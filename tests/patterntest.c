@@ -244,19 +244,19 @@ main (int argc, char** argv)
   TEST_MATCH("*?*x", "yx", TRUE);
   TEST_MATCH("*?*x", "xxxx", TRUE);
   TEST_MATCH("x*??", "xyzw", TRUE);
-  TEST_MATCH("*x", "ִx", TRUE);
-  TEST_MATCH("?x", "ִx", TRUE);
-  TEST_MATCH("??x", "ִx", FALSE);
-  TEST_MATCH("abהצ", "abהצ", TRUE);
-  TEST_MATCH("abהצ", "abao", FALSE);
-  TEST_MATCH("ab?צ", "abהצ", TRUE);
-  TEST_MATCH("ab?צ", "abao", FALSE);
-  TEST_MATCH("abה?", "abהצ", TRUE);
-  TEST_MATCH("abה?", "abao", FALSE);
-  TEST_MATCH("ab??", "abהצ", TRUE);
-  TEST_MATCH("ab*", "abהצ", TRUE);
-  TEST_MATCH("ab*צ", "abהצ", TRUE);
-  TEST_MATCH("ab*צ", "abaצxצ", TRUE);
+  TEST_MATCH("*x", "\xc4x", TRUE);
+  TEST_MATCH("?x", "\xc4x", TRUE);
+  TEST_MATCH("??x", "\xc4x", FALSE);
+  TEST_MATCH("ab\xe4\xf6", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab\xe4\xf6", "abao", FALSE);
+  TEST_MATCH("ab?\xf6", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab?\xf6", "abao", FALSE);
+  TEST_MATCH("ab\xe4?", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab\xe4?", "abao", FALSE);
+  TEST_MATCH("ab??", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab*", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab*\xf6", "ab\xe4\xf6", TRUE);
+  TEST_MATCH("ab*\xf6", "aba\xf6x\xf6", TRUE);
   
   g_print ("\n%u tests passed, %u failed\n", passed, failed);
 

@@ -1,3 +1,19 @@
+Fri Dec  6 14:34:42 2002  Owen Taylor  <otaylor@redhat.com>
+
+	Avoid literal UTF-8. (Allow it to build with 
+	IRIX cc, #72757, Tomas Ogren)
+
+	* tests/patterntest.c (main): Convert literal 
+	iso-8859-1 high bit characters in tests to
+	string escapes.
+
+	* glib/gunichartable.h glib/gen-unicode-tables.pl:
+	Use hex \xMN escapes rather than literal UTF-8
+	for casefold tables.
+
+	* configure.in: AC_PREREQ(2.53). needed for recent
+	GLIB_SIZEOF() changes.
+
 Fri Dec  6 12:40:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/Makefile.am (EXTRA_DIST): Don't

@@ -441,6 +441,8 @@ while (<INPUT>)
     }
 
     my $string = pack ("U*", @values);
+    $string =~ s/([\x80-\xff])/sprintf "\\x%02x",ord($1)/eg;
+    
     if (1 + length $string > $casefoldlen) {
 	$casefoldlen = 1 + length $string;
     }
