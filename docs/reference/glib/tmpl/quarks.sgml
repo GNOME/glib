@@ -58,7 +58,11 @@ If the string does not currently have an associated #GQuark, a new
 Note that this function is identical to g_quark_from_string() except
 that if a new #GQuark is created the string itself is used rather than
 a copy. This saves memory, but can only be used if the string will
-always exist (if, for example, it is a statically-allocated string).
+<emphasis>always</emphasis> exist. It can be used with statically
+allocated strings in the main program, but not with statically 
+allocated memory in dynamically loaded modules, if you expect to
+ever unload the module again (e.g. do not use this function in
+GTK+ theme engines).
 </para>
 
 @string: a string.
