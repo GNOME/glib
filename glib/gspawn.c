@@ -1248,13 +1248,13 @@ script_execute (const gchar *file,
   {
     gchar **new_argv;
 
-    new_argv = g_new0 (gchar*, argc + 1);
+    new_argv = g_new0 (gchar*, argc + 2); /* /bin/sh and NULL */
     
     new_argv[0] = (char *) "/bin/sh";
     new_argv[1] = (char *) file;
-    while (argc > 1)
+    while (argc > 0)
       {
-	new_argv[argc] = argv[argc - 1];
+	new_argv[argc + 1] = argv[argc];
 	--argc;
       }
 
