@@ -142,3 +142,7 @@ using msvcrt, as per the specs file above), and move it into place
 (typically C:\cygnus\cygwin-b20\H-i586-cygwin32\i586-cygwin32\lib\dllcrt2.o).
 
 Next, go back to the GLib directory and build using `make -f makefile.cygwin`.
+Building the dlls uses the script build-dll which is an awful hack. But
+I couldn't get things working in a cleaner way.
+
+--Tor Lillqvist <tml@iki.fi>

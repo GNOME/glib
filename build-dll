@@ -3,7 +3,10 @@
 # Temporary hack until building dlls or executables with exported
 # entry points is easier with gcc -mno-cygwin.
 
-#LD=ld
+# This is usable with cygwin b20.1 and egcs-2.91.66 19990314
+# (egcs-1.1.2 release) as distributed by Mumit Khan. For other combinations,
+# no idea.
+
 GCC=gcc
 DLLTOOL=dlltool
 AS=as

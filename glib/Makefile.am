@@ -21,7 +21,8 @@ EXTRA_DIST = \
 	makefile.cygwin		\
 	giowin32.c		\
 	glibconfig.h.win32	\
-	config.h.win32
+	config.h.win32		\
+	build-dll
 
 lib_LTLIBRARIES = libglib.la
 
