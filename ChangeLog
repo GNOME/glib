@@ -1,5 +1,8 @@
 2005-04-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gconvert.c: Clarify docs in some places. (#172404, 
+	Morten Welinder)
+
 	* NEWS: Updates
 
 2005-04-03  Matthias Clasen  <mclasen@redhat.com>
