@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-03-03 21:13-0500\n"
+"POT-Creation-Date: 2002-02-28 23:38+0100\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -61,7 +61,6 @@ msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je neveljaven"
 
 #: glib/gconvert.c:1632
-#, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime gostitelja URIja '%s' ni veljavno"
 
@@ -386,7 +385,6 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "V ukazni vrstici ali v citiranem besedilu manjka končni narekovaj"
 
 #: glib/gshell.c:529
-#, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Besedilo končano takoj po znaku '\\'. (Besedilo je bilo '%s')"
 
