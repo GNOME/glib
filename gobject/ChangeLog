@@ -7,6 +7,13 @@ Mon Nov  4 14:42:36 2002  Owen Taylor  <otaylor@redhat.com>
  	* gsignal.c: Conditionalize definition of g_handler_ts
  	on DISABLE_MEM_POOLS (#96437)
 	
+2002-10-20  Matthias Clasen  <maclas@gmx.de>
+
+	* gtype.c (g_type_interface_prerequisites): Report only the most
+	specific instantiatable prerequisite, filter out all supertypes of
+	this one (the supertypes are added to the prerequisites array for
+	technical reasons).
+
 2002-10-16  Matthias Clasen  <maclas@gmx.de>
 
 	* glib-mkenums.in: Support for template files.
