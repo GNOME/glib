@@ -1207,7 +1207,7 @@ reencode:
                 lastchar = nextchar;
                 break;
               case -1:
-                if (oldlen > channel->encoded_read_buf->len)
+                if (oldlen < channel->encoded_read_buf->len)
                   status = G_IO_STATUS_NORMAL;
                 else
                   {
@@ -1677,6 +1677,7 @@ g_io_channel_read_chars (GIOChannel	*channel,
         {
           prevchar = nextchar;
           nextchar = g_utf8_next_char (nextchar);
+          g_assert (nextchar != prevchar); /* Posibile for *prevchar of -1 or -2 */
         }
       while (nextchar < channel->encoded_read_buf->str + got_bytes);
 
