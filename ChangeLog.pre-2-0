@@ -1,5 +1,18 @@
 2000-10-09  Raja R Harinath  <harinath@cs.umn.edu>
 
+	Work with beta autoconf 2.50.
+	* configure.in (GLIB_MAJOR_VERSION): Use GLIB_DIVERT_BEFORE_HELP
+	instead of AC_DIVERT_PUSH(),AC_DIVERT_POP.
+	(AC_CHECK_HEADERS): Remove redundant AC_DEFINE(HAVE_...).
+	(REALLOC_0_WORKS): Move AC_DEFINE outside AC_CACHE_VAL.
+	(dlopen): Quote nested AC_CHECK_... calls.
+
+	* acglib.m4 (GLIB_TR_SH, GLIB_TR_CPP): Utility macros copied from
+	beta autoconf 2.50.
+	(GLIB_DIVERT_BEFORE_HELP): New macro that works both with autoconf
+	2.13 and beta autoconf 2.50.
+	(GLIB_SIZEOF, GLIB_BYTECONTENTS): Use GLIB_TR_*.
+
 	* Makefile.am (CONFIGURE_DEPENDENCIES): Use this to specify
 	that 'configure' depends on acglib.m4.
 

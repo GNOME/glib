@@ -1,3 +1,27 @@
+## Portability defines that help interoperate with classic and modern autoconfs
+ifdef([AC_TR_SH],[
+define([GLIB_TR_SH],[AC_TR_SH([$1])])
+define([GLIB_TR_CPP],[AC_TR_CPP([$1])])
+], [
+define([GLIB_TR_SH],
+       [patsubst(translit([[$1]], [*+], [pp]), [[^a-zA-Z0-9_]], [_])])
+define([GLIB_TR_CPP],
+       [patsubst(translit([[$1]],
+  	                  [*abcdefghijklmnopqrstuvwxyz],
+ 			  [PABCDEFGHIJKLMNOPQRSTUVWXYZ]),
+		 [[^A-Z0-9_]], [_])])
+])
+
+# GLIB_DIVERT_BEFORE_HELP(STUFF)
+# Put STUFF early enough so that they are available for $ac_help expansion.
+# Handle both classic (<= v2.13) and modern autoconf
+ifdef([AC_DIVERT],
+      [AC_DEFUN([GLIB_DIVERT_BEFORE_HELP],[AC_DIVERT([NOTICE],[$1])])],
+      [AC_DEFUN([GLIB_DIVERT_BEFORE_HELP],[dnl
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+$1
+AC_DIVERT_POP()])])
+
 dnl GLIB_IF_VAR_EQ (ENV_VAR, VALUE [, EQUALS_ACTION] [, ELSE_ACTION])
 AC_DEFUN(GLIB_IF_VAR_EQ,[
         case "$[$1]" in
@@ -27,14 +51,8 @@ AC_DEFUN(GLIB_ADD_TO_VAR,[
 
 dnl GLIB_SIZEOF (INCLUDES, TYPE, ALIAS [, CROSS-SIZE])
 AC_DEFUN(GLIB_SIZEOF,
-[changequote(<<, >>)dnl
-dnl The name to #define.
-define(<<AC_TYPE_NAME>>, translit(glib_sizeof_$3, [a-z *], [A-Z_P]))dnl
-dnl The cache variable name.
-define(<<AC_CV_NAME>>, translit(glib_cv_sizeof_$3, [ *], [_p]))dnl
-changequote([, ])dnl
-AC_MSG_CHECKING(size of $2)
-AC_CACHE_VAL(AC_CV_NAME,
+[pushdef([glib_Sizeof], GLIB_TR_SH([glib_cv_sizeof_$3]))dnl
+AC_CACHE_CHECK([size of $2], glib_Sizeof,
 [AC_TRY_RUN([#include <stdio.h>
 #if STDC_HEADERS
 #include <stdlib.h>
@@ -47,23 +65,19 @@ main()
   if (!f) exit(1);
   fprintf(f, "%d\n", sizeof($2));
   exit(0);
-}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=0, ifelse([$4], , , AC_CV_NAME=$4))])dnl
-AC_MSG_RESULT($AC_CV_NAME)
-AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
-undefine([AC_TYPE_NAME])dnl
-undefine([AC_CV_NAME])dnl
+}], 
+  [glib_Sizeof=`cat conftestval`  dnl''
+],
+  [glib_Sizeof=0],
+  ifelse([$4], [], [], [glib_Sizeof=$4]))])
+AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), [$[]glib_Sizeof])
+popdef([glib_Sizeof])dnl
 ])
 
 dnl GLIB_BYTE_CONTENTS (INCLUDES, TYPE, ALIAS, N_BYTES, INITIALIZER)
 AC_DEFUN(GLIB_BYTE_CONTENTS,
-[changequote(<<, >>)dnl
-dnl The name to #define.
-define(<<AC_TYPE_NAME>>, translit(glib_byte_contents_$3, [a-z *], [A-Z_P]))dnl
-dnl The cache variable name.
-define(<<AC_CV_NAME>>, translit(glib_cv_byte_contents_$3, [ *], [_p]))dnl
-changequote([, ])dnl
-AC_MSG_CHECKING(byte contents of $5)
-AC_CACHE_VAL(AC_CV_NAME,
+[pushdef([glib_ByteContents], GLIB_TR_SH([glib_cv_byte_contents_$3]))dnl
+AC_CACHE_CHECK([byte contents of $5], glib_ByteContents,
 [AC_TRY_RUN([#include <stdio.h>
 $1
 main()
@@ -77,11 +91,13 @@ main()
     fprintf(f, "%s%d", i?",":"", *(p++));
   fprintf(f, "\n");
   exit(0);
-}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=no, AC_CV_NAME=no)])dnl
-AC_MSG_RESULT($AC_CV_NAME)
-AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
-undefine([AC_TYPE_NAME])dnl
-undefine([AC_CV_NAME])dnl
+}], 
+   [glib_ByteContents=`cat conftestval`  dnl''
+], 
+   [glib_ByteContents=no],
+   [glib_ByteContents=no])])
+AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_byte_contents_$3), [$[]glib_ByteContents])
+popdef([glib_ByteContents])dnl
 ])
 
 dnl GLIB_SYSDEFS (INCLUDES, DEFS_LIST, OFILE [, PREFIX])
@@ -100,6 +116,7 @@ $1
 int main (int c, char **v) {
   FILE *f = fopen ("$glib_sysdefso", "a");
   if (!f) return 1;
+}
 _______EOF
 for glib_sysdef_input in $2 ; do
 	glib_sysdef=`echo $glib_sysdef_input | sed 's/^\([[^:]]*\):.*$/\1/'`
