@@ -1,3 +1,12 @@
+Mon Nov  4 14:42:36 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.c gsignal.c gvaluearray.c: Include config.h
+	so DISABLE_MEMPOOLS actually has an effect.
+	(#96437, Morten Welinder)
+
+	* gsignal.c: Conditionalize definition of g_handler_ts
+	on DISABLE_MEM_POOLS (#96437)
+
 Sat Oct 12 22:02:32 2002  Tim Janik  <timj@gtk.org>
 
 	* testgobject.c: test creation of new fundamental types.

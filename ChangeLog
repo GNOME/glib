@@ -1,3 +1,11 @@
+Mon Nov  4 14:41:48 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gbsearcharray.c: Include config.h
+	so DISABLE_MEMPOOLS actually has an effect.
+	(#96437, Morten Welinder)
+
+	* tests/uri-test.c: Include <config.h>
+
 Mon Nov  4 12:59:01 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gscanner.[ch] glib/gstrfuncs.[ch] configure.in:

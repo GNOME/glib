@@ -31,6 +31,8 @@
  * MT safe
  */
 
+#include <config.h>
+
 #include <thread.h>
 #include <errno.h>
 #include <stdlib.h>

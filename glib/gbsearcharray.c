@@ -16,6 +16,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include <config.h>
+
 #define G_IMPLEMENT_INLINES 1
 #define __G_BSEARCHARRAY_C__
 #include "gbsearcharray.h"
