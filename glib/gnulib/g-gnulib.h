@@ -29,6 +29,9 @@
 #define printf_fetchargs _g_gnulib_printf_fetchargs
 
 /* Use GLib memory allocation */
+#undef malloc
+#undef realloc
+#undef free
 #define malloc  g_malloc
 #define realloc g_realloc
 #define free    g_free

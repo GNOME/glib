@@ -1,5 +1,8 @@
 2004-10-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gnulib/g-gnulib.h: Undef libc functions before defining
+	them, since they may also be macros.  (#155177, Andrea Campi)
+
 	* glib/gkeyfile.h: 
 	* glib/gkeyfile.c: Add a parser for desktop entries and
 	similar files with a .ini-like syntax.  (#139974, Ray Strode)
