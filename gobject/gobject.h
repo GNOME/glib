@@ -54,7 +54,8 @@ typedef void (*GObjectSetPropertyFunc)  (GObject      *object,
                                          const GValue *value,
                                          GParamSpec   *pspec);
 typedef void (*GObjectFinalizeFunc)     (GObject      *object);
-typedef void (*GWeakNotify)		(gpointer      data);
+typedef void (*GWeakNotify)		(gpointer      data,
+					 GObject      *where_the_object_was);
 struct  _GObject
 {
   GTypeInstance g_type_instance;

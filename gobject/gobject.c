@@ -1181,6 +1181,7 @@ g_object_disconnect (gpointer     _object,
 }
 
 typedef struct {
+  GObject *object;
   guint n_weak_refs;
   struct {
     GWeakNotify notify;
@@ -1195,7 +1196,7 @@ weak_refs_notify (gpointer data)
   guint i;
 
   for (i = 0; i < wstack->n_weak_refs; i++)
-    wstack->weak_refs[i].notify (wstack->weak_refs[i].data);
+    wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object);
   g_free (wstack);
 }
 
@@ -1220,6 +1221,7 @@ g_object_weak_ref (GObject    *object,
   else
     {
       wstack = g_renew (WeakRefStack, NULL, 1);
+      wstack->object = object;
       wstack->n_weak_refs = 1;
       i = 0;
     }

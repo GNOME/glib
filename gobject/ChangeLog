@@ -1,3 +1,15 @@
+2001-08-17  James Henstridge  <james@daa.com.au>
+
+	* gobject.c (WeakRefStack): add an object member to the structure.
+	(weak_refs_notify): pass wstack->object as extra argument to
+	notify functions.
+	(g_object_weak_ref): set wstack->object when initialising
+	WeakRefStack.
+
+	* gobject.h (GWeakNotify): add second argument to prototype which
+	gives the pointer to where the object that is being disposed of
+	was.
+
 Wed Jul 18 19:42:31 2001  Tim Janik  <timj@gtk.org>
 
         * gtype.h: if __GNUC__ is defined, inline a test for an exact type
