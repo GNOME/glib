@@ -19,6 +19,7 @@
 
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
+#undef NOISY
 
 #include <string.h>
 
@@ -44,7 +45,6 @@ struct _GPatternSpec
   guint      min_length;
   gchar     *pattern;
 };
-
 
 static gchar *
 match_type_name (GMatchType match_type)
@@ -86,7 +86,9 @@ test_compilation (gchar *src,
 {
   GPatternSpec *spec; 
 
+#ifdef NOISY
   g_print ("compiling \"%s\" \t", utf8(src));
+#endif
   spec = g_pattern_spec_new (src);
 
   if (spec->match_type != match_type)
@@ -120,10 +122,12 @@ test_compilation (gchar *src,
 	       min);
       return FALSE;
     }
-  
+
+#ifdef NOISY  
   g_print ("passed (%s: \"%s\")\n",
 	   match_type_name (spec->match_type),
 	   spec->pattern);
+#endif
   
   return TRUE;
 }
@@ -133,7 +137,9 @@ test_match (gchar *pattern,
 	    gchar *string, 
 	    gboolean match)
 {
+#ifdef NOISY
   g_print ("matching \"%s\" against \"%s\" \t", utf8(string), utf8(pattern));
+#endif
   
   if (g_pattern_match_simple (pattern, string) != match)
     {
@@ -141,7 +147,9 @@ test_match (gchar *pattern,
       return FALSE;
     }
   
+#ifdef NOISY
   g_print ("passed (%s)\n", match ? "match" : "nomatch");
+#endif
   return TRUE;
 }
 
@@ -154,7 +162,9 @@ test_equal (gchar *pattern1,
   GPatternSpec *p2 = g_pattern_spec_new (pattern2);
   gboolean equal = g_pattern_spec_equal (p1, p2);
 
+#ifdef NOISY
   g_print ("comparing \"%s\" with \"%s\" \t", utf8(pattern1), utf8(pattern2));
+#endif
 
   if (expected != equal)
     {
@@ -163,8 +173,10 @@ test_equal (gchar *pattern1,
 	       expected ? "!=" : "==",
 	       match_type_name (p2->match_type), p2->pattern_length, utf8(p2->pattern));
     }
+#ifdef NOISY
   else
     g_print ("passed (%s)\n", equal ? "equal" : "unequal");
+#endif
   
   g_pattern_spec_free (p1);
   g_pattern_spec_free (p2);
@@ -217,17 +229,17 @@ main (int argc, char** argv)
   TEST_COMPILATION("*?*x", G_MATCH_ALL_TAIL, "x?*", 2);
   TEST_COMPILATION("x*??", G_MATCH_ALL_TAIL, "??*x", 3);
 
-  TEST_EQUAL ("*A?B*", "*A?B*", TRUE);
-  TEST_EQUAL ("A*BCD", "A*BCD", TRUE);
-  TEST_EQUAL ("ABCD*", "ABCD****", TRUE);
-  TEST_EQUAL ("A1*", "A1*", TRUE);
-  TEST_EQUAL ("*YZ", "*YZ", TRUE);
-  TEST_EQUAL ("A1x", "A1x", TRUE);
-  TEST_EQUAL ("AB*CD", "AB**CD", TRUE);
-  TEST_EQUAL ("AB*?*CD", "AB*?CD", TRUE);
-  TEST_EQUAL ("AB*?CD", "AB?*CD", TRUE);
-  TEST_EQUAL ("AB*CD", "AB*?*CD", FALSE);
-  TEST_EQUAL ("ABC*", "ABC?", FALSE);
+  TEST_EQUAL("*A?B*", "*A?B*", TRUE);
+  TEST_EQUAL("A*BCD", "A*BCD", TRUE);
+  TEST_EQUAL("ABCD*", "ABCD****", TRUE);
+  TEST_EQUAL("A1*", "A1*", TRUE);
+  TEST_EQUAL("*YZ", "*YZ", TRUE);
+  TEST_EQUAL("A1x", "A1x", TRUE);
+  TEST_EQUAL("AB*CD", "AB**CD", TRUE);
+  TEST_EQUAL("AB*?*CD", "AB*?CD", TRUE);
+  TEST_EQUAL("AB*?CD", "AB?*CD", TRUE);
+  TEST_EQUAL("AB*CD", "AB*?*CD", FALSE);
+  TEST_EQUAL("ABC*", "ABC?", FALSE);
 
   TEST_MATCH("*x", "x", TRUE);
   TEST_MATCH("*x", "xx", TRUE);
@@ -257,8 +269,12 @@ main (int argc, char** argv)
   TEST_MATCH("ab*", "ab\xe4\xf6", TRUE);
   TEST_MATCH("ab*\xf6", "ab\xe4\xf6", TRUE);
   TEST_MATCH("ab*\xf6", "aba\xf6x\xf6", TRUE);
-  
-  g_print ("\n%u tests passed, %u failed\n", passed, failed);
 
-  return 0;
+#ifdef NOISY  
+  g_print ("\n%u tests passed, %u failed\n", passed, failed);
+#endif  
+ 
+  return failed;
 }
+
+
