@@ -1,3 +1,9 @@
+Mon Sep 20 00:35:14 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutf8.c (g_utf16_to_utf8): Add a note explaining how to
+	convert UTF-16 byte stream of ambiguous endianness.  (#152954,
+	Linus Walleij)
+
 Mon Sep 20 00:17:37 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/option-test.c (error_test3_post_parse): 
