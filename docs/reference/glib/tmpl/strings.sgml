@@ -6,12 +6,9 @@ text buffers which grow automatically as text is added.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A #GString is similar to a standard C string, except that it grows
-automatically as text is appended or inserted.
-</para>
-<para>
-The space allocated for the string is always a power of two, so as the
-string grows it will occupy 2, 4, 8, 16, 32, 64, 128 etc. characters.
+A #GString is similar to a standard C string, except that it grows automatically
+as text is appended or inserted. Also, it stores the length of the string, so
+can be used for binary data with embedded nul bytes.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -47,12 +44,13 @@ Creates a new #GString, initialized with the given string.
 
 <!-- ##### FUNCTION g_string_new_len ##### -->
 <para>
-
+Creates a new #GString with @len bytes of the @init buffer.  Because a length is
+provided, @init need not be nul-terminated, and can contain embedded nul bytes.
 </para>
 
-@init: 
-@len: 
-@Returns: 
+@init: initial contents of string
+@len: length of @init to use
+@Returns: a new #GString
 
 
 <!-- ##### FUNCTION g_string_sized_new ##### -->
@@ -129,13 +127,14 @@ Adds a character onto the end of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_append_len ##### -->
 <para>
-
+Appends @len bytes of @val to @string. Because @len is provided, 
+@val may contain embedded nuls and need not be nul-terminated.
 </para>
 
-@string: 
-@val: 
-@len: 
-@Returns: 
+@string: a #GString
+@val: bytes to append
+@len: number of bytes of @val to use
+@Returns: the #GString
 
 
 <!-- ##### FUNCTION g_string_prepend ##### -->
@@ -160,13 +159,14 @@ Adds a character onto the start of a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_prepend_len ##### -->
 <para>
-
+Prepends @len bytes of @val to @string. Because @len is provided, 
+@val may contain embedded nuls and need not be nul-terminated.
 </para>
 
-@string: 
-@val: 
-@len: 
-@Returns: 
+@string: a #GString
+@val: bytes to prepend
+@len: number of bytes in @val to prepend
+@Returns: the #GString passed in
 
 
 <!-- ##### FUNCTION g_string_insert ##### -->
@@ -193,14 +193,15 @@ Inserts a character into a #GString, expanding it if necessary.
 
 <!-- ##### FUNCTION g_string_insert_len ##### -->
 <para>
-
+Inserts @len bytes of @val into @string at @pos.  Because @len is provided, @val
+ may contain embedded nuls and need not be nul-terminated. If @pos is -1, bytes are inserted at the end of the string.
 </para>
 
-@string: 
-@pos: 
-@val: 
-@len: 
-@Returns: 
+@string: a #GString
+@pos: position in @string where insertion should happen, or -1 for at the end
+@val: bytes to insert
+@len: number of bytes of @val to insert
+@Returns: the #GString
 
 
 <!-- ##### FUNCTION g_string_erase ##### -->
@@ -256,20 +257,21 @@ Converts a #GString to lower case.
 
 <!-- ##### FUNCTION g_string_hash ##### -->
 <para>
-
+Creates a hash code for @str; for use with #GHashTable.
 </para>
 
-@str: 
-@Returns: 
+@str: a string to hash
+@Returns: hash code for @str
 
 
 <!-- ##### FUNCTION g_string_equal ##### -->
 <para>
-
+Compares two strings for equality, returning %TRUE if they are equal. 
+For use with #GHashTable.
 </para>
 
-@v: 
-@v2: 
-@Returns: 
+@v: a #GString
+@v2: another #GString
+@Returns: %TRUE if they strings are the same length and contain the same bytes
 
 

@@ -41,7 +41,7 @@ gchar*	              g_strdelimit     (gchar	     *string,
 					gchar	      new_delimiter);
 gchar*	              g_strcanon       (gchar       *string,
 					const gchar *valid_chars,
-					gchar        subsitutor);
+					gchar        substitutor);
 gdouble	              g_strtod	       (const gchar *nptr,
 					gchar	    **endptr);
 G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;

@@ -41,11 +41,14 @@ null-terminated.
 
 <!-- ##### FUNCTION g_strdupv ##### -->
 <para>
-
+Copies a %NULL-terminated array of strings. The result consists of a
+%NULL-terminated array, with one malloc block holding the array of strings, and
+each string itself allocated. The simplest way to free the result is with
+g_strfreev() which frees each string in a vector, then the vector itself.
 </para>
 
-@str_array: 
-@Returns: 
+@str_array: array to copy
+@Returns: a new array
 
 
 <!-- ##### FUNCTION g_strnfill ##### -->
@@ -71,24 +74,33 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
-
+Portability wrapper that calls strlcpy() on systems which have it, and emulates
+strlcpy() otherwise. Copies @src to @dest; @dest is guaranteed to be
+nul-terminated; @src must be nul-terminated; @dest_size is the buffer size, not
+the number of chars to copy. Caveat: strlcpy() is supposedly more secure than
+strcpy() or strncpy(), but if you really want to avoid screwups, g_strdup() is
+an even better idea.
 </para>
 
-@dest: 
-@src: 
-@dest_size: 
-@Returns: 
+@dest: destination buffer
+@src: source buffer
+@dest_size: length of @dest in bytes
+@Returns: length of @src
 
 
 <!-- ##### FUNCTION g_strlcat ##### -->
 <para>
-
+Portability wrapper that calls strlcat() on systems which have it, and emulates
+strlcat() otherwise. Appends nul-terminated @src string to @dest, guaranteeing
+nul-termination for @dest. The total size of @dest won't exceed
+@dest_size. Caveat: this is supposedly a more secure alternative to strcat() or
+strncat(), but for real security g_strconcat() is harder to mess up.
 </para>
 
-@dest: 
-@src: 
-@dest_size: 
-@Returns: 
+@dest: destination buffer, already containing one nul-terminated string
+@src: source buffer
+@dest_size: length of @dest buffer in bytes (not length of existing string inside @dest)
+@Returns: length of @src plus initial length of string in @dest
 
 
 <!-- ##### FUNCTION g_strdup_printf ##### -->
@@ -332,13 +344,16 @@ character compressed.
 
 <!-- ##### FUNCTION g_strcanon ##### -->
 <para>
-
+For each character in @string, if the character is not in @valid_chars,
+replaces the character with @substitutor. Modifies @string in place, 
+and return @string itself, not a copy. The return value is to allow
+nesting such as g_strup (g_strcanon (str)).
 </para>
 
-@string: 
-@valid_chars: 
-@subsitutor: 
-@Returns: 
+@string: a nul-terminated array of bytes
+@valid_chars: bytes permitted in @string
+@substitutor: replacement character for disallowed bytes
+@Returns: @string
 
 
 <!-- ##### FUNCTION g_strsplit ##### -->
@@ -367,8 +382,10 @@ Frees a NULL-terminated array of strings, and the array itself.
 
 <!-- ##### FUNCTION g_strconcat ##### -->
 <para>
-Concatenates all of the given strings into one long string.
-The returned string should be freed when no longer needed.
+Concatenates all of the given strings into one long string.  The returned string
+should be freed when no longer needed.  WARNING: THE VARIABLE ARGUMENT LIST MUST
+END WITH %NULL. If you forget the %NULL, g_strconcat() will start appending
+random memory junk to your string.
 </para>
 
 @string1: The first string to add, which must not be NULL.

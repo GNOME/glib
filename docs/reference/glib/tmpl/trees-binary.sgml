@@ -50,7 +50,7 @@ It should be accessed only by using the following functions.
 
 <!-- ##### FUNCTION g_tree_new ##### -->
 <para>
-Creates a new GTree.
+Creates a new #GTree.
 </para>
 
 @key_compare_func: the function used to order the nodes in the #GTree.
@@ -64,12 +64,13 @@ second.
 
 <!-- ##### FUNCTION g_tree_new_with_data ##### -->
 <para>
-
+Creates a new #GTree with a comparison function that accepts user data.
+See g_tree_new() for more details.
 </para>
 
-@key_compare_func: 
-@user_data: 
-@Returns: 
+@key_compare_func: qsort()-style comparison function
+@user_data: data to pass to comparison function
+@Returns: a new #GTree
 
 
 <!-- ##### FUNCTION g_tree_insert ##### -->

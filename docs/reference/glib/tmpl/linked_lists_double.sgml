@@ -181,12 +181,12 @@ self-contained list with one element.
 
 <!-- ##### FUNCTION g_list_delete_link ##### -->
 <para>
-
+Deletes the node @link from @list.
 </para>
 
-@list: 
-@link: 
-@Returns: 
+@list: a #GList
+@link: node to delete from @list
+@Returns: the new head of @list
 
 
 <!-- ##### FUNCTION g_list_free ##### -->
@@ -270,13 +270,13 @@ value if the first element comes after the second.
 
 <!-- ##### FUNCTION g_list_sort_with_data ##### -->
 <para>
-
+Like g_list_sort(), but the comparison function accepts a user data argument.
 </para>
 
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
+@list: a #GList
+@compare_func: comparison function
+@user_data: user data to pass to comparison function
+@Returns: the new head of @list
 
 
 <!-- ##### USER_FUNCTION GCompareFunc ##### -->

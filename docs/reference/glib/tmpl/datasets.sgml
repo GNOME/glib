@@ -110,12 +110,12 @@ The data element's destroy function is called if it has been set.
 
 <!-- ##### FUNCTION g_dataset_id_remove_no_notify ##### -->
 <para>
-
+Removes an element, without calling its destroy notification function.
 </para>
 
-@dataset_location: 
-@key_id: 
-@Returns: 
+@dataset_location: the location identifying the dataset.
+@key_id: the #GQuark ID identifying the data element.
+@Returns: the data previously stored at @key_id, or %NULL if none.
 
 
 <!-- ##### MACRO g_dataset_set_data ##### -->

@@ -82,11 +82,12 @@ Used to create the first node in a tree.
 
 <!-- ##### FUNCTION g_node_copy ##### -->
 <para>
-
+Recursively copies a #GNode (but does not deep-copy the data inside the nodes,
+since there's no way for GLib to know how to do that).
 </para>
 
-@node: 
-@Returns: 
+@node: a #GNode
+@Returns: a new #GNode containing the same data pointers
 
 
 <!-- ##### FUNCTION g_node_insert ##### -->

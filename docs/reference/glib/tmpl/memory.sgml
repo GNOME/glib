@@ -94,11 +94,12 @@ If @size is 0 it returns NULL.
 <para>
 Reallocates the memory pointed to by @mem, so that it now has space for
 @size bytes of memory. It returns the new address of the memory, which may
-have been moved.
+have been moved. @mem may be %NULL, in which case it's considered to 
+have zero-length. @n_bytes may be 0, in which case %NULL will be returned.
 </para>
 
 @mem: the memory to reallocate.
-@n_bytes: 
+@n_bytes: new size of the memory in bytes
 @Returns: the new address of the allocated memory.
 <!-- # Unused Parameters # -->
 @size: the new size of the allocated memory, in bytes.
@@ -106,21 +107,24 @@ have been moved.
 
 <!-- ##### FUNCTION g_try_malloc ##### -->
 <para>
-
+Attempts to allocate @n_bytes, and returns %NULL on failure. 
+Contrast with g_malloc(), which aborts the program on failure.
 </para>
 
-@n_bytes: 
-@Returns: 
+@n_bytes: number of bytes to allocate
+@Returns: the allocated memory, or %NULL
 
 
 <!-- ##### FUNCTION g_try_realloc ##### -->
 <para>
-
+Attempts to realloc @mem to a new size, @n_bytes, and returns %NULL
+on failure. Contrast with g_realloc(), which aborts the program
+on failure. If @mem is %NULL, behaves the same as g_try_malloc().
 </para>
 
-@mem: 
-@n_bytes: 
-@Returns: 
+@mem: previously-allocated memory, or %NULL
+@n_bytes: number of bytes to allocate
+@Returns: the allocated memory, or %NULL
 
 
 <!-- ##### FUNCTION g_free ##### -->
@@ -134,10 +138,11 @@ If @mem is NULL it simply returns.
 
 <!-- ##### MACRO g_alloca ##### -->
 <para>
-
+Allocates @size bytes on the stack; these bytes will be freed when the current
+stack frame is cleaned up.
 </para>
 
-@size: 
+@size: number of bytes to allocate
 
 
 <!-- ##### MACRO g_memmove ##### -->
@@ -171,22 +176,30 @@ is NULL.
 
 <!-- ##### STRUCT GMemVTable ##### -->
 <para>
-
+A set of functions used to perform memory allocation. The same GMemVTable must
+be used for all allocations in the same program; a call to g_mem_set_vtable(),
+if it exists, should be prior to any use of GLib.
 </para>
 
-@malloc: 
-@realloc: 
-@free: 
-@calloc: 
-@try_malloc: 
-@try_realloc: 
+@malloc: function to use for allocating memory
+@realloc: function to use for reallocating memory
+@free: function to use to free memory
+@calloc: function to use for allocating zero-filled memory
+@try_malloc: function to use for allocating memory without a default error handler
+@try_realloc: function to use for reallocating memory without a default error handler
 
 <!-- ##### FUNCTION g_mem_set_vtable ##### -->
 <para>
-
+Sets the #GMemVTable to use for memory allocation. You can use this to provide
+custom memory allocation routines. THIS FUNCTION MUST BE CALLED BEFORE USING ANY
+OTHER GLIB FUNCTIONS. The vtable only needs to provide malloc, realloc, and free
+functions; GLib can provide default implementations of the others.  The malloc
+and realloc implementations should return %NULL on failure, GLib will handle
+error-checking for you. @vtable is copied, so need not persist after this 
+function has been called.
 </para>
 
-@vtable: 
+@vtable: table of memory allocation routines.
 
 
 <!-- ##### VARIABLE glib_mem_profiler_table ##### -->

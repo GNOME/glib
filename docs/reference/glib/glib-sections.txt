@@ -40,7 +40,6 @@ gsize
 gssize
 
 <SUBSECTION Private>
-gstring
 gldouble
 GLIB_SIZEOF_VOID_P
 GLIB_SIZEOF_LONG
@@ -617,7 +616,6 @@ GIOFuncs
 <SUBSECTION Private>
 g_io_channel_win32_new_fd
 g_io_channel_win32_new_messages
-g_io_channel_win32_new_stream_socket
 g_io_channel_win32_poll
 g_io_channel_win32_make_pollfd
 g_io_channel_win32_get_fd
@@ -950,8 +948,6 @@ GHookFunc
 GHookCheckFunc
 GHookMarshaller
 GHookCheckMarshaller
-GHookFreeFunc
-G_HOOK_DEFERRED_DESTROY
 
 <SUBSECTION>
 g_hook_list_init
@@ -1043,7 +1039,6 @@ GVoidFunc
 GFreeFunc
 
 <SUBSECTION>
-GCompareFuncData
 g_qsort_with_data
 
 <SUBSECTION Private>

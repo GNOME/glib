@@ -1112,7 +1112,7 @@ g_strdelimit (gchar	  *string,
 gchar*
 g_strcanon (gchar       *string,
 	    const gchar *valid_chars,
-	    gchar        subsitutor)
+	    gchar        substitutor)
 {
   register gchar *c;
 
@@ -1122,7 +1122,7 @@ g_strcanon (gchar       *string,
   for (c = string; *c; c++)
     {
       if (!strchr (valid_chars, *c))
-	*c = subsitutor;
+	*c = substitutor;
     }
 
   return string;

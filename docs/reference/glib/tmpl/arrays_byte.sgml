@@ -68,11 +68,11 @@ Creates a new #GByteArray.
 
 <!-- ##### FUNCTION g_byte_array_sized_new ##### -->
 <para>
-
+Creates a new byte array, with the given size.
 </para>
 
-@reserved_size: 
-@Returns: 
+@reserved_size: initial number of bytes in the array
+@Returns: a new #GByteArray
 
 
 <!-- ##### FUNCTION g_byte_array_append ##### -->
@@ -125,21 +125,23 @@ g_byte_array_remove_index().
 
 <!-- ##### FUNCTION g_byte_array_sort ##### -->
 <para>
-
+Sorts a byte array, using @compare_func which should be a qsort()-style
+comparison function (returns -1 for first arg is less than second arg, 0 for
+equal, 1 if first arg is greater than second arg).
 </para>
 
-@array: 
-@compare_func: 
+@array: array to sort
+@compare_func: comparison function
 
 
 <!-- ##### FUNCTION g_byte_array_sort_with_data ##### -->
 <para>
-
+Like g_byte_array_sort(), but the comparison function takes a user data argument.
 </para>
 
-@array: 
-@compare_func: 
-@user_data: 
+@array: a #GByteArray
+@compare_func: comparison function
+@user_data: data to pass to @compare_func
 
 
 <!-- ##### FUNCTION g_byte_array_set_size ##### -->

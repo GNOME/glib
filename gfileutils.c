@@ -117,10 +117,25 @@ g_file_error_quark (void)
   return q;
 }
 
+/**
+ * g_file_error_from_errno:
+ * @err_no: an "errno" value
+ * 
+ * Gets a #GFileError constant based on the passed-in errno.
+ * For example, if you pass in EEXIST this function returns
+ * #G_FILE_ERROR_EXIST. Unlike errno values, you can portably
+ * assume that all #GFileError values will exist.
+ *
+ * Normally a #GFileError value goes into a #GError returned
+ * from a function that manipulates files. So you would use
+ * g_file_error_from_errno() when constructing a #GError.
+ * 
+ * Return value: #GFileError corresponding to the given errno
+ **/
 GFileError
-g_file_error_from_errno (gint en)
+g_file_error_from_errno (gint err_no)
 {
-  switch (en)
+  switch (err_no)
     {
 #ifdef EEXIST
     case EEXIST:

@@ -200,7 +200,7 @@ g_utf8_prev_char (const gchar *p)
  *       nul-terminated.
  * 
  * Return value: the length of the string in characters
- */
+ **/
 gint
 g_utf8_strlen (const gchar *p, gint max)
 {
@@ -310,6 +310,19 @@ g_utf8_pointer_to_offset (const gchar *str,
 }
 
 
+/**
+ * g_utf8_strncpy:
+ * @dest: buffer to fill with characters from @src
+ * @src: UTF-8 string
+ * @n: character count
+ * 
+ * Like the standard C strncpy() function, but copies a given number
+ * of characters instead of a given number of bytes. The @src string
+ * must be valid UTF-8 encoded text. (Use g_utf8_validate() on all
+ * text before trying to use UTF-8 utility functions with it.)
+ * 
+ * Return value: @dest
+ **/
 gchar *
 g_utf8_strncpy (gchar *dest, const gchar *src, size_t n)
 {
@@ -379,6 +392,24 @@ g_utf8_get_charset_internal (char **a)
 static int utf8_locale_cache = -1;
 static char *utf8_charset_cache = NULL;
 
+/**
+ * g_get_charset:
+ * @charset: return location for character set name
+ * 
+ * Obtains the character set for the current locale; you might use
+ * this character set as an argument to g_convert(), to convert from
+ * the current locale's encoding to some other encoding. (Frequently
+ * g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts,
+ * though.)
+ *
+ * The return value is %TRUE if the locale's encoding is UTF-8, in that
+ * case you can perhaps avoid calling g_convert().
+ *
+ * The string returned in @charset is not allocated, and should not be
+ * freed.
+ * 
+ * Return value: %TRUE if the returned charset is UTF-8
+ **/
 gboolean
 g_get_charset (char **charset) 
 {

@@ -545,6 +545,8 @@ g_win32_closedir (DIR *dir)
  * locale from Windows and returns it as a string of the above form
  * for use in forming file names etc. The returned string should be
  * deallocated with g_free().
+ *
+ * Returns: allocated locale name
  */
 
 gchar *
@@ -829,6 +831,8 @@ g_win32_getlocale (void)
  * or in the thread's language, or the user's language, the system's
  * langauge, or US English (see docs for FormatMessage). The returned
  * string should be deallocated with g_free().
+ *
+ * Returns: allocated error message
  */
 gchar *
 g_win32_error_message (gint error)

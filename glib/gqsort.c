@@ -28,8 +28,9 @@
  *
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
- * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/.  */
+ * files for a list of changes.  These files are distributed with GLib
+ * at ftp://ftp.gtk.org/pub/gtk/.
+ */
 
 #include <string.h>
 
@@ -92,6 +93,18 @@ stack_node;
  *    in this case)!
  */
 
+/**
+ * g_qsort_with_data:
+ * @pbase: start of array to sort
+ * @total_elems: elements in the array
+ * @size: size of each element
+ * @compare_func: function to compare elements
+ * @user_data: data to pass to @compare_func
+ *
+ * This is just like the standard C qsort() function, but
+ * the comparison routine accepts a user data argument.
+ * 
+ **/
 void
 g_qsort_with_data (gconstpointer    pbase,
 		   gint             total_elems,

@@ -112,12 +112,12 @@ Removes an element, using its #GQuark identifier.
 
 <!-- ##### FUNCTION g_datalist_id_remove_no_notify ##### -->
 <para>
-
+Removes an element, without calling its destroy notification function.
 </para>
 
-@datalist: 
-@key_id: 
-@Returns: 
+@datalist: a datalist.
+@key_id: the #GQuark identifying a data element.
+@Returns: the data previously stored at @key_id, or %NULL if none
 
 
 <!-- ##### MACRO g_datalist_set_data ##### -->

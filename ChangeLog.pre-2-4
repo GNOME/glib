@@ -1,5 +1,19 @@
 2001-04-16  Havoc Pennington  <hp@redhat.com>
 
+	* gqsort.c: docs
+
+	* gfileutils.c: docs
+
+	* gwin32.c: docs fixes
+
+	* gconvert.c: docs
+
+	* guniprop.c: docs
+
+	* gutf8.c: docs
+
+2001-04-16  Havoc Pennington  <hp@redhat.com>
+
 	* glib-2.0.m4: put AC_PATH_PROG(pkg-config) before "Checking for
 	glib" so the output looks right	
 

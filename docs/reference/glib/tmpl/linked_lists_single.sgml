@@ -152,13 +152,13 @@ to the end of the list.
 
 <!-- ##### FUNCTION g_slist_insert_before ##### -->
 <para>
-
+Inserts a node before @sibling containing @data. Returns the new head of the list.
 </para>
 
-@slist: 
-@sibling: 
-@data: 
-@Returns: 
+@slist: a #GSList
+@sibling: node to insert @data before
+@data: data to put in the newly-inserted node
+@Returns: new head of the list
 
 
 <!-- ##### FUNCTION g_slist_insert_sorted ##### -->
@@ -201,12 +201,12 @@ self-contained list with one element.
 
 <!-- ##### FUNCTION g_slist_delete_link ##### -->
 <para>
-
+Deletes a node of @list. Returns the new list head.
 </para>
 
-@list: 
-@link: 
-@Returns: 
+@list: a #GSList
+@link: node to delete
+@Returns: new head of @list
 
 
 <!-- ##### FUNCTION g_slist_free ##### -->
@@ -273,13 +273,13 @@ value if the first element comes after the second.
 
 <!-- ##### FUNCTION g_slist_sort_with_data ##### -->
 <para>
-
+Like g_slist_sort(), but the sort function accepts a user data argument.
 </para>
 
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
+@list: a #GSList
+@compare_func: qsort()-style comparison function
+@user_data: data to pass to comparison function
+@Returns: new head of the list
 
 
 <!-- ##### FUNCTION g_slist_concat ##### -->

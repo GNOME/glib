@@ -35,6 +35,19 @@
 
 #define PROP(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TPROP ((Char) >> 8, (Char) & 0xff))
 
+/**
+ * g_unichar_break_type:
+ * @c: a Unicode character
+ * 
+ * Determines the break type of @c. @c should be a Unicode character
+ * (to derive a character from UTF-8 encoded text, use
+ * g_utf8_get_char()). The break type is used to find word and line
+ * breaks ("text boundaries"), Pango implements the Unicode boundary
+ * resolution alogorithms and normally you would use a function such
+ * as pango_break() instead of caring about break types yourself.
+ * 
+ * Return value: break type
+ **/
 GUnicodeBreakType
 g_unichar_break_type (gunichar c)
 {

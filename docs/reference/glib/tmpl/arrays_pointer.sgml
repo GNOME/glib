@@ -82,11 +82,11 @@ Creates a new #GPtrArray.
 
 <!-- ##### FUNCTION g_ptr_array_sized_new ##### -->
 <para>
-
+Creates a new #GPtrArray with @reserved_size elements.
 </para>
 
-@reserved_size: 
-@Returns: 
+@reserved_size: Initial number of elements.
+@Returns: the new #GPtrArray.
 
 
 <!-- ##### FUNCTION g_ptr_array_add ##### -->
@@ -158,21 +158,23 @@ g_ptr_array_remove_index().
 
 <!-- ##### FUNCTION g_ptr_array_sort ##### -->
 <para>
-
+Sorts the array, using @compare_func which should be a qsort()-style comparison
+function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
+first arg is greater than second arg).
 </para>
 
-@array: 
-@compare_func: 
+@array: array to sort
+@compare_func: comparison function
 
 
 <!-- ##### FUNCTION g_ptr_array_sort_with_data ##### -->
 <para>
-
+Like g_ptr_array_sort(), but the comparison function has a user data argument.
 </para>
 
-@array: 
-@compare_func: 
-@user_data: 
+@array: array to sort
+@compare_func: qsort()-style comparison function
+@user_data: data to pass to @compare_func
 
 
 <!-- ##### FUNCTION g_ptr_array_set_size ##### -->

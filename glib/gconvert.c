@@ -53,6 +53,20 @@ g_convert_error_quark()
 #error libiconv not in use but included iconv.h is from libiconv
 #endif
 
+/**
+ * g_iconv_open:
+ * @to_codeset: destination codeset
+ * @from_codeset: source codeset
+ * 
+ * Same as the standard UNIX routine iconv_open(), but
+ * may be implemented via libiconv on UNIX flavors that lack
+ * a native implementation.
+ * 
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
+ * more convenient than the raw iconv wrappers.
+ * 
+ * Return value: a "conversion descriptor"
+ **/
 GIConv
 g_iconv_open (const gchar  *to_codeset,
 	      const gchar  *from_codeset)
@@ -62,6 +76,23 @@ g_iconv_open (const gchar  *to_codeset,
   return (GIConv)cd;
 }
 
+/**
+ * g_iconv:
+ * @converter: conversion descriptor from g_iconv_open()
+ * @inbuf: bytes to convert
+ * @inbytes_left: inout parameter, bytes remaining to convert in @inbuf
+ * @outbuf: converted output bytes
+ * @outbytes_left: inout parameter, bytes available to fill in @outbuf
+ * 
+ * Same as the standard UNIX routine iconv(), but
+ * may be implemented via libiconv on UNIX flavors that lack
+ * a native implementation.
+ *
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
+ * more convenient than the raw iconv wrappers.
+ * 
+ * Return value: count of non-reversible conversions, or -1 on error
+ **/
 size_t 
 g_iconv (GIConv   converter,
 	 gchar  **inbuf,
@@ -74,6 +105,21 @@ g_iconv (GIConv   converter,
   return iconv (cd, inbuf, inbytes_left, outbuf, outbytes_left);
 }
 
+/**
+ * g_iconv_close:
+ * @converter: a conversion descriptor from g_iconv_open()
+ *
+ * Same as the standard UNIX routine iconv_close(), but
+ * may be implemented via libiconv on UNIX flavors that lack
+ * a native implementation. Should be called to clean up
+ * the conversion descriptor from iconv_open() when
+ * you are done converting things.
+ *
+ * GLib provides g_convert() and g_locale_to_utf8() which are likely
+ * more convenient than the raw iconv wrappers.
+ * 
+ * Return value: -1 on error, 0 on success
+ **/
 gint
 g_iconv_close (GIConv converter)
 {
