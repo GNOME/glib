@@ -370,7 +370,7 @@ g_string_truncate (GString *fstring,
 
 /**
  * g_string_set_size:
- * @fstring: a #GString
+ * @string: a #GString
  * @len: the new length
  * 
  * Sets the length of a #GString. If the length is less than
@@ -382,20 +382,20 @@ g_string_truncate (GString *fstring,
  * Return value: @fstring
  **/
 GString*
-g_string_set_size (GString *fstring,
+g_string_set_size (GString *string,
 		   gsize    len)    
 {
-  GRealString *string = (GRealString *) fstring;
+  GRealString *rstring = (GRealString *) string;
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  if (len >= string->allocated_len)
-    g_string_maybe_expand (string, len - fstring->len);
+  if (len >= rstring->allocated_len)
+    g_string_maybe_expand (rstring, len - string->len);
   
-  string->len = len;
-  string->str[len] = 0;
+  rstring->len = len;
+  rstring->str[len] = 0;
 
-  return fstring;
+  return string;
 }
 
 GString*

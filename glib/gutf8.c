@@ -501,7 +501,7 @@ g_unichar_to_utf8 (gunichar c,
 /**
  * g_utf8_strchr:
  * @p: a nul-terminated utf-8 string
- * @p_len: the maximum length of p
+ * @len: the maximum length of p
  * @c: a iso-10646 character
  * 
  * Find the leftmost occurence of the given iso-10646 character
@@ -513,22 +513,22 @@ g_unichar_to_utf8 (gunichar c,
  **/
 gchar *
 g_utf8_strchr (const char *p,
-	       gssize      p_len,
+	       gssize      len,
 	       gunichar    c)
 {
   gchar ch[10];
 
-  gint len = g_unichar_to_utf8 (c, ch);
-  ch[len] = '\0';
+  gint charlen = g_unichar_to_utf8 (c, ch);
+  ch[charlen] = '\0';
   
-  return g_strstr_len (p, p_len, ch);
+  return g_strstr_len (p, len, ch);
 }
 
 
 /**
  * g_utf8_strrchr:
  * @p: a nul-terminated utf-8 string
- * @p_len: the maximum length of p
+ * @len: the maximum length of p
  * @c: a iso-10646 character/
  * 
  * Find the rightmost occurence of the given iso-10646 character
@@ -540,15 +540,15 @@ g_utf8_strchr (const char *p,
  **/
 gchar *
 g_utf8_strrchr (const char *p,
-		gssize      p_len,
+		gssize      len,
 		gunichar    c)
 {
   gchar ch[10];
 
-  gint len = g_unichar_to_utf8 (c, ch);
-  ch[len] = '\0';
+  gint charlen = g_unichar_to_utf8 (c, ch);
+  ch[charlen] = '\0';
   
-  return g_strrstr_len (p, p_len, ch);
+  return g_strrstr_len (p, len, ch);
 }
 
 

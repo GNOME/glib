@@ -1,3 +1,8 @@
+Mon Sep 10 11:42:58 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gutf8.c glib/gstring.c glib/gfileutils.c glib/gmain.c: 
+	Doc fixes.
+
 Sat Sep  8 17:14:51 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gfileutils.[ch]: Add g_build_path(), 

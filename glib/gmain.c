@@ -504,7 +504,7 @@ g_poll (GPollFD *fds,
 
 /**
  * g_main_context_ref:
- * @loop: a #GMainContext
+ * @context: a #GMainContext
  * 
  * Increases the reference count on a #GMainContext object by one.
  **/
@@ -569,7 +569,7 @@ g_main_context_unref_and_unlock (GMainContext *context)
 
 /**
  * g_main_context_unref:
- * @loop: a #GMainContext
+ * @context: a #GMainContext
  * 
  * Decreases the reference count on a #GMainContext object by one. If
  * the result is zero, free the context and free all associated memory.
