@@ -37,32 +37,38 @@ typedef struct _GTimeoutData GTimeoutData;
 typedef struct _GSource GSource;
 typedef struct _GPollRec GPollRec;
 
-typedef enum {
+typedef enum
+{
   G_SOURCE_READY = 1 << G_HOOK_FLAG_USER_SHIFT,
   G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1)
 } GSourceFlags;
 
-struct _GSource {
+struct _GSource
+{
   GHook hook;
   gint priority;
   gpointer source_data;
 };
 
-struct _GMainLoop {
+struct _GMainLoop
+{
   gboolean flag;
 };
 
-struct _GIdleData {
+struct _GIdleData
+{
   GSourceFunc callback;
 };
 
-struct _GTimeoutData {
+struct _GTimeoutData
+{
   GTimeVal    expiration;
   gint        interval;
   GSourceFunc callback;
 };
 
-struct _GPollRec {
+struct _GPollRec
+{
   gint priority;
   GPollFD *fd;
   GPollRec *next;
@@ -129,8 +135,8 @@ static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
 
 #ifdef HAVE_POLL
-static GPollFunc poll_func = (GPollFunc)poll;
-#else
+static GPollFunc poll_func = (GPollFunc) poll;
+#else	/* !HAVE_POLL */
 
 /* The following implementation of poll() comes from the GNU C Library.
  * Copyright (C) 1994, 1996, 1997 Free Software Foundation, Inc.
@@ -144,7 +150,7 @@ static GPollFunc poll_func = (GPollFunc)poll;
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
-#else
+#else	/* !NO_FD_SET */
 #  ifndef _AIX
 typedef long fd_mask;
 #  endif
@@ -153,7 +159,7 @@ typedef long fd_mask;
 #  else
 #    define SELECT_MASK int
 #  endif
-#endif
+#endif	/* !NO_FD_SET */
 
 static gint 
 g_poll (GPollFD *fds, guint nfds, gint timeout)
@@ -203,9 +209,8 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
   return ready;
 }
-
 static GPollFunc poll_func = g_poll;
-#endif
+#endif	/* !HAVE_POLL */
 
 /* Hooks for adding to the main loop */
 
@@ -213,7 +218,8 @@ static GPollFunc poll_func = g_poll;
  * sure we insert at the end of equal priority items
  */
 static gint
-g_source_compare (GHook *a, GHook *b)
+g_source_compare (GHook *a,
+		  GHook *b)
 {
   GSource *source_a = (GSource *)a;
   GSource *source_b = (GSource *)b;
@@ -277,7 +283,8 @@ g_source_remove (guint tag)
   if (hook)
     {
       GSource *source = (GSource *)hook;
-      ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
+      
+      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
 
@@ -295,7 +302,8 @@ g_source_remove_by_user_data (gpointer user_data)
   if (hook)
     {
       GSource *source = (GSource *)hook;
-      ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
+
+      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
 
@@ -307,6 +315,7 @@ g_source_find_source_data (GHook	*hook,
 			   gpointer	 data)
 {
   GSource *source = (GSource *)hook;
+
   return (source->source_data == data);
 }
 
@@ -318,20 +327,24 @@ g_source_remove_by_source_data (gpointer source_data)
   G_LOCK (main_loop);
 
   hook = g_hook_find (&source_list, TRUE, 
-			     g_source_find_source_data, source_data);
+		      g_source_find_source_data, source_data);
   if (hook)
     {
       GSource *source = (GSource *)hook;
-      ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
+
+      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
 
   G_UNLOCK (main_loop);
 }
 
-void g_get_current_time (GTimeVal *result)
+void
+g_get_current_time (GTimeVal *result)
 {
-  gettimeofday ((struct timeval *)result, NULL);
+  g_return_if_fail (result != NULL);
+
+  gettimeofday ((struct timeval *) result, NULL);
 }
 
 /* Running the main loop */
@@ -352,24 +365,26 @@ g_main_dispatch (GTimeVal *current_time)
 
       if (G_HOOK_IS_VALID (source))
 	{
-	  gboolean (*dispatch) (gpointer, GTimeVal *, gpointer);
 	  gpointer hook_data = source->hook.data;
 	  gpointer source_data = source->source_data;
+	  gboolean (*dispatch) (gpointer,
+				GTimeVal *,
+				gpointer);
 
-	  dispatch = ((GSourceFuncs *)source->hook.func)->dispatch;
+	  dispatch = ((GSourceFuncs *) source->hook.func)->dispatch;
 	  
 	  source->hook.flags |= G_HOOK_FLAG_IN_CALL;
 
 	  G_UNLOCK (main_loop);
-	  need_destroy = ! dispatch(source_data,
-				    current_time,
-				    hook_data);
+	  need_destroy = ! dispatch (source_data,
+				     current_time,
+				     hook_data);
 	  G_LOCK (main_loop);
 
 	  source->hook.flags &= ~G_HOOK_FLAG_IN_CALL;
 	  
 	  if (need_destroy)
-	    g_hook_destroy_link (&source_list, (GHook *)source);
+	    g_hook_destroy_link (&source_list, (GHook *) source);
 	}
 
       g_hook_unref (&source_list, (GHook *)source);
@@ -381,7 +396,8 @@ g_main_dispatch (GTimeVal *current_time)
  * run the loop.
  */
 static gboolean
-g_main_iterate (gboolean block, gboolean dispatch)
+g_main_iterate (gboolean block,
+		gboolean dispatch)
 {
   GHook *hook;
   GTimeVal current_time;

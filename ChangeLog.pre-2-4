@@ -1,3 +1,10 @@
+Thu Dec 17 04:10:49 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (G_LOCK_DECLARE_*): if !G_THREADS_ENABLED, eat the
+	trailing semicolon with a bogus function declaration, instead
+	of with a bogus variable declarations, so we avoid unused
+	variable warnings.
+
 Wed Dec 16 07:49:16 PST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.8  (CVS tag is GLIB_1_1_8a)

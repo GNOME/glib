@@ -2678,7 +2678,7 @@ void     g_static_private_set (GStaticPrivate	*private_key,
  * such mutexes can be done with G_LOCK(), G_UNLOCK() and G_TRYLOCK()
  * respectively.
  */
-extern gboolean glib_dummy_decl;
+extern void glib_dummy_decl (void);
 #define G_LOCK_NAME(name)		(g__ ## name ## _lock)
 #ifdef	G_THREADS_ENABLED
 #  define G_LOCK_DECLARE_STATIC(name)	static G_LOCK_DECLARE (name)
@@ -2712,8 +2712,8 @@ extern gboolean glib_dummy_decl;
 #    define G_TRYLOCK(name) g_static_mutex_trylock (G_LOCK_NAME (name))
 #  endif /* !G_DEBUG_LOCKS */
 #else	/* !G_THREADS_ENABLED */
-#  define G_LOCK_DECLARE_STATIC(name)	extern gboolean glib_dummy_decl
-#  define G_LOCK_DECLARE(name)		extern gboolean glib_dummy_decl
+#  define G_LOCK_DECLARE_STATIC(name)	extern void glib_dummy_decl (void)
+#  define G_LOCK_DECLARE(name)		extern void glib_dummy_decl (void)
 #  define G_LOCK(name)
 #  define G_UNLOCK(name)
 #  define G_TRYLOCK(name)		(FALSE)
