@@ -1,3 +1,7 @@
+Mon May 10 22:03:52 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.3
+
 1999-05-08  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am tests/Makefile.am: Correct rules for making the
