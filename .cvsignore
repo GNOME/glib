@@ -31,3 +31,6 @@ testgdateparser
 testglib
 annotations
 logs
+glib.rc
+gmodule.rc
+gthread.rc
