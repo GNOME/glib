@@ -1,3 +1,8 @@
+2001-03-10  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am: Use the _LIBADD dependency on libglib only on the
+	Win32 platform (including Cygwin).
+
 2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am, makefile.mingw.in, makefile.msc.in: Set

@@ -1,3 +1,9 @@
+2001-03-10  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Add a couple of missing entries.
+
+	* Makefile.am (libgobject_1_3_la_LIBADD): Use only on Win32.
+
 Fri Mar  9 14:57:17 2001  Tim Janik  <timj@gtk.org>
 
 	* testgruntime.c: test program. covers run first/last/cleanup signal

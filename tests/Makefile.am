@@ -1,7 +1,3 @@
-if PLATFORM_WIN32
-no_undefined = -no-undefined
-endif
-
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
 
 EFENCE=
@@ -10,6 +6,11 @@ libglib = $(top_builddir)/libglib-1.3.la
 libgthread = $(top_builddir)/gthread/libgthread-1.3.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-1.3.la
 libgobject = $(top_builddir)/gobject/libgobject-1.3.la
+
+if PLATFORM_WIN32
+libadd_libglib = $(libglib)
+no_undefined = -no-undefined
+endif
 
 EXTRA_DIST = \
 	$(test_scripts)		\
@@ -90,11 +91,11 @@ install-libLTLIBRARIES:
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
 libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libglib)
+libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libadd_libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
 libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libglib)
+libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@ $(libgmodule) $(libadd_libglib)
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

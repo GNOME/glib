@@ -29,7 +29,10 @@ libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
 	-export-dynamic $(no_undefined) $(export_symbols)	\
 @STRIP_END@
+
+if PLATFORM_WIN32
 libgobject_1_3_la_LIBADD = $(libglib)
+endif
 
 #
 # setup source file variables

@@ -1,3 +1,8 @@
+2001-03-10  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am: Use the _LIBADD dependency on libglib only on
+	Win32.
+
 2001-02-21  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use libglib-1.3.la from top_builddir. Invoke

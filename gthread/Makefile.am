@@ -25,6 +25,7 @@ top_builddir_full=`cd \$(top_builddir); pwd`
 lib_LTLIBRARIES = libgthread-1.3.la
 
 if PLATFORM_WIN32
+libadd_libglib = $(libglib)
 no_undefined = -no-undefined
 endif
 if OS_WIN32
@@ -36,7 +37,7 @@ libgthread_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgthread_1_3_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
+libgthread_1_3_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libadd_libglib)
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
