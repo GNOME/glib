@@ -661,6 +661,7 @@ g_signal_remove_emission_hook
 g_signal_parse_name
 g_signal_get_invocation_hint
 g_signal_type_cclosure_new
+g_signal_accumulator_true_handled
 <SUBSECTION Private>
 g_signal_handlers_destroy
 </SECTION>
