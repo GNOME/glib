@@ -1,3 +1,13 @@
+2001-04-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthreadpool.c (g_thread_pool_thread_proxy): Until now every
+	thread pool always had at least one tread waiting to avoid
+	switching overhead in case a new task would be added soon after
+	one finished. This however means a big waste of threads, if many
+	mostly inactive thread pools are involved. Now such a waiting
+	thread will only wait for half a second (This value is of course
+	very randomly picked) and go to the global threadpool afterwards.
+
 Mon Apr 16 12:04:52 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Remove warnings about conflicts with the

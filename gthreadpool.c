@@ -65,6 +65,7 @@ static void
 g_thread_pool_thread_proxy (gpointer data)
 {
   GRealThreadPool *pool = data;
+  gboolean watcher = FALSE;
 
   g_async_queue_lock (pool->queue);
   while (TRUE)
@@ -76,23 +77,48 @@ g_thread_pool_thread_proxy (gpointer data)
       
       if (g_thread_should_run (pool, len))
 	{
-	  task = g_async_queue_pop_unlocked (pool->queue);
-
-	  if (pool->num_threads > pool->max_threads && pool->max_threads != -1)
-	    /* We are in fact a superfluous threads, so we go to the
-	     * global pool and just hand the data further to the next one
-	     * waiting in the queue */
+	  if (watcher)
 	    {
-	      g_async_queue_push_unlocked (pool->queue, task);
-	      goto_global_pool = TRUE;
+	      /* This thread is actually not needed here, but it waits
+               * for some time anyway. If during that time a new
+               * request arrives, this saves process
+               * swicthes. Otherwise the thread will go to the global
+               * pool afterwards */
+	      GTimeVal end_time;
+	      g_get_current_time (&end_time);
+	      end_time.tv_usec += G_USEC_PER_SEC / 2; /* Halv a second */
+	      if (end_time.tv_usec >= G_USEC_PER_SEC)
+		{
+		  end_time.tv_usec -= G_USEC_PER_SEC;
+		  end_time.tv_sec += 1;
+		}
+	 
+	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
 	    }
-	  else if (pool->running || !pool->immediate)
+	  else
 	    {
-	      g_async_queue_unlock (pool->queue);
-	      pool->pool.thread_func (task, pool->pool.user_data);
-	      g_async_queue_lock (pool->queue);
+	      task = g_async_queue_pop_unlocked (pool->queue);
 	    }
 
+	  if (task)
+	    {
+	      watcher = FALSE;
+	      if (pool->num_threads > pool->max_threads && 
+		  pool->max_threads != -1)
+		/* We are in fact a superfluous threads, so we go to
+		 * the global pool and just hand the data further to
+		 * the next one waiting in the queue */
+		{
+		  g_async_queue_push_unlocked (pool->queue, task);
+		  goto_global_pool = TRUE;
+		}
+	      else if (pool->running || !pool->immediate)
+		{
+		  g_async_queue_unlock (pool->queue);
+		  pool->pool.thread_func (task, pool->pool.user_data);
+		  g_async_queue_lock (pool->queue);
+		}
+	    }
 	  len = g_async_queue_length_unlocked (pool->queue);
 	}
 
@@ -101,9 +127,21 @@ g_thread_pool_thread_proxy (gpointer data)
 	  g_cond_broadcast (inform_cond);
 	  goto_global_pool = TRUE;
 	}
-      else if (len >= 0)
-	/* At this pool there is no thread waiting */
-	goto_global_pool = FALSE; 
+      else if (len > 0)
+	{
+	  /* At this pool there are no threads waiting, but tasks are. */
+	  goto_global_pool = FALSE; 
+	}
+      else if (len == 0 && !watcher && !pool->pool.exclusive)
+	{
+	  /* Here neither threads nor tasks are queued and we didn't
+	   * just return from a timed wait. We now wait for a limited
+	   * time at this pool for new tasks to avoid costly context
+	   * switches. */
+	  goto_global_pool = FALSE;
+	  watcher = TRUE;
+	}
+
       
       if (goto_global_pool)
 	{
