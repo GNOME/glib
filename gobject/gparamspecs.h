@@ -384,7 +384,30 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 
 
 /* --- internal --- */
-GLIB_VAR GType *g_param_spec_types;
+/* We prefix variable declarations so they can
+ * properly get exported in windows dlls.
+ */
+#ifndef GOBJECT_VAR
+#  ifdef G_PLATFORM_WIN32
+#    ifdef GOBJECT_STATIC_COMPILATION
+#      define GOBJECT_VAR extern
+#    else /* !GOBJECT_STATIC_COMPILATION */
+#      ifdef GOBJECT_COMPILATION
+#        ifdef DLL_EXPORT
+#          define GOBJECT_VAR __declspec(dllexport)
+#        else /* !DLL_EXPORT */
+#          define GOBJECT_VAR extern
+#        endif /* !DLL_EXPORT */
+#      else /* !GOBJECT_COMPILATION */
+#        define GOBJECT_VAR extern __declspec(dllimport)
+#      endif /* !GOBJECT_COMPILATION */
+#    endif /* !GOBJECT_STATIC_COMPILATION */
+#  else /* !G_PLATFORM_WIN32 */
+#    define GOBJECT_VAR extern
+#  endif /* !G_PLATFORM_WIN32 */
+#endif /* GOBJECT_VAR */
+
+GOBJECT_VAR GType *g_param_spec_types;
 
 G_END_DECLS
 

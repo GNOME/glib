@@ -1,3 +1,14 @@
+2001-11-22  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in (DEFINES): Set G_LOG_DOMAIN as in Makefile.am.
+
+	* gparamspecs.h (GOBJECT_VAR): Can't use GLIB_VAR here, as that
+	makes sense only when building libglib. GOBJECT_VAR is similar for
+	libgobject.
+
+	* gobject.def: Add g_param_spec_types, remove
+	g_type_fundamental_branch_last.
+
 Wed Nov 21 17:23:33 2001  Tim Janik  <timj@gtk.org>
 
 	* gparamspecs.[hc]: put newly created param spec types into a

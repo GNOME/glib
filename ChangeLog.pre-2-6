@@ -1,3 +1,8 @@
+2001-11-21  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/makefile.mingw.in (DEFINES): Set G_LOG_DOMAIN as in
+	Makefile.am.
+
 Tue Nov 20 20:54:25 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gunidecomp.[ch] glib/gen-unicode-tables.pl: Patch
