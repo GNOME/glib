@@ -3565,7 +3565,7 @@ g_child_watch_source_init_single (void)
 
   action.sa_handler = g_child_watch_signal_handler;
   sigemptyset (&action.sa_mask);
-  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+  action.sa_flags = SA_NOCLDSTOP;
   sigaction (SIGCHLD, &action, NULL);
 }
 
@@ -3674,6 +3674,11 @@ g_child_watch_source_init (void)
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
+ *
+ * Note further that using g_child_watch_source_new() is not 
+ * compatible with calling <literal>waitpid(-1)</literal> in 
+ * the application. Calling waitpid() for individual pids will
+ * still work fine. 
  * 
  * Return value: the newly-created child watch source
  *
