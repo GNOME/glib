@@ -1,3 +1,6 @@
+Tue Sep 26 2000 Elliot Lee <sopwith@redhat.com>
+	* glib.h: Add G_GNUC_PURE macro (but don't use it anywhere).
+
 Mon Sep 25 2000 Elliot Lee <sopwith@redhat.com>
 	* garray.c, glib.h, gmem.c: Add a few missing G_GNUC_CONST's.
 

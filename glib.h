@@ -271,6 +271,13 @@ extern "C" {
 
 /* Provide macros to feature the GCC function attribute.
  */
+#if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+#define G_GNUC_PURE                            \
+  __attribute__((pure))
+#else
+#define G_GNUC_PURE
+#endif
+
 #if	__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
 #define G_GNUC_PRINTF( format_idx, arg_idx )	\
   __attribute__((format (printf, format_idx, arg_idx)))
