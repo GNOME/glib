@@ -961,7 +961,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                       gint                 *standard_error,
                       GError              **error)     
 {
-  gint pid;
+  gint pid = -1;
   gint stdin_pipe[2] = { -1, -1 };
   gint stdout_pipe[2] = { -1, -1 };
   gint stderr_pipe[2] = { -1, -1 };
@@ -1219,6 +1219,26 @@ fork_exec_with_pipes (gboolean              intermediate_child,
     }
 
  cleanup_and_fail:
+
+  /* There was an error from the Child, reap the child to avoid it being
+     a zombie.
+   */
+
+  if (pid > 0)
+  {
+    wait_failed:
+     if (waitpid (pid, NULL, 0) < 0)
+       {
+          if (errno == EINTR)
+            goto wait_failed;
+          else if (errno == ECHILD)
+            ; /* do nothing, child already reaped */
+          else
+            g_warning ("waitpid() should not fail in "
+                       "'fork_exec_with_pipes'");
+       }
+   }
+
   close_and_invalidate (&child_err_report_pipe[0]);
   close_and_invalidate (&child_err_report_pipe[1]);
   close_and_invalidate (&child_pid_report_pipe[0]);

@@ -1,3 +1,8 @@
+2002-09-23  Arvind Samptur <arvind.samptur@wipro.com>
+	* glib/gspawn.c (fork_exec_with_pipes) : when the child fails
+	we need to reap it to avoid a zombie. This would
+	happen in case of g_spawn_sync. Fixes #92658
+
 2002-09-20  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gscanner.c (g_scanner_msg_handler): Don't print
