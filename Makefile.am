@@ -4,8 +4,6 @@ AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS = . gmodule gthread docs tests
 
-configexecincludedir = $(pkglibdir)/include
-
 bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
 glib-config: glib-config.in
@@ -58,14 +56,21 @@ libglib_la_SOURCES = \
 include_HEADERS = \
 	glib.h
 
-configexecinclude_DATA = \
-	glibconfig.h
+configexecincludedir = $(pkglibdir)/include
+#configexecinclude_DATA = glibconfig.h
+
+install-exec-local: glibconfig.h
+	$(mkinstalldirs) $(DESTDIR)$(configexecincludedir)
+	file=$(DESTDIR)$(configexecincludedir)/glibconfig.h; \
+	if test -r $$file && cmp -s glibconfig.h $$file; then :; \
+	else $(INSTALL_DATA) glibconfig.h $$file; fi
 
 configure: configure.in acglib.m4		
 
 BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
 glibconfig.h: stamp-gc-h
-	@:
+	@if test -f glibconfig.h; then :; \
+	else rm -f stamp-gc-h; $(MAKE) stamp-gc-h; fi
 stamp-gc-h: config.status
 	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
 	echo timestamp > stamp-gc-h

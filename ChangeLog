@@ -1,3 +1,10 @@
+1999-03-28  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (glibconfig.h): Make sure `glibconfig.h' exists
+	after the rule is fired.
+	(install-exec-local): Install glibconfig.h only if the contents
+	are different from the currently installed glibconfig.h.
+
 1999-03-26  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (configexecincludedir): Rename from 
