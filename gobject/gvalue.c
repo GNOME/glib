@@ -23,10 +23,10 @@
 
 #include <string.h>
 
-#include "gobjectalias.h"
 #include "gvalue.h"
 #include "gvaluecollector.h"
 #include "gbsearcharray.h"
+#include "gobjectalias.h"
 
 
 /* --- typedefs & structures --- */
@@ -359,3 +359,6 @@ g_value_transform (const GValue *src_value,
     }
   return FALSE;
 }
+
+#define __G_VALUE_C__
+#include "gobjectaliasdef.c"

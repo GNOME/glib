@@ -19,9 +19,9 @@
 
 #include <stdlib.h>
 
-#include "gobjectalias.h"
 #include "gtypeplugin.h"
 #include "gtypemodule.h"
+#include "gobjectalias.h"
 
 typedef struct _ModuleTypeInfo ModuleTypeInfo;
 typedef struct _ModuleInterfaceInfo ModuleInterfaceInfo;
@@ -424,3 +424,7 @@ g_type_module_register_flags (GTypeModule      *module,
   return g_type_module_register_type (G_TYPE_MODULE (module),
                                       G_TYPE_FLAGS, name, &flags_type_info, 0);
 }
+
+
+#define __G_TYPE_MODULE_C__
+#include "gobjectaliasdef.c"

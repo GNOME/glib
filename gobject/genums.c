@@ -23,11 +23,12 @@
 
 #include        <string.h>
 
-#include	"gobjectalias.h"
 #include	"genums.h"
 
 #include	"gvalue.h"
 #include	"gvaluecollector.h"
+
+#include	"gobjectalias.h"
 
 
 /* --- prototypes --- */
@@ -420,3 +421,6 @@ g_value_get_flags (const GValue *value)
   
   return value->data[0].v_ulong;
 }
+
+#define __G_ENUMS_C__
+#include "gobjectaliasdef.c"

@@ -16,7 +16,6 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include	"gobjectalias.h"
 #include	"gboxed.h"
 
 #include	"gbsearcharray.h"
@@ -24,6 +23,8 @@
 #include	"gvaluearray.h"
 #include	"gclosure.h"
 #include	"gvaluecollector.h"
+
+#include	"gobjectalias.h"
 
 #include <string.h>
 
@@ -529,3 +530,6 @@ g_value_take_boxed (GValue       *value,
 
   value_set_boxed_internal (value, boxed, FALSE, TRUE);
 }
+
+#define __G_BOXED_C__
+#include "gobjectaliasdef.c"

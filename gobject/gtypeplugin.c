@@ -16,8 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include	"gobjectalias.h"
 #include	"gtypeplugin.h"
+#include	"gobjectalias.h"
 
 
 
@@ -99,3 +99,6 @@ g_type_plugin_complete_interface_info (GTypePlugin    *plugin,
 				  interface_type,
 				  info);
 }
+
+#define __G_TYPE_PLUGIN_C__
+#include "gobjectaliasdef.c"

@@ -14,10 +14,13 @@ INCLUDES = \
 	-DG_DISABLE_CONST_RETURNS
 
 gobject.def: gobject.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
+	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
 gobjectalias.h: gobject.symbols
 	$(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
+
+gobjectaliasdef.c: gobject.symbols
+	$(PERL) $(srcdir)/makegobjectalias.pl -def < $(srcdir)/gobject.symbols > gobjectaliasdef.c
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -126,7 +129,7 @@ gobject_c_sources = \
 	gvaluetypes.c
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = gmarshal.h gmarshal.c gobjectalias.h
+BUILT_SOURCES = gmarshal.h gmarshal.c gobjectalias.h gobjectaliasdef.c
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have

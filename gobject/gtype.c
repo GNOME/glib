@@ -17,8 +17,8 @@
  * Boston, MA 02111-1307, USA.
  */
 #include        <config.h>
-#include	"gobjectalias.h"
 #include	"gtype.h"
+#include	"gobjectalias.h"
 
 /*
  * MT safe
@@ -3580,3 +3580,6 @@ g_type_instance_get_private (GTypeInstance *instance,
 
   return G_STRUCT_MEMBER_P (instance, offset);
 }
+
+#define __G_TYPE_C__
+#include "gobjectaliasdef.c"

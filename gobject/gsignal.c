@@ -26,12 +26,15 @@
 
 #include <config.h>
 
-#include	"gobjectalias.h"
 #include        "gsignal.h"
+
 #include        "gbsearcharray.h"
 #include        "gvaluecollector.h"
 #include	"gvaluetypes.h"
 #include	"gboxed.h"
+
+#include	"gobjectalias.h"
+
 #include	<string.h> 
 #include	<signal.h>
 
@@ -2655,3 +2658,6 @@ g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
 #include	"gobject.h"
 #include	"genums.h"
 #include        "gmarshal.c"
+
+#define __G_SIGNAL_C__
+#include "gobjectaliasdef.c"

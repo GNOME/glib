@@ -21,10 +21,10 @@
  * MT safe
  */
 
-#include	"gobjectalias.h"
 #include	"gvaluetypes.h"
 
 #include	"gvaluecollector.h"
+#include	"gobjectalias.h"
 #include	<string.h>
 #include	<stdlib.h>	/* qsort() */
 
@@ -906,3 +906,5 @@ g_pointer_type_register_static (const gchar *name)
   return type;
 }
 
+#define __G_VALUETYPES_C__
+#include "gobjectaliasdef.c"

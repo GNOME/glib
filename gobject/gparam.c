@@ -21,11 +21,11 @@
  * MT safe
  */
 
-#include	"gobjectalias.h"
 #include	"gparam.h"
 #include        "gparamspecs.h"
 
 #include	"gvaluecollector.h"
+#include	"gobjectalias.h"
 #include	<string.h>
 
 
@@ -1109,3 +1109,6 @@ g_value_dup_param (const GValue *value)
 
   return value->data[0].v_pointer ? g_param_spec_ref (value->data[0].v_pointer) : NULL;
 }
+
+#define __G_PARAM_C__
+#include "gobjectaliasdef.c"

@@ -18,9 +18,9 @@
  */
 #include        <string.h>
 
-#include	"gobjectalias.h"
 #include        "gvalue.h"
 #include        "genums.h"
+#include	"gobjectalias.h"
 
 
 /* same type transforms
