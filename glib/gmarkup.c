@@ -97,6 +97,7 @@ struct _GMarkupParseContext
 
   guint document_empty : 1;
   guint parsing : 1;
+  gint balance;
 };
 
 /**
@@ -153,6 +154,8 @@ g_markup_parse_context_new (const GMarkupParser *parser,
 
   context->document_empty = TRUE;
   context->parsing = FALSE;
+
+  context->balance = 0;
 
   return context;
 }
@@ -268,6 +271,44 @@ utf8_str (const gchar *utf8,
 {
   char_str (g_utf8_get_char (utf8), buf);
   return buf;
+}
+
+static gboolean
+str_has_suffix (const gchar  *str,
+		const gchar  *suffix)
+{
+  int str_len;
+  int suffix_len;
+  
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (suffix != NULL, FALSE);
+
+  str_len = strlen (str);
+  suffix_len = strlen (suffix);
+
+  if (str_len < suffix_len)
+    return FALSE;
+
+  return strcmp (str + str_len - suffix_len, suffix) == 0;
+}
+
+static gboolean
+str_has_prefix (const gchar  *str,
+		const gchar  *prefix)
+{
+  int str_len;
+  int prefix_len;
+  
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (prefix != NULL, FALSE);
+
+  str_len = strlen (str);
+  prefix_len = strlen (prefix);
+
+  if (str_len < prefix_len)
+    return FALSE;
+  
+  return strncmp (str, prefix, prefix_len) == 0;
 }
 
 static void
@@ -722,7 +763,7 @@ find_current_text_end (GMarkupParseContext *context)
   p = context->current_text;
   next = g_utf8_find_next_char (p, end);
 
-  while (next)
+  while (next && *next)
     {
       p = next;
       next = g_utf8_find_next_char (p, end);
@@ -963,6 +1004,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               const gchar *openangle = "<";
               add_to_partial (context, openangle, openangle + 1);
               context->start = context->iter;
+	      context->balance = 1;
               context->state = STATE_INSIDE_PASSTHROUGH;
             }
           else if (*context->iter == '/')
@@ -1493,13 +1535,28 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               g_free (close_name);
             }
           break;
-
+	  
         case STATE_INSIDE_PASSTHROUGH:
           /* Possible next state: AFTER_CLOSE_ANGLE */
           do
             {
-              if (*context->iter == '>')
-                break;
+	      if (*context->iter == '<') 
+		context->balance++;
+              if (*context->iter == '>') 
+		{
+		  context->balance--;
+		  add_to_partial (context, context->start, context->iter);
+		  context->start = context->iter;
+		  if ((str_has_prefix (context->partial_chunk->str, "<?")
+		       && str_has_suffix (context->partial_chunk->str, "?")) ||
+		      (str_has_prefix (context->partial_chunk->str, "<!--")
+		       && str_has_suffix (context->partial_chunk->str, "--")) ||
+		      (str_has_prefix (context->partial_chunk->str, "<![CDATA[") 
+		       && str_has_suffix (context->partial_chunk->str, "]]")) ||
+		      (str_has_prefix (context->partial_chunk->str, "<!DOCTYPE")
+		       && context->balance == 0)) 
+		    break;
+		}
             }
           while (advance_char (context));
 
@@ -1522,13 +1579,25 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               advance_char (context); /* advance past close angle */
               add_to_partial (context, context->start, context->iter);
 
-              if (context->parser->passthrough)
-                (*context->parser->passthrough) (context,
-                                                 context->partial_chunk->str,
-                                                 context->partial_chunk->len,
-                                                 context->user_data,
-                                                 &tmp_error);
-                  
+	      if (str_has_prefix (context->partial_chunk->str, "<![CDATA[")) 
+		{
+		  if (context->parser->text)
+		    (*context->parser->text) (context,
+					      context->partial_chunk->str + 9,
+					      context->partial_chunk->len - 12,
+					      context->user_data,
+					      &tmp_error);
+		}
+	      else 
+		{
+		  if (context->parser->passthrough)
+		    (*context->parser->passthrough) (context,
+						     context->partial_chunk->str,
+						     context->partial_chunk->len,
+						     context->user_data,
+						     &tmp_error);
+		}
+
               truncate_partial (context);
 
               if (tmp_error == NULL)
