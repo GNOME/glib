@@ -1,14 +1,15 @@
 # Finnish messages for glib.
 # Copyright © 2002 Free Software Foundation, Inc.
-# Lauri Nurmi <lanurmi@iki.fi>, 2002.
+# Lauri Nurmi <lanurmi@iki.fi>, 2002-2004,
+# Sami Pesonen <sampeson@iki.fi>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib VERSION\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2004-03-03 02:44+0200\n"
-"Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
+"POT-Creation-Date: 2004-04-25 01:32+0300\n"
+"PO-Revision-Date: 2004-04-25 01:44+0300\n"
+"Last-Translator: Sami Pesonen <sampeson@iki.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
 "sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,8 +23,8 @@ msgstr "Muunnos merkistöstä \"%s\" merkistöön \"%s\" ei ole tuettu"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Muunninta merkistöstä \"%s\" merkistöön \"%s\" ei voitu avata: %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Muunninta merkistöstä \"%s\" merkistöön \"%s\" ei voitu avata"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
