@@ -109,6 +109,7 @@ use -G_MAX_FLOAT.
 </para>
 
 
+
 <!-- ##### MACRO G_MAXFLOAT ##### -->
 <para>
 The maximum value which can be held in a #gfloat.

@@ -118,6 +118,13 @@ for a const function to return void.
 
 
 
+<!-- ##### MACRO G_GNUC_DEPRECATED ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
 Expands to the GNU C <literal>noreturn</literal> function attribute if the compiler is <command>gcc</command>.

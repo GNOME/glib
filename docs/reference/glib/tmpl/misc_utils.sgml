@@ -22,6 +22,14 @@ These are portable utility functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_set_application_name ##### -->
+<para>
+
+</para>
+
+@application_name: 
+
+
 <!-- ##### FUNCTION g_get_prgname ##### -->
 <para>
 Gets the name of the program. This name should NOT be localized,
