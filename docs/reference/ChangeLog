@@ -1,3 +1,9 @@
+2000-01-25  Damon Chaplin  <damon@karuna.freeserve.co.uk>
+
+	* tmpl/misc_utils.sgml: g_bit_nth_lsf/msf docs from 
+         Nils Rennebarth <nils@ipe.uni-stuttgart.de>, and updates for
+	GVoidFunc & GFreeFunc.
+
 1999-12-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib-sections.txt, tmpl/threads.sgml: Removed

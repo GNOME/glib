@@ -134,22 +134,26 @@ path it returns NULL.
 
 <!-- ##### FUNCTION g_bit_nth_lsf ##### -->
 <para>
-FIXME: I don't know what this does!
+Find the position of the first bit set in @mask, searching from (but not
+including) @nth_bit upwards. Bits are numbered from 0 (least significant)
+to 31. To start searching from the 0th bit, set @nth_bit to -1.
 </para>
 
-@mask: 
-@nth_bit: 
-@Returns: 
+@mask: a #guint32 containing up to 32 bit flags.
+@nth_bit: the index of the bit to start the search from.
+@Returns: the index of the first bit set which is higher than @nth_bit.
 
 
 <!-- ##### FUNCTION g_bit_nth_msf ##### -->
 <para>
-FIXME: I don't know what this does!
+Find the position of the first bit set in @mask, searching from (but not
+including) @nth_bit downwards. Bits are numbered from 0 (least significant)
+to 31. To start searching from the 31st bit, set @nth_bit to 32 or -1.
 </para>
 
-@mask: 
-@nth_bit: 
-@Returns: 
+@mask: a #guint32 containing up to 32 bit flags.
+@nth_bit: the index of the bit to start the search from.
+@Returns: the index of the first bit set which is lower than @nth_bit.
 
 
 <!-- ##### FUNCTION g_bit_storage ##### -->
@@ -212,14 +216,16 @@ Used in g_parse_debug_string().
 
 <!-- ##### USER_FUNCTION GVoidFunc ##### -->
 <para>
-Specifies the type of function passed to g_atexit().
+Declares a type of function which takes no arguments and has no return value.
+It is used to specify the type function passed to g_atexit().
 </para>
 
 
 
 <!-- ##### USER_FUNCTION GFreeFunc ##### -->
 <para>
-
+Declares a type of function which takes an arbitrary data pointer argument
+and has no return value. It is not currently used in GLib or GTK+.
 </para>
 
 @data: 
