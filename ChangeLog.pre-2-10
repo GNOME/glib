@@ -1,3 +1,8 @@
+Fri May 30 15:58:33 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Rework debug_default handling to work
+	with autoconf-2.5x. (#106348)
+
 Fri May 30 15:51:43 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_error_get_from_g_error): 
