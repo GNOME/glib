@@ -1,5 +1,10 @@
 2001-10-23  Tor Lillqvist  <tml@iki.fi>
 
+	* config.h.win32.in: Typo.
+
+	* glibconfig.h.win32.in: Minor update to correspond to what
+	configure now generates.
+
 	* glib/Makefile.am: (Win32): If we have built the MSVC import
 	library, install it. Install the gcc import library. Also support
 	uninstall.
