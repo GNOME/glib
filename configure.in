@@ -594,21 +594,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
         if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(pthread, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-     	        AC_CHECK_LIB(pthreads, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-     	        AC_CHECK_LIB(c_r, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
-	fi
-	dnl ********** DG/UX ************
-        if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(thread, __d10_pthread_attr_init,
-			have_threads=posix)
+                AC_CHECK_HEADER(pthread.h, have_threads=posix)
         fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
@@ -655,6 +641,11 @@ case $have_threads in
                 	AC_CHECK_LIB(thread, __d10_pthread_attr_init,
 				G_THREAD_LIBS="-lthread"
 				G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
+        	fi
+		dnl ********* HPUX 11 ***********
+        	if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(thread, __pthread_attr_init_system,
+				G_THREAD_LIBS="-lpthread")
         	fi
                 mutex_has_default=yes
                 mutex_default_type='pthread_mutex_t'

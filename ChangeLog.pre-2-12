@@ -1,3 +1,11 @@
+1999-01-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Simplified configure.in test for posix threads,
+	systems, that provide /usr/include/pthread.h should also have the
+	posix thread library. This is to avoid writing down all the tests
+	twice. New test for thread system on HPUX 11. Info from Matt
+	Nottingham <matt@sar.dera.gov.uk>.
+
 Wed Jan 27 20:39:49 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4: Xsed isn't valid here, don't use it
