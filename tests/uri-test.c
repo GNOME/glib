@@ -45,9 +45,15 @@ to_uri_tests[] = {
   { "/etc", NULL, "file:///etc"},
   { "/etc", "", "file:///etc"},
   { "/etc", "localhost", "file://localhost/etc"},
+  { "/etc", "otherhost", "file://otherhost/etc"},
 #ifdef G_OS_WIN32
-  { "c:\\windows", NULL, "file:///c:\\windows"},
+  { "c:\\windows", NULL, "file:///c:\\windows"}, /* these 3 tests almost certainly fail */
   { "c:\\windows", "localhost", "file://localhost/c:\\windows"},
+  { "c:\\windows", "otherhost", "file://otherhost/c:\\windows"},
+#else
+  { "c:\\windows", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH}, /* it's important to get this error on Unix */
+  { "c:\\windows", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+  { "c:\\windows", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #endif
   { "etc", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "/etc/öäå", NULL, NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
@@ -55,6 +61,28 @@ to_uri_tests[] = {
   { "/etc", "Ã¶Ã¤Ã¥", "file://%C3%B6%C3%A4%C3%A5/etc"},
   { "/etc", "åäö", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25"},
+  { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+  { "", "", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+  { "", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+  { "", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
+  { "/0123456789", NULL, "file:///0123456789"},
+  { "/ABCDEFGHIJKLMNOPQRSTUVWXYZ", NULL, "file:///ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
+  { "/abcdefghijklmnopqrstuvwxyz", NULL, "file:///abcdefghijklmnopqrstuvwxyz"},
+  { "/-_.!~*'()", NULL, "file:///-_.!~*'()"},
+  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F"},
+  { "/;@+$,", NULL, "file:///%3B%40%2B%24%2C"},
+  { "/:", NULL, "file:///:"}, /* not escaped even though reserved as side effect of DOS support -- is that really what we want on Unix? */
+  { "/?&=", NULL, "file:///?&="}, /* these are not escaped and other reserved characters are -- is that really what we want? */
+  { "/", "0123456789", "file://0123456789/"},
+  { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/"},
+  { "/", "abcdefghijklmnopqrstuvwxyz", "file://abcdefghijklmnopqrstuvwxyz/"},
+  { "/", "-_.!~*'()", "file://-_.!~*'()/"},
+  { "/", "\"#%<>[\\]^`{|}\x7F", "file://%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F/"},
+  { "/", ";?&=+$,", "file://%3B%3F%26%3D%2B%24%2C/"},
+  { "/", "/", "file:////"}, /* should be "file://%2F/" or an error */
+  { "/", "@:", "file://@:/"}, /* these are not escaped and other reserved characters are -- is that really what we want? */
+  { "/", "\x80\xFF", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/", "\xC3\x80\xC3\xBF", "file://%C3%80%C3%BF/"},
 };
 
 
@@ -68,16 +96,38 @@ typedef struct
 
 FromUriTest
 from_uri_tests[] = {
-  { "file:///etc", "/etc", NULL},
-  { "file:/etc", "/etc", NULL},
-  { "file://localhost/etc", "/etc", "localhost", },
-  { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost", },
-  { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "Ã¶Ã¤Ã¥", },
+  { "file:///etc", "/etc"},
+  { "file:/etc", "/etc"},
+  { "file://localhost/etc", "/etc", "localhost"},
+  { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost"},
+  { "file://otherhost/etc", "/etc", "otherhost"},
+  { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
+  { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "Ã¶Ã¤Ã¥"},
   { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
   { "file://localhost/åäö", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
   { "file://åäö/etc", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
   { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
   { "file://some", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
+  { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI}, /* should be G_CONVERT_ERROR_INVALID_URI */
+  { "file:test", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI},
+  { "http://www.yahoo.com/", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI},
+  { "file:////etc", "/etc"}, /* should be "//etc" -- mistake in code for DOS results in dropped slash */
+  { "file://///etc", "//etc"}, /* should be "///etc" -- mistake in code for DOS results in dropped slash */
+  { "file:///c:\\foo", "/c:\\foo"}, /* should be "c:\\foo" on DOS perhaps, but that would be bad for Unix */
+  { "file:///c:/foo", "/c:/foo"}, /* should be "c:/foo" on DOS perhaps, but that would be bad for Unix */
+  { "file:////c:/foo", "/c:/foo"}, /* should be "//c:/foo" on Unix */
+  { "file://0123456789/", "/", "0123456789"},
+  { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
+  { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz"},
+  { "file://-_.!~*'()/", "/", "-_.!~*'()"},
+  { "file://\"<>[\\]^`{|}\x7F/", "/", "\"<>[\\]^`{|}\x7F"},
+  { "file://;?&=+$,/", "/", ";?&=+$,"},
+  { "file://%C3%80%C3%BF/", "/", "\xC3\x80\xC3\xBF"},
+  { "file://@/", "/", "@"},
+  { "file://:/", "/", ":"},
+  { "file://#/", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
+  { "file://%23/", "/", "#"}, /* is it dangerous to return a hostname with a "#" character in it? */
+  { "file://%2F/", "/", "/"}, /* is it dangerous to return a hostname with a "/" character in it? */
 };
 
 

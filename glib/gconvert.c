@@ -1198,8 +1198,8 @@ g_filename_from_uri (const char *uri,
 
   if (!has_case_prefix (uri, "file:/"))
     {
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NOT_LOCAL_FILE,
-		   _("The URI `%s' does not specify a local file"),
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI,
+		   _("The URI `%s' is not an absolute URI using the file scheme"),
 		   uri);
       return NULL;
     }

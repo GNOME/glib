@@ -1,3 +1,15 @@
+2001-08-27  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gconvert.h:
+	* glib/gconvert.c: (g_filename_from_uri):
+	Updated name of error from G_CONVERT_ERROR_NOT_LOCAL_FILE to
+	G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI.
+	
+	* tests/.cvsignore:
+	* tests/uri-test.c:
+	Added a lot more test for the new URI functions, including a
+	number that seem to indicate some minor bugs.
+
 2001-08-26  Alex Larsson  <alexl@redhat.com>
 
 	* glib/gconvert.[ch] (g_filename_from_uri,
