@@ -1,3 +1,8 @@
+2002-12-16  Tor Lillqvist  <tml@iki.fi>
+
+	* fi.po: In the admittedly strangely worded "Channel set flags
+	unsupported" message, "set" is a verb.
+
 Sat Dec 14 20:36:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* po/Makefile.in.in: Fix problem from recent commit where
