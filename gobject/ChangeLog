@@ -1,3 +1,10 @@
+2005-02-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am (TESTS): Only check the abi if
+	the compiler supports visibility, otherwise we
+	know there will be (harmless) extra symbols.  
+	(#166181, Ed Avis)
+
 Sun Feb  6 22:00:46 2005  Manish Singh  <yosh@gimp.org>
 
 	* abicheck.sh: feed the contents of config.h and glibconfig.h
