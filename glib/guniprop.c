@@ -32,8 +32,6 @@
 #define ATTTABLE(Page, Char) \
   ((attr_table[Page] == G_UNICODE_MAX_TABLE_INDEX) ? 0 : (attr_data[attr_table[Page]][Char]))
 
-/* We cheat a bit and cast type values to (char *).  We detect these
-   using the &0xff trick.  */
 #define TTYPE(Page, Char) \
   ((type_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
    ? (type_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \

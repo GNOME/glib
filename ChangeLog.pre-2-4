@@ -1,3 +1,7 @@
+2003-05-23  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/guniprop.c: Remove stale comment.
+
 2003-05-22  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/guniprop.c: Update g_unichar_iswide to Unicode 4.0 (#113404).
