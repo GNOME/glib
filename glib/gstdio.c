@@ -252,7 +252,7 @@ g_stat (const gchar *filename,
  * A wrapper for the POSIX lstat() function. The lstat() function is
  * like stat() except that in the case of symbolic links, it returns
  * information about the symbolic link itself and not the file that it
- * refers to. On Windows where there are no symbolic links g_lstat()
+ * refers to. If the system does not support symbolic links g_lstat()
  * is identical to g_stat().
  * 
  * See the C library manual for more details about lstat().
@@ -266,10 +266,11 @@ int
 g_lstat (const gchar *filename,
 	 struct stat *buf)
 {
-#ifdef G_OS_WIN32
-  return g_stat (filename, buf);
-#else
+#ifdef HAVE_LSTAT
+  /* This can't be Win32, so don't do the widechar dance. */
   return lstat (filename, buf);
+#else
+  return g_stat (filename, buf);
 #endif
 }
 
