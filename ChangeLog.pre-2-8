@@ -1,3 +1,13 @@
+Mon Aug 27 14:56:12 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.h: Add closure_marshal/closure_callback
+	fields to GSourceFuncs for use by g_source_set_closure().
+
+	* glib/gmain.c glib/giounix.c glib/giowin32.c 
+	  glib/gmain.h: Export the SourceFuncs vtables so GObject
+	can use them to figure out closure callbacks/marshallers
+	for the default source types.
+
 Sun Sep  2 13:05:53 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_strchomp): Replace some uses

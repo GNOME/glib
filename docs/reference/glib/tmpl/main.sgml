@@ -636,6 +636,8 @@ the required condition has been met, and returns TRUE if so.
 @check: 
 @dispatch: 
 @finalize: 
+@closure_callback: 
+@closure_marshal: 
 
 <!-- ##### STRUCT GSourceCallbackFuncs ##### -->
 <para>

@@ -59,9 +59,12 @@ struct _GSourceCallbackFuncs
   void (*ref)   (gpointer     cb_data);
   void (*unref) (gpointer     cb_data);
   void (*get)   (gpointer     cb_data,
+		 GSource     *source, 
 		 GSourceFunc *func,
 		 gpointer    *data);
 };
+
+typedef void (*GSourceDummyMarshal) (void);
 
 struct _GSourceFuncs
 {
@@ -72,6 +75,10 @@ struct _GSourceFuncs
 			GSourceFunc callback,
 			gpointer    user_data);
   void     (*finalize) (GSource    *source); /* Can be NULL */
+
+  /* For use by g_source_set_closure */
+  GSourceFunc     closure_callback;	   
+  GSourceDummyMarshal closure_marshal; /* Really is of type GClosureMarshal */
 };
 
 /* Any definitions using GPollFD or GPollFunc are primarily
@@ -285,6 +292,10 @@ guint	   	g_idle_add_full		(gint   	priority,
 					 gpointer	data,
 					 GDestroyNotify notify);
 gboolean	g_idle_remove_by_data	(gpointer	data);
+
+/* Hook for GClosure / GSource integration. Don't touch */
+GLIB_VAR GSourceFuncs g_timeout_funcs;
+GLIB_VAR GSourceFuncs g_idle_funcs;
 
 #ifdef G_OS_WIN32
 

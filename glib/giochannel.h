@@ -284,6 +284,10 @@ GIOChannelError g_io_channel_error_from_errno (gint en);
 GIOChannel* g_io_channel_unix_new    (int         fd);
 gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
+
+/* Hook for GClosure / GSource integration. Don't touch */
+GLIB_VAR GSourceFuncs g_io_watch_funcs;
+
 #ifdef G_OS_WIN32
 
 #define G_WIN32_MSG_HANDLE 19981206

@@ -95,7 +95,7 @@ static gboolean g_io_unix_dispatch (GSource     *source,
 				    gpointer     user_data);
 static void     g_io_unix_finalize (GSource     *source);
 
-GSourceFuncs unix_watch_funcs = {
+GSourceFuncs g_io_watch_funcs = {
   g_io_unix_prepare,
   g_io_unix_check,
   g_io_unix_dispatch,
@@ -324,7 +324,7 @@ g_io_unix_create_watch (GIOChannel   *channel,
   GIOUnixWatch *watch;
 
 
-  source = g_source_new (&unix_watch_funcs, sizeof (GIOUnixWatch));
+  source = g_source_new (&g_io_watch_funcs, sizeof (GIOUnixWatch));
   watch = (GIOUnixWatch *)source;
   
   watch->channel = channel;

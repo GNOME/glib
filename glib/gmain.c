@@ -220,7 +220,7 @@ static gboolean g_idle_dispatch    (GSource     *source,
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
 
-static GSourceFuncs timeout_funcs =
+GSourceFuncs g_timeout_funcs =
 {
   g_timeout_prepare,
   g_timeout_check,
@@ -228,7 +228,7 @@ static GSourceFuncs timeout_funcs =
   NULL
 };
 
-static GSourceFuncs idle_funcs =
+GSourceFuncs g_idle_funcs =
 {
   g_idle_prepare,
   g_idle_check,
@@ -1057,6 +1057,7 @@ g_source_callback_unref (gpointer cb_data)
 
 static void
 g_source_callback_get (gpointer     cb_data,
+		       GSource     *source, 
 		       GSourceFunc *func,
 		       gpointer    *data)
 {
@@ -1588,7 +1589,7 @@ g_main_dispatch (GMainContext *context)
 	  UNLOCK_CONTEXT (context);
 
 	  if (cb_funcs)
-	    cb_funcs->get (cb_data, &callback, &user_data);
+	    cb_funcs->get (cb_data, source, &callback, &user_data);
 
 	  need_destroy = ! dispatch (source,
 				     callback,
@@ -2966,7 +2967,7 @@ g_timeout_dispatch (GSource    *source,
 GSource *
 g_timeout_source_new (guint interval)
 {
-  GSource *source = g_source_new (&timeout_funcs, sizeof (GTimeoutSource));
+  GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
   GTimeVal current_time;
 
@@ -3104,7 +3105,7 @@ g_idle_dispatch (GSource    *source,
 GSource *
 g_idle_source_new (void)
 {
-  return g_source_new (&idle_funcs, sizeof (GSource));
+  return g_source_new (&g_idle_funcs, sizeof (GSource));
 }
 
 /**
@@ -3175,6 +3176,6 @@ g_idle_add (GSourceFunc    function,
 gboolean
 g_idle_remove_by_data (gpointer data)
 {
-  return g_source_remove_by_funcs_user_data (&idle_funcs, data);
+  return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
 }
 
