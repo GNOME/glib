@@ -1,3 +1,8 @@
+2003-08-28  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/patterntest.c (verbose): Fix a C99ism.  (#120821, Thomas 
+	Klausner)
+
 2003-08-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (read_thread): Avoid UNLOCKing the critical

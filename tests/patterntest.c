@@ -30,10 +30,13 @@ static gboolean noisy = FALSE;
 static void
 verbose (const gchar *format, ...)
 {
+  gchar *msg;
   va_list args;
+
   va_start (args, format);
-  gchar *msg = g_strdup_vprintf (format, args);
+  msg = g_strdup_vprintf (format, args);
   va_end (args);
+
   if (noisy) 
     g_print (msg);
   g_free (msg);
