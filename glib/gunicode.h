@@ -185,6 +185,14 @@ gchar *    g_ucs4_to_utf8  (const gunichar  *str,
 gint      g_unichar_to_utf8 (gunichar    c,
 			     char       *outbuf);
 
+/* Validate a UTF8 string, return TRUE if valid, put pointer to
+ * first invalid char in **end
+ */
+
+gboolean g_utf8_validate (const gchar  *str,
+                          gint          len,
+                          const gchar **end);
+
 #ifdef __cplusplus
 }
 #endif

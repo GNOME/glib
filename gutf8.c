@@ -487,3 +487,78 @@ g_utf8_to_ucs4 (const char *str, int len)
   return result;
 }
 
+/**
+ * g_utf8_validate:
+ * @str: a pointer to character data
+ * @max_len: max bytes to validate, or -1 to go until nul
+ * @end: return location for end of valid data
+ * 
+ * Validates UTF-8 encoded text. @str is the text to validate;
+ * if @str is nul-terminated, then @max_len can be -1, otherwise
+ * @max_len should be the number of bytes to validate.
+ * If @end is non-NULL, then the end of the valid range
+ * will be stored there (i.e. the address of the first invalid byte
+ * if some bytes were invalid, or the end of the text being validated
+ * otherwise).
+ *
+ * Returns TRUE if all of @str was valid. Many GLib and GTK+
+ * routines <emphasis>require</emphasis> valid UTF8 as input;
+ * so data read from a file or the network should be checked
+ * with g_utf8_validate() before doing anything else with it.
+ * 
+ * Return value: TRUE if the text was valid UTF-8.
+ **/
+gboolean
+g_utf8_validate (const gchar  *str,
+                 gint          max_len,
+                 const gchar **end)
+{
+
+  const gchar *p;
+  gboolean retval = TRUE;
+  
+  if (end)
+    *end = str;
+  
+  p = str;
+  
+  while ((max_len < 0 || (p - str) < max_len) && *p)
+    {
+      int i, mask = 0, len;
+      gunichar result;
+      unsigned char c = (unsigned char) *p;
+      
+      UTF8_COMPUTE (c, mask, len);
+
+      if (len == -1)
+        {
+          retval = FALSE;
+          break;
+        }
+
+      /* check that the expected number of bytes exists in str */
+      if (max_len >= 0 &&
+          ((max_len - (p - str)) < len))
+        {
+          retval = FALSE;
+          break;
+        }
+        
+      UTF8_GET (result, p, i, mask, len);
+
+      if (result == (gunichar)-1)
+        {
+          retval = FALSE;
+          break;
+        }
+      
+      p += len;
+    }
+
+  if (end)
+    *end = p;
+  
+  return retval;
+}
+
+

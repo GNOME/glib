@@ -1,3 +1,7 @@
+2000-09-10  Havoc Pennington  <hp@redhat.com>
+
+	* gutf8.c (g_utf8_validate): Add this function.
+
 Sat Sep  9 18:50:42 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gstrfuncs.c (g_strescape): Add a missing g_return_if_fail().
