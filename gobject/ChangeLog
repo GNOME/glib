@@ -1,3 +1,8 @@
+2005-02-24  Tor Lillqvist  <tml@novell.com>
+
+	* Makefile.am (EXTRA_DIST): Don't distribute
+	gobject.def. (#167496, J. Ali Harlow)
+
 Sun Feb  6 22:00:46 2005  Manish Singh  <yosh@gimp.org>
 
 	* abicheck.sh: feed the contents of config.h and glibconfig.h

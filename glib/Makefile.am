@@ -39,7 +39,6 @@ EXTRA_DIST = 			\
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
 	glib.rc			\
-	glib.def		\
 	galias.h
 
 lib_LTLIBRARIES = libglib-2.0.la
