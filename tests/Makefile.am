@@ -2,7 +2,8 @@
 INCLUDES = -I$(top_srcdir)
 
 EXTRA_DIST = \
-	makefile.msc
+	makefile.msc \
+	makefile.msc.in
 
 TESTS = \
 	array-test	\
