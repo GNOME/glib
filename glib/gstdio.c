@@ -206,7 +206,7 @@ g_mkdir (const gchar *filename,
  * 
  * See the C library manual for more details about stat().
  *
- * Returns: 0 if the directory was successfully created, -1 if an error 
+ * Returns: 0 if the information was successfully retrieved, -1 if an error 
  *    occurred
  * 
  * Since: 2.6
@@ -240,6 +240,36 @@ g_stat (const gchar *filename,
     }
 #else
   return stat (filename, buf);
+#endif
+}
+
+/**
+ * g_lstat: 
+ * @filename: a pathname in the GLib file name encoding
+ * @buf: a pointer to a <structname>stat</structname> struct, which
+ *    will be filled with the file information
+ *
+ * A wrapper for the POSIX lstat() function. The lstat() function is
+ * like stat() except that in the case of symbolic links, it returns
+ * information about the symbolic link itself and not the file that it
+ * refers to. On Windows where there are no symbolic links g_lstat()
+ * is identical to g_stat().
+ * 
+ * See the C library manual for more details about lstat().
+ *
+ * Returns: 0 if the information was successfully retrieved, -1 if an error 
+ *    occurred
+ * 
+ * Since: 2.6
+ */
+int
+g_lstat (const gchar *filename,
+	 struct stat *buf)
+{
+#ifdef G_OS_WIN32
+  return g_stat (filename, buf);
+#else
+  return lstat (filename, buf);
 #endif
 }
 

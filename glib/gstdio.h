@@ -47,6 +47,9 @@ int g_mkdir     (const gchar *filename,
 int g_stat      (const gchar *filename,
                  struct stat *buf);
 
+int g_lstat     (const gchar *filename,
+                 struct stat *buf);
+
 int g_unlink    (const gchar *filename);
 
 int g_remove    (const gchar *filename);
