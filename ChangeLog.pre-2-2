@@ -1,3 +1,7 @@
+Tue Jan 26 13:39:22 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: don't use backquotes in warning text
+
 1999-01-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gdate.c (g_date_set_time): Removed the #warning about MT
