@@ -1,3 +1,22 @@
+Wed Sep 19 14:17:31 2001  Owen Taylor  <otaylor@redhat.com>
+
+	Patch from Matthias Clasen (#59806)
+
+	* configure.in: Check for vasprintf().
+
+	* glib/gmem.[ch]: Add g_mem_vtable_is_set() to be used
+	for efficiency hacks to avoid extra copies when not
+	needed.
+
+	* glib/gstrfuncs.c: Use vasprintf() to implement
+	g_strdup_printf() when available.
+
+	* glib/gmessages.c (g_logv): Avoid using 
+	printf_string_upper_bound() when we have have vsnprintf.
+
+	* glib/gmessages.c (printf_string_upper_bound): Don't
+	segfault when warning about positional parameters.
+
 Wed Sep 19 14:05:27 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/{gcache.c,gmem.c,grel.c,gstring.c,gtimer.c,gtree}:

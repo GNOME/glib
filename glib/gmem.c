@@ -221,11 +221,28 @@ fallback_calloc (gsize n_blocks,
   return mem;
 }
 
+static gboolean vtable_set = FALSE;
+
+/**
+ * g_mem_vtable_is_set:
+ * 
+ * Checks whether a custom vtable as been set by g_mem_set_vtable.
+ * If a custom vtable has not been set, memory allocated with
+ * free() can be used interchangeable with memory allocated using
+ * g_free(). This function is useful for avoiding an extra copy
+ * of allocated memory returned by a non-GLib-based API.
+ * 
+ * Return value: if %TRUE, a custom vtable has been set.
+ **/
+gboolean
+g_mem_vtable_is_set (void)
+{
+  return vtable_set;
+}
+
 void
 g_mem_set_vtable (GMemVTable *vtable)
 {
-  static gboolean vtable_set = FALSE;
-
   if (!vtable_set)
     {
       vtable_set = TRUE;

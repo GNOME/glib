@@ -484,21 +484,21 @@ g_logv (const gchar   *log_domain,
   /* we use a stack buffer of fixed size, because we might get called
    * recursively.
    */
+#ifdef  HAVE_VSNPRINTF
+  vsnprintf (buffer, 1024, format, args1);
+#else	/* !HAVE_VSNPRINTF */
   G_VA_COPY (args2, args1);
   if (printf_string_upper_bound (format, FALSE, args1) < 1024)
     vsprintf (buffer, format, args2);
   else
     {
       /* since we might be out of memory, we can't use g_vsnprintf(). */
-#ifdef  HAVE_VSNPRINTF
-      vsnprintf (buffer, 1024, format, args2);
-#else	/* !HAVE_VSNPRINTF */
       /* we are out of luck here */
       strncpy (buffer, format, 1024);
-#endif	/* !HAVE_VSNPRINTF */
       buffer[1024] = 0;
     }
   va_end (args2);
+#endif	/* !HAVE_VSNPRINTF */
   
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
@@ -908,6 +908,7 @@ printf_string_upper_bound (const gchar *format,
 		    g_warning (G_GNUC_PRETTY_FUNCTION
 			       "(): unable to handle positional parameters (%%n$)");
 		  len += 1024; /* try adding some safety padding */
+		  conv_done = TRUE;
 		  break;
 
 		  /* parse flags

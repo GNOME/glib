@@ -83,7 +83,7 @@ struct _GMemVTable
 			   gsize    n_bytes);
 };
 void	 g_mem_set_vtable (GMemVTable	*vtable);
-
+gboolean g_mem_vtable_is_set (void);
 
 /* Memory profiler and checker, has to be enabled via g_mem_set_vtable()
  */
