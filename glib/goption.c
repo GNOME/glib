@@ -828,13 +828,9 @@ g_option_context_parse (GOptionContext   *context,
     {
       gchar *prgname;
       
-      prgname = strrchr ((*argv)[0], G_DIR_SEPARATOR);
-      if (prgname)
-	prgname++;
-      else
-	prgname = (*argv)[0];
-
+      prgname = g_path_get_basename ((*argv)[0]);
       g_set_prgname (prgname);
+      g_free (prgname);
     }
   else
     {

@@ -1,3 +1,9 @@
+2004-10-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/goption.c (g_option_context_parse): Use
+	g_path_get_basename() instead of strrchr(), so that either slash
+	is accepted on Windows.
+
 2004-09-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c: Convert filenames to UTF-8 before 
