@@ -1,3 +1,10 @@
+Tue Oct 28 23:38:30 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/printf-test.c: Change the %e tests to not check for
+	actual string equality, but rather equality under g_ascii_strtod(),
+	since the number of leading digits in the exponent seems to 
+	be not exactly prescribed by SUS.
+
 Fri Oct 24 17:09:04 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.0 ===

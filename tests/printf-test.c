@@ -46,6 +46,17 @@ if (failed) \
 #define TEST_FAILED(message) \
   G_STMT_START { g_print ("Error: "); g_print message; g_print ("\n"); any_failed = TRUE; } G_STMT_END
 
+static gboolean
+same_value (const gchar *actual, 
+            const gchar *expected)
+{
+  gdouble actual_value, expected_value;
+
+  actual_value = g_ascii_strtod (actual, NULL);
+  expected_value = g_ascii_strtod (expected, NULL);
+
+  return actual_value == expected_value;
+}
 
 int
 main (int   argc,
@@ -153,17 +164,23 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%05.2f", G_PI) == 5 && !strcmp (buf, "03.14"));
 
   /* %e, basic formatting */
-  TEST (NULL, g_snprintf (buf, 128, "%e", G_PI) == 12 && !strcmp (buf, "3.141593e+00"));
-  TEST (NULL, g_snprintf (buf, 128, "%.8e", G_PI) == 14 && !strcmp (buf, "3.14159265e+00"));
-  TEST (buf, g_snprintf (buf, 128, "%.0e", G_PI) == 5 && !strcmp (buf, "3e+00"));
-  TEST (buf, g_snprintf (buf, 128, "%.1e", 0.0) == 7 && !strcmp (buf, "0.0e+00"));
-  TEST (buf, g_snprintf (buf, 128, "%.1e", 0.00001) == 7 && !strcmp (buf, "1.0e-05"));
-  TEST (buf, g_snprintf (buf, 128, "%.1e", 10000.0) == 7 && !strcmp (buf, "1.0e+04"));
+  /* for %e we can't expect to reproduce exact strings and lengths, since SUS
+   * only guarantees that the exponent shall always contain at least two 
+   * digits. On Windows, it seems to be at least three digits long.
+   * Therefore, we compare the results of parsing the expected result and the
+   * actual result.
+   */
+  TEST (buf, g_snprintf (buf, 128, "%e", G_PI) >= 12 && same_value (buf, "3.141593e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%.8e", G_PI) >= 14 && same_value (buf, "3.14159265e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%.0e", G_PI) >= 5 && same_value (buf, "3e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%.1e", 0.0) >= 7 && same_value (buf, "0.0e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%.1e", 0.00001) >= 7 && same_value (buf, "1.0e-05"));
+  TEST (buf, g_snprintf (buf, 128, "%.1e", 10000.0) >= 7 && same_value (buf, "1.0e+04"));
   /* %e, flags */
-  TEST (NULL, g_snprintf (buf, 128, "%+e", G_PI) == 13 && !strcmp (buf, "+3.141593e+00"));
-  TEST (NULL, g_snprintf (buf, 128, "% e", G_PI) == 13 && !strcmp (buf, " 3.141593e+00"));
-  TEST (NULL, g_snprintf (buf, 128, "%#.0e", G_PI) == 6 && !strcmp (buf, "3.e+00"));
-  TEST (NULL, g_snprintf (buf, 128, "%09.2e", G_PI) == 9 && !strcmp (buf, "03.14e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%+e", G_PI) >= 13 && same_value (buf, "+3.141593e+00"));
+  TEST (buf, g_snprintf (buf, 128, "% e", G_PI) >= 13 && same_value (buf, " 3.141593e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%#.0e", G_PI) >= 6 && same_value (buf, "3.e+00"));
+  TEST (buf, g_snprintf (buf, 128, "%09.2e", G_PI) >= 9 && same_value (buf, "03.14e+00"));
 
   /* %c */
   TEST (NULL, g_snprintf (buf, 128, "%c", 'a') == 1 && !strcmp (buf, "a"));
