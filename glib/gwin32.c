@@ -106,6 +106,537 @@ g_win32_ftruncate (gint  fd,
  * Returns: newly-allocated locale name.
  **/
 
+/* Borrowed from GNU gettext 0.13.1: */
+/* Mingw headers don't have latest language and sublanguage codes.  */
+#ifndef LANG_AFRIKAANS
+#define LANG_AFRIKAANS 0x36
+#endif
+#ifndef LANG_ALBANIAN
+#define LANG_ALBANIAN 0x1c
+#endif
+#ifndef LANG_AMHARIC
+#define LANG_AMHARIC 0x5e
+#endif
+#ifndef LANG_ARABIC
+#define LANG_ARABIC 0x01
+#endif
+#ifndef LANG_ARMENIAN
+#define LANG_ARMENIAN 0x2b
+#endif
+#ifndef LANG_ASSAMESE
+#define LANG_ASSAMESE 0x4d
+#endif
+#ifndef LANG_AZERI
+#define LANG_AZERI 0x2c
+#endif
+#ifndef LANG_BASQUE
+#define LANG_BASQUE 0x2d
+#endif
+#ifndef LANG_BELARUSIAN
+#define LANG_BELARUSIAN 0x23
+#endif
+#ifndef LANG_BENGALI
+#define LANG_BENGALI 0x45
+#endif
+#ifndef LANG_BURMESE
+#define LANG_BURMESE 0x55
+#endif
+#ifndef LANG_CAMBODIAN
+#define LANG_CAMBODIAN 0x53
+#endif
+#ifndef LANG_CATALAN
+#define LANG_CATALAN 0x03
+#endif
+#ifndef LANG_CHEROKEE
+#define LANG_CHEROKEE 0x5c
+#endif
+#ifndef LANG_DIVEHI
+#define LANG_DIVEHI 0x65
+#endif
+#ifndef LANG_EDO
+#define LANG_EDO 0x66
+#endif
+#ifndef LANG_ESTONIAN
+#define LANG_ESTONIAN 0x25
+#endif
+#ifndef LANG_FAEROESE
+#define LANG_FAEROESE 0x38
+#endif
+#ifndef LANG_FARSI
+#define LANG_FARSI 0x29
+#endif
+#ifndef LANG_FRISIAN
+#define LANG_FRISIAN 0x62
+#endif
+#ifndef LANG_FULFULDE
+#define LANG_FULFULDE 0x67
+#endif
+#ifndef LANG_GAELIC
+#define LANG_GAELIC 0x3c
+#endif
+#ifndef LANG_GALICIAN
+#define LANG_GALICIAN 0x56
+#endif
+#ifndef LANG_GEORGIAN
+#define LANG_GEORGIAN 0x37
+#endif
+#ifndef LANG_GUARANI
+#define LANG_GUARANI 0x74
+#endif
+#ifndef LANG_GUJARATI
+#define LANG_GUJARATI 0x47
+#endif
+#ifndef LANG_HAUSA
+#define LANG_HAUSA 0x68
+#endif
+#ifndef LANG_HAWAIIAN
+#define LANG_HAWAIIAN 0x75
+#endif
+#ifndef LANG_HEBREW
+#define LANG_HEBREW 0x0d
+#endif
+#ifndef LANG_HINDI
+#define LANG_HINDI 0x39
+#endif
+#ifndef LANG_IBIBIO
+#define LANG_IBIBIO 0x69
+#endif
+#ifndef LANG_IGBO
+#define LANG_IGBO 0x70
+#endif
+#ifndef LANG_INDONESIAN
+#define LANG_INDONESIAN 0x21
+#endif
+#ifndef LANG_INUKTITUT
+#define LANG_INUKTITUT 0x5d
+#endif
+#ifndef LANG_KANNADA
+#define LANG_KANNADA 0x4b
+#endif
+#ifndef LANG_KANURI
+#define LANG_KANURI 0x71
+#endif
+#ifndef LANG_KASHMIRI
+#define LANG_KASHMIRI 0x60
+#endif
+#ifndef LANG_KAZAK
+#define LANG_KAZAK 0x3f
+#endif
+#ifndef LANG_KONKANI
+#define LANG_KONKANI 0x57
+#endif
+#ifndef LANG_KYRGYZ
+#define LANG_KYRGYZ 0x40
+#endif
+#ifndef LANG_LAO
+#define LANG_LAO 0x54
+#endif
+#ifndef LANG_LATIN
+#define LANG_LATIN 0x76
+#endif
+#ifndef LANG_LATVIAN
+#define LANG_LATVIAN 0x26
+#endif
+#ifndef LANG_LITHUANIAN
+#define LANG_LITHUANIAN 0x27
+#endif
+#ifndef LANG_MACEDONIAN
+#define LANG_MACEDONIAN 0x2f
+#endif
+#ifndef LANG_MALAY
+#define LANG_MALAY 0x3e
+#endif
+#ifndef LANG_MALAYALAM
+#define LANG_MALAYALAM 0x4c
+#endif
+#ifndef LANG_MALTESE
+#define LANG_MALTESE 0x3a
+#endif
+#ifndef LANG_MANIPURI
+#define LANG_MANIPURI 0x58
+#endif
+#ifndef LANG_MARATHI
+#define LANG_MARATHI 0x4e
+#endif
+#ifndef LANG_MONGOLIAN
+#define LANG_MONGOLIAN 0x50
+#endif
+#ifndef LANG_NEPALI
+#define LANG_NEPALI 0x61
+#endif
+#ifndef LANG_ORIYA
+#define LANG_ORIYA 0x48
+#endif
+#ifndef LANG_OROMO
+#define LANG_OROMO 0x72
+#endif
+#ifndef LANG_PAPIAMENTU
+#define LANG_PAPIAMENTU 0x79
+#endif
+#ifndef LANG_PASHTO
+#define LANG_PASHTO 0x63
+#endif
+#ifndef LANG_PUNJABI
+#define LANG_PUNJABI 0x46
+#endif
+#ifndef LANG_RHAETO_ROMANCE
+#define LANG_RHAETO_ROMANCE 0x17
+#endif
+#ifndef LANG_SAAMI
+#define LANG_SAAMI 0x3b
+#endif
+#ifndef LANG_SANSKRIT
+#define LANG_SANSKRIT 0x4f
+#endif
+#ifndef LANG_SERBIAN
+#define LANG_SERBIAN 0x1a
+#endif
+#ifndef LANG_SINDHI
+#define LANG_SINDHI 0x59
+#endif
+#ifndef LANG_SINHALESE
+#define LANG_SINHALESE 0x5b
+#endif
+#ifndef LANG_SLOVAK
+#define LANG_SLOVAK 0x1b
+#endif
+#ifndef LANG_SOMALI
+#define LANG_SOMALI 0x77
+#endif
+#ifndef LANG_SORBIAN
+#define LANG_SORBIAN 0x2e
+#endif
+#ifndef LANG_SUTU
+#define LANG_SUTU 0x30
+#endif
+#ifndef LANG_SWAHILI
+#define LANG_SWAHILI 0x41
+#endif
+#ifndef LANG_SYRIAC
+#define LANG_SYRIAC 0x5a
+#endif
+#ifndef LANG_TAGALOG
+#define LANG_TAGALOG 0x64
+#endif
+#ifndef LANG_TAJIK
+#define LANG_TAJIK 0x28
+#endif
+#ifndef LANG_TAMAZIGHT
+#define LANG_TAMAZIGHT 0x5f
+#endif
+#ifndef LANG_TAMIL
+#define LANG_TAMIL 0x49
+#endif
+#ifndef LANG_TATAR
+#define LANG_TATAR 0x44
+#endif
+#ifndef LANG_TELUGU
+#define LANG_TELUGU 0x4a
+#endif
+#ifndef LANG_THAI
+#define LANG_THAI 0x1e
+#endif
+#ifndef LANG_TIBETAN
+#define LANG_TIBETAN 0x51
+#endif
+#ifndef LANG_TIGRINYA
+#define LANG_TIGRINYA 0x73
+#endif
+#ifndef LANG_TSONGA
+#define LANG_TSONGA 0x31
+#endif
+#ifndef LANG_TSWANA
+#define LANG_TSWANA 0x32
+#endif
+#ifndef LANG_TURKMEN
+#define LANG_TURKMEN 0x42
+#endif
+#ifndef LANG_UKRAINIAN
+#define LANG_UKRAINIAN 0x22
+#endif
+#ifndef LANG_URDU
+#define LANG_URDU 0x20
+#endif
+#ifndef LANG_UZBEK
+#define LANG_UZBEK 0x43
+#endif
+#ifndef LANG_VENDA
+#define LANG_VENDA 0x33
+#endif
+#ifndef LANG_VIETNAMESE
+#define LANG_VIETNAMESE 0x2a
+#endif
+#ifndef LANG_WELSH
+#define LANG_WELSH 0x52
+#endif
+#ifndef LANG_XHOSA
+#define LANG_XHOSA 0x34
+#endif
+#ifndef LANG_YI
+#define LANG_YI 0x78
+#endif
+#ifndef LANG_YIDDISH
+#define LANG_YIDDISH 0x3d
+#endif
+#ifndef LANG_YORUBA
+#define LANG_YORUBA 0x6a
+#endif
+#ifndef LANG_ZULU
+#define LANG_ZULU 0x35
+#endif
+#ifndef SUBLANG_ARABIC_SAUDI_ARABIA
+#define SUBLANG_ARABIC_SAUDI_ARABIA 0x01
+#endif
+#ifndef SUBLANG_ARABIC_IRAQ
+#define SUBLANG_ARABIC_IRAQ 0x02
+#endif
+#ifndef SUBLANG_ARABIC_EGYPT
+#define SUBLANG_ARABIC_EGYPT 0x03
+#endif
+#ifndef SUBLANG_ARABIC_LIBYA
+#define SUBLANG_ARABIC_LIBYA 0x04
+#endif
+#ifndef SUBLANG_ARABIC_ALGERIA
+#define SUBLANG_ARABIC_ALGERIA 0x05
+#endif
+#ifndef SUBLANG_ARABIC_MOROCCO
+#define SUBLANG_ARABIC_MOROCCO 0x06
+#endif
+#ifndef SUBLANG_ARABIC_TUNISIA
+#define SUBLANG_ARABIC_TUNISIA 0x07
+#endif
+#ifndef SUBLANG_ARABIC_OMAN
+#define SUBLANG_ARABIC_OMAN 0x08
+#endif
+#ifndef SUBLANG_ARABIC_YEMEN
+#define SUBLANG_ARABIC_YEMEN 0x09
+#endif
+#ifndef SUBLANG_ARABIC_SYRIA
+#define SUBLANG_ARABIC_SYRIA 0x0a
+#endif
+#ifndef SUBLANG_ARABIC_JORDAN
+#define SUBLANG_ARABIC_JORDAN 0x0b
+#endif
+#ifndef SUBLANG_ARABIC_LEBANON
+#define SUBLANG_ARABIC_LEBANON 0x0c
+#endif
+#ifndef SUBLANG_ARABIC_KUWAIT
+#define SUBLANG_ARABIC_KUWAIT 0x0d
+#endif
+#ifndef SUBLANG_ARABIC_UAE
+#define SUBLANG_ARABIC_UAE 0x0e
+#endif
+#ifndef SUBLANG_ARABIC_BAHRAIN
+#define SUBLANG_ARABIC_BAHRAIN 0x0f
+#endif
+#ifndef SUBLANG_ARABIC_QATAR
+#define SUBLANG_ARABIC_QATAR 0x10
+#endif
+#ifndef SUBLANG_AZERI_LATIN
+#define SUBLANG_AZERI_LATIN 0x01
+#endif
+#ifndef SUBLANG_AZERI_CYRILLIC
+#define SUBLANG_AZERI_CYRILLIC 0x02
+#endif
+#ifndef SUBLANG_BENGALI_INDIA
+#define SUBLANG_BENGALI_INDIA 0x00
+#endif
+#ifndef SUBLANG_BENGALI_BANGLADESH
+#define SUBLANG_BENGALI_BANGLADESH 0x01
+#endif
+#ifndef SUBLANG_CHINESE_MACAU
+#define SUBLANG_CHINESE_MACAU 0x05
+#endif
+#ifndef SUBLANG_ENGLISH_SOUTH_AFRICA
+#define SUBLANG_ENGLISH_SOUTH_AFRICA 0x07
+#endif
+#ifndef SUBLANG_ENGLISH_JAMAICA
+#define SUBLANG_ENGLISH_JAMAICA 0x08
+#endif
+#ifndef SUBLANG_ENGLISH_CARIBBEAN
+#define SUBLANG_ENGLISH_CARIBBEAN 0x09
+#endif
+#ifndef SUBLANG_ENGLISH_BELIZE
+#define SUBLANG_ENGLISH_BELIZE 0x0a
+#endif
+#ifndef SUBLANG_ENGLISH_TRINIDAD
+#define SUBLANG_ENGLISH_TRINIDAD 0x0b
+#endif
+#ifndef SUBLANG_ENGLISH_ZIMBABWE
+#define SUBLANG_ENGLISH_ZIMBABWE 0x0c
+#endif
+#ifndef SUBLANG_ENGLISH_PHILIPPINES
+#define SUBLANG_ENGLISH_PHILIPPINES 0x0d
+#endif
+#ifndef SUBLANG_ENGLISH_INDONESIA
+#define SUBLANG_ENGLISH_INDONESIA 0x0e
+#endif
+#ifndef SUBLANG_ENGLISH_HONGKONG
+#define SUBLANG_ENGLISH_HONGKONG 0x0f
+#endif
+#ifndef SUBLANG_ENGLISH_INDIA
+#define SUBLANG_ENGLISH_INDIA 0x10
+#endif
+#ifndef SUBLANG_ENGLISH_MALAYSIA
+#define SUBLANG_ENGLISH_MALAYSIA 0x11
+#endif
+#ifndef SUBLANG_ENGLISH_SINGAPORE
+#define SUBLANG_ENGLISH_SINGAPORE 0x12
+#endif
+#ifndef SUBLANG_FRENCH_LUXEMBOURG
+#define SUBLANG_FRENCH_LUXEMBOURG 0x05
+#endif
+#ifndef SUBLANG_FRENCH_MONACO
+#define SUBLANG_FRENCH_MONACO 0x06
+#endif
+#ifndef SUBLANG_FRENCH_WESTINDIES
+#define SUBLANG_FRENCH_WESTINDIES 0x07
+#endif
+#ifndef SUBLANG_FRENCH_REUNION
+#define SUBLANG_FRENCH_REUNION 0x08
+#endif
+#ifndef SUBLANG_FRENCH_CONGO
+#define SUBLANG_FRENCH_CONGO 0x09
+#endif
+#ifndef SUBLANG_FRENCH_SENEGAL
+#define SUBLANG_FRENCH_SENEGAL 0x0a
+#endif
+#ifndef SUBLANG_FRENCH_CAMEROON
+#define SUBLANG_FRENCH_CAMEROON 0x0b
+#endif
+#ifndef SUBLANG_FRENCH_COTEDIVOIRE
+#define SUBLANG_FRENCH_COTEDIVOIRE 0x0c
+#endif
+#ifndef SUBLANG_FRENCH_MALI
+#define SUBLANG_FRENCH_MALI 0x0d
+#endif
+#ifndef SUBLANG_FRENCH_MOROCCO
+#define SUBLANG_FRENCH_MOROCCO 0x0e
+#endif
+#ifndef SUBLANG_FRENCH_HAITI
+#define SUBLANG_FRENCH_HAITI 0x0f
+#endif
+#ifndef SUBLANG_GERMAN_LUXEMBOURG
+#define SUBLANG_GERMAN_LUXEMBOURG 0x04
+#endif
+#ifndef SUBLANG_GERMAN_LIECHTENSTEIN
+#define SUBLANG_GERMAN_LIECHTENSTEIN 0x05
+#endif
+#ifndef SUBLANG_KASHMIRI_INDIA
+#define SUBLANG_KASHMIRI_INDIA 0x02
+#endif
+#ifndef SUBLANG_MALAY_MALAYSIA
+#define SUBLANG_MALAY_MALAYSIA 0x01
+#endif
+#ifndef SUBLANG_MALAY_BRUNEI_DARUSSALAM
+#define SUBLANG_MALAY_BRUNEI_DARUSSALAM 0x02
+#endif
+#ifndef SUBLANG_NEPALI_INDIA
+#define SUBLANG_NEPALI_INDIA 0x02
+#endif
+#ifndef SUBLANG_PUNJABI_INDIA
+#define SUBLANG_PUNJABI_INDIA 0x00
+#endif
+#ifndef SUBLANG_PUNJABI_PAKISTAN
+#define SUBLANG_PUNJABI_PAKISTAN 0x01
+#endif
+#ifndef SUBLANG_ROMANIAN_ROMANIA
+#define SUBLANG_ROMANIAN_ROMANIA 0x00
+#endif
+#ifndef SUBLANG_ROMANIAN_MOLDOVA
+#define SUBLANG_ROMANIAN_MOLDOVA 0x01
+#endif
+#ifndef SUBLANG_SERBIAN_LATIN
+#define SUBLANG_SERBIAN_LATIN 0x02
+#endif
+#ifndef SUBLANG_SERBIAN_CYRILLIC
+#define SUBLANG_SERBIAN_CYRILLIC 0x03
+#endif
+#ifndef SUBLANG_SINDHI_INDIA
+#define SUBLANG_SINDHI_INDIA 0x00
+#endif
+#ifndef SUBLANG_SINDHI_PAKISTAN
+#define SUBLANG_SINDHI_PAKISTAN 0x01
+#endif
+#ifndef SUBLANG_SPANISH_GUATEMALA
+#define SUBLANG_SPANISH_GUATEMALA 0x04
+#endif
+#ifndef SUBLANG_SPANISH_COSTA_RICA
+#define SUBLANG_SPANISH_COSTA_RICA 0x05
+#endif
+#ifndef SUBLANG_SPANISH_PANAMA
+#define SUBLANG_SPANISH_PANAMA 0x06
+#endif
+#ifndef SUBLANG_SPANISH_DOMINICAN_REPUBLIC
+#define SUBLANG_SPANISH_DOMINICAN_REPUBLIC 0x07
+#endif
+#ifndef SUBLANG_SPANISH_VENEZUELA
+#define SUBLANG_SPANISH_VENEZUELA 0x08
+#endif
+#ifndef SUBLANG_SPANISH_COLOMBIA
+#define SUBLANG_SPANISH_COLOMBIA 0x09
+#endif
+#ifndef SUBLANG_SPANISH_PERU
+#define SUBLANG_SPANISH_PERU 0x0a
+#endif
+#ifndef SUBLANG_SPANISH_ARGENTINA
+#define SUBLANG_SPANISH_ARGENTINA 0x0b
+#endif
+#ifndef SUBLANG_SPANISH_ECUADOR
+#define SUBLANG_SPANISH_ECUADOR 0x0c
+#endif
+#ifndef SUBLANG_SPANISH_CHILE
+#define SUBLANG_SPANISH_CHILE 0x0d
+#endif
+#ifndef SUBLANG_SPANISH_URUGUAY
+#define SUBLANG_SPANISH_URUGUAY 0x0e
+#endif
+#ifndef SUBLANG_SPANISH_PARAGUAY
+#define SUBLANG_SPANISH_PARAGUAY 0x0f
+#endif
+#ifndef SUBLANG_SPANISH_BOLIVIA
+#define SUBLANG_SPANISH_BOLIVIA 0x10
+#endif
+#ifndef SUBLANG_SPANISH_EL_SALVADOR
+#define SUBLANG_SPANISH_EL_SALVADOR 0x11
+#endif
+#ifndef SUBLANG_SPANISH_HONDURAS
+#define SUBLANG_SPANISH_HONDURAS 0x12
+#endif
+#ifndef SUBLANG_SPANISH_NICARAGUA
+#define SUBLANG_SPANISH_NICARAGUA 0x13
+#endif
+#ifndef SUBLANG_SPANISH_PUERTO_RICO
+#define SUBLANG_SPANISH_PUERTO_RICO 0x14
+#endif
+#ifndef SUBLANG_SWEDISH_FINLAND
+#define SUBLANG_SWEDISH_FINLAND 0x02
+#endif
+#ifndef SUBLANG_TAMAZIGHT_ARABIC
+#define SUBLANG_TAMAZIGHT_ARABIC 0x01
+#endif
+#ifndef SUBLANG_TAMAZIGHT_LATIN
+#define SUBLANG_TAMAZIGHT_LATIN 0x02
+#endif
+#ifndef SUBLANG_TIGRINYA_ETHIOPIA
+#define SUBLANG_TIGRINYA_ETHIOPIA 0x00
+#endif
+#ifndef SUBLANG_TIGRINYA_ERITREA
+#define SUBLANG_TIGRINYA_ERITREA 0x01
+#endif
+#ifndef SUBLANG_URDU_PAKISTAN
+#define SUBLANG_URDU_PAKISTAN 0x01
+#endif
+#ifndef SUBLANG_URDU_INDIA
+#define SUBLANG_URDU_INDIA 0x02
+#endif
+#ifndef SUBLANG_UZBEK_LATIN
+#define SUBLANG_UZBEK_LATIN 0x01
+#endif
+#ifndef SUBLANG_UZBEK_CYRILLIC
+#define SUBLANG_UZBEK_CYRILLIC 0x02
+#endif
+
 gchar *
 g_win32_getlocale (void)
 {
@@ -113,7 +644,7 @@ g_win32_getlocale (void)
   LANGID langid;
   gchar *ev;
   gint primary, sub;
-  gchar *l = NULL, *sl = NULL;
+  gchar *l = "C", *sl = NULL;
   gchar bfr[20];
 
   /* Let the user override the system settings through environment
@@ -158,33 +689,32 @@ g_win32_getlocale (void)
 	case SUBLANG_ARABIC_QATAR: sl = "QA"; break;
 	}
       break;
-#ifdef LANG_ARMENIAN
     case LANG_ARMENIAN: l = "hy"; sl = "AM"; break;
-#endif
-#ifdef LANG_ASSAMESE
     case LANG_ASSAMESE: l = "as"; sl = "IN"; break;
-#endif
-#ifdef LANG_AZERI
     case LANG_AZERI:
       l = "az";
-#if defined (SUBLANG_AZERI_LATIN) && defined (SUBLANG_AZERI_CYRILLIC)
       switch (sub)
 	{
 	/* FIXME: Adjust this when Azerbaijani locales appear on Unix.  */
-	case SUBLANG_AZERI_LATIN: sl = "@latin"; break;
-	case SUBLANG_AZERI_CYRILLIC: sl = "@cyrillic"; break;
+	case SUBLANG_AZERI_LATIN: sl = "AZ@latin"; break;
+	case SUBLANG_AZERI_CYRILLIC: sl = "AZ@cyrillic"; break;
 	}
-#endif
       break;
-#endif
     case LANG_BASQUE:
       l = "eu"; /* sl could be "ES" or "FR".  */
       break;
     case LANG_BELARUSIAN: l = "be"; sl = "BY"; break;
-#ifdef LANG_BENGALI
-    case LANG_BENGALI: l = "bn"; sl = "IN"; break;
-#endif
+    case LANG_BENGALI:
+      l = "bn";
+      switch (sub)
+	{
+	case SUBLANG_BENGALI_INDIA: sl = "IN"; break;
+	case SUBLANG_BENGALI_BANGLADESH: sl = "BD"; break;
+	}
+      break;
     case LANG_BULGARIAN: l = "bg"; sl = "BG"; break;
+    case LANG_BURMESE: l = "my"; sl = "MM"; break;
+    case LANG_CAMBODIAN: l = "km"; sl = "KH"; break;
     case LANG_CATALAN: l = "ca"; sl = "ES"; break;
     case LANG_CHINESE:
       l = "zh";
@@ -194,9 +724,7 @@ g_win32_getlocale (void)
 	case SUBLANG_CHINESE_SIMPLIFIED: sl = "CN"; break;
 	case SUBLANG_CHINESE_HONGKONG: sl = "HK"; break;
 	case SUBLANG_CHINESE_SINGAPORE: sl = "SG"; break;
-#ifdef SUBLANG_CHINESE_MACAU
 	case SUBLANG_CHINESE_MACAU: sl = "MO"; break;
-#endif
 	}
       break;
     case LANG_CROATIAN:		/* LANG_CROATIAN == LANG_SERBIAN */
@@ -210,9 +738,7 @@ g_win32_getlocale (void)
       break;
     case LANG_CZECH: l = "cs"; sl = "CZ"; break;
     case LANG_DANISH: l = "da"; sl = "DK"; break;
-#ifdef LANG_DIVEHI
     case LANG_DIVEHI: l = "div"; sl = "MV"; break;
-#endif
     case LANG_DUTCH:
       l = "nl";
       switch (sub)
@@ -236,12 +762,13 @@ g_win32_getlocale (void)
 	case SUBLANG_ENGLISH_CARIBBEAN: sl = "GD"; break; /* Grenada? */
 	case SUBLANG_ENGLISH_BELIZE: sl = "BZ"; break;
 	case SUBLANG_ENGLISH_TRINIDAD: sl = "TT"; break;
-#ifdef SUBLANG_ENGLISH_ZIMBABWE
 	case SUBLANG_ENGLISH_ZIMBABWE: sl = "ZW"; break;
-#endif
-#ifdef SUBLANG_ENGLISH_PHILIPPINES
 	case SUBLANG_ENGLISH_PHILIPPINES: sl = "PH"; break;
-#endif
+	case SUBLANG_ENGLISH_INDONESIA: sl = "ID"; break;
+	case SUBLANG_ENGLISH_HONGKONG: sl = "HK"; break;
+	case SUBLANG_ENGLISH_INDIA: sl = "IN"; break;
+	case SUBLANG_ENGLISH_MALAYSIA: sl = "MY"; break;
+	case SUBLANG_ENGLISH_SINGAPORE: sl = "SG"; break;
 	}
       break;
     case LANG_ESTONIAN: l = "et"; sl = "EE"; break;
@@ -257,15 +784,29 @@ g_win32_getlocale (void)
 	case SUBLANG_FRENCH_CANADIAN: sl = "CA"; break;
 	case SUBLANG_FRENCH_SWISS: sl = "CH"; break;
 	case SUBLANG_FRENCH_LUXEMBOURG: sl = "LU"; break;
-#ifdef SUBLANG_FRENCH_MONACO
 	case SUBLANG_FRENCH_MONACO: sl = "MC"; break;
-#endif
+	case SUBLANG_FRENCH_WESTINDIES: break;
+	case SUBLANG_FRENCH_REUNION: sl = "RE"; break;
+	case SUBLANG_FRENCH_CONGO: sl = "CG"; break;
+	case SUBLANG_FRENCH_SENEGAL: sl = "SN"; break;
+	case SUBLANG_FRENCH_CAMEROON: sl = "CM"; break;
+	case SUBLANG_FRENCH_COTEDIVOIRE: sl = "CI"; break;
+	case SUBLANG_FRENCH_MALI: sl = "ML"; break;
+	case SUBLANG_FRENCH_MOROCCO: sl = "MA"; break;
+	case SUBLANG_FRENCH_HAITI: sl = "HT"; break;
 	}
       break;
-      /* FIXME: LANG_GALICIAN: What's the code for Galician? */
-#ifdef LANG_GEORGIAN
+    case LANG_FRISIAN: l = "fy"; sl ="NL"; break;
+    case LANG_FULFULDE: l = "ful"; sl = "NG"; break;
+    case LANG_GAELIC:
+      switch (sub)
+	{
+	case 0x01: /* SCOTTISH */ l = "gd"; sl = "GB"; break;
+	case 0x02: /* IRISH */ l = "ga"; sl = "IE"; break;
+	}
+      break;
+    case LANG_GALICIAN: l = "gl"; sl = "ES"; break;
     case LANG_GEORGIAN: l = "ka"; sl = "GE"; break;
-#endif
     case LANG_GERMAN:
       l = "de";
       switch (sub)
@@ -278,16 +819,24 @@ g_win32_getlocale (void)
 	}
       break;
     case LANG_GREEK: l = "el"; sl = "GR"; break;
-#ifdef LANG_GUJARATI
+    case LANG_GUARANI: l = "gn"; sl = "PY"; break;
     case LANG_GUJARATI: l = "gu"; sl = "IN"; break;
-#endif
+    case LANG_HAUSA: l = "ha"; sl = "NG"; break;
+    case LANG_HAWAIIAN:
+      /* FIXME: Do they mean Hawaiian ("haw_US", 1000 speakers)
+       * or Hawaii Creole English ("cpe_US", 600000 speakers)?
+       */
+      l = "cpe";
+      sl = "US";
+      break;
     case LANG_HEBREW: l = "he"; sl = "IL"; break;
-#ifdef LANG_HINDI
     case LANG_HINDI: l = "hi"; sl = "IN"; break;
-#endif
     case LANG_HUNGARIAN: l = "hu"; sl = "HU"; break;
+    case LANG_IBIBIO: l = "nic"; sl = "NG"; break;
     case LANG_ICELANDIC: l = "is"; sl = "IS"; break;
+    case LANG_IGBO: l = "ibo"; sl = "NG"; break;
     case LANG_INDONESIAN: l = "id"; sl = "ID"; break;
+    case LANG_INUKTITUT: l = "iu"; sl = "CA"; break;
     case LANG_ITALIAN:
       l = "it";
       switch (sub)
@@ -297,80 +846,56 @@ g_win32_getlocale (void)
 	}
       break;
     case LANG_JAPANESE: l = "ja"; sl = "JP"; break;
-#ifdef LANG_KANNADA
     case LANG_KANNADA: l = "kn"; sl = "IN"; break;
-#endif
-#ifdef LANG_KASHMIRI
+    case LANG_KANURI: l = "kau"; sl = "NG"; break;
     case LANG_KASHMIRI:
       l = "ks";
       switch (sub)
 	{
 	case SUBLANG_DEFAULT: sl = "PK"; break;
-#ifdef SUBLANG_KASHMIRI_INDIA
 	case SUBLANG_KASHMIRI_INDIA: sl = "IN"; break;
-#endif
 	}
       break;
-#endif
-#ifdef LANG_KAZAK
     case LANG_KAZAK: l = "kk"; sl = "KZ"; break;
-#endif
-#ifdef LANG_KONKANI
     case LANG_KONKANI:
       /* FIXME: Adjust this when such locales appear on Unix.  */
-      l = "kok"; sl = "IN";
+      l = "kok";
+      sl = "IN";
       break;
-#endif
     case LANG_KOREAN: l = "ko"; sl = "KR"; break;
-#ifdef LANG_KYRGYZ
-    case LANG_KYRGYZ: l = "ky"; sl = "KG"; /* ??? */ break; 
-#endif
+    case LANG_KYRGYZ: l = "ky"; sl = "KG"; break; 
+    case LANG_LAO: l = "lo"; sl = "LA"; break;
+    case LANG_LATIN: l = "la"; sl = "VA"; break;
     case LANG_LATVIAN: l = "lv"; sl = "LV"; break;
     case LANG_LITHUANIAN: l = "lt"; sl = "LT"; break;
-#ifdef LANG_MACEDONIAN
     case LANG_MACEDONIAN: l = "mk"; sl = "MK"; break;
-#endif
-#ifdef LANG_MALAY
     case LANG_MALAY:
       l = "ms";
       switch (sub)
 	{
-#ifdef SUBLANG_MALAY_MALAYSIA
 	case SUBLANG_MALAY_MALAYSIA: sl = "MY"; break;
-#endif
-#ifdef SUBLANG_MALAY_BRUNEI_DARUSSALAM
 	case SUBLANG_MALAY_BRUNEI_DARUSSALAM: sl = "BN"; break;
-#endif
 	}
       break;
-#endif
-#ifdef LANG_MALAYALAM
     case LANG_MALAYALAM: l = "ml"; sl = "IN"; break;
-#endif
-#ifdef LANG_MANIPURI
     case LANG_MANIPURI:
       /* FIXME: Adjust this when such locales appear on Unix.  */
-      l = "mni"; sl = "IN";
+      l = "mni";
+      sl = "IN";
       break;
-#endif
-#ifdef LANG_MARATHI
     case LANG_MARATHI: l = "mr"; sl = "IN"; break;
-#endif
-#ifdef LANG_MONGOLIAN
-    case LANG_MONGOLIAN: l = "mn"; sl = "MN"; break;
-#endif
-#ifdef LANG_NEPALI
+    case LANG_MONGOLIAN:
+      /* Ambiguous: could be "mn_CN" or "mn_MN".  */
+      l = "mn";
+      break;
     case LANG_NEPALI:
       l = "ne";
       switch (sub)
 	{
 	case SUBLANG_DEFAULT: sl = "NP"; break;
-#ifdef SUBLANG_NEPALI_INDIA
 	case SUBLANG_NEPALI_INDIA: sl = "IN"; break;
-#endif
 	}
       break;
-#endif
     case LANG_NORWEGIAN:
       l = "no";
       switch (sub)
@@ -379,9 +904,13 @@ g_win32_getlocale (void)
 	case SUBLANG_NORWEGIAN_NYNORSK: l = "nn"; sl = "NO"; break;
 	}
       break;
-#ifdef LANG_ORIYA
     case LANG_ORIYA: l = "or"; sl = "IN"; break;
-#endif
+    case LANG_OROMO: l = "om"; sl = "ET"; break;
+    case LANG_PAPIAMENTU: l = "pap"; sl = "AN"; break;
+    case LANG_PASHTO:
+      /* Ambiguous: could be "ps_PK" or "ps_AF".  */
+      l = "ps";
+      break;
     case LANG_POLISH: l = "pl"; sl = "PL"; break;
     case LANG_PORTUGUESE:
       l = "pt";
@@ -391,27 +920,44 @@ g_win32_getlocale (void)
 	case SUBLANG_PORTUGUESE_BRAZILIAN: sl = "BR"; break;
 	}
       break;
-#ifdef LANG_PUNJABI
-    case LANG_PUNJABI: l = "pa"; sl = "IN"; break;
-#endif
-    case LANG_ROMANIAN: l = "ro"; sl = "RO"; break;
-    case LANG_RUSSIAN:
-      l = "ru"; /* sl could be "RU" or "UA".  */
+    case LANG_PUNJABI:
+      l = "pa";
+      switch (sub)
+	{
+	case SUBLANG_PUNJABI_INDIA: sl = "IN"; break; /* Gurmukhi script */
+	case SUBLANG_PUNJABI_PAKISTAN: sl = "PK"; break; /* Arabic script */
+	}
       break;
-#ifdef LANG_SANSKRIT
+    case LANG_RHAETO_ROMANCE: l = "rm"; sl = "CH"; break;
+    case LANG_ROMANIAN:
+      l = "ro";
+      switch (sub)
+	{
+	case SUBLANG_ROMANIAN_ROMANIA: sl = "RO"; break;
+	case SUBLANG_ROMANIAN_MOLDOVA: sl = "MD"; break;
+	}
+      break;
+    case LANG_RUSSIAN:
+      l = "ru";/* Ambiguous: could be "ru_RU" or "ru_UA" or "ru_MD". */
+      break;
+    case LANG_SAAMI: /* actually Northern Sami */ l = "se"; sl = "NO"; break;
     case LANG_SANSKRIT: l = "sa"; sl = "IN"; break;
-#endif
-#ifdef LANG_SINDHI
-    case LANG_SINDHI: l = "sd"; break;
-#endif
+    case LANG_SINDHI: l = "sd";
+      switch (sub)
+	{
+	case SUBLANG_SINDHI_INDIA: sl = "IN"; break;
+	case SUBLANG_SINDHI_PAKISTAN: sl = "PK"; break;
+	}
+      break;
+    case LANG_SINHALESE: l = "si"; sl = "LK"; break;
     case LANG_SLOVAK: l = "sk"; sl = "SK"; break;
     case LANG_SLOVENIAN: l = "sl"; sl = "SI"; break;
-#ifdef LANG_SORBIAN
+    case LANG_SOMALI: l = "so"; sl = "SO"; break;
     case LANG_SORBIAN:
       /* FIXME: Adjust this when such locales appear on Unix.  */
-      l = "wen"; sl = "DE";
+      l = "wen";
+      sl = "DE";
       break;
-#endif
     case LANG_SPANISH:
       l = "es";
       switch (sub)
@@ -439,9 +985,8 @@ g_win32_getlocale (void)
 	case SUBLANG_SPANISH_PUERTO_RICO: sl = "PR"; break;
 	}
       break;
-#ifdef LANG_SWAHILI
-    case LANG_SWAHILI: l = "sw"; break;
-#endif
+    case LANG_SUTU: l = "bnt"; sl = "TZ"; break; /* or "st_LS" or "nso_ZA"? */ 
+    case LANG_SWAHILI: l = "sw"; sl = "KE"; break;
     case LANG_SWEDISH:
       l = "sv";
       switch (sub)
@@ -450,54 +995,60 @@ g_win32_getlocale (void)
 	case SUBLANG_SWEDISH_FINLAND: sl = "FI"; break;
 	}
       break;
-#ifdef LANG_SYRIAC
-    case LANG_SYRIAC: l = "syr"; break;
-#endif
-#ifdef LANG_TAMIL
+    case LANG_SYRIAC: l = "syr"; sl = "TR"; break; /* An extinct language. */
+    case LANG_TAGALOG: l = "tl"; sl = "PH"; break;
+    case LANG_TAJIK: l = "tg"; sl = "TJ"; break;
     case LANG_TAMIL:
-      l = "ta"; /* sl could be "IN" or "LK".  */
+      l = "ta"; /* Ambiguous: could be "ta_IN" or "ta_LK" or "ta_SG". */
       break;
-#endif
-#ifdef LANG_TATAR
-    case LANG_TATAR: l = "tt"; break;
-#endif
-#ifdef LANG_TELUGU
+    case LANG_TATAR: l = "tt"; sl = "RU"; break;
     case LANG_TELUGU: l = "te"; sl = "IN"; break;
-#endif
     case LANG_THAI: l = "th"; sl = "TH"; break;
+    case LANG_TIBETAN: l = "bo"; sl = "CN"; break;
+    case LANG_TIGRINYA:
+      l = "ti";
+      switch (sub)
+	{
+	case SUBLANG_TIGRINYA_ETHIOPIA: sl = "ET"; break;
+	case SUBLANG_TIGRINYA_ERITREA: sl = "ER"; break;
+	}
+      break;
+    case LANG_TSONGA: l = "ts"; sl = "ZA"; break;
+    case LANG_TSWANA: l = "tn"; sl = "BW"; break;
     case LANG_TURKISH: l = "tr"; sl = "TR"; break;
+    case LANG_TURKMEN: l = "tk"; sl = "TM"; break;
     case LANG_UKRAINIAN: l = "uk"; sl = "UA"; break;
-#ifdef LANG_URDU
     case LANG_URDU:
       l = "ur";
       switch (sub)
 	{
-#ifdef SUBLANG_URDU_PAKISTAN
 	case SUBLANG_URDU_PAKISTAN: sl = "PK"; break;
-#endif
-#ifdef SUBLANG_URDU_INDIA
 	case SUBLANG_URDU_INDIA: sl = "IN"; break;
-#endif
 	}
       break;
-#endif
-#ifdef LANG_UZBEK
     case LANG_UZBEK:
       l = "uz";
       switch (sub)
 	{
-	/* FIXME: Adjust this when Uzbek locales appear on Unix.  */
-#ifdef SUBLANG_UZBEK_LATIN
-	case SUBLANG_UZBEK_LATIN: sl = "UZ@latin"; break;
-#endif
-#ifdef SUBLANG_UZBEK_CYRILLIC
+	case SUBLANG_UZBEK_LATIN: sl = "UZ"; break;
 	case SUBLANG_UZBEK_CYRILLIC: sl = "UZ@cyrillic"; break;
-#endif
 	}
       break;
-#endif
+    case LANG_VENDA:
+      /* FIXME: It's not clear whether Venda has the ISO 639-2 two-letter code
+	 "ve" or not.
+	 http://www.loc.gov/standards/iso639-2/englangn.html has it, but
+	 http://lcweb.loc.gov/standards/iso639-2/codechanges.html doesn't,  */
+      l = "ven"; /* or "ve"? */
+      sl = "ZA";
+      break;
     case LANG_VIETNAMESE: l = "vi"; sl = "VN"; break;
-    default: l = "xx"; break;
+    case LANG_WELSH: l = "cy"; sl = "GB"; break;
+    case LANG_XHOSA: l = "xh"; sl = "ZA"; break;
+    case LANG_YI: l = "sit"; sl = "CN"; break;
+    case LANG_YIDDISH: l = "yi"; sl = "IL"; break;
+    case LANG_YORUBA: l = "yo"; sl = "NG"; break;
+    case LANG_ZULU: l = "zu"; sl = "ZA"; break;
     }
   strcpy (bfr, l);
   if (sl != NULL)
