@@ -1,3 +1,7 @@
+Tue Apr 13 16:16:14 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.2
+
 1999-04-12  Elliot Lee  <sopwith@mh69.mh.cuc.edu>
 
 	* g_strchug(): s/strcpy/memmove/
