@@ -121,6 +121,8 @@ gchar *g_filename_from_uri (const gchar *uri,
 gchar *g_filename_to_uri   (const gchar *filename,
 			    const gchar *hostname,
 			    GError     **error);
+gchar *g_filename_display_name (const gchar *filename);
+gboolean g_get_filename_charsets (G_CONST_RETURN gchar ***charsets);
 
 gchar **g_uri_list_extract_uris (const gchar *uri_list);
 

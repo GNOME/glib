@@ -1,3 +1,8 @@
+2004-11-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: Add g_get_filename_charsets and
+	g_filename_display_name.
+
 2004-11-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Updates

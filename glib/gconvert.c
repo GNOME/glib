@@ -998,7 +998,7 @@ typedef struct _GFilenameCharsetCache GFilenameCharsetCache;
 struct _GFilenameCharsetCache {
   gboolean is_utf8;
   gchar *charset;
-  gchar *filename_charset;
+  gchar **filename_charsets;
 };
 
 static void
@@ -1006,41 +1006,47 @@ filename_charset_cache_free (gpointer data)
 {
   GFilenameCharsetCache *cache = data;
   g_free (cache->charset);
-  g_free (cache->filename_charset);
+  g_strfreev (cache->filename_charsets);
   g_free (cache);
 }
 
 /*
- * get_filename_charset:
- * @charset: return location for the name of the filename encoding 
+ * g_get_filename_charsets:
+ * @charsets: return location for the %NULL-terminated list of encoding names
  *
- * Determines the preferred character set used for filenames by
- * consulting the environment variables G_FILENAME_ENCODING and
- * G_BROKEN_FILENAMES.
+ * Determines the preferred character sets used for filenames.
+ * The first character set from the @charsets is the filename encoding, the
+ * subsequent character sets are used when trying to generate a displayable
+ * representation of a filename, see g_filename_get_display_name().
  *
- * G_FILENAME_ENCODING may be set to a comma-separated list of character 
- * set names. The special token "@locale" is taken to mean the character set 
- * for the current locale. The first character set from the list is taken 
- * as the filename encoding. 
- * If G_FILENAME_ENCODING is not set, but G_BROKEN_FILENAMES is, the
- * character set of the current locale is taken as the filename encoding.
+ * The character sets are determined by consulting the environment variables 
+ * <envar>G_FILENAME_ENCODING</envar> and <envar>G_BROKEN_FILENAMES</envar>.
  *
- * The returned @charset belongs to GLib and must not be freed.
+ * <envar>G_FILENAME_ENCODING</envar> may be set to a comma-separated list 
+ * of character set names. The special token "@locale" is taken to mean the 
+ * character set for the current locale. If <envar>G_FILENAME_ENCODING</envar> 
+ * is not set, but <envar>G_BROKEN_FILENAMES</envar> is, the character set of 
+ * the current locale is taken as the filename encoding. If neither environment
+ * variable is set, UTF-8 is taken as the filename encoding, but the character
+ * set of the current locale is also put in the list of encodings.
+ *
+ * The returned @charsets belong to GLib and must not be freed.
  *
  * Note that on Unix, regardless of the locale character set or
- * G_FILENAME_ENCODING value, the actual file names present on a
+ * <envar>G_FILENAME_ENCODING</envar> value, the actual file names present on a
  * system might be in any random encoding or just gibberish.
  *
- *  Return value: %TRUE
- * if the charset used for filename is UTF-8.
+ * Return value: %TRUE if the filename encoding is UTF-8.
+ * 
+ * Since: 2.6
  */
-static gboolean
-get_filename_charset (const gchar **filename_charset)
+gboolean
+g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets)
 {
   static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
   GFilenameCharsetCache *cache = g_static_private_get (&cache_private);
   const gchar *charset;
-  
+
   if (!cache)
     {
       cache = g_new0 (GFilenameCharsetCache, 1);
@@ -1052,77 +1058,95 @@ get_filename_charset (const gchar **filename_charset)
   if (!(cache->charset && strcmp (cache->charset, charset) == 0))
     {
       const gchar *new_charset;
-      gchar *p, *q;
+      gchar *p;
+      gint i;
 
       g_free (cache->charset);
-      g_free (cache->filename_charset);
+      g_strfreev (cache->filename_charsets);
       cache->charset = g_strdup (charset);
       
       p = getenv ("G_FILENAME_ENCODING");
       if (p != NULL) 
 	{
-	  q = strchr (p, ',');
-	  if (!q) 
-	    q = p + strlen (p);
+	  cache->filename_charsets = g_strsplit (p, ",", 0);
+	  cache->is_utf8 = (strcmp (cache->filename_charsets[0], "UTF-8") == 0);
 
-	  if (strncmp ("@locale", p, q - p) == 0)
+	  for (i = 0; cache->filename_charsets[i]; i++)
 	    {
-	      cache->is_utf8 = g_get_charset (&new_charset);
-	      cache->filename_charset = g_strdup (new_charset);
-	    }
-	  else
-	    {
-	      cache->filename_charset = g_strndup (p, q - p);
-	      cache->is_utf8 = (strcmp (cache->filename_charset, "UTF-8") == 0);
+	      if (strcmp ("@locale", cache->filename_charsets[i]) == 0)
+		{
+		  g_get_charset (&new_charset);
+		  g_free (cache->filename_charsets[i]);
+		  cache->filename_charsets[i] = g_strdup (new_charset);
+		}
 	    }
 	}
       else if (getenv ("G_BROKEN_FILENAMES") != NULL)
 	{
+	  cache->filename_charsets = g_new0 (gchar *, 2);
 	  cache->is_utf8 = g_get_charset (&new_charset);
-	  cache->filename_charset = g_strdup (new_charset);
+	  cache->filename_charsets[0] = g_strdup (new_charset);
 	}
       else 
 	{
-	  cache->filename_charset = g_strdup ("UTF-8");
+	  cache->filename_charsets = g_new0 (gchar *, 3);
 	  cache->is_utf8 = TRUE;
+	  cache->filename_charsets[0] = g_strdup ("UTF-8");
+	  if (!g_get_charset (&new_charset))
+	    cache->filename_charsets[1] = g_strdup (new_charset);
 	}
     }
 
-  if (filename_charset)
-    *filename_charset = cache->filename_charset;
+  if (filename_charsets)
+    *filename_charsets = (const gchar **)cache->filename_charsets;
 
   return cache->is_utf8;
 }
 
 #else /* G_PLATFORM_WIN32 */
 
-static gboolean
-get_filename_charset (const gchar **filename_charset) 
+gboolean
+g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets) 
 {
+  static gchar *charsets[] = {
+    "UTF-8",
+    NULL
+  };
+
 #ifdef G_OS_WIN32
   /* On Windows GLib pretends that the filename charset is UTF-8 */
-  if (filename_charset)
-    *filename_charset = "UTF-8";
+  if (filename_charsets)
+    *filename_charsets = charsets;
+
   return TRUE;
 #else
+  gboolean result;
+
   /* Cygwin works like before */
-  g_get_charset (filename_charset);
-  return FALSE;
+  result = g_get_charset (&(charsets[0]));
+
+  if (filename_charsets)
+    *filename_charsets = charsets;
+
+  return result;
 #endif
 }
-
-#ifdef G_OS_WIN32
-
-static gboolean
-old_get_filename_charset (const gchar **filename_charset) 
-{
-  g_get_charset (filename_charset);
-  return FALSE;
-}
-
-#endif
 
 #endif /* G_PLATFORM_WIN32 */
+
+static gboolean
+get_filename_charset (const gchar **filename_charset)
+{
+  const gchar **charsets;
+  gboolean is_utf8;
+  
+  is_utf8 = g_get_filename_charsets (&charsets);
+
+  if (filename_charset)
+    *filename_charset = charsets[0];
+  
+  return is_utf8;
+}
 
 /* This is called from g_thread_init(). It's used to
  * initialize some static data in a threadsafe way.
@@ -1130,8 +1154,8 @@ old_get_filename_charset (const gchar **filename_charset)
 void 
 _g_convert_thread_init (void)
 {
-  const gchar *dummy;
-  (void) get_filename_charset (&dummy);
+  const gchar **dummy;
+  (void) get_filename_charsets (&dummy);
 }
 
 /**
@@ -1188,7 +1212,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
 {
   const gchar *charset;
 
-  if (old_get_filename_charset (&charset))
+  if (g_get_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
     return g_convert (opsysstring, len, 
@@ -1250,7 +1274,7 @@ g_filename_from_utf8 (const gchar *utf8string,
 {
   const gchar *charset;
 
-  if (old_get_filename_charset (&charset))
+  if (g_get_charset (&charset))
     return strdup_len (utf8string, len, bytes_read, bytes_written, error);
   else
     return g_convert (utf8string, len,
@@ -1684,9 +1708,9 @@ g_filename_from_uri (const gchar *uri,
  *               URI, or %NULL on an error.
  **/
 gchar *
-g_filename_to_uri   (const gchar *filename,
-		     const gchar *hostname,
-		     GError     **error)
+g_filename_to_uri (const gchar *filename,
+		   const gchar *hostname,
+		   GError     **error)
 {
   char *escaped_uri;
 
@@ -1792,3 +1816,96 @@ g_uri_list_extract_uris (const gchar *uri_list)
 
   return result;
 }
+
+static gchar *
+make_valid_utf8 (const gchar *name)
+{
+  GString *string;
+  const gchar *remainder, *invalid;
+  gint remaining_bytes, valid_bytes;
+  
+  string = NULL;
+  remainder = name;
+  remaining_bytes = strlen (name);
+  
+  while (remaining_bytes != 0) 
+    {
+      if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
+	break;
+      valid_bytes = invalid - remainder;
+    
+      if (string == NULL) 
+	string = g_string_sized_new (remaining_bytes);
+
+      g_string_append_len (string, remainder, valid_bytes);
+      g_string_append_c (string, '?');
+      
+      remaining_bytes -= valid_bytes + 1;
+      remainder = invalid + 1;
+    }
+  
+  if (string == NULL)
+    return g_strdup (name);
+  
+  g_string_append (string, remainder);
+  g_string_append (string, " (invalid encoding)");
+
+  g_assert (g_utf8_validate (string->str, -1, NULL));
+  
+  return g_string_free (string, FALSE);
+}
+
+/**
+ * g_filename_display_name:
+ * @filename: a pathname in the GLib filename encoding
+ * 
+ * Converts a filename into a valid UTF-8 string. The 
+ * conversion is not necessarily reversible, so you 
+ * should keep the original around and use the return
+ * value of this function only for display purposes.
+ *
+ * Return value: a newly allocated string containing
+ *   a rendition of the filename in valid UTF-8
+ *
+ * Since: 2.6
+ **/
+gchar *
+g_filename_display_name (const gchar *filename)
+{
+  gint i;
+  const gchar **charsets;
+  gchar *display_name = NULL;
+  gboolean is_utf8;
+ 
+  is_utf8 = g_get_filename_charsets (&charsets);
+
+  if (is_utf8)
+    {
+      if (g_utf8_validate (filename, -1, NULL))
+	display_name = g_strdup (filename);
+    }
+  
+  if (!display_name)
+    {
+      /* Try to convert from the filename charsets to UTF-8.
+       * Skip the first charset if it is UTF-8.
+       */
+      for (i = is_utf8 ? 1 : 0; charsets[i]; i++)
+	{
+	  display_name = g_convert (filename, -1, "UTF-8", charsets[i], 
+				    NULL, NULL, NULL);
+
+	  if (display_name)
+	    break;
+	}
+    }
+  
+  /* if all conversions failed, we replace invalid UTF-8
+   * by a question mark
+   */
+  if (!display_name) 
+    display_name = make_valid_utf8 (filename);
+
+  return display_name;
+}
+

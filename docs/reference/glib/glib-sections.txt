@@ -2079,6 +2079,8 @@ g_filename_to_utf8
 g_filename_from_utf8
 g_filename_from_uri
 g_filename_to_uri
+g_get_filename_charsets
+g_filename_display_name
 g_uri_list_extract_uris
 g_locale_from_utf8
 GConvertError
