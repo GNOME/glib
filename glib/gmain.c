@@ -103,7 +103,7 @@ struct _GMainContext
   GSList *waiters;
 #endif  
 
-  guint ref_count;
+  gint ref_count;
 
   GPtrArray *pending_dispatches;
   gint timeout;			/* Timeout for current iteration */
@@ -153,7 +153,7 @@ struct _GMainLoop
 {
   GMainContext *context;
   gboolean is_running;
-  guint ref_count;
+  gint ref_count;
 };
 
 struct _GTimeoutSource
@@ -171,8 +171,8 @@ struct _GChildWatchSource
 #ifdef G_OS_WIN32
   GPollFD     poll;
 #else /* G_OS_WIN32 */
-   gint        count;
-   gboolean    child_exited;
+  gint        count;
+  gboolean    child_exited;
 #endif /* G_OS_WIN32 */
 };
 
@@ -589,13 +589,9 @@ void
 g_main_context_ref (GMainContext *context)
 {
   g_return_if_fail (context != NULL);
-  g_return_if_fail (context->ref_count > 0); 
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
 
-  LOCK_CONTEXT (context);
-  
-  context->ref_count++;
-
-  UNLOCK_CONTEXT (context);
+  g_atomic_int_inc (&context->ref_count);
 }
 
 /* If DISABLE_MEM_POOLS is defined, then freeing the
@@ -618,18 +614,22 @@ poll_rec_list_free (GMainContext *context,
 }
 #endif /* DISABLE_MEM_POOLS */
 
-static void
-g_main_context_unref_and_unlock (GMainContext *context)
+/**
+ * g_main_context_unref:
+ * @context: a #GMainContext
+ * 
+ * Decreases the reference count on a #GMainContext object by one. If
+ * the result is zero, free the context and free all associated memory.
+ **/
+void
+g_main_context_unref (GMainContext *context)
 {
   GSource *source;
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
 
-  context->ref_count--;
-
-  if (context->ref_count != 0)
-    {
-      UNLOCK_CONTEXT (context);
-      return;
-    }
+  if (!g_atomic_int_dec_and_test (&context->ref_count))
+    return;
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_remove (main_context_list, context);
@@ -642,7 +642,6 @@ g_main_context_unref_and_unlock (GMainContext *context)
       g_source_destroy_internal (source, context, TRUE);
       source = next;
     }
-  UNLOCK_CONTEXT (context);
 
 #ifdef G_THREADS_ENABLED  
   g_static_mutex_free (&context->mutex);
@@ -675,23 +674,6 @@ g_main_context_unref_and_unlock (GMainContext *context)
 #endif
   
   g_free (context);
-}
-
-/**
- * g_main_context_unref:
- * @context: a #GMainContext
- * 
- * Decreases the reference count on a #GMainContext object by one. If
- * the result is zero, free the context and free all associated memory.
- **/
-void
-g_main_context_unref (GMainContext *context)
-{
-  g_return_if_fail (context != NULL);
-  g_return_if_fail (context->ref_count > 0); 
-
-  LOCK_CONTEXT (context);
-  g_main_context_unref_and_unlock (context);
 }
 
 #ifdef G_THREADS_ENABLED
@@ -2636,29 +2618,11 @@ GMainLoop *
 g_main_loop_ref (GMainLoop *loop)
 {
   g_return_val_if_fail (loop != NULL, NULL);
-  g_return_val_if_fail (loop->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&loop->ref_count) > 0, NULL);
 
-  LOCK_CONTEXT (loop->context);
-  loop->ref_count++;
-  UNLOCK_CONTEXT (loop->context);
+  g_atomic_int_inc (&loop->ref_count);
 
   return loop;
-}
-
-static void
-g_main_loop_unref_and_unlock (GMainLoop *loop)
-{
-  loop->ref_count--;
-  if (loop->ref_count == 0)
-    {
-      /* When the ref_count is 0, there can be nobody else using the
-       * loop, so it is safe to unlock before destroying.
-       */
-      g_main_context_unref_and_unlock (loop->context);
-  g_free (loop);
-    }
-  else
-    UNLOCK_CONTEXT (loop->context);
 }
 
 /**
@@ -2672,11 +2636,13 @@ void
 g_main_loop_unref (GMainLoop *loop)
 {
   g_return_if_fail (loop != NULL);
-  g_return_if_fail (loop->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&loop->ref_count) > 0);
 
-  LOCK_CONTEXT (loop->context);
-  
-  g_main_loop_unref_and_unlock (loop);
+  if (!g_atomic_int_dec_and_test (&loop->ref_count))
+    return;
+
+  g_main_context_unref (loop->context);
+  g_free (loop);
 }
 
 /**
@@ -2694,7 +2660,7 @@ g_main_loop_run (GMainLoop *loop)
   GThread *self = G_THREAD_SELF;
 
   g_return_if_fail (loop != NULL);
-  g_return_if_fail (loop->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&loop->ref_count) > 0);
 
 #ifdef G_THREADS_ENABLED
   if (!g_main_context_acquire (loop->context))
@@ -2711,7 +2677,7 @@ g_main_loop_run (GMainLoop *loop)
       
       LOCK_CONTEXT (loop->context);
 
-      loop->ref_count++;
+      g_atomic_int_inc (&loop->ref_count);
 
       if (!loop->is_running)
 	loop->is_running = TRUE;
@@ -2746,7 +2712,7 @@ g_main_loop_run (GMainLoop *loop)
       return;
     }
 
-  loop->ref_count++;
+  g_atomic_int_inc (&loop->ref_count);
   loop->is_running = TRUE;
   while (loop->is_running)
     g_main_context_iterate (loop->context, TRUE, TRUE, self);
@@ -2771,7 +2737,7 @@ void
 g_main_loop_quit (GMainLoop *loop)
 {
   g_return_if_fail (loop != NULL);
-  g_return_if_fail (loop->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&loop->ref_count) > 0);
 
   LOCK_CONTEXT (loop->context);
   loop->is_running = FALSE;
@@ -2797,7 +2763,7 @@ gboolean
 g_main_loop_is_running (GMainLoop *loop)
 {
   g_return_val_if_fail (loop != NULL, FALSE);
-  g_return_val_if_fail (loop->ref_count > 0, FALSE);
+  g_return_val_if_fail (g_atomic_int_get (&loop->ref_count) > 0, FALSE);
 
   return loop->is_running;
 }
@@ -2814,7 +2780,7 @@ GMainContext *
 g_main_loop_get_context (GMainLoop *loop)
 {
   g_return_val_if_fail (loop != NULL, NULL);
-  g_return_val_if_fail (loop->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&loop->ref_count) > 0, NULL);
  
   return loop->context;
 }
@@ -2920,7 +2886,7 @@ g_main_context_add_poll (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
-  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
   g_return_if_fail (fd);
 
   LOCK_CONTEXT (context);
@@ -2992,7 +2958,7 @@ g_main_context_remove_poll (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
-  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
   g_return_if_fail (fd);
 
   LOCK_CONTEXT (context);
@@ -3094,7 +3060,7 @@ g_main_context_set_poll_func (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
-  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
 
   LOCK_CONTEXT (context);
   
@@ -3128,7 +3094,7 @@ g_main_context_get_poll_func (GMainContext *context)
   if (!context)
     context = g_main_context_default ();
   
-  g_return_val_if_fail (context->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&context->ref_count) > 0, NULL);
 
   LOCK_CONTEXT (context);
   result = context->poll_func;
@@ -3168,7 +3134,7 @@ g_main_context_wakeup (GMainContext *context)
   if (!context)
     context = g_main_context_default ();
   
-  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
 
   LOCK_CONTEXT (context);
   g_main_context_wakeup_unlocked (context);
@@ -3571,15 +3537,20 @@ child_watch_helper_thread (gpointer data)
       read (child_watch_wake_up_pipe[0], b, 20);
 
       /* We were woken up.  Wake up all other contexts in all other threads */
-      G_UNLOCK (main_context_list);
+      G_LOCK (main_context_list);
       for (list = main_context_list; list; list = list->next)
 	{
 	  GMainContext *context;
 
 	  context = list->data;
-	  g_main_context_wakeup (context);
+	  if (g_atomic_int_get (&context->ref_count) > 0)
+	    /* Due to racing conditions we can find ref_count == 0, in
+	     * that case, however, the context is still not destroyed
+	     * and no poll can be active, otherwise the ref_count
+	     * wouldn't be 0 */
+	    g_main_context_wakeup (context);
 	}
-      G_LOCK (main_context_list);
+      G_UNLOCK (main_context_list);
     }
   return NULL;
 }
