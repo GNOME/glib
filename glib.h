@@ -411,6 +411,20 @@ typedef signed long	gint32;
 typedef unsigned long	guint32;
 #endif /* SIZEOF_INT */
 
+#if (SIZEOF_LONG == 8)
+#define HAVE_GINT64 1
+typedef signed long gint64;
+typedef unsigned long gint64;
+#elif (SIZEOF_LONG_LONG == 8)
+#define HAVE_GINT64 1
+typedef signed long long gint64;
+typedef unsigned long long guint64;
+#else
+/* No gint64 */
+#undef HAVE_GINT64
+#endif
+
+
 /* Define macros for storing integers inside pointers */
 
 #if (SIZEOF_INT == SIZEOF_VOID_P)

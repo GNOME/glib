@@ -120,6 +120,7 @@ AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(void *)
+AC_CHECK_SIZEOF(long long)
 
 # long doubles were not used, and a portability problem 
 # AC_C_LONG_DOUBLE
