@@ -199,10 +199,8 @@ g_find_program_in_path PRIVATE
 #ifdef G_OS_WIN32
 g_find_program_in_path_utf8
 #endif
-g_fopen
 g_fprintf G_GNUC_PRINTF(2,3)
 g_free
-g_freopen
 g_get_application_name
 g_get_charset
 g_get_current_dir PRIVATE
@@ -415,7 +413,6 @@ g_log_set_default_handler
 g_log_set_fatal_mask
 g_log_set_handler
 g_logv
-g_lstat
 g_main_context_acquire
 g_main_context_add_poll
 g_main_context_check
@@ -470,7 +467,6 @@ g_memdup G_GNUC_MALLOC
 g_mem_is_system_malloc
 g_mem_profile
 g_mem_set_vtable
-g_mkdir
 g_mkstemp PRIVATE
 #ifdef G_OS_WIN32
 g_mkstemp_utf8
@@ -509,7 +505,6 @@ g_nullify_pointer
 g_once_impl
 g_on_error_query
 g_on_error_stack_trace
-g_open
 g_option_context_add_group
 g_option_context_add_main_entries
 g_option_error_quark
@@ -626,10 +621,7 @@ g_relation_insert
 g_relation_new
 g_relation_print
 g_relation_select
-g_remove
-g_rename
 g_return_if_fail_warning
-g_rmdir
 g_scanner_cur_line
 g_scanner_cur_position
 g_scanner_cur_token
@@ -723,7 +715,6 @@ g_spawn_command_line_sync
 g_spawn_error_quark
 g_spawn_sync
 g_sprintf G_GNUC_PRINTF(2,3)
-g_stat
 g_static_mutex_free
 g_static_mutex_get_mutex_impl
 g_static_mutex_init
@@ -891,7 +882,6 @@ g_unichar_validate
 g_unichar_xdigit_value G_GNUC_CONST
 g_unicode_canonical_decomposition G_GNUC_MALLOC
 g_unicode_canonical_ordering
-g_unlink
 g_unsetenv PRIVATE
 #ifdef G_OS_WIN32
 g_unsetenv_utf8
@@ -966,4 +956,17 @@ g_trash_stack_push
 g_bit_nth_lsf
 g_bit_nth_msf
 g_bit_storage
+#endif
+#if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
+/* gstdio wrappers */
+g_open
+g_rename
+g_mkdir
+g_stat
+g_lstat
+g_unlink
+g_remove
+g_rmdir
+g_fopen
+g_freopen
 #endif

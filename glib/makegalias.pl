@@ -16,7 +16,12 @@ print <<EOF;
 
 #include "glib.h"
 
+#include "gprintf.h"
+
+#if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
 #include "gstdio.h"
+#endif
+
 #ifdef G_OS_WIN32
 #include "gwin32.h"
 #endif
@@ -71,6 +76,13 @@ while (<>) {
   }
 
   if ($_ =~ /^\#ifn?def\s+(G|DISABLE_MEM_POOLS)/)
+  {
+      print $_;
+      
+      next;
+  }
+
+  if ($_ =~ /^\#if.*G_STDIO_NO_WRAP_ON_UNIX/)
   {
       print $_;
       

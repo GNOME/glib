@@ -19,6 +19,8 @@
  */
 
 #include "config.h"
+
+#define G_STDIO_NO_WRAP_ON_UNIX
 #include "galias.h"
 
 #include "glib.h"

@@ -1,3 +1,17 @@
+Tue Feb 22 22:03:38 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/gstdio.h: On G_OS_UNIX, simple #define g_open and co. as
+	aliases for their respective C library functions, instead of
+	using the function wrappers. This avoids library users having to
+	care about matching large file support with whatever glib has been
+	built with. Fixes bug #167942.
+
+	* glib/gstdio.c
+	* glib/abicheck.sh
+	* glib/glib.symbols
+	* glib/makegalias.pl: Logic to make the gstdio wrappers still
+	available for compatibility, but not used in new code.
+
 Tue Feb 22 18:33:07 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/gtimer.c (g_usleep): Simplify the loop for the fix below.
