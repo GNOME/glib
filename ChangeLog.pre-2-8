@@ -1,3 +1,8 @@
+2003-02-10  Mohammad DAMT  <mdamt@bisnisweb.com>
+
+	* po/id.po: Added Indonesian translation
+	* configure.in: Added "id" to ALL_LINGUAS
+
 2003-02-06  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.h: 
