@@ -3163,7 +3163,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
   gchar *end_of_valid_int;
   gint int_value = 0;
 
-  int_value = strtol (value, &end_of_valid_int, 0);
+  int_value = strtol (value, &end_of_valid_int, 10);
 
   if (*end_of_valid_int != '\0')
     g_set_error (error, G_KEY_FILE_ERROR,

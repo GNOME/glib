@@ -109,6 +109,27 @@ check_boolean_value (GKeyFile    *keyfile,
 }
 
 static void
+check_integer_value (GKeyFile    *keyfile,
+		     const gchar *group,
+		     const gchar *key,
+		     gint         expected) 
+{
+  GError *error = NULL;
+  gint value;
+
+  value = g_key_file_get_integer (keyfile, group, key, &error);
+  check_no_error (&error);
+
+  if (value != expected)
+    {
+      g_print ("Group %s key %s: "
+	       "expected integer value %d, actual value %d\n",
+	       group, key, expected, value);      
+      exit (1);
+    }
+}
+
+static void
 check_name (const gchar *what,
 	    const gchar *value,
 	    const gchar *expected,
@@ -343,7 +364,49 @@ test_boolean (void)
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 }
 
-int 
+/* check parsing of integer values */
+static void
+test_integer (void)
+{
+  GKeyFile *keyfile;
+  GError *error = NULL;
+
+  const gchar *data = 
+    "[valid]\n"
+    "key1=0\n"
+    "key2=1\n"
+    "key3=-1\n"
+    "key4=2324431\n"
+    "key5=-2324431\n"
+    "key6=000111\n"
+    "[invalid]\n"
+    "key1=0xffff\n"
+    "key2=0.5\n"
+    "key3=1e37\n"
+    "key4=ten\n";
+  
+  keyfile = load_data (data);
+  check_integer_value (keyfile, "valid", "key1", 0);
+  check_integer_value (keyfile, "valid", "key2", 1);
+  check_integer_value (keyfile, "valid", "key3", -1);
+  check_integer_value (keyfile, "valid", "key4", 2324431);
+  check_integer_value (keyfile, "valid", "key5", -2324431);
+  check_integer_value (keyfile, "valid", "key6", 111);
+
+  g_key_file_get_integer (keyfile, "invalid", "key1", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_integer (keyfile, "invalid", "key2", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_integer (keyfile, "invalid", "key3", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_integer (keyfile, "invalid", "key4", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+}
+
+int
 main (int argc, char *argv[])
 {
   test_line_ends ();
@@ -351,6 +414,7 @@ main (int argc, char *argv[])
   test_listing ();
   test_string ();
   test_boolean ();
+  test_integer ();
   
   return 0;
 }

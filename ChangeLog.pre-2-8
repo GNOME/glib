@@ -1,5 +1,9 @@
 2005-01-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_parse_value_as_integer): Don't
+	interpret leading zeros as octal. The specification requires
+	%f parsing, and %f doesn't allow octal.  
+
 	* tests/keyfile-test.c: Add some more tests.
 
 	* glib/gkeyfile.c (g_key_file_get_keys): Return keys in
