@@ -406,7 +406,7 @@ g_relation_print_one (gpointer tuple_key,
   
   for (i = 0; i < rel->fields; i += 1)
     {
-      g_string_sprintfa (gstring, "%p", tuples[i]);
+      g_string_printfa (gstring, "%p", tuples[i]);
       
       if (i < (rel->fields - 1))
 	g_string_append (gstring, ",");

@@ -1,3 +1,10 @@
+2001-05-24  Hans Breuer  <hans@breuer.org>
+
+	* grel.c : reflect renaming of g_string_sprintfa to g_string_printfa
+
+	* makefile.msc.in : create an additional static lib to be used from
+	(at least) glib-genmarshal
+
 2001-05-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* garray.c (g_array_remove_index_fast): Tiny speed improvement

@@ -25,6 +25,7 @@ DLLS_TO_BUILD =			\
 all :				\
 	config.h		\
 	glibconfig.h		\
+	glib-$(GLIB_VER)s.lib \
 	$(DLLS_TO_BUILD)	\
 	gspawn-win32-helper.exe	\
 	testglib.exe		\
@@ -87,8 +88,14 @@ makefile.msc: makefile.msc.in
 
 ################ glib
 
+# create a static libary
+glib-$(GLIB_VER)s.lib : $(glib_OBJECTS)
+	lib /out:glib-$(GLIB_VER)s.lib $(glib_OBJECTS)
+
+# $(LIBICONV_LIBS) is a runtime dependency now
+
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
+	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(INTL_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c glib-$(GLIB_VER).dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows user32.lib
