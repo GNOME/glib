@@ -1,5 +1,10 @@
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
+	* tests/env-test.c: Add tests for '=' in names and values.
+
+	* glib/gutils.c (g_setenv, g_unsetenv): Check that the variable name doesn't contain '='. Add a
+	declaration for environ.  (#119338)
+
 	* acinclude.m4: Tighten the snprintf() test to check behaviour on zero-size buffers.  (#106091)
 
 	* tests/patterntest.c: Specify test strings in UTF-8, remove all charset conversion.

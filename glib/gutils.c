@@ -697,7 +697,7 @@ g_getenv (const gchar *variable)
 
 /**
  * g_setenv:
- * @variable: the environment variable to set.
+ * @variable: the environment variable to set, must not contain '='.
  * @value: the value for to set the variable to.
  * @overwrite: whether to change the variable if it already exists.
  *
@@ -716,6 +716,7 @@ g_setenv (const gchar *variable,
 	  gboolean     overwrite)
 {
   gint result;
+  g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
 #ifdef HAVE_SETENV
   result = setenv (variable, value, overwrite);
 #else
@@ -733,10 +734,17 @@ g_setenv (const gchar *variable,
 #endif
   return result == 0;
 }
-                
+
+#ifndef HAVE_UNSETENV     
+/* According to the Single Unix Specification, environ is not in 
+ * any system header, although unistd.h often declares it.
+ */
+extern char **environ;
+#endif
+           
 /**
  * g_unsetenv:
- * @variable: the environment variable to remove.
+ * @variable: the environment variable to remove, must not contain '='.
  * 
  * Removes an environment variable from the environment.
  *
@@ -750,11 +758,15 @@ void
 g_unsetenv (const gchar *variable)
 {
 #ifdef HAVE_UNSETENV
+  g_return_if_fail (strchr (variable, '=') == NULL);
+
   unsetenv (variable);
 #else
   int i, len;
   gchar **e, **f;
- 
+
+  g_return_if_fail (strchr (variable, '=') == NULL);
+
   len = strlen (variable);
   
   /* Mess directly with the environ array.

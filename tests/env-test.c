@@ -34,6 +34,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <glib.h>
@@ -41,6 +42,16 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+
+static void 
+log (const gchar   *log_domain,
+     GLogLevelFlags log_level,
+     const gchar   *message,
+     gpointer       user_data)
+{
+  /* Silence g_assert () and friends.
+   */
+}
 
 int 
 main (int argc, char *argv[])
@@ -50,6 +61,8 @@ main (int argc, char *argv[])
   gchar *variable = "TEST_G_SETENV";
   gchar *value1 = "works";
   gchar *value2 = "again";
+
+  g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL, log, NULL);
 
   data = g_getenv (variable);
   g_assert (data == NULL && "TEST_G_SETENV already set");
@@ -80,6 +93,23 @@ main (int argc, char *argv[])
   g_unsetenv (variable);
   data = g_getenv (variable);
   g_assert (data == NULL && "g_unsetenv() doesn't work");
+
+  result = g_setenv ("foo=bar", "baz", TRUE);
+  g_assert (!result && "g_setenv() accepts '=' in names");
+
+  result = g_setenv ("foo", "bar=baz", TRUE);
+  g_assert (result && "g_setenv() doesn't accept '=' in values");
+  data = g_getenv ("foo=bar");
+  g_assert (strcmp (data, "baz") == 0 && "g_getenv() doesn't support '=' in names");
+  data = g_getenv ("foo");
+  g_assert (strcmp (data, "bar=baz") == 0 && "g_getenv() doesn't support '=' in values");
+  
+  g_unsetenv ("foo=bar");
+  data = g_getenv ("foo");
+  g_assert (data != NULL && "g_unsetenv() accepts '=' in names");
+  g_unsetenv ("foo");
+  data = g_getenv ("foo");
+  g_assert (data == NULL && "g_unsetenv() doesn't support '=' in values");
 
   return 0;
 }
