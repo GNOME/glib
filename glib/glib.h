@@ -1698,25 +1698,26 @@ typedef enum
   G_STRING_ERROR_LENGTH   /* max_length reached */
 } GStringError;
 
-#define      g_string_length(fstring)   (fstring ? fstring->len : 0)
-#define      g_string_str(fstring)      (fstring ? fstring->str : NULL)
-#define      g_string_char(fstring, n)  (fstring->str[n])
+#define      g_string_length(fstring)    (fstring ? fstring->len : 0)
+#define      g_string_str(fstring)       (fstring ? fstring->str : NULL)
+#define      g_string_char(fstring, n)   (fstring->str[n])
 
-#define      g_string_copy(a,b)         (g_string_assign(a, b->str))
-#define      g_string_dup(fstring)      (fstring ? g_string_new(fstring->str) :\
-                                                   g_string_new(NULL))
+#define      g_string_copy(a,b)          (g_string_assign(a, b->str))
+#define      g_string_dup(fstring)       (fstring ? g_string_new(fstring->str) :\
+                                                    g_string_new(NULL))
 
-#define      g_string_cmp(a,b)          (strcmp(g_string_str(a), \
-                                                g_string_str(b)))
-#define      g_string_ncmp(a,b,n)       (strncmp(g_string_str(a), \
-                                                 g_string_str(b), n))
-#define      g_string_casecmp(a,b)      (g_strcasecmp(g_string_str(a), \
-                                                      g_string_str(b)))
-#define      g_string_ncasecmp(a,b)     (g_strncasecmp(g_string_str(a), \
-                                                       g_string_str(b), n))
-
-#define      g_string_strcmp(a,b)       (strcmp(g_string_str(a), b))
-#define      g_string_strcasecmp(a,b)   (g_strcasecmp(g_string_str(a), b))
+#define      g_string_cmp(a,b)           (strcmp(g_string_str(a), \
+                                                 g_string_str(b)))
+#define      g_string_ncmp(a,b,n)        (strncmp(g_string_str(a), \
+                                                  g_string_str(b), n))
+#define      g_string_casecmp(a,b)       (g_strcasecmp(g_string_str(a), \
+                                                       g_string_str(b)))
+#define      g_string_ncasecmp(a,b,n)    (g_strncasecmp(g_string_str(a), \
+                                                        g_string_str(b), n))
+ 
+#define      g_string_strcmp(a,b)        (strcmp(g_string_str(a), b))
+#define      g_string_strcasecmp(a,b)    (g_strcasecmp(g_string_str(a), b))
+#define      g_string_strncasecmp(a,b,n) (g_strncasecmp(g_string_str(a), b, n))
 
 GString*     g_string_new	        (const gchar	 *init);
 GString*     g_string_sized_new         (guint		  dfl_size);

@@ -1,3 +1,8 @@
+Fri Apr 23 14:29:25 BST 1999  Tony Gale <gale@gtk.org>
+
+	* glib.h: Fix typo in g_string_ncasecmp macro (by me).
+	  Add b_string_strncasecmp macro.
+
 1999-04-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c (g_get_any_init): use sysconf (_SC_GETPW_R_SIZE_MAX) as
