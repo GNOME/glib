@@ -1,3 +1,8 @@
+Sat Feb 14 02:11:08 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Make the check for GNU make work when MAKE is a 
+	full path.  (#134102, Julio M. Merino Vidal)
+
 Sat Feb 14 02:08:03 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Suppress xsltproc and xmlcatalog checks

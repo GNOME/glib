@@ -681,7 +681,7 @@ AC_CHECK_FUNCS(setlocale)
 AC_MSG_CHECKING(whether make is GNU Make)
 STRIP_BEGIN=
 STRIP_END=
-if $ac_make --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
+if ${MAKE} --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
         STRIP_BEGIN='$(strip $(STRIP_DUMMY)'
         STRIP_END=')'
         AC_MSG_RESULT(yes)
