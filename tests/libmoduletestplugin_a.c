@@ -58,7 +58,7 @@ gplugin_a_module_func (GModule *module)
 {
   void (*f) (void) = NULL;
 
-  if (!g_module_symbol (module, "gplugin_say_boo_func", (gpointer) &f))
+  if (!g_module_symbol (module, "gplugin_say_boo_func", (gpointer *) &f))
     {
       g_print ("error: %s\n", g_module_error ());
       exit (1);

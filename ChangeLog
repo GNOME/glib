@@ -3,6 +3,8 @@
 	* tests/module-test.c: g_module_symbol takes a gpointer *, not just
 	a gpointer
 
+	* tests/libmoduletestplugin_a.c: here too
+
 2001-11-29  Havoc Pennington  <hp@redhat.com>
 
 	* glib/gtree.c (g_tree_foreach):
