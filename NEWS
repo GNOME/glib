@@ -1,3 +1,9 @@
+Overview of Changes in GLib 1.1.9:
+
+* Check for pthread_attr_init in all cases, Digital Unix 4 requires this
+* For G_LOCK_DECLARE_*, if !G_THREADS_ENABLED, eat trailing semicolon better
+* Changed g_main_poll_(add|remove) to g_main_(add|remove)_poll
+
 Overview of Changes in GLib 1.1.8:
 
 * Added threading support

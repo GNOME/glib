@@ -1,3 +1,14 @@
+Wed Dec 16 23:04:26 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.9 
+
+	* INSTALL:
+	  NEWS:
+	  README:
+	  configure.in:
+	  glib.spec:
+	  docs/glib-config.1: version=1.1.9
+
 Wed Dec 16 22:32:13 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* glib.h:
