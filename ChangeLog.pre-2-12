@@ -1,3 +1,10 @@
+1999-11-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Create docs/glib-config.1 from
+	docs/glib-config.1.in. Makes 'make distcheck' happy (and me too).
+
+	* glib-config.1: Removed from CVS, as it is a generated file.
+
 1999-11-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
         * configure.in: Make the test for getpwuid_r work on newer AIX
