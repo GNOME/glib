@@ -9,6 +9,14 @@
 	thread, because all unbound threads will schedule according to
 	that value and it defaults to 0 (the minimal value). 
 
+	* glib/gmain.c: Factor out g_main_context_init_pipe from
+	g_main_context_new to initialize the wakeup pipe of a
+	context. Call that function from g_main_context_new if threads are
+	initialized and for all contexts when threads are initialized
+	in g_main_thread_init. (#86872) 
+
+	* gthread/gthread-impl.c: Call g_main_thread_init. (#86872) 
+
 Thu Jul 25 14:23:15 2002  Owen Taylor  <otaylor@redhat.com>
 
  	* glib/gfileutils.c: Clarify the behavior of g_build_path()
