@@ -1,3 +1,7 @@
+Mon Sep  7 20:07:38 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: comment the -std1 check and save LIBS properly
+
 Mon Sep  7 07:53:21 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in: check for all three inline keywords individually.

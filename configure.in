@@ -109,8 +109,9 @@ if eval "test x$GCC = xyes"; then
   fi
 fi
 
+dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
 AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
-glib_save_LDFLAGS=$LDFLAGS
+glib_save_LIBS=$LIBS
 LIBS="$LIBS -lm"
 AC_TRY_RUN([#include <math.h>
              int main (void) { return (log(1) != log(1.)); }],
