@@ -1274,8 +1274,13 @@ g_get_user_data_dir (void)
       if (data_dir && data_dir[0])
         data_dir = g_strdup (data_dir);
       else
-        data_dir = g_build_filename (g_get_home_dir (), ".local", 
-                                     "share", NULL);
+	{
+	  if (!g_tmp_dir)
+	    g_get_any_init ();
+
+	  data_dir = g_build_filename (g_home_dir, ".local", 
+				       "share", NULL);
+	}
 
       g_user_data_dir = data_dir;
     }
@@ -1315,7 +1320,12 @@ g_get_user_config_dir (void)
         if (config_dir && config_dir[0])
             config_dir = g_strdup (config_dir);
         else
-            config_dir = g_build_filename (g_get_home_dir (), ".config", NULL);
+	  {
+	    if (!g_tmp_dir)
+	      g_get_any_init ();
+	    
+            config_dir = g_build_filename (g_home_dir, ".config", NULL);
+	  }
 
         g_user_config_dir = config_dir;
     }
@@ -1355,7 +1365,12 @@ g_get_user_cache_dir (void)
       if (cache_dir && cache_dir[0])
           cache_dir = g_strdup (cache_dir);
       else
-          cache_dir = g_build_filename (g_get_home_dir (), ".cache", NULL);
+	{
+	  if (!g_tmp_dir)
+	    g_get_any_init ();
+
+          cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
+	}
       g_user_cache_dir = cache_dir;
     }
   else

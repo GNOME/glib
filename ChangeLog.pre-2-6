@@ -1,3 +1,11 @@
+Mon Aug 23 01:35:18 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutils.c (g_get_user_cache_dir): 
+	* glib/gutils.c (g_get_user_config_dir): 
+	* glib/gutils.c (g_get_user_data_dir): Don't call g_get_home_dir()
+	while holding the g_utils_global lock, simply use g_home_dir. 
+	(#150695, Jody Goldberg)
+
 2004-08-21  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_win32_finalize): Tell select_thread to
