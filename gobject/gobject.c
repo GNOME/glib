@@ -270,7 +270,10 @@ g_object_last_unref (GObject *object)
   object->ref_count -= 1;
   
   if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
-    G_OBJECT_GET_CLASS (object)->finalize (object);
+    {
+      G_OBJECT_GET_CLASS (object)->finalize (object);
+      g_type_free_instance ((GTypeInstance*) object);
+    }
 }
 
 static void
@@ -296,8 +299,6 @@ g_object_do_finalize (GObject *object)
       debug_objects_count--;
     }
 #endif	DEBUG_OBJECTS
-  
-  g_type_free_instance ((GTypeInstance*) object);
 }
 
 gpointer

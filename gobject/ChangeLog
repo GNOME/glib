@@ -1,3 +1,10 @@
+Sat Sep  9 20:04:13 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.c (g_object_last_unref): Move call to
+	g_type_free_instance() here from g_object_do_finalize,
+	since g_type_free_instance() can unload the object's
+	implementation.
+
 2000-07-27  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.c: No, don't mark glib_debug_objects for export here,
