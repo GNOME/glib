@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib HEAD \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-12-14 02:41+0100\n"
-"PO-Revision-Date: 2004-01-16 07:46+0000\n"
+"PO-Revision-Date: 2004-03-08 21:28+0000\n"
 "Last-Translator: Alastair McKinstry <mckinstry@debian.org>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "Is neambhailí an URI '%s'"
 #: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr ""
+msgstr "Is meamhbháilí an h-óstainm do URI '%s'"
 
 #: glib/gconvert.c:1477
 #, c-format
@@ -382,7 +382,7 @@ msgstr ""
 #: glib/gspawn-win32.c:842 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Teip ag leámh as píopa páiste (%s)"
 
 #: glib/gspawn-win32.c:922
 msgid "Failed to execute helper program"
