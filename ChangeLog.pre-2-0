@@ -1,3 +1,11 @@
+2002-01-28  Havoc Pennington  <hp@pobox.com>
+
+	* glib/gmarkup.c (add_attribute): NULL-terminate
+	context->attr_values so g_strfreev() is safe. 
+	Would previously crash if parsing was ended prior 
+	to ending the start tag.
+	(g_markup_parse_context_parse): add a couple assertions
+
 2002-01-28  Havoc Pennington  <hp@redhat.com>
 
 	* glib/gmacros.h: get rid of warning here

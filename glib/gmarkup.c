@@ -732,6 +732,7 @@ add_attribute (GMarkupParseContext *context, char *name)
   context->attr_names[context->cur_attr] = name;
   context->attr_values[context->cur_attr] = NULL;
   context->attr_names[context->cur_attr+1] = NULL;
+  context->attr_values[context->cur_attr+1] = NULL;
 }
 
 /**
@@ -1196,8 +1197,12 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 		      g_free (context->attr_values[pos]);
 		      context->attr_names[pos] = context->attr_values[pos] = NULL;
 		    }
-                  context->cur_attr = -1;
-
+                  g_assert (context->cur_attr == -1);
+                  g_assert (context->attr_names == NULL ||
+                            context->attr_names[0] == NULL);
+                  g_assert (context->attr_values == NULL ||
+                            context->attr_values[0] == NULL);
+                  
                   if (tmp_error != NULL)
                     {
                       mark_error (context, tmp_error);
