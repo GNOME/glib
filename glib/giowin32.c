@@ -88,6 +88,9 @@ struct _GIOWin32Channel {
   gboolean running;		/* Is reader thread running. FALSE if
 				 * EOF has been reached.
 				 */
+  gboolean needs_close;		/* If the channel has been closed while
+				 * the reader thread was still running.
+				 */
   guint thread_id;		/* If non-NULL has a reader thread, or has
 				 * had.*/
   HANDLE thread_handle;
@@ -123,6 +126,7 @@ g_io_channel_win32_init (GIOWin32Channel *channel)
 #endif
   channel->buffer = NULL;
   channel->running = FALSE;
+  channel->needs_close = FALSE;
   channel->thread_id = 0;
   channel->data_avail_event = NULL;
   channel->space_avail_event = NULL;
@@ -232,17 +236,28 @@ reader_thread (void *parameter)
   if (channel->debug)
     g_print ("thread %#x: got EOF, rdp=%d, wrp=%d, setting data available\n",
 	     channel->thread_id, channel->rdp, channel->wrp);
+
+  if (channel->needs_close)
+    {
+      if (channel->debug)
+	g_print ("thread %#x: channel fd %d needs closing\n",
+		 channel->thread_id, channel->fd);
+      if (channel->type == G_IO_FILE_DESC)
+	close (channel->fd);
+      else if (channel->type == G_IO_STREAM_SOCKET)
+	closesocket (channel->fd);
+      channel->fd = -1;
+    }
+
   SetEvent (channel->data_avail_event);
   UNLOCK (channel->mutex);
   
   g_io_channel_unref((GIOChannel *) channel);
   
-#if 0
-  /* All of the Microsoft docs say we should explicitly
-   * end the thread...
+  /* No need to call _endthreadex(), the actual thread starter routine
+   * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
+   * _endthreadex() for us.
    */
-  _endthreadex(1);
-#endif
 
   CloseHandle (channel->thread_handle);
 
@@ -255,21 +270,10 @@ create_reader_thread (GIOWin32Channel *channel,
 {
   channel->reader = reader;
 
-#if 0
   if ((channel->thread_handle =
-       _beginthreadex (NULL, 0, reader_thread, channel, 0,
-		       &channel->thread_id)) == 0)
+       (HANDLE) _beginthreadex (NULL, 0, reader_thread, channel, 0,
+				&channel->thread_id)) == 0)
     g_warning ("Error creating reader thread: %s", strerror (errno));
-#else
-  if ((channel->thread_handle =
-       CreateThread (NULL, 0, reader_thread, channel, 0,
-		     &channel->thread_id)) == 0)
-    {
-      gchar *msg = g_win32_error_message (GetLastError ());
-      g_warning ("Error creating reader thread: %s", msg);
-      g_free (msg);
-    }
-#endif
   WaitForSingleObject (channel->space_avail_event, INFINITE);
 }
 
@@ -672,25 +676,23 @@ g_io_win32_fd_close (GIOChannel *channel)
   if (win32_channel->running)
     {
       if (win32_channel->debug)
-	g_print ("thread %#x: running, terminating it\n",
-		 win32_channel->thread_id);
-      TerminateThread (win32_channel->thread_handle, 0);
-      if (win32_channel->debug)
-	g_print ("thread %#x: terminated, setting id to 0, closing handle\n",
-		 win32_channel->thread_id);
-      win32_channel->thread_id = 0;
-      CloseHandle (win32_channel->thread_handle);
+	g_print ("thread %#x: running, marking fd %d for later close\n",
+		 win32_channel->thread_id, win32_channel->fd);
       win32_channel->running = FALSE;
+      win32_channel->needs_close = TRUE;
       SetEvent (win32_channel->data_avail_event);
     }
+  else
+    {
+      if (win32_channel->debug)
+	g_print ("closing fd %d\n", win32_channel->fd);
+      close (win32_channel->fd);
+      if (win32_channel->debug)
+	g_print ("closed fd %d, setting to -1\n",
+		 win32_channel->fd);
+      win32_channel->fd = -1;
+    }
   UNLOCK (win32_channel->mutex);
-  if (win32_channel->debug)
-    g_print ("closing fd %d\n", win32_channel->fd);
-  close (win32_channel->fd);
-  if (win32_channel->debug)
-    g_print ("closed fd %d, setting to -1\n",
-	     win32_channel->fd);
-  win32_channel->fd = -1;
 }
 
 static int
@@ -842,6 +844,8 @@ g_io_channel_win32_new_messages (guint hwnd)
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
+  if (win32_channel->debug)
+    g_print ("g_io_channel_win32_new_messages: hwnd = %ud\n", hwnd);
   channel->funcs = &win32_channel_msg_funcs;
   win32_channel->type = G_IO_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
@@ -867,6 +871,8 @@ g_io_channel_win32_new_fd (gint fd)
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
+  if (win32_channel->debug)
+    g_print ("g_io_channel_win32_new_fd: fd = %d\n", fd);
   channel->funcs = &win32_channel_fd_funcs;
   win32_channel->type = G_IO_FILE_DESC;
   win32_channel->fd = fd;
@@ -890,6 +896,8 @@ g_io_channel_win32_new_stream_socket (int socket)
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
+  if (win32_channel->debug)
+    g_print ("g_io_channel_win32_new_stream_socket: socket = %d\n", socket);
   channel->funcs = &win32_channel_sock_funcs;
   win32_channel->type = G_IO_STREAM_SOCKET;
   win32_channel->fd = socket;
@@ -960,42 +968,3 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
     else if (win32_channel->type == G_IO_STREAM_SOCKET)
       create_reader_thread (win32_channel, sock_reader);
 }
-
-/* This variable and the functions below are present just to be 
- * binary compatible with old clients... But note that in GIMP, the
- * libgimp/gimp.c:gimp_extension_process() function will have to be modified
- * anyhow for this new approach.
- *
- * These will be removed after some weeks.
- */
-guint g_pipe_readable_msg = 0;
-
-GIOChannel *
-g_io_channel_win32_new_pipe (int fd)
-{
-  return g_io_channel_win32_new_fd (fd);
-}
-
-GIOChannel *
-g_io_channel_win32_new_pipe_with_wakeups (int   fd,
-					  guint peer,
-					  int   peer_fd)
-{
-  return g_io_channel_win32_new_fd (fd);
-}
-
-void
-g_io_channel_win32_pipe_request_wakeups (GIOChannel *channel,
-					 guint       peer,
-					 int         peer_fd)
-{
-  /* Nothing needed now */
-}
-
-void
-g_io_channel_win32_pipe_readable (gint  fd,
-				  guint offset)
-{
-  /* Nothing needed now */
-}
-

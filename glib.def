@@ -180,11 +180,7 @@ EXPORTS
 	g_io_channel_win32_make_pollfd
 	g_io_channel_win32_new_fd
 	g_io_channel_win32_new_messages
-	g_io_channel_win32_new_pipe
-	g_io_channel_win32_new_pipe_with_wakeups
 	g_io_channel_win32_new_stream_socket
-	g_io_channel_win32_pipe_readable
-	g_io_channel_win32_pipe_request_wakeups
 	g_io_channel_win32_poll
 	g_io_channel_win32_set_debug
 	g_io_channel_write
@@ -301,7 +297,6 @@ EXPORTS
 	g_path_get_dirname
 	g_path_is_absolute
 	g_path_skip_root
-	g_pipe_readable_msg
 	g_print
 	g_printerr
 	g_printf_string_upper_bound

@@ -1,5 +1,24 @@
 2001-01-09  Tor Lillqvist  <tml@iki.fi>
 
+	* giowin32.c (create_reader_thread): Rework the changes needed to
+	pass mainloop-test. Now we don't need to call TerminateThread()
+	after all, which is a relief, as the docs have a BIG RED WARNING
+	SIGN about using that API. Instead, when closing a fd channel that
+	has a reader thread running, just mark it as non-running and
+	additionally mark the fd as ripe for closing. When the reader
+	thread hopefully eventually gets something (and EOF or some actual
+	data), it will note that it shouldn't be running, break out of the
+	loop, and close the fd.
+
+	The socket channel closing code should probably be changed
+	similarily, but that will have to wait until I have a test case.
+	
+	(g_pipe_readable_msg, g_io_channel_win32_new_pipe,
+	g_io_channel_win32_new_pipe_with_wakeups,
+	g_io_channel_win32_pipe_request_wakeups,
+	g_io_channel_win32_pipe_readable): Remove these, have been
+	obsolete for some time.
+	
 	* gutils.c (g_basename, g_dirname): Don't warn about deprecation
 	on Win32. Code written for GLib 1.2 doesn't have much choice but
 	to use GLib >= 1.3 on Win32.
