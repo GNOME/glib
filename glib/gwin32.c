@@ -611,8 +611,17 @@ get_package_directory_from_module (gchar *module_name)
   if (!GetModuleFileName (hmodule, fn, MAX_PATH))
     {
       G_UNLOCK (module_dirs);
+      g_free (fn);
       return NULL;
     }
+
+  if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
+    *p = '\0';
+
+  p = strrchr (fn, G_DIR_SEPARATOR);
+  if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
+	    g_ascii_strcasecmp (p + 1, "lib") == 0))
+    *p = '\0';
 
 #ifdef G_WITH_CYGWIN
   /* In Cygwin we need to have POSIX paths */
@@ -624,14 +633,6 @@ get_package_directory_from_module (gchar *module_name)
     fn = g_strdup(tmp);
   }
 #endif
-
-  if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
-    *p = '\0';
-
-  p = strrchr (fn, G_DIR_SEPARATOR);
-  if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
-	    g_ascii_strcasecmp (p + 1, "lib") == 0))
-    *p = '\0';
 
   g_hash_table_insert (module_dirs, module_name ? module_name : "", fn);
 
@@ -770,7 +771,7 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 
   prefix = g_win32_get_package_installation_directory (package, dll_name);
 
-  sep = (prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR ?
+  sep = ((subdir != NULL && strlen (subdir) > 0) || prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR ?
 	 "" : G_DIR_SEPARATOR_S);
 
   return g_strconcat (prefix, sep, subdir, NULL);

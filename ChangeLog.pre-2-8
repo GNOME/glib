@@ -9,6 +9,16 @@
 	library, install it. Install the gcc import library. Also support
 	uninstall.
 
+	* glib/gutils.h: Add macros G_WIN32_DLLMAIN_FOR_DLL_NAME and
+	G_HARDCODED_PATH_WRAPPER. These are used to avoid hardcoding path
+	names into Windows DLLs.
+
+	* glib/gutils.c: Use them for GLIB_LOCALEDIR.
+
+	* glib/gwin32.c (get_package_directory_from_module): Plug a small
+	memory leak. Minor code reordering.
+	(g_win32_get_package_installation_subdirectory):  Allow empty subdir.
+
 2001-10-19  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Fix test for lib.exe. Can't set ms_librarian

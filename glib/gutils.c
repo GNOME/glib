@@ -1093,43 +1093,8 @@ g_get_codeset (void)
 
 #include <libintl.h>
 
-
-#ifdef G_OS_WIN32
-
-/* DllMain function needed to tuck away the GLib DLL name */
-
-static char dll_name[MAX_PATH];
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-	 DWORD     fdwReason,
-	 LPVOID    lpvReserved)
-{
-  switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-      GetModuleFileName ((HMODULE) hinstDLL, dll_name, sizeof (dll_name));
-      break;
-    }
-
-  return TRUE;
-}
-
-/* On Windows we don't want any hard-coded path names */
-
-#undef GLIB_LOCALE_DIR
-/* It's OK to leak the g_win32_get_...() and g_path_get_basename() results
- * below, as this macro is called only once.
- * Use the actual DLL name of the GLib DLL, i.e. don't assume the
- * GLib DLL has a certain name.
- */
-#define GLIB_LOCALE_DIR					      	\
-  g_win32_get_package_installation_subdirectory			\
-  (GETTEXT_PACKAGE,						\
-   g_path_get_basename (dll_name),				\
-   "share\\locale")
-
-#endif /* !G_OS_WIN32 */
+G_WIN32_DLLMAIN_FOR_DLL_NAME (static, dll_name)
+G_HARDCODED_PATH_WRAPPER (GLIB_LOCALE_DIR, GETTEXT_PACKAGE, _glib_get_locale_dir, dll_name, "lib/locale")
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)
@@ -1138,7 +1103,7 @@ _glib_gettext (const gchar *str)
 
   if (!_glib_gettext_initialized)
     {
-      bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+      bindtextdomain(GETTEXT_PACKAGE, _glib_get_locale_dir ());
       _glib_gettext_initialized = TRUE;
     }
   
