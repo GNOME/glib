@@ -94,7 +94,7 @@ Gets the data element corresponding to a #GQuark.
 
 @dataset_location: the location identifying the dataset.
 @key_id: the #GQuark id to identify the data element.
-@Returns: the data element corresponding to the #GQuark, or NULL if it is
+@Returns: the data element corresponding to the #GQuark, or %NULL if it is
 not found.
 
 
@@ -149,7 +149,7 @@ Gets the data element corresponding to a string.
 
 @l: the location identifying the dataset.
 @k: the string identifying the data element.
-@Returns: the data element corresponding to the string, or NULL if it is not
+@Returns: the data element corresponding to the string, or %NULL if it is not
 found.
 
 

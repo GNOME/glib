@@ -87,7 +87,7 @@ Specifies the type of the hash function which is passed to
 g_hash_table_new() when a #GHashTable is created.
 </para>
 <para>
-The function is passed a key and should return a guint hash value.
+The function is passed a key and should return a #guint hash value.
 The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
 hash functions which can be used when the key is a #gpointer, #gint, and 
 #gchar* respectively.
@@ -108,13 +108,13 @@ lookup.
 <!-- ##### USER_FUNCTION GEqualFunc ##### -->
 <para>
 Specifies the type of a function used to test two values for
-equality. The function should return TRUE if both values are equal and
-FALSE otherwise.
+equality. The function should return %TRUE if both values are equal and
+%FALSE otherwise.
 </para>
 
 @a: a value.
 @b: a value to compare with.
-@Returns: TRUE if @a = @b; FALSE otherwise.
+@Returns: %TRUE if @a = @b; %FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
@@ -237,14 +237,14 @@ which is passed to g_hash_table_foreach().
 Specifies the type of the function passed to g_hash_table_foreach_remove().
 It is called with each key/value pair, together with the @user_data parameter
 passed to g_hash_table_foreach_remove().
-It should return TRUE if the key/value pair should be removed from the
+It should return %TRUE if the key/value pair should be removed from the
 #GHashTable.
 </para>
 
 @key: a key.
 @value: the value associated with the key.
 @user_data: user data passed to g_hash_table_remove().
-@Returns: TRUE if the key/value pair should be removed from the #GHashTable.
+@Returns: %TRUE if the key/value pair should be removed from the #GHashTable.
 
 
 <!-- ##### MACRO g_hash_table_freeze ##### -->
@@ -275,14 +275,14 @@ This function is deprecated and will be removed in the next major
 
 <!-- ##### FUNCTION g_direct_equal ##### -->
 <para>
-Compares two #gpointer arguments and returns TRUE if they are equal.
+Compares two #gpointer arguments and returns %TRUE if they are equal.
 It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using pointers as keys in a #GHashTable.
 </para>
 
 @v: a key.
 @v2: a key to compare with @v.
-@Returns: TRUE if the two keys match.
+@Returns: %TRUE if the two keys match.
 
 
 <!-- ##### FUNCTION g_direct_hash ##### -->
@@ -298,7 +298,7 @@ using gpointer values as keys in a #GHashTable.
 
 <!-- ##### FUNCTION g_int_equal ##### -->
 <para>
-Compares the two #gint values being pointed to and returns TRUE if they are
+Compares the two #gint values being pointed to and returns %TRUE if they are
 equal.
 It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using pointers to integers as keys in a #GHashTable.
@@ -306,14 +306,14 @@ parameter, when using pointers to integers as keys in a #GHashTable.
 
 @v: a pointer to a #gint key.
 @v2: a pointer to a #gint key to compare with @v.
-@Returns: TRUE if the two keys match.
+@Returns: %TRUE if the two keys match.
 
 
 <!-- ##### FUNCTION g_int_hash ##### -->
 <para>
 Converts a pointer to a #gint to a hash value.
 It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using pointers to gint values as keys in a #GHashTable.
+using pointers to #gint values as keys in a #GHashTable.
 </para>
 
 @v: a pointer to a #gint key.
@@ -322,14 +322,14 @@ using pointers to gint values as keys in a #GHashTable.
 
 <!-- ##### FUNCTION g_str_equal ##### -->
 <para>
-Compares two strings and returns TRUE if they are equal.
+Compares two strings and returns %TRUE if they are equal.
 It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using strings as keys in a #GHashTable.
 </para>
 
 @v: a key.
 @v2: a key to compare with @v.
-@Returns: TRUE if the two keys match.
+@Returns: %TRUE if the two keys match.
 
 
 <!-- ##### FUNCTION g_str_hash ##### -->

@@ -108,13 +108,13 @@ Removes the first occurrence of the given pointer from the pointer array.
 The following elements are moved down one place.
 </para>
 <para>
-It returns TRUE if the pointer was removed, or FALSE if the pointer
+It returns %TRUE if the pointer was removed, or %FALSE if the pointer
 was not found.
 </para>
 
 @array: a #GPtrArray.
 @data: the pointer to remove.
-@Returns: TRUE if the pointer is removed. FALSE if the pointer is not found
+@Returns: %TRUE if the pointer is removed. %FALSE if the pointer is not found
 in the array.
 
 
@@ -137,13 +137,13 @@ does not preserve the order of the array. But it is faster than
 g_ptr_array_remove().
 </para>
 <para>
-It returns TRUE if the pointer was removed, or FALSE if the pointer
+It returns %TRUE if the pointer was removed, or %FALSE if the pointer
 was not found.
 </para>
 
 @array: a #GPtrArray.
 @data: the pointer to remove.
-@Returns: TRUE if the pointer was found in the array.
+@Returns: %TRUE if the pointer was found in the array.
 
 
 <!-- ##### FUNCTION g_ptr_array_remove_index_fast ##### -->
@@ -161,13 +161,13 @@ g_ptr_array_remove_index().
 
 <!-- ##### FUNCTION g_ptr_array_sort ##### -->
 <para>
-Sorts the array, using @compare_func which should be a qsort()-style comparison
+Sorts the array, using @compare_func which should be a <function>qsort()</function>-style comparison
 function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
 first arg is greater than second arg).
 </para>
 
-@array: array to sort
-@compare_func: comparison function
+@array: a #GPtrArray.
+@compare_func: comparison function.
 
 
 <!-- ##### FUNCTION g_ptr_array_sort_with_data ##### -->
@@ -175,15 +175,15 @@ first arg is greater than second arg).
 Like g_ptr_array_sort(), but the comparison function has a user data argument.
 </para>
 
-@array: array to sort
-@compare_func: qsort()-style comparison function
-@user_data: data to pass to @compare_func
+@array: a #GPtrArray.
+@compare_func: comparison function.
+@user_data: data to pass to @compare_func.
 
 
 <!-- ##### FUNCTION g_ptr_array_set_size ##### -->
 <para>
 Sets the size of the array, expanding it if necessary.
-New elements are set to NULL.
+New elements are set to %NULL.
 </para>
 
 @array: a #GPtrArray.
@@ -206,7 +206,6 @@ Frees all of the memory allocated for the pointer array.
 </para>
 
 @array: a #GPtrArray.
-@free_seg: if TRUE the actual element data is freed as well.
-@Returns: 
+@free_seg: if %TRUE the actual element data is freed as well.
 
 

@@ -22,87 +22,72 @@ This also means that there is no need to check if the call succeeded.
 
 <!-- ##### MACRO g_new ##### -->
 <para>
-Allocates @count elements of type @type.
+Allocates @n_structs elements of type @struct_type.
 The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns NULL.
+If @count is 0 it returns %NULL.
 </para>
 
-@struct_type: 
-@n_structs: 
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
-<!-- # Unused Parameters # -->
-@type: the type of the elements to allocate.
-@count: the number of elements to allocate.
+@struct_type: the type of the elements to allocate.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
 
 
 <!-- ##### MACRO g_new0 ##### -->
 <para>
-Allocates @count elements of type @type, initialized to 0's.
+Allocates @n_structs elements of type @struct_type, initialized to 0's.
 The returned pointer is cast to a pointer to the given type.
-If @count is 0 it returns NULL.
+If @count is 0 it returns %NULL.
 </para>
 
-@struct_type: 
-@n_structs: 
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
-<!-- # Unused Parameters # -->
-@type: the type of the elements to allocate.
-@count: the number of elements to allocate.
+@struct_type: the type of the elements to allocate.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the allocated memory, cast to a pointer to @struct_type.
 
 
 <!-- ##### MACRO g_renew ##### -->
 <para>
 Reallocates the memory pointed to by @mem, so that it now has space for
-@count elements of type @type. It returns the new address of the memory,
-which may have been moved.
+@n_struct elements of type @struct_type. It returns the new address of 
+the memory, which may have been moved.
 </para>
 
-@struct_type: 
+@struct_type: the type of the elements to allocate.
 @mem: the currently allocated memory.
-@n_structs: 
-@Returns: a pointer to the new allocated memory, cast to a pointer to @type.
-<!-- # Unused Parameters # -->
-@type: the type of the elements to allocate.
-@count: the number of elements to allocate.
+@n_structs: the number of elements to allocate.
+@Returns: a pointer to the new allocated memory, cast to a pointer to @struct_type.
 
 
 <!-- ##### FUNCTION g_malloc ##### -->
 <para>
-Allocates @size bytes of memory.
-If @size is 0 it returns NULL.
+Allocates @n_bytes bytes of memory.
+If @n_bytes is 0 it returns %NULL.
 </para>
 
-@n_bytes: 
+@n_bytes: the number of bytes to allocate.
 @Returns: a pointer to the allocated memory.
-<!-- # Unused Parameters # -->
-@size: the number of bytes to allocate.
 
 
 <!-- ##### FUNCTION g_malloc0 ##### -->
 <para>
-Allocates @size bytes of memory, initialized to 0's.
-If @size is 0 it returns NULL.
+Allocates @n_bytes bytes of memory, initialized to 0's.
+If @n_bytes is 0 it returns %NULL.
 </para>
 
-@n_bytes: 
+@n_bytes: the number of bytes to allocate.
 @Returns: a pointer to the allocated memory.
-<!-- # Unused Parameters # -->
-@size: the number of bytes to allocate.
 
 
 <!-- ##### FUNCTION g_realloc ##### -->
 <para>
 Reallocates the memory pointed to by @mem, so that it now has space for
-@size bytes of memory. It returns the new address of the memory, which may
+@n_bytes bytes of memory. It returns the new address of the memory, which may
 have been moved. @mem may be %NULL, in which case it's considered to 
 have zero-length. @n_bytes may be 0, in which case %NULL will be returned.
 </para>
 
 @mem: the memory to reallocate.
-@n_bytes: new size of the memory in bytes
+@n_bytes: new size of the memory in bytes.
 @Returns: the new address of the allocated memory.
-<!-- # Unused Parameters # -->
-@size: the new size of the allocated memory, in bytes.
 
 
 <!-- ##### FUNCTION g_try_malloc ##### -->
@@ -111,8 +96,8 @@ Attempts to allocate @n_bytes, and returns %NULL on failure.
 Contrast with g_malloc(), which aborts the program on failure.
 </para>
 
-@n_bytes: number of bytes to allocate
-@Returns: the allocated memory, or %NULL
+@n_bytes: number of bytes to allocate.
+@Returns: the allocated memory, or %NULL.
 
 
 <!-- ##### FUNCTION g_try_realloc ##### -->
@@ -122,15 +107,15 @@ on failure. Contrast with g_realloc(), which aborts the program
 on failure. If @mem is %NULL, behaves the same as g_try_malloc().
 </para>
 
-@mem: previously-allocated memory, or %NULL
-@n_bytes: number of bytes to allocate
-@Returns: the allocated memory, or %NULL
+@mem: previously-allocated memory, or %NULL.
+@n_bytes: number of bytes to allocate.
+@Returns: the allocated memory, or %NULL.
 
 
 <!-- ##### FUNCTION g_free ##### -->
 <para>
 Frees the memory pointed to by @mem.
-If @mem is NULL it simply returns.
+If @mem is %NULL it simply returns.
 </para>
 
 @mem: the memory to free.
@@ -142,7 +127,7 @@ Allocates @size bytes on the stack; these bytes will be freed when the current
 stack frame is cleaned up.
 </para>
 
-@size: number of bytes to allocate
+@size: number of bytes to allocate.
 
 
 <!-- ##### MACRO g_memmove ##### -->
@@ -151,9 +136,9 @@ Copies a block of memory @n bytes long, from @s to @d.
 The source and destination areas may overlap.
 </para>
 <para>
-In order to use this function, you must include string.h
+In order to use this function, you must include <filename>string.h</filename>
 yourself, because this macro will typically simply resolve
-to memmove() and GLib does not include string.h for you.
+to <function>memmove()</function> and GLib does not include <filename>string.h</filename> for you.
 </para>
 
 @d: the destination address to copy the bytes to.
@@ -164,36 +149,36 @@ to memmove() and GLib does not include string.h for you.
 <!-- ##### FUNCTION g_memdup ##### -->
 <para>
 Allocates @byte_size bytes of memory, and copies @byte_size bytes into it
-from @mem. If @mem is NULL it returns NULL.
+from @mem. If @mem is %NULL it returns %NULL.
 </para>
 
 @mem: the memory to copy.
 @byte_size: the number of bytes to copy.
-@Returns: a pointer to the newly allocated copy of the memory, or NULL if @mem
-is NULL.
+@Returns: a pointer to the newly allocated copy of the memory, or %NULL if @mem
+is %NULL.
 
 
 <!-- ##### STRUCT GMemVTable ##### -->
 <para>
-A set of functions used to perform memory allocation. The same GMemVTable must
+A set of functions used to perform memory allocation. The same #GMemVTable must
 be used for all allocations in the same program; a call to g_mem_set_vtable(),
 if it exists, should be prior to any use of GLib.
 </para>
 
-@malloc: function to use for allocating memory
-@realloc: function to use for reallocating memory
-@free: function to use to free memory
-@calloc: function to use for allocating zero-filled memory
-@try_malloc: function to use for allocating memory without a default error handler
-@try_realloc: function to use for reallocating memory without a default error handler
+@malloc: function to use for allocating memory.
+@realloc: function to use for reallocating memory.
+@free: function to use to free memory.
+@calloc: function to use for allocating zero-filled memory.
+@try_malloc: function to use for allocating memory without a default error handler.
+@try_realloc: function to use for reallocating memory without a default error handler.
 
 <!-- ##### FUNCTION g_mem_set_vtable ##### -->
 <para>
 Sets the #GMemVTable to use for memory allocation. You can use this to provide
 custom memory allocation routines. THIS FUNCTION MUST BE CALLED BEFORE USING ANY
-OTHER GLIB FUNCTIONS. The vtable only needs to provide malloc, realloc, and free
-functions; GLib can provide default implementations of the others.  The malloc
-and realloc implementations should return %NULL on failure, GLib will handle
+OTHER GLIB FUNCTIONS. The @vtable only needs to provide <function>malloc()</function>, <function>realloc()</function>, and <function>free()</function>
+functions; GLib can provide default implementations of the others.  The <function>malloc()</function>
+and <function>realloc()</function> implementations should return %NULL on failure, GLib will handle
 error-checking for you. @vtable is copied, so need not persist after this 
 function has been called.
 </para>
@@ -211,15 +196,16 @@ function has been called.
 
 <!-- ##### VARIABLE glib_mem_profiler_table ##### -->
 <para>
-
+A #GMemVTable containing profiling variants of the memory
+allocation functions. Use them together with g_mem_profile()
+in order to get information about the memory allocation pattern
+of your program.
 </para>
 
 
 <!-- ##### FUNCTION g_mem_profile ##### -->
 <para>
 Outputs a summary of memory usage.
-To use this function you must configure glib with the flag
-'--enable-mem-profile=yes' before compiling.
 </para>
 <para>
 It outputs the frequency of allocations of different sizes,
@@ -228,6 +214,9 @@ the total number of bytes which have been freed,
 and the difference between the previous two values, i.e. the number of bytes
 still in use.
 </para>
-
+<para>
+Note that this function will not output anything unless you have
+previously installed the #glib_mem_profiler_table with g_mem_set_vtable().
+</para>
 
 

@@ -69,9 +69,9 @@ added to the #GArray.
 Creates a new #GArray.
 </para>
 
-@zero_terminated: TRUE if the array should have an extra element at the end
-which is set to '0'.
-@clear: TRUE if #GArray elements should be automatically cleared to '0'
+@zero_terminated: %TRUE if the array should have an extra element at the end
+which is set to 0.
+@clear: %TRUE if #GArray elements should be automatically cleared to 0
 when they are allocated.
 @element_size: the size of each element in bytes.
 @Returns: the new #GArray.
@@ -85,11 +85,11 @@ add many elements to the array. Note however that the size of the
 array is still 0.
 </para>
 
-@zero_terminated: %TRUE if the array should have an extra element at the end with all bits cleared
-@clear: %TRUE if all bits in the array should be cleared to 0 on allocation
-@element_size: size of each element in the array
-@reserved_size: number of elements preallocated
-@Returns: the new #GArray
+@zero_terminated: %TRUE if the array should have an extra element at the end with all bits cleared.
+@clear: %TRUE if all bits in the array should be cleared to 0 on allocation.
+@element_size: size of each element in the array.
+@reserved_size: number of elements preallocated.
+@Returns: the new #GArray.
 
 
 <!-- ##### MACRO g_array_append_val ##### -->
@@ -214,13 +214,13 @@ g_array_remove_index().
 
 <!-- ##### FUNCTION g_array_sort ##### -->
 <para>
-Sorts a #GArray using @compare_func which should be a qsort()-style comparison
+Sorts a #GArray using @compare_func which should be a <function>qsort()</function>-style comparison
 function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
 first arg is greater than second arg).
 </para>
 
-@array: a #GArray
-@compare_func: comparison function
+@array: a #GArray.
+@compare_func: comparison function.
 
 
 <!-- ##### FUNCTION g_array_sort_with_data ##### -->
@@ -229,9 +229,9 @@ Like g_array_sort(), but the comparison function receives a user data
 argument.
 </para>
 
-@array: a #GArray
-@compare_func: a comparison function
-@user_data: data to pass to @compare_func
+@array: a #GArray.
+@compare_func: comparison function.
+@user_data: data to pass to @compare_func.
 
 
 <!-- ##### MACRO g_array_index ##### -->
@@ -260,7 +260,7 @@ The return value is cast to the given type.
 <!-- ##### FUNCTION g_array_set_size ##### -->
 <para>
 Sets the size of the array, expanding it if necessary.
-If the array was created with clear set to TRUE, the new elements are set to 0.
+If the array was created with @clear set to %TRUE, the new elements are set to 0.
 </para>
 
 @array: a #GArray.
@@ -271,11 +271,10 @@ If the array was created with clear set to TRUE, the new elements are set to 0.
 <!-- ##### FUNCTION g_array_free ##### -->
 <para>
 Frees the memory allocated for the #GArray.
-If free_segment is TRUE it frees the actual element data as well.
+If @free_segment is %TRUE it frees the actual element data as well.
 </para>
 
 @array: a #GArray.
-@free_segment: if TRUE the actual element data is freed as well.
-@Returns: 
+@free_segment: if %TRUE the actual element data is freed as well.
 
 

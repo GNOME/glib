@@ -28,8 +28,8 @@ in a pointer value. Naively, you might try this, but it's incorrect:
  p = (void*) 42;
  i = (int) p;
 </programlisting>
-Again, that example was NOT correct, don't copy it. The problem is
-that on some systems you need to do this:
+Again, that example was <emphasis>not</emphasis> correct, don't copy it. 
+The problem is that on some systems you need to do this:
 <programlisting>
  gpointer p;
  int i;
@@ -66,7 +66,7 @@ storing integers in pointers, and only preserve 32 bits of the
 integer; values outside the range of a 32-bit integer will be mangled.
 </para>
 
-@i: integer to stuff into a pointer
+@i: integer to stuff into a pointer.
 
 
 <!-- ##### MACRO GPOINTER_TO_INT ##### -->
@@ -86,33 +86,35 @@ integer; values outside the range of a 32-bit integer will be mangled.
 
 <!-- ##### MACRO GUINT_TO_POINTER ##### -->
 <para>
-Same as GINT_TO_POINTER(), but for unsigned integers.
+Stuffs an unsigned integer into a pointer type.
 </para>
 
-@u: integer to stuff into the pointer
+@u: unsigned integer to stuff into the pointer.
 
 
 <!-- ##### MACRO GPOINTER_TO_UINT ##### -->
 <para>
-Same as GPOINTER_TO_INT(), but for unsigned integers.
+Extracts an unsigned integer from a pointer. The integer must have
+been stored in the pointer with GUINT_TO_POINTER().
 </para>
 
-@p: pointer to extract an integer from
+@p: pointer to extract an unsigned integer from.
 
 
 <!-- ##### MACRO GSIZE_TO_POINTER ##### -->
 <para>
-
+Stuffs a #gsize into a pointer type.
 </para>
 
-@s: 
+@s: #gsize to stuff into the pointer. 
 
 
 <!-- ##### MACRO GPOINTER_TO_SIZE ##### -->
 <para>
-
+Extracts a #gsize from a pointer. The #gsize must have
+been stored in the pointer with GSIZE_TO_POINTER().
 </para>
 
-@p: 
+@p: pointer to extract a #gsize from.
 
 

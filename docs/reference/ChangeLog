@@ -1,3 +1,12 @@
+2001-09-30  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/arrays.sgml,glib/tmpl/arrays_byte.sgml
+	glib/tmpl/arrays_pointer.sgml, glib/tmpl/caches.sgml, 
+	glib/tmpl/datalist.sgml, glib/tmpl/date.sgml, 
+	glib/tmpl/datasets.sgml, glib/tmpl/type_conversion.sgml,
+	glib/tmpl/memory.sgml, glib/tmpl/hash_tables.sgml:
+	Markup fixes and a few additions.
+
 2001-09-27  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/macros.sgml, glib/tmpl/macros_misc.sgml, 

@@ -73,8 +73,8 @@ avoids frequent reallocation, if you are going to add many bytes to
 the array. Note however that the size of the array is still 0.
 </para>
 
-@reserved_size: number of bytes preallocated
-@Returns: the new #GByteArray
+@reserved_size: number of bytes preallocated.
+@Returns: the new #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_append ##### -->
@@ -127,13 +127,13 @@ g_byte_array_remove_index().
 
 <!-- ##### FUNCTION g_byte_array_sort ##### -->
 <para>
-Sorts a byte array, using @compare_func which should be a qsort()-style
+Sorts a byte array, using @compare_func which should be a <function>qsort()</function>-style
 comparison function (returns -1 for first arg is less than second arg, 0 for
 equal, 1 if first arg is greater than second arg).
 </para>
 
-@array: array to sort
-@compare_func: comparison function
+@array: a #GByteArray.
+@compare_func: comparison function.
 
 
 <!-- ##### FUNCTION g_byte_array_sort_with_data ##### -->
@@ -141,9 +141,9 @@ equal, 1 if first arg is greater than second arg).
 Like g_byte_array_sort(), but the comparison function takes a user data argument.
 </para>
 
-@array: a #GByteArray
-@compare_func: comparison function
-@user_data: data to pass to @compare_func
+@array: a #GByteArray.
+@compare_func: comparison function.
+@user_data: data to pass to @compare_func.
 
 
 <!-- ##### FUNCTION g_byte_array_set_size ##### -->
@@ -159,11 +159,10 @@ Sets the size of the #GByteArray, expanding it if necessary.
 <!-- ##### FUNCTION g_byte_array_free ##### -->
 <para>
 Frees the memory allocated by the #GByteArray.
-If free_segment is TRUE it frees the actual byte data.
+If free_segment is %TRUE it frees the actual byte data.
 </para>
 
 @array: a #GByteArray.
-@free_segment: if TRUE the actual byte data is freed as well.
-@Returns: 
+@free_segment: if %TRUE the actual byte data is freed as well.
 
 
