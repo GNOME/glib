@@ -1,3 +1,8 @@
+2002-01-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Get the right multithread option for GCC 3.0 and
+	later on AIX. (#67583)
+
 2001-07-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h: Use G_GNUC_EXTENSION instead of __extension__. Patch
