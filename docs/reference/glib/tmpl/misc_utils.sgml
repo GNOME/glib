@@ -154,20 +154,11 @@ path it returns %NULL.
 
 <!-- ##### FUNCTION g_path_get_basename ##### -->
 <para>
-Gets the name of the file without any leading directory components.
-The returned string should be freed when no longer needed.
+
 </para>
 
-<note>
-<para>
-This function allocates new memory for the returned string. This is
-different from the old g_basename() function, which returned a pointer
-into the argument.
-</para>
-</note>
-
-@file_name: the name of the file.
-@Returns: the name of the file without any leading directory components.
+@file_name:
+@Returns:
 
 
 <!-- ##### FUNCTION g_path_get_dirname ##### -->
