@@ -1,3 +1,9 @@
+2001-06-13  Havoc Pennington  <hp@redhat.com>
+
+	* Makefile.am (progs_LDADD): link to ./libgobject-1.3.la
+	since an installed libgobject was somehow being found; think 
+	it's a libtool bug, but this workaround should do for now.
+
 2001-06-12  Havoc Pennington  <hp@redhat.com>
 
 	* Makefile.am (glib-mkenums): don't put $(srcdir)/glib-mkenums in

@@ -161,7 +161,7 @@ gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
 testgruntime_SOURCES = testgruntime.c
 # link programs against libgobject
-progs_LDADD = libgobject-1.3.la $(libglib)
+progs_LDADD = ./libgobject-1.3.la $(libglib)
 glib_genmarshal_LDADD = $(libglib)
 gobject_query_LDADD = $(progs_LDADD)
 testgruntime_LDADD = $(progs_LDADD)
