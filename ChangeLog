@@ -1,3 +1,8 @@
+2003-08-11  Matthias Clasen  <maclas@gmx.de>
+
+	* acinclude.m4: Copy newer versions of JH_CHECK_XML_CATALOG and JH_PATH_XML_CATALOG from
+	gtk-doc to enable configuring without xmlcatalog in PATH.  (#119115)
+
 2003-08-10  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_getenv): Don't use a cache of variable name to
