@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2003-02-06 23:34+0700\n"
+"POT-Creation-Date: 2004-03-30 22:38+0700\n"
+"PO-Revision-Date: 2003-03-30 22:38+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
-"Language-Team: Indonesia <id@li.org>\n"
+"Language-Team: Indonesia <sukarelawan@gnome.linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -89,7 +89,7 @@ msgstr "Error saat membuka direktori '%s': %s"
 #: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Tidka dapat mengalokasikan %lu byte untuk membaca file '%s'"
+msgstr "Tidak dapat mengalokasikan %lu byte untuk membaca file '%s'"
 
 #: glib/gfileutils.c:404
 #, c-format
@@ -134,13 +134,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "Gagal saat membuat file '%s': %s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Gagal saat membuat file '%s': %s"
+msgstr "Gagal saat membaca link simbolik '%s': %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Link simbolik tidak didukung oleh sistem"
 
 #: glib/giochannel.c:1143
 #, c-format
