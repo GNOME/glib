@@ -1,14 +1,14 @@
 # glib's Portuguese Translation
-# Copyright (C) 2001, 2003 glib
+# Copyright © 2001, 2004 glib
 # Distributed under the same licence as the glib package
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2004
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2003-12-03 01:50+0000\n"
+"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"POT-Creation-Date: 2004-04-24 16:50+0100\n"
+"PO-Revision-Date: 2004-04-24 16:55+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,8 +22,8 @@ msgstr "Conversão do conjunto de caracteres '%s' para '%s' não é suportada"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Incapaz de abrir conversor de '%s' para '%s': %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Incapaz de abrir conversor de '%s' para '%s'"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -481,12 +481,12 @@ msgstr "Falha ao efectuar fork (%s)"
 #: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Falha ao executar processo filho \"%s\" (%s)"
+msgstr "Falha ao executar o processo filho \"%s\" (%s)"
 
 #: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Falha ao redireccionar saida ou entrada de processo filho (%s)"
+msgstr "Falha ao redireccionar saída ou entrada de processo filho (%s)"
 
 #: glib/gspawn.c:1246
 #, c-format
