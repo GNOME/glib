@@ -1,3 +1,12 @@
+2004-08-04  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add glib_check_version.
+
+	* config.h.win32.in: Update to match what configure produces. Add
+	the G_ATOMIC_*. Define G_ATOMIC_I486 when compiling with gcc. Move
+	HAVE_INT64_AND_I64 to where the configure script puts it. Add
+	HAVE_INTTYPES_H_WITH_UINTMAX. Define intmax_t as __int64 for MSVC.
+
 Tue Aug  3 16:19:44 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/goption.c: Mark user visible strings for translation.

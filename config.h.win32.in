@@ -49,6 +49,26 @@
 /* The size of system_thread, as computed by sizeof. */
 #define GLIB_SIZEOF_SYSTEM_THREAD 4
 
+/* alpha atomic implementation */
+/* #undef G_ATOMIC_ALPHA */
+
+/* i486 atomic implementation */
+#ifndef _MSC_VER
+#define G_ATOMIC_I486 1
+#endif /* _MSC_VER */
+
+/* ia64 atomic implementation */
+/* #undef G_ATOMIC_IA64 */
+
+/* powerpc atomic implementation */
+/* #undef G_ATOMIC_POWERPC */
+
+/* sparcv9 atomic implementation */
+/* #undef G_ATOMIC_SPARCV9 */
+
+/* x86_64 atomic implementation */
+/* #undef G_ATOMIC_X86_64 */
+
 /* Whether glib was compiled with debugging enabled */
 #define G_COMPILED_WITH_DEBUGGING "yes"
 
@@ -133,6 +153,9 @@
 /* define to use system printf */
 /* #undef HAVE_GOOD_PRINTF */
 
+/* define to support printing 64-bit integers with format I64 */
+#define HAVE_INT64_AND_I64 1
+
 /* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
 #ifndef _MSC_VER
 #define HAVE_INTMAX_T 1
@@ -140,12 +163,19 @@
 /* #undef HAVE_INTMAX_T */
 #endif /* _MSC_VER */
 
-/* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
-   declares uintmax_t. */
+/* Define to 1 if you have the <inttypes.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_INTTYPES_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_INTTYPES_H */
+#endif /* _MSC_VER */
+
+/* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
+   declares uintmax_t. */
+#ifndef _MSC_VER
+#define HAVE_INTTYPES_H_WITH_UINTMAX 1
+#else /* _MSC_VER */
+/* #undef HAVE_INTTYPES_H_WITH_UINTMAX */
 #endif /* _MSC_VER */
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
@@ -175,7 +205,6 @@
 #else /* _MSC_VER */
 /* #undef HAVE_LONG_LONG */
 #endif /* _MSC_VER */
-#define HAVE_INT64_AND_I64 1
 
 /* define if system printf can print long long */
 #define HAVE_LONG_LONG_FORMAT 1
@@ -389,7 +418,7 @@
 #define PACKAGE_NAME "glib"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "glib  @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.@GLIB_MICRO_VERSION@"
+#define PACKAGE_STRING "glib @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.@GLIB_MICRO_VERSION@"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "glib"
@@ -447,9 +476,9 @@
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
    automatically deduced at run-time.
-        STACK_DIRECTION > 0 => grows toward higher addresses
-        STACK_DIRECTION < 0 => grows toward lower addresses
-        STACK_DIRECTION = 0 => direction of growth unknown */
+	STACK_DIRECTION > 0 => grows toward higher addresses
+	STACK_DIRECTION < 0 => grows toward lower addresses
+	STACK_DIRECTION = 0 => direction of growth unknown */
 /* #undef STACK_DIRECTION */
 
 /* Define to 1 if you have the ANSI C header files. */
@@ -478,7 +507,7 @@
 #ifndef _MSC_VER
 /* #undef intmax_t */
 #else /* _MSC_VER */
-#define intmax_t long
+#define intmax_t __int64
 #endif /* _MSC_VER */
 
 /* Define to empty if the C compiler doesn't support this keyword. */
