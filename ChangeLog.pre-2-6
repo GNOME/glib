@@ -1,3 +1,25 @@
+2004-11-01  Ray Strode <rstrode@redhat.com>
+
+	* glib/gkeyfile.c:
+	(g_key_file_get_locale_string): don't return an
+	error if we come across a value with invalid utf8 or
+	if we don't find a translated string. Just fallback
+	to the untranslated string (Mark McLoughlin, bug
+	#156790).
+	
+	* glib/gkeyfile.c:
+	(g_key_file_init), (g_key_file_clear): track the
+	actual start GKeyFileGroup rather than just its name
+	(g_key_file_parse_group): allow add_group() to
+	update the start group.
+	(g_key_file_remove_group_node): update the start
+	group if it gets removed (Mark McLoughlin, bug
+	#156790).
+
+	* glib/gkeyfile.c:
+	(g_key_file_parse_string_as_value): Don't escape
+	tabs and spaces in the middle of key values.
+
 2004-11-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c:
