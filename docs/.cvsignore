@@ -16,4 +16,3 @@ Makefile.in
 *.cps
 *.fns
 *.vrs
-glib-config.1

@@ -2045,7 +2045,6 @@ gobject/Makefile
 gthread/Makefile
 po/Makefile.in
 docs/Makefile
-docs/glib-config.1
 docs/reference/Makefile
 docs/reference/glib/Makefile
 docs/reference/gobject/Makefile

@@ -1,5 +1,7 @@
 2001-06-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* docs/Makefile.am, configure.in: Remove docs/glib-config.1.in.
+
 	* gthread-2.0-uninstalled.pc.in (Cflags): Add @G_THREAD_CFLAGS@.
 
 2001-06-07  Havoc Pennington  <hp@redhat.com>
