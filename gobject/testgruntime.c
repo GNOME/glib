@@ -167,7 +167,7 @@ main (int   argc,
   g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
 			  G_LOG_LEVEL_WARNING |
 			  G_LOG_LEVEL_CRITICAL);
-  g_type_init (G_TYPE_DEBUG_OBJECTS | G_TYPE_DEBUG_SIGNALS);
+  g_type_init_with_debug_flags (G_TYPE_DEBUG_OBJECTS | G_TYPE_DEBUG_SIGNALS);
 
   tobject = g_object_new (TEST_TYPE_OBJECT, NULL);
   sigarg = g_object_new (TEST_TYPE_OBJECT, NULL);

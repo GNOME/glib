@@ -133,7 +133,7 @@ main (gint   argc,
   
   root = G_TYPE_OBJECT;
 
-  g_type_init (0);
+  g_type_init ();
   
   for (i = 1; i < argc; i++)
     {

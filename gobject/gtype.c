@@ -2769,7 +2769,7 @@ extern void	g_signal_init		(void);	/* sync with gsignal.c */
 
 /* --- initialization --- */
 void
-g_type_init (GTypeDebugFlags debug_flags)
+g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 {
   G_LOCK_DEFINE_STATIC (type_init_lock);
   static TypeNode *type0_node = NULL;
@@ -2874,4 +2874,10 @@ g_type_init (GTypeDebugFlags debug_flags)
   g_signal_init ();
   
   G_UNLOCK (type_init_lock);
+}
+
+void 
+g_type_init (void)
+{
+  g_type_init_with_debug_flags (0);
 }

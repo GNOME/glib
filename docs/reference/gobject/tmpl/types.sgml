@@ -401,6 +401,7 @@ the type system and assorted other code portions (such as the various fundamenta
 type implementations or the signal system).
 </para>
 
+<!-- # Unused Parameters # -->
 @debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
 
 

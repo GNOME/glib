@@ -1,3 +1,9 @@
+Thu Jun 28 22:49:40 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.[ch] gobject-query.c testgruntime.c: Remove
+	debug flag argument to g_type_init() and add
+	g_type_init_with_debug_flags().
+
 Thu Jun 28 16:42:49 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c (g_signal_lookup): 
