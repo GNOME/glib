@@ -335,8 +335,15 @@ unescape_text (GMarkupParseContext *context,
   const gchar *p;
   UnescapeState state;
   const gchar *start;
+  gboolean normalize_attribute;
 
   str = g_string_new (NULL);
+
+  if (context->state == STATE_INSIDE_ATTRIBUTE_VALUE_SQ ||
+      context->state == STATE_INSIDE_ATTRIBUTE_VALUE_DQ)
+    normalize_attribute = TRUE;
+  else
+    normalize_attribute = FALSE;
 
   state = USTATE_INSIDE_TEXT;
   p = text;
@@ -350,7 +357,26 @@ unescape_text (GMarkupParseContext *context,
         case USTATE_INSIDE_TEXT:
           {
             while (p != text_end && *p != '&')
-              p = g_utf8_next_char (p);
+	      {
+		if ((*p == '\t' || *p == '\n') && normalize_attribute)
+		  {
+		    g_string_append_len (str, start, p - start);
+		    g_string_append_c (str, ' ');
+		    p = g_utf8_next_char (p);
+		    start = p;
+		  }
+		else if (*p == '\r')
+		  {
+		    g_string_append_len (str, start, p - start);
+		    g_string_append_c (str, normalize_attribute ? ' ' : '\n');
+		    p = g_utf8_next_char (p);
+		    if (*p == '\n')
+		      p = g_utf8_next_char (p);
+		    start = p;
+		  }
+		else
+		  p = g_utf8_next_char (p);
+	      }
 
             if (p != start)
               {
@@ -751,6 +777,7 @@ find_current_text_end (GMarkupParseContext *context)
       context->current_text_end = p;
     }
 }
+
 
 static void
 add_attribute (GMarkupParseContext *context, char *name)
@@ -1809,6 +1836,10 @@ append_escaped_text (GString     *str,
  * corresponding entities. This function would typically be used
  * when writing out a file to be parsed with the markup parser.
  * 
+ * Note that this function doesn't protect whitespace and line endings
+ * from being processed according to the XML rules for normalization
+ * of line endings and attribute values.
+ * 
  * Return value: escaped text
  **/
 gchar*
@@ -1965,6 +1996,8 @@ find_conversion (const char  *format,
  * 
  * Return value: newly allocated result from formatting
  *  operation. Free with g_free().
+ *
+ * Since: 2.4
  **/
 char *
 g_markup_vprintf_escaped (const char *format,
@@ -2103,7 +2136,7 @@ g_markup_vprintf_escaped (const char *format,
  * might themselves contain markup.
  *
  * <informalexample><programlisting>
- * const char *store = "Fortnum & Mason";
+ * const char *store = "Fortnum &amp; Mason";
  * const char *item = "Tea";
  * char *output;
  * &nbsp;
@@ -2116,6 +2149,8 @@ g_markup_vprintf_escaped (const char *format,
  * 
  * Return value: newly allocated result from formatting
  *  operation. Free with g_free().
+ *
+ * Since: 2.4
  **/
 char *
 g_markup_printf_escaped (const char *format, ...)

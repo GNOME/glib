@@ -1,3 +1,11 @@
+Wed Oct  8 23:40:26 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmarkup.c (g_markup_printf_escaped): 
+	(g_markup_vprintf_escaped): Document as 2.4 additions.
+	(unescape_text): Implement newline and whitespace normalization
+	according to the XML specification.  (#123919)
+	(g_markup_escape_text): Document whitespace (non)handling.
+
 2003-10-05  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Make the various printf feature test macros
