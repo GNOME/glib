@@ -29,3 +29,5 @@ stamp-h.in
 testgdate
 testgdateparser
 testglib
+annotations
+logs
