@@ -1,3 +1,10 @@
+1999-05-08  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am tests/Makefile.am: Correct rules for making the
+	win32-related files that are made from corresponding .in files.
+	Is there a cleaner way than explicitly writing rules that invoke
+	config.status?
+	
 Sat May  1 10:18:01 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4

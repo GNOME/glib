@@ -80,13 +80,13 @@ testgdateparser_LDADD = libglib.la
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib.m4
 
-glibconfig.h.win32: $(top_builddir)/config.status glibconfig.h.win32.in
+glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-config.h.win32: $(top_builddir)/config.status config.h.win32.in
+config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-makefile.msc: $(top_builddir)/config.status makefile.msc.in
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release sanity snapshot
