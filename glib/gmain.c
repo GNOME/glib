@@ -632,6 +632,8 @@ g_get_current_time (GTimeVal *result)
   FILETIME filetime;
   gint64 t;
 
+  g_return_if_fail (result != NULL);
+
   GetSystemTimeAsFileTime (&filetime);
   t = ((gint64) filetime.dwLowDateTime) +
     ((gint64) filetime.dwHighDateTime) * G_GINT64_CONSTANT (0x100000000);
