@@ -488,7 +488,7 @@ g_on_error_stack_trace
 g_open
 g_option_context_add_group
 g_option_context_add_main_entries
-g_option_error_quark G_GNUC_CONST
+g_option_error_quark
 g_option_context_free
 g_option_context_get_help_enabled
 g_option_context_get_ignore_unknown_options
