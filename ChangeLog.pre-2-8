@@ -1,3 +1,8 @@
+Wed Apr 18 17:35:38 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gutils.c (_glib_gettext): Add missing static pointed
+	out by Michael Meeks.
+
 Wed Apr 18 09:37:07 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* MAINTAINERS: Removed. Keeping README, README.cvs-commits

@@ -1122,7 +1122,7 @@ g_get_codeset (void)
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)
 {
-  gboolean _glib_gettext_initialized = FALSE;
+  static gboolean _glib_gettext_initialized = FALSE;
 
   if (!_glib_gettext_initialized)
     {
