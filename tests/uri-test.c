@@ -307,7 +307,6 @@ run_from_uri_tests (void)
       /* Give some output */
       g_print (".");
     }
-  g_print ("\n");
 }
 
 static gint
@@ -370,6 +369,7 @@ run_roundtrip_tests (void)
       /* Give some output */
       g_print (".");
     }
+  g_print ("\n");
 }
 
 int

@@ -1,3 +1,8 @@
+Sun Aug  1 13:19:18 2004  Manish Singh  <yosh@gimp.org>
+
+	* tests/uri-test.c: move newline printing from run_from_uri_tests()
+	to run_roundtrip_tests().
+
 2004-08-01 Matthias Clasen  <mclasen@redhat.com>
                                                                                 
 	* Post-release version bump
