@@ -1,0 +1,495 @@
+# Icelandic translation of glib
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glib package.
+# Richard Allen <ra@ra.is>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 2.2\n"
+"POT-Creation-Date: 2003-08-20 16:11+0000\n"
+"PO-Revision-Date: 2003-08-18 18:05+0000\n"
+"Last-Translator: Richard Allen <ra@ra.is>\n"
+"Language-Team: is <is@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:402
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "Umbreyting úr stafasettinu '%s' í '%s' er ekki stutt"
+
+#: glib/gconvert.c:406
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Gat ekki opnað umbreyti úr '%s' í '%s': %s"
+
+#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
+#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
+#: glib/gutf8.c:1355
+msgid "Invalid byte sequence in conversion input"
+msgstr "Ógild bætaruna í ílagi umbreytingar"
+
+#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
+#: glib/giochannel.c:2211
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Villa við umbreytingu: %s"
+
+#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
+#: glib/gutf8.c:1351
+msgid "Partial character sequence at end of input"
+msgstr "Ókláruð stafaruna í enda ílags"
+
+#: glib/gconvert.c:800
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Gat ekki umbreytt '%s' í stafatöflu '%s'"
+
+#: glib/gconvert.c:1411
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI '%s' er ekki fullt URI sem notar 'file' skemuna"
+
+#: glib/gconvert.c:1421
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "Skráar-URI '%s' má ekki innihalda '#'"
+
+#: glib/gconvert.c:1438
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI '%s' er ógilt"
+
+#: glib/gconvert.c:1450
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Vélarheitið í URI '%s' er ógilt"
+
+#: glib/gconvert.c:1466
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI '%s' inniheldur ógild sértákn"
+
+#: glib/gconvert.c:1537
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Slóðin '%s' er ekki full slóð"
+
+#: glib/gconvert.c:1547
+msgid "Invalid hostname"
+msgstr "Ógilt vélarheiti"
+
+#: glib/gdir.c:80
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Villa við að opna möppuna '%s': %s"
+
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Gat ekki frátekið %lu bæti til að lesa skrána \"%s\""
+
+#: glib/gfileutils.c:401
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Villa við lestur skráarinnar '%s': %s"
+
+#: glib/gfileutils.c:477
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Gat ekki lesið úr skránni '%s': %s"
+
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Gat ekki opnað skrána '%s': %s"
+
+#: glib/gfileutils.c:538
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "gat ekki lesið eiginleika skráarinnar '%s': fstat() brást: %s"
+
+#: glib/gfileutils.c:564
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Gat ekki opnað skrána '%s': fdopen() brást: %s"
+
+#: glib/gfileutils.c:776
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "Sniðmátið '%s' er ógilt og ætti ekki að innihalda '%s'"
+
+#: glib/gfileutils.c:788
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "Sniðmátið '%s' endar ekki á XXXXXX"
+
+#: glib/gfileutils.c:809
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "gat ekki búið til skrána '%s': %s"
+
+#: glib/gfileutils.c:1150
+#, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "gat ekki lesið tákntengið '%s': %s"
+
+#: glib/gfileutils.c:1169
+msgid "Symbolic links not supported"
+msgstr "Tákntengi eru ekki studd"
+
+#: glib/giochannel.c:1143
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Umbreyting úr stafatöflunni `%s' í `%s' er ekki stutt"
+
+#: glib/giochannel.c:1147
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Gat ekki opnað umbreyti úr `%s' í `%s': %s"
+
+#: glib/giochannel.c:1492
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Gat ekki lesið í g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
+msgid "Leftover unconverted data in read buffer"
+msgstr "Það eru eftir óumbreytt gögn í lesminninu"
+
+#: glib/giochannel.c:1619 glib/giochannel.c:1696
+msgid "Channel terminates in a partial character"
+msgstr "Rásin endar á hluta úr tákni"
+
+#: glib/giochannel.c:1682
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Gat ekki lesið í g_io_channel_read_to_end"
+
+#: glib/gmarkup.c:222
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Villa á línu %d tákn %d: %s"
+
+#: glib/gmarkup.c:306
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Villa á línu %d: %s"
+
+#: glib/gmarkup.c:385
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Tómt viðfang '&;' fannst; gild viðföng eru: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:395
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Táknið '%s' er ógilt í upphafi heiti viðfanga; & táknið byrjar viðfang; ef "
+"Þetta og-merki á ekki að vera byrjun viðfangs ættir þú að rita það sem &amp;"
+
+#: glib/gmarkup.c:431
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Táknið '%s' er ekki gilt í heitum viðfanga"
+
+#: glib/gmarkup.c:475
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Viðfangið '%s' er óþekkt"
+
+#: glib/gmarkup.c:485
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess að "
+"ætla að byrja viðfang. Ritaðu það sem &amp;"
+
+#: glib/gmarkup.c:531
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Gat ekki þáttað '%s' sem ætti að vera tölustafur innan í tilvísun í tákn "
+"(til dæmis &#234;). Ef til vill er talan of stór"
+
+#: glib/gmarkup.c:556
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Tákntilvísunin '%s' vísar ekki í leyfilegt tákn"
+
+#: glib/gmarkup.c:573
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Tóm tákntilvísun; hún ætti að innihalda tölur eins og &#454;"
+
+#: glib/gmarkup.c:583
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess að "
+"ætla að byrja viðfang. Ritaðu það sem &amp;"
+
+#: glib/gmarkup.c:609
+msgid "Unfinished entity reference"
+msgstr "Hálfkláruð viðfangatilvísun"
+
+#: glib/gmarkup.c:615
+msgid "Unfinished character reference"
+msgstr "Hálfkláruð tákntilvísun"
+
+#: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
+msgid "Invalid UTF-8 encoded text"
+msgstr "Ógildur UTF-8 þýddur texti"
+
+#: glib/gmarkup.c:955
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Skjalið verður að byrja á viðfangi (t.d. <book>)"
+
+#: glib/gmarkup.c:994
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' er ekki gilt tákn strax á eftir '<' tákninu; það má ekki byrja á heiti "
+"viðfangs"
+
+#: glib/gmarkup.c:1057
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr "Undarlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
+
+#: glib/gmarkup.c:1144
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Undarlegt tákn '%s', átti von á '=' eftir heiti eiginleika '%s' af mengi '%s'"
+
+#: glib/gmarkup.c:1185
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Undarlegt tákn '%s', átti von á '>' eða '/' tákni rtil þess að enda upphafs "
+"viðfangi '%s', eða eiginleika; Þú notaðir ef til vill ógilt tákn í heiti "
+"eiginleika"
+
+#: glib/gmarkup.c:1268
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Undarlegt tákn '%s', átti von á tilvísunarmerki eftir samasem merkinu þegar "
+"gildi er gefið með eiginleikanum '%s' af menginu '%s'"
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' er ekki gilt tákn strax á eftir '</'; '%s' má ekki vera fyrsta tákn í "
+"heiti mengis"
+
+#: glib/gmarkup.c:1446
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' er ekki gilt tákn strax á eftir lokun mengis '%s'. Leyfilegt tákn er '>'"
+
+#: glib/gmarkup.c:1457
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Mengið '%s' var lokað og engin önnur mengi eru opin"
+
+#: glib/gmarkup.c:1466
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Mengið '%s' var lokað en mengið sem nú er opið er '%s'"
+
+#: glib/gmarkup.c:1613
+msgid "Document was empty or contained only whitespace"
+msgstr "Skjalið var tómt eða innihélt einungis orðabil"
+
+#: glib/gmarkup.c:1627
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Skjalið endar óvænt rétt eftir opið minna en merki '<'"
+
+#: glib/gmarkup.c:1635 glib/gmarkup.c:1679
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Skjalið endar óvænt með mengi sem enn eru opin. '%s' var mengið sem síðast "
+"var opnað"
+
+#: glib/gmarkup.c:1643
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu <%s/>"
+
+#: glib/gmarkup.c:1649
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Skjalið endar óvænt inn í heiti mengis"
+
+#: glib/gmarkup.c:1654
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Skjalið endar óvænt inn í heiti eiginleika"
+
+#: glib/gmarkup.c:1659
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Skjalið endar óvænt inn í tagi sem opnar mengi."
+
+#: glib/gmarkup.c:1665
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og það "
+"er ekkert gildi"
+
+#: glib/gmarkup.c:1672
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Skjalið endar óvænt inn í gildi eiginleika"
+
+#: glib/gmarkup.c:1687
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Skjalið endar óvænt inni í lokunartagi fyrir mengið '%s'"
+
+#: glib/gmarkup.c:1693
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Skjalið endar óvænt inni í athugasemd eða í miðri skipun"
+
+#: glib/gshell.c:72
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Tilvísunin byrjar ekki á spurningarmerki"
+
+#: glib/gshell.c:162
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "Tilvísunarmerki stemma ekki í skipanalínunni eða öðrum texta"
+
+#: glib/gshell.c:530
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Textinn endaði eftir '\\' tákn. (Textinn var '%s')"
+
+#: glib/gshell.c:537
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "Textinn endaði áður en samstaða við %c fannst. (Textinn var '%s')"
+
+#: glib/gshell.c:549
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Textinn var tómur (eða innihélt eingöngu orðabil)"
+
+#: glib/gspawn-win32.c:297
+msgid "Failed to read data from child process"
+msgstr "Gat ekki lesið gögn frá undirferli"
+
+#: glib/gspawn-win32.c:426
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "Óvænt villa í g_io_channel_win32_poll() við lestur úr undirferli"
+
+#: glib/gspawn-win32.c:834 glib/gspawn.c:998
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Gat ekki lesið úr undirferlispípu (%s)"
+
+#: glib/gspawn-win32.c:923
+msgid "Failed to execute helper program"
+msgstr "Gat ekki keyrt hjálparforrit"
+
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Gat ekki keyrt undirferli (%s)"
+
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1203
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Gat ekki farið í möppuna '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1334
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Gat ekki búið til pípu til samskipta við undirferli (%s)"
+
+#: glib/gspawn.c:167
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Gat ekki lesið gögn frá undirferli (%s)"
+
+#: glib/gspawn.c:298
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Óvæn villa í select() við lestur gagna frá undirferli (%s)"
+
+#: glib/gspawn.c:381
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Óvæn villa í waitpid() (%s)"
+
+#: glib/gspawn.c:1063
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Gat ekki ræst (%s)"
+
+#: glib/gspawn.c:1213
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Gat ekki ræst undirferli \"%s\" (%s)"
+
+#: glib/gspawn.c:1223
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Gat ekki sent frálag eða ílag underferlis annað (%s)"
+
+#: glib/gspawn.c:1232
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Gat ekki ræst undirferli (%s)"
+
+#: glib/gspawn.c:1240
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Óþekkt villa við keyrslu undirferlis \"%s\""
+
+#: glib/gspawn.c:1262
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Gat ekki lesið nægjanleg gögn úr pípunni til undirferlisins (%s)"
+
+#: glib/gutf8.c:985
+msgid "Character out of range for UTF-8"
+msgstr "Táknið er utan UTF-8 sviðsins"
+
+#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
+#: glib/gutf8.c:1365 glib/gutf8.c:1461
+msgid "Invalid sequence in conversion input"
+msgstr "Ógild runa í ílagi umbreytingar"
+
+#: glib/gutf8.c:1376 glib/gutf8.c:1472
+msgid "Character out of range for UTF-16"
+msgstr "Táknið er utan UTF-16 sviðsins"
