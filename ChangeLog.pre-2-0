@@ -1,3 +1,8 @@
+1999-11-04  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.{cygwin,msc}.in: Add gwin32 object. Add rule to make .i
+	(preprocessed source) files.
+
 1999-11-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h

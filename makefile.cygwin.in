@@ -74,7 +74,8 @@ glib_OBJECTS = \
 	gstring.o	\
 	gstrfuncs.o	\
 	gscanner.o	\
-	gutils.o
+	gutils.o	\
+	gwin32.o
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
@@ -85,8 +86,13 @@ glibconfig.h: glibconfig.h.win32
 config.h: config.h.win32
 	$(CP) config.h.win32 config.h
 
+.SUFFIXES: .c .o .i
+
 .c.o :
 	$(CC) $(CFLAGS) -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+.c.i :
+	$(CC) $(CFLAGS) -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
 
 gmodule_OBJECTS = \
 	gmodule.o

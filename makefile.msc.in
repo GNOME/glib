@@ -81,7 +81,8 @@ glib_OBJECTS = \
 	gstring.obj	\
 	gstrfuncs.obj	\
 	gscanner.obj	\
-	gutils.obj
+	gutils.obj	\
+	gwin32.obj
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
@@ -94,6 +95,9 @@ config.h: config.h.win32
 
 .c.obj :
 	$(CC) $(CFLAGS) -GD -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+.c.i :
+	$(CC) $(CFLAGS) -GD -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
 
 gmodule_OBJECTS = \
 	gmodule.obj
