@@ -1,3 +1,8 @@
+Fri Oct 26 11:42:50 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* */Makefile.am: Remove $(srcdir)/html before building
+	HTML to prevent stale files. Dist all files in html/
+
 2001-10-25  Havoc Pennington  <hp@pobox.com>
 
 	* glib/tmpl/string_utils.sgml: docs on why the deprecated

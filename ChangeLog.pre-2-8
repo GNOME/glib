@@ -1,3 +1,9 @@
+Wed Oct 24 11:10:54 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Version 1.3.10, interface age, binary age = 0.
+
+	* NEWS: Updates
+
 2001-10-26  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Don't default to win32 thread implementation on
@@ -15,12 +21,6 @@
 	interactive tests, don't run them in the check target.
 
 	* */makefile.msc.in: Include make.msc from GLib's build directory.
-
-Wed Oct 24 11:10:54 2001  Owen Taylor  <otaylor@redhat.com>
-
-	* configure.in: Version 1.3.10, interface age, binary age = 0.
-
-	* NEWS: Updates
 
 Thu Oct 25 12:01:41 2001  Owen Taylor  <otaylor@redhat.com>
 

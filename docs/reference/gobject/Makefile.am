@@ -124,7 +124,8 @@ sgml.stamp: sgml-build.stamp
 
 html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	@echo '*** Building HTML ***'
-	test -d $(srcdir)/html || mkdir $(srcdir)/html
+	rm -rf $(srcdir)/html 
+	mkdir $(srcdir)/html
 	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
 	@echo '-- Fixing Crossreferences' 
@@ -142,8 +143,8 @@ maintainer-clean-local: clean
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-	(installfiles=`echo $(srcdir)/html/*.html`; \
-	if test "$$installfiles" = '$(srcdir)/html/*.html'; \
+	(installfiles=`echo $(srcdir)/html/*`; \
+	if test "$$installfiles" = '$(srcdir)/html/*'; \
 	then echo '-- Nothing to install' ; \
 	else \
 	  for i in $$installfiles; do \
@@ -171,12 +172,6 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
-	-cp $(srcdir)/html/index.sgml $(distdir)/html
-	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
-
-	images=$(HTML_IMAGES) ;    	      \
-	for i in $$images ; do		      \
-	  cp $(srcdir)/$$i $(distdir)/html ;  \
-	done
+	-cp $(srcdir)/html/* $(distdir)/html
 
 .PHONY : dist-hook-local
