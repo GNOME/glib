@@ -143,6 +143,9 @@ GSource      *g_main_context_find_source_by_funcs_user_data (GMainContext *conte
 
 /* Low level functions for implementing custom main loops.
  */
+GMainContext *g_main_context_new     (GThread *thread);
+void          g_main_context_destroy (GMainContext *context);
+
 gboolean g_main_context_prepare  (GMainContext *context,
 				  gint         *priority);
 gint     g_main_context_query    (GMainContext *context,

@@ -102,7 +102,11 @@ EXTRA_DIST += $(gruntime_built_sources)
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
 Makefile: oldest-source-stamp	# oh boy, does automake SUCK!
+
 oldest-source-stamp: $(gruntime_built_sources)
+	@touch oldest-source-stamp
+CLEANFILES+=oldest-source-stamp
+
 $(OBJECTS): oldest-source-stamp  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
 # initial creation of the real stamp-* files
 gmarshal.h:	# never add deps here
@@ -114,24 +118,23 @@ gmarshal.h:	# never add deps here
 # srcdir to be writable, passing --disable-rebuilds to
 # ../configure will supress all autogeneration rules.
 $(srcdir)/stamp-gmarshal.h: @REBUILD@ gmarshal.list gmarshal.h glib-genmarshal
-	cd $(srcdir) \
-	&& echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
+	echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
 	&& echo "#define __G_MARSHAL_H__" >> xgen-gmh \
-	&& ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --header >> xgen-gmh \
+	&& ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
 	&& echo "#endif /* __G_MARSHAL_H__ */" >> xgen-gmh \
-	&& (cmp -s xgen-gmh gmarshal.h || cp xgen-gmh gmarshal.h) \
+	&& (cmp -s xgen-gmh $(srcdir)/gmarshal.h || cp xgen-gmh $(srcdir)/gmarshal.h) \
 	&& rm -f xgen-gmh xgen-gmh~ \
-	&& echo timestamp > $(@F)
+	&& echo timestamp > $@
+
 $(srcdir)/gmarshal.c: @REBUILD@ $(srcdir)/stamp-gmarshal.h
-	cd $(srcdir) \
-	&& ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --body >> xgen-gmc \
-	&& cp xgen-gmc gmarshal.c \
+	./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
+	&& cp xgen-gmc $(srcdir)/gmarshal.c \
 	&& rm -f xgen-gmc xgen-gmc~
+
 $(srcdir)/gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
-	cd $(srcdir) \
-	&& grep '^[A-Z]' $(srcdir)/gmarshal.list \
+	grep '^[A-Z]' $(srcdir)/gmarshal.list \
 	| sed -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
-	&& cp xgen-gms gmarshal.strings \
+	&& cp xgen-gms $(srcdir)/gmarshal.strings \
 	&& rm -f xgen-gms xgen-gms~
 glib-genmarshal.o: gmarshal.strings
 

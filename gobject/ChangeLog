@@ -1,3 +1,11 @@
+2000-12-12  Elliot Lee  <sopwith@redhat.com>
+
+	* Makefile.am:
+	  . You have to 'touch oldest-source-stamp' if you want to avoid having
+	  the Makefile constantly rebuild itself.
+	  . Fix marshaller generation rules to work with srcdir != builddir
+	    (there were issues with trying to run "./glib-genmarshal", etc.)
+
 Mon Dec 11 04:44:11 2000  Tim Janik  <timj@gtk.org>
 
 	* gboxed.c: fixed dealing with collection/lcopy of NULL values.

@@ -485,9 +485,9 @@ g_poll (GPollFD *fds,
 
 #endif	/* !HAVE_POLL */
 
-/* Called to clean up when a thread terminates
+/* Called to clean up, usually when a thread terminates
  */
-static void
+void
 g_main_context_destroy (GMainContext *context)
 {
   GSource *source;
@@ -528,6 +528,73 @@ g_main_context_destroy (GMainContext *context)
 }
 
 /**
+ * g_main_context_new:
+ * @thread: a #GThread (may be NULL)
+ * 
+ * This will create a main-loop context. The context will need to be destroyed
+ * via g_main_context_destroy.
+ * 
+ * Return value: a new main loop context.
+ **/
+GMainContext *
+g_main_context_new(GThread *thread)
+{
+  GMainContext *context;
+
+  context = g_new0 (GMainContext, 1);
+
+#ifdef G_THREADS_ENABLED
+  if (g_thread_supported ())
+    context->mutex = g_mutex_new();
+
+  context->thread = thread;
+#endif
+      
+  context->next_id = 1;
+      
+  context->source_list = NULL;
+
+#if HAVE_POLL
+  context->poll_func = (GPollFunc)poll;
+#else
+  context->poll_func = g_poll;
+#endif
+
+  context->cached_poll_array = NULL;
+  context->cached_poll_array_size = 0;
+      
+  context->pending_dispatches = g_ptr_array_new ();
+      
+  context->time_is_current = FALSE;
+
+#ifdef G_THREADS_ENABLED
+  if (g_thread_supported ())
+    {
+#ifndef G_OS_WIN32
+      if (pipe (context->wake_up_pipe) < 0)
+	g_error ("Cannot create pipe main loop wake-up: %s\n",
+		 g_strerror (errno));
+	  
+      context->wake_up_rec.fd = context->wake_up_pipe[0];
+      context->wake_up_rec.events = G_IO_IN;
+      g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+#else
+      if ((context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL)) == NULL)
+	g_error ("Cannot create wake-up semaphore: %s", g_win32_error_message (GetLastError ()));
+      context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
+      context->wake_up_rec.events = G_IO_IN;
+#ifdef G_MAIN_POLL_DEBUG
+      g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
+#endif
+      g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+#endif
+    }
+#endif
+
+  return context;
+}
+
+/**
  * g_main_context_get:
  * @thread: a #GThread
  * 
@@ -552,55 +619,7 @@ g_main_context_get (GThread *thread)
 
   if (!context)
     {
-      context = g_new0 (GMainContext, 1);
-
-#ifdef G_THREADS_ENABLED
-      if (g_thread_supported ())
-	context->mutex = g_mutex_new();
-
-      context->thread = thread;
-#endif
-      
-      context->next_id = 1;
-      
-      context->source_list = NULL;
-
-#if HAVE_POLL
-      context->poll_func = (GPollFunc)poll;
-#else
-      context->poll_func = g_poll;
-#endif
-
-      context->cached_poll_array = NULL;
-      context->cached_poll_array_size = 0;
-      
-      context->pending_dispatches = g_ptr_array_new ();
-      
-      context->time_is_current = FALSE;
-
-#ifdef G_THREADS_ENABLED
-      if (g_thread_supported ())
-	{
-#ifndef G_OS_WIN32
-	  if (pipe (context->wake_up_pipe) < 0)
-	    g_error ("Cannot create pipe main loop wake-up: %s\n",
-		     g_strerror (errno));
-	  
-	  context->wake_up_rec.fd = context->wake_up_pipe[0];
-	  context->wake_up_rec.events = G_IO_IN;
-	  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-#else
-	  if ((context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL)) == NULL)
-	    g_error ("Cannot create wake-up semaphore: %s", g_win32_error_message (GetLastError ()));
-	  context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
-	  context->wake_up_rec.events = G_IO_IN;
-#ifdef G_MAIN_POLL_DEBUG
-	  g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
-#endif
-	  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-#endif
-	}
-#endif
+      context = g_main_context_new (thread);
 
       if (g_thread_supported ())
 	g_static_private_set_for_thread (&private_key, thread,

@@ -1,3 +1,14 @@
+2000-12-12  Elliot Lee  <sopwith@redhat.com>
+
+	* gmain.c, gmain.h (g_main_context_new, g_main_context_destroy):
+	GMainContext useful in implementing some additional styles of
+	main loop usage.  To do this, however, Joe Hacker needs to be able
+	to create/destroy GMainContext's at will. This is just an export
+	of existing functionality, rather than any new functionality.
+
+	They are listed in the "Low level functions for implementing custom
+	main loops" section of the header file, to avoid confusing people.
+
 Sun Dec 10 10:47:11 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_source_destroy_internal): Remove pollfds
