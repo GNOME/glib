@@ -29,46 +29,48 @@ G_BEGIN_DECLS
 
 /* Basic Type Macros
  */
-#define G_TYPE_FUNDAMENTAL(type)                ((type) & 0xff)
-#define	G_TYPE_FUNDAMENTAL_MAX			(0xff)
-#define G_TYPE_FUNDAMENTAL_LAST                 ((GType) g_type_fundamental_last ())
+#define G_TYPE_FUNDAMENTAL(type)	(g_type_fundamental (type))
+#define	G_TYPE_FUNDAMENTAL_MAX		(255 << G_TYPE_FUNDAMENTAL_SHIFT)
+#define	G_TYPE_FUNDAMENTAL_SHIFT	(2)
 
 
-/* predefined fundamental and derived types
+/* Constant fundamental types
  */
 typedef enum    /*< skip >*/
 {
   /* standard types, introduced by g_type_init() */
-  G_TYPE_INVALID,
-  G_TYPE_NONE,
-  G_TYPE_INTERFACE,
+  G_TYPE_INVALID		=  0 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_NONE			=  1 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_INTERFACE		=  2 << G_TYPE_FUNDAMENTAL_SHIFT,
 
-  /* GLib type ids */
-  G_TYPE_CHAR,
-  G_TYPE_UCHAR,
-  G_TYPE_BOOLEAN,
-  G_TYPE_INT,
-  G_TYPE_UINT,
-  G_TYPE_LONG,
-  G_TYPE_ULONG,
-  G_TYPE_INT64,
-  G_TYPE_UINT64,
-  G_TYPE_ENUM,
-  G_TYPE_FLAGS,
-  G_TYPE_FLOAT,
-  G_TYPE_DOUBLE,
-  G_TYPE_STRING,
-  G_TYPE_POINTER,
-  G_TYPE_BOXED,
-  G_TYPE_PARAM,
-  G_TYPE_OBJECT,
+  /* GLib type IDs */
+  G_TYPE_CHAR			=  3 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_UCHAR			=  4 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_BOOLEAN		=  5 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_INT			=  6 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_UINT			=  7 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_LONG			=  8 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_ULONG			=  9 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_INT64			= 10 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_UINT64			= 11 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_ENUM			= 12 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_FLAGS			= 13 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_FLOAT			= 14 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_DOUBLE			= 15 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_STRING			= 16 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_POINTER		= 17 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_BOXED			= 18 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_PARAM			= 19 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_OBJECT			= 20 << G_TYPE_FUNDAMENTAL_SHIFT,
 
   /* reserved fundamental type ids,
    * mail gtk-devel-list@redhat.com for reservations
    */
-  G_TYPE_RESERVED_BSE_FIRST,
-  G_TYPE_RESERVED_BSE_LAST	= G_TYPE_RESERVED_BSE_FIRST + 15,
-  G_TYPE_RESERVED_LAST_FUNDAMENTAL,
+  G_TYPE_RESERVED_GLIB_FIRST	= 21 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_RESERVED_GLIB_LAST	= 31 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_RESERVED_BSE_FIRST	= 32 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_RESERVED_BSE_LAST	= 48 << G_TYPE_FUNDAMENTAL_SHIFT,
+  G_TYPE_RESERVED_USER_FIRST	= 49 << G_TYPE_FUNDAMENTAL_SHIFT
 } GTypeFundamentals;
 
 
@@ -83,7 +85,6 @@ typedef enum    /*< skip >*/
 #define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
 #define G_TYPE_IS_ABSTRACT(type)                (g_type_test_flags ((type), G_TYPE_FLAG_ABSTRACT))
 #define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_test_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
-#define G_TYPE_IS_PARAM(type)                   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_PARAM)
 #define G_TYPE_IS_VALUE_TYPE(type)              (g_type_check_is_value_type (type))
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)
 
@@ -171,7 +172,6 @@ GType                 g_type_next_base               (GType            leaf_type
 						      GType            root_type);
 gboolean              g_type_is_a                    (GType            type,
 						      GType            is_a_type);
-//FIXME: guint                 g_type_fundamental_branch_last (GType            type);
 gpointer              g_type_class_ref               (GType            type);
 gpointer              g_type_class_peek              (GType            type);
 void                  g_type_class_unref             (gpointer         g_class);
@@ -300,8 +300,8 @@ void  g_type_interface_add_prerequisite (GType			     interface_type,
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
 GTypePlugin*	 g_type_interface_get_plugin	(GType		     instance_type,
 						 GType               implementation_type);
-
-GType		 g_type_fundamental_last	(void);
+GType		 g_type_fundamental_next	(void);
+GType		 g_type_fundamental		(GType		     type_id);
 GTypeInstance*   g_type_create_instance         (GType               type);
 void             g_type_free_instance           (GTypeInstance      *instance);
 void		 g_type_add_class_cache_func    (gpointer	     cache_data,

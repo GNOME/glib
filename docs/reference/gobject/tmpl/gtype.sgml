@@ -82,10 +82,7 @@ for types that are assigned at compile-time.
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
 <para>
-An integer that currently represents the highest value of all
-fundamental type identifiers. This is of interest for dynamic
-introduction of new fundamental types (a
-<emphasis>rarely</emphasis> needed feature).
+
 </para>
 
 
@@ -199,9 +196,11 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_BOXED: 			Identifier for the "#GBoxed" type.
 @G_TYPE_PARAM: 			Identifier for the "#GParam" type.
 @G_TYPE_OBJECT: 		Identifier for the "#GObject" type.
+@G_TYPE_RESERVED_GLIB_FIRST: 
+@G_TYPE_RESERVED_GLIB_LAST: 
 @G_TYPE_RESERVED_BSE_FIRST: 	First fundamental type ID reserved for BSE.
 @G_TYPE_RESERVED_BSE_LAST: 	Last fundamental type ID reserved for BSE.
-@G_TYPE_RESERVED_LAST_FUNDAMENTAL: Last reserved fundamental type ID.
+@G_TYPE_RESERVED_USER_FIRST: 
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
@@ -1105,13 +1104,27 @@ Returns the the #GTypePlugin structure for @type or
 @Returns: 
 
 
-<!-- ##### FUNCTION g_type_fundamental_last ##### -->
+<!-- ##### FUNCTION g_type_fundamental_next ##### -->
 <para>
-Returns the last fundamental type which is registered plus one,
-i.e. the next fundamental type ID that may be registered.
+Returns the next free fundamental type id which can be used to
+register a new fundamental type with g_type_register_fundamental().
+The returned type ID represents the highest currently registered
+fundamental type identifier.
+
 </para>
 
-@Returns: The nextmost not registered fundamental type ID.
+@Returns: The nextmost fundamental type ID to be registered,
+          or 0 if the type system ran out of fundamental type IDs.
+
+
+<!-- ##### FUNCTION g_type_fundamental ##### -->
+<para>
+Internal function, used to extract the fundamental type ID portion.
+use G_TYPE_FUNDAMENTAL() instead.
+</para>
+
+@type_id: valid type ID
+@Returns: fundamental type ID
 
 
 <!-- ##### FUNCTION g_type_create_instance ##### -->
@@ -1119,7 +1132,7 @@ i.e. the next fundamental type ID that may be registered.
 Creates and initializes an instance of @type if @type is valid and can
 be instantiated. The type system only performs basic allocation and
 structure setups for instances, actual instance creation should happen
-through functions supplied by the types fundamental type implementation.
+through functions supplied by the type's fundamental type implementation.
 So use of g_type_create_instance() is reserved for implementators of
 fundamental types only. E.g. instances of the #GObject hierarchy
 should be created via g_object_new() and <emphasis>never</emphasis>

@@ -195,6 +195,13 @@ macro.
 @is_a_type: 
 @Returns: 
 
+<!-- ##### FUNCTION g_type_fundamental_last ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 <!-- ##### FUNCTION g_type_instance_is_a ##### -->
 <para>
 Determines if @instance adheres to the interface exported

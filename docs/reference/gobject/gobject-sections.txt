@@ -78,7 +78,8 @@ g_type_add_interface_dynamic
 g_type_interface_add_prerequisite
 g_type_get_plugin
 g_type_interface_get_plugin
-g_type_fundamental_last
+g_type_fundamental_next
+g_type_fundamental
 g_type_create_instance
 g_type_free_instance
 g_type_add_class_cache_func

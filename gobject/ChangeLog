@@ -1,3 +1,9 @@
+Thu Nov 22 00:26:26 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: provide G_TYPE_FUNDAMENTAL_SHIFT and
+	g_type_fundamental_next() to return next usable fundamental
+	type. use TypeNode pointers as type IDs.
+	
 2001-11-22  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in (DEFINES): Set G_LOG_DOMAIN as in Makefile.am.
@@ -19,7 +25,7 @@ Wed Nov 21 17:23:33 2001  Tim Janik  <timj@gtk.org>
 	G_TYPE_GSTRING.
 
 	* gtype.h: removed fundamental branch APIs and derived enum
-	values.
+	values. define GType as gsize.
 
 2001-11-19  jacob berkman  <jacob@ximian.com>
 
