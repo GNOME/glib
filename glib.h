@@ -654,7 +654,7 @@ void	    g_hash_table_remove		(GHashTable     *hash_table,
 					 gconstpointer	 key);
 gpointer    g_hash_table_lookup		(GHashTable     *hash_table,
 					 gconstpointer   key);
-gboolean    g_hash_table_lookup_full	(GHashTable	*hash_table,
+gboolean    g_hash_table_lookup_extended(GHashTable	*hash_table,
 					 gconstpointer	 lookup_key,
 					 gpointer	*orig_key,
 					 gpointer	*value);

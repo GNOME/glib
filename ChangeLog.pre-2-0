@@ -1,3 +1,9 @@
+Fri Jul 10 00:29:03 EEST 1998 Lauri Alanko <nether@gimp.org>
+
+	* glib.h:
+	* ghash.c: Renamed g_hash_table_lookup_full to
+	g_hash_table_lookup_extended to conform with naming conventions.
+
 Tue Jul  7 03:18:58 EEST 1998 Lauri Alanko <nether@gimp.org>
 
 	* glib.h:
