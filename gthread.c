@@ -166,6 +166,9 @@ g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 
   g_return_if_fail (mutex);
 
+  if (!g_thread_supported ())
+    return;
+
   G_THREAD_UF (thread_self, (&self));
 
   if (g_system_thread_equal (self, mutex->owner))
@@ -184,6 +187,9 @@ g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
   GSystemThread self;
 
   g_return_val_if_fail (mutex, FALSE);
+
+  if (!g_thread_supported ())
+    return TRUE;
 
   G_THREAD_UF (thread_self, (&self));
 
@@ -206,6 +212,9 @@ g_static_rec_mutex_unlock (GStaticRecMutex* mutex)
 {
   g_return_if_fail (mutex);
 
+  if (!g_thread_supported ())
+    return;
+
   if (mutex->depth > 1)
     {
       mutex->depth--;
@@ -221,6 +230,9 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 {
   g_return_if_fail (mutex);
 
+  if (!g_thread_supported ())
+    return;
+
   g_static_mutex_lock (&mutex->mutex);
   G_THREAD_UF (thread_self, (&mutex->owner));
   mutex->depth = depth;
@@ -229,9 +241,14 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 guint    
 g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
-  gint depth = mutex->depth;
+  gint depth;
 
   g_return_val_if_fail (mutex, 0);
+
+  if (!g_thread_supported ())
+    return 1;
+
+  depth = mutex->depth;
 
   g_system_thread_assign (mutex->owner, zero_thread);
   mutex->depth = 0;

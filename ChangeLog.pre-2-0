@@ -1,3 +1,8 @@
+2000-11-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.c (g_static_rec_mutex_*): Made recursive mutexes also
+	work when the thread system is not (yet) initialized.
+
 Sun Nov 12 18:34:32 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gconvert.[ch]: Create wrapper functions for iconv()
