@@ -16,9 +16,9 @@ VS_VERSION_INFO VERSIONINFO
 	VALUE "CompanyName", "The GLib developer community"
 	VALUE "FileDescription", "GModule"
 	VALUE "FileVersion", "@GLIB_VERSION@.BUILDNUMBER"
-	VALUE "InternalName", "libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@"
+	VALUE "InternalName", "libgmodule-2.0-@LT_CURRENT_MINUS_AGE@"
 	VALUE "LegalCopyright", "Copyright © 1998-2000 Tim Janik. Modified by the GLib Team and others 1998-2000."
-	VALUE "OriginalFilename", "libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll"
+	VALUE "OriginalFilename", "libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll"
 	VALUE "ProductName", "GLib"
 	VALUE "ProductVersion", "@GLIB_VERSION@"
       END

@@ -12,8 +12,11 @@
 	* glib/Makefile.am: If !HAVE_GOOD_PRINTF, add libtio.la to LIBADD
 	and DEPENDENCIES.
 
-	* glib/glib.rc.in: Hardcode 2.0 in the names, as that is what the
-	Makefile.am does.
+	* glib/glib.rc.in
+	* gmodule/gmodule.rc.in
+	* gobject/gobject.rc.in
+	* gthread/gthread.rc.in: Hardcode 2.0 in the names, as that is
+	what the Makefile.am does.
 
 2002-11-21  Matthias Clasen  <maclas@gmx.de>
 
