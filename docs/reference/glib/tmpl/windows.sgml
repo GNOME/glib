@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-Windows Compatability Functions
+Windows Compatibility Functions
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -17,7 +17,7 @@ Windows Compatability Functions
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
 Provided for UNIX emulation on Windows; equivalent to UNIX 
-macro MAXPATHLEN, which is the maximum length of a filename
+macro %MAXPATHLEN, which is the maximum length of a filename
 (including full path).
 </para>
 
@@ -26,8 +26,8 @@ macro MAXPATHLEN, which is the maximum length of a filename
 <!-- ##### MACRO NAME_MAX ##### -->
 <para>
 Provided for UNIX emulation on Windows; equivalent to UNIX macro 
-NAME_MAX, which is the maximum length of a single path component.
-i.e. just the "foo" in "/usr/bin/foo".
+%NAME_MAX, which is the maximum length of a single path component.
+i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 </para>
 
 
@@ -40,7 +40,7 @@ Provided for UNIX emulation on Windows; process ID type.
 
 <!-- ##### MACRO pipe ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for pipe()
+Provided for UNIX emulation on Windows; see documentation for <function>pipe()</function>
 in any UNIX manual.
 </para>
 
@@ -49,7 +49,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO ftruncate ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for ftruncate()
+Provided for UNIX emulation on Windows; see documentation for <function>ftruncate()</function>
 in any UNIX manual.
 </para>
 
@@ -59,7 +59,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO opendir ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for opendir()
+Provided for UNIX emulation on Windows; see documentation for <function>opendir()</function>
 in any UNIX manual.
 </para>
 
@@ -67,7 +67,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO readdir ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for readdir()
+Provided for UNIX emulation on Windows; see documentation for <function>readdir()</function>
 in any UNIX manual.
 </para>
 
@@ -75,7 +75,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO rewinddir ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for rewinddir()
+Provided for UNIX emulation on Windows; see documentation for <function>rewinddir()</function>
 in any UNIX manual.
 </para>
 
@@ -83,7 +83,7 @@ in any UNIX manual.
 
 <!-- ##### MACRO closedir ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for closedir()
+Provided for UNIX emulation on Windows; see documentation for <function>closedir()</function>
 in any UNIX manual.
 </para>
 

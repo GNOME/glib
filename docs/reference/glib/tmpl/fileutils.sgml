@@ -16,9 +16,9 @@ File Utilities
 
 <!-- ##### ENUM GFileError ##### -->
 <para>
-Values corresponding to "errno" codes returned from file operations on
-UNIX. Unlike errno codes, #GFileError values are available on all
-systems, even Windows. The exact meaning of each code depends on what
+Values corresponding to <literal>errno</literal> codes returned from file operations
+on UNIX. Unlike <literal>errno</literal> codes, #GFileError values are available on 
+all systems, even Windows. The exact meaning of each code depends on what
 sort of file operation you were performing; the UNIX documentation
 gives more details. The following error code descriptions come 
 from the GNU C Library manual, and are under the copyright

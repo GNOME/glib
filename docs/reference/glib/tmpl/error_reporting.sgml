@@ -42,7 +42,7 @@ For example:
 <programlisting>
 gchar* g_file_get_contents (const gchar *filename, GError **error);
 </programlisting>
-If you pass a non-NULL value for the <literal>error</literal> argument, it should 
+If you pass a non-%NULL value for the <literal>error</literal> argument, it should 
 point to a location where an error can be placed. For example:
 <programlisting>
 gchar *contents;
@@ -65,14 +65,14 @@ else
 Note that <literal>err != NULL</literal> in this example is a
 <emphasis>reliable</emphasis> indicator of whether
 g_file_get_contents() failed. Also, g_file_get_contents() uses the
-convention that a NULL return value means an error occurred (but not
+convention that a %NULL return value means an error occurred (but not
 all functions use this convention).
 </para>
 
 <para>
-Because g_file_get_contents() returns NULL on failure, if you are only
+Because g_file_get_contents() returns %NULL on failure, if you are only
 interested in whether it failed and don't need to display an error message, you
-can pass NULL for the <literal>error</literal> argument:
+can pass %NULL for the <literal>error</literal> argument:
 <programlisting>
 contents = g_file_get_contents ("foo.txt", NULL); /* ignore errors */
 if (contents != NULL)
@@ -88,10 +88,10 @@ the module the error-reporting function is located in, <literal>code</literal>
 indicates the specific error that occurred, and <literal>message</literal> is a
 user-readable error message with as many details as possible. Several functions
 are provided to deal with an error received from a called function:
-g_error_matches() returns TRUE if the error matches a given domain and code,
+g_error_matches() returns %TRUE if the error matches a given domain and code,
 g_propagate_error() copies an error into an error location (so the calling
 function will receive it), and g_clear_error() clears an error location by
-freeing the error and resetting the location to NULL. To display an error to the
+freeing the error and resetting the location to %NULL. To display an error to the
 user, simply display <literal>error-&gt;message</literal>, perhaps along with
 additional context known only to the calling function (the file being opened, or
 whatever -- though in the g_file_get_contents() case,
@@ -102,7 +102,7 @@ whatever -- though in the g_file_get_contents() case,
 When implementing a function that can report errors, the basic tool is
 g_set_error(). Typically, if a fatal error occurs you want to g_set_error(),
 then return immediately. g_set_error() does nothing if the error location passed
-to it is NULL. Here's an example:
+to it is %NULL. Here's an example:
 <programlisting>
 gint
 foo_open_file (GError **error)
@@ -129,7 +129,7 @@ foo_open_file (GError **error)
 <para>
 Things are somewhat more complicated if you yourself call another function that
 can report a #GError. If the sub-function indicates fatal errors in some way
-other than reporting a #GError, such as by returning TRUE on success, you can
+other than reporting a #GError, such as by returning %TRUE on success, you can
 simply do the following:
 <programlisting>
 gboolean
@@ -152,7 +152,7 @@ my_function_that_can_fail (GError **err)
 
 <para>
 If the sub-function does not indicate errors other than by reporting a #GError, 
-you need to create a temporary #GError since the passed-in one may be NULL.
+you need to create a temporary #GError since the passed-in one may be %NULL.
 g_propagate_error() is intended for use in this case.
 <programlisting>
 gboolean
@@ -201,12 +201,12 @@ my_function_that_can_fail (GError **err)
 }
 </programlisting>
 <literal>tmp_error</literal> should be checked immediately after
-sub_function_that_can_fail(), and either cleared or propagated upward.  The rule
+<function>sub_function_that_can_fail()</function>, and either cleared or propagated upward.  The rule
 is: <emphasis>after each error, you must either handle the error, or return it to the
-calling function</emphasis>.  Note that passing NULL for the error location is the
+calling function</emphasis>.  Note that passing %NULL for the error location is the
 equivalent of handling an error by always doing nothing about it. So the
-following code is fine, assuming errors in sub_function_that_can_fail() are not
-fatal to my_function_that_can_fail():
+following code is fine, assuming errors in <function>sub_function_that_can_fail()</function> are not
+fatal to <function>my_function_that_can_fail()</function>:
 <programlisting>
 gboolean
 my_function_that_can_fail (GError **err)
@@ -230,7 +230,7 @@ my_function_that_can_fail (GError **err)
 </para>
 
 <para>
-Note that passing NULL for the error location <emphasis>ignores</emphasis>
+Note that passing %NULL for the error location <emphasis>ignores</emphasis>
 errors; it's equivalent to <literal>try { sub_function_that_can_fail (); } catch
 (...) {}</literal> in C++. It does <emphasis>not</emphasis> mean to leave errors
 unhandled; it means to handle them by doing nothing.
@@ -289,17 +289,17 @@ Summary of rules for use of #GError:
 
       <listitem>
         <para>
-          The caller may pass NULL for the #GError** if they are not interested
+          The caller may pass %NULL for the #GError** if they are not interested
           in details of the exact error that occurred.
         </para>
       </listitem>
 
 	<listitem>
 	  <para>
-           If NULL is passed for the #GError** argument, then errors should 
+           If %NULL is passed for the #GError** argument, then errors should 
            not be returned to the caller, but your function should still 
            abort and return if an error occurs. That is, control flow should
-           not be affected by whether the caller wants to get a #GError.           
+           not be affected by whether the caller wants to get a #GError.
 	  </para>
 	</listitem>
 
@@ -315,7 +315,7 @@ Summary of rules for use of #GError:
 
 	<listitem>
 	  <para>
-          A #GError* must be initialized to NULL before passing its address to
+          A #GError* must be initialized to %NULL before passing its address to
           a function that can report errors.
 	  </para>
 	</listitem>
@@ -323,7 +323,7 @@ Summary of rules for use of #GError:
 	<listitem>
 	  <para>
           "Piling up" errors is always a bug. That is, if you assign a new
-          #GError to a #GError* that is non-NULL, thus overwriting the previous
+          #GError to a #GError* that is non-%NULL, thus overwriting the previous
           error, it indicates that you should have aborted the operation instead
           of continuing. If you were able to continue, you should have cleared
           the previous error with g_clear_error(). g_set_error() will complain
@@ -335,17 +335,17 @@ Summary of rules for use of #GError:
 	<listitem>
 	  <para>
           By convention, if you return a boolean value indicating success 
-          then TRUE means success and FALSE means failure. If FALSE is returned,
-          the error <emphasis>must</emphasis> be set to a non-NULL value. 
+          then %TRUE means success and %FALSE means failure. If %FALSE is returned,
+          the error <emphasis>must</emphasis> be set to a non-%NULL value. 
         </para>
 	</listitem>
 
 
 	<listitem>
 	  <para>
-          A NULL return value is also frequently used to mean that an error
-          occurred.  You should make clear in your documentation whether NULL is
-          a valid return value in non-error cases; if NULL is a valid value,
+          A %NULL return value is also frequently used to mean that an error
+          occurred.  You should make clear in your documentation whether %NULL is
+          a valid return value in non-error cases; if %NULL is a valid value,
           then users must check whether an error was returned to see if the
           function succeeded.
 	  </para>
@@ -355,7 +355,7 @@ Summary of rules for use of #GError:
 	  <para>
           When implementing a function that can report errors, you may want to
           add a check at the top of your function that the error return location
-          is either NULL or contains a NULL error
+          is either %NULL or contains a %NULL error
           (e.g. <literal>g_return_if_fail (error == NULL || *error ==
           NULL);</literal>).
 	  </para>
@@ -375,9 +375,9 @@ Summary of rules for use of #GError:
 
 </para>
 
-@domain: error domain, e.g. #G_FILE_ERROR
-@code: error code, e.g. %G_FILE_ERROR_NOENT
-@message: human-readable informative error message
+@domain: error domain, e.g. #G_FILE_ERROR.
+@code: error code, e.g. %G_FILE_ERROR_NOENT.
+@message: human-readable informative error message.
 
 <!-- ##### FUNCTION g_error_new ##### -->
 <para>

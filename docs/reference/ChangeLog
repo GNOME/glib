@@ -1,3 +1,14 @@
+2001-10-01  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/caches.sgml, glib/tmpl/datalist.sgml,
+	glib/tmpl/hash_tables.sgml, glib/tmpl/messages.sgml,
+	glib/tmpl/misc_utils.sgml: consistently refer to GTK+.
+
+	* glib/tmpl/error_reporting.sgml, glib/tmpl/fileutils.sgml,
+	glib/tmpl/windows.sgml, glib/tmpl/modules.sgml,
+	glib/tmpl/linked_lists_single.sgml, glib/tmpl/trees-nary.sgml,
+	glib/tmpl/trees-binary.sgml, glib/tmpl/timers.sgml: Markup fixes.
+
 2001-09-30  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/arrays.sgml,glib/tmpl/arrays_byte.sgml

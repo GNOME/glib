@@ -17,9 +17,9 @@ These are portable utility functions.
 <!-- ##### FUNCTION g_get_prgname ##### -->
 <para>
 Gets the name of the program.
-(If you are using GDK or GTK the program name is set in gdk_init(), which
+(If you are using GDK or GTK+ the program name is set in gdk_init(), which
 is called by gtk_init(). The program name is found by taking the last
-component of argv[0].)
+component of <literal>argv[0]</literal>.)
 </para>
 
 @Returns: the name of the program.
@@ -39,7 +39,7 @@ Returns an environment variable.
 </para>
 
 @variable: the environment variable to get.
-@Returns: the value of the environment variable, or NULL if the environment
+@Returns: the value of the environment variable, or %NULL if the environment
 variable is not found.
 
 
@@ -54,7 +54,7 @@ Gets the user name of the current user.
 <!-- ##### FUNCTION g_get_real_name ##### -->
 <para>
 Gets the real name of the user. This comes from the user's entry in the
-passwd file.
+<filename>passwd</filename> file.
 </para>
 
 @Returns: the user's real name.
@@ -71,7 +71,8 @@ Gets the current user's home directory.
 <!-- ##### FUNCTION g_get_tmp_dir ##### -->
 <para>
 Gets the directory to use for temporary files.
-This is found from inspecting the environment variables TMPDIR, TMP, and TEMP
+This is found from inspecting the environment variables <envar>TMPDIR</envar>, 
+<envar>TMP</envar>, and <envar>TEMP</envar>
 in that order. If none of those are defined "/tmp" is returned.
 </para>
 
@@ -120,7 +121,7 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_path_is_absolute ##### -->
 <para>
-Returns TRUE if the given @file_name is an absolute file name,
+Returns %TRUE if the given @file_name is an absolute file name,
 i.e. it contains a full path from the root directory such as '/usr/local'
 or 'C:/windows' on windows systems.
 </para>
@@ -133,7 +134,7 @@ or 'C:/windows' on windows systems.
 <para>
 Returns a pointer into @file_name after the root component, i.e. after
 the '/' in Unix or 'C:/' under Windows. If @file_name is not an absolute
-path it returns NULL.
+path it returns %NULL.
 </para>
 
 @file_name: a file name.
@@ -261,7 +262,7 @@ Specifies a function to be called at normal program termination.
 <para>
 Parses a string containing debugging options separated by ':' into a guint
 containing bit flags.
-This is used within GDK and GTK to parse the debug options passed on the
+This is used within GDK and GTK+ to parse the debug options passed on the
 command line or through environment variables.
 </para>
 
@@ -295,7 +296,7 @@ Declares a type of function which takes an arbitrary data pointer argument
 and has no return value. It is not currently used in GLib or GTK+.
 </para>
 
-@data: 
+@data: a data pointer.
 
 
 <!-- ##### FUNCTION g_qsort_with_data ##### -->

@@ -29,7 +29,7 @@ be differentiated from messages from other libraries and application code.
 But be careful not to define it in any public header files.
 </para>
 <para>
-For example, GTK uses this in its Makefile.am:
+For example, GTK+ uses this in its Makefile.am:
 </para>
 <informalexample><programlisting>
 INCLUDES = \

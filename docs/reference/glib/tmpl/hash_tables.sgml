@@ -15,7 +15,7 @@ very quickly.
 Note that neither keys nor values are copied when inserted into the
 #GHashTable, so they must exist for the lifetime of the #GHashTable.
 This means that the use of static strings is OK, but temporary
-strings (i.e. those created in buffers and those returned by GTK widgets)
+strings (i.e. those created in buffers and those returned by GTK+ widgets)
 should be copied with g_strdup() before being inserted.
 </para>
 <para>

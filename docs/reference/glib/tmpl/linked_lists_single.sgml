@@ -34,8 +34,8 @@ the first element in the list. The functions which insert elements return
 the new start of the list, which may have changed.
 </para>
 <para>
-There is no function to create a #GSList. NULL is considered to be the empty
-list so you simply set a #GSList* to NULL.
+There is no function to create a #GSList. %NULL is considered to be the empty
+list so you simply set a #GSList* to %NULL.
 </para>
 <para>
 To add elements, use g_slist_append(), g_slist_prepend(), g_slist_insert()
@@ -155,10 +155,10 @@ to the end of the list.
 Inserts a node before @sibling containing @data. Returns the new head of the list.
 </para>
 
-@slist: a #GSList
-@sibling: node to insert @data before
-@data: data to put in the newly-inserted node
-@Returns: new head of the list
+@slist: a #GSList.
+@sibling: node to insert @data before.
+@data: data to put in the newly-inserted node.
+@Returns: new head of the list.
 
 
 <!-- ##### FUNCTION g_slist_insert_sorted ##### -->
@@ -190,7 +190,7 @@ If none of the elements contain the data, the #GSList is unchanged.
 <!-- ##### FUNCTION g_slist_remove_link ##### -->
 <para>
 Removes an element from a #GSList, without freeing the element.
-The removed element's next link is set to NULL, so that it becomes a
+The removed element's next link is set to %NULL, so that it becomes a
 self-contained list with one element.
 </para>
 
@@ -204,9 +204,9 @@ self-contained list with one element.
 Deletes a node of @list. Returns the new list head.
 </para>
 
-@list: a #GSList
-@link: node to delete
-@Returns: new head of @list
+@list: a #GSList.
+@link: node to delete.
+@Returns: new head of @list.
 
 
 <!-- ##### FUNCTION g_slist_remove_all ##### -->
@@ -216,9 +216,9 @@ head of the list. Contrast with g_slist_remove() which removes only
 the first node matching the given data.
 </para>
 
-@list: a #GSList
-@data: data to remove
-@Returns: new head of @list
+@list: a #GSList.
+@data: data to remove.
+@Returns: new head of @list.
 
 
 <!-- ##### FUNCTION g_slist_free ##### -->
@@ -276,10 +276,7 @@ Sorts a #GSList using the given comparison function.
 </para>
 
 @list: a #GSList.
-@compare_func: the comparison function used to sort the #GSList. This function
-is passed 2 elements of the #GSList and should return 0 if they are equal,
-a negative value if the first element comes before the second, or a positive
-value if the first element comes after the second.
+@compare_func: <function>qsort()</function>-style comparison function.
 @Returns: the start of the sorted #GList.
 
 
@@ -289,9 +286,9 @@ Like g_slist_sort(), but the sort function accepts a user data argument.
 </para>
 
 @list: a #GSList
-@compare_func: qsort()-style comparison function
-@user_data: data to pass to comparison function
-@Returns: new head of the list
+@compare_func: comparison function.
+@user_data: data to pass to comparison function.
+@Returns: new head of the list.
 
 
 <!-- ##### FUNCTION g_slist_concat ##### -->
@@ -322,7 +319,7 @@ Gets the last element in a #GSList.
 </para>
 
 @list: a #GSList.
-@Returns: the last element in the #GSList, or NULL if the #GSList has no
+@Returns: the last element in the #GSList, or %NULL if the #GSList has no
 elements.
 
 
@@ -332,7 +329,7 @@ A convenience macro to gets the next element in a #GSList.
 </para>
 
 @slist: an element in a #GSList.
-@Returns: the next element, or NULL if there are no more elements.
+@Returns: the next element, or %NULL if there are no more elements.
 
 
 <!-- ##### FUNCTION g_slist_nth ##### -->
@@ -342,7 +339,7 @@ Gets the element at the given position in a #GSList.
 
 @list: a #GSList.
 @n: the position of the element, counting from 0.
-@Returns: the element, or NULL if the position is off the end of the #GSList.
+@Returns: the element, or %NULL if the position is off the end of the #GSList.
 
 
 <!-- ##### FUNCTION g_slist_nth_data ##### -->
@@ -352,7 +349,7 @@ Gets the data of the element at the given position.
 
 @list: a #GSList.
 @n: the position of the element.
-@Returns: the element's data, or NULL if the position is off the end of the
+@Returns: the element's data, or %NULL if the position is off the end of the
 #GSList.
 
 
@@ -363,7 +360,7 @@ Finds the element in a #GSList which contains the given data.
 
 @list: a #GSList.
 @data: the element data to find.
-@Returns: the found #GSList element, or NULL if it is not found.
+@Returns: the found #GSList element, or %NULL if it is not found.
 
 
 <!-- ##### FUNCTION g_slist_find_custom ##### -->
@@ -380,7 +377,7 @@ and the given user data.
 @data: user data passed to the function.
 @func: the function to call for each element. It should return 0 when the
 desired element is found.
-@Returns: the found #GSList element, or NULL if it is not found.
+@Returns: the found #GSList element, or %NULL if it is not found.
 
 
 <!-- ##### FUNCTION g_slist_position ##### -->

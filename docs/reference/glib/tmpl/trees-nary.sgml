@@ -86,8 +86,8 @@ Recursively copies a #GNode (but does not deep-copy the data inside the nodes,
 since there's no way for GLib to know how to do that).
 </para>
 
-@node: a #GNode
-@Returns: a new #GNode containing the same data pointers
+@node: a #GNode.
+@Returns: a new #GNode containing the same data pointers.
 
 
 <!-- ##### FUNCTION g_node_insert ##### -->
@@ -108,7 +108,7 @@ Inserts a #GNode beneath the parent before the given sibling.
 </para>
 
 @parent: the #GNode to place @node under.
-@sibling: the sibling #GNode to place @node before. If sibling is NULL,
+@sibling: the sibling #GNode to place @node before. If sibling is %NULL,
 the node is inserted as the last child of @parent.
 @node: the #GNode to insert.
 @Returns: the inserted #GNode.
@@ -120,7 +120,7 @@ Inserts a #GNode beneath the parent after the given sibling.
 </para>
 
 @parent: the #GNode to place @node under.
-@sibling: the sibling #GNode to place @node after. If sibling is NULL,
+@sibling: the sibling #GNode to place @node after. If sibling is %NULL,
 the node is inserted as the first child of @parent.
 @node: the #GNode to insert.
 @Returns: the inserted #GNode.
@@ -202,7 +202,7 @@ Reverses the order of the children of a #GNode.
 <para>
 Traverses a tree starting at the given root #GNode.
 It calls the given function for each node visited.
-The traversal can be halted at any point by returning TRUE from @func.
+The traversal can be halted at any point by returning %TRUE from @func.
 </para>
 
 @root: the root #GNode of the tree to traverse.
@@ -245,12 +245,12 @@ including g_node_traverse() and g_node_find().
 Specifies the type of function passed to g_node_traverse().
 The function is called with each of the nodes visited, together with the
 user data passed to g_node_traverse().
-If the function returns TRUE, then the traversal is stopped.
+If the function returns %TRUE, then the traversal is stopped.
 </para>
 
 @node: a #GNode.
 @data: user data passed to g_node_traverse().
-@Returns: TRUE to stop the traversal.
+@Returns: %TRUE to stop the traversal.
 
 
 <!-- ##### FUNCTION g_node_children_foreach ##### -->
@@ -297,7 +297,7 @@ Finds a #GNode in a tree.
 @flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
 %G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
 @data: the data to find.
-@Returns: the found #GNode, or NULL if the data is not found.
+@Returns: the found #GNode, or %NULL if the data is not found.
 
 
 <!-- ##### FUNCTION g_node_find_child ##### -->
@@ -309,7 +309,7 @@ Finds the first child of a #GNode with the given data.
 @flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
 %G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
 @data: the data to find.
-@Returns: the found child #GNode, or NULL if the data is not found.
+@Returns: the found child #GNode, or %NULL if the data is not found.
 
 
 <!-- ##### FUNCTION g_node_child_index ##### -->
@@ -341,7 +341,7 @@ Gets the first child of a #GNode.
 </para>
 
 @node: a #GNode.
-@Returns: the last child of @node, or NULL if @node is NULL or has no children.
+@Returns: the last child of @node, or %NULL if @node is %NULL or has no children.
 
 
 <!-- ##### FUNCTION g_node_last_child ##### -->
@@ -349,14 +349,14 @@ Gets the first child of a #GNode.
 Gets the last child of a #GNode.
 </para>
 
-@node: a #GNode (must not be NULL).
-@Returns: the last child of @node, or NULL if @node has no children.
+@node: a #GNode (must not be %NULL).
+@Returns: the last child of @node, or %NULL if @node has no children.
 
 
 <!-- ##### FUNCTION g_node_nth_child ##### -->
 <para>
 Gets a child of a #GNode, using the given index.
-The first child is at index 0. If the index is too big, NULL is returned.
+The first child is at index 0. If the index is too big, %NULL is returned.
 </para>
 
 @node: a #GNode.
@@ -380,7 +380,7 @@ Gets the next sibling of a #GNode.
 </para>
 
 @node: a #GNode.
-@Returns: the next sibling of @node, or NULL if @node is NULL.
+@Returns: the next sibling of @node, or %NULL if @node is %NULL.
 
 
 <!-- ##### MACRO g_node_prev_sibling ##### -->
@@ -389,7 +389,7 @@ Gets the previous sibling of a #GNode.
 </para>
 
 @node: a #GNode.
-@Returns: the previous sibling of @node, or NULL if @node is NULL.
+@Returns: the previous sibling of @node, or %NULL if @node is %NULL.
 
 
 <!-- ##### FUNCTION g_node_last_sibling ##### -->
@@ -404,20 +404,20 @@ This could possibly be the node itself.
 
 <!-- ##### MACRO G_NODE_IS_LEAF ##### -->
 <para>
-Returns TRUE if a #GNode is a leaf node.
+Returns %TRUE if a #GNode is a leaf node.
 </para>
 
 @node: a #GNode.
-@Returns: TRUE if the #GNode is a leaf node (i.e. it has no children).
+@Returns: %TRUE if the #GNode is a leaf node (i.e. it has no children).
 
 
 <!-- ##### MACRO G_NODE_IS_ROOT ##### -->
 <para>
-Returns TRUE if a #GNode is the root of a tree.
+Returns %TRUE if a #GNode is the root of a tree.
 </para>
 
 @node: a #GNode.
-@Returns: TRUE if the #GNode is the root of a tree (i.e. it has no parent
+@Returns: %TRUE if the #GNode is the root of a tree (i.e. it has no parent
 or siblings).
 
 
@@ -426,7 +426,7 @@ or siblings).
 Gets the depth of a #GNode.
 </para>
 <para>
-If @node is NULL the depth is 0.
+If @node is %NULL the depth is 0.
 The root node has a depth of 1.
 For the children of the root node the depth is 2. And so on.
 </para>
@@ -457,14 +457,14 @@ Gets the number of children of a #GNode.
 
 <!-- ##### FUNCTION g_node_is_ancestor ##### -->
 <para>
-Returns TRUE if @node is an ancestor of @descendant.
-This is true if node is the parent of descendant, or if node is the
-grandparent of descendant etc.
+Returns %TRUE if @node is an ancestor of @descendant.
+This is true if node is the parent of @descendant, or if node is the
+grandparent of @descendant etc.
 </para>
 
 @node: a #GNode.
 @descendant: a #GNode.
-@Returns: TRUE if @node is an ancestor of @descendant.
+@Returns: %TRUE if @node is an ancestor of @descendant.
 
 
 <!-- ##### FUNCTION g_node_max_height ##### -->
@@ -473,7 +473,7 @@ Gets the maximum height of all branches beneath a #GNode.
 This is the maximum distance from the #GNode to all leaf nodes.
 </para>
 <para>
-If @root is NULL, 0 is returned. If @root has no children, 1 is returned.
+If @root is %NULL, 0 is returned. If @root has no children, 1 is returned.
 If @root has children, 2 is returned. And so on.
 </para>
 
