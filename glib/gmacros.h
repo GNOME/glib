@@ -49,7 +49,7 @@
  */
 #if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
 #define G_GNUC_PURE                            \
-  __attribute__((pure))
+  __attribute__((__pure__))
 #else
 #define G_GNUC_PURE
 #endif

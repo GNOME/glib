@@ -1,3 +1,7 @@
+2001-12-06  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gmacros.h: Do the same for "pure".
+
 2001-12-06  Matthias Clasen  <matthiasc@poet.de>
 
 	The following patch corrects some function attributes. (#61780)
