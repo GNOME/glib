@@ -273,7 +273,7 @@ g_hook_list_invoke (GHookList *hook_list,
       gboolean was_in_call;
       
       g_hook_ref (hook_list, hook);
-      func = hook->func;
+      func = (GHookFunc) hook->func;
       
       was_in_call = G_HOOK_IN_CALL (hook);
       hook->flags |= G_HOOK_FLAG_IN_CALL;
@@ -306,7 +306,7 @@ g_hook_list_invoke_check (GHookList *hook_list,
       gboolean need_destroy;
       
       g_hook_ref (hook_list, hook);
-      func = hook->func;
+      func = (GHookCheckFunc) hook->func;
       
       was_in_call = G_HOOK_IN_CALL (hook);
       hook->flags |= G_HOOK_FLAG_IN_CALL;

@@ -613,6 +613,34 @@ $glib_vacopy
 $glib_inline
 
 #define G_BYTE_ORDER $g_byte_order
+outfile_EOF
+
+  g_bit_sizes="16 32"
+  if test -n "$gint64"; then
+    g_bit_sizes="$g_bit_sizes 64"
+  fi
+
+  for bits in $g_bit_sizes; do                                                  
+    cat >>$outfile <<outfile_EOF                                               
+
+#define GINT${bits}_TO_${g_bs_native}(val)	((gint${bits}) (val))
+#define GUINT${bits}_TO_${g_bs_native}(val)	((guint${bits}) (val))
+#define GINT${bits}_TO_${g_bs_alien}(val)	((gint${bits}) GUINT${bits}_SWAP_LE_BE (val))
+#define GUINT${bits}_TO_${g_bs_alien}(val)	(GUINT${bits}_SWAP_LE_BE (val))
+outfile_EOF
+done
+
+  cat >>$outfile <<outfile_EOF
+
+#define GLONG_TO_LE(val)	((glong) GINT${glongbits}_TO_LE (val))
+#define GULONG_TO_LE(val)	((gulong) GUINT${glongbits}_TO_LE (val))
+#define GLONG_TO_BE(val)	((glong) GINT${glongbits}_TO_BE (val))
+#define GULONG_TO_BE(val)	((gulong) GUINT${glongbits}_TO_BE (val))
+
+#define GINT_TO_LE(val)		((gint) GINT${gintbits}_TO_LE (val))
+#define GUINT_TO_LE(val)	((guint) GUINT${gintbits}_TO_LE (val))
+#define GINT_TO_BE(val)		((gint) GINT${gintbits}_TO_BE (val))
+#define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
 $glib_wc
 
 #ifdef __cplusplus
@@ -666,19 +694,23 @@ x$ac_cv_header_values_h)
 esac
 
 case 2 in
-$ac_cv_sizeof_short) 		gint16=short;;
-$ac_cv_sizeof_int)   		gint16=int;;
+$ac_cv_sizeof_short)		gint16=short;;
+$ac_cv_sizeof_int)		gint16=int;;
 esac
 case 4 in
-$ac_cv_sizeof_short) 		gint32=short;;
-$ac_cv_sizeof_int)  		gint32=int;;
-$ac_cv_sizeof_long) 		gint32=long;;
+$ac_cv_sizeof_short)		gint32=short;;
+$ac_cv_sizeof_int)		gint32=int;;
+$ac_cv_sizeof_long)		gint32=long;;
 esac
 case 8 in
-$ac_cv_sizeof_int)  		gint64=int;;
-$ac_cv_sizeof_long) 		gint64=long;;
-$ac_cv_sizeof_long_long) 	gint64='long long';;
+$ac_cv_sizeof_int)		gint64=int;;
+$ac_cv_sizeof_long)		gint64=long;;
+$ac_cv_sizeof_long_long)	gint64='long long';;
 esac
+
+gintbits=`expr $ac_cv_sizeof_int \* 8`
+glongbits=`expr $ac_cv_sizeof_long \* 8`
+
 
 case $ac_cv_sizeof_void_p in
 $ac_cv_sizeof_int)  	glib_gpi_cast=''        glib_gpui_cast=''         ;;
@@ -747,8 +779,16 @@ if test x$glib_cv_has__inline__ = xyes; then
 fi
 
 case xyes in
-x$ac_cv_c_bigendian)	g_byte_order=G_BIG_ENDIAN 	;;
-*)			g_byte_order=G_LITTLE_ENDIAN	;;
+x$ac_cv_c_bigendian)
+  g_byte_order=G_BIG_ENDIAN
+  g_bs_native=BE
+  g_bs_alien=LE
+  ;;
+*)
+  g_byte_order=G_LITTLE_ENDIAN
+  g_bs_native=LE
+  g_bs_alien=BE
+  ;;
 esac
 
 if test x$glib_wchar_h = xyes; then
