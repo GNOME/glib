@@ -1,3 +1,12 @@
+2001-03-18  Tor Lillqvist  <tml@iki.fi>
+
+	* gspawn-win32.c (SETUP_DEBUG): Add braces to silence gcc -Wall.
+
+	* gspawn-win32-helper.c (write_no_error): Remove unused function.
+
+	* tests/makefile.mingw.in (module-test.exe): Add rules for
+	building module-test.
+
 Wed Mar 14 18:46:54 2001  Tim Janik  <timj@gtk.org>
 
 	* gscanner.[hc]: removed archaic gpointer derived_data; relict and

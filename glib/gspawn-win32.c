@@ -65,10 +65,12 @@
     G_STMT_START					\
       {							\
 	if (debug == -1)				\
-	  if (getenv ("G_SPAWN_WIN32_DEBUG") != NULL)	\
-	    debug = 1;					\
-	  else						\
-	    debug = 0;					\
+	  {						\
+	    if (getenv ("G_SPAWN_WIN32_DEBUG") != NULL)	\
+	      debug = 1;				\
+	    else					\
+	      debug = 0;				\
+	  }						\
       }							\
     G_STMT_END
 #endif

@@ -52,6 +52,13 @@ endif
 .c.exe:
 	$(CC) $(CFLAGS) -o $@ $< -L .. -lglib-$(GLIB_VER) -L ../gthread -lgthread-$(GLIB_VER)
 
+module-test.exe : module-test.o module-test.def
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base,module-test.exp -o module-test.exe module-test.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
+	$(CC) $(CFLAGS) -Wl,module-test.exp -o module-test.exe module-test.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done
 	@echo All tests successful.

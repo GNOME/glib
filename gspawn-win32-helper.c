@@ -36,16 +36,6 @@ write_err_and_exit (gint fd,
   _exit (1);
 }
 
-static void
-write_no_error (gint fd)
-{
-  gint msg = CHILD_NO_ERROR;
-  gint en = 0;
-
-  write (fd, &msg, sizeof(msg));
-  write (fd, &en, sizeof(en));
-}
-
 #ifdef __GNUC__
 #  ifndef _stdcall
 #    define _stdcall  __attribute__((stdcall))
