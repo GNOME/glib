@@ -1,3 +1,16 @@
+1999-08-03  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h
+	* gstrfuncs.c
+	* tests/strfunc-test.c: Rename g_strccpy to g_strcompress and
+	g_strecpy to g_strescape per Tim Janik's suggestion. Dropped the
+	destination parameter, always g_malloc a new string.  Fix bug in
+	g_strcompress, octal digits were gobbled up without limit, should
+	use max three.
+
+	Sources that use g_strescape must have ifdefs to be compilable
+	both with GLib 1.2 and 1.3.
+
 Sat Jul 31 17:52:03 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* glib.h

@@ -1500,7 +1500,7 @@ gchar*  g_strchomp              (gchar        *string);
 #define g_strstrip( string )	g_strchomp (g_strchug (string))
 
 /* String utility functions that return a newly allocated string which
- * ought to be freed from the caller at some point.
+ * ought to be freed with g_free from the caller at some point.
  */
 gchar*	 g_strdup		(const gchar *str);
 gchar*	 g_strdup_printf	(const gchar *format,
@@ -1515,21 +1515,23 @@ gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gchar*   g_strjoin		(const gchar  *separator,
 				 ...); /* NULL terminated */
-/* Copy a string interpreting C string -style escape sequences.
- * The recognized sequences are \b \f \n \r \t \\ \" and the octal format.
+/* Make a copy of a string interpreting C string -style escape
+ * sequences. Inverse of g_strescape. The recognized sequences are \b
+ * \f \n \r \t \\ \" and the octal format.
  */
-gchar*   g_strccpy		(gchar       *dest,
-				 const gchar *source);
-/* Copy a string escaping nonprintable characters like in C strings.
- * Inverse of g_strccpy. The exceptions parameter if non-NULL points
- * to a string containing characters that are not escaped.
- */
-gchar*   g_strecpy		(gchar       *dest,
-				 const gchar *source,
-				 const gchar *exceptions);
+gchar*   g_strcompress		(const gchar *source);
 
-/* deprecated function (used to be a real function) */
-#define g_strescape(src) g_strecpy (g_new (char, strlen (src)*4+1), (src), NULL)
+/* Copy a string escaping nonprintable characters like in C strings.
+ * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
+ * to a string containing characters that are not to be escaped.
+ */
+gchar*   g_strescape		(const gchar *source,
+				 const gchar *exceptions);
+/* Deprecated API:
+ * gchar* g_strescape (const gchar *source);
+ * Luckily this function wasn't much used.
+ * Add a second NULL parameter in calls for mostly identical semantics.
+ */
 
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);

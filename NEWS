@@ -9,7 +9,8 @@ What's new in GLib 1.3.1:
 * Double ended queue implementation.
 * GLib macros for printf() formatting, e.g. G_GULONG_FORMAT = "lu"
 * New thread-safe random number generator Mersenne Twister.
-
+* g_strcompress() added, g_strescape() had a slight API change, and
+  more tightly defined semantics.
 
 Overview of Changes in GLib 1.2.1:
 

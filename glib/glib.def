@@ -366,14 +366,13 @@ EXPORTS
 	g_strcasecmp
 	g_strchomp
 	g_strchug
+	g_strcompress
 	g_strconcat
-	g_strccpy
 	g_strdelimit
 	g_strdown
 	g_strdup
 	g_strdup_printf
 	g_strdup_vprintf
-	g_strecpy
 	g_strerror
 	g_strescape
 	g_strfreev

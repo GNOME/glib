@@ -99,15 +99,14 @@ main (int   argc,
   g_assert (strcmp(string, "00021 test ") == 0);
   g_free (string);
 
-  g_assert (strcmp(g_strccpy(g_malloc(100),
-			     "abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313"),
-		   "abc\\\"\b\f\n\r\t\003\177\234\313") == 0);
-  g_assert (strcmp(g_strecpy(g_malloc(100),
-			     "abc\\\"\b\f\n\r\t\003\177\234\313",
-			     NULL),
+  g_assert (strcmp
+	    (g_strcompress("abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313\\12345z"),
+	     "abc\\\"\b\f\n\r\t\003\177\234\313\12345z") == 0);
+  g_assert (strcmp(g_strescape("abc\\\"\b\f\n\r\t\003\177\234\313",
+			       NULL),
 		   "abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313") == 0);
-  g_assert (strcmp(g_strecpy(g_malloc(100),"abc\\\"\b\f\n\r\t\003\177\234\313",
-			     "\b\f\001\002\003\004"),
+  g_assert (strcmp(g_strescape("abc\\\"\b\f\n\r\t\003\177\234\313",
+			       "\b\f\001\002\003\004"),
 		   "abc\\\\\\\"\b\f\\n\\r\\t\003\\177\\234\\313") == 0);
 
   return 0;

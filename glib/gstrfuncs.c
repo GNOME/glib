@@ -1073,13 +1073,11 @@ g_strdelimit (gchar	  *string,
 }
 
 gchar*
-g_strccpy (gchar       *dest,
-	   const gchar *source)
+g_strcompress (const gchar *source)
 {
-  const gchar *p = source;
+  const gchar *p = source, *octal;
+  gchar *dest = g_malloc (strlen (source) + 1);
   gchar *q = dest;
-
-  g_return_val_if_fail (dest != NULL, NULL);
 
   while (*p)
     {
@@ -1091,7 +1089,8 @@ g_strccpy (gchar       *dest,
 	    case '0':  case '1':  case '2':  case '3':  case '4':
 	    case '5':  case '6':  case '7':
 	      *q = 0;
-	      while ((*p >= '0') && (*p <= '7'))
+	      octal = p;
+	      while ((p < octal + 3) && (*p >= '0') && (*p <= '7'))
 		{
 		  *q = (*q * 8) + (*p - '0');
 		  p++;
@@ -1128,11 +1127,12 @@ g_strccpy (gchar       *dest,
 }
 
 gchar *
-g_strecpy (gchar       *dest,
-	   const gchar *src,
-	   const gchar *exceptions)
+g_strescape (const gchar *source,
+	     const gchar *exceptions)
 {
-  const guchar *p = (guchar *) src;
+  const guchar *p = (guchar *) source;
+  /* Each source byte needs maximally four destination chars (\777) */
+  gchar *dest = g_malloc (strlen (source) * 4 + 1);
   gchar *q = dest;
   guchar excmap[256];
 
