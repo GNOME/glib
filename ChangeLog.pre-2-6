@@ -1,3 +1,21 @@
+Sat Jan  2 02:20:59 1999  Tim Janik  <timj@gtk.org>
+
+	* ghook.c:
+	(g_hook_list_invoke): 
+	(g_hook_list_invoke_check): 
+	(g_hook_list_marshal_check): 
+	(g_hook_list_marshal): avoid unneccessary extra hook referencing (the
+	explicit hook referencing became unneccessarry with my changes from
+	Mon Dec 21 21:48:29 1998).
+
+	* gmain.c (g_main_iterate): fixed reference counting leaks with
+ 	premature loop aborts.
+
+Fri Jan  1 22:47:44 1999  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): handle G_TOKEN_IDENTIFIER_NULL
+	as G_TOKEN_IDENTIFIER.
+
 Fri Jan  1 17:09:19 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* configure.in, glib.h:

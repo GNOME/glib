@@ -234,11 +234,11 @@ g_scanner_free_value (GTokenType     *token_p,
 {
   switch (*token_p)
     {
-    case  G_TOKEN_STRING:
-    case  G_TOKEN_IDENTIFIER:
-    case  G_TOKEN_IDENTIFIER_NULL:
-    case  G_TOKEN_COMMENT_SINGLE:
-    case  G_TOKEN_COMMENT_MULTI:
+    case G_TOKEN_STRING:
+    case G_TOKEN_IDENTIFIER:
+    case G_TOKEN_IDENTIFIER_NULL:
+    case G_TOKEN_COMMENT_SINGLE:
+    case G_TOKEN_COMMENT_MULTI:
       g_free (value_p->v_string);
       break;
       
@@ -871,7 +871,7 @@ g_scanner_unexp_token (GScanner		*scanner,
   
   switch (scanner->token)
     {
-    case  G_TOKEN_EOF:
+    case G_TOKEN_EOF:
       g_snprintf (token_string, token_string_len, "end of file");
       break;
       
@@ -892,7 +892,7 @@ g_scanner_unexp_token (GScanner		*scanner,
 	  break;
 	}
       /* fall through */
-    case  G_TOKEN_SYMBOL:
+    case G_TOKEN_SYMBOL:
       if (expected_token == G_TOKEN_SYMBOL ||
 	  (scanner->config->symbol_2_token &&
 	   expected_token > G_TOKEN_LAST))
@@ -912,52 +912,54 @@ g_scanner_unexp_token (GScanner		*scanner,
 		    symbol_spec);
       break;
       
-    case  G_TOKEN_ERROR:
+    case G_TOKEN_ERROR:
       print_unexp = FALSE;
       expected_token = G_TOKEN_NONE;
       switch (scanner->value.v_error)
 	{
-	case  G_ERR_UNEXP_EOF:
+	case G_ERR_UNEXP_EOF:
 	  g_snprintf (token_string, token_string_len, "scanner: unexpected end of file");
 	  break;
 	  
-	case  G_ERR_UNEXP_EOF_IN_STRING:
+	case G_ERR_UNEXP_EOF_IN_STRING:
 	  g_snprintf (token_string, token_string_len, "scanner: unterminated string constant");
 	  break;
 	  
-	case  G_ERR_UNEXP_EOF_IN_COMMENT:
+	case G_ERR_UNEXP_EOF_IN_COMMENT:
 	  g_snprintf (token_string, token_string_len, "scanner: unterminated comment");
 	  break;
 	  
-	case  G_ERR_NON_DIGIT_IN_CONST:
+	case G_ERR_NON_DIGIT_IN_CONST:
 	  g_snprintf (token_string, token_string_len, "scanner: non digit in constant");
 	  break;
 	  
-	case  G_ERR_FLOAT_RADIX:
+	case G_ERR_FLOAT_RADIX:
 	  g_snprintf (token_string, token_string_len, "scanner: invalid radix for floating constant");
 	  break;
 	  
-	case  G_ERR_FLOAT_MALFORMED:
+	case G_ERR_FLOAT_MALFORMED:
 	  g_snprintf (token_string, token_string_len, "scanner: malformed floating constant");
 	  break;
 	  
-	case  G_ERR_DIGIT_RADIX:
+	case G_ERR_DIGIT_RADIX:
 	  g_snprintf (token_string, token_string_len, "scanner: digit is beyond radix");
 	  break;
 	  
-	case  G_ERR_UNKNOWN:
+	case G_ERR_UNKNOWN:
 	default:
 	  g_snprintf (token_string, token_string_len, "scanner: unknown error");
 	  break;
 	}
       break;
       
-    case  G_TOKEN_CHAR:
+    case G_TOKEN_CHAR:
       g_snprintf (token_string, token_string_len, "character `%c'", scanner->value.v_char);
       break;
       
-    case  G_TOKEN_IDENTIFIER:
-      if (expected_token == G_TOKEN_IDENTIFIER)
+    case G_TOKEN_IDENTIFIER:
+    case G_TOKEN_IDENTIFIER_NULL:
+      if (expected_token == G_TOKEN_IDENTIFIER ||
+	  expected_token == G_TOKEN_IDENTIFIER_NULL)
 	print_unexp = FALSE;
       g_snprintf (token_string,
 		  token_string_len,
@@ -967,18 +969,18 @@ g_scanner_unexp_token (GScanner		*scanner,
 		  scanner->value.v_string);
       break;
       
-    case  G_TOKEN_BINARY:
-    case  G_TOKEN_OCTAL:
-    case  G_TOKEN_INT:
-    case  G_TOKEN_HEX:
+    case G_TOKEN_BINARY:
+    case G_TOKEN_OCTAL:
+    case G_TOKEN_INT:
+    case G_TOKEN_HEX:
       g_snprintf (token_string, token_string_len, "number `%ld'", scanner->value.v_int);
       break;
       
-    case  G_TOKEN_FLOAT:
+    case G_TOKEN_FLOAT:
       g_snprintf (token_string, token_string_len, "number `%.3f'", scanner->value.v_float);
       break;
       
-    case  G_TOKEN_STRING:
+    case G_TOKEN_STRING:
       if (expected_token == G_TOKEN_STRING)
 	print_unexp = FALSE;
       g_snprintf (token_string,
@@ -991,12 +993,12 @@ g_scanner_unexp_token (GScanner		*scanner,
       token_string[token_string_len - 1] = 0;
       break;
       
-    case  G_TOKEN_COMMENT_SINGLE:
-    case  G_TOKEN_COMMENT_MULTI:
+    case G_TOKEN_COMMENT_SINGLE:
+    case G_TOKEN_COMMENT_MULTI:
       g_snprintf (token_string, token_string_len, "comment");
       break;
       
-    case  G_TOKEN_NONE:
+    case G_TOKEN_NONE:
       /* somehow the user's parsing code is screwed, there isn't much
        * we can do about it.
        * Note, a common case to trigger this is
@@ -1029,7 +1031,7 @@ g_scanner_unexp_token (GScanner		*scanner,
 	  break;
 	}
       /* fall through */
-    case  G_TOKEN_SYMBOL:
+    case G_TOKEN_SYMBOL:
       need_valid = (scanner->token == G_TOKEN_SYMBOL ||
 		    (scanner->config->symbol_2_token &&
 		     scanner->token > G_TOKEN_LAST));
@@ -1041,30 +1043,32 @@ g_scanner_unexp_token (GScanner		*scanner,
       /* FIXME: should we attempt to lookup the symbol_name for symbol_2_token? */
       break;
       
-    case  G_TOKEN_INT:
+    case G_TOKEN_INT:
       g_snprintf (expected_string, expected_string_len, "number (integer)");
       break;
       
-    case  G_TOKEN_FLOAT:
+    case G_TOKEN_FLOAT:
       g_snprintf (expected_string, expected_string_len, "number (float)");
       break;
       
-    case  G_TOKEN_STRING:
+    case G_TOKEN_STRING:
       g_snprintf (expected_string,
 		  expected_string_len,
 		  "%sstring constant",
 		  scanner->token == G_TOKEN_STRING ? "valid " : "");
       break;
       
-    case  G_TOKEN_IDENTIFIER:
+    case G_TOKEN_IDENTIFIER:
+    case G_TOKEN_IDENTIFIER_NULL:
       g_snprintf (expected_string,
 		  expected_string_len,
 		  "%s%s",
-		  scanner->token == G_TOKEN_IDENTIFIER ? "valid " : "",
+		  (scanner->token == G_TOKEN_IDENTIFIER_NULL ||
+		   scanner->token == G_TOKEN_IDENTIFIER ? "valid " : ""),
 		  identifier_spec);
       break;
       
-    case  G_TOKEN_NONE:
+    case G_TOKEN_NONE:
       break;
     }
   
@@ -1238,13 +1242,13 @@ g_scanner_get_token_ll	(GScanner	*scanner,
       
       switch (ch)
 	{
-	case  0:
+	case 0:
 	  token = G_TOKEN_EOF;
 	  (*position_p)++;
 	  /* ch = 0; */
 	  break;
 	  
-	case  '/':
+	case '/':
 	  if (!config->scan_comment_multi ||
 	      g_scanner_peek_next_char (scanner) != '*')
 	    goto default_case;
@@ -1266,7 +1270,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  ch = 0;
 	  break;
 	  
-	case  '\'':
+	case '\'':
 	  if (!config->scan_string_sq)
 	    goto default_case;
 	  token = G_TOKEN_STRING;
@@ -1285,7 +1289,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  ch = 0;
 	  break;
 	  
-	case  '"':
+	case '"':
 	  if (!config->scan_string_dq)
 	    goto default_case;
 	  token = G_TOKEN_STRING;
@@ -1308,41 +1312,41 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 			  register guint	i;
 			  register guint	fchar;
 			  
-			case  0:
+			case 0:
 			  break;
 			  
-			case  '\\':
+			case '\\':
 			  gstring = g_string_append_c (gstring, '\\');
 			  break;
 			  
-			case  'n':
+			case 'n':
 			  gstring = g_string_append_c (gstring, '\n');
 			  break;
 			  
-			case  't':
+			case 't':
 			  gstring = g_string_append_c (gstring, '\t');
 			  break;
 			  
-			case  'r':
+			case 'r':
 			  gstring = g_string_append_c (gstring, '\r');
 			  break;
 			  
-			case  'b':
+			case 'b':
 			  gstring = g_string_append_c (gstring, '\b');
 			  break;
 			  
-			case  'f':
+			case 'f':
 			  gstring = g_string_append_c (gstring, '\f');
 			  break;
 			  
-			case  '0':
-			case  '1':
-			case  '2':
-			case  '3':
-			case  '4':
-			case  '5':
-			case  '6':
-			case  '7':
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
 			  i = ch - '0';
 			  fchar = g_scanner_peek_next_char (scanner);
 			  if (fchar >= '0' && fchar <= '7')
@@ -1371,7 +1375,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  ch = 0;
 	  break;
 	  
-	case  '.':
+	case '.':
 	  if (!config->scan_float)
 	    goto default_case;
 	  token = G_TOKEN_FLOAT;
@@ -1379,14 +1383,14 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  ch = g_scanner_get_char (scanner, line_p, position_p);
 	  goto number_parsing;
 	  
-	case  '$':
+	case '$':
 	  if (!config->scan_hex_dollar)
 	    goto default_case;
 	  token = G_TOKEN_HEX;
 	  ch = g_scanner_get_char (scanner, line_p, position_p);
 	  goto number_parsing;
 	  
-	case  '0':
+	case '0':
 	  if (config->scan_octal)
 	    token = G_TOKEN_OCTAL;
 	  else
@@ -1435,15 +1439,15 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  else
 	    ch = '0';
 	  /* fall through */
-	case  '1':
-	case  '2':
-	case  '3':
-	case  '4':
-	case  '5':
-	case  '6':
-	case  '7':
-	case  '8':
-	case  '9':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
 	number_parsing:
 	{
           register gboolean in_number = TRUE;

@@ -273,11 +273,9 @@ g_hook_list_invoke (GHookList *hook_list,
   hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      GHook *tmp;
       GHookFunc func;
       gboolean was_in_call;
       
-      g_hook_ref (hook_list, hook);
       func = (GHookFunc) hook->func;
       
       was_in_call = G_HOOK_IN_CALL (hook);
@@ -286,10 +284,7 @@ g_hook_list_invoke (GHookList *hook_list,
       if (!was_in_call)
 	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
       
-      tmp = g_hook_next_valid (hook_list, hook, may_recurse);
-      
-      g_hook_unref (hook_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (hook_list, hook, may_recurse);
     }
 }
 
@@ -305,12 +300,10 @@ g_hook_list_invoke_check (GHookList *hook_list,
   hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      GHook *tmp;
       GHookCheckFunc func;
       gboolean was_in_call;
       gboolean need_destroy;
       
-      g_hook_ref (hook_list, hook);
       func = (GHookCheckFunc) hook->func;
       
       was_in_call = G_HOOK_IN_CALL (hook);
@@ -321,10 +314,7 @@ g_hook_list_invoke_check (GHookList *hook_list,
       if (need_destroy)
 	g_hook_destroy_link (hook_list, hook);
       
-      tmp = g_hook_next_valid (hook_list, hook, may_recurse);
-      
-      g_hook_unref (hook_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (hook_list, hook, may_recurse);
     }
 }
 
@@ -343,11 +333,8 @@ g_hook_list_marshal_check (GHookList	       *hook_list,
   hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      GHook *tmp;
       gboolean was_in_call;
       gboolean need_destroy;
-      
-      g_hook_ref (hook_list, hook);
       
       was_in_call = G_HOOK_IN_CALL (hook);
       hook->flags |= G_HOOK_FLAG_IN_CALL;
@@ -357,10 +344,7 @@ g_hook_list_marshal_check (GHookList	       *hook_list,
       if (need_destroy)
 	g_hook_destroy_link (hook_list, hook);
       
-      tmp = g_hook_next_valid (hook_list, hook, may_recurse);
-      
-      g_hook_unref (hook_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (hook_list, hook, may_recurse);
     }
 }
 
@@ -379,10 +363,7 @@ g_hook_list_marshal (GHookList		     *hook_list,
   hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      GHook *tmp;
       gboolean was_in_call;
-      
-      g_hook_ref (hook_list, hook);
       
       was_in_call = G_HOOK_IN_CALL (hook);
       hook->flags |= G_HOOK_FLAG_IN_CALL;
@@ -390,10 +371,7 @@ g_hook_list_marshal (GHookList		     *hook_list,
       if (!was_in_call)
 	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
       
-      tmp = g_hook_next_valid (hook_list, hook, may_recurse);
-      
-      g_hook_unref (hook_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (hook_list, hook, may_recurse);
     }
 }
 

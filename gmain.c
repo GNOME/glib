@@ -402,7 +402,7 @@ g_main_dispatch (GTimeVal *current_time)
 	    }
 	}
 
-      g_hook_unref (&source_list, (GHook *)source);
+      g_hook_unref (&source_list, (GHook*) source);
     }
 }
 
@@ -472,19 +472,19 @@ g_main_iterate (gboolean block,
   while (hook)
     {
       GSource *source = (GSource *)hook;
-      GHook *tmp;
       gint source_timeout = -1;
 
       if ((n_ready > 0) && (source->priority > current_priority))
-	break;
+	{
+	  g_hook_unref (&source_list, hook);
+	  break;
+	}
       if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
 	  hook = g_hook_next_valid (&source_list, hook, TRUE);
 	  continue;
 	}
 
-      g_hook_ref (&source_list, hook);
-      
       if (hook->flags & G_SOURCE_READY ||
 	  ((GSourceFuncs *) hook->func)->prepare (source->source_data,
 						  &current_time,
@@ -515,10 +515,7 @@ g_main_iterate (gboolean block,
 	    timeout = MIN (timeout, source_timeout);
 	}
 
-      tmp = g_hook_next_valid (&source_list, hook, TRUE);
-      
-      g_hook_unref (&source_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
 
   /* poll(), if necessary */
@@ -533,17 +530,17 @@ g_main_iterate (gboolean block,
   while (hook)
     {
       GSource *source = (GSource *)hook;
-      GHook *tmp;
 
       if ((n_ready > 0) && (source->priority > current_priority))
-	break;
+	{
+	  g_hook_unref (&source_list, hook);
+	  break;
+	}
       if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
 	  hook = g_hook_next_valid (&source_list, hook, TRUE);
 	  continue;
 	}
-
-      g_hook_ref (&source_list, hook);
 
       if (hook->flags & G_SOURCE_READY ||
 	  ((GSourceFuncs *) hook->func)->check (source->source_data,
@@ -566,10 +563,7 @@ g_main_iterate (gboolean block,
 	    }
 	}
       
-      tmp = g_hook_next_valid (&source_list, hook, TRUE);
-      
-      g_hook_unref (&source_list, hook);
-      hook = tmp;
+      hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
 
   /* Now invoke the callbacks */
