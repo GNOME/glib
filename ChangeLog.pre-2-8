@@ -1,3 +1,8 @@
+Mon Jul  6 10:12:05 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* ltconfig: fix for properly detecting shared lib support on
+	SunPro cc (taken from libtool 1.2.a)
+
 Sat Jul  4 13:38:52 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: added g_array_length
