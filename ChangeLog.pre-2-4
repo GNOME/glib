@@ -1,3 +1,20 @@
+2000-02-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h
+	* gstrfuncs.c (g_filename_to_utf8, g_filename_from_utf8): New
+	functions for conversion between UTF-8 and the encoding expected
+	by C runtime functions like open() and stat(), and returned by
+	readdir().
+
+	Implement them on Win32 where we use the system "ANSI" codepage,
+	which might be single-byte or double-byte. On Unix, just skip the
+	issue for now and provide dummy implementations that return a copy
+	of the argument.
+
+	* README.win32
+	* build-dll
+	* glib.def: Minor updates.
+
 Wed Jan 26 05:24:38 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

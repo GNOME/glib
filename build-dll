@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Temporary hack until building dlls or executables with exported
-# entry points is easier with gcc -mno-cygwin ("mingw32").
+# Temporary hack until building dlls is easier with gcc -mno-cygwin
+# ("mingw32").
 
 # This is usable with cygwin b20.1 and egcs-2.91.66 19990314
-# (egcs-1.1.2 release) or gcc-2.95 as distributed by Mumit Khan. For
+# (egcs-1.1.2 release) or gcc-2.95(.2) as distributed by Mumit Khan. For
 # other combinations, no idea.
 
 GCC="gcc"

@@ -1604,6 +1604,13 @@ gchar*   g_strcompress		(const gchar *source);
  */
 gchar*   g_strescape		(const gchar *source,
 				 const gchar *exceptions);
+/*
+ * Convert between the operating system (or C runtime)
+ * representation of file names and UTF-8.
+ */
+gchar*   g_filename_to_utf8 (const gchar *opsysstring);
+gchar*   g_filename_from_utf8 (const gchar *utf8string);
+
 /* Deprecated API:
  * gchar* g_strescape (const gchar *source);
  * Luckily this function wasn't much used.

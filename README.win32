@@ -54,6 +54,14 @@ changed to G_OS_WIN32.
 
 G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL.
 
+Building software that use GLib or GTk+
+=======================================
+
+Unfortunately, even building software that just *use* GLib or GTk+
+also require to have the right compiler set up the right way, so if
+you intend to use gcc, follow the relevant instructions below in that
+case, too.
+
 Pthreads library
 ================
 
@@ -91,12 +99,9 @@ Building with gcc
 I use the latest and greatest gcc, gcc-2.95.2. 2.95 will also work.
 Earlier version might, but you are on your own.
 
-Read and understand these instruction carefully. If you don't
+Read these instruction carefully and understand them. If you don't
 understand or can't follow the instructions, you probably shouldn't
-want to build GLib (or GTk+ or GIMP) yourself anyway. Unfortunately,
-even building software that just *use* GLib or GTk+ also require to
-have the right compiler set up the right way, so follow these
-instructions in that case, too.
+want to build GLib (or GTk+ or GIMP) yourself anyway. 
 
 0) Get and install Cygwin B20.1.
 
@@ -269,6 +274,26 @@ diff -ru2 ./w32api/include/wingdi.h ../../src/mingw-runtime-19991107/w32api/incl
  #define FW_BLACK	FW_HEAVY
 
 ================ cut here ================
+
+   fpos_t should be long long with MSVCRT.DLL:
+
+================ cut here ================
+--- stdio.h~	Thu Aug 19 02:47:42 1999
++++ stdio.h	Mon Jan 17 21:58:20 2000
+@@ -296,6 +296,11 @@
+  * it is fairly evident that the fpos_t type is a long (in CRTDLL.DLL).
+  * Perhaps an unsigned long? TODO?
++ * In MSVCRT.DLL it's a long long, however.
+  */
++#ifdef __MSVCRT__
++typedef long long fpos_t;
++#else
+ typedef long	fpos_t;
++#endif
+ 
+ int	fgetpos	(FILE* fileGetPosition, fpos_t* pfpos);
+================ cut here ================
+
 
    (I haven't checked yet if other small errors I have noticed in
    previous w32api header versions have been corrected.)

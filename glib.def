@@ -88,6 +88,8 @@ EXPORTS
 	g_direct_equal
 	g_direct_hash
 	g_dirname
+	g_filename_from_utf8
+	g_filename_to_utf8
 	g_free
 	g_get_current_dir
 	g_get_current_time
@@ -348,7 +350,6 @@ EXPORTS
 	g_source_remove
 	g_source_remove_by_source_data
 	g_source_remove_by_user_data
-        g_spaced_primes_closest
 	g_static_mutex_get_mutex_impl
 	g_static_private_get
 	g_static_private_set
@@ -446,3 +447,4 @@ EXPORTS
 	glib_major_version
 	glib_micro_version
 	glib_minor_version
+        g_spaced_primes_closest
