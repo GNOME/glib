@@ -1,5 +1,10 @@
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Protect the the various push/pop allocator
+	functions by #ifndef DISABLE_MEM_POOLS.  (#160215, Frederic Crozat)
+
+	* glib/makegalias.pl: Support #ifndef'ed sections.
+
 	* glib/gutils.c (g_get_system_config_dirs): Don't forget to 
 	initialize g_system_config_dirs.  (#160213, Frederic Crozat)
 

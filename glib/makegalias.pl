@@ -70,7 +70,7 @@ while (<>) {
       next;
   }
 
-  if ($_ =~ /^\#ifdef\s+G/)
+  if ($_ =~ /^\#ifn?def\s+(G|DISABLE_MEM_POOLS)/)
   {
       print $_;
       
