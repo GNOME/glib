@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.2.0\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
-"PO-Revision-Date: 2003-04-28 07:58+0200\n"
+"POT-Creation-Date: 2003-07-14 07:08+0200\n"
+"PO-Revision-Date: 2003-07-14 07:07+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -158,14 +158,6 @@ msgstr "Kanal se završava delimičnim znakom"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ne može da čita sirovo u g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Neispravna veličina poruke"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Mrežna greška"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -433,9 +425,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Neuspelo čitanje iz podređene cevke (%s)"
 
 #: glib/gspawn-win32.c:871
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Neuspelo izvršavanje podređenog procesa (%s)"
+msgstr "Neuspelo izvršavanje pomoćnog programa"
 
 #: glib/gspawn-win32.c:904 glib/gspawn.c:1207
 #, c-format
@@ -512,6 +503,3 @@ msgstr "Neispravan niz u unosu za pretvaranje"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Znak van granica UTF-16"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "Nepodržana podešavanja kanala"
