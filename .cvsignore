@@ -16,3 +16,6 @@ testglib
 config.cache
 glib-config
 libglib.la
+config.h.in
+config.h
+stamp-gc-h

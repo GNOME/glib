@@ -204,6 +204,7 @@ EXPORTS
 	g_scanner_scope_remove_symbol
 	g_scanner_set_scope
 	g_scanner_stat_mode
+	g_scanner_sync_file_offset
 	g_scanner_thaw_symbol_table
 	g_scanner_unexp_token
 	g_scanner_warn
@@ -245,6 +246,7 @@ EXPORTS
 	g_strdup_printf
 	g_strdup_vprintf
 	g_strerror
+	g_strfreev
 	g_string_append
 	g_string_append_c
 	g_string_assign
@@ -265,11 +267,13 @@ EXPORTS
 	g_string_sprintfa
 	g_string_truncate
 	g_string_up
+	g_strjoinv
 	g_strescape
 	g_strndup
 	g_strnfill
 	g_strreverse
 	g_strsignal
+	g_strsplit
 	g_strtod
 	g_strup
 	g_timer_destroy

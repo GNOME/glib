@@ -587,7 +587,7 @@ typedef gint32	GTime;
 #  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
 #endif /* __i386__ */
 
-#ifdef HAVE_GINT64
+#ifdef G_HAVE_GINT64
 #define GUINT64_SWAP_LE_BE(val)         ((guint64) ( \
     (((guint64) (val) & (guint64) 0x00000000000000ffU) << 56) | \
     (((guint64) (val) & (guint64) 0x000000000000ff00U) << 40) | \
@@ -625,7 +625,7 @@ typedef gint32	GTime;
 #  define GUINT32_FROM_LE(val)		((guint32) (val))
 #  define GINT32_FROM_BE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
 #  define GUINT32_FROM_BE(val)		(GUINT32_SWAP_LE_BE (val))
-#  ifdef HAVE_GINT64
+#  ifdef G_HAVE_GINT64
 #  define GINT64_TO_LE(val)		((gint64) (val))
 #  define GUINT64_TO_LE(val)		((guint64) (val))
 #  define GINT64_TO_BE(val)		((gint64) GUINT64_SWAP_LE_BE (val))
@@ -652,7 +652,7 @@ typedef gint32	GTime;
 #  define GUINT32_FROM_BE(val)		((guint32) (val))
 #  define GINT32_FROM_LE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
 #  define GUINT32_FROM_LE(val)		(GUINT32_SWAP_LE_BE (val))
-#  ifdef HAVE_GINT64
+#  ifdef G_HAVE_GINT64
 #  define GINT64_TO_BE(val)		((gint64) (val))
 #  define GUINT64_TO_BE(val)		((guint64) (val))
 #  define GINT64_TO_LE(val)		((gint64) GUINT64_SWAP_LE_BE (val))

@@ -9,7 +9,7 @@ CC = cl -G5 -GF -Ox -W3 -D_DLL -nologo
 
 LDFLAGS = /link /nodefaultlib:libc msvcrt.lib # /debug:full /debugtype:cv 
 INSTALL = copy
-TOUCH = copy makefile.msc
+TOUCH = copy makefile.msc+nul
 
 GLIB_VER = 1.1
 

@@ -323,7 +323,7 @@ main (int   argc,
   guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
-#ifdef HAVE_GINT64
+#ifdef G_HAVE_GINT64
   guint64 gu64t1 = 0x1d636b02300a7aa7U, gu64t2 = 0xa77a0a30026b631dU;
 #endif
 
@@ -345,10 +345,10 @@ main (int   argc,
   TEST (NULL, sizeof (gint16) == 2);
   g_print ("\nchecking size of gint32: %d", (int)sizeof (gint32));
   TEST (NULL, sizeof (gint32) == 4);
-#ifdef	HAVE_GINT64
+#ifdef	G_HAVE_GINT64
   g_print ("\nchecking size of gint64: %d", (int)sizeof (gint64));
   TEST (NULL, sizeof (gint64) == 8);
-#endif	/* HAVE_GINT64 */
+#endif	/* G_HAVE_GINT64 */
   g_print ("\n");
 
   g_print ("checking g_dirname()...");
@@ -824,7 +824,7 @@ main (int   argc,
 #endif
   g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);  
   g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);  
-#ifdef HAVE_GINT64
+#ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
 #endif
   g_print ("ok\n");

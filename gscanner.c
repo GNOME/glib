@@ -21,6 +21,10 @@
  */
 #define		__gscanner_c__
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include	<stdlib.h>
 #include	<stdarg.h>
 #include	<string.h>

@@ -333,8 +333,10 @@ g_getenv (const gchar *variable)
   return getenv (variable);
 #else
   gchar *v;
-  guint l, k;
-  gchar *p;
+  guint k;
+  static gchar *p = NULL;
+  static gint l;
+  gchar dummy[2];
 
   g_return_val_if_fail (variable != NULL, NULL);
   
@@ -347,23 +349,20 @@ g_getenv (const gchar *variable)
    * calling ExpandEnvironmentStrings.
    */
 
-  v = g_strdup (v);
-  l = 16;
-  do
+  /* First check how much space we need */
+  k = ExpandEnvironmentStrings (v, dummy, 2);
+  /* Then allocate that much, and actualy do the expansion */
+  if (p == NULL)
     {
-      p = g_new (gchar, l);
-      
-      k = ExpandEnvironmentStrings (v, p, l);
-      if (k > l)
-	{
-	  g_free (p);
-	  l *= 2;
-	}
+      p = g_malloc (k);
+      l = k;
     }
-  while (k > l);
-  
-  g_free (v);
-  
+  else if (k > l)
+    {
+      p = g_realloc (p, k);
+      l = k;
+    }
+  ExpandEnvironmentStrings (v, p, k);
   return p;
 #endif
 }
@@ -388,13 +387,23 @@ g_get_any_init (void)
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TEMP"));
       
+#ifdef P_tmpdir
+      if (!g_tmp_dir)
+	{
+	  int k;
+	  g_tmp_dir = g_strdup (P_tmpdir);
+	  k = strlen (g_tmp_dir);
+	  if (g_tmp_dir[k-1] == G_DIR_SEPARATOR)
+	    g_tmp_dir[k-1] = '\0';
+	}
+#endif
       if (!g_tmp_dir)
 	{
 #ifndef NATIVE_WIN32
-	  g_tmp_dir = g_strdup (G_DIR_SEPARATOR_S "tmp");
-#else /* !NATIVE_WIN32 */
-	  g_tmp_dir = g_strdup (".");
-#endif /* !NATIVE_WIN32 */
+	  g_tmp_dir = g_strdup ("/tmp");
+#else /* NATIVE_WIN32 */
+	  g_tmp_dir = g_strdup ("C:\\");
+#endif /* NATIVE_WIN32 */
 	}
       
       g_home_dir = g_strdup (g_getenv ("HOME"));
@@ -426,7 +435,6 @@ g_get_any_init (void)
 	  }
 	else
 	  g_real_name = g_strdup (g_user_name);
-	g_home_dir = NULL;
       }
 #  else /* !NATIVE_WIN32 */
       g_user_name = g_strdup ("somebody");
@@ -435,9 +443,6 @@ g_get_any_init (void)
 #  endif /* !NATIVE_WIN32 */
 #endif /* !HAVE_PWD_H */
     }
-
-  if (!g_home_dir)
-    g_home_dir = g_strdup (g_tmp_dir);
 }
 
 gchar*
@@ -458,6 +463,12 @@ g_get_real_name (void)
   return g_real_name;
 }
 
+/* Return the home directory of the user. If there is a HOME
+ * environment variable, its value is returned, otherwise use some
+ * system-dependent way of finding it out. If no home directory can be
+ * deduced, return NULL.
+ */
+
 gchar*
 g_get_home_dir (void)
 {
@@ -466,6 +477,13 @@ g_get_home_dir (void)
   
   return g_home_dir;
 }
+
+/* Return a directory to be used to store temporary files. This is the
+ * value of the TMPDIR, TMP or TEMP environment variables (they are
+ * checked in that order). If none of those exist, use P_tmpdir from
+ * stdio.h.  If that isn't defined, return "/tmp" on POSIXly systems,
+ * and C:\ on Windows.
+ */
 
 gchar*
 g_get_tmp_dir (void)
@@ -522,7 +540,7 @@ g_int_hash (gconstpointer v)
 GIOChannel*
 g_iochannel_new (gint fd)
 {
-  GIOChannel *channel = g_new0 (GIOChannel, 1);
+  GIOChannel *channel = g_new (GIOChannel, 1);
 
   channel->fd = fd;
 

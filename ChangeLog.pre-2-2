@@ -1,3 +1,30 @@
+Sat Oct 31 20:14:22 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* applied glib-tml-981101-1 patch from Tor Lillqvist (ChangeLog
+	entry appended below)
+
+	* testglib.c
+	* gstrfuncs.c
+	* glib.h: use G_HAVE_GINT64, since HAVE_GINT64 is gone
+
+	* gmessages.c
+	* gscanner.c: #include <config.h> in here too, for HAVE_UNISTD_H
+ 
+1998-11-01 Tor Lillqvist <tml@iki.fi>
+
+	* glib.def: Added the new functions.
+
+	* gutils.c:
+	(g_getenv): Better implementation on Win32. No loop necessary.
+	(g_get_any_init): Use P_tmpdir if defined as tmp directory. Don't
+	set home dir always to NULL on Win32.  Don't use tmp directory as
+	last resort home directory, but return NULL if no home
+	directory is known (application must check).
+
+	* makefile.msc: Better touch command, just COPYing a single file
+	sets the timestamp from that file, which isn't what touching should
+	do.
+
 1998-10-31  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Land glib-rrh-19981025-0.patch.

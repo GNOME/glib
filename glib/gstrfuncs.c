@@ -828,11 +828,11 @@ g_printf_string_upper_bound (const gchar* format,
 		case 'u':
 		case 'x':
 		case 'X':
-#ifdef	HAVE_GINT64
+#ifdef	G_HAVE_GINT64
 		  if (extra_long)
 		    (void) va_arg (args, gint64);
 		  else
-#endif	/* HAVE_GINT64 */
+#endif	/* G_HAVE_GINT64 */
 		    {
 		      if (long_int)
 			(void) va_arg (args, long);
