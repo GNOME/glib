@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
-"PO-Revision-Date: 2003-09-29 16:44-0400\n"
+"POT-Creation-Date: 2004-05-07 13:40+0200\n"
+"PO-Revision-Date: 2004-05-07 15:18-0300\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,15 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversão do conjunto de caracteres '%s' para '%s' não é suportada"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Não foi possível abrir conversor de '%s' para '%s': %s"
+msgstr "Não foi possível abrir o conversor de '%s' para '%s'"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr "Sequência de bytes inválida na entrada de conversão"
+msgstr "Seqüência de bytes inválida na entrada de conversão"
 
 #: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
@@ -39,7 +39,7 @@ msgstr "Erro durante a conversão: %s"
 #: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
-msgstr "Sequência de caracteres parcial no final da entrada"
+msgstr "Seqüência de caracteres parcial no final da entrada"
 
 #: glib/gconvert.c:800
 #, c-format
@@ -505,12 +505,12 @@ msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
-msgstr "Caracter fora do limite para UTF-8 "
+msgstr "Caracter fora do limite para UTF-8"
 
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
-msgstr "Sequência inválida na conversão da entrada"
+msgstr "Seqüência inválida na conversão da entrada"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
