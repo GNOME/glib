@@ -759,7 +759,6 @@ g_pattern_match_simple
 <TITLE>Message Logging</TITLE>
 <FILE>messages</FILE>
 G_LOG_DOMAIN
-g_log_domain_glib
 G_LOG_FATAL_MASK
 G_LOG_LEVEL_USER_SHIFT
 GLogFunc

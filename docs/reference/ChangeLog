@@ -1,3 +1,7 @@
+Sat Nov 17 17:24:19 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/glib-sections.txt: Remove g_log_domain_glib
+
 2001-11-15  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/iochannels.sgml: Document GIOFlags, fix typos.
