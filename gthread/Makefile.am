@@ -6,7 +6,8 @@ EXTRA_DIST =				\
 		gthread-posix.c		\
 		gthread-solaris.c	\
 		gthread-nspr.c		\
-		gthread-none.c
+		gthread-none.c		\
+		gthread.def
 
 libglib = $(top_builddir)/libglib.la # -lglib
 

@@ -1,3 +1,7 @@
+Tue Jan 19 20:56:02 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (EXTRA_DIST): Added gthread.def.
+
 Sun Jan 17 10:58:19 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* gthread.def: New file.

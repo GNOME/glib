@@ -5,7 +5,7 @@
 # should be in your PATH.
 BIN = C:\bin
 
-# This is the Cygnus pthread-win32, 
+# This is the location of pthreads for Win32, 
 # see http://sourceware.cygnus.com/pthreads-win32/
 PTHREAD_LIB = ..\lib\pthread.lib
 PTHREAD_INC = ..\include

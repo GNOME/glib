@@ -134,6 +134,7 @@ EXPORTS
 	g_hook_unref
 	g_idle_add
 	g_idle_add_full
+	g_idle_remove_by_data
 	g_int_equal
 	g_int_hash
 	g_io_add_watch

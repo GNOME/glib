@@ -21,9 +21,10 @@ EXTRA_DIST = \
 	sanity_check		\
 	README.win32		\
 	glib.def		\
-	makefile.lcc		\
 	makefile.msc		\
-	glibconfig.h.win32
+	giowin32.c		\
+	glibconfig.h.win32	\
+	config.h.win32
 
 lib_LTLIBRARIES = libglib.la
 
