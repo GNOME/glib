@@ -1,3 +1,7 @@
+Thu Sep 25 15:01:37 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/Makefile.am (SUBDIRS): Add gobject/.
+
 Fri Sep 12 16:26:21 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/gobject/ configure.in: New directory, framework 
