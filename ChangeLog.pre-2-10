@@ -1,3 +1,9 @@
+Thu Feb  5 01:19:12 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/file-test.c (test_mkstemp): Weaken an g_assert() to a 
+	g_warning(), since apparently nothing in Posix forces mkstemp()
+	to reject templates without any X's.  (#133397)
+
 Thu Feb  5 00:56:28 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gcompletion.c (g_completion_complete_utf8): New function which
