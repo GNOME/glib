@@ -1021,9 +1021,9 @@ g_strchomp (gchar *string)
 }
 
 gchar**
-g_str_array_split (const gchar *string,
-		   const gchar *delimiter,
-		   gint         max_tokens)
+g_strsplit (const gchar *string,
+	    const gchar *delimiter,
+	    gint         max_tokens)
 {
   GSList *string_list = NULL, *slist;
   gchar **str_array, *s;
@@ -1076,7 +1076,7 @@ g_str_array_split (const gchar *string,
 }
 
 void
-g_str_array_free (gchar **str_array)
+g_strfreev (gchar **str_array)
 {
   if (str_array)
     {
@@ -1090,8 +1090,8 @@ g_str_array_free (gchar **str_array)
 }
 
 gchar*
-g_str_array_joinv (const gchar  *separator,
-		   const gchar **str_array)
+g_strjoinv (const gchar  *separator,
+	    gchar       **str_array)
 {
   gchar *string;
   
@@ -1126,8 +1126,8 @@ g_str_array_joinv (const gchar  *separator,
 }
 
 gchar*
-g_str_array_join (const gchar  *separator,
-		  ...)
+g_strjoin (const gchar  *separator,
+	   ...)
 {
   gchar *string, *s;
   va_list args;

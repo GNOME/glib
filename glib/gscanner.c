@@ -711,7 +711,7 @@ g_scanner_peek_next_char (GScanner *scanner)
 	}
       while (count == -1 && (errno == EINTR || errno == EAGAIN));
 
-      if (!count)
+      if (count < 1)
 	{
 	  scanner->input_fd = -1;
 
@@ -750,7 +750,7 @@ g_scanner_get_char (GScanner	*scanner,
 	}
       while (count == -1 && (errno == EINTR || errno == EAGAIN));
 
-      if (!count)
+      if (count < 1)
 	{
 	  scanner->input_fd = -1;
 	  fchar = 0;

@@ -1373,22 +1373,22 @@ gchar*	 g_strnfill		(guint	      length,
 				 gchar	      fill_char);
 gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
+gchar*   g_strjoin		(const gchar  *separator,
+				 ...); /* NULL terminated */
 
 /* NULL terminated string arrays.
- * g_str_array_split() splits up string into max_tokens tokens at delim and
+ * g_strsplit() splits up string into max_tokens tokens at delim and
  * returns a newly allocated string array.
- * g_str_array_joinv() concatenates all of str_array's strings, sliding in an
+ * g_strjoinv() concatenates all of str_array's strings, sliding in an
  * optional separator, the returned string is newly allocated.
- * g_str_array_free() frees the array itself and all of its strings.
+ * g_strfreev() frees the array itself and all of its strings.
  */
-gchar**	 g_str_array_split	(const gchar  *string,
+gchar**	 g_strsplit		(const gchar  *string,
 				 const gchar  *delimiter,
 				 gint          max_tokens);
-gchar*   g_str_array_joinv      (const gchar  *separator,
-				 const gchar **str_array);
-gchar*   g_str_array_join       (const gchar  *separator,
-				 ...);
-void     g_str_array_free       (gchar       **str_array);
+gchar*   g_strjoinv		(const gchar  *separator,
+				 gchar       **str_array);
+void     g_strfreev		(gchar       **str_array);
 
 
 
