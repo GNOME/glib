@@ -2490,7 +2490,10 @@ g_type_class_peek_parent (gpointer g_class)
   g_return_val_if_fail (g_class != NULL, NULL);
   
   node = lookup_type_node_I (G_TYPE_FROM_CLASS (g_class));
-  G_READ_LOCK (&type_rw_lock);
+  /* We used to acquire a read lock here. That is not necessary, since 
+   * parent->data->class.class is constant as long as the derived class
+   * exists. 
+   */
   if (node && node->is_classed && node->data && NODE_PARENT_TYPE (node))
     {
       node = lookup_type_node_I (NODE_PARENT_TYPE (node));
@@ -2498,7 +2501,6 @@ g_type_class_peek_parent (gpointer g_class)
     }
   else if (NODE_PARENT_TYPE (node))
     g_warning (G_STRLOC ": invalid class pointer `%p'", g_class);
-  G_READ_UNLOCK (&type_rw_lock);
   
   return class;
 }

@@ -1,3 +1,8 @@
+Fri Dec 26 01:34:01 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gtype.c (g_type_class_peek_parent): Don't acquire a read lock 
+	here.  (#106433, Owen Taylor)
+
 Wed Dec 17 23:29:17 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gvalue.c (g_value_peek_pointer): Use g_assert() instead of
