@@ -1,3 +1,8 @@
+Fri Apr 23 09:03:48 1999  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_symbol): removed inline variable assignment.
+	s/CHECK_ERROR/SUPPORT_OR_RETURN/ to make the code more self descriptive.
+
 Wed Feb 10 12:06:30 1999  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (CHECK_ERROR): be more descriptive on unsupported systems.
