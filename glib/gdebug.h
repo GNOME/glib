@@ -32,7 +32,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 typedef enum {
-  G_DEBUG_FATAL_WARNINGS = 1 << 0,
+  G_DEBUG_FATAL_WARNINGS = 1 << 0
 } GDebugFlag;
 
 

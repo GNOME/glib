@@ -1,3 +1,8 @@
+Mon Feb 25 22:46:29 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gdebug.h: Fix trailing , in enumeration
+	Miroslaw Dobrzanski-Neumann (#72574)
+	
 Mon Feb 25 21:58:01 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/guniprop.c (g_unichar_toupper/lower): Account
