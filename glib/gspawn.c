@@ -447,13 +447,15 @@ g_spawn_sync (const gchar          *working_directory,
  * calling <function>exec()</function> in the child. %G_SPAWN_SEARCH_PATH 
  * means that <literal>argv[0]</literal> need not be an absolute path, it
  * will be looked for in the user's <envar>PATH</envar>. 
- * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standad output will 
+ * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will 
  * be discarded, instead of going to the same location as the parent's 
- * standard output.
+ * standard output. If you use this flag, @standard_output must be %NULL.
  * %G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error
- * will be discarded. %G_SPAWN_CHILD_INHERITS_STDIN means that
- * the child will inherit the parent's standard input (by default,
- * the child's standard input is attached to /dev/null).
+ * will be discarded, instead of going to the same location as the parent's
+ * standard error. If you use this flag, @standard_error must be %NULL.
+ * %G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
+ * standard input (by default, the child's standard input is attached to
+ * /dev/null). If you use this flag, @standard_input must be %NULL.
  * %G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of @argv is
  * the file to execute, while the remaining elements are the
  * actual argument vector to pass to the file. Normally
@@ -477,8 +479,17 @@ g_spawn_sync (const gchar          *working_directory,
  * locations will be filled with file descriptors for writing to the child's
  * standard input or reading from its standard output or standard error.
  * The caller of g_spawn_async_with_pipes() must close these file descriptors
- * when they are no longer in use. If these parameters are %NULL, the
- * corresponding pipe won't be created.
+ * when they are no longer in use. If these parameters are %NULL, the corresponding
+ * pipe won't be created.
+ *
+ * If @standard_input is NULL, the child's standard input is attached to /dev/null
+ * unless %G_SPAWN_CHILD_INHERITS_STDIN is set.
+ *
+ * If @standard_error is NULL, the child's standard error goes to the same location
+ * as the parent's standard error unless %G_SPAWN_STDERR_TO_DEV_NULL is set.
+ *
+ * If @standard_output is NULL, the child's standard output goes to the same location
+ * as the parent's standard output unless %G_SPAWN_STDOUT_TO_DEV_NULL is set.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * If an error is set, the function returns %FALSE. Errors

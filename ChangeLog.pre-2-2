@@ -1,3 +1,11 @@
+Sat Oct 12 12:34:22 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* glib/gtree.c (g_tree_search), glib/gspawn.c
+	(g_spawn_async_with_pipes): 
+
+	Documentation fixes: #71778, Owen Taylor; #85095, Bill Janssen,
+	Owen Taylor. 
+
 Thu Oct 10 23:27:02 2002  Tim Janik  <timj@gtk.org>
 
         * glib/gscanner.c (g_scanner_msg_handler): if input_name is NULL,
