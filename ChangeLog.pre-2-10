@@ -1,3 +1,9 @@
+Wed Dec  9 22:44:44 EST 1998 Joel Becker <jlbec@ocala.cs.miami.edu>
+
+	* Removed #define of G_COMPILED_WITH_DEBUGGING from glibconfig.h
+	It shouldn't be there, and it was causing a double #define.
+        (config.h defines it also)
+
 Tue Dec  8 12:18:38 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.6

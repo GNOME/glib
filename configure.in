@@ -787,8 +787,7 @@ glib_defines="
 #define GLIB_MAJOR_VERSION $GLIB_MAJOR_VERSION
 #define GLIB_MINOR_VERSION $GLIB_MINOR_VERSION
 #define GLIB_MICRO_VERSION $GLIB_MICRO_VERSION
-
-#define G_COMPILED_WITH_DEBUGGING \"$enable_debug\""
+"
 
 case xyes in
 x$glib_cv_va_copy)	glib_vacopy='#define G_VA_COPY	va_copy' ;;
