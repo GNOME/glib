@@ -1,5 +1,10 @@
 2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib.h (G_TRYLOCK): Made the debugging G_TRYLOCK call also work
+	for compilers with funnt G_STMT_(START|END) macros.
+
+	* tests/thread-test.c: Implemented a check for that.
+
 	* gutils.c (g_getenv): Changed the win32 part of this function to
 	be thread safe and to make the returned environment string
 	persistent to match the UN*X behavior. This is again a response to

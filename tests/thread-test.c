@@ -4,12 +4,14 @@
 
 static GMutex* test_g_mutex_mutex = NULL;
 static guint test_g_mutex_int = 0;
+G_LOCK_DEFINE_STATIC (test_g_mutex);
 
 static void
 test_g_mutex_thread (gpointer data)
 {
   g_assert (GPOINTER_TO_INT (data) == 42);
   g_assert (g_mutex_trylock (test_g_mutex_mutex) == FALSE);
+  g_assert (G_TRYLOCK (test_g_mutex) == FALSE);
   g_mutex_lock (test_g_mutex_mutex);
   g_assert (test_g_mutex_int == 42);
   g_mutex_unlock (test_g_mutex_mutex);
@@ -22,11 +24,13 @@ test_g_mutex (void)
   test_g_mutex_mutex = g_mutex_new ();
 
   g_assert (g_mutex_trylock (test_g_mutex_mutex));
+  g_assert (G_TRYLOCK (test_g_mutex));
   thread = g_thread_create (test_g_mutex_thread, 
 			    GINT_TO_POINTER (42),
 			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL);
   g_usleep (G_MICROSEC);
   test_g_mutex_int = 42;
+  G_UNLOCK (test_g_mutex);
   g_mutex_unlock (test_g_mutex_mutex);
   g_thread_join (thread);
   g_mutex_free (test_g_mutex_mutex);

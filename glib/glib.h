@@ -3152,12 +3152,11 @@ extern void glib_dummy_decl (void);
                #name);                                            \
        g_static_mutex_unlock (&G_LOCK_NAME (name));               \
      }G_STMT_END
-#    define G_TRYLOCK(name)		G_STMT_START{		  \
-        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,			  \
+#    define G_TRYLOCK(name)					  \
+        (g_log (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,		  \
 	       "file %s: line %d (%s): try locking: %s ",         \
 	       __FILE__,	__LINE__, G_GNUC_PRETTY_FUNCTION, \
-               #name);                                            \
-     }G_STMT_END,	g_static_mutex_trylock (&G_LOCK_NAME (name))
+               #name), g_static_mutex_trylock (&G_LOCK_NAME (name)))
 #  else	 /* !G_DEBUG_LOCKS */
 #    define G_LOCK(name) g_static_mutex_lock	   (&G_LOCK_NAME (name)) 
 #    define G_UNLOCK(name) g_static_mutex_unlock   (&G_LOCK_NAME (name))
