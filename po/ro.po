@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.10\n"
-"POT-Creation-Date: 2002-07-26 17:56-0400\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2001-10-22 09:35-0400\n"
 "Last-Translator: Marius Andreiana <mandreiana@yahoo.com>\n"
 "Language-Team: Română <ro@li.org>\n"
@@ -24,13 +24,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nu s-a putut deschide convertorul de la '%s' la '%s': %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvenţă de octeţi invalidă în intrarea de conversie"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Eroare în timpul conversiei: %s"
@@ -144,15 +144,15 @@ msgstr "Nu s-a putut deschide convertorul de la '%s' la '%s': %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nu pot face o citire brută în g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "Date neconvertite rămase în memoria tampon pentru citire"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "Canalul se termină într-un caracter parţial"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nu pot face o citire brută în g_io_channel_read_to_end"
 
@@ -178,14 +178,14 @@ msgstr "Eroare la linia %d caracterul %d: %s"
 msgid "Error on line %d: %s"
 msgstr "Eroare la linia %d: %s"
 
-#: glib/gmarkup.c:423
+#: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Entitate goală '&;' văzută; entităţile valide sunt: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:433
+#: glib/gmarkup.c:432
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -196,17 +196,17 @@ msgstr ""
 "începe o entitate; dacă acest ampersand nu ar trebui să fie o entitate "
 "folosiţi &amp;"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Caracterul '%s' nu este valid înăuntrul unui nume de entitate"
 
-#: glib/gmarkup.c:513
+#: glib/gmarkup.c:498
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Numele entităţii '%s' nu este cunoscut"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:509
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -214,7 +214,7 @@ msgstr ""
 "Entitatea nu s-a terminat cu punct şi virgulă; probabil că aţi folosit un "
 "caracter ampersand fără intenţia de a începe o entitate - folosiţi &amp;"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -223,16 +223,16 @@ msgstr ""
 "Eşuare la parsarea '%s', care ar fi trebui să fie o cifră într-un referinţă "
 "caracter (de exemplu &#234;) - poate cifra este prea mare"
 
-#: glib/gmarkup.c:594
+#: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Referinţa caracter '%s' nu codează un caracter permis"
 
-#: glib/gmarkup.c:611
+#: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Referinţă caracter goală; ar trebui să includă o cifra precum &#454;"
 
-#: glib/gmarkup.c:621
+#: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -242,23 +242,23 @@ msgstr ""
 "folosit un caracter ampersand fără intenţia de a începe o entitate - "
 "folosiţi &amp;"
 
-#: glib/gmarkup.c:647
+#: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
 msgstr ""
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:639
 msgid "Unfinished character reference"
 msgstr ""
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "Text codat UTF-8 invalid"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documentul trebuie să înceapă cu un element (e.g. <carte>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1014
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -267,7 +267,7 @@ msgstr ""
 "'%s' nu este un caracter valid care urmează dupa caracterul '<'; nu poate să "
 "înceapă un nume element"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1077
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -276,7 +276,7 @@ msgstr ""
 "Caracter '%s' ciudat, aşteptam un '>' pentru a termina tagul de început al "
 "elementului '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -284,7 +284,7 @@ msgstr ""
 "Caracter '%s' ciudat, aşteptam un '=' după numele atributului '%s' al "
 "elementului '%s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1205
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -295,7 +295,7 @@ msgstr ""
 "început al elementului '%s', sau opţional un atribut; poate aţi folosit un "
 "caracter invalid în numele atributului"
 
-#: glib/gmarkup.c:1304
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -304,7 +304,7 @@ msgstr ""
 "Caracter '%s' ciudat, aşteptam ghilimele de început după semnul egal pentru "
 "a da valoarea atributului '%s' al elementului '%s'"
 
-#: glib/gmarkup.c:1444
+#: glib/gmarkup.c:1428
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -313,7 +313,7 @@ msgstr ""
 "'%s' nu este un caracter valid urmând caracterelor '</'; '%s' nu poate să "
 "înceapă un nume de element"
 
-#: glib/gmarkup.c:1482
+#: glib/gmarkup.c:1466
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -322,25 +322,25 @@ msgstr ""
 "'%s' nu este un caracter valid urmând închiderea elementului '%s'; "
 "caracterul permis este '>'"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementul '%s' a fost închis, nici un element nu este curent deschis"
 
-#: glib/gmarkup.c:1502
+#: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elementul '%s' a fost închis, dar elementul deschis curent este '%s'"
 
-#: glib/gmarkup.c:1661
+#: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
 msgstr "Documentul era gol sau conţinea doar spaţiu alb"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Documentul s-a terminat neaşteptat imediat dupa un caracter '<'"
 
-#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -349,7 +349,7 @@ msgstr ""
 "Documentul s-a terminat neaşteptat cu elemente încă deschise - '%s' a fost "
 "ultimul element deschis"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -358,19 +358,19 @@ msgstr ""
 "Documentul s-a terminat neaşteptat, mă aşteptat să vad un caracter '>' care "
 "să termine tagul <%s/>"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Documentul s-a terminat neaşteptat în numele unui element"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Documentul s-a terminat neaşteptat în numele unui atribut"
 
-#: glib/gmarkup.c:1707
+#: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Documentul s-a terminat neaşteptat într-un tag deschidere element"
 
-#: glib/gmarkup.c:1713
+#: glib/gmarkup.c:1697
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -378,17 +378,17 @@ msgstr ""
 "Documentul s-a terminat neaşteptat după semnul egal ce urma un nume atribut; "
 "nici o valoare pentru atribut"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Documentul s-a terminat neaşteptat în valoarea unui atribut"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Documentul s-a terminat neaşteptat în tagul închidere pentru elementul '%s'"
 
-#: glib/gmarkup.c:1741
+#: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documentul s-a terminat neaşteptat într-un comentariu sau instrucţiune de "
@@ -445,7 +445,7 @@ msgstr "Eşuare la schimbarea directorului '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Eşuare la execuţia procesului copil (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""

@@ -14,7 +14,7 @@ Sat Oct 12 22:02:32 2002  Tim Janik  <timj@gtk.org>
 	* gtype.c (g_type_fundamental_next), (type_node_fundamental_new_W):
 	account for static_fundamental_next storing non-shifted fundamental
 	IDs. this fixes g_type_fundamental_next() not returning a new usable
-	fundamental ID.
+	fundamental ID. (#94481)
 
 Wed Sep 11 16:50:20 2002  Dom Lachowicz <cinamod@hotmail.com>
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2002-07-26 17:56-0400\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2002-06-14 10:43+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -24,13 +24,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не вдалося відкрити перетворювача з \"%s\" у \"%s\": %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неправильна послідовність байтів у перетворюваному вводі"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Помилка під час перетворення: %s"
@@ -145,15 +145,15 @@ msgstr ""
 "Неможливо здійснити безпосереднє зчитування у функції "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфері зчитування лишились неперетворені дані"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "Канал закривається на неповному символі"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Не вдалося здійснити безпосереднє зчитування у функції "
@@ -181,14 +181,14 @@ msgstr "Помилка в рядку %d на символі %d: %s"
 msgid "Error on line %d: %s"
 msgstr "Помилка в рядку %d: %s"
 
-#: glib/gmarkup.c:423
+#: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Знайдено порожню сутність \"&;\"; допусаються такі сутності: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:433
+#: glib/gmarkup.c:432
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -199,17 +199,17 @@ msgstr ""
 "послідовність;  якщо він не є частиною сутності, то екрануйте його сутністю "
 "&amp;"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Символ \"%s\" не допускається в назві сутності"
 
-#: glib/gmarkup.c:513
+#: glib/gmarkup.c:498
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Сутність з назвою \"%s\" не відома"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:509
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -217,7 +217,7 @@ msgstr ""
 "Сутність не закінчується крапкою з комою; схоже, що символ & було "
 "використано не для позначення початку сутності - екрануйте його як &amp;"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -226,17 +226,17 @@ msgstr ""
 "Збій на аналізі \"%s\" на місці числа в посиланні на символ (наприклад, "
 "&#234) - можливо, число надто велике"
 
-#: glib/gmarkup.c:594
+#: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Посилання на символ \"%s\" не визначає дозволений символ"
 
-#: glib/gmarkup.c:611
+#: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Порожнє посилання на символ: воно має включати число, наприклад, &#454;"
 
-#: glib/gmarkup.c:621
+#: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -245,23 +245,23 @@ msgstr ""
 "Посилання на символ не завершується крапкою з комою; схоже, що символ & було "
 "використано не для позначення початку сутності - екрануйте його як &amp;"
 
-#: glib/gmarkup.c:647
+#: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
 msgstr "Незавершене посилання на сутність"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:639
 msgid "Unfinished character reference"
 msgstr "Незавершене посилання на символ"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "Неправильно кодований текст UTF-8"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ має починатися з елемента (наприклад, <book>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1014
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -270,7 +270,7 @@ msgstr ""
 "\"%s\" не може знаходитись за символом \"<\"; назва елемента не може "
 "починатися з цього символа"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1077
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -278,7 +278,7 @@ msgid ""
 msgstr ""
 "Дивний символ \"%s\", очікується символ \">\" для закриття елемента \"%s\""
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -286,7 +286,7 @@ msgstr ""
 "Дивний символ \"%s\", очікується символ \"=\" після назви ознаки \"%s\" "
 "елемента \"%s\""
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1205
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -297,7 +297,7 @@ msgstr ""
 "елемента \"%s\" чи додаткова ознака; можливо, було використано заборонений "
 "символ в назві ознаки"
 
-#: glib/gmarkup.c:1304
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -306,7 +306,7 @@ msgstr ""
 "Дивний символ \"%s\", очікуються відкривні лапки після знака рівності, коли "
 "присвоюються значення ознаці \"%s\" елемента \"%s\""
 
-#: glib/gmarkup.c:1444
+#: glib/gmarkup.c:1428
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -315,7 +315,7 @@ msgstr ""
 "\"%s\" не може знаходитись за символами \"</\"; назва елемента не може "
 "починатися з \"%s\""
 
-#: glib/gmarkup.c:1482
+#: glib/gmarkup.c:1466
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -324,26 +324,26 @@ msgstr ""
 "\"%s\" не може знаходитись за символом, що закриває елемент \"%s\"; "
 "дозволяється символ \">\""
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Було закрито невідкритий елемент \"%s\""
 
-#: glib/gmarkup.c:1502
+#: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Було закрито елемент \"%s\", але зараз вікрито елемент \"%s\""
 
-#: glib/gmarkup.c:1661
+#: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ порожній чи містить лише пропуски"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Текст неочікувано закінчився відразу після вікривної кутової лапки \"<\""
 
-#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -352,7 +352,7 @@ msgstr ""
 "Текст неочікувано закінчився, когда елементи ще були відкриті - \"%s\" був "
 "останнім відкритим елементом"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -361,19 +361,19 @@ msgstr ""
 "Текст неочікувано закінчився,  очікується закривна кутова лапка, що закриє "
 "елемент <%s/>"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Текст неочікувано закінчився всередені назви елемента"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Текст неочікувано закінчився всередені назви ознаки"
 
-#: glib/gmarkup.c:1707
+#: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Текст неочікувано закінчився всередені відкривного елемента"
 
-#: glib/gmarkup.c:1713
+#: glib/gmarkup.c:1697
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -381,16 +381,16 @@ msgstr ""
 "Текст неочікувано закінчився, після знака рівності, що йде за назвою ознаки: "
 "не вказано значення ознаки"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Текст неочікувано закінчився всередині значення ознаки"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Текст неочікувано закінчився всередині закривного елемента \"%s\""
 
-#: glib/gmarkup.c:1741
+#: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Текст неочікувано закінчився всередині коментаря чи інструкції"
 
@@ -443,7 +443,7 @@ msgstr "Не вдалося перейти в каталог \"%s\" (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Збій виконання спадкоємного процесу (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збій створення каналу для обміну з спадкоємним процесом (%s)"

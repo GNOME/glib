@@ -1,3 +1,33 @@
+Overview of Changes in GLib 2.0.7
+=================================
+
+* Fix C++ warnings in gtype.h [Dom Lachowicz]
+* Fix g_type_fundamental_next() [Tim Janik]
+* Fix various missing includes of config.h [Morten Welinder]
+* Handle main loop initialization before g_thread_init [Sebastian Wilhelmi]
+* Various 64-bit fixes [Manish Singh]
+* Fix GPoll on Win32 [Tor Lillqvist, Herman Bloggs]
+* Fix bug with buffering on UTF-8 IOChannels [Daniel Elstner]
+* Misc bug and build fixes [Soren Andersen, Gustavo Carneiro, Tor,
+     Tim, Havoc Pennington,  Matthias Clasen, Sebastian Rittau,
+     Masahiro Sakai, Arvind Samptur, HideToshi Tajima, Owen Taylor]
+* Updated and new translations (be,cs,de,*fa,it,lv,pt_BR,tr)
+
+Overview of Changes in GLib 2.0.6
+=================================
+
+* Fix problem with interface prerequisites [Jon Trowbridge, Dave Camp]
+* Clean up debug spew from GObject [Anders Carlsson]
+* Compiler warning fixes [David L. Cooper II]
+* Fix some problems with g_build_path() [Guillaume Chazarain, Owen Taylor]
+* Fixes for --disable-debug [Sebastian Wilhelmi]
+* Threading fixes [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann, 
+  Rajkumar Sivasamy, Laurent Vivier]
+* Documentation fixes [Jacob Berkman, Manuel Clos, Jared Dukat, 
+  Sebastian Rittau, Linus Welleij]
+* Misc bug fixes [Anders Carlsson, Sam Couter, Morten Welinder, Owen]
+* Updated translations (bg,ko,vi)
+
 Overview of Changes in GLib 2.0.5
 =================================
 

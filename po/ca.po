@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.3\n"
-"POT-Creation-Date: 2002-07-26 17:56-0400\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2002-06-04 01:23+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
@@ -25,13 +25,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "No s'ha pogut obrir el convertidor de '%s' a '%s': %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Seqüència de bytes invàlida en l'entrada de conversió"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "S'ha produït un error durant la conversió: %s"
@@ -145,15 +145,15 @@ msgstr "No s'ha pogut obrir el convertidor des de '%s' fins a '%s': %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "A la memòria intermèdia de lectura hi ha dades sobrants no convertides"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "El canal acaba en un caràcter parcial"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
@@ -179,14 +179,14 @@ msgstr "S'ha produït un error a la línia %d caràcter %d: %s"
 msgid "Error on line %d: %s"
 msgstr "S'ha produït un error en la línia %d: %s"
 
-#: glib/gmarkup.c:423
+#: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "S'ha vist una entitat buida '&;'; les entitats vàlides són: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:433
+#: glib/gmarkup.c:432
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -197,17 +197,17 @@ msgstr ""
 "comencen amb el caràcter &. Si amb aquest signe no es vol indicar una "
 "entitat,substituïu-lo per &amp;"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "El caràcter '%s' no és vàlid dins un nom d'entitat"
 
-#: glib/gmarkup.c:513
+#: glib/gmarkup.c:498
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "No es coneix el nom de l'entitat '%s'"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:509
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -216,7 +216,7 @@ msgstr ""
 "caràcter '&' sense intenció d'iniciar una entitat. Substituïu el caràcter "
 "'&' per &amp;"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -225,17 +225,17 @@ msgstr ""
 "És impossible analitzar '%s' , hi hauria d'haver hagut un dígit dins un "
 "caràcterde referència (per exemple &#234) - potser el dígit és massa llarg"
 
-#: glib/gmarkup.c:594
+#: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "El caràcter de referència '%s' no codifica un caràcter permès"
 
-#: glib/gmarkup.c:611
+#: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "El caràcter de referència és buit; hauria d'incloure un dígit com ara &#454;"
 
-#: glib/gmarkup.c:621
+#: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -245,23 +245,23 @@ msgstr ""
 "utilitzat un caràcter '&' sense intenció d'iniciar una entitat. Substituïu "
 "el caràcter '&' per  &amp;"
 
-#: glib/gmarkup.c:647
+#: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
 msgstr "Referència a una entitat no acabada"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:639
 msgid "Unfinished character reference"
 msgstr "Referència a un caràcter no acabada"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "El text codificat UTF-8 no és vàlid"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El document ha de començar amb un element (p.ex. <llibre>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1014
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -270,7 +270,7 @@ msgstr ""
 "'%s' no és un caràcter vàlid després d'un caràcter '<'; no pot començar un "
 "nom d'element"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1077
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -279,7 +279,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany '%s', s'esperava un '>' per acabar "
 "l'etiqueta d'inici de l'element '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -287,7 +287,7 @@ msgstr ""
 "S'ha trobat un caràcter estrany '%s', s'esperava un '=' després del nom "
 "d'atribut '%s' de l'element '%s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1205
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -298,7 +298,7 @@ msgstr ""
 "finalitzar l'etiqueta d'inici de l'element '%s', o opcionalment un atribut; "
 "potser heu usat un caràcter no vàlid en un nom d'atribut"
 
-#: glib/gmarkup.c:1304
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -308,7 +308,7 @@ msgstr ""
 "després del signe 'igual que' en donar valor a l'atribut '%s' de l'element '%"
 "s'"
 
-#: glib/gmarkup.c:1444
+#: glib/gmarkup.c:1428
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -317,7 +317,7 @@ msgstr ""
 "'%s' no és un caràcter vàlid quan segueix els caracters '</'; un nom "
 "d'element no pot començar per '%s'"
 
-#: glib/gmarkup.c:1482
+#: glib/gmarkup.c:1466
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -326,27 +326,27 @@ msgstr ""
 "'%s' no és un caràcter vàlid quan segueix el nom d'element proper '%s'; el "
 "caràcter permès és '>'"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "L'element '%s' era tancat. Actualment no hi ha cap element obert"
 
-#: glib/gmarkup.c:1502
+#: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "L'element '%s' era tancat, però l'element obert actualment és '%s'"
 
-#: glib/gmarkup.c:1661
+#: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
 msgstr "El document era buit o només contenia espais en blanc"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "El document ha acabat de manera inesperada immediatament després d'un "
 "parèntesi d'angle obert '<'"
 
-#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -355,7 +355,7 @@ msgstr ""
 "El document ha acabat de manera inesperada amb elements encara oberts. '%"
 "s'era l'últim element obert"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -364,21 +364,21 @@ msgstr ""
 "El document ha acabat de manera inesperada, s'esperava trobar un parèntesi "
 "d'angle tancat acabant l'etiqueta <%s/>"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'element"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El document ha acabat de manera inesperada enmig d'un nom d'atribut"
 
-#: glib/gmarkup.c:1707
+#: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'una etiqueta d'obertura "
 "d'un element"
 
-#: glib/gmarkup.c:1713
+#: glib/gmarkup.c:1697
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -386,18 +386,18 @@ msgstr ""
 "El document ha acabat de manera inesperada després d'un signe 'igual' que "
 "sewgueix un nom d'atribut; no hi ha cap valor d'atribut"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El document ha acabat de manera inesperada enmig d'un valor d'atribut"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El document ha acabat de manera inesperada dins l'etiqueta de tancament de "
 "l'element '%s'"
 
-#: glib/gmarkup.c:1741
+#: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El document ha acabat de manera inesperada enmig d'un comentari o una "
@@ -456,7 +456,7 @@ msgstr "És impossible canviar al directori '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "És impossible executar el procés fill (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "És impossible crear el conducte per comunicar amb el procés fill (%s)"

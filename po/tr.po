@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2002-09-17 05:00+0200\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2002-09-18 05:01+0300\n"
 "Last-Translator: Ömer Fadıl USTA <omer_fad@hotmail.com>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -16,21 +16,23 @@ msgstr ""
 #: glib/gconvert.c:400
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "`%s' karakter kümesinden, `%s' karakter kümesine dönüşüm desteklenmiyor"
+msgstr ""
+"`%s' karakter kümesinden, `%s' karakter kümesine dönüşüm desteklenmiyor"
 
 #: glib/gconvert.c:404
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "`%s' karekter kümesinden, `%s' karekter kümesine dönüştürücü açılamıyor: %s"
+msgstr ""
+"`%s' karekter kümesinden, `%s' karekter kümesine dönüştürücü açılamıyor: %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "dönüşüm girdisinde geçersiz bayt dizisi"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "dönüşüm sırasında hata oluştu: %s"
@@ -145,15 +147,15 @@ msgstr "`%s' den `%s' e dönüştürücü açılamıyor: %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr ""
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr ""
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
@@ -180,8 +182,10 @@ msgid "Error on line %d: %s"
 msgstr "satırda hata %d: %s"
 
 #: glib/gmarkup.c:422
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Boş eleman '&;' bulundu; geçerli elemanlar: &amp; &quot; &lt; &qt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Boş eleman '&;' bulundu; geçerli elemanlar: &amp; &quot; &lt; &qt; &apos;"
 
 #: glib/gmarkup.c:432
 #, c-format
@@ -277,8 +281,10 @@ msgstr ""
 
 #: glib/gmarkup.c:1164
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Tek karakter '%s', özellik adı '%s' olan eleman '%s' den sonra '=' bekleniyor"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Tek karakter '%s', özellik adı '%s' olan eleman '%s' den sonra '=' bekleniyor"
 
 #: glib/gmarkup.c:1205
 #, c-format
@@ -419,7 +425,8 @@ msgstr "Child işlemden bilgi okuma başarısızlığı"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "g_io_channel_win32_poll() child işlemden bilgi okumada beklenmeyen hata"
+msgstr ""
+"g_io_channel_win32_poll() child işlemden bilgi okumada beklenmeyen hata"
 
 #: glib/gspawn-win32.c:690 glib/gspawn.c:929
 #, c-format
@@ -436,7 +443,7 @@ msgstr "Klasör değistirme başarısızlığı '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Child işlem yürütme başarısızlığı (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Child işlemlerin haberleşmesi için pipe yaratma başarısızlığı (%s)"
@@ -498,4 +505,3 @@ msgstr "dönüşüm girdisi içinde geçersiz dizi"
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 için karakter sınırlarının dışında"
-

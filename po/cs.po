@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-09-23 04:59+0200\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2002-09-25 22:27+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: LightComp Czech Localization Group <cz_local@lightcomp.cz>\n"
@@ -24,13 +24,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nepodařilo se otevřít převaděč z %s do %s: %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
@@ -143,15 +143,15 @@ msgstr "Nepodařilo se otevřít převodník z `%s' do `%s': %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nepodařilo se přímé čtení v g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "Zbytek nepřevedených dat ve vstupní vyrovnávací paměti"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "Kanál ukončen částí znaku"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nepodařilo se přímé čtení v g_io_channel_read_to_end"
 
@@ -180,7 +180,9 @@ msgstr "Chyba na řádku %d: %s"
 #: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Nalezena prázdná entita '&;', platné entity jsou: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Nalezena prázdná entita '&;', platné entity jsou: &amp; &quot; &lt; &gt; "
+"&apos;"
 
 #: glib/gmarkup.c:432
 #, c-format
@@ -206,14 +208,18 @@ msgstr "Jméno entity '%s' není známo"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Zápis entity není zakončen středníkem; pravděpodobně jste použili znak & bez zapsání jako &amp;"
+msgstr ""
+"Zápis entity není zakončen středníkem; pravděpodobně jste použili znak & bez "
+"zapsání jako &amp;"
 
 #: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Nepodařilo se zpracovat '%s', což by mělo být číslo reprezentující znak (například: &#234) - číslo je pravděpodobně příliš velké"
+msgstr ""
+"Nepodařilo se zpracovat '%s', což by mělo být číslo reprezentující znak "
+"(například: &#234) - číslo je pravděpodobně příliš velké"
 
 #: glib/gmarkup.c:580
 #, c-format
@@ -222,14 +228,17 @@ msgstr "Číslo '%s' neodpovídá žádnému platnému znaku"
 
 #: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Prázdný odkaz na znak. Odkaz by měl obsahovat číslice, například &#454;"
+msgstr ""
+"Prázdný odkaz na znak. Odkaz by měl obsahovat číslice, například &#454;"
 
 #: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr "Odkaz na znak není ukončen středníkem; pravděpodobně jste použili znak & pro začátek entity, samostatný znak napište jako &amp;"
+msgstr ""
+"Odkaz na znak není ukončen středníkem; pravděpodobně jste použili znak & pro "
+"začátek entity, samostatný znak napište jako &amp;"
 
 #: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
@@ -259,7 +268,9 @@ msgstr "Po znaku '<' není '%s' platný znak; nesmí s ním začínat jméno ele
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr "Přebytečný znak '%s', byl očekáván '>' pro ukončení počáteční značky elementu '%s'"
+msgstr ""
+"Přebytečný znak '%s', byl očekáván '>' pro ukončení počáteční značky "
+"elementu '%s'"
 
 #: glib/gmarkup.c:1164
 #, c-format
@@ -275,7 +286,10 @@ msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr "Přebytečný znak '%s', pro ukončení elementu '%s' bylo očekáváno '>' nebo '/' nebo případně atribut; pravděpodobně byl použit neplatný znak v názvu atributu"
+msgstr ""
+"Přebytečný znak '%s', pro ukončení elementu '%s' bylo očekáváno '>' nebo '/' "
+"nebo případně atribut; pravděpodobně byl použit neplatný znak v názvu "
+"atributu"
 
 #: glib/gmarkup.c:1288
 #, c-format
@@ -424,7 +438,7 @@ msgstr "Nepodařilo se změnit adresář '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Nepodařilo se spustit proces potomka (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nepodařilo se vytvořit rouru pro komunikaci s procesem potomka (%s)"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2002-07-26 17:56-0400\n"
+"POT-Creation-Date: 2002-11-04 15:31-0500\n"
 "PO-Revision-Date: 2002-06-12 21:09+0700\n"
 "Last-Translator: Trinh Minh Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo."
 "com>\n"
@@ -25,13 +25,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
 
 #: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/giochannel.c:1333 glib/giochannel.c:2175 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Chuỗi byte không hợp lệ trong chuyển đổi đầu vào"
 
 #: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2187
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Lỗi trong khi chuyển đổi: %s "
@@ -144,15 +144,15 @@ msgstr "Không thể mở trình chuyển đổi từ `%s' thành `%s': %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Không thể thực hiện raw read trong g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515 glib/giochannel.c:1772 glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "Dữ liệu không được chuyển đổi dư trong buffer đọc"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595 glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "Channel tận hết trong một ký tự cục bộ"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Không thể thực hiện raw read trong g_io_channel_read_to_end"
 
@@ -178,13 +178,13 @@ msgstr "Lỗi trong dòng %d char %d: %s"
 msgid "Error on line %d: %s"
 msgstr "Lỗi trong dòng %d: %s"
 
-#: glib/gmarkup.c:423
+#: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Thấy entity '&;' rỗng; các entity hợp lệ là: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:433
+#: glib/gmarkup.c:432
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -194,17 +194,17 @@ msgstr ""
 "Ký tự '%s' không hợp lệ tại nơi bắt đầu của tên entity, ký tự & bắt đầu một "
 "entity; nếu ký tự này không được hỗ trợ là một entity, thoát khỏi nó là &amp;"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Ký tự  '%s' không hợp lệ bên trong tên của entity"
 
-#: glib/gmarkup.c:513
+#: glib/gmarkup.c:498
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Tên Entity '%s' không xác định"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:509
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -212,7 +212,7 @@ msgstr ""
 "Entity không kết thúc bằng dấu chấm phẩy, dường như bạn đã dùng ký hiệu (và) "
 "mà không để bắt đầu cho một entity - ký tự (và) để thoát là &amp;"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -221,16 +221,16 @@ msgstr ""
 "Không phân tích được cú pháp '%s', nó nên là con số bên trong một tham chiếu "
 "ký tự (ví dụ: &#234;) - có thể con số quá dài"
 
-#: glib/gmarkup.c:594
+#: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Tham chiếu ký tự '%s' không encode một ký tự cho phép"
 
-#: glib/gmarkup.c:611
+#: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tham chiếu ký tự rỗng; nên có con số như &#454;"
 
-#: glib/gmarkup.c:621
+#: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -239,23 +239,23 @@ msgstr ""
 "Tham chiếu ký tự không được kết thúc bằng dấu chấm phẩy; dường như bạn đã "
 "dùng ký tự (và) mà không phải để bắt đầu một entity - dấu (và) thoát là &amp;"
 
-#: glib/gmarkup.c:647
+#: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
 msgstr "Tham chiếu entity không được kết thúc"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:639
 msgid "Unfinished character reference"
 msgstr "Tham chiếu ký tự không được kết thúc"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "Văn bản mã hoá UTF-8 không hợp lệ"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Tài liệu phải bắt đầu bằng một phần tử (ví dụ : <book>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1014
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -264,7 +264,7 @@ msgstr ""
 "'%s' không phải ký tự hợp lệ đi theo ký tự '<', nó có thể không bắt đầu tên "
 "phần tử"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1077
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -272,14 +272,14 @@ msgid ""
 msgstr ""
 "Ký tự lẻ '%s', mong muốn ký tự '>' để kết thúc thẻ khởi đầu của phần tử '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Ký tự lẻ '%s', mong muốn '=' sau tên thuộc tính '%s' của thành phần '%s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1205
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -290,7 +290,7 @@ msgstr ""
 "tử '%s', hoặc tùy ý một thuộc tính, có thể bạn đã dùng một ký tự không hợp "
 "lệ trong tên thuộc tính"
 
-#: glib/gmarkup.c:1304
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -299,7 +299,7 @@ msgstr ""
 "Ký tự lẻ '%s', mong muốn dấu ngoặc kép mở đứng sau equals sign khi trao giá "
 "trị cho thuộc tính '%s' của thành phần '%s'"
 
-#: glib/gmarkup.c:1444
+#: glib/gmarkup.c:1428
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -308,7 +308,7 @@ msgstr ""
 "'%s' không phải ký tự hợp lệ đi theo các ký tự '</'; '%s' có thể không bắt "
 "đầu tên một phần tử"
 
-#: glib/gmarkup.c:1482
+#: glib/gmarkup.c:1466
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -317,25 +317,25 @@ msgstr ""
 "'%s' không phải ký tự hợp lệ đi theo tên phần tử đóng '%s'; ký tự được phép "
 "là '>'"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Phần tử '%s' được đóng, hiện thời không có phần tử mở"
 
-#: glib/gmarkup.c:1502
+#: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Phần tử '%s' được đóng, nhưng phần tử mở hiện thời là '%s'"
 
-#: glib/gmarkup.c:1661
+#: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
 msgstr "Tài liệu rỗng hay chỉ chứa dấu trống"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Tài liệu kết thúc không mong muốn đứng ngay sau dấu ngoặc nhọn mở '<'"
 
-#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -344,7 +344,7 @@ msgstr ""
 "Tài liệu kết thúc không mong muốn bằng các phần tử còn mở - '%s' là phần tử "
 "mở vừa qua"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -353,19 +353,19 @@ msgstr ""
 "Tài liệu kết thúc không mong muốn, đúng ra phải thấy dấu ngoặc nhọn đóng kết "
 "thúc thẻ <%s/>"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Tài liệu kết thúc không mong muốn bên trong tên một phần tử"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Tài liệu kế tthúc không mong muốn bên trong tên một thuộc tính"
 
-#: glib/gmarkup.c:1707
+#: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Tài liệu kết thúc không mong muốn bên trong thẻ mở phần tử."
 
-#: glib/gmarkup.c:1713
+#: glib/gmarkup.c:1697
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -373,16 +373,16 @@ msgstr ""
 "Tài liệu kế thúc không mong muốn sau equals sign đi theo tên thuộc tính, "
 "không có giá trị thuộc tính"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Tài liệu kế thúc không mong muốn trong khi ở trong giá trị thuộc tính"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Tài liệu kế thúc không mong muốn bên trong thẻ đóng cho phần tử  '%s'"
 
-#: glib/gmarkup.c:1741
+#: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Tài liệu kết thúc không mong muốn bên trong một chú giải hay hướng dẫn tiến "
@@ -439,7 +439,7 @@ msgstr "Không đổi được tới thư mục '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Không thực thi được tiến trình con (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Không tạo được pipe để liên lạc với tiến trình con (%s)"
