@@ -1,3 +1,12 @@
+2001-10-03  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (Win32) (DllMain): New function (DLL entry point)
+	to tuck away actual DLL name.
+	(GLIB_LOCALE_DIR) Use actual DLL name, instead of assuming one
+	naming convention for DLLs.
+
+	* glib/glib.def: g_string_append_printf.
+
 2001-10-02  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gstrfuncs.c, glib/giochannel.c: documentation update.

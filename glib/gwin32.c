@@ -220,7 +220,7 @@ g_win32_ftruncate (gint  fd,
  * returned string should be deallocated with g_free().
  *
  * Returns: newly-allocated locale name.
- */
+ **/
 
 gchar *
 g_win32_getlocale (void)
@@ -551,7 +551,7 @@ g_win32_getlocale (void)
  * The returned string should be deallocated with g_free().
  *
  * Returns: newly-allocated error message
- */
+ **/
 gchar *
 g_win32_error_message (gint error)
 {
@@ -674,7 +674,6 @@ get_package_directory_from_module (gchar *module_name)
  * The return value should be freed with g_free() when not needed any longer.
  **/
 
-
 gchar *
 g_win32_get_package_installation_directory (gchar *package,
 					    gchar *dll_name)
@@ -756,7 +755,7 @@ g_win32_get_package_installation_directory (gchar *package,
  * g_win32_get_package_installation_directory() with the @package and
  * @dll_name parameters. The return value should be freed with
  * g_free() when no longer needed.
- */
+ **/
 
 gchar *
 g_win32_get_package_installation_subdirectory (gchar *package,
