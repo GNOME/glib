@@ -76,9 +76,9 @@ typedef unsigned __int64 guint64;
 #define G_HAVE_ALLOCA 1
 #define alloca _alloca
 
-#define GLIB_MAJOR_VERSION 1
-#define GLIB_MINOR_VERSION 2
-#define GLIB_MICRO_VERSION 0
+#define GLIB_MAJOR_VERSION @GLIB_MAJOR_VERSION@
+#define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
+#define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
 
 #ifdef	__cplusplus
 #define	G_HAVE_INLINE	1

@@ -3,6 +3,7 @@ Overview of Changes in GLib 1.2.1:
 * g_realloc() fix for SunOS (please report further problems).
 * Continued the never ending fix vendetta regarding getpwuid(),
   this time AIX has been the culprit.
+* Upgrade to libtool 1.2f
 * Miscellaneous other buglets fixed.
 
 What's new in GLib 1.2.0 (since GLib 1.0.x):

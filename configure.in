@@ -40,6 +40,9 @@ GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
 dnl
 AC_DIVERT_POP()dnl
 
+AC_SUBST(GLIB_MAJOR_VERSION)
+AC_SUBST(GLIB_MINOR_VERSION)
+AC_SUBST(GLIB_MICRO_VERSION)
 AC_SUBST(GLIB_VERSION)
 
 # libtool versioning
@@ -1288,12 +1291,14 @@ g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 AC_OUTPUT([
 glib.spec
+glibconfig.h.win32
 Makefile
 glib-config
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gthread/Makefile
 docs/Makefile
+docs/glib-config.1
 tests/Makefile
 ],[case "$CONFIG_FILES" in
 *glib-config*)chmod +x glib-config;;

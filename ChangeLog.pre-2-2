@@ -1,3 +1,22 @@
+Wed Mar 24 21:23:47 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.1
+
+	* README:
+	  INSTALL: 
+	  NEWS: 
+	  sanity_check: updated
+
+	* glibconfig.h.win32.in:
+	  Makefile.am:
+ 	  docs/glib-config.1.in:
+	  docs/Makefile.am: Added files used to generate new files.
+
+	* glibconfig.h.win32:
+	  docs/glib-config.1: Removed, now generated.
+
+	* configure.in: Added to output now-generated files.
+	
 Tue Mar 23 13:43:39 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* giounix.c: add user_data param to check and prepare functions

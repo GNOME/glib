@@ -21,7 +21,7 @@ EXTRA_DIST = \
 	glib.def		\
 	makefile.msc		\
 	giowin32.c		\
-	glibconfig.h.win32	\
+	glibconfig.h.win32.in	\
 	config.h.win32
 
 lib_LTLIBRARIES = libglib.la
