@@ -1,4 +1,15 @@
 2001-10-05  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/hooks.sgml: Document G_HOOK_FLAG_USER_SHIFT.
+
+	* glib/tmpl/trash_stacks.sgml: Document trash stacks.
+
+	* glib/tmpl/async_queues.sgml, glib/tmpl/caches.sgml, 
+	glib/tmpl/completion.sgml, glib/tmpl/patterns.sgml, 
+	glib/tmpl/numerical.sgml, glib/tmpl/random_numbers.sgml, 
+	glib/tmpl/relations.sgml, glib/tmpl/modules.sgml: Update.
+
+2001-10-05  Matthias Clasen  <matthiasc@poet.de>
 	
 	* glib/tmpl/conversions.sgml: Update.
 

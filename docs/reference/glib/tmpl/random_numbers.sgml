@@ -15,19 +15,19 @@ url="http://www.math.keio.ac.jp/~matumoto/emt.html"
 </para>
 
 <para>
-If you just need a random number, you simply call the g_random_*
-functions, which will create a globally used #GRand and use the
-according g_rand_* function internally. Whenever you need a stream of
-reproducible random numbers, you better create a #GRand yourself and
-use the g_rand_* functions directly, which will also be slightly
-faster. Initializing a GRand with a certain seed will produce exactly
-the same series of random numbers on all platforms. This can thus be
-used as a seed for e.g. games.
+If you just need a random number, you simply call the 
+<function>g_random_*</function> functions, which will create a globally 
+used #GRand and use the according <function>g_rand_*</function> functions 
+internally. Whenever you need a stream of reproducible random numbers, you 
+better create a #GRand yourself and use the <funcion>g_rand_*</function> 
+functions directly, which will also be slightly faster. Initializing a #GRand 
+with a certain seed will produce exactly the same series of random numbers 
+on all platforms. This can thus be used as a seed for e.g. games.
 </para>
 
 <para>
-The g_rand*_range functions will return high quality equally
-distributed random numbers, whereas for example the
+The <function>g_rand*_range</function> functions will return high quality
+equally distributed random numbers, whereas for example the
 <literal>(g_random_int()%%max)</literal> approach often doesn't
 yield equally distributed numbers.
 </para>
@@ -40,7 +40,7 @@ yield equally distributed numbers.
 <!-- ##### STRUCT GRand ##### -->
 <para>
 The #GRand struct is an opaque data structure. It should only be
-accessed through the g_rand_* functions.
+accessed through the <function>g_rand_*</function> functions.
 </para>
 
 
@@ -72,7 +72,7 @@ accessed through the g_rand_* functions.
 
 <!-- ##### MACRO g_rand_boolean ##### -->
 <para>
-Return a random #gboolean from @rand. This corresponds to a unbiased
+Returns a random #gboolean from @rand. This corresponds to a unbiased
 coin toss.
 </para>
 
@@ -94,9 +94,6 @@ coin toss.
 @begin: 
 @end: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@min: 
-@max: 
 
 
 <!-- ##### FUNCTION g_rand_double ##### -->
@@ -113,9 +110,6 @@ coin toss.
 @begin: 
 @end: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@min: 
-@max: 
 
 
 <!-- ##### FUNCTION g_random_set_seed ##### -->
@@ -126,7 +120,7 @@ coin toss.
 
 <!-- ##### MACRO g_random_boolean ##### -->
 <para>
-Return a random #gboolean. This corresponds to a unbiased coin toss.
+Returns a random #gboolean. This corresponds to a unbiased coin toss.
 </para>
 
 @Returns: a random #gboolean.
@@ -144,9 +138,6 @@ Return a random #gboolean. This corresponds to a unbiased coin toss.
 @begin: 
 @end: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@min: 
-@max: 
 
 
 <!-- ##### FUNCTION g_random_double ##### -->
@@ -161,8 +152,5 @@ Return a random #gboolean. This corresponds to a unbiased coin toss.
 @begin: 
 @end: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@min: 
-@max: 
 
 

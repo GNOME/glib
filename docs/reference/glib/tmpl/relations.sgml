@@ -84,8 +84,6 @@ Note that this must be called before any records are added to the #GRelation.
 @field: the field to index, counting from 0.
 @hash_func: a function to produce a hash value from the field data.
 @key_equal_func: a function to compare two values of the given field.
-<!-- # Unused Parameters # -->
-@key_compare_func: 
 
 
 <!-- ##### FUNCTION g_relation_insert ##### -->
@@ -100,7 +98,7 @@ fields in the #GRelation.
 
 <!-- ##### FUNCTION g_relation_exists ##### -->
 <para>
-Returns TRUE if a record with the given values exists in a #GRelation.
+Returns %TRUE if a record with the given values exists in a #GRelation.
 Note that the values are compared directly, so that, for example, two
 copies of the same string will not match.
 </para>
@@ -108,7 +106,7 @@ copies of the same string will not match.
 @relation: a #GRelation.
 @Varargs: the fields of the record to compare. The number must match the
 number of fields in the #GRelation.
-@Returns: TRUE if a record matches.
+@Returns: %TRUE if a record matches.
 
 
 <!-- ##### FUNCTION g_relation_count ##### -->
@@ -138,7 +136,7 @@ The returned records should be freed with g_tuples_destroy().
 
 <!-- ##### FUNCTION g_relation_delete ##### -->
 <para>
-Deletes any records from a GRelation that have the given key value in
+Deletes any records from a #GRelation that have the given key value in
 the given field.
 </para>
 
@@ -175,7 +173,7 @@ It only contains one public member - the number of records that matched.
 To access the matched records, you must use g_tuples_index().
 </para>
 
-@len: 
+@len: the number of records that matched.
 
 <!-- ##### FUNCTION g_tuples_destroy ##### -->
 <para>

@@ -31,7 +31,7 @@ If any of the above functions fail, the error status can be found with
 g_module_error().
 </para>
 <para>
-The gmodule implementation features reference counting for opened modules,
+The #GModule implementation features reference counting for opened modules,
 and supports hook functions within a module which are called when the
 module is loaded and unloaded (see #GModuleCheckInit and #GModuleUnload).
 </para>
@@ -71,19 +71,20 @@ added to the directory, using the correct separator character.
 <para>
 The directory should specify the directory where the module can be found.
 It can be %NULL or an empty string to indicate that the module is in a standard
-operating-system specific directory, though this is not recommended since the
+platform-specific directory, though this is not recommended since the
 wrong module may be found.
 </para>
 <para>
-For example, calling g_module_build_path() on a Linux system with a directory
-of <filename>/lib</filename> and a module_name of "mylibrary" will return <filename>/lib/libmylibrary.so</filename>.
-On a Windows system, using <filename>\Windows</filename> as the directory it will return
+For example, calling g_module_build_path() on a Linux system with a @directory
+of <filename>/lib</filename> and a @module_name of "mylibrary" will return 
+<filename>/lib/libmylibrary.so</filename>. On a Windows system, using 
+<filename>\Windows</filename> as the directory it will return
 <filename>\Windows\mylibrary.dll</filename>.
 </para>
 
 @directory: the directory where the module is. This can be %NULL or the empty
-string to indicate that the standard operating system-specific directories
-will be used, though that is not recommended.
+string to indicate that the standard platform-specific directories will be 
+used, though that is not recommended.
 @module_name: the name of the module.
 @Returns: the complete path of the module, including the standard library
 prefix and suffix. This should be freed when no longer needed.
@@ -99,7 +100,7 @@ count is incremented.
 First of all g_module_open() tries to open @file_name as a module. If
 that fails and @file_name has the ".la"-suffix (and is a libtool archive) 
 it tries to open the corresponding module. If that fails and it doesn't 
-have the proper module suffix for that platform (#G_MODULE_SUFFIX), this 
+have the proper module suffix for the platform (#G_MODULE_SUFFIX), this 
 suffix will be appended and the corresponding module will be opended. If 
 that fails and @file_name doesn't have the ".la"-suffix, this suffix is 
 appended and g_module_open() tries to open the corresponding module. If 
@@ -128,7 +129,7 @@ The default action is to bind all symbols when the module is loaded.
 Gets a symbol pointer from a module.
 </para>
 
-@module: the module.
+@module: a #GModule.
 @symbol_name: the name of the symbol to find.
 @symbol: returns the pointer to the symbol value.
 @Returns: %TRUE on success.
@@ -136,11 +137,11 @@ Gets a symbol pointer from a module.
 
 <!-- ##### FUNCTION g_module_name ##### -->
 <para>
-Gets the file name from a #GModule.
+Gets the filename from a #GModule.
 </para>
 
-@module: the module.
-@Returns: the file name of the module, or "main" if the module is the main
+@module: a #GModule.
+@Returns: the filename of the module, or "main" if the module is the main
 program itself.
 
 
@@ -150,7 +151,7 @@ Ensures that a module will never be unloaded.
 Any future g_module_close() calls on the module will be ignored.
 </para>
 
-@module: a module to make permanently resident.
+@module: a #GModule to make permanently resident.
 
 
 <!-- ##### FUNCTION g_module_close ##### -->
@@ -158,7 +159,7 @@ Any future g_module_close() calls on the module will be ignored.
 Closes a module.
 </para>
 
-@module: the module to close.
+@module: a #GModule to close.
 @Returns: %TRUE on success.
 
 
@@ -191,7 +192,7 @@ automatically when the module is unloaded.
 It is passed the #GModule structure.
 </para>
 
-@module: the module about to be unloaded.
+@module: the #GModule about to be unloaded.
 
 
 <!-- ##### MACRO G_MODULE_SUFFIX ##### -->

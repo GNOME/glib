@@ -19,7 +19,7 @@ A completion attempt is requested with g_completion_complete().
 When no longer needed, the #GCompletion is freed with g_completion_free().
 </para>
 <para>
-Items in the completion can be simple strings (e.g. file names),
+Items in the completion can be simple strings (e.g. filenames),
 or pointers to arbitrary data structures. If data structures are used
 you must provide a #GCompletionFunc in g_completion_new(),
 which retrieves the item's string from the data structure.

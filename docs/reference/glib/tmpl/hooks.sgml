@@ -435,7 +435,10 @@ Returns the flags of a hook.
 
 <!-- ##### MACRO G_HOOK_FLAG_USER_SHIFT ##### -->
 <para>
-
+The position of the first bit which is not reserved for internal
+use be the #GHook implementation, i.e. 
+<literal>1 << G_HOOK_FLAG_USER_SHIFT</literal> is the first bit
+which can be used for application-defined flags.
 </para>
 
 

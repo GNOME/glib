@@ -17,15 +17,15 @@ well be done in the same thread.
 Asynchronous queues are an exception from most other GLib data
 structures, as they can be used simultaneously from multiple threads
 without explicit locking and they bring their own builtin reference
-counting. This is because the nature of an asynchronous queue is, that
+counting. This is because the nature of an asynchronous queue is that
 it will always be used by at least 2 concurrent threads.
 </para>
 
 <para>
 For using an asynchronous queue you first have to create one with
-g_async_queue_new(). A newly created queue will get the reference
+g_async_queue_new(). A newly-created queue will get the reference
 count 1. Whenever another thread is creating a new reference of (that
-is pointer to) the queue, it has to increase the reference count
+is, pointer to) the queue, it has to increase the reference count
 (using g_async_queue_ref()). Also, before removing this reference, the
 reference count has to be decreased (using
 g_async_queue_unref()). After that the queue might no longer exist so
@@ -53,7 +53,7 @@ queue and one that doesn't. That way you can hold the queue lock
 (acquire it with g_async_queue_lock() and release it with
 g_async_queue_unlock()) over multiple queue accessing
 instructions. This can be necessary to ensure the integrity of the
-queue, but should only be used, when really necessary as it can make
+queue, but should only be used when really necessary, as it can make
 your life harder if used unwisely. Normally you should only use the
 locking function variants (those without the suffix _unlocked)
 </para>
@@ -67,7 +67,7 @@ locking function variants (those without the suffix _unlocked)
 <para>
 The #GAsyncQueue struct is an opaque data structure, which represents
 an asynchronous queue. It should only be accessed through the
-g_async_queue_* functions.
+<function>g_async_queue_*</function> functions.
 </para>
 
 

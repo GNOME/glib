@@ -87,11 +87,11 @@ using the @value_destroy_func and @key_destroy_func passed to g_cache_new().
 
 <!-- ##### FUNCTION g_cache_destroy ##### -->
 <para>
-Frees the memory allocated for the GCache.
+Frees the memory allocated for the #GCache.
 </para>
 <para>
 Note that it does not destroy the keys and values which were contained in the
-GCache.
+#GCache.
 </para>
 
 @cache: a #GCache.

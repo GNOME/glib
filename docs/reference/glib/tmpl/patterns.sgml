@@ -7,10 +7,12 @@ Matches strings against patterns containing '*' and '?' wildcards.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The <function>g_pattern_match*</function> match a string against
-a pattern containing '*' and '?' wildcards with similar semantics 
+The <function>g_pattern_match*</function> functions match a string 
+against a pattern containing '*' and '?' wildcards with similar semantics 
 as the standard <function>glob()</function> function: '*' matches an
 arbitrary, possibly empty, string, '?' matches an arbitrary character.
+Note that in contrast to <function>glob()</function>, the '/' character
+<emphasis>can</emphasis> be matched by the wildcards. 
 </para>
 <para>
 There is no way to include literal '*' or '?' characters in a pattern. 
