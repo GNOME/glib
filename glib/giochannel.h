@@ -103,8 +103,6 @@ typedef enum
 
 struct _GIOChannel
 {
-  /*<private>*/
-
   guint ref_count;
   GIOFuncs *funcs;
 
@@ -123,20 +121,7 @@ struct _GIOChannel
 
   gboolean use_buffer : 1;	/* The encoding uses the buffers */
   gboolean do_encode : 1;	/* The encoding uses the GIConv coverters */
-
-  /*<public>*/
-
   gboolean close_on_unref : 1;	/* Close the channel on final unref */
-
-  /* The is_readable and is_writeable flags should really be marked
-   * <protected> instead of <private>. Some applications of GIOChannel,
-   * like GNet which implements the unix shutdown function to partially
-   * or completely disconnect sockets, may need to set these. For most
-   * cases, people won't need to touch them.
-   */
-
-  /*<private>*/
-
   gboolean is_readable : 1;	/* Cached GIOFlag */
   gboolean is_writeable : 1;	/* ditto */
   gboolean is_seekable : 1;	/* ditto */
@@ -228,6 +213,9 @@ GIOStatus             g_io_channel_set_encoding         (GIOChannel   *channel,
 							 const gchar  *encoding,
 							 GError      **error);
 G_CONST_RETURN gchar* g_io_channel_get_encoding         (GIOChannel   *channel);
+void                  g_io_channel_set_close_on_unref	(GIOChannel   *channel,
+							 gboolean      do_close);
+gboolean              g_io_channel_get_close_on_unref	(GIOChannel   *channel);
 
 
 GIOStatus   g_io_channel_flush            (GIOChannel   *channel,

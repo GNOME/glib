@@ -194,6 +194,7 @@ EXPORTS
 	g_io_channel_get_buffer_condition
 	g_io_channel_get_buffer_size
 	g_io_channel_get_buffered
+	g_io_channel_get_close_of_unref
 	g_io_channel_get_encoding
 	g_io_channel_get_flags
 	g_io_channel_get_line_term
@@ -210,6 +211,7 @@ EXPORTS
 	g_io_channel_seek_position
 	g_io_channel_set_buffer_size
 	g_io_channel_set_buffered
+	g_io_channel_set_close_of_unref
 	g_io_channel_set_encoding
 	g_io_channel_set_flags
 	g_io_channel_set_line_term

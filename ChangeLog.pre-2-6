@@ -1,3 +1,18 @@
+2001-08-15  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c glib/glib.def glib/giochannel.h: Added
+	new functions g_io_channel_[set,get]_close_on_unref ()
+
+	* glib/giochannel.c: glib/giochannel.h: Documentation fixes
+
+	* glib/giochannel.c: Fixed g_io_channel_write_chars ()
+	so that bytes_written is always set to an appropriate
+	value when it returns
+
+	* glib/giounix.c: changed g_io_channel_get_flags () to
+	set the is_readable and is_writeable flags cached
+	by the channel
+
 Wed Aug 15 11:09:56 2001  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: let the generated .pc files depend on config.status,

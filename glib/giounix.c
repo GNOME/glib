@@ -340,34 +340,24 @@ g_io_unix_create_watch (GIOChannel   *channel,
   return source;
 }
 
-static const GIOFlags g_io_unix_fcntl_flags[] = {
-  G_IO_FLAG_APPEND,
-  G_IO_FLAG_NONBLOCK,
-};
-static const glong g_io_unix_fcntl_posix_flags[] = {
-  O_APPEND,
-#ifdef O_NONBLOCK
-  O_NONBLOCK,
-#else
-  O_NDELAY,
-#endif
-};
-#define G_IO_UNIX_NUM_FCNTL_FLAGS G_N_ELEMENTS (g_io_unix_fcntl_flags)
-
 static GIOStatus
 g_io_unix_set_flags (GIOChannel *channel,
                      GIOFlags    flags,
                      GError    **err)
 {
   glong fcntl_flags;
-  gint loop;
   GIOUnixChannel *unix_channel = (GIOUnixChannel *) channel;
 
   fcntl_flags = 0;
 
-  for (loop = 0; loop < G_IO_UNIX_NUM_FCNTL_FLAGS; loop++)
-    if (flags & g_io_unix_fcntl_flags[loop])
-      fcntl_flags |= g_io_unix_fcntl_posix_flags[loop];
+  if (flags & G_IO_FLAG_APPEND)
+    fcntl_flags |= O_APPEND;
+  if (flags & G_IO_FLAG_NONBLOCK)
+#ifdef O_NONBLOCK
+    fcntl_flags |= O_NONBLOCK;
+#else
+    fcntl_flags |= O_NDELAY;
+#endif
 
   if (fcntl (unix_channel->fd, F_SETFL, fcntl_flags) == -1)
     {
@@ -385,7 +375,6 @@ g_io_unix_get_flags (GIOChannel *channel)
 {
   GIOFlags flags = 0;
   glong fcntl_flags;
-  gint loop;
   GIOUnixChannel *unix_channel = (GIOUnixChannel *) channel;
 
   fcntl_flags = fcntl (unix_channel->fd, F_GETFL);
@@ -397,9 +386,32 @@ g_io_unix_get_flags (GIOChannel *channel)
       return 0;
     }
 
-  for (loop = 0; loop < G_IO_UNIX_NUM_FCNTL_FLAGS; loop++)
-    if (fcntl_flags & g_io_unix_fcntl_posix_flags[loop])
-      flags |= g_io_unix_fcntl_flags[loop];
+  if (fcntl_flags & O_APPEND)
+    flags |= G_IO_FLAG_APPEND;
+#ifdef O_NONBLOCK
+  if (fcntl_flags & O_NONBLOCK)
+#else
+  if (fcntl_flags & O_NDELAY)
+#endif
+    flags |= G_IO_FLAG_NONBLOCK;
+
+  switch (fcntl_flags & (O_RDONLY | O_WRONLY | O_RDWR))
+    {
+      case O_RDONLY:
+        channel->is_readable = TRUE;
+        channel->is_writeable = FALSE;
+        break;
+      case O_WRONLY:
+        channel->is_readable = FALSE;
+        channel->is_writeable = TRUE;
+        break;
+      case O_RDWR:
+        channel->is_readable = TRUE;
+        channel->is_writeable = TRUE;
+        break;
+      default:
+        g_assert_not_reached ();
+    }
 
   return flags;
 }
@@ -540,7 +552,6 @@ g_io_channel_unix_new (gint fd)
   struct stat buffer;
   GIOUnixChannel *unix_channel = g_new (GIOUnixChannel, 1);
   GIOChannel *channel = (GIOChannel *)unix_channel;
-  int flags;
 
   g_io_channel_init (channel);
   channel->funcs = &unix_channel_funcs;
@@ -557,44 +568,10 @@ g_io_channel_unix_new (gint fd)
   else /* Assume not seekable */
     channel->is_seekable = FALSE;
 
-  flags = fcntl (fd, F_GETFL);
-
-  if (flags != -1)
-    {
-      /* Don't know if fcntl flags overlap, be careful */
-
-      if (flags & O_WRONLY)
-        {
-          channel->is_readable = FALSE;
-          channel->is_writeable = TRUE;
-        }
-      else if (flags & O_RDWR)
-        channel->is_readable = channel->is_writeable = TRUE;
-#if O_RDONLY == 0
-      else /* O_RDONLY defined as zero on linux (elsewhere?) */
-        {
-          channel->is_readable = TRUE;
-          channel->is_writeable = FALSE;
-        }
-#else /* O_RDONLY == 0 */
-      else if (flags & O_RDONLY)
-        {
-          channel->is_readable = TRUE;
-          channel->is_writeable = FALSE;
-        }
-      else
-        channel->is_readable = channel->is_writeable = FALSE;
-#endif /* O_RDONLY == 0 */
-    }
-  else
-    {
-      g_warning (G_STRLOC "Error while getting flags for FD: %s (%d)\n",
-                 g_strerror (errno), errno);
-      g_free (channel);
-      return NULL;
-    }
-
   unix_channel->fd = fd;
+
+  g_io_unix_get_flags (channel); /* Sets is_readable, is_writeable */
+
   return channel;
 }
 

@@ -640,6 +640,8 @@ g_io_channel_get_buffered
 g_io_channel_set_buffered
 g_io_channel_get_encoding
 g_io_channel_set_encoding
+g_io_channel_get_close_on_unref
+g_io_channel_set_close_on_unref
 
 <SUBSECTION Private>
 g_io_channel_win32_new_fd
