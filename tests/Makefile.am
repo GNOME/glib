@@ -1,6 +1,9 @@
 
 INCLUDES = -I$(top_srcdir)
 
+EXTRA_DIST = \
+	makefile.msc
+
 TESTS = \
 	array-test	\
 	dirname-test	\
@@ -28,3 +31,5 @@ strfunc_test_LDADD = $(top_builddir)/libglib.la
 tree_test_LDADD = $(top_builddir)/libglib.la
 type_test_LDADD = $(top_builddir)/libglib.la
 
+makefile.msc: $(top_builddir)/config.status makefile.msc.in
+	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

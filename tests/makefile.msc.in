@@ -1,0 +1,49 @@
+## Makefile for building the GLib test programs with Microsoft C
+## Use: nmake -f makefile.msc check
+
+################################################################
+
+# Nothing much configurable below
+
+# cl -? describes the options
+CC = cl -G5 -GF -Ox -W3 -MD -nologo
+
+# No general LDFLAGS needed
+LDFLAGS = /link
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+CFLAGS = -I.. -DHAVE_CONFIG_H
+
+TESTS = \
+	array-test.exe	\
+	dirname-test.exe\
+	hash-test.exe	\
+	list-test.exe	\
+	node-test.exe	\
+	relation-test.exe\
+	slist-test.exe	\
+	string-test.exe	\
+	strfunc-test.exe\
+	tree-test.exe	\
+	type-test.exe
+
+all :	$(TESTS)
+
+.c.exe :
+	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -Fe$@ $< ..\glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
+
+check:	all
+	for %p in ($(TESTS)) do %p
+
+clean:
+	del *.exe
+	del *.obj
+	del *.dll
+	del *.lib
+	del *.err
+	del *.map
+	del *.sym
+	del *.exp
+	del *.pdb

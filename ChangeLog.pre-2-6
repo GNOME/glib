@@ -1,3 +1,23 @@
+1999-04-30  Tor Lillqvist  <tml@localhost.localdomain>
+
+	* Makefile.am: Don't distribute glibconfig.h.win32.in, but
+	glibconfig.h.win32. Generate it when making a dist. Also generate
+	makefile.msc and config.h.win32 from corresponding .in files when
+	making dist.
+
+	* configure.in: Also substitute @GLIB_INTERFACE_AGE@ and
+	@GLIB_BINARY_AGE@ (needed in config.h.win32).
+	
+	* glibconfig.h.win32.in: Use static mutex structure and initial
+	value corresponding to the 1999-04-07 snapshot of pthreads-win32.
+
+	* tests/Makefile.am: Distribute makefile.msc. Generate it when
+	making dist.
+
+	* tests/makefile.msc.in: New file.
+
+	* tests/node-test.c: Include <stdlib.h> for exit().
+
 Thu Apr 29 02:16:36 1999  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c: minor code cleanups.

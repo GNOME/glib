@@ -7,21 +7,23 @@ BIN = C:\bin
 
 # This is the location of pthreads for Win32, 
 # see http://sourceware.cygnus.com/pthreads-win32/
-PTHREAD_LIB = ..\lib\pthread.lib
-PTHREAD_INC = ..\include
+# We want the 1999-04-07 snapshot.
+PTHREADS = ..\pthreads-snap-1999-04-07
+PTHREAD_LIB = $(PTHREADS)\pthread.lib
+PTHREAD_INC = -I$(PTHREADS)
 
 ################################################################
 
 # Nothing much configurable below
 
-# cl -? described the options
+# cl -? describes the options
 CC = cl -G5 -GF -Ox -W3 -MD -nologo
 
-# No general LDFLAGS needes
+# No general LDFLAGS needed
 LDFLAGS = /link
 INSTALL = copy
 
-GLIB_VER = 1.2
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 CFLAGS = -I. -DHAVE_CONFIG_H
 
@@ -101,7 +103,7 @@ gthread-$(GLIB_VER).dll : $(gthread_OBJECTS)
 	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) glib-$(GLIB_VER).lib $(PTHREAD_LIB) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gthread\gthread.def
 
 gthread.obj : gthread\gthread.c gthread\gthread-posix.c
-	$(CC) $(CFLAGS) -GD -I$(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread\gthread.c
+	$(CC) $(CFLAGS) -GD $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread\gthread.c
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.obj
 	$(CC) $(CFLAGS) -Fetestglib.exe testglib.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
@@ -143,7 +145,7 @@ testgthread.exe : glib-$(GLIB_VER).dll gthread-$(GLIB_VER).dll testgthread.obj
 	$(CC) $(CFLAGS) testgthread.obj glib-$(GLIB_VER).lib gthread-$(GLIB_VER).lib $(PTHREAD_LIB) $(LDFLAGS) /subsystem:console 
 
 testgthread.obj : gthread\testgthread.c
-	$(CC) $(CFLAGS) -I$(PTHREAD_INC) -c gthread\testgthread.c
+	$(CC) $(CFLAGS) $(PTHREAD_INC) -c gthread\testgthread.c
 
 clean:
 	del config.h

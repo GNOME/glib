@@ -44,6 +44,8 @@ AC_SUBST(GLIB_MAJOR_VERSION)
 AC_SUBST(GLIB_MINOR_VERSION)
 AC_SUBST(GLIB_MICRO_VERSION)
 AC_SUBST(GLIB_VERSION)
+AC_SUBST(GLIB_INTERFACE_AGE)
+AC_SUBST(GLIB_BINARY_AGE)
 
 # libtool versioning
 LT_RELEASE=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION
@@ -1292,7 +1294,6 @@ g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 AC_OUTPUT([
 glib.spec
-glibconfig.h.win32
 Makefile
 glib-config
 gmodule/gmoduleconf.h

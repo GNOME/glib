@@ -98,7 +98,7 @@ typedef unsigned __int64 guint64;
  *   printf ("sizeof (pthread_mutex_t) = %d\n", sizeof (pthread_mutex_t));
  *   printf ("PTHREAD_MUTEX_INITIALIZER = ");
  *   for (i = 0; i < sizeof (pthread_mutex_t); i++)
- *     printf ("%u, ", (unsigned) ((char *) &m)[i]);
+ *     printf ("%u, ", ((unsigned char *) &m)[i]);
  *   printf ("\n");
  *   exit(0);
  * }
@@ -111,15 +111,15 @@ struct _GStaticMutex
   struct _GMutex *runtime_mutex;
   union {
     /* The size of the pad array should be sizeof (pthread_mutext_t) */
-    /* This value corresponds to the 1999-01-24 version of pthreads-win32 */
-    char   pad[36];
+    /* This value corresponds to the 1999-04-07 version of pthreads-win32 */
+    char   pad[4];
     double dummy_double;
     void  *dummy_pointer;
     long   dummy_long;
   } aligned_pad_u;
 };
 /* This should be NULL followed by the bytes in PTHREAD_MUTEX_INITIALIZER */
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } } }
+#define	G_STATIC_MUTEX_INIT	{ NULL, { { 255, 255, 255, 255 } } }
 #define	g_static_mutex_get_mutex(mutex) \
   (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))

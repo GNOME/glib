@@ -10,9 +10,9 @@ and tools. Both the compiler from MSVC 5.0 and MSVC 6.0 have been used
 successfully.
 
 Before building you must get the pthreads library for Windows from
-http://sourceware.cygnus.com/pthreads-win32/. Edit the location of the
-pthreads library and include files in makefile.msc. Also edit the BIN
-definition in makefile.msc.
+http://sourceware.cygnus.com/pthreads-win32/. We want the 1999-04-07
+release. Edit the location of the pthreads library and include files
+in makefile.msc. Also edit the BIN definition in makefile.msc.
 
 Build with `nmake -f makefile.msc`. Install with `nmake -f
 makefile.msc install`.
