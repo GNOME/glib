@@ -26,3 +26,5 @@ glibconfig-sysdefs.h
 glib.spec
 stamp-h.in
 glibconfig.h.win32
+makefile.msc
+config.h.win32
