@@ -1,3 +1,16 @@
+2001-02-19  Hans Breuer <hans@breuer.org>
+
+	* glib/glib.def, gobject/gobject.def : added nissing symbols
+
+	* gobject/makefile.msc : updated
+
+	* glib/gmessages.c : call the "debug interrupt" before exiting the
+	program, if build with msvc as debug version. Which gives the opportunity
+	to see the callstack, etc.
+
+	* glib/gthread.c : thread->pid is only defined #ifdef
+	G_THREAD_USE_PID_SURROGATE
+
 Mon Feb 19 07:32:38 2001  Tim Janik  <timj@gtk.org>
 
 	* glib-config-2.0.in (lib_glib): my name is glib-config-2.0!

@@ -25,6 +25,7 @@ EXPORTS
 	g_closure_remove_inotify
 	g_closure_set_marshal
 	g_closure_set_meta_marshal
+	g_closure_sink
 	g_closure_unref
 	g_enum_complete_type_info
 	g_enum_get_value

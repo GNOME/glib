@@ -522,8 +522,10 @@ g_thread_create_proxy (gpointer data)
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
  
+#ifdef G_THREAD_USE_PID_SURROGATE
   if (g_thread_use_default_impl)
     SET_PRIO (thread->pid, thread->thread.priority);
+#endif /* G_THREAD_USE_PID_SURROGATE */
 
   thread->func (thread->arg);
 }

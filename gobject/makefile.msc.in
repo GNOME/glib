@@ -3,7 +3,7 @@
 
 TOP = ..\..
 
-!INCLUDE ..\build\win32\make.msc
+!INCLUDE $(TOP)\build\win32\make.msc
 
 # Possibly override GLib version in build\win32\object.defs
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
@@ -34,6 +34,16 @@ gobject_OBJECTS =		\
 	gvalue.obj		\
 	gvaluetypes.obj
 
+gmarshal.h : gmarshal.list glib-genmarshal.exe
+	echo #ifndef __G_MARSHAL_H__ > xgen-gmh
+	echo #define __G_MARSHAL_H__ >> xgen-gmh
+	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --header >> xgen-gmh
+	echo #endif /* __G_MARSHAL_H__ */ >> xgen-gmh
+	copy xgen-gmh gmarshal.h
+
+gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
+	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --body > gmarshal.c
+
 makefile.msc: makefile.msc.in
 	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
 	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
@@ -42,8 +52,4 @@ gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib
-
-# I don't even try to build gmarshal.c and gmarshal.h here. If you try
-# to build this from CVS with MSVC, you will have to have a look in
-# Makefile.am or makefile.mingw.in to see how to do it.
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER).lib

@@ -555,6 +555,8 @@ EXPORTS
 	g_tree_remove
 	g_tree_search
 	g_tree_traverse
+	g_try_malloc
+	g_try_realloc
 	g_tuples_destroy
 	g_tuples_index
 	g_ucs4_to_utf16

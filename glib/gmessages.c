@@ -435,6 +435,10 @@ g_logv (const gchar   *log_domain,
 #ifdef G_OS_WIN32
 	      MessageBox (NULL, fatal_msg_buf, NULL, MB_OK);
 #endif
+# if defined (_MSC_VER) && defined (_DEBUG)
+	      /* let's see the call stack ... */
+	      __asm int 3
+# endif
 	      abort ();
 #endif /* !G_ENABLE_DEBUG || !SIGTRAP */
 	    }
