@@ -1,3 +1,16 @@
+Fri Mar 19 16:29:50 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* config.guess
+	* config.sub
+	* ltconfig
+	* ltmain.sh: upgrade to libtool 1.2f
+
+	* autogen.sh: libtool is not required to autogen glib
+
+	* acconfig.h: remove WITH_SYMBOL_UNDERSCORE (not explictly
+	needed)
+
 1999-03-18  Jeff Garzik  <jgarzik@pobox.com>
 
 	* glib.def: Add new g_list, g_stack, g_queue functions.
