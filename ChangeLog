@@ -1,8 +1,5 @@
 1999-10-31  Tor Lillqvist  <tml@iki.fi>
 
-	* gcache.c (g_cache_remove): Don't crash if removing a nonexistent
-	value.
-
 	* gutils.c (gwin_getlocale): New Win32-specific function, returns
 	a Unixish current locale string (en, zh_TW etc).
 
@@ -15,6 +12,11 @@
 	* gmessages.c (Win32: ensure_stdout_valid): Some improvements,
 	make sure we don't call AllocConsole several times, which I think
 	has happened.
+
+Sun Oct 31 18:55:01 1999  ape@spacetec.no  (Asbjorn Pettersen)
+
+	* gcache.c (g_cache_remove): Test if node is NULL.
+	If not tested, GIMP's script-fu will crash. 
 
 Sun Oct 17 18:11:40 1999  Tim Janik  <timj@gtk.org>
 
