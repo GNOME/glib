@@ -1,3 +1,9 @@
+Sun Sep 19 23:52:35 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.c (mklevel_prefix): 
+	* glib/gmessages.c (g_logv): Fix the types of some variables
+	to be GLogLevelFlags instead of guint.  (#153042, Philippe Blain)
+
 2004-09-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* Version bump

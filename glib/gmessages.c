@@ -459,7 +459,7 @@ g_logv (const gchar   *log_domain,
 	  guint depth = GPOINTER_TO_UINT (g_private_get (g_log_depth));
 	  GLogDomain *domain;
 	  GLogFunc log_func;
-	  guint domain_fatal_mask;
+	  GLogLevelFlags domain_fatal_mask;
 	  gpointer data = NULL;
 
 	  if (was_fatal)
@@ -488,7 +488,7 @@ g_logv (const gchar   *log_domain,
 	  /* had to defer debug initialization until we can keep track of recursion */
 	  if (!(test_level & G_LOG_FLAG_RECURSION) && !_g_debug_initialized)
 	    {
-	      guint orig_test_level = test_level;
+	      GLogLevelFlags orig_test_level = test_level;
 
 	      _g_debug_init ();
 	      if ((domain_fatal_mask | g_log_always_fatal) & test_level)
@@ -706,8 +706,8 @@ format_unsigned (gchar  *buf,
 #define	ALERT_LEVELS		(G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)
 
 static GFileDescriptor
-mklevel_prefix (gchar level_prefix[STRING_BUFFER_SIZE],
-		guint log_level)
+mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
+		GLogLevelFlags log_level)
 {
   gboolean to_stdout = TRUE;
 
