@@ -814,8 +814,8 @@ g_strlcpy (gchar       *dest,
 	   const gchar *src,
 	   gsize        dest_size)
 {
-  g_return_val_if_fail (dest != NULL, NULL);
-  g_return_val_if_fail (src  != NULL, NULL);
+  g_return_val_if_fail (dest != NULL, 0);
+  g_return_val_if_fail (src  != NULL, 0);
   
   return strlcpy (dest, src, dest_size);
 }
@@ -825,8 +825,8 @@ g_strlcat (gchar       *dest,
 	   const gchar *src,
 	   gsize        dest_size)
 {
-  g_return_val_if_fail (dest != NULL, NULL);
-  g_return_val_if_fail (src  != NULL, NULL);
+  g_return_val_if_fail (dest != NULL, 0);
+  g_return_val_if_fail (src  != NULL, 0);
   
   return strlcat (dest, src, dest_size);
 }

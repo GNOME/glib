@@ -1,3 +1,8 @@
+Thu Jul 27 05:15:11 2000  Tim Janik  <timj@gtk.org>
+
+	* gstrfuncs.c (g_strlcpy, g_strlcat): completed tor's fix
+	to cover both #ifdef branches.
+
 2000-07-26  Tor Lillqvist  <tml@iki.fi>
 
 	* gstrfuncs.c (g_strlcpy, g_strlcat): Return 0 on error, not NULL.
