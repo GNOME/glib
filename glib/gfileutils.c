@@ -70,14 +70,14 @@
  * @filename: a filename to test
  * @test: bitfield of #GFileTest flags
  * 
- * Returns TRUE if any of the tests in the bitfield @test are
- * TRUE. For example, (G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)
- * will return TRUE if the file exists; the check whether it's
- * a directory doesn't matter since the existence test is TRUE.
- * With the current set of available tests, there's no point
+ * Returns %TRUE if any of the tests in the bitfield @test are
+ * %TRUE. For example, <literal>(G_FILE_TEST_EXISTS | 
+ * G_FILE_TEST_IS_DIR)</literal> will return %TRUE if the file exists; 
+ * the check whether it's a directory doesn't matter since the existence 
+ * test is %TRUE. With the current set of available tests, there's no point
  * passing in more than one test at a time.
  *
- * Return value: whether a test was TRUE
+ * Return value: whether a test was %TRUE
  **/
 gboolean
 g_file_test (const gchar *filename,
@@ -122,16 +122,16 @@ g_file_error_quark (void)
  * g_file_error_from_errno:
  * @err_no: an "errno" value
  * 
- * Gets a #GFileError constant based on the passed-in errno.
- * For example, if you pass in EEXIST this function returns
- * #G_FILE_ERROR_EXIST. Unlike errno values, you can portably
+ * Gets a #GFileError constant based on the passed-in @errno.
+ * For example, if you pass in %EEXIST this function returns
+ * #G_FILE_ERROR_EXIST. Unlike @errno values, you can portably
  * assume that all #GFileError values will exist.
  *
  * Normally a #GFileError value goes into a #GError returned
  * from a function that manipulates files. So you would use
  * g_file_error_from_errno() when constructing a #GError.
  * 
- * Return value: #GFileError corresponding to the given errno
+ * Return value: #GFileError corresponding to the given @errno
  **/
 GFileError
 g_file_error_from_errno (gint err_no)
@@ -490,17 +490,17 @@ get_contents_win32 (const gchar *filename,
  * @error: return location for a #GError
  * 
  * Reads an entire file into allocated memory, with good error
- * checking. If @error is set, FALSE is returned, and @contents is set
- * to NULL. If TRUE is returned, @error will not be set, and @contents
+ * checking. If @error is set, %FALSE is returned, and @contents is set
+ * to %NULL. If %TRUE is returned, @error will not be set, and @contents
  * will be set to the file contents.  The string stored in @contents
- * will be nul-terminated, so for text files you can pass NULL for the
+ * will be nul-terminated, so for text files you can pass %NULL for the
  * @length argument.  The error domain is #G_FILE_ERROR. Possible
  * error codes are those in the #GFileError enumeration.
  *
  * FIXME currently crashes if the file is too big to fit in memory;
  * should probably use g_try_malloc() when we have that function.
  * 
- * Return value: TRUE on success, FALSE if error is set
+ * Return value: %TRUE on success, %FALSE if error is set
  **/
 gboolean
 g_file_get_contents (const gchar *filename,
@@ -530,18 +530,19 @@ g_file_get_contents (const gchar *filename,
  * g_mkstemp:
  * @tmpl: template filename
  *
- * Open a temporary file. See "man mkstemp" on most UNIX-like systems.
- * This is a portability wrapper, which simply calls mkstemp() on systems
- * that have it, and implements it in GLib otherwise.
+ * Opens a temporary file. See the <function>mkstemp()</function> documentation
+ * on most UNIX-like systems. This is a portability wrapper, which simply calls 
+ * <function>mkstemp()</function> on systems that have it, and implements 
+ * it in GLib otherwise.
  *
- * The parameter is a string that should match the rules for mktemp, i.e.
- * end in "XXXXXX". The X string will be modified to form the name
- * of a file that didn't exist.
+ * The parameter is a string that should match the rules for
+ * <function>mkstemp()</function>, i.e. end in "XXXXXX". The X string will 
+ * be modified to form the name of a file that didn't exist.
  *
- * Return value: A file handle (as from open()) to the file
+ * Return value: A file handle (as from <function>open()</function>) to the file
  * opened for reading and writing. The file is opened in binary mode
  * on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned.
+ * closed with <function>close()</function>. In case of errors, -1 is returned.
  */
 int
 g_mkstemp (char *tmpl)
@@ -605,7 +606,7 @@ g_mkstemp (char *tmpl)
 
 /**
  * g_file_open_tmp:
- * @tmpl: Template for file name, as in g_mkstemp, basename only
+ * @tmpl: Template for file name, as in g_mkstemp(), basename only
  * @name_used: location to store actual name used
  * @error: return location for a #GError
  *
@@ -613,22 +614,22 @@ g_mkstemp (char *tmpl)
  * files (as returned by g_get_tmp_dir()). 
  *
  * @tmpl should be a string ending with six 'X' characters, as the
- * parameter to g_mkstemp() (or mkstemp()). However, unlike these
- * functions, the template should only be a basename, no directory
- * components are allowed. If template is NULL, a default template is
- * used.
+ * parameter to g_mkstemp() (or <function>mkstemp()</function>). 
+ * However, unlike these functions, the template should only be a 
+ * basename, no directory components are allowed. If template is %NULL, 
+ * a default template is used.
  *
- * Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
- * modified, and might thus be a read-only literal string.
+ * Note that in contrast to g_mkstemp() (and <function>mkstemp()</function>) 
+ * @tmpl is not modified, and might thus be a read-only literal string.
  *
- * The actual name used is returned in @name_used if non-NULL. This
- * string should be freed with g_free when not needed any longer.
+ * The actual name used is returned in @name_used if non-%NULL. This
+ * string should be freed with g_free() when not needed any longer.
  *
- * Return value: A file handle (as from open()) to the file
- * opened for reading and writing. The file is opened in binary mode
- * on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned and
- * @error will be set.
+ * Return value: A file handle (as from <function>open()</function>) to 
+ * the file opened for reading and writing. The file is opened in binary 
+ * mode on platforms where there is a difference. The file handle should be
+ * closed with <function>close()</function>. In case of errors, -1 is returned 
+ * and @error will be set.
  **/
 int
 g_file_open_tmp (const char *tmpl,
@@ -765,13 +766,13 @@ g_build_pathv (const gchar *separator,
  * @first_element: the first element in the path
  * @Varargs: remaining elements in path
  * 
- * Create a path from a series of elements using @separator as the
+ * Creates a path from a series of elements using @separator as the
  * separator between elements. At the boundary between two elements,
  * any trailing occurrences of separator in the first element, or
  * leading occurrences of separator in the second element are removed
  * and exactly one copy of the separator is inserted.
  * 
- * Return value: a newly allocated string that must be freed with g_free().
+ * Return value: a newly-allocated string that must be freed with g_free().
  **/
 gchar *
 g_build_path (const gchar *separator,
@@ -795,15 +796,15 @@ g_build_path (const gchar *separator,
  * @first_element: the first element in the path
  * @Varargs: remaining elements in path
  * 
- * Create a filename from a series of elements using the correct
+ * Creates a filename from a series of elements using the correct
  * separator for filenames. This function behaves identically
- * to g_build_path (G_DIR_SEPARATOR_S, first_element, ....)
+ * to <literal>g_build_path (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
  *
  * No attempt is made to force the resulting filename to be an absolute
  * path. If the first element is a relative path, the result will
  * be a relative path. 
  * 
- * Return value: a newly allocated string that must be freed with g_free().
+ * Return value: a newly-allocated string that must be freed with g_free().
  **/
 gchar *
 g_build_filename (const gchar *first_element, 

@@ -223,7 +223,7 @@ g_shell_quote (const gchar *unquoted_string)
  * would produce (the variables, backticks, etc. will be passed
  * through literally instead of being expanded). This function is
  * guaranteed to succeed if applied to the result of
- * g_shell_quote(). If it fails, it returns NULL and sets the
+ * g_shell_quote(). If it fails, it returns %NULL and sets the
  * error. The @quoted_string need not actually contain quoted or
  * escaped text; g_shell_unquote() simply goes through the string and
  * unquotes/unescapes anything that the shell would. Both single and
@@ -581,7 +581,7 @@ tokenize_command_line (const gchar *command_line,
  * literally. Possible errors are those from the #G_SHELL_ERROR
  * domain. Free the returned vector with g_strfreev().
  * 
- * Return value: TRUE on success, FALSE if error set
+ * Return value: %TRUE on success, %FALSE if error set
  **/
 gboolean
 g_shell_parse_argv (const gchar *command_line,

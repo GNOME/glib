@@ -47,7 +47,7 @@ g_error_new_valist(GQuark         domain,
  * g_error_new:
  * @domain: error domain 
  * @code: error code
- * @format: printf()-style format for error message
+ * @format: <function>printf()</function>-style format for error message
  * @Varargs: parameters for message format
  * 
  * Creates a new #GError with the given @domain and @code,
@@ -81,9 +81,9 @@ g_error_new (GQuark       domain,
  * @message: error message
  * 
  * Creates a new #GError; unlike g_error_new(), @message is not
- * a printf()-style format string. Use this function if @message
- * contains text you don't have control over, that could include
- * printf() escape sequences.
+ * a <function>printf()</function>-style format string. Use this 
+ * function if @message contains text you don't have control over, 
+ * that could include <function>printf()</function> escape sequences.
  * 
  * Return value: a new #GError
  **/
@@ -153,7 +153,7 @@ g_error_copy (const GError *error)
  * @domain: an error domain
  * @code: an error code
  * 
- * Returns TRUE if @error matches @domain and @code, FALSE
+ * Returns %TRUE if @error matches @domain and @code, %FALSE
  * otherwise.
  * 
  * Return value: whether @error has @domain and @code
@@ -174,14 +174,14 @@ g_error_matches (const GError *error,
 
 /**
  * g_set_error:
- * @err: a return location for a #GError, or NULL
+ * @err: a return location for a #GError, or %NULL
  * @domain: error domain
  * @code: error code 
- * @format: printf()-style format
+ * @format: <function>printf()</function>-style format
  * @Varargs: args for @format 
  * 
- * Does nothing if @err is NULL; if @err is non-NULL, then *@err must
- * be NULL. A new #GError is created and assigned to *@err.
+ * Does nothing if @err is %NULL; if @err is non-%NULL, then *@err must
+ * be %NULL. A new #GError is created and assigned to *@err.
  **/
 void
 g_set_error (GError      **err,
@@ -212,8 +212,8 @@ g_set_error (GError      **err,
  * @dest: error return location
  * @src: error to move into the return location
  * 
- * If @dest is NULL, free @src; otherwise,
- * moves @src into *@dest. *@dest must be NULL.
+ * If @dest is %NULL, free @src; otherwise,
+ * moves @src into *@dest. *@dest must be %NULL.
  **/
 void    
 g_propagate_error (GError       **dest,
@@ -240,8 +240,8 @@ g_propagate_error (GError       **dest,
  * g_clear_error:
  * @err: a #GError return location
  * 
- * If @err is NULL, does nothing. If @err is non-NULL,
- * calls g_error_free() on *@err and sets *@err to NULL.
+ * If @err is %NULL, does nothing. If @err is non-%NULL,
+ * calls g_error_free() on *@err and sets *@err to %NULL.
  **/
 void
 g_clear_error (GError **err)

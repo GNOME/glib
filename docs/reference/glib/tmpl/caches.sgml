@@ -10,7 +10,7 @@ A #GCache allows sharing of complex data structures, in order to save
 system resources.
 </para>
 <para>
-GTK+ uses a #GCache for #GtkStyles; GDK uses one for #GdkGCs. These consume a lot of
+GTK+ uses caches for #GtkStyles and #GdkGCs. These consume a lot of
 resources, so a #GCache is used to see if a #GtkStyle or #GdkGC with the
 required properties already exists. If it does, then the existing
 object is used instead of creating a new one.

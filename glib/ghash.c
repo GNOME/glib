@@ -96,11 +96,11 @@ static GHashNode *node_free_list = NULL;
  *   Hash values are used to determine where keys are stored within the
  *   #GHashTable data structure. The g_direct_hash(), g_int_hash() and 
  *   g_str_hash() functions are provided for some common types of keys. 
- *   If hash_func is NULL, g_direct_hash() is used.
+ *   If hash_func is %NULL, g_direct_hash() is used.
  * @key_equal_func: a function to check two keys for equality.  This is
  *   used when looking up keys in the #GHashTable.  The g_direct_equal(),
  *   g_int_equal() and g_str_equal() functions are provided for the most
- *   common types of keys. If @key_equal_func is NULL, keys are compared
+ *   common types of keys. If @key_equal_func is %NULL, keys are compared
  *   directly in a similar fashion to g_direct_equal(), but without the
  *   overhead of a function call.
  *
@@ -121,10 +121,10 @@ g_hash_table_new (GHashFunc    hash_func,
  * @hash_func: a function to create a hash value from a key.
  * @key_equal_func: a function to check two keys for equality.
  * @key_destroy_func: a function to free the memory allocated for the key 
- *   used when removing the entry from the #GHashTable or #NULL if you 
+ *   used when removing the entry from the #GHashTable or %NULL if you 
  *   don't want to supply such a function.
  * @value_destroy_func: a function to free the memory allocated for the 
- *   value used when removing the entry from the #GHashTable or #NULL if 
+ *   value used when removing the entry from the #GHashTable or %NULL if 
  *   you don't want to supply such a function.
  * 
  * Creates a new #GHashTable like g_hash_table_new() and allows to specify
@@ -214,7 +214,7 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
  * 
  * Looks up a key in a #GHashTable.
  * 
- * Return value: the associated value, or NULL if the key is not found.
+ * Return value: the associated value, or %NULL if the key is not found.
  **/
 gpointer
 g_hash_table_lookup (GHashTable	  *hash_table,
@@ -237,7 +237,7 @@ g_hash_table_lookup (GHashTable	  *hash_table,
  * @value: returns the value associated with the key.
  * 
  * Looks up a key in the #GHashTable, returning the original key and the
- * associated value and a gboolean which is TRUE if the key was found. This 
+ * associated value and a #gboolean which is %TRUE if the key was found. This 
  * is useful if you need to free the memory allocated for the original key, 
  * for example before calling g_hash_table_remove().
  * 
@@ -276,9 +276,9 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
  * Inserts a new key and value into a #GHashTable.
  * 
  * If the key already exists in the #GHashTable its current value is replaced
- * with the new value. If you supplied a value_destroy_func when creating the 
+ * with the new value. If you supplied a @value_destroy_func when creating the 
  * #GHashTable, the old value is freed using that function. If you supplied
- * a key_destroy_func when creating the #GHashTable, the passed key is freed 
+ * a @key_destroy_func when creating the #GHashTable, the passed key is freed 
  * using that function.
  **/
 void
@@ -325,8 +325,8 @@ g_hash_table_insert (GHashTable *hash_table,
  * Inserts a new key and value into a #GHashTable similar to 
  * g_hash_table_insert(). The difference is that if the key already exists 
  * in the #GHashTable, it gets replaced by the new key. If you supplied a 
- * value_destroy_func when creating the #GHashTable, the old value is freed 
- * using that function. If you supplied a key_destroy_func when creating the 
+ * @value_destroy_func when creating the #GHashTable, the old value is freed 
+ * using that function. If you supplied a @key_destroy_func when creating the 
  * #GHashTable, the old key is freed using that function. 
  **/
 void
@@ -367,7 +367,7 @@ g_hash_table_replace (GHashTable *hash_table,
  * Removes a key and its associated value from a #GHashTable.
  *
  * If the #GHashTable was created using g_hash_table_new_full(), the
- * key and value are freed using the supplied destroy_functions, otherwise
+ * key and value are freed using the supplied destroy functions, otherwise
  * you have to make sure that any dynamically allocated values are freed 
  * yourself.
  * 
@@ -440,7 +440,7 @@ g_hash_table_steal (GHashTable    *hash_table,
  * @user_data: user data to pass to the function.
  * 
  * Calls the given function for each key/value pair in the #GHashTable.
- * If the function returns TRUE, then the key/value pair is removed from the
+ * If the function returns %TRUE, then the key/value pair is removed from the
  * #GHashTable. If you supplied key or value destroy functions when creating
  * the #GHashTable, they are used to free the memory allocated for the removed
  * keys and values.
@@ -465,7 +465,7 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
  * @user_data: user data to pass to the function.
  * 
  * Calls the given function for each key/value pair in the #GHashTable.
- * If the function returns TRUE, then the key/value pair is removed from the
+ * If the function returns %TRUE, then the key/value pair is removed from the
  * #GHashTable, but no key or value destroy functions are called.
  * 
  * Return value: the number of key/value pairs removed.

@@ -660,7 +660,7 @@ g_main_context_new ()
 /**
  * g_main_context_default:
  * 
- * Return the default main context. This is the main context used
+ * Returns the default main context. This is the main context used
  * for main loop functions when a main loop is not explicitly
  * specified.
  * 
@@ -687,18 +687,18 @@ g_main_context_default (void)
  * g_source_new:
  * @source_funcs: structure containing functions that implement
  *                the sources behavior.
- * @struct_size: size of the #GSource structure to create
+ * @struct_size: size of the #GSource structure to create.
  * 
- * Create a new GSource structure. The size is specified to
- * allow creating structures derived from GSource that contain
+ * Creates a new #GSource structure. The size is specified to
+ * allow creating structures derived from #GSource that contain
  * additional data. The size passed in must be at least
- * sizeof(GSource).
+ * <literal>sizeof (GSource)</literal>.
  * 
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_add() before it will be
  * executed.
  * 
- * Return value: the newly create #GSource
+ * Return value: the newly-created #GSource.
  **/
 GSource *
 g_source_new (GSourceFuncs *source_funcs,
@@ -863,7 +863,7 @@ g_source_destroy_internal (GSource      *source,
  * g_source_destroy:
  * @source: a #GSource
  * 
- * Remove a source from its #GMainContext, if any, and mark it as
+ * Removes a source from its #GMainContext, if any, and mark it as
  * destroyed.  The source cannot be subsequently added to another
  * context.
  **/
@@ -886,7 +886,7 @@ g_source_destroy (GSource *source)
  * g_source_get_id:
  * @source: a #GSource
  * 
- * Return the numeric ID for a particular source. The ID of a source
+ * Returns the numeric ID for a particular source. The ID of a source
  * is unique within a particular main loop context. The reverse
  * mapping from ID to source is done by g_main_context_find_source_by_id().
  *
@@ -911,7 +911,7 @@ g_source_get_id (GSource *source)
  * g_source_get_context:
  * @source: a #GSource
  * 
- * Get the #GMainContext with which the source is associated.
+ * Gets the #GMainContext with which the source is associated.
  * Calling this function on a destroyed source is an error.
  * 
  * Return value: the #GMainContext with which the source is associated,
@@ -932,10 +932,10 @@ g_source_get_context (GSource *source)
  * @fd: a #GPollFD structure holding information about a file
  *      descriptor to watch.
  * 
- * Add a file descriptor to the set of file descriptors polled for
+ * Adds a file descriptor to the set of file descriptors polled for
  * this source. This is usually combined with g_source_new() to add an
  * event source. The event source's check function will typically test
- * the revents field in the #GPollFD struct and return %TRUE if events need
+ * the @revents field in the #GPollFD struct and return %TRUE if events need
  * to be processed.
  **/
 void
@@ -965,9 +965,9 @@ g_source_add_poll (GSource *source,
 /**
  * g_source_remove_poll:
  * @source:a #GSource 
- * @fd: a #GPollFD structure previously passed to g_source_poll.
+ * @fd: a #GPollFD structure previously passed to g_source_poll().
  * 
- * Remove a file descriptor from the set of file descriptors polled for
+ * Removes a file descriptor from the set of file descriptors polled for
  * this source. 
  **/
 void
@@ -998,10 +998,10 @@ g_source_remove_poll (GSource *source,
  * g_source_set_callback_indirect:
  * @source: the source
  * @callback_data: pointer to callback data "object"
- * @callback_funcs: functions for reference counting callback_data
+ * @callback_funcs: functions for reference counting @callback_data
  *                  and getting the callback and data
  * 
- * Set the callback function storing the data as a refcounted callback
+ * Sets the callback function storing the data as a refcounted callback
  * "object". This is used to implement g_source_set_callback_closure()
  * and internally. Note that calling g_source_set_callback_indirect() assumes
  * an initial reference count on @callback_data, and thus
@@ -1086,7 +1086,7 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * @data: the data to pass to callback function
  * @notify: a function to call when @data is no longer in use, or %NULL.
  * 
- * Set the callback function for a source.
+ * Sets the callback function for a source.
  **/
 void
 g_source_set_callback (GSource        *source,
@@ -1113,7 +1113,7 @@ g_source_set_callback (GSource        *source,
  * @source: a #GSource
  * @priority: the new priority.
  * 
- * Set the priority of a source. While the main loop is being
+ * Sets the priority of a source. While the main loop is being
  * run, a source will 
  **/
 void
@@ -1154,7 +1154,7 @@ g_source_set_priority (GSource  *source,
  * g_source_get_priority:
  * @source: a #GSource
  * 
- * Gets the priority of a surce
+ * Gets the priority of a source.
  * 
  * Return value: the priority of the source
  **/
@@ -1203,7 +1203,7 @@ g_source_set_can_recurse (GSource  *source,
  * @source: a #GSource
  * 
  * Checks whether a source is allowed to be called recursively.
- * see g_source_set_can_recurse.
+ * see g_source_set_can_recurse().
  * 
  * Return value: whether recursion is allowed.
  **/
@@ -1718,7 +1718,7 @@ g_main_context_acquire (GMainContext *context)
  * g_main_context_release:
  * @context: a #GMainContext
  * 
- * Release ownership of a context previously acquired by this thread
+ * Releases ownership of a context previously acquired by this thread
  * with g_main_context_acquire(). If the context was acquired multiple
  * times, the only release ownership when g_main_context_release()
  * is called as many times as it was acquired.
@@ -1765,10 +1765,9 @@ g_main_context_release (GMainContext *context)
  * @mutex: a mutex, currently held
  * 
  * Tries to become the owner of the specified context,
- * as with g_main_context_acquire. But if another thread
- * is the owner, atomically drop @mutex and wait on
- * @cond until wait until that owner releases
- * ownership or until @cond is signaled, then
+ * as with g_main_context_acquire(). But if another thread
+ * is the owner, atomically drop @mutex and wait on @cond until 
+ * that owner releases ownership or until @cond is signaled, then
  * try again (once) to become the owner.
  * 
  * Return value: %TRUE if the operation succeeded, and
@@ -2028,7 +2027,7 @@ g_main_context_query (GMainContext *context,
  *       g_main_context_query()
  * @n_fds: return value of g_main_context_query()
  * 
- * Pass the results of polling back to the main loop.
+ * Passes the results of polling back to the main loop.
  * 
  * Return value: %TRUE if some sources are ready to be dispatched.
  **/
@@ -2137,7 +2136,7 @@ g_main_context_check (GMainContext *context,
  * g_main_context_dispatch:
  * @context: a #GMainContext
  * 
- * Dispatch all pending sources()
+ * Dispatches all pending sources.
  **/
 void
 g_main_context_dispatch (GMainContext *context)
@@ -2242,7 +2241,7 @@ g_main_context_iterate (GMainContext *context,
  * g_main_context_pending:
  * @context: a #GMainContext (if %NULL, the default context will be used)
  *
- * Check if any sources have pending events for the given context.
+ * Checks if any sources have pending events for the given context.
  * 
  * Return value: %TRUE if events are pending.
  **/
@@ -2266,7 +2265,7 @@ g_main_context_pending (GMainContext *context)
  * @context: a #GMainContext (if %NULL, the default context will be used) 
  * @may_block: whether the call may block.
  * 
- * Run a single iteration for the given main loop. This involves
+ * Runs a single iteration for the given main loop. This involves
  * checking to see if any event sources are ready to be processed,
  * then if no events sources are ready and @may_block is %TRUE, waiting
  * for a source to become ready, then dispatching the highest priority
@@ -2295,13 +2294,13 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
 /**
  * g_main_loop_new:
  * @context: a #GMainContext  (if %NULL, the default context will be used).
- * @is_running: set to TRUE to indicate that the loop is running. This
+ * @is_running: set to %TRUE to indicate that the loop is running. This
  * is not very important since calling g_main_run() will set this to
- * TRUE anyway.
+ * %TRUE anyway.
  * 
- * Create a new #GMainLoop structure
+ * Creates a new #GMainLoop structure.
  * 
- * Return value: 
+ * Return value: a new #GMainLoop.
  **/
 GMainLoop *
 g_main_loop_new (GMainContext *context,
@@ -2326,7 +2325,7 @@ g_main_loop_new (GMainContext *context,
  * g_main_loop_ref:
  * @loop: a #GMainLoop
  * 
- * Increase the reference count on a #GMainLoop object by one.
+ * Increases the reference count on a #GMainLoop object by one.
  * 
  * Return value: @loop
  **/
@@ -2381,7 +2380,7 @@ g_main_loop_unref (GMainLoop *loop)
  * g_main_loop_run:
  * @loop: a #GMainLoop
  * 
- * Run a main loop until g_main_quit() is called on the loop.
+ * Runs a main loop until g_main_quit() is called on the loop.
  * If this is called for the thread of the loop's #GMainContext,
  * it will process events from the loop, otherwise it will
  * simply wait.
@@ -2487,7 +2486,7 @@ g_main_loop_quit (GMainLoop *loop)
  * g_main_loop_is_running:
  * @loop: a #GMainLoop.
  * 
- * Check to see if the main loop is currently being run via g_main_run()
+ * Checks to see if the main loop is currently being run via g_main_run().
  * 
  * Return value: %TRUE if the mainloop is currently being run.
  **/
@@ -2600,8 +2599,8 @@ g_main_context_poll (GMainContext *context,
  *      the same as the priority used for g_source_attach() to ensure that the
  *      file descriptor is polled whenever the results may be needed.
  * 
- * Add a file descriptor to the set of file descriptors polled * for
- * this context. This will very seldom be used directly. Instead
+ * Adds a file descriptor to the set of file descriptors polled for
+ * this context. This will very seldomly be used directly. Instead
  * a typical event source will use g_source_add_poll() instead.
  **/
 void
@@ -2674,7 +2673,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
  * @context:a #GMainContext 
  * @fd: a #GPollFD descriptor previously added with g_main_context_add_poll()
  * 
- * Remove file descriptor from the set of file descriptors to be
+ * Removes file descriptor from the set of file descriptors to be
  * polled for a particular context.
  **/
 void
@@ -2772,8 +2771,9 @@ g_source_get_current_time (GSource  *source,
  * @func: the function to call to poll all file descriptors
  * 
  * Sets the function to use to handle polling of file descriptors. It
- * will be used instead of the poll() system call (or GLib's
- * replacement function, which is used where poll() isn't available).
+ * will be used instead of the <function>poll()</function> system call 
+ * (or GLib's replacement function, which is used where 
+ * <function>poll()</function> isn't available).
  *
  * This function could possibly be used to integrate the GLib event
  * loop with an external event loop.
@@ -2807,7 +2807,7 @@ g_main_context_set_poll_func (GMainContext *context,
  * g_main_context_get_poll_func:
  * @context: a #GMainContext
  * 
- * Gets the poll function set by g_main_context_set_poll_func()
+ * Gets the poll function set by g_main_context_set_poll_func().
  * 
  * Return value: the poll function
  **/
@@ -2850,8 +2850,8 @@ g_main_context_wakeup_unlocked (GMainContext *context)
  * g_main_context_wakeup:
  * @context: a #GMainContext
  * 
- * If @context is currently waiting in a poll(), interrupt
- * the poll(), and continue the iteration process.
+ * If @context is currently waiting in a <function>poll()</function>, interrupt
+ * the <function>poll()</function>, and continue the iteration process.
  **/
 void
 g_main_context_wakeup (GMainContext *context)
@@ -2981,13 +2981,13 @@ g_timeout_dispatch (GSource    *source,
  * g_timeout_source_new:
  * @interval: the timeout interval in milliseconds.
  * 
- * Create a new timeout source.
+ * Creates a new timeout source.
  *
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
- * Return value: the newly create timeout source
+ * Return value: the newly-created timeout source
  **/
 GSource *
 g_timeout_source_new (guint interval)
@@ -3007,16 +3007,16 @@ g_timeout_source_new (guint interval)
 /**
  * g_timeout_add_full:
  * @priority: the priority of the idle source. Typically this will be in the
- *            range btweeen #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
+ *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @interval: the time between calls to the function, in milliseconds
- *             (1/1000ths of a second.)
+ *             (1/1000ths of a second)
  * @function: function to call
  * @data:     data to pass to @function
  * @notify:   function to call when the idle is removed, or %NULL
  * 
  * Sets a function to be called at regular intervals, with the given
  * priority.  The function is called repeatedly until it returns
- * FALSE, at which point the timeout is automatically destroyed and
+ * %FALSE, at which point the timeout is automatically destroyed and
  * the function will not be called again.  The @notify function is
  * called when the timeout is destroyed.  The first call to the
  * function will be at the end of the first @interval.
@@ -3056,13 +3056,13 @@ g_timeout_add_full (gint           priority,
 /**
  * g_timeout_add:
  * @interval: the time between calls to the function, in milliseconds
- *             (1/1000ths of a second.)
+ *             (1/1000ths of a second)
  * @function: function to call
  * @data:     data to pass to @function
  * 
  * Sets a function to be called at regular intervals, with the default
  * priority, #G_PRIORITY_DEFAULT.  The function is called repeatedly
- * until it returns FALSE, at which point the timeout is automatically
+ * until it returns %FALSE, at which point the timeout is automatically
  * destroyed and the function will not be called again.  The @notify
  * function is called when the timeout is destroyed.  The first call
  * to the function will be at the end of the first @interval.
@@ -3119,13 +3119,13 @@ g_idle_dispatch (GSource    *source,
 /**
  * g_idle_source_new:
  * 
- * Create a new idle source.
+ * Creates a new idle source.
  *
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
- * Return value: the newly created idle source
+ * Return value: the newly-created idle source
  **/
 GSource *
 g_idle_source_new (void)
@@ -3142,7 +3142,7 @@ g_idle_source_new (void)
  * @notify:   function to call when the idle is removed, or %NULL
  * 
  * Adds a function to be called whenever there are no higher priority
- * events pending.  If the function returns FALSE it is automatically
+ * events pending.  If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  * 
  * Return value: the id of the event source.
@@ -3178,7 +3178,7 @@ g_idle_add_full (gint           priority,
  * Adds a function to be called whenever there are no higher priority
  * events pending to the default main loop. The function is given the
  * default idle priority, #G_PRIORITY_DEFAULT_IDLE.  If the function
- * returns FALSE it is automatically removed from the list of event
+ * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
  * 
  * Return value: the id of the event source.

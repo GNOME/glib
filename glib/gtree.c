@@ -193,7 +193,7 @@ g_tree_new (GCompareFunc key_compare_func)
 
 /**
  * g_tree_new_with_data:
- * @key_compare_func: qsort()-style comparison function.
+ * @key_compare_func: <function>qsort()</function>-style comparison function.
  * @key_compare_data: data to pass to comparison function.
  * 
  * Creates a new #GTree with a comparison function that accepts user data.
@@ -213,13 +213,13 @@ g_tree_new_with_data (GCompareDataFunc key_compare_func,
 
 /**
  * g_tree_new_full:
- * @key_compare_func: qsort()-style comparison function.
+ * @key_compare_func: <function>qsort()</function>-style comparison function.
  * @key_compare_data: data to pass to comparison function.
  * @key_destroy_func: a function to free the memory allocated for the key 
- *   used when removing the entry from the #GTree or #NULL if you don't
+ *   used when removing the entry from the #GTree or %NULL if you don't
  *   want to supply such a function.
  * @value_destroy_func: a function to free the memory allocated for the 
- *   value used when removing the entry from the #GTree or #NULL if you 
+ *   value used when removing the entry from the #GTree or %NULL if you 
  *   don't want to supply such a function.
  * 
  * Creates a new #GTree like g_tree_new() and allows to specify functions 
@@ -340,7 +340,7 @@ g_tree_replace (GTree    *tree,
  * Removes a key/value pair from a #GTree.
  *
  * If the #GTree was created using g_tree_new_full(), the key and value 
- * are freed using the supplied @destroy_functions, otherwise you have to 
+ * are freed using the supplied destroy functions, otherwise you have to 
  * make sure that any dynamically allocated values are freed yourself.
  **/
 void
@@ -437,7 +437,7 @@ g_tree_lookup_extended (GTree         *tree,
  * g_tree_foreach:
  * @tree: a #GTree.
  * @func: the function to call for each node visited. If this function
- *   returns TRUE, the traversal is stopped.
+ *   returns %TRUE, the traversal is stopped.
  * @user_data: user data to pass to the function.
  * 
  * Calls the given function for each of the key/value pairs in the #GTree.
@@ -466,12 +466,12 @@ g_tree_foreach (GTree         *tree,
  * g_tree_traverse:
  * @tree: a #GTree.
  * @traverse_func: the function to call for each node visited. If this 
- *   function returns TRUE, the traversal is stopped.
+ *   function returns %TRUE, the traversal is stopped.
  * @traverse_type: the order in which nodes are visited, one of %G_IN_ORDER,
  *   %G_PRE_ORDER and %G_POST_ORDER.
  * @user_data: user data to pass to the function.
  * 
- * Calls the given function for each node in the GTree. This function is
+ * Calls the given function for each node in the #GTree. This function is
  * deprecated, since the order of a balanced tree is somewhat arbitrary.
  * If you just want to visit all nodes in sorted order, use g_tree_foreach() 
  * instead. If you really need to visit nodes in a different order, consider

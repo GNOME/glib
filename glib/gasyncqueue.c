@@ -97,8 +97,8 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
  * destroyed and the memory allocated will be freed. So you are not
  * allowed to use the @queue afterwards, as it might have disappeared.
  * The obvious asymmetry (it is not named
- * g_async_queue_unref_unlocked) is because the queue can't be
- * unlocked after dereffing it, as it might already have disappeared.
+ * g_async_queue_unref_unlocked()) is because the queue can't be
+ * unlocked after unreffing it, as it might already have disappeared.
  **/
 void 
 g_async_queue_unref_and_unlock (GAsyncQueue *queue)
@@ -145,8 +145,8 @@ g_async_queue_unref (GAsyncQueue *queue)
  * g_async_queue_lock:
  * @queue: a #GAsyncQueue.
  * 
- * Acquire the @queue's lock. After that you can only call the
- * g_async_queue_*_unlocked function variants on that
+ * Acquires the @queue's lock. After that you can only call the
+ * <function>g_async_queue_*_unlocked()</function> function variants on that
  * @queue. Otherwise it will deadlock.
  **/
 void
@@ -162,7 +162,7 @@ g_async_queue_lock (GAsyncQueue *queue)
  * g_async_queue_unlock:
  * @queue: a #GAsyncQueue.
  * 
- * Release the queue's lock.
+ * Releases the queue's lock.
  **/
 void 
 g_async_queue_unlock (GAsyncQueue *queue)
@@ -178,7 +178,7 @@ g_async_queue_unlock (GAsyncQueue *queue)
  * @queue: a #GAsyncQueue.
  * @data: @data to push into the @queue.
  *
- * Push the @data into the @queue. @data must not be #NULL.
+ * Pushes the @data into the @queue. @data must not be %NULL.
  **/
 void
 g_async_queue_push (GAsyncQueue* queue, gpointer data)
@@ -197,7 +197,7 @@ g_async_queue_push (GAsyncQueue* queue, gpointer data)
  * @queue: a #GAsyncQueue.
  * @data: @data to push into the @queue.
  * 
- * Push the @data into the @queue. @data must not be #NULL. This
+ * Pushes the @data into the @queue. @data must not be %NULL. This
  * function must be called while holding the @queue's lock.
  **/
 void
@@ -251,7 +251,7 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue* queue, gboolean try,
  * g_async_queue_pop:
  * @queue: a #GAsyncQueue.
  * 
- * Pop data from the @queue. This function blocks until data become
+ * Pops data from the @queue. This function blocks until data become
  * available.
  *
  * Return value: data from the queue.
@@ -275,7 +275,7 @@ g_async_queue_pop (GAsyncQueue* queue)
  * g_async_queue_pop_unlocked:
  * @queue: a #GAsyncQueue.
  * 
- * Pop data from the @queue. This function blocks until data become
+ * Pops data from the @queue. This function blocks until data become
  * available. This function must be called while holding the @queue's
  * lock.
  *
@@ -294,10 +294,10 @@ g_async_queue_pop_unlocked (GAsyncQueue* queue)
  * g_async_queue_try_pop:
  * @queue: a #GAsyncQueue.
  * 
- * Try to pop data from the @queue. If no data is available, #NULL is
+ * Tries to pop data from the @queue. If no data is available, %NULL is
  * returned.
  *
- * Return value: data from the queue or #NULL, when no data is
+ * Return value: data from the queue or %NULL, when no data is
  * available immediately.
  **/
 gpointer
@@ -319,11 +319,11 @@ g_async_queue_try_pop (GAsyncQueue* queue)
  * g_async_queue_try_pop_unlocked:
  * @queue: a #GAsyncQueue.
  * 
- * Try to pop data from the @queue. If no data is available, #NULL is
+ * Tries to pop data from the @queue. If no data is available, %NULL is
  * returned. This function must be called while holding the @queue's
  * lock.
  *
- * Return value: data from the queue or #NULL, when no data is
+ * Return value: data from the queue or %NULL, when no data is
  * available immediately.
  **/
 gpointer
@@ -340,13 +340,13 @@ g_async_queue_try_pop_unlocked (GAsyncQueue* queue)
  * @queue: a #GAsyncQueue.
  * @end_time: a #GTimeVal, determining the final time.
  *
- * Pop data from the @queue. If no data is received before @end_time,
- * #NULL is returned.
+ * Pops data from the @queue. If no data is received before @end_time,
+ * %NULL is returned.
  *
  * To easily calculate @end_time a combination of g_get_current_time()
  * and g_time_val_add() can be used.
  *
- * Return value: data from the queue or #NULL, when no data is
+ * Return value: data from the queue or %NULL, when no data is
  * received before @end_time.
  **/
 gpointer
@@ -369,14 +369,14 @@ g_async_queue_timed_pop (GAsyncQueue* queue, GTimeVal *end_time)
  * @queue: a #GAsyncQueue.
  * @end_time: a #GTimeVal, determining the final time.
  *
- * Pop data from the @queue. If no data is received before @end_time,
- * #NULL is returned. This function must be called while holding the
+ * Pops data from the @queue. If no data is received before @end_time,
+ * %NULL is returned. This function must be called while holding the
  * @queue's lock.
  *
  * To easily calculate @end_time a combination of g_get_current_time()
  * and g_time_val_add() can be used.
  *
- * Return value: data from the queue or #NULL, when no data is
+ * Return value: data from the queue or %NULL, when no data is
  * received before @end_time.
  **/
 gpointer

@@ -1,3 +1,7 @@
+2001-12-15  Matthias Clasen  <matthias@poet.de>
+
+	* glib/tmpl/caches.sgml: GCs are cached by GTK, not by GDK.
+
 2001-12-14  Matthias Clasen  <matthias@poet.de>
 
 	* glib/tmpl/memory.sgml: Typo fixes.

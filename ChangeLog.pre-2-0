@@ -1,3 +1,9 @@
+2001-12-15  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gshell.c, glib/gspawn.c, glib/gspawn-win32.c, glib/gerror.c,
+	glib/gfileutils.c, glib/ghash.c, glib/gmain.c, glib/gasyncqueue.c,
+	glib/gtree.c: Minor markup fixes.
+
 2001-12-14  Havoc Pennington  <hp@pobox.com>
 
 	* glib/gshell.c (g_shell_parse_argv): note on how to free returned
