@@ -149,6 +149,17 @@ void	    g_object_set_qdata_full	   (GObject	   *object,
 					    GDestroyNotify  destroy);
 gpointer    g_object_steal_qdata	   (GObject	   *object,
 					    GQuark	    quark);
+gpointer    g_object_get_data 		   (GObject	   *object,
+                                            const gchar    *key);
+void	    g_object_set_data		   (GObject	   *object,
+                                            const gchar    *key,
+					    gpointer	    data);
+void	    g_object_set_data_full	   (GObject	   *object,
+                                            const gchar    *key,
+					    gpointer	    data,
+					    GDestroyNotify  destroy);
+gpointer    g_object_steal_data            (GObject	   *object,
+                                            const gchar    *key);
 void	    g_object_watch_closure	   (GObject	   *object,
 					    GClosure	   *closure);
 GClosure*   g_cclosure_new_object	   (GCallback	    callback_func,

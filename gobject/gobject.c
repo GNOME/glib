@@ -795,6 +795,56 @@ g_object_steal_qdata (GObject *object,
   return g_datalist_id_remove_no_notify (&object->qdata, quark);
 }
 
+gpointer
+g_object_get_data (GObject     *object,
+                   const gchar *key)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+  
+  return g_object_get_qdata (object,
+                             g_quark_try_string (key));
+}
+
+void
+g_object_set_data (GObject     *object,
+                   const gchar *key,
+                   gpointer     data)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (key != NULL);
+
+  g_object_set_qdata (object,
+                      g_quark_from_string (key),
+                      data);
+}
+
+void
+g_object_set_data_full (GObject       *object,
+                        const gchar   *key,
+                        gpointer       data,
+                        GDestroyNotify destroy)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (key != NULL);
+
+  g_object_set_qdata_full (object,
+                           g_quark_from_string (key),
+                           data,
+                           destroy);
+}
+
+gpointer
+g_object_steal_data (GObject     *object,
+                     const gchar *key)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  return g_object_steal_qdata (object,
+                               g_quark_try_string (key));
+}
+
 static void
 g_value_object_init (GValue *value)
 {

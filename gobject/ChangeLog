@@ -1,3 +1,10 @@
+2000-11-20  Havoc Pennington  <hp@redhat.com>
+
+	* gobject.c (g_object_get_data)
+	(g_object_set_data)
+	(g_object_set_data_full)
+	(g_object_steal_data): More convenient data-setting functions
+
 Wed Nov 15 20:58:05 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gtypemodule.c (g_type_module_use): If loading the
