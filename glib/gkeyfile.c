@@ -1832,7 +1832,7 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
   gsize i, num_bools;
 
   g_return_val_if_fail (key_file != NULL, NULL);
-  g_return_val_if_fail (group_name != NULL, FALSE);
+  g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
   key_file_error = NULL;
