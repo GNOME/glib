@@ -1,3 +1,11 @@
+2000-07-08  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h (GLIB_VAR): Rename the GUTILS_C_VAR macro to GLIB_VAR.
+
+	* gunicode.h: Mark the g_utf8_skip array with GLIB_VAR.
+
+	* glib.def: Add two missing entry points.
+
 Thu Jul  6 15:35:28 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Release 1.3.1

@@ -118,9 +118,23 @@ void g_unicode_canonical_ordering (gunichar *string,
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
 					     size_t   *result_len);
 
-/* Array of skip-bytes-per-initial character
+/* Array of skip-bytes-per-initial character.
+ * We prefix variable declarations so they can
+ * properly get exported in windows dlls.
  */
-extern char g_utf8_skip[256];
+#ifndef GLIB_VAR
+#  ifdef G_OS_WIN32
+#    ifdef GLIB_COMPILATION
+#      define GLIB_VAR __declspec(dllexport)
+#    else /* !GLIB_COMPILATION */
+#      define GLIB_VAR extern __declspec(dllimport)
+#    endif /* !GLIB_COMPILATION */
+#  else /* !G_OS_WIN32 */
+#    define GLIB_VAR extern
+#  endif /* !G_OS_WIN32 */
+#endif /* !GLIB_VAR */
+
+GLIB_VAR char g_utf8_skip[256];
 
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(guchar *)(p)])
 

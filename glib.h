@@ -698,19 +698,19 @@ typedef gint32	GTime;
  */
 #ifdef G_OS_WIN32
 #  ifdef GLIB_COMPILATION
-#    define GUTILS_C_VAR __declspec(dllexport)
+#    define GLIB_VAR __declspec(dllexport)
 #  else /* !GLIB_COMPILATION */
-#    define GUTILS_C_VAR extern __declspec(dllimport)
+#    define GLIB_VAR extern __declspec(dllimport)
 #  endif /* !GLIB_COMPILATION */
 #else /* !G_OS_WIN32 */
-#  define GUTILS_C_VAR extern
+#  define GLIB_VAR extern
 #endif /* !G_OS_WIN32 */
 
-GUTILS_C_VAR const guint glib_major_version;
-GUTILS_C_VAR const guint glib_minor_version;
-GUTILS_C_VAR const guint glib_micro_version;
-GUTILS_C_VAR const guint glib_interface_age;
-GUTILS_C_VAR const guint glib_binary_age;
+GLIB_VAR const guint glib_major_version;
+GLIB_VAR const guint glib_minor_version;
+GLIB_VAR const guint glib_micro_version;
+GLIB_VAR const guint glib_interface_age;
+GLIB_VAR const guint glib_binary_age;
 
 #define GLIB_CHECK_VERSION(major,minor,micro)    \
     (GLIB_MAJOR_VERSION > (major) || \
@@ -2833,7 +2833,7 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
 #ifdef G_OS_WIN32
 
-GUTILS_C_VAR guint g_pipe_readable_msg;
+GLIB_VAR guint g_pipe_readable_msg;
 
 #define G_WIN32_MSG_HANDLE 19981206
 
@@ -3028,9 +3028,9 @@ struct _GThreadFunctions
   void      (*thread_self)        (gpointer              thread);
 };
 
-GUTILS_C_VAR GThreadFunctions	g_thread_functions_for_glib_use;
-GUTILS_C_VAR gboolean		g_thread_use_default_impl;
-GUTILS_C_VAR gboolean		g_threads_got_initialized;
+GLIB_VAR GThreadFunctions	g_thread_functions_for_glib_use;
+GLIB_VAR gboolean		g_thread_use_default_impl;
+GLIB_VAR gboolean		g_threads_got_initialized;
 
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly

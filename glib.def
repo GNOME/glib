@@ -164,6 +164,7 @@ EXPORTS
 	g_list_append
 	g_list_concat
 	g_list_copy
+	g_list_delete_link
 	g_list_find
 	g_list_find_custom
 	g_list_first
@@ -480,6 +481,7 @@ EXPORTS
 	g_utf8_offset_to_pointer
 	g_utf8_pointer_to_offset
 	g_utf8_prev_char
+	g_utf8_skip
 	g_utf8_strchr
 	g_utf8_strlen
 	g_utf8_strncpy
