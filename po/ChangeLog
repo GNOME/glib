@@ -1,3 +1,8 @@
+2002-03-31  Abel Cheung  <maddog@linux.org.hk>
+
+	* zh_TW.po: Updated traditional Chinese translation, and removed
+	  all positional parameters :(
+
 2002-03-28  Valek Filippov <frob@df.ru>
 
 	* ru.po: Updated russian translation.
