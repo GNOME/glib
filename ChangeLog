@@ -1,7 +1,7 @@
 2002-02-11  Manish Singh  <yosh@gimp.org>
 
 	* glib/gmessages.h: need statement terminators for the if clauses for
-	the precedeing change.
+	the preceding change.
 
 2002-02-11  Darin Adler  <darin@bentspoon.com>
 
