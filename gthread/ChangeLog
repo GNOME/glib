@@ -1,3 +1,10 @@
+1999-03-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Use the right default arguments for the
+	construction of mutexes and conds for dce threads, these are
+	&pthread_(cond|mutex)attr_default instead of NULL. Hint from
+	D. Emilio Grimaldo Tunon <emilio_tunon@nl.compuware.com>.
+
 1999-03-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am (INCLUDES): Added @GTHREAD_COMPILE_IMPL_DEFINES@.

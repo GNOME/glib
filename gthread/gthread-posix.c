@@ -48,10 +48,14 @@
     int error = (what);                                           \
     if( error ) { posix_print_error( what, error ); }             \
     }G_STMT_END
+# define mutexattr_default NULL
+# define condattr_default NULL
 #elif defined(G_THREADS_IMPL_DCE)
 # define posix_check_for_error( what ) G_STMT_START{             \
     if( (what) == -1 ) { posix_print_error( what, errno ); }       \
     }G_STMT_END
+# define mutexattr_default (&pthread_mutexattr_default)
+# define condattr_default (&pthread_condattr_default)
 #else /* neither G_THREADS_IMPL_POSIX nor G_THREADS_IMPL_DCE are defined */
 # error This should not happen. Contact the GLb team.
 #endif
@@ -60,7 +64,8 @@ static GMutex *
 g_mutex_new_posix_impl (void)
 {
   GMutex *result = (GMutex *) g_new (pthread_mutex_t, 1);
-  posix_check_for_error (pthread_mutex_init ((pthread_mutex_t *) result, NULL));
+  posix_check_for_error (pthread_mutex_init ((pthread_mutex_t *) result, 
+					     mutexattr_default));
   return result;
 }
 
@@ -101,7 +106,8 @@ static GCond *
 g_cond_new_posix_impl (void)
 {
   GCond *result = (GCond *) g_new (pthread_cond_t, 1);
-  posix_check_for_error (pthread_cond_init ((pthread_cond_t *) result, NULL));
+  posix_check_for_error (pthread_cond_init ((pthread_cond_t *) result, 
+					    condattr_default));
   return result;
 }
 
