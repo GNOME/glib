@@ -38,6 +38,7 @@ struct _GAllocator /* from gmem.c */
 static G_LOCK_DEFINE(current_allocator);
 static GAllocator       *current_allocator = NULL;
 
+/* HOLDS: current_allocator_lock */
 static void
 g_slist_validate_allocator (GAllocator *allocator)
 {
@@ -70,16 +71,16 @@ void
 g_slist_push_allocator (GAllocator *allocator)
 {
   g_slist_validate_allocator (allocator);
-  g_lock(current_allocator);
+  g_lock (current_allocator);
   allocator->last = current_allocator;
   current_allocator = allocator;
-  g_unlock(current_allocator);
+  g_unlock (current_allocator);
 }
 
 void
 g_slist_pop_allocator (void)
 {
-  g_lock(current_allocator);
+  g_lock (current_allocator);
   if (current_allocator)
     {
       GAllocator *allocator;
@@ -89,7 +90,7 @@ g_slist_pop_allocator (void)
       allocator->last = NULL;
       allocator->is_unused = TRUE;
     }
-  g_unlock(current_allocator);
+  g_unlock (current_allocator);
 }
 
 GSList*
@@ -97,12 +98,12 @@ g_slist_alloc (void)
 {
   GSList *list;
 
-  g_lock(current_allocator);
+  g_lock (current_allocator);
   if (!current_allocator)
     {
       GAllocator *allocator = g_allocator_new ("GLib default GSList allocator",
 					       1024);
-      g_slist_validate_allocator ( allocator );
+      g_slist_validate_allocator (allocator);
       allocator->last = NULL;
       current_allocator = allocator; 
     }
@@ -125,7 +126,7 @@ g_slist_alloc (void)
 	  current_allocator->free_lists = list->next;
 	}
     }
-  g_unlock(current_allocator);
+  g_unlock (current_allocator);
   
   list->next = NULL;
 
@@ -138,10 +139,10 @@ g_slist_free (GSList *list)
   if (list)
     {
       list->data = list->next;
-      g_lock(current_allocator);
+      g_lock (current_allocator);
       list->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
-      g_unlock(current_allocator);
+      g_unlock (current_allocator);
     }
 }
 
@@ -151,10 +152,10 @@ g_slist_free_1 (GSList *list)
   if (list)
     {
       list->data = NULL;
-      g_lock(current_allocator);
+      g_lock (current_allocator);
       list->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
-      g_unlock(current_allocator);
+      g_unlock (current_allocator);
     }
 }
 

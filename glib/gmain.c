@@ -20,6 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * MT safe
+ */
+
 #include "glib.h"
 #include <sys/time.h>
 #include <unistd.h>
@@ -97,7 +101,7 @@ static GHookList source_list = { 0 };
 /* The following lock is used for both the list of sources
  * and the list of poll records
  */
-G_LOCK_DEFINE (main_loop);
+static G_LOCK_DEFINE (main_loop);
 
 static GSourceFuncs timeout_funcs = {
   g_timeout_prepare,
@@ -228,7 +232,7 @@ g_source_add (gint           priority,
   guint return_val;
   GSource *source;
 
-  g_lock(main_loop);
+  g_lock (main_loop);
 
   if (!source_list.is_setup)
     g_hook_list_init (&source_list, sizeof(GSource));
@@ -257,7 +261,7 @@ g_source_add (gint           priority,
       write (wake_up_pipe[1], "A", 1);
     }
 
-  g_unlock(main_loop);
+  g_unlock (main_loop);
 
   return return_val;
 }
@@ -601,10 +605,10 @@ g_main_poll (gint timeout, gboolean use_priority, gint priority)
 
   poll_waiting = TRUE;
   
-  g_unlock(main_loop);
+  g_unlock (main_loop);
   npoll = i;
   (*poll_func) (fd_array, npoll, timeout);
-  g_lock(main_loop);
+  g_lock (main_loop);
 
   if (!poll_waiting)
     {
@@ -644,7 +648,14 @@ g_main_poll_add_unlocked (gint     priority,
   if (!poll_chunk)
     poll_chunk = g_mem_chunk_create (GPollRec, 32, G_ALLOC_ONLY);
 
-  newrec = g_chunk_new (GPollRec, poll_chunk);
+  if (poll_free_list)
+    {
+      newrec = poll_free_list;
+      poll_free_list = newrec->next;
+    }
+  else
+    newrec = g_chunk_new (GPollRec, poll_chunk);
+
   newrec->fd = fd;
   newrec->priority = priority;
 
@@ -697,7 +708,7 @@ g_main_poll_remove (GPollFD *fd)
       pollrec = pollrec->next;
     }
 
-  g_unlock(main_loop);
+  g_unlock (main_loop);
 }
 
 void 

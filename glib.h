@@ -2612,7 +2612,7 @@ struct _GThreadFunctions
 {
   GMutex*  (*mutex_new)       ();
   void     (*mutex_lock)      (GMutex* mutex);
-  gboolean (*mutex_try_lock)  (GMutex* mutex);
+  gboolean (*mutex_trylock)   (GMutex* mutex);
   void     (*mutex_unlock)    (GMutex* mutex);
   void     (*mutex_free)      (GMutex* mutex);
   GCond*   (*cond_new)        ();
@@ -2655,7 +2655,7 @@ GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
    recursive in general, don't rely on that */
 #define g_mutex_new()           G_USE_THREAD_FUNC(mutex_new,NULL,())
 #define g_mutex_lock(mutex)     G_USE_THREAD_FUNC(mutex_lock,(void)0,(mutex))
-#define g_mutex_try_lock(mutex) G_USE_THREAD_FUNC(mutex_try_lock,TRUE,(mutex))
+#define g_mutex_trylock(mutex)  G_USE_THREAD_FUNC(mutex_trylock,TRUE,(mutex))
 #define g_mutex_unlock(mutex)   G_USE_THREAD_FUNC(mutex_unlock,(void)0,(mutex))
 #define g_mutex_free(mutex)     G_USE_THREAD_FUNC(mutex_free,(void)0,(mutex))
 #define g_cond_new()            G_USE_THREAD_FUNC(cond_new,NULL,())
@@ -2680,35 +2680,15 @@ GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
    use */
 #define g_static_mutex_lock(mutex) \
   g_mutex_lock( g_static_mutex_get_mutex(mutex) )
-#define g_static_mutex_try_lock(mutex) \
-  g_mutex_try_lock( g_static_mutex_get_mutex(mutex) )
+#define g_static_mutex_trylock(mutex) \
+  g_mutex_trylock( g_static_mutex_get_mutex(mutex) )
 #define g_static_mutex_unlock(mutex) \
   g_mutex_unlock( g_static_mutex_get_mutex(mutex) ) 
 
 struct _GStaticPrivate
 {
   guint index;
-
-#if 0
-  /* constructor is called by g_private_get */
-  GNewFunc constructor; 
-  /* destructor is called, when the thread ends */
-  GDestroyNotify destructor;
-  /* if size is non-zero, constructor is taken to be g_malloc0(size)
-     and destructor is g_free */
-  guint          size;
-  /* do not use the following element */
-  guint          id;
-#endif
 };
-
-#if 0
-#define G_STATIC_PRIVATE_INIT_FOR_SIZE(size) \
-  { NULL, NULL, size, 0 }
-
-#define G_STATIC_PRIVATE_INIT_FOR_TYPE(constructor,destructor) \
-  { constructor, destructor, 0, 0 }
-#endif
 
 #define G_STATIC_PRIVATE_INIT { 0 }
 
@@ -2753,12 +2733,11 @@ void     g_static_private_set (GStaticPrivate *private,
 	      __LINE__,						\
 	      __PRETTY_FUNCTION__,                              \
               #name);                                           \
-       g_static_mutex_unlock(g_lock_name(name));                \
-     }G_STMT_END
+     }G_STMT_END, g_static_mutex_trylock(g_lock_name(name))
 #else /* !G_DEBUG_LOCKS */
 #define g_lock(name) g_static_mutex_lock(g_lock_name(name)) 
 #define g_unlock(name) g_static_mutex_unlock(g_lock_name(name))
-#define g_trylock(name) g_static_mutex_try_lock(g_lock_name(name))
+#define g_trylock(name) g_static_mutex_trylock(g_lock_name(name))
 #endif
 
 #ifdef __cplusplus

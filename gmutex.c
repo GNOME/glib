@@ -1,8 +1,9 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * gmutex.c:
+ * gmutex.c: MT safety related functions
  * Copyright 1998 Sebastian Wilhelmi; University of Karlsruhe
+ *                Owen Taylor
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

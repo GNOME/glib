@@ -388,7 +388,7 @@ g_date_clear (GDate       *d, guint ndates)
   memset (d, 0x0, ndates*sizeof (GDate)); 
 }
 
-static G_LOCK_DEFINE(gdate_global);
+static G_LOCK_DEFINE(g_date_global);
 
 /* These are for the parser, output to the user should use *
  * g_date_strftime () - this creates more never-freed memory to annoy
@@ -436,7 +436,7 @@ typedef struct _GDateParseTokens GDateParseTokens;
 
 #define NUM_LEN 10
 
-/* must be called, while holding the gdate_global lock */
+/* HOLDS: g_date_global_lock */
 static void
 g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 {
@@ -516,7 +516,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
     }
 }
 
-/* must be called, while holding the gdate_global lock */
+/* HOLDS: g_date_global_lock */
 static void
 g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
 {
@@ -650,7 +650,7 @@ g_date_set_parse (GDate       *d,
   /* set invalid */
   g_date_clear (d, 1);
   
-  g_lock(gdate_global);
+  g_lock (g_date_global);
 
   g_date_prepare_to_parse (str, &pt);
   
@@ -662,7 +662,7 @@ g_date_set_parse (GDate       *d,
   
   if (pt.num_ints == 4) 
     {
-      g_unlock(gdate_global);
+      g_unlock (g_date_global);
       return; /* presumably a typo; bail out. */
     }
   
@@ -780,7 +780,7 @@ g_date_set_parse (GDate       *d,
   else 
     g_message ("Rejected DMY %u %u %u", day, m, y);
 #endif
-  g_unlock(gdate_global);
+  g_unlock (g_date_global);
 }
 
 void         

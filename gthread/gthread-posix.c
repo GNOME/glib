@@ -1,3 +1,29 @@
+/* GLIB - Library of useful routines for C programming
+ * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ *
+ * gthread.c: posix thread system implementation
+ * Copyright 1998 Sebastian Wilhelmi; University of Karlsruhe
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+/* 
+ * MT safe
+ */
+
 #include <pthread.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -36,7 +62,7 @@ g_mutex_free_posix_impl (GMutex* mutex)
    we might want to change this therfore. */
 
 static gboolean
-g_mutex_try_lock_posix_impl (GMutex* mutex)
+g_mutex_trylock_posix_impl (GMutex* mutex)
 {
   int result;
   result = pthread_mutex_trylock((pthread_mutex_t*)mutex);
@@ -136,7 +162,7 @@ static GThreadFunctions
 g_thread_functions_for_glib_use_default = {
   g_mutex_new_posix_impl,
   (void(*)(GMutex*))pthread_mutex_lock,
-  g_mutex_try_lock_posix_impl,
+  g_mutex_trylock_posix_impl,
   (void(*)(GMutex*))pthread_mutex_unlock,
   g_mutex_free_posix_impl,
   g_cond_new_posix_impl,

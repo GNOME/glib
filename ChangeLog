@@ -1,3 +1,31 @@
+1998-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Made the thread related code follow GNU coding standard.
+
+	* Made a comment (HOLDS:) above each function, that expects the
+	given locks to be held.
+
+	* Changed try_lock to trylock throughout.
+
+	* glib.c: Eventually removed the #if 0'ed code for old GStaticMutex.
+
+	* glib.c: Corrected g_trylock macro for G_DEBUG_LOCKS.
+
+	* gmain.c (g_main_poll_add_unlocked): first take a new poll record
+	form the poll_free_list.
+		
+	* gmem.c, gstrfuncs.c, gutils.c: Made it MT safe.
+
+	* gthraed/*.c: Added copyright headers.
+
+	* gthread/gthread-solaris.c: do not use g_log for errors, as g_log
+	uses these module and endless recursions might happen, just use a
+	plain fprintf(stderr,...).
+
+	* gthread/gthread.c (g_thread_try_init): Call g_mutex_init().
+
+	* gthread/testgthread.c: updated test program.
+	
 Tue Dec  8 18:49:56 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Start at adding thread-safety. (mostly work
