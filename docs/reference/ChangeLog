@@ -1,5 +1,7 @@
 2000-10-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib/tmpl/misc_utils.sgml: Removed the win32 limitation.
+
 	* glib/glib-sections.txt, glib/tmpl/hash_tables.sgml,
 	glib/tmpl/macros_misc.sgml, glib/tmpl/misc_utils.sgml,
 	glib/tmpl/scanner.sgml: Document the recently deprecated functions

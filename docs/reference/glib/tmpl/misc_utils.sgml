@@ -36,8 +36,6 @@ Sets the name of the program.
 <!-- ##### FUNCTION g_getenv ##### -->
 <para>
 Returns an environment variable.
-On windows systems the returned value is only valid until the next call to
-g_getenv().
 </para>
 
 @variable: the environment variable to get.
