@@ -86,6 +86,17 @@ On UNIX systems this works for plain files, pipes, and sockets.
 <para>
 The returned #GIOChannel has a reference count of 1.
 </para>
+<para>
+The default encoding for #GIOChannel is UTF-8. If your application
+is reading output from a command using via pipe, you may need to
+set the encoding to the encoding of the current locale (see
+g_get_charset()) with the g_io_channel_set_encoding() function.
+</para>
+<para>
+If you want to read raw binary data without interpretation, then
+call the g_io_charset_set_encoding() function with %NULL for the
+encoding argument.
+</para>
 
 @fd: a file descriptor.
 @Returns: a new #GIOChannel.

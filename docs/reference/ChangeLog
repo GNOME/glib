@@ -1,3 +1,9 @@
+Thu Nov 21 15:52:04 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/iochannels.sgml: Add helpful comments about
+	the encoding of a new iochannel. (Amaury Jacquot,
+	#96444)
+
 2002-11-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Add note on including gprintf.h,
