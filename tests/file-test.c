@@ -46,7 +46,6 @@ static void
 test_mkstemp (void)
 {
   char template[32];
-  GError *error;
   int fd;
   int i;
   const char hello[] = "Hello, World";
@@ -77,11 +76,61 @@ test_mkstemp (void)
   remove (template);
 }
 
+static void
+test_readlink (void)
+{
+#ifdef HAVE_SYMLINK
+  FILE *file;
+  int result;
+  char *filename = "file-test-data";
+  char *link1 = "file-test-link1";
+  char *link2 = "file-test-link2";
+  char *link3 = "file-test-link3";
+  char *data;
+  GError *error;
+
+  file = fopen (filename, "w");
+  g_assert (file != NULL && "fopen() failed");
+  fclose (file);
+
+  result = symlink (filename, link1);
+  g_assert (result == 0 && "symlink() failed");
+  result = symlink (link1, link2);
+  g_assert (result == 0 && "symlink() failed");
+  
+  error = NULL;
+  data = g_read_link (link1, &error);
+  g_assert (data != NULL && "couldn't read link1");
+  g_assert (strcmp (data, filename) == 0 && "link1 contains wrong data");
+  g_free (data);
+  
+  error = NULL;
+  data = g_read_link (link2, &error);
+  g_assert (data != NULL && "couldn't read link2");
+  g_assert (strcmp (data, link1) == 0 && "link2 contains wrong data");
+  g_free (data);
+  
+  error = NULL;
+  data = g_read_link (link3, &error);
+  g_assert (data == NULL && "could read link3");
+  g_assert (error != NULL && "error not set");
+
+  error = NULL;
+  data = g_read_link (filename, &error);
+  g_assert (data == NULL && "could read regular file as link");
+  g_assert (error != NULL && "error not set");
+  
+  remove (filename);
+  remove (link1);
+  remove (link2);
+#endif
+}
 
 int 
 main (int argc, char *argv[])
 {
   test_mkstemp ();
+  test_readlink ();
 
   return 0;
 }

@@ -1,6 +1,6 @@
 2003-07-28  Matthias Clasen  <maclas@gmx.de>
 
-	* glib/glib-sections.txt: Add g_setenv() and g_unsetenv().  (#100763)
+	* glib/glib-sections.txt: Add g_setenv(), g_unsetenv() and g_read_link().  (#100763, #72545)
 
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 

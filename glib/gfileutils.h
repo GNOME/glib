@@ -78,7 +78,8 @@ gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
                               gsize        *length,    
                               GError      **error);
-
+gchar * g_read_link          (const gchar  *filename,
+			      GError      **error);
 
 /* Wrapper / workalike for mkstemp() */
 int     g_mkstemp            (char         *tmpl);

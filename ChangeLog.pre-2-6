@@ -1,5 +1,13 @@
 2003-07-28  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gfileutils.h: 
+	* glib/gfileutils.c: New function g_read_link(). (#72545)
+
+	* configure.in: Check for setenv, unsetenv, readlink and symlink.
+
+	* tests/file-test.c (test_readlink): Test for g_read_link() (only on systems supporting
+	symbolic links).
+
 	* tests/env-test.c: New test for g_{get,set,unset}env().
 
 	* tests/Makefile.am (test_programs): Add env-test.

@@ -986,3 +986,62 @@ g_build_filename (const gchar *first_element,
 
   return str;
 }
+
+/**
+ * g_read_link:
+ * @filename: the symbolic link
+ * @error: return location for a #GError
+ *
+ * Reads the contents of the symbolic link @filename like the POSIX readlink() function.
+ * The returned string is in the encoding used for filenames. Use g_filename_to_utf8() to 
+ * convert it to UTF-8.
+ *
+ * Returns: A newly allocated string with the contents of the symbolic link, 
+ *          or %NULL if an error occurred.
+ *
+ * Since: 2.4
+ */
+gchar *
+g_read_link (const gchar *filename,
+	     GError     **error)
+{
+#ifdef HAVE_READLINK
+  gchar *buffer;
+  guint size;
+  gint read_size;    
+  
+  size = 256; 
+  buffer = g_malloc (size);
+  
+  while (TRUE) 
+    {
+      read_size = readlink (filename, buffer, size);
+      if (read_size < 0) {
+	g_free (buffer);
+	g_set_error (error,
+		     G_FILE_ERROR,
+		     g_file_error_from_errno (errno),
+		     _("Failed to read the symbolic link '%s': %s"),
+		     filename, g_strerror (errno));
+	
+	return NULL;
+      }
+    
+      if (read_size < size) 
+	{
+	  buffer[read_size] = 0;
+	  return buffer;
+	}
+      
+      size *= 2;
+      buffer = g_realloc (buffer, size);
+    }
+#else
+  g_set_error (error,
+	       G_FILE_ERROR,
+	       G_FILE_ERROR_INVAL,
+	       _("Symbolic links not supported"));
+	
+  return NULL;
+#endif
+}
