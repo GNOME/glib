@@ -1,3 +1,14 @@
+2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_getenv): Changed the win32 part of this function to
+	be thread safe and to make the returned environment string
+	persistent to match the UN*X behavior. This is again a response to
+	Bug #8983.
+
+	* glib.h (G_LOCK_NAME): Removed parentheses around the lock name,
+	as that seems to cause problems for some compilers and really
+	isn't necessary.
+
 Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
 
         * gscanner.c (g_scanner_new): make sure that

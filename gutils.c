@@ -379,38 +379,71 @@ g_getenv (const gchar *variable)
 
   return getenv (variable);
 #else
-  gchar *v;
-  guint k;
-  static gchar *p = NULL;
-  static gint l;
+  G_LOCK_DEFINE_STATIC (getenv);
+  struct env_struct
+  {
+    gchar *key;
+    gchar *value;
+  } *env;
+  static GArray *environs = NULL;
+  gchar *system_env;
+  guint length, i;
   gchar dummy[2];
 
   g_return_val_if_fail (variable != NULL, NULL);
   
-  v = getenv (variable);
-  if (!v)
-    return NULL;
-  
+  G_LOCK (getenv);
+
+  if (!environs)
+    environs = g_array_new (FALSE, FALSE, sizeof (struct env_struct));
+
+  /* First we try to find the envinronment variable inside the already
+   * found ones.
+   */
+
+  for (i = 0; i < environs->len; i++)
+    {
+      env = &g_array_index (environs, struct env_struct, i);
+      if (strcmp (env->key, variable) == 0)
+	{
+	  g_assert (env->value);
+	  G_UNLOCK (getenv);
+	  return env->value;
+	}
+    }
+
+  /* If not found, we ask the system */
+
+  system_env = getenv (variable);
+  if (!system_env)
+    {
+      G_UNLOCK (getenv);
+      return NULL;
+    }
+
   /* On Windows NT, it is relatively typical that environment variables
    * contain references to other environment variables. Handle that by
    * calling ExpandEnvironmentStrings.
    */
 
+  g_array_set_size (environs, environs->len + 1);
+
+  env = &g_array_index (environs, struct env_struct, environs->len - 1);
+
   /* First check how much space we need */
-  k = ExpandEnvironmentStrings (v, dummy, 2);
-  /* Then allocate that much, and actualy do the expansion */
-  if (p == NULL)
-    {
-      p = g_malloc (k);
-      l = k;
-    }
-  else if (k > l)
-    {
-      p = g_realloc (p, k);
-      l = k;
-    }
-  ExpandEnvironmentStrings (v, p, k);
-  return p;
+  length = ExpandEnvironmentStrings (system_env, dummy, 2);
+
+  /* Then allocate that much, and actualy do the expansion and insert
+   * the new found pair into our buffer 
+   */
+
+  env->value = g_malloc (length);
+  env->key = g_strdup (variable);
+
+  ExpandEnvironmentStrings (system_env, env->value, length);
+
+  G_UNLOCK (getenv);
+  return env->value;
 #endif
 }
 

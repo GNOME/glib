@@ -3130,7 +3130,7 @@ void      g_static_rw_lock_free (GStaticRWLock* lock);
  * G_TRYLOCK() respectively.  
  */
 extern void glib_dummy_decl (void);
-#define G_LOCK_NAME(name)		(g__ ## name ## _lock)
+#define G_LOCK_NAME(name)		g__ ## name ## _lock
 #ifdef	G_THREADS_ENABLED
 #  define G_LOCK_DEFINE_STATIC(name)	static G_LOCK_DEFINE (name)
 #  define G_LOCK_DEFINE(name)		\
