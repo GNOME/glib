@@ -1,3 +1,8 @@
+2002-12-16  Tor Lillqvist  <tml@iki.fi>
+
+	* fi.po: In the admittedly strangely worded "Channel set flags
+	unsupported" message, "set" is a verb.
+
 2002-12-15  Christian neumair  <chris@gnome-de.org>
 
 	* de.po: Updated German translation.

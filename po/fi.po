@@ -169,7 +169,7 @@ msgstr "Pistokevirhe"
 
 #: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
-msgstr "Kanavajoukonn liput eivät ole tuettuja"
+msgstr "Kanavalipun asetusta ei ole tuettu"
 
 #: glib/gmarkup.c:222
 #, c-format
