@@ -1,3 +1,9 @@
+Mon Oct 30 05:52:45 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (g_signal_list_ids): get rid of inline documentation owen
+	added, the doc system would ignore it anyways (for some reason not
+	aparent to me).
+
 Mon Oct 30 03:00:07 2000  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc] (g_signal_list_ids): renamed owen's g_type_signals(),

@@ -1,3 +1,7 @@
+Mon Oct 30 06:01:43 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject/gobject-sections.txt: opened up a new section on signals.
+
 2000-10-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/misc_utils.sgml: Removed the win32 limitation.

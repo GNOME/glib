@@ -3,6 +3,7 @@
 <!entity gobject-generic-values SYSTEM "sgml/generic_values.sgml">
 <!entity gobject-objects SYSTEM "sgml/objects.sgml">
 <!entity gobject-param-specs SYSTEM "sgml/param_specs.sgml">
+<!entity gobject-signals SYSTEM "sgml/signals.sgml">
 <!entity gobject-standard-params SYSTEM "sgml/standard_params.sgml">
 <!entity gobject-types SYSTEM "sgml/types.sgml">
 <!entity gobject-value-collection SYSTEM "sgml/value_collection.sgml">
@@ -24,6 +25,7 @@
       &gobject-value-collection;
       &gobject-param-specs;
       &gobject-standard-params;
+      &gobject-signals;
 
   </reference>
 </book>

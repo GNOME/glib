@@ -692,15 +692,6 @@ g_signal_query (guint         signal_id,
   G_UNLOCK (g_signal_mutex);
 }
 
-/**
- * g_signal_list_ids:
- * @itype: an  
- * @n_ids: location to store number of signal ids for @itype
- * 
- * List all signals for a given type.
- *
- * Return value: Newly allocated array of signal ids.
- **/
 guint*
 g_signal_list_ids (GType  itype,
 		   guint *n_ids)

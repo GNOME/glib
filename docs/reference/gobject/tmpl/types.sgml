@@ -750,3 +750,41 @@ GType
 @Returns: 
 
 
+<!-- ##### FUNCTION g_type_check_instance ##### -->
+<para>
+
+</para>
+
+@instance: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_check_value ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_is_dynamic ##### -->
+<para>
+
+</para>
+
+@type: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_value_conforms_to ##### -->
+<para>
+
+</para>
+
+@value: 
+@type: 
+@Returns: 
+
+

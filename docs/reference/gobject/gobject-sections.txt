@@ -81,6 +81,10 @@ g_type_remove_class_cache_func
 g_type_class_unref_uncached
 g_type_get_plugin
 g_type_fundamental_last
+g_type_check_instance
+g_type_check_value
+g_type_is_dynamic
+g_type_value_conforms_to
 
 <SUBSECTION Private>
 g_log_domain_gobject
@@ -220,7 +224,7 @@ g_value_dup_string
 </SECTION>
 
 <SECTION>
-<TITLE>Object Parameter Specifications</TITLE>
+<TITLE>Parameter Specifications</TITLE>
 <FILE>param_specs</FILE>
 GParamSpec
 GParamSpecClass
@@ -316,3 +320,32 @@ G_VALUE_COLLECT
 G_VALUE_LCOPY
 </SECTION>
 
+<SECTION>
+<TITLE>Signals</TITLE>
+<FILE>signals</FILE>
+GSignalInvocationHint
+GSignalAccumulator
+GSignalCMarshaller
+GSignalEmissionHook
+GSignalFlags
+GSignalMatchType
+GSignalQuery
+g_signal_newv
+g_signal_emitv
+g_signal_lookup
+g_signal_name
+g_signal_query
+g_signal_list_ids
+g_signal_connect_closure
+g_signal_handler_find
+g_signal_handler_block
+g_signal_handler_unblock
+g_signal_handler_disconnect
+g_signal_has_handler_pending
+g_signal_stop_emission
+g_signal_type_closure_new
+g_signal_add_emission_hook_full
+g_signal_remove_emission_hook
+g_signal_handlers_destroy
+g_signals_destroy
+</SECTION>

@@ -21,6 +21,7 @@ tmpl_sources =				\
 	tmpl/gobject-unused.sgml	\
 	tmpl/objects.sgml		\
 	tmpl/param_specs.sgml		\
+	tmpl/signals.sgml		\
 	tmpl/standard_params.sgml	\
 	tmpl/types.sgml			\
 	tmpl/value_collection.sgml	\

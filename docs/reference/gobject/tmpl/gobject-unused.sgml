@@ -1,0 +1,12 @@
+<!-- ##### ENUM GSignalType ##### -->
+<para>
+
+</para>
+
+@G_SIGNAL_RUN_FIRST: 
+@G_SIGNAL_RUN_LAST: 
+@G_SIGNAL_RUN_CLEANUP: 
+@G_SIGNAL_NO_RECURSE: 
+@G_SIGNAL_ACTION: 
+@G_SIGNAL_NO_HOOKS: 
+
