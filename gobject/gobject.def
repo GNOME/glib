@@ -175,6 +175,7 @@ EXPORTS
 	g_signal_type_cclosure_new
 	g_source_set_closure
 	g_strdup_value_contents
+	g_strv_get_type
 	g_type_add_class_cache_func
 	g_type_add_interface_check
 	g_type_add_interface_dynamic

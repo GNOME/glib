@@ -1,3 +1,7 @@
+2003-02-28  Hans Breuer  <hans@breuer.org>
+
+	* gobject.def : added g_strv_get_type
+
 Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.3 ===
