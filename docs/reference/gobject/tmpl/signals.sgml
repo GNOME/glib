@@ -839,7 +839,8 @@ g_signal_override_class_closure().
 <!-- ##### FUNCTION g_signal_add_emission_hook ##### -->
 <para>
 Adds an emission hook for a signal, which will get called for any emission
-of that signal, independent of the instance.
+of that signal, independent of the instance. This is possible only
+for signals which don't have #G_SIGNAL_NO_HOOKS flag set.
 </para>
 
 @signal_id: the signal identifier, as returned by g_signal_lookup().
