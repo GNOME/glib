@@ -41,10 +41,10 @@ typedef	gpointer GCallback;
 typedef void  (*GClosureNotify)		(gpointer	 data,
 					 GClosure	*closure);
 typedef void  (*GClosureMarshal)	(GClosure	*closure,
-					 guint           invocation_hint,
 					 GValue         *return_value,
 					 guint           n_param_values,
 					 const GValue   *param_values,
+					 gpointer        invocation_hint,
 					 gpointer	 marshal_data);
 typedef struct _GCClosure		 GCClosure;
 
@@ -69,10 +69,10 @@ struct _GClosure
   /*< public >*/	guint	 is_invalid : 1;
 
   /*< private >*/	void   (*marshal)  (GClosure       *closure,
-					    guint           invocation_hint,
 					    GValue /*out*/ *return_value,
 					    guint           n_param_values,
 					    const GValue   *param_values,
+					    gpointer        invocation_hint,
 					    gpointer	    marshal_data);
   /*< protected >*/	gpointer data;
 
@@ -139,10 +139,10 @@ void		g_closure_set_meta_marshal	(GClosure       *closure,
 						 GClosureMarshal meta_marshal);
 void		g_closure_invalidate		(GClosure	*closure);
 void		g_closure_invoke		(GClosure 	*closure,
-						 guint		 invocation_hint,
 						 GValue	/*out*/	*return_value,
 						 guint		 n_param_values,
-						 const GValue	*param_values);
+						 const GValue	*param_values,
+						 gpointer	 invocation_hint);
 
 
 /*

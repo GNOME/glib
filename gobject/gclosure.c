@@ -19,6 +19,7 @@
 #include	"gclosure.h"
 
 #include	"gvalue.h"
+#include	<string.h>
 
 
 /* FIXME: need caching allocators
@@ -387,10 +388,10 @@ g_closure_remove_fnotify (GClosure      *closure,
 
 void
 g_closure_invoke (GClosure       *closure,
-		  guint           invocation_hint,
 		  GValue /*out*/ *return_value,
 		  guint           n_param_values,
-		  const GValue   *param_values)
+		  const GValue   *param_values,
+		  gpointer        invocation_hint)
 {
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->marshal || closure->meta_marshal);
@@ -415,9 +416,10 @@ g_closure_invoke (GClosure       *closure,
 	}
       if (!in_marshal)
 	closure_invoke_notifiers (closure, PRE_NOTIFY);
-      marshal (closure, invocation_hint,
+      marshal (closure,
 	       return_value,
 	       n_param_values, param_values,
+	       invocation_hint,
 	       marshal_data);
       if (!in_marshal)
 	closure_invoke_notifiers (closure, POST_NOTIFY);
@@ -477,10 +479,10 @@ g_cclosure_new_swap (GCallback      callback_func,
 
 static void
 g_type_class_meta_marshal (GClosure       *closure,
-			   guint           invocation_hint,
 			   GValue /*out*/ *return_value,
 			   guint           n_param_values,
 			   const GValue   *param_values,
+			   gpointer        invocation_hint,
 			   gpointer        marshal_data)
 {
   GTypeClass *class;
@@ -491,16 +493,19 @@ g_type_class_meta_marshal (GClosure       *closure,
   class = G_TYPE_INSTANCE_GET_CLASS (g_value_get_as_pointer (param_values + 0), itype, GTypeClass);
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
-    closure->marshal (closure, invocation_hint, return_value,
-		      n_param_values, param_values, callback);
+    closure->marshal (closure,
+		      return_value,
+		      n_param_values, param_values,
+		      invocation_hint,
+		      callback);
 }
 
 static void
 g_type_iface_meta_marshal (GClosure       *closure,
-			   guint           invocation_hint,
 			   GValue /*out*/ *return_value,
 			   guint           n_param_values,
 			   const GValue   *param_values,
+			   gpointer        invocation_hint,
 			   gpointer        marshal_data)
 {
   GTypeClass *class;
@@ -511,8 +516,11 @@ g_type_iface_meta_marshal (GClosure       *closure,
   class = G_TYPE_INSTANCE_GET_INTERFACE (g_value_get_as_pointer (param_values + 0), itype, GTypeClass);
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
-    closure->marshal (closure, invocation_hint, return_value,
-		      n_param_values, param_values, callback);
+    closure->marshal (closure,
+		      return_value,
+		      n_param_values, param_values,
+		      invocation_hint,
+		      callback);
 }
 
 GClosure*

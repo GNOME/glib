@@ -30,9 +30,16 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-/* --- macros --- */
-#define	G_SIGNAL_HINT_ID(hint)		((hint) >> 8) 
-#define	G_SIGNAL_HINT_RUN_TYPE(hint)	((hint) & 0xff)
+/* --- typedefs --- */
+typedef struct _GSignalQuery          	 GSignalQuery;
+typedef struct _GSignalInvocationHint 	 GSignalInvocationHint;
+typedef	GClosureMarshal			 GSignalCMarshaller;
+typedef gboolean (*GSignalEmissionHook) (GSignalInvocationHint *ihint,
+					 guint			n_param_values,
+					 const GValue	       *param_values);
+typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
+					 GValue		       *return_accu,
+					 const GValue	       *return_value);
 
 
 /* --- run & match types --- */
@@ -42,48 +49,46 @@ typedef enum
   G_SIGNAL_RUN_LAST	= 1 << 1,
   G_SIGNAL_RUN_CLEANUP	= 1 << 2,
   G_SIGNAL_NO_RECURSE	= 1 << 3,
-  G_SIGNAL_ACTION	= 1 << 4,
-  G_SIGNAL_NO_HOOKS	= 1 << 5
-} GSignalType;
+  G_SIGNAL_DETAILED	= 1 << 4,
+  G_SIGNAL_ACTION	= 1 << 5,
+  G_SIGNAL_NO_HOOKS	= 1 << 6
+#define	G_SIGNAL_FLAGS_MASK  0x7f
+} GSignalFlags;
 typedef enum
 {
   G_SIGNAL_MATCH_ID	   = 1 << 0,
-  G_SIGNAL_MATCH_CLOSURE   = 1 << 1,
-  G_SIGNAL_MATCH_FUNC	   = 1 << 2,
-  G_SIGNAL_MATCH_DATA	   = 1 << 3,
-  G_SIGNAL_MATCH_UNBLOCKED = 1 << 4,
-  G_SIGNAL_MATCH_MASK	   = 0x1f
+  G_SIGNAL_MATCH_DETAIL	   = 1 << 1,
+  G_SIGNAL_MATCH_CLOSURE   = 1 << 2,
+  G_SIGNAL_MATCH_FUNC	   = 1 << 3,
+  G_SIGNAL_MATCH_DATA	   = 1 << 4,
+  G_SIGNAL_MATCH_UNBLOCKED = 1 << 5
+#define	G_SIGNAL_MATCH_MASK  0x3f
 } GSignalMatchType;
 
 
-/* --- signal queries --- */
-typedef struct _GSignalQuery GSignalQuery;
-struct	_GSignalQuery
+/* --- signal information --- */
+struct _GSignalInvocationHint
+{
+  guint		signal_id;
+  GQuark	detail;
+  GSignalFlags	run_type;
+};
+struct _GSignalQuery
 {
   guint		signal_id;
   const gchar  *signal_name;
   GType		itype;
-  GSignalType	signal_flags;
+  GSignalFlags	signal_flags;
   GType		return_type;
   guint		n_params;
   const GType  *param_types;
 };
 
 
-/* --- function types --- */
-typedef gboolean  (*GSignalEmissionHook)	(guint          signal_id,
-						 guint		n_values,
-						 const GValue  *values);
-typedef gboolean  (*GSignalAccumulator)		(guint		signal_id,
-						 GValue	       *return_accu,
-						 const GValue  *return_value);
-typedef	GClosureMarshal			GSignalCMarshaller;
-
-
 /* --- signals --- */
 guint	g_signal_newv			(const gchar		*signal_name,
 					 GType			 itype,
-					 GSignalType		 signal_flags,
+					 GSignalFlags		 signal_flags,
 					 GClosure		*class_closure,
 					 GSignalAccumulator	 accumulator,
 					 GSignalCMarshaller	 c_marshaller,
@@ -92,6 +97,7 @@ guint	g_signal_newv			(const gchar		*signal_name,
 					 GType			*param_types);
 void	g_signal_emitv			(const GValue		*instance_and_params,
 					 guint			 signal_id,
+					 GQuark			 detail,
 					 GValue			*return_value);
 guint	g_signal_lookup			(const gchar		*name,
 					 GType			 itype);
@@ -103,6 +109,7 @@ void	g_signal_query			(guint			 signal_id,
 /* --- signal handlers --- */
 guint	 g_signal_connect_closure	(gpointer		 instance,
 					 guint			 signal_id,
+					 GQuark			 detail,
 					 GClosure		*closure,
 					 gboolean		 after);
 void	 g_signal_handler_disconnect	(gpointer		 instance,
@@ -114,17 +121,20 @@ void	 g_signal_handler_unblock	(gpointer		 instance,
 guint	 g_signal_handler_find		(gpointer		 instance,
 					 GSignalMatchType	 mask,
 					 guint			 signal_id,
+					 GQuark			 detail,
 					 GClosure		*closure,
 					 gpointer		 func,
 					 gpointer		 data);
 gboolean g_signal_has_handler_pending	(gpointer		 instance,
 					 guint			 signal_id,
+					 GQuark			 detail,
 					 gboolean		 may_be_blocked);
 
 
 /* --- signal emissions --- */
 void	g_signal_stop_emission		(gpointer		 instance,
-					 guint			 signal_id);
+					 guint			 signal_id,
+					 GQuark			 detail);
 guint	g_signal_add_emission_hook_full	(guint			 signal_id,
 					 GClosure		*closure);
 void	g_signal_remove_emission_hook	(guint			 signal_id,

@@ -1,3 +1,21 @@
+Fri Oct 27 16:33:41 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc]: publically define GSignalInvocationHint structure
+	that gets passed in to closure invocations. added signal details.
+	renamed GSignalType to GSignalFlags to comply with conventions.
+	quite some cleanups and minor fixes. avoid uneccessary handler list
+	walks upon invokation of after handlers. relookup handler list for
+	restarted emissions. preliminary abort normal handler invokation if
+	after handler is encountered.
+
+	* glib-genmarshal.c:
+	* gclosure.[hc]: moved invocation_hint to the end of the
+	g_closure_invoke() arguments as sugegsted by kenelson.
+	also made it a gpointer to be more generic. the invocation_hint
+	is a caller specific thing that can be used to pass additional
+	data in to closure invocations as documented with the caller
+	invoking the closure.
+
 Fri Oct 27 05:35:14 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_object_watch_closure): fixed realloc bug, reported

@@ -248,10 +248,10 @@ generate_marshal (const gchar *signame,
       ind = fprintf (fout, "extern void ");
       ind += fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       fprintf (fout,   "GClosure     *closure,\n");
-      fprintf (fout, "%sguint         invocation_hint,\n", indent (ind));
       fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
       fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
       fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
+      fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
       fprintf (fout, "%sgpointer      marshal_data);\n", indent (ind));
     }
   if (gen_cbody)
@@ -260,10 +260,10 @@ generate_marshal (const gchar *signame,
       fprintf (fout, "void\n");
       ind = fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       fprintf (fout,   "GClosure     *closure,\n");
-      fprintf (fout, "%sguint         invocation_hint,\n", indent (ind));
       fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
       fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
       fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
+      fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
       fprintf (fout, "%sgpointer      marshal_data)\n", indent (ind));
       fprintf (fout, "{\n");
 
