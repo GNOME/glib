@@ -262,11 +262,11 @@ extern "C" {
  * macros, so we can refer to them as strings unconditionally.
  */
 #ifdef	__GNUC__
-#define	G_GNUC_FUNCTION		(__FUNCTION__)
-#define	G_GNUC_PRETTY_FUNCTION	(__PRETTY_FUNCTION__)
+#define	G_GNUC_FUNCTION		__FUNCTION__
+#define	G_GNUC_PRETTY_FUNCTION	__PRETTY_FUNCTION__
 #else	/* !__GNUC__ */
-#define	G_GNUC_FUNCTION		("")
-#define	G_GNUC_PRETTY_FUNCTION	("")
+#define	G_GNUC_FUNCTION		""
+#define	G_GNUC_PRETTY_FUNCTION	""
 #endif	/* !__GNUC__ */
 
 /* we try to provide a usefull equivalent for ATEXIT if it is

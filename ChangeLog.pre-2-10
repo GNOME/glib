@@ -1,3 +1,9 @@
+Sat Apr 10 19:30:50 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h: removed braces around inline strings for the G_GNUC_FUNCTION
+	and G_GNUC_PRETTY_FUNCTION macros, so the macros can be used for compile
+	time string concatenation.
+
 Thu Apr  8 19:53:19 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_main_iterate): Check for two threads
