@@ -185,22 +185,30 @@ This is an internal function introduced mainly for C marshallers.
 
 <!-- ##### FUNCTION g_value_type_transformable ##### -->
 <para>
-
+Check whether g_value_transform() is able to transform values
+of type @src_type into values of type @dest_type.
 </para>
 
-@src_type: 
-@dest_type: 
-@Returns: 
+@src_type:  Source type.
+@dest_type: Target type.
+@Returns:   %TRUE if the transformation is possible, %FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_value_transform ##### -->
 <para>
-
+Tries to cast the contents of @src_value into a type apropriate
+to store in @dest_value, e.g. to transform a %G_TYPE_INT value
+into a %G_TYPE_FLOAT value. Performing transformations between
+value types might incour precision lossage. Especially
+transformations into strings might reveal seemingly arbitrary
+results and shouldn't be relied upon for production code (such
+as rcfile value or object property serialization).
 </para>
 
-@src_value: 
-@dest_value: 
-@Returns: 
+@src_value:  Source value.
+@dest_value: Target value.
+@Returns:    Whether a transformation rule was found and could be applied.
+             Upon failing transformations, @dest_value is left untouched.
 
 
 <!-- ##### USER_FUNCTION GValueTransform ##### -->
