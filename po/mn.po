@@ -1,20 +1,23 @@
+# translation of glib.HEAD.po to Mongolian
 # translation of glib.HEAD.mn.po to Mongolian
 # translation of glib.HEAD.po to mongolian
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# Sanlig Badral <badral@chinggis.com>, 2003
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Sanlig Badral <badral@chinggis.com>, 2003.
+# Sanlig Badral <Badral@openmn.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD.mn\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
-"PO-Revision-Date: 2003-01-20 11:28+0100\n"
-"Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
-"Language-Team: Mongolian <mn@li.org>\n"
+"Project-Id-Version: glib.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-06 20:13+0100\n"
+"PO-Revision-Date: 2004-01-07 01:09+0100\n"
+"Last-Translator: Sanlig Badral <Badral@openmn.org>\n"
+"Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.1\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,38 +52,38 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "»%s« ухарч »%s« кодчилол руу хөрвөхгүй байна"
 
 # CHECK
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI »%s« нь файлын схемд хэрэглэгддэг үнэмлэхүй хаяг биш"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Дотоод URI »%s« нь »#« -г агуулж болохгүй"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "»%s« URI хүчингүй"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI »%s« -н хостын нэр хүчингүй"
 
 # CHECK
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "»%s« URI хүчингүй Escape-тэмдэгт агуулж байна"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "»%s« замын нэр үнэмлэхүй зам биш"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Хүчингүй хостын нэр"
 
@@ -89,59 +92,59 @@ msgstr "Хүчингүй хостын нэр"
 msgid "Error opening directory '%s': %s"
 msgstr "»%s« лавлахыг нээхэд алдаа: %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu байтуудыг »%s« файлыг уншихдаа байрлуулж чадсангүй"
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Файл »%s« -ыг уншиж байхад алдаа: %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "»%s« файлаас уншиж болохгүй байна: %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "»%s« файл нээгдэхгүй байна: %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "»%s« файлын аттрибут тодорхойлогдсонгүй: fstat() нурлаа: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "»%s« файл нээгдэхгүй байна: fdopen() нурлаа: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "»%s« хэв хүчингүй, »%s« -г агуулах хэрэггүй"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "»%s« хэв XXXXXX -р төгсөхгүй байна"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "»%s« файл үүсгэгдсэнгүй: %s"
 
-#: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#: glib/gfileutils.c:1153
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "»%s« файл үүсгэгдсэнгүй: %s"
+msgstr "»%s« символик холбоос уншигдсангүй: %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Символик холбоос дэмжигдээгүй"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -180,8 +183,7 @@ msgid "Error on line %d: %s"
 msgstr "%d мөрөнд алдаа: %s"
 
 #: glib/gmarkup.c:412
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Хоосон абт »&;« олдлоо; хүчинтэй абтууд &amp; &quot; &lt; &gt; &apos; юм. "
 "(абт=аский биш тэмдэгт)"
@@ -278,8 +280,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
 "хүлээгдэж байна"
@@ -393,8 +394,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
+msgstr "Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -523,3 +523,4 @@ msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
 
 #~ msgid "Socket error"
 #~ msgstr "Сокет алдаа"
+
