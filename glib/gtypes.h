@@ -156,7 +156,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	    __v; }))
 #    if !defined (__i486__) && !defined (__i586__) \
 	&& !defined (__pentium__) && !defined (__i686__) \
-	&& !defined (__pentiumpro__)
+	&& !defined (__pentiumpro__) && !defined (__pentium4__)
 #       define GUINT32_SWAP_LE_BE_IA32(val) \
 	  (__extension__					\
 	   ({ register guint32 __v, __x = ((guint32) (val));	\

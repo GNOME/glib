@@ -1,3 +1,8 @@
+Sun May  2 03:51:59 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gtypes.h: check for __pentium4__ when deciding whether to
+	use bswap for GUINT32_SWAP_LE_BE_IA32(). Fixes bug #141620.
+
 2004-05-01  Hans Breuer  <hans@breuer.org>
 
 	* glib/gnulib/Makefile.am : added makefile.msc to EXTRA_DIST
