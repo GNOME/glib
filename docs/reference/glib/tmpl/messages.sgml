@@ -81,13 +81,13 @@ Flags specifying the level of log messages.
 <!-- ##### FUNCTION g_log ##### -->
 <para>
 Logs an error or debugging message.
-If the log level has been set as fatal, the <function>abort()</function>
+If the log level has been set as fatal, the abort()
 function is called to terminate the program.
 </para>
 
 @log_domain: the log domain, usually #G_LOG_DOMAIN.
 @log_level: the log level, either from #GLogLevelFlags or a user-defined level.
-@format: the message format. See the <function>printf()</function>
+@format: the message format. See the printf()
 documentation.
 @Varargs: the parameters to insert into the format string.
 
@@ -95,13 +95,13 @@ documentation.
 <!-- ##### FUNCTION g_logv ##### -->
 <para>
 Logs an error or debugging message.
-If the log level has been set as fatal, the <function>abort()</function>
+If the log level has been set as fatal, the abort()
 function is called to terminate the program.
 </para>
 
 @log_domain: the log domain.
 @log_level: the log level.
-@format: the message format. See the <function>printf()</function>
+@format: the message format. See the printf()
 documentation.
 @args: the parameters to insert into the format string.
 
@@ -111,7 +111,7 @@ documentation.
 A convenience function/macro to log a normal message.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+@...: format string, followed by parameters to insert into the format string (as with printf())
 
 
 <!-- ##### MACRO g_warning ##### -->
@@ -119,7 +119,7 @@ A convenience function/macro to log a normal message.
 A convenience function/macro to log a warning message.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+@...: format string, followed by parameters to insert into the format string (as with printf())
 
 
 <!-- ##### MACRO g_critical ##### -->
@@ -131,14 +131,14 @@ warnings exit the program, then use g_critical() for fatal errors, for
 example.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+@...: format string, followed by parameters to insert into the format string (as with printf())
 
 
 <!-- ##### MACRO g_error ##### -->
 <para>
 A convenience function/macro to log an error message.
 Error messages are always fatal, resulting in a call to
-<function>abort()</function> to terminate the application.
+abort() to terminate the application.
 This function will result in a core dump; don't use it for errors you
 expect. Using this function indicates a bug in your program, i.e. an
 assertion failure.
@@ -152,7 +152,7 @@ assertion failure.
 A convenience function/macro to log a debug message.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+@...: format string, followed by parameters to insert into the format string (as with printf())
 @Since: 2.6
 
 
@@ -243,18 +243,18 @@ The default log handler set up by GLib; g_log_set_default_handler()
 allows to install an alternate default log handler.
 This is used if no log handler has been set for the particular log domain
 and log level combination. It outputs the message to stderr or stdout
-and if the log level is fatal it calls <function>abort()</function>.
+and if the log level is fatal it calls abort().
 </para>
 <para>
 stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
 %G_LOG_LEVEL_WARNING. stdout is used for the rest.
 </para>
-<para>
 
 @log_domain: the log domain of the message.
 @log_level: the level of the message.
 @message: the message.
 @unused_data: data passed from g_log() which is unused.
+
 
 <!-- ##### FUNCTION g_log_set_default_handler ##### -->
 <para>
@@ -268,3 +268,5 @@ g_log_default_handler() as default log handler.
 @user_data: data passed to the log handler.
 @Returns: the previous default log handler
 @Since: 2.6
+
+

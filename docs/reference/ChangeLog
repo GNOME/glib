@@ -1,3 +1,8 @@
+Mon Sep  6 01:56:13 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/messages.sgml: Remove excess markup and fix a markup
+	error.
+
 Sun Sep  5 01:44:23 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: 
