@@ -1,3 +1,11 @@
+Wed Aug 27 01:25:40 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am testifaceinit.c: Add a detailed test case
+	for interface initialization, testing the ability to
+	add interfaces during class initialization and the ordering
+	of interface base_init, class init, and interface_init.
+	(Expected to fail at the moment.)
+
 Mon Aug 25 14:51:46 2003  Manish Singh  <yosh@gimp.org>
 
 	* gtypemodule.c (g_type_module_register_type): fix typo in last
