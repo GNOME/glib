@@ -1,3 +1,10 @@
+Thu Jan 30 16:45:13 2003  Owen Taylor  <otaylor@redhat.com>
+
+        * Makefile.am: Remove references to glib.spec.
+        (#102231)
+
+        * configure.in: Don't generate glib.spec.
+
 Tue Jan 28 16:08:56 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: If msgfmt isn't found,
