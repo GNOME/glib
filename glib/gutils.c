@@ -411,30 +411,32 @@ g_get_any_init (void)
 #endif /* NATIVE_WIN32 */
 	}
       
-#ifdef NATIVE_WIN32
-      /* The official way to specify a home directory on NT is
-       * the HOMEDRIVE and HOMEPATH environment variables.
-       *
-       * This is inside #ifdef NATIVE_WIN32 because with the cygwin dll,
-       * HOME should be a POSIX style pathname.
-       */
-      
-      if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
-	{
-	  gchar *homedrive, *homepath;
-
-	  homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
-	  homepath = g_strdup (g_getenv ("HOMEPATH"));
-
-	  g_home_dir = g_strconcat (homedrive, homepath, NULL);
-	  g_free (homedrive);
-	  g_free (homepath);
-	}
-#endif /* !NATIVE_WIN32 */
-      
       if (!g_home_dir)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
       
+#ifdef NATIVE_WIN32
+      if (!g_home_dir)
+	{
+	  /* The official way to specify a home directory on NT is
+	   * the HOMEDRIVE and HOMEPATH environment variables.
+	   *
+	   * This is inside #ifdef NATIVE_WIN32 because with the cygwin dll,
+	   * HOME should be a POSIX style pathname.
+	   */
+	  
+	  if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
+	    {
+	      gchar *homedrive, *homepath;
+	      
+	      homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
+	      homepath = g_strdup (g_getenv ("HOMEPATH"));
+	      
+	      g_home_dir = g_strconcat (homedrive, homepath, NULL);
+	      g_free (homedrive);
+	      g_free (homepath);
+	    }
+	}
+#endif /* !NATIVE_WIN32 */
       
 #ifdef HAVE_PWD_H
       {

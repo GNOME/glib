@@ -50,12 +50,10 @@ write (FILE       *fd,
 
   return len;
 }
-#endif /* NATIVE_WIN32 */
 
 static void
 ensure_stdout_valid (void)
 {
-#ifdef NATIVE_WIN32
   HANDLE handle;
 
   handle = GetStdHandle (STD_OUTPUT_HANDLE);
@@ -65,8 +63,10 @@ ensure_stdout_valid (void)
       AllocConsole ();
       freopen ("CONOUT$", "w", stdout);
     }
-#endif
 }
+#else
+#define ensure_stdout_valid()	/* Define as empty */
+#endif
 	
 
 /* --- structures --- */
@@ -429,7 +429,6 @@ g_log_default_handler (const gchar    *log_domain,
    * DOS prompt.
    */
   fd = stdout;
-  ensure_stdout_valid ();
 #else
   fd = (log_level >= G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
@@ -450,6 +449,7 @@ g_log_default_handler (const gchar    *log_domain,
 	  return;
 	}
       /* use write(2) for output, in case we are out of memeory */
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, "\n", 1);
@@ -469,6 +469,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_CRITICAL:
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, "\n", 1);
@@ -494,6 +495,7 @@ g_log_default_handler (const gchar    *log_domain,
 	  local_glib_warning_func (message);
 	  return;
 	}
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, "\n", 1);
@@ -519,6 +521,7 @@ g_log_default_handler (const gchar    *log_domain,
 	  local_glib_message_func (message);
 	  return;
 	}
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -535,6 +538,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_INFO:
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -551,6 +555,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_DEBUG:
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -570,6 +575,7 @@ g_log_default_handler (const gchar    *log_domain,
       /* we are used for a log level that is not defined by GLib itself,
        * try to make the best out of it.
        */
+      ensure_stdout_valid ();
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
