@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-29 11:06-0500\n"
+"POT-Creation-Date: 2002-01-29 14:07-0500\n"
 "PO-Revision-Date: 2002-01-28 02:20+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -15,70 +15,70 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:202
+#: glib/gconvert.c:389
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 
-#: glib/gconvert.c:206
+#: glib/gconvert.c:393
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
+#: glib/gconvert.c:591 glib/gconvert.c:881 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ogiltig bytesekvens i konverteringsindata"
 
-#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
+#: glib/gconvert.c:596 glib/gconvert.c:812 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fel under konvertering: %s"
 
-#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:614 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Ofullständig teckensekvens vid slutet av indata"
 
 # fallback syftar på en sträng
-#: glib/gconvert.c:552
+#: glib/gconvert.c:787
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
-#: glib/gconvert.c:1300
+#: glib/gconvert.c:1535
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI:n \"%s\" är ingen absolut URI som använder filschemat"
 
-#: glib/gconvert.c:1310
+#: glib/gconvert.c:1545
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokala fil-URI:n \"%s\" får inte innehålla en \"#\""
 
-#: glib/gconvert.c:1327
+#: glib/gconvert.c:1562
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI:n \"%s\" är ogiltig"
 
-#: glib/gconvert.c:1336
+#: glib/gconvert.c:1571
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
 
-#: glib/gconvert.c:1352
+#: glib/gconvert.c:1587
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
 
-#: glib/gconvert.c:1423
+#: glib/gconvert.c:1658
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
-#: glib/gconvert.c:1437
+#: glib/gconvert.c:1672
 msgid "Invalid byte sequence in hostname"
 msgstr "Ogiltig bytesekvens i värdnamn"
 

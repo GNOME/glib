@@ -1,3 +1,9 @@
+Tue Jan 29 14:06:22 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* 1.3.13
+
+	* NEWS: Update to include last change. 
+
 2002-01-21  Jeffrey Stedfast  <fejj@ximian.com>
 
 	* glib/gconvert.c (open_converter): Rewritten to cache iconv
@@ -11,8 +17,6 @@
 	descriptors.
 
 Tue Jan 29 11:18:44 2002  Owen Taylor  <otaylor@redhat.com>
-
-	* 1.3.13
 
 	* NEWS: Updated.
 

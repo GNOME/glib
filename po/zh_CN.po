@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-29 11:06-0500\n"
+"POT-Creation-Date: 2002-01-29 14:07-0500\n"
 "PO-Revision-Date: 2001-11-03 22:42+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -13,69 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:202
+#: glib/gconvert.c:389
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
-#: glib/gconvert.c:206
+#: glib/gconvert.c:393
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "无法打开从“%s”到“%s”的转换器：%s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
+#: glib/gconvert.c:591 glib/gconvert.c:881 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
-#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
+#: glib/gconvert.c:596 glib/gconvert.c:812 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:614 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
-#: glib/gconvert.c:552
+#: glib/gconvert.c:787
 #, fuzzy, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换 fallback “%s”到字符集“%s”"
 
-#: glib/gconvert.c:1300
+#: glib/gconvert.c:1535
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI“%s”不是文件格式的绝对 URI"
 
-#: glib/gconvert.c:1310
+#: glib/gconvert.c:1545
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: glib/gconvert.c:1327
+#: glib/gconvert.c:1562
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: glib/gconvert.c:1336
+#: glib/gconvert.c:1571
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "URI 中的主机名“%s”包含无效的转义字符"
 
-#: glib/gconvert.c:1352
+#: glib/gconvert.c:1587
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: glib/gconvert.c:1423
+#: glib/gconvert.c:1658
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: glib/gconvert.c:1437
+#: glib/gconvert.c:1672
 msgid "Invalid byte sequence in hostname"
 msgstr "主机名中包含无效字符序列"
 
