@@ -1,16 +1,17 @@
 # translation of glib.HEAD.az.po to Azerbaijani Turkish
 # Copyright (C) 2001, 2004 Free Software Foundation, Inc.
 # KEMAL YILMAZ <kyilmaz@uekae.tubitak.gov.tr>, 2001.
-# Mətin Əmirov <metin@karegen.com>, 2004.
+# Metin Amiroff <metin@karegen.com>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-05-07 13:40+0200\n"
 "PO-Revision-Date: 2004-02-02 12:12+0200\n"
-"Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
-"Language-Team: Azerbaijani Turkish <gnome@azitt.com>\n"
+"Last-Translator: Metin Amiroff <metin@karegen.com>\n"
+"Language-Team: Azerbaijani Turkish <translation-team-az@lists.sourceforge."
+"net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,9 +23,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "`%s' hərf dəstəsindən `%s' hərf dəstəsinə dönüşdürmə dəstəklənmir"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "`%s' dən `%s' ə dönüşdürücü açıla bilmir: %s"
+msgstr "'%s'-dən '%s'-yə dönüşdürücü açıla bilmir"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -249,15 +250,15 @@ msgstr "Bitirilməmiş varlıq mə'lumatı"
 msgid "Unfinished character reference"
 msgstr "Bitirilməmiş xarakter mə'lumatı"
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
 msgstr "Hökmsüz UTF-8 kodlanmış mətn"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:983
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Sənəd bir element ilə başlamalıdır (məs. <kitab>)"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1022
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -266,7 +267,7 @@ msgstr ""
 "'<' xarakterindən sonra gələn '%s' hökmlü bir xarakter deyil; bir element "
 "adı olmaya bilər"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1085
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -275,14 +276,14 @@ msgstr ""
 "Tək hərf '%s', Elementın başlanğıç etiketinin sonuna '>' xarakteri "
 "gözlənilir '%s'"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1172
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Tək hərf '%s', xüsusiyyət adı '%s' olan element '%s' dən sonra '=' gözlənilir"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1213
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -293,7 +294,7 @@ msgstr ""
 "gözlənilir, və ya bir xüsusiyyət; xüsusiyyət adında hökmsüz bir hərf "
 "işlədilmiş ola bilərsiniz"
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1296
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -302,7 +303,7 @@ msgstr ""
 "Tək hərf '%s',element '%s'in xüsusiyyəti '%s''ə qiymət verilirkən bərabərdir "
 "işarətindən sonra açıq alıntı işarəti gözlənilir"
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1436
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -311,7 +312,7 @@ msgstr ""
 "'</' xarakterlərini təqib edən '%s' hökmlü bir xarakter deyildir; '%s' bir "
 "element adı ilə başlamır dəyəsən"
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1474
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -320,26 +321,26 @@ msgstr ""
 "Bağlı element '%s' dən sonra gələn '%s' hökmlü bir hərf deyildir; icazə "
 "verilən hərf isə '>'"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1485
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' bağlanıb, heç bir element açıq deyildir"
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1494
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' bağlanıb, fəqət indi açıq element '%s'"
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1641
 msgid "Document was empty or contained only whitespace"
 msgstr "Sənəd boşdur və ya təkcə boşluq xarakteri daxil etməkdədir"
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Sənəd açıq üçbucaq mötərizə '<'den sonra gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -348,7 +349,7 @@ msgstr ""
 "Sənəd elementləri hələ açıq olaraq gözlənilməz bir şəkildə qurtardı - son "
 "element '%s' açıq idi"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1671
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -357,19 +358,19 @@ msgstr ""
 "Sənəd gözlənilməz bir şəkildə qurtardı, etiket <%s/> ilə qurtaran qapalı "
 "üçbucaq mötərizə gözlənilir"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Sənəd bir elementin içində gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Sənəd bir xüsusiyyət adı içində gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Sənəd bir element-açma etiketi içində gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -377,17 +378,17 @@ msgstr ""
 "Sənəd xüsusiyyət adını təqib edən bərabərdir işarətindən sonra gözlənilməz "
 "bir şəkildə qurtardı: xüsusiyyət qiyməti yoxdur"
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Sənəd bağlı etiket '%s' içində gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Sənəd bir şərh və ya gedişat göstərişi içində ikən gözlənilməz bir şəkildə "
