@@ -49,11 +49,11 @@ g_node_new (gpointer data)
   else
     node = g_chunk_new (GNode, g_tree_node_chunk);
   
-  node->prev = NULL;
+  node->data = data;
   node->next = NULL;
+  node->prev = NULL;
   node->parent = NULL;
   node->children = NULL;
-  node->data = data;
   
   return node;
 }

@@ -1,3 +1,9 @@
+Mon Aug  3 16:02:26 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* gnode.c: change order of gpointer data; field in struct _GNode to
+	be partly binary compatible with GList and GSList.
+
 1998-08-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* garray.c (g_ptr_array_remove_index): bugfix: index check for

@@ -748,12 +748,11 @@ gint	 g_tree_nnodes	 (GTree		*tree);
  */
 struct _GNode
 {
-  GNode *prev;
+  gpointer data;
   GNode *next;
+  GNode *prev;
   GNode *parent;
   GNode *children;
-  
-  gpointer data;
 };
 
 #define	 G_NODE_IS_ROOT(node)	(((GNode*) (node))->parent == NULL && \
