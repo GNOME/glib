@@ -35,7 +35,7 @@ struct {
   gint offset;
   gboolean valid;
 } test[] = {  
-  /* some tests to check max_len handling
+  /* some tests to check max_len handling */
   /* length 1 */
   { "abcde", -1, 5, TRUE },
   { "abcde", 3, 3, TRUE },
