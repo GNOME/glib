@@ -1,5 +1,8 @@
 2005-01-09  Tor Lillqvist  <tlillqvist@novell.com>
 
+	* glib/gwin32.c (g_win32_error_message): Fix cast. (#163133, Roger
+	Leigh)
+
 	* glib/gfileutils.c: Include <io.h> on Windows for
 	prototypes. (#163390, Kazuki Iwamoto)
 

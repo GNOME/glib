@@ -1064,7 +1064,7 @@ g_win32_error_message (gint error)
 		      |FORMAT_MESSAGE_IGNORE_INSERTS
 		      |FORMAT_MESSAGE_FROM_SYSTEM,
 		      NULL, error, 0,
-		      (LPTSTR) &msg, 0, NULL);
+		      (LPWSTR) &msg, 0, NULL);
       if (msg != NULL)
 	{
 	  nchars = wcslen (msg);
