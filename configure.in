@@ -1713,10 +1713,27 @@ if test x"$glib_cv_sizeof_system_thread" = x; then
    GLIB_SIZEOF(,void *, system_thread)
 fi
 
+#
+# Hack to deal with:
+# 
+#  a) GCC < 3.3 for Linux doesn't include -lpthread when
+#     building shared libraries with linux.
+#  b) libtool doesn't recognize -pthread as a library dependency.
+#
+case $host in
+  *-*-linux*)
+    G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
+    ;;
+  *)
+    G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-Wc,-pthread/`"
+    ;;
+esac
+
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
 		   [Source file containing theread implementation])
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
+AC_SUBST(G_THREAD_LIBS_FOR_GTHREAD)
 AC_SUBST(G_THREAD_LIBS_EXTRA)
 
 dnl **********************************************
