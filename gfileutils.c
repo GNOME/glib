@@ -586,20 +586,20 @@ g_mkstemp (char *tmpl)
 
 /**
  * g_file_open_tmp:
- * @template: Template for file name, as in g_mkstemp, basename only
+ * @tmpl: Template for file name, as in g_mkstemp, basename only
  * @name_used: location to store actual name used
  * @error: return location for a #GError
  *
  * Opens a file for writing in the preferred directory for temporary
  * files (as returned by g_get_tmp_dir()). 
  *
- * @template should be a string ending with six 'X' characters, as the
+ * @tmpl should be a string ending with six 'X' characters, as the
  * parameter to g_mkstemp() (or mkstemp()). However, unlike these
  * functions, the template should only be a basename, no directory
  * components are allowed. If template is NULL, a default template is
  * used.
  *
- * Note that in contrast to g_mkstemp() (and mkstemp()) @template is not
+ * Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
  * modified, and might thus be a read-only literal string.
  *
  * The actual name used is returned in @name_used if non-NULL. This
@@ -610,7 +610,7 @@ g_mkstemp (char *tmpl)
  * g_mkstemp() is returned.
  **/
 int
-g_file_open_tmp (const char *template,
+g_file_open_tmp (const char *tmpl,
 		 char      **name_used,
 		 GError    **error)
 {
@@ -619,28 +619,28 @@ g_file_open_tmp (const char *template,
   char *sep;
   char *fulltemplate;
 
-  if (template == NULL)
-    template = ".XXXXXX";
+  if (tmpl == NULL)
+    tmpl = ".XXXXXX";
 
-  if (strchr (template, G_DIR_SEPARATOR))
+  if (strchr (tmpl, G_DIR_SEPARATOR))
     {
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
 		   _("Template '%s' illegal, should not contain a '%s'"),
-		   template, G_DIR_SEPARATOR_S);
+		   tmpl, G_DIR_SEPARATOR_S);
 
       return -1;
     }
   
-  if (strlen (template) < 6 ||
-      strcmp (template + strlen (template) - 6, "XXXXXX") != 0)
+  if (strlen (tmpl) < 6 ||
+      strcmp (tmpl + strlen (tmpl) - 6, "XXXXXX") != 0)
     {
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
 		   _("Template '%s' doesn end with XXXXXX"),
-		   template);
+		   tmpl);
       return -1;
     }
 
@@ -651,7 +651,7 @@ g_file_open_tmp (const char *template,
   else
     sep = G_DIR_SEPARATOR_S;
 
-  fulltemplate = g_strconcat (tmpdir, sep, template, NULL);
+  fulltemplate = g_strconcat (tmpdir, sep, tmpl, NULL);
 
   retval = g_mkstemp (fulltemplate);
 
