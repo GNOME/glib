@@ -1,3 +1,7 @@
+2000-07-14  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Add g_type_get_plugin.
+
 Thu Jul 13 02:07:54 2000  Tim Janik  <timj@gtk.org>
 
 	* gparam.c (g_param_value_defaults): default initialize the temporary

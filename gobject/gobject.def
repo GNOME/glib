@@ -67,6 +67,7 @@ EXPORTS
 	g_type_free_instance
 	g_type_from_name
 	g_type_fundamental_branch_last
+	g_type_get_plugin
 	g_type_get_qdata
 	g_type_init
 	g_type_instance_conforms_to
