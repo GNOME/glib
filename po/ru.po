@@ -1,18 +1,21 @@
-# Copyright (C) 1998-2002 Free Software Foundation, Inc.
+# translation of glib to Russian
+# Copyright (C) 1998-2002, 2004 Free Software Foundation, Inc.
 # Valek Filippov <frob@df.ru>, 2001-2002.
-# Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2002-2003
+# Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2002-2003.
+# Leonid Kanter <leon@asplinux.ru>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.4\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
-"PO-Revision-Date: 2004-04-29 08:57+0400\n"
-"Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2004-12-17 11:40+0100\n"
+"PO-Revision-Date: 2004-12-17 15:42+0200\n"
+"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
+"Language-Team:  <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: glib/gconvert.c:403
 #, c-format
@@ -46,21 +49,19 @@ msgstr "Неполный символ содержится в конце вхо�
 #: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr ""
-"Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
+msgstr "Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
 
 #: glib/gconvert.c:1600
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
-"Идентификатор URI \"%s\" не является абсолютным идентификатором при "
-"использовании файловой схемы"
+"URI \"%s\" не является абсолютным идентификатором при "
+"использовании схемы \"file\""
 
 #: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr ""
-"Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
+msgstr "Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
 
 #: glib/gconvert.c:1627
 #, c-format
@@ -188,8 +189,7 @@ msgid "Error on line %d: %s"
 msgstr "Произошла ошибка в строке %d: %s"
 
 #: glib/gmarkup.c:428
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая сущность \"&;\"; допустимыми сущностями являются: &amp; "
 "&quot; &lt; &gt; &apos;"
@@ -224,18 +224,18 @@ msgstr ""
 "использован не для обозначения начала сущности - экранируйте его как &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Произошёл сбой при разборе строки \"%s\", где должно быть число внутри "
+"Произошёл сбой при разборе строки '%-.*s', где должно быть число внутри "
 "ссылки на символ (&#234; например): возможно, номер слишком велик"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Ссылка на символ \"%s\" не определяет допустимый символ"
+msgstr "Ссылка на символ '%-.*s' не определяет допустимый символ"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -287,8 +287,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1257
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Встретился лишний символ \"%s\", ожидался символ \"=\" после имени атрибута "
 "\"%s\" элемента \"%s\""
@@ -334,8 +333,7 @@ msgstr ""
 #: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
-"Элемент \"%s\" был закрыт, ни один элемент в настоящий момент не открыт"
+msgstr "Элемент \"%s\" был закрыт, ни один элемент в настоящий момент не открыт"
 
 #: glib/gmarkup.c:1593
 #, c-format
@@ -399,13 +397,11 @@ msgstr "Документ непредвиденно окончился внут�
 #: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
+msgstr "Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
 
 #: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Документ непредвиденно окончился внутри комментария или инструкции обработки"
+msgstr "Документ непредвиденно окончился внутри комментария или инструкции обработки"
 
 #: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -425,8 +421,7 @@ msgstr "Текст закончился сразу после символа \"\
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Текст закончился перед соответствующей кавычкой для %c. (Текст был \"%s\")"
+msgstr "Текст закончился перед соответствующей кавычкой для %c. (Текст был \"%s\")"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -439,8 +434,7 @@ msgstr "Произошёл сбой при чтении данных из про
 #: glib/gspawn-win32.c:281 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
-"Произошёл сбой при создании канала для сообщения с процессом-потомком (%s)"
+msgstr "Произошёл сбой при создании канала для сообщения с процессом-потомком (%s)"
 
 #: glib/gspawn-win32.c:321 glib/gspawn.c:1014
 #, c-format
@@ -499,8 +493,7 @@ msgstr "Произошёл сбой при выполнении процесса
 #: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
-"Произошёл сбой при перенаправлении вывода или ввода процесса-потомка (%s)"
+msgstr "Произошёл сбой при перенаправлении вывода или ввода процесса-потомка (%s)"
 
 #: glib/gspawn.c:1248
 #, c-format
@@ -536,128 +529,119 @@ msgstr "Символ находится вне диапазона для UTF-16"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Использование:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPTION...]"
 
 #: glib/goption.c:491
 msgid "Help Options:"
-msgstr ""
+msgstr "Параметры справки:"
 
 #: glib/goption.c:491
 msgid "Show help options"
-msgstr ""
+msgstr "Показать параметры справки"
 
 #: glib/goption.c:495
 msgid "Show all help options"
-msgstr ""
+msgstr "Показать все параметры справки"
 
 #: glib/goption.c:544
 msgid "Application Options:"
-msgstr ""
+msgstr "Применимые параметры:"
 
 #: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Не удается разобрать значение '%s' для --%s"
 
 #: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Целое значение '%s' для %s выходит за пределы"
 
 #: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Неизвестный параметр %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Не удается найти действительный файл ключа в каталогах данных"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "Не является обычным файлом"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "Файл пуст"
 
 #: glib/gkeyfile.c:685
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Файл ключа содержит строку '%s', которая не является ключом - парой величин, группой или комментарием"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Файл ключа не начинается с группы"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Файл ключа содержит неподдерживаемую кодировку '%s'"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Файл ключей не имеет группы '%s'"
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Файл ключа не содержит ключ '%s'"
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "Файл ключа содержит ключ '%s', значение которого '%s' не в кодировке UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
+msgstr "Файл ключа содержит ключ '%s', значение которого не может быть интерпретировано."
 
 #: glib/gkeyfile.c:1976
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr ""
+msgstr "Файл ключа содержит ключ '%s' в группе '%s', значение которого не может быть интерпретировано."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Файл ключа не имеет ключа '%s' в группе '%s'"
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
+msgstr "Файл ключа содержит неверную escape-последовательность '%s'"
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Файл ключа содержит символ escape в конце файла"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Значение '%s'  не может быть интерпретировано как числовое."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Значение '%s'  не может быть интерпретировано как булево."
 
-#~ msgid "Incorrect message size"
-#~ msgstr "Размер сообщения не является правильным"
-
-#~ msgid "Socket error"
-#~ msgstr "Произошла ошибка сокета"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "Набор флагов канала не поддерживается"
