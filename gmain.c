@@ -544,9 +544,6 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  GThreadFunc func;
-  gpointer arg;
-  gpointer private_data;
   GMainContext *context;
 };
 

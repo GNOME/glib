@@ -53,15 +53,16 @@ G_LOCK_DEFINE_STATIC (unused_threads);
 static GMutex *inform_mutex = NULL;
 static GCond *inform_cond = NULL;
 
-static void g_thread_pool_free_internal (GRealThreadPool* pool);
-static void g_thread_pool_thread_proxy (gpointer data);
-static void g_thread_pool_start_thread (GRealThreadPool* pool, GError **error);
-static void g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool);
+static void     g_thread_pool_free_internal (GRealThreadPool* pool);
+static gpointer g_thread_pool_thread_proxy (gpointer data);
+static void     g_thread_pool_start_thread (GRealThreadPool* pool, 
+					    GError **error);
+static void     g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool);
 
 #define g_thread_should_run(pool, len) \
   ((pool)->running || (!(pool)->immediate && (len) > 0))
 
-static void 
+static gpointer 
 g_thread_pool_thread_proxy (gpointer data)
 {
   GRealThreadPool *pool = data;
@@ -174,7 +175,7 @@ g_thread_pool_thread_proxy (gpointer data)
 	      G_UNLOCK (unused_threads);
 	      g_async_queue_unlock (unused_queue);
 	      /* Stop this thread */
-	      return;      
+	      return NULL;      
 	    }
 	  unused_threads++;
 	  G_UNLOCK (unused_threads);
@@ -189,7 +190,7 @@ g_thread_pool_thread_proxy (gpointer data)
 	  
 	  if (pool == stop_this_thread_marker)
 	    /* Stop this thread */
-	    return;
+	    return NULL;
 	  
 	  g_async_queue_lock (pool->queue);
 
@@ -198,6 +199,7 @@ g_thread_pool_thread_proxy (gpointer data)
            * known to the pool, before itself can do it. */
 	}
     }
+  return NULL;
 }
 
 static void

@@ -123,7 +123,7 @@ timeout_callback (gpointer data)
   return TRUE;
 }
 
-void
+gpointer
 adder_thread (gpointer data)
 {
   GMainContext *context;
@@ -179,6 +179,8 @@ adder_thread (gpointer data)
   g_mutex_unlock (context_array_mutex);
 
   cleanup_crawlers (context);
+
+  return NULL;
 }
 
 void

@@ -74,10 +74,9 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  GThreadFunc func;
-  gpointer arg;
-  gpointer private_data;
   GMainContext *context;
+  gpointer private_data;
+  gpointer retval;
   GSystemThread system_thread;
 #ifdef G_THREAD_USE_PID_SURROGATE
   pid_t pid;
@@ -512,7 +511,7 @@ g_thread_fail (void)
   g_error ("The thread system is not yet initialized.");
 }
 
-static void 
+static gpointer
 g_thread_create_proxy (gpointer data)
 {
   GRealThread* thread = data;
@@ -527,7 +526,7 @@ g_thread_create_proxy (gpointer data)
   g_private_set (g_thread_specific_private, data);
 
   /* the lock makes sure, that thread->system_thread is written,
-     before thread->func is called. See g_thread_create. */
+     before thread->thread.func is called. See g_thread_create. */
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
  
@@ -536,7 +535,9 @@ g_thread_create_proxy (gpointer data)
     SET_PRIO (thread->pid, thread->thread.priority);
 #endif /* G_THREAD_USE_PID_SURROGATE */
 
-  thread->func (thread->arg);
+  thread->retval = thread->thread.func (thread->thread.arg);
+
+  return NULL;
 }
 
 GThread* 
@@ -557,8 +558,8 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->thread.joinable = joinable;
   result->thread.bound = bound;
   result->thread.priority = priority;
-  result->func = thread_func;
-  result->arg = arg;
+  result->thread.func = thread_func;
+  result->thread.arg = arg;
   result->private_data = NULL; 
   result->context = NULL;
   G_LOCK (g_thread);
@@ -578,17 +579,28 @@ g_thread_create (GThreadFunc 		 thread_func,
   return (GThread*) result;
 }
 
-void 
+void
+g_thread_exit (gpointer retval)
+{
+  GRealThread* real = (GRealThread*) g_thread_self ();
+  real->retval = retval;
+  G_THREAD_CF (thread_exit, (void)0, ());
+}
+
+gpointer
 g_thread_join (GThread* thread)
 {
   GRealThread* real = (GRealThread*) thread;
-  
+  gpointer retval;
 
-  g_return_if_fail (thread);
-  g_return_if_fail (thread->joinable);
-  g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
+  g_return_val_if_fail (thread, NULL);
+  g_return_val_if_fail (thread->joinable, NULL);
+  g_return_val_if_fail (!g_system_thread_equal (real->system_thread, 
+						zero_thread), NULL);
 
   G_THREAD_UF (thread_join, (&real->system_thread));
+
+  retval = real->retval;
 
   G_LOCK (g_thread);
   g_thread_all_threads = g_slist_remove (g_thread_all_threads, thread);
@@ -599,10 +611,12 @@ g_thread_join (GThread* thread)
   g_system_thread_assign (real->system_thread, zero_thread);
 
   /* the thread structure for non-joinable threads is freed upon
-     thread end. We free the memory here. This will leave loose end,
+     thread end. We free the memory here. This will leave a loose end,
      if a joinable thread is not joined. */
 
   g_free (thread);
+
+  return retval;
 }
 
 void
@@ -642,8 +656,8 @@ g_thread_self (void)
       thread->thread.bound = TRUE; /* This isn't important at all */
       thread->thread.priority = G_THREAD_PRIORITY_NORMAL; /* This is
 							     just a guess */
-      thread->func = NULL;
-      thread->arg = NULL;
+      thread->thread.func = NULL;
+      thread->thread.arg = NULL;
       thread->private_data = NULL;
       thread->context = NULL;
 

@@ -43,7 +43,7 @@ typedef enum
   G_THREAD_ERROR_AGAIN /* Resource temporarily unavailable */
 } GThreadError;
 
-typedef void            (*GThreadFunc)          (gpointer       value);
+typedef gpointer (*GThreadFunc) (gpointer value);
 
 typedef enum
 {
@@ -59,6 +59,8 @@ struct  _GThread
   gboolean joinable;
   gboolean bound;
   GThreadPriority priority;
+  GThreadFunc func;
+  gpointer arg;
 };
 
 typedef struct _GMutex          GMutex;
@@ -191,19 +193,20 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
                                                         (GPrivate*) (value)), \
                                                        (private_key, value))
 #define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
-#define g_thread_exit()               G_THREAD_CF (thread_exit, (void)0, ())
 
-GThread* g_thread_create (GThreadFunc            thread_func,
-                          gpointer               arg,
-                          gulong                 stack_size,
-                          gboolean               joinable,
-                          gboolean               bound,
-                          GThreadPriority        priority,
-                          GError               **error);
-GThread* g_thread_self (void);
-void g_thread_join (GThread *thread);
-void g_thread_set_priority (GThread         *thread,
-                            GThreadPriority  priority);
+GThread* g_thread_create       (GThreadFunc            thread_func,
+                                gpointer               arg,
+                                gulong                 stack_size,
+                                gboolean               joinable,
+                                gboolean               bound,
+                                GThreadPriority        priority,
+                                GError               **error);
+GThread* g_thread_self         (void);
+void     g_thread_exit         (gpointer               retval);
+gpointer g_thread_join         (GThread               *thread);
+
+void     g_thread_set_priority (GThread               *thread,
+                                GThreadPriority        priority);
 
 /* GStaticMutexes can be statically initialized with the value
  * G_STATIC_MUTEX_INIT, and then they can directly be used, that is

@@ -6,7 +6,7 @@ static GMutex* test_g_mutex_mutex = NULL;
 static guint test_g_mutex_int = 0;
 G_LOCK_DEFINE_STATIC (test_g_mutex);
 
-static void
+static gpointer
 test_g_mutex_thread (gpointer data)
 {
   g_assert (GPOINTER_TO_INT (data) == 42);
@@ -15,6 +15,8 @@ test_g_mutex_thread (gpointer data)
   g_mutex_lock (test_g_mutex_mutex);
   g_assert (test_g_mutex_int == 42);
   g_mutex_unlock (test_g_mutex_mutex);
+
+  return GINT_TO_POINTER (41);
 }
 
 static void
@@ -32,7 +34,7 @@ test_g_mutex (void)
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
   g_mutex_unlock (test_g_mutex_mutex);
-  g_thread_join (thread);
+  g_assert (GPOINTER_TO_INT (g_thread_join (thread)) == 41);
   g_mutex_free (test_g_mutex_mutex);
 }
 
@@ -41,7 +43,7 @@ test_g_mutex (void)
 static GStaticRecMutex test_g_static_rec_mutex_mutex = G_STATIC_REC_MUTEX_INIT;
 static guint test_g_static_rec_mutex_int = 0;
 
-static void
+static gpointer
 test_g_static_rec_mutex_thread (gpointer data)
 {
   g_assert (GPOINTER_TO_INT (data) == 42);
@@ -52,6 +54,11 @@ test_g_static_rec_mutex_thread (gpointer data)
   g_assert (test_g_static_rec_mutex_int == 42);
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
+
+  g_thread_exit (GINT_TO_POINTER (43));
+  
+  g_assert_not_reached ();
+  return NULL;
 }
 
 static void
@@ -74,7 +81,8 @@ test_g_static_rec_mutex (void)
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   test_g_static_rec_mutex_int = 0;  
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
-  g_thread_join (thread);
+
+  g_assert (GPOINTER_TO_INT (g_thread_join (thread)) == 43);
 }
 
 /* GStaticPrivate */
@@ -106,7 +114,7 @@ test_g_static_private_destructor (gpointer data)
 }
 
 
-static void
+static gpointer
 test_g_static_private_thread (gpointer data)
 {
   guint number = GPOINTER_TO_INT (data);
@@ -157,6 +165,8 @@ test_g_static_private_thread (gpointer data)
       g_usleep (G_USEC_PER_SEC / 5);
       g_assert (number * 2 == *private2);      
     }
+
+  return GINT_TO_POINTER (GPOINTER_TO_INT (data) * 3);
 }
 
 static void
@@ -186,9 +196,8 @@ test_g_static_private (void)
   test_g_static_private_ready = 0;
 
   for (i = 0; i < THREADS; i++)
-    {
-      g_thread_join (threads[i]);
-    }
+    g_assert (GPOINTER_TO_INT (g_thread_join (threads[i])) == i * 3);
+    
   g_assert (test_g_static_private_counter == 0); 
 }
 
@@ -201,7 +210,7 @@ G_LOCK_DEFINE (test_g_static_rw_lock_state);
 static gboolean test_g_static_rw_lock_run = TRUE; 
 static GStaticRWLock test_g_static_rw_lock_lock = G_STATIC_RW_LOCK_INIT;
 
-static void
+static gpointer
 test_g_static_rw_lock_thread (gpointer data)
 {
   while (test_g_static_rw_lock_run)
@@ -249,6 +258,7 @@ test_g_static_rw_lock_thread (gpointer data)
 	  g_static_rw_lock_writer_unlock (&test_g_static_rw_lock_lock);
 	}
     }
+  return NULL;
 }
 
 static void

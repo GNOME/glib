@@ -1,3 +1,17 @@
+2001-05-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmain.c, gthread.c, gthread.h: Moved func and arg members from
+	GRealThread to GThread, such that they can be accessed by the
+	user.
+
+	* gthread.c, gthread.h: Due to popular demand (Tim being the
+	populus here ;-) threads now have a 'return value', which is
+	returned by g_thread_join and is either the return of the topmost
+	thread function or the value given to g_thread_exit.
+	
+	* gthreadpool.c, tests/mainloop-test.c, test/thread-test.c:
+	Adapted to the above change.
+
 2001-01-06  Hans Breuer  <hans@breuer.org>
 
 	* glib.def : don't try to export g_strcpy, it is g_stpcpy;
