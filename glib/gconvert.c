@@ -1189,6 +1189,35 @@ g_locale_from_utf8 (const gchar *utf8string,
 #endif /* !G_PLATFORM_WIN32 */
 }
 
+#ifndef G_PLATFORM_WIN32
+static gboolean
+have_broken_filenames (void)
+{
+  static gboolean initialized = FALSE;
+  static gboolean broken;
+  
+  if (initialized)
+    return broken;
+
+  broken = (getenv ("G_BROKEN_FILENAMES") != NULL);
+  
+  initialized = TRUE;
+  
+  return broken;
+}
+#endif /* !G_PLATFORM_WIN32 */
+
+/* This is called from g_thread_init(). It's used to
+ * initialize some static data in a threadsafe way.
+ */
+void 
+g_convert_init (void)
+{
+#ifndef G_PLATFORM_WIN32
+  (void)have_broken_filenames ();
+#endif /* !G_PLATFORM_WIN32 */
+}
+
 /**
  * g_filename_to_utf8:
  * @opsysstring:   a string in the encoding for filenames
@@ -1225,7 +1254,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
 			   error);
 #else  /* !G_PLATFORM_WIN32 */
       
-  if (getenv ("G_BROKEN_FILENAMES"))
+  if (have_broken_filenames ())
     return g_locale_to_utf8 (opsysstring, len,
 			     bytes_read, bytes_written,
 			     error);
@@ -1268,7 +1297,7 @@ g_filename_from_utf8 (const gchar *utf8string,
 			     bytes_read, bytes_written,
 			     error);
 #else  /* !G_PLATFORM_WIN32 */
-  if (getenv ("G_BROKEN_FILENAMES"))
+  if (have_broken_filenames ())
     return g_locale_from_utf8 (utf8string, len,
 			       bytes_read, bytes_written,
 			       error);

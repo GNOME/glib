@@ -1,3 +1,12 @@
+2002-03-12  Alexander Larsson  <alla@lysator.liu.se>
+
+	* glib/gconvert.c:
+	Cache getenv("G_BROKEN_FILENAMES") in have_broken_filenames() and
+	use instead. Add g_convert_init() that calls have_broken_filenames()
+
+	* gthread/gthread-impl.c:
+	Have g_thread_init call g_convert_init.
+
 2002-03-11  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strtod): 

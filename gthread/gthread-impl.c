@@ -65,6 +65,7 @@ static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
 void g_mutex_init (void);
 void g_mem_init (void);
 void g_messages_init (void);
+void g_convert_init (void);
 
 #define G_MUTEX_DEBUG_INFO(mutex) (*((gpointer*)(((char*)mutex)+G_MUTEX_SIZE)))
 
@@ -379,6 +380,7 @@ g_thread_init (GThreadFunctions* init)
   g_mutex_init ();
   g_mem_init ();
   g_messages_init ();
+  g_convert_init ();
 
   /* now we can set g_threads_got_initialized and thus enable
    * all the thread functions
