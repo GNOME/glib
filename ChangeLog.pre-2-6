@@ -1,3 +1,8 @@
+Thu Sep 16 18:42:46 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/abicheck.sh: don't hardcode lengths for cut, instead split on
+	the third field.
+
 Thu Sep 16 18:15:32 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gstrfuncs.c (g_strncasecmp): Make it take a guint for number
