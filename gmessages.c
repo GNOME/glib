@@ -155,16 +155,16 @@ g_log_write_prefix (gint           fd,
                     GLogLevelFlags mask)
 {
   static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
-  static gboolean initted = FALSE;
+  static gboolean initialized = FALSE;
   
   g_mutex_lock (g_messages_lock);
 
-  if (!initted)
+  if (!initialized)
     {
       const gchar *val;
-      initted = TRUE;
+      initialized = TRUE;
 
-      val = g_getenv ("G_PREFIX_MESSAGES");
+      val = g_getenv ("G_MESSAGES_PREFIXED");
       
       if (val)
         {
