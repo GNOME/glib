@@ -1,0 +1,58 @@
+<chapter id="tools">
+  <title>GObject related tools</title>
+
+  <sect1 id="tools-refdb">
+    <title>Debugging reference count problems</title>
+    
+    <para>
+      The reference counting scheme used by GObject does solve quite 
+      a few memory management problems but also introduces new sources of bugs.
+      In large applications, finding the exact spot where a the reference count
+      of an Object is not properly handled can be very difficult. Hopefully, 
+      there exist at a too named <ulink url="http://refdbg.sf.net/">refdbg/</ulink>
+      which can be used to automate the task of tracking down the location
+      of invalid code with regard to reference counting. This application 
+      intercepts the reference counting calls and tries to detect invalid behavior. 
+      It suports a filter-rule mechanism to let you trace only the objects you are 
+      interested in and it can be used together with gdb.
+    </para>
+  </sect1>
+  
+  <sect1 id="tools-gtkdoc">
+    <title>Writing API docs</title>
+
+    <para>The API documentation for most of the Glib, GObject, GTK+ and GNOME
+    libraries is built with a combination of complex tools. Typically, the part of 
+    the documentation which describes the behavior of each function is extracted
+    from the specially-formatted source code comments by a tool named gtk-doc which
+    generates docbook xml and merges this docbook xml with a set of master xml 
+    docbook files. These xml docbook files are finally processed with xsltproc
+    (a small program part of the libxslt library) to generate the final html
+    output. Other tools can be used to generate pdf output from the source xml.
+    The following code excerpt shows what these comments look like.
+<programlisting>
+/**
+ * gtk_widget_freeze_child_notify:
+ * @widget: a #GtkWidget
+ * 
+ * Stops emission of "child-notify" signals on @widget. The signals are
+ * queued until gtk_widget_thaw_child_notify() is called on @widget. 
+ *
+ * This is the analogue of g_object_freeze_notify() for child properties.
+ **/
+void
+gtk_widget_freeze_child_notify (GtkWidget *widget)
+{
+...
+</programlisting>
+    </para>
+    <para>
+    The great thoroughful 
+    <ulink url="http://developer.gnome.org/arch/doc/authors.html">documentation</ulink> 
+    on how to setup and use gtk-doc in your
+    project is provided on the gnome developer website.
+    gtk-doc generates
+    </para>
+  </sect1>
+
+</chapter>
