@@ -1,3 +1,9 @@
+Mon May 13 11:55:33 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in acglib.m4: If sizeof(int) == sizeof(long)
+	run compilation tests to determine which way gsize should
+	be defined. (#74413, reported by Miroslaw Dobrzanski-Neumann)
+
 Mon May 13 11:42:23 2002  Owen Taylor  <otaylor@redhat.com>
  
         * glib/libcharset/*: Update from libcharset CVS.
