@@ -1,3 +1,11 @@
+2002-08-18  Havoc Pennington  <hp@pobox.com>
+
+	* autogen.sh: hardcode aclocal-1.4/automake-1.4 so that users with
+	both automake 1.6 and 1.4 installed get the right automake. Means
+	compilation from CVS will now require the latest automake 1.4
+	release, or manually creating symlinks called "automake-1.4" and
+	"aclocal-1.4"
+
 2002-08-10  Gustavo Noronha Silva  <kov@debian.org>
 
 	* configure.in: added pt_BR to ALL_LINGUAS
