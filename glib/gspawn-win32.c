@@ -39,8 +39,6 @@
  * The structure of the source code in this file is a mess, I know.
  */
 
-/* FIXME: Actually implement G_SPAWN_FILE_AND_ARGV_ZERO */
-
 /* Define this to get some logging all the time */
 /* #define G_SPAWN_WIN32_DEBUG */
 
@@ -670,9 +668,9 @@ do_spawn (gboolean              dont_wait,
 	g_print ("doing without gspawn-win32-helper\n");
 
       if (search_path)
-	rc = spawnvp (mode, argv[0], protected_argv);
+	rc = spawnvp (mode, argv[0], file_and_argv_zero ? protected_argv + 1 : protected_argv);
       else
-	rc = spawnv (mode, argv[0], protected_argv);
+	rc = spawnv (mode, argv[0], file_and_argv_zero ? protected_argv + 1 : protected_argv);
 
       for (i = 0; i < argc; i++)
 	g_free (protected_argv[i]);
@@ -694,6 +692,14 @@ do_spawn (gboolean              dont_wait,
   new_argv[0] = "gspawn-win32-helper";
   _g_sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_fd);
   new_argv[ARG_CHILD_ERR_REPORT] = args[ARG_CHILD_ERR_REPORT];
+
+  if (file_and_argv_zero)
+    {
+      /* Overload ARG_CHILD_ERR_REPORT to also encode the
+       * G_SPAWN_FILE_AND_ARGV_ZERO functionality.
+       */
+      strcat (args[ARG_CHILD_ERR_REPORT], "#");
+    }
 
   if (stdin_fd >= 0)
     {
