@@ -1,3 +1,8 @@
+2002-05-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/tmpl/threads.sgml: Clarify recursion issues with
+	GMutex. (#78171)
+
 2002-04-24  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-sections.txt: 
