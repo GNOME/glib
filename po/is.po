@@ -284,6 +284,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"Undarlegt tákn '%s', átti von á tilvísunarmerki eftir samasem merkinu þegar "
+"gildi er gefið með eiginleikanum '%s' af menginu '%s'"
 
 #: glib/gmarkup.c:1414
 #, c-format
@@ -291,6 +293,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
+"'%s' er ekki gilt tákn strax á eftir '</'; '%s' má ekki vera fyrsta tákn "
+"í heiti mengis"
 
 #: glib/gmarkup.c:1452
 #, c-format
@@ -298,24 +302,26 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
+"'%s' er ekki gilt tákn strax á eftir lokun mengis '%s'. Leyfilegt tákn "
+"er '>'"
 
 #: glib/gmarkup.c:1463
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
+msgstr "Mengið '%s' var lokað og engin önnur mengi eru opin"
 
 #: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
+msgstr "Mengið '%s' var lokað en mengið sem nú er opið er '%s'"
 
 #: glib/gmarkup.c:1619
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "Skjalið var tómt eða innihélt einungis orðabil"
 
 #: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Skjalið endar óvænt rétt eftir opið minna en merki '<'"
 
 #: glib/gmarkup.c:1641 glib/gmarkup.c:1685
 #, c-format
@@ -323,6 +329,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"Skjalið endar óvænt með mengi sem enn eru opin. '%s' var mengið sem síðast "
+"var opnað"
 
 #: glib/gmarkup.c:1649
 #, c-format
@@ -330,45 +338,49 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
+"Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu "
+"<%s/>"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Skjalið endar óvænt inn í heiti mengis"
 
 #: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Skjalið endar óvænt inn í heiti eiginleika"
 
 #: glib/gmarkup.c:1665
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "Skjalið endar óvænt inn í tagi sem opnar mengi."
 
 #: glib/gmarkup.c:1671
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og "
+"það er ekkert gildi"
 
 #: glib/gmarkup.c:1678
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Skjalið endar óvænt inn í gildi eiginleika"
 
 #: glib/gmarkup.c:1693
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "Skjalið endar óvænt inni í lokunartagi fyrir mengið '%s'"
 
 #: glib/gmarkup.c:1699
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "Skjalið endar óvænt inni í athugasemd eða í miðri skipun"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "Tilvísunin byrjar ekki á spurningarmerki"
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Tilvísunarmerki stemma ekki í skipanalínunni eða öðrum texta"
 
 #: glib/gshell.c:530
 #, c-format
@@ -393,7 +405,7 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Óvæn villa í g_io_channel_win32_poll() við lestur úr undirferli"
+"Óvænt villa í g_io_channel_win32_poll() við lestur úr undirferli"
 
 #: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
