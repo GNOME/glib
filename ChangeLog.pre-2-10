@@ -1,3 +1,11 @@
+2003-01-02  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.h: Correct the comment telling what headers have
+	the declarations of some POSIXish functions.
+
+	* glib/giowin32.c (g_io_win32_fd_get_flags_internal): Fix braino:
+	The checks for readability/writeability were backwards.
+
 2003-01-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gmessages.c (ensure_stderr_valid): New function, parallel
