@@ -1,3 +1,9 @@
+2004-06-09  Federico Mena Quintero  <federico@ximian.com>
+
+	* tests/uri-test.c (to_uri_tests): Fix expected results (ha ha)
+	for URIs that *should* have been invalid, or viceversa.
+	(from_uri_tests): Likewise.
+
 2004-06-07  Federico Mena Quintero  <federico@ximian.com>
 
 	Fixes #140532.
