@@ -350,6 +350,7 @@ g_closure_unref (GClosure *closure)
   if (closure->ref_count == 0)
     {
       closure_invoke_notifiers (closure, FNOTIFY);
+      g_free (closure->notifiers);
       g_free (closure);
     }
 }

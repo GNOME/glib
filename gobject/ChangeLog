@@ -1,3 +1,8 @@
+2001-01-24    <alexl@redhat.com>
+
+	* gclosure.c (g_closure_unref):
+	Don't leak closure->notifiers.
+
 2001-01-05  Havoc Pennington  <hp@redhat.com>
 
 	* gparamspecs.c (g_param_spec_enum): set the value_type in the
