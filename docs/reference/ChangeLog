@@ -1,3 +1,10 @@
+2001-09-17  Darin Adler  <darin@bentspoon.com>
+
+	* glib/tmpl/string_utils.sgml: Fix a typo and change
+	documentation for g_ascii_isdigit and g_ascii_isxdigit
+	to reflect the fact that the standard isdigit and
+	isxdigit are already locale-independent.
+
 Wed Sep  5 05:24:07 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/gboxed.sgml: documented some functions.

@@ -238,7 +238,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII alphanumeric character
 
 
@@ -255,7 +255,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII alphabetic character
 
 
@@ -272,7 +272,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII control character.
 
 
@@ -281,15 +281,13 @@ non-ASCII character in.
 Determines whether a character is digit (0-9).
 </para>
 <para>
-Unlike the standard C library isdigit function, this only
-recognizes standard ASCII digits and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
+Unlike the standard C library isdigit function,
+this takes a char, not an int, so don't call it
 on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII digit.
 
 
@@ -306,7 +304,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII printing character other than space.
 
 
@@ -323,7 +321,7 @@ on EOF but no need to worry about casting to guchar before passing
 a possibly non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII lower case letter
 
 
@@ -340,7 +338,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII printing character.
 
 
@@ -357,7 +355,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII punctuation character.
 
 
@@ -374,7 +372,7 @@ on EOF but no need to cast to guchar before passing a possibly
 non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII white-space character
 
 
@@ -391,7 +389,7 @@ on EOF but no need to worry about casting to guchar before passing
 a possibly non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII upper case letter
 
 
@@ -400,15 +398,13 @@ a possibly non-ASCII character in.
 Determines whether a character is a hexadecimal-digit character.
 </para>
 <para>
-Unlike the standard C library isxdigit function, this only
-recognizes standard ASCII hexadecimal digits and ignores the
-locale, returning %FALSE for all non-ASCII characters. Also unlike
-the standard library function, this takes a char, not an int, so
+Unlike the standard C library isxdigit function,
+this takes a char, not an int, so
 don't call it on EOF but no need to cast to guchar before passing a
 possibly non-ASCII character in.
 </para>
 
-@c: any characted
+@c: any character
 @Returns: %TRUE if @c is an ASCII hexadecimal-digit character.
 
 
