@@ -1,3 +1,9 @@
+2001-12-23  Matthias Clasen  <matthias@poet.de>
+
+	* glib/tmpl/main.sgml, glib/tmpl/string_utils.sgml,
+	glib/tmpl/strings.sgml: Replace references to deprecated
+	functions.
+
 2001-12-21  Matthias Clasen  <matthias@poet.de>
 
 	* glib/glib-sections.txt: Move g_get_charset() to the

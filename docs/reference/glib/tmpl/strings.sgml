@@ -125,7 +125,7 @@ documentation.
 <!-- ##### FUNCTION g_string_append_printf ##### -->
 <para>
 Appends a formatted string onto the end of a #GString.
-This function is is similar to g_string_sprintf() except that
+This function is is similar to g_string_printf() except that
 the text is appended to the #GString.
 </para>
 

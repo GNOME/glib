@@ -755,7 +755,7 @@ character compressed.
 For each character in @string, if the character is not in @valid_chars,
 replaces the character with @substitutor. Modifies @string in place, 
 and return @string itself, not a copy. The return value is to allow
-nesting such as <literal>g_strup (g_strcanon (str))</literal>.
+nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 </para>
 
 @string: a nul-terminated array of bytes.

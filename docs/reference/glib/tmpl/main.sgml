@@ -33,10 +33,10 @@ manages all available sources of events.
   <para>
     The #GMainLoop data type represents a main event loop.  A #GMainLoop
     is created with g_main_loop_new(). After adding the initial event sources,
-    g_main_run() is called. This continuously checks for new events from
+    g_main_loop_run() is called. This continuously checks for new events from
     each of the event sources and dispatches them.  Finally, the
     processing of an event from one of the sources leads to a call to
-    g_main_quit() to exit the main loop, and g_main_run() returns.
+    g_main_loop_quit() to exit the main loop, and g_main_loop_run() returns.
   </para>
   <para>
     It is possible to create new instances of #GMainLoop recursively.
