@@ -1,3 +1,9 @@
+Sun Jul 23 17:23:35 2000  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: make g_type_fundamental_last() a function, avoiding all
+	that extern variable clutter and avoiding further problems with thread
+	safety.
+
 2000-07-19  Tor Lillqvist  <tml@iki.fi>
 
 	* gparam.h

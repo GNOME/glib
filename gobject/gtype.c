@@ -162,8 +162,8 @@ static ClassCacheFunc *class_cache_funcs = NULL;
 
 
 /* --- externs --- */
-const char *g_log_domain_gobject = "GLib-Object";
-GOBJECT_VAR GType _g_type_fundamental_last = 0;
+const char  *g_log_domain_gobject = "GLib-Object";
+static GType last_fundamental_id = 0;
 
 
 /* --- type nodes --- */
@@ -177,7 +177,7 @@ LOOKUP_TYPE_NODE (register GType utype)
   register GType ftype = G_TYPE_FUNDAMENTAL (utype);
   register GType b_seqno = G_TYPE_BRANCH_SEQNO (utype);
 
-  if (ftype < G_TYPE_FUNDAMENTAL_LAST && b_seqno < g_branch_seqnos[ftype])
+  if (ftype < last_fundamental_id && b_seqno < g_branch_seqnos[ftype])
     return g_type_nodes[ftype][b_seqno];
   else
     return NULL;
@@ -286,18 +286,18 @@ type_node_fundamental_new (GType        ftype,
 {
   GTypeFundamentalInfo *finfo;
   TypeNode *node;
-  guint i, flast = G_TYPE_FUNDAMENTAL_LAST;
+  guint i, flast = last_fundamental_id;
   
   g_assert (ftype == G_TYPE_FUNDAMENTAL (ftype));
   
   type_flags &= G_TYPE_FLAG_MASK;
 
-  _g_type_fundamental_last = MAX (_g_type_fundamental_last, ftype + 1);
-  if (G_TYPE_FUNDAMENTAL_LAST > flast)
+  last_fundamental_id = MAX (last_fundamental_id, ftype + 1);
+  if (last_fundamental_id > flast)
     {
-      g_type_nodes = g_renew (TypeNode**, g_type_nodes, G_TYPE_FUNDAMENTAL_LAST);
-      g_branch_seqnos = g_renew (GType, g_branch_seqnos, G_TYPE_FUNDAMENTAL_LAST);
-      for (i = flast; i < G_TYPE_FUNDAMENTAL_LAST; i++)
+      g_type_nodes = g_renew (TypeNode**, g_type_nodes, last_fundamental_id);
+      g_branch_seqnos = g_renew (GType, g_branch_seqnos, last_fundamental_id);
+      for (i = flast; i < last_fundamental_id; i++)
 	{
 	  g_type_nodes[i] = NULL;
 	  g_branch_seqnos[i] = 0;
@@ -1688,7 +1688,7 @@ g_type_fundamental_branch_last (GType type)
 {
   GType ftype = G_TYPE_FUNDAMENTAL (type);
 
-  return ftype < G_TYPE_FUNDAMENTAL_LAST ? g_branch_seqnos[ftype] : 0;
+  return ftype < last_fundamental_id ? g_branch_seqnos[ftype] : 0;
 }
 
 GType* /* free result */
@@ -1863,6 +1863,12 @@ g_type_get_plugin (GType type)
   return node ? node->plugin : NULL;
 }
 
+GType
+g_type_fundamental_last (void)
+{
+  return last_fundamental_id;
+}
+
 gboolean
 g_type_instance_conforms_to (GTypeInstance *type_instance,
 			     GType          iface_type)
@@ -1958,7 +1964,7 @@ g_type_init (void)
   TypeNode *node;
   GType type;
 
-  if (G_TYPE_FUNDAMENTAL_LAST)
+  if (last_fundamental_id)
     return;
 
   /* type qname hash table */
@@ -1966,10 +1972,10 @@ g_type_init (void)
 
   /* invalid type G_TYPE_INVALID (0)
    */
-  _g_type_fundamental_last = 1;
-  g_type_nodes = g_renew (TypeNode**, g_type_nodes, G_TYPE_FUNDAMENTAL_LAST);
+  last_fundamental_id = 1;
+  g_type_nodes = g_renew (TypeNode**, g_type_nodes, last_fundamental_id);
   g_type_nodes[0] = &type0_node;
-  g_branch_seqnos = g_renew (GType, g_branch_seqnos, G_TYPE_FUNDAMENTAL_LAST);
+  g_branch_seqnos = g_renew (GType, g_branch_seqnos, last_fundamental_id);
   g_branch_seqnos[0] = 1;
 
   /* void type G_TYPE_NONE

@@ -34,7 +34,7 @@ extern "C" {
 #define	G_TYPE_FUNDAMENTAL_MAX			(0xff)
 #define G_TYPE_DERIVE_ID(ptype, branch_seqno)   (G_TYPE_FUNDAMENTAL (ptype) | ((branch_seqno) << 8))
 #define G_TYPE_BRANCH_SEQNO(type)               ((type) >> 8)
-#define G_TYPE_FUNDAMENTAL_LAST                 ((GType) _g_type_fundamental_last)
+#define G_TYPE_FUNDAMENTAL_LAST                 ((GType) g_type_fundamental_last ())
 
 
 /* predefined fundamental and derived types
@@ -317,6 +317,7 @@ void		 g_type_remove_class_cache_func (gpointer	     cache_data,
 						 GTypeClassCacheFunc cache_func);
 void             g_type_class_unref_uncached    (gpointer            g_class);
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
+GType		 g_type_fundamental_last	(void);
 
 
 #ifndef G_DISABLE_CAST_CHECKS
@@ -331,18 +332,6 @@ GTypePlugin*	 g_type_get_plugin		(GType		     type);
 #define _G_TYPE_IGC(ip, ct)             ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_CIT(ip, gt)             (g_type_instance_conforms_to ((GTypeInstance*) ip, gt))
 #define _G_TYPE_CCT(cp, gt)             (g_type_class_is_a ((GTypeClass*) cp, gt))
-
-#ifdef G_OS_WIN32
-#  ifdef GOBJECT_COMPILATION
-#    define GOBJECT_VAR __declspec(dllexport)
-#  else /* !GOBJECT_COMPILATION */
-#    define GOBJECT_VAR extern __declspec(dllimport)
-#  endif /* !GOBJECT_COMPILATION */
-#else /* !G_OS_WIN32 */
-#  define GOBJECT_VAR extern
-#endif /* !G_OS_WIN32 */
-
-GOBJECT_VAR GType    _g_type_fundamental_last;
 
 #ifdef __cplusplus
 }
