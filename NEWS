@@ -1,5 +1,11 @@
+Overview of Changes in GLib 1.2.8:
+
+* GArray zero initialization bug fixed
+* Fix for upper bound calculation of formatted strings
+* Improved GCC detection
 * AIX dynamic modules fix to retrive symbols from shared libraries
   for the main program.
+* Miscellaneous other minor bug fixes
 
 Overview of Changes in GLib 1.2.7:
 
