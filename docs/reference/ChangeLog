@@ -1,7 +1,11 @@
+Tue Mar  9 09:16:11 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.6 ===
+
 Mon Mar  8 08:32:36 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/main.sgml: Reference g_source_set_callback(),
-	not g_source_attach(). (Takeshi AIHANA )
+	not g_source_attach(). (Takeshi AIHANA)
 
 2004-02-29  Sebastian Wilhelmi  <seppi@seppi.de>
 

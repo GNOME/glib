@@ -1,4 +1,15 @@
-Overview of Changes from GLib 2.3.3 to GLib 2.3.4
+Overview of Changes from GLib 2.3.5 to GLib 2.3.6
+=================================================
+
+* GAtomic bug fixes [Sebastian Wilhelmi, Mark McLoughlin]
+* GMain threading fixes and improvements [Sebastian]
+* Win32 [Tor Lillqvist]
+ - restore some symbols extraneously exported from gobject to maintain ABI compatibility
+ - Misc build improvements and fixes [Tor, Cedric Gustin, Hans Breuer]
+* Documentation updates [Sebastian, Takeshi AIHANA, Matthias, Sven Herzberg]
+* New and updated translations (be,es,fi,ga,pa,sr@ije,zh_CN)
+
+Overview of Changes from GLib 2.3.3 to GLib 2.3.5
 =================================================
 
 * Make glib-mkenums parse initializers with macros. [Matthias Clasen, muppet]
