@@ -1,3 +1,7 @@
+2001-03-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in (FLAG_DOES_NOT_WORK): Fix typo and thus bug #51862.
+
 Wed Mar  7 09:32:06 2001  Tim Janik  <timj@gtk.org>
 
 	* glib-object.h: add gvaluearray.h.

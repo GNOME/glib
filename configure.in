@@ -794,7 +794,7 @@ THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
                 computer. GLib will not have a default thread implementation."
 
 FLAG_DOES_NOT_WORK="I can't find the MACRO to enable thread safety on your
-                platform (normaly it's "_REENTRANT"). I'll not use any flag on
+                platform (normally it's "_REENTRANT"). I'll not use any flag on
                 compilation now, but then your programs might not work.
                 Please provide information on how it is done on your system."
 
