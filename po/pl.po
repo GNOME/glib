@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-21 01:30+0100\n"
-"PO-Revision-Date: 2002-01-21 01:30+0100\n"
+"POT-Creation-Date: 2002-01-28 22:59+0100\n"
+"PO-Revision-Date: 2002-01-28 23:00+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,6 +188,8 @@ msgstr "B³±d w wierszu %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
+"Napotkano pust± jednostkê \"&;\"; poprawnymi jednostkami s±: &amp; &quot; "
+"&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -200,18 +202,20 @@ msgstr ""
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr ""
+msgstr "Znak \"%s\" nie jest dopuszczalny wewn±trz nazwy jednostki"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr ""
+msgstr "Nazwa jednostki \"%s\" nie jest znana"
 
 #: glib/gmarkup.c:1
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"Jednostka nie jest zakoñczona ¶rednikiem; najprawdopodobniej zosta³ u¿yty "
+"znak &, który nie mia³ oznaczaæ jednostki - nale¿y go zapisaæ jako &amp;"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -250,6 +254,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
+"Znak \"%s\" nie powinien wystêpowaæ po znaku \"<\"; nie mo¿e on rozpoczynaæ "
+"nazwy elementu"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -257,12 +263,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
+"Niespodziewany znak \"%s\"; oczekiwano znaku \">\", koñcz±cego pocz±tkowy "
+"znacznik elementu \"%s\""
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
+"Niespodziewany znak \"%s\"; po nazwie atrybutu \"%s\" elementu \"%s\" "
+"oczekiwano znaku \"=\""
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -271,6 +281,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"Niespodziewany znak \"%s\"; oczekiwano znaku \">\" lub \"/\", koñcz±cego "
+"znacznik pocz±tkowy elementu \"%s\" lub opcjonalnie atrybutu; byæ mo¿e w "
+"nazwie atrybutu zosta³ u¿yty niepoprawny znak"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -278,6 +291,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"Niespodziewany znak \"%s\"; oczekiwano otwieraj±cego znaku cudzys³owu po "
+"znaku równo¶ci przy podawaniu warto¶ci atrybutu \"%s\" elementu \"%s\""
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -285,6 +300,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
+"Znak \"%s\" nie jest znakiem, który mo¿e pojawiæ siê po sekwencji \"</\"; "
+"\"%s\" nie mo¿e rozpoczynaæ nazwy elementu"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -305,6 +322,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
+"Znak \"%s\" nie jest znakiem, który mo¿e wyst±piæ po domykaj±cej nazwie "
+"elementu \"%s\"; dopuszczalnym znakiem jest \">\""
 
 #: glib/gmarkup.c:1
 msgid "Document was empty or contained only whitespace"
@@ -312,7 +331,7 @@ msgstr "Dokument jest pusty lub zawiera tylko separatory"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Zaraz po znaku \"%s\" nast±pi³ nieoczekiwany koniec dokumentu"
 
 #: glib/gmarkup.c:1 glib/gmarkup.c:1
 #, c-format
@@ -320,6 +339,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"Nast±pi³ nieoczekiwany koniec dokumentu, gdy pewne elementy s± wci±¿ otwarte "
+"- \"%s\" by³ ostatnim otwartym elementem"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -330,34 +351,42 @@ msgstr ""
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz nazwy elementu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz nazwy atrybutu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
+"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz znacznika otwieraj±cego "
+"element."
 
 #: glib/gmarkup.c:1
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"Nast±pi³ nieoczekiwany koniec dokumentu po znaku równo¶ci wystêpuj±cym po "
+"nazwie atrybutu; brak warto¶ci atrybutu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz warto¶ci atrybutu"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
+"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz znacznika domykaj±cego "
+"elementu \"%s\""
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
+"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz komentarza lub instrukcji "
+"przetwarzania"
 
 #: glib/gshell.c:1
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -371,6 +400,7 @@ msgstr ""
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr ""
+"Tekst zakoñczy³ siê bezpo¶rednio po znaku \" (warto¶ci± tekstu by³o \"%s\")."
 
 #: glib/gshell.c:1
 #, c-format
