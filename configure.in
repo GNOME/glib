@@ -1512,7 +1512,7 @@ dnl ***********************
 dnl *** Tests for iconv ***
 dnl ***********************
 
-AC_ARG_WITH(libiconv, [ --with-libiconv     Use the libiconv library ],,with_libiconv=maybe)
+AC_ARG_WITH(libiconv, [ --with-libiconv          use the libiconv library ],,with_libiconv=maybe)
 
 found_iconv=no
 

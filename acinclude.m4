@@ -20,111 +20,102 @@
 # serial 5
 
 AC_DEFUN(AM_GLIB_WITH_NLS,
-  [AC_MSG_CHECKING([whether NLS is requested])
-    dnl Default is enabled NLS
-    AC_ARG_ENABLE(nls,
-      [  --disable-nls           do not use Native Language Support],
-      USE_NLS=$enableval, USE_NLS=yes)
-    AC_MSG_RESULT($USE_NLS)
+  dnl NLS is obligatory
+  [USE_NLS=yes
     AC_SUBST(USE_NLS)
 
-    USE_INCLUDED_LIBINTL=no
+    dnl Figure out what method
+    nls_cv_force_use_gnu_gettext="no"
 
-    dnl If we use NLS figure out what method
-    if test "$USE_NLS" = "yes"; then
-      nls_cv_force_use_gnu_gettext="no"
+    nls_cv_use_gnu_gettext="$nls_cv_force_use_gnu_gettext"
+    if test "$nls_cv_force_use_gnu_gettext" != "yes"; then
+      dnl User does not insist on using GNU NLS library.  Figure out what
+      dnl to use.  If gettext or catgets are available (in this order) we
+      dnl use this.  Else we have to fall back to GNU NLS library.
+      dnl catgets is only used if permitted by option --with-catgets.
+      nls_cv_header_intl=
+      nls_cv_header_libgt=
+      CATOBJEXT=NONE
 
-      nls_cv_use_gnu_gettext="$nls_cv_force_use_gnu_gettext"
-      if test "$nls_cv_force_use_gnu_gettext" != "yes"; then
-        dnl User does not insist on using GNU NLS library.  Figure out what
-        dnl to use.  If gettext or catgets are available (in this order) we
-        dnl use this.  Else we have to fall back to GNU NLS library.
-	dnl catgets is only used if permitted by option --with-catgets.
-	nls_cv_header_intl=
-	nls_cv_header_libgt=
-	CATOBJEXT=NONE
+      AC_CHECK_HEADER(libintl.h,
+        [AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
+	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgettext ("","")],
+	    gt_cv_func_dgettext_libc=yes, gt_cv_func_dgettext_libc=no)])
 
-	AC_CHECK_HEADER(libintl.h,
-	  [AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
-	    [AC_TRY_LINK([#include <libintl.h>], [return (int) dgettext ("","")],
-	       gt_cv_func_dgettext_libc=yes, gt_cv_func_dgettext_libc=no)])
-
-	   if test "$gt_cv_func_dgettext_libc" != "yes"; then
-	     AC_CHECK_LIB(intl, bindtextdomain,
-	       [AC_CACHE_CHECK([for dgettext in libintl],
-		 gt_cv_func_dgettext_libintl,
-		 [AC_CHECK_LIB(intl, dgettext,
+	  if test "$gt_cv_func_dgettext_libc" != "yes"; then
+	    AC_CHECK_LIB(intl, bindtextdomain,
+	      [AC_CACHE_CHECK([for dgettext in libintl],
+	        gt_cv_func_dgettext_libintl,
+	        [AC_CHECK_LIB(intl, dgettext,
 		  gt_cv_func_dgettext_libintl=yes,
 		  gt_cv_func_dgettext_libintl=no)],
-		 gt_cv_func_dgettext_libintl=no)])
-	   fi
+	        gt_cv_func_dgettext_libintl=no)])
+	  fi
 
-           if test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	     LIBS="$LIBS -lintl";
-           fi
+          if test "$gt_cv_func_dgettext_libintl" = "yes"; then
+	    LIBS="$LIBS -lintl";
+          fi
 
-	   if test "$gt_cv_func_dgettext_libc" = "yes" \
-	      || test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	      AC_DEFINE(HAVE_GETTEXT)
-	      AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
-		[test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], no)dnl
-	      if test "$MSGFMT" != "no"; then
-		AC_CHECK_FUNCS(dcgettext)
-		AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
-		AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
-		  [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
-		AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
-			       return _nl_msg_cat_cntr],
-		  [CATOBJEXT=.gmo
-		   DATADIRNAME=share],
-		  [CATOBJEXT=.mo
-		   DATADIRNAME=lib])
-		INSTOBJEXT=.mo
-	      fi
+	  if test "$gt_cv_func_dgettext_libc" = "yes" \
+	    || test "$gt_cv_func_dgettext_libintl" = "yes"; then
+	    AC_DEFINE(HAVE_GETTEXT)
+	    AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
+ 	      [test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], no)dnl
+	    if test "$MSGFMT" != "no"; then
+	      AC_CHECK_FUNCS(dcgettext)
+	      AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
+	      AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
+	        [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
+	      AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
+		 	     return _nl_msg_cat_cntr],
+	        [CATOBJEXT=.gmo
+	         DATADIRNAME=share],
+	        [CATOBJEXT=.mo
+	         DATADIRNAME=lib])
+	      INSTOBJEXT=.mo
 	    fi
+	  fi
 
-	    # Added by Martin Baulig 12/15/98 for libc5 systems
-	    if test "$gt_cv_func_dgettext_libc" != "yes" \
-	       && test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	       INTLLIBS=-lintl
-	       LIBS=`echo $LIBS | sed -e 's/-lintl//'`
-	    fi
-	])
+	  # Added by Martin Baulig 12/15/98 for libc5 systems
+	  if test "$gt_cv_func_dgettext_libc" != "yes" \
+	    && test "$gt_cv_func_dgettext_libintl" = "yes"; then
+	    INTLLIBS=-lintl
+	    LIBS=`echo $LIBS | sed -e 's/-lintl//'`
+	  fi
+      ])
 
-        if test "$CATOBJEXT" = "NONE"; then
-	  dnl Neither gettext nor catgets in included in the C library.
-	  dnl Fall back on GNU gettext library.
-	  nls_cv_use_gnu_gettext=yes
-        fi
+      if test "$CATOBJEXT" = "NONE"; then
+        dnl Neither gettext nor catgets in included in the C library.
+        dnl Fall back on GNU gettext library.
+        nls_cv_use_gnu_gettext=yes
       fi
-
-      if test "$nls_cv_use_gnu_gettext" != "yes"; then
-        AC_DEFINE(ENABLE_NLS)
-      else
-         dnl Unset this variable since we use the non-zero value as a flag.
-         CATOBJEXT=
-      fi
-
-      dnl Test whether we really found GNU xgettext.
-      if test "$XGETTEXT" != ":"; then
-	dnl If it is no GNU xgettext we define it as : so that the
-	dnl Makefiles still can work.
-	if $XGETTEXT --omit-header /dev/null 2> /dev/null; then
-	  : ;
-	else
-	  AC_MSG_RESULT(
-	    [found xgettext program is not GNU xgettext; ignore it])
-	  XGETTEXT=":"
-	fi
-      fi
-
-      # We need to process the po/ directory.
-      POSUB=po
-    else
-      DATADIRNAME=share
     fi
+
+    if test "$nls_cv_use_gnu_gettext" != "yes"; then
+      AC_DEFINE(ENABLE_NLS)
+    else
+      dnl Unset this variable since we use the non-zero value as a flag.
+      CATOBJEXT=
+    fi
+
+    dnl Test whether we really found GNU xgettext.
+    if test "$XGETTEXT" != ":"; then
+      dnl If it is no GNU xgettext we define it as : so that the
+      dnl Makefiles still can work.
+      if $XGETTEXT --omit-header /dev/null 2> /dev/null; then
+        : ;
+      else
+        AC_MSG_RESULT(
+	  [found xgettext program is not GNU xgettext; ignore it])
+        XGETTEXT=":"
+      fi
+    fi
+
+    # We need to process the po/ directory.
+    POSUB=po
+
     AC_OUTPUT_COMMANDS(
-     [case "$CONFIG_FILES" in *po/Makefile.in*)
+      [case "$CONFIG_FILES" in *po/Makefile.in*)
         sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile
       esac])
 
@@ -137,7 +128,6 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
     done
 
     dnl Make all variables we use known to autoconf.
-    AC_SUBST(USE_INCLUDED_LIBINTL)
     AC_SUBST(CATALOGS)
     AC_SUBST(CATOBJEXT)
     AC_SUBST(DATADIRNAME)
@@ -234,6 +224,7 @@ strdup __argz_count __argz_stringify __argz_next])
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
   ])
+
 
 dnl @synopsis AC_FUNC_VSNPRINTF_C99
 dnl
