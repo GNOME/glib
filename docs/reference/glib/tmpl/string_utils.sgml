@@ -32,7 +32,7 @@ The returned string should be freed when no longer needed.
 </para>
 
 @str: the string to duplicate.
-@Returns: a newly-allocated copy of @str. 
+@Returns: a newly-allocated copy of @str.
 
 
 <!-- ##### FUNCTION g_strndup ##### -->
@@ -272,6 +272,17 @@ returns the length of the allocated string.
 
 @string: 
 @n: 
+@format: 
+@args: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_vasprintf ##### -->
+<para>
+
+</para>
+
+@string: 
 @format: 
 @args: 
 @Returns: 
@@ -797,10 +808,10 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 
 <!-- ##### FUNCTION g_strfreev ##### -->
 <para>
-Frees a %NULL-terminated array of strings, and the array itself.
+
 </para>
 
-@str_array: a %NULL-terminated array of strings to free.
+@str_array:
 
 
 <!-- ##### FUNCTION g_strconcat ##### -->

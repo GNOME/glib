@@ -1,3 +1,7 @@
+2003-07-02  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Move g_strfreev() docs inline.
+
 2003-06-19  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/misc_utils.sgml: Move g_path_get_basename() docs inline.

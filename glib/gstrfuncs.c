@@ -2170,6 +2170,13 @@ g_strsplit (const gchar *string,
   return str_array;
 }
 
+/**
+ * g_strfreev:
+ * @str_array: a %NULL-terminated array of strings to free.
+
+ * Frees a %NULL-terminated array of strings, and the array itself.
+ * If called on a %NULL value, g_strfreev() simply returns. 
+ **/
 void
 g_strfreev (gchar **str_array)
 {

@@ -1,3 +1,8 @@
+2003-07-02  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strfreev): Move docs inline, document behavior 
+	for NULL. (#116439, Steve Chaplin)
+
 2003-06-25  Abigail Brady  <morwen@evilmagic.org>
  
  	* glib/gconvert.c (g_convert_with_fallback): Use C99 style \uxxxx
