@@ -1214,6 +1214,7 @@ g_list_insert_sorted
 g_list_remove
 g_list_remove_link
 g_list_delete_link
+g_list_remove_all
 g_list_free
 
 <SUBSECTION>
@@ -1238,6 +1239,7 @@ g_list_previous
 g_list_next
 g_list_nth
 g_list_nth_data
+g_list_nth_prev
 
 <SUBSECTION>
 g_list_find
@@ -1265,6 +1267,7 @@ g_slist_insert_sorted
 g_slist_remove
 g_slist_remove_link
 g_slist_delete_link
+g_slist_remove_all
 g_slist_free
 g_slist_free_1
 
@@ -1330,16 +1333,20 @@ g_trash_stack_height
 <FILE>hash_tables</FILE>
 GHashTable
 g_hash_table_new
+g_hash_table_new_full
 GHashFunc
 GEqualFunc
 g_hash_table_insert
+g_hash_table_replace
 g_hash_table_size
 g_hash_table_lookup
 g_hash_table_lookup_extended
 g_hash_table_foreach
 GHFunc
 g_hash_table_remove
+g_hash_table_steal
 g_hash_table_foreach_remove
+g_hash_table_foreach_steal
 GHRFunc
 g_hash_table_freeze
 g_hash_table_thaw
@@ -1462,15 +1469,21 @@ g_byte_array_free
 GTree
 g_tree_new
 g_tree_new_with_data
+g_tree_new_full
+GCompareDataFunc
 g_tree_insert
+g_tree_replace
 g_tree_nnodes
 g_tree_height
 g_tree_lookup
-g_tree_search
+g_tree_lookup_extended
+g_tree_foreach
 g_tree_traverse
 GTraverseFunc
 GTraverseType
+g_tree_search
 g_tree_remove
+g_tree_steal
 g_tree_destroy
 </SECTION>
 

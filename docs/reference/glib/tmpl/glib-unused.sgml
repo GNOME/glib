@@ -175,21 +175,6 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
-<!-- ##### FUNCTION g_tree_lookup_extended ##### -->
-<para>
-Gets the original key and the associated value and a gboolean which is 
-TRUE if the key was found. This is useful if you need to free the memory 
-allocated for the original key, for example before calling g_tree_remove().
-Since a #GTree is automatically balanced as key/value pairs are added, 
-key lookup is very fast.
-</para>
-
-@tree: a #GTree.
-@lookup_key: the key to look up.
-@orig_key: returns the original key.
-@value: returns the value associated with the key.
-@Returns: TRUE if the key was found in the #GTree.
-
 <!-- ##### MACRO getcwd ##### -->
 <para>
 

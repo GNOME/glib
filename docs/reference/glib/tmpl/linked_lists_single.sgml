@@ -209,6 +209,16 @@ Deletes a node of @list. Returns the new list head.
 @Returns: new head of @list
 
 
+<!-- ##### FUNCTION g_slist_remove_all ##### -->
+<para>
+
+</para>
+
+@list: 
+@data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_slist_free ##### -->
 <para>
 Frees all of the memory used by a #GSList.

@@ -189,6 +189,16 @@ Deletes the node @link from @list.
 @Returns: the new head of @list
 
 
+<!-- ##### FUNCTION g_list_remove_all ##### -->
+<para>
+
+</para>
+
+@list: 
+@data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_list_free ##### -->
 <para>
 Frees all of the memory used by a #GList.
@@ -381,6 +391,16 @@ Gets the data of the element at the given position.
 @n: the position of the element.
 @Returns: the element's data, or NULL if the position is off the end of the
 #GList.
+
+
+<!-- ##### FUNCTION g_list_nth_prev ##### -->
+<para>
+
+</para>
+
+@list: 
+@n: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_list_find ##### -->

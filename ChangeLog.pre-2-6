@@ -1,3 +1,19 @@
+2001-05-04  Sven Neumann  <sven@convergence.de>
+
+	* ghash.c: fixed a typo in a comment.
+
+	* gtree.[ch]: added new functions g_tree_new_full(), g_tree_replace(), 
+	g_tree_steal() and g_tree_foreach() to adapt GTree to the GHashTable
+	API. Moved comments into the C file.
+
+	* docs/reference/glib/glib-sections.txt
+	* docs/reference/glib/tmpl/glib-unused.sgml
+	* docs/reference/glib/tmpl/hash_tables.sgml
+	* docs/reference/glib/tmpl/linked_lists_double.sgml
+	* docs/reference/glib/tmpl/linked_lists_single.sgml
+	* docs/reference/glib/tmpl/macros_misc.sgml
+	* docs/reference/glib/tmpl/trees-binary.sgml: updated documentation
+	
 Thu May  3 06:38:28 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* g[s]list.c (g_[s]list_foreach) docs/Changes-2.0.txt: Make

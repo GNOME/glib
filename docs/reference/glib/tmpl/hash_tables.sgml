@@ -69,6 +69,18 @@ It should only be accessed via the following functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_hash_table_new_full ##### -->
+<para>
+
+</para>
+
+@hash_func: 
+@key_equal_func: 
+@key_destroy_func: 
+@value_destroy_func: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION GHashFunc ##### -->
 <para>
 Specifies the type of the hash function which is passed to
@@ -106,6 +118,16 @@ FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@key: 
+@value: 
+
+
+<!-- ##### FUNCTION g_hash_table_replace ##### -->
 <para>
 
 </para>
@@ -178,7 +200,28 @@ which is passed to g_hash_table_foreach().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_hash_table_steal ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@key: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_hash_table_foreach_remove ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@func: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_hash_table_foreach_steal ##### -->
 <para>
 
 </para>

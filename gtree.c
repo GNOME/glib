@@ -42,7 +42,9 @@ struct _GRealTree
 {
   GTreeNode *root;
   GCompareDataFunc key_compare;
-  gpointer key_compare_data;
+  GDestroyNotify   key_destroy_func;
+  GDestroyNotify   value_destroy_func;
+  gpointer         key_compare_data;
 };
 
 struct _GTreeNode
@@ -55,47 +57,49 @@ struct _GTreeNode
 };
 
 
-static GTreeNode* g_tree_node_new                   (gpointer        key,
-						     gpointer        value);
-static void       g_tree_node_destroy               (GTreeNode      *node);
-static GTreeNode* g_tree_node_insert                (GTreeNode      *node,
-						     GCompareDataFunc compare,
-						     gpointer        comp_data,
-						     gpointer        key,
-						     gpointer        value,
-						     gint           *inserted);
-static GTreeNode* g_tree_node_remove                (GTreeNode      *node,
-						     GCompareDataFunc compare,
-						     gpointer        comp_data,
-						     gconstpointer   key);
-static GTreeNode* g_tree_node_balance               (GTreeNode      *node);
-static GTreeNode* g_tree_node_remove_leftmost       (GTreeNode      *node,
-						     GTreeNode     **leftmost);
-static GTreeNode* g_tree_node_restore_left_balance  (GTreeNode      *node,
-						     gint            old_balance);
-static GTreeNode* g_tree_node_restore_right_balance (GTreeNode      *node,
-						     gint            old_balance);
-static GTreeNode* g_tree_node_lookup                (GTreeNode      *node,
-						     GCompareDataFunc compare,
-						     gpointer        comp_data,
-						     gconstpointer   key);
-static gint       g_tree_node_count                 (GTreeNode      *node);
-static gint       g_tree_node_pre_order             (GTreeNode      *node,
-						     GTraverseFunc   traverse_func,
-						     gpointer        data);
-static gint       g_tree_node_in_order              (GTreeNode      *node,
-						     GTraverseFunc   traverse_func,
-						     gpointer        data);
-static gint       g_tree_node_post_order            (GTreeNode      *node,
-						     GTraverseFunc   traverse_func,
-						     gpointer        data);
-static gpointer   g_tree_node_search                (GTreeNode      *node,
-						     GCompareFunc    search_func,
-						     gconstpointer   data);
-static gint       g_tree_node_height                (GTreeNode      *node);
-static GTreeNode* g_tree_node_rotate_left           (GTreeNode      *node);
-static GTreeNode* g_tree_node_rotate_right          (GTreeNode      *node);
-static void       g_tree_node_check                 (GTreeNode      *node);
+static GTreeNode* g_tree_node_new                   (gpointer          key,
+						     gpointer          value);
+static void       g_tree_node_destroy               (GTreeNode        *node,
+                                                     GDestroyNotify    key_destroy_func,
+						     GDestroyNotify    value_destroy_func);
+static GTreeNode* g_tree_node_insert                (GTree            *tree,
+                                                     GTreeNode        *node,
+						     gpointer          key,
+						     gpointer          value,
+                                                     gboolean          replace,
+						     gboolean         *inserted);
+static GTreeNode* g_tree_node_remove                (GTree            *tree,
+                                                     GTreeNode        *node,
+						     gconstpointer     key,
+                                                     gboolean          notify);
+static GTreeNode* g_tree_node_balance               (GTreeNode        *node);
+static GTreeNode* g_tree_node_remove_leftmost       (GTreeNode        *node,
+						     GTreeNode       **leftmost);
+static GTreeNode* g_tree_node_restore_left_balance  (GTreeNode        *node,
+						     gint              old_balance);
+static GTreeNode* g_tree_node_restore_right_balance (GTreeNode        *node,
+						     gint              old_balance);
+static GTreeNode* g_tree_node_lookup                (GTreeNode        *node,
+						     GCompareDataFunc  compare,
+						     gpointer          comp_data,
+						     gconstpointer     key);
+static gint       g_tree_node_count                 (GTreeNode        *node);
+static gint       g_tree_node_pre_order             (GTreeNode        *node,
+						     GTraverseFunc     traverse_func,
+						     gpointer          data);
+static gint       g_tree_node_in_order              (GTreeNode        *node,
+						     GTraverseFunc     traverse_func,
+						     gpointer          data);
+static gint       g_tree_node_post_order            (GTreeNode        *node,
+						     GTraverseFunc     traverse_func,
+						     gpointer          data);
+static gpointer   g_tree_node_search                (GTreeNode        *node,
+						     GCompareFunc      search_func,
+						     gconstpointer     data);
+static gint       g_tree_node_height                (GTreeNode        *node);
+static GTreeNode* g_tree_node_rotate_left           (GTreeNode        *node);
+static GTreeNode* g_tree_node_rotate_right          (GTreeNode        *node);
+static void       g_tree_node_check                 (GTreeNode        *node);
 
 
 G_LOCK_DEFINE_STATIC (g_tree_global);
@@ -137,13 +141,22 @@ g_tree_node_new (gpointer key,
 }
 
 static void
-g_tree_node_destroy (GTreeNode *node)
+g_tree_node_destroy (GTreeNode      *node,
+		     GDestroyNotify  key_destroy_func,
+		     GDestroyNotify  value_destroy_func)
 {
   if (node)
     {
-      g_tree_node_destroy (node->right);
-      g_tree_node_destroy (node->left);
+      g_tree_node_destroy (node->right,
+			   key_destroy_func, value_destroy_func);
+      g_tree_node_destroy (node->left,
+			   key_destroy_func, value_destroy_func);
 
+      if (key_destroy_func)
+	key_destroy_func (node->key);
+      if (value_destroy_func)
+	value_destroy_func (node->value);
+      
 #ifdef ENABLE_GC_FRIENDLY
       node->left = NULL;
       node->key = NULL;
@@ -157,28 +170,94 @@ g_tree_node_destroy (GTreeNode *node)
    }
 }
 
-GTree*	 g_tree_new_udata(GCompareDataFunc key_compare_func,
-                          gpointer        key_compare_data)
-{
-  GRealTree *rtree;
-
-  g_return_val_if_fail (key_compare_func != NULL, NULL);
-
-  rtree = g_new (GRealTree, 1);
-  rtree->root = NULL;
-  rtree->key_compare = key_compare_func;
-  rtree->key_compare_data = key_compare_data;
-
-  return (GTree*) rtree;
-}
-
+/**
+ * g_tree_new:
+ * @key_compare_func: the function used to order the nodes in the #GTree.
+ *   It should return values similar to the standard 
+ *   <function>strcmp()</function> function -
+ *   0 if the two arguments are equal, a negative value if the first argument 
+ *   comes before the second, or a positive value if the first argument comes 
+ *   after the second.
+ * 
+ * Creates a new #GTree.
+ * 
+ * Return value: a new #GTree.
+ **/
 GTree*
 g_tree_new (GCompareFunc key_compare_func)
 {
-  return g_tree_new_udata ((GCompareDataFunc) key_compare_func, NULL);
+  g_return_val_if_fail (key_compare_func != NULL, NULL);
+
+  return g_tree_new_full ((GCompareDataFunc) key_compare_func, NULL,
+                          NULL, NULL);
 }
 
+/**
+ * g_tree_new_with_data:
+ * @key_compare_func: qsort()-style comparison function.
+ * @key_compare_data: data to pass to comparison function.
+ * 
+ * Creates a new #GTree with a comparison function that accepts user data.
+ * See g_tree_new() for more details.
+ * 
+ * Return value: a new #GTree.
+ **/
+GTree*
+g_tree_new_with_data (GCompareDataFunc key_compare_func,
+ 		      gpointer         key_compare_data)
+{
+  g_return_val_if_fail (key_compare_func != NULL, NULL);
+  
+  return g_tree_new_full (key_compare_func, key_compare_data, 
+ 			  NULL, NULL);
+}
 
+/**
+ * g_tree_new_full:
+ * @key_compare_func: qsort()-style comparison function.
+ * @key_compare_data: data to pass to comparison function.
+ * @key_destroy_func: a function to free the memory allocated for the key 
+ *   used when removing the entry from the #GTree or #NULL if you don't
+ *   want to supply such a function.
+ * @value_destroy_func: a function to free the memory allocated for the 
+ *   value used when removing the entry from the #GTree or #NULL if you 
+ *   don't want to supply such a function.
+ * 
+ * Creates a new #GTree like g_tree_new() and allows to specify functions 
+ * to free the memory allocated for the key and value that get called when 
+ * removing the entry from the #GTree.
+ * 
+ * Return value: a new #GTree.
+ **/
+GTree*	 
+g_tree_new_full (GCompareDataFunc key_compare_func,
+ 		 gpointer         key_compare_data, 		 
+                 GDestroyNotify   key_destroy_func,
+ 		 GDestroyNotify   value_destroy_func)
+{
+  GRealTree *rtree;
+  
+  g_return_val_if_fail (key_compare_func != NULL, NULL);
+  
+  rtree = g_new (GRealTree, 1);
+  rtree->root               = NULL;
+  rtree->key_compare        = key_compare_func;
+  rtree->key_destroy_func   = key_destroy_func;
+  rtree->value_destroy_func = value_destroy_func;
+  rtree->key_compare_data   = key_compare_data;
+  
+  return (GTree*) rtree;
+}
+
+/**
+ * g_tree_destroy:
+ * @tree: a #GTree.
+ * 
+ * Destroys the #GTree. If keys and/or values are dynamically allocated, you 
+ * should either free them first or create the #GTree using g_tree_new_full().
+ * In the latter case the destroy functions you supplied will be called on 
+ * all keys and values before destroying the #GTree.
+ **/
 void
 g_tree_destroy (GTree *tree)
 {
@@ -188,28 +267,93 @@ g_tree_destroy (GTree *tree)
 
   rtree = (GRealTree*) tree;
 
-  g_tree_node_destroy (rtree->root);
+  g_tree_node_destroy (rtree->root,
+                       rtree->key_destroy_func,
+ 		       rtree->value_destroy_func);
+
   g_free (rtree);
 }
 
+/**
+ * g_tree_insert:
+ * @tree: a #Gtree.
+ * @key: the key to insert.
+ * @value: the value corresponding to the key.
+ * 
+ * Inserts a key/value pair into a #GTree. If the given key already exists 
+ * in the #GTree it is set to the new value. If you supplied a 
+ * value_destroy_func when creating the #GTree, the old value is freed using 
+ * that function. If you supplied a key_destroy_func when creating the 
+ * #GTree, the passed key is freed using that function.
+ *
+ * The tree is automatically 'balanced' as new key/value pairs are added,
+ * so that the distance from the root to every leaf is as small as possible.
+ **/
 void
 g_tree_insert (GTree    *tree,
 	       gpointer  key,
 	       gpointer  value)
 {
   GRealTree *rtree;
-  gint inserted;
+  gboolean   inserted;
 
   g_return_if_fail (tree != NULL);
 
   rtree = (GRealTree*) tree;
 
   inserted = FALSE;
-  rtree->root = g_tree_node_insert (rtree->root, rtree->key_compare,
-				    rtree->key_compare_data,
-				    key, value, &inserted);
+  rtree->root = g_tree_node_insert (tree,
+                                    rtree->root,
+				    key, value, 
+				    FALSE, &inserted);
 }
 
+/**
+ * g_tree_replace:
+ * @tree: a #Gtree.
+ * @key: the key to insert.
+ * @value: the value corresponding to the key.
+ * 
+ * Inserts a new key and value into a #GTree similar to g_tree_insert(). 
+ * The difference is that if the key already exists in the #GTree, it gets 
+ * replaced by the new key. If you supplied a value_destroy_func when 
+ * creating the #GTree, the old value is freed using that function. If you 
+ * supplied a key_destroy_func when creating the #GTree, the old key is 
+ * freed using that function. 
+ *
+ * The tree is automatically 'balanced' as new key/value pairs are added,
+ * so that the distance from the root to every leaf is as small as possible.
+ **/
+void
+g_tree_replace (GTree    *tree,
+		gpointer  key,
+		gpointer  value)
+{
+  GRealTree *rtree;
+  gboolean   inserted;
+
+  g_return_if_fail (tree != NULL);
+
+  rtree = (GRealTree*) tree;
+
+  inserted = FALSE;
+  rtree->root = g_tree_node_insert (tree,
+                                    rtree->root,
+				    key, value, 
+				    TRUE, &inserted);
+}
+
+/**
+ * g_tree_remove:
+ * @tree: a #Gtree.
+ * @key: the key to remove.
+ * 
+ * Removes a key/value pair from a #GTree.
+ *
+ * If the #GTree was created using g_tree_new_full(), the key and value 
+ * are freed using the supplied destroy_functions, otherwise you have to 
+ * make sure that any dynamically allocated values are freed yourself.
+ **/
 void
 g_tree_remove (GTree         *tree,
 	       gconstpointer  key)
@@ -220,10 +364,41 @@ g_tree_remove (GTree         *tree,
 
   rtree = (GRealTree*) tree;
 
-  rtree->root = g_tree_node_remove (rtree->root, rtree->key_compare,
-                                    rtree->key_compare_data, key);
+  rtree->root = g_tree_node_remove (tree, rtree->root, key, TRUE);
 }
 
+/**
+ * g_tree_steal:
+ * @tree: a #Gtree.
+ * @key: the key to remove.
+ * 
+ * Removes a key and its associated value from a #GTree without calling 
+ * the key and value destroy functions.
+ **/
+void
+g_tree_steal (GTree         *tree,
+              gconstpointer  key)
+{
+  GRealTree *rtree;
+
+  g_return_if_fail (tree != NULL);
+
+  rtree = (GRealTree*) tree;
+
+  rtree->root = g_tree_node_remove (tree, rtree->root, key, FALSE);
+}
+
+/**
+ * g_tree_lookup:
+ * @tree: a #GTree.
+ * @key: the key to look up.
+ * 
+ * Gets the value corresponding to the given key. Since a #GTree is 
+ * automatically balanced as key/value pairs are added, key lookup is very 
+ * fast.
+ *
+ * Return value: the value corresponding to the key.
+ **/
 gpointer
 g_tree_lookup (GTree         *tree,
 	       gconstpointer  key)
@@ -235,12 +410,26 @@ g_tree_lookup (GTree         *tree,
 
   rtree = (GRealTree*) tree;
 
-  node = g_tree_node_lookup (rtree->root, rtree->key_compare, 
-                             rtree->key_compare_data, key);
+  node = g_tree_node_lookup (rtree->root, 
+                             rtree->key_compare, rtree->key_compare_data, key);
 
   return node ? node->value : NULL;
 }
 
+/**
+ * g_tree_lookup_extended:
+ * @tree: a #GTree.
+ * @lookup_key: the key to look up.
+ * @orig_key: returns the original key.
+ * @value: returns the value associated with the key.
+ * 
+ * Looks up a key in the #GTree, returning the original key and the
+ * associated value and a gboolean which is TRUE if the key was found. This 
+ * is useful if you need to free the memory allocated for the original key, 
+ * for example before calling g_tree_remove().
+ * 
+ * Return value: #TRUE if the key was found in the #GTree.
+ **/
 gboolean
 g_tree_lookup_extended (GTree         *tree,
                         gconstpointer  lookup_key,
@@ -255,9 +444,7 @@ g_tree_lookup_extended (GTree         *tree,
   rtree = (GRealTree*) tree;
   
   node = g_tree_node_lookup (rtree->root, 
-                             rtree->key_compare,
-                             rtree->key_compare_data, 
-                             lookup_key);
+                             rtree->key_compare, rtree->key_compare_data, lookup_key);
 
   if (node)
     {
@@ -271,11 +458,51 @@ g_tree_lookup_extended (GTree         *tree,
     return FALSE;
 }
 
+/**
+ * g_tree_foreach:
+ * @tree: a #GTree.
+ * @func: the function to call for each node visited. If this function
+ *   returns TRUE, the traversal is stopped.
+ * @user_data: user data to pass to the function.
+ * 
+ * Calls the given function for each of the key/value pairs in the #GTree.
+ * The function is passed the key and value of each pair, and the given
+ * @data parameter.
+ **/
+void
+g_tree_foreach (GTree         *tree,
+                GTraverseFunc  func,
+                gpointer       user_data)
+{
+  GRealTree *rtree;
+
+  g_return_if_fail (tree != NULL);
+  
+  rtree = (GRealTree*) tree;
+
+  if (!rtree->root)
+    return;
+
+  g_tree_node_in_order (rtree->root, func, user_data);
+}
+
+/**
+ * g_tree_traverse:
+ * @tree: a #GTree.
+ * @traverse_func: the function to call for each node visited. If this 
+ *   function returns TRUE, the traversal is stopped.
+ * @traverse_type: the order in which nodes are visited, one of %G_IN_ORDER,
+ *   %G_PRE_ORDER and %G_POST_ORDER.
+ * @user_data: user data to pass to the function.
+ * 
+ * Calls the given function for each node in the GTree. This function is
+ * deprecated, use g_tree_foreach() instead.
+ **/
 void
 g_tree_traverse (GTree         *tree,
 		 GTraverseFunc  traverse_func,
 		 GTraverseType  traverse_type,
-		 gpointer       data)
+		 gpointer       user_data)
 {
   GRealTree *rtree;
 
@@ -289,15 +516,15 @@ g_tree_traverse (GTree         *tree,
   switch (traverse_type)
     {
     case G_PRE_ORDER:
-      g_tree_node_pre_order (rtree->root, traverse_func, data);
+      g_tree_node_pre_order (rtree->root, traverse_func, user_data);
       break;
 
     case G_IN_ORDER:
-      g_tree_node_in_order (rtree->root, traverse_func, data);
+      g_tree_node_in_order (rtree->root, traverse_func, user_data);
       break;
 
     case G_POST_ORDER:
-      g_tree_node_post_order (rtree->root, traverse_func, data);
+      g_tree_node_post_order (rtree->root, traverse_func, user_data);
       break;
     
     case G_LEVEL_ORDER:
@@ -306,10 +533,32 @@ g_tree_traverse (GTree         *tree,
     }
 }
 
+/**
+ * g_tree_search:
+ * @tree: a #GTree.
+ * @search_func: the comparison function used to search the #GTree. 
+ * @user_data: the data passed as the second argument to the @search_func 
+ * function.
+ * 
+ * Searches a #GTree using an alternative form of the comparison function.
+ *
+ * This function is not as useful as it sounds.
+ * It allows you to use a different function for performing the lookup of
+ * a key. However, since the tree is ordered according to the @key_compare_func
+ * function passed to g_tree_new(), the function you pass to g_tree_search() 
+ * must return exactly the same value as would be returned by the comparison 
+ * function, for each pair of tree nodes, or the search will not work.
+ * 
+ * To search for a specific value, you can use g_tree_foreach() or 
+ * g_tree_traverse().
+ *
+ * Return value: the value corresponding to the found key, or NULL if the key 
+ * is not found.
+ **/
 gpointer
-g_tree_search (GTree            *tree,
-	       GCompareFunc      search_func,
-	       gconstpointer     data)
+g_tree_search (GTree         *tree,
+	       GCompareFunc   search_func,
+	       gconstpointer  user_data)
 {
   GRealTree *rtree;
 
@@ -318,11 +567,23 @@ g_tree_search (GTree            *tree,
   rtree = (GRealTree*) tree;
 
   if (rtree->root)
-    return g_tree_node_search (rtree->root, search_func, data);
+    return g_tree_node_search (rtree->root, search_func, user_data);
   else
     return NULL;
 }
 
+/**
+ * g_tree_height:
+ * @tree: a #GTree.
+ * 
+ * Gets the height of a #GTree.
+ *
+ * If the #GTree contains no nodes, the height is 0.
+ * If the #GTree contains only one root node the height is 1.
+ * If the root node has children the height is 2, etc.
+ * 
+ * Return value: the height of the #GTree.
+ **/
 gint
 g_tree_height (GTree *tree)
 {
@@ -338,6 +599,14 @@ g_tree_height (GTree *tree)
     return 0;
 }
 
+/**
+ * g_tree_nnodes:
+ * @tree: a #GTree.
+ * 
+ * Gets the number of nodes in a #GTree.
+ * 
+ * Return value: the number of nodes in the #GTree.
+ **/
 gint
 g_tree_nnodes (GTree *tree)
 {
@@ -354,15 +623,18 @@ g_tree_nnodes (GTree *tree)
 }
 
 static GTreeNode*
-g_tree_node_insert (GTreeNode      *node,
-		    GCompareDataFunc compare,
-		    gpointer        compare_data,
-		    gpointer        key,
-		    gpointer        value,
-		    gint           *inserted)
+g_tree_node_insert (GTree     *tree,
+                    GTreeNode *node,
+		    gpointer   key,
+		    gpointer   value,
+                    gboolean   replace,
+		    gboolean  *inserted)
 {
-  gint old_balance;
-  gint cmp;
+  GRealTree *rtree;
+  gint  old_balance;
+  gint  cmp;
+
+  rtree = (GRealTree*) tree;
 
   if (!node)
     {
@@ -370,11 +642,30 @@ g_tree_node_insert (GTreeNode      *node,
       return g_tree_node_new (key, value);
     }
 
-  cmp = (* compare) (key, node->key, compare_data);
+  cmp = rtree->key_compare (key, node->key, rtree->key_compare_data);
   if (cmp == 0)
     {
       *inserted = FALSE;
+
+      if (rtree->value_destroy_func)
+	rtree->value_destroy_func (node->value);
+
       node->value = value;
+      
+      if (replace)
+	{
+	  if (rtree->key_destroy_func)
+	    rtree->key_destroy_func (node->key);
+
+	  node->key = key;
+	}
+      else
+	{
+	  /* free the passed key */
+	  if (rtree->key_destroy_func)
+	    rtree->key_destroy_func (key);
+	}
+
       return node;
     }
 
@@ -383,8 +674,10 @@ g_tree_node_insert (GTreeNode      *node,
       if (node->left)
 	{
 	  old_balance = node->left->balance;
-	  node->left = g_tree_node_insert (node->left, compare, compare_data,
-	                                   key, value, inserted);
+	  node->left = g_tree_node_insert (tree,
+                                           node->left,
+					   key, value,
+					   replace, inserted);
 
 	  if ((old_balance != node->left->balance) && node->left->balance)
 	    node->balance -= 1;
@@ -401,8 +694,10 @@ g_tree_node_insert (GTreeNode      *node,
       if (node->right)
 	{
 	  old_balance = node->right->balance;
-	  node->right = g_tree_node_insert (node->right, compare, compare_data,
-	                                    key, value, inserted);
+	  node->right = g_tree_node_insert (tree,
+                                            node->right,
+					    key, value, 
+					    replace, inserted);
 
 	  if ((old_balance != node->right->balance) && node->right->balance)
 	    node->balance += 1;
@@ -425,11 +720,12 @@ g_tree_node_insert (GTreeNode      *node,
 }
 
 static GTreeNode*
-g_tree_node_remove (GTreeNode      *node,
-		    GCompareDataFunc compare,
-		    gpointer        compare_data,
-		    gconstpointer   key)
+g_tree_node_remove (GTree         *tree,
+                    GTreeNode     *node,
+		    gconstpointer  key,
+                    gboolean       notify)
 {
+  GRealTree *rtree;
   GTreeNode *new_root;
   gint old_balance;
   gint cmp;
@@ -437,7 +733,9 @@ g_tree_node_remove (GTreeNode      *node,
   if (!node)
     return NULL;
 
-  cmp = (* compare) (key, node->key, compare_data);
+  rtree = (GRealTree *) tree;
+
+  cmp = rtree->key_compare (key, node->key, rtree->key_compare_data);
   if (cmp == 0)
     {
       GTreeNode *garbage;
@@ -458,6 +756,14 @@ g_tree_node_remove (GTreeNode      *node,
 	  node = g_tree_node_restore_right_balance (new_root, old_balance);
 	}
 
+      if (notify)
+        {
+          if (rtree->key_destroy_func)
+            rtree->key_destroy_func (garbage->key);
+          if (rtree->value_destroy_func)
+            rtree->value_destroy_func (garbage->value);
+        }
+
 #ifdef ENABLE_GC_FRIENDLY
       garbage->left = NULL;
       garbage->key = NULL;
@@ -474,7 +780,7 @@ g_tree_node_remove (GTreeNode      *node,
       if (node->left)
 	{
 	  old_balance = node->left->balance;
-	  node->left = g_tree_node_remove (node->left, compare, compare_data, key);
+	  node->left = g_tree_node_remove (tree, node->left, key, notify);
 	  node = g_tree_node_restore_left_balance (node, old_balance);
 	}
     }
@@ -483,7 +789,7 @@ g_tree_node_remove (GTreeNode      *node,
       if (node->right)
 	{
 	  old_balance = node->right->balance;
-	  node->right = g_tree_node_remove (node->right, compare, compare_data, key);
+	  node->right = g_tree_node_remove (tree, node->right, key, notify);
 	  node = g_tree_node_restore_right_balance (node, old_balance);
 	}
     }
@@ -558,10 +864,10 @@ g_tree_node_restore_right_balance (GTreeNode *node,
 }
 
 static GTreeNode *
-g_tree_node_lookup (GTreeNode      *node,
-		    GCompareDataFunc compare,
-		    gpointer        compare_data,
-		    gconstpointer   key)
+g_tree_node_lookup (GTreeNode        *node,
+		    GCompareDataFunc  compare,
+		    gpointer          compare_data,
+		    gconstpointer     key)
 {
   gint cmp;
 
