@@ -178,11 +178,11 @@ extern "C" {
  */
 #if !defined (G_VA_COPY)
 #  if defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (_WIN32))
-#  define G_VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
+#    define G_VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
 #  elif defined (G_VA_COPY_AS_ARRAY)
-#  define G_VA_COPY(ap1, ap2)	  g_memmove ((ap1), (ap2), sizeof (va_list))
+#    define G_VA_COPY(ap1, ap2)	  g_memmove ((ap1), (ap2), sizeof (va_list))
 #  else /* va_list is a pointer */
-#  define G_VA_COPY(ap1, ap2)	  ((ap1) = (ap2))
+#    define G_VA_COPY(ap1, ap2)	  ((ap1) = (ap2))
 #  endif /* va_list is a pointer */
 #endif /* !G_VA_COPY */
 
@@ -205,47 +205,42 @@ extern "C" {
  * *capable* to do function inlining, in which case inline function bodys
  * do make sense. we also define G_INLINE_FUNC to properly export the
  * function prototypes if no inlining can be performed.
- * we special case most of the stuff, so inline functions can have a normal
- * implementation by defining G_INLINE_FUNC to extern and G_CAN_INLINE to 1.
+ * inline function bodies have to be special cased with G_CAN_INLINE and a
+ * .c file specific macro to allow one compiled instance with extern linkage
+ * of the functions by defining G_IMPLEMENT_INLINES and the .c file macro.
  */
+#ifdef G_IMPLEMENT_INLINES
+#  define G_INLINE_FUNC extern
+#  undef  G_CAN_INLINE
+#endif
 #ifndef G_INLINE_FUNC
 #  define G_CAN_INLINE 1
 #endif
-#ifdef G_HAVE_INLINE
-#  if defined (__GNUC__) && defined (__STRICT_ANSI__)
-#    undef inline
-#    define inline __inline__
-#  endif
-#else /* !G_HAVE_INLINE */
+#if defined (G_HAVE_INLINE) && defined (__GNUC__) && defined (__STRICT_ANSI__)
+#  undef inline
+#  define inline __inline__
+#elif !defined (G_HAVE_INLINE)
 #  undef inline
 #  if defined (G_HAVE___INLINE__)
 #    define inline __inline__
-#  else /* !inline && !__inline__ */
-#    if defined (G_HAVE___INLINE)
-#      define inline __inline
-#    else /* !inline && !__inline__ && !__inline */
-#      define inline /* don't inline, then */
-#      ifndef G_INLINE_FUNC
-#	 undef G_CAN_INLINE
-#      endif
+#  elif defined (G_HAVE___INLINE)
+#    define inline __inline
+#  else /* !inline && !__inline__ && !__inline */
+#    define inline  /* don't inline, then */
+#    ifndef G_INLINE_FUNC
+#      undef G_CAN_INLINE
 #    endif
 #  endif
 #endif
 #ifndef G_INLINE_FUNC
-#  ifdef __GNUC__
-#    ifdef __OPTIMIZE__
-#      define G_INLINE_FUNC extern inline
-#    else
-#      undef G_CAN_INLINE
-#      define G_INLINE_FUNC extern
-#    endif
-#  else /* !__GNUC__ */
-#    ifdef G_CAN_INLINE
-#      define G_INLINE_FUNC static inline
-#    else
-#      define G_INLINE_FUNC extern
-#    endif
-#  endif /* !__GNUC__ */
+#  if defined (__GNUC__) && (__OPTIMIZE__)
+#    define G_INLINE_FUNC extern inline
+#  elif defined (G_CAN_INLINE) && !defined (__GNUC__)
+#    define G_INLINE_FUNC static inline
+#  else /* can't inline */
+#    define G_INLINE_FUNC extern
+#    undef G_CAN_INLINE
+#  endif
 #endif /* !G_INLINE_FUNC */
 
 
@@ -323,11 +318,11 @@ extern "C" {
  * Actual use is strongly deprecated of course ;)
  */
 #if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
-#define	G_BREAKPOINT()		G_STMT_START{ __asm__ __volatile__ ("int $03"); }G_STMT_END
+#  define G_BREAKPOINT()	G_STMT_START{ __asm__ __volatile__ ("int $03"); }G_STMT_END
 #elif defined (__alpha__) && defined (__GNUC__) && __GNUC__ >= 2
-#define	G_BREAKPOINT()		G_STMT_START{ __asm__ __volatile__ ("bpt"); }G_STMT_END
+#  define G_BREAKPOINT()	G_STMT_START{ __asm__ __volatile__ ("bpt"); }G_STMT_END
 #else	/* !__i386__ && !__alpha__ */
-#define	G_BREAKPOINT()
+#  define G_BREAKPOINT()	G_STMT_START{ raise (5 /* SIGTRAP */); }G_STMT_END
 #endif	/* __i386__ */
 
 
@@ -1806,7 +1801,24 @@ void	g_atexit		(GVoidFunc    func);
  */
 G_INLINE_FUNC gint	g_bit_nth_lsf (guint32 mask,
 				       gint    nth_bit);
-#ifdef	G_CAN_INLINE
+G_INLINE_FUNC gint	g_bit_nth_msf (guint32 mask,
+				       gint    nth_bit);
+G_INLINE_FUNC guint	g_bit_storage (guint number);
+
+
+/* Trash Stacks
+ * elements need to be >= sizeof (gpointer)
+ */
+G_INLINE_FUNC void	g_trash_stack_push	(GTrashStack **stack_p,
+						 gpointer      data_p);
+G_INLINE_FUNC gpointer	g_trash_stack_pop	(GTrashStack **stack_p);
+G_INLINE_FUNC gpointer	g_trash_stack_peek	(GTrashStack **stack_p);
+G_INLINE_FUNC guint	g_trash_stack_height	(GTrashStack **stack_p);
+
+
+/* inline function implementations
+ */
+#if defined (G_CAN_INLINE) || defined (__G_UTILS_C__)
 G_INLINE_FUNC gint
 g_bit_nth_lsf (guint32 mask,
 	       gint    nth_bit)
@@ -1820,11 +1832,6 @@ g_bit_nth_lsf (guint32 mask,
   while (nth_bit < 32);
   return -1;
 }
-#endif	/* G_CAN_INLINE */
-
-G_INLINE_FUNC gint	g_bit_nth_msf (guint32 mask,
-				       gint    nth_bit);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC gint
 g_bit_nth_msf (guint32 mask,
 	       gint    nth_bit)
@@ -1840,10 +1847,6 @@ g_bit_nth_msf (guint32 mask,
   while (nth_bit > 0);
   return -1;
 }
-#endif	/* G_CAN_INLINE */
-
-G_INLINE_FUNC guint	g_bit_storage (guint number);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC guint
 g_bit_storage (guint number)
 {
@@ -1857,15 +1860,6 @@ g_bit_storage (guint number)
   while (number);
   return n_bits;
 }
-#endif	/* G_CAN_INLINE */
-
-
-/* Trash Stacks
- * elements need to be >= sizeof (gpointer)
- */
-G_INLINE_FUNC void	g_trash_stack_push	(GTrashStack **stack_p,
-						 gpointer      data_p);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC void
 g_trash_stack_push (GTrashStack **stack_p,
 		    gpointer      data_p)
@@ -1875,10 +1869,6 @@ g_trash_stack_push (GTrashStack **stack_p,
   data->next = *stack_p;
   *stack_p = data;
 }
-#endif	/* G_CAN_INLINE */
-
-G_INLINE_FUNC gpointer	g_trash_stack_pop	(GTrashStack **stack_p);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC gpointer
 g_trash_stack_pop (GTrashStack **stack_p)
 {
@@ -1896,10 +1886,6 @@ g_trash_stack_pop (GTrashStack **stack_p)
 
   return data;
 }
-#endif  /* G_CAN_INLINE */
-
-G_INLINE_FUNC gpointer	g_trash_stack_peek	(GTrashStack **stack_p);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC gpointer
 g_trash_stack_peek (GTrashStack **stack_p)
 {
@@ -1909,10 +1895,6 @@ g_trash_stack_peek (GTrashStack **stack_p)
 
   return data;
 }
-#endif  /* G_CAN_INLINE */
-
-G_INLINE_FUNC guint	g_trash_stack_height	(GTrashStack **stack_p);
-#ifdef G_CAN_INLINE
 G_INLINE_FUNC guint
 g_trash_stack_height (GTrashStack **stack_p)
 {
@@ -1924,7 +1906,7 @@ g_trash_stack_height (GTrashStack **stack_p)
 
   return i;
 }
-#endif  /* G_CAN_INLINE */
+#endif  /* G_CAN_INLINE || __G_UTILS_C__ */
 
 
 /* String Chunks

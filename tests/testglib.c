@@ -828,6 +828,13 @@ main (int   argc,
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
   
+  g_print ("test positional printf formats (not supported): ");
+  string = g_strdup_printf ("%.*s%s", 5, "a", "b");
+  tmp_string = g_strdup_printf ("%2$*1$s", 5, "c");
+  g_print ("%s%s\n", string, tmp_string);
+  g_free (tmp_string);
+  g_free (string);
+
   g_print ("checking timers...\n");
   
   timer = g_timer_new ();

@@ -50,8 +50,8 @@
 
 /* implement Glib's inline functions
  */
-#define	G_INLINE_FUNC extern
-#define	G_CAN_INLINE 1
+#define	G_IMPLEMENT_INLINES 1
+#define	__G_UTILS_C__
 #include "glib.h"
 
 #ifdef	MAXPATHLEN

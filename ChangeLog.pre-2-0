@@ -1,3 +1,19 @@
+Mon Aug 21 03:57:46 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h (G_BREAKPOINT): for non-i386 and non-alpha, or non gcc,
+	implement BREAKPOINT() as raise (5 /* SIGTRAP */);
+
+	* glib.h: provide user-definable switch G_IMPLEMENT_INLINES,
+	to turn on compilation of inline function implementations provided
+	in header files with extern linkage.
+	wrap inline function implementations into ifdef __G_UTILS_C__, so we
+	really only compile them for gutils.c and not also into arbitrary user
+	code that wants to make use of G_IMPLEMENT_INLINES.
+	adjusted comment apropriately.
+
+	* gutils.c: to turn on compilation of inline functions, provide
+	#define G_IMPLEMENT_INLINES 1 and #define __G_UTILS_C__.
+
 2000-09-06  Havoc Pennington  <hp@redhat.com>
 
 	* gerror.c: docs
@@ -75,6 +91,7 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 	from FormatMessage.
 
 2000-08-25 Elliot Lee <sopwith@redhat.com>
+
 	* glib.h, gunicode.h, gmodule/gmodule.h:
 	: Mark the following functions G_GNUC_CONST (to allow
 	optimization) because their results are a function of only their parameters:
@@ -84,6 +101,7 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 	g_unichar_to*, g_unichar_*digit_value, g_unichar_type
 
 2000-08-21 Elliot Lee <sopwith@redhat.com>
+
 	* gobject/Makefile.am, gobject/gobject-query.c, gobject/gparamspecs.c: Fix inclusion of
 	config.h
 
