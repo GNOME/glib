@@ -99,8 +99,13 @@ main (int argc, char *argv[])
 
   result = g_setenv ("foo", "bar=baz", TRUE);
   g_assert (result && "g_setenv() doesn't accept '=' in values");
+#if 0
+  /* While glibc supports '=' in names in getenv(), SUS doesn't say anything about it,
+   * and Solaris doesn't support it.
+   */
   data = g_getenv ("foo=bar");
   g_assert (strcmp (data, "baz") == 0 && "g_getenv() doesn't support '=' in names");
+#endif
   data = g_getenv ("foo");
   g_assert (strcmp (data, "bar=baz") == 0 && "g_getenv() doesn't support '=' in values");
   

@@ -1,3 +1,8 @@
+2003-08-08  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/env-test.c (main): Remove a test for getenv() behaviour which isn't specified by SUS
+	and doesn't work on Solaris.
+
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/env-test.c: Add tests for '=' in names and values.
