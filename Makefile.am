@@ -62,9 +62,14 @@ libglib_la_SOURCES = \
 	gthreadpool.c   \
 	gtimer.c	\
 	gtree.c		\
+	guniprop.c	\
+	gutf8.c		\
+	gunichartable.h	\
+	gunidecomp.h	\
+	gunidecomp.c	\
 	gutils.c
 
-include_HEADERS = glib.h glib-object.h
+include_HEADERS = glib.h glib-object.h gunicode.h
 
 configexecincludedir = $(pkglibdir)/include
 #configexecinclude_DATA = glibconfig.h
