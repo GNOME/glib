@@ -1,3 +1,7 @@
+2001-11-06  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/Makefile.am (gspawn_win32_helper_LDFLAGS): Use -mwindows.
+
 2001-11-05  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Minor edits.

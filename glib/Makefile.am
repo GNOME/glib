@@ -149,8 +149,8 @@ uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
-
 endif
+
 if OS_WIN32
 # This requires a very new libtool
 export_symbols = -export-symbols glib.def
@@ -174,6 +174,7 @@ libglib_1_3_la_LDFLAGS = \
 if OS_WIN32
 bin_PROGRAMS = gspawn-win32-helper
 gspawn_win32_helper_LDADD = libglib-1.3.la
+gspawn_win32_helper_LDFLAGS = -mwindows
 
 @G_LIB_WIN32_RESOURCE@ : glib.rc
 	$(top_srcdir)/build/win32/lt-compile-resource glib.rc @G_LIB_WIN32_RESOURCE@
