@@ -1,5 +1,7 @@
 2003-01-04  Tor Lillqvist  <tml@iki.fi>
 
+	* Makefile.am (BUILT_EXTRA_DIST): Don't distribute glib-zip.
+
 	* {glib,gmodule,gobject,gthread}/Makefile.am:
 	[Win32] Install also the .def files, to help users generate
 	import libraries for other compilers. Uninstall, too.
