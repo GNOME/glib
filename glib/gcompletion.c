@@ -1,5 +1,12 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * gcompletion.c - Automatically complete a string from a group
+ *		   of target strings
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright 1998  Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

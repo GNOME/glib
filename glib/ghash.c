@@ -1,5 +1,12 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * ghash.c - Dynamically-resizing hash table routines for
+ *	     quick key -> value mapped lookup
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright 1998  Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -54,6 +61,7 @@ static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;
+G_THREAD_SPROTECT(node_free_list)
 
 
 GHashTable*
@@ -338,6 +346,8 @@ g_hash_node_new (gpointer key,
 {
   GHashNode *hash_node;
   
+  g_thread_lock(node_free_list);
+
   if (node_free_list)
     {
       hash_node = node_free_list;
@@ -353,6 +363,8 @@ g_hash_node_new (gpointer key,
       hash_node = g_chunk_new (GHashNode, node_mem_chunk);
     }
   
+  g_thread_unlock(node_free_list);
+
   hash_node->key = key;
   hash_node->value = value;
   hash_node->next = NULL;
@@ -363,8 +375,10 @@ g_hash_node_new (gpointer key,
 static void
 g_hash_node_destroy (GHashNode *hash_node)
 {
+  g_thread_lock(node_free_list);
   hash_node->next = node_free_list;
   node_free_list = hash_node;
+  g_thread_unlock(node_free_list);
 }
 
 static void
@@ -380,6 +394,8 @@ g_hash_nodes_destroy (GHashNode *hash_node)
   while (node->next)
     node = node->next;
   
+  g_thread_lock(node_free_list);
   node->next = node_free_list;
   node_free_list = hash_node;
+  g_thread_unlock(node_free_list);
 }
