@@ -1,24 +1,26 @@
+# translation of el.po to Greek
 # Greek translation of glib.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Simos Xenitellis <simos@hellug.gr>, 2002.
-# Kostas Papadimas <pkst@gmx.net>, 2002.
+# Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 #
 # simos: 25 messages, initial translation
 # kostas: 90 messages, 06Nov2002, completed translation.
 # kostas: 03Dec2002, updated translation for Gnome 2.1x
+# Simos Xenitellis <simos@hellug.gr>, 2002.
+# Kostas Papadimas <pkst@gmx.net>, 2002.
+# Kostas Papadimas <pkst@gnome.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 1.0\n"
+"Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2002-12-03 20:09+0200\n"
-"Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
+"POT-Creation-Date: 2004-02-23 14:42+0200\n"
+"PO-Revision-Date: 2004-02-23 14:44+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -56,8 +58,7 @@ msgstr "Αδυναμία μετατροπής fallback '%s' σε codeset '%s'"
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr ""
-"Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
+msgstr "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος αρχείου"
 
 #: glib/gconvert.c:1507
 #, c-format
@@ -148,13 +149,13 @@ msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
+msgstr "Αποτυχία ανάγνωσης συμβολικού δεσμού '%s': %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Οι συμβολικοί δεσμοί δεν υποστηρίζονται"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -195,8 +196,7 @@ msgid "Error on line %d: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
 #: glib/gmarkup.c:412
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Κενή καταχώρηση  '&;' , έγκυρες οντότητες είναι: &amp; &quot; &lt; &gt; "
 "&apos; "
@@ -296,8 +296,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Περίεργος χαρακτήρας  '%s',  αναμενόταν ένα  '=' μετά το όνομα γνωρίσματος '%"
 "s' του στοιχείου  '%s'"
@@ -405,8 +404,7 @@ msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
+msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε tag κλεισίματος για στοιχείο '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -513,8 +511,7 @@ msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασ�
 #: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
-"Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
+msgstr "Αποτυχία προώθησης αποτελέσματος ή εισόδου της θυγατρικής διεργασίας (%s)"
 
 #: glib/gspawn.c:1232
 #, c-format
@@ -553,3 +550,4 @@ msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Channel set flags δεν υποστηρίζεται"
+
