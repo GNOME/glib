@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-12-08 17:55+0100\n"
-"PO-Revision-Date: 2001-12-08 17:55+0100\n"
+"POT-Creation-Date: 2001-12-15 16:12+0100\n"
+"PO-Revision-Date: 2001-12-15 16:12+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -432,12 +432,12 @@ msgstr "Misslyckades med att läsa från rör till barnet (%s)"
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Misslyckades med att byta katalog till \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:934
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Misslyckades med att köra barnprocess (%s)"
 
-#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:975 glib/gspawn.c:1221
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Misslyckades med att skapa rör för kommunikation med barnprocess (%s)"
@@ -462,22 +462,28 @@ msgstr "Oväntat fel i waitpid() (%s)"
 msgid "Failed to fork (%s)"
 msgstr "Misslyckades med att grena (%s)"
 
-#: glib/gspawn.c:1131
+#: glib/gspawn.c:1122
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Misslyckades med att köra barnprocessen \"%s\" (%s)"
+
+#: glib/gspawn.c:1132
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Misslyckades med att dirigera om utdata eller indata från barnprocess (%s)"
 
-#: glib/gspawn.c:1140
+#: glib/gspawn.c:1141
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Misslyckades med att skapa barnprocess (%s)"
 
-#: glib/gspawn.c:1148
-msgid "Unknown error executing child process"
-msgstr "Okänt fel vid körning av barnprocess"
+#: glib/gspawn.c:1149
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Okänt fel vid körning av barnprocessen \"%s\""
 
-#: glib/gspawn.c:1169
+#: glib/gspawn.c:1171
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
