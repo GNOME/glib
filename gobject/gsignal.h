@@ -238,7 +238,7 @@ void	g_signal_chain_from_overridden	      (const GValue      *instance_and_param
 
 /* --- convenience --- */
 #define g_signal_connect(instance, detailed_signal, c_handler, data) \
-    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags)0)
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
 #define g_signal_connect_after(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_AFTER)
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \

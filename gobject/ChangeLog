@@ -1,3 +1,7 @@
+Thu Dec 13 08:03:17 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c: implemented closure chaining.
+
 2001-12-08  Christopher Blizzard  <blizzard@redhat.com>
 
 	* gsignal.h (g_signal_connect): Explicitly add a cast to the last

@@ -42,12 +42,19 @@ static gint	transform_entries_cmp	(gconstpointer bsearch_node1,
 
 
 /* --- variables --- */
-static GBSearchArray transform_array = G_STATIC_BSEARCH_ARRAY_INIT (sizeof (TransformEntry),
-								    transform_entries_cmp,
-								    0);
+static GBSearchArray *transform_array = NULL;
+static GBSearchConfig transform_bconfig = G_STATIC_BCONFIG (sizeof (TransformEntry),
+							    transform_entries_cmp,
+							    0);
 
 
 /* --- functions --- */
+void
+g_value_c_init (void)	/* sync with gtype.c */
+{
+  transform_array = g_bsearch_array_new (&transform_bconfig);
+}
+
 static inline void		/* keep this function in sync with gvaluecollector.h and gboxed.c */
 value_meminit (GValue *value,
 	       GType   value_type)
@@ -230,7 +237,7 @@ transform_func_lookup (GType src_type,
 	{
 	  TransformEntry *e;
 	  
-	  e = g_bsearch_array_lookup (&transform_array, &entry);
+	  e = g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry);
 	  if (e)
 	    {
 	      /* need to check that there hasn't been a change in value handling */
@@ -277,7 +284,7 @@ g_value_register_transform_func (GType           src_type,
   entry.src_type = src_type;
   entry.dest_type = dest_type;
   
-  if (g_bsearch_array_lookup (&transform_array, &entry))
+  if (g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry))
     g_warning ("reregistering value transformation function (%p) for `%s' to `%s'",
 	       transform_func,
 	       g_type_name (src_type),
@@ -285,7 +292,7 @@ g_value_register_transform_func (GType           src_type,
 
   entry.func = transform_func;
 
-  g_bsearch_array_insert (&transform_array, &entry, TRUE);
+  transform_array = g_bsearch_array_insert (transform_array, &transform_bconfig, &entry, TRUE);
 }
 
 gboolean

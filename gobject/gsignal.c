@@ -36,7 +36,6 @@
  */
 #define	MAX_STACK_VALUES	(16)
 #define HANDLER_PRE_ALLOC       (48)
-#define EMISSION_PRE_ALLOC      (16)
 
 #define REPORT_BUG      "please report occourance circumstances to gtk-devel-list@gnome.org"
 #ifdef	G_ENABLE_DEBUG
@@ -129,17 +128,18 @@ static inline void		handler_ref		(Handler	 *handler);
 static inline void		handler_unref_R		(guint		  signal_id,
 							 gpointer	  instance,
 							 Handler	 *handler);
+static gint			handler_lists_cmp	(gconstpointer	  node1,
+							 gconstpointer	  node2);
 static inline void		emission_push		(Emission	**emission_list_p,
-							 guint		  signal_id,
-							 GQuark		  detail,
-							 gpointer	  instance,
-							 EmissionState	 *state_p);
+							 Emission	 *emission);
 static inline void		emission_pop		(Emission	**emission_list_p,
-							 EmissionState	 *state_p);
+							 Emission	 *emission);
 static inline Emission*		emission_find		(Emission	 *emission_list,
 							 guint		  signal_id,
 							 GQuark		  detail,
 							 gpointer	  instance);
+static gint			class_closures_cmp	(gconstpointer	  node1,
+							 gconstpointer	  node2);
 static gint			signal_key_cmp		(gconstpointer	  node1,
 							 gconstpointer	  node2);
 static	      gboolean		signal_emit_unlocked_R	(SignalNode	 *node,
@@ -175,7 +175,7 @@ struct _SignalNode
   guint              n_params : 8;
   GType		    *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GType		     return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
-  GClosure          *class_closure;
+  GBSearchArray     *class_closure_bsa;
   SignalAccumulator *accumulator;
   GSignalCMarshaller c_marshaller;
   GHookList         *emission_hooks;
@@ -190,11 +190,11 @@ struct _SignalKey
 
 struct _Emission
 {
-  Emission      *next;
-  guint          signal_id;
-  GQuark	 detail;
-  gpointer       instance;
-  EmissionState *state_p;
+  Emission             *next;
+  gpointer              instance;
+  GSignalInvocationHint ihint;
+  EmissionState         state;
+  GType			chain_type;
 };
 
 struct _HandlerList
@@ -225,16 +225,28 @@ struct _HandlerMatch
   } d;
 };
 
+typedef struct
+{
+  GType     instance_type; /* 0 for default closure */
+  GClosure *closure;
+} ClassClosure;
+
 
 /* --- variables --- */
-static GBSearchArray  g_signal_key_bsa = G_STATIC_BSEARCH_ARRAY_INIT (sizeof (SignalKey),
-								      signal_key_cmp,
-								      G_BSEARCH_ARRAY_ALIGN_POWER2);
+static GBSearchArray *g_signal_key_bsa = NULL;
+static GBSearchConfig g_signal_key_bconfig = G_STATIC_BCONFIG (sizeof (SignalKey),
+							       signal_key_cmp,
+							       G_BSEARCH_ARRAY_ALIGN_POWER2);
+static GBSearchConfig g_signal_hlbsa_bconfig = G_STATIC_BCONFIG (sizeof (HandlerList),
+								 handler_lists_cmp,
+								 G_BSEARCH_ARRAY_DEFER_SHRINK);
+static GBSearchConfig g_class_closure_bconfig = G_STATIC_BCONFIG (sizeof (ClassClosure),
+								  class_closures_cmp,
+								  0);
 static GHashTable    *g_handler_list_bsa_ht = NULL;
 static Emission      *g_recursive_emissions = NULL;
 static Emission      *g_restart_emissions = NULL;
 static GTrashStack   *g_handler_ts = NULL;
-static GTrashStack   *g_emission_ts = NULL;
 static gulong         g_handler_sequential_number = 1;
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
 #define	SIGNAL_LOCK()		G_LOCK (g_signal_mutex)
@@ -272,7 +284,7 @@ signal_id_lookup (GQuark quark,
       SignalKey *signal_key;
       
       key.itype = type;
-      signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
+      signal_key = g_bsearch_array_lookup (g_signal_key_bsa, &g_signal_key_bconfig, &key);
       
       if (signal_key)
 	return signal_key->signal_id;
@@ -288,7 +300,7 @@ signal_id_lookup (GQuark quark,
       SignalKey *signal_key;
 
       key.itype = ifaces[n_ifaces];
-      signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
+      signal_key = g_bsearch_array_lookup (g_signal_key_bsa, &g_signal_key_bconfig, &key);
 
       if (signal_key)
 	{
@@ -299,6 +311,15 @@ signal_id_lookup (GQuark quark,
   g_free (ifaces);
   
   return 0;
+}
+
+static gint
+class_closures_cmp (gconstpointer node1,
+		    gconstpointer node2)
+{
+  const ClassClosure *c1 = node1, *c2 = node2;
+  
+  return G_BSEARCH_ARRAY_CMP (c1->instance_type, c2->instance_type);
 }
 
 static gint
@@ -317,15 +338,23 @@ handler_list_ensure (guint    signal_id,
   GBSearchArray *hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
   HandlerList key;
   
-  if (!hlbsa)
-    {
-      hlbsa = g_bsearch_array_new (sizeof (HandlerList), handler_lists_cmp, G_BSEARCH_ARRAY_DEFER_SHRINK);
-      g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
-    }
   key.signal_id = signal_id;
   key.handlers = NULL;
-  
-  return g_bsearch_array_insert (hlbsa, &key, FALSE);
+  if (!hlbsa)
+    {
+      hlbsa = g_bsearch_array_new (&g_signal_hlbsa_bconfig);
+      hlbsa = g_bsearch_array_insert (hlbsa, &g_signal_hlbsa_bconfig, &key, FALSE);
+      g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
+    }
+  else
+    {
+      GBSearchArray *o = hlbsa;
+
+      hlbsa = g_bsearch_array_insert (o, &g_signal_hlbsa_bconfig, &key, FALSE);
+      if (hlbsa != o)
+	g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
+    }
+  return g_bsearch_array_lookup (hlbsa, &g_signal_hlbsa_bconfig, &key);
 }
 
 static inline HandlerList*
@@ -337,7 +366,7 @@ handler_list_lookup (guint    signal_id,
   
   key.signal_id = signal_id;
   
-  return hlbsa ? g_bsearch_array_lookup (hlbsa, &key) : NULL;
+  return hlbsa ? g_bsearch_array_lookup (hlbsa, &g_signal_hlbsa_bconfig, &key) : NULL;
 }
 
 static Handler*
@@ -353,7 +382,7 @@ handler_lookup (gpointer instance,
       
       for (i = 0; i < hlbsa->n_nodes; i++)
         {
-          HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, i);
+          HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, &g_signal_hlbsa_bconfig, i);
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
@@ -454,7 +483,7 @@ handlers_find (gpointer         instance,
           
           for (i = 0; i < hlbsa->n_nodes; i++)
             {
-              HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, i);
+              HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, &g_signal_hlbsa_bconfig, i);
 	      SignalNode *node = NULL;
               Handler *handler;
               
@@ -586,36 +615,29 @@ handler_insert (guint    signal_id,
 }
 
 static inline void
-emission_push (Emission     **emission_list_p,
-	       guint          signal_id,
-	       GQuark	      detail,
-	       gpointer       instance,
-	       EmissionState *state_p)
+emission_push (Emission **emission_list_p,
+	       Emission  *emission)
 {
-  Emission *emission = g_generic_node_alloc (&g_emission_ts,
-                                             sizeof (Emission),
-                                             EMISSION_PRE_ALLOC);
   emission->next = *emission_list_p;
-  emission->signal_id = signal_id;
-  emission->detail = detail;
-  emission->instance = instance;
-  emission->state_p = state_p;
   *emission_list_p = emission;
 }
 
 static inline void
-emission_pop (Emission     **emission_list_p,
-	      EmissionState *state_p)
+emission_pop (Emission **emission_list_p,
+	      Emission  *emission)
 {
-  Emission **loc = emission_list_p, *emission = *loc;
-  
-  while (emission->state_p != state_p)
-    {
-      loc = &emission->next;
-      emission = *loc;
-    }
-  *loc = emission->next;
-  g_generic_node_free (&g_emission_ts, emission);
+  Emission *node, *last = NULL;
+
+  for (node = *emission_list_p; node; last = node, node = last->next)
+    if (node == emission)
+      {
+	if (last)
+	  last->next = node->next;
+	else
+	  *emission_list_p = node->next;
+	return;
+      }
+  g_assert_not_reached ();
 }
 
 static inline Emission*
@@ -628,8 +650,20 @@ emission_find (Emission *emission_list,
   
   for (emission = emission_list; emission; emission = emission->next)
     if (emission->instance == instance &&
-	emission->signal_id == signal_id &&
-	emission->detail == detail)
+	emission->ihint.signal_id == signal_id &&
+	emission->ihint.detail == detail)
+      return emission;
+  return NULL;
+}
+
+static inline Emission*
+emission_find_innermost (Emission *emission_list,
+			 gpointer  instance)
+{
+  Emission *emission;
+  
+  for (emission = emission_list; emission; emission = emission->next)
+    if (emission->instance == instance)
       return emission;
   return NULL;
 }
@@ -657,6 +691,7 @@ g_signal_init (void) /* sync with gtype.c */
       
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
+      g_signal_key_bsa = g_bsearch_array_new (&g_signal_key_bconfig);
       
       /* invalid (0) signal_id */
       g_n_signal_nodes = 1;
@@ -714,11 +749,11 @@ g_signal_stop_emission (gpointer instance,
       
       if (emission)
         {
-          if (*emission->state_p == EMISSION_HOOK)
+          if (emission->state == EMISSION_HOOK)
             g_warning (G_STRLOC ": emission of signal \"%s\" for instance `%p' cannot be stopped from emission hook",
                        node->name, instance);
-          else if (*emission->state_p == EMISSION_RUN)
-            *emission->state_p = EMISSION_STOP;
+          else if (emission->state == EMISSION_RUN)
+            emission->state = EMISSION_STOP;
         }
       else
         g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance `%p'",
@@ -915,11 +950,11 @@ g_signal_stop_emission_by_name (gpointer     instance,
 	  
 	  if (emission)
 	    {
-	      if (*emission->state_p == EMISSION_HOOK)
+	      if (emission->state == EMISSION_HOOK)
 		g_warning (G_STRLOC ": emission of signal \"%s\" for instance `%p' cannot be stopped from emission hook",
 			   node->name, instance);
-	      else if (*emission->state_p == EMISSION_RUN)
-		*emission->state_p = EMISSION_STOP;
+	      else if (emission->state == EMISSION_RUN)
+		emission->state = EMISSION_STOP;
 	    }
 	  else
 	    g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance `%p'",
@@ -973,8 +1008,8 @@ g_signal_list_ids (GType  itype,
   g_return_val_if_fail (n_ids != NULL, NULL);
   
   SIGNAL_LOCK ();
-  keys = g_signal_key_bsa.nodes;
-  n_nodes  = g_signal_key_bsa.n_nodes;
+  keys = G_BSEARCH_ARRAY_NODES (&g_signal_key_bsa);
+  n_nodes = g_signal_key_bsa->n_nodes;
   result = g_array_new (FALSE, FALSE, sizeof (guint));
   
   for (i = 0; i < n_nodes; i++)
@@ -1047,40 +1082,6 @@ g_signal_query (guint         signal_id,
 }
 
 guint
-g_signal_new_valist (const gchar       *signal_name,
-                     GType              itype,
-                     GSignalFlags       signal_flags,
-                     GClosure          *class_closure,
-                     GSignalAccumulator accumulator,
-		     gpointer		accu_data,
-                     GSignalCMarshaller c_marshaller,
-                     GType              return_type,
-                     guint              n_params,
-                     va_list            args)
-{
-  GType *param_types;
-  guint i;
-  guint signal_id;
-
-  if (n_params > 0)
-    {
-      param_types = g_new (GType, n_params);
-
-      for (i = 0; i < n_params; i++)
-	param_types[i] = va_arg (args, GType);
-    }
-  else
-    param_types = NULL;
-
-  signal_id = g_signal_newv (signal_name, itype, signal_flags,
-			     class_closure, accumulator, accu_data, c_marshaller,
-			     return_type, n_params, param_types);
-  g_free (param_types);
-
-  return signal_id;
-}
-
-guint
 g_signal_new (const gchar	 *signal_name,
 	      GType		  itype,
 	      GSignalFlags	  signal_flags,
@@ -1107,6 +1108,65 @@ g_signal_new (const gchar	 *signal_name,
   va_end (args);
  
   return signal_id;
+}
+
+static inline ClassClosure*
+signal_find_class_closure (SignalNode *node,
+			   GType       itype)
+{
+  GBSearchArray *bsa = node->class_closure_bsa;
+  ClassClosure *cc;
+
+  if (bsa)
+    {
+      ClassClosure key;
+
+      /* cc->instance_type is 0 for default closure */
+      
+      key.instance_type = itype;
+      cc = g_bsearch_array_lookup (bsa, &g_class_closure_bconfig, &key);
+      while (!cc && key.instance_type)
+	{
+	  key.instance_type = g_type_parent (key.instance_type);
+	  cc = g_bsearch_array_lookup (bsa, &g_class_closure_bconfig, &key);
+	}
+    }
+  else
+    cc = NULL;
+  return cc;
+}
+
+static inline GClosure*
+signal_lookup_closure (SignalNode    *node,
+		       GTypeInstance *instance)
+{
+  ClassClosure *cc;
+
+  if (node->class_closure_bsa && node->class_closure_bsa->n_nodes == 1)
+    cc = G_BSEARCH_ARRAY_NODES (node->class_closure_bsa);
+  else
+    cc = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
+  return cc ? cc->closure : NULL;
+}
+
+static void
+signal_add_class_closure (SignalNode *node,
+			  GType       itype,
+			  GClosure   *closure)
+{
+  ClassClosure key;
+
+  if (!node->class_closure_bsa)
+    node->class_closure_bsa = g_bsearch_array_new (&g_class_closure_bconfig);
+  key.instance_type = itype;
+  key.closure = g_closure_ref (closure);
+  node->class_closure_bsa = g_bsearch_array_insert (node->class_closure_bsa,
+						    &g_class_closure_bconfig,
+						    &key,
+						    FALSE);
+  g_closure_sink (closure);
+  if (node->c_marshaller && closure && G_CLOSURE_NEEDS_MARSHAL (closure))
+    g_closure_set_marshal (closure, node->c_marshaller);
 }
 
 guint
@@ -1205,10 +1265,10 @@ g_signal_newv (const gchar       *signal_name,
       key.itype = itype;
       key.quark = g_quark_from_string (node->name);
       key.signal_id = signal_id;
-      g_bsearch_array_insert (&g_signal_key_bsa, &key, FALSE);
+      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key, FALSE);
       g_strdelimit (node->name, "_", '-');
       key.quark = g_quark_from_static_string (node->name);
-      g_bsearch_array_insert (&g_signal_key_bsa, &key, FALSE);
+      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key, FALSE);
     }
   node->destroyed = FALSE;
   
@@ -1217,9 +1277,7 @@ g_signal_newv (const gchar       *signal_name,
   node->n_params = n_params;
   node->param_types = g_memdup (param_types, sizeof (GType) * n_params);
   node->return_type = return_type;
-  node->class_closure = class_closure ? g_closure_ref (class_closure) : NULL;
-  if (class_closure)
-    g_closure_sink (class_closure);
+  node->class_closure_bsa = NULL;
   if (accumulator)
     {
       node->accumulator = g_new (SignalAccumulator, 1);
@@ -1230,9 +1288,44 @@ g_signal_newv (const gchar       *signal_name,
     node->accumulator = NULL;
   node->c_marshaller = c_marshaller;
   node->emission_hooks = NULL;
-  if (node->c_marshaller && class_closure && G_CLOSURE_NEEDS_MARSHAL (class_closure))
-    g_closure_set_marshal (class_closure, node->c_marshaller);
+  if (class_closure)
+    signal_add_class_closure (node, 0, class_closure);
   SIGNAL_UNLOCK ();
+
+  return signal_id;
+}
+
+guint
+g_signal_new_valist (const gchar       *signal_name,
+                     GType              itype,
+                     GSignalFlags       signal_flags,
+                     GClosure          *class_closure,
+                     GSignalAccumulator accumulator,
+		     gpointer		accu_data,
+                     GSignalCMarshaller c_marshaller,
+                     GType              return_type,
+                     guint              n_params,
+                     va_list            args)
+{
+  GType *param_types;
+  guint i;
+  guint signal_id;
+
+  if (n_params > 0)
+    {
+      param_types = g_new (GType, n_params);
+
+      for (i = 0; i < n_params; i++)
+	param_types[i] = va_arg (args, GType);
+    }
+  else
+    param_types = NULL;
+
+  signal_id = g_signal_newv (signal_name, itype, signal_flags,
+			     class_closure, accumulator, accu_data, c_marshaller,
+			     return_type, n_params, param_types);
+  g_free (param_types);
+
   return signal_id;
 }
 
@@ -1240,14 +1333,14 @@ static void
 signal_destroy_R (SignalNode *signal_node)
 {
   SignalNode node = *signal_node;
-  
+
   signal_node->destroyed = TRUE;
   
   /* reentrancy caution, zero out real contents first */
   signal_node->n_params = 0;
   signal_node->param_types = NULL;
   signal_node->return_type = 0;
-  signal_node->class_closure = NULL;
+  signal_node->class_closure_bsa = NULL;
   signal_node->accumulator = NULL;
   signal_node->c_marshaller = NULL;
   signal_node->emission_hooks = NULL;
@@ -1259,7 +1352,7 @@ signal_destroy_R (SignalNode *signal_node)
     
     for (emission = (node.flags & G_SIGNAL_NO_RECURSE) ? g_restart_emissions : g_recursive_emissions;
          emission; emission = emission->next)
-      if (emission->signal_id == node.signal_id)
+      if (emission->ihint.signal_id == node.signal_id)
         g_critical (G_STRLOC ": signal \"%s\" being destroyed is currently in emission (instance `%p')",
                     node.name, emission->instance);
   }
@@ -1269,7 +1362,18 @@ signal_destroy_R (SignalNode *signal_node)
    */
   SIGNAL_UNLOCK ();
   g_free (node.param_types);
-  g_closure_unref (node.class_closure);
+  if (node.class_closure_bsa)
+    {
+      guint i;
+
+      for (i = 0; i < node.class_closure_bsa->n_nodes; i++)
+	{
+	  ClassClosure *cc = g_bsearch_array_get_nth (node.class_closure_bsa, &g_class_closure_bconfig, i);
+
+	  g_closure_unref (cc->closure);
+	}
+      g_bsearch_array_destroy (node.class_closure_bsa, &g_class_closure_bconfig);
+    }
   g_free (node.accumulator);
   if (node.emission_hooks)
     {
@@ -1284,6 +1388,25 @@ g_signal_override_class_closure (guint     signal_id,
 				 GType     instance_type,
 				 GClosure *class_closure)
 {
+  SignalNode *node;
+
+  g_return_if_fail (signal_id > 0);
+  g_return_if_fail (class_closure != NULL);
+
+  SIGNAL_LOCK ();
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (!g_type_is_a (instance_type, node->itype))
+    g_warning ("%s: type `%s' cannot be overridden for signal id `%u'", G_STRLOC, g_type_name (instance_type), signal_id);
+  else
+    {
+      ClassClosure *cc = signal_find_class_closure (node, instance_type);
+
+      if (cc && cc->instance_type == instance_type)
+	g_warning ("%s: type `%s' is already overridden for signal id `%u'", G_STRLOC, g_type_name (instance_type), signal_id);
+      else
+	signal_add_class_closure (node, instance_type, class_closure);
+    }
+  SIGNAL_UNLOCK ();
 }
 
 void
@@ -1291,6 +1414,65 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
 				guint         signal_id,
 				GValue       *return_value)
 {
+  GType chain_type = 0, restore_type = 0;
+  Emission *emission = NULL;
+  GClosure *closure = NULL;
+  gpointer instance;
+  SignalNode *node;
+  
+  g_return_if_fail (instance_and_params != NULL);
+  instance = g_value_peek_pointer (instance_and_params);
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (signal_id > 0);
+  
+  SIGNAL_LOCK ();
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (node && g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
+    {
+      Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
+
+      emission = emission_find_innermost (emission_list, instance);
+
+      /* what we don't catch here is the scenario:
+       * 1) signal1 being in class_closure, emitting signal2
+       * 2) signal2 being in class closure, trying to chain signal1
+       * 3) signal1&G_SIGNAL_NO_RECURSE != signal2&G_SIGNAL_NO_RECURSE.
+       *
+       * also, it'd be a good idea to perform the same checks on parameters
+       * as g_signal_emitv() here.
+       */
+      if (emission && emission->ihint.signal_id == signal_id && emission->chain_type != G_TYPE_NONE)
+	{
+	  ClassClosure *cc = signal_find_class_closure (node, emission->chain_type);
+
+	  g_assert (cc != NULL);	/* closure currently in call stack */
+
+	  restore_type = cc->instance_type;
+	  cc = signal_find_class_closure (node, g_type_parent (cc->instance_type));
+	  if (cc && cc->instance_type != restore_type)
+	    {
+	      closure = cc->closure;
+	      chain_type = cc->instance_type;
+	    }
+	}
+      else
+	g_warning ("%s: signal id `%u' is not innermost class closure emission for instance `%p'", G_STRLOC, signal_id, instance);
+    }
+  else
+    g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+  if (closure)
+    {
+      emission->chain_type = chain_type;
+      SIGNAL_UNLOCK ();
+      g_closure_invoke (closure,
+			return_value,
+			node->n_params + 1,
+			instance_and_params,
+			&emission->ihint);
+      SIGNAL_LOCK ();
+      emission->chain_type = restore_type;
+    }
+  SIGNAL_UNLOCK ();
 }
 
 gulong
@@ -1539,7 +1721,7 @@ g_signal_handlers_destroy (gpointer instance)
       
       for (i = 0; i < hlbsa->n_nodes; i++)
         {
-          HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, i);
+          HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, &g_signal_hlbsa_bconfig, i);
           Handler *handler = hlist->handlers;
 	  
           while (handler)
@@ -1558,7 +1740,7 @@ g_signal_handlers_destroy (gpointer instance)
 		}
             }
         }
-      g_bsearch_array_destroy (hlbsa);
+      g_bsearch_array_destroy (hlbsa, &g_signal_hlbsa_bconfig);
     }
   SIGNAL_UNLOCK ();
 }
@@ -1993,9 +2175,8 @@ signal_emit_unlocked_R (SignalNode   *node,
 			GValue	     *emission_return,
 			const GValue *instance_and_params)
 {
-  EmissionState emission_state = 0;
   SignalAccumulator *accumulator;
-  GSignalInvocationHint ihint;
+  Emission emission;
   GClosure *class_closure;
   HandlerList *hlist;
   Handler *handler_list = NULL;
@@ -2020,17 +2201,15 @@ signal_emit_unlocked_R (SignalNode   *node,
   signal_id = node->signal_id;
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
-      Emission *emission = emission_find (g_restart_emissions, signal_id, detail, instance);
+      Emission *node = emission_find (g_restart_emissions, signal_id, detail, instance);
       
-      if (emission)
+      if (node)
 	{
-	  *emission->state_p = EMISSION_RESTART;
+	  node->state = EMISSION_RESTART;
 	  SIGNAL_UNLOCK ();
 	  return return_value_altered;
 	}
     }
-  ihint.signal_id = node->signal_id;
-  ihint.detail = detail;
   accumulator = node->accumulator;
   if (accumulator)
     {
@@ -2041,9 +2220,14 @@ signal_emit_unlocked_R (SignalNode   *node,
     }
   else
     return_accu = emission_return;
-  emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions,
-		 signal_id, detail, instance, &emission_state);
-  class_closure = node->class_closure;
+  emission.instance = instance;
+  emission.ihint.signal_id = node->signal_id;
+  emission.ihint.detail = detail;
+  emission.ihint.run_type = 0;
+  emission.state = 0;
+  emission.chain_type = G_TYPE_NONE;
+  emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission);
+  class_closure = signal_lookup_closure (node, instance);
   
  EMIT_RESTART:
   
@@ -2055,27 +2239,29 @@ signal_emit_unlocked_R (SignalNode   *node,
   if (handler_list)
     handler_ref (handler_list);
   
-  ihint.run_type = G_SIGNAL_RUN_FIRST;
+  emission.ihint.run_type = G_SIGNAL_RUN_FIRST;
   
   if ((node->flags & G_SIGNAL_RUN_FIRST) && class_closure)
     {
-      emission_state = EMISSION_RUN;
-      
+      emission.state = EMISSION_RUN;
+
+      emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
       SIGNAL_UNLOCK ();
       g_closure_invoke (class_closure,
 			return_accu,
 			node->n_params + 1,
 			instance_and_params,
-			&ihint);
-      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
-	  emission_state == EMISSION_RUN)
-	emission_state = EMISSION_STOP;
+			&emission.ihint);
+      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
+	  emission.state == EMISSION_RUN)
+	emission.state = EMISSION_STOP;
       SIGNAL_LOCK ();
+      emission.chain_type = G_TYPE_NONE;
       return_value_altered = TRUE;
       
-      if (emission_state == EMISSION_STOP)
+      if (emission.state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
-      else if (emission_state == EMISSION_RESTART)
+      else if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
@@ -2084,7 +2270,7 @@ signal_emit_unlocked_R (SignalNode   *node,
       gboolean need_destroy, was_in_call, may_recurse = TRUE;
       GHook *hook;
 
-      emission_state = EMISSION_HOOK;
+      emission.state = EMISSION_HOOK;
       hook = g_hook_first_valid (node->emission_hooks, may_recurse);
       while (hook)
 	{
@@ -2097,7 +2283,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 	      was_in_call = G_HOOK_IN_CALL (hook);
 	      hook->flags |= G_HOOK_FLAG_IN_CALL;
               SIGNAL_UNLOCK ();
-	      need_destroy = !hook_func (&ihint, node->n_params + 1, instance_and_params, hook->data);
+	      need_destroy = !hook_func (&emission.ihint, node->n_params + 1, instance_and_params, hook->data);
 	      SIGNAL_LOCK ();
 	      if (!was_in_call)
 		hook->flags &= ~G_HOOK_FLAG_IN_CALL;
@@ -2107,7 +2293,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 	  hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
 	}
       
-      if (emission_state == EMISSION_RESTART)
+      if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
@@ -2115,7 +2301,7 @@ signal_emit_unlocked_R (SignalNode   *node,
     {
       Handler *handler = handler_list;
       
-      emission_state = EMISSION_RUN;
+      emission.state = EMISSION_RUN;
       handler_ref (handler);
       do
 	{
@@ -2135,14 +2321,14 @@ signal_emit_unlocked_R (SignalNode   *node,
 				return_accu,
 				node->n_params + 1,
 				instance_and_params,
-				&ihint);
-	      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
-		  emission_state == EMISSION_RUN)
-		emission_state = EMISSION_STOP;
+				&emission.ihint);
+	      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
+		  emission.state == EMISSION_RUN)
+		emission.state = EMISSION_STOP;
 	      SIGNAL_LOCK ();
 	      return_value_altered = TRUE;
 	      
-	      tmp = emission_state == EMISSION_RUN ? handler->next : NULL;
+	      tmp = emission.state == EMISSION_RUN ? handler->next : NULL;
 	    }
 	  else
 	    tmp = handler->next;
@@ -2155,33 +2341,35 @@ signal_emit_unlocked_R (SignalNode   *node,
 	}
       while (handler);
       
-      if (emission_state == EMISSION_STOP)
+      if (emission.state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
-      else if (emission_state == EMISSION_RESTART)
+      else if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
-  ihint.run_type = G_SIGNAL_RUN_LAST;
+  emission.ihint.run_type = G_SIGNAL_RUN_LAST;
   
   if ((node->flags & G_SIGNAL_RUN_LAST) && class_closure)
     {
-      emission_state = EMISSION_RUN;
+      emission.state = EMISSION_RUN;
       
+      emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
       SIGNAL_UNLOCK ();
       g_closure_invoke (class_closure,
 			return_accu,
 			node->n_params + 1,
 			instance_and_params,
-			&ihint);
-      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
-	  emission_state == EMISSION_RUN)
-	emission_state = EMISSION_STOP;
+			&emission.ihint);
+      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
+	  emission.state == EMISSION_RUN)
+	emission.state = EMISSION_STOP;
       SIGNAL_LOCK ();
+      emission.chain_type = G_TYPE_NONE;
       return_value_altered = TRUE;
       
-      if (emission_state == EMISSION_STOP)
+      if (emission.state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
-      else if (emission_state == EMISSION_RESTART)
+      else if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
@@ -2189,7 +2377,7 @@ signal_emit_unlocked_R (SignalNode   *node,
     {
       Handler *handler = handler_list;
       
-      emission_state = EMISSION_RUN;
+      emission.state = EMISSION_RUN;
       handler_ref (handler);
       do
 	{
@@ -2203,14 +2391,14 @@ signal_emit_unlocked_R (SignalNode   *node,
 				return_accu,
 				node->n_params + 1,
 				instance_and_params,
-				&ihint);
-	      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
-		  emission_state == EMISSION_RUN)
-		emission_state = EMISSION_STOP;
+				&emission.ihint);
+	      if (!accumulate (&emission.ihint, emission_return, &accu, accumulator) &&
+		  emission.state == EMISSION_RUN)
+		emission.state = EMISSION_STOP;
 	      SIGNAL_LOCK ();
 	      return_value_altered = TRUE;
 	      
-	      tmp = emission_state == EMISSION_RUN ? handler->next : NULL;
+	      tmp = emission.state == EMISSION_RUN ? handler->next : NULL;
 	    }
 	  else
 	    tmp = handler->next;
@@ -2222,22 +2410,23 @@ signal_emit_unlocked_R (SignalNode   *node,
 	}
       while (handler);
       
-      if (emission_state == EMISSION_STOP)
+      if (emission.state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
-      else if (emission_state == EMISSION_RESTART)
+      else if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
  EMIT_CLEANUP:
   
-  ihint.run_type = G_SIGNAL_RUN_CLEANUP;
+  emission.ihint.run_type = G_SIGNAL_RUN_CLEANUP;
   
   if ((node->flags & G_SIGNAL_RUN_CLEANUP) && class_closure)
     {
       gboolean need_unset = FALSE;
       
-      emission_state = EMISSION_STOP;
+      emission.state = EMISSION_STOP;
       
+      emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
       SIGNAL_UNLOCK ();
       if (node->return_type != G_TYPE_NONE && !accumulator)
 	{
@@ -2248,19 +2437,20 @@ signal_emit_unlocked_R (SignalNode   *node,
 			node->return_type != G_TYPE_NONE ? &accu : NULL,
 			node->n_params + 1,
 			instance_and_params,
-			&ihint);
+			&emission.ihint);
       if (need_unset)
 	g_value_unset (&accu);
       SIGNAL_LOCK ();
+      emission.chain_type = G_TYPE_NONE;
       
-      if (emission_state == EMISSION_RESTART)
+      if (emission.state == EMISSION_RESTART)
 	goto EMIT_RESTART;
     }
   
   if (handler_list)
     handler_unref_R (signal_id, instance, handler_list);
   
-  emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission_state);
+  emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission);
   SIGNAL_UNLOCK ();
   if (accumulator)
     g_value_unset (&accu);

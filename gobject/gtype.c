@@ -2822,6 +2822,7 @@ g_type_name_from_class (GTypeClass *g_class)
 
 
 /* --- foreign prototypes --- */
+extern void	g_value_c_init		(void); /* sync with gvalue.c */
 extern void	g_value_types_init	(void); /* sync with gvaluetypes.c */
 extern void	g_enum_types_init	(void);	/* sync with genums.c */
 extern void     g_param_type_init       (void);	/* sync with gparam.c */
@@ -2897,6 +2898,8 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   
   G_WRITE_UNLOCK (&type_rw_lock);
   
+  g_value_c_init ();
+
   /* G_TYPE_TYPE_PLUGIN
    */
   g_type_plugin_get_type ();
