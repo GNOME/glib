@@ -1,3 +1,7 @@
+Mon Jan 18 00:02:46 1999  Tim Janik  <timj@gtk.org>
+
+	* NEWS: updates for 1.1.13.
+
 Sun Jan 17 17:15:59 1999  Tim Janik  <timj@gtk.org>
 
 	* gtree.c (g_tree_traverse): removed assertion about rtree->root being

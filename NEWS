@@ -1,3 +1,17 @@
+Overview of Changes in GLib 1.1.13:
+
+* Removed alloca() based function and macro variants again.
+* Improved thread related configure tests.
+* GSource destruction fixups.
+* Fixed up idle function removal based on user_data pointer.
+* Advanced Win32 portability.
+* Enforced GSource's check(), prepare() and dispatch() constrains,
+  loop recursions may only happen from dispatch(), and check() as well
+  as prepare() are called while the main_loop lock is being held.
+* GLib development now requires GNU autoconf 2.13, GNU automake 1.4
+  and GNU libtool 1.2d.
+* Lots of random portability and bug fixes.
+
 Overview of Changes in GLib 1.1.12:
 
 * Added alloca functions/macros: g_strdup_a, g_strconcat3_a, g_alloca,
