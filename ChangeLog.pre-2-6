@@ -4,7 +4,7 @@
 	standard output or standard error are invalid (as they are for GUI
 	applications). These console windows that open up unexpectedly
 	have caused endless amounts of confusion among
-	end-users. (#141102)
+	end-users. (#141102, #151175)
 
 	Don't output the process id on Windows. Only output the program
 	name. If not set with g_set_prgname(), fetch the application
