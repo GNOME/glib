@@ -1600,7 +1600,10 @@ read_again:
           break;
         }
 
-      checked_to = MAX (use_buf->len - (line_term_len - 1), 0);
+      if (use_buf->len > line_term_len - 1)
+	checked_to = use_buf->len - (line_term_len - 1);
+      else
+	checked_to = 0;
     }
 
 done:

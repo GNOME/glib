@@ -1,3 +1,10 @@
+Fri Oct 18 13:41:30 2002  Manish Singh  <yosh@gimp.org>
+
+	* glib/giochannel.c (g_io_channel_read_line_backend): avoid
+	creating negative values out of unsigned values using MAX,
+	check to see if the result would be positive before doing
+	the calculation.
+
 Tue Oct 15 15:28:47 2002  Manish Singh  <yosh@gimp.org>
 
 	* tests/iochannel-test.c: use gsize instead of int where appropriate
