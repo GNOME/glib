@@ -615,10 +615,10 @@ typedef gint32	GTime;
 #define GUINT32_FROM_BE(val)	(GUINT32_TO_BE (val))
 
 #ifdef G_HAVE_GINT64
-#define GINT64_FROM_LE(val)	(GINT32_TO_LE (val))
-#define GUINT64_FROM_LE(val)	(GUINT32_TO_LE (val))
-#define GINT64_FROM_BE(val)	(GINT32_TO_BE (val))
-#define GUINT64_FROM_BE(val)	(GUINT32_TO_BE (val))
+#define GINT64_FROM_LE(val)	(GINT64_TO_LE (val))
+#define GUINT64_FROM_LE(val)	(GUINT64_TO_LE (val))
+#define GINT64_FROM_BE(val)	(GINT64_TO_BE (val))
+#define GUINT64_FROM_BE(val)	(GUINT64_TO_BE (val))
 #endif
 
 #define GLONG_FROM_LE(val)	(GLONG_TO_LE (val))

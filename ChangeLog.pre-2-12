@@ -1,3 +1,8 @@
+1998-12-30  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* glib.h (G[U]INT64_FROM_{LE,BE}): 
+	Define to G[U]INT64_TO_{LE,BE}, not G[U]INT32_TO_{LE,BE}.
+
 Fri Dec 25 19:56:33 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* acglib.m4
