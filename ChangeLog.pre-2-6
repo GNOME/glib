@@ -1,3 +1,8 @@
+2001-03-23  Havoc Pennington  <hp@redhat.com>
+
+	* gutils.c (g_parse_debug_string): make GDebugKeys argument 
+	const
+
 2001-04-14  Hans Breuer  <hans@breuer.org>
 
 	* glib.def : 

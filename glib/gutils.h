@@ -130,9 +130,10 @@ struct _GDebugKey
 
 /* Miscellaneous utility functions
  */
-guint                 g_parse_debug_string (const gchar *string,
-					    GDebugKey   *keys,
-					    guint        nkeys);
+guint                 g_parse_debug_string (const gchar     *string,
+					    const GDebugKey *keys,
+					    guint            nkeys);
+
 gint                  g_snprintf           (gchar       *string,
 					    gulong       n,
 					    gchar const *format,

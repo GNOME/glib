@@ -421,9 +421,9 @@ g_vsnprintf (gchar	 *str,
 }
 
 guint	     
-g_parse_debug_string  (const gchar *string, 
-		       GDebugKey   *keys, 
-		       guint	    nkeys)
+g_parse_debug_string  (const gchar     *string, 
+		       const GDebugKey *keys, 
+		       guint	        nkeys)
 {
   guint i;
   guint result = 0;
