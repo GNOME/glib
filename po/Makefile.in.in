@@ -97,21 +97,6 @@ $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
 	   || ( rm -f $(srcdir)/$(GETTEXT_PACKAGE).pot \
 		&& mv $(GETTEXT_PACKAGE).po $(srcdir)/$(GETTEXT_PACKAGE).pot )
 
-$(srcdir)/cat-id-tbl.c: stamp-cat-id; @:
-$(srcdir)/stamp-cat-id: $(GETTEXT_PACKAGE).pot
-	rm -f cat-id-tbl.tmp
-	sed -f ./po2tbl.sed $(srcdir)/$(GETTEXT_PACKAGE).pot \
-		| sed -e "s/@GETTEXT_PACKAGE NAME@/$(GETTEXT_PACKAGE)/" > cat-id-tbl.tmp
-	if cmp -s cat-id-tbl.tmp $(srcdir)/cat-id-tbl.c; then \
-	  rm cat-id-tbl.tmp; \
-	else \
-	  echo cat-id-tbl.c changed; \
-	  rm -f $(srcdir)/cat-id-tbl.c; \
-	  mv cat-id-tbl.tmp $(srcdir)/cat-id-tbl.c; \
-	fi
-	cd $(srcdir) && rm -f stamp-cat-id && echo timestamp > stamp-cat-id
-
-
 install: install-exec install-data
 install-exec:
 install-data: install-data-@USE_NLS@
@@ -166,8 +151,6 @@ install-data-yes: all
 	  fi; \
 	  $(INSTALL_DATA) $(srcdir)/Makefile.in.in \
 			  $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
-	  $(INSTALL_DATA) $(srcdir)/po2tbl.sed.in \
-			  $(DESTDIR)$(gettextsrcdir)/po2tbl.sed.in; \
 	else \
 	  : ; \
 	fi
@@ -200,7 +183,7 @@ mostlyclean:
 clean: mostlyclean
 
 distclean: clean
-	rm -f Makefile Makefile.in POTFILES *.mo *.msg *.cat *.cat.m po2tbl.sed
+	rm -f Makefile Makefile.in POTFILES *.mo *.msg *.cat *.cat.m
 
 maintainer-clean: distclean
 	@echo "This command is intended for maintainers to use;"

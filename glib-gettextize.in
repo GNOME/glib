@@ -104,12 +104,6 @@ po/Makefile.in.in exists: use option -f if you really want to delete it."
   exit 1
 fi
 
-if test -f po/po2tbl.sed.in && test $force -eq 0; then
-  $echo "\
-po/po2tbl.sed.in exists: use option -f if you really want to delete it."
-  exit 1
-fi
-
 test -d po || {
   $echo "Creating po/ subdirectory"
   mkdir po || {
