@@ -1,3 +1,8 @@
+1999-03-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmem.c: Fixed a stupid cut'n'paste error of mine. Thanks to
+	Friedrich Dominicus <Friedrich.Dominicus@inka.de>
+
 1999-03-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
         * gutils.c (g_get_any_init): Fixed yet another bloody

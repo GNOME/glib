@@ -62,7 +62,7 @@
 #define ENTER_MEM_CHUNK_ROUTINE() \
   g_static_set (allocating_for_mem_chunk, \
 		g_static_get (allocating_for_mem_chunk) + 1)
-#define ENTER_MEM_CHUNK_ROUTINE() \
+#define LEAVE_MEM_CHUNK_ROUTINE() \
   g_static_set (allocating_for_mem_chunk, \
 		g_static_get (allocating_for_mem_chunk) - 1) 
 #else
