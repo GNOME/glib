@@ -1,3 +1,7 @@
+2001-09-24  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
+
+	* configure.in: Added "sk" to ALL_LINGUAS.
+
 2001-09-22  Hans Breuer  <hans@breuer.org>
 
 	* glib/giowin32.c : simply setting is_readable and is_writeable
