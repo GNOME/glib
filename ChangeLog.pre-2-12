@@ -1,11 +1,13 @@
 2005-03-29  Tor Lillqvist  <tml@novell.com>
 
-	* glib/gmain.c (g_poll): If the event fired, assign
+	* glib/gmain.c (g_poll): [Win32] If the event fired, assign
 	f->revents=f->events. We can't know whether the upper layer using
 	the event actually is readable, writeable or what, so say that all
 	the conditions hold. Remove the ResetEvent() call that has been
 	ifdeffed out anyway for a long time. Remove an "#ifdef 1" and
 	#endif pair of lines, that code is not optional.
+	(g_get_current_time): [Win32] Use GetSystemTimeAsFileTime()
+	instead of time() and GetTickCount(). Much simpler.
 
 2005-03-28  Matthias Clasen  <mclasen@redhat.com>
 

@@ -1689,26 +1689,19 @@ g_get_current_time (GTimeVal *result)
   result->tv_sec = r.tv_sec;
   result->tv_usec = r.tv_usec;
 #else
-  /* Avoid calling time() except for the first time.
-   * GetTickCount() should be pretty fast and low-level?
-   * I could also use ftime() but it seems unnecessarily overheady.
+  FILETIME ft;
+  guint64 *time64 = (guint64 *) &ft;
+
+  GetSystemTimeAsFileTime (&ft);
+
+  /* Convert from 100s of nanoseconds since 1601-01-01
+   * to Unix epoch. Yes, this is Y2038 unsafe.
    */
-  static DWORD start_tick = 0;
-  static time_t start_time;
-  DWORD tick;
+  *time64 -= G_GINT64_CONSTANT (116444736000000000);
+  *time64 /= 10;
 
-  g_return_if_fail (result != NULL);
- 
-  if (start_tick == 0)
-    {
-      start_tick = GetTickCount ();
-      time (&start_time);
-    }
-
-  tick = GetTickCount ();
-
-  result->tv_sec = (tick - start_tick) / 1000 + start_time;
-  result->tv_usec = ((tick - start_tick) % 1000) * 1000;
+  result->tv_sec = *time64 / 1000000;
+  result->tv_usec = *time64 % 1000000;
 #endif
 }
 
