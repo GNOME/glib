@@ -1,5 +1,7 @@
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Add new symbols.
+
 	* glib/gkeyfile.c (g_key_file_new): Fix docs.
 
 	* glib/gkeyfile.h: Use the same parameter names as in
