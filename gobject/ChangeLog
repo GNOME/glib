@@ -1,3 +1,8 @@
+Fri Feb 27 01:49:22 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib-mkenums.in: Support parsing of intializers containing
+	macros with arguments.  (#129717)
+
 2003-02-28  Hans Breuer  <hans@breuer.org>
 
 	* gobject.def : added g_strv_get_type
