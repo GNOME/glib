@@ -390,11 +390,11 @@ GSList*
 g_slist_reverse (GSList *list)
 {
   GSList *prev = NULL;
-  GSList *next = NULL;
   
   while (list)
     {
-      next = list->next;
+      GSList *next = list->next;
+
       list->next = prev;
       
       prev = list;

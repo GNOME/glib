@@ -47,7 +47,6 @@ int main(int argc, char** argv)
   GDateDay day;
   gchar buf[101];
   gchar* loc;
-
   /* Try to get all the leap year cases. */
   GDateYear check_years[] = { 
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -63,11 +62,9 @@ int main(int argc, char** argv)
     2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
     3000, 3001, 3002, 3998, 3999, 4000, 4001, 4002, 4003
   };
-                           
   guint n_check_years = sizeof(check_years)/sizeof(GDateYear);
-
-  guint i = 0;
-  gboolean discontinuity = FALSE;
+  guint i;
+  gboolean discontinuity;
 
   g_print("checking GDate...");
   

@@ -693,12 +693,10 @@ static GTreeNode*
 g_tree_node_rotate_right (GTreeNode *node)
 {
   GTreeNode *left;
-  GTreeNode *right;
   gint a_bal;
   gint b_bal;
 
   left = node->left;
-  right = node->right;
 
   node->left = left->right;
   left->right = node;

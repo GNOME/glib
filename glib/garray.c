@@ -209,7 +209,7 @@ g_array_remove_index (GArray* farray,
 
   g_return_val_if_fail (array, NULL);
 
-  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+  g_return_val_if_fail (index < array->len, NULL);
 
   if (index != array->len - 1)
     g_memmove (g_array_elt_pos (array, index),
@@ -229,13 +229,13 @@ g_array_remove_index (GArray* farray,
 
 GArray*
 g_array_remove_index_fast (GArray* farray,
-			   guint index)
+			   guint   index)
 {
   GRealArray* array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
 
-  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+  g_return_val_if_fail (index < array->len, NULL);
 
   if (index != array->len - 1)
     g_memmove (g_array_elt_pos (array, index), 
@@ -403,14 +403,14 @@ g_ptr_array_set_size  (GPtrArray   *farray,
 
 gpointer
 g_ptr_array_remove_index (GPtrArray* farray,
-			  guint index)
+			  guint      index)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
   gpointer result;
 
   g_return_val_if_fail (array, NULL);
 
-  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+  g_return_val_if_fail (index < array->len, NULL);
 
   result = array->pdata[index];
   
@@ -429,14 +429,14 @@ g_ptr_array_remove_index (GPtrArray* farray,
 
 gpointer
 g_ptr_array_remove_index_fast (GPtrArray* farray,
-			       guint index)
+			       guint      index)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
   gpointer result;
 
   g_return_val_if_fail (array, NULL);
 
-  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+  g_return_val_if_fail (index < array->len, NULL);
 
   result = array->pdata[index];
   
