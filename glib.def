@@ -475,6 +475,7 @@ EXPORTS
 	g_static_rw_lock_writer_lock
 	g_static_rw_lock_writer_trylock
 	g_static_rw_lock_writer_unlock
+	g_strcpy
 	g_str_equal
 	g_str_hash
 	g_strcanon

@@ -118,6 +118,40 @@ g_strnfill (guint length,
   return str;
 }
 
+/**
+ * g_stpcpy:
+ * @dest: destination buffer
+ * @src: source string
+ * 
+ * Copies a nul-terminated string into the dest buffer, include the
+ * trailing nul, and return a pointer to the trailing nul byte.
+ * This is useful for concatenating multiple strings together
+ * without having to repeatedly scan for the end.
+ * 
+ * Return value: a pointer to trailing nul byte.
+ **/
+gchar *
+g_stpcpy (gchar       *dest,
+          const gchar *src)
+{
+#ifdef HAVE_STPCPY
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src != NULL, NULL);
+  return stpcpy (dest, src);
+#else
+  register gchar *d = dest;
+  register const gchar *s = src;
+
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src != NULL, NULL);
+  do
+    *d++ = *s;
+  while (*s++ != '\0');
+
+  return d - 1;
+#endif
+}
+
 gchar*
 g_strdup_vprintf (const gchar *format,
 		  va_list      args1)
@@ -156,6 +190,7 @@ g_strconcat (const gchar *string1, ...)
   va_list args;
   gchar	  *s;
   gchar	  *concat;
+  gchar   *ptr;
 
   g_return_val_if_fail (string1 != NULL, NULL);
 
@@ -170,9 +205,9 @@ g_strconcat (const gchar *string1, ...)
   va_end (args);
 
   concat = g_new (gchar, l);
-  concat[0] = 0;
+  ptr = concat;
 
-  strcat (concat, string1);
+  ptr = g_stpcpy (ptr, string1);
   va_start (args, string1);
   s = va_arg (args, gchar*);
   while (s)
@@ -1369,6 +1404,7 @@ g_strjoinv (const gchar  *separator,
 	    gchar       **str_array)
 {
   gchar *string;
+  gchar *ptr;
 
   g_return_val_if_fail (str_array != NULL, NULL);
 
@@ -1381,17 +1417,19 @@ g_strjoinv (const gchar  *separator,
       guint separator_len;
 
       separator_len = strlen (separator);
+      /* First part, getting length */
       len = 1 + strlen (str_array[0]);
-      for(i = 1; str_array[i] != NULL; i++)
-	len += separator_len + strlen(str_array[i]);
+      for (i = 1; str_array[i] != NULL; i++)
+        len += strlen (str_array[i]);
+      len += separator_len * (i - 1);
 
+      /* Second part, building string */
       string = g_new (gchar, len);
-      *string = 0;
-      strcat (string, *str_array);
+      ptr = g_stpcpy (string, *str_array);
       for (i = 1; str_array[i] != NULL; i++)
 	{
-	  strcat (string, separator);
-	  strcat (string, str_array[i]);
+          ptr = g_stpcpy (ptr, separator);
+          ptr = g_stpcpy (ptr, str_array[i]);
 	}
       }
   else
@@ -1408,6 +1446,7 @@ g_strjoin (const gchar  *separator,
   va_list args;
   guint len;
   guint separator_len;
+  gchar *ptr;
 
   if (separator == NULL)
     separator = "";
@@ -1420,7 +1459,8 @@ g_strjoin (const gchar  *separator,
 
   if (s)
     {
-      len = strlen (s);
+      /* First part, getting length */
+      len = 1 + strlen (s);
 
       s = va_arg (args, gchar*);
       while (s)
@@ -1430,19 +1470,19 @@ g_strjoin (const gchar  *separator,
 	}
       va_end (args);
 
-      string = g_new (gchar, len + 1);
-      *string = 0;
+      /* Second part, building string */
+      string = g_new (gchar, len);
 
       va_start (args, separator);
 
       s = va_arg (args, gchar*);
-      strcat (string, s);
+      ptr = g_stpcpy (string, s);
 
       s = va_arg (args, gchar*);
       while (s)
 	{
-	  strcat (string, separator);
-	  strcat (string, s);
+	  ptr = g_stpcpy (ptr, separator);
+          ptr = g_stpcpy (ptr, s);
 	  s = va_arg (args, gchar*);
 	}
     }

@@ -804,6 +804,7 @@ g_strdup
 g_strndup
 g_strdupv
 g_strnfill
+g_stpcpy
 
 <SUBSECTION>
 g_strlcpy

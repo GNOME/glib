@@ -102,6 +102,9 @@
 /* Define if you have the on_exit function.  */
 /* #undef HAVE_ON_EXIT */
 
+/* Define if you have the stpcpy function. */
+/* #undef HAVE_STPCPY */
+
 /* Define if you have the strcasecmp function.  */
 /* #undef HAVE_STRCASECMP */
 

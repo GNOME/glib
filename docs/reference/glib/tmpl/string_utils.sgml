@@ -59,6 +59,16 @@ The returned string should be freed when no longer needed.
 @Returns: a newly-allocated string filled the @fill_char.
 
 
+<!-- ##### FUNCTION g_stpcpy ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
 
