@@ -235,12 +235,24 @@ set_error (GMarkupParseContext *context,
   g_propagate_error (error, tmp_error);
 }
 
+
+/* To make these faster, we first use the ascii-only tests, then check
+ * for the usual non-alnum name-end chars, and only then call the
+ * expensive unicode stuff. Nobody uses non-ascii in XML tag/attribute
+ * names, so this is a reasonable hack that virtually always avoids
+ * the guniprop call.
+ */
+#define IS_COMMON_NAME_END_CHAR(c) \
+  ((c) == '=' || (c) == '/' || (c) == '>' || (c) == ' ')
+
 static gboolean
 is_name_start_char (gunichar c)
 {
-  if (g_unichar_isalpha (c) ||
-      c == '_' ||
-      c == ':')
+  if (g_ascii_isalpha (c) ||
+      (!IS_COMMON_NAME_END_CHAR (c) &&
+       (g_unichar_isalpha (c) ||
+        c == '_' ||
+        c == ':')))
     return TRUE;
   else
     return FALSE;
@@ -249,11 +261,13 @@ is_name_start_char (gunichar c)
 static gboolean
 is_name_char (gunichar c)
 {
-  if (g_unichar_isalnum (c) ||
-      c == '.' ||
-      c == '-' ||
-      c == '_' ||
-      c == ':')
+  if (g_ascii_isalnum (c) ||
+      (!IS_COMMON_NAME_END_CHAR (c) &&
+       (g_unichar_isalnum (c) ||
+        c == '.' ||
+        c == '-' ||
+        c == '_' ||
+        c == ':')))
     return TRUE;
   else
     return FALSE;
@@ -326,296 +340,369 @@ typedef enum
   USTATE_AFTER_CHARREF_HASH
 } UnescapeState;
 
-static gboolean
-unescape_text (GMarkupParseContext *context,
-               const gchar         *text,
-               const gchar         *text_end,
-               gchar              **unescaped,
-               GError             **error)
+typedef struct
 {
-#define MAX_ENT_LEN 5
+  GMarkupParseContext *context;
   GString *str;
-  const gchar *p;
   UnescapeState state;
+  const gchar *text;
+  const gchar *text_end;
+  const gchar *entity_start;
+} UnescapeContext;
+
+static const gchar*
+unescape_text_state_inside_text (UnescapeContext *ucontext,
+                                 const gchar     *p,
+                                 GError         **error)
+{
   const gchar *start;
   gboolean normalize_attribute;
 
-  str = g_string_new (NULL);
-
-  if (context->state == STATE_INSIDE_ATTRIBUTE_VALUE_SQ ||
-      context->state == STATE_INSIDE_ATTRIBUTE_VALUE_DQ)
+  if (ucontext->context->state == STATE_INSIDE_ATTRIBUTE_VALUE_SQ ||
+      ucontext->context->state == STATE_INSIDE_ATTRIBUTE_VALUE_DQ)
     normalize_attribute = TRUE;
   else
     normalize_attribute = FALSE;
 
-  state = USTATE_INSIDE_TEXT;
-  p = text;
   start = p;
+  
+  while (p != ucontext->text_end)
+    {
+      if (*p == '&')
+        {
+          break;
+        }
+      else if (normalize_attribute && (*p == '\t' || *p == '\n'))
+        {
+          g_string_append_len (ucontext->str, start, p - start);
+          g_string_append_c (ucontext->str, ' ');
+          p = g_utf8_next_char (p);
+          start = p;
+        }
+      else if (*p == '\r')
+        {
+          g_string_append_len (ucontext->str, start, p - start);
+          g_string_append_c (ucontext->str, normalize_attribute ? ' ' : '\n');
+          p = g_utf8_next_char (p);
+          if (p != ucontext->text_end && *p == '\n')
+            p = g_utf8_next_char (p);
+          start = p;
+        }
+      else
+        p = g_utf8_next_char (p);
+    }
+  
+  if (p != start)
+    g_string_append_len (ucontext->str, start, p - start);
+  
+  if (p != ucontext->text_end && *p == '&')
+    {
+      p = g_utf8_next_char (p);
+      ucontext->state = USTATE_AFTER_AMPERSAND;
+    }
+
+  return p;
+}
+
+__attribute__ ((noinline))
+static const gchar*
+unescape_text_state_after_ampersand (UnescapeContext *ucontext,
+                                     const gchar     *p,
+                                     GError         **error)
+{
+  ucontext->entity_start = NULL;
+  
+  if (*p == '#')
+    {
+      p = g_utf8_next_char (p);
+
+      ucontext->entity_start = p;
+      ucontext->state = USTATE_AFTER_CHARREF_HASH;
+    }
+  else if (!is_name_start_char (g_utf8_get_char (p)))
+    {
+      if (*p == ';')
+        {
+          set_unescape_error (ucontext->context, error,
+                              p, ucontext->text_end,
+                              G_MARKUP_ERROR_PARSE,
+                              _("Empty entity '&;' seen; valid "
+                                "entities are: &amp; &quot; &lt; &gt; &apos;"));
+        }
+      else
+        {
+          gchar buf[7];
+
+          set_unescape_error (ucontext->context, error,
+                              p, ucontext->text_end,
+                              G_MARKUP_ERROR_PARSE,
+                              _("Character '%s' is not valid at "
+                                "the start of an entity name; "
+                                "the & character begins an entity; "
+                                "if this ampersand isn't supposed "
+                                "to be an entity, escape it as "
+                                "&amp;"),
+                              utf8_str (p, buf));
+        }
+    }
+  else
+    {
+      ucontext->entity_start = p;
+      ucontext->state = USTATE_INSIDE_ENTITY_NAME;
+    }
+
+  return p;
+}
+
+__attribute__ ((noinline))
+static const gchar*
+unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
+                                        const gchar     *p,
+                                        GError         **error)
+{
+#define MAX_ENT_LEN 5
+  gchar buf[MAX_ENT_LEN+1] = {
+    '\0', '\0', '\0', '\0', '\0', '\0'
+  };
+  gchar *dest;
+
+  while (p != ucontext->text_end)
+    {
+      if (*p == ';')
+        break;
+      else if (!is_name_char (*p))
+        {
+          gchar ubuf[7];
+
+          set_unescape_error (ucontext->context, error,
+                              p, ucontext->text_end,
+                              G_MARKUP_ERROR_PARSE,
+                              _("Character '%s' is not valid "
+                                "inside an entity name"),
+                              utf8_str (p, ubuf));
+          break;
+        }
+
+      p = g_utf8_next_char (p);
+    }
+
+  if (ucontext->context->state != STATE_ERROR)
+    {
+      if (p != ucontext->text_end)
+        {
+          const gchar *src;
+                
+          src = ucontext->entity_start;
+          dest = buf;
+          while (src != p)
+            {
+              *dest = *src;
+              ++dest;
+              ++src;
+            }
+
+          /* move to after semicolon */
+          p = g_utf8_next_char (p);
+          ucontext->state = USTATE_INSIDE_TEXT;
+
+          if (strcmp (buf, "lt") == 0)
+            g_string_append_c (ucontext->str, '<');
+          else if (strcmp (buf, "gt") == 0)
+            g_string_append_c (ucontext->str, '>');
+          else if (strcmp (buf, "amp") == 0)
+            g_string_append_c (ucontext->str, '&');
+          else if (strcmp (buf, "quot") == 0)
+            g_string_append_c (ucontext->str, '"');
+          else if (strcmp (buf, "apos") == 0)
+            g_string_append_c (ucontext->str, '\'');
+          else
+            {
+              set_unescape_error (ucontext->context, error,
+                                  p, ucontext->text_end,
+                                  G_MARKUP_ERROR_PARSE,
+                                  _("Entity name '%s' is not known"),
+                                  buf);
+            }
+        }
+      else
+        {
+          set_unescape_error (ucontext->context, error,
+                              /* give line number of the & */
+                              ucontext->entity_start, ucontext->text_end,
+                              G_MARKUP_ERROR_PARSE,
+                              _("Entity did not end with a semicolon; "
+                                "most likely you used an ampersand "
+                                "character without intending to start "
+                                "an entity - escape ampersand as &amp;"));
+        }
+    }
+#undef MAX_ENT_LEN
+
+  return p;
+}
+
+__attribute__ ((noinline))
+static const gchar*
+unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
+                                        const gchar     *p,
+                                        GError         **error)
+{
+  gboolean is_hex = FALSE;
+  const char *start;
+
+  start = ucontext->entity_start;
+
+  if (*p == 'x')
+    {
+      is_hex = TRUE;
+      p = g_utf8_next_char (p);
+      start = p;
+    }
+
+  while (p != ucontext->text_end && *p != ';')
+    p = g_utf8_next_char (p);
+
+  if (p != ucontext->text_end)
+    {
+      g_assert (*p == ';');
+
+      /* digit is between start and p */
+
+      if (start != p)
+        {
+          gchar *digit = g_strndup (start, p - start);
+          gulong l;
+          gchar *end = NULL;
+          gchar *digit_end = digit + (p - start);
+                    
+          errno = 0;
+          if (is_hex)
+            l = strtoul (digit, &end, 16);
+          else
+            l = strtoul (digit, &end, 10);
+
+          if (end != digit_end || errno != 0)
+            {
+              set_unescape_error (ucontext->context, error,
+                                  start, ucontext->text_end,
+                                  G_MARKUP_ERROR_PARSE,
+                                  _("Failed to parse '%s', which "
+                                    "should have been a digit "
+                                    "inside a character reference "
+                                    "(&#234; for example) - perhaps "
+                                    "the digit is too large"),
+                                  digit);
+            }
+          else
+            {
+              /* characters XML permits */
+              if (l == 0x9 ||
+                  l == 0xA ||
+                  l == 0xD ||
+                  (l >= 0x20 && l <= 0xD7FF) ||
+                  (l >= 0xE000 && l <= 0xFFFD) ||
+                  (l >= 0x10000 && l <= 0x10FFFF))
+                {
+                  gchar buf[7];
+                  g_string_append (ucontext->str, char_str (l, buf));
+                }
+              else
+                {
+                  set_unescape_error (ucontext->context, error,
+                                      start, ucontext->text_end,
+                                      G_MARKUP_ERROR_PARSE,
+                                      _("Character reference '%s' does not encode a permitted character"),
+                                      digit);
+                }
+            }
+
+          g_free (digit);
+
+          /* Move to next state */
+          p = g_utf8_next_char (p); /* past semicolon */
+          ucontext->state = USTATE_INSIDE_TEXT;
+        }
+      else
+        {
+          set_unescape_error (ucontext->context, error,
+                              start, ucontext->text_end,
+                              G_MARKUP_ERROR_PARSE,
+                              _("Empty character reference; "
+                                "should include a digit such as "
+                                "&#454;"));
+        }
+    }
+  else
+    {
+      set_unescape_error (ucontext->context, error,
+                          start, ucontext->text_end,
+                          G_MARKUP_ERROR_PARSE,
+                          _("Character reference did not end with a "
+                            "semicolon; "
+                            "most likely you used an ampersand "
+                            "character without intending to start "
+                            "an entity - escape ampersand as &amp;"));
+    }
+
+  return p;
+}
+
+static gboolean
+unescape_text (GMarkupParseContext *context,
+               const gchar         *text,
+               const gchar         *text_end,
+               GString            **unescaped,
+               GError             **error)
+{
+  UnescapeContext ucontext;
+  const gchar *p;
+
+  ucontext.context = context;
+  ucontext.text = text;
+  ucontext.text_end = text_end;
+  ucontext.entity_start = NULL;
+  
+  ucontext.str = g_string_sized_new (text_end - text);
+
+  ucontext.state = USTATE_INSIDE_TEXT;
+  p = text;
+
   while (p != text_end && context->state != STATE_ERROR)
     {
       g_assert (p < text_end);
       
-      switch (state)
+      switch (ucontext.state)
         {
         case USTATE_INSIDE_TEXT:
           {
-            while (p != text_end && *p != '&')
-	      {
-		if ((*p == '\t' || *p == '\n') && normalize_attribute)
-		  {
-		    g_string_append_len (str, start, p - start);
-		    g_string_append_c (str, ' ');
-		    p = g_utf8_next_char (p);
-		    start = p;
-		  }
-		else if (*p == '\r')
-		  {
-		    g_string_append_len (str, start, p - start);
-		    g_string_append_c (str, normalize_attribute ? ' ' : '\n');
-		    p = g_utf8_next_char (p);
-		    if (*p == '\n')
-		      p = g_utf8_next_char (p);
-		    start = p;
-		  }
-		else
-		  p = g_utf8_next_char (p);
-	      }
-
-            if (p != start)
-              {
-                g_string_append_len (str, start, p - start);
-
-                start = NULL;
-              }
-            
-            if (p != text_end && *p == '&')
-              {
-                p = g_utf8_next_char (p);
-                state = USTATE_AFTER_AMPERSAND;
-              }
+            p = unescape_text_state_inside_text (&ucontext,
+                                                 p,
+                                                 error);
           }
           break;
 
         case USTATE_AFTER_AMPERSAND:
           {
-            if (*p == '#')
-              {
-                p = g_utf8_next_char (p);
-
-                start = p;
-                state = USTATE_AFTER_CHARREF_HASH;
-              }
-            else if (!is_name_start_char (g_utf8_get_char (p)))
-              {
-                if (*p == ';')
-                  {
-                    set_unescape_error (context, error,
-                                        p, text_end,
-                                        G_MARKUP_ERROR_PARSE,
-                                        _("Empty entity '&;' seen; valid "
-                                          "entities are: &amp; &quot; &lt; &gt; &apos;"));
-                  }
-                else
-                  {
-                    gchar buf[7];
-
-                    set_unescape_error (context, error,
-                                        p, text_end,
-                                        G_MARKUP_ERROR_PARSE,
-                                        _("Character '%s' is not valid at "
-                                          "the start of an entity name; "
-                                          "the & character begins an entity; "
-                                          "if this ampersand isn't supposed "
-                                          "to be an entity, escape it as "
-                                          "&amp;"),
-                                        utf8_str (p, buf));
-                  }
-              }
-            else
-              {
-                start = p;
-                state = USTATE_INSIDE_ENTITY_NAME;
-              }
+            p = unescape_text_state_after_ampersand (&ucontext,
+                                                     p,
+                                                     error);
           }
           break;
 
 
         case USTATE_INSIDE_ENTITY_NAME:
           {
-            gchar buf[MAX_ENT_LEN+1] = {
-              '\0', '\0', '\0', '\0', '\0', '\0'
-            };
-            gchar *dest;
-
-            while (p != text_end)
-              {
-                if (*p == ';')
-                  break;
-                else if (!is_name_char (*p))
-                  {
-                    gchar ubuf[7];
-
-                    set_unescape_error (context, error,
-                                        p, text_end,
-                                        G_MARKUP_ERROR_PARSE,
-                                        _("Character '%s' is not valid "
-                                          "inside an entity name"),
-                                        utf8_str (p, ubuf));
-                    break;
-                  }
-
-                p = g_utf8_next_char (p);
-              }
-
-            if (context->state != STATE_ERROR)
-              {
-                if (p != text_end)
-                  {
-                    const gchar *src;
-                
-                    src = start;
-                    dest = buf;
-                    while (src != p)
-                      {
-                        *dest = *src;
-                        ++dest;
-                        ++src;
-                      }
-
-                    /* move to after semicolon */
-                    p = g_utf8_next_char (p);
-                    start = p;
-                    state = USTATE_INSIDE_TEXT;
-
-                    if (strcmp (buf, "lt") == 0)
-                      g_string_append_c (str, '<');
-                    else if (strcmp (buf, "gt") == 0)
-                      g_string_append_c (str, '>');
-                    else if (strcmp (buf, "amp") == 0)
-                      g_string_append_c (str, '&');
-                    else if (strcmp (buf, "quot") == 0)
-                      g_string_append_c (str, '"');
-                    else if (strcmp (buf, "apos") == 0)
-                      g_string_append_c (str, '\'');
-                    else
-                      {
-                        set_unescape_error (context, error,
-                                            p, text_end,
-                                            G_MARKUP_ERROR_PARSE,
-                                            _("Entity name '%s' is not known"),
-                                            buf);
-                      }
-                  }
-                else
-                  {
-                    set_unescape_error (context, error,
-                                        /* give line number of the & */
-                                        start, text_end,
-                                        G_MARKUP_ERROR_PARSE,
-                                        _("Entity did not end with a semicolon; "
-                                          "most likely you used an ampersand "
-                                          "character without intending to start "
-                                          "an entity - escape ampersand as &amp;"));
-                  }
-              }
+            p = unescape_text_state_inside_entity_name (&ucontext,
+                                                        p,
+                                                        error);
           }
           break;
 
         case USTATE_AFTER_CHARREF_HASH:
           {
-            gboolean is_hex = FALSE;
-            if (*p == 'x')
-              {
-                is_hex = TRUE;
-                p = g_utf8_next_char (p);
-                start = p;
-              }
-
-            while (p != text_end && *p != ';')
-              p = g_utf8_next_char (p);
-
-            if (p != text_end)
-              {
-                g_assert (*p == ';');
-
-                /* digit is between start and p */
-
-                if (start != p)
-                  {
-                    gchar *digit = g_strndup (start, p - start);
-                    gulong l;
-                    gchar *end = NULL;
-                    gchar *digit_end = digit + (p - start);
-                    
-                    errno = 0;
-                    if (is_hex)
-                      l = strtoul (digit, &end, 16);
-                    else
-                      l = strtoul (digit, &end, 10);
-
-                    if (end != digit_end || errno != 0)
-                      {
-                        set_unescape_error (context, error,
-                                            start, text_end,
-                                            G_MARKUP_ERROR_PARSE,
-                                            _("Failed to parse '%s', which "
-                                              "should have been a digit "
-                                              "inside a character reference "
-                                              "(&#234; for example) - perhaps "
-                                              "the digit is too large"),
-                                            digit);
-                      }
-                    else
-                      {
-                        /* characters XML permits */
-                        if (l == 0x9 ||
-                            l == 0xA ||
-                            l == 0xD ||
-                            (l >= 0x20 && l <= 0xD7FF) ||
-                            (l >= 0xE000 && l <= 0xFFFD) ||
-                            (l >= 0x10000 && l <= 0x10FFFF))
-                          {
-                            gchar buf[7];
-                            g_string_append (str, char_str (l, buf));
-                          }
-                        else
-                          {
-                            set_unescape_error (context, error,
-                                                start, text_end,
-                                                G_MARKUP_ERROR_PARSE,
-                                                _("Character reference '%s' does not encode a permitted character"),
-                                                digit);
-                          }
-                      }
-
-                    g_free (digit);
-
-                    /* Move to next state */
-                    p = g_utf8_next_char (p); /* past semicolon */
-                    start = p;
-                    state = USTATE_INSIDE_TEXT;
-                  }
-                else
-                  {
-                    set_unescape_error (context, error,
-                                        start, text_end,
-                                        G_MARKUP_ERROR_PARSE,
-                                        _("Empty character reference; "
-                                          "should include a digit such as "
-                                          "&#454;"));
-                  }
-              }
-            else
-              {
-                set_unescape_error (context, error,
-                                    start, text_end,
-                                    G_MARKUP_ERROR_PARSE,
-                                    _("Character reference did not end with a "
-                                      "semicolon; "
-                                      "most likely you used an ampersand "
-                                      "character without intending to start "
-                                      "an entity - escape ampersand as &amp;"));
-              }
+            p = unescape_text_state_after_charref_hash (&ucontext,
+                                                        p,
+                                                        error);
           }
           break;
 
@@ -627,7 +714,7 @@ unescape_text (GMarkupParseContext *context,
 
   if (context->state != STATE_ERROR) 
     {
-      switch (state) 
+      switch (ucontext.state) 
 	{
 	case USTATE_INSIDE_TEXT:
 	  break;
@@ -649,40 +736,37 @@ unescape_text (GMarkupParseContext *context,
 
   if (context->state == STATE_ERROR)
     {
-      g_string_free (str, TRUE);
+      g_string_free (ucontext.str, TRUE);
       *unescaped = NULL;
       return FALSE;
     }
   else
     {
-      *unescaped = g_string_free (str, FALSE);
+      *unescaped = ucontext.str;
       return TRUE;
     }
-
-#undef MAX_ENT_LEN
 }
 
-static gboolean
+static inline gboolean
 advance_char (GMarkupParseContext *context)
-{
-  g_return_val_if_fail (context->iter != context->current_text_end, FALSE);
-
+{  
   context->iter = g_utf8_next_char (context->iter);
   context->char_number += 1;
 
   if (context->iter == context->current_text_end)
-    return FALSE;
-
-  if (*context->iter == '\n')
+    {
+      return FALSE;
+    }
+  else if (*context->iter == '\n')
     {
       context->line_number += 1;
       context->char_number = 1;
     }
-
+  
   return TRUE;
 }
 
-static gboolean
+static inline gboolean
 xml_isspace (char c)
 {
   return c == ' ' || c == '\t' || c == '\n' || c == '\r';
@@ -716,7 +800,7 @@ add_to_partial (GMarkupParseContext *context,
                 const gchar         *text_end)
 {
   if (context->partial_chunk == NULL)
-    context->partial_chunk = g_string_new (NULL);
+    context->partial_chunk = g_string_sized_new (text_end - text_start);
 
   if (text_start != text_end)
     g_string_append_len (context->partial_chunk, text_start,
@@ -750,23 +834,18 @@ current_attribute (GMarkupParseContext *context)
 static void
 find_current_text_end (GMarkupParseContext *context)
 {
-  /* This function must be safe (non-segfaulting) on invalid UTF8 */
+  /* This function must be safe (non-segfaulting) on invalid UTF8.
+   * It assumes the string starts with a character start
+   */
   const gchar *end = context->current_text + context->current_text_len;
   const gchar *p;
   const gchar *next;
 
   g_assert (context->current_text_len > 0);
 
-  p = context->current_text;
-  next = g_utf8_find_next_char (p, end);
+  p = g_utf8_find_prev_char (context->current_text, end);
 
-  while (next && *next)
-    {
-      if (p == next)
-	next++;
-      p = next;
-      next = g_utf8_find_next_char (p, end);
-    }
+  g_assert (p != NULL); /* since current_text was a char start */
 
   /* p is now the start of the last character or character portion. */
   g_assert (p != end);
@@ -934,8 +1013,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
    * we could have a trailing incomplete char)
    */
   if (!g_utf8_validate (context->current_text,
-                        context->current_text_len,
-                        &first_invalid))
+			context->current_text_len,
+			&first_invalid))
     {
       gint newlines = 0;
       const gchar *p;
@@ -1352,6 +1431,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                * with the partial chunk if any; set it for the current
                * attribute.
                */
+              GString *unescaped;
+              
               add_to_partial (context, context->start, context->iter);
 
               g_assert (context->cur_attr >= 0);
@@ -1360,10 +1441,11 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                  context->partial_chunk->str,
                                  context->partial_chunk->str +
                                  context->partial_chunk->len,
-                                 &context->attr_values[context->cur_attr],
+                                 &unescaped,
                                  error))
                 {
                   /* success, advance past quote and set state. */
+                  context->attr_values[context->cur_attr] = g_string_free (unescaped, FALSE);
                   advance_char (context);
                   context->state = STATE_BETWEEN_ATTRIBUTES;
                   context->start = NULL;
@@ -1390,7 +1472,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 
           if (context->iter != context->current_text_end)
             {
-              gchar *unescaped = NULL;
+              GString *unescaped = NULL;
 
               /* The text has ended at the open angle. Call the text
                * callback.
@@ -1407,12 +1489,12 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 
                   if (context->parser->text)
                     (*context->parser->text) (context,
-                                              unescaped,
-                                              strlen (unescaped),
+                                              unescaped->str,
+                                              unescaped->len,
                                               context->user_data,
                                               &tmp_error);
                   
-                  g_free (unescaped);
+                  g_string_free (unescaped, TRUE);
 
                   if (tmp_error == NULL)
                     {
@@ -1869,7 +1951,8 @@ g_markup_escape_text (const gchar *text,
   if (length < 0)
     length = strlen (text);
 
-  str = g_string_new (NULL);
+  /* prealloc at least as long as original text */
+  str = g_string_sized_new (length);
   append_escaped_text (str, text, length);
 
   return g_string_free (str, FALSE);
