@@ -40,6 +40,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <signal.h>
 
 #ifdef NATIVE_WIN32
 #  define STRICT
@@ -387,7 +388,16 @@ g_logv (const gchar    *log_domain,
 	  /* *domain can be cluttered now */
 	  
 	  if (test_level & G_LOG_FLAG_FATAL)
-	    abort ();
+	    {
+#if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)
+	      if (!(test_level & G_LOG_FLAG_RECURSION))
+		raise (SIGTRAP);
+	      else
+		abort ();
+#else /* !G_ENABLE_DEBUG || !SIGTRAP */
+	      abort ();
+#endif /* !G_ENABLE_DEBUG || !SIGTRAP */
+	    }
 	  
 	  depth--;
 	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));

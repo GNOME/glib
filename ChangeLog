@@ -1,3 +1,10 @@
+Mon Sep 13 23:25:59 1999  Tim Janik  <timj@gtk.org>
+
+	* gmessages.c (g_logv): in case we have to abort the program,
+	debugging is enabled and we are not called recursively, try
+	to abort with raise (SIGTRAP) first, so developers may ignore
+	certain failure conditions during debugging stage.
+
 Thu Aug 26 15:09:36 1999  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am:
