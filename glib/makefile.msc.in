@@ -48,6 +48,7 @@ glib_OBJECTS =			\
 	gmem.obj		\
 	gmessages.obj		\
 	gnode.obj		\
+	goption.obj	\
 	gprimes.obj		\
 	gqsort.obj		\
 	gqueue.obj		\

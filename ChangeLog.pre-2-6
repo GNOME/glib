@@ -1,3 +1,10 @@
+2004-08-06  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in glib/glib.def : updated
+
+	* glib/gutils.c : avoid 'inconsitent dll linkage' by not
+	defining extern char** environ with msvc
+
 2004-08-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* m4macros/glib-gettext.m4: Require ngettext.  (#123847,

@@ -821,7 +821,13 @@ g_setenv (const gchar *variable,
 /* According to the Single Unix Specification, environ is not in 
  * any system header, although unistd.h often declares it.
  */
+#  ifndef _MSC_VER
+/*
+ * Win32 - at least msvc headers declare it so let's avoid
+ *   warning C4273: '__p__environ' : inconsistent dll linkage.  dllexport assumed.
+ */
 extern char **environ;
+#  endif
 #endif
            
 /**

@@ -401,6 +401,25 @@ EXPORTS
 	g_on_error_query
 	g_on_error_stack_trace
 	g_once_impl
+	g_option_context_add_group
+	g_option_context_add_main_entries
+	g_option_context_error_quark
+	g_option_context_free
+	g_option_context_get_help_enabled
+	g_option_context_get_ignore_unknown_options
+	g_option_context_get_main_group
+	g_option_context_new
+	g_option_context_parse
+	g_option_context_set_help_enabled
+	g_option_context_set_ignore_unknown_options
+	g_option_context_set_main_group
+	g_option_group_add_entries
+	g_option_group_free
+	g_option_group_new
+	g_option_group_set_error_hook
+	g_option_group_set_parse_hooks
+	g_option_group_set_translate_func
+	g_option_group_set_translation_domain
 	g_parse_debug_string
 	g_path_get_basename
 	g_path_get_dirname
@@ -800,6 +819,7 @@ EXPORTS
 	g_win32_get_package_installation_subdirectory
 	g_win32_getlocale
 	glib_binary_age
+	glib_check_version
 	glib_interface_age
 	glib_major_version
 	glib_mem_profiler_table
