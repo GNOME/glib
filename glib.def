@@ -239,6 +239,7 @@ EXPORTS
 	g_mem_profile
 	g_memdup
 	g_messages_init
+	g_mkstemp
 	g_mutex_init
 	g_node_child_index
 	g_node_child_position
