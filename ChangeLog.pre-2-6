@@ -1,3 +1,9 @@
+Wed Sep 26 12:41:05 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c (g_strdup_vprintf): Copy if 
+	!g_mem_is_system_malloc, not the other way around.
+	(Found by James Antill.)
+
 Wed Sep 26 11:00:31 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_strnfill): Use memset; might be 
