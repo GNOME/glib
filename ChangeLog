@@ -1,3 +1,12 @@
+2003-02-11  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (EXTRA_DIST): Include ChangeLog.pre-2-2.
+
+	* glib-zip.in: Include also the gtk-doc/html documentation in the
+	developer package.
+
+	* README.win32: Updates.
+
 2003-02-11  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* AUTHORS: Changed my e-mail address.
