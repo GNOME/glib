@@ -1,3 +1,8 @@
+2002-12-05  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strncasecmp): Break long deprecation
+	info into two paragraphs.
+
 Thu Dec  5 15:43:46 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Fix multiple problems with the programs

@@ -1856,6 +1856,7 @@ g_strcasecmp (const gchar *s1,
  * locale-sensitive, and it's broken if your string is localized, since
  * it doesn't work on many encodings at all, including UTF-8, EUC-JP,
  * etc.
+ *
  * There are therefore two replacement functions: g_ascii_strncasecmp(),
  * which only works on ASCII and is not locale-sensitive, and
  * g_utf8_casefold(), which is good for case-insensitive sorting of UTF-8.

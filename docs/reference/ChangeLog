@@ -1,3 +1,12 @@
+2002-12-05  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/strings.sgml: 
+	* glib/tmpl/scanner.sgml: 
+	* glib/tmpl/main.sgml: 
+	* glib/tmpl/macros_misc.sgml: 
+	* glib/tmpl/hash_tables.sgml: Add Since and Deprecation info
+	for symbols documented in the templates.
+
 2002-12-04  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: Add docs.

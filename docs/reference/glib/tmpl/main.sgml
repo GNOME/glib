@@ -172,49 +172,51 @@ representing the main event loop of a GLib or GTK+ application.
 
 <!-- ##### MACRO g_main_new ##### -->
 <para>
-Creates a new #GMainLoop for the default main loop. A compatibility
-macro, see g_main_loop_new().
+Creates a new #GMainLoop for the default main loop. 
 </para>
 
 @is_running: set to %TRUE to indicate that the loop is running. This is not
 very important since calling g_main_run() will set this to %TRUE anyway.
 @Returns: a new #GMainLoop.
+@Deprecated: Use g_main_loop_new() instead.
 
 
 <!-- ##### MACRO g_main_destroy ##### -->
 <para>
-Frees the memory allocated for the #GMainLoop. A compatibility macro, see
-g_main_loop_unref().
+Frees the memory allocated for the #GMainLoop. 
 </para>
 
 @loop: a #GMainLoop.
+@Deprecated: Use g_main_loop_unref() instead.
 
 
 <!-- ##### MACRO g_main_run ##### -->
 <para>
-Runs a main loop until it stops running. A compatibility macro, see g_main_loop_run().
+Runs a main loop until it stops running. 
 </para>
 
 @loop: a #GMainLoop.
+@Deprecated: Use g_main_loop_run() instead.
 
 
 <!-- ##### MACRO g_main_quit ##### -->
 <para>
 Stops the #GMainLoop. If g_main_run() was called to run the #GMainLoop,
-it will now return. A compatibility macro, see g_main_loop_quit().
+it will now return. 
 </para>
 
 @loop: a #GMainLoop.
+@Deprecated: Use g_main_loop_quit() instead.
 
 
 <!-- ##### MACRO g_main_is_running ##### -->
 <para>
-Checks if the main loop is running. A compatibility macro, see
-g_main_loop_is_running().    
+Checks if the main loop is running. 
 </para>
 
 @loop: a #GMainLoop.
 @Returns: %TRUE if the main loop is running.
+@Deprecated: USe g_main_loop_is_running() instead.
 
 
 <!-- ##### MACRO G_PRIORITY_HIGH ##### -->
@@ -314,7 +316,6 @@ representing a set of sources to be handled in a main loop.
 <!-- ##### MACRO g_main_iteration ##### -->
 <para>
 Runs a single iteration for the default #GMainContext.
-A compatibility macro, see g_main_context_iteration().
 </para>
 
 @may_block: set to %TRUE if it should block (i.e. wait) until an event source
@@ -322,6 +323,7 @@ becomes ready. It will return after an event source has been processed.
 If set to %FALSE it will return immediately if no event source is ready to be
 processed.
 @Returns: %TRUE if more events are pending.
+@Deprecated: Use g_main_context_iteration() instead.
 
 
 <!-- ##### FUNCTION g_main_context_pending ##### -->
@@ -336,11 +338,11 @@ processed.
 <!-- ##### MACRO g_main_pending ##### -->
 <para>
 Checks if any events are pending for the default #GMainContext
-(i.e. ready to be processed).  A compatibility macro, see
-g_main_context_pending().
+(i.e. ready to be processed).  
 </para>
 
 @Returns: %TRUE if any events are pending.
+@Deprecated: Use g_main_context_pending() instead.
 
 
 <!-- ##### FUNCTION g_main_context_find_source_by_id ##### -->
@@ -475,7 +477,7 @@ g_main_context_pending().
 
 <!-- ##### USER_FUNCTION GPollFunc ##### -->
 <para>
-Specifies the type of function passed to g_main_set_poll_func().
+Specifies the type of function passed to g_main_context_set_poll_func().
 The semantics of the function should match those of the
 <function>poll()</function> system call.
 </para>
@@ -510,11 +512,11 @@ or -1 if an error occurred.
 <!-- ##### MACRO g_main_set_poll_func ##### -->
 <para>
 Sets the function to use for the handle polling of file descriptors
-for the default main context. This is a compatability macro, see
-g_main_context_set_poll_func() for full details.
+for the default main context. 
 </para>
 
 @func: the function to call to poll all file descriptors.
+@Deprecated: Use g_main_context_set_poll_func() instead.
 
 
 <!-- ##### FUNCTION g_timeout_source_new ##### -->

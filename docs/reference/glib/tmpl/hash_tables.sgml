@@ -253,7 +253,7 @@ This function is deprecated and will be removed in the next major
  release of GLib. It does nothing.
 </para>
 
-@hash_table: 
+@hash_table: a #GHashTable
 
 
 <!-- ##### MACRO g_hash_table_thaw ##### -->
@@ -262,7 +262,7 @@ This function is deprecated and will be removed in the next major
  release of GLib. It does nothing.
 </para>
 
-@hash_table: 
+@hash_table: a #GHashTable
 
 
 <!-- ##### FUNCTION g_hash_table_destroy ##### -->

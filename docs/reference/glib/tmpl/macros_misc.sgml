@@ -248,6 +248,7 @@ if (G_LIKELY (random () != 1))
 </programlisting></informalexample>
 
 @expr: the expression
+@Since: 2.2
 
 
 <!-- ##### MACRO G_UNLIKELY ##### -->
@@ -261,6 +262,7 @@ if (G_UNLIKELY (random () == 1))
 </programlisting></informalexample>
 
 @expr: the expression
+@Since: 2.2
 
 
 <!-- ##### MACRO G_STRLOC ##### -->
