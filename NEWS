@@ -8,9 +8,25 @@ Overview of Changes from GLib 2.3.0 to GLib-2.3.1
   as a replacement for G_BROKEN_FILENAMES [Matthias]
 * Fix the return value g_main_context_iterate() for
   newly ready sources [Padraig O'Briain]
+* Handle Hangul composition for normalization [Noah Levitt]
+* Add G_{MIN,MAX,MAXU}INT{8,16,32}. [Mark Jones, Matthias]
+* Add G_GSIZE_FORMAT/G_SSIZE_FORMAT [Manish Singh]
+* Add G_STRFUNC as a portable wrapper for __func__ [Tim Janik]
 * Documentation improvements [Matthias]
-* Misc bug fixes [Matthias, Mark McLoughlin, Morten Welinder]
-* Updated translations (es,ja,no)
+* GObject [Tim Janik]
+ - Support '-' in g_signal_connect()/disconnect() names
+   like 'swapped-signal'.
+ - Add g_type_class_peek_static() and use to optimize
+   g_object_new() for static types [Tim]
+ - Allow setting construct-only properties from within
+   init() implementations
+ - Enforce readability/writeability in g_object_set/get()
+* Fix bug with g_ascii_strtod and multi-byte separator.
+  [Behdad Esfahbod, Roozbeh Pournader]  
+* Misc bug fixes [Matthias, John Ehresman, Andrew Lanoix,
+  Tor Lillqvist, Mark McLoughlin, Tim-Philipp Müller, Manish, 
+  Morten Welinder]
+* Updated translations (ca,cs,da,es,fr,ja,nn,no,pt,ru)
 
 Overview of Changes from GLib 2.2.x to GLib-2.3.0
 =================================================

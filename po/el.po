@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
+"POT-Creation-Date: 2003-12-08 12:13-0500\n"
 "PO-Revision-Date: 2002-12-03 20:09+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"

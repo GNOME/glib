@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-18 14:47+0100\n"
+"POT-Creation-Date: 2003-12-08 12:13-0500\n"
 "PO-Revision-Date: 2003-11-18 21:36+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -189,7 +189,9 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "Znak '%s' není platný na začátku názvu entity; počátečním znakem entity je &; v případě, že nemá být entitou, je zapotřebí ho napsat jako &amp;"
+msgstr ""
+"Znak '%s' není platný na začátku názvu entity; počátečním znakem entity je "
+"&; v případě, že nemá být entitou, je zapotřebí ho napsat jako &amp;"
 
 #: glib/gmarkup.c:458
 #, c-format
@@ -205,14 +207,18 @@ msgstr "Název entity '%s' není znám"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Entita nekončí středníkem; pravděpodobně jste použili znak & bez úmyslu začít entitu - zapište ampersand jako &amp;"
+msgstr ""
+"Entita nekončí středníkem; pravděpodobně jste použili znak & bez úmyslu "
+"začít entitu - zapište ampersand jako &amp;"
 
 #: glib/gmarkup.c:558
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Nemohu zpracovat '%s', což by mělo být číslo v odkazu na znak (například &#234) - číslo je možná příliš velké"
+msgstr ""
+"Nemohu zpracovat '%s', což by mělo být číslo v odkazu na znak (například "
+"&#234) - číslo je možná příliš velké"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -229,7 +235,9 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr "Odkaz na znak nekončí středníkem; pravděpodobně jste použili znak & bez úmyslu začít entitu - zapište ampersand jako &amp;"
+msgstr ""
+"Odkaz na znak nekončí středníkem; pravděpodobně jste použili znak & bez "
+"úmyslu začít entitu - zapište ampersand jako &amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -259,13 +267,16 @@ msgstr "'%s' není platný znak po znaku '<'; nesmí s ním začínat název ele
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr "Divný znak '%s', byl očekáván znako '>' pro ukončení počátečního tagu elementu '%s'"
+msgstr ""
+"Divný znak '%s', byl očekáván znako '>' pro ukončení počátečního tagu "
+"elementu '%s'"
 
 #: glib/gmarkup.c:1172
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Divný znak '%s', po názvu atributu '%s' elementu '%s' bylo očekáváno '=' "
+msgstr ""
+"Divný znak '%s', po názvu atributu '%s' elementu '%s' bylo očekáváno '=' "
 
 #: glib/gmarkup.c:1213
 #, c-format
@@ -273,28 +284,37 @@ msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr "Divný znak '%s', bylo očekáváno '>' nebo '/' pro ukončení počátečního tagu elementu '%s' nebo případně atribut; pravděpodobně jste použili neplatný znak v názvu atributu"
+msgstr ""
+"Divný znak '%s', bylo očekáváno '>' nebo '/' pro ukončení počátečního tagu "
+"elementu '%s' nebo případně atribut; pravděpodobně jste použili neplatný "
+"znak v názvu atributu"
 
 #: glib/gmarkup.c:1296
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr "Divný znak '%s', po znaku rovnítka při udávání hodnoty atributu '%s' elementu '%s' byly očekávány uvozovky"
+msgstr ""
+"Divný znak '%s', po znaku rovnítka při udávání hodnoty atributu '%s' "
+"elementu '%s' byly očekávány uvozovky"
 
 #: glib/gmarkup.c:1436
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "'%s' není platný znak po znacích '</'; znakem '%s' nesmí začínat název elementu"
+msgstr ""
+"'%s' není platný znak po znacích '</'; znakem '%s' nesmí začínat název "
+"elementu"
 
 #: glib/gmarkup.c:1474
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "'%s' není povolený znak po ukončovacím názvu elementu '%s'; povoleným znakem je '>'"
+msgstr ""
+"'%s' není povolený znak po ukončovacím názvu elementu '%s'; povoleným znakem "
+"je '>'"
 
 #: glib/gmarkup.c:1485
 #, c-format
@@ -319,14 +339,17 @@ msgstr "Dokument neočekávaně skončil hned po otevírací značce '<'"
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "Dokument neočekávaně skončil, elementy jsou stále otevřeny - poslední otevřený element byl '%s'"
+msgstr ""
+"Dokument neočekávaně skončil, elementy jsou stále otevřeny - poslední "
+"otevřený element byl '%s'"
 
 #: glib/gmarkup.c:1671
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Dokument neočekávaně skončil, byla očekávána uzavírací závorka tagu <%s/>"
+msgstr ""
+"Dokument neočekávaně skončil, byla očekávána uzavírací závorka tagu <%s/>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
@@ -344,7 +367,9 @@ msgstr "Dokument neočekávaně skončil v tagu otevírajícím element."
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr "Dokument neočekávaně skončil po znaku přiřazení následujícím za názvem atributu; chybí hodnota atributu"
+msgstr ""
+"Dokument neočekávaně skončil po znaku přiřazení následujícím za názvem "
+"atributu; chybí hodnota atributu"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -357,7 +382,8 @@ msgstr "Dokument neočekávaně skončil uvnitř uzavíracího tagu pro element 
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokument neočekávaně skončil uvnitř komentáře nebo instrukce pro zpracování"
+msgstr ""
+"Dokument neočekávaně skončil uvnitř komentáře nebo instrukce pro zpracování"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -365,7 +391,9 @@ msgstr "Text v uvozovkách nezačíná uvozovkami"
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Nenalezena uzavírací uvozovka v příkazovém řádku nebo jiném textu quotovaném jako shellem"
+msgstr ""
+"Nenalezena uzavírací uvozovka v příkazovém řádku nebo jiném textu quotovaném "
+"jako shellem"
 
 #: glib/gshell.c:530
 #, c-format

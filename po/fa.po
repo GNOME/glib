@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
+"POT-Creation-Date: 2003-12-08 12:13-0500\n"
 "PO-Revision-Date: 2002-08-23 23:11+0430\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"

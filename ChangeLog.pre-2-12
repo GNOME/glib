@@ -1,3 +1,9 @@
+Mon Dec  8 12:02:40 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.1 ===
+
+	* NEWS: Further updates for 2.3.1.
+
 Fri Dec  5 12:09:13 2003  Manish Singh  <yosh@gimp.org>
 
 	* glib/gunidecomp.c (_g_utf8_normalize_wc): fix gint/gsize confusion.
@@ -40,7 +46,7 @@ Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
 
 Thu Nov 20 15:09:40 2003  Manish Singh  <yosh@gimp.org>
 
-	* configure.in: Added G_GSIZE_FORMAT and friends.
+	* configure.in: Added G_GSIZE_FORMAT and friends
 
 	* tests/printf-test.c
 	* tests/testglib.c

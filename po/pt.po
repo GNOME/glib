@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
-"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
-"POT-Creation-Date: 2003-12-03 01:31+0000\n"
+"POT-Creation-Date: 2003-12-08 12:13-0500\n"
 "PO-Revision-Date: 2003-12-03 01:50+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -152,7 +152,8 @@ msgstr "Incapaz de abrir conversor de `%s' para `%s': %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_line_string"
+msgstr ""
+"Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -164,7 +165,8 @@ msgstr "Canal termina num caracter parcial"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_to_end"
+msgstr ""
+"Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
@@ -210,7 +212,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "Entidade não termina com um ponto e vírgula; provavelmente foi utilizado um "
-"caracter 'i comercial' sem intenção de iniciar uma entidade - mascare-o como &amp;"
+"caracter 'i comercial' sem intenção de iniciar uma entidade - mascare-o como "
+"&amp;"
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -218,8 +221,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Falha ao parsear '%s', que deveria ser um dígito dentro de uma referência "
-"de caracter (&#234; por exemplo) - talvez o dígito seja demasiado grande"
+"Falha ao parsear '%s', que deveria ser um dígito dentro de uma referência de "
+"caracter (&#234; por exemplo) - talvez o dígito seja demasiado grande"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -228,8 +231,7 @@ msgstr "Referência de caracter '%s' não codifica um caracter permitido"
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
-"Referência de caracter vazia; deverá incluir um dígito tal como &#454;"
+msgstr "Referência de caracter vazia; deverá incluir um dígito tal como &#454;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -263,8 +265,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' não é um caracter válido após um caracter '<'; não pode iniciar um "
-"nome de elemento"
+"'%s' não é um caracter válido após um caracter '<'; não pode iniciar um nome "
+"de elemento"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -272,8 +274,8 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Caracter estranho '%s', era esperado um caracter '>' para terminar a etiqueta "
-"inicial do elemento '%s'"
+"Caracter estranho '%s', era esperado um caracter '>' para terminar a "
+"etiqueta inicial do elemento '%s'"
 
 #: glib/gmarkup.c:1172
 #, c-format
@@ -309,8 +311,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' não é um caracter válido após os caracteres '</'; '%s' não pode "
-"iniciar o nome de um elemento"
+"'%s' não é um caracter válido após os caracteres '</'; '%s' não pode iniciar "
+"o nome de um elemento"
 
 #: glib/gmarkup.c:1474
 #, c-format
@@ -376,8 +378,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Documento terminou inesperadamente após o sinal de igual posterior a um "
-"nome de atributo; nenhum valor de atributo"
+"Documento terminou inesperadamente após o sinal de igual posterior a um nome "
+"de atributo; nenhum valor de atributo"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"

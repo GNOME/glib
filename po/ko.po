@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
+"POT-Creation-Date: 2003-12-08 12:13-0500\n"
 "PO-Revision-Date: 2003-12-03 17:30+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -211,8 +211,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "엔티티가 세미콜론으로 끝나지 않습니다; 대부분의 경우 엔티티 시작에 사용하려"
-"고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고"
-"쓰십시오"
+"고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고쓰"
+"십시오"
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -426,8 +426,8 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll()에서 기대되지않"
-"은 오류"
+"자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll()에서 기대되지않은 "
+"오류"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format

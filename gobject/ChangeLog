@@ -1,6 +1,6 @@
 Sat Nov 29 14:57:20 2003  Tim Janik  <timj@gtk.org>
 
-	* gobject.c: fix g_object_set() whithin _init() implementations
+	* gobject.c: fix g_object_set() within _init() implementations
 	not working for construct-only properties.
 	(g_object_init): make the object enter a construct_objects list.
 	(g_object_newv): remove object from construct_objects after creation.
