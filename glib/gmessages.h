@@ -198,7 +198,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 #else /* !G_DISABLE_ASSERT */
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && (__GNUC__ > 2)  && defined(__OPTIMIZE__)
 
 #define g_assert(expr)			G_STMT_START{		\
      if (!G_LIKELY (expr))					\
@@ -250,7 +250,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 #else /* !G_DISABLE_CHECKS */
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && (__GNUC__ > 2) && defined(__OPTIMIZE__)
 
 #define g_return_if_fail(expr)		G_STMT_START{			\
      if (!G_LIKELY (expr)) 	     					\

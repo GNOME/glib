@@ -1,3 +1,8 @@
+2002-11-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h: Only use G_LIKELY in g_assert() and 
+	g_return_[val]_if_fail() if it is actually doing something.
+
 2002-11-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/grand.c, gthread/gthread-impl.c, tests/rand-test.c: 
