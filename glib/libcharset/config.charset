@@ -435,4 +435,7 @@ case "$os" in
 	echo "eo CP850"
 	echo "eo_EO CP850"
 	;;
+    netbsd*)
+	echo "646 ASCII"
+	;;	
 esac

@@ -93,7 +93,8 @@ test_script_support_programs = markup-test
 check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 
 TESTS = $(test_programs) $(test_scripts)
-TESTS_ENVIRONMENT = srcdir=$(srcdir)
+TESTS_ENVIRONMENT = srcdir=$(srcdir) \
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
 
 progs_LDADD = $(EFENCE) $(libglib) $(EFENCE)
 thread_LDADD = $(libgthread) @G_THREAD_LIBS@ $(progs_LDADD)

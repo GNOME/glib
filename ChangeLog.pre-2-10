@@ -1,3 +1,16 @@
+2001-11-27  Dan Winship  <danw@ximian.com>
+
+	* configure.in (G_MODULE_LDFLAGS): Set this from libtool rather
+	than hardcoding values for certain platforms.
+
+	* glib/libcharset/config.charset: Add a rule for NetBSD.
+
+	* glib/libcharset/localcharset.c (_g_locale_get_charset_aliases):
+	If LIBCHARSET_ALIAS_DIR is set, look for charset.aliases there.
+
+	* tests/Makefile.am (TESTS_ENVIRONMENT): set LIBCHARSET_ALIAS_DIR
+	so we don't depend on charset.aliases having been installed
+
 2001-11-26  Matthias Clasen  <matthiasc@poet.de>
 	
 	* glib/gnode.c (g_node_traverse): Implement G_LEVEL_ORDER correctly.
