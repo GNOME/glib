@@ -1021,8 +1021,10 @@ g_mem_chunk_reset (GMemChunk *mem_chunk)
   mem_chunk->free_atoms = NULL;
   
   if (mem_chunk->mem_tree)
-    g_tree_destroy (mem_chunk->mem_tree);
-  mem_chunk->mem_tree = g_tree_new ((GCompareFunc) g_mem_chunk_area_compare);
+    {
+      g_tree_destroy (mem_chunk->mem_tree);
+      mem_chunk->mem_tree = g_tree_new ((GCompareFunc) g_mem_chunk_area_compare);
+    }
 
   LEAVE_MEM_CHUNK_ROUTINE ();
 }

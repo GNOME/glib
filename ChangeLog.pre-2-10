@@ -1,3 +1,9 @@
+Fri Mar 22 17:59:27 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmem.c (g_mem_chunk_reset): Fix problem where
+	if g_mem_chunk_reset() is called on an alloc-only
+	memchunk, then a useles GTree was created.
+
 Wed Mar 20 18:20:21 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gconvert.c (open_converter): Try to work around segfaults
