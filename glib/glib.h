@@ -1865,6 +1865,9 @@ GString*     g_string_new	        (const gchar	 *init);
 GString*     g_string_sized_new         (guint		  dfl_size);
 void	     g_string_free	        (GString	 *string,
 					 gboolean	  free_segment);
+gboolean     g_string_equal             (const GString	 *v,
+					 const GString 	 *v2);
+guint        g_string_hash              (const GString   *str);
 GString*     g_string_assign            (GString	 *string,
 					 const gchar	 *rval);
 GString*     g_string_truncate          (GString	 *string,
@@ -1989,13 +1992,13 @@ GByteArray* g_byte_array_remove_index_fast (GByteArray	 *array,
 
 /* Hash Functions
  */
-gint  g_str_equal (gconstpointer   v,
-		   gconstpointer   v2);
-guint g_str_hash  (gconstpointer   v);
+gboolean g_str_equal (gconstpointer   v,
+		      gconstpointer   v2);
+guint	 g_str_hash  (gconstpointer   v);
 
-gint  g_int_equal (gconstpointer   v,
-		   gconstpointer   v2);
-guint g_int_hash  (gconstpointer   v);
+gint	 g_int_equal (gconstpointer   v,
+		      gconstpointer   v2);
+guint	 g_int_hash  (gconstpointer   v);
 
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or

@@ -1,5 +1,11 @@
 What's new in GLib 1.3.1:
-
+* New GObject library added including object system based on
+  the GTK+ object system. 
+* Functions for getting the properties of Unicode characters, 
+  computing the canonical decomposition and ordering combining
+  characters aand manipulating UTF-8 string manipulation based
+  on libunicode.
+* GString now properly handles embedded nuls.
 * Multiple fixes from the 1.2.x branch.
 * Upgrade to libtool 1.3.3
 * Full thread support (thread creation and destruction).

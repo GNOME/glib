@@ -180,6 +180,35 @@ main (int   argc,
   g_assert (strcmp (string1->str, "firstlast") == 0);
   g_string_free (string1, TRUE);
 
+  /* g_string_equal */
+  string1 = g_string_new ("test");
+  string2 = g_string_new ("te");
+  g_assert (! g_string_equal(string1, string2));
+  g_string_append (string2, "st");
+  g_assert (g_string_equal(string1, string2));
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+  
+  /* Check handling of embedded ASCII 0 (NUL) characters in GString. */
+  string1 = g_string_new ("fiddle");
+  string2 = g_string_new ("fiddle");
+  g_assert (g_string_equal(string1, string2));
+  g_string_append_c(string1, '\0');
+  g_assert (! g_string_equal(string1, string2));
+  g_string_append_c(string2, '\0');
+  g_assert (g_string_equal(string1, string2));
+  g_string_append_c(string1, 'x');
+  g_string_append_c(string2, 'y');
+  g_assert (! g_string_equal(string1, string2));
+  g_assert (string1->len == 8);
+  g_string_append(string1, "yzzy");
+  g_assert (string1->len == 12);
+  g_assert ( memcmp(string1->str, "fiddle\0xyzzy", 13) == 0);
+  g_string_insert(string1, 1, "QED");
+  g_assert ( memcmp(string1->str, "fQEDiddle\0xyzzy", 16) == 0);
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+  
   return 0;
 }
 

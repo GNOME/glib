@@ -134,7 +134,10 @@ sanity:
 	./sanity_check $(VERSION)
 
 snapshot:
-	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`
+	$(MAKE) dist distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
+
+snapcheck:
+	$(MAKE) distcheck distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
 
 dist-hook:
 	cp glib.spec $(distdir)

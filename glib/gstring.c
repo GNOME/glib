@@ -67,7 +67,7 @@ static GMemChunk *string_mem_chunk = NULL;
 /* Hash Functions.
  */
 
-gint
+gboolean
 g_str_equal (gconstpointer v1,
 	     gconstpointer v2)
 {
@@ -265,6 +265,48 @@ g_string_free (GString *string,
   G_UNLOCK (string_mem_chunk);
 }
 
+gboolean
+g_string_equal (const GString *v,
+                const GString *v2)
+{
+  gchar *p, *q;
+  GRealString *string1 = (GRealString *) v;
+  GRealString *string2 = (GRealString *) v2;
+  gint i = string1->len;
+
+  if (i != string2->len)
+    return FALSE;
+
+  p = string1->str;
+  q = string2->str;
+  while (i)
+    {
+      if (*p != *q)
+	return FALSE;
+      p++;
+      q++;
+      i--;
+    }
+  return TRUE;
+}
+
+/* 31 bit hash function */
+guint
+g_string_hash (const GString *str)
+{
+  const gchar *p = str->str;
+  gint n = str->len;
+  guint h = 0;
+
+  while (n--)
+    {
+      h = (h << 5) - h + *p;
+      p++;
+    }
+
+  return h;
+}
+
 GString*
 g_string_assign (GString     *string,
 		 const gchar *rval)
@@ -320,7 +362,7 @@ g_string_insert_len (GString     *fstring,
     g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
   
   /* insert the new string */
-  strncpy (string->str + pos, val, len);
+  g_memmove (string->str + pos, val, len);
 
   string->len += len;
 
@@ -457,15 +499,17 @@ g_string_down (GString *fstring)
 {
   GRealString *string = (GRealString *) fstring;
   guchar *s;
+  gint n = string->len;
 
   g_return_val_if_fail (string != NULL, NULL);
 
   s = string->str;
 
-  while (*s)
+  while (n)
     {
       *s = tolower (*s);
       s++;
+      n--;
     }
 
   return fstring;
@@ -476,15 +520,17 @@ g_string_up (GString *fstring)
 {
   GRealString *string = (GRealString *) fstring;
   guchar *s;
+  gint n = string->len;
 
   g_return_val_if_fail (string != NULL, NULL);
 
   s = string->str;
 
-  while (*s)
+  while (n)
     {
       *s = toupper (*s);
       s++;
+      n--;
     }
 
   return fstring;

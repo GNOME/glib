@@ -1,3 +1,23 @@
+Thu Jun 29 15:57:28 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * NEWS: updated
+
+	* Makefile.am: added snapcheck target to go along with snapshot
+	
+	* gstring.c glib.h (g_string_hash): Add g_string_hash to 
+	go along with g_string_equal.
+
+Tue Jun 27 12:40:23 EDT 2000  David A. Wheeler <dwheeler@dwheeler.com>
+
+	* glib.h: Added g_string_equal for comparing GStrings;
+	changed g_str_equal so it returns gboolean (instead of gint).
+
+	* gstring.c: Modified GString implementation to support embedded
+	ASCII NUL ('\0') characters, and implemented g_string_equal.
+
+	* testglib.c tests/string-test.c: Added tests for g_string_equal
+	and tests for proper handling of embedded ASCII NUL characters.
+
 Wed Jun 28 22:52:00 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am (libglib_la_SOURCES): Fix
@@ -51,7 +71,6 @@ Mon May 29 14:10:35 2000  Owen Taylor  <otaylor@redhat.com>
 	* configure.in acconfig.h: Add check for nl_langinfo(CODESET);
 
 Fri May 19 11:39:29 2000  Tim Janik  <timj@gtk.org>
-
 
         * gutils.c (g_snprintf):
         (g_vsnprintf): added argument assertments.
