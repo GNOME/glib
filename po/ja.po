@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
-"PO-Revision-Date: 2004-10-03 00:36+0900\n"
-"Last-Translator: Ryoichi INAGAKI <ryo1@bc.wakwak.com>\n"
+"POT-Creation-Date: 2004-11-03 23:10+0900\n"
+"PO-Revision-Date: 2004-11-03 23:09+0900\n"
+"Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -512,7 +512,7 @@ msgstr "UTF-16 の範囲外の文字です"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr "使用法:"
+msgstr "用法:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
@@ -520,29 +520,29 @@ msgstr "[オプション...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr "ヘルプ・オプション:"
+msgstr "ヘルプのオプション:"
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr "ヘルプ・オプションを表示する"
+msgstr "ヘルプのオプションを表示する"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr "すべてのヘルプ・オプションを表示する"
+msgstr "ヘルプのオプションを全て表示する"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr "アプリケーション・オプション:"
+msgstr "アプリケーションのオプション:"
 
 #: glib/goption.c:580
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr "--%$2s オプションの整数値 '%$1s' を解析できません"
+msgstr "オプション --%2$s の整数値 '%1$s' を解析できません"
 
 #: glib/goption.c:590
-#, fuzzy, c-format
+#, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr "%$2s の整数値 '%$1s' は範囲外の値です"
+msgstr "%2$s の整数値 '%1$s' は範囲外の値です"
 
 #: glib/goption.c:1310
 #, c-format
