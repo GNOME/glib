@@ -10,169 +10,169 @@ msgstr ""
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=gb2312\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:202
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "²»Ö§³Ö´Ó×Ö·û¼¯¡°%s¡±µ½¡°%s¡±µÄ×ª»»"
+msgstr "ä¸æ”¯æŒä»å­—ç¬¦é›†â€œ%sâ€åˆ°â€œ%sâ€çš„è½¬æ¢"
 
 #: glib/gconvert.c:206
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "ÎŞ·¨´ò¿ª´Ó¡°%s¡±µ½¡°%s¡±µÄ×ª»»Æ÷£º%s"
+msgstr "æ— æ³•æ‰“å¼€ä»â€œ%sâ€åˆ°â€œ%sâ€çš„è½¬æ¢å™¨ï¼š%s"
 
 #: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
 #: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
-msgstr "×ª»»ÊäÈëÖĞ³öÏÖÎŞĞ§×Ö·ûĞòÁĞ"
+msgstr "è½¬æ¢è¾“å…¥ä¸­å‡ºç°æ— æ•ˆå­—ç¬¦åºåˆ—"
 
 #: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
 #: glib/giochannel.c:2176
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "×ª»»¹ı³ÌÖĞ³ö´í£º%s"
+msgstr "è½¬æ¢è¿‡ç¨‹ä¸­å‡ºé”™ï¼š%s"
 
 #: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1317
 msgid "Partial character sequence at end of input"
-msgstr "ÊäÈëÄ©Î²³öÏÖÎ´¾¡×Ö·ûĞòÁĞ"
+msgstr "è¾“å…¥æœ«å°¾å‡ºç°æœªå°½å­—ç¬¦åºåˆ—"
 
 #: glib/gconvert.c:547
 #, c-format
 #, fuzzy
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "ÎŞ·¨×ª»» fallback ¡°%s¡±µ½×Ö·û¼¯¡°%s¡±"
+msgstr "æ— æ³•è½¬æ¢ fallback â€œ%sâ€åˆ°å­—ç¬¦é›†â€œ%sâ€"
 
 #: glib/gconvert.c:1261
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI¡°%s¡±²»ÊÇÎÄ¼ş¸ñÊ½µÄ¾ø¶Ô URI"
+msgstr "URIâ€œ%sâ€ä¸æ˜¯æ–‡ä»¶æ ¼å¼çš„ç»å¯¹ URI"
 
 #: glib/gconvert.c:1271
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "±¾µØÎÄ¼ş URI¡°%s¡±²»ÄÜ°üº¬¡°#¡±"
+msgstr "æœ¬åœ°æ–‡ä»¶ URIâ€œ%sâ€ä¸èƒ½åŒ…å«â€œ#â€"
 
 #: glib/gconvert.c:1288
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI¡°%s¡±ÎŞĞ§"
+msgstr "URIâ€œ%sâ€æ— æ•ˆ"
 
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
-msgstr "URI ÖĞµÄÖ÷»úÃû¡°%s¡±²»ÄÜ°üº¬·Ç·¨×ªÒå×Ö·û"
+msgstr "URI ä¸­çš„ä¸»æœºåâ€œ%sâ€ä¸èƒ½åŒ…å«éæ³•è½¬ä¹‰å­—ç¬¦"
 
 #: glib/gconvert.c:1313
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI¡°%s¡±ÖĞ°üº¬·Ç·¨×ªÒå×Ö·û"
+msgstr "URIâ€œ%sâ€ä¸­åŒ…å«éæ³•è½¬ä¹‰å­—ç¬¦"
 
 #: glib/gconvert.c:1356
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "Â·¾¶Ãû¡°%s¡±²»ÊÇ¾ø¶ÔÂ·¾¶"
+msgstr "è·¯å¾„åâ€œ%sâ€ä¸æ˜¯ç»å¯¹è·¯å¾„"
 
 #: glib/gconvert.c:1370
 msgid "Invalid byte sequence in hostname"
-msgstr "Ö÷»úÃûÖĞ°üº¬ÎŞĞ§×Ö·ûĞòÁĞ"
+msgstr "ä¸»æœºåä¸­åŒ…å«æ— æ•ˆå­—ç¬¦åºåˆ—"
 
 #: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "¶ÁÈ¡ÎÄ¼ş¡°%s¡±³ö´í£º%s"
+msgstr "è¯»å–æ–‡ä»¶â€œ%sâ€å‡ºé”™ï¼š%s"
 
 #: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "ÎŞ·¨¶ÁÈ¡ÎÄ¼ş¡°%s¡±£º%s"
+msgstr "æ— æ³•è¯»å–æ–‡ä»¶â€œ%sâ€ï¼š%s"
 
 #: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "ÎŞ·¨´ò¿ªÎÄ¼ş¡°%s¡±£º%s"
+msgstr "æ— æ³•æ‰“å¼€æ–‡ä»¶â€œ%sâ€ï¼š%s"
 
 #: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "ÎŞ·¨»ñµÃÎÄ¼ş¡°%s¡±ÊôĞÔ£ºfstat() Ê§°Ü£º%s"
+msgstr "æ— æ³•è·å¾—æ–‡ä»¶â€œ%sâ€å±æ€§ï¼šfstat() å¤±è´¥ï¼š%s"
 
 #: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "ÎŞ·¨´ò¿ªÎÄ¼ş¡°%s¡±£ºfdopen() Ê§°Ü£º%s"
+msgstr "æ— æ³•æ‰“å¼€æ–‡ä»¶â€œ%sâ€ï¼šfdopen() å¤±è´¥ï¼š%s"
 
 #: glib/gfileutils.c:655
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Ä£°å¡°%s¡±ÎŞĞ§£¬²»Ó¦¸Ã°üº¬¡°%s¡±"
+msgstr "æ¨¡æ¿â€œ%sâ€æ— æ•ˆï¼Œä¸åº”è¯¥åŒ…å«â€œ%sâ€"
 
 #: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Ä£°å¡°%s¡±µÄ½áÎ²²»ÊÇ XXXXXX"
+msgstr "æ¨¡æ¿â€œ%sâ€çš„ç»“å°¾ä¸æ˜¯ XXXXXX"
 
 #: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "ÎŞ·¨´´½¨ÎÄ¼ş¡°%s¡±£º%s"
+msgstr "æ— æ³•åˆ›å»ºæ–‡ä»¶â€œ%sâ€ï¼š%s"
 
 #: glib/giochannel.c:1110
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "²»Ö§³Ö´Ó×Ö·û¼¯¡°%s¡±×ª»»"
+msgstr "ä¸æ”¯æŒä»å­—ç¬¦é›†â€œ%sâ€è½¬æ¢"
 
 #: glib/giochannel.c:1114
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "ÎŞ·¨´ò¿ª´Ó¡°%s¡±µ½¡°%s¡±µÄ×ª»»Æ÷£º%s"
+msgstr "æ— æ³•æ‰“å¼€ä»â€œ%sâ€åˆ°â€œ%sâ€çš„è½¬æ¢å™¨ï¼š%s"
 
 #: glib/giochannel.c:1461
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "g_io_channel_read_line_string º¯ÊıÎŞ·¨½øĞĞÔ­Ê¼¶ÁÈ¡"
+msgstr "g_io_channel_read_line_string å‡½æ•°æ— æ³•è¿›è¡ŒåŸå§‹è¯»å–"
 
 #: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
 msgid "Leftover unconverted data in read buffer"
-msgstr "ÔÚ¶Á»º³åÀïÁôÓĞÎ´×ª»»Êı¾İ"
+msgstr "åœ¨è¯»ç¼“å†²é‡Œç•™æœ‰æœªè½¬æ¢æ•°æ®"
 
 #: glib/giochannel.c:1588 glib/giochannel.c:1662
 msgid "Channel terminates in a partial character"
-msgstr "Í¨µÀÖÕÖ¹ÓÚÎ´¾¡×Ö·û"
+msgstr "é€šé“ç»ˆæ­¢äºæœªå°½å­—ç¬¦"
 
 #: glib/giochannel.c:1648
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "g_io_channel_read_to_end º¯ÊıÎŞ·¨½øĞĞÔ­Ê¼¶ÁÈ¡"
+msgstr "g_io_channel_read_to_end å‡½æ•°æ— æ³•è¿›è¡ŒåŸå§‹è¯»å–"
 
 #: glib/giowin32.c:701 glib/giowin32.c:730
 msgid "Incorrect message size"
-msgstr "²»ÕıÈ·µÄÏûÏ¢´óĞ¡"
+msgstr "ä¸æ­£ç¡®çš„æ¶ˆæ¯å¤§å°"
 
 #: glib/giowin32.c:1024 glib/giowin32.c:1077
 msgid "Socket error"
-msgstr "Ì×½Ó¿Ú´íÎó"
+msgstr "å¥—æ¥å£é”™è¯¯"
 
 #: glib/giowin32.c:1277
 msgid "Channel set flags unsupported"
-msgstr "²»Ö§³ÖÍ¨µÀÉèÖÃ±êÖ¾"
+msgstr "ä¸æ”¯æŒé€šé“è®¾ç½®æ ‡å¿—"
 
 #: glib/gmarkup.c:216
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "µÚ%dĞĞµÚ%d¸ö×Ö·û³ö´í£º%s"
+msgstr "ç¬¬%dè¡Œç¬¬%dä¸ªå­—ç¬¦å‡ºé”™ï¼š%s"
 
 #: glib/gmarkup.c:300
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "µÚ%dĞĞ³ö´í£º%s"
+msgstr "ç¬¬%dè¡Œå‡ºé”™ï¼š%s"
 
 #: glib/gmarkup.c:379
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"·¢ÏÖ¿ÕµÄÊµÌå¡°&;¡±¡£ÓĞĞ§µÄÊµÌåÎª£º&amp; &quot; &lt; &gt; &apos;"
+"å‘ç°ç©ºçš„å®ä½“â€œ&;â€ã€‚æœ‰æ•ˆçš„å®ä½“ä¸ºï¼š&amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:389
 #, c-format
@@ -181,27 +181,27 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"×Ö·û¡°%s¡±³öÏÖÔÚÊµÌåÃûµÄ¿ªÍ·ÎŞĞ§¡£ÊµÌå¶¼ÒÔ & ×Ö·û "
-"¿ªÍ·£¬Èç¹ûÕâ¸ö & ²»ÊÇÒ»¸öÊµÌåµÄ¿ªÍ·£¬°ÑËü"
-"±äÎª &amp;"
+"å­—ç¬¦â€œ%sâ€å‡ºç°åœ¨å®ä½“åçš„å¼€å¤´æ— æ•ˆã€‚å®ä½“éƒ½ä»¥ & å­—ç¬¦ "
+"å¼€å¤´ï¼Œå¦‚æœè¿™ä¸ª & ä¸æ˜¯ä¸€ä¸ªå®ä½“çš„å¼€å¤´ï¼ŒæŠŠå®ƒ"
+"å˜ä¸º &amp;"
 
 #: glib/gmarkup.c:425
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "×Ö·û¡°%s¡±ÔÚÊµÌåÃûÖĞÎŞĞ§"
+msgstr "å­—ç¬¦â€œ%sâ€åœ¨å®ä½“åä¸­æ— æ•ˆ"
 
 #: glib/gmarkup.c:469
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Î´ÖªµÄÊµÌåÃû¡°%s¡±"
+msgstr "æœªçŸ¥çš„å®ä½“åâ€œ%sâ€"
 
 #: glib/gmarkup.c:479
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"ÊµÌåÃ»ÓĞÒÔ·ÖºÅ½áÊø¡£ºÜ¿ÉÄÜÄúÊ¹ÓÃÁË & "
-"×Ö·û¶øÓÖ²»ÊÇÒ»¸öÊµÌå¡ª¡ª½«Õâ¸ö & ±äÎª &amp;"
+"å®ä½“æ²¡æœ‰ä»¥åˆ†å·ç»“æŸã€‚å¾ˆå¯èƒ½æ‚¨ä½¿ç”¨äº† & "
+"å­—ç¬¦è€Œåˆä¸æ˜¯ä¸€ä¸ªå®ä½“â€•â€•å°†è¿™ä¸ª & å˜ä¸º &amp;"
 
 #: glib/gmarkup.c:525
 #, c-format
@@ -209,17 +209,17 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"ÎŞ·¨½âÎö¡°%s¡±¡£ËüÓ¦¸ÃÊÇ×Ö·ûÒıÓÃÖĞµÄÊı×Ö"
-"£¨Èç&#234;£©¡ª¡ª¿ÉÄÜ¸ÃÊı×ÖÌ«´óÁË"
+"æ— æ³•è§£æâ€œ%sâ€ã€‚å®ƒåº”è¯¥æ˜¯å­—ç¬¦å¼•ç”¨ä¸­çš„æ•°å­—"
+"ï¼ˆå¦‚&#234;ï¼‰â€•â€•å¯èƒ½è¯¥æ•°å­—å¤ªå¤§äº†"
 
 #: glib/gmarkup.c:550
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "×Ö·ûÒıÓÃ¡°%s¡±¶ÔÒ»¸öÒÑÔÊĞíµÄ×Ö·û±àÂë"
+msgstr "å­—ç¬¦å¼•ç”¨â€œ%sâ€å¯¹ä¸€ä¸ªå·²å…è®¸çš„å­—ç¬¦ç¼–ç "
 
 #: glib/gmarkup.c:567
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "¿ÕµÄ×Ö·ûÒıÓÃ¡£Ó¦¸Ã°üÀ¨Êı×Ö£¬Èç &#454;"
+msgstr "ç©ºçš„å­—ç¬¦å¼•ç”¨ã€‚åº”è¯¥åŒ…æ‹¬æ•°å­—ï¼Œå¦‚ &#454;"
 
 #: glib/gmarkup.c:577
 msgid ""
@@ -227,16 +227,16 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"×Ö·ûÒıÓÃÃ»ÓĞÒÔ·ÖºÅ½áÊø¡£ºÜ¿ÉÄÜÄúÊ¹ÓÃÁË & "
-"×Ö·û¶øÓÖ²»ÊÇÒ»¸öÊµÌå¡ª¡ª½«Õâ¸ö & ±äÎª &amp;"
+"å­—ç¬¦å¼•ç”¨æ²¡æœ‰ä»¥åˆ†å·ç»“æŸã€‚å¾ˆå¯èƒ½æ‚¨ä½¿ç”¨äº† & "
+"å­—ç¬¦è€Œåˆä¸æ˜¯ä¸€ä¸ªå®ä½“â€•â€•å°†è¿™ä¸ª & å˜ä¸º &amp;"
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
-msgstr "ÎŞĞ§µÄ UTF-8 ±àÂëÎÄ±¾"
+msgstr "æ— æ•ˆçš„ UTF-8 ç¼–ç æ–‡æœ¬"
 
 #: glib/gmarkup.c:922
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "ÎÄµµ±ØĞëÒÔÒ»¸öÔªËØ¿ªÊ¼£¨ÀıÈç <book>£©"
+msgstr "æ–‡æ¡£å¿…é¡»ä»¥ä¸€ä¸ªå…ƒç´ å¼€å§‹ï¼ˆä¾‹å¦‚ <book>ï¼‰"
 
 #: glib/gmarkup.c:960
 #, c-format
@@ -244,8 +244,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"¡°%s¡±³öÏÖÔÚ×Ö·û¡°<¡±ºóÊÇÎŞĞ§×Ö·û£¬Ëü²»ÄÜ×÷Îª"
-"ÔªËØÃûµÄ¿ªÍ·"
+"â€œ%sâ€å‡ºç°åœ¨å­—ç¬¦â€œ<â€åæ˜¯æ— æ•ˆå­—ç¬¦ï¼Œå®ƒä¸èƒ½ä½œä¸º"
+"å…ƒç´ åçš„å¼€å¤´"
 
 #: glib/gmarkup.c:1023
 #, c-format
@@ -253,15 +253,15 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"×Ö·û¡°%s¡±ÎŞĞ§£¬ÔªËØ¡°%s¡±ÆğÊ¼±ê¼ÇµÄ½áÎ²"
-"Ô¤ÆÚ³öÏÖ×Ö·û¡°>¡±"
+"å­—ç¬¦â€œ%sâ€æ— æ•ˆï¼Œå…ƒç´ â€œ%sâ€èµ·å§‹æ ‡è®°çš„ç»“å°¾"
+"é¢„æœŸå‡ºç°å­—ç¬¦â€œ>â€"
 
 #: glib/gmarkup.c:1110
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"×Ö·û¡°%s¡±ÎŞĞ§£¬ÔªËØ¡°%s¡±µÄÊôĞÔÃû¡°%s¡±ºóÔ¤ÆÚ³öÏÖ×Ö·û¡°=¡±"
+"å­—ç¬¦â€œ%sâ€æ— æ•ˆï¼Œå…ƒç´ â€œ%sâ€çš„å±æ€§åâ€œ%sâ€åé¢„æœŸå‡ºç°å­—ç¬¦â€œ=â€"
 
 #: glib/gmarkup.c:1151
 #, c-format
@@ -270,9 +270,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"×Ö·û¡°%s¡±ÎŞĞ§£¬ÔÚÔªËØ¡°%s¡±ÆğÊ¼±ê¼ÇµÄ½áÎ²Ô¤ÆÚ³öÏÖ×Ö·û¡°>¡±»ò¡°/¡±£¬"
-"Ò²¿ÉÒÔÊÇ¸ÃÔªËØµÄÊôĞÔ¡£¿ÉÄÜÄúÔÚÊôĞÔÃûÖĞÊ¹ÓÃÁË"
-"ÎŞĞ§×Ö·û"
+"å­—ç¬¦â€œ%sâ€æ— æ•ˆï¼Œåœ¨å…ƒç´ â€œ%sâ€èµ·å§‹æ ‡è®°çš„ç»“å°¾é¢„æœŸå‡ºç°å­—ç¬¦â€œ>â€æˆ–â€œ/â€ï¼Œ"
+"ä¹Ÿå¯ä»¥æ˜¯è¯¥å…ƒç´ çš„å±æ€§ã€‚å¯èƒ½æ‚¨åœ¨å±æ€§åä¸­ä½¿ç”¨äº†"
+"æ— æ•ˆå­—ç¬¦"
 
 #: glib/gmarkup.c:1224
 #, c-format
@@ -280,8 +280,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"×Ö·û¡°%s¡±ÎŞĞ§£¬ÔÚ¸øÔªËØ¡°%s¡±µÄÊôĞÔ¡°%s¡±¸³ÖµÊ±£¬Ô¤ÆÚÔÚ"
-"µÈºÅºó³öÏÖÒıºÅ"
+"å­—ç¬¦â€œ%sâ€æ— æ•ˆï¼Œåœ¨ç»™å…ƒç´ â€œ%sâ€çš„å±æ€§â€œ%sâ€èµ‹å€¼æ—¶ï¼Œé¢„æœŸåœ¨"
+"ç­‰å·åå‡ºç°å¼•å·"
 
 #: glib/gmarkup.c:1351
 #, c-format
@@ -289,18 +289,18 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"¡°%s¡±³öÏÖÔÚ×Ö·û¡°</¡±ºóÎŞĞ§¡£¡°%s¡±²»ÄÜ×÷Îª"
-"ÔªËØÃûµÄ¿ªÍ·"
+"â€œ%sâ€å‡ºç°åœ¨å­—ç¬¦â€œ</â€åæ— æ•ˆã€‚â€œ%sâ€ä¸èƒ½ä½œä¸º"
+"å…ƒç´ åçš„å¼€å¤´"
 
 #: glib/gmarkup.c:1388
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "ÔªËØ¡°%s¡±ÒÑ¾­½áÊø£¬Ã»ÓĞÎ´½áÊøµÄÔªËØ"
+msgstr "å…ƒç´ â€œ%sâ€å·²ç»ç»“æŸï¼Œæ²¡æœ‰æœªç»“æŸçš„å…ƒç´ "
 
 #: glib/gmarkup.c:1397
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "ÔªËØ¡°%s¡±ÒÑ¾­½áÊø£¬µ±Ç°Î´½áÊøµÄÔªËØÊÇ¡°%s¡±"
+msgstr "å…ƒç´ â€œ%sâ€å·²ç»ç»“æŸï¼Œå½“å‰æœªç»“æŸçš„å…ƒç´ æ˜¯â€œ%sâ€"
 
 #: glib/gmarkup.c:1408
 #, c-format
@@ -308,17 +308,17 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"¡°%s¡±³öÏÖÔÚ½áÊøµÄÔªËØÃûÎŞĞ§¡£"
-"ÔÊĞíµÄ×Ö·ûÊÇ¡°>¡±"
+"â€œ%sâ€å‡ºç°åœ¨ç»“æŸçš„å…ƒç´ åæ— æ•ˆã€‚"
+"å…è®¸çš„å­—ç¬¦æ˜¯â€œ>â€"
 
 #: glib/gmarkup.c:1541
 #, fuzzy
 msgid "Document was empty or contained only whitespace"
-msgstr "ÎÄµµÎª¿Õ»ò½öº¬¿Õ°××Ö·û"
+msgstr "æ–‡æ¡£ä¸ºç©ºæˆ–ä»…å«ç©ºç™½å­—ç¬¦"
 
 #: glib/gmarkup.c:1555
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "ÎÄµµÔÚÒ»¸ö´ò¿ªµÄ¼âÀ¨ºÅ¡°<¡±ºóÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨ä¸€ä¸ªæ‰“å¼€çš„å°–æ‹¬å·â€œ<â€åæ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1563 glib/gmarkup.c:1606
 #, c-format
@@ -326,8 +326,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"ÎÄµµÔÚ»¹´æÔÚÎ´½áÊøÔªËØÊ±ÒâÍâ½áÊø¡ª¡ª×îºóµÄÎ´½áÊøÔªËØ"
-"ÊÇ¡°%s¡±"
+"æ–‡æ¡£åœ¨è¿˜å­˜åœ¨æœªç»“æŸå…ƒç´ æ—¶æ„å¤–ç»“æŸâ€•â€•æœ€åçš„æœªç»“æŸå…ƒç´ "
+"æ˜¯â€œ%sâ€"
 
 #: glib/gmarkup.c:1571
 #, c-format
@@ -335,144 +335,144 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"ÎÄµµÒâÍâ½áÊø£¬Ô¤ÆÚÒÔÓÒ¼âÀ¨ºÅ¡°>¡±À´½áÊø"
-"±ê¼Ç <%s/>"
+"æ–‡æ¡£æ„å¤–ç»“æŸï¼Œé¢„æœŸä»¥å³å°–æ‹¬å·â€œ>â€æ¥ç»“æŸ"
+"æ ‡è®° <%s/>"
 
 #: glib/gmarkup.c:1577
 msgid "Document ended unexpectedly inside an element name"
-msgstr "ÎÄµµÔÚÔªËØÃûÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨å…ƒç´ åä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "ÎÄµµÔÚÊôĞÔÃûÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨å±æ€§åä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "ÎÄµµÔÚÔªËØÆğÊ¼±ê¼ÇÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨å…ƒç´ èµ·å§‹æ ‡è®°ä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1593
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"ÎÄµµÔÚ¸úÔÚÊôĞÔÃûºóµÄµÈºÅºóÒâÍâ½áÊø¡£"
-"Ã»ÓĞÊôĞÔÖµ"
+"æ–‡æ¡£åœ¨è·Ÿåœ¨å±æ€§ååçš„ç­‰å·åæ„å¤–ç»“æŸã€‚"
+"æ²¡æœ‰å±æ€§å€¼"
 
 #: glib/gmarkup.c:1599
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "ÎÄµµÔÚÊôĞÔÖµÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨å±æ€§å€¼ä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1614
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "ÎÄµµÔÚÔªËØ¡°%s¡±½áÊø±ê¼ÇÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨å…ƒç´ â€œ%sâ€ç»“æŸæ ‡è®°ä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "ÎÄµµÔÚ×¢ÊÍ»ò´¦ÀíÖ¸ÁîÖĞÒâÍâ½áÊø"
+msgstr "æ–‡æ¡£åœ¨æ³¨é‡Šæˆ–å¤„ç†æŒ‡ä»¤ä¸­æ„å¤–ç»“æŸ"
 
 #: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "ÒıÓÃµÄÎÄ±¾Ã»ÓĞÒÔÒıºÅ¿ªÍ·"
+msgstr "å¼•ç”¨çš„æ–‡æœ¬æ²¡æœ‰ä»¥å¼•å·å¼€å¤´"
 
 #: glib/gshell.c:159
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "ÃüÁîĞĞ»òÆäËûshellÒıÓÃÎÄ±¾ÖĞ³öÏÖ²»Æ¥ÅäµÄÒıºÅ"
+msgstr "å‘½ä»¤è¡Œæˆ–å…¶ä»–shellå¼•ç”¨æ–‡æœ¬ä¸­å‡ºç°ä¸åŒ¹é…çš„å¼•å·"
 
 #: glib/gshell.c:526
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "ÎÄ±¾ÔÚÒ»¸ö '' ×Ö·ûºó½áÊø¡££¨ÎÄ±¾Îª¡°%s¡±£©"
+msgstr "æ–‡æœ¬åœ¨ä¸€ä¸ª '' å­—ç¬¦åç»“æŸã€‚ï¼ˆæ–‡æœ¬ä¸ºâ€œ%sâ€ï¼‰"
 
 #: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "ÎÄ±¾ÔÚÕÒµ½Óë %c Æ¥ÅäµÄÒıºÅÖ®Ç°½áÊø¡££¨ÎÄ±¾Îª¡°%s¡±£©"
+msgstr "æ–‡æœ¬åœ¨æ‰¾åˆ°ä¸ %c åŒ¹é…çš„å¼•å·ä¹‹å‰ç»“æŸã€‚ï¼ˆæ–‡æœ¬ä¸ºâ€œ%sâ€ï¼‰"
 
 #: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
-msgstr "¿ÕÎÄ±¾£¨»ò½öº¬¿Õ°××Ö·û£©"
+msgstr "ç©ºæ–‡æœ¬ï¼ˆæˆ–ä»…å«ç©ºç™½å­—ç¬¦ï¼‰"
 
 #: glib/gspawn-win32.c:212
 msgid "Failed to read data from child process"
-msgstr "ÎŞ·¨´Ó×Ó½ø³ÌÖĞ¶ÁÈ¡Êı¾İ"
+msgstr "æ— æ³•ä»å­è¿›ç¨‹ä¸­è¯»å–æ•°æ®"
 
 #: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"g_io_channel_win32_poll() ´Ó×Ó½ø³ÌÖĞ¶ÁÈ¡Êı¾İÊ±³öÏÖ"
-"Òì³£´íÎó"
+"g_io_channel_win32_poll() ä»å­è¿›ç¨‹ä¸­è¯»å–æ•°æ®æ—¶å‡ºç°"
+"å¼‚å¸¸é”™è¯¯"
 
 #: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "ÎŞ·¨´Ó×Ó¹ÜµÀÖĞ¶ÁÈ¡£¨%s£©"
+msgstr "æ— æ³•ä»å­ç®¡é“ä¸­è¯»å–ï¼ˆ%sï¼‰"
 
 #: glib/gspawn-win32.c:925 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "ÎŞ·¨ÇĞ»»µ½Ä¿Â¼¡°%s¡±£¨%s£©"
+msgstr "æ— æ³•åˆ‡æ¢åˆ°ç›®å½•â€œ%sâ€ï¼ˆ%sï¼‰"
 
 #: glib/gspawn-win32.c:934 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "ÎŞ·¨Ö´ĞĞ×Ó½ø³Ì£¨%s£©"
+msgstr "æ— æ³•æ‰§è¡Œå­è¿›ç¨‹ï¼ˆ%sï¼‰"
 
 #: glib/gspawn-win32.c:975 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "ÎŞ·¨´´½¨Óë×Ó½ø³ÌÍ¨Ñ¶µÄ¹ÜµÀ£¨%s£©"
+msgstr "æ— æ³•åˆ›å»ºä¸å­è¿›ç¨‹é€šè®¯çš„ç®¡é“ï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:159
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "ÎŞ·¨´Ó×Ó½ø³ÌÖĞ¶ÁÈ¡Êı¾İ£¨%s£©"
+msgstr "æ— æ³•ä»å­è¿›ç¨‹ä¸­è¯»å–æ•°æ®ï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:290
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "select() ÔÚ´Ó×Ó½ø³ÌÖĞ¶ÁÈ¡Êı¾İÊ±³öÏÖÒì³£´íÎó£¨%s£©"
+msgstr "select() åœ¨ä»å­è¿›ç¨‹ä¸­è¯»å–æ•°æ®æ—¶å‡ºç°å¼‚å¸¸é”™è¯¯ï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:373
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "waitpid() ³öÏÖÒì³£´íÎó£¨%s£©"
+msgstr "waitpid() å‡ºç°å¼‚å¸¸é”™è¯¯ï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:972
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "ÎŞ·¨ fork£¨%s£©"
+msgstr "æ— æ³• forkï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:1131
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "ÎŞ·¨ÖØ¶¨Ïò×Ó½ø³ÌµÄÊäÈë»òÊä³ö£¨%s£©"
+msgstr "æ— æ³•é‡å®šå‘å­è¿›ç¨‹çš„è¾“å…¥æˆ–è¾“å‡ºï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:1140
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "ÎŞ·¨ fork ×Ó½ø³Ì£¨%s£©"
+msgstr "æ— æ³• fork å­è¿›ç¨‹ï¼ˆ%sï¼‰"
 
 #: glib/gspawn.c:1148
 msgid "Unknown error executing child process"
-msgstr "Ö´ĞĞ×Ó½ø³ÌÊ±³öÏÖÎ´Öª´íÎó "
+msgstr "æ‰§è¡Œå­è¿›ç¨‹æ—¶å‡ºç°æœªçŸ¥é”™è¯¯ "
 
 #: glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "ÎŞ·¨´Ó×Ó½ø³Ì¹ÜµÀÖĞ¶ÁÈ¡×ã¹»µÄÊı¾İ£¨%s£©"
+msgstr "æ— æ³•ä»å­è¿›ç¨‹ç®¡é“ä¸­è¯»å–è¶³å¤Ÿçš„æ•°æ®ï¼ˆ%sï¼‰"
 
 #: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
-msgstr "×Ö·û³¬³ö UTF-8 ·¶Î§"
+msgstr "å­—ç¬¦è¶…å‡º UTF-8 èŒƒå›´"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 #: glib/gutf8.c:1331 glib/gutf8.c:1427
 msgid "Invalid sequence in conversion input"
-msgstr "×ª»»ÊäÈëÖĞ³öÏÖÎŞĞ§ĞòÁĞ"
+msgstr "è½¬æ¢è¾“å…¥ä¸­å‡ºç°æ— æ•ˆåºåˆ—"
 
 #: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
-msgstr "×Ö·û³¬³ö UTF-16 ·¶Î§"
+msgstr "å­—ç¬¦è¶…å‡º UTF-16 èŒƒå›´"
