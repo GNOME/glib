@@ -85,7 +85,7 @@ boxed_proxy_value_init (GValue *value)
 static void
 boxed_proxy_value_free (GValue *value)
 {
-  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     {
       BoxedNode key, *node;
 
@@ -119,37 +119,53 @@ boxed_proxy_value_peek_pointer (const GValue *value)
 
 static gchar*
 boxed_proxy_collect_value (GValue      *value,
-			   guint        nth_value,
-			   GType       *collect_type,
-			   GTypeCValue *collect_value)
+			   guint        n_collect_values,
+			   GTypeCValue *collect_values,
+			   guint        collect_flags)
 {
-  BoxedNode key, *node;
+  if (!collect_values[0].v_pointer)
+    value->data[0].v_pointer = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    {
+      value->data[0].v_pointer = collect_values[0].v_pointer;
+      value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
+    }
+  else
+    {
+      BoxedNode key, *node;
+      
+      key.type = value->g_type;
+      node = g_bsearch_array_lookup (&boxed_bsa, &key);
+      value->data[0].v_pointer = node->copy (collect_values[0].v_pointer);
+    }
 
-  key.type = value->g_type;
-  node = g_bsearch_array_lookup (&boxed_bsa, &key);
-  value->data[0].v_pointer = collect_value->v_pointer ? node->copy (collect_value->v_pointer) : NULL;
-
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 boxed_proxy_lcopy_value (const GValue *value,
-			 guint         nth_value,
-			 GType        *collect_type,
-			 GTypeCValue  *collect_value)
+			 guint         n_collect_values,
+			 GTypeCValue  *collect_values,
+			 guint         collect_flags)
 {
-  BoxedNode key, *node;
-  gpointer *boxed_p = collect_value->v_pointer;
+  gpointer *boxed_p = collect_values[0].v_pointer;
 
   if (!boxed_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
-  key.type = value->g_type;
-  node = g_bsearch_array_lookup (&boxed_bsa, &key);
-  *boxed_p = value->data[0].v_pointer ? node->copy (value->data[0].v_pointer) : NULL;
+  if (!value->data[0].v_pointer)
+    *boxed_p = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    *boxed_p = value->data[0].v_pointer;
+  else
+    {
+      BoxedNode key, *node;
 
-  *collect_type = 0;
+      key.type = value->g_type;
+      node = g_bsearch_array_lookup (&boxed_bsa, &key);
+      *boxed_p = node->copy (value->data[0].v_pointer);
+    }
+
   return NULL;
 }
 
@@ -163,9 +179,9 @@ g_boxed_type_register_static (const gchar   *name,
     boxed_proxy_value_free,
     boxed_proxy_value_copy,
     boxed_proxy_value_peek_pointer,
-    G_VALUE_COLLECT_POINTER,
+    "p",
     boxed_proxy_collect_value,
-    G_VALUE_COLLECT_POINTER,
+    "p",
     boxed_proxy_lcopy_value,
   };
   static const GTypeInfo type_info = {
@@ -293,7 +309,7 @@ g_value_set_boxed (GValue       *value,
   g_return_if_fail (G_IS_VALUE_BOXED (value));
   g_return_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)));
 
-  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     g_boxed_free (G_VALUE_TYPE (value), value->data[0].v_pointer);
   value->data[0].v_pointer = boxed ? g_boxed_copy (G_VALUE_TYPE (value), boxed) : NULL;
   value->data[1].v_uint = 0;
@@ -306,10 +322,10 @@ g_value_set_static_boxed (GValue       *value,
   g_return_if_fail (G_IS_VALUE_BOXED (value));
   g_return_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)));
 
-  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     g_boxed_free (G_VALUE_TYPE (value), value->data[0].v_pointer);
   value->data[0].v_pointer = (gpointer) boxed;
-  value->data[1].v_uint = boxed ? G_VALUE_STATIC_TAG : 0;
+  value->data[1].v_uint = boxed ? G_VALUE_NOCOPY_CONTENTS : 0;
 }
 
 gpointer

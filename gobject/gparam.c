@@ -51,13 +51,13 @@ static void	value_param_copy_value		(const GValue	*src_value,
 						 GValue		*dest_value);
 static gpointer	value_param_peek_pointer	(const GValue	*value);
 static gchar*	value_param_collect_value	(GValue		*value,
-						 guint		 nth_value,
-						 GType		*collect_type,
-						 GTypeCValue	*collect_value);
+						 guint           n_collect_values,
+						 GTypeCValue    *collect_values,
+						 guint           collect_flags);
 static gchar*	value_param_lcopy_value		(const GValue	*value,
-						 guint		 nth_value,
-						 GType		*collect_type,
-						 GTypeCValue	*collect_value);
+						 guint           n_collect_values,
+						 GTypeCValue    *collect_values,
+						 guint           collect_flags);
 
 
 /* --- variables --- */
@@ -80,9 +80,9 @@ g_param_type_init (void)	/* sync with gtype.c */
     value_param_free_value,     /* value_free */
     value_param_copy_value,     /* value_copy */
     value_param_peek_pointer,   /* value_peek_pointer */
-    G_VALUE_COLLECT_POINTER,    /* collect_type */
+    "p",			/* collect_format */
     value_param_collect_value,  /* collect_value */
-    G_VALUE_COLLECT_POINTER,    /* lcopy_type */
+    "p",			/* lcopy_format */
     value_param_lcopy_value,    /* lcopy_value */
   };
   static const GTypeInfo param_spec_info = {
@@ -399,13 +399,13 @@ value_param_peek_pointer (const GValue *value)
 
 static gchar*
 value_param_collect_value (GValue      *value,
-			   guint        nth_value,
-			   GType       *collect_type,
-			   GTypeCValue *collect_value)
+			   guint        n_collect_values,
+			   GTypeCValue *collect_values,
+			   guint        collect_flags)
 {
-  if (collect_value->v_pointer)
+  if (collect_values[0].v_pointer)
     {
-      GParamSpec *param = collect_value->v_pointer;
+      GParamSpec *param = collect_values[0].v_pointer;
 
       if (param->g_type_instance.g_class == NULL)
 	return g_strconcat ("invalid unclassed param spec pointer for value type `",
@@ -424,24 +424,27 @@ value_param_collect_value (GValue      *value,
   else
     value->data[0].v_pointer = NULL;
 
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_param_lcopy_value (const GValue *value,
-			 guint         nth_value,
-			 GType        *collect_type,
-			 GTypeCValue  *collect_value)
+			 guint         n_collect_values,
+			 GTypeCValue  *collect_values,
+			 guint         collect_flags)
 {
-  GParamSpec **param_p = collect_value->v_pointer;
+  GParamSpec **param_p = collect_values[0].v_pointer;
 
   if (!param_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
-  *param_p = value->data[0].v_pointer ? g_param_spec_ref (value->data[0].v_pointer) : NULL;
+  if (!value->data[0].v_pointer)
+    *param_p = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    *param_p = value->data[0].v_pointer;
+  else
+    *param_p = g_param_spec_ref (value->data[0].v_pointer);
 
-  *collect_type = 0;
   return NULL;
 }
 

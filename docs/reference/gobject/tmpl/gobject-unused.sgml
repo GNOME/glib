@@ -1,3 +1,83 @@
+<!-- ##### SECTION ./tmpl/closures.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/closures.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/closures.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/closures.sgml:Title ##### -->
+Closures
+
+
+<!-- ##### SECTION ./tmpl/enumerations_flags.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/enumerations_flags.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/enumerations_flags.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/enumerations_flags.sgml:Title ##### -->
+Enumeration and Flag Types
+
+
+<!-- ##### SECTION ./tmpl/gboxed.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gboxed.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gboxed.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/gboxed.sgml:Title ##### -->
+gboxed
+
+
+<!-- ##### SECTION ./tmpl/generic_values.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/generic_values.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/generic_values.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/generic_values.sgml:Title ##### -->
+Generic values
+
+
 <!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
 <para>
 
@@ -16,6 +96,261 @@
 
 <!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Title ##### -->
 gtypemodule.sgml
+
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml:Long_Description ##### -->
+<para>
+#GTypeModule provides a simple implementation of the #GTypePlugin
+interface. The model of #GTypeModule is a dynamically loaded module
+which implements some number of types and interface
+implementations. When the module is loaded, it registerse its types
+and interfaces using g_type_module_register_type() and
+g_type_module_add_interface().  As long as any instances of these
+types and interface implementations are in use, the module is kept
+loaded. When the types and interfaces are gone, the module may be
+unloaded. If the types and interfaces become used again, the module
+will be reloaded.
+</para>
+<para>
+Keeping track of whether the module should be loaded or not is done by
+using a use count - it starts at zero, and whenever it is greater than
+zero, the module is loaded. The use count is maintained internally by
+the type system, but also can be explicitely controlled by
+g_type_module_use() and g_type_module_unuse(). Typically, when loading
+a module for the first type, g_type_module_use() will be used to load
+it so that it can initialize its types. At some later point, when the
+module no longer needs to be loaded except for the type
+implementations it contains, g_type_module_unuse() is called.
+</para>
+<para>
+#GTypeModule does not actually provide any implementation of module
+loading and unloading. To create a particular module type you must
+derive from #GTypeModule and implement the load and unload functions
+in #GTypeModuleClass.
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml:See_Also ##### -->
+<para>
+<variablelist>
+
+<varlistentry>
+<term>#GTypePlugin</term>
+<listitem><para>The abstract type loader interface.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>#GModule</term>
+<listitem><para>Portable mechanism for dynamically loaded modules.</para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml:Short_Description ##### -->
+Type Loading Modules
+
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml:Title ##### -->
+GTypeModule
+
+
+<!-- ##### SECTION ./tmpl/gtypeplugin.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gtypeplugin.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/gtypeplugin.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/gtypeplugin.sgml:Title ##### -->
+GTypePlugin
+
+
+<!-- ##### SECTION ./tmpl/objects.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/objects.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/objects.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/objects.sgml:Title ##### -->
+The Base Object Type
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/param_specs.sgml:Title ##### -->
+Parameter Specifications
+
+
+<!-- ##### SECTION ./tmpl/signals.sgml:Long_Description ##### -->
+<para>
+The basic concept of the signal system is that of the <emphasis>emission</emphasis>
+of a signal.
+Signals are introduced per-type and are identified through strings.
+Signals introduced for a parent type are availale in derived types as well,
+so basically they are a per-type facility that is inherited.
+A signal emission mainly involves invocation of a certain set of callbacks in
+precisely defined manner. There are two main categories of such callbacks,
+per-object
+	<footnote><para> Although signals can deal with any kind of type, i'm
+	referring to those types as "object types" in the following, simply
+	because that is the context most users will encounter signals in.
+	</para></footnote>
+ones and user provided ones.
+The per-object callbacks are most often referred to as "object method
+handler" or "default (signal) handler", while user provided callbacks are
+usually just called "signal handler".
+The object method handler is provided at signal creation time (this most
+frequently happens at the end of an object class' creation), while user
+provided handlers are frequently connected and disconnected to/from a certain
+signal on certain object instances.
+</para>
+<para>
+A signal emission consists of five stages, unless prematurely stopped:
+<variablelist>
+  <varlistentry><term></term><listitem><para>
+	1 - Invocation of the object method handler for %G_SIGNAL_RUN_FIRST signals
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	2 - Invocation of normal user-provided signal handlers (<emphasis>after</emphasis> flag %FALSE)
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	3 - Invocation of the object method handler for %G_SIGNAL_RUN_LAST signals
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	4 - Invocation of user provided signal handlers, connected with an <emphasis>after</emphasis> flag of %TRUE
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	5 - Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
+  </para></listitem></varlistentry>
+</variablelist>
+The user provided signal handlers are called in the order they were
+connected in.
+All handlers may prematurely stop a signal emission, and any number of
+handlers may be connected, disconnected, blocked or unblocked during
+a signal emission.
+There are certain criteria for skipping user handlers in stages 2 and 4
+of a signal emission.
+First, user handlers may be <emphasis>blocked</emphasis>, blocked handlers are omitted
+during callback invocation, to return from the "blocked" state, a
+handler has to get unblocked exactly the same amount of times
+it has been blocked before.
+Second, upon emission of a %G_SIGNAL_DETAILED signal, an additional
+"detail" argument passed in to g_signal_emit() has to match the detail
+argument of the signal handler currently subject to invocation.
+Specification of no detail argument for signal handlers (omission of the
+detail part of the signal specification upon connection) serves as a
+wildcard and matches any detail argument passed in to emission.
+</para>
+
+
+<!-- ##### SECTION ./tmpl/signals.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/signals.sgml:Short_Description ##### -->
+Signals provide a means for customization of object behaviour and are used
+as general purpose notification mechanism.
+
+
+<!-- ##### SECTION ./tmpl/signals.sgml:Title ##### -->
+Signals
+
+
+<!-- ##### SECTION ./tmpl/standard_params.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/standard_params.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/standard_params.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/standard_params.sgml:Title ##### -->
+Standard Parameter Types
+
+
+<!-- ##### SECTION ./tmpl/value_collection.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/value_collection.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/value_collection.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/value_collection.sgml:Title ##### -->
+Varargs Value Collection
+
+
+<!-- ##### SECTION ./tmpl/value_types.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/value_types.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/value_types.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/value_types.sgml:Title ##### -->
+Standard value types
 
 
 <!-- ##### USER_FUNCTION GObjectGetParamFunc ##### -->

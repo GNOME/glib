@@ -53,8 +53,8 @@ typedef enum
   G_SIGNAL_DETAILED	= 1 << 4,
   G_SIGNAL_ACTION	= 1 << 5,
   G_SIGNAL_NO_HOOKS	= 1 << 6
-#define G_SIGNAL_FLAGS_MASK  0x7f
 } GSignalFlags;
+#define G_SIGNAL_FLAGS_MASK  0x7f
 typedef enum
 {
   G_SIGNAL_MATCH_ID	   = 1 << 0,
@@ -63,8 +63,9 @@ typedef enum
   G_SIGNAL_MATCH_FUNC	   = 1 << 3,
   G_SIGNAL_MATCH_DATA	   = 1 << 4,
   G_SIGNAL_MATCH_UNBLOCKED = 1 << 5
-#define G_SIGNAL_MATCH_MASK  0x3f
 } GSignalMatchType;
+#define G_SIGNAL_MATCH_MASK  0x3f
+#define	G_SIGNAL_TYPE_STATIC_SCOPE (G_TYPE_FLAG_RESERVED_ID_BIT)
 
 
 /* --- signal information --- */
@@ -78,9 +79,9 @@ struct _GSignalQuery
 {
   guint		signal_id;
   const gchar  *signal_name;
-  GType		itype;
+  GType		itype;	     /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GSignalFlags	signal_flags;
-  GType		return_type;
+  GType		return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   guint		n_params;
   const GType  *param_types;
 };

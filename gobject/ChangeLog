@@ -1,3 +1,27 @@
+Sat Feb 17 04:55:35 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: changed collect_format, collect_value() and lcopy_format,
+	lcopy_value() in the GTypeValueTable. the collect functions are now
+	called only once per value, collect_format/lcopy_format are strings
+	that enlist all necessary GTypeCValues to be varargs-collected.
+
+	* gvalue.h: ranamed STATIC_TAG to G_VALUE_NOCOPY_CONTENTS to indicate that
+	a value shouldn't copy its contents.
+
+	* gvaluecollector.h: changed G_VALUE_COLLECT() and G_VALUE_LCOPY()
+	macros to carry an additional argument (flags) that can be used
+	to pass G_VALUE_NOCOPY_CONTENTS along to the collection functions.
+
+	* *.c: adapted collect_value() and lcopy_value() functions to the new
+	prototypes, support G_VALUE_NOCOPY_CONTENTS where apropriate.
+
+	* gsignal.[hc]: introduced a G_SIGNAL_TYPE_STATIC_SCOPE flag that can
+	be passed along (ORed) with the parameter types, indicating that the
+	emission arguments are to be considered static for the scope of the
+	emission. should be used with care and only if the caller knows that
+	a parameter cannot be destroyed/freed from signal handlers connected
+	to an emission.
+
 Fri Feb 16 07:10:44 2001  Tim Janik  <timj@gtk.org>
 
 	* gclosure.c:

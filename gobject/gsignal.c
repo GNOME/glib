@@ -158,8 +158,8 @@ struct _SignalNode
   /* reinitializable portion */
   guint              flags : 8;
   guint              n_params : 8;
-  GType		    *param_types;
-  GType		     return_type;
+  GType		    *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
+  GType		     return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GClosure          *class_closure;
   GSignalAccumulator accumulator;
   GSignalCMarshaller c_marshaller;
@@ -941,8 +941,7 @@ g_signal_newc (const gchar	 *signal_name,
   va_start (args, n_params);
 
   signal_id = g_signal_new_valist (signal_name, itype, signal_flags,
-                                   g_signal_type_cclosure_new (itype,
-                                                               class_offset),
+                                   g_signal_type_cclosure_new (itype, class_offset),
                                    accumulator, c_marshaller,
                                    return_type, n_params, args);
 
@@ -1001,19 +1000,20 @@ g_signal_newv (const gchar       *signal_name,
       return 0;
     }
   for (i = 0; i < n_params; i++)
-    if (!G_TYPE_IS_VALUE (param_types[i]) ||
-	param_types[i] == G_TYPE_ENUM || param_types[i] == G_TYPE_FLAGS) /* FIXME: kludge */
+    if (!G_TYPE_IS_VALUE (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) ||
+	(param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) == G_TYPE_ENUM ||
+	(param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) == G_TYPE_FLAGS) /* FIXME: kludge */
       {
 	g_warning (G_STRLOC ": parameter %d of type `%s' for signal \"%s::%s\" is not a value type",
-		   i + 1, g_type_name (param_types[i]), g_type_name (itype), name);
+		   i + 1, g_type_name (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE), g_type_name (itype), name);
 	g_free (name);
 	G_UNLOCK (g_signal_mutex);
 	return 0;
       }
-  if (return_type != G_TYPE_NONE && !G_TYPE_IS_VALUE (return_type))
+  if (return_type != G_TYPE_NONE && !G_TYPE_IS_VALUE (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     {
       g_warning (G_STRLOC ": return value of type `%s' for signal \"%s::%s\" is not a value type",
-		 g_type_name (param_types[i]), g_type_name (itype), name);
+		 g_type_name (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE), g_type_name (itype), name);
       g_free (name);
       G_UNLOCK (g_signal_mutex);
       return 0;
@@ -1559,11 +1559,11 @@ g_signal_emitv (const GValue *instance_and_params,
       return;
     }
   for (i = 0; i < node->n_params; i++)
-    if (!G_VALUE_HOLDS (param_values + i, node->param_types[i]))
+    if (!G_VALUE_HOLDS (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
 	g_critical ("%s: value for `%s' parameter %u for signal \"%s\" is of type `%s'",
 		    G_STRLOC,
-		    g_type_name (node->param_types[i]),
+		    g_type_name (node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE),
 		    i,
 		    node->name,
 		    G_VALUE_TYPE_NAME (param_values + i));
@@ -1576,16 +1576,16 @@ g_signal_emitv (const GValue *instance_and_params,
 	{
 	  g_critical ("%s: return value `%s' for signal \"%s\" is (NULL)",
 		      G_STRLOC,
-		      g_type_name (node->return_type),
+		      g_type_name (node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
 		      node->name);
 	  G_UNLOCK (g_signal_mutex);
 	  return;
 	}
-      else if (!node->accumulator && !G_VALUE_HOLDS (return_value, node->return_type))
+      else if (!node->accumulator && !G_VALUE_HOLDS (return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
 	{
 	  g_critical ("%s: return value `%s' for signal \"%s\" is of type `%s'",
 		      G_STRLOC,
-		      g_type_name (node->return_type),
+		      g_type_name (node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
 		      node->name,
 		      G_VALUE_TYPE_NAME (return_value));
 	  G_UNLOCK (g_signal_mutex);
@@ -1644,8 +1644,11 @@ g_signal_emit_valist (gpointer instance,
       gchar *error;
 
       param_values[i].g_type = 0;
-      g_value_init (param_values + i, node->param_types[i]);
-      G_VALUE_COLLECT (param_values + i, var_args, &error);
+      g_value_init (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      G_VALUE_COLLECT (param_values + i,
+		       var_args,
+		       node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
+		       &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
@@ -1672,9 +1675,12 @@ g_signal_emit_valist (gpointer instance,
       GValue return_value = { 0, };
       gchar *error = NULL;
 
-      g_value_init (&return_value, node->return_type);
+      g_value_init (&return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
       if (signal_emit_R (node, detail, instance, &return_value, instance_and_params))
-	G_VALUE_LCOPY (&return_value, var_args, &error);
+	G_VALUE_LCOPY (&return_value,
+		       var_args,
+		       node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
+		       &error);
       if (!error)
 	g_value_unset (&return_value);
       else
@@ -1779,7 +1785,7 @@ signal_emit_R (SignalNode   *node,
   ihint.detail = detail;
   accumulator = node->accumulator;
   if (accumulator)
-    g_value_init (&accu, node->return_type);
+    g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
   emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions,
 		 signal_id, detail, instance, &emission_state);
   class_closure = node->class_closure;
@@ -2007,7 +2013,7 @@ signal_emit_R (SignalNode   *node,
 	{
 	  if (!accumulator)
 	    {
-	      g_value_init (&accu, node->return_type);
+	      g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
 	      need_unset = TRUE;
 	    }
 	  else if (accu_used)

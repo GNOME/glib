@@ -273,16 +273,16 @@ struct _GTypeValueTable
 				  GValue       *dest_value);
   /* varargs functionality (optional) */
   gpointer (*value_peek_pointer) (const GValue *value);
-  guint      collect_type;
+  gchar	    *collect_format;
   gchar*   (*collect_value)      (GValue       *value,
-				  guint         nth_value,
-				  GType        *collect_type,
-				  GTypeCValue  *collect_value);
-  guint      lcopy_type;
+				  guint         n_collect_values,
+				  GTypeCValue  *collect_values,
+				  guint		collect_flags);
+  gchar	    *lcopy_format;
   gchar*   (*lcopy_value)        (const GValue *value,
-				  guint         nth_value,
-				  GType        *collect_type,
-				  GTypeCValue  *collect_value);
+				  guint         n_collect_values,
+				  GTypeCValue  *collect_values,
+				  guint		collect_flags);
 };
 GType g_type_register_static       (GType                       parent_type,
                                     const gchar                *type_name,

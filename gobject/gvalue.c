@@ -127,26 +127,14 @@ g_value_set_instance (GValue  *value,
       GType g_type = G_VALUE_TYPE (value);
       GTypeValueTable *value_table = g_type_value_table_peek (g_type);
       GTypeCValue cvalue = { 0, };
-      guint nth_value = 0;
-      guint collect_type = value_table->collect_type;
       gchar *error_msg;
       
       g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
       g_return_if_fail (g_type_is_a (G_TYPE_FROM_INSTANCE (instance), G_VALUE_TYPE (value)));
-      g_return_if_fail (value_table->collect_type == G_VALUE_COLLECT_POINTER);
+      g_return_if_fail (strcmp (value_table->collect_format, "p") == 0);
       
       cvalue.v_pointer = instance;
-      error_msg = value_table->collect_value (value, nth_value++, &collect_type, &cvalue);
-      
-      /* this shouldn't be triggered, instance types should collect just one pointer,
-       * but since we have to follow the calling conventions for collect_value(),
-       * we can attempt to feed them with 0s if they insist on extra args.
-       */
-      while (collect_type && !error_msg)
-	{
-	  memset (&cvalue, 0, sizeof (cvalue));
-	  error_msg = value_table->collect_value (value, nth_value++, &collect_type, &cvalue);
-	}
+      error_msg = value_table->collect_value (value, 1, &cvalue, 0);
       
       if (error_msg)
 	{

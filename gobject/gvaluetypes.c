@@ -43,93 +43,87 @@ value_long0_copy (const GValue *src_value,
 
 static gchar*
 value_char_lcopy_value (const GValue *value,
-			guint	      nth_value,
-			GType	     *collect_type,
-			GTypeCValue  *collect_value)
+			guint         n_collect_values,
+			GTypeCValue  *collect_values,
+			guint         collect_flags)
 {
-  gint8 *int8_p = collect_value->v_pointer;
+  gint8 *int8_p = collect_values[0].v_pointer;
   
   if (!int8_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *int8_p = value->data[0].v_int;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_boolean_lcopy_value (const GValue *value,
-			   guint	 nth_value,
-			   GType	*collect_type,
-			   GTypeCValue	*collect_value)
+			   guint         n_collect_values,
+			   GTypeCValue  *collect_values,
+			   guint         collect_flags)
 {
-  gboolean *bool_p = collect_value->v_pointer;
+  gboolean *bool_p = collect_values[0].v_pointer;
   
   if (!bool_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *bool_p = value->data[0].v_int;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_int_collect_value (GValue	     *value,
-			 guint	      nth_value,
-			 GType	     *collect_type,
-			 GTypeCValue *collect_value)
+			 guint        n_collect_values,
+			 GTypeCValue *collect_values,
+			 guint        collect_flags)
 {
-  value->data[0].v_int = collect_value->v_int;
+  value->data[0].v_int = collect_values[0].v_int;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_int_lcopy_value (const GValue *value,
-		       guint	     nth_value,
-		       GType	    *collect_type,
-		       GTypeCValue  *collect_value)
+		       guint         n_collect_values,
+		       GTypeCValue  *collect_values,
+		       guint         collect_flags)
 {
-  gint *int_p = collect_value->v_pointer;
+  gint *int_p = collect_values[0].v_pointer;
   
   if (!int_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *int_p = value->data[0].v_int;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_long_collect_value (GValue      *value,
-			  guint	       nth_value,
-			  GType	      *collect_type,
-			  GTypeCValue *collect_value)
+			  guint        n_collect_values,
+			  GTypeCValue *collect_values,
+			  guint        collect_flags)
 {
-  value->data[0].v_long = collect_value->v_long;
+  value->data[0].v_long = collect_values[0].v_long;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_long_lcopy_value (const GValue *value,
-			guint	      nth_value,
-			GType	     *collect_type,
-			GTypeCValue  *collect_value)
+                        guint         n_collect_values,
+			GTypeCValue  *collect_values,
+			guint         collect_flags)
 {
-  glong *long_p = collect_value->v_pointer;
+  glong *long_p = collect_values[0].v_pointer;
   
   if (!long_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *long_p = value->data[0].v_long;
   
-  *collect_type = 0;
   return NULL;
 }
 
@@ -148,30 +142,28 @@ value_float_copy (const GValue *src_value,
 
 static gchar*
 value_float_collect_value (GValue      *value,
-			   guint	nth_value,
-			   GType       *collect_type,
-			   GTypeCValue *collect_value)
+			   guint        n_collect_values,
+			   GTypeCValue *collect_values,
+			   guint        collect_flags)
 {
-  value->data[0].v_float = collect_value->v_double;
+  value->data[0].v_float = collect_values[0].v_double;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_float_lcopy_value (const GValue *value,
-			 guint	       nth_value,
-			 GType	      *collect_type,
-			 GTypeCValue  *collect_value)
+			 guint         n_collect_values,
+			 GTypeCValue  *collect_values,
+			 guint         collect_flags)
 {
-  gfloat *float_p = collect_value->v_pointer;
+  gfloat *float_p = collect_values[0].v_pointer;
   
   if (!float_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *float_p = value->data[0].v_float;
   
-  *collect_type = 0;
   return NULL;
 }
 
@@ -190,30 +182,28 @@ value_double_copy (const GValue *src_value,
 
 static gchar*
 value_double_collect_value (GValue	*value,
-			    guint	 nth_value,
-			    GType	*collect_type,
-			    GTypeCValue *collect_value)
+			    guint        n_collect_values,
+			    GTypeCValue *collect_values,
+			    guint        collect_flags)
 {
-  value->data[0].v_double = collect_value->v_double;
+  value->data[0].v_double = collect_values[0].v_double;
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_double_lcopy_value (const GValue *value,
-			  guint		nth_value,
-			  GType	       *collect_type,
-			  GTypeCValue  *collect_value)
+			  guint         n_collect_values,
+			  GTypeCValue  *collect_values,
+			  guint         collect_flags)
 {
-  gdouble *double_p = collect_value->v_pointer;
+  gdouble *double_p = collect_values[0].v_pointer;
   
   if (!double_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *double_p = value->data[0].v_double;
   
-  *collect_type = 0;
   return NULL;
 }
 
@@ -226,7 +216,7 @@ value_string_init (GValue *value)
 static void
 value_string_free_value (GValue *value)
 {
-  if (!(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     g_free (value->data[0].v_pointer);
 }
 
@@ -239,30 +229,41 @@ value_string_copy_value (const GValue *src_value,
 
 static gchar*
 value_string_collect_value (GValue	*value,
-			    guint	 nth_value,
-			    GType	*collect_type,
-			    GTypeCValue *collect_value)
+			    guint        n_collect_values,
+			    GTypeCValue *collect_values,
+			    guint        collect_flags)
 {
-  value->data[0].v_pointer = g_strdup (collect_value->v_pointer);
+  if (!collect_values[0].v_pointer)
+    value->data[0].v_pointer = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    {
+      value->data[0].v_pointer = collect_values[0].v_pointer;
+      value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
+    }
+  else
+    value->data[0].v_pointer = g_strdup (collect_values[0].v_pointer);
   
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_string_lcopy_value (const GValue *value,
-			  guint		nth_value,
-			  GType	       *collect_type,
-			  GTypeCValue  *collect_value)
+                          guint         n_collect_values,
+			  GTypeCValue  *collect_values,
+			  guint         collect_flags)
 {
-  gchar **string_p = collect_value->v_pointer;
+  gchar **string_p = collect_values[0].v_pointer;
   
   if (!string_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
-  *string_p = g_strdup (value->data[0].v_pointer);
+  if (!value->data[0].v_pointer)
+    *string_p = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    *string_p = value->data[0].v_pointer;
+  else
+    *string_p = g_strdup (value->data[0].v_pointer);
   
-  *collect_type = 0;
   return NULL;
 }
 
@@ -287,30 +288,28 @@ value_pointer_peek_pointer (const GValue *value)
 
 static gchar*
 value_pointer_collect_value (GValue      *value,
-			     guint        nth_value,
-			     GType       *collect_type,
-			     GTypeCValue *collect_value)
+			     guint        n_collect_values,
+			     GTypeCValue *collect_values,
+			     guint        collect_flags)
 {
-  value->data[0].v_pointer = collect_value->v_pointer;
+  value->data[0].v_pointer = collect_values[0].v_pointer;
 
-  *collect_type = 0;
   return NULL;
 }
 
 static gchar*
 value_pointer_lcopy_value (const GValue *value,
-			   guint         nth_value,
-			   GType        *collect_type,
-			   GTypeCValue  *collect_value)
+			   guint         n_collect_values,
+			   GTypeCValue  *collect_values,
+			   guint         collect_flags)
 {
-  gpointer *pointer_p = collect_value->v_pointer;
+  gpointer *pointer_p = collect_values[0].v_pointer;
 
   if (!pointer_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
   *pointer_p = value->data[0].v_pointer;
 
-  *collect_type = 0;
   return NULL;
 }
 
@@ -331,55 +330,38 @@ value_ccallback_copy (const GValue *src_value,
 
 static gchar*
 value_ccallback_collect_value (GValue      *value,
-			       guint        nth_value,
-			       GType       *collect_type,
-			       GTypeCValue *collect_value)
+			       guint        n_collect_values,
+			       GTypeCValue *collect_values,
+			       guint        collect_flags)
 {
   gchar *error = NULL;
 
-  switch (nth_value)
-    {
-    case 0:
-      value->data[0].v_pointer = collect_value->v_pointer;
-      *collect_type = G_VALUE_COLLECT_POINTER;
-      if (!value->data[0].v_pointer)
-	error = g_strconcat ("invalid (NULL) pointer callback function for value type `",
-			     G_VALUE_TYPE_NAME (value),
-			     "'",
-			     NULL);
-      break;
-    case 1:
-      value->data[1].v_pointer = collect_value->v_pointer;
-      *collect_type = 0;
-      break;
-    }
+  if (!collect_values[0].v_pointer)
+    error = g_strconcat ("invalid (NULL) pointer callback function for value type `",
+			 G_VALUE_TYPE_NAME (value),
+			 "'",
+			 NULL);
+  value->data[0].v_pointer = collect_values[0].v_pointer;
+  value->data[1].v_pointer = collect_values[1].v_pointer;
 
   return error;
 }
 
 static gchar*
 value_ccallback_lcopy_value (const GValue *value,
-			     guint         nth_value,
-			     GType        *collect_type,
-			     GTypeCValue  *collect_value)
+			     guint         n_collect_values,
+			     GTypeCValue  *collect_values,
+			     guint         collect_flags)
 {
-  gpointer *pointer_p = collect_value->v_pointer;
+  gpointer *callback_p = collect_values[0].v_pointer;
+  gpointer *data_p = collect_values[1].v_pointer;
 
-  if (!pointer_p)
+  if (!callback_p || !data_p)
     return g_strdup_printf ("%s location for `%s' passed as NULL",
-			    nth_value ? "data" : "callback",
+			    callback_p ? "data" : "callback",
 			    G_VALUE_TYPE_NAME (value));
-  switch (nth_value)
-    {
-    case 0:
-      *pointer_p = value->data[0].v_pointer;
-      *collect_type = G_VALUE_COLLECT_POINTER;
-      break;
-    case 1:
-      *pointer_p = value->data[1].v_pointer;
-      *collect_type = 0;
-      break;
-    }
+  *callback_p = value->data[0].v_pointer;
+  *data_p = value->data[1].v_pointer;
 
   return NULL;
 }
@@ -412,9 +394,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
       NULL,			/* value_peek_pointer */
-      G_VALUE_COLLECT_INT,	/* collect_type */
+      "i",			/* collect_format */
       value_int_collect_value,	/* collect_value */
-      G_VALUE_COLLECT_POINTER,	/* lcopy_type */
+      "p",			/* lcopy_format */
       value_char_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
@@ -432,9 +414,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			 /* value_free */
       value_long0_copy,		 /* value_copy */
       NULL,                      /* value_peek_pointer */
-      G_VALUE_COLLECT_INT,	 /* collect_type */
+      "i",			 /* collect_format */
       value_int_collect_value,	 /* collect_value */
-      G_VALUE_COLLECT_POINTER,	 /* lcopy_type */
+      "p",			 /* lcopy_format */
       value_boolean_lcopy_value, /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -450,9 +432,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
       NULL,                     /* value_peek_pointer */
-      G_VALUE_COLLECT_INT,	/* collect_type */
+      "i",			/* collect_format */
       value_int_collect_value,	/* collect_value */
-      G_VALUE_COLLECT_POINTER,	/* lcopy_type */
+      "p",			/* lcopy_format */
       value_int_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
@@ -470,9 +452,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
       NULL,                     /* value_peek_pointer */
-      G_VALUE_COLLECT_LONG,	/* collect_type */
+      "l",			/* collect_format */
       value_long_collect_value,	/* collect_value */
-      G_VALUE_COLLECT_POINTER,	/* lcopy_type */
+      "p",			/* lcopy_format */
       value_long_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
@@ -490,9 +472,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			 /* value_free */
       value_float_copy,		 /* value_copy */
       NULL,                      /* value_peek_pointer */
-      G_VALUE_COLLECT_DOUBLE,	 /* collect_type */
+      "d",			 /* collect_format */
       value_float_collect_value, /* collect_value */
-      G_VALUE_COLLECT_POINTER,	 /* lcopy_type */
+      "p",			 /* lcopy_format */
       value_float_lcopy_value,	 /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -508,9 +490,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,			  /* value_free */
       value_double_copy,	  /* value_copy */
       NULL,                       /* value_peek_pointer */
-      G_VALUE_COLLECT_DOUBLE,	  /* collect_type */
+      "d",			  /* collect_format */
       value_double_collect_value, /* collect_value */
-      G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
+      "p",			  /* lcopy_format */
       value_double_lcopy_value,	  /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -526,9 +508,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_string_free_value,	  /* value_free */
       value_string_copy_value,	  /* value_copy */
       value_pointer_peek_pointer, /* value_peek_pointer */
-      G_VALUE_COLLECT_POINTER,	  /* collect_type */
+      "p",			  /* collect_format */
       value_string_collect_value, /* collect_value */
-      G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
+      "p",			  /* lcopy_format */
       value_string_lcopy_value,	  /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -544,9 +526,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,                        /* value_free */
       value_pointer_copy,          /* value_copy */
       value_pointer_peek_pointer,  /* value_peek_pointer */
-      G_VALUE_COLLECT_POINTER,     /* collect_type */
+      "p",			   /* collect_format */
       value_pointer_collect_value, /* collect_value */
-      G_VALUE_COLLECT_POINTER,     /* lcopy_type */
+      "p",			   /* lcopy_format */
       value_pointer_lcopy_value,   /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -562,9 +544,9 @@ g_value_types_init (void)  /* sync with gtype.c */
       NULL,                          /* value_free */
       value_ccallback_copy,          /* value_copy */
       NULL,                          /* value_peek_pointer */
-      G_VALUE_COLLECT_POINTER,       /* collect_type */
+      "pp",			     /* collect_format */
       value_ccallback_collect_value, /* collect_value */
-      G_VALUE_COLLECT_POINTER,       /* lcopy_type */
+      "pp",			     /* lcopy_format */
       value_ccallback_lcopy_value,   /* lcopy_value */
     };
     info.value_table = &value_table;
@@ -734,7 +716,7 @@ g_value_set_string (GValue	*value,
 {
   g_return_if_fail (G_IS_VALUE_STRING (value));
   
-  if (value->data[1].v_uint & G_VALUE_STATIC_TAG)
+  if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
     value->data[1].v_uint = 0;
   else
     g_free (value->data[0].v_pointer);
@@ -747,9 +729,9 @@ g_value_set_static_string (GValue      *value,
 {
   g_return_if_fail (G_IS_VALUE_STRING (value));
   
-  if (!(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     g_free (value->data[0].v_pointer);
-  value->data[1].v_uint = G_VALUE_STATIC_TAG;
+  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
   value->data[0].v_pointer = (gchar*) v_string;
 }
 

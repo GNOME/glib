@@ -18,7 +18,12 @@
  */
 #include	"gtype.h"
 
+/*
+ * MT safe
+ */
+
 #include	"gtypeplugin.h"
+#include	"gvaluecollector.h"
 #include	<string.h>
 
 
@@ -548,6 +553,20 @@ check_derivation_U (GType        parent_type,
 }
 
 static gboolean
+check_collect_format_I (const gchar *collect_format)
+{
+  const gchar *p = collect_format;
+  gchar valid_format[] = { G_VALUE_COLLECT_INT, G_VALUE_COLLECT_LONG,
+			   G_VALUE_COLLECT_DOUBLE, G_VALUE_COLLECT_POINTER,
+			   0 };
+
+  while (*p)
+    if (!strchr (valid_format, *p++))
+      return FALSE;
+  return p - collect_format <= G_VALUE_COLLECT_FORMAT_MAX_LENGTH;
+}
+
+static gboolean
 check_value_table_I (const gchar           *type_name,
 		     const GTypeValueTable *value_table)
 {
@@ -557,8 +576,8 @@ check_value_table_I (const gchar           *type_name,
     {
       if (value_table->value_free || value_table->value_copy ||
 	  value_table->value_peek_pointer ||
-	  value_table->collect_type || value_table->collect_value ||
-	  value_table->lcopy_type || value_table->lcopy_value)
+	  value_table->collect_format || value_table->collect_value ||
+	  value_table->lcopy_format || value_table->lcopy_value)
 	g_warning ("cannot handle uninitializable values of type `%s'",
 		   type_name);
       return FALSE;
@@ -577,17 +596,31 @@ check_value_table_I (const gchar           *type_name,
 	  g_warning ("missing `value_copy()' for type `%s'", type_name);
 	  return FALSE;
 	}
-      if ((value_table->collect_type || value_table->collect_value) &&
-	  (!value_table->collect_type || !value_table->collect_value))
+      if ((value_table->collect_format || value_table->collect_value) &&
+	  (!value_table->collect_format || !value_table->collect_value))
 	{
-	  g_warning ("one of `collect_type' and `collect_value()' is unspecified for type `%s'",
+	  g_warning ("one of `collect_format' and `collect_value()' is unspecified for type `%s'",
 		     type_name);
 	  return FALSE;
 	}
-      if ((value_table->lcopy_type || value_table->lcopy_value) &&
-	  (!value_table->lcopy_type || !value_table->lcopy_value))
+      if (value_table->collect_format && !check_collect_format_I (value_table->collect_format))
 	{
-	  g_warning ("one of `lcopy_type' and `lcopy_value()' is unspecified for type `%s'",
+	  g_warning ("the `%s' specification for type `%s' is too long or invalid",
+		     "collect_format",
+		     type_name);
+	  return FALSE;
+	}
+      if ((value_table->lcopy_format || value_table->lcopy_value) &&
+	  (!value_table->lcopy_format || !value_table->lcopy_value))
+	{
+	  g_warning ("one of `lcopy_format' and `lcopy_value()' is unspecified for type `%s'",
+		     type_name);
+	  return FALSE;
+	}
+      if (value_table->lcopy_format && !check_collect_format_I (value_table->lcopy_format))
+	{
+	  g_warning ("the `%s' specification for type `%s' is too long or invalid",
+		     "lcopy_format",
 		     type_name);
 	  return FALSE;
 	}
@@ -834,7 +867,11 @@ type_data_make_W (TypeNode              *node,
   node->data->common.ref_count = 1;
   
   if (vtable_size)
-    *vtable = *value_table;
+    {
+      *vtable = *value_table;
+      vtable->collect_format = g_strdup (value_table->collect_format ? value_table->collect_format : "");
+      vtable->lcopy_format = g_strdup (value_table->lcopy_format ? value_table->lcopy_format : "");
+    }
   node->data->common.value_table = vtable;
   
   g_assert (node->data->common.value_table != NULL); /* paranoid */
@@ -1377,7 +1414,12 @@ type_data_last_unref_Wm (GType    type,
 	}
       else
 	node->data = NULL;
-      
+
+      if (tdata->common.value_table)
+	{
+	  g_free (tdata->common.value_table->collect_format);
+	  g_free (tdata->common.value_table->lcopy_format);
+	}
       g_free (tdata);
       
       if (ptype)

@@ -34,13 +34,15 @@ extern "C" {
  */
 enum	/*< skip >*/
 {
-  G_VALUE_COLLECT_NONE,
-  G_VALUE_COLLECT_INT,
-  G_VALUE_COLLECT_LONG,
-  G_VALUE_COLLECT_DOUBLE,
-  G_VALUE_COLLECT_POINTER
+  G_VALUE_COLLECT_INT		= 'i',
+  G_VALUE_COLLECT_LONG		= 'l',
+  G_VALUE_COLLECT_DOUBLE	= 'd',
+  G_VALUE_COLLECT_POINTER	= 'p'
 };
 
+
+/* vararg union holding actuall values collected
+ */
 union _GTypeCValue
 {
   gint     v_int;
@@ -60,92 +62,87 @@ union _GTypeCValue
  * __error is a gchar** variable that will be modified to hold a g_new()
  * allocated error messages if something fails.
  */
-#define G_VALUE_COLLECT(value, var_args, __error)					\
+#define G_VALUE_COLLECT(value, var_args, flags, __error)				\
 G_STMT_START {										\
   GValue *_value = (value);								\
+  guint _flags = (flags);								\
   GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
-  gchar *_error_msg = NULL;								\
-  guint _collect_type = _vtable->collect_type;						\
-  guint _nth_value = 0;									\
+  gchar *_collect_format = _vtable->collect_format;					\
+  GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
+  guint _n_values = 0;									\
                                                                                         \
   g_value_reset (_value);								\
-  while (_collect_type && !_error_msg)							\
+  while (*_collect_format)								\
     {											\
-      GTypeCValue _cvalue = { 0, };							\
+      GTypeCValue *_cvalue = _cvalues + _n_values++;					\
                                                                                         \
-      switch (_collect_type)								\
+      switch (*_collect_format++)							\
 	{										\
 	case G_VALUE_COLLECT_INT:							\
-	  _cvalue.v_int = va_arg ((var_args), gint);					\
+	  _cvalue->v_int = va_arg ((var_args), gint);					\
 	  break;									\
 	case G_VALUE_COLLECT_LONG:							\
-	  _cvalue.v_long = va_arg ((var_args), glong);					\
+	  _cvalue->v_long = va_arg ((var_args), glong);					\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
-	  _cvalue.v_double = va_arg ((var_args), gdouble);				\
+	  _cvalue->v_double = va_arg ((var_args), gdouble);				\
 	  break;									\
 	case G_VALUE_COLLECT_POINTER:							\
-	  _cvalue.v_pointer = va_arg ((var_args), gpointer);				\
+	  _cvalue->v_pointer = va_arg ((var_args), gpointer);				\
 	  break;									\
 	default:									\
-	  _error_msg  = g_strdup_printf ("%s: invalid collect type (%d) used for %s",	\
-					 G_STRLOC,					\
-					 _collect_type,					\
-					 "G_VALUE_COLLECT()");				\
-	  continue;									\
+	  g_assert_not_reached ();							\
 	}										\
-      _error_msg = _vtable->collect_value (_value,					\
-					   _nth_value++,				\
-					   &_collect_type,				\
-					   &_cvalue);					\
     }											\
-  *(__error) = _error_msg;								\
+  *(__error) = _vtable->collect_value (_value,						\
+				       _n_values,					\
+				       _cvalues,					\
+				       _flags);						\
 } G_STMT_END
 
 
 /* G_VALUE_LCOPY() collects a value's variable argument
  * locations from a va_list. usage is analogous to G_VALUE_COLLECT().
  */
-#define G_VALUE_LCOPY(value, var_args, __error)						\
+#define G_VALUE_LCOPY(value, var_args, flags, __error)					\
 G_STMT_START {										\
   GValue *_value = (value);								\
+  guint _flags = (flags);								\
   GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
-  gchar *_error_msg = NULL;								\
-  guint _lcopy_type = _vtable->lcopy_type;						\
-  guint _nth_value = 0;									\
+  gchar *_lcopy_format = _vtable->lcopy_format;						\
+  GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
+  guint _n_values = 0;									\
                                                                                         \
-  while (_lcopy_type && !_error_msg)							\
+  while (*_lcopy_format)								\
     {											\
-      GTypeCValue _cvalue = { 0, };							\
+      GTypeCValue *_cvalue = _cvalues + _n_values++;					\
                                                                                         \
-      switch (_lcopy_type)								\
+      switch (*_lcopy_format++)								\
 	{										\
 	case G_VALUE_COLLECT_INT:							\
-	  _cvalue.v_int = va_arg ((var_args), gint);					\
+	  _cvalue->v_int = va_arg ((var_args), gint);					\
 	  break;									\
 	case G_VALUE_COLLECT_LONG:							\
-	  _cvalue.v_long = va_arg ((var_args), glong);					\
+	  _cvalue->v_long = va_arg ((var_args), glong);					\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
-	  _cvalue.v_double = va_arg ((var_args), gdouble);				\
+	  _cvalue->v_double = va_arg ((var_args), gdouble);				\
 	  break;									\
 	case G_VALUE_COLLECT_POINTER:							\
-	  _cvalue.v_pointer = va_arg ((var_args), gpointer);				\
+	  _cvalue->v_pointer = va_arg ((var_args), gpointer);				\
 	  break;									\
 	default:									\
-	  _error_msg  = g_strdup_printf ("%s: invalid collect type (%d) used for %s",	\
-					 G_STRLOC,					\
-					 _lcopy_type,					\
-					 "G_VALUE_LCOPY()");				\
-	  continue;									\
+	  g_assert_not_reached ();							\
 	}										\
-      _error_msg = _vtable->lcopy_value (_value,					\
-					 _nth_value++,					\
-					 &_lcopy_type,					\
-					 &_cvalue);					\
     }											\
-  *(__error) = _error_msg;								\
+  *(__error) = _vtable->lcopy_value (_value,						\
+				     _n_values,						\
+				     _cvalues,						\
+				     _flags);						\
 } G_STMT_END
+
+
+#define	G_VALUE_COLLECT_FORMAT_MAX_LENGTH	(8)
 
 
 

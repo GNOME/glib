@@ -287,9 +287,9 @@ used specifically for managing interface types.
 @value_free: 
 @value_copy: 
 @value_peek_pointer: 
-@collect_type: 
+@collect_format: 
 @collect_value: 
-@lcopy_type: 
+@lcopy_format: 
 @lcopy_value: 
 
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->

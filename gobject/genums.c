@@ -37,14 +37,14 @@ static void	g_flags_class_init		(GFlagsClass	*class,
 static void	value_flags_enum_init		(GValue		*value);
 static void	value_flags_enum_copy_value	(const GValue	*src_value,
 						 GValue		*dest_value);
-static gchar*	value_flags_enum_collect_value (GValue		*value,
-						guint		 nth_value,
-						GType		*collect_type,
-						GTypeCValue	*collect_value);
+static gchar*	value_flags_enum_collect_value  (GValue		*value,
+						 guint           n_collect_values,
+						 GTypeCValue    *collect_values,
+						 guint           collect_flags);
 static gchar*	value_flags_enum_lcopy_value	(const GValue	*value,
-						 guint		 nth_value,
-						 GType		*collect_type,
-						 GTypeCValue	*collect_value);
+						 guint           n_collect_values,
+						 GTypeCValue    *collect_values,
+						 guint           collect_flags);
 
 
 /* --- functions --- */
@@ -53,13 +53,13 @@ g_enum_types_init (void)	/* sync with gtype.c */
 {
   static gboolean initialized = FALSE;
   static const GTypeValueTable flags_enum_value_table = {
-    value_flags_enum_init,	  /* value_init */
-    NULL,			 	  /* value_free */
+    value_flags_enum_init,	    /* value_init */
+    NULL,			    /* value_free */
     value_flags_enum_copy_value,    /* value_copy */
-    NULL,			  	  /* value_peek_pointer */
-    G_VALUE_COLLECT_INT,	  	  /* collect_type */
+    NULL,			    /* value_peek_pointer */
+    "i",			    /* collect_format */
     value_flags_enum_collect_value, /* collect_value */
-    G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
+    "p",			    /* lcopy_format */
     value_flags_enum_lcopy_value,   /* lcopy_value */
   };
   static GTypeInfo info = {
@@ -110,30 +110,28 @@ value_flags_enum_copy_value (const GValue *src_value,
 
 static gchar*
 value_flags_enum_collect_value (GValue      *value,
-				guint	     nth_value,
-				GType	    *collect_type,
-				GTypeCValue *collect_value)
+				guint        n_collect_values,
+				GTypeCValue *collect_values,
+				guint        collect_flags)
 {
-  value->data[0].v_long = collect_value->v_int;
-  
-  *collect_type = 0;
+  value->data[0].v_long = collect_values[0].v_int;
+
   return NULL;
 }
 
 static gchar*
 value_flags_enum_lcopy_value (const GValue *value,
-			      guint	    nth_value,
-			      GType	   *collect_type,
-			      GTypeCValue  *collect_value)
+			      guint         n_collect_values,
+			      GTypeCValue  *collect_values,
+			      guint         collect_flags)
 {
-  gint *int_p = collect_value->v_pointer;
+  gint *int_p = collect_values[0].v_pointer;
   
   if (!int_p)
     return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *int_p = value->data[0].v_long;
   
-  *collect_type = 0;
   return NULL;
 }
 
