@@ -1,3 +1,15 @@
+2004-02-29  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in, glib/gatomic.c, glib/gatomic.h: Moved the
+	assembler functions from gatomic.h to gatomic.c, which makes for
+	better maintainability. Also use gint instead of gint32 to be able
+	to use reference counting for ABI-fixed structures with
+	gint/guint.
+
+	* glib/gthread.h: Adapted accordingly.
+
+	* tests/atomic-test.c: Updated to test for G_MAXINT and G_MININT.
+
 2003-02-28  Hans Breuer  <hans@breuer.org>
 
 	* glib/glib.def : updated externals, including those

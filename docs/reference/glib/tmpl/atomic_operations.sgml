@@ -66,7 +66,7 @@ Reads the value of the integer pointed to by @atomic. Also acts as
 a memory barrier.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @Returns: the value of *@atomic.
 @Since: 2.4
 
@@ -77,7 +77,7 @@ Atomically adds @val to the integer pointed to by @atomic.
 Also acts as a memory barrier.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @val: the value to add to *@atomic.
 @Since: 2.4
 
@@ -89,7 +89,7 @@ the value of *@atomic just before the addition took place.
 Also acts as a memory barrier.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @val: the value to add to *@atomic.
 @Returns: the value of *@atomic before the addition.
 @Since: 2.4
@@ -102,7 +102,7 @@ if they are equal, atomically exchanges *@atomic with @newval.
 Also acts as a memory barrier.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @oldval: the assumed old value of *@atomic.
 @newval: the new value of *@atomic.
 @Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
@@ -139,7 +139,7 @@ Also acts as a memory barrier.
 Atomically increments the integer pointed to by @atomic by 1.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @Since: 2.4
 
 
@@ -148,7 +148,7 @@ Atomically increments the integer pointed to by @atomic by 1.
 Atomically decrements the integer pointed to by @atomic by 1.
 </para>
 
-@atomic: a pointer to a 32-bit integer.
+@atomic: a pointer to an integer.
 @Returns: %TRUE, if the integer pointed to by @atomic is 0 after
 decrementing it.
 @Since: 2.4

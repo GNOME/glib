@@ -291,57 +291,15 @@ gchar c
 # g_atomic
 
 <FUNCTION>
-<NAME>g_atomic_int_get</NAME>
-<RETURNS>gint32</RETURNS>
-gint32 *atomic
-</FUNCTION>
-
-<FUNCTION>
-<NAME>g_atomic_int_exchange_and_add</NAME>
-<RETURNS>gint32</RETURNS>
-gint32 *atomic
-gint32 val
-</FUNCTION>
- 
-<FUNCTION>
-<NAME>g_atomic_int_add</NAME>
-<RETURNS>void</RETURNS>
-gint32 *atomic
-gint32 val
-</FUNCTION>
- 
-<FUNCTION>
-<NAME>g_atomic_int_compare_and_exchange</NAME>
-<RETURNS>gboolean</RETURNS>
-gint32 *atomic
-gint32 oldval
-gint32 newval
-</FUNCTION>
- 
-<FUNCTION>
-<NAME>g_atomic_pointer_get</NAME>
-<RETURNS>gpointer</RETURNS>
-gpointer *atomic
-</FUNCTION>
-
-<FUNCTION>
-<NAME>g_atomic_pointer_compare_and_exchange</NAME>
-<RETURNS>gboolean</RETURNS>
-gpointer *atomic
-gpointer oldval
-gpointer newval
-</FUNCTION>
-
-<FUNCTION>
 <NAME>g_atomic_int_inc</NAME>
 <RETURNS>void</RETURNS>
-gint32 *atomic
+gint *atomic
 </FUNCTION>
 
 <FUNCTION>
 <NAME>g_atomic_int_dec_and_test</NAME>
 <RETURNS>gboolean</RETURNS>
-gint32 *atomic
+gint *atomic
 </FUNCTION>
 
 <STRUCT>
