@@ -381,6 +381,7 @@ EXPORTS
 	g_strfreev
 	g_string_append
 	g_string_append_c
+	g_string_append_len
 	g_string_assign
 	g_string_chunk_free
 	g_string_chunk_insert
@@ -391,9 +392,11 @@ EXPORTS
 	g_string_free
 	g_string_insert
 	g_string_insert_c
+	g_string_insert_len
 	g_string_new
 	g_string_prepend
 	g_string_prepend_c
+	g_string_prepend_len
 	g_string_sized_new
 	g_string_sprintf
 	g_string_sprintfa
