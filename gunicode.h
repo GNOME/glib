@@ -105,7 +105,9 @@ typedef enum
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
  * not null, sets *CHARSET to the name of the current locale's
- * charset.  This value is statically allocated.
+ * charset.  This value is statically allocated, and should be copied
+ * in case the locale's charset will be changed later using setlocale()
+ * or in some other way.
  */
 gboolean g_get_charset (char **charset);
 

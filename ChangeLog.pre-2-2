@@ -1,3 +1,12 @@
+2000-12-17  Tor Lillqvist  <tml@iki.fi>
+
+	* gutf8.c (g_utf8_get_charset_internal): (Win32) Use GetACP to get
+	the current ANSI codepage.
+
+	* gunicode.h: Add comment that the static string g_get_charset
+	sets the parameter to point to should be copied in case the
+	charset might be changed later in the program.
+
 2000-12-14  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in: No need to -DGSPAWN_HELPER when

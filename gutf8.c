@@ -29,6 +29,10 @@
 
 #include "glib.h"
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
     {									      \
@@ -318,8 +322,21 @@ g_utf8_get_charset_internal (char **a)
     }
 #endif
 
+#ifdef G_OS_WIN32
+  if (a && ! *a)
+    {
+      static char codepage[10];
+      
+      sprintf (codepage, "CP%d", GetACP ());
+      *a = codepage;
+      /* What about codepage 1200? Is that UTF-8? */
+      return FALSE;
+    }
+#else
   if (a && ! *a) 
     *a = "US-ASCII";
+#endif
+
   /* Assume this for compatibility at present.  */
   return FALSE;
 }
