@@ -2,8 +2,7 @@
 
 	* gunidecomp.c (COMBINING_CLASS): s/UNICODE_LAST_CHAR/G_UNICODE_LAST_CHAR/
 
-	* gunichartables.h: Update for data in Unicode 3.0.1, 
-	and include tables for line break properties
+	* gunichartables.h: Update for data in Unicode 3.0.1
 
 	* gunidecomp.h: Ditto
 	
