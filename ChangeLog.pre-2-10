@@ -1,3 +1,11 @@
+2005-01-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/keyfile-test.c: Add some more tests.
+
+	* glib/gkeyfile.c (g_key_file_get_keys): Return keys in
+	the order found in the file, rather than the opposite.
+	(g_key_file_parse_value_as_string): Fix error reporting.
+
 2005-01-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_data): Accept \r\n as 

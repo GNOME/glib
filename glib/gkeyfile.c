@@ -1016,16 +1016,16 @@ g_key_file_get_keys (GKeyFile     *key_file,
   keys = (gchar **) g_new0 (gchar **, num_keys + 1);
 
   tmp = group->key_value_pairs;
-  for (i = 0; i < num_keys; i++)
+  for (i = 1; i <= num_keys; i++)
     {
       GKeyFileKeyValuePair *pair;
 
       pair = (GKeyFileKeyValuePair *) tmp->data;
-      keys[i] = g_strdup (pair->key);
+      keys[num_keys - i] = g_strdup (pair->key);
 
       tmp = tmp->next;
     }
-  keys[i] = NULL;
+  keys[num_keys] = NULL;
 
   if (length)
     *length = num_keys;
@@ -2976,7 +2976,6 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 				  GSList      **pieces,
 				  GError      **error)
 {
-  GError *parse_error = NULL;
   gchar *string_value, *p, *q0, *q;
 
   string_value = g_new0 (gchar, strlen (value) + 1);
@@ -3019,7 +3018,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 		  *q++ = '\\';
 		  *q = *p;
 		  
-		  if (parse_error == NULL)
+		  if (*error == NULL)
 		    {
 		      gchar sequence[3];
 		      
@@ -3050,7 +3049,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
       p++;
     }
 
-  if (p > value && p[-1] == '\\' && error == NULL)
+  if (p > value && p[-1] == '\\' && q[-1] != '\\' && *error == NULL)
     g_set_error (error, G_KEY_FILE_ERROR,
 		 G_KEY_FILE_ERROR_INVALID_VALUE,
 		 _("Key file contains escape character at end of line"));
