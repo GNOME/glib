@@ -1181,7 +1181,7 @@ g_printf_string_upper_bound (const gchar *format,
 {
 #if HAVE_C99_VSNPRINTF
   gchar c;
-  return vsnprintf (&c, 1, format, args);
+  return vsnprintf (&c, 1, format, args) + 1;
 #else
   return printf_string_upper_bound (format, TRUE, args);
 #endif

@@ -1,3 +1,8 @@
+2002-01-23  Laszlo Peter  <laca@ireland.sun.com>
+
+	* glib/gmessages.c (g_printf_string_upper_bound): return 1 more
+	for the trailing '\0' when using vsnprintf. (#69474)
+
 2002-01-23  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gconvert.c: (strdup_len): Not used on Windows, don't even
