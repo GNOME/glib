@@ -1,3 +1,7 @@
+2000-08-21 Elliot Lee <sopwith@redhat.com>
+	* gobject/Makefile.am, gobject/gobject-query.c, gobject/gparamspecs.c: Fix inclusion of
+	config.h
+
 Mon Aug 21 14:46:23 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/gio-test.c: Fix a couple of trivial bugs that

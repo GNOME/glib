@@ -20,7 +20,7 @@
 
 #include	"gvaluecollector.h"
 #include	<string.h>
-#include	"../config.h"	/* for SIZEOF_LONG */
+#include	"config.h"	/* for SIZEOF_LONG */
 
 #define	G_FLOAT_EPSILON		(1e-30)
 #define	G_DOUBLE_EPSILON	(1e-90)
