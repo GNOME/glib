@@ -14,7 +14,7 @@ INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 glib.def: glib.symbols
-	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/\t/') > glib.def
+	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > glib.def
 
 galias.h: glib.symbols
 	  $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h

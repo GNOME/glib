@@ -1,3 +1,9 @@
+2004-11-11  J. Ali Harlow  <ali@juiblex.co.uk>
+
+	* gobject/Makefile.am:
+	* glib/Makefile.am (gtk.def): Use embedded tab rather than '\t'
+	escape sequence. (#157951)
+
 2004-11-10  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gconvert.c (g_get_filename_charsets): Fix typo in doc
