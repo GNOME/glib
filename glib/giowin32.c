@@ -1297,7 +1297,7 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
   if (st->st_mode & _S_IFIFO)
     {
       channel->is_readable =
-	(PeekNamedPipe ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL, NULL) != 0);
+	(PeekNamedPipe ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL, NULL) != 0) || GetLastError () == ERROR_BROKEN_PIPE;
       channel->is_writeable =
 	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
       channel->is_seekable  = FALSE;
