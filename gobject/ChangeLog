@@ -1,3 +1,8 @@
+2004-07-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* gsignal.c (g_signal_handler_is_connected): Don't
+	choke on a zero handler_id.
+
 Tue Jul  6 00:46:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gtypemodule.h: 
