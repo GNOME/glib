@@ -1,3 +1,7 @@
+2003-08-12  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Remove two dups.
+
 2003-08-08  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Forgot to actually switch to trio if snprintf() isn't good enough.
