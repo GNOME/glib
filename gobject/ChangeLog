@@ -1,3 +1,8 @@
+2004-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-genmarshal.c (put_marshal_value_getters): Use the 
+	correct fields for enums and flags.  (#145015,Tommi Komulainen) 
+
 Sun Jul 18 18:03:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* === Released 2.5.0 ===
