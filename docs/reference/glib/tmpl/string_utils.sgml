@@ -16,7 +16,20 @@ the header <filename>gprintf.h</filename> which is <emphasis>not</emphasis>
 included in <filename>glib.h</filename> (otherwise using 
 <filename>glib.h</filename> would drag in <filename>stdio.h</filename>), so
 you'll have to explicitly include <literal>&lt;glib/gprintf.h&gt;</literal> 
-in order to use the printf() functions. 
+in order to use the GLib printf() functions. 
+</para>
+<para id="string-precision">
+While you may use the printf() functions to format UTF-8 strings, notice that
+the precision of a <literal>&percnt;Ns</literal> parameter is interpreted as the
+number of <emphasis>bytes</emphasis>, not <emphasis>characters</emphasis> to print.
+On top of that, the GNU libc implementation of the printf() functions has the "feature"
+that it checks that the string given for the <literal>&percnt;Ns</literal> parameter
+consists of a whole number of characters in the current encoding. So, unless you
+are sure you are always going to be in an UTF-8 locale or your know your text is restricted 
+to ASCII, avoid using <literal>&percnt;Ns</literal>.
+If your intention is to format strings for a certain number of columns, then 
+<literal>&percnt;Ns</literal> is not a correct solution anyway, since it fails to take 
+wide characters (see g_unichar_iswide()) into account.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -149,10 +162,10 @@ an even better idea.
 
 <!-- ##### FUNCTION g_strlcat ##### -->
 <para>
-Portability wrapper that calls <function>strlcat()</function> on systems which have it, and emulates it otherwise. Appends nul-terminated @src string to @dest, guaranteeing
+Portability wrapper that calls strlcat() on systems which have it, and emulates it otherwise. Appends nul-terminated @src string to @dest, guaranteeing
 nul-termination for @dest. The total size of @dest won't exceed
-@dest_size. Caveat: this is supposedly a more secure alternative to <function>strcat()</function> or
-<function>strncat()</function>, but for real security g_strconcat() is harder to mess up.
+@dest_size. Caveat: this is supposedly a more secure alternative to strcat() or
+strncat(), but for real security g_strconcat() is harder to mess up.
 </para>
 
 @dest: destination buffer, already containing one nul-terminated string
@@ -163,20 +176,21 @@ nul-termination for @dest. The total size of @dest won't exceed
 
 <!-- ##### FUNCTION g_strdup_printf ##### -->
 <para>
-Similar to the standard C <function>sprintf()</function> function
+Similar to the standard C sprintf() function
 but safer, since it calculates the maximum space required and allocates
 memory to hold the result.
 The returned string should be freed when no longer needed.
 </para>
 
-@format: the standard <function>sprintf()</function> format string.
+@format: a standard printf() format string, but notice 
+  <link linkend="string-precision">string precision pitfalls</link>.
 @Varargs: the parameters to insert into the format string.
 @Returns: a newly-allocated string holding the result.
 
 
 <!-- ##### FUNCTION g_strdup_vprintf ##### -->
 <para>
-Similar to the standard C <function>vsprintf()</function> function
+Similar to the standard C vsprintf() function
 but safer, since it calculates the maximum space required and allocates
 memory to hold the result.
 The returned string should be freed when no longer needed.
@@ -186,7 +200,8 @@ See also g_vasprintf(), which offers the same functionality, but additionally
 returns the length of the allocated string. 
 </para>
 
-@format: the standard <function>sprintf()</function> format string.
+@format: a standard printf() format string, but notice 
+  <link linkend="string-precision">string precision pitfalls</link>.
 @args: the list of parameters to insert into the format string.
 @Returns: a newly-allocated string holding the result.
 
@@ -290,12 +305,10 @@ returns the length of the allocated string.
 
 <!-- ##### FUNCTION g_printf_string_upper_bound ##### -->
 <para>
-Calculates the maximum space needed to store the output of the
-<function>sprintf()</function> function.
+Calculates the maximum space needed to store the output of the sprintf() function.
 </para>
 
-@format: the format string. See the <function>printf()</function>
-documentation.
+@format: the format string. See the printf() documentation.
 @args: the parameters to be inserted into the format string.
 @Returns: the maximum space needed to store the formatted string.
 
@@ -305,7 +318,7 @@ documentation.
 Determines whether a character is alphanumeric.
 </para>
 <para>
-Unlike the standard C library <function>isalnum()</function> function, this only
+Unlike the standard C library isalnum() function, this only
 recognizes standard ASCII letters and ignores the locale, returning
 %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -322,7 +335,7 @@ possibly non-ASCII character in.
 Determines whether a character is alphabetic (i.e. a letter).
 </para>
 <para>
-Unlike the standard C library <function>isalpha()</function> function, this only
+Unlike the standard C library isalpha() function, this only
 recognizes standard ASCII letters and ignores the locale, returning
 %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -339,7 +352,7 @@ possibly non-ASCII character in.
 Determines whether a character is a control character.
 </para>
 <para>
-Unlike the standard C library <function>iscntrl()</function> function, this only
+Unlike the standard C library iscntrl() function, this only
 recognizes standard ASCII control characters and ignores the locale,
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -356,7 +369,7 @@ possibly non-ASCII character in.
 Determines whether a character is digit (0-9).
 </para>
 <para>
-Unlike the standard C library <function>isdigit()</function> function,
+Unlike the standard C library isdigit() function,
 this takes a <type>char</type>, not an <type>int</type>, so don't call it
 on %EOF but no need to cast to #guchar before passing a possibly
 non-ASCII character in.
@@ -371,7 +384,7 @@ non-ASCII character in.
 Determines whether a character is a printing character and not a space.
 </para>
 <para>
-Unlike the standard C library <function>isgraph()</function> function, 
+Unlike the standard C library isgraph() function, 
 this only recognizes standard ASCII characters and ignores the locale, 
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -388,7 +401,7 @@ possibly non-ASCII character in.
 Determines whether a character is an ASCII lower case letter.
 </para>
 <para>
-Unlike the standard C library <function>islower()</function> function, 
+Unlike the standard C library islower() function, 
 this only recognizes standard ASCII letters and ignores the locale,
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -405,7 +418,7 @@ before passing a possibly non-ASCII character in.
 Determines whether a character is a printing character.
 </para>
 <para>
-Unlike the standard C library <function>isprint()</function> function, 
+Unlike the standard C library isprint() function, 
 this only recognizes standard ASCII characters and ignores the locale, 
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -422,7 +435,7 @@ possibly non-ASCII character in.
 Determines whether a character is a punctuation character.
 </para>
 <para>
-Unlike the standard C library <function>ispunct()</function> function, 
+Unlike the standard C library ispunct() function, 
 this only recognizes standard ASCII letters and ignores the locale, 
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -439,7 +452,7 @@ possibly non-ASCII character in.
 Determines whether a character is a white-space character.
 </para>
 <para>
-Unlike the standard C library <function>isspace()</function> function, 
+Unlike the standard C library isspace() function, 
 this only recognizes standard ASCII white-space and ignores the locale, 
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -456,7 +469,7 @@ possibly non-ASCII character in.
 Determines whether a character is an ASCII upper case letter.
 </para>
 <para>
-Unlike the standard C library <function>isupper()</function> function, 
+Unlike the standard C library isupper() function, 
 this only recognizes standard ASCII letters and ignores the locale, 
 returning %FALSE for all non-ASCII characters. Also unlike the standard
 library function, this takes a <type>char</type>, not an <type>int</type>, 
@@ -473,7 +486,7 @@ before passing a possibly non-ASCII character in.
 Determines whether a character is a hexadecimal-digit character.
 </para>
 <para>
-Unlike the standard C library <function>isxdigit()</function> function,
+Unlike the standard C library isxdigit() function,
 this takes a <type>char</type>, not an <type>int</type>, so
 don't call it on %EOF but no need to cast to #guchar before passing a
 possibly non-ASCII character in.
@@ -623,7 +636,7 @@ Reverses all of the bytes in a string.
 For example, <literal>g_strreverse ("abcdef")</literal> will result in "fedcba".
 </para>
 <para>
-Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters.
+Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters. For that purpose, use g_utf8_strreverse().
 </para>
 
 @string: the string to reverse.
@@ -811,7 +824,7 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 
 </para>
 
-@str_array:
+@str_array: 
 
 
 <!-- ##### FUNCTION g_strconcat ##### -->
@@ -855,7 +868,7 @@ together, with @separator between them.
 <para>
 Returns a string corresponding to the given error code, e.g. "no such process".
 This function is included since not all platforms support the 
-<function>strerror()</function> function.
+strerror() function.
 </para>
 
 @errnum: the system error number. See the standard C %errno
@@ -869,7 +882,7 @@ The string can only be used until the next call to g_strerror.
 <para>
 Returns a string describing the given signal, e.g. "Segmentation fault".
 This function is included since not all platforms support the
-<function>strsignal()</function> function.
+strsignal() function.
 </para>
 
 @signum: the signal number. See the <literal>signal</literal>
