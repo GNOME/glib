@@ -199,7 +199,7 @@ my_hash_compare (gconstpointer a,
   return *((const gint*) a) == *((const gint*) b);
 }
 
-gint 
+gint
 my_list_compare_one (gconstpointer a, gconstpointer b)
 {
   gint one = *((const gint*)a);
@@ -207,7 +207,7 @@ my_list_compare_one (gconstpointer a, gconstpointer b)
   return one-two;
 }
 
-gint 
+gint
 my_list_compare_two (gconstpointer a, gconstpointer b)
 {
   gint one = *((const gint*)a);
@@ -348,7 +348,7 @@ main (int   argc,
 
   g_list_free (list);
   list = NULL;
-  
+
   for (i = 0; i < 10; i++)
     list = g_list_insert_sorted (list, &morenums[i], my_list_compare_one);
 
@@ -363,10 +363,10 @@ main (int   argc,
       if (*((gint*) t->data) != i)
          g_error ("Sorted insert failed");
     }
-    
+
   g_list_free (list);
   list = NULL;
-  
+
   for (i = 0; i < 10; i++)
     list = g_list_insert_sorted (list, &morenums[i], my_list_compare_two);
 
@@ -381,7 +381,7 @@ main (int   argc,
       if (*((gint*) t->data) != (9 - i))
          g_error ("Sorted insert failed");
     }
-    
+
   g_list_free (list);
 
   g_print ("ok\n");
@@ -418,10 +418,10 @@ main (int   argc,
       if (*((gint*) st->data) != i)
          g_error ("Sorted insert failed");
     }
-     
+
   g_slist_free(slist);
   slist = NULL;
-   
+
   for (i = 0; i < 10; i++)
     slist = g_slist_insert_sorted (slist, &morenums[i], my_list_compare_two);
 
@@ -436,7 +436,7 @@ main (int   argc,
       if (*((gint*) st->data) != (9 - i))
          g_error("Sorted insert failed");
     }
-    
+
   g_slist_free(slist);
 
   g_print ("ok\n");
@@ -555,9 +555,9 @@ main (int   argc,
 
   g_print ("checking arrays...");
 
-  garray = g_array_new (FALSE);
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
   for (i = 0; i < 10000; i++)
-    g_array_append_val (garray, gint, i);
+    g_array_append_val (garray, i);
 
   for (i = 0; i < 10000; i++)
     if (g_array_index (garray, gint, i) != i)
@@ -565,13 +565,13 @@ main (int   argc,
 
   g_array_free (garray, TRUE);
 
-  garray = g_array_new (FALSE);
-  for (i = 0; i < 10000; i++)
-    g_array_prepend_val (garray, gint, i);
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  for (i = 0; i < 100; i++)
+    g_array_prepend_val (garray, i);
 
-  for (i = 0; i < 10000; i++)
-    if (g_array_index (garray, gint, i) != (10000 - i - 1))
-      g_print ("uh oh: %d ( %d )\n", g_array_index (garray, gint, i), 10000 - i - 1);
+  for (i = 0; i < 100; i++)
+    if (g_array_index (garray, gint, i) != (100 - i - 1))
+      g_print ("uh oh: %d ( %d )\n", g_array_index (garray, gint, i), 100 - i - 1);
 
   g_array_free (garray, TRUE);
 

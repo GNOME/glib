@@ -241,7 +241,7 @@
 #    define ATEXIT(proc)   (atexit (proc))
 #  elif defined (HAVE_ON_EXIT)
 #    define ATEXIT(proc)   (on_exit ((void (*)(int, void *))(proc), NULL))
-#  endif    
+#  endif
 #endif /* ATEXIT */
 
 
@@ -438,9 +438,9 @@ typedef unsigned int	guint;
 typedef float	gfloat;
 typedef double	gdouble;
 
-/* HAVE_LONG_DOUBLE doesn't work correctly on all platforms. 
- * Since gldouble isn't used anywhere, just disable it for now
- */
+/* HAVE_LONG_DOUBLE doesn't work correctly on all platforms.
+ * Since gldouble isn't used anywhere, just disable it for now */
+
 #if 0
 #ifdef HAVE_LONG_DOUBLE
 typedef long double gldouble;
@@ -575,7 +575,7 @@ typedef enum
   /* log flags */
   G_LOG_FLAG_RECURSION		= 1 << 0,
   G_LOG_FLAG_FATAL		= 1 << 1,
-  
+
   /* GLib log levels */
   G_LOG_LEVEL_ERROR		= 1 << 2,	/* always fatal */
   G_LOG_LEVEL_CRITICAL		= 1 << 3,
@@ -583,7 +583,7 @@ typedef enum
   G_LOG_LEVEL_MESSAGE		= 1 << 5,
   G_LOG_LEVEL_INFO		= 1 << 6,
   G_LOG_LEVEL_DEBUG		= 1 << 7,
-  
+
   G_LOG_LEVEL_MASK		= ~(G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL)
 } GLogLevelFlags;
 
@@ -692,8 +692,8 @@ GList* g_list_insert		(GList		*list,
 				 gint		 position);
 GList* g_list_insert_sorted	(GList		*list,
 				 gpointer	 data,
-				 GCompareFunc	 func);			    
-GList* g_list_concat		(GList		*list1, 
+				 GCompareFunc	 func);
+GList* g_list_concat		(GList		*list1,
 				 GList		*list2);
 GList* g_list_remove		(GList		*list,
 				 gpointer	 data);
@@ -737,8 +737,8 @@ GSList* g_slist_insert		(GSList		*list,
 				 gint		 position);
 GSList* g_slist_insert_sorted	(GSList		*list,
 				 gpointer	 data,
-				 GCompareFunc	 func);			    
-GSList* g_slist_concat		(GSList		*list1, 
+				 GCompareFunc	 func);
+GSList* g_slist_concat		(GSList		*list1,
 				 GSList		*list2);
 GSList* g_slist_remove		(GSList		*list,
 				 gpointer	 data);
@@ -1159,8 +1159,8 @@ void	g_set_prgname		(const gchar *prgname);
 
 /* Miscellaneous utility functions
  */
-guint	g_parse_debug_string	(const gchar *string, 
-				 GDebugKey   *keys, 
+guint	g_parse_debug_string	(const gchar *string,
+				 GDebugKey   *keys,
 				 guint	      nkeys);
 gint	g_snprintf		(gchar	     *string,
 				 gulong	      n,
@@ -1185,7 +1185,7 @@ gchar*	g_get_current_dir	(void);
 #define g_memmove(dest, src, size)	G_STMT_START {	\
      memmove ((dest), (src), (size));			\
 } G_STMT_END
-#else 
+#else
 #define g_memmove(dest, src, size)	G_STMT_START {	\
      bcopy ((src), (dest), (size));			\
 } G_STMT_END
@@ -1226,7 +1226,7 @@ static inline guint
 g_bit_storage (guint number)
 {
   register guint n_bits = 0;
-  
+
   do
     {
       n_bits++;
@@ -1264,14 +1264,14 @@ GString* g_string_prepend   (GString	 *string,
 			     const gchar *val);
 GString* g_string_prepend_c (GString	 *string,
 			     gchar	  c);
-GString* g_string_insert    (GString	 *string, 
-			     gint	  pos, 
+GString* g_string_insert    (GString	 *string,
+			     gint	  pos,
 			     const gchar *val);
-GString* g_string_insert_c  (GString	 *string, 
-			     gint	  pos, 
+GString* g_string_insert_c  (GString	 *string,
+			     gint	  pos,
 			     gchar	  c);
-GString* g_string_erase	    (GString	 *string, 
-			     gint	  pos, 
+GString* g_string_erase	    (GString	 *string,
+			     gint	  pos,
 			     gint	  len);
 GString* g_string_down	    (GString	 *string);
 GString* g_string_up	    (GString	 *string);
@@ -1285,34 +1285,24 @@ void	 g_string_sprintfa  (GString	 *string,
 
 /* Resizable arrays
  */
-#define g_array_length(array,type) \
-     (((array)->len)/sizeof(type))
-#define g_array_append_val(array,type,val) \
-     g_rarray_append (array, (gpointer) &val, sizeof (type))
-#define g_array_append_vals(array,type,vals,nvals) \
-     g_rarray_append (array, (gpointer) vals, sizeof (type) * nvals)
-#define g_array_prepend_val(array,type,val) \
-     g_rarray_prepend (array, (gpointer) &val, sizeof (type))
-#define g_array_prepend_vals(array,type,vals,nvals) \
-     g_rarray_prepend (array, (gpointer) vals, sizeof (type) * nvals)
-#define g_array_truncate(array,type,length) \
-     g_rarray_truncate (array, length, sizeof (type))
-#define g_array_index(array,type,index) \
-     ((type*) array->data)[index]
 
-GArray* g_array_new	  (gboolean  zero_terminated);
-void	g_array_free	  (GArray   *array,
-			   gboolean  free_segment);
-GArray* g_rarray_append	  (GArray   *array,
-			   gpointer  data,
-			   gint	     size);
-GArray* g_rarray_prepend  (GArray   *array,
-			   gpointer  data,
-			   gint	     size);
-GArray* g_rarray_truncate (GArray   *array,
-			   gint	     length,
-			   gint	     size);
+#define g_array_append_val(a,v) g_array_append_vals(a,&v,1)
+#define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
+#define g_array_index(a,t,i) (((t*)a->data)[i])
 
+GArray* g_array_new  	     (gboolean zero_terminated,
+			      gboolean clear,
+			      guint    element_size);
+void	g_array_free  	     (GArray   *array,
+			      gboolean  free_segment);
+GArray* g_array_append_vals  (GArray   *array,
+			      gpointer  data,
+			      guint     len);
+GArray* g_array_prepend_vals (GArray   *array,
+			      gpointer  data,
+			      guint     len);
+GArray* g_array_set_size     (GArray   *array,
+			      guint	length);
 
 /* Resizable pointer array.  This interface is much less complicated
  * than the above.  Add appends appends a pointer.  Remove fills any
@@ -1324,30 +1314,28 @@ void	    g_ptr_array_free		   (GPtrArray	*array,
 					    gboolean	 free_seg);
 void	    g_ptr_array_set_size	   (GPtrArray	*array,
 					    gint	 length);
-void	    g_ptr_array_remove_index	   (GPtrArray	*array,
-					    gint	 index);
-gboolean    g_ptr_array_remove		   (GPtrArray	*array,
-					    gpointer	 data);
-void	    g_ptr_array_add		   (GPtrArray	*array,
-					    gpointer	 data);
-
+gpointer    g_ptr_array_remove_index       (GPtrArray   *array,
+					    gint         index);
+gboolean    g_ptr_array_remove             (GPtrArray   *array,
+					    gpointer     data);
+void        g_ptr_array_add                (GPtrArray   *array,
+					    gpointer     data);
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,
  * but type-safe.
  */
-GByteArray* g_byte_array_new	  (void);
-void	    g_byte_array_free	  (GByteArray *array,
-				   gint	       free_segment);
-GByteArray* g_byte_array_append	  (GByteArray	*array,
-				   const guint8 *data,
-				   guint	 len);
 
-GByteArray* g_byte_array_prepend  (GByteArray	*array,
+GByteArray* g_byte_array_new      (void);
+void	    g_byte_array_free     (GByteArray   *array,
+			           gboolean      free_segment);
+GByteArray* g_byte_array_append   (GByteArray   *array,
 				   const guint8 *data,
-				   guint	 len);
-
-GByteArray* g_byte_array_truncate (GByteArray *array,
-				   gint	       length);
+				   guint         len);
+GByteArray* g_byte_array_prepend  (GByteArray   *array,
+				   const guint8 *data,
+				   guint         len);
+GByteArray* g_byte_array_set_size (GByteArray   *array,
+				   guint         length);
 
 
 /* Hash Functions
@@ -1437,7 +1425,7 @@ typedef enum
 typedef enum
 {
   G_TOKEN_EOF			=   0,
-  
+
   G_TOKEN_LEFT_PAREN		= '(',
   G_TOKEN_RIGHT_PAREN		= ')',
   G_TOKEN_LEFT_CURLY		= '{',
@@ -1446,11 +1434,11 @@ typedef enum
   G_TOKEN_RIGHT_BRACE		= ']',
   G_TOKEN_EQUAL_SIGN		= '=',
   G_TOKEN_COMMA			= ',',
-  
+
   G_TOKEN_NONE			= 256,
-  
+
   G_TOKEN_ERROR,
-  
+
   G_TOKEN_CHAR,
   G_TOKEN_BINARY,
   G_TOKEN_OCTAL,
@@ -1458,11 +1446,11 @@ typedef enum
   G_TOKEN_HEX,
   G_TOKEN_FLOAT,
   G_TOKEN_STRING,
-  
+
   G_TOKEN_SYMBOL,
   G_TOKEN_IDENTIFIER,
   G_TOKEN_IDENTIFIER_NULL,
-  
+
   G_TOKEN_COMMENT_SINGLE,
   G_TOKEN_COMMENT_MULTI,
   G_TOKEN_LAST
@@ -1491,11 +1479,11 @@ struct	_GScannerConfig
   gchar		*cset_identifier_first;
   gchar		*cset_identifier_nth;
   gchar		*cpair_comment_single;		/* default: "#\n" */
-  
+
   /* Should symbol lookup work case sensitive?
    */
   guint		case_sensitive : 1;
-  
+
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
@@ -1526,31 +1514,31 @@ struct	_GScanner
   /* unused fields */
   gpointer		user_data;
   guint			max_parse_errors;
-  
+
   /* g_scanner_error() increments this field */
   guint			parse_errors;
-  
+
   /* name of input stream, featured by the default message handler */
   const gchar		*input_name;
-  
+
   /* data pointer for derived structures */
   gpointer		derived_data;
-  
+
   /* link into the scanner configuration */
   GScannerConfig	*config;
-  
+
   /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
   GValue		value;
   guint			line;
   guint			position;
-  
+
   /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
   GValue		next_value;
   guint			next_line;
   guint			next_position;
-  
+
   /* to be considered private */
   GHashTable		*symbol_table;
   const gchar		*text;
@@ -1558,7 +1546,7 @@ struct	_GScanner
   gint			input_fd;
   gint			peeked_char;
   guint			scope_id;
-  
+
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };
@@ -1629,18 +1617,18 @@ struct _GCompletion
 {
   GList* items;
   GCompletionFunc func;
-  
+
   gchar* prefix;
   GList* cache;
 };
 
 GCompletion* g_completion_new	       (GCompletionFunc func);
-void	     g_completion_add_items    (GCompletion*	cmp, 
+void	     g_completion_add_items    (GCompletion*	cmp,
 					GList*		items);
-void	     g_completion_remove_items (GCompletion*	cmp, 
+void	     g_completion_remove_items (GCompletion*	cmp,
 					GList*		items);
 void	     g_completion_clear_items  (GCompletion*	cmp);
-GList*	     g_completion_complete     (GCompletion*	cmp, 
+GList*	     g_completion_complete     (GCompletion*	cmp,
 					gchar*		prefix,
 					gchar**		new_prefix);
 void	     g_completion_free	       (GCompletion*	cmp);
@@ -1694,8 +1682,23 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 			       gint	    field);
 
 
+/* Prime numbers.
+ */
 
+/* This function returns prime numbers spaced by approximately 1.5-2.0
+ * and is for use in resizing data structures which prefer
+ * prime-valued sizes.  The closest spaced prime function returns the
+ * next largest prime, or the highest it knows about which is about
+ * MAXINT/4.
+ */
 
+guint      g_spaced_primes_closest (guint num);
+
+/* Glib version.
+ */
+extern const guint glib_major_version;
+extern const guint glib_minor_version;
+extern const guint glib_micro_version;
 
 #ifdef __cplusplus
 }

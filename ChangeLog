@@ -1,3 +1,33 @@
+Tue Sep  1 23:46:31 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
+
+	* testglib.c (main): Update the array tests.  Reduce the number of
+	iterations for the prepend test from 10000 to 100 since it is
+	O(n^2) and was taking longer than I would like to wait.
+
+	* garray.c: I've worked on the GArray interface, mostly.  It was
+ 	seriously broken before and I hate to do it, but this is going to
+ 	break some code.  It is important to do this now, because more and
+ 	more people are starting to use glib and the interface was both
+ 	broken and inconsistent.  First, rename the _truncate functions of
+ 	both the GArray and GPtrArray classes to _set_size, since this
+ 	function can also be used to extend the arrays.  GArray now
+ 	accepts two more initialization arguments: clear and element_size.
+  	Instead of providing the type to each access function, the array
+ 	now stores the element size.  Clear, if set, causes the library to
+ 	zero element's memory as the array expands.  The major broken-ness
+ 	here was that array->len was in bytes, not elements.  Now, since
+ 	the array knows its element size, array->len is correct and I have
+ 	removed the g_array_length macro.  The only macro which now
+ 	accepts the type as an argument is g_array_index, which casts the
+ 	element to the right type--this interface does not change.  The
+ 	append and prepend functions simply need the types removed.
+  	g_ptr_array_remove_index now returns the removed element.
+
+	* gprimes.c (g_spaced_primes_closest): Move this function out of
+ 	ghash.c and rename it from g_hash_closest_prime.  Fix the primes
+ 	so that they are actually prime (they weren't all -- isn't that
+ 	nice?).
+
 Mon Aug 24 02:08:56 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:
@@ -26,8 +56,8 @@ Mon Aug 24 02:08:56 1998  Tim Janik  <timj@gtk.org>
 	* glib.h: provide a definition for G_VA_COPY.
 
 	* glib.h:
-	* gmessages.c: 
- 	(g_logv): 
+	* gmessages.c:
+ 	(g_logv):
 	(g_vsnprintf):
 	pass va_lists by value, not by reference, since this causes problems
 	on platforms that implement va_list as as arrays. internaly, use
@@ -109,7 +139,7 @@ Sun Aug 16 20:28:27 1998  Tim Janik  <timj@gtk.org>
 	gint64 itself, packages that need gint64 should test for this
  	themselves.
 
-	* glib.h: 
+	* glib.h:
 	* gutils.c: added a new function g_vsnprintf().
 
 Sun Aug 16 Elliot Lee
@@ -148,13 +178,13 @@ Fri Aug 13 14:23:37 1998  Tim Janik  <timj@gtk.org>
 	in other required places.
 
 	* gnode.c:
- 	(g_node_prepend): 
-	(g_node_insert_before): 
-	(g_node_insert): 
+ 	(g_node_prepend):
+	(g_node_insert_before):
+	(g_node_insert):
 	(g_node_append_data):
 	(g_node_prepend_data):
 	(g_node_insert_data_before):
-	(g_node_insert_data): 
+	(g_node_insert_data):
 	(g_node_append):
 	return (node), so these macros/functions can be usefully chained with
 	g_node_new().
@@ -211,7 +241,7 @@ Tue Aug  4 15:17:54 1998  Tim Janik  <timj@gtk.org>
 
 Mon Aug  3 16:02:26 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gnode.c: change order of gpointer data; field in struct _GNode to
 	be partly binary compatible with GList and GSList.
 
@@ -228,7 +258,7 @@ Fri Jul 31 09:08:16 1998  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: compile gnode.c.
 
-	* glib.h: 
+	* glib.h:
 	* gnode.c: added implementation of n-way trees.
 
 	* gtree.c (g_tree_traverse): added a warning to the switch() statement
@@ -245,14 +275,14 @@ Mon Jul 27 01:02:27 1998  Tim Janik  <timj@gtk.org>
  	implementation.
 
 Sat Jul 25 16:09:00 1998  Mark Crichton <crichton@expert.cc.purdue.edu>
-	
-	* glib.h: gtime changed to g_time.  gtime is used in 
+
+	* glib.h: gtime changed to g_time.  gtime is used in
 	/usr/include/time.h in NetBSD, causing multiple headaches.
 	If this isn't the right way of fixing it.... ;)
 
 Thu Jul 23 00:29:14 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gscanner.c: new functions to make a scanner scope sensitive wrt
  	symbol lookups.
 	g_scanner_scope_foreach_symbol, g_scanner_scope_lookup_symbol,
@@ -273,7 +303,7 @@ Tue Jul 14 09:05:18 1998  Tim Janik  <timj@gtk.org>
 
 Fri Jul 10 06:33:43 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gutils.h: added a bunch of utility/wrapper functions:
 	g_basename(), g_getcwd(), g_get_user_name(), g_get_real_name(),
 	g_get_home_dir(), g_get_tmp_dir(), g_get_prgname() and g_set_prgname().
@@ -396,7 +426,7 @@ Thu Jun 11 04:15:31 1998  Tim Janik  <timj@gtk.org>
 Wed Jun 10 19:29:51 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* Makefile.am glib.m4 configure.in:
-	
+
 	Moved out from GTK+; added AM_PATH_GLIB macro.
 
 Wed Jun 10 12:56:07 1998  Owen Taylor  <otaylor@gtk.org>
@@ -411,7 +441,7 @@ Sat May 23 19:00:01 1998  Owen Taylor  <otaylor@gtk.org>
   [ Combination of:
      gtk-rrh-980412-0.patch (Raja R Harinath <harinath@cs.umn.edu>)
      gtk-jbuhler-980516-0 (Jeremy Buhler <jbuhler@cs.washington.edu>) ]
-	
+
 	* glib.h ghash.c gstring.c gdataset.c gutils.c:
 	- Added new typedef g_const_pointer; expunged all incorrect
 	  uses of 'const gpointer'.
@@ -433,7 +463,7 @@ Sat Jun  6 14:09:22 PDT 1998 Manish Singh <yosh@gimp.org>
 
 Wed Jun  3 06:19:42 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h (g_chunk_new0): convenience macro, for allocating small chunks 
+	* glib.h (g_chunk_new0): convenience macro, for allocating small chunks
 	like g_chunk_new() with additional 0 initialization.
 
 Mon Jun  1 04:43:27 1998  Tim Janik  <timj@gtk.org>
@@ -451,7 +481,7 @@ Tue May 26 18:30:06 1998  Tim Janik  <timj@gtk.org>
 
 Mon May 18 22:14:39 1998  Owen Taylor  <otaylor@gtk.org>
 (Yasuhiro SHIRASAKI <joke@awa.tohoku.ac.jp> : gtk-joke-980517-0.patch)
-	
+
 	* gutils.c: Restored a missing prototype for g_vsprintf.
 
 Wed May 20 05:02:26 1998  Tim Janik  <timj@gtk.org>
@@ -506,15 +536,15 @@ Tue May 12 19:22:58 1998  Owen Taylor  <otaylor@gtk.org>
 
  	* glib/glib.h: Added macros G[U]INT_TO_POINTER() and
 	GPOINTER_TO_[U]INT for storing small integers integers
-	inside pointers. 
-	
+	inside pointers.
+
 	* glib/testglib.c: Print sizeof() results
 	as g_print("%ld", (glong)sizeof(foo)), to deal with
 	size_t being long on Alpha's.
 
 Tue May 12 16:54:15 1998  Owen Taylor  <otaylor@gtk.org>
 	(James A <jamesa@demon.net> : gtk-jamesa-980511-4.patch)
-	
+
 	* glib.h gstring.c gmessages.c: Added some missing
 	const to arguments.
 
@@ -611,8 +641,8 @@ Fri May  1 16:36:08 1998  Owen Taylor  <otaylor@gtk.org>
 
 Thu Apr 30 21:41:30 1998  Owen Taylor  <otaylor@gtk.org>
 
-	* gstring.c : Check arguments more carefully, 
-	(gtk-draco-980423-1.patch; ramsey@rhrk.uni-kl.de) 
+	* gstring.c : Check arguments more carefully,
+	(gtk-draco-980423-1.patch; ramsey@rhrk.uni-kl.de)
 
 Tue Apr  7 19:36:48 1998  Owen Taylor  <owt1@cornell.edu>
 
@@ -638,7 +668,7 @@ Fri Apr  3 18:05:45 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* testglib.c: Removed literal german from strings
 	to appease SGI compiler.
-	
+
 Thu Mar 26 20:47:21 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* configure.in glib glibconfig.h.in: Add test for atexit/on_exit -
@@ -689,7 +719,7 @@ Mon Mar  2 17:51:18 1998  Owen Taylor  <owt1@cornell.edu>
 	  to take gchar* not guchar*
 
 	* testglib.c: Remove trailing ; after functions
-	
+
 Sun Mar  1 19:04:40 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* glib.h gstring.c: Added g_string_insert[_c]()
@@ -761,7 +791,7 @@ Sat Jan 17 23:52:40 1998  Owen Taylor  <owt1@cornell.edu>
 	   renamed g_string_equal => g_str_equal
 	   renamed g_string_hash => g_str_hash
 	  And const corrected. Old functions left in for now.
-	
+
 Fri Jan  9 20:03:46 1998  Tim Janik  <timj@psynet.net>
 
 	* gutils.c (g_strerror): changed message for EAGAIN from
@@ -789,8 +819,8 @@ Sat Jan  3 20:23:25 1998  Owen Taylor  <owt1@cornell.edu>
 
 Fri Jan  2 23:52 PST 1998 Jay Painter <jpaint@serv.net>
 
-	* glib_pre1.h: 
-	* glib_pre2.h: 
+	* glib_pre1.h:
+	* glib_pre2.h:
 	* glib.h: reverted glibconfig.h and glib.h files back to the
 	way they were before my ugly hack.
 
@@ -822,8 +852,8 @@ Mon Dec 15 19:33:58 1997  Tim Janik  <timj@psynet.net>
 
 Wed Dec 10 23:27:20 1997  Tim Janik  <timj@psynet.net>
 
-	* glib_pre1.h: 
-	* glib_pre2.h: 
+	* glib_pre1.h:
+	* glib_pre2.h:
 	* glib.h: this file now gets concatenated by makeglib_h from
 	glib_pre1.h and glib_pre2.h to merge in glibconfig.h wich got
 	created by configure (done by Jay Painter).
@@ -831,7 +861,7 @@ Wed Dec 10 23:27:20 1997  Tim Janik  <timj@psynet.net>
 	* glib_pre2.h: the g_assert*() and g_return_*_fail() macros
 	are wrapped by G_STMT_START and G_STMT_END now, to avoid conflicts
 	when used within if (...) g_macro(); else ... conditionals.
-	
+
 Tue Dec 17 13:14:07 1996  Peter Mattis  <pmattis@charnley.HIP.Berkeley.EDU>
 
 	* glib.h: Changed 'g_return_if_fail' and 'g_return_val_if_fail' to

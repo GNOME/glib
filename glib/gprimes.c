@@ -18,14 +18,11 @@
  */
 #include "glib.h"
 
-
-gint g_primes[] =
+static const guint g_primes[] =
 {
   11,
-  15,
-  23,
-  35,
-  49,
+  19,
+  37,
   73,
   109,
   163,
@@ -59,4 +56,16 @@ gint g_primes[] =
   13845163,
 };
 
-gint g_nprimes = sizeof (g_primes) / sizeof (g_primes[0]);
+static const guint g_nprimes = sizeof (g_primes) / sizeof (g_primes[0]);
+
+guint
+g_spaced_primes_closest (guint num)
+{
+  gint i;
+
+  for (i = 0; i < g_nprimes; i++)
+    if (g_primes[i] > num)
+      return g_primes[i];
+
+  return g_primes[g_nprimes - 1];
+}

@@ -30,7 +30,9 @@ struct _GRealArray
   guint8 *data;
   guint   len;
   guint   alloc;
-  guint   zero_terminated;
+  guint   elt_size;
+  guint   zero_terminated : 1;
+  guint   clear : 1;
 };
 
 
@@ -43,7 +45,9 @@ static GMemChunk *array_mem_chunk = NULL;
 
 
 GArray*
-g_array_new (gboolean zero_terminated)
+g_array_new (gboolean zero_terminated,
+	     gboolean clear,
+	     guint    elt_size)
 {
   GRealArray *array;
 
@@ -54,10 +58,12 @@ g_array_new (gboolean zero_terminated)
 
   array = g_chunk_new (GRealArray, array_mem_chunk);
 
-  array->data = NULL;
-  array->len = 0;
-  array->alloc = 0;
+  array->data            = NULL;
+  array->len             = 0;
+  array->alloc           = 0;
   array->zero_terminated = (zero_terminated ? 1 : 0);
+  array->clear           = (clear ? 1 : 0);
+  array->elt_size        = elt_size;
 
   return (GArray*) array;
 }
@@ -73,45 +79,52 @@ g_array_free (GArray  *array,
 }
 
 GArray*
-g_rarray_append (GArray   *array,
-		 gpointer  data,
-		 gint      size)
+g_array_append_vals (GArray   *farray,
+		     gpointer  data,
+		     guint     len)
 {
-  g_array_maybe_expand ((GRealArray*) array, size);
+  GRealArray *array = (GRealArray*) farray;
 
-  memcpy (array->data + array->len, data, size);
+  g_array_maybe_expand (array, len);
 
-  array->len += size;
+  memcpy (array->data + array->elt_size * array->len, data, array->elt_size * len);
 
-  return array;
+  array->len += len;
+
+  return farray;
 }
 
 GArray*
-g_rarray_prepend (GArray   *array,
-		  gpointer  data,
-		  gint      size)
+g_array_prepend_vals (GArray   *farray,
+		      gpointer  data,
+		      guint     len)
 {
-  g_array_maybe_expand ((GRealArray*) array, size);
+  GRealArray *array = (GRealArray*) farray;
 
-  g_memmove (array->data + size, array->data, array->len);
-  memcpy (array->data, data, size);
+  g_array_maybe_expand (array, len);
 
-  array->len += size;
+  g_memmove (array->data + array->elt_size * len, array->data, array->elt_size * array->len);
 
-  return array;
+  memcpy (array->data, data, len * array->elt_size);
+
+  array->len += len;
+
+  return farray;
 }
 
 GArray*
-g_rarray_truncate (GArray *array,
-		   gint    length,
-		   gint    size)
+g_array_set_size (GArray *farray,
+		  guint   length)
 {
-  if (array->data)
-    memset (array->data + length * size, 0, size);
-  array->len = length * size;
-  return array;
-}
+  GRealArray *array = (GRealArray*) farray;
 
+  if (array->len < length)
+    g_array_maybe_expand (array, length - array->len);
+
+  array->len = length;
+
+  return farray;
+}
 
 static gint
 g_nearest_pow (gint num)
@@ -128,17 +141,19 @@ static void
 g_array_maybe_expand (GRealArray *array,
 		      gint        len)
 {
-  guint old_alloc;
+  guint want_alloc = (array->len + len + array->zero_terminated) * array->elt_size;
 
-  if ((array->len + len) > array->alloc)
+  if (want_alloc > array->alloc)
     {
-      old_alloc = array->alloc;
+      guint old_alloc = array->alloc;
 
-      array->alloc = g_nearest_pow (array->len + array->zero_terminated + len);
+      array->alloc = g_nearest_pow (want_alloc);
       array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
+
       array->data = g_realloc (array->data, array->alloc);
 
-      memset (array->data + old_alloc, 0, array->alloc - old_alloc);
+      if (array->clear || array->zero_terminated)
+	memset (array->data + old_alloc, 0, array->alloc - old_alloc);
     }
 }
 
@@ -228,21 +243,26 @@ g_ptr_array_set_size  (GPtrArray   *farray,
   array->len = length;
 }
 
-void
+gpointer
 g_ptr_array_remove_index (GPtrArray* farray,
 			  gint index)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
+  gpointer result;
 
-  g_return_if_fail (array);
+  g_return_val_if_fail (array, NULL);
 
-  g_return_if_fail (index < array->len);
+  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+
+  result = array->pdata[index];
 
   array->pdata[index] = array->pdata[array->len - 1];
 
   array->pdata[array->len - 1] = NULL;
 
   array->len -= 1;
+
+  return result;
 }
 
 gboolean
@@ -284,11 +304,11 @@ g_ptr_array_add (GPtrArray* farray,
 
 GByteArray* g_byte_array_new      (void)
 {
-  return (GByteArray*) g_array_new (FALSE);
+  return (GByteArray*) g_array_new (FALSE, FALSE, 1);
 }
 
 void	    g_byte_array_free     (GByteArray *array,
-			           gint	       free_segment)
+			           gboolean    free_segment)
 {
   g_array_free ((GArray*) array, free_segment);
 }
@@ -297,7 +317,7 @@ GByteArray* g_byte_array_append   (GByteArray *array,
 				   const guint8 *data,
 				   guint       len)
 {
-  g_rarray_append ((GArray*) array, (guint8*)data, len);
+  g_array_append_vals ((GArray*) array, (guint8*)data, len);
 
   return array;
 }
@@ -306,15 +326,15 @@ GByteArray* g_byte_array_prepend  (GByteArray *array,
 				   const guint8 *data,
 				   guint       len)
 {
-  g_rarray_prepend ((GArray*) array, (guint8*)data, len);
+  g_array_prepend_vals ((GArray*) array, (guint8*)data, len);
 
   return array;
 }
 
-GByteArray* g_byte_array_truncate (GByteArray *array,
-				   gint	       length)
+GByteArray* g_byte_array_set_size (GByteArray *array,
+				   guint       length)
 {
-  g_rarray_truncate ((GArray*) array, length, 1);
+  g_array_set_size ((GArray*) array, length);
 
   return array;
 }

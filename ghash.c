@@ -46,7 +46,6 @@ struct _GHashTable
 static void		g_hash_table_resize	(GHashTable	*hash_table);
 static GHashNode**	g_hash_table_lookup_node(GHashTable	*hash_table,
 						 gconstpointer	 key);
-static gint		g_hash_closest_prime	(gint		 num);
 static GHashNode*	g_hash_node_new		(gpointer	 key,
 						 gpointer	 value);
 static void		g_hash_node_destroy	(GHashNode	*hash_node);
@@ -63,7 +62,7 @@ g_hash_table_new (GHashFunc    hash_func,
 {
   GHashTable *hash_table;
   gint i;
-  
+
   hash_table = g_new (GHashTable, 1);
   hash_table->size = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes = 0;
@@ -71,7 +70,7 @@ g_hash_table_new (GHashFunc    hash_func,
   hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
   hash_table->key_compare_func = key_compare_func;
   hash_table->nodes = g_new (GHashNode*, hash_table->size);
-  
+
   for (i = 0; i < hash_table->size; i++)
     hash_table->nodes[i] = NULL;
 
@@ -84,10 +83,10 @@ g_hash_table_destroy (GHashTable *hash_table)
   gint i;
 
   g_return_if_fail (hash_table);
-  
+
   for (i = 0; i < hash_table->size; i++)
     g_hash_nodes_destroy (hash_table->nodes[i]);
-  
+
   g_free (hash_table->nodes);
   g_free (hash_table);
 }
@@ -100,7 +99,7 @@ g_hash_table_insert (GHashTable *hash_table,
   GHashNode **node;
 
   g_return_if_fail (hash_table);
-  
+
   node = g_hash_table_lookup_node (hash_table, key);
 
   if (*node)
@@ -146,7 +145,7 @@ g_hash_table_lookup (GHashTable   *hash_table,
 		     gconstpointer key)
 {
   GHashNode *node;
-	
+
   g_return_val_if_fail (hash_table, NULL);
 
   node = *g_hash_table_lookup_node (hash_table, key);
@@ -160,7 +159,7 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
 			      gpointer		*value)
 {
   GHashNode *node;
-  
+
   g_return_val_if_fail (hash_table, FALSE);
 
   node = *g_hash_table_lookup_node (hash_table, lookup_key);
@@ -232,19 +231,19 @@ g_hash_table_resize (GHashTable *hash_table)
   g_return_if_fail (hash_table);
 
   nodes_per_list = (gfloat) hash_table->nnodes / (gfloat) hash_table->size;
-      
+
   if ((nodes_per_list > 0.3 || hash_table->size <= HASH_TABLE_MIN_SIZE) &&
       (nodes_per_list < 3.0 || hash_table->size >= HASH_TABLE_MAX_SIZE))
     return;
 
-  new_size = CLAMP(g_hash_closest_prime (hash_table->nnodes),
+  new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
 		   HASH_TABLE_MIN_SIZE,
 		   HASH_TABLE_MAX_SIZE);
   new_nodes = g_new (GHashNode*, new_size);
-	  
+
   for (i = 0; i < new_size; i++)
     new_nodes[i] = NULL;
-      
+
   for (i = 0; i < hash_table->size; i++)
     for (node = hash_table->nodes[i]; node; node = next)
       {
@@ -253,7 +252,7 @@ g_hash_table_resize (GHashTable *hash_table)
 	node->next = new_nodes[hash_val];
 	new_nodes[hash_val] = node;
       }
-      
+
   g_free (hash_table->nodes);
   hash_table->nodes = new_nodes;
   hash_table->size = new_size;
@@ -264,7 +263,7 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
 			  gconstpointer	 key)
 {
   GHashNode **node;
-  
+
   g_return_val_if_fail (hash_table, NULL);
 
   node = &hash_table->nodes
@@ -281,22 +280,8 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
   else
     while (*node && (*node)->key != key)
       node = &(*node)->next;
-  
+
   return node;
-}
-
-static gint
-g_hash_closest_prime (gint num)
-{
-  extern gint g_primes[];
-  extern gint g_nprimes;
-  gint i;
-
-  for (i = 0; i < g_nprimes; i++)
-    if ((g_primes[i] - num) > 0)
-      return g_primes[i];
-
-  return g_primes[g_nprimes - 1];
 }
 
 static GHashNode*
