@@ -883,8 +883,8 @@ g_basename
 g_dirname
 g_path_is_absolute
 g_path_skip_root
-g_path_get_dirname
 g_path_get_basename
+g_path_get_dirname
 g_filename_to_utf8
 g_filename_from_utf8
 

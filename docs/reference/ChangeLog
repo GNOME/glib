@@ -1,3 +1,10 @@
+2000-10-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt, glib/tmpl/hash_tables.sgml,
+	glib/tmpl/macros_misc.sgml, glib/tmpl/misc_utils.sgml,
+	glib/tmpl/scanner.sgml: Document the recently deprecated functions
+	as such.
+
 2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
 
 	'make distcheck' fixes.

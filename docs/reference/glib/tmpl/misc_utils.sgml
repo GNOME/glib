@@ -91,8 +91,14 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_basename ##### -->
 <para>
-Gets the name of the file without any leading directory components.
-It returns a pointer into the given file name string.
+This function is deprecated and will be removed in the next major
+release of GLib. Use g_path_get_basename() instead. 
+</para>
+
+<para>
+Gets the name of the file without any leading
+directory components.  It returns a pointer into the given file name
+string.
 </para>
 
 @file_name: the name of the file.
@@ -100,6 +106,11 @@ It returns a pointer into the given file name string.
 
 
 <!-- ##### FUNCTION g_dirname ##### -->
+<para>
+This function is deprecated and will be removed in the next major
+release of GLib. Use g_path_get_dirname() instead.
+</para>
+
 <para>
 Gets the directory components of a file name.
 If the file name has no directory components "." is returned.
@@ -134,20 +145,31 @@ path it returns NULL.
 
 <!-- ##### FUNCTION g_path_get_dirname ##### -->
 <para>
-
+Gets the directory components of a file name.  If the file name has no
+directory components "." is returned.  The returned string should be
+freed when no longer needed.
 </para>
 
-@file_name: 
-@Returns: 
+@file_name: the name of the file.
+@Returns: the directory components of the file.
 
 
 <!-- ##### FUNCTION g_path_get_basename ##### -->
 <para>
-
+Gets the name of the file without any leading directory components.
+The returned string should be freed when no longer needed.
 </para>
 
-@file_name: 
-@Returns: 
+<note>
+<para>
+This function allocates new memory for the returned string. This is
+different from the old g_basename() function, which returned a pointer
+into the argument.
+</para>
+</note>
+
+@file_name: the name of the file.
+@Returns: the name of the file without any leading directory components.
 
 
 <!-- ##### FUNCTION g_filename_to_utf8 ##### -->

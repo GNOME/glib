@@ -308,7 +308,8 @@ Adds a symbol to the given scope.
 
 <!-- ##### FUNCTION g_scanner_freeze_symbol_table ##### -->
 <para>
-
+This function is deprecated and will be removed in the next major
+release of GLib. It does nothing.
 </para>
 
 @scanner: 
@@ -316,7 +317,8 @@ Adds a symbol to the given scope.
 
 <!-- ##### FUNCTION g_scanner_thaw_symbol_table ##### -->
 <para>
-
+This function is deprecated and will be removed in the next major
+release of GLib. It does nothing.
 </para>
 
 @scanner: 

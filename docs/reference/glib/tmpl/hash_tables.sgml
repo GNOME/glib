@@ -252,24 +252,20 @@ It should return TRUE if the key/value pair should be removed from the
 
 <!-- ##### FUNCTION g_hash_table_freeze ##### -->
 <para>
-Disable resizing of a #GHashTable.
-</para>
-<para>
-This should be used if you need to make a lot of changes to a #GHashTable
-at once, as it reduces the number of times that the #GHashTable is rebuilt.
-You should call g_hash_table_thaw() after updating the #GHashTable to
-enable resizing again.
+This function is deprecated and will be removed in the next major
+release of GLib. It does nothing.
 </para>
 
-@hash_table: a #GHashTable.
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_hash_table_thaw ##### -->
 <para>
-Enables resizing of a #GHashTable.
+This function is deprecated and will be removed in the next major
+release of GLib. It does nothing.
 </para>
 
-@hash_table: a #GHashTable.
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_hash_table_destroy ##### -->
