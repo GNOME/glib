@@ -1073,6 +1073,137 @@ g_strdelimit (gchar	  *string,
 }
 
 gchar*
+g_strccpy (gchar       *dest,
+	   const gchar *source)
+{
+  const gchar *p = source;
+  gchar *q = dest;
+
+  g_return_val_if_fail (dest != NULL, NULL);
+
+  while (*p)
+    {
+      if (*p == '\\')
+	{
+	  p++;
+	  switch (*p)
+	    {
+	    case '0':  case '1':  case '2':  case '3':  case '4':
+	    case '5':  case '6':  case '7':
+	      *q = 0;
+	      while ((*p >= '0') && (*p <= '7'))
+		{
+		  *q = (*q * 8) + (*p - '0');
+		  p++;
+		}
+	      q++;
+	      p--;
+	      break;
+	    case 'b':
+	      *q++ = '\b';
+	      break;
+	    case 'f':
+	      *q++ = '\f';
+	      break;
+	    case 'n':
+	      *q++ = '\n';
+	      break;
+	    case 'r':
+	      *q++ = '\r';
+	      break;
+	    case 't':
+	      *q++ = '\t';
+	      break;
+	    default:		/* Also handles \" and \\ */
+	      *q++ = *p;
+	      break;
+	    }
+	}
+      else
+	*q++ = *p;
+      p++;
+    }
+  *q = 0;
+  return dest;
+}
+
+gchar *
+g_strecpy (gchar       *dest,
+	   const gchar *src,
+	   const gchar *exceptions)
+{
+  const guchar *p = (guchar *) src;
+  gchar *q = dest;
+  guchar excmap[256];
+
+  memset (excmap, 0, 256);
+  if (exceptions)
+    {
+      guchar *e = (guchar *) exceptions;
+
+      while (*e)
+	{
+	  excmap[*e] = 1;
+	  e++;
+	}
+    }
+
+  while (*p)
+    {
+      if (excmap[*p])
+	*q++ = *p;
+      else
+	{
+	  switch (*p)
+	    {
+	    case '\b':
+	      *q++ = '\\';
+	      *q++ = 'b';
+	      break;
+	    case '\f':
+	      *q++ = '\\';
+	      *q++ = 'f';
+	      break;
+	    case '\n':
+	      *q++ = '\\';
+	      *q++ = 'n';
+	      break;
+	    case '\r':
+	      *q++ = '\\';
+	      *q++ = 'r';
+	      break;
+	    case '\t':
+	      *q++ = '\\';
+	      *q++ = 't';
+	      break;
+	    case '\\':
+	      *q++ = '\\';
+	      *q++ = '\\';
+	      break;
+	    case '"':
+	      *q++ = '\\';
+	      *q++ = '"';
+	      break;
+	    default:
+	      if ((*p < ' ') || (*p >= 0177))
+		{
+		  *q++ = '\\';
+		  *q++ = '0' + (((*p) >> 6)&07);
+		  *q++ = '0' + (((*p) >> 3)&07);
+		  *q++ = '0' + ((*p)&07);
+		}
+	      else
+		*q++ = *p;
+	      break;
+	    }
+	}
+      p++;
+    }
+  *q = 0;
+  return dest;
+}
+
+gchar*
 g_strescape (gchar *string)
 {
   gchar *q;

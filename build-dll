@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Temporary hack until building dlls or executables with exported
 # entry points is easier with gcc -mno-cygwin ("mingw32").
@@ -35,5 +35,13 @@ $GCC -s -mdll -mno-cygwin -Wl,--base-file,$library.base,$library.exp -o $dllfile
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs &&
 $GCC -mdll -mno-cygwin -Wl,$library.exp -o $dllfile $ldargs &&
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --output-lib lib$libname.a $objs
+
+# Finally, also build import libraries for the Microsoft linker. You
+# will either need to have some decent version of MSVC, or get lib.exe
+# (and link.exe) from the (freely downloadable) Microsoft Platform SDK.
+
+if type -p lib.exe && [ -n "$def" -a "$def" != '-' ]; then
+    lib -name:$libname.dll -def:$def -out:$libname.lib
+fi
 
 rm $library.base $library.exp 2>/dev/null

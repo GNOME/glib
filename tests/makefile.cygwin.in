@@ -24,9 +24,8 @@ TESTS = \
 	rand-test.exe	\
 	relation-test.exe\
 	slist-test.exe	\
-	stack-test.exe	\
-	string-test.exe	\
 	strfunc-test.exe\
+	string-test.exe	\
 	thread-test.exe	\
 	tree-test.exe	\
 	type-test.exe

@@ -1,3 +1,22 @@
+1999-08-01  Tor Lillqvist  <tml@iki.fi>
+
+	* gstrfuncs.c (g_strccpy, g_strecpy): New functions.
+
+	* glib.h: Declare and document them. Define the deprecated
+	g_strescape as a macro that calls g_strecpy.
+
+	* tests/strfunc-test.c (main): Test them.
+
+	* makefile.{cygwin,msc}.in
+	* tests/makefile.{cygwin,msc}.in: Remove gstack and its test
+	program.
+
+	* glib.def: Additions and removals.
+
+	* README.win32: Improve gcc build instructions.
+
+	* build-dll: Also build import library for MSVC.
+
 Sat Jul 24 20:11:35 1999  Tim Janik  <timj@gtk.org>
 
 	* merged GLib 1.3.0 with glib-1.2.3 from Fri Jul 16 22:18:36.

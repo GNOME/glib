@@ -10,12 +10,11 @@ library is used.
 
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
-been used successfully. With gcc I mean the gcc-2.95 pre-release as
-distributed by Mumit Khan, running under cygwin-b20.1. To successfully
-use gcc, follow the instructions below. We want to use gcc
--mno-cygwin, i.e. produce executables (.exe and .dll files) that do
-*not* require the cygwin runtime library. This is sometimes called
-"mingw32".
+been used successfully. With gcc I mean gcc-2.95 as distributed by
+Mumit Khan, running under cygwin-b20.1. To successfully use gcc,
+follow the instructions below. We want to use gcc -mno-cygwin,
+i.e. produce executables (.exe and .dll files) that do *not* require
+the cygwin runtime library. This is sometimes called "mingw32".
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
@@ -94,48 +93,24 @@ The gcc support was added quite recently, but seems to work. Debugging
 with gdb works. I use the latest and greatest gcc and mingw32.
 Somewhat earlier versions will also work, but you are on your own.
 
-Fetch the gcc-2.95 developer snapshot from
-ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/snapshots/gcc-2.95-19990715/.
-Install it somewhere, for instance \gcc-2.95.
+Read and understand these instruction carefully. If you don't
+understand or can't follow the instructions, you probably shouldn't
+want to build glib (or gtk or gimp) yourself anyway.
 
-Fetch the mingw runtime snapshot from 1999-07-15 from
-ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/runtime/. You
-must fix two bugs in it:
+Fetch gcc-2.95 built for cygwin from
+ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/gcc-2.95/gcc-2.95-cygb20.tar.gz
+Install it somewhere, for instance "C:\gcc-2.95" (/gcc-2.95 as seen
+from cygwin). We call this directory $GCCDIR below. You will have
+subdirectories "H-i586-cygwin32" and "include" under $GCCDIR.
 
-1) Fix the prototype and call to __getmainargs() in init.c to include
-one more parameter, an int *, which should be passed the address of a
-zero int. Code snippets below:
-
-...
-#ifdef __MSVCRT__
-extern void __getmainargs(int *, char***, char***, int, int *);
-#else
-...
-#ifdef __MSVCRT__
-	int newmode = 0;
-	(void) __getmainargs(&_argc, &_argv, &dummy_environ, _CRT_glob, &newmode);
-#else
-...
-
-2) Fix the type of the function __p___argv() in stdlib.h to be char***,
-not char**.
-
-Build the mingw32 runtime and install the libraries in the
-gcc-2.95\H-i586-cygwin32\lib directory, and the headers in the
-gcc-2.95\H-i586-cygwin32\i586-cygwin32\include\mingw32 directory.
-Remember to build and install also the w32api import libraries and
-headers.
-
-I prefer to use the msvcrt runtime and not the default
-crtdll. Especially, as the pthread library also uses msvcrt, using
-crtdll would probably not be a good idea at all. Using msvcrt can be
-achieved by applying a few changes to the specs file.
-
-The specs file is in gcc-2.95\H-i586-cygwin32\lib\gcc-lib\i586-cygwin32\2.95
-
-The necessary changes are: replace -lcrtdll with -lmsvcrt, replace
-crt1 with crt2, change -lmoldname to -lmoldname-msvc, and define
-__MSVCRT__.
+Next, you need to modify the gcc setup to use the msvcrt runtime
+instead of crtdll. Also, the mingw32 and win32 API headers and import
+libraries need to be added. I have collected all the necessary
+additions in the file
+http://www.iki.fi/tml/gimp/win32/gcc-2.95-additions.zip . Install that
+in $GCCDIR. If you really want to do everything by yourself, follow
+the instructions in
+http://www.iki.fi/tml/gimp/win32/gcc-environment-setup.html
 
 Next, go back to the GLib directory and build using `make -f
 makefile.cygwin`.  Building the dlls uses the script build-dll which

@@ -74,7 +74,6 @@ glib_OBJECTS = \
 	gqueue.obj	\
 	grand.obj	\
 	gslist.obj	\
-	gstack.obj	\
 	gthread.obj	\
 	gtimer.obj	\
 	gtree.obj	\

@@ -1515,8 +1515,24 @@ gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gchar*   g_strjoin		(const gchar  *separator,
 				 ...); /* NULL terminated */
+/* Copy a string interpreting C string -style escape sequences.
+ * The recognized sequences are \b \f \n \r \t \\ \" and the octal format.
+ */
+gchar*   g_strccpy		(gchar       *dest,
+				 const gchar *source);
+/* Copy a string escaping nonprintable characters like in C strings.
+ * Inverse of g_strccpy. The exceptions parameter if non-NULL points
+ * to a string containing characters that are not escaped.
+ */
+gchar*   g_strecpy		(gchar       *dest,
+				 const gchar *source,
+				 const gchar *exceptions);
+
 /* deprecated function */
 gchar*	 g_strescape		(gchar	      *string);
+
+/* Define a macro for it */
+#define g_strescape(src) g_strecpy (g_malloc (strlen (src)*4+1), src, NULL)
 
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);

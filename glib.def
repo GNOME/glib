@@ -58,10 +58,10 @@ EXPORTS
 	g_date_julian
 	g_date_monday_week_of_year
 	g_date_monday_weeks_in_year
+	g_date_month
 	g_date_new
 	g_date_new_dmy
 	g_date_new_julian
-	g_date_month
 	g_date_set_day
 	g_date_set_dmy
 	g_date_set_julian
@@ -121,12 +121,12 @@ EXPORTS
 	g_hook_get
 	g_hook_insert_before
 	g_hook_insert_sorted
+	g_hook_list_clear
 	g_hook_list_init
 	g_hook_list_invoke
 	g_hook_list_invoke_check
 	g_hook_list_marshal
 	g_hook_list_marshal_check
-	g_hook_list_clear
 	g_hook_next_valid
 	g_hook_prepend
 	g_hook_ref
@@ -190,8 +190,8 @@ EXPORTS
 	g_main_iteration
 	g_main_new
 	g_main_pending
-	g_main_remove_poll
 	g_main_quit
+	g_main_remove_poll
 	g_main_run
 	g_main_set_poll_func
 	g_malloc
@@ -255,6 +255,19 @@ EXPORTS
 	g_quark_from_string
 	g_quark_to_string
 	g_quark_try_string
+	g_queue_create
+	g_queue_free
+	g_queue_is_empty
+	g_queue_peek_head
+	g_queue_peek_tail
+	g_queue_pop_head
+	g_queue_pop_head_link
+	g_queue_pop_tail
+	g_queue_pop_tail_link
+	g_queue_push_head
+	g_queue_push_head_link
+	g_queue_push_tail
+	g_queue_push_tail_link
 	g_rand_double
 	g_rand_double_range
 	g_rand_free
@@ -331,7 +344,6 @@ EXPORTS
 	g_slist_reverse
 	g_slist_sort
 	g_snprintf
-        g_spaced_primes_closest
 	g_source_add
 	g_source_remove
 	g_source_remove_by_source_data
@@ -355,12 +367,15 @@ EXPORTS
 	g_strchomp
 	g_strchug
 	g_strconcat
+	g_strccpy
 	g_strdelimit
 	g_strdown
 	g_strdup
 	g_strdup_printf
 	g_strdup_vprintf
+	g_strecpy
 	g_strerror
+	g_strescape
 	g_strfreev
 	g_string_append
 	g_string_append_c
@@ -377,17 +392,12 @@ EXPORTS
 	g_string_new
 	g_string_prepend
 	g_string_prepend_c
-	g_string_readline
-	g_string_readline_buffered
 	g_string_sized_new
 	g_string_sprintf
 	g_string_sprintfa
-	g_string_tokenise
-	g_string_tokenise_free
 	g_string_truncate
 	g_string_up
 	g_strjoinv
-	g_strescape
 	g_strncasecmp
 	g_strndup
 	g_strnfill
@@ -397,9 +407,11 @@ EXPORTS
 	g_strtod
 	g_strup
 	g_thread_create
+	g_thread_functions_for_glib_use
 	g_thread_join
 	g_thread_self
 	g_thread_set_priority
+	g_threads_got_initialized
 	g_timeout_add
 	g_timeout_add_full
 	g_timer_destroy
@@ -426,8 +438,9 @@ EXPORTS
 	glib_major_version
 	glib_micro_version
 	glib_minor_version
+	gwin_closedir
 	gwin_ftruncate
 	gwin_opendir
 	gwin_readdir
 	gwin_rewinddir
-	gwin_closedir
+        g_spaced_primes_closest
