@@ -563,11 +563,24 @@ static gchar *
 strdup_len (const gchar *string,
 	    gssize       len,
 	    gsize       *bytes_written,
-	    gsize       *bytes_read)
+	    gsize       *bytes_read,
+	    GError      **error)
 	 
 {
   gsize real_len;
 
+  if (!g_utf8_validate (string, -1, NULL))
+    {
+      if (bytes_read)
+	*bytes_read = 0;
+      if (bytes_written)
+	*bytes_written = 0;
+
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+		   _("Invalid byte sequence in conversion input"));
+      return NULL;
+    }
+  
   if (len < 0)
     real_len = strlen (string);
   else
@@ -718,7 +731,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
   const char *charset;
 
   if (g_get_charset (&charset))
-    return strdup_len (opsysstring, len, bytes_read, bytes_written);
+    return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
     return g_convert (opsysstring, len, 
 		      "UTF-8", charset, bytes_read, bytes_written, error);
@@ -864,7 +877,7 @@ g_locale_from_utf8 (const gchar *utf8string,
   const gchar *charset;
 
   if (g_get_charset (&charset))
-    return strdup_len (utf8string, len, bytes_read, bytes_written);
+    return strdup_len (utf8string, len, bytes_read, bytes_written, error);
   else
     return g_convert (utf8string, len,
 		      charset, "UTF-8", bytes_read, bytes_written, error);
@@ -907,12 +920,13 @@ g_filename_to_utf8 (const gchar *opsysstring,
 			   bytes_read, bytes_written,
 			   error);
 #else  /* !G_PLATFORM_WIN32 */
+      
   if (getenv ("G_BROKEN_FILENAMES"))
     return g_locale_to_utf8 (opsysstring, len,
 			     bytes_read, bytes_written,
 			     error);
   else
-    return strdup_len (opsysstring, len, bytes_read, bytes_written);
+    return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
 #endif /* !G_PLATFORM_WIN32 */
 }
 
@@ -955,6 +969,353 @@ g_filename_from_utf8 (const gchar *utf8string,
 			       bytes_read, bytes_written,
 			       error);
   else
-    return strdup_len (utf8string, len, bytes_read, bytes_written);
+    return strdup_len (utf8string, len, bytes_read, bytes_written, error);
 #endif /* !G_PLATFORM_WIN32 */
 }
+
+/* Test of haystack has the needle prefix, comparing case
+ * insensitive. haystack may be UTF-8, but needle must
+ * contain only ascii. */
+static gboolean
+has_case_prefix (const gchar *haystack, const gchar *needle)
+{
+  const gchar *h, *n;
+  
+  /* Eat one character at a time. */
+  h = haystack;
+  n = needle;
+
+  while (*n && *h &&
+	 g_ascii_tolower (*n) == g_ascii_tolower (*h))
+    {
+      n++;
+      h++;
+    }
+  
+  return *n == '\0';
+}
+
+typedef enum {
+  UNSAFE_ALL        = 0x1,  /* Escape all unsafe characters   */
+  UNSAFE_ALLOW_PLUS = 0x2,  /* Allows '+'  */
+  UNSAFE_PATH       = 0x4,  /* Allows '/' and '?' and '&' and '='  */
+  UNSAFE_DOS_PATH   = 0x8,  /* Allows '/' and '?' and '&' and '=' and ':' */
+  UNSAFE_HOST       = 0x10, /* Allows '/' and ':' and '@' */
+  UNSAFE_SLASHES    = 0x20  /* Allows all characters except for '/' and '%' */
+} UnsafeCharacterSet;
+
+static const guchar acceptable[96] = {
+ /* X0   X1   X2   X3   X4   X5   X6   X7   X8   X9   XA   XB   XC   XD   XE   XF */
+  0x00,0x3F,0x20,0x20,0x20,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x22,0x20,0x3F,0x3F,0x1C, /* 2X  !"#$%&'()*+,-./   */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x2C, /* 3X 0123456789:;<=>?   */
+  0x30,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F, /* 4X @ABCDEFGHIJKLMNO   */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x20,0x3F, /* 5X PQRSTUVWXYZ[\]^_   */
+  0x20,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F, /* 6X `abcdefghijklmno   */
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x3F,0x20  /* 7X pqrstuvwxyz{|}~DEL */
+};
+
+static const gchar hex[16] = "0123456789ABCDEF";
+
+/* Note: This escape function works on file: URIs, but if you want to
+ * escape something else, please read RFC-2396 */
+static gchar *
+g_escape_uri_string (const gchar *string, 
+		     UnsafeCharacterSet mask)
+{
+#define ACCEPTABLE(a) ((a)>=32 && (a)<128 && (acceptable[(a)-32] & use_mask))
+
+  const gchar *p;
+  gchar *q;
+  gchar *result;
+  int c;
+  gint unacceptable;
+  UnsafeCharacterSet use_mask;
+  
+  g_return_val_if_fail (mask == UNSAFE_ALL
+			|| mask == UNSAFE_ALLOW_PLUS
+			|| mask == UNSAFE_PATH
+			|| mask == UNSAFE_DOS_PATH
+			|| mask == UNSAFE_HOST
+			|| mask == UNSAFE_SLASHES, NULL);
+  
+  unacceptable = 0;
+  use_mask = mask;
+  for (p = string; *p != '\0'; p++)
+    {
+      c = *p;
+      if (!ACCEPTABLE (c)) 
+	unacceptable++;
+    }
+  
+  result = g_malloc (p - string + unacceptable * 2 + 1);
+  
+  use_mask = mask;
+  for (q = result, p = string; *p != '\0'; p++)
+    {
+      c = (unsigned char)*p;
+      
+      if (!ACCEPTABLE (c))
+	{
+	  *q++ = '%'; /* means hex coming */
+	  *q++ = hex[c >> 4];
+	  *q++ = hex[c & 15];
+	}
+      else
+	*q++ = *p;
+    }
+  
+  *q = '\0';
+  
+  return result;
+}
+
+
+static gchar *
+g_escape_file_uri (const gchar *hostname,
+		   const gchar *pathname)
+{
+  char *escaped_hostname = NULL;
+  char *escaped_path;
+  char *res;
+
+  if (hostname && *hostname != '\0')
+    {
+      escaped_hostname = g_escape_uri_string (hostname, UNSAFE_HOST);
+    }
+
+  escaped_path = g_escape_uri_string (pathname, UNSAFE_DOS_PATH);
+
+  res = g_strconcat ("file://",
+		     (escaped_hostname) ? escaped_hostname : "",
+		     (*escaped_path != '/') ? "/" : "",
+		     escaped_path,
+		     NULL);
+
+  g_free (escaped_hostname);
+  g_free (escaped_path);
+  
+  return res;
+}
+
+static int
+unescape_character (const char *scanner)
+{
+  int first_digit;
+  int second_digit;
+
+  first_digit = g_ascii_xdigit_value (*scanner++);
+  
+  if (first_digit < 0) 
+    return -1;
+  
+  second_digit = g_ascii_xdigit_value (*scanner++);
+  if (second_digit < 0) 
+    return -1;
+  
+  return (first_digit << 4) | second_digit;
+}
+
+static gchar *
+g_unescape_uri_string (const gchar *escaped,
+		       const gchar *illegal_characters,
+		       int          len)
+{
+  const gchar *in, *in_end;
+  gchar *out, *result;
+  int character;
+  
+  if (escaped == NULL)
+    return NULL;
+
+  if (len < 0)
+    len = strlen (escaped);
+
+    result = g_malloc (len + 1);
+  
+  out = result;
+  for (in = escaped, in_end = escaped + len; in < in_end && *in != '\0'; in++)
+    {
+      character = *in;
+      if (character == '%')
+	{
+	  character = unescape_character (in + 1);
+      
+	  /* Check for an illegal character. We consider '\0' illegal here. */
+	  if (character == 0
+	      || (illegal_characters != NULL
+		  && strchr (illegal_characters, (char)character) != NULL))
+	    {
+	      g_free (result);
+	      return NULL;
+	    }
+	  in += 2;
+	}
+      *out++ = character;
+    }
+  
+  *out = '\0';
+  
+  g_assert (out - result <= strlen (escaped));
+
+  if (!g_utf8_validate (result, -1, NULL))
+    {
+      g_free (result);
+      return NULL;
+    }
+  
+  return result;
+}
+
+/**
+ * g_filename_from_uri:
+ * @uri: a uri describing a filename (escaped, encoded in UTF-8)
+ * @hostname: Location to store hostname for the URI, or %NULL.
+ *            If there is no hostname in the URI, %NULL will be
+ *            stored in this location.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *         errors. Any of the errors in #GConvertError may occur.
+ * 
+ * Converts an escaped UTF-8 encoded URI to a local filename in the
+ * encoding used for filenames. 
+ * 
+ * Return value: a newly allocated string holding the resulting
+ *               filename, or %NULL on an error.
+ **/
+gchar *
+g_filename_from_uri (const char *uri,
+		     char      **hostname,
+		     GError    **error)
+{
+  const char *path_part;
+  const char *host_part;
+  char *unescaped_hostname;
+  char *result;
+  char *filename;
+  int offs;
+
+  if (hostname)
+    *hostname = NULL;
+
+  if (!has_case_prefix (uri, "file:/"))
+    {
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NOT_LOCAL_FILE,
+		   _("The URI `%s' does not specify a local file"),
+		   uri);
+      return NULL;
+    }
+  
+  path_part = uri + strlen ("file:");
+  
+  if (strchr (path_part, '#') != NULL)
+    {
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
+		   _("The local file URI `%s' may not include a `#'"),
+		   uri);
+      return NULL;
+    }
+	
+  if (has_case_prefix (path_part, "///")) 
+    path_part += 2;
+  else if (has_case_prefix (path_part, "//"))
+    {
+      path_part += 2;
+      host_part = path_part;
+
+      path_part = strchr (path_part, '/');
+
+      if (path_part == NULL)
+	{
+	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
+		       _("The URI `%s' is invalid"),
+		       uri);
+	  return NULL;
+	}
+
+      unescaped_hostname = g_unescape_uri_string (host_part, "", path_part - host_part);
+      if (unescaped_hostname == NULL)
+	{
+	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
+		       _("The hostname of the URI `%s' is contains invalidly escaped characters"),
+		       uri);
+	  return NULL;
+	}
+      
+      if (hostname)
+	*hostname = unescaped_hostname;
+      else
+	g_free (unescaped_hostname);
+    }
+
+  filename = g_unescape_uri_string (path_part, "/", -1);
+
+  if (filename == NULL)
+    {
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
+		   _("The URI `%s' is contains invalidly escaped characters"),
+		   uri);
+      return NULL;
+    }
+
+  /* DOS uri's are like "file://host/c:\foo", so we need to check if we need to
+   * drop the initial slash */
+  offs = 0;
+  if (g_path_is_absolute (filename+1))
+    offs = 1;
+  
+  result = g_filename_from_utf8 (filename + offs, -1, NULL, NULL, error);
+  g_free (filename);
+  
+  return result;
+}
+
+/**
+ * g_filename_to_uri:
+ * @filename: an absolute filename specified in the encoding
+ *            used for filenames by the operating system.
+ * @hostname: A UTF-8 encoded hostname, or %NULL for none.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *         errors. Any of the errors in #GConvertError may occur.
+ * 
+ * Converts an absolute filename to an escaped UTF-8 encoded URI.
+ * 
+ * Return value: a newly allocated string holding the resulting
+ *               URI, or %NULL on an error.
+ **/
+gchar *
+g_filename_to_uri   (const char *filename,
+		     char       *hostname,
+		     GError    **error)
+{
+  char *escaped_uri;
+  char *utf8_filename;
+
+  g_return_val_if_fail (filename != NULL, NULL);
+
+  if (!g_path_is_absolute (filename))
+    {
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH,
+		   _("The pathname '%s' is not an absolute path"),
+		   filename);
+      return NULL;
+    }
+
+  utf8_filename = g_filename_to_utf8 (filename, -1, NULL, NULL, error);
+  if (utf8_filename == NULL)
+    return NULL;
+  
+  if (hostname &&
+      !g_utf8_validate (hostname, -1, NULL))
+    {
+      g_free (utf8_filename);
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+		   _("Invalid byte sequence in hostname"));
+      return NULL;
+    }
+  
+  escaped_uri = g_escape_file_uri (hostname,
+				   utf8_filename);
+  g_free (utf8_filename);
+  
+  return escaped_uri;
+}
+

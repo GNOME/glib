@@ -75,7 +75,8 @@ test_programs =					\
 	tree-test				\
 	type-test				\
 	unicode-caseconv			\
-	unicode-encoding
+	unicode-encoding			\
+	uri-test
 
 test_scripts = run-markup-tests.sh
 
@@ -117,6 +118,7 @@ tree_test_LDADD = $(progs_LDADD)
 type_test_LDADD = $(progs_LDADD)
 unicode_encoding_LDADD = $(progs_LDADD)
 unicode_caseconv_LDADD = $(progs_LDADD)
+uri_test_LDADD = $(progs_LDADD)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 

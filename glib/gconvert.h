@@ -37,7 +37,10 @@ typedef enum
   G_CONVERT_ERROR_NO_CONVERSION,
   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
   G_CONVERT_ERROR_FAILED,
-  G_CONVERT_ERROR_PARTIAL_INPUT
+  G_CONVERT_ERROR_PARTIAL_INPUT,
+  G_CONVERT_ERROR_NOT_LOCAL_FILE,
+  G_CONVERT_ERROR_INVALID_URI,
+  G_CONVERT_ERROR_NOT_ABSOLUTE_PATH
 } GConvertError;
 
 #define G_CONVERT_ERROR g_convert_error_quark()
@@ -106,6 +109,15 @@ gchar* g_filename_from_utf8 (const gchar  *utf8string,
 			     gsize        *bytes_read,     
 			     gsize        *bytes_written,  
 			     GError      **error);
+
+gchar *g_filename_from_uri (const char *uri,
+			    char      **hostname,
+			    GError    **error);
+  
+gchar *g_filename_to_uri   (const char *filename,
+			    char       *hostname,
+			    GError    **error);
+
 
 G_END_DECLS
 

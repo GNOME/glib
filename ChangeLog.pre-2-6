@@ -1,3 +1,13 @@
+2001-08-26  Alex Larsson  <alexl@redhat.com>
+
+	* glib/gconvert.[ch] (g_filename_from_uri,
+	g_filename_to_uri): New functions to convert
+	between local pahtnames and file: uris.
+
+	* tests/Makefile.am:
+	* tests/uri-test.c:
+	Tests for the new functions.
+
 2001-08-25  Alexander Larsson  <alla@lysator.liu.se>
 
 	* glib/gstrfuncs.[ch]:
