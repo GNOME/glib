@@ -867,7 +867,13 @@ g_get_any_init (void)
       /* We check $HOME first for Win32, though it is a last resort for Unix
        * where we prefer the results of getpwuid().
        */
-      g_home_dir = g_strdup (g_getenv ("HOME"));
+      {
+	gchar *home = g_getenv ("HOME");
+      
+	/* Only believe HOME if it is an absolute path and exists */
+	if (g_path_is_absolute (home) && g_file_test (home, G_FILE_TEST_IS_DIR))
+	  g_home_dir = g_strdup (home);
+      }
       
       /* In case HOME is Unix-style (it happens), convert it to
        * Windows style.
