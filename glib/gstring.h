@@ -101,8 +101,8 @@ GString*     g_string_insert_unichar    (GString	 *string,
 					 gssize		  pos,    
 					 gunichar	  wc);
 GString*     g_string_erase	        (GString	 *string,
-					 gsize		  pos,    
-					 gsize		  len);   
+					 gssize		  pos,
+					 gssize		  len);
 GString*     g_string_ascii_down        (GString	 *string);
 GString*     g_string_ascii_up          (GString	 *string);
 void         g_string_printf            (GString	 *string,

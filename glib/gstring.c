@@ -585,8 +585,8 @@ g_string_insert_unichar (GString *string,
 
 GString*
 g_string_erase (GString *string,
-		gsize    pos,    
-		gsize    len)    
+		gssize   pos,
+		gssize   len)
 {
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (pos >= 0, string);

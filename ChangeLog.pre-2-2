@@ -1,3 +1,8 @@
+2002-02-20  Daniel Elstner  <daniel.elstner@gmx.net>
+
+	* glib/gstring.[ch] (g_string_erase): Use gssize instead of
+	gsize as type of the pos and len arguments. (#71964)
+
 2002-02-20  Simos Xenitellis  <simos@hellug.gr>
 
 	* configure.in: Added el to ALL_LINGUAS (Greek language).
