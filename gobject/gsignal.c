@@ -142,7 +142,7 @@ static inline Emission*		emission_find		(Emission	 *emission_list,
 							 gpointer	  instance);
 static gint			signal_key_cmp		(gconstpointer	  node1,
 							 gconstpointer	  node2);
-static	      gboolean		signal_emit_R		(SignalNode	 *node,
+static	      gboolean		signal_emit_unlocked_R	(SignalNode	 *node,
 							 GQuark		  detail,
 							 gpointer	  instance,
 							 GValue		 *return_value,
@@ -882,6 +882,51 @@ g_signal_parse_name (const gchar *detailed_signal,
     *detail_p = detail;
   
   return TRUE;
+}
+
+void
+g_signal_stop_emission_by_name (gpointer     instance,
+				const gchar *detailed_signal)
+{
+  guint signal_id;
+  GQuark detail = 0;
+  GType itype;
+  
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (detailed_signal != NULL);
+  
+  G_LOCK (g_signal_mutex);
+  itype = G_TYPE_FROM_INSTANCE (instance);
+  signal_id = signal_parse_name (detailed_signal, itype, &detail, TRUE);
+  if (signal_id)
+    {
+      SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
+      
+      if (detail && !(node->flags & G_SIGNAL_DETAILED))
+	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+      else if (!g_type_is_a (itype, node->itype))
+	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+      else
+	{
+	  Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
+	  Emission *emission = emission_find (emission_list, signal_id, detail, instance);
+	  
+	  if (emission)
+	    {
+	      if (*emission->state_p == EMISSION_HOOK)
+		g_warning (G_STRLOC ": emission of signal \"%s\" for instance `%p' cannot be stopped from emission hook",
+			   node->name, instance);
+	      else if (*emission->state_p == EMISSION_RUN)
+		*emission->state_p = EMISSION_STOP;
+	    }
+	  else
+	    g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance `%p'",
+		       node->name, instance);
+	}
+    }
+  else
+    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+  G_UNLOCK (g_signal_mutex);
 }
 
 guint
@@ -1725,8 +1770,8 @@ g_signal_emitv (const GValue *instance_and_params,
     return_value = NULL;
 #endif	/* G_ENABLE_DEBUG */
 
-  signal_emit_R (node, detail, instance, return_value, instance_and_params);
   G_UNLOCK (g_signal_mutex);
+  signal_emit_unlocked_R (node, detail, instance, return_value, instance_and_params);
 }
 
 void
@@ -1736,10 +1781,11 @@ g_signal_emit_valist (gpointer instance,
 		      va_list  var_args)
 {
   GValue *instance_and_params, stack_values[MAX_STACK_VALUES], *free_me = NULL;
+  GType signal_return_type;
   GValue *param_values;
   SignalNode *node;
-  guint i;
-
+  guint i, n_params;
+  
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (signal_id > 0);
 
@@ -1760,6 +1806,8 @@ g_signal_emit_valist (gpointer instance,
     }
 #endif  /* !G_DISABLE_CHECKS */
 
+  n_params = node->n_params;
+  signal_return_type = node->return_type;
   if (node->n_params < MAX_STACK_VALUES)
     instance_and_params = stack_values;
   else
@@ -1771,12 +1819,15 @@ g_signal_emit_valist (gpointer instance,
   for (i = 0; i < node->n_params; i++)
     {
       gchar *error;
-
+      GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
+      
       param_values[i].g_type = 0;
-      g_value_init (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      G_UNLOCK (g_signal_mutex);
+      g_value_init (param_values + i, ptype);
       G_VALUE_COLLECT (param_values + i,
 		       var_args,
-		       node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
+		       static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
 		       &error);
       if (error)
 	{
@@ -1789,26 +1840,31 @@ g_signal_emit_valist (gpointer instance,
 	  while (i--)
 	    g_value_unset (param_values + i);
 
-	  G_UNLOCK (g_signal_mutex);
 	  g_free (free_me);
 	  return;
 	}
+      G_LOCK (g_signal_mutex);
     }
+  G_UNLOCK (g_signal_mutex);
   instance_and_params->g_type = 0;
   g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
   g_value_set_instance (instance_and_params, instance);
-  if (node->return_type == G_TYPE_NONE)
-    signal_emit_R (node, detail, instance, NULL, instance_and_params);
+  if (signal_return_type == G_TYPE_NONE)
+    signal_emit_unlocked_R (node, detail, instance, NULL, instance_and_params);
   else
     {
       GValue return_value = { 0, };
       gchar *error = NULL;
+      GType rtype = signal_return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      gboolean static_scope = signal_return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
+      
+      g_value_init (&return_value, rtype);
 
-      g_value_init (&return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-      signal_emit_R (node, detail, instance, &return_value, instance_and_params);
+      signal_emit_unlocked_R (node, detail, instance, &return_value, instance_and_params);
+
       G_VALUE_LCOPY (&return_value,
 		     var_args,
-		     node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE ? G_VALUE_NOCOPY_CONTENTS : 0,
+		     static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
 		     &error);
       if (!error)
 	g_value_unset (&return_value);
@@ -1816,18 +1872,17 @@ g_signal_emit_valist (gpointer instance,
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
 	  g_free (error);
-
+	  
 	  /* we purposely leak the value here, it might not be
 	   * in a sane state if an error condition occoured
 	   */
 	}
     }
-  for (i = 0; i < node->n_params; i++)
+  for (i = 0; i < n_params; i++)
     g_value_unset (param_values + i);
   g_value_unset (instance_and_params);
   if (free_me)
     g_free (free_me);
-  G_UNLOCK (g_signal_mutex);
 }
 
 void
@@ -1888,11 +1943,11 @@ accumulate (GSignalInvocationHint *ihint,
 }
 
 static gboolean
-signal_emit_R (SignalNode   *node,
-	       GQuark	     detail,
-	       gpointer      instance,
-	       GValue	    *emission_return,
-	       const GValue *instance_and_params)
+signal_emit_unlocked_R (SignalNode   *node,
+			GQuark	      detail,
+			gpointer      instance,
+			GValue	     *emission_return,
+			const GValue *instance_and_params)
 {
   EmissionState emission_state = 0;
   SignalAccumulator *accumulator;
@@ -1901,7 +1956,7 @@ signal_emit_R (SignalNode   *node,
   HandlerList *hlist;
   Handler *handler_list = NULL;
   GValue *return_accu, accu = { 0, };
-  guint signal_id = node->signal_id;
+  guint signal_id;
   gulong max_sequential_handler_number;
   gboolean return_value_altered = FALSE;
   
@@ -1917,6 +1972,8 @@ signal_emit_R (SignalNode   *node,
     }
 #endif	/* G_ENABLE_DEBUG */
   
+  G_LOCK (g_signal_mutex);
+  signal_id = node->signal_id;
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
       Emission *emission = emission_find (g_restart_emissions, signal_id, detail, instance);
@@ -1932,8 +1989,10 @@ signal_emit_R (SignalNode   *node,
   accumulator = node->accumulator;
   if (accumulator)
     {
+      G_UNLOCK (g_signal_mutex);
       g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
       return_accu = &accu;
+      G_LOCK (g_signal_mutex);
     }
   else
     return_accu = emission_return;
@@ -2157,6 +2216,7 @@ signal_emit_R (SignalNode   *node,
     handler_unref_R (signal_id, instance, handler_list);
   
   emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission_state);
+  G_UNLOCK (g_signal_mutex);
   if (accumulator)
     g_value_unset (&accu);
   

@@ -149,6 +149,8 @@ gboolean	      g_signal_parse_name   (const gchar	*detailed_signal,
 void	g_signal_stop_emission		    (gpointer		  instance,
 					     guint		  signal_id,
 					     GQuark		  detail);
+void	g_signal_stop_emission_by_name	    (gpointer		  instance,
+					     const gchar	 *detailed_signal);
 gulong	g_signal_add_emission_hook	    (guint		  signal_id,
 					     GQuark		  quark,
 					     GSignalEmissionHook  hook_func,

@@ -124,10 +124,16 @@ g_module_find_by_name (const gchar *name)
 }
 
 static inline void
-g_module_set_error (const gchar *error)
+g_module_set_error_unduped (const gchar *error)
 {
   g_static_private_set (&module_error_private, g_strdup (error), g_free);
   errno = 0;
+}
+
+static inline void
+g_module_set_error (const gchar *error)
+{
+  g_module_set_error_unduped (g_strdup (error));
 }
 
 
@@ -200,7 +206,7 @@ parse_libtool_archive (const gchar* libtool_name)
   int fd = open (libtool_name, O_RDONLY, 0);
   if (fd < 0)
     {
-      g_module_set_error ("couldn't open libtool archive");   
+      g_module_set_error_unduped (g_strdup_printf ("failed to open libtool archive \"%s\"", libtool_name));   
       return NULL;
     }
   /* search libtool's dlname specification  */
@@ -224,7 +230,7 @@ parse_libtool_archive (const gchar* libtool_name)
 	      (token == TOKEN_INSTALLED ? 
 	       G_TOKEN_IDENTIFIER : G_TOKEN_STRING))
 	    {
-	      g_module_set_error ("libtool archive has unknown format"); 
+	      g_module_set_error_unduped (g_strdup_printf ("unable to parse libtool archive \"%s\"", libtool_name));
 
 	      g_free (lt_dlname);
 	      g_free (lt_libdir);
@@ -270,7 +276,8 @@ parse_libtool_archive (const gchar* libtool_name)
 }
 
 static inline gboolean
-g_str_check_suffix (const gchar* string, const gchar* suffix)
+str_check_suffix (const gchar* string,
+		  const gchar* suffix)
 {
   guint string_len = strlen (string);
   guint suffix_len = strlen (suffix);
@@ -286,7 +293,8 @@ g_module_open (const gchar    *file_name,
 	       GModuleFlags    flags)
 {
   GModule *module;
-  gpointer handle;
+  gpointer handle = NULL;
+  gchar *name = NULL;
   
   SUPPORT_OR_RETURN (NULL);
   
@@ -321,42 +329,49 @@ g_module_open (const gchar    *file_name,
       g_static_rec_mutex_unlock (&g_module_global_lock);
       return module;
     }
-  
-  /* First we try to open the module as provided */
-  handle = _g_module_open (file_name, (flags & G_MODULE_BIND_LAZY) != 0);
 
-  /* If not found, we check, if it is a libtool archive */
-  if (!handle && g_str_check_suffix (file_name, ".la"))
+  /* check whether we have a readable file right away */
+  if (g_file_test (file_name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+    name = g_strdup (file_name);
+  /* try completing file name with standard library suffix */
+  if (!name)
     {
-      gchar *name = parse_libtool_archive (file_name);
-      if (name)
+      name = g_strconcat (file_name, "." G_MODULE_SUFFIX, NULL);
+      if (!g_file_test (file_name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
 	{
-	  handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0);
 	  g_free (name);
+	  name = NULL;
+	}
+    }
+  /* last resort, try appending libtool suffix */
+  if (!name)
+    {
+      name = g_strconcat (file_name, ".la");
+      if (!g_file_test (name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+	{
+	  g_free (name);
+	  name = NULL;
 	}
     }
 
-  /* If still not found, we check, if it is a library name without suffix */
-  if (!handle && !g_str_check_suffix (file_name, "." G_MODULE_SUFFIX))
+  /* ok, try loading the module */
+  if (name)
     {
-      gchar *name = g_strconcat (file_name, "." G_MODULE_SUFFIX, NULL);
-      handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0);
-      g_free (name);
-    }
-
-  /* If still not found, we check, if it is a libtool archive name
-   * without suffix */
-  if (!handle && !g_str_check_suffix (file_name, ".la"))
-    {
-      gchar *la_name = g_strconcat (file_name, ".la", NULL);
-      gchar *name = parse_libtool_archive (la_name);
-      if (name)
+      /* if it's a libtool archive, figure library file to load */
+      if (str_check_suffix (name, ".la")) /* libtool archive? */
 	{
-	  handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0);
+	  gchar *real_name = parse_libtool_archive (name);
+
+	  /* real_name might be NULL, but then module error is already set */
 	  g_free (name);
+	  name = real_name;
 	}
-      g_free (la_name);
+      if (name)
+	handle = _g_module_open (name, (flags & G_MODULE_BIND_LAZY) != 0);
     }
+  else
+    g_module_set_error_unduped (g_strdup_printf ("unable to access file \"%s\"", file_name));
+  g_free (name);
 
   if (handle)
     {

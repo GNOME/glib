@@ -1655,6 +1655,7 @@ g_main_context_prepare (GMainContext *context,
     {
       g_warning ("g_main_context_prepare() called recursively from within a source's check() or "
 		 "prepare() member.");
+      UNLOCK_CONTEXT (context);
       return FALSE;
     }
 
@@ -1839,6 +1840,7 @@ g_main_context_check (GMainContext *context,
     {
       g_warning ("g_main_context_check() called recursively from within a source's check() or "
 		 "prepare() member.");
+      UNLOCK_CONTEXT (context);
       return FALSE;
     }
   
@@ -1857,7 +1859,10 @@ g_main_context_check (GMainContext *context,
    * and let the main loop rerun
    */
   if (context->poll_changed)
-    return 0;
+    {
+      UNLOCK_CONTEXT (context);
+      return 0;
+    }
 #endif /* G_THREADS_ENABLED */
   
   pollrec = context->poll_records;

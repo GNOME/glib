@@ -1,3 +1,10 @@
+Thu May 24 03:43:12 2001  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_open): reordered code so we have a single
+	module loading point (for reliable error messages). do access()
+	tests to figure plausible file names.
+	make error messages more verbose so users canfigure what's going on.
+
 2001-04-20  Dan Winship  <danw@ximian.com>
 
 	* gmodule-dyld.c: gmodule implementation for Darwin/Mac OS X
