@@ -176,7 +176,7 @@ g_static_mutex_init (GStaticMutex *mutex)
 
   g_return_if_fail (mutex);
 
-  memcpy (mutex, &init_mutex, sizeof (GStaticMutex));
+  *mutex = init_mutex;
 }
 
 GMutex *
@@ -221,7 +221,7 @@ g_static_rec_mutex_init (GStaticRecMutex *mutex)
   
   g_return_if_fail (mutex);
 
-  memcpy (mutex, &init_mutex, sizeof (GStaticRecMutex));
+  *mutex = init_mutex;
 }
 
 void
@@ -683,7 +683,7 @@ g_static_rw_lock_init (GStaticRWLock* lock)
 
   g_return_if_fail (lock);
 
-  memcpy (lock, &init_lock, sizeof (GStaticRWLock));
+  *lock = init_lock;
 }
 
 static void inline 

@@ -1,3 +1,13 @@
+2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.def: g_thread_create renamed to g_thread_create_full.
+
+	* gthread.c: memcpy is not necessary here. We can simply use
+	struct assignment.
+
+	* gmessages.c: Fix compilation error on win32. Added
+	GFileDescriptor, wich is gint on Unix and FILE* on win32.
+
 2001-05-21  Andrew Lanoix <alanoix@umich.edu>
 
 	*giowin32.c: G_IO_WIN32_WINDOWS_MESSAGES channels

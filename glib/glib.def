@@ -531,7 +531,7 @@ EXPORTS
 	g_strsplit
 	g_strtod
 	g_strup
-	g_thread_create
+	g_thread_create_full
 	g_thread_error_quark
 	g_thread_functions_for_glib_use
 	g_thread_join

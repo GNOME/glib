@@ -44,6 +44,11 @@
 #include <locale.h>
 #include <errno.h>
 
+#ifdef G_OS_WIN32
+typedef FILE* GFileDescriptor;
+#else
+typedef gint GFileDescriptor;
+#endif
 
 /* --- structures --- */
 typedef struct _GLogDomain	GLogDomain;
@@ -106,7 +111,7 @@ static char *fatal_msg_ptr = fatal_msg_buf;
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 static inline int
-dowrite (FILE        *fd,
+dowrite (GFileDescriptor fd,
 	 const void  *buf,
 	 unsigned int len)
 {
@@ -151,7 +156,7 @@ ensure_stdout_valid (void)
 #endif
 
 static void
-write_unsigned (gint   fd,
+write_unsigned (GFileDescriptor   fd,
 		gulong num,
 		guint  radix)
 {
@@ -197,14 +202,14 @@ write_unsigned (gint   fd,
 }
 
 static void
-write_string (gint   fd,
+write_string (GFileDescriptor fd,
 	      gchar *string)
 {
   write (fd, string, strlen (string));
 }
 
 static void
-g_log_write_prefix (gint           fd,
+g_log_write_prefix (GFileDescriptor fd,
                     GLogLevelFlags mask)
 {
   static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
@@ -573,11 +578,7 @@ g_log_default_handler (const gchar    *log_domain,
 		       const gchar    *message,
 		       gpointer	       unused_data)
 {
-#ifdef G_OS_WIN32
-  FILE *fd;
-#else
-  gint fd;
-#endif
+  GFileDescriptor fd;
   gboolean in_recursion;
   gboolean is_fatal;  
   GErrorFunc local_glib_error_func;
