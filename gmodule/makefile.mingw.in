@@ -3,11 +3,12 @@
 
 ## Use: make -f makefile.mingw
 
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 TOP = ../..
 
 include ../build/win32/make.mingw
+
+# Possibly override GLib version in build\win32\module.defs
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 ################################################################
 

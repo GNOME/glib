@@ -130,7 +130,6 @@ g_win32_opendir (const char *dirname)
 struct dirent*
 g_win32_readdir (DIR *dir)
 {
-  static struct dirent result;
   gchar *basename;
 
   g_return_val_if_fail (dir != NULL, NULL);
@@ -157,11 +156,11 @@ g_win32_readdir (DIR *dir)
   
   basename = g_path_get_basename (((LPWIN32_FIND_DATA) dir->find_file_data)->cFileName);
 
-  strcpy (result.d_name, basename);
+  strcpy (dir->readdir_result.d_name, basename);
 
   g_free (basename);
       
-  return &result;
+  return &dir->readdir_result;
 }
 
 void

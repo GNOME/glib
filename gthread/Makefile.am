@@ -6,6 +6,8 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
 EXTRA_DIST =				\
 		makefile.mingw		\
 		makefile.mingw.in	\
+		makefile.msc		\
+		makefile.msc.in		\
 		gthread-posix.c		\
 		gthread-solaris.c	\
 		gthread-none.c		\
@@ -30,4 +32,7 @@ gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status

@@ -6,6 +6,8 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule \
 EXTRA_DIST =	\
 		makefile.mingw	\
 		makefile.mingw.in \
+		makefile.msc	\
+		makefile.msc.in \
 		gmoduleconf.h.in \
 		gmodule.def	\
 		gmodule-dl.c	\
@@ -56,6 +58,9 @@ gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release

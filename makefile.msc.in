@@ -1,67 +1,52 @@
-## Makefile for building the GLib, gmodule and gthread dlls with Microsoft C
+## Makefile for building the GLib dlls with Microsoft C
 ## Use: nmake -f makefile.msc install
 
 # Change this to wherever you want to install the DLLs. This directory
 # should be in your PATH.
 BIN = C:\bin
 
-# This is the location of pthreads for Win32, 
-# see http://sourceware.cygnus.com/pthreads-win32/
-# We want the 1999-05-30 snapshot.
-PTHREADS = ..\pthreads-snap-1999-05-30
-PTHREAD_LIB = $(PTHREADS)\pthread.lib
-PTHREAD_INC = -I $(PTHREADS)
+TOP = ..
+
+!INCLUDE $(TOP)\build\win32\make.msc
+
+# Possibly override GLib version in build\win32\module.defs
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 ################################################################
 
 # Nothing much configurable below
 
-!IFNDEF DEBUG
-# Full optimization:
-OPTIMIZE = -Ox -MD
-LINKDEBUG =
-!ELSE
-# Debugging:
-OPTIMIZE = -Zi -MDd
-LINKDEBUG = /debug
-!ENDIF
+INCLUDES = -I .
+DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
+DEPCFLAGS = $(LIBICONV_CFLAGS)
 
-# cl -? describes the options
-CC = cl -G5 -GF $(OPTIMIZE) -W3 -nologo
-
-# No general LDFLAGS needed
-LDFLAGS = /link $(LINKDEBUG)
-INSTALL = copy
-
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
-CFLAGS = -I. -DHAVE_CONFIG_H
+DLLS_TO_BUILD = \
+ 	glib-$(GLIB_VER).dll \
+	sub-gmodule \
+	sub-gthread \
+	sub-gobject
 
 all : \
-	glibconfig.h	\
 	config.h	\
-	glib-$(GLIB_VER).dll	\
-	gmodule\gmoduleconf.h \
-	gmodule-$(GLIB_VER).dll	\
-	gthread-$(GLIB_VER).dll \
+	glibconfig.h	\
+	$(DLLS_TO_BUILD) \
 	testglib.exe	\
-	testgmodule.exe	\
 	testgdate.exe	\
 	testgdateparser.exe
 
 install : all
-	$(INSTALL) glib-$(GLIB_VER).dll $(BIN)
-	$(INSTALL) gmodule-$(GLIB_VER).dll $(BIN)
-	$(INSTALL) gthread-$(GLIB_VER).dll $(BIN)
+	copy glib-$(GLIB_VER).dll $(BIN)
 
 glib_OBJECTS = \
 	garray.obj	\
 	gasyncqueue.obj	\
+	gbacktrace.obj	\
 	gcache.obj	\
 	gcompletion.obj	\
 	gdataset.obj	\
 	gdate.obj	\
 	gerror.obj	\
+	gconvert.obj	\
 	ghash.obj	\
 	ghook.obj	\
 	giochannel.obj	\
@@ -89,91 +74,69 @@ glib_OBJECTS = \
 	gutils.obj	\
 	gwin32.obj
 
-glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
-
 glibconfig.h: glibconfig.h.win32
 	copy glibconfig.h.win32 glibconfig.h
 
 config.h: config.h.win32
 	copy config.h.win32 config.h
 
-.c.obj :
-	$(CC) $(CFLAGS) -GD -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+makefile.msc: makefile.msc.in
+	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
+	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
 
-.c.i :
-	$(CC) $(CFLAGS) -GD -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
+################ glib
 
-gmodule_OBJECTS = \
-	gmodule.obj
+glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
 
-gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule\gmodule.def
-	$(CC) $(CFLAGS) -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule\gmodule.def
+################ subdirectories
 
-gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c
-	$(CC) $(CFLAGS) -GD -Igmodule -c -DG_LOG_DOMAIN=g_log_domain_gmodule gmodule\gmodule.c
+sub-gmodule :
+	cd gmodule
+	-$(MAKE) -f makefile.msc all
+	cd ..
 
-gmodule\gmoduleconf.h: gmodule\gmoduleconf.h.win32
-	copy gmodule\gmoduleconf.h.win32 gmodule\gmoduleconf.h
+sub-gthread :
+	cd gthread
+	-$(MAKE) -f makefile.msc all
+	cd ..
 
-gthread_OBJECTS = \
-	gthread-impl.obj
+sub-gobject :
+	cd gobject
+	-$(MAKE) -f makefile.msc all
+	cd ..
 
-gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) gthread\gthread.def
-	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) glib-$(GLIB_VER).lib $(PTHREAD_LIB) $(LDFLAGS) /def:gthread\gthread.def
+################ test progs
 
-gthread-impl.obj : gthread\gthread-impl.c gthread\gthread-posix.c
-	$(CC) $(CFLAGS) -GD $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread\gthread-impl.c
+testglib.obj : testglib.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testglib\" testglib.c
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.obj
 	$(CC) $(CFLAGS) -Fetestglib.exe testglib.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
 
-testglib.obj : testglib.c
-	$(CC) -c $(CFLAGS) testglib.c
+testgdate.obj : testgdate.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdate\" testgdate.c
 
 testgdate.exe : glib-$(GLIB_VER).dll testgdate.obj
 	$(CC) $(CFLAGS) -Fetestgdate.exe testgdate.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
 
-testgdate.obj : testgdate.c
-	$(CC) -c $(CFLAGS) testgdate.c
+testgdateparser.obj : testgdateparser.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdateparser\" testgdateparser.c
 
 testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.obj
 	$(CC) $(CFLAGS) -Fetestgdateparser.exe testgdateparser.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
 
-testgdateparser.obj : testgdateparser.c
-	$(CC) -c $(CFLAGS) testgdateparser.c
+################ other stuff
 
-testgmodule.exe : glib-$(GLIB_VER).dll gmodule-$(GLIB_VER).dll testgmodule.obj libgplugin_a.dll libgplugin_b.dll
-	$(CC) $(CFLAGS) testgmodule.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console 
-
-testgmodule.obj : gmodule\testgmodule.c
-	$(CC) $(CFLAGS) -Igmodule -c gmodule\testgmodule.c
-
-libgplugin_a.dll : libgplugin_a.obj
-	$(CC) $(CFLAGS) -LD libgplugin_a.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib $(LDFLAGS)
-
-libgplugin_a.obj : gmodule\libgplugin_a.c
-	$(CC) $(CFLAGS) -Igmodule -c gmodule\libgplugin_a.c
-
-libgplugin_b.dll : libgplugin_b.obj
-	$(CC) $(CFLAGS) -LD libgplugin_b.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib  $(LDFLAGS)
-
-libgplugin_b.obj : gmodule\libgplugin_b.c
-	$(CC) $(CFLAGS) -Igmodule -c gmodule\libgplugin_b.c
-
-clean:
+clean::
 	del config.h
 	del glibconfig.h
-	del gmodule\gmoduleconf.h
-	del *.exe
-	del *.obj
-	del *.dll
-	del *.lib
-	del *.err
-	del *.map
-	del *.sym
-	del *.exp
-	del *.lk1
-	del *.mk1
-	del *.pdb
-	del *.ilk
+	cd gmodule
+	$(MAKE) -f makefile.msc clean
+	cd ..
+	cd gthread
+	$(MAKE) -f makefile.msc clean
+	cd ..
+	cd gobject
+	$(MAKE) -f makefile.msc clean
+	cd ..

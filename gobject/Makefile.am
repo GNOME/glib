@@ -83,6 +83,8 @@ gobject_query_LDADD = $(progs_LDADD)
 EXTRA_DIST += 			\
 	makefile.mingw		\
 	makefile.mingw.in 	\
+	makefile.msc		\
+	makefile.msc.in 	\
 	gobject.def		\
 	gobject.rc		\
 	gobject.rc.in
@@ -93,3 +95,5 @@ gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gobject/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gobject/makefile.msc.in
+	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status

@@ -244,6 +244,7 @@ EXPORTS
 	g_node_first_sibling
 	g_node_get_root
 	g_node_insert
+	g_node_insert_after
 	g_node_insert_before
 	g_node_is_ancestor
 	g_node_last_child

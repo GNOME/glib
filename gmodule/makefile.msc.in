@@ -1,0 +1,48 @@
+## Makefile for building the gmodule dll with Microsoft C
+## Use: nmake -f makefile.msc install
+
+TOP = ..\..
+
+!INCLUDE $(TOP)\build\win32\make.msc
+
+# Possibly override GLib version in build\win32\module.defs
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .. -I .
+DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=g_log_domain_gmodule
+
+all : \
+	gmoduleconf.h \
+	gmodule-$(GLIB_VER).dll \
+	testgmodule.exe
+
+gmodule_OBJECTS = \
+	gmodule.obj
+
+gmoduleconf.h: gmoduleconf.h.win32
+	copy gmoduleconf.h.win32 gmoduleconf.h
+
+makefile.msc: makefile.msc.in
+	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
+	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
+
+gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule.def
+	$(CC) $(CFLAGS) -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule.def
+
+################ test prog
+
+testgmodule.exe : gmodule-$(GLIB_VER).dll testgmodule.obj libgplugin_a.dll libgplugin_b.dll
+	$(CC) $(CFLAGS) testgmodule.obj gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console 
+
+libgplugin_a.dll : libgplugin_a.obj
+	$(CC) $(CFLAGS) -LD libgplugin_a.obj gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
+
+libgplugin_b.dll : libgplugin_b.obj
+	$(CC) $(CFLAGS) -LD libgplugin_b.obj gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
+
+clean::
+	del gmoduleconf.h

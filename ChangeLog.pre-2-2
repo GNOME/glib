@@ -1,3 +1,31 @@
+2000-10-06  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.msc.in: Revamp to be like makefile.mingw.in, make
+	the MSVC build actually work again.
+	
+	* gmodule/makefile.msc.in
+	* gobject/makefile.msc.in
+	* gthread/makefile.msc.in: New files, like their mingw counterparts.
+
+	* gmodule/Makefile.am
+	* gobject/Makefile.am
+	* gthread/Makefile.am: Make and distribute them.
+	
+	* */makefile.mingw.in: Allow override of GLib version number from
+	the build/win32/module.defs file.
+	
+	* glib.def: Add new entry point.
+
+	Fixes from Hans Breuer:
+	
+	* glib.h (struct DIR): Keep the last readdir result cached inside
+	the DIR struct, to enable several DIRs being open simultaneously.
+
+	* gwin32.c (g_win32_readdir): Use the above instead of static.
+
+	* giowin32.c (g_io_channel_win32_make_pollfd): Insert cast to keep
+	MSVC happy.
+
 2000-10-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h: Changed alloca stuff a bit: when we have a working

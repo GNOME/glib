@@ -3027,18 +3027,21 @@ typedef int pid_t;
 #    define closedir		g_win32_closedir
 #    define NAME_MAX 255
 
-struct DIR
-{
-  gchar    *dir_name;
-  gboolean  just_opened;
-  guint     find_file_handle;
-  gpointer  find_file_data;
-};
-typedef struct DIR DIR;
 struct dirent
 {
   gchar  d_name[NAME_MAX + 1];
 };
+
+struct DIR
+{
+  gchar        *dir_name;
+  gboolean 	just_opened;
+  guint    	find_file_handle;
+  gpointer 	find_file_data;
+  struct dirent readdir_result;
+};
+typedef struct DIR DIR;
+
 /* emulation functions */
 extern int	g_win32_ftruncate	(gint		 f,
 					 guint		 size);

@@ -897,7 +897,7 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
   if (win32_channel->data_avail_event == NULL)
     create_events (win32_channel);
   
-  fd->fd = win32_channel->data_avail_event;
+  fd->fd = (gint) win32_channel->data_avail_event;
   fd->events = condition;
 
   if (win32_channel->thread_id == 0)

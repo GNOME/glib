@@ -1,0 +1,35 @@
+## Makefile for building the gobject dll with Microsoft C
+## Use: nmake -f makefile.msc install
+
+TOP = ..\..
+
+!INCLUDE $(TOP)\build\win32\make.msc
+
+# Possibly override GLib version in build\win32\object.defs
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .. -I .
+DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gobject
+
+all : \
+	gobject-$(GLIB_VER).dll
+
+gobject_OBJECTS = \
+	gvalue.obj \
+	gvaluetypes.obj \
+	gparam.obj \
+	gparamspecs.obj \
+	genums.obj \
+	gobject.obj \
+	gtype.obj
+
+makefile.msc: makefile.msc.in
+	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
+	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
+
+gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
+	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
