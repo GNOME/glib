@@ -108,7 +108,7 @@ GString*     g_string_ascii_up          (GString	 *string);
 void         g_string_printf            (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
-void         g_string_printfa           (GString	 *string,
+void         g_string_append_printf     (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
 

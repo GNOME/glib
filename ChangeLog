@@ -1,3 +1,8 @@
+Mon Oct  1 16:01:24 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstring.[ch] glib/grel.c: Rename g_string_printfa()
+	to g_string_append_printf(). (#61041, Havoc Pennington.)
+
 2001-10-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c: Documentation cleanups. (#61487)
