@@ -1,5 +1,9 @@
 2000-03-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gmain.c (g_main_poll): Warn in case of an error during the call
+	to poll(2). Closes Bug#7564 as reported by David Helder
+	<dhelder@umich.edu>.
+
 	* gutils.c (g_get_current_dir): Make g_get_current_dir work on
 	systems with unlimited pathname length like the HURD (It worked
 	there before, but only for pathes shorter than 2048). Closes

@@ -1034,7 +1034,9 @@ g_main_poll (gint     timeout,
 #endif
       
       G_UNLOCK (main_loop);
-      (*poll_func) (fd_array, npoll, timeout);
+      if ((*poll_func) (fd_array, npoll, timeout) < 0)
+	g_warning ("poll(2) failed due to: %s.",
+		   g_strerror (errno));
       G_LOCK (main_loop);
       
 #ifdef	G_MAIN_POLL_DEBUG
