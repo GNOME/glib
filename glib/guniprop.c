@@ -247,11 +247,11 @@ g_unichar_isspace (gunichar c)
 
 /**
  * g_unichar_isupper:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
  * Determines if a character is uppercase.
  * 
- * Return value: %TRUE if @c is an uppercase character.
+ * Return value: %TRUE if @c is an uppercase character
  **/
 gboolean
 g_unichar_isupper (gunichar c)
@@ -261,16 +261,16 @@ g_unichar_isupper (gunichar c)
 
 /**
  * g_unichar_istitle:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
  * Determines if a character is titlecase. Some characters in
  * Unicode which are composites, such as the DZ digraph
  * have three case variants instead of just two. The titlecase
  * form is used at the beginning of a word where only the
  * first letter is capitalized. The titlecase form of the DZ
- * digraph is U+01F2 LATIN CAPITAL LETTTER D WITH SMALL LETTER Z
+ * digraph is U+01F2 LATIN CAPITAL LETTTER D WITH SMALL LETTER Z.
  * 
- * Return value: %TRUE if the character is titlecase.
+ * Return value: %TRUE if the character is titlecase
  **/
 gboolean
 g_unichar_istitle (gunichar c)
@@ -284,11 +284,11 @@ g_unichar_istitle (gunichar c)
 
 /**
  * g_unichar_isxdigit:
- * @c: a unicode character.
+ * @c: a Unicode character.
  * 
- * Determines if a characters is a hexidecimal digit
+ * Determines if a character is a hexidecimal digit.
  * 
- * Return value: %TRUE if the character is a hexadecimal digit.
+ * Return value: %TRUE if the character is a hexadecimal digit
  **/
 gboolean
 g_unichar_isxdigit (gunichar c)
@@ -301,12 +301,12 @@ g_unichar_isxdigit (gunichar c)
 
 /**
  * g_unichar_isdefined:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
  * Determines if a given character is assigned in the Unicode
  * standard.
  *
- * Return value: %TRUE if the character has an assigned value.
+ * Return value: %TRUE if the character has an assigned value
  **/
 gboolean
 g_unichar_isdefined (gunichar c)
@@ -317,12 +317,12 @@ g_unichar_isdefined (gunichar c)
 
 /**
  * g_unichar_iswide:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
  * Determines if a character is typically rendered in a double-width
  * cell.
  * 
- * Return value: %TRUE if the character is wide.
+ * Return value: %TRUE if the character is wide
  **/
 /* This function stolen from Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>.  */
 gboolean
@@ -343,9 +343,9 @@ g_unichar_iswide (gunichar c)
 
 /**
  * g_unichar_toupper:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
- * Convert a character to uppercase.
+ * Converts a character to uppercase.
  * 
  * Return value: the result of converting @c to uppercase.
  *               If @c is not an lowercase or titlecase character,
@@ -380,9 +380,9 @@ g_unichar_toupper (gunichar c)
 
 /**
  * g_unichar_tolower:
- * @c: a unicode character.
+ * @c: a Unicode character.
  * 
- * Convert a character to lower case
+ * Converts a character to lower case.
  * 
  * Return value: the result of converting @c to lower case.
  *               If @c is not an upperlower or titlecase character,
@@ -417,9 +417,9 @@ g_unichar_tolower (gunichar c)
 
 /**
  * g_unichar_totitle:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
- * Convert a character to the titlecase
+ * Converts a character to the titlecase.
  * 
  * Return value: the result of converting @c to titlecase.
  *               If @c is not an uppercase or lowercase character,
@@ -442,13 +442,13 @@ g_unichar_totitle (gunichar c)
 
 /**
  * g_unichar_digit_value:
- * @c: a unicode character
+ * @c: a Unicode character
  *
  * Determines the numeric value of a character as a decimal
  * digit.
  *
  * Return value: If @c is a decimal digit (according to
- * `g_unichar_isdigit'), its numeric value. Otherwise, -1.
+ * g_unichar_isdigit()), its numeric value. Otherwise, -1.
  **/
 int
 g_unichar_digit_value (gunichar c)
@@ -460,13 +460,13 @@ g_unichar_digit_value (gunichar c)
 
 /**
  * g_unichar_xdigit_value:
- * @c: a unicode character
+ * @c: a Unicode character
  *
  * Determines the numeric value of a character as a hexidecimal
  * digit.
  *
  * Return value: If @c is a hex digit (according to
- * `g_unichar_isxdigit'), its numeric value. Otherwise, -1.
+ * g_unichar_isxdigit()), its numeric value. Otherwise, -1.
  **/
 int
 g_unichar_xdigit_value (gunichar c)
@@ -482,9 +482,9 @@ g_unichar_xdigit_value (gunichar c)
 
 /**
  * g_unichar_type:
- * @c: a unicode character
+ * @c: a Unicode character
  * 
- * Classifies a unicode character by type.
+ * Classifies a Unicode character by type.
  * 
  * Return value: the type of the character.
  **/

@@ -38,7 +38,16 @@
 #define COMBINING_CLASS(Char) \
      (((Char) > (G_UNICODE_LAST_CHAR)) ? 0 : CC((Char) >> 8, (Char) & 0xff))
 
-/* Compute the canonical ordering of a string in-place.  */
+/**
+ * g_unicode_canonical_ordering:
+ * @string: a UCS-4 encoded string.
+ * @len: the maximum length of @string to use.
+ *
+ * Computes the canonical ordering of a string in-place.  
+ * This rearranges decomposed characters in the string 
+ * according to their combining classes.  See the Unicode 
+ * manual for more information. 
+ **/
 void
 g_unicode_canonical_ordering (gunichar *string,
 			      gsize     len)
@@ -121,6 +130,16 @@ find_decomposition (gunichar ch,
   return NULL;
 }
 
+/**
+ * g_unicode_canonical_decomposition:
+ * @ch: a Unicode character.
+ * @result_len: location to store the length of the return value.
+ *
+ * Computes the canonical decomposition of a Unicode character.  
+ * 
+ * Return value: a newly allocated string of Unicode characters.
+ *   @result_len is set to the resulting length of the string.
+ **/
 gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
 				   gsize   *result_len)
@@ -349,11 +368,11 @@ _g_utf8_normalize_wc (const gchar    *str,
  * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * @mode: the type of normalization to perform.
  * 
- * Convert a string into canonical form, standardizing
+ * Converts a string into canonical form, standardizing
  * such issues as whether a character with an accent
  * is represented as a base character and combining
- * accent or as a single precomposed characters. You
- * should generally call g_utf8_normalize before
+ * accent or as a single precomposed character. You
+ * should generally call g_utf8_normalize() before
  * comparing two Unicode strings.
  *
  * The normalization mode %G_NORMALIZE_DEFAULT only
@@ -376,7 +395,8 @@ _g_utf8_normalize_wc (const gchar    *str,
  * a legacy encoding or pass it to a system with
  * less capable Unicode handling.
  * 
- * Return value: the string in normalized form
+ * Return value: a newly allocated string, that is the 
+ *   normalized form of @str.
  **/
 gchar *
 g_utf8_normalize (const gchar    *str,

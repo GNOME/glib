@@ -1,3 +1,8 @@
+2001-09-24  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gutf8.c, glib/gunibreak.c, glib/gunicollate.c,
+	glib/gunidecomp.c, glib/guniprop.c: Inline doc consistency fixes.
+
 2001-09-24  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
 	* configure.in: Added "sk" to ALL_LINGUAS.
