@@ -1,7 +1,11 @@
+2005-01-09  Hans Breuer  <hans@breuer.org>
+
+	* glib/gfileutils.c : make it compile with mvc6 default sdk,
+	(#define INVALID_FILE_ATTRIBUTES, FILE_ATTRIBUTE_DEVICE)
+
 2005-01-09  Tor Lillqvist  <tlillqvist@novell.com>
 
-	* glib/gwin32.c (g_win32_error_message): Fix cast. (#163133, Roger
-	Leigh)
+	* glib/gwin32.c (g_win32_error_message): Fix cast. (#163133, Roger Leigh)
 
 	* glib/gfileutils.c: Include <io.h> on Windows for
 	prototypes. (#163390, Kazuki Iwamoto)

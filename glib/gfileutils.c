@@ -107,6 +107,13 @@ g_file_test (const gchar *filename,
              GFileTest    test)
 {
 #ifdef G_OS_WIN32
+/* stuff missing in std vc6 api */
+#  ifndef INVALID_FILE_ATTRIBUTES
+#    define INVALID_FILE_ATTRIBUTES -1
+#  endif
+#  ifndef FILE_ATTRIBUTE_DEVICE
+#    define FILE_ATTRIBUTE_DEVICE 64
+#  endif
   int attributes;
 
   if (G_WIN32_HAVE_WIDECHAR_API ())
