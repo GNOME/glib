@@ -76,6 +76,14 @@ in any UNIX manual.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_win32_get_windows_version ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO G_WIN32_DLLMAIN_FOR_DLL_NAME ##### -->
 <para>
 On Windows, this macro defines a <function>DllMain()</function> function 
@@ -94,5 +102,19 @@ On non-Windows platforms, expands to nothing.
 <!-- # Unused Parameters # -->
 @static: 
 @dll_name: 
+
+
+<!-- ##### MACRO G_WIN32_HAVE_WIDECHAR_API ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_WIN32_IS_NT_BASED ##### -->
+<para>
+
+</para>
+
 
 

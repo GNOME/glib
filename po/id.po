@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-25 00:52-0400\n"
+"POT-Creation-Date: 2004-09-18 16:02-0400\n"
 "PO-Revision-Date: 2003-03-30 22:38+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <sukarelawan@gnome.linux.or.id>\n"
@@ -15,180 +15,180 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:403
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konversi dari gugus karakter '%s' ke '%s' tidak dapat dilakukan"
 
-#: glib/gconvert.c:406
+#: glib/gconvert.c:407
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Tidak dapat membuka konverter dari '%s' ke '%s': %s"
 
-#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
-#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
-#: glib/gutf8.c:1355
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
+#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gutf8.c:1356
 msgid "Invalid byte sequence in conversion input"
 msgstr "Rangkaian byte dalam input konversi tidak benar"
 
-#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
-#: glib/giochannel.c:2211
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
+#: glib/giochannel.c:2212
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Error saat melakukan konversi: %s"
 
-#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
-#: glib/gutf8.c:1351
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
+#: glib/gutf8.c:1352
 msgid "Partial character sequence at end of input"
 msgstr "Rangkaian karakter sebagian pada akhir input"
 
-#: glib/gconvert.c:800
+#: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Tidak dapat mengkonversi, kembalikan '%s' ke gugus kode '%s'"
 
-#: glib/gconvert.c:1497
+#: glib/gconvert.c:1498
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' bukanlah URI absolut dengan skema file"
 
-#: glib/gconvert.c:1507
+#: glib/gconvert.c:1508
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI File lokal '%s' tidak boleh ada karakter '#' di dalamnya"
 
-#: glib/gconvert.c:1524
+#: glib/gconvert.c:1525
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' tidak benar"
 
-#: glib/gconvert.c:1536
+#: glib/gconvert.c:1537
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Nama host pada URI '%s' tidak benar"
 
-#: glib/gconvert.c:1552
+#: glib/gconvert.c:1553
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' berisi karakter escape yang salah"
 
-#: glib/gconvert.c:1622
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama path '%s' bukan path absolut"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Nama host salah"
 
-#: glib/gdir.c:83
+#: glib/gdir.c:84
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Error saat membuka direktori '%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:400 glib/gfileutils.c:465
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Tidak dapat mengalokasikan %lu byte untuk membaca file '%s'"
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Error saat membaca file '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:487
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Gagal saat membaca file '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:534 glib/gfileutils.c:602
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Gagal saat membuka file '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:548
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Gagal saat mengambil atribut file '%s': Fungsi fstat() mengalami kegagalan: %"
 "s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:574
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Gagal saat membuka file '%s': fungsi fdopen() mengalami kegagalan: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:786
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Template '%s' salah, seharusnya tidak boleh berisi '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Template '%s' tidak boleh diakhiri dengan XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:819
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Gagal saat membuat file '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1160
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Gagal saat membaca link simbolik '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1179
 msgid "Symbolic links not supported"
 msgstr "Link simbolik tidak didukung oleh sistem"
 
-#: glib/giochannel.c:1143
+#: glib/giochannel.c:1144
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konversi karakter dari '%s' menjadi '%s' belum dapat dilakukan"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1148
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Tidak dapat membuka konverter dari '%s' menjadi '%s': %s"
 
-#: glib/giochannel.c:1492
+#: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Tidak dapat melakukan proses baca raw pada fungsi "
 "g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
+#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
 msgid "Leftover unconverted data in read buffer"
 msgstr "Ada data tersisa yang belum dikonversi pada buffer read"
 
-#: glib/giochannel.c:1619 glib/giochannel.c:1696
+#: glib/giochannel.c:1620 glib/giochannel.c:1697
 msgid "Channel terminates in a partial character"
 msgstr "Chanel terputus pada karakter sebagian"
 
-#: glib/giochannel.c:1682
+#: glib/giochannel.c:1683
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Tidak dapat melakukan proses baca raw pada fungsi g_io_channel_read_to_end"
 
-#: glib/gmarkup.c:225
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Error pada baris %d huruf ke %d: %s"
 
-#: glib/gmarkup.c:309
+#: glib/gmarkup.c:310
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Error pada baris ke %d: %s"
 
-#: glib/gmarkup.c:414
+#: glib/gmarkup.c:415
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Ada entitas '&;' yang kosong; Entitas yang benar antara lain adalah: &amp; "
 "&quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:424
+#: glib/gmarkup.c:425
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -199,17 +199,17 @@ msgstr ""
 "yang boleh ada pada awal entitas; Bila ampersand ini dianggap bukan sebuah "
 "entitas, Beri kode escape dan tulis sebagai &amp;"
 
-#: glib/gmarkup.c:460
+#: glib/gmarkup.c:461
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Karakter '%s' tidak boleh digunakan pada nama entitas"
 
-#: glib/gmarkup.c:504
+#: glib/gmarkup.c:505
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Nama entitas '%s' tidak diketahui"
 
-#: glib/gmarkup.c:514
+#: glib/gmarkup.c:515
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -218,7 +218,7 @@ msgstr ""
 "ampersand tanpa bermaksud menjadikannya sebagai entitas - silakan pakai "
 "&amp; saja"
 
-#: glib/gmarkup.c:560
+#: glib/gmarkup.c:561
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -227,16 +227,16 @@ msgstr ""
 "Gagal saat parse '%s'. yang seharusnya berupa digit dalam refernsi karakter "
 "(misalnya &#234;) - mungkin digitnya terlalu besar"
 
-#: glib/gmarkup.c:585
+#: glib/gmarkup.c:586
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Referensi karakter '%s' tidak berisi karakter yang diperbolehkan"
 
-#: glib/gmarkup.c:602
+#: glib/gmarkup.c:603
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Refensi karakter kosong. Seharusnya berisi digit, mislanya &#454;"
 
-#: glib/gmarkup.c:612
+#: glib/gmarkup.c:613
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -246,23 +246,23 @@ msgstr ""
 "menggunakan karakter ampersand tanpa bermaksud menjadikannya sebagai "
 "entitas. Silakan gunakan &amp; saja"
 
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:639
 msgid "Unfinished entity reference"
 msgstr "Referensi entitas yang tidak sempurna"
 
-#: glib/gmarkup.c:644
+#: glib/gmarkup.c:645
 msgid "Unfinished character reference"
 msgstr "Refersi karakter yang tidak sempurna"
 
-#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
+#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
 msgid "Invalid UTF-8 encoded text"
 msgstr "Teks UTF-8 tidak benar"
 
-#: glib/gmarkup.c:990
+#: glib/gmarkup.c:991
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumen harus dimulai dengan elemen (misalnya <book>)"
 
-#: glib/gmarkup.c:1029
+#: glib/gmarkup.c:1030
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -271,7 +271,7 @@ msgstr ""
 "'%s' bukanlah karakter yang benar bila diikuti dengan karakter '<'. Ini "
 "tidak boleh menjadi nama elemen"
 
-#: glib/gmarkup.c:1092
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -280,7 +280,7 @@ msgstr ""
 "Ada karakter aneh '%s'. Seharusnya ada '>' untuk mengakhiri tag awal pada "
 "elemen '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1181
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -288,7 +288,7 @@ msgstr ""
 "Ada karakter aneh '%s'. Seharusnya ada karakter '=' setelah nama atribut '%"
 "s' pada elemen '%s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1222
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -299,7 +299,7 @@ msgstr ""
 "padaelemen '%s', atau bisa juga ada atribut lain. Mungkin Anda menggunakan "
 "karakter yang tidak diperbolehkan pada nama atribut."
 
-#: glib/gmarkup.c:1309
+#: glib/gmarkup.c:1310
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -308,7 +308,7 @@ msgstr ""
 "Ada karakter aneh '%s'. Seharusnya ada tanda kutip buka setelah tanda sama "
 "dengan saat memberikan nilai atribut '%s' pada elemen '%s'"
 
-#: glib/gmarkup.c:1450
+#: glib/gmarkup.c:1451
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -317,7 +317,7 @@ msgstr ""
 "'%s' bukan karakter yang benar bila diikuti dengan karakter '</'. Karena itu "
 "'%s' tidak boleh dijadikan awal nama elemen"
 
-#: glib/gmarkup.c:1489
+#: glib/gmarkup.c:1490
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -326,26 +326,26 @@ msgstr ""
 "'%s' bukan karakter yang benar bila diikuti elemen penutup '%s'. Karakter "
 "yang diperbolehkan adalah '>'"
 
-#: glib/gmarkup.c:1500
+#: glib/gmarkup.c:1501
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elemen '%s' sudah ditutup, tidak ada elemen yang masih terbuka"
 
-#: glib/gmarkup.c:1509
+#: glib/gmarkup.c:1510
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elemen '%s' sudah ditutup, tapi elemen yang masih terbuka adalah '%s'"
 
-#: glib/gmarkup.c:1656
+#: glib/gmarkup.c:1657
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumen kosong atau berisi whitespace saja"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1671
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Dokumen terpotong tidak sempurna sesaat setelah membuka kurung siku '<'"
 
-#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
+#: glib/gmarkup.c:1679 glib/gmarkup.c:1723
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -354,7 +354,7 @@ msgstr ""
 "Dokumen terpotong tidak sempurna dengan elemen yang masih terbuka - '%s' "
 "adalah elemen terakhir yang dibuka"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1687
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -363,19 +363,19 @@ msgstr ""
 "Dokumen terpotong tidak sempurna, seharusnya ada kurung siku penutup untuk "
 "mengakhiri tag <%s/>"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumen terpotong tidak sempurna pada dalam nama elemen"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1698
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumen terpotong tidak sempurna di dalam nama atribut"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1703
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumen terpotong tidak sempurna di dalam tag pembukaan elemen."
 
-#: glib/gmarkup.c:1708
+#: glib/gmarkup.c:1709
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -383,178 +383,178 @@ msgstr ""
 "Dokumen terpotong tidak sempurna setelah tanda sama dengan mengikuti nama "
 "atribut. Tidak ada nilai atribut yang diperoleh"
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1716
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumen tidak sempura saat ada dalam nilai atribut"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumen terpotong tidak sempurna di dalam tag penutup elemen '%s'"
 
-#: glib/gmarkup.c:1736
+#: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumen terpotong tidak sempurna di dalam keterangan atau instruksi "
 "pemrosesan"
 
-#: glib/gshell.c:72
+#: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Teks yang dikutip tidak dimulai dengan tanda kutip"
 
-#: glib/gshell.c:162
+#: glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Tanda kutip kurang satu pada perintah atau pada teks yang dikutip dari shell "
 "lain"
 
-#: glib/gshell.c:540
+#: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
 "Teks berakhir saat setelah karakter '\\' dijumpai. (Teksnya adalah '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Teks berakhir sebelum tanda kutip pasangannya ditemukan untuk %c.  (Tesknya "
 "adalah '%s')"
 
-#: glib/gshell.c:559
+#: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksnya kosong (atau hanya berisi whitespace)"
 
-#: glib/gspawn-win32.c:295
+#: glib/gspawn-win32.c:296
 msgid "Failed to read data from child process"
 msgstr "Gagal untuk membaca data dari proses child"
 
-#: glib/gspawn-win32.c:424
+#: glib/gspawn-win32.c:425
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Ada error pada g_io_channel_win32_poll() saat membaca dari proses child"
 
-#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
+#: glib/gspawn-win32.c:851 glib/gspawn.c:1013
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Gagal saat membaca dari pipe child (%s)"
 
-#: glib/gspawn-win32.c:930
+#: glib/gspawn-win32.c:931
 msgid "Failed to execute helper program"
 msgstr "Gagal saat menjalankan program bantuan"
 
-#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Gagal saat menjalankan proses child (%s)"
 
-#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
+#: glib/gspawn-win32.c:987 glib/gspawn.c:1218
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Gagal saat mengganti direktori ke '%s' (%s)"
 
-#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
+#: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Gagal saat membuat pipe untuk sarana  komunikasi dengan proses child (%s)"
 
-#: glib/gspawn.c:178
+#: glib/gspawn.c:179
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Gagal saat membaca data dari proses child (%s)"
 
-#: glib/gspawn.c:309
+#: glib/gspawn.c:310
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Ada error pada fungsi select() saat membaca data dari proses child (%s)"
 
-#: glib/gspawn.c:392
+#: glib/gspawn.c:393
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ada error pada fungsi waitpid() (%s)"
 
-#: glib/gspawn.c:1077
+#: glib/gspawn.c:1078
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Gagal saat fork (%s)"
 
-#: glib/gspawn.c:1227
+#: glib/gspawn.c:1228
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Gagal saat menjalankan proses child '%s' (%s)"
 
-#: glib/gspawn.c:1237
+#: glib/gspawn.c:1238
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Gagal mengarahkan output atau input pada proses child (%s)"
 
-#: glib/gspawn.c:1246
+#: glib/gspawn.c:1247
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Gagal saat fork proses child (%s)"
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1255
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ada error yang tidak diketahui saat menjalankan proses child '%s'"
 
-#: glib/gspawn.c:1276
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal saat membaca data yang dibutuhkan dai pipe pid child (%s)"
 
-#: glib/gutf8.c:985
+#: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
 msgstr "Karakter di luar jangkauan UTF-8"
 
-#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
-#: glib/gutf8.c:1365 glib/gutf8.c:1461
+#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
+#: glib/gutf8.c:1366 glib/gutf8.c:1462
 msgid "Invalid sequence in conversion input"
 msgstr "Rangkaian input konversi salah"
 
-#: glib/gutf8.c:1376 glib/gutf8.c:1472
+#: glib/gutf8.c:1377 glib/gutf8.c:1473
 msgid "Character out of range for UTF-16"
 msgstr "Karakter di luar jangkauan UTF-16"
 
-#: glib/goption.c:261
+#: glib/goption.c:263
 msgid "Usage:"
 msgstr ""
 
-#: glib/goption.c:261
+#: glib/goption.c:263
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:306
+#: glib/goption.c:308
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:306
+#: glib/goption.c:308
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:310
+#: glib/goption.c:312
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:358
+#: glib/goption.c:360
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:397
+#: glib/goption.c:400
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:407
+#: glib/goption.c:410
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1005
+#: glib/goption.c:1028
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

@@ -251,6 +251,13 @@ See the GNU C documentation for details.
 
 
 
+<!-- ##### MACRO G_HAVE_GNUC_VISIBILITY ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_GNUC_INTERNAL ##### -->
 <para>
 Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 

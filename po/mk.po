@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 11:39+0200\n"
+"POT-Creation-Date: 2004-09-18 16:02-0400\n"
 "PO-Revision-Date: 2004-09-11 19:20+0200\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -18,256 +18,268 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.3.1\n"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:403
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Конвертирањето од  %s' во '%s' не е поддржано"
 
-#: glib/gconvert.c:406
+#: glib/gconvert.c:407
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не можам да го отворам конверторот од '%s' до '%s'"
 
-#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
-#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
-#: glib/gutf8.c:1355
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
+#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gutf8.c:1356
 msgid "Invalid byte sequence in conversion input"
 msgstr "Невалидна секвенца на бајти во влезот на конвертирањето"
 
-#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
-#: glib/giochannel.c:2211
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
+#: glib/giochannel.c:2212
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка при конвертирање: %s"
 
-#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
-#: glib/gutf8.c:1351
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
+#: glib/gutf8.c:1352
 msgid "Partial character sequence at end of input"
 msgstr "Парцијална секвенца на карактер на крајот од влезот"
 
-#: glib/gconvert.c:800
+#: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: glib/gconvert.c:1497
-#, c-format
-msgid "The URI '%s' is not an absolute URI using the file scheme"
+#: glib/gconvert.c:1498
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' не е апсолутно URI кое што користи шема на датотека"
 
-#: glib/gconvert.c:1507
+#: glib/gconvert.c:1508
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Локалното URI '%s' може да не користи '#'"
 
-#: glib/gconvert.c:1524
+#: glib/gconvert.c:1525
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' е невалиден URI"
 
-#: glib/gconvert.c:1536
+#: glib/gconvert.c:1537
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хостот на URI %s е невалидно"
 
-#: glib/gconvert.c:1552
+#: glib/gconvert.c:1553
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' содржи невалидни посебни карактери"
 
-#: glib/gconvert.c:1622
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Патеката '%s' не е апсолутна патека"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Невалидно име на хост"
 
-#: glib/gdir.c:83
+#: glib/gdir.c:84
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Грешка при отворање на директориумот '%s': %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:400 glib/gfileutils.c:465
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не можам да алоцирам %lu бајти за да ја прочитам датотеката \"%s\""
 
-#: glib/gfileutils.c:404
+#: glib/gfileutils.c:411
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Грешка при читањето на датотеката '%s': %s"
 
-#: glib/gfileutils.c:480
+#: glib/gfileutils.c:487
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Не успеав да прочитам од датотеката '%s': %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:534 glib/gfileutils.c:602
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Не успеав да ја отворам датотеката '%s': %s"
 
-#: glib/gfileutils.c:541
+#: glib/gfileutils.c:548
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Не успеав да ги добијам атрибутите на датотеката '%s': fstat() failed: %s"
+msgstr ""
+"Не успеав да ги добијам атрибутите на датотеката '%s': fstat() failed: %s"
 
-#: glib/gfileutils.c:567
+#: glib/gfileutils.c:574
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Не успеав да ја отворам датотеката '%s': fdopen() failed: %s"
 
-#: glib/gfileutils.c:779
+#: glib/gfileutils.c:786
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Мострата '%s' е невалидна, не треба да содржи '%s'"
 
-#: glib/gfileutils.c:791
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Мострата '%s' не завршува со XXXXXX"
 
-#: glib/gfileutils.c:812
+#: glib/gfileutils.c:819
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не успеав да ја креирам датотеката '%s': %s"
 
-#: glib/gfileutils.c:1153
+#: glib/gfileutils.c:1160
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не успеав да ја прочитам симболичката врска '%s': %s"
 
-#: glib/gfileutils.c:1172
+#: glib/gfileutils.c:1179
 msgid "Symbolic links not supported"
 msgstr "Симболичките врски не се поддржани"
 
-#: glib/giochannel.c:1143
+#: glib/giochannel.c:1144
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Конвертирањето од `%s' до `%s' не е поддржано"
 
-#: glib/giochannel.c:1147
+#: glib/giochannel.c:1148
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Не можам да го отворам конверторот од `%s' до `%s': %s"
 
-#: glib/giochannel.c:1492
+#: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не можам да направам грубо читање во g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
+#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
 msgid "Leftover unconverted data in read buffer"
 msgstr "Преостанати неконвертирани податоци во баферот за читање"
 
-#: glib/giochannel.c:1619 glib/giochannel.c:1696
+#: glib/giochannel.c:1620 glib/giochannel.c:1697
 msgid "Channel terminates in a partial character"
 msgstr "Каналот се терминира во парцијален карактер"
 
-#: glib/giochannel.c:1682
+#: glib/giochannel.c:1683
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
-#: glib/gmarkup.c:225
+#: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Грешка на линија %d char %d: %s"
 
-#: glib/gmarkup.c:309
+#: glib/gmarkup.c:310
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Грешка на линија %d: %s"
 
-#: glib/gmarkup.c:414
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Празен ентитет '&;' видени; валидни ентитети се: &amp; &quot; &lt; &gt; &apos;"
+#: glib/gmarkup.c:415
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Празен ентитет '&;' видени; валидни ентитети се: &amp; &quot; &lt; &gt; "
+"&apos;"
 
-#: glib/gmarkup.c:424
+#: glib/gmarkup.c:425
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "Карактерот '%s' претставува невалиден почеток на име на ентитет, карактерот & го започнува ентитетот;"
+msgstr ""
+"Карактерот '%s' претставува невалиден почеток на име на ентитет, карактерот "
+"& го започнува ентитетот;"
 
-#: glib/gmarkup.c:460
+#: glib/gmarkup.c:461
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Карактерот '%s' не е валиден внатре во името на ентитетот"
 
-#: glib/gmarkup.c:504
+#: glib/gmarkup.c:505
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Името на ентитетот '%s' е познато"
 
-#: glib/gmarkup.c:514
+#: glib/gmarkup.c:515
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:560
+#: glib/gmarkup.c:561
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Не успеав да парасирам '%s', кое што требаше да биде параметар за внатрешен дигитален карактер (на пример, &#234) - најверојатно бројот е преголем"
+msgstr ""
+"Не успеав да парасирам '%s', кое што требаше да биде параметар за внатрешен "
+"дигитален карактер (на пример, &#234) - најверојатно бројот е преголем"
 
-#: glib/gmarkup.c:585
+#: glib/gmarkup.c:586
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Параметарот на карактерот'%s' не енкодира забранет карактер"
 
-#: glib/gmarkup.c:602
+#: glib/gmarkup.c:603
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Параметар за празен карактер; треба да содржи бројка како што е &#454;"
 
-#: glib/gmarkup.c:612
+#: glib/gmarkup.c:613
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:638
+#: glib/gmarkup.c:639
 msgid "Unfinished entity reference"
 msgstr "Недовршен параметар за ентитет"
 
-#: glib/gmarkup.c:644
+#: glib/gmarkup.c:645
 msgid "Unfinished character reference"
 msgstr "Недовршен параметар за карактер"
 
-#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
+#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
 msgid "Invalid UTF-8 encoded text"
 msgstr "Невалиден UTF-8 енкодиран текст"
 
-#: glib/gmarkup.c:990
+#: glib/gmarkup.c:991
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документите мора да започнуваат со елемент (пр. <book>)"
 
-#: glib/gmarkup.c:1029
+#: glib/gmarkup.c:1030
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "'%s' не е валиден карактер по '<' карактер; не може да започне име на елемент"
+msgstr ""
+"'%s' не е валиден карактер по '<' карактер; не може да започне име на елемент"
 
-#: glib/gmarkup.c:1092
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Чуден карактер '%s', очекував '>' карактер да го заврши почетниот таг на елементот "
-"'%s'"
+"Чуден карактер '%s', очекував '>' карактер да го заврши почетниот таг на "
+"елементот '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1181
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Чуден карактер '%s', очекував '=' по името на атрибутот '%s' од елементот '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Чуден карактер '%s', очекував '=' по името на атрибутот '%s' од елементот '%"
+"s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1222
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -275,201 +287,253 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1309
+#: glib/gmarkup.c:1310
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1450
+#: glib/gmarkup.c:1451
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1489
+#: glib/gmarkup.c:1490
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
 
-#: glib/gmarkup.c:1500
+#: glib/gmarkup.c:1501
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елементот '%s' е затворен. Во моментов не е отворен ниеден елемент"
 
-#: glib/gmarkup.c:1509
+#: glib/gmarkup.c:1510
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елементот '%s' е затворен, но тековно отворениот елемент е '%s'"
 
-#: glib/gmarkup.c:1656
+#: glib/gmarkup.c:1657
 msgid "Document was empty or contained only whitespace"
 msgstr "Документот е празен или содржи само празни места"
 
-#: glib/gmarkup.c:1670
+#: glib/gmarkup.c:1671
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Документот заврши неочекувано веднаш по заградата за отворениот агол '<'"
+msgstr ""
+"Документот заврши неочекувано веднаш по заградата за отворениот агол '<'"
 
-#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
+#: glib/gmarkup.c:1679 glib/gmarkup.c:1723
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "Документот заврши неочекувано со сеуште отворени елементи - '%s' беше последниот отворен елемент"
+msgstr ""
+"Документот заврши неочекувано со сеуште отворени елементи - '%s' беше "
+"последниот отворен елемент"
 
-#: glib/gmarkup.c:1686
+#: glib/gmarkup.c:1687
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Документот заврши неочекувано, очекував да видам го видам аголот на заградата за затворање на тагот <%s/>"
+msgstr ""
+"Документот заврши неочекувано, очекував да видам го видам аголот на "
+"заградата за затворање на тагот <%s/>"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документот заврши неочекувано внатре во иметп на елементот"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1698
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документот заврши неочекувано внатре во името на атрибутот"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1703
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документот заврши неочекувано внатре во тагот за отворање на елементи."
 
-#: glib/gmarkup.c:1708
+#: glib/gmarkup.c:1709
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1715
+#: glib/gmarkup.c:1716
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Документот заврши неочекувано додека беше внатре во вредноста на атрибутот"
+msgstr ""
+"Документот заврши неочекувано додека беше внатре во вредноста на атрибутот"
 
-#: glib/gmarkup.c:1730
+#: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Документот заврши неочекувано внатре во тагот за затворање на елементи '%s'"
+msgstr ""
+"Документот заврши неочекувано внатре во тагот за затворање на елементи '%s'"
 
-#: glib/gmarkup.c:1736
+#: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документот заврши неочекувано внатре во коментар или инструкција за процесирање"
+msgstr ""
+"Документот заврши неочекувано внатре во коментар или инструкција за "
+"процесирање"
 
-#: glib/gshell.c:72
+#: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Цитираниот текст не започнува со знакот за цитирање"
 
-#: glib/gshell.c:162
+#: glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Несовпаѓачки знак за цитирање на командната линија или друг текст цитиран во школка"
+msgstr ""
+"Несовпаѓачки знак за цитирање на командната линија или друг текст цитиран во "
+"школка"
 
-#: glib/gshell.c:540
+#: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Текстот заврши веднаш по '\\' карактер. (Текстот беше '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Текстот заврши пред да биде пронајден совпаѓачки цитат за %c. (Текстот беше '%s')"
+msgstr ""
+"Текстот заврши пред да биде пронајден совпаѓачки цитат за %c. (Текстот беше "
+"'%s')"
 
-#: glib/gshell.c:559
+#: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текстот беше празен (или содржеше само празни места)"
 
-#: glib/gspawn-win32.c:295
+#: glib/gspawn-win32.c:296
 msgid "Failed to read data from child process"
 msgstr "Не успеав да ги прочитам податоците од подпроцесот"
 
-#: glib/gspawn-win32.c:424
+#: glib/gspawn-win32.c:425
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
+#: glib/gspawn-win32.c:851 glib/gspawn.c:1013
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не успеав да прочитам од под-цевката (%s)"
 
-#: glib/gspawn-win32.c:930
+#: glib/gspawn-win32.c:931
 msgid "Failed to execute helper program"
 msgstr "Не успеав да ја извршам програмата за помош"
 
-#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
+#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Не успеав да го извршам подпроцесот (%s)"
 
-#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
+#: glib/gspawn-win32.c:987 glib/gspawn.c:1218
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Не успеав да го променам директориумот'%s' (%s)"
 
-#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
+#: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Не успеав да креирам цевка за комуникација со другите подпроцеси (%s)"
 
-#: glib/gspawn.c:178
+#: glib/gspawn.c:179
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Не успеав да ги прочитам податоците од подпроцесите (%s)"
 
-#: glib/gspawn.c:309
+#: glib/gspawn.c:310
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Неочекувана грешка во select() при читањето на податоци од подпроцесот (%s)"
+msgstr ""
+"Неочекувана грешка во select() при читањето на податоци од подпроцесот (%s)"
 
-#: glib/gspawn.c:392
+#: glib/gspawn.c:393
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочекувана грешка во waitpid() (%s)"
 
-#: glib/gspawn.c:1077
+#: glib/gspawn.c:1078
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1227
+#: glib/gspawn.c:1228
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Не успеав да го извршам подпроцесот \"%s\" (%s)"
 
-#: glib/gspawn.c:1237
+#: glib/gspawn.c:1238
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Не успеав да го пренасочам излезот или влезот на подпроцесот (%s)"
 
-#: glib/gspawn.c:1246
+#: glib/gspawn.c:1247
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1254
+#: glib/gspawn.c:1255
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Непозната грешка при извршувањето на подпроцесот \"%s\""
 
-#: glib/gspawn.c:1276
+#: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Не успеав да прочитам доволно податоци од pid подцевката (%s)"
 
-#: glib/gutf8.c:985
+#: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
 msgstr "Карактерот е надвор од опсегот за UTF-8"
 
-#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
-#: glib/gutf8.c:1365 glib/gutf8.c:1461
+#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
+#: glib/gutf8.c:1366 glib/gutf8.c:1462
 msgid "Invalid sequence in conversion input"
 msgstr "Невалидна секвенца во излезот од конвертирањето"
 
-#: glib/gutf8.c:1376 glib/gutf8.c:1472
+#: glib/gutf8.c:1377 glib/gutf8.c:1473
 msgid "Character out of range for UTF-16"
 msgstr "Карактерот е надвор од опсег за UTF-16"
 
+#: glib/goption.c:263
+msgid "Usage:"
+msgstr ""
+
+#: glib/goption.c:263
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:308
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:308
+msgid "Show help options"
+msgstr ""
+
+#: glib/goption.c:312
+msgid "Show all help options"
+msgstr ""
+
+#: glib/goption.c:360
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:400
+#, c-format
+msgid "Cannot parse integer value '%s' for --%s"
+msgstr ""
+
+#: glib/goption.c:410
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:1028
+#, c-format
+msgid "Unknown option %s"
+msgstr ""

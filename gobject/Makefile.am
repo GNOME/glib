@@ -132,7 +132,10 @@ gobject_extra_sources = \
 gobject_target_headers = $(gobject_public_h_sources)
 gobject_target_sources = $(gobject_c_sources)
 EXTRA_HEADERS =
-EXTRA_DIST = $(gobject_private_h_sources) $(gobject_extra_sources)
+EXTRA_DIST = \
+	$(gobject_private_h_sources) 	\
+	$(gobject_extra_sources) 	\
+	makegobjectalias.pl
 
 #
 # rules to generate built sources
@@ -218,7 +221,9 @@ BUILT_EXTRA_DIST = \
 	gobject.rc		\
 	gmarshal.h		\
 	gmarshal.c		\
-	stamp-gmarshal.h
+	stamp-gmarshal.h	\
+ 	gobjectalias.h
+
 
 if OS_WIN32
 $(G_OBJECT_WIN32_RESOURCE): gobject.rc
