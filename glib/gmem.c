@@ -224,11 +224,11 @@ fallback_calloc (gsize n_blocks,
 void
 g_mem_set_vtable (GMemVTable *vtable)
 {
-  gboolean vtable_set = FALSE;
+  static gboolean vtable_set = FALSE;
 
   if (!vtable_set)
     {
-      vtable_set |= TRUE;
+      vtable_set = TRUE;
       if (vtable->malloc && vtable->realloc && vtable->free)
 	{
 	  glib_mem_vtable.malloc = vtable->malloc;
