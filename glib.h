@@ -2927,7 +2927,6 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
  */
 gint        g_io_channel_win32_poll (GPollFD     *fds,
 				     gint         n_fds,
-				     GIOCondition condition,
 				     gint         timeout);
 
 /* This is used to add polling for Windows messages. GDK (GTk+) programs

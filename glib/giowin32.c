@@ -874,7 +874,6 @@ g_io_channel_win32_set_debug (GIOChannel *channel,
 gint
 g_io_channel_win32_poll (GPollFD     *fds,
 			 gint         n_fds,
-			 GIOCondition condition,
 			 gint         timeout)
 {
   int i;
@@ -899,7 +898,7 @@ g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
   pollfd.fd = (gint) win32_channel->data_avail_event;
   pollfd.events = condition;
   
-  return g_io_channel_win32_poll (&pollfd, 1, condition, timeout);
+  return g_io_channel_win32_poll (&pollfd, 1, timeout);
 }
 
 /* This variable and the functions below are present just to be 
