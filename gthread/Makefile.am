@@ -43,11 +43,11 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-export_symbols = -export-symbols gthread.def
+export_symbols = -export-symbols $(srcdir)/gthread.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgthread-2.0.dll.a $(DESTDIR)$(libdir)
-	$(INSTALL) gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
+	$(INSTALL) $(srcdir)/gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
 
 uninstall-libtool-import-lib:
 	-rm $(DESTDIR)$(libdir)/libgthread-2.0.dll.a $(DESTDIR)$(libdir)/gthread-2.0.def

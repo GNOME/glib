@@ -1,3 +1,11 @@
+2003-08-13  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/Makefile.am
+	* gmodule/Makefile.am
+	* gobject/Makefile.am
+	* gthread/Makefile.am: Use srcdir also in references to the .def
+	files. (#118885, Jeff Bonggren)
+
 2003-08-12  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gconvert.c (g_locale_from_utf8): Drop the Win32-specific
