@@ -1,3 +1,11 @@
+Sun Feb 22 02:28:43 2004  Matthias Clasen  <maclas@gmx.de>
+
+	Bug #85930, Laurent Vivier:
+	
+	* gmodule-ar.c: Implementation of native module management for AIX.
+	* gmoduleconf.h.in: 
+	* gmodule.c: Support gmodule-ar.c 
+
 2003-01-01  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-win32.c (_g_module_build_path): Use g_ascii_strcasecmp().

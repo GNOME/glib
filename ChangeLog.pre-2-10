@@ -1,3 +1,8 @@
+Sun Feb 22 02:32:14 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Set the gmodule suffix to 'a' for aix and 
+	use the aix gmodule implementation.  (#85930, Laurent Vivier)
+
 Sun Feb 22 00:47:04 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gnode.c (g_node_copy_deep): New function to deep-copy a 

@@ -1007,6 +1007,13 @@ if test -z "$G_MODULE_IMPL"; then
   *-*-mingw*|*-*-cygwin*) G_MODULE_IMPL=G_MODULE_IMPL_WIN32 ;;
   esac
 fi
+dnl *** force native AIX library loader
+dnl *** dlopen() filepath must be of the form /path/libname.a(libname.so)
+if test -z "$G_MODULE_IMPL"; then
+  case "$host" in
+  *-*-aix*) G_MODULE_IMPL=G_MODULE_IMPL_AR ;;
+  esac
+fi
 dnl *** dlopen() and dlsym() in system libraries
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_FUNC(dlopen,
@@ -1128,6 +1135,9 @@ case "$host_os" in
     ;;
   cygwin* | mingw*)
     glib_gmodule_suffix='dll'
+    ;;
+  aix*)
+    glib_gmodule_suffix='a'
     ;;
   *)
     glib_gmodule_suffix='so'    
