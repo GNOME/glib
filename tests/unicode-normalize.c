@@ -67,7 +67,7 @@ test_form (int            line,
     {
       for (i = 0; i < 3; i++)
 	{
-	  char *result = g_utf8_normalize (c[i], mode);
+	  char *result = g_utf8_normalize (c[i], -1, mode);
 	  if (strcmp (result, c[expected]) != 0)
 	    {
 	      fprintf (stderr, "\nFailure: %d/%d: %s\n", line, i + 1, raw[5]);
@@ -83,7 +83,7 @@ test_form (int            line,
     {
       for (i = 3; i < 5; i++)
 	{
-	  char *result = g_utf8_normalize (c[i], mode);
+	  char *result = g_utf8_normalize (c[i], -1, mode);
 	  if (strcmp (result, c[expected]) != 0)
 	    {
 	      fprintf (stderr, "\nFailure: %d/%d: %s\n", line, i, raw[5]);
@@ -144,7 +144,7 @@ int main (int argc, char **argv)
   if (argc == 3)
     line_to_do = atoi(argv[2]);
 
-  in = g_io_channel_new_file (argv[1], G_IO_FILE_MODE_READ, &error);
+  in = g_io_channel_new_file (argv[1], "r", &error);
   if (!in)
     {
       fprintf (stderr, "Cannot open %s: %s\n", argv[1], error->message);

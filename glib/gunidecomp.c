@@ -218,6 +218,7 @@ combine (gunichar  a,
 
 gunichar *
 _g_utf8_normalize_wc (const gchar    *str,
+		      gssize          max_len,
 		      GNormalizeMode  mode)
 {
   gsize n_wc;
@@ -231,7 +232,7 @@ _g_utf8_normalize_wc (const gchar    *str,
 
   n_wc = 0;
   p = str;
-  while (*p)
+  while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar wc = g_utf8_get_char (p);
 
@@ -257,7 +258,7 @@ _g_utf8_normalize_wc (const gchar    *str,
   last_start = 0;
   n_wc = 0;
   p = str;
-  while (*p)
+  while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar wc = g_utf8_get_char (p);
       guchar *decomp;
@@ -345,6 +346,7 @@ _g_utf8_normalize_wc (const gchar    *str,
 /**
  * g_utf8_normalize:
  * @str: a UTF-8 encoded string.
+ * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * @mode: the type of normalization to perform.
  * 
  * Convert a string into canonical form, standardizing
@@ -378,9 +380,10 @@ _g_utf8_normalize_wc (const gchar    *str,
  **/
 gchar *
 g_utf8_normalize (const gchar    *str,
+		  gssize          len,
 		  GNormalizeMode  mode)
 {
-  gunichar *result_wc = _g_utf8_normalize_wc (str, mode);
+  gunichar *result_wc = _g_utf8_normalize_wc (str, len, mode);
   gchar *result;
   
   result = g_ucs4_to_utf8 (result_wc, -1, NULL, NULL, NULL);

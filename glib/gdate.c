@@ -515,8 +515,8 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
       gchar *casefold;
       gchar *normalized;
       
-      casefold = g_utf8_casefold (str);
-      normalized = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+      casefold = g_utf8_casefold (str, -1);
+      normalized = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
       g_free (casefold);
 
       i = 1;
@@ -586,15 +586,15 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
 	  
           g_date_strftime (buf, 127, "%b", &d);
 
-	  casefold = g_utf8_casefold (buf);
+	  casefold = g_utf8_casefold (buf, -1);
           g_free (short_month_names[i]);
-          short_month_names[i] = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+          short_month_names[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
 	  g_free (casefold);
 	  
           g_date_strftime (buf, 127, "%B", &d);
-	  casefold = g_utf8_casefold (buf);
+	  casefold = g_utf8_casefold (buf, -1);
           g_free (long_month_names[i]);
-          long_month_names[i] = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+          long_month_names[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
 	  g_free (casefold);
           
           ++i;

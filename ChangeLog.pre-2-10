@@ -1,7 +1,14 @@
+Fri Jul  6 22:34:32 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gunicode.h glib/gunidecomp.c glib/guniprop.c 
+	  glib/gunicollate.c: Add length arguments to
+	g_utf8_{strup,strdown,casefold,collate_key}.
+
+	* glib/gdate.c: Fix for above.
+
 2001-07-06  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* configure.in: added Basque (eu) to ALL_LINGUAS
-
 
 Mon Jul  2 19:48:52  2001 Andrew Lanoix <alanoix@umich.edu>
 

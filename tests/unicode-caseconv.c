@@ -54,7 +54,7 @@ int main (int argc, char **argv)
       
       test = strings[1];
 
-      convert = g_utf8_strup (test);
+      convert = g_utf8_strup (test, -1);
       if (strcmp (convert, strings[4]) != 0)
 	{
 	  fprintf (stderr, "Failure: toupper(%s) == %s, should have been %s\n",
@@ -63,7 +63,7 @@ int main (int argc, char **argv)
 	}
       g_free (convert);
 
-      convert = g_utf8_strdown (test);
+      convert = g_utf8_strdown (test, -1);
       if (strcmp (convert, strings[2]) != 0)
 	{
 	  fprintf (stderr, "Failure: tolower(%s) == %s, should have been %s\n",
@@ -98,7 +98,7 @@ int main (int argc, char **argv)
 
       test = strings[0];
 
-      convert = g_utf8_casefold (test);
+      convert = g_utf8_casefold (test, -1);
       if (strcmp (convert, strings[1]) != 0)
 	{
 	  fprintf (stderr, "Failure: casefold(%s) == '%s', should have been '%s'\n",

@@ -27,6 +27,7 @@
 #include "glib.h"
 
 extern gunichar *_g_utf8_normalize_wc (const gchar    *str,
+				       gssize          max_len,
 				       GNormalizeMode  mode);
 
 /**
@@ -52,8 +53,8 @@ g_utf8_collate (const gchar *str1,
   
 #ifdef __STDC_ISO_10646__
 
-  gunichar *str1_norm = _g_utf8_normalize_wc (str1, G_NORMALIZE_ALL_COMPOSE);
-  gunichar *str2_norm = _g_utf8_normalize_wc (str2, G_NORMALIZE_ALL_COMPOSE);
+  gunichar *str1_norm = _g_utf8_normalize_wc (str1, -1, G_NORMALIZE_ALL_COMPOSE);
+  gunichar *str2_norm = _g_utf8_normalize_wc (str2, -1, G_NORMALIZE_ALL_COMPOSE);
 
   result = wcscoll ((wchar_t *)str1_norm, (wchar_t *)str2_norm);
 
@@ -63,8 +64,8 @@ g_utf8_collate (const gchar *str1,
 #else /* !__STDC_ISO_10646__ */
 
   const gchar *charset;
-  gchar *str1_norm = g_utf8_normalize (str1, G_NORMALIZE_ALL_COMPOSE);
-  gchar *str2_norm = g_utf8_normalize (str2, G_NORMALIZE_ALL_COMPOSE);
+  gchar *str1_norm = g_utf8_normalize (str1, -1, G_NORMALIZE_ALL_COMPOSE);
+  gchar *str2_norm = g_utf8_normalize (str2, -1, G_NORMALIZE_ALL_COMPOSE);
 
   if (g_get_charset (&charset))
     {
@@ -148,7 +149,8 @@ utf8_encode (char *buf, wchar_t val)
 /**
  * g_utf8_collate_key:
  * @str: a UTF-8 encoded string.
- * 
+ * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
+ *
  * Converts a string into a collation key that can be compared
  * with other collation keys using strcmp(). The results of
  * comparing the collation keys of two strings with strcmp()
@@ -159,14 +161,15 @@ utf8_encode (char *buf, wchar_t val)
  *   be freed with g_free when you are done with it.
  **/
 gchar *
-g_utf8_collate_key (const gchar *str)
+g_utf8_collate_key (const gchar *str,
+		    gssize       len)
 {
   gchar *result;
   size_t len;
   
 #ifdef __STDC_ISO_10646__
 
-  gunichar *str_norm = _g_utf8_normalize_wc (str, G_NORMALIZE_ALL_COMPOSE);
+  gunichar *str_norm = _g_utf8_normalize_wc (str, len, G_NORMALIZE_ALL_COMPOSE);
   wchar_t *result_wc;
   size_t i;
   size_t result_len = 0;
@@ -194,7 +197,7 @@ g_utf8_collate_key (const gchar *str)
 #else /* !__STDC_ISO_10646__ */
 
   const gchar *charset;
-  gchar *str_norm = g_utf8_normalize (str, G_NORMALIZE_ALL_COMPOSE);
+  gchar *str_norm = g_utf8_normalize (str, len, G_NORMALIZE_ALL_COMPOSE);
 
   if (g_get_charset (&charset))
     {

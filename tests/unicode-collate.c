@@ -41,7 +41,7 @@ int main (int argc, char **argv)
 
   if (argc == 2)
     {
-      in = g_io_channel_new_file (argv[1], G_IO_FILE_MODE_READ, &error);
+      in = g_io_channel_new_file (argv[1], "r", &error);
       if (!in)
 	{
 	  fprintf (stderr, "Cannot open %s: %s\n", argv[1], error->message);
@@ -64,7 +64,7 @@ int main (int argc, char **argv)
 
       str[term_pos] = '\0';
 
-      line.key = g_utf8_collate_key (str);
+      line.key = g_utf8_collate_key (str, -1);
       line.str = str;
 
       g_array_append_val (line_array, line);

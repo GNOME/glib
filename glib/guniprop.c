@@ -588,6 +588,7 @@ output_special_case (gchar *out_buffer,
 
 static gsize
 real_toupper (const gchar *str,
+	      gssize       max_len,
 	      gchar       *out_buffer,
 	      LocaleType   locale_type)
 {
@@ -596,7 +597,7 @@ real_toupper (const gchar *str,
   gsize len = 0;
   gboolean last_was_i = FALSE;
 
-  while (*p)
+  while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar c = g_utf8_get_char (p);
       int t = TYPE (c);
@@ -693,8 +694,9 @@ real_toupper (const gchar *str,
 }
 
 /**
- * g_ut8f_strup:
- * @string: a UTF-8 encoded string
+ * g_utf8_strup:
+ * @str: a UTF-8 encoded string
+ * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all Unicode characters in the string that have a case
  * to uppercase. The exact manner that this is done depends
@@ -706,7 +708,8 @@ real_toupper (const gchar *str,
  *    converted to uppercase.  
  **/
 gchar *
-g_utf8_strup (const gchar *str)
+g_utf8_strup (const gchar *str,
+	      gssize       len)
 {
   gsize len;
   LocaleType locale_type;
@@ -719,9 +722,9 @@ g_utf8_strup (const gchar *str)
   /*
    * We use a two pass approach to keep memory management simple
    */
-  len = real_toupper (str, NULL, locale_type);
+  len = real_toupper (str, len, NULL, locale_type);
   result = g_malloc (len + 1);
-  real_toupper (str, result, locale_type);
+  real_toupper (str, len, result, locale_type);
   result[len] = '\0';
 
   return result;
@@ -729,6 +732,7 @@ g_utf8_strup (const gchar *str)
 
 static gsize
 real_tolower (const gchar *str,
+	      gssize       max_len,
 	      gchar       *out_buffer,
 	      LocaleType   locale_type)
 {
@@ -736,7 +740,7 @@ real_tolower (const gchar *str,
   const char *last = NULL;
   gsize len = 0;
 
-  while (*p)
+  while ((max_len < 0 || p < str + max_len) && *p)
     {
       gunichar c = g_utf8_get_char (p);
       int t = TYPE (c);
@@ -807,8 +811,9 @@ real_tolower (const gchar *str,
 }
 
 /**
- * g_ut8f_strdown:
- * @string: a UTF-8 encoded string
+ * g_utf8_strdown:
+ * @str: a UTF-8 encoded string
+ * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all Unicode characters in the string that have a case
  * to lowercase. The exact manner that this is done depends
@@ -819,7 +824,8 @@ real_tolower (const gchar *str,
  *    converted to lowercase.  
  **/
 gchar *
-g_utf8_strdown (const gchar *str)
+g_utf8_strdown (const gchar *str,
+		gssize       len)
 {
   gsize len;
   LocaleType locale_type;
@@ -832,9 +838,9 @@ g_utf8_strdown (const gchar *str)
   /*
    * We use a two pass approach to keep memory management simple
    */
-  len = real_tolower (str, NULL, locale_type);
+  len = real_tolower (str, len, NULL, locale_type);
   result = g_malloc (len + 1);
-  real_tolower (str, result, locale_type);
+  real_tolower (str, len, result, locale_type);
   result[len] = '\0';
 
   return result;
@@ -843,6 +849,7 @@ g_utf8_strdown (const gchar *str)
 /**
  * g_utf8_casefold:
  * @str: a UTF-8 encoded string
+ * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts a string into a form that is independent of case. The
  * result will not correspond to any particular case, but can be
@@ -860,15 +867,16 @@ g_utf8_strdown (const gchar *str)
  *   case independent form of @str.
  **/
 gchar *
-g_utf8_casefold (const gchar *str)
+g_utf8_casefold (const gchar *str,
+		 gssize       len)
 {
   GString *result = g_string_new (NULL);
   const char *p;
   gchar buf[6];
-  int len;
+  int charlen;
 
   p = str;
-  while (*p)
+  while ((len < 0 || p < str + len) && *p)
     {
       gunichar ch = g_utf8_get_char (p);
 
@@ -896,8 +904,8 @@ g_utf8_casefold (const gchar *str)
 	}
 
       ch = g_unichar_tolower (ch);
-      len = g_unichar_to_utf8 (ch, buf);
-      g_string_append_len (result, buf, len);
+      charlen = g_unichar_to_utf8 (ch, buf);
+      g_string_append_len (result, buf, charlen);
       
     next:
       p = g_utf8_next_char (p);

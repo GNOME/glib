@@ -247,9 +247,12 @@ gboolean g_utf8_validate (const gchar  *str,
 /* Validate a Unicode character */
 gboolean g_unichar_validate (gunichar ch);
 
-gchar *g_utf8_strup   (const gchar *str);
-gchar *g_utf8_strdown (const gchar *str);
-gchar *g_utf8_casefold (const gchar *str);
+gchar *g_utf8_strup   (const gchar *str,
+		       gssize       len);
+gchar *g_utf8_strdown (const gchar *str,
+		       gssize       len);
+gchar *g_utf8_casefold (const gchar *str,
+			gssize       len);
 
 typedef enum {
   G_NORMALIZE_DEFAULT,
@@ -263,11 +266,13 @@ typedef enum {
 } GNormalizeMode;
 
 gchar *g_utf8_normalize (const gchar   *str,
+			 gssize         len,
 			 GNormalizeMode mode);
 
 gint   g_utf8_collate     (const gchar *str1,
 			   const gchar *str2);
-gchar *g_utf8_collate_key (const gchar *str);
+gchar *g_utf8_collate_key (const gchar *str,
+			   gssize       len);
 
 G_END_DECLS
 
