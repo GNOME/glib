@@ -150,6 +150,7 @@ guint        g_date_get_day_of_year       (const GDate *date);
  */
 guint        g_date_get_monday_week_of_year (const GDate *date);
 guint        g_date_get_sunday_week_of_year (const GDate *date);
+guint        g_date_get_iso8601_week_of_year (const GDate *date);
 
 /* If you create a static date struct you need to clear it to get it
  * in a sane state before use. You can clear a whole array at

@@ -1,3 +1,10 @@
+Wed Sep  1 20:22:39 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gdate.h:
+	* glib/gdate.c (g_date_get_iso8601_week_of_year): Add
+	a function to calculate the ISO 8601 week number of 
+	a date.  (#92579, Niklas Lundell)
+
 2004-09-01  Anders Carlsson  <andersca@gnome.org>
 
 	* glib/goption.c: (g_option_context_parse):

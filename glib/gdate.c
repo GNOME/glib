@@ -394,6 +394,42 @@ g_date_get_sunday_week_of_year (const GDate *d)
   return ((day + wd)/7U + (wd == 0 ? 1 : 0));
 }
 
+/**
+ * g_date_get_iso8601_week_of_year:
+ * @date: a valid #GDate
+ *
+ * Returns the week of the year, where weeks are interpreted according
+ * to ISO 8601. 
+ * 
+ * Returns: ISO 8601 week number of the year.
+ *
+ * Since: 2.6
+ **/
+guint
+g_date_get_iso8601_week_of_year (const GDate *d)
+{
+  guint j, d4, L, d1, w;
+
+  g_return_val_if_fail (d != NULL, 0);
+  g_return_val_if_fail (g_date_valid (d), 0);
+  
+  if (!d->julian)
+    g_date_update_julian (d);
+  g_return_val_if_fail (d->julian, 0);
+
+  /* Formula taken from the Calendar FAQ; the formula was for the
+   * Julian Period which starts on 1 January 4713 BC, so we add
+   * 1,721,425 to the number of days before doing the formula. 
+   */
+  j  = d->julian + 1721425;
+  d4 = (j + 31741 - (j % 7)) % 146097 % 36524 % 1461;
+  L  = d4 / 1460;
+  d1 = ((d4 - L) % 365) + L;
+  w  = d1 / 7 + 1;
+
+  return w;
+}
+
 gint
 g_date_days_between (const GDate *d1,
 		     const GDate *d2)
