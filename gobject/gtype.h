@@ -19,6 +19,10 @@
 #ifndef __G_TYPE_H__
 #define __G_TYPE_H__
 
+#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
+#error "Only <glib-object.h> can be included directly."
+#endif
+
 #include        <glib.h>
 
 G_BEGIN_DECLS

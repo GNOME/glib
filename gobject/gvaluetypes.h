@@ -21,6 +21,9 @@
 #ifndef __G_VALUETYPES_H__
 #define __G_VALUETYPES_H__
 
+#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
+#error "Only <glib-object.h> can be included directly."
+#endif
 
 #include	<gobject/gvalue.h>
 

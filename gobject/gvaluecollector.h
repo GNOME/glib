@@ -21,6 +21,8 @@
 #ifndef __G_VALUE_COLLECTOR_H__
 #define __G_VALUE_COLLECTOR_H__
 
+#include <glib-object.h>
+
 G_BEGIN_DECLS
 
 /* we may want to add aggregate types here some day, if requested

@@ -21,7 +21,10 @@
 #ifndef __G_BSEARCH_ARRAY_H__
 #define __G_BSEARCH_ARRAY_H__
 
-#include        <gobject/gtype.h>
+#include        <glib/gtypes.h>
+#include        <glib/gutils.h>
+#include        <glib/gmem.h>
+#include        <glib/gmessages.h>
 
 G_BEGIN_DECLS
 

@@ -19,6 +19,8 @@
 #ifndef __GLIB_GOBJECT_H__
 #define __GLIB_GOBJECT_H__
 
+#define __GLIB_GOBJECT_H_INSIDE__
+
 /* topmost include file for GObject header files */
 #include	<gobject/gboxed.h>
 #include	<gobject/genums.h>
@@ -34,5 +36,6 @@
 #include	<gobject/gvaluearray.h>
 #include	<gobject/gvaluetypes.h>
 
+#undef __GLIB_GOBJECT_H_INSIDE__
 
 #endif /* __GLIB_GOBJECT_H__ */

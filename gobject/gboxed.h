@@ -19,6 +19,10 @@
 #ifndef __G_BOXED_H__
 #define __G_BOXED_H__
 
+#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
+#error "Only <glib-object.h> can be included directly."
+#endif
+
 #include        <gobject/gtype.h>
 
 G_BEGIN_DECLS

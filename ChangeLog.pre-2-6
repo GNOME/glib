@@ -1,3 +1,18 @@
+Sat Nov 17 14:10:35 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gbsearcharray.h: Include gtypes.h not gobject/gtype.h
+
+	* glib/glib-object.h gobject/*.h: Prevent headers from
+	being included directly except when compiling GObject.
+
+	* gobject/gvaluecollector.h: Include glib-object.h so that
+	this file can be included directly, since we don't
+	include it _from_ glib-object.h.
+
+	* gobject/gtype.c: Remove struct _GValue hack since we 
+	now include glib/gvaluecollector.h which simply pulls in
+	glib-object.h.
+
 2001-11-15  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/giochannel.c: Documentation fixes.

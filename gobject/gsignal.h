@@ -19,6 +19,9 @@
 #ifndef __G_SIGNAL_H__
 #define __G_SIGNAL_H__
 
+#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
+#error "Only <glib-object.h> can be included directly."
+#endif
 
 #include	<gobject/gclosure.h>
 #include	<gobject/gvalue.h>

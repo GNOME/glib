@@ -137,10 +137,6 @@ static IFaceHolder*			type_iface_peek_holder_L	(TypeNode		*iface,
 
 
 /* --- structures --- */
-struct _GValue	/* kludge, keep in sync with gvalue.h */
-{
-  GType g_type;
-};
 struct _TypeNode
 {
   GTypePlugin *plugin;
