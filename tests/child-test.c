@@ -27,19 +27,50 @@
 #include "config.h"
 
 #include <sys/types.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdlib.h>
 
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 GMainLoop *main_loop;
 gint alive;
 
-gint
+#ifdef G_OS_WIN32
+char *argv0;
+#endif
+
+GPid
 get_a_child (gint ttl)
 {
   GPid pid;
 
+#ifdef G_OS_WIN32
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+  gchar *cmdline;
+
+  memset (&si, 0, sizeof (si));
+  si.cb = sizeof (&si);
+  memset (&pi, 0, sizeof (pi));
+
+  cmdline = g_strdup_printf( "child-test -c%d", ttl);
+
+  if (!CreateProcess (argv0, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    exit (1);
+
+  g_free(cmdline);
+
+  CloseHandle (pi.hThread);
+  pid = pi.hProcess;
+
+  return pid;
+#else
   pid = fork ();
   if (pid < 0)
     exit (1);
@@ -49,12 +80,19 @@ get_a_child (gint ttl)
 
   sleep (ttl);
   _exit (0);
+#endif /* G_OS_WIN32 */
 }
 
 gboolean
 child_watch_callback (GPid pid, gint status, gpointer data)
 {
+#ifndef G_OS_WIN32
   g_print ("child %d exited, status %d\n", pid, status);
+#else
+  g_print ("child %p exited, status %d\n", pid, status);
+
+  CloseHandle(pid);
+#endif
 
   if (--alive == 0)
     g_main_loop_quit (main_loop);
@@ -78,7 +116,12 @@ test_thread (gpointer data)
   g_source_attach (source, g_main_loop_get_context (new_main_loop));
   g_source_unref (source);
 
+#ifdef G_OS_WIN32
+  g_print ("whee! created pid: %p\n", pid);
+#else
   g_print ("whee! created pid: %d\n", pid);
+#endif
+
   g_main_loop_run (new_main_loop);
 
 }
@@ -86,6 +129,15 @@ test_thread (gpointer data)
 int
 main (int argc, char *argv[])
 {
+#ifdef G_OS_WIN32
+  argv0 = argv[0];
+  if (argc > 1 && argv[1][0] == '-' && argv[1][1] == 'c')
+    {
+      int ttl = atoi (argv[1] + 2);
+      Sleep (ttl * 1000);
+      exit (STILL_ACTIVE);
+    }
+#endif
   /* Only run the test, if threads are enabled and a default thread
      implementation is available */
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
