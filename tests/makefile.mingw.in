@@ -18,6 +18,7 @@ TESTS = \
 	array-test.exe	\
 	date-test.exe	\
 	dirname-test.exe\
+	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
 	node-test.exe	\

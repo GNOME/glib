@@ -11,6 +11,7 @@ TESTS = \
 	array-test	\
 	date-test	\
 	dirname-test	\
+	gio-test	\
 	hash-test	\
 	list-test	\
 	node-test	\
@@ -33,6 +34,7 @@ thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREA
 array_test_LDADD = $(progs_LDADD)
 date_test_LDADD = $(progs_LDADD)
 dirname_test_LDADD = $(progs_LDADD)
+gio_test_LDADD = $(progs_LDADD)
 hash_test_LDADD = $(progs_LDADD)
 list_test_LDADD = $(progs_LDADD)
 node_test_LDADD = $(progs_LDADD)

@@ -160,11 +160,13 @@ EXPORTS
 	g_io_channel_unref
 	g_io_channel_win32_get_fd
 	g_io_channel_win32_new_messages
+	g_io_channel_win32_new_fd
 	g_io_channel_win32_new_pipe
 	g_io_channel_win32_new_pipe_with_wakeups
 	g_io_channel_win32_new_stream_socket
 	g_io_channel_win32_pipe_readable
 	g_io_channel_win32_pipe_request_wakeups
+	g_io_channel_win32_wait_for_condition
 	g_io_channel_write
 	g_list_alloc
 	g_list_append
@@ -207,6 +209,7 @@ EXPORTS
 	g_main_remove_poll
 	g_main_run
 	g_main_set_poll_func
+	g_main_win32_get_poll_func
 	g_malloc
 	g_malloc0
 	g_mem_check

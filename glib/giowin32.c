@@ -3,6 +3,7 @@
  *
  * giowin32.c: IO Channels for Win32.
  * Copyright 1998 Owen Taylor and Tor Lillqvist
+ * Copyright 1999-2000 Tor Lillqvist and Craig Setera
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -11,7 +12,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -24,31 +25,37 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
+/* Define this to get (very) verbose logging */
+/* #define G_IO_WIN32_DEBUG */
 
-#include "config.h"
 #include "glib.h"
+
+#include <stdlib.h>
 #include <windows.h>
-#include <winsock.h>		/* Not everybody has winsock2 */
+#include <winsock.h>          /* Not everybody has winsock2 */
 #include <fcntl.h>
 #include <io.h>
+#include <process.h>
 #include <errno.h>
-#include <sys/types.h>
-
-#include <stdio.h>
+#include <sys/stat.h>
 
 typedef struct _GIOWin32Channel GIOWin32Channel;
 typedef struct _GIOWin32Watch GIOWin32Watch;
 
-guint g_pipe_readable_msg;
+#define BUFFER_SIZE 4096
 
 typedef enum {
   G_IO_WINDOWS_MESSAGES,	/* Windows messages */
-  G_IO_FILE_DESC,		/* Unix-like file descriptors from _open*/
-  G_IO_PIPE,			/* pipe, with windows messages for signalling */
-  G_IO_STREAM_SOCKET		/* Stream sockets */
+  G_IO_FILE_DESC,		/* Unix-like file descriptors from
+				 * _open() or _pipe(). Read with read().
+				 * Have to create separate thread to read.
+				 */
+  G_IO_STREAM_SOCKET		/* Stream sockets. Similar as fds, but
+				 * read with recv().
+				 */
 } GIOWin32ChannelType;
 
 struct _GIOWin32Channel {
@@ -58,18 +65,48 @@ struct _GIOWin32Channel {
 				 * as provided by WinSock.
 				 */
   GIOWin32ChannelType type;
-
+  
   /* This is used by G_IO_WINDOWS_MESSAGES channels */
   HWND hwnd;			/* handle of window, or NULL */
-
-  /* This is used by G_IO_PIPE channels */
-  guint peer;			/* thread id of reader */
-  guint peer_fd;		/* fd in the reader */
-  guint offset;			/* counter of accumulated bytes */
-  guint need_wakeups;		/* in output channels whether the
-				 * reader needs wakeups
+  
+  /* Following fields used by fd and socket channels for input */
+  
+  /* Data is kept in a circular buffer. To be able to distinguish between
+   * empty and full buffer, we cannot fill it completely, but have to
+   * leave a one character gap.
+   *
+   * Data available is between indexes rdp and wrp-1 (modulo BUFFER_SIZE).
+   *
+   * Empty:    wrp == rdp
+   * Full:     (wrp + 1) % BUFFER_SIZE == rdp
+   * Partial:  otherwise
+   */
+  guchar *buffer;		/* (Circular) buffer */
+  gint wrp, rdp;		/* Buffer indices for writing and reading */
+  gboolean running;		/* Is reader thread running. FALSE if
+				 * EOF has been reached.
 				 */
+  guint thread_id;		/* If non-NULL has a reader thread, or has
+				 * had.*/
+  HANDLE data_avail_event;
+  HANDLE space_avail_event;
+  CRITICAL_SECTION mutex;
+  
+  /* Function that actually reads from fd */
+  int (*reader) (int fd, guchar *buf, int len);
 };
+
+#define LOCK(mutex) EnterCriticalSection (&mutex)
+#define UNLOCK(mutex) LeaveCriticalSection (&mutex)
+
+/* Temporarilyu change a PRINT to PRINT_ to get just *that* message */
+#define PRINT_(x) g_print x
+
+#ifdef G_IO_WIN32_DEBUG
+#define PRINT(x) PRINT_(x)
+#else
+#define PRINT(x)
+#endif
 
 struct _GIOWin32Watch {
   GPollFD       pollfd;
@@ -78,346 +115,314 @@ struct _GIOWin32Watch {
   GIOFunc       callback;
 };
 
-static gboolean g_io_win32_msg_prepare  (gpointer  source_data, 
-					 GTimeVal *current_time,
-					 gint     *timeout);
-static gboolean g_io_win32_msg_check    (gpointer  source_data,
-					 GTimeVal *current_time);
-static gboolean g_io_win32_msg_dispatch (gpointer  source_data,
-					 GTimeVal *current_time,
-					 gpointer  user_data);
+static void
+create_events (GIOWin32Channel *channel)
+{
+  SECURITY_ATTRIBUTES sec_attrs;
+  
+  sec_attrs.nLength = sizeof(SECURITY_ATTRIBUTES);
+  sec_attrs.lpSecurityDescriptor = NULL;
+  sec_attrs.bInheritHandle = FALSE;
 
-static gboolean g_io_win32_fd_prepare  (gpointer  source_data, 
-					GTimeVal *current_time,
-					gint     *timeout);
-static gboolean g_io_win32_fd_check    (gpointer  source_data,
-					GTimeVal *current_time);
-static gboolean g_io_win32_fd_dispatch (gpointer  source_data,
-					GTimeVal *current_time,
-					gpointer  user_data);
+  channel->data_avail_event = NULL;
+  channel->space_avail_event = NULL;
+  
+  /* The data available event is manual reset, the space available event
+   * is automatic reset.
+   */
+  if (!(channel->data_avail_event = CreateEvent (&sec_attrs, TRUE, FALSE, NULL))
+      || !(channel->space_avail_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL)))
+    {
+      gchar *msg = g_win32_error_message (GetLastError ());
+      g_error ("Error creating event: %s", msg);
+    }
+  InitializeCriticalSection (&channel->mutex);
+}
 
-static gboolean g_io_win32_pipe_prepare  (gpointer  source_data, 
-					  GTimeVal *current_time,
-					  gint     *timeout);
-static gboolean g_io_win32_pipe_check    (gpointer  source_data,
-					  GTimeVal *current_time);
-static gboolean g_io_win32_pipe_dispatch (gpointer  source_data,
-					  GTimeVal *current_time,
-					  gpointer  user_data);
-static void g_io_win32_pipe_destroy	 (gpointer source_data);
+static unsigned __stdcall
+reader_thread (void *parameter)
+{
+  GIOWin32Channel *channel = parameter;
+  guchar *buffer;
+  guint nbytes;
 
-static gboolean g_io_win32_sock_prepare  (gpointer  source_data, 
-					  GTimeVal *current_time,
-					  gint     *timeout);
-static gboolean g_io_win32_sock_check    (gpointer  source_data,
-					  GTimeVal *current_time);
-static gboolean g_io_win32_sock_dispatch (gpointer  source_data,
-					  GTimeVal *current_time,
-					  gpointer  user_data);
+  g_io_channel_ref ((GIOChannel *) channel);
 
-static void g_io_win32_destroy (gpointer source_data);
+  PRINT (("thread %#x: starting. pid:%#x, fd:%d, data_avail:%#x, space_avail:%#x\n",
+	  channel->thread_id,
+	  (guint) GetCurrentProcessId (),
+	  channel->fd,
+	  (guint) channel->data_avail_event,
+	  (guint) channel->space_avail_event));
+  
+  channel->buffer = g_malloc (BUFFER_SIZE);
+  channel->rdp = channel->wrp = 0;
+  channel->running = TRUE;
 
-static GIOError g_io_win32_msg_read (GIOChannel *channel, 
-				     gchar      *buf, 
-				     guint       count,
-				     guint      *bytes_written);
+  SetEvent (channel->space_avail_event);
+  
+  while (channel->running)
+    {
+      LOCK (channel->mutex);
+      PRINT (("thread %#x: rdp=%d, wrp=%d\n",
+	      channel->thread_id, channel->rdp, channel->wrp));
+      if ((channel->wrp + 1) % BUFFER_SIZE == channel->rdp)
+	{
+	  /* Buffer is full */
+	  PRINT (("thread %#x: resetting space_available\n",
+		  channel->thread_id));
+	  ResetEvent (channel->space_avail_event);
+	  PRINT (("thread %#x: waiting for space\n", channel->thread_id));
+	  UNLOCK (channel->mutex);
+	  WaitForSingleObject (channel->space_avail_event, INFINITE);
+	  LOCK (channel->mutex);
+	  PRINT (("thread %#x: rdp=%d, wrp=%d\n",
+		  channel->thread_id, channel->rdp, channel->wrp));
+	}
+      
+      buffer = channel->buffer + channel->wrp;
+      
+      /* Always leave at least one byte unused gap to be able to
+       * distinguish between the full and empty condition...
+       */
+      nbytes = MIN ((channel->rdp + BUFFER_SIZE - channel->wrp - 1) % BUFFER_SIZE,
+		    BUFFER_SIZE - channel->wrp);
 
-static GIOError g_io_win32_msg_write(GIOChannel *channel, 
-				     gchar      *buf, 
-				     guint       count,
-				     guint      *bytes_written);
-static GIOError g_io_win32_msg_seek (GIOChannel *channel,
-				     gint        offset, 
-				     GSeekType   type);
-static void g_io_win32_msg_close    (GIOChannel *channel);
-static guint g_io_win32_msg_add_watch (GIOChannel      *channel,
-				       gint             priority,
-				       GIOCondition     condition,
-				       GIOFunc          func,
-				       gpointer         user_data,
-				       GDestroyNotify   notify);
+      UNLOCK (channel->mutex);
 
-static GIOError g_io_win32_fd_read (GIOChannel *channel, 
-				    gchar      *buf, 
-				    guint       count,
-				    guint      *bytes_written);
-static GIOError g_io_win32_fd_write(GIOChannel *channel, 
-				    gchar      *buf, 
-				    guint       count,
-				    guint      *bytes_written);
-static GIOError g_io_win32_fd_seek (GIOChannel *channel,
-				    gint        offset, 
-				    GSeekType   type);
-static void g_io_win32_fd_close (GIOChannel *channel);
+      nbytes = (*channel->reader) (channel->fd, buffer, nbytes);
+      
+      if (nbytes <= 0)
+	break;
 
-static void g_io_win32_free (GIOChannel *channel);
+      LOCK (channel->mutex);
+      PRINT (("thread %#x: got %d bytes, rdp=%d, wrp=%d\n",
+	      channel->thread_id, nbytes, channel->rdp, channel->wrp));
+      channel->wrp = (channel->wrp + nbytes) % BUFFER_SIZE;
+      PRINT (("thread %#x: rdp=%d, wrp=%d, setting data available\n",
+	      channel->thread_id, channel->rdp, channel->wrp));
+      SetEvent (channel->data_avail_event);
+      UNLOCK (channel->mutex);
+    }
+  
+  LOCK (channel->mutex);
+  channel->running = FALSE;
+  PRINT (("thread %#x: got EOF, rdp=%d, wrp=%d, setting data available\n",
+	  channel->thread_id, channel->rdp, channel->wrp));
+  SetEvent (channel->data_avail_event);
+  UNLOCK (channel->mutex);
+  
+  g_io_channel_unref((GIOChannel *) channel);
+  
+  /* All of the Microsoft docs say we should explicitly
+   * end the thread...
+   */
+  _endthreadex(1);
+  
+  return 0;
+}
 
-static guint g_io_win32_fd_add_watch (GIOChannel      *channel,
-				      gint             priority,
-				      GIOCondition     condition,
-				      GIOFunc          func,
-				      gpointer         user_data,
-				      GDestroyNotify   notify);
+static void
+create_reader_thread (GIOWin32Channel *channel,
+		      gpointer         reader)
+{
+  channel->reader = reader;
 
-static GIOError g_io_win32_no_seek (GIOChannel *channel,
-				    gint        offset, 
-				    GSeekType   type);
+  if (_beginthreadex (NULL, 0, reader_thread, channel, 0,
+		      &channel->thread_id) == 0)
+    g_warning ("Error creating reader thread: %s", strerror (errno));
+  WaitForSingleObject (channel->space_avail_event, INFINITE);
+}
 
-static GIOError g_io_win32_pipe_read (GIOChannel *channel, 
-				      gchar      *buf, 
-				      guint       count,
-				      guint      *bytes_written);
-static GIOError g_io_win32_pipe_write (GIOChannel *channel, 
-				       gchar      *buf, 
-				       guint       count,
-				       guint      *bytes_written);
-static void g_io_win32_pipe_close    (GIOChannel *channel);
-static guint g_io_win32_pipe_add_watch (GIOChannel      *channel,
-					gint             priority,
-					GIOCondition     condition,
-					GIOFunc          func,
-					gpointer         user_data,
-					GDestroyNotify   notify);
-static void g_io_win32_pipe_free (GIOChannel *channel);
-
-static GIOError g_io_win32_sock_read (GIOChannel *channel, 
-				      gchar      *buf, 
-				      guint       count,
-				      guint      *bytes_written);
-static GIOError g_io_win32_sock_write(GIOChannel *channel, 
-				      gchar      *buf, 
-				      guint       count,
-				      guint      *bytes_written);
-static void g_io_win32_sock_close    (GIOChannel *channel);
-static guint g_io_win32_sock_add_watch (GIOChannel      *channel,
-					gint             priority,
-					GIOCondition     condition,
-					GIOFunc          func,
-					gpointer         user_data,
-					GDestroyNotify   notify);
-
-GSourceFuncs win32_watch_msg_funcs = {
-  g_io_win32_msg_prepare,
-  g_io_win32_msg_check,
-  g_io_win32_msg_dispatch,
-  g_io_win32_destroy
-};
-
-GSourceFuncs win32_watch_fd_funcs = {
-  g_io_win32_fd_prepare,
-  g_io_win32_fd_check,
-  g_io_win32_fd_dispatch,
-  g_io_win32_destroy
-};
-
-GSourceFuncs win32_watch_pipe_funcs = {
-  g_io_win32_pipe_prepare,
-  g_io_win32_pipe_check,
-  g_io_win32_pipe_dispatch,
-  g_io_win32_pipe_destroy
-};
-
-GSourceFuncs win32_watch_sock_funcs = {
-  g_io_win32_sock_prepare,
-  g_io_win32_sock_check,
-  g_io_win32_sock_dispatch,
-  g_io_win32_destroy
-};
-
-GIOFuncs win32_channel_msg_funcs = {
-  g_io_win32_msg_read,
-  g_io_win32_msg_write,
-  g_io_win32_no_seek,
-  g_io_win32_msg_close,
-  g_io_win32_msg_add_watch,
-  g_io_win32_free
-};
-
-GIOFuncs win32_channel_fd_funcs = {
-  g_io_win32_fd_read,
-  g_io_win32_fd_write,
-  g_io_win32_fd_seek,
-  g_io_win32_fd_close,
-  g_io_win32_fd_add_watch,
-  g_io_win32_free
-};
-
-GIOFuncs win32_channel_pipe_funcs = {
-  g_io_win32_pipe_read,
-  g_io_win32_pipe_write,
-  g_io_win32_no_seek,
-  g_io_win32_pipe_close,
-  g_io_win32_pipe_add_watch,
-  g_io_win32_pipe_free
-};
-
-GIOFuncs win32_channel_sock_funcs = {
-  g_io_win32_sock_read,
-  g_io_win32_sock_write,
-  g_io_win32_no_seek,
-  g_io_win32_sock_close,
-  g_io_win32_sock_add_watch,
-  g_io_win32_free
-};
-
-#define N_WATCHED_PIPES 4
-
-static struct {
-  gint fd;
-  GIOWin32Watch *watch;
-  GIOWin32Channel *channel;
-  gpointer user_data;
-} watched_pipes[N_WATCHED_PIPES];
-
-static gint n_watched_pipes = 0;
+static int
+buffer_read (GIOWin32Channel *channel,
+	     guchar          *dest,
+	     guint            count,
+	     GIOError        *error)
+{
+  guint nbytes;
+  guint left = count;
+  
+  LOCK (channel->mutex);
+  PRINT (("reading from thread %#x %d bytes, rdp=%d, wrp=%d\n",
+	  channel->thread_id, count, channel->rdp, channel->wrp));
+  
+  while (left)
+    {
+      if (channel->rdp == channel->wrp)
+	{
+	  UNLOCK (channel->mutex);
+	  PRINT (("waiting for data from thread %#x\n", channel->thread_id));
+	  WaitForSingleObject (channel->data_avail_event, INFINITE);
+	  LOCK (channel->mutex);
+	  if (channel->rdp == channel->wrp && !channel->running)
+	    break;
+	}
+      
+      if (channel->rdp < channel->wrp)
+	nbytes = channel->wrp - channel->rdp;
+      else
+	nbytes = BUFFER_SIZE - channel->rdp;
+      UNLOCK (channel->mutex);
+      nbytes = MIN (left, nbytes);
+      PRINT (("moving %d bytes from thread %#x\n",
+	      nbytes, channel->thread_id));
+      memcpy (dest, channel->buffer + channel->rdp, nbytes);
+      dest += nbytes;
+      left -= nbytes;
+      LOCK (channel->mutex);
+      channel->rdp = (channel->rdp + nbytes) % BUFFER_SIZE;
+      PRINT (("setting space available for thread %#x\n", channel->thread_id));
+      SetEvent (channel->space_avail_event);
+      PRINT (("for thread %#x: rdp=%d, wrp=%d\n",
+	      channel->thread_id, channel->rdp, channel->wrp));
+      if (channel->running && channel->rdp == channel->wrp)
+	{
+	  PRINT (("resetting data_available of thread %#x\n",
+		  channel->thread_id));
+	  ResetEvent (channel->data_avail_event);
+	};
+    }
+  UNLOCK (channel->mutex);
+  
+  return count - left;
+}
 
 static gboolean
-g_io_win32_msg_prepare  (gpointer source_data, 
-			 GTimeVal *current_time,
-			 gint    *timeout)
+g_io_win32_prepare (gpointer  source_data,
+		    GTimeVal *current_time,
+		    gint     *timeout,
+		    gpointer  user_data)
 {
-  GIOWin32Watch *data = source_data;
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) data->channel;
-  MSG msg;
-
   *timeout = -1;
-
-  return PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_NOREMOVE) == TRUE;
-}
-
-static gboolean 
-g_io_win32_msg_check    (gpointer source_data,
-			 GTimeVal *current_time)
-{
-  GIOWin32Watch *data = source_data;
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) data->channel;
-  MSG msg;
-
-  return PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_NOREMOVE) == TRUE;
+  
+  return FALSE;
 }
 
 static gboolean
-g_io_win32_msg_dispatch (gpointer source_data, 
-			 GTimeVal *current_time,
-			 gpointer user_data)
-
+g_io_win32_check (gpointer  source_data,
+		  GTimeVal *current_time,
+		  gpointer  user_data)
 {
   GIOWin32Watch *data = source_data;
+  GIOWin32Channel *channel = (GIOWin32Channel *) data->channel;
+  
+  /* If the thread has died, we have encountered EOF. If the buffer
+   * also is emtpty set the HUP bit.
+   */
+  if (!channel->running && channel->rdp == channel->wrp)
+    {
+      PRINT (("g_io_win32_check: setting G_IO_HUP thread %#x rdp=%d wrp=%d\n", channel->thread_id, channel->rdp, channel->wrp));
+      data->pollfd.revents |= G_IO_HUP;
+      return TRUE;
+    }
+  
+  return (data->pollfd.revents & data->condition);
+}
 
-  return (*data->callback)(data->channel,
-			   data->pollfd.revents & data->condition,
-			   user_data);
+static gboolean
+g_io_win32_dispatch (gpointer  source_data,
+		     GTimeVal *current_time,
+		     gpointer  user_data)
+     
+{
+  GIOWin32Watch *data = source_data;
+  
+  return (*data->callback) (data->channel,
+			    data->pollfd.revents & data->condition,
+			    user_data);
 }
 
 static void
 g_io_win32_destroy (gpointer source_data)
 {
   GIOWin32Watch *data = source_data;
-
+  
   g_main_remove_poll (&data->pollfd);
   g_io_channel_unref (data->channel);
   g_free (data);
 }
 
-static gboolean
-g_io_win32_fd_prepare  (gpointer source_data, 
-			GTimeVal *current_time,
-			gint    *timeout)
-{
-  *timeout = -1;
-
-  return FALSE;
-}
-
-static gboolean 
-g_io_win32_fd_check    (gpointer source_data,
-			GTimeVal *current_time)
-{
-  GIOWin32Watch *data = source_data;
-
-  return (data->pollfd.revents & data->condition);
-}
-
-static gboolean
-g_io_win32_fd_dispatch (gpointer source_data, 
-			GTimeVal *current_time,
-			gpointer user_data)
-
-{
-  GIOWin32Watch *data = source_data;
-
-  return (*data->callback)(data->channel,
-			   data->pollfd.revents & data->condition,
-			   user_data);
-}
+static GSourceFuncs win32_watch_funcs = {
+  g_io_win32_prepare,
+  g_io_win32_check,
+  g_io_win32_dispatch,
+  g_io_win32_destroy
+};
 
 static GIOError
-g_io_win32_msg_read (GIOChannel *channel, 
-		     gchar     *buf, 
-		     guint      count,
-		     guint     *bytes_read)
+g_io_win32_msg_read (GIOChannel *channel,
+		     gchar      *buf,
+		     guint       count,
+		     guint      *bytes_read)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  MSG msg;			/* In case of alignment problems */
-
+  MSG msg;               /* In case of alignment problems */
+  
   if (count < sizeof (MSG))
     return G_IO_ERROR_INVAL;
   
   if (!PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_REMOVE))
     return G_IO_ERROR_AGAIN;
-
+  
   memmove (buf, &msg, sizeof (MSG));
   *bytes_read = sizeof (MSG);
   return G_IO_ERROR_NONE;
 }
-		       
-static GIOError 
-g_io_win32_msg_write(GIOChannel *channel, 
-		     gchar     *buf, 
-		     guint      count,
-		     guint     *bytes_written)
+
+static GIOError
+g_io_win32_msg_write (GIOChannel *channel,
+		      gchar      *buf,
+		      guint       count,
+		      guint      *bytes_written)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   MSG msg;
-  gint result;
-
+  
   if (count != sizeof (MSG))
     return G_IO_ERROR_INVAL;
-
+  
   /* In case of alignment problems */
   memmove (&msg, buf, sizeof (MSG));
   if (!PostMessage (win32_channel->hwnd, msg.message, msg.wParam, msg.lParam))
     return G_IO_ERROR_UNKNOWN;
-
+  
   *bytes_written = sizeof (MSG);
-  return G_IO_ERROR_NONE; 
+  return G_IO_ERROR_NONE;
 }
 
-static GIOError 
+static GIOError
 g_io_win32_no_seek (GIOChannel *channel,
-		    gint      offset, 
-		    GSeekType type)
+		    gint        offset,
+		    GSeekType   type)
 {
-  g_warning ("g_io_win32_no_seek: unseekable IO channel type");
   return G_IO_ERROR_UNKNOWN;
 }
 
 
-static void 
+static void
 g_io_win32_msg_close (GIOChannel *channel)
 {
   /* Nothing to be done. Or should we set hwnd to some invalid value? */
 }
 
-static void 
+static void
 g_io_win32_free (GIOChannel *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  
+  if (win32_channel->buffer)
+    {
+      CloseHandle (win32_channel->data_avail_event);
+      CloseHandle (win32_channel->space_avail_event);
+      DeleteCriticalSection (&win32_channel->mutex);
+    }
 
+  g_free (win32_channel->buffer);
   g_free (win32_channel);
 }
 
-static guint 
+static guint
 g_io_win32_msg_add_watch (GIOChannel    *channel,
 			  gint           priority,
 			  GIOCondition   condition,
@@ -426,117 +431,56 @@ g_io_win32_msg_add_watch (GIOChannel    *channel,
 			  GDestroyNotify notify)
 {
   GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   
   watch->channel = channel;
   g_io_channel_ref (channel);
-
+  
   watch->callback = func;
   watch->condition = condition;
-
+  
   watch->pollfd.fd = G_WIN32_MSG_HANDLE;
   watch->pollfd.events = condition;
-
+  
   g_main_add_poll (&watch->pollfd, priority);
-
-  return g_source_add (priority, TRUE, &win32_watch_msg_funcs,
+  
+  return g_source_add (priority, TRUE, &win32_watch_funcs,
 		       watch, user_data, notify);
 }
 
-static gboolean
-g_io_win32_pipe_prepare  (gpointer source_data, 
-			  GTimeVal *current_time,
-			  gint    *timeout)
-{
-  *timeout = -1;
-
-  return FALSE;
-}
-
-static gboolean 
-g_io_win32_pipe_check    (gpointer source_data,
-			  GTimeVal *current_time)
-{
-  GIOWin32Watch *data = source_data;
-  return FALSE;
-}
-
-static gboolean
-g_io_win32_pipe_dispatch (gpointer source_data, 
-			  GTimeVal *current_time,
-			  gpointer user_data)
-
-{
-  GIOWin32Watch *data = source_data;
-
-  return (*data->callback)(data->channel,
-			   data->pollfd.revents & data->condition,
-			   user_data);
-}
-
-static void
-g_io_win32_pipe_destroy (gpointer source_data)
-{
-  GIOWin32Watch *data = source_data;
-
-  g_io_channel_unref (data->channel);
-  g_free (data);
-}
-
-static gboolean
-g_io_win32_sock_prepare  (gpointer source_data, 
-			GTimeVal *current_time,
-			gint    *timeout)
-{
-  *timeout = -1;
-
-  return FALSE;
-}
-
-static gboolean 
-g_io_win32_sock_check    (gpointer source_data,
-			GTimeVal *current_time)
-{
-  GIOWin32Watch *data = source_data;
-
-  return (data->pollfd.revents & data->condition);
-}
-
-static gboolean
-g_io_win32_sock_dispatch (gpointer source_data, 
-			GTimeVal *current_time,
-			gpointer user_data)
-
-{
-  GIOWin32Watch *data = source_data;
-
-  return (*data->callback)(data->channel,
-			   data->pollfd.revents & data->condition,
-			   user_data);
-}
-
 static GIOError
-g_io_win32_fd_read (GIOChannel *channel, 
-		    gchar     *buf, 
+g_io_win32_fd_read (GIOChannel *channel,
+		    gchar     *buf,
 		    guint      count,
 		    guint     *bytes_read)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
+  GIOError error;
+  
+  if (win32_channel->thread_id)
+    {
+      result = buffer_read (win32_channel, buf, count, &error);
+      if (result < 0)
+	{
+	  *bytes_read = 0;
+	  return error;
+	}
+      else
+	{
+	  *bytes_read = result;
+	  return G_IO_ERROR_NONE;
+	}
+    }
 
   result = read (win32_channel->fd, buf, count);
+
   if (result < 0)
     {
       *bytes_read = 0;
-      switch (errno)
-	{
-	case EINVAL:
-	  return G_IO_ERROR_INVAL;
-	case EAGAIN:
-	  return G_IO_ERROR_AGAIN;
-	default:
-	  return G_IO_ERROR_UNKNOWN;
-	}
+      if (errno == EINVAL)
+	return G_IO_ERROR_INVAL;
+      else
+	return G_IO_ERROR_UNKNOWN;
     }
   else
     {
@@ -544,18 +488,19 @@ g_io_win32_fd_read (GIOChannel *channel,
       return G_IO_ERROR_NONE;
     }
 }
-		       
-static GIOError 
-g_io_win32_fd_write(GIOChannel *channel, 
-		    gchar     *buf, 
+
+static GIOError
+g_io_win32_fd_write(GIOChannel *channel,
+		    gchar     *buf,
 		    guint      count,
 		    guint     *bytes_written)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
-
+  
   result = write (win32_channel->fd, buf, count);
-      
+  PRINT (("g_io_win32_fd_write: fd:%d count:%d = %d\n", win32_channel->fd, count, result));
+  
   if (result < 0)
     {
       *bytes_written = 0;
@@ -576,15 +521,15 @@ g_io_win32_fd_write(GIOChannel *channel,
     }
 }
 
-static GIOError 
+static GIOError
 g_io_win32_fd_seek (GIOChannel *channel,
-		    gint      offset, 
+		    gint      offset,
 		    GSeekType type)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   int whence;
   off_t result;
-
+  
   switch (type)
     {
     case G_SEEK_SET:
@@ -617,16 +562,30 @@ g_io_win32_fd_seek (GIOChannel *channel,
     return G_IO_ERROR_NONE;
 }
 
-static void 
+static void
 g_io_win32_fd_close (GIOChannel *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-
+  
   close (win32_channel->fd);
   return;
 }
 
-static guint 
+static int
+fd_reader (int     fd,
+	   guchar *buf,
+	   int     len)
+{
+  int value;
+  
+  value = read (fd, buf, len);
+  
+  PRINT (("fd_reader (%d,%p,%d) = %d\n", fd, buf, len, value));
+  
+  return value;
+}
+
+static guint
 g_io_win32_fd_add_watch (GIOChannel    *channel,
 			 gint           priority,
 			 GIOCondition   condition,
@@ -636,206 +595,65 @@ g_io_win32_fd_add_watch (GIOChannel    *channel,
 {
   GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  DWORD nbytes;
+  char dummy[1];
   
   watch->channel = channel;
   g_io_channel_ref (channel);
-
+  
   watch->callback = func;
   watch->condition = condition;
+  
+  create_events (win32_channel);
 
-  /* This probably does not work, except for CONIN$. */
-  watch->pollfd.fd = _get_osfhandle (win32_channel->fd);
+  watch->pollfd.fd = (gint) win32_channel->data_avail_event;
   watch->pollfd.events = condition;
+  
+  PRINT (("g_io_win32_fd_add_watch: fd:%d handle:%#x\n",
+	  win32_channel->fd, watch->pollfd.fd));
+  
+  /* Is it readable? (Would be strange to watch it otherwise, but... */
+  if (ReadFile ((HANDLE) _get_osfhandle (win32_channel->fd),
+		dummy, 0, &nbytes, NULL))
+    create_reader_thread (win32_channel, fd_reader);
 
   g_main_add_poll (&watch->pollfd, priority);
-
-  return g_source_add (priority, TRUE, &win32_watch_fd_funcs,
+  
+  return g_source_add (priority, TRUE, &win32_watch_funcs,
 		       watch, user_data, notify);
 }
 
 static GIOError
-g_io_win32_pipe_read (GIOChannel *channel, 
-		      gchar     *buf, 
-		      guint      count,
-		      guint     *bytes_read)
-{
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  HANDLE handle;
-  DWORD avail;
-  gint result;
-
-  handle = (HANDLE) _get_osfhandle (win32_channel->fd);
-  if (!PeekNamedPipe (handle, NULL, 0, NULL, &avail, NULL))
-    {
-      return G_IO_ERROR_UNKNOWN;
-    }
-
-  count = MIN (count, avail);
-
-  count = MAX (count, 1);	/* Must read at least one byte, or
-				 * caller will think it's EOF.
-				 */
-  /* g_print ("g_io_win32_pipe_read: %d %d\n", win32_channel->fd, count); */
-  if (count == 0)
-    result = 0;
-  else
-    result = read (win32_channel->fd, buf, count);
-  if (result < 0)
-    {
-      *bytes_read = 0;
-      switch (errno)
-	{
-	case EINVAL:
-	  return G_IO_ERROR_INVAL;
-	case EAGAIN:
-	  return G_IO_ERROR_AGAIN;
-	default:
-	  return G_IO_ERROR_UNKNOWN;
-	}
-    }
-  else
-    {
-      *bytes_read = result;
-      win32_channel->offset += result;
-      /* g_print ("=%d (%d)\n", result, win32_channel->offset); */
-      return G_IO_ERROR_NONE;
-    }
-}
-		       
-static GIOError 
-g_io_win32_pipe_write(GIOChannel *channel, 
-		      gchar     *buf, 
-		      guint      count,
-		      guint     *bytes_written)
-{
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  LONG prevcnt;
-  gint result;
-
-  /* g_print ("g_io_win32_pipe_write: %d %d\n", win32_channel->fd, count); */
-  result = write (win32_channel->fd, buf, count);
-  if (result < 0)
-    {
-      *bytes_written = 0;
-      switch (errno)
-	{
-	case EINVAL:
-	  return G_IO_ERROR_INVAL;
-	case EAGAIN:
-	  return G_IO_ERROR_AGAIN;
-	default:
-	  return G_IO_ERROR_UNKNOWN;
-	}
-    }
-  else
-    {
-      if (g_pipe_readable_msg == 0)
-	g_pipe_readable_msg = RegisterWindowMessage ("g-pipe-readable");
-
-      win32_channel->offset += result;
-      /* g_print ("=%d (%d)\n", result, win32_channel->offset); */
-      if (win32_channel->need_wakeups)
-	{
-	  PostThreadMessage (win32_channel->peer,
-			     g_pipe_readable_msg,
-			     win32_channel->peer_fd,
-			     win32_channel->offset);
-	}
-      *bytes_written = result;
-      return G_IO_ERROR_NONE;
-    }
-}
-
-static void 
-g_io_win32_pipe_close (GIOChannel *channel)
-{
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-
-  /* g_print ("g_io_win32_pipe_close: %#x %d\n", channel, win32_channel->fd); */
-
-  close (win32_channel->fd);
-  return;
-}
-
-static guint 
-g_io_win32_pipe_add_watch (GIOChannel    *channel,
-			   gint           priority,
-			   GIOCondition   condition,
-			   GIOFunc        func,
-			   gpointer       user_data,
-			   GDestroyNotify notify)
-{
-  GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  gint i;
-  
-  /* g_print ("g_io_win32_pipe_add_watch: %d\n", win32_channel->fd); */
-
-  watch->channel = channel;
-  g_io_channel_ref (channel);
-
-  watch->callback = func;
-  watch->condition = condition;
-
-  watch->pollfd.fd = win32_channel->fd;
-  watch->pollfd.events = condition;
-
-  for (i = 0; i < n_watched_pipes; i++)
-    if (watched_pipes[i].fd == -1)
-      break;
-  if (i == N_WATCHED_PIPES)
-    g_error ("Too many watched pipes");
-  else
-    {
-      watched_pipes[i].fd = win32_channel->fd;
-      watched_pipes[i].watch = watch;
-      watched_pipes[i].channel = win32_channel;
-      watched_pipes[i].user_data = user_data;
-      n_watched_pipes = MAX (i + 1, n_watched_pipes);
-    }
-  return g_source_add (priority, FALSE, &win32_watch_pipe_funcs, watch, user_data, notify);
-}
-
-static void
-g_io_win32_pipe_free (GIOChannel *channel)
-{
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  gint i;
-
-  /* g_print ("g_io_win32_pipe_free: %#x %#x\n", channel, channel->channel_data); */
-
-  for (i = 0; i < n_watched_pipes; i++)
-    if (watched_pipes[i].fd == win32_channel->fd)
-      {
-	watched_pipes[i].fd = -1;
-	break;
-      }
-  g_io_win32_free (channel);
-}
-
-static GIOError 
-g_io_win32_sock_read (GIOChannel *channel, 
-		      gchar      *buf, 
+g_io_win32_sock_read (GIOChannel *channel,
+		      gchar      *buf,
 		      guint       count,
 		      guint      *bytes_read)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
+  GIOError error;
+  
+  if (win32_channel->thread_id)
+    {
+      result = buffer_read (win32_channel, buf, count, &error);
+      if (result < 0)
+	{
+	  *bytes_read = 0;
+	  return error;
+	}
+      else
+	{
+	  *bytes_read = result;
+	  return G_IO_ERROR_NONE;
+	}
+    }
 
   result = recv (win32_channel->fd, buf, count, 0);
-  if (result == SOCKET_ERROR)
+
+  if (result < 0)
     {
       *bytes_read = 0;
-      switch (WSAGetLastError ())
-	{
-	case WSAEINVAL:
-	  return G_IO_ERROR_INVAL;
-	case WSAEWOULDBLOCK:
-	case WSAEINTR:
-	  return G_IO_ERROR_AGAIN;
-	default:
-	  return G_IO_ERROR_UNKNOWN;
-	}
+      return G_IO_ERROR_UNKNOWN;
     }
   else
     {
@@ -843,18 +661,18 @@ g_io_win32_sock_read (GIOChannel *channel,
       return G_IO_ERROR_NONE;
     }
 }
-		       
-static GIOError 
-g_io_win32_sock_write(GIOChannel *channel, 
-		      gchar      *buf, 
+
+static GIOError
+g_io_win32_sock_write(GIOChannel *channel,
+		      gchar      *buf,
 		      guint       count,
 		      guint      *bytes_written)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
-
+  
   result = send (win32_channel->fd, buf, count, 0);
-      
+  
   if (result == SOCKET_ERROR)
     {
       *bytes_written = 0;
@@ -876,16 +694,23 @@ g_io_win32_sock_write(GIOChannel *channel,
     }
 }
 
-static void 
+static void
 g_io_win32_sock_close (GIOChannel *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
 
   closesocket (win32_channel->fd);
-  return;
 }
 
-static guint 
+static int
+sock_reader (int     fd,
+	     guchar *buf,
+	     int     len)
+{
+  return recv (fd, buf, len, 0);
+}
+
+static guint
 g_io_win32_sock_add_watch (GIOChannel    *channel,
 			   gint           priority,
 			   GIOCondition   condition,
@@ -895,20 +720,53 @@ g_io_win32_sock_add_watch (GIOChannel    *channel,
 {
   GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  
+
   watch->channel = channel;
   g_io_channel_ref (channel);
 
   watch->callback = func;
   watch->condition = condition;
 
-  watch->pollfd.fd = win32_channel->fd;
+  create_events (win32_channel);
+
+  watch->pollfd.fd = (gint) win32_channel->data_avail_event;
   watch->pollfd.events = condition;
+
+  /* Sockets are always readable, aren't they? */
+  create_reader_thread (win32_channel, sock_reader);
 
   g_main_add_poll (&watch->pollfd, priority);
 
-  return g_source_add (priority, TRUE, &win32_watch_sock_funcs, watch, user_data, notify);
+  return g_source_add (priority, TRUE, &win32_watch_funcs, watch,
+		       user_data, notify);
 }
+
+static GIOFuncs win32_channel_msg_funcs = {
+  g_io_win32_msg_read,
+  g_io_win32_msg_write,
+  g_io_win32_no_seek,
+  g_io_win32_msg_close,
+  g_io_win32_msg_add_watch,
+  g_io_win32_free
+};
+
+static GIOFuncs win32_channel_fd_funcs = {
+  g_io_win32_fd_read,
+  g_io_win32_fd_write,
+  g_io_win32_fd_seek,
+  g_io_win32_fd_close,
+  g_io_win32_fd_add_watch,
+  g_io_win32_free
+};
+
+static GIOFuncs win32_channel_sock_funcs = {
+  g_io_win32_sock_read,
+  g_io_win32_sock_write,
+  g_io_win32_no_seek,
+  g_io_win32_sock_close,
+  g_io_win32_sock_add_watch,
+  g_io_win32_free
+};
 
 GIOChannel *
 g_io_channel_win32_new_messages (guint hwnd)
@@ -918,7 +776,6 @@ g_io_channel_win32_new_messages (guint hwnd)
 
   g_io_channel_init (channel);
   channel->funcs = &win32_channel_msg_funcs;
-  win32_channel->fd = -1;
   win32_channel->type = G_IO_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
 
@@ -926,63 +783,41 @@ g_io_channel_win32_new_messages (guint hwnd)
 }
 
 GIOChannel *
-g_io_channel_unix_new (gint fd)
+g_io_channel_win32_new_fd (gint fd)
 {
-  GIOWin32Channel *win32_channel = g_new (GIOWin32Channel, 1);
-  GIOChannel *channel = (GIOChannel *) win32_channel;
+  GIOWin32Channel *win32_channel;
+  GIOChannel *channel;
+  struct stat st;
+
+  if (fstat (fd, &st) == -1)
+    {
+      g_warning ("%d isn't a (emulated) file descriptor", fd);
+      return NULL;
+    }
+
+  PRINT (("g_io_channel_win32_new_fd: %d\n", fd));
+
+  win32_channel = g_new (GIOWin32Channel, 1);
+  channel = (GIOChannel *) win32_channel;
 
   g_io_channel_init (channel);
+
   channel->funcs = &win32_channel_fd_funcs;
   win32_channel->fd = fd;
   win32_channel->type = G_IO_FILE_DESC;
+  win32_channel->buffer = NULL;
+  win32_channel->running = FALSE;
+  win32_channel->thread_id = 0;
 
   return channel;
 }
 
 gint
-g_io_channel_unix_get_fd (GIOChannel *channel)
+g_io_channel_win32_get_fd (GIOChannel *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
 
   return win32_channel->fd;
-}
-
-GIOChannel *
-g_io_channel_win32_new_pipe_with_wakeups (int   fd,
-					  guint peer,
-					  int   peer_fd)
-{
-  GIOWin32Channel *win32_channel = g_new (GIOWin32Channel, 1);
-  GIOChannel *channel = (GIOChannel *) win32_channel;
-
-  /* g_print ("g_io_channel_win32_new_pipe_with_wakeups %d %#x %d\n", fd, peer, peer_fd); */
-
-  g_io_channel_init (channel);
-  channel->funcs = &win32_channel_pipe_funcs;
-  win32_channel->fd = fd;
-  win32_channel->type = G_IO_PIPE;
-  win32_channel->peer = peer;
-  win32_channel->peer_fd = peer_fd;
-  win32_channel->offset = 0;
-  win32_channel->need_wakeups = TRUE;
-
-  return channel;
-}
-
-GIOChannel *
-g_io_channel_win32_new_pipe (int fd)
-{
-  GIOWin32Channel *win32_channel = g_new (GIOWin32Channel, 1);
-  GIOChannel *channel = (GIOChannel *) win32_channel;
-
-  g_io_channel_init (channel);
-  channel->funcs = &win32_channel_pipe_funcs;
-  win32_channel->fd = fd;
-  win32_channel->type = G_IO_PIPE;
-  win32_channel->offset = 0;
-  win32_channel->need_wakeups = FALSE;
-
-  return channel;
 }
 
 GIOChannel *
@@ -995,41 +830,83 @@ g_io_channel_win32_new_stream_socket (int socket)
   channel->funcs = &win32_channel_sock_funcs;
   win32_channel->fd = socket;
   win32_channel->type = G_IO_STREAM_SOCKET;
+  win32_channel->buffer = NULL;
+  win32_channel->running = FALSE;
+  win32_channel->thread_id = 0;
 
   return channel;
 }
 
-gint
-g_io_channel_win32_get_fd (GIOChannel *channel)
+GIOChannel *
+g_io_channel_unix_new (gint fd)
 {
-  return g_io_channel_unix_get_fd (channel);
+  return g_io_channel_win32_new_fd (fd);
+}
+
+gint
+g_io_channel_unix_get_fd (GIOChannel *channel)
+{
+  return g_io_channel_win32_get_fd (channel);
+}
+
+gint
+g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
+				       GIOCondition condition,
+				       gint         timeout)
+{
+  GPollFD pollfd;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  int result;
+
+  pollfd.fd = (gint) win32_channel->data_avail_event;
+  pollfd.events = condition;
+
+  PRINT (("g_io_channel_win32_wait_for_condition: fd:%d event:%#x timeout:%d\n",
+	  win32_channel->fd, pollfd.fd, timeout));
+
+  result = (*g_main_win32_get_poll_func ()) (&pollfd, 1, timeout);
+
+  PRINT (("g_io_channel_win32_wait_for_condition: done:%d\n", result));
+
+  return result;
+}
+
+
+/* This variable and the functions below are present just to be 
+ * binary compatible with old clients... But note that in GIMP, the
+ * libgimp/gimp.c:gimp_extension_process() function will have to be modified
+ * anyhow for this new approach.
+ *
+ * These will be removed after some weeks.
+ */
+guint g_pipe_readable_msg = 0;
+
+GIOChannel *
+g_io_channel_win32_new_pipe (int fd)
+{
+  return g_io_channel_win32_new_fd (fd);
+}
+
+GIOChannel *
+g_io_channel_win32_new_pipe_with_wakeups (int   fd,
+                           guint peer,
+                           int   peer_fd)
+{
+  return g_io_channel_win32_new_fd (fd);
 }
 
 void
 g_io_channel_win32_pipe_request_wakeups (GIOChannel *channel,
-					 guint       peer,
-					 int         peer_fd)
+                          guint       peer,
+                          int         peer_fd)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-
-  win32_channel->peer = peer;
-  win32_channel->peer_fd = peer_fd;
-  win32_channel->need_wakeups = TRUE;
+  /* Nothing needed now */
 }
 
 void
 g_io_channel_win32_pipe_readable (gint  fd,
-				  guint offset)
+                      guint offset)
 {
-  gint i;
-
-  for (i = 0; i < n_watched_pipes; i++)
-    if (watched_pipes[i].fd == fd)
-      {
-	if ((watched_pipes[i].watch->condition & G_IO_IN)
-	    && watched_pipes[i].channel->offset < offset)
-	  (*watched_pipes[i].watch->callback) (watched_pipes[i].watch->channel,
-					       G_IO_IN,
-					       watched_pipes[i].user_data);
-      }
+  /* Nothing needed now */
 }
+

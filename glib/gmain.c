@@ -36,8 +36,6 @@
 /* uncomment the next line to get poll() debugging info */
 /* #define G_MAIN_POLL_DEBUG */
 
-
-
 #include "glib.h"
 #include <sys/types.h>
 #include <time.h>
@@ -192,34 +190,39 @@ static GPollFunc poll_func = (GPollFunc) poll;
 #ifdef G_OS_WIN32
 
 static gint
-g_poll (GPollFD *fds, guint nfds, gint timeout)
+g_poll (GPollFD *fds,
+	guint    nfds,
+	gint     timeout)
 {
   HANDLE handles[MAXIMUM_WAIT_OBJECTS];
+  gboolean poll_msgs = FALSE;
   GPollFD *f;
   DWORD ready;
   MSG msg;
   UINT timer;
-  LONG prevcnt;
-  gint poll_msgs = -1;
   gint nhandles = 0;
 
   for (f = fds; f < &fds[nfds]; ++f)
     if (f->fd >= 0)
       {
 	if (f->events & G_IO_IN)
-	  if (f->fd == G_WIN32_MSG_HANDLE)
-	    poll_msgs = f - fds;
-	  else
-	    {
-	      /* g_print ("g_poll: waiting for handle %#x\n", f->fd); */
-	      handles[nhandles++] = (HANDLE) f->fd;
-	    }
+	  {
+	    if (f->fd == G_WIN32_MSG_HANDLE)
+	      poll_msgs = TRUE;
+	    else
+	      {
+#ifdef G_MAIN_POLL_DEBUG
+		g_print ("g_poll: waiting for %#x\n", f->fd);
+#endif
+		handles[nhandles++] = (HANDLE) f->fd;
+	      }
+	  }
       }
 
   if (timeout == -1)
     timeout = INFINITE;
 
-  if (poll_msgs >= 0)
+  if (poll_msgs)
     {
       /* Waiting for messages, and maybe events */
       if (nhandles == 0)
@@ -229,7 +232,9 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	      /* Waiting just for messages, infinite timeout
 	       * -> Use PeekMessage, then WaitMessage
 	       */
-	      /* g_print ("WaitMessage, PeekMessage\n"); */
+#ifdef G_MAIN_POLL_DEBUG
+	      g_print ("PeekMessage, then WaitMessage\n");
+#endif
 	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
 		ready = WAIT_OBJECT_0;
 	      else if (!WaitMessage ())
@@ -241,7 +246,9 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	      /* Waiting just for messages, zero timeout
 	       * -> Use PeekMessage
 	       */
-	      /* g_print ("PeekMessage\n"); */
+#ifdef G_MAIN_POLL_DEBUG
+	      g_print ("PeekMessage\n");
+#endif
 	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
 		ready = WAIT_OBJECT_0;
 	      else
@@ -253,17 +260,22 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	       * -> First try PeekMessage, then set a timer, wait for message,
 	       * kill timer, use PeekMessage
 	       */
-	      /* g_print ("PeekMessage\n"); */
+#ifdef G_MAIN_POLL_DEBUG
+	      g_print ("PeekMessage\n");
+#endif
 	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
 		ready = WAIT_OBJECT_0;
 	      else if ((timer = SetTimer (NULL, 0, timeout, NULL)) == 0)
 		g_warning ("g_poll: SetTimer failed");
 	      else
 		{
-		  /* g_print ("WaitMessage\n"); */
+#ifdef G_MAIN_POLL_DEBUG
+		  g_print ("WaitMessage\n");
+#endif
 		  WaitMessage ();
 		  KillTimer (NULL, timer);
-		  if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+		  if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE)
+		      && msg.message != WM_TIMER)
 		    ready = WAIT_OBJECT_0;
 		  else
 		    ready = WAIT_TIMEOUT;
@@ -275,10 +287,12 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	  /* Wait for either message or event
 	   * -> Use MsgWaitForMultipleObjects
 	   */
-	  /* g_print ("MsgWaitForMultipleObjects(%d, %d)\n", nhandles, timeout); */
+#ifdef G_MAIN_POLL_DEBUG
+	  g_print ("MsgWaitForMultipleObjects(%d, %d)\n", nhandles, timeout);
+#endif
 	  ready = MsgWaitForMultipleObjects (nhandles, handles, FALSE,
 					     timeout, QS_ALLINPUT);
-	  /* g_print("=%d\n", ready); */
+
 	  if (ready == WAIT_FAILED)
 	    g_warning ("g_poll: MsgWaitForMultipleObjects failed");
 	}
@@ -293,9 +307,10 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
       /* Wait for just events
        * -> Use WaitForMultipleObjects
        */
-      /* g_print ("WaitForMultipleObjects(%d, %d)\n", nhandles, timeout); */
+#ifdef G_MAIN_POLL_DEBUG
+      g_print ("WaitForMultipleObjects(%d, %d)\n", nhandles, timeout);
+#endif
       ready = WaitForMultipleObjects (nhandles, handles, FALSE, timeout);
-      /* g_print("=%d\n", ready); */
       if (ready == WAIT_FAILED)
 	g_warning ("g_poll: WaitForMultipleObjects failed");
     }
@@ -305,9 +320,17 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
   if (ready == WAIT_FAILED)
     return -1;
-  else if (poll_msgs >= 0 && ready == WAIT_OBJECT_0 + nhandles)
+  else if (ready == WAIT_TIMEOUT)
+    return 0;
+  else if (poll_msgs && ready == WAIT_OBJECT_0 + nhandles)
     {
-      fds[poll_msgs].revents |= G_IO_IN;
+      for (f = fds; f < &fds[nfds]; ++f)
+	if (f->fd >= 0)
+	  {
+	    if (f->events & G_IO_IN)
+	      if (f->fd == G_WIN32_MSG_HANDLE)
+		f->revents |= G_IO_IN;
+	  }
     }
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
@@ -316,15 +339,19 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 	    && f->fd == (gint) handles[ready - WAIT_OBJECT_0])
 	  {
 	    f->revents |= G_IO_IN;
-	    /* g_print ("event %#x\n", f->fd); */
+#ifdef G_MAIN_POLL_DEBUG
+	    g_print ("g_poll: got event %#x\n", f->fd);
+#endif
+#if 0
 	    ResetEvent ((HANDLE) f->fd);
+#endif
 	  }
       }
     
-  if (ready == WAIT_TIMEOUT)
-    return 0;
+  if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
+    return ready - WAIT_OBJECT_0 + 1;
   else
-    return 1;
+    return 0;
 }
 
 #else  /* !G_OS_WIN32 */
@@ -592,7 +619,6 @@ void
 g_get_current_time (GTimeVal *result)
 {
 #ifndef G_OS_WIN32
-  struct timeval r;
   g_return_if_fail (result != NULL);
 
   /*this is required on alpha, there the timeval structs are int's
@@ -608,7 +634,6 @@ g_get_current_time (GTimeVal *result)
   static DWORD start_tick = 0;
   static time_t start_time;
   DWORD tick;
-  time_t t;
 
   g_return_if_fail (result != NULL);
  
@@ -992,9 +1017,12 @@ g_main_poll (gint     timeout,
   if (wake_up_semaphore == NULL)
     {
       if ((wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL)) == NULL)
-	g_error ("Cannot create wake-up semaphore: %d", GetLastError ());
+	g_error ("Cannot create wake-up semaphore: %s", g_win32_error_message (GetLastError ()));
       wake_up_rec.fd = (gint) wake_up_semaphore;
       wake_up_rec.events = G_IO_IN;
+#ifdef G_MAIN_POLL_DEBUG
+      g_print ("wake-up semaphore: %#x\n", (guint) wake_up_semaphore);
+#endif
       g_main_add_poll_unlocked (0, &wake_up_rec);
     }
 #endif
@@ -1029,7 +1057,7 @@ g_main_poll (gint     timeout,
   if (npoll || timeout != 0)
     {
 #ifdef	G_MAIN_POLL_DEBUG
-      g_print ("g_main_poll(%d) timeout: %d\r", npoll, timeout);
+      g_print ("g_main_poll(%d) timeout: %d\n", npoll, timeout);
       poll_timer = g_timer_new ();
 #endif
       
@@ -1222,6 +1250,18 @@ g_main_set_poll_func (GPollFunc func)
     poll_func = (GPollFunc) g_poll;
 #endif
 }
+
+#ifdef G_OS_WIN32
+
+/* Useful on other platforms, too? */
+
+GPollFunc
+g_main_win32_get_poll_func (void)
+{
+  return poll_func;
+}
+
+#endif
 
 /* Wake the main loop up from a poll() */
 static void

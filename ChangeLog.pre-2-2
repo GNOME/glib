@@ -1,3 +1,47 @@
+2000-07-30  Tor Lillqvist  <tml@iki.fi>
+
+	Finally, a new and improved IO Channel and condition watch
+	implementation for Win32. Based on code provided by Craig Setera.
+
+	When watching file descriptors, for which there is no select()
+	like functionality on Win32 that would work on all Win32 platforms
+	for all types of file descriptors (including anonymous pipes), we
+	start a new thread that blocks while trying to read from the file
+	descriptor. When the read returns, a Win32 Event is signalled that
+	the polling routine eventually notices. Meanwhile, the data being
+	read is stored in a circular buffer, from where the IO channel's
+	read() method picks it up.
+ 
+	If the buffer fills up the reading thread has to wait for space
+	becoming available. For this another Win32 Event is used. The IO
+	Channel's read() method signals this when it has read some data
+	out of the buffer.
+
+	The separate reader thread(s), and the circular buffer(s) with
+	associated events mean lots of possibilities for fun parallellism
+	errors. But it seems to work OK, i.e. GIMP runs.
+
+	* gmain.c: Small changes to the Win32 polling function.
+	(g_main_win32_get_poll_func): New function. Perhaps it would be a
+	good idea to provide this on all platforms.
+
+	* giowin32.c: The bulk of the new implementation.
+	(g_io_channel_win32_wait_for_condition): New function. To be used
+	where on Unix one does a select() on the channel's fd, like
+	libgimp's gimp_extension_process(). Could be provided on all
+	platforms.
+
+	* glib.h: Update documentation for IO Channels on Win32. Remove
+	the declarations for the as of now obsolete old functions related
+	to IO Channels for pipes with "wakeup" messages.
+	
+	* glib.def: Some new functions.
+	
+	* tests/gio-test.c: New file, to test GIOChannel and main loop.
+
+	* tests/Makefile.am
+	* tests/makefile.mingw.in: Add it.
+
 Thu Jul 27 05:15:11 2000  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c (g_strlcpy, g_strlcat): completed tor's fix
