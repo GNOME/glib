@@ -1,0 +1,228 @@
+<!-- ##### SECTION Title ##### -->
+Balanced Binary Trees
+
+<!-- ##### SECTION Short_Description ##### -->
+a sorted collection of key/value pairs optimised for searching
+and traversing in order.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The #GTree structure and its associated functions provide a sorted collection
+of key/value pairs optimised for searching and traversing in order.
+</para>
+<para>
+To create a new #GTree use g_tree_new().
+</para>
+<para>
+To insert a key/value pair into a #GTree use g_tree_insert().
+</para>
+<para>
+To lookup the value corresponding to a given key, use g_tree_lookup().
+</para>
+<para>
+To find out the number of nodes in a #GTree, use g_tree_nnodes().
+To get the height of a #GTree, use g_tree_height().
+</para>
+<para>
+To traverse a #GTree, calling a function for each node visited in the
+traversal, use g_tree_traverse().
+</para>
+<para>
+To remove a key/value pair use g_tree_remove().
+</para>
+<para>
+To destroy a #GTree, use g_tree_destroy().
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GTree ##### -->
+<para>
+The #GTree struct is an opaque data structure representing a
+<link linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>.
+It should be accessed only by using the following functions.
+</para>
+
+
+<!-- ##### FUNCTION g_tree_new ##### -->
+<para>
+Creates a new GTree.
+</para>
+
+@key_compare_func: the function used to order the nodes in the #GTree.
+It should return values similar to the standard <function>strcmp()</function>
+function -
+0 if the two arguments are equal, a negative value if the first argument comes
+before the second, or a positive value if the first argument comes after the
+second.
+@Returns: a new #GTree.
+
+
+<!-- ##### FUNCTION g_tree_insert ##### -->
+<para>
+Inserts a key/value pair into a #GTree.
+If the given key already exists in the #GTree it is set to the new value.
+(If you are using dynamically allocated keys and values you should be careful
+to ensure that the old values are freed.)
+</para>
+<para>
+The tree is automatically 'balanced' as new key/value pairs are added,
+so that the distance from the root to every leaf is as small as possible.
+</para>
+
+@tree: a #GTree.
+@key: the key to insert.
+@value: the value corresponding to the key.
+
+
+<!-- ##### FUNCTION g_tree_nnodes ##### -->
+<para>
+Gets the number of nodes in a #GTree.
+</para>
+
+@tree: a #GTree.
+@Returns: the number of nodes in the #GTree.
+
+
+<!-- ##### FUNCTION g_tree_height ##### -->
+<para>
+Gets the height of a #GTree.
+</para>
+<para>
+If the #GTree contains no nodes, the height is 0.
+If the #GTree contains only one root node the height is 1.
+If the root node has children the height is 2, etc.
+</para>
+
+@tree: a #GTree.
+@Returns: the height of the #GTree.
+
+
+<!-- ##### FUNCTION g_tree_lookup ##### -->
+<para>
+Gets the value corresponding to the given key.
+Since a #GTree is automatically balanced as key/value pairs are
+added, key lookup is very fast.
+</para>
+
+@tree: a #GTree.
+@key: the key to look up.
+@Returns: the value corresponding to the key.
+
+
+<!-- ##### FUNCTION g_tree_search ##### -->
+<para>
+Searches a #GTree using an alternative form of the comparison function.
+</para>
+<para>
+This function is not as useful as it sounds.
+It allows you to use a different function for performing the lookup of
+a key. However, since the tree is ordered according to the @key_compare_func
+function passed to g_tree_new(), the function you pass to g_tree_search() must
+return exactly the same value as would be returned by the comparison function,
+for each pair of tree nodes, or the search will not work.
+</para>
+<para>
+To search for a specific value, you can use g_tree_traverse().
+</para>
+
+@tree: a #GTree.
+@search_func: the comparison function used to search the #GTree.
+@data: the data passed as the second argument to the @search_func function.
+@Returns: the value corresponding to the found key, or NULL if the key is
+not found.
+
+
+<!-- ##### USER_FUNCTION GSearchFunc ##### -->
+<para>
+Specifies the type of function passed to g_tree_search().
+</para>
+
+@key: a key from a #GTree.
+@data: the data to compare with the key.
+@Returns: 0 if the desired key has been found, a negative number if the
+desired key comes before @key in the sort order of the #GTree, or a positive
+value if the desired key comes after @key.
+
+
+<!-- ##### FUNCTION g_tree_traverse ##### -->
+<para>
+Calls the given function for each node in the GTree.
+</para>
+
+@tree: a #GTree.
+@traverse_func: the function to call for each node visited. If this function
+returns TRUE, the traversal is stopped.
+@traverse_type: the order in which nodes are visited, one of %G_IN_ORDER,
+%G_PRE_ORDER and %G_POST_ORDER.
+@data: user data to pass to the traverse function.
+
+
+<!-- ##### USER_FUNCTION GTraverseFunc ##### -->
+<para>
+Specifies the type of function passed to g_tree_traverse().
+It is passed the key and value of each node, together with
+the @user_data parameter passed to g_tree_traverse().
+If the function returns TRUE, the traversal is stopped.
+</para>
+
+@key: a key of a #GTree node.
+@value: the value corresponding to the key.
+@data: user data passed to g_tree_traverse().
+@Returns: TRUE to stop the traversal.
+
+
+<!-- ##### ENUM GTraverseType ##### -->
+<para>
+Specifies the type of traveral performed by g_tree_traverse(),
+g_node_traverse() and g_node_find().
+<itemizedlist>
+<listitem><para>
+%G_PRE_ORDER visits a node, then its children.
+</para></listitem>
+<listitem><para>
+%G_IN_ORDER vists a node's left child first, then the node itself, then its
+right child. This is the one to use if you want the output sorted according
+to the compare function.
+</para></listitem>
+<listitem><para>
+%G_POST_ORDER visits the node's children, then the node itself.
+</para></listitem>
+<listitem><para>
+%G_LEVEL_ORDER is not implemented for
+<link linkend="glib-Balanced-Binary-Trees">Balanced Binary Trees</link>.
+For <link linkend="glib-N-ary-Trees">N-ary Trees</link>
+it calls the function for each child of the node, then it recursively visits
+each child.
+</para></listitem>
+</itemizedlist>
+</para>
+
+@G_IN_ORDER: 
+@G_PRE_ORDER: 
+@G_POST_ORDER: 
+@G_LEVEL_ORDER: 
+
+<!-- ##### FUNCTION g_tree_remove ##### -->
+<para>
+Removes a key/value pair from a #GTree.
+If the key or value is dynamically allocated you must remember to free them
+yourself.
+</para>
+
+@tree: a #GTree.
+@key: the key to remove.
+
+
+<!-- ##### FUNCTION g_tree_destroy ##### -->
+<para>
+Destroys the #GTree, freeing all of the memory allocated.
+But it doesn't free keys or values.
+</para>
+
+@tree: a #GTree.
+
+

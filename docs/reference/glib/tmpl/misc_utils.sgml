@@ -1,0 +1,226 @@
+<!-- ##### SECTION Title ##### -->
+Miscellaneous Utility Functions
+
+<!-- ##### SECTION Short_Description ##### -->
+a selection of portable utility functions.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+These are portable utility functions.
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION g_get_prgname ##### -->
+<para>
+Gets the name of the program.
+(If you are using GDK or GTK the program name is set in gdk_init(), which
+is called by gtk_init(). The program name is found by taking the last
+component of argv[0].)
+</para>
+
+@Returns: the name of the program.
+
+
+<!-- ##### FUNCTION g_set_prgname ##### -->
+<para>
+Sets the name of the program.
+</para>
+
+@prgname: the name of the program.
+
+
+<!-- ##### FUNCTION g_getenv ##### -->
+<para>
+Returns an environment variable.
+On windows systems the returned value is only valid until the next call to
+g_getenv().
+</para>
+
+@variable: the environment variable to get.
+@Returns: the value of the environment variable, or NULL if the environment
+variable is not found.
+
+
+<!-- ##### FUNCTION g_get_user_name ##### -->
+<para>
+Gets the user name of the current user.
+</para>
+
+@Returns: the user name of the current user.
+
+
+<!-- ##### FUNCTION g_get_real_name ##### -->
+<para>
+Gets the real name of the user. This comes from the user's entry in the
+passwd file.
+</para>
+
+@Returns: the user's real name.
+
+
+<!-- ##### FUNCTION g_get_home_dir ##### -->
+<para>
+Gets the current user's home directory.
+</para>
+
+@Returns: the current user's home directory.
+
+
+<!-- ##### FUNCTION g_get_tmp_dir ##### -->
+<para>
+Gets the directory to use for temporary files.
+This is found from inspecting the environment variables TMPDIR, TMP, and TEMP
+in that order. If none of those are defined "/tmp" is returned.
+</para>
+
+@Returns: the directory to use for temporary files.
+
+
+<!-- ##### FUNCTION g_get_current_dir ##### -->
+<para>
+Gets the current directory.
+The returned string should be freed when no longer needed.
+</para>
+
+@Returns: the current directory.
+
+
+<!-- ##### FUNCTION g_basename ##### -->
+<para>
+Gets the name of the file without any leading directory components.
+It returns a pointer into the given file name string.
+</para>
+
+@file_name: the name of the file.
+@Returns: the name of the file without any leading directory components.
+
+
+<!-- ##### FUNCTION g_dirname ##### -->
+<para>
+Gets the directory components of a file name.
+If the file name has no directory components "." is returned.
+The returned string should be freed when no longer needed.
+</para>
+
+@file_name: the name of the file.
+@Returns: the directory components of the file.
+
+
+<!-- ##### FUNCTION g_path_is_absolute ##### -->
+<para>
+Returns TRUE if the given @file_name is an absolute file name,
+i.e. it contains a full path from the root directory such as '/usr/local'
+or 'C:/windows' on windows systems.
+</para>
+
+@file_name: a file name.
+@Returns: TRUE if @file_name is an absolute path.
+
+
+<!-- ##### FUNCTION g_path_skip_root ##### -->
+<para>
+Returns a pointer into @file_name after the root component, i.e. after
+the '/' in Unix or 'C:/' under Windows. If @file_name is not an absolute
+path it returns NULL.
+</para>
+
+@file_name: a file name.
+@Returns: a pointer into @file_name after the root component.
+
+
+<!-- ##### FUNCTION g_bit_nth_lsf ##### -->
+<para>
+FIXME: I don't know what this does!
+</para>
+
+@mask: 
+@nth_bit: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bit_nth_msf ##### -->
+<para>
+FIXME: I don't know what this does!
+</para>
+
+@mask: 
+@nth_bit: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_bit_storage ##### -->
+<para>
+Gets the number of bits used to hold @number,
+e.g. if @number is 4, 3 bits are needed.
+</para>
+
+@number: a guint.
+@Returns: the number of bits used to hold @number.
+
+
+<!-- ##### FUNCTION g_spaced_primes_closest ##### -->
+<para>
+Gets the smallest prime number from a built-in array of primes which
+is larger than @num. This is used within GLib to calculate the optimum
+size of a #GHashTable.
+</para>
+<para>
+The built-in array of primes ranges from 11 to 13845163 such that
+each prime is approximately 1.5-2 times the previous prime.
+</para>
+
+@num: a guint.
+@Returns: the smallest prime number from a built-in array of primes which is
+larger than @num.
+
+
+<!-- ##### FUNCTION g_atexit ##### -->
+<para>
+Specifies a function to be called at normal program termination.
+</para>
+
+@func: the function to call on normal program termination.
+
+
+<!-- ##### FUNCTION g_parse_debug_string ##### -->
+<para>
+Parses a string containing debugging options separated by ':' into a guint
+containing bit flags.
+This is used within GDK and GTK to parse the debug options passed on the
+command line or through environment variables.
+</para>
+
+@string: a list of debug options separated by ':' or "all" to set all flags.
+@keys: pointer to an array of #GDebugKey which associate strings with
+bit flags.
+@nkeys: the number of #GDebugKey in the array.
+@Returns: the combined set of bit flags.
+
+
+<!-- ##### STRUCT GDebugKey ##### -->
+<para>
+Associates a string with a bit flag.
+Used in g_parse_debug_string().
+</para>
+
+@key: 
+@value: 
+
+<!-- ##### USER_FUNCTION GVoidFunc ##### -->
+<para>
+Specifies the type of function passed to g_atexit().
+</para>
+
+
+
+<!-- ##### USER_FUNCTION GFreeFunc ##### -->
+<para>
+
+</para>
+
+@data: 
+
+

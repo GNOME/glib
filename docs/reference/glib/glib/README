@@ -1,0 +1,14 @@
+This package contains the reference documentation
+for GLib. For more information about Glib,
+see:
+
+ http://www.gtk.org
+
+For information about contributing to the
+GLib/GTK+ reference documentation project, see:
+
+ http://www.gtk.org/rdp/
+
+The GLib reference documentation is freely redistributable,
+see the file COPYING for details.
+

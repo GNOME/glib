@@ -1,0 +1,75 @@
+<!-- ##### SECTION Title ##### -->
+Timers
+
+<!-- ##### SECTION Short_Description ##### -->
+functions to time operations.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Timers can be used to time operations, in a similar way to a stopwatch.
+Call g_timer_new () to create the timer, g_timer_start () to start it,
+g_timer_elapsed () to determine the time which has elapsed since the timer
+was started, and g_timer_stop () to stop the timer.
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GTimer ##### -->
+<para>
+An opaque data structure which holds the timer information.
+</para>
+
+
+<!-- ##### FUNCTION g_timer_new ##### -->
+<para>
+Creates a new timer.
+</para>
+
+@Returns: the new timer.
+
+
+<!-- ##### FUNCTION g_timer_start ##### -->
+<para>
+Starts the timer.
+</para>
+
+@timer: the timer.
+
+
+<!-- ##### FUNCTION g_timer_stop ##### -->
+<para>
+Stops the timer.
+</para>
+
+@timer: the timer.
+
+
+<!-- ##### FUNCTION g_timer_elapsed ##### -->
+<para>
+
+</para>
+
+@timer: the timer.
+@microseconds: if non-NULL, this will be set to the microseconds component
+of the elapsed time (it does not include the number of seconds elapsed).
+@Returns: the elapsed time in seconds, as a double.
+
+
+<!-- ##### FUNCTION g_timer_reset ##### -->
+<para>
+Resets the elapsed time to 0, leaving the timer running.
+</para>
+
+@timer: the timer.
+
+
+<!-- ##### FUNCTION g_timer_destroy ##### -->
+<para>
+Destroys the timer, freeing the memory allocated for it.
+</para>
+
+@timer: the timer.
+
+

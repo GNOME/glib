@@ -1,0 +1,182 @@
+<!-- ##### SECTION Title ##### -->
+Pointer Arrays
+
+<!-- ##### SECTION Short_Description ##### -->
+arrays of pointers to any type of data, which grow automatically as new
+elements are added.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Pointer Arrays are similar to Arrays but are used only for storing pointers.
+</para>
+<note>
+<para>
+If you remove elements from the array, elements at the end of the array
+are moved into the space previously occupied by the removed element.
+This means that you should not rely on the index of particular elements
+remaining the same. You should also be careful when deleting elements while
+iterating over the array.
+</para>
+</note>
+<para>
+To create a pointer array, use g_ptr_array_new().
+</para>
+<para>
+To add elements to a pointer array, use g_ptr_array_add().
+</para>
+<para>
+To remove elements from a pointer array, use g_ptr_array_remove(), and
+g_ptr_array_remove_index().
+</para>
+<para>
+To access an element of a pointer array, use g_ptr_array_index().
+</para>
+<para>
+To set the size of a pointer array, use g_ptr_array_set_size().
+</para>
+<para>
+To free a pointer array, use g_ptr_array_free().
+</para>
+<example>
+<title>Using a GPtrArray.</title>
+<programlisting>
+  GPtrArray *gparray;
+  gchar *string1 = "one", *string2 = "two", *string3 = "three";
+
+  gparray = g_ptr_array_new ();
+  g_ptr_array_add (gparray, (gpointer) string1);
+  g_ptr_array_add (gparray, (gpointer) string2);
+  g_ptr_array_add (gparray, (gpointer) string3);
+
+  if (g_ptr_array_index (gparray, 0) != (gpointer) string1)
+    g_print ("ERROR: got %p instead of %p\n",
+             g_ptr_array_index (gparray, 0), string1);
+
+  g_ptr_array_free (gparray, TRUE);
+</programlisting></example>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GPtrArray ##### -->
+<para>
+Contains the public fields of a pointer array.
+The <structfield>pdata</structfield> field points to the array of pointers,
+which may as when the array grows.
+The <structfield>len</structfield> field is the number of pointers in the
+array.
+</para>
+
+@pdata: 
+@len: 
+
+<!-- ##### FUNCTION g_ptr_array_new ##### -->
+<para>
+Creates a new #GPtrArray.
+</para>
+
+@Returns: the new #GPtrArray.
+
+
+<!-- ##### FUNCTION g_ptr_array_add ##### -->
+<para>
+Adds a pointer to the end of the pointer array.
+The array will grow in size automatically if necessary.
+</para>
+
+@array: a #GPtrArray.
+@data: the pointer to add.
+
+
+<!-- ##### FUNCTION g_ptr_array_remove ##### -->
+<para>
+Removes the first occurrence of given pointer from the pointer array.
+It returns TRUE if the pointer was removed, or FALSE if the pointer
+was not found.
+</para>
+<note>
+<para>
+If you remove elements from the array, elements at the end of the array
+are moved into the space previously occupied by the removed element.
+This means that you should not rely on the index of particular elements
+remaining the same. You should also be careful when deleting elements while
+iterating over the array.
+</para>
+</note>
+
+@array: a #GPtrArray.
+@data: the pointer to remove.
+@Returns: TRUE if the pointer is removed. FALSE if the pointer is not found
+in the array.
+
+
+<!-- ##### FUNCTION g_ptr_array_remove_index ##### -->
+<para>
+Removes the pointer at the given index from the pointer array.
+</para>
+<note>
+<para>
+If you remove elements from the array, elements at the end of the array
+are moved into the space previously occupied by the removed element.
+This means that you should not rely on the index of particular elements
+remaining the same. You should also be careful when deleting elements while
+iterating over the array.
+</para>
+</note>
+
+@array: a #GPtrArray.
+@index: the index of the pointer to remove.
+@Returns: the pointer which was removed.
+
+
+<!-- ##### FUNCTION g_ptr_array_remove_fast ##### -->
+<para>
+
+</para>
+
+@array: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ptr_array_remove_index_fast ##### -->
+<para>
+
+</para>
+
+@array: 
+@index: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ptr_array_set_size ##### -->
+<para>
+Sets the size of the array, expanding it if necessary.
+New elements are set to NULL.
+</para>
+
+@array: a #GPtrArray.
+@length: the new length of the pointer array.
+
+
+<!-- ##### MACRO g_ptr_array_index ##### -->
+<para>
+Returns the pointer at the given index of the pointer array.
+</para>
+
+@array: a #GPtrArray.
+@index: the index of the pointer to return.
+@Returns: the pointer at the given index.
+
+
+<!-- ##### FUNCTION g_ptr_array_free ##### -->
+<para>
+Frees all of the memory allocated for the pointer array.
+</para>
+
+@array: a #GPtrArray.
+@free_seg: if TRUE the actual element data is freed as well.
+
+

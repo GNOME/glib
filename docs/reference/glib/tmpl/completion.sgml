@@ -1,0 +1,121 @@
+<!-- ##### SECTION Title ##### -->
+Automatic String Completion
+
+<!-- ##### SECTION Short_Description ##### -->
+support for automatic completion using a group of target strings.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GCompletion provides support for automatic completion of a string using
+any group of target strings. It is typically used for file name completion
+as is common in many Unix shells.
+</para>
+<para>
+A #GCompletion is created using g_completion_new().
+Target items are added and removed with
+g_completion_add_items(), g_completion_remove_items() and
+g_completion_clear_items().
+A completion attempt is requested with g_completion_complete().
+When no longer needed, the #GCompletion is freed with g_completion_free().
+</para>
+<para>
+Items in the completion can be simple strings (e.g. file names),
+or pointers to arbitrary data structures. If data structures are used
+you must provide a #GCompletionFunc in g_completion_new(),
+which retrieves the item's string from the data structure.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GCompletion ##### -->
+<para>
+The data structure used for automatic completion.
+<structfield>items</structfield> is the list of target items (strings
+or data structures).
+<structfield>func</structfield> is the function called to get the string
+associated with a target item. It is NULL if the target items are strings.
+<structfield>prefix</structfield> is the last prefix passed to
+g_completion_complete().
+<structfield>cache</structfield> is the list of items which begin with
+<structfield>prefix</structfield>.
+</para>
+
+@items: 
+@func: 
+@prefix: 
+@cache: 
+
+<!-- ##### FUNCTION g_completion_new ##### -->
+<para>
+Creates a new #GCompletion.
+</para>
+
+@func: the function to be called to return the string representing an item
+in the #GCompletion, or NULL if strings are going to be used as the
+#GCompletion items.
+@Returns: the new #GCompletion.
+
+
+<!-- ##### USER_FUNCTION GCompletionFunc ##### -->
+<para>
+Specifies the type of the function passed to g_completion_new().
+It should return the string corresponding to the given target item.
+This is used when you use data structures as #GCompletion items.
+</para>
+
+@Param1: the completion item.
+@Returns: the string corresponding to the item.
+
+
+<!-- ##### FUNCTION g_completion_add_items ##### -->
+<para>
+Adds items to the #GCompletion.
+</para>
+
+@cmp: the #GCompletion.
+@items: the list of items to add.
+
+
+<!-- ##### FUNCTION g_completion_remove_items ##### -->
+<para>
+Removes items from a #GCompletion.
+</para>
+
+@cmp: the #GCompletion.
+@items: the items to remove.
+
+
+<!-- ##### FUNCTION g_completion_clear_items ##### -->
+<para>
+Removes all items from the #GCompletion.
+</para>
+
+@cmp: the #GCompletion.
+
+
+<!-- ##### FUNCTION g_completion_complete ##### -->
+<para>
+Attempts to complete the string @prefix using the #GCompletion target items.
+</para>
+
+@cmp: the #GCompletion.
+@prefix: the prefix string, typically typed by the user, which is compared
+with each of the items.
+@new_prefix: if non-NULL, returns the longest prefix which is common to all
+items that matched @prefix, or NULL if no items matched @prefix.
+This string should be freed when no longer needed.
+@Returns: the list of items whose strings begin with @prefix. This should
+not be changed.
+
+
+<!-- ##### FUNCTION g_completion_free ##### -->
+<para>
+Frees all memory used by the #GCompletion.
+</para>
+
+@cmp: the #GCompletion.
+
+

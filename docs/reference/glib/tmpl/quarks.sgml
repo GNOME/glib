@@ -1,0 +1,91 @@
+<!-- ##### SECTION Title ##### -->
+Quarks
+
+<!-- ##### SECTION Short_Description ##### -->
+a 2-way association between a string and a unique integer identifier.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+Quarks are associations between strings and integer identifiers.
+Given either the string or the #GQuark identifier it is possible to
+retrieve the other.
+</para>
+<para>
+Quarks are used for both
+<link linkend="glib-datasets">Datasets</link> and
+<link linkend="glib-keyed-data-lists">Keyed Data Lists</link>.
+</para>
+<para>
+To create a new quark from a string, use g_quark_from_string() or
+g_quark_from_static_string().
+</para>
+<para>
+To find the string corresponding to a given #GQuark, use g_quark_to_string().
+</para>
+<para>
+To find the #GQuark corresponding to a given string, use g_quark_try_string().
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### TYPEDEF GQuark ##### -->
+<para>
+A GQuark is an integer which uniquely identifies a particular string.
+</para>
+
+
+<!-- ##### FUNCTION g_quark_from_string ##### -->
+<para>
+Gets the #GQuark identifying the given string.
+If the string does not currently have an associated #GQuark, a new
+#GQuark is created, using a copy of the string.
+</para>
+
+@string: a string.
+@Returns: the #GQuark identifying the string.
+
+
+<!-- ##### FUNCTION g_quark_from_static_string ##### -->
+<para>
+Gets the #GQuark identifying the given (static) string.
+If the string does not currently have an associated #GQuark, a new
+#GQuark is created, linked to the given string.
+</para>
+<para>
+Note that this function is identical to g_quark_from_string() except
+that if a new #GQuark is created the string itself is used rather than
+a copy. This saves memory, but can only be used if the string will
+always exist (if, for example, it is a statically-allocated string).
+</para>
+
+@string: a string.
+@Returns: the #GQuark identifying the string.
+
+
+<!-- ##### FUNCTION g_quark_to_string ##### -->
+<para>
+Gets the string associated with the given #GQuark.
+</para>
+
+@quark: a #GQuark.
+@Returns: the string associated with the #GQuark.
+
+
+<!-- ##### FUNCTION g_quark_try_string ##### -->
+<para>
+Gets the #GQuark associated with the given string, or 0 if the string has
+no associated #GQuark.
+</para>
+<para>
+If you want the GQuark to be created if it doesn't already exist, use
+g_quark_from_string() or g_quark_from_static_string().
+</para>
+
+@string: a string.
+@Returns: the #GQuark associated with the string, or 0 if there is no
+#GQuark associated with the string.
+
+

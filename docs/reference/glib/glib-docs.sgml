@@ -1,0 +1,99 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!entity glib-Basic-Types SYSTEM "sgml/types.sgml">
+<!entity glib-Limits-of-Basic-Types SYSTEM "sgml/limits.sgml">
+<!entity glib-Standard-Macros SYSTEM "sgml/macros.sgml">
+<!entity glib-Type-Conversion-Macros SYSTEM "sgml/type_conversion.sgml">
+<!entity glib-Byte-Order-Macros SYSTEM "sgml/byte_order.sgml">
+<!entity glib-Miscellaneous-Macros SYSTEM "sgml/macros_misc.sgml">
+<!entity glib-Memory-Allocation SYSTEM "sgml/memory.sgml">
+<!entity glib-Warnings-and-Assertions SYSTEM "sgml/warnings.sgml">
+<!entity glib-Message-Logging SYSTEM "sgml/messages.sgml">
+<!entity glib-Timers SYSTEM "sgml/timers.sgml">
+<!entity glib-String-Utility-Functions SYSTEM "sgml/string_utils.sgml">
+<!entity glib-Miscellaneous-Utility-Functions SYSTEM "sgml/misc_utils.sgml">
+<!entity glib-Date-and-Time-Functions SYSTEM "sgml/date.sgml">
+<!entity glib-The-Main-Event-Loop SYSTEM "sgml/main.sgml">
+<!entity glib-Threads SYSTEM "sgml/threads.sgml">
+<!entity glib-IO-Channels SYSTEM "sgml/iochannels.sgml">
+<!entity glib-Hook-Functions SYSTEM "sgml/hooks.sgml">
+<!entity glib-Lexical-Scanner SYSTEM "sgml/scanner.sgml">
+<!entity glib-Dynamic-Loading-of-Modules SYSTEM "sgml/modules.sgml">
+<!entity glib-Automatic-String-Completion SYSTEM "sgml/completion.sgml">
+<!entity glib-Windows-Compatability-Functions SYSTEM "sgml/windows.sgml">
+<!entity glib-Memory-Chunks SYSTEM "sgml/memory_chunks.sgml">
+<!entity glib-Doubly-Linked-Lists SYSTEM "sgml/linked_lists_double.sgml">
+<!entity glib-Singly-Linked-Lists SYSTEM "sgml/linked_lists_single.sgml">
+<!entity glib-Hash-Tables SYSTEM "sgml/hash_tables.sgml">
+<!entity glib-Strings SYSTEM "sgml/strings.sgml">
+<!entity glib-String-Chunks SYSTEM "sgml/string_chunks.sgml">
+<!entity glib-Arrays SYSTEM "sgml/arrays.sgml">
+<!entity glib-Pointer-Arrays SYSTEM "sgml/arrays_pointer.sgml">
+<!entity glib-Byte-Arrays SYSTEM "sgml/arrays_byte.sgml">
+<!entity glib-Balanced-Binary-Trees SYSTEM "sgml/trees-binary.sgml">
+<!entity glib-N-ary-Trees SYSTEM "sgml/trees-nary.sgml">
+<!entity glib-Quarks SYSTEM "sgml/quarks.sgml">
+<!entity glib-Keyed-Data-Lists SYSTEM "sgml/datalist.sgml">
+<!entity glib-Datasets SYSTEM "sgml/datasets.sgml">
+<!entity glib-Relations-and-Tuples SYSTEM "sgml/relations.sgml">
+<!entity glib-Caches SYSTEM "sgml/caches.sgml">
+<!entity glib-Memory-Allocators SYSTEM "sgml/allocators.sgml">
+]>
+<book id="index">
+  <bookinfo>
+    <title>GLib Reference Manual</title>
+  </bookinfo>
+
+  <chapter id="glib-fundamentals">
+    <title>GLib Fundamentals</title>
+    &glib-Basic-Types;
+    &glib-Limits-of-Basic-Types;
+    &glib-Standard-Macros;
+    &glib-Type-Conversion-Macros;
+    &glib-Byte-Order-Macros;
+    &glib-Miscellaneous-Macros;
+  </chapter>
+
+  <chapter id="glib-core">
+    <title>GLib Core Application Support</title>
+    &glib-The-Main-Event-Loop;
+    &glib-Threads;
+    &glib-Dynamic-Loading-of-Modules;
+    &glib-Memory-Allocation;
+    &glib-IO-Channels;
+    &glib-Warnings-and-Assertions;
+    &glib-Message-Logging;
+  </chapter>
+
+  <chapter id="glib-utilities">
+    <title>GLib Utilities</title>
+    &glib-String-Utility-Functions;
+    &glib-Date-and-Time-Functions;
+    &glib-Hook-Functions;
+    &glib-Miscellaneous-Utility-Functions;
+    &glib-Lexical-Scanner;
+    &glib-Automatic-String-Completion;
+    &glib-Timers;
+    &glib-Windows-Compatability-Functions;
+  </chapter>
+
+  <chapter id="glib-data-types">
+    <title>GLib Data Types</title>
+    &glib-Memory-Chunks;
+    &glib-Doubly-Linked-Lists;
+    &glib-Singly-Linked-Lists;
+    &glib-Hash-Tables;
+    &glib-Strings;
+    &glib-String-Chunks;
+    &glib-Arrays;
+    &glib-Pointer-Arrays;
+    &glib-Byte-Arrays;
+    &glib-Balanced-Binary-Trees;
+    &glib-N-ary-Trees;
+    &glib-Quarks;
+    &glib-Keyed-Data-Lists;
+    &glib-Datasets;
+    &glib-Relations-and-Tuples;
+    &glib-Caches;
+    &glib-Memory-Allocators;
+  </chapter>
+</book>
