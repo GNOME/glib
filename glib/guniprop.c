@@ -525,7 +525,16 @@ typedef enum {
 static LocaleType
 get_locale_type (void)
 {
+#ifdef G_OS_WIN32
+  char *tem = g_win32_getlocale ();
+  char locale[2];
+
+  locale[0] = tem[0];
+  locale[1] = tem[1];
+  g_free (tem);
+#else
   const char *locale = setlocale (LC_CTYPE, NULL);
+#endif
 
   switch (locale[0])
     {

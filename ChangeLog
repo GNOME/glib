@@ -1,3 +1,9 @@
+2005-01-04  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/guniprop.c (get_locale_type): Use g_win32_getlocale()
+	instead of setlocale() on Windows. setlocale() returns strings
+	like "Turkish_Turkey".
+
 2005-01-04  Matthias Clasen  <mclasen@redhat.com>
 
 	Fix the inlining magic.  (#157536, Jens Hatlak, and
