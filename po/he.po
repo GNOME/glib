@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "POT-Creation-Date: 2002-12-10 06:10+0100\n"
-"PO-Revision-Date: 2002-12-11 06:35+0200\n"
+"PO-Revision-Date: 2002-12-11 23:23+0200\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -53,27 +53,27 @@ msgstr "לא ניתן להמיר ברירת מחדל '%s' למערך תווים 
 #: glib/gconvert.c:1633
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI '%s' הוא לא אבסולוטי בשימוש בתור מזהה קובץ"
+msgstr "הכתובת '%s' היא לא אבסולוטית בשימוש בתור מזהה קובץ"
 
 #: glib/gconvert.c:1643
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "ה-URI של קובץ מקומי '%s' אינו יכול להכיל '#'"
+msgstr "הכתובת של קובץ מקומי '%s' אינה יכולה להכיל '#'"
 
 #: glib/gconvert.c:1660
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI '%s' אינו תקף"
+msgstr "הכתובת '%s' אינה תקפה"
 
 #: glib/gconvert.c:1672
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "שם המארח של URI '%s' אינו תקף"
+msgstr "שם המארח של הכתובת '%s' אינו תקף"
 
 #: glib/gconvert.c:1688
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s' מכיל תווים ללא תוי חילוף תקפים"
+msgstr "הכתובת '%s' מכילה תווים ללא תוי חילוף תקפים"
 
 #: glib/gconvert.c:1759
 #, c-format
@@ -87,7 +87,7 @@ msgstr "שם מחשב מארח לא תקף"
 #: glib/gdir.c:80
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "שגיאה בפתיחת תיקיה '%s': %s"
+msgstr "שגיאה בפתיחת סיפרייה '%s': %s"
 
 #: glib/gfileutils.c:382 glib/gfileutils.c:447
 #, c-format
@@ -150,7 +150,7 @@ msgstr "לא ניתן לבצע קריאה ב-g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
-msgstr "שאריות מידע לא מומר במכלא הקריאה"
+msgstr "שאריות מידע לא מומר בחוצץ הקריאה"
 
 #: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
@@ -427,7 +427,7 @@ msgstr "כשלון בהרצת תוכנת עזר"
 #: glib/gspawn-win32.c:816 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "כשלון בשינוי לתיקיה '%s' (%s)"
+msgstr "כשלון בשינוי לסיפרייה '%s' (%s)"
 
 #: glib/gspawn-win32.c:825
 #, c-format
@@ -462,7 +462,7 @@ msgstr "כשלון בשכפול תהליך (%s)"
 #: glib/gspawn.c:1176
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "כשלון בהרצת תהליך ילד  \"%s\" (%s)"
+msgstr "כשלון בהרצת תהליך ילד \"%s\" (%s)"
 
 #: glib/gspawn.c:1186
 #, c-format
