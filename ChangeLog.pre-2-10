@@ -9,7 +9,7 @@
 
 	* glib/glib.def: Add new functions.
 
-	* glib/Makefile.am: If !HAVE_GOOD_PRINTF, add libtio.la to LIBADD
+	* glib/Makefile.am: If !HAVE_GOOD_PRINTF, add libtrio.la to LIBADD
 	and DEPENDENCIES.
 
 	* glib/glib.rc.in
