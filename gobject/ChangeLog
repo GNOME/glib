@@ -1,3 +1,8 @@
+2001-08-06  Sven Neumann  <sven@gimp.org>
+
+	* gobject.[ch]: 
+	added new functions g_object_[add|remove]_weak_pointer().
+
 2001-08-01  Sven Neumann  <sven@gimp.org>
 
 	* gsignal.h: added convenience macro g_signal_connect_after().

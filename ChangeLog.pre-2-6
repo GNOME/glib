@@ -2,9 +2,6 @@
 
 	* glib/gutils.[ch]: added new function g_nullify_pointer().
 	
-	* gobject/gobject.[ch]: 
-	added new functions g_object_[add|remove]_weak_pointer().
-
 2001-08-05  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c glib/giochannel.c glib/glib.def
