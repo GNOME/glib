@@ -550,7 +550,6 @@ g_utf8_validate (const gchar  *str,
 {
 
   const gchar *p;
-  gboolean retval = TRUE;
   
   if (end)
     *end = str;
@@ -566,34 +565,35 @@ g_utf8_validate (const gchar  *str,
       UTF8_COMPUTE (c, mask, len);
 
       if (len == -1)
-        {
-          retval = FALSE;
-          break;
-        }
+        break;
 
       /* check that the expected number of bytes exists in str */
       if (max_len >= 0 &&
           ((max_len - (p - str)) < len))
-        {
-          retval = FALSE;
-          break;
-        }
+        break;
         
       UTF8_GET (result, p, i, mask, len);
 
       if (result == (gunichar)-1)
-        {
-          retval = FALSE;
-          break;
-        }
+        break;
       
       p += len;
     }
 
   if (end)
     *end = p;
-  
-  return retval;
+
+  /* See that we covered the entire length if a length was
+   * passed in, or that we ended on a nul if not
+   */
+  if (max_len >= 0 &&
+      p != (str + max_len))
+    return FALSE;
+  else if (max_len < 0 &&
+           *p != '\0')
+    return FALSE;
+  else
+    return TRUE;
 }
 
 

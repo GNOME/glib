@@ -80,7 +80,7 @@ g_iconv_close (GIConv converter)
   return iconv_close (cd);
 }
 
-GIConv
+static GIConv
 open_converter (const gchar *to_codeset,
                 const gchar *from_codeset,
 		GError     **error)

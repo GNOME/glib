@@ -1,3 +1,14 @@
+2000-12-13  Havoc Pennington  <hp@redhat.com>
+
+	* gconvert.c (open_converter): make static
+
+	* gutf8.c (g_utf8_validate): Simplify logic a bit, maybe 
+	speeding it up - now we just return FALSE if we had to bail out
+	for any reason before getting to the end of the string, as defined 
+	by a nul byte if len was -1, defined by the len otherwise. This 
+	also fixes a bug where nul bytes were not treated as invalid 
+	when the length was specified.
+
 2000-12-12  Havoc Pennington  <hp@pobox.com>
 
 	* gmain.c (g_main_context_destroy): don't try to use thread stuff
