@@ -35,12 +35,29 @@ struct _GStaticPrivateNode {
 };
 
 static void g_static_private_free_data (gpointer data);
+static void g_thread_fail (void);
 
 /* Global variables */
 
 gboolean g_thread_use_default_impl = TRUE;
 gboolean g_thread_supported = FALSE;
-GThreadFunctions g_thread_functions_for_glib_use; /* is NULLified as default */
+
+GThreadFunctions g_thread_functions_for_glib_use = {
+  (GMutex*(*)())g_thread_fail,                 /* mutex_new */
+  NULL,                                        /* mutex_lock */
+  NULL,                                        /* mutex_trylock */
+  NULL,                                        /* mutex_unlock */
+  NULL,                                        /* mutex_free */
+  (GCond*(*)())g_thread_fail,                  /* cond_new */
+  NULL,                                        /* cond_signal */
+  NULL,                                        /* cond_broadcast */
+  NULL,                                        /* cond_wait */
+  NULL,                                        /* cond_timed_wait  */
+  NULL,                                        /* cond_free */
+  (GPrivate*(*)(GDestroyNotify))g_thread_fail, /* private_new */
+  NULL,                                        /* private_get */
+  NULL,                                        /* private_set */
+}; 
 
 /* Local data */
 
@@ -54,10 +71,14 @@ static GPrivate *g_thread_specific_private = NULL;
 void
 g_mutex_init (void)
 {
+  /* We let the main thread (the one that calls g_thread_init) inherit
+     the data, that it set before calling g_thread_init */
+  gpointer private_old = g_thread_specific_private;
+  g_thread_specific_private = g_private_new (g_static_private_free_data);
+  g_private_set (g_thread_specific_private, private_old);
+
   g_mutex_protect_static_mutex_allocation = g_mutex_new();
   g_thread_specific_mutex = g_mutex_new();
-  
-  g_thread_specific_private = g_private_new (g_static_private_free_data);
 }
 
 GMutex *
@@ -142,4 +163,10 @@ g_static_private_free_data (gpointer data)
 	    node->destroy (node->data);
 	}
     }
+}
+
+static void
+g_thread_fail (void)
+{
+  g_error ("The thread system is not yet initialized.");
 }

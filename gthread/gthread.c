@@ -35,21 +35,20 @@ static gboolean thread_system_already_initialized = FALSE;
 
 #include G_THREAD_SOURCE
 
-void g_mutex_init();
+void g_mutex_init (void);
 
-gboolean
-g_thread_try_init(GThreadFunctions* init)
+void
+g_thread_init(GThreadFunctions* init)
 {
   if (thread_system_already_initialized)
-    return FALSE;
+    g_error ("the glib thread system may only be initialized once.");
     
   thread_system_already_initialized = TRUE;
 
   if (init == NULL)
-    {
-      g_thread_use_default_impl = TRUE;
-      init = &g_thread_functions_for_glib_use_default;
-    }
+    init = &g_thread_functions_for_glib_use_default;
+  else
+    g_thread_use_default_impl = FALSE;
 
   g_thread_functions_for_glib_use = *init;
 
@@ -69,25 +68,19 @@ g_thread_try_init(GThreadFunctions* init)
     init->private_get &&
     init->private_get;
 
-  /* if somebody is calling g_thread_init(), it means that he wants to
+  /* if somebody is calling g_thread_init (), it means that he wants to
      have thread support, so check this */
 
   if (!g_thread_supported)
-    g_error( "Mutex functions missing." );
+    {
+      if (g_thread_use_default_impl)
+	g_error ("Threads are not supported on this platform.");
+      else
+	g_error ("The supplied thread function vector is invalid.");
+    }
 
   /* now call the thread initialization functions of the different
      glib modules. BTW: order does matter, g_mutex_init MUST be first */
 
-  g_mutex_init();
-
-  return TRUE;
+  g_mutex_init ();
 }
-
-void
-g_thread_init(GThreadFunctions* init)
-{  
-  /* Make sure, this function is only called once. */
-  if (!g_thread_try_init (init))
-    g_error( "the glib thread system may only be initialized once." );
-}
-

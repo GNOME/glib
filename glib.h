@@ -2597,10 +2597,7 @@ gint		gwin_closedir  	(DIR		*dir);
 
 #endif /* NATIVE_WIN32 */
 
-/* functions for mutex and condition support for glib. */
-
-/* glib is not completly thread safe now, make 'grep -L "MT safe" g*.c' 
-   to see the files, that are not yet made thread safe */
+/* functions for thread support for glib. */
 
 typedef struct _GMutex GMutex;
 typedef struct _GCond GCond;
@@ -2610,12 +2607,12 @@ typedef struct _GStaticPrivate GStaticPrivate;
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
 {
-  GMutex*  (*mutex_new)       ();
+  GMutex*  (*mutex_new)       (void);
   void     (*mutex_lock)      (GMutex* mutex);
   gboolean (*mutex_trylock)   (GMutex* mutex);
   void     (*mutex_unlock)    (GMutex* mutex);
   void     (*mutex_free)      (GMutex* mutex);
-  GCond*   (*cond_new)        ();
+  GCond*   (*cond_new)        (void);
   void     (*cond_signal)     (GCond* cond);
   void     (*cond_broadcast)  (GCond* cond);
   void     (*cond_wait)       (GCond* cond, GMutex* mutex);
@@ -2631,34 +2628,29 @@ GUTILS_C_VAR GThreadFunctions g_thread_functions_for_glib_use;
 GUTILS_C_VAR gboolean g_thread_use_default_impl;
 GUTILS_C_VAR gboolean g_thread_supported;
 
-/* initializes the mutex/cond implementation for glib, might only be
- * called once, and must not be called directly or indirectly from
- * another glib-function, e.g. as a callback. 
- */
+/* initializes the mutex/cond/private implementation for glib, might
+ * only be called once, and must not be called directly or indirectly
+ * from another glib-function, e.g. as a callback.  */
 void g_thread_init(GThreadFunctions* init); 
 
-/* like above, but might be called several times, returning TRUE, if
- * it was the first call to this function, otherwise FALSE is returned
- * and the init vector is ignored 
- */
-gboolean g_thread_try_init(GThreadFunctions* init);
-
 /* Internal functions for fallback static mutex implementation
- *  Please don't use it directly 
+ * Please don't use it directly 
  */
 GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
 
+#define G_USE_THREAD_FUNC_UNCOND(name,arg) \
+  (*g_thread_functions_for_glib_use.name)arg
 #define G_USE_THREAD_FUNC(name,fail,arg) \
-  (g_thread_supported ? (*g_thread_functions_for_glib_use.name)arg : (fail))
+  (g_thread_supported ? G_USE_THREAD_FUNC_UNCOND(name,arg) : (fail))
 
-/* keep in mind, all those mutexes and static mutexes are not
-   recursive in general, don't rely on that */
-#define g_mutex_new()           G_USE_THREAD_FUNC(mutex_new,NULL,())
+/* keep in mind, all those mutexes and static mutexes are not 
+ * recursive in general, don't rely on that */
+#define g_mutex_new()           G_USE_THREAD_FUNC_UNCOND(mutex_new,())
 #define g_mutex_lock(mutex)     G_USE_THREAD_FUNC(mutex_lock,(void)0,(mutex))
 #define g_mutex_trylock(mutex)  G_USE_THREAD_FUNC(mutex_trylock,TRUE,(mutex))
 #define g_mutex_unlock(mutex)   G_USE_THREAD_FUNC(mutex_unlock,(void)0,(mutex))
 #define g_mutex_free(mutex)     G_USE_THREAD_FUNC(mutex_free,(void)0,(mutex))
-#define g_cond_new()            G_USE_THREAD_FUNC(cond_new,NULL,())
+#define g_cond_new()            G_USE_THREAD_FUNC_UNCOND(cond_new,())
 #define g_cond_signal(cond)     G_USE_THREAD_FUNC(cond_signal,(void)0,(cond))
 #define g_cond_broadcast(cond)  G_USE_THREAD_FUNC(cond_broadcast,(void)0,(cond))
 #define g_cond_wait(cond,mutex) G_USE_THREAD_FUNC(cond_wait,(void)0,(cond,mutex))
@@ -2667,7 +2659,7 @@ GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
 #define g_cond_free(cond)       G_USE_THREAD_FUNC(cond_free,(void)0,(cond))
 
 #define g_private_new(destructor) \
-      G_USE_THREAD_FUNC(private_new,NULL,(destructor))
+      G_USE_THREAD_FUNC_UNCOND(private_new,(destructor))
 #define g_private_get(private) \
       G_USE_THREAD_FUNC(private_get,((gpointer)private),(private))
 #define g_private_set(private,value) \
@@ -2675,9 +2667,9 @@ GMutex* g_static_mutex_get_mutex_impl(GMutex** mutex);
 		     (private,value))
 
 /* GStaticMutex'es can be statically initialized with the value
-   G_STATIC_MUTEX_INIT, and then they can directly be used, that is
-   much easier, than having to explicitly allocate the mutex before
-   use */
+ * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
+ * much easier, than having to explicitly allocate the mutex before
+ * use */
 #define g_static_mutex_lock(mutex) \
   g_mutex_lock( g_static_mutex_get_mutex(mutex) )
 #define g_static_mutex_trylock(mutex) \
@@ -2698,9 +2690,9 @@ void     g_static_private_set (GStaticPrivate *private,
 			       GDestroyNotify  notify);
 
 /* these are some convenience macros, for using StaticMutex'es, you
-   define them by G_LOCK_DEFINE(name), where name could for example be the
-   name of the protected varibale, and you (un)lock them with
-   g_(un)lock(name) */
+ * define them by G_LOCK_DEFINE(name), where name could for example be the
+ * name of the protected varibale, and you (un)lock them with
+ * g_(un)lock(name) */
 #define g_lock_name(name) (name ## _lock)
 #define G_LOCK_DEFINE(name) GStaticMutex g_lock_name(name)=G_STATIC_MUTEX_INIT 
 

@@ -1,3 +1,15 @@
+1998-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmutex.c, glib.h: Now abort, if a mutex/cond/private is
+	allocated before the thread system is set up.
+
+	* gthread/gthread.c (g_thread_init): Removed g_thread_try_init(),
+	as it is not necessary. Changed the error message. Corrected logic
+	for g_thread_use_default_impl.
+
+	* gmutex.c (g_mutex_init): Keep the thread private data array
+	after calling g_thread_init().
+
 1998-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread/testgthread.c (new_thread): Now also working for posix

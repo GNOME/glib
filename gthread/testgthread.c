@@ -15,8 +15,11 @@ test_mutexes()
   GStaticMutex static_mutex = G_STATIC_MUTEX_INIT;
   G_LOCK_DEFINE(test_me);
 
-  mutex = g_mutex_new();
-  cond = g_cond_new();
+  if( g_thread_supported ) 
+    {
+      mutex = g_mutex_new();
+      cond = g_cond_new();
+    }
  
   g_mutex_lock(mutex);
   g_mutex_unlock(mutex);
@@ -30,8 +33,11 @@ test_mutexes()
   g_lock(test_me);
   g_unlock(test_me);
   
-  g_cond_free(cond);
-  g_mutex_free(mutex);
+  if( g_thread_supported ) 
+    {
+      g_cond_free(cond);
+      g_mutex_free(mutex);
+    }
 }
 
 #if defined(DEFAULTMUTEX) /* we are using solaris threads */
