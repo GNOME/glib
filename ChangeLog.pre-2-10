@@ -1,3 +1,9 @@
+2003-06-08  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giowin32.c: Fix indentation and spacing. Use
+	INADDR_LOOPBACK instead of inet_addr("127.0.0.1") and
+	gethostbyaddr().
+
 Sat Jun  6 16:18:10 2003  Andrew Lanoix  <alanoix@umich.edu>
 
 	* glib/giowin32.c: Resolved thread deadlocks in socket 
