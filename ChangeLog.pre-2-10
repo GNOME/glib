@@ -1,3 +1,9 @@
+2001-08-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gmain.c (g_main_context_add_poll_unlocked): Don't free
+	cached_poll_array, when adding new poll's. This is taken care for
+	in g_main_context_iterate.
+
 2001-08-30  Tor Lillqvist  <tml@iki.fi>
 
 	After being away for about five months, I'm back working on

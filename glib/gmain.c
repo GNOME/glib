@@ -2634,12 +2634,6 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   newrec->next = pollrec;
 
   context->n_poll_records++;
-  if (context->cached_poll_array &&
-      context->cached_poll_array_size < context->n_poll_records)
-    {
-      g_free (context->cached_poll_array);
-      context->cached_poll_array = NULL;
-    }
 
 #ifdef G_THREADS_ENABLED
   context->poll_changed = TRUE;
