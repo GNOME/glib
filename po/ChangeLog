@@ -1,3 +1,7 @@
+2004-03-06  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* es.po: Updated Spanish translation.
+
 2004-03-04  Guntupalli Karunakar  <karunakar@freedomink.org>
 
 	* pa.po: Added Punjabi translation by
@@ -66,7 +70,7 @@ Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 2004-02-01  Hasbullah Bin Pit <sebol@my-penguin.org>
 
-        * ms.po: Updated Malay translation.
+	* ms.po: Updated Malay translation.
 
 2004-01-31  Laurent Dhima  <laurenti@alblinux.net>
 
@@ -159,7 +163,7 @@ Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 2003-11-10  Pablo Gonzalo del Campo  <pablodc@bigfoot.com>
 
-        * es.po: Updated Spanish translation by
+	* es.po: Updated Spanish translation by
                  Francisco Javier F. Serrador <serrador@arrakis.es>.
 		 
 2003-10-31  Kjartan Maraas  <kmaraas@gnome.org>
