@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.1.4\n"
+"Project-Id-Version: glib 2.3.1\n"
 "POT-Creation-Date: 2003-11-12 15:18-0500\n"
-"PO-Revision-Date: 2002-12-12 11:42+0900\n"
+"PO-Revision-Date: 2003-12-03 17:30+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,12 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "문자셋 '%s' 에서 '%s'로 변환은 지원되지 않습니다"
+msgstr "문자셋 '%s'에서 '%s'(으)로 변환은 지원되지 않습니다"
 
 #: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "'%s'에서 '%s'로 변환하는 변환기를 열수 없습니다 :%s"
+msgstr "'%s'에서 '%s'(으)로 변환하는 변환기를 열 수 없습니다: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -44,22 +44,22 @@ msgstr "입력의 끝에서 부분적인 문자 순서"
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "코드셋 '%2$s'에서 대체하는 '%1$s'로 변환 못함"
+msgstr "코드셋 '%2$s'에서 대체하는 '%1$s'(으)로 변환 못함"
 
 #: glib/gconvert.c:1492
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI '%s'는 파일스키마를 사용하는 완전한 URI가 아닙니다"
+msgstr "URI '%s'은(는) 파일스키마를 사용하는 완전한 URI가 아닙니다"
 
 #: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "로컬 파일 URI '%s'는 '#'를 포함하지 않습니다"
+msgstr "로컬 파일 URI '%s'은(는) '#'를 포함하지 않습니다"
 
 #: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI '%s'가 잘못되었습니다"
+msgstr "URI '%s'이(가) 잘못되었습니다"
 
 #: glib/gconvert.c:1531
 #, c-format
@@ -69,12 +69,12 @@ msgstr "URI '%s'의 호스트 이름이 잘못되었습니다"
 #: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s'는 잘못된 이스케이프 문자를 포함합니다"
+msgstr "URI '%s'은(는) 잘못된 이스케이프 문자를 포함합니다"
 
 #: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "경로이름 '%s'는 절대 경로가 아닙니다"
+msgstr "경로이름 '%s'은(는) 절대 경로가 아닙니다"
 
 #: glib/gconvert.c:1628
 msgid "Invalid hostname"
@@ -88,12 +88,12 @@ msgstr "디렉토리 '%s' 여는 중 오류 : %s"
 #: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "파일 \"%2$s\"를 읽은 %1$lu 바이트를 할당 할수 없습니다"
+msgstr "파일 \"%2$s\"을(를) 읽은 %1$lu 바이트를 할당할 수 없습니다"
 
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "파일 '%s' 를 읽는 중 오류 : %s"
+msgstr "파일 '%s'을(를) 읽는 중 오류: %s"
 
 #: glib/gfileutils.c:477
 #, c-format
@@ -118,12 +118,12 @@ msgstr "파일 '%s' 열기 실패: fdopen() 실패: %s"
 #: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "템플리트 '%s'가 잘못되었습니다, '%s'를 포함하지 않아야 합니다"
+msgstr "템플리트 '%s'이(가) 잘못되었습니다, '%s'을(를) 포함하지 않아야 합니다"
 
 #: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "템플리트 '%s' 가 XXXXXX로 끝나지 않았습니다"
+msgstr "템플리트 '%s'이(가) XXXXXX로 끝나지 않았습니다"
 
 #: glib/gfileutils.c:809
 #, c-format
@@ -131,27 +131,27 @@ msgid "Failed to create file '%s': %s"
 msgstr "파일 '%s' 만들기 실패: %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "파일 '%s' 만들기 실패: %s"
+msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "심볼릭 링크를 지원하지 않습니다"
 
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "문자셋 `%s'에서 `%s'로 변환을 지원하지 않습니다"
+msgstr "문자셋 `%s'에서 `%s'(으)로 변환을 지원하지 않습니다"
 
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "`%s'에서 `%s'로 변환하는 변환기를 열수 없음: %s"
+msgstr "`%s'에서 `%s'(으)로 변환하는 변환기를 열 수 없음: %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "g_io_channel_read_line_string으로 raw 일기를 할수 없습니다"
+msgstr "g_io_channel_read_line_string으로 raw 일기를 할 수 없습니다"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -163,7 +163,7 @@ msgstr "일부 문자에서 채널 끝냄"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "g_io_channel_read_to_endi로 raw 읽기를 할수 없습니다"
+msgstr "g_io_channel_read_to_endi로 raw 읽기를 할 수 없습니다"
 
 #: glib/gmarkup.c:223
 #, c-format
@@ -197,12 +197,12 @@ msgstr ""
 #: glib/gmarkup.c:458
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "문자 '%s'는 엔티티 이름에서 올바르지 않습니다"
+msgstr "문자 '%s'은(는) 엔티티 이름에서 올바르지 않습니다"
 
 #: glib/gmarkup.c:502
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "엔티티 이름 '%s'가 알려져 있지 않습니다"
+msgstr "엔티티 이름 '%s'이(가) 알려져 있지 않습니다"
 
 # FIXME: "escape"라는 동사를 번역?
 #: glib/gmarkup.c:512
@@ -211,8 +211,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "엔티티가 세미콜론으로 끝나지 않습니다; 대부분의 경우 엔티티 시작에 사용하려"
-"고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이 경우 &amp; 라고 쓰십"
-"시오"
+"고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고"
+"쓰십시오"
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -239,8 +239,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "문자 참조가 세미콜론으로 끝나지 않습니다; 대부분의 경우 엔티티 시작에 사용하"
-"려고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이 경우 &amp; 라고 쓰"
-"십시오"
+"려고 하지 않은 곳에서 & 기호를 사용한 경우일 것입니다 - 이런 경우 &amp; 라고"
+"쓰십시오"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -426,7 +426,7 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll() 에서 기대되지않"
+"자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll()에서 기대되지않"
 "은 오류"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
@@ -446,7 +446,7 @@ msgstr "자식 프로세스 실행 실패 (%s)"
 #: glib/gspawn-win32.c:978 glib/gspawn.c:1203
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "디렉토리 '%s'로 바꾸기 실패 (%s)"
+msgstr "디렉토리 '%s'(으)로 바꾸기 실패 (%s)"
 
 #: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
 #, c-format
@@ -467,7 +467,7 @@ msgstr ""
 #: glib/gspawn.c:381
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "waitpid() 에서 예상되지 않은 오류 (%s)"
+msgstr "waitpid()에서 예상되지 않은 오류 (%s)"
 
 #: glib/gspawn.c:1063
 #, c-format
@@ -477,7 +477,7 @@ msgstr "포크 실패(%s)"
 #: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "자식 프로세스 \"%s\"를 실행하기 실패 (%s)"
+msgstr "자식 프로세스 \"%s\"을(를) 실행하기 실패 (%s)"
 
 #: glib/gspawn.c:1223
 #, c-format
@@ -492,7 +492,7 @@ msgstr "자식 프로세스 (%s)를 생성 실패"
 #: glib/gspawn.c:1240
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "자식 프로세스 \"%s\"를 실행하는 중 알수없는 오류"
+msgstr "자식 프로세스 \"%s\"을(를) 실행하는 중 알 수 없는 오류"
 
 #: glib/gspawn.c:1262
 #, c-format
@@ -511,12 +511,3 @@ msgstr "변환 입력에서 잘못된 순서"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
-
-#~ msgid "Incorrect message size"
-#~ msgstr "잘못된 메세지 크기"
-
-#~ msgid "Socket error"
-#~ msgstr "소켓 오류"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "채널 프래그 지정을 지원하지 않습니다"
