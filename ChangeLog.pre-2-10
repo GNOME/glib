@@ -1,7 +1,7 @@
 2005-03-20  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (do_spawn_with_pipes): Close the process
-	handle if the called doesn't want it also in the case without a
+	handle if the caller doesn't want it also in the case without a
 	helper process.
 	(g_spawn_sync): Don't ask for a child pid which we don't need.
 
