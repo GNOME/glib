@@ -585,9 +585,9 @@ g_hash_table_resize (GHashTable *hash_table)
   gint new_size;
   gint i;
 
-  new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
-		   HASH_TABLE_MIN_SIZE,
-		   HASH_TABLE_MAX_SIZE);
+  new_size = g_spaced_primes_closest (hash_table->nnodes);
+  new_size = CLAMP (new_size, HASH_TABLE_MIN_SIZE, HASH_TABLE_MAX_SIZE);
+ 
   new_nodes = g_new0 (GHashNode*, new_size);
   
   for (i = 0; i < hash_table->size; i++)

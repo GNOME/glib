@@ -1,3 +1,9 @@
+2002-03-20  Sven Neumann  <sven@gimp.org>
+
+	* glib/ghash.c (g_hash_table_resize): avoid repeated call of 
+	g_spaced_primes_closest() by moving it out of the CLAMP macro 
+	(spotted by Salmaso Raffaele).
+
 2002-03-17  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Add MSVC-specific text by Hans Breuer.
