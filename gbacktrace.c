@@ -66,9 +66,6 @@
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
 #else
-#  ifndef _AIX
-     typedef long fd_mask;
-#  endif
 #  if defined(_IBMR2)
 #    define SELECT_MASK void
 #  else

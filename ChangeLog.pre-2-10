@@ -1,3 +1,11 @@
+1999-03-14  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in (glibconfig.h): Remove widechar tests and defines.
+	(fd_set): Change the grep for `fd_mask' to search for `fd_set'.
+	* gerror.c (fd_mask): Remove conditional typedef.  It is not used
+	elsewhere in the file.
+	* gmain.c (fd_mask): Likewise.
+
 1999-03-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Test for posix threads first, then for dce threads.

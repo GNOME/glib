@@ -310,7 +310,7 @@ AC_TRY_COMPILE([#include <sys/types.h>],
 if test $gtk_ok = yes; then
     AC_MSG_RESULT([yes, found in sys/types.h])
 else
-    AC_HEADER_EGREP(fd_mask, sys/select.h, gtk_ok=yes)
+    AC_HEADER_EGREP(fd_set, sys/select.h, gtk_ok=yes)
     if test $gtk_ok = yes; then
         AC_DEFINE(HAVE_SYS_SELECT_H)
         AC_MSG_RESULT([yes, found in sys/select.h])
@@ -319,56 +319,6 @@ else
 	AC_MSG_RESULT(no)
     fi
 fi
-
-# These are used only in GDK (gdki18n.h)
-# This stuff is here only so that we can define these
-# things in glibconfig.h. If gtk+ started using an installed
-# gdkconfig.h file, then the definitions would belong there.
-
-# Check for wchar.h
-
-AC_MSG_CHECKING(for wchar.h)
-AC_TRY_CPP([#include <wchar.h>], glib_wchar_h=yes, glib_wchar_h=no)
-if test $glib_wchar_h = yes; then
-   AC_DEFINE(HAVE_WCHAR_H)
-fi
-AC_MSG_RESULT($glib_wchar_h)
-
-# Check for wctype.h (for iswalnum)
-
-AC_MSG_CHECKING(for wctype.h)
-AC_TRY_CPP([#include <wctype.h>], glib_wctype_h=yes, glib_wctype_h=no)
-if test $glib_wctype_h = yes; then
-   AC_DEFINE(HAVE_WCTYPE_H)
-fi
-AC_MSG_RESULT($glib_wctype_h)
-
-oLIBS="$LIBS"
-# in Solaris 2.5, `iswalnum' is in -lw
-AC_CHECK_FUNC(iswalnum,,[AC_CHECK_LIB(w,iswalnum)])
-
-# The following is necessary for Linux libc-5.4.38
-AC_MSG_CHECKING(if iswalnum() and friends are properly defined)
-AC_TRY_LINK([#include <stdlib.h>],[
-#if (defined(HAVE_WCTYPE_H) || defined(HAVE_WCHAR_H))
-#  ifdef HAVE_WCTYPE_H
-#    include <wctype.h>
-#  else
-#    ifdef HAVE_WCHAR_H
-#      include <wchar.h>
-#    endif
-#  endif
-#else
-#  define iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
-#endif
-iswalnum((wchar_t) 0);
-], glib_working_wctype=yes, glib_working_wctype=no)
-LIBS="$oLIBS"
-
-if test $glib_working_wctype = no; then
-   AC_DEFINE(HAVE_BROKEN_WCTYPE)
-fi
-AC_MSG_RESULT($glib_working_wctype)
 
 
 dnl **********************
@@ -1038,12 +988,7 @@ _______EOF
 	  cat glibconfig-sysdefs.h >>$outfile
 	fi
 
-
 	cat >>$outfile <<_______EOF
-
-$glib_wc
-
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -1216,19 +1161,6 @@ x$ac_cv_c_bigendian)
   g_bs_alien=BE
   ;;
 esac
-
-if test x$glib_wchar_h = xyes; then
-  glib_wc='
-#define G_HAVE_WCHAR_H 1'
-fi
-if test x$glib_wctype_h = xyes; then
-  glib_wc="\$glib_wc
-#define G_HAVE_WCTYPE_H 1"
-fi
-if test x$glib_working_wctype = xno; then
-  glib_wc="\$glib_wc
-#define G_HAVE_BROKEN_WCTYPE 1"
-fi
 
 case x$enable_threads in
 xyes)	g_enable_threads_def="#define";;

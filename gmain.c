@@ -321,14 +321,11 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
-#endif /* HAVE_SYS_SELECT_H_ */
+#endif /* HAVE_SYS_SELECT_H */
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
 #else /* !NO_FD_SET */
-#  ifndef _AIX
-typedef long fd_mask;
-#  endif /* _AIX */
 #  ifdef _IBMR2
 #    define SELECT_MASK void
 #  else /* !_IBMR2 */
