@@ -70,6 +70,11 @@ arrays or arrays on the stack.
 <para>
 Portable way to copy <type>va_list</type> variables.
 </para>
+<para>
+In order to use this function, you must include string.h yourself,
+because this macro may use memmove() and GLib does not include
+string.h for you.
+</para>
 
 <!-- # Unused Parameters # -->
 @ap1: the <type>va_list</type> variable to place a copy of @ap2 in.

@@ -1,3 +1,9 @@
+Thu Jun 28 17:43:29 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/memory.sgml glib/tmpl/macros_misc.sgml: Add
+	notes about inclusion of string.h to docs on g_memmove,
+	G_VA_COPY. (#54411)
+
 Tue Jun 26 12:28:20 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am: Fix problem with glibconfig.h

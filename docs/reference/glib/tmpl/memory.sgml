@@ -150,12 +150,11 @@ stack frame is cleaned up.
 Copies a block of memory @n bytes long, from @s to @d.
 The source and destination areas may overlap.
 </para>
-<note>
 <para>
-On architectures where memmove() is not available, this function is implemented
-using bcopy(), which may not be able to handle overlapping areas.
+In order to use this function, you must include string.h
+yourself, because this macro will typically simply resolve
+to memmove() and GLib does not include string.h for you.
 </para>
-</note>
 
 @d: the destination address to copy the bytes to.
 @s: the source address to copy the bytes from.
