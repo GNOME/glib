@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -134,7 +134,7 @@
 #endif	/* G_CODE_GENERATION */
 
 
-/* Provide simple macro statement wrappers (adapted from Pearl):
+/* Provide simple macro statement wrappers (adapted from Perl):
  *  G_STMT_START { statements; } G_STMT_END;
  *  can be used as a single statement, as in
  *  if (x) G_STMT_START { ... } G_STMT_END; else ...
@@ -180,7 +180,7 @@
 #endif	/* !__GNUC__ */
 
 /* Hacker macro to place breakpoints for x86 machines.
- * Actuall use is strongly deprecated of course ;)
+ * Actual use is strongly deprecated of course ;)
  */
 #if	defined (__i386__)
 #define	G_BREAKPOINT()		G_STMT_START{ __asm__ ("int $03"); }G_STMT_END
@@ -239,7 +239,7 @@
 #define g_chunk_new0(type, chunk)	( \
   (type *) memset (g_mem_chunk_alloc (chunk), 0, sizeof (type)) \
 )
-#define	g_chunk_free(mem, mem_chunk)	G_STMT_START { \
+#define g_chunk_free(mem, mem_chunk)	G_STMT_START { \
   g_mem_chunk_free ((mem_chunk), (mem)); \
 } G_STMT_END
 
@@ -433,9 +433,9 @@ typedef unsigned long	guint32;
 /* This should never happen */
 #endif
 
-typedef gint32	gssize;
+typedef gint32  gssize;
 typedef guint32 gsize;
-typedef gint32	gtime;
+typedef gint32  gtime;
 typedef guint32 GQuark;
 
 typedef struct _GList		GList;
@@ -455,8 +455,8 @@ typedef struct _GDebugKey	GDebugKey;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GScanner	GScanner;
 typedef union  _GValue		GValue;
-typedef struct _GRelation      GRelation;
-typedef struct _GTuples	       GTuples;
+typedef struct _GRelation	GRelation;
+typedef struct _GTuples		GTuples;
 
 
 typedef void		(*GFunc)		(gpointer  data,
@@ -512,13 +512,13 @@ struct _GArray
 struct _GByteArray
 {
   guint8 *data;
-  guint	  len;
+  guint   len;
 };
 
 struct _GPtrArray
 {
   gpointer *pdata;
-  guint	    len;
+  guint     len;
 };
 
 struct _GTuples
@@ -529,7 +529,7 @@ struct _GTuples
 struct _GDebugKey
 {
   gchar *key;
-  guint	 value;
+  guint  value;
 };
 
 struct _GCache { gint dummy; };
