@@ -819,6 +819,17 @@ nesting such as <literal>g_ascii_strup (g_strcanon (str, "abc", '?'))</literal>.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_strsplit_set ##### -->
+<para>
+
+</para>
+
+@string: 
+@delimiters: 
+@max_tokens: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strfreev ##### -->
 <para>
 

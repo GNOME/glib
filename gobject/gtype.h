@@ -437,7 +437,6 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
 #  define _G_TYPE_CCC(cp, gt, ct)       ((ct*) cp)
 #endif /* G_DISABLE_CAST_CHECKS */
 #define _G_TYPE_CHI(ip)			(g_type_check_instance ((GTypeInstance*) ip))
-#define _G_TYPE_CVH(vl, gt)             (g_type_check_value_holds ((GValue*) vl, gt))
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
@@ -458,9 +457,18 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
     __r = g_type_check_class_is_a (__class, __t); \
   __r; \
 }))
+#  define _G_TYPE_CVH(vl, gt)             (G_GNUC_EXTENSION ({ \
+  GValue *__val = (GValue*) vl; GType __t = gt; gboolean __r; \
+  if (__val && __val->g_type == __t) \
+    __r = TRUE; \
+  else \
+    __r = g_type_check_value_holds (__val, __t); \
+  __r; \
+}))
 #else  /* !__GNUC__ */
 #  define _G_TYPE_CIT(ip, gt)             (g_type_check_instance_is_a ((GTypeInstance*) ip, gt))
 #  define _G_TYPE_CCT(cp, gt)             (g_type_check_class_is_a ((GTypeClass*) cp, gt))
+#  define _G_TYPE_CVH(vl, gt)             (g_type_check_value_holds ((GValue*) vl, gt))
 #endif /* !__GNUC__ */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
 extern GTypeDebugFlags			_g_type_debug_flags;

@@ -2009,8 +2009,9 @@ type_data_last_unref_Wm (GType    type,
 		 type_descriptive_name_I (type));
       return;
     }
-  
-  if (node->is_classed && node->data && node->data->class.class && static_n_class_cache_funcs)
+
+  /* call class cache hooks */
+  if (node->is_classed && node->data && node->data->class.class && static_n_class_cache_funcs && !uncached)
     {
       guint i;
       

@@ -1,3 +1,14 @@
+Tue Feb  3 21:24:01 2004  Tim Janik  <timj@gtk.org>
+
+	* gtype.h (_G_TYPE_CVH): provide a short-cut version for
+	this macro in case value->g_type==checked_type for gcc, similar
+	to instance and class check short-cuts. this speeds up code that
+	makes frequent use of G_VALUE_HOLDS_*() (e.g. setters/getters).
+
+	* gtype.c (type_data_last_unref_Wm): don't call class-cache functions
+	for the uncached case, this rendered g_type_class_unref_uncached()
+	useless. pointed out by Stefan Westerfeld.
+
 Sat Jan 24 18:20:13 2004  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: prefixed the parent_class variable defined by G_DEFINE_TYPE()
