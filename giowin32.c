@@ -872,29 +872,62 @@ g_io_channel_win32_set_debug (GIOChannel *channel,
 }
 
 gint
-g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
-				       GIOCondition condition,
-				       gint         timeout)
+g_io_channel_win32_poll (GIOChannel **channels,
+			 gint         n_channels,
+			 GIOCondition condition,
+			 gint         timeout)
 {
-  GPollFD pollfd;
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GPollFD *pollfd;
+  GIOWin32Channel *win32_channel;
+  int i;
   int result;
+  gboolean debug = FALSE;
 
-  pollfd.fd = (gint) win32_channel->data_avail_event;
-  pollfd.events = condition;
+  g_return_val_if_fail (n_channels >= 0, 0);
 
-  if (win32_channel->debug)
-    g_print ("g_io_channel_win32_wait_for_condition: fd:%d event:%#x timeout:%d\n",
-	     win32_channel->fd, pollfd.fd, timeout);
+  pollfd = g_new (GPollFD, n_channels);
 
-  result = (*g_main_win32_get_poll_func ()) (&pollfd, 1, timeout);
+  for (i = 0; i < n_channels; i++)
+    {
+      win32_channel = (GIOWin32Channel *) channels[i];
+      debug |= win32_channel->debug;
+      pollfd[i].fd = (gint) win32_channel->data_avail_event;
+      pollfd[i].events = condition;
+    }
 
-  if (win32_channel->debug)
-    g_print ("g_io_channel_win32_wait_for_condition: done:%d\n", result);
+  if (debug)
+    {
+      g_print ("g_io_channel_win32_poll: ");
+      for (i = 0; i < n_channels; i++)
+	{
+	  win32_channel = (GIOWin32Channel *) channels[i];
+	  g_print ("fd:%d event:%#x ", win32_channel->fd, pollfd[i].fd);
+	}
+      g_print ("condition:%s%s%s%s timeout:%d\n",
+	       (condition & G_IO_ERR) ? " ERR" : "",
+	       (condition & G_IO_HUP) ? " HUP" : "",
+	       (condition & G_IO_IN)  ? " IN"  : "",
+	       (condition & G_IO_PRI) ? " PRI" : "",
+	       timeout);
+    }
+
+  result = (*g_main_win32_get_poll_func ()) (pollfd, n_channels, timeout);
+
+  if (debug)
+    g_print ("g_io_channel_win32_poll: done:%d\n", result);
+
+  g_free (pollfd);
 
   return result;
 }
 
+gint
+g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
+				       GIOCondition condition,
+				       gint         timeout)
+{
+  return g_io_channel_win32_poll (&channel, 1, condition, timeout);
+}
 
 /* This variable and the functions below are present just to be 
  * binary compatible with old clients... But note that in GIMP, the

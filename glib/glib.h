@@ -2921,20 +2921,21 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
 #define G_WIN32_MSG_HANDLE 19981206
 
-/* This can be used to wait until a channel is readable.  On Unix you
- * would do a select() on the fd of the channel. This should probably
- * be replaced by something for all platforms?
+/* This can be used to wait a until at least one of the channels is readable.
+ * On Unix you would do a select() on the file descriptors of the channels.
+ * This should probably be available for all platforms?
  */
-gint        g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
-						   GIOCondition condition,
-						   gint         timeout);
+gint        g_io_channel_win32_poll (GIOChannel **channels,
+				     gint         n_channels,
+				     GIOCondition condition,
+				     gint         timeout);
 
 /* This is used to add polling for Windows messages. GDK (GTk+) programs
  * should *not* use this.
  */
-void        g_main_poll_win32_msg_add(gint        priority,
-				      GPollFD    *fd,
-				      guint       hwnd);
+void        g_main_poll_win32_msg_add (gint        priority,
+				       GPollFD    *fd,
+				       guint       hwnd);
 
 /* An IO channel for Windows messages for window handle hwnd. */
 GIOChannel *g_io_channel_win32_new_messages (guint hwnd);

@@ -806,11 +806,13 @@ g_win32_error_message (gint error)
   gchar *retval;
   int nbytes;
 
-  nbytes = FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER
-			  |FORMAT_MESSAGE_IGNORE_INSERTS
-			  |FORMAT_MESSAGE_FROM_SYSTEM,
-			  NULL, error, 0,
-			  (LPTSTR) &msg, 0, NULL);
+  FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER
+		 |FORMAT_MESSAGE_IGNORE_INSERTS
+		 |FORMAT_MESSAGE_FROM_SYSTEM,
+		 NULL, error, 0,
+		 (LPTSTR) &msg, 0, NULL);
+  nbytes = strlen (msg);
+
   if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
     msg[nbytes-2] = '\0';
   
