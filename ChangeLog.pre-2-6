@@ -1,3 +1,10 @@
+Sat Nov  1 08:45:38 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (g_main_context_iterate): Set the
+	return value from the result of g_main_context_check()
+	(after we poll) rather than g_main_context_prepare.
+	(#121675, Padraig O'Briain)
+
 Fri Oct 31 00:13:53 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Remove the semicolon from the definition of

@@ -2358,7 +2358,7 @@ g_main_context_iterate (GMainContext *context,
   
   UNLOCK_CONTEXT (context);
 
-  some_ready = g_main_context_prepare (context, &max_priority); 
+  g_main_context_prepare (context, &max_priority); 
   
   while ((nfds = g_main_context_query (context, max_priority, &timeout, fds, 
 				       allocated_nfds)) > allocated_nfds)
@@ -2375,7 +2375,7 @@ g_main_context_iterate (GMainContext *context,
   
   g_main_context_poll (context, timeout, max_priority, fds, nfds);
   
-  g_main_context_check (context, max_priority, fds, nfds);
+  some_ready = g_main_context_check (context, max_priority, fds, nfds);
   
   if (dispatch)
     g_main_context_dispatch (context);
