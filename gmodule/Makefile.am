@@ -36,6 +36,7 @@ lib_LTLIBRARIES = libgmodule-1.3.la libgplugin_a.la libgplugin_b.la
 
 if PLATFORM_WIN32
 libadd_libglib = $(libglib)
+libadd_libgmodule = libgmodule-1.3.la
 no_undefined = -no-undefined
 endif
 if OS_WIN32
@@ -52,11 +53,11 @@ libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libadd_libgli
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libadd_libglib)
+libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
 libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libadd_libglib)
+libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@

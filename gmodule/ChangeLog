@@ -1,3 +1,8 @@
+2001-03-12  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (libgplugin_a_la_LIBADD, libgplugin_b_la_LIBADD):
+	Link with the libgmodule la only on Win32.
+
 2001-03-10  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use the _LIBADD dependency on libglib only on the
