@@ -896,12 +896,12 @@ g_source_get_context (GSource *source)
 }
 
 /**
- * g_main_source_add_poll:
+ * g_source_add_poll:
  * @source:a #GSource 
  * @fd: a #GPollFD structure holding information about a file
  *      descriptor to watch.
  * 
- * Add a file descriptor to the set of file descriptors polled * for
+ * Add a file descriptor to the set of file descriptors polled for
  * this source. This is usually combined with g_source_new() to add an
  * event source. The event source's check function will typically test
  * the revents field in the #GPollFD struct and return %TRUE if events need
@@ -927,6 +927,38 @@ g_source_add_poll (GSource *source,
   if (context)
     {
       g_main_context_add_poll_unlocked (context, source->priority, fd);
+      UNLOCK_CONTEXT (context);
+    }
+}
+
+/**
+ * g_source_remove_poll:
+ * @source:a #GSource 
+ * @fd: a #GPollFD structure previously passed to g_source_poll.
+ * 
+ * Remove a file descriptor from the set of file descriptors polled for
+ * this source. 
+ **/
+void
+g_source_remove_poll (GSource *source,
+		      GPollFD *fd)
+{
+  GMainContext *context;
+  
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (fd != NULL);
+  g_return_if_fail (!SOURCE_DESTROYED (source));
+  
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+  
+  source->poll_fds = g_slist_remove (source->poll_fds, fd);
+
+  if (context)
+    {
+      g_main_context_remove_poll_unlocked (context, fd);
       UNLOCK_CONTEXT (context);
     }
 }

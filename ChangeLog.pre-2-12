@@ -1,3 +1,8 @@
+Thu Feb 22 10:31:36 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_source_remove_poll): Add missing implementation
+	of g_source_remove_poll. (Pointed out by Stefan Westerfeld)
+
 2001-02-21  Tor Lillqvist  <tml@iki.fi>
 
 	* gutils.c (g_path_is_absolute): Match also UNC paths on Win32.
