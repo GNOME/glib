@@ -269,7 +269,7 @@ g_thread_join() is called for that thread.
 
 <!-- ##### FUNCTION g_thread_create ##### -->
 <para>
-This function creates a new thread with the priority @priority.
+This function creates a new thread with the default priority.
 </para>
 
 <para>
