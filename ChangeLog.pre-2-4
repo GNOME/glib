@@ -1,3 +1,7 @@
+Sun Jan 17 01:06:38 1999 Timur Bakeyev <mc@bat.ru>
+
+	* configure.in: Add support for FreeBSD 2.2.x macro _THREAD_SAFE.
+
 Wed Jan 13 11:27:24 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* glib.h: don't use inline for !__GNUC__ case with g_warning,

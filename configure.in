@@ -673,31 +673,37 @@ dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
 if test x"$have_threads" != xnone; then
-	G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default
+G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
 
-	case $host in
- 	       *-aix*)
-			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-			if test x"$GCC" = xyes; then 
-                	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
-			fi
-			;;
-	esac
+    case $host in
+	*-aix*)
+		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
+		if test x"$GCC" = xyes; then 
+            	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
+		fi
+		;;
+	*-freebsd2.2*)
+		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
 
-	# if we are not finding the ctime_r function, then we probably are 
-	# not using the proper multithread flag
-	old_CPPFLAGS=$CPPFLAGS
-	CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-	AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, , 
-        	G_THREAD_CFLAGS=
-        	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
-	CPPFLAGS=$old_CPPFLAGS
+		# FreeBSD 2.2.x shiped with gcc 2.7.2.x, which doesn't support
+		# -mthreads flag.
+		;;
+    esac
 
-	AC_MSG_CHECKING(necessary compiler options)
+    # if we are not finding the ctime_r function, then we probably are 
+    # not using the proper multithread flag
+    old_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
+    AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, , 
+    G_THREAD_CFLAGS=
+    AC_MSG_WARN($FLAG_DOES_NOT_WORK))
+    CPPFLAGS=$old_CPPFLAGS
 
-	AC_MSG_RESULT($G_THREAD_CFLAGS)
+    AC_MSG_CHECKING(necessary compiler options)
+
+    AC_MSG_RESULT($G_THREAD_CFLAGS)
 else
-        G_THREAD_CFLAGS=
+    G_THREAD_CFLAGS=
 fi
 
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
