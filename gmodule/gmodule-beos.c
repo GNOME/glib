@@ -1,5 +1,5 @@
 /* GMODULE - GLIB wrapper code for dynamic module loading
- * Copyright (C) 1998 Tim Janik  
+ * Copyright (C) 1998, 2000 Tim Janik  
  *
  * BeOS GMODULE implementation
  * Copyright (C) 1999 Richard Offer and Shawn T. Amundson (amundson@gtk.org)
@@ -55,18 +55,24 @@
 
 /* --- functions --- */
 static gpointer
-_g_module_open (const gchar    *file_name,
-		gboolean	bind_lazy)
+_g_module_open (const gchar *file_name,
+		gboolean     bind_lazy)
 {
   image_id handle;
   
   handle = load_add_on (file_name);
-  if (handle < B_OK) {
-    g_module_set_error (g_strdup_printf("failed to load_add_on(%s), reason: %s", 
-		        (gchar *) file_name, strerror(handle)));
-    return NULL;
-  }
-
+  if (handle < B_OK)
+    {
+      gchar *msg = g_strdup_printf ("failed to load_add_on(%s): %s",
+				    file_name,
+				    strerror (handle));
+      
+      g_module_set_error (msg);
+      g_free (msg);
+      
+      return NULL;
+    }
+  
   return (gpointer) handle;
 }
 
@@ -76,81 +82,100 @@ _g_module_self (void)
   image_info info;
   int32 cookie = 0;
   status_t status;
-
+  
   /* Is it always the first one?  I'm guessing yes. */
-  if ((status = get_next_image_info(0, &cookie, &info)) == B_OK)
+  status = get_next_image_info (0, &cookie, &info);
+  if (status == B_OK)
     return (gpointer) info.id;
   else
     {
-      g_module_set_error (g_strdup_printf("get_next_image_info() for self failed, reason: %s", strerror(status)));
+      gchar *msg = g_strdup_printf ("failed to get_next_image_info(self): %s",
+				    strerror (status));
+      
+      g_module_set_error (msg);
+      g_free (msg);
+      
       return NULL;
     }
 }
 
 static void
-_g_module_close (gpointer	  handle,
-		 gboolean	  is_unref)
+_g_module_close (gpointer handle,
+		 gboolean is_unref)
 {
-   image_info info;
-   gchar *name;
-
-   if (unload_add_on((image_id) handle) != B_OK)
-     {
-       /* Try and get the name of the image. */
-       if (get_image_info((image_id) handle, &info) != B_OK)
-         name = g_strdup("(unknown)");
-       else
-         name = g_strdup (info.name);
-
-       g_module_set_error (g_strdup_printf("failed to unload_add_on(%s)", 
-                           name));
-       g_free (name);
-     }
+  image_info info;
+  gchar *name;
+  
+  if (unload_add_on ((image_id) handle) != B_OK)
+    {
+      gchar *msg;
+      
+      /* Try and get the name of the image. */
+      if (get_image_info ((image_id) handle, &info) != B_OK)
+	name = g_strdup ("unknown");
+      else
+	name = g_strdup (info.name);
+      
+      msg = g_strdup_printf ("failed to unload_add_on(%s): %s", name, strerror (status));
+      g_module_set_error (msg);
+      g_free (msg);
+      g_free (name);
+    }
 }
 
 static gpointer
-_g_module_symbol (gpointer	  handle,
-		  const gchar	 *symbol_name)
+_g_module_symbol (gpointer     handle,
+		  const gchar *symbol_name)
 {
   image_id id;
-  gpointer p;
   status_t status;
   image_info info;
-  gchar name[256];
-  int32 name_len;
-  int32 type;
-  int32 n;
-
+  int32 type, name_len;
+  void *p;
+  gchar *msg, name[256];
+  gint n, l;
+  
   id = (image_id) handle;
-
-  if ((status = get_image_info(id, &info)) != B_OK)
+  
+  status = get_image_info (id, &info);
+  if (status != B_OK)
     {
-      g_module_set_error (g_strdup_printf("failed get_image_info(), reason: %s", strerror(status)));
+      msg = g_strdup_printf ("failed to get_image_info(): %s", strerror (status));
+      g_module_set_error (msg);
+      g_free (msg);
+      
       return NULL;
     }
-
+  
+  l = strlen (symbol_name);
   name_len = 256;
   type = B_SYMBOL_TYPE_ANY;
   n = 0;
-  while ((status = get_nth_image_symbol(id, n, name, &name_len, &type, (void **)&p)) == B_OK)
+  status = get_nth_image_symbol (id, n, name, &name_len, &type, &p);
+  while (status == B_OK)
     {
-      if (!strncmp (name, symbol_name, strlen(symbol_name)))
+      if (p && strncmp (name, symbol_name, l) == 0)
+	return p;
+      
+      if (strcmp (name, "_end") == 0)
         {
-          return p;
+	  msg = g_strdup_printf ("unmatched symbol name `%s'", symbol_name);
+          g_module_set_error (msg);
+	  g_free (msg);
+	  
+	  return NULL;
         }
-
-      if (!strcmp (name, "_end"))
-        {
-          g_module_set_error (g_strdup_printf("g_module_symbol(): no symbol matching '%s'", symbol_name));
-          return NULL;
-        }
-
+      
       name_len = 256;
       type = B_SYMBOL_TYPE_ANY;
       n++;
+      status = get_nth_image_symbol (id, n, name, &name_len, &type, &p);
     }
-
-  g_module_set_error (g_strdup_printf("failed get_image_symbol(%s), reason: %s", symbol_name, strerror(status)));
+  
+  msg = g_strdup_printf ("failed to get_image_symbol(%s): %s", symbol_name, strerror (status));
+  g_module_set_error (msg);
+  g_free (msg);
+  
   return NULL;
 }
 
@@ -158,13 +183,16 @@ static gchar*
 _g_module_build_path (const gchar *directory,
 		      const gchar *module_name)
 {
-  printf("WARNING: _g_module_build_path() untested!\n");
-  if (directory && *directory) {
-    if (strncmp (module_name, "lib", 3) == 0)
-      return g_strconcat (directory, "/", module_name, NULL);
-    else
-      return g_strconcat (directory, "/lib", module_name, ".so", NULL);
-  } else if (strncmp (module_name, "lib", 3) == 0)
+  g_warning ("_g_module_build_path() untested for BeOS!");
+  
+  if (directory && *directory)
+    {
+      if (strncmp (module_name, "lib", 3) == 0)
+	return g_strconcat (directory, "/", module_name, NULL);
+      else
+	return g_strconcat (directory, "/lib", module_name, ".so", NULL);
+    }
+  else if (strncmp (module_name, "lib", 3) == 0)
     return g_strdup (module_name);
   else
     return g_strconcat ("lib", module_name, ".so", NULL);

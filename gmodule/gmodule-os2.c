@@ -1,5 +1,5 @@
 /* GMODULE - GLIB wrapper code for dynamic module loading
- * Copyright (C) 1998 Tim Janik
+ * Copyright (C) 1998, 2000 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -36,12 +36,8 @@
 /* dlerror() is not implemented on all systems
  */
 #ifndef	G_MODULE_HAVE_DLERROR
-#  ifdef __NetBSD__
-#    define dlerror()	g_strerror (errno)
-#  else /* !__NetBSD__ */
 /* could we rely on errno's state here? */
-#    define dlerror()	"unknown dl-error"
-#  endif /* !__NetBSD__ */
+#  define dlerror()	"unknown dl-error"
 #endif	/* G_MODULE_HAVE_DLERROR */
 
 /* some flags are missing on some systems, so we provide
@@ -92,15 +88,16 @@ _g_module_self (void)
    * are required on some systems.
    */
   
-/* XXX, not supported */
+  /* XXX, not supported */
   handle = NULL;
+  g_module_set_error ("module handle for self not supported");
   
   return handle;
 }
 
 static void
-_g_module_close (gpointer	  handle,
-		 gboolean	  is_unref)
+_g_module_close (gpointer handle,
+		 gboolean is_unref)
 {
   /* are there any systems out there that have dlopen()/dlclose()
    * without a reference count implementation?
@@ -109,14 +106,14 @@ _g_module_close (gpointer	  handle,
   
   if (is_unref)
     {
-/* XXX, no return code */
+      /* XXX, no return code */
       dlclose (handle);
     }
 }
 
 static gpointer
-_g_module_symbol (gpointer	  handle,
-		  const gchar	 *symbol_name)
+_g_module_symbol (gpointer     handle,
+		  const gchar *symbol_name)
 {
   gpointer p;
   

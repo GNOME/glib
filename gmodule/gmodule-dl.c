@@ -1,5 +1,5 @@
 /* GMODULE - GLIB wrapper code for dynamic module loading
- * Copyright (C) 1998 Tim Janik
+ * Copyright (C) 1998, 2000 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -70,15 +70,25 @@
 
 
 /* --- functions --- */
+static gchar*
+fetch_dlerror (void)
+{
+  gchar *msg = dlerror ();
+
+  /* make sure we always return an error message != NULL */
+
+  return msg ? msg : "unknown dl-error";
+}
+
 static gpointer
-_g_module_open (const gchar    *file_name,
-		gboolean	bind_lazy)
+_g_module_open (const gchar *file_name,
+		gboolean     bind_lazy)
 {
   gpointer handle;
   
   handle = dlopen (file_name, RTLD_GLOBAL | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
-    g_module_set_error (dlerror ());
+    g_module_set_error (fetch_dlerror ());
   
   return handle;
 }
@@ -94,14 +104,14 @@ _g_module_self (void)
   
   handle = dlopen (NULL, RTLD_GLOBAL | RTLD_LAZY);
   if (!handle)
-    g_module_set_error (dlerror ());
+    g_module_set_error (fetch_dlerror ());
   
   return handle;
 }
 
 static void
-_g_module_close (gpointer	  handle,
-		 gboolean	  is_unref)
+_g_module_close (gpointer handle,
+		 gboolean is_unref)
 {
   /* are there any systems out there that have dlopen()/dlclose()
    * without a reference count implementation?
@@ -111,19 +121,19 @@ _g_module_close (gpointer	  handle,
   if (is_unref)
     {
       if (dlclose (handle) != 0)
-	g_module_set_error (dlerror ());
+	g_module_set_error (fetch_dlerror ());
     }
 }
 
 static gpointer
-_g_module_symbol (gpointer	  handle,
-		  const gchar	 *symbol_name)
+_g_module_symbol (gpointer     handle,
+		  const gchar *symbol_name)
 {
   gpointer p;
   
   p = dlsym (handle, symbol_name);
   if (!p)
-    g_module_set_error (dlerror ());
+    g_module_set_error (fetch_dlerror ());
   
   return p;
 }
