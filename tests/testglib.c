@@ -1179,6 +1179,8 @@ main (int   argc,
 
 #ifdef G_PLATFORM_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
+  g_get_charset (&string);
+  g_print ("current charset: %s\n", string);
   g_print ("GLib DLL name tested for: %s\n", glib_dll);
 
   g_print ("GLib installation directory, from Registry entry for %s if available: %s\n",

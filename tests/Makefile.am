@@ -16,6 +16,11 @@ module_test_exp = module-test.exp
 
 module-test.exp: module-test.o
 	dlltool --output-exp module-test.exp module-test.o
+
+spawn_test_win32_gui = spawn-test-win32-gui
+
+spawn_test_win32_gui_LDFLAGS = -mwindows
+
 endif
 
 EXTRA_DIST =					\
@@ -75,6 +80,7 @@ test_programs =					\
 	shell-test				\
 	slist-test				\
 	spawn-test				\
+	$(spawn_test_win32_gui)			\
 	strfunc-test				\
 	string-test				\
 	strtod-test				\
