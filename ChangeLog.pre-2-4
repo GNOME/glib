@@ -1,3 +1,8 @@
+2001-12-10  Sven Neumann  <sven@gimp.org>
+
+	* gobject/gvalue.c (g_value_register_transform_func): perform an exact
+	match on the two types instead of using transform_func_lookup().
+
 2001-12-09  Christopher Blizzard  <blizzard@redhat.com>
 
 	* glib/gmessages.h: Add pragma that will prevent warnings when you

@@ -274,14 +274,17 @@ g_value_register_transform_func (GType           src_type,
   g_return_if_fail (G_TYPE_HAS_VALUE_TABLE (dest_type));
   g_return_if_fail (transform_func != NULL);
 
-  if (transform_func_lookup (src_type, dest_type))
+  entry.src_type = src_type;
+  entry.dest_type = dest_type;
+  
+  if (g_bsearch_array_lookup (&transform_array, &entry))
     g_warning ("reregistering value transformation function (%p) for `%s' to `%s'",
 	       transform_func,
 	       g_type_name (src_type),
 	       g_type_name (dest_type));
-  entry.src_type = src_type;
-  entry.dest_type = dest_type;
+
   entry.func = transform_func;
+
   g_bsearch_array_insert (&transform_array, &entry, TRUE);
 }
 
