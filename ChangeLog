@@ -3,6 +3,10 @@
 	* configure.in: Test for localtime_r only after including the
 	right MT enabling CFLAGS (i.e. -D_REENTRANT on most systems).
 
+	* configure.in: Find right thread system on DG/UX. Thanks to Marc
+	J. Fraioli <fraioli@dg-rtp.dg.com> for hint. Finally removed the
+	stuff for -fstack-check, that didnt work anyway.
+
 	* gdate.c (g_date_set_time): Emit warning, if no localtime_r
 	function is available on thread enabled systems. Define ptm only,
 	if really needed, and assert on it.

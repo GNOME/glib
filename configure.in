@@ -553,10 +553,6 @@ dnl *************************
 THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
                 computer. glib will not be thread safe on your computer."
 
-THREAD_UNKNOWN_COMPILER="Your compiler is not known, so I cannot
-                determine the necessary compiler options to compile programs 
-                which are using threads. Please provide such information."
-
 FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
                 platform (normaly it's "_REENTRANT"). I'll not use any flag on
                 compilation now, but then your programs might not work. 
@@ -592,6 +588,11 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
         if test "x$have_threads" = xnone; then
 		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
 	fi
+	dnl ********** DG/UX ************
+        if test "x$have_threads" = xnone; then
+                AC_CHECK_LIB(thread, __d10_pthread_attr_init, 
+			have_threads=posix)
+        fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
         if test "x$have_threads" = xnone; then
@@ -613,6 +614,7 @@ dnl determination of G_THREAD_LIBS
 dnl ******************************
 
 G_THREAD_LIBS=
+G_THREAD_CFLAGS=
 
 mutex_has_default=no
 case $have_threads in
@@ -631,6 +633,12 @@ case $have_threads in
 		if test "x$G_THREAD_LIBS" = xerror; then
 			AC_CHECK_FUNC(pthread_attr_init, G_THREAD_LIBS="")
 		fi
+		dnl ********** DG/UX ************
+        	if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(thread, __d10_pthread_attr_init, 
+				G_THREAD_LIBS="-lthread"
+				G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
+        	fi
                 mutex_has_default=yes
                 mutex_default_type='pthread_mutex_t'
                 mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
@@ -672,7 +680,7 @@ dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
 if test x"$have_threads" != xnone; then
-	G_THREAD_CFLAGS="-D_REENTRANT" # good default
+	G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default
 
 	case $host in
  	       *-aix*)
@@ -691,18 +699,6 @@ if test x"$have_threads" != xnone; then
         	G_THREAD_CFLAGS=
         	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
 	CPPFLAGS=$old_CPPFLAGS
-                
-#	if test x"$GCC" = xyes; then 	
-#		# older gcc's do not know the -fstack-check option and will
-#		# stop compiling, so just check this here 
-#		old_CPPFLAGS="$CPPFLAGS"
-#		CPPFLAGS="$CPPFLAGS -fstack-check"
-#		AC_TRY_COMPILE(,,
-#			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -fstack-check")
-#		CPPFLAGS=$old_CPPFLAGS
-#	else
-#       	AC_MSG_WARN($THREAD_UNKNOWN_COMPILER)
-#	fi
 
 	AC_MSG_CHECKING(necessary compiler options)
 
