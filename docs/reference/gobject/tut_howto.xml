@@ -41,52 +41,52 @@
       <title>Boilerplate header code</title>
       
       <para>
-	The first step before writing the code for your GObject is to write the type's header which contains
-	the needed type, function and macro definitions. Each of these elements is nothing but a convention
-	which is followed not only by GTK+'s code but also by most users of GObject. If you feel the need 
-	not to obey the rules stated below, think about it twice:
-	<itemizedlist>
-	  <listitem><para>If your users are a bit accustomed to GTK+ code or any Glib code, they will
-	      be a bit surprised and getting used to the conventions you decided upon will take time (money) and
-	      will make them grumpy (not a good thing)
-	    </para></listitem>
-	  <listitem><para>
-	      You must assess the fact that these conventions might have been designed by both smart
-	      and experienced people: maybe they were at least partly right. Try  to put your ego aside.
-	    </para></listitem>
-	</itemizedlist>
+        The first step before writing the code for your GObject is to write the type's header which contains
+        the needed type, function and macro definitions. Each of these elements is nothing but a convention
+        which is followed not only by GTK+'s code but also by most users of GObject. If you feel the need 
+        not to obey the rules stated below, think about it twice:
+        <itemizedlist>
+          <listitem><para>If your users are a bit accustomed to GTK+ code or any Glib code, they will
+              be a bit surprised and getting used to the conventions you decided upon will take time (money) and
+              will make them grumpy (not a good thing)
+            </para></listitem>
+          <listitem><para>
+              You must assess the fact that these conventions might have been designed by both smart
+              and experienced people: maybe they were at least partly right. Try  to put your ego aside.
+            </para></listitem>
+        </itemizedlist>
       </para>
 
       <para>
-	Pick a name convention for your headers and source code and stick to it:
-	<itemizedlist>
-	  <listitem><para>
-	      use a dash to separate the prefix from the typename: <filename>maman-bar.h</filename> and 
-	      <filename>maman-bar.c</filename> (this is the convention used by Nautilus and most Gnome libraries).
-	    </para></listitem>
-	  <listitem><para>
-	      use an underscore to separate the prefix from the typename: <filename>maman_bar.h</filename> and 
-	      <filename>maman_bar.c</filename>.
-	    </para></listitem>
-	  <listitem><para>
-	      Do not separate the prefix from the typename: <filename>mamanbar.h</filename> and 
-	      <filename>mamanbar.c</filename>. (this is the convention used by GTK+)
-	    </para></listitem>
-	</itemizedlist>
-	I personally like the first solution better: it makes reading file names easier for those with poor
-	eyesight like me.
+        Pick a name convention for your headers and source code and stick to it:
+        <itemizedlist>
+          <listitem><para>
+              use a dash to separate the prefix from the typename: <filename>maman-bar.h</filename> and 
+              <filename>maman-bar.c</filename> (this is the convention used by Nautilus and most Gnome libraries).
+            </para></listitem>
+          <listitem><para>
+              use an underscore to separate the prefix from the typename: <filename>maman_bar.h</filename> and 
+              <filename>maman_bar.c</filename>.
+            </para></listitem>
+          <listitem><para>
+              Do not separate the prefix from the typename: <filename>mamanbar.h</filename> and 
+              <filename>mamanbar.c</filename>. (this is the convention used by GTK+)
+            </para></listitem>
+        </itemizedlist>
+        I personally like the first solution better: it makes reading file names easier for those with poor
+        eyesight like me.
       </para>
 
       <para>
-	The basic conventions for any header which exposes a GType are described in 
-	<xref linkend="gtype-conventions"/>. Most GObject-based code also obeys onf of the following
-	conventions: pick one and stick to it.
-	<itemizedlist>
-	  <listitem><para>
-	      If you want to declare a type named bar with prefix maman, name the type instance
-	      <function>MamanBar</function> and its class <function>MamanBarClass</function>
-	      (name is case-sensitive). It is customary to declare them with code similar to the 
-	      following:
+        The basic conventions for any header which exposes a GType are described in 
+        <xref linkend="gtype-conventions"/>. Most GObject-based code also obeys onf of the following
+        conventions: pick one and stick to it.
+        <itemizedlist>
+          <listitem><para>
+              If you want to declare a type named bar with prefix maman, name the type instance
+              <function>MamanBar</function> and its class <function>MamanBarClass</function>
+              (name is case-sensitive). It is customary to declare them with code similar to the 
+              following:
 <programlisting>
 /*
  * Copyright/Licensing information.
@@ -108,13 +108,13 @@ typedef struct _MamanBar MamanBar;
 typedef struct _MamanBarClass MamanBarClass;
 
 struct _MamanBar {
-	GObject parent;
-	/* instance members */
+  GObject parent;
+  /* instance members */
 };
 
 struct _MamanBarClass {
-	GObjectClass parent;
-	/* class members */
+  GObjectClass parent;
+  /* class members */
 };
 
 /* used by MAMAN_BAR_TYPE */
@@ -126,68 +126,68 @@ GType maman_bar_get_type (void);
 
 #endif
 </programlisting>
-	    </para></listitem>
-	  <listitem><para>
-	      Most GTK+ types declare their private fields in the public header with a /* private */ comment, 
-	      relying on their user's intelligence not to try to play with these fields. Fields not marked private
-	      are considered public by default. The /* protected */ comment (same semantics as those of C++)
-	      is also used, mainly in the GType library, in code written by Tim Janik.
+            </para></listitem>
+          <listitem><para>
+              Most GTK+ types declare their private fields in the public header with a /* private */ comment, 
+              relying on their user's intelligence not to try to play with these fields. Fields not marked private
+              are considered public by default. The /* protected */ comment (same semantics as those of C++)
+              is also used, mainly in the GType library, in code written by Tim Janik.
 <programlisting>
 struct _MamanBar {
-	GObject parent;
-	
-	/* private */
-	int hsize;
+  GObject parent;
+
+  /* private */
+  int hsize;
 };
 </programlisting>
-	    </para></listitem>
-	  <listitem><para>
-	      All of Nautilus code and a lot of Gnome libraries use private indirection members, as described
-	      by Herb Sutter in his Pimpl articles (see <ulink></ulink>: Herb summarizes the different
-	      issues better than I will):
+            </para></listitem>
+          <listitem><para>
+              All of Nautilus code and a lot of Gnome libraries use private indirection members, as described
+              by Herb Sutter in his Pimpl articles (see <ulink></ulink>: Herb summarizes the different
+              issues better than I will):
 <programlisting>
 typedef struct _MamanBarPrivate MamanBarPrivate;
 struct _MamanBar {
-	GObject parent;
+  GObject parent;
 	
-	/* private */
-	MamanBarPrivate *priv;
+  /* private */
+  MamanBarPrivate *priv;
 };
 </programlisting>
-	      The private structure is then defined in the .c file, instantiated in the object's XXX
-	      function and destroyed in the object's XXX function.
-	    </para></listitem>
-	</itemizedlist>
+              The private structure is then defined in the .c file, instantiated in the object's XXX
+              function and destroyed in the object's XXX function.
+            </para></listitem>
+        </itemizedlist>
       </para>
 
       <para>
-	Finally, there are different header include conventions. Again, pick one and stick to it. I personally
-	use indifferently any of the two, depending on the codebase I work on: the rule is consistency.
-	<itemizedlist>
-	  <listitem><para>
-	      Some people add at the top of their headers a number of #include directives to pull in
-	      all the headers needed to compile client code. This allows client code to simply  
-	      #include "maman-bar.h".
-	    </para></listitem>
-	  <listitem><para>
-	      Other do not #include anything and expect the client to #include themselves the headers 
-	      they need before including your header. This speeds up compilation because it minimizes the
-	      amount of pre-processor work. This can be used in conjunction with the re-declaration of certain 
-	      unused types in the client code to minimize compile-time dependencies and thus speed up 
-	      compilation.
-	    </para></listitem>
-	</itemizedlist>
+        Finally, there are different header include conventions. Again, pick one and stick to it. I personally
+        use indifferently any of the two, depending on the codebase I work on: the rule is consistency.
+        <itemizedlist>
+          <listitem><para>
+              Some people add at the top of their headers a number of #include directives to pull in
+              all the headers needed to compile client code. This allows client code to simply  
+              #include "maman-bar.h".
+            </para></listitem>
+          <listitem><para>
+              Other do not #include anything and expect the client to #include themselves the headers 
+              they need before including your header. This speeds up compilation because it minimizes the
+              amount of pre-processor work. This can be used in conjunction with the re-declaration of certain 
+              unused types in the client code to minimize compile-time dependencies and thus speed up 
+              compilation.
+            </para></listitem>
+        </itemizedlist>
       </para>
-	
+        
     </sect2>
 
     <sect2 id="howto-gobject-code">
       <title>Boilerplate code</title>
 
       <para>
-	In your code, the first step is to #include the needed headers: depending on your header include strategy, this
-	can be as simple as #include "maman-bar.h" or as complicated as tens of #include lines ending with 
-	#include "maman-bar.h":
+        In your code, the first step is to #include the needed headers: depending on your header include strategy, this
+        can be as simple as #include "maman-bar.h" or as complicated as tens of #include lines ending with 
+        #include "maman-bar.h":
 <programlisting>
 /*
  * Copyright information
@@ -201,8 +201,8 @@ struct _MamanBar {
  * definition for this private structure.
  */
 struct _MamanBarPrivate {
-        int member_1;
-	/* stuff */
+  int member_1;
+  /* stuff */
 };
 
 /* 
@@ -212,27 +212,27 @@ struct _MamanBarPrivate {
       </para>
 
       <para>
-	Implement <function>maman_bar_get_type</function> and make sure the code compiles:
+        Implement <function>maman_bar_get_type</function> and make sure the code compiles:
 <programlisting>
 GType
 maman_bar_get_type (void)
 {
-    static GType type = 0;
-    if (type == 0) {
-      static const GTypeInfo info = {
-	sizeof (MamanBarClass),
-	NULL,   /* base_init */
-	NULL,   /* base_finalize */
-	NULL,   /* class_init */
-	NULL,   /* class_finalize */
-	NULL,   /* class_data */
-	sizeof (MamanBar),
-	0,      /* n_preallocs */
-	NULL    /* instance_init */
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      sizeof (MamanBarClass),
+      NULL,   /* base_init */
+      NULL,   /* base_finalize */
+      NULL,   /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      sizeof (MamanBar),
+      0,      /* n_preallocs */
+      NULL    /* instance_init */
       };
       type = g_type_register_static (G_TYPE_OBJECT,
-	                             "MamanBarType",
-	                             &amp;info, 0);
+                                     "MamanBarType",
+                                     &amp;info, 0);
     }
     return type;
 }
@@ -244,29 +244,29 @@ maman_bar_get_type (void)
       <title>Object Construction</title>
 
       <para>
-	People often get confused when trying to construct their GObjects because of the
-	sheer number of different ways to hook into the objects's construction process: it is
-	difficult to figure which is the <emphasis>correct</emphasis>, recommended way.
+        People often get confused when trying to construct their GObjects because of the
+        sheer number of different ways to hook into the objects's construction process: it is
+        difficult to figure which is the <emphasis>correct</emphasis>, recommended way.
       </para>
 
       <para>
-	<xref linkend="gobject-construction-table"/> shows what user-provided functions
-	are invoked during object instanciation and in which order they are invoked.
-	A user looking for the equivalent of the simple C++ constructor function should use
-	the instance_init method. It will be invoked after all the parent's instance_init
-	functions have been invoked. It cannot take arbitrary construction parameters 
-	(as in C++) but if your object needs arbitrary parameters to complete initialization,
-	you can use construction properties.
+        <xref linkend="gobject-construction-table"/> shows what user-provided functions
+        are invoked during object instanciation and in which order they are invoked.
+        A user looking for the equivalent of the simple C++ constructor function should use
+        the instance_init method. It will be invoked after all the parent's instance_init
+        functions have been invoked. It cannot take arbitrary construction parameters 
+        (as in C++) but if your object needs arbitrary parameters to complete initialization,
+        you can use construction properties.
       </para>
 
       <para>
-	Construction properties will be set only after all instance_init functions have run.
-	No object reference will be returned to the client of <function>g_object_new></function>
-	until all the construction properties have been set.
+        Construction properties will be set only after all instance_init functions have run.
+        No object reference will be returned to the client of <function>g_object_new></function>
+        until all the construction properties have been set.
       </para>
 
       <para>
-	As such, I would recommend writing the following code first:
+        As such, I would recommend writing the following code first:
 <programlisting>
 static void
 maman_bar_init (GTypeInstance   *instance,
@@ -275,24 +275,24 @@ maman_bar_init (GTypeInstance   *instance,
   MamanBar *self = (MamanBar *)instance;
   self->private = g_new0 (MamanBarPrivate, 1);
 
-   /* initialize all public and private members to reasonable default values. */
-   /* If you need specific consruction properties to complete initialization,
-    * delay initialization completion until the property is set. 
-    */
+  /* initialize all public and private members to reasonable default values. */
+  /* If you need specific consruction properties to complete initialization,
+   * delay initialization completion until the property is set. 
+   */
 }
 </programlisting>
-	And make sure that you set <function>maman_bar_init</function> as the type's instance_init function
-	in <function>maman_bar_get_type</function>. Make sure the code builds and runs: create an instance 
-	of the object and make sure <function>maman_bar_init</function> is called (add a 
-	<function>g_print</function> call in it).
+        And make sure that you set <function>maman_bar_init</function> as the type's instance_init function
+        in <function>maman_bar_get_type</function>. Make sure the code builds and runs: create an instance 
+        of the object and make sure <function>maman_bar_init</function> is called (add a 
+        <function>g_print</function> call in it).
       </para>
 
       <para>
-	Now, if you need special construction properties, install the properties in the class_init function,
-	override the set and get methods and implement the get and set methods as described in 
-	<xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
-	<type>GParamSpec</type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
-	GType ensure that these properties are not set again later by malicious user code.
+        Now, if you need special construction properties, install the properties in the class_init function,
+        override the set and get methods and implement the get and set methods as described in 
+        <xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
+        <type>GParamSpec</type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
+        GType ensure that these properties are not set again later by malicious user code.
 <programlisting>
 static void
 bar_class_init (MamanBarClass *klass)
@@ -310,43 +310,43 @@ bar_class_init (MamanBarClass *klass)
                                           G_PARAM_CONSTRUCT_ONLY |G_PARAM_READWRITE);
 
   g_object_class_install_property (gobject_class,
-				   PROP_MAMAN,
-				   maman_param_spec);
+                                   PROP_MAMAN,
+                                   maman_param_spec);
 }
 </programlisting>
-	If you need this, make sure you can build and run code similar to the code shown above. Make sure
-	your construct properties can set correctly during construction, make sure you cannot set them 
-	afterwards and make sure that if your users do not call <function>g_object_new</function>
-	with the required construction properties, these will be initialized with the default values.
+        If you need this, make sure you can build and run code similar to the code shown above. Make sure
+        your construct properties can set correctly during construction, make sure you cannot set them 
+        afterwards and make sure that if your users do not call <function>g_object_new</function>
+        with the required construction properties, these will be initialized with the default values.
       </para>
 
       <para>
-	I consider good taste to halt program execution if a construction property is set its
-	default value. This allows you to catch client code which does not give a reasonable
-	value to the construction properties. Of course, you are free to disagree but you
-	should have a good reason to do so.
+        I consider good taste to halt program execution if a construction property is set its
+        default value. This allows you to catch client code which does not give a reasonable
+        value to the construction properties. Of course, you are free to disagree but you
+        should have a good reason to do so.
       </para>
 
-	<para>Some people sometimes need to construct their object but only after the construction properties
-	have been set. This is possible through the use of the constructor class method as described in
-	<xref linkend="gobject-instanciation"/>. However, I have yet to see <emphasis>any</emphasis> reasonable
-	use of this feature. As such, to initialize your object instances, use by default the base_init function
-	and construction properties.
-	</para>
+        <para>Some people sometimes need to construct their object but only after the construction properties
+        have been set. This is possible through the use of the constructor class method as described in
+        <xref linkend="gobject-instanciation"/>. However, I have yet to see <emphasis>any</emphasis> reasonable
+        use of this feature. As such, to initialize your object instances, use by default the base_init function
+        and construction properties.
+        </para>
     </sect2>
 
     <sect2 id="howto-gobject-destruction">
       <title>Object Destruction</title>
 
       <para>
-	Again, it is often difficult to figure out which mechanism to use to hook into the object's
-	destruction process: when the last <function>g_object_unref</function> function call is made,
-	a lot of things happen as described in <xref linkend="gobject-destruction-table"/>.
+        Again, it is often difficult to figure out which mechanism to use to hook into the object's
+        destruction process: when the last <function>g_object_unref</function> function call is made,
+        a lot of things happen as described in <xref linkend="gobject-destruction-table"/>.
       </para>
 
       <para>
-	The destruction process of your object must be split is two different phases: you must override
-	both the dispose and the finalize class methods.
+        The destruction process of your object must be split is two different phases: you must override
+        both the dispose and the finalize class methods.
 <programlisting>
 struct _MamanBarPrivate {
   gboolean dispose_has_run;
@@ -377,7 +377,7 @@ bar_finalize (MamanBar *self)
    * Here, complete object destruction.
    * You might not need to do much...
    */
-   g_free (self->private);
+  g_free (self->private);
 }
 
 static void
@@ -401,12 +401,12 @@ maman_bar_init (GTypeInstance   *instance,
       </para>
 
       <para>
-	Add similar code to your GObject, make sure the code still builds and runs: dispose and finalize must be called
-	during the last unref.
-	It is possible that object methods might be invoked after dispose is run and before finalize runs. GObject
-	does not consider this to be a program error: you must gracefully detect this and neither crash nor warn
-	the user. To do this, you need something like the following code at the start of each object method, to make
-	sure the object's data is still valid before manipulating it:
+        Add similar code to your GObject, make sure the code still builds and runs: dispose and finalize must be called
+        during the last unref.
+        It is possible that object methods might be invoked after dispose is run and before finalize runs. GObject
+        does not consider this to be a program error: you must gracefully detect this and neither crash nor warn
+        the user. To do this, you need something like the following code at the start of each object method, to make
+        sure the object's data is still valid before manipulating it:
 <programlisting>
 if (self->private->dispose_has_run) {
   /* Dispose has run. Data is not valid anymore. */
@@ -420,31 +420,31 @@ if (self->private->dispose_has_run) {
       <title>Object methods</title>
 
       <para>
-	Just as with C++, there are many different ways to define object
-	methods and extend them: the following list and sections draw on C++ vocabulary.
-	(Readers are expected to know basic C++ buzzwords. Those who have not had to
-	write C++ code recently can refer to <ulink>XXXX</ulink> to refresh their 
-	memories.)
-	<itemizedlist>
-	  <listitem><para>
-	      non-virtual public methods,
-	    </para></listitem>
-	  <listitem><para>
-	      virtual public methods and
-	    </para></listitem>
-	  <listitem><para>
-	      virtual private methods
-	    </para></listitem>
-	</itemizedlist>
+        Just as with C++, there are many different ways to define object
+        methods and extend them: the following list and sections draw on C++ vocabulary.
+        (Readers are expected to know basic C++ buzzwords. Those who have not had to
+        write C++ code recently can refer to <ulink>XXXX</ulink> to refresh their 
+        memories.)
+        <itemizedlist>
+          <listitem><para>
+              non-virtual public methods,
+            </para></listitem>
+          <listitem><para>
+              virtual public methods and
+            </para></listitem>
+          <listitem><para>
+              virtual private methods
+            </para></listitem>
+        </itemizedlist>
       </para>
 
       <sect3>
-	<title>Non-virtual public methods</title>
+        <title>Non-virtual public methods</title>
 
-	<para>
-	  These are the simplest: you want to provide a simple method which can act on your object. All you need
-	  to do is to provide a function prototype in the header and an implementation of that prototype
-	  in the source file.
+        <para>
+          These are the simplest: you want to provide a simple method which can act on your object. All you need
+          to do is to provide a function prototype in the header and an implementation of that prototype
+          in the source file.
 <programlisting>
 /* declaration in the header. */
 void maman_bar_do_action (MamanBar *self, /* parameters */);
@@ -454,19 +454,19 @@ void maman_bar_do_action (MamanBar *self, /* parameters */)
   /* do stuff here. */
 }
 </programlisting>
-	</para>
+        </para>
 
-	<para>There is really nothing scary about this.</para>
+        <para>There is really nothing scary about this.</para>
       </sect3>
 
       <sect3>
-	<title>Virtual public methods</title>
+        <title>Virtual public methods</title>
 
-	<para>
-	  This is the preferred way to create polymorphic GObjects. All you need to do is to
-	  define the common method and its class function in the public header, implement the
-	  common method in the source file and re-implement the class function in each object 
-	  which inherits from you.
+        <para>
+          This is the preferred way to create polymorphic GObjects. All you need to do is to
+          define the common method and its class function in the public header, implement the
+          common method in the source file and re-implement the class function in each object 
+          which inherits from you.
 <programlisting>
 /* declaration in maman-bar.h. */
 struct _MamanBarClass {
@@ -479,68 +479,68 @@ void maman_bar_do_action (MamanBar *self, /* parameters */);
 /* implementation in maman-bar.c */
 void maman_bar_do_action (MamanBar *self, /* parameters */)
 {
-    MAMAN_BAR_GET_CLASS (self)->do_action (self, /* parameters */);
+  MAMAN_BAR_GET_CLASS (self)->do_action (self, /* parameters */);
 }
 </programlisting>
-	  The code above simply redirects the do_action call to the relevant class function. Some users,
-	  concerned about performance, do not provide the <function>maman_bar_do_action</function>
-	  wrapper function and require users to de-reference the class pointer themselves. This is not such
-	  a great idea in terms of encapsulation and makes it difficult to change the object's implementation
-	  afterwards, should this be needed.
-	</para>
+          The code above simply redirects the do_action call to the relevant class function. Some users,
+          concerned about performance, do not provide the <function>maman_bar_do_action</function>
+          wrapper function and require users to de-reference the class pointer themselves. This is not such
+          a great idea in terms of encapsulation and makes it difficult to change the object's implementation
+          afterwards, should this be needed.
+        </para>
 
-	<para>
-	  Other users, also concerned by performance issues, declare the <function>maman_bar_do_action</function>
-	  function inline in the header file. This, however, makes it difficult to change the
-	  object's implementation later (although easier than requiring users to directly de-reference the class 
-	  function) and is often difficult to write in a portable way (the <emphasis>inline</emphasis> keyword
-	  is not part of the C standard).
-	</para>
+        <para>
+          Other users, also concerned by performance issues, declare the <function>maman_bar_do_action</function>
+          function inline in the header file. This, however, makes it difficult to change the
+          object's implementation later (although easier than requiring users to directly de-reference the class 
+          function) and is often difficult to write in a portable way (the <emphasis>inline</emphasis> keyword
+          is not part of the C standard).
+        </para>
 
-	<para>
-	  In doubt, unless a user shows you hard numbers about the performance cost of the function call,
-	  just <function>maman_bar_do_action</function> in the source file.
-	</para>
+        <para>
+          In doubt, unless a user shows you hard numbers about the performance cost of the function call,
+          just <function>maman_bar_do_action</function> in the source file.
+        </para>
 
-	<para>
-	  Please, note that it is possible for you to provide a default implementation for this class method in
-	  the object's class_init function: initialize the klass->do_action field to a pointer to the actual
-	  implementation. You can also make this class method pure virtual by initializing the klass->do_action
-	  field to NULL:
+        <para>
+          Please, note that it is possible for you to provide a default implementation for this class method in
+          the object's class_init function: initialize the klass->do_action field to a pointer to the actual
+          implementation. You can also make this class method pure virtual by initializing the klass->do_action
+          field to NULL:
 <programlisting>
 static void 
 maman_bar_real_do_action_two (MamanBar *self, /* parameters */)
 {
-    /* Default implementation for the virtual method. */
+  /* Default implementation for the virtual method. */
 }
 
 static void
 maman_bar_class_init (BarClass *klass)
 {
-    /* pure virtual method: mandates implementation in children. */
-    klass->do_action_one = NULL;
-    /* merely virtual method. */
-    klass->do_action_two = maman_bar_real_do_action_two;
+  /* pure virtual method: mandates implementation in children. */
+  klass->do_action_one = NULL;
+  /* merely virtual method. */
+  klass->do_action_two = maman_bar_real_do_action_two;
 }
 
 void maman_bar_do_action_one (MamanBar *self, /* parameters */)
 {
-    MAMAN_BAR_GET_CLASS (self)->do_action_one (self, /* parameters */);
+  MAMAN_BAR_GET_CLASS (self)->do_action_one (self, /* parameters */);
 }
 void maman_bar_do_action_two (MamanBar *self, /* parameters */)
 {
-    MAMAN_BAR_GET_CLASS (self)->do_action_two (self, /* parameters */);
+  MAMAN_BAR_GET_CLASS (self)->do_action_two (self, /* parameters */);
 }
 </programlisting>
-	</para>
+        </para>
       </sect3>
 
       <sect3>
-	<title>Virtual private Methods</title>
+        <title>Virtual private Methods</title>
 
-	<para>
-	  These are very similar to Virtual Public methods. They just don't have a public function to call the
-	  function directly. The header file contains only a declaration of the class function:
+        <para>
+          These are very similar to Virtual Public methods. They just don't have a public function to call the
+          function directly. The header file contains only a declaration of the class function:
 <programlisting>
 /* declaration in maman-bar.h. */
 struct _MamanBarClass {
@@ -551,13 +551,13 @@ struct _MamanBarClass {
 };
 void maman_bar_do_any_action (MamanBar *self, /* parameters */);
 </programlisting>
-	  These class functions are often used to delegate part of the job to child classes:
+          These class functions are often used to delegate part of the job to child classes:
 <programlisting>
 /* this accessor function is static: it is not exported outside of this file. */
 static void 
 maman_bar_do_specific_action (MamanBar *self, /* parameters */)
 {
-    MAMAN_BAR_GET_CLASS (self)->do_specific_action (self, /* parameters */);
+  MAMAN_BAR_GET_CLASS (self)->do_specific_action (self, /* parameters */);
 }
 
 void maman_bar_do_any_action (MamanBar *self, /* parameters */)
@@ -568,77 +568,107 @@ void maman_bar_do_any_action (MamanBar *self, /* parameters */)
    * Try to execute the requested action. Maybe the requested action cannot be implemented
    * here. So, we delegate its implementation to the child class:
    */
-   maman_bar_do_specific_action (self, /* parameters */);
+  maman_bar_do_specific_action (self, /* parameters */);
 
   /* other random code here */
 }
 </programlisting>
-	</para>
+        </para>
 
-	<para>
-	  Again, it is possible to provide a default implementation for this private virtual class function:
+        <para>
+          Again, it is possible to provide a default implementation for this private virtual class function:
 <programlisting>
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-    /* pure virtual method: mandates implementation in children. */
-    klass->do_specific_action_one = NULL;
-    /* merely virtual method. */
-    klass->do_specific_action_two = maman_bar_real_do_specific_action_two;
+  /* pure virtual method: mandates implementation in children. */
+  klass->do_specific_action_one = NULL;
+  /* merely virtual method. */
+  klass->do_specific_action_two = maman_bar_real_do_specific_action_two;
 }
 </programlisting>
-	</para>
+        </para>
 
-	<para>
-	  Children can then implement the subclass with code such as:
+        <para>
+          Children can then implement the subclass with code such as:
 <programlisting>
 static void
 maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
 {
-    MamanBarClass *bar_class = MAMAN_BAR_CLASS (klass);
-    /* implement pure virtual class function. */
-    bar_class->do_specific_action_one = maman_bar_subtype_do_specific_action_one;
+  MamanBarClass *bar_class = MAMAN_BAR_CLASS (klass);
+  /* implement pure virtual class function. */
+  bar_class->do_specific_action_one = maman_bar_subtype_do_specific_action_one;
 }
 </programlisting>
-	</para>
-
-	<para>
-	  Finally, it is interesting to note that, just like in C++, it is possible
-	  to make each object class method chain to its parent class method:
-<programlisting>
-static void 
-maman_bar_real_do_action_two (MamanBar *self, /* parameters */)
-{
-    MamanBarClass *bar_class = g_type_class_peek_parent (klass);
-    /* chain up */
-    bar_class->do_action (self, /* parameters */);
-
-    /* do local stuff here. */
-}
-
-static void
-maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
-{
-    MamanBarClass *bar_class = MAMAN_BAR_CLASS (klass);
-    /* implement pure virtual class function. */
-    bar_class->do_specific_action_one = maman_bar_subtype_do_specific_action_one;
-}
-</programlisting>
-	</para>
+        </para>
       </sect3>
     </sect2>
 
     <sect2 id="howto-gobject-chainup">
      <title>Chaining up</title>
 
-     <p>Chaining up is commonly used to implement the Chain Of Responsability pattern in C++: each class in a
-     given inheritance hierarchy is expected to override the same method and then call from within each method
-     the overriden method of the parent. Personally, I am not sure this is a very smart idea (a detailed explanation
-     of why I think it is a bad idea would take too much space for this document) but I can show you how to do it and
-     here is an example.
-     </p>
+     <para>Chaining up is often loosely defined by the folowing set of conditions:
+       <itemizedlist>
+         <listitem><para>Parent class A defines a public virtual method named <function>foo</function> and 
+         provides a default implementation.</para></listitem>
+         <listitem><para>Child class B re-implements method <function>foo</function>.</para></listitem>
+         <listitem><para>In the method B::foo, the child class B calls its parent class method A::foo.</para></listitem>
+       </itemizedlist>
+       There are many uses to this idiom:
+       <itemizedlist>
+         <listitem><para>You need to change the behaviour of a class without modifying its code. You create
+           a subclass to inherit its implementation, re-implement a public virtual method to modify the behaviour
+           slightly and chain up to ensure that the previous behaviour is not really modifed, just extended.
+           </para></listitem>
+         <listitem><para>You are lazy, you have access to the source code of the parent class but you don't want 
+           to modify it to add method calls to new specialized method calls: it is faster to hack the child class
+           to chain up than to modify the parent to call down.</para></listitem>
+         <listitem><para>You need to implement the Chain Of Responsability pattern: each object of the inheritance
+           tree chains up to its parent (typically, at the begining or the end of the method) to ensure that
+           they each handler is run in turn.</para></listitem>
+       </itemizedlist>
+       I am personally not really convinced any of the last two uses are really a good idea but since this
+       programming idiom is often used, this section attemps to explain how to implement it.
+     </para>
 
-     <p>To invoke the parent method XXX</p>
+     <para>To explicitely chain up to the implementation of the virtual method in the parent class, 
+       you first need a handle to the original parent class structure. This pointer can then be used to 
+       access the original class function pointer and invoke it directly.
+        <footnote>
+          <para>The <emphasis>original</emphasis> adjective used in this sentence is not innocuous. To fully 
+           understand its meaning, you need to recall how class structures are initialized: for each object type,
+           the class structure associated to this object is created by first copying the class structure of its 
+           parent type (a simple <function>memcpy</function>) and then by invoking the class_init callback on 
+           the resulting class structure. Since the class_init callback is responsible for overwriting the class structure
+           with the user re-implementations of the class methods, we cannot merely use the modified copy of the parent class
+           structure stored in our derived instance. We want to get a copy of the class structure of an instance of the parent 
+           class.
+          </para>
+        </footnote>
+     </para>
+
+     <para>The function <function>g_type_class_peek_parent</function> is used to access the original parent 
+      class structure. Its input is a pointer to the class of the derived object and it returns a pointer
+      to the original parent class structure. The code below shows how you could use it:
+<programlisting>
+static void
+b_method_to_call (B *obj, int a)
+{
+  BClass *klass;
+  AClass *parent_class;
+  klass = B_GET_CLASS (obj);
+  parent_class = g_type_class_peek_parent (klass);
+
+  /* do stuff before chain up */
+  parent_class->method_to_call (obj, a);
+  /* do stuff after chain up */
+}
+</programlisting>
+     A lot of people who use this idiom in GTK+ store the parent class structure pointer in a global static 
+     variable to avoid the costly call to <function>g_type_class_peek_parent</function> for each function call.
+     Typically, the class_init callback initializes the global static variable. <filename>gtk/gtkhscale.c</filename>
+     does this.
+    </para>
 
     </sect2>
 
@@ -686,16 +716,16 @@ typedef struct _MamanIbaz MamanIbaz; /* dummy object */
 typedef struct _MamanIbazClass MamanIbazClass;
 
 struct _MamanIbazClass {
-        GTypeInterface parent;
+  GTypeInterface parent;
 
-        void (*do_action) (MamanIbaz *self);
+  void (*do_action) (MamanIbaz *self);
 };
 
 GType maman_ibaz_get_type (void);
 
 void maman_ibaz_do_action (MamanIbaz *self);
 
-#endif //MAMAN_IBAZ_H
+#endif /*MAMAN_IBAZ_H*/
 </programlisting>
       This code is almost exactly similar to the code for a normal <type>GType</type>
       which derives from a <type>GObject</type> except for a few details:
@@ -732,38 +762,38 @@ void maman_ibaz_do_action (MamanIbaz *self);
 static void
 maman_ibaz_base_init (gpointer g_class)
 {
-        static gboolean initialized = FALSE;
+  static gboolean initialized = FALSE;
 
-        if (!initialized) {
-                /* create interface signals here. */
-                initialized = TRUE;
-        }
+  if (!initialized) {
+    /* create interface signals here. */
+    initialized = TRUE;
+  }
 }
 
 GType
 maman_ibaz_get_type (void)
 {
-        static GType type = 0;
-        if (type == 0) {
-                static const GTypeInfo info = {
-                        sizeof (MamanIbazClass),
-                        maman_ibaz_base_init,   /* base_init */
-                        NULL,   /* base_finalize */
-                        NULL,   /* class_init */
-                        NULL,   /* class_finalize */
-                        NULL,   /* class_data */
-                        0,
-                        0,      /* n_preallocs */
-                        NULL    /* instance_init */
-                };
-                type = g_type_register_static (G_TYPE_INTERFACE, "MamanIbaz", &amp;info, 0);
-        }
-        return type;
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      sizeof (MamanIbazClass),
+      maman_ibaz_base_init,   /* base_init */
+      NULL,   /* base_finalize */
+      NULL,   /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      0,
+      0,      /* n_preallocs */
+      NULL    /* instance_init */
+    };
+    type = g_type_register_static (G_TYPE_INTERFACE, "MamanIbaz", &amp;info, 0);
+  }
+  return type;
 }
 
 void maman_ibaz_do_action (MamanIbaz *self)
 {
-        MAMAN_IBAZ_GET_CLASS (self)->do_action (self);
+  MAMAN_IBAZ_GET_CLASS (self)->do_action (self);
 }
 </programlisting>
     </para>
@@ -799,12 +829,12 @@ typedef struct _MamanBaz MamanBaz;
 typedef struct _MamanBazClass MamanBazClass;
 
 struct _MamanBaz {
-        GObject parent;
-        int instance_member;
+  GObject parent;
+  int instance_member;
 };
 
 struct _MamanBazClass {
-        GObjectClass parent;
+  GObjectClass parent;
 };
 
 GType maman_baz_get_type (void);
@@ -822,32 +852,32 @@ GType maman_baz_get_type (void);
 GType 
 maman_baz_get_type (void)
 {
-        static GType type = 0;
-        if (type == 0) {
-                static const GTypeInfo info = {
-                        sizeof (MamanBazClass),
-                        NULL,   /* base_init */
-                        NULL,   /* base_finalize */
-                        NULL,   /* class_init */
-                        NULL,   /* class_finalize */
-                        NULL,   /* class_data */
-                        sizeof (MamanBaz),
-                        0,      /* n_preallocs */
-                        baz_instance_init    /* instance_init */
-                };
-                static const GInterfaceInfo ibaz_info = {
-                        (GInterfaceInitFunc) baz_interface_init,    /* interface_init */
-                        NULL,                                       /* interface_finalize */
-                        NULL                                        /* interface_data */
-                };
-                type = g_type_register_static (G_TYPE_OBJECT,
-                                               "MamanBazType",
-                                               &amp;info, 0);
-                g_type_add_interface_static (type,
-                                             MAMAN_TYPE_IBAZ,
-                                             &amp;ibaz_info);
-        }
-        return type;
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      sizeof (MamanBazClass),
+      NULL,   /* base_init */
+      NULL,   /* base_finalize */
+      NULL,   /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      sizeof (MamanBaz),
+      0,      /* n_preallocs */
+      baz_instance_init    /* instance_init */
+    };
+    static const GInterfaceInfo ibaz_info = {
+      (GInterfaceInitFunc) baz_interface_init,    /* interface_init */
+      NULL,               /* interface_finalize */
+      NULL                /* interface_data */
+    };
+    type = g_type_register_static (G_TYPE_OBJECT,
+                                   "MamanBazType",
+                                   &amp;info, 0);
+    g_type_add_interface_static (type,
+                                 MAMAN_TYPE_IBAZ,
+                                 &amp;ibaz_info);
+  }
+  return type;
 }
 </programlisting>
       This function is very much like all the similar functions we looked at previously. The only interface-specific
@@ -861,21 +891,21 @@ maman_baz_get_type (void)
 <programlisting>
 static void baz_do_action (MamanBaz *self)
 {
-        g_print ("Baz implementation of IBaz interface Action: 0x%x.\n", self->instance_member);
+  g_print ("Baz implementation of IBaz interface Action: 0x%x.\n", self->instance_member);
 }
 static void
-baz_interface_init (gpointer         g_iface,
-                    gpointer         iface_data)
+baz_interface_init (gpointer   g_iface,
+                    gpointer   iface_data)
 {
-        MamanIbazClass *klass = (MamanIbazClass *)g_iface;
-        klass->do_action = (void (*) (MamanIbaz *self))baz_do_action;
+  MamanIbazClass *klass = (MamanIbazClass *)g_iface;
+  klass->do_action = (void (*) (MamanIbaz *self))baz_do_action;
 }
 static void
 baz_instance_init (GTypeInstance   *instance,
                    gpointer         g_class)
 {
-        MamanBaz *self = (MamanBaz *)instance;
-        self->instance_member = 0xdeadbeaf;
+  MamanBaz *self = (MamanBaz *)instance;
+  self->instance_member = 0xdeadbeaf;
 }
 </programlisting>
       <function>baz_interface_init</function> merely initializes the interface methods to the implementations
@@ -900,38 +930,38 @@ baz_instance_init (GTypeInstance   *instance,
   interface I2. The example below shows the GObject equivalent:
 
 <programlisting>
-        type = g_type_register_static (G_TYPE_INTERFACE, "MamanIbar", &amp;info, 0);
-        /* Make the MamanIbar interface require MamanIbaz interface. */
-        g_type_interface_add_prerequisite (type, MAMAN_TYPE_IBAZ);
+  type = g_type_register_static (G_TYPE_INTERFACE, "MamanIbar", &amp;info, 0);
+  /* Make the MamanIbar interface require MamanIbaz interface. */
+  g_type_interface_add_prerequisite (type, MAMAN_TYPE_IBAZ);
 </programlisting>
   The code shown above adds the MamanIbaz interface to the list of prerequisites of MamanIbar while the 
   code below shows how an implementation can implement both interfaces and register their implementations:
 <programlisting>
 static void ibar_do_another_action (MamanBar *self)
 {
-        g_print ("Bar implementation of IBar interface Another Action: 0x%x.\n", self->instance_member);
+  g_print ("Bar implementation of IBar interface Another Action: 0x%x.\n", self->instance_member);
 }
 
 static void
-ibar_interface_init (gpointer         g_iface,
-                    gpointer         iface_data)
+ibar_interface_init (gpointer   g_iface,
+                     gpointer   iface_data)
 {
-        MamanIbarClass *klass = (MamanIbarClass *)g_iface;
-        klass->do_another_action = (void (*) (MamanIbar *self))ibar_do_another_action;
+  MamanIbarClass *klass = (MamanIbarClass *)g_iface;
+  klass->do_another_action = (void (*) (MamanIbar *self))ibar_do_another_action;
 }
 
 
 static void ibaz_do_action (MamanBar *self)
 {
-        g_print ("Bar implementation of IBaz interface Action: 0x%x.\n", self->instance_member);
+  g_print ("Bar implementation of IBaz interface Action: 0x%x.\n", self->instance_member);
 }
 
 static void
-ibaz_interface_init (gpointer         g_iface,
-                    gpointer         iface_data)
+ibaz_interface_init (gpointer   g_iface,
+                    gpointer   iface_data)
 {
-        MamanIbazClass *klass = (MamanIbazClass *)g_iface;
-        klass->do_action = (void (*) (MamanIbaz *self))ibaz_do_action;
+  MamanIbazClass *klass = (MamanIbazClass *)g_iface;
+  klass->do_action = (void (*) (MamanIbaz *self))ibaz_do_action;
 }
 
 
@@ -939,48 +969,48 @@ static void
 bar_instance_init (GTypeInstance   *instance,
                    gpointer         g_class)
 {
-        MamanBar *self = (MamanBar *)instance;
-        self->instance_member = 0x666;
+  MamanBar *self = (MamanBar *)instance;
+  self->instance_member = 0x666;
 }
 
 
 GType 
 maman_bar_get_type (void)
 {
-        static GType type = 0;
-        if (type == 0) {
-                static const GTypeInfo info = {
-                        sizeof (MamanBarClass),
-                        NULL,   /* base_init */
-                        NULL,   /* base_finalize */
-                        NULL,   /* class_init */
-                        NULL,   /* class_finalize */
-                        NULL,   /* class_data */
-                        sizeof (MamanBar),
-                        0,      /* n_preallocs */
-                        bar_instance_init    /* instance_init */
-                };
-                static const GInterfaceInfo ibar_info = {
-                        (GInterfaceInitFunc) ibar_interface_init,   /* interface_init */
-                        NULL,                                       /* interface_finalize */
-                        NULL                                        /* interface_data */
-                };
-                static const GInterfaceInfo ibaz_info = {
-                        (GInterfaceInitFunc) ibaz_interface_init,   /* interface_init */
-                        NULL,                                       /* interface_finalize */
-                        NULL                                        /* interface_data */
-                };
-                type = g_type_register_static (G_TYPE_OBJECT,
-                                               "MamanBarType",
-                                               &amp;info, 0);
-                g_type_add_interface_static (type,
-                                             MAMAN_TYPE_IBAZ,
-                                             &amp;ibaz_info);
-                g_type_add_interface_static (type,
-                                             MAMAN_TYPE_IBAR,
-                                             &amp;ibar_info);
-        }
-        return type;
+  static GType type = 0;
+  if (type == 0) {
+    static const GTypeInfo info = {
+      sizeof (MamanBarClass),
+      NULL,   /* base_init */
+      NULL,   /* base_finalize */
+      NULL,   /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      sizeof (MamanBar),
+      0,      /* n_preallocs */
+      bar_instance_init    /* instance_init */
+    };
+    static const GInterfaceInfo ibar_info = {
+      (GInterfaceInitFunc) ibar_interface_init,   /* interface_init */
+      NULL,                                       /* interface_finalize */
+            NULL                                        /* interface_data */
+    };
+    static const GInterfaceInfo ibaz_info = {
+      (GInterfaceInitFunc) ibaz_interface_init,   /* interface_init */
+      NULL,                                       /* interface_finalize */
+      NULL                                        /* interface_data */
+    };
+    type = g_type_register_static (G_TYPE_OBJECT,
+                                   "MamanBarType",
+                                   &amp;info, 0);
+    g_type_add_interface_static (type,
+                                 MAMAN_TYPE_IBAZ,
+                                 &amp;ibaz_info);
+    g_type_add_interface_static (type,
+                                 MAMAN_TYPE_IBAR,
+                                 &amp;ibar_info);
+  }
+  return type;
 }
 </programlisting>
   It is very important to notice that the order in which interface implementations are added to the main object
@@ -1013,8 +1043,8 @@ maman_bar_get_type (void)
 
 
       <para>
-	The signal system which was built in GType is pretty complex and flexible: it is possible for its users
-	to connect at runtime any number of callbacks (implemented in any language for which a binding exists)
+        The signal system which was built in GType is pretty complex and flexible: it is possible for its users
+        to connect at runtime any number of callbacks (implemented in any language for which a binding exists)
         <footnote>
           <para>A python callback can be connected to any signal on any C-based GObject.
           </para>
@@ -1034,40 +1064,40 @@ uses this method. The code below shows how the user can connect a callback to th
 for this simple example is located in <filename>sample/signal/maman-file.{h|c}</filename> and
 in <filename>sample/signal/test.c</filename>
 <programlisting>
-        file = g_object_new (MAMAN_FILE_TYPE, NULL);
+file = g_object_new (MAMAN_FILE_TYPE, NULL);
 
-        g_signal_connect (G_OBJECT (file), "write",
-                          (GCallback)write_event,
-                          NULL);
+g_signal_connect (G_OBJECT (file), "write",
+                  (GCallback)write_event,
+                  NULL);
 
-	maman_file_write (file, buffer, 50);
+maman_file_write (file, buffer, 50);
 </programlisting>
 </para>
 
 <para>
 The <type>MamanFile</type> signal is registered in the class_init function:
 <programlisting>
-        klass->write_signal_id = 
-                g_signal_newv ("write",
-                               G_TYPE_FROM_CLASS (g_class),
-                               G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
-                               NULL /* class closure */,
-                               NULL /* accumulator */,
-                               NULL /* accu_data */,
-                               g_cclosure_marshal_VOID__VOID,
-                               G_TYPE_NONE /* return_type */,
-                               0     /* n_params */,
-                               NULL  /* param_types */);
+klass->write_signal_id = 
+  g_signal_newv ("write",
+                 G_TYPE_FROM_CLASS (g_class),
+                 G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+                 NULL /* class closure */,
+                 NULL /* accumulator */,
+                 NULL /* accu_data */,
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE /* return_type */,
+                 0     /* n_params */,
+                 NULL  /* param_types */);
 </programlisting>
 and the signal is emited in <function>maman_file_write</function>:
 <programlisting>
 void maman_file_write (MamanFile *self, guint8 *buffer, guint32 size)
 {
-        /* First write data. */
-        /* Then, notify user of data written. */
-        g_signal_emit (self, MAMAN_FILE_GET_CLASS (self)->write_signal_id,
-                       0 /* details */, 
-                       NULL);
+  /* First write data. */
+  /* Then, notify user of data written. */
+  g_signal_emit (self, MAMAN_FILE_GET_CLASS (self)->write_signal_id,
+                 0 /* details */, 
+                 NULL);
 }
 </programlisting>
 As shown above, you can safely set the details parameter to zero if you do not know what it can be used for.
@@ -1110,26 +1140,26 @@ and use the Makefile provided in <filename>sample/signal/Makefile</filename> to 
 of the object <type>MamanFileComplex</type> (full source for this object is included in 
 <filename>sample/signal/maman-file-complex.{h|c}</filename>):
 <programlisting>
-        GClosure *default_closure;
-        GType param_types[2];
+GClosure *default_closure;
+GType param_types[2];
 
-        default_closure = g_cclosure_new (G_CALLBACK (default_write_signal_handler),
-                                          (gpointer)0xdeadbeaf /* user_data */, 
-                                          NULL /* destroy_data */);
+default_closure = g_cclosure_new (G_CALLBACK (default_write_signal_handler),
+                                  (gpointer)0xdeadbeaf /* user_data */, 
+                                  NULL /* destroy_data */);
 
-        param_types[0] = G_TYPE_POINTER;
-        param_types[1] = G_TYPE_UINT;
-        klass->write_signal_id = 
-                g_signal_newv ("write",
-                               G_TYPE_FROM_CLASS (g_class),
-                               G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
-                               default_closure /* class closure */,
-                               NULL /* accumulator */,
-                               NULL /* accu_data */,
-                               maman_file_complex_VOID__POINTER_UINT,
-                               G_TYPE_NONE /* return_type */,
-                               2     /* n_params */,
-                               param_types /* param_types */);
+param_types[0] = G_TYPE_POINTER;
+param_types[1] = G_TYPE_UINT;
+klass->write_signal_id = 
+  g_signal_newv ("write",
+                 G_TYPE_FROM_CLASS (g_class),
+                 G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+                 default_closure /* class closure */,
+                 NULL /* accumulator */,
+                 NULL /* accu_data */,
+                 maman_file_complex_VOID__POINTER_UINT,
+                 G_TYPE_NONE /* return_type */,
+                 2     /* n_params */,
+                 param_types /* param_types */);
 </programlisting>
 The code shown above first creates the closure which contains the code to complete the file write. This
 closure is registered as the default class_closure of the newly created signal.
@@ -1142,9 +1172,9 @@ a skeleton:
 static void
 default_write_signal_handler (GObject *obj, guint8 *buffer, guint size, gpointer user_data)
 {
-        g_assert (user_data == (gpointer)0xdeadbeaf);
-        /* Here, we trigger the real file write. */
-        g_print ("default signal handler: 0x%x %u\n", buffer, size);
+  g_assert (user_data == (gpointer)0xdeadbeaf);
+  /* Here, we trigger the real file write. */
+  g_print ("default signal handler: 0x%x %u\n", buffer, size);
 }
 </programlisting>
 </para>
@@ -1154,11 +1184,11 @@ triggers the signal emission:
 <programlisting>
 void maman_file_complex_write (MamanFileComplex *self, guint8 *buffer, guint size)
 {
-        /* trigger event */
-        g_signal_emit (self,
-                       MAMAN_FILE_COMPLEX_GET_CLASS (self)->write_signal_id,
-                       0, /* details */
-                       buffer, size);
+  /* trigger event */
+  g_signal_emit (self,
+                 MAMAN_FILE_COMPLEX_GET_CLASS (self)->write_signal_id,
+                 0, /* details */
+                 buffer, size);
 }
 </programlisting>
 </para>
@@ -1178,34 +1208,34 @@ you are not reading this).
 <programlisting>
 static void complex_write_event_before (GObject *file, guint8 *buffer, guint size, gpointer user_data)
 {
-        g_assert (user_data == NULL);
-        g_print ("Complex Write event before: 0x%x, %u\n", buffer, size);
+  g_assert (user_data == NULL);
+  g_print ("Complex Write event before: 0x%x, %u\n", buffer, size);
 }
 
 static void complex_write_event_after (GObject *file, guint8 *buffer, guint size, gpointer user_data)
 {
-        g_assert (user_data == NULL);
-        g_print ("Complex Write event after: 0x%x, %u\n", buffer, size);
+  g_assert (user_data == NULL);
+  g_print ("Complex Write event after: 0x%x, %u\n", buffer, size);
 }
 
 static void test_file_complex (void)
 {
-	guint8 buffer[100];
-        GObject *file;
+  guint8 buffer[100];
+  GObject *file;
 
-        file = g_object_new (MAMAN_FILE_COMPLEX_TYPE, NULL);
+  file = g_object_new (MAMAN_FILE_COMPLEX_TYPE, NULL);
 
-        g_signal_connect (G_OBJECT (file), "write",
-                          (GCallback)complex_write_event_before,
+  g_signal_connect (G_OBJECT (file), "write",
+                    (GCallback)complex_write_event_before,
+                    NULL);
+
+  g_signal_connect_after (G_OBJECT (file), "write",
+                          (GCallback)complex_write_event_after,
                           NULL);
 
-        g_signal_connect_after (G_OBJECT (file), "write",
-                                (GCallback)complex_write_event_after,
-                                NULL);
+  maman_file_complex_write (MAMAN_FILE_COMPLEX (file), buffer, 50);
 
-	maman_file_complex_write (MAMAN_FILE_COMPLEX (file), buffer, 50);
-
-        g_object_unref (G_OBJECT (file));
+  g_object_unref (G_OBJECT (file));
 }
 </programlisting>
 The code above generates the following output on my machine:
@@ -1255,12 +1285,12 @@ Complex Write event after: 0xbfffe280, 50
          the <function>write</function> function pointer.
 <programlisting>
 struct _MamanFileSimpleClass {
-	GObjectClass parent;
+  GObjectClass parent;
         
-        guint write_signal_id;
+  guint write_signal_id;
 
-        /* signal default handlers */
-        void (*write) (MamanFileSimple *self, guint8 *buffer, guint size);
+  /* signal default handlers */
+  void (*write) (MamanFileSimple *self, guint8 *buffer, guint size);
 };
 </programlisting>
          The <function>write</function> function pointer is initialied in the class_init function of the object
@@ -1270,25 +1300,25 @@ static void
 maman_file_simple_class_init (gpointer g_class,
                                gpointer g_class_data)
 {
-        GObjectClass *gobject_class = G_OBJECT_CLASS (g_class);
-        MamanFileSimpleClass *klass = MAMAN_FILE_SIMPLE_CLASS (g_class);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (g_class);
+  MamanFileSimpleClass *klass = MAMAN_FILE_SIMPLE_CLASS (g_class);
 
-        klass->write = default_write_signal_handler;
+  klass->write = default_write_signal_handler;
 </programlisting>
         Finally, the signal is created with <function>g_signal_new</function> in the same class_init function:
 <programlisting>
-        klass->write_signal_id = 
-                g_signal_new ("write",
-                              G_TYPE_FROM_CLASS (g_class),
-                              G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
-                              G_STRUCT_OFFSET (MamanFileSimpleClass, write),
-                              NULL /* accumulator */,
-                              NULL /* accu_data */,
-                              maman_file_complex_VOID__POINTER_UINT,
-                              G_TYPE_NONE /* return_type */,
-                              2     /* n_params */,
-                              G_TYPE_POINTER,
-                              G_TYPE_UINT);
+klass->write_signal_id = 
+ g_signal_new ("write",
+               G_TYPE_FROM_CLASS (g_class),
+               G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+               G_STRUCT_OFFSET (MamanFileSimpleClass, write),
+               NULL /* accumulator */,
+               NULL /* accu_data */,
+               maman_file_complex_VOID__POINTER_UINT,
+               G_TYPE_NONE /* return_type */,
+               2     /* n_params */,
+               G_TYPE_POINTER,
+               G_TYPE_UINT);
 </programlisting>
         Of note, here, is the 4th argument to the function: it is an integer calculated by the <function>G_STRUCT_OFFSET</function>
         macro which indicates the offset of the member <emphasis>write</emphasis> from the start of the 
@@ -1370,8 +1400,8 @@ maman_file_simple_class_init (gpointer g_class,
 </sect1>
 
 <!--
-	<sect3>
-	  <title>Warning on signal creation and default closure</title>
+  <sect3>
+          <title>Warning on signal creation and default closure</title>
 
           <para>
             Most of the existing code I have seen up to now (in both GTK+, Gnome libraries and
@@ -1379,7 +1409,7 @@ maman_file_simple_class_init (gpointer g_class,
             variation of the default handler pattern I have shown in the previous section.
           </para>
 
-	  <para>
+          <para>
             Usually, the <function>g_signal_new</function> function is preferred over
             <function>g_signal_newv</function>. When <function>g_signal_new</function>
             is used, the default closure is exported as a class function. For example,
@@ -1394,8 +1424,8 @@ struct  _GObjectClass
   /* class methods and other stuff. */
 
   /* signals */
-  void	     (*notify)			(GObject	*object,
-					 GParamSpec	*pspec);
+  void (*notify) (GObject     *object,
+                  GParamSpec  *pspec);
 };
 </programlisting>
          </para>
@@ -1415,13 +1445,13 @@ g_object_do_class_init (GObjectClass *class)
 
   gobject_signals[NOTIFY] =
     g_signal_new ("notify",
-		  G_TYPE_FROM_CLASS (class),
-		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
-		  G_STRUCT_OFFSET (GObjectClass, notify),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__PARAM,
-		  G_TYPE_NONE,
-		  1, G_TYPE_PARAM);
+                  G_TYPE_FROM_CLASS (class),
+                  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+                  G_STRUCT_OFFSET (GObjectClass, notify),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__PARAM,
+                  G_TYPE_NONE,
+                  1, G_TYPE_PARAM);
 }
 </programlisting>
            <function>g_signal_new</function> creates a <type>GClosure</type> which de-references the
