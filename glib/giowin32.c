@@ -1450,9 +1450,9 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
     {
       /* XXX Seems there is no way to find out the readability of file
        * handles to device files (consoles, mostly) without doing a
-       * blocking read. So punt, use st->st_mode.
+       * blocking read. So punt, say it's readable.
        */
-      channel->is_readable  = !!(st->st_mode & _S_IREAD);
+      channel->is_readable = TRUE;
 
       channel->is_writeable =
 	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
