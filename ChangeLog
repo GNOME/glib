@@ -1,3 +1,10 @@
+2000-03-22  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c: Move Win32-only includes after inclusion of glib.h, so
+	that G_OS_WIN32 is defined.
+
+	* glibconfig.h.win32.in: Add GSystemThread.
+
 2000-03-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c (g_get_current_dir): Ok, Marcus Brinkmann

@@ -48,16 +48,6 @@
 #include <sys/param.h>
 #endif
 
-#ifdef G_OS_WIN32
-#  define STRICT			/* Strict typing, please */
-#  include <windows.h>
-#  include <errno.h>
-#  include <ctype.h>
-#  ifdef _MSC_VER
-#    include <io.h>
-#  endif /* _MSC_VER */
-#endif /* G_OS_WIN32 */
-
 /* implement Glib's inline functions
  */
 #define	G_INLINE_FUNC extern
@@ -73,6 +63,14 @@
 #else	
 #define G_PATH_LENGTH   2048
 #endif
+
+#ifdef G_OS_WIN32
+#  define STRICT			/* Strict typing, please */
+#  include <windows.h>
+#  include <ctype.h>
+#  include <direct.h>
+#  include <io.h>
+#endif /* G_OS_WIN32 */
 
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
@@ -481,7 +479,7 @@ g_get_any_init (void)
 	      g_free (homepath);
 	    }
 	}
-#endif /* !G_OS_WIN32 */
+#endif /* G_OS_WIN32 */
       
 #ifdef HAVE_PWD_H
       {

@@ -147,8 +147,20 @@ struct _GStaticMutex
 #define	g_static_mutex_get_mutex(mutex) \
   (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
-
-#define G_BYTE_ORDER G_LITTLE_ENDIAN
+/* This represents a system thread as used by the implementation. An
+ * alien implementaion, as loaded by g_thread_init can only count on
+ * "sizeof (gpointer)" bytes to store their info. We however need more
+ * for some of our native implementations. */
+typedef union _GSystemThread GSystemThread;
+union _GSystemThread
+{
+  /* The size of the data array should be sizeof (pthread_t) */
+  /* This value corresponds to the 1999-05-30 version of pthreads-win32 */
+  char   data[4];
+  double dummy_double;
+  void  *dummy_pointer;
+  long   dummy_long;
+};
 
 #define GINT16_TO_LE(val)	((gint16) (val))
 #define GUINT16_TO_LE(val)	((guint16) (val))
@@ -174,6 +186,7 @@ struct _GStaticMutex
 #define GUINT_TO_LE(val)	((guint) GUINT32_TO_LE (val))
 #define GINT_TO_BE(val)		((gint) GINT32_TO_BE (val))
 #define GUINT_TO_BE(val)	((guint) GUINT32_TO_BE (val))
+#define G_BYTE_ORDER G_LITTLE_ENDIAN
 
 #define GLIB_SYSDEF_POLLIN	= 1
 #define GLIB_SYSDEF_POLLOUT	= 4
