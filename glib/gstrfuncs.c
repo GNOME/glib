@@ -44,6 +44,7 @@
 #endif
 
 #include "glib.h"
+#include "gprintf.h"
 #include "gprintfint.h"
 
 #ifdef G_OS_WIN32
@@ -181,31 +182,13 @@ g_stpcpy (gchar       *dest,
 
 gchar*
 g_strdup_vprintf (const gchar *format,
-		  va_list      args1)
+		  va_list      args)
 {
-  gchar *buffer;
-#ifdef HAVE_VASPRINTF
-  gint len;
-  len = _g_vasprintf (&buffer, format, args1);
-  if (len < 0)
-    buffer = NULL;
-  else if (!g_mem_is_system_malloc ()) 
-    {
-      gchar *buffer1 = g_strndup (buffer, len);
-      free (buffer);
-      buffer = buffer1;
-    }
-#else
-  va_list args2;
+  gchar *string = NULL;
 
-  G_VA_COPY (args2, args1);
+  g_vasprintf (&string, format, args);
 
-  buffer = g_new (gchar, g_printf_string_upper_bound (format, args1));
-
-  _g_vsprintf (buffer, format, args2);
-  va_end (args2);
-#endif
-  return buffer;
+  return string;
 }
 
 gchar*

@@ -1,3 +1,11 @@
+2003-06-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gprintf.[ch]: Synchronize argument names with headers and docs.
+	(g_vasprintf): An implementation of vasprintf(), code was lifted
+	from g_strdup_vprintf().  (#112365)
+
+	* glib/gstrfuncs.c (g_strdup_vprintf): Just use g_vasprintf().
+
 2003-06-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giochannel.h

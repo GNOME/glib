@@ -21,6 +21,12 @@
 #include <config.h>
 #endif
 
+#define _GNU_SOURCE		/* For vasprintf */
+
+#include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"
@@ -38,14 +44,14 @@
  * Since: 2.2
  **/
 gint
-g_printf (gchar const *fmt,
+g_printf (gchar const *format,
 	  ...)
 {
   va_list args;
   gint retval;
 
-  va_start (args, fmt);
-  retval = g_vprintf (fmt, args);
+  va_start (args, format);
+  retval = g_vprintf (format, args);
   va_end (args);
   
   return retval;
@@ -65,15 +71,15 @@ g_printf (gchar const *fmt,
  * Since: 2.2
  **/
 gint
-g_fprintf (FILE *file, 
-           gchar const *fmt,
+g_fprintf (FILE        *file, 
+           gchar const *format,
 	   ...)
 {
   va_list args;
   gint retval;
 
-  va_start (args, fmt);
-  retval = g_vfprintf (file, fmt, args);
+  va_start (args, format);
+  retval = g_vfprintf (file, format, args);
   va_end (args);
   
   return retval;
@@ -93,15 +99,15 @@ g_fprintf (FILE *file,
  * Since: 2.2
  **/
 gint
-g_sprintf (gchar	*str,
-	   gchar const *fmt,
+g_sprintf (gchar       *string,
+	   gchar const *format,
 	   ...)
 {
   va_list args;
   gint retval;
 
-  va_start (args, fmt);
-  retval = g_vsprintf (str, fmt, args);
+  va_start (args, format);
+  retval = g_vsprintf (string, format, args);
   va_end (args);
   
   return retval;
@@ -137,16 +143,16 @@ g_sprintf (gchar	*str,
  *     was large enough.
  **/
 gint
-g_snprintf (gchar	*str,
+g_snprintf (gchar	*string,
 	    gulong	 n,
-	    gchar const *fmt,
+	    gchar const *format,
 	    ...)
 {
   va_list args;
   gint retval;
 
-  va_start (args, fmt);
-  retval = g_vsnprintf (str, n, fmt, args);
+  va_start (args, format);
+  retval = g_vsnprintf (string, n, format, args);
   va_end (args);
   
   return retval;
@@ -165,12 +171,12 @@ g_snprintf (gchar	*str,
  * Since: 2.2
  **/
 gint
-g_vprintf (gchar const *fmt,
+g_vprintf (gchar const *format,
 	   va_list      args)
 {
-  g_return_val_if_fail (fmt != NULL, 0);
+  g_return_val_if_fail (format != NULL, 0);
 
-  return _g_vprintf (fmt, args);
+  return _g_vprintf (format, args);
 }
 
 /**
@@ -187,13 +193,13 @@ g_vprintf (gchar const *fmt,
  * Since: 2.2
  **/
 gint
-g_vfprintf (FILE *file,
-            gchar const *fmt,
+g_vfprintf (FILE        *file,
+            gchar const *format,
 	    va_list      args)
 {
-  g_return_val_if_fail (fmt != NULL, 0);
+  g_return_val_if_fail (format != NULL, 0);
 
-  return _g_vfprintf (file, fmt, args);
+  return _g_vfprintf (file, format, args);
 }
 
 /**
@@ -210,14 +216,14 @@ g_vfprintf (FILE *file,
  * Since: 2.2
  **/
 gint
-g_vsprintf (gchar	 *str,
-	    gchar const *fmt,
+g_vsprintf (gchar	 *string,
+	    gchar const *format,
 	    va_list      args)
 {
-  g_return_val_if_fail (str != NULL, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
+  g_return_val_if_fail (string != NULL, 0);
+  g_return_val_if_fail (format != NULL, 0);
 
-  return _g_vsprintf (str, fmt, args);
+  return _g_vsprintf (string, format, args);
 }
 
 /** 
@@ -250,15 +256,63 @@ g_vsprintf (gchar	 *str,
  *  was large enough.
  */
 gint
-g_vsnprintf (gchar	 *str,
+g_vsnprintf (gchar	 *string,
 	     gulong	  n,
-	     gchar const *fmt,
+	     gchar const *format,
 	     va_list      args)
 {
-  g_return_val_if_fail (n == 0 || str != NULL, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
+  g_return_val_if_fail (n == 0 || string != NULL, 0);
+  g_return_val_if_fail (format != NULL, 0);
 
-  return _g_vsnprintf (str, n, fmt, args);
+  return _g_vsnprintf (string, n, format, args);
+}
+
+/**
+ * g_vasprintf:
+ * @string: the return location for the newly-allocated string.
+ * @format: the format string. See the printf() documentation.
+ * @args: the list of arguments to insert in the output.
+ *
+ * An implementation of the GNU vasprintf() function which supports 
+ * positional parameters, as specified in the Single Unix Specification.
+ * This function is similar to g_vsprintf(), except that it allocates a 
+ * string to hold the output, instead of putting the output in a buffer 
+ * you allocate in advance.
+ *
+ * Returns: the number of characters printed.
+ *
+ * Since: 2.4
+ **/
+gint 
+g_vasprintf (gchar      **string,
+	     gchar const *format,
+	     va_list      args)
+{
+  gint len;
+  g_return_val_if_fail (string != NULL, -1);
+
+#ifdef HAVE_VASPRINTF
+  len = _g_vasprintf (string, format, args);
+  if (len < 0)
+    *string = NULL;
+  else if (!g_mem_is_system_malloc ()) 
+    {
+      gchar *string1 = g_strndup (*string, len);
+      free (*string);
+      *string = string1;
+    }
+#else
+  va_list args2;
+
+  G_VA_COPY (args2, args);
+
+  *string = g_new (gchar, g_printf_string_upper_bound (format, args));
+
+  len = _g_vsprintf (*string, format, args2);
+  va_end (args2);
+#endif
+
+  return len;
 }
 
 

@@ -50,7 +50,9 @@ gint                  g_vsnprintf (gchar       *string,
 				   gulong       n,
 				   gchar const *format,
 				   va_list      args);
-
+gint                  g_vasprintf (gchar      **string,
+				   gchar const *format,
+				   va_list      args);
 
 G_END_DECLS
 
