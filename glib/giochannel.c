@@ -1007,7 +1007,8 @@ g_io_channel_get_buffered	(GIOChannel *channel)
  *
  * The encoding %NULL is safe to use with binary data.
  *
- * The encoding can only be set under the following conditions:
+ * The encoding can only be set if one of the following conditions
+ * is true:
  *
  * 1. The channel was just created, and has not been written to
  *    or read from yet.
@@ -1030,9 +1031,9 @@ g_io_channel_get_buffered	(GIOChannel *channel)
  *    g_io_channel_read_line_string (), or g_io_channel_read_to_end ()
  *    does <emphasis>not</emphasis> guarantee that the encoding can be changed.
  *
- * Channels which do not meet the above conditions cannot call
+ * Channels which do not meet one of the above conditions cannot call
  * g_io_channel_seek_position () with an offset of %G_SEEK_CUR,
- * and if they are "seekable" cannot
+ * and, if they are "seekable", cannot
  * call g_io_channel_write_chars () after calling one
  * of the API "read" functions.
  *
@@ -1367,11 +1368,10 @@ reencode:
  *
  * Reads a line, including the terminating character(s),
  * from a #GIOChannel into a newly-allocated string.
- * @length will contain allocated memory if the return
+ * @str_return will contain allocated memory if the return
  * is %G_IO_STATUS_NORMAL.
  *
- * Return value: a newly-allocated string. Free this string
- *   with g_free() when you are done with it.
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_read_line (GIOChannel *channel,
