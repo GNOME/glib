@@ -1,3 +1,11 @@
+2001-04-19  Havoc Pennington  <hp@redhat.com>
+
+	* gobject.c (g_object_get_valist): We were returning junk memory
+	here, because we didn't copy the value (G_VALUE_NOCOPY_CONTENTS
+	passed to G_VALUE_LCOPY) and then we freed the GValue immediately
+	after. Removed G_VALUE_NOCOPY_CONTENTS from here; need a
+	G_VALUE_STEAL_CONTENTS or the like if we want this optimization.
+
 Wed Apr 18 09:46:56 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject.c gsignal.c: Change C++ comments for FIXME's to

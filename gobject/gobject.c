@@ -983,7 +983,7 @@ g_object_get_valist (GObject	 *object,
       
       object_get_property (object, pspec, &value);
       
-      G_VALUE_LCOPY (&value, var_args, G_VALUE_NOCOPY_CONTENTS, &error);
+      G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
