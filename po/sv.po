@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
-"PO-Revision-Date: 2002-01-28 02:20+0100\n"
+"POT-Creation-Date: 2002-02-25 10:14+0100\n"
+"PO-Revision-Date: 2002-02-25 10:14+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,9 +64,9 @@ msgid "The URI '%s' is invalid"
 msgstr "URI:n \"%s\" är ogiltig"
 
 #: glib/gconvert.c:1632
-#, fuzzy, c-format
+#, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
+msgstr "Värdnamnet i URI:n \"%s\" är ogiltig"
 
 #: glib/gconvert.c:1648
 #, c-format
@@ -79,9 +79,8 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
 #: glib/gconvert.c:1729
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "Ogiltig bytesekvens i värdnamn"
+msgstr "Ogiltigt värdnamn"
 
 #: glib/gdir.c:79
 #, c-format
