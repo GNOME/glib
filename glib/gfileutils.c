@@ -56,6 +56,10 @@
 #define S_ISLNK(x) 0
 #endif
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 #define _(x) x
 
 /**

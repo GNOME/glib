@@ -76,10 +76,6 @@
 #include <langinfo.h>
 #endif
 
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
