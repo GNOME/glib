@@ -1,3 +1,11 @@
+1999-01-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_any_init): Use getpwuid_r with the right
+	signature, if available.
+
+	* configure.in, acconfig.h: Test for existance of getpwuid_r and
+	its signature.
+
 Tue Jan 19 20:52:43 1999  Tor Lillqvist  <tml@iki.fi>
 	
 	* Makefile.am (EXTRA_DIST): Add new Win32 files.

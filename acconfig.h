@@ -92,6 +92,7 @@
 
 #undef G_THREAD_SOURCE
 
+#undef HAVE_GETPWUID_R_POSIX
 /* #undef PACKAGE */
 /* #undef VERSION */
 

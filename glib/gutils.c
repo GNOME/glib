@@ -384,10 +384,6 @@ g_get_any_init (void)
 {
   if (!g_tmp_dir)
     {
-#ifdef HAVE_PWD_H
-      struct passwd *pw;
-#endif
-
       g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TMP"));
@@ -439,30 +435,50 @@ g_get_any_init (void)
 #endif
       
 #ifdef HAVE_PWD_H
-      /* FIXME: we must actually use the getpwuid_r function here, as
-	 getpwuid is not MT-safe, but the prototype doesn't seem to be
-	 agreed upon on the different systems, i.e. it is
-
-	 struct passwd *getpwuid_r(uid_t uid, struct passwd * pwd, 
-	                           char *buffer, int buflen); 
-
-         on solaris, but 
-	 
-	 int getpwuid_r(uid_t uid, struct passwd *pwd, char *buffer, 
-	                size_t bufsize  struct passwd **result); 
- 
-         on posix. weird. */
-      setpwent ();
-      pw = getpwuid (getuid ());
-      endpwent ();
-      
-      if (pw)
-	{
-	  g_user_name = g_strdup (pw->pw_name);
-	  g_real_name = g_strdup (pw->pw_gecos);
-	  if (!g_home_dir)
-	    g_home_dir = g_strdup (pw->pw_dir);
-	}
+      {
+	struct passwd *pw = NULL, pwd;
+	gpointer buffer = NULL;
+	guint bufsize = sizeof (struct passwd);
+#  ifdef HAVE_GETPWUID_R 
+	while (TRUE)
+	  {
+	    int error = 0;
+	    buffer = g_realloc (buffer, bufsize);
+#    ifdef HAVE_GETPWUID_R_POSIX
+	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	    if (error == 0)
+	      break;
+#    else /* HAVE_GETPWUID_R_POSIX */
+	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	    if (pw)
+	      break;
+	    error = errno;
+#    endif /* HAVE_GETPWUID_R_POSIX */
+	    if (error != ERANGE)
+	      g_error( "Could not read account information: %s", 
+		       g_strerror (error));
+	    bufsize *= 2;
+	  }
+#  else /* HAVE_GETPWUID_R */
+#    if defined(G_THREADS_ENABLED) && defined(__GNUC__)
+#    warning "the `g_get_(user_name|real_name|home_dir|tmp_dir)'"
+#    warning "functions will not be MT-safe at their first call"
+#    warning "because there is no `getpwuid_r' on your system."
+#    endif
+	setpwent ();
+	pw = getpwuid (getuid ());
+	endpwent ();
+#  endif /* HAVE_GETPWUID_R */
+	
+	if (pw)
+	  {
+	    g_user_name = g_strdup (pw->pw_name);
+	    g_real_name = g_strdup (pw->pw_gecos);
+	    if (!g_home_dir)
+	      g_home_dir = g_strdup (pw->pw_dir);
+	  }
+	g_free (buffer);
+      }
 #else /* !HAVE_PWD_H */
 #  ifdef NATIVE_WIN32
       {
