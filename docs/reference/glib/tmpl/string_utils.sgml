@@ -643,7 +643,7 @@ The typical usage would be something like:
 <informalexample><programlisting>
   char buf[G_ASCII_DTOSTR_BUF_SIZE];
 
-  fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
+  fprintf (out, "value=&percent;s\n", g_ascii_dtostr (buf, sizeof (buf), value));
 </programlisting></informalexample>
 </para>
 

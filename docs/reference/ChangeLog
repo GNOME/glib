@@ -1,3 +1,8 @@
+2002-05-30  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: 
+	* glib/tmpl/threads.sgml: Small formatting fixes.
+
 2002-05-26  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/conversions.sgml: Add GIConv.

@@ -488,7 +488,7 @@ access. A first naive implementation would be:
     static GMutex * mutex = NULL;
 
     if (!mutex)
-      mutex = g_mutex_new ();
+      mutex = g_mutex_new (<!-- -->);
     g_mutex_lock (mutex);
     ret_val = current_number = calc_next_number (current_number); 
     g_mutex_unlock (mutex);
