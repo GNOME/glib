@@ -1,8 +1,8 @@
 # Danish translation of glib.
-# Copyright (C) 2001, 02 Free Software Foundation, Inc.
+# Copyright (C) 2001, 02, 03 Free Software Foundation, Inc.
 # Keld Simonsen <keld@dkuug.dk>, 2001.
 # Kjartan Maraas <kmaraas@gnome.org>, 2001.
-# Ole Laursen <olau@hardworking.dk>, 2002.
+# Ole Laursen <olau@hardworking.dk>, 2002, 03.
 #
 # Konventioner:
 #
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
 "POT-Creation-Date: 2003-11-12 15:18-0500\n"
-"PO-Revision-Date: 2002-11-25 22:49+0100\n"
+"PO-Revision-Date: 2003-11-20 21:30+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -136,13 +136,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "Fejl under oprettelse af filen '%s': %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Fejl under oprettelse af filen '%s': %s"
+msgstr "Kunne ikke læse den symbolske henvisning '%s': %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Symbolske henvisninger er ikke understøttet"
 
 #: glib/giochannel.c:1143
 #, c-format
