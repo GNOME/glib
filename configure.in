@@ -777,6 +777,7 @@ if test "x$have_threads" = xnone && test "x$want_threads" != xno; then
 else
 	AC_MSG_RESULT($have_threads)
 fi
+AM_CONDITIONAL(HAVE_THREADS, test "x$have_threads" != xnone && test "x$want_threads" != xno)
 
 
 dnl determination of G_THREAD_CFLAGS

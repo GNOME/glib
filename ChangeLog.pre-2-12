@@ -1,3 +1,9 @@
+2000-09-30  Martin Baulig  <baulig@suse.de>
+
+	* configure.in (HAVE_THREADS): New automake conditional.
+	* Makefile.am (SUBDIRS): Only compile the gthread subdirectory if we
+	actually have threads.
+
 2000-09-29  Martin Baulig  <baulig@suse.de>
 
 	* Makefile.am (pkgconfigdir): Set this to `$(libexecdir)/pkgconfig';
