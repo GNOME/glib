@@ -1434,7 +1434,7 @@ case $host in
     ;;
   *-*-cygwin*)
     glib_os="#define G_OS_UNIX
-#define G_OS_FEATURE_CYGWIN"
+#define G_HAVE_CYGWIN"
     ;;
   *)
     glib_os="#define G_OS_UNIX"

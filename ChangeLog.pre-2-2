@@ -1,3 +1,7 @@
+Sun Oct  3 19:46:55 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: use G_HAVE_CYGWIN instead of G_OS_FEATURE_CYGWIN
+
 Sun Oct  3 19:25:42 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acconfig.h
