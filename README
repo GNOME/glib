@@ -1,7 +1,30 @@
+ *** IMPORTANT *** 
+
+This is a development version of GLib.  You should be using a stable
+version, which is available at ftp://ftp.gtk.org/pub/gtk/v1.2/.  This
+version is meant for developers of GLib only:
+
+ * You should not base stable software on this version of GLib.
+ * GNOME developers should use a stable version of GLib.
+
+Distributions should *NOT* ship a development package of this GLib.
+Do not ship the headers and do not ship the glib-config script.  These
+things will conflict with the stable 1.2 series.  Package only enough
+to satisfy the requirements of some other package.  Package only the
+library itself.  Doing otherwise will do no favors to the community.
+
+If you install this version of GLib, we strongly recommend that you
+install it in a different prefix than GLib 1.2.  Use --prefix as an
+argument to configure to do this.  Otherwise, you will not be able to
+do development with GLib 1.2 any longer.
+
+*** You should be using GLib 1.2 instead. ***
+
+
 General Information
 ===================
 
-This is GLib version 1.2.0. GLib is a library which includes support
+This is GLib version 1.3.0. GLib is a library which includes support
 routines for C such as lists, trees, hashes, memory allocation, and
 many other things.
 
