@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
-"PO-Revision-Date: 2004-03-04 02:33+0800\n"
+"POT-Creation-Date: 2004-11-09 11:45+0100\n"
+"PO-Revision-Date: 2004-11-09 23:03+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -20,18 +20,18 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "无法打开从“%s”到“%s”的转换器：%s"
+msgstr "无法打开从“%s”到“%s”的转换器"
 
-#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
-#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
+#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
-#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
-#: glib/giochannel.c:2212
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
+#: glib/giochannel.c:2214
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
@@ -47,9 +47,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
 #: glib/gconvert.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI“%s”不是文件格式的绝对 URI"
+msgstr "URI“%s”不是“file”格式的绝对 URI"
 
 #: glib/gconvert.c:1607
 #, c-format
@@ -100,7 +100,7 @@ msgstr "读取文件“%s”出错：%s"
 msgid "Failed to read from file '%s': %s"
 msgstr "无法读取文件“%s”：%s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:726
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "无法打开文件“%s”：%s"
@@ -115,53 +115,53 @@ msgstr "无法获得文件“%s”的属性：fstat() 失败：%s"
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "无法打开文件“%s”：fdopen() 失败：%s"
 
-#: glib/gfileutils.c:1009
+#: glib/gfileutils.c:1012
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: glib/gfileutils.c:1021
+#: glib/gfileutils.c:1026
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "模板“%s”的结尾不是 XXXXXX"
 
-#: glib/gfileutils.c:1042
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "无法创建文件“%s”：%s"
 
-#: glib/gfileutils.c:1418
+#: glib/gfileutils.c:1425
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "读取符号连接“%s”失败：%s"
 
-#: glib/gfileutils.c:1439
+#: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
 msgstr "不支持符号连接"
 
-#: glib/giochannel.c:1144
+#: glib/giochannel.c:1146
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "不支持从字符集“%s”到“%s”的转换"
 
-#: glib/giochannel.c:1148
+#: glib/giochannel.c:1150
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "无法打开从“%s”到“%s”的转换器：%s"
 
-#: glib/giochannel.c:1493
+#: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string 函数无法进行原始读取"
 
-#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
+#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
 msgstr "在读缓冲里留有未转换数据"
 
-#: glib/giochannel.c:1620 glib/giochannel.c:1697
+#: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
 msgstr "通道终止于未尽字符"
 
-#: glib/giochannel.c:1683
+#: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
@@ -479,39 +479,39 @@ msgstr "字符超出 UTF-16 范围"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "用法："
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[选项...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr ""
+msgstr "帮助选项："
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr ""
+msgstr "显示帮助选项"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr ""
+msgstr "显示全部帮助选项"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr ""
+msgstr "应用程序选项："
 
 #: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "无法处理 --%2$s 所用的整数值“%1$s”"
 
 #: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "%2$s所用的整数值“%1$s”超出范围"
 
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "未知选项 %s"
