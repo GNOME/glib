@@ -1,3 +1,23 @@
+2004-08-25  Tor Lillqvist  <tml@iki.fi>
+
+	Win32 equivalences of the XDG folders
+	
+	* glib/gutils.c (get_special_folder): New function, calls
+	SHGetSpecialFolderLocation() to get path to places like the My
+	Documents folder.
+	(g_get_any_init): Use CSIDL_PROFILE as HOME if not
+	overridden by env vars.
+	(g_get_user_data_dir): Use CSIDL_PERSONAL.
+	(g_get_user_config_dir): Use CSIDL_APPDATA.
+	(g_get_user_cache_dir): Use CSIDL_INTERNET_CACHE. Debatable...
+	(g_get_system_data_dirs): Use CSIDL_COMMON_APPDATA and
+	CSIDL_COMMON_DOCUMENTS.
+	(g_get_system_config_dirs): Use CSIDL_COMMON_APPDATA.
+
+	* configure.in: Add -lole32 to G_LIBS_EXTRA for mingw.
+
+	* glib/glib.def: Add the new functions.
+
 Mon Aug 23 16:16:35 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/goption.c (g_option_group_add_entries): remove unused

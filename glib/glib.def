@@ -178,7 +178,12 @@ EXPORTS
 	g_get_home_dir
 	g_get_prgname
 	g_get_real_name
+	g_get_system_config_dirs
+	g_get_system_data_dirs
 	g_get_tmp_dir
+	g_get_user_cache_dir
+	g_get_user_config_dir
+	g_get_user_data_dir
 	g_get_user_name
 	g_getenv
 	g_hash_table_destroy

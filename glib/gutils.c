@@ -75,6 +75,7 @@
 
 #ifdef G_OS_WIN32
 #  include <direct.h>
+#  include <shlobj.h>
 #endif
 
 #ifdef HAVE_CODESET
@@ -892,6 +893,45 @@ static  gchar   *g_user_cache_dir = NULL;
 static  gchar   *g_user_config_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
 
+#ifdef G_OS_WIN32
+
+static gchar *
+get_special_folder (int csidl)
+{
+  union {
+    char c[MAX_PATH+1];
+    wchar_t wc[MAX_PATH+1];
+  } path;
+  HRESULT hr;
+  LPITEMIDLIST pidl = NULL;
+  BOOL b;
+  gchar *retval = NULL;
+
+  hr = SHGetSpecialFolderLocation (NULL, csidl, &pidl);
+  if (hr == S_OK)
+    {
+      if (G_WIN32_HAVE_WIDECHAR_API ())
+	{
+	  b = SHGetPathFromIDListW (pidl, path.wc);
+	  if (b)
+	    retval = g_utf16_to_utf8 (path.wc, -1, NULL, NULL, NULL);
+	}
+      else
+	{
+	  b = SHGetPathFromIDListA (pidl, path.c);
+	  if (b)
+	    retval = g_locale_to_utf8 (path.c, -1, NULL, NULL, NULL);
+	}
+      CoTaskMemFree (pidl);
+    }
+  if (retval == NULL)
+    return "C:\\";
+  else
+    return retval;
+}
+
+#endif
+
 /* HOLDS: g_utils_global_lock */
 static void
 g_get_any_init (void)
@@ -952,6 +992,9 @@ g_get_any_init (void)
 	  if (getenv ("USERPROFILE") != NULL)
 	    g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
 	}
+
+      if (!g_home_dir)
+	g_home_dir = get_special_folder (CSIDL_PROFILE);
 
       if (!g_home_dir)
 	{
@@ -1269,6 +1312,9 @@ g_get_user_data_dir (void)
 
   if (!g_user_data_dir)
     {
+#ifdef G_OS_WIN32
+      data_dir = get_special_folder (CSIDL_PERSONAL);
+#else
       data_dir = (gchar *) g_getenv ("XDG_DATA_HOME");
 
       if (data_dir && data_dir[0])
@@ -1281,7 +1327,7 @@ g_get_user_data_dir (void)
 	  data_dir = g_build_filename (g_home_dir, ".local", 
 				       "share", NULL);
 	}
-
+#endif
       g_user_data_dir = data_dir;
     }
   else
@@ -1315,19 +1361,22 @@ g_get_user_config_dir (void)
 
   if (!g_user_config_dir)
     {
-        config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
-
-        if (config_dir && config_dir[0])
-            config_dir = g_strdup (config_dir);
-        else
-	  {
-	    if (!g_tmp_dir)
-	      g_get_any_init ();
-	    
-            config_dir = g_build_filename (g_home_dir, ".config", NULL);
-	  }
-
-        g_user_config_dir = config_dir;
+#ifdef G_OS_WIN32
+      config_dir = get_special_folder (CSIDL_APPDATA);
+#else
+      config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
+      
+      if (config_dir && config_dir[0])
+	config_dir = g_strdup (config_dir);
+      else
+	{
+	  if (!g_tmp_dir)
+	    g_get_any_init ();
+	  
+	  config_dir = g_build_filename (g_home_dir, ".config", NULL);
+	}
+#endif      
+      g_user_config_dir = config_dir;
     }
   else
     config_dir = g_user_config_dir;
@@ -1360,6 +1409,9 @@ g_get_user_cache_dir (void)
 
   if (!g_user_cache_dir)
     {
+#ifdef G_OS_WIN32
+      cache_dir = get_special_folder (CSIDL_INTERNET_CACHE); /* XXX correct? */
+#else
       cache_dir = (gchar *) g_getenv ("XDG_CACHE_HOME");
 
       if (cache_dir && cache_dir[0])
@@ -1371,6 +1423,7 @@ g_get_user_cache_dir (void)
 
           cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
 	}
+#endif
       g_user_cache_dir = cache_dir;
     }
   else
@@ -1404,12 +1457,18 @@ g_get_system_data_dirs (void)
 
   if (!g_system_data_dirs)
     {
+#ifdef G_OS_WIN32
+      data_dirs = g_strconcat (get_special_folder (CSIDL_COMMON_APPDATA),
+			       G_SEARCHPATH_SEPARATOR_S,
+			       get_special_folder (CSIDL_COMMON_DOCUMENTS),
+			       NULL);
+#else
       data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
 
       if (!data_dirs || !data_dirs[0])
           data_dirs = "/usr/local/share/:/usr/share/";
-
-      data_dir_vector = g_strsplit (data_dirs, ":", 0);
+#endif
+      data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
 
       g_system_data_dirs = data_dir_vector;
     }
@@ -1444,12 +1503,15 @@ g_get_system_config_dirs (void)
 
   if (!g_system_config_dirs)
     {
+#ifdef G_OS_WIN32
+      conf_dirs = get_special_folder (CSIDL_COMMON_APPDATA);
+#else
       conf_dirs = (gchar *) g_getenv ("XDG_CONFIG_DIRS");
 
       if (!conf_dirs || !conf_dirs[0])
           conf_dirs = "/etc/xdg";
-
-      conf_dir_vector = g_strsplit (conf_dirs, ":", 0);
+#endif
+      conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
     }
   else
     conf_dir_vector = g_system_config_dirs;
