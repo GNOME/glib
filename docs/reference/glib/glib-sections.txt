@@ -857,6 +857,7 @@ G_USEC_PER_SEC
 GTimeVal
 g_get_current_time
 g_usleep
+g_time_val_add
 
 <SUBSECTION>
 GDate

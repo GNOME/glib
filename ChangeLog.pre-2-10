@@ -1,3 +1,15 @@
+2001-06-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Look for nanosleep function. 
+
+	* gtimer.c: Use nanosleep for g_usleep, when found.
+
+	* gtimer.c, gtimer.h: Add g_time_val_add function. Closes #54271.
+
+	* gasyncqueue.c: Documentation updates.
+
+	* gthreadpool.c: Use g_time_val_add now that we have it.
+
 2001-06-01  Jon Trowbridge  <trow@gnu.org>
 
        * gdate.c (g_date_update_julian): Changed to take a const

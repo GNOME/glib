@@ -1,3 +1,9 @@
+2001-06-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt, glib/tmpl/date.sgml: Add g_time_val_add.
+
+	* glib/tmpl/threads.sgml: Updated. 
+
 2001-05-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/arrays.sgml, glib/tmpl/arrays_pointers.sgml,

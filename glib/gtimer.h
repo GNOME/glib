@@ -40,13 +40,17 @@ typedef struct _GTimer		GTimer;
 #define G_USEC_PER_SEC 1000000
 
 GTimer* g_timer_new	(void);
-void	g_timer_destroy (GTimer	 *timer);
-void	g_timer_start	(GTimer	 *timer);
-void	g_timer_stop	(GTimer	 *timer);
-void	g_timer_reset	(GTimer	 *timer);
-gdouble g_timer_elapsed (GTimer	 *timer,
-			 gulong	 *microseconds);
-void    g_usleep        (gulong microseconds);
+void	g_timer_destroy (GTimer	  *timer);
+void	g_timer_start	(GTimer	  *timer);
+void	g_timer_stop	(GTimer	  *timer);
+void	g_timer_reset	(GTimer	  *timer);
+gdouble g_timer_elapsed (GTimer	  *timer,
+			 gulong	  *microseconds);
+
+void    g_usleep        (gulong    microseconds);
+
+void    g_time_val_add  (GTimeVal *time, 
+                         glong     microseconds);
 
 G_END_DECLS
 

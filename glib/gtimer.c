@@ -38,6 +38,8 @@
 #endif /* HAVE_UNISTD_H */
 #ifndef G_OS_WIN32
 #include <sys/time.h>
+#include <time.h>
+#include <errno.h>
 #endif /* G_OS_WIN32 */
 
 #ifdef G_OS_WIN32
@@ -193,7 +195,14 @@ g_usleep (gulong microseconds)
 {
 #ifdef G_OS_WIN32
   Sleep (microseconds / 1000);
-#else
+#else /* !G_OS_WIN32 */
+# ifdef HAVE_NANOSLEEP
+  struct timespec request, remaining;
+  request.tv_sec = microseconds / G_USEC_PER_SEC;
+  request.tv_nsec = 1000 * (microseconds % G_USEC_PER_SEC);
+  while (nanosleep (&request, &remaining) == EINTR)
+    request = remaining;
+# else /* !HAVE_NANOSLEEP */
   if (g_thread_supported ())
     {
       static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
@@ -201,16 +210,13 @@ g_usleep (gulong microseconds)
       GTimeVal end_time;
       
       g_get_current_time (&end_time);
-      
-      end_time.tv_sec += microseconds / G_USEC_PER_SEC;
-      end_time.tv_usec += microseconds % G_USEC_PER_SEC;
-      
-      if (end_time.tv_usec >= G_USEC_PER_SEC)
+      if (microseconds > G_MAXLONG)
 	{
-	  end_time.tv_usec -= G_USEC_PER_SEC;
-	  end_time.tv_sec += 1;
+	  microseconds -= G_MAXLONG;
+	  g_time_val_add (&end_time, G_MAXLONG);
 	}
-      
+      g_time_val_add (&end_time, microseconds);
+
       g_static_mutex_lock (&mutex);
       
       if (!cond)
@@ -229,6 +235,42 @@ g_usleep (gulong microseconds)
       tv.tv_usec = microseconds % G_USEC_PER_SEC;
       select(0, NULL, NULL, NULL, &tv);
     }
-#endif
+# endif /* !HAVE_NANOSLEEP */
+#endif /* !G_OS_WIN32 */
 }
 
+/**
+ * g_time_val_add:
+ * @time: a #GTimeVal
+ * @microseconds: number of microseconds to add to @time
+ *
+ * Adds the given number of microseconds to @time. @microseconds can
+ * also be negative to decrease the value of @time.
+ **/
+void 
+g_time_val_add (GTimeVal *time, glong microseconds)
+{
+  g_return_if_fail (time->tv_usec >= 0 && time->tv_usec < G_USEC_PER_SEC);
+
+  if (microseconds >= 0)
+    {
+      time->tv_usec += microseconds % G_USEC_PER_SEC;
+      time->tv_sec += microseconds / G_USEC_PER_SEC;
+      if (time->tv_usec >= G_USEC_PER_SEC)
+       {
+         time->tv_usec -= G_USEC_PER_SEC;
+         time->tv_sec++;
+       }
+    }
+  else
+    {
+      microseconds *= -1;
+      time->tv_usec -= microseconds % G_USEC_PER_SEC;
+      time->tv_sec -= microseconds / G_USEC_PER_SEC;
+      if (time->tv_usec < 0)
+       {
+         time->tv_usec += G_USEC_PER_SEC;
+         time->tv_sec--;
+       }      
+    }
+}

@@ -1366,6 +1366,11 @@ This function can also be used, if g_thread_init() has not yet been
 called and will immediately return TRUE then.
 </para>
 
+<para>
+To easily calculate @abs_time a combination of g_get_current_time()
+and g_time_val_add() can be used.
+</para>
+
 @cond: a #GCond
 @mutex: a #GMutex, that is currently locked
 @abs_time: a #GTimeVal, determining the final time

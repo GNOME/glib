@@ -86,20 +86,12 @@ g_thread_pool_thread_proxy (gpointer data)
                * pool afterwards */
 	      GTimeVal end_time;
 	      g_get_current_time (&end_time);
-	      end_time.tv_usec += G_USEC_PER_SEC / 2; /* Halv a second */
-	      if (end_time.tv_usec >= G_USEC_PER_SEC)
-		{
-		  end_time.tv_usec -= G_USEC_PER_SEC;
-		  end_time.tv_sec += 1;
-		}
-	 
+	      g_time_val_add (&end_time, G_USEC_PER_SEC / 2); /* 1/2 second */
 	      task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
 	    }
 	  else
-	    {
-	      task = g_async_queue_pop_unlocked (pool->queue);
-	    }
-
+	    task = g_async_queue_pop_unlocked (pool->queue);
+	  
 	  if (task)
 	    {
 	      watcher = FALSE;

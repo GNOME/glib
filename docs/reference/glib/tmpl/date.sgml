@@ -101,6 +101,15 @@ rely on the exact length of the sleep.
 @microseconds: number of microseconds to pause
 
 
+<!-- ##### FUNCTION g_time_val_add ##### -->
+<para>
+
+</para>
+
+@time: 
+@microseconds: 
+
+
 <!-- ##### STRUCT GDate ##### -->
 <para>
 Represents a day between January 1, Year 1 and a few thousand years in
