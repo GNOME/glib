@@ -257,8 +257,8 @@ print_help (GOptionContext *context,
   gint max_length, len;
   gint i;
 
-  g_print ("Usage:\n");
-  g_print ("  %s [OPTION...] %s\n\n", g_get_prgname (),
+  g_print ("%s\n  %s %s %s\n\n", 
+	   _("Usage:"), g_get_prgname (), _("[OPTION...]"),
 	   context->parameter_string ? context->parameter_string : "");
 
   list = context->groups;
@@ -302,12 +302,12 @@ print_help (GOptionContext *context,
   
   list = context->groups;
 
-  g_print ("Help Options:\n");
-  g_print ("  --%-*s %s\n", max_length, "help", "Show help options");
+  g_print ("%s\n  --%-*s %s\n", 
+	   _("Help Options:"), max_length, "help", _("Show help options"));
 
   /* We only want --help-all when there are groups */
   if (list)
-    g_print ("  --%-*s %s\n", max_length, "help-all", "Show all help options");
+    g_print ("  --%-*s %s\n", max_length, "help-all", _("Show all help options"));
 
   while (list)
     {
@@ -355,7 +355,7 @@ print_help (GOptionContext *context,
     {
       list = context->groups;
 
-      g_print ("Application Options\n");
+      g_print ("%s\n", _("Application Options:"));
 
       for (i = 0; i < context->main_group->n_entries; i++) 
 	print_entry (context->main_group, max_length, &context->main_group->entries[i]);
@@ -394,7 +394,7 @@ parse_int (const gchar *arg_name,
     {
       g_set_error (error,
 		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-		   "Cannot parse integer value '%s' for --%s",
+		   _("Cannot parse integer value '%s' for --%s"),
 		   arg, arg_name);
       return FALSE;
     }
@@ -404,7 +404,7 @@ parse_int (const gchar *arg_name,
     {
       g_set_error (error,
 		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-		   "Integer value '%s' for %s out of range",
+		   _("Integer value '%s' for %s out of range"),
 		   arg, arg_name);
       return FALSE;
     }
@@ -975,7 +975,7 @@ g_option_context_parse (GOptionContext   *context,
 		  if (context->ignore_unknown)
 		    {
 		      gchar *new_arg = NULL; 
-		      int arg_index = 0;
+		      gint arg_index = 0;
 		      
 		      for (j = 0; j < strlen (arg); j++)
 			{
