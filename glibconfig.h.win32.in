@@ -27,11 +27,6 @@ G_BEGIN_DECLS
 #define G_MINLONG	LONG_MIN
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
-#define G_MAXSIZE	UINT_MAX
-
-#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
-#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
-#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
 
 typedef signed char gint8;
 typedef unsigned char guint8;
@@ -73,6 +68,8 @@ typedef unsigned int gsize;
 #define G_GSIZE_MODIFIER ""
 #define G_GSSIZE_FORMAT "i"
 #define G_GSIZE_FORMAT "u"
+
+#define G_MAXSIZE	G_MAXUINT
 
 #define GPOINTER_TO_INT(p)	((gint)   (p))
 #define GPOINTER_TO_UINT(p)	((guint)  (p))
@@ -140,12 +137,6 @@ typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
 #define g_static_mutex_get_mutex(mutex) \
   (g_static_mutex_get_mutex_impl_shortcut (mutex))
-/* double checked locking can be used on this platform */
-#define g_once(once, func, arg) \
-  ((once)->status == G_ONCE_STATUS_READY ? (once)->retval : \
-   g_once_impl (once, func, arg));
-#define g_static_mutex_get_mutex_impl_shortcut(mutex) \
-  (*(mutex) ? *(mutex) : g_static_mutex_get_mutex_impl (mutex))
 /* This represents a system thread as used by the implementation. An
  * alien implementaion, as loaded by g_thread_init can only count on
  * "sizeof (gpointer)" bytes to store their info. We however need more
@@ -190,7 +181,7 @@ union _GSystemThread
 
 #define G_MODULE_SUFFIX "dll"
 
-typedef void* GPid;
+typedef void * GPid;
 
 G_END_DECLS
 

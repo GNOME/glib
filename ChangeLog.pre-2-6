@@ -1,5 +1,11 @@
 2004-03-03  Tor Lillqvist  <tml@iki.fi>
 
+	* glibconfig.h.win32.in: Update to match a configure-generated
+	glibconfig.h. Specifically: Remove G_{MIN,MAX,MAXU}INT64
+	definitions (now in gtypes.h). Remove g_once and
+	g_static_mutex_get_mutex_impl_shortcut definitions (now in
+	gthread.h).
+
 	* tests/child-test.c: Use a macro GPID_FORMAT for the format to
 	print GPid in (%p on Win32, %d on Unix). Maybe configure.in should
 	place that in glibconfig.h?
