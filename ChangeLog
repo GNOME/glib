@@ -1,3 +1,14 @@
+2004-06-07  Federico Mena Quintero  <federico@ximian.com>
+
+	Fixes #140532.
+
+	* glib/gconvert.c (is_asciialphanum): Renamed from
+	is_escalphanum(); ensures that this is an ASCII character.
+	(is_asciiescalpha): Renamed from is_escalpha().
+	(hostname_validate): Use the two functions above.
+	(g_filename_to_uri): Don't convert the filename to UTF-8.
+	(g_filename_from_uri): Don't convert the filename from UTF-8.
+
 Mon Jun  7 22:25:24 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/run-markup-tests.sh: Default to silence, but support
