@@ -1,3 +1,8 @@
+Sun Aug 12 10:03:42 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* */Makefile.am: Set GPATH to fix srcdir != builddir  
+	problems with GNU make.
+
 Sun Aug 12 02:24:36 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/value_arrays.sgml: document value arrays.
