@@ -1,3 +1,8 @@
+2001-07-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gtypes.h: Use G_GNUC_EXTENSION instead of
+	__extension__. Patch from Pavel Roskin <proski@gnu.org>.
+
 2001-07-26  Darin Adler  <darin@bentspoon.com>
 
 	* configure.in:

@@ -118,7 +118,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
  */
 #if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
 #  define GUINT16_SWAP_LE_BE_X86(val) \
-     (__extension__					\
+     (G_GNUC_EXTENSION					\
       ({ register guint16 __v;				\
 	 if (__builtin_constant_p (val))		\
 	   __v = GUINT16_SWAP_LE_BE_CONSTANT (val);	\
@@ -131,7 +131,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 #  if !defined(__i486__) && !defined(__i586__) \
       && !defined(__pentium__) && !defined(__i686__) && !defined(__pentiumpro__)
 #     define GUINT32_SWAP_LE_BE_X86(val) \
-        (__extension__						\
+        (G_GNUC_EXTENSION					\
          ({ register guint32 __v;				\
 	    if (__builtin_constant_p (val))			\
 	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
@@ -144,7 +144,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	__v; }))
 #  else /* 486 and higher has bswap */
 #     define GUINT32_SWAP_LE_BE_X86(val) \
-        (__extension__						\
+        (G_GNUC_EXTENSION					\
          ({ register guint32 __v;				\
 	    if (__builtin_constant_p (val))			\
 	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
