@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "POT-Creation-Date: 2002-03-10 23:05+0300\n"
-"PO-Revision-Date: 2002-03-10 23:21+03:00\n"
+"PO-Revision-Date: 2002-03-17 22:17+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,8 +26,7 @@ msgstr "Не удалось открыть преобразователь из \
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
-"Неправильная последовательность байтов в входной строке для преобразования"
+msgstr "Неправильная последовательность байтов во входной строке для преобразования"
 
 #: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
@@ -53,17 +52,17 @@ msgstr ""
 #: glib/gconvert.c:1603
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr ""
+msgstr "URI локального файла \"%s\" не может содержать \"#\""
 
 #: glib/gconvert.c:1620
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr ""
+msgstr "Недопустимый URI \"%s\""
 
 #: glib/gconvert.c:1632
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr ""
+msgstr "Недопустимое название хоста в URI \"%s\""
 
 #: glib/gconvert.c:1648
 #, c-format
@@ -150,7 +149,7 @@ msgstr "Остаток неперекодированных данных в бу
 
 #: glib/giochannel.c:1587 glib/giochannel.c:1661
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Канал обрывается на части символа"
 
 #: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
@@ -218,11 +217,11 @@ msgstr ""
 #: glib/gmarkup.c:553
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Ссылка на символ \"%s\" не кодирует допустимый символ"
 
 #: glib/gmarkup.c:570
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Пустая ссылка на символ; должна включать цифры, например &#454;"
 
 #: glib/gmarkup.c:580
 msgid ""
@@ -244,7 +243,7 @@ msgstr "Документ должен начинаться с элемента (
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
+msgstr "\"%s\" недопустимый символ после символа \"<\"; название элемента не может начинаться с него"
 
 #: glib/gmarkup.c:1033
 #, c-format
@@ -279,7 +278,7 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
+msgstr "\"%s\" -- недопустимый символ после символа \"</\"; с \"%s\" не может начинаться название элемента"
 
 #: glib/gmarkup.c:1422
 #, c-format
@@ -304,14 +303,14 @@ msgstr "Документ был пуст или содержал только п
 
 #: glib/gmarkup.c:1588
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Неожиданный конец документа сразу после открывающей угловой скобки \"<\""
 
 #: glib/gmarkup.c:1596 glib/gmarkup.c:1640
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr ""
+msgstr "Неожиданный конец документа на открытом элементе: \"%s\" -- последний открытый элемент"
 
 #: glib/gmarkup.c:1604
 #, c-format
@@ -336,7 +335,7 @@ msgstr "Неожиданный конец документа внутри тэг
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr ""
+msgstr "Неожиданный конец элемента на знаке равенства после названия аттрибута; нет значения аттрибута"
 
 #: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -345,7 +344,7 @@ msgstr "Неожиданный конец документа в значении
 #: glib/gmarkup.c:1648
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "Неожиданный конец документа в закрывающем тэге элемента \"%s\""
 
 #: glib/gmarkup.c:1654
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -357,17 +356,17 @@ msgstr "Текст в кавычках не начинается с символ
 
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Непарная кавычка в командной строке или другом тексте для оболочки"
 
 #: glib/gshell.c:528
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr ""
+msgstr "Текст закончился сразу после \"\" символа. (Текст -- \"%s\""
 
 #: glib/gshell.c:535
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Текст закончился до парной кавычки для %c. (Текст -- \"%s\")"
 
 #: glib/gshell.c:547
 msgid "Text was empty (or contained only whitespace)"
@@ -455,7 +454,7 @@ msgstr "Символ вне диапазона для UTF-8"
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 #: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Неправильная последовательность во входной строке преобразования"
 
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
