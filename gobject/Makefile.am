@@ -102,10 +102,7 @@ EXTRA_DIST += $(gruntime_built_sources)
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
 Makefile: oldest-source-stamp	# oh boy, does automake SUCK!
-
 oldest-source-stamp: $(gruntime_built_sources)
-	@touch oldest-source-stamp
-CLEANFILES+=oldest-source-stamp
 
 $(OBJECTS): oldest-source-stamp  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
 # initial creation of the real stamp-* files
@@ -125,12 +122,10 @@ $(srcdir)/stamp-gmarshal.h: @REBUILD@ gmarshal.list gmarshal.h glib-genmarshal
 	&& (cmp -s xgen-gmh $(srcdir)/gmarshal.h || cp xgen-gmh $(srcdir)/gmarshal.h) \
 	&& rm -f xgen-gmh xgen-gmh~ \
 	&& echo timestamp > $@
-
 $(srcdir)/gmarshal.c: @REBUILD@ $(srcdir)/stamp-gmarshal.h
 	./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
 	&& cp xgen-gmc $(srcdir)/gmarshal.c \
 	&& rm -f xgen-gmc xgen-gmc~
-
 $(srcdir)/gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
 	grep '^[A-Z]' $(srcdir)/gmarshal.list \
 	| sed -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
