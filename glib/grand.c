@@ -36,9 +36,13 @@
  * MT safe
  */
 
-#include <glib.h>
+#include "config.h"
+
 #include <math.h>
 #include <stdio.h>
+
+#include "glib.h"
+
 
 G_LOCK_DEFINE_STATIC (global_random);
 static GRand* global_random = NULL;

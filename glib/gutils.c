@@ -28,9 +28,7 @@
  * MT safe for the unix part, FIXME: make the win32 part MT safe as well.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

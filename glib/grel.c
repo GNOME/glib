@@ -27,9 +27,13 @@
  * MT safe
  */
 
-#include "glib.h"
+#include "config.h"
+
 #include <stdarg.h>
 #include <string.h>
+
+#include "glib.h"
+
 
 typedef struct _GRealTuples        GRealTuples;
 

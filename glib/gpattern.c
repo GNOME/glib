@@ -16,6 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include "config.h"
+
+#include <string.h>
+
 #include "gpattern.h"
 
 #include "gmacros.h"
@@ -23,7 +28,6 @@
 #include "gmem.h"
 #include "gunicode.h"
 #include "gutils.h" 
-#include <string.h>
 
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
 typedef enum

@@ -24,7 +24,10 @@
  * MT safe
  */
 
+#include "config.h"
+
 #include "glib.h"
+
 
 typedef struct _GRealThreadPool GRealThreadPool;
 

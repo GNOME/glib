@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 
 #define G_IMPLEMENT_INLINES 1
 #define __G_BSEARCHARRAY_C__

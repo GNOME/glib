@@ -18,6 +18,8 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include <locale.h>
 #include <string.h>
 #ifdef __STDC_ISO_10646__

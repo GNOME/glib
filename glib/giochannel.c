@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include "giochannel.h"
 
 #include <string.h>
 #include <errno.h>
@@ -44,6 +43,8 @@
 #undef G_DISABLE_DEPRECATED
 
 #include "glib.h"
+
+#include "giochannel.h"
 
 #include "glibintl.h"
 

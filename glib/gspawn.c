@@ -20,9 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 
-#include "glib.h"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -35,6 +34,8 @@
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+
+#include "glib.h"
 
 #include "glibintl.h"
 

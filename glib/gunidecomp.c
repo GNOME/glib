@@ -19,13 +19,14 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
+
+#include <stdlib.h>
 
 #include "glib.h"
 #include "gunidecomp.h"
 #include "gunicomp.h"
 
-#include <stdlib.h>
 
 #define CC(Page, Char) \
   ((combining_class_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \

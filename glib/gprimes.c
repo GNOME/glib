@@ -28,7 +28,10 @@
  * MT safe
  */
 
+#include "config.h"
+
 #include "glib.h"
+
 
 static const guint g_primes[] =
 {

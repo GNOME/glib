@@ -18,12 +18,12 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
+
+#include <stdlib.h>
 
 #include "glib.h"
 #include "gunibreak.h"
-
-#include <stdlib.h>
 
 
 #define TPROP(Page, Char) \

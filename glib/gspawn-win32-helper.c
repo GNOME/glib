@@ -19,10 +19,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #undef G_LOG_DOMAIN
 #include "glib.h"
 #define GSPAWN_HELPER
 #include "gspawn-win32.c"	/* For shared definitions */
+
 
 static GString *debugstring;
 

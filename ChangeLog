@@ -1,3 +1,8 @@
+Tue Dec  3 20:22:27 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/*.c: Patch from Sven Neumann to make the
+	include order consistent. (#71704)
+
 2002-12-03  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Check that strlcpy behaves as per the OpenBSD 

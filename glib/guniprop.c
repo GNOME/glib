@@ -19,14 +19,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
-
-#include "glib.h"
-#include "gunichartables.h"
+#include "config.h"
 
 #include <stddef.h>
 #include <string.h>
 #include <locale.h>
+
+#include "glib.h"
+#include "gunichartables.h"
+
 
 #define ATTTABLE(Page, Char) \
   ((attr_table[Page] == G_UNICODE_MAX_TABLE_INDEX) ? 0 : (attr_data[attr_table[Page]][Char]))

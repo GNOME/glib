@@ -18,14 +18,14 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
-
-#include "glib.h"
+#include "config.h"
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+
+#include "glib.h"
 
 #include "glibintl.h"
 

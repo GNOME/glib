@@ -28,21 +28,20 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "glib.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include <signal.h>
 #include <locale.h>
 #include <errno.h>
+
+#include "glib.h"
 #include "gdebug.h"
 #include "gprintfint.h"
 

@@ -32,9 +32,12 @@
  * at ftp://ftp.gtk.org/pub/gtk/.
  */
 
+#include "config.h"
+
 #include <string.h>
 
 #include "glib.h"
+
 
 /* Byte-wise swap two items of size SIZE. */
 #define SWAP(a, b, size)						      \

@@ -28,9 +28,7 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -40,7 +38,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+
 #include "glib.h"
+
 
 struct _GStringChunk
 {

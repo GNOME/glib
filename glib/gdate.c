@@ -28,13 +28,11 @@
  * MT safe
  */
 
+#include "config.h"
+
 #define DEBUG_MSG(x)	/* */
 #ifdef G_ENABLE_DEBUG
 /* #define DEBUG_MSG(args)	g_message args ; */
-#endif
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
 #endif
 
 #include "glib.h"

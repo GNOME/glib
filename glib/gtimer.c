@@ -28,11 +28,8 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
-#include "glib.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
@@ -45,6 +42,9 @@
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif /* G_OS_WIN32 */
+
+#include "glib.h"
+
 
 struct _GTimer
 {

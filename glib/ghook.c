@@ -31,7 +31,9 @@
  * MT safe
  */
 
-#include	"glib.h"
+#include "config.h"
+
+#include "glib.h"
 
 
 /* --- defines --- */

@@ -24,7 +24,10 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#include "config.h"
+
 #include "glib.h"
+
 
 static GError* 
 g_error_new_valist(GQuark         domain,

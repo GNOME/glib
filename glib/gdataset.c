@@ -31,9 +31,11 @@
  * looked at yet.  
  */
 
-#include        <string.h>
-#include	"glib.h"
+#include "config.h"
 
+#include <string.h>
+
+#include "glib.h"
 
 
 /* --- defines --- */

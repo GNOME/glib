@@ -31,23 +31,22 @@
  * MT safe
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "config.h"
 
+#include	<errno.h>
 #include	<stdlib.h>
 #include	<stdarg.h>
 #include	<string.h>
 #include	<stdio.h>
-#include	"glib.h"
-#include	"gprintfint.h"
 #ifdef HAVE_UNISTD_H
 #include	<unistd.h>
 #endif
-#include	<errno.h>
 #ifdef G_OS_WIN32
 #include	<io.h>		/* For _read() */
 #endif
+
+#include	"glib.h"
+#include	"gprintfint.h"
 
 /* --- defines --- */
 #define	to_lower(c)				( \

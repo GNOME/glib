@@ -33,7 +33,6 @@
  */
 
 #include "config.h"
-#include "glib.h"
 
 #ifdef G_THREAD_USE_PID_SURROGATE
 #include <sys/types.h>
@@ -47,6 +46,9 @@
 #endif
 
 #include <string.h>
+
+#include "glib.h"
+
 
 #if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
 # define g_system_thread_equal_simple(thread1, thread2)			\
