@@ -512,7 +512,7 @@ calling the handler.
 <informalexample><programlisting>
  if (g_signal_handler_is_connected (instance, id))
    g_signal_handler_disconnect (instance, id);
-</informalexample></example>
+</programlisting></informalexample>
 </para>
 
 @instance: the instance to connect to.
