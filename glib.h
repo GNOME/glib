@@ -1461,26 +1461,32 @@ gpointer g_memdup		(gconstpointer mem,
 #if G_HAVE_ALLOCA
 
 #  define g_strdup_a(newstr,str) G_STMT_START { \
-	  const char *__old = (str);		\
-	  char *__new;				\
-	  size_t __len = strlen (__old) + 1;	\
-	  __new = alloca (__len);		\
-	  memcpy (__new, __old, __len);		\
-	  (newstr) = __new;			\
+	  if ((str) == NULL) (newstr) = NULL;	\
+	  else {				\
+	    const char *__old = (str);		\
+	    char *__new;			\
+	    size_t __len = strlen (__old) + 1;	\
+	    __new = alloca (__len);		\
+	    memcpy (__new, __old, __len);	\
+	    (newstr) = __new;			\
+   	  }					\
    } G_STMT_END
 
 #  define g_strndup_a(newstr,str,n) G_STMT_START { \
-	  const char *__old = (str);		\
-	  char *__new;				\
-	  size_t __len = strlen (__old);	\
-	  if (__len > (n)) __len = (n);		\
-	  __new = alloca (__len + 1);		\
-	  memcpy (__new, __old, __len);		\
-	  __new[__len] = 0;			\
-	  (newstr) = __new;			\
+	  if ((str) == NULL) (newstr) = NULL;	\
+	  else {				\
+	    const char *__old = (str);		\
+	    char *__new;			\
+	    size_t __len = strlen (__old);	\
+	    if (__len > (n)) __len = (n);	\
+	    __new = alloca (__len + 1);		\
+	    memcpy (__new, __old, __len);	\
+	    __new[__len] = 0;			\
+	    (newstr) = __new;			\
+   	  }					\
    } G_STMT_END
 
-#  define g_strconcat_a(newstr,str1,str2,str3) G_STMT_START { \
+#  define g_strconcat3_a(newstr,str1,str2,str3) G_STMT_START { \
 	  size_t __len1 = ((str1) == (gchar*)NULL) ? 0 : strlen((str1)); \
 	  size_t __len2 = ((str2) == (gchar*)NULL) ? 0 : strlen((str2)); \
 	  size_t __len3 = ((str3) == (gchar*)NULL) ? 0 : strlen((str3)); \

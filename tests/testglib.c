@@ -748,6 +748,29 @@ main (int   argc,
 
   g_print ("ok\n");
 
+  g_print ("checking g_strdup...");
+  g_assert(g_strdup(NULL) == NULL);
+  string = g_strdup(GLIB_TEST_STRING);
+  g_assert(string != NULL);
+  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+  g_free(string);
+
+  g_print ("ok\n");
+
+  g_print ("checking g_strconcat...");
+  string = g_strconcat(GLIB_TEST_STRING, NULL);
+  g_assert(string != NULL);
+  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+  g_free(string);
+  string = g_strconcat(GLIB_TEST_STRING, GLIB_TEST_STRING, 
+  		       GLIB_TEST_STRING, NULL);
+  g_assert(string != NULL);
+  g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
+  			  GLIB_TEST_STRING) == 0);
+  g_free(string);
+  
+  g_print ("ok\n");
+
   /* g_debug (argv[0]); */
 
   /* Relation tests */
@@ -879,13 +902,17 @@ main (int   argc,
   g_strdup_a(string, GLIB_TEST_STRING);
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+  g_strdup_a(string, NULL);
+  g_assert(string == NULL);
 
   g_strndup_a(string, GLIB_TEST_STRING, 5);
   g_assert(string != NULL);
   g_assert(strlen(string) == 5);
   g_assert(strcmp(string, GLIB_TEST_STRING_5) == 0);
+  g_strndup_a(string, NULL, 20);
+  g_assert(string == NULL);
 
-  g_strconcat_a(string, GLIB_TEST_STRING, GLIB_TEST_STRING, GLIB_TEST_STRING);
+  g_strconcat3_a(string, GLIB_TEST_STRING, GLIB_TEST_STRING, GLIB_TEST_STRING);
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
   			  GLIB_TEST_STRING) == 0);

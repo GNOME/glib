@@ -1,3 +1,14 @@
+Fri Jan  1 21:58:40 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* glib.h:
+	(g_strdup_a, g_strndup_a): Handle NULL strings like g_strdup.
+	s/g_strconcat_a/g_strconcat3_a/ to reflect fixed number of args
+
+	* testglib.c:
+	Added g_strdup, g_strconcat checks.
+	Added str==NULL checks for alloca string macros.
+	s/g_strconcat_a/g_strconcat3_a/
+
 Fri Jan  1 18:30:41 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* testglib.c: made the alloca tests follow the testglib style
