@@ -1,6 +1,11 @@
+2000-10-09  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (CONFIGURE_DEPENDENCIES): Use this to specify
+	that 'configure' depends on acglib.m4.
+
 2000-10-09  Havoc Pennington  <hp@redhat.com>
 
-        * Makefile.am, tests/Makefile.am: Add new files.
+	* Makefile.am, tests/Makefile.am: Add new files.
 	
 	* tests/spawn-test.c, tests/shell-test.c: new tests for
 	the shell/spawn stuff

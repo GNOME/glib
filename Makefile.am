@@ -100,7 +100,7 @@ install-exec-local: glibconfig.h
 	if test -r $$file && cmp -s glibconfig.h $$file; then :; \
 	else $(INSTALL_DATA) glibconfig.h $$file; fi
 
-configure: configure.in acglib.m4		
+CONFIGURE_DEPENDENCIES = acglib.m4
 
 BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
 glibconfig.h: stamp-gc-h
