@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.5.1 to GLib 2.5.2
+=================================================
+* Add G_GNUC_INTERNAL macro [Arjan van de Ven]
+* Add GOption, a commandline option parser [Anders Carlsson]
+* Add glib_check_version [Michael Natterer]
+* Add XDG basedir API [Ray Strode]
+* Require ngettext [Danilo Segan]
+* Bug fixes [Manish Singh, Ray Strode, Vincent Noel, 
+  Jon-Kare Hellan, Jody Goldberg]
+* Win32 bug fixes [Tor Lillqvist, Hans Breuer, Peter Zelezny]
+* Documentation improvements [Matthias Clasen, Vincent Untz, Christian Persch]
+* New and updated translations (bs,eu,fi,gu,ne,pa)
+
 Overview of Changes from GLib 2.5.0 to GLib 2.5.1
 =================================================
 
