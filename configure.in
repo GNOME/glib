@@ -15,6 +15,10 @@ cflags_set=${CFLAGS+set}
 # we rewrite this file
 rm -f glibconfig-sysdefs.h
 
+dnl we to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
+dnl are available for $ac_help expansion (don't we all *love* autoconf?)
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+#
 # The following version number definitions apply to GLib and GModule
 # as a whole, so if changes occoured in either of them, they are both
 # treated with the same interface and binary age.
@@ -33,6 +37,9 @@ GLIB_MICRO_VERSION=15
 GLIB_INTERFACE_AGE=2
 GLIB_BINARY_AGE=2
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
+dnl
+AC_DIVERT_POP()dnl
+
 AC_SUBST(GLIB_VERSION)
 
 # libtool versioning
@@ -67,7 +74,18 @@ AM_MAINTAINER_MODE
 
 AC_CANONICAL_HOST
 
-AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=minimum]],,enable_debug=minimum)
+dnl figure debugging default, prior to $ac_help setup
+dnl
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+if test `expr $GLIB_MINOR_VERSION \% 2` = 1 ; then
+	debug_default=yes
+else
+	debug_default=minimum
+fi
+AC_DIVERT_POP()dnl
+
+dnl declare --enable-* args and collect ac_help strings
+AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=$debug_default]],,enable_debug=$debug_default)
 AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
 AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
