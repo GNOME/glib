@@ -519,11 +519,13 @@ g_locale_to_utf8 (const gchar  *opsysstring,
 #ifdef G_OS_WIN32
 
   gint i, clen, total_len, wclen, first;
-  const gint len = len < 0 ? strlen (opsysstring) : len;
   wchar_t *wcs, wc;
   gchar *result, *bp;
   const wchar_t *wcp;
 
+  if (len == -1)
+    len = strlen (opsysstring);
+  
   wcs = g_new (wchar_t, len);
   wclen = MultiByteToWideChar (CP_ACP, 0, opsysstring, len, wcs, len);
 
@@ -658,11 +660,13 @@ g_locale_from_utf8 (const gchar *utf8string,
 #ifdef G_OS_WIN32
 
   gint i, mask, clen, mblen;
-  const gint len = len < 0 ? strlen (utf8string) : len;
   wchar_t *wcs, *wcp;
   gchar *result;
   guchar *cp, *end, c;
   gint n;
+  
+  if (len == -1)
+    len = strlen (utf8string);
   
   /* First convert to wide chars */
   cp = (guchar *) utf8string;

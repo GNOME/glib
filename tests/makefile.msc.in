@@ -22,6 +22,7 @@ TESTS = \
 	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
+	mainloop-test.exe\
 	markup-test.exe	\
 	node-test.exe	\
 	queue-test.exe	\
@@ -36,7 +37,8 @@ TESTS = \
 	thread-test.exe	\
 	threadpool-test.exe\
 	tree-test.exe	\
-	type-test.exe
+	type-test.exe	\
+	unicode-encoding.exe
 
 all :	$(TESTS)
 

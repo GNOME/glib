@@ -182,6 +182,7 @@ EXPORTS
 	g_io_channel_win32_poll
 	g_io_channel_win32_set_debug
 	g_io_channel_write
+	g_io_create_watch
 	g_list_alloc
 	g_list_append
 	g_list_concat
@@ -534,6 +535,7 @@ EXPORTS
 	g_tree_traverse
 	g_tuples_destroy
 	g_tuples_index
+	g_ucs4_to_utf16
 	g_ucs4_to_utf8
 	g_unichar_break_type
 	g_unichar_digit_value
@@ -560,6 +562,8 @@ EXPORTS
 	g_unicode_canonical_decomposition
 	g_unicode_canonical_ordering
 	g_usleep
+	g_utf16_to_ucs4
+	g_utf16_to_utf8
 	g_utf8_find_next_char
 	g_utf8_find_prev_char
 	g_utf8_get_char
@@ -571,6 +575,8 @@ EXPORTS
 	g_utf8_strlen
 	g_utf8_strncpy
 	g_utf8_to_ucs4
+	g_utf8_to_ucs4_fast
+	g_utf8_to_utf16
 	g_utf8_validate
 	g_vsnprintf
 	g_win32_closedir

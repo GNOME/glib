@@ -1,8 +1,14 @@
 #include <errno.h>
 #include <glib.h>
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef G_OS_WIN32
+#include <fcntl.h>		/* For _O_BINARY used by pipe() macro */
+#endif
 
 #define ITERS 10000
 #define INCREMENT 10

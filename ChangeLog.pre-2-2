@@ -1,3 +1,30 @@
+2001-01-06  Tor Lillqvist  <tml@iki.fi>
+
+	* gconvert.c (g_locale_to_utf8, g_locale_from_utf8): Get len using
+	strlen() if arg is negative in the Win32 code, too.
+
+	* giowin32.c: Changes necessary to be able to run
+	mainloop-test. We can't close the fd that our (internal) reader
+	thread is sitting doing a blocking read() from. We must terminate
+	the thread first. Keep track of thread handle, and close it when
+	thread is dying. Start reader thread with the lower-level
+	CreateThread() instead of _beginthreadex() from the C runtime, in
+	order to be able to use TerminateThread(). Hopefuly this isn't
+	harmful.
+
+	* glib.def: Update.
+
+	* tests/makefile.{mingw,msc}.in (TESTS): Add mainloop-test and
+	unicode-encoding.
+
+	* tests/mainloop-test.c: Portability: <unistd.h>, need <fcntl.h>
+	on Win32.
+
+	* tests/unicode-encoding.c (process): Add missing "line" argument
+	to fail(). On Win32, convert UTF-16LE, as libiconv'c ivonf always
+	converts to UTF-16BE if we ask for unspecific UTF-16.
+	(main) Handle also '\r'.
+
 Fri Jan  5 11:25:42 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (PACKAGE): move $enable_debug down below

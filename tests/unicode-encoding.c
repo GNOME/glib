@@ -192,7 +192,13 @@ process (gint      line,
       gint n_chars;
       gchar *utf8_result;
 
-      if (!(utf16_expected_tmp = (gunichar2 *)g_convert (utf8, -1, "UTF-16", "UTF-8",
+#ifdef G_OS_WIN32
+#define TARGET "UTF-16LE"
+#else
+#define TARGET "UTF-16"
+#endif
+
+      if (!(utf16_expected_tmp = (gunichar2 *)g_convert (utf8, -1, TARGET, "UTF-8",
 							 NULL, &bytes_written, NULL)))
 	{
 	  fail ("line %d: could not convert to UTF-16 via g_convert\n", line);
@@ -210,7 +216,7 @@ process (gint      line,
 	}
       else if (utf16_expected_tmp[0] == 0xfffe) /* ANTI-BOM */
 	{
-	  fail ("line %d: conversion via iconv to \"UTF-16\" is not native-endian\n");
+	  fail ("line %d: conversion via iconv to \"UTF-16\" is not native-endian\n", line);
 	  return;
 	}
       else
@@ -315,7 +321,7 @@ main (int argc, char **argv)
   if (!srcdir)
     srcdir = ".";
   
-  testfile = g_strconcat (srcdir, "/", "utf8.txt", NULL);
+  testfile = g_strconcat (srcdir, G_DIR_SEPARATOR_S "utf8.txt", NULL);
   
   g_file_get_contents (testfile, &contents, NULL, &error);
   if (error)
@@ -332,10 +338,10 @@ main (int argc, char **argv)
 	p++;
 
       end = p;
-      while (*end && *end != '\n')
+      while (*end && (*end != '\r' && *end != '\n'))
 	end++;
       
-      if (!*p || *p == '#' || *p == '\n')
+      if (!*p || *p == '#' || *p == '\r' || *p == '\n')
 	goto next_line;
 
       tmp = g_strstrip (g_strndup (p, end - p));
@@ -401,6 +407,8 @@ main (int argc, char **argv)
       
     next_line:
       p = end;
+      if (*p && *p == '\r')
+	p++;
       if (*p && *p == '\n')
 	p++;
       
