@@ -1124,7 +1124,6 @@ g_option_group_add_entries (GOptionGroup       *group,
 			    const GOptionEntry *entries)
 {
   gint n_entries;
-  gint i;
   
   g_return_if_fail (entries != NULL);
 

@@ -1,3 +1,8 @@
+Mon Aug 23 16:16:35 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/goption.c (g_option_group_add_entries): remove unused
+	variable.
+
 Mon Aug 23 01:35:18 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutils.c (g_get_user_cache_dir): 
