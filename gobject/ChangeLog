@@ -1,3 +1,8 @@
+Tue May  7 15:03:02 2002  Owen Taylor  <otaylor@redhat.com>
+
+        * glib-genmarshal.c: Fix include order for config.h (#71704,
+        Morten Welinder)
+
 2002-05-07  Michael Natterer  <mitch@gimp.org>
 
 	* Makefile.am: use the glib-genmarshal found at configure time
