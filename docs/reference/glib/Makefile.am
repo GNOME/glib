@@ -10,7 +10,7 @@ DOC_MAIN_SGML_FILE=glib-docs.sgml
 DOC_SOURCE_DIR=../../..
 
 # Extra options to supply to gtkdoc-scan
-SCAN_OPTIONS=
+SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=

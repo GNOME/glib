@@ -1,3 +1,7 @@
+Mon Mar 26 14:20:36 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/Makefile.am (SCAN_OPTIONS): Add --deprecated-guards
+
 Sat Mar 17 17:51:17 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/Makefile.am glib/Makefile.am: A couple
