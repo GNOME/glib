@@ -28,7 +28,10 @@
 #define __G_COMPLETION_H__
 
 #include <glist.h>
+#include <stddef.h>		/* For size_t */
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 
 G_BEGIN_DECLS
 

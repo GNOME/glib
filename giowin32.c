@@ -354,11 +354,19 @@ g_io_win32_dispatch (GSource     *source,
 		     GSourceFunc  callback,
 		     gpointer     user_data)
 {
+  GIOFunc func = (GIOFunc)callback;
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   
-  return (*callback) (watch->channel,
-		      watch->pollfd.revents & watch->condition,
-		      user_data);
+  if (!func)
+    {
+      g_warning ("GIOWin32Watch dispatched without callback\n"
+		 "You must call g_source_connect().");
+      return FALSE;
+    }
+  
+  return (*func) (watch->channel,
+		  watch->pollfd.revents & watch->condition,
+		  user_data);
 }
 
 static void
@@ -379,7 +387,7 @@ static GSourceFuncs win32_watch_funcs = {
 static GSource *
 g_io_win32_create_watch (GIOChannel    *channel,
 			 GIOCondition   condition,
-			 int (*reader) (int, guchar *, int)))
+			 int (*reader) (int, guchar *, int))
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   GIOWin32Watch *watch;
@@ -741,7 +749,7 @@ static GSource *
 g_io_win32_sock_create_watch (GIOChannel    *channel,
 			      GIOCondition   condition)
 {
-  return g_io_win32_add_watch (channel, condition, sock_reader);
+  return g_io_win32_create_watch (channel, condition, sock_reader);
 }
 
 static GIOFuncs win32_channel_msg_funcs = {
@@ -837,7 +845,16 @@ g_io_channel_win32_new_stream_socket (int socket)
 GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
-  return g_io_channel_win32_new_fd (fd);
+  struct stat st;
+
+  if (fstat (fd, &st) == 0)
+    return g_io_channel_win32_new_fd (fd);
+  
+  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SO_ERROR)
+    return g_io_channel_win32_new_stream_socket(fd);
+
+  g_warning ("%d isn't a file descriptor or a socket", fd);
+  return NULL;
 }
 
 gint
@@ -864,7 +881,7 @@ g_io_channel_win32_poll (GPollFD *fds,
 
   g_return_val_if_fail (n_fds >= 0, 0);
 
-  result = (*g_main_win32_get_poll_func ()) (fds, n_fds, timeout);
+  result = (*g_main_context_get_poll_func (NULL)) (fds, n_fds, timeout);
 
   return result;
 }

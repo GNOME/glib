@@ -98,15 +98,18 @@ static gboolean alloc_console_called = FALSE;
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 static inline int
-write (FILE       *fd,
-       const char *buf,
-       int         len)
+dowrite (FILE        *fd,
+	 const void  *buf,
+	 unsigned int len)
 {
   fwrite (buf, len, 1, fd);
   fflush (fd);
 
   return len;
 }
+
+#define write(fd, buf, len) dowrite(fd, buf, len)
+
 static void
 ensure_stdout_valid (void)
 {

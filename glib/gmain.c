@@ -904,7 +904,7 @@ g_source_add_poll (GSource *source,
   
   g_return_if_fail (source != NULL);
   g_return_if_fail (fd != NULL);
-  g_return_val_if_fail (!SOURCE_DESTROYED (source), 0);
+  g_return_if_fail (!SOURCE_DESTROYED (source));
   
   context = source->context;
 
@@ -2440,8 +2440,6 @@ g_main_context_set_poll_func (GMainContext *context,
   UNLOCK_CONTEXT (context);
 }
 
-#ifdef G_OS_WIN32
-
 /**
  * g_main_context_get_poll_func:
  * @context: a #GMainContext
@@ -2453,7 +2451,7 @@ g_main_context_set_poll_func (GMainContext *context,
 GPollFunc
 g_main_context_get_poll_func (GMainContext *context)
 {
-  GPollFunc *result;
+  GPollFunc result;
   
   if (!context)
     context = g_main_context_default ();
@@ -2461,9 +2459,9 @@ g_main_context_get_poll_func (GMainContext *context)
   LOCK_CONTEXT (context);
   result = context->poll_func;
   UNLOCK_CONTEXT (context);
-}
 
-#endif
+  return result;
+}
 
 /* HOLDS: context's lock */
 /* Wake the main loop up from a poll() */
@@ -2477,7 +2475,7 @@ g_main_context_wakeup (GMainContext *context)
 #ifndef G_OS_WIN32
       write (context->wake_up_pipe[1], "A", 1);
 #else
-      ReleaseSemaphore (context->context->wake_up_semaphore, 1, NULL);
+      ReleaseSemaphore (context->wake_up_semaphore, 1, NULL);
 #endif
     }
 #endif

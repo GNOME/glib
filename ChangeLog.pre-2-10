@@ -1,3 +1,31 @@
+2000-12-14  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c (g_io_win32_dispatch): Warn if no callback. Call
+	callback correctly.
+	(g_io_win32_create_watch): Fix typo.
+	(g_io_win32_fd_create_watch): Ditto.
+	(g_io_channel_unix_new): If it is a file descriptor (i.e., a Unix
+	fd lookalike provided by the C library), call
+	g_io_channel_win32_new_fd(). If it is a socket (from WinSock),
+	call g_io_cahnnel_win32_new_stream_socket(). Hopefully sockets and
+	fds don't overlap. TODO: Implement also datagram sockets.
+	(g_io_channel_win32_poll): Call g_main_context_get_poll_func().
+
+	* gcompletion.h: Include <unistd.h> only on Unix. Is this
+	inclusion really needed here? OTOH, do include <stddef.h>, for
+	size_t.
+
+	* gmessages.c: (Win32) Don't define a function called "write" that
+	might clash with the prototype from <io.h>, use a #define.
+
+	* glib.def: Update.
+
+	* gmain.c (g_source_add_poll): Don't return a value from void
+	function.
+	(g_main_context_get_poll_func): Compile also for non-Win32, as
+	presumably was intended. The result var is a GPollFunc, not a
+	GPollFunc*. Return the result!
+
 2000-12-13  Havoc Pennington  <hp@redhat.com>
 
 	* gconvert.c (open_converter): make static

@@ -157,6 +157,7 @@ EXPORTS
 	g_idle_add
 	g_idle_add_full
 	g_idle_remove_by_data
+	g_idle_source_new
 	g_int_equal
 	g_int_hash
 	g_io_add_watch
@@ -215,17 +216,26 @@ EXPORTS
 	g_log_set_fatal_mask
 	g_log_set_handler
 	g_logv
-	g_main_add_poll
-	g_main_destroy
-	g_main_is_running
-	g_main_iteration
-	g_main_new
-	g_main_pending
-	g_main_quit
-	g_main_remove_poll
-	g_main_run
-	g_main_set_poll_func
-	g_main_win32_get_poll_func
+	g_main_context_add_poll
+	g_main_context_check
+	g_main_context_default
+	g_main_context_dispatch
+	g_main_context_find_source_by_funcs_user_data
+	g_main_context_find_source_by_id
+	g_main_context_find_source_by_user_data
+	g_main_context_get
+	g_main_context_get_poll_func
+	g_main_context_iteration
+	g_main_context_pending
+	g_main_context_prepare
+	g_main_context_query
+	g_main_context_remove_poll
+	g_main_context_set_poll_func
+	g_main_loop_destroy
+	g_main_loop_is_running
+	g_main_loop_new
+	g_main_loop_quit
+	g_main_loop_run
 	g_malloc
 	g_malloc0
 	g_markup_error_quark
@@ -397,10 +407,24 @@ EXPORTS
 	g_slist_sort
 	g_slist_sort_with_data
 	g_snprintf
-	g_source_add
+	g_source_add_poll
+	g_source_attach
+	g_source_destroy
+	g_source_get_can_recurse
+	g_source_get_context
+	g_source_get_current_time
+	g_source_get_id
+	g_source_get_priority
+	g_source_new
+	g_source_ref
 	g_source_remove
-	g_source_remove_by_source_data
+	g_source_remove_by_funcs_user_data
 	g_source_remove_by_user_data
+	g_source_set_callback
+	g_source_set_callback_indirect
+	g_source_set_can_recurse
+	g_source_set_priority
+	g_source_unref
 	g_spaced_primes_closest
 	g_spawn_async
 	g_spawn_async_with_pipes
@@ -432,6 +456,7 @@ EXPORTS
 	g_strdelimit
 	g_strdown
 	g_strdup
+	g_strdupv
 	g_strdup_printf
 	g_strdup_vprintf
 	g_strerror
@@ -486,6 +511,7 @@ EXPORTS
 	g_threads_got_initialized
 	g_timeout_add
 	g_timeout_add_full
+	g_timeout_source_new
 	g_timer_destroy
 	g_timer_elapsed
 	g_timer_new

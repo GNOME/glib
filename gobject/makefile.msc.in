@@ -24,6 +24,7 @@ gobject_OBJECTS =		\
 	gbsearcharray.obj	\
 	gclosure.obj		\
 	genums.obj		\
+	gmarshal.obj		\
 	gobject.obj		\
 	gparam.obj		\
 	gparamspecs.obj		\
@@ -42,4 +43,4 @@ gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"glib-genmarshal\" glib-genmarshal.c ..\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib

@@ -1,3 +1,15 @@
+2000-12-14  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in: Update, include parts from Makefile.am to
+	build gmarshal.[ch]. Some day, we won't need these separate
+	makefiles for Win32 compilation. I hope.
+
+	* makefile.msc.in: Update. No use trying to build gmarshal.[ch]
+	here, it would require Unixish tools. MSVC users building from CVS
+	sources are out of luck.
+	
+	* gobject.def: Update.
+
 Wed Dec 13 09:31:26 2000  Tim Janik  <timj@gtk.org>
 
 	* gparamspecs.[hc]: add G_TYPE_PARAM_BOXED implementation.
