@@ -1,3 +1,17 @@
+Tue Sep  2 14:53:41 2003  Tim Janik  <timj@gtk.org>
+
+	* gobject-query.c (main): fix iterating over fundamental types.
+
+	* gtype.c: applied patch from owen which keeps internal
+	class initialization state to maintain class and interface
+	initialization happen in the order of:
+	1. class' base_init
+	2. interface' base_init
+	=  interfaces added after here are immediately base_init-ialized
+	3. class_init
+	4. Interface_init
+	=  interfaces added here are immediately Interface_init-ialized
+
 Wed Aug 27 19:53:26 2003  Manish Singh  <yosh@gimp.org>
 
 	* gobject.c: removed stray change from previous commit.

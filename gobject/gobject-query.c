@@ -217,7 +217,7 @@ main (gint   argc,
   if (gen_froots)
     {
       root = ~0;
-      for (i = 0; i < 256; i++)
+      for (i = 0; i <= G_TYPE_FUNDAMENTAL_MAX; i += G_TYPE_MAKE_FUNDAMENTAL (1))
 	{
 	  const gchar *name = g_type_name (i);
 	  
