@@ -1,3 +1,14 @@
+2003-07-09  Matthias Clasen  <maclas@gmx.de>
+
+	Support for one-time initialization functions.  (#69668, Sebastian Wilhelmi)
+
+	* configure.in: Check whether double checked locking is safe, define g_once() in
+	glibconfig.h accordingly.
+	* glib/gthread.h: Add GOnce, GOnceStatus, G_ONCE_INIT and g_once_impl.
+	* glib/gthread.c (g_once_impl): Fallback implementation using a mutex if double checked
+	locking is unsafe.
+	* tests/thread-test.c: Add tests for g_once().
+
 2003-07-02  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strfreev): Move docs inline, document behavior 

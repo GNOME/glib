@@ -1606,3 +1606,72 @@ you should also free the #GStaticPrivate.
 @private_key: a #GStaticPrivate to be freed.
 
 
+<!-- ##### STRUCT GOnce ##### -->
+<para>
+A <structname>GOnce</structname> struct controls a one-time initialization function. 
+Any one-time initialization function must have its own unique <structname>GOnce</structname> 
+struct.
+</para>
+ 
+@Since: 2.4
+
+<!-- ##### ENUM GOnceStatus ##### -->
+<para>
+The possible stati of a one-time initialization function controlled by a #GOnce struct.
+</para>
+
+@G_ONCE_STATUS_NOTCALLED: the function has not been called yet.
+@G_ONCE_STATUS_PROGRESS: the function call is currently in progress.
+@G_ONCE_STATUS_READY: the function has been called.
+
+<!-- ##### MACRO G_ONCE_INIT ##### -->
+<para>
+A #GOnce must be initialized with this macro, before it can be used. 
+</para>
+<para>
+<informalexample>
+<programlisting>
+GOnce my_once = G_ONCE_INIT;
+</programlisting>
+</informalexample>
+</para>
+
+
+
+<!-- ##### MACRO g_once ##### -->
+<para>
+The first call to this routine by a process with a given #GOnce struct calls @func with the given 
+argument. Thereafter, subsequent calls to g_once()  with the same #GOnce struct do not call @func 
+again, but return the stored result of the first call. On return from g_once(), the status of @once
+will be %G_ONCE_STATUS_READY.
+</para>
+<para>
+For example, a mutex or a thread-specific data key must be created exactly once. In a threaded 
+environment, calling g_once() ensures that the initialization is serialized across multiple threads.
+</para>
+<note><para>
+Calling g_once() recursively on the same #GOnce struct in @func will lead to a deadlock.
+</para></note>
+<para>
+<informalexample>
+<programlisting>
+gpointer 
+get_debug_flags ()
+{
+  static GOnce my_once = G_ONCE_INIT;
+  
+  g_once (&my_once, parse_debug_flags, NULL);
+
+  return my_once.retval;
+}
+</programlisting>
+</informalexample>
+</para>
+
+@once: a #GOnce structure
+@func: the function associated to @once. This function is called only once, regardless of the 
+       number of times it and its associated #GOnce struct are passed to g_once() .
+@arg:  data to be passed to @func
+@Since: 2.4
+
+

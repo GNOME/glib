@@ -284,6 +284,24 @@ gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
+typedef enum
+{
+  G_ONCE_STATUS_NOTCALLED,
+  G_ONCE_STATUS_PROGRESS,
+  G_ONCE_STATUS_READY  
+} GOnceStatus;
+
+typedef struct _GOnce GOnce;
+struct _GOnce
+{
+  volatile GOnceStatus status;
+  volatile gpointer retval;
+};
+
+#define G_ONCE_INIT { G_ONCE_STATUS_NOTCALLED, NULL }
+
+gpointer g_once_impl (GOnce *once, GThreadFunc func, gpointer arg);
+
 /* these are some convenience macros that expand to nothing if GLib
  * was configured with --disable-threads. for using StaticMutexes,
  * you define them with G_LOCK_DEFINE_STATIC (name) or G_LOCK_DEFINE (name)

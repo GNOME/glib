@@ -1,7 +1,7 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * gmutex.c: MT safety related functions
+ * gthread.c: MT safety related functions
  * Copyright 1998 Sebastian Wilhelmi; University of Karlsruhe
  *                Owen Taylor
  *
@@ -148,7 +148,8 @@ GThreadFunctions g_thread_functions_for_glib_use = {
 
 /* Local data */
 
-static GMutex   *g_mutex_protect_static_mutex_allocation = NULL;
+static GMutex   *g_once_mutex = NULL;
+static GCond    *g_once_cond = NULL;
 static GPrivate *g_thread_specific_private = NULL;
 static GSList   *g_thread_all_threads = NULL;
 static GSList   *g_thread_free_indeces = NULL;
@@ -167,7 +168,8 @@ g_thread_init_glib (void)
    */
   GRealThread* main_thread = (GRealThread*) g_thread_self ();
 
-  g_mutex_protect_static_mutex_allocation = g_mutex_new ();
+  g_once_mutex = g_mutex_new ();
+  g_once_cond = g_cond_new ();
 
   _g_convert_thread_init ();
   _g_rand_thread_init ();
@@ -198,6 +200,33 @@ g_thread_init_glib (void)
 }
 #endif /* G_THREADS_ENABLED */
 
+gpointer 
+g_once_impl (GOnce       *once, 
+	     GThreadFunc  func, 
+	     gpointer     arg)
+{
+  g_mutex_lock (g_once_mutex);
+
+  while (once->status == G_ONCE_STATUS_PROGRESS)
+    g_cond_wait (g_once_cond, g_once_mutex);
+  
+  if (once->status != G_ONCE_STATUS_READY)
+    {
+      once->status = G_ONCE_STATUS_PROGRESS;
+      g_mutex_unlock (g_once_mutex);
+  
+      once->retval = func (arg);
+
+      g_mutex_lock (g_once_mutex);
+      once->status = G_ONCE_STATUS_READY;
+      g_cond_broadcast (g_once_cond);
+    }
+  
+  g_mutex_unlock (g_once_mutex);
+  
+  return once->retval;
+}
+
 void 
 g_static_mutex_init (GStaticMutex *mutex)
 {
@@ -214,14 +243,23 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
   if (!g_thread_supported ())
     return NULL;
 
-  g_assert (g_mutex_protect_static_mutex_allocation);
+  g_assert (g_once_mutex);
 
-  g_mutex_lock (g_mutex_protect_static_mutex_allocation);
+  g_mutex_lock (g_once_mutex);
 
   if (!(*mutex)) 
-    *mutex = g_mutex_new (); 
+    {
+      GMutex *new_mutex = g_mutex_new (); 
+      
+      /* The following is a memory barrier to avoid the write 
+       * to *new_mutex being reordered to after writing *mutex */
+      g_mutex_lock (new_mutex);
+      g_mutex_unlock (new_mutex);
+      
+      *mutex = new_mutex;
+    }
 
-  g_mutex_unlock (g_mutex_protect_static_mutex_allocation);
+  g_mutex_unlock (g_once_mutex);
   
   return *mutex;
 }

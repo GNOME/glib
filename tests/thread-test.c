@@ -297,14 +297,92 @@ test_g_static_rw_lock ()
   g_assert (test_g_static_rw_lock_state == 0);
 }
 
+#define G_ONCE_SIZE 100
+#define G_ONCE_THREADS 10
+
+G_LOCK_DEFINE (test_g_once);
+static guint test_g_once_guint_array[G_ONCE_SIZE];
+static GOnce test_g_once_array[G_ONCE_SIZE];
+
+static gpointer
+test_g_once_init_func(gpointer arg)
+{
+  guint *count = arg;
+  g_usleep (g_random_int_range (20,1000));
+  (*count)++;
+  g_usleep (g_random_int_range (20,1000));
+  return arg;
+}
+
+static gpointer
+test_g_once_thread (gpointer ignore)
+{
+  guint i;
+  G_LOCK (test_g_once);
+  /* Don't start before all threads are created */
+  G_UNLOCK (test_g_once);
+  for (i = 0; i < 1000; i++)
+    {
+      guint pos = g_random_int_range (0, G_ONCE_SIZE);
+      gpointer ret = g_once (test_g_once_array + pos, test_g_once_init_func, 
+			     test_g_once_guint_array + pos);
+      g_assert (ret == test_g_once_guint_array + pos);
+    }
+  
+  /* Make sure, that all counters are touched at least once */
+  for (i = 0; i < G_ONCE_SIZE; i++)
+    {
+      gpointer ret = g_once (test_g_once_array + i, test_g_once_init_func, 
+			     test_g_once_guint_array + i);
+      g_assert (ret == test_g_once_guint_array + i);
+    }
+
+  return NULL;
+}
+
+static void
+test_g_thread_once (void)
+{
+  static GOnce once_init = G_ONCE_INIT;
+  GThread *threads[G_ONCE_THREADS];
+  guint i;
+  for (i = 0; i < G_ONCE_SIZE; i++) 
+    {
+      test_g_once_array[i] = once_init;
+      test_g_once_guint_array[i] = i;
+    }
+  G_LOCK (test_g_once);
+  for (i = 0; i < G_ONCE_THREADS; i++)
+    {
+      threads[i] = g_thread_create (test_g_once_thread, (gpointer)(i%2), 
+				    TRUE, NULL);
+    }
+  G_UNLOCK (test_g_once);
+  for (i = 0; i < G_ONCE_THREADS; i++)
+    {
+      g_thread_join (threads[i]);
+    }
+  
+  for (i = 0; i < G_ONCE_SIZE; i++) 
+    {
+      g_assert (test_g_once_guint_array[i] == i + 1);
+    }
+}
+
 /* run all the tests */
 void
 run_all_tests()
 {
   test_g_mutex ();
+  g_print (".");
   test_g_static_rec_mutex ();
+  g_print (".");
   test_g_static_private ();
+  g_print (".");
   test_g_static_rw_lock ();
+  g_print (".");
+  test_g_thread_once ();
+  g_print (".");
 }
 
 int 
@@ -323,6 +401,7 @@ main (int   argc,
 
   g_thread_use_default_impl = FALSE;
   run_all_tests ();
+  g_print ("\n");
   
 #endif
   return 0;
