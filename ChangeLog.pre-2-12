@@ -1,3 +1,8 @@
+Tue Jan  8 11:33:28 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* docs/Makefile.am (EXTRA_DIST): Add text files to EXTRA_DIST.
+	(#68239, Matthias Clasen)
+
 2002-01-07  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* configure.in (ALL_LINGUAS): Added pl.
