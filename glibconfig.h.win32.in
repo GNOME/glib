@@ -185,12 +185,6 @@ struct _GStaticMutex
 #define G_HAVE_WCHAR_H 1
 #define G_HAVE_WCTYPE_H 1
 
-/* Define if this is Win32, possibly using the Cygwin emulation layer. */
-#define WIN32 1
-
-/* Define if this is Win32 using the Microsoft C runtime.  */
-#define NATIVE_WIN32 1
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

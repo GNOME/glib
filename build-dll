@@ -29,9 +29,9 @@ for F in $ldargs; do
     esac
 done
 
-$GCC -s -mdll -mno-cygwin -Wl,--base-file,$library.base -o $dllfile $ldargs &&
+$GCC -mdll -mno-cygwin -Wl,--base-file,$library.base -o $dllfile $ldargs &&
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs &&
-$GCC -s -mdll -mno-cygwin -Wl,--base-file,$library.base,$library.exp -o $dllfile $ldargs &&
+$GCC -mdll -mno-cygwin -Wl,--base-file,$library.base,$library.exp -o $dllfile $ldargs &&
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs &&
 $GCC -mdll -mno-cygwin -Wl,$library.exp -o $dllfile $ldargs &&
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --output-lib lib$libname.a $objs

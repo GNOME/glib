@@ -1,3 +1,11 @@
+1999-10-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Don't define WIN32 and NATIVE_WIN32.
+
+	* gerror.c (g_on_error_query): (Win32) Slightly more verbosity.
+
+	* build-dll: Don't strip.
+
 Sun Oct  3 19:46:55 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: use G_HAVE_CYGWIN instead of G_OS_FEATURE_CYGWIN

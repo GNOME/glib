@@ -143,7 +143,7 @@ g_on_error_query (const gchar *prg_name)
   if (!prg_name)
     prg_name = g_get_prgname ();
   
-  MessageBox (NULL, "Terminating",
+  MessageBox (NULL, "g_on_error_query called, program terminating",
 	      (prg_name && *prg_name) ? prg_name : NULL,
 	      MB_OK|MB_ICONERROR);
   _exit(0);
