@@ -442,11 +442,12 @@ g_tree_lookup_extended (GTree         *tree,
  * 
  * Calls the given function for each of the key/value pairs in the #GTree.
  * The function is passed the key and value of each pair, and the given
- * @data parameter. The tree may not be modified while iterating over
- * it (you can't add/remove items). To remove all items matching
- * a predicate, you need to add each item to a list as in your
- * #GTraverseFunc as you walk over the tree, then walk the list
- * and remove each item.
+ * @data parameter. The tree is traversed in sorted order.
+ *
+ * The tree may not be modified while iterating over it (you can't 
+ * add/remove items). To remove all items matching a predicate, you need 
+ * to add each item to a list in your #GTraverseFunc as you walk over 
+ * the tree, then walk the list and remove each item.
  **/
 void
 g_tree_foreach (GTree         *tree,
@@ -472,8 +473,8 @@ g_tree_foreach (GTree         *tree,
  * 
  * Calls the given function for each node in the GTree. This function is
  * deprecated, since the order of a balanced tree is somewhat arbitrary.
- * If you just want to visit all nodes in some order, use g_tree_foreach() 
- * instead. If you really need to visit nodes in a specific order, consider
+ * If you just want to visit all nodes in sorted order, use g_tree_foreach() 
+ * instead. If you really need to visit nodes in a different order, consider
  * using an <link linkend="glib-N-ary-Trees">N-ary Tree</link>.
  **/
 void

@@ -1,3 +1,8 @@
+2001-12-05  Sven Neumann  <sven@gimp.org>
+
+	* glib/gtree.c (g_tree_foreach): mention the fact that the tree is
+	traversed in sorted order.
+
 2001-12-03  Manish Singh  <yosh@gimp.org>
 
 	* tests/module-test.c: g_module_symbol takes a gpointer *, not just
