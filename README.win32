@@ -2,25 +2,25 @@ General
 =======
 
 For more information about the port or GLib, GTk+ and the GIMP to
-native Windows, and pre-built DLLs, surf to http://www.gimp.org/win32/
-"Native" means that we use the Win32 API only, and no POSIX (Unix)
-emulation layer except that provided by the Microsoft runtime C
-library. Actually, a pthreads emulation library is used.
+native Windows, and pre-built binaries (DLLs), surf to
+http://www.gimp.org/win32/ . "Native" means that we use the Win32 API
+only, and no POSIX (Unix) emulation layer except that provided by the
+Microsoft runtime C library, and a pthreads emulation library.
 
 To build GLib on Win32, you can use either gcc or the Microsoft
 compiler and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0
 have been used successfully.
 
-But note that to just *use* GLib on Windows, there is not need to
-build it, prebuilt DLLs are available from the webiste above.
+But note that to just *use* GLib on Windows, there is no need to build
+it, prebuilt DLLs are available from the webiste above.
 
-With gcc I mean gcc-2.95 or gcc-2.95.2 as distributed by Mumit Khan,
-either as a mingw version (preferred), or running under cygwin. To
-successfully use gcc, follow the instructions below. We want to use
-gcc -mno-cygwin, i.e. produce executables (.exe and .dll files) that
-do *not* require the cygwin runtime library. This is called "mingw".
-I also use the -fnative-struct flag, which means that in order to use
-the prebuilt DLLs (especiall of GTK+), you *must* also use that flag.
+With gcc I mean gcc-2.95.2 as distributed by Mumit Khan, either as a
+mingw version (preferred), or running under cygwin. To successfully
+use gcc, follow the instructions below. We want to use gcc
+-mno-cygwin, i.e. produce executables (.exe and .dll files) that do
+*not* require the cygwin runtime library. This is called "mingw".  I
+also use the -fnative-struct flag, which means that in order to use
+the prebuilt DLLs (especially of GTK+), you *must* also use that flag.
 (This flag means that the struct layout is identical to that used by
 MSVC.)
 
@@ -44,21 +44,19 @@ related to Win32:
   bundled Microsoft C library (msvcrt.dll) and the pthreads-win32
   library. For instance, pathnames are in the native Windows syntax.
 
-- _WIN32 is defined by the compiler
+- G_WITH_CYGWIN is defined if compiling for the Cygwin
+  environment. Note that G_OS_WIN32 is *not* defined in that case, as
+  Cygwin is supposed to behave like Unix. Building for Cygwin is not
+  supported. Some people have presumably done it, but no changes have
+  been submitted back.
 
-The Win32 port uses the combination with both of those on. As
+The Win32 port of GLib and related software uses only G_OS_WIN32. As
 G_OS_WIN32 is defined in glibconfig.h, it is available to all source
 files that use GLib (or GTk+, which uses GLib).
 
 Additionally, there are the compiler-specific macros:
-- _MSC_VER is defined when using the Microsoft compiler
 - __GNUC__ is defined when using GCC
-
-Some of the usage of these macros used to be a bit mixed up, and had
-to be straightened out when adding the gcc support. In particular, I
-used to check for _MSC_VER in some places where I really wanted to
-check for the Microsoft C library, and those checks has now been
-changed to G_OS_WIN32.
+- _MSC_VER is defined when using the Microsoft compiler
 
 G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib or
 software using it is not known to work with the older CRTDLL.DLL
@@ -67,10 +65,9 @@ runtime.
 Building software that use GLib or GTk+
 =======================================
 
-Unfortunately, even building software that just *use* GLib or GTk+
-also require to have the right compiler set up the right way, so if
-you intend to use gcc, follow the relevant instructions below in that
-case, too.
+Even building software that just *use* GLib or GTk+ also require to
+have the right compiler set up the right way, so if you intend to use
+gcc, follow the relevant instructions below in that case, too.
 
 Pthreads library
 ================
@@ -105,8 +102,8 @@ line that sets GLIB_VER to the correct version number.
 This is done automatically when an official GLib source distribution
 package is built.
 
-Building with gcc
-=================
+Building GLib with gcc
+======================
 
 I use the latest gcc, gcc-2.95.2. Version 2.95 will most probably also
 work.

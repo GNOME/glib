@@ -1,3 +1,7 @@
+2000-12-27  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update.
+
 2000-12-25  Tor Lillqvist  <tml@iki.fi>
 
 	* gmessages.c: (Win32) Use a MessageBox for fatal
