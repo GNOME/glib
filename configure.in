@@ -854,10 +854,13 @@ _______EOF
 #define G_MAXDOUBLE	$glib_Md
 #define G_MINSHORT	$glib_ms
 #define G_MAXSHORT	$glib_Ms
+#define G_MAXUSHORT	$glib_Mus
 #define G_MININT	$glib_mi
 #define G_MAXINT	$glib_Mi
+#define G_MAXUINT	$glib_Mui
 #define G_MINLONG	$glib_ml
 #define G_MAXLONG	$glib_Ml
+#define G_MAXULONG	$glib_Mul
 
 _______EOF
 
@@ -866,8 +869,6 @@ _______EOF
 	cat >>$outfile <<_______EOF
 typedef signed char gint8;
 typedef unsigned char guint8;
-#define G_GINT8_FORMAT "hi"
-#define G_GUINT8_FORMAT "hu"
 _______EOF
 
 
@@ -1035,15 +1036,15 @@ esac
 case xyes in
 x$ac_cv_header_limits_h)
   glib_limits_h=yes
-  glib_ms=SHRT_MIN glib_Ms=SHRT_MAX
-  glib_mi=INT_MIN  glib_Mi=INT_MAX
-  glib_ml=LONG_MIN glib_Ml=LONG_MAX
+  glib_ms=SHRT_MIN glib_Ms=SHRT_MAX glib_Mus=USHRT_MAX
+  glib_mi=INT_MIN  glib_Mi=INT_MAX  glib_Mui=UINT_MAX
+  glib_ml=LONG_MIN glib_Ml=LONG_MAX glib_Mul=ULONG_MAX
   ;;
 x$ac_cv_header_values_h)
   glib_values_h=yes
-  glib_ms=MINSHORT glib_Ms=MAXSHORT
-  glib_mi=MININT   glib_Mi=MAXINT
-  glib_ml=MINLONG  glib_Ml=MAXLONG
+  glib_ms=MINSHORT glib_Ms=MAXSHORT glib_Mus=unknown  # Please insert the right
+  glib_mi=MININT   glib_Mi=MAXINT   glib_Mui=unknown  # values from
+  glib_ml=MINLONG  glib_Ml=MAXLONG  glib_Mul=unknown  # /usr/include/values.h
   ;;
 esac
 
