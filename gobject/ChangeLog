@@ -1,7 +1,7 @@
 Fri Sep 12 16:31:40 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.[ch]: Add g_signal_accumulator_true_handled(), to
-	do TRUE-stops-emit signals.
+	do TRUE-stops-emit signals. (#80487, Ron Steinke)
 
 	* Makefile.am: Move testoverride.c and testifaceinit.c to
 	tests/gobject.
