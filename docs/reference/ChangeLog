@@ -1,4 +1,6 @@
 2001-10-05  Matthias Clasen  <matthiasc@poet.de>
+	
+	* glib/tmpl/conversions.sgml: Update.
 
 	* glib/tmpl/patterns.sgml: Update.
 
