@@ -1,3 +1,7 @@
+2003-04-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add g_string_chunk_insert_len.
+
 2003-04-01  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstring.[hc] (g_string_chunk_insert_len): New function, to
