@@ -1480,13 +1480,20 @@ if test x"$have_threads" != xno; then
 				  [Have function pthread_attr_setstacksize])],
 			[AC_MSG_RESULT(no)])
 		AC_MSG_CHECKING(for minimal/maximal thread priority)
-		if test x"$posix_priority_min" = xnone; then
+		if test x"$posix_priority_min" = x; then
 			AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
 				PX_PRIO_MIN],,[
 				posix_priority_min=PX_PRIO_MIN
 				posix_priority_max=PX_PRIO_MAX])
 		fi
-		if test x"$posix_priority_min" = xnone; then
+		if test x"$posix_priority_min" = x; then
+			# AIX
+			AC_EGREP_CPP(PTHREAD_PRIO_MIN,[#include <pthread.h>
+				PTHREAD_PRIO_MIN],,[
+				posix_priority_min=PTHREAD_PRIO_MIN
+				posix_priority_max=PTHREAD_PRIO_MIN])
+		fi
+		if test x"$posix_priority_min" = x; then
 			AC_EGREP_CPP(PRI_OTHER_MIN,[#include <pthread.h>
 				PRI_OTHER_MIN],,[
 				posix_priority_min=PRI_OTHER_MIN	
