@@ -108,7 +108,7 @@ g_node_new (gpointer data)
   if (!current_allocator)
     {
        GAllocator *allocator = g_allocator_new ("GLib default GNode allocator",
-						1024);
+						128);
        g_node_validate_allocator (allocator);
        allocator->last = NULL;
        current_allocator = allocator;

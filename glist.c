@@ -102,7 +102,7 @@ g_list_alloc (void)
   if (!current_allocator)
     {
       GAllocator *allocator = g_allocator_new ("GLib default GList allocator",
-					       1024);
+					       128);
       g_list_validate_allocator (allocator);
       allocator->last = NULL;
       current_allocator = allocator;

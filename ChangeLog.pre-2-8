@@ -1,3 +1,8 @@
+February 9, 1999 sopwith@redhat.com
+
+	. glist.c, gnode.c, gslist.c: allocate pools of 128 items instead
+	of 1024 items.
+
 1999-02-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, acconfig.h: Changed the test for getpwuid_r to
