@@ -58,7 +58,7 @@ Closures
 
 </para>
 
-@is_invalid: 
+@is_invalid: Indicates whether the closure has been invalidated by g_closure_invalidate()
 
 <!-- ##### MACRO G_TYPE_CLOSURE ##### -->
 <para>
@@ -159,27 +159,54 @@ Closures
 
 <!-- ##### FUNCTION g_closure_ref ##### -->
 <para>
-
+Increment the reference count on a closure to force it staying
+alive while the caller holds a pointer to it.
 </para>
 
-@closure: 
-@Returns: 
+@closure: #GClosure to increment the reference count on
+@Returns: The @closure passed in, for convenience
 
 
 <!-- ##### FUNCTION g_closure_sink ##### -->
 <para>
-
+Take over the initial ownership of a closure.
+When closures are newly created, they get an initial reference count
+of 1, eventhough no caller has yet invoked g_closure_ref() on the @closure.
+Code entities that store closures for notification purposes are supposed
+to call this function, for example like this:
+<msgtext><programlisting>
+static GClosure *notify_closure = NULL;
+void
+foo_notify_set_closure (GClosure *closure)
+{
+  if (notify_closure)
+    g_closure_unref (notify_closure);
+  notify_closure = closure;
+  if (notify_closure)
+    {
+      g_closure_ref (notify_closure);
+      g_closure_sink (notify_closure);
+    }
+}
+</programlisting></msgtext>
+Because g_closure_sink() may decrement the reference count of a closure
+(if it hasn't been called on @closure yet) just like g_closure_unref(),
+g_closure_ref() should be called prior to this function.
 </para>
 
-@closure: 
+@closure: #GClosure to decrement the initial reference count on, if it's
+          still being held
 
 
 <!-- ##### FUNCTION g_closure_unref ##### -->
 <para>
-
+Decrement the reference count of a closure after it was
+previously incremented by the same caller. The closure
+will most likely be destroyed and freed after this function
+returns.
 </para>
 
-@closure: 
+@closure: #GClosure to decrement the reference count on
 
 
 <!-- ##### FUNCTION g_closure_invoke ##### -->
@@ -196,10 +223,12 @@ Closures
 
 <!-- ##### FUNCTION g_closure_invalidate ##### -->
 <para>
-
+This function sets a flag on the closure to indicate that it's
+calling environment has become invalid, and thus causes any future
+invocations of g_closure_invoke() on this @closure to be ignored.
 </para>
 
-@closure: 
+@closure: GClosure to invalidate
 
 
 <!-- ##### FUNCTION g_closure_add_finalize_notifier ##### -->

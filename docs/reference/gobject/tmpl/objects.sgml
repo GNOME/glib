@@ -389,6 +389,17 @@ to match the one used with g_object_add_weak_pointer().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_object_get_qdata ##### -->
+<para>
+This function gets back user data pointers stored via
+g_object_set_qdata().
+</para>
+
+@object:  The GObject to get a stored user data pointer from
+@quark:   A #GQuark, naming the user data pointer
+@Returns: The user data pointer set, or %NULL
+
+
 <!-- ##### FUNCTION g_object_set_qdata ##### -->
 <para>
 This sets an opaque, named pointer on an object.
@@ -404,17 +415,6 @@ removes the data stored.
 @object: The GObject to set store a user data pointer
 @quark:  A #GQuark, naming the user data pointer
 @data:   An opaque user data pointer
-
-
-<!-- ##### FUNCTION g_object_get_qdata ##### -->
-<para>
-This function gets back user data pointers stored via
-g_object_set_qdata().
-</para>
-
-@object:  The GObject to get a stored user data pointer from
-@quark:   A #GQuark, naming the user data pointer
-@Returns: The user data pointer set, or %NULL
 
 
 <!-- ##### FUNCTION g_object_set_qdata_full ##### -->
@@ -465,7 +465,7 @@ free_string_list (gpointer data)
   g_list_free (list);
 }
 </programlisting></msgtext>
-Using g_object_get_qdata() in teh above example, instead of g_object_steal_qdata()
+Using g_object_get_qdata() in the above example, instead of g_object_steal_qdata()
 would have left the destroy function set, and thus the partial string list would
 have been freed upon g_object_set_qdata_full().
 </para>
@@ -540,7 +540,8 @@ as closure data.
 </para>
 
 @object:  GObject restricting lifetime of @closure
-@closure: GClosure to watch 
+@closure: GClosure to watch
+
 
 <!-- ##### FUNCTION g_object_run_dispose ##### -->
 <para>
