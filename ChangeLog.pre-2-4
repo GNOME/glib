@@ -1,3 +1,8 @@
+Fri May 30 19:09:25 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: Backport better handling
+	of ALL_LINGUAS from gettext.m4. (#103808, Andras Salamon)
+
 Fri May 30 18:46:05 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: expand $exec_prefix as
