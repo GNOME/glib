@@ -1,3 +1,7 @@
+2005-01-10  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (EXTRA_DIST): Add missing ChangeLog.pre*
+
 2005-01-09  Hans Breuer  <hans@breuer.org>
 
 	* glib/gfileutils.c : make it compile with mvc6 default sdk,
