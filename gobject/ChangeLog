@@ -1,3 +1,7 @@
+Thu Mar 22 13:36:50 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (g_signal_newv): catch G_SIGNAL_RUN_FIRST with a return value.
+
 2001-03-21  Martin Baulig  <baulig@suse.de>
 
 	* gboxed.[ch] (g_value_dup_boxed): This takes a `const GValue *'

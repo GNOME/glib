@@ -1109,6 +1109,16 @@ g_signal_newv (const gchar       *signal_name,
       G_UNLOCK (g_signal_mutex);
       return 0;
     }
+  if (return_type != G_TYPE_NONE &&
+      (signal_flags & (G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP)) == G_SIGNAL_RUN_FIRST)
+    {
+      g_warning (G_STRLOC ": signal \"%s::%s\" has return type `%s' and is only G_SIGNAL_RUN_FIRST",
+		 g_type_name (itype), name,
+		 g_type_name (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE));
+      g_free (name);
+      G_UNLOCK (g_signal_mutex);
+      return 0;
+    }
   
   /* setup permanent portion of signal node */
   if (!node)
