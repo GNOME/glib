@@ -1,3 +1,13 @@
+Wed Mar 17 03:17:42 1999  Tim Janik  <timj@gtk.org>
+	
+	* configure.in bumped versin number to GLib 1.2.1, interface 1,
+	binary 1.
+	
+	* NEWS: updates.
+
+	* glib.h: added GLIB_CHECK_VERSION() macro similar to
+	GTK_CHECK_VERSION().
+
 Sun Mar 14 17:50:35 1999  Tim Janik  <timj@gtk.org>
 
 	* gmem.c (g_mem_chunk_*): changed a bunch of g_assert() statements

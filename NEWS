@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.2.1:
+
+* g_realloc() fix for SunOS (please report further problems).
+* Continued the never ending fix vendetta regarding getpwuid(),
+  this time AIX has been the culprit.
+* Miscellaneous other buglets fixed.
+
 What's new in GLib 1.2.0 (since GLib 1.0.x):
 
 * GLib is distributed seperatedly from Gtk+
@@ -10,7 +17,7 @@ What's new in GLib 1.2.0 (since GLib 1.0.x):
 * GRelations for n-way mapping of certain data
 * An n-way tree implementation
 * GDate functionality for calendar date manipulations
-* GAllocator type and assocated functions
+* GAllocator type and associated functions
 * Added generic callback maintenance functions (ghook)
 * Generic functions for TAB completions
 * Endian defines (G_*_ENDIAN)
