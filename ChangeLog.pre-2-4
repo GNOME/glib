@@ -1,3 +1,11 @@
+Thu Jan 15 22:35:04 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstring.c (g_string_up): 
+	* glib/gstring.c (g_string_down): 
+	* glib/gstring.c (g_string_ascii_up): 
+	* glib/gstring.c (g_string_ascii_down): Move initialization of
+	variables after g_return_val_if_fail.  (#131564, Olivier Poncet)
+
 Sun Jan 11 16:13:20 2004  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: Add G_MAXSIZE, define in terms of G_MAXUfoo.

@@ -702,10 +702,11 @@ GString*
 g_string_ascii_down (GString *string)
 {
   gchar *s;
-  gint n = string->len;
+  gint n;
 
   g_return_val_if_fail (string != NULL, NULL);
 
+  n = string->len;
   s = string->str;
 
   while (n)
@@ -764,10 +765,11 @@ GString*
 g_string_down (GString *string)
 {
   guchar *s;
-  glong n = string->len;    
+  glong n;
 
   g_return_val_if_fail (string != NULL, NULL);
 
+  n = string->len;    
   s = (guchar *) string->str;
 
   while (n)
@@ -797,10 +799,11 @@ GString*
 g_string_up (GString *string)
 {
   guchar *s;
-  glong n = string->len;
+  glong n;
 
   g_return_val_if_fail (string != NULL, NULL);
 
+  n = string->len;
   s = (guchar *) string->str;
 
   while (n)
