@@ -1424,6 +1424,11 @@ if test x"$have_threads" != xno; then
 	fi
 fi	
 
+if test x"$glib_cv_sizeof_system_thread" = x; then
+   # use a pointer as a fallback.
+   GLIB_SIZEOF(,void *, system_thread)
+fi
+
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
 		   [Source file containing theread implementation])
 AC_SUBST(G_THREAD_CFLAGS)
@@ -2090,11 +2095,7 @@ g_threads_impl_def=$g_threads_impl
 
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
-if test x"$glib_cv_sizeof_system_thread" != x; then
-  g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
-else
-  g_system_thread_sizeof="$ac_cv_sizeof_void_p"
-fi
+g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 g_module_suffix="$glib_gmodule_suffix"

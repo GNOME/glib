@@ -1,3 +1,8 @@
+2001-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Always call GLIB_SIZEOF(..., system_thread). Fixes
+	#65624.
+
 2001-11-28  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Add GLIB_SIZEOF_SIZE_T here, too.
