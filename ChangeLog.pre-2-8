@@ -1,3 +1,9 @@
+Tue May 27 19:56:35 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h: __PRETTY_FUNCTION__ was made a non-token
+	before gcc-3.0.0 for C++. (Fix from Martin Kretzschmar,
+	#113797)
+
 2003-05-28  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/patterntest.c: Remain silent when sucessful. 
