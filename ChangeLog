@@ -1,3 +1,17 @@
+2004-11-08  Matthias Clasen  <mclasen@redhat.com>
+	
+	* glib/gmain.c: Initialize child_watch_count to 1, so 
+	that we don't miss the very first child if it exits 
+	before we set up the child watch. In that case we had 
+	previously source->count == child_watch_count == 0, 
+	causing g_child_watch_check() to skip the waitpid() 
+	call.  (#154827, Gustavo Carneiro)
+
+	* glib/gmain.c (g_child_watch_source_init_single) 
+	(g_child_watch_source_init_multi_threaded): Use sigaction()
+	instead of signal().  (#136867, Jonas Jonsson, patch by
+	Archana Shah)
+
 2004-11-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_get_any_init): Work around an bug
