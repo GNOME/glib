@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
 "POT-Creation-Date: 2001-09-18 18:22+0200\n"
-"PO-Revision-Date: 2001-06-27 21:09+0200\n"
+"PO-Revision-Date: 2001-09-19 17:02+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,22 +45,22 @@ msgstr "Kan ikke konvertere \"fallback\" '%s' til tegnsett '%s'"
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "URIen `%s' er ikke en absolutt URI som bruker filskjema"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "Lokal URI `%s' kan ikke inneholde en `#'"
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "URIen `%s' er ugyldig"
 
 #: glib/gconvert.c:1238
-#, c-format
+#, c-format, fuzzy
 msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "Vertsnavnet for URI `%s' inneholder ugyldige escape-tegn"
 
 #: glib/gconvert.c:1254
 #, c-format
@@ -70,12 +70,11 @@ msgstr ""
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "Stinavnet '%s' er ikke en absolutt sti"
 
 #: glib/gconvert.c:1311
-#, fuzzy
 msgid "Invalid byte sequence in hostname"
-msgstr "Ugyldig bytesekvens i inndata for konvertering"
+msgstr "Ugyldig bytesekvens i vertsnavn"
 
 #: glib/gfileutils.c:309
 #, c-format
@@ -103,9 +102,9 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil '%s': fdopen() feilet: %s"
 
 #: glib/gfileutils.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Mal '%s' er ugyldig, skulle inneholdt en '%s'"
+msgstr "Mal '%s' er ugyldig, må ikke inneholde '%s'"
 
 #: glib/gfileutils.c:667
 #, c-format
