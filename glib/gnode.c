@@ -39,7 +39,7 @@ struct _GAllocator /* from gmem.c */
   GNode         *free_nodes; /* implementation specific */
 };
 
-G_LOCK_DECLARE_STATIC (current_allocator);
+G_LOCK_DEFINE_STATIC (current_allocator);
 static GAllocator *current_allocator = NULL;
 
 /* HOLDS: current_allocator_lock */

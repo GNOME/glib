@@ -128,7 +128,7 @@ static gint in_check_or_prepare = 0;
 /* The following lock is used for both the list of sources
  * and the list of poll records
  */
-G_LOCK_DECLARE_STATIC (main_loop);
+G_LOCK_DEFINE_STATIC (main_loop);
 
 static GSourceFuncs timeout_funcs =
 {

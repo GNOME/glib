@@ -57,7 +57,7 @@ static void		g_hash_node_destroy	 (GHashNode	*hash_node);
 static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
 
-G_LOCK_DECLARE_STATIC (g_hash_global);
+G_LOCK_DEFINE_STATIC (g_hash_global);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;

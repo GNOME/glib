@@ -15,7 +15,7 @@ test_mutexes (void)
   GMutex *mutex = NULL;
   GCond *cond = NULL;
   GStaticMutex static_mutex = G_STATIC_MUTEX_INIT;
-  G_LOCK_DECLARE (test_me);
+  G_LOCK_DEFINE (test_me);
 
   if (g_thread_supported ())
     {

@@ -83,7 +83,7 @@ static GTreeNode* g_tree_node_rotate_right          (GTreeNode      *node);
 static void       g_tree_node_check                 (GTreeNode      *node);
 
 
-G_LOCK_DECLARE_STATIC (g_tree_global);
+G_LOCK_DEFINE_STATIC (g_tree_global);
 static GMemChunk *node_mem_chunk = NULL;
 static GTreeNode *node_free_list = NULL;
 

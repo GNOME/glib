@@ -61,7 +61,7 @@ static void        g_cache_node_destroy (GCacheNode *node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
-G_LOCK_DECLARE_STATIC (node_mem_chunk);
+G_LOCK_DEFINE_STATIC (node_mem_chunk);
 
 GCache*
 g_cache_new (GCacheNewFunc      value_new_func,

@@ -35,7 +35,7 @@ struct _GAllocator /* from gmem.c */
   GSList        *free_lists; /* implementation specific */
 };
 
-G_LOCK_DECLARE_STATIC (current_allocator);
+G_LOCK_DEFINE_STATIC (current_allocator);
 static GAllocator       *current_allocator = NULL;
 
 /* HOLDS: current_allocator_lock */

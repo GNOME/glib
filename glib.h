@@ -2718,20 +2718,22 @@ void     g_static_private_set (GStaticPrivate	*private_key,
 			       gpointer        	 data,
 			       GDestroyNotify    notify);
 
-/* these are some convenience macros that expand to nothing if GLib was
- * configured with --deisable-threads. for using StaticMutexes, you
- * declare them with G_LOCK_DECLARE_STATIC (name) or G_LOCK_DECLARE (name)
- * if you need to export the mutex. name is a unique identifier for the
- * protected varibale or code portion. locking, testing and unlocking of
- * such mutexes can be done with G_LOCK(), G_UNLOCK() and G_TRYLOCK()
- * respectively.
+/* these are some convenience macros that expand to nothing if GLib
+ * was configured with --disable-threads. for using StaticMutexes,
+ * you define them with G_LOCK_DEFINE_STATIC (name) or G_LOCK_DEFINE (name)
+ * if you need to export the mutex. With G_LOCK_EXTERN (name) you can
+ * declare such an globally defined lock. name is a unique identifier
+ * for the protected varibale or code portion. locking, testing and
+ * unlocking of such mutexes can be done with G_LOCK(), G_UNLOCK() and
+ * G_TRYLOCK() respectively.  
  */
 extern void glib_dummy_decl (void);
 #define G_LOCK_NAME(name)		(g__ ## name ## _lock)
 #ifdef	G_THREADS_ENABLED
-#  define G_LOCK_DECLARE_STATIC(name)	static G_LOCK_DECLARE (name)
-#  define G_LOCK_DECLARE(name)		\
+#  define G_LOCK_DEFINE_STATIC(name)	static G_LOCK_DEFINE (name)
+#  define G_LOCK_DEFINE(name)		\
     GStaticMutex G_LOCK_NAME (name) = G_STATIC_MUTEX_INIT 
+#  define G_LOCK_EXTERN(name)		extern GStaticMutex G_LOCK_NAME (name)
 
 #  ifdef G_DEBUG_LOCKS
 #    define G_LOCK(name)		G_STMT_START{		  \
@@ -2760,8 +2762,9 @@ extern void glib_dummy_decl (void);
 #    define G_TRYLOCK(name) g_static_mutex_trylock (G_LOCK_NAME (name))
 #  endif /* !G_DEBUG_LOCKS */
 #else	/* !G_THREADS_ENABLED */
-#  define G_LOCK_DECLARE_STATIC(name)	extern void glib_dummy_decl (void)
-#  define G_LOCK_DECLARE(name)		extern void glib_dummy_decl (void)
+#  define G_LOCK_DEFINE_STATIC(name)	extern void glib_dummy_decl (void)
+#  define G_LOCK_DEFINE(name)		extern void glib_dummy_decl (void)
+#  define G_LOCK_EXTERN(name)		extern void glib_dummy_decl (void)
 #  define G_LOCK(name)
 #  define G_UNLOCK(name)
 #  define G_TRYLOCK(name)		(FALSE)

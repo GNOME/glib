@@ -372,7 +372,7 @@ g_getenv (const gchar *variable)
 }
 
 
-G_LOCK_DECLARE_STATIC (g_utils_global);
+G_LOCK_DEFINE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;
 static	gchar	*g_user_name = NULL;

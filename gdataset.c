@@ -67,7 +67,7 @@ static inline GQuark	g_quark_new			(gchar  	*string);
 
 
 /* --- variables --- */
-G_LOCK_DECLARE_STATIC (g_dataset_global);
+G_LOCK_DEFINE_STATIC (g_dataset_global);
 static GHashTable   *g_dataset_location_ht = NULL;
 static GDataset     *g_dataset_cached = NULL; /* should this be
 						 threadspecific? */
@@ -76,7 +76,7 @@ static GMemChunk    *g_data_mem_chunk = NULL;
 static GData	    *g_data_cache = NULL;
 static guint	     g_data_cache_length = 0;
 
-G_LOCK_DECLARE_STATIC (g_quark_global);
+G_LOCK_DEFINE_STATIC (g_quark_global);
 static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
 static GQuark        g_quark_seq_id = 0;

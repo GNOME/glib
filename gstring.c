@@ -48,7 +48,7 @@ struct _GRealString
   gint   alloc;
 };
 
-G_LOCK_DECLARE_STATIC (string_mem_chunk);
+G_LOCK_DEFINE_STATIC (string_mem_chunk);
 static GMemChunk *string_mem_chunk = NULL;
 
 /* Hash Functions.

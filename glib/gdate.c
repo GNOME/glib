@@ -392,7 +392,7 @@ g_date_clear (GDate       *d, guint ndates)
   memset (d, 0x0, ndates*sizeof (GDate)); 
 }
 
-G_LOCK_DECLARE_STATIC (g_date_global);
+G_LOCK_DEFINE_STATIC (g_date_global);
 
 /* These are for the parser, output to the user should use *
  * g_date_strftime () - this creates more never-freed memory to annoy

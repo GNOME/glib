@@ -46,7 +46,7 @@ static void g_array_maybe_expand (GRealArray *array,
 				  gint        len);
 
 static GMemChunk *array_mem_chunk = NULL;
-G_LOCK_DECLARE_STATIC (array_mem_chunk);
+G_LOCK_DEFINE_STATIC (array_mem_chunk);
 
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -250,7 +250,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 				      gint           len);
 
 static GMemChunk *ptr_array_mem_chunk = NULL;
-G_LOCK_DECLARE_STATIC (ptr_array_mem_chunk);
+G_LOCK_DEFINE_STATIC (ptr_array_mem_chunk);
 
 
 GPtrArray*
