@@ -200,7 +200,7 @@ dnl
 dnl gettext support
 dnl
 
-ALL_LINGUAS="ca de fr no ru sl sv tr uk"
+ALL_LINGUAS="az ca de fr no ru sl sv tr uk"
 AM_GLIB_GNU_GETTEXT
 LIBS="$LIBS $INTLLIBS"
 
