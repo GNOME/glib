@@ -1,3 +1,9 @@
+Fri Sep 26 17:24:53 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.c (g_type_instance_get_private): You can
+	have instance_real_class_bsa be non-NULL, but still 
+	the class not be in the bsa. (Found by Kris Rietveld)
+
 2003-09-15  Matthias Clasen  <maclas@gmx.de>
 
 	* glib-genmarshal.c (complete_out_arg): Don't generate code 

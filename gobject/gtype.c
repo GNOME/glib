@@ -3401,7 +3401,11 @@ g_type_instance_get_private (GTypeInstance *instance,
    * so figure the instances real class first
    */
   if (instance_real_class_bsa)
-    class = instance_real_class_get (instance);
+    {
+      class = instance_real_class_get (instance);
+      if (!class)
+	class = instance->g_class;
+    }
   else
     class = instance->g_class;
 
