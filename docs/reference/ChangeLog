@@ -1,3 +1,13 @@
+2002-01-16  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/building.sgml, glib/compiling.sgml, 
+	glib/running.sgml, glib/resources.sgml, 
+	glib/changes-2.0.sgml: New files.
+
+	* glib/Makefile.am (content_files): Add new files.
+
+	* glib/glib-docs.sgml: Add an Overview chapter.
+
 2002-01-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/threads.sgml: Name the right function.

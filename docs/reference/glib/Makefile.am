@@ -44,7 +44,13 @@ HTML_IMAGES =  				\
 	mainloop-states.gif
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
-content_files =
+content_files =				\
+	running.sgml			\
+	building.sgml			\
+	changes-2.0.sgml		\
+	compiling.sgml			\
+	resources.sgml
+ 
 
 # Other files to distribute
 extra_files =				\

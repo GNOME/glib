@@ -1,0 +1,142 @@
+<refentry id="glib-changes-2-0" revision="17 Jan 2002">
+<refmeta>
+<refentrytitle>Changes from 1.0 to 2.0</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>Changes from 1.0 to 2.0</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Changes from 1.0 to 2.0</refname>
+<refpurpose>
+Incompatible changes made between version 1.0 and version 2.0
+</refpurpose>
+</refnamediv>
+
+
+<refsect1>
+<title>Incompatible changes from 1.0 to 2.0</title>
+
+<para>
+The <ulink url="http://developer.gnome.org/dotplan/porting/">GNOME 2.0
+porting guide</ulink> on <ulink
+url="http://developer.gnome.org">http://developer.gnome.org</ulink>
+has some more detailed discussion of porting from 1.0 to 2.0.
+See the section on GLib.
+</para>
+
+<itemizedlist>
+
+<listitem>
+<para>
+The event loop functionality <structname>GMain</structname> has extensively 
+been revised to support multiple separate main loops in separate threads. 
+All sources (timeouts, idle functions, etc.) are associated with a 
+<structname>GMainContext</structname>.
+</para>
+
+<para>
+Compatibility functions exist so that most application code dealing with
+the main loop will continue to work. However, code that creates new custom 
+types of sources will require modification.
+</para>
+
+<para>
+The main changes here are:
+
+  <itemizedlist>
+
+  <listitem>
+  <para>
+   Sources are now exposed as <type>GSource *</type>, rather than simply as 
+   numeric ids.
+  </para>
+  </listitem>
+  
+  <listitem>
+  <para>
+   New types of sources are created by structure "derivation" from 
+   <structname>GSource</structname>, so the <literal>source_data</literal> 
+   parameter to the <structname>GSource</structname> virtual functions has been
+   replaced with a <type>GSource *</type>.
+  </para>
+  </listitem>
+  
+  <listitem>
+  <para>
+   Sources are first created, then later added to a specific 
+   <structname>GMainContext</structname>. 
+  </para>
+  </listitem>
+  
+  <listitem>
+  <para>
+   Dispatching has been modified so both the callback and data are passed
+   in to the <function>dispatch()</function> virtual function.
+  </para>
+  </listitem>
+
+  </itemizedlist>
+  To go along with this change, the vtable for 
+  <structname>GIOChannel</structname> has changed and
+  <function>add_watch()</function> has been replaced by 
+  <function>create_watch()</function>.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<function>g_list_foreach()</function> and 
+<function>g_slist_foreach()</function> have been changed so they
+are now safe against removal of the current item, not the next item.
+</para>
+
+<para>
+It's not recommended to mutate the list in the callback to these
+functions in any case.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<structname>GDate</structname> now works in UTF-8, not in the current locale. 
+If you want to use it with the encoding of the locale, you need to convert 
+strings using <function>g_locale_to_utf8()</function> first.
+</para>
+</listitem>
+
+<listitem>
+<para>
+<function>g_strsplit()</function> has been fixed to:
+
+  <itemizedlist>
+  <listitem>
+  <para>
+   include trailing empty tokens, rather than stripping them
+  </para>
+  </listitem>
+  <listitem>
+  <para>
+   split into a maximum of <literal>max_tokens</literal> tokens, rather 
+   than <literal>max_tokens + 1</literal>
+  </para>
+  </listitem>
+  </itemizedlist>
+
+  Code depending on either of these bugs will need to be fixed.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Deprecated functions that got removed:
+<function>g_set_error_handler()</function>, 
+<function>g_set_warning_handler()</function>,
+<function>g_set_message_handler()</function>, use 
+<function>g_log_set_handler()</function> instead.
+</para>
+</listitem>
+<itemizedlist>
+
+</refsect1>
+
+</refentry>

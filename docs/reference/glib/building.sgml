@@ -1,0 +1,217 @@
+<refentry id="glib-building" revision="16 Jan 2002">
+<refmeta>
+<refentrytitle>Compiling the GLib package</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GLib Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling the GLib Package</refname>
+<refpurpose>
+How to compile GLib itself
+</refpurpose>
+</refnamediv>
+
+    <refsect1 id="building">
+      <title>Building the Library on UNIX</title>
+      <para>
+        On UNIX, GLib uses the standard GNU build system,
+        using <application>autoconf</application> for package
+        configuration and resolving portability issues,
+        <application>automake</application> for building makefiles
+        that comply with the GNU Coding Standards, and
+        <application>libtool</application> for building shared
+        libraries on multiple platforms.  The normal sequence for
+        compiling and installing the GLib library is thus:
+
+        <literallayout>
+          <userinput>./configure</userinput>
+          <userinput>make</userinput>
+          <userinput>make install</userinput>
+        </literallayout>
+      </para>
+
+      <para>
+        The standard options provided by <application>GNU
+        autoconf</application> may be passed to the
+        <command>configure</command> script.  Please see the
+        <application>autoconf</application> documentation or run
+        <command>./configure --help</command> for information about
+        the standard options.
+      </para>
+    </refsect1>
+
+    <refsect1 id="extra-configuration-options">
+      <title>Extra Configuration Options</title>
+
+      <para>
+        In addition to the normal options, the
+        <command>configure</command> script in the GTK+
+        library supports these additional arguments:
+
+        <cmdsynopsis>
+          <command>configure</command>
+          <group>
+            <arg>--enable-debug=[no|minimum|yes]</arg>
+          </group>
+          <group>
+            <arg>--disable-gc-friendly</arg>
+            <arg>--enable-gc-friendly</arg>
+          </group>
+          <group>
+            <arg>--disable-mem-pools</arg>
+            <arg>--enable-mem-pools</arg>
+          </group>
+          <group>
+            <arg>--disable-threads</arg>
+            <arg>--enable-threads</arg>
+          </group>
+          <group>
+            <arg>--with-threads=[none|posix|dce|solaris|win32]</arg>
+          </group>
+          <group>
+            <arg>--disable-gtk-doc</arg>
+            <arg>--enable-gtk-doc</arg>
+          </group>
+        </cmdsynopsis>
+      </para>
+
+      <formalpara>
+        <title><systemitem>--enable-debug</systemitem></title>
+
+        <para>
+         Turns on various amounts of debugging support. Setting this to 'no'
+         disables g_assert(), g_return_if_fail(), g_return_val_if_fail() and
+         all cast checks between different object types. Setting it to 'minimum'         disables only cast checks. Setting it to 'yes' enables
+         <link linkend="GLIB-Debug-Options">runtime debugging</link>.
+         The default is 'minimum'.
+         Note that 'no' is fast, but dangerous as it tends to destabilize
+         even mostly bug-free software by changing the effect of many bugs
+         from simple warnings into fatal crashes. Thus
+         <option>--enable-debug=no</option> should <emphasis>not</emphasis>
+         be used for stable releases of gtk+.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-gc-friendly</systemitem> and
+          <systemitem>--enable-gc-friendly</systemitem></title>
+
+        <para>
+          When enabled all memory freed by the application,
+          but retained by GLib for performance reasons
+          is set to zero, thus making deployed garbage
+          collection or memory profiling tools detect
+          unlinked memory correctly. This will make GLib
+          slightly slower and is thus disabled by default.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-mem-pools</systemitem> and
+          <systemitem>--enable-mem-pools</systemitem></title>
+
+      <para>
+        Many small chunks of memory are often allocated via collective pools
+        in GLib and are cached after release to speed up reallocations.
+        For sparse memory systems this behaviour is often inferior, so
+        memory pools can be disabled to avoid excessive caching and force
+        atomic maintenance of chunks through the <function>g_malloc()</function>
+        and <function>g_free()</function> functions. Code currently affected by 
+        this:
+        <itemizedlist>
+        <listitem>
+        <para>
+         <structname>GList</structname>, <structname>GSList</structname>,
+         <structname>GNode</structname> allocations
+        </para>
+        </listitem>
+        <listitem>
+        <para>
+        <structname>GMemChunk</structname>s become basically non-effective
+        </para>
+        </listitem>
+        <listitem>
+        <para>
+         <structname>GSignal</structname> disables all caching (potentially 
+         very slow)
+        </para>
+        </listitem>
+        <listitem>
+        <para>
+         <structname>GType</structname> doesn't honour the 
+         <structname>GTypeInfo</structname> 
+         <structfield>n_preallocs</structfield> field anymore
+        </para>
+        </listitem>
+        <listitem>
+        <para>
+         the <structname>GBSearchArray</structname> flag 
+         <literal>G_BSEARCH_ALIGN_POWER2</literal> becomes non-functional
+        </para>
+        </listitem>
+        </itemizedlist>
+      </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-threads</systemitem> and
+          <systemitem>--enable-threads</systemitem></title>
+
+        <para>
+           Do not compile GLib to be multi thread safe. GLib
+           will be slightly faster then. This is however not
+           recommended, as many programs rely on GLib being
+           multi thread safe.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--with-threads</systemitem></title>
+
+        <para>
+          Specify a thread implementation to use.
+          <itemizedlist>
+              <listitem><para>
+                'posix' and 'dce' can be used interchangeable
+                to mean the different versions of posix
+                threads. configure tries to find out, which
+                one is installed.
+              </para></listitem>
+
+              <listitem><para>
+                'solaris' uses the native Solaris thread implementation.
+              </para></listitem>
+
+              <listitem><para>
+                'none' means that GLib will be thread safe,
+                but does not have a default thread
+                implementation. This has to be supplied to
+                g_thread_init() by the programmer.
+              </para></listitem>
+        </itemizedlist>
+
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-gtk-doc</systemitem> and
+          <systemitem>--enable-gtk-doc</systemitem></title>
+
+        <para>
+          By default the <command>configure</command> script will try
+          to auto-detect whether the
+          <application>gtk-doc</application> package is installed.  If
+          it is, then it will use it to extract and build the
+          documentation for the GLib library.  These options
+          can be used to explicitly control whether
+          <application>gtk-doc</application> should be
+          used or not.  If it is not used, the distributed,
+          pre-generated HTML files will be installed instead of
+          building them on your machine.
+        </para>
+      </formalpara>
+
+   </refsect1>
+
+</refentry>

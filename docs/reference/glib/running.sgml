@@ -1,0 +1,75 @@
+<refentry id="glib-running" revision="17 Jan 2002">
+<refmeta>
+<refentrytitle>Running GLib Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GLib Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Running GLib Applications</refname>
+<refpurpose>
+How to run and debug your GLib application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Running and debugging GLib Applications</title>
+
+<refsect2>
+<title>Environment variables</title>
+
+<para> 
+GLib inspects a few of environment variables in addition to standard
+variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>. 
+</para>
+
+<formalpara>
+  <title><envar>G_BROKEN_FILENAMES<envar></title>
+
+  <para>
+    If this environment variable is set, GLib assumes that filenames are in 
+    the locale encoding rather than in UTF-8.
+  </para>
+</formalpara>
+
+<formalpara>
+  <title><envar>G_MESSAGES_PREFIXED</envar></title>
+
+  <para>
+    A list of log levels for which messages should be prefixed by the 
+    program name and PID of the application. The default is to prefix
+    everything except %G_LOG_LEVEL_MESSAGE and %G_LOG_LEVEL_INFO. 
+  </para>
+</formalpara>
+
+</refsect2>
+
+<refsect2>
+<title>Traps and traces</title>
+
+<para>
+Some code portions contain trap variables that can be set during debugging 
+time if GLib has been configured with <option>--enable-debug=yes</option>. 
+Such traps lead to immediate code halts to examine the current program state 
+and backtrace.
+</para>
+
+<para>
+Currently, the following trap variables exist:
+<programlisting>
+static volatile gulong g_trap_free_size;
+static volatile gulong g_trap_realloc_size;
+static volatile gulong g_trap_malloc_size;
+</programlisting>
+If set to a size > 0, <link linkend="g-free">g_free()</link>, 
+<link linkend="g-realloc">g_realloc()</link> and 
+<link linkend="g-malloc">g_malloc()</link> will be intercepted if the size 
+matches the size of the corresponding memory block. This will only work with 
+<literal>g_mem_set_vtable (glib_mem_profiler_table)</literal> upon startup 
+though, because memory profiling is required to match on the memory block sizes.
+</para>
+</refsect2>
+
+</refsect1>
+
+</refentry>

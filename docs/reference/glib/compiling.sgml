@@ -1,0 +1,56 @@
+<refentry id="glib-compiling" revision="17 Jan 2002">
+<refmeta>
+<refentrytitle>Compiling GLib Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GLib Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling GLib Applications</refname>
+<refpurpose>
+How to compile your GLib application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Compiling GLib Applications on UNIX</title>
+
+<para>
+To compile a GLib application, you need to tell the compiler where to 
+find the GLib header files and libraries. This is done with the
+<application>pkg-config</application> utility.
+</para>
+<para>
+The following interactive shell session demonstrates how
+<application>pkg-config</application> is used:
+<programlisting>
+$ pkg-config --cflags glib-2.0
+ -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include 
+$ pkg-config --libs glib-2.0
+ -L/usr/lib -lm -lglib-1.3  
+</programlisting>
+</para>
+<para>
+If your application uses modules, threads or <structname>GObject</structname>
+features, it must be compiled and linked with the options returned by the 
+following <application>pkg-config</application> invokations: 
+<programlisting>
+$ pkg-config --cflags --libs gmodule-2.0 
+$ pkg-config --cflags --libs gthread-2.0
+$ pkg-config --cflags --libs gobject-2.0
+</programlisting>
+</para>
+<para>
+The simplest way to compile a program is to use the "backticks"
+feature of the shell. If you enclose a command in backticks
+(<emphasis>not single quotes</emphasis>), then its output will be
+substituted into the command line before execution. So to compile 
+a GLib Hello, World, you would type the following:
+<programlisting>
+$ cc `pkg-config --cflags --libs glib-2.0` hello.c -o hello
+</programlisting>
+</para>
+
+</refsect1>
+
+</refentry>
