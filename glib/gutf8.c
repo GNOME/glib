@@ -22,7 +22,7 @@
 #include <config.h>
 
 #include <stdlib.h>
-#ifdef HAVE_LANGINFO_H
+#ifdef HAVE_CODESET
 #include <langinfo.h>
 #endif
 #include <string.h>
@@ -297,16 +297,7 @@ g_utf8_get_charset_internal (char **a)
   if (charset && strstr (charset, "UTF-8"))
       return TRUE;
 
-#ifdef _NL_CTYPE_CODESET_NAME
-  charset = nl_langinfo (_NL_CTYPE_CODESET_NAME);
-  if (charset)
-    {
-      if (a && ! *a)
-	*a = charset;
-      if (strcmp (charset, "UTF-8") == 0)
-	return TRUE;
-    }
-#elif CODESET
+#ifdef HAVE_CODESET
   charset = nl_langinfo(CODESET);
   if (charset)
     {
@@ -315,7 +306,18 @@ g_utf8_get_charset_internal (char **a)
       if (strcmp (charset, "UTF-8") == 0)
 	return TRUE;
     }
-#endif  
+#endif
+  
+#if 0 /* #ifdef _NL_CTYPE_CODESET_NAME */
+  charset = nl_langinfo (_NL_CTYPE_CODESET_NAME);
+  if (charset)
+    {
+      if (a && ! *a)
+	*a = charset;
+      if (strcmp (charset, "UTF-8") == 0)
+	return TRUE;
+    }
+#endif
 
   if (a && ! *a) 
     *a = "US-ASCII";
