@@ -1,3 +1,8 @@
+Tue Apr 27 13:11:29 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_poll): Mask out ERR HUP and NVAL from
+	the events field so we don't give IRIX fits.
+
 Tue Apr 20 08:42:22 1999  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c (g_scanner_unexp_token): behave conservative with

@@ -998,7 +998,12 @@ g_main_poll (gint     timeout,
       if (pollrec->fd->events)
 	{
 	  fd_array[i].fd = pollrec->fd->fd;
-	  fd_array[i].events = pollrec->fd->events;
+	  /* In direct contradiction to the Unix98 spec, IRIX runs into
+	   * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
+	   * flags in the events field of the pollfd while it should
+	   * just ignoring them. So we mask them out here.
+	   */
+	  fd_array[i].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
 	  fd_array[i].revents = 0;
 	  i++;
 	}
