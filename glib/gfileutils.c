@@ -988,7 +988,7 @@ g_build_filename (const gchar *first_element,
 }
 
 /**
- * g_read_link:
+ * g_file_read_link:
  * @filename: the symbolic link
  * @error: return location for a #GError
  *
@@ -1002,8 +1002,8 @@ g_build_filename (const gchar *first_element,
  * Since: 2.4
  */
 gchar *
-g_read_link (const gchar *filename,
-	     GError     **error)
+g_file_read_link (const gchar *filename,
+	          GError     **error)
 {
 #ifdef HAVE_READLINK
   gchar *buffer;

@@ -1,3 +1,9 @@
+2003-07-30  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gfileutils.[hc]: Rename g_read_link() to g_file_read_link() to better match the remaining file
+	utilities in the g_file_ namespace and to better separate it from readlink(). This is hopefully no problem 
+	as the function is just 2 days old.
+
 2003-07-29  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gqsort.[hc] (g_qsort_with_data): 

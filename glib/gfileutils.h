@@ -78,7 +78,7 @@ gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
                               gsize        *length,    
                               GError      **error);
-gchar * g_read_link          (const gchar  *filename,
+gchar   *g_file_read_link    (const gchar  *filename,
 			      GError      **error);
 
 /* Wrapper / workalike for mkstemp() */

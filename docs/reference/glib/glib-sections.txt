@@ -878,7 +878,7 @@ g_file_get_contents
 g_file_test
 g_mkstemp
 g_file_open_tmp
-g_read_link
+g_file_read_link
 
 <SUBSECTION>
 GDir
