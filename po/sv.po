@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-11-22 14:08-0500\n"
-"PO-Revision-Date: 2001-09-11 21:20+0200\n"
+"POT-Creation-Date: 2001-12-03 02:19+0100\n"
+"PO-Revision-Date: 2001-12-03 02:19+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:202
-#, fuzzy, c-format
+#, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 
 #: glib/gconvert.c:206
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
@@ -49,27 +49,27 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
 #: glib/gconvert.c:1261
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI:n \"%s\" är ingen absolut URI som använder filschemat"
 
 #: glib/gconvert.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Lokala fil-URI:n \"%s\" får inte inkludera en \"#\""
+msgstr "Lokala fil-URI:n \"%s\" får inte innehålla en \"#\""
 
 #: glib/gconvert.c:1288
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI:n \"%s\" är ogiltig"
 
 #: glib/gconvert.c:1297
-#, fuzzy, c-format
+#, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
 
 #: glib/gconvert.c:1313
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
 
@@ -136,31 +136,31 @@ msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
 #: glib/giochannel.c:1460
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "Kan inte göra en rå läsning i g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "Överbliven okonverterad data i läsbufferten"
 
 #: glib/giochannel.c:1587 glib/giochannel.c:1661
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Kanalen slutar med ett ofullständigt tecken"
 
 #: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Kan inte göra en rå läsning i g_io_channel_read_to_end"
 
 #: glib/giowin32.c:701 glib/giowin32.c:730
 msgid "Incorrect message size"
-msgstr ""
+msgstr "Ogiltig meddelandestorlek"
 
 #: glib/giowin32.c:1024 glib/giowin32.c:1077
 msgid "Socket error"
-msgstr ""
+msgstr "Uttagsfel"
 
 #: glib/giowin32.c:1277
 msgid "Channel set flags unsupported"
-msgstr ""
+msgstr "Kanalinställningsflaggor stöds inte"
 
 #: glib/gmarkup.c:216
 #, c-format
