@@ -1,3 +1,8 @@
+2005-03-23  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_getenv): [Win32] Fix corner case bug when
+	environment variable value is exactly one character.
+
 2005-03-20  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gspawn-win32.c (do_spawn_with_pipes): Close the process

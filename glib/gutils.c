@@ -931,6 +931,8 @@ g_getenv (const gchar *variable)
 	  g_free (wname);
 	  return NULL;
 	}
+      else if (len == 1)
+	len = 2;
 
       wvalue = g_new (wchar_t, len);
 
@@ -982,6 +984,8 @@ g_getenv (const gchar *variable)
 	  g_free (cpname);
 	  return NULL;
 	}
+      else if (len == 1)
+	len = 2;
 
       cpvalue = g_new (gchar, len);
 
