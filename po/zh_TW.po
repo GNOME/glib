@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.11\n"
-"POT-Creation-Date: 2001-11-18 08:37-0500\n"
+"POT-Creation-Date: 2001-11-22 14:08-0500\n"
 "PO-Revision-Date: 2001-11-20 04:30+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -180,7 +180,7 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "實體名稱不應以 '%s' 開始，應該使用 & 字元；如果這個 & 字元不是作為實體使用，"
-"請將 & 轉換為 &amp;" 
+"請將 & 轉換為 &amp;"
 
 #: glib/gmarkup.c:425
 #, c-format
@@ -197,8 +197,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"實體的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
-"為 &amp;" 
+"實體的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換為 "
+"&amp;"
 
 #: glib/gmarkup.c:525
 #, c-format
@@ -223,7 +223,7 @@ msgid ""
 "as &amp;"
 msgstr ""
 "字元參引的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
-"為 &amp;" 
+"為 &amp;"
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"

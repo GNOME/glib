@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-09-23 00:53+0200\n"
+"POT-Creation-Date: 2001-11-22 14:08-0500\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -13,66 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:143
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
+#: glib/gconvert.c:202
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvorba iz nabora znakov `%s' v `%s' ni podprta"
 
-#: glib/gconvert.c:147
-#, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
+#: glib/gconvert.c:206
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nisem mogel odpreti pretvornika iz `%s' v `%s': %s"
 
-#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
+#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
+#: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neveljavna sekvenca bajtov na vhodu pretvorbe"
 
-#: glib/gconvert.c:302 glib/gconvert.c:513
+#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
-#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
-#: glib/gutf8.c:1265
+#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1317
 msgid "Partial character sequence at end of input"
 msgstr "Delna (nedokonèana) sekvenca znakov na koncu vhoda"
 
-#: glib/gconvert.c:488
+#: glib/gconvert.c:547
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne morem pretvoriti '%s' v nabor znakov '%s'"
 
-#: glib/gconvert.c:1202
-#, c-format
-msgid "The URI `%s' is not an absolute URI using the file scheme"
+#: glib/gconvert.c:1261
+#, fuzzy, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI `%s' pri uporabi sheme datotek ni absoluten"
 
-#: glib/gconvert.c:1212
-#, c-format
-msgid "The local file URI `%s' may not include a `#'"
+#: glib/gconvert.c:1271
+#, fuzzy, c-format
+msgid "The local file URI '%s' may not include a '#'"
 msgstr "Krajevna datoteka URI `%s' ne sme vsebovati `#'"
 
-#: glib/gconvert.c:1229
-#, c-format
-msgid "The URI `%s' is invalid"
+#: glib/gconvert.c:1288
+#, fuzzy, c-format
+msgid "The URI '%s' is invalid"
 msgstr "URI `%s' je neveljaven"
 
-#: glib/gconvert.c:1238
-#, c-format
-msgid "The hostname of the URI `%s' contains invalidly escaped characters"
+#: glib/gconvert.c:1297
+#, fuzzy, c-format
+msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "Ime gostitelja URI `%s' vsebuje neveljavne ube¾ne znake"
 
-#: glib/gconvert.c:1254
-#, c-format
-msgid "The URI `%s' contains invalidly escaped characters"
+#: glib/gconvert.c:1313
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI `%s' vsebuje neveljavne ube¾ne znake"
 
-#: glib/gconvert.c:1297
+#: glib/gconvert.c:1356
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Pot '%s' ni absolutna pot"
 
-#: glib/gconvert.c:1311
+#: glib/gconvert.c:1370
 msgid "Invalid byte sequence in hostname"
 msgstr "Neveljavno zaporedje bajtov v imenu gostitelja"
 
@@ -102,6 +105,7 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nisem uspel odpreti datoteke '%s': fdopen() ni uspel: %s"
 
 #: glib/gfileutils.c:655
+#, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "©ablona '%s' je neveljavna, ne bi smela vsebovati '%s'"
 
@@ -114,6 +118,44 @@ msgstr "©ablona '%s' se ne konèa z XXXXXX"
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nisem uspel ustvariti datoteke '%s' %s"
+
+#: glib/giochannel.c:1110
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Pretvorba iz nabora znakov `%s' v `%s' ni podprta"
+
+#: glib/giochannel.c:1114
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Nisem mogel odpreti pretvornika iz `%s' v `%s': %s"
+
+#: glib/giochannel.c:1460
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: glib/giochannel.c:1587 glib/giochannel.c:1661
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: glib/giochannel.c:1647
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#: glib/giowin32.c:701 glib/giowin32.c:730
+msgid "Incorrect message size"
+msgstr ""
+
+#: glib/giowin32.c:1024 glib/giowin32.c:1077
+msgid "Socket error"
+msgstr ""
+
+#: glib/giowin32.c:1277
+msgid "Channel set flags unsupported"
+msgstr ""
 
 #: glib/gmarkup.c:216
 #, c-format
@@ -366,17 +408,17 @@ msgstr ""
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nisem uspel brati iz cevi otroka (%s)"
 
-#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:925 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nisem uspel spremeniti imenika v '%s' (%s)"
 
-#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nisem uspel izvesti procesa otroka (%s)"
 
-#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nisem uspel ustvariti cevi za komunikacijo s procesom otroka (%s)"
@@ -421,15 +463,15 @@ msgstr "Neznana napaka med izvajanjem procesa otroka"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nisem uspel prebrati dovolj podatkov iz cevi otroka (%s)"
 
-#: glib/gutf8.c:898
+#: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
 msgstr "Znak izven intervala za UTF-8"
 
-#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
-#: glib/gutf8.c:1279 glib/gutf8.c:1375
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1331 glib/gutf8.c:1427
 msgid "Invalid sequence in conversion input"
 msgstr "Neveljavna sekvenca na vhodu pretvorbe"
 
-#: glib/gutf8.c:1290 glib/gutf8.c:1386
+#: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr "Znak izven intervala za UTF-16"

@@ -1,3 +1,7 @@
+Thu Nov 22 13:56:55 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Version 1.3.11
+
 Thu Nov 22 13:14:18 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (GLIB_MICRO_VERSION): Version 11, 

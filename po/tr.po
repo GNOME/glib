@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-10-22 09:35-0400\n"
+"POT-Creation-Date: 2001-11-22 14:08-0500\n"
 "PO-Revision-Date: 2001-02-05 20:28+0200\n"
 "Last-Translator: Kemal Yýlmaz <kyilmaz@uekae.tubitak.gov.tr>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -24,13 +24,13 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' den `%s' e dönüþtürücü açýlamýyor: %s"
 
 #: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
-#: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
+#: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
 msgstr "dönüþüm girdisinde geçersiz bayt dizisi"
 
 #: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
-#: glib/giochannel.c:2176
+#: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "dönüþüm sýrasýnda hata oluþtu: %s"
@@ -132,19 +132,19 @@ msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüþüm desteklenmiyor"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "`%s' den `%s' e dönüþtürücü açýlamýyor: %s"
 
-#: glib/giochannel.c:1461
+#: glib/giochannel.c:1460
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 
-#: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
+#: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
 msgid "Leftover unconverted data in read buffer"
 msgstr ""
 
-#: glib/giochannel.c:1588 glib/giochannel.c:1662
+#: glib/giochannel.c:1587 glib/giochannel.c:1661
 msgid "Channel terminates in a partial character"
 msgstr ""
 
-#: glib/giochannel.c:1648
+#: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
