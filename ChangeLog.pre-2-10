@@ -1,3 +1,9 @@
+Sun Feb  6 21:59:09 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/abicheck.sh: feed the contents of config.h and glibconfig.h
+	into the preprocessor, since glib.symbols could need #defines
+	from them.
+
 Sun Feb  6 12:09:55 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/gatomic.c: Don't use matching constraints for asm mem
