@@ -1,3 +1,9 @@
+2004-12-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (g_option_context_parse): Call
+	post-parse hooks also if argv is NULL.  (#161668,
+	Marcin Krzyzanowski)
+
 2004-12-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

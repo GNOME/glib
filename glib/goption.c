@@ -1324,30 +1324,33 @@ g_option_context_parse (GOptionContext   *context,
 	      
 	    }
 	}
+    }
 
-      /* Call post-parse hooks */
-      list = context->groups;
-      while (list)
+  /* Call post-parse hooks */
+  list = context->groups;
+  while (list)
+    {
+      GOptionGroup *group = list->data;
+      
+      if (group->post_parse_func)
 	{
-	  GOptionGroup *group = list->data;
-
-	  if (group->post_parse_func)
-	    {
-	      if (!(* group->post_parse_func) (context, group,
-					       group->user_data, error))
-		goto fail;
-	    }
-	  
-	  list = list->next;
-	}
-
-      if (context->main_group && context->main_group->post_parse_func)
-	{
-	  if (!(* context->main_group->post_parse_func) (context, context->main_group,
-							 context->main_group->user_data, error))
+	  if (!(* group->post_parse_func) (context, group,
+					   group->user_data, error))
 	    goto fail;
 	}
-
+      
+      list = list->next;
+    }
+  
+  if (context->main_group && context->main_group->post_parse_func)
+    {
+      if (!(* context->main_group->post_parse_func) (context, context->main_group,
+						     context->main_group->user_data, error))
+	goto fail;
+    }
+  
+  if (argc && argv)
+    {
       free_pending_nulls (context, TRUE);
       
       for (i = 1; i < *argc; i++)
