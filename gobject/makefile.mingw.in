@@ -59,13 +59,13 @@ gmarshal.h:	# never add deps here
 $(srcdir)/stamp-gmarshal.h: @REBUILD@ gmarshal.list gmarshal.h glib-genmarshal.exe
 	echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
 	&& echo "#define __G_MARSHAL_H__" >> xgen-gmh \
-	&& ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
+	&& PATH=../glib:$$PATH ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
 	&& echo "#endif /* __G_MARSHAL_H__ */" >> xgen-gmh \
 	&& (cmp -s xgen-gmh $(srcdir)/gmarshal.h || cp xgen-gmh $(srcdir)/gmarshal.h) \
 	&& rm -f xgen-gmh xgen-gmh~ \
 	&& echo timestamp > $@
 $(srcdir)/gmarshal.c: @REBUILD@ $(srcdir)/stamp-gmarshal.h
-	./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
+	PATH=../glib:$$PATH ./glib-genmarshal --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
 	&& cp xgen-gmc $(srcdir)/gmarshal.c \
 	&& rm -f xgen-gmc xgen-gmc~
 $(srcdir)/gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list

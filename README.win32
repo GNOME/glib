@@ -49,8 +49,8 @@ Even building software that just *use* GLib or GTk+ also require to
 have the right compiler set up the right way, so if you intend to use
 gcc, follow the relevant instructions below in that case, too.
 
-Libiconv
-========
+Dependent libraries
+===================
 
 Before building GLib you must also have the libiconv library, either
 from the same website mentioned above, or from it's homepage at
@@ -58,13 +58,19 @@ http://clisp.cons.org/~haible/packages-libiconv.html. Libiconv has
 makefiles for building with MS Visual C only, but as it is one source
 file only, building it "by hand" with gcc isn't hard.
 
+You must also have the "intl" library from GNU tettext 0.10.40 (or
+later). Get a prebuilt version from the website mentioned above.
+
+Edit the correct paths to those libraries in build/win32/module.defs
+as appropriate.
+
 Where are the makefiles?
 ========================
 
 If you are building from a CVS snapshot, you will not have any
 makefile.mingw or makefile.msc file. You should copy the corresponding
-makefile.mingw.in or makefile.msc.in file to that name, and edit the
-@GLIB_VERSION@ strings to the correct version number.
+makefile.mingw.in or makefile.msc.in file to that name, and replace
+any @...@ strings with the correct value.
 
 This is done automatically when an official GLib source distribution
 package is built.
@@ -72,20 +78,24 @@ package is built.
 Building GLib with gcc
 ======================
 
-I use the latest gcc, gcc-2.95.3. Version 2.95.2 will most probably
-also work.
+I use gcc-2.95.3. Version 2.95.2 will most probably also work.
 
 You can either use gcc running on Cygwin, or the "pure" mingw
-gcc. Using the latter is much easier. 
+gcc. Using the latter might work better, or at least did at some
+point.
 
-Just fetch the latest version of gcc for mingw and the msvcrt runtime,
-from www.mingw.org.
+Fetch the latest version of gcc for mingw and the msvcrt runtime, from
+www.mingw.org.
 
 Set up your PATH so that the gcc from the bin directory that got
 created above is the one that gets used. Even if you run the mingw
 gcc, you still want to have Cygwin to run make in.
 
-Then run make -f makefile.mingw. 
+Then run make -f makefile.mingw. Install the resulting DLLs somewhere
+in your PATH. You can either keep the headers and import libraries
+where they are, or install them somewhere else. There are no rules in
+the makefile.mingws for installing, it is up to you where to put
+stuff.
 
 I use the -fnative-struct flag, which means that in order to use the
 prebuilt DLLs (especially of GTK+), you *must* also use that flag.
@@ -96,20 +106,31 @@ gcc- and MSVC-compiled code, which definitely is a good thing.)
 It is also possible to use the auto*, ./configure and libtool
 mechanism when building for mingw. You should be running Cygwin, or
 maybe cross-compiling from real Unix, for the configure script to
-work, obviously. The same libtool issue has to be taken into account
-as when building for Cygwin: You most probably should have a very new
-libtool. Remember to invoke configure with CC='gcc -fnative-struct' if
-you want to produce DLLs binary compatible with the "official" ones.
+work, obviously. You most probably should have very new auto* and
+libtool. Personally, I invoke configure using:
+
+CC='gcc -mpentium -fnative-struct'
+  CPPFLAGS='-I/src/libiconv-1.7/include -I/target/include'
+  LDFLAGS='-L/src/libiconv-1.7/lib -L/target/lib' ./configure
+  --with-libiconv --disable-static --prefix=/target
+  --host=i386-pc-mingw32 --enable-maintainer-mode
+
+(on a single line)
 
 But please note that the ./configure mechanism should not blindly be
 used to build a GLib to be distributed to potential developers because
 it produces a compiler-dependent glibconfig.h (and config.h, but that
-shouldn't matter). For instance, the typedef for gint64 is long long
-with gcc, but __int64 with MSVC. Otherwise, there really shouldn't be
-any reason to distribute separate GLib DLLs for gcc and MSVC users, as
-both compiler+tools generate code that uses the same C runtime
-library. Thus one either has to edit glibconfig.h afterwards, or use
-the hand-written config.h.win32 and glibconfig.h.win32.
+shouldn't matter, as it isn't seen by GLib-using applications). For
+instance, the typedef for gint64 is long long with gcc, but __int64
+with MSVC.
+
+Except for this and a few other minor issues, there really shouldn't
+be any reason to distribute separate GLib DLLs for gcc and MSVC users,
+as both compiler+tools generate code that uses the same C runtime
+library. Thus one either has to manually edit glibconfig.h afterwards,
+or use the supplied config.h.win32 and glibconfig.h.win32. These have
+been produced by running configure twice, once using gcc and once
+using MSVC, and merging the resulting files with diff -D.
 
 There are probably also other hickups when using auto* and configure
 to build for mingw, sigh. Every now and then I try to get rid of the
@@ -120,21 +141,28 @@ working on using auto*/configure/libtool on Win32, and it now seems to
 work well enough (with some patches applied to the current CVS
 libtool...).
 
-The hand-written makefile.mingw(.in) files, and the stuff in the
-"build" module has been updated to produce DLLs and import libraries
-that match what Makefile.am and libtool produces.
+The hand-written makefile.{mingw,msc} files, and the stuff in the
+"build" subdirectory, has been updated to produce DLLs and import
+libraries that match what Makefile.am and libtool produces. For GLib,
+the DLL is called libglib-1.3-10.dll (at GLib 1.3.10), and the import
+libraries libglib-1.3.a and glib-1.3.lib. Note that the "1.3" is part
+of the "basename" of the library, it is not something that libtool
+would tuck on. The -10 suffix is the value of "LT_CURRENT -
+LT_AGE". The 10 is *not* the micro version number of GLib, although,
+for GLib 1.3.10, it happens to be the same. For the gory details, see
+configure.in and libtool documentation.
 
-If you want to run the Cygwin-based gcc, it gets a bit more
-complicated. We still want gcc to produce code that does not use
-Cygwin, but the msvcrt runtime. In theory it should work to use the
--no-cygwin flag, but I haven't tested that lately.
+If you want to run the Cygwin-hosted gcc, and still want to produce
+code that does not use Cygwin, but the msvcrt runtime, in theory it
+should work to use the -no-cygwin flag, but I haven't tested that
+lately.
 
 If you would want to use the Cygwin tools to generate a GLib that
 *does* use the Cygwin runtime, the normal Unix configuration method
 should work as if on Unix. Note that successfully producing shared
-libraries (DLLs) most probably requires you to have a very new
-libtool. (And a new libtool probably requires rather new autoconf and
-automake.)
+libraries (DLLs) for Cygwin most probably requires you to have a very
+new libtool. (And a new libtool probably requires rather new autoconf
+and automake.) I haven't personally tested this in a while.
 
 Building with MSVC
 ==================

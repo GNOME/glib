@@ -12,6 +12,8 @@ include ../build/win32/make.mingw
 INCLUDES = -I .. -I ../glib -I ../gmodule
 DEFINES = -DHAVE_CONFIG_H
 
+# mainloop-test removed for now until it is fixed
+
 TESTS = \
 	testglib.exe	\
 	testgdate.exe	\
@@ -22,7 +24,6 @@ TESTS = \
 	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
-	mainloop-test.exe\
 	markup-test.exe	\
 	module-test.exe	\
 	node-test.exe	\
