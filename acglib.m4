@@ -50,30 +50,25 @@ AC_DEFUN(GLIB_ADD_TO_VAR,[
         GLIB_STR_CONTAINS($[$1], [$2], [$1]="$[$1]", [$1]="$[$1] [$3]")
 ])
 
-dnl GLIB_SIZEOF (INCLUDES, TYPE, ALIAS [, CROSS-SIZE])
-AC_DEFUN(GLIB_SIZEOF,
-[pushdef([glib_Sizeof], GLIB_TR_SH([glib_cv_sizeof_$3]))dnl
-AC_CACHE_CHECK([size of $2], glib_Sizeof,
-[AC_TRY_RUN([#include <stdio.h>
-#if STDC_HEADERS
-#include <stdlib.h>
-#include <stddef.h>
-#endif
-$1
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof($2));
-  exit(0);
-}], 
-  [glib_Sizeof=`cat conftestval`  dnl''
-],
-  [glib_Sizeof=0],
-  ifelse([$4], [], [], [glib_Sizeof=$4]))])
-AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), [$[]glib_Sizeof], [Size of $3])
-popdef([glib_Sizeof])dnl
-])
+# GLIB_SIZEOF (INCLUDES, TYPE, ALIAS)
+# ---------------------------------------------------------------
+# The definition here is based of that of AC_CHECK_SIZEOF
+AC_DEFUN([GLIB_SIZEOF],
+[AS_LITERAL_IF([$3], [],
+               [AC_FATAL([$0: requires literal arguments])])dnl
+AC_CACHE_CHECK([size of $2], AS_TR_SH([glib_cv_sizeof_$3]),
+[ # The cast to unsigned long works around a bug in the HP C Compiler
+  # version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+  # declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+  # This bug is HP SR number 8606223364.
+  _AC_COMPUTE_INT([(long) (sizeof ($2))],
+                  [AS_TR_SH([glib_cv_sizeof_$3])],
+                  [AC_INCLUDES_DEFAULT([$1])],
+                  [AC_MSG_ERROR([cannot compute sizeof ($2), 77])])
+])dnl
+AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), $AS_TR_SH([glib_cv_sizeof_$3]),
+                   [The size of $3, as computed by sizeof.])
+])# GLIB_SIZEOF
 
 dnl GLIB_BYTE_CONTENTS (INCLUDES, TYPE, ALIAS, N_BYTES, INITIALIZER)
 AC_DEFUN(GLIB_BYTE_CONTENTS,
@@ -102,51 +97,12 @@ AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_byte_contents_$3), [$[]glib_ByteContents],
 popdef([glib_ByteContents])dnl
 ])
 
-dnl GLIB_SYSDEFS (INCLUDES, DEFS_LIST, OFILE [, PREFIX])
-AC_DEFUN(GLIB_SYSDEFS,
-[glib_sysdefso="translit($3, [-_a-zA-Z0-9 *], [-_a-zA-Z0-9])"
-glib_sysdef_msg=`echo $2 | sed 's/:[[^ 	]]*//g'`
-if test "x`(echo '\n') 2>/dev/null`" != 'x\n'; then
-  glib_nl='\\n'
-else
-  glib_nl='\n'
-fi
-AC_MSG_CHECKING(system definitions for $glib_sysdef_msg)
-cat >confrun.c <<_______EOF
-#include <stdio.h>
-$1
-int main (int c, char **v) {
-  FILE *f = fopen ("$glib_sysdefso", "a");
-  if (!f) return 1;
-_______EOF
-for glib_sysdef_input in $2 ; do
-	glib_sysdef=`echo $glib_sysdef_input | sed 's/^\([[^:]]*\):.*$/\1/'`
-	glib_default=`echo $glib_sysdef_input | sed 's/^[[^:]]*:\(.*\)$/\1/'`
-	echo "#ifdef $glib_sysdef" >>confrun.c
-	echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d${glib_nl}\", \"$glib_sysdef\", \"$4\", $glib_sysdef);" >>confrun.c
-	echo "#else" >>confrun.c
-	if test $glib_sysdef != $glib_default; then
-		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d${glib_nl}\", \"$glib_sysdef\", \"$4\", $glib_default);" >>confrun.c
-	else
-		echo "  fprintf (f, \"#define GLIB_SYSDEF_%s${glib_nl}\", \"$glib_sysdef\");" >>confrun.c
-	fi
-	echo "#endif" >>confrun.c
-done
-echo "return 0; }" >>confrun.c
-AC_TRY_RUN(`cat confrun.c`, AC_MSG_RESULT(done),
-[	for glib_sysdef_input in $2 ; do
-		glib_sysdef=`echo $glib_sysdef_input | sed 's/^\([[^:]]*\):.*$/\1/'`
-		glib_default=`echo $glib_sysdef_input | sed 's/^[[^:]]*:\(.*\)$/\1/'`
-		if test $glib_sysdef != $glib_default; then
-			glib_default=" $4$glib_default"
-		else
-			glib_default=
-		fi
-		echo "#define GLIB_SYSDEF_$glib_sysdef$glib_default" >>$glib_sysdefso
-	done
-	AC_MSG_RESULT(failed)])
-rm -f confrun.c
-])
+# GLIB_CHECK_VALUE(SYMBOL, INCLUDES, ACTION-IF-FAIL)
+# ---------------------------------------------------------------
+AC_DEFUN([GLIB_CHECK_VALUE],
+[AC_CACHE_CHECK([value of $1], AS_TR_SH([glib_cv_value_$1]),
+  [_AC_COMPUTE_INT([$1], AS_TR_SH([glib_cv_value_$1]), [$2], [$3])])
+])dnl
 
 # GLIB_CHECK_COMPILE_WARNINGS(PROGRAM, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # ---------------------------------------------------------------------

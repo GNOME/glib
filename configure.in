@@ -14,9 +14,6 @@ AC_INIT(glib/glib.h)
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
-# we rewrite this file
-rm -f glibconfig-sysdefs.h
-
 GLIB_AC_DIVERT_BEFORE_HELP([
 #
 # The following version number definitions apply to GLib, GModule, GObject 
@@ -404,25 +401,29 @@ if test "x$GCC" = "xyes"; then
   fi
 fi
 
+dnl
 dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
-AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
-glib_save_LIBS=$LIBS
-LIBS="$LIBS -lm"
-AC_TRY_RUN([#include <math.h>
-             int main (void) { return (log(1) != log(1.)); }],
-     AC_MSG_RESULT(none needed),
-     glib_save_CFLAGS=$CFLAGS
-     CFLAGS="$CFLAGS -std1"
-     AC_TRY_RUN([#include <math.h>
-                 int main (void) { return (log(1) != log(1.)); }],
-         AC_MSG_RESULT(-std1),
-         AC_MSG_RESULT()
-         CFLAGS=$glib_save_CFLAGS
-         AC_MSG_WARN(
-                [No ANSI prototypes found in library. (-std1 didn't work.)])
-     )
-)
-LIBS=$glib_save_LIBS
+dnl
+if test $cross_compiling != yes ; then
+    AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
+    glib_save_LIBS=$LIBS
+    LIBS="$LIBS -lm"
+    AC_TRY_RUN([#include <math.h>
+		 int main (void) { return (log(1) != log(1.)); }],
+	 AC_MSG_RESULT(none needed),
+	 glib_save_CFLAGS=$CFLAGS
+	 CFLAGS="$CFLAGS -std1"
+	 AC_TRY_RUN([#include <math.h>
+		     int main (void) { return (log(1) != log(1.)); }],
+	     AC_MSG_RESULT(-std1),
+	     AC_MSG_RESULT()
+	     CFLAGS=$glib_save_CFLAGS
+	     AC_MSG_WARN(
+		    [No ANSI prototypes found in library. (-std1 didn't work.)])
+	 )
+    )
+    LIBS=$glib_save_LIBS
+fi
 
 dnl NeXTStep cc seems to need this
 AC_MSG_CHECKING([for extra flags for POSIX compliance])
@@ -545,7 +546,7 @@ dnl AC_C_INLINE is useless to us since it bails out too early, we need to
 dnl truely know which ones of `inline', `__inline' and `__inline__' are
 dnl actually supported.
 AC_CACHE_CHECK([for __inline],glib_cv_has__inline,[
-        AC_TRY_RUN([
+        AC_TRY_COMPILE([
 	__inline int foo () { return 0; }
 	int main () { return foo (); }
        	],
@@ -558,7 +559,7 @@ case x$glib_cv_has__inline in
 xyes) AC_DEFINE(G_HAVE___INLINE,1,[Have __inline keyword])
 esac
 AC_CACHE_CHECK([for __inline__],glib_cv_has__inline__,[
-        AC_TRY_RUN([
+        AC_TRY_COMPILE([
 	__inline__ int foo () { return 0; }
 	int main () { return foo (); }
        	],
@@ -571,7 +572,7 @@ case x$glib_cv_has__inline__ in
 xyes) AC_DEFINE(G_HAVE___INLINE__,1,[Have __inline__ keyword])
 esac
 AC_CACHE_CHECK([for inline], glib_cv_hasinline,[
-        AC_TRY_RUN([
+        AC_TRY_COMPILE([
 	#undef inline
 	inline int foo () { return 0; }
 	int main () { return foo (); }
@@ -621,7 +622,7 @@ AC_MSG_RESULT($g_have_gnuc_varargs)
 AC_C_BIGENDIAN
 
 # check for header files
-AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h sys/param.h sys/poll.h sys/select.h])
+AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h sys/param.h sys/poll.h sys/select.h sys/types.h])
 AC_CHECK_HEADERS([sys/time.h sys/times.h unistd.h values.h stdint.h sched.h])
 
 # Checks for libcharset
@@ -646,30 +647,12 @@ AC_SUBST(STRIP_BEGIN)
 AC_SUBST(STRIP_END)
 
 # check additional type sizes
-size_includes=["
-#include <stdarg.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-"]
-if test "x$ac_cv_header_stdint_h" = "xyes"; then
-  size_includes=["$size_includes
-#include <stdint.h>
-"]
-fi
-if test "x$ac_cv_header_unistd_h" = "xyes"; then
-  size_includes=["$size_includes
-#include <unistd.h>
-"]
-fi
-GLIB_SIZEOF([$size_includes], size_t, size_t)
-GLIB_SIZEOF([$size_includes], ptrdiff_t, ptrdiff_t)
-GLIB_SIZEOF([$size_includes], intmax_t, intmax_t)
+AC_CHECK_SIZEOF(size_t)
 
 dnl Try to figure out whether gsize, gssize should be long or int
 AC_MSG_CHECKING([for the appropriate definition for size_t])
 
-case $glib_cv_sizeof_size_t in
+case $ac_cv_sizeof_size_t in
   $ac_cv_sizeof_short) 
       glib_size_type=short
       ;;
@@ -687,8 +670,8 @@ dnl If int/long are the same size, we see which one produces
 dnl warnings when used in the location as size_t. (This matters
 dnl on AIX with xlc)
 dnl
-if test $glib_cv_sizeof_size_t = $ac_cv_sizeof_int &&
-   test $glib_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
+if test $ac_cv_sizeof_size_t = $ac_cv_sizeof_int &&
+   test $ac_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
   GLIB_CHECK_COMPILE_WARNINGS([
 #include <stddef.h> 
 int main ()
@@ -1695,15 +1678,14 @@ dnl **********************************************
 dnl
 dnl if mutex_has_default = yes, we also got
 dnl mutex_default_type, mutex_default_init and mutex_header_file
-GLIB_IF_VAR_EQ(mutex_has_default, yes,
+if test $mutex_has_default = yes ; then
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	glib_save_LIBS="$LIBS"
 	LIBS="$LIBS $G_THREAD_LIBS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
 	GLIB_SIZEOF([#include <$mutex_header_file>],
                     $mutex_default_type,
-                    gmutex,
-                    )
+                    gmutex)
 	GLIB_BYTE_CONTENTS([#include <$mutex_header_file>],
 			   $mutex_default_type,
 			   gmutex,
@@ -1714,19 +1696,37 @@ GLIB_IF_VAR_EQ(mutex_has_default, yes,
 	fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 	LIBS="$glib_save_LIBS"
-	,
-)
-
+fi
 
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************
-GLIB_SYSDEFS(
-[#include <sys/types.h>
-#include <sys/poll.h>],
-	POLLIN:1 POLLOUT:4 POLLPRI:2 POLLERR:8 POLLHUP:16 POLLNVAL:32,
-	glibconfig-sysdefs.h,
-	=)
+
+glib_poll_includes=["
+#include <sys/types.h>
+#include <sys/poll.h>
+"]
+
+if test $ac_cv_header_sys_types_h = yes &&
+   test $ac_cv_header_sys_poll_h = yes ; then
+  glib_failed=false
+  GLIB_CHECK_VALUE(POLLIN, $glib_poll_includes, glib_failed=true)
+  GLIB_CHECK_VALUE(POLLOUT, $glib_poll_includes, glib_failed=true)
+  GLIB_CHECK_VALUE(POLLPRI, $glib_poll_includes, glib_failed=true)
+  GLIB_CHECK_VALUE(POLLERR, $glib_poll_includes, glib_failed=true)
+  GLIB_CHECK_VALUE(POLLHUP, $glib_poll_includes, glib_failed=true)
+  GLIB_CHECK_VALUE(POLLNVAL, $glib_poll_includes, glib_failed=true)
+  if $glib_failed ; then
+    AC_MSG_ERROR([Could not determine values for POLL* constants])
+  fi
+else
+  glib_cv_value_POLLIN=1
+  glib_cv_value_POLLOUT=4
+  glib_cv_value_POLLPRI=2
+  glib_cv_value_POLLERR=8
+  glib_cv_value_POLLHUP=16
+  glib_cv_value_POLLNVAL=32
+fi
 
 dnl **********************
 dnl *** Win32 API libs ***
@@ -2116,13 +2116,12 @@ _______EOF
 #define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
 #define G_BYTE_ORDER $g_byte_order
 
-_______EOF
-
-	if test -r glibconfig-sysdefs.h; then
-	  cat glibconfig-sysdefs.h >>$outfile
-	fi
-
-	cat >>$outfile <<_______EOF
+#define GLIB_SYSDEF_POLLIN =$g_pollin
+#define GLIB_SYSDEF_POLLOUT =$g_pollout
+#define GLIB_SYSDEF_POLLPRI =$g_pollpri
+#define GLIB_SYSDEF_POLLHUP =$g_pollhup
+#define GLIB_SYSDEF_POLLERR =$g_pollerr
+#define GLIB_SYSDEF_POLLNVAL =$g_pollnval
 
 #define G_MODULE_SUFFIX "$g_module_suffix"
 
@@ -2247,7 +2246,7 @@ $ac_cv_sizeof___int64)
   gint64_constant='(val##i64)'
   ;;
 esac
-glib_size_t=$glib_cv_sizeof_size_t
+glib_size_t=$ac_cv_sizeof_size_t
 glib_size_type_define=$glib_size_type
 glib_void_p=$ac_cv_sizeof_long
 glib_long=$ac_cv_sizeof_void_p
@@ -2341,6 +2340,13 @@ x$ac_cv_c_bigendian)
   g_bs_alien=BE
   ;;
 esac
+
+g_pollin=$glib_cv_value_POLLIN
+g_pollout=$glib_cv_value_POLLOUT
+g_pollpri=$glib_cv_value_POLLPRI
+g_pollhup=$glib_cv_value_POLLHUP
+g_pollerr=$glib_cv_value_POLLERR
+g_pollnval=$glib_cv_value_POLLNVAL
 
 g_stack_grows=$glib_cv_stack_grows
 

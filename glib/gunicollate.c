@@ -217,7 +217,7 @@ g_utf8_collate_key (const gchar *str,
   const gchar *charset;
   gchar *str_norm;
 
-  g_return_val_if_fail (str1 != NULL, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   str_norm = g_utf8_normalize (str, len, G_NORMALIZE_ALL_COMPOSE);
 

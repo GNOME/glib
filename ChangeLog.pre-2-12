@@ -1,3 +1,36 @@
+Thu Dec  5 15:24:14 2002  Owen Taylor  <otaylor@redhat.com>
+
+	Start of fixes for cross-compilation. Based on
+	patches from Dimi Shahbaz, Dan Kegel, Johannes Stenzenbach,
+	Amy Lin. (#58786)
+
+	* configure.in: Don't run the Digital-Unix 4 -std1 check
+	when cross_compiling.
+
+	* configure.in: Use AC_TRY_COMPILE() rather than 
+	AC_TRY_RUN() for inline checks. (Daniel Egger)
+
+	* configure.in: use AC_CHECK_SIZEOF rather than
+	GLIB_SIZEOF for size_t. Remove unused checks for
+	size of ptrdiff_t/intmax_t.
+
+	* acglib.m4: Resync GLIB_SIZEOF of to the current
+	AC_CHECK_SIZEOF, which handles cross-compilation.
+
+	* acglib.m4: Remove no longer needed GLIB_SYSDEFS(),
+	add GLIB_CHECK_VALUE() as a wrapper around the
+	amazing _AC_COMPUTE_INT() autoconf 2.5x internal.
+
+	* configure.in: Redo the POLL* value checks in a
+	cross-compilation friendly way.
+
+Thu Dec  5 15:28:37 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gtimer.c: Include glibconfig.h early so
+	that we include <windows.h> when needed.
+
+	* glib/gstrfuncs.c: Fix typo.
+
 Tue Dec  3 21:10:28 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Add 3rd argument to remaining AC_DEFINES(),
