@@ -1,5 +1,9 @@
 2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib/tmpl/threads.sgml: Fixed stupid typo.
+
+2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
 	* glib/tmpl/threads.sgml: Completed.
 
 Wed Mar  7 09:33:27 2001  Tim Janik  <timj@gtk.org>

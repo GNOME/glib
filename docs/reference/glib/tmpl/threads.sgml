@@ -977,7 +977,7 @@ dangerous resizing of the array. Using that functions is fully
 multithread safe now. 
 </para>
 
-</para>
+<para>
 Most of the time the writers should have precedence of readers. That
 means for this implementation, that as soon as a writer wants to lock
 the data, no other reader is allowed to lock the data, whereas of
