@@ -440,7 +440,7 @@ g_spawn_sync (const gchar          *working_directory,
  * vector elements into a command line, and the C runtime startup code
  * does a corresponding recostruction of an argument vector from the
  * command line, to be passed to
- * <funcion>main()</function>. Complications arise when you have
+ * <function>main()</function>. Complications arise when you have
  * argument vector elements that contain spaces of double quotes. The
  * <function>spawn()</function> functions don't do any quoting or
  * escaping, but on the other hand the startup code does do unquoting
