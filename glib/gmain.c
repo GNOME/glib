@@ -745,10 +745,10 @@ g_main_context_new ()
 
   context->owner = NULL;
   context->waiters = NULL;
-#endif
 
   context->wake_up_pipe[0] = -1;
   context->wake_up_pipe[1] = -1;
+#endif
 
   context->ref_count = 1;
 

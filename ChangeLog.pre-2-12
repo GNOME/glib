@@ -1,3 +1,8 @@
+2004-02-18  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gmain.c (g_main_context_new): Set context->wake_up_pipe
+	only for G_THREADS_ENABLED.
+
 Sat Feb 14 11:05:26 2004  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: Remove unnecessary STRIP_* definitions, and GNU
