@@ -98,7 +98,7 @@ struct _GHook
 
 
 /* --- prototypes --- */
-/* callback mainenance functions */
+/* callback maintenance functions */
 void	 g_hook_list_init		(GHookList		*hook_list,
 					 guint			 hook_size);
 void	 g_hook_list_clear		(GHookList		*hook_list);
