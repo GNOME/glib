@@ -112,7 +112,7 @@ main ()
                glib_major_version, glib_minor_version, glib_micro_version);
         printf("*** You need a version of GLIB newer than %d.%d.%d. The latest version of\n",
 	       major, minor, micro);
-        printf("*** GLIB is always available from ftp://ftp.glib.org.\n");
+        printf("*** GLIB is always available from ftp://ftp.gtk.org.\n");
         printf("***\n");
         printf("*** If you have already installed a sufficiently new version, this error\n");
         printf("*** probably means that the wrong copy of the glib-config shell script is\n");

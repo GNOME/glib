@@ -1,3 +1,8 @@
+Sat Jun 27 21:55:46 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.m4: ftp.glib.org -> ftp.gtk.org, since glib.org isn't
+	ours. ;)
+
 Fri Jun 19 03:11:02 1998  Tim Janik  <timj@gtk.org>
 
 	* gdataset.c: removed g_dataset_try_key, g_dataset_force_id and
