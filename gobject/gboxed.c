@@ -376,8 +376,7 @@ g_boxed_copy (GType         boxed_type,
 
       /* double check and grouse if things went wrong */
       if (dest_value.data[1].v_ulong ||
-	  dest_value.data[2].v_ulong ||
-	  dest_value.data[3].v_ulong)
+	  dest_value.data[2].v_ulong)
 	g_warning ("the copy_value() implementation of type `%s' seems to make use of reserved GValue fields",
 		   g_type_name (boxed_type));
 

@@ -1,3 +1,17 @@
+Sun Feb 16 22:08:48 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject.[hc]:
+	* gparam.[hc]: provide marshaller specific value_set_*_take_ownership()
+	variants.
+
+	* gvalue.h: shrink GValue's data contents to 2 unions.
+
+	* glib-genmarshal.c: fix release and realeas_check hackage by always
+	using _take_ownership() variants. directly access value contents if
+	G_ENABLE_DEBUG is not defined.
+
+	* gobject.h: add padding pointers to the class struct.
+
 Wed Feb 13 17:22:37 2002  Tim Janik  <timj@gtk.org>
 
 	* gtype.c (g_type_value_table_peek): fixed a check for node not being NULL.

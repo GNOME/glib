@@ -56,8 +56,6 @@ typedef struct
   const gchar *sig_name;	/* signature name [STRING] */
   const gchar *ctype;		/* C type name [gchar*] */
   const gchar *setter;		/* value setter function [g_value_set_string] */
-  const gchar *release;		/* value release function [g_free] */
-  const gchar *release_check;   /* checks if release function is safe to call */
 } OutArgument;
 typedef struct
 {
@@ -126,33 +124,83 @@ static gboolean		 std_includes = TRUE;
 
 
 /* --- functions --- */
+static void
+put_marshal_value_getters (void)
+{
+  fputs ("\n", fout);
+  fputs ("#ifdef G_ENABLE_DEBUG\n", fout);
+  fputs ("#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_char(v)     g_value_get_char (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_uchar(v)    g_value_get_uchar (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_int(v)      g_value_get_int (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_uint(v)     g_value_get_uint (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_long(v)     g_value_get_long (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_ulong(v)    g_value_get_ulong (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_int64(v)    g_value_get_int64 (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_uint64(v)   g_value_get_uint64 (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_enum(v)     g_value_get_enum (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_flags(v)    g_value_get_flags (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_float(v)    g_value_get_float (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_double(v)   g_value_get_double (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_param(v)    g_value_get_param (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_object(v)   g_value_get_object (v)\n", fout);
+  fputs ("#else /* !G_ENABLE_DEBUG */\n", fout);
+  fputs ("/* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.\n", fout);
+  fputs (" *          Do not access GValues directly in your code. Instead, use the\n", fout);
+  fputs (" *          g_value_get_*() functions\n", fout);
+  fputs (" */\n", fout);
+  fputs ("#define g_marshal_value_peek_boolean(v)  (v)->data[0].v_int\n", fout);
+  fputs ("#define g_marshal_value_peek_char(v)     (v)->data[0].v_int\n", fout);
+  fputs ("#define g_marshal_value_peek_uchar(v)    (v)->data[0].v_uint\n", fout);
+  fputs ("#define g_marshal_value_peek_int(v)      (v)->data[0].v_int\n", fout);
+  fputs ("#define g_marshal_value_peek_uint(v)     (v)->data[0].v_uint\n", fout);
+  fputs ("#define g_marshal_value_peek_long(v)     (v)->data[0].v_long\n", fout);
+  fputs ("#define g_marshal_value_peek_ulong(v)    (v)->data[0].v_ulong\n", fout);
+  fputs ("#define g_marshal_value_peek_int64(v)    (v)->data[0].v_int64\n", fout);
+  fputs ("#define g_marshal_value_peek_uint64(v)   (v)->data[0].v_uint64\n", fout);
+  fputs ("#define g_marshal_value_peek_enum(v)     (v)->data[0].v_int\n", fout);
+  fputs ("#define g_marshal_value_peek_flags(v)    (v)->data[0].v_uint\n", fout);
+  fputs ("#define g_marshal_value_peek_float(v)    (v)->data[0].v_float\n", fout);
+  fputs ("#define g_marshal_value_peek_double(v)   (v)->data[0].v_double\n", fout);
+  fputs ("#define g_marshal_value_peek_string(v)   (v)->data[0].v_pointer\n", fout);
+  fputs ("#define g_marshal_value_peek_param(v)    (v)->data[0].v_pointer\n", fout);
+  fputs ("#define g_marshal_value_peek_boxed(v)    (v)->data[0].v_pointer\n", fout);
+  fputs ("#define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer\n", fout);
+  fputs ("#define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer\n", fout);
+  fputs ("#endif /* !G_ENABLE_DEBUG */\n", fout);
+  fputs ("\n", fout);
+}
+
 static gboolean
 complete_in_arg (InArgument *iarg)
 {
   static const InArgument args[] = {
     /* keyword		sig_name	ctype		getter			*/
     { "VOID",		"VOID",		"void",		NULL,			},
-    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_get_boolean",	},
-    { "CHAR",		"CHAR",		"gchar",	"g_value_get_char",	},
-    { "UCHAR",		"UCHAR",	"guchar",	"g_value_get_uchar",	},
-    { "INT",		"INT",		"gint",		"g_value_get_int",	},
-    { "UINT",		"UINT",		"guint",	"g_value_get_uint",	},
-    { "LONG",		"LONG",		"glong",	"g_value_get_long",	},
-    { "ULONG",		"ULONG",	"gulong",	"g_value_get_ulong",	},
-    { "INT64",		"INT64",	"gint64",       "g_value_get_int64",	},
-    { "UINT64",		"UINT64",	"guint64",	"g_value_get_uint64",	},
-    { "ENUM",		"ENUM",		"gint",		"g_value_get_enum",	},
-    { "FLAGS",		"FLAGS",	"guint",	"g_value_get_flags",	},
-    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_get_float",	},
-    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_get_double",	},
-    { "STRING",		"STRING",	"gpointer",	"(char*) g_value_get_string",	},
-    { "PARAM",		"PARAM",	"gpointer",	"g_value_get_param",	},
-    { "BOXED",		"BOXED",	"gpointer",	"g_value_get_boxed",	},
-    { "POINTER",	"POINTER",	"gpointer",	"g_value_get_pointer",	},
-    { "OBJECT",		"OBJECT",	"gpointer",	"g_value_get_object",	},
+    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_marshal_value_peek_boolean",	},
+    { "CHAR",		"CHAR",		"gchar",	"g_marshal_value_peek_char",	},
+    { "UCHAR",		"UCHAR",	"guchar",	"g_marshal_value_peek_uchar",	},
+    { "INT",		"INT",		"gint",		"g_marshal_value_peek_int",	},
+    { "UINT",		"UINT",		"guint",	"g_marshal_value_peek_uint",	},
+    { "LONG",		"LONG",		"glong",	"g_marshal_value_peek_long",	},
+    { "ULONG",		"ULONG",	"gulong",	"g_marshal_value_peek_ulong",	},
+    { "INT64",		"INT64",	"gint64",       "g_marshal_value_peek_int64",	},
+    { "UINT64",		"UINT64",	"guint64",	"g_marshal_value_peek_uint64",	},
+    { "ENUM",		"ENUM",		"gint",		"g_marshal_value_peek_enum",	},
+    { "FLAGS",		"FLAGS",	"guint",	"g_marshal_value_peek_flags",	},
+    { "FLOAT",		"FLOAT",	"gfloat",	"g_marshal_value_peek_float",	},
+    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_marshal_value_peek_double",	},
+    { "STRING",		"STRING",	"gpointer",	"g_marshal_value_peek_string",	},
+    { "PARAM",		"PARAM",	"gpointer",	"g_marshal_value_peek_param",	},
+    { "BOXED",		"BOXED",	"gpointer",	"g_marshal_value_peek_boxed",	},
+    { "POINTER",	"POINTER",	"gpointer",	"g_marshal_value_peek_pointer",	},
+    { "OBJECT",		"OBJECT",	"gpointer",	"g_marshal_value_peek_object",	},
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,			},
-    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_get_boolean",	},
+    { "BOOL",		"BOOLEAN",	"gboolean",	"g_marshal_value_peek_boolean",	},
   };
   const guint n_args = sizeof (args) / sizeof (args[0]);
   guint i;
@@ -175,29 +223,29 @@ static gboolean
 complete_out_arg (OutArgument *oarg)
 {
   static const OutArgument args[] = {
-    /* keyword		sig_name	ctype		setter			release                 release_check */
-    { "VOID",		"VOID",		"void",		NULL,			NULL,			NULL          },
-    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			NULL          },
-    { "CHAR",		"CHAR",		"gchar",	"g_value_set_char",	NULL,			NULL          },
-    { "UCHAR",		"UCHAR",	"guchar",	"g_value_set_uchar",	NULL,			NULL          },
-    { "INT",		"INT",		"gint",		"g_value_set_int",	NULL,			NULL          },
-    { "UINT",		"UINT",		"guint",	"g_value_set_uint",	NULL,			NULL          },
-    { "LONG",		"LONG",		"glong",	"g_value_set_long",	NULL,			NULL          },
-    { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",	NULL,			NULL          },
-    { "INT64",		"INT64",	"gint64",	"g_value_set_int64",	NULL,			NULL          },
-    { "UINT64",		"UINT64",	"guint64",	"g_value_set_uint64",	NULL,			NULL          },
-    { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",	NULL,			NULL          },
-    { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",	NULL,			NULL          },
-    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",	NULL,			NULL          },
-    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_set_double",	NULL,			NULL          },
-    { "STRING",		"STRING",	"gchar*",	"g_value_set_string_take_ownership", NULL,	NULL          },
-    { "PARAM",		"PARAM",	"GParamSpec*",	"g_value_set_param",	"g_param_spec_unref",	NULL          },
-    { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership", NULL,	NULL          },
-    { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",	NULL,			NULL          },
-    { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object",	"g_object_unref",	"NULL !="     },
+    /* keyword		sig_name	ctype		setter			*/
+    { "VOID",		"VOID",		"void",		NULL,					     },
+    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_set_boolean",			     },
+    { "CHAR",		"CHAR",		"gchar",	"g_value_set_char",			     },
+    { "UCHAR",		"UCHAR",	"guchar",	"g_value_set_uchar",			     },
+    { "INT",		"INT",		"gint",		"g_value_set_int",			     },
+    { "UINT",		"UINT",		"guint",	"g_value_set_uint",			     },
+    { "LONG",		"LONG",		"glong",	"g_value_set_long",			     },
+    { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",			     },
+    { "INT64",		"INT64",	"gint64",	"g_value_set_int64",			     },
+    { "UINT64",		"UINT64",	"guint64",	"g_value_set_uint64",			     },
+    { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",			     },
+    { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",			     },
+    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",			     },
+    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_set_double",			     },
+    { "STRING",		"STRING",	"gchar*",	"g_value_set_string_take_ownership",         },
+    { "PARAM",		"PARAM",	"GParamSpec*",	"g_value_set_param_take_ownership",          },
+    { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership",          },
+    { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",			     },
+    { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object_take_ownership",	     },
     /* deprecated: */
-    { "NONE",		"VOID",		"void",		NULL,			NULL,			NULL          },
-    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			NULL          }
+    { "NONE",		"VOID",		"void",		NULL,					     },
+    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",			     },
   };
   const guint n_args = sizeof (args) / sizeof (args[0]);
   guint i;
@@ -210,8 +258,6 @@ complete_out_arg (OutArgument *oarg)
 	oarg->sig_name = args[i].sig_name;
 	oarg->ctype = args[i].ctype;
 	oarg->setter = args[i].setter;
-	oarg->release = args[i].release;
-	oarg->release_check = args[i].release_check;
 
 	return TRUE;
       }
@@ -398,19 +444,6 @@ generate_marshal (const gchar *signame,
 	{
 	  fprintf (fout, "\n");
 	  fprintf (fout, "  %s (return_value, v_return);\n", sig->rarg->setter);
-	  if (sig->rarg->release)
-	    {
-	      if (sig->rarg->release_check)
-		{
-		  fprintf (fout, "  if (%s (v_return))\n", sig->rarg->release_check);
-		  fprintf (fout, "    %s (v_return);\n", sig->rarg->release);
-			   
-		}
-	      else
-		{
-		  fprintf (fout, "  %s (v_return);\n", sig->rarg->release);
-		}
-	    }
 	}
 
       /* cfile marshal footer */
@@ -609,6 +642,10 @@ main (int   argc,
 
   if (gen_cheader)
     fprintf (fout, "G_BEGIN_DECLS\n");
+
+  /* generate necessary preprocessor directives */
+  if (gen_cbody)
+    put_marshal_value_getters ();
 
   /* process input files */
   for (slist = files; slist; slist = slist->next)

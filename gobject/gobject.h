@@ -99,6 +99,8 @@ struct  _GObjectClass
   /* signals */
   void	     (*notify)			(GObject	*object,
 					 GParamSpec	*pspec);
+  /* padding */
+  gpointer	pdummy[8];
 };
 struct _GObjectConstructParam
 {
@@ -207,6 +209,11 @@ gulong	    g_signal_connect_object           (gpointer	       instance,
 
 /*< protected >*/
 void        g_object_run_dispose	      (GObject	      *object);
+
+
+/* --- marshaller specific --- */
+void        g_value_set_object_take_ownership (GValue         *value,
+					       gpointer        v_object);
 
 
 /* --- implementation macros --- */

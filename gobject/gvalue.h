@@ -38,8 +38,6 @@ G_BEGIN_DECLS
 
 
 /* --- typedefs & structures --- */
-typedef void (*GValueExchange)  (GValue	      *value1,
-				 GValue	      *value2);
 typedef void (*GValueTransform) (const GValue *src_value,
 				 GValue       *dest_value);
 struct _GValue
@@ -58,7 +56,7 @@ struct _GValue
     gfloat	v_float;
     gdouble	v_double;
     gpointer	v_pointer;
-  } data[4];
+  } data[2];
 };
 
 

@@ -1526,6 +1526,27 @@ g_value_set_object (GValue   *value,
     }
 }
 
+void
+g_value_set_object_take_ownership (GValue  *value,
+				   gpointer v_object)
+{
+  g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
+
+  if (value->data[0].v_pointer)
+    {
+      g_object_unref (value->data[0].v_pointer);
+      value->data[0].v_pointer = NULL;
+    }
+
+  if (v_object)
+    {
+      g_return_if_fail (G_IS_OBJECT (v_object));
+      g_return_if_fail (g_value_type_compatible (G_OBJECT_TYPE (v_object), G_VALUE_TYPE (value)));
+
+      value->data[0].v_pointer = v_object; /* we take over the reference count */
+    }
+}
+
 gpointer
 g_value_get_object (const GValue *value)
 {

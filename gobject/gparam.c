@@ -962,6 +962,19 @@ g_value_set_param (GValue     *value,
     g_param_spec_ref (value->data[0].v_pointer);
 }
 
+void
+g_value_set_param_take_ownership (GValue     *value,
+				  GParamSpec *param)
+{
+  g_return_if_fail (G_VALUE_HOLDS_PARAM (value));
+  if (param)
+    g_return_if_fail (G_IS_PARAM_SPEC (param));
+
+  if (value->data[0].v_pointer)
+    g_param_spec_unref (value->data[0].v_pointer);
+  value->data[0].v_pointer = param; /* we take over the reference count */
+}
+
 GParamSpec*
 g_value_get_param (const GValue *value)
 {
