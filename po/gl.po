@@ -1,12 +1,12 @@
 # Galician translation of GLib
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Manuel A. Fernández Montecelo <manuel@sindominio.net>, 2001.
+# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# Manuel A. Fernández Montecelo <manuel@sindominio.net>, 2001-2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-05-23 14:42-0400\n"
-"PO-Revision-Date: 2001-12-19 21:39+0100\n"
+"POT-Creation-Date: 2002-06-01 21:11+0200\n"
+"PO-Revision-Date: 2002-06-08 00:28+0200\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Secuencia parcial de caracter ao final da entrada"
 #: glib/gconvert.c:796
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Non se pode converter o por defecto (fallback) '%s' ao código '%s'"
+msgstr "Non se pode converter o predeterminado (fallback) '%s' ao código '%s'"
 
 #: glib/gconvert.c:1630
 #, c-format
@@ -61,24 +61,23 @@ msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' non é válido"
 
 #: glib/gconvert.c:1669
-#, fuzzy, c-format
+#, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "O nome do servidor no URI '%s' contén caracteres de escape non válidos"
+msgstr "O nome do servidor no URI '%s' non é válido"
 
 #: glib/gconvert.c:1685
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "A URI '%s' contén caracteres de escape non válidos"
+msgstr "O URI '%s' contén caracteres de escape non válidos"
 
 #: glib/gconvert.c:1756
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "O nome de ruta '%s' non é unha ruta absoluta"
+msgstr "O nome de rota '%s' non é unha rota absoluta"
 
 #: glib/gconvert.c:1766
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "Secuencia de bytes non válida no nome do servidor"
+msgstr "Nome de servidor non válido"
 
 #: glib/gdir.c:80
 #, c-format
@@ -167,7 +166,7 @@ msgstr "Erro de socket"
 
 #: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
-msgstr "Non está soportado o establecemento de sinaladores na canle"
+msgstr "Non está soportado o establecemento de sinaladores (flags) na canle"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -212,8 +211,9 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"A entidade non remata cun punto e coma, o máis seguro é que usase un "
-"caracter & sen intención de comezar unha entidade, se é así póñao como &amp;"
+"A entidade non remata cun punto e coma, o máis seguro é que se usou un "
+"caracter & sen intención de comezar unha entidade, se é así debe porse como "
+"&amp;"
 
 #: glib/gmarkup.c:569
 #, c-format
@@ -239,18 +239,18 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr ""
-"A referencia de caracter '%s' non remataba con punto e coma, o máis seguro é "
-"que usase un caracter & sen intención de comezar unha entidade - pon o & "
-"como &amp;"
+msgstr "A"
+"referencia de caracter '%s' non remataba con punto e coma, o máis seguro é "
+"que se usou un caracter & sen intención de comezar unha entidade - debese "
+"escapar o & como &amp;"
 
 #: glib/gmarkup.c:647
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Referencia a entidade non rematada"
 
 #: glib/gmarkup.c:653
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Referencia a caracter non rematada"
 
 #: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
 msgid "Invalid UTF-8 encoded text"
@@ -294,7 +294,7 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "Caracter sobrante '%s', agardábase '>' ou '/' para pechar a etiqueta de "
-"comezo do elemento '%s', ou opcionalmente un atributo; quizais usou un "
+"comezo do elemento '%s', ou opcionalmente un atributo; quizais se usou un "
 "caracter non válido no nome dun atributo"
 
 #: glib/gmarkup.c:1304
@@ -303,8 +303,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Caracter sobrante '%s', agardábase un caracter '\"' despois do signo igual "
-"para dar un valor ao atributo '%s' do elemento '%s'"
+"Caracter sobrante '%s', agardábase un caracter de comezo de comiñas despois "
+"do signo igual para dar un valor ao atributo '%s' do elemento '%s'"
 
 #: glib/gmarkup.c:1444
 #, c-format
@@ -407,14 +407,12 @@ msgstr "O texto en forma citada non comenza cunha marca de cita"
 
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"Marca de cita non pechada en liña de comandos ou outro texto en forma de "
-"cita nunha shell"
+msgstr "Marca de cita non pechada na liña de comandos ou outro texto en forma de cita nunha shell"
 
 #: glib/gshell.c:529
-#, fuzzy, c-format
+#, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "O texto rematou despois dun caracter ''. (O texto era '%s')"
+msgstr "O texto rematou despois dun caracter '\\'. (O texto era '%s')"
 
 #: glib/gshell.c:536
 #, c-format
