@@ -1,3 +1,8 @@
+2001-12-08  Christopher Blizzard  <blizzard@redhat.com>
+
+	* gsignal.h (g_signal_connect): Explicitly add a cast to the last
+	argument so that the macro will work from C++.
+
 2001-12-06  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in (gobject_OBJECTS): Add gsourceclosure.o.
