@@ -363,13 +363,19 @@ void
 g_mem_profile (void)
 {
   guint local_data[(MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0])];
-  gulong local_allocs = profile_allocs;
-  gulong local_zinit = profile_zinit;
-  gulong local_frees = profile_frees;
-  gulong local_mc_allocs = profile_mc_allocs;
-  gulong local_mc_frees = profile_mc_frees;
+  gulong local_allocs;
+  gulong local_zinit;
+  gulong local_frees;
+  gulong local_mc_allocs;
+  gulong local_mc_frees;
 
   g_mutex_lock (g_profile_mutex);
+
+  local_allocs = profile_allocs;
+  local_zinit = profile_zinit;
+  local_frees = profile_frees;
+  local_mc_allocs = profile_mc_allocs;
+  local_mc_frees = profile_mc_frees;
 
   if (!profile_data)
     {
@@ -377,8 +383,11 @@ g_mem_profile (void)
       return;
     }
 
-  memcpy (local_data, profile_data, (MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
+  memcpy (local_data, profile_data, 
+	  (MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
   
+  g_mutex_unlock (g_profile_mutex);
+
   g_print ("GLib Memory statistics (successful operations):\n");
   profile_print_locked (local_data, TRUE);
   g_print ("GLib Memory statistics (failing operations):\n");
@@ -395,7 +404,6 @@ g_mem_profile (void)
 	   local_mc_frees,
 	   ((gdouble) local_mc_frees) / local_mc_allocs * 100.0,
 	   local_mc_allocs - local_mc_frees);
-  g_mutex_unlock (g_profile_mutex);
 }
 
 static gpointer
