@@ -1,3 +1,8 @@
+2004-12-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/generic_values.sgml: Document some return
+	values.  (#161345, Stefan Kost)
+
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.7 ===

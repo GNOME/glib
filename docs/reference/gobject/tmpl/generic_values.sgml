@@ -116,9 +116,9 @@ used to pass around pointers to GValueArrays.
 Initializes @value with the default value of @type.
 </para>
 
-@value: 		A zero-filled (uninitialized) #GValue structure.
-@g_type: 	Type the #GValue should hold values of.
-@Returns: 
+@value: A zero-filled (uninitialized) #GValue structure.
+@g_type: Type the #GValue should hold values of.
+@Returns: the #GValue structure that has been passed in
 
 
 <!-- ##### FUNCTION g_value_copy ##### -->
@@ -126,8 +126,8 @@ Initializes @value with the default value of @type.
 Copies the value of @src_value into @dest_value.
 </para>
 
-@src_value: 	An initialized #GValue structure.
-@dest_value: 	An initialized #GValue structure of the same type as @src_value.
+@src_value: An initialized #GValue structure.
+@dest_value: An initialized #GValue structure of the same type as @src_value.
 
 
 <!-- ##### FUNCTION g_value_reset ##### -->
@@ -136,8 +136,8 @@ Clears the current value in @value and resets it to the default value
 (as if the value had just been initialized).
 </para>
 
-@value: 	An initialized #GValue structure.
-@Returns: 
+@value: An initialized #GValue structure.
+@Returns: the #GValue structure that has been passed in
 
 
 <!-- ##### FUNCTION g_value_unset ##### -->
@@ -148,7 +148,7 @@ An unset value is the same as an uninitialized (zero-filled)
 #GValue structure.
 </para>
 
-@value: 	An initialized #GValue structure.
+@value:	An initialized #GValue structure.
 
 
 <!-- ##### FUNCTION g_value_fits_pointer ##### -->
@@ -157,8 +157,8 @@ Determines if @value will fit inside the size of a pointer value.
 This is an internal function introduced mainly for C marshallers.
 </para>
 
-@value: 		An initialized #GValue structure.
-@Returns: 	#TRUE if @value will fit inside a pointer value.
+@value: An initialized #GValue structure.
+@Returns: #TRUE if @value will fit inside a pointer value.
 
 
 <!-- ##### FUNCTION g_value_peek_pointer ##### -->
@@ -168,8 +168,8 @@ g_value_fits_pointer() returned #TRUE for the passed in value.
 This is an internal function introduced mainly for C marshallers.
 </para>
 
-@value: 		An initialized #GValue structure.
-@Returns: 	#TRUE if @value will fit inside a pointer value.
+@value: An initialized #GValue structure.
+@Returns: #TRUE if @value will fit inside a pointer value.
 
 
 <!-- ##### FUNCTION g_value_type_compatible ##### -->
@@ -178,9 +178,9 @@ Returns whether a #GValue of type @src_type can be copied into
 a #GValue of type @dest_type.
 </para>
 
-@src_type:  source type to be copied.
+@src_type: source type to be copied.
 @dest_type: destination type for copying.
-@Returns:   %TRUE if g_value_copy() is possible with @src_type and @dest_type.
+@Returns: %TRUE if g_value_copy() is possible with @src_type and @dest_type.
 
 
 <!-- ##### FUNCTION g_value_type_transformable ##### -->
@@ -189,9 +189,9 @@ Check whether g_value_transform() is able to transform values
 of type @src_type into values of type @dest_type.
 </para>
 
-@src_type:  Source type.
+@src_type: Source type.
 @dest_type: Target type.
-@Returns:   %TRUE if the transformation is possible, %FALSE otherwise.
+@Returns: %TRUE if the transformation is possible, %FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_value_transform ##### -->
@@ -205,10 +205,10 @@ results and shouldn't be relied upon for production code (such
 as rcfile value or object property serialization).
 </para>
 
-@src_value:  Source value.
+@src_value: Source value.
 @dest_value: Target value.
-@Returns:    Whether a transformation rule was found and could be applied.
-             Upon failing transformations, @dest_value is left untouched.
+@Returns: Whether a transformation rule was found and could be applied.
+          Upon failing transformations, @dest_value is left untouched.
 
 
 <!-- ##### USER_FUNCTION GValueTransform ##### -->
