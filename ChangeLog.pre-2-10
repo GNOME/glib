@@ -1,3 +1,8 @@
+﻿Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
+
+	* glib/giowin32.c: Bind inter-thread comminication 
+		sockets to INADDR_LOOPBACK instead of INADDR_ANY.
+
 2003-11-15  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/makefile.msc.in: Fix for MSVC build: Skip strtod-test, use

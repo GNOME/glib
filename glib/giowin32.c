@@ -356,7 +356,7 @@ init_reset_sockets (GIOWin32Channel *channel)
 
   local.sin_family = AF_INET;
   local.sin_port = 0;
-  local.sin_addr.s_addr = htonl (INADDR_ANY);
+  local.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
 
   if (bind (channel->reset_send, (struct sockaddr *)&local, sizeof (local)) == SOCKET_ERROR)
     {
@@ -366,7 +366,7 @@ init_reset_sockets (GIOWin32Channel *channel)
 
   local2.sin_family = AF_INET;
   local2.sin_port = 0;
-  local2.sin_addr.s_addr = htonl (INADDR_ANY);
+  local2.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
 
   channel->reset_recv = (gint) socket (AF_INET, SOCK_DGRAM, 0);
   if (channel->reset_recv == INVALID_SOCKET)
