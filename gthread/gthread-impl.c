@@ -69,7 +69,6 @@ void g_messages_init (void);
 typedef struct _ErrorCheckInfo ErrorCheckInfo;
 struct _ErrorCheckInfo
 {
-  gchar *name;
   gchar *location;
   GThread *owner;
 };
@@ -83,42 +82,26 @@ g_mutex_new_errorcheck_impl (void)
   return retval;
 }
 
-static inline void
-fill_info (ErrorCheckInfo *info,
-	   GThread *self,
-	   gulong magic, 
-	   gchar *name, 
-	   gchar *location)
-{
-  info->owner = self;
-  if (magic == G_MUTEX_DEBUG_MAGIC)
-    {
-      /* We are used with special instrumented calls, where name and
-       * location is provided as well, so use them */
-      info->name = name;
-      info->location = location;
-    }
-  else
-    info->name = info->location = "unknown";
-}
-
 static void
 g_mutex_lock_errorcheck_impl (GMutex *mutex, 
-			      gulong magic, 
-			      gchar *name, 
+			      gulong magic,
 			      gchar *location)
 {
   ErrorCheckInfo *info;
   GThread *self = g_thread_self ();
+
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    location = "unknown";
+
   if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
     {
       /* if the debug info is NULL, we have not yet locked that mutex,
        * so we do it now */
       g_thread_functions_for_glib_use_default.mutex_lock (mutex);
-      /* Now we have to check again, because anothe thread might mave
-       * locked the mutex at the same time, we did. This technique is
-       * not 100% save on systems without decent cache coherence,
-       * but we have no choice */ 
+      /* Now we have to check again, because another thread might have
+       * tried to lock the mutex at the same time we did. This
+       * technique is not 100% save on systems without decent cache
+       * coherence, but we have no choice */
       if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
 	{
 	  info = G_MUTEX_DEBUG_INFO (mutex) = g_new0 (ErrorCheckInfo, 1);
@@ -128,56 +111,70 @@ g_mutex_lock_errorcheck_impl (GMutex *mutex,
   
   info = G_MUTEX_DEBUG_INFO (mutex);
   if (info->owner == self)
-    g_error ("Trying to recursivly lock the mutex '%s' at '%s', "
-	     "previously locked by name '%s' at '%s'", 
-	     name, location, info->name, info->location);
+    g_error ("Trying to recursivly lock a mutex at '%s', "
+	     "previously locked at '%s'", 
+	     location, info->location);
 
   g_thread_functions_for_glib_use_default.mutex_lock (mutex);
 
-  fill_info (info, self, magic, name, location);
+  info->owner = self;
+  info->location = location;
 }
 
 static gboolean
 g_mutex_trylock_errorcheck_impl (GMutex *mutex, 
 				 gulong magic, 
-				 gchar *name, 
 				 gchar *location)
 {
   ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
   GThread *self = g_thread_self ();
+
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    location = "unknown";
+
   if (!info)
     {
       /* This mutex has not yet been used, so simply lock and return TRUE */
-      g_mutex_lock_errorcheck_impl (mutex, magic, name, location);
+      g_mutex_lock_errorcheck_impl (mutex, magic, location);
       return TRUE;
     }
+
   if (info->owner == self)
-    g_error ("Trying to recursivly lock the mutex '%s' at '%s', "
-	     "previously locked by name '%s' at '%s'", 
-	     name, location, info->name, info->location);
+    g_error ("Trying to recursivly lock a mutex at '%s', "
+	     "previously locked at '%s'", 
+	     location, info->location);
   
   if (!g_thread_functions_for_glib_use_default.mutex_trylock (mutex))
     return FALSE;
 
-  fill_info (info, self, magic, name, location);
+  info->owner = self;
+  info->location = location;
+
   return TRUE;
 }
 
 static void
 g_mutex_unlock_errorcheck_impl (GMutex *mutex, 
 				gulong magic, 
-				gchar *name, 
 				gchar *location)
 {
   ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
   GThread *self = g_thread_self ();
+
   if (magic != G_MUTEX_DEBUG_MAGIC)
-    name = location = "unknown";
-  if (!info || info->owner != self)
-    g_error ("Trying to unlock the unlocked mutex '%s' at '%s'",
-	     name, location);
+    location = "unknown";
+
+  if (!info || info->owner == NULL)
+    g_error ("Trying to unlock an unlocked mutex at '%s'", location);
+
+  if (info->owner != self)
+    g_warning ("Trying to unlock a mutex at '%s', "
+	       "previously locked by a different thread at '%s'",
+	       location, info->location);
+
   info->owner = NULL;
-  info->name = info->location = NULL;
+  info->location = NULL;
+
   g_thread_functions_for_glib_use_default.mutex_unlock (mutex);
 }
 
@@ -187,6 +184,73 @@ g_mutex_free_errorcheck_impl (GMutex *mutex)
   g_free (G_MUTEX_DEBUG_INFO (mutex));
   g_thread_functions_for_glib_use_default.mutex_free (mutex);  
 }
+
+static void     
+g_cond_wait_errorcheck_impl (GCond *cond,
+			     GMutex *mutex, 
+			     gulong magic, 
+			     gchar *location)
+{
+  
+  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  GThread *self = g_thread_self ();
+
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    location = "unknown";
+
+  if (!info || info->owner == NULL)
+    g_error ("Trying to use an unlocked mutex in g_cond_wait() at '%s'",
+	     location);
+
+  if (info->owner != self)
+    g_error ("Trying to use a mutex locked by another thread in "
+	     "g_cond_wait() at '%s'", location);
+
+  info->owner = NULL;
+  location = info->location;
+
+  g_thread_functions_for_glib_use_default.cond_wait (cond, mutex);
+
+  info->owner = self;
+  info->location = location;
+}
+    
+
+static gboolean 
+g_cond_timed_wait_errorcheck_impl (GCond *cond,
+                                   GMutex *mutex,
+                                   GTimeVal *end_time, 
+				   gulong magic, 
+				   gchar *location)
+{
+  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  GThread *self = g_thread_self ();
+  gboolean retval;
+
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    location = "unknown";
+
+  if (!info || info->owner == NULL)
+    g_error ("Trying to use an unlocked mutex in g_cond_timed_wait() at '%s'",
+	     location);
+
+  if (info->owner != self)
+    g_error ("Trying to use a mutex locked by another thread in "
+	     "g_cond_timed_wait() at '%s'", location);
+
+  info->owner = NULL;
+  location = info->location;
+  
+  retval = g_thread_functions_for_glib_use_default.cond_timed_wait (cond, 
+								    mutex, 
+								    end_time);
+
+  info->owner = self;
+  info->location = location;
+
+  return retval;
+}
+
 
 /* unshadow function declaration. See glib.h */
 #undef g_thread_init
@@ -207,6 +271,8 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
   errorcheck_functions.mutex_unlock = 
     (void (*)(GMutex *)) g_mutex_unlock_errorcheck_impl;
   errorcheck_functions.mutex_free = g_mutex_free_errorcheck_impl;
+  errorcheck_functions.cond_wait = g_cond_wait_errorcheck_impl;
+  errorcheck_functions.cond_timed_wait = g_cond_timed_wait_errorcheck_impl;
     
   g_thread_init (&errorcheck_functions);
 }

@@ -1,3 +1,10 @@
+2000-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c: Revamped errorcheck mutexes and added errorcheck
+	cond_wait() and cond_timed_wait() funtions. This makes he whole
+	thing work. Now we only show the location of the locking/unlocking
+	for -DG_ERRORCHECK_MUTEXES and not the name of the mutex.
+
 2000-11-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-impl.c, gthread-posix.c, gthread-solaris.c: Removed

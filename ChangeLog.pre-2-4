@@ -1,3 +1,13 @@
+2000-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.c: Set the thread data before locking the mutex, because
+	the locking call might use g_thread_self ().
+
+	* gthread.h: Do only show the location of the locking/unlocking
+	for -DG_ERRORCHECK_MUTEXES and not the name of the mutex. Add the
+	errorcheck capability for g_cond_wait and g_cond_timed_wait as
+	well.
+	
 2000-11-27  Havoc Pennington  <hp@redhat.com>
 
 	* gthread.h: Add void in empty function arg list

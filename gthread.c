@@ -391,11 +391,12 @@ g_thread_create_proxy (gpointer data)
 
   g_assert (data);
 
-  /* the lock makes sure, that thread->system_thread is written,
-     before thread->func is called. See g_thread_create */
-
-  G_LOCK (g_thread_create);
+  /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (g_thread_specific_private, data);
+
+  /* the lock makes sure, that thread->system_thread is written,
+     before thread->func is called. See g_thread_create. */
+  G_LOCK (g_thread_create);
   G_UNLOCK (g_thread_create);
 
   thread->func (thread->arg);
