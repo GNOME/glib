@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule \
-	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@
+	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
 
 EXTRA_DIST =	\
 		makefile.mingw.in \

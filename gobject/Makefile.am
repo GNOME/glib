@@ -9,6 +9,7 @@ INCLUDES = @STRIP_BEGIN@ \
 	-I$(top_srcdir)/glib			\
 	-I$(top_builddir)			\
 	@GLIB_DEBUG_FLAGS@			\
+	-DG_DISABLE_DEPRECATED			\
 	-DGOBJECT_COMPILATION			\
 	-DG_DISABLE_CONST_RETURNS		\
 @STRIP_END@

@@ -105,7 +105,7 @@ shutdown_source (gpointer data)
     {
       nrunning--;
       if (nrunning == 0)
-	g_main_quit (main_loop);
+	g_main_loop_quit (main_loop);
     }
 }
 
@@ -367,9 +367,9 @@ main (int    argc,
 #endif
 	}
       
-      main_loop = g_main_new (FALSE);
+      main_loop = g_main_loop_new (NULL, FALSE);
       
-      g_main_run (main_loop);
+      g_main_loop_run (main_loop);
     }
   else if (argc == 3)
     {

@@ -167,10 +167,8 @@ adder_thread (gpointer data)
   g_source_attach (timeout_source, context);
   g_source_unref (timeout_source);
 
-  g_main_run (addr_data.loop);
+  g_main_loop_run (addr_data.loop);
 
-  g_io_channel_close (channels[0]);
-  g_io_channel_close (channels[1]);
   g_io_channel_unref (channels[0]);
   g_io_channel_unref (channels[1]);
 
@@ -204,6 +202,9 @@ io_pipe (GIOChannel **channels)
 
   channels[0] = g_io_channel_unix_new (fds[0]);
   channels[1] = g_io_channel_unix_new (fds[1]);
+
+  g_io_channel_set_close_on_unref (channels[0], TRUE);
+  g_io_channel_set_close_on_unref (channels[1], TRUE);
 }
 
 void
@@ -241,9 +242,6 @@ adder_response (GIOChannel   *source,
 		   test_data->current_val, ITERS * INCREMENT);
 	  exit (1);
 	}
-
-      g_io_channel_close (source);
-      g_io_channel_close (test_data->in);
 
       g_io_channel_unref (source);
       g_io_channel_unref (test_data->in);

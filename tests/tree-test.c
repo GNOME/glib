@@ -103,14 +103,14 @@ main (int   argc,
       g_tree_insert (tree, &chars[i], &chars[i]);
     }
 
-  g_tree_traverse (tree, my_traverse, G_IN_ORDER, NULL);
+  g_tree_foreach (tree, my_traverse, NULL);
 
   g_assert (g_tree_nnodes (tree) == (10 + 26 + 26));
 
   for (i = 0; i < 10; i++)
     g_tree_remove (tree, &chars[i]);
 
-  g_tree_traverse (tree, my_traverse, G_IN_ORDER, NULL);
+  g_tree_foreach (tree, my_traverse, NULL);
 
   return 0;
 }

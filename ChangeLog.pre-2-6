@@ -1,3 +1,12 @@
+Tue Oct 15 15:07:45 2002  Manish Singh  <yosh@gimp.org>
+
+	* gmodule/Makefile.am gobject/Makefile.am gthread/Makefile.am:
+	add -DG_DISABLED_DEPRECATED
+
+	* tests/gio-test.c tests/mainloop-test.c tests/string-test.c
+	tests/testglib.c test/tree-test.c tests/unicode-collate.c
+	tests/unicode-normalize.c: Deprecation cleanup
+
 Mon Oct 14 15:51:05 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gdate.c (g_date_fill_parse_tokens): Fix a memory

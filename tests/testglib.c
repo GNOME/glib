@@ -672,7 +672,7 @@ main (int   argc,
   g_print ("tree nnodes: %d\n", g_tree_nnodes (tree));
 
   g_print ("tree: ");
-  g_tree_traverse (tree, my_traverse, G_IN_ORDER, NULL);
+  g_tree_foreach (tree, my_traverse, NULL);
   g_print ("\n");
 
   for (i = 0; i < 10; i++)
@@ -682,7 +682,7 @@ main (int   argc,
   g_print ("tree nnodes: %d\n", g_tree_nnodes (tree));
 
   g_print ("tree: ");
-  g_tree_traverse (tree, my_traverse, G_IN_ORDER, NULL);
+  g_tree_foreach (tree, my_traverse, NULL);
   g_print ("\n");
 
   g_print ("ok\n");
@@ -810,19 +810,19 @@ main (int   argc,
 #ifndef G_OS_WIN32
   /* MSVC, mingw32 and LCC use the same run-time C library, which doesn't like
      the %10000.10000f format... */
-  g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",
-		    "this pete guy sure is a wuss, like he's the number ",
-		    1,
-		    " wuss.  everyone agrees.\n",
-		    string1->str,
-		    10, 666, 15, 15, 666.666666666, 666.666666666);
+  g_string_printf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",
+		   "this pete guy sure is a wuss, like he's the number ",
+		   1,
+		   " wuss.  everyone agrees.\n",
+		   string1->str,
+		   10, 666, 15, 15, 666.666666666, 666.666666666);
 #else
-  g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%100.100f",
-		    "this pete guy sure is a wuss, like he's the number ",
-		    1,
-		    " wuss.  everyone agrees.\n",
-		    string1->str,
-		    10, 666, 15, 15, 666.666666666, 666.666666666);
+  g_string_printf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%100.100f",
+		   "this pete guy sure is a wuss, like he's the number ",
+		   1,
+		   " wuss.  everyone agrees.\n",
+		   string1->str,
+		   10, 666, 15, 15, 666.666666666, 666.666666666);
 #endif
 
   g_print ("string2 length = %lu...\n", (gulong)string2->len);

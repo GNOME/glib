@@ -191,7 +191,7 @@ int main (int argc, char **argv)
       return 1;
     }
 
-  g_io_channel_close (in);
+  g_io_channel_unref (in);
   g_string_free (buffer, TRUE);
 
   return !success;

@@ -2,7 +2,7 @@
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gthread \
 	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@ \
-	@GLIB_DEBUG_FLAGS@
+	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
 
 EXTRA_DIST =				\
 		makefile.mingw.in	\

@@ -92,7 +92,7 @@ int main (int argc, char **argv)
   for (i = 0; i < line_array->len; i++)
     printf ("%s\n", g_array_index (line_array, Line, i).str);
 
-  g_io_channel_close (in);
+  g_io_channel_unref (in);
 
   return 0;
 }
