@@ -1,3 +1,19 @@
+Mon May  6 11:48:08 2002  Owen Taylor  <otaylor@redhat.com>
+
+	[ merged from stable ]
+ 
+ 	* Makefile.am (EXTRA_DIST): Add ChangeLog.pre-2-0 (#78641)
+ 
+ 	* m4macros/glib-2.0.m4: save CFLAGS/LIBS properly when
+ 	compiling "what went wrong" test case. (#79330)
+ 
+ 	* m4macros/glib-2.0.m4: Remove reference to editing
+ 	pkg-config script. (From Jim Gettys)
+ 
+ 	* configure.in: (Look for dyld interfaces before dlopen()
+ 	since OS X can have both. Patch from Jacob Berkman, 
+ 	#80438)
+	
 2002-05-01  jacob berkman  <jacob@ximian.com>
 
 	* configure.in: fix typo on 64-bit printf formatting string
