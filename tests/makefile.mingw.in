@@ -49,7 +49,7 @@ all:	$(TESTS) $(DLLS)
 .SUFFIXES: .c .i .exe
 
 .c.exe:
-	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread -L ../glib -lglib-1.3
+	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread-1.3 -L ../glib -lglib-1.3
 
 module-test.exe : module-test.o
 	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3 $(LDFLAGS)

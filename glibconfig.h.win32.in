@@ -1,6 +1,6 @@
-/* glibconfig.h.win32
+/* glibconfig.h
  *
- * This is a based on a generated file.  Please modify 'configure.in'
+ * This is a generated file.  Please modify 'configure.in'
  */
 
 #ifndef __G_LIBCONFIG_H__
@@ -39,15 +39,19 @@ typedef unsigned int guint32;
 #define G_GUINT32_FORMAT "u"
 #define G_HAVE_GINT64 1
 
-#ifdef _MSC_VER
-typedef __int64 gint64;
+#ifndef _MSC_VER
+G_GNUC_EXTENSION typedef signed long long gint64;
+G_GNUC_EXTENSION typedef unsigned long long guint64;
+#else /* _MSC_VER */
+typedef signed __int64 gint64;
 typedef unsigned __int64 guint64;
+#endif /* _MSC_VER */
+
+#ifndef _MSC_VER
+#define G_GINT64_CONSTANT(val)	(G_GNUC_EXTENSION (val##LL))
+#else /* _MSC_VER */
 #define G_GINT64_CONSTANT(val)	(val##i64)
-#elif __GNUC__
-typedef long long gint64;
-typedef unsigned long long guint64;
-#define G_GINT64_CONSTANT(val)	(val##LL)
-#endif
+#endif /* _MSC_VER */
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
 
@@ -83,17 +87,24 @@ typedef guint32 gsize;
 #ifdef	__cplusplus
 #define	G_HAVE_INLINE	1
 #else	/* !__cplusplus */
+#ifndef _MSC_VER
+#define G_HAVE_INLINE 1
+#else /* _MSC_VER */
 
+#endif /* _MSC_VER */
 #define G_HAVE___INLINE 1
+#ifndef _MSC_VER
+#define G_HAVE___INLINE__ 1
+#endif /* not _MSC_VER */
 #endif	/* !__cplusplus */
 
+#ifndef _MSC_VER
 #ifndef __cplusplus
 # define G_HAVE_ISO_VARARGS 1
 #endif
 
-#ifdef __GNUC__
 #define G_HAVE_GNUC_VARARGS 1
-#endif
+#endif /* not _MSC_VER */
 
 
 #define G_THREADS_ENABLED
