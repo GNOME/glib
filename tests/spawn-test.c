@@ -96,9 +96,9 @@ run_tests (void)
     }
 #else
 #ifdef G_OS_WIN32
-  printf ("Running ipconfig synchronously, collecting its output\n");
+  printf ("Running netstat synchronously, collecting its output\n");
 
-  if (!g_spawn_command_line_sync ("ipconfig /all",
+  if (!g_spawn_command_line_sync ("netstat -n",
                                   &output, &erroutput, NULL,
                                   &err))
     {
@@ -111,9 +111,9 @@ run_tests (void)
       g_assert (output != NULL);
       g_assert (erroutput != NULL);
       
-      if (strstr (output, "IP Configuration") == 0)
+      if (strstr (output, "Active Connections") == 0)
         {
-          printf ("output was '%s', should have contained 'IP Configuration'\n",
+          printf ("output was '%s', should have contained 'Active Connections'\n",
                   output);
 
           exit (1);

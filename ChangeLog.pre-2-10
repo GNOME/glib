@@ -14,6 +14,14 @@
 	also on Win32 (useful in case there are several instances of the
 	same program running).
 
+	* tests/testglib.c (main): Print more detailled output from the
+	timer tests. Don't print home directory twice. Test
+	g_win32_error_message().
+
+	* tests/spawn-test.c (run_tests): On Win32, run netstat instead of
+	ipconfig. On Windows XP collecting output from ipconfig doesn't
+	seem to work for some reason.
+
 2005-03-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Update the documentation, reflecting the

@@ -330,6 +330,8 @@ main (int   argc,
   GMemChunk *mem_chunk;
   GStringChunk *string_chunk;
   GTimer *timer, *timer2;
+  gdouble elapsed;
+  gulong elapsed_usecs;
   gint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
@@ -436,8 +438,6 @@ main (int   argc,
   g_free (string);
   g_print ("user: %s\n", g_get_user_name ());
   g_print ("real: %s\n", g_get_real_name ());
-  s = g_get_home_dir ();
-  g_print ("home: %s\n", s ? s : "NULL!");
   s = g_get_home_dir ();
   g_print ("home: %s\n", s ? s : "NULL!");
   s = g_get_user_data_dir ();
@@ -1013,16 +1013,20 @@ main (int   argc,
   g_usleep((29*G_USEC_PER_SEC)/5); /* run timer for 5.8 seconds */
   g_timer_stop(timer);
 
-  g_print ("\t=> total elapsed = %.2f seconds (should be: 9.00 seconds)\n\n", g_timer_elapsed(timer, NULL));
+  elapsed = g_timer_elapsed (timer, &elapsed_usecs);
+  g_print ("\t=> timer = %.6f = %d.%06ld (should be: 9.000000) (%.6f off)\n", elapsed, (int) elapsed, elapsed_usecs, ABS (elapsed - 9.));
 
-  if (g_timer_elapsed(timer, NULL) > 8.8 && g_timer_elapsed(timer, NULL) < 9.2)
+  if (elapsed > 8.8 && elapsed < 9.2)
     g_print ("g_timer_continue ... ok\n\n");
   else
     g_print ("g_timer_continue ... ***** FAILED *****\n\n");
 
   g_timer_stop(timer2);
 
-  if (g_timer_elapsed(timer2, NULL) > (8.8+6.5) && g_timer_elapsed(timer2, NULL) < (9.2+6.5))
+  elapsed = g_timer_elapsed(timer2, &elapsed_usecs);
+  g_print ("\t=> timer2 = %.6f = %d.%06ld (should be: %.6f) (%.6f off)\n\n", elapsed, (int) elapsed, elapsed_usecs, 9.+6.5, ABS (elapsed - (9.+6.5)));
+
+  if (elapsed > (8.8+6.5) && elapsed < (9.2+6.5))
     g_print ("timer2 ... ok\n\n");
   else
     g_print ("timer2 ... ***** FAILED *****\n\n");
@@ -1285,6 +1289,8 @@ main (int   argc,
 
   g_print ("found more.com as %s\n", g_find_program_in_path ("more.com"));
   g_print ("found regedit as %s\n", g_find_program_in_path ("regedit"));
+
+  g_print ("a Win32 error message: %s\n", g_win32_error_message (2));
 
 #endif
 
