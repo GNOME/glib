@@ -1334,24 +1334,13 @@ gdouble g_timer_elapsed (GTimer	 *timer,
 			 gulong	 *microseconds);
 
 
-/* String utility functions
+/* String utility functions that modify a string argument or
+ * return a constant string that must not be freed.
  */
 #define	 G_STR_DELIMITERS	"_-|> <."
-void	 g_strdelimit		(gchar	     *string,
+gchar*	 g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
-gchar*	 g_strdup		(const gchar *str);
-gchar*	 g_strdup_printf	(const gchar *format,
-				 ...) G_GNUC_PRINTF (1, 2);
-gchar*	 g_strdup_vprintf	(const gchar *format,
-				 va_list      args);
-gchar*	 g_strndup		(const gchar *str,
-				 guint	      n);
-gchar*	 g_strnfill		(guint	      length,
-				 gchar	      fill_char);
-gchar*	 g_strconcat		(const gchar *string1,
-				 ...); /* NULL terminated */
-#define  g_str_join g_strconcat
 gdouble	 g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
 gchar*	 g_strerror		(gint	      errnum);
@@ -1363,26 +1352,42 @@ void	 g_strup		(gchar	     *string);
 void	 g_strreverse		(gchar	     *string);
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
-
 /* removes leading spaces */
-gchar *  g_str_chug             (gchar *astring,
-				 gboolean in_place);
+gchar*   g_strchug              (gchar        *string);
 /* removes trailing spaces */
-gchar *  g_str_chomp            (gchar *astring,
-				 gboolean in_place);
+gchar*  g_strchomp              (gchar        *string);
 /* removes leading & trailing spaces */
-#define g_str_strip(astring, in_place) \
-        g_str_chomp(g_str_chug(astring, in_place), FALSE)
+#define g_strstrip( string )	g_strchomp (g_strchug (string))
 
-/* these routines that work with string arrays in which the last
-   element is NULL */
-gchar ** g_str_split            (const gchar *string,
-				 const gchar *delim,
-				 gint max_tokens);
-gchar*	 g_strconcatv		(const gchar *separator,
-				 const gchar **strarray);
-#define  g_str_joinv g_strconcatv
-void     g_str_array_free       (gchar **strarray);
+/* String utility functions that return a newly allocated string which
+ * ought to be freed from the caller at some point.
+ */
+gchar*	 g_strdup		(const gchar *str);
+gchar*	 g_strdup_printf	(const gchar *format,
+				 ...) G_GNUC_PRINTF (1, 2);
+gchar*	 g_strdup_vprintf	(const gchar *format,
+				 va_list      args);
+gchar*	 g_strndup		(const gchar *str,
+				 guint	      n);
+gchar*	 g_strnfill		(guint	      length,
+				 gchar	      fill_char);
+gchar*	 g_strconcat		(const gchar *string1,
+				 ...); /* NULL terminated */
+
+/* NULL terminated string arrays.
+ * g_str_array_split() splits up string into max_tokens tokens at delim and
+ * returns a newly allocated string array.
+ * g_str_array_join() concatenates all of str_array's strings, sliding in an
+ * optional separator, the returned string is newly allocated.
+ * g_str_array_free() frees the array itself and all of its strings.
+ */
+gchar**	 g_str_array_split	(const gchar  *string,
+				 const gchar  *delimiter,
+				 gint          max_tokens);
+gchar*	 g_str_array_join	(gchar       **str_array,
+				 const gchar  *separator);
+void     g_str_array_free       (gchar       **str_array);
+
 
 
 /* calculate a string size, guarranteed to fit format + args.

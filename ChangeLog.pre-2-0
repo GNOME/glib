@@ -1,3 +1,27 @@
+Wed Oct 21 17:03:05 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* gstrfuncs.c: API cleanups of the new g_str* functions for consistency
+ 	with the existing naming scheme for g_str* functions. grouped the g_str*
+	functions that will return a newly allocated string seperatedly. all of
+	the in_place arguments were skipped, the caller is supposed to pass a
+	g_strdup()ed string if he wants to retrive a new copy. indentation and
+	coding style fixups. added some g_return_if_fail() statements.
+	string array functions are prefixed with g_str_array_.
+	(g_strdelimit): return the modified string like all other g_str*
+ 	functions, that operate in place.
+	(g_strchug): renamed from g_str_chug(), removed in_place argument.
+	(g_strchomp): renamed from g_str_chomp(), removed in_place argument.
+	(g_strstrip): renamed from g_str_strip(), removed in_place argument.
+	(g_str_array_join): renamed from g_strconcatv(), since it actually
+ 	operates on a string array and has totaly different semantics from
+	g_strconcat(). check for separator != NULL, don't segfault if the first
+ 	string is NULL. removed the `const' from the string array that's passed,
+	so users can operate on gchar** string arrays.
+	(g_str_array_split): renamed from g_str_split() because we actually
+ 	produce a string array. reimplemented this function for efficiency.
+	removed macro aliases g_str_joinv and g_str_join.
+
 1998-10-20  Elliot Lee  <sopwith@redhat.com>
 
 	* glib.h, gstrfuncs.c: Move string join/split/free routines from

@@ -967,14 +967,14 @@ g_strcasecmp (const gchar *s1,
 #endif
 }
 
-void
+gchar*
 g_strdelimit (gchar	  *string,
 	      const gchar *delimiters,
 	      gchar	   new_delim)
 {
   register gchar *c;
   
-  g_return_if_fail (string != NULL);
+  g_return_val_if_fail (string != NULL, NULL);
   
   if (!delimiters)
     delimiters = G_STR_DELIMITERS;
@@ -984,139 +984,138 @@ g_strdelimit (gchar	  *string,
       if (strchr (delimiters, *c))
 	*c = new_delim;
     }
+
+  return string;
 }
 
 /* blame Elliot for these next five routines */
-char **
-g_str_split(const gchar *string, const gchar *delim, gint max_tokens)
+gchar*
+g_strchug (gchar *string)
 {
-  /* this could more easily be implemented using a GPtrArray */
-  gchar **retval = NULL;
-  GList *items = NULL, *anode = NULL;
-  gint numitems = 0, dlen, i;
-  gchar *src, *cur, *nxt;
+  gchar *start;
 
-  g_return_val_if_fail(string != NULL, NULL);
-  g_return_val_if_fail(delim != NULL, NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
-  if(max_tokens < 0)
-    max_tokens = INT_MAX;
+  for (start = string; *start && isspace (*start); start++)
+    ;
 
-  dlen = strlen(delim);
-  nxt = strstr(string, delim);
-  if(!nxt) {
-    retval = g_malloc(sizeof(gchar *) * 2);
-    retval[0] = g_strdup(string);
-    retval[1] = NULL;
-    return retval;
-  }
-  src = cur = g_strdup(string);
-  nxt = strstr(src, delim);
-	
-  while(nxt && numitems < (max_tokens - 1)) {
-    *nxt = '\0';
-    items = g_list_append(items, g_strdup(cur));
-    cur = nxt + dlen;
-    nxt = strstr(cur, delim);
-    numitems++;
-  }
-  /* We have to take the rest of the string and put it as last token */
-  if(*cur) {
-    items = g_list_append(items, g_strdup(cur));
-    numitems++;
-  }
-  g_free(src);
+  strcpy (string, start);
 
-  retval = g_malloc(sizeof(gchar *) * (numitems + 1));
-  for(anode = items, i = 0; anode; anode = anode->next, i++)
-    retval[i] = anode->data;
-  retval[i] = NULL;
-  g_list_free(items);
-
-  return retval;
+  return string;
 }
 
-gchar *
-g_str_chug(gchar *astring, gboolean in_place)
+gchar*
+g_strchomp (gchar *string)
 {
-  gchar *retval, *start;
+  gchar *s;
 
-  g_return_val_if_fail(astring != NULL, NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
-  for(start = astring; *start && isspace(*start); start++)
-    /* */;
+  if (!*string)
+    return string;
 
-  if(in_place) {
-    retval = astring;
-    g_memmove(retval, start, strlen(start) + 1);
-  } else
-    retval = g_strdup(start);
+  for (s = string + strlen (string) - 1; s >= string && isspace (*s); s--)
+    *s = '\0';
 
-  return retval;
+  return string;
 }
 
-gchar *
-g_str_chomp(gchar *astring, gboolean in_place)
+gchar**
+g_str_array_split (const gchar *string,
+		   const gchar *delimiter,
+		   gint         max_tokens)
 {
-  int i;
-  gchar *retval, *end;
+  GSList *string_list = NULL, *slist;
+  gchar **str_array, **as, *s;
+  guint n = 1;
 
-  g_return_val_if_fail(astring != NULL, NULL);
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (delimiter != NULL, NULL);
 
-  if(in_place)
-    retval = astring;
-  else
-    retval = g_strdup(astring);
+  if (max_tokens < 1)
+    max_tokens = G_MAXINT;
 
-  i = strlen (retval);
-  if (!i)
-    return retval;
+  s = strstr (string, delimiter);
+  if (s)
+    {
+      guint delimiter_len = strlen (delimiter);
+      
+      do
+	{
+	  guint len;
+	  gchar *new_string;
+	  
+	  len = s - string;
+	  new_string = g_new (gchar, len + 1);
+	  strncpy (new_string, string, len);
+	  new_string[len] = 0;
+	  string_list = g_slist_prepend (string_list, new_string);
+	  n++;
+	  string = s + delimiter_len;
+	  s = strstr (string, delimiter);
+	}
+      while (--max_tokens && s);
+    }
+  if (*string)
+    {
+      n++;
+      string_list = g_slist_prepend (string_list, g_strdup (string));
+    }
+  
+  str_array = g_new (gchar*, n);
+  as = str_array + n - 1;
+  *(as--) = NULL;
+  for (slist = string_list; slist; slist = slist->next)
+    *(as--) = slist->data;
+  g_slist_free (string_list);
 
-  end = retval + i - 1;
-  for (; end >= retval && isspace (*end); end--)
-    *end = '\0';
-
-  return retval;
+  return str_array;
 }
 
 void
-g_str_array_free(gchar **strarray)
+g_str_array_free (gchar **str_array)
 {
-  int i;
+  if (str_array)
+    {
+      gchar **as;
 
-  if(strarray == NULL) return; /* Don't use g_return_if_fail,
-				  because this is legal */
-
-  for(i = 0; strarray[i]; i++)
-    g_free(strarray[i]);
-
-  g_free(strarray);
+      for (as = str_array; *as; as++)
+	g_free (*as);
+      g_free (str_array);
+    }
 }
 
-gchar*	 g_strconcatv		(const gchar *separator,
-				 const gchar **strarray)
+gchar*
+g_str_array_join (gchar       **str_array,
+		  const gchar  *separator)
 {
-  guint	  l, sepl;
-  gchar	  *concat;
-  int i;
+  gchar *string;
   
-  g_return_val_if_fail (strarray != NULL, NULL);
+  g_return_val_if_fail (str_array != NULL, NULL);
+  g_return_val_if_fail (separator != NULL, NULL);
 
-  l = strlen(strarray[0]) + 1;
-  sepl = strlen(separator);
-  for(i = 1; strarray[i]; i++) {
-    l += sepl;
-    l += strlen(strarray[i]);
-  }
-  
-  concat = g_new (gchar, l);
-  *concat = '\0';
+  if (*str_array)
+    {
+      guint len;
+      guint seperator_len;
+      gchar **as;
 
-  strcat (concat, strarray[0]);
-  for(i = 1; strarray[i]; i++) {
-    strcat (concat, separator);
-    strcat (concat, strarray[i]);
-  }
+      seperator_len = strlen (separator);
+      len = 1 + strlen (*str_array);
+      for (as = str_array + 1; *as; as++)
+	len += seperator_len + strlen (*as);
+      
+      string = g_new (gchar, len);
+      *string = 0;
+      strcat (string, *str_array);
+      for (as = str_array + 1; *as; as++)
+	{
+	  strcat (string, separator);
+	  strcat (string, *as);
+	}
+      }
+  else
+    string = g_strdup ("");
 
-  return concat;
+  return string;
 }
