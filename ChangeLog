@@ -11,13 +11,6 @@
 
 2000-09-29  Martin Baulig  <baulig@suse.de>
 
-	* Makefile.am (pkgconfigdir): Set this to `$(libexecdir)/pkgconfig';
-	this is the directory where pkg-config actually looks.
-
-	* *.pc.in: Made the pkg-config scripts actually work.
-
-2000-09-29  Martin Baulig  <baulig@suse.de>
-
 	Several minor ANSI C fixes.
 
 	Added missing casts:

@@ -3,12 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-VERSION="@VERSION@"
-REQUIRES=""
-CFLAGS="-I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include $CFLAGS"
-LIBS_PATH="-L${libdir} $LIBS_PATH"
-LIBS_LINK_SELF="-lglib-1.3 $LIBS_LINK_SELF"
-LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
-
-#Name: GLib
-#Description: C Utility Library
+Name: GLib
+Description: C Utility Library
+Version: @VERSION@
+Libs: -L${libdir} -lglib-1.3
+Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include 
