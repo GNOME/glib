@@ -998,6 +998,8 @@ g_utf8_casefold (const gchar *str,
  *
  * Return value: %TRUE if @ch has a mirrored character and @mirrored_ch is
  * filled in, %FALSE otherwise
+ *
+ * Since: 2.4
  **/
 /* This code is adapted from FriBidi (http://fribidi.sourceforge.net/). 
  * FriBidi is: Copyright (C) 1999,2000 Dov Grobgeld, and

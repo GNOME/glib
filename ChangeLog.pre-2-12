@@ -1,3 +1,8 @@
+2003-09-29  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/guniprop.c (g_unichar_get_mirror_char): Add "Since: 2.4" 
+	to docs.
+
 Thu Sep 25 15:43:08 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/gobject/testmodule.[ch] test/gobject/Makefile.am:

@@ -568,6 +568,7 @@ G_THREAD_ECF
 G_THREAD_CF
 G_THREAD_UF
 g_static_mutex_get_mutex_impl
+g_static_mutex_get_mutex_impl_shortcut
 G_MUTEX_DEBUG_MAGIC
 g_thread_init_with_errorcheck_mutexes
 G_LOCK_NAME
@@ -1921,6 +1922,7 @@ GUnicodeBreakType
 g_unichar_break_type
 g_unicode_canonical_ordering
 g_unicode_canonical_decomposition
+g_unichar_get_mirror_char
 
 <SUBSECTION>
 g_utf8_next_char
