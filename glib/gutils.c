@@ -443,26 +443,30 @@ g_get_any_init (void)
 	while (TRUE)
 	  {
 	    int error = 0;
+	    errno = 0;
 	    buffer = g_realloc (buffer, bufsize);
 #    ifdef HAVE_GETPWUID_R_POSIX
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	    if (error == 0)
-	      break;
+	    if (errno == 0) /* The errorcode is in error (might be 0, too) */
+	      errno = error;
 #    else /* HAVE_GETPWUID_R_POSIX */
 	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	    if (pw)
-	      break;
 #    endif /* HAVE_GETPWUID_R_POSIX */
-	    error = errno;
-	    if (error != ERANGE)
+	    if (errno == 0)
+	      {
+		g_assert (pw);
+		break;
+	      }
+
+	    if (errno != ERANGE)
 	      g_error ("Could not read account information: %s", 
-		       g_strerror (error));
+		       g_strerror (errno));
 	    bufsize *= 2;
 	  }
 #  else /* HAVE_GETPWUID_R */
 #    if defined(G_THREADS_ENABLED) && defined(__GNUC__)
 #    warning "the `g_get_(user_name|real_name|home_dir|tmp_dir)'"
-#    warning "functions will not be MT-safe at their first call"
+#    warning "functions will not be MT-safe during their first call"
 #    warning "because there is no `getpwuid_r' on your system."
 #    endif
 	setpwent ();

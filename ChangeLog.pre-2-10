@@ -1,3 +1,9 @@
+1999-01-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_any_init): Changed error handling again, as the
+	error is not always set in errno, it is the return value on some
+	systems. What an evil world.
+
 Thu Jan 21 05:35:20 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* gstrfuncs.c: Include signal.h only when the signal names will be
