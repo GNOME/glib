@@ -1,0 +1,39 @@
+If you want to hack on the Gtk+ project, it will make you life easier
+to have the following packages installed:
+
+	- GNU autoconf 2.13
+	- GNU automake 1.4
+	        (Beta releases are at ftp://ftp.cygnus.com/pub/tromey)
+	- GNU libtool 1.2d
+
+These should be available by ftp from ftp.gnu.org or any of the
+fine GNU mirrors.  Beta software can be found at alpha.gnu.org.
+
+To compile a CVS version of glib on your system, you will need to take
+several steps to setup the tree for compilation.  You can do all these
+steps at once by running:
+
+        cvsroot/glib# ./autogen.sh
+   
+Basically this does the following for you:
+
+  	cvsroot/glib# aclocal; automake; autoconf
+
+        The above commands create the "configure" script.  Now you
+	can run the configure script in cvsroot/glib to create all
+	the Makefiles.
+
+Before running autogen.sh or configure, make sure you have libtool 
+in your path.  
+
+Note that autogen.sh runs configure for you.  If you wish to pass
+options like --prefix=/usr to configure you can give those options
+to autogen.sh and they will be passed on to configure.
+
+Please submit patches to the gtk-list@redhat.com mailing list (you must
+subscribe before you post, e-mail gtk-list-request@redhat.com with a
+subject of "subscribe"). All kinds of contributions are accepted.
+Patches that you wish to go into the distribution should also be uploaded 
+to ftp://ftp.gimp.org/incoming.  Follow the rules there for naming your
+patches. 
+

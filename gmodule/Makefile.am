@@ -19,7 +19,9 @@ include_HEADERS = \
 
 libglib = $(top_builddir)/libglib.la # -lglib
 
-lib_LTLIBRARIES = libgmodule.la libgplugin_a.la libgplugin_b.la
+lib_LTLIBRARIES = libgmodule.la
+
+noinst_LTLIBRARIES = libgplugin_a.la libgplugin_b.la
 
 libgmodule_la_SOURCES = gmodule.c
 libgmodule_la_LDFLAGS = \
@@ -48,16 +50,6 @@ testgmodule_LDADD = libgmodule.la $(libglib) @G_MODULE_LIBS@
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
 	  echo $$p; \
-	done
-
-install-libLTLIBRARIES: libgmodule.la
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='libgmodule.la'; for p in $$list; do \
-	 if test -f $$p; then \
-	  echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p; \
-	 else :; fi; \
 	done
 
 release:

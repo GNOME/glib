@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-# build . first, then SUBDIRS
-SUBDIRS = gmodule gthread docs tests
-all-recursive-am: all-am
-# alpha `automake' supports this better
-#SUBDIRS = . gmodule gthread docs tests
+SUBDIRS = . gmodule gthread docs tests
 
 configincludedir = $(pkglibdir)/include
 
