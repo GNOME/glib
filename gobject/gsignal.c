@@ -433,7 +433,7 @@ handler_unref_R (guint    signal_id,
     {
       if (handler->next)
         handler->next->prev = handler->prev;
-      if (handler->prev)	/* watch out for g_signal_handlers_destroy()! */
+      if (handler->prev)	/* watch out for _g_signal_handlers_destroy()! */
         handler->prev->next = handler->next;
       else
         {
@@ -568,7 +568,7 @@ g_signal_init (void) /* sync with gtype.c */
 }
 
 void
-g_signals_destroy (GType itype)
+_g_signals_destroy (GType itype)
 {
   guint i;
   
@@ -628,6 +628,80 @@ g_signal_stop_emission (gpointer instance,
   else
     g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
   G_UNLOCK (g_signal_mutex);
+}
+
+static inline guint
+signal_parse_name (const gchar *name,
+		   GType        itype,
+		   GQuark      *detail_p,
+		   gboolean     force_quark)
+{
+  const gchar *colon = strchr (name, ':');
+  guint signal_id;
+  
+  if (!colon)
+    {
+      signal_id = signal_id_lookup (g_quark_try_string (name), itype);
+      if (signal_id && detail_p)
+	*detail_p = 0;
+    }
+  else if (colon[1] == ':')
+    {
+      gchar buffer[32];
+      guint l = colon - name;
+      
+      if (l < 32)
+	{
+	  memcpy (buffer, name, l);
+	  buffer[l] = 0;
+	  signal_id = signal_id_lookup (g_quark_try_string (buffer), itype);
+	}
+      else
+	{
+	  gchar *signal = g_new (gchar, l + 1);
+	  
+	  memcpy (signal, name, l);
+	  signal[l] = 0;
+	  signal_id = signal_id_lookup (g_quark_try_string (signal), itype);
+	  g_free (signal);
+	}
+      
+      if (signal_id && detail_p)
+	*detail_p = colon[2] ? (force_quark ? g_quark_from_string : g_quark_try_string) (colon + 2) : 0;
+    }
+  else
+    signal_id = 0;
+  return signal_id;
+}
+
+gboolean
+g_signal_parse_name (const gchar *detailed_signal,
+		     GType        itype,
+		     guint       *signal_id_p,
+		     GQuark      *detail_p,
+		     gboolean	  force_detail_quark)
+{
+  GQuark detail = 0;
+  guint signal_id;
+
+  g_return_val_if_fail (detailed_signal != NULL, FALSE);
+  g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), FALSE);
+
+  G_LOCK (g_signal_mutex);
+  signal_id = signal_parse_name (detailed_signal, itype, &detail, force_detail_quark);
+  G_UNLOCK (g_signal_mutex);
+
+  if (signal_id)
+    {
+      if (signal_id_p)
+	*signal_id_p = signal_id;
+      if (detail_p)
+	*detail_p = detail;
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 guint
@@ -871,11 +945,11 @@ signal_destroy_R (SignalNode *signal_node)
 }
 
 guint
-g_signal_connect_closure (gpointer  instance,
-			  guint     signal_id,
-			  GQuark    detail,
-			  GClosure *closure,
-			  gboolean  after)
+g_signal_connect_closure_by_id (gpointer  instance,
+				guint     signal_id,
+				GQuark    detail,
+				GClosure *closure,
+				gboolean  after)
 {
   SignalNode *node;
   guint handler_id = 0;
@@ -982,7 +1056,7 @@ g_signal_handler_disconnect (gpointer instance,
 }
 
 void
-g_signal_handlers_destroy (gpointer instance)
+_g_signal_handlers_destroy (gpointer instance)
 {
   GBSearchArray *hlbsa;
   

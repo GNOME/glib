@@ -10,3 +10,29 @@
 @G_SIGNAL_ACTION: 
 @G_SIGNAL_NO_HOOKS: 
 
+<!-- ##### FUNCTION g_signal_connect_closure ##### -->
+<para>
+
+</para>
+
+@instance: 
+@signal_id: 
+@detail: 
+@closure: 
+@after: 
+@Returns: 
+
+<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+<!-- ##### FUNCTION g_signals_destroy ##### -->
+<para>
+
+</para>
+
+@itype: 
+

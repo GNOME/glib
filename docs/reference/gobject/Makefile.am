@@ -22,6 +22,7 @@ tmpl_sources =				\
 	tmpl/objects.sgml		\
 	tmpl/param_specs.sgml		\
 	tmpl/signals.sgml		\
+	tmpl/closures.sgml		\
 	tmpl/standard_params.sgml	\
 	tmpl/types.sgml			\
 	tmpl/value_collection.sgml	\

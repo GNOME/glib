@@ -164,7 +164,7 @@ g_object_base_class_finalize (GObjectClass *class)
   
   g_message ("finallizing base class of %s", G_OBJECT_CLASS_NAME (class));
 
-  g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
+  _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
   
   for (i = 0; i < class->n_param_specs; i++)
     {
@@ -295,7 +295,7 @@ g_object_do_shutdown (GObject *object)
 static void
 g_object_do_finalize (GObject *object)
 {
-  g_signal_handlers_destroy (object);
+  _g_signal_handlers_destroy (object);
   g_datalist_clear (&object->qdata);
   
 #ifdef	DEBUG_OBJECTS

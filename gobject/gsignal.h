@@ -122,7 +122,7 @@ gboolean g_signal_has_handler_pending	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       gboolean		  may_be_blocked);
-guint	 g_signal_connect_closure	      (gpointer		  instance,
+guint	 g_signal_connect_closure_by_id	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       GClosure		 *closure,
@@ -164,8 +164,13 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 
 
 /*< private >*/
-void	g_signal_handlers_destroy	      (gpointer		  instance);
-void	g_signals_destroy		      (GType		  itype);
+gboolean g_signal_parse_name		      (const gchar	 *detailed_signal,
+					       GType		  itype,
+					       guint		 *signal_id_p,
+					       GQuark		 *detail_p,
+					       gboolean		  force_detail_quark);
+void	 _g_signal_handlers_destroy	      (gpointer		  instance);
+void	 _g_signals_destroy		      (GType		  itype);
 
 
 #ifdef __cplusplus

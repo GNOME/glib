@@ -1,0 +1,237 @@
+<!-- ##### SECTION Title ##### -->
+Closures
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### USER_FUNCTION GClosureMarshal ##### -->
+<para>
+
+</para>
+
+@closure: 
+@return_value: 
+@n_param_values: 
+@param_values: 
+@invocation_hint: 
+@marshal_data: 
+
+
+<!-- ##### USER_FUNCTION GClosureNotify ##### -->
+<para>
+
+</para>
+
+@data: 
+@closure: 
+
+
+<!-- ##### STRUCT GClosure ##### -->
+<para>
+
+</para>
+
+@is_invalid: 
+
+<!-- ##### STRUCT GCClosure ##### -->
+<para>
+
+</para>
+
+@closure: 
+@callback: 
+
+<!-- ##### STRUCT GClosureNotifyData ##### -->
+<para>
+
+</para>
+
+@data: 
+@notify: 
+
+<!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
+<para>
+
+</para>
+
+@closure: 
+
+
+<!-- ##### MACRO G_CCLOSURE_SWAP_DATA ##### -->
+<para>
+
+</para>
+
+@cclosure: 
+
+
+<!-- ##### FUNCTION g_cclosure_new ##### -->
+<para>
+
+</para>
+
+@callback_func: 
+@user_data: 
+@destroy_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_cclosure_new_swap ##### -->
+<para>
+
+</para>
+
+@callback_func: 
+@user_data: 
+@destroy_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_cclosure_new_object ##### -->
+<para>
+
+</para>
+
+@callback_func: 
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_cclosure_new_object_swap ##### -->
+<para>
+
+</para>
+
+@callback_func: 
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_closure_ref ##### -->
+<para>
+
+</para>
+
+@closure: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_closure_unref ##### -->
+<para>
+
+</para>
+
+@closure: 
+
+
+<!-- ##### FUNCTION g_closure_invoke ##### -->
+<para>
+
+</para>
+
+@closure: 
+@return_value: 
+@n_param_values: 
+@param_values: 
+@invocation_hint: 
+
+
+<!-- ##### FUNCTION g_closure_invalidate ##### -->
+<para>
+
+</para>
+
+@closure: 
+
+
+<!-- ##### FUNCTION g_closure_add_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+
+<!-- ##### FUNCTION g_closure_remove_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+
+<!-- ##### FUNCTION g_closure_add_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+
+<!-- ##### FUNCTION g_closure_remove_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+
+<!-- ##### FUNCTION g_closure_new_simple ##### -->
+<para>
+
+</para>
+
+@sizeof_closure: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_closure_set_marshal ##### -->
+<para>
+
+</para>
+
+@closure: 
+@marshal: 
+
+
+<!-- ##### FUNCTION g_closure_add_marshal_guards ##### -->
+<para>
+
+</para>
+
+@closure: 
+@pre_marshal_data: 
+@pre_marshal_notify: 
+@post_marshal_data: 
+@post_marshal_notify: 
+
+
+<!-- ##### FUNCTION g_closure_set_meta_marshal ##### -->
+<para>
+
+</para>
+
+@closure: 
+@marshal_data: 
+@meta_marshal: 
+
+

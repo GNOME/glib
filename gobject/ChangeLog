@@ -1,3 +1,10 @@
+Fri Nov  3 07:35:00 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc]: prefix internal functions with '_'. renamed
+	g_signal_connect_closure() to g_signal_connect_closure_by_id().
+	added g_signal_parse_name() to retrive signal_id and detail quark
+	from a signal name (internal).
+
 Wed Nov  1 03:36:54 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_object_base_class_finalize): destroy all signals that

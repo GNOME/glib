@@ -1,3 +1,14 @@
+Fri Nov  3 07:33:15 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject/gobject-docs.sgml: added &gobject-closures; section.
+
+	* gobject/Makefile.am (tmpl_sources): add tmpl/clsoures.sgml
+
+	* gobject/gobject-sections.txt: added Closure section.
+	
+	* gobject/tmpl/closures.sgml: new file with template description
+	for GClosure functions.
+
 2000-11-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/glib-unused.sgml: Remove superfluous GSearchFunc.

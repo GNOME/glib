@@ -145,7 +145,7 @@ void		g_closure_invoke		(GClosure 	*closure,
 						 gpointer	 invocation_hint);
 
 
-/*
+/* FIXME:
   data_object::destroy		-> closure_invalidate();
   closure_invalidate()		-> disconnect(closure);
   disconnect(closure)		-> (unlink) closure_unref();

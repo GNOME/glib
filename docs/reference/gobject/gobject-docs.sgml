@@ -4,6 +4,7 @@
 <!entity gobject-objects SYSTEM "sgml/objects.sgml">
 <!entity gobject-param-specs SYSTEM "sgml/param_specs.sgml">
 <!entity gobject-signals SYSTEM "sgml/signals.sgml">
+<!entity gobject-closures SYSTEM "sgml/closures.sgml">
 <!entity gobject-standard-params SYSTEM "sgml/standard_params.sgml">
 <!entity gobject-types SYSTEM "sgml/types.sgml">
 <!entity gobject-value-collection SYSTEM "sgml/value_collection.sgml">
@@ -71,6 +72,7 @@
       &gobject-param-specs;
       &gobject-standard-params;
       &gobject-signals;
+      &gobject-closures;
   </reference>
   
 </book>

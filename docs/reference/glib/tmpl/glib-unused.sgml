@@ -65,6 +65,17 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 
+<!-- ##### USER_FUNCTION GEqualFunc ##### -->
+<para>
+Specifies the type of a function used to test two values for
+equality. The function should return TRUE if both values are equal and
+FALSE otherwise.
+</para>
+
+@a: a value.
+@b: a value to compare with.
+@Returns: TRUE if @a = @b; FALSE otherwise.
+
 <!-- ##### FUNCTION g_convert_error_quark ##### -->
 <para>
 
