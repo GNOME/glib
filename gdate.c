@@ -609,16 +609,22 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
         }
       
 #ifdef G_ENABLE_DEBUG
+#  if 0
       g_message ("**GDate prepared a new set of locale-specific parse rules.");
+#  endif
       i = 1;
       while (i < 13) 
         {
+#  if 0
           g_message ("  %s   %s", long_month_names[i], short_month_names[i]);
+#  endif
           ++i;
         }
       if (using_twodigit_years)
         {
+#  if 0
           g_message ("**Using twodigit years with cutoff year: %u", twodigit_start_year);
+#  endif
         }
       { 
         gchar *strings[3];
@@ -642,8 +648,10 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
               }
             ++i;
           }
+#  if 0
         g_message ("**Order: %s, %s, %s", strings[0], strings[1], strings[2]);
         g_message ("**Sample date in this locale: `%s'", buf);
+#  endif
       }
 #endif
     }
@@ -668,8 +676,10 @@ g_date_set_parse (GDate       *d,
   g_date_prepare_to_parse (str, &pt);
   
 #ifdef G_ENABLE_DEBUG
+#  if 0
   g_message ("Found %d ints, `%d' `%d' `%d' and written out month %d", 
 	     pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month);
+#  endif
 #endif
   
   

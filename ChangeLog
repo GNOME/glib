@@ -1,3 +1,14 @@
+1999-03-14  Jeff Garzik  <jgarzik@pobox.com>
+
+	* gdate.c:
+	Commented out debugging output.
+
+	* tests/Makefile.am, tests/date-test.c:
+	Added test of the GDate module, based closely on testgdate.c.
+
+	* tests/Makefile.am:
+	Bugfix - compile tests with @GLIB_DEBUG_FLAGS@.
+
 1999-03-14  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (glibconfig.h): Remove widechar tests and defines.

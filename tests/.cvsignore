@@ -35,3 +35,4 @@ type-test
 strfunc-test
 queue-test
 stack-test
+date-test

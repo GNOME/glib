@@ -1,8 +1,9 @@
 
-INCLUDES = -I$(top_srcdir)
+INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
 TESTS = \
 	array-test	\
+	date-test	\
 	dirname-test	\
 	hash-test	\
 	list-test	\
@@ -19,6 +20,7 @@ TESTS = \
 noinst_PROGRAMS = $(TESTS)
 
 array_test_LDADD = $(top_builddir)/libglib.la
+date_test_LDADD = $(top_builddir)/libglib.la
 dirname_test_LDADD = $(top_builddir)/libglib.la
 hash_test_LDADD = $(top_builddir)/libglib.la
 list_test_LDADD = $(top_builddir)/libglib.la
