@@ -1,3 +1,24 @@
+Overview of Changes from GLib 2.3.2 to GLib 2.3.3
+=================================================
+
+* Add a native AIX gmodule implementation. [Laurent Vivier]
+* Add g_node_copy_deep().  [James M. Cape, Matthias Clasen]
+* Extend GQueue API to match the GList API. [Soeren Sandmann]
+* Add g_hash_table_find().  [Tim Janik]
+* Add a G_MODULE_BIND_LOCAL flag. [David Schleef]
+* Inline g_string_append_c() when possible. [Owen Taylor, Tim]
+* Wrap waitpid() as a GSource. [Jonathan R. Blandford]
+* Add g_completion_complete_utf8(). [Theppitak Karoonboonyanan, 
+  Matthias]
+* Add g_strsplit_set(). [Soeren]
+* Documentation improvements. [Vincent Untz, Sebastian Wilhelmi, 
+  Soeren, Matthias]
+* Win32 build fixes. [Tor Lillquist]
+* Misc bugfixes [Manish Singh, Noah Levitt, Simon Josefsson, 
+  Morten Welinder, Damien Carbery, Julio M. Merino Vidal, Sebastian, 
+  Matthias]
+* Updated translations (nn,cs,it,ko,sq,ms,az,hr,uk,sr,sr@Latn,sq,ta)
+
 Overview of Changes from GLib 2.3.1 to GLib 2.3.2
 =================================================
 

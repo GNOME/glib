@@ -1,3 +1,7 @@
+Mon Feb 23 22:24:00 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Start of 2.3.3 section.
+
 Sun Feb 22 02:32:14 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Set the gmodule suffix to 'a' for aix and 
