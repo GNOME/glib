@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-25 12:38+0200\n"
-"PO-Revision-Date: 2004-10-25 12:39+0200\n"
+"POT-Creation-Date: 2004-10-27 12:29+0200\n"
+"PO-Revision-Date: 2004-10-27 12:30+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -85,57 +85,57 @@ msgstr "Ugyldig vertsnavn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:402 glib/gfileutils.c:476
+#: glib/gfileutils.c:396 glib/gfileutils.c:470
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:412
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:501
+#: glib/gfileutils.c:495
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: glib/gfileutils.c:552 glib/gfileutils.c:633
+#: glib/gfileutils.c:546 glib/gfileutils.c:627
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: glib/gfileutils.c:569
+#: glib/gfileutils.c:563
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: glib/gfileutils.c:600
+#: glib/gfileutils.c:594
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:813
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: glib/gfileutils.c:831
+#: glib/gfileutils.c:825
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mal «%s» slutter ikke med XXXXXX"
 
-#: glib/gfileutils.c:852
+#: glib/gfileutils.c:846
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: glib/gfileutils.c:1195
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: glib/gfileutils.c:1216
+#: glib/gfileutils.c:1210
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -514,29 +514,29 @@ msgstr "[FLAGG...]"
 
 #: glib/goption.c:308
 msgid "Help Options:"
-msgstr ""
+msgstr "Flagg for hjelp:"
 
 #: glib/goption.c:308
 msgid "Show help options"
-msgstr ""
+msgstr "Vis flagg for hjelp"
 
 #: glib/goption.c:312
 msgid "Show all help options"
-msgstr ""
+msgstr "Vis alle flagg for hjelp"
 
 #: glib/goption.c:360
 msgid "Application Options:"
-msgstr ""
+msgstr "Flagg for applikasjonen"
 
 #: glib/goption.c:400
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Kan ikke lese heltallsverdi «%s» for --%s"
 
 #: glib/goption.c:410
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Heltallsverdi «%s» for %s er utenfor gyldig område"
 
 #: glib/goption.c:1024
 #, c-format
