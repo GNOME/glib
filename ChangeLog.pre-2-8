@@ -1,3 +1,19 @@
+2003-01-22  Tor Lillqvist  <tml@iki.fi>
+
+	Fix for bug #104014, reported by Alex Shaduri:
+	
+	* glib/gspawn-win32.c (protect_argv): New function. Add
+	double-quotes around argv elements that need it, and escape
+	embedded double-quotes with backslash.
+	(do_spawn_with_pipes) Call protect_argv().
+
+	* glib/gspawn-win32-helper.c (WinMain): Call protect_argv().
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Document argument
+	vector vs. command line details on Win32.
+	(g_spawn_command_line_sync): Improve documentation about
+	backslashes in the command line on Windows.
+
 2003-01-21  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "mn" to ALL_LINGUAS.
