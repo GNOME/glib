@@ -1,3 +1,8 @@
+Overview of Changes in GLib 1.1.10:
+
+* g_main_is_running: new function to check whether a main loop has been quitted
+* a few other enhancement/fixes
+
 Overview of Changes in GLib 1.1.9:
 
 * Check for pthread_attr_init in all cases, Digital Unix 4 requires this

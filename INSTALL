@@ -1,12 +1,12 @@
 Simple install procedure
 ========================
 
-  % gzip -cd glib-1.1.9.tar.gz | tar xvf - # unpack the sources
-  % cd glib-1.1.9                          # change to the toplevel directory
-  % ./configure                            # run the `configure' script
-  % make                                   # build GLIB
+  % gzip -cd glib-1.1.10.tar.gz | tar xvf - # unpack the sources
+  % cd glib-1.1.10                          # change to the toplevel directory
+  % ./configure                             # run the `configure' script
+  % make                                    # build GLIB
   [ Become root if necessary ]
-  % make install                           # install GLIB
+  % make install                            # install GLIB
 
 The Nitty-Gritty
 ================

@@ -1,3 +1,13 @@
+Wed Dec 23 00:43:25 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.10
+
+	* INSTALL:
+	  NEWS:
+	  README:
+	  configure.in:
+	  docs/glib-config.1: version=1.1.10
+
 Wed Dec 23 04:18:11 1998  George Lebl  <jirka@5z.com>
 
 	* gmain.c: (g_get_current_time) don't cast to timeval since
