@@ -1,3 +1,18 @@
+Overview of Changes in GLib 1.1.6:
+
+* New GDate functionality for calendar date manipulations (g_date_*)
+* New GAllocator type and assocated functions
+* New functions g_slist_copy and g_list_copy to duplicate a list with all
+  its data pointers.
+* New function g_array_insert_vals and new macro g_array_insert_val to
+  insert elements at an arbitrary index
+* GAllocators used for glist, gslist, gnode node allocations
+* Incremental freezing in ghash
+* New function g_hook_list_marshal_check to eventually destroy hooks after
+  they got marshalled
+* Removed GListAllocator type and its g_*_allocator_*() function variants
+* Bug fixes
+
 Overview of Changes in GLib 1.1.5:
 
 * Win32 portability
