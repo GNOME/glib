@@ -37,6 +37,7 @@ strfunc-test
 string-test
 thread-test
 threadpool-test
+timeloop-closure
 tree-test
 type-test
 unicode-encoding

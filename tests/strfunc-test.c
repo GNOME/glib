@@ -91,73 +91,35 @@ str_check (gchar *str,
   return ok;
 }
 
-static gboolean
-test_isalnum (gchar c)
-{
-  return g_ascii_isalnum (c);
-}
+#define FOR_ALL_CTYPE(macro)	\
+	macro(isalnum)		\
+	macro(isalpha)		\
+	macro(iscntrl)		\
+	macro(isdigit)		\
+	macro(isgraph)		\
+	macro(islower)		\
+	macro(isprint)		\
+	macro(ispunct)		\
+	macro(isspace)		\
+	macro(isupper)		\
+	macro(isxdigit)
 
-static gboolean
-test_isalpha (gchar c)
-{
-  return g_ascii_isalpha (c);
-}
+#define DEFINE_CALL_CTYPE(function)		\
+	static int				\
+	call_##function (int c)			\
+	{					\
+		return function (c);		\
+	}
 
-static gboolean
-test_iscntrl (gchar c)
-{
-  return g_ascii_iscntrl (c);
-}
+#define DEFINE_CALL_G_ASCII_CTYPE(function)	\
+	static gboolean				\
+	call_g_ascii_##function (gchar c)	\
+	{					\
+		return g_ascii_##function (c);	\
+	}
 
-static gboolean
-test_isdigit (gchar c)
-{
-  return g_ascii_isdigit (c);
-}
-
-static gboolean
-test_isgraph (gchar c)
-{
-  return g_ascii_isgraph (c);
-}
-
-static gboolean
-test_islower (gchar c)
-{
-  return g_ascii_islower (c);
-}
-
-static gboolean
-test_isprint (gchar c)
-{
-  return g_ascii_isprint (c);
-}
-
-static gboolean
-test_ispunct (gchar c)
-{
-  return g_ascii_ispunct (c);
-}
-
-static gboolean
-test_isspace (gchar c)
-{
-  return g_ascii_isspace (c);
-}
-
-static gboolean
-test_isupper (gchar c)
-{
-  return g_ascii_isupper (c);
-}
-
-static gboolean
-test_isxdigit (gchar c)
-{
-  return g_ascii_isxdigit (c);
-}
-
-
+FOR_ALL_CTYPE (DEFINE_CALL_CTYPE)
+FOR_ALL_CTYPE (DEFINE_CALL_G_ASCII_CTYPE)
 
 static void
 test_is_function (const char *name,
@@ -335,19 +297,9 @@ main (int   argc,
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",", 2), "", ",x,,y,,z,,", NULL));
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",,", 2), "", "x,,y,,z,,", NULL));
 
-  #define TEST_IS(name) test_is_function (#name, test_##name, name, g_unichar_##name)
+  #define TEST_IS(name) test_is_function (#name, call_g_ascii_##name, call_##name, g_unichar_##name);
 
-  TEST_IS (isalnum);
-  TEST_IS (isalpha);
-  TEST_IS (iscntrl);
-  TEST_IS (isdigit);
-  TEST_IS (isgraph);
-  TEST_IS (islower);
-  TEST_IS (isprint);
-  TEST_IS (ispunct);
-  TEST_IS (isspace);
-  TEST_IS (isupper);
-  TEST_IS (isxdigit);
+  FOR_ALL_CTYPE(TEST_IS)
 
   #undef TEST_IS
 

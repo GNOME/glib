@@ -1,3 +1,12 @@
+2001-09-17  Darin Adler  <darin@bentspoon.com>
+
+	* tests/strfunc-test.c: (main): Change so that it works
+	on platforms where isalpha is a macro only, without the
+	corresponding function that the C standard requires.
+	Also eliminate the multiple lists of ctype functions.
+
+	* tests/.cvsignore: Ignore the new test.
+
 2001-09-17  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Add variable for LT_CURRENT minus LT_AGE (the
