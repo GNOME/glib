@@ -16,6 +16,7 @@ _libs
 libmoduletestplugin_a.la
 libmoduletestplugin_b.la
 array-test
+child-test
 completion-test
 cxx-test
 date-test
