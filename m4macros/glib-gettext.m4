@@ -95,6 +95,7 @@ glib_DEFUN([GLIB_WITH_NLS],
 
     CATOBJEXT=NONE
     XGETTEXT=:
+    INTLLIBS=
 
     AC_CHECK_HEADER(libintl.h,
      [gt_cv_func_dgettext_libintl="no"
@@ -160,6 +161,10 @@ glib_DEFUN([GLIB_WITH_NLS],
       if test "$gt_cv_func_dgettext_libc" = "yes" \
 	|| test "$gt_cv_func_dgettext_libintl" = "yes"; then
         gt_cv_have_gettext=yes
+      fi
+  
+      if test "$gt_cv_func_dgettext_libintl" = "yes"; then
+        INTLLIBS="-lintl $libintl_extra_libs"
       fi
   
       if test "$gt_cv_have_gettext" = "yes"; then
