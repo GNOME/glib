@@ -246,7 +246,7 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokument neprièakovano konèan z ¹e odprtimi elementi - '%s' je bil "
+"Dokument neprièakovano konèan s ¹e odprtimi elementi - '%s' je bil "
 "zadnji odprt element"
 
 #: gmarkup.c:1645
@@ -343,7 +343,7 @@ msgstr "Nisem uspel izvesti procesa otroka (%s)"
 #: gspawn-win32.c:977 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Nisem uspel ustvariti cevi za komunikacijo z procesom otroka (%s)"
+msgstr "Nisem uspel ustvariti cevi za komunikacijo s procesom otroka (%s)"
 
 #: gspawn.c:158
 #, c-format
