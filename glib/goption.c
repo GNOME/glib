@@ -1057,8 +1057,10 @@ free_pending_nulls (GOptionContext *context,
  *
  * If the parsing is successful, any parsed arguments are
  * removed from the array and @argc and @argv are updated 
- * accordingly. In case of an error, @argc and @argv are
- * left unmodified.
+ * accordingly. A '--' option is stripped from @argv
+ * unless there are unparsed options before and after it, 
+ * or some of the options after it start with '-'. In case 
+ * of an error, @argc and @argv are left unmodified. 
  *
  * If automatic <option>--help</option> support is enabled
  * (see g_option_context_set_help_enabled()), and the 
@@ -1120,6 +1122,8 @@ g_option_context_parse (GOptionContext   *context,
   if (argc && argv)
     {
       gboolean stop_parsing = FALSE;
+      gboolean has_unknown = FALSE;
+      gint separator_pos = 0;
 
       for (i = 1; i < *argc; i++)
 	{
@@ -1137,7 +1141,7 @@ g_option_context_parse (GOptionContext   *context,
 		  /* '--' terminates list of arguments */
 		  if (*arg == 0)
 		    {
-		      add_pending_null (context, &((*argv)[i]), NULL);
+		      separator_pos = i;
 		      stop_parsing = TRUE;
 		      continue;
 		    }
@@ -1306,11 +1310,14 @@ g_option_context_parse (GOptionContext   *context,
 		    }
 		}
 	      
+	      if (!parsed)
+		has_unknown = TRUE;
+
 	      if (!parsed && !context->ignore_unknown)
 		{
 		  g_set_error (error,
 			       G_OPTION_ERROR, G_OPTION_ERROR_UNKNOWN_OPTION,
-			       _("Unknown option %s"), (*argv)[i]);
+				   _("Unknown option %s"), (*argv)[i]);
 		  goto fail;
 		}
 	    }
@@ -1322,8 +1329,14 @@ g_option_context_parse (GOptionContext   *context,
 					argc, argv, error, &parsed))
 		goto fail;
 	      
+	      if (!parsed && (has_unknown || (*argv)[i][0] == '-'))
+		separator_pos = 0;
 	    }
 	}
+
+      if (separator_pos > 0)
+	add_pending_null (context, &((*argv)[separator_pos]), NULL);
+	
     }
 
   /* Call post-parse hooks */

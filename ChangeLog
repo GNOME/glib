@@ -1,5 +1,12 @@
 2004-12-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/option-test.c: Add some tests for '--' 
+	stripping.
+
+	* glib/goption.c (g_option_context_parse): Don't
+	strip '--' if it would be needed by a second option
+	parser.  (#161701)
+
 	* glib/gunicollate.c (g_utf8_collate): Make docs 
 	more accurate.  (#161683, Marcin Krzyzanowski)
 

@@ -585,12 +585,148 @@ rest_test2 (void)
   g_assert (ignore_test1_boolean);
   g_assert (strcmp (argv[0], "program") == 0);
   g_assert (strcmp (argv[1], "foo") == 0);
+  g_assert (strcmp (argv[2], "--") == 0);
+  g_assert (strcmp (argv[3], "-bar") == 0);
+  g_assert (argv[4] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+/* check that -- stripping works */
+void
+rest_test2a (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test -- bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "foo") == 0);
+  g_assert (strcmp (argv[2], "bar") == 0);
+  g_assert (argv[3] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
+rest_test2b (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_set_ignore_unknown_options (context, TRUE);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test -bar --", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "foo") == 0);
   g_assert (strcmp (argv[2], "-bar") == 0);
   g_assert (argv[3] == NULL);
 
   g_strfreev (argv);
   g_option_context_free (context);
 }
+
+void
+rest_test2c (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test foo -- bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "foo") == 0);
+  g_assert (strcmp (argv[2], "bar") == 0);
+  g_assert (argv[3] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
+rest_test2d (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test -- -bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "--") == 0);
+  g_assert (strcmp (argv[2], "-bar") == 0);
+  g_assert (argv[3] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
 
 /* check that G_OPTION_REMAINING collects non-option arguments */
 void
@@ -736,6 +872,10 @@ main (int argc, char **argv)
   /* Test handling of rest args */
   rest_test1 ();
   rest_test2 ();
+  rest_test2a ();
+  rest_test2b ();
+  rest_test2c ();
+  rest_test2d ();
   rest_test3 ();
   rest_test4 ();
   rest_test5 ();
