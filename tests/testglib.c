@@ -322,6 +322,8 @@ int
 main (int   argc,
       char *argv[])
 {
+  const gchar *s;
+  gchar **sv;
   GList *list, *t;
   GSList *slist, *st;
   GHashTable *hash_table;
@@ -434,7 +436,20 @@ main (int   argc,
   g_free (string);
   g_print ("user: %s\n", g_get_user_name ());
   g_print ("real: %s\n", g_get_real_name ());
-  g_print ("home: %s\n", g_get_home_dir ());
+  s = g_get_home_dir ();
+  g_print ("home: %s\n", s ? s : "NULL!");
+  s = g_get_home_dir ();
+  g_print ("home: %s\n", s ? s : "NULL!");
+  s = g_get_user_data_dir ();
+  g_print ("user_data: %s\n", s ? s : "NULL!");
+  s = g_get_user_config_dir ();
+  g_print ("user_config: %s\n", s ? s : "NULL!");
+  s = g_get_user_cache_dir ();
+  g_print ("user_cache: %s\n", s ? s : "NULL!");
+  sv = (gchar **) g_get_system_data_dirs ();
+  g_print ("system_data: %s\n", sv ? g_strjoinv (G_SEARCHPATH_SEPARATOR_S, sv) : "NULL!");
+  sv = (gchar **) g_get_system_config_dirs ();
+  g_print ("system_config: %s\n", s ? g_strjoinv (G_SEARCHPATH_SEPARATOR_S, sv) : "NULL!");
   g_print ("tmp-dir: %s\n", g_get_tmp_dir ());
 
   /* type sizes */
