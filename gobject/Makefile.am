@@ -36,11 +36,11 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-export_symbols = -export-symbols gobject.def
+export_symbols = -export-symbols $(srcdir)/gobject.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
-	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
+	$(INSTALL) $(srcdir)/gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
 
 uninstall-libtool-import-lib:
 	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a $(DESTDIR)$(libdir)/gobject-2.0.def

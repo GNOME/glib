@@ -53,11 +53,11 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-export_symbols = -export-symbols gmodule.def
+export_symbols = -export-symbols $(srcdir)/gmodule.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)
-	$(INSTALL) gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
+	$(INSTALL) $(srcdir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
 
 uninstall-libtool-import-lib:
 	-rm $(DESTDIR)$(libdir)/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)/gmodule-2.0.def
