@@ -1,7 +1,15 @@
 2004-11-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.h: Don't mark g_option_error_quark() as const,
+	to be consistent with all the other error_quark functions. 
+	(technically they are const, but since these are called only
+	in error paths, giving the compiler better optimization 
+	opportunities doesn't matter much)
+
+2004-11-23  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix a problem with the PLT reduction changes which caused the
-	internal aliases to use all attributes.
+	internal aliases to lose all attributes.
 	
 	* glib/glib.symbols: Add attribute annotations.
 	* glib/makegalias.pl: Keep attribute annotations, but strip PRIVATE.

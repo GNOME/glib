@@ -72,7 +72,7 @@ typedef enum
   G_OPTION_ERROR_FAILED
 } GOptionError;
 
-GQuark g_option_error_quark (void) G_GNUC_CONST;
+GQuark g_option_error_quark (void);
 
 
 struct _GOptionEntry
