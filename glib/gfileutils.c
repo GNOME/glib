@@ -862,7 +862,7 @@ g_build_pathv (const gchar *separator,
  * g_build_path:
  * @separator: a string used to separator the elements of the path.
  * @first_element: the first element in the path
- * @Varargs: remaining elements in path
+ * @Varargs: remaining elements in path, terminated by %NULL
  * 
  * Creates a path from a series of elements using @separator as the
  * separator between elements. At the boundary between two elements,
@@ -914,7 +914,7 @@ g_build_path (const gchar *separator,
 /**
  * g_build_filename:
  * @first_element: the first element in the path
- * @Varargs: remaining elements in path
+ * @Varargs: remaining elements in path, terminated by %NULL
  * 
  * Creates a filename from a series of elements using the correct
  * separator for filenames. This function behaves identically

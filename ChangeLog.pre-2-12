@@ -1,5 +1,9 @@
 2002-11-25  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gfileutils.c (g_build_path): 
+	(g_build_filename): Document that the varargs must be 
+	NULL-terminated. (#99510)
+
 	* glib/gmessages.h (g_assert): 
 	(g_return_if_fail): 
 	(g_return_val_if_fail): Remove the (no longer effective) empty
