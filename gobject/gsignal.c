@@ -148,6 +148,7 @@ static	      gboolean		signal_emit_unlocked_R	(SignalNode	 *node,
 							 gpointer	  instance,
 							 GValue		 *return_value,
 							 const GValue	 *instance_and_params);
+static const gchar *            type_debug_name         (GType            type);
 
 
 /* --- structures --- */
@@ -730,7 +731,7 @@ _g_signals_destroy (GType itype)
           if (node->destroyed)
             g_warning (G_STRLOC ": signal \"%s\" of type `%s' already destroyed",
                        node->name,
-                       g_type_name (node->itype));
+                       type_debug_name (node->itype));
           else
 	    signal_destroy_R (node);
         }
@@ -1220,7 +1221,7 @@ g_signal_newv (const gchar       *signal_name,
     {
       g_warning (G_STRLOC ": signal \"%s\" already exists in the `%s' %s",
                  name,
-                 g_type_name (node->itype),
+                 type_debug_name (node->itype),
                  G_TYPE_IS_INTERFACE (node->itype) ? "interface" : "class ancestry");
       g_free (name);
       SIGNAL_UNLOCK ();
@@ -1230,8 +1231,8 @@ g_signal_newv (const gchar       *signal_name,
     {
       g_warning (G_STRLOC ": signal \"%s\" for type `%s' was previously created for type `%s'",
                  name,
-                 g_type_name (itype),
-                 g_type_name (node->itype));
+                 type_debug_name (itype),
+                 type_debug_name (node->itype));
       g_free (name);
       SIGNAL_UNLOCK ();
       return 0;
@@ -1240,7 +1241,7 @@ g_signal_newv (const gchar       *signal_name,
     if (!G_TYPE_IS_VALUE (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
 	g_warning (G_STRLOC ": parameter %d of type `%s' for signal \"%s::%s\" is not a value type",
-		   i + 1, g_type_name (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE), g_type_name (itype), name);
+		   i + 1, type_debug_name (param_types[i]), type_debug_name (itype), name);
 	g_free (name);
 	SIGNAL_UNLOCK ();
 	return 0;
@@ -1248,7 +1249,7 @@ g_signal_newv (const gchar       *signal_name,
   if (return_type != G_TYPE_NONE && !G_TYPE_IS_VALUE (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     {
       g_warning (G_STRLOC ": return value of type `%s' for signal \"%s::%s\" is not a value type",
-		 g_type_name (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE), g_type_name (itype), name);
+		 type_debug_name (return_type), type_debug_name (itype), name);
       g_free (name);
       SIGNAL_UNLOCK ();
       return 0;
@@ -1257,8 +1258,7 @@ g_signal_newv (const gchar       *signal_name,
       (signal_flags & (G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP)) == G_SIGNAL_RUN_FIRST)
     {
       g_warning (G_STRLOC ": signal \"%s::%s\" has return type `%s' and is only G_SIGNAL_RUN_FIRST",
-		 g_type_name (itype), name,
-		 g_type_name (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE));
+		 type_debug_name (itype), name, type_debug_name (return_type));
       g_free (name);
       SIGNAL_UNLOCK ();
       return 0;
@@ -1410,13 +1410,13 @@ g_signal_override_class_closure (guint     signal_id,
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!g_type_is_a (instance_type, node->itype))
-    g_warning ("%s: type `%s' cannot be overridden for signal id `%u'", G_STRLOC, g_type_name (instance_type), signal_id);
+    g_warning ("%s: type `%s' cannot be overridden for signal id `%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
   else
     {
       ClassClosure *cc = signal_find_class_closure (node, instance_type);
       
       if (cc && cc->instance_type == instance_type)
-	g_warning ("%s: type `%s' is already overridden for signal id `%u'", G_STRLOC, g_type_name (instance_type), signal_id);
+	g_warning ("%s: type `%s' is already overridden for signal id `%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
       else
 	signal_add_class_closure (node, instance_type, class_closure);
     }
@@ -1984,7 +1984,7 @@ g_signal_emitv (const GValue *instance_and_params,
       {
 	g_critical ("%s: value for `%s' parameter %u for signal \"%s\" is of type `%s'",
 		    G_STRLOC,
-		    g_type_name (node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE),
+		    type_debug_name (node->param_types[i]),
 		    i,
 		    node->name,
 		    G_VALUE_TYPE_NAME (param_values + i));
@@ -1997,7 +1997,7 @@ g_signal_emitv (const GValue *instance_and_params,
 	{
 	  g_critical ("%s: return value `%s' for signal \"%s\" is (NULL)",
 		      G_STRLOC,
-		      g_type_name (node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
+		      type_debug_name (node->return_type),
 		      node->name);
 	  SIGNAL_UNLOCK ();
 	  return;
@@ -2006,7 +2006,7 @@ g_signal_emitv (const GValue *instance_and_params,
 	{
 	  g_critical ("%s: return value `%s' for signal \"%s\" is of type `%s'",
 		      G_STRLOC,
-		      g_type_name (node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
+		      type_debug_name (node->return_type),
 		      node->name,
 		      G_VALUE_TYPE_NAME (return_value));
 	  SIGNAL_UNLOCK ();
@@ -2479,6 +2479,17 @@ signal_emit_unlocked_R (SignalNode   *node,
   return return_value_altered;
 }
 
+static const gchar*
+type_debug_name (GType type)
+{
+  if (type)
+    {
+      const char *name = g_type_name (type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      return name ? name : "<unknown>";
+    }
+  else
+    return "<invalid>";
+}
 
 /* --- compile standard marshallers --- */
 #include	"gobject.h"
