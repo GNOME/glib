@@ -27,6 +27,39 @@ The Base Object Type
 </para>
 
 
+<!-- ##### STRUCT GObjectConstructParam ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+@trailer: 
+
+<!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_id: 
+@value: 
+@pspec: 
+@trailer: 
+
+
+<!-- ##### USER_FUNCTION GObjectSetPropertyFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_id: 
+@value: 
+@pspec: 
+@trailer: 
+
+
 <!-- ##### MACRO G_OBJECT ##### -->
 <para>
 
@@ -123,6 +156,26 @@ The Base Object Type
 @object: 
 
 
+<!-- ##### FUNCTION g_object_class_install_property ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@property_id: 
+@pspec: 
+
+
+<!-- ##### FUNCTION g_object_class_find_property ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@property_name: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_object_new ##### -->
 <para>
 
@@ -197,6 +250,51 @@ The Base Object Type
 @first_param_name: 
 
 
+<!-- ##### FUNCTION g_object_set_property ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_get_property ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_freeze_notify ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION g_object_notify ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+
+
+<!-- ##### FUNCTION g_object_thaw_notify ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
 <!-- ##### FUNCTION g_object_ref ##### -->
 <para>
 
@@ -255,6 +353,47 @@ The Base Object Type
 @Returns: 
 
 
+<!-- ##### FUNCTION g_object_get_data ##### -->
+<para>
+
+</para>
+
+@object: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_set_data ##### -->
+<para>
+
+</para>
+
+@object: 
+@key: 
+@data: 
+
+
+<!-- ##### FUNCTION g_object_set_data_full ##### -->
+<para>
+
+</para>
+
+@object: 
+@key: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION g_object_steal_data ##### -->
+<para>
+
+</para>
+
+@object: 
+@key: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_value_set_object ##### -->
 <para>
 
@@ -280,5 +419,24 @@ The Base Object Type
 
 @value: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_object_watch_closure ##### -->
+<para>
+
+</para>
+
+@object: 
+@closure: 
+
+
+<!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_id: 
+@pspec: 
 
 

@@ -116,6 +116,14 @@ Parameter Specifications
 @pspec: 
 
 
+<!-- ##### FUNCTION g_param_spec_sink ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
 <!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
 <para>
 
@@ -207,6 +215,57 @@ Parameter Specifications
 @nick: 
 @blurb: 
 @flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_new ##### -->
+<para>
+
+</para>
+
+@type_prefixing: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_insert ##### -->
+<para>
+
+</para>
+
+@pool: 
+@pspec: 
+@owner_type: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_remove ##### -->
+<para>
+
+</para>
+
+@pool: 
+@pspec: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_lookup ##### -->
+<para>
+
+</para>
+
+@pool: 
+@param_name: 
+@owner_type: 
+@walk_ancestors: 
+@trailer_p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_type_register_static ##### -->
+<para>
+
+</para>
+
+@name: 
+@pspec_info: 
 @Returns: 
 
 

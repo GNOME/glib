@@ -122,14 +122,6 @@ Enumeration and Flag Types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_POINTER ##### -->
-<para>
-
-</para>
-
-@value: 
-
-
 <!-- ##### STRUCT GEnumValue ##### -->
 <para>
 

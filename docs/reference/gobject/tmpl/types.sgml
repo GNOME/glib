@@ -59,6 +59,78 @@ GType
 
 
 
+<!-- ##### MACRO G_TYPE_IS_ABSTRACT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_DERIVED ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_FUNDAMENTAL ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_VALUE_TYPE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_INSTANTIATABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_TYPE_IS_INTERFACE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
 <!-- ##### ENUM GTypeFundamentals ##### -->
 <para>
 
@@ -108,46 +180,6 @@ GType
 @G_TYPE_PARAM_CCALLBACK: 
 @G_TYPE_PARAM_BOXED: 
 @G_TYPE_PARAM_OBJECT: 
-
-<!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_TYPE_IS_INSTANTIATABLE ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_TYPE_IS_INTERFACE ##### -->
-<para>
-
-</para>
-
-@type: 
-
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
@@ -207,54 +239,6 @@ GType
 @lcopy_type: 
 @lcopy_value: 
 
-<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_CAST ##### -->
-<para>
-
-</para>
-
-@instance: 
-@g_type: 
-@c_type: 
-
-
-<!-- ##### MACRO G_TYPE_CHECK_CLASS_CAST ##### -->
-<para>
-
-</para>
-
-@g_class: 
-@g_type: 
-@c_type: 
-
-
-<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_TYPE ##### -->
-<para>
-
-</para>
-
-@instance: 
-@g_type: 
-
-
-<!-- ##### MACRO G_TYPE_CHECK_CLASS_TYPE ##### -->
-<para>
-
-</para>
-
-@g_class: 
-@g_type: 
-
-
-<!-- ##### MACRO G_TYPE_INSTANCE_GET_CLASS ##### -->
-<para>
-
-</para>
-
-@instance: 
-@g_type: 
-@c_type: 
-
-
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
 <para>
 
@@ -279,67 +263,160 @@ GType
 @g_iface: 
 
 
-<!-- ##### FUNCTION g_type_init ##### -->
+<!-- ##### MACRO G_TYPE_INSTANCE_GET_CLASS ##### -->
 <para>
 
+</para>
+
+@instance: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_INSTANCE_GET_INTERFACE ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_CAST ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_INSTANCE_TYPE ##### -->
+<para>
+
+</para>
+
+@instance: 
+@g_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_CLASS_CAST ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@g_type: 
+@c_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_CLASS_TYPE ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@g_type: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_VALUE ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_TYPE_CHECK_VALUE_TYPE ##### -->
+<para>
+
+</para>
+
+@value: 
+@g_type: 
+
+
+<!-- ##### FUNCTION g_type_init ##### -->
+<para>
+Prior to any use of the type system, g_type_init() has to be called to initialize
+the type system and assorted other code portions (such as the various fundamental
+type implementations or the signal system).
 </para>
 
 
 
 <!-- ##### FUNCTION g_type_name ##### -->
 <para>
-
+Return the unique name that is assigned to a type ID (this is the preferred method
+to find out whether a specific type has been registered for the passed in ID yet).
 </para>
 
-@type: 
-@Returns: 
+@type:    Type to return name for.
+@Returns: Static type name or NULL.
 
 
 <!-- ##### FUNCTION g_type_qname ##### -->
 <para>
-
+Return the corresponding quark of the type IDs name.
 </para>
 
-@type: 
-@Returns: 
+@type:    Type to return quark of type name for.
+@Returns: The type names quark or 0.
 
 
 <!-- ##### FUNCTION g_type_from_name ##### -->
 <para>
-
+Lookup the type ID from a given type name, returns 0 if no type has been registered under this name
+(this is the preferred method to find out by name whether a specific type has been registered yet).
 </para>
 
-@name: 
-@Returns: 
+@name:    Type name to lookup.
+@Returns: Corresponding type ID or 0.
 
 
 <!-- ##### FUNCTION g_type_parent ##### -->
 <para>
-
+Return the direct parent type of the passed in type.
+If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
 </para>
 
-@type: 
-@Returns: 
+@type:    The derived type.
+@Returns: The parent type.
 
 
 <!-- ##### FUNCTION g_type_next_base ##### -->
 <para>
-
+Given a @type and a @base_type which is contained in its anchestry, return
+the type that @base_type is the direct parent type for.
+In other words, for a given type branch, e.g. Root-Derived1-Derived2-Leaf, specified
+through @type=Leaf, return the nextmost child of @base_type. In this example, for
+@base_type=Derived1, the returned value would be Derived2, for @base_type=Root, the
+returned value would be Derived1.
 </para>
 
-@type: 
-@base_type: 
-@Returns: 
+@type:      Descendant of @base_type and the type to be returned.
+@base_type: Direct parent of the returned type.
+@Returns:   Immediate child of @base_type and anchestor of @type.
 
 
 <!-- ##### FUNCTION g_type_is_a ##### -->
 <para>
-
+Check whether @type is a descendant of @is_a_type.
 </para>
 
-@type: 
-@is_a_type: 
-@Returns: 
+@type:      Type to check anchestry for.
+@is_a_type: Possible anchestor of @type.
+@Returns:   %TRUE if @type is_a @is_a_type holds true.
 
 
 <!-- ##### FUNCTION g_type_fundamental_branch_last ##### -->
@@ -398,22 +475,25 @@ GType
 
 <!-- ##### FUNCTION g_type_children ##### -->
 <para>
-
+Return a newly allocated and 0 terminated array of type IDs, listing the
+child types of @type. The return value has to be g_free()ed after use.
 </para>
 
-@type: 
-@n_children: 
-@Returns: 
+@type:       The parent type.
+@n_children: Optional #guint pointer to contain the number of child types.
+@Returns:    Newly allocated and 0 terminated array of child types.
 
 
 <!-- ##### FUNCTION g_type_interfaces ##### -->
 <para>
-
+Return a newly allocated and 0 terminated array of type IDs, listing the
+interface types that @type conforms to. The return value has to be
+g_free()ed after use.
 </para>
 
-@type: 
-@n_interfaces: 
-@Returns: 
+@type:         The type to list interface types for.
+@n_interfaces: Optional #guint pointer to contain the number of interface types.
+@Returns:      Newly allocated and 0 terminated array of interface types.
 
 
 <!-- ##### FUNCTION g_type_set_qdata ##### -->
@@ -514,6 +594,16 @@ GType
 
 @G_TYPE_FLAG_ABSTRACT: 
 
+<!-- ##### ENUM GTypeFundamentalFlags ##### -->
+<para>
+
+</para>
+
+@G_TYPE_FLAG_CLASSED: 
+@G_TYPE_FLAG_INSTANTIATABLE: 
+@G_TYPE_FLAG_DERIVABLE: 
+@G_TYPE_FLAG_DEEP_DERIVABLE: 
+
 <!-- ##### FUNCTION g_type_register_static ##### -->
 <para>
 
@@ -571,33 +661,30 @@ GType
 @plugin: 
 
 
-<!-- ##### FUNCTION g_type_class_is_a ##### -->
+<!-- ##### FUNCTION g_type_get_plugin ##### -->
 <para>
 
 </para>
 
-@g_class: 
-@is_a_type: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION g_type_check_class_cast ##### -->
+<!-- ##### FUNCTION g_type_interface_get_plugin ##### -->
 <para>
 
 </para>
 
-@g_class: 
-@is_a_type: 
+@instance_type: 
+@implementation_type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION g_type_check_instance_cast ##### -->
+<!-- ##### FUNCTION g_type_fundamental_last ##### -->
 <para>
 
 </para>
 
-@instance: 
-@iface_type: 
 @Returns: 
 
 
@@ -628,15 +715,6 @@ GType
 @instance: 
 
 
-<!-- ##### FUNCTION g_type_value_table_peek ##### -->
-<para>
-
-</para>
-
-@type: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_type_add_class_cache_func ##### -->
 <para>
 
@@ -663,23 +741,6 @@ GType
 @g_class: 
 
 
-<!-- ##### FUNCTION g_type_get_plugin ##### -->
-<para>
-
-</para>
-
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_type_fundamental_last ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION g_type_check_instance ##### -->
 <para>
 
@@ -689,12 +750,71 @@ GType
 @Returns: 
 
 
+<!-- ##### FUNCTION g_type_check_instance_cast ##### -->
+<para>
+
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_instance_is_a ##### -->
+<para>
+
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_check_class_cast ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_class_is_a ##### -->
+<para>
+
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_type_check_value ##### -->
 <para>
 
 </para>
 
 @value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_value_is_a ##### -->
+<para>
+
+</para>
+
+@value: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_value_table_peek ##### -->
+<para>
+
+</para>
+
+@type: 
 @Returns: 
 
 

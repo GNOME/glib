@@ -313,18 +313,18 @@ void             g_type_class_unref_uncached    (gpointer            g_class);
 
 
 /*< private >*/
-GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
-						 GType               is_a_type);
-gboolean         g_type_class_is_a              (GTypeClass         *g_class,
-						 GType               is_a_type);
+gboolean	 g_type_check_instance          (GTypeInstance      *instance);
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
 gboolean         g_type_instance_is_a		(GTypeInstance      *instance,
 						 GType               iface_type);
+GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
+						 GType               is_a_type);
+gboolean         g_type_class_is_a              (GTypeClass         *g_class,
+						 GType               is_a_type);
 gboolean	 g_type_check_value             (GValue		    *value);
 gboolean	 g_type_value_is_a		(GValue		    *value,
 						 GType		     type);
-gboolean	 g_type_check_instance          (GTypeInstance      *instance);
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 

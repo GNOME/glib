@@ -1,3 +1,9 @@
+Tue Jan  9 03:10:38 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/types.sgml: added some function documentations.
+
+	* gobject/gobject-sections.txt: buncha fixups.
+
 Fri Jan  5 15:47:10 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt glib/tmpl/* glib/Makefile.am: Updated.

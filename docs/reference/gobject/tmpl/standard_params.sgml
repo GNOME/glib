@@ -206,6 +206,70 @@ Standard Parameter Types
 @pspec: 
 
 
+<!-- ##### MACRO G_IS_PARAM_SPEC_POINTER ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_POINTER ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_BOXED ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_BOXED ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CCALLBACK ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_CCALLBACK ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_PARAM ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
 <!-- ##### MACRO G_IS_PARAM_SPEC_OBJECT ##### -->
 <para>
 
@@ -342,6 +406,34 @@ Standard Parameter Types
 @substitutor: 
 @null_fold_if_empty: 
 @ensure_non_null: 
+
+<!-- ##### STRUCT GParamSpecBoxed ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### STRUCT GParamSpecCCallback ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### STRUCT GParamSpecParam ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### STRUCT GParamSpecPointer ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
 
 <!-- ##### STRUCT GParamSpecObject ##### -->
 <para>
@@ -533,6 +625,56 @@ Standard Parameter Types
 @nick: 
 @blurb: 
 @default_value: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_boxed ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@boxed_type: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_ccallback ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_param ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@param_type: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_pointer ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
 @flags: 
 @Returns: 
 

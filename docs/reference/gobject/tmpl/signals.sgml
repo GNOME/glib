@@ -103,7 +103,11 @@ value returned by the last callback.
 
 <!-- ##### TYPEDEF GSignalCMarshaller ##### -->
 <para>
-
+This is the signature of marshaller functions, required to marshall
+arrays of parameter values to signal emissions into C language callback
+invocations. It is merely an alias to @GClosureMarshal since the @GClosure
+mechanism takes over responsibility of actuall function invocation for the
+signal system.
 </para>
 
 
@@ -124,16 +128,25 @@ value returned by the last callback.
 
 <!-- ##### ENUM GSignalFlags ##### -->
 <para>
-
+The signal flags are used to specify a signal's behaviour, the overrall
+signal description outlines how especially the RUN flags controll the
+stages of a signal emission.
 </para>
 
-@G_SIGNAL_RUN_FIRST: 
-@G_SIGNAL_RUN_LAST: 
-@G_SIGNAL_RUN_CLEANUP: 
-@G_SIGNAL_NO_RECURSE: 
-@G_SIGNAL_DETAILED: 
-@G_SIGNAL_ACTION: 
-@G_SIGNAL_NO_HOOKS: 
+@G_SIGNAL_RUN_FIRST:   Invoke the object method handler in the first emission stage.
+@G_SIGNAL_RUN_LAST:    Invoke the object method handler in the third emission stage.
+@G_SIGNAL_RUN_CLEANUP: Invoke the object method handler in the last emission stage.
+@G_SIGNAL_NO_RECURSE:  Signals being emitted for an object while currently being in
+                       emission for this very object will not be emitted recursively,
+                       but instead cause the first emission to be restarted.
+@G_SIGNAL_DETAILED:    This signal supports "::detail" appendixes to the signal name
+                       upon hanlder connections and emissions.
+@G_SIGNAL_ACTION:      Action signals are signals that may freely be emitted on alive
+                       objects from user code via g_signal_emit() and friends, without
+                       the need of being embedded into extra code that performs pre or
+                       post emission adjustments on the object. They can also be thought
+                       of as by third-party code generically callable obejct methods.
+@G_SIGNAL_NO_HOOKS:    No emissions hooks are supported for this signal.
 
 <!-- ##### ENUM GSignalMatchType ##### -->
 <para>
@@ -168,6 +181,23 @@ filled in by the g_signal_query() function.
                       @gpointer     data2);
 </programlisting></msgtext>
 
+<!-- ##### FUNCTION g_signal_newc ##### -->
+<para>
+
+</para>
+
+@signal_name: 
+@itype: 
+@signal_flags: 
+@class_offset: 
+@accumulator: 
+@c_marshaller: 
+@return_type: 
+@n_params: 
+@Varargs: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_signal_newv ##### -->
 <para>
 
@@ -185,15 +215,36 @@ filled in by the g_signal_query() function.
 @Returns: 
 
 
-<!-- ##### FUNCTION g_signal_emitv ##### -->
+<!-- ##### FUNCTION g_signal_new_valist ##### -->
 <para>
 
 </para>
 
-@instance_and_params: 
-@signal_id: 
-@detail: 
-@return_value: 
+@signal_name: 
+@itype: 
+@signal_flags: 
+@class_closure: 
+@accumulator: 
+@c_marshaller: 
+@return_type: 
+@n_params: 
+@args: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_signal_query ##### -->
+<para>
+Query the signal system for in-depth information about a
+specific signal. This function will fill in a user-provided
+structure to hold signal-specific information. If an invalid
+dignal id is passed in, the @signal_id member of the @GSignalQuery
+is 0. All members filled into the @GSignalQuery structure should
+be considered constant and have to be left untouched.
+</para>
+
+@signal_id: 	The signal id of the signal to query information for
+@query: 	A user provided structure that is filled in with constant
+		values upon success.
 
 
 <!-- ##### FUNCTION g_signal_lookup ##### -->
@@ -215,21 +266,6 @@ filled in by the g_signal_query() function.
 @Returns: 
 
 
-<!-- ##### FUNCTION g_signal_query ##### -->
-<para>
-Query the signal system for in-depth information about a
-specific signal. This function will fill in a user-provided
-structure to hold signal-specific information. If an invalid
-dignal id is passed in, the @signal_id member of the @GSignalQuery
-is 0. All members filled into the @GSignalQuery structure should
-be considered constant and have to be left untouched.
-</para>
-
-@signal_id: 	The signal id of the signal to query information for
-@query: 	A user provided structure that is filled in with constant
-		values upon success.
-
-
 <!-- ##### FUNCTION g_signal_list_ids ##### -->
 <para>
 List the signals by id, that a certain instance or interface type
@@ -240,6 +276,93 @@ g_signal_query().
 @itype: 	Instance or interface type
 @n_ids: 	Location to store the number of signal ids for @itype
 @Returns: 	Newly allocated array of signal ids
+
+
+<!-- ##### FUNCTION g_signal_emit ##### -->
+<para>
+
+</para>
+
+@instance: 
+@signal_id: 
+@detail: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_signal_emit_by_name ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_signal_emitv ##### -->
+<para>
+
+</para>
+
+@instance_and_params: 
+@signal_id: 
+@detail: 
+@return_value: 
+
+
+<!-- ##### FUNCTION g_signal_emit_valist ##### -->
+<para>
+
+</para>
+
+@instance: 
+@signal_id: 
+@detail: 
+@var_args: 
+
+
+<!-- ##### FUNCTION g_signal_connect_data ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@data: 
+@destroy_data: 
+@swapped: 
+@after: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_signal_connect_object ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@gobject: 
+@swapped: 
+@after: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_signal_connect_closure ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@closure: 
+@after: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@signal_id: 
+@detail: 
 
 
 <!-- ##### FUNCTION g_signal_connect_closure_by_id ##### -->
@@ -450,5 +573,23 @@ and @detail quark.
 @force_detail_quark: 	%TRUE forces creation of a GQuark for the detail
 @Returns: 		Whether the signal name could successfully be parsed and
 			@signal_id_p and @detail_p contain valid return values.
+
+
+<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
+<para>
+
+</para>
+
+@instance: 
+
+
+<!-- ##### FUNCTION g_signal_type_cclosure_new ##### -->
+<para>
+
+</para>
+
+@itype: 
+@struct_offset: 
+@Returns: 
 
 

@@ -94,6 +94,30 @@ Standard value types
 @value: 
 
 
+<!-- ##### MACRO G_IS_VALUE_POINTER ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_IS_VALUE_CCALLBACK ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_IS_VALUE_PARAM ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
 <!-- ##### FUNCTION g_value_set_char ##### -->
 <para>
 
@@ -265,6 +289,15 @@ Standard value types
 @v_string: 
 
 
+<!-- ##### FUNCTION g_value_set_static_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@v_string: 
+
+
 <!-- ##### FUNCTION g_value_get_string ##### -->
 <para>
 
@@ -281,5 +314,79 @@ Standard value types
 
 @value: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_value_set_param ##### -->
+<para>
+
+</para>
+
+@value: 
+@param: 
+
+
+<!-- ##### FUNCTION g_value_get_param ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_dup_param ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_get_ccallback ##### -->
+<para>
+
+</para>
+
+@value: 
+@callback_func: 
+@callback_data: 
+
+
+<!-- ##### FUNCTION g_value_get_pointer ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_set_pointer ##### -->
+<para>
+
+</para>
+
+@value: 
+@v_pointer: 
+
+
+<!-- ##### FUNCTION g_value_set_ccallback ##### -->
+<para>
+
+</para>
+
+@value: 
+@callback_func: 
+@callback_data: 
+
+
+<!-- ##### FUNCTION g_value_set_instance ##### -->
+<para>
+
+</para>
+
+@value: 
+@instance: 
 
 
