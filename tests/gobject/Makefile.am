@@ -50,6 +50,7 @@ test_programs =					\
 	ifacecheck				\
 	ifaceinit				\
 	ifaceinherit				\
+	ifaceproperties				\
 	override
 
 check_PROGRAMS = $(test_programs)
