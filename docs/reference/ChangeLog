@@ -1,3 +1,8 @@
+2004-12-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/misc_utils.sgml: Clarify g_get_prgname docs.  
+	(#161480, Danny Milo)
+
 2004-12-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/version.sgml: Improve wording.  (#161484,
