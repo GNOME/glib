@@ -1494,7 +1494,7 @@ g_filename_from_uri (const gchar *uri,
   if (!has_case_prefix (uri, "file:/"))
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		   _("The URI '%s' is not an absolute URI using the file scheme"),
+		   _("The URI '%s' is not an absolute URI using the \"file\" scheme"),
 		   uri);
       return NULL;
     }
