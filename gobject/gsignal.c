@@ -883,31 +883,26 @@ g_signal_list_ids (GType  itype,
 }
 
 guint
-g_signal_new (const gchar       *signal_name,
-	      GType              itype,
-	      GSignalFlags       signal_flags,
-	      GClosure          *class_closure,
-	      GSignalAccumulator accumulator,
-	      GSignalCMarshaller c_marshaller,
-	      GType              return_type,
-	      guint              n_params,
-	      ...)
+g_signal_new_valist (const gchar       *signal_name,
+                     GType              itype,
+                     GSignalFlags       signal_flags,
+                     GClosure          *class_closure,
+                     GSignalAccumulator accumulator,
+                     GSignalCMarshaller c_marshaller,
+                     GType              return_type,
+                     guint              n_params,
+                     va_list            args)
 {
   GType *param_types;
   guint i;
-  va_list args;
   guint signal_id;
 
   if (n_params > 0)
     {
       param_types = g_new (GType, n_params);
 
-      va_start (args, n_params);
-
       for (i = 0; i < n_params; i++)
 	param_types[i] = va_arg (args, GType);
-
-      va_end (args);
     }
   else
     param_types = NULL;
@@ -917,6 +912,35 @@ g_signal_new (const gchar       *signal_name,
 			     return_type, n_params, param_types);
   g_free (param_types);
 
+  return signal_id;
+}
+
+guint
+g_signal_newc (const gchar	 *signal_name,
+               GType		  itype,
+               GSignalFlags	  signal_flags,
+               guint              class_offset,
+               GSignalAccumulator accumulator,
+               GSignalCMarshaller c_marshaller,
+               GType		  return_type,
+               guint		  n_params,
+               ...)
+{
+  va_list args;
+  guint signal_id;
+
+  g_return_val_if_fail (signal_name != NULL, 0);
+  
+  va_start (args, n_params);
+
+  signal_id = g_signal_new_valist (signal_name, itype, signal_flags,
+                                   g_signal_type_cclosure_new (itype,
+                                                               class_offset),
+                                   accumulator, c_marshaller,
+                                   return_type, n_params, args);
+
+  va_end (args);
+ 
   return signal_id;
 }
 

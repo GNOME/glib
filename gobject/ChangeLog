@@ -1,3 +1,12 @@
+2000-12-15  Havoc Pennington  <hp@pobox.com>
+
+	* gobject.c (g_object_do_class_init): use g_signal_newc
+
+	* gsignal.c (g_signal_newc): convenience function for signals
+	created from C
+	(g_signal_new_valist): added
+	(g_signal_new): removed
+
 Fri Dec 15 04:40:23 2000  Tim Janik  <timj@gtk.org>
 
 	* gparam.[hc]: add an instance member value_type so the default

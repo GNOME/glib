@@ -87,15 +87,6 @@ struct _GSignalQuery
 
 
 /* --- signals --- */
-guint	g_signal_new			      (const gchar	 *signal_name,
-					       GType		  itype,
-					       GSignalFlags	  signal_flags,
-					       GClosure		 *class_closure,
-					       GSignalAccumulator accumulator,
-					       GSignalCMarshaller c_marshaller,
-					       GType		  return_type,
-					       guint		  n_params,
-					       ...);
 guint	g_signal_newv			      (const gchar	 *signal_name,
 					       GType		  itype,
 					       GSignalFlags	  signal_flags,
@@ -105,6 +96,24 @@ guint	g_signal_newv			      (const gchar	 *signal_name,
 					       GType		  return_type,
 					       guint		  n_params,
 					       GType		 *param_types);
+guint	g_signal_new_valist                   (const gchar	 *signal_name,
+					       GType		  itype,
+					       GSignalFlags	  signal_flags,
+					       GClosure		 *class_closure,
+					       GSignalAccumulator accumulator,
+					       GSignalCMarshaller c_marshaller,
+					       GType		  return_type,
+					       guint		  n_params,
+					       va_list            args);
+guint	g_signal_newc			      (const gchar	 *signal_name,
+					       GType		  itype,
+					       GSignalFlags	  signal_flags,
+                                               guint              class_offset,
+					       GSignalAccumulator accumulator,
+					       GSignalCMarshaller c_marshaller,
+					       GType		  return_type,
+					       guint		  n_params,
+					       ...);
 void	g_signal_emitv			      (const GValue	 *instance_and_params,
 					       guint		  signal_id,
 					       GQuark		  detail,

@@ -299,25 +299,23 @@ g_object_do_class_init (GObjectClass *class)
 							   "and a data pointer",
 							   G_PARAM_WRITABLE));
   gobject_signals[PROPERTIES_CHANGED] =
-    g_signal_new ("properties_changed",
-		  G_TYPE_FROM_CLASS (class),
-		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  g_signal_type_cclosure_new (G_TYPE_FROM_CLASS (class),
-					      G_STRUCT_OFFSET (GObjectClass, properties_changed)),
-		  NULL, /* accumulator */
-		  g_cclosure_marshal_VOID__UINT_POINTER,
-		  G_TYPE_NONE,
-		  2, G_TYPE_UINT, G_TYPE_POINTER);
+    g_signal_newc ("properties_changed",
+                   G_TYPE_FROM_CLASS (class),
+                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
+                   G_STRUCT_OFFSET (GObjectClass, properties_changed),
+                   NULL, /* accumulator */
+                   g_cclosure_marshal_VOID__UINT_POINTER,
+                   G_TYPE_NONE,
+                   2, G_TYPE_UINT, G_TYPE_POINTER);
   gobject_signals[NOTIFY] =
-    g_signal_new ("notify",
-		  G_TYPE_FROM_CLASS (class),
-		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
-		  g_signal_type_cclosure_new (G_TYPE_FROM_CLASS (class),
-					      G_STRUCT_OFFSET (GObjectClass, notify)),
-		  NULL, /* accumulator */
-		  g_cclosure_marshal_VOID__PARAM,
-		  G_TYPE_NONE,
-		  1, G_TYPE_PARAM);
+    g_signal_newc ("notify",
+                   G_TYPE_FROM_CLASS (class),
+                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+                   G_STRUCT_OFFSET (GObjectClass, notify),
+                   NULL, /* accumulator */
+                   g_cclosure_marshal_VOID__PARAM,
+                   G_TYPE_NONE,
+                   1, G_TYPE_PARAM);
 }
 
 void
