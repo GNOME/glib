@@ -441,7 +441,7 @@ GString*
 g_string_down (GString *fstring)
 {
   GRealString *string = (GRealString*)fstring;
-  gchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -460,7 +460,7 @@ GString*
 g_string_up (GString *fstring)
 {
   GRealString *string = (GRealString*)fstring;
-  gchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 

@@ -929,7 +929,7 @@ g_printf_string_upper_bound (const gchar* format,
 void
 g_strdown (gchar *string)
 {
-  register gchar *s;
+  register guchar *s;
 
   g_return_if_fail (string != NULL);
 
@@ -945,7 +945,7 @@ g_strdown (gchar *string)
 void
 g_strup (gchar *string)
 {
-  register gchar *s;
+  register guchar *s;
 
   g_return_if_fail (string != NULL);
 
@@ -1103,7 +1103,7 @@ g_strescape (gchar *string)
 gchar*
 g_strchug (gchar *string)
 {
-  gchar *start;
+  guchar *start;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -1125,7 +1125,8 @@ g_strchomp (gchar *string)
   if (!*string)
     return string;
 
-  for (s = string + strlen (string) - 1; s >= string && isspace (*s); s--)
+  for (s = string + strlen (string) - 1; s >= string && isspace ((guchar)*s); 
+       s--)
     *s = '\0';
 
   return string;

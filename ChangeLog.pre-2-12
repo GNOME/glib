@@ -1,3 +1,9 @@
+1999-06-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gdate.c, gstrfuncs.c, gstring.c: Fixed the use of the
+	is..... and to..... macros, which take unsigned chars, not chars!
+	Thanks to Morten Welinder <terra@diku.dk> for pointing this out.
+
 Thu Jun  3 16:30:31 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* gerror.c (g_on_error_query): check isatty() before querying so

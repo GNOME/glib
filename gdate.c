@@ -453,7 +453,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 {
   gchar num[4][NUM_LEN+1];
   gint i;
-  const gchar *s;
+  const guchar *s;
   
   /* We count 4, but store 3; so we can give an error
    * if there are 4.
