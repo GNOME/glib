@@ -1,3 +1,8 @@
+2004-03-02  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c: Fixed missing definition for ppc code. Fix by
+	Mark McLoughlin <mark@skynet.ie>.
+
 Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.5 ===

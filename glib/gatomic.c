@@ -340,6 +340,7 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 				   gint oldval, 
 				   gint newval)
 {
+  gpointer result;
   __asm __volatile ("sync\n"
                     "1: lwarx   %0,0,%1\n"
                     "   extsw   %0,%0\n"
