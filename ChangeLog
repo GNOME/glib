@@ -1,3 +1,10 @@
+Mon Jan 28 17:56:10 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h: Only use __FUNCTION__, __PRETTY_FUNCTION__ for
+	G_GNUC_FUNCTION, G_GNUC_PRETTY_FUNCTION, G_STRLOC when __GNUC__ <
+	3, since in 3.0.3 the semantics of these functions were changed in
+	an incompatible way. (#69097)
+
 2002-01-28  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: Some documentation fixes/elaborations
