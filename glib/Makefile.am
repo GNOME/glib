@@ -14,7 +14,7 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST = \
 	glib.m4			\
-	glib.spec		\
+	glib.spec.in		\
 	acglib.m4		\
 	sanity_check		\
 	README.win32		\
@@ -97,3 +97,6 @@ sanity:
 
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`
+
+dist-hook:
+	cp glib.spec $(distdir)

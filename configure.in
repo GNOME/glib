@@ -1244,6 +1244,7 @@ g_mutex_contents="$glib_cv_byte_contents_gmutex"
 ])
 
 AC_OUTPUT([
+glib.spec
 Makefile
 glib-config
 gmodule/gmoduleconf.h
