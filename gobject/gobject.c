@@ -589,7 +589,7 @@ object_set_property (GObject             *object,
     {
       gchar *contents = g_strdup_value_contents (value);
 
-      g_warning ("value \"%s\" of type `%s' is invalid for property `%s' of type `%s'",
+      g_warning ("value \"%s\" of type `%s' is invalid or out of range for property `%s' of type `%s'",
 		 contents,
 		 G_VALUE_TYPE_NAME (value),
 		 pspec->name,
