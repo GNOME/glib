@@ -399,6 +399,7 @@ EXPORTS
 	g_string_up
 	g_strjoinv
 	g_strescape
+	g_strncasecmp
 	g_strndup
 	g_strnfill
 	g_strreverse
