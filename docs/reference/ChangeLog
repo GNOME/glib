@@ -1,3 +1,7 @@
+Wed Aug 18 23:38:52 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* README: Added some simple build instructions.
+
 Wed Aug 18 23:11:28 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* Import into CVS of glib-reference-1.1.3

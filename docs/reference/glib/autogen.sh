@@ -42,6 +42,7 @@ if test -z "$*"; then
         echo "to pass any to it, please specify them on the $0 command line."
 fi
 
+aclocal $ACLOCAL_FLAGS
 automake -a $am_opt
 autoconf
 cd $ORIGDIR
