@@ -1,5 +1,7 @@
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/option.sgml: Add an example.
+
 	* glib/glib-sections.txt: Add G_OPTION_REMAINING
 
 	* glib/tmpl/option.sgml: Add docs.

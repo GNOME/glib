@@ -221,7 +221,8 @@ g_option_context_get_help_enabled (GOptionContext *context)
  * g_option_context_parse() treats unknown options as error.
  * 
  * This setting does not affect non-option arguments (i.e. arguments 
- * which don't start with a dash).
+ * which don't start with a dash). But note that GOption cannot reliably
+ * determine whether a non-option belongs to a preceding unknown option.
  *
  * Since: 2.6
  **/

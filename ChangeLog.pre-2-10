@@ -1,5 +1,7 @@
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c: Doc additions.
+
 	* glib/goption.c (parse_arg): Convert filenames to UTF-8 on
 	Windows.
 
