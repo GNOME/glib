@@ -7,6 +7,7 @@
 	* gutils.c
 	* gwin32.c
 	* testglib.c
+	* Makefile.am
 	* makefile.{cygwin,msc}: Move the Win32-only functions to the new
 	file gwin32.c
 

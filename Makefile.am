@@ -21,6 +21,7 @@ EXTRA_DIST = \
 	makefile.cygwin		\
 	giowin32.c		\
 	glibconfig.h.win32	\
+	gwin32.c		\
 	config.h.win32		\
 	build-dll
 
