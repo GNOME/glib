@@ -928,10 +928,6 @@ case "$CONFIG_OTHER" in
 #ifndef GLIBCONFIG_H
 #define GLIBCONFIG_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 _______EOF
 
 	if test x$glib_limits_h = xyes; then
@@ -951,6 +947,10 @@ _______EOF
 	fi
 
 	cat >> $outfile <<_______EOF
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 #define G_MINFLOAT	$glib_mf
 #define G_MAXFLOAT	$glib_Mf

@@ -1,3 +1,9 @@
+2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule.h: include glib.h before doing extern "C". Makes some
+	C++ compiler happy. Reported by Denis Vakatov
+	<vakatov@peony.nlm.nih.gov>.
+
 Wed Mar  1 05:34:47 2000  Tim Janik  <timj@gtk.org>
 
 	* gmodule-beos.c (_g_module_symbol): do not return NULL symbols.

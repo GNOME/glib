@@ -1,3 +1,9 @@
+2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: glibconfig.h now includes files outside of the
+	extern "C" block. Makes some C++ compiler happy. Reported by Denis
+	Vakatov <vakatov@peony.nlm.nih.gov>.
+
 Sat Jul 15 09:14:35 2000  Tim Janik  <timj@gtk.org>
 
         * gstrfuncs.c (g_strncasecmp): fixed an off by 0 error (yeah,
