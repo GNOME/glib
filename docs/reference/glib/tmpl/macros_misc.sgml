@@ -253,18 +253,20 @@ See the GNU C documentation for details.
 
 <!-- ##### MACRO G_HAVE_GNUC_VISIBILITY ##### -->
 <para>
-
+This macro is defined as 1 if the the compiler supports ELF visibility 
+attributes (currently only <command>gcc</command>).
 </para>
 
+Since: 2.6
 
 
 <!-- ##### MACRO G_GNUC_INTERNAL ##### -->
 <para>
 Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 
-compiler is <command>gcc</command>. This attribute can be used for marking 
-library functions as being used internally to the lib only, to not create 
-inefficient PLT entries. Note that static functions do not need to be marked 
-as internal in this way. See the GNU C documentation for details. 
+compiler supports it  (currently only <command>gcc</command>). This attribute 
+can be used for marking library functions as being used internally to the lib 
+only, to not create inefficient PLT entries. Note that static functions do not 
+need to be marked as internal in this way. See the GNU C documentation for details. 
 </para>
 
 Since: 2.6
@@ -308,17 +310,18 @@ Expands to a string identifying the current code position.
 
 <!-- ##### MACRO G_STRFUNC ##### -->
 <para>
-
+Expands to a string identifying the current function. 
 </para>
 
+@Since: 2.4
 
 
 <!-- ##### MACRO G_GINT16_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for constructing printf() conversion
-specifiers for values of type #gint16. It is a string literal, but doesn't
-include the percent-sign, such that you can add precision and length
-modifiers between percent-sign and conversion specifier and append a 
+specifiers for values of type #gint16 or #guint16. It is a string literal, 
+but doesn't include the percent-sign, such that you can add precision and 
+length modifiers between percent-sign and conversion specifier and append a 
 conversion specifier.
 </para>
 
@@ -368,7 +371,7 @@ printing values of type #guint16. See also #G_GINT16_FORMAT.
 <!-- ##### MACRO G_GINT32_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for constructing printf() conversion
-specifiers for values of type #gint32. See also #G_GINT16_MODIFIER.
+specifiers for values of type #gint32 or #guint32. See also #G_GINT16_MODIFIER.
 </para>
 
 @Since: 2.4
@@ -393,7 +396,7 @@ printing values of type #guint32. See also #G_GINT16_FORMAT.
 <!-- ##### MACRO G_GINT64_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for constructing printf() conversion
-specifiers for values of type #gint64. See also #G_GINT16_MODIFIER.
+specifiers for values of type #gint64 or #guint64. See also #G_GINT16_MODIFIER.
 </para>
 
 <note>
@@ -445,22 +448,28 @@ recommended for parsing anyway; consider using g_strtoull() instead.
 
 <!-- ##### MACRO G_GSIZE_MODIFIER ##### -->
 <para>
-
+The platform dependent length modifier for constructing printf() conversion
+specifiers for values of type #gsize or #gssize. See also #G_GINT16_MODIFIER.
 </para>
 
+@Since: 2.6
 
 
 <!-- ##### MACRO G_GSIZE_FORMAT ##### -->
 <para>
-
+This is the platform dependent conversion specifier for scanning and
+printing values of type #gsize. See also #G_GINT16_FORMAT.
 </para>
 
+@Since: 2.6
 
 
 <!-- ##### MACRO G_GSSIZE_FORMAT ##### -->
 <para>
-
+This is the platform dependent conversion specifier for scanning and
+printing values of type #gssize. See also #G_GINT16_FORMAT.
 </para>
 
+@Since: 2.6
 
 

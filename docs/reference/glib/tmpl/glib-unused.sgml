@@ -1,3 +1,49 @@
+<!-- ##### SECTION ./tmpl/desktop_entry.sgml:Long_Description ##### -->
+<para>
+The "GDesktopEntry" parser is intended to parse files written to
+the <ulink
+url="http://www.freedesktop.org/Standards/desktop-entry-spec">Desktop
+Entry Specification</ulink>.  It supports deserialization of
+desktop entries from files and in-memory data.  Desktop entries
+are used for a variety of things including menus, application
+MIME type registration, and launchers.
+</para>
+
+<para>
+To load an existing desktop entry from a data directory (as
+returned by g_get_user_data_dir() and g_get_system_data_dirs())
+use g_desktop_entry_new_from_data_dirs().  To load an existing
+desktop entry from an arbitrary location on the file system use
+g_desktop_entry_new_from_file().  If the desktop entry is already
+in memory use g_desktop_entry_new_from_data().  Once the desktop 
+entry is loaded its keys can be queried using the g_desktop_entry_get 
+family of functions.
+</para>
+
+<para>
+To create a new desktop entry first call g_desktop_entry_new().
+Then, call the g_desktop_entry_set family of functions.  Next,
+call g_desktop_entry_to_data() to output the desktop entry to 
+a byte array, which can be written to disk or sent over a
+network.  Finally, call g_desktop_entry_free() to deallocate the
+#GDesktopEntry object returned by g_desktop_entry_new().
+</para>
+
+
+<!-- ##### SECTION ./tmpl/desktop_entry.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/desktop_entry.sgml:Short_Description ##### -->
+serializes and deserializes a desktop entry.
+
+
+<!-- ##### SECTION ./tmpl/desktop_entry.sgml:Title ##### -->
+Desktop Entry Parser
+
+
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 
@@ -51,6 +97,46 @@
 @s2: 
 @Returns: 
 
+<!-- ##### STRUCT GDesktopEntry ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GDesktopEntryError ##### -->
+<para>
+Error codes returned by desktop entry parsing.
+</para>
+
+@G_DESKTOP_ENTRY_ERROR_UNKNOWN_ENCODING: text being parsed is not UTF-8 and
+cannot be guessed.
+@G_DESKTOP_ENTRY_ERROR_BAD_START_GROUP: desktop entry does not start with a
+legal start group.
+@G_DESKTOP_ENTRY_ERROR_PARSE: desktop entry is empty or contains invalid
+data.
+@G_DESKTOP_ENTRY_ERROR_NOT_FOUND: valid desktop entry could not be found.
+@G_DESKTOP_ENTRY_ERROR_KEY_NOT_FOUND: desktop entry does not have requested
+key.
+@G_DESKTOP_ENTRY_ERROR_GROUP_NOT_FOUND: desktop entry does not have requested
+group
+@G_DESKTOP_ENTRY_ERROR_INVALID_VALUE: desktop entry contains key which has
+value that cannot be validated.
+
+<!-- ##### ENUM GDesktopEntryFlags ##### -->
+<para>
+#GDesktopEntry supports a few flags for tweaking performance during
+deserialization.  #G_DESKTOP_ENTRY_DISCARD_COMMENTS and 
+#G_DESKTOP_ENTRY_DISCARD_TRANSLATIONS will reduce memory footprint,
+and #G_DESKTOP_ENTRY_GENERATE_LOOKUP_MAP will increase key lookup speed.
+</para>
+
+@G_DESKTOP_ENTRY_NONE: use parser defaults
+@G_DESKTOP_ENTRY_DISCARD_COMMENTS:  Discard all lines that are blank
+or start with "#".
+@G_DESKTOP_ENTRY_DISCARD_TRANSLATIONS: Only retain translations that
+are returned by g_get_language_names().
+@G_DESKTOP_ENTRY_GENERATE_LOOKUP_MAP: Generate a lookup map for key names to make lookups constant time at the cost of more memory.
+
 <!-- ##### USER_FUNCTION GErrorFunc ##### -->
 <para>
 Specifies the type of function passed to g_set_error_handler().
@@ -102,6 +188,14 @@ Specifies the type of function passed to g_set_warning_handler().
 <!-- ##### MACRO G_CHANNEL_ERROR ##### -->
 <para>
 
+</para>
+
+
+<!-- ##### MACRO G_DESKTOP_ENTRY_ERROR ##### -->
+<para>
+Error domain for desktop entry parsing. Errors in this domain will
+be from the #GDesktopEntryError enumeration. See #GError for information on 
+error domains.
 </para>
 
 
@@ -211,25 +305,328 @@ in any UNIX manual.
 
 @Returns: 
 
-<!-- ##### FUNCTION g_get_language_names ##### -->
+<!-- ##### FUNCTION g_desktop_entry_escape_strings ##### -->
 <para>
 
 </para>
 
+@entry: 
+@should_escape: 
+
+<!-- ##### FUNCTION g_desktop_entry_free ##### -->
+<para>
+
+</para>
+
+@entry: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_boolean ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@error: 
 @Returns: 
 
-<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
+<!-- ##### FUNCTION g_desktop_entry_get_boolean_list ##### -->
 <para>
 
 </para>
 
+@entry: 
+@group_name: 
+@key: 
+@length: 
+@error: 
 @Returns: 
 
-<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
+<!-- ##### FUNCTION g_desktop_entry_get_groups ##### -->
 <para>
 
 </para>
 
+@entry: 
+@length: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_integer ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_integer_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_keys ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@length: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_locale_string ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@locale: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_locale_string_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@locale: 
+@length: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_start_group ##### -->
+<para>
+
+</para>
+
+@entry: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_string ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_get_string_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_has_group ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_has_key ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_new ##### -->
+<para>
+
+</para>
+
+@flags: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_new_from_data ##### -->
+<para>
+
+</para>
+
+@data: 
+@length: 
+@legal_start_groups: 
+@flags: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_new_from_data_dirs ##### -->
+<para>
+
+</para>
+
+@file: 
+@full_path: 
+@legal_start_groups: 
+@flags: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_new_from_file ##### -->
+<para>
+
+</para>
+
+@file: 
+@legal_start_groups: 
+@flags: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_desktop_entry_remove_group ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_remove_key ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_boolean ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@boolean: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_boolean_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_integer ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@integer: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_integer_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_locale_string ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@locale: 
+@string: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_locale_string_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@locale: 
+@list: 
+@length: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_string ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@string: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_set_string_list ##### -->
+<para>
+
+</para>
+
+@entry: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+@error: 
+
+<!-- ##### FUNCTION g_desktop_entry_to_data ##### -->
+<para>
+
+</para>
+
+@entry: 
+@length: 
+@error: 
 @Returns: 
 
 <!-- ##### FUNCTION g_io_channel_error_quark ##### -->

@@ -595,18 +595,22 @@ for the default main context.
 
 <!-- ##### TYPEDEF GPid ##### -->
 <para>
-
+A type which is used to hold a process identification. 
+On Unix, processes are identified by a process id (an 
+integer), while Windows uses process handles (which are 
+pointers).
 </para>
 
 
 <!-- ##### USER_FUNCTION GChildWatchFunc ##### -->
 <para>
-
+The type of functions to be called when a child exists.
 </para>
 
-@pid: 
-@status: 
-@data: 
+@pid: the process id of the child process
+@status: Status information about the child process,
+  see waitpid(2) for more information about this field
+@data: user data passed to g_child_watch_add() 
 
 
 <!-- ##### FUNCTION g_child_watch_source_new ##### -->

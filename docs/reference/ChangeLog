@@ -1,3 +1,18 @@
+2004-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/gobject-sections.txt: Additions.
+
+	* gobject/Makefile.am (IGNORE_HFILES): Add gobjectalias.h
+
+	* glib/tmpl/main.sgml: Document GChildWatchFunc
+
+	* glib/tmpl/keyfile.sgml: New template.
+
+	* glib/glib-sections.txt: Additions.
+
+	* glib/tmpl/macros_misc.sgml: Document some more of
+	the macros.
+
 2004-10-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-docs.sgml:  Add GKeyFile section, add

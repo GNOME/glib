@@ -15,6 +15,9 @@ DOC_SOURCE_DIR=../../../gobject
 HFILE_GLOB=$(top_srcdir)/gobject/*.h
 CFILE_GLOB=$(top_srcdir)/gobject/*.c
 
+# Headers to ignore
+IGNORE_HFILES=gobjectalias.h
+
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \

@@ -820,6 +820,7 @@ G_BREAKPOINT
 
 <SUBSECTION Private>
 g_return_if_fail_warning
+g_assert_warning
 </SECTION>
 
 <SECTION>
@@ -959,7 +960,7 @@ GTranslateFunc
 g_option_group_set_translate_func
 g_option_group_set_translation_domain
 <SUBSECTION Private>
-g_option_context_error_quark
+g_option_error_quark
 </SECTION>
 
 
@@ -1400,28 +1401,34 @@ g_key_file_get_groups
 g_key_file_get_keys
 g_key_file_has_group
 g_key_file_has_key
-g_key_file_remove_group
-g_key_file_remove_key
 
 <SUBSECTION>
 g_key_file_get_value
-g_key_file_set_value
 g_key_file_get_string
-g_key_file_set_string
 g_key_file_get_locale_string
-g_key_file_set_locale_string
 g_key_file_get_boolean
-g_key_file_set_boolean
 g_key_file_get_integer
-g_key_file_set_integer
 g_key_file_get_string_list
-g_key_file_set_string_list
 g_key_file_get_locale_string_list
-g_key_file_set_locale_string_list
 g_key_file_get_boolean_list
-g_key_file_set_boolean_list
 g_key_file_get_integer_list
+g_key_file_get_comment
+
+<SUBSECTION>
+g_key_file_set_value
+g_key_file_set_string
+g_key_file_set_locale_string
+g_key_file_set_boolean
+g_key_file_set_integer
+g_key_file_set_string_list
+g_key_file_set_locale_string_list
+g_key_file_set_boolean_list
 g_key_file_set_integer_list
+g_key_file_set_comment
+g_key_file_remove_group
+g_key_file_remove_key
+g_key_file_remove_comment
+
 <SUBSECTION Private>
 g_key_file_error_quark
 </SECTION>
@@ -1470,7 +1477,6 @@ g_completion_free
 MAXPATHLEN
 pid_t
 pipe
-ftruncate
 
 g_win32_error_message
 g_win32_getlocale
@@ -2060,6 +2066,7 @@ g_filename_to_utf8
 g_filename_from_utf8
 g_filename_from_uri
 g_filename_to_uri
+g_uri_list_extract_uris
 g_locale_from_utf8
 GConvertError
 

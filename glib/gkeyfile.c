@@ -216,7 +216,6 @@ g_key_file_clear (GKeyFile *key_file)
 
 /**
  * g_key_file_new:
- * @flags: flags from #GKeyFileFlags
  *
  * Creates a new empty #GKeyFile object. Use g_key_file_load_from_file(),
  * g_key_file_load_from_data() or g_key_file_load_from_data_dirs() to

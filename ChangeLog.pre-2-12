@@ -1,5 +1,10 @@
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c (g_key_file_new): Fix docs.
+
+	* glib/gkeyfile.h: Use the same parameter names as in
+	the implementation and the docs.
+
 	* glib/gwin32.c (g_win32_get_windows_version): Make this
 	function thread-safe in the GLib style.
 	* glib/gthreadinit.h: 

@@ -1,0 +1,463 @@
+<!-- ##### SECTION Title ##### -->
+Key-value file parser
+
+<!-- ##### SECTION Short_Description ##### -->
+parses <filename>.ini</filename>-like config files
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GKeyFile ##### -->
+<para>
+The <structname>GKeyFile</structname> struct contains only private fields
+and should not be used directly.
+</para>
+
+
+<!-- ##### MACRO G_KEY_FILE_ERROR ##### -->
+<para>
+Error domain for key file parsing. Errors in this domain will
+be from the #GKeyFileError enumeration. See #GError for information on 
+error domains.
+</para>
+
+
+
+<!-- ##### ENUM GKeyFileError ##### -->
+<para>
+Error codes returned by key file parsing.
+</para>
+
+@G_KEY_FILE_ERROR_UNKNOWN_ENCODING: the text being parsed was in an unknown encoding
+@G_KEY_FILE_ERROR_PARSE: document was ill-formed
+@G_KEY_FILE_ERROR_NOT_FOUND: the file was not found
+@G_KEY_FILE_ERROR_KEY_NOT_FOUND: a requested key was not found
+@G_KEY_FILE_ERROR_GROUP_NOT_FOUND: a requested group was not found
+@G_KEY_FILE_ERROR_INVALID_VALUE: a value could not be parsed
+
+<!-- ##### ENUM GKeyFileFlags ##### -->
+<para>
+Flags which influence the parsing.
+</para>
+
+@G_KEY_FILE_NONE: No flags, default behaviour
+@G_KEY_FILE_KEEP_COMMENTS: Use this flag if you plan to write the (possibly modified)
+  contents of the key file back to a file; otherwise all comments will be lost when
+  the key file is written back.
+@G_KEY_FILE_KEEP_TRANSLATIONS: Use this flag if you plan to write the (possibly modified)
+  contents of the key file back to a file; otherwise only the translations for the current
+  language will be written back.
+
+<!-- ##### FUNCTION g_key_file_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_free ##### -->
+<para>
+
+</para>
+
+@key_file: 
+
+
+<!-- ##### FUNCTION g_key_file_set_list_separator ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@separator: 
+
+
+<!-- ##### FUNCTION g_key_file_load_from_file ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@file: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_load_from_data ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@data: 
+@length: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_load_from_data_dirs ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@file: 
+@full_path: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_to_data ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_start_group ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_groups ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_keys ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_has_group ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_has_key ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_value ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_string ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_locale_string ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@locale: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_boolean ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_integer ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_string_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_locale_string_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@locale: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_boolean_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_integer_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_get_comment ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_key_file_set_value ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
+
+
+<!-- ##### FUNCTION g_key_file_set_string ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@string: 
+
+
+<!-- ##### FUNCTION g_key_file_set_locale_string ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@locale: 
+@string: 
+
+
+<!-- ##### FUNCTION g_key_file_set_boolean ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
+<!-- # Unused Parameters # -->
+@boolean: 
+
+
+<!-- ##### FUNCTION g_key_file_set_integer ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@value: 
+<!-- # Unused Parameters # -->
+@integer: 
+
+
+<!-- ##### FUNCTION g_key_file_set_string_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+
+
+<!-- ##### FUNCTION g_key_file_set_locale_string_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@locale: 
+@list: 
+@length: 
+
+
+<!-- ##### FUNCTION g_key_file_set_boolean_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+
+
+<!-- ##### FUNCTION g_key_file_set_integer_list ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@list: 
+@length: 
+
+
+<!-- ##### FUNCTION g_key_file_set_comment ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@comment: 
+@error: 
+
+
+<!-- ##### FUNCTION g_key_file_remove_group ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@error: 
+
+
+<!-- ##### FUNCTION g_key_file_remove_key ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+
+
+<!-- ##### FUNCTION g_key_file_remove_comment ##### -->
+<para>
+
+</para>
+
+@key_file: 
+@group_name: 
+@key: 
+@error: 
+
+

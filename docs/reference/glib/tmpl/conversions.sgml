@@ -316,6 +316,15 @@ error domains.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_uri_list_extract_uris ##### -->
+<para>
+
+</para>
+
+@uri_list: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_locale_from_utf8 ##### -->
 <para>
 

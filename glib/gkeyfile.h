@@ -117,7 +117,7 @@ gboolean  g_key_file_get_boolean            (GKeyFile             *key_file,
 void      g_key_file_set_boolean            (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
-					     gboolean              boolean);
+					     gboolean              value);
 gint      g_key_file_get_integer            (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -125,7 +125,7 @@ gint      g_key_file_get_integer            (GKeyFile             *key_file,
 void      g_key_file_set_integer            (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
-					     gint                  integer);
+					     gint                  value);
 gchar   **g_key_file_get_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
