@@ -98,10 +98,14 @@ g_file_test (const gchar *filename,
 
   if (test & G_FILE_TEST_IS_SYMLINK)
     {
+#ifdef G_OS_WIN32
+      /* no sym links on win32, no lstat in msvcrt */
+#else
       struct stat s;
 
       if ((lstat (filename, &s) == 0) && S_ISLNK (s.st_mode))
         return TRUE;
+#endif
     }
   
   if (test & (G_FILE_TEST_IS_REGULAR | G_FILE_TEST_IS_DIR))

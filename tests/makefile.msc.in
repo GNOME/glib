@@ -45,7 +45,8 @@ TESTS = \
 	tree-test.exe	\
 	type-test.exe	\
 	unicode-caseconv.exe \
-	unicode-encoding.exe
+	unicode-encoding.exe \
+	uri-test.exe
 
 DLLS = \
 	libmoduletestplugin_a.dll \
