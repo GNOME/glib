@@ -1,3 +1,15 @@
+Wed Jan 27 20:39:49 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4: Xsed isn't valid here, don't use it
+
+	* ltmain.sh
+	* ltconfig: better file magic regexp for Linux libs
+
+	* gmodule/Makefile.am: arg, noinst_LTLIBRARIES doesn't make shared
+	libs, revert my previous change to this file
+
+	* docs/texinfo.tex: add it so automake doesn't whine
+
 Wed Jan 27 01:57:19 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in (G_MODULE_HAVE_DLERROR): applied patch from Andrej
