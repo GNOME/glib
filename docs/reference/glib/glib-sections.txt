@@ -519,9 +519,7 @@ GStaticPrivate
 G_STATIC_PRIVATE_INIT
 g_static_private_init
 g_static_private_get
-g_static_private_get_for_thread
 g_static_private_set
-g_static_private_set_for_thread
 g_static_private_free
 
 <SUBSECTION Private>

@@ -1,3 +1,8 @@
+2001-04-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt: Removed
+	g_static_private_(get|set)_for_thread.
+
 Mon Mar 26 14:20:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am (SCAN_OPTIONS): Add --deprecated-guards
