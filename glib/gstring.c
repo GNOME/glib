@@ -578,24 +578,26 @@ get_length_upper_bound (const gchar* fmt, va_list *args)
   return len;
 }
 
-char*
+extern gchar* g_vsprintf (const gchar *fmt, va_list *args, va_list *args2);
+gchar*
 g_vsprintf (const gchar *fmt,
-	    va_list *args,
-	    va_list *args2)
+	    va_list     *args,
+	    va_list     *args2)
 {
   static gchar *buf = NULL;
-  static gint   alloc = 0;
+  static guint  alloc = 0;
+  guint len;
 
-  gint len = get_length_upper_bound (fmt, args);
+  len = get_length_upper_bound (fmt, args);
 
   if (len >= alloc)
     {
       if (buf)
 	g_free (buf);
 
-      alloc = nearest_pow (MAX(len + 1, 1024 + 1));
+      alloc = nearest_pow (MAX (len + 1, 1024 + 1));
 
-      buf = g_new (char, alloc);
+      buf = g_new (gchar, alloc);
     }
 
   vsprintf (buf, fmt, *args2);

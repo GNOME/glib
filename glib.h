@@ -672,7 +672,7 @@ GList* g_list_concat		(GList		*list1,
 GList* g_list_remove		(GList		*list,
 				 gpointer	 data);
 GList* g_list_remove_link	(GList		*list,
-				 GList		*link);
+				 GList		*llink);
 GList* g_list_reverse		(GList		*list);
 GList* g_list_nth		(GList		*list,
 				 guint		 n);
@@ -682,7 +682,7 @@ GList* g_list_find_custom	(GList		*list,
 				 gpointer	 data,
 				 GCompareFunc	 func);
 gint   g_list_position		(GList		*list,
-				 GList		*link);
+				 GList		*llink);
 gint   g_list_index		(GList		*list,
 				 gpointer	 data);
 GList* g_list_last		(GList		*list);
@@ -717,7 +717,7 @@ GSList* g_slist_concat		(GSList		*list1,
 GSList* g_slist_remove		(GSList		*list,
 				 gpointer	 data);
 GSList* g_slist_remove_link	(GSList		*list,
-				 GSList		*link);
+				 GSList		*llink);
 GSList* g_slist_reverse		(GSList		*list);
 GSList* g_slist_nth		(GSList		*list,
 				 guint		 n);
@@ -727,7 +727,7 @@ GSList* g_slist_find_custom	(GSList		*list,
 				 gpointer	 data,
 				 GCompareFunc	 func);
 gint	g_slist_position	(GSList		*list,
-				 GSList		*link);
+				 GSList		*llink);
 gint	g_slist_index		(GSList		*list,
 				 gpointer	 data);
 GSList* g_slist_last		(GSList		*list);

@@ -1,3 +1,7 @@
+Mon Aug 17 15:21:42 1998  Tim Janik  <timj@gtk.org>
+
+	* grel.c: made private functions static.
+
 Sun Aug 16 23:23:46 CDT 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* gmodule/Makefile.am: added gmodule-dl.c and gmodule-dld.c to

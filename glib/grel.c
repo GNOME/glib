@@ -41,8 +41,9 @@ struct _GRealTuples
   gpointer *data;
 };
 
-gboolean
-tuple_equal_2 (gconstpointer v_a, gconstpointer v_b)
+static gboolean
+tuple_equal_2 (gconstpointer v_a,
+	       gconstpointer v_b)
 {
   gpointer* a = (gpointer*) v_a;
   gpointer* b = (gpointer*) v_b;
@@ -50,7 +51,7 @@ tuple_equal_2 (gconstpointer v_a, gconstpointer v_b)
   return a[0] == b[0] && a[1] == b[1];
 }
 
-guint
+static guint
 tuple_hash_2 (gconstpointer v_a)
 {
   gpointer* a = (gpointer*) v_a;
@@ -58,7 +59,7 @@ tuple_hash_2 (gconstpointer v_a)
   return (gulong)a[0] ^ (gulong)a[1];
 }
 
-GHashFunc
+static GHashFunc
 tuple_hash (gint fields)
 {
   switch (fields)
@@ -72,7 +73,7 @@ tuple_hash (gint fields)
   return NULL;
 }
 
-GCompareFunc
+static GCompareFunc
 tuple_equal (gint fields)
 {
   switch (fields)
@@ -369,8 +370,10 @@ g_tuples_index (GTuples     *tuples0,
 /* Print
  */
 
-void
-g_relation_print_one (gpointer tuple_key, gpointer tuple_value, gpointer user_data)
+static void
+g_relation_print_one (gpointer tuple_key,
+		      gpointer tuple_value,
+		      gpointer user_data)
 {
   gint i;
   GRealRelation* rel = (GRealRelation*) user_data;
@@ -389,8 +392,10 @@ g_relation_print_one (gpointer tuple_key, gpointer tuple_value, gpointer user_da
   g_print ("]\n");
 }
 
-void
-g_relation_print_index (gpointer tuple_key, gpointer tuple_value, gpointer user_data)
+static void
+g_relation_print_index (gpointer tuple_key,
+			gpointer tuple_value,
+			gpointer user_data)
 {
   GRealRelation* rel = (GRealRelation*) user_data;
   GHashTable* table = (GHashTable*) tuple_value;
