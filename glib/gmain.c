@@ -2475,8 +2475,11 @@ g_main_loop_quit (GMainLoop *loop)
   loop->is_running = FALSE;
   g_main_context_wakeup_unlocked (loop->context);
 
+#ifdef G_THREADS_ENABLED
   if (loop->context->cond)
     g_cond_broadcast (loop->context->cond);
+#endif /* G_THREADS_ENABLED */
+
   UNLOCK_CONTEXT (loop->context);
 }
 

@@ -1,3 +1,8 @@
+2001-10-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gmain.c (g_main_loop_quit): Conditionalize thread related
+	calls. (#63091)
+
 2001-10-28  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add missing g_pattern_match_simple and
