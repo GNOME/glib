@@ -309,6 +309,7 @@ get_contents_stdio (const gchar *filename,
                        filename, strerror (errno));
 
           g_string_free (str, TRUE);
+	  fclose (f);
           
           return FALSE;
         }
