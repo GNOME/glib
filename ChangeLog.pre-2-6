@@ -1,3 +1,8 @@
+﻿Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
+
+	* glib/giowin32.c: Bind inter-thread comminication 
+		sockets to INADDR_LOOPBACK instead of INADDR_ANY.
+
 Thu Nov 20 15:09:40 2003  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: Added G_GSIZE_FORMAT and friends.
