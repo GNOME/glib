@@ -77,7 +77,6 @@ A data structure representing an IO Channel. The fields should be considered
 private and should only be accessed with the following functions.
 </para>
 
-@channel_flags: 
 @ref_count: 
 @funcs: 
 @encoding: 
@@ -88,12 +87,12 @@ private and should only be accessed with the following functions.
 @read_buf: 
 @encoded_read_buf: 
 @write_buf: 
+@partial_write_buf: 
 @use_buffer: 
 @do_encode: 
-@ready_to_read: 
-@ready_to_write: 
 @close_on_unref: 
-@seekable_cached: 
+@is_readable: 
+@is_writeable: 
 @is_seekable: 
 
 <!-- ##### FUNCTION g_io_channel_unix_new ##### -->
@@ -137,18 +136,6 @@ programmer (unless you are creating a new type of #GIOChannel).
 @error: 
 @Returns: 
 
-
-<!-- ##### ENUM GIOFileMode ##### -->
-<para>
-
-</para>
-
-@G_IO_FILE_MODE_READ: 
-@G_IO_FILE_MODE_WRITE: 
-@G_IO_FILE_MODE_APPEND: 
-@G_IO_FILE_MODE_READ_WRITE: 
-@G_IO_FILE_MODE_READ_WRITE_TRUNCATE: 
-@G_IO_FILE_MODE_READ_WRITE_APPEND: 
 
 <!-- ##### FUNCTION g_io_channel_read_chars ##### -->
 <para>
@@ -271,14 +258,51 @@ operation.
 @G_SEEK_SET: 
 @G_SEEK_END: 
 
-<!-- ##### FUNCTION g_io_channel_close ##### -->
+<!-- ##### FUNCTION g_io_channel_shutdown ##### -->
 <para>
+
 </para>
 
 @channel: 
+@flush: 
+@err: 
+@Returns: 
 
 
-<!-- ##### FUNCTION g_channel_error_quark ##### -->
+<!-- ##### ENUM GIOStatus ##### -->
+<para>
+
+</para>
+
+@G_IO_STATUS_ERROR: 
+@G_IO_STATUS_NORMAL: 
+@G_IO_STATUS_EOF: 
+@G_IO_STATUS_AGAIN: 
+
+<!-- ##### ENUM GIOChannelError ##### -->
+<para>
+
+</para>
+
+@G_IO_CHANNEL_ERROR_FBIG: 
+@G_IO_CHANNEL_ERROR_INVAL: 
+@G_IO_CHANNEL_ERROR_IO: 
+@G_IO_CHANNEL_ERROR_ISDIR: 
+@G_IO_CHANNEL_ERROR_NOSPC: 
+@G_IO_CHANNEL_ERROR_NXIO: 
+@G_IO_CHANNEL_ERROR_OVERFLOW: 
+@G_IO_CHANNEL_ERROR_PIPE: 
+@G_IO_CHANNEL_ERROR_PCHAR_FLUSH: 
+@G_IO_CHANNEL_ERROR_FAILED: 
+
+<!-- ##### MACRO G_IO_CHANNEL_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION g_io_channel_error_quark ##### -->
 <para>
 
 </para>
@@ -286,7 +310,7 @@ operation.
 @Returns: 
 
 
-<!-- ##### FUNCTION g_channel_error_from_errno ##### -->
+<!-- ##### FUNCTION g_io_channel_error_from_errno ##### -->
 <para>
 
 </para>
@@ -538,6 +562,24 @@ generic way.
 
 
 
+<!-- ##### FUNCTION g_io_channel_get_buffered ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_buffered ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buffered: 
+
+
 <!-- ##### FUNCTION g_io_channel_get_encoding ##### -->
 <para>
 
@@ -556,15 +598,6 @@ generic way.
 @encoding: 
 @error: 
 @Returns: 
-
-
-<!-- ##### MACRO G_IO_CHANNEL_ENCODE_RAW ##### -->
-<para>
-Encoding for nonbuffered IO. With this encoding, data must be
-read using g_io_channel_read_chars(); the other functions will
-not work.
-</para>
-
 
 
 <!-- ##### FUNCTION g_io_channel_read ##### -->
@@ -609,5 +642,12 @@ g_io_channel_write(), and g_io_channel_seek().
 @type.
 @type: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_close ##### -->
+<para>
+</para>
+
+@channel: 
 
 

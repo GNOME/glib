@@ -46,8 +46,6 @@
 #include	<unistd.h>
 #endif
 #include	<errno.h>
-#include	<sys/types.h>	/* needed for sys/stat.h */
-#include	<sys/stat.h>
 #ifdef G_OS_WIN32
 #include	<io.h>		/* For _read() */
 #endif
@@ -293,10 +291,10 @@ g_scanner_msg_handler (GScanner		*scanner,
 {
   g_return_if_fail (scanner != NULL);
   
-  fprintf (stdout, "%s:%d: ", scanner->input_name, scanner->line);
+  fprintf (stderr, "%s:%d: ", scanner->input_name, scanner->line);
   if (is_error)
-    fprintf (stdout, "error: ");
-  fprintf (stdout, "%s\n", message);
+    fprintf (stderr, "error: ");
+  fprintf (stderr, "%s\n", message);
 }
 
 void
@@ -1104,25 +1102,6 @@ g_scanner_unexp_token (GScanner		*scanner,
   
   g_free (token_string);
   g_free (expected_string);
-}
-
-gint
-g_scanner_stat_mode (const gchar *filename)
-{
-  struct stat  *stat_buf;
-  gint		st_mode;
-  
-  stat_buf = g_new0 (struct stat, 1);
-#ifdef HAVE_LSTAT  
-  lstat (filename, stat_buf);
-#else
-  stat (filename, stat_buf);
-#endif
-  st_mode = stat_buf->st_mode;
-  
-  g_free (stat_buf);
-  
-  return st_mode;
 }
 
 static void

@@ -152,18 +152,6 @@ Prepares to scan a file.
 @scanner: 
 
 
-<!-- ##### FUNCTION g_scanner_stat_mode ##### -->
-<para>
-Gets the file attributes.
-This is the <structfield>st_mode</structfield> field from the
-<structname>stat</structname> structure. See the <function>stat()</function>
-documentation.
-</para>
-
-@filename: the file name.
-@Returns: the file attributes.
-
-
 <!-- ##### FUNCTION g_scanner_input_text ##### -->
 <para>
 Prepares to scan a text buffer.

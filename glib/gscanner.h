@@ -244,7 +244,6 @@ void		g_scanner_error			(GScanner	*scanner,
 void		g_scanner_warn			(GScanner	*scanner,
 						 const gchar	*format,
 						 ...) G_GNUC_PRINTF (2,3);
-gint		g_scanner_stat_mode		(const gchar	*filename);
 /* keep downward source compatibility */
 #define		g_scanner_add_symbol( scanner, symbol, value )	G_STMT_START { \
   g_scanner_scope_add_symbol ((scanner), 0, (symbol), (value)); \

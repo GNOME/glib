@@ -59,6 +59,18 @@
 @hook_list: 
 @hook: 
 
+<!-- ##### ENUM GIOFileMode ##### -->
+<para>
+
+</para>
+
+@G_IO_FILE_MODE_READ: 
+@G_IO_FILE_MODE_WRITE: 
+@G_IO_FILE_MODE_APPEND: 
+@G_IO_FILE_MODE_READ_WRITE: 
+@G_IO_FILE_MODE_READ_WRITE_TRUNCATE: 
+@G_IO_FILE_MODE_READ_WRITE_APPEND: 
+
 <!-- ##### MACRO G_CHANNEL_ERROR ##### -->
 <para>
 
@@ -79,6 +91,14 @@ depending on the system type.
 </para>
 
 
+<!-- ##### MACRO G_IO_CHANNEL_ENCODE_RAW ##### -->
+<para>
+Encoding for nonbuffered IO. With this encoding, data must be
+read using g_io_channel_read_chars(); the other functions will
+not work.
+</para>
+
+
 <!-- ##### MACRO access ##### -->
 <para>
 
@@ -96,6 +116,21 @@ depending on the system type.
 
 </para>
 
+
+<!-- ##### FUNCTION g_channel_error_from_errno ##### -->
+<para>
+
+</para>
+
+@en: 
+@Returns: 
+
+<!-- ##### FUNCTION g_channel_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 <!-- ##### FUNCTION g_convert_error_quark ##### -->
 <para>
@@ -158,6 +193,17 @@ To use this function you must configure glib with the flag
 </para>
 
 @mem: the memory to check.
+
+<!-- ##### FUNCTION g_scanner_stat_mode ##### -->
+<para>
+Gets the file attributes.
+This is the <structfield>st_mode</structfield> field from the
+<structname>stat</structname> structure. See the <function>stat()</function>
+documentation.
+</para>
+
+@filename: the file name.
+@Returns: the file attributes.
 
 <!-- ##### FUNCTION g_source_add ##### -->
 <para>

@@ -1,3 +1,10 @@
+Sun Jul 29 16:08:17 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/gscanner.[hc]: removed deprecated g_scanner_stat_mode().
+
+	* glib/gscanner.c (g_scanner_msg_handler): by default, print scanner
+	errors and warnings to stderr.
+
 2001-07-27  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gtypes.h: Use G_GNUC_EXTENSION instead of
