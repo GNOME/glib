@@ -1,3 +1,9 @@
+Mon Aug 30 00:01:01 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/ghash.c (g_hash_table_lookup): Point to 
+	g_hash_table_lookup_extended() for differentiation between
+	not-found and value-is-NULL.  (#150960, Morten Welinder)
+
 2004-08-21  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_win32_finalize): Tell select_thread to

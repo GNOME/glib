@@ -212,7 +212,10 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
  * @hash_table: a #GHashTable.
  * @key: the key to look up.
  * 
- * Looks up a key in a #GHashTable.
+ * Looks up a key in a #GHashTable. Note that this function cannot
+ * distinguish between a key that is not present and one which is present
+ * and has the value %NULL. If you need this distinction, use
+ * g_hash_table_lookup_extended().
  * 
  * Return value: the associated value, or %NULL if the key is not found.
  **/
