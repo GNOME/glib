@@ -44,6 +44,14 @@ EXPORTS
 	g_bit_nth_msf
 	g_bit_storage
 	g_blow_chunks
+	g_bsearch_array_destroy
+	g_bsearch_array_get_index
+	g_bsearch_array_get_nth
+	g_bsearch_array_new
+	g_bsearch_array_insert
+	g_bsearch_array_lookup
+	g_bsearch_array_remove
+	g_bsearch_array_remove_node
 	g_byte_array_append
 	g_byte_array_free
 	g_byte_array_new
@@ -433,12 +441,9 @@ EXPORTS
 	g_scanner_unexp_token
 	g_scanner_warn
 	g_set_error
-	g_set_error_handler
-	g_set_message_handler
 	g_set_prgname
 	g_set_print_handler
 	g_set_printerr_handler
-	g_set_warning_handler
 	g_shell_error_quark
 	g_shell_parse_argv
 	g_shell_quote

@@ -37,7 +37,14 @@ libgthread_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgthread_1_3_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
+libgthread_1_3_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
+
+libgthread_1_3_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@
+
+if OS_WIN32
+@G_THREAD_WIN32_RESOURCE@ : gthread.rc
+	$(top_srcdir)/build/win32/lt-compile-resource gthread.rc @G_THREAD_WIN32_RESOURCE@
+endif
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status

@@ -35,7 +35,7 @@
  */
 
 /* Define this to get some logging all the time */
-#define G_SPAWN_WIN32_DEBUG
+/* #define G_SPAWN_WIN32_DEBUG */
 
 #include "glib.h"
 

@@ -48,7 +48,9 @@ libgmodule_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
+libgmodule_1_3_la_LIBADD = @G_MODULE_WIN32_RESOURCE@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
+
+libgmodule_1_3_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
@@ -61,6 +63,11 @@ libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
 testgmodule_LDADD = libgmodule-1.3.la $(libglib) @G_MODULE_LIBS@
+
+if OS_WIN32
+@G_MODULE_WIN32_RESOURCE@ : gmodule.rc
+	$(top_srcdir)/build/win32/lt-compile-resource gmodule.rc @G_MODULE_WIN32_RESOURCE@
+endif
 
 gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status

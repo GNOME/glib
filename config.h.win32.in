@@ -1,13 +1,10 @@
-/* config.h.win32. Handcrafted for Microsoft C */
+/* config.h.win32. Handcrafted for the Microsoft C library. */
 
 /* Define to empty if the keyword does not work.  */
 /* #undef const */
 
 /* Define if you don't have vprintf but do have _doprnt.  */
 /* #undef HAVE_DOPRNT */
-
-/* Define if you have <unistd.h>.  */
-/* #undef HAVE_UNISTD_H */
 
 /* Define if you have the vprintf function.  */
 #define HAVE_VPRINTF 1
@@ -26,23 +23,12 @@
 
 /* #undef HAVE_BROKEN_WCTYPE */
 /* #undef HAVE_DOPRNT */
-#define HAVE_FLOAT_H 1
 #define HAVE_GETCWD 1
-#define HAVE_LIMITS_H 1
 /* #undef HAVE_LOCALTIME_R */
 /* #undef HAVE_LONG_DOUBLE */
 /* #undef HAVE_POLL */
-/* #undef HAVE_PWD_H */
-/* #undef HAVE_SYS_PARAM_H */
 /* #undef HAVE_SYS_POLL_H */
-/* #undef HAVE_SYS_SELECT_H */
-/* #undef HAVE_SYS_TIME_H */
-/* #undef HAVE_SYS_TIMES_H */
 #define HAVE_STRERROR 1
-/* #undef HAVE_STRSIGNAL */
-/* #undef HAVE_UNISTD_H */
-/* #undef HAVE_VSNPRINTF */
-/* #undef HAVE_VALUES_H */
 #define HAVE_VPRINTF 1
 #define HAVE_WCHAR_H 1
 #define HAVE_WCTYPE_H 1

@@ -128,17 +128,17 @@ install-data-local:
 	  false ;									\
         fi
 
-libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@
-libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ 
-
-
 if PLATFORM_WIN32
 no_undefined = -no-undefined
+
 endif
 if OS_WIN32
 # This requires a very new libtool
 export_symbols = -export-symbols glib.def
 endif
+
+libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@
 
 libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
@@ -147,5 +147,22 @@ libglib_1_3_la_LDFLAGS = \
 if OS_WIN32
 bin_PROGRAMS = gspawn-win32-helper
 gspawn_win32_helper_LDADD = libglib-1.3.la
+
+@G_LIB_WIN32_RESOURCE@ : glib.rc
+	$(top_srcdir)/build/win32/lt-compile-resource glib.rc @G_LIB_WIN32_RESOURCE@
 endif
 
+glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib/glib.rc.in
+	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/glib/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.msc: $(top_builddir)/config.status $(top_srcdir)/glib/makefile.msc.in
+	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done

@@ -2,14 +2,6 @@ EXPORTS
 	g_boxed_copy
 	g_boxed_free
 	g_boxed_type_register_static
-	g_bsearch_array_destroy
-	g_bsearch_array_get_index
-	g_bsearch_array_get_nth
-	g_bsearch_array_new
-	g_bsearch_array_insert
-	g_bsearch_array_lookup
-	g_bsearch_array_remove
-	g_bsearch_array_remove_node
 	g_cclosure_marshal_STRING__OBJECT_POINTER
 	g_cclosure_marshal_VOID__BOOLEAN
 	g_cclosure_marshal_VOID__BOXED
@@ -192,6 +184,7 @@ EXPORTS
 	g_type_interface_add_prerequisite
 	g_type_interface_get_plugin
 	g_type_interface_peek
+	g_type_interface_peek_parent
 	g_type_interfaces
 	g_type_is_a
 	g_type_module_add_interface

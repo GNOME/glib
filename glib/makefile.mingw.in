@@ -18,13 +18,14 @@ DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 all :				\
 	../config.h		\
 	../glibconfig.h		\
-	glib-@GLIB_VERSION@.dll \
+	libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
 	gspawn-win32-helper.exe
 
 glib_OBJECTS =			\
 	garray.o		\
 	gasyncqueue.o		\
 	gbacktrace.o		\
+	gbsearcharray.o		\
 	gcache.o		\
 	gcompletion.o		\
 	gconvert.o		\
@@ -72,16 +73,13 @@ glib_OBJECTS =			\
 ../config.h: ../config.h.win32
 	cp $< $@
 
-ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
-makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' <$< >$@
-endif
-
 ################ The glib DLL
 
-glib-@GLIB_VERSION@.dll : $(glib_OBJECTS) glib.def
-	$(BUILD_DLL) glib @GLIB_VERSION@ glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(glib_OBJECTS) glib.def glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc
+	$(BUILD_DLL) glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+
+glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : glib.rc
+	cp $< $@
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
-	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib
-
+	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@

@@ -16,14 +16,9 @@ DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
 all : \
 	gmoduleconf.h \
-	gmodule-@GLIB_VERSION@.dll \
+	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
 	testgmodule.exe \
 	libgplugin_a.dll libgplugin_b.dll
-
-ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
-makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' <$< >$@
-endif
 
 gmodule_OBJECTS = \
 	gmodule.o
@@ -33,22 +28,25 @@ gmoduleconf.h: gmoduleconf.h.win32
 
 ################ The gmodule DLL
 
-gmodule-@GLIB_VERSION@.dll : $(gmodule_OBJECTS) gmodule.def
-	$(BUILD_DLL) gmodule @GLIB_VERSION@ $(CFLAGS) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib
+libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(gmodule_OBJECTS) gmodule.def gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc
+	$(BUILD_DLL) gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT:@LT_REVISION@:@LT_AGE@ $(CFLAGS) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : gmodule.rc
+	cp $< $@
 
 ################ test prog
 
-testgmodule.exe : gmodule-@GLIB_VERSION@.dll testgmodule.o 
+testgmodule.exe : libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgmodule.o 
 # We have to generate an .exp file separately with dlltool, and link
 # with that. Sigh.
 	dlltool --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -o testgmodule.exe testgmodule.o testgmodule.exp -L ../glib -lglib -L . -lgmodule $(LFLAGS)
+	$(CC) $(CFLAGS) -o testgmodule.exe testgmodule.o testgmodule.exp -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
 
 libgplugin_a.dll : libgplugin_a.o
-	$(BUILD_DLL) libgplugin_a - libgplugin_a.o -L ../glib -lglib -L . -lgmodule
+	$(BUILD_DLL) libgplugin_a - libgplugin_a.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 libgplugin_b.dll : libgplugin_b.o
-	$(BUILD_DLL) libgplugin_b - libgplugin_b.o -L ../glib -lglib -L . -lgmodule
+	$(BUILD_DLL) libgplugin_b - libgplugin_b.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 ################ Other stuff
 

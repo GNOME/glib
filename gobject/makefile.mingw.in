@@ -16,21 +16,13 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_grun
 
 srcdir=.
 
-BUILD_DLL = ../build-dll
-
 all : \
-	gobject-@GLIB_VERSION@.dll	\
+	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
+	testgruntime.exe \
 	glib-genmarshal.exe
-
-ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
-makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' \
-	    -e 's,@RE[B]UILD@,,' <$< >$@
-endif
 
 gobject_OBJECTS =		\
 	gboxed.o		\
-	gbsearcharray.o		\
 	gclosure.o		\
 	genums.o		\
 	gobject.o		\
@@ -45,11 +37,14 @@ gobject_OBJECTS =		\
 	gvaluetransform.o	\
 	gvaluetypes.o
 
-gobject-@GLIB_VERSION@.dll : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
-	$(BUILD_DLL) gobject @GLIB_VERSION@ gobject.def $(gobject_OBJECTS) -L ../glib -lglib
+libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
+	$(BUILD_DLL) gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ gobject.def $(gobject_OBJECTS) -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib
+	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+testgruntime.exe: libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgruntime.o
+	$(CC) $(CFLAGS) -o testgruntime.exe testgruntime.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
 
 # Copied from Makefile.am:
 # initial creation of the real stamp-* files

@@ -1,4 +1,37 @@
+2001-09-17  Tor Lillqvist  <tml@iki.fi>
 
+	* configure.in: Add variable for LT_CURRENT minus LT_AGE (the
+	suffix used by libtool on Win32 for DLLs). Set variables for the
+	compiled resource files on Windows. Handle the native Win32
+	threads gmodule.
+
+	* glib/Makefile.am
+	* gmodule/Makefile.am
+	* gobject/Makefile.am: (Win32) Add hacks to link in the object
+	file produced from the resource file. Use the lt-compile-resource
+	script from the build module. The non-hack way would be to teach
+	libtool, autoconf and automake about .rc files (which are a kind
+	of source code, after all, that gets compiled to object
+	files). But then there would be problems with those who don't have
+	bleeding edge auto* and libtool.
+
+	* glib/glib.def
+	* gobject/gobject.def: Updates.
+
+	* glib/glib.rc.in
+	* gmodule/gmodule.rc.in
+	* gobject/gobject.rc.in
+	* gthread/gthread.rc.in: Update InternalName and OriginalFilename to
+	match libtool's naming convention for DLLs.
+
+	* glib/gutils.c: Ditto when constructing the DLL name in the
+	definition for GLIB_LOCALE_DIR.
+
+	* glib/makefile.mingw.in
+	* gmodule/makefile.mingw.in
+	* gobject/makefile.mingw.in
+	* gthread/makefile.mingw.in: Update import library names.
+	
 Fri Sep 14 20:34:27 2001  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gconvert.c (g_filename_from_uri): Replace `is contains'

@@ -16,9 +16,9 @@ VS_VERSION_INFO VERSIONINFO
 	VALUE "CompanyName", "The GLib developer community"
 	VALUE "FileDescription", "GLib"
 	VALUE "FileVersion", "@GLIB_VERSION@.BUILDNUMBER"
-	VALUE "InternalName", "glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@"
+	VALUE "InternalName", "libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@"
 	VALUE "LegalCopyright", "Copyright © 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald. Modified by the GLib Team and others 1997-2000."
-	VALUE "OriginalFilename", "glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.dll"
+	VALUE "OriginalFilename", "libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll"
 	VALUE "ProductName", "GLib"
 	VALUE "ProductVersion", "@GLIB_VERSION@"
       END

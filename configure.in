@@ -49,10 +49,12 @@ LT_RELEASE=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION
 LT_CURRENT=`expr $GLIB_MICRO_VERSION - $GLIB_INTERFACE_AGE`
 LT_REVISION=$GLIB_INTERFACE_AGE
 LT_AGE=`expr $GLIB_BINARY_AGE - $GLIB_INTERFACE_AGE`
+LT_CURRENT_MINUS_AGE=`expr $LT_CURRENT - $LT_AGE`
 AC_SUBST(LT_RELEASE)
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
+AC_SUBST(LT_CURRENT_MINUS_AGE)
 
 VERSION=$GLIB_VERSION
 PACKAGE=glib
@@ -913,19 +915,31 @@ AC_MSG_CHECKING([if building for pure Win32])
 case "$host" in
   *-*-mingw*)
     os_win32=yes
+    G_LIB_WIN32_RESOURCE=glib-win32res.lo
+    G_MODULE_WIN32_RESOURCE=gmodule-win32res.lo
+    G_OBJECT_WIN32_RESOURCE=gobject-win32res.lo
+    G_THREAD_WIN32_RESOURCE=gthread-win32res.lo
     ;;
   *)
     os_win32=no
+    G_LIB_WIN32_RESOURCE=
+    G_MODULE_WIN32_RESOURCE=
+    G_OBJECT_WIN32_RESOURCE=
+    G_THREAD_WIN32_RESOURCE=
     ;;
 esac
 AC_MSG_RESULT($os_win32)
 AM_CONDITIONAL(OS_WIN32, test x$os_win32 = xyes)
+AC_SUBST(G_LIB_WIN32_RESOURCE)
+AC_SUBST(G_MODULE_WIN32_RESOURCE)
+AC_SUBST(G_OBJECT_WIN32_RESOURCE)
+AC_SUBST(G_THREAD_WIN32_RESOURCE)
 
 dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris] specify a thread implementation to use],
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris/win32] specify a thread implementation to use],
 	if test "x$with_threads" = x; then
 		want_threads=yes
 	else
@@ -1005,6 +1019,13 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 			have_threads=posix)
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
+fi
+if test "x$want_threads" = xyes || test "x$want_threads" = xwin32; then
+       	case $host in
+               	*-*-mingw*|*-*-cygwin*)
+		have_threads=win32
+		;;
+	esac
 fi
 
 AC_MSG_CHECKING(for thread implementation)
@@ -1180,6 +1201,10 @@ case $have_threads in
            mutex_header_file='thread.h'
 	   g_threads_impl="SOLARIS"
            ;;
+	win32)
+	   g_threads_impl="WIN32"
+	   G_THREAD_LIBS=""
+	   ;;
         none)
 	   g_threads_impl="NONE"
            ;;
@@ -1325,6 +1350,9 @@ if test x"$have_threads" != xnone; then
 			  AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, [whether to use the PID niceness surrogate for thread priorities])
                         ],
 			[AC_MSG_RESULT(no)])
+	elif test x"$have_threads" = xwin32; then
+		# It's a pointer to a private struct
+		GLIB_SIZEOF(,struct _GThreadData *, system_thread)
 	else # solaris threads
 		GLIB_SIZEOF([#include <thread.h>], thread_t, system_thread)
 	fi

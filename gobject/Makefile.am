@@ -31,7 +31,9 @@ libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
 	-export-dynamic $(no_undefined) $(export_symbols)	\
 @STRIP_END@
 
-libgobject_1_3_la_LIBADD = $(libglib)
+libgobject_1_3_la_LIBADD = @G_OBJECT_WIN32_RESOURCE@ $(libglib)
+
+libgobject_1_3_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@
 
 #
 # setup source file variables
@@ -196,6 +198,11 @@ glib-mkenums: $(srcdir)/glib-mkenums
 	  rm glib-mkenums;			\
         fi;					\
 	cp $(srcdir)/glib-mkenums glib-mkenums
+
+if OS_WIN32
+@G_OBJECT_WIN32_RESOURCE@ : gobject.rc
+	$(top_srcdir)/build/win32/lt-compile-resource gobject.rc @G_OBJECT_WIN32_RESOURCE@
+endif
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status

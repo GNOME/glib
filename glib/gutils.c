@@ -1092,11 +1092,13 @@ g_get_codeset (void)
 #ifndef GLIB_LOCALE_DIR
 #ifdef G_PLATFORM_WIN32
 
-#define GLIB_LOCALE_DIR					       	\
+#define GLIB_LOCALE_DIR					      	\
   g_win32_get_package_installation_subdirectory			\
-  (GETTEXT_PACKAGE, g_strdup_printf ("glib-%d.%d.dll",		\
-				     GLIB_MAJOR_VERSION,	\
-				     GLIB_MINOR_VERSION),	\
+  (GETTEXT_PACKAGE,						\
+   g_strdup_printf ("libglib-%d.%d-%d.dll",			\
+		    GLIB_MAJOR_VERSION,				\
+		    GLIB_MINOR_VERSION,				\
+		    GLIB_MICRO_VERSION - GLIB_BINARY_AGE),	\
    "locale")
 
 #endif /* G_PLATFORM_WIN32 */
