@@ -46,8 +46,8 @@
 #include <io.h>			/* For read(), write() etc */
 #endif
 
-int array[10000];
-gboolean failed = FALSE;
+static int array[10000];
+static gboolean failed = FALSE;
 
 #define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
 if (failed) \
@@ -351,6 +351,9 @@ main (int   argc,
     { "a\\b\\", "a\\b" },
     { "c\\\\\\", "c" },
 #endif
+#ifdef G_WITH_CYGWIN
+    { "//server/share///x", "//server/share" },
+#endif
     { ".", "." },
     { "..", "." },
     { "", "." },
@@ -374,6 +377,9 @@ main (int   argc,
     { "\\\\server\\foo\\bar", "bar" },
     { "a\\b", NULL },
 #endif
+#ifdef G_WITH_CYGWIN
+    { "//server/share///x", "//x" },
+#endif
     { ".", NULL },
     { "", NULL },
   };
@@ -394,6 +400,11 @@ main (int   argc,
   gchar *p;
 #ifdef G_OS_WIN32
   gchar *glib_dll = g_strdup_printf ("glib-%d.%d.dll",
+				     GLIB_MAJOR_VERSION,
+				     GLIB_MINOR_VERSION);
+#endif
+#ifdef G_WITH_CYGWIN
+  gchar *glib_dll = g_strdup_printf ("cygglib-%d.%d.dll",
 				     GLIB_MAJOR_VERSION,
 				     GLIB_MINOR_VERSION);
 #endif
@@ -1151,7 +1162,7 @@ main (int   argc,
 
   g_print ("ok\n");
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
 
   g_print ("GLib installation directory, from Registry entry for %s if available: %s\n",

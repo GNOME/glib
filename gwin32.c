@@ -42,7 +42,10 @@
 
 #define STRICT			/* Strict typing, please */
 #include <windows.h>
+#undef STRICT
+#ifndef G_WITH_CYGWIN
 #include <direct.h>
+#endif
 #include <errno.h>
 #include <ctype.h>
 #ifdef _MSC_VER
@@ -51,7 +54,13 @@
 
 #include "glib.h"
 
-int
+#ifdef G_WITH_CYGWIN
+#include <sys/cygwin.h>
+#endif
+
+#ifndef G_WITH_CYGWIN
+
+gint
 g_win32_ftruncate (gint  fd,
 		   guint size)
 {
@@ -214,8 +223,9 @@ g_win32_closedir (DIR *dir)
 
   return 0;
 }
+#endif
 
-/* Mingw32 headers don't have latest language and sublanguage codes */
+/* Mingw headers don't have latest language and sublanguage codes */
 #ifndef LANG_AFRIKAANS
 #define LANG_AFRIKAANS 0x36
 #endif
@@ -873,12 +883,23 @@ get_package_directory_from_module (gchar *module_name)
   if (!GetModuleFileName (hmodule, fn, MAX_PATH))
     return NULL;
 
-  if ((p = strrchr (fn, '\\')) != NULL)
+#ifdef G_WITH_CYGWIN
+  /* In Cygwin we need to have POSIX paths */
+  {
+    gchar tmp[MAX_PATH];
+
+    cygwin_conv_to_posix_path(fn, tmp);
+    g_free(fn);
+    fn = g_strdup(tmp);
+  }
+#endif
+
+  if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
     *p = '\0';
 
   if (module_name)
     {
-      p = strrchr (fn, '\\');
+      p = strrchr (fn, G_DIR_SEPARATOR);
       if (p && (g_strcasecmp (p + 1, "bin") == 0 ||
 		g_strcasecmp (p + 1, "lib") == 0))
 	*p = '\0';
@@ -927,7 +948,6 @@ g_win32_get_package_installation_directory (gchar *package,
   static GHashTable *package_dirs = NULL;
   gchar *result = NULL;
   gchar *key;
-  char win_dir[MAX_PATH];
   HKEY reg_key = NULL;
   DWORD type;
   DWORD nbytes;
@@ -1001,7 +1021,8 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 
   prefix = g_win32_get_package_installation_directory (package, dll_name);
 
-  sep = (prefix[strlen (prefix) - 1] == '\\' ? "" : "\\");
+  sep = (prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR ?
+	 "" : G_DIR_SEPARATOR_S);
 
   return g_strconcat (prefix, sep, subdir, NULL);
 }

@@ -59,6 +59,14 @@ struct _GRealTimer
   guint active : 1;
 };
 
+#ifdef G_OS_WIN32
+#  define GETTIME(v) \
+     v = GetTickCount ()
+#else /* !G_OS_WIN32 */
+#  define GETTIME(v) \
+     gettimeofday (&v, NULL)
+#endif /* !G_OS_WIN32 */
+
 GTimer*
 g_timer_new (void)
 {
@@ -67,11 +75,7 @@ g_timer_new (void)
   timer = g_new (GRealTimer, 1);
   timer->active = TRUE;
 
-#ifdef G_OS_WIN32
-  timer->start = GetTickCount ();
-#else /* !G_OS_WIN32 */
-  gettimeofday (&timer->start, NULL);
-#endif /* !G_OS_WIN32 */
+  GETTIME (timer->start);
 
   return ((GTimer*) timer);
 }
@@ -94,11 +98,7 @@ g_timer_start (GTimer *timer)
   rtimer = (GRealTimer*) timer;
   rtimer->active = TRUE;
 
-#ifdef G_OS_WIN32
-  rtimer->start = GetTickCount ();
-#else /* !G_OS_WIN32 */
-  gettimeofday (&rtimer->start, NULL);
-#endif /* !G_OS_WIN32 */
+  GETTIME (rtimer->start);
 }
 
 void
@@ -111,11 +111,7 @@ g_timer_stop (GTimer *timer)
   rtimer = (GRealTimer*) timer;
   rtimer->active = FALSE;
 
-#ifdef G_OS_WIN32
-  rtimer->end = GetTickCount ();
-#else /* !G_OS_WIN32 */
-  gettimeofday (&rtimer->end, NULL);
-#endif /* !G_OS_WIN32 */
+  GETTIME(rtimer->end);
 }
 
 void
@@ -127,11 +123,7 @@ g_timer_reset (GTimer *timer)
 
   rtimer = (GRealTimer*) timer;
 
-#ifdef G_OS_WIN32
-   rtimer->start = GetTickCount ();
-#else /* !G_OS_WIN32 */
-  gettimeofday (&rtimer->start, NULL);
-#endif /* !G_OS_WIN32 */
+  GETTIME (rtimer->start);
 }
 
 gdouble
@@ -152,10 +144,7 @@ g_timer_elapsed (GTimer *timer,
   if (rtimer->active)
     rtimer->end = GetTickCount ();
 
-  /* Check for wraparound, which happens every 49.7 days.
-   * No, Win95 machines probably are never running for that long,
-   * but NT machines are.
-   */
+  /* Check for wraparound, which happens every 49.7 days. */
   if (rtimer->end < rtimer->start)
     total = (UINT_MAX - (rtimer->start - rtimer->end)) / 1000.0;
   else

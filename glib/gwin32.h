@@ -29,18 +29,22 @@
 
 #include <gtypes.h>
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 
 /* Windows emulation stubs for common Unix functions
  */
 
 G_BEGIN_DECLS
 
+#ifndef MAXPATHLEN
 #define MAXPATHLEN 1024
+#endif
 
 #ifdef _MSC_VER
 typedef int pid_t;
 #endif
+
+#ifdef G_OS_WIN32
 
 /*
  * To get prototypes for the following POSIXish functions, you have to
@@ -89,12 +93,14 @@ struct DIR
 typedef struct DIR DIR;
 
 /* emulation functions */
-extern int	g_win32_ftruncate	(gint		 f,
+gint		g_win32_ftruncate	(gint		 f,
 					 guint		 size);
 DIR*		g_win32_opendir		(const gchar	*dirname);
 struct dirent*	g_win32_readdir  	(DIR		*dir);
 void		g_win32_rewinddir 	(DIR		*dir);
 gint		g_win32_closedir  	(DIR		*dir);
+
+#endif /* G_OS_WIN32 */
 
 /* The MS setlocale uses locale names of the form "English_United
  * States.1252" etc. We want the Unixish standard form "en", "zh_TW"
@@ -119,6 +125,6 @@ gchar*          g_win32_get_package_installation_subdirectory (gchar *package,
 
 G_END_DECLS
 
-#endif	 /* G_OS_WIN32 */
+#endif	 /* G_PLATFORM_WIN32 */
 
 #endif /* __G_WIN32_H__ */

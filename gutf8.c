@@ -29,10 +29,11 @@
 
 #include "glib.h"
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 #include <stdio.h>
 #define STRICT
 #include <windows.h>
+#undef STRICT
 #endif
 
 #include "glibintl.h"
@@ -341,7 +342,7 @@ g_utf8_get_charset_internal (char **a)
     }
 #endif
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
   if (a && ! *a)
     {
       static char codepage[10];

@@ -64,13 +64,16 @@
 #define G_PATH_LENGTH   2048
 #endif
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 #  define STRICT			/* Strict typing, please */
 #  include <windows.h>
 #  undef STRICT
 #  include <ctype.h>
+#endif /* G_PLATFORM_WIN32 */
+
+#ifdef G_OS_WIN32
 #  include <direct.h>
-#endif /* G_OS_WIN32 */
+#endif
 
 #ifdef HAVE_CODESET
 #include <langinfo.h>
@@ -548,9 +551,10 @@ g_path_is_absolute (const gchar *file_name)
     return TRUE;
 
 #ifdef G_OS_WIN32
+  /* Recognize drive letter on native Windows */
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return TRUE;
-#endif
+#endif /* G_OS_WIN32 */
 
   return FALSE;
 }
@@ -560,13 +564,13 @@ g_path_skip_root (const gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, NULL);
   
-#ifdef G_OS_WIN32
-  /* Skip \\server\share */
+#ifdef G_PLATFORM_WIN32
+  /* Skip \\server\share (Win32) or //server/share (Cygwin) */
   if (file_name[0] == G_DIR_SEPARATOR &&
       file_name[1] == G_DIR_SEPARATOR &&
       file_name[2])
     {
-      gchar *p, *q;
+      gchar *p;
 
       if ((p = strchr (file_name + 2, G_DIR_SEPARATOR)) > file_name + 2 &&
 	  p[1])
@@ -1087,12 +1091,12 @@ g_get_codeset (void)
   char *result = nl_langinfo (CODESET);
   return g_strdup (result);
 #else
-#ifndef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
+  return g_strdup_printf ("CP%d", GetACP ());
+#else
   /* FIXME: Do something more intelligent based on setlocale (LC_CTYPE, NULL)
    */
   return g_strdup ("ISO-8859-1");
-#else
-  return g_strdup_printf ("CP%d", GetACP ());
 #endif
 #endif
 }
@@ -1102,7 +1106,8 @@ g_get_codeset (void)
 #include <libintl.h>
 
 
-#ifdef G_OS_WIN32
+#ifndef GLIB_LOCALE_DIR
+#ifdef G_PLATFORM_WIN32
 
 #define GLIB_LOCALE_DIR					       	\
   g_win32_get_package_installation_subdirectory			\
@@ -1111,7 +1116,8 @@ g_get_codeset (void)
 				     GLIB_MINOR_VERSION),	\
    "locale")
 
-#endif /* G_OS_WIN32 */
+#endif /* G_PLATFORM_WIN32 */
+#endif /* !GLIB_LOCALE_DIR */
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)

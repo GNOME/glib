@@ -161,7 +161,7 @@ gunichar *g_unicode_canonical_decomposition (gunichar  ch,
 
 /* Array of skip-bytes-per-initial character.
  * We prefix variable declarations so they can
- * properly get exported in windows dlls.
+ * properly get exported in Windows DLLs.
  */
 GLIB_VAR char g_utf8_skip[256];
 
