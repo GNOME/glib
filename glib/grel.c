@@ -17,6 +17,7 @@
  */
 #include "glib.h"
 #include <stdarg.h>
+#include <string.h>
 
 typedef struct _GRealRelation      GRealRelation;
 typedef struct _GRealTuples        GRealTuples;

@@ -1,3 +1,10 @@
+1998-06-18  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* testglib.c (main): Use GINT_TO_POINTER casts to remove compiler
+	warnings.
+
+	* grel.c: #include <string.h>
+
 Fri Jun 12 15:39:06 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h (GScanner): cleanups of the structure fields (binary

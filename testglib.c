@@ -477,11 +477,11 @@ main (int   argc,
 
   gparray = g_ptr_array_new ();
   for (i = 0; i < 10000; i++)
-    g_ptr_array_add (gparray, (void*)i);
+    g_ptr_array_add (gparray, GINT_TO_POINTER (i));
 
   for (i = 0; i < 10000; i++)
-    if (g_ptr_array_index (gparray, i) != (void*)i)
-      g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), (void*)i);
+    if (g_ptr_array_index (gparray, i) != GINT_TO_POINTER (i))
+      g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
 
   g_ptr_array_free (gparray, TRUE);
 
