@@ -3,9 +3,12 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: GThread
-Description: Thread support for GLib
-Requires: glib-2.0
-Version: @VERSION@
-Libs: -L${libdir} -lgthread-1.3 @G_THREAD_LIBS@
-Cflags:
+REQUIRES="glib-2.0"
+VERSION="@VERSION@"
+CFLAGS="$CFLAGS"
+LIBS_PATH="-L${libdir} $LIBS_PATH"
+LIBS_LINK_SELF="-lgthread-1.3 @G_THREAD_LIBS@ $LIBS_LINK_SELF"
+LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
+
+#Name: GThread
+#Description: Thread support for GLib

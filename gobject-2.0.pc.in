@@ -3,9 +3,12 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: GObject
-Description: Object/type system for GLib
-Requires: glib-2.0
-Version: @VERSION@
-Libs: -L${libdir} -lgobject-1.3
-Cflags:
+REQUIRES="glib-2.0"
+VERSION="@VERSION@"
+CFLAGS="$CFLAGS"
+LIBS_PATH="-L${libdir} $LIBS_PATH"
+LIBS_LINK_SELF="-lobject-1.3 $LIBS_LINK_SELF"
+LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
+
+#Name: GObject
+#Description: Object/type system for GLib
