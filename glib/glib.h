@@ -1758,6 +1758,7 @@ gchar*	  g_quark_to_string		(GQuark		 quark);
 
 
 /* Keyed Data List
+ * NOTE: these functions are scheduled for a rename in GLib 1.3
  */
 void	  g_datalist_init		 (GData		 **datalist);
 void	  g_datalist_clear		 (GData		 **datalist);
@@ -1789,6 +1790,7 @@ void	  g_datalist_foreach		 (GData		 **datalist,
 
 
 /* Location Associated Keyed Data
+ * NOTE: these functions are scheduled for a rename in GLib 1.3
  */
 void	  g_dataset_destroy		(gconstpointer	  dataset_location);
 gpointer  g_dataset_id_get_data		(gconstpointer	  dataset_location,
