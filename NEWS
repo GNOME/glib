@@ -1,3 +1,14 @@
+Overview of Changes in GLib 1.1.8:
+* Added threading support
+  - The ability to specify a set of functions to be used for
+    locking at runtime.
+  - Default implementations of locking functions for pthreads,
+    Solaris threads, and (experimentally) NSPR.
+  - All static variables should now properly locked.
+  - Enhancements to the generic main-loop mechanism to be thread-safe.
+    (It is used for the main-loop in GTK+ as of GTK+-1.1.8)
+* Portability fixes.
+
 Overview of Changes in GLib 1.1.7:
 
 * Removed multiple define from glibconfig.h
