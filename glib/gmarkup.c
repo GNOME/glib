@@ -1706,6 +1706,24 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
 }
 
 /**
+ * g_markup_parse_context_get_element:
+ * @context: a #GMarkupParseContext
+ * @returns: the name of the currently open element, or %NULL
+ *
+ * Retrieves the name of the currently open element.
+ **/
+G_CONST_RETURN gchar *
+g_markup_parse_context_get_element (GMarkupParseContext *context)
+{
+  g_return_if_fail (context != NULL);
+
+  if (context->tag_stack == NULL) 
+    return NULL;
+  else
+    return current_element (context);
+} 
+
+/**
  * g_markup_parse_context_get_position:
  * @context: a #GMarkupParseContext
  * @line_number: return location for a line number, or %NULL

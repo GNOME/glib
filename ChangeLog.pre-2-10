@@ -1,3 +1,9 @@
+2002-07-15  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmarkup.h: 
+	* glib/gmarkup.c (g_markup_parse_context_get_element): New
+	function to get the currently open element.  (#70448)
+
 2002-07-04  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* tests/*.c: Added #undef G_DISABLE_ASSERT and #undef G_LOG_DOMAIN
