@@ -1,3 +1,11 @@
+Mon Jul  2 19:48:52  2001 Andrew Lanoix <alanoix@umich.edu>
+
+	*giowin32.c: g_source_remove()ing an socket iochannel closes
+	the socket when it should not. Patch by Peter Zelezny 
+	<zed@linux.com>
+
+	*giowin32.c: Fix a few typos
+	
 Mon Jul  2 16:03:21 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_channel_get_buffer_condition): Fix.

@@ -170,7 +170,6 @@ static unsigned __stdcall
 read_thread (void *parameter)
 {
   GIOWin32Channel *channel = parameter;
-  GSList *tmp;
   guchar *buffer;
   guint nbytes;
 
@@ -464,10 +463,7 @@ select_thread (void *parameter)
   LOCK (channel->mutex);
   if (channel->fd != -1)
     {
-      if (channel->debug)
-	g_print ("select_thread %#x: channel fd %d needs closing\n",
-		 channel->thread_id, channel->fd);
-      closesocket (channel->fd);
+      /* DO NOT close the fd here */
       channel->fd = -1;
     }
 
@@ -691,7 +687,7 @@ g_io_win32_msg_write (GIOChannel  *channel,
   memmove (&msg, buf, sizeof (MSG));
   if (!PostMessage (win32_channel->hwnd, msg.message, msg.wParam, msg.lParam))
     {
-      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED
+      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED,
         _("Unknown error")); /* Correct error message? FIXME */
       return G_IO_STATUS_ERROR;
     }
@@ -707,7 +703,7 @@ g_io_win32_no_seek (GIOChannel *channel,
 		    GSeekType   type,
 		    GError     **err)
 {
-  g_set_error(error, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_SPIPE,
+  g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_SPIPE,
     _("Seeking not allowed on this type of channel"));
 
   return G_IO_STATUS_ERROR;
