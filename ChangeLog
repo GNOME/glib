@@ -1,5 +1,7 @@
 2005-02-04  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Remove the --enable-ansi option  (#160469)
+
 	* configure.in: Define a HAVE_GNUC_VISIBILITY automake
 	conditional.
 
