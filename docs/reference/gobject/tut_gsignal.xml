@@ -173,7 +173,7 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
       <para>
 	GObject's signals have nothing to do with standard UNIX signals: they connect 
 	arbitrary application-specific events with any number of listeners.
-	For example, in GTK, every user event (keystroke or mouse move) is received
+	For example, in GTK+, every user event (keystroke or mouse move) is received
 	from the X server and generates a GTK+ event under the form of a signal emission
 	on a given object instance.
       </para>

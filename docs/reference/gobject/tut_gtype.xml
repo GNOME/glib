@@ -250,9 +250,10 @@ struct _GTypeValueTable
 	  <listitem><para>Create a macro named <function>PREFIX_OBJECT (obj)</function> which 
 	      returns a pointer of type <type>PrefixObject</type>. This macro is used to enforce
 	      static type safety by doing explicit casts wherever needed. It also enforces
-	      dynamic type safety by doing runtime checks. It is expected that in production
-	      builds, the dynamic type checks are disabled: they should be used only in 
-	      development environments. For example, we would create 
+	      dynamic type safety by doing runtime checks. It is possible to disable the dynamic
+              type checks in production builds (see 
+              <ulink>http://developer.gnome.org/doc/API/2.0/glib/glib-building.html</ulink>).
+              For example, we would create 
 	      <function>MAMAN_BAR (obj)</function> to keep the previous example.
 	    </para></listitem>
 	  <listitem><para>If the type is classed, create a macro named 
@@ -367,11 +368,20 @@ GType maman_bar_get_type (void)
 
 	<para>
 	  Types which are registered with a class and are declared instantiable are
-	  what most closely resembles an <emphasis>object</emphasis>. The code below
-	  shows how you could register such a type in the type system:
+	  what most closely resembles an <emphasis>object</emphasis>. 
+          Although <type>GObject</type>s (detailed in <xref linkend="chapter-gobject"/>) 
+          are the most well known type of instantiable
+          classed types, other kinds of similar objects used as the base of an inheritance 
+          hierarchy have been externally developped and they are all built on the fundamental
+          features described below.
+        </para>
+
+        <para>
+          For example, the code below shows how you could register 
+          such a fundamental object type in the type system:
 <programlisting>
 typedef struct {
-  Object parent;
+  GObject parent;
   /* instance members */
   int field_a;
 } MamanBar;
@@ -474,20 +484,21 @@ typedef struct {
 	  object instance by doing: 
 <programlisting>
 B *b;
-b->parent.parent_class->g_class.g_type
+b->parent.parent.g_class->g_type
 </programlisting>
 	  or, more quickly:
 <programlisting>
 B *b;
-((GTypeInstance*)b)->g_class.g_type
+((GTypeInstance*)b)->g_class->g_type
 </programlisting>
 	</para>
 
 	<para>
-	  Instanciation of these types can be done with <function>g_type_create_instance</function>:
+	  Instanciation of these types can be done with 
+          <function>g_type_create_instance</function>:
 <programlisting>
-GTypeInstance*   g_type_create_instance         (GType               type);
-void             g_type_free_instance           (GTypeInstance      *instance);
+GTypeInstance* g_type_create_instance (GType          type);
+void           g_type_free_instance   (GTypeInstance *instance);
 </programlisting>
 	  <function>g_type_create_instance</function> will lookup the type information
 	  structure associated to the type requested. Then, the instance size and instanciation
@@ -530,9 +541,16 @@ The class initialization process is entirely implemented in
 	</para>
 
 	<para>
-	  Class destruction (called finalization in Gtype) is the symmetric process of the initialization:
-	  it is implemented in <function>type_data_finalize_class_U</function> (in <filename>gtype.c
-	  </filename>, as usual...). Interfaces are first destroyed. Then, the most derived 
+	  Class destruction
+          <footnote>
+            <para>It is implemented in <function>type_data_finalize_class_U</function> 
+                  (in <filename>gtype.c</filename>.
+            </para>
+          </footnote>
+          (the concept of destruction is sometimes partly refered to as finalization 
+          in Gtype) is the symmetric process of the initialization: interfaces are 
+          destroyed first. 
+          Then, the most derived 
 	  class_finalize (<type>ClassFinalizeFunc</type>) function is invoked. The 
 	  base_class_finalize (<type>GBaseFinalizeFunc</type>) functions are 
 	  Finally invoked from bottom-most most-derived type to top-most fundamental type and 
