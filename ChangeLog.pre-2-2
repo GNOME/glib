@@ -1,3 +1,8 @@
+2002-05-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmarkup.c (g_markup_parse_context_parse): Added
+	proper support for CDATA sections.
+
 2002-05-20  jacob berkman  <jacob@ximian.com>
 
 	* glib/gdir.c: include sys/types.h before dirent.h to build on

@@ -18,10 +18,8 @@ easily migrate to full-scale XML at a later time if the need arises.
 
 <para>
 GMarkup is not guaranteed to signal an error on all invalid XML; the
-parser may accept documents that an XML parser would not, e.g. the
-sequence <literal>&lt;[[</literal> has special meaning in XML and not
-in GMarkup. However, invalid XML documents are not considered valid
-GMarkup documents. 
+parser may accept documents that an XML parser would not. However, invalid XML 
+documents are not considered valid GMarkup documents. 
 </para>
 
 <para>
@@ -34,12 +32,12 @@ Only UTF-8 encoding is allowed.
 </listitem>
 <listitem>
 <para>
-No CDATA, no user-defined entities.
+No user-defined entities.
 </para>
 </listitem>
 <listitem>
 <para>
-Processing instructions and comments are "passed through" but are not 
+Processing instructions, comments and the doctype declaration are "passed through" but are not 
 interpreted in any way.
 </para>
 </listitem>
@@ -72,6 +70,11 @@ Attributes
 <listitem>
 <para>
 Character references
+</para>
+</listitem>
+<listitem>
+<para>
+Sections marked as CDATA
 </para>
 </listitem>
 </itemizedlist>
@@ -135,8 +138,8 @@ is seen.
 @end_element: Callback to invoke when the closing tag of an element is seen
 @text: Callback to invoke when some text is seen (text is always
 inside an element)
-@passthrough: Callback to invoke for comments and processing
-instructions; if you're re-writing the parsed document, write the
+@passthrough: Callback to invoke for comments, processing
+instructions and doctype declarations; if you're re-writing the parsed document, write the
 passthrough text back out in the same position
 @error: Callback to invoke when an error occurs
 

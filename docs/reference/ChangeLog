@@ -1,3 +1,7 @@
+2002-05-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/markup.sgml: Updates.
+
 Sat May 18 00:44:35 2002  Tim Janik  <timj@gtk.org>
 
 	[merged from stable]
