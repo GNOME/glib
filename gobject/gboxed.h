@@ -60,6 +60,7 @@ GType	g_boxed_type_register_static		(const gchar	*name,
 #define	G_TYPE_CLOSURE		(g_closure_get_type ())
 #define	G_TYPE_VALUE		(g_value_get_type ())
 #define	G_TYPE_VALUE_ARRAY	(g_value_array_get_type ())
+#define	G_TYPE_STRV	        (g_strv_get_type ())
 #define	G_TYPE_GSTRING		(g_gstring_get_type ())
 
 
@@ -72,7 +73,10 @@ void	g_value_set_boxed_take_ownership	(GValue		*value,
 GType	g_closure_get_type	(void)	G_GNUC_CONST;
 GType	g_value_get_type	(void)	G_GNUC_CONST;
 GType	g_value_array_get_type	(void)	G_GNUC_CONST;
-GType	g_gstring_get_type	(void)	G_GNUC_CONST;
+GType	g_strv_get_type	        (void)	G_GNUC_CONST;
+GType	g_gstring_get_type      (void)	G_GNUC_CONST;
+
+typedef gchar** GStrv;
      
 G_END_DECLS
 

@@ -82,3 +82,39 @@ The #GType for #GString.
 
 
 
+<!-- ##### MACRO G_TYPE_STRV ##### -->
+<para>
+The #GType for a boxed type holding a %NULL-terminated array of strings.
+</para>
+<para>
+The code fragments in the following example show the use of a property of
+type #G_TYPE_STRV with g_object_class_install_property(), g_object_set()
+and g_object_get().
+</para>
+<informalexample><programlisting>
+g_object_class_install_property (object_class,
+                                 PROP_AUTHORS,
+                                 g_param_spec_boxed ("authors",
+                                                     _("Authors"),
+                                                     _("List of authors"),
+                                                     G_TYPE_STRV,
+                                                     G_PARAM_READWRITE));
+
+
+gchar *authors[] = { "Owen", "Tim", NULL };
+g_object_set (obj, "authors", authors, NULL);
+
+
+gchar *writers[];
+g_object_get (obj, "authors", &amp;writers, NULL);
+/* do something with writers */
+g_strfreev (writers);
+</programlisting></informalexample>
+
+@Since: 2.4
+
+<!-- ##### TYPEDEF GStrv ##### -->
+<para>
+A C representable type name for #G_TYPE_STRV.
+</para>
+

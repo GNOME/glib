@@ -291,12 +291,15 @@ g_pointer_type_register_static
 
 <SUBSECTION>
 G_TYPE_GSTRING
+G_TYPE_STRV
+GStrv
 
 <SUBSECTION Standard>
 G_TYPE_IS_BOXED
 
 <SUBSECTION Private>
 g_gstring_get_type
+g_strv_get_type
 </SECTION>
 
 <SECTION>

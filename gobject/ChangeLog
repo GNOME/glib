@@ -1,3 +1,9 @@
+Fri Jan  9 23:41:00 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gboxed.h:
+	* gboxed.c (g_strv_get_type): Add a boxed type for nul-terminated
+	string arrays.  (#110528)
+
 Fri Jan  9 15:34:15 2004  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: added convenience macros G_IMPLEMENT_INTERFACE() and

@@ -171,6 +171,18 @@ g_value_array_get_type (void)
 }
 
 GType
+g_strv_get_type (void)
+{
+  static GType type_id = 0;
+
+  if (!type_id)
+    type_id = g_boxed_type_register_static ("GStrv",
+					    (GBoxedCopyFunc) g_strdupv,
+					    (GBoxedFreeFunc) g_strfreev);
+  return type_id;
+}
+
+GType
 g_gstring_get_type (void)
 {
   static GType type_id = 0;
