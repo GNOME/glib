@@ -5,6 +5,8 @@ Fri Jan 22 16:51:44 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* galloca.c:
 	Compile even if G_NATIVE_ALLOCA is not defined.
+	Don't use g_free and g_malloc [yet?].  Code appears to depend on
+	internal malloc() alignment sizes.
 
 	* tests/alloca-test.c:
 	Always test internal alloca replacement too, even if we have a
