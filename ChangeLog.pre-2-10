@@ -1,4 +1,8 @@
 2001-11-26  Matthias Clasen  <matthiasc@poet.de>
+	
+	* glib/gnode.c (g_node_traverse): Implement G_LEVEL_ORDER correctly.
+
+	* tests/node-test.c: Add a testcase for G_LEVEL_ORDER implementation.
 
 	* glib/gtree.h: Mark g_tree_traverse() as deprecated. (#65343)
 	

@@ -88,6 +88,7 @@ g_node_test (void)
   GNode *root;
   GNode *node;
   GNode *node_B;
+  GNode *node_D;
   GNode *node_F;
   GNode *node_G;
   GNode *node_J;
@@ -105,7 +106,8 @@ g_node_test (void)
 
   g_node_append_data (node_B, C2P ('E'));
   g_node_prepend_data (node_B, C2P ('C'));
-  g_node_insert (node_B, 1, g_node_new (C2P ('D')));
+  node_D = g_node_new (C2P ('D'));
+  g_node_insert (node_B, 1, node_D); 
 
   node_F = g_node_new (C2P ('F'));
   g_node_append (root, node_F);
@@ -180,6 +182,13 @@ g_node_test (void)
   TEST (tstring, strcmp (tstring, "ABFEDCGKJIH") == 0);
   g_free (tstring); tstring = NULL;
   
+  g_node_append (node_D, g_node_new (C2P ('L')));
+  g_node_append (node_D, g_node_new (C2P ('M')));
+
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
+  TEST (tstring, strcmp (tstring, "ABFEDCGLMKJIH") == 0);
+  g_free (tstring); tstring = NULL;
+
   g_node_destroy (root);
 
   /* allocation tests */

@@ -222,22 +222,11 @@ and its children are visited. And so on.
 <para>
 Specifies which nodes are visited during several of the tree functions,
 including g_node_traverse() and g_node_find().
-<itemizedlist>
-<listitem><para>
-%G_TRAVERSE_LEAFS specifies that only leaf nodes should be visited.
-</para></listitem>
-<listitem><para>
-%G_TRAVERSE_NON_LEAFS specifies that only non-leaf nodes should be visited.
-</para></listitem>
-<listitem><para>
-%G_TRAVERSE_ALL specifies that all nodes should be visited.
-</para></listitem>
-</itemizedlist>
 </para>
 
-@G_TRAVERSE_LEAFS: 
-@G_TRAVERSE_NON_LEAFS: 
-@G_TRAVERSE_ALL: 
+@G_TRAVERSE_LEAFS: only leaf nodes should be visited. 
+@G_TRAVERSE_NON_LEAFS: only non-leaf nodes should be visited.
+@G_TRAVERSE_ALL: all nodes should be visited.
 @G_TRAVERSE_MASK: 
 
 <!-- ##### USER_FUNCTION GNodeTraverseFunc ##### -->

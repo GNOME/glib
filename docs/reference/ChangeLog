@@ -1,3 +1,7 @@
+2001-11-26  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/trees-nary.sgml: Document G_LEVEL_ORDER better.
+
 2001-11-22  Matthias Clasen  <matthiasc@poet.de>
 
 	Fixes for #61284:
