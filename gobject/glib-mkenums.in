@@ -3,6 +3,8 @@
 # glib-mkenums.pl 
 # Information about the current enumeration
 my $flags;			# Is enumeration a bitmask?
+my $option_lowercase_name;			# A lower case name to use as part of the *_get_type() function, instead of the one that we guess.
+                        # For instance, when an enum uses abnormal capitalization and we can not guess where to put the underscores.
 my $seenbitshift;		# Have we seen bitshift operators?
 my $enum_prefix;		# Prefix for this enumeration
 my $enumname;			# Name for this enumeration
@@ -268,9 +270,11 @@ while (<>) {
 	    next if defined $options{skip};
 	    $enum_prefix = $options{prefix};
 	    $flags = $options{flags};
+      $option_lowercase_name = $options{lowercase_name};
 	} else {
 	    $enum_prefix = undef;
 	    $flags = undef;
+      $option_lowercase_name = undef;
 	}
 	# Didn't have trailing '{' look on next lines
 	if (!defined $1) {
@@ -345,6 +349,11 @@ while (<>) {
 
 	$enumlong = uc($enspace) . "_" . $enumshort;
 	$enumsym = lc($enspace) . "_" . lc($enumshort);
+
+  #The options might override the lower case name if it could not be generated correctly:
+  if (defined($option_lowercase_name)) {
+      $enumsym = $option_lowercase_name;
+  }
 
 	if ($firstenum) {
 	    $firstenum = 0;

@@ -1,3 +1,10 @@
+2003-12-30  Murray Cumming  <murrayc@usa.net>
+  
+  	* gobject/glib-mkenums.in: Added a lowercase_name option, to be used
+  	next to the enum declaration, where the flag option is already used,
+  	when it is not possible to guess where to put the underscores in the
+  	_get_type() function name, for instance for GNOMEVFSURIHide.
+
 Fri Dec 26 02:03:58 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/garray.[hc] (g_ptr_array_foreach): New function to
