@@ -1,3 +1,8 @@
+2001-02-10  Tor Lillqvist  <tml@iki.fi>
+
+	* gwin32.c (get_package_directory_from_module): Don't store
+	address of local variable in hashtable.
+
 2001-02-08  Fatih Demir	<kabalak@kabalak.net>
 
 	* configure.in: Added "tr" to ALL_LINGUAS.

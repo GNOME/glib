@@ -850,7 +850,7 @@ get_package_directory_from_module (gchar *module_name)
 {
   static GHashTable *module_dirs = NULL;
   HMODULE hmodule = NULL;
-  gchar fn[MAX_PATH];
+  gchar *fn;
   gchar *p;
   gchar *result;
 
@@ -869,7 +869,8 @@ get_package_directory_from_module (gchar *module_name)
 	return NULL;
     }
 
-  if (!GetModuleFileName (hmodule, fn, sizeof (fn)))
+  fn = g_malloc (MAX_PATH);
+  if (!GetModuleFileName (hmodule, fn, MAX_PATH))
     return NULL;
 
   if ((p = strrchr (fn, '\\')) != NULL)
