@@ -310,6 +310,9 @@ int
 main (int   argc,
       char *argv[])
 {
+  GTypeInfo info = { 0, };
+  GTypeFundamentalInfo finfo = { 0, };
+  GType type;
   TestObject *sigarg;
   DerivedObject *dobject;
   gchar *string = NULL;
@@ -318,6 +321,15 @@ main (int   argc,
 			  G_LOG_LEVEL_WARNING |
 			  G_LOG_LEVEL_CRITICAL);
   g_type_init_with_debug_flags (G_TYPE_DEBUG_OBJECTS | G_TYPE_DEBUG_SIGNALS);
+
+  /* test new fundamentals */
+  g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST) == g_type_fundamental_next ());
+  type = g_type_register_fundamental (g_type_fundamental_next (), "FooShadow1", &info, &finfo, 0);
+  g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 1) == g_type_fundamental_next ());
+  type = g_type_register_fundamental (g_type_fundamental_next (), "FooShadow2", &info, &finfo, 0);
+  g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 2) == g_type_fundamental_next ());
+  g_assert (g_type_from_name ("FooShadow1") == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST));
+  g_assert (g_type_from_name ("FooShadow2") == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 1));
 
   /* to test past class initialization interface setups, create the class here */
   g_type_class_ref (TEST_TYPE_OBJECT);
