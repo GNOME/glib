@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <errno.h>
 #include <ctype.h>		/* For tolower() */
 #if !defined (HAVE_STRSIGNAL) || !defined(NO_SYS_SIGLIST_DECL)
 #include <signal.h>
@@ -45,6 +46,36 @@
 /* do not include <unistd.h> in this place since it
  * inteferes with g_strsignal() on some OSes
  */
+
+typedef union  _GDoubleIEEE754  GDoubleIEEE754;
+#define G_IEEE754_DOUBLE_BIAS   (1023)
+/* multiply with base2 exponent to get base10 exponent (nomal numbers) */
+#define G_LOG_2_BASE_10         (0.30102999566398119521)
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+union _GDoubleIEEE754
+{
+  gdouble v_double;
+  struct {
+    guint mantissa_low : 32;
+    guint mantissa_high : 20;
+    guint biased_exponent : 11;
+    guint sign : 1;
+  } mpn;
+};
+#elif G_BYTE_ORDER == G_BIG_ENDIAN
+union _GDoubleIEEE754
+{
+  gdouble v_double;
+  struct {
+    guint sign : 1;
+    guint biased_exponent : 11;
+    guint mantissa_high : 20;
+    guint mantissa_low : 32;
+  } mpn;
+};
+#else /* !G_LITTLE_ENDIAN && !G_BIG_ENDIAN */
+#error unknown ENDIAN type
+#endif /* !G_LITTLE_ENDIAN && !G_BIG_ENDIAN */
 
 gchar*
 g_strdup (const gchar *str)
@@ -791,143 +822,309 @@ g_strsignal (gint signum)
   return msg;
 }
 
+typedef struct
+{
+  guint min_width;
+  guint precision;
+  gboolean alternate_format, zero_padding, adjust_left, locale_grouping;
+  gboolean add_space, add_sign, possible_sign, seen_precision;
+  gboolean mod_half, mod_long, mod_extra_long;
+} PrintfArgSpec;
+
 guint
 g_printf_string_upper_bound (const gchar* format,
 			     va_list      args)
 {
+  static const gboolean honour_longs = SIZEOF_LONG > 4 || SIZEOF_VOID_P > 4;
   guint len = 1;
+
+  if (!format)
+    return len;
 
   while (*format)
     {
-      gboolean long_int = FALSE;
-      gboolean extra_long = FALSE;
-      gchar c;
+      register gchar c = *format++;
 
-      c = *format++;
+      if (c != '%')
+        len += 1;
+      else /* (c == '%') */
+        {
+          PrintfArgSpec spec = { 0, };
+          gboolean seen_l = FALSE, conv_done = FALSE;
+          guint conv_len = 0;
+          const gchar *spec_start = format;
 
-      if (c == '%')
-	{
-	  gboolean done = FALSE;
+          do
+            {
+              c = *format++;
+              switch (c)
+                {
+                  GDoubleIEEE754 u_double;
+                  guint v_uint;
+                  gint v_int;
+                  const gchar *v_string;
 
-	  while (*format && !done)
-	    {
-	      switch (*format++)
-		{
-		  gchar *string_arg;
+                  /* beware of positional parameters
+                   */
+                case '$':
+                  g_warning (G_GNUC_PRETTY_FUNCTION
+                             "(): unable to handle positional parameters (%%n$)");
+                  len += 1024; /* try adding some safety padding */
+                  break;
 
-		case '*':
-		  len += va_arg (args, int);
-		  break;
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-		  /* add specified format length, since it might exceed the
-		   * size we assume it to have.
-		   */
-		  format -= 1;
-		  len += strtol (format, (char**) &format, 10);
-		  break;
-		case 'h':
-		  /* ignore short int flag, since all args have at least the
-		   * same size as an int
-		   */
-		  break;
-		case 'l':
-		  if (long_int)
-		    extra_long = TRUE; /* linux specific */
-		  else
-		    long_int = TRUE;
-		  break;
-		case 'q':
-		case 'L':
-		  long_int = TRUE;
-		  extra_long = TRUE;
-		  break;
-		case '\'':
-		  len += 64;
-		  break;
-		case 's':
-		  string_arg = va_arg (args, char *);
-		  if (string_arg)
-		    len += strlen (string_arg);
-		  else
-		    {
-		      /* add enough padding to hold "(null)" identifier */
-		      len += 16;
-		    }
-		  done = TRUE;
-		  break;
-		case 'd':
-		case 'i':
-		case 'o':
-		case 'u':
-		case 'x':
-		case 'X':
-#ifdef	G_HAVE_GINT64
-		  if (extra_long)
-		    (void) va_arg (args, gint64);
-		  else
-#endif	/* G_HAVE_GINT64 */
-		    {
-		      if (long_int)
-			(void) va_arg (args, long);
-		      else
-			(void) va_arg (args, int);
-		    }
-		  len += extra_long ? 64 : 32;
-		  done = TRUE;
-		  break;
-		case 'D':
-		case 'O':
-		case 'U':
-		  (void) va_arg (args, long);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case 'e':
-		case 'E':
-		case 'f':
-		case 'g':
-		case 'G':
+                  /* parse flags
+                   */
+                case '#':
+                  spec.alternate_format = TRUE;
+                  break;
+                case '0':
+                  spec.zero_padding = TRUE;
+                  break;
+                case '-':
+                  spec.adjust_left = TRUE;
+                  break;
+                case ' ':
+                  spec.add_space = TRUE;
+                  break;
+                case '+':
+                  spec.add_sign = TRUE;
+                  break;
+                case '\'':
+                  spec.locale_grouping = TRUE;
+                  break;
+
+                  /* parse output size specifications
+                   */
+                case '.':
+                  spec.seen_precision = TRUE;
+                  break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                  v_uint = c - '0';
+                  c = *format;
+                  while (c >= '0' && c <= '9')
+                    {
+                      format++;
+                      v_uint = v_uint * 10 + c - '0';
+                      c = *format;
+                    }
+                  if (spec.seen_precision)
+                    spec.precision = MAX (spec.precision, v_uint);
+                  else
+                    spec.min_width = MAX (spec.min_width, v_uint);
+                  break;
+                case '*':
+                  v_int = va_arg (args, int);
+                  if (spec.seen_precision)
+                    {
+                      /* forget about negative precision */
+                      if (v_int >= 0)
+                        spec.precision = MAX (spec.precision, v_int);
+                    }
+                  else
+                    {
+                      if (v_int < 0)
+                        {
+                          v_int = - v_int;
+                          spec.adjust_left = TRUE;
+                        }
+                      spec.min_width = MAX (spec.min_width, v_int);
+                    }
+                  break;
+
+                  /* parse type modifiers
+                   */
+                case 'h':
+                  spec.mod_half = TRUE;
+                  break;
+                case 'l':
+                  if (!seen_l)
+                    {
+                      spec.mod_long = TRUE;
+                      seen_l = TRUE;
+                      break;
+                    }
+                  /* else, fall through */
+                case 'L':
+                case 'q':
+                  spec.mod_long = TRUE;
+                  spec.mod_extra_long = TRUE;
+                  break;
+                case 'z':
+                case 'Z':
+#if GLIB_SIZEOF_SIZE_T > 4
+                  spec.mod_long = TRUE;
+                  spec.mod_extra_long = TRUE;
+#endif /* GLIB_SIZEOF_SIZE_T > 4 */
+                  break;
+                case 't':
+#if GLIB_SIZEOF_PTRDIFF_T > 4
+                  spec.mod_long = TRUE;
+                  spec.mod_extra_long = TRUE;
+#endif /* GLIB_SIZEOF_PTRDIFF_T > 4 */
+                  break;
+                case 'j':
+#if GLIB_SIZEOF_INTMAX_T > 4
+                  spec.mod_long = TRUE;
+                  spec.mod_extra_long = TRUE;
+#endif /* GLIB_SIZEOF_INTMAX_T > 4 */
+                  break;
+
+                  /* parse output conversions
+                   */
+                case '%':
+                  conv_len += 1;
+                  break;
+                case 'O':
+                case 'D':
+                case 'I':
+                case 'U':
+                  /* some C libraries feature long variants for these as well? */
+                  spec.mod_long = TRUE;
+                  /* fall through */
+                case 'o':
+                  conv_len += 2;
+                  /* fall through */
+                case 'd':
+                case 'i':
+                  conv_len += 1; /* sign */
+                  /* fall through */
+                case 'u':
+                  conv_len += 4;
+                  /* fall through */
+                case 'x':
+                case 'X':
+                  spec.possible_sign = TRUE;
+                  conv_len += 10;
+                  if (spec.mod_long && honour_longs)
+                    conv_len *= 2;
+                  if (spec.mod_extra_long)
+                    conv_len *= 2;
+                  if (spec.mod_extra_long)
+                    {
+#ifdef G_HAVE_GINT64
+                      (void) va_arg (args, gint64);
+#else /* !G_HAVE_GINT64 */
+                      (void) va_arg (args, long);
+#endif /* !G_HAVE_GINT64 */
+                    }
+                  else if (spec.mod_long)
+                    (void) va_arg (args, long);
+                  else
+                    (void) va_arg (args, int);
+                  break;
+                case 'A':
+                case 'a':
+                  /*          0x */
+                  conv_len += 2;
+                  /* fall through */
+                case 'g':
+                case 'G':
+                case 'e':
+                case 'E':
+                case 'f':
+                  spec.possible_sign = TRUE;
+                  /*          n   .   dddddddddddddddddddddddd   E   +-  eeee */
+                  conv_len += 1 + 1 + MAX (24, spec.precision) + 1 + 1 + 4;
+                  if (spec.mod_extra_long)
+                    g_warning (G_GNUC_PRETTY_FUNCTION
+                               "(): unable to handle long double, collecting double only");
 #ifdef HAVE_LONG_DOUBLE
-		  if (extra_long)
-		    (void) va_arg (args, long double);
-		  else
-#endif	/* HAVE_LONG_DOUBLE */
-		    (void) va_arg (args, double);
-		  len += extra_long ? 128 : 64;
-		  done = TRUE;
-		  break;
-		case 'c':
-		  (void) va_arg (args, int);
-		  len += 1;
-		  done = TRUE;
-		  break;
-		case 'p':
-		case 'n':
-		  (void) va_arg (args, void*);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case '%':
-		  len += 1;
-		  done = TRUE;
-		  break;
-		default:
-		  /* ignore unknow/invalid flags */
-		  break;
-		}
-	    }
-	}
-      else
-	len += 1;
-    }
+#error need to implement special handling for long double
+#endif
+                  u_double.v_double = va_arg (args, double);
+                  /* %f can expand up to all significant digits before '.' (308) */
+                  if (c == 'f' &&
+                      u_double.mpn.biased_exponent > 0 && u_double.mpn.biased_exponent < 2047)
+                    {
+                      gint exp = u_double.mpn.biased_exponent;
+
+                      exp -= G_IEEE754_DOUBLE_BIAS;
+                      exp = exp * G_LOG_2_BASE_10 + 1;
+                      conv_len += exp;
+                    }
+                  /* some printf() implementations require extra padding for rounding */
+                  conv_len += 2;
+                  /* we can't really handle locale specific grouping here */
+                  if (spec.locale_grouping)
+                    conv_len *= 2;
+                  break;
+                case 'C':
+                  spec.mod_long = TRUE;
+                  /* fall through */
+                case 'c':
+                  conv_len += spec.mod_long ? MB_LEN_MAX : 1;
+                  (void) va_arg (args, int);
+                  break;
+                case 'S':
+                  spec.mod_long = TRUE;
+                  /* fall through */
+                case 's':
+                  v_string = va_arg (args, char*);
+                  if (!v_string)
+                    conv_len += 8; /* hold "(null)" */
+                  else if (spec.seen_precision)
+                    conv_len += spec.precision;
+                  else
+                    conv_len += strlen (v_string);
+                  conv_done = TRUE;
+                  if (spec.mod_long)
+                    {
+                      g_warning (G_GNUC_PRETTY_FUNCTION
+                                 "(): unable to handle wide char strings");
+                      len += 1024; /* try adding some safety padding */
+                    }
+                  break;
+                case 'P': /* do we actually need this? */
+                  /* fall through */
+                case 'p':
+                  spec.alternate_format = TRUE;
+                  conv_len += 10;
+                  if (honour_longs)
+                    conv_len *= 2;
+                  /* fall through */
+                case 'n':
+                  conv_done = TRUE;
+                  (void) va_arg (args, void*);
+                  break;
+                case 'm':
+                  /* there's not much we can do to be clever */
+                  v_string = g_strerror (errno);
+                  v_uint = v_string ? strlen (v_string) : 0;
+                  conv_len += MAX (256, v_uint);
+                  break;
+
+                  /* handle invalid cases
+                   */
+                case '\000':
+                  /* no conversion specification, bad bad */
+                  conv_len += format - spec_start;
+                  break;
+                default:
+                  g_warning (G_GNUC_PRETTY_FUNCTION
+                             "(): unable to handle `%c' while parsing format",
+                             c);
+                  break;
+                }
+              conv_done |= conv_len > 0;
+            }
+          while (!conv_done);
+          /* handle width specifications */
+          conv_len = MAX (conv_len, MAX (spec.precision, spec.min_width));
+          /* handle flags */
+          conv_len += spec.alternate_format ? 2 : 0;
+          conv_len += (spec.add_space || spec.add_sign || spec.possible_sign);
+          /* finally done */
+          len += conv_len;
+        } /* else (c == '%') */
+    } /* while (*format) */
 
   return len;
 }
