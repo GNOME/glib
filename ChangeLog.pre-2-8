@@ -1,3 +1,9 @@
+2004-11-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/Makefile.am (test_programs): Add utf8-validate.
+
+	* tests/utf8-validate.c: Unit tests for g_utf8_validate().
+
 2004-11-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.h: Don't mark g_option_error_quark() as const,
