@@ -46,13 +46,13 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
   fi
 
   if test x"$no_glib" = x ; then
-    GLIB_CFLAGS=`$PKG_CONFIG $pkg_config_args --cflags`
-    GLIB_LIBS=`$PKG_CONFIG $pkg_config_args --libs`
-    glib_config_major_version=`$PKG_CONFIG glib-2.0 --modversion | \
+    GLIB_CFLAGS=`$PKG_CONFIG --cflags $pkg_config_args`
+    GLIB_LIBS=`$PKG_CONFIG --libs $pkg_config_args`
+    glib_config_major_version=`$PKG_CONFIG --modversion glib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    glib_config_minor_version=`$PKG_CONFIG glib-2.0 --modversion | \
+    glib_config_minor_version=`$PKG_CONFIG --modversion glib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    glib_config_micro_version=`$PKG_CONFIG glib-2.0 --modversion | \
+    glib_config_micro_version=`$PKG_CONFIG --modversion glib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
     if test "x$enable_glibtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"

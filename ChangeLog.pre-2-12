@@ -1,3 +1,9 @@
+2001-04-11  Alexander Larsson  <alexl@redhat.com>
+
+	* glib-2.0.m4: Pass pkg-config options
+	before the other args so it works even if
+	POSIXLY_CORRECT is set.
+
 Mon Apr  9 18:57:44 2001  Tim Janik  <timj@gtk.org>
 
 	* configure.in: increment version to 1.3.4 (binary 0, interface 0).
