@@ -1,3 +1,9 @@
+2001-07-08  Martin Baulig  <baulig@suse.de>
+
+	* tests/unicode-normalize.c, tests/unicode-collate.c:
+	Reflect latest g_io_channel_new_file() API changes, use
+	G_IO_FILE_MODE_READ instead of "r".
+
 Fri Jul  6 22:34:32 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gunicode.h glib/gunidecomp.c glib/guniprop.c 
