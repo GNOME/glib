@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2002-05-23 14:42-0400\n"
+"POT-Creation-Date: 2002-06-13 16:23-0400\n"
 "PO-Revision-Date: 2001-02-05 20:28+0200\n"
 "Last-Translator: Kemal Yılmaz <kyilmaz@uekae.tubitak.gov.tr>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"

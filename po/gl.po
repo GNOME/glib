@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-06-01 21:11+0200\n"
+"POT-Creation-Date: 2002-06-13 16:23-0400\n"
 "PO-Revision-Date: 2002-06-08 00:28+0200\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -239,8 +239,8 @@ msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr "A"
-"referencia de caracter '%s' non remataba con punto e coma, o máis seguro é "
+msgstr ""
+"Areferencia de caracter '%s' non remataba con punto e coma, o máis seguro é "
 "que se usou un caracter & sen intención de comezar unha entidade - debese "
 "escapar o & como &amp;"
 
@@ -407,7 +407,9 @@ msgstr "O texto en forma citada non comenza cunha marca de cita"
 
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Marca de cita non pechada na liña de comandos ou outro texto en forma de cita nunha shell"
+msgstr ""
+"Marca de cita non pechada na liña de comandos ou outro texto en forma de "
+"cita nunha shell"
 
 #: glib/gshell.c:529
 #, c-format

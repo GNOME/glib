@@ -1,4 +1,12 @@
-Overview of Changes in GLib 2.0.2
+Overview of Changes in GLib 2.0.4
+=================================
+
+* Fix some 64-bit problems. (George Lebl, David L. Cooper II)
+* Add note about Tru64 iconv to INSTALL. (Manuel Op de Coul)
+* Fix problem with timouts > MAXINT. (Tim Janik, Owen Taylor)
+* Updated translations (ca,es,fr,ja,gl,ms,nl,pl,pt,ru)
+
+Overview of Changes in GLib 2.0.3
 =================================
 
 * Handle sorting 0-length arrays (Ron Arts)

@@ -1,8 +1,8 @@
 Simple install procedure
 ========================
 
-  % gzip -cd glib-2.0.3.tar.gz | tar xvf -  # unpack the sources
-  % cd glib-2.0.3                           # change to the toplevel directory
+  % gzip -cd glib-2.0.4.tar.gz | tar xvf -  # unpack the sources
+  % cd glib-2.0.4                           # change to the toplevel directory
   % ./configure                             # run the `configure' script
   % make                                    # build GLIB
 
@@ -46,6 +46,12 @@ the converters between locale encodings and UTF-8 installed.
 At a minimum you'll need the SUNWuiu8 package. You probably
 should also install the SUNWciu8, SUNWhiu8, SUNWjiu8, and
 SUNWkiu8 packages.
+
+The native iconv on Compaq Tru64 doesn't contain support for
+UTF-8, so you'll need to use GNU libiconv instead. (When
+using GNU libiconv for GTK+, you'll need to use GNU libiconv
+for GNU gettext as well.) This probably applies to related
+operating systems as well.
 
 Finally, for message catalog handling, GTK+ requires an implementation
 of gettext(). If your system doesn't provide this functionality,
