@@ -2270,3 +2270,59 @@ g_strrstr_len (const gchar *haystack,
 }
 
 
+/**
+ * g_str_has_suffix:
+ * @str: a nul-terminated string.
+ * @suffix: the nul-terminated suffix to look for.
+ *
+ * Looks whether the string @str ends with @suffix.
+ *
+ * Return value: TRUE if @str end with @suffix, FALSE otherwise.
+ **/
+gboolean
+g_str_has_suffix (const gchar  *str,
+		  const gchar  *suffix)
+{
+  int str_len;
+  int suffix_len;
+  
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (suffix != NULL, FALSE);
+
+  str_len = strlen (str);
+  suffix_len = strlen (suffix);
+
+  if (str_len < suffix_len)
+    return FALSE;
+
+  return strcmp (str + str_len - suffix_len, suffix) == 0;
+}
+
+/**
+ * g_str_has_prefix:
+ * @str: a nul-terminated string.
+ * @prefix: the nul-terminated prefix to look for.
+ *
+ * Looks whether the string @str begins with @prefix.
+ *
+ * Return value: TRUE if @str begins with @prefix, FALSE otherwise.
+ **/
+gboolean
+g_str_has_prefix (const gchar  *str,
+		  const gchar  *prefix)
+{
+  int str_len;
+  int prefix_len;
+  
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (prefix != NULL, FALSE);
+
+  str_len = strlen (str);
+  prefix_len = strlen (prefix);
+
+  if (str_len < prefix_len)
+    return FALSE;
+  
+  return strncmp (str, prefix, prefix_len) == 0;
+}
+

@@ -116,6 +116,11 @@ gchar *               g_strrstr_len    (const gchar  *haystack,
 					gssize        haystack_len,
 					const gchar  *needle);
 
+gboolean              g_str_has_suffix (const gchar  *str,
+					const gchar  *suffix);
+gboolean              g_str_has_prefix (const gchar  *str,
+					const gchar  *prefix);
+
 /* String to/from double conversion functions */
 
 gdouble	              g_strtod         (const gchar  *nptr,

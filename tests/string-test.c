@@ -210,6 +210,22 @@ main (int   argc,
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
   
+  g_assert (g_str_has_prefix("foobar", "gazonk") == FALSE);
+  g_assert (g_str_has_prefix("xyzzy", "xyzzy") == TRUE);
+  g_assert (g_str_has_prefix("xyzzy", "xy") == TRUE);
+  g_assert (g_str_has_prefix("xyzzy", "") == TRUE);
+  g_assert (g_str_has_prefix("xyz", "xyzzy") == FALSE);
+  g_assert (g_str_has_prefix("", "xyzzy") == FALSE);
+  g_assert (g_str_has_prefix("", "") == TRUE);
+
+  g_assert (g_str_has_suffix("foobar", "gazonk") == FALSE);
+  g_assert (g_str_has_suffix("xyzzy", "xyzzy") == TRUE);
+  g_assert (g_str_has_suffix("xyzzy", "zy") == TRUE);
+  g_assert (g_str_has_suffix("xyzzy", "") == TRUE);
+  g_assert (g_str_has_suffix("zzy", "xyzzy") == FALSE);
+  g_assert (g_str_has_suffix("", "xyzzy") == FALSE);
+  g_assert (g_str_has_suffix("", "") == TRUE);
+
   return 0;
 }
 
