@@ -1,3 +1,8 @@
+2000-04-10 Elliot Lee <sopwith@redhat.com>
+	* gstrfuncs.c: A stringified double can be longer than 32 chars -
+	fix space calculation routine to 'double' the max amount of space
+	a double & long double can take.
+
 Fri Mar 24 03:34:02 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: put a comment for the g_datalist_ and g_dataset_ API, that

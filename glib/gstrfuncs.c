@@ -897,7 +897,7 @@ g_printf_string_upper_bound (const gchar* format,
 		  else
 #endif	/* HAVE_LONG_DOUBLE */
 		    (void) va_arg (args, double);
-		  len += extra_long ? 64 : 32;
+		  len += extra_long ? 128 : 64;
 		  done = TRUE;
 		  break;
 		case 'c':
