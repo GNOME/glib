@@ -417,7 +417,7 @@ ignored. Calling
 <para>
 <informalexample>
 <programlisting>
-g_thread_join (retval);
+g_thread_exit (retval);
 </programlisting>
 </informalexample>
 </para>

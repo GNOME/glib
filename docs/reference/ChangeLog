@@ -1,3 +1,7 @@
+2002-01-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/tmpl/threads.sgml: Name the right function.
+
 2001-12-23  Matthias Clasen  <matthias@poet.de>
 
 	* glib/tmpl/main.sgml, glib/tmpl/string_utils.sgml,
