@@ -133,7 +133,10 @@ g_hook_destroy_link (GHookList *hook_list,
       if (hook_list->hook_destroy)
 	hook_list->hook_destroy (hook_list, hook);
       else if (hook->destroy)
-	hook->destroy (hook->data);
+	{
+	  hook->destroy (hook->data);
+	  hook->destroy = NULL;
+	}
       g_hook_unref (hook_list, hook); /* counterpart to g_hook_insert_before */
     }
 }
