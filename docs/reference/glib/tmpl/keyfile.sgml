@@ -6,7 +6,86 @@ parses <filename>.ini</filename>-like config files
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+#GKeyFile lets you parse, edit or create files containing groups of
+key-value pairs, which we call <firstterm>key files</firstterm> for 
+lack of a better name. Several freedesktop.org specifications use
+key files now, e.g the 
+<ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+Entry Specification</ulink> and the
+<ulink url="http://freedesktop.org/Standards/icon-theme-spec">Icon
+Theme Specification</ulink>. 
+</para>
 
+<para>
+The syntax of key files is described in detail in the 
+<ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+Entry Specification</ulink>, here is a quick summary: Key files
+consists of groups of key-value pairs, interspersed with comments.
+</para>
+
+<informalexample><programlisting>
+# this is just an example
+# there can be comments before the first group
+
+[First Group]
+
+Name=Key File Example\tthis value shows\nescaping
+
+# localized strings are stored in multiple key-value pairs
+Welcome=Hello
+Welcome[de]=Hallo
+Welcome[fr]=Bonjour
+Welcome[it]=Ciao
+
+[Another Group]
+
+Numbers=2;20;-200;0
+
+Booleans=true;false;true;true
+
+</programlisting></informalexample>
+
+<para>
+Lines beginning with a '#' and blank lines are considered comments.
+</para>
+
+<para>
+Groups are started by a header line containing the group name enclosed
+in '[' and ']', and ended implicitly by the start of the next group or
+the end of the file. Each key-value pair must be contained in a group.
+</para>
+
+<para>
+Key-value pairs generally have the form <literal>key=value</literal>, 
+with the exception of localized strings, which have the form 
+<literal>key[locale]=value</literal>. Space before and after the 
+'=' character are ignored. Newline, tab, carriage return and backslash 
+characters are escaped as \n, \t, \r, and \\, respectively. To preserve
+initial and final spaces, these can also be escaped as \s.
+</para>
+
+<para>
+Key files can store strings (possibly with localized variants), integers,
+booleans and lists of these. Lists are separated by a separator character,
+typically ';' or ','. To use the list separator character in a value in
+a list, it has to be escaped by prefixing it with a backslash.
+</para>
+
+<para>
+This syntax is obviously inspired by the <filename>.ini</filename> 
+files commonly met on Windows, but there are some important differences:
+<itemizedlist>
+<listitem><para>
+<filename>.ini</filename> files use the ';' character to begin comments,
+ key files use the '#' character.
+</para></listitem>
+<listitem><para>
+Key files allow only comments before the first group.
+</para></listitem>
+<listitem><para>
+Key files are always encoded in UTF-8.
+</para></listitem>
+</itemizedlist>
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
