@@ -564,39 +564,6 @@ g_hash_table_size (GHashTable *hash_table)
   return hash_table->nnodes;
 }
 
-/**
- * g_hash_table_freeze:
- * @hash_table: a #GHashTable.
- * 
- * This function is deprecated and will be removed in the next major
- * release of GLib. It does nothing.
- **/
-void
-g_hash_table_freeze (GHashTable *hash_table)
-{
-#ifdef G_ENABLE_DEBUG
-  static gboolean first_call = TRUE;
-
-  if (first_call)
-    {
-      g_warning("g_hash_table_freeze and g_hash_table_thaw are deprecated.");
-      first_call = FALSE;
-    }
-#endif /* G_ENABLE_DEBUG */
-}
-
-/**
- * g_hash_table_thaw:
- * @hash_table: a #GHashTable.
- * 
- * This function is deprecated and will be removed in the next major
- * release of GLib. It does nothing.
- **/
-void
-g_hash_table_thaw (GHashTable *hash_table)
-{
-}
-
 static void
 g_hash_table_resize (GHashTable *hash_table)
 {

@@ -256,10 +256,14 @@ gint		g_scanner_stat_mode		(const gchar	*filename);
   g_scanner_scope_foreach_symbol ((scanner), 0, (func), (data)); \
 } G_STMT_END
 
+#ifndef G_DISABLE_DEPRECATED
+
 /* The following two functions are deprecated and will be removed in
  * the next major release. They do no good. */
-void		g_scanner_freeze_symbol_table	(GScanner	*scanner);
-void		g_scanner_thaw_symbol_table	(GScanner	*scanner);
+#define g_scanner_freeze_symbol_table(scanner) ((void)0)
+#define g_scanner_thaw_symbol_table(scanner) ((void)0)
+
+#endif /* G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

@@ -73,10 +73,14 @@ guint	    g_hash_table_foreach_steal	   (GHashTable	   *hash_table,
 					    gpointer	    user_data);
 guint	    g_hash_table_size		   (GHashTable	   *hash_table);
 
+#ifndef G_DISABLE_DEPRECATED
+
 /* The following two functions are deprecated and will be removed in
  * the next major release. They do no good. */
-void	    g_hash_table_freeze		   (GHashTable     *hash_table);
-void	    g_hash_table_thaw		   (GHashTable     *hash_table);
+#define g_hash_table_freeze(hash_table) ((void)0)
+#define g_hash_table_thaw(hash_table) ((void)0)
+
+#endif /* G_DISABLE_DEPRECATED */
 
 /* Hash Functions
  */

@@ -149,12 +149,16 @@ gboolean              g_path_is_absolute   (const gchar *file_name);
 /* In case of absolute paths, skip the root part */
 G_CONST_RETURN gchar* g_path_skip_root     (const gchar *file_name);
 
+#ifndef G_DISABLE_DEPRECATED
+
 /* These two functions are deprecated and will be removed in the next
  * major release of GLib. Use g_path_get_dirname/g_path_get_basename
  * instead. Whatch out! The string returned by g_path_get_basename
  * must be g_freed, while the string returned by g_basename must not.*/
 G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
-gchar*                g_dirname            (const gchar *file_name);
+#define g_dirname g_path_get_dirname
+
+#endif /* G_DISABLE_DEPRECATED */
 
 /* The returned strings are newly allocated with g_malloc() */
 gchar*                g_get_current_dir    (void);

@@ -470,17 +470,6 @@ G_CONST_RETURN gchar*
 g_basename (const gchar	   *file_name)
 {
   register gchar *base;
-#if defined(G_ENABLE_DEBUG) && !defined(G_OS_WIN32)
-  static gboolean first_call = TRUE;
-
-  if (first_call)
-    {
-      g_message ("g_basename is deprecated. Use g_path_get_basename instead. "
-		 "Beware that the string returned by g_path_get_basename() has "
-		 " to be g_free()ed.");
-      first_call = FALSE;
-    }
-#endif /* G_ENABLE_DEBUG */
   
   g_return_val_if_fail (file_name != NULL, NULL);
   
@@ -626,22 +615,6 @@ g_path_get_dirname (const gchar	   *file_name)
   base[len] = 0;
   
   return base;
-}
-
-gchar*
-g_dirname (const gchar	   *file_name)
-{
-#if defined(G_ENABLE_DEBUG) && !defined(G_OS_WIN32)
-  static gboolean first_call = TRUE;
-
-  if (first_call)
-    {
-      g_message ("g_dirname() is deprecated. Use g_path_get_dirname() instead.");
-      first_call = FALSE;
-    }
-#endif /* G_ENABLE_DEBUG */
-
-  return g_path_get_dirname (file_name);
 }
 
 gchar*

@@ -1,5 +1,16 @@
 2001-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* ghash.c, ghash.h: Remove definition of g_hash_table_freeze and
+	g_hash_table_thaw. Instead added G_DISABLE_DEPRECATED-guarded
+	macros to ghash.h to go along the lines of the standard.
+
+	* gscanner.c, gscanner.h: Dito for g_scanner_freeze_symbol_table
+	and g_scanner_thaw_symbol_table.
+
+	* gutils.c, gutils.h: Dito for g_dirname. g_basename is still
+	defined in gutils.c, but declared ing gutils.h only
+	G_DISABLE_DEPRECATED-guarded.
+	
 	* configure.in: Removed bashism in test for the pkg-config
 	version.
 
