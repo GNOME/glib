@@ -1,3 +1,8 @@
+Sun Jan  9 13:28:36 2000  Tim Janik  <timj@gtk.org>
+
+        * gstrfuncs.c (g_strtod): correctly fetch the current locale,
+        fix from owen.
+
 1999-11-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Make the test for getpwuid_r work on newer AIX
