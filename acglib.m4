@@ -1,0 +1,80 @@
+dnl GLIB_IF_VAR_EQ (ENV_VAR, VALUE [, EQUALS_ACTION] [, ELSE_ACTION])
+AC_DEFUN(GLIB_IF_VAR_EQ,[
+        case "$[$1]" in
+        "[$2]"[)]
+                [$3]
+                ;;
+        *[)]
+                [$4]
+                ;;
+        esac
+])
+dnl GLIB_STR_CONTAINS (SRC_STRING, SUB_STRING [, CONTAINS_ACTION] [, ELSE_ACTION])
+AC_DEFUN(GLIB_STR_CONTAINS,[
+        case "[$1]" in
+        *"[$2]"*[)]
+                [$3]
+                ;;
+        *[)]
+                [$4]
+                ;;
+        esac
+])
+dnl GLIB_ADD_TO_VAR (ENV_VARIABLE, CHECK_STRING, ADD_STRING)
+AC_DEFUN(GLIB_ADD_TO_VAR,[
+        GLIB_STR_CONTAINS($[$1], [$2], [$1]="$[$1]", [$1]="$[$1] [$3]")
+])
+
+dnl GLIB_SIZEOF (INCLUDES, TYPE, ALIAS [, CROSS-SIZE])
+AC_DEFUN(GLIB_SIZEOF,
+[changequote(<<, >>)dnl
+dnl The name to #define.
+define(<<AC_TYPE_NAME>>, translit(glib_sizeof_$3, [a-z *], [A-Z_P]))dnl
+dnl The cache variable name.
+define(<<AC_CV_NAME>>, translit(glib_cv_sizeof_$3, [ *], [_p]))dnl
+changequote([, ])dnl
+AC_MSG_CHECKING(size of $2)
+AC_CACHE_VAL(AC_CV_NAME,
+[AC_TRY_RUN([#include <stdio.h>
+$1
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof($2));
+  exit(0);
+}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=0, ifelse([$4], , , AC_CV_NAME=$4))])dnl
+AC_MSG_RESULT($AC_CV_NAME)
+AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
+undefine([AC_TYPE_NAME])dnl
+undefine([AC_CV_NAME])dnl
+])
+
+dnl GLIB_BYTE_CONTENTS (INCLUDES, TYPE, ALIAS, N_BYTES, INITIALIZER)
+AC_DEFUN(GLIB_BYTE_CONTENTS,
+[changequote(<<, >>)dnl
+dnl The name to #define.
+define(<<AC_TYPE_NAME>>, translit(glib_byte_contents_$3, [a-z *], [A-Z_P]))dnl
+dnl The cache variable name.
+define(<<AC_CV_NAME>>, translit(glib_cv_byte_contents_$3, [ *], [_p]))dnl
+changequote([, ])dnl
+AC_MSG_CHECKING(byte contents of $2)
+AC_CACHE_VAL(AC_CV_NAME,
+[AC_TRY_RUN([#include <stdio.h>
+$1
+main()
+{
+  static $2 tv = $5;
+  char *p = (char*) &tv;
+  int i;
+  FILE *f=fopen("conftestval", "w");
+  for (i = 0; i < $4; i++)
+    fprintf(f, "%s%d", i?",":"", *(p++));
+  fprintf(f, "\n");
+  exit(0);
+}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=0, AC_CV_NAME=0)])dnl
+AC_MSG_RESULT($AC_CV_NAME)
+AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
+undefine([AC_TYPE_NAME])dnl
+undefine([AC_CV_NAME])dnl
+])

@@ -1,3 +1,7 @@
+Sat Dec 19 03:10:50 1998  Tim Janik  <timj@gtk.org>
+
+	* fixed up gthread includes, cleaned up glibconfig.h a little bit.
+
 Fri Dec 18 12:51:39 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c: Fix errors in computation of timeout

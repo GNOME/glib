@@ -487,11 +487,14 @@ typedef gint32	GTime;
 
 
 /* Portable endian checks and conversions
+ *
+ * glibconfig.h defines G_BYTE_ORDER which expands to one of
+ * the below macros.
  */
-
 #define G_LITTLE_ENDIAN 1234
 #define G_BIG_ENDIAN    4321
 #define G_PDP_ENDIAN    3412		/* unused, need specific PDP check */	
+
 
 /* Basic bit swapping functions
  */
@@ -507,7 +510,6 @@ typedef gint32	GTime;
 /* Intel specific stuff for speed
  */
 #if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
-
 #  define GUINT16_SWAP_LE_BE_X86(val) \
      (__extension__					\
       ({ register guint16 __v;				\
@@ -518,9 +520,7 @@ typedef gint32	GTime;
 			      : "=r" (__v)		\
 			      : "0" ((guint16) (val)));	\
 	__v; }))
-
 #  define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_X86 (val))
-
 #  if !defined(__i486__) && !defined(__i586__) \
       && !defined(__pentium__) && !defined(__i686__) && !defined(__pentiumpro__)
 #     define GUINT32_SWAP_LE_BE_X86(val) \
@@ -535,7 +535,6 @@ typedef gint32	GTime;
 			       : "=r" (__v)			\
 			       : "0" ((guint32) (val)));	\
 	__v; }))
-
 #  else /* 486 and higher has bswap */
 #     define GUINT32_SWAP_LE_BE_X86(val) \
         (__extension__						\
@@ -548,9 +547,7 @@ typedef gint32	GTime;
 			       : "0" ((guint32) (val)));	\
 	__v; }))
 #  endif /* processor specific 32-bit stuff */
-
 #  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_X86 (val))
-
 #else /* !__i386__ */
 #  define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_CONSTANT (val))
 #  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
@@ -574,7 +571,6 @@ typedef gint32	GTime;
 	(guint64) G_GINT64_CONSTANT(0x00ff000000000000U)) >> 40) |	\
       (((guint64) (val) &						\
 	(guint64) G_GINT64_CONSTANT(0xff00000000000000U)) >> 56)))
-
 #  if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
 #    define GUINT64_SWAP_LE_BE_X86(val) \
 	(__extension__						\
@@ -591,9 +587,7 @@ typedef gint32	GTime;
 		__r.__l[1] = GUINT32_SWAP_LE_BE (__w.__l[0]);	\
 	      }							\
 	  __r.__ll; }))
-
 #    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_X86 (val))
-
 #  else /* !__i386__ */
 #    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_CONSTANT(val))
 #  endif
@@ -608,8 +602,8 @@ typedef gint32	GTime;
     (((guint32) (val) & (guint32) 0x00ff00ffU) << 8) | \
     (((guint32) (val) & (guint32) 0xff00ff00U) >> 8)))
 
-/* The TO_?E stuff is defined in glibconfig.h. The transformation is symmetric,
-   so the FROM just maps to the TO.
+/* The G*_TO_?E() macros are defined in glibconfig.h.
+ * The transformation is symmetric, so the FROM just maps to the TO.
  */
 #define GINT16_FROM_LE(val)	(GINT16_TO_LE (val))
 #define GUINT16_FROM_LE(val)	(GUINT16_TO_LE (val))
@@ -636,6 +630,7 @@ typedef gint32	GTime;
 #define GUINT_FROM_LE(val)	(GUINT_TO_LE (val))
 #define GINT_FROM_BE(val)	(GINT_TO_BE (val))
 #define GUINT_FROM_BE(val)	(GUINT_TO_BE (val))
+
 
 /* Portable versions of host-network order stuff
  */
@@ -665,9 +660,9 @@ GUTILS_C_VAR const guint glib_micro_version;
 GUTILS_C_VAR const guint glib_interface_age;
 GUTILS_C_VAR const guint glib_binary_age;
 
+
 /* Forward declarations of glib types.
  */
-
 typedef struct _GAllocator	GAllocator;
 typedef struct _GArray		GArray;
 typedef struct _GByteArray	GByteArray;
@@ -693,7 +688,6 @@ typedef struct _GTree		GTree;
 typedef struct _GTuples		GTuples;
 typedef union  _GTokenValue	GTokenValue;
 typedef struct _GIOChannel	GIOChannel;
-
 
 typedef enum
 {
