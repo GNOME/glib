@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule $(GLIB_DEBUG_FLAGS)
 
 EFENCE=
 
@@ -103,8 +103,8 @@ TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
 
 progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
-thread_ldadd = $(libgthread) @G_THREAD_LIBS@ $(progs_ldadd)
-module_ldadd = $(libgmodule) @G_MODULE_LIBS@ $(progs_ldadd)
+thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
+module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 array_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
@@ -116,7 +116,7 @@ list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
 markup_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
-module_test_LDFLAGS = @G_MODULE_LDFLAGS@
+module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 node_test_LDADD = $(progs_ldadd)
 queue_test_LDADD = $(progs_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
@@ -143,18 +143,12 @@ install-libLTLIBRARIES:
 	:
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
-libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) -rpath $(libdir)
-libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
+libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
+libmoduletestplugin_a_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
-libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) -rpath $(libdir)
-libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in
-	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
+libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \
@@ -165,3 +159,5 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	for f in $(srcdir)/markups/* ; do  \
 	  cp $$f $(distdir)/markups;       \
 	done
+
+DISTCLEANFILES = iochannel-test-outfile

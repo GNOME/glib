@@ -61,26 +61,17 @@ libgthread_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgthread_2_0_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS_FOR_GTHREAD@ $(libglib)
+libgthread_2_0_la_LIBADD = $(G_THREAD_WIN32_RESOURCE) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(libglib)
 
-libgthread_2_0_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@ @GTHREAD_DEF@
+libgthread_2_0_la_DEPENDENCIES = $(G_THREAD_WIN32_RESOURCE) $(GTHREAD_DEF)
 
 if OS_WIN32
-@G_THREAD_WIN32_RESOURCE@ : gthread.rc
-	$(top_srcdir)/build/win32/lt-compile-resource gthread.rc @G_THREAD_WIN32_RESOURCE@
+$(G_THREAD_WIN32_RESOURCE): gthread.rc
+	$(top_srcdir)/build/win32/lt-compile-resource gthread.rc $@
 endif
 
 gthread-2.0.lib: libgthread-2.0.la gthread.def
-	lib -name:libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:gthread.def -out:$@
-
-gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
-	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.mingw.in
-	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	lib -name:libgthread-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gthread.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \
@@ -91,3 +82,4 @@ dist-hook: $(BUILT_EXTRA_DIST)
 install-data-local: install-ms-lib install-libtool-import-lib
 
 uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
+

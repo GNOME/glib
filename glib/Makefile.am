@@ -11,7 +11,7 @@ SUBDIRS = libcharset $(TRIO_SUBDIR)
 DIST_SUBDIRS = libcharset trio
 
 INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
-	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
+	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\
 	makefile.mingw.in	\
@@ -182,8 +182,8 @@ install-libtool-import-lib:
 uninstall-libtool-import-lib:
 endif
 
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(trio_libtrio_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(trio_libtrio_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(trio_libtrio_la) $(GIO) $(GSPAWN) $(PLATFORMDEP) $(G_LIB_WIN32_RESOURCE) $(ICONV_LIBS) $(G_LIBS_EXTRA)
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(trio_libtrio_la) $(GIO) $(GSPAWN) $(PLATFORMDEP) $(G_LIB_WIN32_RESOURCE) $(GLIB_DEF)
 
 libglib_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
@@ -194,21 +194,12 @@ bin_PROGRAMS = gspawn-win32-helper
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 
-@G_LIB_WIN32_RESOURCE@ : glib.rc
-	$(top_srcdir)/build/win32/lt-compile-resource glib.rc @G_LIB_WIN32_RESOURCE@
+$(G_LIB_WIN32_RESOURCE): glib.rc
+	$(top_srcdir)/build/win32/lt-compile-resource glib.rc $@
 endif
 
 glib-2.0.lib: libglib-2.0.la glib.def
-	lib -name:libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:glib.def -out:$@
-
-glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib/glib.rc.in
-	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/glib/makefile.mingw.in
-	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/glib/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	lib -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:glib.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \

@@ -68,30 +68,21 @@ endif
 
 libgmodule_2_0_la_SOURCES = gmodule.c
 libgmodule_2_0_la_LDFLAGS = \
-	@G_MODULE_LDFLAGS@ \
+	$(G_MODULE_LDFLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgmodule_2_0_la_LIBADD = @G_MODULE_WIN32_RESOURCE@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
+libgmodule_2_0_la_LIBADD = $(G_MODULE_WIN32_RESOURCE) $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 
-libgmodule_2_0_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@ @GMODULE_DEF@
+libgmodule_2_0_la_DEPENDENCIES = $(G_MODULE_WIN32_RESOURCE) $(GMODULE_DEF)
 
 if OS_WIN32
-@G_MODULE_WIN32_RESOURCE@ : gmodule.rc
-	$(top_srcdir)/build/win32/lt-compile-resource gmodule.rc @G_MODULE_WIN32_RESOURCE@
+$(G_MODULE_WIN32_RESOURCE): gmodule.rc
+	$(top_srcdir)/build/win32/lt-compile-resource gmodule.rc $@
 endif
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
-	lib -name:libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:gmodule.def -out:$@
-
-gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
-	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.mingw.in
-	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	lib -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gmodule.def -out:$@
 
 .PHONY: files release
 

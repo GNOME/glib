@@ -169,7 +169,9 @@ uninstall:
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT); \
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT).m; \
 	done
-	rm -f $(DESTDIR)$(gettextsrcdir)/po-Makefile.in.in
+	if test "$(PACKAGE)" = "glib"; then \
+	  rm -f $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
+	fi
 
 check: all
 
@@ -199,19 +201,28 @@ dist distdir: update-po $(DISTFILES)
 
 update-po: Makefile
 	$(MAKE) $(GETTEXT_PACKAGE).pot
+	tmpdir=`pwd`; \
 	cd $(srcdir); \
 	catalogs='$(CATALOGS)'; \
 	for cat in $$catalogs; do \
 	  cat=`basename $$cat`; \
 	  lang=`echo $$cat | sed 's/\$(CATOBJEXT)$$//'`; \
-	  mv $$lang.po $$lang.old.po; \
 	  echo "$$lang:"; \
-	  if $(MSGMERGE) $$lang.old.po $(GETTEXT_PACKAGE).pot -o $$lang.po; then \
-	    rm -f $$lang.old.po; \
+	  if $(MSGMERGE) $$lang.po $(GETTEXT_PACKAGE).pot -o $$tmpdir/$$lang.new.po; then \
+	    if cmp $$lang.po $$tmpdir/$$lang.new.po >/dev/null 2>&1; then \
+	      rm -f $$tmpdir/$$lang.new.po; \
+            else \
+	      if mv -f $$tmpdir/$$lang.new.po $$lang.po; then \
+	        :; \
+	      else \
+	        echo "msgmerge for $$lang.po failed: cannot move $$tmpdir/$$lang.new.po to $$lang.po" 1>&2; \
+	        rm -f $$tmpdir/$$lang.new.po; \
+	        exit 1; \
+	      fi; \
+	    fi; \
 	  else \
 	    echo "msgmerge for $$cat failed!"; \
-	    rm -f $$lang.po; \
-	    mv $$lang.old.po $$lang.po; \
+	    rm -f $$tmpdir/$$lang.new.po; \
 	  fi; \
 	done
 

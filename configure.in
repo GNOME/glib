@@ -1,43 +1,74 @@
+# Process this file with autoconf to produce a configure script.
+# require autoconf 2.54
+AC_PREREQ(2.54)
+
 dnl ***********************************
 dnl *** include special GLib macros ***
 dnl ***********************************
 
-define(glib_configure_in)
-builtin(include, acglib.m4)dnl
-builtin(include, glib/libcharset/codeset.m4)dnl
-builtin(include, glib/libcharset/glibc21.m4)dnl
-builtin(include, m4macros/glib-gettext.m4)dnl
+m4_define(glib_configure_in)
+m4_include(acglib.m4)dnl
+m4_include(glib/libcharset/codeset.m4)dnl
+m4_include(glib/libcharset/glibc21.m4)dnl
+m4_include(m4macros/glib-gettext.m4)dnl
 
-# require autoconf 2.53
-AC_PREREQ(2.53)
-
-# Process this file with autoconf to produce a configure script.
-AC_INIT(glib/glib.h)
-
-# Save this value here, since automake will set cflags later
-cflags_set=${CFLAGS+set}
-
-GLIB_AC_DIVERT_BEFORE_HELP([
 #
 # The following version number definitions apply to GLib, GModule, GObject 
 # and GThread as a whole, so if changes occoured in any of them, they are all
 # treated with the same interface and binary age.
 #
 # Making releases:
-#   GLIB_MICRO_VERSION += 1;
-#   GLIB_INTERFACE_AGE += 1;
-#   GLIB_BINARY_AGE += 1;
-# if any functions have been added, set GLIB_INTERFACE_AGE to 0.
+#   glib_micro_version += 1;
+#   glib_interface_age += 1;
+#   glib_binary_age += 1;
+# if any functions have been added, set glib_interface_age to 0.
 # if backwards compatibility has been broken,
-# set GLIB_BINARY_AGE _and_ GLIB_INTERFACE_AGE to 0.
+# set glib_binary_age _and_ glib_interface_age to 0.
 #
-GLIB_MAJOR_VERSION=2
-GLIB_MINOR_VERSION=2
-GLIB_MICRO_VERSION=0
-GLIB_INTERFACE_AGE=0
-GLIB_BINARY_AGE=`expr 100 '*' $GLIB_MINOR_VERSION + $GLIB_MICRO_VERSION`
-GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
-])dnl
+m4_define([glib_major_version], [2])
+m4_define([glib_minor_version], [2])
+m4_define([glib_micro_version], [0])
+m4_define([glib_interface_age], [0])
+m4_define([glib_binary_age],
+          [m4_eval(100 * glib_minor_version + glib_micro_version)])
+m4_define([glib_version],
+          [glib_major_version.glib_minor_version.glib_micro_version])
+
+# libtool version related macros
+m4_define([glib_lt_release], [glib_major_version.glib_minor_version])
+m4_define([glib_lt_current],
+          [m4_eval(100 * glib_minor_version + glib_micro_version - glib_interface_age)])
+m4_define([glib_lt_revision], [glib_interface_age])
+m4_define([glib_lt_age], [m4_eval(glib_binary_age - glib_interface_age)])
+m4_define([glib_lt_current_minus_age],
+          [m4_eval(glib_lt_current - glib_lt_age)])
+
+# if the minor version number is odd, then we want debugging.  Otherwise
+# we only want minimal debugging support.
+m4_define([glib_debug_default],
+          [m4_if(m4_eval(glib_minor_version % 2), [1], [yes], [minimum])])dnl
+
+
+AC_INIT(glib, [glib_version],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=glib])
+
+AC_CONFIG_SRCDIR([glib/glib.h])
+
+# Save this value here, since automake will set cflags later
+cflags_set=${CFLAGS+set}
+
+AM_INIT_AUTOMAKE([no-define])
+
+# Specify a configuration file
+AM_CONFIG_HEADER([config.h])
+
+
+GLIB_MAJOR_VERSION=glib_major_version
+GLIB_MINOR_VERSION=glib_minor_version
+GLIB_MICRO_VERSION=glib_micro_version
+GLIB_INTERFACE_AGE=glib_interface_age
+GLIB_BINARY_AGE=glib_binary_age
+GLIB_VERSION=glib_version
 
 AC_SUBST(GLIB_MAJOR_VERSION)
 AC_SUBST(GLIB_MINOR_VERSION)
@@ -46,43 +77,35 @@ AC_SUBST(GLIB_VERSION)
 AC_SUBST(GLIB_INTERFACE_AGE)
 AC_SUBST(GLIB_BINARY_AGE)
 
+AC_DEFINE(GLIB_MAJOR_VERSION, [glib_major_version],
+	  [Define to the GLIB major version])
+AC_DEFINE(GLIB_MINOR_VERSION, [glib_minor_version],
+	  [Define to the GLIB minor version])
+AC_DEFINE(GLIB_MICRO_VERSION, [glib_micro_version],
+	  [Define to the GLIB micro version])
+AC_DEFINE(GLIB_INTERFACE_AGE, [glib_interface_age],
+	  [Define to the GLIB interface age])
+AC_DEFINE(GLIB_BINARY_AGE, [glib_binary_age],
+	  [Define to the GLIB binary age])
+
 # libtool versioning
-LT_RELEASE=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION
-LT_CURRENT=`expr 100 '*' $GLIB_MINOR_VERSION + $GLIB_MICRO_VERSION - $GLIB_INTERFACE_AGE`
-LT_REVISION=$GLIB_INTERFACE_AGE
-LT_AGE=`expr $GLIB_BINARY_AGE - $GLIB_INTERFACE_AGE`
-LT_CURRENT_MINUS_AGE=`expr $LT_CURRENT - $LT_AGE`
+LT_RELEASE=glib_lt_release
+LT_CURRENT=glib_lt_current
+LT_REVISION=glib_lt_revision
+LT_AGE=glib_lt_age
+LT_CURRENT_MINUS_AGE=glib_lt_current_minus_age
 AC_SUBST(LT_RELEASE)
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 AC_SUBST(LT_CURRENT_MINUS_AGE)
 
-VERSION=$GLIB_VERSION
-PACKAGE=glib
-
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
-
-# Specify a configuration file
-AM_CONFIG_HEADER(config.h)
-
-AC_DEFINE_UNQUOTED(GLIB_MAJOR_VERSION, $GLIB_MAJOR_VERSION,
-		   [Define to the GLIB major version])
-AC_DEFINE_UNQUOTED(GLIB_MINOR_VERSION, $GLIB_MINOR_VERSION,
-		   [Define to the GLIB minor version])
-AC_DEFINE_UNQUOTED(GLIB_MICRO_VERSION, $GLIB_MICRO_VERSION,
-		   [Define to the GLIB micro version])
-AC_DEFINE_UNQUOTED(GLIB_INTERFACE_AGE, $GLIB_INTERFACE_AGE,
-		   [Define to the GLIB interface age])
-AC_DEFINE_UNQUOTED(GLIB_BINARY_AGE, $GLIB_BINARY_AGE,
-		   [Define to the GLIB binary age])
-
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
 AC_CANONICAL_HOST
 
-AC_MSG_CHECKING(for the BeOS)
+AC_MSG_CHECKING([for the BeOS])
 case $host in
   *-*-beos*)
     glib_native_beos="yes"
@@ -123,7 +146,7 @@ case "$host" in
     ;;
 esac
 AC_MSG_RESULT([$glib_native_win32])
-AM_CONDITIONAL(OS_WIN32, test "$glib_native_win32" = "yes")
+AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)
@@ -135,62 +158,72 @@ AC_SUBST(GTHREAD_DEF)
 AC_SUBST(TESTGMODULE_EXP)
 
 if test "$glib_native_win32" = "yes"; then
-  AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
+  AC_CHECK_PROG(ms_librarian, [lib.exe], [yes], [no])
 fi
-AM_CONDITIONAL(MS_LIB_AVAILABLE, test x$ms_librarian = xyes)
-
-GLIB_AC_DIVERT_BEFORE_HELP([
-# figure debugging default, prior to $ac_help setup
-case $GLIB_MINOR_VERSION in
-*[[13579]]) debug_default=yes ;;
-*)          debug_default=minimum ;;
-esac[]dnl
-])
+AM_CONDITIONAL(MS_LIB_AVAILABLE, [test x$ms_librarian = xyes])
 
 dnl declare --enable-* args and collect ac_help strings
-AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=$debug_default]],,enable_debug=$debug_default)
-AC_ARG_ENABLE(gc_friendly, [  --enable-gc-friendly    turn on garbage collector friendliness [default=no]],,enable_gc_friendly=no)
-AC_ARG_ENABLE(mem_pools, [  --disable-mem-pools     disable all glib memory pools],,disable_mem_pools=no)
-AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
-		    , enable_ansi=no)
-AC_ARG_ENABLE(threads, [  --enable-threads        turn on basic thread support [default=yes]
-                          ([=no] will override --with-threads)],,enable_threads=yes)
-AC_ARG_ENABLE(rebuilds, [  --disable-rebuilds      disable all source autogeneration rules],,enable_rebuilds=yes)
+AC_ARG_ENABLE(debug,
+              AC_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
+                             [turn on debugging @<:@default=glib_debug_default@:>@]),,
+              enable_debug=glib_debug_default)
+
+AC_ARG_ENABLE(gc_friendly,
+              [AC_HELP_STRING([--enable-gc-friendly],
+                              [turn on garbage collector friendliness [default=no]])],,
+              [enable_gc_friendly=no])
+AC_ARG_ENABLE(mem_pools,
+              [AC_HELP_STRING([--disable-mem-pools],
+			      [disable all glib memory pools])],,
+	      [disable_mem_pools=no])
+AC_ARG_ENABLE(ansi,
+              [AC_HELP_STRING([--enable-ansi],
+                              [turn on strict ansi [default=no]])],,
+	      [enable_ansi=no])
+AC_ARG_ENABLE(threads,
+              [AC_HELP_STRING([--enable-threads],
+                              [turn on basic thread support [default=yes]
+([=no] will override --with-threads)])],,
+              [enable_threads=yes])
+AC_ARG_ENABLE(rebuilds,
+              [AC_HELP_STRING([--disable-rebuilds],
+                              [disable all source autogeneration rules])],,
+              [enable_rebuilds=yes])
 
 if test "x$enable_threads" != "xyes"; then
   enable_threads=no
 fi
 
-AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}",
+AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, ["${enable_debug}"],
 	[Whether glib was compiled with debugging enabled])
 
-AC_MSG_CHECKING(whether to enable garbage collector friendliness)
+AC_MSG_CHECKING([whether to enable garbage collector friendliness])
 if test "x$enable_gc_friendly" = "xyes"; then
   AC_DEFINE(ENABLE_GC_FRIENDLY, 1, [Whether to enable GC friendliness])
   AC_SUBST(ENABLE_GC_FRIENDLY)
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
 else
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT([no])
 fi
 
-AC_MSG_CHECKING(whether to disable memory pools)
+AC_MSG_CHECKING([whether to disable memory pools])
 if test "x$disable_mem_pools" = "xno"; then
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT([no])
 else
-  AC_DEFINE(DISABLE_MEM_POOLS, 1, [Whether to disable memory pools])
+  AC_DEFINE(DISABLE_MEM_POOLS, [1], [Whether to disable memory pools])
   AC_SUBST(DISABLE_MEM_POOLS)
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
 fi
 
 dnl Checks for programs.
 AC_PROG_CC
 
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
-AC_CHECK_PROGS(CXX, $CCC c++ g++ gcc CC cxx cc++ cl, gcc)
+AC_CHECK_PROGS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], [gcc])
 AC_LANG_SAVE
 AC_LANG_CPLUSPLUS
 AC_TRY_COMPILE(,[class a { int b; } c;], ,CXX=)
-AM_CONDITIONAL(HAVE_CXX, test "$CXX" != "")
+AM_CONDITIONAL(HAVE_CXX, [test "$CXX" != ""])
 AC_LANG_RESTORE
 
 AM_PROG_CC_STDC
@@ -201,7 +234,7 @@ AC_SYS_LARGEFILE
 #
 # Find pkg-config
 #
-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+AC_PATH_PROG(PKG_CONFIG, [pkg-config], [no])
 if test x$PKG_CONFIG = xno ; then
   AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
 fi
@@ -270,7 +303,7 @@ AC_EXEEXT
 # define a MAINT-like variable REBUILD which is set if Perl
 # and awk are found, so autogenerated sources can be rebuilt
 AC_PROG_AWK
-AC_CHECK_PROGS(PERL, perl5 perl)
+AC_CHECK_PROGS(PERL, [perl5 perl])
 # We would like indent, but don't require it.
 AC_CHECK_PROG(INDENT, indent, indent)
 REBUILD=\#
@@ -285,7 +318,7 @@ AC_SUBST(REBUILD)
 # Need full path to Perl for glib-mkenums
 #
 if test "x$PERL" != x ; then
-  AC_PATH_PROG(PERL_PATH, $PERL)
+  AC_PATH_PROG(PERL_PATH, [$PERL])
 else
   PERL_PATH="/usr/bin/env perl"
 fi
@@ -297,30 +330,33 @@ dnl ***********************
 dnl
 dnl We do this before the gettext checks, to avoid distortion
 
-AC_ARG_WITH(libiconv, [  --with-libiconv=[no/gnu/native] use the libiconv library ],,with_libiconv=maybe)
+AC_ARG_WITH(libiconv,
+            [AC_HELP_STRING([--with-libiconv=@<:@no/gnu/native@:>@],
+                            [use the libiconv library])],,
+	    [with_libiconv=maybe])
 
 found_iconv=no
 case $with_libiconv in
   maybe)
     # Check in the C library first
-    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
     # Check if we have GNU libiconv
     if test $found_iconv = "no"; then
-      AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+      AC_CHECK_LIB(iconv, libiconv_open, [with_libiconv=gnu; found_iconv=yes])
     fi
     # Check if we have a iconv in -liconv, possibly from vendor
     if test $found_iconv = "no"; then
-      AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+      AC_CHECK_LIB(iconv, iconv_open, [with_libiconv=native; found_iconv=yes])
     fi
     ;;
   no)
-    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    AC_CHECK_FUNC(iconv_open, [with_libiconv=no; found_iconv=yes])
     ;;
   gnu|yes)
-    AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+    AC_CHECK_LIB(iconv, libiconv_open, [with_libiconv=gnu; found_iconv=yes])
     ;;
   native)
-    AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+    AC_CHECK_LIB(iconv, iconv_open, [with_libiconv=native; found_iconv=yes])
     ;;
 esac
 
@@ -346,7 +382,7 @@ LIBS="$INTLLIBS $LIBS"
 
 GETTEXT_PACKAGE=glib20
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", 
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], 
   [Define the gettext package to be used])
 
 GLIB_DEFINE_LOCALEDIR(GLIB_LOCALE_DIR)
@@ -700,7 +736,10 @@ AC_FUNC_PRINTF_UNIX98
 # Check whether to use trio printf
 #
 
-AC_ARG_ENABLE(included-printf, [  --enable-included-printf    use included printf [default=auto]], enable_trio="$enableval")
+AC_ARG_ENABLE(included-printf,
+              [AC_HELP_STRING([--enable-included-printf],
+                              [use included printf [default=auto]])],
+              enable_trio="$enableval")
 
 need_trio=no
 if test "x$enable_trio" = "xyes" ; then
@@ -1175,13 +1214,15 @@ dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris/win32] specify a thread implementation to use],
-	if test "x$with_threads" = x; then
+AC_ARG_WITH(threads,
+           [AC_HELP_STRING([--with-threads=@<:@none/posix/dce/solaris/win32@:>@],
+                           [specify a thread implementation to use])],
+           [if test "x$with_threads" = x; then
 		want_threads=yes
-	else
+	    else
 		want_threads=$with_threads
-	fi,
-	want_threads=yes)
+	    fi],
+	   [want_threads=yes])
 if test "x$enable_threads" = "xno"; then
         want_threads=no
 fi
@@ -1847,87 +1888,16 @@ dnl **************************
 dnl *** Checks for gtk-doc ***
 dnl **************************
 
-AC_ARG_WITH(html-dir, [  --with-html-dir=PATH    path to installed docs])
-
-if test "x$with_html_dir" = "x" ; then
-  HTML_DIR='${datadir}/gtk-doc/html'
-else
-  HTML_DIR=$with_html_dir
-fi
-
-AC_SUBST(HTML_DIR)
-
-AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
-
-AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
-
-gtk_doc_min_version=0.10
-if $GTKDOC ; then
-    gtk_doc_version=`gtkdoc-mkdb --version`
-    AC_MSG_CHECKING([gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version])
-
-    IFS="${IFS= 	}"; gtk_save_IFS="$IFS"; IFS="."
-    set $gtk_doc_version
-    for min in $gtk_doc_min_version ; do
-        cur=$1; shift
-        if test -z $min ; then break; fi
-        if test -z $cur ; then GTKDOC=false; break; fi
-        if test $cur -gt $min ; then break ; fi
-        if test $cur -lt $min ; then GTKDOC=false; break ; fi
-    done
-    IFS="$gtk_save_IFS"
-
-    if $GTKDOC ; then
-      AC_MSG_RESULT(yes)
-    else
-      AC_MSG_RESULT(no)
-    fi
-fi
-
-AM_CONDITIONAL(HAVE_GTK_DOC, $GTKDOC)
-AC_SUBST(HAVE_GTK_DOC)
-
-AC_CHECK_PROG(DB2HTML, db2html, true, false)
-AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
-
-dnl Let people disable the gtk-doc stuff.
-AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc        use gtk-doc to build documentation [default=auto]], enable_gtk_doc="$enableval", enable_gtk_doc=no)
-
-if test x$enable_gtk_doc = xyes ; then
-  if test x$GTKDOC = xtrue ; then
-    enable_gtk_doc=yes
-  else
-    enable_gtk_doc=no 
-  fi
-fi
-
-dnl NOTE: We need to use a separate automake conditional for this
-dnl       to make this work with the tarballs.
-AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
+GTK_DOC_CHECK([1.0])
 
 dnl ******************************
 dnl *** output the whole stuff ***
 dnl ******************************
 
-AC_OUTPUT_COMMANDS([
-
-## Generate `glibconfig.h' in two cases
-## 1. `config.status' is run either explicitly, or via configure.
-##     Esp. not when it is run in `Makefile' to generate makefiles and
-##     config.h
-## 2. CONFIG_OTHER is set explicitly
-##
-## Case 1 is difficult.  We know that `automake' sets one of
-## CONFIG_FILES or CONFIG_HEADERS to empty.  This heuristic works
-## only when AM_CONFIG_HEADER is set, however.
-
-if test -n "${CONFIG_FILES}" && test -n "${CONFIG_HEADERS}"; then
-  # Both CONFIG_FILES and CONFIG_HEADERS are non-empty ==> Case 1
-  CONFIG_OTHER=${CONFIG_OTHER:-glibconfig.h}
-fi
-case "$CONFIG_OTHER" in
-*glibconfig.h*)
-	echo creating glibconfig.h
+dnl this section will only be run if config.status is invoked with no
+dnl arguments, or with "glibconfig.h" as an argument.
+AC_CONFIG_COMMANDS([glibconfig.h],
+[
 	outfile=glibconfig.h-tmp
 	cat > $outfile <<\_______EOF
 /* glibconfig.h
@@ -2131,7 +2101,7 @@ struct _GStaticMutex
 {
   struct _GMutex *runtime_mutex;
   union {
-    char   pad[$g_mutex_sizeof];
+    char   pad[[$g_mutex_sizeof]];
     double dummy_double;
     void  *dummy_pointer;
     long   dummy_long;
@@ -2160,7 +2130,7 @@ _______EOF
 typedef union _GSystemThread GSystemThread;
 union _GSystemThread
 {
-  char   data[$g_system_thread_sizeof];
+  char   data[[$g_system_thread_sizeof]];
   double dummy_double;
   void  *dummy_pointer;
   long   dummy_long;
@@ -2205,12 +2175,11 @@ _______EOF
 
 
 	if cmp -s $outfile glibconfig.h; then
-	  echo glibconfig.h is unchanged
+	  AC_MSG_NOTICE([glibconfig.h is unchanged])
 	  rm -f $outfile
 	else
 	  mv $outfile glibconfig.h
-	fi ;;
-esac
+	fi
 ],[
 
 # Note that if two cases are the same, case goes with the first one.
@@ -2458,7 +2427,7 @@ case $host in
 esac
 ])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 glib-2.0.pc
 glib-2.0-uninstalled.pc
 gmodule-2.0.pc
@@ -2476,8 +2445,8 @@ build/win32/dirent/Makefile
 glib/Makefile
 glib/libcharset/Makefile
 glib/trio/Makefile
-gmodule/gmoduleconf.h
 gmodule/Makefile
+gmodule/gmoduleconf.h
 gobject/Makefile
 gobject/glib-mkenums
 gthread/Makefile
@@ -2490,8 +2459,37 @@ docs/reference/gobject/Makefile
 docs/reference/gobject/version.xml
 tests/Makefile
 m4macros/Makefile
-],[
-chmod 0755 glib-zip
-chmod 0755 glib-gettextize
-chmod 0755 gobject/glib-mkenums
 ])
+
+AC_CONFIG_COMMANDS([chmod-scripts],
+[chmod 0755 glib-zip
+chmod 0755 glib-gettextize
+chmod 0755 gobject/glib-mkenums])
+
+# we want to invoke this macro solely so that the config.status script
+# and automake generated makefiles know about these generated files.
+# They are only needed to distcheck the package
+if false; then
+  AC_CONFIG_FILES([
+    INSTALL
+    README
+    config.h.win32
+    glibconfig.h.win32
+    glib/makefile.mingw
+    glib/makefile.msc
+    glib/glib.rc
+    gmodule/makefile.mingw
+    gmodule/makefile.msc
+    gmodule/gmodule.rc
+    gobject/makefile.mingw
+    gobject/makefile.msc
+    gobject/gobject.rc
+    gthread/makefile.mingw
+    gthread/makefile.msc
+    gthread/gthread.rc
+    tests/makefile.mingw
+    tests/makefile.msc
+  ])
+fi
+
+AC_OUTPUT
