@@ -165,7 +165,6 @@ must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSIVE bit flags.
 Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if you want
 to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 </para>
-<para>
 
 <example>
 <title>Adding a log handler for all warning messages in the default (application) domain</title>

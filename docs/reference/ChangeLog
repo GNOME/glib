@@ -1,3 +1,10 @@
+Wed Dec 19 23:07:53 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/messages.sgml glib/tmpl/string_utils.sgml: 
+	SGML fixes.
+
+	* gobject/gobject-sections.txt glib/glib-sectoins.txt: Small updates.
+
 2001-12-15  Matthias Clasen  <matthias@poet.de>
 
 	* glib/tmpl/caches.sgml: GCs are cached by GTK, not by GDK.

@@ -271,7 +271,7 @@ Determines whether a character is alphabetic (i.e. a letter).
 Unlike the standard C library <function>isalpha()</function> function, this only
 recognizes standard ASCII letters and ignores the locale, returning
 %FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a <type>char</type>, not an <type>int</type, 
+library function, this takes a <type>char</type>, not an <type>int</type>, 
 so don't call it on %EOF but no need to cast to #guchar before passing a 
 possibly non-ASCII character in.
 </para>
