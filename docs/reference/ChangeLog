@@ -1,3 +1,8 @@
+Thu Jun 10 21:29:55 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/modules.sgml: Add an example for GModule
+	usage.  (#144127, Tommi Komulainen)
+
 Sun Jun  6 23:20:42 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: Fix the docs for G_DEFINE_TYPE()

@@ -41,6 +41,48 @@ program, e.g. through calling <literal>g_quark_from_static_string ("my-module-st
 it must ensure that it is never unloaded, by calling g_module_make_resident().
 </para>
 
+<para>
+<example>
+<title>Calling a function defined in a <structname>GModule</structname></title>
+<programlisting>
+/* the function signature for 'say_hello' */
+typedef void (* SayHelloFunc) (const char *message);
+
+gboolean
+just_say_hello (const char *filename, GError **error)
+{
+  SayHelloFunc  say_hello;
+  GModule      *module;
+
+  module = g_module_open (filename, G_MODULE_BIND_LAZY);
+  if (!module)
+    {
+      g_set_error (error, FOO_ERROR, FOO_ERROR_BLAH,
+		   "&percnt;s", g_module_error (<!-- -->));
+      return FALSE;
+    }
+
+  if (!g_module_symbol (module, "say_hello", (gpointer *)&amp;say_hello))
+    {
+      g_set_error (error, SAY_ERROR, SAY_ERROR_OPEN,
+		   "&percnt;s: &percnt;s", filename, g_module_error (<!-- -->));
+      if (!g_module_close (module))
+	g_warning ("&percnt;s: &percnt;s", filename, g_module_error (<!-- -->));
+      return FALSE;
+    }
+
+  /* call our function in the module */
+  say_hello ("Hello world!");
+
+  if (!g_module_close (module))
+    g_warning ("&percnt;s: &percnt;s", filename, g_module_error (<!-- -->));
+
+  return TRUE;
+}
+</programlisting>
+</example>
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
