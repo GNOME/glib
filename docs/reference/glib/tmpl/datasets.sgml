@@ -23,6 +23,7 @@ in the hash table of #GQuark identifiers.
 <para>
 There is no function to create a dataset. It is automatically created as
 soon as you add elements to it.
+</para>
 <para>
 To add data elements to a dataset use g_dataset_id_set_data(),
 g_dataset_id_set_data_full(), g_dataset_set_data()

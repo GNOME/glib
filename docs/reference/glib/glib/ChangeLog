@@ -1,3 +1,13 @@
+Tue Aug 17 08:42:17 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* tmpl/datasets.sgml: Added missing </para>
+	* tmpl/timers.sgml: Added missing </para>
+	* tmpl/misc_utils.sgml: Added missing </para>
+	* tmpl/linked_lists_double.sgml: Added missing </para>
+	* tmpl/linked_lists_single.sgml: Added missing </para>
+	* tmpl/threads.sgml: Removed extra <para>s.
+	* tmpl/main.sgml: Added missing </para>
+
 Wed Aug 18 23:38:52 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Added some simple build instructions.

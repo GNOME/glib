@@ -36,6 +36,7 @@ the new start of the list, which may have changed.
 <para>
 There is no function to create a #GSList. NULL is considered to be the empty
 list so you simply set a #GSList* to NULL.
+</para>
 <para>
 To add elements, use g_slist_append(), g_slist_prepend(), g_slist_insert()
 and g_slist_insert_sorted().

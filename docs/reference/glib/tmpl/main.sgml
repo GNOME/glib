@@ -425,6 +425,7 @@ parameter passed to the g_source_add() and related functions.
 </entry>
 </row>
 </tbody></tgroup></informaltable>
+</para>
 
 <para>
 For idle sources, the prepare and check functions always return TRUE to

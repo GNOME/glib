@@ -10,6 +10,7 @@ Timers can be used to time operations, in a similar way to a stopwatch.
 Call g_timer_new () to create the timer, g_timer_start () to start it,
 g_timer_elapsed () to determine the time which has elapsed since the timer
 was started, and g_timer_stop () to stop the timer.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>

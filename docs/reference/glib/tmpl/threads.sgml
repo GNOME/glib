@@ -207,7 +207,6 @@ The #GMutex struct is an opaque data structure to represent a mutex
 (mutual exclusion). It can be used to protect data against shared
 access. Take for example the following function:
 
-<para>
 <example>
 <title>A function which will not work in a threaded environment</title>
 <programlisting>
@@ -736,7 +735,6 @@ example from above.  Now we don't want current_number to be shared
 between the threads, but to be private to each thread. This can be
 done as follows:
 
-<para>
 <example>
 <title>Using GPrivate for per-thread data</title>
 <programlisting>
