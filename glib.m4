@@ -60,7 +60,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
       CFLAGS="$CFLAGS $GLIB_CFLAGS"
-      LIBS="$LIBS $GLIB_LIBS"
+      LIBS="$GLIB_LIBS $LIBS"
 dnl
 dnl Now check if the installed GLIB is sufficiently new. (Also sanity
 dnl checks the results of glib-config to some extent
