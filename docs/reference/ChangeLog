@@ -1,5 +1,9 @@
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.5.7 ===
+	
+2004-12-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/building.sgml: 
 	* glib/tmpl/linked_lists_single.sgml: 
 	* glib/tmpl/linked_lists_double.sgml: 

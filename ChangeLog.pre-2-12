@@ -1,5 +1,9 @@
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.5.7 ===
+	
+2004-12-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib.symbols: Protect the the various push/pop allocator
 	functions by #ifndef DISABLE_MEM_POOLS.  (#160215, Frederic Crozat)
 

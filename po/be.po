@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
+"POT-Creation-Date: 2004-12-02 16:01-0500\n"
 "PO-Revision-Date: 2004-03-08 15:46+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -213,20 +213,20 @@ msgid "Error on line %d char %d: %s"
 msgstr "Памылка ў радку %d сымбалі %d: %s"
 
 # glib/gmarkup.c:303
-#: glib/gmarkup.c:310
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Памылка ў радку %d: %s"
 
 # glib/gmarkup.c:382
-#: glib/gmarkup.c:415
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Пусты запіс \"&;\" адшуканы; дапушчальна: &amp; &quot; &lt; &gt; &apos;"
 
 # glib/gmarkup.c:392
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -238,19 +238,19 @@ msgstr ""
 "тады экрануйце яго запісам &amp;"
 
 # glib/gmarkup.c:428
-#: glib/gmarkup.c:461
+#: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Сымбаль \"%s\" нядапушчальны ў нутры назвы запісу"
 
 # glib/gmarkup.c:472
-#: glib/gmarkup.c:505
+#: glib/gmarkup.c:521
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Невядома назва запісу \"%s\""
 
 # glib/gmarkup.c:482
-#: glib/gmarkup.c:515
+#: glib/gmarkup.c:531
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -259,28 +259,28 @@ msgstr ""
 "не для пазначэньня пачатку запісу - экрануйце яго як &amp;"
 
 # glib/gmarkup.c:528
-#: glib/gmarkup.c:561
-#, c-format
+#: glib/gmarkup.c:584
+#, fuzzy, c-format
 msgid ""
-"Failed to parse '%s', which should have been a digit inside a character "
+"Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "Збой пад час разбору \"%s\", дзе мусіць быць нумар у нутры лучыва да сымбалю "
 "(&#234; напрыклад) - мажліва, нумар завялікі"
 
 # glib/gmarkup.c:553
-#: glib/gmarkup.c:586
-#, c-format
-msgid "Character reference '%s' does not encode a permitted character"
+#: glib/gmarkup.c:609
+#, fuzzy, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Лучыва на сымбаль \"%s\" ня вызначае дазволены сымбаль"
 
 # glib/gmarkup.c:570
-#: glib/gmarkup.c:603
+#: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Пустое лучыва да сымбалю: мусіць уключаць нумар, напрыклад &#454;"
 
 # glib/gmarkup.c:580
-#: glib/gmarkup.c:613
+#: glib/gmarkup.c:634
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -289,26 +289,26 @@ msgstr ""
 "Лучыва да сымбалю ня сканчаецца кропкай з коскай; здаецца, што сымбаль & быў "
 "выкарыстаны ня для пазначэньня пачатка запісу - экрануйце яго як &amp;"
 
-#: glib/gmarkup.c:639
+#: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
 msgstr "Незавершанае лучыва да запісу"
 
-#: glib/gmarkup.c:645
+#: glib/gmarkup.c:726
 msgid "Unfinished character reference"
 msgstr "Незавершанае лучыва да сымбалю"
 
 # glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
 msgid "Invalid UTF-8 encoded text"
 msgstr "Недапушчальна кадаваны тэкст UTF-8"
 
 # glib/gmarkup.c:932
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:1064
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Дакумэнт мусіць пачынацца з элемэнту (напрыклад <book>)"
 
 # glib/gmarkup.c:970
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1104
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -318,7 +318,7 @@ msgstr ""
 "сымбаль ня можа пачынаць назву элемэнту"
 
 # glib/gmarkup.c:1033
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1168
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -328,7 +328,7 @@ msgstr ""
 "\""
 
 # glib/gmarkup.c:1120
-#: glib/gmarkup.c:1181
+#: glib/gmarkup.c:1257
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -337,7 +337,7 @@ msgstr ""
 "элемэнту \"%s\""
 
 # glib/gmarkup.c:1161
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1299
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -349,7 +349,7 @@ msgstr ""
 "выкарыстаны недапушчальны сымбаль у назве атрыбуту"
 
 # glib/gmarkup.c:1244
-#: glib/gmarkup.c:1310
+#: glib/gmarkup.c:1388
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -359,7 +359,7 @@ msgstr ""
 "надаецца значэньне атрыбуту \"%s\" элемэнта \"%s\""
 
 # glib/gmarkup.c:1384
-#: glib/gmarkup.c:1451
+#: glib/gmarkup.c:1533
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -369,7 +369,7 @@ msgstr ""
 "s\" ня можа пачынаць імя элемэнту"
 
 # glib/gmarkup.c:1422
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1573
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -379,30 +379,30 @@ msgstr ""
 "дапушчальным сымбалем зьяўляецца \">\""
 
 # glib/gmarkup.c:1433
-#: glib/gmarkup.c:1501
+#: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 "Элемэнт \"%s\" быў зачынены, ані водны элемэнт у бягучы момант ня адчынены"
 
 # glib/gmarkup.c:1442
-#: glib/gmarkup.c:1510
+#: glib/gmarkup.c:1593
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Элемэнт \"%s\" быў зачынены, але ў быгучы час адчынены \"%s\""
 
 # glib/gmarkup.c:1574
-#: glib/gmarkup.c:1657
+#: glib/gmarkup.c:1740
 msgid "Document was empty or contained only whitespace"
 msgstr "Дакумэнт быў пусты ці утрымліваў толькі прагалы"
 
 # glib/gmarkup.c:1588
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1754
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Дакумэнт нечакана скончыўся адразу пасьля углавой дужкі \"<\""
 
 # glib/gmarkup.c:1596 glib/gmarkup.c:1640
-#: glib/gmarkup.c:1679 glib/gmarkup.c:1723
+#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -412,7 +412,7 @@ msgstr ""
 "апошнім адчыненым элемэнтам"
 
 # glib/gmarkup.c:1604
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1770
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -421,22 +421,22 @@ msgstr ""
 "Дакумэнт нечакана скончыўся, чакаецца углавая дужка якая зачыняе тэг <%s/>"
 
 # glib/gmarkup.c:1610
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Дакумэнт нечакана скончыўся ў нутры імя элемэнту"
 
 # glib/gmarkup.c:1615
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Дакумэнт нечакана скончыўся ў нутры імя атрыбуту"
 
 # glib/gmarkup.c:1620
-#: glib/gmarkup.c:1703
+#: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Дакумэнт нечакана скончыўся  ў нутры элемэнту які адчыняе тэг"
 
 # glib/gmarkup.c:1626
-#: glib/gmarkup.c:1709
+#: glib/gmarkup.c:1792
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -445,18 +445,18 @@ msgstr ""
 "атрыбуту: ня ўказана значэньне атрыбуту"
 
 # glib/gmarkup.c:1633
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Дакумэнт нечакана скончыўся ў нутры значэньня атрыбуту"
 
 # glib/gmarkup.c:1648
-#: glib/gmarkup.c:1731
+#: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Дакумэнт нечакана скончыўся ў нутры элэмэнта \"%s\" які зачыняе тэг"
 
 # glib/gmarkup.c:1654
-#: glib/gmarkup.c:1737
+#: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Дакумэнт нечакана скончыўся ў нутры камэнтару ці інструкцыі"
 
@@ -502,7 +502,7 @@ msgstr ""
 "даньняў з працэса-нашчадка"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1013
+#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Збой пад час чытаньня даньняў з каналу нашчадка (%s)"
@@ -519,13 +519,13 @@ msgid "Failed to execute child process (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка (%s)"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1218
+#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Збой пад час зьмены каталёгу \"%s\" (%s)"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
+#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збой пад час стварэньня каналу для абмену з працэсам-нашчадкам (%s)"
@@ -551,37 +551,37 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Непрадбачаная памылка ў waitpid() (%s)"
 
 # glib/gspawn.c:979
-#: glib/gspawn.c:1078
+#: glib/gspawn.c:1079
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Збой пад час разгалінаньня (%s)"
 
 # glib/gspawn.c:1129
-#: glib/gspawn.c:1228
+#: glib/gspawn.c:1229
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка \"%s\" (%s)"
 
 # glib/gspawn.c:1139
-#: glib/gspawn.c:1238
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Збой пад час перанакіраваньня вываду ці ўводу працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1148
-#: glib/gspawn.c:1247
+#: glib/gspawn.c:1248
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Збой пад час разгалінаньня працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1156
-#: glib/gspawn.c:1255
+#: glib/gspawn.c:1256
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Невядомая памылка пад час выкананьня працэса-нашчадка \"%s\""
 
 # glib/gspawn.c:1178
-#: glib/gspawn.c:1277
+#: glib/gspawn.c:1278
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -641,6 +641,87 @@ msgstr ""
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
+msgstr ""
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr ""
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr ""
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr ""
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr ""
+
+# glib/gconvert.c:1648
+#: glib/gkeyfile.c:3023
+#, fuzzy, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "URI \"%s\" утрымлівае недапушчальны сымбаль"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr ""
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
 
 # glib/giowin32.c:704 glib/giowin32.c:733

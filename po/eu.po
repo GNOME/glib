@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
+"POT-Creation-Date: 2004-12-02 16:01-0500\n"
 "PO-Revision-Date: 2004-08-23 13:25+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -178,19 +178,19 @@ msgstr "Ezin dira datu gordinak irakurri g_io_channel_read_to_end-etik"
 msgid "Error on line %d char %d: %s"
 msgstr "Errorea %d lerroko %d karakterean: %s "
 
-#: glib/gmarkup.c:310
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Errorea %d lerroan: %s "
 
-#: glib/gmarkup.c:415
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "'&;' entitatea hutsik dago; baliozko entitateak hauek dira: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -201,17 +201,17 @@ msgstr ""
 "entitate bat hasten du; & ikurrak entitatea izan behar ez badu, izenda "
 "ezazu  &amp;"
 
-#: glib/gmarkup.c:461
+#: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "'%s' karakterea ezin da erabili entitate-izenen barruan"
 
-#: glib/gmarkup.c:505
+#: glib/gmarkup.c:521
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "'%s' entitate-izena ezezaguna da"
 
-#: glib/gmarkup.c:515
+#: glib/gmarkup.c:531
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -219,27 +219,27 @@ msgstr ""
 "Entitatea ez da puntu eta komaz bukatzen; normalean & ikurra erabiltzen da "
 "entitatea hasteko asmorik gabe; izendatu & karakterea &amp; gisa;"
 
-#: glib/gmarkup.c:561
-#, c-format
+#: glib/gmarkup.c:584
+#, fuzzy, c-format
 msgid ""
-"Failed to parse '%s', which should have been a digit inside a character "
+"Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "Ezin izan da '%s' analizatu, digitu bat izan behar zuen karaktere-"
 "erreferentzia baten barruan (&#234; adibidez); agian digitua handiegia da"
 
-#: glib/gmarkup.c:586
-#, c-format
-msgid "Character reference '%s' does not encode a permitted character"
+#: glib/gmarkup.c:609
+#, fuzzy, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr ""
 "'%s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
 
-#: glib/gmarkup.c:603
+#: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Karaktere-erreferentzia hutsa, digitu bat eduki beharko luke; adibidez &#454;"
 
-#: glib/gmarkup.c:613
+#: glib/gmarkup.c:634
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -249,23 +249,23 @@ msgstr ""
 "erabiliko zenuen entitatea hasteko asmorik gabe. Izendatu & karakterea &amp; "
 "gisa;"
 
-#: glib/gmarkup.c:639
+#: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
 msgstr "Amaitu gabeko entitate-erreferentzia"
 
-#: glib/gmarkup.c:645
+#: glib/gmarkup.c:726
 msgid "Unfinished character reference"
 msgstr "Amaitu gabeko karaktere-erreferentzia"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
 msgid "Invalid UTF-8 encoded text"
 msgstr "UTF-8 gisa kodetutako testu baliogabea"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:1064
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentuak elementu batez hasi behar du (adibidez, <book>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1104
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -274,7 +274,7 @@ msgstr ""
 "'%s' ez da karaktere balioduna '<' karakterearen atzetik; baliteke elementu "
 "baten izena ez hastea"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1168
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -283,7 +283,7 @@ msgstr ""
 "'%s' karaktere bitxia, '>' karakterea espero zen '%s' elementuaren hasiera-"
 "etiketa amaitzeko"
 
-#: glib/gmarkup.c:1181
+#: glib/gmarkup.c:1257
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -291,7 +291,7 @@ msgstr ""
 "'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
 "atributuaren ondoren"
 
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1299
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -302,7 +302,7 @@ msgstr ""
 "hasiera-etiketa bukatzeko, edo bestela atributu bat. Agian karaktere  "
 "baliogabea erabili duzu atributu-izen batean"
 
-#: glib/gmarkup.c:1310
+#: glib/gmarkup.c:1388
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -311,7 +311,7 @@ msgstr ""
 "'%s' karaktere bitxia, komatxo irekia espero zen berdin ikurraren ondoren "
 "'$2%s' elementuaren '$1%s' atributuari balioa ematean"
 
-#: glib/gmarkup.c:1451
+#: glib/gmarkup.c:1533
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -320,7 +320,7 @@ msgstr ""
 "'%s' ez da karaktere balioduna '</'; karaktereen atzetik; baliteke '%s'e(k) "
 "elementu baten izena ez hastea"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1573
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -329,25 +329,25 @@ msgstr ""
 "'%s' karaktere baliogabea da '%s' itxiera-elementuaren izenaren atzetik; "
 "baimendutako karakterea '>' da"
 
-#: glib/gmarkup.c:1501
+#: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' elementua itxi egin da, unean ez dago elementurik irekita"
 
-#: glib/gmarkup.c:1510
+#: glib/gmarkup.c:1593
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' elementua itxi egin da, baina unean '%s' elementua dago irekita"
 
-#: glib/gmarkup.c:1657
+#: glib/gmarkup.c:1740
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentua hutsik dago edo zuriuneak bakarrik ditu"
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1754
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentua ustekabean itxi da angelu-parentesi ireki baten ondoren '<'"
 
-#: glib/gmarkup.c:1679 glib/gmarkup.c:1723
+#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -356,7 +356,7 @@ msgstr ""
 "Dokumentua ustekabean amaitu da oraindik irekita zeuden elementuekin. '%s' "
 "irekitako azken elementua da"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1770
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -365,20 +365,20 @@ msgstr ""
 "Dokumentua ustekabean amaitu da, angelu-parentesi itxia ikustea espero nuen  "
 "<%s/> etiketa amaitzen"
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentua ustekabean amaitu da elementu-izen baten barruan"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
 
-#: glib/gmarkup.c:1703
+#: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
 
-#: glib/gmarkup.c:1709
+#: glib/gmarkup.c:1792
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -386,17 +386,17 @@ msgstr ""
 "Dokumentua ustekabean amaitu da atributu-izen baten ondorengo berdin "
 "ikurraren atzetik; ez dago atributu-baliorik"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
 
-#: glib/gmarkup.c:1731
+#: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
 
-#: glib/gmarkup.c:1737
+#: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentua ustekabean amaitu da iruzkin baten barruan edo prozesatzen ari "
@@ -439,7 +439,7 @@ msgstr ""
 "Ustekabeko errorea gertatu da g_io_channel_win32_poll()-en prozesu umetik "
 "datuak irakurtzean"
 
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1013
+#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin izan da kanalizazio umetik irakurri (%s) "
@@ -454,12 +454,12 @@ msgstr "Ezin izan da laguntza-programa exekutatu"
 msgid "Failed to execute child process (%s)"
 msgstr "Ezin izan da prozesu umea exekutatu (%s) "
 
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1218
+#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Ezin izan da `%s' direktoriora aldatu (%s) "
 
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
+#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin izan da kanalizazioa sortu prozesu umearekin komunikatzeko (%s) "
@@ -479,32 +479,32 @@ msgstr "Ustekabeko errorea select()-en, datuak prozesu umetik irakurtzen (%s) "
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ustekabeko errorea waitpid()-en (%s)"
 
-#: glib/gspawn.c:1078
+#: glib/gspawn.c:1079
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Ezin da sardetu (%s) "
 
-#: glib/gspawn.c:1228
+#: glib/gspawn.c:1229
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Ezin izan da \"%s\" prozesu umea exekutatu (%s) "
 
-#: glib/gspawn.c:1238
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ezin izan da prozesu umearen irteera edo sarrera birbideratu (%s) "
 
-#: glib/gspawn.c:1247
+#: glib/gspawn.c:1248
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Ezin izan da prozesu umea sardetu (%s)"
 
-#: glib/gspawn.c:1255
+#: glib/gspawn.c:1256
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Errore ezezaguna \"%s\" prozesu umea exekutatzean"
 
-#: glib/gspawn.c:1277
+#: glib/gspawn.c:1278
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s) "
@@ -560,6 +560,86 @@ msgstr "%2$s(r)en '%1$s' osoko balioa barrutitik kanpo"
 #, c-format
 msgid "Unknown option %s"
 msgstr "%s aukera ezezaguna"
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr ""
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr ""
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr ""
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:3023
+#, fuzzy, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr ""
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr ""
 
 #~ msgid "Text ended just after a '%s' character. (The text was '%s')"
 #~ msgstr "Textua bukatzen da  '%s' batez. (Textua '%s' zen)"

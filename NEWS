@@ -11,9 +11,8 @@ Overview of Changes from GLib 2.5.6 to GLib 2.5.7
 * Win32 bug fixes [Hans Breuer, Tor Lillqvist, Robert Ögren,
   Bruce Hochstetler]
 * Bug fixes [Kazuki IWAMOTO, Matthias, Manish Singh, Morten,
-  Frederic Crozat]
+  Frederic Crozat, Tor]
 * Documentation improvements [Matthias, Tor, Owen]
-* Bugs fixed: 158263,158469,125627,159131,156421,159557,136255,159001,159664,61780,149826,157258,153727
 * New and updated translations (cs,da,de,en_CA,en_GB,es,nb,nl,sq,zh_CN)
 
 Overview of Changes from GLib 2.5.5 to GLib 2.5.6

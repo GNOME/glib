@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
+"POT-Creation-Date: 2004-12-02 16:01-0500\n"
 "PO-Revision-Date: 2004-07-22 12:01+0530\n"
 "Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
 "Language-Team: Punjabi <pa@li.org>\n"
@@ -175,17 +175,17 @@ msgstr "g_io_channel_read_to_end ਖੁਲ ਰਿਹਾ ਹੈ"
 msgid "Error on line %d char %d: %s"
 msgstr "ਗਲਤੀ ਇਸ ਲਾਇਨ %d ਇਸ ਅੱਖਰ %d: ਤੇ ਹੈ %s"
 
-#: glib/gmarkup.c:310
+#: glib/gmarkup.c:324
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "ਇਸ ਲਾਇਨ %d ਵਿੱਚ ਗਲਤੀ ਹੈ %s"
 
-#: glib/gmarkup.c:415
+#: glib/gmarkup.c:428
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "ਖਾਲੀ ਇਕਾਈ '&;' ਵੇਖੋ; ਜਾਇਜ ਇਕਾਈ : &amp; &quot; &lt; &gt; &apos; ਹਨ"
 
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:438
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -195,17 +195,17 @@ msgstr ""
 "ਇਹ %s ਅੱਖਰ ਕੋਈ ਇਕਾਈ ਸੁਰੂ ਕਰਨ ਲਈ ਗਲਤ ਹੈ & ਅੱਖਰ ਇਕਾਈ ਆਰੰਭ ਕਰਦਾ ਹੈ  ਜੇਕਰ ਇਹ ਐਪਰਸੈਡ ਇਕਾਈ "
 "ਬਣਨਯੋਗ ਨਹੀ ਤਾਂ ਇਸ ਨੂੰ ਇਸਤਰਾਂ &amp; ਛਡ ਦਿਉ  "
 
-#: glib/gmarkup.c:461
+#: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "ਇਹ %s ਅੱਖਰ ਇਕਾਈ ਦੇ ਨਾਉ ਲਈ ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gmarkup.c:505
+#: glib/gmarkup.c:521
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "ਇਕਾਈ ਦਾ ਨਾਉ %s ਪਤਾ ਨਹੀ ਹੈ"
 
-#: glib/gmarkup.c:515
+#: glib/gmarkup.c:531
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -213,25 +213,25 @@ msgstr ""
 "ਇਕਾਈ ਸੈਮੀਕਾਲਨ ਨਾਲ ਖਤਮ ਨਹੀ ਹੋ ਸਕਦਾ ਹੋ ਸਕਦਾ ਕਿ ਤੁਸੀ ਇਕ ਐਪਰਸੈਨਡ ਅੱਖਰ ਬਿਨਾਂ ਇਕਾਈ ਆਰੰਭ "
 "ਕੀਤੇ ਹੀ ਵਰਤ ਰਹੇ ਹੋ, ਐਪਰਸੈਨਡ ਇਸਤਰਾਂ &amp; ਛੱਡੋ"
 
-#: glib/gmarkup.c:561
-#, c-format
+#: glib/gmarkup.c:584
+#, fuzzy, c-format
 msgid ""
-"Failed to parse '%s', which should have been a digit inside a character "
+"Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "'%s' ਪਾਰਸ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਜੋ ਕਿ ਅੱਖਰ ਵਿੱਚ ਨੰਬਰ ਹੋਣ ਚਾਹੀਦਾ ਹੈਵੇਖੋ (&#234; ਉਦਾਹਰਨ ਲਈ) - "
 "ਅੱਖਰ ਬਹੁਤ ਲੰਮਾ ਹੋ ਗਿਆ ਹੈ"
 
-#: glib/gmarkup.c:586
-#, c-format
-msgid "Character reference '%s' does not encode a permitted character"
+#: glib/gmarkup.c:609
+#, fuzzy, c-format
+msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "ਅੱਖਰ ਦਾ ਹਵਾਲਾ %s ਇਕ ਚੁਣੇ ਅੱਖਰ ਨੂੰ ਇਨਕੋਡ ਨਹੀ ਕਰ ਸਕਦਾ"
 
-#: glib/gmarkup.c:603
+#: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "ਖਾਲੀ ਅੱਖਰ ਦਾ ਹਵਾਲਾ, ਕੋਈ ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ ਜਿਵੇ ਕਿ &#454;"
 
-#: glib/gmarkup.c:613
+#: glib/gmarkup.c:634
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -240,23 +240,23 @@ msgstr ""
 "ਅੱਖਰੀ ਹਵਾਲਾ ਸੈਮੀਕਾਲਨ ਨਾਲ ਖਤਮ ਨਹੀ ਹੋ ਸਕਦਾ  ਹੋ ਸਕਦਾ ਕਿ ਤੁਸੀ ਇਕ ਐਪਰਸੈਨਡ ਅੱਖਰ ਬਿਨਾਂ ਇਕਾਈ "
 "ਆਰੰਭ ਕੀਤੇ ਹੀ ਵਰਤ ਰਹੇ ਹੋ, ਐਪਰਸੈਨਡ ਇਸਤਰਾਂ &amp; ਛਡੋ"
 
-#: glib/gmarkup.c:639
+#: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
 msgstr "ਅਪੂਰਨ ਇਕਾਈ ਹਵਾਲਾ"
 
-#: glib/gmarkup.c:645
+#: glib/gmarkup.c:726
 msgid "Unfinished character reference"
 msgstr "ਅਪੂਰਨ ਅੱਖਰੀ ਹਵਾਲਾ"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
 msgid "Invalid UTF-8 encoded text"
 msgstr "ਗਲਤ UTF-8 ਇੰਨਕੋਡ ਅੱਖਰ"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:1064
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ਦਸਤਾਵੇਜ਼ ਇਕ ਭਾਗ ਨਾਲ ਆਰੰਭ ਹੋਣਾ ਜਰੂਰੀ ਹੈ (ਜਿਵੇ ਕਿ. <book>)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1104
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -265,7 +265,7 @@ msgstr ""
 "ਇਹ '%s' ਜਾਇਜ ਅੱਖਰ ਨਹੀ ਹੈ ਜੋ ਕਿ '<' ਅੱਖਰ ਤੋ ਮਗਰ ਹੈ  ਇਹ ਕਿਸੇ ਭਾਗ ਦੇ ਨਾਉ ਨਾਲ ਆਰੰਭ ਨਹੀ "
 "ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1168
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -274,13 +274,13 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤਅੱਖਰ '%s', ਇਹ '>' ਅੱਖਰ ਦੀ ਉਮੀਦ ਸੀ ਤਾਂਕਿ ਹਿਸੇ ਦੀ ਸੁਰੂ ਕੀਤੀ ਪੱਟੀ ਖਤਮ ਕੀਤੀ ਜਾ "
 "ਸਕੇ'%s'"
 
-#: glib/gmarkup.c:1181
+#: glib/gmarkup.c:1257
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ %s ਹੈ   ਇਸ %s ਭਾਗ ਦੇ ਇਸ ਵਿਸ਼ੇਸਤਾ ਨਾਉ %s  ਮਗਰੋ  = ਨਿਸ਼ਚਿਤ ਹੈ"
 
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1299
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -290,7 +290,7 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ '%s' ਹੈ, ਇਕ ਅੱਖਰ '>'ਜਾਂ '/'  ਨਿਸ਼ਚਿਤ ਅੱਖਰ ਹੈ ਤਾਂਕਿ ਹਿੱਸੇ ਦੀ ਸੁਰੂ ਕੀਤੀ ਪੱਟੀ "
 "ਖਤਮ ਕੀਤੀ ਜਾ ਸਕੇ '%s', ਜਾਂ ਚੁਣਿਆ ਪ੍ਰਤੀਕ ਜਿਸ ਲ਼ਈ ਤੁਸੀ ਗਲਤ ਨਾਉ ਭਰਿਆ ਹੈ"
 
-#: glib/gmarkup.c:1310
+#: glib/gmarkup.c:1388
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -299,7 +299,7 @@ msgstr ""
 "ਅਨਿਸ਼ਚਿਤ ਅੱਖਰ '%s', ਬਰਾਬਰ ਦੇ ਨਿਸ਼ਾਨ ਮਗਰੋ ਇਕ ਖੁੱਲਾ ਹਵਾਲਾ ਨਿਸ਼ਾਨ ਜਰੂਰੀ ਹੈ, ਜਦੋ ਕਿ ਤੁਸੀ ਇਕ "
 "ਭਾਗ '%s' ਦੇ ਪ੍ਰਤੀਕ '%s' ਲਈ ਮੁੱਲ ਦੇ ਰਹੇ ਹੋ"
 
-#: glib/gmarkup.c:1451
+#: glib/gmarkup.c:1533
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -308,7 +308,7 @@ msgstr ""
 "ਇਸ '</' ਅੱਖਰ ਮਗਰੋਂ ਇਹ %s'  ਅੱਖਰ ਜਾਇਜ ਨਹੀ ਹੈ  '%s' ਇਕ ਭਾਗ ਦੇ ਨਾਉ ਨਾਲ ਆਰੰਭ ਨਹੀ ਹੋ ਸਕਦਾ "
 "ਹੈ"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1573
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -316,32 +316,32 @@ msgid ""
 msgstr ""
 "ਇਹ '%s' ਅੱਖਰ ਬੰਦ ਭਾਗ ਦੇ ਨਾਉ ਮਗਰੋ ਜਾਇਜ ਨਹੀ ਹੈ  '%s'; ਸਿਰਫ '>' ਅੱਖਰ ਹੀ ਨਿਸ਼ਚਿਤ ਹੈ "
 
-#: glib/gmarkup.c:1501
+#: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "ਇਹ ਭਾਗ '%s' ਬੰਦ ਸੀ, ਕੋਈ ਭਾਗ ਖੁੱਲਾ ਨਹੀ ਹੈ"
 
-#: glib/gmarkup.c:1510
+#: glib/gmarkup.c:1593
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "ਇਹ ਭਾਗ '%s' ਬੰਦ ਸੀ, '%s' ਭਾਗ ਖੁੱਲਾ ਹੈ  "
 
-#: glib/gmarkup.c:1657
+#: glib/gmarkup.c:1740
 msgid "Document was empty or contained only whitespace"
 msgstr "ਦਸਤਾਵੇਜ਼ ਖਾਲੀ ਹੈ ਜਾਂ ਕੇਵਲ ਸਾਫ ਹੀ ਹੈ "
 
-#: glib/gmarkup.c:1671
+#: glib/gmarkup.c:1754
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਖੁਲੀ ਬਰੈਕਟ '<' ਪਾਉਣ ਮਗਰੋ  "
 
-#: glib/gmarkup.c:1679 glib/gmarkup.c:1723
+#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਜਦੋ ਕਿ-ਇਹ '%s' ਅਖੀਰੀ ਖੁੱਲਾ ਭਾਗ ਹੈ"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1770
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -349,19 +349,19 @@ msgid ""
 msgstr ""
 "ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ, ਇਕ ਬੰਦ ਬਰੈਕਟ <%s/> ਜੋ ਕਿ ਪੱਟੀ ਨੂੰ ਬੰਦ ਕਰਦੀ ਹੈ, ਦੀ ਉਮੀਦ ਸੀ  "
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element name"
 msgstr "ਇਕ ਹਿੱਸੇ ਦੇ ਨਾਉ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "ਇਕ ਗੁਣ ਦੇ ਨਾਉ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1703
+#: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "ਇਕ ਹਿੱਸੇ ਦੀ ਖੁਲੀ ਪੱਟੀ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ,"
 
-#: glib/gmarkup.c:1709
+#: glib/gmarkup.c:1792
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -369,16 +369,16 @@ msgstr ""
 "ਇਕ ਗੁਣ ਦੇ ਨਾਉ ਤੋ ਪਹਿਲਾਂ ਬਰਾਬਰ ਦੇ ਨਿਸ਼ਾਨ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ ਗੁਣ ਦਾ ਕੋਈ ਮੁੱਲ "
 "ਨਹੀ ਹੈ"
 
-#: glib/gmarkup.c:1716
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ਇਕ ਗੁਣ ਦੇ ਮੁੱਲ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ"
 
-#: glib/gmarkup.c:1731
+#: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ਇਕ ਹਿੱਸੇ  '%s' ਦੀ ਪੱਟੀ ਕਰਕੇ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ "
 
-#: glib/gmarkup.c:1737
+#: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ਇਕ ਟਿੱਪਣੀ ਜਾਂ ਹਦਾਇਤ ਚਲਾਉਣ ਦੌਰਾਨ ਦਸਤਾਵੇਜ਼ ਬੇਉਮੀਦ ਬੰਦ ਹੋ ਗਿਆ ਹੈ "
 
@@ -416,7 +416,7 @@ msgstr ""
 "ਅਣਪਛਾਤੀ ਗਲਤੀ - g_io_channel_win32_poll() ਅਗਲੇਰੀਆਂ ਕਿਰਿਆਵਾਂ ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ "
 "ਹੈ  "
 
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1013
+#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਤੋ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
@@ -430,12 +430,12 @@ msgstr "ਸਹਾਇਤਾ ਕਾਰਜ ਚਲਾਉਣ ਵਿੱਚ ਅਸਫ�
 msgid "Failed to execute child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਰਿਹਾ ਹੈ  "
 
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1218
+#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ਡਾਇਕਰੈਕਟਰੀ '%s' ਬਦਲਣ ਵਿੱਚ ਅਸਫਲ (%s)"
 
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
+#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨਾਲ ਸੰਚਾਰ ਲਈ ਪਾਇਪ  ਬਣਾਉਣ ਵਿੱਚ ਅਸਫਲ ਹੈ  "
@@ -455,32 +455,32 @@ msgstr "ਅਣਪਛਾਤੀ ਗਲਤੀ --ਅਗਲੀ ਕਿਰਿਆ(%s) �
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) ਵਿੱਚ ਅਣਪਛਾਤੀ ਗਲਤੀ ਹੈ"
 
-#: glib/gspawn.c:1078
+#: glib/gspawn.c:1079
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s)ਸ਼ਾਖਾਵਾਂ ਵਿੱਚ ਵੰਡਣ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1228
+#: glib/gspawn.c:1229
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ (%s)"
 
-#: glib/gspawn.c:1238
+#: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s)  ਦੇ ਨਤੀਜੇ ਨੂੰ ਵਾਪਿਸ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1247
+#: glib/gspawn.c:1248
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ (%s) ਨੂੰ ਵੰਡ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1255
+#: glib/gspawn.c:1256
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "ਅਗਲੀ ਕਿਰਿਆ \"%s\" ਨੂੰ  ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਹੈ"
 
-#: glib/gspawn.c:1277
+#: glib/gspawn.c:1278
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ਅਗਲੀ ਕਿਰਿਆ ਪਾਇਪ(%s)  ਤੋ ਚਾਹੀਦਾ ਡਾਟਾ ਖੋਲਣ ਵਿੱਚ ਅਸਫਲ ਹੈ "
@@ -535,4 +535,84 @@ msgstr ""
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
+msgstr ""
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr ""
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr ""
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr ""
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr ""
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr ""
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr ""
+
+#: glib/gkeyfile.c:3023
+#, fuzzy, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr ""
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
