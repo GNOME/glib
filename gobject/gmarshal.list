@@ -44,3 +44,4 @@ STRING:OBJECT,POINTER
 
 # GRuntime specific marshallers
 VOID:UINT,POINTER
+BOOL:FLAGS

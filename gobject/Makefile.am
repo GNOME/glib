@@ -46,6 +46,7 @@ gruntime_public_h_sources = @STRIP_BEGIN@ \
 	gparam.h		\
 	gparamspecs.h		\
 	gsignal.h		\
+	gsourceclosure.h	\
 	gtype.h			\
 	gtypemodule.h		\
 	gtypeplugin.h		\
@@ -68,6 +69,7 @@ gruntime_c_sources = @STRIP_BEGIN@ \
 	gparam.c		\
 	gparamspecs.c		\
 	gsignal.c		\
+	gsourceclosure.c	\
 	gtype.c			\
 	gtypemodule.c		\
 	gtypeplugin.c		\

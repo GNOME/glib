@@ -1,3 +1,9 @@
+Mon Aug 27 14:55:27 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gsourceclosure.[ch] (g_source_set_closure): Implement.
+
+	* gsourceclosure.[ch]: Add GType's for GIOChannel, GIOCondition.
+
 2001-08-17  James Henstridge  <james@daa.com.au>
 
 	* gobject.c (WeakRefStack): add an object member to the structure.

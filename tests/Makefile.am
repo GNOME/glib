@@ -37,7 +37,7 @@ CXX_TEST =
 endif
 
 if ENABLE_TIMELOOP
-timeloop = timeloop
+timeloop = timeloop timeloop-closure
 endif
 noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
 testglib_LDADD = $(libglib)
@@ -47,6 +47,7 @@ unicode_normalize_LDADD = $(libglib)
 unicode_collate_LDADD = $(libglib)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
+timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
 
 test_programs =					\
