@@ -1070,7 +1070,7 @@ g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets)
       cache->charset = g_strdup (charset);
       
       p = getenv ("G_FILENAME_ENCODING");
-      if (p != NULL) 
+      if (p != NULL && p[0] != '\0') 
 	{
 	  cache->filename_charsets = g_strsplit (p, ",", 0);
 	  cache->is_utf8 = (strcmp (cache->filename_charsets[0], "UTF-8") == 0);
