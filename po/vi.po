@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-12-16 00:40-0500\n"
-"PO-Revision-Date: 2003-01-19 20:08+0700\n"
+"PO-Revision-Date: 2004-06-25 05:12+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,9 +22,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Không hỗ trợ  việc chuyển từ đặt ký tự '%s' thành '%s'"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
+msgstr "Không thể mở trình chuyển đổi từ '%s' sang '%s'"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
 #: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
@@ -105,7 +105,7 @@ msgstr "Không đọc được từ tập tin '%s': %s"
 #: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Không mở được tập tin '%s': %s"
+msgstr "Lỗi khi mở tập tin '%s': %s"
 
 #: glib/gfileutils.c:656
 #, c-format
@@ -133,13 +133,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
 
 #: glib/gfileutils.c:1425
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Không tạo được tập tin '%s': %s"
+msgstr "Lỗi đọc liên kết tượng trưng '%s': %s"
 
 #: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Không hỗ trợ liên kết tượng trưng"
 
 #: glib/giochannel.c:1146
 #, c-format
@@ -365,7 +365,7 @@ msgstr "Tài liệu được kết thúc không mong muốn bên trong tên thu�
 
 #: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Tài liệu được kết thúc không mong muốn bên trong tag của phần tử mở"
+msgstr "Tài liệu được kết thúc không mong muốn bên trong tag của phần tử mở."
 
 #: glib/gmarkup.c:1792
 msgid ""
@@ -630,11 +630,11 @@ msgstr ""
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""
 
-#~ msgid "Incorrect message size"
-#~ msgstr "Kích thước thông điệp sai"
+msgid "Incorrect message size"
+msgstr "Kích thước thông điệp sai"
 
-#~ msgid "Socket error"
-#~ msgstr "Lỗi Socket"
+msgid "Socket error"
+msgstr "Lỗi Socket"
 
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "Kênh đặt các flag không được hỗ trợ"
+msgid "Channel set flags unsupported"
+msgstr "Kênh đặt các flag không được hỗ trợ"
