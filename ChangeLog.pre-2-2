@@ -1,3 +1,10 @@
+Mon Nov  4 10:45:48 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Add -DG_DISABLE_CAST_CHECKS for 
+	everything but --enable-debug.
+
+	* configure.in: Require pkg-config 0.14. (#97553)
+
 Mon Nov  4 14:41:48 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* glib/gbsearcharray.c: Include config.h
@@ -5,10 +12,6 @@ Mon Nov  4 14:41:48 2002  Owen Taylor  <otaylor@redhat.com>
  	(#96437, Morten Welinder)
  
  	* tests/uri-test.c: Include <config.h>
-
-Mon Nov  4 10:45:48 2002  Owen Taylor  <otaylor@redhat.com>
-
-	* configure.in: Require pkg-config 0.14. (#97553)
 
 2002-11-03  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 

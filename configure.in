@@ -206,10 +206,10 @@ if test x$PKG_CONFIG = xno ; then
   AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
 fi
 
-if $PKG_CONFIG --atleast-pkgconfig-version 0.5 ; then
+if $PKG_CONFIG --atleast-pkgconfig-version 0.14 ; then
   :
 else
-  AC_MSG_ERROR([*** pkg-config too old; version 0.5 or better required.])
+  AC_MSG_ERROR([*** pkg-config too old; version 0.14 or better required.])
 fi
 
 if test "x$enable_debug" = "xyes"; then
@@ -222,8 +222,10 @@ if test "x$enable_debug" = "xyes"; then
 	
   GLIB_DEBUG_FLAGS="-DG_ENABLE_DEBUG"
 else
+  GLIB_DEBUG_FLAGS="-DG_DISABLE_CAST_CHECKS"
+
   if test "x$enable_debug" = "xno"; then
-    GLIB_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
+    GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
   fi
 fi
 
