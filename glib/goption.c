@@ -112,6 +112,18 @@ g_option_error_quark (void)
   return q;
 }
 
+/**
+ * g_option_context_new:
+ * @parameter_string: the parameter string to be used in 
+ *    <option>--help</option> output.
+ *
+ * Creates a new option context. 
+ *
+ * Returns: a newly created #GOptionContext, which must be
+ *    freed with g_option_context_free() after use.
+ *
+ * Since: 2.6
+ */
 GOptionContext *
 g_option_context_new (const gchar *parameter_string)
 
@@ -122,14 +134,22 @@ g_option_context_new (const gchar *parameter_string)
 
   context->parameter_string = g_strdup (parameter_string);
   context->help_enabled = TRUE;
+  context->ignore_unknown = FALSE;
 
   return context;
 }
 
-void
-g_option_context_free (GOptionContext *context)
-{
-  g_return_if_fail (context != NULL);
+/**
+ * g_option_context_free:
+ * @context: a #GOptionContext 
+ *
+ * Frees context and all the groups which have been 
+ * added to it.
+ *
+ * Since: 2.6
+ */
+void g_option_context_free (GOptionContext *context) {
+g_return_if_fail (context != NULL);
 
   g_list_foreach (context->groups, (GFunc)g_option_group_free, NULL);
   g_list_free (context->groups);
@@ -145,9 +165,22 @@ g_option_context_free (GOptionContext *context)
   g_free (context);
 }
 
-void
-g_option_context_set_help_enabled (GOptionContext *context,
-				   gboolean        help_enabled)
+
+/**
+ * g_option_context_set_help_enabled:
+ * @context: a #GOptionContext
+ * @help_enabled: %TRUE to enable <option>--help</option>, %FALSE to disable it
+ *
+ * Enables or disables automatic generation of <option>--help</option> 
+ * output. By default, g_option_context_parse() recognizes
+ * <option>--help</option>, <option>-?</option>, <option>--help-all</option>
+ * and <option>--help-</option><replaceable>groupname</replaceable> and creates
+ * suitable output to stdout. 
+ *
+ * Since: 2.6
+ */
+void g_option_context_set_help_enabled (GOptionContext *context,
+                                        gboolean        help_enabled)
 
 {
   g_return_if_fail (context != NULL);
@@ -155,14 +188,40 @@ g_option_context_set_help_enabled (GOptionContext *context,
   context->help_enabled = help_enabled;
 }
 
-gboolean
-g_option_context_get_help_enabled (GOptionContext *context)
+/**
+ * g_option_context_get_help_enabled:
+ * @context: a #GOptionContext
+ * 
+ * Returns whether automatic <option>--help</option> generation
+ * is turned on for @context. See g_option_context_set_help_enabled().
+ * 
+ * Returns: %TRUE if automatic help generation is turned on.
+ *
+ * Since: 2.6
+ */
+gboolean 
+g_option_context_get_help_enabled (GOptionContext *context) 
 {
   g_return_val_if_fail (context != NULL, FALSE);
-
+  
   return context->help_enabled;
 }
 
+/**
+ * g_option_context_set_ignore_unknown_options:
+ * @context: a #GOptionContext
+ * @ignore_unknown: %TRUE to ignore unknown options, %FALSE to produce
+ *    an error when unknown options are met
+ * 
+ * Sets whether to ignore unknown options or not. If an argument is 
+ * ignored, it is left in the @argv array after parsing. By default, 
+ * g_option_context_parse() treats unknown options as error.
+ * 
+ * This setting does not affect non-option arguments (i.e. arguments 
+ * which don't start with a dash).
+ *
+ * Since: 2.6
+ **/
 void
 g_option_context_set_ignore_unknown_options (GOptionContext *context,
 					     gboolean	     ignore_unknown)
@@ -172,6 +231,17 @@ g_option_context_set_ignore_unknown_options (GOptionContext *context,
   context->ignore_unknown = ignore_unknown;
 }
 
+/**
+ * g_option_context_get_ignore_unknown_options:
+ * @context: a #GOptionContext
+ * 
+ * Returns whether unknown options are ignored or not. See
+ * g_option_context_set_ignore_unknown_options().
+ * 
+ * Returns: %TRUE if unknown options are ignored.
+ * 
+ * Since: 2.6
+ **/
 gboolean
 g_option_context_get_ignore_unknown_options (GOptionContext *context)
 {
@@ -180,6 +250,19 @@ g_option_context_get_ignore_unknown_options (GOptionContext *context)
   return context->ignore_unknown;
 }
 
+/**
+ * g_option_context_add_group:
+ * @context: a #GOptionContext
+ * @group: the group to add
+ * 
+ * Adds a #GOptionGroup to the @context, so that parsing with @context
+ * will recognize the options in the group. Note that the group will
+ * be freed together with the context when g_option_context_free() is
+ * called, so you must not free the group yourself after adding it
+ * to a context.
+ *
+ * Since: 2.6
+ **/
 void
 g_option_context_add_group (GOptionContext *context,
 			    GOptionGroup   *group)
@@ -193,6 +276,18 @@ g_option_context_add_group (GOptionContext *context,
   context->groups = g_list_prepend (context->groups, group);
 }
 
+/**
+ * g_option_context_set_main_group:
+ * @context: a #GOptionContext
+ * @group: the group to set as main group
+ * 
+ * Sets a #GOptionGroup as main group of the @context. 
+ * This has the same effect as calling g_option_context_add_group(), 
+ * the only difference is that the options in the main group are 
+ * treated differently when generating <option>--help</option> output.
+ *
+ * Since: 2.6
+ **/
 void
 g_option_context_set_main_group (GOptionContext *context,
 				 GOptionGroup   *group)
@@ -203,6 +298,18 @@ g_option_context_set_main_group (GOptionContext *context,
   context->main_group = group;
 }
 
+/**
+ * g_option_context_get_main_group:
+ * @context: a #GOptionContext
+ * 
+ * Returns a pointer to the main group of @context.
+ * 
+ * Return value: the main group of @context, or %NULL if @context doesn't
+ *  have a main group. Note that group belongs to @context and should
+ *  not be modified or freed.
+ *
+ * Since: 2.6
+ **/
 GOptionGroup *
 g_option_context_get_main_group (GOptionContext *context)
 {
@@ -211,6 +318,19 @@ g_option_context_get_main_group (GOptionContext *context)
   return context->main_group;
 }
 
+/**
+ * g_option_context_add_main_entries:
+ * @context: a #GOptionContext
+ * @entries: a %NULL-terminated array of #GOptionEntry<!-- -->s
+ * @translation_domain: a translation domain to use for translating
+ *    the <option>--help</option> output for the options in @entries
+ *    with gettext(), or %NULL
+ * 
+ * A convenience function which creates a main group if it doesn't 
+ * exist, adds the @entries to it and sets the translation domain.
+ * 
+ * Since: 2.6
+ **/
 void
 g_option_context_add_main_entries (GOptionContext      *context,
 				   const GOptionEntry  *entries,
@@ -814,6 +934,28 @@ free_pending_nulls (GOptionContext *context,
   context->pending_nulls = NULL;
 }
 
+/**
+ * g_option_context_parse:
+ * @context: a #GOptionContext
+ * @argc: a pointer to the number of command line arguments.
+ * @argv: a pointer to the array of command line arguments.
+ * @error: a return location for errors 
+ * 
+ * Parses the command line arguments, recognizing options
+ * which have been added to @context. A side-effect of 
+ * calling this function is that g_set_prgname() will be
+ * called.
+ *
+ * If the parsing is successful, any parsed arguments are
+ * removed from the array and @argc and @argv are updated 
+ * accordingly. In case of an error, @argc and @argv are
+ * left unmodified.
+ * 
+ * Return value: %TRUE if the parsing was successful, 
+ *               %FALSE if an error occurred
+ *
+ * Since: 2.6
+ **/
 gboolean
 g_option_context_parse (GOptionContext   *context,
 			gint             *argc,
@@ -1095,7 +1237,27 @@ g_option_context_parse (GOptionContext   *context,
   return FALSE;
 }
 				   
-     
+/**
+ * g_option_group_new:
+ * @name: the name for the option group, this is used to provide
+ *   help for the options in this group with <option>--help-</option>@name
+ * @description: a description for this group to be shown in 
+ *   <option>--help</option>. This string is translated using the translation
+ *   domain or translation function of the group
+ * @help_description: a description for the <option>--help-</option>@name option.
+ *   This string is translated using the translation domain or translation function
+ *   of the group
+ * @user_data: user data that will be passed to the pre- and post-parse hooks,
+ *   the error hook and to callbacks of %G_OPTION_ARG_CALLBACK options, or %NULL
+ * @destroy: a function that will be called to free @user_data, or %NULL
+ * 
+ * Creates a new #GOptionGroup.
+ * 
+ * Return value: a newly created option group. It should be added 
+ *   to a #GOptionContext or freed with g_option_group_free().
+ *
+ * Since: 2.6
+ **/
 GOptionGroup *
 g_option_group_new (const gchar    *name,
 		    const gchar    *description,
@@ -1116,6 +1278,15 @@ g_option_group_new (const gchar    *name,
   return group;
 }
 
+/**
+ * g_option_group_free:
+ * @group: a #GOptionGroup
+ * 
+ * Frees a #GOptionGroup. Note that you must <emphasis>not</emphasis>
+ * free groups which have been added to a #GOptionContext.
+ *
+ * Since: 2.6
+ **/
 void
 g_option_group_free (GOptionGroup *group)
 {
@@ -1137,6 +1308,15 @@ g_option_group_free (GOptionGroup *group)
 }
 
 
+/**
+ * g_option_group_add_entries:
+ * @group: a #GOptionGroup
+ * @entries: a %NULL-terminated array of #GOptionEntry<!-- -->s
+ * 
+ * Adds the options specified in @entries to @group.
+ *
+ * Since: 2.6
+ **/
 void
 g_option_group_add_entries (GOptionGroup       *group,
 			    const GOptionEntry *entries)
@@ -1154,6 +1334,22 @@ g_option_group_add_entries (GOptionGroup       *group,
   group->n_entries += n_entries;
 }
 
+/**
+ * g_option_group_set_parse_hooks:
+ * @group: a #GOptionGroup
+ * @pre_parse_func: a function to call before parsing, or %NULL
+ * @post_parse_func: a function to call after parsing, or %NULL
+ * 
+ * Associates two functions with @group which will be called 
+ * from g_option_context_parse() before the first option is parsed
+ * and after the last option has been parsed, respectively.
+ *
+ * Note that the user data to be passed to @pre_parse_func and
+ * @post_parse_func can be specified when constructing the group
+ * with g_option_group_new().
+ *
+ * Since: 2.6
+ **/
 void
 g_option_group_set_parse_hooks (GOptionGroup     *group,
 				GOptionParseFunc  pre_parse_func,
@@ -1165,6 +1361,20 @@ g_option_group_set_parse_hooks (GOptionGroup     *group,
   group->post_parse_func = post_parse_func;  
 }
 
+/**
+ * g_option_group_set_error_hook:
+ * @group: a #GOptionGroup
+ * @error_func: a function to call when an error occurs
+ * 
+ * Associates a function with @group which will be called 
+ * from g_option_context_parse() when an error occurs.
+ *
+ * Note that the user data to be passed to @pre_parse_func and
+ * @post_parse_func can be specified when constructing the group
+ * with g_option_group_new().
+ *
+ * Since: 2.6
+ **/
 void
 g_option_group_set_error_hook (GOptionGroup     *group,
 			       GOptionErrorFunc	 error_func)
@@ -1175,11 +1385,28 @@ g_option_group_set_error_hook (GOptionGroup     *group,
 }
 
 
+/**
+ * g_option_group_set_translate_func:
+ * @group: a #GOptionGroup
+ * @func: the #GTranslateFunc, or %NULL 
+ * @data: user data to pass to @func, or %NULL
+ * @destroy_notify: a function which gets called to free @data, or %NULL
+ * 
+ * Sets the function which is used to translate user-visible
+ * strings, for <option>--help</option> output. Different
+ * groups can use different #GTranslateFunc<!-- -->s. If @func
+ * is %NULL, strings are not translated.
+ *
+ * If you are using gettext(), you only need to set the translation
+ * domain, see g_option_group_set_translation_domain().
+ *
+ * Since: 2.6
+ **/
 void
 g_option_group_set_translate_func (GOptionGroup   *group,
 				   GTranslateFunc  func,
 				   gpointer        data,
-				   GDestroyNotify  notify)
+				   GDestroyNotify  destroy_notify)
 {
   g_return_if_fail (group != NULL);
   
@@ -1198,6 +1425,16 @@ dgettext_swapped (const gchar *msgid,
   return dgettext (domainname, msgid);
 }
 
+/**
+ * g_option_group_set_translation_domain:
+ * @group: a #GOptionGroup
+ * @domain: the domain to use
+ * 
+ * A convenience function to use gettext() for translating
+ * user-visible strings. 
+ * 
+ * Since: 2.6
+ **/
 void
 g_option_group_set_translation_domain (GOptionGroup *group,
 				       const gchar  *domain)

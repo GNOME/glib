@@ -1,3 +1,7 @@
+2004-10-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c: Add documentation.
+
 2004-10-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmessages.h: Mark g_assert_warning as G_GNUC_NORETURN,

@@ -2,11 +2,78 @@
 Commandline option parser
 
 <!-- ##### SECTION Short_Description ##### -->
-
+parses commandline options
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+The GOption commandline parser is intended to be a simpler replacement for the
+popt library. It supports short and long commandline options, as shown in the 
+following example:
+</para>
 
+<para>
+<literal>test -x 1 --long-y foo --flag --long-z=baz -uvw -- file1 file2</literal>
+</para>
+
+<para>
+The example demonstrates a number of features of the GOption commandline parser
+<itemizedlist>
+<listitem><para>
+  Options can be single letters, prefixed by a single dash. Multiple
+  short options can be grouped behind a single dash.
+</para></listitem>
+<listitem><para>
+  Long options are prefixed by two consecutive dashes.
+</para></listitem>
+<listitem><para>
+  Options can have an extra argument, which can be a number, a string or a filename.
+  For long options, the extra argument can be appended with an equals sign after the
+  option name.
+</para></listitem>
+<listitem><para>
+  An argument consisting solely of two dashes turns off further parsing, any remaining
+  arguments are returned to the application as rest arguments.
+</para></listitem>
+</itemizedlist>
+</para>
+
+<para>
+Another important feature of GOption is that it can automatically generate nicely
+formatted help output. Unless it is explicitly turned off with 
+g_option_context_set_help_enabled(), GOption will recognize the 
+<option>--help</option>, <option>-?</option>, <option>--help-all</option>
+and <option>--help-</option><replaceable>groupname</replaceable> options (where 
+<replaceable>groupname</replaceable> is the name of a #GOptionGroup) and 
+write a text similar to the one shown in the following example to stdout.
+</para>
+
+<informalexample><screen>
+Usage:
+  testtreemodel [OPTION...]
+
+Help Options:
+  --help                   Show help options
+  --help-all               Show all help options
+  --help-gtk               Show GTK+ Options
+
+Application Options:
+  -r, --repeats=N          Average over N repetitions
+  -m, --max-size=M         Test up to 2^M items
+  --display=DISPLAY        X display to use
+</screen></informalexample>
+
+<para>
+GOption groups options in #GOptionGroup<!-- -->s, which makes it easy to
+incorporate options from multiple sources. The intended use for this is
+to let applications collect option groups from the libraries it uses,
+add them to their #GOptionContext, and parse all options by a single call
+to g_option_context_parse(). See gtk_get_option_group() for an example.
+</para>
+
+<para>
+If an option is declared to be of type string or filename, GOption takes
+care of converting it to the right encoding; strings are returned in UTF-8,
+filenames are returned in the GLib filename encoding.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,56 +83,47 @@ Commandline option parser
 
 <!-- ##### ENUM GOptionError ##### -->
 <para>
-
+Error codes returned by option parsing.
 </para>
 
-@G_OPTION_ERROR_UNKNOWN_OPTION: 
-@G_OPTION_ERROR_BAD_VALUE: 
-@G_OPTION_ERROR_FAILED: 
+@G_OPTION_ERROR_UNKNOWN_OPTION: An option was not known to the parser.
+  This error will only be reported, if the parser hasn't been instructed
+  to ignore unknown options, see g_option_context_set_ignore_unknown_options().
+@G_OPTION_ERROR_BAD_VALUE: A value couldn't be parsed.
+@G_OPTION_ERROR_FAILED: A #GOptionArgFunc callback failed.
 
 <!-- ##### MACRO G_OPTION_ERROR ##### -->
 <para>
-
+Error domain for option parsing. Errors in this domain will
+be from the #GOptionError enumeration. See #GError for information on 
+error domains.
 </para>
 
 
-
-<!-- ##### ENUM GOptionFlags ##### -->
-<para>
-
-</para>
-
-@G_OPTION_FLAG_HIDDEN: 
-@G_OPTION_FLAG_IN_MAIN: 
-
-<!-- ##### ENUM GOptionArg ##### -->
-<para>
-
-</para>
-
-@G_OPTION_ARG_NONE: 
-@G_OPTION_ARG_STRING: 
-@G_OPTION_ARG_INT: 
-@G_OPTION_ARG_CALLBACK: 
-@G_OPTION_ARG_FILENAME: 
-@G_OPTION_ARG_STRING_ARRAY: 
-@G_OPTION_ARG_FILENAME_ARRAY: 
 
 <!-- ##### USER_FUNCTION GOptionArgFunc ##### -->
 <para>
-
+The type of function to be passed as callback for %G_OPTION_ARG_CALLBACK
+options.
 </para>
 
-@option_name: 
-@value: 
-@data: 
-@error: 
-@Returns: 
+@option_name: The name of the option being parsed. This will be either a 
+  single dash followed by a single letter (for a short name) or two dashes
+  followed by a long option name.
+@value: The value to be parsed.
+@data: User data added to the #GOptionGroup containing the option when it
+  was created with g_option_group_new()
+@error: A return location for errors. The error code %G_OPTION_ERROR_FAILED
+  is intended to be used for errors in #GOptionArgFunc callbacks.
+@Returns: %TRUE if the option was successfully parsed, %FALSE if an error 
+  occurred
 
 
 <!-- ##### STRUCT GOptionContext ##### -->
 <para>
-
+A <structname>GOptionContext</structname> struct defines which options
+are accepted by the commandline option parser. The struct has only private 
+fields and should not be directly accessed.
 </para>
 
 
@@ -134,18 +192,87 @@ Commandline option parser
 @Returns: 
 
 
-<!-- ##### STRUCT GOptionEntry ##### -->
+<!-- ##### ENUM GOptionArg ##### -->
 <para>
-
+The #GOptionArg enum values determine which type of extra argument the
+options expect to find. If an option expects an extra argument, it
+can be specified in several ways; with a short option:
+<option>-x arg</option>, with a long option: <option>--name arg</option>
+or combined in a single argument: <option>--name=arg</option>.
 </para>
 
-@long_name: 
-@short_name: 
-@flags: 
-@arg: 
-@arg_data: 
-@description: 
-@arg_description: 
+@G_OPTION_ARG_NONE: No extra argument. This is useful for simple flags.
+@G_OPTION_ARG_STRING: The option takes a string argument.
+@G_OPTION_ARG_INT: The option takes an integer argument.
+@G_OPTION_ARG_CALLBACK: The option provides a callback to parse the
+  extra argument.
+@G_OPTION_ARG_FILENAME: The option takes a filename as argument.
+@G_OPTION_ARG_STRING_ARRAY: The option takes a string argument, multiple
+  uses of the option are collected into an array of strings.
+@G_OPTION_ARG_FILENAME_ARRAY: The option takes a filename as argument, 
+  multiple uses of the option are collected into an array of strings.
+
+<!-- ##### ENUM GOptionFlags ##### -->
+<para>
+Flags which modify individual options.
+</para>
+
+@G_OPTION_FLAG_HIDDEN: The option doesn't appear in <option>--help</option>
+   output.
+@G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
+   <option>--help</option> output, even if it is defined in a group.
+
+<!-- ##### STRUCT GOptionEntry ##### -->
+<para>
+A <structname>GOptionEntry</structname> defines a single option.
+To have an effect, they must be added to a #GOptionGroup with
+g_option_context_add_main_entries() or g_option_group_add_entries().
+</para>
+
+@long_name: The long name of an option can be used to specify it
+  in a commandline as --<replaceable>long_name</replaceable>. Every
+  option must have a long name.
+@short_name: If an option has a short name, it can be specified
+  -<replaceable>short_name</replaceable> in a commandline.
+@flags: Flags from #GOptionEntryFlags.
+@arg: The type of the option, as a #GOptionArg.
+@arg_data:  If the @arg type is %G_OPTION_ARG_CALLBACK, then @arg_data must 
+ point to a #GOptionArgFunc callback function, which will be called to handle 
+ the extra argument. Otherwise, @arg_data is a pointer to a location to store 
+ the value, the required type of the location depends on the @arg type:
+  <variablelist>
+    <varlistentry>
+      <term>%G_OPTION_ARG_NONE</term>
+      <listitem><para>%gboolean</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_STRING</term>
+      <listitem><para>%gchar*</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_INT</term>
+      <listitem><para>%gint</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_FILENAME</term>
+      <listitem><para>%gchar*</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_STRING_ARRAY</term>
+      <listitem><para>%gchar**</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>%G_OPTION_ARG_FILENAME_ARRAY</term>
+      <listitem><para>%gchar**</para></listitem>
+    </varlistentry>
+  </variablelist>
+@description: the description for the option in <option>--help</option>
+  output. The @description is translated using the @translate_func of the
+  group, see g_option_group_set_translation_domain().
+@arg_description: The placeholder to use for the extra argument parsed
+  by the option in <option>--help</option>
+  output. The @arg_description is translated using the @translate_func of the
+  group, see g_option_group_set_translation_domain().
 
 <!-- ##### FUNCTION g_option_context_add_main_entries ##### -->
 <para>
@@ -159,7 +286,14 @@ Commandline option parser
 
 <!-- ##### STRUCT GOptionGroup ##### -->
 <para>
-
+A <structname>GOptionGroup</structname> struct defines the options in a single
+group. The struct has only private fields and should not be directly accessed. 
+</para>
+<para>
+All options in a group share the same translation function. Libaries which
+need to parse commandline options are expected to provide a function for
+getting a <structname>GOptionGroup</structname> holding their options, which 
+the application can then add to its #GOptionContext.
 </para>
 
 
@@ -222,14 +356,18 @@ Commandline option parser
 
 <!-- ##### USER_FUNCTION GOptionParseFunc ##### -->
 <para>
-
+The type of function that can be called before and after parsing.
 </para>
 
+@context The active #GOptionContext
+
 @context: 
-@group: 
-@data: 
-@error: 
-@Returns: 
+@group: The group to which the function belongs
+@data: User data added to the #GOptionGroup containing the option when it
+  was created with g_option_group_new()
+@error: A return location for error details
+@Returns: %TRUE if the function completed successfully, %FALSE if an error 
+  occurred
 
 
 <!-- ##### FUNCTION g_option_group_set_parse_hooks ##### -->
@@ -244,13 +382,17 @@ Commandline option parser
 
 <!-- ##### USER_FUNCTION GOptionErrorFunc ##### -->
 <para>
-
+The type of function to be used as callback when a parse error
+occurs.
 </para>
 
+@context The active #GOptionContext
+
 @context: 
-@group: 
-@data: 
-@error: 
+@group: The group to which the function belongs
+@data: User data added to the #GOptionGroup containing the option when it
+  was created with g_option_group_new()
+@error: The #GError containing details about the parse error
 
 
 <!-- ##### FUNCTION g_option_group_set_error_hook ##### -->
@@ -264,12 +406,15 @@ Commandline option parser
 
 <!-- ##### USER_FUNCTION GTranslateFunc ##### -->
 <para>
-
+The type of functions which are used to translate user-visible
+strings, for <option>--help</option> output.
 </para>
 
-@str: 
-@data: 
-@Returns: 
+@str: the untranslated string
+@data: user data specified when installing the function, e.g.
+  in g_option_group_set_translate_func()
+@Returns: a translation of the string for the current locale.
+  The returned string is owned by GLib and must not be freed.
 
 
 <!-- ##### FUNCTION g_option_group_set_translate_func ##### -->
