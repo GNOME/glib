@@ -1,0 +1,501 @@
+# Serbian translation of glib
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003.
+# 
+# This file is distributed under the same license as the glib package.
+# 
+# Maintainer: Danilo Šegan <dsegan@gmx.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.2.0\n"
+"POT-Creation-Date: 2002-10-17 02:56+0200\n"
+"PO-Revision-Date: 2003-04-28 07:58+0200\n"
+"Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
+"Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:400
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
+
+#: glib/gconvert.c:404
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Ne može pokrenuti pretvaranje iz „%s““ u „%s“: %s"
+
+#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
+#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gutf8.c:1320
+msgid "Invalid byte sequence in conversion input"
+msgstr "Neispravan niz bajtova u ulazu koji pretvaram"
+
+#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
+#: glib/giochannel.c:2183
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Greška pri pretvaranju: %s"
+
+#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1316
+msgid "Partial character sequence at end of input"
+msgstr "Nepotpun niz znakova na kraju ulaza" # ovo pretpostavljam da se odnosi na delimičan UTF8 zapis
+
+#: glib/gconvert.c:798
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
+
+#: glib/gconvert.c:1632
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI „%s“ nije apsolutan URI koji koristi zapis datoteka"
+
+#: glib/gconvert.c:1642
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "URI lokalne datoteke „%s“ ne sme sadržati „#“"
+
+#: glib/gconvert.c:1659
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI „%s“ je neispravan"
+
+#: glib/gconvert.c:1671
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Ime domaćina za URI „%s“ je neispravno"
+
+#: glib/gconvert.c:1687
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI „%s“ sadrži neispravno naznačene znake"
+
+#: glib/gconvert.c:1758
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Putanja „%s“ nije apsolutna putanja"
+
+#: glib/gconvert.c:1768
+msgid "Invalid hostname"
+msgstr "Neispravno ime domaćina"
+
+#: glib/gdir.c:80
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Greška pri otvaranju direktorijuma „%s“: %s"
+
+#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Ne može obezbediti %lu bajtova za čitanje datoteke „%s“"
+
+#: glib/gfileutils.c:348
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Greška pri čitanju datoteke „%s“: %s"
+
+#: glib/gfileutils.c:424
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Ne može da pročita datoteku „%s“: %s"
+
+#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Ne može da otvori datoteku „%s“: %s"
+
+#: glib/gfileutils.c:485
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Ne može da sazna osobine datoteke „%s“: fstat() nije uspeo: %s"
+
+#: glib/gfileutils.c:511
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Ne može da otvori datoteku „%s“: fdopen() nije uspeo: %s"
+
+#: glib/gfileutils.c:718
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "Obrazac '%s' neispravan, ne sme sadržati „%s“"
+
+#: glib/gfileutils.c:730
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "Obrazac '%s' se ne završava sa XXXXXX"
+
+#: glib/gfileutils.c:751
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Ne može da obrazuje datoteku „%s“: %s"
+
+#: glib/giochannel.c:1119
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Pretvaranje iz skupa „%s“ u skup „%s“ nije podržano"
+
+#: glib/giochannel.c:1123
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Ne može da pokrene pretvaranje iz „%s“ u „%s“: %s"
+
+#: glib/giochannel.c:1468
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Ne može da čita sirovo u g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+msgid "Leftover unconverted data in read buffer"
+msgstr "Preostali nepretvoreni podaci u međuspremniku za čitanje"
+
+#: glib/giochannel.c:1595 glib/giochannel.c:1669
+msgid "Channel terminates in a partial character"
+msgstr "Kanal se završava delimičnim znakom"
+
+#: glib/giochannel.c:1655
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Ne može da čita sirovo u g_io_channel_read_to_end"
+
+#: glib/giowin32.c:712 glib/giowin32.c:741
+msgid "Incorrect message size"
+msgstr "Neispravna veličina poruke"
+
+#: glib/giowin32.c:1045 glib/giowin32.c:1098
+msgid "Socket error"
+msgstr "Mrežna greška"
+
+#: glib/giowin32.c:1298
+msgid "Channel set flags unsupported"
+msgstr "Nepodržana podešavanja kanala"
+
+#: glib/gmarkup.c:222
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Greška u redu %d, znak %d: %s"
+
+#: glib/gmarkup.c:344
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Greška u %d. redu: %s"
+
+#: glib/gmarkup.c:423
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Uočen prazan entitet „&;“; prihvatljivi entiteti su &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:433
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr "Entitet ne može početi znakom „%s“ ; znak & započinje entitet; ako ovaj znak ne označava entitet, istaknite ga kao &amp;"
+
+#: glib/gmarkup.c:469
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Znak „%s“ nije dozvoljen van imena entiteta"
+
+#: glib/gmarkup.c:513
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Entitet „%s“ nije poznat"
+
+#: glib/gmarkup.c:523
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Entitet se ne završava tačka-zarezom; najverovatnije ste koristili ampersand "
+"bez namere da započnete entitet — naznačite ampersand kao &amp;"
+
+#: glib/gmarkup.c:569
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Nije uspeo da obradi „%s“, što je morala biti cifra unutar oznake znaka "
+"(na primer &#234;) — moguće je da je cifra prevelika"
+
+#: glib/gmarkup.c:594
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Oznaka „%s“ nije za dozvoljeni znak"
+
+#: glib/gmarkup.c:611
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Prazna oznaka; morala bi sadržati cifru kao na primer &#747;"
+
+#: glib/gmarkup.c:621
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Oznaka se ne završava tačka-zarezom; najverovatnije ste koristili ampersand "
+"bez namere da započnete entitet — naznačite ampersand kao &amp;"
+
+#: glib/gmarkup.c:647
+msgid "Unfinished entity reference"
+msgstr "Nedovršena oznaka entiteta" # poziv umesto oznaka?
+
+#: glib/gmarkup.c:653
+msgid "Unfinished character reference"
+msgstr "Nedovršena oznaka" # oznaka znaka??? neeeee
+
+#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+msgid "Invalid UTF-8 encoded text"
+msgstr "Neispravan tekst u UTF-8 zapisu" # može i ćirilica: „Unikod TransFormacija 8“
+
+#: glib/gmarkup.c:991
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Dokument mora početi elementom (npr. <knjiga>)"
+
+#: glib/gmarkup.c:1030
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"„%s“ ne predstavlja ispravan znak nakon „<“ znaka; ne može njime "
+"početi ime elementa"
+
+#: glib/gmarkup.c:1093
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Čudan znak „%s“, a očekivao sam „>“ znak radi okončanja početne oznake elementa "
+"„%s“"
+
+#: glib/gmarkup.c:1180
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Čudan znak „%s“, očekivao sam „=“ posle osobine „%s“ elementa „%s“"
+
+#: glib/gmarkup.c:1221
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Čudan znak „%s“, očekivao sam ili „>“ ili „/“ radi okončanja početne oznake "
+" elementa „%s“, ili moguću osobinu; možda ste koristili neispravan znak "
+"u imenu osobine"
+
+#: glib/gmarkup.c:1304
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Čudan znak „%s“, očekivao sam početni navodnik nakon znaka jednakosti pri "
+"dodeli vrednosti osobini „%s“ elementa „%s“"
+
+#: glib/gmarkup.c:1444
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"„%s“ nije ispravan znak nakon niza „</“; „%s“ ne može započeti ime "
+"elementa"
+
+#: glib/gmarkup.c:1482
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"„%s“ nije ispravan znak nakon zatvaranja elementa „%s“; dozvoljeni "
+"znak je „>“"
+
+#: glib/gmarkup.c:1493
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Element „%s“ je zatvoren, nema trenutno otvorenih elemenata"
+
+#: glib/gmarkup.c:1502
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Element „%s“ je zatvoren, a trenutno otvoren element je „%s“"
+
+#: glib/gmarkup.c:1661
+msgid "Document was empty or contained only whitespace"
+msgstr "Dokument je prazan ili sadrži samo beline" # beline se kod nas koristi kod papirnih izdanja, a ovaj izraz eng. koriste svuda
+
+#: glib/gmarkup.c:1675
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokument završen neočekivano neposredno nakon otvorene kosougle zagrade „<“"
+
+#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Dokument završen neočekivano sa otvorenim elementima — „%s“ je poslednje "
+"otvoren element"
+
+#: glib/gmarkup.c:1691
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Dokument završen neočekivano, očekivao sam da naiđem na zatvorenu kosouglu "
+"zagradu koja zatvara oznaku <%s/>"
+
+#: glib/gmarkup.c:1697
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Dokument završen neočekivano usred imena elementa"
+
+#: glib/gmarkup.c:1702
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Dokument završen neočekivano usred imena osobine"
+
+#: glib/gmarkup.c:1707
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Dokument završen neočekivano usred početne oznake elementa."
+
+#: glib/gmarkup.c:1713
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Dokument završen neočekivano nakon znaka jednakosti posle imena osobine; "
+"vrednost osobine nije navedena"
+
+#: glib/gmarkup.c:1720
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Dokument završen neočekivano usred vrednosti osobine"
+
+#: glib/gmarkup.c:1735
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Dokument završen neočekivano usred završne oznake elementa „%s“"
+
+#: glib/gmarkup.c:1741
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Dokument završen neočekivano usred primedbe ili uputa za obradu"
+
+#: glib/gshell.c:71
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Navod ne počinje navodnikom"
+
+#: glib/gshell.c:161
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "Neuparen navodnik u naredbi ili drugom citatu iz ljuske"
+
+#: glib/gshell.c:529
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Sadržaj završen neposredno nakon „\\“ znaka. (Radi se o tekstu „%s“)"
+
+#: glib/gshell.c:536
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "Sadržaj završen pre nailaska na odgovarajući navodnik za %c. (Radi se o tekstu „%s“)"
+
+#: glib/gshell.c:548
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Sadržaj prazan (ili sadrži samo beline)"
+
+#: glib/gspawn-win32.c:198
+msgid "Failed to read data from child process"
+msgstr "Neuspelo čitanje podataka iz podređenog procesa" # Ovaj prevod nije psihološke prirode :)
+
+#: glib/gspawn-win32.c:323
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Neočekivana greška dok su u g_io_channel_win32_poll() čitani podaci "
+"od podređenog procesa"
+
+#: glib/gspawn-win32.c:690 glib/gspawn.c:929
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Neuspelo čitanje iz podređene cevke (%s)"
+
+#: glib/gspawn-win32.c:778 glib/gspawn.c:1134
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
+
+#: glib/gspawn-win32.c:787
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Neuspelo izvršavanje podređenog procesa (%s)"
+
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Neuspelo stvaranje cevke za vezu sa podređenim procesom (%s)"
+
+#: glib/gspawn.c:166
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Neuspelo čitanje podataka od podređenog procesa (%s)"
+
+#: glib/gspawn.c:298
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Neočekivana greška u select() pri čitanju podataka od podređenog procesa (%s)"
+
+#: glib/gspawn.c:381
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Neočekivana greška u waitpid() (%s)"
+
+# za sada ovako, možda grananje, umnožavanje? viljuškanje ;-)
+#: glib/gspawn.c:994
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Neuspeo fork() (%s)"
+
+#: glib/gspawn.c:1144
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Neuspelo izvršavanje podređenog procesa „%s“ (%s)"
+
+#: glib/gspawn.c:1154
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Neuspelo preusmeravanje ulaza ili izlaza podređenog procesa (%s)"
+
+#: glib/gspawn.c:1163
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Neuspeo fork() podređenog procesa (%s)"
+
+#: glib/gspawn.c:1171
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Nepoznata greška pri izvršavanju podređenog procesa „%s“"
+
+#: glib/gspawn.c:1193
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Nije uspeo da pročita dovoljno podataka iz cevke ka podređenom procesu (%s)"
+
+#: glib/gutf8.c:950
+msgid "Character out of range for UTF-8"
+msgstr "Znak van granica UTF-8"
+
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
+msgid "Invalid sequence in conversion input"
+msgstr "Neispravan niz u unosu za pretvaranje"
+
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
+msgid "Character out of range for UTF-16"
+msgstr "Znak van granica UTF-16"
