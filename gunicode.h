@@ -22,7 +22,7 @@
 #ifndef __G_UNICODE_H__
 #define __G_UNICODE_H__
 
-#include <stddef.h>      /* For size_t */
+#include <gerror.h>
 #include <gtypes.h>
 
 G_BEGIN_DECLS
@@ -151,13 +151,13 @@ GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
    decomposed characters in the string according to their combining
    classes.  See the Unicode manual for more information.  */
 void g_unicode_canonical_ordering (gunichar *string,
-				   size_t   len);
+				   gsize     len);
 
 /* Compute canonical decomposition of a character.  Returns g_malloc()d
    string of Unicode characters.  RESULT_LEN is set to the resulting
    length of the string.  */
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
-					     size_t   *result_len);
+					     gsize    *result_len);
 
 /* Array of skip-bytes-per-initial character.
  * We prefix variable declarations so they can
@@ -184,7 +184,7 @@ gint g_utf8_strlen (const gchar *p,
 /* Copies n characters from src to dest */
 gchar* g_utf8_strncpy (gchar       *dest,
 		       const gchar *src,
-		       size_t       n);
+		       gsize        n);
 
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
