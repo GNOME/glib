@@ -1,17 +1,21 @@
+# translation of glib.glib-2-2.po to ukrainian
 # Ukrainian translation of GLIB library.
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
 # Yuri Syrota <rasta@renome.rovno.ua>, 2001.
+# Taras Boychuk <btr1@torba.com>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2003-08-25 20:40-0400\n"
-"PO-Revision-Date: 2003-01-27 11:56--500\n"
-"Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
-"Language-Team: Ukrainian <uk@li.org>\n"
+"Project-Id-Version: glib.glib-2-2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-17 11:46+0200\n"
+"PO-Revision-Date: 2003-09-26 18:30+0300\n"
+"Last-Translator: Taras Boychuk <btr1@torba.com>\n"
+"Language-Team: ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: glib/gconvert.c:401
 #, c-format
@@ -38,7 +42,7 @@ msgstr "Помилка під час перетворення: %s"
 #: glib/gconvert.c:626 glib/gutf8.c:905 glib/gutf8.c:1105 glib/gutf8.c:1246
 #: glib/gutf8.c:1350
 msgid "Partial character sequence at end of input"
-msgstr "Незавершена символьна послідовність на кінці вводу"
+msgstr "Незавершена символьна послідовність у кінці вводу"
 
 #: glib/gconvert.c:799
 #, c-format
@@ -84,7 +88,7 @@ msgstr "Неправильна назва хоста"
 #: glib/gdir.c:80
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Помилка відкриття каталогу \"%s\": %s"
+msgstr "Помилка відкривання каталогу \"%s\": %s"
 
 #: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
@@ -94,27 +98,27 @@ msgstr "Не вдалось виділити %lu байтів для зчиту�
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Помилка зчитування файлу \"%s\": %s"
+msgstr "Помилка зчитування файла \"%s\": %s"
 
 #: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Помилка зчитування з файлу \"%s\": %s"
+msgstr "Помилка зчитування з файла \"%s\": %s"
 
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Збій відкриття файлу \"%s\": %s"
+msgstr "Збій відкривання файла \"%s\": %s"
 
 #: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Не вдалось отримати ознаки файлу \"%s\": збій fstat(): %s"
+msgstr "Не вдалось отримати ознаки файла \"%s\": збій fstat(): %s"
 
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Збій відкривання файлу \"%s\": збій fdopen(): %s"
+msgstr "Збій відкривання файла \"%s\": збій fdopen(): %s"
 
 #: glib/gfileutils.c:776
 #, c-format
@@ -129,7 +133,7 @@ msgstr "Шаблон \"%s\" не закінчується на XXXXXX"
 #: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Збій створення файлу \"%s\": %s"
+msgstr "Збій створення файла \"%s\": %s"
 
 #: glib/giochannel.c:1134
 #, c-format
@@ -149,7 +153,7 @@ msgstr ""
 
 #: glib/giochannel.c:1530 glib/giochannel.c:1787 glib/giochannel.c:1873
 msgid "Leftover unconverted data in read buffer"
-msgstr "В буфері зчитування лишились не перетворені дані"
+msgstr "В буфері зчитування залишились неперетворені дані"
 
 #: glib/giochannel.c:1610 glib/giochannel.c:1687
 msgid "Channel terminates in a partial character"
@@ -157,8 +161,7 @@ msgstr "Канал завершується на неповному символ
 
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"Неможливо виконати безпосереднє зчитування у функції g_io_channel_read_to_end"
+msgstr "Неможливо виконати безпосереднє зчитування у функції g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -171,8 +174,7 @@ msgid "Error on line %d: %s"
 msgstr "Помилка в рядку %d: %s"
 
 #: glib/gmarkup.c:385
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Виявлено порожню сутність \"&;\"; допустимими сутностями є: &amp; &quot; "
 "&lt; &gt; &apos;"
@@ -184,7 +186,7 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Сутність не може починатися з символу \"%s\", її починає символ \"&\";  якщо "
+"Сутність не може починатися з символу \"%s\", її починає символ \"&\"; якщо "
 "цей символ не має бути частиною сутності, то екрануйте його сутністю &amp;"
 
 #: glib/gmarkup.c:431
@@ -212,7 +214,7 @@ msgid ""
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "Стався збій під час аналізу посилання на символ, виявлено \"%s\", де має "
-"бути цифра (&#234, наприклад), можливо, цифра надто велика"
+"бути цифра (&#234;, for example) можливо, цифра надто велика"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -268,8 +270,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1150
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Зайвий символ \"%s\", очікувався символ \"=\" після назви ознаки \"%s\" "
 "елемента \"%s\""
@@ -320,7 +321,7 @@ msgstr "Було закрито невідкритий елемент \"%s\""
 #: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Було закрито елемент \"%s\", але зараз відрито елемент \"%s\""
+msgstr "Було закрито елемент \"%s\", але зараз відкрито елемент \"%s\""
 
 #: glib/gmarkup.c:1619
 msgid "Document was empty or contained only whitespace"
@@ -328,8 +329,7 @@ msgstr "Документ порожній чи містить лише проп�
 
 #: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
-"Документ раптово закінчився відразу після початкової кутової дужки \"<\""
+msgstr "Документ раптово закінчився відразу після початкової кутової дужки \"<\""
 
 #: glib/gmarkup.c:1641 glib/gmarkup.c:1685
 #, c-format
@@ -398,8 +398,7 @@ msgstr "Текст закінчився перед символом \"\\\". (Т�
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Текст закінчився перед відповідними лапками для %c. (Текст був таким: \"%s\")"
+msgstr "Текст закінчився перед відповідними лапками для %c. (Текст був таким: \"%s\")"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -414,7 +413,7 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Неочікувана помилка в зчитувавані даних з спадкоємного процесу через "
+"Неочікувана помилка на зчитувавані даних з спадкоємного процесу через "
 "g_io_channel_win32_poll() "
 
 #: glib/gspawn-win32.c:834 glib/gspawn.c:1002
@@ -486,8 +485,7 @@ msgstr "Невідома помилка виконання спадкоємно�
 #: glib/gspawn.c:1266
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
-"Не вдалося зчитати достатньої кількості даних з спадкоємного каналу (%s)"
+msgstr "Не вдалося зчитати достатньої кількості даних з спадкоємного каналу (%s)"
 
 #: glib/gutf8.c:984
 msgid "Character out of range for UTF-8"
@@ -507,3 +505,4 @@ msgstr "Символ не входить в набір UTF-16"
 
 #~ msgid "Socket error"
 #~ msgstr "Помилка сокета"
+
