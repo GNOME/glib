@@ -541,15 +541,23 @@ The class initialization process is entirely implemented in
 
       <para>
 	As many readers have now understood it, the base initialization/finalization process is
-	very similar to the C++ Constructor/Destructor paradigm. However, it is very different
-	in that, in C++, class constructors are automatically edited at compile 
-	time by the compiler to ensure that classes are correctly initialized before 
-	running the user-provided constructor code itself. With GObject, users must provide both 
-        the class and instance initialization functions.
-	Similarly, GTypes have no instance destruction mechanism. It is
+	very similar to the C++ Constructor/Destructor paradigm. The practical details are quite different
+        though and it is important not to get confused by the superficial similarities. Typically, what 
+        most users have grown to know as a C++ constructor (that is, a list of
+        object methods invoked on the object instance once for each type of the inheritance hierachy) does
+        not exist in GType and must be built on top of the facilities offered by GType. Similarly,
+        GTypes have no instance destruction mechanism. It is
 	the user's responsibility to implement correct destruction semantics on top
 	of the existing GType code. (this is what GObject does. See 
-	<xref linkend="chapter-gobject"></xref>)
+	<xref linkend="chapter-gobject"/>)
+      </para>
+
+      <para>
+       For example, if the object B which derives from A is instantiated, GType will only invoke the 
+       instance_init callback of object B while a C++ runtime will invoke the constructor of the object 
+       type A first and then of the object type B. Furthermore, the C++ code equivalent to the base_init 
+       and class_init callbacks of GType is usually not needed because C++ cannot really create object 
+       types at runtime.
       </para>
 
 	<para>

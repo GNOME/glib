@@ -133,7 +133,7 @@ all the objects manipulated by the programmer. This so-called <emphasis>dynamic 
 </footnote>
 
  library is then
-used by special generic glue code to automatically convert function parameters and function caling conventions
+used by special generic glue code to automatically convert function parameters and function calling conventions
 between different runtime domains.</para></listitem>
 </itemizedlist>
 The greatest advantage of the solution implemented by GType is that the glue code sitting at the runtime domain 
