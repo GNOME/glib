@@ -236,7 +236,7 @@ g_ptr_array_remove_index (GPtrArray* farray,
 
   g_return_if_fail (array);
 
-  g_return_if_fail (index >= array->len);
+  g_return_if_fail (index < array->len);
 
   array->pdata[index] = array->pdata[array->len - 1];
 

@@ -1,3 +1,8 @@
+1998-08-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* garray.c (g_ptr_array_remove_index): bugfix: index check for
+	array has been wrong.
+
 Fri Jul 31 22:17:05 1998  Tim Janik  <timj@gtk.org>
 
 	* testglib.c (g_node_test): added a GNode test.
