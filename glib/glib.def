@@ -405,6 +405,7 @@ EXPORTS
 	g_printf_string_upper_bound
 	g_propagate_error
 	g_ptr_array_add
+	g_ptr_array_foreach
 	g_ptr_array_free
 	g_ptr_array_new
 	g_ptr_array_remove
@@ -441,7 +442,9 @@ EXPORTS
 	g_rand_int_range
 	g_rand_new
 	g_rand_new_with_seed
+	g_rand_new_with_seed_array
 	g_rand_set_seed
+	g_rand_set_seed_array
 	g_random_double
 	g_random_double_range
 	g_random_int
@@ -660,6 +663,7 @@ EXPORTS
 	g_timeout_add_full
 	g_timeout_funcs
 	g_timeout_source_new
+	g_timer_continue
 	g_timer_destroy
 	g_timer_elapsed
 	g_timer_new
