@@ -1,3 +1,8 @@
+Fri Sep 11 02:11:46 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: explicitely include the prototypes for inline functions
+	to cure gcc warnings for -Wmissing-prototypes.
+
 Wed Sep  9 02:52:04 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in: added -posix check for NeXTStep

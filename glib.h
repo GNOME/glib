@@ -1256,10 +1256,12 @@ void	g_atexit		(GVoidFunc    func);
 
 /* Bit tests
  */
+G_INLINE_FUNC gint	g_bit_nth_lsf (guint32 mask,
+				       gint    nth_bit);
+#ifdef	G_CAN_INLINE
 G_INLINE_FUNC gint
 g_bit_nth_lsf (guint32 mask,
 	       gint    nth_bit)
-#ifdef G_CAN_INLINE
 {
   do
     {
@@ -1270,13 +1272,14 @@ g_bit_nth_lsf (guint32 mask,
   while (nth_bit < 32);
   return -1;
 }
-#else
-;
-#endif
+#endif	/* G_CAN_INLINE */
+
+G_INLINE_FUNC gint	g_bit_nth_msf (guint32 mask,
+				       gint    nth_bit);
+#ifdef G_CAN_INLINE
 G_INLINE_FUNC gint
 g_bit_nth_msf (guint32 mask,
 	       gint    nth_bit)
-#ifdef G_CAN_INLINE
 {
   if (nth_bit < 0)
     nth_bit = 33;
@@ -1289,25 +1292,24 @@ g_bit_nth_msf (guint32 mask,
   while (nth_bit > 0);
   return -1;
 }
-#else
-;
-#endif
+#endif  /* G_CAN_INLINE */
+
+G_INLINE_FUNC guint	g_bit_storage (guint number);
+#ifdef G_CAN_INLINE
 G_INLINE_FUNC guint
 g_bit_storage (guint number)
-#ifdef G_CAN_INLINE
 {
   register guint n_bits = 0;
 
   do
     {
       n_bits++;
-      number = number >> 1;
-    } while (number);
+      number >>= 1;
+    }
+  while (number);
   return n_bits;
 }
-#else
-;
-#endif
+#endif  /* G_CAN_INLINE */
 
 
 /* String Chunks
