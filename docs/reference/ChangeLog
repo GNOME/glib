@@ -1,3 +1,8 @@
+2003-07-12  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Add a paragraph about string precision, add links to it.
+	Remove markup which is now handled better by gtk-doc.
+
 2003-07-09  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/threads.sgml: Document GOnce, GOnceStatus, G_ONCE_INIT, g_once and g_once_impl.
