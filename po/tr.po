@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
-"PO-Revision-Date: 2004-03-12 02:28+0200\n"
+"POT-Creation-Date: 2004-11-09 00:01+0200\n"
+"PO-Revision-Date: 2004-10-20 14:56+0300\n"
 "Last-Translator: Onur Can ÇAKMAK <onur@uzem.itu.edu.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,18 +22,18 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüşüm desteklenmiyor"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "'%s' den '%s' e dönüştürücü açılamıyor: %s"
+msgstr "'%s'--'%s' dönüştürücüsü açılamıyor"
 
-#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
-#: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
+#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dönüşüm girdisinde geçersiz bayt dizisi"
 
-#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1323
-#: glib/giochannel.c:2212
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
+#: glib/giochannel.c:2214
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Dönüşüm sırasında hata oluştu: %s"
@@ -50,9 +50,9 @@ msgstr ""
 "Geridönüş karakter kümesi '%s', '%s' karakter kümesine dönüştürülemiyor"
 
 #: glib/gconvert.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "'%s' dosya şemasını kullanan düzgün bir URI değil"
+msgstr "\"dosya\" şemasını kullanan URI '%s' düzgün bir URI değil"
 
 #: glib/gconvert.c:1607
 #, c-format
@@ -70,14 +70,14 @@ msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI makine adı '%s' geçersiz"
 
 #: glib/gconvert.c:1652
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "%s adresi geçersiz şekilde escape edilmiş karakter içeriyor"
+msgstr "URI '%s' geçersiz şekilde escape edilmiş karakter içeriyor"
 
 #: glib/gconvert.c:1722
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "'%s', uygun bir konum değil"
+msgstr "'%s' yol adı, kesin bir yol değil"
 
 #: glib/gconvert.c:1732
 msgid "Invalid hostname"
@@ -103,7 +103,7 @@ msgstr "Dosya okuma hatası: '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Dosyadan okuma başarısızlığı '%s': %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:726
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Dosya açma başarısızlığı '%s': %s"
@@ -120,54 +120,53 @@ msgstr ""
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Dosya açma başarısızlığı '%s': fdopen() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1009
+#: glib/gfileutils.c:1012
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Şablon '%s' geçersiz, '%s' içermemeli"
 
-#: glib/gfileutils.c:1021
+#: glib/gfileutils.c:1026
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Şablon '%s' XXXXXX ile bitmiyor"
 
-#: glib/gfileutils.c:1042
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Dosya yaratılamadı '%s': %s"
 
-#: glib/gfileutils.c:1418
+#: glib/gfileutils.c:1425
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Sembolik bağ '%s' okunamadı: %s"
 
-#: glib/gfileutils.c:1439
+#: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
 msgstr "Sembolik bağlar desteklenmiyor"
 
-#: glib/giochannel.c:1144
+#: glib/giochannel.c:1146
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüşüm desteklenmiyor"
 
-#: glib/giochannel.c:1148
-#, fuzzy, c-format
+#: glib/giochannel.c:1150
+#, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "`%s' den `%s' e dönüştürücü açılamıyor: %s"
+msgstr "`%s'-`%s' dönüştürücüsü açılamıyor: %s"
 
-#: glib/giochannel.c:1493
+#: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_st içinde okuma yapılamıyor"
 
-#: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
-#, fuzzy
+#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
 msgstr "Okuma tampon belleğinde kalıntı çevrilmemiş veri"
 
-#: glib/giochannel.c:1620 glib/giochannel.c:1697
+#: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
 msgstr "Kanal kısmi bir karakterde sonlanıyor"
 
-#: glib/giochannel.c:1683
+#: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end içinde okuma başarısız"
 
@@ -517,39 +516,39 @@ msgstr "UTF-16 için karakter sınırlarının dışında"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Kullanımı:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[SEÇENEK...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr ""
+msgstr "Yardım Seçenekleri:"
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr ""
+msgstr "Yardım seçeneklerini göster"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr ""
+msgstr "Tüm yardım seçeneklerini göster"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr ""
+msgstr "Uygulama Seçenekleri:"
 
 #: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "%2$s için tamsayı değeri %1$s ayrıştırılamıyor"
 
 #: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "%2$s için tamsayı değeri %1$s aralık dışında"
 
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Bilinmeyen seçenek %s"
