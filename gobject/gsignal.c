@@ -1841,8 +1841,8 @@ g_signal_handlers_block_matched (gpointer         instance,
 {
   guint n_handlers = 0;
   
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
-  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
   if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {
@@ -1867,8 +1867,8 @@ g_signal_handlers_unblock_matched (gpointer         instance,
 {
   guint n_handlers = 0;
   
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
-  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
   if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {
@@ -1893,8 +1893,8 @@ g_signal_handlers_disconnect_matched (gpointer         instance,
 {
   guint n_handlers = 0;
   
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
-  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
   
   if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
     {

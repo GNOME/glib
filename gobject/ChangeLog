@@ -1,3 +1,10 @@
+2003-03-06  Matthias Clasen  <maclas@gmx.de>
+
+	* gsignal.c (g_signal_handlers_block_matched): 
+	(g_signal_handlers_unblock_matched): 
+	(g_signal_handlers_disconnect_matched): Fix 0/FALSE confusion.
+	(#107662, Morten Welinder)
+
 Mon Feb 17 20:59:47 2003  Tim Janik  <timj@gtk.org>
 
 	* gvalue.c (g_value_register_transform_func): don't assert the types
