@@ -1,3 +1,15 @@
+Thu Oct  8 06:47:27 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gdataset.c: removed functions g_dataset_id_set_destroy and
+	g_datalist_id_set_destroy and macros g_dataset_set_destroy and
+	g_datalist_set_destroy.
+	added new functions g_dataset_id_remove_no_notify and
+	g_datalist_id_remove_no_notify plus associated macros
+	g_dataset_remove_no_notify and g_datalist_remove_no_notify, which
+ 	will remove a certain data portion without invokation of its destroy
+ 	notifier, this should only be used in very controled circumstances.
+
 Wed Oct  7 05:31:24 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:
@@ -311,7 +323,7 @@ Mon Aug 24 02:08:56 1998  Tim Janik  <timj@gtk.org>
 
 1998-08-18: Elliot Lee <sopwith@redhat.com>
 
-	. In gmem.c, add the ability to exclude memory chunks from the
+	* In gmem.c, add the ability to exclude memory chunks from the
  	  memory profiling information.
 
 Tue Aug 18 18:23:09 PDT 1998 Manish Singh <yosh@gimp.org>
@@ -723,7 +735,7 @@ Wed May 20 05:02:26 1998  Tim Janik  <timj@gtk.org>
         g_mem_chunk_new().
         (g_chunk_free): new convenience macro to be consistent with g_chunk_new.
 
-Tue, 19 May 1998 09:00:02 +0200  §Paolo Molaro <lupus@debian.org>
+Tue, 19 May 1998 09:00:02 +0200  Paolo Molaro <lupus@debian.org>
 
 	* gcompletion.c: generic functions for com<TAB>pletion...
 
@@ -738,8 +750,8 @@ Sun May 17 10:48:27 1998  Tim Janik  <timj@gtk.org>
 Fri May 15 22:31:49 1998  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c (g_scanner_unexp_token): removed spurious va_end(args)
- 	that for some reason didn't produce a compiler wrning on my machine
- 	(is va_end undefined for i386?).
+ 	that for some reason didn't produce a compiler warning on my machine
+ 	(is va_end defined to nothing for i386?).
 
 Fri May 15 12:32:08 1998  rodo  <doulik@karlin.mff.cuni.cz>
 

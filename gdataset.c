@@ -199,8 +199,11 @@ g_data_set_internal (GData	  **datalist,
 	      
 	      /* the GData struct *must* already be unlinked
 	       * when invoking the destroy function
+	       * we use (data==NULL && destroy_func!=NULL) as
+	       * a special hint combination to "steal"
+	       * data without destroy notification
 	       */
-	      if (list->destroy_func)
+	      if (list->destroy_func && !destroy_func)
 		list->destroy_func (list->data);
 	      
 	      if (g_data_cache_length < G_DATA_CACHE_MAX)
@@ -277,6 +280,8 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
   register GDataset *dataset;
   
   g_return_if_fail (dataset_location != NULL);
+  if (!data)
+    g_return_if_fail (destroy_func == NULL);
   if (!key_id)
     {
       if (data)
@@ -309,6 +314,8 @@ g_datalist_id_set_data_full (GData	  **datalist,
 			     GDestroyNotify destroy_func)
 {
   g_return_if_fail (datalist != NULL);
+  if (!data)
+    g_return_if_fail (destroy_func == NULL);
   if (!key_id)
     {
       if (data)
@@ -321,48 +328,29 @@ g_datalist_id_set_data_full (GData	  **datalist,
 }
 
 void
-g_dataset_id_set_destroy (gconstpointer  dataset_location,
-			  GQuark         key_id,
-			  GDestroyNotify destroy_func)
+g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
+			       GQuark         key_id)
 {
-  register GDataset *dataset;
-  
   g_return_if_fail (dataset_location != NULL);
-  g_return_if_fail (key_id > 0);
   
-  if (g_dataset_location_ht)
+  if (key_id && g_dataset_location_ht)
     {
+      GDataset *dataset;
+  
       dataset = g_dataset_lookup (dataset_location);
       if (dataset)
-	{
-	  register GData *list;
-	  
-	  for (list = dataset->datalist; list; list = list->next)
-	    if (list->id == key_id)
-	      {
-		list->destroy_func = destroy_func;
-		break;
-	      }
-	}
+	g_data_set_internal (&dataset->datalist, key_id, NULL, (GDestroyNotify) 42, dataset);
     }
 }
 
 void
-g_datalist_id_set_destroy (GData	**datalist,
-			   GQuark         key_id,
-			   GDestroyNotify destroy_func)
+g_datalist_id_remove_no_notify (GData	**datalist,
+				GQuark    key_id)
 {
-  register GData *list;
-  
   g_return_if_fail (datalist != NULL);
-  g_return_if_fail (key_id > 0);
-  
-  for (list = *datalist; list; list = list->next)
-    if (list->id == key_id)
-      {
-	list->destroy_func = destroy_func;
-	break;
-      }
+
+  if (key_id)
+    g_data_set_internal (datalist, key_id, NULL, (GDestroyNotify) 42, NULL);
 }
 
 gpointer
