@@ -1613,9 +1613,6 @@ Any one-time initialization function must have its own unique <structname>GOnce<
 struct.
 </para>
 
-@status: the status of the function controled by this struct
-@retval: the return value of the function controled by this struct. This field will be
-         %NULL unless <literal>status == G_ONCE_STATUS_READY</literal>.
 @Since: 2.4
 
 <!-- ##### ENUM GOnceStatus ##### -->
