@@ -1,3 +1,14 @@
+2001-10-01  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gscanner.h (GScannerMsgFunc): make third argument
+	a gboolean.
+	(g_scanner_add_symbol, g_scanner_remove_symbol, 
+	g_scanner_foreach_symbol): mark these 
+	G_DISABLE_DEPRECATED. (#61469)
+
+	* glib/gscanner.c (g_scanner_msg_handler): make third 
+	argument gboolean. (#61468)
+
 2001-10-01  Sven Neumann  <sven@gimp.org>
 
 	* glib/gconvert.c
