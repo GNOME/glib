@@ -779,6 +779,7 @@ typedef void		(*GDataForeachFunc)	(GQuark		key_id,
 typedef void		(*GFunc)		(gpointer	data,
 						 gpointer	user_data);
 typedef guint		(*GHashFunc)		(gconstpointer	key);
+typedef void		(*GFreeFunc)		(gpointer	data);
 typedef void		(*GHFunc)		(gpointer	key,
 						 gpointer	value,
 						 gpointer	user_data);
@@ -986,6 +987,8 @@ gint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
 					 GHRFunc	 func,
 					 gpointer	 user_data);
 gint	    g_hash_table_size		(GHashTable	*hash_table);
+void	    g_hash_table_set_key_freefunc (GHashTable	*hash_table,
+					 GFreeFunc	*free_func);
 
 
 /* Caches

@@ -1,3 +1,15 @@
+Tue Nov 24 14:05:47 EST 1998	Michael K. Johnson <johnsonm@redhat.com>
+
+	* glib.h: added GFreeFunc and g_hash_table_set_key_freefunc()
+	prototype.
+	* ghash.c: added g_hash_table_set_key_freefunc() implementation.
+	Modified the prototypes of the functions g_hash_node_destroy() and 
+	g_hash_nodes_destroy(), and changed the functions that call them
+	to match the new definitions.
+	This changes no external interfaces, and should create no binary
+	or source incompatibilities.  It does add a member to the
+	GHashTable structure.
+
 Tue Nov 24 09:40:00 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed the GListAllocator type and its g_*_allocator_*()
