@@ -1738,8 +1738,8 @@ g_ascii_strcasecmp (const gchar *s1,
 
   while (*s1 && *s2)
     {
-      c1 = (gint)(guchar) g_ascii_tolower (*s1);
-      c2 = (gint)(guchar) g_ascii_tolower (*s2);
+      c1 = (gint)(guchar) TOLOWER (*s1);
+      c2 = (gint)(guchar) TOLOWER (*s2);
       if (c1 != c2)
 	return (c1 - c2);
       s1++; s2++;
@@ -1779,8 +1779,8 @@ g_ascii_strncasecmp (const gchar *s1,
   while (n && *s1 && *s2)
     {
       n -= 1;
-      c1 = (gint)(guchar) g_ascii_tolower (*s1);
-      c2 = (gint)(guchar) g_ascii_tolower (*s2);
+      c1 = (gint)(guchar) TOLOWER (*s1);
+      c2 = (gint)(guchar) TOLOWER (*s2);
       if (c1 != c2)
 	return (c1 - c2);
       s1++; s2++;
