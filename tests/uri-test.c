@@ -62,13 +62,10 @@ to_uri_tests[] = {
 #endif
   { "etc", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #ifndef G_PLATFORM_WIN32
-  /* g_filename_to_utf8 uses current code page on Win32, these tests assume that
-   * local filenames *are* in UTF-8.
-   */
-  { "/etc/\xE5\xE4\xF6", NULL, NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/etc/\xE5\xE4\xF6", NULL, "file:///etc/%E5%E4%F6" },
   { "/etc/\xC3\xB6\xC3\xA4\xC3\xA5", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5"},
 #endif
-  { "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5", "file://%C3%B6%C3%A4%C3%A5/etc"},
+  { "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc", "\xE5\xE4\xF6", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25"},
   { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
@@ -101,7 +98,7 @@ to_uri_tests[] = {
   { "/", "/", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "@:", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "\x80\xFF", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
-  { "/", "\xC3\x80\xC3\xBF", "file://%C3%80%C3%BF/"},
+  { "/", "\xC3\x80\xC3\xBF", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
 };
 
 
@@ -129,7 +126,7 @@ from_uri_tests[] = {
 #endif
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
-  { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5"},
+  { "file://%C3%B6%C3%A4%C3%A5/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://localhost/\xE5\xE4\xF6", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://\xE5\xE4\xF6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -162,7 +159,7 @@ from_uri_tests[] = {
   { "file://-_.!~*'()/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://\"<>[\\]^`{|}\x7F/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://;?&=+$,/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://%C3%80%C3%BF/", "/", "\xC3\x80\xC3\xBF"},
+  { "file://%C3%80%C3%BF/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://@/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://:/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://#/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
