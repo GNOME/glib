@@ -1,3 +1,12 @@
+2004-03-01  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Add g_slist_remove_all back for ABI
+	compatibility. That entry point actually is in the glib DLL, but
+	it was at some time many years ago by mistake added to
+	gobject.def. Thus there presumably are executables out there that
+	expect it to be exported from the gobject DLL. We don't want to
+	break those. (#134813, J. Ali Harlow)
+
 Fri Feb 27 01:49:22 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib-mkenums.in: Support parsing of intializers containing

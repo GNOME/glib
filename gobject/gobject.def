@@ -173,6 +173,7 @@ EXPORTS
 	g_signal_stop_emission
 	g_signal_stop_emission_by_name
 	g_signal_type_cclosure_new
+	g_slist_remove_all
 	g_source_set_closure
 	g_strdup_value_contents
 	g_strv_get_type
