@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-04-05 11:38+0200\n"
-"PO-Revision-Date: 2001-04-05 13:03+0200\n"
+"POT-Creation-Date: 2001-04-05 22:21+0200\n"
+"PO-Revision-Date: 2001-04-05 22:26+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -314,7 +314,7 @@ msgstr "Ensamt citationstecken på kommandoraden eller annan skalciterad text"
 #: gshell.c:519
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "Texten slutade efter ett \"\"-tecken (texten var \"%s\")."
+msgstr "Texten slutade efter ett ''-tecken (texten var \"%s\")."
 
 #: gshell.c:526
 #, c-format

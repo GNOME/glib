@@ -1,5 +1,10 @@
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
+	* sv.po: Fixed another message in the Swedish translation. Thanks to
+	Jörgen Tegnér <teg@post.utfors.se>.
+
+2001-04-05  Christian Rose  <menthos@menthos.com>
+
 	* sv.po: Fixed Swedish translation, thanks to Veronica Loell
 	<info@nakawe.se> and Martin Norbäck <d95mback@dtek.chalmers.se>.
 
