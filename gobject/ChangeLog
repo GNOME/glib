@@ -1,3 +1,8 @@
+2003-09-15  Matthias Clasen  <maclas@gmx.de>
+
+	* glib-genmarshal.c (complete_out_arg): Don't generate code 
+	using deprecated APIs.  (#122292, Christian Persch)
+
 Fri Sep 12 16:31:40 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.[ch]: Add g_signal_accumulator_true_handled(), to
