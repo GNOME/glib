@@ -1,3 +1,16 @@
+2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Determine the suffix of the shared librarries for
+	this system. This is done analogous to
+	ltconfig.sh. G_MODULE_SUFFIX in glibconfig.h is set to either
+	"sl", "dll", or (most often) "so".
+
+	* tests/Makefile.am, tests/module-test.c,
+	tests/libmoduletestplugin_a.c, tests/libmoduletestplugin_b.c:
+	Added new testcase for gmodule. This is mostly copied from
+	gmodule/testgmodule.c, but unlike that is is quiet. (Why BTW are
+	some tests that verbose, not to say loquacious...)
+
 2000-12-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* grand.c: Updated G_RAND_DOUBLE_TRANSFORM to be more

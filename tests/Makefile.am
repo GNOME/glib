@@ -20,6 +20,7 @@ test_programs = \
 	hash-test	\
 	list-test	\
 	mainloop-test	\
+	module-test	\
 	node-test	\
 	queue-test	\
 	rand-test	\
@@ -45,6 +46,7 @@ TESTS_ENVIRONMENT = srcdir=$(srcdir)
 
 progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
 thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
+module_LDADD = $(progs_LDADD) $(top_builddir)/gmodule/libgmodule-1.3.la @G_MODULE_LIBS@
 
 array_test_LDADD = $(progs_LDADD)
 date_test_LDADD = $(progs_LDADD)
@@ -54,6 +56,8 @@ hash_test_LDADD = $(progs_LDADD)
 list_test_LDADD = $(progs_LDADD)
 mainloop_test_LDADD = $(thread_LDADD)
 markup_test_LDADD = $(progs_LDADD)
+module_test_LDADD = $(module_LDADD)
+module_test_LDFLAGS = @G_MODULE_LDFLAGS@
 node_test_LDADD = $(progs_LDADD)
 queue_test_LDADD = $(progs_LDADD)
 rand_test_LDADD = $(progs_LDADD)
@@ -67,6 +71,20 @@ thread_test_LDADD = $(thread_LDADD)
 threadpool_test_LDADD = $(thread_LDADD)
 tree_test_LDADD = $(progs_LDADD)
 type_test_LDADD = $(progs_LDADD)
+
+lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
+
+# Prevent those libs from being installed
+install-libLTLIBRARIES:
+	:
+
+libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
+libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
+libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ 
+
+libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
+libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
+libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@  
 
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

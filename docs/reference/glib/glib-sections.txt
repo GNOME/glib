@@ -1094,6 +1094,7 @@ g_module_error
 <SUBSECTION>
 GModuleCheckInit
 GModuleUnload
+G_MODULE_SUFFIX
 G_MODULE_EXPORT
 G_MODULE_IMPORT
 </SECTION>

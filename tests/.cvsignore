@@ -6,6 +6,8 @@ Makefile.in
 makefile.msc
 makefile.mingw
 _libs
+libmoduletestplugin_a.la
+libmoduletestplugin_b.la
 array-test
 date-test
 dirname-test
@@ -13,6 +15,7 @@ hash-test
 list-test
 mainloop-test
 markup-test
+module-test
 node-test
 queue-test
 rand-test

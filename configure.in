@@ -680,6 +680,21 @@ dnl *** done, have e got an implementation?
 if test -z "$G_MODULE_IMPL"; then
 	G_MODULE_IMPL=0
 fi
+
+AC_MSG_CHECKING(for the suffix of shared libraries)
+case "$host_os" in
+  hpux9* | hpux10* | hpux11*)  # taken from ltconfig
+    glib_gmodule_suffix='sl'
+    ;;
+  cygwin* | mingw*)
+    glib_gmodule_suffix='dll'
+    ;;
+  *)
+    glib_gmodule_suffix='so'    
+    ;;
+esac
+AC_MSG_RESULT(.$glib_gmodule_suffix)
+ 
 AC_SUBST(G_MODULE_IMPL)
 AC_SUBST(G_MODULE_LIBS)
 AC_SUBST(G_MODULE_LIBS_EXTRA)
@@ -1499,6 +1514,8 @@ _______EOF
 
 	cat >>$outfile <<_______EOF
 
+#define G_MODULE_SUFFIX "$g_module_suffix"
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
@@ -1708,6 +1725,8 @@ g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
+
+g_module_suffix="$glib_gmodule_suffix"
 
 case $host in
   *-*-beos*)

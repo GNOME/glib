@@ -1,3 +1,23 @@
+2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule.c: Make g_module_open more tolerant wrt to the module
+	name. First it tries to open the module as named, if that fails,
+	it checks, whether it is a libtool archive and parses it, if that
+	fails it appends the systems shared library suffix
+	(i.e. ".so") (if not already found) and tries again and if that
+	fails it tries to append the ".la" libtool suffix (if not already
+	found) and parses it.
+
+	* gmodule.c: Lock recursive mutex during most module functions for
+	safety.
+
+	* gmodule-dl.c: Return an error from _g_module_symbol only, if
+	dlerror says so. All other functions return an error as well, if
+	dlerror returns NULL.
+
+	* testgmodule.c: Thanks to the above change the #ifdefs have
+	vanished.
+
 2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (BUILT_EXTRA_DIST): New variable.

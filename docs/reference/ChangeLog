@@ -1,3 +1,9 @@
+2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt: Added G_MODULE_SUFFIX.
+
+	* glib/tmpl/modules.sgml: Updated.
+
 2000-12-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/glib-sections.txt: Added g_rand_boolean and

@@ -91,8 +91,20 @@ prefix and suffix. This should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_module_open ##### -->
 <para>
-Opens a module.
-If the module has already been opened, its reference count is incremented.
+Opens a module. If the module has already been opened, its reference
+count is incremented. 
+</para>
+
+<para>
+First of all g_module_open() tries to open @file_name as a module. If
+that fails and @file_name has the ".la"-suffix (and is a libtool
+archive) it tries to open the corresponding module. If that fails and
+it doesn't have the proper module suffix for that plaform
+(#G_MODULE_SUFFIX,) this suffix will be appended and the coresponding
+module will be opended. If that fails and @file_name doesn't have the
+".la"-suffix, this suffix is appended and g_module_open() tries to
+open the corresponding module. If eventually that fails as well, NULL
+is returned.
 </para>
 
 @file_name: the name of the file containing the module.
@@ -181,6 +193,15 @@ It is passed the #GModule structure.
 </para>
 
 @module: the module about to be unloaded.
+
+
+<!-- ##### MACRO G_MODULE_SUFFIX ##### -->
+<para>
+Expands to the proper shared library suffix for the current platform
+without the leading dot. For the most Unices and Linux this is "so",
+for some HPUX versions this is "sl" and for Windows this is "dll".
+</para>
+
 
 
 <!-- ##### MACRO G_MODULE_EXPORT ##### -->
