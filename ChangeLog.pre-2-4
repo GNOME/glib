@@ -10,6 +10,8 @@
 	relative path in a subdirectory, don't do any path search.
 	(g_get_any_init): (Win32) Also look for the USERPROFILE env var
 	indicating the home directory equivalent.
+	(g_find_program_in_path): (Win32): Use MAXPATHLEN, not PATH_MAX
+	which isn't defined with MSVC.
 
 	* testglib.c (main): Test g_find_program_in_path() on Win32 by
 	looking for more.com and regedit.

@@ -270,7 +270,7 @@ g_find_program_in_path (const gchar *program)
 #else
   {
     gchar *tmp;
-    gchar moddir[PATH_MAX], sysdir[PATH_MAX], windir[PATH_MAX];
+    gchar moddir[MAXPATHLEN], sysdir[MAXPATHLEN], windir[MAXPATHLEN];
 
     GetModuleFileName (NULL, moddir, sizeof (moddir));
     tmp = g_path_get_dirname (moddir);
