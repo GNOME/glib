@@ -1,3 +1,7 @@
+2003-06-04  Abel Cheung  <maddog@linux.org.hk>
+
+	* ta.po: Fix broken encoding.
+
 2003-05-27  Abel Cheung  <maddog@linux.org.hk>
 
 	* zh_TW.po: Updated traditional Chinese translation.
