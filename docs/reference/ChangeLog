@@ -1,3 +1,9 @@
+Tue Oct 21 23:29:54 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtypemodule.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: 
+	* gobject/tmpl/gtype.sgml: Additions.
+
 Tue Oct 21 23:09:15 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gparamspec.sgml: 

@@ -15,24 +15,28 @@ Enumeration and flags types
 
 <!-- ##### STRUCT GEnumClass ##### -->
 <para>
-
+The class of an enumeration type holds information about its 
+possible values.
 </para>
 
 @g_type_class: 
-@minimum: 
-@maximum: 
-@n_values: 
-@values: 
+@minimum: the smallest possible value.
+@maximum: the largest possible value.
+@n_values: the number of possible values.
+@values: an array of #GEnumValue structs describing the 
+individual values.
 
 <!-- ##### STRUCT GFlagsClass ##### -->
 <para>
-
+The class of a flags type holds information about its 
+possible values.
 </para>
 
 @g_type_class: 
-@mask: 
-@n_values: 
-@values: 
+@mask: a mask covering all possible values.
+@n_values: the number of possible values.
+@values: an array of #GFlagsValue structs describing the 
+individual values.
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE ##### -->
 <para>

@@ -181,7 +181,7 @@ An opaque structure used as the base of all type instances.
 
 <!-- ##### STRUCT GTypeClass ##### -->
 <para>
-
+An opaque structure used as the base of all classes.
 </para>
 
 
@@ -850,6 +850,7 @@ have been installed.
  g_type_default_interface_unref() when you are done using
  the interface.
 @Since: 2.4
+
 
 <!-- ##### FUNCTION g_type_default_interface_peek ##### -->
 <para>
