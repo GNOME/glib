@@ -7,7 +7,7 @@ DOC_MODULE=glib
 DOC_MAIN_SGML_FILE=glib-docs.sgml
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=../../..
+DOC_SOURCE_DIR=../../../glib
 
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
@@ -19,8 +19,8 @@ MKDB_OPTIONS=
 FIXXREF_OPTIONS=
 
 # Used for dependencies
-HFILE_GLOB=$(top_srcdir)/*.h $(top_srcdir)/gmodule/*.h
-CFILE_GLOB=$(top_srcdir)/*.c $(top_srcdir)/gmodule/*.c
+HFILE_GLOB=$(top_srcdir)/glib/*.h $(top_srcdir)/gmodule/*.h
+CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Headers to ignore
 IGNORE_HFILES=			\

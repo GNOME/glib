@@ -20,8 +20,8 @@
 #ifndef __G_MAIN_H__
 #define __G_MAIN_H__
 
-#include <gslist.h>
-#include <gthread.h>
+#include <glib/gslist.h>
+#include <glib/gthread.h>
 
 G_BEGIN_DECLS
 

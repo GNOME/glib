@@ -27,7 +27,7 @@
 #ifndef __G_SCANNER_H__
 #define __G_SCANNER_H__
 
-#include <ghash.h>
+#include <glib/ghash.h>
 
 G_BEGIN_DECLS
 

@@ -27,7 +27,7 @@
 #ifndef __G_UTILS_H__
 #define __G_UTILS_H__
 
-#include <gtypes.h>
+#include <glib/gtypes.h>
 #include <stdarg.h>
 
 G_BEGIN_DECLS

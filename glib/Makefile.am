@@ -1,45 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.4
-
-SUBDIRS = . m4macros gobject gmodule gthread docs tests build
-
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
-	ChangeLog.pre-1-2	\
-	glib.spec.in		\
-	NEWS.pre-1-3		\
-	acglib.m4		\
-	sanity_check		\
-	README.win32		\
-	TODO.xml		\
-	glib.def		\
-	makefile.msc.in		\
-	makefile.mingw.in	\
-	glibconfig.h.win32.in	\
-	config.h.win32.in	\
-	build-dll		\
-	glib.rc.in		\
-	glib-2.0.pc.in 		\
-	gobject-2.0.pc.in 	\
-	gmodule-2.0.pc.in	\
-	gthread-2.0.pc.in	\
-	glib-2.0-uninstalled.pc.in 	\
-	gobject-2.0-uninstalled.pc.in 	\
-	gmodule-2.0-uninstalled.pc.in	\
-	gthread-2.0-uninstalled.pc.in	\
 	gen-unicode-tables.pl
-
-# These may be in the builddir too
-BUILT_EXTRA_DIST = 		\
-	makefile.msc		\
-	makefile.mingw		\
-	glibconfig.h.win32	\
-	config.h.win32		\
-	glib.rc			\
-	glib.spec
 
 lib_LTLIBRARIES = libglib-1.3.la
 
@@ -97,6 +62,11 @@ EXTRA_libglib_1_3_la_SOURCES = \
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
+	glib-object.h	\
+	glib.h
+
+glibsubincludedir=$(includedir)/glib-2.0/glib
+glibsubinclude_HEADERS =   \
 	galloca.h	\
 	garray.h	\
 	gasyncqueue.h	\
@@ -111,8 +81,6 @@ glibinclude_HEADERS =   \
 	ghash.h		\
 	ghook.h		\
 	giochannel.h	\
-	glib.h 		\
-	glib-object.h	\
 	glist.h		\
 	gmacros.h	\
 	gmain.h		\
@@ -142,24 +110,12 @@ glibinclude_HEADERS =   \
 	gutils.h	\
 	gwin32.h
 
-configexecincludedir = $(libdir)/glib-2.0/include
-#configexecinclude_DATA = glibconfig.h
-
-install-exec-local: glibconfig.h
-	$(mkinstalldirs) $(DESTDIR)$(configexecincludedir)
-	file=$(DESTDIR)$(configexecincludedir)/glibconfig.h; \
-	if test -r $$file && cmp -s glibconfig.h $$file; then :; \
-	else $(INSTALL_DATA) glibconfig.h $$file; fi
-
-CONFIGURE_DEPENDENCIES = acglib.m4
-
-BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
-glibconfig.h: stamp-gc-h
-	@if test -f glibconfig.h; then :; \
-	else rm -f stamp-gc-h; $(MAKE) stamp-gc-h; fi
-stamp-gc-h: config.status
-	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
-	echo timestamp > stamp-gc-h
+install-data-local:
+	@if test -f $(glibincludedir)/glist.h ; then					\
+	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
+	  echo "*** contents of this directory and type 'make install' again." ;	\
+	  false ;									\
+        fi
 
 libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@
 libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ 
@@ -181,63 +137,4 @@ if OS_WIN32
 bin_PROGRAMS = gspawn-win32-helper
 gspawn_win32_helper_LDADD = libglib-1.3.la
 endif
-if ENABLE_TIMELOOP
-timeloop = timeloop
-endif
-noinst_PROGRAMS = testglib testgdate testgdateparser $(timeloop)
-testglib_LDADD = libglib-1.3.la
-testgdate_LDADD = libglib-1.3.la
-testgdateparser_LDADD = libglib-1.3.la
-if ENABLE_TIMELOOP
-timeloop_LDADD = libglib-1.3.la
-endif
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gthread-2.0.pc
-
-glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/makefile.mingw.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-bin_SCRIPTS=glib-config-2.0
-BUILT_SOURCES=glib-config-2.0
-glib-config-2.0: glib-config-2.0.in
-
-.PHONY: files release sanity snapshot
-
-files:
-	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
-	  echo $$p; \
-	done
-
-release:
-	rm -rf .deps */.deps
-	cd docs && make glib.html
-	$(MAKE) distcheck
-
-sanity:
-	./sanity_check $(VERSION)
-
-snapshot:
-	$(MAKE) dist distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
-
-snapcheck:
-	$(MAKE) distcheck distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
-
-dist-hook: $(BUILT_EXTRA_DIST)
-	cd $(top_builddir) && CONFIG_FILES="INSTALL README" CONFIG_HEADERS= $(SHELL) ./config.status
-	files='$(BUILT_EXTRA_DIST) INSTALL README'; \
-	for f in $$files; do \
-	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
-	  rm -f $(distdir)/$$f && cp $$d/$$f $(distdir) || exit 1; done

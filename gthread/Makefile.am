@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gthread \
 	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@ \
 	@GLIB_DEBUG_FLAGS@
 
@@ -19,7 +19,7 @@ BUILT_EXTRA_DIST = \
 		makefile.msc		\
 		gthread.rc
 
-libglib = $(top_builddir)/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-1.3.la
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 

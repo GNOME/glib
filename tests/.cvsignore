@@ -39,3 +39,8 @@ tree-test
 type-test
 unicode-encoding
 gio-test
+testgdate
+testgdateparser
+testglib
+timeloop
+timeloop-basic

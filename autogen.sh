@@ -8,7 +8,7 @@ ORIGDIR=`pwd`
 cd $srcdir
 PROJECT=GLib
 TEST_TYPE=-f
-FILE=glib.h
+FILE=glib/glib.h
 
 DIE=0
 

@@ -3,6 +3,7 @@ Makefile.in
 gobject-decl.txt
 gobject-unused.txt
 gobject-decl-list.txt
+gobject-undocumented.txt
 html
 sgml
 *.stamp

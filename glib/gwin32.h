@@ -27,7 +27,7 @@
 #ifndef __G_WIN32_H__
 #define __G_WIN32_H__
 
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 #ifdef G_PLATFORM_WIN32
 

@@ -28,7 +28,7 @@
 #define __G_MESSAGES_H__
 
 #include <stdarg.h>
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule \
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule \
 	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST =	\
@@ -28,7 +28,7 @@ glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS = \
 		gmodule.h
 
-libglib = $(top_builddir)/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-1.3.la
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 

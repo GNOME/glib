@@ -27,8 +27,8 @@
 #ifndef __G_THREAD_H__
 #define __G_THREAD_H__
 
-#include <gerror.h>
-#include <gtypes.h>
+#include <glib/gerror.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

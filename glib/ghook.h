@@ -27,7 +27,7 @@
 #ifndef __G_HOOK_H__
 #define __G_HOOK_H__
 
-#include <gmem.h>
+#include <glib/gmem.h>
 
 G_BEGIN_DECLS
 

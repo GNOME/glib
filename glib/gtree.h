@@ -27,7 +27,7 @@
 #ifndef __G_TREE_H__
 #define __G_TREE_H__
 
-#include <gnode.h>
+#include <glib/gnode.h>
 
 G_BEGIN_DECLS
 

@@ -27,7 +27,7 @@
 #ifndef __G_COMPLETION_H__
 #define __G_COMPLETION_H__
 
-#include <glist.h>
+#include <glib/glist.h>
 
 G_BEGIN_DECLS
 

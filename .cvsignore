@@ -1,10 +1,3 @@
-*.lo
-*.obj
-*.lib
-*.dll
-*.exe
-.deps
-.libs
 Makefile
 Makefile.in
 _libs
@@ -20,7 +13,6 @@ glib.spec
 glibconfig-sysdefs.h
 glibconfig.h
 glibconfig.h.win32
-libglib-1.3.la
 libtool
 makefile.cygwin
 makefile.mingw
@@ -29,11 +21,6 @@ so_locations
 stamp-gc-h
 stamp-h
 stamp-h.in
-testgdate
-testgdateparser
-testglib
-timeloop
-timeloop-basic
 annotations
 logs
 glib.rc

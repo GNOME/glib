@@ -27,7 +27,7 @@
 #ifndef __G_TIMER_H__
 #define __G_TIMER_H__
 
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

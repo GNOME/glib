@@ -1,8 +1,8 @@
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
 
 EFENCE=
 
-libglib = $(top_builddir)/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-1.3.la
 libgthread = $(top_builddir)/gthread/libgthread-1.3.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-1.3.la
 libgobject = $(top_builddir)/gobject/libgobject-1.3.la
@@ -29,6 +29,17 @@ cxx_test_LDADD = $(progs_LDADD)
 cxx_test_SOURCES = cxx-test.C
 else
 CXX_TEST =
+endif
+
+if ENABLE_TIMELOOP
+timeloop = timeloop
+endif
+noinst_PROGRAMS = testglib testgdate testgdateparser $(timeloop)
+testglib_LDADD = $(libglib)
+testgdate_LDADD = $(libglib)
+testgdateparser_LDADD = $(libglib)
+if ENABLE_TIMELOOP
+timeloop_LDADD = $(libglib)
 endif
 
 test_programs = \

@@ -1,3 +1,13 @@
+Tue Jun 26 11:43:46 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in Makefile.am *.[ch] glib/*.[ch] glib/Makefile.am:
+	Move glib library into a subdirectory, make all GLib include
+	files include as <glib/glist.h>
+
+	* tests/testglib.c tests/testgdate.c tests/testgdateparser.c
+	  tests/timeloop.c tests/timeloop-basic.c: Move all tests into
+	the tests/ subdirectory.
+
 Sat Jun 23 17:34:38 2001  Tim Janik  <timj@gtk.org>
 
 	* gmessages.c (g_logv): use G_BREAKPOINT() instead of raise(5).

@@ -3,6 +3,7 @@ Makefile.in
 glib-decl-list.txt
 glib-decl.txt
 glib-unused.txt
+glib-undocumented.txt
 html
 sgml
 *.stamp

@@ -6,12 +6,13 @@
 INCLUDES = @STRIP_BEGIN@ \
 	-DG_LOG_DOMAIN=g_log_domain_gruntime	\
 	-I$(top_srcdir)				\
+	-I$(top_srcdir)/glib			\
 	-I$(top_builddir)			\
 	@GLIB_DEBUG_FLAGS@			\
 	-DG_DISABLE_CONST_RETURNS		\
 @STRIP_END@
 
-libglib = $(top_builddir)/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-1.3.la
 
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject-1.3.la

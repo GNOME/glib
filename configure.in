@@ -7,7 +7,7 @@ builtin(include, acglib.m4)dnl
 AC_PREREQ(2.13)
 
 # Process this file with autoconf to produce a configure script.
-AC_INIT(glist.c)
+AC_INIT(glib/glib.h)
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
@@ -1535,7 +1535,7 @@ case "$CONFIG_OTHER" in
 #ifndef __G_LIBCONFIG_H__
 #define __G_LIBCONFIG_H__
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 
 _______EOF
 
@@ -2039,6 +2039,7 @@ glib.spec
 Makefile
 build/Makefile
 build/win32/Makefile
+glib/Makefile
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile

@@ -28,7 +28,7 @@
 #ifndef __G_QSORT_H__
 #define __G_QSORT_H__
 
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

@@ -28,7 +28,7 @@
 #define __G_CONVERT_H__
 
 #include <stddef.h>      /* For size_t */
-#include <gerror.h>
+#include <glib/gerror.h>
 
 G_BEGIN_DECLS
 

@@ -27,7 +27,7 @@
 #ifndef __G_MEM_H__
 #define __G_MEM_H__
 
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

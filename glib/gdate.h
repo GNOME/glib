@@ -27,7 +27,7 @@
 #ifndef __G_DATE_H__
 #define __G_DATE_H__
 
-#include <gquark.h>
+#include <glib/gquark.h>
 
 G_BEGIN_DECLS
 

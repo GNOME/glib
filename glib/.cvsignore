@@ -1,0 +1,10 @@
+Makefile
+Makefile.in
+libglib-1.3.la
+*.lo
+*.obj
+*.lib
+*.dll
+*.exe
+.deps
+.libs
