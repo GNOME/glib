@@ -3441,7 +3441,7 @@ g_child_watch_check (GSource  *source)
 
 #else /* G_OS_WIN32 */
 
-static void
+static gboolean
 check_for_child_exited (GSource *source)
 {
   GChildWatchSource *child_watch_source;
@@ -3451,6 +3451,9 @@ check_for_child_exited (GSource *source)
   count = child_watch_count;
 
   child_watch_source = (GChildWatchSource *) source;
+
+  if (child_watch_source->child_exited)
+    return TRUE;
 
   if (child_watch_source->count < count)
     {
@@ -3463,6 +3466,8 @@ check_for_child_exited (GSource *source)
 	}
       child_watch_source->count = count;
     }
+
+  return child_watch_source->child_exited;
 }
 
 static gboolean
@@ -3474,9 +3479,7 @@ g_child_watch_prepare (GSource *source,
 
   child_watch_source = (GChildWatchSource *) source;
 
-  check_for_child_exited (source);
-
-  return child_watch_source->child_exited;
+  return check_for_child_exited (source);
 }
 
 
@@ -3487,7 +3490,7 @@ g_child_watch_check (GSource  *source)
 
   child_watch_source = (GChildWatchSource *) source;
 
-  return (child_watch_source->count < child_watch_count);
+  return check_for_child_exited (source);
 }
 
 #endif /* G_OS_WIN32 */

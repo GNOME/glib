@@ -1,3 +1,11 @@
+Mon Mar  1 15:49:09 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (check_for_child_exited): Don't
+	call waitpid() on a source that has already exited.
+
+	* glib/gmain.c (g_child_watch_check): Return TRUE
+	only if the child actually exited.
+
 Mon Mar  1 15:39:57 2004  Owen Taylor  <otaylor@redhat.com>
 
        Patch from J. Ali Harlow
