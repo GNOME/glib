@@ -129,7 +129,7 @@ gchar *
 g_utf8_find_prev_char (const char *str,
 		       const char *p)
 {
-  for (--p; p > str; --p)
+  for (--p; p >= str; --p)
     {
       if ((*p & 0xc0) != 0x80)
 	return (gchar *)p;

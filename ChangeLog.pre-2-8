@@ -1,3 +1,8 @@
+2001-08-01  Christopher James Lahey  <clahey@ximian.com>
+
+	* glib/gutf8.c (g_utf8_find_prev_char): Made g_utf8_find_prev_char
+	able to return the first character of a string.
+
 2001-07-31  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.h: Committed this file, which is where
