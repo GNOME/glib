@@ -205,10 +205,41 @@ g_usleep (gulong microseconds)
 #ifdef G_OS_WIN32
   Sleep (microseconds / 1000);
 #else
-  struct timeval tv;
-  tv.tv_sec = microseconds / G_MICROSEC;
-  tv.tv_usec = microseconds % G_MICROSEC;
-  select(0, NULL, NULL, NULL, &tv);
+  if (g_thread_supported ())
+    {
+      static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
+      static GCond* cond = NULL;
+      GTimeVal end_time;
+      
+      g_get_current_time (&end_time);
+      
+      end_time.tv_sec += microseconds / G_MICROSEC;
+      end_time.tv_usec += microseconds % G_MICROSEC;
+      
+      if (end_time.tv_usec >= G_MICROSEC)
+	{
+	  end_time.tv_usec -= G_MICROSEC;
+	  end_time.tv_sec += 1;
+	}
+      
+      g_static_mutex_lock (&mutex);
+      
+      if (!cond)
+	cond = g_cond_new ();
+      
+      while (g_cond_timed_wait (cond, g_static_mutex_get_mutex (&mutex), 
+				&end_time))
+	/* do nothing */;
+      
+      g_static_mutex_unlock (&mutex);
+    }
+  else
+    {
+      struct timeval tv;
+      tv.tv_sec = microseconds / G_MICROSEC;
+      tv.tv_usec = microseconds % G_MICROSEC;
+      select(0, NULL, NULL, NULL, &tv);
+    }
 #endif
 }
 

@@ -1,3 +1,17 @@
+2000-03-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: After finding the right thread library (containing
+	e.g. pthread_create) we now search for the right realtime library
+	(containing e.g. sched_get_priority_max). Makes the output of the
+	thread related libraries correct. 
+
+	* gtimer.c (g_usleep): The current implementation of g_usleep
+	(simply calling select) doesn't work reliable for multi-threaded
+	programs on some platforms (bad omen for the main loop....), so I
+	changed the implementation for thread-using programs to wait for a
+	GCond for the specified amount of time (NB: sleep and usleep are
+	not MT-safe in general, because they often use signals).
+
 Wed Mar 22 16:49:57 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gmem.c (g_mem_chunk_area_compare): Fix indentation.

@@ -733,8 +733,6 @@ case $have_threads in
 		G_THREAD_LIBS=error
 		glib_save_LIBS="$LIBS"
 		for thread_lib in "" pthread pthreads c_r thread dce; do
-			# This is not AC_CHECK_LIB to also work with function
-			# name mangling in header files.
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
 				IN=""
@@ -760,6 +758,31 @@ case $have_threads in
 				}],
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"
+				break],
+				[AC_MSG_RESULT(no)])
+		done
+		for thread_lib in "" rt; do
+			if test x"$thread_lib" = x; then
+				add_thread_lib=""
+				IN=""
+			else
+				add_thread_lib="-l$thread_lib"
+				IN=" in -l$thread_lib"
+			fi
+			LIBS="$glib_save_LIBS $add_thread_lib"
+			
+			AC_MSG_CHECKING(for sched_get_priority_min$IN)
+			AC_TRY_RUN([#include <sched.h>
+				#include <errno.h>
+				int main() {
+    				errno = 0;
+                                return sched_get_priority_min(SCHED_OTHER)==-1
+					&& errno != 0;
+				}],
+				[AC_MSG_RESULT(yes)
+				G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
+				posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
+		     		posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
 				break],
 				[AC_MSG_RESULT(no)])
 		done
@@ -884,8 +907,8 @@ if test x"$enable_threads" = xyes; then
 			# The signature for the POSIX version is:
 			# int getpwuid_r(uid_t, struct passwd *, char *, size_t, struct passwd **)
 			AC_TRY_COMPILE([#include <pwd.h>
-                                        #include <sys/types.h>
-                                        #include <stdlib.h>],
+				#include <sys/types.h>
+				#include <stdlib.h>],
 				[getpwuid_r((uid_t)0, NULL, NULL, (size_t)0, NULL);],
 				[AC_DEFINE(HAVE_GETPWUID_R_POSIX)
 				AC_MSG_RESULT(yes)],
@@ -907,26 +930,7 @@ if test x"$enable_threads" = xyes; then
 			[AC_MSG_RESULT(yes)
 			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
 			[AC_MSG_RESULT(no)])
-		# If sched_get_priority_min(SCHED_OTHER) returns something 
-		# negative, we ignore it.
 		AC_MSG_CHECKING(for minimal/maximal thread priority)
-		AC_TRY_RUN([#include <pthread.h>
-		     int main () 
-		     { return sched_get_priority_min(SCHED_OTHER) == -1;}],
-		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"],
-		     [posix_priority_min=none])
-		# On some platforms we need to link to -lrt to use the 
-		# sched_* functions
-		LIBS="$LIBS -lrt"
-		AC_TRY_RUN([#include <pthread.h>
-		     int main () 
-		     { return sched_get_priority_min(SCHED_OTHER) == -1;}],
-		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
-		     G_THREAD_LIBS="$G_THREAD_LIBS -lrt"],
-		     [posix_priority_min=none])
-		LIBS="$glib_save_LIBS $G_THREAD_LIBS"
 		if test x"$posix_priority_min" = xnone; then
 			AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
 				PX_PRIO_MIN],,[
@@ -939,7 +943,7 @@ if test x"$enable_threads" = xyes; then
 				posix_priority_min=PRI_OTHER_MIN	
 				posix_priority_max=PRI_OTHER_MAX])
 		fi
-		if test x"$posix_priority_min" = xnone; then
+		if test x"$posix_priority_min" = x; then
 			AC_MSG_RESULT(none found)
 			AC_MSG_WARN($POSIX_NO_PRIORITIES)
 	                posix_priority_min=-1
