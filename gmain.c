@@ -629,26 +629,15 @@ g_get_current_time (GTimeVal *result)
   result->tv_sec = r.tv_sec;
   result->tv_usec = r.tv_usec;
 #else
-  /* Avoid calling time() except for the first time.
-   * GetTickCount() should be pretty fast and low-level?
-   * I could also use ftime() but it seems unnecessarily overheady.
-   */
-  static DWORD start_tick = 0;
-  static time_t start_time;
-  DWORD tick;
+  FILETIME filetime;
+  gint64 t;
 
-  g_return_if_fail (result != NULL);
- 
-  if (start_tick == 0)
-    {
-      start_tick = GetTickCount ();
-      time (&start_time);
-    }
+  GetSystemTimeAsFileTime (&filetime);
+  t = ((gint64) filetime.dwLowDateTime) +
+    ((gint64) filetime.dwHighDateTime) * G_GINT64_CONSTANT (0x100000000);
 
-  tick = GetTickCount ();
-
-  result->tv_sec = (tick - start_tick) / 1000 + start_time;
-  result->tv_usec = ((tick - start_tick) % 1000) * 1000;
+  result->tv_sec = (t - G_GINT64_CONSTANT (0x19db1ded53e8000)) / 10000000;
+  result->tv_usec = (t % 10000000) / 10;
 #endif
 }
 

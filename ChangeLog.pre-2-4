@@ -1,3 +1,8 @@
+2000-08-31  Tor Lillqvist  <tml@iki.fi>
+
+	* gmain.c (g_get_current_time): (Win32): Simplify, use
+	GetSystemTimeAsFileTime().
+
 2000-08-27  Tor Lillqvist  <tml@iki.fi>
 
 	* giowin32.c (g_io_channel_win32_poll): New function, otherwise
