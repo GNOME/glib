@@ -1,3 +1,8 @@
+2001-11-23  Hans Breuer  <hans@breuer.org>
+
+	* gobject.def : updated externals
+
+
 Mon Nov 19 14:35:56 2001  Owen Taylor  <otaylor@redhat.com>
  
  	* *.h: Improve the detection of invalid includes by moving

@@ -29,6 +29,7 @@ EXPORTS
 	g_closure_add_finalize_notifier
 	g_closure_add_invalidate_notifier
 	g_closure_add_marshal_guards
+	g_closure_get_type
 	g_closure_invalidate
 	g_closure_invoke
 	g_closure_new_object
@@ -50,6 +51,7 @@ EXPORTS
 	g_flags_get_value_by_name
 	g_flags_get_value_by_nick
 	g_flags_register_static
+	g_gstring_get_type
 	g_io_channel_get_type
 	g_io_condition_get_type
 	g_object_add_weak_pointer
@@ -187,7 +189,8 @@ EXPORTS
 	g_type_depth
 	g_type_free_instance
 	g_type_from_name
-	g_type_fundamental_last
+	g_type_fundamental
+	g_type_fundamental_next
 	g_type_get_plugin
 	g_type_get_qdata
 	g_type_init
@@ -221,12 +224,14 @@ EXPORTS
 	g_type_register_static
 	g_type_remove_class_cache_func
 	g_type_set_qdata
+	g_type_test_flags
 	g_type_value_table_peek
 	g_unichar_validate
 	g_value_array_append
 	g_value_array_copy
 	g_value_array_free
 	g_value_array_get_nth
+	g_value_array_get_type
 	g_value_array_insert
 	g_value_array_new
 	g_value_array_prepend
@@ -253,6 +258,7 @@ EXPORTS
 	g_value_get_param
 	g_value_get_pointer
 	g_value_get_string
+	g_value_get_type
 	g_value_get_uchar
 	g_value_get_uint
 	g_value_get_uint64
