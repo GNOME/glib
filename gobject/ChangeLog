@@ -1,3 +1,7 @@
+Wed Jan  9 05:23:27 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject.h (G_OBJECT_WARN_INVALID_PROPERTY_ID): cosmetic fix.
+
 2002-01-05  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : use -FImsvc_recommended_pragmas.h

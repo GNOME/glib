@@ -224,7 +224,7 @@ G_STMT_START { \
              G_OBJECT_TYPE_NAME (_object)); \
 } G_STMT_END
 #define G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec) \
-    G_OBJECT_WARN_INVALID_PSPEC ((object), "property id", (property_id), (pspec))
+    G_OBJECT_WARN_INVALID_PSPEC ((object), "property", (property_id), (pspec))
 
 G_END_DECLS
 
