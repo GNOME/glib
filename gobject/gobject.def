@@ -31,24 +31,32 @@ EXPORTS
 	g_flags_get_value_by_name
 	g_flags_get_value_by_nick
 	g_flags_register_static
+	g_object_class_find_property
+	g_object_class_install_property
+	g_object_freeze_notify
 	g_object_get
 	g_object_get_data
+	g_object_get_property
 	g_object_get_qdata
 	g_object_get_valist
 	g_object_new
 	g_object_new_valist
+	g_object_notify
 	g_object_ref
 	g_object_set
 	g_object_set_data
 	g_object_set_data_full
+	g_object_set_property
 	g_object_set_qdata
 	g_object_set_qdata_full
 	g_object_set_valist
 	g_object_steal_data
 	g_object_steal_qdata
+	g_object_thaw_notify
 	g_object_unref
 	g_object_watch_closure
 	g_param_spec_boolean
+	g_param_spec_boxed
 	g_param_spec_char
 	g_param_spec_double
 	g_param_spec_enum
@@ -58,6 +66,7 @@ EXPORTS
 	g_param_spec_int
 	g_param_spec_long
 	g_param_spec_object
+	g_param_spec_pointer
 	g_param_spec_ref
 	g_param_spec_set_qdata
 	g_param_spec_set_qdata_full
@@ -74,6 +83,7 @@ EXPORTS
 	g_param_values_cmp
 	g_signal_connect_closure_by_id
 	g_signal_connect_object
+	g_signal_emit_valist
 	g_signal_emitv
 	g_signal_handler_block
 	g_signal_handler_disconnect
@@ -89,6 +99,7 @@ EXPORTS
 	g_signal_newv
 	g_signal_query
 	g_signal_stop_emission
+	g_signal_type_cclosure_new
 	g_type_add_class_cache_func
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
@@ -112,9 +123,9 @@ EXPORTS
 	g_type_get_plugin
 	g_type_get_qdata
 	g_type_init
+	g_type_instance_is_a
 	g_type_interface_peek
 	g_type_interfaces
-	g_type_instance_is_a
 	g_type_is_a
 	g_type_module_add_interface
 	g_type_module_get_type
