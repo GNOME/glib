@@ -1,6 +1,10 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=.
+
+pushd $srcdir
 PROJECT=GLib
 TEST_TYPE=-f
 FILE=glib.h
@@ -56,14 +60,9 @@ aclocal $ACLOCAL_FLAGS
 
 automake $am_opt
 autoconf
+popd
 
-if [ -z "$OBJ_DIR" ]; then
-	./configure "$@"
-else
-	mkdir -p "$OBJ_DIR"
-	cd "$OBJ_DIR"
-	../configure "$@"
-fi
+$srcdir/configure "$@"
 
 echo 
 echo "Now type 'make' to compile $PROJECT."
