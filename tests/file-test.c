@@ -131,11 +131,36 @@ test_readlink (void)
 #endif
 }
 
+static void
+test_get_contents (void)
+{
+  const gchar *text = "abcdefghijklmnopqrstuvwxyz";
+  const gchar *filename = "file-test-get-contents";
+  gchar *contents;
+  gsize len;
+  FILE *f;
+  GError *error = NULL;
+
+  f = g_fopen (filename, "w");
+  fwrite (text, 1, strlen (text), f);
+  fclose (f);
+
+  g_assert (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+
+  if (! g_file_get_contents (filename, &contents, &len, &error))
+    g_error ("g_file_get_contents() failed: %s", error->message);
+
+  g_assert (strcmp (text, contents) == 0 && "content mismatch");
+
+  g_free (contents);
+}
+
 int 
 main (int argc, char *argv[])
 {
   test_mkstemp ();
   test_readlink ();
+  test_get_contents ();
 
   return 0;
 }

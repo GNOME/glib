@@ -1,3 +1,12 @@
+2005-03-10  Sven Neumann  <sven@gimp.org>
+
+	* glib/gfileutils.c (get_contents_stdio): delay memory allocation
+	until after the first read. Saves a bunch of reallocs. Also
+	increased the buffer size to 4096 bytes. (bug #165954)
+
+	* tests/file-test.c (test_get_contents): added a (very basic) test
+	for g_file_get_contents().
+
 Wed Mar  9 19:06:45 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/glib.symbols: Add g_file_replace.

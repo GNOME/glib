@@ -464,33 +464,31 @@ static gboolean
 get_contents_stdio (const gchar *display_filename,
                     FILE        *f,
                     gchar      **contents,
-                    gsize       *length, 
+                    gsize       *length,
                     GError     **error)
 {
-  gchar buf[2048];
+  gchar buf[4096];
   size_t bytes;
-  char *str;
-  size_t total_bytes;
-  size_t total_allocated;
-  
+  gchar *str = NULL;
+  size_t total_bytes = 0;
+  size_t total_allocated = 0;
+
   g_assert (f != NULL);
 
-#define STARTING_ALLOC 64
-  
-  total_bytes = 0;
-  total_allocated = STARTING_ALLOC;
-  str = g_malloc (STARTING_ALLOC);
-  
   while (!feof (f))
     {
-      int save_errno;
+      gint save_errno;
 
-      bytes = fread (buf, 1, 2048, f);
+      bytes = fread (buf, 1, sizeof (buf), f);
       save_errno = errno;
 
       while ((total_bytes + bytes + 1) > total_allocated)
         {
-          total_allocated *= 2;
+          if (str)
+            total_allocated *= 2;
+          else
+            total_allocated = MIN (bytes + 1, sizeof (buf));
+
           str = g_try_realloc (str, total_allocated);
 
           if (str == NULL)
@@ -499,13 +497,13 @@ get_contents_stdio (const gchar *display_filename,
                            G_FILE_ERROR,
                            G_FILE_ERROR_NOMEM,
                            _("Could not allocate %lu bytes to read file \"%s\""),
-                           (gulong) total_allocated, 
+                           (gulong) total_allocated,
 			   display_filename);
 
               goto error;
             }
         }
-      
+
       if (ferror (f))
         {
           g_set_error (error,
@@ -525,20 +523,20 @@ get_contents_stdio (const gchar *display_filename,
   fclose (f);
 
   str[total_bytes] = '\0';
-  
+
   if (length)
     *length = total_bytes;
-  
+
   *contents = str;
-  
+
   return TRUE;
 
  error:
 
   g_free (str);
   fclose (f);
-  
-  return FALSE;  
+
+  return FALSE;
 }
 
 #ifndef G_OS_WIN32

@@ -24,6 +24,7 @@ date-test
 dirname-test
 env-test
 file-test
+file-test-get-contents
 hash-test
 iochannel-test
 iochannel-test-outfile
