@@ -1,4 +1,4 @@
-# translation of es.po to 
+# translation of es.po to
 # traducción de es.po al Spanish
 # translation of es.po to Spanish
 # Spanish/Spain translation of glib.
@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
-"PO-Revision-Date: 2004-11-18 16:18+0100\n"
-"Last-Translator: \n"
-"Language-Team:  <es@li.org>\n"
+"POT-Creation-Date: 2004-12-04 12:03+0100\n"
+"PO-Revision-Date: 2004-12-04 12:05+0100\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
+"Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,8 +151,7 @@ msgstr "Enlaces simbólicos no soportados"
 #: glib/giochannel.c:1146
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
-"La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
+msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
 
 #: glib/giochannel.c:1150
 #, c-format
@@ -161,8 +160,7 @@ msgstr "No se pudo abrir el conversor de «%s»·a·«%s»:·%s"
 
 #: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
+msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
@@ -174,8 +172,7 @@ msgstr "El canal termina en un carácter parcial"
 
 #: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
+msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:226
 #, c-format
@@ -188,8 +185,7 @@ msgid "Error on line %d: %s"
 msgstr "Error·en la línea·%d:·%s"
 
 #: glib/gmarkup.c:428
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
 "·&apos;"
@@ -225,19 +221,19 @@ msgstr ""
 "&amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Ha ocurrido un error al analizar «%s»,·el cual debería tener un dígito "
+"Ha ocurrido un error al analizar «%-.*s»,·el cual debería tener un dígito "
 "dentro de un carácter de referencia·( por ejemplo &#234;·)·-·tal vez el "
 "dígito es demasiado grande"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "El carácter de referencia «%s» no codifica un carácter permitido"
+msgstr "El carácter de referencia «%-.*s» no codifica un carácter permitido"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -291,8 +287,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1257
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Carácter impropio «%s»,·se esperaba el carácter '='·después del nombre de "
 "atributo·«%s»·del elemento·«%s»"
@@ -425,8 +420,7 @@ msgstr ""
 #: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: glib/gshell.c:548
 #, c-format
@@ -582,8 +576,7 @@ msgstr "Opción desconocida %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
-"No se pudo encontrar la clave de archivo válida en los directorios de datos"
+msgstr "No se pudo encontrar la clave de archivo válida en los directorios de datos"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
@@ -595,8 +588,7 @@ msgstr "El archivo está vacío"
 
 #: glib/gkeyfile.c:685
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "El archivo clave contiene la línea «%s» que no es un par valor-clave, grupo "
 "o comentario"
@@ -668,3 +660,4 @@ msgstr "El valor «%s» no puede interpretarse como un número."
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
+
