@@ -1,3 +1,8 @@
+Sat Jul 24 17:50:07 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* glib/gstrfuncs.c (g_strsplit_set):
+	s/g_strtokenize/g_strsplit_set/ in docs.
+
 Fri Jul 23 10:37:50 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/type-test.c (main): Actually test G_MAXSIZE with
