@@ -541,7 +541,7 @@ profiler_try_realloc (gpointer mem,
   
   if (mem && p[0])	/* free count */
     {
-      g_warning ("realloc(%p, %u): memory has been freed %lu times already", p + 2, n_bytes, p[0]);
+      g_warning ("realloc(%p, %lu): memory has been freed %lu times already", p + 2, (gulong)n_bytes, p[0]);
       profiler_log (PROFILER_ALLOC | PROFILER_RELOC, n_bytes, FALSE);
 
       return NULL;

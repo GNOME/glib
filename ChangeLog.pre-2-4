@@ -1,3 +1,12 @@
+Tue Jun 11 17:03:39 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/patterntest.c (test_compilation)
+	* glib/gmem.c (profiler_try_realloc): A couple
+	of 64-bit printf format fix from George Lebl.
+
+	* glib/gconvert.c (open_converter): Fix gsize/gint
+	mixup for g_iconv() arguments.
+
 2002-06-03  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gwin32.c (g_win32_get_package_installation_directory):
