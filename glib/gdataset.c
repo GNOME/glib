@@ -110,7 +110,11 @@ g_datalist_clear_i (GData **datalist)
       list = prev->next;
       
       if (prev->destroy_func)
-	prev->destroy_func (prev->data);
+	{
+	  G_UNLOCK (g_dataset_global);
+	  prev->destroy_func (prev->data);
+	  G_LOCK (g_dataset_global);
+	}
       
       if (g_data_cache_length < G_DATA_CACHE_MAX)
 	{

@@ -1,3 +1,8 @@
+1999-10-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gdataset.c (g_datalist_clear_i): Avoid Freezing, when g_datalist
+	is called recursivly.
+
 Thu Oct  7 12:28:27 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.6
