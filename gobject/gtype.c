@@ -926,13 +926,10 @@ type_data_make_W (TypeNode              *node,
       data->instance.class_data = info->class_data;
       data->instance.class = NULL;
       data->instance.instance_size = info->instance_size;
-      if (NODE_PARENT_TYPE (node))
-	{
-	  TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
-	  data->instance.private_size = pnode->data->instance.private_size;
-	}
-      else
-	data->instance.private_size = 0;
+      /* We'll set the final value for data->instance.private size
+       * after the parent class has been initialized
+       */
+      data->instance.private_size = 0;
 #ifdef	DISABLE_MEM_POOLS
       data->instance.n_preallocs = 0;
 #else	/* !DISABLE_MEM_POOLS */
@@ -1588,6 +1585,11 @@ type_class_init_Wm (TypeNode   *node,
       TypeNode *pnode = lookup_type_node_I (pclass->g_type);
       
       memcpy (class, pclass, pnode->data->class.class_size);
+      /* We need to initialize the private_size here rather than in
+       * type_data_make_W() since the class init for the parent
+       * class may have changed pnode->data->instance.private_size.
+       */
+      node->data->instance.private_size = pnode->data->instance.private_size;
     }
   class->g_type = NODE_TYPE (node);
   

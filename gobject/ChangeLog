@@ -1,3 +1,11 @@
+Tue Jul  8 14:55:27 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.c (type_class_init_Wm): Initialize
+	node->data->instance.private_size here rather than
+	in type_data_make_W() since the class init for the parent
+        class may have changed pnode->data->instance.private_size.
+	(#116921, reported by Soeren Sandmann)
+
 2003-06-18  Matthias Clasen  <maclas@gmx.de>
 
 	* Makefile.am (man_MANS): Removed, these are now installed from
