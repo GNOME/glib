@@ -1,0 +1,10 @@
+*.lo
+Makefile
+Makefile.in
+.deps
+_libs
+.libs
+libgmodule-1.1.la
+gmoduleconf.h
+stamp-h
+testgmodule
