@@ -115,7 +115,14 @@ There are probably also other hickups when using auto* and configure
 to build for mingw, sigh. Every now and then I try to get rid of the
 hand-written makefiles and configuration headers for Win32, and start
 fooling around with auto* etc, but after a while give up and fall
-back.
+back. At least, it used to be like that. Lately I have again been
+working on using auto*/configure/libtool on Win32, and it now seems to
+work well enough (with some patches applied to the current CVS
+libtool...).
+
+The hand-written makefile.mingw(.in) files, and the stuff in the
+"build" module has been updated to produce DLLs and import libraries
+that match what Makefile.am and libtool produces.
 
 If you want to run the Cygwin-based gcc, it gets a bit more
 complicated. We still want gcc to produce code that does not use
