@@ -47,9 +47,9 @@
 
 #define win32_check_for_error(what) G_STMT_START{			\
   if (!(what))								\
-    g_error ("file %s: line %d (%s): error %ld during %s",		\
+    g_error ("file %s: line %d (%s): error %s during %s",		\
 	     __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,		\
-	     GetLastError (), #what);					\
+	     g_win32_error_message (GetLastError ()), #what);		\
   }G_STMT_END
 
 #define G_MUTEX_SIZE (sizeof (HANDLE))
@@ -467,9 +467,11 @@ g_thread_create_win32_impl (GThreadFunc func,
 
   if (retval->thread == NULL)
     {
-      g_free (retval);
+      gchar *win_error = g_win32_error_message (GetLastError ());
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
-                   "Error creating thread: %ld", GetLastError());
+                   "Error creating thread: %s", win_error);
+      g_free (retval);
+      g_free (win_error);
       return;
     }
 

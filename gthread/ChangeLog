@@ -1,3 +1,8 @@
+2001-06-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-win32.c: Use g_win32_error_message to beautify error
+	messages.
+
 2001-05-24  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : pthread isn't required anymore
