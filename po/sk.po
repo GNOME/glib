@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.8\n"
-"POT-Creation-Date: 2001-09-28 16:09+0200\n"
-"PO-Revision-Date: 2001-09-28 16:11CET\n"
+"POT-Creation-Date: 2001-10-12 18:52+0200\n"
+"PO-Revision-Date: 2001-10-12 18:53CET\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -14,24 +14,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
 
-#: glib/gconvert.c:202 glib/giochannel.c:1101
-#, c-format
-msgid "Conversion from character set `%s' to `%s' is not supported"
+#: glib/gconvert.c:202
+#, fuzzy, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Prevod zo znakovej sady `%s' do `%s' nie je podporovaný"
 
-#: glib/gconvert.c:206 glib/giochannel.c:1105
+#: glib/gconvert.c:206
 #, c-format
-msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nepodarilo sa otvoriť program pre prevod `%s' do `%s': %s"
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Nepodarilo sa otvoriť program pre prevod '%s' do '%s': %s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1273
-#: glib/giochannel.c:1315 glib/giochannel.c:2155 glib/gutf8.c:875
+#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
 #: glib/gutf8.c:1321
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 
-#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1280
-#: glib/giochannel.c:2167
+#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/giochannel.c:2176
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Chyba počas prevodu: %s"
@@ -48,28 +48,28 @@ msgstr "Nepodarilo sa previesť náhradné `%s' do kódovej stránky `%s'"
 
 #: glib/gconvert.c:1261
 #, c-format
-msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr "URI `%s' nie je absolútne URI súborovej schémy"
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI '%s' nie je absolútne URI súborovej schémy"
 
 #: glib/gconvert.c:1271
 #, c-format
-msgid "The local file URI `%s' may not include a `#'"
-msgstr "URI lokálneho súboru `%s' nesmie obsahovať `#'"
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "URI lokálneho súboru '%s' nesmie obsahovať '#'"
 
 #: glib/gconvert.c:1288
 #, c-format
-msgid "The URI `%s' is invalid"
-msgstr "URI `%s' je neplatné"
+msgid "The URI '%s' is invalid"
+msgstr "URI '%s' je neplatné"
 
 #: glib/gconvert.c:1297
 #, c-format
-msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr "Hostiteľ URI `%s' obsahuje neplatné zapísané znaky"
+msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+msgstr "Hostiteľ URI '%s' obsahuje neplatné zapísané znaky"
 
 #: glib/gconvert.c:1313
 #, c-format
-msgid "The URI `%s' contains invalidly escaped characters"
-msgstr "URI `%s' obsahuje neplatné zadané znaky"
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI '%s' obsahuje neplatné zadané znaky"
 
 #: glib/gconvert.c:1356
 #, c-format
@@ -120,19 +120,29 @@ msgstr "Šablóna '%s' nekončí XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
 
-#: glib/giochannel.c:1452
+#: glib/giochannel.c:1110
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Prevod zo znakovej sady `%s' do `%s' nie je podporovaný"
+
+#: glib/giochannel.c:1114
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Nepodarilo sa otvoriť program pre prevod `%s' do `%s': %s"
+
+#: glib/giochannel.c:1461
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nepodarilo sa 'raw' čítanie v g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1499 glib/giochannel.c:1753 glib/giochannel.c:1839
+#: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
 msgid "Leftover unconverted data in read buffer"
 msgstr "Zanechané neprevedené dáta vo vstupnom bufferi"
 
-#: glib/giochannel.c:1579 glib/giochannel.c:1653
+#: glib/giochannel.c:1588 glib/giochannel.c:1662
 msgid "Channel terminates in a partial character"
 msgstr "Kanál končí čiastočným znakom"
 
-#: glib/giochannel.c:1639
+#: glib/giochannel.c:1648
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nepodarilo sa 'raw' čítanie v g_io_channel_read_to_end"
 
