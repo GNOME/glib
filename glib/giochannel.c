@@ -758,7 +758,7 @@ g_io_channel_seek_position	(GIOChannel* channel,
             offset -= channel->read_buf->len;
           if (channel->encoded_read_buf)
             {
-              g_assert (channel->encoded_read_buf->len == 0 && !channel->do_encode);
+              g_assert (channel->encoded_read_buf->len == 0 || !channel->do_encode);
 
               /* If there's anything here, it's because the encoding is UTF-8,
                * so we can just subtract the buffer length, the same as for
@@ -1011,7 +1011,7 @@ g_io_channel_set_encoding (GIOChannel	*channel,
           else
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
                          _("Could not open converter from `%s' to `%s': %s"),
-                         from_enc, to_enc, strerror (errno));
+                         from_enc, to_enc, strerror (err));
 
           if (read_cd != (GIConv) -1)
             g_iconv_close (read_cd);
@@ -1126,6 +1126,7 @@ g_io_channel_fill_buffer (GIOChannel *channel,
     {
       size_t errnum, inbytes_left, outbytes_left;
       gchar *inbuf, *outbuf;
+      int errval;
 
       g_assert (channel->encoded_read_buf);
 
@@ -1144,6 +1145,12 @@ reencode:
 
       errnum = g_iconv (channel->read_cd, &inbuf, &inbytes_left,
 			&outbuf, &outbytes_left);
+      errval = errno;
+
+      g_assert (inbuf + inbytes_left == channel->read_buf->str
+                + channel->read_buf->len);
+      g_assert (outbuf + outbytes_left == channel->encoded_read_buf->str
+                + channel->encoded_read_buf->len);
 
       g_string_erase (channel->read_buf, 0,
 		      channel->read_buf->len - inbytes_left);
@@ -1152,7 +1159,7 @@ reencode:
 
       if (errnum == (size_t) -1)
         {
-          switch (errno)
+          switch (errval)
             {
               case EINVAL:
                 if ((oldlen == channel->encoded_read_buf->len)
@@ -1177,8 +1184,9 @@ reencode:
                   }
                 break;
               default:
+                g_assert (errval != EBADF); /* The converter should be open */
                 g_set_error (err, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                  _("Error during conversion: %s"), strerror (errno));
+                  _("Error during conversion: %s"), strerror (errval));
                 return G_IO_STATUS_ERROR;
             }
         }
@@ -2021,7 +2029,7 @@ reconvert:
                     return G_IO_STATUS_ERROR;
                   default:
                     g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                      _("Error during conversion: %s"), strerror (errno));
+                      _("Error during conversion: %s"), strerror (errnum));
                     if (from_buf_len >= left_len + from_buf_old_len)
                       wrote_bytes += from_buf_len - left_len - from_buf_old_len;
                     if (bytes_written)
