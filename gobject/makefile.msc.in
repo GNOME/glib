@@ -5,12 +5,7 @@ TOP = ..\..
 
 !INCLUDE ..\build\win32\make.msc
 
-# Possibly override GLib version in build\win32\object.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 ################################################################
-
-# Nothing much configurable below
 
 INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"GLib-GObject\" \
@@ -24,7 +19,7 @@ all :				\
 	gmarshal.c              \
 	gmarshal.strings \
 	gobject-query.exe \
-	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll	\
+	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
 	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	testgobject.exe	\
 	testoverride.exe
@@ -56,9 +51,9 @@ gmarshal.h : gmarshal.list glib-genmarshal.exe
 gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
 	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --body > gmarshal.c
 
-libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def
+libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def
 	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) /implib:gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib /def:gobject.def
+	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def
 
 gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS) 
 	lib /out:$@ $(gobject_OBJECTS)
@@ -68,13 +63,13 @@ glib-genmarshal.exe : glib-genmarshal.c gmarshal.strings
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
 	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
 
-gobject-query.exe : gobject-query.c libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
+gobject-query.exe : gobject-query.c libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION gobject-query.c \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+	..\glib\glib-2.0.lib gobject-2.0.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
 
 gmarshal.strings : gmarshal.list
 	perl marshal-genstrings.pl > gmarshal.strings
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -Fe$@ $< gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gthread\gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) user32.lib /subsystem:console
+	$(CC) $(CFLAGS) -Fe$@ $< gobject-2.0.lib ..\glib\glib-2.0.lib ..\gmodule\gmodule-2.0.lib $(LDFLAGS) user32.lib /subsystem:console

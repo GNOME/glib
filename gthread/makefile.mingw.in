@@ -9,19 +9,17 @@ include ../build/win32/make.mingw
 
 ################################################################
 
-# Nothing much configurable below
-
 INCLUDES = -I .. -I ../glib -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\" -DG_ENABLE_DEBUG
 
 all : \
-	libgthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a
+	libgthread-2.0.a
 
 gthread_OBJECTS = \
 	gthread-impl.o
 
-libgthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(gthread_OBJECTS) gthread.def gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc
-	$(BUILD_DLL) gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ gthread.def $(gthread_OBJECTS) -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+libgthread-2.0.a : $(gthread_OBJECTS) gthread.def gthread-2.0.rc
+	$(BUILD_DLL) gthread-2.0 @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ gthread.def $(gthread_OBJECTS) -L ../glib -lglib-2.0
 
-gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : gthread.rc
+gthread-2.0.rc : gthread.rc
 	cp $< $@

@@ -16,7 +16,7 @@ DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
 all : \
 	gmoduleconf.h \
-	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a
+	libgmodule-2.0.a
 
 gmodule_OBJECTS = \
 	gmodule.o
@@ -26,10 +26,10 @@ gmoduleconf.h: gmoduleconf.h.win32
 
 ################ The gmodule DLL
 
-libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(gmodule_OBJECTS) gmodule.def gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc
-	$(BUILD_DLL) gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ $(CFLAGS) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+libgmodule-2.0.a : $(gmodule_OBJECTS) gmodule.def gmodule-2.0.rc
+	$(BUILD_DLL) gmodule-2.0 @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ $(CFLAGS) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib-2.0
 
-gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : gmodule.rc
+gmodule-2.0.rc : gmodule.rc
 	cp $< $@
 
 ################ Other stuff

@@ -17,7 +17,7 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"GLib-GObject\" 
 srcdir=.
 
 all : \
-	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
+	libgobject-2.0.a \
 	testgobject.exe \
 	glib-genmarshal.exe
 
@@ -38,14 +38,17 @@ gobject_OBJECTS =		\
 	gvaluetransform.o	\
 	gvaluetypes.o
 
-libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
-	$(BUILD_DLL) gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ gobject.def $(gobject_OBJECTS) -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+libgobject-2.0.a : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def gobject-2.0.rc
+	$(BUILD_DLL) gobject-2.0 @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ gobject.def $(gobject_OBJECTS) -L ../glib -lglib-2.0
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib-2.0
 
-testgobject.exe: libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgobject.o
-	$(CC) $(CFLAGS) -o testgobject.exe testgobject.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
+testgobject.exe: libgobject-2.0.a testgobject.o
+	$(CC) $(CFLAGS) -o testgobject.exe testgobject.o -L ../glib -lglib-2.0 -L . -lgobject-2.0 $(LFLAGS)
+
+gobject-2.0.rc : gobject.rc
+	cp $< $@
 
 # Copied from Makefile.am:
 # initial creation of the real stamp-* files

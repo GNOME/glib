@@ -18,7 +18,7 @@ DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 all :				\
 	../config.h		\
 	../glibconfig.h		\
-	libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
+	libglib-2.0.a \
 	gspawn-win32-helper.exe
 
 glib_OBJECTS =			\
@@ -80,11 +80,11 @@ localcharset.c : libcharset/localcharset.c
 
 ################ The glib DLL
 
-libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(glib_OBJECTS) glib.def glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc
-	$(BUILD_DLL) glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+libglib-2.0.a : $(glib_OBJECTS) glib.def glib-2.0.rc
+	$(BUILD_DLL) glib-2.0 @LT_CURRENT@:@LT_REVISION@:@LT_AGE@ glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
-glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : glib.rc
+glib-2.0.rc : glib.rc
 	cp $< $@
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
-	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-2.0
