@@ -88,7 +88,11 @@ G_BEGIN_DECLS
 
 /* Typedefs
  */
+#if	GLIB_SIZEOF_LONG == GLIB_SIZEOF_SIZE_T
+typedef gulong                          GType;
+#else	/* hm, shouldn't happen? */
 typedef gsize                           GType;
+#endif
 typedef struct _GValue                  GValue;
 typedef union  _GTypeCValue             GTypeCValue;
 typedef struct _GTypePlugin             GTypePlugin;

@@ -505,7 +505,7 @@ g_type_class_meta_marshal (GClosure       *closure,
 {
   GTypeClass *class;
   gpointer callback;
-  /* GType itype = GPOINTER_TO_UINT (closure->data); */
+  /* GType itype = (GType) closure->data; */
   guint offset = GPOINTER_TO_UINT (marshal_data);
   
   class = G_TYPE_INSTANCE_GET_CLASS (g_value_peek_pointer (param_values + 0), itype, GTypeClass);
@@ -528,7 +528,7 @@ g_type_iface_meta_marshal (GClosure       *closure,
 {
   GTypeClass *class;
   gpointer callback;
-  GType itype = GPOINTER_TO_UINT (closure->data);
+  GType itype = (GType) closure->data;
   guint offset = GPOINTER_TO_UINT (marshal_data);
   
   class = G_TYPE_INSTANCE_GET_INTERFACE (g_value_peek_pointer (param_values + 0), itype, GTypeClass);
@@ -550,7 +550,7 @@ g_signal_type_cclosure_new (GType    itype,
   g_return_val_if_fail (G_TYPE_IS_CLASSED (itype) || G_TYPE_IS_INTERFACE (itype), NULL);
   g_return_val_if_fail (struct_offset >= sizeof (GTypeClass), NULL);
   
-  closure = g_closure_new_simple (sizeof (GClosure), GUINT_TO_POINTER (itype));
+  closure = g_closure_new_simple (sizeof (GClosure), (gpointer) itype);
   if (G_TYPE_IS_INTERFACE (itype))
     g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_iface_meta_marshal);
   else

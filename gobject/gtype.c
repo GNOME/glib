@@ -355,7 +355,7 @@ type_node_any_new_W (TypeNode             *pnode,
   
   g_hash_table_insert (static_type_nodes_ht,
 		       GUINT_TO_POINTER (node->qname),
-		       GUINT_TO_POINTER (type));
+		       (gpointer) type);
   return node;
 }
 
@@ -1742,7 +1742,7 @@ g_type_register_fundamental (GType                       type_id,
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
     {
-      g_warning ("attempt to register fundamental type `%s' with invalid type id (%u)",
+      g_warning ("attempt to register fundamental type `%s' with invalid type id (%lu)",
 		 type_name,
 		 type_id);
       return 0;
@@ -2128,7 +2128,7 @@ g_type_from_name (const gchar *name)
   if (quark)
     {
       G_READ_LOCK (&type_rw_lock);
-      type = GPOINTER_TO_UINT (g_hash_table_lookup (static_type_nodes_ht, GUINT_TO_POINTER (quark)));
+      type = (GType) g_hash_table_lookup (static_type_nodes_ht, GUINT_TO_POINTER (quark));
       G_READ_UNLOCK (&type_rw_lock);
     }
   
@@ -2794,7 +2794,7 @@ g_type_value_table_peek (GType type)
     return vtable;
   
   if (!node)
-    g_warning (G_STRLOC ": type id `%u' is invalid", type);
+    g_warning (G_STRLOC ": type id `%lu' is invalid", type);
   if (!has_refed_data)
     g_warning ("can't peek value table for type `%s' which is not currently referenced",
 	       type_descriptive_name_I (type));

@@ -743,7 +743,7 @@ pool_list (gpointer key,
 {
   GParamSpec *pspec = value;
   gpointer *data = user_data;
-  GType owner_type = GPOINTER_TO_UINT (data[1]);
+  GType owner_type = (GType) data[1];
 
   if (owner_type == pspec->owner_type)
     data[0] = g_list_prepend (data[0], pspec);
@@ -760,7 +760,7 @@ g_param_spec_pool_list_owned (GParamSpecPool *pool,
   
   G_SLOCK (&pool->smutex);
   data[0] = NULL;
-  data[1] = GUINT_TO_POINTER (owner_type);
+  data[1] = (gpointer) owner_type;
   g_hash_table_foreach (pool->hash_table, pool_list, &data);
   G_SUNLOCK (&pool->smutex);
 
@@ -810,7 +810,7 @@ pool_depth_list (gpointer key,
   GParamSpec *pspec = value;
   gpointer *data = user_data;
   GSList **slists = data[0];
-  GType owner_type = GPOINTER_TO_UINT (data[1]);
+  GType owner_type = (GType) data[1];
 
   if (g_type_is_a (owner_type, pspec->owner_type))
     {
@@ -839,7 +839,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   d = g_type_depth (owner_type);
   slists = g_new0 (GSList*, d);
   data[0] = slists;
-  data[1] = GUINT_TO_POINTER (owner_type);
+  data[1] = (gpointer) owner_type;
   g_hash_table_foreach (pool->hash_table, pool_depth_list, &data);
   for (i = 0; i < d - 1; i++)
     slists[i] = pspec_list_remove_overridden (slists[i], pool->hash_table, owner_type, n_pspecs_p);
