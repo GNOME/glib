@@ -421,6 +421,12 @@ g_source_destroy_func (GHookList *hook_list,
   G_LOCK (main_loop);
 }
 
+static void
+g_source_noop (GHookList *hook_list,
+	       GHook     *hook)
+{
+}
+
 guint 
 g_source_add (gint           priority,
 	      gboolean       can_recurse,
@@ -437,7 +443,8 @@ g_source_add (gint           priority,
   if (!source_list.is_setup)
     g_hook_list_init (&source_list, sizeof(GSource));
 
-  source_list.hook_destroy = g_source_destroy_func;
+  source_list.hook_destroy = g_source_noop;
+  source_list.hook_free = g_source_destroy_func;
 
   source = (GSource *)g_hook_alloc (&source_list);
   source->priority = priority;
@@ -1116,7 +1123,7 @@ g_timeout_dispatch (gpointer source_data,
 {
   GTimeoutData *data = source_data;
 
-  if (data->callback(user_data))
+  if (data->callback (user_data))
     {
       guint seconds = data->interval / 1000;
       guint msecs = data->interval - seconds * 1000;
