@@ -521,7 +521,8 @@ g_path_skip_root (const gchar *file_name)
   /* Skip \\server\share or //server/share */
   if (G_IS_DIR_SEPARATOR (file_name[0]) &&
       G_IS_DIR_SEPARATOR (file_name[1]) &&
-      file_name[2])
+      file_name[2] &&
+      !G_IS_DIR_SEPARATOR (file_name[2]))
     {
       gchar *p;
 
@@ -606,8 +607,47 @@ g_path_get_dirname (const gchar	   *file_name)
     base--;
 
 #ifdef G_OS_WIN32
+  /* base points to the char before the last slash.
+   *
+   * In case file_name is the root of a drive (X:\) or a child of the
+   * root of a drive (X:\foo), include the slash.
+   *
+   * In case file_name is the root share of an UNC path
+   * (\\server\share), add a slash, returning \\server\share\ .
+   *
+   * In case file_name is a direct child of a share in an UNC path
+   * (\\server\share\foo), include the slash after the share name,
+   * returning \\server\share\ .
+   */
   if (base == file_name + 1 && g_ascii_isalpha (file_name[0]) && file_name[1] == ':')
-      base++;
+    base++;
+  else if (G_IS_DIR_SEPARATOR (file_name[0]) &&
+	   G_IS_DIR_SEPARATOR (file_name[1]) &&
+	   file_name[2] &&
+	   !G_IS_DIR_SEPARATOR (file_name[2]) &&
+	   base >= file_name + 2)
+    {
+      const gchar *p = file_name + 2;
+      while (*p && !G_IS_DIR_SEPARATOR (*p))
+	p++;
+      if (p == base + 1)
+	{
+	  len = (guint) strlen (file_name) + 1;
+	  base = g_new (gchar, len + 1);
+	  strcpy (base, file_name);
+	  base[len-1] = G_DIR_SEPARATOR;
+	  base[len] = 0;
+	  return base;
+	}
+      if (G_IS_DIR_SEPARATOR (*p))
+	{
+	  p++;
+	  while (*p && !G_IS_DIR_SEPARATOR (*p))
+	    p++;
+	  if (p == base + 1)
+	    base++;
+	}
+    }
 #endif
 
   len = (guint) 1 + base - file_name;

@@ -1,3 +1,10 @@
+2004-12-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_path_skip_root): Require UNC paths to start
+	with exactly two slashes.
+	(g_path_get_dirname): Handle UNC paths better. Part of fix for
+	#161797.
+
 2004-12-11  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c: Fix #157255. Also some refactoring of this
