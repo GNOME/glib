@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.1.4:
+
+* Added generic callback maintenance functions (ghook)
+* New endian defines (G_*_ENDIAN)
+* New string join/split/free routines 
+* Fixes
+
 Overview of Changes in GLib 1.1.3:
 
 * New GModule mechanism (implemented in an extra library) which wraps dynamic

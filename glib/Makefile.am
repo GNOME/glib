@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = gmodule
+SUBDIRS = gmodule docs
 
 configincludedir = $(pkglibdir)/include
 
@@ -10,9 +10,10 @@ glib-config: glib-config.in
 
 DEFS += -DG_LOG_DOMAIN=g_log_domain_glib
 
-EXTRA_DIST =	\
-		glib.m4 \
-		glib.spec
+EXTRA_DIST =			\
+		glib.m4		\
+		glib.spec	\
+		sanity_check
 
 # build . first, then SUBDIRS
 all-recursive-am: all-am
@@ -57,7 +58,7 @@ testglib_LDADD = libglib.la
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib.m4
 
-.PHONY: files release
+.PHONY: files release sanity snapshot
 
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
@@ -65,4 +66,12 @@ files:
 	done
 
 release:
+	rm -rf .deps */.deps
+	cd docs && make glib.html
+	$(MAKE) distcheck
+
+sanity:
+	./sanity_check $(VERSION)
+
+snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`

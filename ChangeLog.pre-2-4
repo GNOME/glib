@@ -1,3 +1,23 @@
+Sun Oct 25 01:24:01 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.4
+
+	* docs/Makefile.am:
+	* docs/.cvsignore
+	* docs/glib-config.1: 
+	* docs/glib.texi: Moved docs from gtk and created glib-config.1 
+	from gtk-config.1 in gtk
+
+	* configure.in:
+	* Makefile.am:
+	* sanity_check: added in docs directory, change rule 'release'
+	to 'snapshot' and created a new 'release' rule for doing the
+	distribution.  Added in a 'sanity' rule.
+
+	* NEWS:
+	* README: 
+	* INSTALL: Updated for the release
+
 Sun Oct 25 07:30:10 1998  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c:

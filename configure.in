@@ -479,4 +479,5 @@ Makefile
 glib-config
 gmodule/gmoduleconf.h
 gmodule/Makefile
+docs/Makefile
 ],[chmod +x glib-config])
