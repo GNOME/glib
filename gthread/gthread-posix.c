@@ -51,7 +51,7 @@ static void
 g_mutex_free_posix_impl (GMutex * mutex)
 {
   posix_check_for_error (pthread_mutex_destroy ((pthread_mutex_t *) mutex));
-  free (mutex);
+  g_free (mutex);
 }
 
 /* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use

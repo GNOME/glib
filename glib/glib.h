@@ -2472,9 +2472,9 @@ struct _GPollFD
   gushort 	revents;
 };
 
-void        g_main_poll_add          (gint        priority,
+void        g_main_add_poll          (gint        priority,
 				      GPollFD    *fd);
-void        g_main_poll_remove       (GPollFD    *fd);
+void        g_main_remove_poll       (GPollFD    *fd);
 void        g_main_set_poll_func     (GPollFunc   func);
 
 GIOChannel* g_io_channel_unix_new    (int         fd);

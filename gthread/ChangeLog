@@ -1,3 +1,7 @@
+Wed Dec 16 22:21:33 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* gthread-posix.c: use g_free in mutex_free (from Tim Janik)
+
 Thu Dec 17 03:38:57 1998  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: -DG_LOG_DOMAIN="GThread", we don't need an extern

@@ -131,7 +131,7 @@ g_io_unix_destroy (gpointer source_data)
 {
   GIOUnixWatch *data = source_data;
 
-  g_main_poll_remove (&data->pollfd);
+  g_main_remove_poll (&data->pollfd);
   g_io_channel_unref (data->channel);
   g_free (data);
 }
@@ -276,7 +276,7 @@ g_io_unix_add_watch (GIOChannel    *channel,
   watch->pollfd.fd = unix_channel->fd;
   watch->pollfd.events = condition;
 
-  g_main_poll_add (priority, &watch->pollfd);
+  g_main_add_poll (priority, &watch->pollfd);
 
   return g_source_add (priority, TRUE, &unix_watch_funcs, watch, user_data, notify);
 }

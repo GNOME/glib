@@ -1,3 +1,11 @@
+Wed Dec 16 22:32:13 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* glib.h:
+	  giounix.c: s/g_main_poll_add/g_main_remove_add/g
+                     s/g_main_poll_remove/g_main_remove_poll/g
+                     s/g_main_poll_add_unlocking/g_main_add_unlocking_poll/g
+          (from Tim Janik)
+
 Wed Dec 16 20:04:10 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in: check for pthread_attr_init in all cases, du4
