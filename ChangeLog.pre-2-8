@@ -1,3 +1,8 @@
+Wed Feb 28 21:26:18 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* README.in: Propagate changes commited to the README.in
+	back to here.
+
 Wed Feb 28 16:59:05 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (mem_warn): Add discouraging message if
