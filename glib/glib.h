@@ -1175,38 +1175,37 @@ gdouble g_timer_elapsed (GTimer	 *timer,
 
 /* String utility functions
  */
-#define G_STR_DELIMITERS	"_-|> <."
-void	g_strdelimit		(gchar	     *string,
+#define  G_STR_DELIMITERS	"_-|> <."
+void	 g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
-gchar*	g_strdup		(const gchar *str);
-gchar*	g_strdup_printf		(const gchar *format,
+gchar*	 g_strdup		(const gchar *str);
+gchar*	 g_strdup_printf	(const gchar *format,
 				 ...) G_GNUC_PRINTF (1, 2);
-gchar*	g_strdup_vprintf	(const gchar *format,
+gchar*	 g_strdup_vprintf	(const gchar *format,
 				 va_list      args);
-gchar*	g_strndup		(const gchar *str,
+gchar*	 g_strndup		(const gchar *str,
 				 guint        n);
-gchar*  g_strnfill		(guint        length,
+gchar*   g_strnfill		(guint        length,
 				 gchar	      fill_char);
-gchar*	g_strconcat		(const gchar *string1,
+gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
-gdouble g_strtod		(const gchar *nptr,
+gdouble  g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
-gchar*	g_strerror		(gint	      errnum);
-gchar*	g_strsignal		(gint	      signum);
-gint	g_strcasecmp		(const gchar *s1,
+gchar*	 g_strerror		(gint	      errnum);
+gchar*	 g_strsignal		(gint	      signum);
+gint	 g_strcasecmp		(const gchar *s1,
 				 const gchar *s2);
-void	g_strdown		(gchar	     *string);
-void	g_strup			(gchar	     *string);
-void	g_strreverse		(gchar	     *string);
+void	 g_strdown		(gchar	     *string);
+void	 g_strup		(gchar	     *string);
+void	 g_strreverse		(gchar	     *string);
+gpointer g_memdup		(gconstpointer mem,
+				 guint         byte_size);
 
 /* calculate a string size, guarranteed to fit format + args.
  */
 guint	g_printf_string_upper_bound (const gchar* format,
 				     va_list      args);
-
-guint8*	g_memdup		(const guint8 *mem,
-				 guint         len);
 
 
 /* Retrive static string info
