@@ -209,6 +209,20 @@ test_object_init (TestObject *tobject)
 
   g_assert (priv);
   g_assert ((gchar *)priv >= (gchar *)tobject + sizeof (TestObject));
+
+  priv->dummy1 = 54321;
+}
+/* Check to see if private data initialization in the
+ * instance init function works.
+ */
+static void
+test_object_check_private_init (TestObject *tobject)
+{
+  TestObjectPrivate *priv;
+
+  priv = TEST_OBJECT_GET_PRIVATE (tobject);
+
+  g_assert (priv->dummy1 == 54321);
 }
 static gboolean
 test_signal_accumulator (GSignalInvocationHint *ihint,
@@ -290,9 +304,15 @@ derived_object_test_iface_init (gpointer giface,
 #define DERIVED_IS_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), DERIVED_TYPE_OBJECT))
 #define DERIVED_OBJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), DERIVED_TYPE_OBJECT, DerivedObjectClass))
 #define DERIVED_OBJECT_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), DERIVED_TYPE_OBJECT, DerivedObjectPrivate))
-typedef struct _TestObject           DerivedObject;
+typedef struct _DerivedObject        DerivedObject;
 typedef struct _TestObjectClass      DerivedObjectClass;
 typedef struct _DerivedObjectPrivate DerivedObjectPrivate;
+struct _DerivedObject
+{
+  TestObject parent_instance;
+  int  dummy1;
+  int  dummy2;
+};
 struct _DerivedObjectPrivate
 {
   char dummy;
@@ -379,6 +399,8 @@ main (int   argc,
   g_type_class_ref (TEST_TYPE_OBJECT);
 
   dobject = g_object_new (DERIVED_TYPE_OBJECT, NULL);
+  test_object_check_private_init (TEST_OBJECT (dobject));
+
   sigarg = g_object_new (TEST_TYPE_OBJECT, NULL);
 
   g_print ("MAIN: emit test-signal:\n");
