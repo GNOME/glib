@@ -1,3 +1,7 @@
+2004-08-11  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Added nb to ALL_LINGUAS
+
 Thu Aug 5 20:53:00 2004 Ray Strode <rstrode@redhat.com>
 	
 	* glib/gutils.h (g_get_codeset): strdup result so caller
