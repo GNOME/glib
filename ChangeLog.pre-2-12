@@ -1,3 +1,15 @@
+Sat Oct 12 21:30:41 2002  Tim Janik  <timj@gtk.org>
+
+	* merged up from glib-2-0:
+
+        * glib/gstrfuncs.c (g_ascii_strtod): fix comment.
+        (g_ascii_strtoull): new function, acting like strtoull(3) in the C
+        locale.
+
+        * glib/gscanner.[hc]: fix 32bit issues with integer parsing and
+        support storing 64bit values in GTokenValue by
+        using g_ascii_strtoull().
+
 Sat Oct 12 12:34:22 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* glib/gtree.c (g_tree_search), glib/gspawn.c
