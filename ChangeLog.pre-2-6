@@ -4,8 +4,9 @@
 
 	* gthreadpool.c: The global thread pool now also is seperated for
 	bound and unbound threads. Only threads with standard stack size
-	go to the global pool. g_thread_pool_new now protect the global
-	setup of inform_mutex etc. with a lock.
+	go to the global pool. g_thread_pool_new now protects the global
+	setup of inform_mutex etc. with a lock. Fixed some typos. Unlock
+	the queue after g_thread_pool_wakeup_and_stop_all in the proxy.
 
 2001-04-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
