@@ -236,46 +236,51 @@ g_find_program_in_path (const gchar *program)
 {
   const gchar *last_dot = strrchr (program, '.');
 
-  if (last_dot == NULL || strchr (last_dot, '\\') != NULL)
+  if (last_dot == NULL ||
+      strchr (last_dot, '\\') != NULL ||
+      strchr (last_dot, '/') != NULL)
     {
       const gint program_length = strlen (program);
-      const gchar *pathext = getenv ("PATHEXT");
-      const gchar *p;
+      gchar *pathext = g_build_path (";",
+				     ".exe;.cmd;.bat;.com",
+				     g_getenv ("PATHEXT"),
+				     NULL);
+      gchar *p;
       gchar *decorated_program;
       gchar *retval;
-
-      if (pathext == NULL)
-	pathext = ".com;.exe;.bat";
 
       p = pathext;
       do
 	{
-	  pathext = p;
-	  p = my_strchrnul (pathext, ';');
+	  gchar *q = my_strchrnul (p, ';');
 
-	  decorated_program = g_malloc (program_length + (p-pathext) + 1);
+	  decorated_program = g_malloc (program_length + (q-p) + 1);
 	  memcpy (decorated_program, program, program_length);
-	  memcpy (decorated_program+program_length, pathext, p-pathext);
-	  decorated_program [program_length + (p-pathext)] = '\0';
+	  memcpy (decorated_program+program_length, p, q-p);
+	  decorated_program [program_length + (q-p)] = '\0';
 	  
 	  retval = inner_find_program_in_path (decorated_program);
 	  g_free (decorated_program);
 
 	  if (retval != NULL)
-	    return retval;
+	    {
+	      g_free (pathext);
+	      return retval;
+	    }
+	  p = q;
 	} while (*p++ != '\0');
+      g_free (pathext);
       return NULL;
     }
   else
     return inner_find_program_in_path (program);
 }
 
-#define g_find_program_in_path inner_find_program_in_path
 #endif
 
 /**
  * g_find_program_in_path:
- * @program: a program name
+ * @program: a program name in the GLib file name encoding
  * 
  * Locates the first executable named @program in the user's path, in the
  * same way that execvp() would locate it. Returns an allocated string
@@ -283,29 +288,34 @@ g_find_program_in_path (const gchar *program)
  * the path. If @program is already an absolute path, returns a copy of
  * @program if @program exists and is executable, and NULL otherwise.
  * 
- * On Windows, if @program does not have a file type suffix, tries to
- * append the suffixes in the PATHEXT environment variable (if that
- * doesn't exists, the suffixes .com, .exe, and .bat) in turn, and
- * then look for the resulting file name in the same way as
- * CreateProcess() would. This means first in the directory where the
+ * On Windows, if @program does not have a file type suffix, tries
+ * with the suffixes .exe, .cmd, .bat and .com, and the suffixes in
+ * the PATHEXT environment variable.
+ *
+ * It looks for the file in the same way as CreateProcess()
+ * would. This means first in the directory where the executing
  * program was loaded from, then in the current directory, then in the
  * Windows 32-bit system directory, then in the Windows directory, and
- * finally in the directories in the PATH environment variable. If
- * the program is found, the return value contains the full name
- * including the type suffix.
+ * finally in the directories in the PATH environment variable. If the
+ * program is found, the return value contains the full name including
+ * the type suffix.
  *
  * Return value: absolute path, or NULL
  **/
 #ifdef G_OS_WIN32
-static
-#endif
+static gchar *
+inner_find_program_in_path (const gchar *program)
+#else
 gchar*
 g_find_program_in_path (const gchar *program)
+#endif
 {
   const gchar *path, *p;
   gchar *name, *freeme;
 #ifdef G_OS_WIN32
-  gchar *path_tmp;
+  const gchar *path_copy;
+  gchar *filename = NULL, *appdir = NULL;
+  gchar *sysdir = NULL, *windir = NULL;
 #endif
   size_t len;
   size_t pathlen;
@@ -345,21 +355,82 @@ g_find_program_in_path (const gchar *program)
       path = "/bin:/usr/bin:.";
     }
 #else
-  {
-    gchar *tmp;
-    gchar moddir[MAXPATHLEN], sysdir[MAXPATHLEN], windir[MAXPATHLEN];
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      int n;
+      wchar_t wfilename[MAXPATHLEN], wsysdir[MAXPATHLEN],
+	wwindir[MAXPATHLEN];
+      
+      n = GetModuleFileNameW (NULL, wfilename, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	filename = g_utf16_to_utf8 (wfilename, -1, NULL, NULL, NULL);
+      
+      n = GetSystemDirectoryW (wsysdir, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	sysdir = g_utf16_to_utf8 (wsysdir, -1, NULL, NULL, NULL);
+      
+      n = GetWindowsDirectoryW (wwindir, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	windir = g_utf16_to_utf8 (wwindir, -1, NULL, NULL, NULL);
+    }
+  else
+    {
+      int n;
+      gchar cpfilename[MAXPATHLEN], cpsysdir[MAXPATHLEN],
+	cpwindir[MAXPATHLEN];
+      
+      n = GetModuleFileNameA (NULL, cpfilename, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	filename = g_locale_to_utf8 (cpfilename, -1, NULL, NULL, NULL);
+      
+      n = GetSystemDirectoryA (cpsysdir, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	sysdir = g_locale_to_utf8 (cpsysdir, -1, NULL, NULL, NULL);
+      
+      n = GetWindowsDirectoryA (cpwindir, MAXPATHLEN);
+      if (n > 0 && n < MAXPATHLEN)
+	windir = g_locale_to_utf8 (cpwindir, -1, NULL, NULL, NULL);
+    }
+  
+  if (filename)
+    {
+      appdir = g_path_get_dirname (filename);
+      g_free (filename);
+    }
+  
+  path = g_strdup (path);
 
-    GetModuleFileName (NULL, moddir, sizeof (moddir));
-    tmp = g_path_get_dirname (moddir);
-    GetSystemDirectory (sysdir, sizeof (sysdir));
-    GetWindowsDirectory (windir, sizeof (windir));
-    path_tmp = g_strconcat (tmp, ";.;", sysdir, ";", windir,
-			    (path != NULL ? ";" : NULL),
-			    (path != NULL ? path : NULL),
-			    NULL);
-    g_free (tmp);
-    path = path_tmp;
+  if (windir)
+    {
+      const gchar *tem = path;
+      path = g_strconcat (windir, ";", path, NULL);
+      g_free ((gchar *) tem);
+      g_free (windir);
+    }
+  
+  if (sysdir)
+    {
+      const gchar *tem = path;
+      path = g_strconcat (sysdir, ";", path, NULL);
+      g_free ((gchar *) tem);
+      g_free (sysdir);
+    }
+  
+  {
+    const gchar *tem = path;
+    path = g_strconcat (".;", path, NULL);
+    g_free ((gchar *) tem);
   }
+  
+  if (appdir)
+    {
+      const gchar *tem = path;
+      path = g_strconcat (appdir, ";", path, NULL);
+      g_free ((gchar *) tem);
+      g_free (appdir);
+    }
+
+  path_copy = path;
 #endif
   
   len = strlen (program) + 1;
@@ -394,7 +465,7 @@ g_find_program_in_path (const gchar *program)
           ret = g_strdup (startp);
           g_free (freeme);
 #ifdef G_OS_WIN32
-	  g_free (path_tmp);
+	  g_free ((gchar *) path_copy);
 #endif
           return ret;
         }
@@ -403,7 +474,7 @@ g_find_program_in_path (const gchar *program)
   
   g_free (freeme);
 #ifdef G_OS_WIN32
-  g_free (path_tmp);
+  g_free ((gchar *) path_copy);
 #endif
 
   return NULL;
@@ -801,82 +872,156 @@ g_get_current_dir (void)
 #endif /* !Win32 */
 }
 
-#ifdef G_OS_WIN32
-
-#undef g_get_current_dir
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-gchar*
-g_get_current_dir (void)
-{
-  gchar *utf8_dir = g_get_current_dir_utf8 ();
-  gchar *dir = g_locale_from_utf8 (utf8_dir, -1, NULL, NULL, NULL);
-  g_free (utf8_dir);
-  return dir;
-}
-
-#endif
-
 /**
  * g_getenv:
- * @variable: the environment variable to get.
+ * @variable: the environment variable to get, in the GLib file name encoding.
  * 
- * Returns an environment variable.
+ * Returns the value of an environment variable. The name and value
+ * are in the GLib file name encoding. On Unix, this means the actual
+ * bytes which might or might not be in some consistent character set
+ * and encoding. On Windows, it is in UTF-8. On Windows, in case the
+ * environment variable's value contains references to other
+ * environment variables, they are expanded.
  * 
- * Return value: the value of the environment variable, or %NULL if the environment
- * variable is not found. The returned string may be overwritten by the next call to g_getenv(),
- * g_setenv() or g_unsetenv().
+ * Return value: the value of the environment variable, or %NULL if
+ * the environment variable is not found. The returned string may be
+ * overwritten by the next call to g_getenv(), g_setenv() or
+ * g_unsetenv().
  **/
 G_CONST_RETURN gchar*
 g_getenv (const gchar *variable)
 {
 #ifndef G_OS_WIN32
+
   g_return_val_if_fail (variable != NULL, NULL);
 
   return getenv (variable);
-#else
+
+#else /* G_OS_WIN32 */
+
   GQuark quark;
-  gchar *system_env;
-  gchar *expanded_env;
-  guint length;
-  gchar dummy[2];
+  gchar *value;
 
   g_return_val_if_fail (variable != NULL, NULL);
-  
-  system_env = getenv (variable);
-  if (!system_env)
-    return NULL;
+  g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), NULL);
 
   /* On Windows NT, it is relatively typical that environment
    * variables contain references to other environment variables. If
-   * so, use ExpandEnvironmentStrings(). (If all software was written
-   * in the best possible way, such environment variables would be
-   * stored in the Registry as REG_EXPAND_SZ type values, and would
-   * then get automatically expanded before the program sees them. But
-   * there is broken software that stores environment variables as
-   * REG_SZ values even if they contain references to other
-   * environment variables.
+   * so, use ExpandEnvironmentStrings(). (In an ideal world, such
+   * environment variables would be stored in the Registry as
+   * REG_EXPAND_SZ type values, and would then get automatically
+   * expanded before a program sees them. But there is broken software
+   * that stores environment variables as REG_SZ values even if they
+   * contain references to other environment variables.)
    */
 
-  if (strchr (system_env, '%') == NULL)
+  if (G_WIN32_HAVE_WIDECHAR_API ())
     {
-      /* No reference to other variable(s), return value as such. */
-      return system_env;
+      wchar_t dummy[2], *wname, *wvalue;
+      int len;
+      
+      wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+
+      len = GetEnvironmentVariableW (wname, dummy, 2);
+
+      if (len == 0)
+	{
+	  g_free (wname);
+	  return NULL;
+	}
+
+      wvalue = g_new (wchar_t, len);
+
+      if (GetEnvironmentVariableW (wname, wvalue, len) != len - 1)
+	{
+	  g_free (wname);
+	  g_free (wvalue);
+	  return NULL;
+	}
+
+      if (wcschr (wvalue, L'%') != NULL)
+	{
+	  wchar_t *tem = wvalue;
+
+	  len = ExpandEnvironmentStringsW (wvalue, dummy, 2);
+
+	  if (len > 0)
+	    {
+	      wvalue = g_new (wchar_t, len);
+
+	      if (ExpandEnvironmentStringsW (tem, wvalue, len) != len)
+		{
+		  g_free (wvalue);
+		  wvalue = tem;
+		}
+	      else
+		g_free (tem);
+	    }
+	}
+
+      value = g_utf16_to_utf8 (wvalue, -1, NULL, NULL, NULL);
+
+      g_free (wname);
+      g_free (wvalue);
+    }
+  else
+    {
+      gchar dummy[3], *cpname, *cpvalue;
+      int len;
+      
+      cpname = g_locale_from_utf8 (variable, -1, NULL, NULL, NULL);
+
+      g_return_val_if_fail (cpname != NULL, NULL);
+
+      len = GetEnvironmentVariableA (cpname, dummy, 2);
+
+      if (len == 0)
+	{
+	  g_free (cpname);
+	  return NULL;
+	}
+
+      cpvalue = g_new (gchar, len);
+
+      if (GetEnvironmentVariableA (cpname, cpvalue, len) != len - 1)
+	{
+	  g_free (cpname);
+	  g_free (cpvalue);
+	  return NULL;
+	}
+
+      if (strchr (cpvalue, '%') != NULL)
+	{
+	  gchar *tem = cpvalue;
+
+	  len = ExpandEnvironmentStringsA (cpvalue, dummy, 3);
+
+	  if (len > 0)
+	    {
+	      cpvalue = g_new (gchar, len);
+
+	      if (ExpandEnvironmentStringsA (tem, cpvalue, len) != len)
+		{
+		  g_free (cpvalue);
+		  cpvalue = tem;
+		}
+	      else
+		g_free (tem);
+	    }
+	}
+
+      value = g_locale_to_utf8 (cpvalue, -1, NULL, NULL, NULL);
+
+      g_free (cpname);
+      g_free (cpvalue);
     }
 
-  /* First check how much space we need */
-  length = ExpandEnvironmentStrings (system_env, dummy, 2);
-  
-  expanded_env = g_malloc (length);
-  
-  ExpandEnvironmentStrings (system_env, expanded_env, length);
-  
-  quark = g_quark_from_string (expanded_env);
-  g_free (expanded_env);
+  quark = g_quark_from_string (value);
+  g_free (value);
   
   return g_quark_to_string (quark);
-#endif
+
+#endif /* G_OS_WIN32 */
 }
 
 /**
@@ -885,7 +1030,10 @@ g_getenv (const gchar *variable)
  * @value: the value for to set the variable to.
  * @overwrite: whether to change the variable if it already exists.
  *
- * Sets an environment variable.
+ * Sets an environment variable. Both the variable's name and value
+ * should be in the GLib file name encoding. On Unix, this means that
+ * they can be any sequence of bytes. On Windows, they should be in
+ * UTF-8.
  *
  * Note that on some systems, the memory used for the variable and its value 
  * can't be reclaimed later.
@@ -899,17 +1047,20 @@ g_setenv (const gchar *variable,
 	  const gchar *value, 
 	  gboolean     overwrite)
 {
+#ifndef G_OS_WIN32
+
   gint result;
 #ifndef HAVE_SETENV
   gchar *string;
 #endif
 
+  g_return_val_if_fail (variable != NULL, FALSE);
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
 
 #ifdef HAVE_SETENV
   result = setenv (variable, value, overwrite);
 #else
-  if (!overwrite && g_getenv (variable) != NULL)
+  if (!overwrite && getenv (variable) != NULL)
     return TRUE;
   
   /* This results in a leak when you overwrite existing
@@ -920,19 +1071,76 @@ g_setenv (const gchar *variable,
   result = putenv (string);
 #endif
   return result == 0;
+
+#else /* G_OS_WIN32 */
+
+  gboolean retval;
+
+  g_return_val_if_fail (variable != NULL, FALSE);
+  g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
+  g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), FALSE);
+  g_return_val_if_fail (g_utf8_validate (value, -1, NULL), FALSE);
+
+  if (!overwrite && g_getenv (variable) != NULL)
+    return TRUE;
+
+  /* We want to (if possible) set both the environment variable copy
+   * kept by the C runtime and the one kept by the system.
+   *
+   * We can't use only the C runtime's putenv or _wputenv() as that
+   * won't work for arbitrary Unicode strings in a "non-Unicode" app
+   * (with main() and not wmain()). In a "main()" app the C runtime
+   * initializes the C runtime's environment table by converting the
+   * real (wide char) environment variables to system codepage, thus
+   * breaking those that aren't representable in the system codepage.
+   *
+   * As the C runtime's putenv() will also set the system copy, we do
+   * the putenv() first, then call SetEnvironmentValueW ourselves.
+   */
+
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+      wchar_t *wvalue = g_utf8_to_utf16 (value, -1, NULL, NULL, NULL);
+      gchar *tem = g_strconcat (variable, "=", value, NULL);
+      wchar_t *wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
+      
+      g_free (tem);
+      _wputenv (wassignment);
+      g_free (wassignment);
+
+      retval = (SetEnvironmentVariableW (wname, wvalue) != 0);
+
+      g_free (wname);
+      g_free (wvalue);
+    }
+  else
+    {
+      /* In the non-Unicode case (Win9x), just putenv() is good
+       * enough.
+       */
+      gchar *tem = g_strconcat (variable, "=", value, NULL);
+      gchar *cpassignment = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
+
+      g_free (tem);
+      
+      retval = (putenv (cpassignment) == 0);
+
+      g_free (cpassignment);
+    }
+
+  return retval;
+
+#endif /* G_OS_WIN32 */
 }
 
+#ifndef G_OS_WIN32
 #ifndef HAVE_UNSETENV     
 /* According to the Single Unix Specification, environ is not in 
  * any system header, although unistd.h often declares it.
  */
-#  ifndef _MSC_VER
-/*
- * Win32 - at least msvc headers declare it so let's avoid
- *   warning C4273: '__p__environ' : inconsistent dll linkage.  dllexport assumed.
- */
 extern char **environ;
-#  endif
+#endif
 #endif
            
 /**
@@ -950,14 +1158,18 @@ extern char **environ;
 void
 g_unsetenv (const gchar *variable)
 {
+#ifndef G_OS_WIN32
+
 #ifdef HAVE_UNSETENV
+  g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
 
   unsetenv (variable);
-#else
+#else /* !HAVE_UNSETENV */
   int len;
   gchar **e, **f;
 
+  g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
 
   len = strlen (variable);
@@ -979,7 +1191,44 @@ g_unsetenv (const gchar *variable)
       e++;
     }
   *f = NULL;
-#endif
+#endif /* !HAVE_UNSETENV */
+
+#else  /* G_OS_WIN32 */
+
+  g_return_if_fail (variable != NULL);
+  g_return_if_fail (strchr (variable, '=') == NULL);
+  g_return_if_fail (g_utf8_validate (variable, -1, NULL));
+
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+      gchar *tem = g_strconcat (variable, "=", NULL);
+      wchar_t *wassignment = g_utf8_to_utf16 (tem, -1, NULL, NULL, NULL);
+      
+      g_free (tem);
+      _wputenv (wassignment);
+      g_free (wassignment);
+
+      SetEnvironmentVariableW (wname, NULL);
+
+      g_free (wname);
+    }
+  else
+    {
+      /* In the non-Unicode case (Win9x), just putenv() is good
+       * enough.
+       */
+      gchar *tem = g_strconcat (variable, "=", NULL);
+      gchar *cpassignment = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
+
+      g_free (tem);
+      
+      putenv (cpassignment);
+
+      g_free (cpassignment);
+    }
+
+#endif /* G_OS_WIN32 */
 }
 
 G_LOCK_DEFINE_STATIC (g_utils_global);
@@ -1047,13 +1296,6 @@ g_get_any_init (void)
 {
   if (!g_tmp_dir)
     {
-#ifdef G_OS_WIN32
-      /* g_tmp_dir is kept in the system codepage for most of this
-       * function, and converted at the end. home_dir, user_name and
-       * real_name are handled in UTF-8 all the way.
-       */
-#endif
-
       g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TMP"));
@@ -1076,7 +1318,7 @@ g_get_any_init (void)
 #ifndef G_OS_WIN32
 	  g_tmp_dir = g_strdup ("/tmp");
 #else /* G_OS_WIN32 */
-	  g_tmp_dir = g_strdup ("C:\\");
+	  g_tmp_dir = g_strdup ("\\");
 #endif /* G_OS_WIN32 */
 	}
       
@@ -1084,23 +1326,18 @@ g_get_any_init (void)
       /* We check $HOME first for Win32, though it is a last resort for Unix
        * where we prefer the results of getpwuid().
        */
-      {
-	const gchar *home = g_getenv ("HOME");
-	gchar *home_utf8 = NULL;
+      g_home_dir = g_strdup (g_getenv ("HOME"));
 
-	if (home)
-	  home_utf8 = g_locale_to_utf8 (home, -1, NULL, NULL, NULL);
-
-	/* Only believe HOME if it is an absolute path and exists */
-	if (home_utf8)
-	  {
-	    if (g_path_is_absolute (home_utf8) &&
-		g_file_test (home_utf8, G_FILE_TEST_IS_DIR))
-	      g_home_dir = home_utf8;
-	    else 
-	      g_free (home_utf8);
-	  }
-      }
+      /* Only believe HOME if it is an absolute path and exists */
+      if (g_home_dir)
+	{
+	  if (!(g_path_is_absolute (g_home_dir) &&
+		g_file_test (g_home_dir, G_FILE_TEST_IS_DIR)))
+	    {
+	      g_free (g_home_dir);
+	      g_home_dir = NULL;
+	    }
+	}
       
       /* In case HOME is Unix-style (it happens), convert it to
        * Windows style.
@@ -1115,9 +1352,8 @@ g_get_any_init (void)
       if (!g_home_dir)
 	{
 	  /* USERPROFILE is probably the closest equivalent to $HOME? */
-	  if (getenv ("USERPROFILE") != NULL)
-	    g_home_dir = g_locale_to_utf8 (g_getenv ("USERPROFILE"),
-					   -1, NULL, NULL, NULL);
+	  if (g_getenv ("USERPROFILE") != NULL)
+	    g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
 	}
 
       if (!g_home_dir)
@@ -1130,18 +1366,10 @@ g_get_any_init (void)
 	   * 2000 HOMEDRIVE seems to be equal to SYSTEMDRIVE, and
 	   * HOMEPATH is its root "\"?
 	   */
-	  if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
-	    {
-	      gchar *homedrive, *homepath;
-	      
-	      homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
-	      homepath = g_locale_to_utf8 (g_getenv ("HOMEPATH"),
-					   -1, NULL, NULL, NULL);
-	      
-	      g_home_dir = g_strconcat (homedrive, homepath, NULL);
-	      g_free (homedrive);
-	      g_free (homepath);
-	    }
+	  if (g_getenv ("HOMEDRIVE") != NULL && g_getenv ("HOMEPATH") != NULL)
+	    g_home_dir = g_strconcat (g_getenv ("HOMEDRIVE"),
+				      g_getenv ("HOMEPATH"),
+				      NULL);
 	}
 #endif /* G_OS_WIN32 */
       
@@ -1286,12 +1514,16 @@ g_get_any_init (void)
 	g_real_name = g_strdup ("Unknown");
 
 #ifdef G_OS_WIN32
-      g_tmp_dir_cp = g_tmp_dir;
-      g_tmp_dir = g_locale_to_utf8 (g_tmp_dir_cp, -1, NULL, NULL, NULL);
-
+      g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
       g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
-
       g_real_name_cp = g_locale_from_utf8 (g_real_name, -1, NULL, NULL, NULL);
+
+      if (!g_tmp_dir_cp)
+	g_tmp_dir_cp = g_strdup ("\\");
+      if (!g_user_name_cp)
+	g_user_name_cp = g_strdup ("somebody");
+      if (!g_real_name_cp)
+	g_real_name_cp = g_strdup ("Unknown");
 
       /* home_dir might be NULL, unlike tmp_dir, user_name and
        * real_name.
@@ -1315,25 +1547,6 @@ g_get_user_name (void)
   return g_user_name;
 }
 
-#ifdef G_OS_WIN32
-
-#undef g_get_user_name
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-G_CONST_RETURN gchar*
-g_get_user_name (void)
-{
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-  
-  return g_user_name_cp;
-}
-
-#endif
-
 G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
@@ -1345,25 +1558,6 @@ g_get_real_name (void)
   return g_real_name;
 }
 
-#ifdef G_OS_WIN32
-
-#undef g_get_real_name
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-G_CONST_RETURN gchar*
-g_get_real_name (void)
-{
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
- 
-  return g_real_name_cp;
-}
-
-#endif
-
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
@@ -1374,25 +1568,6 @@ g_get_home_dir (void)
   
   return g_home_dir;
 }
-
-#ifdef G_OS_WIN32
-
-#undef g_get_home_dir
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-G_CONST_RETURN gchar*
-g_get_home_dir (void)
-{
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-
-  return g_home_dir_cp;
-}
-
-#endif
 
 /* Return a directory to be used to store temporary files. This is the
  * value of the TMPDIR, TMP or TEMP environment variables (they are
@@ -1411,25 +1586,6 @@ g_get_tmp_dir (void)
   
   return g_tmp_dir;
 }
-
-#ifdef G_OS_WIN32
-
-#undef g_get_tmp_dir
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-G_CONST_RETURN gchar*
-g_get_tmp_dir (void)
-{
-  G_LOCK (g_utils_global);
-  if (!g_tmp_dir)
-    g_get_any_init ();
-  G_UNLOCK (g_utils_global);
-
-  return g_tmp_dir_cp;
-}
-
-#endif
 
 G_LOCK_DEFINE_STATIC (g_prgname);
 static gchar *g_prgname = NULL;
@@ -2189,3 +2345,135 @@ _glib_gettext (const gchar *str)
 }
 
 #endif /* ENABLE_NLS */
+
+#ifdef G_OS_WIN32
+
+/* Binary compatibility versions. Not for newly compiled code. */
+
+#undef g_find_program_in_path
+
+gchar*
+g_find_program_in_path (const gchar *program)
+{
+  gchar *utf8_program = g_locale_to_utf8 (program, -1, NULL, NULL, NULL);
+  gchar *utf8_retval = g_find_program_in_path_utf8 (utf8_program);
+  gchar *retval;
+
+  g_free (utf8_program);
+  if (utf8_retval == NULL)
+    return NULL;
+  retval = g_locale_from_utf8 (utf8_retval, -1, NULL, NULL, NULL);
+  g_free (utf8_retval);
+
+  return retval;
+}
+
+#undef g_get_current_dir
+
+gchar*
+g_get_current_dir (void)
+{
+  gchar *utf8_dir = g_get_current_dir_utf8 ();
+  gchar *dir = g_locale_from_utf8 (utf8_dir, -1, NULL, NULL, NULL);
+  g_free (utf8_dir);
+  return dir;
+}
+
+#undef g_getenv
+
+G_CONST_RETURN gchar*
+g_getenv (const gchar *variable)
+{
+  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
+  const gchar *utf8_value = g_getenv_utf8 (utf8_variable);
+  gchar *value = g_locale_from_utf8 (utf8_value, -1, NULL, NULL, NULL);
+  GQuark quark = g_quark_from_string (value);
+
+  g_free (utf8_variable);
+  g_free (value);
+
+  return g_quark_to_string (quark);
+}
+
+#undef g_setenv
+
+gboolean
+g_setenv (const gchar *variable, 
+	  const gchar *value, 
+	  gboolean     overwrite)
+{
+  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
+  gchar *utf8_value = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
+  gboolean retval = g_setenv_utf8 (utf8_variable, utf8_value, overwrite);
+
+  g_free (utf8_variable);
+  g_free (utf8_value);
+
+  return retval;
+}
+
+#undef g_unsetenv
+
+void
+g_unsetenv (const gchar *variable)
+{
+  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
+
+  g_unsetenv_utf8 (utf8_variable);
+
+  g_free (utf8_variable);
+}
+
+#undef g_get_user_name
+
+G_CONST_RETURN gchar*
+g_get_user_name (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+  
+  return g_user_name_cp;
+}
+
+#undef g_get_real_name
+
+G_CONST_RETURN gchar*
+g_get_real_name (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+ 
+  return g_real_name_cp;
+}
+
+#undef g_get_home_dir
+
+G_CONST_RETURN gchar*
+g_get_home_dir (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+
+  return g_home_dir_cp;
+}
+
+#undef g_get_tmp_dir
+
+G_CONST_RETURN gchar*
+g_get_tmp_dir (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+
+  return g_tmp_dir_cp;
+}
+
+#endif

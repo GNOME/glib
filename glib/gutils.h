@@ -192,6 +192,13 @@ void                  g_nullify_pointer    (gpointer    *nullify_location);
 
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
+#ifdef G_OS_WIN32
+#define g_getenv g_getenv_utf8
+#define g_setenv g_setenv_utf8
+#define g_unsetenv g_unsetenv_utf8
+#define g_find_program_in_path g_find_program_in_path_utf8
+#endif
+
 G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
 gboolean              g_setenv             (const gchar *variable,
 					    const gchar *value,

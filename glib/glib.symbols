@@ -195,7 +195,10 @@ g_file_test PRIVATE
 #ifdef G_OS_WIN32
 g_file_test_utf8
 #endif
-g_find_program_in_path
+g_find_program_in_path PRIVATE
+#ifdef G_OS_WIN32
+g_find_program_in_path_utf8
+#endif
 g_fopen
 g_fprintf G_GNUC_PRINTF(2,3)
 g_free
@@ -208,7 +211,10 @@ g_get_current_dir_utf8
 #endif
 g_get_current_time
 g_get_filename_charsets
-g_getenv
+g_getenv PRIVATE
+#ifdef G_OS_WIN32
+g_getenv_utf8
+#endif
 g_get_home_dir PRIVATE
 #ifdef G_OS_WIN32
 g_get_home_dir_utf8
@@ -645,7 +651,10 @@ g_scanner_sync_file_offset
 g_scanner_unexp_token
 g_scanner_warn G_GNUC_PRINTF(2,3)
 g_set_application_name
-g_setenv
+g_setenv PRIVATE
+#ifdef G_OS_WIN32
+g_setenv_utf8
+#endif
 g_set_error G_GNUC_PRINTF(4,5)
 g_set_prgname
 g_set_printerr_handler
@@ -882,7 +891,10 @@ g_unichar_xdigit_value G_GNUC_CONST
 g_unicode_canonical_decomposition G_GNUC_MALLOC
 g_unicode_canonical_ordering
 g_unlink
-g_unsetenv
+g_unsetenv PRIVATE
+#ifdef G_OS_WIN32
+g_unsetenv_utf8
+#endif
 g_uri_list_extract_uris G_GNUC_MALLOC
 g_usleep
 g_utf16_to_ucs4 G_GNUC_MALLOC

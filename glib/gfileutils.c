@@ -146,7 +146,7 @@ g_file_test (const gchar *filename,
   if (test & G_FILE_TEST_IS_EXECUTABLE)
     {
       const gchar *lastdot = strrchr (filename, '.');
-      gchar *pathext = NULL, *tem, *p;
+      const gchar *pathext = NULL, *p;
       int extlen;
 
       if (lastdot == NULL)
@@ -160,53 +160,11 @@ g_file_test (const gchar *filename,
 
       /* Check if it is one of the types listed in %PATHEXT% */
 
-      /* Perhaps unfortunately, g_getenv() doesn't return UTF-8, but
-       * system codepage. And _wgetenv() isn't useful either, as the C
-       * runtime just keeps system codepage versions of the
-       * environment variables in applications that aren't built
-       * specially. So use GetEnvironmentVariableW().
-       */
-      if (G_WIN32_HAVE_WIDECHAR_API ())
-	{
-	  wchar_t dummy[2], *wvar;
-	  int len;
-
-	  len = GetEnvironmentVariableW (L"PATHEXT", dummy, 2);
-
-	  if (len == 0)
-	    return FALSE;
-
-	  wvar = g_new (wchar_t, len);
-
-	  if (GetEnvironmentVariableW (L"PATHEXT", wvar, len) == len - 1)
-	    pathext = g_utf16_to_utf8 (wvar, -1, NULL, NULL, NULL);
-
-	  g_free (wvar);
-	}
-      else
-	{
-	  gchar dummy[2], *cpvar;
-	  int len;
-
-	  len = GetEnvironmentVariableA ("PATHEXT", dummy, 2);
-
-	  if (len == 0)
-	    return FALSE;
-
-	  cpvar = g_new (gchar, len);
-
-	  if (GetEnvironmentVariableA ("PATHEXT", cpvar, len) == len - 1)
-	    pathext = g_locale_to_utf8 (cpvar, -1, NULL, NULL, NULL);
-
-	  g_free (cpvar);
-	}
-
+      pathext = g_getenv ("PATHEXT");
       if (pathext == NULL)
 	return FALSE;
 
-      tem = pathext;
       pathext = g_utf8_casefold (pathext, -1);
-      g_free (tem);
 
       lastdot = g_utf8_casefold (lastdot, -1);
       extlen = strlen (lastdot);
@@ -214,13 +172,13 @@ g_file_test (const gchar *filename,
       p = pathext;
       while (TRUE)
 	{
-	  gchar *q = strchr (p, ';');
+	  const gchar *q = strchr (p, ';');
 	  if (q == NULL)
 	    q = p + strlen (p);
 	  if (extlen == q - p &&
 	      memcmp (lastdot, p, extlen) == 0)
 	    {
-	      g_free (pathext);
+	      g_free ((gchar *) pathext);
 	      g_free ((gchar *) lastdot);
 	      return TRUE;
 	    }
@@ -230,7 +188,7 @@ g_file_test (const gchar *filename,
 	    break;
 	}
 
-      g_free (pathext);
+      g_free ((gchar *) pathext);
       g_free ((gchar *) lastdot);
       return FALSE;
     }

@@ -1,3 +1,18 @@
+2005-01-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.symbols
+	* glib/gutils.h
+	* glib/gutils.c: Make also g_getenv(), g_setenv(), g_unsetenv()
+	and g_find_program_in_path() take and return UTF-8 strings on
+	Win32. Implement DLL ABI backward compatility for them, too. Move
+	all the DLL ABI stability wrappers to the end of the file. Use
+	wide character API when available in inner_find_program_in_path().
+
+	* glib/gfileutils.c: With the UTF-8ness of g_getenv() above, just
+	use g_getenv() to get PATHEXT. (Yeah, it's probably overdoing it
+	to consider somebody actually having anything else than ASCII
+	in PATHEXT, but...)
+
 2004-12-31  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gfileutils.c (g_file_test): Rewrite the Win32 version to
