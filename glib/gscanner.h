@@ -110,7 +110,6 @@ union	_GTokenValue
   gulong	v_binary;
   gulong	v_octal;
   gulong	v_int;
-  guint64       v_int64;
   gdouble	v_float;
   gulong	v_hex;
   gchar		*v_string;
@@ -155,7 +154,6 @@ struct	_GScannerConfig
   guint		char_2_token : 1;		/* return G_TOKEN_CHAR? */
   guint		symbol_2_token : 1;
   guint		scope_0_fallback : 1;		/* try scope 0 on lookups? */
-  guint		store_int64 : 1; 		/* use value.v_int64 rather than v_int */
   guint		padding_dummy;
 };
 

@@ -1,3 +1,11 @@
+Mon Nov  4 12:59:01 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gscanner.[ch] glib/gstrfuncs.[ch] configure.in:
+	Back out API additions from glib-2-0 branch.
+
+	* glib/gscanner.c: Fix parsing of unsigned long
+	without using g_ascii_strtoull.
+
 2002-11-03  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* configure.in: Added Belarusian to ALL_LINGUAS
