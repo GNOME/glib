@@ -976,6 +976,8 @@ static gchar *g_application_name = NULL;
  * been called).
  * 
  * Return value: human-readable application name. may return %NULL
+ *
+ * Since: 2.2
  **/
 G_CONST_RETURN gchar*
 g_get_application_name (void)

@@ -1,3 +1,13 @@
+2002-11-29  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/main.sgml: Write something about GSourceDummyMarshal.
+
+	* glib/tmpl/date.sgml: 
+	* glib/tmpl/string_utils.sgml: Remove redundant docs.
+
+	* glib/glib-sections.txt: Add g_ascii_strtoull and 
+	g_get_application_name.
+
 2002-11-28  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/strings.sgml: 

@@ -50,14 +50,10 @@ nul-terminated.
 
 <!-- ##### FUNCTION g_strdupv ##### -->
 <para>
-Copies a %NULL-terminated array of strings. The result consists of a
-%NULL-terminated array, with one malloc block holding the array of strings, and
-each string itself allocated. The simplest way to free the result is with
-g_strfreev() which frees each string in a vector, then the vector itself.
 </para>
 
-@str_array: array to copy
-@Returns: a new array
+@str_array: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strnfill ##### -->
@@ -615,6 +611,17 @@ Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte char
 
 @string: the string to reverse.
 @Returns: the same pointer passed in as @string.
+
+
+<!-- ##### FUNCTION g_ascii_strtoull ##### -->
+<para>
+
+</para>
+
+@nptr: 
+@endptr: 
+@base: 
+@Returns: 
 
 
 <!-- ##### MACRO G_ASCII_DTOSTR_BUF_SIZE ##### -->

@@ -628,7 +628,8 @@ an event source.
 
 <!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
 <para>
-
+This is just a placeholder for #GClosureMarshal, which cannot be used here
+for dependency reasons.
 </para>
 
 

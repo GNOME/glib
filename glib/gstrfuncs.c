@@ -603,6 +603,8 @@ g_ascii_formatd (gchar       *buffer,
  * is returned, and %ERANGE is stored in %errno.
  *
  * Return value: the #guint64 value.
+ *
+ * Since: 2.0.7
  **/
 guint64
 g_ascii_strtoull (const gchar *nptr,

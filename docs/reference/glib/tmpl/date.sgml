@@ -83,8 +83,6 @@ Represents a precise time, with seconds and microseconds. Same as the
 
 <!-- ##### FUNCTION g_get_current_time ##### -->
 <para>
-Equivalent to <function>gettimeofday()</function>, but also works on
-Win32. Returns the current time.
 </para>
 
 @result: 

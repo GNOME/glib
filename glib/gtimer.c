@@ -226,36 +226,36 @@ g_usleep (gulong microseconds)
 
 /**
  * g_time_val_add:
- * @time: a #GTimeVal
+ * @time_: a #GTimeVal
  * @microseconds: number of microseconds to add to @time
  *
- * Adds the given number of microseconds to @time. @microseconds can
- * also be negative to decrease the value of @time.
+ * Adds the given number of microseconds to @time_. @microseconds can
+ * also be negative to decrease the value of @time_.
  **/
 void 
-g_time_val_add (GTimeVal *time, glong microseconds)
+g_time_val_add (GTimeVal *time_, glong microseconds)
 {
-  g_return_if_fail (time->tv_usec >= 0 && time->tv_usec < G_USEC_PER_SEC);
+  g_return_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC);
 
   if (microseconds >= 0)
     {
-      time->tv_usec += microseconds % G_USEC_PER_SEC;
-      time->tv_sec += microseconds / G_USEC_PER_SEC;
-      if (time->tv_usec >= G_USEC_PER_SEC)
+      time_->tv_usec += microseconds % G_USEC_PER_SEC;
+      time_->tv_sec += microseconds / G_USEC_PER_SEC;
+      if (time_->tv_usec >= G_USEC_PER_SEC)
        {
-         time->tv_usec -= G_USEC_PER_SEC;
-         time->tv_sec++;
+         time_->tv_usec -= G_USEC_PER_SEC;
+         time_->tv_sec++;
        }
     }
   else
     {
       microseconds *= -1;
-      time->tv_usec -= microseconds % G_USEC_PER_SEC;
-      time->tv_sec -= microseconds / G_USEC_PER_SEC;
-      if (time->tv_usec < 0)
+      time_->tv_usec -= microseconds % G_USEC_PER_SEC;
+      time_->tv_sec -= microseconds / G_USEC_PER_SEC;
+      if (time_->tv_usec < 0)
        {
-         time->tv_usec += G_USEC_PER_SEC;
-         time->tv_sec--;
+         time_->tv_usec += G_USEC_PER_SEC;
+         time_->tv_sec--;
        }      
     }
 }

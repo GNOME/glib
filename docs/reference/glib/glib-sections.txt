@@ -951,6 +951,7 @@ g_strncasecmp
 g_strreverse
 
 <SUBSECTION>
+g_ascii_strtoull
 G_ASCII_DTOSTR_BUF_SIZE
 g_ascii_strtod
 g_ascii_dtostr
@@ -1141,6 +1142,7 @@ g_hook_destroy_link
 <SECTION>
 <TITLE>Miscellaneous Utility Functions</TITLE>
 <FILE>misc_utils</FILE>
+g_get_application_name
 g_get_prgname
 g_set_prgname
 g_getenv
