@@ -1,3 +1,7 @@
+2002-12-11  Gil Osher  <dolfin@rpg.org.il>
+
+	* he.po: Added Hebrew translation.
+
 2002-12-09  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Updated Norwegian (bokmal) translation.
@@ -73,7 +77,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-10-04  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2002-09-22  Christopher R. Gabriel  <cgabriel@cgabriel.org>
 
@@ -189,7 +193,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* ru.po: Updated russian translation.
 
-2002-03-06  Germï¿½ Poo-Caamao <gpoo@ubiobio.cl>
+2002-03-06  Germï?½ Poo-Caamao <gpoo@ubiobio.cl>
 
         * es.po: Updated spanish translation.
 
@@ -199,7 +203,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-03-03  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2002-03-02  Hasbullah Bin Pit <sebol@ikhlas.com>
 
@@ -278,11 +282,11 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-02-12  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2002-02-10  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2002-02-07  Changwoo Ryu  <cwryu@debian.org>
 
@@ -355,7 +359,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-01-11  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2002-01-09  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
 
@@ -406,7 +410,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-12-13  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 
 2001-12-11  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
@@ -426,7 +430,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-12-04  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 	* POTFILES.in: Added glib/gdir.c.
 	
 2001-12-03  Christian Rose  <menthos@menthos.com>
@@ -436,7 +440,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 2001-11-26  Jesus Bravo Alvarez  <jba@pobox.com>
 
 	* gl.po: Added Galician translation from
-	  Manuel A. Fernï¿½dez Montecelo <manuel@sindominio.net>
+	  Manuel A. Fernï?½dez Montecelo <manuel@sindominio.net>
 
 2001-11-23 Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>
 	
@@ -452,7 +456,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-11-14  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 	
 2001-11-07  Wang Jian  <lark@linux.net.cn>
 
@@ -526,7 +530,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-09-19  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* no.po: Updated Norwegian (bokmï¿½) translation.
+	* no.po: Updated Norwegian (bokmï?½) translation.
 	
 2001-09-11  Christian Rose  <menthos@menthos.com>
 
@@ -550,9 +554,9 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 	* Makefile.in.in: Updated from more recent gettext to fix
 	  problem with DESTDIR.
 
-2001-09-02  Carlos Perell Marï¿½ <carlos@gnome-db.org>
+2001-09-02  Carlos Perell Marï?½ <carlos@gnome-db.org>
 
-	* es.po: Added Spanish translation by josï¿½antonio salgueiro
+	* es.po: Added Spanish translation by josï?½antonio salgueiro
 	<joseantsa@retemail.es>
 
 2001-08-21  Abel Cheung  <maddog@linux.org.hk>
@@ -604,12 +608,12 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Fixed another message in the Swedish translation. Thanks to
-	Jrgen Tegnï¿½ <teg@post.utfors.se>.
+	Jrgen Tegnï?½ <teg@post.utfors.se>.
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Fixed Swedish translation, thanks to Veronica Loell
-	<info@nakawe.se> and Martin Norbï¿½k <d95mback@dtek.chalmers.se>.
+	<info@nakawe.se> and Martin Norbï?½k <d95mback@dtek.chalmers.se>.
 
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
@@ -639,4 +643,5 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 2001-01-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Added Norwegian translation.
+
 
