@@ -22,63 +22,63 @@ INCLUDES = -I .
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
 DEPCFLAGS = $(LIBICONV_CFLAGS)
 
-DLLS_TO_BUILD = \
- 	glib-$(GLIB_VER).dll \
-	gmodule/gmodule-$(GLIB_VER).dll \
-	gthread/gthread-$(GLIB_VER).dll \
-	gobject/gobject-$(GLIB_VER).dll \
+DLLS_TO_BUILD =				\
+ 	glib-$(GLIB_VER).dll		\
+	gmodule/gmodule-$(GLIB_VER).dll	\
+	gthread/gthread-$(GLIB_VER).dll	\
+	gobject/gobject-$(GLIB_VER).dll
 
 
-all : \
-	config.h \
-	glibconfig.h \
-	$(DLLS_TO_BUILD) \
-	gspawn-win32-helper.exe \
-	testglib.exe \
-	testgdate.exe \
+all :				\
+	config.h		\
+	glibconfig.h		\
+	$(DLLS_TO_BUILD)	\
+	gspawn-win32-helper.exe	\
+	testglib.exe		\
+	testgdate.exe		\
 	testgdateparser.exe
 
 install : all
 	$(INSTALL) $(DLLS_TO_BUILD) $(BIN)
 
-glib_OBJECTS = \
-	garray.o \
-	gasyncqueue.o \
-	gbacktrace.o \
-	gcache.o \
-	gcompletion.o \
-	gconvert.o \
-	gdataset.o \
-	gdate.o \
-	gerror.o \
-	gfileutils.o \
-	ghook.o \
-	ghash.o \
-	giochannel.o \
-	giowin32.o \
-	glist.o \
-	gmain.o \
-	gmem.o \
-	gmessages.o \
-	gnode.o \
-	gprimes.o \
-	gqueue.o \
-	grand.o \
-	gshell.o \
-	gslist.o \
-	gspawn-win32.o \
-	gthread.o \
-	gthreadpool.o \
-	gtimer.o \
-	gtree.o \
-	grel.o \
-	gstring.o \
-	gstrfuncs.o \
-	gscanner.o \
-	gunidecomp.o \
-	guniprop.o \
-	gutf8.o \
-	gutils.o \
+glib_OBJECTS =			\
+	garray.o		\
+	gasyncqueue.o		\
+	gbacktrace.o		\
+	gcache.o		\
+	gcompletion.o		\
+	gconvert.o		\
+	gdataset.o		\
+	gdate.o			\
+	gerror.o		\
+	gfileutils.o		\
+	ghash.o			\
+	ghook.o			\
+	giochannel.o		\
+	giowin32.o		\
+	glist.o			\
+	gmain.o			\
+	gmem.o			\
+	gmessages.o		\
+	gnode.o			\
+	gprimes.o		\
+	gqueue.o		\
+	grand.o			\
+	grel.o			\
+	gscanner.o		\
+	gshell.o		\
+	gslist.o		\
+	gspawn-win32.o		\
+	gstrfuncs.o		\
+	gstring.o		\
+	gthread.o		\
+	gthreadpool.o		\
+	gtimer.o		\
+	gtree.o			\
+	gunidecomp.o		\
+	guniprop.o		\
+	gutf8.o			\
+	gutils.o		\
 	gwin32.o
 
 glibconfig.h: glibconfig.h.win32

@@ -20,62 +20,62 @@ INCLUDES = -I .
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
 DEPCFLAGS = $(LIBICONV_CFLAGS)
 
-DLLS_TO_BUILD = \
- 	glib-$(GLIB_VER).dll \
-	sub-gmodule \
-	sub-gthread \
+DLLS_TO_BUILD =			\
+ 	glib-$(GLIB_VER).dll	\
+	sub-gmodule		\
+	sub-gthread		\
 	sub-gobject
 
-all : \
-	config.h	\
-	glibconfig.h	\
-	$(DLLS_TO_BUILD) \
-	gspawn-win32-helper.exe \
-	testglib.exe	\
-	testgdate.exe	\
+all :				\
+	config.h		\
+	glibconfig.h		\
+	$(DLLS_TO_BUILD)	\
+	gspawn-win32-helper.exe	\
+	testglib.exe		\
+	testgdate.exe		\
 	testgdateparser.exe
 
 install : all
 	copy glib-$(GLIB_VER).dll $(BIN)
 
-glib_OBJECTS = \
-	garray.obj	\
-	gasyncqueue.obj	\
-	gbacktrace.obj	\
-	gcache.obj	\
-	gcompletion.obj	\
-	gdataset.obj	\
-	gdate.obj	\
-	gerror.obj	\
-	gfileutils.obj	\
-	gconvert.obj	\
-	ghash.obj	\
-	ghook.obj	\
-	giochannel.obj	\
-	giowin32.obj	\
-	glist.obj	\
-	gmain.obj	\
-	gmem.obj	\
-	gmessages.obj	\
-	gnode.obj	\
-	gprimes.obj	\
-	gqueue.obj	\
-	grand.obj	\
-	grel.obj	\
-	gscanner.obj	\
-	gshell.obj	\
-	gslist.obj	\
-	gstrfuncs.obj	\
-	gstring.obj	\
-	gspawn-win32.obj \
-	gthread.obj	\
-	gthreadpool.obj	\
-	gtimer.obj	\
-	gtree.obj	\
-	gunidecomp.obj	\
-	guniprop.obj	\
-	gutf8.obj	\
-	gutils.obj	\
+glib_OBJECTS =			\
+	garray.obj		\
+	gasyncqueue.obj		\
+	gbacktrace.obj		\
+	gcache.obj		\
+	gcompletion.obj		\
+	gconvert.obj		\
+	gdataset.obj		\
+	gdate.obj		\
+	gerror.obj		\
+	gfileutils.obj		\
+	ghash.obj		\
+	ghook.obj		\
+	giochannel.obj		\
+	giowin32.obj		\
+	glist.obj		\
+	gmain.obj		\
+	gmem.obj		\
+	gmessages.obj		\
+	gnode.obj		\
+	gprimes.obj		\
+	gqueue.obj		\
+	grand.obj		\
+	grel.obj		\
+	gscanner.obj		\
+	gshell.obj		\
+	gslist.obj		\
+	gspawn-win32.obj	\
+	gstrfuncs.obj		\
+	gstring.obj		\
+	gthread.obj		\
+	gthreadpool.obj		\
+	gtimer.obj		\
+	gtree.obj		\
+	gunidecomp.obj		\
+	guniprop.obj		\
+	gutf8.obj		\
+	gutils.obj		\
 	gwin32.obj
 
 glibconfig.h: glibconfig.h.win32

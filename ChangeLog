@@ -1,3 +1,7 @@
+2000-10-26  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.{mingw,msc}.in: Cosmetics.
+
 2000-10-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gstrfuncs.c (g_strsplit): When the string is ended by a
