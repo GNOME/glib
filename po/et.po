@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: glib 1.3.14\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-15 11:45+0100\n"
-"PO-Revision-Date: 2005-01-29 20:55+0300\n"
-"Last-Translator: Priit Laes <amd@tt.ee>\n"
+"PO-Revision-Date: 2005-02-20 22:55+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee> \n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +55,7 @@ msgstr "Osaline märgijada sisendi lõpus"
 #: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr ""
+msgstr "Taandresiimi '%s' pole võimalik teisendada kooditabelisse '%s'"
 
 #: glib/gconvert.c:1601
 #, c-format
@@ -101,7 +101,7 @@ msgstr "Viga kataloogi '%s' avamisel: %s"
 #: glib/gfileutils.c:566
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Ei saa eraldada %lu faili \"%s\" lugemiseks"
 
 #: glib/gfileutils.c:511
 #, c-format
@@ -165,27 +165,27 @@ msgstr "Konverterit `%s' -> `%s' ei saa avada: %s"
 
 #: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "Ei saa teostada toorest lugemise g_io_channel_read_line_string'i sees"
 
 #: glib/giochannel.c:1542
 #: glib/giochannel.c:1799
 #: glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "Lugemispuhvrisse jäi teisendamata andmeid"
 
 #: glib/giochannel.c:1622
 #: glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Kanali katkestus poole märgi pealt"
 
 #: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Ei saa teostada toorest lugemise g_io_channel_read_to_end'i sees"
 
 #: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Viga real %d sümbolil %d: %s"
+msgstr "Viga real %d märgil %d: %s"
 
 #: glib/gmarkup.c:324
 #, c-format
@@ -201,11 +201,13 @@ msgstr ""
 #, c-format
 msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
 msgstr ""
+"Märk '%s' ei ole olemi nime alguses lubatud. Märk & alustab olemit, kui see "
+"ampersand pole mõeldud olemiks, märgi see kui &amp;"
 
 #: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Sümbol '%s' ei ole olemi nimes lubatud"
+msgstr "Märk '%s' ei ole olemi nimes lubatud"
 
 #: glib/gmarkup.c:521
 #, c-format
@@ -215,24 +217,29 @@ msgstr "Olemi nimi '%s' on tuntmatu"
 #: glib/gmarkup.c:531
 msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"Olem ei lõppenud semikooloniga; kõige tõenäolisemalt ei kavatsenud sa "
+"ampersandi kasutades olemit alustada - märgi see kui &amp;"
 
 #: glib/gmarkup.c:584
 #, c-format
 msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"Viga '%-.*s' parsimisel. See võiks olla märgiviites olev number (näiteks "
+"&#234;) - võibolla on number liiga suur"
 
 #: glib/gmarkup.c:609
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr ""
+msgstr "Märgiviide '%-.*s' ei teisendu lubatud märgiks"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Tühi märgiviide, see peaks sisaldama numbrit, näiteks &#454;"
 
 #: glib/gmarkup.c:634
 msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"Märgiviide ei lõpe semikooloniga. Enamasti kasutatakse ampersand märki ilma kavatsuseta olemit alustada - märgi see kui &amp;"
 
 #: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
@@ -240,7 +247,7 @@ msgstr "Lõpetamata viide olemile"
 
 #: glib/gmarkup.c:726
 msgid "Unfinished character reference"
-msgstr "Lõpetamata viide sümbolile"
+msgstr "Lõpetamata viide märgile"
 
 #: glib/gmarkup.c:969
 #: glib/gmarkup.c:997
@@ -256,21 +263,25 @@ msgstr "Dokument peab algama elemendiga (nt: <book>)"
 #, c-format
 msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
 msgstr ""
+"Märk '%s' ei ole märgi '<' järel lubatud, see võib mitte olla elemendi nimi"
 
 #: glib/gmarkup.c:1168
 #, c-format
 msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
-msgstr "Veider sümbol '%s', oodatakse '>' sümbolit, et lõpetada elemendi '%s' algussilti"
+msgstr "Veider märk '%s', oodatakse '>' märki, et lõpetada elemendi '%s' algussilti"
 
 #: glib/gmarkup.c:1257
 #, c-format
 msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Veider sümbol '%s', oodatakse '=' sümbolit peale elemendi '%s' tunnust nimega '%s' "
+msgstr "Veider märk '%s', oodatakse '=' märki peale elemendi '%s' tunnust nimega '%s' "
 
 #: glib/gmarkup.c:1299
 #, c-format
 msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
 msgstr ""
+"Veider märk '%s', oodatakse märke '>' või '/', mis tähitaksid elemendi '%s' "
+"märgendi algust või lõppu, ühe võimalusena ka atribuuti. Võib-olla kasutad "
+"sa atribuudi nimes vigast märki?"
 
 #: glib/gmarkup.c:1388
 #, c-format
@@ -281,11 +292,15 @@ msgstr ""
 #, c-format
 msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
 msgstr ""
+"Märk '%s' ei ole märkide '</' järel lubatud, '%s' võib mitte olla elemendi "
+"nimi"
 
 #: glib/gmarkup.c:1573
 #, c-format
 msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
 msgstr ""
+"Märk '%s' ei ole lubatud märk elemendi '%s' nime sulgemise järel, lubatud "
+"märk on '>'"
 
 #: glib/gmarkup.c:1584
 #, c-format
@@ -303,38 +318,40 @@ msgstr "Dokument on tühi või sisaldab ainult tühja ruumi"
 
 #: glib/gmarkup.c:1754
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Dokument lõpeb ootamatult ilma avatud nurksulgu '<' sulgemata"
+msgstr "Dokument lõppes ootamatult ilma avatud nurksulgu '<' sulgemata"
 
 #: glib/gmarkup.c:1762
 #: glib/gmarkup.c:1806
 #, c-format
 msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
-msgstr "Dokument lõpeb ootamatult ilma, et avatud elemente sulgemata - '%s' oli viimane avatud element"
+msgstr "Dokument lõppes ootamatult ilma, et avatud elemente sulgemata - '%s' oli viimane avatud element"
 
 #: glib/gmarkup.c:1770
 #, c-format
 msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
-msgstr "Dokument lõpeb ootamatult, märgendi <%s/> lõpetamiseks loodetakse näha nurksulgu"
+msgstr "Dokument lõppes ootamatult, märgendi <%s/> lõpetamiseks loodetakse näha nurksulgu"
 
 #: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Dokument lõpeb ootamatult elemendi nime sees"
+msgstr "Dokument lõppes ootamatult elemendi nime sees"
 
 #: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Dokument lõpeb ootamatult atribuudi nime sees"
+msgstr "Dokument lõppes ootamatult atribuudi nime sees"
 
 #: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Dokument lõpeb ootamatult elemendi avamise märgendi sees"
+msgstr "Dokument lõppes ootamatult elemendi avamise märgendi sees"
 
 #: glib/gmarkup.c:1792
 msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
 msgstr ""
+"Dokument lõppes ootamatult peale atribuudi nime järel olevat võrdusmärki, "
+"atribuudu väärtus on puudu"
 
 #: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Dokument lõppes ootamatult keset attribuudi väärtust"
 
 #: glib/gmarkup.c:1814
 #, c-format
@@ -402,6 +419,8 @@ msgstr "Tõrge abiprogrammi käivitamisel"
 #: glib/gspawn-win32.c:789
 msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
 msgstr ""
+"Ootamatu viga, kui g_io_channel_win32_poll() funktsioon luges "
+"lapsprotsessilt andmeid"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -446,7 +465,7 @@ msgstr "Tundmatu viga alamprotsessi \"%s\" käivitamisel"
 #: glib/gspawn.c:1278
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Tõrge piisavate andmete lugemisel lapsprotsessi torust (%s)"
 
 #: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
@@ -459,7 +478,7 @@ msgstr "Märk on väljaspool UTF-8 ulatust"
 #: glib/gutf8.c:1371
 #: glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Vigane jada sisendi teisendamisel"
 
 #: glib/gutf8.c:1382
 #: glib/gutf8.c:1478
