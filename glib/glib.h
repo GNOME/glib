@@ -1030,7 +1030,7 @@ struct _GHook
   GHook		*next;
   GHook		*prev;
   guint		 ref_count;
-  guint		 id;
+  guint		 hook_id;
   guint		 flags;
   gpointer	 func;
   GDestroyNotify destroy;
@@ -1040,11 +1040,11 @@ struct _GHook
 					  G_HOOK_ACTIVE) != 0)
 #define	G_HOOK_IS_IN_CALL(hook)		((((GHook*) hook)->flags & \
 					  G_HOOK_IN_CALL) != 0)
-#define G_HOOK_IS_VALID(hook)		(((GHook*) hook)->id != 0 && \
+#define G_HOOK_IS_VALID(hook)		(((GHook*) hook)->hook_id != 0 && \
 					 G_HOOK_IS_ACTIVE (hook))
 #define G_HOOK_IS_UNLINKED(hook)	(((GHook*) hook)->next == NULL && \
 					 ((GHook*) hook)->prev == NULL && \
-					 ((GHook*) hook)->id == 0 && \
+					 ((GHook*) hook)->hook_id == 0 && \
 					 ((GHook*) hook)->ref_count == 0)
 
 void	 g_hook_list_init		(GHookList		*hook_list,
@@ -1058,7 +1058,7 @@ void	 g_hook_ref			(GHookList		*hook_list,
 void	 g_hook_unref			(GHookList		*hook_list,
 					 GHook			*hook);
 gboolean g_hook_destroy			(GHookList		*hook_list,
-					 guint			 id);
+					 guint			 hook_id);
 void	 g_hook_destroy_link		(GHookList		*hook_list,
 					 GHook			*hook);
 void	 g_hook_prepend			(GHookList		*hook_list,
@@ -1070,7 +1070,7 @@ void	 g_hook_insert_sorted		(GHookList		*hook_list,
 					 GHook			*hook,
 					 GHookCompareFunc	 func);
 GHook*	 g_hook_get			(GHookList		*hook_list,
-					 guint			 id);
+					 guint			 hook_id);
 GHook*	 g_hook_find			(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 GHookFindFunc		 func,
@@ -1105,7 +1105,7 @@ void	 g_hook_list_invoke_check	(GHookList		*hook_list,
 					 gboolean		 may_recurse);
 /* invoke a marshaller on all valid hooks.
  */
-void	 g_hook_list_marshall		(GHookList		*hook_list,
+void	 g_hook_list_marshal		(GHookList		*hook_list,
 					 gboolean		 may_recurse,
 					 GHookMarshaller	 marshaller,
 					 gpointer		 data);

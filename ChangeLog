@@ -1,3 +1,20 @@
+Sat Oct  3 01:18:10 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* ghook.c:
+	(g_hook_list_invoke):
+	(g_hook_list_invoke):
+	(g_hook_list_marshal): properly handle the first valid hook to call,
+	it maybe IN_CALL already.
+	(g_hook_list_marshal): minor name change.
+
+Fri Oct  2 23:21:21 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* ghook.c: renamed GHook.id to GHook.hook_id so we don't get troubles
+	with ObjC which reserves "id" as a keyword (Raja R Harinath
+ 	<harinath@cs.umn.edu>).
+
 Wed Sep 30 10:53:03 1998  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: added ghook.c.
