@@ -1,3 +1,8 @@
+2001-03-20  Havoc Pennington  <hp@redhat.com>
+
+	* gutf8.c (g_utf8_strlen): rewrite, based on bug #52328 from
+	Anders
+
 2001-03-19  Havoc Pennington  <hp@redhat.com>
 
 	* gutf8.c (g_unichar_validate): added this function

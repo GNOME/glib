@@ -206,20 +206,35 @@ g_utf8_strlen (const gchar *p, gint max)
 {
   int len = 0;
   const gchar *start = p;
-  /* special case for the empty string */
-  if (!*p) 
-    return 0;
-  /* Note that the test here and the test in the loop differ subtly.
-     In the loop we want to see if we've passed the maximum limit --
-     for instance if the buffer ends mid-character.  Here at the top
-     of the loop we want to see if we've just reached the last byte.  */
-  while (max < 0 || p - start < max)
+
+  if (max < 0)
     {
-      p = g_utf8_next_char (p);
-      ++len;
-      if (! *p || (max > 0 && p - start > max))
-	break;
+      while (*p)
+        {
+          p = g_utf8_next_char (p);
+          ++len;
+        }
     }
+  else
+    {
+      if (max == 0 || !*p)
+        return 0;
+      
+      p = g_utf8_next_char (p);          
+
+      while (p - start < max && *p)
+        {
+          ++len;
+          p = g_utf8_next_char (p);          
+        }
+
+      /* only do the last len increment if we got a complete
+       * char (don't count partial chars)
+       */
+      if (p - start == max)
+        ++len;
+    }
+
   return len;
 }
 
