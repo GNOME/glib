@@ -1359,6 +1359,7 @@ g_param_spec_enum (const gchar *name,
   
   espec->enum_class = g_type_class_ref (enum_type);
   espec->default_value = default_value;
+  G_PARAM_SPEC (espec)->value_type = enum_type;
   
   return G_PARAM_SPEC (espec);
 }
@@ -1383,6 +1384,7 @@ g_param_spec_flags (const gchar *name,
   
   fspec->flags_class = g_type_class_ref (flags_type);
   fspec->default_value = default_value;
+  G_PARAM_SPEC (fspec)->value_type = flags_type;
   
   return G_PARAM_SPEC (fspec);
 }

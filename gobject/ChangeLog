@@ -1,3 +1,9 @@
+2001-01-05  Havoc Pennington  <hp@redhat.com>
+
+	* gparamspecs.c (g_param_spec_enum): set the value_type in the
+	param spec; closes bug 40210
+	(g_param_spec_flags): ditto for flags
+
 2001-01-03  Alexander Larsson  <alexl@redhat.com>
 
 	* gobject.c:
