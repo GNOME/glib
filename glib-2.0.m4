@@ -28,12 +28,12 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
       esac
   done
 
+  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+
   min_glib_version=ifelse([$1], ,1.3.3,$1)
   AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
 
   no_glib=""
-
-  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
   if test x$PKG_CONFIG != xno ; then
     if pkg-config --atleast-pkgconfig-version 0.5 ; then

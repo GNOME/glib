@@ -1,3 +1,8 @@
+2001-04-16  Havoc Pennington  <hp@redhat.com>
+
+	* glib-2.0.m4: put AC_PATH_PROG(pkg-config) before "Checking for
+	glib" so the output looks right	
+
 2001-03-23  Havoc Pennington  <hp@redhat.com>
 
 	* gutils.c (g_parse_debug_string): make GDebugKeys argument 
