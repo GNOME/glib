@@ -1112,6 +1112,8 @@ typedef enum
   G_HOOK_FLAG_MASK	= 0x0f
 } GHookFlagMask;
 
+#define	G_HOOK_DEFERRED_DESTROY	((GHookFreeFunc) 0x01)
+
 struct _GHookList
 {
   guint		 seq_id;

@@ -400,7 +400,7 @@ g_source_compare (GHook *a,
   return (source_a->priority < source_b->priority) ? -1 : 1;
 }
 
-/* HOLDS: main_loop_lock */
+/* HOLDS: main_loop lock */
 static void
 g_source_destroy_func (GHookList *hook_list,
 		       GHook     *hook)
@@ -421,12 +421,6 @@ g_source_destroy_func (GHookList *hook_list,
   G_LOCK (main_loop);
 }
 
-static void
-g_source_noop (GHookList *hook_list,
-	       GHook     *hook)
-{
-}
-
 guint 
 g_source_add (gint           priority,
 	      gboolean       can_recurse,
@@ -441,12 +435,14 @@ g_source_add (gint           priority,
   G_LOCK (main_loop);
 
   if (!source_list.is_setup)
-    g_hook_list_init (&source_list, sizeof(GSource));
+    {
+      g_hook_list_init (&source_list, sizeof (GSource));
 
-  source_list.hook_destroy = g_source_noop;
-  source_list.hook_free = g_source_destroy_func;
+      source_list.hook_destroy = G_HOOK_DEFERRED_DESTROY;
+      source_list.hook_free = g_source_destroy_func;
+    }
 
-  source = (GSource *)g_hook_alloc (&source_list);
+  source = (GSource*) g_hook_alloc (&source_list);
   source->priority = priority;
   source->source_data = source_data;
   source->hook.func = funcs;
