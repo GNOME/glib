@@ -647,5 +647,5 @@ _g_atomic_thread_init (void)
 #endif /* DEFINE_WITH_MUTEXES */
 }
 
-#define IN_FILE_gatomic 1
+#define __G_ATOMIC_C__
 #include "galiasdef.c"
