@@ -10,11 +10,12 @@ library is used.
 
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
-been used successfully. With gcc I mean gcc-2.95 as distributed by
-Mumit Khan, running under cygwin-b20.1. To successfully use gcc,
-follow the instructions below. We want to use gcc -mno-cygwin,
-i.e. produce executables (.exe and .dll files) that do *not* require
-the cygwin runtime library. This is sometimes called "mingw32".
+been used successfully. With gcc I mean gcc-2.95 or gcc-2.95.2 as
+distributed by Mumit Khan, running under cygwin-b20.1. To successfully
+use gcc, follow the instructions below. We want to use gcc
+-mno-cygwin, i.e. produce executables (.exe and .dll files) that do
+*not* require the cygwin runtime library. This is sometimes called
+"mingw32".
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
@@ -27,22 +28,19 @@ haven't succeeded in that.
 With a little work, it might be possible to use the ./configure
 mechanism also with a "mingw32" configuration.
 
-The following preprocessor macros are defined in glibconfig.h and used
-for conditional compilation related to Win32:
+The following preprocessor macro are used for conditional compilation
+related to Win32:
 
-- WIN32 is defined when compiling for the Win32 platform, regardless
-  if using the X11 or Win32 windowing API (in the case of GLib, this
-  dimension isn't significant), regardless whether using a more or
-  less complete POSIX emulation runtime layer (like Cygwin) or not.
-
-- NATIVE_WIN32 is defined when compiling for Win32, *and* without
+- G_OS_WIN32 is defined when compiling for Win32, *and* without
   any POSIX emulation, other that to the extent provided by the
   bundled Microsoft C library (msvcrt.dll) and the pthreads-win32
   library. For instance, pathnames are in the native Windows syntax.
 
-The Win32 port uses the combination with both of those on. As these
-are in glibconfig.h, they are available to all source files that use
-GLib (or GTk+, which uses GLib).
+- _WIN32 is defined by the compiler
+
+The Win32 port uses the combination with both of those on. As
+G_OS_WIN32 is defined in glibconfig.h, it is available to all source
+files that use GLib (or GTk+, which uses GLib).
 
 Additionally, there are the compiler-specific macros:
 - _MSC_VER is defined when using the Microsoft compiler
@@ -52,8 +50,9 @@ Some of the usage of these macros used to be a bit mixed up, and had
 to be straightened out when adding the gcc support. In particular, I
 used to check for _MSC_VER in some places where I really wanted to
 check for the Microsoft C library, and those checks has now been
-changed to NATIVE_WIN32. NATIVE_WIN32 ought to be renamed to
-USE_MSVCRT.
+changed to G_OS_WIN32.
+
+G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL.
 
 Pthreads library
 ================
@@ -89,28 +88,234 @@ makefile.msc`. Install with `nmake -f makefile.msc install`.
 Building with gcc
 =================
 
-The gcc support was added quite recently, but seems to work. Debugging
-with gdb works. I use the latest and greatest gcc and mingw32.
-Somewhat earlier versions will also work, but you are on your own.
+I use the latest and greatest gcc, gcc-2.95.2. 2.95 will also work.
+Earlier version might, but you are on your own.
 
 Read and understand these instruction carefully. If you don't
 understand or can't follow the instructions, you probably shouldn't
-want to build glib (or gtk or gimp) yourself anyway.
+want to build GLib (or GTk+ or GIMP) yourself anyway. Unfortunately,
+even building software that just *use* GLib or GTk+ also require to
+have the right compiler set up the right way, so follow these
+instructions in that case, too.
 
-Fetch gcc-2.95 built for cygwin from
-ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/gcc-2.95/gcc-2.95-cygb20.tar.gz
-Install it somewhere, for instance "C:\gcc-2.95" (/gcc-2.95 as seen
-from cygwin). We call this directory $GCCDIR below. You will have
-subdirectories "H-i586-cygwin32" and "include" under $GCCDIR.
+0) Get and install Cygwin B20.1.
 
-Next, you need to modify the gcc setup to use the msvcrt runtime
-instead of crtdll. Also, the mingw32 and win32 API headers and import
-libraries need to be added. I have collected all the necessary
-additions in the file
-http://www.iki.fi/tml/gimp/win32/gcc-2.95-additions.zip . Install that
-in $GCCDIR. If you really want to do everything by yourself, follow
-the instructions in
-http://www.iki.fi/tml/gimp/win32/gcc-environment-setup.html
+   Move the include files and libraries included in Cygwin out of the
+   way not to mix things up... (For example, rename
+   /cygnus/cygwin-b20/H-i586-cygwin32/i586-cygwin32/lib to
+   lib-no-thanks and rename
+   /cygnus/cygwin-b20/H-i586-cygwin32/i586-cygwin32/include to
+   include-no-thanks.
+
+1) Get gcc 2.95.2 built for Cygwin B20.1 from 
+   ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/gcc-2.95.2/gcc-2.95.2-cygb20.tar.gz
+
+   Install it somewhere, let's say G:\gcc-2.95.2 (//g/gcc-2.95.2 when
+   in Cygwin). Add //g/gcc-2.95.2/H-i586-cygwin32/bin to your
+   PATH. Below,I assume you use bash.
+
+   Replace the specs file in
+   //g/gcc-2.95.2/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/2.95.2/specs
+   with the following. (The changes are: Define __MSVCRT__, replace
+   the "1" versions of the crt files with the "2" ones, replace crtdll
+   with msvcrt. Also, extra whitespace squished. )
+
+================ cut here ================
+*asm:
+
+
+*asm_final:
+
+
+*cpp:
+-remap %(cpp_cpu) %{posix:-D_POSIX_SOURCE} %{!mno-cygwin:-D__CYGWIN32__ -D__CYGWIN__} %{mno-cygwin:-iwithprefixbefore ../../../../%(mingw_include_path)/include/mingw32 -D__MSVCRT__ -D__MINGW32__=0.2}
+
+*cc1:
+%(cc1_spec) 
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+%{mwindows:--subsystem windows} %{mconsole:--subsystem console} %{mdll:--dll -e _DllMainCRTStartup@12}
+
+*lib:
+%{pg:-lgmon} %{!mno-cygwin:-lcygwin} %{mno-cygwin:-lmingw32 -lmoldname -lmsvcrt} %{mwindows:-lgdi32 -lcomdlg32} -luser32 -lkernel32 -ladvapi32 -lshell32
+
+*libgcc:
+-lgcc
+
+*startfile:
+%{mdll: %{mno-cygwin:dllcrt2%O%s}} %{!mdll: %{!mno-cygwin:crt0%O%s} %{mno-cygwin:crt2%O%s} %{pg: %{!mno-cygwin:gcrt0%O%s} %{mno-cygwin:gcrt2%O%s}}}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-Di386 -D_WIN32 -DWINNT -D_X86_=1 -D__STDC__=1 -D__stdcall=__attribute__((__stdcall__)) -D__cdecl=__attribute__((__cdecl__)) -D__declspec(x)=__attribute__((x)) -Asystem(winnt) -Acpu(i386) -Amachine(i386)
+
+*cross_compile:
+0
+
+*version:
+2.95.2
+
+*multilib:
+. !mno-cygwin;mingw32 mno-cygwin;;
+
+*multilib_defaults:
+
+
+*multilib_extra:
+
+
+*multilib_matches:
+mno-cygwin mno-cygwin;
+
+*linker:
+collect2
+
+*cpp_486:
+%{!ansi:-Di486} -D__i486 -D__i486__
+
+*cpp_586:
+%{!ansi:-Di586 -Dpentium} -D__i586 -D__i586__ -D__pentium -D__pentium__
+
+*cpp_k6:
+%{!ansi:-Di586 -Dk6} -D__i586 -D__i586__ -D__k6 -D__k6__
+
+*cpp_686:
+%{!ansi:-Di686 -Dpentiumpro} -D__i686 -D__i686__ -D__pentiumpro -D__pentiumpro__
+
+*cpp_cpu_default:
+%(cpp_586)
+
+*cpp_cpu:
+-Acpu(i386) -Amachine(i386) %{!ansi:-Di386} -D__i386 -D__i386__ %{mcpu=i486:%(cpp_486)} %{m486:%(cpp_486)} %{mpentium:%(cpp_586)} %{mcpu=pentium:%(cpp_586)} %{mpentiumpro:%(cpp_686)} %{mcpu=pentiumpro:%(cpp_686)} %{mcpu=k6:%(cpp_k6)} %{!mcpu*:%{!m486:%{!mpentium*:%(cpp_cpu_default)}}}
+
+*cc1_cpu:
+%{!mcpu*: %{m386:-mcpu=i386 -march=i386} %{m486:-mcpu=i486 -march=i486} %{mpentium:-mcpu=pentium} %{mpentiumpro:-mcpu=pentiumpro}}
+
+*mingw_include_path:
+i586-cygwin32
+
+*link_command:
+%{!fsyntax-only: %{!c:%{!M:%{!MM:%{!E:%{!S:%(linker) %l %X %{o*} %{A} %{d} %{e*} %{m} %{N} %{n} %{r} %{s} %{t} %{u*} %{x} %{z} %{Z} %{!A:%{!nostdlib:%{!nostartfiles:%S}}} %{static:} %{L*} %D %o %{!nostdlib:%{!nodefaultlibs:%G %L %G}} %{!A:%{!nostdlib:%{!nostartfiles:%E}}} %{T*} 
+ }}}}}}
+
+================ cut here ================
+
+2) Get the Mingw32 runtime sources from 
+   ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/gcc-2.95.2/runtime-source-19991107.zip
+
+   Unpack it somewhere, say //g/src/mingw-runtime-19991107 .
+
+   Apply the following patches:
+
+   This makes the mingwm10.dll depend on the stuff that is needed
+   to build it.:
+
+================ cut here ================
+diff -ru2 ./mingw/Makefile.in ../../src/mingw-runtime-19991107/mingw/Makefile.in
+--- ./mingw/Makefile.in	Sun Nov 07 12:19:22 1999
++++ ../../src/mingw-runtime-19991107/mingw/Makefile.in	Mon Nov 08 14:55:38 1999
+@@ -138,5 +138,5 @@
+                     --base-file mingwthrd.base --output-exp mingwthrd.exp
+ 
+-$(THREAD_DLL_NAME) mingwthrd.def: $(DLL_OFILES) Makefile
++$(THREAD_DLL_NAME) mingwthrd.def: $(DLL_OFILES) Makefile libmingw32.a libmoldname.a lib$(RUNTIME).a dllcrt$(CRT_ID).o
+ 	$(DLLTOOL) --as $(AS) --output-def mingwthrd.def $(DLL_OFILES)
+ 	$(CC) -Wl,--base-file=mingwthrd.base $(DLL_CC_STUFF)
+================ cut here ================
+
+   This enables building the profiling gcrt2.o. I don't know how useful
+   it is, though, there doesn't seem to be any gprof command in cygwin.
+
+================ cut here ================
+diff -ru2 ./mingw/profile/Makefile.in ../../src/mingw-runtime-19991107/mingw/profile/Makefile.in
+--- ./mingw/profile/Makefile.in	Sun Nov 07 12:18:56 1999
++++ ../../src/mingw-runtime-19991107/mingw/profile/Makefile.in	Mon Nov 08 12:12:12 1999
+@@ -76,8 +76,8 @@
+ 
+ gcrt1.o: gcrt0.c
+-	$(CC) -U__MSVCRT__ -c -o $@ $(CPPFLAGS) $(CFLAGS) $?
++	$(CC) -U__MSVCRT__ -c -o $@ $(CPPFLAGS) $(ALL_CFLAGS) $?
+ 
+ gcrt2.o: gcrt0.c
+-	$(CC) -D__MSVCRT__ -c -o $@ $(CPPFLAGS) $(CFLAGS) $?
++	$(CC) -D__MSVCRT__ -c -o $@ $(CPPFLAGS) $(ALL_CFLAGS) $?
+ 
+ Makefile: Makefile.in config.status configure
+================ cut here ================
+
+   This fixes a typo in wingdi.h:
+
+================ cut here ================
+diff -ru2 ./w32api/include/wingdi.h ../../src/mingw-runtime-19991107/w32api/include/wingdi.h
+--- ./w32api/include/wingdi.h	Thu Nov 04 03:42:40 1999
++++ ../../src/mingw-runtime-19991107/w32api/include/wingdi.h	Mon Nov 08 12:48:02 1999
+@@ -304,5 +304,5 @@
+ #define FW_BOLD	700
+ #define FW_EXTRABOLD	800
+-#define FW_ULTRABOLD	FW_EXTRABOOLD
++#define FW_ULTRABOLD	FW_EXTRABOLD
+ #define FW_HEAVY	900
+ #define FW_BLACK	FW_HEAVY
+
+================ cut here ================
+
+   (I haven't checked yet if other small errors I have noticed in
+   previous w32api header versions have been corrected.)
+
+3) Now you should build the mingw32 and w32api runtime and import libraries.
+
+   Go to //g/src/mingw-runtime-19991107/w32api. Enter:
+
+   CC='gcc -mno-cygwin' ./configure i586-pc-mingw32msvc
+   make
+
+   That should complete in a while. It should produce a lot of .a
+   libraries (both import libraries, and a couple of archive
+   libraries), and some .o files. I don't trust make install to do
+   what I want (especially as I didn't give any --prefix argument to
+   the configure...), so I install the stuff manually:
+
+   cd lib
+   mkdir //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
+   cp *.a //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
+   cd ../include
+   mkdir //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32
+   cp *.h //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32
+
+   Now go to ../../mingw, and run the same configure command, and do a
+   make:
+
+   CC='gcc -mno-cygwin' ./configure i586-pc-mingw32msvc
+   make
+
+   Then install the mingw32 libraries and headers:
+   cp *.a //g/gcc-2.95.2/H-i586-cygwin32/lib/mingw32
+   mkdir //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32/sys
+   cp include/sys/*.h //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32/sys
+   cp include/*.h //g/gcc-2.95.2/H-i586-cygwin32/i586-cygwin32/include/mingw32
+
+
+4) Get an updated set of binutils for cygwin B20.1 from
+   ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/gcc-2.95.2/binutils-2.9.4-cygb20.tar.gz
+   Unpack that in your /cygnus/cygwin-b20 directory.  The relevant
+   difference is: dlltool now parses GCC generated export directives
+   correctly for DATA items.
+   
+5) Whew. That hopefully should be it.
+
+Cheers,
+--tml
 
 Next, go back to the GLib directory and build using `make -f
 makefile.cygwin`.  Building the dlls uses the script build-dll which
