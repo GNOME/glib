@@ -85,10 +85,12 @@ static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
                                                    gboolean        notify);
 
 
+#ifndef DISABLE_MEM_POOLS
 G_LOCK_DEFINE_STATIC (g_hash_global);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;
+#endif
 
 /**
  * g_hash_table_new:
@@ -612,6 +614,9 @@ g_hash_node_new (gpointer key,
 {
   GHashNode *hash_node;
   
+#ifdef DISABLE_MEM_POOLS
+  hash_node = g_new (GHashNode, 1);
+#else
   G_LOCK (g_hash_global);
   if (node_free_list)
     {
@@ -628,6 +633,7 @@ g_hash_node_new (gpointer key,
       hash_node = g_chunk_new (GHashNode, node_mem_chunk);
     }
   G_UNLOCK (g_hash_global);
+#endif
   
   hash_node->key = key;
   hash_node->value = value;
@@ -651,10 +657,14 @@ g_hash_node_destroy (GHashNode      *hash_node,
   hash_node->value = NULL;
 #endif /* ENABLE_GC_FRIENDLY */
 
+#ifdef DISABLE_MEM_POOLS
+  g_free (hash_node);
+#else
   G_LOCK (g_hash_global);
   hash_node->next = node_free_list;
   node_free_list = hash_node;
   G_UNLOCK (g_hash_global);
+#endif
 }
 
 static void
@@ -662,6 +672,20 @@ g_hash_nodes_destroy (GHashNode *hash_node,
 		      GFreeFunc  key_destroy_func,
 		      GFreeFunc  value_destroy_func)
 {
+#ifdef DISABLE_MEM_POOLS
+  while (hash_node)
+    {
+      GHashNode *next = hash_node->next;
+
+      if (key_destroy_func)
+	key_destroy_func (hash_node->key);
+      if (value_destroy_func)
+	value_destroy_func (hash_node->value);
+
+      g_free (hash_node);
+      hash_node = next;
+    }  
+#else
   if (hash_node)
     {
       GHashNode *node = hash_node;
@@ -681,10 +705,10 @@ g_hash_nodes_destroy (GHashNode *hash_node,
 	  node = node->next;
 	}
 
-  if (key_destroy_func)
-    key_destroy_func (node->key);
-  if (value_destroy_func)
-    value_destroy_func (node->value);
+      if (key_destroy_func)
+	key_destroy_func (node->key);
+      if (value_destroy_func)
+	value_destroy_func (node->value);
 
 #ifdef ENABLE_GC_FRIENDLY
       node->key = NULL;
@@ -696,4 +720,5 @@ g_hash_nodes_destroy (GHashNode *hash_node,
       node_free_list = hash_node;
       G_UNLOCK (g_hash_global);
     }
+#endif
 }
