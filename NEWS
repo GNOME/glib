@@ -1,3 +1,14 @@
+Overview of Changes in GLib 1.3.9:
+==================================
+
+* Fixes for comparison of threads [Sebastian Wilhelmi]
+* Use vasprintf() when possible for g_strdup_printf [Matthias Clasen]
+* Win32 fixes [Tor Lillqvist, Hans Breuer]
+* Add a len argument to g_ascii_strup/strdown
+* Bug, portability fixes, cleanups.
+
+Other Contributors: Darin Adler, Katsuhiro Okuno, Joshua N. Pritikin
+
 Overview of Changes in GLib 1.3.8:
 ==================================
 

@@ -452,8 +452,11 @@ possibly non-ASCII character in.
 
 </para>
 
-@string: 
+@str: 
+@len: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@string: 
 
 
 <!-- ##### FUNCTION g_ascii_strdown ##### -->
@@ -461,8 +464,11 @@ possibly non-ASCII character in.
 
 </para>
 
-@string: 
+@str: 
+@len: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@string: 
 
 
 <!-- ##### FUNCTION g_ascii_tolower ##### -->

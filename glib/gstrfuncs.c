@@ -999,24 +999,29 @@ g_strlcat (gchar       *dest,
 
 /**
  * g_ascii_strdown:
- * @string: a string
+ * @str: a string
+ * @len: length of @str in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all upper case ASCII letters to lower case ASCII letters.
  * 
  * Return value: a newly allocated string, with all the upper case
- *               characters in @string converted to lower case, with
+ *               characters in @str converted to lower case, with
  *               semantics that exactly match g_ascii_tolower. (Note
  *               that this is unlike the old g_strdown, which modified
  *               the string in place.)
  **/
 gchar*
-g_ascii_strdown (const gchar *string)
+g_ascii_strdown (const gchar *str,
+		 gint         len)
 {
   gchar *result, *s;
   
-  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
-  result = g_strdup (string);
+  if (len < 0)
+    len = strlen (str);
+
+  result = g_strndup (str, len);
   for (s = result; *s; s++)
     *s = g_ascii_tolower (*s);
   
@@ -1025,24 +1030,29 @@ g_ascii_strdown (const gchar *string)
 
 /**
  * g_ascii_strup:
- * @string: a string
+ * @str: a string
+ * @len: length of @str in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all lower case ASCII letters to upper case ASCII letters.
  * 
  * Return value: a newly allocated string, with all the lower case
- *               characters in @string converted to upper case, with
+ *               characters in @str converted to upper case, with
  *               semantics that exactly match g_ascii_toupper. (Note
  *               that this is unlike the old g_strup, which modified
  *               the string in place.)
  **/
 gchar*
-g_ascii_strup (const gchar *string)
+g_ascii_strup (const gchar *str,
+	       gint         len)
 {
   gchar *result, *s;
 
-  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
-  result = g_strdup (string);
+  if (len < 0)
+    len = strlen (str);
+
+  result = g_strndup (str, len);
   for (s = result; *s; s++)
     *s = g_ascii_toupper (*s);
 

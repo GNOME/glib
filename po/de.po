@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-09-18 18:22+0200\n"
+"POT-Creation-Date: 2001-09-25 10:54-0400\n"
 "PO-Revision-Date: 2001-07-29 07:42+0200\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -23,7 +23,7 @@ msgstr "Umwadnlung von Zeichensatz `%s' in `%s' wird nicht unterstützt"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Konverter von `%s' in `%s' konnte nicht geöffnet werden: `%s'"
 
-#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:828 glib/gutf8.c:1274
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
@@ -32,8 +32,8 @@ msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 msgid "Error during conversion: %s"
 msgstr "Fehler während der Umwandlung: %s"
 
-#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
-#: glib/gutf8.c:1265
+#: glib/gconvert.c:320 glib/gutf8.c:824 glib/gutf8.c:1024 glib/gutf8.c:1165
+#: glib/gutf8.c:1270
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
@@ -440,15 +440,15 @@ msgstr "Unbekannter Fehler beim Verlassen des Kindprozesses"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Es konnten nicht genug Daten von Kind-PID-Pipe (%s) gelesen werden"
 
-#: glib/gutf8.c:898
+#: glib/gutf8.c:903
 msgid "Character out of range for UTF-8"
 msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
-#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
-#: glib/gutf8.c:1279 glib/gutf8.c:1375
+#: glib/gutf8.c:992 glib/gutf8.c:1001 glib/gutf8.c:1133 glib/gutf8.c:1142
+#: glib/gutf8.c:1284 glib/gutf8.c:1380
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gutf8.c:1290 glib/gutf8.c:1386
+#: glib/gutf8.c:1295 glib/gutf8.c:1391
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
