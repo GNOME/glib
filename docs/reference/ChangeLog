@@ -1,3 +1,8 @@
+2002-04-24  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: 
+	* gobject/tmpl/gtype.sgml: Updates.
+
 2002-04-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/strings.sgml: Fix the description of g_string_assign. (#78728)

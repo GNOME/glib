@@ -20,7 +20,7 @@ with g_type_register_static() that gets type specific information passed
 in via a #GTypeInfo structure.
 Dynamic types are created with g_type_register_dynamic() which takes a
 #GTypePlugin structure instead. The remaining type information (the
-#GTypeInfo structure) is retrived during runtime through #GTypePlugin
+#GTypeInfo structure) is retrieved during runtime through #GTypePlugin
 and the g_type_plugin_*() API.
 These registration functions are usually called only once from a 
 function whose only purpose is to return the type identifier for a 
@@ -47,7 +47,7 @@ type.
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL ##### -->
 <para>
-Returns #TRUE if @type is a fundamental data type such as #G_TYPE_INT or
+Returns %TRUE if @type is a fundamental data type such as #G_TYPE_INT or
 #G_TYPE_POINTER. Fundamental types are types that serve as fundaments for
 the derived types, thus they are the roots of distinct inheritance hierarchies.
 </para>
@@ -65,22 +65,24 @@ for types that are assigned at compile-time.
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL_SHIFT ##### -->
 <para>
-
+Shift value used in converting numbers to type IDs.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_MAKE_FUNDAMENTAL ##### -->
 <para>
-
+Returns the type ID for the fundamental type number @x.
+Use g_type_fundamental_next() instead of this macro to create new fundamental 
+types.
 </para>
 
-@x: 
+@x: the fundamental type number.
 
 
 <!-- ##### MACRO G_TYPE_IS_ABSTRACT ##### -->
 <para>
-Returns #TRUE if @type is an abstract type.  An abstract type can not be
+Returns %TRUE if @type is an abstract type.  An abstract type can not be
 instantiated and is normally used as an abstract base class for
 derived classes.
 </para>
@@ -90,7 +92,7 @@ derived classes.
 
 <!-- ##### MACRO G_TYPE_IS_DERIVED ##### -->
 <para>
-Returns #TRUE if @type is derived (or in object-oriented terminology:
+Returns %TRUE if @type is derived (or in object-oriented terminology:
 inherited) from another type (this holds true for all non-fundamental
 types).
 </para>
@@ -100,7 +102,7 @@ types).
 
 <!-- ##### MACRO G_TYPE_IS_FUNDAMENTAL ##### -->
 <para>
-Returns #TRUE if @type is a fundamental type.
+Returns %TRUE if @type is a fundamental type.
 </para>
 
 @type: A #GType value.
@@ -116,15 +118,15 @@ Returns #TRUE if @type is a fundamental type.
 
 <!-- ##### MACRO G_TYPE_HAS_VALUE_TABLE ##### -->
 <para>
-
+Returns %TRUE if @type has a #GTypeValueTable.
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
 <para>
-Returns #TRUE if @type is a classed type.
+Returns %TRUE if @type is a classed type.
 </para>
 
 @type: A #GType value.
@@ -132,7 +134,7 @@ Returns #TRUE if @type is a classed type.
 
 <!-- ##### MACRO G_TYPE_IS_INSTANTIATABLE ##### -->
 <para>
-Returns #TRUE if @type can be instantiated.  Instantiation is the
+Returns %TRUE if @type can be instantiated.  Instantiation is the
 process of creating an instance (object) of this type.
 </para>
 
@@ -141,7 +143,7 @@ process of creating an instance (object) of this type.
 
 <!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
 <para>
-Returns #TRUE if @type is a derivable type.  A derivable type can
+Returns %TRUE if @type is a derivable type.  A derivable type can
 be used as the base class of a flat (single-level) class hierarchy.
 </para>
 
@@ -150,7 +152,7 @@ be used as the base class of a flat (single-level) class hierarchy.
 
 <!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
 <para>
-Returns #TRUE if @type is a deep derivable type.  A deep derivable type
+Returns %TRUE if @type is a deep derivable type.  A deep derivable type
 can be used as the base class of a deep (multi-level) class hierarchy.
 </para>
 
@@ -159,11 +161,13 @@ can be used as the base class of a deep (multi-level) class hierarchy.
 
 <!-- ##### MACRO G_TYPE_IS_INTERFACE ##### -->
 <para>
-Returns #TRUE if @type is an interface type.
+Returns %TRUE if @type is an interface type.
 Interface types are types that provide pure APIs, the implementation
 of which is provided by another type (which is then said to conform
 to the interface).  GLib interfaces are somewhat analogous to Java
-interfaces and C++ classes containing only pure virtual functions.
+interfaces and C++ classes containing only pure virtual functions, 
+with the difference that GType interfaces are not derivable (but see
+g_type_interface_add_prerequisite() for an alternative).
 </para>
 
 @type: A #GType value.
@@ -202,7 +206,7 @@ across invocation of g_type_register_static().
 @instance_size:  Size of the instance (object) structure (required for instantiatable types only).
 @n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
 @instance_init:  Location of the instance initialization function (optional, for instantiatable types only).
-@value_table: 	 A #GTypeValueTable function table for generic handling of GValues of this type (usualy only
+@value_table: 	 A #GTypeValueTable function table for generic handling of GValues of this type (usually only
 		 useful for fundamental types).
 
 <!-- ##### STRUCT GTypeFundamentalInfo ##### -->
@@ -233,9 +237,10 @@ to serve as a container for values of a type.
 @value_init: 		Default initialize @values contents by poking values
 			directly into the value-&gt;data array. The data array of
 			the #GValue passed into this function was zero-filled
-			with memset, so no care has to be taken to free any
+			with <function>memset()</function>, so no care has to
+                        be taken to free any
 			old contents. E.g. for the implementation of a string
-			value that may never be NULL, the implementation might
+			value that may never be %NULL, the implementation might
 			look like:
 <msgtext><programlisting>
 {
@@ -299,10 +304,10 @@ to serve as a container for values of a type.
 			values collected from a variable argument list into contents
 			suitable for storage in a GValue. This function should setup
 			@value similar to value_init(), e.g. for a string value that
-			does not allow NULL pointers, it needs to either spew an error,
+			does not allow %NULL pointers, it needs to either spew an error,
 			or do an implicit conversion by storing an empty string.
 			The @value passed in to this function has a zero-filled data
-			array, so just like for @value_init it is guaranteed to not
+			array, so just like for value_init() it is guaranteed to not
 			contain any old contents that might need freeing.
 			@n_collect_values is exactly the string length of @collect_format,
 			and @collect_values is an array of unions #GTypeCValue with
@@ -311,7 +316,7 @@ to serve as a container for values of a type.
 			@collect_flags is an argument provided as a hint by the caller,
 			which may contain the flag #G_VALUE_NOCOPY_CONTENTS indicating,
 			that the collected value contents may be considered "static"
-			for the duration of the #@value lifetime.
+			for the duration of the @value lifetime.
 			Thus an extra copy of the contents stored in @collect_values is
 			not required for assignment to @value.
 			For our above string example, we continue with:
@@ -334,7 +339,7 @@ to serve as a container for values of a type.
 			It should be noted, that it is generally a bad idea to follow the
 			#G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
 			reentrancy requirements and reference count assertions performed
-			by the GSignal code, reference counts should always be incremented
+			by the #GSignal code, reference counts should always be incremented
 			for reference counted contents stored in the value-&gt;data array.
 			To deviate from our string example for a moment, and taking a look
 			at an exemplary implementation for collect_value() of #GObject:
@@ -355,9 +360,9 @@ to serve as a container for values of a type.
 			The reference count for valid objects is always incremented,
 			regardless of @collect_flags. For invalid objects, the example
 			returns a newly allocated string without altering @value.
-			Upon success, collect_value() needs to return NULL, if however
+			Upon success, collect_value() needs to return %NULL, if however
 			a malicious condition occurred, collect_value() may spew an
-			error by returning a newly allocated non-NULL string, giving
+			error by returning a newly allocated non-%NULL string, giving
 			a suitable description of the error condition.
 			The calling code makes no assumptions about the @value
 			contents being valid upon error returns, @value
@@ -365,7 +370,7 @@ to serve as a container for values of a type.
 			a good idea to not allocate #GValue contents, prior to returning
 			an error, however, collect_values() is not obliged to return
 			a correctly setup @value for error returns, simply because
-			any non-NULL return is considered a fatal condition so further
+			any non-%NULL return is considered a fatal condition so further
 			program behaviour is undefined.
 @lcopy_format: 		Format description of the arguments to collect for @lcopy_value,
 			analogous to @collect_format. Usually, @lcopy_format string consists
@@ -534,26 +539,28 @@ the type system and assorted other code portions (such as the various fundamenta
 type implementations or the signal system).
 </para>
 
-<!-- # Unused Parameters # -->
-@debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
-
 
 <!-- ##### ENUM GTypeDebugFlags ##### -->
 <para>
+The <type>GTypeDebugFlags</type> enumeration values can be passed to
+g_type_init_with_debug_flags() to trigger debugging messages during runtime.
+Note that the messages can also be triggered by setting the
+<envar>GOBJECT_DEBUG</envar> environment variable to a ':'-separated list of 
+"objects" and "signals".
 
 </para>
 
-@G_TYPE_DEBUG_NONE: 
-@G_TYPE_DEBUG_OBJECTS: 
-@G_TYPE_DEBUG_SIGNALS: 
+@G_TYPE_DEBUG_NONE: Print no messages.
+@G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping.
+@G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions.
 @G_TYPE_DEBUG_MASK: 
 
 <!-- ##### FUNCTION g_type_init_with_debug_flags ##### -->
 <para>
-
+Similar to g_type_init(), but additionally sets debug flags.
 </para>
 
-@debug_flags: 
+@debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
 
 
 <!-- ##### FUNCTION g_type_name ##### -->
@@ -563,7 +570,7 @@ to find out whether a specific type has been registered for the passed in ID yet
 </para>
 
 @type: 		Type to return name for.
-@Returns: 	Static type name or NULL.
+@Returns: 	Static type name or %NULL.
 
 
 <!-- ##### FUNCTION g_type_qname ##### -->
@@ -597,11 +604,12 @@ If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
 
 <!-- ##### FUNCTION g_type_depth ##### -->
 <para>
-
+Returns the length of the ancestry of the passed in type. This includes the
+type itself, so that e.g. a fundamental type has depth 1.
 </para>
 
-@type: 
-@Returns: 
+@type:    A #GType value. 
+@Returns: The depth of @type.
 
 
 <!-- ##### FUNCTION g_type_next_base ##### -->
@@ -621,11 +629,12 @@ the leaf type is descended from the root type.
 
 <!-- ##### FUNCTION g_type_is_a ##### -->
 <para>
-Check whether @type is a descendant of @is_a_type.
+If @is_a_type is a derivable type, check whether @type is a descendant of @is_a_type.
+If @is_a_type is an interface, check whether @type conforms to it.
 </para>
 
 @type:      Type to check anchestry for.
-@is_a_type: Possible anchestor of @type.
+@is_a_type: Possible anchestor of @type or interface @type could conform to.
 @Returns:   %TRUE if @type is_a @is_a_type holds true.
 
 
@@ -644,12 +653,12 @@ exist already.
 <para>
 This function is essentially the same as g_type_class_ref(), except that
 the classes reference count isn't incremented. Therefore, this function
-may return NULL if the class of the type passed in does not currently
+may return %NULL if the class of the type passed in does not currently
 exist (hasn't been referenced before).
 </para>
 
 @type: 		Type ID of a classed type.
-@Returns: 	The #GTypeClass structure for the given type ID or NULL
+@Returns: 	The #GTypeClass structure for the given type ID or %NULL
 		if the class does not currently exist.
 
 
@@ -666,7 +675,7 @@ class pointer after g_type_class_unref() are invalid.
 
 <!-- ##### FUNCTION g_type_class_peek_parent ##### -->
 <para>
-This is a convenience function, often needed in class intializers.
+This is a convenience function, often needed in class initializers.
 It essentially takes the immediate parent type of the class passed in,
 and returns the class structure thereof. Since derived classes hold
 a reference count on their parent classes as long as they are instantiated,
@@ -685,12 +694,15 @@ g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
 
 <!-- ##### FUNCTION g_type_interface_peek ##### -->
 <para>
-
+Returns the #GTypeInterface structure of an interface to which the passed in 
+class conforms.
 </para>
 
-@instance_class: 
-@iface_type: 
-@Returns: 
+@instance_class: A #GTypeClass structure.
+@iface_type:     An interface ID which this class conforms to.
+@Returns:        The #GTypeInterface structure of @iface_type, or %NULL if the
+                 class is not instantiated.
+
 
 
 <!-- ##### FUNCTION g_type_interface_peek_parent ##### -->
@@ -704,25 +716,25 @@ g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
 
 <!-- ##### FUNCTION g_type_children ##### -->
 <para>
-Return a newly allocated and 0 terminated array of type IDs, listing the
+Return a newly allocated and 0-terminated array of type IDs, listing the
 child types of @type. The return value has to be g_free()ed after use.
 </para>
 
 @type:       The parent type.
 @n_children: Optional #guint pointer to contain the number of child types.
-@Returns:    Newly allocated and 0 terminated array of child types.
+@Returns:    Newly allocated and 0-terminated array of child types.
 
 
 <!-- ##### FUNCTION g_type_interfaces ##### -->
 <para>
-Return a newly allocated and 0 terminated array of type IDs, listing the
+Return a newly allocated and 0-terminated array of type IDs, listing the
 interface types that @type conforms to. The return value has to be
 g_free()ed after use.
 </para>
 
 @type:         The type to list interface types for.
 @n_interfaces: Optional #guint pointer to contain the number of interface types.
-@Returns:      Newly allocated and 0 terminated array of interface types.
+@Returns:      Newly allocated and 0-terminated array of interface types.
 
 
 <!-- ##### FUNCTION g_type_set_qdata ##### -->
@@ -807,11 +819,11 @@ The initialization process of a class involves:
 	over from the parent class.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
-	3 - Invocation of the GBaseInitFunc initializers of all parent
+	3 - Invocation of the GBaseInitFunc() initializers of all parent
 	types and the class' type.
   </para></listitem></varlistentry>
   <varlistentry><term></term><listitem><para>
-	4 - Invocation of the class' GClassInitFunc initializer.
+	4 - Invocation of the class' GClassInitFunc() initializer.
   </para></listitem></varlistentry>
 </variablelist>
 Since derived classes are partially initialized through a memory copy
@@ -819,11 +831,11 @@ of the parent class, the general rule is that GBaseInitFunc() and
 GBaseFinalizeFunc() should take care of necessary reinitialization
 and release of those class members that were introduced by the type
 that specified these GBaseInitFunc()/GBaseFinalizeFunc().
-GClassInitFunc() should only care about intializing static
+GClassInitFunc() should only care about initializing static
 class members, while dynamic class members (such as allocated strings
 or reference counted resources) are better handled by a GBaseInitFunc()
 for this type, so proper initialization of the dynamic class members
-are performed for class intialization of derived types as well.
+is performed for class initialization of derived types as well.
 An example may help to correspond the intend of the different class
 initializers:
 
@@ -857,7 +869,7 @@ typedef struct {
 static void
 type_b_base_class_init (TypeBClass *class)
 {
-  class->dynamic_gstring = g_string_new ("some other string);
+  class->dynamic_gstring = g_string_new ("some other string");
 }
 static void
 type_b_base_class_finalize (TypeBClass *class)
@@ -902,7 +914,7 @@ time.
 A callback function used by the type system to finalize a class.
 This function is rarely needed, as dynamically allocated class resources
 should be handled by GBaseInitFunc() and GBaseFinalizeFunc().
-Also, specification of a GClassFinalizeFunc in the #GTypeInfo
+Also, specification of a GClassFinalizeFunc() in the #GTypeInfo
 structure of a static type is invalid, because classes of static types
 will never be finalized (they are artificially kept alive when their
 reference count drops to zero).
@@ -989,7 +1001,7 @@ instances (if not abstract).  The value of @flags determines the nature
 </para>
 
 @parent_type: 	Type which this type will be derived from.
-@type_name: 	Null-terminated string used as the name of the new type.
+@type_name: 	0-terminated string used as the name of the new type.
 @info: 		The #GTypeInfo structure for this type.
 @flags: 		Bitwise combination of #GTypeFlags values.
 @Returns: 	The new type identifier.
@@ -1005,12 +1017,10 @@ instances (if not abstract).  The value of @flags determines the nature
 </para>
 
 @parent_type: 	Type which this type will be derived from.
-@type_name: 	Null-terminated string used as the name of the new type.
-@plugin: 	The #GTypePlugin structure to retrive the #GTypeInfo from.
+@type_name: 	0-terminated string used as the name of the new type.
+@plugin: 	The #GTypePlugin structure to retrieve the #GTypeInfo from.
 @flags: 		Bitwise combination of #GTypeFlags values.
-@Returns: 	The new type identifier.
-<!-- # Unused Parameters # -->
-@Returns: #G_TYPE_INVALID if registration failed or the new type identifier.
+@Returns: 	The new type identifier or #G_TYPE_INVALID if registration failed.
 
 
 <!-- ##### FUNCTION g_type_register_fundamental ##### -->
@@ -1024,7 +1034,7 @@ characteristics of the fundamental type.
 </para>
 
 @type_id: 	A predefined #GTypeFundamentals value.
-@type_name: 	Null-terminated string used as the name of the new type.
+@type_name: 	0-terminated string used as the name of the new type.
 @info: 		The #GTypeInfo structure for this type.
 @finfo: 		The #GTypeFundamentalInfo structure for this type.
 @flags: 		Bitwise combination of #GTypeFlags values.
@@ -1064,13 +1074,13 @@ is used to manage the relationship.
 
 <!-- ##### FUNCTION g_type_get_plugin ##### -->
 <para>
-Returns the the #GTypePlugin structure for @type or
-#NULL if @type does not have a #GTypePlugin structure.
+Returns the #GTypePlugin structure for @type or
+%NULL if @type does not have a #GTypePlugin structure.
 </para>
 
-@type: 		The #GType to retrive the plugin for.
+@type: 		The #GType to retrieve the plugin for.
 @Returns: 	The corresponding plugin if @type is a dynamic type,
-		NULL otherwise.
+		%NULL otherwise.
 
 
 <!-- ##### FUNCTION g_type_interface_get_plugin ##### -->
@@ -1169,7 +1179,7 @@ that implements or has internal knowledge of the implementation of
 
 @type:    A #GType value.
 @Returns: Location of the #GTypeValueTable associated with @type or
-          #NULL if there is no #GTypeValueTable associated with @type.
+          %NULL if there is no #GTypeValueTable associated with @type.
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->

@@ -6,7 +6,6 @@
 GType
 G_TYPE_FUNDAMENTAL
 G_TYPE_FUNDAMENTAL_MAX
-G_TYPE_FUNDAMENTAL_SHIFT
 G_TYPE_MAKE_FUNDAMENTAL
 G_TYPE_IS_ABSTRACT
 G_TYPE_IS_DERIVED
@@ -87,6 +86,7 @@ g_type_remove_class_cache_func
 g_type_class_unref_uncached
 g_type_value_table_peek
 <SUBSECTION Private>
+G_TYPE_FUNDAMENTAL_SHIFT
 g_type_check_instance
 g_type_check_instance_cast
 g_type_check_instance_is_a
