@@ -1,7 +1,8 @@
 2005-02-02  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.h: Remove unnecessary MSVC-only typedef for
-	pid_t. GLib does not pretend to be a POSIX emulation library.
+	pid_t. (#165910) GLib does not pretend to be a POSIX emulation
+	library.
 
 	* glib/gstdio.c: In the Win32 part of all functions, handle
 	invalid UTF-8 more robustly. Don't pass the resulting NULL
