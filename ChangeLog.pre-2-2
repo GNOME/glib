@@ -1,3 +1,7 @@
+2001-11-10  Tor Lillqvist  <tml@iki.fi>
+
+	* glib-zip.in (DEVZIP): Also share/glib-2.0.
+
 2001-11-09  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c (g_win32_getlocale): Add a couple of languages
