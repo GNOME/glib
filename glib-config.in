@@ -17,6 +17,7 @@ Options:
 Libraries:
 	glib
 	gmodule
+	gthread
 EOF
 	exit $1
 }
@@ -69,6 +70,9 @@ while test $# -gt 0; do
     gmodule)
       lib_gmodule=yes
       ;;
+    gthread)
+      lib_gthread=yes
+      ;;
     *)
       usage 1 1>&2
       ;;
@@ -83,7 +87,11 @@ if test "$echo_exec_prefix" = "yes"; then
 	echo $exec_prefix
 fi
 if test "$echo_cflags" = "yes"; then
-	echo -I@libdir@/glib/include $includes
+	cflags=""
+	if test "$lib_gthread" = "yes"; then
+		cflags="$cflags @G_THREAD_CFLAGS@"
+	fi
+	echo -I@libdir@/glib/include $includes $cflags
 fi
 if test "$echo_libs" = "yes"; then
 	libs=""
@@ -93,5 +101,8 @@ if test "$echo_libs" = "yes"; then
 	if test "$lib_gmodule" = "yes"; then
 		libs="@G_MODULE_LDFLAGS@ -lgmodule $libs @G_MODULE_LIBS@"
 	fi
-	echo "-L@libdir@ $libs"
+	if test "$lib_gthread" = "yes"; then
+		libs="-lgthread $libs @G_THREAD_LIBS@"
+	fi
+	echo -L@libdir@ $libs
 fi

@@ -1,3 +1,26 @@
+Tue Dec  8 18:49:56 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Start at adding thread-safety. (mostly work
+	of Sebastian Wilhelmi <wilhelmi@ira.uka.de>)
+
+	- configure.in now looks for a system thread implementation.
+	Currently support is included for POSIX threads
+	and Solaris threads. The default support is built
+	into a separate library -lgthread.
+
+	- The thread implementation can be modified by passing
+	a vector of functions g_thread_init().
+
+	- The default or supplied functions are used to
+	implement a small set of thread functions for
+	mutexes, condition variables, and thread-private
+	data.
+
+	- GLib now uses these functions to provide thread
+	safety. (In the sense that all global static
+	data is locked... individual structures must still
+	be locked by the caller.)
+
 Mon Dec  7 23:10:41 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* gmain.c: fixes to #undef HAVE_POLL case

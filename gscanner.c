@@ -19,6 +19,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/* 
+ * MT safe
+ */
+
 #define		__gscanner_c__
 
 #ifdef HAVE_CONFIG_H
