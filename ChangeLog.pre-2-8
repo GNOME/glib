@@ -1,3 +1,8 @@
+Tue Jan  6 15:38:30 2004  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* glib/gutils.h: Check defined (__OPTIMIZE__) not
+ 	__OPTIMIZE__. (Zack Rusin)
+ 
 2003-12-30  Murray Cumming  <murrayc@usa.net>
   
   	* gobject/glib-mkenums.in: Added a lowercase_name option, to be used
