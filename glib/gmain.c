@@ -38,6 +38,7 @@
 
 #include "glib.h"
 #include "gthreadinit.h"
+#include <signal.h>
 #include <sys/types.h>
 #include <time.h>
 #ifdef HAVE_SYS_TIME_H

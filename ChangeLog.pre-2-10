@@ -1,3 +1,8 @@
+Wed Feb 18 23:57:42 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.c: Include signal.h for SIGCHLD.  (#134622, Damien
+	Carbery)
+
 2004-02-18  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gmain.c (g_main_context_new): Set context->wake_up_pipe
