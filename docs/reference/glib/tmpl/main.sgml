@@ -610,7 +610,7 @@ The type of functions to be called when a child exists.
 @pid: the process id of the child process
 @status: Status information about the child process,
   see waitpid(2) for more information about this field
-@data: user data passed to g_child_watch_add() 
+@data: user data passed to g_child_watch_add()
 
 
 <!-- ##### FUNCTION g_child_watch_source_new ##### -->

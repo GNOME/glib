@@ -29,12 +29,18 @@ G_BEGIN_DECLS
 
 typedef struct _GDir GDir;
 
-GDir    *               g_dir_open      (const gchar  *path,
-					 guint         flags,
-					 GError      **error);
-G_CONST_RETURN gchar   *g_dir_read_name (GDir         *dir);
-void                    g_dir_rewind    (GDir         *dir);
-void                    g_dir_close     (GDir         *dir);
+#ifdef G_OS_WIN32
+/* For DLL ABI stability, keep old names for old (non-UTF-8) functionality. */
+#define g_dir_open g_dir_open_utf8
+#define g_dir_read_name g_dir_read_name_utf8
+#endif
+
+GDir    *                g_dir_open           (const gchar  *path,
+					       guint         flags,
+					       GError      **error);
+G_CONST_RETURN gchar    *g_dir_read_name      (GDir         *dir);
+void                     g_dir_rewind         (GDir         *dir);
+void                     g_dir_close          (GDir         *dir);
 
 G_END_DECLS
 

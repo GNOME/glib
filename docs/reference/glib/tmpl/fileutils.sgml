@@ -6,7 +6,31 @@ various file-related functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+There is a group of functions which wrap the common POSIX functions 
+dealing with filenames (g_open(), g_rename(), g_mkdir(), g_stat(), 
+g_unlink(), g_remove(), g_fopen(), g_freopen()). The point of these 
+wrappers is to make it possible to handle file names with any Unicode 
+characters in them on Windows without having to use ifdefs and the 
+wide character API in the application code.
+</para>
+<para>
+The pathname argument should be in the GLib file name encoding. On
+POSIX this is the actual on-disk encoding which might correspond to
+the locale settings of the process (or the 
+<envar>G_FILENAME_ENCODING</envar> environment variable), or not.
+</para>
+<para>
+On Windows the GLib file name encoding is UTF-8. Note that the
+Microsoft C library does not use UTF-8, but has separate APIs for
+current system code page and wide characters (UTF-16). The GLib
+wrappers call the wide character API if present (on modern Windows
+systems), otherwise convert to/from the system code page.
+</para>
 
+<para>
+Another group of functions allows to open and read directories
+in the GLib file name encoding. These are g_dir_open(), 
+g_dir_read_name(), g_dir_rewind(), g_dir_close().
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -221,5 +245,85 @@ An opaque structure representing an opened directory.
 </para>
 
 @dir: 
+
+
+<!-- ##### FUNCTION g_open ##### -->
+<para>
+
+</para>
+
+@filename: 
+@flags: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rename ##### -->
+<para>
+
+</para>
+
+@oldfilename: 
+@newfilename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mkdir ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_stat ##### -->
+<para>
+
+</para>
+
+@filename: 
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unlink ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_remove ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_fopen ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_freopen ##### -->
+<para>
+
+</para>
+
+@filename: 
+@mode: 
+@stream: 
+@Returns: 
 
 

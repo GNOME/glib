@@ -90,6 +90,7 @@ libglib_2_0_la_SOURCES = 	\
 	gscanner.c		\
 	gshell.c		\
 	gslist.c		\
+	gstdio.c		\
 	gstrfuncs.c		\
 	gstring.c		\
 	gthread.c       	\
@@ -164,6 +165,7 @@ glibsubinclude_HEADERS =   \
 	gshell.h	\
 	gslist.h	\
 	gspawn.h	\
+	gstdio.h	\
 	gstrfuncs.h	\
 	gstring.h	\
 	gthread.h	\

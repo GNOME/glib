@@ -98,6 +98,11 @@ gchar* g_locale_from_utf8 (const gchar  *utf8string,
 /* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
  */
+#ifdef G_OS_WIN32
+#define g_filename_to_utf8 g_filename_to_utf8_utf8
+#define g_filename_from_utf8 g_filename_from_utf8_utf8
+#endif
+
 gchar* g_filename_to_utf8   (const gchar  *opsysstring,
 			     gssize        len,            
 			     gsize        *bytes_read,     

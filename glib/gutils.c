@@ -702,11 +702,32 @@ g_get_current_dir (void)
       buffer[1] = 0;
     }
 
+#ifdef G_OS_WIN32
+  dir = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+#else
   dir = g_strdup (buffer);
+#endif
   g_free (buffer);
   
   return dir;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_get_current_dir
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+gchar*
+g_get_current_dir (void)
+{
+  gchar *utf8_dir = g_get_current_dir_utf8 ();
+  gchar *dir = g_locale_from_utf8 (utf8_dir, -1, NULL, NULL, NULL);
+  g_free (utf8_dir);
+  return dir;
+}
+
+#endif
 
 /**
  * g_getenv:
@@ -1167,6 +1188,27 @@ g_get_home_dir (void)
   return g_home_dir;
 }
 
+#ifdef G_OS_WIN32
+
+#undef g_get_home_dir
+
+G_CONST_RETURN gchar*
+g_get_home_dir (void)
+{
+  static gchar *home_dir = NULL;
+
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  if (!home_dir && g_home_dir)
+    home_dir = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
+  G_UNLOCK (g_utils_global);
+
+  return home_dir;
+}
+
+#endif
+
 /* Return a directory to be used to store temporary files. This is the
  * value of the TMPDIR, TMP or TEMP environment variables (they are
  * checked in that order). If none of those exist, use P_tmpdir from
@@ -1184,6 +1226,30 @@ g_get_tmp_dir (void)
   
   return g_tmp_dir;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_get_tmp_dir
+
+G_CONST_RETURN gchar*
+g_get_tmp_dir (void)
+{
+  static gchar *tmp_dir = NULL;
+
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  if (!tmp_dir)
+    tmp_dir = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
+
+  if (tmp_dir == NULL)
+    tmp_dir = "C:\\";
+  G_UNLOCK (g_utils_global);
+
+  return tmp_dir;
+}
+
+#endif
 
 G_LOCK_DEFINE_STATIC (g_prgname);
 static gchar *g_prgname = NULL;

@@ -46,6 +46,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+#include "gstdio.h"
 #include "glibintl.h"
 
 typedef struct _GIOWin32Channel GIOWin32Channel;
@@ -1336,7 +1337,7 @@ g_io_channel_new_file (const gchar  *filename,
     }
 
   /* always open 'untranslated' */
-  fid = open (filename, flags | _O_BINARY, pmode);
+  fid = g_open (filename, flags | _O_BINARY, pmode);
 
   if (g_io_win32_get_debug_flag ())
     {
@@ -1382,6 +1383,32 @@ g_io_channel_new_file (const gchar  *filename,
 
   return channel;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_io_channel_new_file
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+GIOChannel *
+g_io_channel_new_file (const gchar  *filename,
+                       const gchar  *mode,
+                       GError      **error)
+{
+  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
+  GIOChannel *retval;
+
+  if (utf8_filename == NULL)
+    return NULL;
+
+  retval = g_io_channel_new_file_utf8 (utf8_filename, mode, error);
+
+  g_free (utf8_filename);
+
+  return retval;
+}
+
+#endif
 
 static GIOStatus
 g_io_win32_set_flags (GIOChannel *channel,

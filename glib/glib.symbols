@@ -148,8 +148,14 @@ g_date_valid_year
 g_dir_close
 g_direct_equal
 g_direct_hash
-g_dir_open
-g_dir_read_name
+g_dir_open PRIVATE
+#ifdef G_OS_WIN32
+g_dir_open_utf8
+#endif
+g_dir_read_name PRIVATE
+#ifdef G_OS_WIN32
+g_dir_read_name_utf8
+#endif
 g_dir_rewind
 g_error_copy
 g_error_free
@@ -158,29 +164,55 @@ g_error_new
 g_error_new_literal
 g_file_error_from_errno
 g_file_error_quark
-g_file_get_contents
+g_file_get_contents PRIVATE
+#ifdef G_OS_WIN32
+g_file_get_contents_utf8
+#endif
 g_filename_from_uri
-g_filename_from_utf8
+g_filename_from_utf8 PRIVATE
+#ifdef G_OS_WIN32
+g_filename_from_utf8_utf8
+#endif
 g_filename_to_uri
-g_filename_to_utf8
-g_file_open_tmp
+g_filename_to_utf8 PRIVATE
+#ifdef G_OS_WIN32
+g_filename_to_utf8_utf8
+#endif
+g_file_open_tmp PRIVATE
+#ifdef G_OS_WIN32
+g_file_open_tmp_utf8
+#endif
 g_file_read_link
-g_file_test
+g_file_test PRIVATE
+#ifdef G_OS_WIN32
+g_file_test_utf8
+#endif
 g_find_program_in_path
+g_fopen
 g_fprintf
 g_free
+g_freopen
 g_get_application_name
 g_get_charset
-g_get_current_dir
+g_get_current_dir PRIVATE
+#ifdef G_OS_WIN32
+g_get_current_dir_utf8
+#endif
 g_get_current_time
 g_getenv
-g_get_home_dir
+g_get_home_dir PRIVATE
+#ifdef G_OS_WIN32
+g_get_home_dir_utf8
+#endif
 g_get_language_names
 g_get_prgname
 g_get_real_name
 g_get_system_config_dirs
 g_get_system_data_dirs
-g_get_tmp_dir
+g_get_tmp_dir PRIVATE
+#ifdef G_OS_WIN32
+g_get_tmp_dir_utf8
+#endif
 g_get_user_cache_dir
 g_get_user_config_dir
 g_get_user_data_dir
@@ -245,7 +277,10 @@ g_io_channel_get_encoding
 g_io_channel_get_flags
 g_io_channel_get_line_term
 g_io_channel_init
-g_io_channel_new_file
+g_io_channel_new_file PRIVATE
+#ifdef G_OS_WIN32
+g_io_channel_new_file_utf8
+#endif
 g_io_channel_read
 g_io_channel_read_chars
 g_io_channel_read_line
@@ -410,7 +445,11 @@ g_memdup
 g_mem_is_system_malloc
 g_mem_profile
 g_mem_set_vtable
-g_mkstemp
+g_mkdir
+g_mkstemp PRIVATE
+#ifdef G_OS_WIN32
+g_mkstemp_utf8
+#endif
 g_node_child_index
 g_node_child_position
 g_node_children_foreach
@@ -443,6 +482,7 @@ g_nullify_pointer
 g_once_impl
 g_on_error_query
 g_on_error_stack_trace
+g_open
 g_option_context_add_group
 g_option_context_add_main_entries
 g_option_error_quark
@@ -559,6 +599,8 @@ g_relation_insert
 g_relation_new
 g_relation_print
 g_relation_select
+g_remove
+g_rename
 g_return_if_fail_warning
 g_scanner_cur_line
 g_scanner_cur_position
@@ -648,6 +690,7 @@ g_spawn_command_line_sync
 g_spawn_error_quark
 g_spawn_sync
 g_sprintf
+g_stat
 g_static_mutex_free
 g_static_mutex_get_mutex_impl
 g_static_mutex_init
@@ -815,6 +858,7 @@ g_unichar_validate
 g_unichar_xdigit_value
 g_unicode_canonical_decomposition
 g_unicode_canonical_ordering
+g_unlink
 g_unsetenv
 g_uri_list_extract_uris
 g_usleep

@@ -115,6 +115,10 @@ G_BEGIN_DECLS
 
 /* Retrive static string info
  */
+#ifdef G_OS_WIN32
+#define g_get_home_dir g_get_home_dir_utf8
+#define g_get_tmp_dir g_get_tmp_dir_utf8
+#endif
 G_CONST_RETURN gchar* g_get_user_name        (void);
 G_CONST_RETURN gchar* g_get_real_name        (void);
 G_CONST_RETURN gchar* g_get_home_dir         (void);
@@ -170,6 +174,10 @@ G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 #define g_dirname g_path_get_dirname
 
 #endif /* G_DISABLE_DEPRECATED */
+
+#ifdef G_OS_WIN32
+#define g_get_current_dir g_get_current_dir_utf8
+#endif
 
 /* The returned strings are newly allocated with g_malloc() */
 gchar*                g_get_current_dir    (void);

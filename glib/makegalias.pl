@@ -16,7 +16,7 @@ print <<EOF;
 
 #include "glib.h"
 
-#include "gprintf.h"
+#include "gstdio.h"
 #ifdef G_OS_WIN32
 #include "gwin32.h"
 #endif
@@ -77,8 +77,9 @@ while (<>) {
       next;
   }
  
-
   my $str = $_;
+  # Drop any Win32 specific .def file syntax
+  $str = (split (/ /, $str))[0];
   chomp($str);
   my $alias = "IA__".$str;
   

@@ -260,6 +260,7 @@ attributes (currently only <command>gcc</command>).
 Since: 2.6
 
 
+
 <!-- ##### MACRO G_GNUC_INTERNAL ##### -->
 <para>
 Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 

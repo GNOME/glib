@@ -1014,8 +1014,9 @@ filename_charset_cache_free (gpointer data)
  * get_filename_charset:
  * @charset: return location for the name of the filename encoding 
  *
- * Determines the character set used for filenames by consulting the 
- * environment variables G_FILENAME_ENCODING and G_BROKEN_FILENAMES. 
+ * Determines the preferred character set used for filenames by
+ * consulting the environment variables G_FILENAME_ENCODING and
+ * G_BROKEN_FILENAMES.
  *
  * G_FILENAME_ENCODING may be set to a comma-separated list of character 
  * set names. The special token "@locale" is taken to mean the character set 
@@ -1025,8 +1026,13 @@ filename_charset_cache_free (gpointer data)
  * character set of the current locale is taken as the filename encoding.
  *
  * The returned @charset belongs to GLib and must not be freed.
- * 
- * Return value: %TRUE if the charset used for filename is UTF-8.
+ *
+ * Note that on Unix, regardless of the locale character set or
+ * G_FILENAME_ENCODING value, the actual file names present on a
+ * system might be in any random encoding or just gibberish.
+ *
+ *  Return value: %TRUE
+ * if the charset used for filename is UTF-8.
  */
 static gboolean
 get_filename_charset (const gchar **filename_charset)
@@ -1089,12 +1095,33 @@ get_filename_charset (const gchar **filename_charset)
 }
 
 #else /* G_PLATFORM_WIN32 */
+
 static gboolean
 get_filename_charset (const gchar **filename_charset) 
+{
+#ifdef G_OS_WIN32
+  /* On Windows GLib pretends that the filename charset is UTF-8 */
+  if (filename_charset)
+    *filename_charset = "UTF-8";
+  return TRUE;
+#else
+  /* Cygwin works like before */
+  g_get_charset (filename_charset);
+  return FALSE;
+#endif
+}
+
+#ifdef G_OS_WIN32
+
+static gboolean
+old_get_filename_charset (const gchar **filename_charset) 
 {
   g_get_charset (filename_charset);
   return FALSE;
 }
+
+#endif
+
 #endif /* G_PLATFORM_WIN32 */
 
 /* This is called from g_thread_init(). It's used to
@@ -1146,6 +1173,30 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		      "UTF-8", charset, bytes_read, bytes_written, error);
 }
 
+#ifdef G_OS_WIN32
+
+#undef g_filename_to_utf8
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+gchar*
+g_filename_to_utf8 (const gchar *opsysstring, 
+		    gssize       len,           
+		    gsize       *bytes_read,   
+		    gsize       *bytes_written,
+		    GError     **error)
+{
+  const gchar *charset;
+
+  if (old_get_filename_charset (&charset))
+    return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
+  else
+    return g_convert (opsysstring, len, 
+		      "UTF-8", charset, bytes_read, bytes_written, error);
+}
+
+#endif
+
 /**
  * g_filename_from_utf8:
  * @utf8string:    a UTF-8 encoded string.
@@ -1183,6 +1234,30 @@ g_filename_from_utf8 (const gchar *utf8string,
     return g_convert (utf8string, len,
 		      charset, "UTF-8", bytes_read, bytes_written, error);
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_filename_from_utf8
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+gchar*
+g_filename_from_utf8 (const gchar *utf8string,
+		      gssize       len,            
+		      gsize       *bytes_read,    
+		      gsize       *bytes_written,
+		      GError     **error)
+{
+  const gchar *charset;
+
+  if (old_get_filename_charset (&charset))
+    return strdup_len (utf8string, len, bytes_read, bytes_written, error);
+  else
+    return g_convert (utf8string, len,
+		      charset, "UTF-8", bytes_read, bytes_written, error);
+}
+
+#endif
 
 /* Test of haystack has the needle prefix, comparing case
  * insensitive. haystack may be UTF-8, but needle must

@@ -1,5 +1,29 @@
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
+	Introduce the idea of a filename encoding, which is 
+	*literally* the filename encoding on Unix. On windows, 
+	use the Unicode name converted to UTF-8. (#156325,
+	Tor Lillqvist, Owen Taylor)
+	
+	* glib/gdir.[hc]: 
+	* glib/gconvert.[hc]: 
+	* glib/gfileutils.[hc]: 
+	* glib/gutils.[hc]: 
+	* glib/giowin32.c: On Windows, keep old ABI versions 
+	of GLib pathname api for DLL ABI stability. Use different 
+	names for the new-style UTF-8 versions. Hide this through 
+	a #define.
+
+	* glib/gstdio.[hc]: New files containing wrappers for
+	POSIX pathname api.
+
+	* glib/glib.symbols: Add new symbols.
+
+	* glib/makegalias.pl: Drop Win32 specific .def syntax,
+	include gstdio.h
+
+2004-10-27  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gkeyfile.c: Fix includes. (#156500, #156499, 
 	Kazuki IWAMOTO)
 

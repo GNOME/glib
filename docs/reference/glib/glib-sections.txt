@@ -967,6 +967,7 @@ g_option_error_quark
 <SECTION>
 <TITLE>File Utilities</TITLE>
 <FILE>fileutils</FILE>
+<INCLUDE>glib.h,glib/gstdio.h</INCLUDE>
 GFileError
 G_FILE_ERROR
 GFileTest
@@ -983,6 +984,16 @@ g_dir_open
 g_dir_read_name
 g_dir_rewind
 g_dir_close
+
+<SUBSECTION>
+g_open
+g_rename
+g_mkdir
+g_stat
+g_unlink
+g_remove
+g_fopen
+g_freopen
 
 <SUBSECTION Private>
 g_file_error_quark
