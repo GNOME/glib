@@ -618,6 +618,7 @@ G_MODULE_PLUGIN_LIBS=
 G_MODULE_LDFLAGS=
 dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
+G_MODULE_BROKEN_RTLD_GLOBAL=0
 G_MODULE_HAVE_DLERROR=0
 dnl *** dlopen() and dlsym() in system libraries
 if test -z "$G_MODULE_IMPL"; then
