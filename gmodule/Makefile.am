@@ -11,7 +11,8 @@ EXTRA_DIST =	\
 		gmodule-os2.c	\
 		gmodule-win32.c	\
 		gmodule-beos.c	\
-		gmoduleconf.h.win32
+		gmoduleconf.h.win32 \
+		gmodule.rc
 
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
@@ -47,6 +48,9 @@ libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
 testgmodule_LDADD = libgmodule.la $(libglib) @G_MODULE_LIBS@
+
+gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release
 

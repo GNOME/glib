@@ -1,3 +1,13 @@
+2000-02-07  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule.rc.in gthread.rc.in: Move to corresponding subdirectories.
+
+	* Makefile.am
+	* gmodule/Makefile.am
+	* gthread/Makefile.am: Change accordingly.
+	
+	* makefile.cygwin: Corresponding changes, some cleanup.
+
 2000-02-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.rc.in gmodule.rc.in gthread.rc.in: New files, for putting

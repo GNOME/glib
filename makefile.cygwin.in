@@ -28,6 +28,9 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 CFLAGS = $(OPTIMIZE) -I. -DHAVE_CONFIG_H
 
+# Kludge to get the path to the win32 headers
+WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's!/winver.h!!')
+
 all : \
 	config.h	\
 	glibconfig.h	\
@@ -76,11 +79,13 @@ glib_OBJECTS = \
 	gwin32.o	\
 	glib-win32res.o
 
-glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
+glibconfig.h: glibconfig.h.win32
+	cp glibconfig.h.win32 glibconfig.h
 
-# Kludge to get the path to the win32 headers
-WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's!/winver.h!!')
+config.h: config.h.win32
+	cp config.h.win32 config.h
+
+################ glib
 
 # The *.stamp files aren't distributed. Thus, this takes care of only
 # tml building libraries with nonzero build number.
@@ -96,24 +101,16 @@ glib-build.tmp :
 	echo 0 >glib-build.tmp
 endif
 
-%-win32res.o : %.rc %-build.tmp
-	m4 -DBUILDNUMBER=`cat $*-build.tmp` <$*.rc >$*-win32res.rc
-	windres --include-dir $(WIN32APIHEADERS) $*-win32res.rc $*-win32res.o
-	rm $*-build.tmp $*-win32res.rc
+glib-win32res.o : glib.rc glib-build.tmp
+	m4 -DBUILDNUMBER=`cat glib-build.tmp` <glib.rc >glib-win32res.rc
+	windres --include-dir $(WIN32APIHEADERS) glib-win32res.rc glib-win32res.o
+	rm glib-build.tmp glib-win32res.rc
 
-glibconfig.h: glibconfig.h.win32
-	cp glibconfig.h.win32 glibconfig.h
+glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
 
-config.h: config.h.win32
-	cp config.h.win32 config.h
 
-.SUFFIXES: .c .o .i
-
-.c.o :
-	$(CC) $(CFLAGS) -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
-
-.c.i :
-	$(CC) $(CFLAGS) -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
+################ gmodule
 
 gmodule_OBJECTS = \
 	gmodule.o	\
@@ -130,6 +127,12 @@ gmodule-build.tmp :
 	echo 0 >gmodule-build.tmp
 endif
 
+gmodule-win32res.o : gmodule/gmodule.rc gmodule-build.tmp
+	m4 -DBUILDNUMBER=`cat gmodule-build.tmp` <gmodule/gmodule.rc >gmodule-win32res.rc
+	windres --include-dir $(WIN32APIHEADERS) gmodule-win32res.rc gmodule-win32res.o
+	rm gmodule-build.tmp gmodule-win32res.rc
+
+
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule/gmodule.def
 	./build-dll gmodule $(GLIB_VER) gmodule/gmodule.def $(gmodule_OBJECTS) -L. -lglib-$(GLIB_VER) -lwsock32
 
@@ -138,6 +141,8 @@ gmodule.o : gmodule/gmodule.c gmodule/gmodule-win32.c
 
 gmodule/gmoduleconf.h: gmodule/gmoduleconf.h.win32
 	cp gmodule/gmoduleconf.h.win32 gmodule/gmoduleconf.h
+
+################ gthread
 
 gthread_OBJECTS = \
 	gthread-impl.o	\
@@ -153,11 +158,19 @@ gthread-build.tmp :
 	echo 0 >gthread-build.tmp
 endif
 
+gthread-win32res.o : gthread/gthread.rc gthread-build.tmp
+	m4 -DBUILDNUMBER=`cat gthread-build.tmp` <gthread/gthread.rc >gthread-win32res.rc
+	windres --include-dir $(WIN32APIHEADERS) gthread-win32res.rc gthread-win32res.o
+	rm gthread-build.tmp gthread-win32res.rc
+
+
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) glib-$(GLIB_VER).dll gthread/gthread.def
 	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB)
 
 gthread-impl.o : gthread/gthread-impl.c gthread/gthread-posix.c
 	$(CC) $(CFLAGS) $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread/gthread-impl.c
+
+################ test progs
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.o
 	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
@@ -202,6 +215,17 @@ libgplugin_b.dll : libgplugin_b.o
 libgplugin_b.o : gmodule/libgplugin_b.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_b.c
 
+################ other stuff
+
 clean:
 	-rm config.h glibconfig.h gmodule/gmoduleconf.h
 	-rm *.exe *.o *.dll *.a *.base *.exp
+
+.SUFFIXES: .c .o .i
+
+.c.o :
+	$(CC) $(CFLAGS) -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+.c.i :
+	$(CC) $(CFLAGS) -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
+
