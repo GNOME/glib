@@ -335,6 +335,7 @@ EXPORTS
 	g_main_context_unref
 	g_main_context_wait
 	g_main_context_wakeup
+	g_main_depth
 	g_main_loop_get_context
 	g_main_loop_is_running
 	g_main_loop_new
