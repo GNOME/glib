@@ -273,6 +273,11 @@ g_poll (GPollFD *fds,
       {
 	if (f->fd == G_WIN32_MSG_HANDLE)
 	  poll_msgs = TRUE;
+	else if (nhandles == MAXIMUM_WAIT_OBJECTS)
+	  {
+	    g_warning (G_STRLOC ": Too many handles to wait for!\n");
+	    break;
+	  }
 	else
 	  {
 #ifdef G_MAIN_POLL_DEBUG
