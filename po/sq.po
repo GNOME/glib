@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD\n"
+"Project-Id-Version: glib.HEAD.sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2004-01-16 00:28+0100\n"
+"POT-Creation-Date: 2004-01-31 17:31+0100\n"
+"PO-Revision-Date: 2004-01-31 17:30+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Konvertimi nga set i karaktereve '%s' në '%s' nuk suportohet"
+msgstr "Konvertimi nga familja e gërmave '%s' në '%s' nuk suportohet"
 
 #: glib/gconvert.c:406
 #, c-format
