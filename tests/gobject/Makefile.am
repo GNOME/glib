@@ -48,6 +48,7 @@ test_programs =					\
 	accumulator				\
 	defaultiface				\
 	ifaceinit				\
+	ifaceinherit				\
 	override
 
 check_PROGRAMS = $(test_programs)

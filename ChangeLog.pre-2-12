@@ -1,3 +1,8 @@
+Thu Oct  2 00:02:55 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/gobject/Makefile.am test/gobject/ifaceinherit.c:
+	Tests of interface inheritance and overriding.
+
 2003-09-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c (do_spawn): Call protect_argv() in
