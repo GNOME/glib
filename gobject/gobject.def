@@ -12,14 +12,24 @@ EXPORTS
 	g_bsearch_array_remove_node
 	g_cclosure_marshal_STRING__OBJECT_POINTER
 	g_cclosure_marshal_VOID__BOOLEAN
+	g_cclosure_marshal_VOID__BOXED
+	g_cclosure_marshal_VOID__CHAR
+	g_cclosure_marshal_VOID__DOUBLE
+	g_cclosure_marshal_VOID__ENUM
+	g_cclosure_marshal_VOID__FLAGS
+	g_cclosure_marshal_VOID__FLOAT
 	g_cclosure_marshal_VOID__INT
-	g_cclosure_marshal_VOID__POINTER
+	g_cclosure_marshal_VOID__LONG
+	g_cclosure_marshal_VOID__OBJECT
 	g_cclosure_marshal_VOID__PARAM
+	g_cclosure_marshal_VOID__POINTER
+	g_cclosure_marshal_VOID__STRING
+	g_cclosure_marshal_VOID__UCHAR
 	g_cclosure_marshal_VOID__UINT
 	g_cclosure_marshal_VOID__UINT_POINTER
-	g_cclosure_marshal_VOID__OBJECT
-	g_cclosure_marshal_VOID__STRING
+	g_cclosure_marshal_VOID__ULONG
 	g_cclosure_marshal_VOID__VOID
+	g_cclosure_marshal_VOID__DOUBLE
 	g_cclosure_new
 	g_cclosure_new_object
 	g_cclosure_new_object_swap
@@ -29,6 +39,7 @@ EXPORTS
 	g_closure_add_marshal_guards
 	g_closure_invalidate
 	g_closure_invoke
+	g_closure_new_object
 	g_closure_new_simple
 	g_closure_ref
 	g_closure_remove_finalize_notifier
@@ -50,8 +61,9 @@ EXPORTS
 	g_object_class_find_property
 	g_object_class_install_property
 	g_object_class_list_properties
-	g_object_freeze_notify
 	g_object_connect
+	g_object_disconnect
+	g_object_freeze_notify
 	g_object_get
 	g_object_get_data
 	g_object_get_property
@@ -59,6 +71,7 @@ EXPORTS
 	g_object_get_valist
 	g_object_new
 	g_object_new_valist
+	g_object_newv
 	g_object_notify
 	g_object_ref
 	g_object_run_dispose
@@ -79,6 +92,7 @@ EXPORTS
 	g_param_spec_boolean
 	g_param_spec_boxed
 	g_param_spec_char
+	g_param_spec_closure
 	g_param_spec_double
 	g_param_spec_enum
 	g_param_spec_flags
@@ -88,13 +102,14 @@ EXPORTS
 	g_param_spec_internal
 	g_param_spec_long
 	g_param_spec_object
+	g_param_spec_param
 	g_param_spec_pointer
 	g_param_spec_pool_insert
 	g_param_spec_pool_list
 	g_param_spec_pool_list_owned
 	g_param_spec_pool_lookup
-	g_param_spec_pool_remove
 	g_param_spec_pool_new
+	g_param_spec_pool_remove
 	g_param_spec_ref
 	g_param_spec_set_qdata
 	g_param_spec_set_qdata_full
@@ -102,10 +117,12 @@ EXPORTS
 	g_param_spec_steal_qdata
 	g_param_spec_string
 	g_param_spec_uchar
-	g_param_spec_unichar
 	g_param_spec_uint
 	g_param_spec_ulong
+	g_param_spec_unichar
 	g_param_spec_unref
+	g_param_spec_value_array
+	g_param_type_register_static
 	g_param_value_convert
 	g_param_value_defaults
 	g_param_value_set_default
@@ -123,6 +140,7 @@ EXPORTS
 	g_signal_handler_block
 	g_signal_handler_disconnect
 	g_signal_handler_find
+	g_signal_handler_is_connected
 	g_signal_handler_unblock
 	g_signal_handlers_block_matched
 	g_signal_handlers_destroy
@@ -133,12 +151,13 @@ EXPORTS
 	g_signal_lookup
 	g_signal_name
 	g_signal_new
-	g_signal_newv
 	g_signal_new_valist
+	g_signal_newv
 	g_signal_parse_name
 	g_signal_query
 	g_signal_remove_emission_hook
 	g_signal_stop_emission
+	g_signal_stop_emission_by_name
 	g_signal_type_cclosure_new
 	g_slist_remove_all
 	g_strdup_value_contents
@@ -160,6 +179,7 @@ EXPORTS
 	g_type_class_unref
 	g_type_class_unref_uncached
 	g_type_create_instance
+	g_type_depth
 	g_type_free_instance
 	g_type_from_name
 	g_type_fundamental_branch_last
@@ -170,6 +190,7 @@ EXPORTS
 	g_type_init_with_debug_flags
 	g_type_instance_is_a
 	g_type_interface_add_prerequisite
+	g_type_interface_get_plugin
 	g_type_interface_peek
 	g_type_interfaces
 	g_type_is_a
@@ -180,6 +201,8 @@ EXPORTS
 	g_type_module_unuse
 	g_type_module_use
 	g_type_name
+	g_type_name_from_class
+	g_type_name_from_instance
 	g_type_next_base
 	g_type_parent
 	g_type_plugin_complete_interface_info
@@ -188,6 +211,7 @@ EXPORTS
 	g_type_plugin_unuse
 	g_type_plugin_use
 	g_type_qname
+	g_type_query
 	g_type_register_dynamic
 	g_type_register_fundamental
 	g_type_register_static
@@ -196,11 +220,23 @@ EXPORTS
 ;	g_type_value_is_a
 	g_type_value_table_peek
 	g_unichar_validate
+	g_value_array_append
+	g_value_array_copy
+	g_value_array_free
+	g_value_array_get_nth
+	g_value_array_insert
+	g_value_array_new
+	g_value_array_prepend
+	g_value_array_remove
+	g_value_array_sort
+	g_value_array_sort_with_data
 ;	g_value_convert
 	g_value_copy
 	g_value_dup_boxed
 	g_value_dup_object
+	g_value_dup_param
 	g_value_dup_string
+	g_value_fits_pointer
 ;	g_value_get_as_pointer
 	g_value_get_boolean
 	g_value_get_boxed
@@ -212,6 +248,7 @@ EXPORTS
 	g_value_get_int
 	g_value_get_long
 	g_value_get_object
+	g_value_get_param
 	g_value_get_pointer
 	g_value_get_string
 	g_value_get_uchar
@@ -223,14 +260,17 @@ EXPORTS
 	g_value_reset
 	g_value_set_boolean
 	g_value_set_boxed
+	g_value_set_boxed_take_ownership
 	g_value_set_char
 	g_value_set_double
 	g_value_set_enum
 	g_value_set_flags
 	g_value_set_float
+	g_value_set_instance
 	g_value_set_int
 	g_value_set_long
 	g_value_set_object
+	g_value_set_param
 	g_value_set_pointer
 	g_value_set_static_boxed
 	g_value_set_static_string
