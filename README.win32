@@ -71,6 +71,7 @@ Building with MSVC
 
 If using the Microsoft toolchain, build with `nmake -f
 makefile.msc`. Install with `nmake -f makefile.msc install`. 
+
 Building with gcc
 =================
 
