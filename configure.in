@@ -1086,7 +1086,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xwin32; then
        	case $host in
-               	*-*-mingw*|*-*-cygwin*)
+               	*-*-mingw*)
 		have_threads=win32
 		;;
 	esac

@@ -1,5 +1,10 @@
 2001-10-26  Tor Lillqvist  <tml@iki.fi>
 
+	* configure.in: Don't default to win32 thread implementation on
+	Cygwin. The gthread-win32 implementation really is for Win32 with
+	MS runtime only. Let configure find pthreads when configuring for
+	Cygwin.
+
 	* README.win32: Updates.
 
 	* glib/glib.def: Update.
