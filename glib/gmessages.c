@@ -538,7 +538,7 @@ g_logv (const gchar   *log_domain,
 	    {
 #if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)
 	      if (!(test_level & G_LOG_FLAG_RECURSION))
-		raise (SIGTRAP);
+		G_BREAKPOINT ();
 	      else
 		abort ();
 #else /* !G_ENABLE_DEBUG || !SIGTRAP */

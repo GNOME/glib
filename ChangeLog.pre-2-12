@@ -1,3 +1,7 @@
+Sat Jun 23 17:34:38 2001  Tim Janik  <timj@gtk.org>
+
+	* gmessages.c (g_logv): use G_BREAKPOINT() instead of raise(5).
+
 Wed Jun 20 12:00:54 2001  Owen Taylor  <otaylor@redhat.com>
 
         Changes for 64-bit cleanliness, loosely based on patch 
