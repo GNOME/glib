@@ -1,3 +1,18 @@
+2004-04-10  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giowin32.c
+	* glib/gmain.c
+	* glib/gstrfuncs.c
+	* glib/gthread.c: Decorating variable definitions with
+	__declspec(dllexport) causes problems on Cygwin build, and isn't
+	really needed for a native Win32 build with mingw or MSVC, so
+	remove. (#138402, Roger Leigh)
+
+	* glib/libcharset/localcharset.c: Use Win32-specific code also on
+	Cygwin.
+	* tests/uri-test.c: Don't assume that local filenames are in UTF-8
+	on Cygwin, either. (#138412, Roger Leigh)
+
 2004-04-08  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "gu" (Gujarati) to ALL_LINGUAS.

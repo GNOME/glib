@@ -271,9 +271,6 @@ static gint child_watch_wake_up_pipe[2] = {0, 0};
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 GSourceFuncs g_timeout_funcs =
 {
   g_timeout_prepare,
@@ -290,9 +287,6 @@ GSourceFuncs g_child_watch_funcs =
   NULL
 };
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 GSourceFuncs g_idle_funcs =
 {
   g_idle_prepare,
@@ -3666,7 +3660,8 @@ g_child_watch_source_init (void)
 
 /**
  * g_child_watch_source_new:
- * @pid: process id of a child process to watch
+ * @pid: process id of a child process to watch. On Windows, a HANDLE
+ * for the process to watch (which actually doesn't have to be a child).
  * 
  * Creates a new child_watch source.
  *

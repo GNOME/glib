@@ -734,9 +734,6 @@ g_io_win32_finalize (GSource *source)
   UNLOCK (channel->mutex);
 }
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 GSourceFuncs g_io_watch_funcs = {
   g_io_win32_prepare,
   g_io_win32_check,

@@ -95,9 +95,6 @@ static GSystemThread zero_thread; /* This is initialized to all zero */
 gboolean g_thread_use_default_impl = TRUE;
 gboolean g_threads_got_initialized = FALSE;
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 GThreadFunctions g_thread_functions_for_glib_use = {
   (GMutex*(*)())g_thread_fail,                 /* mutex_new */
   NULL,                                        /* mutex_lock */

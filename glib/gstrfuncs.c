@@ -75,9 +75,6 @@ static const guint16 ascii_table_data[256] = {
   /* the upper 128 are all zeroes */
 };
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 const guint16 * const g_ascii_table = ascii_table_data;
 
 gchar*

@@ -61,7 +61,7 @@ to_uri_tests[] = {
   { "c:\\windows", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #endif
   { "etc", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
-#ifndef G_OS_WIN32
+#ifndef G_PLATFORM_WIN32
   /* g_filename_to_utf8 uses current code page on Win32, these tests assume that
    * local filenames *are* in UTF-8.
    */

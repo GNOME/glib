@@ -23,6 +23,13 @@
 # include <config.h>
 #endif
 
+#include <glibconfig.h>
+
+#if defined G_PLATFORM_WIN32
+/* Want to use Win32-specific code in this file also on Cygwin */
+# define _WIN32 1		
+#endif
+
 #if HAVE_STDDEF_H
 # include <stddef.h>
 #endif
