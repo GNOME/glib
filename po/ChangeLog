@@ -1,3 +1,7 @@
+2001-09-28  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
+
+	* sk.po: Updated Slovak translation.
+
 2001-09-28  Tor Lillqvist  <tml@iki.fi>
 
 	* POTFILES.in: Add iochannel.c and giowin32.c.
