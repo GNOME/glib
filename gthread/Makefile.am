@@ -19,20 +19,20 @@ BUILT_EXTRA_DIST = \
 		makefile.msc		\
 		gthread.rc
 
-libglib = $(top_builddir)/glib/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-2.0.la
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 
-lib_LTLIBRARIES = libgthread-1.3.la
+lib_LTLIBRARIES = libgthread-2.0.la
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gthread-1.3.lib
+noinst_DATA = gthread-2.0.lib
 
 install-ms-lib:
-	$(INSTALL) gthread-1.3.lib $(DESTDIR)$(libdir)
+	$(INSTALL) gthread-2.0.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gthread-1.3.lib
+	-rm $(DESTDIR)$(libdir)/gthread-2.0.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
@@ -46,30 +46,30 @@ if OS_WIN32
 export_symbols = -export-symbols gthread.def
 
 install-libtool-import-lib:
-	$(INSTALL) .libs/libgthread-1.3.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) .libs/libgthread-2.0.dll.a $(DESTDIR)$(libdir)
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgthread-1.3.dll.a
+	-rm $(DESTDIR)$(libdir)/libgthread-2.0.dll.a
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
 endif
 
-libgthread_1_3_la_SOURCES = gthread-impl.c
-libgthread_1_3_la_LDFLAGS = \
+libgthread_2_0_la_SOURCES = gthread-impl.c
+libgthread_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgthread_1_3_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
+libgthread_2_0_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
 
-libgthread_1_3_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@ @GTHREAD_DEF@
+libgthread_2_0_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@ @GTHREAD_DEF@
 
 if OS_WIN32
 @G_THREAD_WIN32_RESOURCE@ : gthread.rc
 	$(top_srcdir)/build/win32/lt-compile-resource gthread.rc @G_THREAD_WIN32_RESOURCE@
 endif
 
-gthread-1.3.lib: libgthread-1.3.la gthread.def
-	lib -name:libgthread-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gthread.def -out:$@
+gthread-2.0.lib: libgthread-2.0.la gthread.def
+	lib -name:libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:gthread.def -out:$@
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status

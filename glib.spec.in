@@ -4,7 +4,7 @@ Version:	@VERSION@
 Release:	1
 License:	LGPL
 Group:		Development/Libraries
-Source:		ftp://ftp.gimp.org/pub/gtk/v1.3/glib-%{version}.tar.gz
+Source:		ftp://ftp.gimp.org/pub/gtk/v2.0/glib-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 URL:		http://www.gtk.org
 

@@ -13,19 +13,19 @@ INCLUDES = @STRIP_BEGIN@ \
 	-DG_DISABLE_CONST_RETURNS		\
 @STRIP_END@
 
-libglib = $(top_builddir)/glib/libglib-1.3.la
+libglib = $(top_builddir)/glib/libglib-2.0.la
 
 # libraries to compile and install
-lib_LTLIBRARIES = libgobject-1.3.la
+lib_LTLIBRARIES = libgobject-2.0.la
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gobject-1.3.lib
+noinst_DATA = gobject-2.0.lib
 
 install-ms-lib:
-	$(INSTALL) gobject-1.3.lib $(DESTDIR)$(libdir)
+	$(INSTALL) gobject-2.0.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gobject-1.3.lib
+	-rm $(DESTDIR)$(libdir)/gobject-2.0.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
@@ -39,9 +39,9 @@ if OS_WIN32
 export_symbols = -export-symbols gobject.def
 
 install-libtool-import-lib:
-	$(INSTALL) .libs/libgobject-1.3.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgobject-1.3.dll.a
+	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
@@ -49,14 +49,14 @@ endif
 
 # libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
-libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
+libgobject_2_0_la_LDFLAGS = @STRIP_BEGIN@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
 	-export-dynamic $(no_undefined) $(export_symbols)	\
 @STRIP_END@
 
-libgobject_1_3_la_LIBADD = @G_OBJECT_WIN32_RESOURCE@ $(libglib)
+libgobject_2_0_la_LIBADD = @G_OBJECT_WIN32_RESOURCE@ $(libglib)
 
-libgobject_1_3_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@ @GOBJECT_DEF@
+libgobject_2_0_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@ @GOBJECT_DEF@
 
 #
 # setup source file variables
@@ -144,7 +144,7 @@ EXTRA_DIST += $(gobject_built_sources)
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
 
-$(libgobject_1_3_la_OBJECTS): $(gobject_built_sources)  ${gobject_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
+$(libgobject_2_0_la_OBJECTS): $(gobject_built_sources)  ${gobject_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
 # initial creation of the real stamp-* files
 gmarshal.h:	# never add deps here
 	test -f "$(srcdir)/$@" || touch $(srcdir)/$@
@@ -176,7 +176,7 @@ glib-genmarshal.o: gmarshal.strings
 
 # target platform:
 libgobjectinclude_HEADERS = $(gobject_target_headers)
-libgobject_1_3_la_SOURCES = $(gobject_target_sources)
+libgobject_2_0_la_SOURCES = $(gobject_target_sources)
 
 #
 # programs to compile and install
@@ -190,7 +190,7 @@ glib_genmarshal_SOURCES = glib-genmarshal.c
 testgobject_SOURCES = testgobject.c
 testoverride_SOURCES = testoverride.c
 # link programs against libgobject
-progs_LDADD = ./libgobject-1.3.la $(libglib)
+progs_LDADD = ./libgobject-2.0.la $(libglib)
 glib_genmarshal_LDADD = $(libglib)
 gobject_query_LDADD = $(progs_LDADD)
 testgobject_LDADD = $(progs_LDADD)
@@ -223,8 +223,8 @@ if OS_WIN32
 	$(top_srcdir)/build/win32/lt-compile-resource gobject.rc @G_OBJECT_WIN32_RESOURCE@
 endif
 
-gobject-1.3.lib: libgobject-1.3.la gobject.def
-	lib -name:libgobject-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gobject.def -out:$@
+gobject-2.0.lib: libgobject-2.0.la gobject.def
+	lib -name:libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:gobject.def -out:$@
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status

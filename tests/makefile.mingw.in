@@ -56,20 +56,20 @@ all:	$(TESTS) $(NONAUTOMATIC_TESTS) $(DLLS)
 .SUFFIXES: .c .i .exe
 
 .c.exe:
-	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread-1.3 -L ../glib -lglib-1.3
+	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread-2.0 -L ../glib -lglib-2.0
 
 module-test.exe : module-test.o
-	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3 $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L ../glib -lglib-2.0 -L ../gmodule -lgmodule-2.0 $(LDFLAGS)
 	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
-	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3 $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-2.0 -L ../gmodule -lgmodule-2.0 $(LDFLAGS)
 	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
-	$(CC) $(CFLAGS) -Wl,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3 $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-2.0 -L ../gmodule -lgmodule-2.0 $(LDFLAGS)
 
 libmoduletestplugin_a.dll : libmoduletestplugin_a.o
-	$(BUILD_DLL) libmoduletestplugin_a - libmoduletestplugin_a.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3
+	$(BUILD_DLL) libmoduletestplugin_a - libmoduletestplugin_a.o -L ../glib -lglib-2.0 -L ../gmodule -lgmodule-2.0
 
 libmoduletestplugin_b.dll : libmoduletestplugin_b.o
-	$(BUILD_DLL) libmoduletestplugin_b - libmoduletestplugin_b.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3
+	$(BUILD_DLL) libmoduletestplugin_b - libmoduletestplugin_b.o -L ../glib -lglib-2.0 -L ../gmodule -lgmodule-2.0
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; PATH=../glib:../gmodule:../gobject:../gthread:$$PATH ./$$P; done

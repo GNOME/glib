@@ -2,10 +2,10 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule @GLIB_DE
 
 EFENCE=
 
-libglib = $(top_builddir)/glib/libglib-1.3.la
-libgthread = $(top_builddir)/gthread/libgthread-1.3.la
-libgmodule = $(top_builddir)/gmodule/libgmodule-1.3.la
-libgobject = $(top_builddir)/gobject/libgobject-1.3.la
+libglib = $(top_builddir)/glib/libglib-2.0.la
+libgthread = $(top_builddir)/gthread/libgthread-2.0.la
+libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
+libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
 if PLATFORM_WIN32
 libadd_libgmodule = $(libgmodule)

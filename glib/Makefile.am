@@ -18,22 +18,22 @@ BUILT_EXTRA_DIST = 		\
 	makefile.mingw		\
 	glib.rc
 
-lib_LTLIBRARIES = libglib-1.3.la
+lib_LTLIBRARIES = libglib-2.0.la
 
 if MS_LIB_AVAILABLE
-noinst_DATA = glib-1.3.lib
+noinst_DATA = glib-2.0.lib
 
 install-ms-lib:
-	$(INSTALL) glib-1.3.lib $(DESTDIR)$(libdir)
+	$(INSTALL) glib-2.0.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/glib-1.3.lib
+	-rm $(DESTDIR)$(libdir)/glib-2.0.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
 endif
 
-libglib_1_3_la_SOURCES = 	\
+libglib_2_0_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
 	gbacktrace.c		\
@@ -84,7 +84,7 @@ libglib_1_3_la_SOURCES = 	\
 	gutils.c		\
 	gdebug.h
 
-EXTRA_libglib_1_3_la_SOURCES = \
+EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
 	giowin32.c	\
 	gspawn.c	\
@@ -160,32 +160,32 @@ if OS_WIN32
 export_symbols = -export-symbols glib.def
 
 install-libtool-import-lib:
-	$(INSTALL) .libs/libglib-1.3.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libglib-1.3.dll.a
+	-rm $(DESTDIR)$(libdir)/libglib-2.0.dll.a
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
 endif
 
-libglib_1_3_la_LIBADD = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_1_3_la_DEPENDENCIES = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
+libglib_2_0_la_LIBADD = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
 
-libglib_1_3_la_LDFLAGS = \
+libglib_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
 if OS_WIN32
 bin_PROGRAMS = gspawn-win32-helper
-gspawn_win32_helper_LDADD = libglib-1.3.la
+gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 
 @G_LIB_WIN32_RESOURCE@ : glib.rc
 	$(top_srcdir)/build/win32/lt-compile-resource glib.rc @G_LIB_WIN32_RESOURCE@
 endif
 
-glib-1.3.lib: libglib-1.3.la glib.def
-	lib -name:libglib-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:glib.def -out:$@
+glib-2.0.lib: libglib-2.0.la glib.def
+	lib -name:libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll -def:glib.def -out:$@
 
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib/glib.rc.in
 	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status

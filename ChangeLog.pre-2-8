@@ -1,3 +1,22 @@
+Sun Mar  3 21:09:24 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Default to --disable-gtk-doc, to avoid
+	Jade setup hassles.
+
+	* autogen.sh: Add --enable-gtk-doc.
+
+	* configure.in: Default to --disable-static to go
+	along with Pango, GTK+ where we need to do that for
+	bin-compat reasons.
+
+	* Makefile.am: Add a slightly modified distcheck rule
+	that passes --enable-gtk-doc to the configure inside.
+	(So that 'make dist' succeeds inside.)
+
+	* configure.in *.pc.in **/Makefile.am m4macros/glib-2.0.m4
+	tests/makefile.mingw.in: Switch everything over to
+	glib-2.0.
+
 Sun Mar  3 02:30:05 2002  Tim Janik  <timj@gtk.org>
 
 	* glib/gscanner.h (_GScannerConfig): added padding.

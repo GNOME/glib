@@ -44,7 +44,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
     no_glib=yes
   fi
 
-  min_glib_version=ifelse([$1], ,1.3.3,$1)
+  min_glib_version=ifelse([$1], ,2.0.0,$1)
   AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
 
   if test x$PKG_CONFIG != xno ; then

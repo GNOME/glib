@@ -31,9 +31,9 @@ GLIB_AC_DIVERT_BEFORE_HELP([
 # if backwards compatibility has been broken,
 # set GLIB_BINARY_AGE _and_ GLIB_INTERFACE_AGE to 0.
 #
-GLIB_MAJOR_VERSION=1
-GLIB_MINOR_VERSION=3
-GLIB_MICRO_VERSION=15
+GLIB_MAJOR_VERSION=2
+GLIB_MINOR_VERSION=0
+GLIB_MICRO_VERSION=0
 GLIB_INTERFACE_AGE=0
 GLIB_BINARY_AGE=0
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
@@ -292,6 +292,7 @@ GLIB_LOCALE_DIR="${prefix}/${DATADIRNAME}/locale"
 AC_DEFINE_UNQUOTED(GLIB_LOCALE_DIR,"$GLIB_LOCALE_DIR")
 
 dnl Initialize libtool
+AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
@@ -1613,9 +1614,9 @@ AC_CHECK_PROG(DB2HTML, db2html, true, false)
 AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
 
 dnl Let people disable the gtk-doc stuff.
-AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc        use gtk-doc to build documentation [default=auto]], enable_gtk_doc="$enableval", enable_gtk_doc=auto)
+AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc        use gtk-doc to build documentation [default=auto]], enable_gtk_doc="$enableval", enable_gtk_doc=no)
 
-if test x$enable_gtk_doc = xauto ; then
+if test x$enable_gtk_doc = xyes ; then
   if test x$GTKDOC = xtrue ; then
     enable_gtk_doc=yes
   else

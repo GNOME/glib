@@ -1,6 +1,6 @@
 Makefile
 Makefile.in
-libglib-1.3.la
+libglib-2.0.la
 makefile.mingw
 makefile.msc
 glib.rc
