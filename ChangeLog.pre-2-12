@@ -1,3 +1,11 @@
+2004-08-11  Ray Strode  <rstrode@redhat.com>
+
+	* docs/reference/glib/glib-sections.txt: 
+	* glib/gutils.[ch] (g_get_user_data_dir),
+	(g_get_user_config_dir), (g_get_user_cache_dir),
+	(g_get_system_data_dirs), (g_get_system_config_dirs): 
+	Add new XDG basedir API (bug 139973).
+
 2004-08-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmacros.h: Remove G_GNUC_INTERNAL from here.

@@ -122,6 +122,11 @@ void                  g_set_prgname          (const gchar *prgname);
 G_CONST_RETURN gchar* g_get_application_name (void);
 void                  g_set_application_name (const gchar *application_name);
 
+G_CONST_RETURN gchar*    g_get_user_data_dir      (void);
+G_CONST_RETURN gchar*    g_get_user_config_dir    (void);
+G_CONST_RETURN gchar*    g_get_user_cache_dir     (void);
+G_CONST_RETURN gchar * G_CONST_RETURN * g_get_system_data_dirs   (void);
+G_CONST_RETURN gchar * G_CONST_RETURN * g_get_system_config_dirs (void);
 
 typedef struct _GDebugKey	GDebugKey;
 struct _GDebugKey
@@ -166,7 +171,6 @@ G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 gchar*                g_get_current_dir    (void);
 gchar*                g_path_get_basename  (const gchar *file_name);
 gchar*                g_path_get_dirname   (const gchar *file_name);
-
 
 /* Set the pointer at the specified location to NULL */
 void                  g_nullify_pointer    (gpointer    *nullify_location);

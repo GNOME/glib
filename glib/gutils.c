@@ -30,6 +30,8 @@
 
 #include "config.h"
 
+#include <ctype.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -884,6 +886,12 @@ static	gchar	*g_user_name = NULL;
 static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
 
+static  gchar   *g_user_data_dir = NULL;
+static  gchar  **g_system_data_dirs = NULL;
+static  gchar   *g_user_cache_dir = NULL;
+static  gchar   *g_user_config_dir = NULL;
+static  gchar  **g_system_config_dirs = NULL;
+
 /* HOLDS: g_utils_global_lock */
 static void
 g_get_any_init (void)
@@ -1236,6 +1244,203 @@ g_set_application_name (const gchar *application_name)
 
   if (already_set)
     g_warning ("g_set_application() name called multiple times");
+}
+
+/**
+ * g_get_user_data_dir:
+ * 
+ * Returns a base directory in which to access application data such
+ * as icons that is customized for a particular user.  
+ *
+ * On Unix platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a string owned by GLib that must not be modified 
+ *               or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar*
+g_get_user_data_dir (void)
+{
+  gchar *data_dir;  
+
+  G_LOCK (g_utils_global);
+
+  if (!g_user_data_dir)
+    {
+      data_dir = (gchar *) g_getenv ("XDG_DATA_HOME");
+
+      if (data_dir && data_dir[0])
+        data_dir = g_strdup (data_dir);
+      else
+        data_dir = g_build_filename (g_get_home_dir (), ".local", 
+                                     "share", NULL);
+
+      g_user_data_dir = data_dir;
+    }
+  else
+    data_dir = g_user_data_dir;
+
+  G_UNLOCK (g_utils_global);
+
+  return data_dir;
+}
+
+/**
+ * g_get_user_config_dir:
+ * 
+ * Returns a base directory in which to store user-specific application 
+ * configuration information such as user preferences and settings. 
+ *
+ * On Unix platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a string owned by GLib that must not be modified 
+ *               or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar*
+g_get_user_config_dir (void)
+{
+  gchar *config_dir;  
+
+  G_LOCK (g_utils_global);
+
+  if (!g_user_config_dir)
+    {
+        config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
+
+        if (config_dir && config_dir[0])
+            config_dir = g_strdup (config_dir);
+        else
+            config_dir = g_build_filename (g_get_home_dir (), ".config", NULL);
+
+        g_user_config_dir = config_dir;
+    }
+  else
+    config_dir = g_user_config_dir;
+
+  G_UNLOCK (g_utils_global);
+
+  return config_dir;
+}
+
+/**
+ * g_get_user_cache_dir:
+ * 
+ * Returns a base directory in which to store non-essential, cached
+ * data specific to particular user.
+ *
+ * On Unix platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a string owned by GLib that must not be modified 
+ *               or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar*
+g_get_user_cache_dir (void)
+{
+  gchar *cache_dir;  
+
+  G_LOCK (g_utils_global);
+
+  if (!g_user_cache_dir)
+    {
+      cache_dir = (gchar *) g_getenv ("XDG_CACHE_HOME");
+
+      if (cache_dir && cache_dir[0])
+          cache_dir = g_strdup (cache_dir);
+      else
+          cache_dir = g_build_filename (g_get_home_dir (), ".cache", NULL);
+      g_user_cache_dir = cache_dir;
+    }
+  else
+    cache_dir = g_user_cache_dir;
+
+  G_UNLOCK (g_utils_global);
+
+  return cache_dir;
+}
+
+/**
+ * g_get_system_data_dirs:
+ * 
+ * Returns an ordered list of base directories in which to access 
+ * system-wide application data.
+ *
+ * On Unix platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a %NULL-terminated array of strings owned by GLib that must 
+ *               not be modified or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar * G_CONST_RETURN * 
+g_get_system_data_dirs (void)
+{
+  gchar *data_dirs, **data_dir_vector;
+
+  G_LOCK (g_utils_global);
+
+  if (!g_system_data_dirs)
+    {
+      data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
+
+      if (!data_dirs || !data_dirs[0])
+          data_dirs = "/usr/local/share/:/usr/share/";
+
+      data_dir_vector = g_strsplit (data_dirs, ":", 0);
+
+      g_system_data_dirs = data_dir_vector;
+    }
+  else
+    data_dir_vector = g_system_data_dirs;
+
+  G_UNLOCK (g_utils_global);
+
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) data_dir_vector;
+}
+
+/**
+ * g_get_system_config_dirs:
+ * 
+ * Returns an ordered list of base directories in which to access 
+ * system-wide configuration information.
+ *
+ * On Unix platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>
+ * 
+ * Return value: a %NULL-terminated array of strings owned by GLib that must 
+ *               not be modified or freed.
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar * G_CONST_RETURN *
+g_get_system_config_dirs (void)
+{
+  gchar *conf_dirs, **conf_dir_vector;
+
+  G_LOCK (g_utils_global);
+
+  if (!g_system_config_dirs)
+    {
+      conf_dirs = (gchar *) g_getenv ("XDG_CONFIG_DIRS");
+
+      if (!conf_dirs || !conf_dirs[0])
+          conf_dirs = "/etc/xdg";
+
+      conf_dir_vector = g_strsplit (conf_dirs, ":", 0);
+    }
+  else
+    conf_dir_vector = g_system_config_dirs;
+  G_UNLOCK (g_utils_global);
+
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) conf_dir_vector;
 }
 
 guint

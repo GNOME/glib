@@ -1261,6 +1261,11 @@ g_setenv
 g_unsetenv
 g_get_user_name
 g_get_real_name
+g_get_user_cache_dir
+g_get_user_data_dir
+g_get_user_config_dir
+g_get_system_data_dirs
+g_get_system_config_dirs
 
 <SUBSECTION>
 g_get_home_dir
