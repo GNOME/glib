@@ -760,6 +760,7 @@ int main (int argc, char **argv)
 }
 ],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)
 AC_MSG_RESULT($g_have_gnuc_visibility)
+AM_CONDITIONAL(HAVE_GNUC_VISIBILITY, [test x$g_have_gnuc_visibility = xyes])
 
 # check for bytesex stuff
 AC_C_BIGENDIAN

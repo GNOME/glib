@@ -1,3 +1,13 @@
+2005-02-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Define a HAVE_GNUC_VISIBILITY automake
+	conditional.
+
+	* glib/Makefile.am (TESTS): Only check the abi if
+	the compiler supports visibility, otherwise we
+	know there will be (harmless) extra symbols.  
+	(#166181, Ed Avis)
+
 2005-02-02  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gwin32.h: Remove unnecessary MSVC-only typedef for
