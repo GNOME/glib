@@ -621,6 +621,7 @@ g_relation_select
 g_remove
 g_rename
 g_return_if_fail_warning
+g_rmdir
 g_scanner_cur_line
 g_scanner_cur_position
 g_scanner_cur_token

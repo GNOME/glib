@@ -55,6 +55,8 @@ int g_unlink    (const gchar *filename);
 
 int g_remove    (const gchar *filename);
 
+int g_rmdir (const gchar *filename);
+
 FILE *g_fopen   (const gchar *filename,
                  const gchar *mode);
 

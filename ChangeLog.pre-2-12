@@ -1,3 +1,10 @@
+2004-12-13  Tor Lillqvist  <tml@iki.fi>
+
+	* NEWS: Update.
+
+	* glib/glib.symbols
+	* glib/gstdio.[ch]: Add g_rmdir().
+
 2004-12-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates

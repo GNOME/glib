@@ -6,7 +6,7 @@ Overview of Changes from GLib 2.4.x to GLib 2.6.0
   - GKeyFile, a parser/editor for the .ini like files 
   - Functions to support the XDG basedir specification
   - Wrappers for common POSIX pathname functions to handle filename
-    encodings consistently
+    encodings consistently. On Windows, these use UTF-8.
 
 * Miscellaneous new functions
   - g_filename_display_name() converts filenames in displayable UTF-8 strings
@@ -28,6 +28,8 @@ Overview of Changes from GLib 2.4.x to GLib 2.6.0
   - Reduce code size by removing literal strings from g_return_if_fail()
 
 * Other changes
+  - On Windows, GLib functions that take file name arguments now require
+    those to be in UTF-8. Functions that return file names return UTF-8.
   - Use higher precision for mathematical constants
   - Don't convert to/from UTF-8 in g_filename_to_uri/g_filename_from_uri
   - Support ll as printf format modifier for long long on all platforms
