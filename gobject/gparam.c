@@ -289,10 +289,9 @@ canonicalize_key (gchar *key)
  * character of a property name must be a letter. Names which violate these
  * rules lead to undefined behaviour. 
  *
- * When creating and looking up a #GParamSpec<!-- -->s, either separator can
- * be used, but they cannot be mixed. Using '-' is considerably more efficient
- * and in fact <emphasis>required</emphasis> when using property names as 
- * detail strings for signals.
+ * When creating and looking up a #GParamSpec, either separator can be used, 
+ * but they cannot be mixed. Using '-' is considerably more efficient and in 
+ * fact required when using property names as detail strings for signals.
  * 
  * Return value: a newly allocated #GParamSpec instance
  **/

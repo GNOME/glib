@@ -1,3 +1,8 @@
+2002-12-17  Matthias Clasen  <maclas@gmx.de>
+
+	* gparam.c (g_param_spec_internal): Remove markup from doc
+	comment, as GObject doesn't use --sgml-mode yet.
+
 2002-12-15  Matthias Clasen  <maclas@gmx.de>
 
 	* gsignal.c (g_signal_new): Typo fix.
