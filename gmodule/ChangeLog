@@ -1,3 +1,8 @@
+2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule.h: Moved declaration of g_log_domain_gmodule up before
+	the inclusion of glib.h to make it compile on non-gcc compilers.
+
 2000-07-22  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Remove leftover gmodule-win32res.o stuff. The
