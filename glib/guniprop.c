@@ -360,7 +360,7 @@ g_unichar_toupper (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0xd800 && val < 0xdc00)
 	{
-	  guchar *p = special_case_table[val - 0xd800];
+	  const guchar *p = special_case_table[val - 0xd800];
 	  return p[0] * 256 + p[1];
 	}
       else
@@ -397,7 +397,7 @@ g_unichar_tolower (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0xd800 && val < 0xdc00)
 	{
-	  guchar *p = special_case_table[val - 0xd800];
+	  const guchar *p = special_case_table[val - 0xd800];
 	  return p[0] * 256 + p[1];
 	}
       else
@@ -562,7 +562,7 @@ output_special_case (gchar *out_buffer,
 		     int    type,
 		     int    which)
 {
-  guchar *p = special_case_table[index];
+  const guchar *p = special_case_table[index];
 
   if (type != G_UNICODE_TITLECASE_LETTER)
     p += 2; /* +2 to skip over "best single match" */

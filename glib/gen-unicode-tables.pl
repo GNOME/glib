@@ -531,7 +531,7 @@ sub print_tables
 					 'page', \&fetch_type);
     }
 
-    print OUT "static char *type_table[256] = {\n";
+    print OUT "static const char *type_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
@@ -550,7 +550,7 @@ sub print_tables
 	$row[$count / 256] = &print_row ($count, '', 'unsigned short', 2,
 					 'attrpage', \&fetch_attr);
     }
-    print OUT "static unsigned short *attr_table[256] = {\n";
+    print OUT "static const unsigned short *attr_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
@@ -564,7 +564,7 @@ sub print_tables
     #
 
     # FIXME: type.
-    print OUT "static unsigned short title_table[][3] = {\n";
+    print OUT "static const unsigned short title_table[][3] = {\n";
     my ($item);
     my ($first) = 1;
     foreach $item (sort keys %title_to_lower)
@@ -634,7 +634,7 @@ sub print_row
 	return $def_pfx . $values[0];
     }
 
-    printf OUT "static %s %s%d[256] = {\n  ", $typname, $name, $start / 256;
+    printf OUT "static const %s %s%d[256] = {\n  ", $typname, $name, $start / 256;
     my ($column) = 2;
     for ($i = $start; $i < $start + 256; ++$i)
     {
@@ -682,7 +682,7 @@ sub print_decomp
 					 \&fetch_cclass);
     }
 
-    print OUT "static unsigned char *combining_class_table[256] = {\n";
+    print OUT "static const unsigned char *combining_class_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
@@ -699,7 +699,7 @@ sub print_decomp
     print OUT "  unsigned char *expansion;\n";
     print OUT "} decomposition;\n\n";
 
-    print OUT "static decomposition decomp_table[] =\n{\n";
+    print OUT "static const decomposition decomp_table[] =\n{\n";
     my ($iter);
     my ($first) = 1;
     for ($count = 0; $count <= $last; ++$count)
@@ -783,7 +783,7 @@ sub print_line_break
                                          \&fetch_break_type);
     }
 
-    print OUT "static char *break_property_table[256] = {\n";
+    print OUT "static const char *break_property_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
@@ -892,7 +892,7 @@ sub output_special_case_table
  * other than the case of the codepoint, in the order [Ll],[Lu],[Lt],
  * separated and terminated by a double NUL.
  */
-static guchar special_case_table[][$special_case_len] = {
+static const guchar special_case_table[][$special_case_len] = {
 EOT
 
     for $case (@special_cases) {
@@ -1046,7 +1046,7 @@ sub output_composition_table
 					 sub { exists $vals{$_[0]} ? $vals{$_[0]} : 0; });
     }
 
-    print OUT "static unsigned short *compose_table[256] = {\n";
+    print OUT "static const unsigned short *compose_table[256] = {\n";
     for (my $count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
@@ -1057,7 +1057,7 @@ sub output_composition_table
 
     # Output first singletons
 
-    print OUT "static gushort compose_first_single[][2] = {\n";
+    print OUT "static const gushort compose_first_single[][2] = {\n";
     $i = 0;				     
     for $record (@first_singletons) {
 	print OUT ",\n" if $i++ > 0;
@@ -1069,7 +1069,7 @@ sub output_composition_table
 		  
     # Output second singletons
 
-    print OUT "static gushort compose_second_single[][2] = {\n";
+    print OUT "static const gushort compose_second_single[][2] = {\n";
     $i = 0;				     
     for $record (@second_singletons) {
 	print OUT ",\n" if $i++ > 0;
@@ -1082,7 +1082,7 @@ sub output_composition_table
     # Output array of composition pairs
 
     print OUT <<EOT;
-static gushort compose_array[$n_first][$n_second] = {
+static const gushort compose_array[$n_first][$n_second] = {
 EOT
 			
     for (my $i = 0; $i < $n_first; $i++) {
@@ -1117,7 +1117,7 @@ sub output_casefold_table
 
 /* Table of casefolding cases that can't be derived by lowercasing
  */
-static struct {
+static const struct {
   guint16 ch;
   gchar data[$casefoldlen];
 } casefold_table[] = {

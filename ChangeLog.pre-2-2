@@ -1,3 +1,11 @@
+Wed Sep 26 14:37:52 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gen-unicode-tables.pl glib/guniprop.c 
+	  glib/{gunibreak,gunichartables,gunidecomp}.h:
+	Patch from Andrew Taylor to make much of the unicode
+	table data const so that it can be made read-only
+	and shared.
+
 Wed Sep 26 12:41:05 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_strdup_vprintf): Copy if 
