@@ -3,6 +3,9 @@
 	* config.h.win32.in: Match new additions to a configure-produced
 	config.h.
 
+	* glibconfig.h.win32.in: gssize and gsize as in a
+	configure-produced glibconfig.h.
+
 Thu May 16 12:24:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* acinclude.m4 m4macros/glib-gettext.m4: Incorporate 
