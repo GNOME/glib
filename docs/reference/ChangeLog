@@ -1,3 +1,7 @@
+Wed Nov 14 03:19:49 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmp/param_value_types.sgml: more docs.
+
 Tue Nov 13 21:31:58 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmp/param_value_types.sgml: list parameter and

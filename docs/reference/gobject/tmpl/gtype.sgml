@@ -225,7 +225,6 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_BOXED: 		Identifier for the "#GParamSpecBoxed" type.
 @G_TYPE_PARAM_POINTER: 		Identifier for the "#GParamSpecPointer" type.
 @G_TYPE_PARAM_VALUE_ARRAY: 	Identifier for the "#GParamSpecValueArray" type.
-@G_TYPE_PARAM_CLOSURE: 		Identifier for the "#GParamClosure" type.
 @G_TYPE_PARAM_OBJECT: 	 	Identifier for the "#GParamSpecObject" type.
 
 <!-- ##### STRUCT GTypeInterface ##### -->
