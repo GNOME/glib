@@ -188,7 +188,7 @@ gint        g_io_channel_win32_get_fd (GIOChannel *channel);
  * you can use normal recv() or recvfrom() on sockets even if GLib
  * is polling them.
  */
-GIOChannel *g_io_channel_win32_new_socket (int socket);
+GIOChannel *g_io_channel_win32_new_socket (gint socket);
 
 #endif
 

@@ -12,6 +12,23 @@ EXPORTS
 	g_array_sized_new
 	g_array_sort
 	g_array_sort_with_data
+	g_async_queue_length
+	g_async_queue_length_unlocked
+	g_async_queue_lock
+	g_async_queue_new
+	g_async_queue_pop
+	g_async_queue_pop_unlocked
+	g_async_queue_push
+	g_async_queue_push_unlocked
+	g_async_queue_ref
+	g_async_queue_ref_unlocked
+	g_async_queue_timed_pop
+	g_async_queue_timed_pop_unlocked
+	g_async_queue_try_pop
+	g_async_queue_try_pop_unlocked
+	g_async_queue_unlock
+	g_async_queue_unref
+	g_async_queue_unref_and_unlock
 	g_atexit
 	g_basename
 	g_bit_nth_lsf
@@ -484,6 +501,7 @@ EXPORTS
 	g_string_insert_c
 	g_string_insert_len
 	g_string_new
+	g_string_new_len
 	g_string_prepend
 	g_string_prepend_c
 	g_string_prepend_len

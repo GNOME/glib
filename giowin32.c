@@ -282,10 +282,12 @@ create_thread (GIOWin32Channel     *channel,
 	       GIOCondition         condition,
 	       unsigned (__stdcall *thread) (void *parameter))
 {
-  if ((channel->thread_handle =
-       (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
-				&channel->thread_id)) == 0)
-    g_warning ("Error creating reader thread: %s", strerror (errno));
+  channel->thread_handle =
+    (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
+			     &channel->thread_id);
+  if (channel->thread_handle == 0)
+    g_warning (G_STRLOC ": Error creating reader thread: %s",
+	       strerror (errno));
   WaitForSingleObject (channel->space_avail_event, INFINITE);
 }
 
@@ -545,7 +547,7 @@ g_io_win32_dispatch (GSource     *source,
   
   if (!func)
     {
-      g_warning ("GIOWin32Watch dispatched without callback\n"
+      g_warning (G_STRLOC ": GIOWin32Watch dispatched without callback\n"
 		 "You must call g_source_connect().");
       return FALSE;
     }
@@ -819,7 +821,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
       whence = SEEK_END;
       break;
     default:
-      g_warning ("g_io_win32_fd_seek: unknown seek type");
+      g_warning (G_STRLOC ": Unknown seek type %d", (int) type);
       return G_IO_ERROR_UNKNOWN;
     }
   
@@ -1030,7 +1032,7 @@ g_io_channel_win32_new_fd (gint fd)
 
   if (fstat (fd, &st) == -1)
     {
-      g_warning ("%d isn't a (emulated) file descriptor", fd);
+      g_warning (G_STRLOC ": %d isn't a (emulated) file descriptor", fd);
       return NULL;
     }
 
@@ -1084,7 +1086,7 @@ g_io_channel_unix_new (gint fd)
   if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SO_ERROR)
     return g_io_channel_win32_new_socket(fd);
 
-  g_warning ("%d is neither a file descriptor or a socket", fd);
+  g_warning (G_STRLOC ": %d is neither a file descriptor or a socket", fd);
   return NULL;
 }
 

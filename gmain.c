@@ -294,7 +294,7 @@ g_poll (GPollFD *fds,
 		  g_print ("WaitMessage\n");
 #endif
 		  if (!WaitMessage ())
-		    g_warning ("g_poll: WaitMessage failed");
+		    g_warning (G_STRLOC ": WaitMessage() failed");
 		  ready = WAIT_OBJECT_0 + nhandles;
 		}
 	      else if (timeout == 0)
@@ -310,8 +310,9 @@ g_poll (GPollFD *fds,
 		   * -> Set a timer, wait for message,
 		   * kill timer, use PeekMessage
 		   */
-		  if ((timer = SetTimer (NULL, 0, timeout, NULL)) == 0)
-		    g_warning ("g_poll: SetTimer failed");
+		  timer = SetTimer (NULL, 0, timeout, NULL);
+		  if (timer == 0)
+		    g_warning (G_STRLOC ": SetTimer() failed");
 		  else
 		    {
 #ifdef G_MAIN_POLL_DEBUG
@@ -342,7 +343,7 @@ g_poll (GPollFD *fds,
 						 timeout, QS_ALLINPUT);
 
 	      if (ready == WAIT_FAILED)
-		g_warning ("g_poll: MsgWaitForMultipleObjects failed");
+		g_warning (G_STRLOC ": MsgWaitForMultipleObjects() failed");
 	    }
 	}
     }
@@ -361,7 +362,7 @@ g_poll (GPollFD *fds,
 #endif
       ready = WaitForMultipleObjects (nhandles, handles, FALSE, timeout);
       if (ready == WAIT_FAILED)
-	g_warning ("g_poll: WaitForMultipleObjects failed");
+	g_warning (G_STRLOC ": WaitForMultipleObjects() failed");
     }
 
 #ifdef G_MAIN_POLL_DEBUG
@@ -600,8 +601,10 @@ g_main_context_get (GThread *thread)
 	  context->wake_up_rec.events = G_IO_IN;
 	  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 #else
-	  if ((context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL)) == NULL)
-	    g_error ("Cannot create wake-up semaphore: %s", g_win32_error_message (GetLastError ()));
+	  context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL);
+	  if (context->wake_up_semaphore == NULL)
+	    g_error ("Cannot create wake-up semaphore: %s",
+		     g_win32_error_message (GetLastError ()));
 	  context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
 	  context->wake_up_rec.events = G_IO_IN;
 #ifdef G_MAIN_POLL_DEBUG

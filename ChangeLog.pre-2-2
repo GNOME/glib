@@ -1,3 +1,11 @@
+2001-02-02  Tor Lillqvist  <tml@iki.fi>
+
+	* giochannel.h
+	* giowin32.c
+	* gmain.c: Stylistic cleanups. Use G_STRLOC in g_warning() calls.
+
+	* glib.def: Add missing functions.
+
 2001-02-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c, gthread.h: Added g_static_mutex_init to allow
@@ -7,6 +15,11 @@
 Wed Jan 31 13:46:58 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* acinclude.m4 glib-gettext.m4: Fix problem with --disable-nls.
+
+2001-01-31  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Corresponding change as below to
+	GStaticMutex.
 
 2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
