@@ -1,3 +1,14 @@
+Mon Oct 25 15:05:18 2004  Manish Singh  <yosh@gimp.org>
+
+	* autogen.sh: rm autom4te.cache, since it might interfere with
+	differing autoconf versions.
+
+	* tests/child-test.c: use GINT_TO_POINTER for g_child_watch_add
+	user data.
+
+	* glib/gfileutils.c: G_IS_DIR_SEPARATOR is defined in gutils.h now,
+	don't redefine it here.
+
 2004-10-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_remove_group_node): Don't

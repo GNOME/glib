@@ -72,6 +72,8 @@ if test -z "$AUTOGEN_SUBDIR_MODE"; then
         fi
 fi
 
+rm -rf autom4te.cache
+
 $ACLOCAL $ACLOCAL_FLAGS || exit $?
 
 libtoolize --force || exit $?

@@ -65,12 +65,6 @@
 
 #include "glibintl.h"
 
-#ifdef G_OS_WIN32
-#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR || c == '/')
-#else
-#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR)
-#endif
-
 /**
  * g_file_test:
  * @filename: a filename to test

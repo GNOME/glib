@@ -169,9 +169,11 @@ main (int argc, char *argv[])
   g_thread_create (test_thread, GINT_TO_POINTER (20), FALSE, NULL);
 #else
   pid = get_a_child (10);
-  g_child_watch_add (pid, child_watch_callback, GINT_TO_POINTER (10));
+  g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
+		     GINT_TO_POINTER (10));
   pid = get_a_child (20);
-  g_child_watch_add (pid, child_watch_callback, GINT_TO_POINTER (20));
+  g_child_watch_add (pid, (GChildWatchFunc) child_watch_callback,
+		     GINT_TO_POINTER (20));
 #endif
   
   g_main_loop_run (main_loop);
