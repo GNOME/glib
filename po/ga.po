@@ -104,7 +104,7 @@ msgstr "Teip ag leámh as comhad '%s: : %s"
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Teip ag oscáilt comhad '%s;: %s"
+msgstr "Teip ag oscailt comhad '%s;: %s"
 
 #: glib/gfileutils.c:538
 #, c-format
@@ -114,7 +114,7 @@ msgstr ""
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Teip af oscáilt comhad  '%s': teipadh fdopen(): %s"
+msgstr "Teip af oscailt comhad  '%s': teipadh fdopen(): %s"
 
 #: glib/gfileutils.c:776
 #, c-format
