@@ -1,123 +1,93 @@
-/* glibconfig.h.win32. Handcrafted for Microsoft C  */
+/* glibconfig.h.win32 */
+/* Handcrafted for Microsoft C. */
 
-#if !(defined(_MSC_VER) || defined(__LCC__))
-#error Unrecognized Win32 compiler, edit glibconfig.h by hand
-#endif
+#ifndef GLIBCONFIG_H
+#define GLIBCONFIG_H
 
-/* Define to empty if the keyword does not work.  */
-/* #undef const */
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-/* Define if you don't have vprintf but do have _doprnt.  */
-/* #undef HAVE_DOPRNT */
+#include <limits.h>
+#include <float.h>
 
-/* Define if you have the vprintf function.  */
-#define HAVE_VPRINTF 1
+#define G_MINFLOAT FLT_MIN
+#define G_MAXFLOAT FLT_MAX
+#define G_MINDOUBLE DBL_MIN
+#define G_MAXDOUBLE DBL_MAX
+#define G_MINSHORT SHRT_MIN
+#define G_MAXSHORT SHRT_MAX
+#define G_MININT INT_MIN
+#define G_MAXINT INT_MAX
+#define G_MINLONG LONG_MIN
+#define G_MAXLONG LONG_MAX
 
-/* Define as __inline if that's what the C compiler calls it.  */
-#if defined (_MSC_VER)
-#define G_HAVE___INLINE
-#endif
+typedef signed char gint8;
+typedef unsigned char guint8;
+typedef signed short gint16;
+typedef unsigned short guint16;
+typedef signed int gint32;
+typedef unsigned int guint32;
+#define G_HAVE_GINT64 1
+typedef __int64 gint64;
+typedef unsigned __int64 guint64;
 
-/* Define if you have the ANSI C header files.  */
-#define STDC_HEADERS 1
+#define GPOINTER_TO_INT(p)	((gint)(p))
+#define GPOINTER_TO_UINT(p)	((guint)(p))
 
-/* Define if your processor stores words with the most significant
-   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
-/* #undef WORDS_BIGENDIAN */
+#define GINT_TO_POINTER(i)	((gpointer)(i))
+#define GUINT_TO_POINTER(u)	((gpointer)(u))
 
-/* #undef ENABLE_MEM_CHECK */
-/* #undef ENABLE_MEM_PROFILE */
+#define g_ATEXIT(proc)	(atexit (proc))
 
-/* #undef G_COMPILED_WITH_DEBUGGING */
-/* #undef HAVE_BROKEN_WCTYPE */
-/* #undef HAVE_DOPRNT */
-/* #undef HAVE_LONG_DOUBLE */
-/* #undef HAVE_PWD_H */
-/* #undef HAVE_SYS_PARAM_H */
-/* #undef HAVE_SYS_SELECT_H */
-/* #undef HAVE_SYS_TIME_H */
-/* #undef HAVE_SYS_TIMES_H */
-/* #undef HAVE_UNISTD_H */
-/* #undef HAVE_VSNPRINTF */
-#define HAVE_VPRINTF 1
-#ifdef _MSC_VER
-#define HAVE_WCHAR_H 1
-#define HAVE_WCTYPE_H 1
-#else
-#undef HAVE_WCHAR_H
-#undef HAVE_WCTYPE_H
-#endif
-
-/* #undef NO_FD_SET */
-/* #undef NO_SYS_ERRLIST */
-#define NO_SYS_SIGLIST 1
+#define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END
 
 #define GLIB_MAJOR_VERSION 1
 #define GLIB_MINOR_VERSION 1
 #define GLIB_MICRO_VERSION 4
-#define GLIB_INTERFACE_AGE 0
-#define GLIB_BINARY_AGE 0
 
-/* The number of bytes in a char.  */
-#define SIZEOF_CHAR 1
+#define G_COMPILED_WITH_DEBUGGING "minimum"
 
-/* The number of bytes in a int.  */
-#define SIZEOF_INT 4
+#define G_HAVE___INLINE 1
 
-/* The number of bytes in a long.  */
-#define SIZEOF_LONG 4
+#define G_BYTE_ORDER G_LITTLE_ENDIAN
 
-/* The number of bytes in a long long.  */
-/* #undef SIZEOF_LONG_LONG */
+#define GINT16_TO_LE(val)	((gint16) (val))
+#define GUINT16_TO_LE(val)	((guint16) (val))
+#define GINT16_TO_BE(val)	((gint16) GUINT16_SWAP_LE_BE (val))
+#define GUINT16_TO_BE(val)	(GUINT16_SWAP_LE_BE (val))
 
-/* The number of bytes in a short.  */
-#define SIZEOF_SHORT 2
+#define GINT32_TO_LE(val)	((gint32) (val))
+#define GUINT32_TO_LE(val)	((guint32) (val))
+#define GINT32_TO_BE(val)	((gint32) GUINT32_SWAP_LE_BE (val))
+#define GUINT32_TO_BE(val)	(GUINT32_SWAP_LE_BE (val))
 
-/* The number of bytes in a void *.  */
-#define SIZEOF_VOID_P 4
+#define GINT64_TO_LE(val)	((gint64) (val))
+#define GUINT64_TO_LE(val)	((guint64) (val))
+#define GINT64_TO_BE(val)	((gint64) GUINT64_SWAP_LE_BE (val))
+#define GUINT64_TO_BE(val)	(GUINT64_SWAP_LE_BE (val))
 
-/* Define if you have the atexit function.  */
-#define HAVE_ATEXIT 1
+#define GLONG_TO_LE(val)	((glong) GINT32_TO_LE (val))
+#define GULONG_TO_LE(val)	((gulong) GUINT32_TO_LE (val))
+#define GLONG_TO_BE(val)	((glong) GINT32_TO_BE (val))
+#define GULONG_TO_BE(val)	((gulong) GUINT32_TO_BE (val))
 
-/* Define if you have the lstat function.  */
-/* #undef HAVE_LSTAT */
+#define GINT_TO_LE(val)		((gint) GINT32_TO_LE (val))
+#define GUINT_TO_LE(val)	((guint) GUINT32_TO_LE (val))
+#define GINT_TO_BE(val)		((gint) GINT32_TO_BE (val))
+#define GUINT_TO_BE(val)	((guint) GUINT32_TO_BE (val))
 
-/* Define if you have the memmove function.  */
-#define HAVE_MEMMOVE 1
-
-/* Define if you have the on_exit function.  */
-/* #undef HAVE_ON_EXIT */
-
-/* Define if you have the strcasecmp function.  */
-/* #undef HAVE_STRCASECMP */
-
-/* Define if you have the strerror function.  */
-#define HAVE_STRERROR 1
-
-/* Define if you have the strsignal function.  */
-/* #undef HAVE_STRSIGNAL */
-
-/* Define if you have the vsnprintf function.  */
-/* #undef HAVE_VSNPRINTF */
-
-/* Define if you have the getpid function.  */
-/* #undef HAVE_GETPID */
-
-/* Define if you have the <float.h> header file.  */
-#ifdef _MSC_VER
-#define HAVE_FLOAT_H 1
-#else
-/* #undef HAVE_FLOAT_H */
-#endif
-
-/* Define if you have the <limits.h> header file.  */
-#define HAVE_LIMITS_H 1
-
-/* Define if you have the <values.h> header file.  */
-/* #undef HAVE_VALUES_H */
+#define G_HAVE_WCHAR_H 1
+#define G_HAVE_WCTYPE_H 1
 
 /* Define if this is Win32, possibly using the GNU-Win32 emulation layer. */
 #define WIN32 1
 
 /* Define if this is Win32 without GNU-Win32.  */
 #define NATIVE_WIN32 1
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* GLIBCONFIG_H */

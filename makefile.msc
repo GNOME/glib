@@ -17,6 +17,7 @@ CFLAGS = -I.
 
 all : \
 	glibconfig.h	\
+	config.h	\
 	glib-$(GLIB_VER).dll	\
 	gmodule\gmoduleconf.h \
 	gmodule-$(GLIB_VER).dll	\
@@ -26,7 +27,6 @@ all : \
 install : all
 	$(INSTALL) glib-$(GLIB_VER).dll $(BIN)
 	$(INSTALL) gmodule-$(GLIB_VER).dll $(BIN)
-	$(TOUCH) install
 
 glib_OBJECTS = \
 	garray.obj	\
@@ -56,8 +56,11 @@ glib-$(GLIB_VER).dll : $(glib_OBJECTS)
 glibconfig.h: glibconfig.h.win32
 	copy glibconfig.h.win32 glibconfig.h
 
+config.h: config.h.win32
+	copy config.h.win32 config.h
+
 .c.obj :
-	$(CC) $(CFLAGS) -GD -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+	$(CC) $(CFLAGS) -GD -c -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
 
 gmodule_OBJECTS = \
 	gmodule.obj
@@ -96,6 +99,9 @@ libgplugin_b.obj : gmodule\libgplugin_b.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule\libgplugin_b.c
 
 clean:
+	del config.h
+	del glibconfig.h
+	del gmodule\gmoduleconf.h
 	del *.exe
 	del *.obj
 	del *.dll
