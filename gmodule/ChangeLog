@@ -1,3 +1,8 @@
+1998-11-13  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* Makefile.am (INCLUDES): The previous commit message is wrong
+	about the -I$(top_srcdir) being redundant. I put it back.
+
 Wed Nov 11 23:23:22 EST 1998 Jeff Garzik <jgarzik@pobox.com>
 
         * Makefile.am : INCLUDES is the right way to add to CFLAGS, not 
