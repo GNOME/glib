@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-09 09:32-0500\n"
+"POT-Creation-Date: 2004-03-16 13:10-0500\n"
 "PO-Revision-Date: 2003-07-01 15:10-0500\n"
 "Last-Translator: Charles Voelger <cvoelger@dweasel.com>\n"
 "Language-Team: Esperanto <LL@li.org>\n"
@@ -408,82 +408,82 @@ msgstr "Teksto finis antaŭ konvenan citilon por %c. (La teksto estis '%s')"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksto estis malplena (aŭ enhavis nur blankspacon)"
 
-#: glib/gspawn-win32.c:297
+#: glib/gspawn-win32.c:295
 msgid "Failed to read data from child process"
 msgstr "Malsukesis legi datumon de procezido"
 
-#: glib/gspawn-win32.c:426
+#: glib/gspawn-win32.c:424
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Neatendita eraro dum g_io_channel_win32_poll() legado de datumo de procezido"
 
-#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
+#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Malsukcesis legi de duktido (%s)"
 
-#: glib/gspawn-win32.c:924
+#: glib/gspawn-win32.c:930
 msgid "Failed to execute helper program"
 msgstr "Malsukcesis lanĉi helpant-programon"
 
-#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
+#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Malsukcesis lanĉi procezidon (%s)"
 
-#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
+#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Malsukcesis ŝanĝi al dosierujo '%s' (%s)"
 
-#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Malsukcesis krei dukton por komunikado kun procezido (%s)"
 
-#: glib/gspawn.c:167
+#: glib/gspawn.c:178
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Malsukcesis legi datumon de procezido (%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neatendita eraro en select() dum datumlegado de procezido (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:392
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neatendita eraro en waitpid() (%s)"
 
-#: glib/gspawn.c:1066
+#: glib/gspawn.c:1077
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Malsukcesis branĉiĝi (%s)"
 
-#: glib/gspawn.c:1216
+#: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Malsukcesis lanĉi procezidon \"%s\" (%s)"
 
-#: glib/gspawn.c:1226
+#: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Malsukcesis alidirekti enigon aŭ eligon de procezido (%s)"
 
-#: glib/gspawn.c:1235
+#: glib/gspawn.c:1246
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Malsukcesis branĉiĝi procezidon (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nekonata eraro dum la lanĉando de la procezido \"%s\""
 
-#: glib/gspawn.c:1265
+#: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Malsukcesis legi sufiĉe datumon de ida pid-dukto (%s)"

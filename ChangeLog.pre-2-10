@@ -1,3 +1,13 @@
+Tue Mar 16 11:50:56 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.4.0 ===
+
+	* configure.in: Version 2.4.0, interface age 0.
+
+	* README.in: Updates
+
+	* NEWS: Updates
+
 Sun Mar 14 13:56:48 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmessages.c (escape_string): Handle invalid

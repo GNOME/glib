@@ -1,3 +1,7 @@
+Tue Mar 16 12:06:09 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.4.0 ===
+	
 Sun Mar 14 11:00:41 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Document the fact that

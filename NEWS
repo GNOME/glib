@@ -1,3 +1,14 @@
+Overview of Changes from GLib 2.3.6 to GLib 2.4.0
+=================================================
+
+* Handle invalid-UTF-8 in g_log() properly [Matthias Clasen]
+* Win32 bug fixes [Tor Lillqvist, Bruce Hochstetler]
+* Miscellaneous bug and portability fixes [Olivier Biot, David L. Cooper II, 
+  Kjartan Maraas, Frédéric L. W. Meunier, Christof Petig, Manish Singh, 
+  Sebastian Wilhelmi]
+* Documentation updates [Owen]
+* Updated translations (hr,ro)
+
 Overview of Changes from GLib 2.3.5 to GLib 2.3.6
 =================================================
 
@@ -39,7 +50,7 @@ Overview of Changes from GLib 2.3.2 to GLib 2.3.3
 * Add g_strsplit_set(). [Soeren]
 * Documentation improvements. [Vincent Untz, Sebastian Wilhelmi, 
   Soeren, Matthias]
-* Win32 build fixes. [Tor Lillquist]
+* Win32 build fixes. [Tor Lillqvist]
 * Misc bugfixes [Manish Singh, Noah Levitt, Simon Josefsson, 
   Morten Welinder, Damien Carbery, Julio M. Merino Vidal, Sebastian, 
   Matthias]
@@ -122,7 +133,7 @@ Overview of Changes from GLib 2.2.x to GLib-2.3.0
 * Miscellaneous API additions: g_value_take_string(),
   g_value_take_param(), g_value_take_object(), 
   g_value_take_boxed(). [Matthias]
-* Win32 build fixes [Tor Lillquist]
+* Win32 build fixes [Tor Lillqvist]
 
 Overview of Changes from GLib 2.1.5 to GLib-2.2.0
 =================================================

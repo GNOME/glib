@@ -4,7 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
-"POT-Creation-Date: 2004-03-13 13:03+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-03-16 13:10-0500\n"
 "PO-Revision-Date: 2004-03-13 13:03+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -175,8 +176,10 @@ msgid "Error on line %d: %s"
 msgstr "Greška na retku %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Prazan entitet '&;' ; ispravni entiteti su: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Prazan entitet '&;' ; ispravni entiteti su: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:422
 #, c-format
@@ -186,8 +189,7 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "Znak '%s' nije dozvoljen na početku imena entiteta; znak & počinje entitet; "
-"ako ovaj & nije entitet onda ga označite sa "
-"&amp;"
+"ako ovaj & nije entitet onda ga označite sa &amp;"
 
 #: glib/gmarkup.c:458
 #, c-format
@@ -213,8 +215,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nisam uspio parsirati '%s', koji bi trebao biti broj unutar znakovne"
-"reference (npr. &#234;) - možda je broj prevelik"
+"Nisam uspio parsirati '%s', koji bi trebao biti broj unutar "
+"znakovnereference (npr. &#234;) - možda je broj prevelik"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -231,9 +233,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Znakovna referenca nije završila sa točka-zarezom; vjerojatno ste koristitli ampersand znak"
-"bez namjere da počnete entitet - escapirajte ampersand "
-"kao &amp;"
+"Znakovna referenca nije završila sa točka-zarezom; vjerojatno ste koristitli "
+"ampersand znakbez namjere da počnete entitet - escapirajte ampersand kao "
+"&amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -257,8 +259,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' nije dozvoljeni znak koji smije slijediti nakon '<' znaka; "
-"ne smije započeti ime elementa"
+"'%s' nije dozvoljeni znak koji smije slijediti nakon '<' znaka; ne smije "
+"započeti ime elementa"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -266,13 +268,14 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Neparan znak '%s', očekuje se da '>' znak završi početni tag "
-"elementa'%s'"
+"Neparan znak '%s', očekuje se da '>' znak završi početni tag elementa'%s'"
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Neparan znak '%s', očekuje se '=' poslije imena atributa '%s' elementa '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Neparan znak '%s', očekuje se '=' poslije imena atributa '%s' elementa '%s'"
 
 #: glib/gmarkup.c:1213
 #, c-format
@@ -281,9 +284,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Čudan znak '%s', očekuje se da znak '>' ili '/' završe početak taga "
-"elementa '%s', ili opcionalno atributa; možda ste koristili neispravan znak"
-"u imenu atributa"
+"Čudan znak '%s', očekuje se da znak '>' ili '/' završe početak taga elementa "
+"'%s', ili opcionalno atributa; možda ste koristili neispravan znaku imenu "
+"atributa"
 
 #: glib/gmarkup.c:1296
 #, c-format
@@ -291,8 +294,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Čudan znak '%s', očekuje se otvoreni navodnik nakon znaka jednakosti"
-"kada se daje vrijednost atributa '%s' elementa '%s'"
+"Čudan znak '%s', očekuje se otvoreni navodnik nakon znaka jednakostikada se "
+"daje vrijednost atributa '%s' elementa '%s'"
 
 #: glib/gmarkup.c:1436
 #, c-format
@@ -300,8 +303,7 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' nije znak koji smije slijediti '</'; '%s' ne smije započeti"
-"ime elementa"
+"'%s' nije znak koji smije slijediti '</'; '%s' ne smije započetiime elementa"
 
 #: glib/gmarkup.c:1474
 #, c-format
@@ -309,8 +311,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' nije ispravan znak koji može slijediti nakon imena završnog elementa '%s'; "
-"dozvoljeni znak je '>'"
+"'%s' nije ispravan znak koji može slijediti nakon imena završnog elementa '%"
+"s'; dozvoljeni znak je '>'"
 
 #: glib/gmarkup.c:1485
 #, c-format
@@ -336,8 +338,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokument je završio neočekivano sa još uvijek otvorenim elementima- '%s' je bio zadnji"
-"otvoreni element"
+"Dokument je završio neočekivano sa još uvijek otvorenim elementima- '%s' je "
+"bio zadnjiotvoreni element"
 
 #: glib/gmarkup.c:1671
 #, c-format
@@ -345,8 +347,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokument je završio neočekivano, očekivalo se da zatvorena šiljata zagrada"
-"završi tag<%s/>"
+"Dokument je završio neočekivano, očekivalo se da zatvorena šiljata "
+"zagradazavrši tag<%s/>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
@@ -365,8 +367,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Dokument je završio neočekivano nakon što je znak jednakosti slijedio"
-"ime atributa; nema vrijednosti atributa"
+"Dokument je završio neočekivano nakon što je znak jednakosti slijedioime "
+"atributa; nema vrijednosti atributa"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -375,11 +377,13 @@ msgstr "Dokument je završio neočekivano unutar vrijednosti atributa"
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokument je završio neočekivano unutar taga koji završava za element '%s'"
+msgstr ""
+"Dokument je završio neočekivano unutar taga koji završava za element '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokument je završio neočekivano unutar komentara ili izvršavanja instrukcije"
+msgstr ""
+"Dokument je završio neočekivano unutar komentara ili izvršavanja instrukcije"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -397,7 +401,9 @@ msgstr "Tekst je završio nakon '\\' znaka (Tekst je bio '%s')"
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Tekst je završio prije nego što je nađen završni navodnik %c. (Tekst je bio '%s')"
+msgstr ""
+"Tekst je završio prije nego što je nađen završni navodnik %c. (Tekst je bio "
+"'%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -412,10 +418,10 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Neočekivana greška u g_io_channel_win32_poll() čitajući podatke procesa"
-"djeteta"
+"Neočekivana greška u g_io_channel_win32_poll() čitajući podatke "
+"procesadjeteta"
 
-#: glib/gspawn-win32.c:850 glib/gspawn.c:1001
+#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nisam uspio čitati iz cjevovoda djeteta (%s)"
@@ -429,57 +435,57 @@ msgstr "Nisam uspio izvršiti pomoćni program"
 msgid "Failed to execute child process (%s)"
 msgstr "Nisam mogao izvesti proces dijete (%s)"
 
-#: glib/gspawn-win32.c:986 glib/gspawn.c:1206
+#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nisam mogao promijeniti putanju u mapu '%s' (%s)"
 
-#: glib/gspawn-win32.c:1040 glib/gspawn.c:1337
+#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ne mogu stvoriti cjevovod za komuniciranje sa procesom djetetom(%s)"
 
-#: glib/gspawn.c:167
+#: glib/gspawn.c:178
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Neuspjeh u čitanju podataka od procesa djeteta(%s)"
 
-#: glib/gspawn.c:298
+#: glib/gspawn.c:309
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Neočekivana greška u select() čitanju podataka procesa djeteta (%s)"
 
-#: glib/gspawn.c:381
+#: glib/gspawn.c:392
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Neočekivana greška u waitpid() (%s)"
 
-#: glib/gspawn.c:1066
+#: glib/gspawn.c:1077
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Pokretanje nije uspio (%s)"
 
-#: glib/gspawn.c:1216
+#: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Neuspjeh u izvršavanju procesa djeteta \"%s\" (%s)"
 
-#: glib/gspawn.c:1226
+#: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nisam uspio preusmjeriti izlaz ili ulaz procesa djeteta (%s)"
 
-#: glib/gspawn.c:1235
+#: glib/gspawn.c:1246
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nisam uspio pokrenuti proces dijete (%s)"
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1254
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nepoznata greška u izvršavanju procesa djeteta \"%s\""
 
-#: glib/gspawn.c:1265
+#: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Neuspjeh u čitanju dovoljno podataka iz cjevovoda procesa djeteta (%s)"
@@ -496,4 +502,3 @@ msgstr "Neispravna sekvenca u pretvaranju ulaza"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Znak je izvan raspona za UTF-16"
-
