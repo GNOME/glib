@@ -1,3 +1,11 @@
+1999-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fixed typo. Now HPUX 11 thread system detection
+	should work.
+
+	* gutils.c (g_get_any_init): Changed initial bufsize to 64. Should
+	solve some problems out there.
+
 Wed Jan 27 23:21:50 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* INSTALL

@@ -644,7 +644,7 @@ case $have_threads in
         	fi
 		dnl ********* HPUX 11 ***********
         	if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(thread, __pthread_attr_init_system,
+                	AC_CHECK_LIB(pthread, __pthread_attr_init_system,
 				G_THREAD_LIBS="-lpthread")
         	fi
                 mutex_has_default=yes
