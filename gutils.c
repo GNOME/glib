@@ -371,6 +371,7 @@ g_getenv (const gchar *variable)
 #endif
 }
 
+
 G_LOCK_DECLARE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;
@@ -400,6 +401,7 @@ g_get_any_init (void)
 	    g_tmp_dir[k-1] = '\0';
 	}
 #endif
+
       if (!g_tmp_dir)
 	{
 #ifndef NATIVE_WIN32
@@ -428,51 +430,55 @@ g_get_any_init (void)
 	  g_free (homedrive);
 	  g_free (homepath);
 	}
+#endif /* !NATIVE_WIN32 */
+      
       if (!g_home_dir)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
-#else
-      g_home_dir = g_strdup (g_getenv ("HOME"));
-#endif
+      
       
 #ifdef HAVE_PWD_H
       {
-	struct passwd *pw = NULL, pwd;
+	struct passwd *pw = NULL;
 	gpointer buffer = NULL;
-	guint bufsize = sizeof (struct passwd);
-#  ifdef HAVE_GETPWUID_R 
-	while (TRUE)
+
+#  ifdef HAVE_GETPWUID_R
+	struct passwd pwd;
+	guint bufsize = 1; // sizeof (struct passwd);
+	gint error;
+
+	do
 	  {
-	    int error = 0;
-	    errno = 0;
-	    buffer = g_realloc (buffer, bufsize);
+	    g_free (buffer);
+	    buffer = g_malloc (bufsize);
+
 #    ifdef HAVE_GETPWUID_R_POSIX
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	    if (errno == 0) /* The errorcode is in error (might be 0, too) */
-	      errno = error;
-#    else /* HAVE_GETPWUID_R_POSIX */
+	    error = error ? errno : 0;
+#    else /* !HAVE_GETPWUID_R_POSIX */
 	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-#    endif /* HAVE_GETPWUID_R_POSIX */
-	    if (errno == 0)
-	      {
-		g_assert (pw);
-		break;
-	      }
+	    error = errno;
+#    endif /* !HAVE_GETPWUID_R_POSIX */
 
-	    if (errno != ERANGE)
-	      g_error ("Could not read account information: %s", 
-		       g_strerror (errno));
 	    bufsize *= 2;
 	  }
-#  else /* HAVE_GETPWUID_R */
-#    if defined(G_THREADS_ENABLED) && defined(__GNUC__)
+	while (error == ERANGE);
+
+	if (error)
+	  g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
+
+#  else /* !HAVE_GETPWUID_R */
+
+#    ifdef G_THREADS_ENABLED
 #    warning "the `g_get_(user_name|real_name|home_dir|tmp_dir)'"
 #    warning "functions will not be MT-safe during their first call"
 #    warning "because there is no `getpwuid_r' on your system."
-#    endif
+#    endif /* G_THREADS_ENABLED */
+
 	setpwent ();
 	pw = getpwuid (getuid ());
 	endpwent ();
-#  endif /* HAVE_GETPWUID_R */
+
+#  endif /* !HAVE_GETPWUID_R */
 	
 	if (pw)
 	  {
@@ -483,28 +489,32 @@ g_get_any_init (void)
 	  }
 	g_free (buffer);
       }
+
 #else /* !HAVE_PWD_H */
+
 #  ifdef NATIVE_WIN32
       {
 	guint len = 17;
+	gchar buffer[17];
 	
-	g_user_name = g_new (gchar, len);
-	
-	if (!GetUserName (g_user_name, &len))
+	if (GetUserName (buffer, &len))
 	  {
-	    g_free (g_user_name);
-	    g_user_name = g_strdup ("somebody");
-	    g_real_name = g_strdup ("Unknown");
+	    g_user_name = g_strdup (buffer);
+	    g_real_name = g_strdup (buffer);
 	  }
-	else
-	  g_real_name = g_strdup (g_user_name);
       }
 #  else /* !NATIVE_WIN32 */
-      g_user_name = g_strdup ("somebody");
-      g_real_name = g_strdup ("Unknown");
+      /* why are we forcefully setting g_home_dir to NULL here? */
+      g_free (g_home_dir);
       g_home_dir = NULL;
 #  endif /* !NATIVE_WIN32 */
+
 #endif /* !HAVE_PWD_H */
+
+      if (!g_user_name)
+	g_user_name = g_strdup ("somebody");
+      if (!g_real_name)
+	g_real_name = g_strdup ("Unknown");
     }  
 }
 

@@ -1,3 +1,14 @@
+Sat Jan 23 02:14:28 1999  Tim Janik  <timj@gtk.org>
+
+	* gutils.c (g_get_any_init): cleaned up the errno mess for
+	GETPWUID. we especially don't want to g_error() out here!
+	the warning for G_THREADS_ENABLED and !HAVE_GETPWUID_R isn't
+	gcc related.
+	if !HAVE_PWD_H and !NATIVE_WIN32, g_free the home dir before
+	resetting it to NULL, why are we doing this anyways?
+	reordered code a bit so we always provide defaults (except
+	for g_home_dir).
+
 Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* tests/{Makefile.am, string-test.c, strfunc-test.c}:
