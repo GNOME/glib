@@ -1,3 +1,9 @@
+2001-07-20  Hans Breuer  <hans@breuer.org>
+
+	* gobject.def : updated externals
+
+	* makefile.msc.in : reflect glib move
+
 Tue Jul 10 18:50:16 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.h (struct _GSignalQuery): fix misplaced comment.

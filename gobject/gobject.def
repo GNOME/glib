@@ -61,6 +61,7 @@ EXPORTS
 	g_object_new_valist
 	g_object_notify
 	g_object_ref
+	g_object_run_dispose
 	g_object_set
 	g_object_set_data
 	g_object_set_data_full
@@ -73,7 +74,8 @@ EXPORTS
 	g_object_thaw_notify
 	g_object_unref
 	g_object_watch_closure
-	g_param_spec_pool_belongings
+	g_object_weak_ref
+	g_object_weak_unref
 	g_param_spec_boolean
 	g_param_spec_boxed
 	g_param_spec_char
@@ -89,6 +91,7 @@ EXPORTS
 	g_param_spec_pointer
 	g_param_spec_pool_insert
 	g_param_spec_pool_list
+	g_param_spec_pool_list_owned
 	g_param_spec_pool_lookup
 	g_param_spec_pool_remove
 	g_param_spec_pool_new
@@ -129,7 +132,7 @@ EXPORTS
 	g_signal_list_ids
 	g_signal_lookup
 	g_signal_name
-	g_signal_newc
+	g_signal_new
 	g_signal_newv
 	g_signal_new_valist
 	g_signal_parse_name
@@ -164,6 +167,7 @@ EXPORTS
 	g_type_get_plugin
 	g_type_get_qdata
 	g_type_init
+	g_type_init_with_debug_flags
 	g_type_instance_is_a
 	g_type_interface_add_prerequisite
 	g_type_interface_peek

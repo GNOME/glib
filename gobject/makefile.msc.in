@@ -12,14 +12,18 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I .
-DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime -DG_ENABLE_DEBUG
+INCLUDES = -I .. -I . -I ..\glib
+DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime \
+		-DG_ENABLE_DEBUG
+#		-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS
+#		-DG_DISABLE_CAST_CHECKS
 
 all :				\
 	glib-genmarshal.exe \
 	gmarshal.h \
 	gmarshal.c \
 	gobject-$(GLIB_VER).dll	\
+	gobject-$(GLIB_VER)s.lib
 
 gobject_OBJECTS =		\
 	gboxed.obj		\
@@ -53,8 +57,13 @@ makefile.msc: makefile.msc.in
 	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
 
 gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
-	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
+	$(CC) $(CFLAGS) -Fm -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) \
+	..\glib\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
+
+gobject-$(GLIB_VER)s.lib : $(gobject_OBJECTS) 
+	lib /out:gobject-$(GLIB_VER)s.lib $(gobject_OBJECTS)
 
 # link glib's static version to avoid installing 
-glib-genmarshal.exe : glib-genmarshal.c ..\glib-$(GLIB_VER)s.lib
-	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER)s.lib user32.lib advapi32.lib $(INTL_LIBS)
+glib-genmarshal.exe : glib-genmarshal.c ..\glib\glib-$(GLIB_VER)s.lib
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
+	..\glib\glib-$(GLIB_VER)s.lib user32.lib advapi32.lib $(INTL_LIBS)
