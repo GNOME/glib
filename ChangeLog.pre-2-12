@@ -1,5 +1,6 @@
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutils.c: 
 	* glib/gkeyfile.c: Don't include ctype.h needlessly.  (#156424,
 	Morten Welinder)
 

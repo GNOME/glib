@@ -30,8 +30,6 @@
 
 #include "config.h"
 
-#include <ctype.h>
-
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -72,7 +70,6 @@
 #  include <windows.h>
 #  undef STRICT
 #  include <lmcons.h>		/* For UNLEN */
-#  include <ctype.h>
 #endif /* G_PLATFORM_WIN32 */
 
 #ifdef G_OS_WIN32
@@ -429,7 +426,7 @@ g_parse_debug_string  (const gchar     *string,
 	    }
 	  
 	  for (i=0; i<nkeys; i++)
-	    if (g_ascii_strncasecmp(keys[i].key, p, q - p) == 0 &&
+	    if (g_ascii_strncasecmp (keys[i].key, p, q - p) == 0 &&
 		keys[i].key[q - p] == '\0')
 	      result |= keys[i].value;
 	  
