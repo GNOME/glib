@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
 "POT-Creation-Date: 2002-06-14 09:56+0300\n"
-"PO-Revision-Date: 2002-06-14 09:55+0200\n"
+"PO-Revision-Date: 2002-06-14 10:15+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -167,7 +167,7 @@ msgstr "Канал закривається на неповному символ
 
 #: glib/giochannel.c:1655
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Не вдалося здійснити безпосереднє зчитування у функції g_io_channel_read_to_end"
 
 #: glib/giowin32.c:712
 #: glib/giowin32.c:741
@@ -181,7 +181,7 @@ msgstr "Помилка сокета"
 
 #: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
-msgstr ""
+msgstr "Набір ознак каналу не підтримується"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -195,22 +195,22 @@ msgstr "Помилка в рядку %d: %s"
 
 #: glib/gmarkup.c:423
 msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
+msgstr "Знайдено порожню сутність \"&;\"; допусаються такі сутності: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:433
 #, c-format
 msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
-msgstr ""
+msgstr "Символ \"%s\" не допускається на початку назви сутності; символ & починає послідовність;  якщо він не є частиною сутності, то екрануйте його сутністю &amp;"
 
 #: glib/gmarkup.c:469
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr ""
+msgstr "Символ \"%s\" не допускається в назві сутності"
 
 #: glib/gmarkup.c:513
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr ""
+msgstr "Сутність з назвою \"%s\" не відома"
 
 #: glib/gmarkup.c:523
 msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
