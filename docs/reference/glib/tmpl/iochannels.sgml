@@ -276,32 +276,34 @@ operation.
 
 <!-- ##### ENUM GIOStatus ##### -->
 <para>
-
+Stati returned by most of the #GIOFuncs functions. 
 </para>
 
-@G_IO_STATUS_ERROR: 
-@G_IO_STATUS_NORMAL: 
-@G_IO_STATUS_EOF: 
-@G_IO_STATUS_AGAIN: 
+@G_IO_STATUS_ERROR: An error occurred. 
+@G_IO_STATUS_NORMAL: Success.
+@G_IO_STATUS_EOF: End of file.
+@G_IO_STATUS_AGAIN: Resource temporarily unavailable.
 
 <!-- ##### ENUM GIOChannelError ##### -->
 <para>
-
+Error codes returned by #GIOChannel operations.
 </para>
 
-@G_IO_CHANNEL_ERROR_FBIG: 
-@G_IO_CHANNEL_ERROR_INVAL: 
-@G_IO_CHANNEL_ERROR_IO: 
-@G_IO_CHANNEL_ERROR_ISDIR: 
-@G_IO_CHANNEL_ERROR_NOSPC: 
-@G_IO_CHANNEL_ERROR_NXIO: 
+@G_IO_CHANNEL_ERROR_FBIG: File too large.
+@G_IO_CHANNEL_ERROR_INVAL: Invalid argument.
+@G_IO_CHANNEL_ERROR_IO: IO error.
+@G_IO_CHANNEL_ERROR_ISDIR: File is a directory.
+@G_IO_CHANNEL_ERROR_NOSPC: No space left on device.
+@G_IO_CHANNEL_ERROR_NXIO: No such device or address.
 @G_IO_CHANNEL_ERROR_OVERFLOW: 
-@G_IO_CHANNEL_ERROR_PIPE: 
-@G_IO_CHANNEL_ERROR_FAILED: 
+@G_IO_CHANNEL_ERROR_PIPE: Broken pipe.
+@G_IO_CHANNEL_ERROR_FAILED: Some other error.
 
 <!-- ##### MACRO G_IO_CHANNEL_ERROR ##### -->
 <para>
-
+Error domain for #GIOChannel operations. Errors in this domain will
+be from the #IOChannelError enumeration. See #GError for information on
+error domains.
 </para>
 
 
@@ -444,7 +446,7 @@ g_io_add_watch_full(), which is called when the requested condition on a
 @source: the #GIOChannel event source.
 @condition: the condition which has been satisfied.
 @data: user data set in g_io_add_watch() or g_io_add_watch_full().
-@Returns: the function should return FALSE if the event source should be
+@Returns: the function should return %FALSE if the event source should be
 removed.
 
 

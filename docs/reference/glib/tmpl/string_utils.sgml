@@ -28,15 +28,15 @@ The returned string should be freed when no longer needed.
 <!-- ##### FUNCTION g_strndup ##### -->
 <para>
 Duplicates the first @n characters of a string, returning a newly-allocated
-buffer @n + 1 characters long which will always be null-terminated.
-If @str is less than @n characters long the buffer is padded with nulls.
+buffer @n + 1 characters long which will always be nul-terminated.
+If @str is less than @n characters long the buffer is padded with nuls.
 The returned value should be freed when no longer needed.
 </para>
 
 @str: the string to duplicate part of.
 @n: the maximum number of characters to copy from @str.
 @Returns: a newly-allocated buffer containing the first @n characters of @str,
-null-terminated.
+nul-terminated.
 
 
 <!-- ##### FUNCTION g_strdupv ##### -->
@@ -165,7 +165,7 @@ The returned string should be freed when no longer needed.
 <para>
 A safer form of the standard <function>sprintf()</function> function.
 The output is guaranteed to not exceed @n characters (including the
-terminating NULL character), so it is easy to ensure that a buffer overflow
+terminating nul character), so it is easy to ensure that a buffer overflow
 cannot occur.
 </para>
 <para>
@@ -174,7 +174,7 @@ See also g_strdup_printf().
 <note>
 <para>
 In versions of GLib prior to 1.2.3, this function may return -1 if the output
-was truncated, and the truncated string may not be NULL-terminated.
+was truncated, and the truncated string may not be nul-terminated.
 </para>
 </note>
 
@@ -191,7 +191,7 @@ documentation.
 <para>
 A safer form of the standard <function>vsprintf()</function> function.
 The output is guaranteed to not exceed @n characters (including the
-terminating NULL character), so it is easy to ensure that a buffer overflow
+terminating nul character), so it is easy to ensure that a buffer overflow
 cannot occur.
 </para>
 <para>
@@ -200,7 +200,7 @@ See also g_strdup_vprintf().
 <note>
 <para>
 In versions of GLib prior to 1.2.3, this function may return -1 if the output
-was truncated, and the truncated string may not be NULL-terminated.
+was truncated, and the truncated string may not be nul-terminated.
 </para>
 </note>
 
@@ -612,7 +612,7 @@ to the @new_delimiter character.
 </para>
 
 @string: the string to convert.
-@delimiters: a string containing the current delimiters, or NULL to use the
+@delimiters: a string containing the current delimiters, or %NULL to use the
 standard delimiters defined in #G_STR_DELIMITERS.
 @new_delimiter: the new delimiter character.
 @Returns: 
@@ -641,7 +641,7 @@ g_strcompress() does the reverse conversion.
 
 @source: a string to escape.
 @exceptions: a string of characters not to escape in @source.
-@Returns: a newly allocated copy of @source with certain
+@Returns: a newly-allocated copy of @source with certain
 characters escaped. See above.
 
 
@@ -652,7 +652,7 @@ does the reverse conversion of g_strescape().
 </para>
 
 @source: a string to compress.
-@Returns: a newly allocated copy of @source with all escaped 
+@Returns: a newly-allocated copy of @source with all escaped 
 character compressed.
 
 
@@ -661,13 +661,13 @@ character compressed.
 For each character in @string, if the character is not in @valid_chars,
 replaces the character with @substitutor. Modifies @string in place, 
 and return @string itself, not a copy. The return value is to allow
-nesting such as g_strup (g_strcanon (str)).
+nesting such as <literal>g_strup (g_strcanon (str))</literal>.
 </para>
 
-@string: a nul-terminated array of bytes
-@valid_chars: bytes permitted in @string
-@substitutor: replacement character for disallowed bytes
-@Returns: @string
+@string: a nul-terminated array of bytes.
+@valid_chars: bytes permitted in @string.
+@substitutor: replacement character for disallowed bytes.
+@Returns: @string.
 
 
 <!-- ##### FUNCTION g_strsplit ##### -->
@@ -682,10 +682,10 @@ nesting such as g_strup (g_strcanon (str)).
 
 <!-- ##### FUNCTION g_strfreev ##### -->
 <para>
-Frees a NULL-terminated array of strings, and the array itself.
+Frees a %NULL-terminated array of strings, and the array itself.
 </para>
 
-@str_array: a NULL-terminated array of strings to free.
+@str_array: a %NULL-terminated array of strings to free.
 
 
 <!-- ##### FUNCTION g_strconcat ##### -->
@@ -696,8 +696,8 @@ END WITH %NULL. If you forget the %NULL, g_strconcat() will start appending
 random memory junk to your string.
 </para>
 
-@string1: The first string to add, which must not be NULL.
-@Varargs: a NULL-terminated list of strings to append to the string.
+@string1: The first string to add, which must not be %NULL.
+@Varargs: a %NULL-terminated list of strings to append to the string.
 @Returns: a newly-allocated string containing all the string arguments.
 
 
@@ -707,8 +707,8 @@ Joins a number of strings together to form one long string, with the optional
 @separator inserted between each of them.
 </para>
 
-@separator: a string to insert between each of the strings, or NULL.
-@Varargs: a NULL-terminated list of strings to join.
+@separator: a string to insert between each of the strings, or %NULL.
+@Varargs: a %NULL-terminated list of strings to join.
 @Returns: a newly-allocated string containing all of the strings joined
 together, with @separator between them.
 
@@ -719,8 +719,8 @@ Joins a number of strings together to form one long string, with the optional
 @separator inserted between each of them.
 </para>
 
-@separator: a string to insert between each of the strings, or NULL.
-@str_array: a NULL-terminated array of strings to join.
+@separator: a string to insert between each of the strings, or %NULL.
+@str_array: a %NULL-terminated array of strings to join.
 @Returns: a newly-allocated string containing all of the strings joined
 together, with @separator between them.
 

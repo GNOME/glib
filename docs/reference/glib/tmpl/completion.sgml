@@ -38,7 +38,7 @@ The data structure used for automatic completion.
 <structfield>items</structfield> is the list of target items (strings
 or data structures).
 <structfield>func</structfield> is the function called to get the string
-associated with a target item. It is NULL if the target items are strings.
+associated with a target item. It is %NULL if the target items are strings.
 <structfield>prefix</structfield> is the last prefix passed to
 g_completion_complete().
 <structfield>cache</structfield> is the list of items which begin with

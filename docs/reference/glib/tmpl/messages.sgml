@@ -23,7 +23,7 @@ These can be extended with user-defined levels.
 <!-- ##### MACRO G_LOG_DOMAIN ##### -->
 <para>
 Defines the log domain.
-For applications, this is typically left as the default NULL (or "") domain.
+For applications, this is typically left as the default %NULL (or "") domain.
 Libraries should define this so that any messages which they log can
 be differentiated from messages from other libraries and application code.
 But be careful not to define it in any public header files.
@@ -181,10 +181,10 @@ to set a handler for this log level you must combine it with G_LOG_FLAG_FATAL.
 </programlisting>
 </example>
 
-@log_domain: the log domain, or NULL for the default "" application domain.
+@log_domain: the log domain, or %NULL for the default "" application domain.
 @log_levels: the log levels to apply the log handler for. To handle fatal
 and recursive messages as well, combine the log levels with the
-G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
+#G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSIVE bit flags.
 @log_func: the log handler function.
 @user_data: data passed to the log handler.
 @Returns: the id of the new handler.

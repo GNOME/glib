@@ -127,7 +127,7 @@ or 'C:/windows' on windows systems.
 </para>
 
 @file_name: a file name.
-@Returns: TRUE if @file_name is an absolute path.
+@Returns: %TRUE if @file_name is an absolute path.
 
 
 <!-- ##### FUNCTION g_path_skip_root ##### -->

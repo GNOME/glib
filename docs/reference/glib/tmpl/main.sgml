@@ -176,8 +176,8 @@ Creates a new #GMainLoop for the default main loop. A compatibility
 macro, see g_main_loop_new().
 </para>
 
-@is_running: set to TRUE to indicate that the loop is running. This is not
-very important since calling g_main_run() will set this to TRUE anyway.
+@is_running: set to %TRUE to indicate that the loop is running. This is not
+very important since calling g_main_run() will set this to %TRUE anyway.
 @Returns: a new #GMainLoop.
 
 
@@ -316,11 +316,11 @@ Runs a single iteration for the default #GMainContext.
 A compatibility macro, see g_main_context_iteration().
 </para>
 
-@may_block: set to TRUE if it should block (i.e. wait) until an event source
+@may_block: set to %TRUE if it should block (i.e. wait) until an event source
 becomes ready. It will return after an event source has been processed.
-If set to FALSE it will return immediately if no event source is ready to be
+If set to %FALSE it will return immediately if no event source is ready to be
 processed.
-@Returns: TRUE if more events are pending.
+@Returns: %TRUE if more events are pending.
 
 
 <!-- ##### FUNCTION g_main_context_pending ##### -->
@@ -573,8 +573,6 @@ g_main_context_set_poll_func() for full details.
 @data: 
 @notify: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@destroy: 
 
 
 <!-- ##### FUNCTION g_idle_remove_by_data ##### -->
@@ -609,7 +607,7 @@ you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
 <row>
 <entry>#gushort revents;</entry>
 <entry>a bitwise combination of flags from #GIOCondition, returned from the
-poll() function to indicate which events occurred.
+<function>poll()</function> function to indicate which events occurred.
 </entry>
 </row>
 </tbody></tgroup></informaltable>
@@ -680,25 +678,26 @@ Called when the source is destroyed.
 </para>
 
 <para>
-For idle sources, the prepare and check functions always return TRUE to
+For idle sources, the prepare and check functions always return %TRUE to
 indicate that the source is always ready to be processed.
 The prepare function also returns a timeout value of 0 to ensure that the
-poll() call doesn't block (since that would be time wasted which could have
-been spent running the idle function).
+<function>poll()</function> call doesn't block (since that would be time 
+wasted which could have been spent running the idle function).
 </para>
 <para>
-For timeout sources, the prepare and check functions both return TRUE if the
-timeout interval has expired.
-The prepare function also returns a timeout value to ensure that the poll()
-call doesn't block too long and miss the next timeout.
+For timeout sources, the prepare and check functions both return %TRUE if the
+timeout interval has expired. The prepare function also returns a timeout 
+value to ensure that the <function>poll()</function> call doesn't block too 
+long and miss the next timeout.
 </para>
 <para>
-For file descriptor sources, the prepare function typically returns FALSE,
-since it must wait until poll() has been called before it knows whether any
-events need to be processed. It sets the returned timeout to -1 to indicate
-that it doesn't mind how long the poll() call blocks.
-In the check function, it tests the results of the poll() call to see if
-the required condition has been met, and returns TRUE if so.
+For file descriptor sources, the prepare function typically returns %FALSE,
+since it must wait until <function>poll()</function> has been called before 
+it knows whether any events need to be processed. It sets the returned 
+timeout to -1 to indicate that it doesn't mind how long the 
+<function>poll()</function> call blocks.
+In the check function, it tests the results of the <function>poll()</function>
+call to see if the required condition has been met, and returns %TRUE if so.
 </para>
 
 @prepare: 
@@ -842,7 +841,7 @@ g_idle_add(), and g_idle_add_full().
 
 @data: data passed to the function, set when the source was created with one
 of the above functions.
-@Returns: it should return FALSE if the source should be removed.
+@Returns: it should return %FALSE if the source should be removed.
 
 
 <!-- ##### FUNCTION g_source_set_callback_indirect ##### -->

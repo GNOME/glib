@@ -154,7 +154,7 @@ from @mem. If @mem is %NULL it returns %NULL.
 
 @mem: the memory to copy.
 @byte_size: the number of bytes to copy.
-@Returns: a pointer to the newly allocated copy of the memory, or %NULL if @mem
+@Returns: a pointer to the newly-allocated copy of the memory, or %NULL if @mem
 is %NULL.
 
 

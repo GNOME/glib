@@ -1,3 +1,13 @@
+2001-10-01  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/iochannels.sgml, glib/tmpl/shell.sgml,
+	glib/tmpl/spawn.sgml, glib/tmpl/memory.sgml,
+	glib/tmpl/macros.sgml, glib/tmpl/completion.sgml,
+	glib/tmpl/main.sgml, glib/tmpl/messages.sgml,
+	glib/tmpl/misc_utils.sgml, glib/tmpl/threads.sgml,
+	glib/tmpl/trees-nary.sgml, glib/tmpl/string_utils.sgml:
+	More markup fixes and completions.
+
 Mon Oct  1 15:59:46 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/strings.sgml docs/glib-sections.txt: Rename

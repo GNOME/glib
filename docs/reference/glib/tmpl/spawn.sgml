@@ -16,33 +16,35 @@ Spawning Processes (fork/exec)
 
 <!-- ##### ENUM GSpawnError ##### -->
 <para>
-
+Error codes returned by spawning processes.
 </para>
 
-@G_SPAWN_ERROR_FORK: 
-@G_SPAWN_ERROR_READ: 
-@G_SPAWN_ERROR_CHDIR: 
-@G_SPAWN_ERROR_ACCES: 
-@G_SPAWN_ERROR_PERM: 
-@G_SPAWN_ERROR_2BIG: 
-@G_SPAWN_ERROR_NOEXEC: 
-@G_SPAWN_ERROR_NAMETOOLONG: 
-@G_SPAWN_ERROR_NOENT: 
-@G_SPAWN_ERROR_NOMEM: 
-@G_SPAWN_ERROR_NOTDIR: 
-@G_SPAWN_ERROR_LOOP: 
-@G_SPAWN_ERROR_TXTBUSY: 
-@G_SPAWN_ERROR_IO: 
-@G_SPAWN_ERROR_NFILE: 
-@G_SPAWN_ERROR_MFILE: 
-@G_SPAWN_ERROR_INVAL: 
-@G_SPAWN_ERROR_ISDIR: 
-@G_SPAWN_ERROR_LIBBAD: 
-@G_SPAWN_ERROR_FAILED: 
+@G_SPAWN_ERROR_FORK: Fork failed due to lack of memory.
+@G_SPAWN_ERROR_READ: Read or select on pipes failed.
+@G_SPAWN_ERROR_CHDIR: Changing to working directory failed.
+@G_SPAWN_ERROR_ACCES: <function>execv()</function> returned %EACCES. 
+@G_SPAWN_ERROR_PERM: <function>execv()</function> returned %EPERM. 
+@G_SPAWN_ERROR_2BIG: <function>execv()</function> returned %E2BIG. 
+@G_SPAWN_ERROR_NOEXEC: <function>execv()</function> returned %ENOEXEC. 
+@G_SPAWN_ERROR_NAMETOOLONG: <function>execv()</function> returned %ENAMETOOLONG.
+@G_SPAWN_ERROR_NOENT: <function>execv()</function> returned %ENOENT. 
+@G_SPAWN_ERROR_NOMEM: <function>execv()</function> returned %ENOMEM. 
+@G_SPAWN_ERROR_NOTDIR: <function>execv()</function> returned %ENOTDIR. 
+@G_SPAWN_ERROR_LOOP: <function>execv()</function> returned %ELOOP. 
+@G_SPAWN_ERROR_TXTBUSY: <function>execv()</function> returned %ETXTBUSY. 
+@G_SPAWN_ERROR_IO: <function>execv()</function> returned %EIO. 
+@G_SPAWN_ERROR_NFILE: <function>execv()</function> returned %ENFILE. 
+@G_SPAWN_ERROR_MFILE: <function>execv()</function> returned %EMFILE. 
+@G_SPAWN_ERROR_INVAL: <function>execv()</function> returned %EINVAL. 
+@G_SPAWN_ERROR_ISDIR: <function>execv()</function> returned %EISDIR. 
+@G_SPAWN_ERROR_LIBBAD: <function>execv()</function> returned %ELIBBAD. 
+@G_SPAWN_ERROR_FAILED: Some other fatal failure, <literal>error-&gt;message</literal> should explain. 
 
 <!-- ##### MACRO G_SPAWN_ERROR ##### -->
 <para>
-
+Error domain for spawning processes. Errors in this domain will
+be from the #GSpawnError enumeration. See #GError for information on
+error domains.
 </para>
 
 
