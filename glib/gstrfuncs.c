@@ -214,7 +214,7 @@ g_strconcat (const gchar *string1, ...)
   s = va_arg (args, gchar*);
   while (s)
     {
-      strcat (concat, s);
+      ptr = g_stpcpy (ptr, s);
       s = va_arg (args, gchar*);
     }
   va_end (args);
