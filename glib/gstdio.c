@@ -34,6 +34,7 @@
 #ifdef G_OS_WIN32
 #include <errno.h>
 #include <wchar.h>
+#include <direct.h>
 #include <io.h>
 #endif
 

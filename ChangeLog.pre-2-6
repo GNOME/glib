@@ -1,5 +1,8 @@
 2004-10-29  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gstdio.c: Include also <direct.h> for mkdir() prototype
+	with MSVC. [156727, Kazuki IWAMOTO]
+
 	* glib/giochannel.h (g_io_channel_new_file): Redefine also
 	g_io_channel_new_file to the UTF-8 version on Win32. [156725,
 	Kazuki IWAMOTO)
