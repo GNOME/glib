@@ -184,8 +184,8 @@ G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 
 /* The returned strings are newly allocated with g_malloc() */
 gchar*                g_get_current_dir    (void);
-gchar*                g_path_get_basename  (const gchar *file_name);
-gchar*                g_path_get_dirname   (const gchar *file_name);
+gchar*                g_path_get_basename  (const gchar *file_name) G_GNUC_MALLOC;
+gchar*                g_path_get_dirname   (const gchar *file_name) G_GNUC_MALLOC;
 
 /* Set the pointer at the specified location to NULL */
 void                  g_nullify_pointer    (gpointer    *nullify_location);

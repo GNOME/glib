@@ -155,9 +155,9 @@ gint                  g_ascii_strncasecmp (const gchar *s1,
 					   const gchar *s2,
 					   gsize        n);
 gchar*                g_ascii_strdown     (const gchar *str,
-					   gssize       len);
+					   gssize       len) G_GNUC_MALLOC;
 gchar*                g_ascii_strup       (const gchar *str,
-					   gssize       len);
+					   gssize       len) G_GNUC_MALLOC;
 
 #ifndef G_DISABLE_DEPRECATED
 
@@ -179,24 +179,24 @@ gchar*	              g_strup	       (gchar	     *string);
 /* String utility functions that return a newly allocated string which
  * ought to be freed with g_free from the caller at some point.
  */
-gchar*	              g_strdup	       (const gchar *str);
+gchar*	              g_strdup	       (const gchar *str) G_GNUC_MALLOC;
 gchar*	              g_strdup_printf  (const gchar *format,
-					...) G_GNUC_PRINTF (1, 2);
+					...) G_GNUC_PRINTF (1, 2) G_GNUC_MALLOC;
 gchar*	              g_strdup_vprintf (const gchar *format,
-					va_list      args);
+					va_list      args) G_GNUC_MALLOC;
 gchar*	              g_strndup	       (const gchar *str,
-					gsize        n);  
+					gsize        n) G_GNUC_MALLOC;  
 gchar*	              g_strnfill       (gsize        length,  
-					gchar        fill_char);
+					gchar        fill_char) G_GNUC_MALLOC;
 gchar*	              g_strconcat      (const gchar *string1,
-					...); /* NULL terminated */
+					...) G_GNUC_MALLOC; /* NULL terminated */
 gchar*                g_strjoin	       (const gchar  *separator,
-					...); /* NULL terminated */
+					...) G_GNUC_MALLOC; /* NULL terminated */
 /* Make a copy of a string interpreting C string -style escape
  * sequences. Inverse of g_strescape. The recognized sequences are \b
  * \f \n \r \t \\ \" and the octal format.
  */
-gchar*                g_strcompress    (const gchar *source);
+gchar*                g_strcompress    (const gchar *source) G_GNUC_MALLOC;
 
 /* Copy a string escaping nonprintable characters like in C strings.
  * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
@@ -207,10 +207,10 @@ gchar*                g_strcompress    (const gchar *source);
  * provides mostly identical semantics.
  */
 gchar*                g_strescape      (const gchar *source,
-					const gchar *exceptions);
+					const gchar *exceptions) G_GNUC_MALLOC;
 
 gpointer              g_memdup	       (gconstpointer mem,
-					guint	       byte_size);
+					guint	       byte_size) G_GNUC_MALLOC;
 
 /* NULL terminated string arrays.
  * g_strsplit(), g_strsplit_set() split up string into max_tokens tokens
@@ -223,14 +223,14 @@ gpointer              g_memdup	       (gconstpointer mem,
  */
 gchar**	              g_strsplit       (const gchar  *string,
 					const gchar  *delimiter,
-					gint          max_tokens);
+					gint          max_tokens) G_GNUC_MALLOC;
 gchar **	      g_strsplit_set   (const gchar *string,
 					const gchar *delimiters,
-					gint         max_tokens);
+					gint         max_tokens) G_GNUC_MALLOC;
 gchar*                g_strjoinv       (const gchar  *separator,
-					gchar       **str_array);
+					gchar       **str_array) G_GNUC_MALLOC;
 void                  g_strfreev       (gchar       **str_array);
-gchar**               g_strdupv        (gchar       **str_array);
+gchar**               g_strdupv        (gchar       **str_array) G_GNUC_MALLOC;
 guint                 g_strv_length    (gchar       **str_array);
 
 gchar*                g_stpcpy         (gchar        *dest,

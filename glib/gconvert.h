@@ -65,13 +65,13 @@ gchar* g_convert               (const gchar  *str,
 				const gchar  *from_codeset,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
-				GError      **error);
+				GError      **error) G_GNUC_MALLOC;
 gchar* g_convert_with_iconv    (const gchar  *str,
 				gssize        len,
 				GIConv        converter,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
-				GError      **error);
+				GError      **error) G_GNUC_MALLOC;
 gchar* g_convert_with_fallback (const gchar  *str,
 				gssize        len,            
 				const gchar  *to_codeset,
@@ -79,7 +79,7 @@ gchar* g_convert_with_fallback (const gchar  *str,
 				gchar        *fallback,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
-				GError      **error);
+				GError      **error) G_GNUC_MALLOC;
 
 
 /* Convert between libc's idea of strings and UTF-8.
@@ -88,12 +88,12 @@ gchar* g_locale_to_utf8   (const gchar  *opsysstring,
 			   gssize        len,            
 			   gsize        *bytes_read,     
 			   gsize        *bytes_written,  
-			   GError      **error);
+			   GError      **error) G_GNUC_MALLOC;
 gchar* g_locale_from_utf8 (const gchar  *utf8string,
 			   gssize        len,            
 			   gsize        *bytes_read,     
 			   gsize        *bytes_written,  
-			   GError      **error);
+			   GError      **error) G_GNUC_MALLOC;
 
 /* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
@@ -107,24 +107,24 @@ gchar* g_filename_to_utf8   (const gchar  *opsysstring,
 			     gssize        len,            
 			     gsize        *bytes_read,     
 			     gsize        *bytes_written,  
-			     GError      **error);
+			     GError      **error) G_GNUC_MALLOC;
 gchar* g_filename_from_utf8 (const gchar  *utf8string,
 			     gssize        len,            
 			     gsize        *bytes_read,     
 			     gsize        *bytes_written,  
-			     GError      **error);
+			     GError      **error) G_GNUC_MALLOC;
 
 gchar *g_filename_from_uri (const gchar *uri,
 			    gchar      **hostname,
-			    GError     **error);
+			    GError     **error) G_GNUC_MALLOC;
   
 gchar *g_filename_to_uri   (const gchar *filename,
 			    const gchar *hostname,
-			    GError     **error);
-gchar *g_filename_display_name (const gchar *filename);
+			    GError     **error) G_GNUC_MALLOC;
+gchar *g_filename_display_name (const gchar *filename) G_GNUC_MALLOC;
 gboolean g_get_filename_charsets (G_CONST_RETURN gchar ***charsets);
 
-gchar **g_uri_list_extract_uris (const gchar *uri_list);
+gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
 
 G_END_DECLS
 

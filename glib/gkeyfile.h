@@ -70,14 +70,14 @@ gboolean g_key_file_load_from_data_dirs    (GKeyFile             *key_file,
 					     GError              **error);
 gchar    *g_key_file_to_data                (GKeyFile             *key_file,
 					     gsize                *length,
-					     GError              **error);
-gchar    *g_key_file_get_start_group        (GKeyFile             *key_file);
+					     GError              **error) G_GNUC_MALLOC;
+gchar    *g_key_file_get_start_group        (GKeyFile             *key_file) G_GNUC_MALLOC;
 gchar   **g_key_file_get_groups             (GKeyFile             *key_file,
-					     gsize                *length);
+					     gsize                *length) G_GNUC_MALLOC;
 gchar   **g_key_file_get_keys               (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     gsize                *length,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 gboolean  g_key_file_has_group              (GKeyFile             *key_file,
 					     const gchar          *group_name);
 gboolean  g_key_file_has_key                (GKeyFile             *key_file,
@@ -87,7 +87,7 @@ gboolean  g_key_file_has_key                (GKeyFile             *key_file,
 gchar    *g_key_file_get_value              (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_value              (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -95,7 +95,7 @@ void      g_key_file_set_value              (GKeyFile             *key_file,
 gchar    *g_key_file_get_string             (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_string             (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -104,7 +104,7 @@ gchar    *g_key_file_get_locale_string      (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     const gchar          *locale,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_locale_string      (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -130,7 +130,7 @@ gchar   **g_key_file_get_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gsize                *length,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -141,7 +141,7 @@ gchar   **g_key_file_get_locale_string_list (GKeyFile             *key_file,
 					     const gchar          *key,
 					     const gchar          *locale,
 					     gsize                *length,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_locale_string_list (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -152,7 +152,7 @@ gboolean *g_key_file_get_boolean_list       (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gsize                *length,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_boolean_list       (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -162,7 +162,7 @@ gint     *g_key_file_get_integer_list       (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gsize                *length,
-					     GError              **error);
+					     GError              **error) G_GNUC_MALLOC;
 void      g_key_file_set_integer_list       (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
@@ -176,7 +176,7 @@ void      g_key_file_set_comment            (GKeyFile             *key_file,
 gchar    *g_key_file_get_comment            (GKeyFile             *key_file,
                                              const gchar          *group_name,
                                              const gchar          *key,
-                                             GError              **error);
+                                             GError              **error) G_GNUC_MALLOC;
 
 void      g_key_file_remove_comment         (GKeyFile             *key_file,
                                              const gchar          *group_name,

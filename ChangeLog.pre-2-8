@@ -1,3 +1,17 @@
+2004-11-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gconvert.h:
+	* glib/gkeyfile.h:
+	* glib/gmem.h: 
+	* glib/gstrfuncs.h:
+	* glib/gunicode.h:
+	* glib/gutils.h: Mark functions with G_GNUC_MALLOC when appropriate.
+
+	* glib/glib.symbols: Add G_GNUC_MALLOC annotations.
+
+	* glib/gmacros.h (G_GNUC_MALLOC): Add a macro for 
+	__attribute__((__malloc__)).  (#61780)
+
 2004-11-28  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.[hc]

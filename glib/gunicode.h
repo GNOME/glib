@@ -159,7 +159,7 @@ void g_unicode_canonical_ordering (gunichar *string,
    string of Unicode characters.  RESULT_LEN is set to the resulting
    length of the string.  */
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
-					     gsize    *result_len);
+					     gsize    *result_len) G_GNUC_MALLOC;
 
 /* Array of skip-bytes-per-initial character.
  */
@@ -204,35 +204,35 @@ gunichar2 *g_utf8_to_utf16     (const gchar      *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 gunichar * g_utf8_to_ucs4      (const gchar      *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 gunichar * g_utf8_to_ucs4_fast (const gchar      *str,
 				glong             len,            
-				glong            *items_written); 
+				glong            *items_written) G_GNUC_MALLOC; 
 gunichar * g_utf16_to_ucs4     (const gunichar2  *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 gchar*     g_utf16_to_utf8     (const gunichar2  *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 gunichar2 *g_ucs4_to_utf16     (const gunichar   *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 gchar*     g_ucs4_to_utf8      (const gunichar   *str,
 				glong             len,            
 				glong            *items_read,     
 				glong            *items_written,  
-				GError          **error);
+				GError          **error) G_GNUC_MALLOC;
 
 /* Convert a single character into UTF-8. outbuf must have at
  * least 6 bytes of space. Returns the number of bytes in the
@@ -253,11 +253,11 @@ gboolean g_utf8_validate (const gchar  *str,
 gboolean g_unichar_validate (gunichar ch);
 
 gchar *g_utf8_strup   (const gchar *str,
-		       gssize       len);
+		       gssize       len) G_GNUC_MALLOC;
 gchar *g_utf8_strdown (const gchar *str,
-		       gssize       len);
+		       gssize       len) G_GNUC_MALLOC;
 gchar *g_utf8_casefold (const gchar *str,
-			gssize       len);
+			gssize       len) G_GNUC_MALLOC;
 
 typedef enum {
   G_NORMALIZE_DEFAULT,
@@ -272,12 +272,12 @@ typedef enum {
 
 gchar *g_utf8_normalize (const gchar   *str,
 			 gssize         len,
-			 GNormalizeMode mode);
+			 GNormalizeMode mode) G_GNUC_MALLOC;
 
 gint   g_utf8_collate     (const gchar *str1,
 			   const gchar *str2);
 gchar *g_utf8_collate_key (const gchar *str,
-			   gssize       len);
+			   gssize       len) G_GNUC_MALLOC;
 
 gboolean g_unichar_get_mirror_char (gunichar ch,
                                     gunichar *mirrored_ch);

@@ -16,11 +16,11 @@ g_ascii_digit_value G_GNUC_CONST
 g_ascii_dtostr
 g_ascii_formatd
 g_ascii_strcasecmp
-g_ascii_strdown
+g_ascii_strdown G_GNUC_MALLOC
 g_ascii_strncasecmp
 g_ascii_strtod
 g_ascii_strtoull
-g_ascii_strup
+g_ascii_strup G_GNUC_MALLOC
 g_ascii_tolower G_GNUC_CONST
 g_ascii_toupper G_GNUC_CONST
 g_ascii_xdigit_value G_GNUC_CONST
@@ -84,10 +84,10 @@ g_completion_free
 g_completion_new
 g_completion_remove_items
 g_completion_set_compare
-g_convert
+g_convert G_GNUC_MALLOC
 g_convert_error_quark
-g_convert_with_fallback
-g_convert_with_iconv
+g_convert_with_fallback G_GNUC_MALLOC
+g_convert_with_iconv G_GNUC_MALLOC
 g_datalist_clear
 g_datalist_foreach
 g_datalist_id_get_data
@@ -168,14 +168,14 @@ g_file_get_contents PRIVATE
 #ifdef G_OS_WIN32
 g_file_get_contents_utf8
 #endif
-g_filename_display_name
-g_filename_from_uri
-g_filename_from_utf8 PRIVATE
+g_filename_display_name G_GNUC_MALLOC
+g_filename_from_uri G_GNUC_MALLOC
+g_filename_from_utf8 PRIVATE G_GNUC_MALLOC
 #ifdef G_OS_WIN32
 g_filename_from_utf8_utf8
 #endif
-g_filename_to_uri
-g_filename_to_utf8 PRIVATE
+g_filename_to_uri G_GNUC_MALLOC
+g_filename_to_utf8 PRIVATE G_GNUC_MALLOC 
 #ifdef G_OS_WIN32
 g_filename_to_utf8_utf8
 #endif
@@ -325,18 +325,18 @@ g_io_create_watch
 g_key_file_error_quark
 g_key_file_free
 g_key_file_get_boolean
-g_key_file_get_boolean_list
-g_key_file_get_comment
-g_key_file_get_groups
+g_key_file_get_boolean_list G_GNUC_MALLOC
+g_key_file_get_comment G_GNUC_MALLOC
+g_key_file_get_groups G_GNUC_MALLOC
 g_key_file_get_integer
-g_key_file_get_integer_list
-g_key_file_get_keys
-g_key_file_get_locale_string
-g_key_file_get_locale_string_list
-g_key_file_get_start_group
-g_key_file_get_string
-g_key_file_get_string_list
-g_key_file_get_value
+g_key_file_get_integer_list G_GNUC_MALLOC
+g_key_file_get_keys G_GNUC_MALLOC
+g_key_file_get_locale_string G_GNUC_MALLOC
+g_key_file_get_locale_string_list G_GNUC_MALLOC
+g_key_file_get_start_group G_GNUC_MALLOC
+g_key_file_get_string G_GNUC_MALLOC
+g_key_file_get_string_list G_GNUC_MALLOC
+g_key_file_get_value G_GNUC_MALLOC
 g_key_file_has_group
 g_key_file_has_key
 g_key_file_load_from_data
@@ -357,7 +357,7 @@ g_key_file_set_locale_string_list
 g_key_file_set_string
 g_key_file_set_string_list
 g_key_file_set_value
-g_key_file_to_data
+g_key_file_to_data G_GNUC_MALLOC
 glib_check_version
 g_list_alloc
 g_list_append
@@ -389,8 +389,8 @@ g_list_remove_link
 g_list_reverse
 g_list_sort
 g_list_sort_with_data
-g_locale_from_utf8
-g_locale_to_utf8
+g_locale_from_utf8 G_GNUC_MALLOC
+g_locale_to_utf8 G_GNUC_MALLOC
 g_log G_GNUC_PRINTF(3,4)
 g_log_default_handler
 g_log_remove_handler
@@ -429,8 +429,8 @@ g_main_loop_quit
 g_main_loop_ref
 g_main_loop_run
 g_main_loop_unref
-g_malloc
-g_malloc0
+g_malloc G_GNUC_MALLOC
+g_malloc0 G_GNUC_MALLOC
 g_markup_error_quark
 g_markup_escape_text
 g_markup_parse_context_end_parse
@@ -450,7 +450,7 @@ g_mem_chunk_info
 g_mem_chunk_new
 g_mem_chunk_print
 g_mem_chunk_reset
-g_memdup
+g_memdup G_GNUC_MALLOC
 g_mem_is_system_malloc
 g_mem_profile
 g_mem_set_vtable
@@ -512,8 +512,8 @@ g_option_group_set_parse_hooks
 g_option_group_set_translate_func
 g_option_group_set_translation_domain
 g_parse_debug_string
-g_path_get_basename
-g_path_get_dirname
+g_path_get_basename G_GNUC_MALLOC
+g_path_get_dirname G_GNUC_MALLOC
 g_path_is_absolute
 g_path_skip_root
 g_pattern_match
@@ -727,17 +727,17 @@ g_strcanon
 g_strcasecmp
 g_strchomp
 g_strchug
-g_strcompress
-g_strconcat
+g_strcompress G_GNUC_MALLOC
+g_strconcat G_GNUC_MALLOC
 g_strdelimit
 g_strdown
-g_strdup
-g_strdup_printf G_GNUC_PRINTF(1,2)
-g_strdupv
-g_strdup_vprintf
+g_strdup G_GNUC_MALLOC
+g_strdup_printf G_GNUC_PRINTF(1,2) G_GNUC_MALLOC
+g_strdupv G_GNUC_MALLOC
+g_strdup_vprintf G_GNUC_MALLOC
 g_str_equal
 g_strerror G_GNUC_CONST
-g_strescape
+g_strescape G_GNUC_MALLOC
 g_strfreev
 g_str_hash
 g_str_has_prefix
@@ -775,19 +775,19 @@ g_string_sized_new
 g_string_truncate
 g_string_up
 g_strip_context
-g_strjoin
-g_strjoinv
+g_strjoin G_GNUC_MALLOC
+g_strjoinv G_GNUC_MALLOC
 g_strlcat
 g_strlcpy
 g_strncasecmp
-g_strndup
-g_strnfill
+g_strndup G_GNUC_MALLOC
+g_strnfill G_GNUC_MALLOC
 g_strreverse
 g_strrstr
 g_strrstr_len
 g_strsignal G_GNUC_CONST
-g_strsplit
-g_strsplit_set
+g_strsplit G_GNUC_MALLOC
+g_strsplit_set G_GNUC_MALLOC
 g_strstr_len
 g_strtod
 g_strup
@@ -835,12 +835,12 @@ g_tree_replace
 g_tree_search
 g_tree_steal
 g_tree_traverse
-g_try_malloc
+g_try_malloc G_GNUC_MALLOC
 g_try_realloc
 g_tuples_destroy
 g_tuples_index
-g_ucs4_to_utf16
-g_ucs4_to_utf8
+g_ucs4_to_utf16 G_GNUC_MALLOC
+g_ucs4_to_utf8 G_GNUC_MALLOC
 g_unichar_break_type G_GNUC_CONST
 g_unichar_digit_value G_GNUC_CONST
 g_unichar_get_mirror_char
@@ -865,35 +865,35 @@ g_unichar_to_utf8
 g_unichar_type G_GNUC_CONST
 g_unichar_validate
 g_unichar_xdigit_value G_GNUC_CONST
-g_unicode_canonical_decomposition
+g_unicode_canonical_decomposition G_GNUC_MALLOC
 g_unicode_canonical_ordering
 g_unlink
 g_unsetenv
-g_uri_list_extract_uris
+g_uri_list_extract_uris G_GNUC_MALLOC
 g_usleep
-g_utf16_to_ucs4
-g_utf16_to_utf8
-g_utf8_casefold
+g_utf16_to_ucs4 G_GNUC_MALLOC
+g_utf16_to_utf8 G_GNUC_MALLOC
+g_utf8_casefold G_GNUC_MALLOC
 g_utf8_collate
-g_utf8_collate_key
+g_utf8_collate_key G_GNUC_MALLOC
 g_utf8_find_next_char
 g_utf8_find_prev_char
 g_utf8_get_char
 g_utf8_get_char_validated
-g_utf8_normalize
+g_utf8_normalize G_GNUC_MALLOC
 g_utf8_offset_to_pointer
 g_utf8_pointer_to_offset
 g_utf8_prev_char
 g_utf8_strchr
-g_utf8_strdown
+g_utf8_strdown G_GNUC_MALLOC
 g_utf8_strlen
 g_utf8_strncpy
 g_utf8_strrchr
 g_utf8_strreverse
-g_utf8_strup
-g_utf8_to_ucs4
-g_utf8_to_ucs4_fast
-g_utf8_to_utf16
+g_utf8_strup G_GNUC_MALLOC
+g_utf8_to_ucs4 G_GNUC_MALLOC
+g_utf8_to_ucs4_fast G_GNUC_MALLOC
+g_utf8_to_utf16 G_GNUC_MALLOC
 g_utf8_validate
 g_vasprintf
 g_vfprintf
