@@ -40,12 +40,12 @@ struct _GRealThreadPool
 };
 
 /* The following is just an address to mark the stop order for a
- * thread, it could be any address (as long, as it isn;t a valid
+ * thread, it could be any address (as long, as it isn't a valid
  * GThreadPool address) */
 static const gpointer stop_this_thread_marker = (gpointer) &g_thread_pool_new;
 
 /* Here all unused threads are waiting, depending on their priority */
-static GAsyncQueue *unused_thread_queue[G_THREAD_PRIORITY_URGENT + 1];
+static GAsyncQueue *unused_thread_queue[G_THREAD_PRIORITY_URGENT + 1][2];
 static gint unused_threads = 0;
 static gint max_unused_threads = 0;
 G_LOCK_DEFINE_STATIC (unused_threads);
@@ -70,7 +70,8 @@ g_thread_pool_thread_proxy (gpointer data)
   while (TRUE)
     {
       gpointer task; 
-      gboolean goto_global_pool = !pool->pool.exclusive;
+      gboolean goto_global_pool = 
+	!pool->pool.exclusive && pool->pool.stack_size == 0;
       gint len = g_async_queue_length_unlocked (pool->queue);
       
       if (g_thread_should_run (pool, len))
@@ -96,17 +97,18 @@ g_thread_pool_thread_proxy (gpointer data)
 	}
 
       if (!g_thread_should_run (pool, len))
-	g_cond_broadcast (inform_cond);
-      
-      if (!pool->running && (pool->immediate || len <= 0))
-	goto_global_pool = TRUE;
+	{
+	  g_cond_broadcast (inform_cond);
+	  goto_global_pool = TRUE;
+	}
       else if (len >= 0)
 	/* At this pool there is no thread waiting */
 	goto_global_pool = FALSE; 
       
       if (goto_global_pool)
 	{
-	  GThreadPriority priority = pool->pool.priority;
+	  GAsyncQueue *unused_queue = 
+	    unused_thread_queue[pool->pool.priority][pool->pool.bound ? 1 : 0];
 	  pool->num_threads--; 
 
 	  if (!pool->running && !pool->waiting)
@@ -117,32 +119,35 @@ g_thread_pool_thread_proxy (gpointer data)
 		  g_thread_pool_free_internal (pool);
 		}		
 	      else if (len == - pool->num_threads)
-		g_thread_pool_wakeup_and_stop_all (pool);
+		{
+		  g_thread_pool_wakeup_and_stop_all (pool);
+		  g_async_queue_unlock (pool->queue);
+		}
 	    }
 	  else
 	    g_async_queue_unlock (pool->queue);
 	  
-	  g_async_queue_lock (unused_thread_queue[priority]);
+	  g_async_queue_lock (unused_queue);
 
 	  G_LOCK (unused_threads);
-	  if (unused_threads >= max_unused_threads && max_unused_threads != -1)
+	  if ((unused_threads >= max_unused_threads && 
+	       max_unused_threads != -1) || pool->pool.stack_size != 0)
 	    {
 	      G_UNLOCK (unused_threads);
-	      g_async_queue_unlock (unused_thread_queue[priority]);
+	      g_async_queue_unlock (unused_queue);
 	      /* Stop this thread */
 	      return;      
 	    }
 	  unused_threads++;
 	  G_UNLOCK (unused_threads);
 
-	  pool = 
-	    g_async_queue_pop_unlocked (unused_thread_queue[priority]);
+	  pool = g_async_queue_pop_unlocked (unused_queue);
 
 	  G_LOCK (unused_threads);
 	  unused_threads--;
 	  G_UNLOCK (unused_threads);
 
-	  g_async_queue_unlock (unused_thread_queue[priority]);
+	  g_async_queue_unlock (unused_queue);
 	  
 	  if (pool == stop_this_thread_marker)
 	    /* Stop this thread */
@@ -163,7 +168,8 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 {
   gboolean success = FALSE;
   GThreadPriority priority = pool->pool.priority;
-  GAsyncQueue *queue = unused_thread_queue[priority];
+  guint bound = pool->pool.bound ? 1 : 0;
+  GAsyncQueue *queue = unused_thread_queue[priority][bound];
   
   if (pool->num_threads >= pool->max_threads && pool->max_threads != -1)
     /* Enough threads are already running */
@@ -186,10 +192,10 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
   if (!success)
     {
       GError *local_error = NULL;
-      /* No thread was found, we have to start one new */
+      /* No thread was found, we have to start a new one */
       g_thread_create (g_thread_pool_thread_proxy, pool, 
 		       pool->pool.stack_size, FALSE, 
-		       pool->pool.bound, priority, &local_error);
+		       bound, priority, &local_error);
       
       if (local_error)
 	{
@@ -203,6 +209,54 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
   pool->num_threads++;
 }
 
+/**
+ * g_thread_pool_new: 
+ * @thread_func: a function to execute in the threads of the new thread pool
+ * @max_threads: the maximal number of threads to execute concurrently in 
+ *   the new thread pool, -1 means no limit
+ * @stack_size: the stack size for the threads of the new thread pool,
+ *   0 means using the standard
+ * @bound: should the threads of the new thread pool be bound?
+ * @priority: a priority for the threads of the new thread pool
+ * @exclusive: should this thread pool be exclusive?
+ * @user_data: user data that is handed over to @thread_func every time it 
+ *   is called
+ * @error: return location for error
+ *
+ * This function creates a new thread pool. All threads created within
+ * this thread pool will have the priority @priority and the stack
+ * size @stack_size and will be bound if and only if @bound is
+ * true. 
+ *
+ * Whenever you call g_thread_pool_push(), either a new thread is
+ * created or an unused one is reused. At most @max_threads threads
+ * are running concurrently for this thread pool. @max_threads = -1
+ * allows unlimited threads to be created for this thread pool. The
+ * newly created or reused thread now executes the function
+ * @thread_func with the two arguments. The first one is the parameter
+ * to g_thread_pool_push() and the second one is @user_data.
+ *
+ * The parameter @exclusive determines, whether the thread pool owns
+ * all threads exclusive or whether the threads are shared
+ * globally. If @exclusive is @TRUE, @max_threads threads are started
+ * immediately and they will run exclusively for this thread pool until
+ * it is destroyed by g_thread_pool_free(). If @exclusive is @FALSE,
+ * threads are created, when needed and shared between all
+ * non-exclusive thread pools. This implies that @max_threads may not
+ * be -1 for exclusive thread pools.
+ *
+ * Note, that only threads from a thread pool with a @stack_size of 0
+ * (which means using the standard stack size) will be globally
+ * reused. Threads from a thread pool with a non-zero stack size will
+ * stay only in this thread pool until it is freed and can thus not be
+ * controlled by the g_thread_pool_set_unused_threads() function.
+ *
+ * @error can be NULL to ignore errors, or non-NULL to report
+ * errors. An error can only occur, when @exclusive is set to @TRUE and
+ * not all @max_threads threads could be created.
+ *
+ * Return value: the new #GThreadPool
+ **/
 GThreadPool* 
 g_thread_pool_new (GFunc            thread_func,
 		   gint             max_threads,
@@ -214,6 +268,7 @@ g_thread_pool_new (GFunc            thread_func,
 		   GError         **error)
 {
   GRealThreadPool *retval;
+  G_LOCK_DEFINE_STATIC (init);
 
   g_return_val_if_fail (thread_func, NULL);
   g_return_val_if_fail (!exclusive || max_threads != -1, NULL);
@@ -233,14 +288,21 @@ g_thread_pool_new (GFunc            thread_func,
   retval->num_threads = 0;
   retval->running = TRUE;
 
+  G_LOCK (init);
+  
   if (!inform_mutex)
     {
       inform_mutex = g_mutex_new ();
       inform_cond = g_cond_new ();
       for (priority = G_THREAD_PRIORITY_LOW; 
 	   priority < G_THREAD_PRIORITY_URGENT + 1; priority++)
-	unused_thread_queue[priority] = g_async_queue_new ();
+	{
+	  unused_thread_queue[priority][0] = g_async_queue_new ();
+	  unused_thread_queue[priority][1] = g_async_queue_new ();
+	}
     }
+
+  G_UNLOCK (init);
 
   if (retval->pool.exclusive)
     {
@@ -263,6 +325,24 @@ g_thread_pool_new (GFunc            thread_func,
   return (GThreadPool*) retval;
 }
 
+/**
+ * g_thread_pool_push:
+ * @pool: a #GThreadPool
+ * @data: a new task for @pool
+ * @error: return location for error
+ * 
+ * Inserts @data into the list of tasks to be executed by @pool. When
+ * the number of currently running threads is lower than the maximal
+ * allowed number of threads, a new thread is started (or reused) with
+ * the properties given to g_thread_pool_new (). Otherwise @data stays
+ * in the queue until a thread in this pool finishes its previous task
+ * and processes @data. 
+ *
+ * @error can be NULL to ignore errors, or non-NULL to report
+ * errors. An error can only occur, when a new thread couldn't be
+ * created. In that case @data is simply appended to the queue of work
+ * to do.  
+ **/
 void 
 g_thread_pool_push (GThreadPool     *pool,
 		    gpointer         data,
@@ -280,7 +360,7 @@ g_thread_pool_push (GThreadPool     *pool,
       g_return_if_fail (real->running);
     }
 
-  if (!pool->exclusive && g_async_queue_length_unlocked (real->queue) >= 0)
+  if (g_async_queue_length_unlocked (real->queue) >= 0)
     /* No thread is waiting in the queue */
     g_thread_pool_start_thread (real, error);
 
@@ -288,6 +368,30 @@ g_thread_pool_push (GThreadPool     *pool,
   g_async_queue_unlock (real->queue);
 }
 
+/**
+ * g_thread_pool_set_max_threads:
+ * @pool: a #GThreadPool
+ * @max_threads: a new maximal number of threads for @pool
+ * @error: return location for error
+ * 
+ * Sets the maximal allowed number of threads for @pool. A value of -1
+ * means, that the maximal number of threads is unlimited.
+ *
+ * Setting @max_threads to 0 means stopping all work for @pool. It is
+ * effectively frozen until @max_threads is set to a non-zero value
+ * again.
+ * 
+ * A thread is never terminated while calling @thread_func, as
+ * supplied by g_thread_pool_new (). Instead the maximal number of
+ * threads only has effect for the allocation of new threads in
+ * g_thread_pool_push (). A new thread is allocated, whenever the
+ * number of currently running threads in @pool is smaller than the
+ * maximal number.
+ *
+ * @error can be NULL to ignore errors, or non-NULL to report
+ * errors. An error can only occur, when a new thread couldn't be
+ * created. 
+ **/
 void
 g_thread_pool_set_max_threads (GThreadPool     *pool,
 			       gint             max_threads,
@@ -324,6 +428,14 @@ g_thread_pool_set_max_threads (GThreadPool     *pool,
   g_async_queue_unlock (real->queue);
 }
 
+/**
+ * g_thread_pool_get_max_threads:
+ * @pool: a #GThreadPool
+ *
+ * Returns the maximal number of threads for @pool.
+ *
+ * Return value: the maximal number of threads
+ **/
 gint
 g_thread_pool_get_max_threads (GThreadPool     *pool)
 {
@@ -342,6 +454,14 @@ g_thread_pool_get_max_threads (GThreadPool     *pool)
   return retval;
 }
 
+/**
+ * g_thread_pool_get_num_threads:
+ * @pool: a #GThreadPool
+ *
+ * Returns the number of threads currently running in @pool.
+ *
+ * Return value: the number of threads currently running
+ **/
 guint
 g_thread_pool_get_num_threads (GThreadPool     *pool)
 {
@@ -360,6 +480,14 @@ g_thread_pool_get_num_threads (GThreadPool     *pool)
   return retval;
 }
 
+/**
+ * g_thread_pool_unprocessed:
+ * @pool: a #GThreadPool
+ *
+ * Returns the number of tasks still unprocessed in @pool.
+ *
+ * Return value: the number of unprocessed tasks
+ **/
 guint
 g_thread_pool_unprocessed (GThreadPool     *pool)
 {
@@ -374,6 +502,26 @@ g_thread_pool_unprocessed (GThreadPool     *pool)
   return MAX (unprocessed, 0);
 }
 
+/**
+ * g_thread_pool_free:
+ * @pool: a #GThreadPool
+ * @immediate: should @pool shut down immediately?
+ * @wait: should the function wait for all tasks to be finished?
+ *
+ * Frees all resources allocated for @pool.
+ *
+ * If @immediate is #TRUE, no new task is processed for
+ * @pool. Otherwise @pool is not freed before the last task is
+ * processed. Note however, that no thread of this pool is
+ * interrupted, while processing a task. Instead at least all still
+ * running threads can finish their tasks before the @pool is freed.
+ *
+ * If @wait is #TRUE, the functions does not return before all tasks
+ * to be processed (dependent on @immediate, whether all or only the
+ * currently running) are ready. Otherwise the function returns immediately.
+ *
+ * After calling this function @pool must not be used anymore. 
+ **/
 void
 g_thread_pool_free (GThreadPool     *pool,
 		    gboolean         immediate,
@@ -384,7 +532,7 @@ g_thread_pool_free (GThreadPool     *pool,
   g_return_if_fail (real);
   g_return_if_fail (real->running);
   /* It there's no thread allowed here, there is not much sense in
-   * not stopping this pool immediatly, when it's not empty */
+   * not stopping this pool immediately, when it's not empty */
   g_return_if_fail (immediate || real->max_threads != 0 || 
 		    g_async_queue_length (real->queue) == 0);
 
@@ -452,6 +600,14 @@ g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool)
     g_async_queue_push_unlocked (pool->queue, GUINT_TO_POINTER (1));
 }
 
+/**
+ * g_thread_pool_set_max_unused_threads:
+ * @max_threads: maximal number of unused threads
+ *
+ * Sets the maximal number of unused threads to @max_threads. If
+ * @max_threads is -1, no limit is imposed on the number of unused
+ * threads.
+ **/
 void
 g_thread_pool_set_max_unused_threads (gint max_threads)
 {
@@ -464,26 +620,31 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
   if (max_unused_threads < unused_threads && max_unused_threads != -1)
     {
       guint close_down_num = unused_threads - max_unused_threads;
-      GThreadPriority priority;
 
       while (close_down_num > 0)
 	{
+	  GThreadPriority priority;
+	  guint bound;
+
 	  guint old_close_down_num = close_down_num;
 	  for (priority = G_THREAD_PRIORITY_LOW; 
 	       priority < G_THREAD_PRIORITY_URGENT + 1 && close_down_num > 0; 
 	       priority++)
 	    {
-	      GAsyncQueue *queue = unused_thread_queue[priority];
-	      g_async_queue_lock (queue);
-	      
-	      if (g_async_queue_length_unlocked (queue) < 0)
+	      for (bound = 0; bound < 2; bound++)
 		{
-		  g_async_queue_push_unlocked (queue, 
-					       stop_this_thread_marker);
-		  close_down_num--;
+		  GAsyncQueue *queue = unused_thread_queue[priority][bound];
+		  g_async_queue_lock (queue);
+		  
+		  if (g_async_queue_length_unlocked (queue) < 0)
+		    {
+		      g_async_queue_push_unlocked (queue, 
+						   stop_this_thread_marker);
+		      close_down_num--;
+		    }
+		  
+		  g_async_queue_unlock (queue);
 		}
-	      
-	      g_async_queue_unlock (queue);
 	    }
 
 	  /* Just to make sure, there are no counting problems */
@@ -494,6 +655,13 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
   G_UNLOCK (unused_threads);
 }
 
+/**
+ * g_thread_pool_get_max_unused_threads:
+ * 
+ * Returns the maximal allowed number of unused threads.
+ *
+ * Return value: the maximal number of unused threads
+ **/
 gint
 g_thread_pool_get_max_unused_threads (void)
 {
@@ -506,6 +674,13 @@ g_thread_pool_get_max_unused_threads (void)
   return retval;
 }
 
+/**
+ * g_thread_pool_get_num_unused_threads:
+ * 
+ * Returns the number of currently unused threads.
+ *
+ * Return value: the number of currently unused threads
+ **/
 guint g_thread_pool_get_num_unused_threads (void)
 {
   guint retval;
@@ -517,6 +692,13 @@ guint g_thread_pool_get_num_unused_threads (void)
   return retval;
 }
 
+/**
+ * g_thread_pool_stop_unused_threads:
+ * 
+ * Stops all currently unused threads. This does not change the
+ * maximal number of unused threads. This function can be used to
+ * regularly stop all unused threads e.g. from g_timeout_add().
+ **/
 void g_thread_pool_stop_unused_threads (void)
 { 
   guint oldval = g_thread_pool_get_max_unused_threads ();

@@ -1,3 +1,12 @@
+2001-04-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthreadpool.c: Added documentation.
+
+	* gthreadpool.c: The global thread pool now also is seperated for
+	bound and unbound threads. Only threads with standard stack size
+	go to the global pool. g_thread_pool_new now protect the global
+	setup of inform_mutex etc. with a lock.
+
 2001-04-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmain.c: Use the new GRealThread member "context" instead of a
@@ -8,7 +17,8 @@
 	
 	* gthread.c, gthread.h: Removed the functions
 	g_static_private_(get|set)_for_thread and adapted
-	g_static_private_(get|set) and g_static_private_free accordingly.
+	g_static_private_(get|set) and g_static_private_free
+	accordingly. This fixes Bug #51435.
 	
 2001-03-30  Sven Neumann  <sven@gimp.org>
 
