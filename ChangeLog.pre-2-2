@@ -1,3 +1,7 @@
+2002-11-03  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
+
+	* configure.in: Added Belarusian to ALL_LINGUAS
+
 2002-11-02  Daniel Elstner  <daniel.elstner@gmx.net>
 
 	* glib/giochannel.c (g_io_channel_write_chars): Fix left_len
