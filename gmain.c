@@ -346,9 +346,14 @@ g_source_remove_by_source_data (gpointer source_data)
 void
 g_get_current_time (GTimeVal *result)
 {
+  struct timeval r;
   g_return_if_fail (result != NULL);
 
-  gettimeofday ((struct timeval *) result, NULL);
+  /*this is required on alpha, there the timeval structs are int's
+    not longs and a cast only would fail horribly*/
+  gettimeofday (&r, NULL);
+  result->tv_sec = r.tv_sec;
+  result->tv_usec = r.tv_usec;
 }
 
 /* Running the main loop */
