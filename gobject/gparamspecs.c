@@ -1587,7 +1587,7 @@ g_param_spec_object (const gchar *name,
 {
   GParamSpecObject *ospec;
   
-  g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
+  g_return_val_if_fail (g_type_is_a (object_type, G_TYPE_OBJECT), NULL);
   
   ospec = g_param_spec_internal (G_TYPE_PARAM_OBJECT,
 				 name,

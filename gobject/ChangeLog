@@ -1,3 +1,12 @@
+Fri Mar  9 10:14:00 2001  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.c (g_param_spec_object): use g_type_is_a() to check
+	for object_type being a G_TYPE_OBJECT, not G_TYPE_IS_OBJECT(), since
+	that wouldn't allow interface types.
+
+	* gtype.c (g_type_interface_add_prerequisite): arg, fixed small cnp bug
+	with bad implications and an off-by-one error.
+
 Thu Mar  8 16:34:22 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gvaluetransform.c: Include <string.h> for memcpy.

@@ -1141,7 +1141,7 @@ g_type_interface_add_prerequisite (GType interface_type,
 
   G_WRITE_LOCK (&type_rw_lock);
   iface = lookup_type_node_L (interface_type);
-  prerequisite_node = lookup_type_node_L (interface_type);
+  prerequisite_node = lookup_type_node_L (prerequisite_type);
   if (!iface || !prerequisite_node || !NODE_IS_IFACE (iface))
     {
       g_warning ("interface type `%s' or prerequisite type `%s' invalid",
@@ -1164,7 +1164,7 @@ g_type_interface_add_prerequisite (GType interface_type,
     {
       guint i;
 
-      for (i = 0; i < prerequisite_node->n_supers; i++)
+      for (i = 0; i < prerequisite_node->n_supers + 1; i++)
 	type_iface_add_prerequisite_W (iface, lookup_type_node_L (prerequisite_node->supers[i]));
     }
   else if (NODE_IS_IFACE (prerequisite_node))
