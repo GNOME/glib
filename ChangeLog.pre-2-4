@@ -1,3 +1,11 @@
+Wed Jan 27 01:57:19 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in (G_MODULE_HAVE_DLERROR): applied patch from Andrej
+	Borsenkow <borsenkow.msk@sni.de> to also check for dlsym() in system
+	libraries and -ldl, to catch systems that provide dlopen() in libc
+	and dlsym() in libdl. this is at least the case for Reliant UNIX
+	5.44 (labeling itself as SINIX).
+
 Tue Jan 26 13:39:22 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: don't use backquotes in warning text

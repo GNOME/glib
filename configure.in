@@ -443,17 +443,21 @@ G_MODULE_LDFLAGS=
 G_MODULE_IMPL=
 G_MODULE_NEED_USCORE=0
 G_MODULE_HAVE_DLERROR=0
-dnl *** dlopen() in system libraries
+dnl *** dlopen() and dlsym() in system libraries
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_FUNC(dlopen,
-		G_MODULE_IMPL=G_MODULE_IMPL_DL
+		AC_CHECK_FUNC(dlsym,
+			G_MODULE_IMPL=G_MODULE_IMPL_DL
+		,)
 	,)
 fi
-dnl *** dlopen() in libdl
+dnl *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_LIB(dl, dlopen,
-		G_MODULE_LIBS=-ldl
-		G_MODULE_IMPL=G_MODULE_IMPL_DL
+		AC_CHECK_LIB(dl, dlsym,
+			G_MODULE_LIBS=-ldl
+			G_MODULE_IMPL=G_MODULE_IMPL_DL
+		,)
 	,)
 fi
 dnl *** shl_load() in libdld (HP-UX)
