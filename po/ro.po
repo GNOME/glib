@@ -1,14 +1,14 @@
 # Romanian translation for glib2
-# Copyright (C) 2001 - 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001 - 2005 Free Software Foundation, Inc.
 # Marius Andreiana <mandreiana@yahoo.com>, 2001.
-# Mişu Moldovan <dumol@go.ro>, 2004.
+# Mişu Moldovan <dumol@go.ro>, 2004, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib-2-4\n"
+"Project-Id-Version: glib-2-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-28 00:44-0500\n"
-"PO-Revision-Date: 2004-08-28 14:42+0300\n"
+"POT-Creation-Date: 2005-03-02 20:19+0100\n"
+"PO-Revision-Date: 2005-03-02 22:46+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -48,9 +48,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nu pot converti rezerva „%s” la setul de caractere „%s”"
 
 #: glib/gconvert.c:1601
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI-ul „%s” nu este un URI absolut folosind schema fişierului"
+msgstr "URI-ul „%s” nu este un URI absolut folosind schema „fişier”"
 
 #: glib/gconvert.c:1611
 #, c-format
@@ -213,18 +213,18 @@ msgstr ""
 "caracter ampersand fără intenţia de a începe o entitate. Utilizaţi &amp;"
 
 #: glib/gmarkup.c:573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Eşuare la procesarea „%s”, care ar fi trebui să fie o cifră într-un caracter "
-"referinţă (de exemplu &#234;). Poate cifra este prea mare"
+"Eşuare la procesarea „%-.*s”, care ar fi trebui să fie o cifră într-un "
+"caracter referinţă (de exemplu &#234;). Poate cifra este prea mare"
 
 #: glib/gmarkup.c:598
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Referinţa caracterului „%s” nu codează un caracter permis"
+msgstr "Referinţa caracterului „%-.*s” nu codează un caracter permis"
 
 #: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -519,91 +519,93 @@ msgstr "Caracter în afara standardului UTF-16"
 
 #: glib/goption.c:435
 msgid "Usage:"
-msgstr ""
+msgstr "Utilizare:"
 
 #: glib/goption.c:435
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPŢIUNE...]"
 
 #: glib/goption.c:518
 msgid "Help Options:"
-msgstr ""
+msgstr "Opţiuni ajutor:"
 
 #: glib/goption.c:519
 msgid "Show help options"
-msgstr ""
+msgstr "Arată opţiunile de ajutor"
 
 #: glib/goption.c:524
 msgid "Show all help options"
-msgstr ""
+msgstr "Arată toate opţiunile de ajutor"
 
 #: glib/goption.c:574
 msgid "Application Options:"
-msgstr ""
+msgstr "Opţiuni aplicaţie:"
 
 #: glib/goption.c:614
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Nu pot prelucra valoarea întregului „%s” pentru --%s"
 
 #: glib/goption.c:624
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Valoarea întregului „%s” pentru %s este înafara limitelor"
 
 #: glib/goption.c:1354
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Opţiune necunoscută %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Nu s-a găsit un fişier cheie în directoarele de date"
 
 #: glib/gkeyfile.c:373
 msgid "Not a regular file"
-msgstr ""
+msgstr "Nu este un fişier obişnuit"
 
 #: glib/gkeyfile.c:381
 msgid "File is empty"
-msgstr ""
+msgstr "Fişier gol"
 
 #: glib/gkeyfile.c:691
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Fişierul-cheie conţine linia „%s” care nu este o pereche cheie-valoare, un "
+"grup sau un comentariu"
 
 #: glib/gkeyfile.c:759
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Fişierul cheie nu începe cu un grup"
 
 #: glib/gkeyfile.c:802
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Fişierul cheie are o codare nesuportată de tip „%s”"
 
 #: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
 #: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
 #: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Fişierul cheie nu are grupul „%s”"
 
 #: glib/gkeyfile.c:1169
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Fişierul cheie nu are cheie „%s”"
 
 #: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "Fişierul cheie conţine cheia „%s” cu valoarea „%s” care nu este UTF-8"
 
 #: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
+msgstr "Fişierul cheie conţine cheia „%s” care are o valoare neinterpretabilă."
 
 #: glib/gkeyfile.c:1988
 #, c-format
@@ -611,27 +613,30 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Fişierul cheie conţine cheia „%s” în grupul „%s” care are o valoare ce nu "
+"poate fi interpretată"
 
 #: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Fişierul cheie nu are cheia „%s” în grupul „%s”"
 
 #: glib/gkeyfile.c:3022
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Fişieul cheie conţine caractere „escape” la sfârşit de linie"
 
 #: glib/gkeyfile.c:3044
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "URI-ul „%s” conţine caractere „escaped” invalide"
+msgstr "URI-ul „%s” conţine secvenţe „escaped” invalide"
 
 #: glib/gkeyfile.c:3182
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Valoarea „%s” nu poate fi interpretată ca un număr."
 
 #: glib/gkeyfile.c:3210
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare booleană."
+
