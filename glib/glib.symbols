@@ -169,6 +169,7 @@ g_file_get_contents PRIVATE
 g_file_get_contents_utf8
 #endif
 g_filename_display_name G_GNUC_MALLOC
+g_filename_display_basename G_GNUC_MALLOC
 g_filename_from_uri PRIVATE G_GNUC_MALLOC
 #ifdef G_OS_WIN32
 g_filename_from_uri_utf8 G_GNUC_MALLOC

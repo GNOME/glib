@@ -1918,7 +1918,7 @@ make_valid_utf8 (const gchar *name)
  * You must pass the whole absolute pathname to this functions so that
  * translation of well known locations can be done.
  *
- * This function is prefered over g_filename_display_name() if you know the
+ * This function is preferred over g_filename_display_name() if you know the
  * whole path, as it allows translation.
  *
  * Return value: a newly allocated string containing
@@ -1931,6 +1931,8 @@ g_filename_display_basename (const gchar *filename)
 {
   char *basename;
   char *display_name;
+
+  g_return_val_if_fail (filename != NULL, NULL);
   
   basename = g_path_get_basename (filename);
   display_name = g_filename_display_name (basename);

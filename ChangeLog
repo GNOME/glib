@@ -1,5 +1,14 @@
 2004-12-15  Alexander Larsson  <alexl@redhat.com>
 
+	* glib/gconvert.c: (g_filename_display_basename):
+	Fix spelling
+	Add g_return_val_if_fail.
+	
+	* glib/glib.symbols:
+	Add g_filename_display_basename
+
+2004-12-15  Alexander Larsson  <alexl@redhat.com>
+
 	* glib/gconvert.[ch]:
 	Add g_filename_display_basename.
 
