@@ -103,8 +103,8 @@ g_thread_init (GThreadFunctions* init)
     }
 
   /* now do any initialization stuff required by the implementation,
-     but only if called with a NULL argument, of course. Otherwise it's
-     up to the user to do do. */
+   * but only if called with a NULL argument, of course. Otherwise
+   * it's up to the user to do so. */
 
 #ifdef HAVE_G_THREAD_IMPL_INIT
   if (g_thread_use_default_impl)

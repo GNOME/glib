@@ -37,6 +37,9 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #define posix_print_error( name, num )                          \
   g_error( "file %s: line %d (%s): error %s during %s",         \
@@ -64,12 +67,17 @@
 # error This should not happen. Contact the GLib team.
 #endif
 
+gulong g_thread_min_stack_size = 0;
+
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()
 {
   g_thread_min_priority = POSIX_MIN_PRIORITY;
   g_thread_max_priority = POSIX_MAX_PRIORITY;
+#ifdef _SC_THREAD_STACK_MIN
+  g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
+#endif /* _SC_THREAD_STACK_MIN */
 }
 
 static GMutex *
@@ -228,7 +236,10 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   
 #ifdef HAVE_PTHREAD_ATTR_SETSTACKSIZE
   if (stack_size)
+    {
+      stack_size = MAX (g_thread_min_stack_size, stack_size);
       posix_check_for_error (pthread_attr_setstacksize (&attr, stack_size));
+    }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
 #ifdef PTHREAD_SCOPE_SYSTEM

@@ -35,6 +35,9 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #define solaris_print_error( name, num )                        \
   g_error( "file %s: line %d (%s): error %s during %s",         \
@@ -46,12 +49,17 @@
   if( error ) { solaris_print_error( what, error ); }           \
   }G_STMT_END
 
+gulong g_thread_min_stack_size = 0;
+
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()
 {
   g_thread_min_priority = 0;
   g_thread_max_priority = 127;
+#ifdef _SC_THREAD_STACK_MIN
+  g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
+#endif /* _SC_THREAD_STACK_MIN */
 }
 
 static GMutex *
@@ -192,6 +200,8 @@ g_thread_create_solaris_impl (GThreadFunc thread_func,
   long flags = (bound ? THR_BOUND : 0) | (joinable ? 0: THR_DETACHED);
   
   g_return_if_fail (thread_func);
+  
+  stack_size = MAX (g_thread_min_stack_size, stack_size);
   
   solaris_check_for_error (thr_create (NULL, stack_size,  
 				       (void* (*)(void*))thread_func,

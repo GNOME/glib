@@ -1,3 +1,9 @@
+2000-02-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c, gthread-solaris.c: check for sysconf
+	(_SC_THREAD_STACK_MIN), which returns the minimal stack size for
+	new threads. Patch from Soeren Sandmann <sandmann@daimi.au.dk>.
+
 1999-11-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c, gthread-solaris.c: Changed the prototype of
