@@ -1,4 +1,43 @@
+Overview of Changes in GLib 1.3.2:
+
+GLib:
+
+* Win32 build improvements  [Tor]
+* Improvements to error reporting  
+  (g_critical(), g_return_if_reached()) [Darin]
+* Add g_strlcpy/g_strlcat  [David Wheeler]
+* New IO channel implementation for Win32  [Tor] 
+* Make g_array_free, g_string_free return pointer to memory requested
+  not to be freed.  [Darin]
+* Added GError based error reporting for thread functions.  [Sebastian]
+* Moved reference docs into GLib distribution. [Owen]
+* Added g_convert() for doing convenient character set conversions based
+  on iconv. (GLib now requires libiconv or a native iconv.) [Havoc/Owen]
+* Various Unicode handling additions (g_ucs4_to_utf8, g_utf8_validate(),
+  g_{locale,filename}_{to,from}_utf8)  [Robert/Havoc/Owen]
+* Portability fixes for threading.  [Sebastian]
+* Added convenient functions for launching new processes (g_spawn_*),
+  and shell quoting/unquoting functions.  [Havoc]
+* Split glib.h into many headers.  [Sebastian]
+* Added a simple callback-based parser for XML-like files (GMarkup).  [Havoc]
+* Fixed confusions between comparison functions that return <0, 0, >0
+  and equaility functions that return FALSE,TRUE.  [Sebastian]
+* Added safe/portable temporary file manipulation functions.  [Tor]
+* autoconf improvements.  [Raja]
+* Many documentation improvements.
+* Bug fixes.
+
+GObject:
+
+* Added boxed and pointer types.  [Tim/Jonathan]
+* Added callback abstraction (GClosure)  [Tim]
+* Added signal system (GSignal)  [Tim]
+* Make GTypePlugin an interface  [Tim]
+* Added GTypeModule - a simple GTypePlugin instantiation  [Owen]
+* Bug fixes.
+
 What's new in GLib 1.3.1:
+
 * New GObject library added including object system based on
   the GTK+ object system. 
 * Functions for getting the properties of Unicode characters, 

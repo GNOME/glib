@@ -3,9 +3,10 @@ INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
 EFENCE=
 
-EXTRA_DIST = \
-	makefile.msc.in	\
-	makefile.mingw.in
+EXTRA_DIST = 			\
+	makefile.msc.in		\
+	makefile.mingw.in	\
+	run-markup-tests.sh
 
 BUILT_EXTRA_DIST = \
 	makefile.msc	\
@@ -70,4 +71,7 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
-
+	mkdir $(distdir)/markups;          \
+	for f in $(srcdir)/markups/* ; do  \
+	  cp $$f $(distdir)/markups;       \
+        done
