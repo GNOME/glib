@@ -1,3 +1,7 @@
+2004-11-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 Mon Nov  8 10:45:50 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gasyncqueue.c
