@@ -1,5 +1,7 @@
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* Makefile.am (bin_SCRIPTS): made 'make distcheck' happy.
+
 	* gobject.def: Removed g_param_spec_stringc.
 
 Tue May 22 02:46:13 2001  Tim Janik  <timj@gtk.org>
