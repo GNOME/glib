@@ -699,20 +699,22 @@ g_io_win32_msg_write (GIOChannel  *channel,
 
 static GIOStatus
 g_io_win32_no_seek (GIOChannel *channel,
-		    gint        offset,
+		    glong       offset,
 		    GSeekType   type,
 		    GError     **err)
 {
-  g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_SPIPE,
-    _("Seeking not allowed on this type of channel"));
+  g_assert_not_reached ();
 
   return G_IO_STATUS_ERROR;
 }
 
-static void
-g_io_win32_msg_close (GIOChannel *channel)
+static GIOStatus
+g_io_win32_msg_close (GIOChannel *channel,
+		      GError    **err)
 {
   /* Nothing to be done. Or should we set hwnd to some invalid value? */
+
+  return G_IO_STATUS_NORMAL;
 }
 
 static void
@@ -794,7 +796,7 @@ g_io_win32_fd_read (GIOChannel *channel,
 #endif
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_channel_error_from_errno (errno),
+                         g_io_channel_error_from_errno (errno),
                          strerror (errno));
             return G_IO_STATUS_ERROR;
         }
@@ -832,7 +834,7 @@ g_io_win32_fd_write (GIOChannel  *channel,
 #endif
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_channel_error_from_errno (errno),
+                         g_io_channel_error_from_errno (errno),
                          strerror (errno));
             return G_IO_STATUS_ERROR;
         }
@@ -845,7 +847,7 @@ g_io_win32_fd_write (GIOChannel  *channel,
 
 static GIOStatus
 g_io_win32_fd_seek (GIOChannel *channel,
-		    gint        offset,
+		    glong       offset,
 		    GSeekType   type,
 		    GError    **err)
 {
@@ -874,7 +876,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
   if (result < 0)
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_channel_error_from_errno (errno),
+		   g_io_channel_error_from_errno (errno),
 		   strerror (errno));
       return G_IO_STATUS_ERROR;
     }
@@ -882,8 +884,9 @@ g_io_win32_fd_seek (GIOChannel *channel,
   return G_IO_STATUS_NORMAL;
 }
 
-static void
-g_io_win32_fd_close (GIOChannel *channel)
+static GIOStatus
+g_io_win32_fd_close (GIOChannel *channel,
+	             GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   
@@ -912,6 +915,10 @@ g_io_win32_fd_close (GIOChannel *channel)
       win32_channel->fd = -1;
     }
   UNLOCK (win32_channel->mutex);
+
+  /* FIXME error detection? */
+
+  return G_IO_STATUS_NORMAL;
 }
 
 static GSource *
@@ -935,7 +942,7 @@ g_io_win32_sock_read (GIOChannel *channel,
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_read: sockfd:%d count:%d\n",
 	     win32_channel->fd, count);
-  
+repeat: 
   result = recv (win32_channel->fd, buf, count, 0);
 
   if (win32_channel->debug)
@@ -954,7 +961,7 @@ g_io_win32_sock_read (GIOChannel *channel,
           return G_IO_STATUS_AGAIN;
 #ifdef WE_NEED_TO_HANDLE_WSAEINTR /* not anymore with wsock2 ? */
 	case WSAEINTR:
-          return G_IO_STATUS_INTR;
+          goto repeat;
 #endif
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
@@ -986,7 +993,7 @@ g_io_win32_sock_write (GIOChannel  *channel,
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_write: sockfd:%d count:%d\n",
 	     win32_channel->fd, count);
-  
+repeat:
   result = send (win32_channel->fd, buf, count, 0);
   
   if (win32_channel->debug)
@@ -1005,7 +1012,7 @@ g_io_win32_sock_write (GIOChannel  *channel,
           return G_IO_STATUS_AGAIN;
 #ifdef WE_NEED_TO_HANDLE_WSAEINTR /* not anymore with wsock2 ? */
 	case WSAEINTR:
-	  return G_IO_STATUS_INTR;
+          goto repeat;
 #endif
 	default:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
@@ -1023,8 +1030,9 @@ g_io_win32_sock_write (GIOChannel  *channel,
     }
 }
 
-static void
-g_io_win32_sock_close (GIOChannel *channel)
+static GIOStatus
+g_io_win32_sock_close (GIOChannel *channel,
+		       GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
@@ -1049,6 +1057,10 @@ g_io_win32_sock_close (GIOChannel *channel)
     win32_channel->fd = -1;
   }
   UNLOCK(win32_channel->mutex);
+
+  /* FIXME error detection? */
+
+  return G_IO_STATUS_NORMAL;
 }
 
 static GSource *
@@ -1135,6 +1147,10 @@ g_io_channel_win32_new_messages (guint hwnd)
   win32_channel->type = G_IO_WIN32_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
 
+  /* FIXME set is_readable, is_writeable */
+
+  channel->is_seekable = FALSE;
+
   return channel;
 }
 
@@ -1162,6 +1178,10 @@ g_io_channel_win32_new_fd (gint fd)
   win32_channel->type = G_IO_WIN32_FILE_DESC;
   win32_channel->fd = fd;
 
+  /* FIXME set is_readable, is_writeable */
+
+  channel->is_seekable = TRUE;
+
   return channel;
 }
 
@@ -1186,6 +1206,10 @@ g_io_channel_win32_new_socket (int socket)
   channel->funcs = &win32_channel_sock_funcs;
   win32_channel->type = G_IO_WIN32_SOCKET;
   win32_channel->fd = socket;
+
+  /* FIXME set is_readable, is_writeable */
+
+  channel->is_seekable = FALSE;
 
   return channel;
 }

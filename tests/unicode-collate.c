@@ -42,7 +42,7 @@ int main (int argc, char **argv)
 
   if (argc == 2)
     {
-      in = g_io_channel_new_file (argv[1], G_IO_FILE_MODE_READ, &error);
+      in = g_io_channel_new_file (argv[1], "r", &error);
       if (!in)
 	{
 	  fprintf (stderr, "Cannot open %s: %s\n", argv[1], error->message);

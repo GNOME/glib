@@ -1,3 +1,29 @@
+Fri Jul 20 19:19:10 (UTC) 2001  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: API changes, fixes to
+	error handling, some internal restructuring
+	* glib/giochannel.h: API changes, documentation for
+	elements in GIOChannel structure
+	* glib/giounix.c: Matched API changes, implemented
+	backend to set is_readable, is_writeable, is_seekable
+	flags, added a test to catch large values of count
+	for which the behavior of write() is undefined
+	* glib/giowin32.c: Changed to match new prototypes for
+	io_close() and io_seek(), removed references to
+	G_IO_STATUS_INTR, set is_seekable flag in channel
+	creation functions
+	* glib.def: Renamed g_channel_error_quark() and
+	g_channel_error_from_errno() to g_io_channel_error_quark() and
+	g_io_channel_error_from_errno(); added new functions
+	g_io_channel_get_buffered() and g_io_channel_set_buffered()
+	* docs/reference/glib/glib-sections.txt: Modified iochannel
+	section to reflect new functions and API changes
+	* tests/iochannel-test.c: Fixed to work with API changes
+	* tests/iochannel-test-infile: New file; input file
+	for iochannel-test
+	* tests/unicode-collate.c tests/unicode-normalize.c:
+	Changed G_IO_FILE_MODE_READ to "r" to match API change
+
 Fri Jul 20 19:16:24 (UTC) 2001  Ron Steinke  <rsteinke@w-link.net>
 
 	* gobject/glib-genmarshal.c: modified to create header files

@@ -594,7 +594,6 @@ g_io_channel_init
 
 <SUBSECTION>
 g_io_channel_new_file
-GIOFileMode
 g_io_channel_read_chars
 g_io_channel_read_line
 g_io_channel_read_line_string
@@ -603,14 +602,14 @@ g_io_channel_write_chars
 g_io_channel_flush
 g_io_channel_seek_position
 GSeekType
-g_io_channel_close
+g_io_channel_shutdown
 
 <SUBSECTION>
-GChannelStatus
-GChannelError
-G_CHANNEL_ERROR
-g_channel_error_quark
-g_channel_error_from_errno
+GIOStatus
+GIOChannelError
+G_IO_CHANNEL_ERROR
+g_io_channel_error_quark
+g_io_channel_error_from_errno
 
 <SUBSECTION>
 g_io_channel_ref
@@ -638,10 +637,10 @@ g_io_channel_set_line_term
 G_IO_CHANNEL_UNIX_LINE_TERM
 G_IO_CHANNEL_DOS_LINE_TERM
 G_IO_CHANNEL_MACINTOSH_LINE_TERM
-G_IO_CHANNEL_DEFAULT_LINE_TERM
+g_io_channel_get_buffered
+g_io_channel_set_buffered
 g_io_channel_get_encoding
 g_io_channel_set_encoding
-G_IO_CHANNEL_ENCODE_RAW
 
 <SUBSECTION Private>
 g_io_channel_win32_new_fd
@@ -656,6 +655,7 @@ g_io_channel_read
 GIOError
 g_io_channel_write
 g_io_channel_seek
+g_io_channel_close
 </SECTION>
 
 <SECTION>

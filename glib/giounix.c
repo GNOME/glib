@@ -177,6 +177,9 @@ g_io_unix_read (GIOChannel *channel,
   GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   gssize result;
 
+  if (count > SSIZE_MAX) /* At least according to the Debian manpage for read */
+    count = SSIZE_MAX;
+
  retry:
   result = read (unix_channel->fd, buf, count);
 
@@ -196,7 +199,7 @@ g_io_unix_read (GIOChannel *channel,
 #endif
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_channel_error_from_errno (errno),
+                         g_io_channel_error_from_errno (errno),
                          strerror (errno));
             return G_IO_STATUS_ERROR;
         }
@@ -236,7 +239,7 @@ g_io_unix_write (GIOChannel  *channel,
 #endif
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_channel_error_from_errno (errno),
+                         g_io_channel_error_from_errno (errno),
                          strerror (errno));
             return G_IO_STATUS_ERROR;
         }
@@ -278,7 +281,7 @@ g_io_unix_seek (GIOChannel *channel,
   if (result < 0)
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_channel_error_from_errno (errno),
+		   g_io_channel_error_from_errno (errno),
 		   strerror (errno));
       return G_IO_STATUS_ERROR;
     }
@@ -296,7 +299,7 @@ g_io_unix_close (GIOChannel *channel,
   if (close (unix_channel->fd) < 0)
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_channel_error_from_errno (errno),
+		   g_io_channel_error_from_errno (errno),
 		   strerror (errno));
       return G_IO_STATUS_ERROR;
     }
@@ -351,19 +354,6 @@ static const glong g_io_unix_fcntl_posix_flags[] = {
 };
 #define G_IO_UNIX_NUM_FCNTL_FLAGS G_N_ELEMENTS (g_io_unix_fcntl_flags)
 
-static const GIOFlags g_io_unix_fcntl_flags_read_only[] = {
-  G_IO_FLAG_IS_READABLE,
-  G_IO_FLAG_IS_WRITEABLE,
-};
-static const glong g_io_unix_fcntl_posix_flags_read_only[] = {
-  O_RDONLY | O_RDWR,
-  O_WRONLY | O_RDWR,
-};
-/* Only need to map posix_flags -> flags for read only, not the
- * other way around, so this works.
- */
-#define G_IO_UNIX_NUM_FCNTL_FLAGS_READ_ONLY G_N_ELEMENTS (g_io_unix_fcntl_flags_read_only)
-
 static GIOStatus
 g_io_unix_set_flags (GIOChannel *channel,
                      GIOFlags    flags,
@@ -382,7 +372,7 @@ g_io_unix_set_flags (GIOChannel *channel,
   if (fcntl (unix_channel->fd, F_SETFL, fcntl_flags) == -1)
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
-		   g_channel_error_from_errno (errno),
+		   g_io_channel_error_from_errno (errno),
 		   g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
@@ -397,102 +387,199 @@ g_io_unix_get_flags (GIOChannel *channel)
   glong fcntl_flags;
   gint loop;
   GIOUnixChannel *unix_channel = (GIOUnixChannel *) channel;
-  struct stat buffer;
 
   fcntl_flags = fcntl (unix_channel->fd, F_GETFL);
+
   if (fcntl_flags == -1)
     {
       g_warning (G_STRLOC "Error while getting flags for FD: %s (%d)\n",
 		 g_strerror (errno), errno);
       return 0;
     }
-  if (!channel->seekable_cached)
-    {
-      channel->seekable_cached = TRUE;
-
-      /* I'm not sure if fstat on a non-file (e.g., socket) works
-       * it should be safe to sat if it fails, the fd isn't seekable.
-       */
-      if (fstat (unix_channel->fd, &buffer) == -1 ||
-	  !S_ISREG (buffer.st_mode))
-	channel->is_seekable = FALSE;
-      else
-	channel->is_seekable = TRUE;
-    }
 
   for (loop = 0; loop < G_IO_UNIX_NUM_FCNTL_FLAGS; loop++)
     if (fcntl_flags & g_io_unix_fcntl_posix_flags[loop])
       flags |= g_io_unix_fcntl_flags[loop];
-
-  for (loop = 0; loop < G_IO_UNIX_NUM_FCNTL_FLAGS_READ_ONLY; loop++)
-    if (fcntl_flags & g_io_unix_fcntl_posix_flags_read_only[loop])
-      flags |= g_io_unix_fcntl_flags_read_only[loop];
-
-  if (channel->is_seekable)
-    flags |= G_IO_FLAG_IS_SEEKABLE;
 
   return flags;
 }
 
 GIOChannel *
 g_io_channel_new_file (const gchar *filename,
-                       GIOFileMode  mode,
+                       const gchar *mode,
                        GError     **error)
 {
-  FILE *f;
-  int fid;
-  gchar *mode_name;
+  int fid, flags;
   GIOChannel *channel;
+  enum { /* Cheesy hack */
+    MODE_R = 1 << 0,
+    MODE_W = 1 << 1,
+    MODE_A = 1 << 2,
+    MODE_PLUS = 1 << 3,
+  } mode_num;
 
-  switch (mode)
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (mode != NULL, NULL);
+  g_return_val_if_fail ((error == NULL) || (*error == NULL), NULL);
+
+  switch (mode[0])
     {
-      case G_IO_FILE_MODE_READ:
-        mode_name = "r";
+      case 'r':
+        mode_num = MODE_R;
         break;
-      case G_IO_FILE_MODE_WRITE:
-        mode_name = "w";
+      case 'w':
+        mode_num = MODE_W;
         break;
-      case G_IO_FILE_MODE_APPEND:
-        mode_name = "a";
-        break;
-      case G_IO_FILE_MODE_READ_WRITE:
-        mode_name = "r+";
-        break;
-      case G_IO_FILE_MODE_READ_WRITE_TRUNCATE:
-        mode_name = "w+";
-        break;
-      case G_IO_FILE_MODE_READ_WRITE_APPEND:
-        mode_name = "a+";
+      case 'a':
+        mode_num = MODE_A;
         break;
       default:
-        g_warning ("Invalid GIOFileMode %i.\n", mode);
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
         return NULL;
     }
 
-  f = fopen (filename, mode_name);
-  if (!f)
+  switch (mode[1])
+    {
+      case '\0':
+        break;
+      case '+':
+        if (mode[2] == '\0')
+          {
+            mode_num |= MODE_PLUS;
+            break;
+          }
+        /* Fall through */
+      default:
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        return NULL;
+    }
+
+  switch (mode_num)
+    {
+      case MODE_R:
+        flags = O_RDONLY;
+        break;
+      case MODE_W:
+        flags = O_WRONLY | O_TRUNC | O_CREAT;
+        break;
+      case MODE_A:
+        flags = O_WRONLY | O_APPEND | O_CREAT;
+        break;
+      case MODE_R | MODE_PLUS:
+        flags = O_RDWR;
+        break;
+      case MODE_W | MODE_PLUS:
+        flags = O_RDWR | O_TRUNC | O_CREAT;
+        break;
+      case MODE_A | MODE_PLUS:
+        flags = O_RDWR | O_APPEND | O_CREAT;
+        break;
+      default:
+        g_assert_not_reached ();
+        flags = 0;
+    }
+
+  fid = open (filename, flags);
+  if (fid < 0)
     {
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    strerror (errno));
       return (GIOChannel *)NULL;
     }
-    
-  fid = fileno (f);
 
-  channel = g_io_channel_unix_new (fid);
+  channel = (GIOChannel *) g_new (GIOUnixChannel, 1);
+
   channel->close_on_unref = TRUE;
+  channel->is_seekable = TRUE;
+
+  switch (mode_num)
+    {
+      case MODE_R:
+        channel->is_readable = TRUE;
+        channel->is_writeable = FALSE;
+        break;
+      case MODE_W:
+      case MODE_A:
+        channel->is_readable = FALSE;
+        channel->is_writeable = TRUE;
+        break;
+      case MODE_R | MODE_PLUS:
+      case MODE_W | MODE_PLUS:
+      case MODE_A | MODE_PLUS:
+        channel->is_readable = TRUE;
+        channel->is_writeable = TRUE;
+        break;
+      default:
+        g_assert_not_reached ();
+    }
+
+  g_io_channel_init (channel);
+  channel->funcs = &unix_channel_funcs;
+
+  ((GIOUnixChannel *) channel)->fd = fid;
   return channel;
 }
 
 GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
+  struct stat buffer;
   GIOUnixChannel *unix_channel = g_new (GIOUnixChannel, 1);
   GIOChannel *channel = (GIOChannel *)unix_channel;
+  int flags;
 
   g_io_channel_init (channel);
   channel->funcs = &unix_channel_funcs;
+
+  /* I'm not sure if fstat on a non-file (e.g., socket) works
+   * it should be safe to say if it fails, the fd isn't seekable.
+   */
+  /* Newer UNIX versions support S_ISSOCK(), fstat() will probably
+   * succeed in most cases.
+   */
+  if (fstat (unix_channel->fd, &buffer) == 0)
+    channel->is_seekable = S_ISREG (buffer.st_mode) || S_ISCHR (buffer.st_mode)
+                           || S_ISBLK (buffer.st_mode);
+  else /* Assume not seekable */
+    channel->is_seekable = FALSE;
+
+  flags = fcntl (fd, F_GETFL);
+
+  if (flags != -1)
+    {
+      /* Don't know if fcntl flags overlap, be careful */
+
+      if (flags & O_WRONLY)
+        {
+          channel->is_readable = FALSE;
+          channel->is_writeable = TRUE;
+        }
+      else if (flags & O_RDWR)
+        channel->is_readable = channel->is_writeable = TRUE;
+#if O_RDONLY == 0
+      else /* O_RDONLY defined as zero on linux (elsewhere?) */
+        {
+          channel->is_readable = TRUE;
+          channel->is_writeable = FALSE;
+        }
+#else /* O_RDONLY == 0 */
+      else if (flags & O_RDONLY)
+        {
+          channel->is_readable = TRUE;
+          channel->is_writeable = FALSE;
+        }
+      else
+        channel->is_readable = channel->is_writeable = FALSE;
+#endif /* O_RDONLY == 0 */
+    }
+  else
+    {
+      g_warning (G_STRLOC "Error while getting flags for FD: %s (%d)\n",
+                 g_strerror (errno), errno);
+      g_free (channel);
+      return NULL;
+    }
 
   unix_channel->fd = fd;
   return channel;

@@ -19,43 +19,42 @@ gint main (gint argc, gchar * argv[])
     GIOStatus status;
     GIOFlags flags;
 
-    if (argc < 2)
-    {
-        g_print( "Usage: foo in-file\n" );
-        exit (1);
-    }
-
     setbuf(stdout, NULL); /* For debugging */
 
-    gio_r = g_io_channel_new_file (argv[1], G_IO_FILE_MODE_READ, &gerr);
-    if(gerr) {
-      g_warning(gerr->message);
-      g_warning("Unable to open file %s", argv[1]);
-      g_free(gerr);
-      return 0;
-    }
-    gio_w = g_io_channel_new_file( "/var/tmp/fooOut.txt", G_IO_FILE_MODE_WRITE, &gerr);
-    if(gerr) {
-      g_warning(gerr->message);
-      g_free(gerr);
-      return 0;
-    }
+    gio_r = g_io_channel_new_file ("iochannel-test-infile", "r", &gerr);
+    if (gerr)
+      {
+        g_warning(gerr->message);
+        g_warning("Unable to open file %s", "iochannel-test-infile");
+        g_free(gerr);
+        return 0;
+      }
+    gio_w = g_io_channel_new_file( "iochannel-test-outfile", "w", &gerr);
+    if (gerr)
+      {
+        g_warning(gerr->message);
+        g_warning("Unable to open file %s", "iochannel-test-outfile");
+        g_free(gerr);
+        return 0;
+      }
 
     g_io_channel_set_encoding (gio_r, encoding, &gerr);
-    if(gerr) {
-      g_warning(gerr->message);
-      g_free(gerr);
-      return 0;
-    }
+    if (gerr)
+      {
+        g_warning(gerr->message);
+        g_free(gerr);
+        return 0;
+      }
     
     g_io_channel_set_buffer_size (gio_r, BUFFER_SIZE);
 
     status = g_io_channel_set_flags (gio_r, G_IO_FLAG_NONBLOCK, &gerr);
-    if(status == G_IO_STATUS_ERROR) {
-      g_warning(gerr->message);
-      g_error_free(gerr);
-      gerr = NULL;
-    }
+    if (status == G_IO_STATUS_ERROR)
+      {
+        g_warning(gerr->message);
+        g_error_free(gerr);
+        gerr = NULL;
+      }
     flags = g_io_channel_get_flags (gio_r);
     block = ! (flags & G_IO_FLAG_NONBLOCK);
     if (block)
@@ -106,9 +105,6 @@ gint main (gint argc, gchar * argv[])
       {
         case G_IO_STATUS_EOF:
           break;
-        case G_IO_STATUS_PARTIAL_CHARS:
-          g_warning ("Partial characters at the end of input.");
-          break;
         case G_IO_STATUS_ERROR:
           g_warning (gerr->message);
           g_error_free (gerr);
@@ -123,11 +119,12 @@ gint main (gint argc, gchar * argv[])
       status = g_io_channel_flush (gio_w, &gerr);
     while (status == G_IO_STATUS_AGAIN);
 
-    if(status == G_IO_STATUS_ERROR) {
-      g_warning(gerr->message);
-      g_error_free(gerr);
-      gerr = NULL;
-    }
+    if (status == G_IO_STATUS_ERROR)
+      {
+        g_warning(gerr->message);
+        g_error_free(gerr);
+        gerr = NULL;
+      }
 
     g_print ("read %d bytes, wrote %d bytes\n", rlength, wlength);
 

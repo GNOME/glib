@@ -47,26 +47,22 @@ typedef enum
   G_IO_ERROR_UNKNOWN
 } GIOError;
 
-#define G_IO_CHANNEL_ERROR g_channel_error_quark()
+#define G_IO_CHANNEL_ERROR g_io_channel_error_quark()
 
 typedef enum
 {
   /* Derived from errno */
-  G_IO_CHANNEL_ERROR_ACCES,
-  G_IO_CHANNEL_ERROR_BADF,
-  G_IO_CHANNEL_ERROR_DEADLK,
-  G_IO_CHANNEL_ERROR_FAULT,
+  G_IO_CHANNEL_ERROR_FBIG,
   G_IO_CHANNEL_ERROR_INVAL,
   G_IO_CHANNEL_ERROR_IO,
   G_IO_CHANNEL_ERROR_ISDIR,
-  G_IO_CHANNEL_ERROR_MFILE,
-  G_IO_CHANNEL_ERROR_NOLCK,
   G_IO_CHANNEL_ERROR_NOSPC,
-  G_IO_CHANNEL_ERROR_PERM,
+  G_IO_CHANNEL_ERROR_NXIO,
+  G_IO_CHANNEL_ERROR_OVERFLOW,
   G_IO_CHANNEL_ERROR_PIPE,
-  G_IO_CHANNEL_ERROR_SPIPE,
   /* Other */
-  G_IO_CHANNEL_ERROR_ENCODE_RW,
+  G_IO_CHANNEL_ERROR_PCHAR_FLUSH,
+  /* Unconverted partial UTF-8 chars in buffer during flush */
   G_IO_CHANNEL_ERROR_FAILED
 } GIOChannelError;
 
@@ -75,7 +71,6 @@ typedef enum
   G_IO_STATUS_ERROR,
   G_IO_STATUS_NORMAL,
   G_IO_STATUS_EOF,
-  G_IO_STATUS_PARTIAL_CHARS, /* like EOF, but with unconverted data left */
   G_IO_STATUS_AGAIN
 } GIOStatus;
 
@@ -99,7 +94,6 @@ typedef enum
 #define G_IO_CHANNEL_UNIX_LINE_TERM "\n"
 #define G_IO_CHANNEL_DOS_LINE_TERM "\r\n"
 #define G_IO_CHANNEL_MACINTOSH_LINE_TERM "\r"
-#define G_IO_CHANNEL_ENCODE_RAW "GIOChannelEncodeRaw"
 
 typedef enum
 {
@@ -113,41 +107,30 @@ typedef enum
   G_IO_FLAG_SET_MASK = G_IO_FLAG_APPEND | G_IO_FLAG_NONBLOCK,
 } GIOFlags;
 
-typedef enum
-{
-  G_IO_FILE_MODE_READ,
-  G_IO_FILE_MODE_WRITE,
-  G_IO_FILE_MODE_APPEND,
-  G_IO_FILE_MODE_READ_WRITE,
-  G_IO_FILE_MODE_READ_WRITE_TRUNCATE,
-  G_IO_FILE_MODE_READ_WRITE_APPEND,
-} GIOFileMode;
-
 struct _GIOChannel
 {
-  guint channel_flags;
   guint ref_count;
   GIOFuncs *funcs;
 
   gchar *encoding;
   GIConv read_cd;
   GIConv write_cd;
-  gchar *line_term;
+  gchar *line_term;		/* String which indicates the end of a line of text */
 
   gsize buf_size;
-  GString *read_buf;
-  GString *encoded_read_buf;
-  GString *write_buf;
+  GString *read_buf;		/* Raw data from the channel */
+  GString *encoded_read_buf;    /* Channel data converted to UTF-8 */
+  GString *write_buf;		/* Data ready to be written to the file */
+  gchar partial_write_buf[6];	/* UTF-8 partial characters, null terminated */
 
-  /* Group the flags together to save memory */
+  /* Group the flags together, immediately after partial_write_buf, to save memory */
 
-  gboolean use_buffer : 1;
-  gboolean do_encode : 1;
-  gboolean ready_to_read : 1;
-  gboolean ready_to_write : 1;
-  gboolean close_on_unref : 1;
-  gboolean seekable_cached : 1;
-  gboolean is_seekable : 1;
+  gboolean use_buffer : 1;	/* The encoding uses the buffers */
+  gboolean do_encode : 1;	/* The encoding uses the GIConv coverters */
+  gboolean close_on_unref : 1;	/* Close the channel on final unref */
+  gboolean is_readable : 1;	/* Cached GIOFlag */
+  gboolean is_writeable : 1;	/* ditto */
+  gboolean is_seekable : 1;	/* ditto */
 };
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
@@ -229,6 +212,9 @@ GIOFlags              g_io_channel_get_flags            (GIOChannel   *channel);
 void                  g_io_channel_set_line_term        (GIOChannel   *channel,
 							 const gchar  *line_term);
 G_CONST_RETURN gchar* g_io_channel_get_line_term        (GIOChannel   *channel);
+void		      g_io_channel_set_buffered		(GIOChannel   *channel,
+							 gboolean      buffered);
+gboolean	      g_io_channel_get_buffered		(GIOChannel   *channel);
 GIOStatus             g_io_channel_set_encoding         (GIOChannel   *channel,
 							 const gchar  *encoding,
 							 GError      **error);
@@ -265,13 +251,13 @@ GIOStatus   g_io_channel_seek_position    (GIOChannel   *channel,
 					   GSeekType     type,
 					   GError      **error);
 GIOChannel* g_io_channel_new_file         (const gchar  *filename,
-					   GIOFileMode   mode,
+					   const gchar  *mode,
 					   GError      **error);
 
 /* Error handling */
 
-GQuark          g_channel_error_quark      (void);
-GIOChannelError g_channel_error_from_errno (gint en);
+GQuark          g_io_channel_error_quark      (void);
+GIOChannelError g_io_channel_error_from_errno (gint en);
 
 /* On Unix, IO channels created with this function for any file
  * descriptor or socket.
