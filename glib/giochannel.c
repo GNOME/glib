@@ -479,10 +479,10 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 
   if ((channel->read_buf && (channel->read_buf->len > 0)) /* FIXME full chars how? */
     || (channel->encoded_read_buf && (channel->encoded_read_buf->len > 0)))
-    condition &= G_IO_IN;
+    condition |= G_IO_IN;
 
   if (channel->write_buf && (channel->write_buf->len < channel->buf_size))
-    condition &= G_IO_OUT;
+    condition |= G_IO_OUT;
 
   return condition;
 }

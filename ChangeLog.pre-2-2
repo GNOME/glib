@@ -1,3 +1,13 @@
+2001-07-22  Hans Breuer  <hans@breuer.org>
+
+	* glib/giochannel.c (g_io_channel_get_buffer_condition) : make
+	the code actually have an effect (Use |= to set bits). Not
+	absolutely sure if is the right one.
+
+	* glib/giowin32.c (g_io_win32_<check|prepare>) : don't modify
+	watch->condition but restored the previous behaviour.
+	Now gio-test as well as The Gimp work again ...
+	
 2001-07-21  Hans Breuer  <hans@breuer.org>
 
 	* glib/giowin32.c (g_io_channel_new_file) : set the

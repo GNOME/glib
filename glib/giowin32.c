@@ -321,7 +321,7 @@ buffer_read (GIOWin32Channel *channel,
 	{
 	  UNLOCK (channel->mutex);
           *bytes_read = 0;
-	  return G_IO_STATUS_EOF; /* Is this correct? FIXME */
+	  return G_IO_STATUS_NORMAL; /* as before, normal case ? */
 	}
     }
   
@@ -514,6 +514,8 @@ g_io_win32_prepare (GSource *source,
 		 channel->thread_id);
     }
 
+  return FALSE;
+  /* XXX: why should we want to do this ? */
   watch->condition = g_io_channel_get_buffer_condition (watch->channel);
 
   return (watch->pollfd.revents & (G_IO_IN | G_IO_OUT)) == watch->condition;
@@ -525,6 +527,8 @@ g_io_win32_check (GSource *source)
 	MSG msg;
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
+
   
   if (channel->debug)
     g_print ("g_io_win32_check: for thread %#x:\n"
@@ -552,8 +556,6 @@ g_io_win32_check (GSource *source)
 		 channel->thread_id);
     }
 
-  watch->condition &= g_io_channel_get_buffer_condition (watch->channel);
-  
   return (watch->pollfd.revents & watch->condition);
 }
 
@@ -659,7 +661,7 @@ g_io_win32_msg_read (GIOChannel *channel,
 	     win32_channel->hwnd);
   if (!PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_REMOVE))
     return G_IO_STATUS_AGAIN;
-  
+
   memmove (buf, &msg, sizeof (MSG));
   *bytes_read = sizeof (MSG);
 
@@ -804,6 +806,7 @@ g_io_win32_fd_read (GIOChannel *channel,
 
   *bytes_read = result;
 
+  return G_IO_STATUS_NORMAL; /* XXX: 0 byte read an error ?? */
   return (result > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
 }
 
@@ -975,6 +978,7 @@ repeat:
     {
       *bytes_read = result;
 
+      return G_IO_STATUS_NORMAL; /* XXX: 0 byte read an error ?? */
       return (result > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
     }
 }
@@ -1101,7 +1105,7 @@ g_io_channel_new_file (const gchar  *filename,
         mode_num = MODE_A;
         break;
       default:
-        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        g_warning (G_STRLOC ": Invalid GIOFileMode %s.\n", mode);
         return NULL;
     }
 
@@ -1117,7 +1121,7 @@ g_io_channel_new_file (const gchar  *filename,
           }
         /* Fall through */
       default:
-        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        g_warning (G_STRLOC ": Invalid GIOFileMode %s.\n", mode);
         return NULL;
     }
 
