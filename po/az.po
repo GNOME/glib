@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.az\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-01 15:17+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2004-02-02 12:12+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkish <gnome@azitt.com>\n"
@@ -178,8 +178,10 @@ msgid "Error on line %d: %s"
 msgstr "%d sətirində xəta : %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Boş element '&;' tapldı; hökmlü elementlər: &amp; &quot; &lt; &qt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Boş element '&;' tapldı; hökmlü elementlər: &amp; &quot; &lt; &qt; &apos;"
 
 #: glib/gmarkup.c:422
 #, c-format
@@ -275,8 +277,10 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Tək hərf '%s', xüsusiyyət adı '%s' olan element '%s' dən sonra '=' gözlənilir"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Tək hərf '%s', xüsusiyyət adı '%s' olan element '%s' dən sonra '=' gözlənilir"
 
 #: glib/gmarkup.c:1213
 #, c-format
@@ -332,7 +336,8 @@ msgstr "Sənəd boşdur və ya təkcə boşluq xarakteri daxil etməkdədir"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Sənəd açıq üçbucaq mötərizə '<'den sonra gözlənilməz bir şəkildə qurtardı"
+msgstr ""
+"Sənəd açıq üçbucaq mötərizə '<'den sonra gözlənilməz bir şəkildə qurtardı"
 
 #: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
@@ -374,7 +379,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
+msgstr ""
+"Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
 
 #: glib/gmarkup.c:1715
 #, c-format
@@ -417,7 +423,8 @@ msgstr "Törəmə gedişatdan mə'lumat oxuma iflası"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "g_io_channel_win32_poll() törəmə gedişatdan mə'lumat oxumada gözlənilməz xəta"
+msgstr ""
+"g_io_channel_win32_poll() törəmə gedişatdan mə'lumat oxumada gözlənilməz xəta"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
@@ -500,4 +507,3 @@ msgstr "dönüşdürmə girişi içində hökmsüz qatar"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 üçün hərf sərhədinin xaricindədir"
-

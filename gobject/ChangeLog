@@ -1,3 +1,7 @@
+Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.3 ===
+
 Fri Feb 20 02:44:54 2004  Tim Janik  <timj@gtk.org>
 
 	* gtype.h (G_DEFINE_TYPE_EXTENDED): added (GTypeFlags) cast needed by C++.

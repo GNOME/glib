@@ -66,14 +66,6 @@ Specifies the type of function passed to g_set_error_handler().
 @hook_list: 
 @hook: 
 
-<!-- ##### STRUCT GIConv ##### -->
-<para>
-The <structname>GIConv</structname> struct wraps an
-<function>iconv()</function> conversion descriptor. It contains private data
-and should only be accessed using the following functions.
-</para>
-
-
 <!-- ##### ENUM GIOFileMode ##### -->
 <para>
 

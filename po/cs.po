@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-24 04:12+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2004-01-25 03:58+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -268,7 +268,9 @@ msgstr "'%s' není platný znak po znaku '<'; nesmí s ním začínat název ele
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr "Divný znak '%s', byl očekáván znak '>' pro ukončení počátečního tagu elementu '%s'"
+msgstr ""
+"Divný znak '%s', byl očekáván znak '>' pro ukončení počátečního tagu "
+"elementu '%s'"
 
 #: glib/gmarkup.c:1172
 #, c-format

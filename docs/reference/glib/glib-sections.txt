@@ -40,7 +40,6 @@ gsize
 gssize
 
 <SUBSECTION Private>
-gldouble
 GLIB_SIZEOF_VOID_P
 GLIB_SIZEOF_LONG
 GLIB_SIZEOF_SIZE_T
@@ -82,6 +81,9 @@ G_MAXUINT32
 G_MININT64
 G_MAXINT64
 G_MAXUINT64
+
+<SUBSECTION>
+G_MAXSIZE
 
 <SUBSECTION>
 G_MINFLOAT
@@ -324,6 +326,7 @@ G_UNLIKELY
 
 <SUBSECTION>
 G_STRLOC
+G_STRFUNC
 
 <SUBSECTION>
 G_GINT16_MODIFIER
@@ -335,6 +338,9 @@ G_GUINT32_FORMAT
 G_GINT64_MODIFIER
 G_GINT64_FORMAT
 G_GUINT64_FORMAT
+G_GSIZE_MODIFIER
+G_GSIZE_FORMAT
+G_GSSIZE_FORMAT
 
 <SUBSECTION Private>
 GLIB_VAR
@@ -1500,17 +1506,41 @@ g_slist_pop_allocator
 GQueue
 g_queue_new
 g_queue_free
+g_queue_is_empty
+g_queue_get_length
+g_queue_reverse
+g_queue_copy
+g_queue_foreach
+g_queue_find
+g_queue_find_custom
+g_queue_sort
 g_queue_push_head
 g_queue_push_tail
+g_queue_push_nth
 g_queue_pop_head
 g_queue_pop_tail
-g_queue_is_empty
+g_queue_pop_nth
 g_queue_peek_head
 g_queue_peek_tail
+g_queue_peek_nth
+g_queue_index
+g_queue_remove
+g_queue_remove_all
+g_queue_insert_before
+g_queue_insert_after
+g_queue_insert_sorted
 g_queue_push_head_link
 g_queue_push_tail_link
+g_queue_push_nth_link
 g_queue_pop_head_link
 g_queue_pop_tail_link
+g_queue_pop_nth_link
+g_queue_peek_head_link
+g_queue_peek_tail_link
+g_queue_peek_nth_link
+g_queue_link_index
+g_queue_unlink
+g_queue_delete_link
 </SECTION>
 
 <SECTION>
@@ -1538,6 +1568,7 @@ g_hash_table_size
 g_hash_table_lookup
 g_hash_table_lookup_extended
 g_hash_table_foreach
+g_hash_table_find
 GHFunc
 g_hash_table_remove
 g_hash_table_steal

@@ -286,6 +286,13 @@ Expands to a string identifying the current code position.
 
 
 
+<!-- ##### MACRO G_STRFUNC ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_GINT16_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for constructing printf() conversion
@@ -413,6 +420,27 @@ if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not
 recommended for parsing anyway; consider using g_strtoull() instead.
 </para>
 </note>
+
+
+
+<!-- ##### MACRO G_GSIZE_MODIFIER ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_GSIZE_FORMAT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_GSSIZE_FORMAT ##### -->
+<para>
+
+</para>
 
 
 

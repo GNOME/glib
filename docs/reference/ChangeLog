@@ -1,3 +1,9 @@
+Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.3 ===
+
+	* glib/glib-sections.txt: Updates.
+
 Sun Feb 22 00:59:11 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/trees-nary.sgml: Document GCopyFunc.

@@ -171,6 +171,13 @@ The maximum value which can be held in a #guint64.
 
 
 
+<!-- ##### MACRO G_MAXSIZE ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_MINFLOAT ##### -->
 <para>
 The minimum positive value which can be held in a #gfloat.

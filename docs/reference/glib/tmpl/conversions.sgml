@@ -45,6 +45,14 @@ convert strings between different character sets using <function>iconv()</functi
 @Returns: 
 
 
+<!-- ##### STRUCT GIConv ##### -->
+<para>
+The <structname>GIConv</structname> struct wraps an
+<function>iconv()</function> conversion descriptor. It contains private data
+and should only be accessed using the following functions.
+</para>
+
+
 <!-- ##### FUNCTION g_convert_with_iconv ##### -->
 <para>
 

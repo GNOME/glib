@@ -178,6 +178,17 @@ equality. The function should return %TRUE if both values are equal and
 @user_data: 
 
 
+<!-- ##### FUNCTION g_hash_table_find ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@predicate: 
+@user_data: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION GHFunc ##### -->
 <para>
 Specifies the type of the function passed to g_hash_table_foreach().

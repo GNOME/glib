@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-12 00:39+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2004-02-01 21:21+0100\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -269,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
-"početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
+"njime početi"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -321,8 +321,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
-"je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
+"znak je „>“"
 
 #: glib/gmarkup.c:1485
 #, c-format

@@ -101,6 +101,7 @@ of a tree.
 @Returns: A pointer to the copy.
 @Since: 2.4
 
+
 <!-- ##### FUNCTION g_node_copy_deep ##### -->
 <para>
 

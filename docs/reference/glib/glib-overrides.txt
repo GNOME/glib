@@ -287,3 +287,7 @@ gchar c
 <RETURNS>gboolean</RETURNS>
 gchar c
 </FUNCTION>
+
+<STRUCT>
+<NAME>GIConv</NAME>
+</STRUCT>
