@@ -61,7 +61,11 @@ g_dir_open (const gchar  *path,
             guint         flags,
             GError      **error)
 {
-  GDir *dir = g_new (GDir, 1);
+  GDir *dir;
+
+  g_return_val_if_fail (path != NULL, NULL);
+
+  dir = g_new (GDir, 1);
 
   dir->dir = opendir (path);
 

@@ -1,3 +1,8 @@
+2002-02-08  Michael Natterer  <mitch@gimp.org>
+
+	* glib/gdir.c: g_dir_open: added g_return_val_if_fail() to prevent
+	us from calling opendir(NULL) (which simply crashes).
+
 2002-02-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gfileutils.c (g_file_test): Extended documentation.
