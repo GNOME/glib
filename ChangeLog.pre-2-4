@@ -1,3 +1,8 @@
+Wed Oct 10 20:07:36 2001  Joshua N Pritikin  <vishnu@pobox.com>
+
+	* glib/gmessages.c glib/gtypes.h: Remove G_HAVE_GINT64
+	conditionalization.
+
 Wed Oct 10 17:34:15 2001  Joshua N Pritikin  <vishnu@pobox.com>
 
 	* configure.in: Un-conditionalize and require a 64-bit integer

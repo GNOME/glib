@@ -1048,11 +1048,7 @@ printf_string_upper_bound (const gchar *format,
 		    conv_len *= 2;
 		  if (spec.mod_extra_long)
 		    {
-#ifdef G_HAVE_GINT64
 		      (void) va_arg (args, gint64);
-#else /* !G_HAVE_GINT64 */
-		      (void) va_arg (args, long);
-#endif /* !G_HAVE_GINT64 */
 		    }
 		  else if (spec.mod_long)
 		    (void) va_arg (args, long);

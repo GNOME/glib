@@ -160,8 +160,7 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 #  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
 #endif /* __i386__ */
 
-#ifdef G_HAVE_GINT64
-#  define GUINT64_SWAP_LE_BE_CONSTANT(val)	((guint64) ( \
+#define GUINT64_SWAP_LE_BE_CONSTANT(val)	((guint64) ( \
       (((guint64) (val) &						\
 	(guint64) G_GINT64_CONSTANT(0x00000000000000ffU)) << 56) |	\
       (((guint64) (val) &						\
@@ -178,8 +177,8 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	(guint64) G_GINT64_CONSTANT(0x00ff000000000000U)) >> 40) |	\
       (((guint64) (val) &						\
 	(guint64) G_GINT64_CONSTANT(0xff00000000000000U)) >> 56)))
-#  if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
-#    define GUINT64_SWAP_LE_BE_X86(val) \
+#if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
+#  define GUINT64_SWAP_LE_BE_X86(val) \
 	(__extension__						\
 	 ({ union { guint64 __ll;				\
 		    guint32 __l[2]; } __r;			\
@@ -194,10 +193,9 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 		__r.__l[1] = GUINT32_SWAP_LE_BE (__w.__l[0]);	\
 	      }							\
 	  __r.__ll; }))
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_X86 (val))
-#  else /* !__i386__ */
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_CONSTANT(val))
-#  endif
+#  define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_X86 (val))
+#else /* !__i386__ */
+#  define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_CONSTANT(val))
 #endif
 
 #define GUINT16_SWAP_LE_PDP(val)	((guint16) (val))
@@ -221,12 +219,10 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 #define GINT32_FROM_BE(val)	(GINT32_TO_BE (val))
 #define GUINT32_FROM_BE(val)	(GUINT32_TO_BE (val))
 
-#ifdef G_HAVE_GINT64
 #define GINT64_FROM_LE(val)	(GINT64_TO_LE (val))
 #define GUINT64_FROM_LE(val)	(GUINT64_TO_LE (val))
 #define GINT64_FROM_BE(val)	(GINT64_TO_BE (val))
 #define GUINT64_FROM_BE(val)	(GUINT64_TO_BE (val))
-#endif
 
 #define GLONG_FROM_LE(val)	(GLONG_TO_LE (val))
 #define GULONG_FROM_LE(val)	(GULONG_TO_LE (val))
