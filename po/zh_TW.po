@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.13\n"
-"POT-Creation-Date: 2002-03-08 10:58-0500\n"
+"POT-Creation-Date: 2002-03-28 18:32-0500\n"
 "PO-Revision-Date: 2002-02-07 08:25+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -13,69 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:390
+#: glib/gconvert.c:398
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支援將字元集 '%s' 轉換到 '%s'"
 
-#: glib/gconvert.c:394
+#: glib/gconvert.c:402
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "無法開啟由 '%s' 至 '%s' 的轉換器：%s"
 
-#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
+#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "轉換輸入時遇到不正確的位元組次序"
 
-#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "輸入完結時出現未完成的字元次序"
 
-#: glib/gconvert.c:788
+#: glib/gconvert.c:796
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "無法將後備字串 '%s' 轉換到字元集 '%s'"
 
-#: glib/gconvert.c:1593
+#: glib/gconvert.c:1630
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI '%s' 不是使用 file 格式的絕對 URI"
 
-#: glib/gconvert.c:1603
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本機檔案 URI '%s' 不應含有 '#'"
 
-#: glib/gconvert.c:1620
+#: glib/gconvert.c:1657
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "不正確的 URI '%s'"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1669
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' 中的主機名稱含有不正確的跳出字元"
 
-#: glib/gconvert.c:1648
+#: glib/gconvert.c:1685
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' 含有不正確的跳出字元"
 
-#: glib/gconvert.c:1719
+#: glib/gconvert.c:1756
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路徑名稱 '%s' 不是絕對路徑"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1766
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "主機名稱含有不正確的位元組次序"
@@ -100,32 +100,32 @@ msgstr "讀入檔案 '%s' 時發生錯誤：%s"
 msgid "Failed to read from file '%s': %s"
 msgstr "讀入檔案失敗 '%s'：%s"
 
-#: glib/gfileutils.c:465 glib/gfileutils.c:533
+#: glib/gfileutils.c:473 glib/gfileutils.c:541
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "開啟檔案失敗 '%s'：%s"
 
-#: glib/gfileutils.c:479
+#: glib/gfileutils.c:487
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "無法取得檔案 '%s' 的屬性：fstat() 失敗：%s"
 
-#: glib/gfileutils.c:505
+#: glib/gfileutils.c:513
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "開啟檔案 '%s' 失敗：fdopen() 失敗：%s"
 
-#: glib/gfileutils.c:712
+#: glib/gfileutils.c:720
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "樣式 '%s' 不正確，不應含有 '%s'"
 
-#: glib/gfileutils.c:724
+#: glib/gfileutils.c:732
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "樣式 '%s' 結尾不是 XXXXXX"
 
-#: glib/gfileutils.c:745
+#: glib/gfileutils.c:753
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "無法建立檔案 '%s'：%s"
@@ -156,15 +156,15 @@ msgstr "輸入管道在字元未完成前就終止"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 中無法讀入原始資料"
 
-#: glib/giowin32.c:704 glib/giowin32.c:733
+#: glib/giowin32.c:712 glib/giowin32.c:741
 msgid "Incorrect message size"
 msgstr "訊息長度不正確"
 
-#: glib/giowin32.c:1037 glib/giowin32.c:1090
+#: glib/giowin32.c:1045 glib/giowin32.c:1098
 msgid "Socket error"
 msgstr "Socket 發生錯誤"
 
-#: glib/giowin32.c:1290
+#: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
 msgstr "不支援設定管道旗標的操作"
 

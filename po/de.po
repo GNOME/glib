@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.15\n"
-"POT-Creation-Date: 2002-03-16 17:18+0100\n"
+"POT-Creation-Date: 2002-03-28 18:32-0500\n"
 "PO-Revision-Date: 2002-02-28 01:13+0100\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -13,71 +13,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:390
+#: glib/gconvert.c:398
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Umwandlung von Zeichensatz '%s' in '%s' wird nicht unterstützt"
 
-#: glib/gconvert.c:394
+#: glib/gconvert.c:402
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Konverter von '%s' in '%s' konnte nicht geöffnet werden: %s"
 
-#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
+#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
-#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler während der Umwandlung: %s"
 
-#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
-#: glib/gconvert.c:788
+#: glib/gconvert.c:796
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel '%s' kann nicht in Codierung '%s' umgewandelt werden"
 
 # CHECK
-#: glib/gconvert.c:1622
+#: glib/gconvert.c:1630
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "Der URI '%s' ist kein absoluter URI, der das Dateischema verwendet"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Der lokale URI '%s' darf '#' nicht enthalten"
 
-#: glib/gconvert.c:1649
+#: glib/gconvert.c:1657
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Der URI '%s' ist ungültig"
 
-#: glib/gconvert.c:1661
+#: glib/gconvert.c:1669
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Der Hostname der URI '%s' ist ungültig"
 
 # CHECK
-#: glib/gconvert.c:1677
+#: glib/gconvert.c:1685
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Der URI '%s' enthält ungültige Escape-Zeichen"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1756
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Der Pfadname '%s' ist kein absoluter Pfad"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1766
 msgid "Invalid hostname"
 msgstr "Ungültiger Hostname"
 
@@ -101,34 +101,34 @@ msgstr "Fehler beim Lesen der Datei '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei '%s' gelesen werden: %s"
 
-#: glib/gfileutils.c:465 glib/gfileutils.c:533
+#: glib/gfileutils.c:473 glib/gfileutils.c:541
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei '%s' konnte nicht geöffnet werden: %s"
 
-#: glib/gfileutils.c:479
+#: glib/gfileutils.c:487
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Attribute der Datei '%s' konnten nicht ermittelt werden: fstat() "
 "fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:505
+#: glib/gfileutils.c:513
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei '%s' konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:712
+#: glib/gfileutils.c:720
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Vorlage '%s' ungültig, sollte kein '%s' enthalten"
 
-#: glib/gfileutils.c:724
+#: glib/gfileutils.c:732
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Vorlage '%s' endet nicht auf XXXXXX"
 
-#: glib/gfileutils.c:745
+#: glib/gfileutils.c:753
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei '%s' konnte nicht erstellt werden: %s"

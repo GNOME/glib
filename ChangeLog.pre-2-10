@@ -1,3 +1,9 @@
+Thu Mar 28 18:25:14 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 2.0.1
+
+	* configure.in: Version 2.0.1, interface, binary age 1.
+
 Thu Mar 28 18:22:53 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Remove warning about g_print, etc, encoding.

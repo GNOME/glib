@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2002-03-08 10:58-0500\n"
+"POT-Creation-Date: 2002-03-28 18:32-0500\n"
 "PO-Revision-Date: 2002-02-20 14:33+0000\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -13,70 +13,70 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:390
+#: glib/gconvert.c:398
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
 
-#: glib/gconvert.c:394
+#: glib/gconvert.c:402
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Δεν ήταν δυνατή η μετονομασία του φακέλου %s στο %s: %s"
 
-#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
+#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 
 # gconf/gconftool.c:1181
-#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr ""
 
-#: glib/gconvert.c:788
+#: glib/gconvert.c:796
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: glib/gconvert.c:1593
+#: glib/gconvert.c:1630
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1603
+#: glib/gconvert.c:1640
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Το αρχείο εικόνας '%s' δε βρέθηκε.\n"
 
-#: glib/gconvert.c:1620
+#: glib/gconvert.c:1657
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Το URI '%s' δεν είναι έγκυρο"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1669
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1648
+#: glib/gconvert.c:1685
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Αυτό το μήνυμα δεν περιέχει έγκυρους παραλήπτες:"
 
-#: glib/gconvert.c:1719
+#: glib/gconvert.c:1756
 #, fuzzy, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Η αποθήκη του root %s δεν είναι απόλυτη θέση"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1766
 msgid "Invalid hostname"
 msgstr "Ακατάλληλο όνομα συστήματος"
 
@@ -105,35 +105,35 @@ msgid "Failed to read from file '%s': %s"
 msgstr "Αποτυχία ανάγνωσης από το αρχείο '%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:465 glib/gfileutils.c:533
+#: glib/gfileutils.c:473 glib/gfileutils.c:541
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Αποτυχία ανοίγματος αρχείου `%s': %s"
 
 # gconf/gconfd.c:1701
-#: glib/gfileutils.c:479
+#: glib/gfileutils.c:487
 #, fuzzy, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Αποτυχία λήψης όλων των εγγραφών στο `%s': %s"
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:505
+#: glib/gfileutils.c:513
 #, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Αδύνατο το κλείσιμο του αρχείου `%s': %s"
 
-#: glib/gfileutils.c:712
+#: glib/gfileutils.c:720
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr ""
 
-#: glib/gfileutils.c:724
+#: glib/gfileutils.c:732
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr ""
 
 # gconf/gconf-internals.c:2416
-#: glib/gfileutils.c:745
+#: glib/gfileutils.c:753
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
@@ -165,15 +165,15 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
 #
-#: glib/giowin32.c:704 glib/giowin32.c:733
+#: glib/giowin32.c:712 glib/giowin32.c:741
 msgid "Incorrect message size"
 msgstr "Εσφαλμένο μέγεθος μηνύματος"
 
-#: glib/giowin32.c:1037 glib/giowin32.c:1090
+#: glib/giowin32.c:1045 glib/giowin32.c:1098
 msgid "Socket error"
 msgstr "Σφάλμα υποδοχέα (socket)"
 
-#: glib/giowin32.c:1290
+#: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
 msgstr ""
 
