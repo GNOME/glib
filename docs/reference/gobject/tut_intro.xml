@@ -13,8 +13,15 @@ or interpreted languages.</para></listitem>
 
 <para>A lot of programmers are used to work with compiled-only or dynamically interpreted-only
 languages and do not understand the challenges associated with cross-language interoperability.
-This introduction tries to provide an insight into these challenges and describes briefly 
+This introduction tries to provide an insight into these challenges. describes briefly 
 the solution choosen by GLib.
+</para>
+
+<para>The following chapters go into greater detail into how GType and GObject work and
+how you can use them as a C programmer. I personally find it useful to keep in mind that
+allowing access to C objects from other interpreted languages was one of the major design
+goals: this can often explain the sometimes rather convoluted APIs and features present
+in this library.
 </para>
 
 <sect1>
@@ -149,12 +156,18 @@ boundaries is written once: the figure below states this more clearly.
   </mediaobject>
 </figure>
 
-Currently, there exist at least Python and Perl glue code which makes it possible to use
-C objects written with GType directly in Python or Perl, without any further work.
+Currently, there exist at least Python and Perl generic glue code which makes it possible to use
+C objects written with GType directly in Python or Perl, with a minimum amount of work: there
+is no need to generate huge amounts of glue code either automatically or by hand.
 </para>
 
+<para>Although that goal was arguably laudable, its pursuit has had a major influence on
+the whole GType/GObject library. C programmers are likely to be puzzled at the complexity 
+of the features exposed in the following chapters if they forget that the GType/GObject library
+was not only designed to offer OO-like features to C programmers but also transparent 
+cross-langage interoperability.
+</para>
 
 </sect1>
-
 
 </chapter>
