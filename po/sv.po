@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-25 19:56+0100\n"
-"PO-Revision-Date: 2002-02-25 19:56+0100\n"
+"POT-Creation-Date: 2002-02-26 10:54+0100\n"
+"PO-Revision-Date: 2002-02-26 10:54+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -316,7 +316,7 @@ msgid ""
 "allowed character is '>'"
 msgstr ""
 "\"%s\" är inte ett giltigt tecken efter stängelementnamnet \"%s\". Det "
-"giltiga tecknet är \">\""
+"tillåtna tecknet är \">\""
 
 #: glib/gmarkup.c:1433
 #, c-format
@@ -399,10 +399,9 @@ msgstr "Citerad text börjar inte med citationstecken"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Ensamt citationstecken på kommandoraden eller annan skalciterad text"
 
-# tecknet är ett #: gshell.c:519
 #: glib/gshell.c:528
 #, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Texten slutade efter ett \"\\\"-tecken (texten var \"%s\")."
 
 #: glib/gshell.c:535
