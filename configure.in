@@ -1527,6 +1527,8 @@ AC_OUTPUT([
 glib.spec
 Makefile
 glib-config-2.0
+build/Makefile
+build/win32/Makefile
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile

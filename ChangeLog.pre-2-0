@@ -1,3 +1,9 @@
+Sat Jul 15 22:44:22 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Add build/Makefile and 
+	build/win32/Makefile to AC_OUTPUT() so things build
+	again.
+
 Sat Jul 15 09:11:46 2000  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c (g_strncasecmp): fixed an off by 0 error (yeah,
