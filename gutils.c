@@ -548,7 +548,7 @@ g_iochannel_new (gint fd)
   channel->peer = 0;
   channel->peer_fd = 0;
   channel->offset = 0;
-  channel->peer_offset = 0;
+  channel->need_wakeups = 0;
 #endif /* NATIVE_WIN32 */
 
   return channel;

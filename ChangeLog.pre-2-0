@@ -1,3 +1,29 @@
+Tue Nov 24 18:57:59 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* applied glib-tml-981120-0, change log appended below.
+
+	* glibconfig.h.win32: passthrough 64-bit constants unchanged, VC++
+	infers them
+
+Fri Nov 20 22:26:43 1998  Tor Lillqvist  <tml@iki.fi>
+
+        * glib.h: Moved MSC pragmas from glib.h to glibconfig.h.win32.
+        peer_offset field in WIN32 part of GIOChannel removed, need_wakeups
+        added. Added "extern" to __declspec(dllimport).
+
+        * gutils.c: Initialise need_wakeups.
+
+        * glibconfig.h.win32: Pragmas moved here. Define G_GINT64_CONSTANT.
+
+        * gmodule/gmodule.def: Added g_module_build_path.
+
+        * gscanner.c: (g_scanner_cur_value) Move initailisation of v
+        to before its use.
+
+        * glib.def: Added g_(s)list_sort.
+
+        * makefile.msc: A few more comments.
+
 Tue Nov 24 14:05:47 EST 1998	Michael K. Johnson <johnsonm@redhat.com>
 
 	* glib.h: added GFreeFunc and g_hash_table_set_key_freefunc()

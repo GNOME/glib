@@ -89,33 +89,6 @@
 
 #endif /* !NATIVE_WIN32 */
 
-#ifdef _MSC_VER
-/* Make MSVC more pedantic, this is a recommended pragma list
- * from _Win32_Programming_ by Rector and Newcomer.
- */
-#pragma warning(error:4002)
-#pragma warning(error:4003)
-#pragma warning(1:4010)
-#pragma warning(error:4013)
-#pragma warning(1:4016)
-#pragma warning(error:4020)
-#pragma warning(error:4021)
-#pragma warning(error:4027)
-#pragma warning(error:4029)
-#pragma warning(error:4033)
-#pragma warning(error:4035)
-#pragma warning(error:4045)
-#pragma warning(error:4047)
-#pragma warning(error:4049)
-#pragma warning(error:4053)
-#pragma warning(error:4071)
-#pragma warning(disable:4101)
-#pragma warning(error:4150)
-
-#pragma warning(disable:4244)	/* No possible loss of data warnings, please */
-#endif /* _MSC_VER */
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -680,7 +653,7 @@ typedef gint32	GTime;
 #  ifdef GLIB_COMPILATION
 #    define GUTILS_C_VAR __declspec(dllexport)
 #  else /* !GLIB_COMPILATION */
-#    define GUTILS_C_VAR __declspec(dllimport)
+#    define GUTILS_C_VAR extern __declspec(dllimport)
 #  endif /* !GLIB_COMPILATION */
 #else /* !NATIVE_WIN32 */
 #  define GUTILS_C_VAR extern
@@ -2130,8 +2103,8 @@ struct _GIOChannel
 				 * be included in the message posted
 				 * so we keep in sync.
 				 */
-  guint peer_offset;		/* in input channels where the writer's
-				 * offset is, so we don't try to read too much
+  guint need_wakeups;		/* in output channels whether the reader
+				 * needs wakeups
 				 */
 #endif
 };

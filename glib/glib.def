@@ -116,6 +116,7 @@ EXPORTS
 	g_list_remove_link
 	g_list_reverse
 	g_list_set_allocator
+	g_list_sort
 	g_log
 	g_log_default_handler
 	g_log_remove_handler
@@ -241,6 +242,7 @@ EXPORTS
 	g_slist_remove_link
 	g_slist_reverse
 	g_slist_set_allocator
+	g_slist_sort
 	g_snprintf
 	g_str_equal
 	g_str_hash

@@ -620,12 +620,12 @@ g_scanner_cur_value (GScanner *scanner)
 {
   GTokenValue v;
   
+  v.v_int = 0;
+  
   g_return_val_if_fail (scanner != NULL, v);
 
   /* MSC isn't capable of handling return scanner->value; ? */
 
-  v.v_int = 0;
-  
   v = scanner->value;
 
   return v;

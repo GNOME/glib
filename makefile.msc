@@ -1,8 +1,13 @@
 ## Makefile for building the GLib and gmodule dll with Microsoft C
 ## Use: nmake -f makefile.msc install
 
-# Change this to wherever you want to install the dlls
+# Change this to wherever you want to install the DLLs. This directory
+# should be in your PATH.
 BIN = C:\bin
+
+################################################################
+
+# Nothing much configurable below
 
 # cl -? described the options
 CC = cl -G5 -GF -Ox -W3 -D_DLL -nologo
