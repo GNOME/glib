@@ -1000,6 +1000,7 @@ g_get_tmp_dir (void)
   return g_tmp_dir;
 }
 
+G_LOCK_DEFINE (g_prgname);
 static gchar *g_prgname = NULL;
 
 gchar*
@@ -1007,9 +1008,9 @@ g_get_prgname (void)
 {
   gchar* retval;
 
-  G_LOCK (g_utils_global);
+  G_LOCK (g_prgname);
   retval = g_prgname;
-  G_UNLOCK (g_utils_global);
+  G_UNLOCK (g_prgname);
 
   return retval;
 }
@@ -1017,13 +1018,10 @@ g_get_prgname (void)
 void
 g_set_prgname (const gchar *prgname)
 {
-  gchar *c;
-    
-  G_LOCK (g_utils_global);
-  c = g_prgname;
+  G_LOCK (g_prgname);
+  g_free (g_prgname);
   g_prgname = g_strdup (prgname);
-  g_free (c);
-  G_UNLOCK (g_utils_global);
+  G_UNLOCK (g_prgname);
 }
 
 guint

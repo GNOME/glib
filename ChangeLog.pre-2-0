@@ -1,3 +1,8 @@
+2001-10-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gutils.c (g_set_prgname, g_get_prgname): Use another LOCK
+	for g_prgname to avoid deadlocking. (#62606)
+
 2001-10-19  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Check also ac_cv_sizeof___int64 when requiring a
