@@ -39,7 +39,12 @@
 #endif
 #ifdef G_OS_WIN32
 #include <io.h>
+
+#ifndef S_ISREG
+#define S_ISREG(mode) ((mode)&_S_IFREG)
 #endif
+
+#endif  /* G_OS_WIN23 */
 
 #include "gconvert.h"
 #include "gdataset.h"

@@ -1,3 +1,8 @@
+2004-11-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Define S_ISREG() on windows, since it
+	is not present there.  (#158469, Kazuki IWAMOTO)
+
 2004-11-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_load_from_fd): Use S_ISREG(), since
