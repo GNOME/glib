@@ -1,3 +1,12 @@
+1998-06-10  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* acinclude.m4: New file.  Contains `libtool.m4' from libtool-1.2,
+	the version from which glib's libtool forked.  Needed for people
+	who use post-1.2 alphas of libtool.
+	* configure.in (enable_mem_check, enable_mem_profile): Replace
+	`echo -n' with AC_MSG_CHECKING.
+	(fd_set): Explain test for `fd_set' better.
+
 Wed Jun 10 19:29:51 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* Makefile.am glib.m4 configure.in:

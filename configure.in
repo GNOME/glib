@@ -57,22 +57,22 @@ AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile=[no/yes] turn on malloc profi
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
 		    , enable_ansi=no)
 
-echo -n "Enabling memory checking... "
+AC_MSG_CHECKING(whether to enable memory checking)
 if test "x$enable_mem_check" = "xyes"; then
   AC_DEFINE(ENABLE_MEM_CHECK, 1)
   AC_SUBST(ENABLE_MEM_CHECK)
-  echo "yes"
+  AC_MSG_RESULT(yes)
 else
-  echo "no"
+  AC_MSG_RESULT(no)
 fi
 
-echo -n "Enabling memory profiling... "
+AC_MSG_CHECKING(whether to enable memory profiling)
 if test "x$enable_mem_profile" = "xyes"; then
   AC_DEFINE(ENABLE_MEM_PROFILE, 1)
   AC_SUBST(ENABLE_MEM_PROFILE)
-  echo "yes"
+  AC_MSG_RESULT(yes)
 else
-  echo "no"
+  AC_MSG_RESULT(no)
 fi
 
 if test "x$enable_debug" = "xyes"; then
@@ -134,7 +134,7 @@ AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 AC_CHECK_FUNCS(strerror strsignal memmove vsnprintf strcasecmp)
 
 # Check for sys_errlist
-AC_MSG_CHECKING(sys_errlist)
+AC_MSG_CHECKING(for sys_errlist)
 AC_TRY_LINK(, [
 extern char *sys_errlist[];
 extern int sys_nerr;
@@ -146,7 +146,7 @@ if test $glib_ok = no; then
 fi
 
 # Check for sys_siglist
-AC_MSG_CHECKING(sys_siglist)
+AC_MSG_CHECKING(for sys_siglist)
 AC_TRY_LINK(, [
 extern char *sys_siglist[];
 sys_siglist[1][0] = 0;
@@ -156,20 +156,21 @@ if test $glib_ok = no; then
     AC_DEFINE(NO_SYS_SIGLIST)
 fi
 
-# Check for sys/select.h
-
-AC_MSG_CHECKING([fd_set and sys/select])
+# Check if <sys/select.h> needs to be included for fd_set
+AC_MSG_CHECKING([for fd_set])
 AC_TRY_COMPILE([#include <sys/types.h>],
         [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = no; then
+if test $gtk_ok = yes; then
+    AC_MSG_RESULT([yes, found in sys/types.h])
+else
     AC_HEADER_EGREP(fd_mask, sys/select.h, gtk_ok=yes)
     if test $gtk_ok = yes; then
         AC_DEFINE(HAVE_SYS_SELECT_H)
+        AC_MSG_RESULT([yes, found in sys/select.h])
+    else
+	AC_DEFINE(NO_FD_SET)
+	AC_MSG_RESULT(no)
     fi
-fi
-AC_MSG_RESULT($gtk_ok)
-if test $gtk_ok = no; then
-    AC_DEFINE(NO_FD_SET)
 fi
 
 # This stuff is here, only so that we can define these
