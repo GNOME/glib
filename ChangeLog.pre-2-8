@@ -1,3 +1,24 @@
+2003-02-04  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giowin32.c (g_io_channel_unix_new): Fix typo: Should be
+	SOCKET_ERROR, not SO_ERROR. Noticed by Daniel Kaufmann.
+	
+	Merge from stable branch: 
+
+	Fix for bug #104014, reported by Alex Shaduri:
+	
+	* glib/gspawn-win32.c (protect_argv): New function. Add
+	double-quotes around argv elements that need it, and escape
+	embedded double-quotes with backslash.
+	(do_spawn_with_pipes) Call protect_argv().
+
+	* glib/gspawn-win32-helper.c (WinMain): Call protect_argv().
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Document argument
+	vector vs. command line details on Win32.
+	(g_spawn_command_line_sync): Improve documentation about
+	backslashes in the command line on Windows.
+
 Thu Jan 30 16:45:13 2003  Owen Taylor  <otaylor@redhat.com>
 
         * Makefile.am: Remove references to glib.spec.

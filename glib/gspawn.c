@@ -432,6 +432,24 @@ g_spawn_sync (const gchar          *working_directory,
  * the program must be a full path; the <envar>PATH</envar> shell variable 
  * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  *
+ * On Windows, the low-level child process creation API
+ * (<function>CreateProcess()</function>)doesn't use argument vectors,
+ * but a command line. The C runtime library's
+ * <function>spawn*()</function> family of functions (which
+ * g_spawn_async_with_pipes() eventually calls) paste the argument
+ * vector elements into a command line, and the C runtime startup code
+ * does a corresponding recostruction of an argument vector from the
+ * command line, to be passed to
+ * <function>main()</function>. Complications arise when you have
+ * argument vector elements that contain spaces of double quotes. The
+ * <function>spawn()</function> functions don't do any quoting or
+ * escaping, but on the other hand the startup code does do unquoting
+ * and unescaping in order to enable receiving arguments with embedded
+ * spaces or double quotes. To work around this asymmetry,
+ * g_spawn_async_with_pipes() will do quoting and escaping on argument
+ * vector elements that need it before calling the C runtime
+ * <function>spawn()</function> function.
+ *
  * @envp is a %NULL-terminated array of strings, where each string
  * has the form <literal>KEY=VALUE</literal>. This will become
  * the child's environment. If @envp is %NULL, the child inherits its
@@ -584,11 +602,11 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * 
  * On Windows, please note the implications of g_shell_parse_argv()
  * parsing @command_line. Space is a separator, and backslashes are
- * special. Thus you cannot simply pass a @command_line consisting of
- * a canonical Windows path, like "c:\\program files\\app\\app.exe",
- * as the backslashes will be eaten, and the space will act as a
- * separator. You need to enclose the path with single quotes, like
- * "'c:\\program files\\app\\app.exe'".
+ * special. Thus you cannot simply pass a @command_line containing
+ * canonical Windows paths, like "c:\\program files\\app\\app.exe", as
+ * the backslashes will be eaten, and the space will act as a
+ * separator. You need to enclose such paths with single quotes, like
+ * "'c:\\program files\\app\\app.exe' 'e:\\folder\\argument.txt'".
  *
  * Return value: %TRUE on success, %FALSE if an error was set
  **/

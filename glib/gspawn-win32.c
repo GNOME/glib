@@ -97,6 +97,84 @@ enum {
   ARG_COUNT = ARG_PROGRAM
 };
 
+static gint
+protect_argv (gchar  **argv,
+	      gchar ***new_argv)
+{
+  gint i;
+  gint argc = 0;
+  
+  while (argv[argc])
+    ++argc;
+  *new_argv = g_new (gchar *, argc+1);
+
+  /* Quote each argv element if necessary, so that it will get
+   * reconstructed correctly in the C runtime startup code.  Note that
+   * the unquoting algorithm in the C runtime is really weird, and
+   * rather different than what Unix shells do. See stdargv.c in the C
+   * runtime sources (in the Platform SDK, in src/crt).
+   *
+   * Note that an new_argv[0] constructed by this function should
+   * *not* be passed as the filename argument to a spawn* or exec*
+   * family function. That argument should be the real file name
+   * without any quoting.
+   */
+  for (i = 0; i < argc; i++)
+    {
+      gchar *p = argv[i];
+      gchar *q;
+      gint len = 0;
+      gboolean need_dblquotes = FALSE;
+      while (*p)
+	{
+	  if (*p == ' ' || *p == '\t')
+	    need_dblquotes = TRUE;
+	  else if (*p == '"')
+	    len++;
+	  else if (*p == '\\')
+	    {
+	      gchar *pp = p;
+	      while (*pp && *pp == '\\')
+		pp++;
+	      if (*pp == '"')
+		len++;
+	    }
+	  len++;
+	  p++;
+	}
+
+      q = (*new_argv)[i] = g_malloc (len + need_dblquotes*2 + 1);
+      p = argv[i];
+
+      if (need_dblquotes)
+	*q++ = '"';
+
+      while (*p)
+	{
+	  if (*p == '"')
+	    *q++ = '\\';
+	  else if (*p == '\\')
+	    {
+	      gchar *pp = p;
+	      while (*pp && *pp == '\\')
+		pp++;
+	      if (*pp == '"')
+		*q++ = '\\';
+	    }
+	  *q++ = *p;
+	  p++;
+	}
+
+      if (need_dblquotes)
+	*q++ = '"';
+      *q++ = '\0';
+      /* printf ("argv[%d]:%s, need_dblquotes:%s len:%d => %s\n", i, argv[i], need_dblquotes?"TRUE":"FALSE", len, (*new_argv)[i]); */
+    }
+  (*new_argv)[argc] = NULL;
+
+  return argc;
+}
+
 #ifndef GSPAWN_HELPER
 
 static gboolean make_pipe            (gint                  p[2],
@@ -746,6 +824,9 @@ do_spawn_with_pipes (gboolean              dont_wait,
   gint helper = -1;
   gint buf[2];
   gint n_ints = 0;
+  gint i;
+  gint argc;
+  gchar **new_argv;
   
   if (!make_pipe (child_err_report_pipe, error))
     return FALSE;
@@ -759,13 +840,15 @@ do_spawn_with_pipes (gboolean              dont_wait,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
+  argc = protect_argv (argv, &new_argv);
+
   helper = do_spawn (dont_wait,
 		     child_err_report_pipe[1],
 		     stdin_pipe[0],
 		     stdout_pipe[1],
 		     stderr_pipe[1],
 		     working_directory,
-		     argv,
+		     new_argv,
 		     envp,
 		     close_descriptors,
 		     search_path,
@@ -775,6 +858,10 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     child_setup,
 		     user_data);
       
+  for (i = 0; i < argc; i++)
+    g_free (new_argv[i]);
+  g_free (new_argv);
+
   /* do_spawn() returns -1 if gspawn-win32-helper couldn't be run */
   if (helper == -1)
     {
