@@ -1,5 +1,7 @@
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/misc_utils.sgml: Move g_getenv() docs inline.
+
 	* glib/tmpl/string_utils.sgml: Small fixes.
 
 	* glib/glib-docs.sgml: Add paragraph about multi-threading policy.

@@ -54,12 +54,30 @@ reasons this function can only be called once.
 
 <!-- ##### FUNCTION g_getenv ##### -->
 <para>
-Returns an environment variable.
+
 </para>
 
-@variable: the environment variable to get.
-@Returns: the value of the environment variable, or %NULL if the environment
-variable is not found.
+@variable:
+@Returns: 
+
+
+<!-- ##### FUNCTION g_setenv ##### -->
+<para>
+
+</para>
+
+@variable: 
+@value: 
+@overwrite: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unsetenv ##### -->
+<para>
+
+</para>
+
+@variable: 
 
 
 <!-- ##### FUNCTION g_get_user_name ##### -->

@@ -1,6 +1,7 @@
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutils.c (g_unsetenv): Use same argument name as in header, to pacify gtk-doc.
+	(g_getenv): Move docs inline, add comment about lifespan of return value.
 
 	* glib-2.0.pc.in (Libs): Remove forgotten @TRIO_LIBS@.  (#118616, Noah Levitt)
 

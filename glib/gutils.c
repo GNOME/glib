@@ -609,6 +609,16 @@ g_get_current_dir (void)
   return dir;
 }
 
+/**
+ * g_getenv:
+ * @variable: the environment variable to get.
+ * 
+ * Returns an environment variable.
+ * 
+ * Return value: the value of the environment variable, or %NULL if the environment
+ * variable is not found. The returned string may be overwritten by the next call to g_getenv(),
+ * g_setenv() or g_unsetenv().
+ **/
 G_CONST_RETURN gchar*
 g_getenv (const gchar *variable)
 {
