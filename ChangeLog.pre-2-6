@@ -1,3 +1,9 @@
+2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: The mutex in the check for pthread_mutex_trylock
+	should be a static var. Thanks to Wan-Teh Chang <wtc@netscape.com>
+	for pointing this out.
+
 2000-02-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Changed GCC version test to also accept major

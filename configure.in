@@ -818,8 +818,8 @@ if test x"$have_threads" != xnone; then
 		AC_MSG_CHECKING(whether pthread_mutex_trylock is posix like)
 		# DCE Threads return 1 as success, posix 0. what a mess.
 		AC_TRY_RUN([#include <pthread.h>
-			int main () { 
 			pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+			int main () { 
 			return !pthread_mutex_trylock (&mutex); }],
 			[AC_MSG_RESULT(no)],
 			[AC_MSG_RESULT(yes)
