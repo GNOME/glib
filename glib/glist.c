@@ -574,3 +574,62 @@ g_list_sort (GList       *list,
 			    g_list_sort (l2,   compare_func),
 			    compare_func);
 }
+
+GList* 
+g_list_sort2 (GList       *list,
+	      GCompareFunc compare_func)
+{
+  GSList *runs = NULL;
+  GList *tmp;
+
+  /* Degenerate case.  */
+  if (!list) return NULL;
+
+  /* Assume: list = [12,2,4,11,2,4,6,1,1,12].  */
+  for (tmp = list; tmp; )
+    {
+      GList *tmp2;
+      for (tmp2 = tmp;
+	   tmp2->next && compare_func (tmp2->data, tmp2->next->data) <= 0;
+	   tmp2 = tmp2->next)
+	/* Nothing */;
+      runs = g_slist_append (runs, tmp);
+      tmp = tmp2->next;
+      tmp2->next = NULL;
+    }
+  /* Now: runs = [[12],[2,4,11],[2,4,6],[1,1,12]].  */
+  
+  while (runs->next)
+    {
+      /* We have more than one run.  Merge pairwise.  */
+      GSList *dst, *src, *dstprev = NULL;
+      dst = src = runs;
+      while (src && src->next)
+	{
+	  dst->data = g_list_sort_merge (src->data,
+					 src->next->data,
+					 compare_func);
+	  dstprev = dst;
+	  dst = dst->next;
+	  src = src->next->next;
+	}
+
+      /* If number of runs was odd, just keep the last.  */
+      if (src)
+	{
+	  dst->data = src->data;
+	  dstprev = dst;
+	  dst = dst->next;
+	}
+
+      dstprev->next = NULL;
+      g_slist_free (dst);
+    }
+
+  /* After 1st loop: runs = [[2,4,11,12],[1,1,2,4,6,12]].  */
+  /* After 2nd loop: runs = [[1,1,2,2,4,4,6,11,12,12]].  */
+
+  list = runs->data;
+  g_slist_free (runs);
+  return list;
+}

@@ -155,7 +155,7 @@ extern "C" {
  * we define G_CAN_INLINE, if the compiler seems to be actually
  * *capable* to do function inlining, in which case inline function bodys
  * do make sense. we also define G_INLINE_FUNC to properly export the
- * function prototypes if no inlinig can be performed.
+ * function prototypes if no inlining can be performed.
  * we special case most of the stuff, so inline functions can have a normal
  * implementation by defining G_INLINE_FUNC to extern and G_CAN_INLINE to 1.
  */
@@ -2295,6 +2295,208 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 guint	   g_spaced_primes_closest (guint num);
 
 
+/* IO Channels
+ */
+
+typedef struct _GIOFuncs GIOFuncs;
+
+typedef enum {
+  G_IO_ERROR_NONE,
+  G_IO_ERROR_AGAIN,
+  G_IO_ERROR_INVAL,
+  G_IO_ERROR_UNKNOWN
+} GIOError;
+
+typedef enum {
+  G_SEEK_CUR,
+  G_SEEK_SET,
+  G_SEEK_END
+} GSeekType;
+
+typedef enum {
+  G_IO_IN  
+#ifdef POLLIN
+            = POLLIN
+#endif
+  ,G_IO_OUT  
+#ifdef POLLOUT
+            = POLLOUT
+#endif
+  ,G_IO_PRI  
+#ifdef POLLPRI
+            = POLLPRI
+#endif
+
+  ,G_IO_ERR  
+#ifdef POLLERR
+           = POLLERR
+#endif
+  ,G_IO_HUP  
+#ifdef POLLHUP
+           = POLLHUP
+#endif
+  ,G_IO_NVAL  
+#ifdef POLLNVAL
+           = POLLNVAL
+#endif
+} GIOCondition;
+
+struct _GIOChannel {
+  gpointer channel_data;
+};
+
+typedef gboolean (*GIOFunc) (GIOChannel   *source,
+			     GIOCondition  condition,
+			     gpointer      data);
+
+struct _GIOFuncs {
+  GIOError (*io_read)   (GIOChannel *channel, 
+		         gchar      *buf, 
+		         guint       count,
+			 guint      *bytes_read);
+  GIOError (*io_write)  (GIOChannel *channel, 
+		 	 gchar      *buf, 
+			 guint       count,
+			 guint      *bytes_written);
+  GIOError (*io_seek)   (GIOChannel   *channel, 
+		 	 gint        offset, 
+		  	 GSeekType   type);
+  void (*io_close)      (GIOChannel *channel);
+  guint (*io_add_watch) (GIOChannel      *channel,
+			 gint           priority,
+			 GIOCondition   condition,
+			 GIOFunc        func,
+			 gpointer       user_data,
+			 GDestroyNotify notify);
+  void (*io_free)       (GIOChannel *channel);
+};
+
+GIOChannel *g_io_channel_new    (GIOFuncs      *funcs,
+				 gpointer       channel_data);
+void      g_io_channel_ref      (GIOChannel    *channel);
+void      g_io_channel_unref    (GIOChannel    *channel);
+GIOError  g_io_channel_read     (GIOChannel    *channel, 
+			         gchar         *buf, 
+			         guint          count,
+			         guint         *bytes_read);
+GIOError  g_io_channel_write    (GIOChannel    *channel, 
+			         gchar         *buf, 
+			         guint          count,
+			         guint         *bytes_written);
+GIOError  g_io_channel_seek     (GIOChannel    *channel,
+			         gint           offset, 
+			         GSeekType      type);
+void      g_io_channel_close    (GIOChannel    *channel);
+guint     g_io_add_watch_full   (GIOChannel    *channel,
+			         gint           priority,
+			         GIOCondition   condition,
+			         GIOFunc        func,
+			         gpointer       user_data,
+			         GDestroyNotify notify);
+guint    g_io_add_watch         (GIOChannel    *channel,
+			         GIOCondition   condition,
+			         GIOFunc        func,
+			         gpointer       user_data);
+
+/* Main loop */
+
+typedef struct _GTimeVal GTimeVal;
+typedef struct _GSourceFuncs GSourceFuncs;
+
+typedef struct _GMainLoop GMainLoop; /* Opaque */
+
+struct _GTimeVal {
+  glong tv_sec;
+  glong tv_usec;
+};
+
+struct _GSourceFuncs {
+  gboolean (*prepare)  (gpointer  source_data, 
+			GTimeVal *current_time,
+			gint     *timeout);
+  gboolean (*check)    (gpointer  source_data,
+			GTimeVal *current_time);
+  gboolean (*dispatch) (gpointer  source_data, 
+			GTimeVal *current_time,
+			gpointer  user_data);
+  GDestroyNotify destroy;
+};
+
+typedef gboolean (*GSourceFunc) (gpointer        data);
+
+/* Hooks for adding to the main loop */
+
+guint g_source_add                  (gint           priority, 
+				     gboolean       can_recurse,
+				     GSourceFuncs  *funcs,
+				     gpointer       source_data, 
+				     gpointer       user_data,
+				     GDestroyNotify notify);
+void g_source_remove                (guint          tag);
+void g_source_remove_by_user_data   (gpointer       user_data);
+void g_source_remove_by_source_data (gpointer       source_data);
+
+
+void g_get_current_time (GTimeVal *result);
+
+/* Running the main loop */
+
+GMainLoop *g_main_new (void);
+void g_main_run (GMainLoop *loop);
+void g_main_quit (GMainLoop *loop);
+void g_main_destroy (GMainLoop *loop);
+
+/* Run a single iteration of the mainloop. If block is FALSE,
+ * will never block
+ */
+gboolean g_main_iteration (gboolean block);
+
+/* See if any events are pending
+ */
+gboolean g_main_pending ();
+
+/* Idles and timeouts */
+
+guint g_timeout_add_full  (gint           priority,
+			   guint          interval, 
+			   GSourceFunc    function,
+			   gpointer       data,
+			   GDestroyNotify notify);
+guint g_timeout_add       (guint          interval,
+			   GSourceFunc    function,
+			   gpointer       data);
+
+guint	   g_idle_add	   (GSourceFunc        function,
+			    gpointer	       data);
+guint	   g_idle_add_full (gint   	       priority,
+			    GSourceFunc	       function,
+			    gpointer	       data,
+			    GDestroyNotify     destroy);
+
+/* Unix-specific IO and main loop calls */
+
+typedef struct _GPollFD GPollFD;
+
+struct _GPollFD {
+   gint fd;
+   gushort events;
+   gushort revents;
+};
+
+typedef gint (*GPollFunc) (GPollFD *ufds, guint nfsd, gint timeout);
+
+void        g_main_poll_add          (gint        priority,
+				      GPollFD    *fd);
+void        g_main_poll_remove       (GPollFD    *fd);
+
+void        g_main_set_poll_func     (GPollFunc   func);
+
+
+GIOChannel *g_io_channel_unix_new    (int         fd);
+gint        g_io_channel_unix_get_fd (GIOChannel *channel);
+
+#if 0 /* old IO Channels */
+
 /* IO Channels.
  * These are used for plug-in communication in the GIMP, for instance.
  * On Unix, it's simply an encapsulated file descriptor (a pipe).
@@ -2326,6 +2528,7 @@ void        g_iochannel_wakeup_peer    (GIOChannel *channel);
 #  define   g_iochannel_wakeup_peer(channel) G_STMT_START { } G_STMT_END
 #endif
 
+#endif /* old IO Channels */
 
 /* Windows emulation stubs for common unix functions
  */

@@ -226,6 +226,7 @@ AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
 AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
 AC_CHECK_HEADERS(pwd.h, AC_DEFINE(HAVE_PWD_H))
 AC_CHECK_HEADERS(sys/param.h, AC_DEFINE(HAVE_SYS_PARAM_H))
+AC_CHECK_HEADERS(sys/poll.h, AC_DEFINE(HAVE_SYS_POLL_H))
 AC_CHECK_HEADERS(sys/select.h, AC_DEFINE(HAVE_SYS_SELECT_H))
 AC_CHECK_HEADERS(sys/time.h, AC_DEFINE(HAVE_SYS_TIME_H))
 AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
@@ -233,7 +234,7 @@ AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
 
 # Check for sys_errlist
 AC_MSG_CHECKING(for sys_errlist)
@@ -549,6 +550,9 @@ outfile_EOF
   if test x$glib_values_h = xyes; then
     echo '#include <values.h>' >> $outfile
   fi
+  if test x$glib_sys_poll_h = xyes; then
+    echo '#include <sys/poll.h>' >> $outfile
+  fi
 
   cat >> $outfile <<outfile_EOF
 
@@ -696,6 +700,10 @@ x$ac_cv_header_values_h)
   glib_ml=MINLONG  glib_Ml=MAXLONG
   ;;
 esac
+
+if test x$ac_cv_header_sys_poll_h = xyes ; then
+  glib_sys_poll_h=yes
+fi
 
 case 2 in
 $ac_cv_sizeof_short)		gint16=short;;

@@ -1,3 +1,14 @@
+Sat Nov 28 12:53:47 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am configure.in acconfig.h giochannel.c
+	  glib.h glist.c gmain.c gutils.c:
+
+        - Revised GIOChannel to provide a generic virtual-function
+  	  based interface.
+	- Added unix fd-based GIOChannel's
+	- Added generic main-loop abstraction
+	- Added timeouts and idle functions using main-loop abstraction.
+
 1998-12-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h: 
