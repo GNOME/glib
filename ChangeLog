@@ -1,3 +1,14 @@
+Thu Apr  8 19:53:19 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_iterate): Check for two threads
+	calling g_main_iterate at once.
+
+	* gmain.c: If the set of poll file descriptors changes
+	during a call to poll(), abort that call, and start
+	a new poll. My test program still segfaults
+	obscurely on glibc 2.0 (in read()!!!), but now it works on
+	glibc 2.1, so I'll blame something else for the other segfault.
+
 1999-03-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed slight bug, that made configure hang on some

@@ -113,6 +113,7 @@ static void     g_main_poll               (gint      timeout,
 					   gint      priority);
 static void     g_main_add_poll_unlocked  (gint      priority,
 					   GPollFD  *fd);
+static void     g_main_wakeup             (void);
 
 static gboolean g_timeout_prepare      (gpointer  source_data, 
 					GTimeVal *current_time,
@@ -177,6 +178,9 @@ static HANDLE wake_up_semaphore = NULL;
 #endif /* NATIVE_WIN32 */
 static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
+
+/* Flag indicating whether the set of fd's changed during a poll */
+static gboolean poll_changed = FALSE;
 #endif /* G_THREADS_ENABLED */
 
 #ifdef HAVE_POLL
@@ -476,17 +480,9 @@ g_source_add (gint           priority,
 
 #ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
+  g_main_wakeup ();
+#endif
 
-  if (poll_waiting)
-    {
-      poll_waiting = FALSE;
-#ifndef NATIVE_WIN32
-      write (wake_up_pipe[1], "A", 1);
-#else
-      ReleaseSemaphore (wake_up_semaphore, 1, NULL);
-#endif
-    }
-#endif
   G_UNLOCK (main_loop);
 
   return return_val;
@@ -715,6 +711,13 @@ g_main_iterate (gboolean block,
   g_get_current_time (&current_time);
 
   G_LOCK (main_loop);
+
+  if (poll_waiting)
+    {
+      g_warning("g_main_iterate(): main loop already active in another thread");
+      G_UNLOCK (main_loop);
+      return FALSE;
+    }
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
@@ -856,7 +859,7 @@ g_main_iterate (gboolean block,
       
       hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
-
+ 
   /* Now invoke the callbacks */
 
   if (pending_dispatches)
@@ -917,7 +920,7 @@ g_main_run (GMainLoop *loop)
 		 "prepare() member or from a second thread, iteration not possible");
       return;
     }
-
+  
   loop->is_running = TRUE;
   while (loop->is_running)
     g_main_iterate (TRUE, TRUE);
@@ -1002,6 +1005,7 @@ g_main_poll (gint     timeout,
     }
 #ifdef G_THREADS_ENABLED
   poll_waiting = TRUE;
+  poll_changed = FALSE;
 #endif
   
   npoll = i;
@@ -1063,6 +1067,12 @@ g_main_poll (gint     timeout,
     }
   else
     poll_waiting = FALSE;
+
+  /* If the set of poll file descriptors changed, bail out
+   * and let the main loop rerun
+   */
+  if (poll_changed)
+    return;
 #endif
 
   pollrec = poll_records;
@@ -1126,6 +1136,13 @@ g_main_add_poll_unlocked (gint     priority,
   newrec->next = pollrec;
 
   n_poll_records++;
+
+#ifdef G_THREADS_ENABLED
+  poll_changed = TRUE;
+
+  /* Now wake up the main loop if it is waiting in the poll() */
+  g_main_wakeup ();
+#endif
 }
 
 void 
@@ -1157,6 +1174,13 @@ g_main_remove_poll (GPollFD *fd)
       pollrec = pollrec->next;
     }
 
+#ifdef G_THREADS_ENABLED
+  poll_changed = TRUE;
+  
+  /* Now wake up the main loop if it is waiting in the poll() */
+  g_main_wakeup ();
+#endif
+
   G_UNLOCK (main_loop);
 }
 
@@ -1170,6 +1194,23 @@ g_main_set_poll_func (GPollFunc func)
     poll_func = (GPollFunc) poll;
 #else
     poll_func = (GPollFunc) g_poll;
+#endif
+}
+
+/* Wake the main loop up from a poll() */
+static void
+g_main_wakeup (void)
+{
+#ifdef G_THREADS_ENABLED
+  if (poll_waiting)
+    {
+      poll_waiting = FALSE;
+#ifndef NATIVE_WIN32
+      write (wake_up_pipe[1], "A", 1);
+#else
+      ReleaseSemaphore (wake_up_semaphore, 1, NULL);
+#endif
+    }
 #endif
 }
 
