@@ -2,14 +2,14 @@
 
 	* glib/gkeyfile.c
 	(find_file_in_data_dirs): clean up a leak (#156652,
-        Morten Welinder)
-        (g_key_file_load_from_fd): propagate fstat() error
-        conditions and retry read on EAGAIN (#156647, Morten
-        Welinder).  Return error if file is NOT regular, not if
-        it is regular (bug introduced from last commited bug
-        fix). 
-        (g_key_file_load_from_data_dirs): allocate enough space
-        for the terminating NULL.
+	Morten Welinder)
+	(g_key_file_load_from_fd): propagate fstat() error
+	conditions and retry read on EAGAIN (#156647, Morten
+	Welinder).  Return error if file is NOT regular, not if
+	it is regular (bug introduced from last commited bug
+	fix). 
+	(g_key_file_load_from_data_dirs): allocate enough space
+	for the terminating NULL.
 
 2004-10-28  Ray Strode  <rstrode@redhat.com>
 
