@@ -928,7 +928,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   else if (helper == DO_SPAWN_OK_NO_HELPER)
     {
       if (child_handle && dont_wait && !dont_return_handle)
-	*child_handle = shortcut_spawn_retval;
+	*child_handle = (GPid) shortcut_spawn_retval;
       else if (!dont_wait && exit_status)
 	*exit_status = shortcut_spawn_retval;
 

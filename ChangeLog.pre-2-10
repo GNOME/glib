@@ -1,3 +1,11 @@
+2003-03-07  Hans Breuer  <hans@breuer.org>
+
+	* glib/gspawn-win32.c : (GPid)shortcut_spawn_retval which
+	doesn't improve the implementation at all, it just make it 
+	compile with msvc ...
+
+	* glib/makefile.msc.in : build gatomic.c (now really:)
+	
 2004-03-06  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Update.

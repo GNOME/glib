@@ -28,6 +28,7 @@ gnulib\gnulib.lib :
 glib_OBJECTS =			\
 	garray.obj		\
 	gasyncqueue.obj		\
+	gatomic.obj	\
 	gbacktrace.obj		\
 	gcache.obj		\
 	gcompletion.obj		\
