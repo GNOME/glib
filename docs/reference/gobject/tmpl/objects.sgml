@@ -288,23 +288,98 @@ to match the one used with g_object_add_weak_pointer().
 
 <!-- ##### FUNCTION g_object_connect ##### -->
 <para>
-
+A convenience function to connect multiple signals at once.
 </para>
+<para>
+The signal specs expected by this function have the form
+"modifier::signal_name", where modifier can be one of the following:
+<variablelist>
+<varlistentry>
+<term>signal</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_data (...)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>object_signal</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_object (...)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>swapped_signal</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_data (..., G_CONNECT_SWAPPED)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>swapped_object_signal</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>signal_after</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_data (..., G_CONNECT_AFTER)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>object_signal_after</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_object (..., G_CONNECT_AFTER)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>swapped_signal_after</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_data (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>swapped_object_signal_after</term>
+<listitem><para>
+equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
+</para></listitem>
+</varlistentry>
+</variablelist>
+</para>
+<informalexample>
+<programlisting>
+  menu->toplevel = g_object_connect (g_object_new (GTK_TYPE_WINDOW,
+						   "type", GTK_WINDOW_POPUP,
+						   "child", menu,
+						   NULL),
+				     "signal::event", gtk_menu_window_event, menu,
+				     "signal::size_request", gtk_menu_window_size_request, menu,
+				     "signal::destroy", gtk_widget_destroyed, &amp;menu-&gt;toplevel,
+				     NULL);
+</programlisting>
+</informalexample>
 
-@object: 
-@signal_spec: 
-@Varargs: 
-@Returns: 
+@object: a #GObject
+@signal_spec: the spec for the first signal 
+@Varargs: #GCallback for the first signal, followed by data for the first signal, 
+          followed optionally by more signal spec/callback/data triples, 
+          followed by %NULL
+@Returns: @object
 
 
 <!-- ##### FUNCTION g_object_disconnect ##### -->
 <para>
-
+A convenience function to disconnect multiple signals at once.
+</para>
+<para>
+The signal specs expected by this function have the form "any_signal", which
+means to disconnect any signal with matching callback and data, or 
+"any_signal::signal_name", which only disconnects the signal named "signal_name". 
 </para>
 
-@object: 
-@signal_spec: 
-@Varargs: 
+@object: a #GObject
+@signal_spec: the spec for the first signal 
+@Varargs: #GCallback for the first signal, followed by data for the first signal, 
+          followed optionally by more signal spec/callback/data triples, 
+          followed by %NULL
 
 
 <!-- ##### FUNCTION g_object_set ##### -->
@@ -524,22 +599,24 @@ Gets a property of an object.
 
 <!-- ##### FUNCTION g_object_set_valist ##### -->
 <para>
-
+Sets properties on an object.
 </para>
 
-@object: 
-@first_property_name: 
-@var_args: 
+@object: a #GObject
+@first_property_name: name of the first property to set
+@var_args: value for the first property, followed optionally by more
+           name/value pairs, followed by %NULL
 
 
 <!-- ##### FUNCTION g_object_get_valist ##### -->
 <para>
-
+Gets properties of an object. 
 </para>
 
-@object: 
-@first_property_name: 
-@var_args: 
+@object: a #GObject
+@first_property_name: name of the first property to get
+@var_args: return location for the first property, followed optionally by more
+           name/return location pairs, followed by %NULL
 
 
 <!-- ##### FUNCTION g_object_watch_closure ##### -->
