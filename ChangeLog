@@ -1,3 +1,7 @@
+2002-11-10  Ole Laursen  <olau@hardworking.dk>
+
+	* configure.in: Added da to ALL_LINGUAS.
+
 2002-11-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_main_thread_init, called by
