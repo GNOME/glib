@@ -47,6 +47,12 @@ At a minimum you'll need the SUNWuiu8 package. You probably
 should also install the SUNWciu8, SUNWhiu8, SUNWjiu8, and
 SUNWkiu8 packages.
 
+The native iconv on Compaq Tru64 doesn't contain support for
+UTF-8, so you'll need to use GNU libiconv instead. (When
+using GNU libiconv for GTK+, you'll need to use GNU libiconv
+for GNU gettext as well.) This probably applies to related
+operating systems as well.
+
 Finally, for message catalog handling, GTK+ requires an implementation
 of gettext(). If your system doesn't provide this functionality,
 you should use the libintl library from the GNU gettext package,
