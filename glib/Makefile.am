@@ -172,8 +172,10 @@ export_symbols = -export-symbols glib.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
+
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libglib-2.0.dll.a
+	-rm $(DESTDIR)$(libdir)/libglib-2.0.dll.a $(DESTDIR)$(libdir)/glib-2.0.def
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:

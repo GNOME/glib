@@ -1,5 +1,11 @@
 2003-01-04  Tor Lillqvist  <tml@iki.fi>
 
+	* {glib,gmodule,gobject,gthread}/Makefile.am:
+	[Win32] Install also the .def files, to help users generate
+	import libraries for other compilers. Uninstall, too.
+
+	* glib-zip.in: Include .def files from above.
+
 	* glib/giowin32.c (g_io_win32_fd_get_flags_internal): Don't claim
 	broken pipes are unreadable. (Well, they are, but read() handles
 	it, and treats it like EOF.)

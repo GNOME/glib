@@ -29,12 +29,16 @@ bin/gobject-query.exe
 include/glib-2.0
 lib/libglib-2.0.dll.a
 lib/glib-2.0.lib
+lib/glib-2.0.def
 lib/libgmodule-2.0.dll.a
 lib/gmodule-2.0.lib
+lib/gmodule-2.0.def
 lib/libgobject-2.0.dll.a
 lib/gobject-2.0.lib
+lib/gobject-2.0.def
 lib/libgthread-2.0.dll.a
 lib/gthread-2.0.lib
+lib/gthread-2.0.def
 lib/glib-2.0
 lib/pkgconfig/glib-2.0.pc
 lib/pkgconfig/gmodule-2.0.pc

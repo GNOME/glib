@@ -57,8 +57,10 @@ export_symbols = -export-symbols gmodule.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
+
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgmodule-2.0.dll.a
+	-rm $(DESTDIR)$(libdir)/libgmodule-2.0.dll.a $(DESTDIR)$(libdir)/gmodule-2.0.def
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
