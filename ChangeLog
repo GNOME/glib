@@ -1,3 +1,8 @@
+Fri May 30 17:24:23 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-gettextize.in: Quote $srcdir to handle $srcdir
+	with spaces (#107850, Evan Martin)
+
 Fri May 30 16:48:26 2003  Owen Taylor  <otaylor@redhat.com>
  
  	* glib/giochannel.c (g_io_channel_error_from_errno):

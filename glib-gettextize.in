@@ -83,7 +83,7 @@ fi
 # Fill in the command line options value.
 if test $# -eq 1; then
   srcdir=$1
-  if cd $srcdir; then
+  if cd "$srcdir"; then
     srcdir=`pwd`
   else
     $echo "Cannot change directory to \`$srcdir'"
@@ -124,9 +124,9 @@ for file in *; do
     intl | po)
       ;;
     *)
-      rm -f $srcdir/$file
-      ($try_ln_s && ln -s $gettext_dir/$file $srcdir/$file && $echo "Symlinking file $file") 2>/dev/null ||
-      { $echo "Copying file $file"; cp $file $srcdir/$file; }
+      rm -f "$srcdir/$file"
+      ($try_ln_s && ln -s $gettext_dir/$file "$srcdir/$file" && $echo "Symlinking file $file") 2>/dev/null ||
+      { $echo "Copying file $file"; cp $file "$srcdir/$file"; }
       ;;
   esac
 done
@@ -134,17 +134,17 @@ done
 # Copy files to po/ subdirectory.
 cd po
 for file in *; do
-  rm -f $srcdir/po/$file
-  ($try_ln_s && ln -s $gettext_dir/po/$file $srcdir/po/$file && $echo "Symlinking file po/$file") 2>/dev/null ||
-  { $echo "Copying file po/$file"; cp $file $srcdir/po/$file; }
+  rm -f "$srcdir/po/$file"
+  ($try_ln_s && ln -s $gettext_dir/po/$file "$srcdir/po/$file" && $echo "Symlinking file po/$file") 2>/dev/null ||
+  { $echo "Copying file po/$file"; cp $file "$srcdir/po/$file"; }
 done
-if test -f $srcdir/po/cat-id-tbl.c; then
+if test -f "$srcdir/po/cat-id-tbl.c"; then
   $echo "Removing po/cat-id-tbl.c"
-  rm -f $srcdir/po/cat-id-tbl.c
+  rm -f "$srcdir/po/cat-id-tbl.c"
 fi
-if test -f $srcdir/po/stamp-cat-id; then
+if test -f "$srcdir/po/stamp-cat-id"; then
   $echo "Removing po/stamp-cat-id"
-  rm -f $srcdir/po/stamp-cat-id
+  rm -f "$srcdir/po/stamp-cat-id"
 fi
 
 echo
