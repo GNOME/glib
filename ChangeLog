@@ -1,3 +1,9 @@
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdir.c (g_dir_open): Convert filename to UTF-8 
+	before using it in the error message.  (#146054, Federico
+	Mena Quintero)
+
 Thu Jul  8 00:54:32 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gi18n.h: Remove the ENABLE_NLS check, since GLib can't
