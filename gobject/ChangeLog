@@ -1,3 +1,9 @@
+Mon Mar 25 17:51:05 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-mkenums.in (parse_entries): Fix various bugs and
+	excessive stack usage that crept in the conversion from
+	gtk-mkenums. (#74431)
+
 Mon Mar 25 17:25:57 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.c (g_type_free_instance): Wrap setting freed instance
