@@ -1,3 +1,7 @@
+2002-05-17  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add new functions.
+
 Thu May 16 12:24:00 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* acinclude.m4 m4macros/glib-gettext.m4: Incorporate 
