@@ -1,3 +1,9 @@
+Wed Mar 13 12:00:59 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h (g_critical): Add missing g_critical
+	definition for non-C99, non-gnuc compilers.
+	(#69287, Dan Nguyen)
+
 Mon Mar 11 15:36:33 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Copy REALLOC_0_WORKS check from

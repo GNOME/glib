@@ -1337,6 +1337,15 @@ g_message (const gchar *format,
   va_end (args);
 }
 static void
+g_critical (const gchar *format,
+	    ...)
+{
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, format, args);
+  va_end (args);
+}
+static void
 g_warning (const gchar *format,
 	   ...)
 {
