@@ -1,3 +1,8 @@
+2005-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gfileutils.c (g_file_get_contents): Clarify the 
+	documentation.  (#162251, Mariano Suárez-Alvarez)
+
 2005-01-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_setenv, g_unsetenv): Clarify the 
