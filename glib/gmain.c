@@ -1790,7 +1790,7 @@ get_depth_pointer (void)
  *     {
  *       GList *next = l->next;
  *       FreeListBlock *block = l->data;
- *       if (block->depth > depth);
+ *       if (block->depth > depth)
  *         {
  *           g_free (block->mem);
  *           g_free (block);
