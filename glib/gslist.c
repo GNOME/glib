@@ -256,6 +256,31 @@ g_slist_remove_link (GSList *list,
 }
 
 GSList*
+g_slist_copy (GSList *list)
+{
+  GSList *new_list = NULL;
+
+  if (list)
+    {
+      GSList *last;
+
+      new_list = g_slist_alloc ();
+      new_list->data = list->data;
+      last = new_list;
+      list = list->next;
+      while (list)
+	{
+	  last->next = g_slist_alloc ();
+	  last = last->next;
+	  last->data = list->data;
+	  list = list->next;
+	}
+    }
+
+  return new_list;
+}
+
+GSList*
 g_slist_reverse (GSList *list)
 {
   GSList *tmp;

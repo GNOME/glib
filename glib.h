@@ -885,6 +885,7 @@ GList* g_list_remove		(GList		*list,
 GList* g_list_remove_link	(GList		*list,
 				 GList		*llink);
 GList* g_list_reverse		(GList		*list);
+GList* g_list_copy		(GList		*list);
 GList* g_list_nth		(GList		*list,
 				 guint		 n);
 GList* g_list_find		(GList		*list,
@@ -932,6 +933,7 @@ GSList* g_slist_remove		(GSList		*list,
 GSList* g_slist_remove_link	(GSList		*list,
 				 GSList		*llink);
 GSList* g_slist_reverse		(GSList		*list);
+GSList*	g_slist_copy		(GSList		*list);
 GSList* g_slist_nth		(GSList		*list,
 				 guint		 n);
 GSList* g_slist_find		(GSList		*list,
