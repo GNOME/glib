@@ -266,7 +266,7 @@ static gulong profile_mc_allocs = 0;
 static gulong profile_zinit = 0;
 static gulong profile_frees = 0;
 static gulong profile_mc_frees = 0;
-G_LOCK_DEFINE_STATIC (g_profile_mutex);
+static GMutex *g_profile_mutex = NULL;
 #ifdef  G_ENABLE_DEBUG
 static volatile gulong glib_trap_free_size = 0;
 static volatile gulong glib_trap_realloc_size = 0;
@@ -280,13 +280,13 @@ profiler_log (ProfilerJob job,
 	      gulong      n_bytes,
 	      gboolean    success)
 {
-  G_LOCK (g_profile_mutex);
+  g_mutex_lock (g_profile_mutex);
   if (!profile_data)
     {
       profile_data = standard_malloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
       if (!profile_data)	/* memory system kiddin' me, eh? */
 	{
-	  G_UNLOCK (g_profile_mutex);
+	  g_mutex_unlock (g_profile_mutex);
 	  return;
 	}
     }
@@ -320,7 +320,7 @@ profiler_log (ProfilerJob job,
       else
 	profile_mc_frees += n_bytes;
     }
-  G_UNLOCK (g_profile_mutex);
+  g_mutex_unlock (g_profile_mutex);
 }
 
 static void
@@ -369,11 +369,11 @@ g_mem_profile (void)
   gulong local_mc_allocs = profile_mc_allocs;
   gulong local_mc_frees = profile_mc_frees;
 
-  G_LOCK (g_profile_mutex);
+  g_mutex_lock (g_profile_mutex);
 
   if (!profile_data)
     {
-      G_UNLOCK (g_profile_mutex);
+      g_mutex_unlock (g_profile_mutex);
       return;
     }
 
@@ -395,7 +395,7 @@ g_mem_profile (void)
 	   local_mc_frees,
 	   ((gdouble) local_mc_frees) / local_mc_allocs * 100.0,
 	   local_mc_allocs - local_mc_frees);
-  G_UNLOCK (g_profile_mutex);
+  g_mutex_unlock (g_profile_mutex);
 }
 
 static gpointer
@@ -1250,5 +1250,6 @@ g_mem_init (void)
 #endif
 #ifndef G_DISABLE_CHECKS
   mem_chunk_recursion = g_private_new (NULL);
+  g_profile_mutex = g_mutex_new ();
 #endif
 }

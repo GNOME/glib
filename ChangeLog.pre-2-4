@@ -1,3 +1,10 @@
+2001-01-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmem.c: Made g_profile_mutex a GMutex* instead of
+	G_LOCK_DEFINE_STATIC to avoid deadlock for thread implementations
+	without native static mutexes. Contruct g_profile_mutex in
+	g_mem_init().
+
 2001-01-06  Tor Lillqvist  <tml@iki.fi>
 
 	* gconvert.c (g_locale_to_utf8, g_locale_from_utf8): Get len using
