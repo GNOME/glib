@@ -180,6 +180,7 @@ EXTRA_DIST += 			\
 	gobject.def		\
 	gobject.rc.in		\
 	glib-genmarshal.1	\
+	glib-mkenums		\
 	glib-mkenums.1
 
 BUILT_EXTRA_DIST = \

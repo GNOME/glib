@@ -1293,7 +1293,7 @@ if test x"$have_threads" != xnone; then
 			  exit (getpid()==other_pid || 
 				$posix_priority_min != $posix_priority_max);
 			}],
-			[AC_MSG_RESULT(yes),
+			[AC_MSG_RESULT(yes)
 			  AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, [whether to use the PID niceness surrogate for thread priorities])
                         ],
 			[AC_MSG_RESULT(no)])

@@ -1,3 +1,8 @@
+2001-05-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am (EXTRA_DIST): Really distribute glib-mkenums, now
+	that bin_SCRIPTS doesn't seem to care about doing so anymore.
+
 Mon May 28 06:51:24 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c (signal_emit_unlocked_R): fixed bad faux-pass, forgot
