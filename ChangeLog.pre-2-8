@@ -1,3 +1,15 @@
+Sun Dec  8 23:36:12 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gfileutils.c (g_file_test): Guard against
+	the POSIX allowed behavior where access (file, X_OK)
+	succeeds for uid==0 when no executable bits are set.
+
+	* glib/gfileutils.c (g_file_test): Add doc notes
+	about the possibility of race conditions, and the
+	fact that EXISTS and IS_EXECUTABLE give results
+	for the real uid not the effective user ID.
+	(#81854, Morten Welinder.)
+
 Fri Dec  6 14:34:42 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Avoid literal UTF-8. (Allow it to build with 

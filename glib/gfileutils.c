@@ -77,12 +77,34 @@
  * test is %TRUE. With the current set of available tests, there's no point
  * passing in more than one test at a time.
  * 
- * Apart from #G_FILE_TEST_IS_SYMLINK all tests follow symbolic links,
+ * Apart from %G_FILE_TEST_IS_SYMLINK all tests follow symbolic links,
  * so for a symbolic link to a regular file g_file_test() will return
- * %TRUE for both #G_FILE_TEST_IS_SYMLINK and #G_FILE_TEST_IS_REGULAR.
+ * %TRUE for both %G_FILE_TEST_IS_SYMLINK and %G_FILE_TEST_IS_REGULAR.
  *
  * Note, that for a dangling symbolic link g_file_test() will return
- * %TRUE for #G_FILE_TEST_IS_SYMLINK and %FALSE for all other flags.
+ * %TRUE for %G_FILE_TEST_IS_SYMLINK and %FALSE for all other flags.
+ *
+ * You should never use g_file_test() to test whether it is safe
+ * to perform an operaton, because there is always the possibility
+ * of the condition changing before you actually perform the operation.
+ * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
+ * to know whether it is is safe to write to a file without being
+ * tricked into writing into a different location. It doesn't work!
+ *
+ * <informalexample><programlisting>
+ * /&ast; DON'T DO THIS &ast;/
+ *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) {
+ *    fd = open (filename, O_WRONLY);
+ *    /&ast; write to fd &ast;/
+ *  }
+ * </programlisting></informalexample>
+ *
+ * Another thing to note is that %G_FILE_TEST_EXISTS and
+ * %G_FILE_TEST_IS_EXECUTABLE are implemented using the access()
+ * system call. This usually doesn't matter, but if your program
+ * is setuid or setgid it means that these tests will give you
+ * the answer for the real user ID and group ID , rather than the
+ * effective user ID and group ID.
  *
  * Return value: whether a test was %TRUE
  **/
@@ -94,7 +116,19 @@ g_file_test (const gchar *filename,
     return TRUE;
   
   if ((test & G_FILE_TEST_IS_EXECUTABLE) && (access (filename, X_OK) == 0))
-    return TRUE;
+    {
+#ifndef G_OS_WIN32
+      if (getuid () != 0)
+#endif	
+	return TRUE;
+
+      /* For root, on some POSIX systems, access (filename, X_OK)
+       * will succeed even if no executable bits are set on the
+       * file. We fall through to a stat test to avoid that.
+       */
+    }
+  else
+    test &= ~G_FILE_TEST_IS_EXECUTABLE;
 
   if (test & G_FILE_TEST_IS_SYMLINK)
     {
@@ -108,7 +142,9 @@ g_file_test (const gchar *filename,
 #endif
     }
   
-  if (test & (G_FILE_TEST_IS_REGULAR | G_FILE_TEST_IS_DIR))
+  if (test & (G_FILE_TEST_IS_REGULAR |
+	      G_FILE_TEST_IS_DIR |
+	      G_FILE_TEST_IS_EXECUTABLE))
     {
       struct stat s;
       
@@ -119,6 +155,15 @@ g_file_test (const gchar *filename,
 	  
 	  if ((test & G_FILE_TEST_IS_DIR) && S_ISDIR (s.st_mode))
 	    return TRUE;
+
+	  /* The extra test for root when access (file, X_OK) succeeds.
+	   */
+	  if ((test & G_FILE_TEST_IS_EXECUTABLE) &&
+	      ((s.st_mode & S_IXOTH) ||
+	       (s.st_mode & S_IXUSR) ||
+	       (s.st_mode & S_IXGRP)))
+	    return TRUE;
+	      
 	}
     }
 
