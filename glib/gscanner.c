@@ -1027,11 +1027,13 @@ g_scanner_unexp_token (GScanner		*scanner,
       break;
       
     case G_TOKEN_INT:
-      g_snprintf (expected_string, expected_string_len, "number (integer)");
+      g_snprintf (expected_string, expected_string_len, "%snumber (integer)",
+		  scanner->token == G_TOKEN_INT ? "valid " : "");
       break;
       
     case G_TOKEN_FLOAT:
-      g_snprintf (expected_string, expected_string_len, "number (float)");
+      g_snprintf (expected_string, expected_string_len, "%snumber (float)",
+		  scanner->token == G_TOKEN_FLOAT ? "valid " : "");
       break;
       
     case G_TOKEN_STRING:
