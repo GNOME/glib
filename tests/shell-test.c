@@ -178,13 +178,113 @@ run_tests (void)
     }
 }
 
+static gboolean any_test_failed = FALSE;
+
+#define CHECK_STRING_RESULT(expression, expected_value) \
+ check_string_result (#expression, __FILE__, __LINE__, expression, expected_value)
+
+static void
+check_string_result (const char *expression,
+		     const char *file_name,
+		     int line_number,
+		     char *result,
+		     const char *expected)
+{
+	gboolean match;
+	
+	if (expected == NULL)
+	  match = result == NULL;
+	else
+	  match = result != NULL && strcmp (result, expected) == 0;
+
+	if (!match)
+	  {
+	    if (!any_test_failed)
+	      fprintf (stderr, "\n");
+	  
+	    fprintf (stderr, "FAIL: check failed in %s, line %d\n", file_name, line_number);
+	    fprintf (stderr, "      evaluated: %s\n", expression);
+	    fprintf (stderr, "       expected: %s\n", expected == NULL ? "NULL" : expected);
+	    fprintf (stderr, "            got: %s\n", result == NULL ? "NULL" : result);
+	    
+	    any_test_failed = TRUE;
+	  }
+
+	g_free (result);
+}
+
+static char *
+test_shell_unquote (const char *str)
+{
+  char *result;
+  GError *error;
+
+  error = NULL;
+  result = g_shell_unquote (str, &error);
+  if (error == NULL)
+    return result;
+
+  /* Leaks the error, which is no big deal. */
+
+  if (error->domain != G_SHELL_ERROR)
+    return g_strdup ("error in domain other than G_SHELL_ERROR");
+
+  /* It would be nice to check the error message too, but that's
+   * localized, so it's too much of a pain.
+   */
+  switch (error->code)
+    {
+    case G_SHELL_ERROR_BAD_QUOTING:
+      return g_strdup ("G_SHELL_ERROR_BAD_QUOTING");
+    case G_SHELL_ERROR_EMPTY_STRING:
+      return g_strdup ("G_SHELL_ERROR_EMPTY_STRING");
+    case G_SHELL_ERROR_FAILED:
+      return g_strdup ("G_SHELL_ERROR_FAILED");
+    default:
+      return g_strdup ("bad error code in G_SHELL_ERROR domain");
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   run_tests ();
   
-  return 0;
+  CHECK_STRING_RESULT (g_shell_quote (""), "''");
+  CHECK_STRING_RESULT (g_shell_quote ("a"), "'a'");
+  CHECK_STRING_RESULT (g_shell_quote ("("), "'('");
+  CHECK_STRING_RESULT (g_shell_quote ("'"), "''\\'''");
+  CHECK_STRING_RESULT (g_shell_quote ("'a"), "''\\''a'");
+  CHECK_STRING_RESULT (g_shell_quote ("a'"), "'a'\\'''");
+  CHECK_STRING_RESULT (g_shell_quote ("a'a"), "'a'\\''a'");
+  
+  CHECK_STRING_RESULT (test_shell_unquote (""), "");
+  CHECK_STRING_RESULT (test_shell_unquote ("a"), "a");
+  CHECK_STRING_RESULT (test_shell_unquote ("'a'"), "a");
+  CHECK_STRING_RESULT (test_shell_unquote ("'('"), "(");
+  CHECK_STRING_RESULT (test_shell_unquote ("''\\'''"), "'");
+  CHECK_STRING_RESULT (test_shell_unquote ("''\\''a'"), "'a");
+  CHECK_STRING_RESULT (test_shell_unquote ("'a'\\'''"), "a'");
+  CHECK_STRING_RESULT (test_shell_unquote ("'a'\\''a'"), "a'a");
+
+  CHECK_STRING_RESULT (test_shell_unquote ("\\\\"), "\\");
+  CHECK_STRING_RESULT (test_shell_unquote ("\\\n"), "");
+
+  CHECK_STRING_RESULT (test_shell_unquote ("'\\''"), "G_SHELL_ERROR_BAD_QUOTING");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\"\""), "\"");
+
+  CHECK_STRING_RESULT (test_shell_unquote ("\""), "G_SHELL_ERROR_BAD_QUOTING");
+  CHECK_STRING_RESULT (test_shell_unquote ("'"), "G_SHELL_ERROR_BAD_QUOTING");
+
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\\\""), "\\");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\`\""), "`");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\$\""), "$");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\n\""), "\n");
+
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\'\""), "\\'");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\r\""), "\\\r");
+  CHECK_STRING_RESULT (test_shell_unquote ("\"\\n\""), "\\n");
+
+  return any_test_failed ? 1 : 0;
 }
-
-

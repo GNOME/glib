@@ -198,7 +198,7 @@ g_shell_quote (const gchar *unquoted_string)
     {
       /* Replace literal ' with a close ', a \', and a open ' */
       if (*p == '\'')
-        g_string_append (dest, "'\''");
+        g_string_append (dest, "'\\''");
       else
         g_string_append_c (dest, *p);
 
