@@ -1,15 +1,17 @@
 #include <glib.h>
+#include <locale.h>
 #include <string.h>
 #include <stdlib.h>
 
 static GKeyFile *
-load_data (const gchar *data)
+load_data (const gchar   *data, 
+	   GKeyFileFlags  flags)
 {
   GKeyFile *keyfile;
   GError *error = NULL;
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+  g_key_file_load_from_data (keyfile, data, -1, flags, &error);
   if (error)
     {
       g_print ("Could not load data: %s\n", error->message);
@@ -82,6 +84,160 @@ check_string_value (GKeyFile    *keyfile,
       exit (1);
     }
 
+  g_free (value);
+}
+
+static void
+check_locale_string_value (GKeyFile    *keyfile,
+			   const gchar *group,
+			   const gchar *key,
+			   const gchar *locale,
+			   const gchar *expected) 
+{
+  GError *error = NULL;
+  gchar *value;
+
+  value = g_key_file_get_locale_string (keyfile, group, key, locale, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+
+  if (strcmp (value, expected) != 0)
+    {
+      g_print ("Group %s key %s locale %s: "
+	       "expected string value '%s', actual value '%s'\n",
+	       group, key, locale, expected, value);      
+      exit (1);
+    }
+
+  g_free (value);
+}
+
+static void
+check_string_list_value (GKeyFile    *keyfile,
+			 const gchar *group,
+			 const gchar *key,
+			 ...)
+{
+  gint i;
+  gchar *v, **value;
+  va_list args;
+  gsize len;
+  GError *error = NULL;
+
+  value = g_key_file_get_string_list (keyfile, group, key, &len, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+  
+  va_start (args, key);
+  i = 0;
+  v = va_arg (args, gchar*);
+  while (v)
+    {
+      if (value[i] == NULL)
+	{
+	  g_print ("Group %s key %s: list too short (%d)\n", 
+		   group, key, i);      
+	  exit (1);
+	}
+      if (strcmp (v, value[i]) != 0)
+	{
+	  g_print ("Group %s key %s: mismatch at %d, expected %s, got %s\n", 
+		   group, key, i, v, value[i]);      
+	  exit (1);
+	}
+
+      i++;
+      v = va_arg (args, gchar*);
+    }
+
+  va_end (args);
+  
+  g_strfreev (value);
+}
+
+static void
+check_integer_list_value (GKeyFile    *keyfile,
+			  const gchar *group,
+			  const gchar *key,
+			  ...)
+{
+  gint i;
+  gint v, *value;
+  va_list args;
+  gsize len;
+  GError *error = NULL;
+
+  value = g_key_file_get_integer_list (keyfile, group, key, &len, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+  
+  va_start (args, key);
+  i = 0;
+  v = va_arg (args, gint);
+  while (v != -100)
+    {
+      if (i == len)
+	{
+	  g_print ("Group %s key %s: list too short (%d)\n", 
+		   group, key, i);      
+	  exit (1);
+	}
+      if (value[i] != v)
+	{
+	  g_print ("Group %s key %s: mismatch at %d, expected %d, got %d\n", 
+		   group, key, i, v, value[i]);      
+	  exit (1);
+	}
+
+      i++;
+      v = va_arg (args, gint);
+    }
+
+  va_end (args);
+  
+  g_free (value);
+}
+
+static void
+check_boolean_list_value (GKeyFile    *keyfile,
+			  const gchar *group,
+			  const gchar *key,
+			  ...)
+{
+  gint i;
+  gboolean v, *value;
+  va_list args;
+  gsize len;
+  GError *error = NULL;
+
+  value = g_key_file_get_boolean_list (keyfile, group, key, &len, &error);
+  check_no_error (&error);
+  g_assert (value != NULL);
+  
+  va_start (args, key);
+  i = 0;
+  v = va_arg (args, gboolean);
+  while (v != -100)
+    {
+      if (i == len)
+	{
+	  g_print ("Group %s key %s: list too short (%d)\n", 
+		   group, key, i);      
+	  exit (1);
+	}
+      if (value[i] != v)
+	{
+	  g_print ("Group %s key %s: mismatch at %d, expected %d, got %d\n", 
+		   group, key, i, v, value[i]);      
+	  exit (1);
+	}
+
+      i++;
+      v = va_arg (args, gboolean);
+    }
+
+  va_end (args);
+  
   g_free (value);
 }
 
@@ -174,7 +330,7 @@ test_line_ends (void)
     "key3=value3\r\r\n"
     "key4=value4\n";
 
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
 
   check_string_value (keyfile, "group1", "key1", "value1");
   check_string_value (keyfile, "group1", "key2", "value2");
@@ -200,7 +356,7 @@ test_whitespace (void)
     "key4  =  value \t4\n"
     "  key5  =  value5\n";
   
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
 
   check_string_value (keyfile, "group1", "key1", "value1");
   check_string_value (keyfile, "group1", "key2", "value2");
@@ -229,7 +385,7 @@ test_listing (void)
     "key3=value3\n"
     "key4=value4\n";
   
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
 
   names = g_key_file_get_groups (keyfile, &len);
   if (names == NULL)
@@ -308,7 +464,7 @@ test_string (void)
     "key1=\\a\\b\\0800xff\n"
     "key2=blabla\\\n";
   
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
 
   check_string_value (keyfile, "valid", "key1", " \n\t\r\\");
   check_string_value (keyfile, "valid", "key2", "\"quoted\"");
@@ -345,7 +501,8 @@ test_boolean (void)
     "key3=yes\n"
     "key4=no\n";
   
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
+
   check_boolean_value (keyfile, "valid", "key1", TRUE);
   check_boolean_value (keyfile, "valid", "key2", FALSE);
   check_boolean_value (keyfile, "valid", "key3", TRUE);
@@ -385,7 +542,8 @@ test_integer (void)
     "key3=1e37\n"
     "key4=ten\n";
   
-  keyfile = load_data (data);
+  keyfile = load_data (data, 0);
+
   check_integer_value (keyfile, "valid", "key1", 0);
   check_integer_value (keyfile, "valid", "key2", 1);
   check_integer_value (keyfile, "valid", "key3", -1);
@@ -406,6 +564,111 @@ test_integer (void)
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 }
 
+/* check handling of translated strings */
+static void
+test_locale_string (void)
+{
+  GKeyFile *keyfile;
+  GError *error = NULL;
+  gchar *value;
+
+  const gchar *data = 
+    "[valid]\n"
+    "key1=v1\n"
+    "key1[de]=v1-de\n"
+    "key1[de_DE]=v1-de_DE\n"
+    "key1[de_DE.UTF8]=v1-de_DE.UTF8\n"
+    "key1[fr]=v1-fr\n"
+    "key1[en] =v1-en\n"
+    "[invalid]\n"
+    "key1[de=v1\n"
+    "key1[fr]]=v2\n"
+    "key1 [en]=v3\n";  
+  
+  keyfile = load_data (data, G_KEY_FILE_KEEP_TRANSLATIONS);
+
+  check_locale_string_value (keyfile, "valid", "key1", "it", "v1");
+  check_locale_string_value (keyfile, "valid", "key1", "de", "v1-de");
+  check_locale_string_value (keyfile, "valid", "key1", "de_DE", "v1-de_DE");
+  check_locale_string_value (keyfile, "valid", "key1", "de_DE.UTF8", "v1-de_DE.UTF8");
+  check_locale_string_value (keyfile, "valid", "key1", "fr", "v1-fr");
+  check_locale_string_value (keyfile, "valid", "key1", "fr_FR", "v1-fr");
+  check_locale_string_value (keyfile, "valid", "key1", "en", "v1-en");
+  
+  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "de", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_free (value);
+
+  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "fr", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_free (value);
+
+  value = g_key_file_get_locale_string (keyfile, "invalid", "key1", "en", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_free (value);
+  
+  g_key_file_free (keyfile);
+
+  /* now test that translations are thrown away */
+
+  g_setenv ("LC_ALL", "de", TRUE);
+  setlocale (LC_ALL, "");
+
+  keyfile = load_data (data, 0);
+
+  check_locale_string_value (keyfile, "valid", "key1", "it", "v1");
+  check_locale_string_value (keyfile, "valid", "key1", "de", "v1-de");
+  check_locale_string_value (keyfile, "valid", "key1", "de_DE", "v1-de");
+  check_locale_string_value (keyfile, "valid", "key1", "de_DE.UTF8", "v1-de");
+  check_locale_string_value (keyfile, "valid", "key1", "fr", "v1");
+  check_locale_string_value (keyfile, "valid", "key1", "fr_FR", "v1");
+  check_locale_string_value (keyfile, "valid", "key1", "en", "v1");
+
+  g_key_file_free (keyfile);  
+}
+
+static void
+test_lists (void)
+{
+  GKeyFile *keyfile;
+
+  const gchar *data = 
+    "[valid]\n"
+    "key1=v1;v2\n"
+    "key2=v1;v2;\n"
+    "key3=v1,v2\n"
+    "key4=v1\\;v2\n"
+    "key5=true;false\n"
+    "key6=1;0;-1\n"
+    "key7= 1 ; 0 ; -1 \n"
+    "key8=v1\\,v2\n";
+  
+  keyfile = load_data (data, 0);
+
+  check_string_list_value (keyfile, "valid", "key1", "v1", "v2", NULL);
+  check_string_list_value (keyfile, "valid", "key2", "v1", "v2", NULL);
+  check_string_list_value (keyfile, "valid", "key3", "v1,v2", NULL);
+  check_string_list_value (keyfile, "valid", "key4", "v1;v2", NULL);
+  check_boolean_list_value (keyfile, "valid", "key5", TRUE, FALSE, -100);
+  check_integer_list_value (keyfile, "valid", "key6", 1, 0, -1, -100);
+  /* maybe these should be valid */
+  /* check_integer_list_value (keyfile, "valid", "key7", 1, 0, -1, -100);*/
+  /* check_string_list_value (keyfile, "valid", "key8", "v1\\,v2", NULL);*/
+
+  g_key_file_free (keyfile);  
+
+  /* Now check an alternate separator */
+
+  keyfile = load_data (data, 0);
+  g_key_file_set_list_separator (keyfile, ',');
+
+  check_string_list_value (keyfile, "valid", "key1", "v1;v2", NULL);
+  check_string_list_value (keyfile, "valid", "key2", "v1;v2;", NULL);
+  check_string_list_value (keyfile, "valid", "key3", "v1", "v2", NULL);
+
+  g_key_file_free (keyfile);  
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -415,6 +678,8 @@ main (int argc, char *argv[])
   test_string ();
   test_boolean ();
   test_integer ();
+  test_locale_string ();
+  test_lists ();
   
   return 0;
 }
