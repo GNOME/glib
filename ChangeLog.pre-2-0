@@ -1,3 +1,14 @@
+Sat Oct 31 05:08:26 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: removed old G_ENUM(), G_FLAGS(), G_NV() and G_SV() macros.
+	added macros G_STRUCT_OFFSET(), G_STRUCT_MEMBER_P() and
+ 	G_STRUCT_MEMBER() for handling structure fields through their offsets.
+	(struct _GHookList): added a hook_free function member, that can be used
+	to free additional fields in derived hook structures.
+	g_hook_free(): if hook_list->hook_free != NULL, call this function prior
+	to freeing the hook. (this functionality should have been there in the
+	first place, it just got forgotten as an implementation detail).
+
 Wed Oct 28 00:49:32 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: G_BREAKPOINT for alpha from Robert Wilhelm

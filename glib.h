@@ -181,20 +181,15 @@ extern "C" {
 #endif /* !G_VA_COPY */
 
 
-/* Provide simple enum value macro wrappers that ease automated
- * enum value stringification code. [abandoned]
+/* Provide convenience macros for handling structure
+ * fields through their offsets.
  */
-#if	!defined (G_CODE_GENERATION)
-#define G_ENUM( EnumerationName )		EnumerationName
-#define G_FLAGS( EnumerationName )		EnumerationName
-#define G_NV( VALUE_NAME , value_nick, VALUE)	VALUE_NAME = (VALUE)
-#define G_SV( VALUE_NAME, value_nick )		VALUE_NAME
-#else	/* G_CODE_GENERATION */
-#define G_ENUM( EnumerationName )		G_ENUM_E + EnumerationName +
-#define G_FLAGS( EnumerationName )		G_ENUM_F + EnumerationName +
-#define G_NV( VALUE_NAME , value_nick, VALUE)	G_ENUM_V + VALUE_NAME + value_nick +
-#define G_SV( VALUE_NAME, value_nick )		G_ENUM_V + VALUE_NAME + value_nick +
-#endif	/* G_CODE_GENERATION */
+#define G_STRUCT_OFFSET(struct_type, member)	\
+    ((gulong) ((gchar*) &((struct_type*) 0)->member))
+#define G_STRUCT_MEMBER_P(struct_p, struct_offset)   \
+    ((gpointer) ((gchar*) (struct_p) + (gulong) (struct_offset)))
+#define G_STRUCT_MEMBER(member_type, struct_p, struct_offset)   \
+    (*(member_type*) G_STRUCT_MEMBER_P ((struct_p), (struct_offset)))
 
 
 /* inlining hassle. for compilers that don't allow the `inline' keyword,
@@ -936,6 +931,8 @@ typedef void		(*GHookMarshaller)	(GHook		*hook,
 						 gpointer	 data);
 typedef void		(*GHookFunc)		(gpointer	 data);
 typedef gboolean	(*GHookCheckFunc)	(gpointer	 data);
+typedef void		(*GHookFreeFunc)	(GHookList      *hook_list,
+						 GHook          *hook);
 typedef void		(*GLogFunc)		(const gchar   *log_domain,
 						 GLogLevelFlags	log_level,
 						 const gchar   *message,
@@ -1286,6 +1283,7 @@ struct _GHookList
   guint		 is_setup : 1;
   GHook		*hooks;
   GMemChunk	*hook_memchunk;
+  GHookFreeFunc	 hook_free; /* virtual function */
 };
 
 struct _GHook

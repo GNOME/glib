@@ -42,6 +42,7 @@ g_hook_list_init (GHookList *hook_list,
 					      hook_size,
 					      hook_size * G_HOOKS_PREALLOC,
 					      G_ALLOC_AND_FREE);
+  hook_list->hook_free = NULL;
 }
 
 void
@@ -105,6 +106,9 @@ g_hook_free (GHookList *hook_list,
   g_return_if_fail (hook_list->is_setup);
   g_return_if_fail (hook != NULL);
   g_return_if_fail (G_HOOK_IS_UNLINKED (hook));
+
+  if (hook_list->hook_free)
+    hook_list->hook_free (hook_list, hook);
   
   g_chunk_free (hook, hook_list->hook_memchunk);
 }
@@ -176,7 +180,7 @@ g_hook_unref (GHookList *hook_list,
 	}
       hook->prev = NULL;
       
-      g_chunk_free (hook, hook_list->hook_memchunk);
+      g_hook_free (hook_list, hook);
       
       if (!hook_list->hooks &&
 	  !hook_list->is_setup)
