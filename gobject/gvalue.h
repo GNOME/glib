@@ -50,6 +50,10 @@ struct _GValue
     guint	v_uint;
     glong	v_long;
     gulong	v_ulong;
+#ifdef G_HAVE_GINT64
+    gint64      v_int64;
+    guint64     v_uint64;
+#endif /* G_HAVE_GINT64 */
     gfloat	v_float;
     gdouble	v_double;
     gpointer	v_pointer;

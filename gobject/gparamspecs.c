@@ -1698,3 +1698,59 @@ g_param_spec_object (const gchar *name,
   
   return G_PARAM_SPEC (ospec);
 }
+
+#ifdef G_HAVE_GINT64
+
+GParamSpec*
+g_param_spec_int64 (const gchar *name,
+		   const gchar *nick,
+		   const gchar *blurb,
+		   gint64        minimum,
+		   gint64	maximum,
+		   gint64	default_value,
+		   GParamFlags	flags)
+{
+  GParamSpecInt64 *ispec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  ispec = g_param_spec_internal (G_TYPE_PARAM_INT64,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  
+  ispec->minimum = minimum;
+  ispec->maximum = maximum;
+  ispec->default_value = default_value;
+  
+  return G_PARAM_SPEC (ispec);
+}
+
+GParamSpec*
+g_param_spec_uint64 (const gchar *name,
+		   const gchar *nick,
+		   const gchar *blurb,
+		   guint64        minimum,
+		   guint64	maximum,
+		   guint64	default_value,
+		   GParamFlags	flags)
+{
+  GParamSpecUInt64 *ispec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  ispec = g_param_spec_internal (G_TYPE_PARAM_UINT64,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  
+  ispec->minimum = minimum;
+  ispec->maximum = maximum;
+  ispec->default_value = default_value;
+  
+  return G_PARAM_SPEC (ispec);
+}
+
+#endif /* G_HAVE_GINT64 */

@@ -1,3 +1,9 @@
+Wed Oct  3 16:02:24 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-genmarshal.c gparamspecs.[ch] gvalue.h 
+        gobject/gvaluetypes.[ch]: Add support for G_TYPE_INT64
+	and storing it in GValue (Patch from Mathieu Lacage, #59254.)
+
 2001-10-03  jacob berkman  <jacob@ximian.com>
 
 	* gtype.c (type_iface_retrieve_holder_info_Wm): 

@@ -38,6 +38,8 @@ G_BEGIN_DECLS
 #define G_VALUE_HOLDS_DOUBLE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
 #define G_VALUE_HOLDS_STRING(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
 #define G_VALUE_HOLDS_POINTER(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
+#define G_VALUE_HOLDS_INT64(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_INT64))
+#define G_VALUE_HOLDS_UINT64(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UINT64))
 
 
 /* --- prototypes --- */
@@ -77,6 +79,14 @@ gchar*		      g_value_dup_string	(const GValue *value);
 void		      g_value_set_pointer	(GValue	      *value,
 						 gpointer      v_pointer);
 gpointer	      g_value_get_pointer	(const GValue *value);
+#ifdef G_HAVE_GINT64
+void		      g_value_set_int64		(GValue	      *value,
+						 gint64	       v_int64);
+gint64		      g_value_get_int64		(const GValue *value);
+void		      g_value_set_uint64	(GValue	      *value,
+						 guint64      v_uint64);
+guint64		      g_value_get_uint64	(const GValue *value);
+#endif /* G_HAVE_GINT64 */
 
 
 /* debugging aid, describe value contents as string */

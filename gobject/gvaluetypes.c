@@ -711,6 +711,41 @@ g_value_get_pointer (const GValue *value)
   return value->data[0].v_pointer;
 }
 
+#ifdef G_HAVE_GINT64
+void
+g_value_set_int64 (GValue *value,
+		  gint64 v_int64)
+{
+  g_return_if_fail (G_VALUE_HOLDS_INT64 (value));
+
+  value->data[0].v_int64 = v_int64;
+}
+
+gint64
+g_value_get_int64 (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_INT64 (value), 0);
+
+  return value->data[0].v_int64;
+}
+
+void
+g_value_set_uint64 (GValue *value,
+		   guint64 v_uint64)
+{
+  g_return_if_fail (G_VALUE_HOLDS_UINT64 (value));
+
+  value->data[0].v_uint64 = v_uint64;
+}
+
+guint64
+g_value_get_uint64 (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_UINT64 (value), 0);
+
+  return value->data[0].v_uint64;
+}
+#endif /* G_HAVE_GINT64 */
 
 /* need extra includes for g_strdup_value_contents() ;( */
 #include "gobject.h"

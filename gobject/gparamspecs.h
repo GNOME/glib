@@ -90,6 +90,11 @@ typedef struct _GParamSpecPointer    GParamSpecPointer;
 typedef struct _GParamSpecValueArray GParamSpecValueArray;
 typedef struct _GParamSpecClosure    GParamSpecClosure;
 typedef struct _GParamSpecObject     GParamSpecObject;
+#ifdef G_HAVE_GINT64
+typedef struct _GParamSpecInt64      GParamSpecInt64;
+typedef struct _GParamSpecUInt64     GParamSpecUInt64;
+#endif /* G_HAVE_GINT64 */
+
 struct _GParamSpecChar
 {
   GParamSpec    parent_instance;
@@ -219,7 +224,24 @@ struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
 };
-
+#ifdef G_HAVE_GINT64
+struct _GParamSpecInt64
+{
+  GParamSpec    parent_instance;
+  
+  gint64        minimum;
+  gint64        maximum;
+  gint64        default_value;
+};
+struct _GParamSpecUInt64
+{
+  GParamSpec    parent_instance;
+  
+  guint64       minimum;
+  guint64       maximum;
+  guint64       default_value;
+};
+#endif /* G_HAVE_GINT64 */
 
 /* --- GParamSpec prototypes --- */
 GParamSpec*	g_param_spec_char	 (const gchar	 *name,
@@ -332,6 +354,20 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  const gchar	 *nick,
 					  const gchar	 *blurb,
 					  GType		  object_type,
+					  GParamFlags	  flags);
+GParamSpec*	g_param_spec_int64	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  gint64       	  minimum,
+					  gint64       	  maximum,
+					  gint64       	  default_value,
+					  GParamFlags	  flags);
+GParamSpec*	g_param_spec_uint64	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  guint64	  minimum,
+					  guint64	  maximum,
+					  guint64	  default_value,
 					  GParamFlags	  flags);
 
 
