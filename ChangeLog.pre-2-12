@@ -1,3 +1,8 @@
+Wed Jun 28 22:52:00 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (libglib_la_SOURCES): Fix
+	gunichartable.h => gunichartables.h. (From Eric Limings)
+
 Fri Jun 23 17:20:26 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: define gstring in terms of gchar*. this typedef reflects
