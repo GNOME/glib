@@ -1,3 +1,8 @@
+2002-02-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c: Only compile most of this file, if
+	G_THREAD_ENABLED is set.
+	
 2002-01-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-solaris.c: Use g_free instead of free. Pointed out by

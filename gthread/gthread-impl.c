@@ -37,6 +37,8 @@
 
 #include <glib.h>
 
+#ifdef G_THREAD_ENABLED
+
 static gboolean thread_system_already_initialized = FALSE;
 static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
 
@@ -285,7 +287,7 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
    * of g_thread_functions_for_glib_use_default based on operating
    * system version, C library version, or whatever. */
   g_thread_impl_init();
-#endif
+#endif /* HAVE_G_THREAD_IMPL_INIT */
 
   errorcheck_functions = g_thread_functions_for_glib_use_default;
   errorcheck_functions.mutex_new = g_mutex_new_errorcheck_impl;
@@ -310,10 +312,6 @@ void
 g_thread_init (GThreadFunctions* init)
 {
   gboolean supported;
-
-#ifndef	G_THREADS_ENABLED
-  g_error ("GLib thread support is disabled.");
-#endif	/* !G_THREADS_ENABLED */
 
   if (thread_system_already_initialized)
     g_error ("GThread system may only be initialized once.");
@@ -390,3 +388,13 @@ g_thread_init (GThreadFunctions* init)
   /* we want the main thread to run with normal priority */
   g_thread_set_priority (g_thread_self(), G_THREAD_PRIORITY_NORMAL);
 }
+
+#else /* !G_THREADS_ENABLED */
+
+void
+g_thread_init (GThreadFunctions* init)
+{
+  g_error ("GLib thread support is disabled.");
+}
+
+#endif /* !G_THREADS_ENABLED */

@@ -1283,7 +1283,7 @@ case $have_threads in
 	   g_threads_impl="WIN32"
 	   G_THREAD_LIBS=""
 	   ;;
-        none)
+        none|no)
 	   g_threads_impl="NONE"
            ;;
         *)
