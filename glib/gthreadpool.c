@@ -55,7 +55,7 @@ static GCond *inform_cond = NULL;
 
 static void g_thread_pool_free_internal (GRealThreadPool* pool);
 static void g_thread_pool_thread_proxy (gpointer data);
-static void g_thread_pool_start_thread (GRealThreadPool* pool);
+static void g_thread_pool_start_thread (GRealThreadPool* pool, GError **error);
 static void g_thread_pool_wakeup_and_stop_all (GRealThreadPool* pool);
 
 #define g_thread_should_run(pool, len) \
@@ -162,7 +162,8 @@ g_thread_pool_thread_proxy (gpointer data)
 }
 
 static void
-g_thread_pool_start_thread (GRealThreadPool* pool)
+g_thread_pool_start_thread (GRealThreadPool  *pool, 
+			    GError          **error)
 {
   gboolean success = FALSE;
   GThreadPriority priority = pool->pool.priority;
@@ -206,9 +207,19 @@ g_thread_pool_start_thread (GRealThreadPool* pool)
     }
 
   if (!success)
-    /* No thread was found, we have to start one new */
-    g_thread_create (g_thread_pool_thread_proxy, pool, pool->pool.stack_size, 
-		     FALSE, pool->pool.bound, priority);
+    {
+      GError *local_error = NULL;
+      /* No thread was found, we have to start one new */
+      g_thread_create (g_thread_pool_thread_proxy, pool, 
+		       pool->pool.stack_size, FALSE, 
+		       pool->pool.bound, priority, &local_error);
+      
+      if (local_error)
+	{
+	  g_propagate_error (error, local_error);
+	  return;
+	}
+    }
 
   /* See comment in g_thread_pool_thread_proxy as to why this is done
    * here and not there */
@@ -222,7 +233,8 @@ g_thread_pool_new (GFunc            thread_func,
 		   gboolean         bound,
 		   GThreadPriority  priority,
 		   gboolean         exclusive,
-		   gpointer         user_data)
+		   gpointer         user_data,
+		   GError         **error)
 {
   GRealThreadPool *retval;
 
@@ -257,9 +269,17 @@ g_thread_pool_new (GFunc            thread_func,
   if (retval->pool.exclusive)
     {
       g_async_queue_lock (retval->queue);
-
+  
       while (retval->num_threads < retval->max_threads)
-	g_thread_pool_start_thread (retval);
+	{
+	  GError *local_error = NULL;
+	  g_thread_pool_start_thread (retval, &local_error);
+	  if (local_error)
+	    {
+	      g_propagate_error (error, local_error);
+	      break;
+	    }
+	}
 
       g_async_queue_unlock (retval->queue);
     }
@@ -269,7 +289,8 @@ g_thread_pool_new (GFunc            thread_func,
 
 void 
 g_thread_pool_push (GThreadPool     *pool,
-		    gpointer         data)
+		    gpointer         data,
+		    GError         **error)
 {
   GRealThreadPool *real = (GRealThreadPool*) pool;
 
@@ -284,17 +305,17 @@ g_thread_pool_push (GThreadPool     *pool,
     }
 
   if (!pool->exclusive && g_async_queue_length_unlocked (real->queue) >= 0)
-    {
-      /* No thread is waiting in the queue */
-      g_thread_pool_start_thread (real);
-    }
+    /* No thread is waiting in the queue */
+    g_thread_pool_start_thread (real, error);
+
   g_async_queue_push_unlocked (real->queue, data);
   g_async_queue_unlock (real->queue);
 }
 
 void
 g_thread_pool_set_max_threads (GThreadPool     *pool,
-			       gint             max_threads)
+			       gint             max_threads,
+			       GError         **error)
 {
   GRealThreadPool *real = (GRealThreadPool*) pool;
   gint to_start;
@@ -314,8 +335,16 @@ g_thread_pool_set_max_threads (GThreadPool     *pool,
     to_start = g_async_queue_length_unlocked (real->queue);
   
   for ( ; to_start > 0; to_start--)
-    g_thread_pool_start_thread (real);
-    
+    {
+      GError *local_error = NULL;
+      g_thread_pool_start_thread (real, &local_error);
+      if (local_error)
+	{
+	  g_propagate_error (error, local_error);
+	  break;
+	}
+    }
+   
   g_async_queue_unlock (real->queue);
 }
 

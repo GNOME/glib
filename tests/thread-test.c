@@ -27,7 +27,7 @@ test_g_mutex (void)
   g_assert (G_TRYLOCK (test_g_mutex));
   thread = g_thread_create (test_g_mutex_thread, 
 			    GINT_TO_POINTER (42),
-			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL);
+			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
   g_usleep (G_MICROSEC);
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
@@ -62,7 +62,7 @@ test_g_static_rec_mutex (void)
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   thread = g_thread_create (test_g_static_rec_mutex_thread, 
 			    GINT_TO_POINTER (42),
-			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL);
+			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
   g_usleep (G_MICROSEC);
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   g_usleep (G_MICROSEC);
@@ -136,7 +136,7 @@ test_g_static_private (void)
       threads[i] = g_thread_create (test_g_static_private_thread, 
 				    GINT_TO_POINTER (i),
 				    0, TRUE, TRUE, 
-				    G_THREAD_PRIORITY_NORMAL);      
+				    G_THREAD_PRIORITY_NORMAL, NULL);      
     }
   for (i = 0; i < THREADS; i++)
     {
@@ -213,7 +213,7 @@ test_g_static_rw_lock ()
     {
       threads[i] = g_thread_create (test_g_static_rw_lock_thread, 
 				    0, 0, TRUE, TRUE, 
-				    G_THREAD_PRIORITY_NORMAL);      
+				    G_THREAD_PRIORITY_NORMAL, NULL);      
     }
   g_usleep (G_MICROSEC);
   test_g_static_rw_lock_run = FALSE;

@@ -33,17 +33,17 @@ main (int   argc,
   g_thread_init (NULL);
   
   pool1 = g_thread_pool_new (thread_pool_func, 3, 0, FALSE, 
-                            G_THREAD_PRIORITY_NORMAL, FALSE, NULL);
+                            G_THREAD_PRIORITY_NORMAL, FALSE, NULL, NULL);
   pool2 = g_thread_pool_new (thread_pool_func, 5, 0, FALSE, 
-			     G_THREAD_PRIORITY_LOW, FALSE, NULL);
+			     G_THREAD_PRIORITY_LOW, FALSE, NULL, NULL);
   pool3 = g_thread_pool_new (thread_pool_func, 7, 0, FALSE, 
-                             G_THREAD_PRIORITY_LOW, TRUE, NULL);
+                             G_THREAD_PRIORITY_LOW, TRUE, NULL, NULL);
 
   for (i = 0; i < RUNS; i++)
     {
-      g_thread_pool_push (pool1, GUINT_TO_POINTER (1));
-      g_thread_pool_push (pool2, GUINT_TO_POINTER (1));
-      g_thread_pool_push (pool3, GUINT_TO_POINTER (1));
+      g_thread_pool_push (pool1, GUINT_TO_POINTER (1), NULL);
+      g_thread_pool_push (pool2, GUINT_TO_POINTER (1), NULL);
+      g_thread_pool_push (pool3, GUINT_TO_POINTER (1), NULL);
     } 
   
   g_thread_pool_free (pool1, FALSE, TRUE);

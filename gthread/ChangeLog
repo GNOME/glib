@@ -1,3 +1,8 @@
+2000-09-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c (g_thread_create_posix_impl): Use GError to
+	report errors.
+
 2000-05-13  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: New file, with gthread stuff moved from

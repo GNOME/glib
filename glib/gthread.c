@@ -51,6 +51,21 @@
    (memcpy (&dest, &src, GLIB_SIZEOF_SYSTEM_THREAD))
 #endif /* GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P */
 
+GQuark 
+g_thread_error_quark()
+{
+  static GQuark quark;
+  G_LOCK_DEFINE_STATIC(lock);
+  if (!quark)
+  {
+    G_LOCK (lock);
+    if (!quark)
+      quark = g_quark_from_static_string ("g-thread-error");
+    G_UNLOCK (lock);
+  }
+  return quark;
+}
+
 typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
@@ -97,7 +112,7 @@ GThreadFunctions g_thread_functions_for_glib_use = {
   NULL,                                        /* private_set */
   (void(*)(GThreadFunc, gpointer, gulong, 
 	   gboolean, gboolean, GThreadPriority, 
-	   gpointer))g_thread_fail,            /* thread_create */
+	   gpointer, GError**))g_thread_fail,  /* thread_create */
   NULL,                                        /* thread_yield */
   NULL,                                        /* thread_join */
   NULL,                                        /* thread_exit */
@@ -381,10 +396,11 @@ g_thread_create (GThreadFunc 		 thread_func,
 		 gulong 		 stack_size,
 		 gboolean 		 joinable,
 		 gboolean 		 bound,
-		 GThreadPriority 	 priority)
+		 GThreadPriority 	 priority,
+		 GError                **error)
 {
   GRealThread* result = g_new (GRealThread, 1);
-
+  GError *local_error = NULL;
   g_return_val_if_fail (thread_func, NULL);
   
   result->thread.joinable = joinable;
@@ -394,10 +410,18 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->arg = arg;
   result->private_data = NULL; 
   G_LOCK (g_thread_create);
-  G_THREAD_UF (thread_create, (g_thread_create_proxy, result, stack_size, 
-			       joinable, bound, priority,
-			       &result->system_thread));
+  G_THREAD_UF (thread_create, (g_thread_create_proxy, result, 
+			       stack_size, joinable, bound, priority,
+			       &result->system_thread, &local_error));
   G_UNLOCK (g_thread_create);
+
+  if (local_error)
+    {
+      g_propagate_error (error, local_error);
+      g_free (result);
+      return NULL;
+    }
+
   return (GThread*) result;
 }
 

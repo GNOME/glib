@@ -941,6 +941,15 @@ struct _GTuples
   guint len;
 };
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#include <gerror.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /* IEEE Standard 754 Single Precision Storage Format (gfloat):
  *
@@ -3047,6 +3056,14 @@ gchar *         g_win32_error_message (gint error);
 /* GLib Thread support
  */
 
+extern GQuark g_thread_error_quark();
+#define G_THREAD_ERROR g_thread_error_quark()
+
+typedef enum
+{
+  G_THREAD_ERROR_AGAIN /* Resource temporarily unavailable */
+} GThreadError;
+
 typedef void		(*GThreadFunc)		(gpointer	value);
 
 typedef enum
@@ -3099,7 +3116,8 @@ struct _GThreadFunctions
 			           gboolean 		 joinable,
 			           gboolean 		 bound,
 			           GThreadPriority 	 priority,
-				   gpointer              thread);
+				   gpointer              thread,
+				   GError              **error);
   void      (*thread_yield)       (void);
   void      (*thread_join)        (gpointer		 thread);
   void      (*thread_exit)        (void);
@@ -3161,11 +3179,12 @@ GThread* g_thread_create (GThreadFunc 		 thread_func,
 			  gulong 		 stack_size,
 			  gboolean 		 joinable,
 			  gboolean 		 bound,
-			  GThreadPriority 	 priority);
+			  GThreadPriority 	 priority,
+			  GError               **error);
 GThread* g_thread_self ();
-void g_thread_join (GThread* thread);
-void g_thread_set_priority (GThread* thread, 
-			    GThreadPriority priority);
+void g_thread_join (GThread *thread);
+void g_thread_set_priority (GThread         *thread, 
+			    GThreadPriority  priority);
 
 /* GStaticMutexes can be statically initialized with the value
  * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
@@ -3365,20 +3384,23 @@ GThreadPool*    g_thread_pool_new             (GFunc            thread_func,
 					       gboolean         bound,
 					       GThreadPriority  priority,
 					       gboolean         exclusive,
-					       gpointer         user_data);
+					       gpointer         user_data,
+					       GError         **error);
 
 /* Push new data into the thread pool. This task is assigned to a thread later
  * (when the maximal number of threads is reached for that pool) or now
  * (otherwise). If necessary a new thread will be started. The function
  * returns immediatly */
 void            g_thread_pool_push            (GThreadPool     *pool,
-					       gpointer         data);
+					       gpointer         data,
+					       GError         **error);
 
 /* Set the number of threads, which can run concurrently for that pool, -1
  * means no limit. 0 means has the effect, that the pool won't process
  * requests until the limit is set higher again */
 void            g_thread_pool_set_max_threads (GThreadPool     *pool,
-					       gint             max_threads);
+					       gint             max_threads,
+					       GError         **error);
 gint            g_thread_pool_get_max_threads (GThreadPool     *pool);
 
 /* Get the number of threads assigned to that pool. This number doesn't
@@ -3410,6 +3432,5 @@ void            g_thread_pool_stop_unused_threads    (void);
 #endif /* __cplusplus */
 
 #include <gunicode.h>
-#include <gerror.h>
 
 #endif /* __G_LIB_H__ */

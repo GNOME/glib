@@ -4,6 +4,16 @@
 	g_propagte_error to hand over local errors to the calling
 	function.
 
+	* glib.h: Include gerror.h before it is used for some g_thread_*
+	functions.
+
+	* gthread.c, gthreadpool.c, glib.h: Enable error reporting for
+	thread creation, namly for g_thread_create, g_thread_pool_new,
+	g_thread_pool_push and g_thread_pool_set_max_threads.
+
+	* tests/thread-test.c, tests/threadpool-test.c: Adapted
+	accordingly.
+	
 2000-08-31  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h

@@ -232,9 +232,11 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 			    gboolean joinable,
 			    gboolean bound,
 			    GThreadPriority priority,
-			    gpointer thread)
+			    gpointer thread,
+			    GError **error)
 {
   pthread_attr_t attr;
+  gint ret;
 
   g_return_if_fail (thread_func);
 
@@ -274,11 +276,23 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 # endif /* G_THREADS_IMPL_DCE */
 #endif /* HAVE_PRIORITIES */
 
-  posix_check_for_error (pthread_create (thread, &attr, 
-                                         (void* (*)(void*))thread_func,
-                                         arg));
+  ret = pthread_create (thread, &attr, (void* (*)(void*))thread_func, arg);
   
+#ifdef G_THREADS_IMPL_DCE
+  if (ret == -1) 
+    ret = errno;
+  else
+    ret = 0;
+#endif /* G_THREADS_IMPL_DCE */
+
   posix_check_for_error (pthread_attr_destroy (&attr));
+
+  if (ret)
+    {
+      g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
+		   "Error creating thread: %s", g_strerror (ret));
+      return;
+    }
 
 #ifdef G_THREADS_IMPL_DCE
   if (!joinable)
