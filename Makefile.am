@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = . gmodule gthread docs tests
+SUBDIRS = . gobject gmodule gthread docs tests
 
 bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
@@ -64,8 +64,7 @@ libglib_la_SOURCES = \
 	gtree.c		\
 	gutils.c
 
-include_HEADERS = \
-	glib.h
+include_HEADERS = glib.h glib-object.h
 
 configexecincludedir = $(pkglibdir)/include
 #configexecinclude_DATA = glibconfig.h

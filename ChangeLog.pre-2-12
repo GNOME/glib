@@ -1,3 +1,42 @@
+Thu May  4 02:04:46 2000  Tim Janik  <timj@gtk.org>
+
+        * configure.in (STRIP_DUMMY): some Make 3.79 $(strip ) versions are
+        broken and require an empty arg, give it to them.
+
+Fri Apr 28 23:54:35 2000  Tim Janik  <timj@gtk.org>
+
+	* setup things for a new sub-library libgobject:
+
+	* Makefile.am (SUBDIRS): added gobject
+
+	* glib-config.in: feature -lgobject.
+
+	* configure.in (AC_OUTPUT): generate gobject/Makefile.
+
+	* glib.m4 (AM_PATH_GLIB): feature gobject module.
+
+	* glib.spec.in: added %{prefix}/lib/libgobject-1.3.so.*
+
+Fri Apr 28 21:41:49 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h: added G_STRLOC macro.
+	G_STRUCT_OFFSET(): signedness corrections.
+	(G_CSET_DIGITS): list 0-9.
+	* gscanner.c (g_scanner_config_template): use G_CSET_DIGITS.
+
+	* glib.h: 
+	* gstrfuncs.c:
+	(g_strdown):
+	(g_strup):
+	(g_strreverse): return the modified string instead of void, so
+	calls to these functions can be nested.
+	(g_strcanon): new function, canonicalizes string according to
+	a given character set.
+
+Fri Apr 28 19:45:16 2000  Tim Janik  <timj@gtk.org>
+
+	* gasyncqueue.c (g_async_queue_unref): get rid of an unused variable.
+
 Wed May 10 19:52:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.m4: Print found version when test succeeds.

@@ -89,8 +89,9 @@ static GScannerConfig g_scanner_config_template =
    )			/* cset_identifier_first */,
   (
    G_CSET_a_2_z
-   "_0123456789"
+   "_"
    G_CSET_A_2_Z
+   G_CSET_DIGITS
    G_CSET_LATINS
    G_CSET_LATINC
    )			/* cset_identifier_nth */,

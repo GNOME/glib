@@ -92,8 +92,6 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 void 
 g_async_queue_unref (GAsyncQueue *queue)
 {
-  gboolean stop;
-
   g_return_if_fail (queue);
   g_return_if_fail (queue->ref_count > 0);
 

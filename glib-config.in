@@ -17,6 +17,7 @@ Options:
 Libraries:
 	glib
 	gmodule
+	gobject
 	gthread
 EOF
 	exit $1
@@ -70,6 +71,9 @@ while test $# -gt 0; do
     gmodule)
       lib_gmodule=yes
       ;;
+    gobject)
+      lib_gobject=yes
+      ;;
     gthread)
       lib_gthread=yes
       ;;
@@ -98,6 +102,9 @@ if test "$echo_libs" = "yes"; then
 	libsa=""
 	if test "$lib_glib" = "yes"; then
 		libsp="$libsp -lglib"
+	fi
+	if test "$lib_gobject" = "yes"; then
+		libsp="-lgobject $libsp"
 	fi
 	if test "$lib_gthread" = "yes"; then
 		libsp="-lgthread $libsp"

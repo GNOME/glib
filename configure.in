@@ -19,7 +19,7 @@ dnl we need to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
 dnl are available for $ac_help expansion (don't we all *love* autoconf?)
 AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #
-# The following version number definitions apply to GLib, GModule and GThread
+# The following version number definitions apply to GLib, GModule, GObject and GThread
 # as a whole, so if changes occoured in any of them, they are all
 # treated with the same interface and binary age.
 #
@@ -305,7 +305,7 @@ esac
 # check for bytesex stuff
 AC_C_BIGENDIAN
 
-# xhexk for header files
+# check for header files
 AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
 AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
 AC_CHECK_HEADERS(pwd.h, AC_DEFINE(HAVE_PWD_H))
@@ -317,6 +317,21 @@ AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
 AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 AC_CHECK_HEADERS(stdint.h, AC_DEFINE(HAVE_VALUES_H))
+
+AC_MSG_CHECKING(whether make is GNU Make)
+STRIP_BEGIN=
+STRIP_END=
+if $ac_make --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
+        STRIP_BEGIN='$(strip $(STRIP_DUMMY)'
+        STRIP_END=')'
+        AC_MSG_RESULT(yes)
+else
+        AC_MSG_RESULT(no)
+fi
+STRIP_DUMMY=
+AC_SUBST(STRIP_DUMMY)
+AC_SUBST(STRIP_BEGIN)
+AC_SUBST(STRIP_END)
 
 # check additional type sizes
 size_includes=["
@@ -1503,6 +1518,7 @@ Makefile
 glib-config
 gmodule/gmoduleconf.h
 gmodule/Makefile
+gobject/Makefile
 gthread/Makefile
 docs/Makefile
 docs/glib-config.1

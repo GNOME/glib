@@ -80,6 +80,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/libglib-1.3.so.*
 %{prefix}/lib/libgthread-1.3.so.*
 %{prefix}/lib/libgmodule-1.3.so.*
+%{prefix}/lib/libgobject-1.3.so.*
 
 %files devel
 %defattr(-, root, root)

@@ -35,6 +35,9 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
          gmodule) 
              glib_config_args="$glib_config_args gmodule"
          ;;
+         gobject) 
+             glib_config_args="$glib_config_args gobject"
+         ;;
          gthread) 
              glib_config_args="$glib_config_args gthread"
          ;;

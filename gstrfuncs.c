@@ -801,12 +801,12 @@ extern const char * strsignal(int);
   return msg;
 }
 
-void
+gchar*
 g_strdown (gchar *string)
 {
   register guchar *s;
 
-  g_return_if_fail (string != NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
   s = string;
 
@@ -815,14 +815,16 @@ g_strdown (gchar *string)
       *s = tolower (*s);
       s++;
     }
+
+  return string;
 }
 
-void
+gchar*
 g_strup (gchar *string)
 {
   register guchar *s;
 
-  g_return_if_fail (string != NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
   s = string;
 
@@ -831,12 +833,14 @@ g_strup (gchar *string)
       *s = toupper (*s);
       s++;
     }
+
+  return string;
 }
 
-void
+gchar*
 g_strreverse (gchar *string)
 {
-  g_return_if_fail (string != NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
   if (*string)
     {
@@ -856,6 +860,8 @@ g_strreverse (gchar *string)
 	  t--;
 	}
     }
+
+  return string;
 }
 
 gint
@@ -943,12 +949,31 @@ g_strdelimit (gchar	  *string,
 }
 
 gchar*
+g_strcanon (gchar       *string,
+	    const gchar *valid_chars,
+	    gchar        subsitutor)
+{
+  register gchar *c;
+
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (valid_chars != NULL, NULL);
+
+  for (c = string; *c; c++)
+    {
+      if (!strchr (valid_chars, *c))
+	*c = subsitutor;
+    }
+
+  return string;
+}
+
+gchar*
 g_strcompress (const gchar *source)
 {
   const gchar *p = source, *octal;
   gchar *dest = g_malloc (strlen (source) + 1);
   gchar *q = dest;
-
+  
   while (*p)
     {
       if (*p == '\\')
@@ -993,6 +1018,7 @@ g_strcompress (const gchar *source)
       p++;
     }
   *q = 0;
+  
   return dest;
 }
 

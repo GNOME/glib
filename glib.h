@@ -147,6 +147,14 @@ extern "C" {
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
+/* provide a string identifying the current code position */
+#ifdef  __GNUC__
+#  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
+#else
+#  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
+#endif
+
+
 /* Count the number of elements in an array. The array must be defined
  * as such; using this with a dynamically allocated array will give
  * incorrect results.
@@ -171,9 +179,9 @@ extern "C" {
  * fields through their offsets.
  */
 #define G_STRUCT_OFFSET(struct_type, member)	\
-    ((gulong) ((gchar*) &((struct_type*) 0)->member))
+    ((glong) ((guint8*) &((struct_type*) 0)->member))
 #define G_STRUCT_MEMBER_P(struct_p, struct_offset)   \
-    ((gpointer) ((gchar*) (struct_p) + (gulong) (struct_offset)))
+    ((gpointer) ((guint8*) (struct_p) + (glong) (struct_offset)))
 #define G_STRUCT_MEMBER(member_type, struct_p, struct_offset)   \
     (*(member_type*) G_STRUCT_MEMBER_P ((struct_p), (struct_offset)))
 
@@ -1022,6 +1030,9 @@ GSList* g_slist_insert		(GSList		*list,
 GSList* g_slist_insert_sorted	(GSList		*list,
 				 gpointer	 data,
 				 GCompareFunc	 func);
+GSList* g_slist_insert_before   (GSList         *slist,
+				 GSList         *sibling,
+				 gpointer        data);
 GSList* g_slist_concat		(GSList		*list1,
 				 GSList		*list2);
 GSList* g_slist_remove		(GSList		*list,
@@ -1567,6 +1578,9 @@ void    g_usleep        (gulong microseconds);
 gchar*	 g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
+gchar*	 g_strcanon		(gchar       *string,
+				 const gchar *valid_chars,
+				 gchar        subsitutor);
 gdouble	 g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
 gchar*	 g_strerror		(gint	      errnum);
@@ -1576,9 +1590,9 @@ gint	 g_strcasecmp		(const gchar *s1,
 gint	 g_strncasecmp		(const gchar *s1,
 				 const gchar *s2,
 				 guint 	      n);
-void	 g_strdown		(gchar	     *string);
-void	 g_strup		(gchar	     *string);
-void	 g_strreverse		(gchar	     *string);
+gchar*	 g_strdown		(gchar	     *string);
+gchar*	 g_strup		(gchar	     *string);
+gchar*	 g_strreverse		(gchar	     *string);
 /* removes leading spaces */
 gchar*   g_strchug              (gchar        *string);
 /* removes trailing spaces */
@@ -2054,6 +2068,7 @@ void	  g_dataset_foreach		(gconstpointer	  dataset_location,
 /* Character sets */
 #define G_CSET_A_2_Z	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define G_CSET_a_2_z	"abcdefghijklmnopqrstuvwxyz"
+#define G_CSET_DIGITS	"0123456789"
 #define G_CSET_LATINC	"\300\301\302\303\304\305\306"\
 			"\307\310\311\312\313\314\315\316\317\320"\
 			"\321\322\323\324\325\326"\
