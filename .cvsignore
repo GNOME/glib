@@ -8,7 +8,6 @@ _libs
 libglib-1.1.la
 config.log
 glibconfig.h
-glib.h
 libtool
 config.status
 stamp-h
