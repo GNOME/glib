@@ -111,6 +111,7 @@ struct _GIOChannel
   GIConv read_cd;
   GIConv write_cd;
   gchar *line_term;		/* String which indicates the end of a line of text */
+  guint line_term_len;		/* So we can have null in the line term */
 
   gsize buf_size;
   GString *read_buf;		/* Raw data from the channel */
@@ -205,8 +206,10 @@ GIOStatus             g_io_channel_set_flags            (GIOChannel   *channel,
 							 GError      **error);
 GIOFlags              g_io_channel_get_flags            (GIOChannel   *channel);
 void                  g_io_channel_set_line_term        (GIOChannel   *channel,
-							 const gchar  *line_term);
-G_CONST_RETURN gchar* g_io_channel_get_line_term        (GIOChannel   *channel);
+							 const gchar  *line_term,
+							 gint          length);
+G_CONST_RETURN gchar* g_io_channel_get_line_term        (GIOChannel   *channel,
+							 gint         *length);
 void		      g_io_channel_set_buffered		(GIOChannel   *channel,
 							 gboolean      buffered);
 gboolean	      g_io_channel_get_buffered		(GIOChannel   *channel);

@@ -1,3 +1,12 @@
+2001-09-10  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.h glib/giochannel.c: Added a length argument
+	to g_io_channel_[set,get]_line_term(), allowing embeded nulls
+	and binary safe line termination strings
+
+	* glib/giochannel.c: Got rid of a compile warning in
+	g_io_channel_write_chars()
+
 Mon Sep 10 17:13:36 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gmessages.h: got rid of g_set_error_handler(),

@@ -76,6 +76,7 @@ g_io_channel_init (GIOChannel *channel)
   channel->ref_count = 1;
   channel->encoding = g_strdup ("UTF-8");
   channel->line_term = NULL;
+  channel->line_term_len = 0;
   channel->buf_size = G_IO_NICE_BUF_SIZE;
   channel->read_cd = (GIConv) -1;
   channel->write_cd = (GIConv) -1;
@@ -113,7 +114,8 @@ g_io_channel_unref (GIOChannel *channel)
         g_iconv_close (channel->read_cd);
       if (channel->write_cd != (GIConv) -1)
         g_iconv_close (channel->write_cd);
-      g_free (channel->line_term);
+      if (channel->line_term)
+        g_free (channel->line_term);
       if (channel->read_buf)
         g_string_free (channel->read_buf, TRUE);
       if (channel->write_buf)
@@ -625,29 +627,39 @@ g_io_channel_get_buffer_size (GIOChannel	*channel)
  * g_io_channel_set_line_term:
  * @channel: a #GIOChannel
  * @line_term: The line termination string. Use %NULL for auto detect.
- *             Auto detection breaks on "\n", "\r\n", "\r", and
+ *             Auto detection breaks on "\n", "\r\n", "\r", "\0", and
  *             the unicode paragraph separator. Auto detection should
  *             not be used for anything other than file-based channels.
+ * @length: The length of the termination string. If -1 is passed, the
+ *          string is assumed to be null terminated. This option allows
+ *          termination strings with embeded nulls.
  *
  * This sets the string that #GIOChannel uses to determine
  * where in the file a line break occurs.
  **/
 void
 g_io_channel_set_line_term (GIOChannel	*channel,
-                            const gchar	*line_term)
+                            const gchar	*line_term,
+			    gint         length)
 {
   g_return_if_fail (channel != NULL);
-  g_return_if_fail (!line_term || line_term[0]); /* Disallow "" */
-  g_return_if_fail (!line_term || g_utf8_validate (line_term, -1, NULL));
-                   /* Require valid UTF-8 */
+  g_return_if_fail (line_term == NULL || length != 0); /* Disallow "" */
 
-  g_free (channel->line_term);
-  channel->line_term = g_strdup (line_term);
+  if (line_term == NULL)
+    length = 0;
+  else if (length < 0)
+    length = strlen (line_term);
+
+  if (channel->line_term)
+    g_free (channel->line_term);
+  channel->line_term = line_term ? g_memdup (line_term, length) : NULL;
+  channel->line_term_len = length;
 }
 
 /**
  * g_io_channel_get_line_term:
  * @channel: a #GIOChannel
+ * @length: a location to return the length of the line terminator
  *
  * This returns the string that #GIOChannel uses to determine
  * where in the file a line break occurs. A value of %NULL
@@ -657,9 +669,13 @@ g_io_channel_set_line_term (GIOChannel	*channel,
  *   is owned by GLib and must not be freed.
  **/
 G_CONST_RETURN gchar*
-g_io_channel_get_line_term (GIOChannel	*channel)
+g_io_channel_get_line_term (GIOChannel	*channel,
+			    gint        *length)
 {
   g_return_val_if_fail (channel != NULL, 0);
+
+  if (length)
+    *length = channel->line_term_len;
 
   return channel->line_term;
 }
@@ -1440,7 +1456,7 @@ g_io_channel_read_line_backend	(GIOChannel *channel,
   status = G_IO_STATUS_NORMAL;
 
   if (channel->line_term)
-    line_term_len = strlen (channel->line_term);
+    line_term_len = channel->line_term_len;
   else
     line_term_len = 3;
     /* This value used for setting checked_to, it's the longest of the four
@@ -1500,14 +1516,14 @@ read_again:
 
       first_time = FALSE;
 
-      lastchar = use_buf->str + strlen (use_buf->str);
+      lastchar = use_buf->str + use_buf->len;
 
       for (nextchar = use_buf->str + checked_to; nextchar < lastchar;
            channel->encoding ? nextchar = g_utf8_next_char (nextchar) : nextchar++)
         {
           if (channel->line_term)
             {
-              if (strncmp (channel->line_term, nextchar, line_term_len) == 0)
+              if (memcmp (channel->line_term, nextchar, line_term_len) == 0)
                 {
                   line_length = nextchar - use_buf->str;
                   got_term_len = line_term_len;
@@ -1540,22 +1556,18 @@ read_again:
                         goto done;
                       }
                     break;
+                  case '\0': /* Embeded null in input */
+                    line_length = nextchar - use_buf->str;
+                    got_term_len = 1;
+                    goto done;
                   default: /* no match */
                     break;
                 }
             }
         }
 
-      g_assert (nextchar == lastchar); /* Valid UTF-8, didn't overshoot */
-
-      /* Also terminate on '\0' */
-
-      line_length = lastchar - use_buf->str;
-      if (line_length < use_buf->len)
-        {
-          got_term_len = 0;
-          break;
-        }
+      /* If encoding != NULL, valid UTF-8, didn't overshoot */
+      g_assert (nextchar == lastchar);
 
       /* Check for EOF */
 
@@ -1572,10 +1584,7 @@ read_again:
           break;
         }
 
-      if (use_buf->len > line_term_len - 1)
-	checked_to = use_buf->len - (line_term_len - 1);
-      else
-	checked_to = 0;
+      checked_to = MAX (use_buf->len - (line_term_len - 1), 0);
     }
 
 done:
@@ -2041,6 +2050,7 @@ reconvert:
                         break;
                       default:
                         g_assert_not_reached ();
+                        err = (size_t) -1;
                         errnum = 0; /* Don't confunse the compiler */
                     }
                 }
