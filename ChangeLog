@@ -1,5 +1,14 @@
 2000-08-10  Havoc Pennington  <hp@redhat.com>
 
+	* gthread-2.0.pc.in (Cflags): don't duplicate glib Cflags
+
+	* gmodule-2.0.pc.in (Cflags): don't duplicate glib Cflags
+
+	* gobject-2.0.pc.in (Cflags): don't duplicate Cflags from glib
+	itself
+
+2000-08-10  Havoc Pennington  <hp@redhat.com>
+
 	* glib-2.0.pc.in (Cflags): Look in glib-2.0/include for
 	glibconfig.h
 

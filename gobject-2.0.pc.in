@@ -8,4 +8,4 @@ Description: Object/type system for GLib
 Requires: glib-2.0
 Version: @VERSION@
 Libs: -L${libdir} -lgobject-1.3
-Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib/include 
+Cflags:
