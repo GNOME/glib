@@ -1846,6 +1846,7 @@ gboolean
 g_main_context_prepare (GMainContext *context,
 			gint         *priority)
 {
+  gint i;
   gint n_ready = 0;
   gint current_priority = G_MAXINT;
   GSource *source;
@@ -1889,6 +1890,9 @@ g_main_context_prepare (GMainContext *context,
 #endif
 
   /* If recursing, clear list of pending dispatches */
+
+  for (i = 0; i < context->pending_dispatches->len; i++)
+    SOURCE_UNREF ((GSource *)context->pending_dispatches->pdata[i], context);
   g_ptr_array_set_size (context->pending_dispatches, 0);
   
   /* Prepare all sources */
