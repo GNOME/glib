@@ -382,7 +382,7 @@ g_module_symbol (GModule	*module,
   *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */
   
-  module_error = g_module_error();
+  module_error = g_module_error ();
   if (module_error)
     {
       gchar *error;
@@ -391,6 +391,7 @@ g_module_symbol (GModule	*module,
       g_module_set_error (error);
       g_free (error);
       *symbol = NULL;
+
       return FALSE;
     }
   

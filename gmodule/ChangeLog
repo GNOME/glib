@@ -1,3 +1,25 @@
+Wed Mar  1 05:34:47 2000  Tim Janik  <timj@gtk.org>
+
+	* gmodule-beos.c (_g_module_symbol): do not return NULL symbols.
+
+	* gmodule-os2.c: removed NetBSD specific defines.
+	(_g_module_self): set an error message for unsupported behaviour.
+
+	* gmodule-beos.c: many coding style fixups.
+	(_g_module_open):
+	(_g_module_self):
+	(_g_module_close):
+	(_g_module_symbol): bunch of memory leaks plugged.
+
+	* gmodule-dl.c: make sure the error message returned from dlerror()
+	is always != NULL, by using a wrapper function fetch_dlerror(). based
+	on a patch to fix _g_module_symbol() for NetBSD from Scott Presnell
+	<srp@zgi.com>.
+
+	* gmodule-dld.c: minor indentation.
+
+	* gmodule-win32.c: minor cleanups.
+
 Sat Feb 19 19:43:29 2000  Tim Janik  <timj@gtk.org>
 
 	* testgmodule.c (main): added test to check that not yet bound symbols
