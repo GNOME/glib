@@ -1,3 +1,14 @@
+Sun Mar  3 04:11:58 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject.c: placed a comment about not changing CArray until we have
+	g_object_list_watched_closures().
+
+	* gparam.h (struct _GParamSpecClass): added padding.
+
+	* gobjectnotifyqueue.c (struct _GObjectNotifyQueue): abuse
+	g_list_alloc() to allocate GObjectNotifyQueue to et rid
+	of locking issues.
+
 Tue Feb 26 10:51:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am (testgobject_LDADD): Rename testgruntime

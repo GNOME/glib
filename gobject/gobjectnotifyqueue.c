@@ -38,14 +38,17 @@ struct _GObjectNotifyContext
 {
   GQuark                       quark_notify_queue;
   GObjectNotifyQueueDispatcher dispatcher;
-  GTrashStack                 *nqueue_trash;
+  GTrashStack                 *_nqueue_trash; /* unused */
 };
 struct _GObjectNotifyQueue
 {
   GObjectNotifyContext *context;
   GSList               *pspecs;
-  guint                 n_pspecs;
-  guint                 freeze_count;
+  guint16               n_pspecs;
+  guint16               freeze_count;
+  /* currently, this structure abuses the GList allocation chain and thus
+   * must be <= sizeof (GList)
+   */
 };
 
 
@@ -56,7 +59,7 @@ g_object_notify_queue_free (gpointer data)
   GObjectNotifyQueue *nqueue = data;
 
   g_slist_free (nqueue->pspecs);
-  g_trash_stack_push (&nqueue->context->nqueue_trash, nqueue);
+  g_list_free_1 ((void*) nqueue);
 }
 
 static inline GObjectNotifyQueue*
@@ -68,20 +71,14 @@ g_object_notify_queue_freeze (GObject		   *object,
   nqueue = g_datalist_id_get_data (&object->qdata, context->quark_notify_queue);
   if (!nqueue)
     {
-      nqueue = g_trash_stack_pop (&context->nqueue_trash);
-      if (!nqueue)
-	{
-	  guint i;
-
-	  nqueue = g_new (GObjectNotifyQueue, 16);
-	  for (i = 0; i < 15; i++)
-	    g_trash_stack_push (&context->nqueue_trash, nqueue++);
-	}
+      nqueue = (void*) g_list_alloc ();
       memset (nqueue, 0, sizeof (*nqueue));
       nqueue->context = context;
       g_datalist_id_set_data_full (&object->qdata, context->quark_notify_queue,
 				   nqueue, g_object_notify_queue_free);
     }
+
+  g_return_val_if_fail (nqueue->freeze_count < 65535, nqueue);
   nqueue->freeze_count++;
 
   return nqueue;
@@ -145,6 +142,8 @@ g_object_notify_queue_add (GObject            *object,
 {
   if (pspec->flags & G_PARAM_READABLE)
     {
+      g_return_if_fail (nqueue->n_pspecs < 65535);
+      
       /* we do the deduping in _thaw */
       nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
       nqueue->n_pspecs++;

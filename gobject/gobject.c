@@ -233,7 +233,9 @@ g_object_notify_dispatcher (GObject     *object,
 static void
 g_object_do_class_init (GObjectClass *class)
 {
+  /* read the comment about typedef struct CArray; on why not to change this quark */
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
+
   quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
   pspec_pool = g_param_spec_pool_new (TRUE);
   property_notify_context.quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
@@ -1593,6 +1595,24 @@ typedef struct {
   guint     n_closures;
   GClosure *closures[1]; /* flexible array */
 } CArray;
+/* don't change this structure without supplying an accessor for
+ * watched closures, e.g.:
+ * GSList* g_object_list_watched_closures (GObject *object)
+ * {
+ *   CArray *carray;
+ *   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+ *   carray = g_object_get_data (object, "GObject-closure-array");
+ *   if (carray)
+ *     {
+ *       GSList *slist = NULL;
+ *       guint i;
+ *       for (i = 0; i < carray->n_closures; i++)
+ *         slist = g_slist_prepend (slist, carray->closures[i]);
+ *       return slist;
+ *     }
+ *   return NULL;
+ * }
+ */
 
 static void
 object_remove_closure (gpointer  data,
