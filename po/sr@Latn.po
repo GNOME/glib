@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2004-02-01 21:21+0100\n"
+"POT-Creation-Date: 2004-04-29 01:01+0200\n"
+"PO-Revision-Date: 2004-04-29 01:01+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,8 +25,8 @@ msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“: %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -269,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
-"njime početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
+"početi"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -321,8 +321,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
-"znak je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
+"je „>“"
 
 #: glib/gmarkup.c:1485
 #, c-format
