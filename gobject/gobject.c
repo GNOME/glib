@@ -207,7 +207,7 @@ g_object_base_class_finalize (GObjectClass *class)
 {
   GList *list, *node;
   
-  g_message ("finallizing base class of %s", G_OBJECT_CLASS_NAME (class));
+  g_message ("finalizing base class of %s", G_OBJECT_CLASS_NAME (class));
 
   _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
 
