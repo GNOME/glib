@@ -1,3 +1,20 @@
+2001-01-05  Tor Lillqvist  <tml@iki.fi>
+
+	* gfileutils.c (g_file_open_tmp): (Win32:) Look also for (illegal)
+	forward slashes in the template.
+
+	* gutils.c (g_path_skip_root): On Win32, skip the \\server\share
+	part of UNC paths. On all platforms, skip several initial
+	slashes. Add a few comments.
+	(g_get_any_init): On Win32, in case HOME is Unix-style with
+	(forward) slashes (some other applications apparently set it up
+	this way, convert to backslashed form.
+
+	* configure.in (glib_os): Remove stray 'v'. Add case for mingw,
+	although using configure for mingw surely doesn't work yet.
+
+	* glib.def: Update.
+
 2001-01-02  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in: remove glib-config-2.0

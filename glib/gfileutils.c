@@ -625,7 +625,11 @@ g_file_open_tmp (const char *tmpl,
   if (tmpl == NULL)
     tmpl = ".XXXXXX";
 
-  if (strchr (tmpl, G_DIR_SEPARATOR))
+  if (strchr (tmpl, G_DIR_SEPARATOR)
+#ifdef G_OS_WIN32
+      || strchr (tmpl, '/')
+#endif
+				    )
     {
       g_set_error (error,
 		   G_FILE_ERROR,

@@ -231,11 +231,12 @@ EXPORTS
 	g_main_context_query
 	g_main_context_remove_poll
 	g_main_context_set_poll_func
-	g_main_loop_destroy
 	g_main_loop_is_running
 	g_main_loop_new
 	g_main_loop_quit
+	g_main_loop_ref
 	g_main_loop_run
+	g_main_loop_unref
 	g_malloc
 	g_malloc0
 	g_markup_error_quark

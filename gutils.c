@@ -471,10 +471,25 @@ g_path_skip_root (gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, NULL);
   
+#ifdef G_OS_WIN32
+  /* Skip \\server\share\ */
+  if (file_name[0] == G_DIR_SEPARATOR &&
+      file_name[1] == G_DIR_SEPARATOR &&
+      file_name[2] && 
+      strchr (file_name + 2, G_DIR_SEPARATOR) > file_name + 2)
+    return strchr (file_name + 2, G_DIR_SEPARATOR) + 1;
+#endif
+  
+  /* Skip initial slashes */
   if (file_name[0] == G_DIR_SEPARATOR)
-    return file_name + 1;
+    {
+      while (file_name[0] == G_DIR_SEPARATOR)
+	file_name++;
+      return file_name;
+    }
 
 #ifdef G_OS_WIN32
+  /* Skip X:\ */
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return file_name + 3;
 #endif
@@ -687,15 +702,21 @@ g_get_any_init (void)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
       
 #ifdef G_OS_WIN32
-      if (!g_home_dir)
+      /* In case HOME is Unix-style (it happens), convert it to
+       * Windows style.
+       */
+      if (g_home_dir)
+	{
+	  gchar *p;
+	  while ((p = strchr (g_home_dir, '/')) != NULL)
+	    *p = '\\';
+	}
+      else
 	{
 	  /* The official way to specify a home directory on NT is
-	   * the HOMEDRIVE and HOMEPATH environment variables.
-	   *
-	   * This is inside #ifdef G_OS_WIN32 because with the cygwin dll,
-	   * HOME should be a POSIX style pathname.
+	   * the HOMEDRIVE and HOMEPATH environment variables. At least
+	   * it was at some time.
 	   */
-	  
 	  if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
 	    {
 	      gchar *homedrive, *homepath;
