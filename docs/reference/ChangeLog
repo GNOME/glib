@@ -1,3 +1,8 @@
+2002-10-20  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am (SCANOBJ_FILES): 
+	* glib/Makefile.am (SCANOBJ_FILES): Add $(DOC_MODULE).prerequisites.
+
 2002-10-15  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-sections.txt: Add g_type_interface_prerequisites.

@@ -76,6 +76,7 @@ SCANOBJ_FILES = 		 \
 	$(DOC_MODULE).args 	 \
 	$(DOC_MODULE).hierarchy  \
 	$(DOC_MODULE).interfaces \
+	$(DOC_MODULE).prerequisites \
 	$(DOC_MODULE).signals
 
 if ENABLE_GTK_DOC
