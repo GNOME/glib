@@ -1,3 +1,7 @@
+2003-08-08  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Forgot to actually switch to trio if snprintf() isn't good enough.
+
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/trio/trio.c (trio_snprintf, trio_vsnprintf): Accept NULL buffer if max is zero. 

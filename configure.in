@@ -710,6 +710,9 @@ fi
 if test "$ac_cv_func_vsnprintf_c99" != "yes" ; then
   need_trio=yes
 fi
+if test "$ac_cv_func_snprintf_c99" != "yes" ; then
+  need_trio=yes
+fi
 if test "$ac_cv_func_printf_unix98" != "yes" ; then
   need_trio=yes
 fi
