@@ -1,3 +1,8 @@
+Thu Dec 11 10:31:21 2003  Manish Singh  <yosh@gimp.org>
+
+	* glib/gmacros.h: change #elif with no expression to #else in
+	G_STRFUNC definition. Thanks to Damien Carbery, fixes #129101.
+
 Mon Dec  8 12:02:40 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.1 ===

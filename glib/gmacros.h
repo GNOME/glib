@@ -113,7 +113,7 @@
 #  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (G_HAVE_ISO_VARARGS)
 #  define G_STRFUNC     ((const char*) (__func__))
-#elif
+#else
 #  define G_STRFUNC     ((const char*) ("???"))
 #endif
 
