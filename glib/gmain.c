@@ -723,7 +723,7 @@ g_main_iterate (gboolean block,
       G_UNLOCK (main_loop);
       return FALSE;
     }
-#endif G_THREADS_ENABLED  
+#endif
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
