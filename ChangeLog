@@ -1,3 +1,8 @@
+2005-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdate.c: Remove a lot of pointless g_return_if_fail()
+	checks.  (#169859, Morten Welinder)
+
 2005-03-10  Sven Neumann  <sven@gimp.org>
 
 	* tests/file-test.c: include <gstdio.h>.
