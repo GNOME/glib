@@ -509,16 +509,16 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
 		{
 		  prev->next = node->next;
 		  g_hash_node_destroy (node,
-				       notify ? hash_table->value_destroy_func : NULL,
-				       notify ? hash_table->key_destroy_func : NULL);
+				       notify ? hash_table->key_destroy_func : NULL,
+				       notify ? hash_table->value_destroy_func : NULL);
 		  node = prev;
 		}
 	      else
 		{
 		  hash_table->nodes[i] = node->next;
 		  g_hash_node_destroy (node,
-				       notify ? hash_table->value_destroy_func : NULL,
-				       notify ? hash_table->key_destroy_func : NULL);
+				       notify ? hash_table->key_destroy_func : NULL,
+				       notify ? hash_table->value_destroy_func : NULL);
 		  goto restart;
 		}
 	    }

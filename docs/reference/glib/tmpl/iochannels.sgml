@@ -77,7 +77,6 @@ A data structure representing an IO Channel. The fields should be considered
 private and should only be accessed with the following functions.
 </para>
 
-@close_on_unref: 
 
 <!-- ##### FUNCTION g_io_channel_unix_new ##### -->
 <para>
@@ -582,6 +581,24 @@ generic way.
 @encoding: 
 @error: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_close_on_unref ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_close_on_unref ##### -->
+<para>
+
+</para>
+
+@channel: 
+@do_close: 
 
 
 <!-- ##### FUNCTION g_io_channel_read ##### -->
