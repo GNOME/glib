@@ -1,3 +1,8 @@
+Sat Jul 15 23:49:03 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/glib.texi: Remove incomplete start of info file -
+	real docs are in RDP.	
+
 Sat Jul 15 22:44:22 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Add build/Makefile and 
