@@ -1,3 +1,8 @@
+2002-01-23  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* Makefile.in.in (POTFILES): Remove inlttool [] tags from
+	POTFILE.in
+
 2002-01-21  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* pl.po: Updated Polish translation by
