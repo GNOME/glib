@@ -1,3 +1,7 @@
+2005-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/keyfile-test.c: Some more unit tests.
+
 2005-01-28  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "tl" to ALL_LINGUAS.
