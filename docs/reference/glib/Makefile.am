@@ -16,12 +16,14 @@ tmpl_sources =				\
 	tmpl/arrays.sgml		\
 	tmpl/arrays_byte.sgml		\
 	tmpl/arrays_pointer.sgml	\
+	tmpl/async_queues.sgml		\
 	tmpl/byte_order.sgml		\
 	tmpl/caches.sgml		\
 	tmpl/completion.sgml		\
 	tmpl/datalist.sgml		\
 	tmpl/datasets.sgml		\
 	tmpl/date.sgml			\
+	tmpl/error_reporting.sgml	\
 	tmpl/glib-unused.sgml		\
 	tmpl/hash_tables.sgml		\
 	tmpl/hooks.sgml			\
@@ -37,41 +39,56 @@ tmpl_sources =				\
 	tmpl/messages.sgml		\
 	tmpl/misc_utils.sgml		\
 	tmpl/modules.sgml		\
+	tmpl/numerical.sgml		\
 	tmpl/quarks.sgml		\
+	tmpl/queue.sgml			\
+	tmpl/random_numbers.sgml	\
 	tmpl/relations.sgml		\
 	tmpl/scanner.sgml		\
 	tmpl/string_chunks.sgml		\
 	tmpl/string_utils.sgml		\
 	tmpl/strings.sgml		\
+	tmpl/thread_pools.sgml		\
 	tmpl/threads.sgml		\
 	tmpl/timers.sgml		\
+	tmpl/trash_stack.sgml		\
 	tmpl/trees-binary.sgml		\
 	tmpl/trees-nary.sgml		\
 	tmpl/type_conversion.sgml	\
 	tmpl/types.sgml			\
+	tmpl/unicode.sgml		\
 	tmpl/warnings.sgml		\
 	tmpl/windows.sgml
 
 glib_docdir = $(HTML_DIR)
 glib_doc_DATA =				\
-	glib-decl.txt			\
 	glib-sections.txt		\
 	glib-overrides.txt
 
 EXTRA_DIST = 				\
 	$(glib_doc_DATA)
 
-html/book1.html: sgml/glib-doc.bottom
-	$(MAKE) html
+if ENABLE_GTK_DOC
+all-local: html/index.html
 
-sgml/glib-doc.bottom: $(tmpl_sources)
+glib-decl.txt: 
+	$(MAKE) scan
+
+$(tmpl_sources): glib-decl.txt glib-sections.txt glib-overrides.txt
+	$(MAKE) templates
+
+sgml/glib-doc.bottom: $(tmpl_sources) glib-decl.txt
 	$(MAKE) sgml
+
+html/index.html: sgml/glib-doc.bottom
+	$(MAKE) html
+endif
 
 scan:
 	-(cd $(srcdir) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="config.h gmoduleconf.h gunidecomp.h gunichartables.h glibconfig-sysdefs.h" )
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="gobject config.h gmoduleconf.h gunidecomp.h gunichartables.h glibconfig-sysdefs.h" )
 
-templates: scan
+templates: 
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
 sgml:
@@ -81,6 +98,8 @@ sgml:
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	@echo '-- Fixing Crossreferences' 
+	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR)
 
 clean-local:
 	rm -f *~ *.bak *.signals *-unused.txt
@@ -100,8 +119,6 @@ install-data-local:
 	  done; \
 	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
 	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
-	  echo '-- Fixing Crossreferences' ; \
-	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)|| true; \
 	fi)
 
 dist-hook:

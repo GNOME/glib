@@ -1,0 +1,451 @@
+<!-- ##### SECTION Title ##### -->
+Unicode Manipulation
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF gunichar ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF gunichar2 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_get_charset ##### -->
+<para>
+
+</para>
+
+@charset: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isalnum ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isalpha ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_iscntrl ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isdigit ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isgraph ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_islower ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isprint ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_ispunct ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isspace ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isupper ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isxdigit ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_istitle ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_isdefined ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_iswide ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_toupper ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_tolower ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_totitle ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_digit_value ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_xdigit_value ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### ENUM GUnicodeType ##### -->
+<para>
+
+</para>
+
+@G_UNICODE_CONTROL: 
+@G_UNICODE_FORMAT: 
+@G_UNICODE_UNASSIGNED: 
+@G_UNICODE_PRIVATE_USE: 
+@G_UNICODE_SURROGATE: 
+@G_UNICODE_LOWERCASE_LETTER: 
+@G_UNICODE_MODIFIER_LETTER: 
+@G_UNICODE_OTHER_LETTER: 
+@G_UNICODE_TITLECASE_LETTER: 
+@G_UNICODE_UPPERCASE_LETTER: 
+@G_UNICODE_COMBINING_MARK: 
+@G_UNICODE_ENCLOSING_MARK: 
+@G_UNICODE_NON_SPACING_MARK: 
+@G_UNICODE_DECIMAL_NUMBER: 
+@G_UNICODE_LETTER_NUMBER: 
+@G_UNICODE_OTHER_NUMBER: 
+@G_UNICODE_CONNECT_PUNCTUATION: 
+@G_UNICODE_DASH_PUNCTUATION: 
+@G_UNICODE_CLOSE_PUNCTUATION: 
+@G_UNICODE_FINAL_PUNCTUATION: 
+@G_UNICODE_INITIAL_PUNCTUATION: 
+@G_UNICODE_OTHER_PUNCTUATION: 
+@G_UNICODE_OPEN_PUNCTUATION: 
+@G_UNICODE_CURRENCY_SYMBOL: 
+@G_UNICODE_MODIFIER_SYMBOL: 
+@G_UNICODE_MATH_SYMBOL: 
+@G_UNICODE_OTHER_SYMBOL: 
+@G_UNICODE_LINE_SEPARATOR: 
+@G_UNICODE_PARAGRAPH_SEPARATOR: 
+@G_UNICODE_SPACE_SEPARATOR: 
+
+<!-- ##### FUNCTION g_unichar_type ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unicode_canonical_ordering ##### -->
+<para>
+
+</para>
+
+@string: 
+@len: 
+
+
+<!-- ##### FUNCTION g_unicode_canonical_decomposition ##### -->
+<para>
+
+</para>
+
+@ch: 
+@result_len: 
+@Returns: 
+
+
+<!-- ##### MACRO g_utf8_next_char ##### -->
+<para>
+
+</para>
+
+@p: 
+
+
+<!-- ##### FUNCTION g_utf8_get_char ##### -->
+<para>
+
+</para>
+
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_offset_to_pointer ##### -->
+<para>
+
+</para>
+
+@str: 
+@offset: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_pointer_to_offset ##### -->
+<para>
+
+</para>
+
+@str: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_prev_char ##### -->
+<para>
+
+</para>
+
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_find_next_char ##### -->
+<para>
+
+</para>
+
+@p: 
+@end: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_find_prev_char ##### -->
+<para>
+
+</para>
+
+@str: 
+@p: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_strlen ##### -->
+<para>
+
+</para>
+
+@p: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_strncpy ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+@n: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_strchr ##### -->
+<para>
+
+</para>
+
+@p: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_strrchr ##### -->
+<para>
+
+</para>
+
+@p: 
+@c: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_to_utf16 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_to_ucs4 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf16_to_ucs4 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf16_to_utf8 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ucs4_to_utf16 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ucs4_to_utf8 ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_unichar_to_utf8 ##### -->
+<para>
+
+</para>
+
+@c: 
+@outbuf: 
+@Returns: 
+
+

@@ -1,0 +1,139 @@
+<!-- ##### SECTION Title ##### -->
+Generic values
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO G_VALUE_TYPE ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_VALUE_TYPE_NAME ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_TYPE_IS_VALUE ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_IS_VALUE ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### USER_FUNCTION GValueExchange ##### -->
+<para>
+
+</para>
+
+@value1: 
+@value2: 
+
+
+<!-- ##### STRUCT GValue ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_value_init ##### -->
+<para>
+
+</para>
+
+@value: 
+@g_type: 
+
+
+<!-- ##### FUNCTION g_value_copy ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+
+
+<!-- ##### FUNCTION g_value_convert ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_reset ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### FUNCTION g_value_unset ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### FUNCTION g_values_exchange ##### -->
+<para>
+
+</para>
+
+@value1: 
+@value2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_types_exchangable ##### -->
+<para>
+
+</para>
+
+@value_type1: 
+@value_type2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_register_exchange_func ##### -->
+<para>
+
+</para>
+
+@value_type1: 
+@value_type2: 
+@func: 
+
+

@@ -1,0 +1,261 @@
+<!-- ##### SECTION Title ##### -->
+Object Parameter Specifications
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GParamSpec ##### -->
+<para>
+
+</para>
+
+@g_instance: 
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+
+<!-- ##### STRUCT GParamSpecClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE_NAME ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GET_CLASS ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_VALUE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_VALUE_TYPE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### ENUM GParamFlags ##### -->
+<para>
+
+</para>
+
+@G_PARAM_READABLE: 
+@G_PARAM_WRITABLE: 
+@G_PARAM_MASK: 
+@G_PARAM_USER_MASK: 
+
+<!-- ##### FUNCTION g_param_spec_ref ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_unref ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@data: 
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata_full ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION g_param_spec_steal_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_value_set_default ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+
+
+<!-- ##### FUNCTION g_param_value_defaults ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_value_validate ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_values_cmp ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value1: 
+@value2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<para>
+
+</para>
+
+@param_type: 
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_hash_table_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_hash_table_insert ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@pspec: 
+@owner_type: 
+
+
+<!-- ##### FUNCTION g_param_spec_hash_table_remove ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@pspec: 
+
+
+<!-- ##### FUNCTION g_param_spec_hash_table_lookup ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@param_name: 
+@owner_type: 
+@try_ancestors: 
+@trailer: 
+@Returns: 
+
+

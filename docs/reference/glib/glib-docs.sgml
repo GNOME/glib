@@ -4,16 +4,22 @@
 <!entity glib-Standard-Macros SYSTEM "sgml/macros.sgml">
 <!entity glib-Type-Conversion-Macros SYSTEM "sgml/type_conversion.sgml">
 <!entity glib-Byte-Order-Macros SYSTEM "sgml/byte_order.sgml">
+<!entity glib-Numerical-Definitions SYSTEM "sgml/numerical.sgml">
 <!entity glib-Miscellaneous-Macros SYSTEM "sgml/macros_misc.sgml">
 <!entity glib-Memory-Allocation SYSTEM "sgml/memory.sgml">
+<!entity glib-Error-Reporting SYSTEM "sgml/error_reporting.sgml">
 <!entity glib-Warnings-and-Assertions SYSTEM "sgml/warnings.sgml">
 <!entity glib-Message-Logging SYSTEM "sgml/messages.sgml">
 <!entity glib-Timers SYSTEM "sgml/timers.sgml">
 <!entity glib-String-Utility-Functions SYSTEM "sgml/string_utils.sgml">
+<!entity glib-Unicode-Manipulation SYSTEM "sgml/unicode.sgml">
+<!entity glib-Random-Numbers SYSTEM "sgml/random_numbers.sgml">
 <!entity glib-Miscellaneous-Utility-Functions SYSTEM "sgml/misc_utils.sgml">
 <!entity glib-Date-and-Time-Functions SYSTEM "sgml/date.sgml">
 <!entity glib-The-Main-Event-Loop SYSTEM "sgml/main.sgml">
 <!entity glib-Threads SYSTEM "sgml/threads.sgml">
+<!entity glib-Thread-Pools SYSTEM "sgml/thread_pools.sgml">
+<!entity glib-Async-Queues SYSTEM "sgml/async_queues.sgml">
 <!entity glib-IO-Channels SYSTEM "sgml/iochannels.sgml">
 <!entity glib-Hook-Functions SYSTEM "sgml/hooks.sgml">
 <!entity glib-Lexical-Scanner SYSTEM "sgml/scanner.sgml">
@@ -23,6 +29,8 @@
 <!entity glib-Memory-Chunks SYSTEM "sgml/memory_chunks.sgml">
 <!entity glib-Doubly-Linked-Lists SYSTEM "sgml/linked_lists_double.sgml">
 <!entity glib-Singly-Linked-Lists SYSTEM "sgml/linked_lists_single.sgml">
+<!entity glib-Double-ended-Queues SYSTEM "sgml/queue.sgml">
+<!entity glib-Trash-Stacks SYSTEM "sgml/trash_stack.sgml">
 <!entity glib-Hash-Tables SYSTEM "sgml/hash_tables.sgml">
 <!entity glib-Strings SYSTEM "sgml/strings.sgml">
 <!entity glib-String-Chunks SYSTEM "sgml/string_chunks.sgml">
@@ -50,6 +58,7 @@
     &glib-Standard-Macros;
     &glib-Type-Conversion-Macros;
     &glib-Byte-Order-Macros;
+    &glib-Numerical-Definitions;
     &glib-Miscellaneous-Macros;
   </chapter>
 
@@ -57,9 +66,12 @@
     <title>GLib Core Application Support</title>
     &glib-The-Main-Event-Loop;
     &glib-Threads;
+    &glib-Thread-Pools;
+    &glib-Async-Queues;
     &glib-Dynamic-Loading-of-Modules;
     &glib-Memory-Allocation;
     &glib-IO-Channels;
+    &glib-Error-Reporting;
     &glib-Warnings-and-Assertions;
     &glib-Message-Logging;
   </chapter>
@@ -67,7 +79,9 @@
   <chapter id="glib-utilities">
     <title>GLib Utilities</title>
     &glib-String-Utility-Functions;
+    &glib-Unicode-Manipulation;
     &glib-Date-and-Time-Functions;
+    &glib-Random-Numbers;   
     &glib-Hook-Functions;
     &glib-Miscellaneous-Utility-Functions;
     &glib-Lexical-Scanner;
@@ -81,6 +95,8 @@
     &glib-Memory-Chunks;
     &glib-Doubly-Linked-Lists;
     &glib-Singly-Linked-Lists;
+    &glib-Double-ended-Queues;
+    &glib-Trash-Stacks;
     &glib-Hash-Tables;
     &glib-Strings;
     &glib-String-Chunks;

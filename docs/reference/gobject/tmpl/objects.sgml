@@ -1,0 +1,364 @@
+<!-- ##### SECTION Title ##### -->
+The Base Object Type
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GObject ##### -->
+<para>
+
+</para>
+
+@g_type_instance: 
+
+<!-- ##### STRUCT GObjectClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO G_OBJECT ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_GET_CLASS ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_TYPE ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_TYPE_NAME ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_CLASS_TYPE ##### -->
+<para>
+
+</para>
+
+@class: 
+
+
+<!-- ##### MACRO G_OBJECT_CLASS_NAME ##### -->
+<para>
+
+</para>
+
+@class: 
+
+
+<!-- ##### MACRO G_IS_VALUE_OBJECT ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### MACRO G_TYPE_IS_OBJECT ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_IS_OBJECT ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_CLASS ##### -->
+<para>
+
+</para>
+
+@class: 
+
+
+<!-- ##### MACRO G_IS_OBJECT_CLASS ##### -->
+<para>
+
+</para>
+
+@class: 
+
+
+<!-- ##### MACRO G_NOTIFY_PRIORITY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION GObjectGetParamFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_id: 
+@value: 
+@pspec: 
+@trailer: 
+
+
+<!-- ##### USER_FUNCTION GObjectSetParamFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_id: 
+@value: 
+@pspec: 
+@trailer: 
+
+
+<!-- ##### USER_FUNCTION GObjectFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION g_object_class_install_param ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@param_id: 
+@pspec: 
+
+
+<!-- ##### FUNCTION g_object_class_find_param_spec ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@param_name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_new ##### -->
+<para>
+
+</para>
+
+@object_type: 
+@first_param_name: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_new_valist ##### -->
+<para>
+
+</para>
+
+@object_type: 
+@first_param_name: 
+@var_args: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_param_name: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_object_get ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_param_name: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_object_set_valist ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_param_name: 
+@var_args: 
+
+
+<!-- ##### FUNCTION g_object_get_valist ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_param_name: 
+@var_args: 
+
+
+<!-- ##### FUNCTION g_object_set_param ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_get_param ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_queue_param_changed ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_name: 
+
+
+<!-- ##### FUNCTION g_object_ref ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_unref ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION g_object_get_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_set_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@data: 
+
+
+<!-- ##### FUNCTION g_object_set_qdata_full ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION g_object_steal_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_set_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@v_object: 
+
+
+<!-- ##### FUNCTION g_value_get_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_dup_object ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### MACRO G_WARN_INVALID_PARAM_ID ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_id: 
+@pspec: 
+
+

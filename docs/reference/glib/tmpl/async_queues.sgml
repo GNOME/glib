@@ -1,0 +1,172 @@
+<!-- ##### SECTION Title ##### -->
+Asynchronous Queues
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GAsyncQueue ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_async_queue_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_lock ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_unlock ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_ref ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_ref_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_unref ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_unref_and_unlock ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_async_queue_push ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+
+
+<!-- ##### FUNCTION g_async_queue_push_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+
+
+<!-- ##### FUNCTION g_async_queue_pop ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_pop_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_try_pop ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_try_pop_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_timed_pop ##### -->
+<para>
+
+</para>
+
+@queue: 
+@end_time: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_timed_pop_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@end_time: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_length ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_async_queue_length_unlocked ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+

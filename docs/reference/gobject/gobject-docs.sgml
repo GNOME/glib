@@ -1,0 +1,28 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!entity gobject-enumerations-flags SYSTEM "sgml/enumerations_flags.sgml">
+<!entity gobject-generic-values SYSTEM "sgml/generic_values.sgml">
+<!entity gobject-objects SYSTEM "sgml/objects.sgml">
+<!entity gobject-param-specs SYSTEM "sgml/param_specs.sgml">
+<!entity gobject-standard-params SYSTEM "sgml/standard_params.sgml">
+<!entity gobject-types SYSTEM "sgml/types.sgml">
+<!entity gobject-value-collection SYSTEM "sgml/value_collection.sgml">
+<!entity gobject-value-types SYSTEM "sgml/value_types.sgml">
+]>
+<book id="index">
+  <bookinfo>
+    <title>GObject Reference Manual</title>
+  </bookinfo>
+
+  <reference>
+    <title>API Reference</title>
+
+	  &gobject-types;
+	  &gobject-objects;
+	  &gobject-enumerations-flags;
+	  &gobject-generic-values;
+	  &gobject-value-types;
+	  &gobject-value-collection;
+	  &gobject-param-specs;
+	  &gobject-standard-params;
+
+</book>

@@ -1,0 +1,142 @@
+<!-- ##### SECTION Title ##### -->
+Random Numbers
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GRand ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_rand_new_with_seed ##### -->
+<para>
+
+</para>
+
+@seed: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_free ##### -->
+<para>
+
+</para>
+
+@rand: 
+
+
+<!-- ##### FUNCTION g_rand_set_seed ##### -->
+<para>
+
+</para>
+
+@rand: 
+@seed: 
+
+
+<!-- ##### FUNCTION g_rand_int ##### -->
+<para>
+
+</para>
+
+@rand: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_int_range ##### -->
+<para>
+
+</para>
+
+@rand: 
+@min: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_double ##### -->
+<para>
+
+</para>
+
+@rand: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_double_range ##### -->
+<para>
+
+</para>
+
+@rand: 
+@min: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_random_set_seed ##### -->
+<para>
+
+</para>
+
+@seed: 
+
+
+<!-- ##### FUNCTION g_random_int ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_random_int_range ##### -->
+<para>
+
+</para>
+
+@min: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_random_double ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_random_double_range ##### -->
+<para>
+
+</para>
+
+@min: 
+@max: 
+@Returns: 
+
+

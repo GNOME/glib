@@ -1,0 +1,142 @@
+<!-- ##### SECTION Title ##### -->
+Double-ended Queues
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GQueue ##### -->
+<para>
+
+</para>
+
+@head: 
+@tail: 
+@length: 
+
+<!-- ##### FUNCTION g_queue_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_free ##### -->
+<para>
+
+</para>
+
+@queue: 
+
+
+<!-- ##### FUNCTION g_queue_push_head ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+
+
+<!-- ##### FUNCTION g_queue_push_tail ##### -->
+<para>
+
+</para>
+
+@queue: 
+@data: 
+
+
+<!-- ##### FUNCTION g_queue_pop_head ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_pop_tail ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_is_empty ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_peek_head ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_peek_tail ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_push_head_link ##### -->
+<para>
+
+</para>
+
+@queue: 
+@link: 
+
+
+<!-- ##### FUNCTION g_queue_push_tail_link ##### -->
+<para>
+
+</para>
+
+@queue: 
+@link: 
+
+
+<!-- ##### FUNCTION g_queue_pop_head_link ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_queue_pop_tail_link ##### -->
+<para>
+
+</para>
+
+@queue: 
+@Returns: 
+
+

@@ -1,0 +1,107 @@
+<!-- ##### SECTION Title ##### -->
+Error Reporting
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GError ##### -->
+<para>
+
+</para>
+
+@domain: 
+@code: 
+@message: 
+
+<!-- ##### FUNCTION g_error_new ##### -->
+<para>
+
+</para>
+
+@domain: 
+@code: 
+@format: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_error_new_literal ##### -->
+<para>
+
+</para>
+
+@domain: 
+@code: 
+@message: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_error_free ##### -->
+<para>
+
+</para>
+
+@error: 
+
+
+<!-- ##### FUNCTION g_error_copy ##### -->
+<para>
+
+</para>
+
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_error_matches ##### -->
+<para>
+
+</para>
+
+@error: 
+@domain: 
+@code: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_set_error ##### -->
+<para>
+
+</para>
+
+@err: 
+@domain: 
+@code: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION g_propagate_error ##### -->
+<para>
+
+</para>
+
+@dest: 
+@src: 
+
+
+<!-- ##### FUNCTION g_clear_error ##### -->
+<para>
+
+</para>
+
+@err: 
+
+
