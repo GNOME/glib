@@ -22,9 +22,9 @@
  
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 #if defined (__GNUC__)
 # if defined (G_ATOMIC_I486)
@@ -647,5 +647,5 @@ _g_atomic_thread_init (void)
 #endif /* DEFINE_WITH_MUTEXES */
 }
 
-#define IN_FILE_gatomic 1
+#define __G_ATOMIC_C__
 #include "galiasdef.c"

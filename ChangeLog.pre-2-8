@@ -1,5 +1,10 @@
 005-03-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gatomic.c:
+	* glib/gcache.c: Small fixes to the previous commit.
+
+005-03-13  Matthias Clasen  <mclasen@redhat.com>
+
 	Make PLT-reduction work with gcc4, and don't include
 	everything in galias.h:
 	
