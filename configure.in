@@ -578,6 +578,51 @@ GLIB_SIZEOF([$size_includes], size_t, size_t)
 GLIB_SIZEOF([$size_includes], ptrdiff_t, ptrdiff_t)
 GLIB_SIZEOF([$size_includes], intmax_t, intmax_t)
 
+dnl Try to figure out whether gsize, gssize should be long or int
+AC_MSG_CHECKING([for the appropriate definition for size_t])
+
+case $glib_cv_sizeof_size_t in
+  $ac_cv_sizeof_short) 
+      glib_size_type=short
+      ;;
+  $ac_cv_sizeof_int) 
+      glib_size_type=int
+      ;;
+  $ac_cv_sizeof_long) 
+      glib_size_type=long
+      ;;
+  *)  AC_MSG_ERROR([No type matching size_t in size])
+      ;;
+esac
+
+dnl If int/long are the same size, we see which one produces
+dnl warnings when used in the location as size_t. (This matters
+dnl on AIX with xlc)
+dnl
+if test $glib_cv_sizeof_size_t = $ac_cv_sizeof_int &&
+   test $glib_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
+  GLIB_CHECK_COMPILE_WARNINGS([
+#include <stddef.h> 
+int main ()
+{
+  size_t s = 1;
+  unsigned int *size_int = &s;
+  return (int)*size_int;
+}
+    ],glib_size_type=int,
+      [GLIB_CHECK_COMPILE_WARNINGS([
+#include <stddef.h> 
+int main ()
+{
+   size_t s = 1;
+   unsigned long *size_long = &s;
+   return (int)*size_long;
+}
+        ],glib_size_type=long)])
+fi
+
+AC_MSG_RESULT(unsigned $glib_size_type)
+
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf unsetenv getc_unlocked)
 
@@ -1780,19 +1825,8 @@ _______EOF
 
 _______EOF
 
-	case x$glib_size_t in
-        x2) echo "typedef gint16  gssize;" >> $outfile
-            echo "typedef guint16 gsize;"  >> $outfile
-            ;;
-        x4) echo "typedef gint32  gssize;" >> $outfile
-            echo "typedef guint32 gsize;"  >> $outfile
-            ;;
-        x8) echo "typedef gint64  gssize;" >> $outfile
-            echo "typedef guint64 gsize;"  >> $outfile
-            ;;
- 	*)  echo "#error size of size_t is unknown" >> $outfile
-            ;;
-        esac
+echo "typedef signed $glib_size_type_define gssize;" >> $outfile
+echo "typedef unsigned $glib_size_type_define gsize;" >> $outfile
 
 	if test -z "$glib_unknown_void_p"; then
 	  cat >>$outfile <<_______EOF
@@ -2074,6 +2108,7 @@ $ac_cv_sizeof___int64)
   ;;
 esac
 glib_size_t=$glib_cv_sizeof_size_t
+glib_size_type_define=$glib_size_type
 glib_void_p=$ac_cv_sizeof_long
 glib_long=$ac_cv_sizeof_void_p
 
