@@ -1837,6 +1837,10 @@ g_filename_from_uri
 g_filename_to_uri
 g_locale_from_utf8
 GConvertError
+
+<SUBSECTION>
+g_get_charset
+
 <SUBSECTION Private>
 g_convert_error_quark
 </SECTION>
@@ -1846,9 +1850,6 @@ g_convert_error_quark
 <FILE>unicode</FILE>
 gunichar
 gunichar2
-
-<SUBSECTION>
-g_get_charset
 
 <SUBSECTION>
 g_unichar_validate

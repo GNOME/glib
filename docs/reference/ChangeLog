@@ -1,3 +1,8 @@
+2001-12-21  Matthias Clasen  <matthias@poet.de>
+
+	* glib/glib-sections.txt: Move g_get_charset() to the
+	Charset conversion section. (#65630)
+ 
 Wed Dec 19 23:07:53 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/messages.sgml glib/tmpl/string_utils.sgml: 

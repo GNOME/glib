@@ -1,3 +1,7 @@
+2001-12-21  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gfileutils.c (g_file_get_contents): Remove FIXME. (#67063)
+
 2001-12-19  Mark McLoughlin  <mark@skynet.ie>
 
 	* glib/gscanner.c: (g_scanner_unexp_token): fix segfaults.

@@ -539,9 +539,6 @@ get_contents_win32 (const gchar *filename,
  * @length argument.  The error domain is #G_FILE_ERROR. Possible
  * error codes are those in the #GFileError enumeration.
  *
- * FIXME currently crashes if the file is too big to fit in memory;
- * should probably use g_try_malloc() when we have that function.
- * 
  * Return value: %TRUE on success, %FALSE if error is set
  **/
 gboolean
