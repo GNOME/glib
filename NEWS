@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.2.9:
+
+* Addition of .pc files
+* Include file movement into a glib-1.2 subdir
+* One or two pieces of sugar for your pet C++ compiler 
+* Miscellaneous important bug fixes
+
 Overview of Changes in GLib 1.2.8:
 
 * GArray zero initialization bug fixed
