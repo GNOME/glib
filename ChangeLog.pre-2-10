@@ -1,5 +1,9 @@
 2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
 
+	* tests/unicode-encoding.c: Return nonzero exit status if the test fails. (#118729)
+
+2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
+
 	* tests/utf8.txt: Change instances of U+10ffff to U+10fffd, since that
 	is the last valid unicode character. Add check that U+10ffff is
 	NOTUNICODE. (#118730)

@@ -418,5 +418,5 @@ main (int argc, char **argv)
       line++;
     }
 
-  return 0;
+  return exit_status;
 }
