@@ -1,3 +1,8 @@
+Sat Feb 17 07:58:46 2001  Tim Janik  <timj@gtk.org>
+
+	* genums.h (G_TYPE_IS_FLAGS): patch from sven to fixup
+	G_ENUM_CLASS_TYPE() macro.
+
 Sat Feb 17 04:55:35 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: changed collect_format, collect_value() and lcopy_format,
