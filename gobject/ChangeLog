@@ -1,3 +1,10 @@
+Thu Feb 27 17:33:19 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.[ch] testgobject.c: Add support for instance-private data. 
+	g_type_class_add_private(), g_type_instance_get_private(),
+	G_TYPE_INSTANCE_GET_PRIVATE(). (#101959, patch partly by
+	Mark McLoughlin, extensive feedback from Tim Janik.)
+
 2003-03-06  Matthias Clasen  <maclas@gmx.de>
 
 	* gsignal.c (g_signal_handlers_block_matched): 

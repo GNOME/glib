@@ -150,6 +150,8 @@ struct _GTypeQuery
 #define G_TYPE_FROM_CLASS(g_class)                              (((GTypeClass*) (g_class))->g_type)
 #define G_TYPE_FROM_INTERFACE(g_iface)                          (((GTypeInterface*) (g_iface))->g_type)
 
+#define G_TYPE_INSTANCE_GET_PRIVATE(instance, g_type, c_type)   ((c_type*) g_type_instance_get_private ((GTypeInstance*) (instance), (g_type)))
+
 
 /* debug flags for g_type_init_with_debug_flags() */
 typedef enum	/*< skip >*/
@@ -298,6 +300,10 @@ void  g_type_interface_add_prerequisite (GType			     interface_type,
 GType *g_type_interface_prerequisites   (GType                       interface_type,
 					 guint                       *n_prerequisites);
 
+void     g_type_class_add_private    (gpointer       g_class,
+				      gsize          private_size);
+gpointer g_type_instance_get_private (GTypeInstance *instance,
+				      GType          private_type);
 
 /* --- protected (for fundamental type implementations) --- */
 GTypePlugin*	 g_type_get_plugin		(GType		     type);

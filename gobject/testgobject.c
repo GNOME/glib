@@ -126,8 +126,10 @@ iface_print_string (TestIface   *tiobj,
 #define TEST_IS_OBJECT(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), TEST_TYPE_OBJECT))
 #define TEST_IS_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TEST_TYPE_OBJECT))
 #define TEST_OBJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), TEST_TYPE_OBJECT, TestObjectClass))
-typedef struct _TestObject      TestObject;
-typedef struct _TestObjectClass TestObjectClass;
+#define TEST_OBJECT_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), TEST_TYPE_OBJECT, TestObjectPrivate))
+typedef struct _TestObject        TestObject;
+typedef struct _TestObjectClass   TestObjectClass;
+typedef struct _TestObjectPrivate TestObjectPrivate;
 struct _TestObject
 {
   GObject parent_instance;
@@ -139,6 +141,11 @@ struct _TestObjectClass
   gchar* (*test_signal) (TestObject *tobject,
 			 TestIface  *iface_object,
 			 gpointer    tdata);
+};
+struct _TestObjectPrivate
+{
+  int     dummy1;
+  gdouble dummy2;
 };
 static void	test_object_class_init	(TestObjectClass	*class);
 static void	test_object_init	(TestObject		*tobject);
@@ -190,10 +197,18 @@ test_object_class_init (TestObjectClass *class)
 		test_signal_accumulator, NULL,
 		g_cclosure_marshal_STRING__OBJECT_POINTER,
 		G_TYPE_STRING, 2, TEST_TYPE_IFACE, G_TYPE_POINTER);
+
+  g_type_class_add_private (class, sizeof (TestObjectPrivate));
 }
 static void
 test_object_init (TestObject *tobject)
 {
+  TestObjectPrivate *priv;
+
+  priv = TEST_OBJECT_GET_PRIVATE (tobject);
+
+  g_assert (priv);
+  g_assert ((gchar *)priv >= (gchar *)tobject + sizeof (TestObject));
 }
 static gboolean
 test_signal_accumulator (GSignalInvocationHint *ihint,
@@ -274,8 +289,16 @@ derived_object_test_iface_init (gpointer giface,
 #define DERIVED_IS_OBJECT(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), DERIVED_TYPE_OBJECT))
 #define DERIVED_IS_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), DERIVED_TYPE_OBJECT))
 #define DERIVED_OBJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), DERIVED_TYPE_OBJECT, DerivedObjectClass))
-typedef struct _TestObject      DerivedObject;
-typedef struct _TestObjectClass DerivedObjectClass;
+#define DERIVED_OBJECT_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), DERIVED_TYPE_OBJECT, DerivedObjectPrivate))
+typedef struct _TestObject           DerivedObject;
+typedef struct _TestObjectClass      DerivedObjectClass;
+typedef struct _DerivedObjectPrivate DerivedObjectPrivate;
+struct _DerivedObjectPrivate
+{
+  char dummy;
+};
+static void derived_object_class_init (DerivedObjectClass *class);
+static void derived_object_init       (DerivedObject      *dobject);
 GType
 derived_object_get_type (void)
 {
@@ -288,12 +311,12 @@ derived_object_get_type (void)
 	sizeof (DerivedObjectClass),
 	NULL,           /* base_init */
 	NULL,           /* base_finalize */
-	NULL,		/* class_init */
+	(GClassInitFunc) derived_object_class_init,
 	NULL,           /* class_finalize */
 	NULL,           /* class_data */
 	sizeof (DerivedObject),
 	5,              /* n_preallocs */
-	NULL,		/* instance_init */
+	(GInstanceInitFunc) derived_object_init,
       };
       GInterfaceInfo iface_info = { derived_object_test_iface_init, NULL, GUINT_TO_POINTER (87) };
 
@@ -303,7 +326,28 @@ derived_object_get_type (void)
 
   return derived_object_type;
 }
+static void
+derived_object_class_init (DerivedObjectClass *class)
+{
+  g_type_class_add_private (class, sizeof (DerivedObjectPrivate));
+}
+static void
+derived_object_init (DerivedObject *dobject)
+{
+  TestObjectPrivate *test_priv;
+  DerivedObjectPrivate *derived_priv;
 
+  derived_priv = DERIVED_OBJECT_GET_PRIVATE (dobject);
+
+  g_assert (derived_priv);
+  g_assert ((gchar *)derived_priv >= (gchar *)TEST_OBJECT_GET_PRIVATE (dobject) + sizeof (TestObjectPrivate));
+
+  test_priv = TEST_OBJECT_GET_PRIVATE (dobject);
+  
+  g_assert (test_priv);
+  g_assert ((gchar *)test_priv >= (gchar *)dobject + sizeof (TestObject));
+
+}
 
 /* --- main --- */
 int

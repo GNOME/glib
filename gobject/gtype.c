@@ -107,6 +107,18 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 						       sizeof (gpointer)), \
                                                   sizeof (glong)))
 
+/* The 2*sizeof(size_t) alignment here is borrowed from
+ * GNU libc, so it should be good most everywhere.
+ * It is more conservative than is needed on some 64-bit
+ * platforms, but ia64 does require a 16-byte alignment.
+ * The SIMD extensions for x86 and ppc32 would want a
+ * larger alignment than this, but we don't need to
+ * do better than malloc.
+ */
+#define STRUCT_ALIGNMENT (2 * sizeof (gsize))
+#define ALIGN_STRUCT(offset) \
+      ((offset + (STRUCT_ALIGNMENT - 1)) & -STRUCT_ALIGNMENT)
+
 
 /* --- typedefs --- */
 typedef struct _TypeNode        TypeNode;
@@ -182,6 +194,10 @@ struct _TypeNode
 #define	iface_node_set_dependants_array_W(n,d)	(type_set_qdata_W ((n), static_quark_dependants_array, (d)))
 #define	TYPE_ID_MASK				((GType) ((1 << G_TYPE_FUNDAMENTAL_SHIFT) - 1))
 
+#define NODE_IS_ANCESTOR(ancestor, node)                                                    \
+        ((ancestor)->n_supers <= (node)->n_supers &&                                        \
+	 (node)->supers[(node)->n_supers - (ancestor)->n_supers] == NODE_TYPE (ancestor))
+
 
 struct _IFaceHolder
 {
@@ -229,6 +245,7 @@ struct _InstanceData
   gconstpointer      class_data;
   gpointer           class;
   guint16            instance_size;
+  guint16            private_size;
   guint16            n_preallocs;
   GInstanceInitFunc  instance_init;
   GMemChunk        *mem_chunk;
@@ -909,6 +926,13 @@ type_data_make_W (TypeNode              *node,
       data->instance.class_data = info->class_data;
       data->instance.class = NULL;
       data->instance.instance_size = info->instance_size;
+      if (NODE_PARENT_TYPE (node))
+	{
+	  TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+	  data->instance.private_size = pnode->data->instance.private_size;
+	}
+      else
+	data->instance.private_size = 0;
 #ifdef	DISABLE_MEM_POOLS
       data->instance.n_preallocs = 0;
 #else	/* !DISABLE_MEM_POOLS */
@@ -1338,6 +1362,19 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
     }
 }
 
+/* Assumes type's class already exists
+ */
+static inline size_t
+type_total_instance_size_I (TypeNode *node)
+{
+  gsize total_instance_size;
+
+  total_instance_size = node->data->instance.instance_size;
+  if (node->data->instance.private_size != 0)
+    total_instance_size = ALIGN_STRUCT (total_instance_size) + node->data->instance.private_size;
+
+  return total_instance_size;
+}
 
 /* --- type structure creation/destruction --- */
 GTypeInstance*
@@ -1347,6 +1384,7 @@ g_type_create_instance (GType type)
   GTypeInstance *instance;
   GTypeClass *class;
   guint i;
+  gsize total_instance_size;
   
   node = lookup_type_node_I (type);
   if (!node || !node->is_instantiatable)
@@ -1364,21 +1402,35 @@ g_type_create_instance (GType type)
     }
   
   class = g_type_class_ref (type);
+
+  total_instance_size = type_total_instance_size_I (node);
   
   if (node->data->instance.n_preallocs)
     {
       G_WRITE_LOCK (&type_rw_lock);
       if (!node->data->instance.mem_chunk)
-	node->data->instance.mem_chunk = g_mem_chunk_new (NODE_NAME (node),
-							  node->data->instance.instance_size,
-							  (node->data->instance.instance_size *
-							   node->data->instance.n_preallocs),
-							  G_ALLOC_AND_FREE);
+	{
+	  /* If there isn't private data, the compiler will have already
+	   * added the necessary padding, but in the private data case, we
+	   * have to pad ourselves to ensure proper alignment of all the
+	   * atoms in the slab.
+	   */
+	  gsize atom_size = total_instance_size;
+	  if (node->data->instance.private_size)
+	    atom_size = ALIGN_STRUCT (atom_size);
+	  
+	  node->data->instance.mem_chunk = g_mem_chunk_new (NODE_NAME (node),
+							    atom_size,
+							    (atom_size *
+							     node->data->instance.n_preallocs),
+							    G_ALLOC_AND_FREE);
+	}
+      
       instance = g_chunk_new0 (GTypeInstance, node->data->instance.mem_chunk);
       G_WRITE_UNLOCK (&type_rw_lock);
     }
   else
-    instance = g_malloc0 (node->data->instance.instance_size);	/* fine without read lock */
+    instance = g_malloc0 (total_instance_size);	/* fine without read lock */
   for (i = node->n_supers; i > 0; i--)
     {
       TypeNode *pnode;
@@ -1424,7 +1476,7 @@ g_type_free_instance (GTypeInstance *instance)
   
   instance->g_class = NULL;
 #ifdef G_ENABLE_DEBUG  
-  memset (instance, 0xaa, node->data->instance.instance_size);	/* debugging hack */
+  memset (instance, 0xaa, type_total_instance_size_I (node));	/* debugging hack */
 #endif  
   if (node->data->instance.n_preallocs)
     {
@@ -1527,7 +1579,7 @@ type_class_init_Wm (TypeNode   *node,
   g_assert (node->is_classed && node->data &&
 	    node->data->class.class_size &&
 	    !node->data->class.class);
-  
+
   class = g_malloc0 (node->data->class.class_size);
   node->data->class.class = class;
   
@@ -2255,8 +2307,7 @@ type_node_check_conformities_UorL (TypeNode *node,
   gboolean match;
   
   if (/* support_inheritance && */
-      iface_node->n_supers <= node->n_supers &&
-      node->supers[node->n_supers - iface_node->n_supers] == NODE_TYPE (iface_node))
+      NODE_IS_ANCESTOR (iface_node, node))
     return TRUE;
   
   support_interfaces = support_interfaces && node->is_instantiatable && NODE_IS_IFACE (iface_node);
@@ -3024,4 +3075,84 @@ void
 g_type_init (void)
 {
   g_type_init_with_debug_flags (0);
+}
+
+void
+g_type_class_add_private (gpointer g_class,
+			  gsize    private_size)
+{
+  GType instance_type = ((GTypeClass *)g_class)->g_type;
+  TypeNode *node = lookup_type_node_I (instance_type);
+  gsize offset;
+
+  if (!node || !node->is_instantiatable || !node->data || node->data->class.class != g_class)
+    {
+      g_warning ("cannot add private field to invalid (non-instantiatable) type '%s'",
+		 type_descriptive_name_I (instance_type));
+      return;
+    }
+
+  if (NODE_PARENT_TYPE (node))
+    {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+      if (node->data->instance.private_size != pnode->data->instance.private_size)
+	{
+	  g_warning ("g_type_add_private() called multiple times for the same type");
+	  return;
+	}
+    }
+  
+  G_WRITE_LOCK (&type_rw_lock);
+
+  offset = ALIGN_STRUCT (node->data->instance.private_size);
+  node->data->instance.private_size = offset + private_size;
+  
+  G_WRITE_UNLOCK (&type_rw_lock);
+}
+
+gpointer
+g_type_instance_get_private (GTypeInstance *instance,
+			     GType          private_type)
+{
+  TypeNode *instance_node;
+  TypeNode *private_node;
+  TypeNode *parent_node;
+  gsize offset;
+
+  g_return_val_if_fail (instance != NULL && instance->g_class != NULL, NULL);
+  
+  instance_node = lookup_type_node_I (instance->g_class->g_type);
+  if (G_UNLIKELY (!instance_node || !instance_node->is_instantiatable))
+    {
+      g_warning ("instance of invalid non-instantiatable type `%s'",
+		 type_descriptive_name_I (instance->g_class->g_type));
+      return NULL;
+    }
+
+  private_node = lookup_type_node_I (private_type);
+  if (G_UNLIKELY (!private_node || !NODE_IS_ANCESTOR (private_node, instance_node)))
+    {
+      g_warning ("attempt to retrieve private data for invalid type '%s'",
+		 type_descriptive_name_I (private_type));
+      return NULL;
+    }
+
+  /* Note that we don't need a read lock, since instance existing
+   * means that the instance class and all parent classes
+   * exist, so the node->data, node->data->instance.instance_size,
+   * and node->data->instance.private_size are not going to be changed.
+   * for any of the relevant types.
+   */
+
+  offset = ALIGN_STRUCT (instance_node->data->instance.instance_size);
+
+  if (NODE_PARENT_TYPE (private_node))
+    {
+      parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
+      g_assert (parent_node->data && parent_node->data->common.ref_count);
+
+      offset += ALIGN_STRUCT (parent_node->data->instance.private_size);
+    }
+
+  return G_STRUCT_MEMBER_P (instance, offset);
 }
