@@ -73,7 +73,7 @@ EXPORTS
 	g_param_value_set_default
 	g_param_value_validate
 	g_param_values_cmp
-	g_signal_connect_closure
+	g_signal_connect_closure_by_id
 	g_signal_emitv
 	g_signal_handler_block
 	g_signal_handler_disconnect
@@ -86,7 +86,6 @@ EXPORTS
 	g_signal_query
 	g_signal_stop_emission
 	g_signal_type_closure_new
-	g_signals_destroy
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
 	g_type_check_class_cast

@@ -29,6 +29,7 @@ gobject_OBJECTS =		\
 	gparamspecs.obj		\
 	gsignal.obj		\
 	gtype.obj		\
+	gtypeplugin.obj		\
 	gvalue.obj		\
 	gvaluetypes.obj
 
