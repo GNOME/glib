@@ -200,9 +200,11 @@ g_strtod (const gchar *nptr,
     {
       gchar *old_locale;
 
-      old_locale = setlocale (LC_NUMERIC, "C");
+      old_locale = g_strdup (setlocale (LC_NUMERIC, NULL));
+      setlocale (LC_NUMERIC, "C");
       val_2 = strtod (nptr, &fail_pos_2);
       setlocale (LC_NUMERIC, old_locale);
+      g_free (old_locale);
     }
 
   if (!fail_pos_1 || fail_pos_1[0] == 0 || fail_pos_1 >= fail_pos_2)
