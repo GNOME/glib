@@ -263,10 +263,11 @@ struct _GStaticRWLock
   GCond *write_cond;
   guint read_counter;
   gboolean write;
+  guint want_to_read;
   guint want_to_write;
 };
 
-#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, FALSE }
+#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, 0, 0 }
 
 void      g_static_rw_lock_init           (GStaticRWLock* lock);
 void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock);

@@ -1,5 +1,9 @@
 2001-08-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib/gthread.h, glib/gthread.c: Add 'want_to_read' to
+	GStaticRWLock to avoid calling g_cond_broadcast, when no one is
+	waiting.
+
 	* glib/gmain.c (g_main_context_add_poll_unlocked): Don't free
 	cached_poll_array, when adding new poll's. This is taken care for
 	in g_main_context_iterate.
