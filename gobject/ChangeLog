@@ -1,3 +1,8 @@
+Tue Jul  8 22:29:31 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* gtype.c (type_class_init_Wm): Only access node->data->instance
+	when the node is instantiable.
+
 Tue Jul  8 14:55:27 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.c (type_class_init_Wm): Initialize

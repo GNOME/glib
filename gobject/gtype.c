@@ -912,7 +912,7 @@ type_data_make_W (TypeNode              *node,
 	vtable_size += strlen (value_table->lcopy_format);
       vtable_size += 2;
     }
-  
+   
   if (node->is_instantiatable) /* carefull, is_instantiatable is also is_classed */
     {
       data = g_malloc0 (sizeof (InstanceData) + vtable_size);
@@ -1585,11 +1585,15 @@ type_class_init_Wm (TypeNode   *node,
       TypeNode *pnode = lookup_type_node_I (pclass->g_type);
       
       memcpy (class, pclass, pnode->data->class.class_size);
-      /* We need to initialize the private_size here rather than in
-       * type_data_make_W() since the class init for the parent
-       * class may have changed pnode->data->instance.private_size.
-       */
-      node->data->instance.private_size = pnode->data->instance.private_size;
+
+      if (node->is_instantiatable)
+	{
+	  /* We need to initialize the private_size here rather than in
+	   * type_data_make_W() since the class init for the parent
+	   * class may have changed pnode->data->instance.private_size.
+	   */
+	  node->data->instance.private_size = pnode->data->instance.private_size;
+	}
     }
   class->g_type = NODE_TYPE (node);
   
