@@ -1,3 +1,8 @@
+Tue Aug 18 02:46:44 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (__STRICT_ANSI__): if __STRICT_ANSI__ is defined, make
+	`inline' a noop, since strict ANSI rules don't permit `inline'.
+
 Mon Aug 17 15:21:42 1998  Tim Janik  <timj@gtk.org>
 
 	* grel.c: made private functions static.

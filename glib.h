@@ -166,6 +166,18 @@
 #endif
 
 
+/* ANSI does not permit the keyword `inline'.
+ */
+#if defined (__STRICT_ANSI__)
+#  undef inline
+#  ifdef __GNUC__
+#    define inline	__inline__
+#  else /* !__GNUC__ */
+#    define inline	/* don't inline */
+#  endif /* !__GNUC__ */
+#endif /* __STRICT_ANSI__ */
+
+
 /* Provide macros to feature the GCC function attribute.
  */
 #if	__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
