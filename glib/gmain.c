@@ -2349,7 +2349,7 @@ g_main_context_query (GMainContext *context,
   if (timeout)
     {
       *timeout = context->timeout;
-      if (timeout != 0)
+      if (*timeout != 0)
 	context->time_is_current = FALSE;
     }
   

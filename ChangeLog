@@ -1,3 +1,8 @@
+2004-04-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_main_context_query): Only set time_is_current to 
+	FALSE if context->timeout is not zero.  (#137795, Christian Krause)
+
 2004-04-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/printf-test.c (main): Comment out a nonessential testcase
