@@ -1,3 +1,8 @@
+2001-03-09  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update with some information about using configure
+	and libtool.
+
 2001-03-09  Hans Breuer  <hans@breuer.org>
 
 	* gobject/gobject.def : updated
@@ -116,6 +121,8 @@ Thu Feb 22 10:31:36 2001  Owen Taylor  <otaylor@redhat.com>
 	* gutils.c: For code needed both on Cygwin and native Win32,
 	test for G_PLATFORM_WIN32.
 
+	* gmarkup.h: Use G_BEGIN_DECLS and G_END_DECLS.
+	
 	* gtypes.h: Refine GLIB_VAR definition. Also check for DLL_EXPORT
 	in case compiling a static library on Win32 or Cygwin.
 
