@@ -115,20 +115,17 @@ OR of any of the #GModuleFlags.
 
 <!-- ##### ENUM GModuleFlags ##### -->
 <para>
-Flags passed to g_module_open().
-#G_MODULE_BIND_LAZY specifies that symbols are only resolved when needed.
-The default action is to bind all symbols when the module is loaded.
-(#G_MODULE_BIND_LAZY is not supported on all platforms.)
-#G_MODULE_BIND_LOCAL specifies that symbols in the module should
-not be added to the global name space.  The default action on most
-platforms is to place symbols in the module in the global name space,
-which may cause conflicts with existing symbols.
-(#G_MODULE_BIND_LOCAL is not supported on all platforms.)
+Flags passed to g_module_open(). Note that these flags are
+not supported on all platforms.
 </para>
 
-@G_MODULE_BIND_LAZY: 
-@G_MODULE_BIND_LOCAL: 
-@G_MODULE_BIND_MASK: 
+@G_MODULE_BIND_LAZY: specifies that symbols are only resolved when needed.
+  The default action is to bind all symbols when the module is loaded.
+@G_MODULE_BIND_LOCAL:specifies that symbols in the module should
+  not be added to the global name space.  The default action on most
+  platforms is to place symbols in the module in the global name space,
+  which may cause conflicts with existing symbols. 
+@G_MODULE_BIND_MASK: mask for all flags.
 
 <!-- ##### FUNCTION g_module_symbol ##### -->
 <para>

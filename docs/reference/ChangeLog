@@ -1,3 +1,11 @@
+Fri Feb 27 22:10:25 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/modules.sgml: Reformat a bit.
+
+Fri Feb 27 22:05:23 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/limits.sgml: Document G_MAXSIZE.
+
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
         * glib/tmpl/threads.sgml: Updated to reflect removal of the PID

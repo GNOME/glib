@@ -1,3 +1,11 @@
+Fri Feb 27 22:13:22 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gqueue.c: Trivial doc changes.
+
+Fri Feb 27 21:58:20 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/ghash.c (g_hash_table_find): Add "Since: 2.4"
+
 2004-02-27  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gasyncqueue.c, glib/gasyncqueue.h: Use

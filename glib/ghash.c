@@ -565,15 +565,16 @@ g_hash_table_foreach (GHashTable *hash_table,
  * @predicate:  function to test the key/value pairs for a certain property.
  * @user_data:  user data to pass to the function.
  * 
- * Calls the given function for key/value pairs in the
- * #GHashTable until @predicate returns %TRUE.  The function is passed 
- * the key and value of each pair, and the given @user_data parameter.  
- *  The hash table may not
- * be modified while iterating over it (you can't add/remove
- * items). 
+ * Calls the given function for key/value pairs in the #GHashTable until 
+ * @predicate returns %TRUE.  The function is passed the key and value of 
+ * each pair, and the given @user_data parameter. The hash table may not
+ * be modified while iterating over it (you can't add/remove items). 
+ *
  * Return value: The value of the first key/value pair is returned, for which 
  * func evaluates to %TRUE. If no pair with the requested property is found, 
- * %NULL is returned
+ * %NULL is returned.
+ *
+ * Since: 2.4
  **/
 gpointer
 g_hash_table_find (GHashTable	   *hash_table,

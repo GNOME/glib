@@ -144,7 +144,7 @@ g_queue_reverse (GQueue *queue)
  * g_queue_copy:
  * @queue: a #GQueue
  * 
- * Copy a @queue. Note that is a shallow copy. If the elements in the
+ * Copies a @queue. Note that is a shallow copy. If the elements in the
  * queue consist of pointers to data, the pointers are copied, but the
  * actual data is not.
  * 
@@ -298,7 +298,7 @@ g_queue_push_head (GQueue  *queue,
  *     larger than the number of elements in the @queue, the element is
  *     added to the end of the queue.
  * 
- * Insert a new element into @queue at the given position
+ * Inserts a new element into @queue at the given position
  * 
  * Since: 2.4
  **/
@@ -399,7 +399,7 @@ g_queue_push_tail_link (GQueue *queue,
  *     @queue.
  * @link_: the link to add to @queue
  * 
- * Insert @link into @queue at the given position.
+ * Inserts @link into @queue at the given position.
  * 
  * Since: 2.4
  **/
