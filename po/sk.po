@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.8\n"
-"POT-Creation-Date: 2001-12-23 17:50-0500\n"
-"PO-Revision-Date: 2001-12-11 13:37CET\n"
-"Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
+"POT-Creation-Date: 2002-01-03 07:22-0500\n"
+"PO-Revision-Date: 2002-01-04 15:54CET\n"
+"Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: glib/gconvert.c:202
 #, c-format
@@ -88,7 +88,7 @@ msgstr "Chyba pri otváraní priečinku'%s': %s"
 #: glib/gfileutils.c:320 glib/gfileutils.c:385
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Nepodarilo sa alokovať %lu bajtov pre načítanie súboru \"%s\""
 
 #: glib/gfileutils.c:331
 #, c-format
@@ -179,10 +179,8 @@ msgid "Error on line %d: %s"
 msgstr "Chyba na riadku %d: %s"
 
 #: glib/gmarkup.c:379
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:389
 #, c-format
@@ -228,8 +226,7 @@ msgstr "Odkaz na znak '%s' nie je kódom povoleného znaku"
 
 #: glib/gmarkup.c:567
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
-"Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
+msgstr "Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
 
 #: glib/gmarkup.c:577
 msgid ""
@@ -266,8 +263,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1110
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Prebytočný znak '%s'. Bol očakávaný znak '=' za menom atribútu '%s' elementu "
 "'%s'"
@@ -297,8 +293,7 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
-"'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
+msgstr "'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
 
 #: glib/gmarkup.c:1388
 #, c-format
@@ -315,8 +310,7 @@ msgstr "Element '%s' bol ukončený, ale momentálne otvorený element je '%s'"
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
-"'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
+msgstr "'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
 
 #: glib/gmarkup.c:1541
 msgid "Document was empty or contained only whitespace"
@@ -340,8 +334,7 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
+msgstr "Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
 
 #: glib/gmarkup.c:1577
 msgid "Document ended unexpectedly inside an element name"
@@ -359,8 +352,7 @@ msgstr "Dokument neočakávane skončil v začiatočnej značke elementu."
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr ""
-"Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
+msgstr "Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
 
 #: glib/gmarkup.c:1599
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -373,8 +365,7 @@ msgstr "Dokument neočakávane skončil v koncovej značke pre element '%s'"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
+msgstr "Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
 
 #: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -392,8 +383,7 @@ msgstr "Text skončil hneď po znaku ''.  (Text bol '%s')"
 #: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
+msgstr "Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
 
 #: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
@@ -452,9 +442,9 @@ msgid "Failed to fork (%s)"
 msgstr "Nepodarilo sa zavolať fork (%s)"
 
 #: glib/gspawn.c:1127
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Nepodarilo sa spustiť proces potomka (%s)"
+msgstr "Nepodarilo sa spustiť proces potomka \"%s\" (%s)"
 
 #: glib/gspawn.c:1137
 #, c-format
@@ -467,9 +457,9 @@ msgid "Failed to fork child process (%s)"
 msgstr "Nepodarilo sa spustiť proces potomka (%s)"
 
 #: glib/gspawn.c:1154
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Neznáma chyba počas behu procesu potomka"
+msgstr "Neznáma chyba počas behu procesu potomka \"%s\""
 
 #: glib/gspawn.c:1176
 #, c-format
@@ -488,3 +478,4 @@ msgstr "Neplatná sekvencia na vstupe prevodu"
 #: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
+
