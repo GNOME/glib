@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib/2.0\n"
+"Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-25 01:51+0100\n"
-"PO-Revision-Date: 2003-11-18 22:34+0100\n"
+"POT-Creation-Date: 2003-12-27 17:16+0100\n"
+"PO-Revision-Date: 2003-12-28 12:44+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Konvertering frå teiknsett «%s» til «%s» er ikkje støtta"
+msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"
 
 #: glib/gconvert.c:406
 #, c-format
@@ -47,7 +47,7 @@ msgstr "Delvis teiknsekvens på slutten av inndata"
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Kan ikkje konvertere tilbakefall «%s» til kodesett «%s»"
+msgstr "Kan ikkje konvertera tilbakefall «%s» til kodesett «%s»"
 
 #: glib/gconvert.c:1497
 #, c-format
@@ -116,7 +116,7 @@ msgstr "Klarte ikkje å få tak i eigenskapar for fila «%s»: fstat() feila: %s
 #: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Kunne ikkje opne fila «%s»: fdopen() feila: %s"
+msgstr "Kunne ikkje opna fila «%s»: fdopen() feila: %s"
 
 #: glib/gfileutils.c:779
 #, c-format
@@ -145,7 +145,7 @@ msgstr "Symbolske lenkjer er ikkje støtta"
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Konvertering frå teiknsett «%s» til «%s» er ikkje støtta"
+msgstr "Konvertering frå teiknsettet «%s» til «%s» er ikkje støtta"
 
 #: glib/giochannel.c:1147
 #, c-format
@@ -179,8 +179,7 @@ msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
 #: glib/gmarkup.c:412
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "Fann tom entitet «&;»; gyldige entitetar er: &amp; &quot; &lt; &apos;"
 
 #: glib/gmarkup.c:422
@@ -209,8 +208,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entiteten slutta ikkje med eit semikolon; sannsynlegvis brukte du eit et- "
-"teikn utan å meina å opne ein entitet – skriv et-teikn som &amp;"
+"Entiteten slutta ikkje med eit semikolon. Du brukte truleg eit "
+"et-teikn utan å meina å opna ein entitet. Skriv et-teikn som «&amp;»."
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -275,8 +274,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%"
 "s»"
@@ -343,7 +341,7 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokumentet slutta uventa med element forsatt opne – «%s» var det siste "
+"Dokumentet slutta uventa med element framleis opne. «%s» var det siste "
 "elementet som vart opna"
 
 #: glib/gmarkup.c:1671
@@ -365,8 +363,7 @@ msgstr "Dokumentet tok uventa slutt inni eit attributtnamn"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
-"Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
+msgstr "Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
 
 #: glib/gmarkup.c:1693
 msgid ""
@@ -387,8 +384,7 @@ msgstr "Dokumentet avslutta uventa i eit lukkemerke for elementet «%s»"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
+msgstr "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -422,8 +418,7 @@ msgstr "Klarte ikkje å lesa data frå barneprosess"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
@@ -515,3 +510,4 @@ msgstr "Teikn ikkje gyldig for UTF-16"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kanalen set flag ustøtta"
+
