@@ -1,3 +1,9 @@
+2002-02-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gfileutils.c (g_file_test): Do not follow symbolic links
+	for G_FILE_TEST_SYMLINK. Also fixed the correct "OR"-behaviour for
+	G_FILE_TEST_IS_EXECUTABLE and G_FILE_TEST_EXISTS. (#60048)
+
 2002-02-07  Changwoo Ryu  <cwryu@debian.org>
 
 	* configure.in (ALL_LINGUAS): Added "ko".

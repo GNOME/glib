@@ -76,6 +76,10 @@
  * the check whether it's a directory doesn't matter since the existence 
  * test is %TRUE. With the current set of available tests, there's no point
  * passing in more than one test at a time.
+ * 
+ * Apart from #G_FILE_TEST_IS_SYMLINK all tests follow symbolic links,
+ * so for a symbolic link to a regular file g_file_test() will return
+ * %TRUE for both #G_FILE_TEST_IS_SYMLINK and #G_FILE_TEST_IS_REGULAR.
  *
  * Return value: whether a test was %TRUE
  **/
@@ -83,29 +87,35 @@ gboolean
 g_file_test (const gchar *filename,
              GFileTest    test)
 {
-  if (test & G_FILE_TEST_EXISTS)
-    return (access (filename, F_OK) == 0);
-  else if (test & G_FILE_TEST_IS_EXECUTABLE)
-    return (access (filename, X_OK) == 0);
-  else
+  if ((test & G_FILE_TEST_EXISTS) && (access (filename, F_OK) == 0))
+    return TRUE;
+  
+  if ((test & G_FILE_TEST_IS_EXECUTABLE) && (access (filename, X_OK) == 0))
+    return TRUE;
+
+  if (test & G_FILE_TEST_IS_SYMLINK)
+    {
+      struct stat s;
+
+      if ((lstat (filename, &s) == 0) && S_ISLNK (s.st_mode))
+        return TRUE;
+    }
+  
+  if (test & (G_FILE_TEST_IS_REGULAR | G_FILE_TEST_IS_DIR))
     {
       struct stat s;
       
-      if (stat (filename, &s) < 0)
-        return FALSE;
-
-      if ((test & G_FILE_TEST_IS_REGULAR) &&
-          S_ISREG (s.st_mode))
-        return TRUE;
-      else if ((test & G_FILE_TEST_IS_DIR) &&
-               S_ISDIR (s.st_mode))
-        return TRUE;
-      else if ((test & G_FILE_TEST_IS_SYMLINK) &&
-               S_ISLNK (s.st_mode))
-        return TRUE;
-      else
-        return FALSE;
+      if (stat (filename, &s) == 0)
+	{
+	  if ((test & G_FILE_TEST_IS_REGULAR) && S_ISREG (s.st_mode))
+	    return TRUE;
+	  
+	  if ((test & G_FILE_TEST_IS_DIR) && S_ISDIR (s.st_mode))
+	    return TRUE;
+	}
     }
+
+  return FALSE;
 }
 
 GQuark
