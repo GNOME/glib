@@ -1,3 +1,15 @@
+1999-07-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in, acconfig.h, gutils.c: Added a g_memmove
+	replacement for platforms without memmove, where bcopy can't
+	handle overlapping copies and the corresponding checks, which is
+	taken form the PERL Configure routine.
+
+	* glib.h: Updated the commentary about g_memmove to be right and
+	more GLib-like.
+	
+	* configure.in: Removed test for rand_r, as it isn't used anymore.
+
 1999-06-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h, grand.c: Finally removed the g_random_normal and

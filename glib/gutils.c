@@ -81,6 +81,32 @@ const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
+#if !defined (HAVE_MEMMOVE) && !defined (HAVE_WORKING_BCOPY)
+void 
+g_memmove (gpointer dest, gconstpointer src, gulong len)
+{
+  gchar* destptr = dest;
+  const gchar* srcptr = src;
+  if (src + len < dest || dest + len < src)
+    {
+      bcopy (src, dest, len);
+      return;
+    }
+  else if (dest <= src)
+    {
+      while (len--)
+	*(destptr++) = *(srcptr++);
+    }
+  else
+    {
+      destptr += len;
+      srcptr += len;
+      while (len--)
+	*(--destptr) = *(--srcptr);
+    }
+}
+#endif /* !HAVE_MEMMOVE && !HAVE_WORKING_BCOPY */
+
 void
 g_atexit (GVoidFunc func)
 {

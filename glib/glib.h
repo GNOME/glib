@@ -58,7 +58,7 @@
  *    To register hooks which are executed on exit().
  *    Usually a wrapper for STDC atexit.
  *
- *  void *g_memmove(void *dest, const void *src, guint count);
+ *  void g_memmove(gpointer dest, gconstpointer void *src, gulong count);
  *    A wrapper for STDC memmove, or an implementation, if memmove doesn't
  *    exist.  The prototype looks like the above, give or take a const,
  *    or size_t.

@@ -69,6 +69,7 @@
 #undef HAVE_VALUES_H
 #undef HAVE_WCHAR_H
 #undef HAVE_WCTYPE_H
+#undef HAVE_WORKING_BCOPY
 
 #undef NO_FD_SET
 #undef NO_SYS_ERRLIST
