@@ -41,7 +41,6 @@
 
 /* --- signals --- */
 enum {
-  PROPERTIES_CHANGED,
   NOTIFY,
   LAST_SIGNAL
 };

@@ -355,7 +355,7 @@ g_boxed_copy (GType         boxed_type,
     {
       GValue src_value, dest_value;
       
-      /* we heavil rely on third-party boxed type value vtable
+      /* we heavily rely on third-party boxed type value vtable
        * implementations to follow normal boxed value storage
        * (data[0].v_pointer is the boxed struct, and
        * data[1].v_uint holds the G_VALUE_NOCOPY_CONTENTS flag,
@@ -370,13 +370,12 @@ g_boxed_copy (GType         boxed_type,
       src_value.data[0].v_pointer = (gpointer) src_boxed;
       src_value.data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
 
-      /* call third-party code copy fucntion, fingers-crossed */
+      /* call third-party code copy function, fingers-crossed */
       value_meminit (&dest_value, boxed_type);
       value_table->value_copy (&src_value, &dest_value);
 
       /* double check and grouse if things went wrong */
-      if (dest_value.data[1].v_ulong ||
-	  dest_value.data[2].v_ulong)
+      if (dest_value.data[1].v_ulong)
 	g_warning ("the copy_value() implementation of type `%s' seems to make use of reserved GValue fields",
 		   g_type_name (boxed_type));
 

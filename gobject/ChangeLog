@@ -1,3 +1,14 @@
+Mon May  6 16:06:23 2002  Owen Taylor  <otaylor@redhat.com>
+
+	[ merged from stable ]
+
+	* gobject.c: Remove PROPERTIES_CHANGED enumeration
+	value that wasn't used any more. (#78833, 
+	Matthias Clasen)
+
+	* gboxed.c (g_boxed_copy): Remove check on data[2]
+	that no longer exists. (#80814, Daniel Elstner)
+
 Tue Mar 26 15:21:47 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.h (g_signal_handlers_*_by_func): Add explicit
