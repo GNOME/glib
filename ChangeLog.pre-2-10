@@ -1,3 +1,20 @@
+2001-06-07  Havoc Pennington  <hp@redhat.com>
+
+	* m4macros/glib-2.0.m4: subst GLIB_GENMARSHAL, GOBJECT_QUERY, 
+	GLIB_MKENUMS variables
+
+	* gmodule-2.0.pc.in: add gmodule_supported variable
+
+	* glib-2.0.pc.in: add glib_genmarshal, gobject_query,
+	glib_mkenums variables	
+
+	* configure.in: put G_MODULE_SUPPORTED value into 
+	.pc files
+
+	* autogen.sh: support AUTOGEN_SUBDIR_MODE
+
+	* Makefile.am: add -uninstalled.pc.in to EXTRA_DIST
+
 2001-06-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Look for nanosleep function. 

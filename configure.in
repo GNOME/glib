@@ -806,6 +806,9 @@ fi
 dnl *** done, have we got an implementation?
 if test -z "$G_MODULE_IMPL"; then
 	G_MODULE_IMPL=0
+        G_MODULE_SUPPORTED=false
+else
+        G_MODULE_SUPPORTED=true
 fi
 
 AC_MSG_CHECKING(for the suffix of shared libraries)
@@ -822,6 +825,7 @@ case "$host_os" in
 esac
 AC_MSG_RESULT(.$glib_gmodule_suffix)
  
+AC_SUBST(G_MODULE_SUPPORTED)
 AC_SUBST(G_MODULE_IMPL)
 AC_SUBST(G_MODULE_LIBS)
 AC_SUBST(G_MODULE_LIBS_EXTRA)
@@ -2023,10 +2027,14 @@ esac
 
 AC_OUTPUT([
 glib-2.0.pc
-glib-config-2.0
+glib-2.0-uninstalled.pc
 gmodule-2.0.pc
+gmodule-2.0-uninstalled.pc
 gthread-2.0.pc
+gthread-2.0-uninstalled.pc
 gobject-2.0.pc
+gobject-2.0-uninstalled.pc
+glib-config-2.0
 glib.spec
 Makefile
 build/Makefile

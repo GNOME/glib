@@ -26,6 +26,10 @@ EXTRA_DIST = 			\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
 	gthread-2.0.pc.in	\
+	glib-2.0-uninstalled.pc.in 	\
+	gobject-2.0-uninstalled.pc.in 	\
+	gmodule-2.0-uninstalled.pc.in	\
+	gthread-2.0-uninstalled.pc.in	\
 	gen-unicode-tables.pl
 
 # These may be in the builddir too

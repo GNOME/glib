@@ -3,6 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
+gmodule_supported=@G_MODULE_SUPPORTED@
+
 Name: GModule
 Description: Dynamic module loader for GLib
 Requires: glib-2.0

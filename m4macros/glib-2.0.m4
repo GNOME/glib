@@ -30,22 +30,38 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
 
   AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
-  min_glib_version=ifelse([$1], ,1.3.3,$1)
-  AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
-
   no_glib=""
 
   if test x$PKG_CONFIG != xno ; then
-    if pkg-config --atleast-pkgconfig-version 0.5 ; then
+    if $PKG_CONFIG --atleast-pkgconfig-version 0.7 ; then
       :
     else
-      echo *** pkg-config too old; version 0.5 or better required.
+      echo *** pkg-config too old; version 0.7 or better required.
       no_glib=yes
       PKG_CONFIG=no
     fi
   fi
 
+  ## don't try to run the test against uninstalled libtool libs
+  if $PKG_CONFIG --uninstalled $pkg_config_args; then
+        echo "Will use uninstalled version of GLib found in PKG_CONFIG_PATH"
+        enable_glibtest=no
+  fi
+
+  min_glib_version=ifelse([$1], ,1.3.3,$1)
+  AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
+
+  if $PKG_CONFIG --atleast-version $min_glib_version $pkg_config_args; then
+        :
+  else
+        no_glib = yes
+  fi
+
   if test x"$no_glib" = x ; then
+    GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
+    GOBJECT_QUERY=`$PKG_CONFIG --variable=gobject_query glib-2.0`
+    GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+
     GLIB_CFLAGS=`$PKG_CONFIG --cflags $pkg_config_args`
     GLIB_LIBS=`$PKG_CONFIG --libs $pkg_config_args`
     glib_config_major_version=`$PKG_CONFIG --modversion glib-2.0 | \
@@ -178,9 +194,15 @@ main ()
      fi
      GLIB_CFLAGS=""
      GLIB_LIBS=""
+     GLIB_GENMARSHAL=""
+     GOBJECT_QUERY=""
+     GLIB_MKENUMS=""
      ifelse([$3], , :, [$3])
   fi
   AC_SUBST(GLIB_CFLAGS)
   AC_SUBST(GLIB_LIBS)
+  AC_SUBST(GLIB_GENMARSHAL)
+  AC_SUBST(GOBJECT_QUERY)
+  AC_SUBST(GLIB_MKENUMS)
   rm -f conf.glibtest
 ])
