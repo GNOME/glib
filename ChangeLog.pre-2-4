@@ -1,3 +1,7 @@
+2001-11-26  Jesus Bravo Alvarez  <jba@pobox.com>
+
+	* configure.in: Added gl (Galician) to ALL_LINGUAS
+
 2001-11-23  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in : added -Zm400 to DEPCFLAGS to avoid :
