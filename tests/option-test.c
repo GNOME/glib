@@ -508,6 +508,22 @@ empty_test2 (void)
   g_option_context_free (context);
 }
 
+void
+empty_test3 (void)
+{
+  GOptionContext *context;
+  gint argc;
+  gchar **argv;
+
+  argc = 0;
+  argv = NULL;
+
+  context = g_option_context_new (NULL);
+  g_option_context_parse (context, &argc, &argv, NULL);
+  
+  g_option_context_free (context);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -537,6 +553,7 @@ main (int argc, char **argv)
   /* Test parsing empty args */
   empty_test1 ();
   empty_test2 ();
-  
+  empty_test3 ();
+
   return 0;
 }

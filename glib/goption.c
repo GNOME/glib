@@ -825,7 +825,7 @@ g_option_context_parse (GOptionContext   *context,
   GList *list;
 
   /* Set program name */
-  if (argc && argv)
+  if (argc && argv && *argc)
     {
       gchar *prgname;
       
