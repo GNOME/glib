@@ -2757,7 +2757,7 @@ g_type_value_table_peek (GType type)
    * but we should only get called with referenced types anyway
    */
   data = node ? node->data : NULL;
-  if (node->mutatable_check_cache)
+  if (node && node->mutatable_check_cache)
     return data->common.value_table;
 
   G_READ_LOCK (&type_rw_lock);

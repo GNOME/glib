@@ -1,3 +1,7 @@
+Wed Feb 13 17:22:37 2002  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (g_type_value_table_peek): fixed a check for node not being NULL.
+
 Wed Feb 13 06:53:50 2002  Tim Janik  <timj@gtk.org>
 
 	* gparam.c: remove extraneous redefinition of G_PARAM_SPEC_CLASS().
