@@ -1,3 +1,8 @@
+Mon Aug 25 14:51:46 2003  Manish Singh  <yosh@gimp.org>
+
+	* gtypemodule.c (g_type_module_register_type): fix typo in last
+	commit, cast to GTypeValueTable * to get rid of const warning.
+
 Mon Aug 25 14:16:48 2003  Owen Taylor  <otaylor@redhat.com>
  
  	* gtypemodule.c (g_type_module_register_type): Clarify

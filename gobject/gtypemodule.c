@@ -318,7 +318,7 @@ g_type_module_register_type (GTypeModule     *module,
 	}
 
       if (module_type_info->info.value_table)
-	g_free (odule_type_info->info.value_table);
+	g_free ((GTypeValueTable *) module_type_info->info.value_table);
     }
   else
     {
