@@ -489,6 +489,10 @@ EXPORTS
 	g_timer_reset
 	g_timer_start
 	g_timer_stop
+	g_trash_stack_height
+	g_trash_stack_peek
+	g_trash_stack_pop
+	g_trash_stack_push
 	g_tree_destroy
 	g_tree_height
 	g_tree_insert
