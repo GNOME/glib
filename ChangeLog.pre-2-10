@@ -1,3 +1,11 @@
+2001-01-06  Hans Breuer  <hans@breuer.org>
+
+	* glib.def : don't try to export g_strcpy, it is g_stpcpy;
+	updated and added some tweaking for functions which got 
+	renamed recently, to avoid the update hassle if it can 
+	simply be done compatible. Should vanish if there is a 
+	stable version for win32.
+
 Fri May  4 11:49:18 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Released 1.3.5

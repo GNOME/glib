@@ -116,7 +116,6 @@ EXPORTS
 	g_date_valid_year
 	g_direct_equal
 	g_direct_hash
-	g_dirname
 	g_error_copy
 	g_error_free
 	g_error_matches
@@ -144,14 +143,12 @@ EXPORTS
 	g_hash_table_destroy
 	g_hash_table_foreach
 	g_hash_table_foreach_remove
-	g_hash_table_freeze
 	g_hash_table_insert
 	g_hash_table_lookup
 	g_hash_table_lookup_extended
 	g_hash_table_new
 	g_hash_table_remove
 	g_hash_table_size
-	g_hash_table_thaw
 	g_hook_alloc
 	g_hook_compare_ids
 	g_hook_destroy
@@ -318,6 +315,10 @@ EXPORTS
 	g_path_get_dirname
 	g_path_is_absolute
 	g_path_skip_root
+	g_pattern_match
+	g_pattern_match_string
+	g_pattern_spec_free
+	g_pattern_spec_new
 	g_print
 	g_printerr
 	g_printf_string_upper_bound
@@ -381,7 +382,6 @@ EXPORTS
 	g_scanner_destroy
 	g_scanner_eof
 	g_scanner_error
-	g_scanner_freeze_symbol_table
 	g_scanner_get_next_token
 	g_scanner_input_file
 	g_scanner_input_text
@@ -395,7 +395,6 @@ EXPORTS
 	g_scanner_set_scope
 	g_scanner_stat_mode
 	g_scanner_sync_file_offset
-	g_scanner_thaw_symbol_table
 	g_scanner_unexp_token
 	g_scanner_warn
 	g_set_error
@@ -477,7 +476,7 @@ EXPORTS
 	g_static_rw_lock_writer_lock
 	g_static_rw_lock_writer_trylock
 	g_static_rw_lock_writer_unlock
-	g_strcpy
+	g_stpcpy
 	g_str_equal
 	g_str_hash
 	g_strcanon
@@ -630,3 +629,10 @@ EXPORTS
 	glib_micro_version
 	glib_minor_version
 
+; compatibility for older win32 apps, which should
+; not need an update because of simple function renaming
+; and vice versa, i.e.:
+; compatibility of Dia 0.87 with tml's latest Gtk+ version (2000-12-26)
+	g_dirname=g_path_get_dirname
+	g_string_sprintfa=g_string_printfa
+	g_string_sprintf=g_string_printf
