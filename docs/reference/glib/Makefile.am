@@ -79,7 +79,7 @@ DOC_STAMPS=scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp \
 SCANOBJ_FILES = 		\
 	$(DOC_MODULE).args 	\
 	$(DOC_MODULE).hierarchy \
-	$(DOC_MODULE).signal
+	$(DOC_MODULE).signals
 
 if ENABLE_GTK_DOC
 all-local: html-build.stamp
@@ -89,7 +89,7 @@ all-local: html-build.stamp
 scan-build.stamp: $(HFILE_GLOB)
 	@echo '*** Scanning header files ***'
 	cd $(srcdir) && ( \
-	if grep -l '^..+$$' $(DOC_MODULE).types > /dev/null ; then \
+	if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj --module=$(DOC_MODULE) ; \
 	else \
 	    for i in $(SCANOBJ_FILES) ; do \

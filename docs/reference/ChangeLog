@@ -1,3 +1,8 @@
+Sat Mar 17 17:51:17 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am glib/Makefile.am: A couple
+	of small fixes.
+
 2001-03-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/threads.sgml: Spelling corrections.
