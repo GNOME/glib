@@ -1,3 +1,9 @@
+Fri Apr 16 06:52:07 1999  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): feature G_TOKEN_EOF as a valid
+	expected token as well, so we get "- expected end of file" instead of
+	"- expected (unknown) token <0>".
+
 Tue Apr 13 16:16:14 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.2
