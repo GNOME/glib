@@ -1,3 +1,11 @@
+2003-08-15  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gmain.c (g_poll): [Win32] Don't exceed handle array
+	bounds. Warn if there would be too many handles to wait
+	for. (WaitForMultipleObjects() has a relatively low limit of 64
+	handles. The Win32 IO channel code should be fixed not to need to
+	wait for one handle per file or socket being watched. Later.)
+
 2003-08-13  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/Makefile.am
