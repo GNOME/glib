@@ -65,9 +65,10 @@
 #endif
 
 #ifdef G_PLATFORM_WIN32
-#  define STRICT			/* Strict typing, please */
+#  define STRICT		/* Strict typing, please */
 #  include <windows.h>
 #  undef STRICT
+#  include <lmcons.h>		/* For UNLEN */
 #  include <ctype.h>
 #endif /* G_PLATFORM_WIN32 */
 
@@ -868,8 +869,8 @@ g_get_any_init (void)
       
 #  ifdef G_OS_WIN32
       {
-	guint len = 17;
-	gchar buffer[17];
+	guint len = UNLEN+1;
+	gchar buffer[UNLEN+1];
 	
 	if (GetUserName ((LPTSTR) buffer, (LPDWORD) &len))
 	  {

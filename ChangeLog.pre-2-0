@@ -1,3 +1,8 @@
+2001-12-31  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_get_any_init): (Win32) Use longer buffer for
+	user name.
+
 Sat Dec 29 15:07:21 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gspawn.c (script_execute): Copy trailing NULL
