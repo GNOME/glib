@@ -28,3 +28,6 @@ stamp-h.in
 glibconfig.h.win32
 makefile.msc
 config.h.win32
+glib.pc
+gmodule.pc
+gthread.pc

@@ -1306,6 +1306,9 @@ gthread/Makefile
 docs/Makefile
 docs/glib-config.1
 tests/Makefile
+glib.pc
+gmodule.pc
+gthread.pc
 ],[case "$CONFIG_FILES" in
 *glib-config*)chmod +x glib-config;;
 esac])

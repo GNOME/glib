@@ -26,7 +26,11 @@ EXTRA_DIST = \
 	glibconfig.h.win32	\
 	glibconfig.h.win32.in	\
 	config.h.win32		\
-	config.h.win32.in
+	config.h.win32.in	\
+	glib.pc.in 		\
+	gmodule.pc.in		\
+	gthread.pc.in
+
 
 lib_LTLIBRARIES = libglib.la
 
@@ -85,6 +89,9 @@ testgdateparser_LDADD = libglib.la
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib.m4
+
+pkgconfigdir = $(libexecdir)/pkgconfig
+pkgconfig_DATA = glib.pc gmodule.pc gthread.pc
 
 glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
