@@ -652,13 +652,13 @@ Disconnects all handlers on an instance that match @func and @data.
 </para>
 
 @signal_id: 
-@quark: 
+@detail: 
 @hook_func: 
 @hook_data: 
 @data_destroy: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@detail: 
+@quark: 
 
 
 <!-- ##### FUNCTION g_signal_remove_emission_hook ##### -->

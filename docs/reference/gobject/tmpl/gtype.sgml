@@ -29,7 +29,7 @@ it may be instantiated, inherited, or implemented depending on exactly
 what sort of type it is.
 There is also a third registration function for registering fundamental
 types called g_type_register_fundamental() which requires both a #GTypeInfo
-structure and a GTypeFundamentalInfo structure but it is seldom used
+structure and a #GTypeFundamentalInfo structure but it is seldom used
 since most fundamental types are predefined rather than user-defined.
 </para>
 
@@ -762,7 +762,6 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_query ##### -->
 <para>
-
 </para>
 
 @type: 
@@ -771,13 +770,14 @@ g_free()ed after use.
 
 <!-- ##### STRUCT GTypeQuery ##### -->
 <para>
-
+A structure holding information for a specific type. It is
+filled in by the g_type_query() function.
 </para>
 
-@type: 
-@type_name: 
-@class_size: 
-@instance_size: 
+@type: the #GType value of the type.
+@type_name: the name of the type.
+@class_size: the size of the class structure.
+@instance_size: the size of the instance structure.
 
 <!-- ##### USER_FUNCTION GBaseInitFunc ##### -->
 <para>
@@ -1091,7 +1091,7 @@ Returns the #GTypePlugin structure for @type or
 </para>
 
 @instance_type: 
-@implementation_type: 
+@interface_type: 
 @Returns: 
 
 
@@ -1187,147 +1187,149 @@ that implements or has internal knowledge of the implementation of
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->
 <para>
-
+An invalid #GType, used as error return value in some functions which return
+a #GType. 
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_NONE ##### -->
 <para>
-
+A fundamental type which is used as a replacement for the C
+<literal>void</literal> return type.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_INTERFACE ##### -->
 <para>
-
+The fundamental type from which all interfaces are derived.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_CHAR ##### -->
 <para>
-
+The fundamental type corresponding to #gchar.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_UCHAR ##### -->
 <para>
-
+The fundamental type corresponding to #guchar.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_BOOLEAN ##### -->
 <para>
-
+The fundamental type corresponding to #gboolean.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_INT ##### -->
 <para>
-
+The fundamental type corresponding to #gint.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_UINT ##### -->
 <para>
-
+The fundamental type corresponding to #guint.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_LONG ##### -->
 <para>
-
+The fundamental type corresponding to #glong.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_ULONG ##### -->
 <para>
-
+The fundamental type corresponding to #gulong.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_INT64 ##### -->
 <para>
-
+The fundamental type corresponding to #gint64.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_UINT64 ##### -->
 <para>
-
+The fundamental type corresponding to #guint64.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_ENUM ##### -->
 <para>
-
+The fundamental type from which all enumeration types are derived.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_FLAGS ##### -->
 <para>
-
+The fundamental type from which all flags types are derived.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_FLOAT ##### -->
 <para>
-
+The fundamental type corresponding to #gfloat.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_DOUBLE ##### -->
 <para>
-
+The fundamental type corresponding to #gdouble.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_STRING ##### -->
 <para>
-
+The fundamental type corresponding to nul-terminated C strings.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_POINTER ##### -->
 <para>
-
+The fundamental type corresponding to #gpointer.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_BOXED ##### -->
 <para>
-
+The fundamental type from which all boxed types are derived.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_PARAM ##### -->
 <para>
-
+The fundamental type from which all #GParamSpec types are derived.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_OBJECT ##### -->
 <para>
-
+The fundamental type for #GObject.
 </para>
 
 

@@ -161,7 +161,7 @@ void	g_signal_stop_emission		    (gpointer		  instance,
 void	g_signal_stop_emission_by_name	    (gpointer		  instance,
 					     const gchar	 *detailed_signal);
 gulong	g_signal_add_emission_hook	    (guint		  signal_id,
-					     GQuark		  quark,
+					     GQuark		  detail,
 					     GSignalEmissionHook  hook_func,
 					     gpointer	       	  hook_data,
 					     GDestroyNotify	  data_destroy);

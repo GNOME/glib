@@ -1961,6 +1961,16 @@ g_type_add_interface_static (GType                 instance_type,
   G_WRITE_UNLOCK (&type_rw_lock);
 }
 
+/**
+ * g_type_add_interface_dynamic:
+ * @instance_type: the #GType value of an instantiable type.
+ * @interface_type: the #GType value of an interface type.
+ * @plugin: the #GTypePlugin structure to retrieve the #GInterfaceInfo from.
+ * 
+ * Adds the dynamic @interface_type to @instantiable_type. The information
+ * contained in the #GTypePlugin structure pointed to by @plugin
+ * is used to manage the relationship.
+ **/
 void
 g_type_add_interface_dynamic (GType        instance_type,
 			      GType        interface_type,
@@ -2151,6 +2161,19 @@ g_type_interface_peek (gpointer instance_class,
   return vtable;
 }
 
+/**
+ * g_type_interface_peek_parent:
+ * @g_iface: A #GTypeInterface structure.
+ * 
+ * Returns the corresponding #GTypeInterface structure of the parent type
+ * of the instance type to which @g_iface belongs. This is useful when 
+ * deriving the implementation of an interface from the parent type and 
+ * then possibly overriding some methods. 
+ * 
+ * Return value: The corresponding #GTypeInterface structure of the parent type
+ * of the instance type to which @g_iface belongs, or %NULL if the parent type
+ * doesn't conform to the interface.
+ **/
 gpointer
 g_type_interface_peek_parent (gpointer g_iface)
 {
@@ -2550,6 +2573,18 @@ type_add_flags_W (TypeNode  *node,
   type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
 }
 
+/**
+ * g_type_query:
+ * @type: the #GType value of a static, classed type.
+ * @query: A user provided structure that is filled in with constant values 
+ *         upon success.
+ * 
+ * Queries the type system for information about a specific type. 
+ * This function will fill in a user-provided structure to hold type-specific 
+ * information. If an invalid #GType is passed in, the @type member of the 
+ * #GTypeQuery is 0. All members filled into the #GTypeQuery structure should
+ * be considered constant and have to be left untouched.
+ **/
 void
 g_type_query (GType       type,
 	      GTypeQuery *query)
@@ -2625,6 +2660,19 @@ g_type_get_plugin (GType type)
   return node ? node->plugin : NULL;
 }
 
+/**
+ * g_type_interface_get_plugin:
+ * @instance_type: the #GType value of an instantiatable type.
+ * @interface_type: the #GType value of an interface type.
+ * 
+ * Returns the #GTypePlugin structure for the dynamic interface 
+ * @interface_type which has been added to @instance_type, or 
+ * %NULL if @interface_type has not been added to @instance_type or does 
+ * not have a #GTypePlugin structure. See g_type_add_interface_dynamic().
+ * 
+ * Return value: the #GTypePlugin for the dynamic interface @interface_type
+ * of @instance_type.
+ **/
 GTypePlugin*
 g_type_interface_get_plugin (GType instance_type,
 			     GType interface_type)

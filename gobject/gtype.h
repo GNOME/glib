@@ -302,7 +302,7 @@ GType *g_type_interface_prerequisites   (GType                       interface_t
 /* --- protected (for fundamental type implementations) --- */
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
 GTypePlugin*	 g_type_interface_get_plugin	(GType		     instance_type,
-						 GType               implementation_type);
+						 GType               interface_type);
 GType		 g_type_fundamental_next	(void);
 GType		 g_type_fundamental		(GType		     type_id);
 GTypeInstance*   g_type_create_instance         (GType               type);

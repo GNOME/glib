@@ -1,3 +1,14 @@
+2002-12-04  Matthias Clasen  <maclas@gmx.de>
+
+	* gsignal.h (g_signal_add_emission_hook): 
+	* gtype.h (g_type_interface_get_plugin): Sync parameter names with
+	docs and implementation.
+
+	* gtype.c (g_type_add_interface_dynamic): 
+	(g_type_interface_get_plugin): 
+	(g_type_interface_peek_parent): 
+	(g_type_query): Add docs.
+
 2002-12-03  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.c (g_type_get_qdata): 
