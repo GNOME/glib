@@ -1,3 +1,8 @@
+Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Revert last change to Makefile.in.in - no this
+	is not the Makefile.in.in from gettext.
+
 2001-09-05  Ross Golder  <ross@golder.org>
 
 	* Makefile.in.in: Updated from more recent gettext to fix
