@@ -1,3 +1,8 @@
+Wed May  2 11:10:22 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gutf8.c (g_utf8_to_ucs4_fast): Fix read past end of the string.
+	(#50404, fix from Jonas Borgström)
+	
 Sun Apr 29 00:37:34 2001  Tim Janik  <timj@gtk.org>
 
 	* ghook.[hc]: made hook ids a gulong.

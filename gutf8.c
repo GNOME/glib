@@ -660,7 +660,7 @@ g_utf8_to_ucs4_fast (const gchar *str,
     }
   else
     {
-      while (*p && p < str + len)
+      while (p < str + len && *p)
 	{
 	  p = g_utf8_next_char (p);
 	  ++n_chars;
