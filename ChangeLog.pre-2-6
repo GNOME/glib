@@ -1,3 +1,8 @@
+Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in docs/Makefile.am: Add gtk-doc checks
+	for newly added docs/reference/ subdir.
+
 2000-09-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c (g_thread_error_quark): Don't use a G_LOCK, as it

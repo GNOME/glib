@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = reference
+
 man_MANS = glib-config.1
 
 EXTRA_DIST = glib-config.1.in
