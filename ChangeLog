@@ -1,3 +1,10 @@
+2003-05-01  Havoc Pennington  <hp@pobox.com>
+
+	* glib/gmarkup.c (advance_char): for non-nul-terminated strings,
+	this would read one past the end of the string. valgrind never 
+	showed this up because most people use g_file_get_contents()
+	which leaves a nul termination which is initialized.
+
 Thu Apr 24 19:12:05 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* autogen.sh (have_libtool): Accept libtool-1.5. (#111483)

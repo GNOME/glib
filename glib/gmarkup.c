@@ -638,13 +638,19 @@ advance_char (GMarkupParseContext *context)
 
   context->iter = g_utf8_next_char (context->iter);
   context->char_number += 1;
-  if (*context->iter == '\n')
-    {
-      context->line_number += 1;
-      context->char_number = 1;
-    }
 
-  return context->iter != context->current_text_end;
+  if (context->iter != context->current_text_end)
+    {
+      if (*context->iter == '\n')
+        {
+          context->line_number += 1;
+          context->char_number = 1;
+        }
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static gboolean
