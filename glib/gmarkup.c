@@ -49,6 +49,7 @@ typedef enum
   STATE_AFTER_ELISION_SLASH, /* the slash that obviates need for end element */
   STATE_INSIDE_OPEN_TAG_NAME,
   STATE_INSIDE_ATTRIBUTE_NAME,
+  STATE_AFTER_ATTRIBUTE_NAME,
   STATE_BETWEEN_ATTRIBUTES,
   STATE_AFTER_ATTRIBUTE_EQUALS_SIGN,
   STATE_INSIDE_ATTRIBUTE_VALUE_SQ,
@@ -56,6 +57,7 @@ typedef enum
   STATE_INSIDE_TEXT,
   STATE_AFTER_CLOSE_TAG_SLASH,
   STATE_INSIDE_CLOSE_TAG_NAME,
+  STATE_AFTER_CLOSE_TAG_NAME,
   STATE_INSIDE_PASSTHROUGH,
   STATE_ERROR
 } GMarkupParseState;
@@ -1136,33 +1138,34 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           break;
 
         case STATE_INSIDE_ATTRIBUTE_NAME:
-          /* Possible next states: AFTER_ATTRIBUTE_EQUALS_SIGN */
+          /* Possible next states: AFTER_ATTRIBUTE_NAME */
+
+          advance_to_name_end (context);
+	  add_to_partial (context, context->start, context->iter);
 
           /* read the full name, if we enter the equals sign state
            * then add the attribute to the list (without the value),
            * otherwise store a partial chunk to be prepended later.
            */
-          advance_to_name_end (context);
+          if (context->iter != context->current_text_end)
+	    context->state = STATE_AFTER_ATTRIBUTE_NAME;
+	  break;
 
-          if (context->iter == context->current_text_end)
-            {
-              /* The name hasn't necessarily ended. Merge with
-               * partial chunk, leave state unchanged.
-               */
-              add_to_partial (context, context->start, context->iter);
-            }
-          else
-            {
-              /* The name has ended. Combine it with the partial chunk
-               * if any; push it on the stack; enter next state.
-               */
-              add_to_partial (context, context->start, context->iter);
+	case STATE_AFTER_ATTRIBUTE_NAME:
+          /* Possible next states: AFTER_ATTRIBUTE_EQUALS_SIGN */
 
+	  skip_spaces (context);
+
+	  if (context->iter != context->current_text_end)
+	    {
+	      /* The name has ended. Combine it with the partial chunk
+	       * if any; push it on the stack; enter next state.
+	       */
               add_attribute (context, g_string_free (context->partial_chunk, FALSE));
-
+	      
               context->partial_chunk = NULL;
               context->start = NULL;
-
+	      
               if (*context->iter == '=')
                 {
                   advance_char (context);
@@ -1179,7 +1182,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                              utf8_str (context->iter, buf),
                              current_attribute (context),
                              current_element (context));
-
+		  
                 }
             }
           break;
@@ -1280,31 +1283,37 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 
         case STATE_AFTER_ATTRIBUTE_EQUALS_SIGN:
           /* Possible next state: INSIDE_ATTRIBUTE_VALUE_[SQ/DQ] */
-          if (*context->iter == '"')
-            {
-              advance_char (context);
-              context->state = STATE_INSIDE_ATTRIBUTE_VALUE_DQ;
-              context->start = context->iter;
-            }
-          else if (*context->iter == '\'')
-            {
-              advance_char (context);
-              context->state = STATE_INSIDE_ATTRIBUTE_VALUE_SQ;
-              context->start = context->iter;
-            }
-          else
-            {
-              gchar buf[7];
-              set_error (context,
-                         error,
-                         G_MARKUP_ERROR_PARSE,
-                         _("Odd character '%s', expected an open quote mark "
-                           "after the equals sign when giving value for "
-                           "attribute '%s' of element '%s'"),
-                         utf8_str (context->iter, buf),
-                         current_attribute (context),
-                         current_element (context));
-            }
+
+	  skip_spaces (context);
+
+	  if (context->iter != context->current_text_end)
+	    {
+	      if (*context->iter == '"')
+		{
+		  advance_char (context);
+		  context->state = STATE_INSIDE_ATTRIBUTE_VALUE_DQ;
+		  context->start = context->iter;
+		}
+	      else if (*context->iter == '\'')
+		{
+		  advance_char (context);
+		  context->state = STATE_INSIDE_ATTRIBUTE_VALUE_SQ;
+		  context->start = context->iter;
+		}
+	      else
+		{
+		  gchar buf[7];
+		  set_error (context,
+			     error,
+			     G_MARKUP_ERROR_PARSE,
+			     _("Odd character '%s', expected an open quote mark "
+			       "after the equals sign when giving value for "
+			       "attribute '%s' of element '%s'"),
+			     utf8_str (context->iter, buf),
+			     current_attribute (context),
+			     current_element (context));
+		}
+	    }
           break;
 
         case STATE_INSIDE_ATTRIBUTE_VALUE_SQ:
@@ -1447,88 +1456,89 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           break;
 
         case STATE_INSIDE_CLOSE_TAG_NAME:
-          /* Possible next state: AFTER_CLOSE_ANGLE */
+          /* Possible next state: AFTER_CLOSE_TAG_NAME */
           advance_to_name_end (context);
+	  add_to_partial (context, context->start, context->iter);
 
-          if (context->iter == context->current_text_end)
-            {
-              /* The name hasn't necessarily ended. Merge with
-               * partial chunk, leave state unchanged.
-               */
-              add_to_partial (context, context->start, context->iter);
-            }
-          else
-            {
-              /* The name has ended. Combine it with the partial chunk
-               * if any; check that it matches stack top and pop
-               * stack; invoke proper callback; enter next state.
-               */
-              gchar *close_name;
+          if (context->iter != context->current_text_end)
+	    context->state = STATE_AFTER_CLOSE_TAG_NAME;
+	  break;
 
-              add_to_partial (context, context->start, context->iter);
+	case STATE_AFTER_CLOSE_TAG_NAME:
+          /* Possible next state: AFTER_CLOSE_TAG_SLASH */
 
-              close_name = g_string_free (context->partial_chunk, FALSE);
-              context->partial_chunk = NULL;
+	  skip_spaces (context);
+	  
+	  if (context->iter != context->current_text_end)
+	    {
+	      gchar *close_name;
+
+	      /* The name has ended. Combine it with the partial chunk
+	       * if any; check that it matches stack top and pop
+	       * stack; invoke proper callback; enter next state.
+	       */
+	      close_name = g_string_free (context->partial_chunk, FALSE);
+	      context->partial_chunk = NULL;
               
-              if (*context->iter != '>')
-                {
-                  gchar buf[7];
-                  set_error (context,
-                             error,
-                             G_MARKUP_ERROR_PARSE,
-                             _("'%s' is not a valid character following "
-                               "the close element name '%s'; the allowed "
-                               "character is '>'"),
-                             utf8_str (context->iter, buf),
-                             close_name);
-                }
-              else if (context->tag_stack == NULL)
-                {
-                  set_error (context,
-                             error,
-                             G_MARKUP_ERROR_PARSE,
-                             _("Element '%s' was closed, no element "
-                               "is currently open"),
-                             close_name);
-                }
-              else if (strcmp (close_name, current_element (context)) != 0)
-                {
-                  set_error (context,
-                             error,
-                             G_MARKUP_ERROR_PARSE,
-                             _("Element '%s' was closed, but the currently "
-                               "open element is '%s'"),
-                             close_name,
-                             current_element (context));
-                }
-              else
-                {
-                  GError *tmp_error;
-                  advance_char (context);
-                  context->state = STATE_AFTER_CLOSE_ANGLE;
-                  context->start = NULL;
-
-                  /* call the end_element callback */
-                  tmp_error = NULL;
-                  if (context->parser->end_element)
-                    (* context->parser->end_element) (context,
-                                                      close_name,
-                                                      context->user_data,
-                                                      &tmp_error);
-
-                  
-                  /* Pop the tag stack */
-                  g_free (context->tag_stack->data);
-                  context->tag_stack = g_slist_delete_link (context->tag_stack,
-                                                            context->tag_stack);
-                  
-                  if (tmp_error)
+	      if (*context->iter != '>')
+		{
+		  gchar buf[7];
+		  set_error (context,
+			     error,
+			     G_MARKUP_ERROR_PARSE,
+			     _("'%s' is not a valid character following "
+			       "the close element name '%s'; the allowed "
+			       "character is '>'"),
+			     utf8_str (context->iter, buf),
+			     close_name);
+		}
+	      else if (context->tag_stack == NULL)
+		{
+		  set_error (context,
+			     error,
+			     G_MARKUP_ERROR_PARSE,
+			     _("Element '%s' was closed, no element "
+			       "is currently open"),
+			     close_name);
+		}
+	      else if (strcmp (close_name, current_element (context)) != 0)
+		{
+		  set_error (context,
+			     error,
+			     G_MARKUP_ERROR_PARSE,
+			     _("Element '%s' was closed, but the currently "
+			       "open element is '%s'"),
+			     close_name,
+			     current_element (context));
+		}
+	      else
+		{
+		  GError *tmp_error;
+		  advance_char (context);
+		  context->state = STATE_AFTER_CLOSE_ANGLE;
+		  context->start = NULL;
+		  
+		  /* call the end_element callback */
+		  tmp_error = NULL;
+		  if (context->parser->end_element)
+		    (* context->parser->end_element) (context,
+						      close_name,
+						      context->user_data,
+						      &tmp_error);
+		  
+		  
+		  /* Pop the tag stack */
+		  g_free (context->tag_stack->data);
+		  context->tag_stack = g_slist_delete_link (context->tag_stack,
+							    context->tag_stack);
+		  
+		  if (tmp_error)
                     {
                       mark_error (context, tmp_error);
                       g_propagate_error (error, tmp_error);
                     }
                 }
-
+	      
               g_free (close_name);
             }
           break;

@@ -1,3 +1,15 @@
+2004-07-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/markups/valid-{9,10,11}.gmarkup: 
+	* tests/markups/fail-{37,38,39}.gmarkup: Tests for handling
+	of whitespace inside tags.
+
+	* glib/gmarkup.c (enum GMarkupParseState): Add 
+	STATE_AFTER_ATTRIBUTE_NAME and STATE_AFTER_CLOSE_TAG_NAME.
+	(g_markup_parse_context_parse): Accept whitespace between
+	attribute names, '=' and attribute values and between
+	close tag name and '>'. (#148646, Hiroyuki Ikezoe)
+
 Tue Jul 27 02:01:31 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strsplit_set): s/g_strsplit/g_strsplit_set/
