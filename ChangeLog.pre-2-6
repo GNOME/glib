@@ -1,3 +1,9 @@
+Wed Dec 18 16:19:08 2002  Manish Singh  <yosh@gimp.org>
+
+	* glib/gtypes.h: new endian asm for ia64 and x86_64, general
+	reorg and clean up. New implementation of GUINT16_SWAP_LE_BE_CONSTANT()
+	that should optimize better. (#101318)
+
 2002-12-17  Tor Lillqvist  <tml@iki.fi>
 
 	Improvement based on suggestion by Thorsten Maerz:
