@@ -1,3 +1,16 @@
+Fri Jul 13 19:20:06 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstring.c (g_string_insert/append/prepend_unichar):
+	Add functions to insert a unichar as UTF-8, since this
+	is reasonably common.
+
+	* glib/gutf8.c glib/gunicode.h (g_utf8_get_char_validated):
+	New function exposing iterating through possibly invalid/incomplete
+	UTF-8 to unicode to the outside world.
+
+	* glib/gutf8.c (g_utf8_get_char_extended): Fix max_len argument
+	to be gssize, not gsize.
+
 2001-07-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Added "nn" to ALL_LINGUAS.

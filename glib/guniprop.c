@@ -872,8 +872,6 @@ g_utf8_casefold (const gchar *str,
 {
   GString *result = g_string_new (NULL);
   const char *p;
-  gchar buf[6];
-  int charlen;
 
   p = str;
   while ((len < 0 || p < str + len) && *p)
@@ -903,9 +901,7 @@ g_utf8_casefold (const gchar *str,
 	    }
 	}
 
-      ch = g_unichar_tolower (ch);
-      charlen = g_unichar_to_utf8 (ch, buf);
-      g_string_append_len (result, buf, charlen);
+      g_string_append_unichar (result, g_unichar_tolower (ch));
       
     next:
       p = g_utf8_next_char (p);

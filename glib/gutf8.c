@@ -245,7 +245,9 @@ g_utf8_strlen (const gchar *p,
  * 
  * Convert a sequence of bytes encoded as UTF-8 to a unicode character.
  * If @p does not point to a valid UTF-8 encoded character, results are
- * undefined.
+ * undefined. If you are not sure that the bytes are complete
+ * valid unicode characters, you should use g_utf8_get_char_validated()
+ * instead.
  * 
  * Return value: the resulting character
  **/
@@ -550,7 +552,8 @@ g_utf8_strrchr (const char *p,
  * and return (gunichar)-2 on incomplete trailing character
  */
 static inline gunichar
-g_utf8_get_char_extended (const gchar *p, gsize max_len)  
+g_utf8_get_char_extended (const  gchar *p,
+			  gssize max_len)  
 {
   guint i, len;
   gunichar wc = (guchar) *p;
@@ -623,6 +626,35 @@ g_utf8_get_char_extended (const gchar *p, gsize max_len)
     return (gunichar)-1;
   
   return wc;
+}
+
+/**
+ * g_utf8_get_char_validated:
+ * @p: a pointer to unicode character encoded as UTF-8
+ * @max_len: the maximum number of bytes to read, or -1, for no maximum.
+ * 
+ * Convert a sequence of bytes encoded as UTF-8 to a unicode character.
+ * This function checks for incomplete characters, for invalid characters
+ * such as characters that are out of the range of Unicode, and for
+ * overlong encodings of valid characters.
+ * 
+ * Return value: the resulting character. If @p points to a partial
+ *    sequence at the end of a string that could begin a valid character,
+ *    returns (gunichar)-2; otherwise, if @p does not point to a valid
+ *    UTF-8 encoded unicode character, returns (gunichar)-1.
+ **/
+gunichar
+g_utf8_get_char_validated (const  gchar *p,
+			   gssize max_len)
+{
+  gunichar result = g_utf8_get_char_extended (p, max_len);
+
+  if (result & 0x80000000)
+    return result;
+  else if (!UNICODE_VALID (result))
+    return (gunichar)-1;
+  else
+    return result;
 }
 
 /**

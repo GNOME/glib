@@ -167,7 +167,10 @@ GLIB_VAR char g_utf8_skip[256];
 
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(guchar *)(p)])
 
-gunichar g_utf8_get_char          (const gchar *p);
+gunichar g_utf8_get_char           (const gchar  *p);
+gunichar g_utf8_get_char_validated (const  gchar *p,
+				    gssize        max_len);
+
 gchar*   g_utf8_offset_to_pointer (const gchar *str,
                                    glong        offset);  
 glong    g_utf8_pointer_to_offset (const gchar *str,      

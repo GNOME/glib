@@ -28,6 +28,7 @@
 #define __G_STRING_H__
 
 #include <glib/gtypes.h>
+#include <glib/gunicode.h>
 
 G_BEGIN_DECLS
 
@@ -79,10 +80,14 @@ GString*     g_string_append_len        (GString	 *string,
                                          gssize           len);  
 GString*     g_string_append_c          (GString	 *string,
 					 gchar		  c);
+GString*     g_string_append_unichar    (GString	 *string,
+					 gunichar	  wc);
 GString*     g_string_prepend           (GString	 *string,
 					 const gchar	 *val);
 GString*     g_string_prepend_c         (GString	 *string,
 					 gchar		  c);
+GString*     g_string_prepend_unichar   (GString	 *string,
+					 gunichar	  wc);
 GString*     g_string_prepend_len       (GString	 *string,
 			                 const gchar	 *val,
                                          gssize           len);  
@@ -92,6 +97,9 @@ GString*     g_string_insert            (GString	 *string,
 GString*     g_string_insert_c          (GString	 *string,
 					 gssize		  pos,    
 					 gchar		  c);
+GString*     g_string_insert_unichar    (GString	 *string,
+					 gssize		  pos,    
+					 gunichar	  wc);
 GString*     g_string_erase	        (GString	 *string,
 					 gsize		  pos,    
 					 gsize		  len);   

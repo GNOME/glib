@@ -465,6 +465,25 @@ g_string_append_c (GString *fstring,
   return g_string_insert_c (fstring, -1, c);
 }
 
+/**
+ * g_string_append_unichar:
+ * @string: a #GString
+ * @wc: a Unicode character
+ * 
+ * Converts a Unicode character into UTF-8, and appends it
+ * to the string.
+ * 
+ * Return value: @string
+ **/
+GString*
+g_string_append_unichar (GString  *string,
+			 gunichar  wc)
+{  
+  g_return_val_if_fail (string != NULL, NULL);
+  
+  return g_string_insert_unichar (string, -1, wc);
+}
+
 GString*
 g_string_prepend (GString     *fstring,
 		  const gchar *val)
@@ -493,6 +512,25 @@ g_string_prepend_c (GString *fstring,
   g_return_val_if_fail (fstring != NULL, NULL);
   
   return g_string_insert_c (fstring, 0, c);
+}
+
+/**
+ * g_string_append_unichar:
+ * @string: a #GString
+ * @wc: a Unicode character
+ * 
+ * Converts a Unicode character into UTF-8, and prepends it
+ * to the string.
+ * 
+ * Return value: @string
+ **/
+GString*
+g_string_prepend_unichar (GString  *string,
+			  gunichar  wc)
+{  
+  g_return_val_if_fail (string != NULL, NULL);
+  
+  return g_string_insert_unichar (string, 0, wc);
 }
 
 GString*
@@ -535,6 +573,36 @@ g_string_insert_c (GString *fstring,
   string->str[string->len] = 0;
 
   return fstring;
+}
+
+/**
+ * g_string_insert_unichar:
+ * @string: a #Gstring
+ * @pos: the position at which to insert character, or -1 to
+ *       append at the end of the string.
+ * @wc: a Unicode character
+ * 
+ * Converts a Unicode character into UTF-8, and insert it
+ * into the string at the given position.
+ * 
+ * Return value: @string
+ **/
+GString*
+g_string_insert_unichar (GString *string,
+			 gssize   pos,    
+			 gunichar wc)
+{  
+  gchar buf[6];
+  gint charlen;
+
+  /* We could be somewhat more efficient here by computing
+   * the length, adding the space, then converting into that
+   * space, by cut-and-pasting the internals of g_unichar_to_utf8.
+   */
+  g_return_val_if_fail (string != NULL, NULL);
+
+  charlen = g_unichar_to_utf8 (wc, buf);
+  return g_string_insert_len (string, pos, buf, charlen);
 }
 
 GString*

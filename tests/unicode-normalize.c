@@ -11,8 +11,6 @@ decode (const gchar *input)
   unsigned ch;
   int offset = 0;
   GString *result = g_string_new (NULL);
-  int len;
-  char buf[6];
   
   do 
     {
@@ -30,8 +28,7 @@ decode (const gchar *input)
 	  return NULL;
 	}
 
-      len = g_unichar_to_utf8 (ch, buf);
-      g_string_append_len (result, buf, len);
+      g_string_append_unichar (result, ch);
       
       while (input[offset] && input[offset] != ' ')
 	offset++;
