@@ -960,6 +960,7 @@ g_scanner_foreach_symbol
 <SECTION>
 <TITLE>Dynamic Loading of Modules</TITLE>
 <FILE>modules</FILE>
+<INCLUDE>gmodule.h</INCLUDE>
 GModule
 g_module_supported
 g_module_build_path

@@ -1,3 +1,7 @@
+2000-10-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib-sections.txt, tmpl/modules.sgml: Fixed #10086.
+
 Tue Sep  5 20:03:25 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Moved into glib source tree, updated glib-sections.txt

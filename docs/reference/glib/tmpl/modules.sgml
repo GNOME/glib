@@ -12,6 +12,12 @@ The current implementation supports all systems that provide
 an implementation of dlopen() (e.g. Linux/Sun), as well as HP-UX via its
 shl_load() mechanism, and Windows platforms via DLLs.
 </para>
+
+<para>
+A program, which wants to use these functions must be linked to the
+libraries output by the command "glib-config --libs gmodule".
+</para>
+
 <para>
 To use them you must first determine whether dynamic loading
 is supported on the platform by calling g_module_supported().
