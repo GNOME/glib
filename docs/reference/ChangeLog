@@ -1,3 +1,11 @@
+Sat Sep  8 14:13:44 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/Makefile.am (IGNORE_HFILES): Add 
+	gbsearcharray.h.
+
+	* gobject/Makefile.am (IGNORE_HFILES): Remove
+	gbsearcharray.h.
+
 2001-08-15  Ron Stenike  <rsteinke@w-link.net>
 
 	* docs/reference/glib/glib-sections.txt: Added
