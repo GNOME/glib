@@ -44,3 +44,4 @@
    ignoring punctuation (such as underscores).  */
 
 #undef USE_LIBICONV
+#undef SANE_MALLOC_PROTOS

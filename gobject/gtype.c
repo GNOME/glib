@@ -21,7 +21,6 @@
 #include	"gtypeplugin.h"
 #include	<string.h>
 
-#undef FIXME_DISABLE_PREALLOCATIONS
 
 /* NOTE: some functions (some internal variants and exported ones)
  * invalidate data portions of the TypeNodes. if external functions/callbacks
@@ -753,10 +752,11 @@ type_data_make (TypeNode              *node,
       data->instance.class_data = info->class_data;
       data->instance.class = NULL;
       data->instance.instance_size = info->instance_size;
-      data->instance.n_preallocs = MIN (info->n_preallocs, 1024);
-#ifdef FIXME_DISABLE_PREALLOCATIONS
+#ifdef	DISABLE_MEM_POOLS
       data->instance.n_preallocs = 0;
-#endif
+#else	/* !DISABLE_MEM_POOLS */
+      data->instance.n_preallocs = MIN (info->n_preallocs, 1024);
+#endif	/* !DISABLE_MEM_POOLS */
       data->instance.instance_init = info->instance_init;
       data->instance.mem_chunk = NULL;
     }

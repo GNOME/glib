@@ -27,7 +27,11 @@
 static inline guint
 upper_power2 (guint number)
 {
+#ifdef	DISABLE_MEM_POOLS
+  return number;
+#else	/* !DISABLE_MEM_POOLS */
   return number ? 1 << g_bit_storage (number - 1) : 0;
+#endif	/* !DISABLE_MEM_POOLS */
 }
 
 static inline gpointer

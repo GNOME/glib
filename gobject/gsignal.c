@@ -33,15 +33,14 @@
 #define HANDLER_PRE_ALLOC       (48)
 #define EMISSION_PRE_ALLOC      (16)
 
-#define TIGHT_MEMORY    (1)
-
 #define REPORT_BUG      "please report occourance circumstances to gtk-devel-list@gnome.org"
 
 
 /* --- generic allocation --- */
-/* we can special case allocations generically by replacing
+/* we special case allocations generically by replacing
  * these functions with more speed/memory aware variants
  */
+#ifndef	DISABLE_MEM_POOLS
 static inline gpointer
 g_generic_node_alloc (GTrashStack **trash_stack_p,
                       guint         sizeof_node,
@@ -71,6 +70,21 @@ g_generic_node_free (GTrashStack **trash_stack_p,
 {
   g_trash_stack_push (trash_stack_p, node);
 }
+#else	/* !DISABLE_MEM_POOLS */
+static inline gpointer
+g_generic_node_alloc (GTrashStack **trash_stack_p,
+                      guint         sizeof_node,
+                      guint         nodes_pre_alloc)
+{
+  return g_malloc (sizeof_node);
+}
+static inline void
+g_generic_node_free (GTrashStack **trash_stack_p,
+                     gpointer      node)
+{
+  g_free (node);
+}
+#endif	/* !DISABLE_MEM_POOLS */
 
 
 /* --- typedefs --- */
@@ -640,7 +654,7 @@ g_signal_init (void) /* sync with gtype.c */
       /* setup signal key array */
       g_signal_key_bsa.cmp_func = signal_key_cmp;
       g_signal_key_bsa.sizeof_node = sizeof (SignalKey);
-      g_signal_key_bsa.flags = 0; /* alloc-only */
+      g_signal_key_bsa.flags = G_BSEARCH_ALIGN_POWER2; /* alloc-only */
       
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
@@ -1066,7 +1080,7 @@ signal_destroy_R (SignalNode *signal_node)
   signal_node->c_marshaller = NULL;
   signal_node->emission_hooks = NULL;
   
-#ifndef G_DISABLE_CHECKS
+#ifdef	G_ENABLE_DEBUG
   /* check current emissions */
   {
     Emission *emission;
@@ -1539,7 +1553,7 @@ g_signal_emitv (const GValue *instance_and_params,
       G_UNLOCK (g_signal_mutex);
       return;
     }
-#ifndef G_DISABLE_CHECKS
+#ifdef G_ENABLE_DEBUG
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
       g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
@@ -1582,7 +1596,7 @@ g_signal_emitv (const GValue *instance_and_params,
     }
   else
     return_value = NULL;
-#endif	/* !G_DISABLE_CHECKS */
+#endif	/* G_ENABLE_DEBUG */
 
   signal_emit_R (node, detail, instance, return_value, instance_and_params);
   G_UNLOCK (g_signal_mutex);

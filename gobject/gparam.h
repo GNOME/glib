@@ -53,6 +53,7 @@ typedef enum
   /* bits in the range 0xffffff00 are reserved for 3rd party usage */
 #define	G_PARAM_USER_MASK	(0xffffff00)
 } GParamFlags;
+#define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
 
 
 /* --- typedefs & structures --- */

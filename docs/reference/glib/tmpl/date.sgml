@@ -422,74 +422,6 @@ dates must be valid.
 greater than zero if @lhs is greater than @rhs
 
 
-<!-- ##### FUNCTION g_date_get_day ##### -->
-<para>
-Return the day of the month; the #GDate must be valid.
-</para>
-
-@date: Date to extract the day of the month from
-@Returns: Day of the month
-
-
-<!-- ##### FUNCTION g_date_get_month ##### -->
-<para>
-Accessor for the month of the year. Date must be valid.
-</para>
-
-@date: Date to get the month from
-@Returns: A #GDateMonth
-
-
-<!-- ##### FUNCTION g_date_get_year ##### -->
-<para>
-Accessor; returns the year of a #GDate. The date must be valid.
-</para>
-
-@date: Date
-@Returns: Year in which the date falls
-
-
-<!-- ##### FUNCTION g_date_get_julian ##### -->
-<para>
-Accessor, returns the Julian day or "serial number" of the #GDate. The
-Julian day is simply the number of days since January 1, Year 1; i.e.,
-January 1, Year 1 is Julian day 1; January 2, Year 1 is Julian day 2,
-etc. Date must be valid.
-</para>
-
-@date: Date to extract the Julian day from
-@Returns: Julian day
-
-
-<!-- ##### FUNCTION g_date_get_weekday ##### -->
-<para>
-Returns the day of the week for a #GDate. The date must be valid.
-</para>
-
-@date: Date
-@Returns: Day of the week as a #GDateWeekday
-
-
-<!-- ##### FUNCTION g_date_get_day_of_year ##### -->
-<para>
-Return the day of the year, where Jan 1 is the first day of the
-year. Date must be valid.
-</para>
-
-@date: Date to extract day of year from
-@Returns: Day of the year
-
-
-<!-- ##### FUNCTION g_date_get_days_in_month ##### -->
-<para>
-Return the number of days in a month, taking leap years into account.
-</para>
-
-@month: Month
-@year: Year
-@Returns: Number of days in @month during the year @year.
-
-
 <!-- ##### FUNCTION g_date_is_first_of_month ##### -->
 <para>
 Returns TRUE if the date is on the first of a month. Date must be valid.
@@ -515,56 +447,6 @@ Returns TRUE if the year is a leap year
 
 @year: Year to check
 @Returns: Boolean, if the year is a leap year
-
-
-<!-- ##### FUNCTION g_date_get_monday_week_of_year ##### -->
-<para>
-Return the week of the year, where weeks are understood to start on
-Monday. If the date is before the first Monday of the year, return
-0. Date must be valid.
-</para>
-
-@date: Date to use
-@Returns: Week of the year
-
-
-<!-- ##### FUNCTION g_date_get_monday_weeks_in_year ##### -->
-<para>
-Return the number of weeks in the year, where weeks are taken to start
-on Monday. Will be 52 or 53. Date must be valid. (Years always have 52
-7-day periods, plus 1 or 2 extra days depending on whether it's a leap
-year. This function is basically telling you how many Mondays are in
-the year, i.e. there are 53 Mondays if one of the extra days happens
-to be a Monday.)
-</para>
-
-@year: Year
-@Returns: Number of Mondays in the year
-
-
-<!-- ##### FUNCTION g_date_get_sunday_week_of_year ##### -->
-<para>
-Week of the year during which this date falls, if weeks are understood
-to being on Sunday. Date must be valid. Can return 0 if the day is
-before the first Sunday of the year.
-</para>
-
-@date: Date
-@Returns: Week number
-
-
-<!-- ##### FUNCTION g_date_get_sunday_weeks_in_year ##### -->
-<para>
-Return the number of weeks in the year, where weeks are taken to start
-on Sunday. Will be 52 or 53. Date must be valid. (Years always have 52
-7-day periods, plus 1 or 2 extra days depending on whether it's a leap
-year. This function is basically telling you how many Sundays are in
-the year, i.e. there are 53 Sundays if one of the extra days happens
-to be a Sunday.)
-</para>
-
-@year: Year to count weeks in
-@Returns: Number of weeks
 
 
 <!-- ##### FUNCTION g_date_strftime ##### -->

@@ -195,15 +195,6 @@ It is passed the #GModule structure.
 @module: the module about to be unloaded.
 
 
-<!-- ##### MACRO G_MODULE_SUFFIX ##### -->
-<para>
-Expands to the proper shared library suffix for the current platform
-without the leading dot. For the most Unices and Linux this is "so",
-for some HPUX versions this is "sl" and for Windows this is "dll".
-</para>
-
-
-
 <!-- ##### MACRO G_MODULE_EXPORT ##### -->
 <para>
 Used to declare functions exported by modules.

@@ -383,9 +383,9 @@ g_basename (const gchar	   *file_name)
 
   if (first_call)
     {
-      g_warning("g_basename is deprecated. Use g_path_get_basename instead.");
-      g_warning("Watch out! You have to g_free the string returned by "
-		"g_path_get_basename.");
+      g_message ("g_basename is deprecated. Use g_path_get_basename instead. "
+		 "Beware that the string returned by g_path_get_basename() has "
+		 " to be g_free()ed.");
       first_call = FALSE;
     }
 #endif /* G_ENABLE_DEBUG */
@@ -512,7 +512,7 @@ g_dirname (const gchar	   *file_name)
 
   if (first_call)
     {
-      g_warning("g_dirname is deprecated. Use g_path_get_dirname instead.");
+      g_message ("g_dirname() is deprecated. Use g_path_get_dirname() instead.");
       first_call = FALSE;
     }
 #endif /* G_ENABLE_DEBUG */

@@ -1,3 +1,11 @@
+<!-- ##### FUNCTION g_date_get_day ##### -->
+<para>
+Return the day of the month; the #GDate must be valid.
+</para>
+
+@date: Date to extract the day of the month from
+@Returns: Day of the month
+
 <!-- ##### FUNCTION g_markup_parse_context_parse ##### -->
 <para>
 
@@ -23,6 +31,19 @@
 @source: 
 @callback_data: 
 @callback_funcs: 
+
+<!-- ##### FUNCTION g_date_get_sunday_weeks_in_year ##### -->
+<para>
+Return the number of weeks in the year, where weeks are taken to start
+on Sunday. Will be 52 or 53. Date must be valid. (Years always have 52
+7-day periods, plus 1 or 2 extra days depending on whether it's a leap
+year. This function is basically telling you how many Sundays are in
+the year, i.e. there are 53 Sundays if one of the extra days happens
+to be a Sunday.)
+</para>
+
+@year: Year to count weeks in
+@Returns: Number of weeks
 
 <!-- ##### FUNCTION g_locale_to_utf8 ##### -->
 <para>
@@ -54,6 +75,26 @@
 
 @source: 
 @can_recurse: 
+
+<!-- ##### FUNCTION g_date_get_days_in_month ##### -->
+<para>
+Return the number of days in a month, taking leap years into account.
+</para>
+
+@month: Month
+@year: Year
+@Returns: Number of days in @month during the year @year.
+
+<!-- ##### FUNCTION g_date_get_julian ##### -->
+<para>
+Accessor, returns the Julian day or "serial number" of the #GDate. The
+Julian day is simply the number of days since January 1, Year 1; i.e.,
+January 1, Year 1 is Julian day 1; January 2, Year 1 is Julian day 2,
+etc. Date must be valid.
+</para>
+
+@date: Date to extract the Julian day from
+@Returns: Julian day
 
 <!-- ##### MACRO pclose ##### -->
 <para>
@@ -192,6 +233,16 @@ See #G_PRIORITY_DEFAULT, #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH,
 @struct_size: 
 @Returns: 
 
+<!-- ##### FUNCTION g_date_get_monday_week_of_year ##### -->
+<para>
+Return the week of the year, where weeks are understood to start on
+Monday. If the date is before the first Monday of the year, return
+0. Date must be valid.
+</para>
+
+@date: Date to use
+@Returns: Week of the year
+
 <!-- ##### MACRO getpid ##### -->
 <para>
 
@@ -225,6 +276,14 @@ type of source.
 @source: 
 @Returns: 
 
+<!-- ##### FUNCTION g_date_get_year ##### -->
+<para>
+Accessor; returns the year of a #GDate. The date must be valid.
+</para>
+
+@date: Date
+@Returns: Year in which the date falls
+
 <!-- ##### FUNCTION g_mkstemp ##### -->
 <para>
 
@@ -232,6 +291,14 @@ type of source.
 
 @tmpl: 
 @Returns: 
+
+<!-- ##### FUNCTION g_date_get_month ##### -->
+<para>
+Accessor for the month of the year. Date must be valid.
+</para>
+
+@date: Date to get the month from
+@Returns: A #GDateMonth
 
 <!-- ##### FUNCTION g_main_context_get_poll_func ##### -->
 <para>
@@ -255,14 +322,6 @@ type of source.
 </para>
 
 
-<!-- ##### FUNCTION g_source_get_current_time ##### -->
-<para>
-
-</para>
-
-@source: 
-@timeval: 
-
 <!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
 <para>
 
@@ -271,6 +330,14 @@ type of source.
 @s1: 
 @s2: 
 @Returns: 
+
+<!-- ##### FUNCTION g_source_get_current_time ##### -->
+<para>
+
+</para>
+
+@source: 
+@timeval: 
 
 <!-- ##### FUNCTION g_main_loop_new ##### -->
 <para>
@@ -308,6 +375,14 @@ type of source.
 
 @array: 
 @compare_func: 
+
+<!-- ##### MACRO G_MODULE_SUFFIX ##### -->
+<para>
+Expands to the proper shared library suffix for the current platform
+without the leading dot. For the most Unices and Linux this is "so",
+for some HPUX versions this is "sl" and for Windows this is "dll".
+</para>
+
 
 <!-- ##### FUNCTION g_markup_parse_context_get_position ##### -->
 <para>
@@ -387,6 +462,15 @@ type of source.
 @source: 
 @fd: 
 
+<!-- ##### FUNCTION g_date_get_day_of_year ##### -->
+<para>
+Return the day of the year, where Jan 1 is the first day of the
+year. Date must be valid.
+</para>
+
+@date: Date to extract day of year from
+@Returns: Day of the year
+
 <!-- ##### FUNCTION g_tree_new_with_data ##### -->
 <para>
 
@@ -446,6 +530,16 @@ type of source.
 @priority: 
 @Returns: 
 
+<!-- ##### FUNCTION g_date_get_sunday_week_of_year ##### -->
+<para>
+Week of the year during which this date falls, if weeks are understood
+to being on Sunday. Date must be valid. Can return 0 if the day is
+before the first Sunday of the year.
+</para>
+
+@date: Date
+@Returns: Week number
+
 <!-- ##### FUNCTION g_source_set_priority ##### -->
 <para>
 
@@ -473,6 +567,19 @@ type of source.
 @user_data: 
 @Returns: 
 
+<!-- ##### FUNCTION g_date_get_monday_weeks_in_year ##### -->
+<para>
+Return the number of weeks in the year, where weeks are taken to start
+on Monday. Will be 52 or 53. Date must be valid. (Years always have 52
+7-day periods, plus 1 or 2 extra days depending on whether it's a leap
+year. This function is basically telling you how many Mondays are in
+the year, i.e. there are 53 Mondays if one of the extra days happens
+to be a Monday.)
+</para>
+
+@year: Year
+@Returns: Number of Mondays in the year
+
 <!-- ##### FUNCTION g_main_context_find_source_by_user_data ##### -->
 <para>
 
@@ -495,6 +602,15 @@ type of source.
 
 </para>
 
+
+<!-- ##### MACRO g_rand_boolean ##### -->
+<para>
+Return a random #gboolean from @rand. This corresponds to a unbiased
+coin toss.
+</para>
+
+@rand: a #GRand.
+@Returns: a random #gboolean.
 
 <!-- ##### FUNCTION g_io_create_watch ##### -->
 <para>
@@ -540,19 +656,19 @@ Removes a file descriptor from the list being polled.
 </para>
 
 
-<!-- ##### MACRO g_string ##### -->
-<para>
-Turns the argument into a string literal by using the '#' stringizing operator.
-</para>
-
-@x: text to convert to a literal string.
-
 <!-- ##### FUNCTION g_idle_source_new ##### -->
 <para>
 
 </para>
 
 @Returns: 
+
+<!-- ##### MACRO g_string ##### -->
+<para>
+Turns the argument into a string literal by using the '#' stringizing operator.
+</para>
+
+@x: text to convert to a literal string.
 
 <!-- ##### FUNCTION g_main_context_pending ##### -->
 <para>
@@ -575,6 +691,14 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 @loop: 
+
+<!-- ##### FUNCTION g_date_get_weekday ##### -->
+<para>
+Returns the day of the week for a #GDate. The date must be valid.
+</para>
+
+@date: Date
+@Returns: Day of the week as a #GDateWeekday
 
 <!-- ##### MACRO read ##### -->
 <para>
@@ -610,6 +734,13 @@ There are no flags right now
 </para>
 
 @G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: 
+
+<!-- ##### MACRO g_random_boolean ##### -->
+<para>
+Return a random #gboolean. This corresponds to a unbiased coin toss.
+</para>
+
+@Returns: a random #gboolean.
 
 <!-- ##### FUNCTION g_slist_sort_with_data ##### -->
 <para>

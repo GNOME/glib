@@ -1,0 +1,28 @@
+
+
+G_BREAKPOINT () traps for the debugger
+======================================
+
+Some code portions contain trap variables that can be set during
+debugging time if G_ENABLE_DEBUG has been defined upon compilation
+(use the --enable-debug=yes option to configure for this, macros.txt
+covers more details).
+Such traps lead to immediate code halts to examine the current
+program state and backtrace.
+Currently, the following trap variables exist:
+
+static volatile gulong glib_trap_free_size;
+static volatile gulong glib_trap_realloc_size;
+static volatile gulong glib_trap_malloc_size;
+	If set to a size > 0, g_free(), g_realloc() and g_malloc()
+	respectively, will be intercepted if the size matches the
+	size of the corresponding memory block to free/reallocate/allocate.
+	This will only work with g_mem_set_vtable (glib_mem_profiler_table)
+	upon startup though, because memory profiling is required to match
+	on the memory block sizes.
+static volatile GObject *glib_trap_object_ref;
+	If set to a valid object pointer, ref/unref will be intercepted
+	with G_BREAKPOINT ();
+
+
+2000/12/28	Tim Janik

@@ -70,16 +70,6 @@ accessed through the g_rand_* functions.
 @seed: 
 
 
-<!-- ##### MACRO g_rand_boolean ##### -->
-<para>
-Return a random #gboolean from @rand. This corresponds to a unbiased
-coin toss.
-</para>
-
-@rand: a #GRand.
-@Returns: a random #gboolean.
-
-
 <!-- ##### FUNCTION g_rand_int ##### -->
 
 
@@ -91,9 +81,12 @@ coin toss.
 
 
 @rand: 
+@min: 
+@max: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @begin: 
 @end: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_rand_double ##### -->
@@ -107,23 +100,18 @@ coin toss.
 
 
 @rand: 
+@min: 
+@max: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @begin: 
 @end: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_random_set_seed ##### -->
 
 
 @seed: 
-
-
-<!-- ##### MACRO g_random_boolean ##### -->
-<para>
-Return a random #gboolean. This corresponds to a unbiased coin toss.
-</para>
-
-@Returns: a random #gboolean.
 
 
 <!-- ##### FUNCTION g_random_int ##### -->
@@ -135,9 +123,12 @@ Return a random #gboolean. This corresponds to a unbiased coin toss.
 <!-- ##### FUNCTION g_random_int_range ##### -->
 
 
+@min: 
+@max: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @begin: 
 @end: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_random_double ##### -->
@@ -149,8 +140,11 @@ Return a random #gboolean. This corresponds to a unbiased coin toss.
 <!-- ##### FUNCTION g_random_double_range ##### -->
 
 
+@min: 
+@max: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @begin: 
 @end: 
-@Returns: 
 
 

@@ -1,3 +1,27 @@
+Thu Dec 28 10:21:46 2000  Tim Janik  <timj@gtk.org>
+
+	* gmem.[hc]: got rid of outdated dmalloc support. provide g_try_malloc()
+	and g_try_realloc() which _may_ fail and return NULL.
+	nuked g_mem_check(), provided GMemVTable for memory function
+	virtualization, alterable at program startup with g_mem_set_vtable().
+	provided glib_mem_profiler_table and g_mem_profile() to support limited
+	profiling information out of the box (uses mprotect() for free()ed areas
+	on linux).
+	provide globally visible G_MEM_ALIGN.
+	buncha cleanups.
+
+	* docs/macros.txt: file to get a clue about the various configuration
+	macros.
+
+	* docs/debugging.txt: explain debugging traps.
+
+	* configure.in: got rid of --enable-mem-check and --enable-mem-profile,
+	define GLIB_SIZEOF_VOID_P and GLIB_SIZEOF_LONG. check malloc prototypes
+	and define SANE_MALLOC_PROTOS is we can use them.
+	<boy, is this file a mess>
+
+	* gutils.c, gscanner.c: fix up compatibility warnings, use g_message().
+
 2000-12-27  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Update.

@@ -27,7 +27,6 @@
 
 
 #define	PREALLOC_CPARAMS	(8)
-#define	DEBUG_OBJECTS
 
 
 /* --- macros --- */
@@ -126,22 +125,21 @@ struct _NotifyQueue
 
 
 /* --- variables --- */
-static GQuark	       quark_notify_queue = 0;
-static GQuark	       quark_property_id = 0;
-static GQuark	       quark_closure_array = 0;
-static GParamSpecPool *pspec_pool = NULL;
-static gulong	       gobject_signals[LAST_SIGNAL] = { 0, };
+static GQuark	         quark_notify_queue = 0;
+static GQuark	         quark_property_id = 0;
+static GQuark	         quark_closure_array = 0;
+static GParamSpecPool   *pspec_pool = NULL;
+static gulong	         gobject_signals[LAST_SIGNAL] = { 0, };
 
 
 /* --- functions --- */
-#ifdef	DEBUG_OBJECTS
-
+#ifdef	G_ENABLE_DEBUG
 /* We need an actual method for handling debug keys in GLib.
  * For now, we'll simply use, as a method
  * 'extern gboolean glib_debug_objects'
  */
+static volatile GObject *glib_trap_object_ref = NULL;
 gboolean glib_debug_objects = FALSE;
-
 static guint		  debug_objects_count = 0;
 static GHashTable	 *debug_objects_ht = NULL;
 static void
@@ -168,7 +166,7 @@ debug_objects_atexit (void)
 	}
     }
 }
-#endif /* DEBUG_OBJECTS */
+#endif /* G_ENABLE_DEBUG */
 
 void
 g_object_type_init (void)	/* sync with gtype.c */
@@ -210,9 +208,9 @@ g_object_type_init (void)	/* sync with gtype.c */
   type = g_type_register_fundamental (G_TYPE_OBJECT, "GObject", &info, &finfo, 0);
   g_assert (type == G_TYPE_OBJECT);
   
-#ifdef	DEBUG_OBJECTS
+#ifdef	G_ENABLE_DEBUG
   g_atexit (debug_objects_atexit);
-#endif /* DEBUG_OBJECTS */
+#endif	/* G_ENABLE_DEBUG */
 }
 
 static void
@@ -433,7 +431,7 @@ g_object_init (GObject *object)
   /* freeze object's notification queue, g_object_new_valist() takes care of that */
   object_freeze_notifies (object);
 
-#ifdef	DEBUG_OBJECTS
+#ifdef	G_ENABLE_DEBUG
   if (glib_debug_objects)
     {
       if (!debug_objects_ht)
@@ -441,7 +439,7 @@ g_object_init (GObject *object)
       debug_objects_count++;
       g_hash_table_insert (debug_objects_ht, object, object);
     }
-#endif /* DEBUG_OBJECTS */
+#endif	/* G_ENABLE_DEBUG */
 }
 
 static void
@@ -512,15 +510,20 @@ g_object_last_unref (GObject *object)
   if (object->ref_count == 1)	/* may have been re-referenced meanwhile */
     G_OBJECT_GET_CLASS (object)->shutdown (object);
   
+#ifdef	G_ENABLE_DEBUG
+  if (glib_trap_object_ref == object)
+    G_BREAKPOINT ();
+#endif	/* G_ENABLE_DEBUG */
+
   object->ref_count -= 1;
   
   if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
     {
       G_OBJECT_GET_CLASS (object)->finalize (object);
-#ifdef  DEBUG_OBJECTS
+#ifdef	G_ENABLE_DEBUG
       if (glib_debug_objects && debug_objects_ht)
 	g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
-#endif /* DEBUG_OBJECTS */
+#endif	/* G_ENABLE_DEBUG */
       g_type_free_instance ((GTypeInstance*) object);
     }
 }
@@ -540,7 +543,7 @@ g_object_finalize (GObject *object)
   g_signal_handlers_destroy (object);
   g_datalist_clear (&object->qdata);
   
-#ifdef	DEBUG_OBJECTS
+#ifdef	G_ENABLE_DEBUG
   if (glib_debug_objects)
     {
       g_assert (g_hash_table_lookup (debug_objects_ht, object) == object);
@@ -548,7 +551,7 @@ g_object_finalize (GObject *object)
       g_hash_table_remove (debug_objects_ht, object);
       debug_objects_count--;
     }
-#endif /* DEBUG_OBJECTS */
+#endif	/* G_ENABLE_DEBUG */
 }
 
 static inline void
@@ -1224,6 +1227,11 @@ g_object_ref (gpointer _object)
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (object->ref_count > 0, NULL);
   
+#ifdef  G_ENABLE_DEBUG
+  if (glib_trap_object_ref == object)
+    G_BREAKPOINT ();
+#endif  /* G_ENABLE_DEBUG */
+
   object->ref_count += 1;
   
   return object;
@@ -1237,6 +1245,11 @@ g_object_unref (gpointer _object)
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count > 0);
   
+#ifdef  G_ENABLE_DEBUG
+  if (glib_trap_object_ref == object)
+    G_BREAKPOINT ();
+#endif  /* G_ENABLE_DEBUG */
+
   if (object->ref_count > 1)
     object->ref_count -= 1;
   else

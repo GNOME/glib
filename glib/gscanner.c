@@ -570,8 +570,8 @@ g_scanner_freeze_symbol_table (GScanner *scanner)
 
   if (first_call)
     {
-      g_warning("g_scanner_freeze_symbol_table and "
-		"g_scanner_thaw_symbol_table are deprecated.");
+      g_message ("g_scanner_freeze_symbol_table() and "
+		 "g_scanner_thaw_symbol_table() are deprecated.");
       first_call = FALSE;
     }
 #endif /* G_ENABLE_DEBUG */
@@ -580,6 +580,7 @@ g_scanner_freeze_symbol_table (GScanner *scanner)
 void
 g_scanner_thaw_symbol_table (GScanner *scanner)
 {
+  g_scanner_freeze_symbol_table (scanner);
 }
 
 GTokenType

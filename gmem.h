@@ -29,35 +29,70 @@
 
 #include <gtypes.h>
 
-/* optionally feature DMALLOC memory allocation debugger
- */
-#ifdef USE_DMALLOC
-#include "dmalloc.h"
-#endif
-
 G_BEGIN_DECLS
 
-typedef struct _GAllocator      GAllocator;
-typedef struct _GMemChunk       GMemChunk;
+typedef struct _GAllocator GAllocator;
+typedef struct _GMemChunk  GMemChunk;
+typedef struct _GMemVTable GMemVTable;
 
-/* Provide macros for easily allocating memory. The macros
- *  will cast the allocated memory to the specified type
- *  in order to avoid compiler warnings. (Makes the code neater).
+
+#if GLIB_SIZEOF_VOID_P > GLIB_SIZEOF_LONG
+#  define G_MEM_ALIGN	GLIB_SIZEOF_VOID_P
+#else	/* GLIB_SIZEOF_VOID_P <= GLIB_SIZEOF_LONG */
+#  define G_MEM_ALIGN	GLIB_SIZEOF_LONG
+#endif	/* GLIB_SIZEOF_VOID_P <= GLIB_SIZEOF_LONG */
+
+
+/* Memory allocation functions
  */
+gpointer g_malloc         (gulong	 n_bytes);
+gpointer g_malloc0        (gulong	 n_bytes);
+gpointer g_realloc        (gpointer	 mem,
+			   gulong	 n_bytes);
+void	 g_free	          (gpointer	 mem);
+gpointer g_try_malloc     (gulong	 n_bytes);
+gpointer g_try_realloc    (gpointer	 mem,
+			   gulong	 n_bytes);
 
-#ifdef __DMALLOC_H__
-#  define g_new(type, count)		(ALLOC (type, count))
-#  define g_new0(type, count)		(CALLOC (type, count))
-#  define g_renew(type, mem, count)	(REALLOC (mem, type, count))
-#else /* __DMALLOC_H__ */
-#  define g_new(type, count)	  \
-      ((type *) g_malloc ((unsigned) sizeof (type) * (count)))
-#  define g_new0(type, count)	  \
-      ((type *) g_malloc0 ((unsigned) sizeof (type) * (count)))
-#  define g_renew(type, mem, count)	  \
-      ((type *) g_realloc (mem, (unsigned) sizeof (type) * (count)))
-#endif /* __DMALLOC_H__ */
 
+/* Convenience memory allocators
+ */
+#define g_new(struct_type, n_structs)		\
+    ((struct_type *) g_malloc (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define g_new0(struct_type, n_structs)		\
+    ((struct_type *) g_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define g_renew(struct_type, mem, n_structs)	\
+    ((struct_type *) g_realloc ((mem), ((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+
+
+/* Memory allocation virtualization for debugging purposes
+ * g_mem_set_vtable() has to be the very first GLib function called
+ * if being used
+ */
+struct _GMemVTable
+{
+  gpointer (*malloc)      (gsize    n_bytes);
+  gpointer (*realloc)     (gpointer mem,
+			   gsize    n_bytes);
+  void     (*free)        (gpointer mem);
+  /* optional */
+  gpointer (*calloc)      (gsize    n_blocks,
+			   gsize    n_block_bytes);
+  gpointer (*try_malloc)  (gsize    n_bytes);
+  gpointer (*try_realloc) (gpointer mem,
+			   gsize    n_bytes);
+};
+void	 g_mem_set_vtable (GMemVTable	*vtable);
+
+
+/* Memory profiler and checker, has to be enabled via g_mem_set_vtable()
+ */
+extern GMemVTable	*glib_mem_profiler_table;
+void	g_mem_profile	(void);
+
+
+/* Memchunk convenience functions
+ */
 #define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \
   g_mem_chunk_new (#type " mem chunks (" #pre_alloc ")", \
 		   sizeof (type), \
@@ -74,37 +109,6 @@ typedef struct _GMemChunk       GMemChunk;
   g_mem_chunk_free ((mem_chunk), (mem)); \
 } G_STMT_END
 
-/* Memory allocation and debugging
- */
-#ifdef USE_DMALLOC
-
-#define g_malloc(size)	     ((gpointer) MALLOC (size))
-#define g_malloc0(size)	     ((gpointer) CALLOC (char, size))
-#define g_realloc(mem,size)  ((gpointer) REALLOC (mem, char, size))
-#define g_free(mem)	     FREE (mem)
-
-#else /* !USE_DMALLOC */
-
-gpointer g_malloc      (gulong	  size);
-gpointer g_malloc0     (gulong	  size);
-gpointer g_realloc     (gpointer  mem,
-			gulong	  size);
-void	 g_free	       (gpointer  mem);
-
-#endif /* !USE_DMALLOC */
-
-void	 g_mem_profile (void);
-void	 g_mem_check   (gpointer  mem);
-
-/* Generic allocators
- */
-GAllocator* g_allocator_new   (const gchar  *name,
-			       guint         n_preallocs);
-void        g_allocator_free  (GAllocator   *allocator);
-
-#define	G_ALLOCATOR_LIST	(1)
-#define	G_ALLOCATOR_SLIST	(2)
-#define	G_ALLOCATOR_NODE	(3)
 
 /* "g_mem_chunk_new" creates a new memory chunk.
  * Memory chunks are used to allocate pieces of memory which are
@@ -150,9 +154,21 @@ void	   g_mem_chunk_info    (void);
  *  much better name than "g_mem_chunk_clean_all" or something
  *  similar.
  */
-void g_blow_chunks (void);
+void	   g_blow_chunks (void);
+
+
+/* Generic allocators
+ */
+GAllocator* g_allocator_new   (const gchar  *name,
+			       guint         n_preallocs);
+void        g_allocator_free  (GAllocator   *allocator);
+
+/* internal */
+#define	G_ALLOCATOR_LIST	(1)
+#define	G_ALLOCATOR_SLIST	(2)
+#define	G_ALLOCATOR_NODE	(3)
+
 
 G_END_DECLS
 
 #endif /* __G_MEM_H__ */
-
