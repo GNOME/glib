@@ -37,7 +37,7 @@ typedef union  _GTokenValue     GTokenValue;
 
 typedef void		(*GScannerMsgFunc)	(GScanner      *scanner,
 						 gchar	       *message,
-						 gint		error);
+						 gboolean	error);
 
 /* GScanner: Flexible lexical scanner for general purpose.
  */
@@ -244,6 +244,9 @@ void		g_scanner_error			(GScanner	*scanner,
 void		g_scanner_warn			(GScanner	*scanner,
 						 const gchar	*format,
 						 ...) G_GNUC_PRINTF (2,3);
+
+#ifndef G_DISABLE_DEPRECATED
+
 /* keep downward source compatibility */
 #define		g_scanner_add_symbol( scanner, symbol, value )	G_STMT_START { \
   g_scanner_scope_add_symbol ((scanner), 0, (symbol), (value)); \
@@ -254,8 +257,6 @@ void		g_scanner_warn			(GScanner	*scanner,
 #define		g_scanner_foreach_symbol( scanner, func, data )	G_STMT_START { \
   g_scanner_scope_foreach_symbol ((scanner), 0, (func), (data)); \
 } G_STMT_END
-
-#ifndef G_DISABLE_DEPRECATED
 
 /* The following two functions are deprecated and will be removed in
  * the next major release. They do no good. */

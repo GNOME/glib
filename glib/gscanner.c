@@ -143,7 +143,7 @@ static guchar	g_scanner_get_char	  (GScanner	*scanner,
 					   guint	*position_p);
 static void	g_scanner_msg_handler	  (GScanner	*scanner,
 					   gchar	*message,
-					   gint		 is_error);
+					   gboolean	 is_error);
 
 
 /* --- functions --- */
@@ -285,7 +285,7 @@ g_scanner_destroy (GScanner	*scanner)
 static void
 g_scanner_msg_handler (GScanner		*scanner,
 		       gchar		*message,
-		       gint		 is_error)
+		       gboolean		is_error)
 {
   g_return_if_fail (scanner != NULL);
   
