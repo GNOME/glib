@@ -1,3 +1,7 @@
+2002-04-28  Christophe Merlet  <christophe@merlet.net>
+
+	* fr.po: Updated French translation.
+
 2002-04-18  Vincent van Adrighem <V.vanAdrighem@dirck.mine.nu>
 
 	* nl.po: Updated Dutch translation by Ronald Hummelink.
@@ -28,7 +32,7 @@
 
 	* de.po: Updated German translation.
 
-2002-03-15  Christophe Merlet  <redfox@eikonex.org>
+2002-03-15  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation.
 
@@ -77,7 +81,7 @@
 
 	* sk.po: Updated Slovak translation.
 
-2002-02-26  Christophe Merlet  <redfox@eikonex.org>
+2002-02-26  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation and
 	converted to UTF-8.
@@ -470,7 +474,7 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* de.po: Added German translation.
 
-2001-03-02  Christophe Merlet  <redfox@eikonex.org>
+2001-03-02  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Added French translation.
 
