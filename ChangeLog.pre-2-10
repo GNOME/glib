@@ -1,6 +1,6 @@
 2005-02-24  Tor Lillqvist  <tml@novell.com>
 
-	* Makefile.am (BUILT_EXTRA_DIST): Don't distribute
+	* glib/Makefile.am (BUILT_EXTRA_DIST): Don't distribute
 	glib.def. (#167496, J. Ali Harlow)
 
 	* glib/gfileutils.c (get_contents_win32): Use g_fopen(). (#168341,
