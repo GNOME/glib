@@ -12,7 +12,7 @@ bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
 glib-config: glib-config.in
 
-INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib
+INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST = \
 	glib.m4		\
