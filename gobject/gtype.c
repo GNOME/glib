@@ -2486,6 +2486,69 @@ g_type_interface_peek_parent (gpointer g_iface)
   return vtable;
 }
 
+gpointer
+g_type_default_interface_ref (GType g_type)
+{
+  TypeNode *node;
+  
+  G_WRITE_LOCK (&type_rw_lock);
+  
+  node = lookup_type_node_I (g_type);
+  if (!node || !NODE_IS_IFACE (node) ||
+      (node->data && node->data->common.ref_count < 1))
+    {
+      G_WRITE_UNLOCK (&type_rw_lock);
+      g_warning ("cannot retrieve default vtable for invalid or non-interface type '%s'",
+		 type_descriptive_name_I (g_type));
+      return NULL;
+    }
+  
+  type_data_ref_Wm (node);
+
+  type_iface_ensure_dflt_vtable_Wm (node);
+
+  G_WRITE_UNLOCK (&type_rw_lock);
+  
+  return node->data->iface.dflt_vtable;
+}
+
+gpointer
+g_type_default_interface_peek (GType g_type)
+{
+  TypeNode *node;
+  gpointer vtable;
+  
+  node = lookup_type_node_I (g_type);
+  G_READ_LOCK (&type_rw_lock);
+  if (node && NODE_IS_IFACE (node) && node->data && node->data->iface.dflt_vtable)
+    vtable = node->data->iface.dflt_vtable;
+  else
+    vtable = NULL;
+  G_READ_UNLOCK (&type_rw_lock);
+  
+  return vtable;
+}
+
+void
+g_type_default_interface_unref (gpointer g_iface)
+{
+  TypeNode *node;
+  GTypeInterface *vtable = g_iface;
+  
+  g_return_if_fail (g_iface != NULL);
+  
+  node = lookup_type_node_I (vtable->g_type);
+  G_WRITE_LOCK (&type_rw_lock);
+  if (node && NODE_IS_IFACE (node) &&
+      node->data->iface.dflt_vtable == g_iface &&
+      node->data->common.ref_count > 0)
+    type_data_unref_Wm (node, FALSE);
+  else
+    g_warning ("cannot unreference invalid interface default vtable for '%s'",
+	       type_descriptive_name_I (vtable->g_type));
+  G_WRITE_UNLOCK (&type_rw_lock);
+}
+
 G_CONST_RETURN gchar*
 g_type_name (GType type)
 {

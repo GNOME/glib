@@ -183,6 +183,10 @@ gpointer              g_type_interface_peek          (gpointer         instance_
 						      GType            iface_type);
 gpointer              g_type_interface_peek_parent   (gpointer         g_iface);
 
+gpointer              g_type_default_interface_ref   (GType            g_type);
+gpointer              g_type_default_interface_peek  (GType            g_type);
+void                  g_type_default_interface_unref (gpointer         g_iface);
+
 /* g_free() the returned arrays */
 GType*                g_type_children                (GType            type,
 						      guint           *n_children);

@@ -1,3 +1,8 @@
+Mon Sep 29 10:51:01 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.[ch]: Add g_type_default_interface_ref/peek/unref
+	for accessing the default vtable of an interface.
+
 Fri Sep 26 17:24:53 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.c (g_type_instance_get_private): You can
