@@ -41,6 +41,9 @@
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
+#if defined (G_OS_WIN32)
+# include <io.h>		/* For open() and close() prototypes. */
+#endif
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support refernce counts on

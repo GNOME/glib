@@ -1,3 +1,7 @@
+2001-01-27  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.msc.in: Don't try to compile gmarshal.c on its own.
+
 2001-01-24    <alexl@redhat.com>
 
 	* gclosure.c (g_closure_unref):

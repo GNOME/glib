@@ -24,7 +24,6 @@ gobject_OBJECTS =		\
 	gbsearcharray.obj	\
 	gclosure.obj		\
 	genums.obj		\
-	gmarshal.obj		\
 	gobject.obj		\
 	gparam.obj		\
 	gparamspecs.obj		\
@@ -44,3 +43,7 @@ gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 
 glib-genmarshal.exe : glib-genmarshal.c
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib
+
+# I don't even try to build gmarshal.c and gmarshal.h here. If you try
+# to build this from CVS with MSVC, you will have to have a look in
+# Makefile.am or makefile.mingw.in to see how to do it.

@@ -1,3 +1,7 @@
+2001-01-27  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule.c: (Win32) Need <io.h> for open() and close().
+
 2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.c: Make g_module_open more tolerant wrt to the module
