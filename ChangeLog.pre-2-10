@@ -1,7 +1,7 @@
 2004-06-06  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_get_any_init): Check home for being
-	NULL. (#143812)
+	NULL. (#143812, Ivan Wong)
 
 Sun Jun  6 15:23:00 2004  Pawan Chitrakr  <pawan@nplinu.org>
 
