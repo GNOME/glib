@@ -1,3 +1,11 @@
+2001-06-08  Havoc Pennington  <hp@redhat.com>
+
+	* gspawn.c: support G_SPAWN_FILE_AND_ARGV_ZERO specifying that 
+	the vector passed in to g_spawn_* contains a filename to 
+	execute in argv[0] then the actual argv begins at argv + 1.
+	Kind of a lame hack, but this isn't something you commonly want
+	to do, and avoids adding more function arguments.
+
 2001-06-08  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* configure.in: Added Azeri (az) to ALL_LINGUAS

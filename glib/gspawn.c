@@ -52,6 +52,7 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gboolean              stdout_to_null,
                                       gboolean              stderr_to_null,
                                       gboolean              child_inherits_stdin,
+                                      gboolean              file_and_argv_zero,
                                       GSpawnChildSetupFunc  child_setup,
                                       gpointer              user_data,
                                       gint                 *child_pid,
@@ -237,6 +238,7 @@ g_spawn_sync (const gchar          *working_directory,
                              (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
                              (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                              (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+                             (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
                              child_setup,
                              user_data,
                              &pid,
@@ -442,6 +444,11 @@ g_spawn_sync (const gchar          *working_directory,
  * will be discarded. %G_SPAWN_CHILD_INHERITS_STDIN means that
  * the child will inherit the parent's standard input (by default,
  * the child's standard input is attached to /dev/null).
+ * %G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of @argv is
+ * the file to execute, while the remaining elements are the
+ * actual argument vector to pass to the file. Normally
+ * g_spawn_async_with_pipes() uses @argv[0] as the file to execute, and
+ * passes all of @argv to the child.
  *
  * @child_setup and @user_data are a function and user data to be
  * called in the child after GLib has performed all the setup it plans
@@ -504,6 +511,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                                (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
                                (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                                (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+                               (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
                                child_setup,
                                user_data,
                                child_pid,
@@ -764,6 +772,7 @@ do_exec (gint                  child_err_report_fd,
          gboolean              stdout_to_null,
          gboolean              stderr_to_null,
          gboolean              child_inherits_stdin,
+         gboolean              file_and_argv_zero,
          GSpawnChildSetupFunc  child_setup,
          gpointer              user_data)
 {
@@ -854,7 +863,9 @@ do_exec (gint                  child_err_report_fd,
       (* child_setup) (user_data);
     }
 
-  g_execute (argv[0], argv, envp, search_path);
+  g_execute (argv[0],
+             file_and_argv_zero ? argv + 1 : argv,
+             envp, search_path);
 
   /* Exec failed */
   write_err_and_exit (child_err_report_fd,
@@ -923,6 +934,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                       gboolean              stdout_to_null,
                       gboolean              stderr_to_null,
                       gboolean              child_inherits_stdin,
+                      gboolean              file_and_argv_zero,
                       GSpawnChildSetupFunc  child_setup,
                       gpointer              user_data,
                       gint                 *child_pid,
@@ -1021,6 +1033,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                        stdout_to_null,
                        stderr_to_null,
                        child_inherits_stdin,
+                       file_and_argv_zero,
                        child_setup,
                        user_data);
             }
@@ -1049,6 +1062,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                    stdout_to_null,
                    stderr_to_null,
                    child_inherits_stdin,
+                   file_and_argv_zero,
                    child_setup,
                    user_data);
         }

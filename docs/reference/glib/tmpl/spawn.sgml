@@ -58,6 +58,7 @@ Spawning Processes (fork/exec)
 @G_SPAWN_STDOUT_TO_DEV_NULL: 
 @G_SPAWN_STDERR_TO_DEV_NULL: 
 @G_SPAWN_CHILD_INHERITS_STDIN: 
+@G_SPAWN_FILE_AND_ARGV_ZERO: 
 
 <!-- ##### USER_FUNCTION GSpawnChildSetupFunc ##### -->
 <para>
