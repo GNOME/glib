@@ -301,7 +301,7 @@ do_test (gint         index,
 	       index,
 	       str->str, max_len, 
 	       valid ? "TRUE" : "FALSE", offset,
-	       result ? "TRUE" : "FALSE", end - text);
+	       result ? "TRUE" : "FALSE", (gint) (end - text));
       g_string_free (str, FALSE);
     }
 }

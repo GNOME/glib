@@ -1,3 +1,10 @@
+Sun Nov 28 13:13:56 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/abicheck.sh: filter G_GNUC before PRIVATE so $ is still true.
+
+	* tests/utf8-validate.c: cast pointer math to gint for error print
+	message.
+
 Sun Nov 28 12:07:29 2004  Manish Singh  <yosh@gimp.org>
 
 	* tests/utf8-validate.c: minor comment fix.
