@@ -1,3 +1,7 @@
+2003-07-12  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gprintf.c: Doc additions.
+
 2003-07-10  Joel Brich <joel.brich@laposte.net>
 
 	* configure.in: Added "eo" to ALL_LINGUAS.
