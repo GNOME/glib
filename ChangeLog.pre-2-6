@@ -1,3 +1,10 @@
+Sun May  9 02:04:14 2004  Matthias Clasen  <maclas@gmx.de>
+
+	Merge from 2.4:
+	
+	* glib/guniprop.c (g_utf8_casefold): Avoid an unnecessary
+	memleak.  (#141998, Nikolai Weibull)
+
 Sat May  8 23:02:26 2004  Matthias Clasen  <maclas@gmx.de>
 
 	Merge from 2.4:

@@ -942,11 +942,12 @@ gchar *
 g_utf8_casefold (const gchar *str,
 		 gssize       len)
 {
-  GString *result = g_string_new (NULL);
+  GString *result;
   const char *p;
 
   g_return_val_if_fail (str != NULL, NULL);
 
+  result = g_string_new (NULL);
   p = str;
   while ((len < 0 || p < str + len) && *p)
     {
