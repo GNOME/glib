@@ -556,6 +556,8 @@ g_io_channel_unix_new (gint fd)
   g_io_channel_init (channel);
   channel->funcs = &unix_channel_funcs;
 
+  unix_channel->fd = fd;
+
   /* I'm not sure if fstat on a non-file (e.g., socket) works
    * it should be safe to say if it fails, the fd isn't seekable.
    */
@@ -567,8 +569,6 @@ g_io_channel_unix_new (gint fd)
                            || S_ISBLK (buffer.st_mode);
   else /* Assume not seekable */
     channel->is_seekable = FALSE;
-
-  unix_channel->fd = fd;
 
   g_io_unix_get_flags (channel); /* Sets is_readable, is_writeable */
 
