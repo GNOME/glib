@@ -84,7 +84,54 @@ Thu Feb 22 10:31:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 2001-02-21  Tor Lillqvist  <tml@iki.fi>
 
-	* gutils.c (g_path_is_absolute): Match also UNC paths on Win32.
+	* gutils.c (g_find_program_in_path): Implement on Win32.
+
+	Cygwin support contributed by Stefan Ondrejicka
+	<ondrej@idata.sk>. Hopefully I got it all in while simultaneously
+	adding support for auto*/libtool for mingw.
+
+	* Makefile.am: Changes for auto* support on Cygwin and Win32. Do
+	still distribute the hand-written makefiles and *.win32.in files,
+	though. Use GIO, GSPAWN and PLATFORMDEP macros set by configure.
+	Use -no-undefined. Pass -export-symbols glib.def to libtool.
+	
+	* configure.in: Define G_PLATFORM_WIN32 on both pure Win32 (mingw)
+	and Cygwin. Add AC_CYGWIN, AC_EXEEXT and AC_LIBTOOL_WIN32_DLL
+	calls for Cygwin and mingw support.  Check for %I64u guint64
+	format (in MS C library). Set G_MODULE_IMPL on mingw and
+	Cygwin. Use ac_object and ac_exeext.  Set GIO, GSPAWN, PLATFORMDEP
+	and G_LIBS_EXTRA. Compile timeloop only on Unix. Define OS_WIN32
+	automake conditional on Win32.
+	
+	* glib.h: Include gwin32.h also on Cygwin.
+
+	* gfileutils.c (get_contents_posix): Use O_BINARY (defined as 0 on
+	Unix) for Cygwin's sake.
+
+	* gtimer.c (GETTIME): Reduce #ifdefs, use a macro GETTIME().
+
+	* gconvert.c
+	* gthread.c
+	* gutf8.c
+	* gutils.c: For code needed both on Cygwin and native Win32,
+	test for G_PLATFORM_WIN32.
+
+	* gtypes.h: Refine GLIB_VAR definition. Also check for DLL_EXPORT
+	in case compiling a static library on Win32 or Cygwin.
+
+	* gwin32.c: No <direct.h> on Cygwin. No need for ftruncate() or
+	dirent emulation on Cygwin.
+	(get_package_directory_from_module) Convert return value from
+	GetModuleFileName() to POSIX path on Cygwin.
+
+	* tests/Makefile.am (progs_LDADD): Link with libglib, libgthread
+	and libgmodule as appropriate. Use -no-undefined.
+
+	* gbacktrace.c: Move #ifdefs around a bit on Win32.
+
+2001-02-21  Tor Lillqvist  <tml@iki.fi>
+
+	* gshell.c (unquote_string_inplace): Make static.
 
 	* gthread.h: Include gtypes.h to be sure to get GLIB_VAR
 	definition, remove definition from here.
@@ -97,10 +144,13 @@ Thu Feb 22 10:31:36 2001  Owen Taylor  <otaylor@redhat.com>
 	* Makefile.am (INCLUDES): Add -DGLIB_COMPILATION.
 
 	* makefile.mingw.in: Remove install target, Windows isn't Unix.
+	(DEFINES): Add -DDLL_EXPORT.
 
 	* testgdate.c
 	* testgdateparser.c
 	* testglib.c: Undefine GLIB_COMPILATION.
+
+	* testglib.c: Make some vars static. Add Cygwin path tests.
 
 	* glib.def: Updates.
 

@@ -62,6 +62,7 @@
 #ifdef G_OS_WIN32
 #  define STRICT		/* Strict typing, please */
 #  include <windows.h>
+#  undef STRICT
 #endif
 
 #ifndef NO_FD_SET
@@ -75,7 +76,9 @@
 #endif
 
 
+#ifndef G_OS_WIN32
 static void stack_trace (char **args);
+#endif
 
 extern volatile gboolean glib_on_error_halt;
 volatile gboolean glib_on_error_halt = TRUE;
@@ -185,6 +188,8 @@ g_on_error_stack_trace (const gchar *prg_name)
 #endif
 }
 
+#ifndef G_OS_WIN32
+
 static gboolean stack_trace_done = FALSE;
 
 static void
@@ -196,7 +201,6 @@ stack_trace_sigchld (int signum)
 static void
 stack_trace (char **args)
 {
-#ifdef G_OS_UNIX
   pid_t pid;
   int in_fd[2];
   int out_fd[2];
@@ -291,7 +295,6 @@ stack_trace (char **args)
   close (out_fd[0]);
   close (out_fd[1]);
   _exit (0);
-#else
-  abort ();
-#endif
 }
+
+#endif /* !G_OS_WIN32 */

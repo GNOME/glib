@@ -28,8 +28,10 @@
 #include "glib.h"
 #include "config.h"
 
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
+#define STRICT
 #include <windows.h>
+#undef STRICT
 #endif
 
 #include "glibintl.h"
@@ -521,7 +523,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
 		  gint         *bytes_written,
 		  GError      **error)
 {
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 
   gint i, clen, total_len, wclen, first;
   wchar_t *wcs, wc;
@@ -617,7 +619,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
   
   return result;
 
-#else
+#else  /* !G_PLATFORM_WIN32 */
 
   char *charset, *str;
 
@@ -628,7 +630,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
 		   "UTF-8", charset, bytes_read, bytes_written, error);
   
   return str;
-#endif
+#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -662,7 +664,7 @@ g_locale_from_utf8 (const gchar *utf8string,
 		    gint        *bytes_written,
 		    GError     **error)
 {
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
 
   gint i, mask, clen, mblen;
   wchar_t *wcs, *wcp;
@@ -764,7 +766,7 @@ g_locale_from_utf8 (const gchar *utf8string,
   
   return result;
 
-#else
+#else  /* !G_PLATFORM_WIN32 */
 
   gchar *charset, *str;
 
@@ -776,7 +778,7 @@ g_locale_from_utf8 (const gchar *utf8string,
 
   return str;
   
-#endif
+#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -809,11 +811,11 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		    gint        *bytes_written,
 		    GError     **error)
 {
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
   return g_locale_to_utf8 (opsysstring, len,
 			   bytes_read, bytes_written,
 			   error);
-#else
+#else  /* !G_PLATFORM_WIN32 */
   if (getenv ("G_BROKEN_FILENAMES"))
     return g_locale_to_utf8 (opsysstring, len,
 			     bytes_read, bytes_written,
@@ -833,7 +835,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
     return g_strdup (opsysstring);
   else
     return g_strndup (opsysstring, len);
-#endif
+#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -865,11 +867,11 @@ g_filename_from_utf8 (const gchar *utf8string,
 		      gint        *bytes_written,
 		      GError     **error)
 {
-#ifdef G_OS_WIN32
+#ifdef G_PLATFORM_WIN32
   return g_locale_from_utf8 (utf8string, len,
 			     bytes_read, bytes_written,
 			     error);
-#else
+#else  /* !G_PLATFORM_WIN32 */
   if (getenv ("G_BROKEN_FILENAMES"))
     return g_locale_from_utf8 (utf8string, len,
 			       bytes_read, bytes_written,
@@ -889,7 +891,5 @@ g_filename_from_utf8 (const gchar *utf8string,
     return g_strdup (utf8string);
   else
     return g_strndup (utf8string, len);
-#endif
+#endif /* !G_PLATFORM_WIN32 */
 }
-
-

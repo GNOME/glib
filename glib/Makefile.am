@@ -18,11 +18,7 @@ EXTRA_DIST = 			\
 	glib.def		\
 	makefile.msc.in		\
 	makefile.mingw.in	\
-	giowin32.c		\
 	glibconfig.h.win32.in	\
-	gwin32.c		\
-	gspawn-win32.c		\
-	gspawn-win32-helper.c	\
 	config.h.win32.in	\
 	build-dll		\
 	glib.rc.in		\
@@ -57,7 +53,6 @@ libglib_1_3_la_SOURCES = 	\
 	ghash.c			\
 	ghook.c			\
 	giochannel.c    	\
-	giounix.c       	\
 	glibintl.h		\
 	glist.c			\
 	gmain.c         	\
@@ -73,7 +68,6 @@ libglib_1_3_la_SOURCES = 	\
 	gscanner.c		\
 	gshell.c		\
 	gslist.c		\
-	gspawn.c		\
 	gstrfuncs.c		\
 	gstring.c		\
 	gthread.c       	\
@@ -89,8 +83,12 @@ libglib_1_3_la_SOURCES = 	\
 	gunidecomp.c		\
 	gutils.c
 
-## If we decide to link in 'alloca.c', this is how to do it
-#libglib_1_3_la_LIBADD = @ALLOCA@
+EXTRA_libglib_1_3_la_SOURCES = \
+	giounix.c	\
+	giowin32.c	\
+	gspawn.c	\
+	gspawn-win32.c	\
+	gwin32.c
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
@@ -158,18 +156,36 @@ stamp-gc-h: config.status
 	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
 	echo timestamp > stamp-gc-h
 
-libglib_1_3_la_LIBADD = @ICONV_LIBS@
+libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@
+libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ 
+
+
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
+if OS_WIN32
+# This requires a very new libtool
+export_symbols = -export-symbols glib.def
+endif
 
 libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic
+	-export-dynamic $(no_undefined) $(export_symbols)
 
-noinst_PROGRAMS = testglib testgdate testgdateparser timeloop
+if OS_WIN32
+bin_PROGRAMS = gspawn-win32-helper
+gspawn_win32_helper_LDADD = libglib-1.3.la
+endif
+if ENABLE_TIMELOOP
+timeloop = timeloop
+endif
+noinst_PROGRAMS = testglib testgdate testgdateparser $(timeloop)
 testglib_LDADD = libglib-1.3.la
 testgdate_LDADD = libglib-1.3.la
 testgdateparser_LDADD = libglib-1.3.la
+if ENABLE_TIMELOOP
 timeloop_LDADD = libglib-1.3.la
-
+endif
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib-2.0.m4
 

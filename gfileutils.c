@@ -378,7 +378,8 @@ get_contents_posix (const gchar *filename,
   struct stat stat_buf;
   gint fd;
   
-  fd = open (filename, O_RDONLY);
+  /* O_BINARY useful on Cygwin */
+  fd = open (filename, O_RDONLY|O_BINARY);
 
   if (fd < 0)
     {
