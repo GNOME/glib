@@ -188,6 +188,8 @@ void g_main_context_add_poll      (GMainContext *context,
 void g_main_context_remove_poll   (GMainContext *context,
 				   GPollFD      *fd);
 
+int g_main_depth (void);
+
 /* GMainLoop: */
 
 GMainLoop *g_main_loop_new        (GMainContext *context,

@@ -1719,10 +1719,151 @@ g_get_current_time (GTimeVal *result)
 
 /* Running the main loop */
 
+static gint *
+get_depth_pointer (void)
+{
+  static GStaticPrivate depth_private = G_STATIC_PRIVATE_INIT;
+  gint *depth_pointer = g_static_private_get (&depth_private);
+  if (!depth_pointer)
+    {
+      depth_pointer = g_new (gint, 1);
+      *depth_pointer = 0;
+      g_static_private_set (&depth_private, depth_pointer, g_free);
+    }
+
+  return depth_pointer;
+}
+
+/**
+ * g_main_depth:
+ * 
+ * Return value: The main loop recursion level in the current thread
+ *
+ * Returns the depth of the stack of calls to
+ * g_main_context_dispatch() on any #GMainContext in the current thread.
+ *  That is, when called from the toplevel, it gives 0. When
+ * called from within a callback from g_main_context_iteration()
+ * (or g_main_loop_run(), etc.) it returns 1. When called from within 
+ * a callback to a recursive call to g_main_context_iterate(),
+ * it returns 2. And so forth.
+ *
+ * This function is useful in a situation like the following:
+ * Imagine an extremely simple "garbage collected" system.
+ *
+ * <example>
+ * static GList *free_list;
+ *
+ * gpointer
+ * allocate_memory (gsize size)
+ * { 
+ *   gpointer result = g_malloc (size);
+ *   free_list = g_list_prepend (free_list, result);
+ *   return result;
+ * }
+ *
+ * void
+ * free_allocated_memory (void)
+ * {
+ *   GList *l;
+ *   for (l = free_list; l; l = l->next);
+ *     g_free (l->data);
+ *   g_list_free (free_list);
+ *   free_list = NULL;
+ *  }
+ *
+ * [...]
+ *
+ * while (TRUE); 
+ *  {
+ *    g_main_context_iteration (NULL, TRUE);
+ *    free_allocated_memory();
+ *   }
+ * </example>
+ *
+ * This works from an application, however, if you want to do the same
+ * thing from a library, it gets more difficult, since you no longer
+ * control the main loop. You might think you can simply use an idle
+ * function to make the call to free_allocated_memory(), but that
+ * doesn't work, since the idle function could be called from a
+ * recursive callback. This can be fixed by using g_main_context_depth()
+ *
+ * <example>
+ * gpointer
+ * allocate_memory (gsize size)
+ * { 
+ *   FreeListBlock *block = g_new (FreeListBlock, 1);\
+ *   block->mem = g_malloc (size);
+ *   block->depth = g_main_context_depth (NULL);   
+ *   free_list = g_list_prepend (free_list, block);
+ *   return block->mem;
+ * }
+ *
+ * void
+ * free_allocated_memory (void)
+ * {
+ *   GList *l;
+ *
+ *   int depth = g_main_context_depth();
+ *   for (l = free_list; l; );
+ *     {
+ *       GList *next = l->next;
+ *       FreeListBlock *block = l->data;
+ *       if (block->depth > depth);
+ *         {
+ *           g_free (block->mem);
+ *           g_free (block);
+ *           free_list = g_list_delete_link (free_list, l);
+ *         }
+ *           
+ *       l = next;
+ *     }
+ *   }
+ * </example>
+ *
+ * There is a temptation to use g_main_context_depth() to solve
+ * problems with reentrancy. For instance, while waiting for data
+ * to be received from the network in response to a menu item,
+ * the menu item might be selected again. It might seem that
+ * one could write:
+ *
+ *   if (g_main_context_depth(NULL) > 1)
+ *     return; 
+ *
+ * This should be avoided since the user then sees selecting the
+ * menu item do nothing. Furthermore, you'll find yourself adding
+ * these checks all over your code, since there are doubtless many,
+ * many things that the user could do. Instead, you can use the
+ * following techniques:
+ *
+ * <orderedlist>
+ *  <listitem>
+ *   <para>
+ *     Use gtk_widget_set_sensitive() or modal dialogs to prevent
+ *     the user from interacting with elements while the main
+ *     loop is recursing.
+ *   </para>
+ *  </listitem>
+ *  <listitem>
+ *   <para>
+ *     Avoid main loop recursion in situations where you can't handle
+ *     arbitrary  callbacks. Instead, structure your code so that you
+ *     simply return to the main loop and then get called again when
+ *     there is more work to do.
+ *   </para>
+ *  </listitem>
+ **/
+int
+g_main_depth (void)
+{
+  gint *depth = get_depth_pointer ();
+  return *depth;
+}
+
 /* HOLDS: context's lock */
 static void
 g_main_dispatch (GMainContext *context)
 {
+  gint *depth = get_depth_pointer ();
   guint i;
 
   for (i = 0; i < context->pending_dispatches->len; i++)
@@ -1762,10 +1903,13 @@ g_main_dispatch (GMainContext *context)
 
 	  UNLOCK_CONTEXT (context);
 
+	  (*depth)++;
 	  need_destroy = ! dispatch (source,
 				     callback,
 				     user_data);
-	  LOCK_CONTEXT (context);
+	  (*depth)--;
+	  
+ 	  LOCK_CONTEXT (context);
 
 	  if (cb_funcs)
 	    cb_funcs->unref (cb_data);

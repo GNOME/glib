@@ -1,3 +1,8 @@
+Sun Feb 29 21:34:34 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.[ch]: Add g_main_depth() (Request from
+	Tim Janik and Stefan Westerfeld)
+
 Mon Mar  1 00:26:11 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* NEWS: Update for 2.3.4
