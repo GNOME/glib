@@ -22,3 +22,9 @@
 
   To go along with this change, the vtable for GIOChannel has changed and
   add_watch() has been replaced by create_watch().
+
+* g_list_foreach() and g_slist_foreach() have been changed so they
+  are now safe against removal of the current item, not the next item.
+
+  It's not recommended to mutate the list in the callback to these
+  functions in any case.

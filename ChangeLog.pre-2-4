@@ -1,3 +1,11 @@
+Thu May  3 06:38:28 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* g[s]list.c (g_[s]list_foreach) docs/Changes-2.0.txt: Make
+	foreach() safe against removal of the _current_ element. While
+	this could break some code, the new behavior is consistent with
+	the rest of GLib/GTK+ and probably is what people expect in most
+	cases. (Suggested by Paul Kuykendall, #50071)
+
 Wed May  2 11:10:22 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gutf8.c (g_utf8_to_ucs4_fast): Fix read past end of the string.

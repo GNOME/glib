@@ -589,8 +589,9 @@ g_slist_foreach (GSList   *list,
 {
   while (list)
     {
+      GSList *next = list->next;
       (*func) (list->data, user_data);
-      list = list->next;
+      list = next;
     }
 }
 
