@@ -567,7 +567,7 @@ GSystemThread
 g_thread_use_default_impl
 g_threads_got_initialized
 g_thread_functions_for_glib_use
-<SUBSECTION Private>
+g_thread_init_glib
 g_thread_error_quark
 </SECTION>
 

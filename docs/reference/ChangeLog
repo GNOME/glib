@@ -1,5 +1,7 @@
 2003-06-18  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/glib-sections.txt: Add g_thread_init_glib to silence gtk-doc.
+
 	* gobject/Makefile.am: Add rule to regenerate man pages from 
 	Docbook.
 	(man_MANS): Add glib-mkenums.1, glib-genmarshal.1 and gobject-query.1.
