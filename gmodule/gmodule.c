@@ -139,6 +139,8 @@ g_module_set_error (const gchar *error)
 #include "gmodule-dld.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
 #include "gmodule-win32.c"
+#elif	(G_MODULE_IMPL == G_MODULE_IMPL_DYLD)
+#include "gmodule-dyld.c"
 #else
 #undef	SUPPORT_OR_RETURN
 #define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error ("dynamic modules are " \

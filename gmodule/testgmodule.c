@@ -71,14 +71,14 @@ main (int   arg,
   g_print ("check that not yet bound symbols in shared libraries of main module are retrievable:\n");
   string = "g_module_close";
   basename = g_path_get_basename (g_module_name (module_self));
-  g_print ("retrive symbol `%s' from \"%s\":\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\":\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     {
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
-  g_print ("retrived symbol `%s' as %p\n", string, f_self);
+  g_print ("retrieved symbol `%s' as %p\n", string, f_self);
   g_print ("load plugin from \"%s\"\n", plugin_a);
   module_a = g_module_open (plugin_a, G_MODULE_BIND_LAZY);
   if (!module_a)
@@ -98,7 +98,7 @@ main (int   arg,
    */
   string = "gplugin_a_func";
   basename = g_path_get_basename (g_module_name (module_a));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
@@ -107,7 +107,7 @@ main (int   arg,
     }
   string = "gplugin_b_func";
   basename = g_path_get_basename (g_module_name (module_b));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
@@ -123,7 +123,7 @@ main (int   arg,
    */
   string = "g_clash_func";
   basename = g_path_get_basename (g_module_name (module_self));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     {
@@ -131,7 +131,7 @@ main (int   arg,
       return 1;
     }
   basename = g_path_get_basename (g_module_name (module_a));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
@@ -139,7 +139,7 @@ main (int   arg,
       return 1;
     }
   basename = g_path_get_basename (g_module_name (module_b));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
@@ -157,13 +157,13 @@ main (int   arg,
    */
   string = "gplugin_clash_func";
   basename = g_path_get_basename (g_module_name (module_self));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     f_self = NULL;
-  g_print ("retrived function `%s' from self: %p\n", string, f_self);
+  g_print ("retrieved function `%s' from self: %p\n", string, f_self);
   basename = g_path_get_basename (g_module_name (module_a));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
@@ -171,7 +171,7 @@ main (int   arg,
       return 1;
     }
   basename = g_path_get_basename (g_module_name (module_b));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
@@ -189,7 +189,7 @@ main (int   arg,
    */
   string = "gplugin_a_module_func";
   basename = g_path_get_basename (g_module_name (module_a));
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_print ("retrieve symbol `%s' from \"%s\"\n", string, basename);
   g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &gmod_f))
     {

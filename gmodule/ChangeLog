@@ -1,3 +1,12 @@
+2001-04-20  Dan Winship  <danw@ximian.com>
+
+	* gmodule-dyld.c: gmodule implementation for Darwin/Mac OS X
+
+	* gmodule.c: 
+	* gmoduleconf.h.in: Add gmodule-dyld support
+
+	* testgmodule.c (main): Fix spelling
+
 2001-03-13  Tor Lillqvist  <tml@iki.fi>
 
 	From Edward M. Lee  <tailbert@yahoo.com>:
