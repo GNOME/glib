@@ -822,16 +822,19 @@ g_get_any_init (void)
       {
 	struct passwd *pw = NULL;
 	gpointer buffer = NULL;
+        gint error;
 	
 #  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
         struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX  
 	/* This reurns the maximum length */
-        glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);  
+        glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
+	
+	if (bufsize < 0)
+	  bufsize = 64;
 #    else /* _SC_GETPW_R_SIZE_MAX */
         glong bufsize = 64;
 #    endif /* _SC_GETPW_R_SIZE_MAX */
-        gint error;
 	
         do
           {
