@@ -432,6 +432,7 @@ g_object_last_unref (GObject *object)
   
   if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
     {
+      g_signal_handlers_destroy (object);
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
       G_OBJECT_GET_CLASS (object)->finalize (object);
 #ifdef	G_ENABLE_DEBUG
@@ -1220,7 +1221,7 @@ g_object_weak_ref (GObject    *object,
     {
       wstack = g_renew (WeakRefStack, NULL, 1);
       wstack->n_weak_refs = 1;
-      i = wstack->n_weak_refs;
+      i = 0;
     }
   wstack->weak_refs[i].notify = notify;
   wstack->weak_refs[i].data = data;
@@ -1615,7 +1616,7 @@ g_object_watch_closure (GObject  *object,
       carray = g_renew (CArray, NULL, 1);
       carray->object = object;
       carray->n_closures = 1;
-      i = carray->n_closures;
+      i = 0;
     }
   else
     {

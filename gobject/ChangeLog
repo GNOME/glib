@@ -1,3 +1,9 @@
+Mon Jul  2 07:17:47 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (g_object_weak_ref): 
+	(g_object_watch_closure): congrats tim, introducing of-by-one
+	errors like on my very first day of C programming.
+
 Sat Jun 30 11:07:00 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject.[hc]: provide weak_ref/weak_unref functions,
