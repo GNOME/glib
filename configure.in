@@ -2200,7 +2200,7 @@ _______EOF
 /* double checked locking can be used on this platform */
 #define g_once(once, func, arg) \\
   ((once)->status == G_ONCE_STATUS_READY ? (once)->retval : \\
-   g_once_impl (once, func, arg));
+   g_once_impl (once, func, arg))
 #define g_static_mutex_get_mutex_impl_shortcut(mutex) \\
   (*(mutex) ? *(mutex) : g_static_mutex_get_mutex_impl (mutex))
 _______EOF

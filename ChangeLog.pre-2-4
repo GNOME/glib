@@ -1,3 +1,8 @@
+Fri Oct 31 00:13:53 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Remove the semicolon from the definition of
+	g_once(), so that GPOINTER_TO_INT (g_once (...)) works.
+
 Tue Oct 28 23:38:30 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/printf-test.c: Change the %e tests to not check for
