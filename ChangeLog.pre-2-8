@@ -1,3 +1,8 @@
+2005-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_get_boolean_list): Fix a
+	sparse warning.  (#164467, Kjartan Maraas)
+
 2005-01-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c (g_get_filename_charsets): Don't crash
