@@ -1,5 +1,10 @@
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/trio/trio.c (trio_snprintf, trio_vsnprintf): Accept NULL buffer if max is zero. 
+
+	* acinclude.m4 (AC_FUNC_SNPRINTF_C99): Tests whether the system snprintf() is good enough.
+	* configure.in: Use  AC_FUNC_SNPRINTF_C99.  (#106091)
+
 	* tests/patterntest.c: Specify test strings in UTF-8, remove all charset conversion.
 	Replace the NOISY define by a cmdline arg --noisy.   (#115757)
 

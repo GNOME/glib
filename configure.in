@@ -694,6 +694,7 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf unsetenv getc_unlocked)
 
 AC_FUNC_VSNPRINTF_C99
+AC_FUNC_SNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
 
 #
@@ -732,6 +733,7 @@ if test "$enable_trio" != "yes" ; then
 else
   glib_cv_long_long_format="ll"
   AC_DEFINE(HAVE_VASPRINTF,1)
+  AC_DEFINE(HAVE_C99_SNPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
   if test "$glib_native_win32" != "yes" ; then
