@@ -1,7 +1,12 @@
 2000-04-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib.h, glist.h, gslist.h: Changed the 'data' parameters from
+	gpointer to gconstpointer for the functions
+	g_(list|slist)_(remove|find|find_custom|index), as they do not
+	change this parameter. This fixes bug #4836.
+
 	* glib.h: Changed comment for g_getenv to reflect, that the
-	returned memory must not be freed. Fixes Bug #8983.
+	returned memory must not be freed. Fixes bug #8983.
 
 2000-04-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 

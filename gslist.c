@@ -283,8 +283,8 @@ g_slist_concat (GSList *list1, GSList *list2)
 }
 
 GSList*
-g_slist_remove (GSList   *list,
-		gpointer  data)
+g_slist_remove (GSList        *list,
+		gconstpointer  data)
 {
   GSList *tmp;
   GSList *prev;
@@ -425,8 +425,8 @@ g_slist_nth_data (GSList   *list,
 }
 
 GSList*
-g_slist_find (GSList   *list,
-	      gpointer  data)
+g_slist_find (GSList        *list,
+	      gconstpointer  data)
 {
   while (list)
     {
@@ -439,9 +439,9 @@ g_slist_find (GSList   *list,
 }
 
 GSList*
-g_slist_find_custom (GSList      *list,
-		     gpointer     data,
-		     GCompareFunc func)
+g_slist_find_custom (GSList        *list,
+		     gconstpointer  data,
+		     GCompareFunc   func)
 {
   g_return_val_if_fail (func != NULL, list);
 
@@ -474,8 +474,8 @@ g_slist_position (GSList *list,
 }
 
 gint
-g_slist_index (GSList   *list,
-	       gpointer data)
+g_slist_index (GSList        *list,
+	       gconstpointer  data)
 {
   gint i;
 
