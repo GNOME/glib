@@ -123,6 +123,8 @@ glibsubinclude_HEADERS =   \
 	gfileutils.h	\
 	ghash.h		\
 	ghook.h		\
+	gi18n.h		\
+	gi18n-lib.h	\
 	giochannel.h	\
 	glist.h		\
 	gmacros.h	\

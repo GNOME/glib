@@ -1,3 +1,16 @@
+Wed Nov  5 22:05:19 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gi18n-lib.h: 
+	* glib/gi18n.h: New headers defining common gettext-support
+	macros.
+
+	* glib/Makefile.am (glibsubinclude_HEADERS): Add gi18n.h
+	and gi18n-lib.h.
+
+	* glib/gstrfuncs.h: 
+	* glib/gstrfuncs.c (g_strip_context): Auxiliary function for
+	the implementation of Q_().
+
 2003-11-05  Morten Welinder  <terra@gnome.org>
 
 	* glib/garray.c (g_ptr_array_remove_range): Make it compile.

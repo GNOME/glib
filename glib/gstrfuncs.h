@@ -231,6 +231,9 @@ gchar**               g_strdupv        (gchar       **str_array);
 gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 
+G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid, 
+					const gchar *msgval);
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */

@@ -2545,3 +2545,30 @@ g_str_has_prefix (const gchar  *str,
   return strncmp (str, prefix, prefix_len) == 0;
 }
 
+
+/**
+ * g_strip_context:
+ * @msgid: a string
+ * @msgval: another string
+ * 
+ * An auxiliary function for gettext() support (see Q_()).
+ * 
+ * Return value: @msgval, unless @msgval is identical to @msgid and contains
+ *   a '|' character, in which case a pointer to the substring of msgid after
+ *   the first '|' character is returned. 
+ *
+ * Since: 2.4
+ **/
+G_CONST_RETURN gchar *
+g_strip_context  (const gchar *msgid, 
+		  const gchar *msgval)
+{
+  if (msgval == msgid)
+    {
+      const char *c = strchr (msgid, '|');
+      if (c != NULL)
+	return c + 1;
+    }
+  
+  return msgval;
+}
