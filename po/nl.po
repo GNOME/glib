@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
-"PO-Revision-Date: 2004-11-29 19:16+0100\n"
+"POT-Creation-Date: 2004-12-17 19:51+0100\n"
+"PO-Revision-Date: 2004-12-18 00:15+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -224,18 +224,17 @@ msgstr ""
 "gebruik in plaats daarvan &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Verwerken van '%s' mislukt, hetgeen een getal in een tekenreferentie zou "
-"moeten zijn (bijvoorbeel &#234;) - misschien is het getal te groot"
+msgstr "Verwerken van '%-.*s' is mislukt, hetgeen een getal in een tekenreferentie zou moeten zijn (bijvoorbeeld &#234;) - misschien is het getal te groot"
 
+# niet geoorloofd/toegestaan/ongeoorloofd
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Tekenreferentie '%s' verwijst niet naar een toegestaan teken"
+msgstr "Tekenreferentie '%-.*s' staat niet voor een geoorloofd teken"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -376,7 +375,7 @@ msgstr "Het document eindigde onverwacht in een attribuutnaam"
 
 #: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Het document eindigde onverwacht in een element-openings-tag"
+msgstr "Het document eindigde onverwacht in een element-openings-tag."
 
 #: glib/gmarkup.c:1792
 msgid ""
