@@ -1,3 +1,7 @@
+Wed Mar  9 19:06:45 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/glib.symbols: Add g_file_replace.
+
 2005-03-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version

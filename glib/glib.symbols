@@ -191,6 +191,7 @@ g_file_open_tmp PRIVATE
 g_file_open_tmp_utf8
 #endif
 g_file_read_link
+g_file_replace
 g_file_test PRIVATE
 #ifdef G_OS_WIN32
 g_file_test_utf8
