@@ -1,3 +1,7 @@
+Sun Jun  6 15:23:00 2004  Pawan Chitrakr  <pawan@nplinu.org>
+
+	* configure.in: Added "ne" (Nepali) in ALL_LINGUAS
+
 Fri Jun  4 19:26:47 2004  Manish Singh  <yosh@gimp.org>
 
         * glib/galloca.h: cpp #directives should always have the "#" in the
