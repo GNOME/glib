@@ -7,7 +7,7 @@ DOC_MODULE=glib
 DOC_MAIN_SGML_FILE=glib-docs.sgml
 
 # The directory containing the source code
-DOC_SOURCE_DIR=$(top_srcdir)
+DOC_SOURCE_DIR=../../..
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=

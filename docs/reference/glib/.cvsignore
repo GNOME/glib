@@ -1,7 +1,7 @@
 Makefile
 Makefile.in
-glib-unused.txt
 glib-decl-list.txt
 glib-decl.txt
+glib-unused.txt
 html
 sgml
