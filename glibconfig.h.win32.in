@@ -64,8 +64,8 @@ typedef unsigned __int64 guint64;
 #define GLIB_SIZEOF_LONG   4
 #define GLIB_SIZEOF_SIZE_T 4
 
-typedef gint32  gssize;
-typedef guint32 gsize;
+typedef signed int gssize;
+typedef unsigned int gsize;
 
 #define GPOINTER_TO_INT(p)	((gint)   (p))
 #define GPOINTER_TO_UINT(p)	((guint)  (p))
