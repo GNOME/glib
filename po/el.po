@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2002-02-20 14:33+0000\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -371,17 +371,17 @@ msgstr "Το παρατιθέμενο αλφαριθμητικό δεν αρχί
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 
-#: glib/gshell.c:528
+#: glib/gshell.c:529
 #, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr ""
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2001-12-19 21:39+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -403,18 +403,18 @@ msgstr ""
 "Marca de cita non pechada en liña de comandos ou outro texto en forma de "
 "cita nunha shell"
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "O texto rematou despois dun caracter ''. (O texto era '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "O texto rematou antes de atopar a comiña final para %c. (O texto era '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "O texto estaba baleiro (ou contiña espacios en branco namais)"
 

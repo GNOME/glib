@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.5\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2001-09-28 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -386,17 +386,17 @@ msgstr "§Áü¸Ç¢ò¾ ¯¨Ã µ÷ \" -¯¼ı ¦¾¡¼í¸Å¢ø¨Ä"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "`¸ğ¼¨Ç ÅÊÂ¢ø «øÄĞ §ÅÚ §Áü¸Ç¢ò¾ ¯¨ÃÂ¢ø ¦À¡Õò¾ÁüÈ \" "
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr " \"  À¢ıÒ ¯¨Ã ÓÊÅ¨¼ó¾Ğ. (¯¨Ã: '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "%c ìÌ ¦À¡Õò¾Á¡É §Áü§¸¡û ¸ñÎÀ¢ÊôÀ¾ğÌ Óı ¯¨Ã ÓÊÅ¨¼ó¾Ğ. (¯¨Ã: '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "¯¨Ã ¦ÅüÈ¡ ­Õó¾Ğ («øÄĞ ¦Åñ¦ÅÇ¢ ÁğÎ§Á)"
 

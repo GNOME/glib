@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2001-11-23 13:07+0100\n"
 "Last-Translator: Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -399,19 +399,19 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Ongebalanceerde '\"'-teken in opdrachtregel of andere shell-gequoted tekst"
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst eindige na een '-karakter (de tekst was '%s')."
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "De tekst eindigde voordat een afsluitend quote-karakter was gevonden voor %c "
 "(de tekst was '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "De tekst was leeg (of bevatte slechts witte ruimte)"
 

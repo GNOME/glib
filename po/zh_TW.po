@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.13\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2002-02-07 08:25+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -369,17 +369,17 @@ msgstr "應該用引號括起來的文字不是以括號為開始"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "指令列或其它標為指令的字串內有不對稱的引號"
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "文字在 '' 字元後就終止了。（文字為 '%s'）"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "字串完結前仍沒有對應於 %c 的引號（字串為 '%s'）"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "文字是空白的（或只含有空白字元）"
 

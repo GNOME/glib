@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib/2.0\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2002-01-31 20:07+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"
@@ -387,18 +387,18 @@ msgstr "Sitert tekst startar ikkje med eit siteringsmerke"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Upara siteringsmerke i kommandolinje eller anna skal-sitert tekst"
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Teksta tok slutt rett etter eit \" teikn (Teksta var '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Teksta tok slutt før avsluttane sitatteikn var funne for %c (Teksta var '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksta var tom (eller innehdlt kun tome teikn)"
 

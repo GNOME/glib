@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
+"POT-Creation-Date: 2002-03-03 21:13-0500\n"
 "PO-Revision-Date: 2001-09-02 09:00+0200\n"
 "Last-Translator: José Antonio Salgueiro <joseantsa@eresmas.net>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -401,19 +401,19 @@ msgstr "Texto citado no empieza con una marca de cita"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Marca no emparejada en la línea de comandos o en otro texto citado"
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:529
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Texto termina justo después de un carácter ''. (El texto era '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Texto termina antes de que se encontrasen las citas correspondientes para %c "
 "(El texto era '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Texto vacío (o sólo contiene espacios en blanco)"
 

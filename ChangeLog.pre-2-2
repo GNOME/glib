@@ -1,3 +1,7 @@
+Tue Mar  5 19:41:02 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* GTK+-2.0.0 rc1
+
 2002-03-05  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.c (g_source_set_priority): Finish docs.  
