@@ -76,10 +76,14 @@ g_mutex_trylock_posix_impl (GMutex * mutex)
   int result;
 
   result = pthread_mutex_trylock ((pthread_mutex_t *) mutex);
-  if (result != EBUSY)
+#ifdef HAVE_PTHREAD_MUTEX_TRYLOCK_POSIX
+  if (result == EBUSY)
     return FALSE;
-
   posix_check_for_error (result);
+#else
+  if (result == 0)
+    return FALSE;
+#endif
   return TRUE;
 }
 
@@ -123,7 +127,11 @@ g_cond_timed_wait_posix_impl (GCond * cond,
   result = pthread_cond_timedwait ((pthread_cond_t *) cond,
 				   (pthread_mutex_t *) entered_mutex,
 				   &end_time);
+#ifdef HAVE_PTHREAD_COND_TIMEDWAIT_POSIX
   timed_out = (result == ETIMEDOUT);
+#else
+  timed_out = (result == -1 && errno == EAGAIN);
+#endif
   if (!timed_out)
     posix_check_for_error (result);
   return !timed_out;

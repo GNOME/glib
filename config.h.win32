@@ -61,8 +61,9 @@
 #define GLIB_BINARY_AGE 0
 
 #define G_THREAD_SOURCE "gthread-posix.c"
-#define G_THREADS_IMPL_POSIX
+#define HAVE_PTHREAD_COND_TIMEDWAIT_POSIX 1
 #define HAVE_PTHREAD_GETSPECIFIC_POSIX 1
+#define HAVE_PTHREAD_MUTEX_TRYLOCK_POSIX 1
 
 /* The number of bytes in a char.  */
 #define SIZEOF_CHAR 1

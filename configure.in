@@ -784,6 +784,7 @@ if test x"$have_threads" != xnone; then
 		fi
 	fi
 	if test x"$have_threads" = xposix; then
+		LIBS="$LIBS $G_THREAD_LIBS"
 		AC_MSG_CHECKING(whether pthread_getspecific is posix like)
 		# PCThreads has pthread_getspecific(pthread_key_t, void **);
 		AC_TRY_COMPILE([#include <pthread.h>],
@@ -791,6 +792,31 @@ if test x"$have_threads" != xnone; then
 			[AC_MSG_RESULT(no)],
 			[AC_MSG_RESULT(yes)
 			AC_DEFINE(HAVE_PTHREAD_GETSPECIFIC_POSIX)])
+		AC_MSG_CHECKING(whether pthread_mutex_trylock is posix like)
+		# DCE Threads return 1 as success, posix 0. what a mess.
+		AC_TRY_RUN([#include <pthread.h>
+			int main () { 
+			pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+			return !pthread_mutex_trylock (&mutex); }],
+			[AC_MSG_RESULT(no)],
+			[AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_PTHREAD_MUTEX_TRYLOCK_POSIX)])
+		AC_MSG_CHECKING(whether pthread_cond_timedwait is posix like)
+		# DCE Threads return -1 as failure, posix ETIMEDOUT.
+		AC_TRY_RUN([#include <pthread.h>
+			int main () { 
+			pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+			pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+			struct timeval tval;
+			struct timespec tspec;
+			gettimeofday (&tval, NULL);
+			tspec.tv_sec += tval.tv_sec;
+			tspec.tv_nsec = 0;
+			return pthread_cond_timedwait (&cond,&mutex,&tspec) 
+				!= -1;}],
+			[AC_MSG_RESULT(no)],
+			[AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_PTHREAD_COND_TIMEDWAIT_POSIX)])
 	fi
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"

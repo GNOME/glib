@@ -1,3 +1,12 @@
+1999-03-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glibconfig.h.win32, config.h.win32: Moved G_THREADS_IMPL_POSIX
+	from config.h.win32 to glibconfig.h.win32
+
+	* acconfig.h, configure.in, config.h.win32: Added test for DCE
+	versions of mutex_trylock and cond_timedwait. The win32 versions
+	are posix, aren't they?
+
 1999-03-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmem.c: Fixed a stupid cut'n'paste error of mine. Thanks to
