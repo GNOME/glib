@@ -93,136 +93,6 @@ g_win32_ftruncate (gint  fd,
   return 0;
 }
 
-DIR*
-g_win32_opendir (const char *dirname)
-{
-  DIR *result;
-  gchar *mask;
-  guint k;
-
-  g_return_val_if_fail (dirname != NULL, NULL);
-
-  result = g_new0 (DIR, 1);
-  result->find_file_data = g_new0 (WIN32_FIND_DATA, 1);
-  result->dir_name = g_strdup (dirname);
-  
-  k = strlen (result->dir_name);
-  if (k && result->dir_name[k - 1] == '\\')
-    {
-      result->dir_name[k - 1] = '\0';
-    }
-  mask = g_strdup_printf ("%s\\*", result->dir_name);
-
-  result->find_file_handle = (guint) FindFirstFile (mask,
-					     (LPWIN32_FIND_DATA) result->find_file_data);
-  g_free (mask);
-
-  if (result->find_file_handle == (guint) INVALID_HANDLE_VALUE)
-    {
-      int error = GetLastError ();
-
-      g_free (result->dir_name);
-      g_free (result->find_file_data);
-      g_free (result);
-      switch (error)
-	{
-	default:
-	  errno = EIO;
-	  return NULL;
-	}
-    }
-  result->just_opened = TRUE;
-
-  return result;
-}
-
-struct dirent*
-g_win32_readdir (DIR *dir)
-{
-  gchar *basename;
-
-  g_return_val_if_fail (dir != NULL, NULL);
-
-  if (dir->just_opened)
-    dir->just_opened = FALSE;
-  else
-    {
-      if (!FindNextFile ((HANDLE) dir->find_file_handle,
-			 (LPWIN32_FIND_DATA) dir->find_file_data))
-	{
-	  int error = GetLastError ();
-
-	  switch (error)
-	    {
-	    case ERROR_NO_MORE_FILES:
-	      return NULL;
-	    default:
-	      errno = EIO;
-	      return NULL;
-	    }
-	}
-    }
-  
-  basename = g_path_get_basename (((LPWIN32_FIND_DATA) dir->find_file_data)->cFileName);
-
-  strcpy (dir->readdir_result.d_name, basename);
-
-  g_free (basename);
-      
-  return &dir->readdir_result;
-}
-
-void
-g_win32_rewinddir (DIR *dir)
-{
-  gchar *mask;
-
-  g_return_if_fail (dir != NULL);
-
-  if (!FindClose ((HANDLE) dir->find_file_handle))
-    g_warning ("gwin_rewinddir(): FindClose() failed\n");
-
-  mask = g_strdup_printf ("%s\\*", dir->dir_name);
-  dir->find_file_handle = (guint) FindFirstFile (mask,
-					  (LPWIN32_FIND_DATA) dir->find_file_data);
-  g_free (mask);
-
-  if (dir->find_file_handle == (guint) INVALID_HANDLE_VALUE)
-    {
-      int error = GetLastError ();
-
-      switch (error)
-	{
-	default:
-	  errno = EIO;
-	  return;
-	}
-    }
-  dir->just_opened = TRUE;
-}  
-
-gint
-g_win32_closedir (DIR *dir)
-{
-  g_return_val_if_fail (dir != NULL, -1);
-
-  if (!FindClose ((HANDLE) dir->find_file_handle))
-    {
-      int error = GetLastError ();
-
-      switch (error)
-	{
-	default:
-	  errno = EIO; return -1;
-	}
-    }
-
-  g_free (dir->dir_name);
-  g_free (dir->find_file_data);
-  g_free (dir);
-
-  return 0;
-}
 #endif
 
 /* MSVC 5.0 headers don't have latest language and sublanguage codes */
@@ -711,10 +581,13 @@ static gchar *
 get_package_directory_from_module (gchar *module_name)
 {
   static GHashTable *module_dirs = NULL;
+  G_LOCK_DEFINE_STATIC (module_dirs);
   HMODULE hmodule = NULL;
   gchar *fn;
   gchar *p;
   gchar *result;
+
+  G_LOCK (module_dirs);
 
   if (module_dirs == NULL)
     module_dirs = g_hash_table_new (g_str_hash, g_str_equal);
@@ -722,7 +595,10 @@ get_package_directory_from_module (gchar *module_name)
   result = g_hash_table_lookup (module_dirs, module_name ? module_name : "");
       
   if (result)
-    return g_strdup (result);
+    {
+      G_UNLOCK (module_dirs);
+      return g_strdup (result);
+    }
 
   if (module_name)
     {
@@ -733,7 +609,10 @@ get_package_directory_from_module (gchar *module_name)
 
   fn = g_malloc (MAX_PATH);
   if (!GetModuleFileName (hmodule, fn, MAX_PATH))
-    return NULL;
+    {
+      G_UNLOCK (module_dirs);
+      return NULL;
+    }
 
 #ifdef G_WITH_CYGWIN
   /* In Cygwin we need to have POSIX paths */
@@ -755,6 +634,8 @@ get_package_directory_from_module (gchar *module_name)
     *p = '\0';
 
   g_hash_table_insert (module_dirs, module_name ? module_name : "", fn);
+
+  G_UNLOCK (module_dirs);
 
   return g_strdup (fn);
 }
@@ -795,6 +676,7 @@ g_win32_get_package_installation_directory (gchar *package,
 					    gchar *dll_name)
 {
   static GHashTable *package_dirs = NULL;
+  G_LOCK_DEFINE_STATIC (package_dirs);
   gchar *result = NULL;
   gchar *key;
   HKEY reg_key = NULL;
@@ -803,13 +685,18 @@ g_win32_get_package_installation_directory (gchar *package,
 
   if (package != NULL)
     {
+      G_LOCK (package_dirs);
+      
       if (package_dirs == NULL)
 	package_dirs = g_hash_table_new (g_str_hash, g_str_equal);
       
       result = g_hash_table_lookup (package_dirs, package);
       
       if (result && result[0])
-	return g_strdup (result);
+	{
+	  G_UNLOCK (package_dirs);
+	  return g_strdup (result);
+	}
       
       key = g_strconcat ("Software\\", package, NULL);
       
@@ -835,12 +722,14 @@ g_win32_get_package_installation_directory (gchar *package,
 	RegCloseKey (reg_key);
       
       g_free (key);
-      
-    }
-  if (result)
-    {
-      g_hash_table_insert (package_dirs, package, result);
-      return g_strdup (result);
+
+      if (result)
+	{
+	  g_hash_table_insert (package_dirs, package, result);
+	  G_UNLOCK (package_dirs);
+	  return g_strdup (result);
+	}
+      G_UNLOCK (package_dirs);
     }
 
   if (dll_name != NULL)

@@ -1,3 +1,18 @@
+2001-09-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c
+	* glib/gwin32.h
+	* glib/glib.def: Remove own implementation of dirent
+	functions. Instead, gcc (mingw) users should go ahead and use the
+	<dirent.h> included with the mingw gcc, and the dirent functions
+	included in libmingw32, while MSVC users can use the same (public
+	domain) code, extracted from mingw-runtime sources and placed in
+	build/win32/dirent.[ch].
+
+	* glib/gwin32.c (get_package_directory_from_module,
+	g_win32_get_package_installation_directory): Use static lock to
+	protect static hash table.
+
 Sat Sep 29 02:33:14 2001  George Lebl <jirka@5z.com>
 
 	* tests/testglib.c (main): cast the string size to gulong and use %lu

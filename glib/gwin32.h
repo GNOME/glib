@@ -68,38 +68,8 @@ typedef int pid_t;
  */
 #    define ftruncate(fd, size)	g_win32_ftruncate (fd, size)
 
-/* -lmingw32 also has emulations for these, but we need our own
- * for MSVC anyhow, so we might aswell use them always.
- */
-#    define opendir		g_win32_opendir
-#    define readdir		g_win32_readdir
-#    define rewinddir		g_win32_rewinddir
-#    define closedir		g_win32_closedir
-#    define NAME_MAX 255
-
-struct dirent
-{
-  gchar  d_name[NAME_MAX + 1];
-};
-
-struct DIR
-{
-  gchar        *dir_name;
-  gboolean 	just_opened;
-  guint    	find_file_handle;
-  gpointer 	find_file_data;
-  struct dirent readdir_result;
-};
-typedef struct DIR DIR;
-
-/* emulation functions */
 gint		g_win32_ftruncate	(gint		 f,
 					 guint		 size);
-DIR*		g_win32_opendir		(const gchar	*dirname);
-struct dirent*	g_win32_readdir  	(DIR		*dir);
-void		g_win32_rewinddir 	(DIR		*dir);
-gint		g_win32_closedir  	(DIR		*dir);
-
 #endif /* G_OS_WIN32 */
 
 /* The MS setlocale uses locale names of the form "English_United
