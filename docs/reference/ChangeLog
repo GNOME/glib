@@ -1,3 +1,9 @@
+2000-10-09  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gobject/Makefile.am (DOC_SOURCE_DIR): Don't set to 
+	$top_srcdir)/gobject.
+	* glib/Makefile.am (DOC_SOURCE_DIR): Don't set to $(top_srcdir),
+
 2000-09-29  Jonathan Blandford  <jrb@redhat.com>
 
 	* glib/tmpl/trees-nary.sgml: Add g_node_insert_after().
