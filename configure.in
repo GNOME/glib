@@ -1,9 +1,12 @@
 dnl ***********************************
 dnl *** include special GLib macros ***
 dnl ***********************************
+
+define(glib_configure_in)
 builtin(include, acglib.m4)dnl
 builtin(include, glib/libcharset/codeset.m4)dnl
 builtin(include, glib/libcharset/glibc21.m4)dnl
+builtin(include, m4macros/glib-gettext.m4)dnl
 
 # require autoconf 2.53
 AC_PREREQ(2.53)
@@ -30,8 +33,8 @@ GLIB_AC_DIVERT_BEFORE_HELP([
 #
 GLIB_MAJOR_VERSION=2
 GLIB_MINOR_VERSION=1
-GLIB_MICRO_VERSION=3
-GLIB_INTERFACE_AGE=0
+GLIB_MICRO_VERSION=4
+GLIB_INTERFACE_AGE=1
 GLIB_BINARY_AGE=`expr 100 '*' $GLIB_MINOR_VERSION + $GLIB_MICRO_VERSION`
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
 ])dnl
@@ -330,11 +333,9 @@ dnl gettext support
 dnl
 
 ALL_LINGUAS="az be bg ca cs da de el es eu fr gl hi ja ko ms nl nn no pl pt pt_BR ro ru sk sl sq sv ta tr uk vi zh_CN zh_TW"
-AM_GLIB_GNU_GETTEXT
+GLIB_GNU_GETTEXT
 
-if test "$gt_cv_func_dgettext_libc" = "yes" || test "$gt_cv_func_dgettext_libintl" = "yes"; then
-  :
-else
+if test "$gt_cv_have_gettext" != "yes" ; then
   AC_MSG_ERROR([
 *** You must have either have gettext support in your C library, or use the 
 *** GNU gettext library. (http://www.gnu.org/software/gettext/gettext.html
@@ -348,11 +349,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", 
   [Define the gettext package to be used])
 
-# AM_GLIB_GNU_GETTEXT above substs $DATADIRNAME
-# this is the directory where the *.{mo,gmo} files are installed
-GLIB_LOCALE_DIR="${prefix}/${DATADIRNAME}/locale"
-AC_DEFINE_UNQUOTED(GLIB_LOCALE_DIR, "$GLIB_LOCALE_DIR", 
-  [Define the location where the catalogs will be installed])
+GLIB_DEFINE_LOCALEDIR(GLIB_LOCALE_DIR)
 
 AC_CHECK_FUNCS(bind_textdomain_codeset)
 

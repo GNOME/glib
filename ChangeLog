@@ -1,3 +1,27 @@
+Wed Dec 11 14:28:50 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Version 2.1.4, interface age 1.
+
+	* m4macros/glib-gettext.m4: Major rewrite; remove leftovers
+	from building intl/, prefer libintl if both libc and libintl 
+	have dgettext and libintl also has bind_textdomain_codeset().
+	(#70627)
+
+	* configure.in acinclude.m4: Use an include to avoid having 
+	to duplicate the gettext macros between glib-gettext.m4
+	and acinclude.m4.
+
+	* m4macros/glib-gettext.m4: Do some tricks so that configure.in 
+	can use macros under hidden names, but aclocal will still 
+	find them when installed.
+
+	* m4macros/glib-gettext.m4: Add AM_GLIB_DEFINE_LOCALEDIR
+	to encapsulate install location of catalog files.
+
+	* m4macros/glib-gettext.m4 (AM_GLIB_DEFINE_LOCALEDIR):
+	Fix bug where if --prefix wasn't set on the configure line,
+	GLib would look for translations in NONE/share/locale.
+
 Wed Dec 11 11:11:44 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/grand.c: Include string.h, supress a warning.
