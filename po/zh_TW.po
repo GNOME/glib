@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.11\n"
-"POT-Creation-Date: 2001-11-22 14:08-0500\n"
-"PO-Revision-Date: 2001-11-20 04:30+0800\n"
+"POT-Creation-Date: 2001-12-10 07:51-0500\n"
+"PO-Revision-Date: 2001-12-11 07:48+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -78,6 +78,11 @@ msgstr "路徑名稱 '%s' 不是絕對路徑"
 #: glib/gconvert.c:1370
 msgid "Invalid byte sequence in hostname"
 msgstr "主機名稱含有不正確的位元組次序"
+
+#: glib/gdir.c:75
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "開啟目錄 '%s' 時發生錯誤：%s"
 
 #: glib/gfileutils.c:309
 #, c-format
