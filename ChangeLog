@@ -1,3 +1,7 @@
+Wed Sep 19 11:23:41 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Error out if gettext support is not found. (#59386)
+
 2001-09-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gthread.h (GThreadFunctions): Add thread_equal function to

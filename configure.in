@@ -204,6 +204,16 @@ dnl
 
 ALL_LINGUAS="az ca de es eu fr nn no ru sl sv ta tr uk zh_TW"
 AM_GLIB_GNU_GETTEXT
+
+if test "$gt_cv_func_dgettext_libc" = "yes" || test "$gt_cv_func_dgettext_libintl" = "yes"; then
+  :
+else
+  AC_MSG_ERROR([
+*** You must have either have gettext support in your C library, or use the 
+*** GNU gettext library. (http://www.gnu.org/software/gettext/gettext.html
+])
+fi
+
 LIBS="$LIBS $INTLLIBS"
 
 GETTEXT_PACKAGE=glib20
