@@ -1,7 +1,8 @@
 2001-03-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Updates.
-	* tests/makefile.mingw.in: Add module-test rules.
+	* tests/makefile.mingw.in
+	* tests/makefile.msc.in: Add module-test rules.
 
 Mon Mar 26 14:14:53 2001  Owen Taylor  <otaylor@redhat.com>
 

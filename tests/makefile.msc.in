@@ -12,7 +12,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I..
+INCLUDES = -I .. -I ../gmodule
 DEFINES = -DHAVE_CONFIG_H
 
 TESTS = \
@@ -24,6 +24,7 @@ TESTS = \
 	list-test.exe	\
 	mainloop-test.exe\
 	markup-test.exe	\
+	module-test.exe	\
 	node-test.exe	\
 	queue-test.exe	\
 	rand-test.exe	\
@@ -38,7 +39,9 @@ TESTS = \
 	threadpool-test.exe\
 	tree-test.exe	\
 	type-test.exe	\
-	unicode-encoding.exe
+	unicode-encoding.exe \
+	libmoduletestplugin_a.dll \
+	libmoduletestplugin_b.dll
 
 all :	$(TESTS)
 
@@ -49,6 +52,12 @@ makefile.msc: makefile.msc.in
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
 	$(CC) $(CFLAGS) -Fe$@ $< ..\glib-$(GLIB_VER).lib ..\gmodule\gmodule-$(GLIB_VER).lib ..\gthread\gthread-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
+
+libmoduletestplugin_a.dll : libmoduletestplugin_a.obj
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_a.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
+
+libmoduletestplugin_b.dll : libmoduletestplugin_b.obj
+	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-$(GLIB_VER).lib ..\glib-$(GLIB_VER).lib $(LDFLAGS)
 
 check:	all
 	for %p in ($(TESTS)) do %p
