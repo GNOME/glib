@@ -1,3 +1,9 @@
+Mon Apr 19 13:42:21 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_iterate): Added missing
+	#ifdef G_THREADS_ENABLED. (I never liked G_THREADS_ENABLED in
+	the first place!)
+
 1999-04-18  Havoc Pennington  <hp@pobox.com>
 
 	* gutils.c (g_snprintf): When using the vsnprintf()

@@ -712,12 +712,14 @@ g_main_iterate (gboolean block,
 
   G_LOCK (main_loop);
 
+#ifdef G_THREADS_ENABLED
   if (poll_waiting)
     {
       g_warning("g_main_iterate(): main loop already active in another thread");
       G_UNLOCK (main_loop);
       return FALSE;
     }
+#endif G_THREADS_ENABLED  
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
@@ -1072,7 +1074,10 @@ g_main_poll (gint     timeout,
    * and let the main loop rerun
    */
   if (poll_changed)
-    return;
+    {
+      g_free (fd_array);
+      return;
+    }
 #endif
 
   pollrec = poll_records;
