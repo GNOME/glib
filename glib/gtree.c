@@ -75,7 +75,7 @@ static GTreeNode* g_tree_node_restore_left_balance  (GTreeNode      *node,
 						     gint            old_balance);
 static GTreeNode* g_tree_node_restore_right_balance (GTreeNode      *node,
 						     gint            old_balance);
-static gpointer   g_tree_node_lookup                (GTreeNode      *node,
+static GTreeNode* g_tree_node_lookup                (GTreeNode      *node,
 						     GCompareDataFunc compare,
 						     gpointer        comp_data,
 						     gconstpointer   key);
@@ -229,13 +229,16 @@ g_tree_lookup (GTree         *tree,
 	       gconstpointer  key)
 {
   GRealTree *rtree;
+  GTreeNode *node;
 
   g_return_val_if_fail (tree != NULL, NULL);
 
   rtree = (GRealTree*) tree;
 
-  return g_tree_node_lookup (rtree->root, rtree->key_compare, 
+  node = g_tree_node_lookup (rtree->root, rtree->key_compare, 
                              rtree->key_compare_data, key);
+
+  return node ? node->value : NULL;
 }
 
 gboolean
@@ -554,7 +557,7 @@ g_tree_node_restore_right_balance (GTreeNode *node,
   return node;
 }
 
-static gpointer
+static GTreeNode *
 g_tree_node_lookup (GTreeNode      *node,
 		    GCompareDataFunc compare,
 		    gpointer        compare_data,
@@ -567,7 +570,7 @@ g_tree_node_lookup (GTreeNode      *node,
 
   cmp = (* compare) (key, node->key, compare_data);
   if (cmp == 0)
-    return node->value;
+    return node;
 
   if (cmp < 0)
     {
