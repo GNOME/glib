@@ -1,3 +1,8 @@
+Sat Feb 14 02:08:03 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Suppress xsltproc and xmlcatalog checks
+	if enable_man=no.  (#134091, Julio M. Merino Vidal)
+
 Sat Feb 14 01:21:34 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.h: 
