@@ -1,3 +1,9 @@
+2001-05-29  James Henstridge  <james@daa.com.au>
+
+	* gmessages.h: "#ifdef G_HAVE_ISO_VARARGS" will always succeed
+	even when we don't have ISO vararg support.  Changed to
+	"#if G_HAVE_ISO_VARARGS".
+
 Mon May 28 11:40:34 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Check for __VARARGS__ separately for C and C++.
