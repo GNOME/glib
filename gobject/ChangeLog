@@ -1,3 +1,23 @@
+Thu Nov 27 17:53:52 2003  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]:
+	(g_type_class_peek_static): variant of class_peek() which works for
+	static types only.
+
+	* gobject.c:
+	(g_object_do_class_init): make ::notify a run-action signal.
+	(g_object_newv): use g_type_class_peek_static() by default to
+	speed up common code path (trades two write-locks for one read-lock).
+	(g_object_disconnect):
+	(g_object_connect): allow signal specification words to be
+	seperated by '-'.
+	(g_object_set_valist):
+	(g_object_new_valist): don't leak values.
+	(g_object_get_property): check property for readability.
+	(g_object_set_property): check property for writability and to
+	not be construct-only.
+	(g_object_set_valist): check property to not be construct-only.
+
 Sat Oct 25 01:09:17 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gparam.h (struct _GParamSpecClass): Add /*< private >*/ 

@@ -2463,6 +2463,25 @@ g_type_class_peek (GType type)
 }
 
 gpointer
+g_type_class_peek_static (GType type)
+{
+  TypeNode *node;
+  gpointer class;
+  
+  node = lookup_type_node_I (type);
+  G_READ_LOCK (&type_rw_lock);
+  if (node && node->is_classed && node->data &&
+      /* peek only static types: */ node->plugin == NULL &&
+      node->data->class.class) /* common.ref_count _may_ be 0 */
+    class = node->data->class.class;
+  else
+    class = NULL;
+  G_READ_UNLOCK (&type_rw_lock);
+  
+  return class;
+}
+
+gpointer
 g_type_class_peek_parent (gpointer g_class)
 {
   TypeNode *node;

@@ -253,7 +253,7 @@ g_object_do_class_init (GObjectClass *class)
   gobject_signals[NOTIFY] =
     g_signal_new ("notify",
 		  G_TYPE_FROM_CLASS (class),
-		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (GObjectClass, notify),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__PARAM,
@@ -414,7 +414,7 @@ g_object_class_override_property (GObjectClass *oclass,
   if (!overridden)
     {
       g_warning ("%s: Can't find property to override for '%s::%s'",
-		 G_STRLOC, G_OBJECT_CLASS_NAME (oclass), name);
+		 G_STRFUNC, G_OBJECT_CLASS_NAME (oclass), name);
       return;
     }
 
@@ -631,7 +631,7 @@ g_object_notify (GObject     *object,
 
   if (!pspec)
     g_warning ("%s: object class `%s' has no property named `%s'",
-	       G_STRLOC,
+	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else
@@ -656,8 +656,8 @@ g_object_thaw_notify (GObject *object)
   g_object_ref (object);
   nqueue = g_object_notify_queue_from_object (object, &property_notify_context);
   if (!nqueue || !nqueue->freeze_count)
-    g_warning (G_STRLOC ": property-changed notification for %s(%p) is not frozen",
-	       G_OBJECT_TYPE_NAME (object), object);
+    g_warning ("%s: property-changed notification for %s(%p) is not frozen",
+	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
   else
     g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
@@ -826,7 +826,7 @@ g_object_newv (GType       object_type,
   GObjectConstructParam *cparams, *oparams;
   GObjectNotifyQueue *nqueue;
   GObject *object;
-  GObjectClass *class;
+  GObjectClass *class, *unref_class = NULL;
   GSList *slist;
   guint n_total_cparams = 0, n_cparams = 0, n_oparams = 0, n_cvalues;
   GValue *cvalues;
@@ -835,7 +835,9 @@ g_object_newv (GType       object_type,
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
 
-  class = g_type_class_ref (object_type);
+  class = g_type_class_peek_static (object_type);
+  if (!class)
+    class = unref_class = g_type_class_ref (object_type);
   for (slist = class->construct_properties; slist; slist = slist->next)
     {
       clist = g_list_prepend (clist, slist->data);
@@ -855,7 +857,7 @@ g_object_newv (GType       object_type,
       if (!pspec)
 	{
 	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     g_type_name (object_type),
 		     parameters[i].name);
 	  continue;
@@ -863,7 +865,7 @@ g_object_newv (GType       object_type,
       if (!(pspec->flags & G_PARAM_WRITABLE))
 	{
 	  g_warning ("%s: property `%s' of object class `%s' is not writable",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     pspec->name,
 		     g_type_name (object_type));
 	  continue;
@@ -874,8 +876,8 @@ g_object_newv (GType       object_type,
 
 	  if (!list)
 	    {
-	      g_warning (G_STRLOC ": construct property \"%s\" for object `%s' can't be set twice",
-			 pspec->name, g_type_name (object_type));
+	      g_warning ("%s: construct property \"%s\" for object `%s' can't be set twice",
+                         G_STRFUNC, pspec->name, g_type_name (object_type));
 	      continue;
 	    }
 	  cparams[n_cparams].pspec = pspec;
@@ -936,7 +938,8 @@ g_object_newv (GType       object_type,
     object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
   g_free (oparams);
 
-  g_type_class_unref (class);
+  if (unref_class)
+    g_type_class_unref (unref_class);
 
   /* release our own freeze count and handle notifications */
   g_object_notify_queue_thaw (object, nqueue);
@@ -974,7 +977,7 @@ g_object_new_valist (GType	  object_type,
       if (!pspec)
 	{
 	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     g_type_name (object_type),
 		     name);
 	  break;
@@ -990,12 +993,9 @@ g_object_new_valist (GType	  object_type,
       G_VALUE_COLLECT (&params[n_params].value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", G_STRFUNC, error);
 	  g_free (error);
-
-	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occoured
-	   */
+          g_value_unset (&params[n_params].value);
 	  break;
 	}
       n_params++;
@@ -1074,7 +1074,7 @@ g_object_set_valist (GObject	 *object,
       if (!pspec)
 	{
 	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     G_OBJECT_TYPE_NAME (object),
 		     name);
 	  break;
@@ -1082,23 +1082,26 @@ g_object_set_valist (GObject	 *object,
       if (!(pspec->flags & G_PARAM_WRITABLE))
 	{
 	  g_warning ("%s: property `%s' of object class `%s' is not writable",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-      
+      if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+        {
+          g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
+                     G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
+          break;
+        }
+
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       
       G_VALUE_COLLECT (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", G_STRFUNC, error);
 	  g_free (error);
-	  
-	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occoured
-	   */
+          g_value_unset (&value);
 	  break;
 	}
       
@@ -1138,7 +1141,7 @@ g_object_get_valist (GObject	 *object,
       if (!pspec)
 	{
 	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     G_OBJECT_TYPE_NAME (object),
 		     name);
 	  break;
@@ -1146,7 +1149,7 @@ g_object_get_valist (GObject	 *object,
       if (!(pspec->flags & G_PARAM_READABLE))
 	{
 	  g_warning ("%s: property `%s' of object class `%s' is not readable",
-		     G_STRLOC,
+		     G_STRFUNC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
@@ -1159,7 +1162,7 @@ g_object_get_valist (GObject	 *object,
       G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", G_STRFUNC, error);
 	  g_free (error);
 	  g_value_unset (&value);
 	  break;
@@ -1224,9 +1227,17 @@ g_object_set_property (GObject	    *object,
 				    TRUE);
   if (!pspec)
     g_warning ("%s: object class `%s' has no property named `%s'",
-	       G_STRLOC,
+	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
+  else if (!(pspec->flags & G_PARAM_WRITABLE))
+    g_warning ("%s: property `%s' of object class `%s' is not writable",
+               G_STRFUNC,
+               pspec->name,
+               G_OBJECT_TYPE_NAME (object));
+  else if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+    g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
+               G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
     object_set_property (object, pspec, value, nqueue);
   
@@ -1253,9 +1264,14 @@ g_object_get_property (GObject	   *object,
 				    TRUE);
   if (!pspec)
     g_warning ("%s: object class `%s' has no property named `%s'",
-	       G_STRLOC,
+	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
+  else if (!(pspec->flags & G_PARAM_READABLE))
+    g_warning ("%s: property `%s' of object class `%s' is not readable",
+               G_STRFUNC,
+               pspec->name,
+               G_OBJECT_TYPE_NAME (object));
   else
     {
       GValue *prop_value, tmp_value = { 0, };
@@ -1269,8 +1285,8 @@ g_object_get_property (GObject	   *object,
 	}
       else if (!g_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
 	{
-	  g_warning ("can't retrieve property `%s' of type `%s' as value of type `%s'",
-		     pspec->name,
+	  g_warning ("%s: can't retrieve property `%s' of type `%s' as value of type `%s'",
+		     G_STRFUNC, pspec->name,
 		     g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
 		     G_VALUE_TYPE_NAME (value));
 	  g_object_unref (object);
@@ -1314,37 +1330,44 @@ g_object_connect (gpointer     _object,
 	sid = g_signal_connect_data (object, signal_spec + 8,
 				     callback, data, NULL,
 				     0);
-      else if (strncmp (signal_spec, "object_signal::", 15) == 0)
+      else if (strncmp (signal_spec, "object_signal::", 15) == 0 ||
+               strncmp (signal_spec, "object-signal::", 15) == 0)
 	sid = g_signal_connect_object (object, signal_spec + 15,
 				       callback, data,
 				       0);
-      else if (strncmp (signal_spec, "swapped_signal::", 16) == 0)
+      else if (strncmp (signal_spec, "swapped_signal::", 16) == 0 ||
+               strncmp (signal_spec, "swapped-signal::", 16) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 16,
 				     callback, data, NULL,
 				     G_CONNECT_SWAPPED);
-      else if (strncmp (signal_spec, "swapped_object_signal::", 23) == 0)
+      else if (strncmp (signal_spec, "swapped_object_signal::", 23) == 0 ||
+               strncmp (signal_spec, "swapped-object-signal::", 23) == 0)
 	sid = g_signal_connect_object (object, signal_spec + 23,
 				       callback, data,
 				       G_CONNECT_SWAPPED);
-      else if (strncmp (signal_spec, "signal_after::", 14) == 0)
+      else if (strncmp (signal_spec, "signal_after::", 14) == 0 ||
+               strncmp (signal_spec, "signal-after::", 14) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 14,
 				     callback, data, NULL,
 				     G_CONNECT_AFTER);
-      else if (strncmp (signal_spec, "object_signal_after::", 21) == 0)
+      else if (strncmp (signal_spec, "object_signal_after::", 21) == 0 ||
+               strncmp (signal_spec, "object-signal-after::", 21) == 0)
 	sid = g_signal_connect_object (object, signal_spec + 21,
 				       callback, data,
 				       G_CONNECT_AFTER);
-      else if (strncmp (signal_spec, "swapped_signal_after::", 22) == 0)
+      else if (strncmp (signal_spec, "swapped_signal_after::", 22) == 0 ||
+               strncmp (signal_spec, "swapped-signal-after::", 22) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 22,
 				     callback, data, NULL,
 				     G_CONNECT_SWAPPED | G_CONNECT_AFTER);
-      else if (strncmp (signal_spec, "swapped_object_signal_after::", 29) == 0)
+      else if (strncmp (signal_spec, "swapped_object_signal_after::", 29) == 0 ||
+               strncmp (signal_spec, "swapped-object-signal-after::", 29) == 0)
 	sid = g_signal_connect_object (object, signal_spec + 29,
 				       callback, data,
 				       G_CONNECT_SWAPPED | G_CONNECT_AFTER);
       else
 	{
-	  g_warning ("%s: invalid signal spec \"%s\"", G_STRLOC, signal_spec);
+	  g_warning ("%s: invalid signal spec \"%s\"", G_STRFUNC, signal_spec);
 	  break;
 	}
       signal_spec = va_arg (var_args, gchar*);
@@ -1372,29 +1395,31 @@ g_object_disconnect (gpointer     _object,
       gpointer data = va_arg (var_args, gpointer);
       guint sid = 0, detail = 0, mask = 0;
 
-      if (strncmp (signal_spec, "any_signal::", 12) == 0)
+      if (strncmp (signal_spec, "any_signal::", 12) == 0 ||
+          strncmp (signal_spec, "any-signal::", 12) == 0)
 	{
 	  signal_spec += 12;
 	  mask = G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA;
 	}
-      else if (strcmp (signal_spec, "any_signal") == 0)
+      else if (strcmp (signal_spec, "any_signal") == 0 ||
+               strcmp (signal_spec, "any-signal") == 0)
 	{
 	  signal_spec += 10;
 	  mask = G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA;
 	}
       else
 	{
-	  g_warning ("%s: invalid signal spec \"%s\"", G_STRLOC, signal_spec);
+	  g_warning ("%s: invalid signal spec \"%s\"", G_STRFUNC, signal_spec);
 	  break;
 	}
 
       if ((mask & G_SIGNAL_MATCH_ID) &&
 	  !g_signal_parse_name (signal_spec, G_OBJECT_TYPE (object), &sid, &detail, FALSE))
-	g_warning ("%s: invalid signal name \"%s\"", G_STRLOC, signal_spec);
+	g_warning ("%s: invalid signal name \"%s\"", G_STRFUNC, signal_spec);
       else if (!g_signal_handlers_disconnect_matched (object, mask | (detail ? G_SIGNAL_MATCH_DETAIL : 0),
 						      sid, detail,
 						      NULL, (gpointer)callback, data))
-	g_warning (G_STRLOC ": signal handler %p(%p) is not connected", callback, data);
+	g_warning ("%s: signal handler %p(%p) is not connected", G_STRFUNC, callback, data);
       signal_spec = va_arg (var_args, gchar*);
     }
   va_end (var_args);
@@ -1481,7 +1506,7 @@ g_object_weak_unref (GObject    *object,
 	  }
     }
   if (!found_one)
-    g_warning (G_STRLOC ": couldn't find weak ref %p(%p)", notify, data);
+    g_warning ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
 
 void

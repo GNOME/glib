@@ -177,6 +177,7 @@ gboolean              g_type_is_a                    (GType            type,
 						      GType            is_a_type);
 gpointer              g_type_class_ref               (GType            type);
 gpointer              g_type_class_peek              (GType            type);
+gpointer              g_type_class_peek_static       (GType            type);
 void                  g_type_class_unref             (gpointer         g_class);
 gpointer              g_type_class_peek_parent       (gpointer         g_class);
 gpointer              g_type_interface_peek          (gpointer         instance_class,
