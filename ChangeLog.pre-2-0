@@ -1,3 +1,9 @@
+2001-07-31  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.h: Committed this file, which is where
+	the changes in my previous changelog entry happened,
+	not giochannel.c
+
 2001-07-31  Sven Neumann  <sven@gimp.org>
 
 	* glib/gmem.c: declare gboolean vtable_set static.

@@ -91,10 +91,6 @@ typedef enum
   G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
 } GIOCondition;
 
-#define G_IO_CHANNEL_UNIX_LINE_TERM "\n"
-#define G_IO_CHANNEL_DOS_LINE_TERM "\r\n"
-#define G_IO_CHANNEL_MACINTOSH_LINE_TERM "\r"
-
 typedef enum
 {
   G_IO_FLAG_APPEND = 1 << 0,
@@ -109,6 +105,8 @@ typedef enum
 
 struct _GIOChannel
 {
+  /*<private>*/
+
   guint ref_count;
   GIOFuncs *funcs;
 
@@ -127,7 +125,20 @@ struct _GIOChannel
 
   gboolean use_buffer : 1;	/* The encoding uses the buffers */
   gboolean do_encode : 1;	/* The encoding uses the GIConv coverters */
+
+  /*<public>*/
+
   gboolean close_on_unref : 1;	/* Close the channel on final unref */
+
+  /* The is_readable and is_writeable flags should really be marked
+   * <protected> instead of <private>. Some applications of GIOChannel,
+   * like GNet which implements the unix shutdown function to partially
+   * or completely disconnect sockets, may need to set these. For most
+   * cases, people won't need to touch them.
+   */
+
+  /*<private>*/
+
   gboolean is_readable : 1;	/* Cached GIOFlag */
   gboolean is_writeable : 1;	/* ditto */
   gboolean is_seekable : 1;	/* ditto */
