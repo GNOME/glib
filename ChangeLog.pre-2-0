@@ -1,3 +1,8 @@
+Sun Feb 13 08:16:47 2000  Tim Janik  <timj@gtk.org>
+
+	* configure.in: wtf??? someone destroyed the configure.in, reverting to
+	an older version from Feb 4 which apears to still work.
+
 2000-02-07  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule.rc.in gthread.rc.in: Move to corresponding subdirectories.
