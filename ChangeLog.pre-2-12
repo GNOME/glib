@@ -1,3 +1,12 @@
+Wed Mar 14 18:46:54 2001  Tim Janik  <timj@gtk.org>
+
+	* gscanner.[hc]: removed archaic gpointer derived_data; relict and
+	added a GData member instead.
+	
+	* glist.[hc]: added g_list_remove_all().
+
+	* gslist.[hc]: added g_slist_remove_all().
+
 Sat Mar 17 19:54:51 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* timeloop.c: Reorder headers to make FreeBSD happy. 

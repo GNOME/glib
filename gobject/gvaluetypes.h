@@ -88,6 +88,9 @@ void g_value_set_string_take_ownership		(GValue		   *value,
 						 gchar		   *v_string);
 
 
+/* humpf, need a C representable type name for G_TYPE_STRING */
+typedef gchar* gchararray;
+
 
 G_END_DECLS
 

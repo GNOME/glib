@@ -1,3 +1,15 @@
+Sat Mar 17 23:18:36 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (g_object_get_property): minor bug-fix.
+
+	* gbsearcharray.[hc]: provide a macro for static initialization and
+	functions g_bsearch_array_new() and g_bsearch_array_destroy() for
+	dynamic allocations.
+	
+	* gboxed.c: introduce G_TYPE_GSTRING, boxed type for GString.
+	
+	* gclosure.[hc]: naming corrections.
+
 Fri Mar  9 16:42:08 2001  Tim Janik  <timj@gtk.org>
 
 	* gvaluetypes.[hc]: moved g_strdup_value_contents() into this file as

@@ -63,6 +63,8 @@ GSList*  g_slist_concat         (GSList           *list1,
 				 GSList           *list2);
 GSList*  g_slist_remove         (GSList           *list,
 				 gconstpointer     data);
+GSList*  g_slist_remove_all     (GSList           *list,
+				 gconstpointer     data);
 GSList*  g_slist_remove_link    (GSList           *list,
 				 GSList           *link);
 GSList*  g_slist_delete_link    (GSList           *list,

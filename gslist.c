@@ -325,29 +325,54 @@ GSList*
 g_slist_remove (GSList        *list,
 		gconstpointer  data)
 {
-  GSList *tmp;
-  GSList *prev;
+  GSList *tmp, *prev = NULL;
 
-  prev = NULL;
   tmp = list;
-
   while (tmp)
     {
       if (tmp->data == data)
 	{
 	  if (prev)
 	    prev->next = tmp->next;
-	  if (list == tmp)
-	    list = list->next;
+	  else
+	    list = tmp->next;
 
-	  tmp->next = NULL;
-	  g_slist_free (tmp);
-
+	  g_slist_free_1 (tmp);
 	  break;
 	}
-
       prev = tmp;
-      tmp = tmp->next;
+      tmp = prev->next;
+    }
+
+  return list;
+}
+
+GSList*
+g_slist_remove_all (GSList        *list,
+		    gconstpointer  data)
+{
+  GSList *tmp, *prev = NULL;
+
+  tmp = list;
+  while (tmp)
+    {
+      if (tmp->data == data)
+	{
+	  GSList *next = tmp->next;
+
+	  if (prev)
+	    prev->next = next;
+	  else
+	    list = next;
+	  
+	  g_slist_free_1 (tmp);
+	  tmp = next;
+	}
+      else
+	{
+	  prev = tmp;
+	  tmp = prev->next;
+	}
     }
 
   return list;

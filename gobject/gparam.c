@@ -244,6 +244,7 @@ g_param_spec_internal (GType        param_type,
 
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail ((name[0] >= 'A' && name[0] <= 'Z') || (name[0] >= 'a' && name[0] <= 'z'), NULL);
 
   pspec = (gpointer) g_type_create_instance (param_type);
   pspec->name = g_strdup (name);
@@ -621,7 +622,7 @@ param_spec_ht_lookup (GHashTable  *hash_table,
 
   if (!pspec)
     {
-      /* sigh, try canonicalization */
+      /* try canonicalized form */
       key.name = g_strdup (param_name);
       key.owner_type = owner_type;
       

@@ -43,7 +43,7 @@ handler function is declared by #GScannerMsgFunc.
 @max_parse_errors: 
 @parse_errors: 
 @input_name: 
-@derived_data: 
+@qdata: 
 @config: 
 @token: 
 @value: 

@@ -1,3 +1,39 @@
+<!-- ##### FUNCTION g_closure_add_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_add_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_remove_fnotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
+<!-- ##### FUNCTION g_closure_remove_inotify ##### -->
+<para>
+
+</para>
+
+@closure: 
+@notify_data: 
+@notify_func: 
+
 <!-- ##### FUNCTION g_param_spec_string_c ##### -->
 <para>
 

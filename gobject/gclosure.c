@@ -221,9 +221,9 @@ g_closure_add_marshal_guards (GClosure      *closure,
 }
 
 void
-g_closure_add_fnotify (GClosure      *closure,
-		       gpointer       notify_data,
-		       GClosureNotify notify_func)
+g_closure_add_finalize_notifier (GClosure      *closure,
+				 gpointer       notify_data,
+				 GClosureNotify notify_func)
 {
   guint i;
 
@@ -243,9 +243,9 @@ g_closure_add_fnotify (GClosure      *closure,
 }
 
 void
-g_closure_add_inotify (GClosure      *closure,
-		       gpointer       notify_data,
-		       GClosureNotify notify_func)
+g_closure_add_invalidate_notifier (GClosure      *closure,
+				   gpointer       notify_data,
+				   GClosureNotify notify_func)
 {
   guint i;
 
@@ -371,9 +371,9 @@ g_closure_sink (GClosure *closure)
 }
 
 void
-g_closure_remove_inotify (GClosure      *closure,
-			  gpointer       notify_data,
-			  GClosureNotify notify_func)
+g_closure_remove_invalidate_notifier (GClosure      *closure,
+				      gpointer       notify_data,
+				      GClosureNotify notify_func)
 {
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
@@ -387,9 +387,9 @@ g_closure_remove_inotify (GClosure      *closure,
 }
 
 void
-g_closure_remove_fnotify (GClosure      *closure,
-                          gpointer       notify_data,
-			  GClosureNotify notify_func)
+g_closure_remove_finalize_notifier (GClosure      *closure,
+				    gpointer       notify_data,
+				    GClosureNotify notify_func)
 {
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
@@ -469,7 +469,7 @@ g_cclosure_new (GCallback      callback_func,
   
   closure = g_closure_new_simple (sizeof (GCClosure), user_data);
   if (destroy_data)
-    g_closure_add_fnotify (closure, user_data, destroy_data);
+    g_closure_add_finalize_notifier (closure, user_data, destroy_data);
   ((GCClosure*) closure)->callback = callback_func;
   
   return closure;
@@ -486,7 +486,7 @@ g_cclosure_new_swap (GCallback      callback_func,
   
   closure = g_closure_new_simple (sizeof (GCClosure), user_data);
   if (destroy_data)
-    g_closure_add_fnotify (closure, user_data, destroy_data);
+    g_closure_add_finalize_notifier (closure, user_data, destroy_data);
   ((GCClosure*) closure)->callback = callback_func;
   closure->derivative_flag = TRUE;
   

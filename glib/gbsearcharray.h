@@ -35,23 +35,27 @@ typedef gint  (*GBSearchCompareFunc) (gconstpointer bsearch_node1,
 				      gconstpointer bsearch_node2);
 typedef enum
 {
-  G_BSEARCH_ALIGN_POWER2	= 1 << 0,
-  G_BSEARCH_DEFER_SHRINK	= 1 << 1
-} GBSearchFlags;
+  G_BSEARCH_ARRAY_ALIGN_POWER2	= 1 << 0,
+  G_BSEARCH_ARRAY_DEFER_SHRINK	= 1 << 1
+} GBSearchArrayFlags;
 
 
 /* --- structures --- */
 struct _GBSearchArray
 {
-  GBSearchCompareFunc cmp_func;
-  guint16             sizeof_node;
+  GBSearchCompareFunc cmp_nodes;
   guint16	      flags;
+  guint16             sizeof_node;
   guint               n_nodes;
   gpointer            nodes;
 };
 
 
 /* --- prototypes --- */
+GBSearchArray*	g_bsearch_array_new		(guint16	     sizeof_node,
+						 GBSearchCompareFunc node_cmp_func,
+						 GBSearchArrayFlags  flags);
+void		g_bsearch_array_destroy		(GBSearchArray	*barray);
 gpointer	g_bsearch_array_insert		(GBSearchArray	*barray,
 						 gconstpointer	 key_node,
 						 gboolean	 replace_existing);
@@ -70,6 +74,11 @@ guint		g_bsearch_array_get_index	(GBSearchArray	*barray,
 						 gpointer	 node_in_array);
 
 
+/* initialization of static arrays */
+#define	G_STATIC_BSEARCH_ARRAY_INIT(sizeof_node, cmp_nodes, flags) \
+  { (cmp_nodes), (flags), (sizeof_node), 0, NULL }
+
+
 /* --- implementation details --- */
 #if defined (G_CAN_INLINE) || defined (__G_BSEARCHARRAY_C__)
 G_INLINE_FUNC gpointer
@@ -78,7 +87,7 @@ g_bsearch_array_lookup (GBSearchArray *barray,
 {
   if (barray->n_nodes > 0)
     {
-      GBSearchCompareFunc cmp_func = barray->cmp_func;
+      GBSearchCompareFunc cmp_nodes = barray->cmp_nodes;
       gint sizeof_node = barray->sizeof_node;
       guint n_nodes = barray->n_nodes;
       guint8 *nodes = (guint8 *) barray->nodes;
@@ -92,7 +101,7 @@ g_bsearch_array_lookup (GBSearchArray *barray,
 	  
 	  i = (n_nodes + 1) >> 1;
 	  check = nodes + i * sizeof_node;
-	  cmp = cmp_func (key_node, check);
+	  cmp = cmp_nodes (key_node, check);
 	  if (cmp == 0)
 	    return check;
 	  else if (cmp > 0)

@@ -43,7 +43,7 @@ static gint	boxed_nodes_cmp		(gconstpointer	p1,
 
 
 /* --- variables --- */
-static GBSearchArray boxed_bsa = { boxed_nodes_cmp, sizeof (BoxedNode), 0, 0, NULL };
+static GBSearchArray boxed_bsa = G_STATIC_BSEARCH_ARRAY_INIT (sizeof (BoxedNode), boxed_nodes_cmp, 0);
 
 
 /* --- functions --- */
@@ -92,6 +92,28 @@ static gpointer
 value_array_init (void)
 {
   return g_value_array_new (0);
+}
+
+static gpointer
+gstring_init (void)
+{
+  return g_string_new ("");
+}
+
+static gpointer
+gstring_copy (gpointer boxed)
+{
+  const GString *src_gstring = boxed;
+
+  return g_string_new_len (src_gstring->str, src_gstring->len);
+}
+
+static void
+gstring_free (gpointer boxed)
+{
+  GString *gstring = boxed;
+
+  g_string_free (gstring, TRUE);
 }
 
 void
@@ -144,6 +166,16 @@ g_boxed_type_init (void)  /* sync with gtype.c */
 				       (GBoxedFreeFunc) g_value_array_free,
 				       FALSE);
   g_assert (type == G_TYPE_VALUE_ARRAY);
+
+  /* boxed: G_TYPE_GSTRING
+   * yes, the naming is a bit odd, but GString is obviously not G_TYPE_STRING
+   */
+  type = g_boxed_type_register_static ("GString",
+				       gstring_init,		/* don't allow NULL values */
+				       gstring_copy,
+				       gstring_free,
+				       FALSE);
+  g_assert (type == G_TYPE_GSTRING);
 }
 
 static void

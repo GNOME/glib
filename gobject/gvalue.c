@@ -42,12 +42,9 @@ static gint	transform_entries_cmp	(gconstpointer bsearch_node1,
 
 
 /* --- variables --- */
-static GBSearchArray transform_array = {
-  transform_entries_cmp,
-  sizeof (TransformEntry),
-  0, /* no flags */
-  0, NULL,
-};
+static GBSearchArray transform_array = G_STATIC_BSEARCH_ARRAY_INIT (sizeof (TransformEntry),
+								    transform_entries_cmp,
+								    0);
 
 
 /* --- functions --- */

@@ -462,7 +462,7 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_lcopy_string,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_STRING, "gstring", &info, &finfo, 0);
+    type = g_type_register_fundamental (G_TYPE_STRING, "gchararray", &info, &finfo, 0);
     g_assert (type == G_TYPE_STRING);
   }
 
@@ -743,19 +743,19 @@ g_strdup_value_contents (const GValue *value)
   else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
     {
       GValue tmp_value = { 0, };
-      
+      gchar *s;
+
       g_value_init (&tmp_value, G_TYPE_STRING);
       g_value_transform (value, &tmp_value);
+      s = g_strescape (g_value_get_string (&tmp_value), NULL);
+      g_value_unset (&tmp_value);
       if (G_VALUE_HOLDS_ENUM (value) || G_VALUE_HOLDS_FLAGS (value))
 	contents = g_strdup_printf ("((%s) %s)",
 				    g_type_name (G_VALUE_TYPE (value)),
-				    g_value_get_string (&tmp_value));
+				    s);
       else
-	{
-	  src = g_value_get_string (&tmp_value);
-	  contents = g_strdup (src ? src : "NULL");
-	}
-      g_value_unset (&tmp_value);
+	contents = g_strdup (s ? s : "NULL");
+      g_free (s);
     }
   else if (g_value_fits_pointer (value))
     {

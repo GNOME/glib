@@ -168,8 +168,8 @@ struct	_GScanner
   /* name of input stream, featured by the default message handler */
   const gchar		*input_name;
   
-  /* data pointer for derived structures */
-  gpointer		derived_data;
+  /* quarked data */
+  GData			*qdata;
   
   /* link into the scanner configuration */
   GScannerConfig	*config;

@@ -35,7 +35,6 @@
 /* pre allocation configurations
  */
 #define	MAX_STACK_VALUES	(16)
-#define BSA_PRE_ALLOC           (20)
 #define HANDLER_PRE_ALLOC       (48)
 #define EMISSION_PRE_ALLOC      (16)
 
@@ -141,6 +140,8 @@ static inline Emission*		emission_find		(Emission	 *emission_list,
 							 guint		  signal_id,
 							 GQuark		  detail,
 							 gpointer	  instance);
+static gint			signal_key_cmp		(gconstpointer	  node1,
+							 gconstpointer	  node2);
 static	      gboolean		signal_emit_R		(SignalNode	 *node,
 							 GQuark		  detail,
 							 gpointer	  instance,
@@ -226,11 +227,12 @@ struct _HandlerMatch
 
 
 /* --- variables --- */
-static GBSearchArray  g_signal_key_bsa = { NULL, 0, 0, 0, NULL };
+static GBSearchArray  g_signal_key_bsa = G_STATIC_BSEARCH_ARRAY_INIT (sizeof (SignalKey),
+								      signal_key_cmp,
+								      G_BSEARCH_ARRAY_ALIGN_POWER2);
 static GHashTable    *g_handler_list_bsa_ht = NULL;
 static Emission      *g_recursive_emissions = NULL;
 static Emission      *g_restart_emissions = NULL;
-static GTrashStack   *g_bsa_ts = NULL;
 static GTrashStack   *g_handler_ts = NULL;
 static GTrashStack   *g_emission_ts = NULL;
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
@@ -314,14 +316,7 @@ handler_list_ensure (guint    signal_id,
   
   if (!hlbsa)
     {
-      hlbsa = g_generic_node_alloc (&g_bsa_ts,
-                                    sizeof (GBSearchArray),
-                                    BSA_PRE_ALLOC);
-      hlbsa->cmp_func = handler_lists_cmp;
-      hlbsa->sizeof_node = sizeof (HandlerList);
-      hlbsa->flags = G_BSEARCH_DEFER_SHRINK;
-      hlbsa->n_nodes = 0;
-      hlbsa->nodes = NULL;
+      hlbsa = g_bsearch_array_new (sizeof (HandlerList), handler_lists_cmp, G_BSEARCH_ARRAY_DEFER_SHRINK);
       g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
     }
   key.signal_id = signal_id;
@@ -658,11 +653,6 @@ g_signal_init (void) /* sync with gtype.c */
       /* handler_id_node_prepend() requires this */
       g_assert (sizeof (GList) == sizeof (HandlerMatch));
       
-      /* setup signal key array */
-      g_signal_key_bsa.cmp_func = signal_key_cmp;
-      g_signal_key_bsa.sizeof_node = sizeof (SignalKey);
-      g_signal_key_bsa.flags = G_BSEARCH_ALIGN_POWER2; /* alloc-only */
-      
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
       
@@ -983,7 +973,7 @@ g_signal_list_ids (GType  itype,
   
   G_UNLOCK (g_signal_mutex);
   
-  return (guint *) g_array_free (result, FALSE);
+  return (guint*) g_array_free (result, FALSE);
 }
 
 guint
@@ -1452,8 +1442,7 @@ g_signal_handlers_destroy (gpointer instance)
 		}
             }
         }
-      g_free (hlbsa->nodes);
-      g_generic_node_free (&g_bsa_ts, hlbsa);
+      g_bsearch_array_destroy (hlbsa);
     }
   G_UNLOCK (g_signal_mutex);
 }

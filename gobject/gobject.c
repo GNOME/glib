@@ -661,7 +661,7 @@ object_set_property (GObject      *object,
     {
       gchar *contents = g_strdup_value_contents (value);
 
-      g_warning ("value <%s> of type `%s' is invalid for property `%s' of type `%s'",
+      g_warning ("value \"%s\" of type `%s' is invalid for property `%s' of type `%s'",
 		 contents,
 		 G_VALUE_TYPE_NAME (value),
 		 pspec->name,
@@ -985,10 +985,7 @@ g_object_get_valist (GObject	 *object,
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
 	  g_free (error);
-	  
-	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occoured
-	   */
+	  g_value_unset (&value);
 	  break;
 	}
       
@@ -1052,7 +1049,8 @@ g_object_set_property (GObject	    *object,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
   if (!pspec)
-    g_warning ("object class `%s' has no property named `%s'",
+    g_warning ("%s: object class `%s' has no property named `%s'",
+	       G_STRLOC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else
@@ -1080,7 +1078,8 @@ g_object_get_property (GObject	   *object,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
   if (!pspec)
-    g_warning ("object class `%s' has no property named `%s'",
+    g_warning ("%s: object class `%s' has no property named `%s'",
+	       G_STRLOC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else
@@ -1100,6 +1099,7 @@ g_object_get_property (GObject	   *object,
 		     pspec->name,
 		     g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
 		     G_VALUE_TYPE_NAME (value));
+	  g_object_unref (object);
 	  return;
 	}
       else
@@ -1536,7 +1536,7 @@ destroy_closure_array (gpointer data)
       /* removing object_remove_closure() upfront is probably faster than
        * letting it fiddle with quark_closure_array which is empty anyways
        */
-      g_closure_remove_inotify (closure, object, object_remove_closure);
+      g_closure_remove_invalidate_notifier (closure, object, object_remove_closure);
       g_closure_invalidate (closure);
     }
   g_free (carray);
@@ -1554,7 +1554,7 @@ g_object_watch_closure (GObject  *object,
   g_return_if_fail (closure->in_marshal == FALSE);
   g_return_if_fail (object->ref_count > 0);	/* this doesn't work on finalizing objects */
   
-  g_closure_add_inotify (closure, object, object_remove_closure);
+  g_closure_add_invalidate_notifier (closure, object, object_remove_closure);
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);

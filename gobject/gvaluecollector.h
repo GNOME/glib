@@ -106,7 +106,7 @@ G_STMT_START {										\
  */
 #define G_VALUE_LCOPY(value, var_args, flags, __error)					\
 G_STMT_START {										\
-  GValue *_value = (value);								\
+  const GValue *_value = (value);							\
   guint _flags = (flags);								\
   GType _value_type = G_VALUE_TYPE (_value);						\
   GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\

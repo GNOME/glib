@@ -61,6 +61,8 @@ GList*   g_list_concat         (GList            *list1,
 				GList            *list2);
 GList*   g_list_remove         (GList            *list,
 				gconstpointer     data);
+GList*   g_list_remove_all     (GList            *list,
+				gconstpointer     data);
 GList*   g_list_remove_link    (GList            *list,
 				GList            *llink);
 GList*   g_list_delete_link    (GList            *list,

@@ -364,6 +364,34 @@ g_list_remove (GList	     *list,
   return list;
 }
 
+GList*
+g_list_remove_all (GList	*list,
+		   gconstpointer data)
+{
+  GList *tmp = list;
+
+  while (tmp)
+    {
+      if (tmp->data != data)
+	tmp = tmp->next;
+      else
+	{
+	  GList *next = tmp->next;
+
+	  if (tmp->prev)
+	    tmp->prev->next = next;
+	  else
+	    list = next;
+	  if (next)
+	    next->prev = tmp->prev;
+
+	  _g_list_free_1 (tmp);
+	  tmp = next;
+	}
+    }
+  return list;
+}
+
 static inline GList*
 _g_list_remove_link (GList *list,
 		     GList *link)

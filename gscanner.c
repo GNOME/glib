@@ -184,7 +184,7 @@ g_scanner_new (const GScannerConfig *config_templ)
   scanner->max_parse_errors = 0;
   scanner->parse_errors	= 0;
   scanner->input_name = NULL;
-  scanner->derived_data = NULL;
+  g_datalist_init (&scanner->qdata);
   
   scanner->config = g_new0 (GScannerConfig, 1);
   
@@ -275,6 +275,7 @@ g_scanner_destroy (GScanner	*scanner)
 {
   g_return_if_fail (scanner != NULL);
   
+  g_datalist_clear (&scanner->qdata);
   g_hash_table_foreach (scanner->symbol_table, 
 			g_scanner_destroy_symbol_table_entry, NULL);
   g_hash_table_destroy (scanner->symbol_table);
