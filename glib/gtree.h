@@ -33,9 +33,9 @@ G_BEGIN_DECLS
 
 typedef struct _GTree  GTree;
 
-typedef gint   (*GTraverseFunc)	(gpointer  key,
-                                 gpointer  value,
-                                 gpointer  data);
+typedef gboolean (*GTraverseFunc) (gpointer  key,
+                                   gpointer  value,
+                                   gpointer  data);
 
 /* Balanced binary trees
  */
