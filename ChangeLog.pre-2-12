@@ -1,3 +1,7 @@
+2000-03-22 Elliot Lee <sopwith@redhat.com>
+	* gmem.c (g_mem_chunk_area_compare): Fix 64-bitness bug in comparing two pointers more
+	than 4G apart.
+
 2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: The mutex in the check for pthread_mutex_trylock
