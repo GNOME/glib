@@ -82,6 +82,7 @@ EXPORTS
 	g_completion_free
 	g_completion_new
 	g_completion_remove_items
+	g_completion_set_compare
 	g_convert
 	g_convert_error_quark
 	g_convert_init
@@ -293,6 +294,7 @@ EXPORTS
 	g_list_pop_allocator
 	g_list_position
 	g_list_prepend
+	g_list_push_allocator
 	g_list_remove
 	g_list_remove_all
 	g_list_remove_link
@@ -640,7 +642,6 @@ EXPORTS
 	g_strup
 	g_thread_create_full
 	g_thread_error_quark
-	g_thread_exit
 	g_thread_exit
 	g_thread_functions_for_glib_use
 	g_thread_join

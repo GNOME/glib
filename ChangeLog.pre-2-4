@@ -1,3 +1,7 @@
+2003-10-24  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add some missing entries.
+
 2003-09-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c (do_spawn): Call protect_argv() in
@@ -19,7 +23,7 @@
 2003-09-03  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Use G_GINT64_CONSTANT to define
-	G_MININT64 etc, like in the configure-generated glibnconfig.h.
+	G_MININT64 etc, like in the configure-generated glibconfig.h.
 
 2003-08-28  Matthias Clasen  <maclas@gmx.de>
 
