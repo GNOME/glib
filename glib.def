@@ -54,17 +54,21 @@ EXPORTS
 	g_date_add_years
 	g_date_clear
 	g_date_compare
-	g_date_day
-	g_date_day_of_year
-	g_date_days_in_month
 	g_date_free
+	g_date_get_day
+	g_date_get_day_of_year
+	g_date_get_days_in_month
+	g_date_get_julian
+	g_date_get_monday_week_of_year
+	g_date_get_monday_weeks_in_year
+	g_date_get_month
+	g_date_get_sunday_week_of_year
+	g_date_get_sunday_weeks_in_year
+	g_date_get_weekday
+	g_date_get_year
 	g_date_is_first_of_month
 	g_date_is_last_of_month
 	g_date_is_leap_year
-	g_date_julian
-	g_date_monday_week_of_year
-	g_date_monday_weeks_in_year
-	g_date_month
 	g_date_new
 	g_date_new_dmy
 	g_date_new_julian
@@ -79,8 +83,6 @@ EXPORTS
 	g_date_subtract_days
 	g_date_subtract_months
 	g_date_subtract_years
-	g_date_sunday_week_of_year
-	g_date_sunday_weeks_in_year
 	g_date_to_struct_tm
 	g_date_valid
 	g_date_valid_day
@@ -89,8 +91,6 @@ EXPORTS
 	g_date_valid_month
 	g_date_valid_weekday
 	g_date_valid_year
-	g_date_weekday
-	g_date_year
 	g_direct_equal
 	g_direct_hash
 	g_dirname
@@ -102,8 +102,8 @@ EXPORTS
 	g_file_error_from_errno
 	g_file_error_quark
 	g_file_get_contents
-	g_file_test
 	g_file_open_tmp
+	g_file_test
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free
@@ -456,9 +456,9 @@ EXPORTS
 	g_strdelimit
 	g_strdown
 	g_strdup
-	g_strdupv
 	g_strdup_printf
 	g_strdup_vprintf
+	g_strdupv
 	g_strerror
 	g_strescape
 	g_strfreev

@@ -1,3 +1,13 @@
+2000-12-25  Tor Lillqvist  <tml@iki.fi>
+
+	* gmessages.c: (Win32) Use a MessageBox for fatal
+	messages. Collect eror message into a buffer, and display that.
+
+	* glib.def: Update.
+
+	* glibconfig.h.win32.in: Update. Remove unused wchar and wctype
+	macros, add G_MODULE_SUFFIX.
+
 2000-12-24  Ali Abdin  <aliabdin@aucegypt.edu>
 
 	* Makefile.am, gcompat.h, glib.h: New gcompat.h header file

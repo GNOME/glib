@@ -95,6 +95,14 @@ static GPrivate* g_log_depth = NULL;
 
 static gboolean alloc_console_called = FALSE;
 
+static gboolean gonna_abort = FALSE;
+
+/* This default message will usually be overwritten. */
+/* Yes, a fixed size buffer is bad. So sue me. But g_error is never
+ * with huge strings, is it? */
+static char fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
+static char *fatal_msg_ptr = fatal_msg_buf;
+
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 static inline int
@@ -102,6 +110,14 @@ dowrite (FILE        *fd,
 	 const void  *buf,
 	 unsigned int len)
 {
+  if (gonna_abort)
+    {
+      memcpy (fatal_msg_ptr, buf, len);
+      fatal_msg_ptr += len;
+      *fatal_msg_ptr = 0;
+      return len;
+    }
+
   fwrite (buf, len, 1, fd);
   fflush (fd);
 
@@ -114,6 +130,9 @@ static void
 ensure_stdout_valid (void)
 {
   HANDLE handle;
+
+  if (gonna_abort)
+    return;
 
   if (!alloc_console_called)
     {
@@ -413,6 +432,9 @@ g_logv (const gchar   *log_domain,
 	      else
 		abort ();
 #else /* !G_ENABLE_DEBUG || !SIGTRAP */
+#ifdef G_OS_WIN32
+	      MessageBox (NULL, fatal_msg_buf, NULL, MB_OK);
+#endif
 	      abort ();
 #endif /* !G_ENABLE_DEBUG || !SIGTRAP */
 	    }
@@ -473,6 +495,7 @@ g_log_default_handler (const gchar    *log_domain,
    * DOS prompt.
    */
   fd = stdout;
+  gonna_abort = is_fatal;
 #else
   fd = (log_level > G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
