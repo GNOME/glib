@@ -1,3 +1,16 @@
+Sun Jan 24 00:36:22 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* ghash.c:
+	- Revert previous "fix" (which really just did things a
+	  different way).
+	- (g_hash_table_remove): Don't need to support multiple values
+	  for a single key.
+
+	* tests/hash-test.c:
+	Add test where hash function always returns a single value.
+	Add beginnings of tests for g_hash_table_foreach[_remove] and
+	g_hash_table_remove.
+
 Sat Jan 23 20:40:06 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* gutils.c: removed the #warning about MT without getpwuid_r

@@ -1,6 +1,5 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
- * Copyright (C) 1999 The Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -50,17 +49,13 @@ struct _GHashTable
 
 
 static void		g_hash_table_resize	 (GHashTable	*hash_table);
-static GHashNode*	g_hash_table_lookup_node (GHashTable    *hash_table,
-						  gconstpointer  key,
-						  GHashNode    **last_p,
-						  guint	        *bucket_p);
+static GHashNode**	g_hash_table_lookup_node (GHashTable	*hash_table,
+						  gconstpointer	 key);
 static GHashNode*	g_hash_node_new		 (gpointer	 key,
 						  gpointer	 value);
 static void		g_hash_node_destroy	 (GHashNode	*hash_node);
 static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
-#define G_HASH_BUCKET(table,key) \
-    ((* (table)->hash_func) (key) % (table)->size)
 
 G_LOCK_DECLARE_STATIC (g_hash_global);
 
@@ -103,17 +98,14 @@ g_hash_table_destroy (GHashTable *hash_table)
   g_free (hash_table);
 }
 
-static inline GHashNode*
-g_hash_table_lookup_node (GHashTable	 *hash_table,
-			  gconstpointer	  key,
-			  GHashNode	**last_p,
-			  guint		*bucket_p)
+static inline GHashNode**
+g_hash_table_lookup_node (GHashTable	*hash_table,
+			  gconstpointer	 key)
 {
-  GHashNode *node, *last = NULL;
-  guint bucket;
+  GHashNode **node;
   
-  bucket = G_HASH_BUCKET (hash_table, key);
-  node = hash_table->nodes [bucket];
+  node = &hash_table->nodes
+    [(* hash_table->hash_func) (key) % hash_table->size];
   
   /* Hash table lookup needs to be fast.
    *  We therefore remove the extra conditional of testing
@@ -121,23 +113,12 @@ g_hash_table_lookup_node (GHashTable	 *hash_table,
    *  the inner loop.
    */
   if (hash_table->key_compare_func)
-    while (node && !(*hash_table->key_compare_func) (node->key, key))
-      {
-	last = node;
-        node = node->next;
-      }
+    while (*node && !(*hash_table->key_compare_func) ((*node)->key, key))
+      node = &(*node)->next;
   else
-    while (node && node->key != key)
-      {
-	last = node;
-        node = node->next;
-      }
+    while (*node && (*node)->key != key)
+      node = &(*node)->next;
   
-  if (last_p)
-    *last_p = last;
-  if (bucket_p)
-    *bucket_p = bucket;
-
   return node;
 }
 
@@ -149,7 +130,7 @@ g_hash_table_lookup (GHashTable	  *hash_table,
   
   g_return_val_if_fail (hash_table != NULL, NULL);
   
-  node = g_hash_table_lookup_node (hash_table, key, NULL, NULL);
+  node = *g_hash_table_lookup_node (hash_table, key);
   
   return node ? node->value : NULL;
 }
@@ -159,27 +140,13 @@ g_hash_table_insert (GHashTable *hash_table,
 		     gpointer	 key,
 		     gpointer	 value)
 {
-  GHashNode *node, *last;
-  guint bucket;
+  GHashNode **node;
   
   g_return_if_fail (hash_table != NULL);
-
-  node = g_hash_table_lookup_node (hash_table, key, &last, &bucket);
   
-  if (node == NULL)
-    {
-      node = g_hash_node_new (key, value);
-
-      if (last == NULL)
-        hash_table->nodes [bucket] = node;
-      else
-        last->next = node;
-
-      hash_table->nnodes++;
-      if (!hash_table->frozen)
-        g_hash_table_resize (hash_table);
-    }
-  else
+  node = g_hash_table_lookup_node (hash_table, key);
+  
+  if (*node)
     {
       /* do not reset node->key in this place, keeping
        * the old key might be intended.
@@ -187,31 +154,32 @@ g_hash_table_insert (GHashTable *hash_table,
        * can be used otherwise.
        *
        * node->key = key; */
-      node->value = value;
+      (*node)->value = value;
     }
-      
+  else
+    {
+      *node = g_hash_node_new (key, value);
+      hash_table->nnodes++;
+      if (!hash_table->frozen)
+	g_hash_table_resize (hash_table);
+    }
 }
 
 void
 g_hash_table_remove (GHashTable	     *hash_table,
 		     gconstpointer    key)
 {
-  GHashNode *node, *last;
-  guint bucket;
+  GHashNode **node, *dest;
   
   g_return_if_fail (hash_table != NULL);
   
-  node = g_hash_table_lookup_node (hash_table, key, &last, &bucket);
+  node = g_hash_table_lookup_node (hash_table, key);
 
-  if (node)
+  if (*node)
     {
-      if (last == NULL)
-          hash_table->nodes [bucket] = node->next;
-      else
-	  last->next = node->next;
-
-      g_hash_node_destroy (node);
-
+      dest = *node;
+      (*node) = dest->next;
+      g_hash_node_destroy (dest);
       hash_table->nnodes--;
   
       if (!hash_table->frozen)
@@ -229,7 +197,7 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
   
   g_return_val_if_fail (hash_table != NULL, FALSE);
   
-  node = g_hash_table_lookup_node (hash_table, lookup_key, NULL, NULL);
+  node = *g_hash_table_lookup_node (hash_table, lookup_key);
   
   if (node)
     {

@@ -161,7 +161,64 @@ static gint second_hash_cmp (gconstpointer a, gconstpointer b)
 
 
 
-static void second_hash_test (void)
+static guint one_hash(gconstpointer key)
+{
+  return 1;
+}
+
+
+static void not_even_foreach (gpointer       key,
+				 gpointer       value,
+				 gpointer	user_data)
+{
+  const char *_key = (const char *) key;
+  const char *_value = (const char *) value;
+  int i;
+  char val [20];
+
+  g_assert (_key != NULL);
+  g_assert (*_key != 0);
+  g_assert (_value != NULL);
+  g_assert (*_value != 0);
+
+  i = atoi (_key);
+  g_assert (atoi (_key) > 0);
+
+  sprintf (val, "%d value", i);
+  g_assert (strcmp (_value, val) == 0);
+
+  g_assert ((i % 2) != 0);
+  g_assert (i != 3);
+}
+
+
+static gboolean remove_even_foreach (gpointer       key,
+				 gpointer       value,
+				 gpointer	user_data)
+{
+  const char *_key = (const char *) key;
+  const char *_value = (const char *) value;
+  int i;
+  char val [20];
+
+  g_assert (_key != NULL);
+  g_assert (*_key != 0);
+  g_assert (_value != NULL);
+  g_assert (*_value != 0);
+
+  i = atoi (_key);
+  g_assert (i > 0);
+
+  sprintf (val, "%d value", i);
+  g_assert (strcmp (_value, val) == 0);
+
+  return ((i % 2) == 0) ? TRUE : FALSE;
+}
+
+
+
+
+static void second_hash_test (gboolean simple_hash)
 {
      int       i;
      char      key[20] = "", val[20]="", *v, *orig_key, *orig_val;
@@ -170,7 +227,8 @@ static void second_hash_test (void)
 
      crcinit ();
 
-     h = g_hash_table_new (honeyman_hash, second_hash_cmp);
+     h = g_hash_table_new (simple_hash ? one_hash : honeyman_hash,
+     			   second_hash_cmp);
      g_assert (h != NULL);
      for (i=0; i<20; i++)
           {
@@ -197,8 +255,18 @@ static void second_hash_test (void)
 	  g_assert (atoi (v) == i);
           }
 
+     /**** future test stuff, yet to be debugged 
+     sprintf (key, "%d", 3);
+     g_hash_table_remove (h, key);
+     g_hash_table_foreach_remove (h, remove_even_foreach, NULL);
+     g_hash_table_foreach (h, not_even_foreach, NULL);
+     */
+
      for (i=0; i<20; i++)
           {
+	  if (((i % 2) == 0) || (i == 3))
+	    i++;
+
           sprintf (key, "%d", i);
 	  g_assert (atoi(key) == i);
 
@@ -290,7 +358,8 @@ main (int   argc,
 
   g_hash_table_destroy (hash_table);
 
-  second_hash_test ();
+  second_hash_test (TRUE);
+  second_hash_test (FALSE);
   direct_hash_test ();
 
   return 0;
