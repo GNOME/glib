@@ -1,3 +1,8 @@
+Sat Jan 10 02:43:20 2004  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: made G_DEFINE_TYPE_INTERNAL() public by renaming it to
+	G_DEFINE_TYPE_EXTENDED() and moving it into the appropriate section.
+
 Fri Jan  9 23:41:00 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gboxed.h:

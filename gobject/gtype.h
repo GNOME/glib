@@ -325,10 +325,10 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  * example: G_DEFINE_TYPE_WITH_CODE (GtkGadget, gtk_gadget, GTK_TYPE_WIDGET,
  *                                   g_print ("GtkGadget-id: %lu\n", g_define_type_id));
  */
-#define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, 0, parent_class, {})
-#define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)          G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, 0, parent_class, _C_)
-#define G_DEFINE_ABSTRACT_TYPE(TN, t_n, T_P)                G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, {})
-#define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, _C_)
+#define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, parent_class, {})
+#define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)          G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, parent_class, _C_)
+#define G_DEFINE_ABSTRACT_TYPE(TN, t_n, T_P)                G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, {})
+#define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, _C_)
 
 /* convenience macro to ease interface addition in the CODE
  * section of G_DEFINE_TYPE_WITH_CODE() (this macro relies on
@@ -343,6 +343,40 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
     (GInterfaceInitFunc) iface_init \
   }; \
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
+}
+
+#define G_DEFINE_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, type_parent_class, CODE) \
+\
+static void     type_name##_init              (TypeName        *self); \
+static void     type_name##_class_init        (TypeName##Class *klass); \
+static gpointer type_parent_class = NULL; \
+static void     type_name##_class_intern_init (gpointer klass) \
+{ \
+  type_parent_class = g_type_class_peek_parent (klass); \
+  type_name##_class_init ((TypeName##Class*) klass); \
+} \
+\
+GType \
+type_name##_get_type (void) \
+{ \
+  static GType g_define_type_id = 0; \
+  if (G_UNLIKELY (g_define_type_id == 0)) \
+    { \
+      static const GTypeInfo g_define_type_info = { \
+        sizeof (TypeName##Class), \
+        (GBaseInitFunc) NULL, \
+        (GBaseFinalizeFunc) NULL, \
+        (GClassInitFunc) type_name##_class_intern_init, \
+        (GClassFinalizeFunc) NULL, \
+        NULL,   /* class_data */ \
+        sizeof (TypeName), \
+        0,      /* n_preallocs */ \
+        (GInstanceInitFunc) type_name##_init, \
+      }; \
+      g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, flags); \
+      { CODE ; } \
+    } \
+  return g_define_type_id; \
 }
 
 
@@ -393,39 +427,6 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
 
 
 /* --- implementation bits --- */
-#define G_DEFINE_TYPE_INTERNAL(TypeName, type_name, TYPE_PARENT, flags, type_parent_class, CODE) \
-\
-static void     type_name##_init              (TypeName        *self); \
-static void     type_name##_class_init        (TypeName##Class *klass); \
-static gpointer type_parent_class = NULL; \
-static void     type_name##_class_intern_init (gpointer klass) \
-{ \
-  type_parent_class = g_type_class_peek_parent (klass); \
-  type_name##_class_init ((TypeName##Class*) klass); \
-} \
-\
-GType \
-type_name##_get_type (void) \
-{ \
-  static GType g_define_type_id = 0; \
-  if (G_UNLIKELY (g_define_type_id == 0)) \
-    { \
-      static const GTypeInfo g_define_type_info = { \
-        sizeof (TypeName##Class), \
-        (GBaseInitFunc) NULL, \
-        (GBaseFinalizeFunc) NULL, \
-        (GClassInitFunc) type_name##_class_intern_init, \
-        (GClassFinalizeFunc) NULL, \
-        NULL,   /* class_data */ \
-        sizeof (TypeName), \
-        0,      /* n_preallocs */ \
-        (GInstanceInitFunc) type_name##_init, \
-      }; \
-      g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, flags); \
-      { CODE ; } \
-    } \
-  return g_define_type_id; \
-}
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \
     ((ct*) g_type_check_instance_cast ((GTypeInstance*) ip, gt))
