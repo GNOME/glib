@@ -658,8 +658,14 @@ parse_arg (GOptionContext *context,
       {
 	gchar *data;
 
+#ifdef G_OS_WIN32
+	data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+	
+	if (!data)
+	  return FALSE;
+#else
 	data = g_strdup (value);
-
+#endif
 	change = get_change (context, G_OPTION_ARG_FILENAME,
 			     entry->arg_data);
 	g_free (change->allocated.str);
@@ -675,8 +681,14 @@ parse_arg (GOptionContext *context,
       {
 	gchar *data;
 	
+#ifdef G_OS_WIN32
+	data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+	
+	if (!data)
+	  return FALSE;
+#else
 	data = g_strdup (value);
-
+#endif
 	change = get_change (context, G_OPTION_ARG_STRING_ARRAY,
 			     entry->arg_data);
 
