@@ -333,6 +333,7 @@ EXPORTS
 	g_main_loop_ref
 	g_main_loop_run
 	g_main_loop_unref
+	g_main_thread_init
 	g_malloc
 	g_malloc0
 	g_markup_error_quark

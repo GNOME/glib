@@ -1,3 +1,8 @@
+2002-11-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add g_main_thread_init, called by
+	gthread/gthread-impl.c.
+
 Mon Nov  4 15:23:20 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* ==== Released 2.0.7 ====
