@@ -1,3 +1,10 @@
+Sat Apr 17 20:55:13 BST 1999  Tony Gale <gale@gtk.org>
+
+	* glib.h, gstring.c: Add new g_string functions for reading
+	  from file/socket descriptors, and tokenising strings.
+
+	  Added various g_string macros.
+
 Tue Apr 13 23:28:32 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Mention the tests directory.

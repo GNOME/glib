@@ -1689,39 +1689,82 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
 
 /* Strings
  */
-GString* g_string_new	    (const gchar *init);
-GString* g_string_sized_new (guint	  dfl_size);
-void	 g_string_free	    (GString	 *string,
-			     gint	  free_segment);
-GString* g_string_assign    (GString	 *lval,
-			     const gchar *rval);
-GString* g_string_truncate  (GString	 *string,
-			     gint	  len);
-GString* g_string_append    (GString	 *string,
-			     const gchar *val);
-GString* g_string_append_c  (GString	 *string,
-			     gchar	  c);
-GString* g_string_prepend   (GString	 *string,
-			     const gchar *val);
-GString* g_string_prepend_c (GString	 *string,
-			     gchar	  c);
-GString* g_string_insert    (GString	 *string,
-			     gint	  pos,
-			     const gchar *val);
-GString* g_string_insert_c  (GString	 *string,
-			     gint	  pos,
-			     gchar	  c);
-GString* g_string_erase	    (GString	 *string,
-			     gint	  pos,
-			     gint	  len);
-GString* g_string_down	    (GString	 *string);
-GString* g_string_up	    (GString	 *string);
-void	 g_string_sprintf   (GString	 *string,
-			     const gchar *format,
-			     ...) G_GNUC_PRINTF (2, 3);
-void	 g_string_sprintfa  (GString	 *string,
-			     const gchar *format,
-			     ...) G_GNUC_PRINTF (2, 3);
+typedef enum
+{
+  G_STRING_ERROR_NONE,    /* No error occurred */
+  G_STRING_ERROR_INVAL,   /* Invalid input value to function */ 
+  G_STRING_ERROR_READ,    /* read() returned an error - check errno */
+  G_STRING_ERROR_NODATA,  /* No more input data - result string may contain data */
+  G_STRING_ERROR_LENGTH   /* max_length reached */
+} GStringError;
+
+#define      g_string_length(fstring)   (fstring ? fstring->len : 0)
+#define      g_string_str(fstring)      (fstring ? fstring->str : NULL)
+#define      g_string_char(fstring, n)  (fstring->str[n])
+
+#define      g_string_copy(a,b)         (g_string_assign(a, b->str))
+#define      g_string_dup(fstring)      (fstring ? g_string_new(fstring->str) :\
+                                                   g_string_new(NULL))
+
+#define      g_string_cmp(a,b)          (strcmp(g_string_str(a), \
+                                                g_string_str(b)))
+#define      g_string_ncmp(a,b,n)       (strncmp(g_string_str(a), \
+                                                 g_string_str(b), n))
+#define      g_string_casecmp(a,b)      (g_strcasecmp(g_string_str(a), \
+                                                      g_string_str(b)))
+#define      g_string_ncasecmp(a,b)     (g_strncasecmp(g_string_str(a), \
+                                                       g_string_str(b), n))
+
+#define      g_string_strcmp(a,b)       (strcmp(g_string_str(a), b))
+#define      g_string_strcasecmp(a,b)   (g_strcasecmp(g_string_str(a), b))
+
+GString*     g_string_new	        (const gchar	 *init);
+GString*     g_string_sized_new         (guint		  dfl_size);
+void	     g_string_free	        (GString	 *string,
+					 gint		  free_segment);
+GString*     g_string_assign            (GString	 *lval,
+					 const gchar	 *rval);
+GString*     g_string_truncate          (GString	 *string,
+					 gint		  len);
+GString*     g_string_append            (GString	 *string,
+			                 const gchar	 *val);
+GString*     g_string_append_c          (GString	 *string,
+					 gchar		  c);
+GString*     g_string_prepend           (GString	 *string,
+					 const gchar	 *val);
+GString*     g_string_prepend_c         (GString	 *string,
+					 gchar		  c);
+GString*     g_string_insert            (GString	 *string,
+					 gint		  pos,
+					 const gchar	 *val);
+GString*     g_string_insert_c          (GString	 *string,
+					 gint		  pos,
+					 gchar		  c);
+GString*     g_string_erase	        (GString	 *string,
+					 gint		  pos,
+					 gint		  len);
+GString*     g_string_down              (GString	 *string);
+GString*     g_string_up                (GString	 *string);
+void         g_string_sprintf           (GString	 *string,
+					 const gchar	 *format,
+					 ...) G_GNUC_PRINTF (2, 3);
+void         g_string_sprintfa          (GString	 *string,
+					 const gchar	 *format,
+					 ...) G_GNUC_PRINTF (2, 3);
+GStringError g_string_readline          (GString	 *dest_str,
+					 gint		 max_length,
+					 gint		 fd);
+GStringError g_string_readline_buffered (GString	 *dest_str,
+					 GString	 *buff_str,
+					 gint		  max_length,
+					 gint		  fd,
+					 gint		  match_bare_cr);
+GList*       g_string_tokenise          (GString	 *string,
+					 gchar		 *delims,
+					 gint		  max_tokens,
+					 gint		  allow_empty);
+void         g_string_tokenise_free     (GList		 *tokens,
+					 gint		  free_token);
 
 
 /* Resizable arrays, remove fills any cleared spot and shortens the
