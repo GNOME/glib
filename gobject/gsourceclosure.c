@@ -191,5 +191,5 @@ g_source_set_closure (GSource  *source,
     }
 }
 
-#define __G_SOURCE_CLOSURE_C__
+#define __G_SOURCECLOSURE_C__
 #include "gobjectaliasdef.c"

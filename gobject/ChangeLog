@@ -1,5 +1,9 @@
 2005-03-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* abicheck.sh: Make work again.
+
+	* gsourceclosure.c: Fix a typo.
+
 	Make PLT-reduction work with gcc4, and don't include
 	everything in gobjectalias.h:
 	
