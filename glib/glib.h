@@ -36,6 +36,7 @@
 #include <gconvert.h>
 #include <gdataset.h>
 #include <gdate.h>
+#include <gerror.h>
 #include <gfileutils.h>
 #include <ghash.h>
 #include <ghook.h>

@@ -1,5 +1,9 @@
 2000-10-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* Makefile.am: Added the new headers to glibinclude_HEADERS.
+
+	* glib.h: Forgot to include gerror.h.
+
 	* glib.h, galloca.h, garray.h, gasyncqueue.h, gbacktrace.h,
 	gcache.h, gcompletion.h, gconvert.h, gdataset.h, gdate.h, ghash.h,
 	ghook.h, giochannel.h, glist.h , gmacros.h, gmain.h, gmem.h,
@@ -7,7 +11,7 @@
 	grel.h, gscanner.h, gslist.h, gstrfuncs.h, gstring.h, gthread.h,
 	gthreadpool.h, gtimer.h, gtree.h, gtypes.h, gutils.h: Split glib.h
 	into many header files mostly according to the resp. *.c-files.
-
+	
 	* gmacros.h: Added G_BEGIN_DECLS and G_END_DECLS to mean: 'in case
 	of C++: extern "C" { ... }' analogous to glibc __BEGIN_DECLS and
 	__END_DECLS.

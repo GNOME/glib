@@ -83,13 +83,46 @@ libglib_1_3_la_SOURCES = 	\
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
+	galloca.h	\
+	garray.h	\
+	gasyncqueue.h	\
+	gbacktrace.h	\
+	gcache.h	\
+	gcompletion.h	\
+	gconvert.h	\
+	gdataset.h	\
+	gdate.h		\
 	gerror.h	\
 	gfileutils.h	\
+	ghash.h		\
+	ghook.h		\
+	giochannel.h	\
 	glib.h 		\
 	glib-object.h	\
+	glist.h		\
+	gmacros.h	\
+	gmain.h		\
+	gmem.h		\
+	gmessages.h	\
+	gnode.h		\
+	gprimes.h	\
+	gquark.h	\
+	gqueue.h	\
+	grand.h		\
+	grel.h		\
+	gscanner.h	\
 	gshell.h	\
+	gslist.h	\
 	gspawn.h	\
-	gunicode.h
+	gstrfuncs.h	\
+	gstring.h	\
+	gthread.h	\
+	gthreadpool.h	\
+	gtimer.h	\
+	gtree.h		\
+	gtypes.h	\
+	gunicode.h	\
+	gutils.h
 
 configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h
