@@ -100,3 +100,19 @@ Same as GPOINTER_TO_INT(), but for unsigned integers.
 @p: pointer to extract an integer from
 
 
+<!-- ##### MACRO GSIZE_TO_POINTER ##### -->
+<para>
+
+</para>
+
+@s: 
+
+
+<!-- ##### MACRO GPOINTER_TO_SIZE ##### -->
+<para>
+
+</para>
+
+@p: 
+
+

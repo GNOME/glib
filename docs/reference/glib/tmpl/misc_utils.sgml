@@ -169,6 +169,27 @@ freed when no longer needed.
 @Returns: the directory components of the file.
 
 
+<!-- ##### FUNCTION g_build_filename ##### -->
+<para>
+
+</para>
+
+@first_element: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_build_path ##### -->
+<para>
+
+</para>
+
+@separator: 
+@first_element: 
+@Varargs: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_find_program_in_path ##### -->
 <para>
 
@@ -287,5 +308,13 @@ and has no return value. It is not currently used in GLib or GTK+.
 @size: 
 @compare_func: 
 @user_data: 
+
+
+<!-- ##### FUNCTION g_nullify_pointer ##### -->
+<para>
+
+</para>
+
+@nullify_location: 
 
 

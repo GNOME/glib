@@ -135,6 +135,8 @@ GPOINTER_TO_INT
 <SUBSECTION>
 GUINT_TO_POINTER
 GPOINTER_TO_UINT
+GSIZE_TO_POINTER
+GPOINTER_TO_SIZE
 </SECTION>
 
 <SECTION>
@@ -286,6 +288,7 @@ G_GNUC_SCANF
 G_GNUC_FORMAT
 G_GNUC_FUNCTION
 G_GNUC_PRETTY_FUNCTION
+G_GNUC_NO_INSTRUMENT
 
 <SUBSECTION>
 G_STRLOC
@@ -306,6 +309,8 @@ G_CAN_INLINE
 inline
 G_HAVE___INLINE
 G_HAVE___INLINE__
+G_HAVE_GNUC_VARARGS
+G_HAVE_ISO_VARARGS
 </SECTION>
 
 <SECTION>
@@ -332,6 +337,7 @@ g_main_loop_unref
 g_main_loop_run
 g_main_loop_quit
 g_main_loop_is_running
+g_main_loop_get_context
 g_main_new
 g_main_destroy
 g_main_run
@@ -347,7 +353,9 @@ G_PRIORITY_LOW
 
 <SUBSECTION>
 GMainContext
-g_main_context_get
+g_main_context_new
+g_main_context_ref
+g_main_context_unref
 g_main_context_default
 g_main_context_iteration
 g_main_iteration
@@ -356,6 +364,10 @@ g_main_pending
 g_main_context_find_source_by_id
 g_main_context_find_source_by_user_data
 g_main_context_find_source_by_funcs_user_data
+g_main_context_wakeup
+g_main_context_acquire
+g_main_context_release
+g_main_context_wait
 g_main_context_prepare
 g_main_context_query
 g_main_context_check
@@ -385,6 +397,7 @@ GPollFD
 GSource
 GSourceFuncs
 GSourceCallbackFuncs
+GSourceDummyMarshal
 g_source_new
 g_source_ref
 g_source_unref
@@ -418,6 +431,8 @@ GLIB_SYSDEF_POLLOUT
 GLIB_SYSDEF_POLLPRI
 g_main_poll_win32_msg_add
 G_WIN32_MSG_HANDLE
+g_idle_funcs
+g_timeout_funcs
 </SECTION>
 
 <SECTION>
@@ -657,6 +672,9 @@ GIOError
 g_io_channel_write
 g_io_channel_seek
 g_io_channel_close
+
+<SUBSECTION Private>
+g_io_watch_funcs
 </SECTION>
 
 <SECTION>
@@ -720,6 +738,18 @@ g_on_error_stack_trace
 
 <SUBSECTION>
 G_BREAKPOINT
+</SECTION>
+
+<SECTION>
+<TITLE>Glob-style pattern matching</TITLE>
+<FILE>patterns</FILE>
+GMatchType
+GPatternSpec
+g_pattern_spec_new
+g_pattern_spec_free
+g_pattern_match
+g_pattern_match_string
+g_pattern_match_simple
 </SECTION>
 
 <SECTION>
@@ -839,6 +869,9 @@ g_strndup
 g_strdupv
 g_strnfill
 g_stpcpy
+g_strstr_len
+g_strrstr
+g_strrstr_len
 
 <SUBSECTION>
 g_strlcpy
@@ -916,6 +949,9 @@ g_strjoinv
 <SUBSECTION>
 g_strerror
 g_strsignal
+
+<SUBSECTION Private>
+GAsciiType
 </SECTION>
 
 <SECTION>
@@ -1055,9 +1091,11 @@ g_hook_first_valid
 g_hook_next_valid
 
 GHookFlagMask
+G_HOOK_FLAGS
 G_HOOK_FLAG_USER_SHIFT
 
 <SUBSECTION>
+G_HOOK
 G_HOOK_IS_VALID
 G_HOOK_ACTIVE
 G_HOOK_IN_CALL
@@ -1091,6 +1129,8 @@ g_path_is_absolute
 g_path_skip_root
 g_path_get_basename
 g_path_get_dirname
+g_build_filename
+g_build_path
 
 <SUBSECTION>
 g_find_program_in_path
@@ -1117,6 +1157,9 @@ GFreeFunc
 <SUBSECTION>
 g_qsort_with_data
 
+<SUBSECTION>
+g_nullify_pointer
+
 <SUBSECTION Private>
 G_NATIVE_ATEXIT
 g_ATEXIT
@@ -1134,7 +1177,6 @@ GScannerConfig
 <SUBSECTION>
 g_scanner_input_file
 g_scanner_sync_file_offset
-g_scanner_stat_mode
 g_scanner_input_text
 g_scanner_peek_next_token
 g_scanner_get_next_token
@@ -1288,6 +1330,7 @@ GList
 g_list_append
 g_list_prepend
 g_list_insert
+g_list_insert_before
 g_list_insert_sorted
 g_list_remove
 g_list_remove_link
@@ -1454,12 +1497,15 @@ g_string_printf
 g_string_printfa
 g_string_append
 g_string_append_c
+g_string_append_unichar
 g_string_append_len
 g_string_prepend
 g_string_prepend_c
+g_string_prepend_unichar
 g_string_prepend_len
 g_string_insert
 g_string_insert_c
+g_string_insert_unichar
 g_string_insert_len
 g_string_erase
 g_string_truncate
@@ -1770,6 +1816,7 @@ g_random_double_range
 <FILE>conversions</FILE>
 g_convert
 g_convert_with_fallback
+g_convert_with_iconv
 G_CONVERT_ERROR
 g_iconv_open
 g_iconv
@@ -1777,6 +1824,8 @@ g_iconv_close
 g_locale_to_utf8
 g_filename_to_utf8
 g_filename_from_utf8
+g_filename_from_uri
+g_filename_to_uri
 g_locale_from_utf8
 GConvertError
 <SUBSECTION Private>
@@ -1823,6 +1872,7 @@ g_unicode_canonical_decomposition
 <SUBSECTION>
 g_utf8_next_char
 g_utf8_get_char
+g_utf8_get_char_validated
 g_utf8_offset_to_pointer
 g_utf8_pointer_to_offset
 g_utf8_prev_char
@@ -1833,6 +1883,15 @@ g_utf8_strncpy
 g_utf8_strchr
 g_utf8_strrchr
 g_utf8_validate
+
+<SUBSECTION>
+g_utf8_strup
+g_utf8_strdown
+g_utf8_casefold
+g_utf8_normalize
+GNormalizeMode
+g_utf8_collate
+g_utf8_collate_key
 
 <SUBSECTION>
 g_utf8_to_utf16

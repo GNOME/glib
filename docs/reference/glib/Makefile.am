@@ -30,6 +30,7 @@ IGNORE_HFILES=			\
 	gbsearcharray.h		\
 	gmoduleconf.h		\
 	gunibreak.h		\
+	gunicomp.h		\
 	gunidecomp.h		\
 	gunichartables.h	\
 	glibconfig-sysdefs.h

@@ -196,6 +196,13 @@ and function prototype. See the GNU C documentation for details.
 
 
 
+<!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_STRLOC ##### -->
 <para>
 

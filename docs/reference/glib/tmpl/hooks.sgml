@@ -426,11 +426,27 @@ thread) are considered valid. If set to FALSE, these are skipped.
 @G_HOOK_FLAG_IN_CALL: 
 @G_HOOK_FLAG_MASK: 
 
+<!-- ##### MACRO G_HOOK_FLAGS ##### -->
+<para>
+
+</para>
+
+@hook: 
+
+
 <!-- ##### MACRO G_HOOK_FLAG_USER_SHIFT ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### MACRO G_HOOK ##### -->
+<para>
+
+</para>
+
+@hook: 
 
 
 <!-- ##### MACRO G_HOOK_IS_VALID ##### -->

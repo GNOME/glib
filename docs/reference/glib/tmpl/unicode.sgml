@@ -346,6 +346,16 @@ that may contain invalid UTF-8.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_utf8_get_char_validated ##### -->
+<para>
+
+</para>
+
+@p: 
+@max_len: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_utf8_offset_to_pointer ##### -->
 <para>
 
@@ -455,6 +465,81 @@ that may contain invalid UTF-8.
 @Returns: 
 <!-- # Unused Parameters # -->
 @len: 
+
+
+<!-- ##### FUNCTION g_utf8_strup ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_strdown ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_casefold ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_normalize ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### ENUM GNormalizeMode ##### -->
+<para>
+
+</para>
+
+@G_NORMALIZE_DEFAULT: 
+@G_NORMALIZE_NFD: 
+@G_NORMALIZE_DEFAULT_COMPOSE: 
+@G_NORMALIZE_NFC: 
+@G_NORMALIZE_ALL: 
+@G_NORMALIZE_NFKD: 
+@G_NORMALIZE_ALL_COMPOSE: 
+@G_NORMALIZE_NFKC: 
+
+<!-- ##### FUNCTION g_utf8_collate ##### -->
+<para>
+
+</para>
+
+@str1: 
+@str2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_collate_key ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_utf8_to_utf16 ##### -->

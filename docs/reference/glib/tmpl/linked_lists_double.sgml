@@ -141,6 +141,17 @@ to the end of the list.
 @Returns: the new start of the #GList.
 
 
+<!-- ##### FUNCTION g_list_insert_before ##### -->
+<para>
+
+</para>
+
+@list: 
+@sibling: 
+@data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_list_insert_sorted ##### -->
 <para>
 Inserts a new element into the list, using the given comparison function

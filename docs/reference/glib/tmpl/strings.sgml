@@ -146,6 +146,16 @@ Adds a character onto the end of a #GString, expanding it if necessary.
 @Returns: the #GString.
 
 
+<!-- ##### FUNCTION g_string_append_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@wc: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_string_append_len ##### -->
 <para>
 Appends @len bytes of @val to @string. Because @len is provided, 
@@ -176,6 +186,16 @@ Adds a character onto the start of a #GString, expanding it if necessary.
 @string: a #GString.
 @c: the character to prepend on the start of the #GString.
 @Returns: the #GString.
+
+
+<!-- ##### FUNCTION g_string_prepend_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@wc: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_prepend_len ##### -->
@@ -210,6 +230,17 @@ Inserts a character into a #GString, expanding it if necessary.
 @pos: the position to insert the character.
 @c: the character to insert.
 @Returns: the #GString.
+
+
+<!-- ##### FUNCTION g_string_insert_unichar ##### -->
+<para>
+
+</para>
+
+@string: 
+@pos: 
+@wc: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_insert_len ##### -->

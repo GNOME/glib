@@ -45,6 +45,20 @@ Character Set Conversion
 @Returns: 
 
 
+<!-- ##### FUNCTION g_convert_with_iconv ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@converter: 
+@bytes_read: 
+@bytes_written: 
+@error: 
+@Returns: 
+
+
 <!-- ##### MACRO G_CONVERT_ERROR ##### -->
 <para>
 Error domain for character set conversions. Errors in this domain will
@@ -121,6 +135,28 @@ error domains.
 @len: 
 @bytes_read: 
 @bytes_written: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_filename_from_uri ##### -->
+<para>
+
+</para>
+
+@uri: 
+@hostname: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_filename_to_uri ##### -->
+<para>
+
+</para>
+
+@filename: 
+@hostname: 
 @error: 
 @Returns: 
 

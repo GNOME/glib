@@ -72,6 +72,38 @@ The returned string should be freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_strstr_len ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@haystack_len: 
+@needle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_strrstr ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@needle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_strrstr_len ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@haystack_len: 
+@needle: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strlcpy ##### -->
 <para>
 Portability wrapper that calls strlcpy() on systems which have it, and emulates

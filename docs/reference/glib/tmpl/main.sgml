@@ -161,6 +161,15 @@ of a GLib or GTK+ application.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_main_loop_get_context ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
 <!-- ##### MACRO g_main_new ##### -->
 <para>
 Creates a new #GMainLoop for the default main loop. A compatibility
@@ -259,6 +268,30 @@ It is not used within GLib or GTK+.
 </para>
 
 
+<!-- ##### FUNCTION g_main_context_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_ref ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_unref ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
 <!-- ##### FUNCTION g_main_context_default ##### -->
 <para>
 
@@ -340,6 +373,42 @@ g_main_context_pending().
 @Returns: 
 <!-- # Unused Parameters # -->
 @source_data: 
+
+
+<!-- ##### FUNCTION g_main_context_wakeup ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_acquire ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_release ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_wait ##### -->
+<para>
+
+</para>
+
+@context: 
+@cond: 
+@mutex: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_main_context_prepare ##### -->
@@ -647,6 +716,13 @@ the required condition has been met, and returns TRUE if so.
 @ref: 
 @unref: 
 @get: 
+
+<!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
+<para>
+
+</para>
+
+
 
 <!-- ##### FUNCTION g_source_new ##### -->
 <para>
