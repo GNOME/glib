@@ -1,3 +1,9 @@
+2000-10-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gvalue.c (exchange_entries_equal), gparam.c (param_spec_equals):
+	made both functions return gboolean just for the little extra
+	standard conformance now that GEqualFunc is introduced.
+
 Mon Oct 30 05:52:45 2000  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c (g_signal_list_ids): get rid of inline documentation owen

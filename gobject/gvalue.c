@@ -142,7 +142,7 @@ g_value_reset (GValue *value)
   value_table->value_init (value);
 }
 
-static gint
+static gboolean
 exchange_entries_equal (gconstpointer v1,
 			gconstpointer v2)
 {

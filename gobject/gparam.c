@@ -286,7 +286,7 @@ param_spec_hash (gconstpointer key_spec)
   return h;
 }
 
-static gint
+static gboolean
 param_spec_equals (gconstpointer key_spec_1,
 		   gconstpointer key_spec_2)
 {
