@@ -85,7 +85,7 @@ tuple_hash (gint fields)
   return NULL;
 }
 
-static GCompareFunc
+static GEqualFunc
 tuple_equal (gint fields)
 {
   switch (fields)
@@ -150,7 +150,7 @@ void
 g_relation_index (GRelation   *relation,
 		  gint         field,
 		  GHashFunc    hash_func,
-		  GCompareFunc key_compare_func)
+		  GEqualFunc   key_equal_func)
 {
   GRealRelation *rel = (GRealRelation *) relation;
 
@@ -158,7 +158,7 @@ g_relation_index (GRelation   *relation,
   
   g_return_if_fail (rel->count == 0 && rel->hashed_tuple_tables[field] == NULL);
   
-  rel->hashed_tuple_tables[field] = g_hash_table_new (hash_func, key_compare_func);
+  rel->hashed_tuple_tables[field] = g_hash_table_new (hash_func, key_equal_func);
 }
 
 void

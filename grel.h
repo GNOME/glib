@@ -67,7 +67,7 @@ void       g_relation_destroy (GRelation   *relation);
 void       g_relation_index   (GRelation   *relation,
                                gint         field,
                                GHashFunc    hash_func,
-                               GCompareFunc key_compare_func);
+                               GEqualFunc   key_equal_func);
 void       g_relation_insert  (GRelation   *relation,
                                ...);
 gint       g_relation_delete  (GRelation   *relation,

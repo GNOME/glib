@@ -917,14 +917,14 @@ g_direct_hash (gconstpointer v)
   return GPOINTER_TO_UINT (v);
 }
 
-gint
+gboolean
 g_direct_equal (gconstpointer v1,
 		gconstpointer v2)
 {
   return v1 == v2;
 }
 
-gint
+gboolean
 g_int_equal (gconstpointer v1,
 	     gconstpointer v2)
 {

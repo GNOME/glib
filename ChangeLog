@@ -1,3 +1,18 @@
+2000-10-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gcache.h, gcache.c, ghash.h, ghash.c, grel.c, grel.h, gtypes.h:
+	Introduced new function type GEqualFunc to return TRUE for equal
+	params. This is now used instead of GCompareFunc (which should
+	work akin to strcmp) here. This kind of fixes Bug #14412. Note
+	that technically GCompareFunc and GEqualFunc are still the same
+	types, as gint == gboolean.
+
+	* ghash.h, gutils.c: g_int_equal and g_direct_equal now return
+	gboolean to be really become GEqualFunc.
+
+	* gscanner.c, testglib.c, tests/hash-test.c: Some tiny changes to
+	follow the above change.
+
 2000-10-27  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in (glib_OBJECTS): Add gmarkup.

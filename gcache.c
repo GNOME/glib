@@ -77,7 +77,7 @@ g_cache_new (GCacheNewFunc      value_new_func,
 	     GCacheDestroyFunc  key_destroy_func,
 	     GHashFunc          hash_key_func,
 	     GHashFunc          hash_value_func,
-	     GCompareFunc       key_compare_func)
+	     GEqualFunc         key_equal_func)
 {
   GRealCache *cache;
 
@@ -87,14 +87,14 @@ g_cache_new (GCacheNewFunc      value_new_func,
   g_return_val_if_fail (key_destroy_func != NULL, NULL);
   g_return_val_if_fail (hash_key_func != NULL, NULL);
   g_return_val_if_fail (hash_value_func != NULL, NULL);
-  g_return_val_if_fail (key_compare_func != NULL, NULL);
+  g_return_val_if_fail (key_equal_func != NULL, NULL);
 
   cache = g_new (GRealCache, 1);
   cache->value_new_func = value_new_func;
   cache->value_destroy_func = value_destroy_func;
   cache->key_dup_func = key_dup_func;
   cache->key_destroy_func = key_destroy_func;
-  cache->key_table = g_hash_table_new (hash_key_func, key_compare_func);
+  cache->key_table = g_hash_table_new (hash_key_func, key_equal_func);
   cache->value_table = g_hash_table_new (hash_value_func, NULL);
 
   return (GCache*) cache;

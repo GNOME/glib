@@ -238,9 +238,9 @@ my_hash (gconstpointer key)
   return (guint) *((const gint*) key);
 }
 
-static gint
-my_hash_compare (gconstpointer a,
-		 gconstpointer b)
+static gboolean
+my_hash_equal (gconstpointer a,
+	       gconstpointer b)
 {
   return *((const gint*) a) == *((const gint*) b);
 }
@@ -617,7 +617,7 @@ main (int   argc,
 
   g_print ("checking hash tables...");
 
-  hash_table = g_hash_table_new (my_hash, my_hash_compare);
+  hash_table = g_hash_table_new (my_hash, my_hash_equal);
   for (i = 0; i < 10000; i++)
     {
       array[i] = i;

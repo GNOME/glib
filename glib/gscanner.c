@@ -127,7 +127,7 @@ static inline
 GScannerKey*	g_scanner_lookup_internal (GScanner	*scanner,
 					   guint	 scope_id,
 					   const gchar	*symbol);
-static gint	g_scanner_key_equal	  (gconstpointer v1,
+static gboolean	g_scanner_key_equal	  (gconstpointer v1,
 					   gconstpointer v2);
 static guint	g_scanner_key_hash	  (gconstpointer v);
 static void	g_scanner_get_token_ll	  (GScanner	*scanner,
@@ -346,7 +346,7 @@ g_scanner_warn (GScanner       *scanner,
     }
 }
 
-static gint
+static gboolean
 g_scanner_key_equal (gconstpointer v1,
 		     gconstpointer v2)
 {

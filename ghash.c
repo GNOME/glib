@@ -50,7 +50,7 @@ struct _GHashTable
   gint nnodes;
   GHashNode **nodes;
   GHashFunc hash_func;
-  GCompareFunc key_compare_func;
+  GEqualFunc key_equal_func;
 };
 
 
@@ -71,7 +71,7 @@ static GHashNode *node_free_list = NULL;
 
 GHashTable*
 g_hash_table_new (GHashFunc    hash_func,
-		  GCompareFunc key_compare_func)
+		  GEqualFunc   key_equal_func)
 {
   GHashTable *hash_table;
   guint i;
@@ -80,7 +80,7 @@ g_hash_table_new (GHashFunc    hash_func,
   hash_table->size = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes = 0;
   hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
-  hash_table->key_compare_func = key_compare_func;
+  hash_table->key_equal_func = key_equal_func;
   hash_table->nodes = g_new (GHashNode*, hash_table->size);
   
   for (i = 0; i < hash_table->size; i++)
@@ -114,11 +114,11 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
   
   /* Hash table lookup needs to be fast.
    *  We therefore remove the extra conditional of testing
-   *  whether to call the key_compare_func or not from
+   *  whether to call the key_equal_func or not from
    *  the inner loop.
    */
-  if (hash_table->key_compare_func)
-    while (*node && !(*hash_table->key_compare_func) ((*node)->key, key))
+  if (hash_table->key_equal_func)
+    while (*node && !(*hash_table->key_equal_func) ((*node)->key, key))
       node = &(*node)->next;
   else
     while (*node && (*node)->key != key)

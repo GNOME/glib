@@ -45,7 +45,7 @@ GCache*  g_cache_new           (GCacheNewFunc      value_new_func,
                                 GCacheDestroyFunc  key_destroy_func,
                                 GHashFunc          hash_key_func,
                                 GHashFunc          hash_value_func,
-                                GCompareFunc       key_compare_func);
+                                GEqualFunc         key_equal_func);
 void     g_cache_destroy       (GCache            *cache);
 gpointer g_cache_insert        (GCache            *cache,
                                 gpointer           key);

@@ -84,9 +84,9 @@ my_hash (gconstpointer key)
   return (guint) *((const gint*) key);
 }
 
-static gint
-my_hash_compare (gconstpointer a,
-		 gconstpointer b)
+static gboolean
+my_hash_equal (gconstpointer a,
+	       gconstpointer b)
 {
   return *((const gint*) a) == *((const gint*) b);
 }
@@ -160,11 +160,9 @@ static guint honeyman_hash(gconstpointer key)
 }
 
 
-static gint second_hash_cmp (gconstpointer a, gconstpointer b)
+static gboolean second_hash_cmp (gconstpointer a, gconstpointer b)
 {
-  gint rc = (strcmp (a, b) == 0);
-
-  return rc;
+  return (strcmp (a, b) == 0);
 }
 
 
@@ -336,7 +334,7 @@ main (int   argc,
   GHashTable *hash_table;
   gint i;
 
-  hash_table = g_hash_table_new (my_hash, my_hash_compare);
+  hash_table = g_hash_table_new (my_hash, my_hash_equal);
   for (i = 0; i < 10000; i++)
     {
       array[i] = i;

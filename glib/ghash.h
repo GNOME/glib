@@ -40,7 +40,7 @@ typedef gboolean	(*GHRFunc)		(gpointer	key,
 /* Hash tables
  */
 GHashTable* g_hash_table_new		(GHashFunc	 hash_func,
-					 GCompareFunc	 key_compare_func);
+					 GEqualFunc	 key_equal_func);
 void	    g_hash_table_destroy	(GHashTable	*hash_table);
 void	    g_hash_table_insert		(GHashTable	*hash_table,
 					 gpointer	 key,
@@ -72,7 +72,7 @@ gboolean g_str_equal (gconstpointer   v,
                       gconstpointer   v2);
 guint    g_str_hash  (gconstpointer   v);
 
-gint     g_int_equal (gconstpointer   v,
+gboolean g_int_equal (gconstpointer   v,
                       gconstpointer   v2) G_GNUC_CONST;
 guint    g_int_hash  (gconstpointer   v) G_GNUC_CONST;
 
@@ -82,9 +82,9 @@ guint    g_int_hash  (gconstpointer   v) G_GNUC_CONST;
  * passing NULL into g_hash_table_new() as GHashFunc has the
  * same effect as passing g_direct_hash().
  */
-guint g_direct_hash  (gconstpointer v) G_GNUC_CONST;
-gint  g_direct_equal (gconstpointer v,
-                      gconstpointer v2) G_GNUC_CONST;
+guint    g_direct_hash  (gconstpointer v) G_GNUC_CONST;
+gboolean g_direct_equal (gconstpointer v,
+                         gconstpointer v2) G_GNUC_CONST;
 
 G_END_DECLS
 
