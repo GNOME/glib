@@ -1,3 +1,13 @@
+2002-11-20  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h (g_return_if_fail): 
+	(g_return_val_if_fail): Use G_LIKELY.  (#69022)
+
+	* glib/gmacros.h (G_LIKELY): 
+	(G_UNLIKELY): New macros for hinting the compiler about the
+	expected result of expressions. For gcc 3.x, define these
+	using __builtin_expect.  (#69022)
+
 Tue Nov 19 14:38:18 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_ascii_strtoull): Fix 

@@ -197,4 +197,19 @@
 #define G_CONST_RETURN const
 #endif
 
+/*
+ * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 
+ * the compiler about the expected result of an expression. Some compilers
+ * can use this information for optimizations.
+ */
+#if defined(__GNUC__) && (__GNUC__ > 2)
+#define G_LIKELY(expr) __builtin_expect (!!(expr), 1)
+#define G_UNLIKELY(expr) __builtin_expect (!!(expr), 0)
+#else
+#define G_LIKELY(expr) expr
+#define G_UNLIKELY(expr) expr
+#endif
+
 #endif /* __G_MACROS_H__ */
+
+

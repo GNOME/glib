@@ -237,6 +237,32 @@ See the GNU C documentation for details.
 
 
 
+<!-- ##### MACRO G_LIKELY ##### -->
+<para>
+Hints the compiler that the expression is likely to evaluate to a true
+value. The compiler may use this information for optimizations.
+</para>
+<informalexample><programlisting>
+if (G_LIKELY (random () != 1))
+  g_print ("not one");
+</programlisting></informalexample>
+
+@expr: the expression
+
+
+<!-- ##### MACRO G_UNLIKELY ##### -->
+<para>
+Hints the compiler that the expression is unlikely to evaluate to a true
+value. The compiler may use this information for optimizations.
+</para>
+<informalexample><programlisting>
+if (G_UNLIKELY (random () == 1))
+  g_print ("a random one");
+</programlisting></informalexample>
+
+@expr: the expression
+
+
 <!-- ##### MACRO G_STRLOC ##### -->
 <para>
 Expands to a string identifying the current code position. 
