@@ -1,3 +1,7 @@
+Sat May  1 10:58:57 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* Makefile.am: use -avoid-version and -module for test plugins
+
 Mon Apr 19 08:43:59 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
 
 	* Makefile.am (EXTRA_DIST): Add gmodule-os2.c
