@@ -1,3 +1,11 @@
+2002-11-27  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h: Use G_LIKELY without surrounding parentheses 
+	in g_assert() and g_return_[val]_if_fail() so that we always trigger
+	the gcc warning about "assignment used as truth value".
+
+	* glib/gmacros.h: Always put parentheses in G_LIKELY and G_UNLIKELY.
+
 2002-11-26  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.h: Only use G_LIKELY in g_assert() and 
