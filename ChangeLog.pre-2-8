@@ -1,3 +1,7 @@
+2002-05-22  jacob berkman  <jacob@ximian.com>
+
+	* m4macros/glib-gettext.m4 (AM_GLIB_WITH_NLS): fix tyop
+
 Wed May 22 15:40:47 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* README.in: Remove notes about now-fixed-bugs.
