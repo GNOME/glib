@@ -131,8 +131,6 @@ static GIOError
 g_io_error_get_from_g_error (GIOStatus status,
 			     GError *err)
 {
-  g_return_val_if_fail (err != NULL, G_IO_ERROR_UNKNOWN);
-	
   switch (status)
     {
       case G_IO_STATUS_NORMAL:
@@ -141,6 +139,8 @@ g_io_error_get_from_g_error (GIOStatus status,
       case G_IO_STATUS_AGAIN:
         return G_IO_ERROR_AGAIN;
       case G_IO_STATUS_ERROR:
+	g_return_val_if_fail (err != NULL, G_IO_ERROR_UNKNOWN);
+	
         if (err->domain != G_IO_CHANNEL_ERROR)
           return G_IO_ERROR_UNKNOWN;
         switch (err->code)

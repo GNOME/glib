@@ -1,3 +1,8 @@
+Sun Jun  1 09:42:36 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_error_get_from_g_error): Put 
+	the g_return_val_if_fail() in the right place.
+
 Fri May 31 1:17:45 2003  Ray Strode  <halfline@hawaii.rr.com>
 
 	* glib/giochannel.c (g_io_channel_error_from_errno):
