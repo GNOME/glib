@@ -1,3 +1,10 @@
+Wed Nov 11 23:23:22 EST 1998 Jeff Garzik <jgarzik@pobox.com>
+
+	* Makefile.am : INCLUDES is the right way to add to CFLAGS, not
+	DEFS.  Also there are bugs with '+=' in makefiles.
+	Got rid of DEFS line by moving G_LOG_DOMAIN setting into INCLUDES.
+	Removed redundant -I from INCLUDES.
+
 Wed Nov 11 18:11:24 EST 1998 Gregory McLean <gregm@comstar.net>
 
 	* docs/*.sgml : Batch of new documentation that should be easier
