@@ -316,6 +316,8 @@ g_module_open (const gchar    *file_name,
 	      main_module->next = NULL;
 	    }
 	}
+      else
+	main_module->ref_count++;
 
       g_static_rec_mutex_unlock (&g_module_global_lock);
       return main_module;

@@ -1,3 +1,8 @@
+Tue Dec  3 20:56:19 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gmodule.c (g_module_open): Properly refcount the
+	main module if it is already open. (#98648)
+
 Sat Mar  2 14:46:17 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gmodule-beos.c (_g_module_build_path) * gmodule-dyld.c (_g_module_build_path) 
