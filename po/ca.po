@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# glib translation to Catalan.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Softcatalà <info@softcatala.org>, 2001.
 #
@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-09-25 10:54-0400\n"
-"PO-Revision-Date: 2001-04-30 20:16+0200\n"
+"POT-Creation-Date: 2001-09-25 21:56+0200\n"
+"PO-Revision-Date: 2001-09-23 21:07+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,37 +46,38 @@ msgstr "No es pot convertir el 'fallback' '%s' al joc de codis '%s'"
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "L'URI `%s' no és un URI absolut que utilitzi l'esquema de fitxers"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "Pot ser que l'URI del fitxer local `%s' no inclogui cap `#'"
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "L'URI `%s' no és vàlid"
 
 #: glib/gconvert.c:1238
 #, c-format
 msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
+"El nom de l'ordinador central de l'URI `%s' conté caràcters d'escapada no "
+"vàlida"
 
 #: glib/gconvert.c:1254
 #, c-format
 msgid "The URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "L'URI `%s' conté caràcters d'escapada no vàlida"
 
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "El nom de camí '%s' no és un camí absolut"
 
 #: glib/gconvert.c:1311
-#, fuzzy
 msgid "Invalid byte sequence in hostname"
-msgstr "Seqüència de bytes invàlida en l'entrada de conversió"
+msgstr "Seqüència de bytes invàlida en el nom de l'ordinador central"
 
 #: glib/gfileutils.c:309
 #, c-format
@@ -105,9 +106,9 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "És impossible obrir el fitxer '%s': fdopen() ha fallat: %s"
 
 #: glib/gfileutils.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "La plantilla '%s' és il·legal, no hauria de contenir un '%s'"
+msgstr "La plantilla '%s' no és vàlida, no pot contenir cap '%s'"
 
 #: glib/gfileutils.c:667
 #, c-format
@@ -333,11 +334,11 @@ msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El document ha acabat de manera inesperada enmig d'un valor d'atribut"
 
 #: glib/gmarkup.c:1614
-#, fuzzy, c-format
+#, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
-"El document ha acabat de manera inesperada enmig de l'etiqueta final de "
-"l'element anterior '%s'"
+"El document ha acabat de manera inesperada dins l'etiqueta de tancament de "
+"l'element '%s'"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
