@@ -1,3 +1,7 @@
+Wed Sep  6 10:28:34 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* guniprop.c gunicode.h gutf8.c: Some inline docs fixes.
+
 2000-09-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h, gtimer.c, tests/thread-test.c:

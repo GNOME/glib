@@ -145,7 +145,7 @@ gint     g_utf8_pointer_to_offset (const gchar *str,
 				   const gchar *pos);
 gchar *  g_utf8_prev_char         (const gchar *p);
 gchar *  g_utf8_find_next_char    (const gchar *p,
-				   const gchar *bound);
+				   const gchar *end);
 gchar *  g_utf8_find_prev_char    (const gchar *str,
 				   const gchar *p);
 
@@ -161,9 +161,9 @@ gchar *g_utf8_strncpy (gchar       *dest,
    functions are equivalants to strchr and strrchr */
 
 gchar *g_utf8_strchr  (const gchar *p,
-		       gunichar     ch);
+		       gunichar     c);
 gchar *g_utf8_strrchr (const gchar *p,
-		       gunichar     ch);
+		       gunichar     c);
 
 gunichar2 *g_utf8_to_utf16 (const gchar     *str,
 			    gint             len);

@@ -253,7 +253,7 @@ g_unichar_toupper (gunichar c)
  * 
  * Convert a character to lower case
  * 
-e * Return value: the result of converting @c to lower case.
+ * Return value: the result of converting @c to lower case.
  *               If @c is not an upperlower or titlecase character,
  *               @c is returned unchanged.
  **/
