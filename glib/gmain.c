@@ -1672,7 +1672,10 @@ g_main_context_acquire (GMainContext *context)
   LOCK_CONTEXT (context);
 
   if (!context->owner)
-    context->owner = self;
+    {
+      context->owner = self;
+      g_assert (context->owner_count == 0);
+    }
 
   if (context->owner == self)
     {
@@ -1701,8 +1704,6 @@ void
 g_main_context_release (GMainContext *context)
 {
 #ifdef G_THREAD_ENABLED
-  GMainWaiter *waiter_to_notify = NULL;
-
   if (context == NULL)
     context = g_main_context_default ();
   
@@ -1715,29 +1716,22 @@ g_main_context_release (GMainContext *context)
 
       if (context->waiters)
 	{
-	  waiter_to_notify = context->waiters;
+	  GMainWaiter *waiter = context->waiters->data;
+	  gboolean loop_internal_waiter =
+	    (waiter->mutex == g_static_mutex_get_mutex (&context->mutex));
 	  context->waiters = g_slist_delete_link (context->waiters,
 						  context->waiters);
+	  if (!loop_internal_waiter)
+	    g_mutex_lock (waiter->mutex);
+	  
+	  g_cond_signal (waiter->cond);
+	  
+	  if (!loop_internal_waiter)
+	    g_mutex_unlock (waiter->mutex);
 	}
     }
 
-  if (waiter_to_notify)
-    {
-      gboolean loop_internal_waiter =
-	(waiter_to_notify->mutex == g_static_mutex_get_mutex (&context->mutex));
-
-      if (!loop_internal_waiter)
-	g_mutex_lock (waiter_to_notify->mutex);
-      
-      g_cond_signal (waiter_to_notify->cond);
-      
-      if (!loop_internal_waiter)
-	g_mutex_unlock (waiter_to_notify->mutex);
-      else
-	UNLOCK_CONTEXT (context); 
-    }
-  else
-    UNLOCK_CONTEXT (context); 
+  UNLOCK_CONTEXT (context); 
 
   return result;
 #endif /* G_THREAD_ENABLED */
@@ -1796,7 +1790,10 @@ g_main_context_wait (GMainContext *context,
     }
 
   if (!context->owner)
-    context->owner = self;
+    {
+      context->owner = self;
+      g_assert (context->owner_count == 0);
+    }
 
   if (context->owner == self)
     {
@@ -2384,7 +2381,6 @@ g_main_loop_run (GMainLoop *loop)
 	{
 	  g_warning ("g_main_loop_run() was called from second thread but"
 		     "g_thread_init() was never called.");
-	  UNLOCK_CONTEXT (loop->context);
 	  return;
 	}
       
@@ -2405,9 +2401,10 @@ g_main_loop_run (GMainLoop *loop)
       
       if (!loop->is_running)
 	{
+	  UNLOCK_CONTEXT (loop->context);
 	  if (got_ownership)
 	    g_main_context_release (loop->context);
-	  g_main_loop_unref_and_unlock (loop);
+	  g_main_loop_unref (loop);
 	  return;
 	}
 
