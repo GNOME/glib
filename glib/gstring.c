@@ -257,7 +257,7 @@ g_string_free (GString *string,
 {
   gchar *segment;
 
-  g_return_if_fail (string != NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
   if (free_segment)
     {

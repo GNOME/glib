@@ -1,5 +1,9 @@
 2000-09-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gstring.c (g_string_free): Use g_return_val_if_fail instead of
+	g_return_if_fail, as the function now is supposed to return
+	something.
+	
 	* gerror.c, gerror.h (g_propagte_error): Added function
 	g_propagte_error to hand over local errors to the calling
 	function.
