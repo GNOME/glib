@@ -34,15 +34,6 @@
 
 #include "config.h"
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <errno.h>
-#include <linux/unistd.h>
-_syscall0(pid_t,gettid)
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -86,23 +77,7 @@ struct  _GRealThread
   gpointer private_data;
   gpointer retval;
   GSystemThread system_thread;
-#ifdef G_THREAD_USE_PID_SURROGATE
-  pid_t tid;
-#endif /* G_THREAD_USE_PID_SURROGATE */
 };
-
-#ifdef G_THREAD_USE_PID_SURROGATE
-static gint priority_map[4];
-static gboolean prio_warned = FALSE;
-# define SET_PRIO(tid, prio) G_STMT_START{				\
-  gint error = setpriority (PRIO_PROCESS, (tid), priority_map[prio]);	\
-  if (error == -1 && errno == EACCES && !prio_warned)			\
-    {									\
-      prio_warned = TRUE;						\
-      g_warning ("Priorities can only be increased by root.");		\
-    }									\
-  }G_STMT_END
-#endif /* G_THREAD_USE_PID_SURROGATE */
 
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 struct _GStaticPrivateNode
@@ -179,17 +154,6 @@ g_thread_init_glib (void)
   _g_mem_thread_init ();
   _g_messages_thread_init ();
   
-#ifdef G_THREAD_USE_PID_SURROGATE
-  priority_map[G_THREAD_PRIORITY_NORMAL] = 
-    getpriority (PRIO_PROCESS, (gettid ()));
-  priority_map[G_THREAD_PRIORITY_LOW] = 
-    MIN (20, priority_map[G_THREAD_PRIORITY_NORMAL] + 10);
-  priority_map[G_THREAD_PRIORITY_HIGH] = 
-    MAX (-20, priority_map[G_THREAD_PRIORITY_NORMAL] - 10);
-  priority_map[G_THREAD_PRIORITY_URGENT] = 
-    MAX (-20, priority_map[G_THREAD_PRIORITY_NORMAL] - 15);
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
   g_threads_got_initialized = TRUE;
 
   g_thread_specific_private = g_private_new (g_thread_cleanup);
@@ -583,10 +547,6 @@ g_thread_create_proxy (gpointer data)
 
   g_assert (data);
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-  thread->tid = gettid ();
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (g_thread_specific_private, data);
 
@@ -595,11 +555,6 @@ g_thread_create_proxy (gpointer data)
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
  
-#ifdef G_THREAD_USE_PID_SURROGATE
-  if (g_thread_use_default_impl)
-    SET_PRIO (thread->tid, thread->thread.priority);
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
   thread->retval = thread->thread.func (thread->thread.data);
 
   return NULL;
@@ -697,13 +652,8 @@ g_thread_set_priority (GThread* thread,
 
   thread->priority = priority;
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-  if (g_thread_use_default_impl)
-    SET_PRIO (real->tid, priority);
-  else
-#endif /* G_THREAD_USE_PID_SURROGATE */
-    G_THREAD_CF (thread_set_priority, (void)0, 
-		 (&real->system_thread, priority));
+  G_THREAD_CF (thread_set_priority, (void)0, 
+	       (&real->system_thread, priority));
 }
 
 GThread*
@@ -727,10 +677,6 @@ g_thread_self (void)
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-      thread->tid = gettid ();
-#endif /* G_THREAD_USE_PID_SURROGATE */
-      
       g_private_set (g_thread_specific_private, thread); 
       
       G_LOCK (g_thread);

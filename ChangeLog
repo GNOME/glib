@@ -1,5 +1,9 @@
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
+	* configure.in, config.h.win32.in, glib/gthread.c: Removed the PID
+	niceness surrogate for thread priorities as requested by Tim. It
+	does more harm than good.
+
 	* glib/gatomic.c, glib/gatomic.h: New files to implement atomic
 	operations for different platforms. Fixes bug #63621.
 

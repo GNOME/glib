@@ -1,5 +1,8 @@
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
+        * glib/tmpl/threads.sgml: Updated to reflect removal of the PID
+	niceness surrogate for thread priorities.
+
 	* glib/glib-overrides.txt, glib/glib-sections.txt,
 	glib/glib-docs.sgml, glib/tmpl/atomic_operations.sgml: Add docs
 	for atomic operations.

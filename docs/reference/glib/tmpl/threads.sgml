@@ -236,7 +236,7 @@ Specifies the priority of a thread.
 <note>
 <para>
 It is not guaranteed, that threads with different priorities really
-behave accordingly. On some systems (e.g. Linux) only root can increase
+behave accordingly. On some systems (e.g. Linux) there are no thread
 priorities. On other systems (e.g. Solaris) there doesn't seem to be
 different scheduling for different priorities. All in all try to avoid
 being dependent on priorities.
@@ -320,7 +320,7 @@ error is set, if and only if the function returns %NULL.
 <note>
 <para>
 It is not guaranteed, that threads with different priorities really
-behave accordingly. On some systems (e.g. Linux) only root can increase
+behave accordingly. On some systems (e.g. Linux) there are no thread
 priorities. On other systems (e.g. Solaris) there doesn't seem to be
 different scheduling for different priorities. All in all try to avoid
 being dependent on priorities. Use %G_THREAD_PRIORITY_NORMAL here as a
@@ -377,7 +377,7 @@ Changes the priority of @thread to @priority.
 <note>
 <para>
 It is not guaranteed, that threads with different priorities really
-behave accordingly. On some systems (e.g. Linux) only root can increase
+behave accordingly. On some systems (e.g. Linux) there are no thread
 priorities. On other systems (e.g. Solaris) there doesn't seem to be
 different scheduling for different priorities. All in all try to avoid
 being dependent on priorities.
@@ -1613,8 +1613,6 @@ Any one-time initialization function must have its own unique <structname>GOnce<
 struct.
 </para>
 
-@status: 
-@retval: 
 @Since: 2.4
 
 <!-- ##### ENUM GOnceStatus ##### -->

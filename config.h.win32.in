@@ -72,9 +72,6 @@
 /* Source file containing theread implementation */
 #define G_THREAD_SOURCE "gthread-win32.c"
 
-/* whether to use the PID niceness surrogate for thread priorities */
-/* #undef G_THREAD_USE_PID_SURROGATE */
-
 /* A 'va_copy' style function */
 #ifndef _MSC_VER
 #define G_VA_COPY va_copy

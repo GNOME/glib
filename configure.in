@@ -1761,35 +1761,6 @@ int main () {
 		fi
 		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func,[The POSIX RT yield function])
 		CPPFLAGS="$glib_save_CPPFLAGS"
-
-		AC_CACHE_CHECK([whether to use the PID niceness surrogate for thread priorities], 
-                               glib_cv_use_pid_surrogate, 
-                 [AC_TRY_RUN([
-#include <pthread.h> 
-#include <sys/types.h>
-#include <linux/unistd.h>
-#include <unistd.h> 
-_syscall0(pid_t,gettid)
-
-pid_t other_pid = 0;
-
-void* func(void* data) {other_pid = gettid();}
-main()
-{ pthread_t t; 
-  void *ret;
-  pthread_create (&t, 0, func, NULL);
-  pthread_join (t, &ret);
-  exit (gettid()==other_pid || 
-	$posix_priority_min != $posix_priority_max);
-}               ],
-		[glib_cv_use_pid_surrogate=yes],
-                [glib_cv_use_pid_surrogate=no],
-                [])])
-	  GLIB_ASSERT_SET(glib_cv_use_pid_surrogate)
-          if test "$glib_cv_use_pid_surrogate" = "yes" ; then
-	    AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, 
-                      [whether to use the PID niceness surrogate for thread priorities])
-          fi
            
 	elif test x"$have_threads" = xwin32; then
 		# It's a pointer to a private struct
@@ -1864,11 +1835,11 @@ if test $mutex_has_default = yes ; then
 	LIBS="$glib_save_LIBS"
 fi
 
-dnl *****************************
-dnl *** GAtomic tests for gcc ***
-dnl *****************************
+dnl ********************************
+dnl *** g_atomic_* tests for gcc ***
+dnl ********************************
 
-AC_MSG_CHECKING([whether to use inline assembler routines for atomic integers])
+AC_MSG_CHECKING([whether to use inline assembler code for atomic operations])
 
 if test x"$GCC" = xyes; then
   case $host_cpu in
