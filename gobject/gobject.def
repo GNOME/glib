@@ -95,6 +95,7 @@ EXPORTS
 	g_param_spec_string
 	g_param_spec_stringc
 	g_param_spec_uchar
+	g_param_spec_unichar
 	g_param_spec_uint
 	g_param_spec_ulong
 	g_param_spec_unref
@@ -132,6 +133,7 @@ EXPORTS
 	g_signal_remove_emission_hook
 	g_signal_stop_emission
 	g_signal_type_cclosure_new
+	g_slist_remove_all
 	g_strdup_value_contents
 	g_type_add_class_cache_func
 	g_type_add_interface_dynamic
@@ -185,6 +187,7 @@ EXPORTS
 	g_type_set_qdata
 ;	g_type_value_is_a
 	g_type_value_table_peek
+	g_unichar_validate
 ;	g_value_convert
 	g_value_copy
 	g_value_dup_boxed

@@ -1,3 +1,7 @@
+2001-04-14  Hans Breuer  <hans@breuer.org>
+
+	* gobject.def : updated
+
 Mon Apr  9 18:56:15 2001  Tim Janik  <timj@gtk.org>
 
 	* gclosure.c (g_closure_invoke): only require marshal/meta_marshal if
