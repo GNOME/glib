@@ -87,7 +87,7 @@ g_get_charset()) with the g_io_channel_set_encoding() function.
 </para>
 <para>
 If you want to read raw binary data without interpretation, then
-call the g_io_charset_set_encoding() function with %NULL for the
+call the g_io_channel_set_encoding() function with %NULL for the
 encoding argument.
 </para>
 
