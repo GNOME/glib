@@ -1,3 +1,7 @@
+2001-10-11  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/patterns.sgml, glib/tmpl/shell.sgml: Updates.
+
 2001-10-05  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/hooks.sgml: Document G_HOOK_FLAG_USER_SHIFT.

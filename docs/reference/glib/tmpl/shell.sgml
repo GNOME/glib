@@ -42,9 +42,6 @@ error domains.
 @argvp: 
 @error: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@argc: 
-@argv: 
 
 
 <!-- ##### FUNCTION g_shell_quote ##### -->

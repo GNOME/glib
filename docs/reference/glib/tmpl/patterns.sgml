@@ -11,11 +11,16 @@ The <function>g_pattern_match*</function> functions match a string
 against a pattern containing '*' and '?' wildcards with similar semantics 
 as the standard <function>glob()</function> function: '*' matches an
 arbitrary, possibly empty, string, '?' matches an arbitrary character.
-Note that in contrast to <function>glob()</function>, the '/' character
-<emphasis>can</emphasis> be matched by the wildcards. 
 </para>
 <para>
-There is no way to include literal '*' or '?' characters in a pattern. 
+Note that in contrast to <function>glob()</function>, the '/' character
+<emphasis>can</emphasis> be matched by the wildcards, there are no
+'[...]' character ranges and '*', '?' and '[' can <emphasis>not</emphasis>
+be escaped to include them literally in a pattern. 
+</para>
+<para>
+The pattern matcher is restricted to ASCII and will not work correctly with
+multibyte UTF-8 characters in the pattern or in the string to match.
 </para>
 <para>
 When multiple string must be matched against the same pattern, it
