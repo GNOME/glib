@@ -1,8 +1,27 @@
+Overview of Changes from GLib 2.3.1 to GLib 2.3.2
+=================================================
+
+* Add G_MAXSIZE.  [Manish Singh]
+* Add g_rand_new_with_seed_array(), g_rand_set_seed_array(),
+  implementing the init-by-array functionality of the 
+  original mersenne twister. [George Lebl]
+* Add a lowercase_name option to glib-mkenums. [Murray Cumming]
+* Add g_ptr_array_foreach(). [Matthias Clasen]
+* Fix a threadsafety issue in mem chunks. [Matthias]
+* Fix g_filename_{to,from}_utf8() on Win32 and improve 
+  g_file_test() there too [Hans Breuer] 
+* Add a boxed type for NULL-terminated string arrays.  [Matthias]
+* Add G_DEFINE_TYPE() plus variants to ease the constuction
+  of GObject boilerplate code.  [Tim Janik]
+* Documentation improvements [Matthias, Manish]
+* Misc bug fixes [Manish, Matthias, Owen Taylor]
+* Updated translations (ar,nn,fa,de,mn,no,ga)
+
 Overview of Changes from GLib 2.3.0 to GLib-2.3.1
 =================================================
 
 * Add glib/gi18n.h and glib/gi18n-lib.h for common
-  gettext suport, including a Q() macro for translation
+  gettext support, including a Q_() macro for translation
   with context [Matthias Clasen]
 * Add a more flexible G_FILENAME_ENCODING variable
   as a replacement for G_BROKEN_FILENAMES [Matthias]

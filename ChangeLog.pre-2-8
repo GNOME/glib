@@ -1,3 +1,7 @@
+Tue Jan 20 22:31:22 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Start of 2.3.2 section.
+
 Fri Jan 16 21:45:56 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstring.c (g_string_ascii_up): Forgot to fix this one.
