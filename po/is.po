@@ -258,13 +258,14 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Underlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
+"Undarlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
 
 #: glib/gmarkup.c:1150
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""o"Underlegt tákn '%s', átti von á '=' eftir heiti eiginleika '%s' af mengi '%s'"
+msgstr ""
+"Undarlegt tákn '%s', átti von á '=' eftir heiti eiginleika '%s' af mengi '%s'"
 
 #: glib/gmarkup.c:1191
 #, c-format
@@ -273,6 +274,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"Undarlegt tákn '%s', átti von á '>' eða '/' tákni rtil þess að enda upphafs "
+"viðfangi '%s', eða eiginleika; Þú notaðir ef til vill ógilt tákn í heiti "
+"eiginleika"
 
 #: glib/gmarkup.c:1274
 #, c-format
