@@ -41,7 +41,7 @@ typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
 					 gpointer               data);
 
 
-/* --- run & match types --- */
+/* --- run, match and connect types --- */
 typedef enum
 {
   G_SIGNAL_RUN_FIRST	= 1 << 0,
@@ -53,6 +53,11 @@ typedef enum
   G_SIGNAL_NO_HOOKS	= 1 << 6
 } GSignalFlags;
 #define G_SIGNAL_FLAGS_MASK  0x7f
+typedef enum
+{
+  G_CONNECT_AFTER	= 1 << 0,
+  G_CONNECT_SWAPPED	= 1 << 1
+} GConnectFlags;
 typedef enum
 {
   G_SIGNAL_MATCH_ID	   = 1 << 0,
@@ -106,7 +111,7 @@ guint                 g_signal_new_valist   (const gchar        *signal_name,
 					     GType               return_type,
 					     guint               n_params,
 					     va_list             args);
-guint                 g_signal_newc         (const gchar        *signal_name,
+guint                 g_signal_new          (const gchar        *signal_name,
 					     GType               itype,
 					     GSignalFlags        signal_flags,
 					     guint               class_offset,
@@ -179,8 +184,7 @@ gulong	 g_signal_connect_data		      (gpointer		  instance,
 					       GCallback	  c_handler,
 					       gpointer		  data,
 					       GClosureNotify	  destroy_data,
-					       gboolean		  swapped,
-					       gboolean		  after);
+					       GConnectFlags	  connect_flags);
 void	 g_signal_handler_block		      (gpointer		  instance,
 					       gulong		  handler_id);
 void	 g_signal_handler_unblock	      (gpointer		  instance,
@@ -220,22 +224,30 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 
 
 /* --- convenience --- */
-#define g_signal_connectc(instance, detailed_signal, c_handler, data, swapped) \
-    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (swapped), FALSE)
 #define g_signal_connect(instance, detailed_signal, c_handler, data) \
-    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, FALSE, FALSE)
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, 0)
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
-    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, TRUE, FALSE)
-#define	g_signal_disconnect_by_func(instance, func, data) \
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
+#define	g_signal_handlers_disconnect_by_func(instance, func, data) \
     g_signal_handlers_disconnect_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
 					  0, 0, NULL, (func), (data))
-#define	g_signal_block_by_func(instance, func, data) \
+#define	g_signal_handlers_block_by_func(instance, func, data) \
     g_signal_handlers_block_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
 				     0, 0, NULL, (func), (data))
-#define	g_signal_unblock_by_func(instance, func, data) \
+#define	g_signal_handlers_unblock_by_func(instance, func, data) \
     g_signal_handlers_unblock_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
 				       0, 0, NULL, (func), (data))
-     
+
+#ifndef	G_DISABLE_COMPAT
+/* tmp compat, to be nuked soon */
+#define g_signal_connectc(instance, detailed_signal, c_handler, data, swapped) \
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (swapped)?G_CONNECT_SWAPPED:0);
+#define	g_signal_newc	g_signal_new
+#define	g_signal_disconnect_by_func 	g_signal_handlers_disconnect_by_func
+#define	g_signal_block_by_func		g_signal_handlers_block_by_func
+#define	g_signal_unblock_by_func	g_signal_handlers_unblock_by_func
+#endif
+
 /*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);

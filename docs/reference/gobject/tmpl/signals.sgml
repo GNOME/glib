@@ -207,11 +207,13 @@ filled in by the g_signal_query() function.
 
 
 
-<!-- ##### FUNCTION g_signal_newc ##### -->
+<!-- ##### MACRO g_signal_newc ##### -->
 <para>
 
 </para>
 
+@Returns: 
+<!-- # Unused Parameters # -->
 @signal_name: 
 @itype: 
 @signal_flags: 
@@ -222,7 +224,6 @@ filled in by the g_signal_query() function.
 @return_type: 
 @n_params: 
 @Varargs: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_signal_newv ##### -->
@@ -360,9 +361,11 @@ g_signal_query().
 @c_handler: 
 @data: 
 @destroy_data: 
+@connect_flags: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @swapped: 
 @after: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_signal_connect_object ##### -->
@@ -374,9 +377,11 @@ g_signal_query().
 @detailed_signal: 
 @c_handler: 
 @gobject: 
+@connect_flags: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @swapped: 
 @after: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_signal_connect_closure ##### -->

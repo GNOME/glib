@@ -23,6 +23,7 @@
 #include        <gobject/gvalue.h>
 #include        <gobject/gparam.h>
 #include        <gobject/gclosure.h>
+#include        <gobject/gsignal.h>
 
 G_BEGIN_DECLS
 
@@ -184,8 +185,7 @@ guint	    g_signal_connect_object           (gpointer	       instance,
 					       const gchar    *detailed_signal,
 					       GCallback       c_handler,
 					       gpointer	       gobject,
-					       gboolean        swapped,
-					       gboolean        after);
+					       GConnectFlags   connect_flags);
 
 
 /* --- implementation macros --- */

@@ -726,7 +726,7 @@ pool_list (gpointer key,
 }
 
 GList*
-g_param_spec_pool_belongings (GParamSpecPool *pool,
+g_param_spec_pool_list_owned (GParamSpecPool *pool,
 			      GType           owner_type)
 {
   gpointer data[2];

@@ -1,3 +1,22 @@
+Thu Jun 28 16:42:49 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (g_signal_lookup): 
+	(g_signal_list_ids): give elaborate warnings about invalid types,
+	non-instantiatable types and unloaded types that we can't operate on.
+
+	* gparam.[hc]: g_param_spec_pool_belongings() ->
+	g_param_spec_pool_list_owned().
+
+	* gsignal.[hc]: renamed:
+	g_signal_newc -> g_signal_new
+	g_signal_disconnect_by_func -> g_signal_handlers_disconnect_by_func
+	g_signal_block_by_func -> g_signal_handlers_block_by_func
+	g_signal_unblock_by_func -> g_signal_handlers_unblock_by_func
+	added GConnectType to simplify (..gboolean swapped, gboolean after)
+	args.
+
+	* gobject.[hc]: changed prototypes accordingly.
+
 2001-06-22  Hans Breuer  <hans@breuer.org>
 
 	* gobject.def : updated externals

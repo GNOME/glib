@@ -943,8 +943,68 @@ g_signal_lookup (const gchar *name,
   SIGNAL_LOCK ();
   signal_id = signal_id_lookup (g_quark_try_string (name), itype);
   SIGNAL_UNLOCK ();
+  if (!signal_id)
+    {
+      /* give elaborate warnings */
+      if (!g_type_name (itype))
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id `%u'",
+		   name, itype);
+      else if (!G_TYPE_IS_INSTANTIATABLE (itype))
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for non instantiatable type `%s'",
+		   name, g_type_name (itype));
+      else if (!g_type_class_peek (itype))
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" of unloaded type `%s'",
+		   name, g_type_name (itype));
+    }
   
   return signal_id;
+}
+
+guint*
+g_signal_list_ids (GType  itype,
+		   guint *n_ids)
+{
+  SignalKey *keys;
+  GArray *result;
+  guint n_nodes;
+  guint i;
+  
+  g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), NULL);
+  g_return_val_if_fail (n_ids != NULL, NULL);
+  
+  SIGNAL_LOCK ();
+  keys = g_signal_key_bsa.nodes;
+  n_nodes  = g_signal_key_bsa.n_nodes;
+  result = g_array_new (FALSE, FALSE, sizeof (guint));
+  
+  for (i = 0; i < n_nodes; i++)
+    if (keys[i].itype == itype)
+      {
+	const gchar *name = g_quark_to_string (keys[i].quark);
+	
+	/* Signal names with "_" in them are aliases to the same
+	 * name with "-" instead of "_".
+	 */
+	if (!strchr (name, '_'))
+	  g_array_append_val (result, keys[i].signal_id);
+      }
+  *n_ids = result->len;
+  SIGNAL_UNLOCK ();
+  if (!n_nodes)
+    {
+      /* give elaborate warnings */
+      if (!g_type_name (itype))
+	g_warning (G_STRLOC ": unable to list signals for invalid type id `%u'",
+		   itype);
+      else if (!G_TYPE_IS_INSTANTIATABLE (itype))
+	g_warning (G_STRLOC ": unable to list signals of non instantiatable type `%s'",
+		   g_type_name (itype));
+      else if (!g_type_class_peek (itype))
+	g_warning (G_STRLOC ": unable to list signals of unloaded type `%s'",
+		   g_type_name (itype));
+    }
+  
+  return (guint*) g_array_free (result, FALSE);
 }
 
 G_CONST_RETURN gchar*
@@ -986,43 +1046,6 @@ g_signal_query (guint         signal_id,
   SIGNAL_UNLOCK ();
 }
 
-guint*
-g_signal_list_ids (GType  itype,
-		   guint *n_ids)
-{
-  SignalKey *keys;
-  GArray *result;
-  guint n_nodes;
-  guint i;
-  
-  g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), NULL);
-  g_return_val_if_fail (n_ids != NULL, NULL);
-  
-  SIGNAL_LOCK ();
-  
-  keys = g_signal_key_bsa.nodes;
-  n_nodes  = g_signal_key_bsa.n_nodes;
-  result = g_array_new (FALSE, FALSE, sizeof (guint));
-  
-  for (i = 0; i < n_nodes; i++)
-    if (keys[i].itype == itype)
-      {
-	const gchar *name = g_quark_to_string (keys[i].quark);
-	
-	/* Signal names with "_" in them are aliases to the same
-	 * name with "-" instead of "_".
-	 */
-	if (!strchr (name, '_'))
-	  g_array_append_val (result, keys[i].signal_id);
-      }
-  
-  *n_ids = result->len;
-  
-  SIGNAL_UNLOCK ();
-  
-  return (guint*) g_array_free (result, FALSE);
-}
-
 guint
 g_signal_new_valist (const gchar       *signal_name,
                      GType              itype,
@@ -1058,16 +1081,16 @@ g_signal_new_valist (const gchar       *signal_name,
 }
 
 guint
-g_signal_newc (const gchar	 *signal_name,
-               GType		  itype,
-               GSignalFlags	  signal_flags,
-               guint              class_offset,
-	       GSignalAccumulator accumulator,
-	       gpointer		  accu_data,
-               GSignalCMarshaller c_marshaller,
-               GType		  return_type,
-               guint		  n_params,
-               ...)
+g_signal_new (const gchar	 *signal_name,
+	      GType		  itype,
+	      GSignalFlags	  signal_flags,
+	      guint               class_offset,
+	      GSignalAccumulator  accumulator,
+	      gpointer		  accu_data,
+	      GSignalCMarshaller  c_marshaller,
+	      GType		  return_type,
+	      guint		  n_params,
+	      ...)
 {
   va_list args;
   guint signal_id;
@@ -1350,17 +1373,20 @@ g_signal_connect_data (gpointer       instance,
 		       GCallback      c_handler,
 		       gpointer       data,
 		       GClosureNotify destroy_data,
-		       gboolean       swapped,
-		       gboolean       after)
+		       GConnectFlags  connect_flags)
 {
   guint signal_id;
   gulong handler_seq_no = 0;
   GQuark detail = 0;
   GType itype;
-
+  gboolean swapped, after;
+  
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail (detailed_signal != NULL, 0);
   g_return_val_if_fail (c_handler != NULL, 0);
+
+  swapped = (connect_flags & G_CONNECT_SWAPPED) != FALSE;
+  after = (connect_flags & G_CONNECT_AFTER) != FALSE;
 
   SIGNAL_LOCK ();
   itype = G_TYPE_FROM_INSTANCE (instance);

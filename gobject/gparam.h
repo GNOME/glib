@@ -172,7 +172,7 @@ GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
 						 const gchar	*param_name,
 						 GType		 owner_type,
 						 gboolean	 walk_ancestors);
-GList*		g_param_spec_pool_belongings	(GParamSpecPool	*pool,
+GList*		g_param_spec_pool_list_owned	(GParamSpecPool	*pool,
 						 GType		 owner_type);
 GParamSpec**	g_param_spec_pool_list		(GParamSpecPool	*pool,
 						 GType		 owner_type,
@@ -192,8 +192,8 @@ GParamSpec**	g_param_spec_pool_list		(GParamSpecPool	*pool,
  * gint values_cmp (GParamSpec   *pspec,
  *                  const GValue *value1,
  *                  const GValue *value2):
- *	return value1 - value2, i.e. <0 if value1 < value2,
- *	>0 if value1 > value2, and 0 otherwise (they are equal)
+ *	return value1 - value2, i.e. (-1) if value1 < value2,
+ *	(+1) if value1 > value2, and (0) otherwise (equality)
  */
 
 G_END_DECLS

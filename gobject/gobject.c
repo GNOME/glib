@@ -212,7 +212,7 @@ g_object_base_class_finalize (GObjectClass *class)
 
   g_slist_free (class->construct_properties);
   class->construct_properties = NULL;
-  list = g_param_spec_pool_belongings (pspec_pool, G_OBJECT_CLASS_TYPE (class));
+  list = g_param_spec_pool_list_owned (pspec_pool, G_OBJECT_CLASS_TYPE (class));
   for (node = list; node; node = node->next)
     {
       GParamSpec *pspec = node->data;
@@ -1073,19 +1073,19 @@ g_object_connect (gpointer     _object,
       if (strncmp (signal_spec, "signal::", 8) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 8,
 				     callback, data, NULL,
-				     FALSE, FALSE);
+				     0);
       else if (strncmp (signal_spec, "swapped_signal::", 16) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 16,
 				     callback, data, NULL,
-				     TRUE, FALSE);
+				     G_CONNECT_SWAPPED);
       else if (strncmp (signal_spec, "signal_after::", 14) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 14,
 				     callback, data, NULL,
-				     FALSE, TRUE);
+				     G_CONNECT_AFTER);
       else if (strncmp (signal_spec, "swapped_signal_after::", 22) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 22,
 				     callback, data, NULL,
-				     TRUE, TRUE);
+				     G_CONNECT_SWAPPED | G_CONNECT_AFTER);
       else
 	{
 	  g_warning ("%s: invalid signal spec \"%s\"", G_STRLOC, signal_spec);
@@ -1408,12 +1408,11 @@ g_value_dup_object (const GValue *value)
 }
 
 guint
-g_signal_connect_object (gpointer     instance,
-			 const gchar *detailed_signal,
-			 GCallback    c_handler,
-			 gpointer     gobject,
-			 gboolean     swapped,
-			 gboolean     after)
+g_signal_connect_object (gpointer      instance,
+			 const gchar  *detailed_signal,
+			 GCallback     c_handler,
+			 gpointer      gobject,
+			 GConnectFlags connect_flags)
 {
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail (detailed_signal != NULL, 0);
@@ -1425,12 +1424,12 @@ g_signal_connect_object (gpointer     instance,
 
       g_return_val_if_fail (G_IS_OBJECT (gobject), 0);
 
-      closure = (swapped ? g_cclosure_new_object_swap : g_cclosure_new_object) (c_handler, gobject);
+      closure = ((connect_flags & G_CONNECT_SWAPPED) ? g_cclosure_new_object_swap : g_cclosure_new_object) (c_handler, gobject);
 
-      return g_signal_connect_closure (instance, detailed_signal, closure, after);
+      return g_signal_connect_closure (instance, detailed_signal, closure, connect_flags & G_CONNECT_AFTER);
     }
   else
-    return g_signal_connect_data (instance, detailed_signal, c_handler, NULL, NULL, swapped, after);
+    return g_signal_connect_data (instance, detailed_signal, c_handler, NULL, NULL, connect_flags);
 }
 
 typedef struct {
