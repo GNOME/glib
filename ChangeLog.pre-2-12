@@ -1,3 +1,15 @@
+2001-04-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmain.c: Use the new GRealThread member "context" instead of a
+	GStaticPrivate to store the thread specific main loop context.
+
+	* gthread.c: Added "context" member to GRealThread and updated
+	g_thread_create, g_thread_self and g_thread_cleanup accordingly.
+	
+	* gthread.c, gthread.h: Removed the functions
+	g_static_private_(get|set)_for_thread and adapted
+	g_static_private_(get|set) and g_static_private_free accordingly.
+	
 2001-03-30  Sven Neumann  <sven@gimp.org>
 
 	* ghash.[ch]

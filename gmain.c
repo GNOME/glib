@@ -496,7 +496,7 @@ g_poll (GPollFD *fds,
 
 /* Called to clean up when a thread terminates
  */
-static void
+void
 g_main_context_destroy (GMainContext *context)
 {
   GSource *source;
@@ -538,6 +538,18 @@ g_main_context_destroy (GMainContext *context)
   g_free (context);
 }
 
+/* This is an imcomplete (only the members up till context) version of
+ * GRealThread from gthread.h. Keep them in sync */
+typedef struct _GRealThread GRealThread;
+struct  _GRealThread
+{
+  GThread thread;
+  GThreadFunc func;
+  gpointer arg;
+  gpointer private_data;
+  GMainContext *context;
+};
+
 /**
  * g_main_context_get:
  * @thread: a #GThread
@@ -551,13 +563,13 @@ g_main_context_destroy (GMainContext *context)
 GMainContext *
 g_main_context_get (GThread *thread)
 {
-  static GStaticPrivate private_key = G_STATIC_PRIVATE_INIT;
+  GRealThread *real_thread = (GRealThread*)thread;
   GMainContext *context;
 
   g_return_val_if_fail (thread != NULL, NULL);
 
   if (g_thread_supported ())
-    context = g_static_private_get_for_thread (&private_key, thread);
+    context = real_thread->context;
   else
     context = default_main_context;
 
@@ -616,9 +628,7 @@ g_main_context_get (GThread *thread)
 #endif
 
       if (g_thread_supported ())
-	g_static_private_set_for_thread (&private_key, thread,
-					 context,
-					 (GDestroyNotify)g_main_context_destroy);
+	real_thread->context = context;
       else
 	default_main_context = context;
     }

@@ -229,12 +229,6 @@ gpointer g_static_private_get            (GStaticPrivate   *private_key);
 void     g_static_private_set            (GStaticPrivate   *private_key,
 					  gpointer          data,
 					  GDestroyNotify    notify);
-gpointer g_static_private_get_for_thread (GStaticPrivate   *private_key,
-                                          GThread          *thread);
-void     g_static_private_set_for_thread (GStaticPrivate   *private_key,
-					  GThread          *thread,
-					  gpointer          data,
-					  GDestroyNotify    notify);
 void     g_static_private_free           (GStaticPrivate   *private_key);
 
 typedef struct _GStaticRecMutex GStaticRecMutex;

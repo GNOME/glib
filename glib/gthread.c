@@ -69,6 +69,7 @@ g_thread_error_quark (void)
   return quark;
 }
 
+/* Keep this in sync with GRealThread in gmain.c! */
 typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
@@ -76,6 +77,7 @@ struct  _GRealThread
   GThreadFunc func;
   gpointer arg;
   gpointer private_data;
+  GMainContext *context;
   GSystemThread system_thread;
 #ifdef G_THREAD_USE_PID_SURROGATE
   pid_t pid;
@@ -346,17 +348,8 @@ g_static_private_init (GStaticPrivate *private_key)
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
 {
-  return g_static_private_get_for_thread (private_key, g_thread_self ());
-}
-
-gpointer
-g_static_private_get_for_thread (GStaticPrivate *private_key,
-				 GThread        *thread)
-{
+  GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
-  GRealThread *self = (GRealThread*) thread;
-
-  g_return_val_if_fail (thread, NULL);
 
   array = self->private_data;
   if (!array)
@@ -365,7 +358,8 @@ g_static_private_get_for_thread (GStaticPrivate *private_key,
   if (!private_key->index)
     return NULL;
   else if (private_key->index <= array->len)
-    return g_array_index (array, GStaticPrivateNode, private_key->index - 1).data;
+    return g_array_index (array, GStaticPrivateNode, 
+			  private_key->index - 1).data;
   else
     return NULL;
 }
@@ -375,23 +369,11 @@ g_static_private_set (GStaticPrivate *private_key,
 		      gpointer        data,
 		      GDestroyNotify  notify)
 {
-  g_static_private_set_for_thread (private_key, g_thread_self (), 
-				   data, notify);
-}
-
-void
-g_static_private_set_for_thread (GStaticPrivate *private_key, 
-				 GThread        *thread,
-				 gpointer        data,
-				 GDestroyNotify  notify)
-{
+  GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
-  GRealThread *self =(GRealThread*) thread;
   static guint next_index = 0;
   GStaticPrivateNode *node;
 
-  g_return_if_fail (thread);
-  
   array = self->private_data;
   if (!array)
     {
@@ -444,31 +426,47 @@ g_static_private_set_for_thread (GStaticPrivate *private_key,
 void     
 g_static_private_free (GStaticPrivate *private_key)
 {
-  GStaticPrivate copied_key;
+  guint index = private_key->index;
   GSList *list;
 
-  copied_key.index = private_key->index;
-  private_key->index = 0;
-
-  if (!copied_key.index)
+  if (!index)
     return;
+  
+  private_key->index = 0;
 
   G_LOCK (g_thread);
   list =  g_thread_all_threads;
   while (list)
     {
-      GThread *thread = list->data;
+      GRealThread *thread = list->data;
+      GArray *array = thread->private_data;
       list = list->next;
-      
-      G_UNLOCK (g_thread);
-      g_static_private_set_for_thread (&copied_key, thread, NULL, NULL);
-      G_LOCK (g_thread);
+
+      if (array && index <= array->len)
+	{
+	  GStaticPrivateNode *node = &g_array_index (array, 
+						     GStaticPrivateNode, 
+						     index - 1);
+	  gpointer ddata = node->data;
+	  GDestroyNotify ddestroy = node->destroy;
+
+	  node->data = NULL;
+	  node->destroy = NULL;
+
+	  if (ddestroy) 
+	    {
+	      G_UNLOCK (g_thread);
+	      ddestroy (ddata);
+	      G_LOCK (g_thread);
+	      }
+	}
     }
-  g_thread_free_indeces = 
-    g_slist_prepend (g_thread_free_indeces, 
-		     GUINT_TO_POINTER (copied_key.index));
+  g_thread_free_indeces = g_slist_prepend (g_thread_free_indeces, 
+					   GUINT_TO_POINTER (index));
   G_UNLOCK (g_thread);
 }
+
+void g_main_context_destroy (GMainContext *context);
 
 static void
 g_thread_cleanup (gpointer data)
@@ -490,6 +488,9 @@ g_thread_cleanup (gpointer data)
 	    }
 	  g_array_free (array, TRUE);
 	}
+      if (thread->context)
+	g_main_context_destroy (thread->context);
+
       /* We only free the thread structure, if it isn't joinable. If
          it is, the structure is freed in g_thread_join */
       if (!thread->thread.joinable)
@@ -559,6 +560,7 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->func = thread_func;
   result->arg = arg;
   result->private_data = NULL; 
+  result->context = NULL;
   G_LOCK (g_thread);
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result, 
 			       stack_size, joinable, bound, priority,
@@ -643,6 +645,7 @@ g_thread_self (void)
       thread->func = NULL;
       thread->arg = NULL;
       thread->private_data = NULL;
+      thread->context = NULL;
 
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));
