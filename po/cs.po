@@ -1,5 +1,6 @@
 # glib Czech translation.
 # Copyright (C) 2002 Free Software Foundation, Inc.
+# Copyright (C) 2004 glib'S COPYRIGHT HOLDER
 # Copyright (C) 2004 Miloslav Trmac <mitr@volny.cz>
 # Petr Pytelka <pyta@lightcomp.cz>, 2002.
 # Miloslav Trmac <mitr@volny.cz>, 2002, 2004.
@@ -8,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2004-01-25 03:58+0100\n"
+"POT-Creation-Date: 2004-04-26 03:44+0200\n"
+"PO-Revision-Date: 2004-04-26 15:06+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +24,8 @@ msgstr "Převod ze znakové sady '%s' do '%s' není podporován"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Nemohu otevřít převaděč z '%s' do '%s': %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Nemohu otevřít převaděč z '%s' do '%s'"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
