@@ -5,10 +5,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-05-26 17:54-0500\n"
-"PO-Revision-Date: 2002-05-05 23:19GMT\n"
-"Last-Translator: \n"
-"Language-Team:  <C@li.org>\n"
+"POT-Creation-Date: 2002-05-24 17:00-0500\n"
+"PO-Revision-Date: 2002-05-27 14:39-0300\n"
+"Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
+"Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -179,22 +179,16 @@ msgid "Error on line %d: %s"
 msgstr "خطأ في السطر %d: %s"
 
 #: glib/gmarkup.c:423
-#, fuzzy
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:433
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
 
 #: glib/gmarkup.c:469
 #, c-format
@@ -207,43 +201,33 @@ msgid "Entity name '%s' is not known"
 msgstr "اسم الكيان '%s' غير معروف"
 
 #: glib/gmarkup.c:523
-#, fuzzy
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
 
 #: glib/gmarkup.c:569
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Failed to parse '%s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
 
 #: glib/gmarkup.c:594
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Character reference '%s' does not encode a permitted character"
+msgstr ""
 
 #: glib/gmarkup.c:611
-#, fuzzy
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Empty character reference; should include a digit such as &#454;"
+msgstr ""
 
 #: glib/gmarkup.c:621
-#, fuzzy
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
 
 #: glib/gmarkup.c:647
 msgid "Unfinished entity reference"
@@ -262,67 +246,52 @@ msgid "Document must begin with an element (e.g. <book>)"
 msgstr "يجب أن يبدأ المستند مع عنصر (<book> مثلا)"
 
 #: glib/gmarkup.c:1030
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
 
 #: glib/gmarkup.c:1093
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
 
 #: glib/gmarkup.c:1180
-#, fuzzy, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+#, c-format
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 
 #: glib/gmarkup.c:1221
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
 
 #: glib/gmarkup.c:1304
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
 
 #: glib/gmarkup.c:1444
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
 
 #: glib/gmarkup.c:1482
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
 
 #: glib/gmarkup.c:1493
 #, c-format
@@ -356,9 +325,7 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"انتهى المستند بشكل غير متوقع، كنت أتوقع أن أري قوسا ذا زاوية لينهي العلامة<%"
-"s/>"
+msgstr "انتهى المستند بشكل غير متوقع، كنت أتوقع أن أري قوسا ذا زاوية لينهي العلامة<%s/>"
 
 #: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an element name"
@@ -373,13 +340,10 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "انتهى المستند بشكل غير متوقع بعد علامة فتح عنصر"
 
 #: glib/gmarkup.c:1713
-#, fuzzy
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
 
 #: glib/gmarkup.c:1720
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -399,9 +363,8 @@ msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "النص المقتبس لا يبدأ بعلامة اقتباس"
 
 #: glib/gshell.c:161
-#, fuzzy
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
 
 #: glib/gshell.c:529
 #, c-format
@@ -422,13 +385,10 @@ msgid "Failed to read data from child process"
 msgstr "فشلت قراءة البيانات من العملية الإبنة"
 
 #: glib/gspawn-win32.c:323
-#, fuzzy
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
 
 #: glib/gspawn-win32.c:690 glib/gspawn.c:929
 #, c-format
@@ -507,3 +467,4 @@ msgstr "تتابع غير موجود في مدخلات التحويل"
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "الحرف خارج حدود UTF-16"
+
