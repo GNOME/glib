@@ -453,9 +453,7 @@ g_get_any_init (void)
 	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
 	if (!error)
 	  goto pw_out;
-	/* error = errno;          According to the Solaris man page,
-				       this is not necessary. */
-	    
+	error = errno;
 #    else /* !HAVE_GETPWUID_R_POSIX */
 	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
 	if (pw == NULL)
