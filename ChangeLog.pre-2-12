@@ -1,3 +1,7 @@
+Mon Sep  8 00:31:10 2003  Stefan Westerfeld  <stefan@space.twc.de>
+
+        * glib/gbsearcharray.h: inserted casts for C++.
+
 2003-08-28  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/patterntest.c (verbose): Fix a C99ism.  (#120821, Thomas 

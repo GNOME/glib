@@ -133,7 +133,7 @@ g_bsearch_array_create (const GBSearchConfig *bconfig)
   size = sizeof (GBSearchArray) + bconfig->sizeof_node;
   if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
     size = G_BSEARCH_UPPER_POWER2 (size);
-  barray = g_realloc (NULL, size);
+  barray = (GBSearchArray *) g_realloc (NULL, size);
   memset (barray, 0, sizeof (GBSearchArray));
 
   return barray;
@@ -210,10 +210,10 @@ g_bsearch_array_grow (GBSearchArray        *barray,
       new_size = G_BSEARCH_UPPER_POWER2 (sizeof (GBSearchArray) + new_size);
       old_size = G_BSEARCH_UPPER_POWER2 (sizeof (GBSearchArray) + old_size);
       if (old_size != new_size)
-        barray = g_realloc (barray, new_size);
+        barray = (GBSearchArray *) g_realloc (barray, new_size);
     }
   else
-    barray = g_realloc (barray, sizeof (GBSearchArray) + new_size);
+    barray = (GBSearchArray *) g_realloc (barray, sizeof (GBSearchArray) + new_size);
   node = G_BSEARCH_ARRAY_NODES (barray) + index * bconfig->sizeof_node;
   g_memmove (node + bconfig->sizeof_node, node, (barray->n_nodes - index) * bconfig->sizeof_node);
   barray->n_nodes += 1;
@@ -233,7 +233,7 @@ g_bsearch_array_insert (GBSearchArray        *barray,
     }
   else
     {
-      node = g_bsearch_array_lookup_insertion (barray, bconfig, key_node);
+      node = (guint8 *) g_bsearch_array_lookup_insertion (barray, bconfig, key_node);
       if (G_LIKELY (node))
         {
           guint index = g_bsearch_array_get_index (barray, bconfig, node);
@@ -253,7 +253,7 @@ g_bsearch_array_replace (GBSearchArray        *barray,
                          const GBSearchConfig *bconfig,
                          gconstpointer         key_node)
 {
-  guint8 *node = g_bsearch_array_lookup (barray, bconfig, key_node);
+  guint8 *node = (guint8 *) g_bsearch_array_lookup (barray, bconfig, key_node);
   if (G_LIKELY (node))  /* expected path */
     memcpy (node, key_node, bconfig->sizeof_node);
   else                  /* revert to insertion */
@@ -282,10 +282,10 @@ g_bsearch_array_remove (GBSearchArray        *barray,
           new_size = G_BSEARCH_UPPER_POWER2 (sizeof (GBSearchArray) + new_size);
           old_size = G_BSEARCH_UPPER_POWER2 (sizeof (GBSearchArray) + old_size);
           if (old_size != new_size)
-            barray = g_realloc (barray, new_size);
+            barray = (GBSearchArray *) g_realloc (barray, new_size);
         }
       else
-        barray = g_realloc (barray, sizeof (GBSearchArray) + new_size);
+        barray = (GBSearchArray *) g_realloc (barray, sizeof (GBSearchArray) + new_size);
     }
   return barray;
 }
