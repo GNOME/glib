@@ -35,6 +35,7 @@ lib_LTLIBRARIES = libglib.la
 
 libglib_la_SOURCES = \
 	garray.c	\
+	gasyncqueue.c	\
 	gcache.c	\
 	gcompletion.c	\
 	gdataset.c	\
@@ -58,6 +59,7 @@ libglib_la_SOURCES = \
 	gstrfuncs.c	\
 	gstring.c	\
 	gthread.c       \
+	gthreadpool.c   \
 	gtimer.c	\
 	gtree.c		\
 	gutils.c

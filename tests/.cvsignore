@@ -37,5 +37,6 @@ testgdate
 testgdateparser
 testglib
 thread-test
+threadpool-test
 tree-test
 type-test

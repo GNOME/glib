@@ -21,6 +21,7 @@ TESTS = \
 	strfunc-test	\
 	string-test	\
 	thread-test	\
+	threadpool-test \
 	tree-test	\
 	type-test
 
@@ -39,6 +40,8 @@ slist_test_LDADD = $(top_builddir)/libglib.la
 strfunc_test_LDADD = $(top_builddir)/libglib.la
 string_test_LDADD = $(top_builddir)/libglib.la
 thread_test_LDADD = $(top_builddir)/libglib.la \
+		$(top_builddir)/gthread/libgthread.la @G_THREAD_LIBS@
+threadpool_test_LDADD = $(top_builddir)/libglib.la \
 		$(top_builddir)/gthread/libgthread.la @G_THREAD_LIBS@
 tree_test_LDADD = $(top_builddir)/libglib.la
 type_test_LDADD = $(top_builddir)/libglib.la

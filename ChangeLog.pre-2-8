@@ -1,3 +1,20 @@
+2000-04-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gasyncqueue.c: New File implementing an asynchronous queue to be
+	used for asynchronous inter-thread communication.
+	
+	* gthreadpool.c: New File implementing a thread pool to be used
+	for distributing work among several threads. 
+
+	* glib.h: Added the type and function declarations for these two
+	types.
+
+	* tests/threadpool-test.c: New File implementing a test for the
+	thread pool. This also checks the asynchronous queue underlying
+	the thread pool.
+
+	* tests/Makefile.am: Changed accordingly.
+	
 2000-04-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Look for both pthread_create and pthread_join in
@@ -8,7 +25,7 @@
 	* glib.h, gcache.c, gtree.c: Changed the 'value' parameter of
 	g_cache_remove from gpointer to gconstpointer. Dito for the 'key'
 	parameter of g_tree_lookup and g_tree_remove and the 'data'
-	parameter of g_tree_serach. This function now takes a function of
+	parameter of g_tree_search. This function now takes a function of
 	type GCompareFunc instead of GSearchFunc. This fixes Bug
 	#8267. Thanks to Juan Toledo <toledo@users.sourceforge.net> for
 	pointing that out.
