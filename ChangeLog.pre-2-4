@@ -1,5 +1,8 @@
 2003-03-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gutf8.c (UNICODE_VALID): Update to Unicode 3.1 and optimize
+	a bit.  (#107427, Noah Lewitt)
+
 	* glib/libcharset/config.charset: Add cp1251 support for Solaris.
 	(#104738, Hidetoshi Tajima)
 
