@@ -1245,7 +1245,7 @@ main (int   argc,
 
   g_print ("ok\n");
 
-  if (g_get_charset (&charset))
+  if (g_get_charset ((G_CONST_RETURN char**)&charset))
     g_print ("current charset is UTF-8: %s\n", charset);
   else
     g_print ("current charset is not UTF-8: %s\n", charset);

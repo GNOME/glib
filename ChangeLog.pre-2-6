@@ -1,5 +1,7 @@
 2004-04-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/testglib.c (main): Trivial warning fix.  (#140345)
+
 	* tests/queue-test.c (main): Add some tests for off-by-one errors.
 
 	* glib/gqueue.c (g_queue_pop_nth_link): Fix an off-by-one 
