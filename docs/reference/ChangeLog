@@ -1,7 +1,11 @@
+Sun Aug 29 23:50:45 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/fileutils.sgml: Fix a typo.  (#151109, Stepan Kasal)
+
 2004-08-13  Matthias Clasen  <clasen@redhat.com>
-                                                                                
+
         * === Released 2.4.6 ===
-                                                                                
+
 2004-08-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/threads.sgml: Document the necessity to call
