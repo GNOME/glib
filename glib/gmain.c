@@ -265,7 +265,7 @@ enum {
   CHILD_WATCH_INITIALIZED_THREADED
 };
 static gint child_watch_init_state = CHILD_WATCH_UNINITIALIZED;
-static gint child_watch_count = 0;
+static gint child_watch_count = 1;
 static gint child_watch_wake_up_pipe[2] = {0, 0};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
@@ -3565,12 +3565,17 @@ g_child_watch_signal_handler (int signum)
 static void
 g_child_watch_source_init_single (void)
 {
+  struct sigaction action;
+
   g_assert (! g_thread_supported());
   g_assert (child_watch_init_state == CHILD_WATCH_UNINITIALIZED);
 
   child_watch_init_state = CHILD_WATCH_INITIALIZED_SINGLE;
 
-  signal (SIGCHLD, g_child_watch_signal_handler);
+  action.sa_handler = g_child_watch_signal_handler;
+  sigemptyset (&action.sa_mask);
+  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+  sigaction (SIGCHLD, &action, NULL);
 }
 
 static gpointer
@@ -3617,6 +3622,7 @@ child_watch_helper_thread (gpointer data)
 static void
 g_child_watch_source_init_multi_threaded (void)
 {
+  struct sigaction action;
   GError *error = NULL;
 
   g_assert (g_thread_supported());
@@ -3630,7 +3636,11 @@ g_child_watch_source_init_multi_threaded (void)
   if (g_thread_create (child_watch_helper_thread, NULL, FALSE, &error) == NULL)
     g_error ("Cannot create a thread to monitor child exit status: %s\n", error->message);
   child_watch_init_state = CHILD_WATCH_INITIALIZED_THREADED;
-  signal (SIGCHLD, g_child_watch_signal_handler);
+
+  action.sa_handler = g_child_watch_signal_handler;
+  sigemptyset (&action.sa_mask);
+  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+  sigaction (SIGCHLD, &action, NULL);
 }
 
 static void
