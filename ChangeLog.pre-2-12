@@ -1,5 +1,7 @@
 2005-02-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Doc clarifications.  (#165907, Vincent Untz)
+
 	* tests/keyfile-test.c (test_group_remove): Add test case for
 	group removal.
 
