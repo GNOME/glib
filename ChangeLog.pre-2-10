@@ -1,3 +1,12 @@
+2000-07-15  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (SUBDIRS): Include the "build" module in GLib, too,
+	to make it more self-contained. If your CVS client doesn't
+	automatically get it, do a cvs get build in glib.
+
+	* */makefile.mingw.in: Include make.mingw from build in the glib
+	source directory.
+
 Fri Jul 14 16:26:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Release 1.3.1

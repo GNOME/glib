@@ -14,7 +14,7 @@ PTHREADS = $(TOP)/pthreads-snap-1999-05-30
 PTHREAD_LIBS = -L $(PTHREADS) -lpthread32
 PTHREAD_INC = -I $(PTHREADS)
 
-include $(TOP)/build/win32/make.mingw
+include ../build/win32/make.mingw
 
 ################################################################
 

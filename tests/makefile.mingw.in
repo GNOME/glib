@@ -5,7 +5,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 TOP = ../..
 
-include $(TOP)/build/win32/make.mingw
+include ../build/win32/make.mingw
 
 ################################################################
 
