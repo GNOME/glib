@@ -1,3 +1,9 @@
+2004-11-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_load_from_fd): Use S_ISREG(), since
+	S_IFMT and S_IFREG are apprarently missing on some systems (they 
+	are SUS, but not Posix).  (#158263)
+
 2004-11-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version.

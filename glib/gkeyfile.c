@@ -359,7 +359,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
       return FALSE;
     }
 
-  if ((stat_buf.st_mode & S_IFMT) != S_IFREG)
+  if (!S_ISREG (stat_buf.st_mode))
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
