@@ -79,7 +79,7 @@ provided to copy and free opaque boxed structures of this type.
 
 <!-- ##### MACRO G_TYPE_GSTRING ##### -->
 <para>
-
+The #GType for #GString.
 </para>
 
 

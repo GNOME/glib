@@ -178,6 +178,12 @@ An opaque structure used as the base of all type instances.
 </para>
 
 
+<!-- ##### STRUCT GTypeClass ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT GTypeInfo ##### -->
 <para>
 This structure is used to provide the type system with the information

@@ -63,6 +63,12 @@ in #GTypeModuleClass.
 @interface_infos: 
 @name: 
 
+<!-- ##### STRUCT GTypeModuleClass ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_type_module_use ##### -->
 <para>
 

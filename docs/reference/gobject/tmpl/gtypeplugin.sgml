@@ -20,6 +20,12 @@ An interface for dynamically loadable types
 </para>
 
 
+<!-- ##### STRUCT GTypePluginClass ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### USER_FUNCTION GTypePluginUse ##### -->
 <para>
 

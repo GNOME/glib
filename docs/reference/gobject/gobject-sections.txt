@@ -19,6 +19,7 @@ G_TYPE_IS_DEEP_DERIVABLE
 G_TYPE_IS_INTERFACE
 GTypeInterface
 GTypeInstance
+GTypeClass
 GTypeInfo
 GTypeFundamentalInfo
 GInterfaceInfo
@@ -138,6 +139,7 @@ GOBJECT_VAR
 <FILE>gtypeplugin</FILE>
 <TITLE>GTypePlugin</TITLE>
 GTypePlugin
+GTypePluginClass
 GTypePluginUse
 GTypePluginUnuse
 GTypePluginCompleteTypeInfo
@@ -160,6 +162,7 @@ G_TYPE_PLUGIN_GET_CLASS
 <FILE>gtypemodule</FILE>
 <TITLE>GTypeModule</TITLE>
 GTypeModule
+GTypeModuleClass
 g_type_module_use
 g_type_module_unuse
 g_type_module_set_name
