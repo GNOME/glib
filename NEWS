@@ -1,12 +1,14 @@
 Overview of Changes from GLib 2.4.7 to GLib 2.4.8
 =================================================
+* Reduce signal connection complexity from O(n) to O(1) 
+  [Sven Neumann]
 * GChildWatch
   - Use sigaction instead of signal [Jonas Jonnson, 
     Archana Shah]
   - Make the very first SIGCHLD work [Gustavo Carneiro]
 * Win32 bug fixes [Tor Lillqvist, Bruce Hochstetler]
 * Other bug fixes [Andrea Campi, Dave MacLachlan]
-* Bugs fixed 155177,156446,136867,154827,157528,155178
+* Bugs fixed 155177,156446,136867,154827,157528,155178,153727
 
 Overview of Changes from GLib 2.4.6 to GLib 2.4.7
 =================================================
