@@ -17,7 +17,7 @@
 	<listitem><para>Generic per-object properties with set/get function pairs</para></listitem>
 	<listitem><para>Easy use of signals</para></listitem>
       </itemizedlist>
-      All the GTK objects and all of the objects in Gnome libraries which use the glib type
+      All the GTK+ objects and all of the objects in Gnome libraries which use the glib type
       system inherit from <type>GObject</type> which is why it is important to understand
       the details of how it works.
     </para>
@@ -53,12 +53,12 @@
       <para>
 	The example below shows how <type>MamanBar</type> overrides the parent's constructor:
 <programlisting>
-#define MAMAN_BAR_TYPE		  (maman_bar_get_type ())
-#define MAMAN_BAR(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_BAR_TYPE, MamanBar))
-#define MAMAN_BAR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_BAR_TYPE, MamanBarClass))
-#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_TYPE ((obj), MAMAN_BAR_TYPE))
-#define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_BAR_TYPE))
-#define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_BAR_TYPE, MamanBarClass))
+#define MAMAN_TYPE_BAR		  (maman_bar_get_type ())
+#define MAMAN_BAR(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
+#define MAMAN_BAR_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
+#define MAMAN_IS_BAR(obj)	  (G_TYPE_CHECK_TYPE ((obj), MAMAN_TYPE_BAR))
+#define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
+#define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
 
 typedef struct _MamanBar MamanBar;
 typedef struct _MamanBarClass MamanBarClass;
@@ -74,7 +74,7 @@ struct _MamanBarClass {
   /* class members */
 };
 
-/* used by MAMAN_BAR_TYPE */
+/* used by MAMAN_TYPE_BAR */
 GType maman_bar_get_type (void);
 
 static GObject *
@@ -88,7 +88,7 @@ maman_bar_constructor (GType                  type,
     /* Invoke parent constructor. */
     MamanBarClass *klass;
     GObjectClass *parent_class;  
-    klass = MAMAN_BAR_CLASS (g_type_class_peek (MAMAN_BAR_TYPE));
+    klass = MAMAN_BAR_CLASS (g_type_class_peek (MAMAN_TYPE_BAR));
     parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
     obj = parent_class->constructor (type,
                                      n_construct_properties,
@@ -142,7 +142,7 @@ GType maman_bar_get_type (void)
 </programlisting>
 	If the user instantiates an object <type>MamanBar</type> with:
 <programlisting>
-MamanBar *bar = g_object_new (MAMAN_BAR_TYPE, NULL);
+MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
 </programlisting>	
 	If this is the first instantiation of such an object, the <function>maman_b_class_init</function>
 	function will be invoked after any <function>maman_b_base_class_init</function> function. 
@@ -504,7 +504,8 @@ void        g_object_run_dispose	      (GObject	      *object);
     <title>Object properties</title>
 
     <para>
-      One of GObject's nice features is its generic get/set mechanism. When an object
+      One of GObject's nice features is its generic get/set mechanism for object
+      properties. When an object
       is instanciated, the object's class_init handler should be used to register
       the object's properties with <function>g_object_class_install_property</function>
       (implemented in <filename>gobject.c</filename>).
@@ -620,7 +621,7 @@ maman_bar_class_init (gpointer g_class,
 
 GObject *bar;
 GValue val = {0,};
-bar = g_object_new (MAMAN_SUBBAR_TYPE, NULL);
+bar = g_object_new (MAMAN_TYPE_SUBBAR, NULL);
 g_value_init (&amp;val, G_TYPE_CHAR);
 g_value_set_char (&amp;val, 11);
 g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
@@ -699,6 +700,10 @@ g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
       can only be delayed by the notification freezing mechanism.
     </para>
 
+    <sect2 id="gobject-multi-properties">
+        <title>Accessing multiple properties at once</title>
+
+
     <para>
       It is interesting to note that the <function>g_object_set</function> and 
       <function>g_object_set_valist</function> (vararg version) functions can be used to set
@@ -727,6 +732,11 @@ g_object_set (G_OBJECT (foo),
 	<function>g_object_set</function> on each pair of parameters only after the object has been successfully constructed.
       Of course, the "notify" signal will be emitted for each property set.
     </para>
+
+    </sect2>
+
+<!-- @todo tell here about how to pass use handle properties in derived classe -->
+
 
   </sect1>
 

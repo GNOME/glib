@@ -291,7 +291,7 @@ maman_bar_init (GTypeInstance   *instance,
 	Now, if you need special construction properties, install the properties in the class_init function,
 	override the set and get methods and implement the get and set methods as described in 
 	<xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
-	pspec by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
+	<type>GParamSpec</type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
 	GType ensure that these properties are not set again later by malicious user code.
 <programlisting>
 static void
@@ -439,7 +439,7 @@ if (self->private->dispose_has_run) {
       </para>
 
       <sect3>
-	<title>non-virtual public methods</title>
+	<title>Non-virtual public methods</title>
 
 	<para>
 	  These are the simplest: you want to provide a simple method which can act on your object. All you need
@@ -460,7 +460,7 @@ void maman_bar_do_action (MamanBar *self, /* parameters */)
       </sect3>
 
       <sect3>
-	<title>Virtual Public methods</title>
+	<title>Virtual public methods</title>
 
 	<para>
 	  This is the preferred way to create polymorphic GObjects. All you need to do is to
@@ -536,7 +536,7 @@ void maman_bar_do_action_two (MamanBar *self, /* parameters */)
       </sect3>
 
       <sect3>
-	<title>Virtual Private Methods</title>
+	<title>Virtual private Methods</title>
 
 	<para>
 	  These are very similar to Virtual Public methods. They just don't have a public function to call the
@@ -628,6 +628,19 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
       </sect3>
     </sect2>
 
+    <sect2 id="howto-gobject-chainup">
+     <title>Chaining up</title>
+
+     <p>Chaining up is commonly used to implement the Chain Of Responsability pattern in C++: each class in a
+     given inheritance hierarchy is expected to override the same method and then call from within each method
+     the overriden method of the parent. Personally, I am not sure this is a very smart idea (a detailed explanation
+     of why I think it is a bad idea would take too much space for this document) but I can show you how to do it and
+     here is an example.
+     </p>
+
+     <p>To invoke the parent method XXX</p>
+
+    </sect2>
 
   </sect1>
 
@@ -661,12 +674,12 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
 
 #include &lt;glib-object.h&gt;
 
-#define MAMAN_IBAZ_TYPE             (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_IBAZ_TYPE, MamanIbaz))
-#define MAMAN_IBAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_IBAZ_TYPE, MamanIbazClass))
-#define MAMAN_IS_IBAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_IBAZ_TYPE))
-#define MAMAN_IS_IBAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_IBAZ_TYPE))
-#define MAMAN_IBAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_IBAZ_TYPE, MamanIbazClass))
+#define MAMAN_TYPE_IBAZ             (maman_ibaz_get_type ())
+#define MAMAN_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
+#define MAMAN_IBAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_TYPE_IBAZ, MamanIbazClass))
+#define MAMAN_IS_IBAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
+#define MAMAN_IS_IBAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_TYPE_IBAZ))
+#define MAMAN_IBAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazClass))
 
 
 typedef struct _MamanIbaz MamanIbaz; /* dummy object */
@@ -774,12 +787,12 @@ void maman_ibaz_do_action (MamanIbaz *self)
 
 #include &lt;glib-object.h>
 
-#define MAMAN_BAZ_TYPE             (maman_baz_get_type ())
-#define MAMAN_BAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_BAZ_TYPE, Mamanbaz))
-#define MAMAN_BAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_BAZ_TYPE, MamanbazClass))
-#define MAMAN_IS_BAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_BAZ_TYPE))
-#define MAMAN_IS_BAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_BAZ_TYPE))
-#define MAMAN_BAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), MAMAN_BAZ_TYPE, MamanbazClass))
+#define MAMAN_TYPE_BAZ             (maman_baz_get_type ())
+#define MAMAN_BAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAZ, Mamanbaz))
+#define MAMAN_BAZ_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), MAMAN_TYPE_BAZ, MamanbazClass))
+#define MAMAN_IS_BAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAZ))
+#define MAMAN_IS_BAZ_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), MAMAN_TYPE_BAZ))
+#define MAMAN_BAZ_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), MAMAN_TYPE_BAZ, MamanbazClass))
 
 
 typedef struct _MamanBaz MamanBaz;
@@ -831,7 +844,7 @@ maman_baz_get_type (void)
                                                "MamanBazType",
                                                &amp;info, 0);
                 g_type_add_interface_static (type,
-                                             MAMAN_IBAZ_TYPE,
+                                             MAMAN_TYPE_IBAZ,
                                              &amp;ibaz_info);
         }
         return type;
@@ -840,7 +853,7 @@ maman_baz_get_type (void)
       This function is very much like all the similar functions we looked at previously. The only interface-specific
       code present here is the call to <function>g_type_add_interface_static</function> which is used to inform
       the type system that this just-registered <type>GType</type> also implements the interface 
-      <function>MAMAN_IBAZ_TYPE</function>.
+      <function>MAMAN_TYPE_IBAZ</function>.
     </para>
 
     <para>
@@ -889,7 +902,7 @@ baz_instance_init (GTypeInstance   *instance,
 <programlisting>
         type = g_type_register_static (G_TYPE_INTERFACE, "MamanIbar", &amp;info, 0);
         /* Make the MamanIbar interface require MamanIbaz interface. */
-        g_type_interface_add_prerequisite (type, MAMAN_IBAZ_TYPE);
+        g_type_interface_add_prerequisite (type, MAMAN_TYPE_IBAZ);
 </programlisting>
   The code shown above adds the MamanIbaz interface to the list of prerequisites of MamanIbar while the 
   code below shows how an implementation can implement both interfaces and register their implementations:
@@ -961,10 +974,10 @@ maman_bar_get_type (void)
                                                "MamanBarType",
                                                &amp;info, 0);
                 g_type_add_interface_static (type,
-                                             MAMAN_IBAZ_TYPE,
+                                             MAMAN_TYPE_IBAZ,
                                              &amp;ibaz_info);
                 g_type_add_interface_static (type,
-                                             MAMAN_IBAR_TYPE,
+                                             MAMAN_TYPE_IBAR,
                                              &amp;ibar_info);
         }
         return type;
