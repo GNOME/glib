@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2003-06-22 12:33+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-11 11:53+0200\n"
 "PO-Revision-Date: 2003-06-22 18:32+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkic <gnome@azitt.com>\n"
@@ -23,28 +24,19 @@ msgstr "`%s' hərf dəstəsindən `%s' hərf dəstəsinə dönüşdürmə dəst�
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' dən `%s' ə dönüşdürücü açıla bilmir: %s"
 
-#: glib/gconvert.c:603
-#: glib/gconvert.c:893
-#: glib/giochannel.c:1306
-#: glib/giochannel.c:1348
-#: glib/giochannel.c:2190
-#: glib/gutf8.c:909
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
 msgstr "dönüşdürmə girişində hökmsüz bayt qatarı"
 
-#: glib/gconvert.c:608
-#: glib/gconvert.c:824
-#: glib/giochannel.c:1313
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1313
 #: glib/giochannel.c:2202
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Dönüşdürmə sırasında xəta yarandı: %s"
 
-#: glib/gconvert.c:626
-#: glib/gutf8.c:905
-#: glib/gutf8.c:1105
-#: glib/gutf8.c:1246
+#: glib/gconvert.c:626 glib/gutf8.c:905 glib/gutf8.c:1105 glib/gutf8.c:1246
 #: glib/gutf8.c:1350
 msgid "Partial character sequence at end of input"
 msgstr "Girişin sonunda parçalı hərf qatarı"
@@ -93,8 +85,7 @@ msgstr "Hökmsüz qovşaq adı"
 msgid "Error opening directory '%s': %s"
 msgstr "Cərgə açma xətası: '%s': %s"
 
-#: glib/gfileutils.c:384
-#: glib/gfileutils.c:449
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "\"%2$s\" faylını oxumaq üçün %1$lu bayt ayrıla bilmir"
@@ -109,8 +100,7 @@ msgstr "Fayl oxuma xətası: '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Fayldan oxuma iflası '%s': %s"
 
-#: glib/gfileutils.c:518
-#: glib/gfileutils.c:586
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Fayl açma iflası '%s': %s"
@@ -154,30 +144,17 @@ msgstr "`%s' dən `%s' ə dönüşdürücü açıla bilmir: %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Can't do a raw read in g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1530
-#: glib/giochannel.c:1787
-#: glib/giochannel.c:1873
+#: glib/giochannel.c:1530 glib/giochannel.c:1787 glib/giochannel.c:1873
 msgid "Leftover unconverted data in read buffer"
 msgstr "Oxuna buferdə dönüşdürülməmiş verilənlər var"
 
-#: glib/giochannel.c:1610
-#: glib/giochannel.c:1687
+#: glib/giochannel.c:1610 glib/giochannel.c:1687
 msgid "Channel terminates in a partial character"
 msgstr "Kanal qismi xarakterlə bitir"
 
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Can't do a raw read in g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712
-#: glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Səhv ismarıc böyüklüyü"
-
-#: glib/giowin32.c:1034
-#: glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Soket xətası"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -190,13 +167,21 @@ msgid "Error on line %d: %s"
 msgstr "%d sətirində xəta : %s"
 
 #: glib/gmarkup.c:385
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Boş element '&;' tapldı; hökmlü elementlər: &amp; &quot; &lt; &qt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Boş element '&;' tapldı; hökmlü elementlər: &amp; &quot; &lt; &qt; &apos;"
 
 #: glib/gmarkup.c:395
 #, c-format
-msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
-msgstr "Element adının başındakı hərf '%s' hökmlü deyil; & hərf bir elementlə başlayar; əgər bu ampersand bir element olaraq var sayılmazsa, &amp olaraq işlədə bilərsiniz"
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Element adının başındakı hərf '%s' hökmlü deyil; & hərf bir elementlə "
+"başlayar; əgər bu ampersand bir element olaraq var sayılmazsa, &amp olaraq "
+"işlədə bilərsiniz"
 
 #: glib/gmarkup.c:431
 #, c-format
@@ -209,13 +194,22 @@ msgid "Entity name '%s' is not known"
 msgstr "Element adı '%s' bilinmir"
 
 #: glib/gmarkup.c:485
-msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Element nöqtəli vergül ilə qurtarmır; böyük ehtimalla bir ampersand işlətdiniz bir element başlanğıcı ola bilməyən hərf üçün ampersandı &amp olaraq işlədin"
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Element nöqtəli vergül ilə qurtarmır; böyük ehtimalla bir ampersand "
+"işlətdiniz bir element başlanğıcı ola bilməyən hərf üçün ampersandı &amp "
+"olaraq işlədin"
 
 #: glib/gmarkup.c:531
 #, c-format
-msgid "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
-msgstr "'%s' i şərhləndirmə xətası, hərf içində bir rəqəm olmalıdır referens (məs; &#234) - belki rəqəm çok böyükdür"
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"'%s' i şərhləndirmə xətası, hərf içində bir rəqəm olmalıdır referens (məs; "
+"&#234) - belki rəqəm çok böyükdür"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -227,20 +221,24 @@ msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Boş hərf referens; &#454 kimi bir rəqəm daxil etməlidir;"
 
 #: glib/gmarkup.c:583
-msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Xarakter referens nöqtəli vergül ilə qurtarmır; böyük ehtimalla ampersand xarakteri elementə başlamaq üçün işlətmədiniz - ampersand yerinə &amp işlədə bilərsiniz"
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Xarakter referens nöqtəli vergül ilə qurtarmır; böyük ehtimalla ampersand "
+"xarakteri elementə başlamaq üçün işlətmədiniz - ampersand yerinə &amp işlədə "
+"bilərsiniz"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
-msgstr "Bitirilməmiş varlıq məlumatı"
+msgstr "Bitirilməmiş varlıq mə'lumatı"
 
 #: glib/gmarkup.c:615
 msgid "Unfinished character reference"
-msgstr "Bitirilməmiş xarakter məlumatı"
+msgstr "Bitirilməmiş xarakter mə'lumatı"
 
-#: glib/gmarkup.c:866
-#: glib/gmarkup.c:894
-#: glib/gmarkup.c:925
+#: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
 msgid "Invalid UTF-8 encoded text"
 msgstr "Hökmsüz UTF-8 kodlanmış mətn"
 
@@ -250,38 +248,66 @@ msgstr "Sənəd bir element ilə başlamalıdır (məs. <kitab>)"
 
 #: glib/gmarkup.c:1000
 #, c-format
-msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
-msgstr "'<' xarakterindən sonra gələn '%s' hökmlü bir xarakter deyil; bir element adı olmaya bilər"
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'<' xarakterindən sonra gələn '%s' hökmlü bir xarakter deyil; bir element "
+"adı olmaya bilər"
 
 #: glib/gmarkup.c:1063
 #, c-format
-msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
-msgstr "Tək hərf '%s', Elementın başlanğıç etiketinin sonuna '>' xarakteri gözlənilir '%s'"
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Tək hərf '%s', Elementın başlanğıç etiketinin sonuna '>' xarakteri "
+"gözlənilir '%s'"
 
 #: glib/gmarkup.c:1150
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Tək hərf '%s', xüsusiyyət adı '%s' olan element '%s' dən sonra '=' gözlənilir"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Tək hərf '%s', xüsusiyyət adı '%s' olan element '%s' dən sonra '=' gözlənilir"
 
 #: glib/gmarkup.c:1191
 #, c-format
-msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
-msgstr "Tək hərf '%s', '%s' elementin başlanğıç etiketinin sonuna '>' və ya '/' gözlənilir, və ya bir xüsusiyyət; xüsusiyyət adında hökmsüz bir hərf işlədilmiş ola bilərsiniz"
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Tək hərf '%s', '%s' elementin başlanğıç etiketinin sonuna '>' və ya '/' "
+"gözlənilir, və ya bir xüsusiyyət; xüsusiyyət adında hökmsüz bir hərf "
+"işlədilmiş ola bilərsiniz"
 
 #: glib/gmarkup.c:1274
 #, c-format
-msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
-msgstr "Tək hərf '%s',element '%s'in xüsusiyyəti '%s''ə qiymət verilirkən bərabərdir işarətindən sonra açıq alıntı işarəti gözlənilir"
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Tək hərf '%s',element '%s'in xüsusiyyəti '%s''ə qiymət verilirkən bərabərdir "
+"işarətindən sonra açıq alıntı işarəti gözlənilir"
 
 #: glib/gmarkup.c:1414
 #, c-format
-msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
-msgstr "'</' xarakterlərini təqib edən '%s' hökmlü bir xarakter deyildir; '%s' bir element adı ilə başlamır dəyəsən"
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'</' xarakterlərini təqib edən '%s' hökmlü bir xarakter deyildir; '%s' bir "
+"element adı ilə başlamır dəyəsən"
 
 #: glib/gmarkup.c:1452
 #, c-format
-msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
-msgstr "Bağlı element '%s' dən sonra gələn '%s' hökmlü bir hərf deyildir; icazə verilən hərf isə '>'"
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"Bağlı element '%s' dən sonra gələn '%s' hökmlü bir hərf deyildir; icazə "
+"verilən hərf isə '>'"
 
 #: glib/gmarkup.c:1463
 #, c-format
@@ -299,18 +325,26 @@ msgstr "Sənəd boşdur və ya təkcə boşluq xarakteri daxil etməkdədir"
 
 #: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Sənəd açıq üçbucaq mötərizə '<'den sonra gözlənilməz bir şəkildə qurtardı"
+msgstr ""
+"Sənəd açıq üçbucaq mötərizə '<'den sonra gözlənilməz bir şəkildə qurtardı"
 
-#: glib/gmarkup.c:1641
-#: glib/gmarkup.c:1685
+#: glib/gmarkup.c:1641 glib/gmarkup.c:1685
 #, c-format
-msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
-msgstr "Sənəd elementləri hələ açıq olaraq gözlənilməz bir şəkildə qurtardı - son element '%s' açıq idi"
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Sənəd elementləri hələ açıq olaraq gözlənilməz bir şəkildə qurtardı - son "
+"element '%s' açıq idi"
 
 #: glib/gmarkup.c:1649
 #, c-format
-msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
-msgstr "Sənəd gözlənilməz bir şəkildə qurtardı, etiket <%s/> ilə qurtaran qapalı üçbucaq mötərizə gözlənilir"
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Sənəd gözlənilməz bir şəkildə qurtardı, etiket <%s/> ilə qurtaran qapalı "
+"üçbucaq mötərizə gözlənilir"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly inside an element name"
@@ -325,12 +359,17 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Sənəd bir element-açma etiketi içində gözlənilməz bir şəkildə qurtardı"
 
 #: glib/gmarkup.c:1671
-msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
-msgstr "Sənəd xüsusiyyət adını təqib edən bərabərdir işarətindən sonra gözlənilməz bir şəkildə qurtardı: xüsusiyyət qiyməti yoxdur"
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Sənəd xüsusiyyət adını təqib edən bərabərdir işarətindən sonra gözlənilməz "
+"bir şəkildə qurtardı: xüsusiyyət qiyməti yoxdur"
 
 #: glib/gmarkup.c:1678
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
+msgstr ""
+"Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
 
 #: glib/gmarkup.c:1693
 #, c-format
@@ -339,7 +378,9 @@ msgstr "Sənəd bağlı etiket '%s' içində gözlənilməz bir şəkildə qurta
 
 #: glib/gmarkup.c:1699
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Sənəd bir şərh və ya gedişat göstərişi içində ikən gözlənilməz bir şəkildə qurtarır"
+msgstr ""
+"Sənəd bir şərh və ya gedişat göstərişi içində ikən gözlənilməz bir şəkildə "
+"qurtarır"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -363,37 +404,37 @@ msgstr "%c üçün uyğunluq alıntısı tapılmadan mətn qurtardı. (Mətn '%s
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Mətn boş idi (və ya təkcə boşluq daxil edirdi)"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Törəmə gedişatdan mə'lumat oxuma iflası"
 
-#: glib/gspawn-win32.c:414
-msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
-msgstr "g_io_channel_win32_poll() törəmə gedişatdan mə'lumat oxumada gözlənilməz xəta"
+#: glib/gspawn-win32.c:426
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"g_io_channel_win32_poll() törəmə gedişatdan mə'lumat oxumada gözlənilməz xəta"
 
-#: glib/gspawn-win32.c:784
-#: glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Törəmə pipe-dan oxuma iflası (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Yardımcı proqram icra edilə bilmədi"
 
-#: glib/gspawn-win32.c:904
-#: glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Qovluq dəyişdirmə iflası '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Törəmə gedişat icra iflası (%s)"
 
-#: glib/gspawn-win32.c:956
-#: glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Qovluq dəyişdirmə iflası '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Törəmə gedişatların xəbərləşməyi üçün pipe yaratma iflası (%s)"
@@ -447,17 +488,17 @@ msgstr "Törəmə pid pipe dan kifayət qədər mə'lumat oxuma iflası (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 üçün hərf sərhədinin xaricində"
 
-#: glib/gutf8.c:1073
-#: glib/gutf8.c:1082
-#: glib/gutf8.c:1214
-#: glib/gutf8.c:1223
-#: glib/gutf8.c:1364
-#: glib/gutf8.c:1460
+#: glib/gutf8.c:1073 glib/gutf8.c:1082 glib/gutf8.c:1214 glib/gutf8.c:1223
+#: glib/gutf8.c:1364 glib/gutf8.c:1460
 msgid "Invalid sequence in conversion input"
 msgstr "dönüşdürmə girişi içində hökmsüz qatar"
 
-#: glib/gutf8.c:1375
-#: glib/gutf8.c:1471
+#: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 üçün hərf sərhədinin xaricindədir"
 
+#~ msgid "Incorrect message size"
+#~ msgstr "Səhv ismarıc böyüklüyü"
+
+#~ msgid "Socket error"
+#~ msgstr "Soket xətası"
