@@ -1,3 +1,9 @@
+2001-07-23  Padraig O'Briain  <Padraig.Obriain@sun.com>
+
+	* gobject/gobjectnotifyqueue.c: fix unconditional check of
+	first GParamSpec in g_object_notify_queue_thaw(); prevent
+	property notification being lost
+
 2001-07-23  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: fixed g_io_channel_seek_position() so that

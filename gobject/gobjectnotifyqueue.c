@@ -104,6 +104,8 @@ g_object_notify_queue_thaw (GObject            *object,
   g_return_if_fail (object->ref_count > 0);
 
   pspecs = nqueue->n_pspecs > 16 ? free_me = g_new (GParamSpec*, nqueue->n_pspecs) : pspecs_mem;
+  /* set first entry to NULL since it's checked unconditionally */
+  pspecs[0] = NULL;
   for (slist = nqueue->pspecs; slist; slist = slist->next)
     {
       GParamSpec *pspec = slist->data;
