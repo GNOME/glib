@@ -21,6 +21,7 @@
 #endif
 
 #ifndef __G_SOURCECLOSURE_H__
+#define __G_SOURCECLOSURE_H__
 
 #include <gobject/gclosure.h>
 
