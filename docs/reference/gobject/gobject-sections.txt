@@ -263,7 +263,7 @@ GTypeValueTable
 
 <SECTION>
 <TITLE>Value arrays</TITLE>
-<FILE>value_types</FILE>
+<FILE>value_arrays</FILE>
 GValueArray
 g_value_array_new
 g_value_array_copy

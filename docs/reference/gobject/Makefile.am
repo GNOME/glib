@@ -2,36 +2,47 @@
 
 # The name of the module.
 DOC_MODULE=gobject
+
 # The top-level SGML file.
 DOC_MAIN_SGML_FILE=gobject-docs.sgml
-# Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
-EXTRA_DIST +=
+
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=../../../gobject
+
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS=
+
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=
+
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
-# Images to copy into HTML directory
-HTML_IMAGES =
 
 # Used for dependencies
 HFILE_GLOB=$(top_srcdir)/gobject/*.h
 CFILE_GLOB=$(top_srcdir)/gobject/*.c
+
 # Headers to ignore
 IGNORE_HFILES=				\
-	.saved				\
-	glib-genmarshal.c		\
 	gbsearcharray.h
+
 # Extra files to add when scanning
 EXTRA_HFILES=
+
+# Images to copy into HTML directory
+HTML_IMAGES =
+
+# Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
+content_files =
+
+# Other files to distribute
+extra_files =
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 GTKDOC_CFLAGS =
 GTKDOC_LIBS =
+
 # Commands for compiling and linking 
 GTKDOC_CC=$(LIBTOOL) --mode=compile $(CC)
 GTKDOC_LD=$(LIBTOOL) --mode=link $(CC)
@@ -43,29 +54,32 @@ GTKDOC_LD=$(LIBTOOL) --mode=link $(CC)
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
-DOC_STAMPS = $(srcdir)/tmpl.stamp $(srcdir)/sgml.stamp $(srcdir)/html.stamp \
-	     build-scan.stamp build-tmpl.stamp build-sgml.stamp build-html.stamp
-# gtkdoc-mktmpl:	creates, and on changes touches:	tmpl.stamp
-# gtkdoc-mkdb:		creates, and on changes touches:	sgml.stamp
-# gtkdoc-mkhtml:	creates, and on changes touches:	html.stamp
+EXTRA_DIST = 				\
+	$(content_files)		\
+	$(extra_files)			\
+	$(HTML_IMAGES)			\
+	$(DOC_MAIN_SGML_FILE)		\
+	$(DOC_MODULE).types		\
+	$(DOC_MODULE)-sections.txt	\
+	$(DOC_MODULE)-overrides.txt
 
+DOC_STAMPS=scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp \
+	   $(srcdir)/tmpl.stamp $(srcdir)/sgml.stamp $(srcdir)/html.stamp
 
-.PHONY: gtkdoc-build-all
-
-if ENABLE_GTK_DOC
 SCANOBJ_FILES = 		\
 	$(DOC_MODULE).args 	\
 	$(DOC_MODULE).hierarchy \
 	$(DOC_MODULE).signal
 
-all-local: gtkdoc-build-all
+if ENABLE_GTK_DOC
+all-local: html-build.stamp
 
-gtkdoc-build-all: build-sgml.stamp build-html.stamp
-	@true
-build-scan.stamp: $(HFILE_GLOB)
+#### scan ####
+
+scan-build.stamp: $(HFILE_GLOB)
 	@echo '*** Scanning header files ***'
 	cd $(srcdir) && ( \
-	if grep -l '^.+$$' $(DOC_MODULE).types > /dev/null 2>/dev/null ; then \
+	if grep -l '^..+$$' $(DOC_MODULE).types > /dev/null ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj --module=$(DOC_MODULE) ; \
 	else \
 	    for i in $(SCANOBJ_FILES) ; do \
@@ -74,29 +88,45 @@ build-scan.stamp: $(HFILE_GLOB)
 	fi )
 	cd $(srcdir) && \
 	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
-	touch build-scan.stamp
-build-tmpl.stamp: build-scan.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt $(srcdir)/tmpl/*.sgml
+	touch scan-build.stamp
+
+$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
+	@true
+
+#### templates ####
+
+tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
 	@echo '*** Rebuilding template files ***'
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
-	touch build-tmpl.stamp
-tmpl.stamp: build-tmpl.stamp
+	touch tmpl-build.stamp
+
+tmpl.stamp: tmpl-build.stamp
 	@true
-build-sgml.stamp: tmpl.stamp $(CFILE_GLOB)
+
+#### sgml ####
+
+sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) tmpl/*.sgml
 	@echo '*** Building SGML ***'
 	cd $(srcdir) && \
 	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) $(MKDB_OPTIONS)
-	touch build-sgml.stamp
-sgml.stamp: build-sgml.stamp
+	touch sgml-build.stamp
+
+sgml.stamp: sgml-build.stamp
 	@true
-build-html.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE)
+
+#### html ####
+
+html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
 	@echo '*** Building HTML ***'
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
 	@echo '-- Fixing Crossreferences' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
-	touch build-html.stamp
+	touch html-build.stamp
 endif
+
+##############
 
 clean-local:
 	rm -f *~ *.bak $(SCANOBJ_FILES) *-unused.txt $(DOC_STAMPS)
@@ -142,12 +172,4 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	  cp $(srcdir)/$$i $(distdir)/html ;  \
         done
 
-.PHONY: dist-hook-local
-
-
-EXTRA_DIST = 				\
-	$(HTML_IMAGES)			\
-	$(DOC_MAIN_SGML_FILE)		\
-	$(DOC_MODULE).types		\
-	$(DOC_MODULE)-sections.txt	\
-	$(DOC_MODULE)-overrides.txt
+.PHONY : dist-hook-local

@@ -1,3 +1,16 @@
+Wed Mar  7 15:02:17 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am: Revert Tim's last commit to
+	get rid of 7+ unnecessary / broken changes. Add
+	back the useful part. Also fix problem with grep,
+	add dependency on template files.
+
+	* gobject/gobject-sections.txt: Remove double 
+	value_types names which was screwing up builds.
+
+	* glib/Makefile.am: Propagate changes from 
+	gobject/Makefile.am
+
 2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/threads.sgml: Fixed stupid typo.
