@@ -1,3 +1,8 @@
+Tue Aug 18 18:23:09 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h
+	* gstrfuncs.c: added g_strndup
+
 Tue Aug 18 04:40:17 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

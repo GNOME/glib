@@ -43,6 +43,22 @@ g_strdup (const gchar *str)
 }
 
 gchar*
+g_strndup (const gchar *str, gulong n)
+{
+  char *new_str;
+
+  new_str = NULL;
+  if (str)
+    {
+      new_str = g_new (char, n + 1);
+      strncpy (new_str, str, n);
+      new_str[n] = '\0';
+    }
+
+  return new_str;
+}
+
+gchar*
 g_strconcat (const gchar *string1, ...)
 {
   guint	  l;

@@ -1106,6 +1106,8 @@ void	g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
 gchar*	g_strdup		(const gchar *str);
+gchar*	g_strndup		(const gchar *str,
+				 gulong n);
 gchar*	g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gdouble g_strtod		(const gchar *nptr,
