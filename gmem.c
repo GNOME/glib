@@ -71,7 +71,6 @@
 #endif
 
 
-#define MAX_MEM_AREA  65536L
 #define MEM_AREA_SIZE 4L
 
 #if SIZEOF_VOID_P > SIZEOF_LONG
@@ -125,7 +124,8 @@ struct _GRealMemChunk
 };
 
 
-static gulong g_mem_chunk_compute_size (gulong    size);
+static gulong g_mem_chunk_compute_size (gulong    size,
+					gulong    min_size);
 static gint   g_mem_chunk_area_compare (GMemArea *a,
 					GMemArea *b);
 static gint   g_mem_chunk_area_search  (GMemArea *a,
@@ -469,7 +469,13 @@ g_mem_chunk_new (gchar  *name,
   GRealMemChunk *mem_chunk;
   gulong rarea_size;
 
+  g_return_val_if_fail (atom_size > 0, NULL);
+  g_return_val_if_fail (area_size >= atom_size, NULL);
+
   ENTER_MEM_CHUNK_ROUTINE();
+
+  area_size = (area_size + atom_size - 1) / atom_size;
+  area_size *= atom_size;
 
   mem_chunk = g_new (struct _GRealMemChunk, 1);
   mem_chunk->name = name;
@@ -488,29 +494,11 @@ g_mem_chunk_new (gchar  *name,
   
   if (mem_chunk->atom_size % MEM_ALIGN)
     mem_chunk->atom_size += MEM_ALIGN - (mem_chunk->atom_size % MEM_ALIGN);
-  
-  mem_chunk->area_size = area_size;
-  if (mem_chunk->area_size > MAX_MEM_AREA)
-    mem_chunk->area_size = MAX_MEM_AREA;
-  while (mem_chunk->area_size < mem_chunk->atom_size)
-    mem_chunk->area_size *= 2;
-  
-  rarea_size = mem_chunk->area_size + sizeof (GMemArea) - MEM_AREA_SIZE;
-  rarea_size = g_mem_chunk_compute_size (rarea_size);
+
+  rarea_size = area_size + sizeof (GMemArea) - MEM_AREA_SIZE;
+  rarea_size = g_mem_chunk_compute_size (rarea_size, atom_size + sizeof (GMemArea) - MEM_AREA_SIZE);
   mem_chunk->area_size = rarea_size - (sizeof (GMemArea) - MEM_AREA_SIZE);
-  
-  /*
-    mem_chunk->area_size -= (sizeof (GMemArea) - MEM_AREA_SIZE);
-    if (mem_chunk->area_size < mem_chunk->atom_size)
-    {
-    mem_chunk->area_size = (mem_chunk->area_size + sizeof (GMemArea) - MEM_AREA_SIZE) * 2;
-    mem_chunk->area_size -= (sizeof (GMemArea) - MEM_AREA_SIZE);
-    }
-    
-    if (mem_chunk->area_size % mem_chunk->atom_size)
-    mem_chunk->area_size += mem_chunk->atom_size - (mem_chunk->area_size % mem_chunk->atom_size);
-  */
-  
+
   g_mutex_lock (mem_chunks_lock);
   mem_chunk->next = mem_chunks;
   mem_chunk->prev = NULL;
@@ -920,7 +908,8 @@ g_blow_chunks (void)
 
 
 static gulong
-g_mem_chunk_compute_size (gulong size)
+g_mem_chunk_compute_size (gulong size,
+			  gulong min_size)
 {
   gulong power_of_2;
   gulong lower, upper;
@@ -932,9 +921,10 @@ g_mem_chunk_compute_size (gulong size)
   lower = power_of_2 >> 1;
   upper = power_of_2;
   
-  if ((size - lower) < (upper - size))
+  if (size - lower < upper - size && lower >= min_size)
     return lower;
-  return upper;
+  else
+    return upper;
 }
 
 static gint
