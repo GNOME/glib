@@ -77,7 +77,7 @@ gboolean g_get_charset (char **charset);
 gboolean g_unichar_isalnum   (gunichar c);
 gboolean g_unichar_isalpha   (gunichar c);
 gboolean g_unichar_iscntrl   (gunichar c);
-gboolean g_unicphar_isdigit   (gunichar c);
+gboolean g_unichar_isdigit   (gunichar c);
 gboolean g_unichar_isgraph   (gunichar c);
 gboolean g_unichar_islower   (gunichar c);
 gboolean g_unichar_isprint   (gunichar c);

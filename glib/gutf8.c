@@ -75,7 +75,6 @@
       (Result) <<= 6;							      \
       (Result) |= ((Chars)[(Count)] & 0x3f);				      \
     }
-
 gchar g_utf8_skip[256] = {
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -349,6 +348,8 @@ g_get_charset (char **charset)
  * g_unichar_to_utf8:
  * @ch: a ISO10646 character code
  * @out: output buffer, must have at least 6 bytes of space.
+ *       If %NULL, the length will be computed and returned
+ *       and nothing will be written to @out.
  * 
  * Convert a single character to utf8
  * 
@@ -392,12 +393,15 @@ g_unichar_to_utf8 (gunichar c, gchar *outbuf)
       len = 6;
     }
 
-  for (i = len - 1; i > 0; --i)
+  if (outbuf)
     {
-      outbuf[i] = (c & 0x3f) | 0x80;
-      c >>= 6;
+      for (i = len - 1; i > 0; --i)
+	{
+	  outbuf[i] = (c & 0x3f) | 0x80;
+	  c >>= 6;
+	}
+      outbuf[0] = c | first;
     }
-  outbuf[0] = c | first;
 
   return len;
 }

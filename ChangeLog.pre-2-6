@@ -1,3 +1,10 @@
+Sun Jul 30 16:54:13 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * gunicode.h: Fix stray character
+	
+	* gutf8.c (g_unichar_to_utf8): Allow outbuf to be NULL, in
+	which case we just compute the length.
+
 2000-07-31  Havoc Pennington  <hp@redhat.com>
 
 	* Makefile.am (EXTRA_DIST): forgot to add .pc.in to EXTRA_DIST
