@@ -102,7 +102,8 @@ extern const char **_g_charset_get_aliases (const char *canonical_name);
  * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
- * Return value: a "conversion descriptor"
+ * Return value: a "conversion descriptor", or (GIConv)-1 if
+ *  opening the converter failed.
  **/
 GIConv
 g_iconv_open (const gchar  *to_codeset,
@@ -121,20 +122,20 @@ g_iconv_open (const gchar  *to_codeset,
 	  while (*p)
 	    {
 	      if (try_conversion (to_codeset, *p, &cd))
-		return (GIConv)cd;
+		goto out;
 
 	      if (try_to_aliases (to_aliases, *p, &cd))
-		return (GIConv)cd;
+		goto out;
 
 	      p++;
 	    }
 	}
 
       if (try_to_aliases (to_aliases, from_codeset, &cd))
-	return (GIConv)cd;
+	goto out;
     }
 
-  return (GIConv)cd;
+  return (cd == (iconv_t)-1) ? (GIConv)-1 : (GIConv)cd;
 }
 
 /**
