@@ -145,13 +145,14 @@ stages of a signal emission.
 @G_SIGNAL_NO_RECURSE:  Signals being emitted for an object while currently being in
                        emission for this very object will not be emitted recursively,
                        but instead cause the first emission to be restarted.
-@G_SIGNAL_DETAILED:    This signal supports "::detail" appendixes to the signal name
+@G_SIGNAL_DETAILED:    This signal supports "::detail" appendices to the signal name
                        upon handler connections and emissions.
 @G_SIGNAL_ACTION:      Action signals are signals that may freely be emitted on alive
                        objects from user code via g_signal_emit() and friends, without
                        the need of being embedded into extra code that performs pre or
                        post emission adjustments on the object. They can also be thought
-                       of as by third-party code generically callable object methods.
+                       of as object methods which can be called generically by 
+                       third-party code.
 @G_SIGNAL_NO_HOOKS:    No emissions hooks are supported for this signal.
 
 <!-- ##### ENUM GSignalMatchType ##### -->

@@ -1,3 +1,7 @@
+Fri Dec 19 21:40:00 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/signals.sgml: Rewording.
+
 Tue Dec  2 02:31:15 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/limits.sgml:
