@@ -1,3 +1,8 @@
+2005-02-11  Tor Lillqvist  <tml@novell.com>
+
+	* glib/giowin32.c: Include winsock2.h before windows.h, to avoid
+	compilation errors with MSVC. (#167105)
+
 2005-02-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (print_help): Take main group options into
