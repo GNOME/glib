@@ -1,3 +1,7 @@
+2002-12-11  Pauli Virtanen <pauli.virtanen@hut.fi>
+
+	* configure.in: Added "fi" to ALL_LINGUAS.
+
 Fri Dec  6 12:40:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/Makefile.am (EXTRA_DIST): Don't
