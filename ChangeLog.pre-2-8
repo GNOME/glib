@@ -1,3 +1,8 @@
+Fri Feb 27 00:46:29 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strerror): Don't modify errno.  (#116617, 
+	Balazs Scheidler)
+
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gatomic.h: Fix the !G_THREADS_ENABLED case.

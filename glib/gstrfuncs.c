@@ -727,13 +727,17 @@ g_strerror (gint errnum)
 {
   static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
   char *msg;
+  int saved_errno = errno;
 
 #ifdef HAVE_STRERROR
   const char *msg_locale;
 
   msg_locale = strerror (errnum);
   if (g_get_charset (NULL))
-    return msg_locale;
+    {
+      errno = saved_errno;
+      return msg_locale;
+    }
   else
     {
       gchar *msg_utf8 = g_locale_to_utf8 (msg_locale, -1, NULL, NULL, NULL);
@@ -744,7 +748,9 @@ g_strerror (gint errnum)
 	  GQuark msg_quark = g_quark_from_string (msg_utf8);
 	  g_free (msg_utf8);
 	  
-	  return g_quark_to_string (msg_quark);
+	  msg_utf8 = (gchar *) g_quark_to_string (msg_quark);
+	  errno = saved_errno;
+	  return msg_utf8;
 	}
     }
 #elif NO_SYS_ERRLIST
@@ -1179,6 +1185,7 @@ g_strerror (gint errnum)
 
   _g_sprintf (msg, "unknown error (%d)", errnum);
 
+  errno = saved_errno;
   return msg;
 }
 
