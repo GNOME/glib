@@ -1,5 +1,8 @@
 2000-12-14  Tor Lillqvist  <tml@iki.fi>
 
+	* makefile.{mingw,msc}.in: No need to -DGSPAWN_HELPER when
+	compiling gspawn-win32-helper any longer.
+
 	* giowin32.c (g_io_win32_dispatch): Warn if no callback. Call
 	callback correctly.
 	(g_io_win32_create_watch): Fix typo.
