@@ -268,17 +268,14 @@ g_poll (GPollFD *fds,
   for (f = fds; f < &fds[nfds]; ++f)
     if (f->fd >= 0)
       {
-	if (f->events & G_IO_IN)
+	if (f->fd == G_WIN32_MSG_HANDLE)
+	  poll_msgs = TRUE;
+	else
 	  {
-	    if (f->fd == G_WIN32_MSG_HANDLE)
-	      poll_msgs = TRUE;
-	    else
-	      {
 #ifdef G_MAIN_POLL_DEBUG
-		g_print ("g_poll: waiting for %#x\n", f->fd);
+	    g_print ("g_poll: waiting for %#x\n", f->fd);
 #endif
-		handles[nhandles++] = (HANDLE) f->fd;
-	      }
+	    handles[nhandles++] = (HANDLE) f->fd;
 	  }
       }
 
@@ -327,7 +324,10 @@ g_poll (GPollFD *fds,
 		   */
 		  timer = SetTimer (NULL, 0, timeout, NULL);
 		  if (timer == 0)
-		    g_warning (G_STRLOC ": SetTimer() failed");
+		    {
+		      g_warning (G_STRLOC ": SetTimer() failed");
+		      ready = WAIT_TIMEOUT;
+		    }
 		  else
 		    {
 #ifdef G_MAIN_POLL_DEBUG
@@ -381,7 +381,7 @@ g_poll (GPollFD *fds,
     }
 
 #ifdef G_MAIN_POLL_DEBUG
-  g_print ("wait returns %d%s\n",
+  g_print ("wait returns %ld%s\n",
 	   ready,
 	   (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
 	    (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
@@ -408,10 +408,13 @@ g_poll (GPollFD *fds,
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {
-	if ((f->events & G_IO_IN)
+	if ((f->events & (G_IO_IN | G_IO_OUT))
 	    && f->fd == (gint) handles[ready - WAIT_OBJECT_0])
 	  {
-	    f->revents |= G_IO_IN;
+	    if (f->events & G_IO_IN)
+	      f->revents |= G_IO_IN;
+	    else
+	      f->revents |= G_IO_OUT;
 #ifdef G_MAIN_POLL_DEBUG
 	    g_print ("g_poll: got event %#x\n", f->fd);
 #endif

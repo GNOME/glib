@@ -1,3 +1,16 @@
+2002-10-27  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in (G_MODULE_LDFLAGS): Don't set on Win32, only causes
+	trouble.
+	
+	* glib/gmain.c (g_poll): Fix for bug reported by Herman Bloggs
+	(http://mail.gnome.org/archives/gtk-devel-list/2002-October/msg00101.html)
+	and others. We waited for events only for GPollFDs whose events
+	field had G_IO_IN set. We need to wait also for events for
+	GPollFDs that have just G_IO_OUT set. Non-blocking sockets in the
+	process of being connect()ed are one such case. Also silence a
+	couple of gcc warnings.
+
 Fri Oct 18 13:41:30 2002  Manish Singh  <yosh@gimp.org>
 
 	* glib/giochannel.c (g_io_channel_read_line_backend): avoid
