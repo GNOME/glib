@@ -1,3 +1,12 @@
+2001-10-01  Alex Larsson  <alexl@redhat.com>
+
+	* glib/gconvert.[ch]:
+	Convert G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI and
+	G_CONVERT_ERROR_INVALID_URI to G_CONVERT_ERROR_BAD_URI.
+
+	* tests/uri-test.c:
+	Update tests
+
 Mon Oct  1 16:01:24 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstring.[ch] glib/grel.c: Rename g_string_printfa()

@@ -103,14 +103,14 @@ from_uri_tests[] = {
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
   { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "Г¶Г¤ГҐ"},
-  { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
-  { "file://localhost/едц", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
-  { "file://едц/etc", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
-  { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
-  { "file://some", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
-  { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI}, /* should be G_CONVERT_ERROR_INVALID_URI */
-  { "file:test", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI},
-  { "http://www.yahoo.com/", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_FILE_URI},
+  { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://localhost/едц", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://едц/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://some", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file:test", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "http://www.yahoo.com/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:////etc", "/etc"}, /* should be "//etc" -- mistake in code for DOS results in dropped slash */
   { "file://///etc", "//etc"}, /* should be "///etc" -- mistake in code for DOS results in dropped slash */
   { "file:///c:\\foo", "/c:\\foo"}, /* should be "c:\\foo" on DOS perhaps, but that would be bad for Unix */
@@ -125,7 +125,7 @@ from_uri_tests[] = {
   { "file://%C3%80%C3%BF/", "/", "\xC3\x80\xC3\xBF"},
   { "file://@/", "/", "@"},
   { "file://:/", "/", ":"},
-  { "file://#/", NULL, NULL, G_CONVERT_ERROR_INVALID_URI},
+  { "file://#/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://%23/", "/", "#"}, /* is it dangerous to return a hostname with a "#" character in it? */
   { "file://%2F/", "/", "/"}, /* is it dangerous to return a hostname with a "/" character in it? */
 };
