@@ -742,9 +742,10 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
 
     # if we are not finding the ctime_r function, then we probably are
     # not using the proper multithread flag
+    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
     old_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-    AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, ,
+    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
     G_THREAD_CFLAGS=
     AC_MSG_WARN($FLAG_DOES_NOT_WORK))
     CPPFLAGS=$old_CPPFLAGS

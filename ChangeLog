@@ -1,3 +1,9 @@
+1999-03-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Also accept _Pctime_r instead of ctime_r, while
+	seraching for the right `_REENTRANT' flag. This is for Digital
+	UNIX 4.0d. Thanks to Sascha Brawer <sb@adasys.ch>.
+
 Tue Mar  9 23:25:50 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in: check for working realloc (NULL,).
