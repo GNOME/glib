@@ -244,6 +244,7 @@ EXPORTS
 	g_type_set_qdata
 	g_type_test_flags
 	g_type_value_table_peek
+	g_unichar_validate
 	g_value_array_append
 	g_value_array_copy
 	g_value_array_free
