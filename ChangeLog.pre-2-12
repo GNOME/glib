@@ -1,3 +1,7 @@
+Mon Jul 12 00:02:40 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gi18n-lib.h: Remove the ENABLE_NLS check here as well.
+
 2004-07-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdir.c (g_dir_open): Convert filename to UTF-8 

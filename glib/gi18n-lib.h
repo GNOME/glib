@@ -21,8 +21,6 @@
 
 #include <glib/gstrfuncs.h>
 
-#ifdef ENABLE_NLS
-
 #include <libintl.h>
 
 #ifndef GETTEXT_PACKAGE
@@ -35,19 +33,6 @@
 #define N_(String) gettext_noop (String)
 #else
 #define N_(String) (String)
-#endif
-
-#else /* NLS is disabled */
-
-#define _(String) (String)
-#define Q_(String) (String)
-#define N_(String) (String)
-#define textdomain(String) (String)
-#define gettext(String) (String)
-#define dgettext(Domain,String) (String)
-#define dcgettext(Domain,String,Type) (String)
-#define bindtextdomain(Domain,Directory) (Domain) 
-
 #endif
 
 #endif  /* __G_I18N_LIB_H__ */
