@@ -1520,32 +1520,47 @@ dnl ***********************
 dnl *** Tests for iconv ***
 dnl ***********************
 
-AC_ARG_WITH(libiconv, [ --with-libiconv          use the libiconv library ],,with_libiconv=maybe)
+AC_ARG_WITH(libiconv, [  --with-libiconv=[no/gnu/native] use the libiconv library ],,with_libiconv=maybe)
 
 found_iconv=no
-
-if test "x$with_libiconv" != "xyes" ; then
-   # 
-   # Check in the C library 
-   #
-   AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
-fi
-
-if test "x$with_libiconv" != "xno" ; then
-   #
-   # Check for libiconv
-   #
-   AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=yes; found_iconv=yes)
-fi
+case $with_libiconv in
+  maybe)
+    # Check in the C library first
+    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    # Check if we have GNU libiconv
+    if test $found_iconv = "no"; then
+      AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+    fi
+    # Check if we have a iconv in -liconv, possibly from vendor
+    if test $found_iconv = "no"; then
+      AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+    fi
+    ;;
+  no)
+    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    ;;
+  gnu|yes)
+    AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+    ;;
+  native)
+    AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+    ;;
+esac
 
 if test "x$found_iconv" = "xno" ; then
    AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
 fi
 
-if test "x$with_libiconv" = "xyes" ; then
-  ICONV_LIBS="-liconv"
-  AC_DEFINE(USE_LIBICONV)
-fi
+case $with_libiconv in
+  gnu)
+    ICONV_LIBS="-liconv"
+    AC_DEFINE(USE_LIBICONV_GNU, [Using GNU libiconv])
+    ;;
+  native)
+    ICONV_LIBS="-liconv"
+    AC_DEFINE(USE_LIBICONV_NATIVE, [Using a native implementation of iconv in a separate library])
+    ;;
+esac
 AC_SUBST(ICONV_LIBS)
 
 dnl If the system doesn't define EILSEQ, we should define EILSEQ ourselves

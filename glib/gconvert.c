@@ -38,11 +38,11 @@
 
 #include "glibintl.h"
 
-#if defined(USE_LIBICONV) && !defined (_LIBICONV_H)
-#error libiconv in use but included iconv.h not from libiconv
+#if defined(USE_LIBICONV_GNU) && !defined (_LIBICONV_H)
+#error GNU libiconv in use but included iconv.h not from libiconv
 #endif
-#if !defined(USE_LIBICONV) && defined (_LIBICONV_H)
-#error libiconv not in use but included iconv.h is from libiconv
+#if !defined(USE_LIBICONV_GNU) && defined (_LIBICONV_H)
+#error GNU libiconv not in use but included iconv.h is from libiconv
 #endif
 
 GQuark 

@@ -1,3 +1,11 @@
+Mon Feb 25 23:01:53 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in acconfig.h config.h.win32.in
+	glib/gconvert.c: Check for iconv_* in -liconv
+	as well as libiconv_* in -liconv since AIX ships
+	the system iconv in a separate library.
+	Patch from Miroslaw Dobrzanski-Neumann (#72569)	
+
 Mon Feb 25 22:46:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gdebug.h: Fix trailing , in enumeration
