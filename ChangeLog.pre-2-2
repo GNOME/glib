@@ -1,3 +1,7 @@
+Thu Sep 23 19:47:10 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.5
+
 Fri Sep 17 10:24:45 1999  Tim Janik  <timj@gtk.org>
 
         * gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied patch
