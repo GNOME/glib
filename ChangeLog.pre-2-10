@@ -3,7 +3,7 @@
 	* configure.in: Fixed recognition of dce. Do not use -lc_r on
 	OpenBSD and FreeBSD. Instead use -pthread. Move scheduling
 	parameter check to after the case..esac block for finding the
-	right thread libs.
+	right thread libs. (#73686)
 
 Tue Mar  5 19:41:02 2002  Owen Taylor  <otaylor@redhat.com>
 
