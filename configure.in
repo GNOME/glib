@@ -237,7 +237,7 @@ if test x$ac_cv_sizeof_long_long = x8; then
 	AC_MSG_CHECKING(for format to printf and scanf a gint64)
 	AC_CACHE_VAL(glib_cv_long_long_format,[
 		for format in ll q; do
-		AC_TRY_RUN([#include <stdio.h>  
+		  AC_TRY_RUN([#include <stdio.h>  
 			int main()
 			{
 			  long long b, a = -0x3AFAFAFAFAFAFAFALL;
@@ -251,7 +251,7 @@ if test x$ac_cv_sizeof_long_long = x8; then
 			break)
 		done])
 	if test -n "$glib_cv_long_long_format"; then
-	AC_MSG_RESULT(%${glib_cv_long_long_format}i)
+	  AC_MSG_RESULT(%${glib_cv_long_long_format}i)
         else
 	  AC_MSG_RESULT(none)
         fi
@@ -779,18 +779,73 @@ else
 fi
 
 
-dnl determination of G_THREAD_LIBS
-dnl ******************************
+dnl determination of G_THREAD_CFLAGS
+dnl ********************************
 
 G_THREAD_LIBS=
 G_THREAD_LIBS_EXTRA=
 G_THREAD_CFLAGS=
 
+if test x"$have_threads" != xnone; then
+
+    G_THREAD_CFLAGS="-D_REENTRANT" # good default guess
+
+    case $host in
+	*-aix*)
+		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
+		if test x"$GCC" = xyes; then
+            	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
+		fi
+		;;
+	*-freebsd2.2*)
+		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
+
+		# FreeBSD 2.2.x shiped with gcc 2.7.2.x, which doesn't support
+		# -mthreads flag.
+		;;	
+	*-sysv5uw7*)  # UnixWare 7 
+           	if test "$GCC" != "yes"; then
+               		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -Kthread"
+           	else	
+			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -pthread"
+           	fi	
+		;;
+    esac
+
+    # if we are not finding the ctime_r function, then we probably are
+    # not using the proper multithread flag
+
+    glib_save_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
+
+    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
+    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
+    	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
+
+    CPPFLAGS="$glib_save_CPPFLAGS"
+
+    AC_MSG_CHECKING(thread related cflags)
+    AC_MSG_RESULT($G_THREAD_CFLAGS)
+    CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
+fi
+
+dnl determination of G_THREAD_LIBS
+dnl ******************************
+
 mutex_has_default=no
 case $have_threads in
         posix|dce)
-		G_THREAD_LIBS=error
-		glib_save_LIBS="$LIBS"
+	   G_THREAD_LIBS=error
+	   glib_save_LIBS="$LIBS"
+    	   case $host in
+	     *-sysv5uw7*) # UnixWare 7 
+           	if test "$GCC" != "yes"; then
+               		G_THREAD_LIBS="-Kthread"
+           	else	
+			G_THREAD_LIBS="-pthread"
+           	fi	
+		;;
+             *)
 		for thread_lib in "" pthread pthreads c_r thread dce; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
@@ -823,6 +878,9 @@ case $have_threads in
 				break],
 				[AC_MSG_RESULT(no)])
 		done
+		if test "x$G_THREAD_LIBS" = xerror; then
+        	  AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
+		fi
 		for thread_lib in "" rt; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
@@ -849,34 +907,36 @@ case $have_threads in
 				[AC_MSG_RESULT(no)])
 		done
 		LIBS="$glib_save_LIBS"
-                mutex_has_default=yes
-                mutex_default_type='pthread_mutex_t'
-                mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
-                mutex_header_file='pthread.h'
-		if test "x$have_threads" = "xposix"; then
-			g_threads_impl="POSIX"
-		else
-			g_threads_impl="DCE"
-			have_threads="posix"
-		fi
-		AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
-                ;;
+		;;
+           esac 
+           mutex_has_default=yes
+           mutex_default_type='pthread_mutex_t'
+           mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
+           mutex_header_file='pthread.h'
+	   if test "x$have_threads" = "xposix"; then
+	     g_threads_impl="POSIX"
+	   else
+	     g_threads_impl="DCE"
+	     have_threads="posix"
+	   fi
+	   AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
+           ;;
         solaris)
-		G_THREAD_LIBS=error
-                AC_CHECK_LIB(thread, cond_init, G_THREAD_LIBS="-lthread")
-                mutex_has_default=yes
-                mutex_default_type='mutex_t'
-		mutex_default_init="DEFAULTMUTEX"
-                mutex_header_file='thread.h'
-		g_threads_impl="SOLARIS"
-                ;;
+	   G_THREAD_LIBS=error
+           AC_CHECK_LIB(thread, cond_init, G_THREAD_LIBS="-lthread")
+           mutex_has_default=yes
+           mutex_default_type='mutex_t'
+	   mutex_default_init="DEFAULTMUTEX"
+           mutex_header_file='thread.h'
+	   g_threads_impl="SOLARIS"
+           ;;
         none)
-		g_threads_impl="NONE"
-                ;;
+	   g_threads_impl="NONE"
+           ;;
         *)
-		g_threads_impl="NONE"
-		G_THREAD_LIBS=error
-                ;;
+	   g_threads_impl="NONE"
+           G_THREAD_LIBS=error
+           ;;
 esac
 
 if test "x$G_THREAD_LIBS" = xerror; then
@@ -895,55 +955,14 @@ esac
 AC_MSG_CHECKING(thread related libraries)
 AC_MSG_RESULT($G_THREAD_LIBS)
 
-dnl determination of G_THREAD_CFLAGS
-dnl ********************************
-
-if test x"$enable_threads" = xyes; then
-
-    G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
-
-    case $host in
-	*-aix*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-		if test x"$GCC" = xyes; then
-            	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
-		fi
-		;;
-	*-freebsd2.2*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-
-		# FreeBSD 2.2.x shiped with gcc 2.7.2.x, which doesn't support
-		# -mthreads flag.
-		;;
-    esac
-
-    # if we are not finding the ctime_r function, then we probably are
-    # not using the proper multithread flag
-    old_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
-    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
-    G_THREAD_CFLAGS=
-    AC_MSG_WARN($FLAG_DOES_NOT_WORK))
-    CPPFLAGS=$old_CPPFLAGS
-
-    AC_MSG_CHECKING(thread related cflags)
-
-    AC_MSG_RESULT($G_THREAD_CFLAGS)
-else
-    G_THREAD_CFLAGS=
-fi
-
 dnl check for mt safe function variants and some posix functions
 dnl ************************************************************
 
-if test x"$enable_threads" = xyes; then
+if test x"$have_threads" != xnone; then
 	glib_save_LIBS="$LIBS"
-	glib_save_CFLAGS="$CFLAGS"
 	# we are not doing the following for now, as this might require glib 
 	# to always be linked with the thread libs on some platforms. 
 	# LIBS="$LIBS $G_THREAD_LIBS"
-	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 	AC_CHECK_FUNCS(localtime_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
 		AC_MSG_CHECKING([for getpwuid_r])
@@ -1041,7 +1060,6 @@ if test x"$enable_threads" = xyes; then
 	fi
 
 	LIBS="$glib_save_LIBS"
-	CFLAGS="$glib_save_CFLAGS"
 
 	# now spit out all the warnings.
 	if test "$ac_cv_func_getpwuid_r" != "yes"; then
@@ -1060,8 +1078,6 @@ AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 AC_SUBST(G_THREAD_LIBS_EXTRA)
-
-CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 
 dnl **********************************************
 dnl *** GDefaultMutex setup and initialization ***
@@ -1257,7 +1273,7 @@ _______EOF
 #define G_GINT64_FORMAT $gint64_format
 #define G_GUINT64_FORMAT $guint64_format
 _______EOF
-	fi
+		fi
 	fi
 
 	case x$glib_size_t in
@@ -1486,8 +1502,8 @@ $ac_cv_sizeof_long)
 $ac_cv_sizeof_long_long)
   gint64='long long'
   if test -n "$glib_cv_long_long_format"; then
-  gint64_format='"'$glib_cv_long_long_format'i"'
-  guint64_format='"'$glib_cv_long_long_format'u"'
+    gint64_format='"'$glib_cv_long_long_format'i"'
+    guint64_format='"'$glib_cv_long_long_format'u"'
   fi
   glib_extension='G_GNUC_EXTENSION '
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
@@ -1581,9 +1597,9 @@ x$ac_cv_c_bigendian)
   ;;
 esac
 
-case x$enable_threads in
-xyes)	g_enable_threads_def="#define";;
-*)	g_enable_threads_def="#undef ";;
+case x$have_threads in
+xnone)	g_enable_threads_def="#undef";;
+*)	g_enable_threads_def="#define";;
 esac
 
 g_threads_impl_def=$g_threads_impl

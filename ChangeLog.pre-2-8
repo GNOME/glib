@@ -1,5 +1,19 @@
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: Moved determination of G_THREAD_FLAGS before
+	G_THREAD_LIBS. Check for UnixWare systems and set the right cflags
+	and libs there (it needs -Kthread for the native compiler and
+	-pthread for gcc). Thanks to Boyd Lynn Gerber <gerberb@zenez.com>
+	for the info.
+
+	* configure.in: Fail immediately, when no thread library is found,
+	instead of continuing searching for rt libs etc. Changed almost
+	all occurances of $enable_threads to $have_threads, as that's,
+	what we want.
+
+	* tests/threadpool-test.c: Define vars inside the guard to avoid
+	warnings.
+
 	* configure.in, tests/type-test.c: Some platforms support 64 bit
 	'long long', but you can not printf or scanf them. In that case,
 	don't define G_G{UINT|INT}64_FORMAT. Changed the type-test program

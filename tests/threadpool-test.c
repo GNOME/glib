@@ -25,11 +25,11 @@ int
 main (int   argc,
       char *argv[])
 {
-  GThreadPool *pool1, *pool2, *pool3;
-  guint i;
   /* Only run the test, if threads are enabled and a default thread
      implementation is available */
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
+  GThreadPool *pool1, *pool2, *pool3;
+  guint i;
   g_thread_init (NULL);
   
   pool1 = g_thread_pool_new (thread_pool_func, 3, 0, FALSE, 
