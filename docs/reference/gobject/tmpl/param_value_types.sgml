@@ -45,7 +45,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_BOOLEAN.
 
 <!-- ##### MACRO G_TYPE_PARAM_BOOLEAN ##### -->
 <para>
-
+The #GType of #GParamSpecBoolean.
 </para>
 
 
@@ -115,7 +115,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_CHAR.
 
 <!-- ##### MACRO G_TYPE_PARAM_CHAR ##### -->
 <para>
-
+The #GType of #GParamSpecChar.
 </para>
 
 
@@ -189,7 +189,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_UCHAR.
 
 <!-- ##### MACRO G_TYPE_PARAM_UCHAR ##### -->
 <para>
-
+The #GType of #GParamSpecUChar.
 </para>
 
 
@@ -263,7 +263,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_INT.
 
 <!-- ##### MACRO G_TYPE_PARAM_INT ##### -->
 <para>
-
+The #GType of #GParamSpecInt.
 </para>
 
 
@@ -337,7 +337,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_UINT.
 
 <!-- ##### MACRO G_TYPE_PARAM_UINT ##### -->
 <para>
-
+The #GType of #GParamSpecUInt.
 </para>
 
 
@@ -411,7 +411,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_LONG.
 
 <!-- ##### MACRO G_TYPE_PARAM_LONG ##### -->
 <para>
-
+The #GType of #GParamSpecLong.
 </para>
 
 
@@ -485,7 +485,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_ULONG.
 
 <!-- ##### MACRO G_TYPE_PARAM_ULONG ##### -->
 <para>
-
+The #GType of #GParamSpecULong.
 </para>
 
 
@@ -559,7 +559,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_INT64.
 
 <!-- ##### MACRO G_TYPE_PARAM_INT64 ##### -->
 <para>
-
+The #GType of #GParamSpecInt64.
 </para>
 
 
@@ -633,7 +633,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_UINT64.
 
 <!-- ##### MACRO G_TYPE_PARAM_UINT64 ##### -->
 <para>
-
+The #GType of #GParamSpecUInt64.
 </para>
 
 
@@ -707,7 +707,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_FLOAT.
 
 <!-- ##### MACRO G_TYPE_PARAM_FLOAT ##### -->
 <para>
-
+The #GType of #GParamSpecFloat.
 </para>
 
 
@@ -782,7 +782,7 @@ Return whether the given #GValue can hold values of type %G_TYPE_DOUBLE.
 
 <!-- ##### MACRO G_TYPE_PARAM_DOUBLE ##### -->
 <para>
-
+The #GType of #GParamSpecDouble.
 </para>
 
 
@@ -833,18 +833,18 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_ENUM ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_ENUM.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_ENUM ##### -->
 <para>
-
+Cast a #GParamSpec instance into a #GParamSpecEnum.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_ENUM ##### -->
@@ -857,7 +857,7 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_TYPE_PARAM_ENUM ##### -->
 <para>
-
+The #GType of #GParamSpecEnum.
 </para>
 
 
@@ -905,18 +905,18 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_FLAGS ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_FLAGS.
 </para>
 
-@pspec: 
+@pspec:  a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_FLAGS ##### -->
 <para>
-
+Cast a #GParamSpec instance into a #GParamSpecChar.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_FLAGS ##### -->
@@ -929,7 +929,7 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_TYPE_PARAM_FLAGS ##### -->
 <para>
-
+The #GType of #GParamSpecFlags.
 </para>
 
 
@@ -977,18 +977,18 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_STRING ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_STRING.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_STRING ##### -->
 <para>
-
+Casts a #GParamSpec instance into a #GParamSpecString.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_STRING ##### -->
@@ -1001,7 +1001,7 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_TYPE_PARAM_STRING ##### -->
 <para>
-
+The #GType of #GParamSpecString.
 </para>
 
 
@@ -1085,18 +1085,18 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_PARAM.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_PARAM ##### -->
 <para>
-
+Casts a #GParamSpec instance into a #GParamSpecParam.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_PARAM ##### -->
@@ -1109,7 +1109,7 @@ Get the contents of a %G_TYPE_DOUBLE #GValue.
 
 <!-- ##### MACRO G_TYPE_PARAM_PARAM ##### -->
 <para>
-
+The #GType of #GParamSpecParam.
 </para>
 
 
@@ -1196,7 +1196,7 @@ Return whether the given #GValue can hold values derived from type %G_TYPE_BOXED
 
 <!-- ##### MACRO G_TYPE_PARAM_BOXED ##### -->
 <para>
-
+The #GType of #GParamSpecBoxed.
 </para>
 
 
@@ -1272,18 +1272,18 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_POINTER ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_POINTER.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_POINTER ##### -->
 <para>
-
+Casts a #GParamSpec instance into a #GParamSpecPointer.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_POINTER ##### -->
@@ -1296,7 +1296,7 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 
 <!-- ##### MACRO G_TYPE_PARAM_POINTER ##### -->
 <para>
-
+The #GType of #GParamSpecPointer.
 </para>
 
 
@@ -1340,18 +1340,18 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_OBJECT ##### -->
 <para>
-
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_PARAM_SPEC_OBJECT ##### -->
 <para>
-
+Casts a #GParamSpec instance into a #GParamSpecObject.
 </para>
 
-@pspec: 
+@pspec: a valid #GParamSpec instance
 
 
 <!-- ##### MACRO G_VALUE_HOLDS_OBJECT ##### -->
@@ -1364,7 +1364,7 @@ later freed with g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 
 <!-- ##### MACRO G_TYPE_PARAM_OBJECT ##### -->
 <para>
-
+The #GType of #GParamSpecObject.
 </para>
 
 
@@ -1443,7 +1443,7 @@ Cast a #GParamSpec instance into a #GParamSpecUnichar.
 
 <!-- ##### MACRO G_TYPE_PARAM_UNICHAR ##### -->
 <para>
-
+The #GType of #GParamSpecUnichar.
 </para>
 
 
@@ -1489,7 +1489,7 @@ Cast a #GParamSpec instance into a #GParamSpecValueArray.
 
 <!-- ##### MACRO G_TYPE_PARAM_VALUE_ARRAY ##### -->
 <para>
-
+The #GType of #GParamSpecValueArray.
 </para>
 
 

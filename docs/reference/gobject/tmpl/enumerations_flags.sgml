@@ -18,12 +18,21 @@ Enumeration and flags types
 
 </para>
 
+@g_type_class: 
+@minimum: 
+@maximum: 
+@n_values: 
+@values: 
 
 <!-- ##### STRUCT GFlagsClass ##### -->
 <para>
 
 </para>
 
+@g_type_class: 
+@mask: 
+@n_values: 
+@values: 
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE ##### -->
 <para>
@@ -43,10 +52,10 @@ Enumeration and flags types
 
 <!-- ##### MACRO G_TYPE_IS_ENUM ##### -->
 <para>
-
+Returns whether @type "is a" %G_TYPE_ENUM.
 </para>
 
-@type: 
+@type: a #GType ID.
 
 
 <!-- ##### MACRO G_ENUM_CLASS ##### -->
@@ -67,10 +76,10 @@ Enumeration and flags types
 
 <!-- ##### MACRO G_TYPE_IS_FLAGS ##### -->
 <para>
-
+Returns whether @type "is a" %G_TYPE_FLAGS.
 </para>
 
-@type: 
+@type: a #GType ID.
 
 
 <!-- ##### MACRO G_FLAGS_CLASS ##### -->

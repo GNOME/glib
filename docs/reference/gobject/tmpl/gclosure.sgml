@@ -63,7 +63,7 @@ Functions as first-class objects
 
 <!-- ##### MACRO G_TYPE_CLOSURE ##### -->
 <para>
-
+The #GType for #GClosure.
 </para>
 
 
@@ -328,14 +328,14 @@ atfer this function, unles g_closure_ref() was called beforehand.
 
 <!-- ##### MACRO G_TYPE_IO_CHANNEL ##### -->
 <para>
-
+The #GType for #GIOChannel.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_IO_CONDITION ##### -->
 <para>
-
+The #GType for #GIOCondition.
 </para>
 
 

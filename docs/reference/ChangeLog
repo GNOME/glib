@@ -1,3 +1,9 @@
+2002-12-09  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/enumerations_flags.sgml: 
+	* gobject/tmpl/gclosure.sgml: 
+	* gobject/tmpl/param_value_types.sgml: Add docs.
+
 2002-12-06  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gparamspec.sgml: Typo fix.
