@@ -1855,9 +1855,8 @@ g_type_check_flags (GType      type,
   return FALSE;
 }
 
-gboolean
-g_type_is_dynamic (GType      type,
-		   GTypeFlags flags)
+GTypePlugin*
+g_type_get_plugin (GType type)
 {
   TypeNode *node = LOOKUP_TYPE_NODE (type);
 

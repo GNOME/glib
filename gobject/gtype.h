@@ -308,8 +308,6 @@ gboolean         g_type_instance_conforms_to    (GTypeInstance      *instance,
 						 GType               iface_type);
 gboolean         g_type_check_flags             (GType               type,
 						 GTypeFlags          flags);
-gboolean         g_type_is_dynamic              (GType               type,
-						 GTypeFlags          flags);
 GTypeInstance*   g_type_create_instance         (GType               type);
 void             g_type_free_instance           (GTypeInstance      *instance);
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
@@ -318,6 +316,7 @@ void		 g_type_add_class_cache_func    (gpointer	     cache_data,
 void		 g_type_remove_class_cache_func (gpointer	     cache_data,
 						 GTypeClassCacheFunc cache_func);
 void             g_type_class_unref_uncached    (gpointer            g_class);
+GTypePlugin*	 g_type_get_plugin		(GType		     type);
 
 
 #ifndef G_DISABLE_CAST_CHECKS

@@ -1,3 +1,7 @@
+Tue Jul 11 02:48:13 2000  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: removed g_type_is_dynamic() and added g_type_get_plugin().
+
 2000-07-10  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject-query.c: Include ../config.h for HAVE_UNISTD_H. Use it
