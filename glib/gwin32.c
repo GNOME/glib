@@ -219,6 +219,9 @@ g_win32_getlocale (void)
       break;
     case LANG_CZECH: l = "cs"; sl = "CZ"; break;
     case LANG_DANISH: l = "da"; sl = "DK"; break;
+#ifdef LANG_DIVEHI
+    case LANG_DIVEHI: l = "div"; sl = "MV"; break;
+#endif
     case LANG_DUTCH:
       l = "nl";
       switch (sub)
@@ -268,6 +271,7 @@ g_win32_getlocale (void)
 #endif
 	}
       break;
+      /* FIXME: LANG_GALICIAN: What's the code for Galician? */
 #ifdef LANG_GEORGIAN
     case LANG_GEORGIAN: l = "ka"; sl = "GE"; break;
 #endif
@@ -327,6 +331,9 @@ g_win32_getlocale (void)
       break;
 #endif
     case LANG_KOREAN: l = "ko"; sl = "KR"; break;
+#ifdef LANG_KYRGYZ
+    case LANG_KYRGYZ: l = "ky"; sl = "KG"; /* ??? */ break; 
+#endif
     case LANG_LATVIAN: l = "lv"; sl = "LV"; break;
     case LANG_LITHUANIAN: l = "lt"; sl = "LT"; break;
 #ifdef LANG_MACEDONIAN
@@ -357,6 +364,9 @@ g_win32_getlocale (void)
 #endif
 #ifdef LANG_MARATHI
     case LANG_MARATHI: l = "mr"; sl = "IN"; break;
+#endif
+#ifdef LANG_MONGOLIAN
+    case LANG_MONGOLIAN: l = "mn"; sl = "MN"; break;
 #endif
 #ifdef LANG_NEPALI
     case LANG_NEPALI:
@@ -449,6 +459,9 @@ g_win32_getlocale (void)
 	case SUBLANG_SWEDISH_FINLAND: sl = "FI"; break;
 	}
       break;
+#ifdef LANG_SYRIAC
+    case LANG_SYRIAC: l = "syr"; break;
+#endif
 #ifdef LANG_TAMIL
     case LANG_TAMIL:
       l = "ta"; /* sl could be "IN" or "LK".  */

@@ -1,3 +1,8 @@
+2001-11-09  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c (g_win32_getlocale): Add a couple of languages
+	that have LANG_* codes in newest headers, just for completeness.
+
 2001-11-08  Wang Jian  <lark@linux.net.cn>
 
 	* configure.in(ALL_LINGUAS): Added zh_CN for Simplified Chinese.
