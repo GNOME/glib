@@ -1,3 +1,7 @@
+2004-09-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Update.
+
 2004-09-09  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmessages.c (g_return_if_fail_warning): Strip the

@@ -1,3 +1,20 @@
+Overview of Changes from GLib 2.5.2 to GLib 2.5.3
+=================================================
+* GOption
+ - set the program name from argv[0] [Masatake YAMATO] 
+ - make contexts work without a main group [Anders Carlsson]
+* Add API to get ISO 8601 week numbers [Niklas Lundell]
+* Add API to install an alternate default log handler [Darin Adler]
+* Add API to obtain a list of applicable locale names [Hidetoshi Tajima]
+* Reduce code size bloat by removing literal strings from
+ the g_return_if_fail() macros [Owen Taylor]
+* Add g_strv_length [Tim-Philipp Müller]
+* Win32 changes
+ - Add API to determine the Windows version [Tor Lillqvist]
+* Other bug fixes [Stepan Kasal, Anders, Tor]
+* Documentation improvements [Morten Welinder, Matthias Clasen]
+* New and updated translations (es,nn,ro)
+
 Overview of Changes from GLib 2.5.1 to GLib 2.5.2
 =================================================
 * Add G_GNUC_INTERNAL macro [Arjan van de Ven]
