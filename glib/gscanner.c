@@ -102,7 +102,6 @@ static	GScannerConfig	g_scanner_config_template =
 
 
 /* --- prototypes --- */
-extern char* g_vsprintf (gchar *fmt, va_list *args, va_list *args2);
 static inline
 gint		g_scanner_char_2_num	  (guchar	 c,
 					   guchar	 base);
@@ -271,16 +270,12 @@ g_scanner_error (GScanner	*scanner,
   
   if (scanner->msg_handler)
     {
-      va_list args, args2;
+      va_list args;
       gchar *string;
       
       va_start (args, format);
-      va_start (args2, format);
-      string = g_vsprintf ((gchar*) format, &args, &args2);
+      string = g_strdup_vprintf (format, args);
       va_end (args);
-      va_end (args2);
-      
-      string = g_strdup (string);
       
       scanner->msg_handler (scanner, string, TRUE);
       
@@ -298,16 +293,12 @@ g_scanner_warn (GScanner       *scanner,
   
   if (scanner->msg_handler)
     {
-      va_list args, args2;
+      va_list args;
       gchar *string;
       
       va_start (args, format);
-      va_start (args2, format);
-      string = g_vsprintf ((gchar*) format, &args, &args2);
+      string = g_strdup_vprintf (format, args);
       va_end (args);
-      va_end (args2);
-      
-      string = g_strdup (string);
       
       scanner->msg_handler (scanner, string, FALSE);
       

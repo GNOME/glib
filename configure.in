@@ -222,6 +222,87 @@ if test $gtk_ok = no; then
 fi
 AC_MSG_RESULT($gtk_ok)
 
+dnl **********************
+dnl *** va_copy checks ***
+dnl **********************
+dnl we currently check for all three cases, so we get all results in config.log
+AC_MSG_CHECKING(for an implementation of va_copy())
+AC_CACHE_VAL(glib_cv_va_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	va_copy (args2, args1);
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	glib_cv_va_copy=yes
+	,
+	glib_cv_va_copy=no
+	,)
+])
+AC_MSG_RESULT($glib_cv_va_copy)
+AC_MSG_CHECKING(for an implementation of __va_copy())
+AC_CACHE_VAL(glib_cv___va_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	__va_copy (args2, args1);
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	glib_cv___va_copy=yes
+	,
+	glib_cv___va_copy=no
+	,)
+])
+AC_MSG_RESULT($glib_cv___va_copy)
+AC_MSG_CHECKING(whether va_lists can be copied by value)
+AC_CACHE_VAL(glib_cv_va_val_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	args2 = args1;
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	glib_cv_va_val_copy=yes
+	,
+	glib_cv_va_val_copy=no
+	,)
+])
+if test "x$glib_cv_va_copy" = "xyes"; then
+  AC_DEFINE(G_VA_COPY, va_copy)
+else if test "x$glib_cv___va_copy" = "xyes"; then
+  AC_DEFINE(G_VA_COPY, __va_copy)
+fi
+fi
+if test "x$glib_cv_va_val_copy" = "xno"; then
+  AC_DEFINE(G_VA_COPY_AS_ARRAY)
+fi
+AC_MSG_RESULT($glib_cv_va_val_copy)
+
+
 dnl ***********************
 dnl *** g_module checks ***
 dnl ***********************

@@ -43,12 +43,6 @@ struct _GLogHandler
 };
 
 
-/* --- prototypes --- */
-extern gchar* g_vsprintf (const gchar *fmt,
-			  va_list     *args,
-			  va_list     *args2);
-
-
 /* --- variables --- */
 const gchar	     *g_log_domain_glib = "GLib";
 static GLogDomain    *g_log_domains = NULL;
@@ -258,9 +252,9 @@ void
 g_logv (const gchar    *log_domain,
 	GLogLevelFlags	log_level,
 	const gchar    *format,
-	va_list	       *args1,
-	va_list	       *args2)
+	va_list	        args1)
 {
+  va_list args2;
   gchar buffer[1025];
   register gint i;
   
@@ -269,9 +263,23 @@ g_logv (const gchar    *log_domain,
     return;
   
   /* we use a stack buffer of fixed size, because we might get called
-   * recursively, and we can also be out of memory.
+   * recursively.
    */
-  g_vsnprintf (buffer, 1025, format, args1, args2);
+  G_VA_COPY (args2, args1);
+  if (g_printf_string_upper_bound (format, args1) < 1024)
+    vsprintf (buffer, format, args2);
+  else
+    {
+      /* since we might be out of memory, we can't use g_vsnprintf(). */
+#ifdef  HAVE_VSNPRINTF
+      vsnprintf (buffer, 1024, format, args2);
+#else	/* !HAVE_VSNPRINTF */
+      /* we are out of luck here */
+      strncpy (buffer, format, 1024);
+#endif	/* !HAVE_VSNPRINTF */
+      buffer[1024] = 0;
+    }
+  va_end (args2);
   
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
@@ -312,13 +320,11 @@ g_log (const gchar    *log_domain,
        const gchar    *format,
        ...)
 {
-  va_list arg_list1, arg_list2;
+  va_list args;
   
-  va_start (arg_list1, format);
-  va_start (arg_list2, format);
-  g_logv (log_domain, log_level, format, &arg_list1, &arg_list2);
-  va_end (arg_list2);
-  va_end (arg_list1);
+  va_start (args, format);
+  g_logv (log_domain, log_level, format, args);
+  va_end (args);
 }
 
 void
@@ -523,30 +529,23 @@ void
 g_print (const gchar *format,
 	 ...)
 {
-  va_list args, args2;
-  char *buf;
+  va_list args;
+  gchar *string;
   
   g_return_if_fail (format != NULL);
   
   va_start (args, format);
-  va_start (args2, format);
-  buf = g_vsprintf (format, &args, &args2);
+  string = g_strdup_vprintf (format, args);
   va_end (args);
-  va_end (args2);
   
   if (glib_print_func)
-    {
-      gchar *string;
-      
-      string = g_strdup (buf);
-      glib_print_func (string);
-      g_free (string);
-    }
+    glib_print_func (string);
   else
     {
-      fputs (buf, stdout);
+      fputs (string, stdout);
       fflush (stdout);
     }
+  g_free (string);
 }
 
 GPrintFunc
@@ -564,30 +563,23 @@ void
 g_printerr (const gchar *format,
 	    ...)
 {
-  va_list args, args2;
-  char *buf;
+  va_list args;
+  gchar *string;
   
   g_return_if_fail (format != NULL);
   
   va_start (args, format);
-  va_start (args2, format);
-  buf = g_vsprintf (format, &args, &args2);
+  string = g_strdup_vprintf (format, args);
   va_end (args);
-  va_end (args2);
   
   if (glib_printerr_func)
-    {
-      gchar *string;
-      
-      string = g_strdup (buf);
-      glib_printerr_func (string);
-      g_free (string);
-    }
+    glib_printerr_func (string);
   else
     {
-      fputs (buf, stderr);
+      fputs (string, stderr);
       fflush (stderr);
     }
+  g_free (string);
 }
 
 /* compatibility code */

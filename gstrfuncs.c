@@ -59,6 +59,37 @@ g_strndup (const gchar *str, gulong n)
 }
 
 gchar*
+g_strdup_vprintf (const gchar *format,
+		  va_list      args1)
+{
+  gchar *buffer;
+  va_list args2;
+
+  G_VA_COPY (args2, args1);
+
+  buffer = g_new (gchar, g_printf_string_upper_bound (format, args1));
+
+  vsprintf (buffer, format, args2);
+  va_end (args2);
+
+  return buffer;
+}
+
+gchar*
+g_strdup_printf (const gchar *format,
+		 ...)
+{
+  gchar *buffer;
+  va_list args;
+
+  va_start (args, format);
+  buffer = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  return buffer;
+}
+
+gchar*
 g_strconcat (const gchar *string1, ...)
 {
   guint	  l;
@@ -679,6 +710,143 @@ g_strsignal (gint signum)
   
   sprintf (msg, "unknown signal (%d)", signum);
   return msg;
+}
+
+guint
+g_printf_string_upper_bound (const gchar* format,
+			     va_list      args)
+{
+  guint len = 1;
+  
+  while (*format)
+    {
+      gboolean long_int = FALSE;
+      gboolean extra_long = FALSE;
+      gchar c;
+      
+      c = *format++;
+      
+      if (c == '%')
+	{
+	  gboolean done = FALSE;
+	  
+	  while (*format && !done)
+	    {
+	      switch (*format++)
+		{
+		  gchar *string_arg;
+		  
+		case '*':
+		  len += va_arg (args, int);
+		  break;
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		  /* add specified format length, since it might exceed the
+		   * size we assume it to have.
+		   */
+		  format -= 1;
+		  len += strtol (format, (char**) &format, 10);
+		  break;
+		case 'h':
+		  /* ignore short int flag, since all args have at least the
+		   * same size as an int
+		   */
+		  break;
+		case 'l':
+		  if (long_int)
+		    extra_long = TRUE; /* linux specific */
+		  else
+		    long_int = TRUE;
+		  break;
+		case 'q':
+		case 'L':
+		  long_int = TRUE;
+		  extra_long = TRUE;
+		  break;
+		case 's':
+		  string_arg = va_arg (args, char *);
+		  if (string_arg)
+		    len += strlen (string_arg);
+		  else
+		    {
+		      /* add enough padding to hold "(null)" identifier */
+		      len += 16;
+		    }
+		  done = TRUE;
+		  break;
+		case 'd':
+		case 'i':
+		case 'o':
+		case 'u':
+		case 'x':
+		case 'X':
+#ifdef	HAVE_GINT64
+		  if (extra_long)
+		    (void) va_arg (args, gint64);
+		  else
+#endif	/* HAVE_GINT64 */
+		    {
+		      if (long_int)
+			(void) va_arg (args, long);
+		      else
+			(void) va_arg (args, int);
+		    }
+		  len += extra_long ? 64 : 32;
+		  done = TRUE;
+		  break;
+		case 'D':
+		case 'O':
+		case 'U':
+		  (void) va_arg (args, long);
+		  len += 32;
+		  done = TRUE;
+		  break;
+		case 'e':
+		case 'E':
+		case 'f':
+		case 'g':
+#ifdef HAVE_LONG_DOUBLE
+		  if (extra_long)
+		    (void) va_arg (args, long double);
+		  else
+#endif	/* HAVE_LONG_DOUBLE */
+		    (void) va_arg (args, double);
+		  len += extra_long ? 64 : 32;
+		  done = TRUE;
+		  break;
+		case 'c':
+		  (void) va_arg (args, int);
+		  len += 1;
+		  done = TRUE;
+		  break;
+		case 'p':
+		case 'n':
+		  (void) va_arg (args, void*);
+		  len += 32;
+		  done = TRUE;
+		  break;
+		case '%':
+		  len += 1;
+		  done = TRUE;
+		  break;
+		default:
+		  /* ignore unknow/invalid flags */
+		  break;
+		}
+	    }
+	}
+      else
+	len += 1;
+    }
+  
+  return len;
 }
 
 void

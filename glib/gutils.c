@@ -32,7 +32,6 @@ const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
-extern char* g_vsprintf (const gchar *fmt, va_list *args, va_list *args2);
 
 gint
 g_snprintf (gchar	*str,
@@ -51,17 +50,16 @@ g_snprintf (gchar	*str,
   return retval;
 #else	/* !HAVE_VSNPRINTF */
   gchar *printed;
-  va_list args, args2;
+  va_list args;
   
   va_start (args, fmt);
-  va_start (args2, fmt);
+  printed = g_strdup_vprintf (fmt, args);
+  va_end (args);
   
-  printed = g_vsprintf (fmt, &args, &args2);
   strncpy (str, printed, n);
   str[n-1] = '\0';
-  
-  va_end (args2);
-  va_end (args);
+
+  g_free (printed);
   
   return strlen (str);
 #endif	/* !HAVE_VSNPRINTF */
@@ -71,21 +69,22 @@ gint
 g_vsnprintf (gchar	 *str,
 	     gulong	  n,
 	     gchar const *fmt,
-	     va_list     *args1,
-	     va_list     *args2)
+	     va_list      args)
 {
 #ifdef	HAVE_VSNPRINTF
   gint retval;
   
-  retval = vsnprintf (str, n, fmt, *args1);
+  retval = vsnprintf (str, n, fmt, args);
   
   return retval;
 #else	/* !HAVE_VSNPRINTF */
   gchar *printed;
   
-  printed = g_vsprintf (fmt, args1, args2);
+  printed = g_strdup_vprintf (fmt, args);
   strncpy (str, printed, n);
   str[n-1] = '\0';
+
+  g_free (printed);
   
   return strlen (str);
 #endif /* !HAVE_VSNPRINTF */

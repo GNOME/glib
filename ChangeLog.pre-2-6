@@ -1,3 +1,52 @@
+Mon Aug 24 02:08:56 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+ 	* gstring.c:
+	* gstrfuncs.c:
+ 	(g_vsprintf): removed this function which was not publically
+	exported in glib.h. to export it, it should have been named
+ 	differently in the first place, since its semantics differ from
+ 	vsprintf(). apart from that, it was a possible cause for
+	problems since it worked on a previously allocated memory area and
+	was used in a lot places of glib. exporting it would have been a
+	guararant for problems with threaded programs.
+	(g_printf_string_upper_bound): exported this function to return
+	a string size, guarranteed to be big enough to hold the fully
+ 	expanded format+args string. added 'q', 'L' and 'll' flag handling.
+ 	in fact, the newly allocated area is in most cases much bigger than
+ 	required.
+	(g_strdup_vprintf()): new function returning a newly allocated string
+ 	containing the contents of *format and associated args (size is
+	calculated with g_printf_string_upper_bound()).
+	(g_strdup_printf): new function which wraps g_strdup_vprintf().
+
+	* configure.in: check for va_copy() or __va_copy() alternatively.
+	check whether va_lists can be copyied by value.
+
+	* glib.h: provide a definition for G_VA_COPY.
+
+	* glib.h:
+	* gmessages.c: 
+ 	(g_logv): 
+	(g_vsnprintf):
+	pass va_lists by value, not by reference, since this causes problems
+	on platforms that implement va_list as as arrays. internaly, use
+	G_VA_COPY (new_arg, org_arg); va_end (new_arg); to produce a second
+	va_list variable, if multiple passes are required. changed all
+	callers.
+
+	* glib.h:
+	* gerror.h:
+	renamed g_debug() to g_on_error_query(), cleaned up a bit.
+	renamed g_stack_trace() to g_on_error_stack_trace() since both
+	functions cluttered different namespaces.
+	there is an appropriate comment in glib.h now that explains the
+	unix and gdb specific dependencies of both functions.
+	removed g_attach_process().
+	g_on_error_stack_trace() should probably be handled with caution,
+	i've seem several different linux versions (2.0.x) become unstable
+	after invokation of this function.
+
 1998-08-18: Elliot Lee <sopwith@redhat.com>
 
 	. In gmem.c, add the ability to exclude memory chunks from the

@@ -36,9 +36,6 @@
 #include <string.h> /* for bzero on BSD systems */
 #endif
 
-#define INTERACTIVE 0
-#define STACK_TRACE 1
-
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
@@ -54,104 +51,105 @@
 #endif
 
 
-static int  do_query (char *prompt);
-static void debug (const gchar *progname, int method);
-static void stack_trace (char **);
-static void stack_trace_sigchld (int);
+static void stack_trace (char **args);
 
-
-static int stack_trace_done;
+extern volatile gboolean glib_on_error_halt;
+volatile gboolean glib_on_error_halt = TRUE;
 
 void
-g_debug (const gchar *progname)
+g_on_error_query (const gchar *prg_name)
 {
-  char buf[32];
+  static const gchar *query1 = "[E]xit, [H]alt";
+  static const gchar *query2 = ", show [S]tack trace";
+  static const gchar *query3 = " or [P]roceed";
+  gchar buf[16];
 
-  fprintf (stdout, "[n]othing, [e]xit, [s]tack trace, [a]ttach to process: ");
-  fflush (stdout);
-
-  fgets (buf, 32, stdin);
-  if (strcmp (buf, "n\n") == 0)
-    return;
-  else if (strcmp (buf, "s\n") == 0)
-    debug (progname, STACK_TRACE);
-  else if (strcmp (buf, "a\n") == 0)
-    debug (progname, INTERACTIVE);
+  if (!prg_name)
+    prg_name = g_get_prgname ();
+  
+ retry:
+  
+  if (prg_name)
+    fprintf (stdout,
+	     "%s (pid:%u): %s%s%s: ",
+	     prg_name,
+	     (guint) getpid (),
+	     query1,
+	     query2,
+	     query3);
   else
-    exit (0);
-}
-
-void
-g_attach_process (const gchar *progname,
-		  gboolean     query)
-{
-  if (!query || do_query ("attach to process"))
-    debug (progname, INTERACTIVE);
-}
-
-void
-g_stack_trace (const gchar *progname,
-	       gboolean     query)
-{
-  if (!query || do_query ("print stack trace"))
-    debug (progname, STACK_TRACE);
-}
-
-static int
-do_query (char *prompt)
-{
-  char buf[32];
-
-  fprintf (stdout, "%s (y/n) ", prompt);
+    fprintf (stdout,
+	     "(process:%u): %s%s: ",
+	     (guint) getpid (),
+	     query1,
+	     query3);
   fflush (stdout);
+  
+  fgets (buf, 8, stdin);
 
-  fgets (buf, 32, stdin);
-  if ((strcmp (buf, "yes\n") == 0) ||
-      (strcmp (buf, "y\n") == 0) ||
-      (strcmp (buf, "YES\n") == 0) ||
-      (strcmp (buf, "Y\n") == 0))
-    return TRUE;
-
-  return FALSE;
+  if ((buf[0] == 'E' || buf[0] == 'e')
+      && buf[1] == '\n')
+    _exit (0);
+  else if ((buf[0] == 'P' || buf[0] == 'p')
+	   && buf[1] == '\n')
+    return;
+  else if (prg_name
+	   && (buf[0] == 'S' || buf[0] == 's')
+	   && buf[1] == '\n')
+    {
+      g_on_error_stack_trace (prg_name);
+      goto retry;
+    }
+  else if ((buf[0] == 'H' || buf[0] == 'h')
+	   && buf[1] == '\n')
+    {
+      while (glib_on_error_halt)
+	;
+      glib_on_error_halt = TRUE;
+      return;
+    }
+  else
+    goto retry;
 }
 
-static void
-debug (const char *progname,
-       int   method)
+void
+g_on_error_stack_trace (const gchar *prg_name)
 {
   pid_t pid;
-  char buf[16];
-  char *args[4] = { "gdb", NULL, NULL, NULL };
-  volatile int x;
+  gchar buf[16];
+  gchar *args[4] = { "gdb", NULL, NULL, NULL };
 
-  sprintf (buf, "%d", (int) getpid ());
+  if (!prg_name)
+    return;
 
-  args[1] = (gchar*) progname;
+  sprintf (buf, "%u", (guint) getpid ());
+
+  args[1] = (gchar*) prg_name;
   args[2] = buf;
 
-  switch (method)
+  pid = fork ();
+  if (pid == 0)
     {
-    case INTERACTIVE:
-      fprintf (stdout, "pid: %s\n", buf);
-      break;
-    case STACK_TRACE:
-      pid = fork ();
-      if (pid == 0)
-	{
-	  stack_trace (args);
-	  _exit (0);
-	}
-      else if (pid == (pid_t) -1)
-	{
-	  perror ("could not fork");
-	  return;
-	}
-      break;
+      stack_trace (args);
+      _exit (0);
     }
-
-  x = 1;
-  while (x)
+  else if (pid == (pid_t) -1)
+    {
+      perror ("unable to fork gdb");
+      return;
+    }
+  
+  while (glib_on_error_halt)
     ;
+  glib_on_error_halt = TRUE;
+}
+
+static gboolean stack_trace_done = FALSE;
+
+static void
+stack_trace_sigchld (int signum)
+{
+  stack_trace_done = TRUE;
 }
 
 static void
@@ -167,12 +165,12 @@ stack_trace (char **args)
   char buffer[256];
   char c;
 
-  stack_trace_done = 0;
+  stack_trace_done = FALSE;
   signal (SIGCHLD, stack_trace_sigchld);
 
   if ((pipe (in_fd) == -1) || (pipe (out_fd) == -1))
     {
-      perror ("could open pipe");
+      perror ("unable to open pipe");
       _exit (0);
     }
 
@@ -189,7 +187,7 @@ stack_trace (char **args)
     }
   else if (pid == (pid_t) -1)
     {
-      perror ("could not fork");
+      perror ("unable to fork");
       _exit (0);
     }
 
@@ -251,10 +249,4 @@ stack_trace (char **args)
   close (out_fd[0]);
   close (out_fd[1]);
   _exit (0);
-}
-
-static void
-stack_trace_sigchld (int signum)
-{
-  stack_trace_done = 1;
 }

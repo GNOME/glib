@@ -125,6 +125,20 @@
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
 
+/* Define G_VA_COPY() to do the right thing for copying va_list variables.
+ * glibconfig.h may have already defined G_VA_COPY as va_copy or __va_copy.
+ */
+#if !defined (G_VA_COPY)
+#  if defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (_WIN32))
+#  define G_VA_COPY(ap1, ap2)     (*(ap1) = *(ap2))
+#  elif defined (G_VA_COPY_AS_ARRAY)
+#  define G_VA_COPY(ap1, ap2)     g_memmove ((ap1), (ap2), sizeof (va_list))
+#  else /* va_list is a pointer */
+#  define G_VA_COPY(ap1, ap2)     ((ap1) = (ap2))
+#  endif /* va_list is a pointer */
+#endif /* !G_VA_COPY */
+
+
 /* Provide simple enum value macro wrappers that ease automated
  * enum value stringification code. [abandoned]
  */
@@ -926,13 +940,17 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 					 ((GNode*) (node))->children : NULL)
 
 
-/* Fatal error handlers
+/* Fatal error handlers.
+ * g_on_error_query() will prompt the user to either
+ * [E]xit, [H]alt, [P]roceed or show [S]tack trace.
+ * g_on_error_stack_trace() invokes gdb, which attaches to the current
+ * process and shows a stack trace.
+ * These function may cause different actions on non-unix platforms.
+ * The prg_name arg is required by gdb to find the executable, if it is
+ * passed as NULL, g_on_error_query() will try g_get_prgname().
  */
-void g_attach_process (const gchar *progname,
-		       gboolean	    query);
-void g_debug	      (const gchar *progname);
-void g_stack_trace    (const gchar *progname,
-		       gboolean	    query);
+void g_on_error_query (const gchar *prg_name);
+void g_on_error_stack_trace (const gchar *prg_name);
 
 
 /* Logging mechanism
@@ -955,8 +973,7 @@ void		g_log			(const gchar	*log_domain,
 void		g_logv			(const gchar	*log_domain,
 					 GLogLevelFlags	 log_level,
 					 const gchar	*format,
-					 va_list	*args1,
-					 va_list	*args2);
+					 va_list	 args);
 GLogLevelFlags	g_log_set_fatal_mask	(const gchar	*log_domain,
 					 GLogLevelFlags	 fatal_mask);
 GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
@@ -978,28 +995,28 @@ static inline void
 g_error (const gchar *format,
 	 ...)
 {
-  va_list arg_list1, arg_list2;
-  va_start (arg_list1, format); va_start (arg_list2, format);
-  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, &arg_list1, &arg_list2);
-  va_end (arg_list2); va_end (arg_list1);
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, args);
+  va_end (args);
 }
 static inline void
 g_message (const gchar *format,
 	   ...)
 {
-  va_list arg_list1, arg_list2;
-  va_start (arg_list1, format); va_start (arg_list2, format);
-  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, &arg_list1, &arg_list2);
-  va_end (arg_list2); va_end (arg_list1);
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
+  va_end (args);
 }
 static inline void
 g_warning (const gchar *format,
 	   ...)
 {
-  va_list arg_list1, arg_list2;
-  va_start (arg_list1, format); va_start (arg_list2, format);
-  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, format, &arg_list1, &arg_list2);
-  va_end (arg_list2); va_end (arg_list1);
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, format, args);
+  va_end (args);
 }
 #endif	/* !__GNUC__ */
 
@@ -1106,6 +1123,10 @@ void	g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
 gchar*	g_strdup		(const gchar *str);
+gchar*	g_strdup_printf		(const gchar *format,
+				 ...) G_GNUC_PRINTF (1, 2);
+gchar*	g_strdup_vprintf	(const gchar *format,
+				 va_list      args);
 gchar*	g_strndup		(const gchar *str,
 				 gulong n);
 gchar*	g_strconcat		(const gchar *string1,
@@ -1119,6 +1140,11 @@ gint	g_strcasecmp		(const gchar *s1,
 void	g_strdown		(gchar	     *string);
 void	g_strup			(gchar	     *string);
 void	g_strreverse		(gchar	     *string);
+
+/* calculate a string size, guarranteed to fit format + args.
+ */
+guint	g_printf_string_upper_bound (const gchar* format,
+				     va_list      args);
 
 
 /* Retrive static string info
@@ -1143,8 +1169,7 @@ gint	g_snprintf		(gchar	     *string,
 gint	g_vsnprintf		(gchar	     *string,
 				 gulong	      n,
 				 gchar const *format,
-				 va_list     *args1,
-				 va_list     *args2);
+				 va_list      args);
 gchar*	g_basename		(const gchar *file_name);
 
 /* strings are newly allocated with g_malloc() */

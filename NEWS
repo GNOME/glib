@@ -2,7 +2,14 @@ Overview of Changes in GLib 1.1.3:
 
 * New library gmodule included which basically wraps dlopen() facilities.
 * New g_log() mechanism for logging of messages at different log levels,
-  associated with certain log domains.
+  associated with certain log domains (define -DG_LOG_DOMAIN for your module).
+* New inline functions for bit masks tests.
+* GNode functions now return the newly allocated node.
+* New macro G_VA_COPY() to work around va_list copying oddities on some
+  platforms. the non-static g_vsprintf() function vanished in favour of
+  a publically exported g_strdup_vprintf().
+* New utility functions for string and printf-like format handling .
+* Lotsa bug fixes and cleanups as always ;)
 
 Overview of Changes in GLib 1.1.2:
 

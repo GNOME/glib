@@ -466,152 +466,16 @@ g_string_up (GString *fstring)
   return fstring;
 }
 
-static int
-get_length_upper_bound (const gchar* fmt, va_list *args)
-{
-  int len = 0;
-  int short_int;
-  int long_int;
-  int done;
-  char *tmp;
-
-  while (*fmt)
-    {
-      char c = *fmt++;
-
-      short_int = FALSE;
-      long_int = FALSE;
-
-      if (c == '%')
-	{
-	  done = FALSE;
-	  while (*fmt && !done)
-	    {
-	      switch (*fmt++)
-		{
-		case '*':
-		  len += va_arg(*args, int);
-		  break;
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-		  fmt -= 1;
-		  len += strtol (fmt, (char **)&fmt, 10);
-		  break;
-		case 'h':
-		  short_int = TRUE;
-		  break;
-		case 'l':
-		  long_int = TRUE;
-		  break;
-
-		  /* I ignore 'q' and 'L', they're not portable anyway. */
-
-		case 's':
-		  tmp = va_arg(*args, char *);
-		  if(tmp)
-		    len += strlen (tmp);
-		  else
-		    len += strlen ("(null)");
-		  done = TRUE;
-		  break;
-		case 'd':
-		case 'i':
-		case 'o':
-		case 'u':
-		case 'x':
-		case 'X':
-		  if (long_int)
-		    (void)va_arg (*args, long);
-		  else if (short_int)
-		    (void)va_arg (*args, int);
-		  else
-		    (void)va_arg (*args, int);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case 'D':
-		case 'O':
-		case 'U':
-		  (void)va_arg (*args, long);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case 'e':
-		case 'E':
-		case 'f':
-		case 'g':
-		  (void)va_arg (*args, double);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case 'c':
-		  (void)va_arg (*args, int);
-		  len += 1;
-		  done = TRUE;
-		  break;
-		case 'p':
-		case 'n':
-		  (void)va_arg (*args, void*);
-		  len += 32;
-		  done = TRUE;
-		  break;
-		case '%':
-		  len += 1;
-		  done = TRUE;
-		  break;
-		default:
-		  break;
-		}
-	    }
-	}
-      else
-	len += 1;
-    }
-
-  return len;
-}
-
-extern gchar* g_vsprintf (const gchar *fmt, va_list *args, va_list *args2);
-gchar*
-g_vsprintf (const gchar *fmt,
-	    va_list     *args,
-	    va_list     *args2)
-{
-  static gchar *buf = NULL;
-  static guint  alloc = 0;
-  guint len;
-
-  len = get_length_upper_bound (fmt, args);
-
-  if (len >= alloc)
-    {
-      if (buf)
-	g_free (buf);
-
-      alloc = nearest_pow (MAX (len + 1, 1024 + 1));
-
-      buf = g_new (gchar, alloc);
-    }
-
-  vsprintf (buf, fmt, *args2);
-
-  return buf;
-}
-
 static void
-g_string_sprintfa_int (GString *string,
+g_string_sprintfa_int (GString     *string,
 		       const gchar *fmt,
-		       va_list *args,
-		       va_list *args2)
+		       va_list      args)
 {
-  g_string_append (string, g_vsprintf (fmt, args, args2));
+  gchar *buffer;
+
+  buffer = g_strdup_vprintf (fmt, args);
+  g_string_append (string, buffer);
+  g_free (buffer);
 }
 
 void
@@ -619,17 +483,13 @@ g_string_sprintf (GString *string,
 		  const gchar *fmt,
 		  ...)
 {
-  va_list args, args2;
-
-  va_start(args, fmt);
-  va_start(args2, fmt);
+  va_list args;
 
   g_string_truncate (string, 0);
 
-  g_string_sprintfa_int (string, fmt, &args, &args2);
-
-  va_end(args);
-  va_end(args2);
+  va_start (args, fmt);
+  g_string_sprintfa_int (string, fmt, args);
+  va_end (args);
 }
 
 void
@@ -637,13 +497,9 @@ g_string_sprintfa (GString *string,
 		   const gchar *fmt,
 		   ...)
 {
-  va_list args, args2;
+  va_list args;
 
-  va_start(args, fmt);
-  va_start(args2, fmt);
-
-  g_string_sprintfa_int (string, fmt, &args, &args2);
-
-  va_end(args);
-  va_end(args2);
+  va_start (args, fmt);
+  g_string_sprintfa_int (string, fmt, args);
+  va_end (args);
 }

@@ -169,7 +169,8 @@ main (int   arg,
 #if 0
   g_log_set_fatal_mask ("GModule", G_LOG_FATAL_MASK|G_LOG_LEVEL_WARNING);
   g_module_symbol (0, 0, 0);
-  g_warning("jahoooo");
+  g_warning("jahooo");
+  g_on_error_query (".libs/testgmodule");
 #endif
   
   return 0;
