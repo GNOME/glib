@@ -26,6 +26,16 @@
 
 #include        <gmodule.h>
 
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain(void         *hinstDll,
+	unsigned long dwReason,
+	void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
+
 G_MODULE_EXPORT const gchar*
 g_module_check_init (GModule *module)
 {

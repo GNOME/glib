@@ -1,5 +1,7 @@
 /* GMODULE - GLIB wrapper code for dynamic module loading
- * Copyright (C) 1998 Tim Janik
+ * Copyright (C) 1998, 2000 Tim Janik
+ *
+ * WIN32 GMODULE implementation
  * Copyright (C) 1998 Tor Lillqvist
  *
  * This library is free software; you can redistribute it and/or
@@ -34,17 +36,17 @@
 
 /* --- functions --- */
 static gpointer
-_g_module_open (const gchar    *file_name,
-		gboolean	bind_lazy)
+_g_module_open (const gchar *file_name,
+		gboolean     bind_lazy)
 {
   HINSTANCE handle;
   
   handle = LoadLibrary (file_name);
   if (!handle)
     {
-      char error[100];
-      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
-		     0, error, sizeof (error), NULL);
+      gchar error[100];
+
+      sprintf (error, "Error code %d", GetLastError ());
       g_module_set_error (error);
     }
   
@@ -59,9 +61,9 @@ _g_module_self (void)
   handle = GetModuleHandle (NULL);
   if (!handle)
     {
-      char error[100];
-      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
-		     0, error, sizeof (error), NULL);
+      gchar error[100];
+
+      sprintf (error, "Error code %d", GetLastError ());
       g_module_set_error (error);
     }
   
@@ -69,32 +71,33 @@ _g_module_self (void)
 }
 
 static void
-_g_module_close (gpointer	  handle,
-		 gboolean	  is_unref)
+_g_module_close (gpointer handle,
+		 gboolean is_unref)
 {
   if (!FreeLibrary (handle))
     {
-      char error[100];
-      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
-		     0, error, sizeof (error), NULL);
+      gchar error[100];
+
+      sprintf (error, "Error code %d", GetLastError ());
       g_module_set_error (error);
     }
 }
 
 static gpointer
-_g_module_symbol (gpointer	  handle,
-		  const gchar	 *symbol_name)
+_g_module_symbol (gpointer     handle,
+		  const gchar *symbol_name)
 {
   gpointer p;
   
   p = GetProcAddress (handle, symbol_name);
   if (!p)
     {
-      char error[100];
-      FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError (),
-		     0, error, sizeof (error), NULL);
+      gchar error[100];
+
+      sprintf (error, "Error code %d", GetLastError ());
       g_module_set_error (error);
     }
+  
   return p;
 }
 
@@ -103,7 +106,7 @@ _g_module_build_path (const gchar *directory,
 		      const gchar *module_name)
 {
   gint k;
-
+  
   k = strlen (module_name);
   if (directory && *directory)
     if (k > 4 && g_strcasecmp (module_name + k - 4, ".dll") == 0)

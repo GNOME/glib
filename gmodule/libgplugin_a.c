@@ -27,6 +27,16 @@
 #include	<gmodule.h>
 #include	<stdlib.h>
 
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain(void         *hinstDll,
+	unsigned long dwReason,
+	void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
+
 G_MODULE_EXPORT void
 gplugin_a_func (void)
 {
@@ -54,7 +64,7 @@ gplugin_say_boo_func (void)
 G_MODULE_EXPORT void
 gplugin_a_module_func (GModule *module)
 {
-  void(*f)(void) = NULL;
+  void (*f) (void) = NULL;
   gchar *string;
 
   string = "gplugin_say_boo_func";

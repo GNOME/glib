@@ -134,10 +134,6 @@ g_module_set_error (const gchar *error)
 #include "gmodule-dld.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
 #include "gmodule-win32.c"
-#elif	(G_MODULE_IMPL == G_MODULE_IMPL_OS2)
-#include "gmodule-os2.c"
-#elif	(G_MODULE_IMPL == G_MODULE_IMPL_BEOS)
-#include "gmodule-beos.c"
 #else
 #undef	SUPPORT_OR_RETURN
 #define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error ("dynamic modules are " \
@@ -171,6 +167,17 @@ _g_module_build_path (const gchar *directory,
   return NULL;
 }
 #endif	/* no implementation */
+
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain (void         *hinstDll,
+	 unsigned long dwReason,
+	 void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
+
 
 /* --- functions --- */
 gboolean
@@ -256,8 +263,7 @@ g_module_open (const gchar    *file_name,
       
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
-        if (check_init)
-          check_failed = check_init (module);
+	check_failed = check_init (module);
       
       /* we don't call unload() if the initialization check failed. */
       if (!check_failed)
@@ -376,7 +382,7 @@ g_module_symbol (GModule	*module,
   *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */
   
-  module_error = g_module_error();
+  module_error = g_module_error ();
   if (module_error)
     {
       gchar *error;
@@ -385,6 +391,7 @@ g_module_symbol (GModule	*module,
       g_module_set_error (error);
       g_free (error);
       *symbol = NULL;
+
       return FALSE;
     }
   
