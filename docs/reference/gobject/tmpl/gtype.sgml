@@ -1321,6 +1321,45 @@ fundamental types.
 @g_class: 
 
 
+<!-- ##### FUNCTION g_type_add_interface_check ##### -->
+<para>
+Adds a function to be called after an interface vtable is
+initialized for any class. That is, after the @interface_init
+member of #GInterfaceInfo has been called.
+</para>
+<para>
+This function is useful when you want to check an invariant
+that depends on the interfaces of a class. For instance,
+the implementation of #GObject uses this facility to check
+that an object implements all of the properties that are
+defined on its interfaces.    
+</para>
+
+@check_data: data to pass to @check_func
+@check_func: function to be called after each interface
+   is initialized.
+
+
+<!-- ##### FUNCTION g_type_remove_interface_check ##### -->
+<para>
+Removes an interface check function added with
+g_type_add_interface_check().
+</para>
+
+@check_data: callback data passed to g_type_add_interface_check()
+@chec_func: callback function passed to g_type_add_interface_check()
+
+
+<!-- ##### USER_FUNCTION GTypeInterfaceCheckFunc ##### -->
+<para>
+A callback called after an interface vtable is initialized.
+See g_type_add_interface_check().
+</para>
+
+@func_data: data passed to g_type_add_interface_check().
+@g_iface: the interface that has been initialized
+
+
 <!-- ##### FUNCTION g_type_value_table_peek ##### -->
 <para>
 Returns the location of the #GTypeValueTable associated with @type.

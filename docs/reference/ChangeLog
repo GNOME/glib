@@ -1,3 +1,8 @@
+Thu Oct  2 01:22:46 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/gobject-sections.txt gobject/tmpl/gtype.sgml: 
+	Add g_type_add/remove_interface_check()
+
 2003-09-30  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gparamspec.sgml: 

@@ -91,6 +91,9 @@ g_type_free_instance
 g_type_add_class_cache_func
 g_type_remove_class_cache_func
 g_type_class_unref_uncached
+g_type_add_interface_check
+g_type_remove_interface_check
+GTypeInterfaceCheckFunc
 g_type_value_table_peek
 <SUBSECTION Private>
 G_TYPE_FUNDAMENTAL_SHIFT
