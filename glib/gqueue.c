@@ -64,6 +64,11 @@ g_queue_free (GQueue *queue)
 
   g_list_free (queue->head);
 
+#ifdef ENABLE_GC_FRIENDLY
+  queue->head = NULL;
+  queue->tail = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+
   G_LOCK (queue_memchunk);
   g_trash_stack_push (&free_queue_nodes, queue);
   G_UNLOCK (queue_memchunk);

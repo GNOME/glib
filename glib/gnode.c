@@ -82,7 +82,7 @@ void
 g_node_push_allocator (GAllocator *allocator)
 {
   G_LOCK (current_allocator);
-  g_node_validate_allocator ( allocator );
+  g_node_validate_allocator (allocator);
   allocator->last = current_allocator;
   current_allocator = allocator;
   G_UNLOCK (current_allocator);
@@ -148,6 +148,14 @@ g_nodes_free (GNode *node)
     {
       if (parent->children)
 	g_nodes_free (parent->children);
+
+#ifdef ENABLE_GC_FRIENDLY
+      parent->data = NULL;
+      parent->prev = NULL;
+      parent->parent = NULL;
+      parent->children = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+
       if (parent->next)
 	parent = parent->next;
       else

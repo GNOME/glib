@@ -48,11 +48,11 @@ struct _GRealArray
 
 #define g_array_elt_len(array,i) ((array)->elt_size * (i))
 #define g_array_elt_pos(array,i) ((array)->data + g_array_elt_len((array),(i)))
-#define g_array_elt_zero(array, pos, len)                               \
+#define g_array_elt_zero(array, pos, len) 				\
   (memset (g_array_elt_pos ((array), pos), 0,  g_array_elt_len ((array), len)))
-#define g_array_zero_terminate(array) G_STMT_START{                     \
-  if ((array)->zero_terminated)                                         \
-    g_array_elt_zero ((array), (array)->len, 1);                        \
+#define g_array_zero_terminate(array) G_STMT_START{			\
+  if ((array)->zero_terminated)						\
+    g_array_elt_zero ((array), (array)->len, 1);			\
 }G_STMT_END
 
 static gint g_nearest_pow        (gint        num);
@@ -182,14 +182,17 @@ g_array_set_size (GArray *farray,
 		  guint   length)
 {
   GRealArray *array = (GRealArray*) farray;
-
-  if (array->len < length)
+  if (length > array->len)
     {
       g_array_maybe_expand (array, length - array->len);
       
       if (array->clear)
 	g_array_elt_zero (array, array->len, length - array->len);
     }
+#ifdef ENABLE_GC_FRIENDLY  
+  else if (length < array->len)
+    g_array_elt_zero (array, length, array->len - length);
+#endif /* ENABLE_GC_FRIENDLY */  
   
   array->len = length;
   
@@ -215,7 +218,11 @@ g_array_remove_index (GArray* farray,
   
   array->len -= 1;
 
+#ifdef ENABLE_GC_FRIENDLY
+  g_array_elt_zero (array, array->len, 1);
+#else /* !ENABLE_GC_FRIENDLY */
   g_array_zero_terminate (array);
+#endif /* ENABLE_GC_FRIENDLY */  
 
   return farray;
 }
@@ -237,7 +244,11 @@ g_array_remove_index_fast (GArray* farray,
   
   array->len -= 1;
 
+#ifdef ENABLE_GC_FRIENDLY
+  g_array_elt_zero (array, array->len, 1);
+#else /* !ENABLE_GC_FRIENDLY */
   g_array_zero_terminate (array);
+#endif /* ENABLE_GC_FRIENDLY */  
 
   return farray;
 }
@@ -262,10 +273,16 @@ g_array_maybe_expand (GRealArray *array,
 
   if (want_alloc > array->alloc)
     {
-      array->alloc = g_nearest_pow (want_alloc);
-      array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
+      want_alloc = g_nearest_pow (want_alloc);
+      want_alloc = MAX (want_alloc, MIN_ARRAY_SIZE);
 
-      array->data = g_realloc (array->data, array->alloc);
+      array->data = g_realloc (array->data, want_alloc);
+
+#ifdef ENABLE_GC_FRIENDLY
+      memset (array->data + array->alloc, 0, want_alloc - array->alloc);
+#endif /* ENABLE_GC_FRIENDLY */
+
+      array->alloc = want_alloc;
     }
 }
 
@@ -338,9 +355,16 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
 {
   if ((array->len + len) > array->alloc)
     {
+#ifdef ENABLE_GC_FRIENDLY
+      guint old_alloc = array->alloc;
+#endif /* ENABLE_GC_FRIENDLY */
       array->alloc = g_nearest_pow (array->len + len);
       array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
       array->pdata = g_realloc (array->pdata, sizeof(gpointer) * array->alloc);
+#ifdef ENABLE_GC_FRIENDLY
+      for ( ; old_alloc < array->alloc; old_alloc++)
+	array->pdata [old_alloc] = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
     }
 }
 
@@ -365,6 +389,14 @@ g_ptr_array_set_size  (GPtrArray   *farray,
       for (i = array->len; i < length; i++)
 	array->pdata[i] = NULL;
     }
+#ifdef ENABLE_GC_FRIENDLY  
+  else if (length < array->len)
+    {
+      int i;
+      for (i = length; i < array->len; i++)
+	array->pdata[i] = NULL;
+    }
+#endif /* ENABLE_GC_FRIENDLY */  
 
   array->len = length;
 }
@@ -388,6 +420,10 @@ g_ptr_array_remove_index (GPtrArray* farray,
   
   array->len -= 1;
 
+#ifdef ENABLE_GC_FRIENDLY  
+  array->pdata[array->len] = NULL;
+#endif /* ENABLE_GC_FRIENDLY */  
+
   return result;
 }
 
@@ -408,6 +444,10 @@ g_ptr_array_remove_index_fast (GPtrArray* farray,
     array->pdata[index] = array->pdata[array->len - 1];
 
   array->len -= 1;
+
+#ifdef ENABLE_GC_FRIENDLY  
+  array->pdata[array->len] = NULL;
+#endif /* ENABLE_GC_FRIENDLY */  
 
   return result;
 }

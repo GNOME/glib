@@ -380,6 +380,12 @@ g_hash_node_new (gpointer key,
 static void
 g_hash_node_destroy (GHashNode *hash_node)
 {
+
+#ifdef ENABLE_GC_FRIENDLY
+  hash_node->key = NULL;
+  hash_node->value = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+
   G_LOCK (g_hash_global);
   hash_node->next = node_free_list;
   node_free_list = hash_node;
@@ -394,8 +400,19 @@ g_hash_nodes_destroy (GHashNode *hash_node)
       GHashNode *node = hash_node;
   
       while (node->next)
-        node = node->next;
-  
+	{
+#ifdef ENABLE_GC_FRIENDLY
+	  node->key = NULL;
+	  node->value = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+	  node = node->next;
+	}
+
+#ifdef ENABLE_GC_FRIENDLY
+      node->key = NULL;
+      node->value = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+ 
       G_LOCK (g_hash_global);
       node->next = node_free_list;
       node_free_list = hash_node;

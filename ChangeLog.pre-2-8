@@ -1,5 +1,15 @@
 2000-04-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in, acconfig.h: Add configure test for garbage
+	collector friendliness for GLib. If enabled, ENABLE_GC_FRIENDLY
+	will be defined.
+
+	* garray.c, ghash.c, glist.c, gmain.c, gmem.c, gnode.c, gqueue.c,
+	gslist.c, gtree.c: If ENABLE_GC_FRIENDLY is defined, NULLify all
+	memory released by the user, but cached by GLib. This lets a
+	garbage collector have a more correct view of the actually used
+	memory.
+	
 	* garray.c, glib.h: Added g_(array|ptr_array|byte_array)_sized_new
 	functions, that reserve a certain amount of memeory for the array
 	at creation time to avoid reallocation. Fixes bug #6707 from

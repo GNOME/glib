@@ -78,7 +78,7 @@ void
 g_list_push_allocator(GAllocator *allocator)
 {
   G_LOCK (current_allocator);
-  g_list_validate_allocator ( allocator );
+  g_list_validate_allocator (allocator);
   allocator->last = current_allocator;
   current_allocator = allocator;
   G_UNLOCK (current_allocator);
@@ -151,9 +151,23 @@ g_list_free (GList *list)
 {
   if (list)
     {
+      GList *last_node = list;
+
+#ifdef ENABLE_GC_FRIENDLY
+      while (last_node->next)
+        {
+          last_node->data = NULL;
+          last_node->prev = NULL;
+          last_node = last_node->next;
+        }
+      last_node->data = NULL
+      last_node->prev = NULL
+#else /* !ENABLE_GC_FRIENDLY */
       list->data = list->next;  
+#endif /* ENABLE_GC_FRIENDLY */
+
       G_LOCK (current_allocator);
-      list->next = current_allocator->free_lists;
+      last_node->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
       G_UNLOCK (current_allocator);
     }
@@ -165,6 +179,11 @@ _g_list_free_1 (GList *list)
   if (list)
     {
       list->data = NULL;  
+
+#ifdef ENABLE_GC_FRIENDLY
+      list->prev = NULL;  
+#endif /* ENABLE_GC_FRIENDLY */
+
       G_LOCK (current_allocator);
       list->next = current_allocator->free_lists;
       current_allocator->free_lists = list;

@@ -648,9 +648,15 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
         }
       else
         {
+#ifdef ENABLE_GC_FRIENDLY
+	  rmem_chunk->mem_area = (GMemArea*) g_malloc0 (sizeof (GMemArea) -
+							MEM_AREA_SIZE +
+							rmem_chunk->area_size); 
+#else /* !ENABLE_GC_FRIENDLY */
 	  rmem_chunk->mem_area = (GMemArea*) g_malloc (sizeof (GMemArea) -
 						       MEM_AREA_SIZE +
 						       rmem_chunk->area_size);
+#endif /* ENABLE_GC_FRIENDLY */
 	  
 	  rmem_chunk->num_mem_areas += 1;
 	  rmem_chunk->mem_area->next = rmem_chunk->mem_areas;
@@ -715,6 +721,10 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
 
   rmem_chunk = (GRealMemChunk*) mem_chunk;
   
+#ifdef ENABLE_GC_FRIENDLY
+  memset (mem, 0, rmem_chunk->atom_size);
+#endif /* ENABLE_GC_FRIENDLY */
+
   /* Don't do anything if this is an ALLOC_ONLY chunk
    */
   if (rmem_chunk->type == G_ALLOC_AND_FREE)

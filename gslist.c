@@ -151,9 +151,21 @@ g_slist_free (GSList *list)
 {
   if (list)
     {
-      list->data = list->next;
+      GSList *last_node = list;
+  
+#ifdef ENABLE_GC_FRIENDLY
+      while (last_node->next)
+	{
+	  last_node->data = NULL;
+	  last_node = last_node->next;
+	}
+      last_node->data = NULL
+#else /* !ENABLE_GC_FRIENDLY */
+      list->data = list->next;  
+#endif /* ENABLE_GC_FRIENDLY */
+	
       G_LOCK (current_allocator);
-      list->next = current_allocator->free_lists;
+      last_node->next = current_allocator->free_lists;
       current_allocator->free_lists = list;
       G_UNLOCK (current_allocator);
     }

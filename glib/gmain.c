@@ -1186,6 +1186,10 @@ g_main_remove_poll (GPollFD *fd)
 	  else
 	    poll_records = pollrec->next;
 
+#ifdef ENABLE_GC_FRIENDLY
+	  pollrec->fd = NULL;  
+#endif /* ENABLE_GC_FRIENDLY */
+
 	  pollrec->next = poll_free_list;
 	  poll_free_list = pollrec;
 

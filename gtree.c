@@ -135,6 +135,13 @@ g_tree_node_destroy (GTreeNode *node)
     {
       g_tree_node_destroy (node->right);
       g_tree_node_destroy (node->left);
+
+#ifdef ENABLE_GC_FRIENDLY
+      node->left = NULL;
+      node->key = NULL;
+      node->value = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
+
       G_LOCK (g_tree_global);
       node->right = node_free_list;
       node_free_list = node;
@@ -395,6 +402,12 @@ g_tree_node_remove (GTreeNode    *node,
 	  new_root->balance = node->balance;
 	  node = g_tree_node_restore_right_balance (new_root, old_balance);
 	}
+
+#ifdef ENABLE_GC_FRIENDLY
+      garbage->left = NULL;
+      garbage->key = NULL;
+      garbage->value = NULL;
+#endif /* ENABLE_GC_FRIENDLY */
 
       G_LOCK (g_tree_global);
       garbage->right = node_free_list;
