@@ -1,3 +1,8 @@
+Thu Jun 10 23:38:02 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/printf-test.c (TEST): Actually set any_failed on 
+	failure.  (#143552, Philippe Blain)
+
 2004-06-09  Federico Mena Quintero  <federico@ximian.com>
 
 	* tests/uri-test.c (to_uri_tests): Fix expected results (ha ha)
