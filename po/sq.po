@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-16 00:25+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2004-01-16 00:28+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -166,7 +166,8 @@ msgstr "Kanali përfundon me një karakter të pjesëshëm"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
+msgstr ""
+"I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
@@ -179,7 +180,8 @@ msgid "Error on line %d: %s"
 msgstr "Gabim tek rrjeshti %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "U gjet një entitet bosh '&;'; entitetet e vlefshme janë: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -277,7 +279,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "U gjet karakteri '%s', përkundrazi pritej një '=' mbas emrit të atributit '%"
 "s' të elementit '%s'"
@@ -329,7 +332,8 @@ msgstr "Elementi '%s' është mbyllur, asnjë element aktualisht është i hapur
 #: glib/gmarkup.c:1494
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
+msgstr ""
+"Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
 
 #: glib/gmarkup.c:1641
 msgid "Document was empty or contained only whitespace"
@@ -337,7 +341,8 @@ msgstr "Dokumenti ishte bosh apo përmbante vetëm hapësira të bardha"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
+msgstr ""
+"Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
 
 #: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
@@ -382,7 +387,8 @@ msgstr "Dokumenti u mbyll papritur në brendësi të vlerës së një atributi"
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
+msgstr ""
+"Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -482,7 +488,8 @@ msgstr "I pamundur zbatimi i procesit bir \"%s\" (%s)"
 #: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "I pamundur ridrejtimi i të dhënave në hyrje apo dalje të procesit bir (%s)"
+msgstr ""
+"I pamundur ridrejtimi i të dhënave në hyrje apo dalje të procesit bir (%s)"
 
 #: glib/gspawn.c:1232
 #, c-format
@@ -497,7 +504,8 @@ msgstr "Gabim i panjohur gjatë ekzekutimit të procesit bir \"%s\""
 #: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
+msgstr ""
+"I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
@@ -511,4 +519,3 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Karakteri nuk ekziston në UTF-16"
-

@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2003-11-13 15:04+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -47,37 +47,37 @@ msgstr "Seqüència de caràcters parcial al final de l'entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No es pot convertir el 'fallback' '%s' al joc de codis '%s'"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "L'URI '%s' no és un URI absolut que utilitzi l'esquema de fitxers"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Pot ser que l'URI del fitxer local '%s' no inclogui cap '#'"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI '%s' no és vàlid"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nom de l'ordinador central de l'URI '%s' no és vàlid"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI '%s' conté caràcters d'escapada invàlids"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nom de camí '%s' no és un camí absolut"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Nom de l'ordinador central invàlid"
 
@@ -86,58 +86,58 @@ msgstr "Nom de l'ordinador central invàlid"
 msgid "Error opening directory '%s': %s"
 msgstr "S'ha produït un error en obrir el directori '%s': %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "No s'ha pogut assignar %lu bytes per a llegir el fitxer \"%s\""
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "S'ha produït un error en llegir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "No s'ha pogut llegir des del fitxer «%s»: %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "No s'ha pogut obtenir els atributs del fitxer «%s»: fstat() ha fallat: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: fdopen() ha fallat: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "La plantilla '%s' no és vàlida, no pot contenir cap '%s'"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "La plantilla '%s' no acaba en XXXXXX"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "No s'ha pogut crear el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr "No se suporten els enllaços simbòlics"
 

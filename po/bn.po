@@ -6,7 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2002-12-15 09:35-0800\n"
 "Last-Translator: Taneem Ahmed <taneem@eyetap.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -46,37 +47,37 @@ msgstr "প্রদত্ত তথ্যের শেষে আংশিক �
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "শেষ পন্থা '%s' থেকে কোডসেট '%s' এ পরিবর্তন করা যায়নি"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "ফাইলের ধারা অনুযায়ী ইউআরআই '%s' একটি আপেক্ষিক পথ"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানীয় ফাইল ইউআরআই '%s' এর মধ্যে সম্ভবত '#' নেই"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ইউআরআই '%s' গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ইউআরআই '%s' এর হোস্ট নাম গ্রহনযোগ্য নয়"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ইউআরআই '%s' এর মধ্যে অগ্রহণীয় escape অক্ষর আছে"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "পথনাম '%s' একটি আপেক্ষিক পথ"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "ভুল হোস্ট নাম"
 
@@ -85,57 +86,57 @@ msgstr "ভুল হোস্ট নাম"
 msgid "Error opening directory '%s': %s"
 msgstr "ডাইরেক্টরি '%s' খুলতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu বাইট্স ফাইল \"%s\" পড়ার জন্য বরাদ্দ করা যাইনি"
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ফাইল \"%s\" পড়ার সময়কালীন ভুল: %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ফাইল \"%s\" থেকে পড়াতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ফাইল \"%s\" এর বৈশিষ্ট্য পেতে ব্যর্থ: fstat() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ফাইল \"%s\" খুলতে ব্যর্থ: fdopen() ব্যর্থ: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "নমুনা '%s' সঠিক নয়, '%s' থাকা উচিত্‌ নয়"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "নমুনা '%s' এর শেষে XXXXXX নাই"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ফাইল \"%s\" সৃষ্টি করতে ব্যর্থ: %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

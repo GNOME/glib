@@ -9,7 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2002-12-11 23:23+0200\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -50,37 +51,37 @@ msgstr "רצף תווים חלקי בסוף הקלט"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "לא ניתן להמיר ברירת מחדל '%s' למערך תווים '%s'"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "הכתובת '%s' היא לא אבסולוטית בשימוש בתור מזהה קובץ"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "הכתובת של קובץ מקומי '%s' אינה יכולה להכיל '#'"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "הכתובת '%s' אינה תקפה"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "שם המארח של הכתובת '%s' אינו תקף"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "הכתובת '%s' מכילה תווים ללא תוי חילוף תקפים"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "שם הנתיב '%s' אינו נתיב מוחלט"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "שם מחשב מארח לא תקף"
 
@@ -89,57 +90,57 @@ msgstr "שם מחשב מארח לא תקף"
 msgid "Error opening directory '%s': %s"
 msgstr "שגיאה בפתיחת סיפרייה '%s': %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "לא ניתן להקצות %lu בתים עבור קריאת קובץ \"%s\""
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "שגיאה בקריאת קובץ '%s': %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "כשלון בקריאה מקובץ %s': %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "כשלון בפתיחת קובץ %s': %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "כשלון בקבלת מאפייני קובץ '%s': fstat() נכשל: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "כשלון בפתיחת קובץ '%s': fdopen() נכשל: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "תבנית '%s'  אינה תקפה, אינה צריכה להכיל '%s'"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "תבנית '%s' אינה מסתיימת ב-XXXXXX"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "כשלון ביצירת קובץ '%s': %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "כשלון ביצירת קובץ '%s': %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

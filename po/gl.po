@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2001-12-19 21:39+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -45,37 +46,37 @@ msgstr "Secuencia parcial de caracter ao final da entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Non se pode converter o por defecto (fallback) '%s' ao código '%s'"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "O URI '%s' non é un URI absoluto usando o esquema de ficheiro"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de ficheiro local '%s' non pode incluir un '#'"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' non é válido"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "O nome do servidor no URI '%s' contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "A URI '%s' contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de ruta '%s' non é unha ruta absoluta"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "Secuencia de bytes non válida no nome do servidor"
@@ -85,57 +86,57 @@ msgstr "Secuencia de bytes non válida no nome do servidor"
 msgid "Error opening directory '%s': %s"
 msgstr "Erro abrindo o directorio '%s': %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Non se puideron asignar %lu bytes para ler o ficheiro \"%s\""
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Erro lendo o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Fallo ao ler desde o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Fallo ao abrir o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Fallo ao obter os atributos do ficheiro '%s': fstat() fallou: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Fallo ao abrir o ficheiro '%s': fdopen() fallou: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "O modelo '%s' non é válido, non debería conter '%s'"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "O modelo '%s' non remata con XXXXXX"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Fallo ao crear o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Fallo ao crear o ficheiro '%s': %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

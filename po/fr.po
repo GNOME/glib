@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2003-11-22 11:38+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -49,37 +49,37 @@ msgstr "Séquence partielle de caractères à la fin de l'entrée"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne peut convertir le fallback « %s » vers le jeu de code « %s »"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "L'URI « %s » n'est pas une URI absolue utilisant le schema de fichier"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "L'URI de fichier local « %s » peut ne pas inclure un  « # »"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI « %s » est non valide"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Le nom d'hôte de l'URI « %s » est non valide"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI « %s » contient des caractères d'échappements non valides"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Le chemin « %s » n'est pas un chemin absolu"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Nom d'hôte non valide"
 
@@ -88,58 +88,58 @@ msgstr "Nom d'hôte non valide"
 msgid "Error opening directory '%s': %s"
 msgstr "Erreur à l'ouverture du répertoire « %s » : %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ne peut allouer %lu octets pour lire le fichier « %s »"
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Erreur de lecture du fichier « %s » : %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "La lecture depuis le fichier « %s » a échoué : %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "L'ouverture du fichier « %s » a échoué : %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "L'obtention des attributs du fichier « %s » a échoué : fstat() a échoué : %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "L'ouverture du fichier « %s » a échoué : fdopen() a échoué : %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Le modèle « %s » est non valide, il ne devrait pas contenir de « %s »"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Le modèle « %s » ne doit pas finir avec XXXXXX"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "La création du fichier « %s » a échoué : %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "La lecture du lien symbolique « %s » a échoué : %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr "Liens symboliques non supportés"
 

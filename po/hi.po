@@ -7,7 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2002-12-20 10:12-0500\n"
 "Last-Translator: Unknown :-(\n"
 "Language-Team: Hindi <hi@li.org>\n"
@@ -47,37 +48,37 @@ msgstr "इनपुट के अंत में आंशिक कैरे�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "%s से कोड सेट %s में परिवर्तन नहीं किया जा सकता"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "फाइल योजना का उपयोग करने पर uri %s absolute uri नहीं है। (निरपेछ)"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "स्थानीय फाइल uri %s में # सम्मिलित नहीं है"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "uri %s अवैध है"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "uri %s का होस्टनाम अवैध है"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "uri %s में अवैध इस्केप कैरेक्टर सम्मिलित है"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "पाथनाम %s एक absolute पाथ नहीं है"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "अवैध होस्ट नाम"
 
@@ -86,57 +87,57 @@ msgstr "अवैध होस्ट नाम"
 msgid "Error opening directory '%s': %s"
 msgstr "डायरेक्टरी %s को खोलने में त्रुटि %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "फाइल %2$s को पढ़ने के लिए %1$lu बाइट allocate नहीं किया जा सकता"
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, fuzzy, c-format
 msgid "Error reading file '%s': %s"
 msgstr "%s फाइल को पढ़ने में त्रुटि"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, fuzzy, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "%s फाइल को फढ़ने में असफल"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, fuzzy, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "%s फाइल को खोलने में असफल"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, fuzzy, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "फाइल %s के एटीट्यूट ग्यात करने में असफल"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "फाइल %s को खोलने में असफल"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "टैम्पलेट %s अवैध है, इसमें %s शामिल नहीं है"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "टैम्पलेट %s xxxx पर समाप्त नहीं हो रहा है"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "फाइल %s को निर्मित करने में असफल"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "फाइल %s को निर्मित करने में असफल"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

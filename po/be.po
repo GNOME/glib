@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2002-11-20 17:52+0200\n"
 "Last-Translator: Ales Nyakhaychyk <i18n@infonet.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -58,44 +59,44 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Немагчыма пераўтвараць знак \"%s\" у знак з набору \"%s\""
 
 # glib/gconvert.c:1593
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 "URI \"%s\" не зьяўляюцца абсалютным URI пад час выкарыстаньня файлавай схемы"
 
 # glib/gconvert.c:1603
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI \"%s\" мясцовага файлу ня можа ўлучаць \"#\""
 
 # glib/gconvert.c:1620
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" нерэчаісны"
 
 # glib/gconvert.c:1632
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Назва вузлу ў URI \"%s\" нерэчаісная"
 
 # glib/gconvert.c:1648
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" утрымлівае недапушчальны сымбаль"
 
 # glib/gconvert.c:1719
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Шлях \"%s\" ня зьяўляецца абсалютным"
 
 # glib/gconvert.c:1729
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Недапушчальная назва вузла"
 
@@ -106,66 +107,66 @@ msgid "Error opening directory '%s': %s"
 msgstr "Памылка пад час адкрыцьця каталёгу \"%s\": %s"
 
 # glib/gfileutils.c:337 glib/gfileutils.c:402
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ня атрымалася разьмеркаваць %lu байтаў для чытаньня файлу \"%s\""
 
 # glib/gfileutils.c:348
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Памылка пад час чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:426
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Збой пад час чытаньня з файлу \"%s\": %s"
 
 # glib/gfileutils.c:465 glib/gfileutils.c:533
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Збой пад час адкрыцьця файлу \"%s\": %s"
 
 # glib/gfileutils.c:479
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Збой пад час атрыманьня атрыбутаў файлу \"%s\": збой fstat(): %s"
 
 # glib/gfileutils.c:505
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Збой пад час адкрыцьця файлу \"%s\": збой fdopen(): %s"
 
 # glib/gfileutils.c:712
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблён \"%s\" нядапушчальны, ня павінны ўтрымліваць \"%s\""
 
 # glib/gfileutils.c:724
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблён \"%s\" сканчаецца не на XXXXXX"
 
 # glib/gfileutils.c:745
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Збой пад час стварэньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:745
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Збой пад час стварэньня файлу \"%s\": %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-06 20:13+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2004-01-07 01:09+0100\n"
 "Last-Translator: Sanlig Badral <Badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
@@ -183,7 +183,8 @@ msgid "Error on line %d: %s"
 msgstr "%d мөрөнд алдаа: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Хоосон абт »&;« олдлоо; хүчинтэй абтууд &amp; &quot; &lt; &gt; &apos; юм. "
 "(абт=аский биш тэмдэгт)"
@@ -280,7 +281,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Сонин тэмдэгт »%s«, »%s« элементийн »%s« аттрибутын нэрийн дараа »=« "
 "хүлээгдэж байна"
@@ -394,7 +396,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
+msgstr ""
+"Баримт тайлбар эсвэл заавар боловсруулалтын дотор гэнэтийн байдлаар төгсөв"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -523,4 +526,3 @@ msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
 
 #~ msgid "Socket error"
 #~ msgstr "Сокет алдаа"
-

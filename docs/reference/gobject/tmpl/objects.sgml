@@ -21,6 +21,17 @@ to the #GObject implementation and should never be accessed directly.
 </para>
 
 
+<!-- ##### SIGNAL GObject::notify ##### -->
+<para>
+The notify signal is emitted on an object when one of its properties 
+has been changed. Note that getting this signal doesn't guarantee that the
+value of the property has actually changed, it may also be emitted when
+the setter for the property is called to reinstate the previous value.
+</para>
+
+@gobject: the object which received the signal.
+@pspec: the #GParamSpec of the property which changed
+
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
 The class structure for the <structname>GObject</structname> type.
@@ -854,15 +865,4 @@ properties in set_property() and get_property() implementations.
 @property_id: the numeric id of the property
 @pspec: the #GParamSpec of the property
 
-
-<!-- ##### SIGNAL GObject::notify ##### -->
-<para>
-The notify signal is emitted on an object when one of its properties 
-has been changed. Note that getting this signal doesn't guarantee that the
-value of the property has actually changed, it may also be emitted when
-the setter for the property is called to reinstate the previous value.
-</para>
-
-@gobject: the object which received the signal.
-@pspec: the #GParamSpec of the property which changed
 

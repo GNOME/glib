@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2002-08-18 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -45,37 +46,37 @@ msgstr "உள்ளீடின் முடிவில் பூர்த்�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "பின்னடைப்பு '%s', '%s' குறிக் கணமிற்கு மாற்ற முடியவில்லை"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "வலை முகவரி `%s' கோப்புத் திட்டமுறைப்படி ஓர் தனி வலை முகவரி அல்ல"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "உள்ளமைக் கோப்பு வலை முகவரி `%s' இல் ஓர் `#' இல்லாமல் இருக்கலாம்"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "`%s' செல்லுபடியாகாத வலை முகவரி"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "`%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' பாதைப்-பெயர் ஓர் தனிப் பாதை அல்ல"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
@@ -84,57 +85,57 @@ msgstr "பிழையான விருந்தோம்புப்-பெ�
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' கோப்பிலிருந்து வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() நொடிப்படைந்தது: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s' படிம அச்சு XXXXXX கொண்டு முடிவதில்லை"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, fuzzy, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr ""
 

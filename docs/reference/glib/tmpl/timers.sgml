@@ -61,6 +61,7 @@ g_timer_stop() must be called before using this function.
 @timer: a #GTimer.
 @Since: 2.4
 
+
 <!-- ##### FUNCTION g_timer_elapsed ##### -->
 <para>
 If @timer has been started but not stopped, obtains the time since the timer was

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-27 17:16+0100\n"
+"POT-Creation-Date: 2004-01-22 15:09-0500\n"
 "PO-Revision-Date: 2003-12-28 12:44+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -179,7 +179,8 @@ msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
 #: glib/gmarkup.c:412
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "Fann tom entitet «&;»; gyldige entitetar er: &amp; &quot; &lt; &apos;"
 
 #: glib/gmarkup.c:422
@@ -208,8 +209,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entiteten slutta ikkje med eit semikolon. Du brukte truleg eit "
-"et-teikn utan å meina å opna ein entitet. Skriv et-teikn som «&amp;»."
+"Entiteten slutta ikkje med eit semikolon. Du brukte truleg eit et-teikn utan "
+"å meina å opna ein entitet. Skriv et-teikn som «&amp;»."
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -274,7 +275,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet «%"
 "s»"
@@ -363,7 +365,8 @@ msgstr "Dokumentet tok uventa slutt inni eit attributtnamn"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
+msgstr ""
+"Dokumentet vart uventa avslutta inne i eit merke som opnar eit element."
 
 #: glib/gmarkup.c:1693
 msgid ""
@@ -384,7 +387,8 @@ msgstr "Dokumentet avslutta uventa i eit lukkemerke for elementet «%s»"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
+msgstr ""
+"Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -418,7 +422,8 @@ msgstr "Klarte ikkje å lesa data frå barneprosess"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+msgstr ""
+"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
@@ -510,4 +515,3 @@ msgstr "Teikn ikkje gyldig for UTF-16"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kanalen set flag ustøtta"
-
