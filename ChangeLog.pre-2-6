@@ -1,3 +1,11 @@
+2000-05-02  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.def: Add new functions.
+
+	* makefile.{cygwin,msc}.in (glib_OBJECTS): Add new object files.
+
+	* tests/makefile.{cygwin,msc}.in: Add threadpool-test.
+
 2000-04-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gasyncqueue.c: New File implementing an asynchronous queue to be

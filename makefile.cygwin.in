@@ -52,6 +52,7 @@ install : all
 
 glib_OBJECTS = \
 	garray.o	\
+	gasyncqueue.o	\
 	gcache.o	\
 	gcompletion.o	\
 	gdataset.o	\
@@ -71,6 +72,7 @@ glib_OBJECTS = \
 	grand.o		\
 	gslist.o	\
 	gthread.o	\
+	gthreadpool.o	\
 	gtimer.o	\
 	gtree.o		\
 	grel.o		\

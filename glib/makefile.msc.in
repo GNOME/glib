@@ -56,13 +56,14 @@ install : all
 
 glib_OBJECTS = \
 	garray.obj	\
+	gasyncqueue.obj	\
 	gcache.obj	\
 	gcompletion.obj	\
 	gdataset.obj	\
 	gdate.obj	\
 	gerror.obj	\
-	ghook.obj	\
 	ghash.obj	\
+	ghook.obj	\
 	giochannel.obj	\
 	giowin32.obj	\
 	glist.obj	\
@@ -73,14 +74,15 @@ glib_OBJECTS = \
 	gprimes.obj	\
 	gqueue.obj	\
 	grand.obj	\
+	grel.obj	\
+	gscanner.obj	\
 	gslist.obj	\
+	gstrfuncs.obj	\
+	gstring.obj	\
 	gthread.obj	\
+	gthreadpool.obj	\
 	gtimer.obj	\
 	gtree.obj	\
-	grel.obj	\
-	gstring.obj	\
-	gstrfuncs.obj	\
-	gscanner.obj	\
 	gutils.obj	\
 	gwin32.obj
 

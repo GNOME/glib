@@ -419,6 +419,9 @@ EXPORTS
 	g_thread_create
 	g_thread_functions_for_glib_use
 	g_thread_join
+	g_thread_pool_free
+	g_thread_pool_new
+	g_thread_pool_push
 	g_thread_self
 	g_thread_set_priority
 	g_thread_use_default_impl
