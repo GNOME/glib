@@ -533,6 +533,10 @@ g_get_any_init (void)
       
 #endif /* !HAVE_PWD_H */
       
+#ifdef __EMX__
+      /* change '\\' in %HOME% to '/' */
+      g_strdelimit (g_home_dir, "\\",'/');
+#endif
       if (!g_user_name)
 	g_user_name = g_strdup ("somebody");
       if (!g_real_name)

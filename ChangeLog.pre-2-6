@@ -1,3 +1,8 @@
+Sat Mar  6 11:03:08 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
+
+	* gutils.c (g_get_any_init): add OS/2 changes.
+	change '\\' in HOME to '/'.
+
 1999-03-03  Josh MacDonald  <jmacd@spin.dsl.pacbell.net>
 
 	* glib.def: g_spaced_primes_closest was omitted here, so I
