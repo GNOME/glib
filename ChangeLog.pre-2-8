@@ -38,7 +38,7 @@
 
 	Introduce the idea of a filename encoding, which is 
 	*literally* the filename encoding on Unix. On windows, 
-	use the Unicode name converted to UTF-8. (#156325,
+	use the Unicode name converted to UTF-8. (#101792,
 	Tor Lillqvist, Owen Taylor)
 	
 	* glib/gdir.[hc]: 
