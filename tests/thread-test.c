@@ -81,9 +81,11 @@ test_g_static_rec_mutex (void)
 
 #define THREADS 10
 
-static GStaticPrivate test_g_static_private_private = G_STATIC_PRIVATE_INIT;
+static GStaticPrivate test_g_static_private_private1 = G_STATIC_PRIVATE_INIT;
+static GStaticPrivate test_g_static_private_private2 = G_STATIC_PRIVATE_INIT;
 static GStaticMutex test_g_static_private_mutex = G_STATIC_MUTEX_INIT;
 static guint test_g_static_private_counter = 0;
+static guint test_g_static_private_ready = 0;
 
 static gpointer
 test_g_static_private_constructor (void)
@@ -109,20 +111,51 @@ test_g_static_private_thread (gpointer data)
 {
   guint number = GPOINTER_TO_INT (data);
   guint i;
-  guint* private;
+  guint *private1, *private2;
   for (i = 0; i < 10; i++)
     {
       number = number * 11 + 1; /* A very simple and bad RNG ;-) */
-      private = g_static_private_get (&test_g_static_private_private);
-      if (!private || number % 7 > 3)
+      private1 = g_static_private_get (&test_g_static_private_private1);
+      if (!private1 || number % 7 > 3)
 	{
-	  private = test_g_static_private_constructor ();
-	  g_static_private_set (&test_g_static_private_private, private,
+	  private1 = test_g_static_private_constructor ();
+	  g_static_private_set (&test_g_static_private_private1, private1,
 				test_g_static_private_destructor);
 	}
-      *private = number;
+      *private1 = number;
+      private2 = g_static_private_get (&test_g_static_private_private2);
+      if (!private2 || number % 13 > 5)
+	{
+	  private2 = test_g_static_private_constructor ();
+	  g_static_private_set (&test_g_static_private_private2, private2,
+				test_g_static_private_destructor);
+	}
+      *private2 = number * 2;
       g_usleep (G_USEC_PER_SEC / 5);
-      g_assert (number == *private);
+      g_assert (number == *private1);
+      g_assert (number * 2 == *private2);      
+    }
+  g_static_mutex_lock (&test_g_static_private_mutex);
+  test_g_static_private_ready++;
+  g_static_mutex_unlock (&test_g_static_private_mutex);  
+
+  /* Busy wait is not nice but that's just a test */
+  while (test_g_static_private_ready != 0)
+    g_usleep (G_USEC_PER_SEC / 5);  
+
+  for (i = 0; i < 10; i++)
+    {
+      private2 = g_static_private_get (&test_g_static_private_private2);
+      number = number * 11 + 1; /* A very simple and bad RNG ;-) */
+      if (!private2 || number % 13 > 5)
+	{
+	  private2 = test_g_static_private_constructor ();
+	  g_static_private_set (&test_g_static_private_private2, private2,
+				test_g_static_private_destructor);
+	}      
+      *private2 = number * 2;
+      g_usleep (G_USEC_PER_SEC / 5);
+      g_assert (number * 2 == *private2);      
     }
 }
 
@@ -131,6 +164,9 @@ test_g_static_private (void)
 {
   GThread *threads[THREADS];
   guint i;
+
+  test_g_static_private_ready = 0;
+
   for (i = 0; i < THREADS; i++)
     {
       threads[i] = g_thread_create (test_g_static_private_thread, 
@@ -138,6 +174,17 @@ test_g_static_private (void)
 				    0, TRUE, TRUE, 
 				    G_THREAD_PRIORITY_NORMAL, NULL);      
     }
+
+  /* Busy wait is not nice but that's just a test */
+  while (test_g_static_private_ready != THREADS)
+    g_usleep (G_USEC_PER_SEC / 5);
+
+  /* Reuse the static private */
+  g_static_private_free (&test_g_static_private_private2);
+  g_static_private_init (&test_g_static_private_private2);
+  
+  test_g_static_private_ready = 0;
+
   for (i = 0; i < THREADS; i++)
     {
       g_thread_join (threads[i]);
@@ -231,7 +278,7 @@ run_all_tests()
   test_g_mutex ();
   test_g_static_rec_mutex ();
   test_g_static_private ();
-  test_g_static_rw_lock ();  
+  test_g_static_rw_lock ();
 }
 
 int 

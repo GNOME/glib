@@ -1,3 +1,19 @@
+2001-02-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.c, gthread.h: Added functions g_static_rec_mutex_init,
+	g_static_rec_mutex_free, g_static_private_init,
+	g_static_private_free, g_static_rw_lock_init to allow the usage of
+	all those types dynamically. (g_static_rw_lock_free already
+	existed). Aditionally freed static_private indeces are reused
+	now. Untill now the array would just grow if you would use more
+	and more static_private. That required adding a slist of all
+	running threads, which could potentially be of good use later. It
+	is not exported however. Renamed a LOCK and small indentation
+	fixes.
+
+	* tests/thread-test.c: Test the new static_private index freing
+	and reusing feature.
+	
 Mon Feb 12 15:01:09 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (gtk_doc_min_version): Add check for gtk-doc version.

@@ -52,7 +52,7 @@
 #endif /* GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P */
 
 GQuark 
-g_thread_error_quark()
+g_thread_error_quark (void)
 {
   static GQuark quark;
   if (!quark)
@@ -117,8 +117,11 @@ GThreadFunctions g_thread_functions_for_glib_use = {
 /* Local data */
 
 static GMutex   *g_mutex_protect_static_mutex_allocation = NULL;
-static GMutex   *g_thread_specific_mutex = NULL;
 static GPrivate *g_thread_specific_private = NULL;
+static GSList   *g_thread_all_threads = NULL;
+static GSList   *g_thread_free_indeces = NULL;
+
+G_LOCK_DEFINE_STATIC (g_thread);
 
 /* This must be called only once, before any threads are created.
  * It will only be called from g_thread_init() in -lgthread.
@@ -137,8 +140,17 @@ g_mutex_init (void)
   G_THREAD_UF (private_set, (g_thread_specific_private, main_thread));
   G_THREAD_UF (thread_self, (&main_thread->system_thread));
 
-  g_mutex_protect_static_mutex_allocation = g_mutex_new();
-  g_thread_specific_mutex = g_mutex_new();
+  g_mutex_protect_static_mutex_allocation = g_mutex_new ();
+}
+
+void 
+g_static_mutex_init (GStaticMutex *mutex)
+{
+  static GStaticMutex init_mutex = G_STATIC_MUTEX_INIT;
+
+  g_return_if_fail (mutex);
+
+  memcpy (mutex, &init_mutex, sizeof (GStaticMutex));
 }
 
 GMutex *
@@ -152,21 +164,11 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
   g_mutex_lock (g_mutex_protect_static_mutex_allocation);
 
   if (!(*mutex)) 
-    *mutex = g_mutex_new(); 
+    *mutex = g_mutex_new (); 
 
   g_mutex_unlock (g_mutex_protect_static_mutex_allocation);
   
   return *mutex;
-}
-
-void 
-g_static_mutex_init (GStaticMutex *mutex)
-{
-  static GStaticMutex init_mutex = G_STATIC_MUTEX_INIT;
-
-  g_return_if_fail (mutex);
-
-  memcpy (mutex, &init_mutex, sizeof (GStaticMutex));
 }
 
 void
@@ -184,6 +186,16 @@ g_static_mutex_free (GStaticMutex* mutex)
     g_mutex_free (*runtime_mutex);
 
   *runtime_mutex = NULL;
+}
+
+void     
+g_static_rec_mutex_init (GStaticRecMutex *mutex)
+{
+  static GStaticRecMutex init_mutex = G_STATIC_REC_MUTEX_INIT;
+  
+  g_return_if_fail (mutex);
+
+  memcpy (mutex, &init_mutex, sizeof (GStaticRecMutex));
 }
 
 void
@@ -284,6 +296,19 @@ g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
   return depth;
 }
 
+void
+g_static_rec_mutex_free (GStaticRecMutex *mutex)
+{
+  g_return_if_fail (mutex);
+
+  g_static_mutex_free (&mutex->mutex);
+}
+
+void     
+g_static_private_init (GStaticPrivate *private_key)
+{
+  private_key->index = 0;
+}
 
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
@@ -343,12 +368,23 @@ g_static_private_set_for_thread (GStaticPrivate *private_key,
 
   if (!private_key->index)
     {
-      g_mutex_lock (g_thread_specific_mutex);
+      G_LOCK (g_thread);
 
       if (!private_key->index)
-	private_key->index = ++next_index;
+	{
+	  if (g_thread_free_indeces)
+	    {
+	      private_key->index = 
+		GPOINTER_TO_UINT (g_thread_free_indeces->data);
+	      g_thread_free_indeces = 
+		g_slist_delete_link (g_thread_free_indeces,
+				     g_thread_free_indeces);
+	    }
+	  else
+	    private_key->index = ++next_index;
+	}
 
-      g_mutex_unlock (g_thread_specific_mutex);
+      G_UNLOCK (g_thread);
     }
 
   if (private_key->index > array->len)
@@ -370,6 +406,35 @@ g_static_private_set_for_thread (GStaticPrivate *private_key,
       node->data = data;
       node->destroy = notify;
     }
+}
+
+void     
+g_static_private_free (GStaticPrivate *private_key)
+{
+  GStaticPrivate copied_key;
+  GSList *list;
+
+  copied_key.index = private_key->index;
+  private_key->index = 0;
+
+  if (!copied_key.index)
+    return;
+
+  G_LOCK (g_thread);
+  list =  g_thread_all_threads;
+  while (list)
+    {
+      GThread *thread = list->data;
+      list = list->next;
+      
+      G_UNLOCK (g_thread);
+      g_static_private_set_for_thread (&copied_key, thread, NULL, NULL);
+      G_LOCK (g_thread);
+    }
+  g_thread_free_indeces = 
+    g_slist_prepend (g_thread_free_indeces, 
+		     GUINT_TO_POINTER (copied_key.index));
+  G_UNLOCK (g_thread);
 }
 
 static void
@@ -396,6 +461,10 @@ g_thread_cleanup (gpointer data)
          it is, the structure is freed in g_thread_join */
       if (!thread->thread.joinable)
 	{
+	  G_LOCK (g_thread);
+	  g_thread_all_threads = g_slist_remove (g_thread_all_threads, data);
+	  G_UNLOCK (g_thread);
+	  
 	  /* Just to make sure, this isn't used any more */
 	  g_system_thread_assign (thread->system_thread, zero_thread);
 	  g_free (thread);
@@ -409,8 +478,6 @@ g_thread_fail (void)
   g_error ("The thread system is not yet initialized.");
 }
 
-G_LOCK_DEFINE_STATIC (g_thread_create);
-
 static void 
 g_thread_create_proxy (gpointer data)
 {
@@ -423,8 +490,8 @@ g_thread_create_proxy (gpointer data)
 
   /* the lock makes sure, that thread->system_thread is written,
      before thread->func is called. See g_thread_create. */
-  G_LOCK (g_thread_create);
-  G_UNLOCK (g_thread_create);
+  G_LOCK (g_thread);
+  G_UNLOCK (g_thread);
 
   thread->func (thread->arg);
 }
@@ -450,11 +517,12 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->func = thread_func;
   result->arg = arg;
   result->private_data = NULL; 
-  G_LOCK (g_thread_create);
+  G_LOCK (g_thread);
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result, 
 			       stack_size, joinable, bound, priority,
 			       &result->system_thread, &local_error));
-  G_UNLOCK (g_thread_create);
+  g_thread_all_threads = g_slist_prepend (g_thread_all_threads, result);
+  G_UNLOCK (g_thread);
 
   if (local_error)
     {
@@ -477,6 +545,10 @@ g_thread_join (GThread* thread)
   g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
 
   G_THREAD_UF (thread_join, (&real->system_thread));
+
+  G_LOCK (g_thread);
+  g_thread_all_threads = g_slist_remove (g_thread_all_threads, thread);
+  G_UNLOCK (g_thread);
 
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
@@ -505,7 +577,7 @@ g_thread_set_priority (GThread* thread,
 }
 
 GThread*
-g_thread_self()
+g_thread_self (void)
 {
   GRealThread* thread = g_private_get (g_thread_specific_private);
 
@@ -526,20 +598,36 @@ g_thread_self()
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));
 
-      g_private_set (g_thread_specific_private, thread);
+      g_private_set (g_thread_specific_private, thread); 
+      
+      G_LOCK (g_thread);
+      g_thread_all_threads = g_slist_prepend (g_thread_all_threads, thread);
+      G_UNLOCK (g_thread);
     }
   
   return (GThread*)thread;
 }
 
-static void inline g_static_rw_lock_wait (GCond** cond, GStaticMutex* mutex)
+void
+g_static_rw_lock_init (GStaticRWLock* lock)
+{
+  static GStaticRWLock init_lock = G_STATIC_RW_LOCK_INIT;
+
+  g_return_if_fail (lock);
+
+  memcpy (lock, &init_lock, sizeof (GStaticRWLock));
+}
+
+static void inline 
+g_static_rw_lock_wait (GCond** cond, GStaticMutex* mutex)
 {
   if (!*cond)
       *cond = g_cond_new ();
   g_cond_wait (*cond, g_static_mutex_get_mutex (mutex));
 }
 
-static void inline g_static_rw_lock_signal (GStaticRWLock* lock)
+static void inline 
+g_static_rw_lock_signal (GStaticRWLock* lock)
 {
   if (lock->want_to_write && lock->write_cond)
     g_cond_signal (lock->write_cond);
@@ -547,7 +635,8 @@ static void inline g_static_rw_lock_signal (GStaticRWLock* lock)
     g_cond_broadcast (lock->read_cond);
 }
 
-void g_static_rw_lock_reader_lock (GStaticRWLock* lock)
+void 
+g_static_rw_lock_reader_lock (GStaticRWLock* lock)
 {
   g_return_if_fail (lock);
 
@@ -561,7 +650,8 @@ void g_static_rw_lock_reader_lock (GStaticRWLock* lock)
   g_static_mutex_unlock (&lock->mutex);
 }
 
-gboolean g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
+gboolean 
+g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
 {
   gboolean ret_val = FALSE;
 
@@ -580,7 +670,8 @@ gboolean g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
   return ret_val;
 }
 
-void g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
+void 
+g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
 {
   g_return_if_fail (lock);
 
@@ -594,7 +685,8 @@ void g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
   g_static_mutex_unlock (&lock->mutex);
 }
 
-void g_static_rw_lock_writer_lock (GStaticRWLock* lock)
+void 
+g_static_rw_lock_writer_lock (GStaticRWLock* lock)
 {
   g_return_if_fail (lock);
 
@@ -610,7 +702,8 @@ void g_static_rw_lock_writer_lock (GStaticRWLock* lock)
   g_static_mutex_unlock (&lock->mutex);
 }
 
-gboolean g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
+gboolean 
+g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
 {
   gboolean ret_val = FALSE;
 
@@ -629,7 +722,8 @@ gboolean g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
   return ret_val;
 }
 
-void g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
+void 
+g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
 {
   g_return_if_fail (lock);
   
@@ -642,14 +736,20 @@ void g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
   g_static_mutex_unlock (&lock->mutex);
 }
 
-void g_static_rw_lock_free (GStaticRWLock* lock)
+void 
+g_static_rw_lock_free (GStaticRWLock* lock)
 {
   g_return_if_fail (lock);
   
   if (lock->read_cond)
-    g_cond_free (lock->read_cond);
+    {
+      g_cond_free (lock->read_cond);
+      lock->read_cond = NULL;
+    }
   if (lock->write_cond)
-    g_cond_free (lock->write_cond);
-  
+    {
+      g_cond_free (lock->write_cond);
+      lock->write_cond = NULL;
+    }
+  g_static_mutex_free (&lock->mutex);
 }
-

@@ -46,8 +46,8 @@ G_BEGIN_DECLS
 /* GLib Thread support
  */
 
-extern GQuark g_thread_error_quark();
-#define G_THREAD_ERROR g_thread_error_quark()
+extern GQuark g_thread_error_quark (void);
+#define G_THREAD_ERROR g_thread_error_quark ()
 
 typedef enum
 {
@@ -235,16 +235,18 @@ struct _GStaticPrivate
   guint index;
 };
 #define G_STATIC_PRIVATE_INIT { 0 }
-gpointer g_static_private_get (GStaticPrivate   *private_key);
-void     g_static_private_set (GStaticPrivate   *private_key,
-                               gpointer          data,
-                               GDestroyNotify    notify);
-gpointer g_static_private_get_for_thread (GStaticPrivate *private_key,
-                                          GThread        *thread);
-void g_static_private_set_for_thread (GStaticPrivate *private_key,
-                                      GThread        *thread,
-                                      gpointer        data,
-                                      GDestroyNotify  notify);
+void     g_static_private_init           (GStaticPrivate   *private_key);
+gpointer g_static_private_get            (GStaticPrivate   *private_key);
+void     g_static_private_set            (GStaticPrivate   *private_key,
+					  gpointer          data,
+					  GDestroyNotify    notify);
+gpointer g_static_private_get_for_thread (GStaticPrivate   *private_key,
+                                          GThread          *thread);
+void     g_static_private_set_for_thread (GStaticPrivate   *private_key,
+					  GThread          *thread,
+					  gpointer          data,
+					  GDestroyNotify    notify);
+void     g_static_private_free           (GStaticPrivate   *private_key);
 
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
@@ -255,12 +257,14 @@ struct _GStaticRecMutex
 };
 
 #define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
+void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
 void     g_static_rec_mutex_lock        (GStaticRecMutex *mutex);
 gboolean g_static_rec_mutex_trylock     (GStaticRecMutex *mutex);
 void     g_static_rec_mutex_unlock      (GStaticRecMutex *mutex);
 void     g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
                                          guint            depth);
 guint    g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_free        (GStaticRecMutex *mutex);
 
 typedef struct _GStaticRWLock GStaticRWLock;
 struct _GStaticRWLock
@@ -275,13 +279,14 @@ struct _GStaticRWLock
 
 #define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, FALSE }
 
+void      g_static_rw_lock_init           (GStaticRWLock* lock);
 void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock);
 gboolean  g_static_rw_lock_reader_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_reader_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock);
 gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
-void      g_static_rw_lock_free (GStaticRWLock* lock);
+void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
 /* these are some convenience macros that expand to nothing if GLib
  * was configured with --disable-threads. for using StaticMutexes,
