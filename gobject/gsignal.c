@@ -825,9 +825,15 @@ g_signal_add_emission_hook (guint               signal_id,
 
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
-  if (!node || node->destroyed || (node->flags & G_SIGNAL_NO_HOOKS))
+  if (!node || node->destroyed)
     {
       g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+      SIGNAL_UNLOCK ();
+      return 0;
+    }
+  if (node->flags & G_SIGNAL_NO_HOOKS) 
+    {
+      g_warning ("%s: signal id `%u' does not support emission hooks (G_SIGNAL_NO_HOOKS flag set)", G_STRLOC, signal_id);
       SIGNAL_UNLOCK ();
       return 0;
     }

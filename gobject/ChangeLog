@@ -1,3 +1,8 @@
+2004-10-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* gsignal.c (g_signal_add_emission_hook): Improve the warning 
+	if G_SIGNAL_NO_HOOKS is set.  (#154299, Nickolay V. Shmyrev)
+
 2004-09-22  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (install-libtool-import-lib): [Win32] Add code to
