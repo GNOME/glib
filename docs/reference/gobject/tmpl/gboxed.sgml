@@ -63,18 +63,16 @@ provided to copy and free opaque boxed structures of this type.
 @boxed_copy: Boxed structure copy function.
 @boxed_free: Boxed structure free function.
 @Returns: New %G_TYPE_BOXED derived type id for @name.
-<!-- # Unused Parameters # -->
-@boxed_init: 
-@is_refcounted: 
 
 
 <!-- ##### FUNCTION g_pointer_type_register_static ##### -->
 <para>
-
+Creates a new %G_TYPE_POINTER derived type id for a new
+pointer type with name @name. 
 </para>
 
-@name: 
-@Returns: 
+@name: the name of the new pointer type.
+@Returns: a new %G_TYPE_POINTER derived type id for @name.
 
 
 <!-- ##### MACRO G_TYPE_GSTRING ##### -->
@@ -82,5 +80,42 @@ provided to copy and free opaque boxed structures of this type.
 The #GType for #GString.
 </para>
 
+
+
+<!-- ##### MACRO G_TYPE_STRV ##### -->
+<para>
+The #GType for a boxed type holding a %NULL-terminated array of strings.
+</para>
+<para>
+The code fragments in the following example show the use of a property of
+type #G_TYPE_STRV with g_object_class_install_property(), g_object_set()
+and g_object_get().
+</para>
+<informalexample><programlisting>
+g_object_class_install_property (object_class,
+                                 PROP_AUTHORS,
+                                 g_param_spec_boxed ("authors",
+                                                     _("Authors"),
+                                                     _("List of authors"),
+                                                     G_TYPE_STRV,
+                                                     G_PARAM_READWRITE));
+
+
+gchar *authors[] = { "Owen", "Tim", NULL };
+g_object_set (obj, "authors", authors, NULL);
+
+
+gchar *writers[];
+g_object_get (obj, "authors", &amp;writers, NULL);
+/* do something with writers */
+g_strfreev (writers);
+</programlisting></informalexample>
+
+
+
+<!-- ##### TYPEDEF GStrv ##### -->
+<para>
+
+</para>
 
 

@@ -50,8 +50,10 @@ typedef void  (*GTypePluginCompleteInterfaceInfo) (GTypePlugin     *plugin,
 						   GInterfaceInfo  *info);
 struct _GTypePluginClass
 {
+  /*< private >*/
   GTypeInterface		   base_iface;
   
+  /*< public >*/
   GTypePluginUse		   use_plugin;
   GTypePluginUnuse		   unuse_plugin;
   GTypePluginCompleteTypeInfo	   complete_type_info;

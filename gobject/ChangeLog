@@ -1,3 +1,8 @@
+Sat Oct 18 01:24:14 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gtypeplugin.h (struct _GTypePluginClass): Add /*< public >*/
+	and /*< private >*/ markers for documentation purposes.
+
 Thu Oct  2 07:37:12 2003  Tim Janik  <timj@gtk.org>
 
 	* gtype.c: fix post class_init interface initialization logic

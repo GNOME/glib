@@ -1,3 +1,9 @@
+Sat Oct 18 01:30:47 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gboxed.sgml: 
+	* gobject/tmpl/gtypeplugin.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: Additions.
+
 Sat Oct 18 00:04:22 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject.types: List GObject here, since the
