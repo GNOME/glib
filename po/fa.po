@@ -1,17 +1,19 @@
+# translation of fa.po to Persian
 # translation of glib to Persian
 # Copyright (C) 2002 The FarsiWeb Project Group
 # Roozbeh Pournader <roozbeh@sharif.edu>, 2002
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
+"Project-Id-Version: fa\n"
 "POT-Creation-Date: 2002-08-20 15:10+0430\n"
-"PO-Revision-Date: 2002-08-20 18:27+0430\n"
+"PO-Revision-Date: 2002-08-23 23:11+0430\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0beta1\n"
 
 #: glib/gconvert.c:400
 #, c-format
@@ -48,7 +50,7 @@ msgstr "نمی‌توان اصلاح حالت '%s' را به مجموعه‌کد
 #: glib/gconvert.c:1632
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "نشانی جهانی '%s' نشانی جهانی مطلقی که از شم پرونده استفاده کند نیست"
 
 #: glib/gconvert.c:1642
 #, c-format
@@ -165,7 +167,7 @@ msgstr "خطای سوکت"
 
 #: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
-msgstr ""
+msgstr "نشان‌های تنظیم‌شده توسط کانال، پشتیبانی نمی‌شوند"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -390,9 +392,8 @@ msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "متن نقل شده با علامت نقل قول شروع نمی‌شود"
 
 #: glib/gshell.c:161
-#, fuzzy
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "علامت نقل قول تکی در سطر دستور یا ؟؟؟ دیگر"
+msgstr "علامت نقل قول تکی در سطر دستور یا متون داخل پوسته‌ی دیگر"
 
 #: glib/gshell.c:529
 #, c-format
@@ -483,7 +484,7 @@ msgstr "خطای ناشناخته هنگام اجرای فراروند فرزن�
 #: glib/gspawn.c:1193
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "خواندن داده‌ی کافی از لوله‌ی pid فرزند شکست خورد (%s)"
 
 #: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
