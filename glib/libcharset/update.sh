@@ -20,11 +20,12 @@ done
 
 cp $ORIGINAL/include/libcharset.h.in ./libcharset.h
 
+for i in codeset.m4 glibc21.m4 ; do
+  cp $ORIGINAL/m4/$i .
+done
+
 patch -p0 < libcharset-glib.patch
 
 echo "dnl From libcharset $VERSION" > ../../aclibcharset.m4
 
-for i in codeset.m4 glibc21.m4 ; do
-  cat $ORIGINAL/m4/$i >> ../../aclibcharset.m4
-done
 

@@ -2,7 +2,8 @@ dnl ***********************************
 dnl *** include special GLib macros ***
 dnl ***********************************
 builtin(include, acglib.m4)dnl
-builtin(include, aclibcharset.m4)dnl
+builtin(include, glib/libcharset/codeset.m4)dnl
+builtin(include, glib/libcharset/glibc21.m4)dnl
 
 # require autoconf 2.13
 AC_PREREQ(2.13)

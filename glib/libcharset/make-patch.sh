@@ -20,4 +20,8 @@ for i in localcharset.c ref-add.sin ref-del.sin ; do
   diff -u $ORIGINAL/lib/$i $i >> libcharset-glib.patch
 done
 
+for i in glibc21.m4 codeset.m4 ; do
+  diff -u $ORIGINAL/m4/$i $i >> libcharset-glib.patch
+done
+
 diff -u $ORIGINAL/include/libcharset.h.in libcharset.h >> libcharset-glib.patch

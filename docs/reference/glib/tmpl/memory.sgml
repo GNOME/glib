@@ -201,6 +201,14 @@ function has been called.
 @vtable: table of memory allocation routines.
 
 
+<!-- ##### FUNCTION g_mem_is_system_malloc ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### VARIABLE glib_mem_profiler_table ##### -->
 <para>
 

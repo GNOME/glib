@@ -30,6 +30,28 @@
         *aliases != '\0';
         aliases += strlen (aliases) + 1, aliases += strlen (aliases) + 1)
      if (strcmp (codeset, aliases) == 0
+--- /home/otaylor/ftp/libiconv-1.7.0.1/libcharset/m4/glibc21.m4	Sat Jun 17 14:31:21 2000
++++ glibc21.m4	Fri Sep 28 12:12:39 2001
+@@ -3,7 +3,7 @@
+ # Test for the GNU C Library, version 2.1 or newer.
+ # From Bruno Haible.
+ 
+-AC_DEFUN(jm_GLIBC21,
++AC_DEFUN([jm_GLIBC21],
+   [
+     AC_CACHE_CHECK(whether we are using the GNU C Library 2.1 or newer,
+       ac_cv_gnu_library_2_1,
+--- /home/otaylor/ftp/libiconv-1.7.0.1/libcharset/m4/codeset.m4	Mon Apr  3 04:06:24 2000
++++ codeset.m4	Fri Sep 28 12:12:44 2001
+@@ -2,7 +2,7 @@
+ 
+ dnl From Bruno Haible.
+ 
+-AC_DEFUN(jm_LANGINFO_CODESET,
++AC_DEFUN([jm_LANGINFO_CODESET],
+ [
+   AC_CHECK_HEADERS(langinfo.h)
+   AC_CHECK_FUNCS(nl_langinfo)
 --- /home/otaylor/ftp/libiconv-1.7.0.1/libcharset/include/libcharset.h.in	Tue Mar 27 08:34:42 2001
 +++ libcharset.h	Wed Sep 26 21:55:40 2001
 @@ -30,8 +30,8 @@

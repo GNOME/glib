@@ -14,6 +14,8 @@ EXTRA_DIST = 			\
 	charset.alias		\
 	ref-add.sed		\
 	ref-del.sed		\
+	glibc21.m4		\
+	codeset.m4		\
 	update.sh		\
 	make-patch.sh
 
