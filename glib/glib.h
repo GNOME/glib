@@ -1654,10 +1654,10 @@ struct	_GScanner
 
   /* to be considered private */
   GHashTable		*symbol_table;
-  const gchar		*text;
-  guint			text_len;
   gint			input_fd;
-  gint			peeked_char;
+  const gchar		*text;
+  const gchar		*text_end;
+  gchar			*buffer;
   guint			scope_id;
 
   /* handler function for _warn and _error */

@@ -1,3 +1,15 @@
+Fri Sep 25 00:04:37 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: version bump to 1.1.4, binary age 0, interface age 0.
+
+	* glib.h (struct _GScanner): dumped peeked_char and text_len in favour
+ 	of *text_end and *buffer for buffered read()s.
+
+	* gscanner.c: changed peeking and retrival of next character so we
+	have buffered reads. fixed minor bug with number parsing error
+	reporting. made some static!!! variables local ones (why did we use
+ 	static temporary variables in the lowlevel tokenization code anyways?).
+
 Mon Sep 21 23:23:10 CDT 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.3

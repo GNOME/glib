@@ -42,6 +42,7 @@
 	  ((guchar)(c))							\
 	)								\
 )
+#define	READ_BUFFER_SIZE	(4000)
 
 
 /* --- typedefs --- */
@@ -57,7 +58,7 @@ struct	_GScannerKey
 
 
 /* --- variables --- */
-static	GScannerConfig	g_scanner_config_template =
+static GScannerConfig g_scanner_config_template =
 {
   (
    " \t\n"
@@ -103,9 +104,6 @@ static	GScannerConfig	g_scanner_config_template =
 
 /* --- prototypes --- */
 static inline
-gint		g_scanner_char_2_num	  (guchar	 c,
-					   guchar	 base);
-static inline
 GScannerKey*	g_scanner_lookup_internal (GScanner	*scanner,
 					   guint	 scope_id,
 					   const gchar	*symbol);
@@ -122,8 +120,6 @@ static void	g_scanner_get_token_i	  (GScanner	*scanner,
 					   GTokenValue	*value_p,
 					   guint	*line_p,
 					   guint	*position_p);
-static void	g_scanner_free_value	  (GTokenType	*token_p,
-					   GTokenValue	*value_p);
 
 static guchar	g_scanner_peek_next_char  (GScanner	*scanner);
 static guchar	g_scanner_get_char	  (GScanner	*scanner,
@@ -135,7 +131,7 @@ static void	g_scanner_msg_handler	  (GScanner	*scanner,
 
 
 /* --- functions --- */
-static gint
+static inline gint
 g_scanner_char_2_num (guchar	c,
 		      guchar	base)
 {
@@ -209,15 +205,36 @@ g_scanner_new (GScannerConfig	*config_templ)
   scanner->next_position = 0;
   
   scanner->symbol_table = g_hash_table_new (g_scanner_key_hash, g_scanner_key_equal);
-  scanner->text = NULL;
-  scanner->text_len = 0;
   scanner->input_fd = -1;
-  scanner->peeked_char = -1;
+  scanner->text = NULL;
+  scanner->text_end = NULL;
+  scanner->buffer = NULL;
   scanner->scope_id = 0;
   
   scanner->msg_handler = g_scanner_msg_handler;
   
   return scanner;
+}
+
+static inline void
+g_scanner_free_value (GTokenType     *token_p,
+		      GTokenValue     *value_p)
+{
+  switch (*token_p)
+    {
+    case  G_TOKEN_STRING:
+    case  G_TOKEN_IDENTIFIER:
+    case  G_TOKEN_IDENTIFIER_NULL:
+    case  G_TOKEN_COMMENT_SINGLE:
+    case  G_TOKEN_COMMENT_MULTI:
+      g_free (value_p->v_string);
+      break;
+      
+    default:
+      break;
+    }
+  
+  *token_p = G_TOKEN_NONE;
 }
 
 static void
@@ -242,6 +259,7 @@ g_scanner_destroy (GScanner	*scanner)
   g_scanner_free_value (&scanner->token, &scanner->value);
   g_scanner_free_value (&scanner->next_token, &scanner->next_value);
   g_free (scanner->config);
+  g_free (scanner->buffer);
   g_free (scanner);
 }
 
@@ -304,43 +322,6 @@ g_scanner_warn (GScanner       *scanner,
       
       g_free (string);
     }
-}
-
-void
-g_scanner_input_file (GScanner	*scanner,
-		      gint	input_fd)
-{
-  g_return_if_fail (input_fd >= 0);
-  
-  scanner->token = G_TOKEN_NONE;
-  scanner->value.v_int = 0;
-  scanner->line = 1;
-  scanner->position = 0;
-  scanner->next_token = G_TOKEN_NONE;
-  
-  scanner->text = NULL;
-  scanner->text_len = 0;
-  scanner->input_fd = input_fd;
-  scanner->peeked_char = -1;
-}
-
-void
-g_scanner_input_text (GScanner	     *scanner,
-		      const  gchar   *text,
-		      guint	      text_len)
-{
-  g_return_if_fail (text != NULL);
-  
-  scanner->token = G_TOKEN_NONE;
-  scanner->value.v_int = 0;
-  scanner->line = 1;
-  scanner->position = 0;
-  scanner->next_token = G_TOKEN_NONE;
-  
-  scanner->text = text;
-  scanner->text_len = text_len;
-  scanner->input_fd = -1;
-  scanner->peeked_char = -1;
 }
 
 static gint
@@ -662,41 +643,90 @@ g_scanner_eof (GScanner	*scanner)
   return scanner->token == G_TOKEN_EOF;
 }
 
+void
+g_scanner_input_file (GScanner *scanner,
+		      gint	input_fd)
+{
+  g_return_if_fail (scanner != NULL);
+  g_return_if_fail (input_fd >= 0);
+
+  scanner->token = G_TOKEN_NONE;
+  scanner->value.v_int = 0;
+  scanner->line = 1;
+  scanner->position = 0;
+  scanner->next_token = G_TOKEN_NONE;
+
+  scanner->input_fd = input_fd;
+  scanner->text = NULL;
+  scanner->text_end = NULL;
+
+  if (!scanner->buffer)
+    scanner->buffer = g_new (gchar, READ_BUFFER_SIZE + 1);
+}
+
+void
+g_scanner_input_text (GScanner	  *scanner,
+		      const gchar *text,
+		      guint	   text_len)
+{
+  g_return_if_fail (scanner != NULL);
+  if (text_len)
+    g_return_if_fail (text != NULL);
+  else
+    text = NULL;
+
+  scanner->token = G_TOKEN_NONE;
+  scanner->value.v_int = 0;
+  scanner->line = 1;
+  scanner->position = 0;
+  scanner->next_token = G_TOKEN_NONE;
+
+  scanner->input_fd = -1;
+  scanner->text = text;
+  scanner->text_end = text + text_len;
+
+  if (scanner->buffer)
+    {
+      g_free (scanner->buffer);
+      scanner->buffer = NULL;
+    }
+}
+
 static guchar
 g_scanner_peek_next_char (GScanner *scanner)
 {
-  guchar fchar;
-  
-  if (scanner->text_len)
+  if (scanner->text < scanner->text_end)
     {
-      fchar = scanner->text[0];
+      return *scanner->text;
     }
   else if (scanner->input_fd >= 0)
     {
-      if (scanner->peeked_char < 0)
+      register gint count;
+      register gchar *buffer;
+
+      buffer = scanner->buffer;
+      do
 	{
-	  register gint count;
-	  
-	  do
-	    {
-	      count = read (scanner->input_fd, &fchar, 1);
-	    }
-	  while (count == -1 &&
-		 (errno == EINTR ||
-		  errno == EAGAIN));
-	  
-	  if (count != 1)
-	    fchar = 0;
-	  
-	  scanner->peeked_char = fchar;
+	  count = read (scanner->input_fd, buffer, READ_BUFFER_SIZE);
+	}
+      while (count == -1 && (errno == EINTR || errno == EAGAIN));
+
+      if (!count)
+	{
+	  scanner->input_fd = -1;
+
+	  return 0;
 	}
       else
-	fchar = scanner->peeked_char;
+	{
+	  scanner->text = buffer;
+	  scanner->text_end = buffer + count;
+
+	  return *buffer;
+	}
     }
   else
-    fchar = 0;
-  
-  return fchar;
+    return 0;
 }
 
 static guchar
@@ -704,37 +734,32 @@ g_scanner_get_char (GScanner	*scanner,
 		    guint	*line_p,
 		    guint	*position_p)
 {
-  guchar fchar;
-  
-  if (scanner->text_len)
-    {
-      fchar = *(scanner->text++);
-      scanner->text_len--;
-    }
+  register guchar fchar;
+
+  if (scanner->text < scanner->text_end)
+    fchar = *(scanner->text++);
   else if (scanner->input_fd >= 0)
     {
-      if (scanner->peeked_char < 0)
+      register gint count;
+      register gchar *buffer;
+
+      buffer = scanner->buffer;
+      do
 	{
-	  register gint count;
-	  
-	  do
-	    {
-	      count = read (scanner->input_fd, &fchar, 1);
-	    }
-	  while (count == -1 &&
-		 (errno == EINTR ||
-		  errno == EAGAIN));
-	  if (count != 1 || fchar == 0)
-	    {
-	      fchar = 0;
-	      scanner->peeked_char = 0;
-	    }
+	  count = read (scanner->input_fd, buffer, READ_BUFFER_SIZE);
+	}
+      while (count == -1 && (errno == EINTR || errno == EAGAIN));
+
+      if (!count)
+	{
+	  scanner->input_fd = -1;
+	  fchar = 0;
 	}
       else
 	{
-	  fchar = scanner->peeked_char;
-	  if (fchar)
-	    scanner->peeked_char = -1;
+	  scanner->text = buffer + 1;
+	  scanner->text_end = buffer + count;
+	  fchar = *buffer;
 	}
     }
   else
@@ -1050,27 +1075,6 @@ g_scanner_stat_mode (const gchar *filename)
 }
 
 static void
-g_scanner_free_value (GTokenType     *token_p,
-		      GTokenValue     *value_p)
-{
-  switch (*token_p)
-    {
-    case  G_TOKEN_STRING:
-    case  G_TOKEN_IDENTIFIER:
-    case  G_TOKEN_IDENTIFIER_NULL:
-    case  G_TOKEN_COMMENT_SINGLE:
-    case  G_TOKEN_COMMENT_MULTI:
-      g_free (value_p->v_string);
-      break;
-      
-    default:
-      break;
-    }
-  
-  *token_p = G_TOKEN_NONE;
-}
-
-static void
 g_scanner_get_token_i (GScanner	*scanner,
 		       GTokenType	*token_p,
 		       GTokenValue	*value_p,
@@ -1131,23 +1135,21 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 			 guint		*line_p,
 			 guint		*position_p)
 {
-  register GScannerConfig	*config;
-  register gboolean		in_comment_multi;
-  register gboolean		in_comment_single;
-  register gboolean		in_string_sq;
-  register gboolean		in_string_dq;
-  static   guchar		ch;
-  register GTokenType		token;
-  register GString		*gstring;
-  GTokenValue			value;
+  register GScannerConfig *config;
+  register GTokenType	   token;
+  register gboolean	   in_comment_multi;
+  register gboolean	   in_comment_single;
+  register gboolean	   in_string_sq;
+  register gboolean	   in_string_dq;
+  register GString	  *gstring;
+  GTokenValue		   value;
+  guchar		   ch;
   
   config = scanner->config;
   (*value_p).v_int = 0;
   
-  if (scanner->token == G_TOKEN_EOF ||
-      (!scanner->text_len &&
-       (scanner->input_fd < 0 ||
-	scanner->peeked_char == 0)))
+  if ((scanner->text >= scanner->text_end && scanner->input_fd < 0) ||
+      scanner->token == G_TOKEN_EOF)
     {
       *token_p = G_TOKEN_EOF;
       return;
@@ -1159,7 +1161,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   in_string_dq = FALSE;
   gstring = NULL;
   
-  do
+  do /* while (ch != 0) */
     {
       register gboolean		dotted_float = FALSE;
       
@@ -1178,13 +1180,10 @@ g_scanner_get_token_ll	(GScanner	*scanner,
       
       switch (ch)
 	{
-	  register gboolean	in_number;
-	  static	 gchar		*endptr;
-	  
 	case  0:
 	  token = G_TOKEN_EOF;
 	  (*position_p)++;
-	  ch = 0;
+	  /* ch = 0; */
 	  break;
 	  
 	case  '/':
@@ -1291,7 +1290,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 			  if (fchar >= '0' && fchar <= '7')
 			    {
 			      ch = g_scanner_get_char (scanner, line_p, position_p);
-			      i= i * 8 + ch - '0';
+			      i = i * 8 + ch - '0';
 			      fchar = g_scanner_peek_next_char (scanner);
 			      if (fchar >= '0' && fchar <= '7')
 				{
@@ -1388,217 +1387,221 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	case  '8':
 	case  '9':
 	number_parsing:
-	if (token == G_TOKEN_NONE)
-	  token = G_TOKEN_INT;
-	
-	gstring = g_string_new (dotted_float ? "0." : "");
-	gstring = g_string_append_c (gstring, ch);
-	in_number = TRUE;
-	while (in_number)
-	  {
-	    register gboolean is_E;
-	    
-	    is_E = (ch == 'e' || ch == 'E') && token == G_TOKEN_FLOAT;
-	    ch = g_scanner_peek_next_char (scanner);
-	    
-	    if (g_scanner_char_2_num (ch, 36) >= 0 ||
-		(config->scan_float && ch == '.') ||
-		(is_E && ch == '+') ||
-		(is_E && ch == '-') )
-	      ch = g_scanner_get_char (scanner, line_p, position_p);
-	    else
-	      in_number = FALSE;
-	    
-	    if (in_number)
-	      switch (ch)
+	{
+          register gboolean in_number = TRUE;
+	  gchar *endptr;
+	  
+	  if (token == G_TOKEN_NONE)
+	    token = G_TOKEN_INT;
+	  
+	  gstring = g_string_new (dotted_float ? "0." : "");
+	  gstring = g_string_append_c (gstring, ch);
+	  
+	  do /* while (in_number) */
+	    {
+	      register gboolean is_E;
+	      
+	      is_E = token == G_TOKEN_FLOAT && (ch == 'e' || ch == 'E');
+	      
+	      ch = g_scanner_peek_next_char (scanner);
+	      
+	      if (g_scanner_char_2_num (ch, 36) >= 0 ||
+		  (config->scan_float && ch == '.') ||
+		  (is_E && (ch == '+' || ch == '-')))
 		{
-		case  '.':
-		  if (token != G_TOKEN_INT &&
-		      token != G_TOKEN_OCTAL)
+		  ch = g_scanner_get_char (scanner, line_p, position_p);
+		  
+		  switch (ch)
 		    {
-		      token = G_TOKEN_ERROR;
-		      if (token == G_TOKEN_FLOAT)
-			value.v_error = G_ERR_FLOAT_MALFORMED;
+		    case '.':
+		      if (token != G_TOKEN_INT && token != G_TOKEN_OCTAL)
+			{
+			  value.v_error = token == G_TOKEN_FLOAT ? G_ERR_FLOAT_MALFORMED : G_ERR_FLOAT_RADIX;
+			  token = G_TOKEN_ERROR;
+			  in_number = FALSE;
+			}
 		      else
-			value.v_error = G_ERR_FLOAT_RADIX;
-		      in_number = FALSE;
-		    }
-		  else
-		    {
-		      token = G_TOKEN_FLOAT;
+			{
+			  token = G_TOKEN_FLOAT;
+			  gstring = g_string_append_c (gstring, ch);
+			}
+		      break;
+		      
+		    case '0':
+		    case '1':
+		    case '2':
+		    case '3':
+		    case '4':
+		    case '5':
+		    case '6':
+		    case '7':
+		    case '8':
+		    case '9':
 		      gstring = g_string_append_c (gstring, ch);
-		    }
-		  break;
-		  
-		case	'0':
-		case  '1':
-		case  '2':
-		case  '3':
-		case  '4':
-		case  '5':
-		case  '6':
-		case  '7':
-		case  '8':
-		case  '9':
-		  gstring = g_string_append_c (gstring, ch);
-		  break;
-		  
-		case	'-':
-		case	'+':
-		  if (token != G_TOKEN_FLOAT)
-		    {
-		      token = G_TOKEN_ERROR;
-		      value.v_error = G_ERR_NON_DIGIT_IN_CONST;
-		      in_number = FALSE;
-		    }
-		  else
-		    gstring = g_string_append_c (gstring, ch);
-		  break;
-		  
-		case	'e':
-		case	'E':
-		  if ((token != G_TOKEN_HEX && !config->scan_float) ||
-		      (token != G_TOKEN_HEX &&
-		       token != G_TOKEN_OCTAL &&
-		       token != G_TOKEN_FLOAT &&
-		       token != G_TOKEN_INT))
-		    {
-		      token = G_TOKEN_ERROR;
-		      value.v_error = G_ERR_NON_DIGIT_IN_CONST;
-		      in_number = FALSE;
-		    }
-		  else
-		    {
+		      break;
+		      
+		    case '-':
+		    case '+':
+		      if (token != G_TOKEN_FLOAT)
+			{
+			  token = G_TOKEN_ERROR;
+			  value.v_error = G_ERR_NON_DIGIT_IN_CONST;
+			  in_number = FALSE;
+			}
+		      else
+			gstring = g_string_append_c (gstring, ch);
+		      break;
+		      
+		    case 'e':
+		    case 'E':
+		      if ((token != G_TOKEN_HEX && !config->scan_float) ||
+			  (token != G_TOKEN_HEX &&
+			   token != G_TOKEN_OCTAL &&
+			   token != G_TOKEN_FLOAT &&
+			   token != G_TOKEN_INT))
+			{
+			  token = G_TOKEN_ERROR;
+			  value.v_error = G_ERR_NON_DIGIT_IN_CONST;
+			  in_number = FALSE;
+			}
+		      else
+			{
+			  if (token != G_TOKEN_HEX)
+			    token = G_TOKEN_FLOAT;
+			  gstring = g_string_append_c (gstring, ch);
+			}
+		      break;
+		      
+		    default:
 		      if (token != G_TOKEN_HEX)
-			token = G_TOKEN_FLOAT;
-		      gstring = g_string_append_c (gstring, ch);
+			{
+			  token = G_TOKEN_ERROR;
+			  value.v_error = G_ERR_NON_DIGIT_IN_CONST;
+			  in_number = FALSE;
+			}
+		      else
+			gstring = g_string_append_c (gstring, ch);
+		      break;
 		    }
-		  break;
-		  
-		default:
-		  if (token != G_TOKEN_HEX)
-		    {
-		      token = G_TOKEN_ERROR;
-		      value.v_error = G_ERR_NON_DIGIT_IN_CONST;
-		      in_number = FALSE;
-		    }
-		  else
-		    gstring = g_string_append_c (gstring, ch);
-		  break;
 		}
-	  }
-	endptr = NULL;
-	switch (token)
-	  {
-	  case	G_TOKEN_BINARY:
-	    value.v_binary = strtol (gstring->str, &endptr, 2);
-	    break;
-	    
-	  case	G_TOKEN_OCTAL:
-	    value.v_octal = strtol (gstring->str, &endptr, 8);
-	    break;
-	    
-	  case	G_TOKEN_INT:
-	    value.v_int = strtol (gstring->str, &endptr, 10);
-	    break;
-	    
-	  case	G_TOKEN_FLOAT:
-	    value.v_float = g_strtod (gstring->str, &endptr);
-	    break;
-	    
-	  case	G_TOKEN_HEX:
-	    value.v_hex = strtol (gstring->str, &endptr, 16);
-	    break;
-	    
-	  default:
-	    break;
-	  }
-	if (endptr && *endptr)
-	  {
-	    token = G_TOKEN_ERROR;
-	    if (*endptr == 'e' || *endptr == 'E')
-	      value.v_error = G_ERR_NON_DIGIT_IN_CONST;
-	    else
-	      value.v_error = G_ERR_DIGIT_RADIX;
-	  }
-	g_string_free (gstring, TRUE);
-	gstring = NULL;
-	ch = 0;
+	      else
+		in_number = FALSE;
+	    }
+	  while (in_number);
+	  
+	  endptr = NULL;
+	  switch (token)
+	    {
+	    case G_TOKEN_BINARY:
+	      value.v_binary = strtol (gstring->str, &endptr, 2);
+	      break;
+	      
+	    case G_TOKEN_OCTAL:
+	      value.v_octal = strtol (gstring->str, &endptr, 8);
+	      break;
+	      
+	    case G_TOKEN_INT:
+	      value.v_int = strtol (gstring->str, &endptr, 10);
+	      break;
+	      
+	    case G_TOKEN_FLOAT:
+	      value.v_float = g_strtod (gstring->str, &endptr);
+	      break;
+	      
+	    case G_TOKEN_HEX:
+	      value.v_hex = strtol (gstring->str, &endptr, 16);
+	      break;
+	      
+	    default:
+	      break;
+	    }
+	  if (endptr && *endptr)
+	    {
+	      token = G_TOKEN_ERROR;
+	      if (*endptr == 'e' || *endptr == 'E')
+		value.v_error = G_ERR_NON_DIGIT_IN_CONST;
+	      else
+		value.v_error = G_ERR_DIGIT_RADIX;
+	    }
+	  g_string_free (gstring, TRUE);
+	  gstring = NULL;
+	  ch = 0;
+	} /* number_parsing:... */
 	break;
 	
 	default:
 	default_case:
-	if (config->cpair_comment_single &&
-	    ch == config->cpair_comment_single[0])
-	  {
-	    token = G_TOKEN_COMMENT_SINGLE;
-	    in_comment_single = TRUE;
-	    gstring = g_string_new ("");
-	    while ((ch = g_scanner_get_char (scanner,
-					     line_p,
-					     position_p)) != 0)
-	      {
-		if (ch == config->cpair_comment_single[1])
-		  {
-		    in_comment_single = FALSE;
-		    ch = 0;
-		    break;
-		  }
-		
-		gstring = g_string_append_c (gstring, ch);
-		ch = 0;
-	      }
-	  }
-	else if (config->scan_identifier && ch &&
-		 strchr (config->cset_identifier_first, ch))
-	  {
-	  identifier_precedence:
-	    
-	    if (config->cset_identifier_nth && ch &&
-		strchr (config->cset_identifier_nth,
-			g_scanner_peek_next_char (scanner)))
-	      {
-		token = G_TOKEN_IDENTIFIER;
-		gstring = g_string_new ("");
-		gstring = g_string_append_c (gstring, ch);
-		do
-		  {
-		    ch = g_scanner_get_char (scanner, line_p, position_p);
-		    gstring = g_string_append_c (gstring, ch);
-		    ch = g_scanner_peek_next_char (scanner);
-		  }
-		while (ch && strchr (config->cset_identifier_nth, ch));
-		ch = 0;
-	      }
-	    else if (config->scan_identifier_1char)
-	      {
-		token = G_TOKEN_IDENTIFIER;
-		value.v_identifier = g_new0 (gchar, 2);
-		value.v_identifier[0] = ch;
-		ch = 0;
-	      }
-	  }
-	if (ch)
-	  {
-	    if (config->char_2_token)
-	      token = ch;
-	    else
-	      {
-		token = G_TOKEN_CHAR;
-		value.v_char = ch;
-	      }
-	    ch = 0;
-	  }
+	{
+	  if (config->cpair_comment_single &&
+	      ch == config->cpair_comment_single[0])
+	    {
+	      token = G_TOKEN_COMMENT_SINGLE;
+	      in_comment_single = TRUE;
+	      gstring = g_string_new ("");
+	      while ((ch = g_scanner_get_char (scanner,
+					       line_p,
+					       position_p)) != 0)
+		{
+		  if (ch == config->cpair_comment_single[1])
+		    {
+		      in_comment_single = FALSE;
+		      ch = 0;
+		      break;
+		    }
+		  
+		  gstring = g_string_append_c (gstring, ch);
+		  ch = 0;
+		}
+	    }
+	  else if (config->scan_identifier && ch &&
+		   strchr (config->cset_identifier_first, ch))
+	    {
+	    identifier_precedence:
+	      
+	      if (config->cset_identifier_nth && ch &&
+		  strchr (config->cset_identifier_nth,
+			  g_scanner_peek_next_char (scanner)))
+		{
+		  token = G_TOKEN_IDENTIFIER;
+		  gstring = g_string_new ("");
+		  gstring = g_string_append_c (gstring, ch);
+		  do
+		    {
+		      ch = g_scanner_get_char (scanner, line_p, position_p);
+		      gstring = g_string_append_c (gstring, ch);
+		      ch = g_scanner_peek_next_char (scanner);
+		    }
+		  while (ch && strchr (config->cset_identifier_nth, ch));
+		  ch = 0;
+		}
+	      else if (config->scan_identifier_1char)
+		{
+		  token = G_TOKEN_IDENTIFIER;
+		  value.v_identifier = g_new0 (gchar, 2);
+		  value.v_identifier[0] = ch;
+		  ch = 0;
+		}
+	    }
+	  if (ch)
+	    {
+	      if (config->char_2_token)
+		token = ch;
+	      else
+		{
+		  token = G_TOKEN_CHAR;
+		  value.v_char = ch;
+		}
+	      ch = 0;
+	    }
+	} /* default_case:... */
 	break;
 	}
-      g_assert (ch == 0 && token != G_TOKEN_NONE);
+      g_assert (ch == 0 && token != G_TOKEN_NONE); /* paranoid */
     }
   while (ch != 0);
   
-  if (in_comment_multi ||
-      in_comment_single ||
-      in_string_sq ||
-      in_string_dq)
+  if (in_comment_multi || in_comment_single ||
+      in_string_sq || in_string_dq)
     {
       token = G_TOKEN_ERROR;
       if (gstring)
@@ -1609,7 +1612,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
       (*position_p)++;
       if (in_comment_multi || in_comment_single)
 	value.v_error = G_ERR_UNEXP_EOF_IN_COMMENT;
-      else if (in_string_sq || in_string_dq)
+      else /* (in_string_sq || in_string_dq) */
 	value.v_error = G_ERR_UNEXP_EOF_IN_STRING;
     }
   
@@ -1620,51 +1623,53 @@ g_scanner_get_token_ll	(GScanner	*scanner,
       gstring = NULL;
     }
   
-  if (token == G_TOKEN_IDENTIFIER &&
-      config->scan_symbols)
+  if (token == G_TOKEN_IDENTIFIER)
     {
-      register GScannerKey	*key;
-      register guint scope_id;
-      
-      scope_id = scanner->scope_id;
-      key = g_scanner_lookup_internal (scanner, scope_id, value.v_identifier);
-      if (!key && scope_id && scanner->config->scope_0_fallback)
-	key = g_scanner_lookup_internal (scanner, 0, value.v_identifier);
-      
-      if (key)
+      if (config->scan_symbols)
 	{
-	  g_free (value.v_identifier);
-	  token = G_TOKEN_SYMBOL;
-	  value.v_symbol = key->value;
+	  register GScannerKey	*key;
+	  register guint scope_id;
+	  
+	  scope_id = scanner->scope_id;
+	  key = g_scanner_lookup_internal (scanner, scope_id, value.v_identifier);
+	  if (!key && scope_id && scanner->config->scope_0_fallback)
+	    key = g_scanner_lookup_internal (scanner, 0, value.v_identifier);
+	  
+	  if (key)
+	    {
+	      g_free (value.v_identifier);
+	      token = G_TOKEN_SYMBOL;
+	      value.v_symbol = key->value;
+	    }
 	}
-    }
-  
-  if (token == G_TOKEN_IDENTIFIER &&
-      config->scan_identifier_NULL &&
-      strlen (value.v_identifier) == 4)
-    {
-      gchar *null_upper = "NULL";
-      gchar *null_lower = "null";
       
-      if (scanner->config->case_sensitive)
+      if (token == G_TOKEN_IDENTIFIER &&
+	  config->scan_identifier_NULL &&
+	  strlen (value.v_identifier) == 4)
 	{
-	  if (value.v_identifier[0] == null_upper[0] &&
-	      value.v_identifier[1] == null_upper[1] &&
-	      value.v_identifier[2] == null_upper[2] &&
-	      value.v_identifier[3] == null_upper[3])
-	    token = G_TOKEN_IDENTIFIER_NULL;
-	}
-      else
-	{
-	  if ((value.v_identifier[0] == null_upper[0] ||
-	       value.v_identifier[0] == null_lower[0]) &&
-	      (value.v_identifier[1] == null_upper[1] ||
-	       value.v_identifier[1] == null_lower[1]) &&
-	      (value.v_identifier[2] == null_upper[2] ||
-	       value.v_identifier[2] == null_lower[2]) &&
-	      (value.v_identifier[3] == null_upper[3] ||
-	       value.v_identifier[3] == null_lower[3]))
-	    token = G_TOKEN_IDENTIFIER_NULL;
+	  gchar *null_upper = "NULL";
+	  gchar *null_lower = "null";
+	  
+	  if (scanner->config->case_sensitive)
+	    {
+	      if (value.v_identifier[0] == null_upper[0] &&
+		  value.v_identifier[1] == null_upper[1] &&
+		  value.v_identifier[2] == null_upper[2] &&
+		  value.v_identifier[3] == null_upper[3])
+		token = G_TOKEN_IDENTIFIER_NULL;
+	    }
+	  else
+	    {
+	      if ((value.v_identifier[0] == null_upper[0] ||
+		   value.v_identifier[0] == null_lower[0]) &&
+		  (value.v_identifier[1] == null_upper[1] ||
+		   value.v_identifier[1] == null_lower[1]) &&
+		  (value.v_identifier[2] == null_upper[2] ||
+		   value.v_identifier[2] == null_lower[2]) &&
+		  (value.v_identifier[3] == null_upper[3] ||
+		   value.v_identifier[3] == null_lower[3]))
+		token = G_TOKEN_IDENTIFIER_NULL;
+	    }
 	}
     }
   
