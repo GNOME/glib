@@ -1,3 +1,10 @@
+Mon Aug 25 12:17:20 2003  Owen Taylor  <otaylor@redhat.com>
+
+ 	* glib/gmain.c (g_main_context_unref_and_unlock): 
+ 	When DISABLE_MEM_POOLS is set, loop through and free
+ 	the poll records explicitely, since g_mem_chunk_destroy()
+ 	won't do it. (#118121, Morten Welinder)
+ 
 2003-08-22  Samúel Jón Gunnarsson  <sammi@techattack.nu>
 
 	* is.po: Added "is" to ALL_LINGUAS.
