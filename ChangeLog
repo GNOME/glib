@@ -1,5 +1,15 @@
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 
+	* tests/printf-test.c: New test, tests printf behaviour. This was already mentioned in Makefile.am
+	by accident.
+
+	* tests/file-test.c: New test, currently contains mkstemp tests copied from testglib.c.
+
+	* tests/Makefile.am (test_programs): Add file-test.
+
+	* glib/gprintf.c: Fix all g_return_val_if_fail () checks to return -1 on error to match the
+	behaviour of the stdio printf() family.
+
 	* glib/garray.h: 
 	* glib/garray.c (g_{,byte,pointer}_remove_range): New functions to remove a range of elements
 	from an array.  (#94879, Nalin Dahyabhai)

@@ -179,7 +179,7 @@ gint
 g_vprintf (gchar const *format,
 	   va_list      args)
 {
-  g_return_val_if_fail (format != NULL, 0);
+  g_return_val_if_fail (format != NULL, -1);
 
   return _g_vprintf (format, args);
 }
@@ -203,7 +203,7 @@ g_vfprintf (FILE        *file,
             gchar const *format,
 	    va_list      args)
 {
-  g_return_val_if_fail (format != NULL, 0);
+  g_return_val_if_fail (format != NULL, -1);
 
   return _g_vfprintf (file, format, args);
 }
@@ -227,8 +227,8 @@ g_vsprintf (gchar	 *string,
 	    gchar const *format,
 	    va_list      args)
 {
-  g_return_val_if_fail (string != NULL, 0);
-  g_return_val_if_fail (format != NULL, 0);
+  g_return_val_if_fail (string != NULL, -1);
+  g_return_val_if_fail (format != NULL, -1);
 
   return _g_vsprintf (string, format, args);
 }
@@ -269,8 +269,8 @@ g_vsnprintf (gchar	 *string,
 	     gchar const *format,
 	     va_list      args)
 {
-  g_return_val_if_fail (n == 0 || string != NULL, 0);
-  g_return_val_if_fail (format != NULL, 0);
+  g_return_val_if_fail (n == 0 || string != NULL, -1);
+  g_return_val_if_fail (format != NULL, -1);
 
   return _g_vsnprintf (string, n, format, args);
 }

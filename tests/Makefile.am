@@ -66,6 +66,7 @@ test_programs =					\
 	$(CXX_TEST)				\
 	date-test				\
 	dirname-test				\
+	file-test				\
 	gio-test				\
 	hash-test				\
 	iochannel-test				\
@@ -111,6 +112,7 @@ module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 array_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
 dirname_test_LDADD = $(progs_ldadd)
+file_test_LDADD = $(progs_ldadd)
 gio_test_LDADD = $(progs_ldadd)
 hash_test_LDADD = $(progs_ldadd)
 iochannel_test_LDADD = $(progs_ldadd)
