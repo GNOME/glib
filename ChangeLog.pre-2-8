@@ -1,3 +1,7 @@
+2002-12-11  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gtimer.c (g_timer_elapsed): Fix off-by-one error. (#100853)
+
 2002-12-11  Pauli Virtanen <pauli.virtanen@hut.fi>
 
 	* configure.in: Added "fi" to ALL_LINGUAS.

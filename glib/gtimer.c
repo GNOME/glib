@@ -133,7 +133,7 @@ g_timer_elapsed (GTimer *timer,
 
   /* Check for wraparound, which happens every 49.7 days. */
   if (timer->end < timer->start)
-    total = (UINT_MAX - (timer->start - timer->end)) / 1000.0;
+    total = (UINT_MAX - (timer->start - timer->end - 1)) / 1000.0;
   else
     total = (timer->end - timer->start) / 1000.0;
 
@@ -141,7 +141,7 @@ g_timer_elapsed (GTimer *timer,
     {
       if (timer->end < timer->start)
 	*microseconds =
-	  ((UINT_MAX - (timer->start - timer->end)) % 1000) * 1000;
+	  ((UINT_MAX - (timer->start - timer->end - 1)) % 1000) * 1000;
       else
 	*microseconds =
 	  ((timer->end - timer->start) % 1000) * 1000;
