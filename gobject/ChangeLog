@@ -1,3 +1,8 @@
+2005-03-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-mkenums.in: Avoid forcing extra newlines when using
+	template files.  (#171005)
+
 2005-03-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* abicheck.sh: Make work again.
@@ -15,8 +20,8 @@
 	produced when calling makegalias.pl -def
 	* Makefile.am (gobjectaliasdef.c): Add a rule to 
 	build this file.
-	* *.c: Include gobjectalias.h after the other i
-        GLib headers, include gobjectaliasdef.c at the bottom.
+	* *.c: Include gobjectalias.h after the other 
+	GLib headers, include gobjectaliasdef.c at the bottom.
 
 2005-02-28  Matthias Clasen  <mclasen@redhat.com>
 
