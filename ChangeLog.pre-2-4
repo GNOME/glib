@@ -1,3 +1,10 @@
+2003-12-04  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gunidecomp.c: Add hangul composition and decomposition to
+	unicode normalization. (#100456)
+
+	* tests/unicode-normalize.c: Test hangul.
+
 Tue Dec  2 02:29:41 2003  Matthias Clasen  <maclas@gmx.de>
 
 	Fix for #103710, Mark Jones:

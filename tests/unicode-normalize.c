@@ -23,13 +23,6 @@ decode (const gchar *input)
 	  exit (1);
 	}
 
-      /* FIXME: We don't handle the Hangul syllables */
-      if (ch >= 0xac00 && ch <= 0xd7ff)  /* Hangul syllables */
-	{
-	  g_string_free (result, TRUE);
-	  return NULL;
-	}
-
       g_string_append_unichar (result, ch);
       
       while (input[offset] && input[offset] != ' ')

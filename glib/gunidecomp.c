@@ -52,6 +52,17 @@ _g_unichar_combining_class (gunichar uc)
   return COMBINING_CLASS (uc);
 }
 
+/* constants for hangul syllable [de]composition */
+#define SBase 0xAC00 
+#define LBase 0x1100 
+#define VBase 0x1161 
+#define TBase 0x11A7
+#define LCount 19 
+#define VCount 21
+#define TCount 28
+#define NCount (VCount * TCount)
+#define SCount (LCount * NCount)
+
 /**
  * g_unicode_canonical_ordering:
  * @string: a UCS-4 encoded string.
@@ -97,6 +108,47 @@ g_unicode_canonical_ordering (gunichar *string,
 	    }
 	  last = next;
 	}
+    }
+}
+
+/* http://www.unicode.org/unicode/reports/tr15/#Hangul
+ * r should be null or have sufficient space. Calling with r == NULL will
+ * only calculate the result_len; however, a buffer with space for three
+ * characters will always be big enough. */
+static void
+decompose_hangul (gunichar s, 
+                  gunichar *r,
+                  gsize *result_len)
+{
+  gint SIndex = s - SBase;
+
+  /* not a hangul syllable */
+  if (SIndex < 0 || SIndex >= SCount)
+    {
+      if (r)
+        r[0] = s;
+      *result_len = 1;
+    }
+  else
+    {
+      gunichar L = LBase + SIndex / NCount;
+      gunichar V = VBase + (SIndex % NCount) / TCount;
+      gunichar T = TBase + SIndex % TCount;
+
+      if (r)
+        {
+          r[0] = L;
+          r[1] = V;
+        }
+
+      if (T != TBase) 
+        {
+          if (r)
+            r[2] = T;
+          *result_len = 3;
+        }
+      else
+        *result_len = 2;
     }
 }
 
@@ -159,11 +211,18 @@ gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
 				   gsize   *result_len)
 {
-  const gchar *decomp = find_decomposition (ch, FALSE);
+  const gchar *decomp;
   const gchar *p;
   gunichar *r;
 
-  if (decomp)
+  /* Hangul syllable */
+  if (ch >= 0xac00 && ch <= 0xd7af)
+    {
+      decompose_hangul (ch, NULL, result_len);
+      r = g_malloc (*result_len * sizeof (gunichar));
+      decompose_hangul (ch, r, result_len);
+    }
+  else if ((decomp = find_decomposition (ch, FALSE)) != NULL)
     {
       /* Found it.  */
       int i;
@@ -188,6 +247,34 @@ g_unicode_canonical_decomposition (gunichar ch,
   return r;
 }
 
+/* L,V => LV and LV,T => LVT  */
+static gboolean
+combine_hangul (gunichar a,
+                gunichar b,
+                gunichar *result)
+{
+  gint LIndex = a - LBase;
+  gint SIndex = a - SBase;
+
+  gint VIndex = b - VBase;
+  gint TIndex = b - TBase;
+
+  if (0 <= LIndex && LIndex < LCount
+      && 0 <= VIndex && VIndex < VCount)
+    {
+      *result = SBase + (LIndex * VCount + VIndex) * TCount;
+      return TRUE;
+    }
+  else if (0 <= SIndex && SIndex < SCount && (SIndex % TCount) == 0
+           && 0 <= TIndex && TIndex <= TCount)
+    {
+      *result = a + TIndex;
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 #define CI(Page, Char) \
   ((compose_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
    ? (compose_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
@@ -202,6 +289,9 @@ combine (gunichar  a,
 	 gunichar *result)
 {
   gushort index_a, index_b;
+
+  if (combine_hangul (a, b, result))
+    return TRUE;
 
   index_a = COMPOSE_INDEX(a);
 
@@ -262,14 +352,24 @@ _g_utf8_normalize_wc (const gchar    *str,
   p = str;
   while ((max_len < 0 || p < str + max_len) && *p)
     {
+      const gchar *decomp;
       gunichar wc = g_utf8_get_char (p);
 
-      const gchar *decomp = find_decomposition (wc, do_compat);
+      if (wc >= 0xac00 && wc <= 0xd7af)
+        {
+          gint result_len;
+          decompose_hangul (wc, NULL, &result_len);
+          n_wc += result_len;
+        }
+      else 
+        {
+          decomp = find_decomposition (wc, do_compat);
 
-      if (decomp)
-        n_wc += g_utf8_strlen (decomp, -1);
-      else
-	n_wc++;
+          if (decomp)
+            n_wc += g_utf8_strlen (decomp, -1);
+          else
+            n_wc++;
+        }
 
       p = g_utf8_next_char (p);
     }
@@ -286,16 +386,25 @@ _g_utf8_normalize_wc (const gchar    *str,
       int cc;
       gsize old_n_wc = n_wc;
 	  
-      decomp = find_decomposition (wc, do_compat);
-	  
-      if (decomp)
-	{
-          const char *pd;
-          for (pd = decomp; *pd != '\0'; pd = g_utf8_next_char (pd))
-            wc_buffer[n_wc++] = g_utf8_get_char (pd);
-	}
+      if (wc >= 0xac00 && wc <= 0xd7af)
+        {
+          gint result_len;
+          decompose_hangul (wc, wc_buffer + n_wc, &result_len);
+          n_wc += result_len;
+        }
       else
-	wc_buffer[n_wc++] = wc;
+        {
+          decomp = find_decomposition (wc, do_compat);
+          
+          if (decomp)
+            {
+              const char *pd;
+              for (pd = decomp; *pd != '\0'; pd = g_utf8_next_char (pd))
+                wc_buffer[n_wc++] = g_utf8_get_char (pd);
+            }
+          else
+            wc_buffer[n_wc++] = wc;
+        }
 
       if (n_wc > 0)
 	{
