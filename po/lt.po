@@ -1,18 +1,20 @@
-# Lithuanian translation of glib messages
-# Copyright (C) 2003 Free Software Foundation, Inc.
-# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-#
+# Lithuanian translation of Glib library.
+# Copyright (C) 2003-2004 Free Software Foundation, Inc.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003-2004.
+# Žygimantas Beručka <uid0@akl.lt>, 2004.
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
+"Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-12-02 16:01-0500\n"
-"PO-Revision-Date: 2003-09-22 20:54+0200\n"
-"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"PO-Revision-Date: 2004-12-04 19:49+0200\n"
+"Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: glib/gconvert.c:403
 #, c-format
@@ -20,9 +22,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Keitimas iš koduotės '%s' į koduotę '%s' nepalaikomas"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Nepavyko atidaryti keitiklio iš '%s' į '%s': %s"
+msgstr "Nepavyko atidaryti keitiklio iš '%s' į '%s'"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
 #: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
@@ -47,9 +49,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Negalima keisti atgalinio varianto '%s' į koduotę '%s'"
 
 #: glib/gconvert.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "Adresas '%s' neatitinka absoliutaus adreso bylų schemos"
+msgstr "Adresas '%s' nėra absoliutus adresas naudojantis „file“ schemą"
 
 #: glib/gconvert.c:1607
 #, c-format
@@ -212,22 +214,22 @@ msgstr ""
 "simbolį nepradėdami elemento įvedimo - apeikite ampersendą įvesdami &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nepavyko apdoroti '%s', kuris galėjo turėti skaičius simbolio aprašyme (pvz. "
-"&#234;) - gal skaičius per didelis"
+"Nepavyko apdoroti '%-.*s', kuris galėjo turėti skaičius simbolio aprašyme "
+"(pvz. &#234;) - gal skaičius per didelis"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Simbolio aprašymas '%s' neatitinka leistinus simbolius"
+msgstr "Simbolio aprašymas '%-.*s' neatitinka leistinus simbolius"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Tuščias simbolio apračymas; ten turėtų būti skaičiai, pvz. &#454;"
+msgstr "Tuščias simbolio aprašymas; ten turėtų būti skaičiai, pvz. &#454;"
 
 #: glib/gmarkup.c:634
 msgid ""
@@ -519,91 +521,95 @@ msgstr "Simbolis neatitinka UTF-16 simbolių diapazono"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Naudojimas:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[PARINKTIS...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr ""
+msgstr "Pagalbos parinktys:"
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr ""
+msgstr "Rodyti pagalbos parinktis"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr ""
+msgstr "Rodyti visas pagalbos parinktis"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr ""
+msgstr "Programos parinktys:"
 
 #: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Nepavyko apdoroti sveikosios reikšmės „%s“ reikalingos --%s"
 
 #: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Sveikoji reikšmė „%s“ reikalinga %s viršyja ribas"
 
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Nežinoma parinktis %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Duomenų aplankuose nepavyko rasti tinkamos raktų bylos"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "Nėra paprasta byla"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "Byla yra tuščia"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Raktų byloje yra eilutė „%s“, kuri nėra raktas-reikšmė pora, grupė ar "
+"komentaras"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Raktų byla neprasideda grupe"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Raktų byloje yra nepalaikoma koduotė „%s“"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Raktų byla neturi grupės „%s“"
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Raktų byla neturi rakto „%s“"
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "Raktų byloje yra raktas „%s“ su reikšme „%s“, kuri nėra UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
+"Raktų byloje yra raktas „%s“, kuriame yra reikšmė, kurios negalima "
+"suprasti."
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -611,27 +617,30 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Raktų byloje yra raktas „%s“ grupėje „%s“, kuriame yra reikšmė, kurios "
+"negalima suprasti."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Raktų byloje nėra rakto „%s“ grupėje „%s“"
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "Adrese '%s' yra klaidingai perkoduoti symboliai"
+msgstr "Raktų byloje yra klaidinga pabėgimo tvarka „%s“"
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Raktų byloje, eilutės pabaigoje yra pabėgimo simbolis"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Reikšmės „%s“ negalima interpretuoti kaip skaičiaus."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Reikšmės „%s“ negalima interpretuoti kaip loginės."
+
