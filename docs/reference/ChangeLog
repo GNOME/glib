@@ -1,3 +1,7 @@
+Sun Aug 29 23:50:45 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/fileutils.sgml: Fix a typo.  (#151109, Stepan Kasal)
+
 2004-08-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/fileutils.sgml: Add G_FILE_ERROR_NOSYS.

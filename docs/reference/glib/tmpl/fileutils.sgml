@@ -111,7 +111,7 @@ error domains.
 
 <!-- ##### ENUM GFileTest ##### -->
 <para>
-A test to perform an a file using g_file_test().
+A test to perform on a file using g_file_test().
 </para>
 
 @G_FILE_TEST_IS_REGULAR: %TRUE if the file is a regular file (not a symlink or directory)
