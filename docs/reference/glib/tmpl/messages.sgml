@@ -11,6 +11,10 @@ used for debugging.
 </para>
 
 <para>
+Note that the formatted messages must not exceed 1024 bytes. Longer messages will be truncated. 
+</para>
+
+<para>
 There are several built-in levels of messages, defined in #GLogLevelFlags.
 These can be extended with user-defined levels.
 </para>
