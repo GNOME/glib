@@ -1,3 +1,13 @@
+2005-03-20  Tor Lillqvist  <tml@novell.com>
+
+	* tests/testglib.c (main): Print more detailled output from the
+	timer tests. Don't print home directory twice. Test
+	g_win32_error_message().
+
+	* tests/spawn-test.c (run_tests): On Win32, run netstat instead of
+	ipconfig. On Windows XP collecting output from ipconfig doesn't
+	seem to work for some reason.
+
 2005-03-18  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in : handle galiasdef.c (although completely 
