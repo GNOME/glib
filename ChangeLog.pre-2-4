@@ -1,3 +1,8 @@
+Thu Feb 19 18:40:01 2004  Tim Janik  <timj@gtk.org>
+
+	* glib/gstring.[hc]: for G_CAN_INLINE environments, inline
+	g_string_append_c() for efficiency. (vaguely based on #118707).
+
 Wed Feb 18 23:57:42 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.c: Include signal.h for SIGCHLD.  (#134622, Damien

@@ -585,6 +585,55 @@ for the default main context.
 @Returns: 
 
 
+<!-- ##### TYPEDEF GPid ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION GChildWatchFunc ##### -->
+<para>
+
+</para>
+
+@pid: 
+@status: 
+@data: 
+
+
+<!-- ##### FUNCTION g_child_watch_source_new ##### -->
+<para>
+
+</para>
+
+@pid: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_child_watch_add ##### -->
+<para>
+
+</para>
+
+@pid: 
+@function: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_child_watch_add_full ##### -->
+<para>
+
+</para>
+
+@priority: 
+@pid: 
+@function: 
+@data: 
+@notify: 
+@Returns: 
+
+
 <!-- ##### STRUCT GPollFD ##### -->
 <para>
 

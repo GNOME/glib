@@ -515,6 +515,7 @@ g_string_append_len (GString	 *string,
   return g_string_insert_len (string, -1, val, len);
 }
 
+#undef g_string_append_c
 GString*
 g_string_append_c (GString *string,
 		   gchar    c)

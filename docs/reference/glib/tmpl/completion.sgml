@@ -107,6 +107,17 @@ This string should be freed when no longer needed.
 not be changed.
 
 
+<!-- ##### FUNCTION g_completion_complete_utf8 ##### -->
+<para>
+
+</para>
+
+@cmp: 
+@prefix: 
+@new_prefix: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_completion_set_compare ##### -->
 <para>
 Sets the function to use for string comparisons. The default
