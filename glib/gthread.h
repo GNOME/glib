@@ -59,7 +59,6 @@ struct  _GThread
   GThreadFunc func;
   gpointer data;
   gboolean joinable;
-  gboolean bound;
   GThreadPriority priority;
 };
 
@@ -194,7 +193,11 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
                                                        (private_key, value))
 #define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
 
-GThread* g_thread_create       (GThreadFunc            func,
+#define g_thread_create(func, data, joinable, error)			\
+  (g_thread_create_full (func, data, 0, joinable, FALSE, 		\
+                         G_THREAD_PRIORITY_NORMAL, error))
+
+GThread* g_thread_create_full  (GThreadFunc            func,
                                 gpointer               data,
                                 gulong                 stack_size,
                                 gboolean               joinable,

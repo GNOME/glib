@@ -1,5 +1,18 @@
 2001-05-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gthread.c, gthread.h: Renamed g_thread_create to
+	g_thread_create_full and added macro g_thread_create, which omits
+	'stack_size', 'bound' and 'priority' parameters. Also removed
+	'bound' from GThread struct.
+
+	* gthreadpool.h, gthreadpool.c: Adapted GThreadPool to the above
+	changes. GThreadPool lost the 'priority' and 'bound'
+	members. g_thread_pool_new the 'stack_size', 'bound' and
+	'priority' parameters.
+
+	* tests/mainloop-test.c, tests/thread-test.c,
+	tests/threadpool-test.c: Adapted to the above changes.
+
 	* gmem.c (g_mem_profile): Fixed mutex deadlock.
 
 2001-05-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>

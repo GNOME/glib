@@ -541,13 +541,13 @@ g_thread_create_proxy (gpointer data)
 }
 
 GThread* 
-g_thread_create (GThreadFunc 		 func,
-		 gpointer 		 data,
-		 gulong 		 stack_size,
-		 gboolean 		 joinable,
-		 gboolean 		 bound,
-		 GThreadPriority 	 priority,
-		 GError                **error)
+g_thread_create_full (GThreadFunc 		 func,
+		      gpointer 		 data,
+		      gulong 		 stack_size,
+		      gboolean 		 joinable,
+		      gboolean 		 bound,
+		      GThreadPriority 	 priority,
+		      GError                **error)
 {
   GRealThread* result = g_new (GRealThread, 1);
   GError *local_error = NULL;
@@ -556,7 +556,6 @@ g_thread_create (GThreadFunc 		 func,
   g_return_val_if_fail (priority <= G_THREAD_PRIORITY_URGENT, NULL);
   
   result->thread.joinable = joinable;
-  result->thread.bound = bound;
   result->thread.priority = priority;
   result->thread.func = func;
   result->thread.data = data;
@@ -653,7 +652,6 @@ g_thread_self (void)
          created by GLib. */
       thread = g_new (GRealThread, 1);
       thread->thread.joinable = FALSE; /* This is a save guess */
-      thread->thread.bound = TRUE; /* This isn't important at all */
       thread->thread.priority = G_THREAD_PRIORITY_NORMAL; /* This is
 							     just a guess */
       thread->thread.func = NULL;

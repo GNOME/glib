@@ -42,22 +42,17 @@ struct _GThreadPool
 {
   GFunc func;
   gpointer user_data;
-  gboolean bound;
-  GThreadPriority priority;
   gboolean exclusive;
 };
 
 /* Get a thread pool with the function func, at most max_threads may
- * run at a time (max_threads == -1 means no limit), stack_size, bound,
- * priority like in g_thread_create, exclusive == TRUE means, that the threads
- * shouldn't be shared and that they will be prestarted (otherwise they are
- * started as needed) user_data is the 2nd argument to the func */
+ * run at a time (max_threads == -1 means no limit), exclusive == TRUE
+ * means, that the threads shouldn't be shared and that they will be
+ * prestarted (otherwise they are started as needed) user_data is the
+ * 2nd argument to the func */
 GThreadPool*    g_thread_pool_new             (GFunc            func,
                                                gpointer         user_data,
                                                gint             max_threads,
-                                               gulong           stack_size,
-                                               gboolean         bound,
-                                               GThreadPriority  priority,
                                                gboolean         exclusive,
                                                GError         **error);
 

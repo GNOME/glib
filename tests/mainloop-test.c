@@ -267,8 +267,7 @@ create_adder_thread (void)
   sub_channels[0] = in_channels[0];
   sub_channels[1] = out_channels[1];
 
-  g_thread_create (adder_thread, sub_channels, 0,
-		   FALSE, TRUE, G_THREAD_PRIORITY_NORMAL, &err);
+  g_thread_create (adder_thread, sub_channels, FALSE, &err);
 
   if (err)
     {

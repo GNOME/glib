@@ -27,9 +27,8 @@ test_g_mutex (void)
 
   g_assert (g_mutex_trylock (test_g_mutex_mutex));
   g_assert (G_TRYLOCK (test_g_mutex));
-  thread = g_thread_create (test_g_mutex_thread, 
-			    GINT_TO_POINTER (42),
-			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
+  thread = g_thread_create (test_g_mutex_thread, GINT_TO_POINTER (42),
+			    TRUE, NULL);
   g_usleep (G_USEC_PER_SEC);
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
@@ -68,8 +67,7 @@ test_g_static_rec_mutex (void)
 
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   thread = g_thread_create (test_g_static_rec_mutex_thread, 
-			    GINT_TO_POINTER (42),
-			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
+			    GINT_TO_POINTER (42), TRUE, NULL);
   g_usleep (G_USEC_PER_SEC);
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
   g_usleep (G_USEC_PER_SEC);
@@ -180,9 +178,7 @@ test_g_static_private (void)
   for (i = 0; i < THREADS; i++)
     {
       threads[i] = g_thread_create (test_g_static_private_thread, 
-				    GINT_TO_POINTER (i),
-				    0, TRUE, TRUE, 
-				    G_THREAD_PRIORITY_NORMAL, NULL);      
+				    GINT_TO_POINTER (i), TRUE, NULL);      
     }
 
   /* Busy wait is not nice but that's just a test */
@@ -269,8 +265,7 @@ test_g_static_rw_lock ()
   for (i = 0; i < THREADS; i++)
     {
       threads[i] = g_thread_create (test_g_static_rw_lock_thread, 
-				    0, 0, TRUE, TRUE, 
-				    G_THREAD_PRIORITY_NORMAL, NULL);      
+				    NULL, TRUE, NULL);      
     }
   g_usleep (G_USEC_PER_SEC);
   test_g_static_rw_lock_run = FALSE;

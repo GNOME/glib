@@ -32,12 +32,9 @@ main (int   argc,
   guint i;
   g_thread_init (NULL);
   
-  pool1 = g_thread_pool_new (thread_pool_func, 3, 0, FALSE, 
-                            G_THREAD_PRIORITY_NORMAL, FALSE, NULL, NULL);
-  pool2 = g_thread_pool_new (thread_pool_func, 5, 0, FALSE, 
-			     G_THREAD_PRIORITY_LOW, FALSE, NULL, NULL);
-  pool3 = g_thread_pool_new (thread_pool_func, 7, 0, FALSE, 
-                             G_THREAD_PRIORITY_LOW, TRUE, NULL, NULL);
+  pool1 = g_thread_pool_new (thread_pool_func, NULL, 3, FALSE, NULL);
+  pool2 = g_thread_pool_new (thread_pool_func, NULL, 5, TRUE, NULL);
+  pool3 = g_thread_pool_new (thread_pool_func, NULL, 7, TRUE, NULL);
 
   for (i = 0; i < RUNS; i++)
     {

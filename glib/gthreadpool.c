@@ -31,7 +31,6 @@ typedef struct _GRealThreadPool GRealThreadPool;
 struct _GRealThreadPool
 {
   GThreadPool pool;
-  gulong stack_size;
   GAsyncQueue* queue;
   gint max_threads;
   gint num_threads;
@@ -45,8 +44,8 @@ struct _GRealThreadPool
  * GThreadPool address) */
 static const gpointer stop_this_thread_marker = (gpointer) &g_thread_pool_new;
 
-/* Here all unused threads are waiting, depending on their priority */
-static GAsyncQueue *unused_thread_queue[G_THREAD_PRIORITY_URGENT + 1][2];
+/* Here all unused threads are waiting  */
+static GAsyncQueue *unused_thread_queue;
 static gint unused_threads = 0;
 static gint max_unused_threads = 0;
 G_LOCK_DEFINE_STATIC (unused_threads);
@@ -73,8 +72,7 @@ g_thread_pool_thread_proxy (gpointer data)
   while (TRUE)
     {
       gpointer task; 
-      gboolean goto_global_pool = 
-	!pool->pool.exclusive && pool->stack_size == 0;
+      gboolean goto_global_pool = !pool->pool.exclusive;
       gint len = g_async_queue_length_unlocked (pool->queue);
       
       if (g_thread_should_run (pool, len))
@@ -147,8 +145,6 @@ g_thread_pool_thread_proxy (gpointer data)
       
       if (goto_global_pool)
 	{
-	  GAsyncQueue *unused_queue = 
-	    unused_thread_queue[pool->pool.priority][pool->pool.bound ? 1 : 0];
 	  pool->num_threads--; 
 
 	  if (!pool->running && !pool->waiting)
@@ -167,27 +163,27 @@ g_thread_pool_thread_proxy (gpointer data)
 	  else
 	    g_async_queue_unlock (pool->queue);
 	  
-	  g_async_queue_lock (unused_queue);
+	  g_async_queue_lock (unused_thread_queue);
 
 	  G_LOCK (unused_threads);
 	  if ((unused_threads >= max_unused_threads && 
-	       max_unused_threads != -1) || pool->stack_size != 0)
+	       max_unused_threads != -1))
 	    {
 	      G_UNLOCK (unused_threads);
-	      g_async_queue_unlock (unused_queue);
+	      g_async_queue_unlock (unused_thread_queue);
 	      /* Stop this thread */
 	      return NULL;      
 	    }
 	  unused_threads++;
 	  G_UNLOCK (unused_threads);
 
-	  pool = g_async_queue_pop_unlocked (unused_queue);
+	  pool = g_async_queue_pop_unlocked (unused_thread_queue);
 
 	  G_LOCK (unused_threads);
 	  unused_threads--;
 	  G_UNLOCK (unused_threads);
 
-	  g_async_queue_unlock (unused_queue);
+	  g_async_queue_unlock (unused_thread_queue);
 	  
 	  if (pool == stop_this_thread_marker)
 	    /* Stop this thread */
@@ -208,35 +204,26 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 			    GError          **error)
 {
   gboolean success = FALSE;
-  GThreadPriority priority = pool->pool.priority;
-  guint bound = pool->pool.bound ? 1 : 0;
-  GAsyncQueue *queue = unused_thread_queue[priority][bound];
   
   if (pool->num_threads >= pool->max_threads && pool->max_threads != -1)
     /* Enough threads are already running */
     return;
 
-  g_async_queue_lock (queue);
+  g_async_queue_lock (unused_thread_queue);
 
-  if (g_async_queue_length_unlocked (queue) < 0)
+  if (g_async_queue_length_unlocked (unused_thread_queue) < 0)
     {
-      /* First we try a thread with the right priority */
-      g_async_queue_push_unlocked (queue, pool);
+      g_async_queue_push_unlocked (unused_thread_queue, pool);
       success = TRUE;
     }
 
-  g_async_queue_unlock (queue);
+  g_async_queue_unlock (unused_thread_queue);
 
-  /* We will not search for threads with other priorities, because changing
-   * priority is quite unportable */
-  
   if (!success)
     {
       GError *local_error = NULL;
       /* No thread was found, we have to start a new one */
-      g_thread_create (g_thread_pool_thread_proxy, pool, 
-		       pool->stack_size, FALSE, 
-		       bound, priority, &local_error);
+      g_thread_create (g_thread_pool_thread_proxy, pool, FALSE, &local_error);
       
       if (local_error)
 	{
@@ -257,17 +244,10 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  *   is called
  * @max_threads: the maximal number of threads to execute concurrently in 
  *   the new thread pool, -1 means no limit
- * @stack_size: the stack size for the threads of the new thread pool,
- *   0 means using the standard
- * @bound: should the threads of the new thread pool be bound?
- * @priority: a priority for the threads of the new thread pool
  * @exclusive: should this thread pool be exclusive?
  * @error: return location for error
  *
- * This function creates a new thread pool. All threads created within
- * this thread pool will have the priority @priority and the stack
- * size @stack_size and will be bound if and only if @bound is
- * true. 
+ * This function creates a new thread pool.
  *
  * Whenever you call g_thread_pool_push(), either a new thread is
  * created or an unused one is reused. At most @max_threads threads
@@ -286,12 +266,6 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * non-exclusive thread pools. This implies that @max_threads may not
  * be -1 for exclusive thread pools.
  *
- * Note, that only threads from a thread pool with a @stack_size of 0
- * (which means using the standard stack size) will be globally
- * reused. Threads from a thread pool with a non-zero stack size will
- * stay only in this thread pool until it is freed and can thus not be
- * controlled by the g_thread_pool_set_unused_threads() function.
- *
  * @error can be NULL to ignore errors, or non-NULL to report
  * errors. An error can only occur, when @exclusive is set to @TRUE and
  * not all @max_threads threads could be created.
@@ -302,9 +276,6 @@ GThreadPool*
 g_thread_pool_new (GFunc            func,
 		   gpointer         user_data,
 		   gint             max_threads,
-		   gulong           stack_size,
-		   gboolean         bound,
-		   GThreadPriority  priority,
 		   gboolean         exclusive,
 		   GError         **error)
 {
@@ -320,10 +291,7 @@ g_thread_pool_new (GFunc            func,
 
   retval->pool.func = func;
   retval->pool.user_data = user_data;
-  retval->pool.bound = bound;
-  retval->pool.priority = priority;
   retval->pool.exclusive = exclusive;
-  retval->stack_size = stack_size;
   retval->queue = g_async_queue_new ();
   retval->max_threads = max_threads;
   retval->num_threads = 0;
@@ -335,12 +303,7 @@ g_thread_pool_new (GFunc            func,
     {
       inform_mutex = g_mutex_new ();
       inform_cond = g_cond_new ();
-      for (priority = G_THREAD_PRIORITY_LOW; 
-	   priority < G_THREAD_PRIORITY_URGENT + 1; priority++)
-	{
-	  unused_thread_queue[priority][0] = g_async_queue_new ();
-	  unused_thread_queue[priority][1] = g_async_queue_new ();
-	}
+      unused_thread_queue = g_async_queue_new ();
     }
 
   G_UNLOCK (init);
@@ -659,37 +622,13 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
 
   if (max_unused_threads < unused_threads && max_unused_threads != -1)
     {
-      guint close_down_num = unused_threads - max_unused_threads;
+      guint i;
 
-      while (close_down_num > 0)
-	{
-	  GThreadPriority priority;
-	  guint bound;
-
-	  guint old_close_down_num = close_down_num;
-	  for (priority = G_THREAD_PRIORITY_LOW; 
-	       priority < G_THREAD_PRIORITY_URGENT + 1 && close_down_num > 0; 
-	       priority++)
-	    {
-	      for (bound = 0; bound < 2; bound++)
-		{
-		  GAsyncQueue *queue = unused_thread_queue[priority][bound];
-		  g_async_queue_lock (queue);
-		  
-		  if (g_async_queue_length_unlocked (queue) < 0)
-		    {
-		      g_async_queue_push_unlocked (queue, 
-						   stop_this_thread_marker);
-		      close_down_num--;
-		    }
-		  
-		  g_async_queue_unlock (queue);
-		}
-	    }
-
-	  /* Just to make sure, there are no counting problems */
-	  g_assert (old_close_down_num != close_down_num);
-	}
+      g_async_queue_lock (unused_thread_queue);
+      for (i = unused_threads - max_unused_threads; i > 0; i--)
+	g_async_queue_push_unlocked (unused_thread_queue, 
+				     stop_this_thread_marker);
+      g_async_queue_unlock (unused_thread_queue);
     }
     
   G_UNLOCK (unused_threads);
