@@ -1,3 +1,9 @@
+2004-11-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_parse_value_as_string): 
+	Don't access invalid memory address if p wasn't 
+	increased.  (#159557, Frederic Crozat)
+
 2004-11-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/strtod-test.c (main): Add a testcase for the previous fix.

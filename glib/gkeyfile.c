@@ -3041,7 +3041,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
       p++;
     }
 
-  if (p[-1] == '\\' && error == NULL)
+  if (p > value && p[-1] == '\\' && error == NULL)
     g_set_error (error, G_KEY_FILE_ERROR,
 		 G_KEY_FILE_ERROR_INVALID_VALUE,
 		 _("Key file contains escape character at end of line"));
