@@ -291,10 +291,20 @@ g_cond_timed_wait_win32_impl (GCond *cond,
   g_return_val_if_fail (cond != NULL, FALSE);
   g_return_val_if_fail (entered_mutex != NULL, FALSE);
 
-  g_get_current_time (&current_time);
-  to_wait = (abs_time->tv_sec - current_time.tv_sec) * 1000 +
-    (abs_time->tv_usec - current_time.tv_usec) / 1000;
-
+  if (!abs_time)
+    to_wait = INFINITE;
+  else
+    {
+      g_get_current_time (&current_time);
+      if (abs_time->tv_sec < current_time.tv_sec ||
+	  (abs_time->tv_sec == current_time.tv_sec &&
+	   abs_time->tv_usec <= current_time.tv_usec))
+	to_wait = 0;
+      else
+	to_wait = (abs_time->tv_sec - current_time.tv_sec) * 1000 +
+	  (abs_time->tv_usec - current_time.tv_usec) / 1000;      
+    }
+  
   return g_cond_wait_internal (cond, entered_mutex, to_wait);
 }
 
