@@ -3,6 +3,9 @@
 	* tests/spawn-test-win32-gui.c: Minor Cygwin fix. (#138405, Roger
 	Leigh)
 
+	* tests/unicode-encoding.c (process): Use UTF-16LE explicitly also
+	on Cygwin. (#138423, Roger Leigh)
+
 2004-03-30  Adam Weinberger  <adamw@gnome.org>
 
 	* configure.in: Added en_CA to ALL_LINGUAS.
