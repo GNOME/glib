@@ -9,7 +9,7 @@ TOP = ..\..
 
 INCLUDES = -I . -I ..
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
-DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
+DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\
 	..\config.h		\
@@ -28,6 +28,7 @@ glib_OBJECTS =			\
 	gconvert.obj		\
 	gdataset.obj		\
 	gdate.obj		\
+	gdir.obj	\
 	gerror.obj		\
 	gfileutils.obj		\
 	ghash.obj		\
@@ -81,7 +82,7 @@ glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS)
 	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS)
 
 libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /implib:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib /def:glib.def
+	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) $(DIRENT_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /implib:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) /subsystem:windows user32.lib

@@ -1,3 +1,11 @@
+2001-11-04  Hans Breuer  <hans@breuer.org>
+
+	* glib/gdir.[hc] : (new files) simplified wrapper around dirent 
+	functions to improve portability of downstream libs/apps
+	* glib/makefile.msc.in : use them
+	* glib/glib.def : export them
+	* config.h.win32.in : needing HAVE_DIRENT_H defined
+
 2001-11-04  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/Makefile.am: On Win32, create separate .exp file for
