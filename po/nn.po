@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KDEADMIN/kcron\n"
-"POT-Creation-Date: 2001-09-05 23:39+0200\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-09-06 00:24GMT\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"
@@ -60,13 +60,13 @@ msgstr "URIen '%s' er ugyldig"
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1254
-#, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
-msgstr ""
+#, fuzzy, c-format
+msgid "The URI `%s' contains invalidly escaped characters"
+msgstr "URIen '%s' er ugyldig"
 
 #: glib/gconvert.c:1297
 #, c-format
@@ -77,42 +77,42 @@ msgstr "Filstien '%s' er ikkje ein absolutt sti"
 msgid "Invalid byte sequence in hostname"
 msgstr "Ugyldig bytesekvens i maskinnamn"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil ved lesing a fil '%s': %s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Klarte ikkje å lese frå fila '%s': %s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Kunne ikkje opna fil: %s: %s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Klarte ikkje å få tak i eigenskapar for fila '%s' fstat() feila: %s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kunne ikkje opne fila '%s': fdopen() feila: %s"
 
-#: glib/gfileutils.c:654
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#: glib/gfileutils.c:655
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal '%s' er ugyldig, kan ikkje ikkje innehalde ein '%s'"
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malfila '%s' er ikkje avslutta med XXXXXX"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Klarte ikkje å opprette fila '%s': %s"
@@ -128,7 +128,8 @@ msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
 #: glib/gmarkup.c:379
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 
 #: glib/gmarkup.c:389
@@ -202,7 +203,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1110
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1151
@@ -313,7 +315,8 @@ msgstr "Teksta tok slutt rett etter eit \" teikn (Teksta var '%s')"
 #: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Teksta tok slutt før avsluttane sitatteikn var funne for %c (Teksta var '%s')"
+msgstr ""
+"Teksta tok slutt før avsluttane sitatteikn var funne for %c (Teksta var '%s')"
 
 #: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
@@ -327,7 +330,8 @@ msgstr "Failed to read data from child process"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+msgstr ""
+"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
@@ -400,4 +404,3 @@ msgstr "Ugyldig sekvens i inndata konvertering"
 #: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
-

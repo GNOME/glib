@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-02-05 20:28+0200\n"
 "Last-Translator: Kemal Yýlmaz <kyilmaz@uekae.tubitak.gov.tr>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -59,12 +59,12 @@ msgstr ""
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1254
 #, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1297
@@ -77,44 +77,44 @@ msgstr ""
 msgid "Invalid byte sequence in hostname"
 msgstr "dönüþüm girdisinde geçersiz bayt dizisi"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Dosya okuma hatasý: '%s': %s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Dosyadan okuma baþarýsýzlýðý '%s': %s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Dosya açma baþarýsýzlýðý '%s': %s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Dosyanýn özelliklerini elde etme baþarýsýzlýðý '%s': fstat() baþarýsýzlýðý: %"
 "s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Dosya açma baþarýsýzlýðý '%s': fdopen() baþarýsýzlýðý: %s"
 
-#: glib/gfileutils.c:654
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#: glib/gfileutils.c:655
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Þablon '%s' geçersiz, '%s' içermemeli"
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Þablon '%s' XXXXXX ile bitmiyor"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Dosya yaratma baþarýsýzlýðý '%s': %s"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-07-29 07:42+0200\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -59,12 +59,12 @@ msgstr ""
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1254
 #, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1297
@@ -77,44 +77,44 @@ msgstr ""
 msgid "Invalid byte sequence in hostname"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fehler beim Lesen der Datei `%s': %s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei `%s' gelesen werden: %s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: %s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Attribute der Datei `%s' konnten nicht ermittelt werden: fstat() "
 "fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:654
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#: glib/gfileutils.c:655
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Vorlage `%s' ungültig, sollte kein `%s' enthalten"
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Vorlage `%s' endet nicht auf XXXXXX"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei `%s' konnte nicht erstellt werden: %s"

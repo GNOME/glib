@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-04-30 20:16+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
@@ -60,12 +60,12 @@ msgstr ""
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1254
 #, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1297
@@ -78,43 +78,43 @@ msgstr ""
 msgid "Invalid byte sequence in hostname"
 msgstr "Seqüència de bytes invàlida en l'entrada de conversió"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "S'ha produït un error en llegir el fitxer '%s': %s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "És impossible llegir des del fitxer '%s': %s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "És impossible obrir el fitxer '%s': %s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "És impossible obtenir els atributs del fitxer '%s': fstat() ha fallat: %s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "És impossible obrir el fitxer '%s': fdopen() ha fallat: %s"
 
-#: glib/gfileutils.c:654
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#: glib/gfileutils.c:655
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "La plantilla '%s' és il·legal, no hauria de contenir un '%s'"
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "La plantilla '%s' no acaba en XXXXXX"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "És impossible crear el fitxer '%s': %s"

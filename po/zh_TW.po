@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.7\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-08-03 07:31+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -59,12 +59,12 @@ msgstr ""
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1254
 #, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr ""
 
 #: glib/gconvert.c:1297
@@ -77,42 +77,42 @@ msgstr ""
 msgid "Invalid byte sequence in hostname"
 msgstr "轉換輸入時遇到不正確的位元組次序"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "當讀入檔案 '%s' 時發生錯誤：%s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "無法讀入檔案 '%s'：%s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "無法開啟檔案 '%s'：%s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "無法取得檔案 '%s' 的屬性：fstat() 失敗：%s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "無法開啟檔案 '%s'：fdopen() 失敗：%s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:655
 #, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr ""
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr ""
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "無法建立檔案 '%s'：%s"

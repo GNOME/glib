@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-09-02 09:00+0200\n"
 "Last-Translator: José Antonio Salgueiro <joseantsa@eresmas.net>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -58,14 +58,14 @@ msgid "The URI `%s' is invalid"
 msgstr "La URI·`%s'·no es válida"
 
 #: glib/gconvert.c:1238
-#, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+#, fuzzy, c-format
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr ""
 "El nombre del huésped de la·URI·`%s'·contiene caracteres de escape no válidos"
 
 #: glib/gconvert.c:1254
-#, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+#, fuzzy, c-format
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr "La·URI·`%s'·contiene caracteres de escape no válidos"
 
 #: glib/gconvert.c:1297
@@ -77,42 +77,42 @@ msgstr "El nombre de la trayectoria '%s' no es una trayectoria absoluta"
 msgid "Invalid byte sequence in hostname"
 msgstr "Secuencia de byte no válida en el nombre del huésped"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Error leyendo fichero '%s':·%s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Falló la lectura desde el fichero '%s':·%s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Falló al abrir el fichero '%s':·%s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Falló la adquisición de atributos del fichero '%s':·fstat()·fallo:·%s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Falló al abrir el archivo '%s':·fdopen()·falló:·%s"
 
-#: glib/gfileutils.c:654
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#: glib/gfileutils.c:655
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Plantilla ilegal '%s'·no debería contener un '%s'"
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "La plantilla ·'%s'· no termina con XXXXXX"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falló al crear el archivo '%s':·%s"

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-09-11 21:19+0200\n"
+"POT-Creation-Date: 2001-09-18 18:22+0200\n"
 "PO-Revision-Date: 2001-09-11 21:20+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -62,12 +62,12 @@ msgstr "URI:n \"%s\" är ogiltig"
 
 #: glib/gconvert.c:1238
 #, c-format
-msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgid "The hostname of the URI `%s' contains invalidly escaped characters"
 msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
 
 #: glib/gconvert.c:1254
 #, c-format
-msgid "The URI `%s' is contains invalidly escaped characters"
+msgid "The URI `%s' contains invalidly escaped characters"
 msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
 
 #: glib/gconvert.c:1297
@@ -107,8 +107,8 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
 #: glib/gfileutils.c:655
-#, c-format
-msgid "Template '%s' illegal, should not contain a '%s'"
+#, fuzzy, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mallen \"%s\" är ogiltig, den får inte innehålla ett \"%s\""
 
 #: glib/gfileutils.c:667
@@ -190,8 +190,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett "
-"&-tecken utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
+"Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett &-"
+"tecken utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
@@ -451,8 +451,9 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
 
-#~ msgid "The hostname of the URI `%s' contains invalidly escaped characters"
+#~ msgid ""
+#~ "The hostname of the URI `%s' is contains invalidly escaped characters"
 #~ msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
 
-#~ msgid "The URI `%s' contains invalidly escaped characters"
+#~ msgid "The URI `%s' is contains invalidly escaped characters"
 #~ msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
