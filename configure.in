@@ -1125,7 +1125,13 @@ if test x"$have_threads" != xno; then
 	*-aix*)
 		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
 		if test x"$GCC" = xyes; then
-            	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
+			# GCC 3.0 and above needs -pthread
+			# GCC 2.x and below needs -mthreads
+			AC_TRY_COMPILE(,[#if __GNUC__ <= 2
+					bail out here
+					#endif],
+				G_THREAD_CFLAGS="$G_THREAD_CFLAGS -pthread", 
+				G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads")
 		fi
 		;;
 	*-freebsd2.2*)

@@ -1,3 +1,8 @@
+2002-01-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Get the right multithread option for GCC 3.0 and
+	later. (#67583)
+
 2002-01-21  Jeffrey Stedfast  <fejj@ximian.com>
 
 	* glib/gconvert.c (g_convert_with_fallback): If g_convert fails,
