@@ -1,3 +1,9 @@
+Mon May  6 16:00:41 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gbacktrace.h: Exclude OSF from alpha definition
+	of G_BREAKPOINT(), since the assembler apparently
+	doesn't support bpt. (#77852, Gareth Pierce) [from stable]
+
 Mon May  6 11:48:08 2002  Owen Taylor  <otaylor@redhat.com>
 
 	[ merged from stable ]
