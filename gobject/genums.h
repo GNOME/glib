@@ -19,7 +19,9 @@
 #ifndef __G_ENUMS_H__
 #define __G_ENUMS_H__
 
-#include	<gobject/gtype.h>
+#include <string.h>
+
+#include <gobject/gtype.h>
 
 
 #ifdef __cplusplus

@@ -1,3 +1,9 @@
+Thu Jun 29 16:02:07 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.c:include string.h for memset
+	* genums.h: include string.h for strcpy
+	* gvalue.c: include string.h for memset, memcpy.
+
 Sat Jun 24 23:03:04 2000  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: provide G_TYPE_CHAR, G_TYPE_UCHAR, G_TYPE_BOOLEAN,
