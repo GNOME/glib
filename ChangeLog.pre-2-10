@@ -1,3 +1,8 @@
+Mon Oct 14 15:32:14 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* tests/mainloop-test.c (adder_response): Fix a minor memory
+ 	leak.
+ 
 Sat Oct 12 21:30:41 2002  Tim Janik  <timj@gtk.org>
 
 	* merged up from glib-2-0:
