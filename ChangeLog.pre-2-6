@@ -1,5 +1,8 @@
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gkeyfile.c: Fix includes. (#156500, #156499, 
+	Kazuki IWAMOTO)
+
 	* glib/Makefile.am (galias.h): Fix srcdir != builddir 
 	builds.  (#156447, Thomas Fitzsimmons)
 
