@@ -1,3 +1,13 @@
+2004-03-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gatomic.c: Fix infinite recursion for
+	G_MEMORY_BARRIER_NEEDED and DEFINE_WITH_MUTEXES by using a GMutex
+	instead of G_DEFINE_LOCK. The mutex is allocated by the new
+	function _g_atomic_thread_init. Fixes #136284.
+
+	* glib/gthreadinit.h, glib/gthread.c: Declare and call
+	_g_atomic_thread_init during thread system initialization.
+ 
 2004-03-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_main_depth. (#136221, Cedric Gustin)

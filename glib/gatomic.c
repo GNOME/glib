@@ -466,17 +466,18 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 
 #ifdef DEFINE_WITH_MUTEXES
 /* We have to use the slow, but safe locking method */
-G_LOCK_DEFINE_STATIC (g_atomic_lock);
+static GMutex *g_atomic_mutex; 
+
 gint
 g_atomic_int_exchange_and_add (gint *atomic, 
 			       gint  val)
 {
   gint result;
     
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   result = *atomic;
   *atomic += val;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 
   return result;
 }
@@ -486,9 +487,9 @@ void
 g_atomic_int_add (gint *atomic,
 		  gint  val)
 {
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   *atomic += val;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 }
 
 gboolean
@@ -498,7 +499,7 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 {
   gboolean result;
     
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   if (*atomic == oldval)
     {
       result = TRUE;
@@ -506,7 +507,7 @@ g_atomic_int_compare_and_exchange (gint *atomic,
     }
   else
     result = FALSE;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 
   return result;
 }
@@ -518,7 +519,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 {
   gboolean result;
     
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   if (*atomic == oldval)
     {
       result = TRUE;
@@ -526,7 +527,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
     }
   else
     result = FALSE;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 
   return result;
 }
@@ -537,9 +538,9 @@ g_atomic_int_get (gint *atomic)
 {
   gint result;
 
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   result = *atomic;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 
   return result;
 }
@@ -549,9 +550,9 @@ g_atomic_pointer_get (gpointer *atomic)
 {
   gpointer result;
 
-  G_LOCK (g_atomic_lock);
+  g_mutex_lock (g_atomic_mutex);
   result = *atomic;
-  G_UNLOCK (g_atomic_lock);
+  g_mutex_unlock (g_atomic_mutex);
 
   return result;
 }
@@ -609,3 +610,11 @@ g_atomic_int_add (gint *atomic,
   while (!ATOMIC_INT_CMP_XCHG (atomic, result, result + val));
 }
 #endif /* ATOMIC_INT_CMP_XCHG */
+
+void 
+_g_atomic_thread_init ()
+{
+#ifdef DEFINE_WITH_MUTEXES
+  g_atomic_mutex = g_mutex_new ();
+#endif /* DEFINE_WITH_MUTEXES */
+}

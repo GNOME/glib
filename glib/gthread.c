@@ -153,7 +153,8 @@ g_thread_init_glib (void)
   _g_main_thread_init ();
   _g_mem_thread_init ();
   _g_messages_thread_init ();
-  
+  _g_atomic_thread_init ();
+ 
   g_threads_got_initialized = TRUE;
 
   g_thread_specific_private = g_private_new (g_thread_cleanup);
