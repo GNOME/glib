@@ -1,3 +1,11 @@
+2002-06-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gmessages.h (g_assert, g_assert_not_reached,
+	g_return_if_fail, g_return_val_if_fail): In case of
+	G_DISABLE_ASSERT replace "G_STMT_START{ }G_STMT_END" with
+	"G_STMT_START{ (void)0; }G_STMT_END", because the former chokes
+	gcc prior to 3.0. (#86664)
+
 2002-06-26  Yanko Kaneti <yaneti@declera.com>
 
 	* configure.in: (ALL_LINGUAS) Added Bulgarian (bg).
