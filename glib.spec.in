@@ -1,10 +1,10 @@
-Name:		glib
+Name:		glib2
 Summary:	Handy library of utility functions
 Version:	@VERSION@
 Release:	1
 License:	LGPL
 Group:		Development/Libraries
-Source:		ftp://ftp.gimp.org/pub/gtk/v1.1/%{name}-%{version}.tar.gz
+Source:		ftp://ftp.gimp.org/pub/gtk/v1.3/glib-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 URL:		http://www.gtk.org
 
@@ -23,7 +23,7 @@ libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
 
 %prep
-%setup -q
+%setup -q -n glib-%{version}
 
 %build
 CFLAGS="$RPM_OPT_FLAGS"
@@ -72,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 #%{_datadir}/gtk-doc/html/gobject
 
 %changelog
+* Mon Aug 27 2001 Jens Finke <jens@gnome.org>
+- Changed package name to glib2. 
+- Updated source URL.
 
 * Mon Aug 14 2001 Jens Finke <jens@gnome.org>
 - Updated to match gpp standard:
