@@ -49,7 +49,7 @@
   if( error ) { solaris_print_error( what, error ); }			\
   }G_STMT_END
 
-gulong g_thread_min_stack_size = 0;
+static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (mutex_t))
 

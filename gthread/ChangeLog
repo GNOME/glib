@@ -1,3 +1,8 @@
+2001-01-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-solaris.c, gthread-posix.c: Made g_thread_min_stack_size
+	static.
+
 2000-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-impl.c: Revamped errorcheck mutexes and added errorcheck

@@ -115,7 +115,7 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
 # define PRIORITY_URGENT_VALUE POSIX_MAX_PRIORITY
 #endif /* POSIX_MIN_PRIORITY && POSIX_MAX_PRIORITY */
 
-gulong g_thread_min_stack_size = 0;
+static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
