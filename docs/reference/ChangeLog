@@ -1,3 +1,7 @@
+2001-10-15  Sven Neumann  <sven@gimp.org>
+
+	* glib/tmpl/random_numbers.sgml: fixed typo.
+
 Sat Oct 13 06:58:23 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/tmpl/patterns.sgml: amended documentation.

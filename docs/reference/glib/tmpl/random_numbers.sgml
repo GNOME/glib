@@ -19,7 +19,7 @@ If you just need a random number, you simply call the
 <function>g_random_*</function> functions, which will create a globally 
 used #GRand and use the according <function>g_rand_*</function> functions 
 internally. Whenever you need a stream of reproducible random numbers, you 
-better create a #GRand yourself and use the <funcion>g_rand_*</function> 
+better create a #GRand yourself and use the <function>g_rand_*</function> 
 functions directly, which will also be slightly faster. Initializing a #GRand 
 with a certain seed will produce exactly the same series of random numbers 
 on all platforms. This can thus be used as a seed for e.g. games.
