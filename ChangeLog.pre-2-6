@@ -1,3 +1,10 @@
+Fri Dec 25 19:56:33 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* acglib.m4
+	* configure.in: provide defaults for POLL sysdefs, simple enums
+	don't work with bitwise logic. Reported by Daniel Skarda
+	<0rfelyus@atrey.karlin.mff.cuni.cz>
+
 Wed Dec 23 00:43:25 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.10
