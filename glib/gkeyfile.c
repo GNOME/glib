@@ -1127,8 +1127,8 @@ g_key_file_get_groups (GKeyFile *key_file,
  * event that the @group_name cannot be found, %NULL is returned 
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a string or %NULL if the specified key cannot be
- * found.
+ * Return value: a newly allocated string or %NULL if the specified 
+ *  key cannot be found.
  *
  * Since: 2.6
  **/
@@ -1233,8 +1233,8 @@ g_key_file_set_value (GKeyFile    *key_file,
  * event that the @group_name cannot be found, %NULL is returned 
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a string or %NULL if the specified key cannot be
- * found.
+ * Return value: a newly allocated string or %NULL if the specified 
+ *   key cannot be found.
  *
  * Since: 2.6
  **/
@@ -1515,8 +1515,9 @@ extern GSList *_g_compute_locale_variants (const gchar *locale);
  * with @key cannot be interpreted or no suitable translation can
  * be found then the untranslated value is returned.
  *
- * Return value: a string or %NULL if the specified key cannot be
- *               found.
+ * Return value: a newly allocated string or %NULL if the specified 
+ *   key cannot be found.
+ *
  * Since: 2.6
  **/
 gchar *
