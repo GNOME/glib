@@ -1,3 +1,7 @@
+Overview of Changes in GLib 1.1.7:
+
+* Removed multiple define from glibconfig.h
+
 Overview of Changes in GLib 1.1.6:
 
 * New GDate functionality for calendar date manipulations (g_date_*)

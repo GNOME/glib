@@ -1,3 +1,14 @@
+Thu Dec 10 21:49:39 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.7
+
+	* INSTALL:
+	  NEWS:
+	  README:
+	  configure.in:
+	  glib.spec:
+	  docs/glib-config.1: Increased version to 1.1.7
+
 Wed Dec  9 22:44:44 EST 1998 Joel Becker <jlbec@ocala.cs.miami.edu>
 
 	* Removed #define of G_COMPILED_WITH_DEBUGGING from glibconfig.h
