@@ -102,7 +102,7 @@ GSourceFuncs unix_watch_funcs = {
   g_io_unix_finalize
 };
 
-GIOFuncs unix_channel_funcs = {
+static GIOFuncs unix_channel_funcs = {
   g_io_unix_read,
   g_io_unix_write,
   g_io_unix_seek,

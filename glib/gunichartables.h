@@ -5993,7 +5993,7 @@ static unsigned short title_table[][3] = {
  * other than the case of the codepoint, in the order [Ll],[Lu],[Lt],
  * separated and terminated by a double NUL.
  */
-guchar special_case_table[][18] = {
+static guchar special_case_table[][18] = {
  "\x00\x00\x00\x53\x00\x53\x00\x00\x00\x53\x00\x73\0",
  "\x00\x00\x00\x46\x00\x46\x00\x00\x00\x46\x00\x66\0",
  "\x00\x00\x00\x46\x00\x49\x00\x00\x00\x46\x00\x69\0",
@@ -6101,7 +6101,7 @@ guchar special_case_table[][18] = {
 
 /* Table of casefolding cases that can't be derived by lowercasing
  */
-struct {
+static struct {
   guint16 ch;
   gchar data[7];
 } casefold_table[] = {

@@ -1,3 +1,9 @@
+Sun Sep  2 11:10:42 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gen-unicode-tables.pl glib/gunicomp.h
+	glib/gunichartables.h glib/giounix.c: Fix some variables that 
+	should have been static.
+
 2001-08-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gthread.h, glib/gthread.c: Add 'want_to_read' to

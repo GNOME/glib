@@ -77,7 +77,7 @@ g_unicode_canonical_ordering (gunichar *string,
     }
 }
 
-guchar *
+static guchar *
 find_decomposition (gunichar ch,
 		    gboolean compat)
 {

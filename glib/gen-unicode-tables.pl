@@ -892,7 +892,7 @@ sub output_special_case_table
  * other than the case of the codepoint, in the order [Ll],[Lu],[Lt],
  * separated and terminated by a double NUL.
  */
-guchar special_case_table[][$special_case_len] = {
+static guchar special_case_table[][$special_case_len] = {
 EOT
 
     for $case (@special_cases) {
@@ -1057,7 +1057,7 @@ sub output_composition_table
 
     # Output first singletons
 
-    print OUT "gushort compose_first_single[][2] = {\n";
+    print OUT "static gushort compose_first_single[][2] = {\n";
     $i = 0;				     
     for $record (@first_singletons) {
 	print OUT ",\n" if $i++ > 0;
@@ -1069,7 +1069,7 @@ sub output_composition_table
 		  
     # Output second singletons
 
-    print OUT "gushort compose_second_single[][2] = {\n";
+    print OUT "static gushort compose_second_single[][2] = {\n";
     $i = 0;				     
     for $record (@second_singletons) {
 	print OUT ",\n" if $i++ > 0;
@@ -1082,7 +1082,7 @@ sub output_composition_table
     # Output array of composition pairs
 
     print OUT <<EOT;
-gushort compose_array[$n_first][$n_second] = {
+static gushort compose_array[$n_first][$n_second] = {
 EOT
 			
     for (my $i = 0; $i < $n_first; $i++) {
@@ -1117,7 +1117,7 @@ sub output_casefold_table
 
 /* Table of casefolding cases that can't be derived by lowercasing
  */
-struct {
+static struct {
   guint16 ch;
   gchar data[$casefoldlen];
 } casefold_table[] = {
