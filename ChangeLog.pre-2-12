@@ -1,5 +1,17 @@
 2002-11-18  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gspawn-win32.c (do_spawn_with_pipes): Do handle
+	G_SPAWN_DO_NOT_REAP_CHILD after all, similarily as on Unix. If the
+	flag is not set, don't call DuplicateHandle() on the handle
+	returned by the helper process, and set the "child pid" returned
+	to the called to zero. Close the handle to the helper process in
+	all cases.
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Document Windows
+	behaviour of G_SPAWN_DO_NOT_REAP_CHILD.
+
+2002-11-18  Tor Lillqvist  <tml@iki.fi>
+
 	[Win32] Fix the asynchronous g_spawn* to return the process handle
 	of the started program properly. (Note: not the process id. The
 	spawn*() functions in the C runtime return the created process's

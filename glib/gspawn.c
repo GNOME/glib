@@ -437,10 +437,16 @@ g_spawn_sync (const gchar          *working_directory,
  * parent's environment.
  *
  * @flags should be the bitwise OR of any flags you want to affect the
- * function's behavior. The %G_SPAWN_DO_NOT_REAP_CHILD means that the
- * child will not be automatically reaped; you must call 
- * <function>waitpid()</function> or handle %SIGCHLD yourself, or the 
- * child will become a zombie.
+ * function's behavior. On Unix, the %G_SPAWN_DO_NOT_REAP_CHILD means
+ * that the child will not be automatically reaped; you must call
+ * <function>waitpid()</function> or handle %SIGCHLD yourself, or the
+ * child will become a zombie. On Windows, the flag means that a
+ * handle to the child will be returned @child_pid. You must call
+ * <function>CloseHandle()</function> on it eventually (or exit the
+ * process), or the child processs will continue to take up some table
+ * space even after its death. Quite similar to zombies on Unix,
+ * actually.
+ *
  * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that the parent's open file
  * descriptors will be inherited by the child; otherwise all
  * descriptors except stdin/stdout/stderr will be closed before
@@ -477,10 +483,17 @@ g_spawn_sync (const gchar          *working_directory,
  * process. You should carefully consider what you do in @child_setup
  * if you intend your software to be portable to Windows.
  *
- * If non-%NULL, @child_pid will be filled with the child's process
- * ID. You can use the process ID to send signals to the child, or
- * to <function>waitpid()</function> if you specified the 
- * %G_SPAWN_DO_NOT_REAP_CHILD flag.
+ * If non-%NULL, @child_pid will on Unix be filled with the child's
+ * process ID. You can use the process ID to send signals to the
+ * child, or to <function>waitpid()</function> if you specified the
+ * %G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, @child_pid will be
+ * filled with a handle to the child process only if you specified the
+ * %G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child
+ * process using the Win32 API, for example wait for its termination
+ * with the <function>WaitFor*()</function> functions, or examine its
+ * exit code with <function>GetExitCodeProcess()</function>. You
+ * should close the handle with <function>CloseHandle()</function>
+ * when you no longer need it.
  *
  * If non-%NULL, the @standard_input, @standard_output, @standard_error
  * locations will be filled with file descriptors for writing to the child's
