@@ -1,3 +1,8 @@
+2004-03-31  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c (_g_module_build_path): On Cygwin, use the "cyg"
+	prefix, and accept also the normal "lib". (#138403, Roger Leigh)
+
 Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.3 ===

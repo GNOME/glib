@@ -230,14 +230,28 @@ _g_module_build_path (const gchar *directory,
   if (directory && *directory)
     if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, NULL);
+#ifdef G_WITH_CYGWIN
+    else if (strncmp (module_name, "lib", 3) == 0 || strncmp (module_name, "cyg", 3) == 0)
+      return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
+    else
+      return g_strconcat (directory, G_DIR_SEPARATOR_S, "cyg", module_name, ".dll", NULL);
+#else
     else if (strncmp (module_name, "lib", 3) == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
     else
       return g_strconcat (directory, G_DIR_SEPARATOR_S, "lib", module_name, ".dll", NULL);
+#endif
   else if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
     return g_strdup (module_name);
+#ifdef G_WITH_CYGWIN
+  else if (strncmp (module_name, "lib", 3) == 0 || strncmp (module_name, "cyg", 3) == 0)
+    return g_strconcat (module_name, ".dll", NULL);
+  else
+    return g_strconcat ("cyg", module_name, ".dll", NULL);
+#else
   else if (strncmp (module_name, "lib", 3) == 0)
     return g_strconcat (module_name, ".dll", NULL);
   else
     return g_strconcat ("lib", module_name, ".dll", NULL);
+#endif
 }
