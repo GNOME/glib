@@ -1,3 +1,9 @@
+Sun Jan 11 15:34:35 2004  Manish Singh  <yosh@gimp.org>
+
+	* gsourceclosure.c: wrap g_io_channel_ref in a function that returns
+	the passed in GIOChannel, so we aren't abusing GBoxedCopyFunc
+	semantics. Fixes bug #131076.
+
 Sat Jan 10 23:55:42 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib-mkenums.1: Document the lowercase_name trigraph option.
