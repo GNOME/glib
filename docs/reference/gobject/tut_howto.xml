@@ -182,6 +182,40 @@ static void maman_bar_init(GTypeInstance *instance, gpointer g_class) {
 }
 </programlisting>
             </para></listitem>
+
+            <listitem><para>
+              A similar alternative, available since Glib version 2.4, is to define a private structure in the .c file,
+              declare it as a private structure in <function>class_init</function> using 
+              <function>g_type_class_add_private</function> and declare a macro to allow convenient access to this structure.
+              A private structure will then be attached to each newly created object by the GObject system.
+              You dont need to free or allocate the private structure, only the objects or pointers that it may contain.
+<programlisting>
+typedef struct _MamanBarPrivate MamanBarPrivate;
+
+struct _MamanBarPrivate {
+  int private_field;
+};
+
+#define MAMAN_BAR_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), MAMAN_BAR_TYPE, MamanBarPrivate))
+
+static void
+maman_bar_class_init (MamanBarClass *klass)
+{
+  ...
+  g_type_class_add_private (klass, sizeof (MamanBarPrivate));
+  ...
+}
+
+static int
+maman_bar_get_private_field (MamanBar *self)
+{
+  MamanBarPrivate *priv = MAMAN_BAR_GET_PRIVATE (self);
+
+  return priv->private_field;
+}
+</programlisting>
+            </para></listitem>
+
         </itemizedlist>
       </para>
 
@@ -377,9 +411,13 @@ struct _MamanBarPrivate {
   gboolean dispose_has_run;
 };
 
+static GObjectClass parent_class = NULL;
+
 static void
-bar_dispose (MamanBar *self)
+bar_dispose (GObject *obj)
 {
+  MamanBar *self = (MamanBar *)obj;
+
   if (self->private->dispose_has_run) {
    /* If dispose did already run, return. */
     return;
@@ -393,16 +431,24 @@ bar_dispose (MamanBar *self)
    * the most simple solution is to unref all members on which you own a 
    * reference.
    */
+
+   /* Chain up to the parent class */
+   G_OBJECT_CLASS (parent_class)->dispose (obj);
 }
 
 static void
-bar_finalize (MamanBar *self)
+bar_finalize (GObject *obj)
 {
+  MamanBar *self = (MamanBar *)obj;
+
   /*
    * Here, complete object destruction.
    * You might not need to do much...
    */
   g_free (self->private);
+
+   /* Chain up to the parent class */
+   G_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
 static void
@@ -421,6 +467,8 @@ maman_bar_init (GTypeInstance   *instance,
   MamanBar *self = (MamanBar *)instance;
   self->private = g_new0 (MamanBarPrivate, 1);
   self->private->dispose_has_run = FALSE;
+
+  parent_class = g_type_class_peek_parent (klass);
 }
 </programlisting>
       </para>
