@@ -276,7 +276,6 @@ g_array_sort (GArray       *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->data != NULL);
 
   qsort (array->data,
 	 array->len,
@@ -292,7 +291,6 @@ g_array_sort_with_data (GArray           *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->data != NULL);
 
   g_qsort_with_data (array->data,
 		     array->len,
@@ -570,7 +568,6 @@ g_ptr_array_sort (GPtrArray    *array,
 		  GCompareFunc  compare_func)
 {
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->pdata != NULL);
 
   qsort (array->pdata,
 	 array->len,
@@ -584,7 +581,6 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
 			    gpointer          user_data)
 {
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->pdata != NULL);
 
   g_qsort_with_data (array->pdata,
 		     array->len,

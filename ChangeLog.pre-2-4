@@ -1,3 +1,16 @@
+Tue May  7 11:24:22 2002  Owen Taylor  <otaylor@redhat.com>
+
+	Fixes for #79347, Ron Arts.
+
+	* glib/gqsort.c (g_qsort_with_data): Handle 0 elements,
+	don't g_return_if_fail().
+
+	* tests/qsort-test.c (main): Add a 0 element test.
+
+	* glib/garray.c (g_[ptr_]array_sort_with[_data]): 
+	Remove invalid assertions that array->pdata != NULL ..
+	it's NULL for 0 elements which is a valid case.
+
 Mon May  6 16:00:41 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gbacktrace.h: Exclude OSF from alpha definition
