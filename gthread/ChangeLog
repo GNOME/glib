@@ -1,3 +1,8 @@
+2001-09-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c: Corrected the array size (cough, cough). Pointed
+	out by gpablo@intersystems.com.ar. Fixes #61065.
+
 2001-09-25  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use new macros for .def file, and check for
