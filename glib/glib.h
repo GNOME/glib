@@ -1263,7 +1263,7 @@ GLogLevelFlags	g_log_set_fatal_mask	(const gchar	*log_domain,
 					 GLogLevelFlags	 fatal_mask);
 GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 #ifndef	G_LOG_DOMAIN
-#define	G_LOG_DOMAIN	(NULL)
+#define	G_LOG_DOMAIN	((gchar*) 0)
 #endif	/* G_LOG_DOMAIN */
 #ifdef	__GNUC__
 #define	g_error(format, args...)	g_log (G_LOG_DOMAIN, \

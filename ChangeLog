@@ -1,3 +1,9 @@
+Sun Jan 17 16:14:03 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h (g_error): if !defined (G_LOG_DOMAIN) define G_LOG_DOMAIN as
+	((gchar*) 0) instead of ((void*) 0) to silence egcs C++ mode, reported
+	by Seth Alves <alves@hungry.com>.
+
 Sun Jan 17 14:13:52 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: added a define G_HOOK_DEFERRED_DESTROY, to substitute a noop
