@@ -1053,28 +1053,56 @@ g_win32_getlocale (void)
 gchar *
 g_win32_error_message (gint error)
 {
-  gchar *msg = NULL;
   gchar *retval;
-  int nbytes;
 
-  FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER
-		 |FORMAT_MESSAGE_IGNORE_INSERTS
-		 |FORMAT_MESSAGE_FROM_SYSTEM,
-		 NULL, error, 0,
-		 (LPTSTR) &msg, 0, NULL);
-  if (msg != NULL)
+  if (G_WIN32_HAVE_WIDECHAR_API ())
     {
-      nbytes = strlen (msg);
+      wchar_t *msg = NULL;
+      int nchars;
 
-      if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
-	msg[nbytes-2] = '\0';
-  
-      retval = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
+      FormatMessageW (FORMAT_MESSAGE_ALLOCATE_BUFFER
+		      |FORMAT_MESSAGE_IGNORE_INSERTS
+		      |FORMAT_MESSAGE_FROM_SYSTEM,
+		      NULL, error, 0,
+		      (LPTSTR) &msg, 0, NULL);
+      if (msg != NULL)
+	{
+	  nchars = wcslen (msg);
 
-      LocalFree (msg);
+	  if (nchars > 2 && msg[nchars-1] == '\n' && msg[nchars-2] == '\r')
+	    msg[nchars-2] = '\0';
+	  
+	  retval = g_utf16_to_utf8 (msg, -1, NULL, NULL, NULL);
+	  
+	  LocalFree (msg);
+	}
+      else
+	retval = g_strdup ("");
     }
   else
-    retval = g_strdup ("");
+    {
+      gchar *msg = NULL;
+      int nbytes;
+
+      FormatMessageA (FORMAT_MESSAGE_ALLOCATE_BUFFER
+		      |FORMAT_MESSAGE_IGNORE_INSERTS
+		      |FORMAT_MESSAGE_FROM_SYSTEM,
+		      NULL, error, 0,
+		      (LPTSTR) &msg, 0, NULL);
+      if (msg != NULL)
+	{
+	  nbytes = strlen (msg);
+
+	  if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
+	    msg[nbytes-2] = '\0';
+	  
+	  retval = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
+	  
+	  LocalFree (msg);
+	}
+      else
+	retval = g_strdup ("");
+    }
 
   return retval;
 }
@@ -1104,17 +1132,41 @@ get_package_directory_from_module (gchar *module_name)
 
   if (module_name)
     {
-      hmodule = GetModuleHandle (module_name);
+      if (G_WIN32_HAVE_WIDECHAR_API ())
+	{
+	  wchar_t *wc_module_name = g_utf8_to_utf16 (module_name, -1, NULL, NULL, NULL);
+	  hmodule = GetModuleHandleW (wc_module_name);
+	  g_free (wc_module_name);
+	}
+      else
+	{
+	  char *cp_module_name = g_locale_from_utf8 (module_name, -1, NULL, NULL, NULL);
+	  hmodule = GetModuleHandleA (cp_module_name);
+	  g_free (cp_module_name);
+	}
       if (!hmodule)
 	return NULL;
     }
 
-  fn = g_malloc (MAX_PATH);
-  if (!GetModuleFileName (hmodule, fn, MAX_PATH))
+  if (G_WIN32_HAVE_WIDECHAR_API ())
     {
-      G_UNLOCK (module_dirs);
-      g_free (fn);
-      return NULL;
+      wchar_t wc_fn[MAX_PATH];
+      if (!GetModuleFileNameW (hmodule, wc_fn, MAX_PATH))
+	{
+	  G_UNLOCK (module_dirs);
+	  return NULL;
+	}
+      fn = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
+    }
+  else
+    {
+      gchar cp_fn[MAX_PATH];
+      if (!GetModuleFileNameA (hmodule, cp_fn, MAX_PATH))
+	{
+	  G_UNLOCK (module_dirs);
+	  return NULL;
+	}
+      fn = g_locale_to_utf8 (cp_fn, -1, NULL, NULL, NULL);
     }
 
   if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
@@ -1145,8 +1197,8 @@ get_package_directory_from_module (gchar *module_name)
 
 /**
  * g_win32_get_package_installation_directory:
- * @package: An identifier for a software package, or %NULL
- * @dll_name: The name of a DLL that a package provides, or %NULL.
+ * @package: An identifier for a software package, or %NULL, in UTF-8
+ * @dll_name: The name of a DLL that a package provides, or %NULL, in the GLib file name encoding, which is UTF-8 on Windows.
  *
  * Try to determine the installation directory for a software package.
  * Typically used by GNU software packages.
@@ -1173,8 +1225,10 @@ get_package_directory_from_module (gchar *module_name)
  * the main executable of the process was loaded is uses instead in
  * the same way as above.
  *
- * Returns: a string containing the installation directory for @package.
- * The return value should be freed with g_free() when not needed any longer.
+ * Returns: a string containing the installation directory for
+ * @package. The string is in the GLib file name encoding, i.e. UTF-8
+ * on Windows. The return value should be freed with g_free() when not
+ * needed any longer.
  **/
 
 gchar *
@@ -1207,21 +1261,51 @@ g_win32_get_package_installation_directory (gchar *package,
       key = g_strconcat ("Software\\", package, NULL);
       
       nbytes = 0;
-      if ((RegOpenKeyEx (HKEY_CURRENT_USER, key, 0,
-			 KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-	   && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-			       &type, NULL, &nbytes) == ERROR_SUCCESS)
-	  ||
-	  ((RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
-			 KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-	   && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-			       &type, NULL, &nbytes) == ERROR_SUCCESS)
-	   && type == REG_SZ))
+      if (G_WIN32_HAVE_WIDECHAR_API ())
 	{
-	  result = g_malloc (nbytes + 1);
-	  RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-			   &type, result, &nbytes);
-	  result[nbytes] = '\0';
+	  wchar_t *wc_key = g_utf8_to_utf16 (key, -1, NULL, NULL, NULL);
+	  if (((RegOpenKeyExW (HKEY_CURRENT_USER, wc_key, 0,
+			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+		&& RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+				     &type, NULL, &nbytes) == ERROR_SUCCESS)
+	       ||
+	       (RegOpenKeyExW (HKEY_LOCAL_MACHINE, wc_key, 0,
+			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+		&& RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+				     &type, NULL, &nbytes) == ERROR_SUCCESS))
+	      && type == REG_SZ)
+	    {
+	      wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
+	      RegQueryValueExW (reg_key, L"InstallationDirectory", 0,
+				&type, (LPBYTE) wc_temp, &nbytes);
+	      wc_temp[nbytes/2] = '\0';
+	      result = g_utf16_to_utf8 (wc_temp, -1, NULL, NULL, NULL);
+	      g_free (wc_temp);
+	    }
+	  g_free (wc_key);
+	}
+      else
+	{
+	  char *cp_key = g_locale_from_utf8 (key, -1, NULL, NULL, NULL);
+	  if (((RegOpenKeyExA (HKEY_CURRENT_USER, cp_key, 0,
+			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+		&& RegQueryValueExA (reg_key, "InstallationDirectory", 0,
+				     &type, NULL, &nbytes) == ERROR_SUCCESS)
+	       ||
+	       (RegOpenKeyExA (HKEY_LOCAL_MACHINE, cp_key, 0,
+			       KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+		&& RegQueryValueExA (reg_key, "InstallationDirectory", 0,
+				     &type, NULL, &nbytes) == ERROR_SUCCESS))
+	      && type == REG_SZ)
+	    {
+	      char *cp_temp = g_malloc (nbytes + 1);
+	      RegQueryValueExA (reg_key, "InstallationDirectory", 0,
+				&type, cp_temp, &nbytes);
+	      cp_temp[nbytes] = '\0';
+	      result = g_locale_to_utf8 (cp_temp, -1, NULL, NULL, NULL);
+	      g_free (cp_temp);
+	    }
+	  g_free (cp_key);
 	}
 
       if (reg_key != NULL)
@@ -1233,7 +1317,7 @@ g_win32_get_package_installation_directory (gchar *package,
 	{
 	  g_hash_table_insert (package_dirs, package, result);
 	  G_UNLOCK (package_dirs);
-	  return g_strdup (result);
+	  return result;
 	}
       G_UNLOCK (package_dirs);
     }
@@ -1258,9 +1342,10 @@ g_win32_get_package_installation_directory (gchar *package,
  * g_win32_get_package_installation_directory() with the @package and
  * @dll_name parameters. 
  *
- * Returns: a string containing the complete path to @subdir inside the 
- * installation directory of @package. The return value should be freed with
- * g_free() when no longer needed.
+ * Returns: a string containing the complete path to @subdir inside
+ * the installation directory of @package. The string is in the GLib
+ * file name encoding, i.e. UTF-8 on Windows. The return value should
+ * be freed with g_free() when no longer needed.
  **/
 
 gchar *

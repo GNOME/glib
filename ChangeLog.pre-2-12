@@ -1,3 +1,12 @@
+2004-11-24  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c (g_win32_error_message,
+	get_package_directory_from_module,
+	g_win32_get_package_installation_directory,
+	g_win32_get_package_installation_subdirectory): Use wide character
+	API when available. Document that string parameters and return
+	values are in UTF-8.
+
 2004-11-24  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutf8.c: Replace g_utf8_validate() with an
