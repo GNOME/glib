@@ -76,6 +76,7 @@ typedef guint           (*GHashFunc)            (gconstpointer  key);
 typedef void            (*GHFunc)               (gpointer       key,
                                                  gpointer       value,
                                                  gpointer       user_data);
+typedef void            (*GFreeFunc)            (gpointer       data);
 
 /* Define some mathematical constants that aren't available
  * symbolically in some strict ISO C implementations.

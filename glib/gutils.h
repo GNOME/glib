@@ -183,6 +183,8 @@ typedef	void		(*GVoidFunc)		(void);
  */
 void	g_atexit		(GVoidFunc    func);
 
+/* Look for an executable in PATH, following execvp() rules */
+gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
  */
