@@ -34,8 +34,8 @@
 /* We cheat a bit and cast type values to (char *).  We detect these
    using the &0xff trick.  */
 #define TTYPE(Page, Char) \
-  (((((int) type_table[Page]) & 0xff) == ((int) type_table[Page])) \
-   ? ((int) (type_table[Page])) \
+  (((GPOINTER_TO_INT(type_table[Page]) & 0xff) == GPOINTER_TO_INT(type_table[Page])) \
+   ? GPOINTER_TO_INT(type_table[Page]) \
    : (type_table[Page][Char]))
 
 #define TYPE(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TTYPE ((Char) >> 8, (Char) & 0xff))

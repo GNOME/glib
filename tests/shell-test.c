@@ -164,7 +164,6 @@ do_argv_test (const gchar *cmdline, const TestResult *result)
 static void
 run_tests (void)
 {
-  GError *err;
   gint i;
   
   i = 0;

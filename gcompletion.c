@@ -44,6 +44,7 @@ g_completion_new (GCompletionFunc func)
   gcomp->cache = NULL;
   gcomp->prefix = NULL;
   gcomp->func = func;
+  gcomp->strncmp_func = strncmp;
 
   return gcomp;
 }
@@ -175,13 +176,13 @@ g_completion_complete (GCompletion* cmp,
   if (cmp->prefix && cmp->cache)
     {
       plen = strlen (cmp->prefix);
-      if (plen <= len && !strncmp (prefix, cmp->prefix, plen))
+      if (plen <= len && ! cmp->strncmp_func (prefix, cmp->prefix, plen))
 	{ 
 	  /* use the cache */
 	  list = cmp->cache;
 	  while (list)
 	    {
-	      if (strncmp (prefix,
+	      if (cmp->strncmp_func (prefix,
 			   cmp->func ? cmp->func (list->data) : (gchar*) list->data,
 			   len))
 		{
@@ -204,7 +205,7 @@ g_completion_complete (GCompletion* cmp,
       list = cmp->items;
       while (*prefix && list)
 	{
-	  if (!strncmp (prefix,
+	  if (!cmp->strncmp_func (prefix,
 			cmp->func ? cmp->func (list->data) : (gchar*) list->data,
 			len))
 	    cmp->cache = g_list_prepend (cmp->cache, list->data);
@@ -230,6 +231,13 @@ g_completion_free (GCompletion* cmp)
   
   g_completion_clear_items (cmp);
   g_free (cmp);
+}
+
+void
+g_completion_set_compare(GCompletion *cmp,
+			 GCompletionStrncmpFunc strncmp_func)
+{
+  cmp->strncmp_func = strncmp_func;
 }
 
 #ifdef TEST_COMPLETION

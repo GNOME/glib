@@ -28,6 +28,7 @@
 #define __G_COMPLETION_H__
 
 #include <glist.h>
+#include <unistd.h>
 
 G_BEGIN_DECLS
 
@@ -38,6 +39,9 @@ typedef gchar*          (*GCompletionFunc)      (gpointer);
 /* GCompletion
  */
 
+typedef int (*GCompletionStrcmpFunc)(const char *s1, const char *s2);
+typedef int (*GCompletionStrncmpFunc)(const char *s1, const char *s2, size_t n);
+
 struct _GCompletion
 {
   GList* items;
@@ -45,6 +49,7 @@ struct _GCompletion
  
   gchar* prefix;
   GList* cache;
+  GCompletionStrncmpFunc strncmp_func;
 };
 
 GCompletion* g_completion_new          (GCompletionFunc func);
@@ -56,6 +61,8 @@ void         g_completion_clear_items  (GCompletion*    cmp);
 GList*       g_completion_complete     (GCompletion*    cmp,
                                         gchar*          prefix,
                                         gchar**         new_prefix);
+void         g_completion_set_compare (GCompletion *cmp,
+				       GCompletionStrncmpFunc strncmp_func);
 void         g_completion_free         (GCompletion*    cmp);
 
 G_END_DECLS

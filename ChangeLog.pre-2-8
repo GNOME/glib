@@ -1,3 +1,13 @@
+2000-11-28  Elliot Lee  <sopwith@redhat.com>
+
+	* gmarkup.c: Fix warnings.
+
+	* guniprop.c, gunidecomp.c: Make warnings go away by using
+	GPOINTER_TO_INT() instead of (int).
+
+	* gcompletion.[ch]: Add g_completion_set_compare(),
+	to allow (for example) using case-insensitive completion.
+
 2000-11-28  Tor Lillqvist  <tml@iki.fi>
 
 	Patches by Hans Breuer:

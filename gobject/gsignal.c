@@ -376,9 +376,9 @@ handlers_find (gpointer         instance,
     {
       HandlerList *hlist = handler_list_lookup (signal_id, instance);
       Handler *handler;
-      SignalNode *node;
+      SignalNode *node = NULL;
       
-      if (mask & G_SIGNAL_MATCH_FUNC)
+      if (!(mask & G_SIGNAL_MATCH_FUNC))
 	{
 	  node = LOOKUP_SIGNAL_NODE (signal_id);
 	  if (!node || !node->c_marshaller)
@@ -413,7 +413,7 @@ handlers_find (gpointer         instance,
           for (i = 0; i < hlbsa->n_nodes; i++)
             {
               HandlerList *hlist = g_bsearch_array_get_nth (hlbsa, i);
-	      SignalNode *node;
+	      SignalNode *node = NULL;
               Handler *handler;
               
 	      if (!(mask & G_SIGNAL_MATCH_FUNC))

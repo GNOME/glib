@@ -201,7 +201,7 @@ pad (const gchar *string)
     {
       g_free (buffer);
       buffer = g_strdup_printf ("%s ", string);
-      g_warning ("overfull string (%u bytes) for padspace", strlen (string));
+      g_warning ("overfull string (%lu bytes) for padspace", strlen (string));
 
       return buffer;
     }

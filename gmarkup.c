@@ -1263,8 +1263,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   if (context->parser->start_element)
                     (* context->parser->start_element) (context,
                                                         start_name,
-                                                        attr_names,
-                                                        attr_values,
+                                                        (const gchar *)attr_names,
+                                                        (const gchar *)attr_values,
                                                         context->user_data,
                                                         &tmp_error);
 

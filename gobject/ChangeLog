@@ -1,3 +1,11 @@
+2000-11-28  Elliot Lee  <sopwith@redhat.com>
+
+	* gsignal.c: Fix warnings about possible use of uninitialized
+	variables, and fix logic that would leave 'node' unset in cases
+	that it might be used in.
+
+	* glib-genmarshal.c: Fix warning about printf format.
+
 2000-11-28  Tor Lillqvist  <tml@iki.fi>
 
 	* gboxed.c: Include <string.h> for memset ().

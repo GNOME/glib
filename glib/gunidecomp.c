@@ -29,9 +29,9 @@
 /* We cheat a bit and cast type values to (char *).  We detect these
    using the &0xff trick.  */
 #define CC(Page, Char) \
-  (((((int) (combining_class_table[Page])) & 0xff) \
-    == ((int) combining_class_table[Page])) \
-   ? ((int) combining_class_table[Page]) \
+  ((((GPOINTER_TO_INT(combining_class_table[Page])) & 0xff) \
+    == GPOINTER_TO_INT(combining_class_table[Page])) \
+   ? GPOINTER_TO_INT(combining_class_table[Page]) \
    : (combining_class_table[Page][Char]))
 
 #define COMBINING_CLASS(Char) \
