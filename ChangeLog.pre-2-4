@@ -1,3 +1,7 @@
+Fri Dec  5 12:09:13 2003  Manish Singh  <yosh@gimp.org>
+
+	* glib/gunidecomp.c (_g_utf8_normalize_wc): fix gint/gsize confusion.
+
 2003-12-04  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gunidecomp.c: Add hangul composition and decomposition to
@@ -29,7 +33,7 @@ Wed Nov 26 16:45:16 2003  Roozbeh Pournader  <roozbeh@sharif.edu>
 
 	* tests/strtod-test.c: Fixed the tests to catch the above.
 
-﻿Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
+Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
 
 	* glib/giowin32.c: Bind inter-thread comminication 
 		sockets to INADDR_LOOPBACK instead of INADDR_ANY.
