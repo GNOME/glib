@@ -1385,7 +1385,19 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               close_name = g_string_free (context->partial_chunk, FALSE);
               context->partial_chunk = NULL;
               
-              if (context->tag_stack == NULL)
+              if (*context->iter != '>')
+                {
+                  gchar buf[7];
+                  set_error (context,
+                             error,
+                             G_MARKUP_ERROR_PARSE,
+                             _("'%s' is not a valid character following "
+                               "the close element name '%s'; the allowed "
+                               "character is '>'"),
+                             utf8_str (context->iter, buf),
+                             close_name);
+                }
+              else if (context->tag_stack == NULL)
                 {
                   set_error (context,
                              error,
@@ -1403,18 +1415,6 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                "open element is '%s'"),
                              close_name,
                              current_element (context));
-                }
-              else if (*context->iter != '>')
-                {
-                  gchar buf[7];
-                  set_error (context,
-                             error,
-                             G_MARKUP_ERROR_PARSE,
-                             _("'%s' is not a valid character following "
-                               "the close element name '%s'; the allowed "
-                               "character is '>'"),
-                             utf8_str (context->iter, buf),
-                             close_name);
                 }
               else
                 {

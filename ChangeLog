@@ -1,3 +1,9 @@
+2002-01-29  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gmarkup.c (g_markup_parse_context_parse): Change the
+	order in which some error conditions are checked to improve
+	error messages. (#69646)
+
 Tue Jan 29 15:04:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* 1.3.13
