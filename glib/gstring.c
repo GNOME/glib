@@ -58,7 +58,7 @@ struct _GRealString
 {
   gchar *str;
   gsize len;    
-  gsize alloc;  
+  gsize allocated_len;  
 };
 
 G_LOCK_DEFINE_STATIC (string_mem_chunk);
@@ -212,10 +212,10 @@ static void
 g_string_maybe_expand (GRealString* string,
 		       gsize        len) 
 {
-  if (string->len + len >= string->alloc)
+  if (string->len + len >= string->allocated_len)
     {
-      string->alloc = nearest_power (1, string->len + len + 1);
-      string->str = g_realloc (string->str, string->alloc);
+      string->allocated_len = nearest_power (1, string->len + len + 1);
+      string->str = g_realloc (string->str, string->allocated_len);
     }
 }
 
@@ -233,7 +233,7 @@ g_string_sized_new (gsize dfl_size)
   string = g_chunk_new (GRealString, string_mem_chunk);
   G_UNLOCK (string_mem_chunk);
 
-  string->alloc = 0;
+  string->allocated_len = 0;
   string->len   = 0;
   string->str   = NULL;
 
@@ -364,6 +364,36 @@ g_string_truncate (GString *fstring,
   string->len = MIN (len, string->len);
 
   string->str[string->len] = 0;
+
+  return fstring;
+}
+
+/**
+ * g_string_set_size:
+ * @fstring: a #GString
+ * @len: the new length
+ * 
+ * Sets the length of a #GString. If the length is less than
+ * the current length, the string will be truncated. If the
+ * length is greater than the current length, the contents
+ * of the newly added area are undefined. (However, as
+ * always, string->str[string->len] will be a nul byte.) 
+ * 
+ * Return value: @fstring
+ **/
+GString*
+g_string_set_size (GString *fstring,
+		   gsize    len)    
+{
+  GRealString *string = (GRealString *) fstring;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  if (len >= string->allocated_len)
+    g_string_maybe_expand (string, len - fstring->len);
+  
+  string->len = len;
+  string->str[len] = 0;
 
   return fstring;
 }

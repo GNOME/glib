@@ -37,7 +37,8 @@ typedef struct _GStringChunk	GStringChunk;
 struct _GString
 {
   gchar  *str;
-  gssize len;    
+  gsize len;    
+  gsize allocated_len;
 };
 
 /* String Chunks
@@ -65,6 +66,8 @@ GString*     g_string_assign            (GString	 *string,
 					 const gchar	 *rval);
 GString*     g_string_truncate          (GString	 *string,
 					 gsize		  len);    
+GString*     g_string_set_size          (GString         *string,
+					 gsize            len);
 GString*     g_string_insert_len        (GString         *string,
                                          gssize           pos,   
                                          const gchar     *val,

@@ -51,6 +51,8 @@ EXPORTS
 	g_cache_new
 	g_cache_remove
 	g_cache_value_foreach
+	g_channel_error_quark
+	g_channel_error_from_errno
 	g_clear_error
 	g_completion_add_items
 	g_completion_clear_items
@@ -184,10 +186,26 @@ EXPORTS
 	g_io_add_watch
 	g_io_add_watch_full
 	g_io_channel_close
+	g_io_channel_flush
+	g_io_channel_get_buffer_condition
+	g_io_channel_get_buffer_size
+	g_io_channel_get_encoding
+	g_io_channel_get_flags
+	g_io_channel_get_line_term
 	g_io_channel_init
+	g_io_channel_new_file
 	g_io_channel_read
+	g_io_channel_read_chars
+	g_io_channel_read_line
+	g_io_channel_read_line_string
+	g_io_channel_read_to_end
 	g_io_channel_ref
 	g_io_channel_seek
+	g_io_channel_seek_position
+	g_io_channel_set_buffer_size
+	g_io_channel_set_encoding
+	g_io_channel_set_flags
+	g_io_channel_set_line_term
 	g_io_channel_unix_get_fd
 	g_io_channel_unix_new
 	g_io_channel_unref
@@ -200,6 +218,7 @@ EXPORTS
 	g_io_channel_win32_poll
 	g_io_channel_win32_set_debug
 	g_io_channel_write
+	g_io_channel_write_chars
 	g_io_create_watch
 	g_list_alloc
 	g_list_append

@@ -49,6 +49,7 @@ test_programs = \
 	dirname-test	\
 	gio-test	\
 	hash-test	\
+	iochannel-test	\
 	list-test	\
 	mainloop-test	\
 	module-test	\
@@ -86,6 +87,7 @@ date_test_LDADD = $(progs_LDADD)
 dirname_test_LDADD = $(progs_LDADD)
 gio_test_LDADD = $(progs_LDADD)
 hash_test_LDADD = $(progs_LDADD)
+iochannel_test_LDADD = $(progs_LDADD)
 list_test_LDADD = $(progs_LDADD)
 mainloop_test_LDADD = $(thread_LDADD)
 markup_test_LDADD = $(progs_LDADD)

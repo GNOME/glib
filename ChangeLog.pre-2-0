@@ -1,3 +1,29 @@
+Fri Jun 29 13:36:39 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstring.[ch] (g_string_set_size): Add function to 
+	allow setting the length of a string greater than the 
+	current length (for buffering usage)
+
+	* glib/gstring.[ch]: Expose string->allocated_len, since
+	that is	useful when using GString simply as a buffer. 
+	(Renamed from string->alloc)
+
+	* glib/giochannel.[ch] glib/giounix.c glib/giowin32.c:
+	Major patch from Hidetoshi Tajima and Ron Steinke
+	reworking GIOChannel to have:
+
+	 - Buffering
+	 - Sane and useful error reporting
+	 - Streaming encoding conversion with iconv
+	 - Convenience functions to read by lines or 
+	   an entire file.
+
+	Also fix remaining 64 bit cleanliness issues.
+
+	* tests/iochannel-test.c tests/Makefile.am: Test case
+	for IO channel streaming conversion. Still needs 
+	some fixing up.
+
 Thu Jun 28 16:57:44 2001  Tim Janik  <timj@gtk.org>
 
 	* configure.in (GLIB_MICRO_VERSION): up version number to 1.3.7,

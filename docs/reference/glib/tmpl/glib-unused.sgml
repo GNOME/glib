@@ -1,3 +1,37 @@
+<!-- ##### ENUM GChannelError ##### -->
+<para>
+
+</para>
+
+@G_CHANNEL_ERROR_ACCES: 
+@G_CHANNEL_ERROR_BADF: 
+@G_CHANNEL_ERROR_DEADLK: 
+@G_CHANNEL_ERROR_FAULT: 
+@G_CHANNEL_ERROR_INVAL: 
+@G_CHANNEL_ERROR_IO: 
+@G_CHANNEL_ERROR_ISDIR: 
+@G_CHANNEL_ERROR_MFILE: 
+@G_CHANNEL_ERROR_NOLCK: 
+@G_CHANNEL_ERROR_NOSPC: 
+@G_CHANNEL_ERROR_PERM: 
+@G_CHANNEL_ERROR_PIPE: 
+@G_CHANNEL_ERROR_SPIPE: 
+@G_CHANNEL_ERROR_ENCODE_RW: 
+@G_CHANNEL_ERROR_FAILED: 
+
+<!-- ##### ENUM GChannelStatus ##### -->
+<para>
+
+</para>
+
+@G_CHANNEL_STATUS_NORMAL: 
+@G_CHANNEL_STATUS_EOF: 
+@G_CHANNEL_STATUS_PARTIAL_CHARS: 
+@G_CHANNEL_STATUS_AGAIN: 
+@G_CHANNEL_STATUS_INTR: 
+@G_CHANNEL_STATUS_ERROR: 
+@G_CHANNEL_STATUS_BAD_INPUT: 
+
 <!-- ##### USER_FUNCTION GCompareFuncData ##### -->
 <para>
 
@@ -25,9 +59,23 @@
 @hook_list: 
 @hook: 
 
+<!-- ##### MACRO G_CHANNEL_ERROR ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO G_HOOK_DEFERRED_DESTROY ##### -->
 <para>
 
+</para>
+
+
+<!-- ##### MACRO G_IO_CHANNEL_DEFAULT_LINE_TERM ##### -->
+<para>
+One of %G_IO_CHANNEL_UNIX_LINE_TERM, %G_IO_CHANNEL_DOS_LINE_TERM,
+or %G_IO_CHANNEL_MACINTOSH_LINE_TERM (unimplemented)
+depending on the system type.
 </para>
 
 

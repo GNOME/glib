@@ -29,6 +29,7 @@
 
 #include <glib/gmain.h>
 #include <glib/gtypes.h>
+#include <glib/gstring.h>
 
 G_BEGIN_DECLS
 
@@ -37,6 +38,7 @@ G_BEGIN_DECLS
 
 typedef struct _GIOChannel	GIOChannel;
 typedef struct _GIOFuncs        GIOFuncs;
+
 typedef enum
 {
   G_IO_ERROR_NONE,
@@ -44,12 +46,46 @@ typedef enum
   G_IO_ERROR_INVAL,
   G_IO_ERROR_UNKNOWN
 } GIOError;
+
+#define G_IO_CHANNEL_ERROR g_channel_error_quark()
+
+typedef enum
+{
+  /* Derived from errno */
+  G_IO_CHANNEL_ERROR_ACCES,
+  G_IO_CHANNEL_ERROR_BADF,
+  G_IO_CHANNEL_ERROR_DEADLK,
+  G_IO_CHANNEL_ERROR_FAULT,
+  G_IO_CHANNEL_ERROR_INVAL,
+  G_IO_CHANNEL_ERROR_IO,
+  G_IO_CHANNEL_ERROR_ISDIR,
+  G_IO_CHANNEL_ERROR_MFILE,
+  G_IO_CHANNEL_ERROR_NOLCK,
+  G_IO_CHANNEL_ERROR_NOSPC,
+  G_IO_CHANNEL_ERROR_PERM,
+  G_IO_CHANNEL_ERROR_PIPE,
+  G_IO_CHANNEL_ERROR_SPIPE,
+  /* Other */
+  G_IO_CHANNEL_ERROR_ENCODE_RW,
+  G_IO_CHANNEL_ERROR_FAILED
+} GIOChannelError;
+
+typedef enum
+{
+  G_IO_STATUS_ERROR,
+  G_IO_STATUS_NORMAL,
+  G_IO_STATUS_EOF,
+  G_IO_STATUS_PARTIAL_CHARS, /* like EOF, but with unconverted data left */
+  G_IO_STATUS_AGAIN
+} GIOStatus;
+
 typedef enum
 {
   G_SEEK_CUR,
   G_SEEK_SET,
   G_SEEK_END
 } GSeekType;
+
 typedef enum
 {
   G_IO_IN	GLIB_SYSDEF_POLLIN,
@@ -60,11 +96,58 @@ typedef enum
   G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
 } GIOCondition;
 
+#define G_IO_CHANNEL_UNIX_LINE_TERM "\n"
+#define G_IO_CHANNEL_DOS_LINE_TERM "\r\n"
+#define G_IO_CHANNEL_MACINTOSH_LINE_TERM "\r"
+#define G_IO_CHANNEL_ENCODE_RAW "GIOChannelEncodeRaw"
+
+typedef enum
+{
+  G_IO_FLAG_APPEND = 1 << 0,
+  G_IO_FLAG_NONBLOCK = 1 << 1,
+  G_IO_FLAG_IS_READABLE = 1 << 2,	/* Read only flag */
+  G_IO_FLAG_IS_WRITEABLE = 1 << 3,	/* Read only flag */
+  G_IO_FLAG_IS_SEEKABLE = 1 << 4,	/* Read only flag */
+  G_IO_FLAG_MASK = (1 << 5) - 1,
+  G_IO_FLAG_GET_MASK = G_IO_FLAG_MASK,
+  G_IO_FLAG_SET_MASK = G_IO_FLAG_APPEND | G_IO_FLAG_NONBLOCK,
+} GIOFlags;
+
+typedef enum
+{
+  G_IO_FILE_MODE_READ,
+  G_IO_FILE_MODE_WRITE,
+  G_IO_FILE_MODE_APPEND,
+  G_IO_FILE_MODE_READ_WRITE,
+  G_IO_FILE_MODE_READ_WRITE_TRUNCATE,
+  G_IO_FILE_MODE_READ_WRITE_APPEND,
+} GIOFileMode;
+
 struct _GIOChannel
 {
   guint channel_flags;
   guint ref_count;
   GIOFuncs *funcs;
+
+  gchar *encoding;
+  GIConv read_cd;
+  GIConv write_cd;
+  gchar *line_term;
+
+  gsize buf_size;
+  GString *read_buf;
+  GString *encoded_read_buf;
+  GString *write_buf;
+
+  /* Group the flags together to save memory */
+
+  gboolean use_buffer : 1;
+  gboolean do_encode : 1;
+  gboolean ready_to_read : 1;
+  gboolean ready_to_write : 1;
+  gboolean close_on_unref : 1;
+  gboolean seekable_cached : 1;
+  gboolean is_seekable : 1;
 };
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
@@ -72,50 +155,123 @@ typedef gboolean (*GIOFunc) (GIOChannel   *source,
 			     gpointer      data);
 struct _GIOFuncs
 {
-  GIOError  (*io_read)         (GIOChannel   *channel, 
-				gchar        *buf, 
-				guint         count,
-				guint        *bytes_read);
-  GIOError  (*io_write)        (GIOChannel   *channel, 
-				gchar        *buf, 
-				guint         count,
-				guint        *bytes_written);
-  GIOError  (*io_seek)         (GIOChannel   *channel, 
-				gint          offset, 
-				GSeekType     type);
-  void      (*io_close)        (GIOChannel   *channel);
-  GSource * (*io_create_watch) (GIOChannel   *channel,
-				GIOCondition  condition);
-  void      (*io_free)         (GIOChannel   *channel);
+  GIOStatus (*io_read)           (GIOChannel   *channel, 
+			          gchar        *buf, 
+				  gsize         count,
+				  gsize        *bytes_read,
+				  GError      **err);
+  GIOStatus (*io_write)          (GIOChannel   *channel, 
+				  const gchar  *buf, 
+				  gsize         count,
+				  gsize        *bytes_written,
+				  GError      **err);
+  GIOStatus (*io_seek)           (GIOChannel   *channel, 
+				  glong         offset, 
+				  GSeekType     type,
+				  GError      **err);
+  GIOStatus  (*io_close)         (GIOChannel   *channel,
+				  GError      **err);
+  GSource*   (*io_create_watch)  (GIOChannel   *channel,
+				  GIOCondition  condition);
+  void       (*io_free)          (GIOChannel   *channel);
+  GIOStatus  (*io_set_flags)     (GIOChannel   *channel,
+                                  GIOFlags      flags,
+				  GError      **err);
+  GIOFlags   (*io_get_flags)     (GIOChannel   *channel);
 };
 
 void        g_io_channel_init   (GIOChannel    *channel);
 void        g_io_channel_ref    (GIOChannel    *channel);
 void        g_io_channel_unref  (GIOChannel    *channel);
+
+#ifndef G_DISABLE_DEPRECATED
 GIOError    g_io_channel_read   (GIOChannel    *channel, 
 			         gchar         *buf, 
-			         guint          count,
-			         guint         *bytes_read);
+			         gsize          count,
+			         gsize         *bytes_read);
 GIOError  g_io_channel_write    (GIOChannel    *channel, 
-			         gchar         *buf, 
-			         guint          count,
-			         guint         *bytes_written);
+			         const gchar   *buf, 
+			         gsize          count,
+			         gsize         *bytes_written);
 GIOError  g_io_channel_seek     (GIOChannel    *channel,
-			         gint           offset, 
+			         glong          offset, 
 			         GSeekType      type);
 void      g_io_channel_close    (GIOChannel    *channel);
-guint     g_io_add_watch_full   (GIOChannel    *channel,
-			         gint           priority,
-			         GIOCondition   condition,
-			         GIOFunc        func,
-			         gpointer       user_data,
-			         GDestroyNotify notify);
-GSource *g_io_create_watch      (GIOChannel   *channel,
-			         GIOCondition  condition);
-guint    g_io_add_watch         (GIOChannel    *channel,
-			         GIOCondition   condition,
-			         GIOFunc        func,
-			         gpointer       user_data);
+#endif /* G_DISABLE_DEPRECATED */
+
+GIOStatus g_io_channel_shutdown (GIOChannel      *channel,
+				 gboolean         flush,
+				 GError         **err);
+guint     g_io_add_watch_full   (GIOChannel      *channel,
+				 gint             priority,
+				 GIOCondition     condition,
+				 GIOFunc          func,
+				 gpointer         user_data,
+				 GDestroyNotify   notify);
+GSource * g_io_create_watch     (GIOChannel      *channel,
+				 GIOCondition     condition);
+guint     g_io_add_watch        (GIOChannel      *channel,
+				 GIOCondition     condition,
+				 GIOFunc          func,
+				 gpointer         user_data);
+
+/* character encoding conversion involved functions.
+ */
+
+void                  g_io_channel_set_buffer_size      (GIOChannel   *channel,
+							 gsize         size);
+gsize                 g_io_channel_get_buffer_size      (GIOChannel   *channel);
+GIOCondition          g_io_channel_get_buffer_condition (GIOChannel   *channel);
+GIOStatus             g_io_channel_set_flags            (GIOChannel   *channel,
+							 GIOFlags      flags,
+							 GError      **error);
+GIOFlags              g_io_channel_get_flags            (GIOChannel   *channel);
+void                  g_io_channel_set_line_term        (GIOChannel   *channel,
+							 const gchar  *line_term);
+G_CONST_RETURN gchar* g_io_channel_get_line_term        (GIOChannel   *channel);
+GIOStatus             g_io_channel_set_encoding         (GIOChannel   *channel,
+							 const gchar  *encoding,
+							 GError      **error);
+G_CONST_RETURN gchar* g_io_channel_get_encoding         (GIOChannel   *channel);
+
+
+GIOStatus   g_io_channel_flush            (GIOChannel   *channel,
+					   GError      **error);
+GIOStatus   g_io_channel_read_line        (GIOChannel   *channel,
+					   gchar       **str_return,
+					   gsize        *length,
+					   gsize        *terminator_pos,
+					   GError      **error);
+GIOStatus   g_io_channel_read_line_string (GIOChannel   *channel,
+					   GString      *buffer,
+					   gsize        *terminator_pos,
+					   GError      **error);
+GIOStatus   g_io_channel_read_to_end      (GIOChannel   *channel,
+					   gchar       **str_return,
+					   gsize        *length,
+					   GError      **error);
+GIOStatus   g_io_channel_read_chars       (GIOChannel   *channel,
+					   gchar        *buf,
+					   gsize         count,
+					   gsize        *bytes_read,
+					   GError      **error);
+GIOStatus   g_io_channel_write_chars      (GIOChannel   *channel,
+					   const gchar  *buf,
+					   gssize        count,
+					   gsize        *bytes_written,
+					   GError      **error);
+GIOStatus   g_io_channel_seek_position    (GIOChannel   *channel,
+					   glong         offset,
+					   GSeekType     type,
+					   GError      **error);
+GIOChannel* g_io_channel_new_file         (const gchar  *filename,
+					   GIOFileMode   mode,
+					   GError      **error);
+
+/* Error handling */
+
+GQuark          g_channel_error_quark      (void);
+GIOChannelError g_channel_error_from_errno (gint en);
 
 /* On Unix, IO channels created with this function for any file
  * descriptor or socket.
@@ -178,7 +334,7 @@ GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
  * the file descriptor should be done by this internal GLib
  * thread. Your code should call only g_io_channel_read().
  */
-GIOChannel* g_io_channel_win32_new_fd (int         fd);
+GIOChannel* g_io_channel_win32_new_fd (gint         fd);
 
 /* Get the C runtime file descriptor of a channel. */
 gint        g_io_channel_win32_get_fd (GIOChannel *channel);

@@ -32,6 +32,7 @@ string.
 
 @str: 
 @len: 
+@alloc: 
 
 <!-- ##### FUNCTION g_string_new ##### -->
 <para>
@@ -245,6 +246,16 @@ Cuts off the end of the GString, leaving the first @len characters.
 @string: a #GString.
 @len: the new size of the #GString.
 @Returns: the #GString.
+
+
+<!-- ##### FUNCTION g_string_set_size ##### -->
+<para>
+
+</para>
+
+@string: 
+@len: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_free ##### -->

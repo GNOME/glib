@@ -15,11 +15,13 @@ Windows is only partially complete.
 <para>
 To create a new #GIOChannel on Unix systems use g_io_channel_unix_new().
 This works for plain file descriptors, pipes and sockets.
+Alternately, a channel can be created for a file in a system independent
+manner using g_io_channel_new_file().
 </para>
 <para>
 Once a #GIOChannel has been created, it can be used in a generic manner
-with the functions g_io_channel_read(), g_io_channel_write(),
-g_io_channel_seek(), and g_io_channel_close().
+with the functions g_io_channel_read_chars(), g_io_channel_write_chars(),
+g_io_channel_seek_position(), and g_io_channel_close().
 </para>
 <para>
 To add a #GIOChannel to the 
@@ -32,7 +34,8 @@ called whenever these events occur.
 #GIOChannel instances are created with an initial reference count of 1.
 g_io_channel_ref() and g_io_channel_unref() can be used to increment or
 decrement the reference count respectively. When the reference count falls
-to 0, the #GIOChannel is freed. (Though it isn't closed automatically.)
+to 0, the #GIOChannel is freed. (Though it isn't closed automatically,
+unless it was created using g_io_channel_new_from_file().)
 Using g_io_add_watch() or g_io_add_watch_full() increments a channel's
 reference count.
 </para>
@@ -42,6 +45,14 @@ which creates a #GIOChannel from a file descriptor and adds it to the
 <link linkend="glib-The-Main-Event-Loop">main event loop</link>.
 The event source can later be removed with gtk_input_remove().
 Similar functions can also be found in GDK.
+</para>
+<para>
+The new functions g_io_channel_read_chars(), g_io_channel_read_line(),
+g_io_channel_read_line_string(), g_io_channel_read_to_end(),
+g_io_channel_write_chars(), g_io_channel_seek_position(),
+and g_io_channel_flush() should not be mixed with the
+depricated functions g_io_channel_read(), g_io_channel_write(),
+and g_io_channel_seek() on the same channel.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -69,6 +80,21 @@ private and should only be accessed with the following functions.
 @channel_flags: 
 @ref_count: 
 @funcs: 
+@encoding: 
+@read_cd: 
+@write_cd: 
+@line_term: 
+@buf_size: 
+@read_buf: 
+@encoded_read_buf: 
+@write_buf: 
+@use_buffer: 
+@do_encode: 
+@ready_to_read: 
+@ready_to_write: 
+@close_on_unref: 
+@seekable_cached: 
+@is_seekable: 
 
 <!-- ##### FUNCTION g_io_channel_unix_new ##### -->
 <para>
@@ -102,59 +128,120 @@ programmer (unless you are creating a new type of #GIOChannel).
 @channel: a #GIOChannel.
 
 
-<!-- ##### FUNCTION g_io_channel_read ##### -->
+<!-- ##### FUNCTION g_io_channel_new_file ##### -->
 <para>
-Reads data from a #GIOChannel.
 </para>
 
-@channel: a #GIOChannel.
-@buf: a buffer to read the data into (which should be at least count bytes
-long).
-@count: the number of bytes to read from the #GIOChannel.
-@bytes_read: returns the number of bytes actually read.
-@Returns: %G_IO_ERROR_NONE if the operation was successful.
+@filename: 
+@mode: 
+@error: 
+@Returns: 
 
 
-<!-- ##### ENUM GIOError ##### -->
+<!-- ##### ENUM GIOFileMode ##### -->
 <para>
 
 </para>
 
-@G_IO_ERROR_NONE: 
-@G_IO_ERROR_AGAIN: 
-@G_IO_ERROR_INVAL: 
-@G_IO_ERROR_UNKNOWN: 
+@G_IO_FILE_MODE_READ: 
+@G_IO_FILE_MODE_WRITE: 
+@G_IO_FILE_MODE_APPEND: 
+@G_IO_FILE_MODE_READ_WRITE: 
+@G_IO_FILE_MODE_READ_WRITE_TRUNCATE: 
+@G_IO_FILE_MODE_READ_WRITE_APPEND: 
 
-<!-- ##### FUNCTION g_io_channel_write ##### -->
+<!-- ##### FUNCTION g_io_channel_read_chars ##### -->
 <para>
-Writes data to a #GIOChannel.
+
 </para>
 
-@channel: a #GIOChannel.
-@buf: the buffer containing the data to write.
-@count: the number of bytes to write.
-@bytes_written: the number of bytes actually written.
-@Returns: %G_IO_ERROR_NONE if the operation was successful.
+@channel: 
+@buf: 
+@count: 
+@bytes_read: 
+@error: 
+@Returns: 
 
 
-<!-- ##### FUNCTION g_io_channel_seek ##### -->
+<!-- ##### FUNCTION g_io_channel_read_line ##### -->
 <para>
-Sets the current position in the #GIOChannel, similar to the standard system
-call <function>fseek()</function>.
+
 </para>
 
-@channel: a #GIOChannel.
-@offset: an offset, in bytes, which is added to the position specified by
-@type.
-@type: the position in the file, which can be %G_SEEK_CUR (the current
-position), %G_SEEK_SET (the start of the file), or %G_SEEK_END (the end of the
-file).
-@Returns: %G_IO_ERROR_NONE if the operation was successful.
+@channel: 
+@str_return: 
+@length: 
+@terminator_pos: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_line_string ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buffer: 
+@terminator_pos: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_read_to_end ##### -->
+<para>
+
+</para>
+
+@channel: 
+@str_return: 
+@length: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_write_chars ##### -->
+<para>
+
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_written: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_flush ##### -->
+<para>
+
+</para>
+
+@channel: 
+@error: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@err: 
+
+
+<!-- ##### FUNCTION g_io_channel_seek_position ##### -->
+<para>
+
+</para>
+
+@channel: 
+@offset: 
+@type: 
+@error: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@err: 
 
 
 <!-- ##### ENUM GSeekType ##### -->
 <para>
-An enumeration specifying the base position for a g_io_channel_seek()
+An enumeration specifying the base position for a g_io_channel_seek_position()
 operation.
 
 <informaltable pgwide=1 frame="none" role="enum">
@@ -186,11 +273,26 @@ operation.
 
 <!-- ##### FUNCTION g_io_channel_close ##### -->
 <para>
-Closes a #GIOChannel.
-The #GIOChannel will be freed when its reference count drops to 0.
 </para>
 
-@channel: a #GIOChannel.
+@channel: 
+
+
+<!-- ##### FUNCTION g_channel_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_channel_error_from_errno ##### -->
+<para>
+
+</para>
+
+@en: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_io_channel_ref ##### -->
@@ -330,4 +432,182 @@ generic way.
 @io_close: 
 @io_create_watch: 
 @io_free: 
+@io_set_flags: 
+@io_get_flags: 
+
+<!-- ##### FUNCTION g_io_channel_get_buffer_size ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_buffer_size ##### -->
+<para>
+
+</para>
+
+@channel: 
+@size: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_buffer_condition ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_get_flags ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@flags: 
+@error: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_flags ##### -->
+<para>
+
+</para>
+
+@channel: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### ENUM GIOFlags ##### -->
+<para>
+
+</para>
+
+@G_IO_FLAG_APPEND: 
+@G_IO_FLAG_NONBLOCK: 
+@G_IO_FLAG_IS_READABLE: 
+@G_IO_FLAG_IS_WRITEABLE: 
+@G_IO_FLAG_IS_SEEKABLE: 
+@G_IO_FLAG_MASK: 
+@G_IO_FLAG_GET_MASK: 
+@G_IO_FLAG_SET_MASK: 
+
+<!-- ##### FUNCTION g_io_channel_get_line_term ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_line_term ##### -->
+<para>
+
+</para>
+
+@channel: 
+@line_term: 
+
+
+<!-- ##### MACRO G_IO_CHANNEL_UNIX_LINE_TERM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_IO_CHANNEL_DOS_LINE_TERM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_IO_CHANNEL_MACINTOSH_LINE_TERM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION g_io_channel_get_encoding ##### -->
+<para>
+
+</para>
+
+@channel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_set_encoding ##### -->
+<para>
+
+</para>
+
+@channel: 
+@encoding: 
+@error: 
+@Returns: 
+
+
+<!-- ##### MACRO G_IO_CHANNEL_ENCODE_RAW ##### -->
+<para>
+Encoding for nonbuffered IO. With this encoding, data must be
+read using g_io_channel_read_chars(); the other functions will
+not work.
+</para>
+
+
+
+<!-- ##### FUNCTION g_io_channel_read ##### -->
+<para>
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_read: 
+@Returns: 
+
+
+<!-- ##### ENUM GIOError ##### -->
+<para>
+#GIOError is only used by the depricated functions g_io_channel_read(),
+g_io_channel_write(), and g_io_channel_seek().
+</para>
+
+@G_IO_ERROR_NONE: 
+@G_IO_ERROR_AGAIN: 
+@G_IO_ERROR_INVAL: 
+@G_IO_ERROR_UNKNOWN: 
+
+<!-- ##### FUNCTION g_io_channel_write ##### -->
+<para>
+</para>
+
+@channel: 
+@buf: 
+@count: 
+@bytes_written: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_io_channel_seek ##### -->
+<para>
+</para>
+
+@channel: 
+@offset: 
+@type.
+@type: 
+@Returns: 
+
 
