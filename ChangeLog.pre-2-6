@@ -1,7 +1,7 @@
 2004-10-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstdio.c: Include galias.h before glib.h (#156697,
-	Christian Persch)
+	Christophe Fergeau)
 
 	* glib/gkeyfile.c: Add a missing "Since: 2.6" comment.
 
