@@ -1,3 +1,10 @@
+Mon May 29 14:10:35 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gutils.c (g_locale_get_codeset): Add function to get the 
+	codeset name for the current locale.
+
+	* configure.in acconfig.h: Add check for nl_langinfo(CODESET);
+
 Fri May 19 11:39:29 2000  Tim Janik  <timj@gtk.org>
 
 

@@ -1712,6 +1712,8 @@ gchar*	g_get_current_dir	(void);
  * must not be freed. */
 gchar*  g_getenv		(const gchar *variable);
 
+gchar * g_locale_get_codeset    (void);
+
 /* we use a GLib function as a replacement for ATEXIT, so
  * the programmer is not required to check the return value
  * (if there is any in the implementation) and doesn't encounter

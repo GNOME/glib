@@ -72,6 +72,10 @@
 #  include <io.h>
 #endif /* G_OS_WIN32 */
 
+#ifdef HAVE_CODESET
+#include <langinfo.h>
+#endif
+
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
@@ -755,4 +759,17 @@ guint
 g_int_hash (gconstpointer v)
 {
   return *(const gint*) v;
+}
+
+gchar *
+g_locale_get_codeset (void)
+{
+#ifdef HAVE_CODESET  
+  char *result = nl_langinfo (CODESET);
+  return g_strdup (result);
+#else
+  /* FIXME: Do something more intelligent based on setlocale (LC_CTYPE, NULL)
+   */
+  return g_strdup ("ISO-8859-1");
+#endif
 }

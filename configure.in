@@ -449,6 +449,17 @@ AC_CACHE_VAL(glib_cv_sane_realloc,[
 ])
 AC_MSG_RESULT($glib_cv_sane_realloc)
 
+dnl Check for nl_langinfo and CODESET
+
+AC_MSG_CHECKING([for nl_langinfo (CODESET)])
+AC_TRY_COMPILE([#include <langinfo.h>],
+	[char *codeset = nl_langinfo (CODESET);],
+   AC_DEFINE(HAVE_CODESET)
+   have_codeset=yes,
+   have_codeset=no)
+
+AC_MSG_RESULT($have_codeset)
+  
 
 dnl **********************
 dnl *** va_copy checks ***
