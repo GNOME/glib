@@ -662,69 +662,6 @@ g_int_hash (gconstpointer v)
   return *(const gint*) v;
 }
 
-#if 0 /* Old IO Channels */
-
-GIOChannel*
-g_iochannel_new (gint fd)
-{
-  GIOChannel *channel = g_new (GIOChannel, 1);
-
-  channel->fd = fd;
-
-#ifdef NATIVE_WIN32
-  channel->peer = 0;
-  channel->peer_fd = 0;
-  channel->offset = 0;
-  channel->need_wakeups = 0;
-#endif /* NATIVE_WIN32 */
-
-  return channel;
-}
-
-void
-g_iochannel_free (GIOChannel *channel)
-{
-  g_return_if_fail (channel != NULL);
-
-  g_free (channel);
-}
-
-void
-g_iochannel_close_and_free (GIOChannel *channel)
-{
-  g_return_if_fail (channel != NULL);
-
-  close (channel->fd);
-
-  g_iochannel_free (channel);
-}
-
-#undef g_iochannel_wakeup_peer
-
-void
-g_iochannel_wakeup_peer (GIOChannel *channel)
-{
-#ifdef NATIVE_WIN32
-  static guint message = 0;
-#endif
-
-  g_return_if_fail (channel != NULL);
-
-#ifdef NATIVE_WIN32
-  if (message == 0)
-    message = RegisterWindowMessage ("gdk-pipe-readable");
-
-#  if 0
-  g_print ("g_iochannel_wakeup_peer: calling PostThreadMessage (%#x, %d, %d, %d)\n",
-	   channel->peer, message, channel->peer_fd, channel->offset);
-#  endif
-  PostThreadMessage (channel->peer, message,
-		     channel->peer_fd, channel->offset);
-#endif /* NATIVE_WIN32 */
-}
-
-#endif /* Old IO Channels */
-
 #ifdef NATIVE_WIN32
 
 int

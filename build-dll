@@ -1,8 +1,10 @@
 #!/bin/sh
 
-# Temporary hack until building dlls with gcc -mno-cygwin is easier
+# Temporary hack until building dlls or executables with exported
+# entry points is easier with gcc -mno-cygwin.
 
-LD=ld
+#LD=ld
+GCC=gcc
 DLLTOOL=dlltool
 AS=as
 
@@ -24,10 +26,11 @@ for F in $ldargs; do
     esac
 done
 
-$LD -s --base-file $library.base --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
-$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs
-$LD -s --base-file $library.base $library.exp --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
-$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs
-$LD $library.exp --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
+$GCC -s -mdll -mno-cygwin -Wl,--base-file,$library.base -o $dllfile $ldargs
+$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs &&
+$GCC -s -mdll -mno-cygwin -Wl,--base-file,$library.base,$library.exp -o $dllfile $ldargs
+$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs &&
+$GCC -mdll -mno-cygwin -Wl,$library.exp -o $dllfile $ldargs
 $DLLTOOL --as=$AS --dllname $dllfile $defswitch --output-lib lib$libname.a $objs
-rm $library.base $library.exp
+
+rm $library.base $library.exp 2>/dev/null

@@ -48,7 +48,7 @@
 #include	<errno.h>
 #include	<sys/types.h>	/* needed for sys/stat.h */
 #include	<sys/stat.h>
-#ifdef _MSC_VER
+#ifdef NATIVE_WIN32
 #include	<io.h>		/* For _read() */
 #endif
 

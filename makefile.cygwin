@@ -12,6 +12,8 @@ PTHREADS = ../pthreads-snap-1999-04-07
 PTHREAD_LIB = -L$(PTHREADS) -lpthread
 PTHREAD_INC = -I $(PTHREADS)
 
+OPTIMIZE = -g -O
+
 ################################################################
 
 # Nothing much configurable below
@@ -25,7 +27,7 @@ INSTALL = install
 
 GLIB_VER = 1.3
 
-CFLAGS = -g -O2 -I. -DHAVE_CONFIG_H
+CFLAGS = $(OPTIMIZE) -I. -DHAVE_CONFIG_H
 
 all : \
 	glibconfig.h	\
@@ -76,7 +78,7 @@ glib_OBJECTS = \
 	gutils.o
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
 
 glibconfig.h: glibconfig.h.win32
 	$(CP) glibconfig.h.win32 glibconfig.h
@@ -91,7 +93,7 @@ gmodule_OBJECTS = \
 	gmodule.o
 
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule/gmodule.def
-	./build-dll gmodule $(GLIB_VER) gmodule/gmodule.def $(gmodule_OBJECTS) -L. -lglib-$(GLIB_VER) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+	./build-dll gmodule $(GLIB_VER) gmodule/gmodule.def $(gmodule_OBJECTS) -L. -lglib-$(GLIB_VER) -lwsock32
 
 gmodule.o : gmodule/gmodule.c gmodule/gmodule-win32.c
 	$(CC) $(CFLAGS) -Igmodule -c -DG_LOG_DOMAIN=g_log_domain_gmodule gmodule/gmodule.c
@@ -103,25 +105,25 @@ gthread_OBJECTS = \
 	gthread.o
 
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) glib-$(GLIB_VER).dll gthread/gthread.def
-	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB) -lwsock32
 
 gthread.o : gthread/gthread.c gthread/gthread-posix.c
 	$(CC) $(CFLAGS) $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread/gthread.c
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.o
-	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
 
 testglib.o : testglib.c
 	$(CC) -c $(CFLAGS) testglib.c
 
 testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
-	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
 
 testgdate.o : testgdate.c
 	$(CC) -c $(CFLAGS) testgdate.c
 
 testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.o
-	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
 
 testgdateparser.o : testgdateparser.c
 	$(CC) -c $(CFLAGS) testgdateparser.c
@@ -130,23 +132,23 @@ testgmodule.exe : glib-$(GLIB_VER).dll gmodule-$(GLIB_VER).dll testgmodule.o lib
 # Wow, do we really have to do it like this to get some symbols
 # exported from a .exe? Apparently yes. Does the __declspec(dllexport) 
 # actually do anything in egcs-1.1.2?
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) $(LDFLAGS)
 	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) $(LDFLAGS)
 	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) $(LDFLAGS)
 
 testgmodule.o : gmodule/testgmodule.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule/testgmodule.c
 
 libgplugin_a.dll : libgplugin_a.o
-	./build-dll libgplugin_a - - libgplugin_a.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt
+	./build-dll libgplugin_a - - libgplugin_a.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER)
 
 libgplugin_a.o : gmodule/libgplugin_a.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_a.c
 
 libgplugin_b.dll : libgplugin_b.o
-	./build-dll libgplugin_b - - libgplugin_b.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt
+	./build-dll libgplugin_b - - libgplugin_b.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER)
 
 libgplugin_b.o : gmodule/libgplugin_b.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_b.c
@@ -158,12 +160,5 @@ testgthread.o : gthread/testgthread.c
 	$(CC) $(CFLAGS) $(PTHREAD_INC) -c gthread/testgthread.c
 
 clean:
-	-rm config.h
-	-rm glibconfig.h
-	-rm gmodule/gmoduleconf.h
-	-rm *.exe
-	-rm *.o
-	-rm *.dll
-	-rm *.a
-	-rm *.base
-	-rm *.exp
+	-rm config.h glibconfig.h gmodule/gmoduleconf.h
+	-rm *.exe *.o *.dll *.a *.base *.exp

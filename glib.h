@@ -2773,6 +2773,7 @@ typedef int pid_t;
 #ifdef __GNUC__
 #    define stat		_stat
 #endif
+#    define unlink		_unlink
 #    define open		_open
 #    define read		_read
 #    define write		_write

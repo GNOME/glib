@@ -43,6 +43,10 @@
 #include <ctype.h>
 #include "glib.h"
 
+#ifdef NATIVE_WIN32
+#include <io.h>			/* For _read */
+#endif
+
 #define G_STRING_BLOCK_SIZE 512
 
 typedef struct _GRealStringChunk GRealStringChunk;

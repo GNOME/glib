@@ -6,31 +6,56 @@ by the Microsoft runtime C library. Additionally, a pthreads emulation
 library is used.
 
 To build GLib on Win32, you can use either the Microsoft compiler and
-tools, or egcs-1.1.2 running under cygwin-b20.1. Both the compiler
-from MSVC 5.0 and from MSVC 6.0 have been used successfully. If you
-build with egcs, note that the produced executables and DLLs do *not*
-require the cygwin dll ("mingw32"). That's the whole point of this
-porting effort, more or less.
+tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
+been used successfully. With gcc I mean egcs-1.1.2 (as distributed by
+Mumit Khan), running under cygwin-b20.1.
 
-The egcs support was added quite recently, but seems to work in all
-respects. Debugging with gdk works.
+If you build with gcc, note that the produced executables and DLLs do
+*not* require the cygwin dll (gcc -mno-cygwin). That's the whole point
+of this porting effort, more or less.
 
-Before building you must get the pthreads library for Windows from
+The egcs support was added quite recently, but seems to
+work. Debugging with gdb works. I prefer to use the msvcrt runtime and
+not the default crtdll. This can be achieved by applying the following
+diff to the specs file, which typically is installed as
+C:/cygnus/cygwin-b20/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/egcs-2.91.66/specs.
+
+Sorry for the illegibility of this diff, but the specs file is like
+that... This diff replaces -lcrtdll with -lmsvcrt, replaces crt1 with
+crt2, and defines __MSVCRT__.
+
+--- specs.ORIG	Sun Apr 25 00:40:40 1999
++++ specs	Sun Apr 25 00:48:04 1999
+@@ -23 +23 @@
+-%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmoldname -lcrtdll}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
++%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmoldname -lmsvcrt}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
+@@ -29 +29 @@
+-%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt1%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt1%O%s} %{pg:gcrt0%O%s}}
++%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt2%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt2%O%s} %{pg:gcrt0%O%s}}
+@@ -38 +38 @@
+--Di386 -D_WIN32   -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386)
++-Di386 -D_WIN32 %{mno-cygwin:-D__MSVCRT__ } -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386) 
+
+Note: If you build with gcc, you should also fix the definition of
+_dev_t in the header mingw32/sys/types.h to correspond to what it
+actually is used by msvcrt.dll. It should be unsigned int, not
+short. Otherwise stat() calls will fail.
+
+Before building you must get the pthreads library for Win32 from
 http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
 snapshot from 1999-04-07 is the one that should be used. Edit the
-location of the pthreads library and include files in
-makefile.msc.
+location of the pthreads library and include files in makefile.msc.
 
 If using the Microsoft toolchain, build with `nmake -f
-makefile.msc`. Install with `nmake -f makefile.msc install`.
-If using egcs, build using `make -f makefile.cygwin`.
+makefile.msc`. Install with `nmake -f makefile.msc install`.  If using
+egcs, build using `make -f makefile.cygwin`.
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check`.
 
 If you would want to use the cygwin tools to generate executables that
-*do* usethe cygwin runtime the normal Unix configuration method should
-work as if on Unix (knock on wood).
+*do* use the cygwin runtime, the normal Unix configuration method
+should work as if on Unix (knock on wood).
 
 With a little work, it might be possible to use the ./configure
 mechanism also with a "mingw32" configuration.

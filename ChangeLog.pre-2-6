@@ -1,3 +1,15 @@
+1999-04-25  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: More editing.
+	* build-dll: Use gcc, not ld to link.
+	* glib.h: On native Win32 use _unlink().
+	* gscanner.c: Use corrent NATIVE_WIN32 feature test macro,
+	not _MSC_VER.
+	* gstring.c: Include <io.h> on Win32 for _read prototype.
+	* gutils.c: Remove old IO channel code (was in #if 0).
+	* makefile.cygwin: Don't need to link with kernel32 and msvcrt
+	explicitly, they are included anyway.
+
 1999-04-24  Tor Lillqvist  <tml@iki.fi>
 
 	Support added for building using a GNU toolchain on Win32,
