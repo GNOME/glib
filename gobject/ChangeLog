@@ -1,3 +1,17 @@
+Sat Jun 30 11:07:00 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.[hc]: provide weak_ref/weak_unref functions,
+	invoked from ->dispose. renamed ->shutdown() to ->dispose(),
+	provide "public" API entry here: g_object_run_dispose(), this
+	fucntion should _only_ be called from object system implementations
+	(e.g. gtkobject.c) if at all.
+
+	* gtypemodule.c (g_type_module_dispose): s/shutdown/dispose/
+
+	* gsignal.h: removed compat aliases.
+
+	* gobject.c (g_object_connect): support data objects.
+	
 Sat Jun 30 13:17:12 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* testgruntime.c (test_object_class_init)

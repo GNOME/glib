@@ -317,6 +317,56 @@ g_list_insert (GList	*list,
     return list;
 }
 
+GList*
+g_list_insert_before (GList   *list,
+		      GList   *sibling,
+		      gpointer data)
+{
+  if (!list)
+    {
+      list = g_list_alloc ();
+      list->data = data;
+      g_return_val_if_fail (sibling == NULL, list);
+      return list;
+    }
+  else if (sibling)
+    {
+      GList *node;
+
+      node = g_list_alloc ();
+      node->data = data;
+      if (sibling->prev)
+	{
+	  node->prev = sibling->prev;
+	  node->prev->next = node;
+	  node->next = sibling;
+	  sibling->prev = node;
+	  return list;
+	}
+      else
+	{
+	  node->next = sibling;
+	  sibling->prev = node;
+	  g_return_val_if_fail (sibling == list, node);
+	  return node;
+	}
+    }
+  else
+    {
+      GList *last;
+
+      last = list;
+      while (last->next)
+	last = last->next;
+
+      last->next = g_list_alloc ();
+      last->next->data = data;
+      last->next->prev = last;
+
+      return list;
+    }
+}
+
 GList *
 g_list_concat (GList *list1, GList *list2)
 {

@@ -61,6 +61,23 @@
 @closure: 
 @Returns: 
 
+<!-- ##### MACRO g_signal_newc ##### -->
+<para>
+
+</para>
+
+@Returns: 
+@signal_name: 
+@itype: 
+@signal_flags: 
+@class_offset: 
+@accumulator: 
+@accu_data: 
+@c_marshaller: 
+@return_type: 
+@n_params: 
+@Varargs: 
+
 <!-- ##### FUNCTION g_type_value_is_a ##### -->
 <para>
 Determines if @value is a #GValue whose type conforms to @type.

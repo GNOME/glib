@@ -57,6 +57,9 @@ GList*   g_list_insert         (GList            *list,
 GList*   g_list_insert_sorted  (GList            *list,
 				gpointer          data,
 				GCompareFunc      func);
+GList*   g_list_insert_before  (GList            *list,
+				GList            *sibling,
+				gpointer          data);
 GList*   g_list_concat         (GList            *list1,
 				GList            *list2);
 GList*   g_list_remove         (GList            *list,

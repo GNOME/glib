@@ -51,21 +51,21 @@ static void g_type_module_complete_interface_info (GTypePlugin     *plugin,
 						   GType            interface_type,
 						   GInterfaceInfo  *info);
  
-static GObjectClass *parent_class;
+static gpointer parent_class = NULL;
 
 static void
-g_type_module_shutdown (GObject *object)
+g_type_module_dispose (GObject *object)
 {
   GTypeModule *module = G_TYPE_MODULE (object);
   
   if (module->type_infos || module->interface_infos)
     {
-      g_warning (G_STRLOC ": shutdown should never happen for static type plugins once types or interfaces have been registered");
+      g_warning (G_STRLOC ": unsolicitated invocation of g_object_dispose() on GTypeModule");
 	     
       g_object_ref (object);
     }
 
-  parent_class->shutdown (object);
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -75,7 +75,7 @@ g_type_module_finalize (GObject *object)
 
   g_free (module->name);
 
-  parent_class->finalize (object);
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -85,7 +85,7 @@ g_type_module_class_init (GTypeModuleClass *class)
 
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (class));
   
-  gobject_class->shutdown = g_type_module_shutdown;
+  gobject_class->dispose = g_type_module_dispose;
   gobject_class->finalize = g_type_module_finalize;
 }
 

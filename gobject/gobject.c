@@ -61,7 +61,7 @@ static GObject*	g_object_constructor			(GType                  type,
 							 guint                  n_construct_properties,
 							 GObjectConstructParam *construct_params);
 static void	g_object_last_unref			(GObject	*object);
-static void	g_object_shutdown			(GObject	*object);
+static void	g_object_real_dispose			(GObject	*object);
 static void	g_object_finalize			(GObject	*object);
 static void	g_object_do_set_property		(GObject        *object,
 							 guint           property_id,
@@ -103,6 +103,7 @@ static inline void	   object_set_property		(GObject        *object,
 
 /* --- variables --- */
 static GQuark	            quark_closure_array = 0;
+static GQuark	            quark_weak_refs = 0;
 static GParamSpecPool      *pspec_pool = NULL;
 static GObjectNotifyContext property_notify_context = { 0, };
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
@@ -133,11 +134,8 @@ debug_objects_atexit (void)
   IF_DEBUG (OBJECTS)
     {
       G_LOCK (debug_objects);
-      if (debug_objects_ht)
-	{
-	  g_message ("stale GObjects: %u", debug_objects_count);
-	  g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
-	}
+      g_message ("stale GObjects: %u", debug_objects_count);
+      g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
       G_UNLOCK (debug_objects);
     }
 }
@@ -186,7 +184,10 @@ g_object_type_init (void)	/* sync with gtype.c */
   
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (OBJECTS)
-    g_atexit (debug_objects_atexit);
+    {
+      debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
+      g_atexit (debug_objects_atexit);
+    }
 #endif	/* G_ENABLE_DEBUG */
 }
 
@@ -236,6 +237,7 @@ static void
 g_object_do_class_init (GObjectClass *class)
 {
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
+  quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
   pspec_pool = g_param_spec_pool_new (TRUE);
   property_notify_context.quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   property_notify_context.dispatcher = g_object_notify_dispatcher;
@@ -243,7 +245,7 @@ g_object_do_class_init (GObjectClass *class)
   class->constructor = g_object_constructor;
   class->set_property = g_object_do_set_property;
   class->get_property = g_object_do_get_property;
-  class->shutdown = g_object_shutdown;
+  class->dispose = g_object_real_dispose;
   class->finalize = g_object_finalize;
   class->dispatch_properties_changed = g_object_dispatch_properties_changed;
   class->notify = NULL;
@@ -344,8 +346,6 @@ g_object_init (GObject *object)
   IF_DEBUG (OBJECTS)
     {
       G_LOCK (debug_objects);
-      if (!debug_objects_ht)
-	debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
       debug_objects_count++;
       g_hash_table_insert (debug_objects_ht, object, object);
       G_UNLOCK (debug_objects);
@@ -382,51 +382,25 @@ g_object_do_get_property (GObject     *object,
 }
 
 static void
-g_object_last_unref (GObject *object)
+g_object_real_dispose (GObject *object)
 {
-  g_return_if_fail (object->ref_count > 0);
-  
-  if (object->ref_count == 1)	/* may have been re-referenced meanwhile */
-    G_OBJECT_GET_CLASS (object)->shutdown (object);
-  
-#ifdef	G_ENABLE_DEBUG
-  if (g_trap_object_ref == object)
-    G_BREAKPOINT ();
-#endif	/* G_ENABLE_DEBUG */
+  guint ref_count;
 
-  object->ref_count -= 1;
-  
-  if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
-    {
-      g_signal_handlers_destroy (object);
-      g_object_set_qdata (object, quark_closure_array, NULL);
-      G_OBJECT_GET_CLASS (object)->finalize (object);
-#ifdef	G_ENABLE_DEBUG
-      IF_DEBUG (OBJECTS)
-	{
-	  G_LOCK (debug_objects);
-	  if (debug_objects_ht)
-	    g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
-	  G_UNLOCK (debug_objects);
-	}
-#endif	/* G_ENABLE_DEBUG */
-      g_type_free_instance ((GTypeInstance*) object);
-    }
-}
+  g_signal_handlers_destroy (object);
+  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
 
-static void
-g_object_shutdown (GObject *object)
-{
-  /* this function needs to be always present for unconditional
-   * chaining, we also might add some code here later.
-   * beware though, subclasses may invoke shutdown() arbitrarily.
+  /* yes, temporarily altering the ref_count is hackish, but that
+   * enforces people not jerking around with weak_ref notifiers
    */
+  ref_count = object->ref_count;
+  object->ref_count = 0;
+  g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+  object->ref_count = ref_count;
 }
 
 static void
 g_object_finalize (GObject *object)
 {
-  g_signal_handlers_destroy (object);
   g_datalist_clear (&object->qdata);
   
 #ifdef	G_ENABLE_DEBUG
@@ -442,6 +416,38 @@ g_object_finalize (GObject *object)
 }
 
 static void
+g_object_last_unref (GObject *object)
+{
+  g_return_if_fail (object->ref_count > 0);
+  
+  if (object->ref_count == 1)	/* may have been re-referenced meanwhile */
+    G_OBJECT_GET_CLASS (object)->dispose (object);
+  
+#ifdef	G_ENABLE_DEBUG
+  if (g_trap_object_ref == object)
+    G_BREAKPOINT ();
+#endif	/* G_ENABLE_DEBUG */
+
+  object->ref_count -= 1;
+  
+  if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
+    {
+      g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
+      G_OBJECT_GET_CLASS (object)->finalize (object);
+#ifdef	G_ENABLE_DEBUG
+      IF_DEBUG (OBJECTS)
+	{
+	  /* catch objects not chaining finalize handlers */
+	  G_LOCK (debug_objects);
+	  g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
+	  G_UNLOCK (debug_objects);
+	}
+#endif	/* G_ENABLE_DEBUG */
+      g_type_free_instance ((GTypeInstance*) object);
+    }
+}
+
+static void
 g_object_dispatch_properties_changed (GObject     *object,
 				      guint        n_pspecs,
 				      GParamSpec **pspecs)
@@ -450,6 +456,17 @@ g_object_dispatch_properties_changed (GObject     *object,
 
   for (i = 0; i < n_pspecs; i++)
     g_signal_emit (object, gobject_signals[NOTIFY], g_quark_from_string (pspecs[i]->name), pspecs[i]);
+}
+
+void
+g_object_run_dispose (GObject *object)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (object->ref_count > 0);
+
+  g_object_ref (object);
+  G_OBJECT_GET_CLASS (object)->dispose (object);
+  g_object_unref (object);
 }
 
 void
@@ -1068,24 +1085,40 @@ g_object_connect (gpointer     _object,
     {
       gpointer callback = va_arg (var_args, gpointer);
       gpointer data = va_arg (var_args, gpointer);
-      guint sid;
+      gulong sid;
 
       if (strncmp (signal_spec, "signal::", 8) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 8,
 				     callback, data, NULL,
 				     0);
+      else if (strncmp (signal_spec, "object_signal::", 15) == 0)
+	sid = g_signal_connect_object (object, signal_spec + 15,
+				       callback, data,
+				       0);
       else if (strncmp (signal_spec, "swapped_signal::", 16) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 16,
 				     callback, data, NULL,
 				     G_CONNECT_SWAPPED);
+      else if (strncmp (signal_spec, "swapped_object_signal::", 23) == 0)
+	sid = g_signal_connect_object (object, signal_spec + 23,
+				       callback, data,
+				       G_CONNECT_SWAPPED);
       else if (strncmp (signal_spec, "signal_after::", 14) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 14,
 				     callback, data, NULL,
 				     G_CONNECT_AFTER);
+      else if (strncmp (signal_spec, "object_signal_after::", 21) == 0)
+	sid = g_signal_connect_object (object, signal_spec + 21,
+				       callback, data,
+				       G_CONNECT_AFTER);
       else if (strncmp (signal_spec, "swapped_signal_after::", 22) == 0)
 	sid = g_signal_connect_data (object, signal_spec + 22,
 				     callback, data, NULL,
 				     G_CONNECT_SWAPPED | G_CONNECT_AFTER);
+      else if (strncmp (signal_spec, "swapped_object_signal_after::", 29) == 0)
+	sid = g_signal_connect_object (object, signal_spec + 29,
+				       callback, data,
+				       G_CONNECT_SWAPPED | G_CONNECT_AFTER);
       else
 	{
 	  g_warning ("%s: invalid signal spec \"%s\"", G_STRLOC, signal_spec);
@@ -1144,6 +1177,88 @@ g_object_disconnect (gpointer     _object,
   va_end (var_args);
 
   return object;
+}
+
+typedef struct {
+  guint n_weak_refs;
+  struct {
+    GWeakNotify notify;
+    gpointer    data;
+  } weak_refs[1];  /* flexible array */
+} WeakRefStack;
+
+static void
+weak_refs_notify (gpointer data)
+{
+  WeakRefStack *wstack = data;
+  guint i;
+
+  for (i = 0; i < wstack->n_weak_refs; i++)
+    wstack->weak_refs[i].notify (wstack->weak_refs[i].data);
+  g_free (wstack);
+}
+
+void
+g_object_weak_ref (GObject    *object,
+		   GWeakNotify notify,
+		   gpointer    data)
+{
+  WeakRefStack *wstack;
+  guint i;
+  
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+  g_return_if_fail (object->ref_count >= 1);
+
+  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_refs);
+  if (wstack)
+    {
+      i = wstack->n_weak_refs++;
+      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+    }
+  else
+    {
+      wstack = g_renew (WeakRefStack, NULL, 1);
+      wstack->n_weak_refs = 1;
+      i = wstack->n_weak_refs;
+    }
+  wstack->weak_refs[i].notify = notify;
+  wstack->weak_refs[i].data = data;
+  g_datalist_id_set_data_full (&object->qdata, quark_weak_refs, wstack, weak_refs_notify);
+}
+
+void
+g_object_weak_unref (GObject    *object,
+		     GWeakNotify notify,
+		     gpointer    data)
+{
+  WeakRefStack *wstack;
+  gboolean found_one = FALSE;
+
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+
+  wstack = g_datalist_id_get_data (&object->qdata, quark_weak_refs);
+  if (wstack)
+    {
+      guint i;
+
+      for (i = 0; i < wstack->n_weak_refs; i++)
+	if (wstack->weak_refs[i].notify == notify &&
+	    wstack->weak_refs[i].data == data)
+	  {
+	    found_one = TRUE;
+	    wstack->n_weak_refs -= 1;
+	    if (i != wstack->n_weak_refs)
+	      {
+		wstack->weak_refs[i].notify = wstack->weak_refs[wstack->n_weak_refs].notify;
+		wstack->weak_refs[i].data = wstack->weak_refs[wstack->n_weak_refs].data;
+	      }
+	    break;
+	  }
+    }
+  if (!found_one)
+    g_warning (G_STRLOC ": couldn't find weak ref %p(%p)", notify, data);
 }
 
 gpointer
@@ -1482,6 +1597,7 @@ g_object_watch_closure (GObject  *object,
 			GClosure *closure)
 {
   CArray *carray;
+  guint i;
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (closure != NULL);
@@ -1493,23 +1609,21 @@ g_object_watch_closure (GObject  *object,
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);
-  carray = g_object_steal_qdata (object, quark_closure_array);
+  carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
   if (!carray)
     {
       carray = g_renew (CArray, NULL, 1);
       carray->object = object;
       carray->n_closures = 1;
-      carray->closures[0] = closure;
-      g_object_set_qdata_full (object, quark_closure_array, carray, destroy_closure_array);
+      i = carray->n_closures;
     }
   else
     {
-      guint i = carray->n_closures++;
-      
+      i = carray->n_closures++;
       carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
-      carray->closures[i] = closure;
-      g_object_set_qdata_full (object, quark_closure_array, carray, destroy_closure_array);
     }
+  carray->closures[i] = closure;
+  g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
 }
 
 GClosure*

@@ -307,6 +307,45 @@ g_slist_insert (GSList   *list,
   return list;
 }
 
+GSList*
+g_slist_insert_before (GSList  *slist,
+		       GSList  *sibling,
+		       gpointer data)
+{
+  if (!slist)
+    {
+      slist = g_slist_alloc ();
+      slist->data = data;
+      g_return_val_if_fail (sibling == NULL, slist);
+      return slist;
+    }
+  else
+    {
+      GSList *node, *last = NULL;
+
+      for (node = slist; node; last = node, node = last->next)
+	if (node == sibling)
+	  break;
+      if (!last)
+	{
+	  node = g_slist_alloc ();
+	  node->data = data;
+	  node->next = slist;
+
+	  return node;
+	}
+      else
+	{
+	  node = g_slist_alloc ();
+	  node->data = data;
+	  node->next = last->next;
+	  last->next = node;
+
+	  return slist;
+	}
+    }
+}
+
 GSList *
 g_slist_concat (GSList *list1, GSList *list2)
 {

@@ -207,25 +207,6 @@ filled in by the g_signal_query() function.
 
 
 
-<!-- ##### MACRO g_signal_newc ##### -->
-<para>
-
-</para>
-
-@Returns: 
-<!-- # Unused Parameters # -->
-@signal_name: 
-@itype: 
-@signal_flags: 
-@class_offset: 
-@accumulator: 
-@accu_data: 
-@c_marshaller: 
-@return_type: 
-@n_params: 
-@Varargs: 
-
-
 <!-- ##### FUNCTION g_signal_newv ##### -->
 <para>
 

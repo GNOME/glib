@@ -54,6 +54,7 @@ typedef void (*GObjectSetPropertyFunc)  (GObject      *object,
                                          const GValue *value,
                                          GParamSpec   *pspec);
 typedef void (*GObjectFinalizeFunc)     (GObject      *object);
+typedef void (*GWeakNotify)		(gpointer      data);
 struct  _GObject
 {
   GTypeInstance g_type_instance;
@@ -73,17 +74,17 @@ struct  _GObjectClass
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
                                  GObjectConstructParam *construct_properties);
-  void       (*set_property)            (GObject        *object,
+  void       (*set_property)		(GObject        *object,
                                          guint           property_id,
                                          const GValue   *value,
                                          GParamSpec     *pspec);
-  void       (*get_property)            (GObject        *object,
+  void       (*get_property)		(GObject        *object,
                                          guint           property_id,
                                          GValue         *value,
                                          GParamSpec     *pspec);
-  void       (*shutdown)                (GObject        *object);
-  void       (*finalize)                (GObject        *object);
-
+  void       (*dispose)			(GObject        *object);
+  void       (*finalize)		(GObject        *object);
+  
   /* seldomly overidden */
   void       (*dispatch_properties_changed) (GObject      *object,
 					     guint	   n_pspecs,
@@ -147,6 +148,12 @@ void        g_object_notify                   (GObject        *object,
 void        g_object_thaw_notify              (GObject        *object);
 gpointer    g_object_ref                      (gpointer        object);
 void        g_object_unref                    (gpointer        object);
+void	    g_object_weak_ref		      (GObject	      *object,
+					       GWeakNotify     notify,
+					       gpointer	       data);
+void	    g_object_weak_unref		      (GObject	      *object,
+					       GWeakNotify     notify,
+					       gpointer	       data);
 gpointer    g_object_get_qdata                (GObject        *object,
 					       GQuark          quark);
 void        g_object_set_qdata                (GObject        *object,
@@ -186,6 +193,10 @@ guint	    g_signal_connect_object           (gpointer	       instance,
 					       GCallback       c_handler,
 					       gpointer	       gobject,
 					       GConnectFlags   connect_flags);
+
+
+/*< protected >*/
+void        g_object_run_dispose	      (GObject	      *object);
 
 
 /* --- implementation macros --- */

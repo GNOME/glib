@@ -1,3 +1,10 @@
+Sat Jun 30 23:14:32 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/glist.[hc]: added g_list_insert_before().
+
+	* glib/gslist.c (g_slist_insert_before): provide an implementation,
+	prototype was already present...
+
 Sun Jul  1 20:16:25 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/guniprop.c (g_unichar_totitle): Use G_N_ELEMENTS

@@ -171,7 +171,7 @@ struct _GTypeQuery
 #define G_TYPE_FROM_INTERFACE(g_iface)                          (((GTypeInterface*) (g_iface))->g_type)
 
 
-/* debug flags for g_type_init() */
+/* debug flags for g_type_init_with_debug_flags() */
 typedef enum	/*< skip >*/
 {
   G_TYPE_DEBUG_NONE	= 0,

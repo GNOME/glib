@@ -238,15 +238,6 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
     g_signal_handlers_unblock_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
 				       0, 0, NULL, (func), (data))
 
-#ifndef	G_DISABLE_COMPAT
-/* tmp compat, to be nuked soon */
-#define g_signal_connectc(instance, detailed_signal, c_handler, data, swapped) \
-    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (swapped)?G_CONNECT_SWAPPED:0);
-#define	g_signal_newc	g_signal_new
-#define	g_signal_disconnect_by_func 	g_signal_handlers_disconnect_by_func
-#define	g_signal_block_by_func		g_signal_handlers_block_by_func
-#define	g_signal_unblock_by_func	g_signal_handlers_unblock_by_func
-#endif
 
 /*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
