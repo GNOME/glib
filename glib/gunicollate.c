@@ -84,8 +84,8 @@ g_utf8_collate (const gchar *str1,
     }
   else
     {
-      gchar *str1_locale = g_convert (str1_norm, -1, "UTF-8", charset, NULL, NULL, NULL);
-      gchar *str2_locale = g_convert (str2_norm, -1, "UTF-8", charset, NULL, NULL, NULL);
+      gchar *str1_locale = g_convert (str1_norm, -1, charset, "UTF-8", NULL, NULL, NULL);
+      gchar *str2_locale = g_convert (str2_norm, -1, charset, "UTF-8", NULL, NULL, NULL);
 
       if (str1_locale && str2_locale)
 	result =  strcoll (str1_locale, str2_locale);
@@ -226,7 +226,7 @@ g_utf8_collate_key (const gchar *str,
     }
   else
     {
-      gchar *str_locale = g_convert (str_norm, -1, "UTF-8", charset, NULL, NULL, NULL);
+      gchar *str_locale = g_convert (str_norm, -1, charset, "UTF-8", NULL, NULL, NULL);
 
       if (str_locale)
 	{
