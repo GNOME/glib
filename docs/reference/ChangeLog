@@ -1,5 +1,8 @@
 2003-06-06  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/limits.sgml: Correct the documentation for
+	G_MINFLOAT and G_MINDOUBLE.  (#114513, Christophe Fergeau)
+
 	* glib/glib-sections.txt: Add g_vasprintf().
 
 	* glib/tmpl/string_utils.sgml: Add a hint about g_vasprintf() to
