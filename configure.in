@@ -440,7 +440,7 @@ dnl *** check whether we need preceeding underscores
 		  if (handle) {
 		    f1 = dlsym (handle, "glib_underscore_test");
 		    f2 = dlsym (handle, "_glib_underscore_test");
-		  } return !(f2 && !f1);
+		  } return (f2 && !f1);
 		}],
 			glib_cv_uscore=yes
 			G_MODULE_NEED_USCORE=1
