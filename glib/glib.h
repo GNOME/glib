@@ -1538,6 +1538,9 @@ gchar*  g_path_skip_root	(gchar       *file_name);
 /* strings are newly allocated with g_malloc() */
 gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
+
+/* return the environment string for the variable. The returned memory
+ * must not be freed. */
 gchar*  g_getenv		(const gchar *variable);
 
 

@@ -1,3 +1,8 @@
+Wed Aug  9 14:12:03 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h: Backport correct descriptive comment from 
+	1.3.1 so I can close #20285.
+
 2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: glibconfig.h now includes files outside of the
