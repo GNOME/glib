@@ -1,3 +1,14 @@
+Sun Jan 24 10:33:30 1999  Tim Janik  <timj@gtk.org>
+
+	* gutils.c (g_get_any_init): reverted raja's changes, since they leaked
+	a struct passwd contents buffer and for the rest mostly substituted a
+	while loop with a bunch of gotos.
+	restored the getpwuid() code to what we had after my recent clean ups
+	("Sat Jan 23 02:14:28 1999 Tim Janik"), module yosh's recent changes.
+	to feature solaris behaviour of directly returning errno, we don't
+	modify error anymore if it's > 0 and simply reset errno.
+	don't reset g_home_dir for !NATIVE_WIN32 && !NATIVE_WIN32.
+
 1999-01-24  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gutils.c 

@@ -442,67 +442,36 @@ g_get_any_init (void)
 	gpointer buffer = NULL;
 
 #  ifdef HAVE_GETPWUID_R
-	struct passwd pwd;
-	guint bufsize = 1;	/* sizeof (struct passwd); */
-	gint error;
+        struct passwd pwd;
+        guint bufsize = 1; /* sizeof (struct passwd); */
+        gint error;
 
-      pw_retry:
-	buffer = g_malloc (bufsize);
-	
+        do
+          {
+            g_free (buffer);
+            buffer = g_malloc (bufsize);
+
+	    errno = 0;
 #    ifdef HAVE_GETPWUID_R_POSIX
-	/* There appears to be some confusion about what the return
-           value should be, and whether errno is set or not.
-	   So, we are careful about it.  */
-	errno = 0;
-	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-
-	if (error == 0)
-	  goto pw_out;
-
-	/* Some kind of error.
-	   
-	   SUSv2 says returned value is an error code; says nothing
-	   about `errno'.  GNU Libc says some non-null (sic) value and
-	   errno is set.  Either way, this code path is chosen.
-
-	   If `errno' isn't changed, the return value contains the
-	   error code (like ERANGE).
-
-	   If `errno' is changed, then it must be right, irrespective
-	   of whether the return value follows SUSv2 or not.  */
-	if (errno != 0)
-	  error = errno;
-	
+            error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+            error = error < 1 ? errno : error;
 #    else /* !HAVE_GETPWUID_R_POSIX */
-	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	if (pw != NULL)
-	  goto pw_out;
-	/* If it got here, there is an error.  The `uid' should be
-           valid, so there must be something else wrong.  */
-	error = errno;
+            pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+            error = pw ? 0 : errno;
 #    endif /* !HAVE_GETPWUID_R_POSIX */
 
-	/* If it came here, there's some kind of error.  */
-	g_free (buffer);
+            bufsize *= 2;
+          }
+        while (error == ERANGE);
 
-	if (error == ERANGE)
-	  {
-	    bufsize *= 2;
-	    goto pw_retry;
-	  }
+        if (error)
+          g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
 
-	g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
-	/* Make any subsequent g_free (buffer) a no-op.  */
-	buffer = NULL;
-	
-      pw_out:
-	;
-	
 #  else /* !HAVE_GETPWUID_R */
 
-	setpwent ();
-	pw = getpwuid (getuid ());
-	endpwent ();
+        setpwent ();
+        pw = getpwuid (getuid ());
+        endpwent ();
 
 #  endif /* !HAVE_GETPWUID_R */
 	
@@ -529,11 +498,7 @@ g_get_any_init (void)
 	    g_real_name = g_strdup (buffer);
 	  }
       }
-#  else /* !NATIVE_WIN32 */
-      /* why are we forcefully setting g_home_dir to NULL here? */
-      g_free (g_home_dir);
-      g_home_dir = NULL;
-#  endif /* !NATIVE_WIN32 */
+#  endif /* NATIVE_WIN32 */
 
 #endif /* !HAVE_PWD_H */
 
