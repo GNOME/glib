@@ -1,3 +1,8 @@
+2004-12-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Remove a no longer needed hack for 
+	libtool < 1.5.2.  (#100697, Owen Taylor, Sebastian Wilhelmi)
+
 2004-12-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.symbols

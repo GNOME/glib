@@ -1836,14 +1836,10 @@ fi
 # 
 #  a) GCC < 3.3 for Linux doesn't include -lpthread when
 #     building shared libraries with linux.
-#  b) libtool doesn't recognize -pthread as a library dependency.
 #
 case $host in
   *-*-linux*)
     G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
-    ;;
-  *)
-    G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-Wc,-pthread/`"
     ;;
 esac
 
