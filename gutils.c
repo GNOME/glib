@@ -448,10 +448,11 @@ g_get_any_init (void)
         guint bufsize = 64;
         gint error;
 
-        do
+        while (1)
           {
             g_free (buffer);
             buffer = g_malloc (bufsize);
+	    errno = 0;
 
 #    ifdef HAVE_GETPWUID_R_POSIX
             error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
@@ -461,21 +462,38 @@ g_get_any_init (void)
             error = pw ? 0 : errno;
 #    endif /* !HAVE_GETPWUID_R_POSIX */
 
+	    /* Now there are actually only 3 cases to leave the loop:
+	       1. pw != NULL -> all went fine.
+	       2. pw == NULL && ( error == 0 || error == ENOENT ) 
+	            -> no such user (unlikely in the case of getuid ())
+	       3. bufsize > 32k -> the problem can't be of ERANGE type */  
+	    if (pw)
+	      break;
+
+	    if (pw == NULL && ( error == 0 || error == ENOENT))
+	      {
+		g_warning ("getpwuid_r(): failed due to: No such user %d.",
+			   getuid ());
+		break;
+	      }
+      
+	    if (bufsize > 32 * 1024)
+	      {
+		g_warning ("getpwuid_r(): failed due to: %s.",
+			   g_strerror (error));
+		break;
+	      }
+	      
             bufsize *= 2;
-          }
-        while (error == ERANGE);
-
-        if (error)
-          g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
-
-#  else /* !HAVE_GETPWUID_R */
-
-        setpwent ();
-        pw = getpwuid (getuid ());
-        endpwent ();
-
+         }
 #  endif /* !HAVE_GETPWUID_R */
-	
+
+	if (!pw)
+	  {
+	    setpwent ();
+	    pw = getpwuid (getuid ());
+	    endpwent ();
+	  }
 	if (pw)
 	  {
 	    g_user_name = g_strdup (pw->pw_name);

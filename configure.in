@@ -572,7 +572,9 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 		"
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide information on your thread implementation."
+		provide information on your thread implementation.
+		You can also use the '--disable-threads' flag for configure 
+		to compile without thread support."
 
 FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because

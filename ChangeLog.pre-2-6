@@ -1,3 +1,14 @@
+1999-02-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Make the error message in case of a broken thread
+	system a bit more informative.
+
+	* gutils.c (g_get_any_init): Changed the error logic again, now
+	only leaving the memory doubling loop, when success is reached or
+	when the user isn't found or when the buffer is 32k big,
+	additionally now getpwuid will be run, if getpwuid_r didn't work
+	out properly. A warning is issued however.
+
 Thu Feb 04 20:42:24 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32 config.h.win32: Update GLIB_MICRO_VERSION.
