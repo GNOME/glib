@@ -242,7 +242,7 @@ test_signal_accumulator (GSignalInvocationHint *ihint,
   else
     result_string = NULL;
 
-  g_value_set_string_take_ownership (return_accu, result_string);
+  g_value_take_string (return_accu, result_string);
 
   return TRUE;
 }

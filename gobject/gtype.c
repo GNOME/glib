@@ -286,11 +286,17 @@ typedef struct {
   gpointer            cache_data;
   GTypeClassCacheFunc cache_func;
 } ClassCacheFunc;
+typedef struct {
+  gpointer                check_data;
+  GTypeInterfaceCheckFunc check_func;
+} IFaceCheckFunc;
 
 
 /* --- variables --- */
 static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
+static guint           static_n_iface_check_funcs = 0;
+static IFaceCheckFunc *static_iface_check_funcs = NULL;
 static GQuark          static_quark_type_flags = 0;
 static GQuark          static_quark_iface_holder = 0;
 static GQuark          static_quark_dependants_array = 0;
@@ -1642,6 +1648,8 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
 
   g_assert (iface->data && entry && entry->vtable == NULL && iholder && iholder->info);
   
+  entry->init_state = IFACE_INIT;
+
   pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
   if (pnode)	/* want to copy over parent iface contents */
     {
@@ -1673,16 +1681,15 @@ type_iface_vtable_iface_init_Wm (TypeNode *iface,
 				 TypeNode *node)
 {
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
-  IFaceHolder *iholder;
+  IFaceHolder *iholder = type_iface_peek_holder_L (iface, NODE_TYPE (node));
   GTypeInterface *vtable = NULL;
+  guint i;
   
-  iholder = type_iface_peek_holder_L (iface, NODE_TYPE (node));
-  if (!iholder)
-    return;
-
   /* iholder->info should have been filled in by type_iface_vtable_base_init_Wm() */
-  g_assert (iface->data && entry && iholder->info);
+  g_assert (iface->data && entry && iholder && iholder->info);
   
+  entry->init_state = INITIALIZED;
+      
   vtable = entry->vtable;
 
   if (iholder->info->interface_init)
@@ -1691,6 +1698,16 @@ type_iface_vtable_iface_init_Wm (TypeNode *iface,
       if (iholder->info->interface_init)
 	iholder->info->interface_init (vtable, iholder->info->interface_data);
       G_WRITE_LOCK (&type_rw_lock);
+    }
+  
+  for (i = 0; i < static_n_iface_check_funcs; i++)
+    {
+      GTypeInterfaceCheckFunc check_func = static_iface_check_funcs[i].check_func;
+      gpointer check_data = static_iface_check_funcs[i].check_data;
+
+      G_WRITE_UNLOCK (&type_rw_lock);
+      check_func (check_data, (gpointer)vtable);
+      G_WRITE_LOCK (&type_rw_lock);      
     }
 }
 
@@ -1804,8 +1821,6 @@ type_class_init_Wm (TypeNode   *node,
       if (i == CLASSED_NODE_N_IFACES (node))
 	break;
 
-      entry->init_state = IFACE_INIT;
-      
       if (!type_iface_vtable_base_init_Wm (lookup_type_node_I (entry->iface_type), node))
 	{
 	  guint j;
@@ -1865,8 +1880,6 @@ type_class_init_Wm (TypeNode   *node,
       if (i == CLASSED_NODE_N_IFACES (node))
 	break;
 
-      entry->init_state = INITIALIZED;
-      
       type_iface_vtable_iface_init_Wm (lookup_type_node_I (entry->iface_type), node);
       
       /* As in the loop above, additional initialized entries might be inserted
@@ -1891,29 +1904,12 @@ type_iface_vtable_init_Wm (TypeNode *node,
 {
   InitState class_state =
     node->data ? node->data->class.init_state : UNINITIALIZED;
-  InitState new_state = UNINITIALIZED;
   
   if (class_state >= BASE_IFACE_INIT)
-    {
-      type_iface_vtable_base_init_Wm (iface, node);
-      new_state = IFACE_INIT;
-    }
-
-  if (class_state >= IFACE_INIT)
-    {
-      type_iface_vtable_iface_init_Wm (iface, node);
-      new_state = INITIALIZED;
-    }
+    type_iface_vtable_base_init_Wm (iface, node);
   
-  if (class_state != UNINITIALIZED && class_state != INITIALIZED)
-    {
-      /* The interface was added while we were initializing the class
-       */
-      IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
-      g_assert (entry);
-      
-      entry->init_state = new_state;
-    }
+  if (class_state >= IFACE_INIT)
+    type_iface_vtable_iface_init_Wm (iface, node);
 }
 
 static void
@@ -2113,6 +2109,51 @@ g_type_remove_class_cache_func (gpointer            cache_data,
 	       cache_func, cache_data);
 }
 
+
+void
+g_type_add_interface_check (gpointer	            check_data,
+			    GTypeInterfaceCheckFunc check_func)
+{
+  guint i;
+  
+  g_return_if_fail (check_func != NULL);
+  
+  G_WRITE_LOCK (&type_rw_lock);
+  i = static_n_iface_check_funcs++;
+  static_iface_check_funcs = g_renew (IFaceCheckFunc, static_iface_check_funcs, static_n_iface_check_funcs);
+  static_iface_check_funcs[i].check_data = check_data;
+  static_iface_check_funcs[i].check_func = check_func;
+  G_WRITE_UNLOCK (&type_rw_lock);
+}
+
+void
+g_type_remove_interface_check (gpointer                check_data,
+			       GTypeInterfaceCheckFunc check_func)
+{
+  gboolean found_it = FALSE;
+  guint i;
+  
+  g_return_if_fail (check_func != NULL);
+  
+  G_WRITE_LOCK (&type_rw_lock);
+  for (i = 0; i < static_n_iface_check_funcs; i++)
+    if (static_iface_check_funcs[i].check_data == check_data &&
+	static_iface_check_funcs[i].check_func == check_func)
+      {
+	static_n_iface_check_funcs--;
+	g_memmove (static_iface_check_funcs + i,
+		   static_iface_check_funcs + i + 1,
+		   sizeof (static_iface_check_funcs[0]) * (static_n_iface_check_funcs - i));
+	static_iface_check_funcs = g_renew (IFaceCheckFunc, static_iface_check_funcs, static_n_iface_check_funcs);
+	found_it = TRUE;
+	break;
+      }
+  G_WRITE_UNLOCK (&type_rw_lock);
+  
+  if (!found_it)
+    g_warning (G_STRLOC ": cannot remove unregistered class check func %p with data %p",
+	       check_func, check_data);
+}
 
 /* --- type registration --- */
 GType
