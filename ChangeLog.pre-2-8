@@ -1,3 +1,10 @@
+2001-05-14  Havoc Pennington  <hp@redhat.com>
+
+	* gutf8.c (g_utf8_get_char): fix docs; they said we validated 
+	the UTF-8, but we can't possibly detect partial chars since
+	there's no length arg here, so trying to use this function 
+	on invalid UTF-8 is a bad idea.
+
 Thu May 10 23:21:30 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gmessages.c (g_log_write_prefix): Avoid using stderr

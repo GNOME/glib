@@ -243,9 +243,10 @@ g_utf8_strlen (const gchar *p, gint max)
  * @p: a pointer to unicode character encoded as UTF-8
  * 
  * Convert a sequence of bytes encoded as UTF-8 to a unicode character.
+ * If @p does not point to a valid UTF-8 encoded character, results are
+ * undefined.
  * 
- * Return value: the resulting character or (gunichar)-1 if @p does
- *               not point to a valid UTF-8 encoded unicode character
+ * Return value: the resulting character
  **/
 gunichar
 g_utf8_get_char (const gchar *p)
@@ -492,7 +493,7 @@ g_unichar_to_utf8 (gunichar c, gchar *outbuf)
 /**
  * g_utf8_strchr:
  * @p: a nul-terminated utf-8 string
- * @c: a iso-10646 character/
+ * @c: a iso-10646 character
  * 
  * Find the leftmost occurence of the given iso-10646 character
  * in a UTF-8 string.
@@ -1387,7 +1388,7 @@ g_ucs4_to_utf16 (const gunichar  *str,
  * Validates UTF-8 encoded text. @str is the text to validate;
  * if @str is nul-terminated, then @max_len can be -1, otherwise
  * @max_len should be the number of bytes to validate.
- * If @end is non-NULL, then the end of the valid range
+ * If @end is non-%NULL, then the end of the valid range
  * will be stored there (i.e. the address of the first invalid byte
  * if some bytes were invalid, or the end of the text being validated
  * otherwise).
