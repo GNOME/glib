@@ -33,7 +33,8 @@
 
 /**
  * g_printf:
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @Varargs: the arguments to insert in the output.
  *
  * An implementation of the standard printf() function which supports 
@@ -60,7 +61,8 @@ g_printf (gchar const *format,
 /**
  * g_fprintf:
  * @file: the stream to write to.
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @Varargs: the arguments to insert in the output.
  *
  * An implementation of the standard fprintf() function which supports 
@@ -88,7 +90,8 @@ g_fprintf (FILE        *file,
 /**
  * g_sprintf:
  * @string: the buffer to hold the output.
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @Varargs: the arguments to insert in the output.
  *
  * An implementation of the standard sprintf() function which supports 
@@ -118,7 +121,8 @@ g_sprintf (gchar       *string,
  * @string: the buffer to hold the output.
  * @n: the maximum number of characters to produce (including the 
  *     terminating nul character).
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @Varargs: the arguments to insert in the output.
  *
  * A safer form of the standard sprintf() function. The output is guaranteed
@@ -160,7 +164,8 @@ g_snprintf (gchar	*string,
 
 /**
  * g_vprintf:
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard vprintf() function which supports 
@@ -182,7 +187,8 @@ g_vprintf (gchar const *format,
 /**
  * g_vfprintf:
  * @file: the stream to write to.
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard fprintf() function which supports 
@@ -205,7 +211,8 @@ g_vfprintf (FILE        *file,
 /**
  * g_vsprintf:
  * @string: the buffer to hold the output.
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the standard vsprintf() function which supports 
@@ -231,7 +238,8 @@ g_vsprintf (gchar	 *string,
  * @string: the buffer to hold the output.
  * @n: the maximum number of characters to produce (including the 
  *     terminating nul character).
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice 
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @args: the list of arguments to insert in the output.
  *
  * A safer form of the standard vsprintf() function. The output is guaranteed
@@ -270,7 +278,8 @@ g_vsnprintf (gchar	 *string,
 /**
  * g_vasprintf:
  * @string: the return location for the newly-allocated string.
- * @format: the format string. See the printf() documentation.
+ * @format: a standard printf() format string, but notice
+ *          <link linkend="string-precision">string precision pitfalls</link>.
  * @args: the list of arguments to insert in the output.
  *
  * An implementation of the GNU vasprintf() function which supports 
