@@ -1,3 +1,8 @@
+1998-10-20  Elliot Lee  <sopwith@redhat.com>
+
+	* glib.h, gstrfuncs.c: Move string join/split/free routines from
+ 	libgnome/gnome-string, rename, and add g_str_chug.
+
 1998-10-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: made the check for needed _ in module's func-names

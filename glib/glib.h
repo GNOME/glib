@@ -1351,6 +1351,7 @@ gchar*	 g_strnfill		(guint	      length,
 				 gchar	      fill_char);
 gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
+#define  g_str_join g_strconcat
 gdouble	 g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
 gchar*	 g_strerror		(gint	      errnum);
@@ -1362,6 +1363,26 @@ void	 g_strup		(gchar	     *string);
 void	 g_strreverse		(gchar	     *string);
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
+
+/* removes leading spaces */
+gchar *  g_str_chug             (gchar *astring,
+				 gboolean in_place);
+/* removes trailing spaces */
+gchar *  g_str_chomp            (gchar *astring,
+				 gboolean in_place);
+/* removes leading & trailing spaces */
+#define g_str_strip(astring, in_place) \
+        g_str_chomp(g_str_chug(astring, in_place), FALSE)
+
+/* these routines that work with string arrays in which the last
+   element is NULL */
+gchar ** g_str_split            (const gchar *string,
+				 const gchar *delim,
+				 gint max_tokens);
+gchar*	 g_strconcatv		(const gchar **strarray);
+#define  g_str_joinv g_str_concatv
+void     g_str_array_free       (gchar **strarray);
+
 
 /* calculate a string size, guarranteed to fit format + args.
  */
