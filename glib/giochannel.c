@@ -180,6 +180,15 @@ g_io_channel_read (GIOChannel *channel,
   g_return_val_if_fail (channel != NULL, G_IO_ERROR_UNKNOWN);
   g_return_val_if_fail (bytes_read != NULL, G_IO_ERROR_UNKNOWN);
 
+  if (count == 0)
+    {
+      if (bytes_read)
+        *bytes_read = 0;
+      return G_IO_STATUS_NORMAL;
+    }
+
+  g_return_val_if_fail (buf != NULL, G_IO_ERROR_UNKNOWN);
+
   status = channel->funcs->io_read (channel, buf, count, bytes_read, &err);
 
   error = g_io_error_get_from_g_error (status, err);
@@ -550,7 +559,7 @@ g_io_channel_error_from_errno (gint en)
 
 #ifdef EFAULT
     case EFAULT:
-      g_warning("File descriptor outside valid address space.\n");
+      g_warning("Buffer outside valid address space.\n");
       return G_IO_CHANNEL_ERROR_FAILED;
 #endif
 

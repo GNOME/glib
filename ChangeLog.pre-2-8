@@ -1,3 +1,11 @@
+2003-01-25  Ron Steinke  <rsteinke@w-link.net>
+
+	(Ancient, binary compatible fixes found sitting in my tree)
+
+	* Added early checks for count == 0 and buf == NULL in g_io_channel_read()
+
+	* Better error message for EFAULT in  g_io_channel_error_from_errno()
+
 2003-01-04  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (BUILT_EXTRA_DIST): Don't distribute glib-zip.
