@@ -1,3 +1,20 @@
+2004-09-22  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (install-libtool-import-lib): [Win32] Add code to
+	remove the bug-compatibility entries (see #134813, and related
+	comments below) from the import library. The PRIVATE keyword in
+	the .def file is supposed to mean that, but it isn't implemented
+	yet by GNU ld.
+
+	* makegobjectalias.pl: In case the symbol is followed by some
+	stuff ("PRIVATE") that's intended for the .def file, use just the
+	actual symbol.
+
+	* gobject.symbols: For binary bug compatibility on Win32, add the
+	g_slist_remove_all and g_unichar_validate symbols inside #ifdef
+	INCLUDE_INTERNAL_SYMBOLS. (See #134813 and log entries from March
+	below.)
+
 2004-09-18 Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.3 ===

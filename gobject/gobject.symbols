@@ -319,3 +319,7 @@ g_value_unset
 #ifdef INCLUDE_VARIABLES
 g_param_spec_types
 #endif
+#ifdef INCLUDE_INTERNAL_SYMBOLS
+g_slist_remove_all PRIVATE
+g_unichar_validate PRIVATE
+#endif

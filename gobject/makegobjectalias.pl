@@ -75,6 +75,8 @@ while (<>) {
 
   my $str = $_;
   chomp($str);
+  # Drop any Win32 specific .def file syntax
+  $str = (split (/ /, $str))[0];
   my $alias = "IA__".$str;
   
   print <<EOF
