@@ -1173,9 +1173,8 @@ g_source_unref_internal (GSource      *source,
 			 GMainContext *context,
 			 gboolean      have_lock)
 {
-  gpointer cb_data = NULL;
-  GSourceCallbackFuncs *cb_funcs = NULL;
-  GSList *tmp_list;
+  gpointer old_cb_data = NULL;
+  GSourceCallbackFuncs *old_cb_funcs = NULL;
 
   g_return_if_fail (source != NULL);
   
@@ -1185,6 +1184,12 @@ g_source_unref_internal (GSource      *source,
   source->ref_count--;
   if (source->ref_count == 0)
     {
+      old_cb_data = source->callback_data;
+      old_cb_funcs = source->callback_funcs;
+
+      source->callback_data = NULL;
+      source->callback_funcs = NULL;
+
       if (context && !SOURCE_DESTROYED (source))
 	{
 	  g_warning (G_STRLOC ": ref_count == 0, but source is still attached to a context!");
@@ -1204,12 +1209,12 @@ g_source_unref_internal (GSource      *source,
   if (!have_lock && context)
     UNLOCK_CONTEXT (context);
 
-  if (cb_data)
+  if (old_cb_funcs)
     {
       if (have_lock)
 	UNLOCK_CONTEXT (context);
       
-      cb_funcs->unref (cb_data);
+      old_cb_funcs->unref (old_cb_data);
 
       if (have_lock)
 	LOCK_CONTEXT (context);

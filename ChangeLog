@@ -1,3 +1,9 @@
+Wed Dec 13 20:41:49 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_source_unref_internal): Unref callback->cb_data
+	if it was still set when the source is freed. (Usually, this
+	will be done by g_source_destroy.)
+
 2001-01-02  Dan Winship  <danw@helixcode.com>
 
 	* garray.h (g_array_append_val, g_array_prepend_val,
