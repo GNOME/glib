@@ -24,7 +24,6 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
 #include <stdio.h>
@@ -48,12 +47,6 @@ else \
 } G_STMT_END
 
 #define GLIB_TEST_STRING "el dorado "
-#define GLIB_TEST_STRING_5 "el do"
-
-typedef struct {
-	guint age;
-	gchar name[40];
-} GlibTestInfo;
 
 static gboolean
 strv_check (gchar **strv, ...)
@@ -107,22 +100,22 @@ main (int   argc,
   TEST (NULL, g_ascii_strcasecmp ("B", "a") > 0);
   TEST (NULL, g_ascii_strcasecmp ("B", "A") > 0);
 
-  g_assert(g_strdup(NULL) == NULL);
-  string = g_strdup(GLIB_TEST_STRING);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+  TEST (NULL, g_strdup (NULL) == NULL);
+  string = g_strdup (GLIB_TEST_STRING);
+  TEST (NULL, string != NULL);
+  TEST (NULL, strcmp (string, GLIB_TEST_STRING) == 0);
   g_free(string);
-
-  string = g_strconcat(GLIB_TEST_STRING, NULL);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+  
+  string = g_strconcat (GLIB_TEST_STRING, NULL);
+  TEST (NULL, string != NULL);
+  TEST (NULL, strcmp (string, GLIB_TEST_STRING) == 0);
   g_free(string);
-
-  string = g_strconcat(GLIB_TEST_STRING, GLIB_TEST_STRING, 
-  		       GLIB_TEST_STRING, NULL);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
-  			  GLIB_TEST_STRING) == 0);
+  
+  string = g_strconcat (GLIB_TEST_STRING, GLIB_TEST_STRING, 
+			GLIB_TEST_STRING, NULL);
+  TEST (NULL, string != NULL);
+  TEST (NULL, strcmp (string, GLIB_TEST_STRING GLIB_TEST_STRING
+		      GLIB_TEST_STRING) == 0);
   g_free(string);
   
   string = g_strdup_printf ("%05d %-5s", 21, "test");
@@ -131,27 +124,26 @@ main (int   argc,
   g_free (string);
   
   TEST (NULL, strcmp
-	    (g_strcompress("abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313\\12345z"),
-	     "abc\\\"\b\f\n\r\t\003\177\234\313\12345z") == 0);
+	(g_strcompress ("abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313\\12345z"),
+	 "abc\\\"\b\f\n\r\t\003\177\234\313\12345z") == 0);
+  TEST (NULL, strcmp (g_strescape("abc\\\"\b\f\n\r\t\003\177\234\313", NULL),
+		      "abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313") == 0);
   TEST (NULL, strcmp(g_strescape("abc\\\"\b\f\n\r\t\003\177\234\313",
-			       NULL),
-		   "abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313") == 0);
-  TEST (NULL, strcmp(g_strescape("abc\\\"\b\f\n\r\t\003\177\234\313",
-			       "\b\f\001\002\003\004"),
-		   "abc\\\\\\\"\b\f\\n\\r\\t\003\\177\\234\\313") == 0);
+				 "\b\f\001\002\003\004"),
+		     "abc\\\\\\\"\b\f\\n\\r\\t\003\\177\\234\\313") == 0);
 
   copy = g_strdupv (vec);
   TEST (NULL, strcmp (copy[0], "Foo") == 0);
   TEST (NULL, strcmp (copy[1], "Bar") == 0);
   TEST (NULL, copy[2] == NULL);
   g_strfreev (copy);
-
+  
   TEST (NULL, strcmp (g_strstr_len ("FooBarFooBarFoo", 6, "Bar"),
-		    "BarFooBarFoo") == 0);
+		      "BarFooBarFoo") == 0);
   TEST (NULL, strcmp (g_strrstr ("FooBarFooBarFoo", "Bar"),
-		    "BarFoo") == 0);
+		      "BarFoo") == 0);
   TEST (NULL, strcmp (g_strrstr_len ("FooBarFooBarFoo", 14, "BarFoo"),
-		    "BarFooBarFoo") == 0);
+		      "BarFooBarFoo") == 0);
 
   TEST (NULL, strv_check (g_strsplit ("", ",", 0), "", NULL));
   TEST (NULL, strv_check (g_strsplit ("x", ",", 0), "x", NULL));
