@@ -1,6 +1,15 @@
+Mon Oct 29 11:29:37 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-2.0.m4: Don't try to use PKG_CONFIG
+	when we didn't find it. (#62944, Eric Lemings)
+
+	* m4macros/glib-2.0.m4: Fix problem with spaces around =
+	sign in assignment. (#63209, Arkadiusz Miskiewicz)
+
 Mon Oct 29 10:59:36 2001  Owen Taylor  <otaylor@redhat.com>
 
-	* configure.in: Add gobject/glib-mkenums to AC_OUTPUT.
+	* configure.in: Check for path to Perl, add gobject/glib-mkenums 
+	to AC_OUTPUT. (#63093, Dan Winship)
 
 Mon Oct 29 10:55:12 2001  Owen Taylor  <otaylor@redhat.com>
 

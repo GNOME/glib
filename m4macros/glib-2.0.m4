@@ -40,21 +40,25 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
       no_glib=yes
       PKG_CONFIG=no
     fi
-  fi
-
-  ## don't try to run the test against uninstalled libtool libs
-  if $PKG_CONFIG --uninstalled $pkg_config_args; then
-        echo "Will use uninstalled version of GLib found in PKG_CONFIG_PATH"
-        enable_glibtest=no
+  else
+    no_glib=yes
   fi
 
   min_glib_version=ifelse([$1], ,1.3.3,$1)
   AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
 
-  if $PKG_CONFIG --atleast-version $min_glib_version $pkg_config_args; then
-        :
-  else
-        no_glib = yes
+  if test x$PKG_CONFIG != xno ; then
+    ## don't try to run the test against uninstalled libtool libs
+    if $PKG_CONFIG --uninstalled $pkg_config_args; then
+	  echo "Will use uninstalled version of GLib found in PKG_CONFIG_PATH"
+	  enable_glibtest=no
+    fi
+
+    if $PKG_CONFIG --atleast-version $min_glib_version $pkg_config_args; then
+	  :
+    else
+	  no_glib=yes
+    fi
   fi
 
   if test x"$no_glib" = x ; then
