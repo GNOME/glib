@@ -22,3 +22,11 @@ stamp-gc-h
 testgdate
 testgdateparser
 glibconfig-sysdefs.h
+alloca-test
+hash-test
+list-test
+node-test
+relation-test
+slist-test
+string-test
+array-test

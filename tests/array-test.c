@@ -48,90 +48,60 @@ typedef struct {
 } GlibTestInfo;
 
 
-static gboolean
-my_hash_callback_remove (gpointer key,
-			 gpointer value,
-			 gpointer user_data)
-{
-  int *d = value;
-
-  if ((*d) % 2)
-    return TRUE;
-
-  return FALSE;
-}
-
-static void
-my_hash_callback_remove_test (gpointer key,
-			      gpointer value,
-			      gpointer user_data)
-{
-  int *d = value;
-
-  if ((*d) % 2)
-    g_print ("bad!\n");
-}
-
-static void
-my_hash_callback (gpointer key,
-		  gpointer value,
-		  gpointer user_data)
-{
-  int *d = value;
-  *d = 1;
-}
-
-static guint
-my_hash (gconstpointer key)
-{
-  return (guint) *((const gint*) key);
-}
-
-static gint
-my_hash_compare (gconstpointer a,
-		 gconstpointer b)
-{
-  return *((const gint*) a) == *((const gint*) b);
-}
-
-
 int
 main (int   argc,
       char *argv[])
 {
-  GHashTable *hash_table;
   gint i;
+  GArray *garray;
+  GPtrArray *gparray;
+  GByteArray *gbarray;
 
-  hash_table = g_hash_table_new (my_hash, my_hash_compare);
+  /* array tests */
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  for (i = 0; i < 10000; i++)
+    g_array_append_val (garray, i);
+
+  for (i = 0; i < 10000; i++)
+    g_assert (g_array_index (garray, gint, i) == i);
+
+  g_array_free (garray, TRUE);
+
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  for (i = 0; i < 100; i++)
+    g_array_prepend_val (garray, i);
+
+  for (i = 0; i < 100; i++)
+    g_assert (g_array_index (garray, gint, i) == (100 - i - 1));
+
+  g_array_free (garray, TRUE);
+
+  /* pointer arrays */
+  gparray = g_ptr_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_ptr_array_add (gparray, GINT_TO_POINTER (i));
+
+  for (i = 0; i < 10000; i++)
+    if (g_ptr_array_index (gparray, i) != GINT_TO_POINTER (i))
+      g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
+
+  g_ptr_array_free (gparray, TRUE);
+
+  /* byte arrays */
+  gbarray = g_byte_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_byte_array_append (gbarray, (guint8*) "abcd", 4);
+
   for (i = 0; i < 10000; i++)
     {
-      array[i] = i;
-      g_hash_table_insert (hash_table, &array[i], &array[i]);
-    }
-  g_hash_table_foreach (hash_table, my_hash_callback, NULL);
-
-  for (i = 0; i < 10000; i++)
-    if (array[i] == 0)
-      g_assert_not_reached();
-
-  for (i = 0; i < 10000; i++)
-    g_hash_table_remove (hash_table, &array[i]);
-
-  for (i = 0; i < 10000; i++)
-    {
-      array[i] = i;
-      g_hash_table_insert (hash_table, &array[i], &array[i]);
+      g_assert (gbarray->data[4*i] == 'a');
+      g_assert (gbarray->data[4*i+1] == 'b');
+      g_assert (gbarray->data[4*i+2] == 'c');
+      g_assert (gbarray->data[4*i+3] == 'd');
     }
 
-  if (g_hash_table_foreach_remove (hash_table, my_hash_callback_remove, NULL) != 5000 ||
-      g_hash_table_size (hash_table) != 5000)
-    g_assert_not_reached();
-
-  g_hash_table_foreach (hash_table, my_hash_callback_remove_test, NULL);
-
-
-  g_hash_table_destroy (hash_table);
+  g_byte_array_free (gbarray, TRUE);
 
   return 0;
-
 }
+

@@ -3,6 +3,7 @@ INCLUDES = -I..
 
 TESTS = \
 	alloca-test	\
+	array-test	\
 	hash-test	\
 	list-test	\
 	node-test	\
@@ -13,6 +14,7 @@ TESTS = \
 noinst_PROGRAMS = $(TESTS)
 
 alloca_test_LDADD = ../libglib.la
+array_test_LDADD = ../libglib.la
 hash_test_LDADD = ../libglib.la
 list_test_LDADD = ../libglib.la
 node_test_LDADD = ../libglib.la
