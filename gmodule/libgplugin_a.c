@@ -42,7 +42,7 @@ gplugin_say_boo_func (void)
   g_print ("GPluginA: BOOH!\n");
 }
 
-void
+G_MODULE_EXPORT void
 gplugin_a_module_func (GModule *module)
 {
   void(*f)(void) = NULL;

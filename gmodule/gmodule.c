@@ -66,6 +66,9 @@ g_module_find_by_handle (gpointer handle)
 {
   GModule *module;
 
+  if (main_module && main_module->handle == handle)
+    return main_module;
+
   for (module = modules; module; module = module->next)
     if (handle == module->handle)
       return module;
@@ -180,21 +183,18 @@ g_module_open (const gchar    *file_name,
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
       module->handle = handle;
-      module->ref_count = 0;
+      module->ref_count = 1;
       module->de_init = NULL;
-      module->next = NULL;
+      module->next = modules;
+      modules = module;
 
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", &check_init))
 	check_failed = check_init (module);
 
-      /* should call de_init() on failed initializations also? */
+      /* we don't call de_init() if the initialization check failed. */
       if (!check_failed)
 	g_module_symbol (module, "g_module_de_init", &module->de_init);
-
-      module->ref_count += 1;
-      module->next = modules;
-      modules = module;
 
       if (check_failed)
 	{
@@ -214,13 +214,15 @@ gboolean
 g_module_close (GModule        *module)
 {
   CHECK_ERROR (FALSE);
-
+  
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (module->ref_count > 0, FALSE);
-
+  
   if (module != main_module)
     module->ref_count--;
-
+  
+  if (!module->ref_count && module->de_init)
+    module->de_init (module);
   if (!module->ref_count)
     {
       GModule *last;
@@ -242,9 +244,6 @@ g_module_close (GModule        *module)
 	  node = last->next;
 	}
       module->next = NULL;
-
-      if (module->de_init)
-	module->de_init (module);
 
       _g_module_close (&module->handle, FALSE);
       g_free (module->file_name);
