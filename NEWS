@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.6.3 to GLib 2.6.4
+=================================================
+* Fix compilation with gcc 4.0 [Matthias Clasen]
+* Fix g_date_get_iso8601_week_of_year [Jon-Kare Hellan]
+* Win32:
+  - use more precise times in gtimer.c [Tor Lillqvist]
+  - bug fixes [Tor, Daniel Atallah]
+* Other bug fixes [Tim Janik, Matthias, Manish Singh,
+  Dave Benson, Jeff Franks]
+* Documentation improvements [Tim-Philipp Müller, Matthias,
+  Stefan Kost, Tor, Jared Lash]
+* New and updated translations (el,fa,hu,id,ro,rw)
+Bugs fixed: 169348,169858,170445,170566,159507,168352,165852,171005,167614,170148,170149
+
 Overview of Changes from GLib 2.6.2 to GLib 2.6.3
 =================================================
 * GOption
