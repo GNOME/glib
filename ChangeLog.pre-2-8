@@ -1,3 +1,13 @@
+1998-12-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* docs/glib-config.1: Updated to reflect the existence of gthread.
+
+	* gmain.c (g_main_poll_add_unlocking): Changed
+	g_main_poll_add_unlocked to g_main_poll_add_unlocking to match
+	semantic, (indeed, main_loop must be locked, when calling this
+	function). Removed the unlocking from the end of that function, as
+	that is not right. Made a 'HOLDS' comment above the function.
+
 Wed Dec 16 03:16:58 1998  Tim Janik  <timj@gtk.org>
 
         * configure.in: version bump to 1.1.8, binary age 0, interface age 0.
