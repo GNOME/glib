@@ -1,14 +1,14 @@
 # glib20's Portuguese Translation
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
-"PO-Revision-Date: 2001-12-25 21:41+0000\n"
+"POT-Creation-Date: 2002-03-04 23:46+0000\n"
+"PO-Revision-Date: 2002-03-04 23:48+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
-"Language-Team: Portuguese <none@none.org>\n"
+"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,9 +61,9 @@ msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' é inválido"
 
 #: glib/gconvert.c:1632
-#, fuzzy, c-format
+#, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "O nome de servidor do URI '%s' contém caracteres mascarados inválidos"
+msgstr "O nome de servidor do URI '%s' é inválido"
 
 #: glib/gconvert.c:1648
 #, c-format
@@ -76,9 +76,8 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho '%s' não é um caminho absoluto"
 
 #: glib/gconvert.c:1729
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "Sequência de bytes inválida no nome de servidor"
+msgstr "Nome de servidor inválido"
 
 #: glib/gdir.c:79
 #, c-format
@@ -399,19 +398,19 @@ msgstr "Texto citado não começa com uma aspa"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Aspa sem par na linha de comando ou outro texto de consola citado"
 
-#: glib/gshell.c:528
+#: glib/gshell.c:529
 #, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "Texto terminou logo após um caracter ''. (o texto era '%s')"
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Texto terminou logo após um caracter '\\'. (O texto era '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Texto terminou antes da aspa equivalente ter sido encontrada para %c. (texto "
 "era '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Texto estava vazio (ou apenas continha espaços)"
 
