@@ -1,3 +1,8 @@
+Mon Oct 29 10:55:12 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/libcharset/Makefile.am (EXTRA_DIST): Dist
+	ref-add.sin, ref-del.sin. (#63092, Dan Winship)
+
 2001-10-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gmain.c (g_main_loop_quit): Conditionalize thread related

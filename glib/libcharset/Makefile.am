@@ -15,6 +15,8 @@ EXTRA_DIST = 			\
 	charset.alias		\
 	ref-add.sed		\
 	ref-del.sed		\
+	ref-add.sin		\
+	ref-del.sin		\
 	glibc21.m4		\
 	codeset.m4		\
 	update.sh		\
