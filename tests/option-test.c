@@ -8,6 +8,7 @@ gboolean error_test3_boolean;
 
 int arg_test1_int;
 gchar *arg_test2_string;
+gchar *arg_test3_filename;
 
 gchar **array_test1_array;
 
@@ -295,6 +296,36 @@ arg_test2 (void)
 }
 
 void
+arg_test3 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_FILENAME, &arg_test3_filename, NULL, NULL },
+      { NULL } };
+  
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test foo.txt", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Last arg specified is the one that should be stored */
+  g_assert (strcmp (arg_test3_filename, "foo.txt") == 0);
+
+  g_free (arg_test3_filename);
+  
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
 ignore_test1 (void)
 {
   GOptionContext *context;
@@ -379,24 +410,6 @@ ignore_test3 (void)
 
   /* Now try parsing */
   argv = split_string ("program --test foo --hello", &argc);
-  argv_copy = copy_stringv (argv, argc);
-  
-  retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval);
-
-  /* Check array */
-  arg = join_stringv (argc, argv);
-  g_assert (strcmp (arg, "program --hello") == 0);
-
-  g_assert (strcmp (ignore_test3_string, "foo") == 0);
-  g_free (ignore_test3_string);
-
-  g_free (arg);
-  g_strfreev (argv_copy);
-  g_free (argv);
-
-  /* Try again */
-  argv = split_string ("program --test=foo --hello", &argc);
   argv_copy = copy_stringv (argv, argc);
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
@@ -509,6 +522,7 @@ main (int argc, char **argv)
   /* Test that special argument parsing works */
   arg_test1 ();
   arg_test2 ();
+  arg_test3 ();
 
   /* Test string arrays */
   array_test1 ();

@@ -542,6 +542,7 @@ parse_arg (GOptionContext *context,
 	change->prev.str = *(gchar **)entry->arg_data;
 	change->allocated.str = data;
 
+	*(gchar **)entry->arg_data = data;
 	break;
       }
 
