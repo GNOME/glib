@@ -1188,27 +1188,6 @@ esac
 AC_MSG_RESULT($GIO)
 AC_SUBST(GIO)
 
-dnl check for cpu to enable double checked locking when possible
-dnl ************************************************************
-
-if test x"$have_threads" != xno; then
-	AC_MSG_CHECKING(whether double checked locking is safe)
-	# According to glibc/linuxthreads the following platforms do
-	# not have the notion of a read or write memory barrier and
-	# therefore the double checked locking should be safe. Have a
-	# look at pthread_once in glibc/linuxthreads/mutex.c to see,
-	# what this means.
-	case $host_cpu in
-		arm|hppa|i386|i686|ia64|m68k|sh|cris|x86_64)
-			g_use_double_checked_locking=yes
-		;;
-		*)
-			g_use_double_checked_locking=no
-		;;
-	esac
-	AC_MSG_RESULT($g_use_double_checked_locking)
-fi
-
 dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************
@@ -2233,24 +2212,6 @@ typedef struct _GMutex* GStaticMutex;
 _______EOF
 	fi
 
-	if test x$g_use_double_checked_locking = xyes; then
-		cat >>$outfile <<_______EOF
-/* double checked locking can be used on this platform */
-#define g_once(once, func, arg) \\
-  ((once)->status == G_ONCE_STATUS_READY ? (once)->retval : \\
-   g_once_impl (once, func, arg))
-#define g_static_mutex_get_mutex_impl_shortcut(mutex) \\
-  (*(mutex) ? *(mutex) : g_static_mutex_get_mutex_impl (mutex))
-_______EOF
-	else
-		cat >>$outfile <<_______EOF
-/* double checked locking is unsafe to use on this platform, do full locking */
-#define g_once(once, func, arg) (g_once_impl(once, func, arg))
-#define g_static_mutex_get_mutex_impl_shortcut(mutex) \\
-  (g_static_mutex_get_mutex_impl (mutex))
-_______EOF
-fi		
-
 	cat >>$outfile <<_______EOF
 /* This represents a system thread as used by the implementation. An
  * alien implementaion, as loaded by g_thread_init can only count on
@@ -2565,7 +2526,6 @@ xno)	g_enable_threads_def="#undef";;
 esac
 
 g_threads_impl_def=$g_threads_impl
-g_use_double_checked_locking=$g_use_double_checked_locking
 
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"

@@ -1,5 +1,14 @@
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
+	* glib/gatomic.h: empty G_ATOMIC_MEMORY_BARRIER() definition for
+	!G_THREADS_ENABLED
+
+	* glib/gthread.h: Define g_once and
+	g_static_mutex_get_mutex_impl_shortcut in terms of
+	G_MEMORY_BARRIER, if defined and if we can inline.
+
+	* configure.in: Remove double checked locking feature check.
+
 	* configure.in, config.h.win32.in, glib/gthread.c: Removed the PID
 	niceness surrogate for thread priorities as requested by Tim. It
 	does more harm than good.

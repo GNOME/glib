@@ -29,6 +29,8 @@
 
 #include <glib/gerror.h>
 #include <glib/gtypes.h>
+#include <glib/gutils.h>  /* for G_CAN_INLINE */
+#include <glib/gatomic.h>  /* for G_ATOMIC_MEMORY_BARRIER */
 
 G_BEGIN_DECLS
 
@@ -301,6 +303,30 @@ struct _GOnce
 #define G_ONCE_INIT { G_ONCE_STATUS_NOTCALLED, NULL }
 
 gpointer g_once_impl (GOnce *once, GThreadFunc func, gpointer arg);
+
+#if defined (G_CAN_INLINE) && defined (G_ATOMIC_MEMORY_BARRIER)
+static inline gpointer 
+g_once (GOnce *once, GThreadFunc func, gpointer arg)
+{
+  if (once->status != G_ONCE_STATUS_READY)
+    return g_once_impl (once, func, arg);
+
+  G_ATOMIC_MEMORY_BARRIER ();
+  return once->retval;
+}
+static inline GMutex* 
+g_static_mutex_get_mutex_impl_shortcut (GMutex **mutex)
+{
+  if (! *mutex)
+    return g_static_mutex_get_mutex_impl (mutex);
+
+  G_ATOMIC_MEMORY_BARRIER ();
+  return *mutex;  
+}
+#else /* !G_CAN_INLINE || !G_ATOMIC_MEMORY_BARRIER */
+# define g_once g_once_impl
+# define g_static_mutex_get_mutex_impl_shortcut g_static_mutex_get_mutex_impl
+#endif /* G_CAN_INLINE && G_ATOMIC_MEMORY_BARRIER*/
 
 /* these are some convenience macros that expand to nothing if GLib
  * was configured with --disable-threads. for using StaticMutexes,

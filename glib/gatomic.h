@@ -341,7 +341,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
   return result == oldval;
 }
 
-#     define  G_ATOMIC_MEMORY_BARRIER() /* Not needed */
+#     define G_ATOMIC_MEMORY_BARRIER() /* Not needed */
 
 #   elif defined(G_ATOMIC_INLINED_IMPLEMENTATION_POWERPC)
 /* Adapted from CVS version 1.12 of glibc's sysdeps/powerpc/bits/atomic.h 
@@ -450,7 +450,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 #       error "Your system has an unsupported pointer size"
 #     endif /* GLIB_SIZEOF_VOID_P */
 
-#     define  G_ATOMIC_MEMORY_BARRIER() __asm ("sync" : : : "memory")
+#     define G_ATOMIC_MEMORY_BARRIER() __asm ("sync" : : : "memory")
 
 #   elif defined(G_ATOMIC_INLINED_IMPLEMENTATION_IA64)
 /* Adapted from CVS version 1.8 of glibc's sysdeps/ia64/bits/atomic.h
@@ -486,7 +486,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 					  (long)oldval, (long)newval);
 }
 
-#     define  G_ATOMIC_MEMORY_BARRIER() __sync_synchronize ()
+#     define G_ATOMIC_MEMORY_BARRIER() __sync_synchronize ()
 
 #   else /* !G_ATOMIC_INLINED_IMPLEMENTATION_... */
 #     define G_ATOMIC_USE_FALLBACK_IMPLEMENTATION
@@ -503,6 +503,7 @@ gint32 g_atomic_int_exchange_and_add (gint32 *atomic, gint32  val);
   (*(atomic) == (oldval) ? (*(atomic) = (newval), TRUE) : FALSE)
 # define g_atomic_int_get(atomic) (*(atomic))
 # define g_atomic_pointer_get(atomic) (*(atomic))
+# define G_ATOMIC_MEMORY_BARRIER() /* Not needed */
 #endif /* G_THREADS_ENABLED */
 
 #ifdef G_ATOMIC_USE_FALLBACK_IMPLEMENTATION
