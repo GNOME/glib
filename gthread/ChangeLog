@@ -1,3 +1,11 @@
+2001-09-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Add g_thread_equal_posix_impl and add to the
+	function vector g_thread_functions_for_glib_use_default.
+	
+	* gthread-solaris.c, gthread-win32.c: Add NULL as equal function,
+	as on those two platforms you don't need an equal function.
+
 2001-09-19  Tor Lillqvist  <tml@iki.fi>
 
 	* gthread.rc.in: Correct InternalName and OriginalFilename to

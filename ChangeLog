@@ -1,3 +1,11 @@
+2001-09-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gthread.h (GThreadFunctions): Add thread_equal function to
+	allow for platform defined function to compare two threads.
+
+	* glib/gthread.c: Use g_thread_functions_for_glib_use.thread_equal
+	when non-NULL instead of ==.
+	
 Wed Sep 19 10:44:25 2001  Tim Janik  <timj@gtk.org>
 
 	* Released 1.3.8.

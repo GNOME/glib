@@ -102,6 +102,8 @@ struct _GThreadFunctions
   void      (*thread_set_priority)(gpointer              thread,
                                    GThreadPriority       priority);
   void      (*thread_self)        (gpointer              thread);
+  gboolean  (*thread_equal)       (gpointer              thread1,
+				   gpointer              thread2);
 };
 
 GLIB_VAR GThreadFunctions       g_thread_functions_for_glib_use;

@@ -270,5 +270,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_join_solaris_impl,
   g_thread_exit_solaris_impl,
   g_thread_set_priority_solaris_impl,
-  g_thread_self_solaris_impl
+  g_thread_self_solaris_impl,
+  NULL /* no equal function necessary on Solaris */
 };

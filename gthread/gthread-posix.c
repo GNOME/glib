@@ -383,6 +383,12 @@ g_thread_self_posix_impl (gpointer thread)
   *(pthread_t*)thread = pthread_self();
 }
 
+static gboolean
+g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
+{
+  return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
+}
+
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_posix_impl,
@@ -404,5 +410,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_join_posix_impl,
   g_thread_exit_posix_impl,
   g_thread_set_priority_posix_impl,
-  g_thread_self_posix_impl
+  g_thread_self_posix_impl,
+  g_thread_equal_posix_impl
 };

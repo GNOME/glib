@@ -137,6 +137,7 @@ This struct should only be used, if you know, what you are doing.
 @thread_exit: 
 @thread_set_priority: 
 @thread_self: 
+@thread_equal: 
 
 <!-- ##### FUNCTION g_thread_init ##### -->
 
