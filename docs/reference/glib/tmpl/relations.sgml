@@ -83,7 +83,7 @@ Note that this must be called before any records are added to the #GRelation.
 @relation: a #GRelation.
 @field: the field to index, counting from 0.
 @hash_func: a function to produce a hash value from the field data.
-@key_compare_func: a function to compare two values of the given field.
+@key_equal_func: a function to compare two values of the given field.
 
 
 <!-- ##### FUNCTION g_relation_insert ##### -->

@@ -69,12 +69,12 @@ Hash values are used to determine where keys are stored within the
 #GHashTable data structure.
 The g_direct_hash(), g_int_hash() and g_str_hash() functions are provided for
 some common types of keys. If hash_func is NULL, g_direct_hash() is used.
-@key_compare_func: a function to compare two keys to see if they are equal.
-This is used when looking up keys in the #GHashTable.
-The g_direct_equal(), g_int_equal() and g_str_equal() functions are provided
-for the most common types of keys. If compare_func is NULL, keys are compared
-directly in a similar fashion to g_direct_equal(), but without the overhead
-of a function call.
+@key_equal_func: a function to check two keys for equality.  This is
+used when looking up keys in the #GHashTable.  The g_direct_equal(),
+g_int_equal() and g_str_equal() functions are provided for the most
+common types of keys. If @key_equal_func is NULL, keys are compared
+directly in a similar fashion to g_direct_equal(), but without the
+overhead of a function call.
 @Returns: a new #GHashTable.
 
 
@@ -102,30 +102,16 @@ lookup.
 @Returns: the hash value corresponding to the key.
 
 
-<!-- ##### USER_FUNCTION GCompareFunc ##### -->
+<!-- ##### USER_FUNCTION GEqualFunc ##### -->
 <para>
-Specifies the type of a comparison function used to compare two values.
-The value which should be returned depends on the context in which the
-#GCompareFunc is used.
-</para>
-<para>
-In g_hash_table_new(), g_cache_new(), and g_relation_index() the function
-should return TRUE if the two parameters are equal, or FALSE if they are not.
-</para>
-<para>
-In g_list_find_custom() and g_slist_find_custom() the function should return
-0 if the two parameters are equal.
-</para>
-<para>
-In g_list_insert_sorted(), g_list_sort(), g_slist_insert_sorted(),
-g_slist_sort() and g_tree_new()  the function should return a negative integer
-if the first value comes before the second, 0 if they are equal, or a positive
-integer if the first value comes after the second.
+Specifies the type of a function used to test two values for
+equality. The function should return TRUE if both values are equal and
+FALSE otherwise.
 </para>
 
 @a: a value.
 @b: a value to compare with.
-@Returns: TRUE if the two values are equivalent.
+@Returns: TRUE if @a = @b; FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
@@ -285,7 +271,7 @@ first.
 <!-- ##### FUNCTION g_direct_equal ##### -->
 <para>
 Compares two #gpointer arguments and returns TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
+It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using pointers as keys in a #GHashTable.
 </para>
 
@@ -309,7 +295,7 @@ using gpointer values as keys in a #GHashTable.
 <para>
 Compares the two #gint values being pointed to and returns TRUE if they are
 equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
+It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using pointers to integers as keys in a #GHashTable.
 </para>
 
@@ -332,7 +318,7 @@ using pointers to gint values as keys in a #GHashTable.
 <!-- ##### FUNCTION g_str_equal ##### -->
 <para>
 Compares two strings and returns TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_compare_func
+It can be passed to g_hash_table_new() as the @key_equal_func
 parameter, when using strings as keys in a #GHashTable.
 </para>
 

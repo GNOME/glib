@@ -1069,8 +1069,6 @@ called and will set @private_key to @data casted to #GPrivate* then.
 
 @private_key: a #GPrivate.
 @data: the new pointer.
-<!-- # Unused Parameters # -->
-@value: 
 
 
 <!-- ##### STRUCT GStaticPrivate ##### -->

@@ -195,10 +195,8 @@ self-contained list with one element.
 </para>
 
 @list: a #GSList.
-@link: 
-@Returns: the new start of the #GSList, without the element.
-<!-- # Unused Parameters # -->
 @llink: an element in the #GSList.
+@Returns: the new start of the #GSList, without the element.
 
 
 <!-- ##### FUNCTION g_slist_delete_link ##### -->
