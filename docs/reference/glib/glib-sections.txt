@@ -736,6 +736,7 @@ g_file_error_from_errno
 g_file_get_contents
 g_file_test
 g_mkstemp
+g_file_open_tmp
 <SUBSECTION Private>
 g_file_error_quark
 </SECTION>
@@ -950,8 +951,6 @@ g_path_is_absolute
 g_path_skip_root
 g_path_get_basename
 g_path_get_dirname
-g_filename_to_utf8
-g_filename_from_utf8
 
 <SUBSECTION>
 g_find_program_in_path
@@ -1597,6 +1596,13 @@ g_random_double_range
 g_convert
 g_convert_with_fallback
 G_CONVERT_ERROR
+g_iconv_open
+g_iconv
+g_iconv_close
+g_locale_to_utf8
+g_filename_to_utf8
+g_filename_from_utf8
+g_locale_from_utf8
 GConvertError
 <SUBSECTION Private>
 g_convert_error_quark

@@ -1,3 +1,10 @@
+Mon Nov 13 00:18:55 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * glib/glib-sections.sgml: Move conversion functions
+	into GConv section.
+	
+	* gobject/gobject-docs.sgml: Fix some malformed sgml.
+
 Sun Nov  5 13:24:50 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/Makefile.am gobject/gobject-sections.sgml: Updates

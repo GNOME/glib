@@ -170,24 +170,6 @@ freed when no longer needed.
 @Returns: the directory components of the file.
 
 
-<!-- ##### FUNCTION g_filename_to_utf8 ##### -->
-<para>
-
-</para>
-
-@opsysstring: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_filename_from_utf8 ##### -->
-<para>
-
-</para>
-
-@utf8string: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_find_program_in_path ##### -->
 <para>
 
