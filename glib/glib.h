@@ -1380,7 +1380,7 @@ gchar ** g_str_split            (const gchar *string,
 				 const gchar *delim,
 				 gint max_tokens);
 gchar*	 g_strconcatv		(const gchar **strarray);
-#define  g_str_joinv g_str_concatv
+#define  g_str_joinv g_strconcatv
 void     g_str_array_free       (gchar **strarray);
 
 
