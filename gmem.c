@@ -124,6 +124,7 @@ struct _GRealMemChunk
 };
 
 
+#ifndef DISABLE_MEM_POOLS
 static gulong g_mem_chunk_compute_size (gulong    size,
 					gulong    min_size) G_GNUC_CONST;
 static gint   g_mem_chunk_area_compare (GMemArea *a,
@@ -136,6 +137,7 @@ static gint   g_mem_chunk_area_search  (GMemArea *a,
  * g_malloc, the same holds true for StaticPrivate */
 static GMutex* mem_chunks_lock = NULL;
 static GRealMemChunk *mem_chunks = NULL;
+#endif
 
 #ifdef ENABLE_MEM_PROFILE
 static GMutex* mem_profile_lock;
@@ -460,6 +462,7 @@ g_mem_check (gpointer mem)
 #endif /* ENABLE_MEM_CHECK */
 }
 
+#ifndef DISABLE_MEM_POOLS
 GMemChunk*
 g_mem_chunk_new (gchar  *name,
 		 gint    atom_size,
@@ -960,6 +963,92 @@ g_mem_chunk_area_search (GMemArea *a,
     }
   return -1;
 }
+#else /* DISABLE_MEM_POOLS */
+
+typedef struct
+{
+  guint alloc_size;           /* the size of an atom */
+}  GMinimalMemChunk;
+
+GMemChunk*
+g_mem_chunk_new (gchar  *name,
+		 gint    atom_size,
+		 gulong  area_size,
+		 gint    type)
+{
+  GMinimalMemChunk *mem_chunk;
+
+  g_return_val_if_fail (atom_size > 0, NULL);
+
+  mem_chunk = g_new (GMinimalMemChunk, 1);
+  mem_chunk->alloc_size = atom_size;
+
+  return ((GMemChunk*) mem_chunk);
+}
+
+void
+g_mem_chunk_destroy (GMemChunk *mem_chunk)
+{
+  g_return_if_fail (mem_chunk != NULL);
+  
+  g_free (mem_chunk);
+}
+
+gpointer
+g_mem_chunk_alloc (GMemChunk *mem_chunk)
+{
+  GMinimalMemChunk *minimal = (GMinimalMemChunk *)mem_chunk;
+  
+  g_return_val_if_fail (mem_chunk != NULL, NULL);
+  
+  return g_malloc (minimal->alloc_size);
+}
+
+gpointer
+g_mem_chunk_alloc0 (GMemChunk *mem_chunk)
+{
+  GMinimalMemChunk *minimal = (GMinimalMemChunk *)mem_chunk;
+  
+  g_return_val_if_fail (mem_chunk != NULL, NULL);
+  
+  return g_malloc0 (minimal->alloc_size);
+}
+
+void
+g_mem_chunk_free (GMemChunk *mem_chunk,
+		  gpointer   mem)
+{
+  g_return_if_fail (mem_chunk != NULL);
+  
+  g_free (mem);
+}
+
+void
+g_mem_chunk_clean (GMemChunk *mem_chunk)
+{
+}
+
+void
+g_mem_chunk_reset (GMemChunk *mem_chunk)
+{
+}
+
+void
+g_mem_chunk_print (GMemChunk *mem_chunk)
+{
+}
+
+void
+g_mem_chunk_info (void)
+{
+}
+
+void
+g_blow_chunks (void)
+{
+}
+  
+#endif /* DISABLE_MEM_POOLS */
 
 /* generic allocators
  */
@@ -1010,8 +1099,10 @@ g_allocator_free (GAllocator *allocator)
 void
 g_mem_init (void)
 {
+#ifndef DISABLE_MEM_POOLS
   mem_chunks_lock = g_mutex_new();
-#ifdef ENABLE_MEM_PROFILE
+#endif
+#if ENABLE_MEM_PROFILE
   mem_profile_lock = g_mutex_new();
   allocating_for_mem_chunk = g_private_new(NULL);
 #endif

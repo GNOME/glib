@@ -105,6 +105,7 @@ AC_ARG_ENABLE(msg-prefix, [  --enable-msg-prefix     turn on program name and PI
 AC_ARG_ENABLE(mem_check, [  --enable-mem-check      turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
 AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile    turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
 AC_ARG_ENABLE(gc_friendly, [  --enable-gc-friendly    turn on garbage collector friendliness [default=no]],,enable_gc_friendly=no)
+AC_ARG_ENABLE(mem_pools, [  --disable-mem-pools     disable all glib memory pools],,disable_mem_pools=no)
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
 		    , enable_ansi=no)
 AC_ARG_ENABLE(threads, [  --enable-threads        turn on basic thread support [default=yes]
@@ -141,6 +142,16 @@ if test "x$enable_gc_friendly" = "xyes"; then
 else
   AC_MSG_RESULT(no)
 fi
+
+AC_MSG_CHECKING(whether to disable memory pools)
+if test "x$disable_mem_pools" = "xno"; then
+  AC_MSG_RESULT(no)
+else
+  AC_DEFINE(DISABLE_MEM_POOLS, 1, [Whether to disable memory pools])
+  AC_SUBST(DISABLE_MEM_POOLS)
+  AC_MSG_RESULT(yes)
+fi
+
 
 if test "x$enable_debug" = "xyes"; then
   test "$cflags_set" = set || CFLAGS="$CFLAGS -g"

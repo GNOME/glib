@@ -28,9 +28,14 @@
  * MT safe
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "glib.h"
 
 
+#ifndef DISABLE_MEM_POOLS
 struct _GAllocator /* from gmem.c */
 {
   gchar         *name;
@@ -189,6 +194,40 @@ g_slist_free_1 (GSList *list)
 {
   _g_slist_free_1 (list);
 }
+#else /* DISABLE_MEM_POOLS */
+
+#define _g_slist_alloc g_slist_alloc
+GSList*
+g_slist_alloc (void)
+{
+  GSList *list;
+  
+  list = g_new0 (GSList, 1);
+  
+  return list;
+}
+
+void
+g_slist_free (GSList *list)
+{
+  GSList *last;
+  
+  while (list)
+    {
+      last = list;
+      list = list->next;
+      g_free (last);
+    }
+}
+
+#define _g_slist_free_1 g_slist_free_1
+void
+g_slist_free_1 (GSList *list)
+{
+  g_free (list);
+}
+
+#endif
 
 GSList*
 g_slist_append (GSList   *list,

@@ -31,8 +31,13 @@
  * MT safe
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "glib.h"
 
+#ifndef DISABLE_MEM_POOLS
 /* node allocation
  */
 struct _GAllocator /* from gmem.c */
@@ -167,6 +172,35 @@ g_nodes_free (GNode *node)
   current_allocator->free_nodes = node;
   G_UNLOCK (current_allocator);
 }
+#else /* DISABLE_MEM_POOLS */
+
+GNode*
+g_node_new (gpointer data)
+{
+  GNode *node;
+
+  node = g_new0 (GNode, 1);
+  
+  node->data = data;
+  
+  return node;
+}
+
+static void
+g_nodes_free (GNode *root)
+{
+  GNode *node, *next;
+  
+  node = root;
+  while (node != NULL)
+    {
+      next = node->next;
+      g_nodes_free (node->children);
+      g_free (node);
+      node = next;
+    }
+}
+#endif
 
 void
 g_node_destroy (GNode *root)
