@@ -346,7 +346,7 @@ g_module_open (const gchar    *file_name,
   /* try completing by appending libtool suffix */
   if (!name)
     {
-      name = g_strconcat (file_name, ".la");
+      name = g_strconcat (file_name, ".la", NULL);
       if (!g_file_test (name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
 	{
 	  g_free (name);
@@ -357,7 +357,16 @@ g_module_open (const gchar    *file_name,
    * it via library paths
    */
   if (!name)
-    name = g_strdup (file_name);
+    {
+      gchar *dot = strrchr (file_name, '.');
+      gchar *slash = strrchr (file_name, G_DIR_SEPARATOR);
+      
+      /* make sure the name has a suffix */
+      if (!dot || dot < slash)
+	name = g_strconcat (file_name, "." G_MODULE_SUFFIX, NULL);
+      else
+	name = g_strdup (file_name);
+    }
 
   /* ok, try loading the module */
   if (name)

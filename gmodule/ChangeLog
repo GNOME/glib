@@ -1,3 +1,8 @@
+Tue May 29 12:57:51 2001  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_symbol): erk, strconcat needs NULL as last arg.
+	make sure we pass module name with suffix into backend open.
+
 Mon May 28 20:19:25 2001  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (g_module_open): as a last resort, if we can't access()
