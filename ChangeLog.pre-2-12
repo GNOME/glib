@@ -1,3 +1,8 @@
+1999-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Moved the check for MT save function variants
+	after the determination of the MT cflags and use them there.
+
 1999-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed typo. Now HPUX 11 thread system detection

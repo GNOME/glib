@@ -572,7 +572,7 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 		"
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide informationon your thread implementation."
+		provide information on your thread implementation."
 
 FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because
@@ -683,42 +683,6 @@ fi
 AC_MSG_CHECKING(necessary linker options)
 AC_MSG_RESULT($G_THREAD_LIBS)
 
-dnl check for mt safe function variants
-dnl ***********************************
-
-if test x"$have_threads" != xnone; then
-	glib_save_LIBS="$LIBS"
-	# we are not doing the following for now, as this might require glib 
-	# to always be linked with the thread libs on some platforms. 
-	# LIBS="$LIBS $G_THREAD_LIBS"
-	AC_CHECK_FUNCS(localtime_r rand_r)
-	if test "$ac_cv_header_pwd_h" = "yes"; then
-	 	AC_CHECK_FUNCS(getpwuid_r)
-		if test "$ac_cv_func_getpwuid_r" = "yes"; then
-			AC_MSG_CHECKING(whether getpwuid_r is posix like)
-			# getpwuid_r(0, NULL, NULL, 0) is the signature on
-			# solaris, if that is not found, the prog below won't 
-			# compile, then the posix signature is assumed as 
-			# the default.
-			AC_TRY_COMPILE([#include <pwd.h>],
-				[getpwuid_r(0, NULL, NULL, 0);],
-				[AC_MSG_RESULT(no)],
-				[AC_MSG_RESULT(yes)
-				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
-		fi
-	fi
-	LIBS="$glib_save_LIBS"
-fi
-
-if test "x$enable_threads" = "xyes"; then
-	if test "$ac_cv_func_getpwuid_r" != "yes"; then
-		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
-	fi
-	if test "$ac_cv_func_localtime_r" != "yes"; then
-		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
-	fi
-fi
-
 dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
@@ -754,6 +718,45 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
     AC_MSG_RESULT($G_THREAD_CFLAGS)
 else
     G_THREAD_CFLAGS=
+fi
+
+dnl check for mt safe function variants
+dnl ***********************************
+
+if test x"$have_threads" != xnone; then
+	glib_save_LIBS="$LIBS"
+	glib_save_CFLAGS="$CFLAGS"
+	# we are not doing the following for now, as this might require glib 
+	# to always be linked with the thread libs on some platforms. 
+	# LIBS="$LIBS $G_THREAD_LIBS"
+	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
+	AC_CHECK_FUNCS(localtime_r rand_r)
+	if test "$ac_cv_header_pwd_h" = "yes"; then
+	 	AC_CHECK_FUNCS(getpwuid_r)
+		if test "$ac_cv_func_getpwuid_r" = "yes"; then
+			AC_MSG_CHECKING(whether getpwuid_r is posix like)
+			# getpwuid_r(0, NULL, NULL, 0) is the signature on
+			# solaris, if that is not found, the prog below won't 
+			# compile, then the posix signature is assumed as 
+			# the default.
+			AC_TRY_COMPILE([#include <pwd.h>],
+				[getpwuid_r(0, NULL, NULL, 0);],
+				[AC_MSG_RESULT(no)],
+				[AC_MSG_RESULT(yes)
+				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
+		fi
+	fi
+	LIBS="$glib_save_LIBS"
+	CFLAGS="$glib_save_CFLAGS"
+fi
+
+if test "x$enable_threads" = "xyes"; then
+	if test "$ac_cv_func_getpwuid_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
+	fi
+	if test "$ac_cv_func_localtime_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
+	fi
 fi
 
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
