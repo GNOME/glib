@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-07 21:56+0100\n"
-"PO-Revision-Date: 2002-01-07 21:56+0100\n"
+"POT-Creation-Date: 2002-01-21 01:30+0100\n"
+"PO-Revision-Date: 2002-01-21 01:30+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,23 +21,24 @@ msgstr ""
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
+"Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obs³ugiwana"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr ""
+msgstr "Nie mo¿na otworzyæ konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/gconvert.c:1 glib/gconvert.c:1 glib/giochannel.c:1
 #: glib/giochannel.c:1 glib/giochannel.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Niepoprawna sekwencja bajtów na wej¶ciu konwersji"
 
 #: glib/gconvert.c:1 glib/gconvert.c:1 glib/giochannel.c:1
 #: glib/giochannel.c:1
 #, c-format
 msgid "Error during conversion: %s"
-msgstr ""
+msgstr "B³±d podczas konwersji: %s"
 
 #: glib/gconvert.c:1 glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1
@@ -52,17 +53,17 @@ msgstr ""
 #: glib/gconvert.c:1
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "URI \"%s\" nie jest bezwzglêdnym URI, u¿ywaj±cym schematu plikowego"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr ""
+msgstr "URI lokalnego pliku \"%s\" nie mo¿e zawieraæ znaku \"#\""
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr ""
+msgstr "URI \"%s\" jest niepoprawny"
 
 #: glib/gconvert.c:1
 #, c-format
@@ -77,11 +78,11 @@ msgstr ""
 #: glib/gconvert.c:1
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "¦cie¿ka \"%s\" nie jest ¶cie¿k± bezwzglêdn±"
 
 #: glib/gconvert.c:1
 msgid "Invalid byte sequence in hostname"
-msgstr ""
+msgstr "Niepoprawna sekwencja bajtów w nazwie komputera"
 
 #: glib/gdir.c:1
 #, c-format
@@ -91,7 +92,7 @@ msgstr "Wyst±pi³ b³±d przy otwieraniu katalogu \"%s\": %s"
 #: glib/gfileutils.c:1 glib/gfileutils.c:1
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Nie mo¿na zaalokowaæ %lu bajtów do odczytu pliku \"%s\""
 
 #: glib/gfileutils.c:1
 #, c-format
@@ -112,16 +113,17 @@ msgstr "Nie mo¿na otworzyæ pliku \"%s\": %s"
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
+"Nie mo¿na uzyskaæ atrybutów pliku \"%s\": funkcja fstat() zwróci³a b³±d: %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr ""
+msgstr "Nie mo¿na otworzyæ pliku \"%s\": funcja fdopen() zwróci³a b³±d: %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr ""
+msgstr "Szablon \"%s\" jest niepoprawny, nie powinien on zawieraæ \"%s\""
 
 #: glib/gfileutils.c:1
 #, c-format
@@ -137,11 +139,12 @@ msgstr "Nie mo¿na stworzyæ pliku \"%s\": %s"
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr ""
+"Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obs³ugiwana"
 
 #: glib/giochannel.c:1
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr ""
+msgstr "Nie mo¿na otworzyæ konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/giochannel.c:1
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -161,11 +164,11 @@ msgstr ""
 
 #: glib/giowin32.c:1 glib/giowin32.c:1
 msgid "Incorrect message size"
-msgstr ""
+msgstr "Niepoprawny rozmiar danych"
 
 #: glib/giowin32.c:1 glib/giowin32.c:1
 msgid "Socket error"
-msgstr ""
+msgstr "B³±d przy operacji na gnie¼dzie"
 
 #: glib/giowin32.c:1
 msgid "Channel set flags unsupported"
@@ -174,7 +177,7 @@ msgstr ""
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr ""
+msgstr "B³±d w wierszu %d przy znaku %d: %s"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -235,11 +238,11 @@ msgstr ""
 
 #: glib/gmarkup.c:1 glib/gmarkup.c:1 glib/gmarkup.c:1
 msgid "Invalid UTF-8 encoded text"
-msgstr ""
+msgstr "Tekst nie jest poprawnym ³añcuchem UTF-8"
 
 #: glib/gmarkup.c:1
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr ""
+msgstr "Dokument musi rozpoczynaæ siê jakim¶ elementem (np. <book>)"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -287,11 +290,14 @@ msgstr ""
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
+"Element \"%s\" zosta³ zamkniêty, lecz brak aktualnie otwartego elementu"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
+"Element \"%s\" zosta³ zamkniêty, lecz aktualnie otwartym elementem jest "
+"\"%s\""
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -302,7 +308,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "Dokument jest pusty lub zawiera tylko separatory"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
@@ -373,11 +379,11 @@ msgstr ""
 
 #: glib/gshell.c:1
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
+msgstr "Tekst jest pusty (lub zawiera tylko separatory)"
 
 #: glib/gspawn-win32.c:1
 msgid "Failed to read data from child process"
-msgstr ""
+msgstr "Nie mo¿na odczytaæ danych z procesu potomnego"
 
 #: glib/gspawn-win32.c:1
 msgid ""
@@ -393,57 +399,59 @@ msgstr ""
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr ""
+msgstr "Nie mo¿na zmieniæ katalogu na \"%s\" (%s)"
 
 #: glib/gspawn-win32.c:1
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr ""
+msgstr "Nie mo¿na wykonaæ procesu potomnego (%s)"
 
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "Nie mo¿na stworzyæ potoku do komunikacji z procesem potomnym (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr ""
+msgstr "Nie mo¿na odczytaæ danych z procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
+"Nieoczekiwany b³±d w funkcji select() przy odczytywaniu danych z procesu "
+"potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr ""
+msgstr "Nieoczekiwany b³±d w funkcji waitpit() (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Nie mo¿na stworzyæ procesu (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr ""
+msgstr "Nie mo¿na wykonaæ procesu potomnego \"%s\" (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "Nie mo¿na przekierowaæ wej¶cia lub wyj¶cia procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "Nie mo¿na stworzyæ procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr ""
+msgstr "Przy wykonywaniu procesu potomnego \"%s\" wyst±pi³ nieznany b³±d"
 
 #: glib/gspawn.c:1
 #, c-format
@@ -452,13 +460,13 @@ msgstr ""
 
 #: glib/gutf8.c:1
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
 
 #: glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1 glib/gutf8.c:1
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Niepoprawna sekwencja na wej¶ciu konwersji"
 
 #: glib/gutf8.c:1 glib/gutf8.c:1
 msgid "Character out of range for UTF-16"
-msgstr ""
+msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
