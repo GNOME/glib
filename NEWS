@@ -1,3 +1,40 @@
+Overview of Changes from GLib 2.4.x to GLib 2.6.0
+=================================================
+
+* Major new APIs
+  - GOption, a commandline option parser
+  - GKeyFile, a parser/editor for the .ini like files 
+  - Functions to support the XDG basedir specification
+  - Wrappers for common POSIX pathname functions to handle filename
+    encodings consistently
+
+* Miscellaneous new functions
+  - g_filename_display_name() converts filenames in displayable UTF-8 strings
+  - g_uri_list_extract_uris() splits uri lists
+  - g_date_get_iso8601_week_of_year() gets ISO 8601 week numbers
+  - g_log_set_default_handler() installs an alternate default log handler
+  - g_get_language_names() obtains a list of applicable locale names
+  - g_strv_length() calculates the length of NULL-terminated string arrays
+  - g_win32_get_windows_version() determines the Windows version 
+  - G_GNUC_INTERNAL marks functions as non-exported
+  - glib_check_version() checks the GLib version at runtime
+  - g_debug() completes the family of logging functions
+
+* Performance improvements
+  - Optimize g_utf8_validate()
+  - Optimize g_markup_parse_context_parse()
+  - Reduce signal connection complexity from O(n) to O(1) 
+  - Get rid of many PLT entries for internally used exported symbols
+  - Reduce code size by removing literal strings from g_return_if_fail()
+
+* Other changes
+  - Use higher precision for mathematical constants
+  - Don't convert to/from UTF-8 in g_filename_to_uri/g_filename_from_uri
+  - Support ll as printf format modifier for long long on all platforms
+  - Clean up the ABI and enforce the list of exported symbols
+  - Add a .pc file for using gmodule in libraries
+  - Require ngettext
+
 Overview of Changes from GLib 2.5.7 to GLib 2.6.0
 =================================================
 * GOption: Don't list help options if group-specific
