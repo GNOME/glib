@@ -78,11 +78,12 @@ EXPORTS
 	g_param_spec_set_qdata_full
 	g_param_spec_steal_qdata
 	g_param_spec_string
-	g_param_spec_string_c
+	g_param_spec_stringc
 	g_param_spec_uchar
 	g_param_spec_uint
 	g_param_spec_ulong
 	g_param_spec_unref
+	g_param_value_convert
 	g_param_value_defaults
 	g_param_value_set_default
 	g_param_value_validate
@@ -161,14 +162,11 @@ EXPORTS
 	g_type_register_static
 	g_type_remove_class_cache_func
 	g_type_set_qdata
-	g_type_value_is_a
 	g_type_value_table_peek
-	g_value_convert
 	g_value_copy
 	g_value_dup_boxed
 	g_value_dup_object
 	g_value_dup_string
-	g_value_get_as_pointer
 	g_value_get_boolean
 	g_value_get_boxed
 	g_value_get_char
@@ -205,4 +203,3 @@ EXPORTS
 	g_value_set_ulong
 	g_value_types_init
 	g_value_unset
-	g_values_exchange

@@ -45,13 +45,15 @@ gobject_OBJECTS =		\
 	gtypemodule.o		\
 	gtypeplugin.o		\
 	gvalue.o		\
+	gvaluearray.o		\
+	gvaluetransform.o	\
 	gvaluetypes.o
 
-gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
+gobject-$(GLIB_VER).dll : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
 	$(BUILD_DLL) gobject $(GLIB_VER) gobject.def $(gobject_OBJECTS) -L .. -lglib-$(GLIB_VER)
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L .. -lglib-$(GLIB_VER) -L . -lgobject-$(GLIB_VER)
+	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L .. -lglib-$(GLIB_VER)
 
 # Copied from Makefile.am:
 # initial creation of the real stamp-* files
@@ -81,3 +83,6 @@ $(srcdir)/gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
 	&& cp xgen-gms $(srcdir)/gmarshal.strings \
 	&& rm -f xgen-gms xgen-gms~
 glib-genmarshal.o: gmarshal.strings
+
+clean::
+	-rm gmarshal.h gmarshal.c stamp-gmarshal.h

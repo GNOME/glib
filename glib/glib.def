@@ -511,9 +511,9 @@ EXPORTS
 	g_string_prepend
 	g_string_prepend_c
 	g_string_prepend_len
+	g_string_printf
+	g_string_printfa
 	g_string_sized_new
-	g_string_sprintf
-	g_string_sprintfa
 	g_string_truncate
 	g_string_up
 	g_strjoin
