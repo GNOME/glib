@@ -1,3 +1,8 @@
+Fri Sep 18 03:41:20 1998  Tim Janik  <timj@gtk.org>
+
+	* gtree.c (g_tree_new): check for key_compare_func != NULL (reported
+	by Michal Kara).
+
 Thu Sep 17 18:55:46 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* config.h.in: removed from repository

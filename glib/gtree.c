@@ -87,6 +87,8 @@ g_tree_new (GCompareFunc key_compare_func)
 {
   GRealTree *rtree;
 
+  g_return_val_if_fail (key_compare_func != NULL, NULL);
+
   rtree = g_new (GRealTree, 1);
   rtree->root = NULL;
   rtree->key_compare = key_compare_func;
