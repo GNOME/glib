@@ -6,7 +6,20 @@ Functions as first-class objects
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+A #GClosure represents a callback supplied by the programmer. It will generally
+comprise a function of some kind and a marshaller used to call it. It is the 
+reponsibility of the marshaller to convert the arguments for the invocation 
+from #GValue<!-- -->s into a suitable form, perform the callback on the 
+converted arguments, and transform the return value back into a #GValue.
+</para>
+<para>
+In the case of C programs, a closure usually just holds a pointer to a function
+and maybe a data argument, and the marshaller converts between #GValue<!-- -->
+and native C types. The GObject library provides the #GCClosure type for this
+purpose. Bindings for other languages need marshallers which 
+convert between #GValue<!-- -->s and suitable representations in the runtime
+of the language in order to use functions written in that languages as 
+callbacks.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,50 +29,62 @@ Functions as first-class objects
 
 <!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
 <para>
-
+Returns %TRUE if a #GClosureMarshal marshaller has not yet been set on 
+@closure. See g_closure_set_marshal().
 </para>
 
-@closure: 
+@closure: a #GClosure
 
 
 <!-- ##### MACRO G_CLOSURE_N_NOTIFIERS ##### -->
 <para>
-
+Returns the total number of notifiers connected with the closure @cl. 
+The count includes the meta marshaller, the finalize and invalidate notifiers 
+and the marshal guards. Note that each guard counts as two notifiers. 
+See g_closure_set_meta_marshal(), g_closure_add_finalize_notifier(),
+g_closure_add_invalidate_notifier() and g_closure_add_marshal_guards().
 </para>
 
-@cl: 
+@cl: a #GClosure
 
 
 <!-- ##### MACRO G_CCLOSURE_SWAP_DATA ##### -->
 <para>
-
+Returns whether the user data of the #GCClosure should be passed as the
+first parameter to the callback. See g_cclosure_new_swap().
 </para>
 
-@cclosure: 
+@cclosure: a #GCClosure
 
 
 <!-- ##### MACRO G_CALLBACK ##### -->
 <para>
-
+Cast a function pointer to a #GCallback.
 </para>
 
-@f: 
+@f: a function pointer.
 
 
 <!-- ##### USER_FUNCTION GCallback ##### -->
 <para>
-
+The type used for callback functions in structure definitions and function 
+signatures. This doesn't mean that all callback functions must take no 
+parameters and return void. The required signature of a callback function 
+is determined by the context in which is used (e.g. the signal to which it 
+is connected). Use G_CALLBACK() to cast the callback function to a #GCallback. 
 </para>
 
 
 
 <!-- ##### STRUCT GClosure ##### -->
 <para>
-
+A #GClosure represents a callback supplied by the programmer.
 </para>
 
-@in_marshal: 
-@is_invalid: Indicates whether the closure has been invalidated by g_closure_invalidate()
+@in_marshal: Indicates whether the closure is currently being invoked with 
+  g_closure_invoke()
+@is_invalid: Indicates whether the closure has been invalidated by 
+  g_closure_invalidate()
 
 <!-- ##### MACRO G_TYPE_CLOSURE ##### -->
 <para>
@@ -70,97 +95,107 @@ The #GType for #GClosure.
 
 <!-- ##### STRUCT GCClosure ##### -->
 <para>
-
+A #GCClosure is a specialization of #GClosure for C function callbacks.
 </para>
 
-@closure: 
-@callback: 
+@closure: the #GClosure
+@callback: the callback function
 
 <!-- ##### USER_FUNCTION GClosureMarshal ##### -->
 <para>
-
+The type used for marshaller functions.
 </para>
 
-@closure: 
-@return_value: 
-@n_param_values: 
-@param_values: 
-@invocation_hint: 
-@marshal_data: 
+@closure: the #GClosure to which the marshaller belongs
+@return_value: a #GValue to store the return value. May be %NULL if the
+  callback of @closure doesn't return a value.
+@n_param_values: the length of the @param_values array
+@param_values: an array of #GValue<!-- -->s holding the arguments on
+  which to invoke the callback of @closure
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller,
+  see g_closure_set_marshal() and g_closure_set_meta_marshal()
 
 
 <!-- ##### USER_FUNCTION GClosureNotify ##### -->
 <para>
-
+The type used for the various notification callbacks which can be registered
+on closures.
 </para>
 
-@data: 
-@closure: 
+@data: data specified when registering the notification callback
+@closure: the #GClosure on which the notification is emitted
 
-
-<!-- ##### STRUCT GClosureNotifyData ##### -->
-<para>
-
-</para>
-
-@data: 
-@notify: 
 
 <!-- ##### FUNCTION g_cclosure_new ##### -->
 <para>
-
+Creates a new closure which invokes @callback_func with @user_data as last 
+parameter. 
 </para>
 
-@callback_func: 
-@user_data: 
-@destroy_data: 
-@Returns: 
+@callback_func: the function to invoke
+@user_data: user data to pass to @callback_func
+@destroy_data: destroy notify to be called when @user_data is destroyed
+@Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_cclosure_new_swap ##### -->
 <para>
-
+Creates a new closure which invokes @callback_func with @user_data as first 
+parameter. 
 </para>
 
-@callback_func: 
-@user_data: 
-@destroy_data: 
-@Returns: 
+@callback_func: the function to invoke
+@user_data: user data to pass to @callback_func
+@destroy_data: destroy notify to be called when @user_data is destroyed
+@Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_cclosure_new_object ##### -->
 <para>
-
+A variant of g_cclosure_new() which uses @object as @user_data
+and calls g_object_watch_closure() on @object and the 
+created closure. This function is mainly useful when implementing new types 
+of closures.
 </para>
 
-@callback_func: 
-@object: 
-@Returns: 
+@callback_func: the function to invoke
+@object: a #GObject pointer to pass to @callback_func
+@Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_cclosure_new_object_swap ##### -->
 <para>
-
+A variant of g_cclosure_new_swap() which uses @object as @user_data
+and calls g_object_watch_closure() on @object and the 
+created closure. This function is mainly useful when implementing new types 
+of closures.
 </para>
 
-@callback_func: 
-@object: 
-@Returns: 
+@callback_func: the function to invoke
+@object: a #GObject pointer to pass to @callback_func
+@Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_closure_new_object ##### -->
 <para>
-
+A variant of g_closure_new_simple() which stores @object in the @data
+field of the closure and calls g_object_watch_closure() on @object and the 
+created closure. This function is mainly useful when implementing new types 
+of closures.
 </para>
 
-@sizeof_closure: 
-@object: 
-@Returns: 
+@sizeof_closure: the size of the structure to allocate, must be at least 
+<literal>sizeof (GClosure)</literal>
+@object: a #GObject pointer to store in the @data field of the newly 
+  allocated #GClosure
+@Returns: a newly allocated #GClosure
 
 
 <!-- ##### FUNCTION g_closure_ref ##### -->
 <para>
-Increment the reference count on a closure to force it staying
+Increments the reference count on a closure to force it staying
 alive while the caller holds a pointer to it.
 </para>
 
@@ -170,7 +205,7 @@ alive while the caller holds a pointer to it.
 
 <!-- ##### FUNCTION g_closure_sink ##### -->
 <para>
-Take over the initial ownership of a closure.
+Takes over the initial ownership of a closure.
 When closures are newly created, they get an initial reference count
 of 1, eventhough no caller has yet invoked g_closure_ref() on the @closure.
 Code entities that store closures for notification purposes are supposed
@@ -201,7 +236,7 @@ g_closure_ref() should be called prior to this function.
 
 <!-- ##### FUNCTION g_closure_unref ##### -->
 <para>
-Decrement the reference count of a closure after it was
+Decrements the reference count of a closure after it was
 previously incremented by the same caller. The closure
 will most likely be destroyed and freed after this function
 returns.
@@ -212,25 +247,27 @@ returns.
 
 <!-- ##### FUNCTION g_closure_invoke ##### -->
 <para>
-
+Invokes the closure.
 </para>
 
-@closure: 
-@return_value: 
-@n_param_values: 
-@param_values: 
-@invocation_hint: 
+@closure: a #GClosure
+@return_value: a #GValue to store the return value. May be %NULL if the
+  callback of @closure doesn't return a value.
+@n_param_values: the length of the @param_values array
+@param_values: an array of #GValue<!-- -->s holding the arguments on
+  which to invoke the callback of @closure
+@invocation_hint: a context-dependent invocation hint
 
 
 <!-- ##### FUNCTION g_closure_invalidate ##### -->
 <para>
-This function sets a flag on the closure to indicate that it's
-calling environment has become invalid, and thus causes any future
-invocations of g_closure_invoke() on this @closure to be ignored.
+Sets a flag on the closure to indicate that it's calling environment has 
+become invalid, and thus causes any future invocations of g_closure_invoke() 
+on this @closure to be ignored.
 Also, invalidation notifiers installed on the closure will be called
 at this point, and since invalidation notifiers may unreference
 the closure, @closure should be considered an invalidated pointer
-atfer this function, unles g_closure_ref() was called beforehand.
+after this function, unless g_closure_ref() was called beforehand.
 </para>
 
 @closure: GClosure to invalidate
@@ -238,83 +275,144 @@ atfer this function, unles g_closure_ref() was called beforehand.
 
 <!-- ##### FUNCTION g_closure_add_finalize_notifier ##### -->
 <para>
-
+Registers a finalization notifier which will be called when the reference
+count of @closure goes down to 0. Finalization notifiers are invoked after
+invalidation notifiers, in an unspecified order.
 </para>
 
-@closure: 
-@notify_data: 
-@notify_func: 
+@closure: a #GClosure
+@notify_data: data to pass to @notify_func
+@notify_func: the callback function to register
 
 
 <!-- ##### FUNCTION g_closure_add_invalidate_notifier ##### -->
 <para>
-
+Registers an invalidation notifier which will be called when the @closure
+is invalidated with g_closure_invalidate(). Invalidation notifiers are 
+invoked before finalization notifiers, in an unspecified order.
 </para>
 
-@closure: 
-@notify_data: 
-@notify_func: 
+@closure: a #GClosure
+@notify_data: data to pass to @notify_func
+@notify_func: the callback function to register
 
 
 <!-- ##### FUNCTION g_closure_remove_finalize_notifier ##### -->
 <para>
-
+Removes a finalization notifier. Notifiers may only be removed before or 
+during their invocation.
 </para>
 
-@closure: 
-@notify_data: 
-@notify_func: 
+@closure: a #GClosure
+@notify_data: data which was passed to g_closure_add_finalize_notifier()
+ when registering @notify_func
+@notify_func: the callback function to remove
 
 
 <!-- ##### FUNCTION g_closure_remove_invalidate_notifier ##### -->
 <para>
-
+Removes a invalidation notifier. Notifiers may only be removed before or 
+during their invocation.
 </para>
 
-@closure: 
-@notify_data: 
-@notify_func: 
+@closure: a #GClosure
+@notify_data: data which was passed to g_closure_add_invalidate_notifier()
+ when registering @notify_func
+@notify_func: the callback function to remove
 
 
 <!-- ##### FUNCTION g_closure_new_simple ##### -->
 <para>
-
+Allocates a struct of the given size and initializes the initial part
+as a #GClosure. This function is mainly useful when implementing new types 
+of closures.
 </para>
+<informalexample>
+<programlisting>
+typedef struct _MyClosure MyClosure;
+struct _MyClosure 
+{
+  GClosure closure;
+  /* extra data goes here */
+};
+    
 
-@sizeof_closure: 
-@data: 
-@Returns: 
+static void
+my_closure_finalize (gpointer  notify_data, 
+                     GClosure *closure)
+{
+  MyClosure *my_closure = (MyClosure *)closure;
+
+  /* free extra data here */
+}
+
+MyClosure *my_closure_new (gpointer data)
+{
+  GClosure *closure;
+  MyClosure *my_closure;
+  
+  closure = g_closure_new_simple (sizeof (MyClosure), data);
+  my_closure = (MyClosure *) closure;
+
+  / initialize extra data here */
+
+  g_closure_add_finalize_notifier (closure, notify_data,
+                                   my_closure_finalize);
+  return my_closure;
+}
+</programlisting>
+</informalexample>
+
+@sizeof_closure: the size of the structure to allocate, must be at least 
+<literal>sizeof (GClosure)</literal>
+@data: data to store in the @data field of the newly allocated #GClosure
+@Returns: a newly allocated #GClosure
 
 
 <!-- ##### FUNCTION g_closure_set_marshal ##### -->
 <para>
-
+Sets the marshaller of @closure. A marshaller set with g_closure_set_marshal() 
+should interpret its @marshal_data argument as a callback function to be 
+invoked instead of @closure->callback, provided it is not %NULL. GObject provides a number of predefined marshallers  for use with #GCClosure<!-- -->s, 
+see the g_cclosure_marshal_*() functions.
 </para>
 
-@closure: 
-@marshal: 
+@closure: a #GClosure
+@marshal: a #GClosureMarshal function
 
 
 <!-- ##### FUNCTION g_closure_add_marshal_guards ##### -->
 <para>
-
+Adds a pair of notifiers which get invoked before and after the closure 
+callback, respectively. See g_object_watch_closure() for a use of marshal 
+guards.
 </para>
 
-@closure: 
-@pre_marshal_data: 
-@pre_marshal_notify: 
-@post_marshal_data: 
-@post_marshal_notify: 
+@closure: a #GClosure
+@pre_marshal_data: data to pass to @pre_marshal_notify
+@pre_marshal_notify: a function to call before the closure callback
+@post_marshal_data: data to pass to @post_marshal_notify
+@post_marshal_notify: a function to call after the closure callback
 
 
 <!-- ##### FUNCTION g_closure_set_meta_marshal ##### -->
 <para>
-
+Sets the meta marshaller of @closure. A meta marshaller 
+should use its @marshal_data argument together with @closure->data 
+to determine the callback function to use, and pass it as @marshal_data
+to @closure->marshal.
+</para>
+<para>
+As an example for the use of a meta marshaller, consider a closure whose
+@data member contains a pointer to a class structure. The meta marshaller 
+could then be given an offset into this struct in @marshal_data, and use
+it to determine the class member function to use as callback. This is
+how class closures for signals are actually implemented in GObject.
 </para>
 
-@closure: 
-@marshal_data: 
-@meta_marshal: 
+@closure: a #GClosure
+@marshal_data: context-dependent data to pass to @meta_marshal
+@meta_marshal: a #GClosureMarshal function
 
 
 <!-- ##### FUNCTION g_source_set_closure ##### -->
@@ -341,6 +439,315 @@ The #GType for #GIOChannel.
 <!-- ##### MACRO G_TYPE_IO_CONDITION ##### -->
 <para>
 The #GType for #GIOCondition.
+</para>
+
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__VOID ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 1
+@param_values: a #GValue array holding only the instance
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__BOOLEAN ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gboolean arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gboolean parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__CHAR ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gchar arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gchar parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__UCHAR ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, guchar arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #guchar parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__INT ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gint parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__UINT ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, guint arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #guint parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__LONG ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, glong arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #glong parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__ULONG ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gulong arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gulong parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__ENUM ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes an enumeration type..
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the enumeration parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__FLAGS ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes a flags type
+denotes a flags type.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the flags parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__FLOAT ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gfloat arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gfloat parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__DOUBLE ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gdouble arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gdouble parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__STRING ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, const gchar *arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gchar* parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__PARAM ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, GParamSpec *arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #GParamSpec* parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__BOXED ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, GBoxed *arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #GBoxed* parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__POINTER ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, gpointer arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #gpointer parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__OBJECT ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, GOBject *arg1, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 2
+@param_values: a #GValue array holding the instance and the #GObject* parameter
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_STRING__OBJECT_POINTER ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 3
+@param_values: a #GValue array holding instance, arg1 and arg2
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_VOID__UINT_POINTER ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>void (*callback) (gpointer instance, guint arg1, gpointer arg2, gpointer user_data)</literal>.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: ignored
+@n_param_values: 3
+@param_values: a #GValue array holding instance, arg1 and arg2
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### FUNCTION g_cclosure_marshal_BOOLEAN__FLAGS ##### -->
+<para>
+A marshaller for a #GCClosure with a callback of type
+<literal>gboolean (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter
+denotes a flags type.
+</para>
+
+@closure: the #GClosure to which the marshaller belongs
+@return_value: a #GValue which can store the returned #gboolean
+@n_param_values: 2
+@param_values: a #GValue array holding instance and arg1
+@invocation_hint: the invocation hint given as the the last argument
+  to g_closure_invoke()
+@marshal_data: additional data specified when registering the marshaller
+
+
+<!-- ##### MACRO g_cclosure_marshal_BOOL__FLAGS ##### -->
+<para>
+Another name for g_cclosure_marshal_BOOLEAN__FLAGS().
 </para>
 
 

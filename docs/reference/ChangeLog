@@ -1,3 +1,13 @@
+Tue Oct 14 02:35:45 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Move the g_cclosure_marshal_*
+	functions to a non-private subsection, since these functions
+	are not private.
+
+Tue Oct 14 02:35:16 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gclosure.sgml: Fill in.
+
 Sun Oct  5 23:23:53 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/glib-sections.txt: 
