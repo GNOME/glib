@@ -1,3 +1,9 @@
+1998-12-16  Joel Becker  <jlbec@ocala.cs.miami.edu>
+
+	* glib.h, gscanner.c: changed func_data to user_data in
+        g_scanner_scope_symbol_foreach and associated friends, because
+	AIX headers #define func_data.
+
 1998-12-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed stupid bug, that made

@@ -1976,7 +1976,7 @@ gpointer	g_scanner_scope_lookup_symbol	(GScanner	*scanner,
 void		g_scanner_scope_foreach_symbol	(GScanner	*scanner,
 						 guint		 scope_id,
 						 GHFunc		 func,
-						 gpointer	 func_data);
+						 gpointer	 user_data);
 gpointer	g_scanner_lookup_symbol		(GScanner	*scanner,
 						 const gchar	*symbol);
 void		g_scanner_freeze_symbol_table	(GScanner	*scanner);

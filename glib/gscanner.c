@@ -522,31 +522,31 @@ g_scanner_foreach_internal (gpointer  _key,
   register GScannerKey *key;
   register gpointer *d;
   register GHFunc func;
-  register gpointer func_data;
+  register gpointer user_data;
   register guint *scope_id;
   
   d = _user_data;
   func = (GHFunc) d[0];
-  func_data = d[1];
+  user_data = d[1];
   scope_id = d[2];
   key = _value;
   
   if (key->scope_id == *scope_id)
-    func (key->symbol, key->value, func_data);
+    func (key->symbol, key->value, user_data);
 }
 
 void
 g_scanner_scope_foreach_symbol (GScanner       *scanner,
 				guint		scope_id,
 				GHFunc		func,
-				gpointer	func_data)
+				gpointer	user_data)
 {
   gpointer d[3];
   
   g_return_if_fail (scanner != NULL);
   
   d[0] = (gpointer) func;
-  d[1] = func_data;
+  d[1] = user_data;
   d[2] = &scope_id;
   
   g_hash_table_foreach (scanner->symbol_table, g_scanner_foreach_internal, d);
