@@ -2039,8 +2039,6 @@ void	     g_completion_free	       (GCompletion*	cmp);
  * Pennington <hp@pobox.com> 
  */
 
-#include <time.h>
-
 /* this enum is used to specify order of appearance in parsed date
  *  strings
  */
@@ -2172,7 +2170,7 @@ void         g_date_set_parse             (GDate       *d,
                                            const gchar *str);
 
 void         g_date_set_time              (GDate       *d, 
-                                           time_t       t);
+                                           GTime        time);
 
 void         g_date_set_month             (GDate       *d, 
                                            GDateMonth   m);
@@ -2222,7 +2220,7 @@ gint         g_date_compare               (GDate       *lhs,
 
 
 void         g_date_to_struct_tm          (GDate       *d,
-                                           struct tm   *tm);
+                                           gpointer     struct_tm_p);
 
 /* Just like strftime() except you can only use date-related formats.
  *   Using a time format is undefined.

@@ -1,3 +1,15 @@
+Wed Dec  2 02:10:59 1998  Tim Janik  <timj@gtk.org>
+
+	* gdate.c: s/time_t/GTime/ and s/g_print/g_message/
+	include time.h.
+
+	* glib.h: removed #include <time.h>, changed time_t paramter of
+ 	g_date_set_time() to time_t, changed struct tm parameter of
+	g_date_to_struct_tm to `gpointer struct_tm_p'. yes, this is not
+	nice, but including time.h actually breaks a bunch of code.
+	
+	* incremented GLib version to 1.1.6.
+
 1998-11-30  Havoc Pennington  <hp@pobox.com>
 
 	* gdate.c: New file, implements calendrical calculations.
