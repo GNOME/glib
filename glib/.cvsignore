@@ -3,6 +3,7 @@ Makefile.in
 libglib-2.0.la
 makefile.mingw
 makefile.msc
+galias.h
 glib.rc
 gspawn-win32-helper
 *-build.stamp
