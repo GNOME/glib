@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"POT-Creation-Date: 2002-05-23 14:42-0400\n"
-"PO-Revision-Date: 2002-02-26 01:02+0800\n"
+"POT-Creation-Date: 2002-05-28 05:25+0800\n"
+"PO-Revision-Date: 2002-05-26 01:02+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
 "MIME-Version: 1.0\n"
@@ -242,11 +242,11 @@ msgstr ""
 
 #: glib/gmarkup.c:647
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Rujukan entiti tidak tamat"
 
 #: glib/gmarkup.c:653
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Rujukan aksara tidak tamat"
 
 #: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
 msgid "Invalid UTF-8 encoded text"
