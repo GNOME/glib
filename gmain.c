@@ -83,7 +83,7 @@ struct _GPollRec
 static void     g_main_poll               (gint      timeout,
 					   gboolean  use_priority, 
 					   gint      priority);
-static void     g_main_add_unlocking_poll (gint      priority,
+static void     g_main_add_poll_unlocked  (gint      priority,
 					   GPollFD  *fd);
 
 static gboolean g_timeout_prepare      (gpointer  source_data, 
@@ -649,7 +649,7 @@ g_main_poll (gint     timeout,
 	     gboolean use_priority,
 	     gint     priority)
 {
-  GPollFD *fd_array = g_new (GPollFD, n_poll_records);
+  GPollFD *fd_array;
   GPollRec *pollrec;
 
   gint i;
@@ -663,9 +663,11 @@ g_main_poll (gint     timeout,
 
       wake_up_rec.fd = wake_up_pipe[0];
       wake_up_rec.events = G_IO_IN;
-      g_main_add_unlocking_poll (0, &wake_up_rec);
+      g_main_add_poll_unlocked (0, &wake_up_rec);
     }
   
+  fd_array = g_new (GPollFD, n_poll_records);
+ 
   pollrec = poll_records;
   i = 0;
   while (pollrec && (!use_priority || priority >= pollrec->priority))
@@ -710,14 +712,14 @@ g_main_add_poll (GPollFD *fd,
 		 gint     priority)
 {
   G_LOCK (main_loop);
-  g_main_add_unlocking_poll (priority, fd);
+  g_main_add_poll_unlocked (priority, fd);
   G_UNLOCK (main_loop);
 }
 
 /* HOLDS: main_loop_lock */
 static void 
-g_main_add_unlocking_poll (gint     priority,
-			   GPollFD *fd)
+g_main_add_poll_unlocked (gint     priority,
+			  GPollFD *fd)
 {
   GPollRec *lastrec, *pollrec, *newrec;
 
