@@ -1,3 +1,17 @@
+2004-09-15  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c (g_win32_error_message): Convert message to
+	UTF-8. Technically this breaks API, but the actual use cases in
+	gdk/win32 have assumed it is UTF-8 anyway. Fix
+	documentation. (#152618, Kazuki Iwamoto)
+
+	* glib/gwin32.h: Don't define ftruncate as a macro. Was never a
+	good idea, and it clashes with newest mingw headers, which have a
+	ftruncate implementation as an inline function. Thanks to Dominik R.
+
+	* glib/gwin32.c (g_win32_ftruncate): Simplify implementation, just
+	call _chsize() in the C library.
+
 2004-09-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Update.
