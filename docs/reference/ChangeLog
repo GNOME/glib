@@ -1,3 +1,8 @@
+2003-03-31  Sven Neumann  <sven@gimp.org>
+
+	* gobject/tmpl/param_value_types.sgml: removed docs for
+	g_param_spec_ulong() since this function is documented inline.
+
 2003-02-11  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Fix an off-by-one error in the

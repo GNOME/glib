@@ -260,7 +260,7 @@ g_object_do_class_init (GObjectClass *class)
 
 /**
  * g_object_class_install_property:
- * @class: a #GObjectClass
+ * @oclass: a #GObjectClass
  * @property_id: the id for the new property
  * @pspec: the #GParamSpec for the new property
  * 

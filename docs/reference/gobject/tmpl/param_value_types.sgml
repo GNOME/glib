@@ -496,7 +496,6 @@ A #GParamSpec derived structure that contains the meta data for unsigned long in
 
 <!-- ##### FUNCTION g_param_spec_ulong ##### -->
 <para>
-Create a new #GParamSpecULong instance specifying a %G_TYPE_ULONG property.
 </para>
 
 @name: 
