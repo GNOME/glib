@@ -1,3 +1,26 @@
+2000-09-29  Martin Baulig  <baulig@suse.de>
+
+	Several minor ANSI C fixes.
+
+	Added missing casts:
+	* gdate.c (g_date_fill_parse_tokens): `s = (guchar *) str'.
+	* gmain.c (g_idle_dispatch): `func = (GSourceFunc) source_data'.
+	(g_idle_add_full): `(gpointer) function' in call to g_source_add().
+	* gstrfuncs.c (g_strdown): `s = (guchar *) string' and
+	`return (gchar *) string'.
+	(g_strup): Likewise.
+	(g_strchug): `start = (guchar*) string' in 1st for() argument;
+	`strlen ((gchar *) start)' in call to g_memmove().
+	* gstring.c (g_string_down): `s = (guchar *) string->str'.
+	(g_string_up): Likewise.
+	* gthreadpool.c (stop_this_thread_marker):
+	`(gpointer) &g_thread_pool_new'.
+	* gunidecomp.h (decomp_table[]): Cast all the strings to
+	`unsigned char *'.
+
+	Put text following #endif into comments:
+	* gmain.c: here.
+
 2000-09-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, glib.h: Added errorcheck mutexes. These are

@@ -465,7 +465,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
    */
   num[0][0] = num[1][0] = num[2][0] = num[3][0] = '\0';
   
-  s = str;
+  s = (const guchar *) str;
   pt->num_ints = 0;
   while (*s && pt->num_ints < 4) 
     {

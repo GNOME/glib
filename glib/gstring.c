@@ -512,7 +512,7 @@ g_string_down (GString *fstring)
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  s = string->str;
+  s = (guchar *) string->str;
 
   while (n)
     {
@@ -533,7 +533,7 @@ g_string_up (GString *fstring)
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  s = string->str;
+  s = (guchar *) string->str;
 
   while (n)
     {

@@ -42,7 +42,7 @@ struct _GRealThreadPool
 /* The following is just an address to mark the stop order for a
  * thread, it could be any address (as long, as it isn;t a valid
  * GThreadPool address) */
-static const gpointer stop_this_thread_marker = &g_thread_pool_new;
+static const gpointer stop_this_thread_marker = (gpointer) &g_thread_pool_new;
 
 /* Here all unused threads are waiting, depending on their priority */
 static GAsyncQueue *unused_thread_queue[G_THREAD_PRIORITY_URGENT + 1];

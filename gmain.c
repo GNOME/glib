@@ -744,7 +744,7 @@ g_main_iterate (gboolean block,
       G_UNLOCK (main_loop);
       return FALSE;
     }
-#endif G_THREADS_ENABLED  
+#endif /* G_THREADS_ENABLED */
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
@@ -1403,7 +1403,7 @@ g_idle_dispatch (gpointer source_data,
 		 GTimeVal *dispatch_time,
 		 gpointer user_data)
 {
-  GSourceFunc func = source_data;
+  GSourceFunc func = (GSourceFunc) source_data;
 
   return func (user_data);
 }
@@ -1416,7 +1416,7 @@ g_idle_add_full (gint           priority,
 {
   g_return_val_if_fail (function != NULL, 0);
 
-  return g_source_add (priority, FALSE, &idle_funcs, function, data, notify);
+  return g_source_add (priority, FALSE, &idle_funcs, (gpointer) function, data, notify);
 }
 
 guint 
