@@ -55,14 +55,8 @@ GQuark
 g_thread_error_quark()
 {
   static GQuark quark;
-  G_LOCK_DEFINE_STATIC(lock);
   if (!quark)
-  {
-    G_LOCK (lock);
-    if (!quark)
-      quark = g_quark_from_static_string ("g-thread-error");
-    G_UNLOCK (lock);
-  }
+    quark = g_quark_from_static_string ("g_thread_error");
   return quark;
 }
 
