@@ -36,25 +36,25 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
 #include <sys/time.h>
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #include <windows.h>
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 
 typedef struct _GRealTimer GRealTimer;
 
 struct _GRealTimer
 {
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   DWORD start;
   DWORD end;
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   struct timeval start;
   struct timeval end;
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
   guint active : 1;
 };
@@ -67,11 +67,11 @@ g_timer_new (void)
   timer = g_new (GRealTimer, 1);
   timer->active = TRUE;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   timer->start = GetTickCount ();
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   gettimeofday (&timer->start, NULL);
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
   return ((GTimer*) timer);
 }
@@ -94,11 +94,11 @@ g_timer_start (GTimer *timer)
   rtimer = (GRealTimer*) timer;
   rtimer->active = TRUE;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   rtimer->start = GetTickCount ();
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   gettimeofday (&rtimer->start, NULL);
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 }
 
 void
@@ -111,11 +111,11 @@ g_timer_stop (GTimer *timer)
   rtimer = (GRealTimer*) timer;
   rtimer->active = FALSE;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   rtimer->end = GetTickCount ();
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   gettimeofday (&rtimer->end, NULL);
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 }
 
 void
@@ -127,11 +127,11 @@ g_timer_reset (GTimer *timer)
 
   rtimer = (GRealTimer*) timer;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
    rtimer->start = GetTickCount ();
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   gettimeofday (&rtimer->start, NULL);
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 }
 
 gdouble
@@ -140,15 +140,15 @@ g_timer_elapsed (GTimer *timer,
 {
   GRealTimer *rtimer;
   gdouble total;
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   struct timeval elapsed;
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 
   g_return_val_if_fail (timer != NULL, 0);
 
   rtimer = (GRealTimer*) timer;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   if (rtimer->active)
     rtimer->end = GetTickCount ();
 
@@ -170,7 +170,7 @@ g_timer_elapsed (GTimer *timer,
 	*microseconds =
 	  ((rtimer->end - rtimer->start) % 1000) * 1000;
     }
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   if (rtimer->active)
     gettimeofday (&rtimer->end, NULL);
 
@@ -187,7 +187,7 @@ g_timer_elapsed (GTimer *timer,
 
   if (microseconds)
     *microseconds = elapsed.tv_usec;
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
   return total;
 }
@@ -195,7 +195,7 @@ g_timer_elapsed (GTimer *timer,
 void
 g_usleep (gulong microseconds)
 {
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   Sleep (microseconds / 1000);
 #else
   struct timeval tv;

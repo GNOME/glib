@@ -42,7 +42,7 @@
 #endif
 #include <signal.h>
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  define STRICT
 #  include <windows.h>
 #  include <process.h>          /* For _getpid() */
@@ -424,7 +424,7 @@ g_log_default_handler (const gchar    *log_domain,
 		       const gchar    *message,
 		       gpointer	       unused_data)
 {
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   FILE *fd;
 #else
   gint fd;
@@ -450,7 +450,7 @@ g_log_default_handler (const gchar    *log_domain,
   else
     sprintf (prg_pid, " (pid:%u): ", getpid ());
   
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   /* Use just stdout as stderr is hard to get redirected from the
    * DOS prompt.
    */

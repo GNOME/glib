@@ -101,6 +101,8 @@ typedef unsigned long long guint64;
 #define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
 #define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
 
+#define G_OS_WIN32
+
 #ifdef	__cplusplus
 #define	G_HAVE_INLINE	1
 #else	/* !__cplusplus */

@@ -1,3 +1,8 @@
+Sun Oct  3 19:30:52 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* gmodule.h
+	* testgmodule.c: use G_OS stuff
+
 Sat Jul 24 20:47:18 1999  Tim Janik  <timj@gtk.org>
 
 	* merged changes from GLib-1-2 branch.

@@ -72,7 +72,7 @@
 #endif
 
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 
 /* On native Win32, directory separator is the backslash, and search path
  * separator is the semicolon.
@@ -82,7 +82,7 @@
 #define G_SEARCHPATH_SEPARATOR ';'
 #define G_SEARCHPATH_SEPARATOR_S ";"
 
-#else  /* !NATIVE_WIN32 */
+#else  /* !G_OS_WIN32 */
 
 /* Unix */
 
@@ -91,7 +91,7 @@
 #define G_SEARCHPATH_SEPARATOR ':'
 #define G_SEARCHPATH_SEPARATOR_S ":"
 
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
 #ifdef __cplusplus
 extern "C" {
@@ -659,15 +659,15 @@ typedef gint32	GTime;
  * we prefix variable declarations so they can
  * properly get exported in windows dlls.
  */
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  ifdef GLIB_COMPILATION
 #    define GUTILS_C_VAR __declspec(dllexport)
 #  else /* !GLIB_COMPILATION */
 #    define GUTILS_C_VAR extern __declspec(dllimport)
 #  endif /* !GLIB_COMPILATION */
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
 #  define GUTILS_C_VAR extern
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
 GUTILS_C_VAR const guint glib_major_version;
 GUTILS_C_VAR const guint glib_minor_version;
@@ -2692,7 +2692,7 @@ void        g_main_set_poll_func     (GPollFunc   func);
 GIOChannel* g_io_channel_unix_new    (int         fd);
 gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 
 GUTILS_C_VAR guint g_pipe_readable_msg;
 
@@ -2750,7 +2750,7 @@ GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
 
 /* Windows emulation stubs for common Unix functions
  */
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  define MAXPATHLEN 1024
 
 #ifdef _MSC_VER
@@ -2814,7 +2814,7 @@ DIR*		gwin_opendir	(const gchar	*dirname);
 struct dirent*	gwin_readdir  	(DIR		*dir);
 void		gwin_rewinddir 	(DIR		*dir);
 gint		gwin_closedir  	(DIR		*dir);
-#endif	 /* NATIVE_WIN32 */
+#endif	 /* G_OS_WIN32 */
 
 
 /* GLib Thread support

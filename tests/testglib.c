@@ -306,7 +306,7 @@ main (int   argc,
     gchar *filename;
     gchar *dirname;
   } dirname_checks[] = {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },
@@ -699,7 +699,7 @@ main (int   argc,
   for (i = 0; i < 10000; i++)
     g_string_append_c (string1, 'a'+(i%26));
 
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   /* MSVC, mingw32 and LCC use the same run-time C library, which doesn't like
      the %10000.10000f format... */
   g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",

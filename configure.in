@@ -82,15 +82,13 @@ AC_CANONICAL_HOST
 AC_MSG_CHECKING(for the BeOS)
 case $host in
   *-*-beos*)
-    AC_DEFINE(GLIB_NATIVE_BEOS, 1)
     glib_native_beos="yes"
-    AC_MSG_RESULT([$glib_native_beos])
     ;;
-  default)
+  *)
     glib_native_beos="no"
-    AC_MSG_RESULT($glib_native_beos)
     ;;
 esac
+AC_MSG_RESULT([$glib_native_beos])
 
 dnl figure debugging default, prior to $ac_help setup
 dnl
@@ -1114,6 +1112,7 @@ _______EOF
 $glib_atexit
 $glib_memmove
 $glib_defines
+$glib_os
 
 $glib_vacopy
 
@@ -1213,6 +1212,7 @@ _______EOF
 	fi
 
 	cat >>$outfile <<_______EOF
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -1428,10 +1428,18 @@ g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
 g_recmutex_contents="$glib_cv_byte_contents_grecmutex"
 
-if test "x$glib_native_beos" = "xyes"; then
-    glib_native_beos_def="\$glib_native_beos_def
-#define GLIB_NATIVE_BEOS 1"
-fi           
+case $host in
+  *-*-beos*)
+    glib_os="#define G_OS_BEOS"
+    ;;
+  *-*-cygwin*)
+    glib_os="#define G_OS_UNIX
+#define G_OS_FEATURE_CYGWIN"
+    ;;
+  *)
+    glib_os="#define G_OS_UNIX"
+    ;;
+esac
 ])
 
 AC_OUTPUT([

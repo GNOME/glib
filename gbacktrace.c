@@ -59,7 +59,7 @@
 #include <string.h> /* for bzero on BSD systems */
 #endif
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  define STRICT		/* Strict typing, please */
 #  include <windows.h>
 #  include <process.h>		/* For _getpid() */
@@ -84,7 +84,7 @@ volatile gboolean glib_on_error_halt = TRUE;
 void
 g_on_error_query (const gchar *prg_name)
 {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   static const gchar *query1 = "[E]xit, [H]alt";
   static const gchar *query2 = ", show [S]tack trace";
   static const gchar *query3 = " or [P]roceed";
@@ -111,14 +111,10 @@ g_on_error_query (const gchar *prg_name)
 	     query3);
   fflush (stdout);
   
-#ifndef NATIVE_WIN32
   if (isatty(0) && isatty(1))
     fgets (buf, 8, stdin); 
   else
     strcpy (buf, "E\n");
-#else
-  fgets (buf, 8, stdin); 
-#endif
 
   if ((buf[0] == 'E' || buf[0] == 'e')
       && buf[1] == '\n')
@@ -157,7 +153,7 @@ g_on_error_query (const gchar *prg_name)
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
-#if !defined(NATIVE_WIN32) && ! defined(GLIB_NATIVE_BEOS)
+#ifdef G_OS_UNIX
   pid_t pid;
   gchar buf[16];
   gchar *args[4] = { "gdb", NULL, NULL, NULL };
@@ -201,7 +197,7 @@ stack_trace_sigchld (int signum)
 static void
 stack_trace (char **args)
 {
-#if !defined(NATIVE_WIN32) && !defined(GLIB_NATIVE_BEOS)
+#ifdef G_OS_UNIX
   pid_t pid;
   int in_fd[2];
   int out_fd[2];

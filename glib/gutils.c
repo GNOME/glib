@@ -50,7 +50,7 @@
 #include <sys/param.h>
 #endif
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  define STRICT			/* Strict typing, please */
 #  include <windows.h>
 #  include <direct.h>
@@ -59,7 +59,7 @@
 #  ifdef _MSC_VER
 #    include <io.h>
 #  endif /* _MSC_VER */
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 
 /* implement Glib's inline functions
  */
@@ -268,10 +268,10 @@ g_basename (const gchar	   *file_name)
   if (base)
     return base + 1;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   if (isalpha (file_name[0]) && file_name[1] == ':')
     return (gchar*) file_name + 2;
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
   
   return (gchar*) file_name;
 }
@@ -284,7 +284,7 @@ g_path_is_absolute (const gchar *file_name)
   if (file_name[0] == G_DIR_SEPARATOR)
     return TRUE;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return TRUE;
 #endif
@@ -300,7 +300,7 @@ g_path_skip_root (gchar *file_name)
   if (file_name[0] == G_DIR_SEPARATOR)
     return file_name + 1;
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return file_name + 3;
 #endif
@@ -366,7 +366,7 @@ g_get_current_dir (void)
 gchar*
 g_getenv (const gchar *variable)
 {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   g_return_val_if_fail (variable != NULL, NULL);
 
   return getenv (variable);
@@ -439,23 +439,23 @@ g_get_any_init (void)
       
       if (!g_tmp_dir)
 	{
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
 	  g_tmp_dir = g_strdup ("/tmp");
-#else /* NATIVE_WIN32 */
+#else /* G_OS_WIN32 */
 	  g_tmp_dir = g_strdup ("C:\\");
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 	}
       
       if (!g_home_dir)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
       
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
       if (!g_home_dir)
 	{
 	  /* The official way to specify a home directory on NT is
 	   * the HOMEDRIVE and HOMEPATH environment variables.
 	   *
-	   * This is inside #ifdef NATIVE_WIN32 because with the cygwin dll,
+	   * This is inside #ifdef G_OS_WIN32 because with the cygwin dll,
 	   * HOME should be a POSIX style pathname.
 	   */
 	  
@@ -471,7 +471,7 @@ g_get_any_init (void)
 	      g_free (homepath);
 	    }
 	}
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
       
 #ifdef HAVE_PWD_H
       {
@@ -555,7 +555,7 @@ g_get_any_init (void)
       
 #else /* !HAVE_PWD_H */
       
-#  ifdef NATIVE_WIN32
+#  ifdef G_OS_WIN32
       {
 	guint len = 17;
 	gchar buffer[17];
@@ -566,7 +566,7 @@ g_get_any_init (void)
 	    g_real_name = g_strdup (buffer);
 	  }
       }
-#  endif /* NATIVE_WIN32 */
+#  endif /* G_OS_WIN32 */
       
 #endif /* !HAVE_PWD_H */
       
@@ -704,7 +704,7 @@ g_int_hash (gconstpointer v)
   return *(const gint*) v;
 }
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 
 int
 gwin_ftruncate (gint  fd,
@@ -866,4 +866,4 @@ gwin_closedir (DIR *dir)
   return 0;
 }
 
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */

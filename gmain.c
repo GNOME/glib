@@ -54,14 +54,14 @@
 #endif /* HAVE_UNISTD_H */
 #include <errno.h>
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #define STRICT
 #include <windows.h>
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 
-#ifdef GLIB_NATIVE_BEOS
+#ifdef G_OS_BEOS
 #include <net/socket.h>
-#endif /* GLIB_NATIVE_BEOS */
+#endif /* G_OS_BEOS */
 
 /* Types */
 
@@ -168,13 +168,13 @@ static GMemChunk *poll_chunk;
 static guint n_poll_records = 0;
 
 #ifdef G_THREADS_ENABLED
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
 /* this pipe is used to wake up the main loop when a source is added.
  */
 static gint wake_up_pipe[2] = { -1, -1 };
-#else /* NATIVE_WIN32 */
+#else /* G_OS_WIN32 */
 static HANDLE wake_up_semaphore = NULL;
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
 static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
 
@@ -189,7 +189,7 @@ extern gint poll (GPollFD *ufds, guint nfsd, gint timeout);
 #  endif  /* !sun */
 static GPollFunc poll_func = (GPollFunc) poll;
 #else	/* !HAVE_POLL */
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 
 static gint
 g_poll (GPollFD *fds, guint nfds, gint timeout)
@@ -327,7 +327,7 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
     return 1;
 }
 
-#else  /* !NATIVE_WIN32 */
+#else  /* !G_OS_WIN32 */
 
 /* The following implementation of poll() comes from the GNU C Library.
  * Copyright (C) 1994, 1996, 1997 Free Software Foundation, Inc.
@@ -339,9 +339,9 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
-#ifdef GLIB_NATIVE_BEOS
+#ifdef G_OS_BEOS
 #undef NO_FD_SET
-#endif /* GLIB_NATIVE_BEOS */
+#endif /* G_OS_BEOS */
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
@@ -407,7 +407,7 @@ g_poll (GPollFD *fds,
   return ready;
 }
 
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
 static GPollFunc poll_func = g_poll;
 #endif	/* !HAVE_POLL */
@@ -591,7 +591,7 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
 void
 g_get_current_time (GTimeVal *result)
 {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   struct timeval r;
   g_return_if_fail (result != NULL);
 
@@ -974,7 +974,7 @@ g_main_poll (gint     timeout,
   gint npoll;
 
 #ifdef G_THREADS_ENABLED
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
   if (wake_up_pipe[0] < 0)
     {
       if (pipe (wake_up_pipe) < 0)
@@ -1074,7 +1074,7 @@ g_main_poll (gint     timeout,
 #ifdef G_THREADS_ENABLED
   if (!poll_waiting)
     {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
       gchar c;
       read (wake_up_pipe[0], &c, 1);
 #endif
@@ -1222,7 +1222,7 @@ g_main_wakeup (void)
   if (poll_waiting)
     {
       poll_waiting = FALSE;
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
       write (wake_up_pipe[1], "A", 1);
 #else
       ReleaseSemaphore (wake_up_semaphore, 1, NULL);

@@ -95,15 +95,10 @@
 #undef GLIB_INTERFACE_AGE
 #undef GLIB_BINARY_AGE
 
-#undef WIN32
-#undef NATIVE_WIN32
-
 #undef G_THREAD_SOURCE
 #undef POSIX_MIN_PRIORITY
 #undef POSIX_MAX_PRIORITY
 #undef POSIX_YIELD_FUNC
-
-#undef GLIB_NATIVE_BEOS
 
 /* #undef PACKAGE */
 /* #undef VERSION */

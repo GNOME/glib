@@ -40,11 +40,11 @@ extern const char      *g_log_domain_gmodule;
  * to feature Windows dll stubs.
  */
 #define	G_MODULE_IMPORT		extern
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
 #  define	G_MODULE_EXPORT		__declspec(dllexport)
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
 #  define	G_MODULE_EXPORT
-#endif /* !NATIVE_WIN32 */
+#endif /* !G_OS_WIN32 */
 
 typedef enum
 {

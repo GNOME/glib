@@ -1,3 +1,21 @@
+Sun Oct  3 19:25:42 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* acconfig.h
+	* configure.in
+	* glibconfig.h.win32: G_OS_FOO #defines. I *think* I got the cygwin
+	and beos stuff right, but I haven't tested it. The respective
+	porters should fix any screwups
+
+	* glib.h
+	* gerror.c
+	* gmain.c
+	* gmessages.c
+	* gscanner.c
+	* gthread.c
+	* gtimer.c
+	* gutils.c
+	* testglib.c: use G_OS stuff
+
 Wed Sep 22 01:53:18 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h (NULL): define NULL as (0L) if __cplusplus is defined, to

@@ -66,7 +66,7 @@ static void g_thread_fail (void);
 gboolean g_thread_use_default_impl = TRUE;
 gboolean g_threads_got_initialized = FALSE;
 
-#if defined(NATIVE_WIN32) && defined(__GNUC__)
+#if defined(G_OS_WIN32) && defined(__GNUC__)
 __declspec(dllexport)
 #endif
 GThreadFunctions g_thread_functions_for_glib_use = {

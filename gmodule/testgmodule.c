@@ -52,13 +52,13 @@ main (int   arg,
   string = g_get_current_dir ();
   g_print ("testgmodule (%s):\n", string);
 
-#ifdef NATIVE_WIN32
+#ifdef G_OS_WIN32
   plugin_a = g_strconcat (string, "\\libgplugin_a.dll", NULL);
   plugin_b = g_strconcat (string, "\\libgplugin_b.dll", NULL);
-#else /* !NATIVE_WIN32 */
+#else /* !G_OS_WIN32 */
   plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.so", NULL);
   plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.so", NULL);
-#endif /* NATIVE_WIN32 */
+#endif /* G_OS_WIN32 */
   g_free (string);
 
   /* module handles
