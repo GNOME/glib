@@ -1,3 +1,9 @@
+Sun Aug 29 23:58:38 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/ghash.c (g_hash_table_lookup): Point to 
+	g_hash_table_lookup_extended() for differentiation between
+	not-found and value-is-NULL.  (#150960, Morten Welinder)
+
 2004-08-27  Matthias Clasen  <mclasen@redhat.com>
 
 	Fix #151193, Stepan Kasal:
