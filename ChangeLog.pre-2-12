@@ -1,3 +1,8 @@
+Fri Aug  3 10:20:10 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/guniprop.c (g_unichar_xdigit_value): Fix computation
+	(Fix from Cesar Rincon)
+
 2001-08-01  Christopher James Lahey  <clahey@ximian.com>
 
 	* glib/gutf8.c (g_utf8_find_prev_char): Made g_utf8_find_prev_char

@@ -471,9 +471,9 @@ int
 g_unichar_xdigit_value (gunichar c)
 {
   if (c >= 'A' && c <= 'F')
-    return c - 'A' + 1;
+    return c - 'A' + 10;
   if (c >= 'a' && c <= 'f')
-    return c - 'a' + 1;
+    return c - 'a' + 10;
   if (TYPE (c) == G_UNICODE_DECIMAL_NUMBER)
     return ATTTABLE (c >> 8, c & 0xff);
   return -1;
