@@ -1,3 +1,9 @@
+Fri May 30 14:42:24 2003  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* gobject.c (g_value_set_object): Order refs/unrefs
+ 	so setting the same object back is safe. (#112861,
+ 	Morten Welinder)
+ 
 2003-03-24  Sven Neumann  <sven@gimp.org>
 
 	* gtype.c (type_data_finalize_class_ifaces_Wm): removed leftover

@@ -1508,14 +1508,12 @@ void
 g_value_set_object (GValue   *value,
 		    gpointer  v_object)
 {
+  GObject *old;
+	
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
-  
-  if (value->data[0].v_pointer)
-    {
-      g_object_unref (value->data[0].v_pointer);
-      value->data[0].v_pointer = NULL;
-    }
 
+  old = value->data[0].v_pointer;
+  
   if (v_object)
     {
       g_return_if_fail (G_IS_OBJECT (v_object));
@@ -1524,6 +1522,11 @@ g_value_set_object (GValue   *value,
       value->data[0].v_pointer = v_object;
       g_object_ref (value->data[0].v_pointer);
     }
+  else
+    value->data[0].v_pointer = NULL;
+  
+  if (old)
+    g_object_unref (old);
 }
 
 void
