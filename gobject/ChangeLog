@@ -1,3 +1,10 @@
+2004-11-30  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (gobject.def): gcc -E complains "linker input file
+	unused because linking not done" if told to preprocess the
+	gobject.symbols file. Use '-' and redirection to pass it as
+	standard input instead.
+
 Sun Nov 28 13:21:12 2004  Manish Singh  <yosh@gimp.org>
 
 	* abicheck.sh: filter G_GNUC before PRIVATE so $ is still true.

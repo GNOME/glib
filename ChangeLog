@@ -1,3 +1,10 @@
+2004-11-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/Makefile.am (glib.def): gcc -E complains "linker input file
+	unused because linking not done" if told to preprocess the
+	glib.symbols file. Use '-' and redirection to pass it as standard
+	input instead.
+
 2004-11-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* NEWS: Updates
