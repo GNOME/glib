@@ -1266,7 +1266,6 @@ g_utf16_to_ucs4 (const gunichar2  *str,
  * @str: a UTF-8 encoded string
  * @len: the maximum length of @str to use. If @len < 0, then
  *       the string is nul-terminated.
- 
  * @items_read: location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial

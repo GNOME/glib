@@ -1,3 +1,8 @@
+2002-01-24  Sven Neumann  <sven@gimp.org>
+
+	* glib/gutf8.c (g_utf8_to_utf16): removed an empty line in the
+	inline documentation that confused gtk-doc.
+
 2002-01-23  Laszlo Peter  <laca@ireland.sun.com>
 
 	* glib/gmessages.c (g_printf_string_upper_bound): return 1 more
