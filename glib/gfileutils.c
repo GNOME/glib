@@ -65,6 +65,12 @@
 
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR || c == '/')
+#else
+#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR)
+#endif
+
 /**
  * g_file_test:
  * @filename: a filename to test
@@ -749,21 +755,26 @@ g_file_open_tmp (const gchar *tmpl,
   const char *tmpdir;
   char *sep;
   char *fulltemplate;
+  const char *slash;
 
   if (tmpl == NULL)
     tmpl = ".XXXXXX";
 
-  if (strchr (tmpl, G_DIR_SEPARATOR)
+  if ((slash = strchr (tmpl, G_DIR_SEPARATOR)) != NULL
 #ifdef G_OS_WIN32
-      || strchr (tmpl, '/')
+      || (strchr (tmpl, '/') != NULL && (slash = "/"))
 #endif
-				    )
+      )
     {
+      char c[2];
+      c[0] = *slash;
+      c[1] = '\0';
+
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
 		   _("Template '%s' invalid, should not contain a '%s'"),
-		   tmpl, G_DIR_SEPARATOR_S);
+		   tmpl, c);
 
       return -1;
     }
@@ -781,7 +792,7 @@ g_file_open_tmp (const gchar *tmpl,
 
   tmpdir = g_get_tmp_dir ();
 
-  if (tmpdir [strlen (tmpdir) - 1] == G_DIR_SEPARATOR)
+  if (G_IS_DIR_SEPARATOR (tmpdir [strlen (tmpdir) - 1]))
     sep = "";
   else
     sep = G_DIR_SEPARATOR_S;
@@ -964,8 +975,17 @@ g_build_path (const gchar *separator,
  * @Varargs: remaining elements in path, terminated by %NULL
  * 
  * Creates a filename from a series of elements using the correct
- * separator for filenames. This function behaves identically
- * to <literal>g_build_path (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
+ * separator for filenames.
+ *
+ * On Unix, this function behaves identically to <literal>g_build_path
+ * (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
+ *
+ * On Windows, it takes into account that either the backslash
+ * (<literal>\</literal> or slash (<literal>/</literal>) can be used
+ * as separator in filenames, but otherwise behaves as on Unix. When
+ * file pathname separators need to be inserted, the one that last
+ * previously occurred in the parameters (reading from left to right)
+ * is used.
  *
  * No attempt is made to force the resulting filename to be an absolute
  * path. If the first element is a relative path, the result will
@@ -977,6 +997,7 @@ gchar *
 g_build_filename (const gchar *first_element, 
 		  ...)
 {
+#ifndef G_OS_WIN32
   gchar *str;
   va_list args;
 
@@ -985,6 +1006,111 @@ g_build_filename (const gchar *first_element,
   va_end (args);
 
   return str;
+#else
+  /* Code copied from g_build_pathv(), and modifed to use two
+   * alternative single-character separators.
+   */
+  va_list args;
+  GString *result;
+  gboolean is_first = TRUE;
+  gboolean have_leading = FALSE;
+  const gchar *single_element = NULL;
+  const gchar *next_element;
+  const gchar *last_trailing = NULL;
+  gchar current_separator = '\\';
+
+  va_start (args, first_element);
+
+  result = g_string_new (NULL);
+
+  next_element = first_element;
+
+  while (TRUE)
+    {
+      const gchar *element;
+      const gchar *start;
+      const gchar *end;
+
+      if (next_element)
+	{
+	  element = next_element;
+	  next_element = va_arg (args, gchar *);
+	}
+      else
+	break;
+
+      /* Ignore empty elements */
+      if (!*element)
+	continue;
+      
+      start = element;
+
+      if (TRUE)
+	{
+	  while (start &&
+		 (*start == '\\' || *start == '/'))
+	    {
+	      current_separator = *start;
+	      start++;
+	    }
+	}
+
+      end = start + strlen (start);
+      
+      if (TRUE)
+	{
+	  while (end >= start + 1 &&
+		 (end[-1] == '\\' || end[-1] == '/'))
+	    {
+	      current_separator = end[-1];
+	      end--;
+	    }
+	  
+	  last_trailing = end;
+	  while (last_trailing >= element + 1 &&
+		 (last_trailing[-1] == '\\' || last_trailing[-1] == '/'))
+	    last_trailing--;
+
+	  if (!have_leading)
+	    {
+	      /* If the leading and trailing separator strings are in the
+	       * same element and overlap, the result is exactly that element
+	       */
+	      if (last_trailing <= start)
+		single_element = element;
+		  
+	      g_string_append_len (result, element, start - element);
+	      have_leading = TRUE;
+	    }
+	  else
+	    single_element = NULL;
+	}
+
+      if (end == start)
+	continue;
+
+      if (!is_first)
+	g_string_append_len (result, &current_separator, 1);
+      
+      g_string_append_len (result, start, end - start);
+      is_first = FALSE;
+    }
+
+  va_end (args);
+
+  if (single_element)
+    {
+      g_string_free (result, TRUE);
+      return g_strdup (single_element);
+    }
+  else
+    {
+      if (last_trailing)
+	g_string_append (result, last_trailing);
+  
+      return g_string_free (result, FALSE);
+    }
+#endif
 }
 
 /**

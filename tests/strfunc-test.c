@@ -441,6 +441,39 @@ main (int   argc,
   TEST (NULL, str_check (g_build_filename (S"x"S, S"y"S, S"z"S, NULL), S"x"S"y"S"z"S));
   TEST (NULL, str_check (g_build_filename (S S"x"S S, S S"y"S S, S S"z"S S, NULL), S S"x"S"y"S"z"S S));
 
+#ifdef G_OS_WIN32
+
+  /* Test also using the slash as file name separator */
+#define U "/"
+  TEST (NULL, str_check (g_build_filename (NULL), ""));
+  TEST (NULL, str_check (g_build_filename (U, NULL), U));
+  TEST (NULL, str_check (g_build_filename (U"x", NULL), U"x"));
+  TEST (NULL, str_check (g_build_filename ("x"U, NULL), "x"U));
+  TEST (NULL, str_check (g_build_filename ("", U"x", NULL), U"x"));
+  TEST (NULL, str_check (g_build_filename ("", U"x", NULL), U"x"));
+  TEST (NULL, str_check (g_build_filename (U, "x", NULL), U"x"));
+  TEST (NULL, str_check (g_build_filename (U U, "x", NULL), U U"x"));
+  TEST (NULL, str_check (g_build_filename (U S, "x", NULL), U S"x"));
+  TEST (NULL, str_check (g_build_filename ("x"U, "", NULL), "x"U));
+  TEST (NULL, str_check (g_build_filename ("x"S"y", "z"U"a", NULL), "x"S"y"S"z"U"a"));
+  TEST (NULL, str_check (g_build_filename ("x", U, NULL), "x"U));
+  TEST (NULL, str_check (g_build_filename ("x", U U, NULL), "x"U U));
+  TEST (NULL, str_check (g_build_filename ("x", S U, NULL), "x"S U));
+  TEST (NULL, str_check (g_build_filename (U"x", "y", NULL), U"x"U"y"));
+  TEST (NULL, str_check (g_build_filename ("x", "y"U, NULL), "x"U"y"U));
+  TEST (NULL, str_check (g_build_filename (U"x"U, U"y"U, NULL), U"x"U"y"U));
+  TEST (NULL, str_check (g_build_filename (U"x"U U, U U"y"U, NULL), U"x"U"y"U));
+  TEST (NULL, str_check (g_build_filename ("x", U, "y",  NULL), "x"U"y"));
+  TEST (NULL, str_check (g_build_filename ("x", U U, "y",  NULL), "x"U"y"));
+  TEST (NULL, str_check (g_build_filename ("x", U S, "y",  NULL), "x"S"y"));
+  TEST (NULL, str_check (g_build_filename ("x", S U, "y",  NULL), "x"U"y"));
+  TEST (NULL, str_check (g_build_filename ("x", U "y", "z", NULL), "x"U"y"U"z"));
+  TEST (NULL, str_check (g_build_filename ("x", S "y", "z", NULL), "x"S"y"S"z"));
+  TEST (NULL, str_check (g_build_filename ("x", S "y", "z", U, "a", "b", NULL), "x"S"y"S"z"U"a"U"b"));
+  TEST (NULL, str_check (g_build_filename (U"x"U, U"y"U, U"z"U, NULL), U"x"U"y"U"z"U));
+  TEST (NULL, str_check (g_build_filename (U U"x"U U, U U"y"U U, U U"z"U U, NULL), U U"x"U"y"U"z"U U));
+#endif /* G_OS_WIN32 */
+
 #undef S
 
   {

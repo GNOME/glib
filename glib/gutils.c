@@ -83,6 +83,13 @@
 #include <libintl.h>
 #endif
 
+/* G_IS_DIR_SEPARATOR probably should be made public in GLib 2.4 */
+#ifdef G_OS_WIN32
+#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR || c == '/')
+#else
+#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR)
+#endif
+
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
@@ -250,7 +257,11 @@ g_find_program_in_path (const gchar *program)
    * don't look in PATH.
    */
   if (g_path_is_absolute (program)
-      || strchr (program, G_DIR_SEPARATOR) != NULL)
+      || strchr (program, G_DIR_SEPARATOR) != NULL
+#ifdef G_OS_WIN32
+      || strchr (program, '/') != NULL
+#endif
+      )
     {
       if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE))
         return g_strdup (program);
@@ -402,6 +413,15 @@ g_basename (const gchar	   *file_name)
   g_return_val_if_fail (file_name != NULL, NULL);
   
   base = strrchr (file_name, G_DIR_SEPARATOR);
+
+#ifdef G_OS_WIN32
+  {
+    gchar *q = strrchr (file_name, '/');
+    if (base == NULL || (q != NULL && q > base))
+	base = q;
+  }
+#endif
+
   if (base)
     return base + 1;
 
@@ -442,7 +462,7 @@ g_path_get_basename (const gchar   *file_name)
   
   last_nonslash = strlen (file_name) - 1;
 
-  while (last_nonslash >= 0 && file_name [last_nonslash] == G_DIR_SEPARATOR)
+  while (last_nonslash >= 0 && G_IS_DIR_SEPARATOR (file_name [last_nonslash]))
     last_nonslash--;
 
   if (last_nonslash == -1)
@@ -457,7 +477,7 @@ g_path_get_basename (const gchar   *file_name)
 
   base = last_nonslash;
 
-  while (base >=0 && file_name [base] != G_DIR_SEPARATOR)
+  while (base >=0 && !G_IS_DIR_SEPARATOR (file_name [base]))
     base--;
 
 #ifdef G_OS_WIN32
@@ -477,16 +497,12 @@ g_path_is_absolute (const gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, FALSE);
   
-  if (file_name[0] == G_DIR_SEPARATOR
-#ifdef G_OS_WIN32
-      || file_name[0] == '/'
-#endif
-				     )
+  if (G_IS_DIR_SEPARATOR (file_name[0]))
     return TRUE;
 
 #ifdef G_OS_WIN32
   /* Recognize drive letter on native Windows */
-  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && (file_name[2] == G_DIR_SEPARATOR || file_name[2] == '/'))
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && G_IS_DIR_SEPARATOR (file_name[2]))
     return TRUE;
 #endif /* G_OS_WIN32 */
 
@@ -499,23 +515,32 @@ g_path_skip_root (const gchar *file_name)
   g_return_val_if_fail (file_name != NULL, NULL);
   
 #ifdef G_PLATFORM_WIN32
-  /* Skip \\server\share (Win32) or //server/share (Cygwin) */
-  if (file_name[0] == G_DIR_SEPARATOR &&
-      file_name[1] == G_DIR_SEPARATOR &&
+  /* Skip \\server\share or //server/share */
+  if (G_IS_DIR_SEPARATOR (file_name[0]) &&
+      G_IS_DIR_SEPARATOR (file_name[1]) &&
       file_name[2])
     {
       gchar *p;
 
-      if ((p = strchr (file_name + 2, G_DIR_SEPARATOR)) > file_name + 2 &&
+      p = strchr (file_name + 2, G_DIR_SEPARATOR);
+#ifdef G_OS_WIN32
+      {
+	gchar *q = strchr (file_name + 2, '/');
+	if (p == NULL || (q != NULL && q < p))
+	  p = q;
+      }
+#endif
+      if (p &&
+	  p > file_name + 2 &&
 	  p[1])
 	{
 	  file_name = p + 1;
 
-	  while (file_name[0] && file_name[0] != G_DIR_SEPARATOR)
+	  while (file_name[0] && !G_IS_DIR_SEPARATOR (file_name[0]))
 	    file_name++;
 
 	  /* Possibly skip a backslash after the share name */
-	  if (file_name[0] == G_DIR_SEPARATOR)
+	  if (G_IS_DIR_SEPARATOR (file_name[0]))
 	    file_name++;
 
 	  return (gchar *)file_name;
@@ -524,16 +549,16 @@ g_path_skip_root (const gchar *file_name)
 #endif
   
   /* Skip initial slashes */
-  if (file_name[0] == G_DIR_SEPARATOR)
+  if (G_IS_DIR_SEPARATOR (file_name[0]))
     {
-      while (file_name[0] == G_DIR_SEPARATOR)
+      while (G_IS_DIR_SEPARATOR (file_name[0]))
 	file_name++;
       return (gchar *)file_name;
     }
 
 #ifdef G_OS_WIN32
   /* Skip X:\ */
-  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && G_IS_DIR_SEPARATOR (file_name[2]))
     return (gchar *)file_name + 3;
 #endif
 
@@ -549,9 +574,16 @@ g_path_get_dirname (const gchar	   *file_name)
   g_return_val_if_fail (file_name != NULL, NULL);
   
   base = strrchr (file_name, G_DIR_SEPARATOR);
+#ifdef G_OS_WIN32
+  {
+    gchar *q = strrchr (file_name, '/');
+    if (base == NULL || (q != NULL && q > base))
+	base = q;
+  }
+#endif
   if (!base)
     return g_strdup (".");
-  while (base > file_name && *base == G_DIR_SEPARATOR)
+  while (base > file_name && G_IS_DIR_SEPARATOR (*base))
     base--;
   len = (guint) 1 + base - file_name;
   
@@ -792,7 +824,7 @@ g_get_any_init (void)
 	  gsize k;    
 	  g_tmp_dir = g_strdup (P_tmpdir);
 	  k = strlen (g_tmp_dir);
-	  if (k > 1 && g_tmp_dir[k - 1] == G_DIR_SEPARATOR)
+	  if (k > 1 && G_IS_DIR_SEPARATOR (g_tmp_dir[k - 1]))
 	    g_tmp_dir[k - 1] = '\0';
 	}
 #endif

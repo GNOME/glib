@@ -1,3 +1,22 @@
+2003-08-16  Tor Lillqvist  <tml@iki.fi>
+
+	Fix #117925 (Dov Grobgeld):
+
+	* glib/gutils.c (g_find_program_in_path, g_basename,
+	g_path_get_basename, g_path_is_absolute, g_path_skip_root,
+	g_path_get_dirname, g_get_any_init): On Win32, look also for
+	slashes ('/') as pathname separators.
+
+	* glib/gfileutils.c (g_file_open_tmp): Ditto. If the template
+	contains a pathname separator, include the actual one in the error
+	message, instead of always the canonical one.
+
+	(g_build_filename): Separate implementation on Win32 that looks
+	for either slash or backslash. Document Unix/Windows differences.
+
+	* tests/testglib.c
+	* tests/strfunc-test.c: Test above functionality on Win32.
+
 2003-08-15  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gmain.c (g_poll): [Win32] Don't exceed handle array
