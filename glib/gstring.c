@@ -280,7 +280,7 @@ g_string_assign (GString     *string,
 
 GString*
 g_string_truncate (GString *fstring,
-		   gint     len)
+		   guint    len)
 {
   GRealString *string = (GRealString *) fstring;
 

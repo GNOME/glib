@@ -149,6 +149,10 @@ g_snprintf (gchar	*str,
   va_list args;
   gint retval;
   
+  g_return_val_if_fail (str != NULL, 0);
+  g_return_val_if_fail (n > 0, 0);
+  g_return_val_if_fail (fmt != NULL, 0);
+
   va_start (args, fmt);
   retval = vsnprintf (str, n, fmt, args);
   va_end (args);
@@ -164,6 +168,10 @@ g_snprintf (gchar	*str,
   gchar *printed;
   va_list args;
   
+  g_return_val_if_fail (str != NULL, 0);
+  g_return_val_if_fail (n > 0, 0);
+  g_return_val_if_fail (fmt != NULL, 0);
+
   va_start (args, fmt);
   printed = g_strdup_vprintf (fmt, args);
   va_end (args);
@@ -186,6 +194,10 @@ g_vsnprintf (gchar	 *str,
 #ifdef	HAVE_VSNPRINTF
   gint retval;
   
+  g_return_val_if_fail (str != NULL, 0);
+  g_return_val_if_fail (n > 0, 0);
+  g_return_val_if_fail (fmt != NULL, 0);
+
   retval = vsnprintf (str, n, fmt, args);
   
   if (retval < 0)
@@ -198,6 +210,10 @@ g_vsnprintf (gchar	 *str,
 #else	/* !HAVE_VSNPRINTF */
   gchar *printed;
   
+  g_return_val_if_fail (str != NULL, 0);
+  g_return_val_if_fail (n > 0, 0);
+  g_return_val_if_fail (fmt != NULL, 0);
+
   printed = g_strdup_vprintf (fmt, args);
   strncpy (str, printed, n);
   str[n-1] = '\0';

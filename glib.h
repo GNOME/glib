@@ -1864,7 +1864,7 @@ void	     g_string_free	        (GString	 *string,
 GString*     g_string_assign            (GString	 *string,
 					 const gchar	 *rval);
 GString*     g_string_truncate          (GString	 *string,
-					 gint		  len);
+					 guint		  len);
 GString*     g_string_insert_len        (GString         *string,
                                          gint             pos,
                                          const gchar     *val,
