@@ -2757,44 +2757,32 @@ GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
 typedef int pid_t;
 #endif
 
-/* These POSIXish functions are available in the Microsoft C library
- * prefixed with underscore (which of course technically speaking is
- * the Right Thing, as they are non-ANSI. Not that being non-ANSI
- * prevents Microsoft from practically requiring you to include
- * <windows.h> every now and then...).
+/*
+ * To get prototypes for the following POSIXish functions, you have to
+ * include the indicated non-POSIX headers. The functions are defined
+ * in OLDNAMES.LIB (MSVC) or -lmoldname-msvc (mingw32).
  *
- * You still need to include the appropriate headers to get the
- * prototypes, like <stdio.h>, <io.h>, <direct.h> or <process.h>.
- *
- * For some functions, we provide emulators in glib, which are prefixed
- * with gwin_.
+ * getcwd: <direct.h> (MSVC), <io.h> (mingw32)
+ * getpid: <process.h>
+ * access: <io.h>
+ * unlink: <stdio.h> or <io.h>
+ * open, read, write, lseek, close: <io.h>
+ * rmdir: <direct.h>
+ * pipe: <direct.h> */
+
+/* pipe is not in OLDNAMES.LIB or -lmoldname-msvc. */
+#define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
+
+/* For some POSIX functions that are not provided by the MS runtime,
+ * we provide emulators in glib, which are prefixed with gwin_.
  */
-#    define getcwd		_getcwd
-#    define getpid		_getpid
-#    define access		_access
-#ifdef __GNUC__
-#    define stat		_stat
-#    define fileno		_fileno
-#endif
-#    define fstat		_fstat
-#    define unlink		_unlink
-#    define open		_open
-#    define read		_read
-#    define write		_write
-#    define lseek		_lseek
-#    define close		_close
-#    define rmdir		_rmdir
-#    define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
-#    define popen		_popen
-#    define pclose		_pclose
-#    define fdopen		_fdopen
-#    define hypot		_hypot
 #    define ftruncate(fd, size)	gwin_ftruncate (fd, size)
 #    define opendir		gwin_opendir
 #    define readdir		gwin_readdir
 #    define rewinddir		gwin_rewinddir
 #    define closedir		gwin_closedir
 #    define NAME_MAX 255
+
 struct DIR
 {
   gchar    *dir_name;
