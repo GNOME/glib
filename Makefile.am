@@ -9,7 +9,7 @@ BUILT_SOURCES=glib-config-2.0
 glib-config-2.0: glib-config-2.0.in
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
-	-DG_DISBALE_COMPAT_H
+	-DG_DISABLE_COMPAT_H
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\

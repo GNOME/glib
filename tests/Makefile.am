@@ -1,5 +1,5 @@
 
-INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule @GLIB_DEBUG_FLAGS@
 
 EFENCE=
 

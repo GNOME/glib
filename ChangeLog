@@ -1,3 +1,10 @@
+2001-01-03  Havoc Pennington  <hp@pobox.com>
+
+	* tests/Makefile.am (INCLUDES): -I$(top_srcdir)/gmodule, 
+	fix from Michael Meeks
+
+	* Makefile.am (INCLUDES): DISABLE was spelled wrong
+
 Wed Jan  3 14:10:49 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.[ch]: Switch GMainLoop to be ref/unref, use to
