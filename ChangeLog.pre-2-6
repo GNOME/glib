@@ -1,3 +1,18 @@
+1999-07-13  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Correct URL for mingw runtime sources.
+
+	* build-dll: Combine commands with &&.
+
+	* glib.h: Map also rmdir() and hypot() for MSVCRT library.
+
+	* makefile.cygwin.in
+	* tests/makefile.cygwin.in: New DLL naming style. GCC-compiled DLLs are
+ 	now called *.gcc.dll, to avoid binary incompatibilities with
+ 	MSVC-compiled versions.
+
+	* makefile.msc.in: Cosmetics.
+
 1999-07-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Test for pthread_join rather than for

@@ -122,9 +122,9 @@ accessing the fields in a stat struct as filled in by the stat and
 fstat functions in the MS library will cause various interesting
 failures.
 
-You also will have to get the mingw32 source snapshot from
-http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz (this
-is the source to the "mingw32" part of Mumit Khan's egcs-1.1.2
+You also will have to get the mingw32 runtime source from
+ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/runtime/source-1999-04-05.tar.gz
+(this is the source to the "mingw32" part of Mumit Khan's egcs-1.1.2
 distribution.) Unpack it and fix the prototype and call to
 __getmainargs() in init.c to include one more parameter, an int *,
 which should be passed the address of a zero int. Code snippets below:

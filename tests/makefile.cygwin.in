@@ -37,7 +37,7 @@ all :	$(TESTS)
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER)
+	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER).gcc -lgthread-$(GLIB_VER).gcc
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done

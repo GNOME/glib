@@ -12,6 +12,10 @@ PTHREADS = ..\pthreads-snap-1999-05-30
 PTHREAD_LIB = $(PTHREADS)\pthread.lib
 PTHREAD_INC = -I $(PTHREADS)
 
+################################################################
+
+# Nothing much configurable below
+
 !IFNDEF DEBUG
 # Full optimization:
 OPTIMIZE = -Ox -MD
@@ -21,10 +25,6 @@ LINKDEBUG =
 OPTIMIZE = -Zi -MDd
 LINKDEBUG = /debug
 !ENDIF
-
-################################################################
-
-# Nothing much configurable below
 
 # cl -? describes the options
 CC = cl -G5 -GF $(OPTIMIZE) -W3 -nologo

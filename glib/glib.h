@@ -2778,10 +2778,12 @@ typedef int pid_t;
 #    define write		_write
 #    define lseek		_lseek
 #    define close		_close
+#    define rmdir		_rmdir
 #    define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
 #    define popen		_popen
 #    define pclose		_pclose
 #    define fdopen		_fdopen
+#    define hypot		_hypot
 #    define ftruncate(fd, size)	gwin_ftruncate (fd, size)
 #    define opendir		gwin_opendir
 #    define readdir		gwin_readdir
