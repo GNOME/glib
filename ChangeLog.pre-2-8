@@ -1,5 +1,11 @@
 2002-11-28  Matthias Clasen  <maclas@gmx.de>
 
+	* configure.in: Fix the definitions around printf: either we use
+	system printf in which case HAVE_VASPRINTF, HAVE_C99_VSNPRINTF and
+	HAVE_UNIX98_PRINTF have already been determined by earlier tests,
+	or we use the included printf, in which case we know that these
+	three can be defined as 1.  (#99826)
+
 	* glib/gutf8.c (g_utf8_strreverse): 
 	* glib/gstrfuncs.c (g_str_has_suffix): 
 	(g_str_has_prefix): 

@@ -732,6 +732,7 @@ fi
 AM_CONDITIONAL(HAVE_GOOD_PRINTF, test "$enable_trio" != "yes")
 if test "$enable_trio" != "yes" ; then 
   AC_DEFINE(HAVE_GOOD_PRINTF,1,[define to use system printf])
+else
   AC_DEFINE(HAVE_VASPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
