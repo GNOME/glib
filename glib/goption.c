@@ -654,7 +654,7 @@ parse_arg (GOptionContext *context,
 	change = get_change (context, G_OPTION_ARG_NONE,
 			     entry->arg_data);
 
-	*(gboolean *)entry->arg_data = TRUE;
+	*(gboolean *)entry->arg_data = !(entry->flags & G_OPTION_FLAG_REVERSE);
  	break;
       }	     
     case G_OPTION_ARG_STRING:
