@@ -1,3 +1,11 @@
+2002-02-27  Daniel Elstner  <daniel.elstner@gmx.net>
+
+	* glib/gdate.c (g_date_strftime): Remove the shortcut
+	for UTF-8 locales to ensure consistent behaviour.  Fix
+	handling of the strftime return value, and avoid looping
+	if strftime is buggy and constantly returns 0.  Always
+	return 0 if the output buffer was to small. (#72544)
+
 Tue Feb 26 21:44:01 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* config.status config.guess: Remove these files

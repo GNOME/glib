@@ -1322,11 +1322,12 @@ g_date_order (GDate *date1,
   g_return_if_fail (g_date_valid (date1));
   g_return_if_fail (g_date_valid (date2));
 
-  if (g_date_compare (date1, date2) == 1) {
-    GDate tmp = *date1;
-    *date1 = *date2;
-    *date2 = tmp;
-  }
+  if (g_date_compare (date1, date2) > 0)
+    {
+      GDate tmp = *date1;
+      *date1 = *date2;
+      *date2 = tmp;
+    }
 }
 
 gsize     
@@ -1336,109 +1337,96 @@ g_date_strftime (gchar       *s,
                  const GDate *d)
 {
   struct tm tm;
-  const gchar *charset;
-  
+  gsize locale_format_len = 0;
+  gchar *locale_format;
+  gsize tmplen;
+  gchar *tmpbuf;
+  gsize tmpbufsize;
+  gsize convlen = 0;
+  gchar *convbuf;
+  GError *error = NULL;
+  gsize retval;
+
   g_return_val_if_fail (d != NULL, 0);
   g_return_val_if_fail (g_date_valid (d), 0);
   g_return_val_if_fail (slen > 0, 0); 
   g_return_val_if_fail (format != 0, 0);
   g_return_val_if_fail (s != 0, 0);
-  
+
   g_date_to_struct_tm (d, &tm);
 
-  if (g_get_charset (&charset))
-    {
-      gint retval = strftime (s, slen, format, &tm);
-      if (retval == 0)
-	{
-	  /* If retval == 0, the contents of s are undefined.  We define
-	   *  them. 
-	   */
-	  s[0] = '\0';
-	}
+  locale_format = g_locale_from_utf8 (format, -1, NULL, &locale_format_len, &error);
 
-      return retval;
+  if (error)
+    {
+      g_warning (G_STRLOC "Error converting format to locale encoding: %s\n", error->message);
+      g_error_free (error);
+
+      s[0] = '\0';
+      return 0;
+    }
+
+  tmpbufsize = MAX (128, locale_format_len * 2);
+  while (TRUE)
+    {
+      tmpbuf = g_malloc (tmpbufsize);
+
+      /* Set the first byte to something other than '\0', to be able to
+       * recognize whether strftime actually failed or just returned "".
+       */
+      tmpbuf[0] = '\1';
+      tmplen = strftime (tmpbuf, tmpbufsize, locale_format, &tm);
+
+      if (tmplen == 0 && tmpbuf[0] != '\0')
+        {
+          g_free (tmpbuf);
+          tmpbufsize *= 2;
+
+          if (tmpbufsize > 65536)
+            {
+              g_warning (G_STRLOC "Maximum buffer size for g_date_strftime exceeded: giving up\n");
+              g_free (locale_format);
+
+              s[0] = '\0';
+              return 0;
+            }
+        }
+      else
+        break;
+    }
+  g_free (locale_format);
+
+  convbuf = g_locale_to_utf8 (tmpbuf, tmplen, NULL, &convlen, &error);
+  g_free (tmpbuf);
+
+  if (error)
+    {
+      g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s\n", error->message);
+      g_error_free (error);
+
+      s[0] = '\0';
+      return 0;
+    }
+
+  if (slen <= convlen)
+    {
+      /* Ensure only whole characters are copied into the buffer.
+       */
+      gchar *end = g_utf8_find_prev_char (convbuf, convbuf + slen);
+      g_assert (end != NULL);
+      convlen = end - convbuf;
+
+      /* Return 0 because the buffer isn't large enough.
+       */
+      retval = 0;
     }
   else
-    {
-      gchar *locale_format;
-      gsize tmplen;
-      gchar *tmpbuf;
-      gsize tmpbufsize;
-      gsize convlen = 0;
-      gchar *convbuf;
-      GError *error = NULL;
-      
-      locale_format = g_convert (format, -1 , charset, "UTF-8",
-				 NULL, NULL, &error);
-      if (error)
-	{
-	  g_warning (G_STRLOC "Error converting format to %s: %s\n",
-		     charset, error->message);
-	  g_error_free (error);
+    retval = convlen;
 
-	  return 0;
-	}
-      
-      tmpbufsize = MAX (128, strlen (locale_format) * 2);
-      while (TRUE)
-	{
-	  tmpbuf = g_malloc (tmpbufsize + 1);
-	  tmplen = strftime (tmpbuf, tmpbufsize + 1, locale_format, &tm);
-	  if (tmplen == tmpbufsize + 1)
-	    {
-	      g_free (tmpbuf);
-	      tmpbufsize *= 2;
-	    }
-	  else
-	    break;
-	}
-      g_free (locale_format);
+  memcpy (s, convbuf, convlen);
+  s[convlen] = '\0';
+  g_free (convbuf);
 
-      if (tmplen == 0)
-	{
-	  /* If retval == 0, the contents of s are undefined.  We define
-	   *  them. 
-	   */
-	  g_free (locale_format);
-	  s[0] = '\0';
-	  return 0;
-	}
-
-      convbuf = g_convert (tmpbuf, tmplen, "UTF-8", charset, NULL, &convlen, &error);
-      g_free (tmpbuf);
-      
-      if (error)
-	{
-	  g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s\n", error->message);
-	  g_error_free (error);
-	}
-      else
-	{
-	  /* Only copy whole characters into the buffer
-	   */
-	  gchar *in = convbuf;
-	  gchar *out = s;
-	  gchar *end = s + slen - 1;
-
-	  while (*in)
-	    {
-	      int len = g_utf8_skip[*(guchar *)in];
-	      if (out + len < end)
-		{
-		  out += len;
-		  in += len;
-		}
-	      else
-		break;
-	    }
-
-	  memcpy (s, convbuf, out - s);
-	  *out = '\0';
-	}
-
-      g_free (convbuf);
-
-      return convlen;
-    }
+  return retval;
 }
+
