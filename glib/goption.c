@@ -482,26 +482,29 @@ print_help (GOptionContext *context,
 
   /* Add a bit of padding */
   max_length += 4;
-  
-  list = context->groups;
 
-  g_print ("%s\n  --%-*s %s\n", 
-	   _("Help Options:"), max_length, "help", _("Show help options"));
-
-  /* We only want --help-all when there are groups */
-  if (list)
-    g_print ("  --%-*s %s\n", max_length, "help-all", _("Show all help options"));
-
-  while (list)
+  if (!group)
     {
-      GOptionGroup *group = list->data;
-
-      g_print ("  --help-%-*s %s\n", max_length - 5, group->name, TRANSLATE (group, group->help_description));
+      list = context->groups;
       
-      list = list->next;
-    }
+      g_print ("%s\n  --%-*s %s\n", 
+	       _("Help Options:"), max_length, "help", _("Show help options"));
+      
+      /* We only want --help-all when there are groups */
+      if (list)
+	g_print ("  --%-*s %s\n", max_length, "help-all", _("Show all help options"));
 
-  g_print ("\n");
+      while (list)
+	{
+	  GOptionGroup *group = list->data;
+	  
+	  g_print ("  --help-%-*s %s\n", max_length - 5, group->name, TRANSLATE (group, group->help_description));
+	  
+	  list = list->next;
+	}
+
+      g_print ("\n");
+    }
 
   if (group)
     {

@@ -1,3 +1,9 @@
+2004-12-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (print_help): Don't print help options
+	if the options of a specific group have been 
+	requested.  (#160645, Glynn Foster)
+
 2004-12-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_get_language_names): Update the returned
