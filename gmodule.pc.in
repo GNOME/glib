@@ -7,5 +7,5 @@ Name: GModule
 Description: Dynamic module loader for GLib
 Requires: glib
 Version: @VERSION@
-Libs: -L${libdir} @G_MODULE_LDFLAGS@ -lgmodule-1.2 @G_MODULE_LIBS@
+Libs: -L${libdir} @G_MODULE_LDFLAGS@ -lgmodule @G_MODULE_LIBS@
 Cflags:

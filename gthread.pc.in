@@ -7,5 +7,5 @@ Name: GThread
 Description: Thread support for GLib
 Requires: glib
 Version: @VERSION@
-Libs: -L${libdir} -lgthread-1.2 @G_THREAD_LIBS@
-Cflags:
+Libs: -L${libdir} -lgthread @G_THREAD_LIBS@
+Cflags: @G_THREAD_CFLAGS@

@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: GLib
 Description: C Utility Library
 Version: @VERSION@
-Libs: -L${libdir} -lglib-1.2
+Libs: -L${libdir} -lglib
 Cflags: -I${includedir}/glib-1.2 -I${libdir}/glib/include 
 
