@@ -576,8 +576,9 @@ g_main_context_unref_and_unlock (GMainContext *context)
 
   g_ptr_array_free (context->pending_dispatches, TRUE);
   g_free (context->cached_poll_array);
-  
-  g_mem_chunk_destroy (context->poll_chunk);
+ 
+  if (context->poll_chunk) 
+    g_mem_chunk_destroy (context->poll_chunk);
 
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported())

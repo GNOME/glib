@@ -1,3 +1,10 @@
+Wed Jul  9 16:27:26 2003  Manish Singh  <yosh@gimp.org>
+
+	* glib/gmain.c (g_main_context_unref_and_unlock): check if
+	context->poll_chunk is set before trying to destroy it. For example,
+	This can happen if no sources are added to a context before it is
+	freed.
+
 2003-07-09  Morten Welinder  <terra@gnome.org>
 
 	* glib/gprintf.c (g_vasprintf): Avoid var declaration after
