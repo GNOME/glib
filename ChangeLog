@@ -1,3 +1,7 @@
+Mon Aug  9 17:37:56 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmacros.h (G_GNUC_INTERNAL): Define empty if gcc is too old.
+
 2004-08-06  Hans Breuer  <hans@breuer.org>
 
 	* glib/makefile.msc.in glib/glib.def : updated

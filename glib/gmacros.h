@@ -59,7 +59,7 @@
  * functions as being used internally to the lib only, to not 
  * create inefficient PLT entries.
  */
-#if defined (__GNUC__) 
+#if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
 #else
 #define G_GNUC_INTERNAL
