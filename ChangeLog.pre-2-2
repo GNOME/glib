@@ -1,3 +1,8 @@
+Thu Mar 14 17:37:45 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_write_chars): Fix some
+	gsize/gint mismatches. (#74422, Miroslaw Dobrzanski-Neumann)
+
 2002-03-14  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gmessages.c: Fixed threading issues brought up by
