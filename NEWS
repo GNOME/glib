@@ -1,3 +1,9 @@
+Overview of Changes in GLib 1.1.3:
+
+* New library gmodule included which basically wraps dlopen() facilities.
+* New g_log() mechanism for logging of messages at different log levels,
+  associated with certain log domains.
+
 Overview of Changes in GLib 1.1.2:
 
 * Fixed packaging mistake which occured in 1.1.1

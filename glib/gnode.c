@@ -113,35 +113,35 @@ g_node_unlink (GNode *node)
   node->prev = NULL;
 }
 
-void
+GNode*
 g_node_insert (GNode *parent,
 	       gint   position,
 	       GNode *node)
 {
-  g_return_if_fail (parent != NULL);
-  g_return_if_fail (node != NULL);
-  g_return_if_fail (G_NODE_IS_ROOT (node));
+  g_return_val_if_fail (parent != NULL, node);
+  g_return_val_if_fail (node != NULL, node);
+  g_return_val_if_fail (G_NODE_IS_ROOT (node), node);
   
   if (position > 0)
-    g_node_insert_before (parent,
-			  g_node_nth_child (parent, position),
-			  node);
+    return g_node_insert_before (parent,
+				 g_node_nth_child (parent, position),
+				 node);
   else if (position == 0)
-    g_node_prepend (parent, node);
-  else if (position < 0)
-    g_node_append (parent, node);
+    return g_node_prepend (parent, node);
+  else /* if (position < 0) */
+    return g_node_append (parent, node);
 }
 
-void
+GNode*
 g_node_insert_before (GNode *parent,
 		      GNode *sibling,
 		      GNode *node)
 {
-  g_return_if_fail (parent != NULL);
-  g_return_if_fail (node != NULL);
-  g_return_if_fail (G_NODE_IS_ROOT (node));
+  g_return_val_if_fail (parent != NULL, node);
+  g_return_val_if_fail (node != NULL, node);
+  g_return_val_if_fail (G_NODE_IS_ROOT (node), node);
   if (sibling)
-    g_return_if_fail (sibling->parent == parent);
+    g_return_val_if_fail (sibling->parent == parent, node);
   
   node->parent = parent;
   
@@ -174,15 +174,17 @@ g_node_insert_before (GNode *parent,
       else
 	node->parent->children = node;
     }
+
+  return node;
 }
 
-void
+GNode*
 g_node_prepend (GNode *parent,
 		GNode *node)
 {
-  g_return_if_fail (parent != NULL);
+  g_return_val_if_fail (parent != NULL, node);
   
-  g_node_insert_before (parent, parent->children, node);
+  return g_node_insert_before (parent, parent->children, node);
 }
 
 GNode*

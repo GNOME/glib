@@ -40,7 +40,7 @@ g_snprintf (gchar	*str,
 	    gchar const *fmt,
 	    ...)
 {
-#ifdef HAVE_VSNPRINTF
+#ifdef	HAVE_VSNPRINTF
   va_list args;
   gint retval;
   
@@ -49,8 +49,7 @@ g_snprintf (gchar	*str,
   va_end (args);
   
   return retval;
-  
-#else
+#else	/* !HAVE_VSNPRINTF */
   gchar *printed;
   va_list args, args2;
   
@@ -65,8 +64,31 @@ g_snprintf (gchar	*str,
   va_end (args);
   
   return strlen (str);
+#endif	/* !HAVE_VSNPRINTF */
+}
+
+gint
+g_vsnprintf (gchar	 *str,
+	     gulong	  n,
+	     gchar const *fmt,
+	     va_list     *args1,
+	     va_list     *args2)
+{
+#ifdef	HAVE_VSNPRINTF
+  gint retval;
   
-#endif
+  retval = vsnprintf (str, n, fmt, *args1);
+  
+  return retval;
+#else	/* !HAVE_VSNPRINTF */
+  gchar *printed;
+  
+  printed = g_vsprintf (fmt, args1, args2);
+  strncpy (str, printed, n);
+  str[n-1] = '\0';
+  
+  return strlen (str);
+#endif /* !HAVE_VSNPRINTF */
 }
 
 guint	     

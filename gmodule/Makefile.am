@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule
+DEFS += -DG_LOG_DOMAIN=g_log_domain_gmodule
 
 EXTRA_DIST =	\
 		gmoduleconf.h.in

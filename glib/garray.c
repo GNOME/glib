@@ -43,7 +43,7 @@ static GMemChunk *array_mem_chunk = NULL;
 
 
 GArray*
-g_array_new (gint zero_terminated)
+g_array_new (gboolean zero_terminated)
 {
   GRealArray *array;
 
@@ -63,8 +63,8 @@ g_array_new (gint zero_terminated)
 }
 
 void
-g_array_free (GArray *array,
-	      gint    free_segment)
+g_array_free (GArray  *array,
+	      gboolean free_segment)
 {
   if (free_segment)
     g_free (array->data);

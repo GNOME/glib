@@ -19,8 +19,16 @@
 #ifndef __G_LIB_H__
 #define __G_LIB_H__
 
+/* system specific config file
+ */
 #include <glibconfig.h>
 
+/* support standard arg inline functions for assertment macros
+ */
+#include <stdarg.h>
+
+/* optionally feature DMALLOC memory allocation debugger
+ */
 #ifdef USE_DMALLOC
 #include "dmalloc.h"
 #endif
@@ -59,7 +67,6 @@
 #define G_MAXDOUBLE MAXDOUBLE
 
 #endif /* HAVE_VALUES_H */
-
 
 #ifdef HAVE_LIMITS_H
 
@@ -118,8 +125,8 @@
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
 
-/* Provide simple enum value macro wrappers that ease automated enum value
- * stringification code.
+/* Provide simple enum value macro wrappers that ease automated
+ * enum value stringification code. [abandoned]
  */
 #if	!defined (G_CODE_GENERATION)
 #define G_ENUM( EnumerationName )		EnumerationName
@@ -158,6 +165,7 @@
 #  endif
 #endif
 
+
 /* Provide macros to feature the GCC function attribute.
  */
 #if	__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
@@ -179,17 +187,9 @@
 #define G_GNUC_CONST
 #endif	/* !__GNUC__ */
 
-/* Hacker macro to place breakpoints for x86 machines.
- * Actual use is strongly deprecated of course ;)
- */
-#if	defined (__i386__)
-#define	G_BREAKPOINT()		G_STMT_START{ __asm__ ("int $03"); }G_STMT_END
-#else	/* !__i386__ */
-#define	G_BREAKPOINT()
-#endif	/* __i386__ */
 
-/* Wrap the __PRETTY_FUNCTION__ and __FUNCTION__ variables with macros,
- * so we can refer to them as strings unconditionally.
+/* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
+ * macros, so we can refer to them as strings unconditionally.
  */
 #ifdef	__GNUC__
 #define	G_GNUC_FUNCTION		(__FUNCTION__)
@@ -198,6 +198,16 @@
 #define	G_GNUC_FUNCTION		("")
 #define	G_GNUC_PRETTY_FUNCTION	("")
 #endif	/* !__GNUC__ */
+
+
+/* Hacker macro to place breakpoints for x86 machines.
+ * Actual use is strongly deprecated of course ;)
+ */
+#if	defined (__i386__)
+#define	G_BREAKPOINT()		G_STMT_START{ __asm__ ("int $03"); }G_STMT_END
+#else	/* !__i386__ */
+#define	G_BREAKPOINT()
+#endif	/* __i386__ */
 
 
 #ifndef ATEXIT
@@ -216,8 +226,8 @@
 
 #ifdef __DMALLOC_H__
 
-#define g_new(type,count)	 ALLOC(type,count)
-#define g_new0(type,count)	 CALLOC(type,count)
+#define g_new(type, count)	 (ALLOC (type, count))
+#define g_new0(type, count)	 (CALLOC (type, count))
 
 #else /* __DMALLOC_H__ */
 
@@ -243,13 +253,15 @@
   g_mem_chunk_free ((mem_chunk), (mem)); \
 } G_STMT_END
 
+
 #define g_string(x) #x
 
 
 /* Provide macros for error handling. The "assert" macros will
  *  exit on failure. The "return" macros will exit the current
  *  function. Two different definitions are given for the macros
- *  in order to support gcc's __PRETTY_FUNCTION__ capability.
+ *  if G_DISABLE_ASSERT is not defined, in order to support gcc's
+ *  __PRETTY_FUNCTION__ capability.
  */
 
 #ifdef G_DISABLE_ASSERT
@@ -261,37 +273,46 @@
 
 #ifdef __GNUC__
 
-#define g_assert(expr)			G_STMT_START{\
-     if (!(expr))				     \
-       g_error ("file %s: line %d (%s): \"%s\"",     \
-		__FILE__,			     \
-		__LINE__,			     \
-		__PRETTY_FUNCTION__,		     \
-		#expr);			}G_STMT_END
+#define g_assert(expr)			G_STMT_START{		\
+     if (!(expr))						\
+       g_log (G_LOG_DOMAIN,					\
+	      G_LOG_LEVEL_ERROR,				\
+	      "file %s: line %d (%s): assertion failed: (%s)",	\
+	      __FILE__,						\
+	      __LINE__,						\
+	      __PRETTY_FUNCTION__,				\
+	      #expr);			}G_STMT_END
 
-#define g_assert_not_reached()		G_STMT_START{		      \
-     g_error ("file %s: line %d (%s): \"should not be reached\"",     \
-	      __FILE__,						      \
-	      __LINE__,						      \
-	      __PRETTY_FUNCTION__);	}G_STMT_END
+#define g_assert_not_reached()		G_STMT_START{		\
+     g_log (G_LOG_DOMAIN,					\
+	    G_LOG_LEVEL_ERROR,					\
+	    "file %s: line %d (%s): should not be reached",	\
+	    __FILE__,						\
+	    __LINE__,						\
+	    __PRETTY_FUNCTION__);	}G_STMT_END
 
 #else /* !__GNUC__ */
 
-#define g_assert(expr)			G_STMT_START{\
-     if (!(expr))				     \
-       g_error ("file %s: line %d: \"%s\"",	     \
-		__FILE__,			     \
-		__LINE__,			     \
-		#expr);			}G_STMT_END
+#define g_assert(expr)			G_STMT_START{		\
+     if (!(expr))						\
+       g_log (G_LOG_DOMAIN,					\
+	      G_LOG_LEVEL_ERROR,				\
+	      "file %s: line %d: assertion failed: (%s)",	\
+	      __FILE__,						\
+	      __LINE__,						\
+	      #expr);			}G_STMT_END
 
-#define g_assert_not_reached()		G_STMT_START{		      \
-     g_error ("file %s: line %d: \"should not be reached\"",	      \
-	      __FILE__,						      \
-	      __LINE__);		}G_STMT_END
+#define g_assert_not_reached()		G_STMT_START{	\
+     g_log (G_LOG_DOMAIN,				\
+	    G_LOG_LEVEL_ERROR,				\
+	    "file %s: line %d: should not be reached",	\
+	    __FILE__,					\
+	    __LINE__);		}G_STMT_END
 
 #endif /* __GNUC__ */
 
-#endif /* G_DISABLE_ASSERT */
+#endif /* !G_DISABLE_ASSERT */
+
 
 #ifdef G_DISABLE_CHECKS
 
@@ -302,59 +323,73 @@
 
 #ifdef __GNUC__
 
-#define g_return_if_fail(expr)		G_STMT_START{		       \
-     if (!(expr))						       \
-       {							       \
-	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
-		    __FILE__,					       \
-		    __LINE__,					       \
-		    __PRETTY_FUNCTION__,			       \
-		    #expr);					       \
-	 return;						       \
+#define g_return_if_fail(expr)		G_STMT_START{			\
+     if (!(expr))							\
+       {								\
+	 g_log (G_LOG_DOMAIN,						\
+		G_LOG_LEVEL_WARNING,					\
+		"file %s: line %d (%s): assertion failed: (%s)",	\
+		__FILE__,						\
+		__LINE__,						\
+		__PRETTY_FUNCTION__,					\
+		#expr);							\
+	 return;							\
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr,val)	G_STMT_START{		       \
-     if (!(expr))						       \
-       {							       \
-	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
-		    __FILE__,					       \
-		    __LINE__,					       \
-		    __PRETTY_FUNCTION__,			       \
-		    #expr);					       \
-	 return val;						       \
+#define g_return_val_if_fail(expr,val)	G_STMT_START{			\
+     if (!(expr))							\
+       {								\
+	 g_log (G_LOG_DOMAIN,						\
+		G_LOG_LEVEL_WARNING,					\
+		"file %s: line %d (%s): assertion failed: (%s)",	\
+		__FILE__,						\
+		__LINE__,						\
+		__PRETTY_FUNCTION__,					\
+		#expr);							\
+	 return val;							\
        };				}G_STMT_END
 
 #else /* !__GNUC__ */
 
-#define g_return_if_fail(expr)		G_STMT_START{		  \
-     if (!(expr))						  \
-       {							  \
-	 g_warning ("file %s: line %d: assertion. \"%s\" failed", \
-		    __FILE__,					  \
-		    __LINE__,					  \
-		    #expr);					  \
-	 return;						  \
+#define g_return_if_fail(expr)		G_STMT_START{		\
+     if (!(expr))						\
+       {							\
+	 g_log (G_LOG_DOMAIN,					\
+		G_LOG_LEVEL_WARNING,				\
+		"file %s: line %d: assertion failed: (%s)",	\
+		__FILE__,					\
+		__LINE__,					\
+		#expr);						\
+	 return;						\
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr, val)	G_STMT_START{		  \
-     if (!(expr))						  \
-       {							  \
-	 g_warning ("file %s: line %d: assertion \"%s\" failed.", \
-		    __FILE__,					  \
-		    __LINE__,					  \
-		    #expr);					  \
-	 return val;						  \
+#define g_return_val_if_fail(expr, val)	G_STMT_START{		\
+     if (!(expr))						\
+       {							\
+	 g_log (G_LOG_DOMAIN,					\
+		G_LOG_LEVEL_WARNING,				\
+		"file %s: line %d: assertion failed: (%s)",	\
+		__FILE__,					\
+		__LINE__,					\
+		#expr);						\
+	 return val;						\
        };				}G_STMT_END
 
 #endif /* !__GNUC__ */
 
-#endif /* G_DISABLE_CHECKS */
+#endif /* !G_DISABLE_CHECKS */
 
 
 #ifdef __cplusplus
+/* the #pragma } statment is used to fix up emacs' c-mode which gets
+ * confused by extern "C" {. the ansi standard says that compilers
+ * have to ignore #pragma directives that they don't know about,
+ * so we should be save in using this.
+ */
 extern "C" {
 #pragma }
 #endif /* __cplusplus */
+
 
 /* Provide type definitions for commonly used types.
  *  These are useful because a "gint8" can be adjusted
@@ -378,8 +413,8 @@ typedef float	gfloat;
 typedef double	gdouble;
 
 /* HAVE_LONG_DOUBLE doesn't work correctly on all platforms. 
- * Since gldouble isn't used anywhere, just disable it for now */
-
+ * Since gldouble isn't used anywhere, just disable it for now
+ */
 #if 0
 #ifdef HAVE_LONG_DOUBLE
 typedef long double gldouble;
@@ -396,12 +431,10 @@ typedef signed char	gint8;
 typedef unsigned char	guint8;
 #endif /* SIZEOF_CHAR */
 
-
 #if (SIZEOF_SHORT == 2)
 typedef signed short	gint16;
 typedef unsigned short	guint16;
 #endif /* SIZEOF_SHORT */
-
 
 #if (SIZEOF_INT == 4)
 typedef signed int	gint32;
@@ -422,12 +455,11 @@ typedef unsigned long long guint64;
 #else
 /* No gint64 */
 #undef HAVE_GINT64
-#warning "No gint64 available"
 #endif
 
 
-/* Define macros for storing integers inside pointers */
-
+/* Define macros for storing integers inside pointers
+ */
 #if (SIZEOF_INT == SIZEOF_VOID_P)
 
 #define GPOINTER_TO_INT(p) ((gint)(p))
@@ -445,14 +477,26 @@ typedef unsigned long long guint64;
 #define GUINT_TO_POINTER(u) ((gpointer)(gulong)(u))
 
 #else
-/* This should never happen */
-#error "Unhandled SIZEOF_VOID_P"
+#error SIZEOF_VOID_P unknown - This should never happen
 #endif
 
 typedef gint32	gssize;
 typedef guint32 gsize;
 typedef guint32 GQuark;
 typedef gint32	GTime;
+
+
+/* Glib version.
+ */
+extern const guint glib_major_version;
+extern const guint glib_minor_version;
+extern const guint glib_micro_version;
+extern const guint glib_interface_age;
+extern const guint glib_binary_age;
+
+
+/* Forward declarations of glib types.
+ */
 
 typedef struct _GList		GList;
 typedef struct _GSList		GSList;
@@ -477,35 +521,80 @@ typedef struct _GTuples		GTuples;
 typedef struct _GNode		GNode;
 
 
-typedef void		(*GFunc)		(gpointer  data,
-						 gpointer  user_data);
-typedef void		(*GHFunc)		(gpointer  key,
-						 gpointer  value,
-						 gpointer  user_data);
-typedef gpointer	(*GCacheNewFunc)	(gpointer  key);
-typedef gpointer	(*GCacheDupFunc)	(gpointer  value);
-typedef void		(*GCacheDestroyFunc)	(gpointer  value);
-typedef gint		(*GTraverseFunc)	(gpointer  key,
-						 gpointer  value,
-						 gpointer  data);
-typedef gboolean	(*GNodeTraverseFunc)	(GNode	  *node,
-						 gpointer  data);
-typedef void		(*GNodeForeachFunc)	(GNode	  *node,
-						 gpointer  data);
-typedef gint		(*GSearchFunc)		(gpointer  key,
-						 gpointer  data);
-typedef void		(*GErrorFunc)		(gchar	  *str);
-typedef void		(*GWarningFunc)		(gchar	  *str);
-typedef void		(*GPrintFunc)		(gchar	  *str);
-typedef void		(*GScannerMsgFunc)	(GScanner *scanner,
-						 gchar	  *message,
-						 gint	   error);
-typedef void		(*GDestroyNotify)	(gpointer  data);
+typedef enum
+{
+  G_TRAVERSE_LEAFS	= 1 << 0,
+  G_TRAVERSE_NON_LEAFS	= 1 << 1,
+  G_TRAVERSE_ALL	= G_TRAVERSE_LEAFS | G_TRAVERSE_NON_LEAFS,
+  G_TRAVERSE_MASK	= 0x03
+} GTraverseFlags;
 
-typedef guint		(*GHashFunc)		(gconstpointer	  key);
-typedef gint		(*GCompareFunc)		(gconstpointer	  a,
-						 gconstpointer	  b);
+typedef enum
+{
+  G_IN_ORDER,
+  G_PRE_ORDER,
+  G_POST_ORDER,
+  G_LEVEL_ORDER
+} GTraverseType;
+
+/* Log level shift offset for user defined
+ * log levels (0-7 are used by GLib).
+ */
+#define	G_LOG_LEVEL_USER_SHIFT	(8)
+
+/* Glib log levels and flags.
+ */
+typedef enum
+{
+  /* log flags */
+  G_LOG_FLAG_RECURSION		= 1 << 0,
+  G_LOG_FLAG_FATAL		= 1 << 1,
+  
+  /* GLib log levels */
+  G_LOG_LEVEL_ERROR		= 1 << 2,	/* always fatal */
+  G_LOG_LEVEL_CRITICAL		= 1 << 3,
+  G_LOG_LEVEL_WARNING		= 1 << 4,
+  G_LOG_LEVEL_MESSAGE		= 1 << 5,
+  G_LOG_LEVEL_INFO		= 1 << 6,
+  G_LOG_LEVEL_DEBUG		= 1 << 7,
+  
+  G_LOG_LEVEL_MASK		= ~(G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL)
+} GLogLevelFlags;
+
+/* GLib log levels that are considered fatal by default */
+#define	G_LOG_FATAL_MASK	(G_LOG_FLAG_RECURSION | G_LOG_LEVEL_ERROR)
+
+
+typedef gpointer	(*GCacheNewFunc)	(gpointer	key);
+typedef gpointer	(*GCacheDupFunc)	(gpointer	value);
+typedef void		(*GCacheDestroyFunc)	(gpointer	value);
+typedef gint		(*GCompareFunc)		(gconstpointer	a,
+						 gconstpointer	b);
 typedef gchar*		(*GCompletionFunc)	(gpointer);
+typedef void		(*GDestroyNotify)	(gpointer	data);
+typedef void		(*GFunc)		(gpointer	data,
+						 gpointer	user_data);
+typedef guint		(*GHashFunc)		(gconstpointer	key);
+typedef void		(*GHFunc)		(gpointer	key,
+						 gpointer	value,
+						 gpointer	user_data);
+typedef void		(*GLogFunc)		(const gchar   *log_domain,
+						 GLogLevelFlags	log_level,
+						 const gchar   *message,
+						 gpointer	user_data);
+typedef gboolean	(*GNodeTraverseFunc)	(GNode	       *node,
+						 gpointer	data);
+typedef void		(*GNodeForeachFunc)	(GNode	       *node,
+						 gpointer	data);
+typedef gint		(*GSearchFunc)		(gpointer	key,
+						 gpointer	data);
+typedef void		(*GScannerMsgFunc)	(GScanner      *scanner,
+						 gchar	       *message,
+						 gint		error);
+typedef gint		(*GTraverseFunc)	(gpointer	key,
+						 gpointer	value,
+						 gpointer	data);
+
 
 struct _GList
 {
@@ -562,21 +651,6 @@ struct _GMemChunk { gint dummy; };
 struct _GListAllocator { gint dummy; };
 struct _GStringChunk { gint dummy; };
 
-typedef enum
-{
-  G_IN_ORDER,
-  G_PRE_ORDER,
-  G_POST_ORDER,
-  G_LEVEL_ORDER
-} GTraverseType;
-
-typedef enum
-{
-  G_TRAVERSE_LEAFS	= 1 << 0,
-  G_TRAVERSE_NON_LEAFS	= 1 << 1,
-  G_TRAVERSE_ALL	= G_TRAVERSE_LEAFS | G_TRAVERSE_NON_LEAFS,
-  G_TRAVERSE_MASK	= 0x03
-} GTraverseFlags;
 
 /* Doubly linked lists
  */
@@ -619,9 +693,9 @@ void   g_list_foreach		(GList		*list,
 				 gpointer	 user_data);
 gpointer g_list_nth_data	(GList		*list,
 				 guint		 n);
-
 #define g_list_previous(list)	((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	((list) ? (((GList *)(list))->next) : NULL)
+
 
 /* Singly linked lists
  */
@@ -663,8 +737,8 @@ void	g_slist_foreach		(GSList		*list,
 				 gpointer	 user_data);
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
-
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
+
 
 /* List Allocators
  */
@@ -748,10 +822,10 @@ gint	 g_tree_nnodes	 (GTree		*tree);
 struct _GNode
 {
   gpointer data;
-  GNode *next;
-  GNode *prev;
-  GNode *parent;
-  GNode *children;
+  GNode	  *next;
+  GNode	  *prev;
+  GNode	  *parent;
+  GNode	  *children;
 };
 
 #define	 G_NODE_IS_ROOT(node)	(((GNode*) (node))->parent == NULL && \
@@ -762,13 +836,13 @@ struct _GNode
 GNode*	 g_node_new		(gpointer	   data);
 void	 g_node_destroy		(GNode		  *root);
 void	 g_node_unlink		(GNode		  *node);
-void	 g_node_insert		(GNode		  *parent,
+GNode*	 g_node_insert		(GNode		  *parent,
 				 gint		   position,
 				 GNode		  *node);
-void	 g_node_insert_before	(GNode		  *parent,
+GNode*	 g_node_insert_before	(GNode		  *parent,
 				 GNode		  *sibling,
 				 GNode		  *node);
-void	 g_node_prepend		(GNode		  *parent,
+GNode*	 g_node_prepend		(GNode		  *parent,
 				 GNode		  *node);
 guint	 g_node_n_nodes		(GNode		  *root,
 				 GTraverseFlags	   flags);
@@ -782,21 +856,16 @@ GNode*	 g_node_find		(GNode		  *root,
 				 gpointer	   data);
 
 /* convenience macros */
-#define g_node_append(parent, node)	G_STMT_START { \
-  g_node_insert_before ((parent), NULL, (node)); \
-} G_STMT_END
-#define	g_node_insert_data(parent, position, data) G_STMT_START { \
-  g_node_insert ((parent), (position), g_node_new ((data))); \
-} G_STMT_END
-#define	g_node_insert_data_before(parent, sibling, data) G_STMT_START { \
-  g_node_insert_before ((parent), (sibling), g_node_new ((data))); \
-} G_STMT_END
-#define	g_node_prepend_data(parent, data)		 G_STMT_START { \
-  g_node_prepend ((parent), g_node_new ((data))); \
-} G_STMT_END
-#define	g_node_append_data(parent, data) G_STMT_START { \
-  g_node_insert_before ((parent), NULL, g_node_new ((data))); \
-} G_STMT_END
+#define g_node_append(parent, node)				\
+     g_node_insert_before ((parent), NULL, (node))
+#define	g_node_insert_data(parent, position, data)		\
+     g_node_insert ((parent), (position), g_node_new (data))
+#define	g_node_insert_data_before(parent, sibling, data)	\
+     g_node_insert_before ((parent), (sibling), g_node_new (data))
+#define	g_node_prepend_data(parent, data)			\
+     g_node_prepend ((parent), g_node_new (data))
+#define	g_node_append_data(parent, data)			\
+     g_node_insert_before ((parent), NULL, g_node_new (data))
 
 /* traversal function, assumes that `node' is root
  * (only traverses `node' and its subtree).
@@ -845,18 +914,108 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 					 ((GNode*) (node))->children : NULL)
 
 
-
-/* Memory
+/* Fatal error handlers
  */
+void g_attach_process (const gchar *progname,
+		       gboolean	    query);
+void g_debug	      (const gchar *progname);
+void g_stack_trace    (const gchar *progname,
+		       gboolean	    query);
 
+
+/* Logging mechanism
+ */
+extern const gchar			*g_log_domain_glib;
+guint		g_log_set_handler	(const gchar	*log_domain,
+					 GLogLevelFlags	 log_levels,
+					 GLogFunc	 log_func,
+					 gpointer	 user_data);
+void		g_log_remove_handler	(const gchar	*log_domain,
+					 guint		 handler_id);
+void		g_log_default_handler	(const gchar	*log_domain,
+					 GLogLevelFlags	 log_level,
+					 const gchar	*message,
+					 gpointer	 unused_data);
+void		g_log			(const gchar	*log_domain,
+					 GLogLevelFlags	 log_level,
+					 const gchar	*format,
+					 ...) G_GNUC_PRINTF (3, 4);
+void		g_logv			(const gchar	*log_domain,
+					 GLogLevelFlags	 log_level,
+					 const gchar	*format,
+					 va_list	*args1,
+					 va_list	*args2);
+GLogLevelFlags	g_log_set_fatal_mask	(const gchar	*log_domain,
+					 GLogLevelFlags	 fatal_mask);
+#ifndef	G_LOG_DOMAIN
+#define	G_LOG_DOMAIN	(NULL)
+#endif	/* G_LOG_DOMAIN */
+#ifdef	__GNUC__
+#define	g_error(format, args...)	g_log (G_LOG_DOMAIN, \
+					       G_LOG_LEVEL_ERROR, \
+					       format, ##args)
+#define	g_message(format, args...)	g_log (G_LOG_DOMAIN, \
+					       G_LOG_LEVEL_MESSAGE, \
+					       format, ##args)
+#define	g_warning(format, args...)	g_log (G_LOG_DOMAIN, \
+					       G_LOG_LEVEL_WARNING, \
+					       format, ##args)
+#else	/* !__GNUC__ */
+static inline void
+g_error (const gchar *format,
+	 ...)
+{
+  va_list arg_list1, arg_list2;
+  va_start (arg_list1, format); va_start (arg_list2, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, &arg_list1, &arg_list2);
+  va_end (arg_list2); va_end (arg_list1);
+}
+static inline void
+g_message (const gchar *format,
+	   ...)
+{
+  va_list arg_list1, arg_list2;
+  va_start (arg_list1, format); va_start (arg_list2, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, &arg_list1, &arg_list2);
+  va_end (arg_list2); va_end (arg_list1);
+}
+static inline void
+g_warning (const gchar *format,
+	   ...)
+{
+  va_list arg_list1, arg_list2;
+  va_start (arg_list1, format); va_start (arg_list2, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, format, &arg_list1, &arg_list2);
+  va_end (arg_list2); va_end (arg_list1);
+}
+#endif	/* !__GNUC__ */
+
+typedef void	(*GPrintFunc)		(const gchar	*string);
+void		g_print			(const gchar	*format,
+					 ...) G_GNUC_PRINTF (1, 2);
+GPrintFunc	g_set_print_handler	(GPrintFunc	 func);
+void		g_printerr		(const gchar	*format,
+					 ...) G_GNUC_PRINTF (1, 2);
+GPrintFunc	g_set_printerr_handler	(GPrintFunc	 func);
+
+/* deprecated compatibility functions, use g_log_set_handler() instead */
+typedef void		(*GErrorFunc)		(const gchar *str);
+typedef void		(*GWarningFunc)		(const gchar *str);
+GErrorFunc   g_set_error_handler   (GErrorFunc	 func);
+GWarningFunc g_set_warning_handler (GWarningFunc func);
+GPrintFunc   g_set_message_handler (GPrintFunc func);
+
+
+/* Memory allocation and debugging
+ */
 #ifdef USE_DMALLOC
 
-#define g_malloc(size)	     (gpointer) MALLOC(size)
-#define g_malloc0(size)	     (gpointer) CALLOC(char,size)
-#define g_realloc(mem,size)  (gpointer) REALLOC(mem,char,size)
-#define g_free(mem)	     FREE(mem)
+#define g_malloc(size)	     ((gpointer) MALLOC (size))
+#define g_malloc0(size)	     ((gpointer) CALLOC (char, size))
+#define g_realloc(mem,size)  ((gpointer) REALLOC (mem, char, size))
+#define g_free(mem)	     FREE (mem)
 
-#else /* USE_DMALLOC */
+#else /* !USE_DMALLOC */
 
 gpointer g_malloc      (gulong	  size);
 gpointer g_malloc0     (gulong	  size);
@@ -864,7 +1023,7 @@ gpointer g_realloc     (gpointer  mem,
 			gulong	  size);
 void	 g_free	       (gpointer  mem);
 
-#endif /* USE_DMALLOC */
+#endif /* !USE_DMALLOC */
 
 void	 g_mem_profile (void);
 void	 g_mem_check   (gpointer  mem);
@@ -927,17 +1086,9 @@ gdouble g_timer_elapsed (GTimer	 *timer,
 			 gulong	 *microseconds);
 
 
-/* Output
- */
-void g_error   (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
-void g_warning (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
-void g_message (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
-void g_print   (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
-
-
 /* String utility functions
  */
-#define G_STR_DELIMITERS     "_-|> <."
+#define G_STR_DELIMITERS	"_-|> <."
 void	g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
@@ -955,7 +1106,7 @@ void	g_strup			(gchar	     *string);
 void	g_strreverse		(gchar	     *string);
 
 
-/* Retrive static info
+/* Retrive static string info
  */
 gchar*	g_get_user_name		(void);
 gchar*	g_get_real_name		(void);
@@ -974,35 +1125,75 @@ gint	g_snprintf		(gchar	     *string,
 				 gulong	      n,
 				 gchar const *format,
 				 ...) G_GNUC_PRINTF (3, 4);
+gint	g_vsnprintf		(gchar	     *string,
+				 gulong	      n,
+				 gchar const *format,
+				 va_list     *args1,
+				 va_list     *args2);
 gchar*	g_basename		(const gchar *file_name);
 
 /* strings are newly allocated with g_malloc() */
 gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
 
-
 /* We make the assumption that if memmove isn't available, then
  * bcopy will do the job. This isn't safe everywhere. (bcopy can't
- * necessarily handle overlapping copies) */
+ * necessarily handle overlapping copies).
+ * Either way, g_memmove() will not return a value.
+ */
 #ifdef HAVE_MEMMOVE
-#define g_memmove memmove
+#define g_memmove(dest, src, size)	G_STMT_START {	\
+     memmove ((dest), (src), (size));			\
+} G_STMT_END
 #else 
-#define g_memmove(a,b,c)	bcopy((b), (a), (c))
+#define g_memmove(dest, src, size)	G_STMT_START {	\
+     bcopy ((src), (dest), (size));			\
+} G_STMT_END
 #endif
 
-/* Errors
+
+/* Bit tests
  */
-GErrorFunc   g_set_error_handler   (GErrorFunc	 func);
-GWarningFunc g_set_warning_handler (GWarningFunc func);
-GPrintFunc   g_set_message_handler (GPrintFunc func);
-GPrintFunc   g_set_print_handler   (GPrintFunc func);
-
-void g_debug	      (const gchar *progname);
-void g_attach_process (const gchar *progname,
-		       gint	    query);
-void g_stack_trace    (const gchar *progname,
-		       gint	    query);
-
+static inline gint
+g_bit_nth_lsf (guint32 mask,
+	       gint    nth_bit)
+{
+  do
+    {
+      nth_bit++;
+      if (mask & (1 << (guint) nth_bit))
+	return nth_bit;
+    }
+  while (nth_bit < 32);
+  return -1;
+}
+static inline gint
+g_bit_nth_msf (guint32 mask,
+	       gint    nth_bit)
+{
+  if (nth_bit < 0)
+    nth_bit = 33;
+  do
+    {
+      nth_bit--;
+      if (mask & (1 << (guint) nth_bit))
+	return nth_bit;
+    }
+  while (nth_bit > 0);
+  return -1;
+}
+static inline guint
+g_bit_storage (guint number)
+{
+  register guint n_bits = 0;
+  
+  do
+    {
+      n_bits++;
+      number = number >> 1;
+    } while (number);
+  return n_bits;
+}
 
 
 /* String Chunks
@@ -1013,6 +1204,7 @@ gchar*	      g_string_chunk_insert	   (GStringChunk *chunk,
 					    const gchar	 *string);
 gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
 					    const gchar	 *string);
+
 
 /* Strings
  */
@@ -1050,6 +1242,7 @@ void	 g_string_sprintfa  (GString	 *string,
 			     const gchar *format,
 			     ...) G_GNUC_PRINTF (2, 3);
 
+
 /* Resizable arrays
  */
 #define g_array_length(array,type) \
@@ -1067,9 +1260,9 @@ void	 g_string_sprintfa  (GString	 *string,
 #define g_array_index(array,type,index) \
      ((type*) array->data)[index]
 
-GArray* g_array_new	  (gint	     zero_terminated);
+GArray* g_array_new	  (gboolean  zero_terminated);
 void	g_array_free	  (GArray   *array,
-			   gint	     free_segment);
+			   gboolean  free_segment);
 GArray* g_rarray_append	  (GArray   *array,
 			   gpointer  data,
 			   gint	     size);
@@ -1080,13 +1273,12 @@ GArray* g_rarray_truncate (GArray   *array,
 			   gint	     length,
 			   gint	     size);
 
+
 /* Resizable pointer array.  This interface is much less complicated
  * than the above.  Add appends appends a pointer.  Remove fills any
  * cleared spot and shortens the array.
  */
-
 #define	    g_ptr_array_index(array,index) (array->pdata)[index]
-
 GPtrArray*  g_ptr_array_new		   (void);
 void	    g_ptr_array_free		   (GPtrArray	*array,
 					    gboolean	 free_seg);
@@ -1099,14 +1291,13 @@ gboolean    g_ptr_array_remove		   (GPtrArray	*array,
 void	    g_ptr_array_add		   (GPtrArray	*array,
 					    gpointer	 data);
 
+
 /* Byte arrays, an array of guint8.  Implemented as a GArray,
  * but type-safe.
  */
-
 GByteArray* g_byte_array_new	  (void);
 void	    g_byte_array_free	  (GByteArray *array,
 				   gint	       free_segment);
-
 GByteArray* g_byte_array_append	  (GByteArray	*array,
 				   const guint8 *data,
 				   guint	 len);
@@ -1123,11 +1314,11 @@ GByteArray* g_byte_array_truncate (GByteArray *array,
  */
 gint  g_str_equal (gconstpointer   v,
 		   gconstpointer   v2);
-guint g_str_hash  (gconstpointer v);
+guint g_str_hash  (gconstpointer   v);
 
-gint  g_int_equal (gconstpointer v,
-		   gconstpointer v2);
-guint g_int_hash  (gconstpointer v);
+gint  g_int_equal (gconstpointer   v,
+		   gconstpointer   v2);
+guint g_int_hash  (gconstpointer   v);
 
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or
@@ -1145,6 +1336,7 @@ GQuark	  g_quark_from_static_string	(const gchar	*string);
 GQuark	  g_quark_from_string		(const gchar	*string);
 gchar*	  g_quark_to_string		(GQuark		 quark);
 
+
 /* Location Associated Data
  */
 void	  g_dataset_destroy		(gconstpointer	 dataset_location);
@@ -1157,14 +1349,20 @@ void	  g_dataset_id_set_data_full	(gconstpointer	 dataset_location,
 void	  g_dataset_id_set_destroy	(gconstpointer	 dataset_location,
 					 GQuark		 key_id,
 					 GDestroyNotify	 destroy_func);
-
-#define	  g_dataset_id_set_data(l,k,d)	G_STMT_START{g_dataset_id_set_data_full((l),(k),(d),NULL);}G_STMT_END
-#define	  g_dataset_id_remove_data(l,k)	G_STMT_START{g_dataset_id_set_data((l),(k),NULL);}G_STMT_END
-#define	  g_dataset_get_data(l,k)	(g_dataset_id_get_data((l),g_quark_try_string(k)))
-#define	  g_dataset_set_data_full(l,k,d,f) G_STMT_START{g_dataset_id_set_data_full((l),g_quark_from_string(k),(d),(f));}G_STMT_END
-#define	  g_dataset_set_destroy(l,k,f)	G_STMT_START{g_dataset_id_set_destroy((l),g_quark_from_string(k),(f));}G_STMT_END
-#define	  g_dataset_set_data(l,k,d)	G_STMT_START{g_dataset_set_data_full((l),(k),(d),NULL);}G_STMT_END
-#define	  g_dataset_remove_data(l,k)	G_STMT_START{g_dataset_set_data((l),(k),NULL);}G_STMT_END
+#define	  g_dataset_id_set_data(l, k, d)	\
+     g_dataset_id_set_data_full ((l), (k), (d), NULL)
+#define	  g_dataset_id_remove_data(l, k)	\
+     g_dataset_id_set_data ((l), (k), NULL)
+#define	  g_dataset_get_data(l, k)		\
+     (g_dataset_id_get_data ((l), g_quark_try_string (k)))
+#define	  g_dataset_set_data_full(l, k, d, f)	\
+     g_dataset_id_set_data_full ((l), g_quark_from_string (k), (d), (f))
+#define	  g_dataset_set_destroy(l, k, f)	\
+     g_dataset_id_set_destroy ((l), g_quark_from_string (k), (f))
+#define	  g_dataset_set_data(l, k, d)		\
+     g_dataset_set_data_full ((l), (k), (d), NULL)
+#define	  g_dataset_remove_data(l,k)		\
+     g_dataset_set_data ((l), (k), NULL)
 
 
 /* GScanner: Flexible lexical scanner for general purpose.
@@ -1385,7 +1583,6 @@ gint		g_scanner_stat_mode		(const gchar	*filename);
 } G_STMT_END
 
 
-
 /* Completion */
 
 struct _GCompletion
@@ -1457,13 +1654,8 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 			       gint	    field);
 
 
-/* Glib version.
- */
-extern const guint glib_major_version;
-extern const guint glib_minor_version;
-extern const guint glib_micro_version;
-extern const guint glib_interface_age;
-extern const guint glib_binary_age;
+
+
 
 #ifdef __cplusplus
 }

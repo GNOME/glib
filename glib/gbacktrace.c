@@ -83,7 +83,7 @@ g_debug (const gchar *progname)
 
 void
 g_attach_process (const gchar *progname,
-		  int          query)
+		  gboolean     query)
 {
   if (!query || do_query ("attach to process"))
     debug (progname, INTERACTIVE);
@@ -91,7 +91,7 @@ g_attach_process (const gchar *progname,
 
 void
 g_stack_trace (const gchar *progname,
-	       int          query)
+	       gboolean     query)
 {
   if (!query || do_query ("print stack trace"))
     debug (progname, STACK_TRACE);

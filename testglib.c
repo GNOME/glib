@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <string.h>
@@ -716,8 +717,13 @@ main (int   argc,
     }
 
   g_byte_array_free (gbarray, TRUE);
-
   g_print ("ok\n");
+
+  g_printerr ("g_log tests:");
+  g_warning ("harmless warning");
+  g_message ("the next warning is a test:");
+  string = NULL;
+  g_print (string);
 
   return 0;
 }

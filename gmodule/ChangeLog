@@ -1,3 +1,12 @@
+Fri Aug 14 02:24:39 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: feature the G_LOG_DOMAIN macro to set the log domain
+	to "GModule" upon compilation. we currently have to add this definition
+	to the DEFS variable.
+	* testgmodule.c: we need an ugly #undef G_LOG_DOMAIN at the start
+	of this file currently, since automake doesn't support per target
+	_CFLAGS yet.
+
 Mon Aug 10 03:35:57 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c: minor changes to internal interface.

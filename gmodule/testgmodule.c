@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#undef	G_LOG_DOMAIN
 #include	<gmodule.h>
 
 
@@ -30,7 +31,6 @@ typedef	void (*GModuleFunc) (GModule *);
 
 SimpleFunc gplugin_clash_func;
 
-     
 int
 main (int   arg,
       char *argv[])
@@ -166,5 +166,11 @@ main (int   arg,
   if (!g_module_close (module_b))
     g_print ("error: %s\n", g_module_error ());
 
+#if 0
+  g_log_set_fatal_mask ("GModule", G_LOG_FATAL_MASK|G_LOG_LEVEL_WARNING);
+  g_module_symbol (0, 0, 0);
+  g_warning("jahoooo");
+#endif
+  
   return 0;
 }

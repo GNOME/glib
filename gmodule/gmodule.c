@@ -56,6 +56,7 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 
 
 /* --- variables --- */
+const char      *g_log_domain_gmodule = "GModule";
 static GModule	*modules = NULL;
 static GModule	*main_module = NULL;
 static gchar	*module_error = NULL;
@@ -264,7 +265,7 @@ g_module_error (void)
 gboolean
 g_module_symbol (GModule	*module,
 		 const gchar	*symbol_name,
-		 gconstpointer	*symbol)
+		 gpointer	*symbol)
 {
   if (symbol)
     *symbol = NULL;

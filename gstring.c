@@ -593,7 +593,7 @@ g_vsprintf (const gchar *fmt,
       if (buf)
 	g_free (buf);
 
-      alloc = nearest_pow (MAX(len + 1, 1024));
+      alloc = nearest_pow (MAX(len + 1, 1024 + 1));
 
       buf = g_new (char, alloc);
     }

@@ -8,6 +8,8 @@ bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
 glib-config: glib-config.in
 
+DEFS += -DG_LOG_DOMAIN=g_log_domain_glib
+
 EXTRA_DIST =	\
 		glib.m4 \
 		glib.spec

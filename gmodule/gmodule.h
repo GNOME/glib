@@ -20,12 +20,13 @@
 #define __GMODULE_H__
 
 
-#include <glib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #pragma }
 #endif /* __cplusplus */
+
+extern const char      *g_log_domain_gmodule;
+#include <glib.h>
 
 
 /* exporting and importing functions,
@@ -61,7 +62,7 @@ gchar*		g_module_error		   (void);
 /* retrive a symbol pointer from `module', returns TRUE on success */
 gboolean	g_module_symbol		   (GModule		*module,
 					    const gchar		*symbol_name,
-					    gconstpointer	*symbol);
+					    gpointer		*symbol);
 
 /* retrive the file name from an existing module */
 gchar*		g_module_name		   (GModule		*module);
