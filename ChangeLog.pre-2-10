@@ -1,3 +1,8 @@
+2002-11-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmacros.h: Fix the non-gcc-3.x definitions of G_LIKELY 
+	and G_UNLIKELY.  (Reported by Dan Mills)
+
 2002-11-25  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gfileutils.c (g_build_path): 

@@ -225,10 +225,29 @@
 #define G_LIKELY(expr) __builtin_expect (_G_BOOLEAN_EXPR(expr), 1)
 #define G_UNLIKELY(expr) __builtin_expect (_G_BOOLEAN_EXPR(expr), 0)
 #else
-#define G_LIKELY(expr) expr
-#define G_UNLIKELY(expr) expr
+#define G_LIKELY(expr) (expr)
+#define G_UNLIKELY(expr) (expr)
 #endif
 
 #endif /* __G_MACROS_H__ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
