@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY nbsp "&#x00a0;">
-<!ENTITY hash "#">
 <!ENTITY glib-Basic-Types SYSTEM "xml/types.xml">
 <!ENTITY glib-Limits-of-Basic-Types SYSTEM "xml/limits.xml">
 <!ENTITY glib-Standard-Macros SYSTEM "xml/macros.xml">

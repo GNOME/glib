@@ -1,3 +1,8 @@
+2002-06-03  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory):
+	Replace homegrown "hash" entity by standard ISO entity "num".
+
 2002-05-26  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.c: Remove references to nonexisting functions 

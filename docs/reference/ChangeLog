@@ -1,3 +1,12 @@
+2002-06-03  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-docs.sgml: 
+	* glib/glib-docs.sgml: 
+	* glib/tmpl/macros.sgml: 
+	* glib/tmpl/string_utils.sgml: Replace homegrown "nbsp", "hash"
+	and "percent" entities by standard ISO entities "nbsp", "num" and
+	"percnt". 
+
 2002-05-30  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: 

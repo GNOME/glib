@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY nbsp "&#x00a0;">
 <!ENTITY gobject-GType SYSTEM "xml/gtype.xml">
 <!ENTITY gobject-GTypePlugin SYSTEM "xml/gtypeplugin.xml">
 <!ENTITY gobject-GTypeModule SYSTEM "xml/gtypemodule.xml">
