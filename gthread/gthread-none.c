@@ -33,3 +33,5 @@
 
 static GThreadFunctions
 g_thread_functions_for_glib_use_default; /* is NULLified */
+
+#define G_MUTEX_SIZE 0
