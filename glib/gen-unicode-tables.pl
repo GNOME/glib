@@ -23,7 +23,6 @@
 
 # gen-unicode-tables.pl - Generate tables for libunicode from Unicode data.
 # See http://www.unicode.org/Public/UNIDATA/UnicodeCharacterDatabase.html
-# Usage: gen-unicode-tables.pl [-decomp | -both] UNICODE-VERSION UnicodeData.txt LineBreak.txt SpecialCasing.txt CaseFolding.txt
 # I consider the output of this program to be unrestricted.  Use it as
 # you will.
 
@@ -167,17 +166,38 @@ elsif (@ARGV && $ARGV[0] eq '-both')
     shift @ARGV;
 }
 
-if (@ARGV != 7) {
+if (@ARGV != 2) {
     $0 =~ s@.*/@@;
-    die "Usage: $0 [-decomp | -both] UNICODE-VERSION UnicodeData.txt LineBreak.txt SpecialCasing.txt CaseFolding.txt CompositionExclusions.txt BidiMirroring.txt\n";
+    die "\nUsage: $0 [-decomp | -both] UNICODE-VERSION DIRECTORY\n\n       DIRECTORY should contain the following Unicode data files:\n       UnicodeData.txt, LineBreak.txt, SpecialCasing.txt, CaseFolding.txt,\n       CompositionExclusions.txt, BidiMirroring.txt\n\n";
 }
- 
+
+my ($unicodedatatxt, $linebreaktxt, $specialcasingtxt, $casefoldingtxt, $compositionexclusionstxt, $bidimirroringtxt);
+
+my $d = $ARGV[1];
+opendir (my $dir, $d) or die "Cannot open Unicode data dir $d: $!\n";
+for my $f (readdir ($dir))
+{
+    $unicodedatatxt = "$d/$f" if ($f =~ /UnicodeData.*\.txt/);
+    $linebreaktxt = "$d/$f" if ($f =~ /LineBreak.*\.txt/);
+    $specialcasingtxt = "$d/$f" if ($f =~ /SpecialCasing.*\.txt/);
+    $casefoldingtxt = "$d/$f" if ($f =~ /CaseFolding.*\.txt/);
+    $compositionexclusionstxt = "$d/$f" if ($f =~ /CompositionExclusions.*\.txt/);
+    $bidimirroringtxt = "$d/$f" if ($f =~ /BidiMirroring.*\.txt/);
+}
+
+defined $unicodedatatxt or die "Did not find UnicodeData file";
+defined $linebreaktxt or die "Did not find LineBreak file";
+defined $specialcasingtxt or die "Did not find SpecialCasing file";
+defined $casefoldingtxt or die "Did not find CaseFolding file";
+defined $compositionexclusionstxt or die "Did not find CompositionExclusions file";
+defined $bidimirroringtxt or die "Did not find BidiMirroring file";
+
 print "Creating decomp table\n" if ($do_decomp);
 print "Creating property table\n" if ($do_props);
 
-print "Composition exlusions from $ARGV[5]\n";
+print "Composition exlusions from $compositionexclusionstxt\n";
 
-open (INPUT, "< $ARGV[5]") || exit 1;
+open (INPUT, "< $compositionexclusionstxt") || exit 1;
 
 while (<INPUT>) {
 
@@ -196,9 +216,9 @@ while (<INPUT>) {
 
 close INPUT;
 
-print "Unicode data from $ARGV[1]\n";
+print "Unicode data from $unicodedatatxt\n";
 
-open (INPUT, "< $ARGV[1]") || exit 1;
+open (INPUT, "< $unicodedatatxt") || exit 1;
 
 # we save memory by skipping the huge empty area before U+E0000
 my $pages_before_e0000;
@@ -259,9 +279,9 @@ for (++$last_code; $last_code <= 0x10FFFF; ++$last_code)
 
 print "Creating line break table\n";
 
-print "Line break data from $ARGV[2]\n";
+print "Line break data from $linebreaktxt\n";
 
-open (INPUT, "< $ARGV[2]") || exit 1;
+open (INPUT, "< $linebreaktxt") || exit 1;
 
 $last_code = -1;
 while (<INPUT>)
@@ -334,7 +354,7 @@ print STDERR "Last code is not 0x10FFFF" if ($last_code != 0x10FFFF);
 
 print "Reading special-casing table for case conversion\n";
 
-open (INPUT, "< $ARGV[3]") || exit 1;
+open (INPUT, "< $specialcasingtxt") || exit 1;
 
 while (<INPUT>)
 {
@@ -393,7 +413,7 @@ while (<INPUT>)
 
 close INPUT;
 
-open (INPUT, "< $ARGV[4]") || exit 1;
+open (INPUT, "< $casefoldingtxt") || exit 1;
 
 my $casefoldlen = 0;
 my @casefold;
@@ -461,7 +481,7 @@ while (<INPUT>)
 
 close INPUT;
 
-open (INPUT, "< $ARGV[6]") || exit 1;
+open (INPUT, "< $bidimirroringtxt") || exit 1;
 
 my @bidimirror;
 while (<INPUT>)

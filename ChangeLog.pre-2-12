@@ -1,5 +1,10 @@
 2003-09-12  Noah Levitt  <nlevitt@columbia.edu>
 
+	* glib/gen-unicode-tables.pl: Take a directory where to look for the
+	unicode files on the command line instead of 7 individual files.
+
+2003-09-12  Noah Levitt  <nlevitt@columbia.edu>
+
 	* glib/gen-unicode-tables.pl:
 	* glib/gunichartables.h:
 	* glib/gunicode.h:
