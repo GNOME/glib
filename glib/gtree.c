@@ -1054,7 +1054,7 @@ g_tree_node_check (GTreeNode *node)
       
       balance = right_height - left_height;
       if (balance != node->balance)
-	g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
+	g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO,
 	       "g_tree_node_check: failed: %d ( %d )\n",
 	       balance, node->balance);
       

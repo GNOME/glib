@@ -80,7 +80,6 @@ static gsize printf_string_upper_bound (const gchar *format,
 
 static GMutex* g_messages_lock = NULL;
 
-const gchar	     *g_log_domain_glib = "GLib";
 static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;

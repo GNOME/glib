@@ -2,7 +2,7 @@
 
 SUBDIRS=libcharset
 
-INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=g_log_domain_glib \
+INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\

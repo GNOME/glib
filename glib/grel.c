@@ -404,7 +404,7 @@ g_relation_print_one (gpointer tuple_key,
     }
   
   g_string_append (gstring, "]");
-  g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, gstring->str);
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, gstring->str);
   g_string_free (gstring, TRUE);
 }
 
@@ -416,7 +416,7 @@ g_relation_print_index (gpointer tuple_key,
   GRelation* rel = (GRelation*) user_data;
   GHashTable* table = (GHashTable*) tuple_value;
   
-  g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "*** key %p", tuple_key);
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "*** key %p", tuple_key);
   
   g_hash_table_foreach (table,
 			g_relation_print_one,
@@ -428,7 +428,7 @@ g_relation_print (GRelation *relation)
 {
   gint i;
   
-  g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "*** all tuples (%d)", relation->count);
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "*** all tuples (%d)", relation->count);
   
   g_hash_table_foreach (relation->all_tuples,
 			g_relation_print_one,
@@ -439,7 +439,7 @@ g_relation_print (GRelation *relation)
       if (relation->hashed_tuple_tables[i] == NULL)
 	continue;
       
-      g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "*** index %d", i);
+      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "*** index %d", i);
       
       g_hash_table_foreach (relation->hashed_tuple_tables[i],
 			    g_relation_print_index,

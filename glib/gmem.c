@@ -1044,7 +1044,7 @@ g_mem_chunk_print (GMemChunk *mem_chunk)
       mem_areas = mem_areas->next;
     }
 
-  g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO,
 	 "%s: %ld bytes using %d mem areas",
 	 mem_chunk->name, mem, mem_chunk->num_mem_areas);
 }
@@ -1065,7 +1065,7 @@ g_mem_chunk_info (void)
     }
   g_mutex_unlock (mem_chunks_lock);
   
-  g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "%d mem chunks", count);
+  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "%d mem chunks", count);
   
   g_mutex_lock (mem_chunks_lock);
   mem_chunk = mem_chunks;
