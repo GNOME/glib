@@ -1,5 +1,15 @@
 2000-03-24  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* garray.c: Made GArray behave correct. Now zero_terminated really
+	means, that the element array->data[array->len] exists and is
+	zeroed, and clear means that any unassigned elements obtained
+	through g_array_set_size (the only way to get unassigned elements
+	AFAICT) are zeroed. Added some macors to mak the code more
+	obvoius. Also made GPtrArray zero elements after
+	g_ptr_array_set_size. This is done in a portbale way (assignment
+	of NULL instead of just memsetting it to zero), though that might
+	be more portability than we actually want.
+
 	* Makefile.am, gthread/Makefile.am, gmodule/Makefile.am,
 	tests/Makefile.am: Added various win32 related *.in files to
 	EXTRA_DIST to let 'make distcheck' procude all the corresponding
