@@ -1,3 +1,9 @@
+2001-01-19  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* gconvert.c: Fix typo.
+	* gfileutils.c: Same here.
+	* configure.in: Added no to ALL_LINGUAS
+	
 2001-01-17  Tor Lillqvist  <tml@iki.fi>
 
 	* gwin32.c (g_win32_getlocale, g_win32_error_message): Add doc

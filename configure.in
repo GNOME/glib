@@ -181,7 +181,7 @@ dnl
 dnl gettext support
 dnl
 
-ALL_LINGUAS=""
+ALL_LINGUAS="no"
 AM_GLIB_GNU_GETTEXT
 LIBS="$LIBS $INTLLIBS"
 

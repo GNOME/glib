@@ -646,7 +646,7 @@ g_file_open_tmp (const char *tmpl,
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
-		   _("Template '%s' doesn end with XXXXXX"),
+		   _("Template '%s' doesn't end with XXXXXX"),
 		   tmpl);
       return -1;
     }

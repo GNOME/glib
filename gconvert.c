@@ -92,7 +92,7 @@ open_converter (const gchar *to_codeset,
       /* Something went wrong.  */
       if (errno == EINVAL)
         g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-                     _("Conversion from character set `%s' to `%s' is not suppo\rted"),
+                     _("Conversion from character set `%s' to `%s' is not supported"),
                      from_codeset, to_codeset);
       else
         g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
