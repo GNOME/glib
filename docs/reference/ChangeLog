@@ -1,6 +1,12 @@
+2002-03-25  Sven Neumann  <sven@gimp.org>
+
+	* glib/tmpl/scanner.sgml: Fixed documentation about unused struct 
+	fields and added a note about proper g_scanner_unexp_token() usage.
+
 2002-03-11  Matthias Clasen  <maclas@gmx.de>
 
-	* glib/tmpl/string_utils.sgml: Add a note about g_strreverse() and UTF-8.
+	* glib/tmpl/string_utils.sgml: Add a note about g_strreverse() and 
+	UTF-8.
 
 2002-02-21  Matthias Clasen  <maclas@gmx.de>
 

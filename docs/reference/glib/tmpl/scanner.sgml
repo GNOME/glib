@@ -31,7 +31,7 @@ name would be a good choice.
 </para>
 <para>
 The <structfield>user_data</structfield> and
-<structfield>derived_data</structfield> fields are not used.
+<structfield>max_parse_errors</structfield> fields are not used.
 If you need to associate extra data with the scanner you can place them here.
 </para>
 <para>
@@ -435,6 +435,9 @@ documentation.
 <!-- ##### FUNCTION g_scanner_unexp_token ##### -->
 <para>
 Outputs a message resulting from an unexpected token in the input stream.
+Note that you should not call g_scanner_peek_next_token() followed by
+g_scanner_unexp_token() without an intermediate call to
+g_scanner_get_next_token().
 </para>
 
 @scanner: a #GScanner.
