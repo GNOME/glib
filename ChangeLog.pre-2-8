@@ -1,3 +1,11 @@
+1998-11-04  Phil Schwan  <pschwan@cmu.edu>
+
+	* configure.in: Added 'strncasecmp' to the list of functions to be
+	searched for.
+	* glib.h: Added a prototype for 'g_strncasecmp'
+	* gstrfuncs.c: (g_strncasecmp) new function modeled closely after
+	'g_strcasecmp'
+
 Wed Nov  4 15:06:44 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* config.h.win32 (new file)

@@ -233,7 +233,7 @@ AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp)
 
 # Check for sys_errlist
 AC_MSG_CHECKING(for sys_errlist)

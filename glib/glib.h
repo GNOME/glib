@@ -1402,6 +1402,9 @@ gchar*	 g_strerror		(gint	      errnum);
 gchar*	 g_strsignal		(gint	      signum);
 gint	 g_strcasecmp		(const gchar *s1,
 				 const gchar *s2);
+gint	 g_strncasecmp		(const gchar *s1,
+				 const gchar *s2,
+				 guint 	      n);
 void	 g_strdown		(gchar	     *string);
 void	 g_strup		(gchar	     *string);
 void	 g_strreverse		(gchar	     *string);

@@ -975,6 +975,38 @@ g_strcasecmp (const gchar *s1,
 #endif
 }
 
+gint
+g_strncasecmp (const gchar *s1,
+	       const gchar *s2,
+	       guint n)
+{
+#ifdef HAVE_STRNCASECMP
+  return strncasecmp (s1, s2, n);
+#else
+  gint c1, c2;
+  
+  g_return_val_if_fail (s1 != NULL, 0);
+  g_return_val_if_fail (s2 != NULL, 0);
+
+  while (n-- && *s1 && *s2)
+    {
+      /* According to A. Cox, some platforms have islower's that
+       * don't work right on non-uppercase
+       */
+      c1 = isupper ((guchar)*s1) ? tolower ((guchar)*s1) : *s1;
+      c2 = isupper ((guchar)*s2) ? tolower ((guchar)*s2) : *s2;
+      if (c1 != c2)
+	return (c1 - c2);
+      s1++; s2++;
+    }
+
+  if (n)
+    return (((gint)(guchar) *s1) - ((gint)(guchar) *s2));
+  else
+    return 0;
+#endif
+}
+
 gchar*
 g_strdelimit (gchar	  *string,
 	      const gchar *delimiters,
