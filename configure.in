@@ -222,4 +222,87 @@ if test $gtk_ok = no; then
 fi
 AC_MSG_RESULT($gtk_ok)
 
-AC_OUTPUT([Makefile glib-config],[chmod +x glib-config])
+dnl ***********************
+dnl *** g_module checks ***
+dnl ***********************
+G_MODULE_LIBS=
+G_MODULE_LDFLAGS=
+G_MODULE_IMPL=
+G_MODULE_NEED_USCORE=0
+G_MODULE_HAVE_DLERROR=0
+dnl *** dlopen() in system libraries
+if test -z "$G_MODULE_IMPL"; then
+	AC_CHECK_FUNC(dlopen,
+		G_MODULE_IMPL=G_MODULE_IMPL_DL
+	,)
+fi
+dnl *** dlopen() in libdl
+if test -z "$G_MODULE_IMPL"; then
+	AC_CHECK_LIB(dl, dlopen,
+		G_MODULE_LIBS=-ldl
+		G_MODULE_IMPL=G_MODULE_IMPL_DL
+	,)
+fi
+dnl *** shl_load() in libdld (HP-UX)
+if test -z "$G_MODULE_IMPL"; then
+	G_MODULE_LDFLAGS='-Wl,-E'
+	AC_CHECK_LIB(dld, shl_load,
+		G_MODULE_LIBS=-ldld
+		G_MODULE_IMPL=G_MODULE_IMPL_DLD
+	,)
+fi
+dnl *** additional checks for G_MODULE_IMPL_DL
+if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
+	if test -d /usr/include/linux; then
+		G_MODULE_LDFLAGS='-rdynamic'
+	fi
+	LIBS_orig="$LIBS"
+	LDFLAGS_orig="$LDFLAGS"
+	LIBS="$LIBS $G_MODULE_LIBS"
+	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
+dnl *** check whether we need preceeding underscores
+	AC_MSG_CHECKING(for preceeding underscore in symbols)
+	AC_CACHE_VAL(glib_cv_uscore,[
+		AC_TRY_RUN([
+		#include <dlfcn.h>
+		int glib_underscore_test (void) { return 42; }
+		int main() {
+		  void *f1 = (void*)0, *f2 = (void*)0, *handle;
+		  handle = dlopen ((void*)0, 0);
+		  if (handle) {
+		    f1 = dlsym (handle, "glib_underscore_test");
+		    f2 = dlsym (handle, "_glib_underscore_test");
+		  } return !(f2 && !f1);
+		}],
+			glib_cv_uscore=yes
+			G_MODULE_NEED_USCORE=1
+		,
+			glib_cv_uscore=no
+			G_MODULE_NEED_USCORE=0
+		,)
+	])
+	AC_MSG_RESULT($glib_cv_uscore)
+	LDFLAGS="$LDFLAGS_orig"
+dnl *** check for having dlerror()
+	AC_CHECK_FUNC(dlerror,
+		G_MODULE_HAVE_DLERROR=1,
+		G_MODULE_HAVE_DLERROR=0)
+	LIBS="$LIBS_orig"
+fi
+dnl *** done, have e got an implementation?
+if test -z "$G_MODULE_IMPL"; then
+	G_MODULE_IMPL=0
+fi
+AC_SUBST(G_MODULE_IMPL)
+AC_SUBST(G_MODULE_LIBS)
+AC_SUBST(G_MODULE_LDFLAGS)
+AC_SUBST(G_MODULE_HAVE_DLERROR)
+AC_SUBST(G_MODULE_NEED_USCORE)
+
+
+AC_OUTPUT([
+Makefile
+glib-config
+gmodule/gmoduleconf.h
+gmodule/Makefile
+],[chmod +x glib-config])

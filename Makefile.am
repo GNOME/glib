@@ -1,8 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = gmodule
+
 configincludedir = $(pkglibdir)/include
 
 bin_SCRIPTS=glib-config
+BUILT_SOURCES=glib-config
+glib-config: glib-config.in
 
 EXTRA_DIST =	\
 		glib.m4 \
