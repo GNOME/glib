@@ -2072,8 +2072,8 @@ gboolean g_str_equal (gconstpointer   v,
 guint	 g_str_hash  (gconstpointer   v);
 
 gint	 g_int_equal (gconstpointer   v,
-		      gconstpointer   v2);
-guint	 g_int_hash  (gconstpointer   v);
+		      gconstpointer   v2) G_GNUC_CONST;
+guint	 g_int_hash  (gconstpointer   v) G_GNUC_CONST;
 
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or
@@ -2081,9 +2081,9 @@ guint	 g_int_hash  (gconstpointer   v);
  * passing NULL into g_hash_table_new() as GHashFunc has the
  * same effect as passing g_direct_hash().
  */
-guint g_direct_hash  (gconstpointer v);
+guint g_direct_hash  (gconstpointer v) G_GNUC_CONST;
 gint  g_direct_equal (gconstpointer v,
-		      gconstpointer v2);
+		      gconstpointer v2) G_GNUC_CONST;
 
 
 /* Quarks (string<->id association)
@@ -2091,7 +2091,7 @@ gint  g_direct_equal (gconstpointer v,
 GQuark	  g_quark_try_string		(const gchar	*string);
 GQuark	  g_quark_from_static_string	(const gchar	*string);
 GQuark	  g_quark_from_string		(const gchar	*string);
-gchar*	  g_quark_to_string		(GQuark		 quark);
+gchar*	  g_quark_to_string		(GQuark		 quark) G_GNUC_CONST;
 
 
 /* Keyed Data List
@@ -2568,11 +2568,11 @@ void         g_date_add_years             (GDate       *date,
                                            guint        n_years);
 void         g_date_subtract_years        (GDate       *date,
                                            guint        n_years);
-gboolean     g_date_is_leap_year          (GDateYear    year);
+gboolean     g_date_is_leap_year          (GDateYear    year) G_GNUC_CONST;
 guint8       g_date_days_in_month         (GDateMonth   month, 
-                                           GDateYear    year);
-guint8       g_date_monday_weeks_in_year  (GDateYear    year);
-guint8       g_date_sunday_weeks_in_year  (GDateYear    year);
+                                           GDateYear    year) G_GNUC_CONST;
+guint8       g_date_monday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
+guint8       g_date_sunday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
 
 /* qsort-friendly (with a cast...) */
 gint         g_date_compare               (GDate       *lhs,
@@ -2681,7 +2681,7 @@ gdouble g_random_double_range  (gdouble     min,
  * next largest prime, or the highest it knows about which is about
  * MAXINT/4.
  */
-guint	   g_spaced_primes_closest (guint num);
+guint	   g_spaced_primes_closest (guint num) G_GNUC_CONST;
 
 
 /* GIOChannel

@@ -74,35 +74,35 @@ gboolean g_get_charset (char **charset);
 
 /* These are all analogs of the <ctype.h> functions.
  */
-gboolean g_unichar_isalnum   (gunichar c);
-gboolean g_unichar_isalpha   (gunichar c);
-gboolean g_unichar_iscntrl   (gunichar c);
-gboolean g_unichar_isdigit   (gunichar c);
-gboolean g_unichar_isgraph   (gunichar c);
-gboolean g_unichar_islower   (gunichar c);
-gboolean g_unichar_isprint   (gunichar c);
-gboolean g_unichar_ispunct   (gunichar c);
-gboolean g_unichar_isspace   (gunichar c);
-gboolean g_unichar_isupper   (gunichar c);
-gboolean g_unichar_isxdigit  (gunichar c);
-gboolean g_unichar_istitle   (gunichar c);
-gboolean g_unichar_isdefined (gunichar c);
-gboolean g_unichar_iswide    (gunichar c);
+gboolean g_unichar_isalnum   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isalpha   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_iscntrl   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isdigit   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isgraph   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_islower   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isprint   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_ispunct   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isspace   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isupper   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isxdigit  (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_istitle   (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_isdefined (gunichar c) G_GNUC_CONST;
+gboolean g_unichar_iswide    (gunichar c) G_GNUC_CONST;
 
 /* More <ctype.h> functions.  These convert between the three cases.
  * See the Unicode book to understand title case.  */
-gunichar g_unichar_toupper (gunichar c);
-gunichar g_unichar_tolower (gunichar c);
-gunichar g_unichar_totitle (gunichar c);
+gunichar g_unichar_toupper (gunichar c) G_GNUC_CONST;
+gunichar g_unichar_tolower (gunichar c) G_GNUC_CONST;
+gunichar g_unichar_totitle (gunichar c) G_GNUC_CONST;
 
 /* If C is a digit (according to `g_unichar_isdigit'), then return its
    numeric value.  Otherwise return -1.  */
-gint g_unichar_digit_value (gunichar c);
+gint g_unichar_digit_value (gunichar c) G_GNUC_CONST;
 
-gint g_unichar_xdigit_value (gunichar c);
+gint g_unichar_xdigit_value (gunichar c) G_GNUC_CONST;
 
 /* Return the Unicode character type of a given character.  */
-GUnicodeType g_unichar_type (gunichar c);
+GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 
 
 

@@ -57,7 +57,7 @@ typedef const gchar* (*GModuleCheckInit) (GModule	*module);
 typedef void	     (*GModuleUnload)	 (GModule	*module);
 
 /* return TRUE if dynamic module loading is supported */
-gboolean	g_module_supported	   (void);
+gboolean	g_module_supported	   (void) G_GNUC_CONST;
 
 /* open a module `file_name' and return handle, which is NULL on error */
 GModule*	g_module_open		   (const gchar		*file_name,

@@ -1,3 +1,12 @@
+2000-08-25 Elliot Lee <sopwith@redhat.com>
+	* glib.h, gunicode.h, gmodule/gmodule.h:
+	: Mark the following functions G_GNUC_CONST (to allow
+	optimization) because their results are a function of only their parameters:
+	g_int_hash, g_int_equal, g_direct_hash, g_direct_equal, g_quark_to_string,
+	g_date_is_leap_year, g_date_days_in_month, g_date_monday_weeks_in_year,
+	g_date_sunday_weeks_in_year, g_spaced_primes_closest, g_unichar_is*,
+	g_unichar_to*, g_unichar_*digit_value, g_unichar_type
+
 2000-08-21 Elliot Lee <sopwith@redhat.com>
 	* gobject/Makefile.am, gobject/gobject-query.c, gobject/gparamspecs.c: Fix inclusion of
 	config.h
