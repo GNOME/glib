@@ -8,7 +8,8 @@ bin_SCRIPTS=glib-config-2.0
 BUILT_SOURCES=glib-config-2.0
 glib-config-2.0: glib-config-2.0.in
 
-INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
+INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
+	-DG_DISBALE_COMPAT_H
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
@@ -101,6 +102,7 @@ glibinclude_HEADERS =   \
 	gasyncqueue.h	\
 	gbacktrace.h	\
 	gcache.h	\
+	gcompat.h	\
 	gcompletion.h	\
 	gconvert.h	\
 	gdataset.h	\

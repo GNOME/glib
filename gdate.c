@@ -249,7 +249,7 @@ g_date_update_dmy (GDate *d)
 }
 
 GDateWeekday 
-g_date_weekday (GDate *d)
+g_date_get_weekday (GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_WEEKDAY);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_WEEKDAY);
@@ -264,7 +264,7 @@ g_date_weekday (GDate *d)
 }
 
 GDateMonth   
-g_date_month (GDate *d)
+g_date_get_month (GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_MONTH);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_MONTH);
@@ -279,7 +279,7 @@ g_date_month (GDate *d)
 }
 
 GDateYear    
-g_date_year (GDate *d)
+g_date_get_year (GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_YEAR);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_YEAR);
@@ -294,7 +294,7 @@ g_date_year (GDate *d)
 }
 
 GDateDay     
-g_date_day (GDate *d)
+g_date_get_day (GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_DAY);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_DAY);
@@ -309,7 +309,7 @@ g_date_day (GDate *d)
 }
 
 guint32      
-g_date_julian (GDate *d)
+g_date_get_julian (GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_JULIAN);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_JULIAN);
@@ -324,7 +324,7 @@ g_date_julian (GDate *d)
 }
 
 guint        
-g_date_day_of_year (GDate *d)
+g_date_get_day_of_year (GDate *d)
 {
   gint index;
   
@@ -343,7 +343,7 @@ g_date_day_of_year (GDate *d)
 }
 
 guint        
-g_date_monday_week_of_year (GDate *d)
+g_date_get_monday_week_of_year (GDate *d)
 {
   GDateWeekday wd;
   guint day;
@@ -362,14 +362,14 @@ g_date_monday_week_of_year (GDate *d)
   
   g_date_set_dmy (&first, 1, 1, d->year);
   
-  wd = g_date_weekday (&first) - 1; /* make Monday day 0 */
-  day = g_date_day_of_year (d) - 1;
+  wd = g_date_get_weekday (&first) - 1; /* make Monday day 0 */
+  day = g_date_get_day_of_year (d) - 1;
   
   return ((day + wd)/7U + (wd == 0 ? 1 : 0));
 }
 
 guint        
-g_date_sunday_week_of_year (GDate *d)
+g_date_get_sunday_week_of_year (GDate *d)
 {
   GDateWeekday wd;
   guint day;
@@ -388,9 +388,9 @@ g_date_sunday_week_of_year (GDate *d)
   
   g_date_set_dmy (&first, 1, 1, d->year);
   
-  wd = g_date_weekday (&first);
+  wd = g_date_get_weekday (&first);
   if (wd == 7) wd = 0; /* make Sunday day 0 */
-  day = g_date_day_of_year (d) - 1;
+  day = g_date_get_day_of_year (d) - 1;
   
   return ((day + wd)/7U + (wd == 0 ? 1 : 0));
 }
@@ -1119,8 +1119,8 @@ g_date_is_leap_year (GDateYear  year)
 }
 
 guint8         
-g_date_days_in_month (GDateMonth month, 
-                      GDateYear  year)
+g_date_get_days_in_month (GDateMonth month, 
+                          GDateYear  year)
 {
   gint index;
   
@@ -1133,7 +1133,7 @@ g_date_days_in_month (GDateMonth month,
 }
 
 guint8       
-g_date_monday_weeks_in_year (GDateYear  year)
+g_date_get_monday_weeks_in_year (GDateYear  year)
 {
   GDate d;
   
@@ -1141,21 +1141,21 @@ g_date_monday_weeks_in_year (GDateYear  year)
   
   g_date_clear (&d, 1);
   g_date_set_dmy (&d, 1, 1, year);
-  if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
+  if (g_date_get_weekday (&d) == G_DATE_MONDAY) return 53;
   g_date_set_dmy (&d, 31, 12, year);
-  if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
+  if (g_date_get_weekday (&d) == G_DATE_MONDAY) return 53;
   if (g_date_is_leap_year (year)) 
     {
       g_date_set_dmy (&d, 2, 1, year);
-      if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
+      if (g_date_get_weekday (&d) == G_DATE_MONDAY) return 53;
       g_date_set_dmy (&d, 30, 12, year);
-      if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
+      if (g_date_get_weekday (&d) == G_DATE_MONDAY) return 53;
     }
   return 52;
 }
 
 guint8       
-g_date_sunday_weeks_in_year (GDateYear  year)
+g_date_get_sunday_weeks_in_year (GDateYear  year)
 {
   GDate d;
   
@@ -1163,15 +1163,15 @@ g_date_sunday_weeks_in_year (GDateYear  year)
   
   g_date_clear (&d, 1);
   g_date_set_dmy (&d, 1, 1, year);
-  if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
+  if (g_date_get_weekday (&d) == G_DATE_SUNDAY) return 53;
   g_date_set_dmy (&d, 31, 12, year);
-  if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
+  if (g_date_get_weekday (&d) == G_DATE_SUNDAY) return 53;
   if (g_date_is_leap_year (year)) 
     {
       g_date_set_dmy (&d, 2, 1, year);
-      if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
+      if (g_date_get_weekday (&d) == G_DATE_SUNDAY) return 53;
       g_date_set_dmy (&d, 30, 12, year);
-      if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
+      if (g_date_get_weekday (&d) == G_DATE_SUNDAY) return 53;
     }
   return 52;
 }
@@ -1257,12 +1257,12 @@ g_date_to_struct_tm (GDate      *d,
   tm->tm_mon  = d->month - 1; /* 0-11 goes in tm */
   tm->tm_year = ((int)d->year) - 1900; /* X/Open says tm_year can be negative */
   
-  day = g_date_weekday (d);
+  day = g_date_get_weekday (d);
   if (day == 7) day = 0; /* struct tm wants days since Sunday, so Sunday is 0 */
   
   tm->tm_wday = (int)day;
   
-  tm->tm_yday = g_date_day_of_year (d) - 1; /* 0 to 365 */
+  tm->tm_yday = g_date_get_day_of_year (d) - 1; /* 0 to 365 */
   tm->tm_isdst = -1; /* -1 means "information not available" */
 }
 

@@ -1,3 +1,14 @@
+2000-12-24  Ali Abdin  <aliabdin@aucegypt.edu>
+
+	* Makefile.am, gcompat.h, glib.h: New gcompat.h header file
+ 	  as recommended by Havoc.
+
+	* gdate.c, gdate.h, testgdate.c,
+	  docs/reference/glib/glib-sections.txt,
+	  docs/reference/glib/tmpl/date.sgml, tests/date-test.c: Rename some
+	  of the gdate functions to use the '_get' in their name. Patch
+	  reviewed by Havoc.
+		
 2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Determine the suffix of the shared librarries for

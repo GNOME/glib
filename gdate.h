@@ -136,20 +136,20 @@ gboolean     g_date_valid_dmy             (GDateDay     day,
                                            GDateMonth   month,
                                            GDateYear    year) G_GNUC_CONST;
 
-GDateWeekday g_date_weekday               (GDate       *date);
-GDateMonth   g_date_month                 (GDate       *date);
-GDateYear    g_date_year                  (GDate       *date);
-GDateDay     g_date_day                   (GDate       *date);
-guint32      g_date_julian                (GDate       *date);
-guint        g_date_day_of_year           (GDate       *date);
+GDateWeekday g_date_get_weekday           (GDate       *date);
+GDateMonth   g_date_get_month             (GDate       *date);
+GDateYear    g_date_get_year              (GDate       *date);
+GDateDay     g_date_get_day               (GDate       *date);
+guint32      g_date_get_julian            (GDate       *date);
+guint        g_date_get_day_of_year       (GDate       *date);
 /* First monday/sunday is the start of week 1; if we haven't reached
  * that day, return 0. These are not ISO weeks of the year; that
  * routine needs to be added.
  * these functions return the number of weeks, starting on the
  * corrsponding day
  */
-guint        g_date_monday_week_of_year   (GDate      *date);
-guint        g_date_sunday_week_of_year   (GDate      *date);
+guint        g_date_get_monday_week_of_year (GDate      *date);
+guint        g_date_get_sunday_week_of_year (GDate      *date);
 
 /* If you create a static date struct you need to clear it to get it
  * in a sane state before use. You can clear a whole array at
@@ -199,10 +199,10 @@ void         g_date_add_years             (GDate       *date,
 void         g_date_subtract_years        (GDate       *date,
                                            guint        n_years);
 gboolean     g_date_is_leap_year          (GDateYear    year) G_GNUC_CONST;
-guint8       g_date_days_in_month         (GDateMonth   month,
+guint8       g_date_get_days_in_month     (GDateMonth   month,
                                            GDateYear    year) G_GNUC_CONST;
-guint8       g_date_monday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
-guint8       g_date_sunday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
+guint8       g_date_get_monday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
+guint8       g_date_get_sunday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
 
 /* qsort-friendly (with a cast...) */
 gint         g_date_compare               (GDate       *lhs,

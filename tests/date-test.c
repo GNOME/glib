@@ -77,13 +77,13 @@ int main(int argc, char** argv)
 
   TEST("January 1, Year 1 created and valid", g_date_valid(d));
 
-  j = g_date_julian(d);
+  j = g_date_get_julian(d);
   
   TEST("January 1, Year 1 is Julian date 1", j == 1);
 
-  TEST("Returned month is January", g_date_month(d) == G_DATE_JANUARY);
-  TEST("Returned day is 1", g_date_day(d) == 1);
-  TEST("Returned year is 1", g_date_year(d) == 1);
+  TEST("Returned month is January", g_date_get_month(d) == G_DATE_JANUARY);
+  TEST("Returned day is 1", g_date_get_day(d) == 1);
+  TEST("Returned year is 1", g_date_get_year(d) == 1);
 
   TEST("Bad month is invalid", !g_date_valid_month(G_DATE_BAD_MONTH));
   TEST("Month 13 is invalid",  !g_date_valid_month(13));
@@ -135,9 +135,9 @@ int main(int argc, char** argv)
   /* Note: this test will hopefully work, but no promises. */
   TEST("Successfully parsed a %x-formatted string", 
        g_date_valid(d) && 
-       g_date_month(d) == 1 && 
-       g_date_day(d) == 10 && 
-       g_date_year(d) == 2000);
+       g_date_get_month(d) == 1 && 
+       g_date_get_day(d) == 10 && 
+       g_date_get_year(d) == 2000);
   if (failed)
     g_date_debug_print(d);
   
@@ -154,9 +154,9 @@ int main(int argc, char** argv)
       guint32 first_day_of_year = G_DATE_BAD_JULIAN;
       guint16 days_in_year = g_date_is_leap_year(y) ? 366 : 365;
       guint   sunday_week_of_year = 0;
-      guint   sunday_weeks_in_year = g_date_sunday_weeks_in_year(y);
+      guint   sunday_weeks_in_year = g_date_get_sunday_weeks_in_year(y);
       guint   monday_week_of_year = 0;
-      guint   monday_weeks_in_year = g_date_monday_weeks_in_year(y);
+      guint   monday_weeks_in_year = g_date_get_monday_weeks_in_year(y);
 
       if (discontinuity)
         g_print(" (Break in sequence of requested years to check)\n");
@@ -174,7 +174,7 @@ int main(int argc, char** argv)
       m = 1;
       while (m < 13) 
 	{
-	  guint8 dim = g_date_days_in_month(m,y);
+	  guint8 dim = g_date_get_days_in_month(m,y);
 	  GDate days[31];         /* This is the fast way, no allocation */
 
 	  TEST("Sensible number of days in month", (dim > 0 && dim < 32));
@@ -204,89 +204,89 @@ int main(int argc, char** argv)
 
 	      if (m == G_DATE_JANUARY && day == 1) 
 		{
-		  first_day_of_year = g_date_julian(d);
+		  first_day_of_year = g_date_get_julian(d);
 		}
 
 	      g_assert(first_day_of_year != G_DATE_BAD_JULIAN);
 
 	      TEST("Date with DMY triplet is valid", g_date_valid(d));
-	      TEST("Month accessor works", g_date_month(d) == m);
-	      TEST("Year accessor works", g_date_year(d) == y);
-	      TEST("Day of month accessor works", g_date_day(d) == day);
+	      TEST("Month accessor works", g_date_get_month(d) == m);
+	      TEST("Year accessor works", g_date_get_year(d) == y);
+	      TEST("Day of month accessor works", g_date_get_day(d) == day);
 
 	      TEST("Day of year is consistent with Julian dates",
-		   ((g_date_julian(d) + 1 - first_day_of_year) ==
-		    (g_date_day_of_year(d))));
+		   ((g_date_get_julian(d) + 1 - first_day_of_year) ==
+		    (g_date_get_day_of_year(d))));
 
 	      if (failed) 
 		{
 		  g_print("first day: %u this day: %u day of year: %u\n", 
 			  first_day_of_year, 
-			  g_date_julian(d),
-			  g_date_day_of_year(d));
+			  g_date_get_julian(d),
+			  g_date_get_day_of_year(d));
 		}
 	      
 	      if (m == G_DATE_DECEMBER && day == 31) 
 		{
 		  TEST("Last day of year equals number of days in year", 
-		       g_date_day_of_year(d) == days_in_year);
+		       g_date_get_day_of_year(d) == days_in_year);
 		  if (failed) 
 		    {
 		      g_print("last day: %u days in year: %u\n", 
-			      g_date_day_of_year(d), days_in_year);
+			      g_date_get_day_of_year(d), days_in_year);
 		    }
 		}
 
 	      TEST("Day of year is not more than number of days in the year",
-		   g_date_day_of_year(d) <= days_in_year);
+		   g_date_get_day_of_year(d) <= days_in_year);
 
 	      TEST("Monday week of year is not more than number of weeks in the year",
-		   g_date_monday_week_of_year(d) <= monday_weeks_in_year);
+		   g_date_get_monday_week_of_year(d) <= monday_weeks_in_year);
 	      if (failed)
 		{
 		  g_print("Weeks in year: %u\n", monday_weeks_in_year);
 		  g_date_debug_print(d);
 		}
 	      TEST("Monday week of year is >= than last week of year",
-		   g_date_monday_week_of_year(d) >= monday_week_of_year);
+		   g_date_get_monday_week_of_year(d) >= monday_week_of_year);
 
-	      if (g_date_weekday(d) == G_DATE_MONDAY) 
+	      if (g_date_get_weekday(d) == G_DATE_MONDAY) 
 		{
 		  
 		  TEST("Monday week of year on Monday 1 more than previous day's week of year",
-		       (g_date_monday_week_of_year(d) - monday_week_of_year) == 1);
+		       (g_date_get_monday_week_of_year(d) - monday_week_of_year) == 1);
 		}
 	      else 
 		{
 		  TEST("Monday week of year on non-Monday 0 more than previous day's week of year",
-		       (g_date_monday_week_of_year(d) - monday_week_of_year) == 0);
+		       (g_date_get_monday_week_of_year(d) - monday_week_of_year) == 0);
 		}
 
 
-	      monday_week_of_year = g_date_monday_week_of_year(d);
+	      monday_week_of_year = g_date_get_monday_week_of_year(d);
 
 
 	      TEST("Sunday week of year is not more than number of weeks in the year",
-		   g_date_sunday_week_of_year(d) <= sunday_weeks_in_year);
+		   g_date_get_sunday_week_of_year(d) <= sunday_weeks_in_year);
 	      if (failed)
 		{
 		  g_date_debug_print(d);
 		}
 	      TEST("Sunday week of year is >= than last week of year",
-		   g_date_sunday_week_of_year(d) >= sunday_week_of_year);
+		   g_date_get_sunday_week_of_year(d) >= sunday_week_of_year);
 
-	      if (g_date_weekday(d) == G_DATE_SUNDAY) 
+	      if (g_date_get_weekday(d) == G_DATE_SUNDAY) 
 		{
 		  TEST("Sunday week of year on Sunday 1 more than previous day's week of year",
-		       (g_date_sunday_week_of_year(d) - sunday_week_of_year) == 1);
+		       (g_date_get_sunday_week_of_year(d) - sunday_week_of_year) == 1);
 		}
 	      else 
 		{
 		  TEST("Sunday week of year on non-Sunday 0 more than previous day's week of year",
-		       (g_date_sunday_week_of_year(d) - sunday_week_of_year) == 0);
+		       (g_date_get_sunday_week_of_year(d) - sunday_week_of_year) == 0);
 		}
 
-	      sunday_week_of_year = g_date_sunday_week_of_year(d);
+	      sunday_week_of_year = g_date_get_sunday_week_of_year(d);
 
 	      TEST("Date is equal to itself",
 		   g_date_compare(d,d) == 0);
@@ -307,7 +307,7 @@ int main(int argc, char** argv)
 
                   g_date_subtract_days(d, i);
                   TEST("Forward days then backward days returns us to current day",
-                       g_date_day(d) == day);
+                       g_date_get_day(d) == day);
 
                   if (failed) 
                     {
@@ -316,7 +316,7 @@ int main(int argc, char** argv)
                     }
 
                   TEST("Forward days then backward days returns us to current month",
-                       g_date_month(d) == m);
+                       g_date_get_month(d) == m);
 
                   if (failed) 
                     {
@@ -325,7 +325,7 @@ int main(int argc, char** argv)
                     }
 
                   TEST("Forward days then backward days returns us to current year",
-                       g_date_year(d) == y);
+                       g_date_get_year(d) == y);
 
                   if (failed) 
                     {
@@ -342,7 +342,7 @@ int main(int argc, char** argv)
                   g_date_subtract_months(d, i);
 
                   TEST("Forward months then backward months returns us to current month",
-                       g_date_month(d) == m);
+                       g_date_get_month(d) == m);
 
                   if (failed) 
                     {
@@ -351,7 +351,7 @@ int main(int argc, char** argv)
                     }
 
                   TEST("Forward months then backward months returns us to current year",
-                       g_date_year(d) == y);
+                       g_date_get_year(d) == y);
 
                   if (failed) 
                     {
@@ -365,7 +365,7 @@ int main(int argc, char** argv)
                       /* Day should be unchanged */
 		      
                       TEST("Forward months then backward months returns us to current day",
-                           g_date_day(d) == day);
+                           g_date_get_day(d) == day);
 		      
                       if (failed) 
                         {
@@ -390,7 +390,7 @@ int main(int argc, char** argv)
                   g_date_subtract_years(d, i);
 
                   TEST("Forward years then backward years returns us to current month",
-                       g_date_month(d) == m);
+                       g_date_get_month(d) == m);
 
                   if (failed) 
                     {
@@ -399,7 +399,7 @@ int main(int argc, char** argv)
                     }
 
                   TEST("Forward years then backward years returns us to current year",
-                       g_date_year(d) == y);
+                       g_date_get_year(d) == y);
 
                   if (failed) 
                     {
@@ -410,7 +410,7 @@ int main(int argc, char** argv)
                   if (m != 2 && day != 29) 
                     {
                       TEST("Forward years then backward years returns us to current day",
-                           g_date_day(d) == day);
+                           g_date_get_day(d) == day);
 		      
                       if (failed) 
                         {
@@ -433,16 +433,16 @@ int main(int argc, char** argv)
                 /* We can only run sequence tests between sequential years */
                 
                 TEST("Julians are sequential with increment 1",
-                     j+1 == g_date_julian(d));
+                     j+1 == g_date_get_julian(d));
                 if (failed) 
                   {
                     g_print("Out of sequence, prev: %u expected: %u got: %u\n",
-                            j, j+1, g_date_julian(d));
+                            j, j+1, g_date_get_julian(d));
                   }
 
                 g_date_add_days(d,1);
                 TEST("Next day has julian 1 higher",
-                     g_date_julian(d) == j + 2);
+                     g_date_get_julian(d) == j + 2);
                 g_date_subtract_days(d, 1);
                 
                 if (j != G_DATE_BAD_JULIAN) 
@@ -450,7 +450,7 @@ int main(int argc, char** argv)
                     g_date_subtract_days(d, 1);
                     
                     TEST("Previous day has julian 1 lower",
-                         g_date_julian(d) == j);
+                         g_date_get_julian(d) == j);
                     
                     g_date_add_days(d, 1); /* back to original */
                   }
@@ -460,7 +460,7 @@ int main(int argc, char** argv)
               fflush(stdout);
               fflush(stderr);
 
-	      j = g_date_julian(d); /* inc current julian */
+	      j = g_date_get_julian(d); /* inc current julian */
 
 	      ++day;
 	    } 
