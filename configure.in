@@ -667,6 +667,23 @@ call_a(2,3);
 ],g_have_gnuc_varargs=yes,g_have_gnuc_varargs=no)
 AC_MSG_RESULT($g_have_gnuc_varargs)
 
+# check for GNUC visibility support
+AC_MSG_CHECKING(for GNUC visibility attribute)
+GLIB_CHECK_COMPILE_WARNINGS([
+void
+__attribute__ ((visibility ("hidden")))
+     f (void)
+{
+}
+
+int main (int argc, char **argv)
+{
+	f();
+	return 0;
+}
+],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)
+AC_MSG_RESULT($g_have_gnuc_visibility)
+
 # check for bytesex stuff
 AC_C_BIGENDIAN
 
@@ -2206,6 +2223,18 @@ _______EOF
 
 	fi
 
+	if test x$g_have_gnuc_visibility = xyes ; then
+		cat >>$outfile <<_______EOF
+#define G_HAVE_GNUC_VISIBILITY 1
+#define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+_______EOF
+	else
+		cat >>$outfile <<_______EOF
+#define G_GNUC_INTERNAL
+_______EOF
+	fi
+
+
 	echo >>$outfile
 	if test x$g_mutex_has_default = xyes; then
 		cat >>$outfile <<_______EOF
@@ -2521,6 +2550,8 @@ fi
 g_have_gnuc_varargs=$g_have_gnuc_varargs
 g_have_iso_c_varargs=$g_have_iso_c_varargs
 g_have_iso_cxx_varargs=$g_have_iso_cxx_varargs
+
+g_have_gnuc_visibility=$g_have_gnuc_visibility
 
 case xyes in
 x$ac_cv_c_bigendian)

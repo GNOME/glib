@@ -1,3 +1,10 @@
+2004-08-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmacros.h: Remove G_GNUC_INTERNAL from here.
+	* configure.in: Check whether the visibility attribute
+	works and define G_HAVE_GNUC_VISIBILITY and 
+	G_GNUC_INTERNAL in glibconfig.h correspondingly.
+
 Mon Aug  9 17:37:56 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmacros.h (G_GNUC_INTERNAL): Define empty if gcc is too old.
