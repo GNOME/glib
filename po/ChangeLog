@@ -1,3 +1,7 @@
+2002-06-05  Christophe Merlet  <christophe@merlet.net>
+
+	* fr.po: Updated French translation.
+
 2002-06-04  Zbigniew Chyla  <chyla@buy.pl>
 
 	* pl.po: Updated Polish translation by
@@ -82,7 +86,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* de.po: Updated German translation.
 
-2002-03-15  Christophe Merlet  <redfox@eikonex.org>
+2002-03-15  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation.
 
@@ -131,7 +135,7 @@ Wed May 22 15:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* sk.po: Updated Slovak translation.
 
-2002-02-26  Christophe Merlet  <redfox@eikonex.org>
+2002-02-26  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation and
 	converted to UTF-8.
@@ -524,7 +528,7 @@ Wed Sep  5 09:27:34 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* de.po: Added German translation.
 
-2001-03-02  Christophe Merlet  <redfox@eikonex.org>
+2001-03-02  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Added French translation.
 
