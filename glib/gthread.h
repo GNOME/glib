@@ -204,7 +204,7 @@ GThread* g_thread_create (GThreadFunc            thread_func,
                           gboolean               bound,
                           GThreadPriority        priority,
                           GError               **error);
-GThread* g_thread_self ();
+GThread* g_thread_self (void);
 void g_thread_join (GThread *thread);
 void g_thread_set_priority (GThread         *thread,
                             GThreadPriority  priority);

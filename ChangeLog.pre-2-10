@@ -1,3 +1,7 @@
+2000-11-27  Havoc Pennington  <hp@redhat.com>
+
+	* gthread.h: Add void in empty function arg list
+
 2000-11-22  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in: Add gqsort.
