@@ -316,6 +316,9 @@ g_type_module_register_type (GTypeModule     *module,
 		     parent_type_name ? parent_type_name : "(unknown)");
 	  return 0;
 	}
+
+      if (module_type_info->info.value_table)
+	g_free (odule_type_info->info.value_table);
     }
   else
     {
