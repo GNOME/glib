@@ -1,3 +1,9 @@
+Fri Jun 18 22:53:13 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gsourceclosure.h (__G_SOURCECLOSURE_H__): Actually 
+	define the guard after checking for it.  (#108038, 
+	Morten Welinder)
+
 2004-04-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.4.1 ===
