@@ -14,11 +14,11 @@ VS_VERSION_INFO VERSIONINFO
       BLOCK "040904B0"
       BEGIN
 	VALUE "CompanyName", "The GLib developer community"
-	VALUE "FileDescription", "GLib"
+	VALUE "FileDescription", "GObject"
 	VALUE "FileVersion", "@GLIB_VERSION@.BUILDNUMBER"
-	VALUE "InternalName", "gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@"
+	VALUE "InternalName", "libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@"
 	VALUE "LegalCopyright", "Copyright © 1998-2000 Tim Janik and Red Hat, Inc."
-	VALUE "OriginalFilename", "gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.dll"
+	VALUE "OriginalFilename", "libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll"
 	VALUE "ProductName", "GLib"
 	VALUE "ProductVersion", "@GLIB_VERSION@"
       END

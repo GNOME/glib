@@ -1,3 +1,8 @@
+2001-09-19  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule.rc.in: Correct InternalName and OriginalFilename to
+	match what we actually produce.
+
 2001-09-18  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: On Win32, pass a dummy -rpath flag to libtool when
