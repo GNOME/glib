@@ -7,8 +7,8 @@
 # (egcs-1.1.2 release) or gcc-2.95 as distributed by Mumit Khan. For
 # other combinations, no idea.
 
-GCC=gcc
-DLLTOOL=dlltool
+GCC="gcc"
+DLLTOOL="dlltool"
 AS=as
 
 library=$1; shift

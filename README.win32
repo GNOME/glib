@@ -112,7 +112,7 @@ instructions in that case, too.
 
    Install it somewhere, let's say G:\gcc-2.95.2 (//g/gcc-2.95.2 when
    in Cygwin). Add //g/gcc-2.95.2/H-i586-cygwin32/bin to your
-   PATH. Below,I assume you use bash.
+   PATH. I assume you use bash below.
 
    Replace the specs file in
    //g/gcc-2.95.2/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/2.95.2/specs
@@ -313,9 +313,6 @@ diff -ru2 ./w32api/include/wingdi.h ../../src/mingw-runtime-19991107/w32api/incl
    correctly for DATA items.
    
 5) Whew. That hopefully should be it.
-
-Cheers,
---tml
 
 Next, go back to the GLib directory and build using `make -f
 makefile.cygwin`.  Building the dlls uses the script build-dll which
