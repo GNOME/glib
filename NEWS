@@ -1,3 +1,9 @@
+Overview of Changes in GLib 1.1.14:
+
+* Check for dlsym() in system libraries and -dl
+* FreeBSD portability fixes
+* Random bug fixes and autoconf/automake changes
+
 Overview of Changes in GLib 1.1.13:
 
 * Removed alloca() based function and macro variants again.

@@ -1,3 +1,14 @@
+Wed Jan 27 23:21:50 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* INSTALL
+	  NEWS
+	  README
+	  configure.in
+	  glib.spec
+	  docs/glib-config.1: version=1.1.14
+
+	* Released GLib 1.1.14
+
 1999-01-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Simplified configure.in test for posix threads,
