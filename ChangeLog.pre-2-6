@@ -1,3 +1,7 @@
+2003-09-28  Gediminas Paulauskas  <menesis@delfi.lt>
+
+	* configure.in: Added lt (Lithuanian) to ALL_LINGUAS.
+
 2003-09-03  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Use G_GINT64_CONSTANT to define
