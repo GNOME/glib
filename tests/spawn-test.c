@@ -131,8 +131,9 @@ run_tests (void)
       erroutput = NULL;
     }
 
-  printf ("Starting spawn-test-win32-gui asynchronously (without wait).\n"
-	  "Click on the OK buttons.\n");
+  printf ("Running spawn-test-win32-gui in various ways. Click on the OK buttons.\n");
+
+  printf ("First asynchronously (without wait).\n");
 
   if (!g_spawn_command_line_async ("'.\\spawn-test-win32-gui.exe' 1", &err))
     {
@@ -141,8 +142,7 @@ run_tests (void)
       exit (1);
     }
 
-  printf ("Running spawn-test-win32-gui synchronously,\n"
-	  "collecting its output. Click on the OK buttons.\n");
+  printf ("Now synchronously, collecting its output.\n");
   if (!g_spawn_command_line_sync ("'.\\spawn-test-win32-gui.exe' 2",
 				  &output, &erroutput, NULL,
 				  &err))
@@ -174,8 +174,26 @@ run_tests (void)
       g_free (erroutput);
     }
 
-  printf ("Running spawn-test-win32-gui asynchronously again.\n"
-	  "This time talking to it through pipes. Click on the OK buttons.\n");
+  printf ("Now with G_SPAWN_FILE_AND_ARGV_ZERO.\n");
+
+  if (!g_shell_parse_argv ("'.\\spawn-test-win32-gui.exe' this-should-be-argv-zero nop", NULL, &argv, &err))
+    {
+      fprintf (stderr, "Error parsing command line? %s\n", err->message);
+      g_error_free (err);
+      exit (1);
+    }
+
+  if (!g_spawn_async (NULL, argv, NULL,
+		      G_SPAWN_FILE_AND_ARGV_ZERO,
+		      NULL, NULL, NULL,
+		      &err))
+    {
+      fprintf (stderr, "Error: %s\n", err->message);
+      g_error_free (err);
+      exit (1);
+    }
+
+  printf ("Now talking to it through pipes.\n");
 
   if (pipe (pipedown) < 0 ||
       pipe (pipeup) < 0)

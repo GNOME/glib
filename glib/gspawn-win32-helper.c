@@ -76,6 +76,7 @@ WinMain (struct HINSTANCE__ *hInstance,
   int handle;
   int no_error = CHILD_NO_ERROR;
   int zero = 0;
+  gint file_and_argv_zero = 0;
   gchar **new_argv;
 
   SETUP_DEBUG();
@@ -104,6 +105,10 @@ WinMain (struct HINSTANCE__ *hInstance,
    * write error messages.
    */
   child_err_report_fd = atoi (__argv[ARG_CHILD_ERR_REPORT]);
+
+  /* Hack to implement G_SPAWN_FILE_AND_ARGV_ZERO */
+  if (__argv[ARG_CHILD_ERR_REPORT][strlen (__argv[ARG_CHILD_ERR_REPORT]) - 1] == '#')
+    file_and_argv_zero = 1;
 
   /* argv[ARG_STDIN..ARG_STDERR] are the file descriptors that should
    * be dup2'd to stdin, stdout and stderr, '-' if the corresponding
@@ -220,7 +225,7 @@ WinMain (struct HINSTANCE__ *hInstance,
 					__argv[ARG_PROGRAM],
 					(mode == P_WAIT ?
 					 "P_WAIT" : "P_NOWAIT")));
-      i = ARG_PROGRAM+1;
+      i = ARG_PROGRAM + 1 + file_and_argv_zero;
       while (new_argv[i])
 	{
 	  g_string_append (debugstring, new_argv[i++]);
@@ -231,9 +236,9 @@ WinMain (struct HINSTANCE__ *hInstance,
     }
 
   if (new_argv[ARG_USE_PATH][0] == 'y')
-    handle = spawnvp (mode, __argv[ARG_PROGRAM], new_argv+ARG_PROGRAM);
+    handle = spawnvp (mode, __argv[ARG_PROGRAM], new_argv + ARG_PROGRAM + file_and_argv_zero);
   else
-    handle = spawnv (mode, __argv[ARG_PROGRAM], new_argv+ARG_PROGRAM);
+    handle = spawnv (mode, __argv[ARG_PROGRAM], new_argv + ARG_PROGRAM + file_and_argv_zero);
 
   if (debug)
     {
