@@ -1,3 +1,24 @@
+1999-11-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* acconfig.h, config.h.win32.in, configure.in: Renamed
+	GLIB_SIZEOF_PTHREAD_T to GLIB_SIZEOF_SYSTEM_THREAD to reflect
+	changed meaning.
+
+	* configure.in: Cope with systems, that have a pthread_t type,
+	that is not a pointer. Hint from Karl Nelson
+	<kenelson@ece.ucdavis.edu>. Define GLIB_SIZEOF_SYSTEM_THREAD to 4
+	for Solaris. Cope with systems, that have no default mutex
+	initialize, like obviously most DCE systems.
+
+	* glib.h, gthread.c: Changed the prototype of thread_create and
+	thread_self to return the system thread into provided memory
+	instead of a return value. This is necessary, as HPUX has a
+	pthread_t, that is bigger than the biggest integral type there.
+
+	* gthread.c: system_thread is no longer a pointer, but an memory
+	area of size GLIB_SIZEOF_SYSTEM_THREAD. Changed the
+	zeroinitialization and the tests for zeroness accordingly.
+
 1999-11-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Create docs/glib-config.1 from

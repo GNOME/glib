@@ -2934,18 +2934,19 @@ struct _GThreadFunctions
   gpointer  (*private_get)        (GPrivate		*private_key);
   void      (*private_set)        (GPrivate		*private_key,
 			           gpointer		 data);
-  gpointer  (*thread_create)      (GThreadFunc 		 thread_func,
+  void      (*thread_create)      (GThreadFunc 		 thread_func,
 			           gpointer 		 arg,
 			           gulong 		 stack_size,
 			           gboolean 		 joinable,
 			           gboolean 		 bound,
-			           GThreadPriority 	 priority);
+			           GThreadPriority 	 priority,
+				   gpointer              thread);
   void      (*thread_yield)       (void);
   void      (*thread_join)        (gpointer		 thread);
   void      (*thread_exit)        (void);
   void      (*thread_set_priority)(gpointer		 thread, 
 				   GThreadPriority 	 priority);
-  gpointer  (*thread_self)        (void);
+  void      (*thread_self)        (gpointer              thread);
 };
 
 GUTILS_C_VAR GThreadFunctions	g_thread_functions_for_glib_use;

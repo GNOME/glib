@@ -39,6 +39,24 @@
 #include <unistd.h>
 #endif
 
+typedef union _SystemThread SystemThread;
+
+/* This represents a system thread as used by the implementation. An
+ * alien implementaion, as loaded by g_thread_init can only count on
+ * "sizeof (gpointer)" bytes to store their info. We however need more
+ * for some of our native implementations. */
+union _SystemThread
+{
+  guchar   data[GLIB_SIZEOF_SYSTEM_THREAD];
+  gdouble  double_dummy; /* These are used for the right alignment */
+  gpointer pointer_dummy;
+#ifdef G_HAVE_GINT64
+  guint64  long_dummy;
+#else
+  guint32  long_dummy;  
+#endif
+};
+
 typedef struct _GRealThread GRealThread;
 
 struct  _GRealThread
@@ -46,9 +64,34 @@ struct  _GRealThread
   GThread thread;
   GThreadFunc func;
   gpointer arg;
-  gpointer system_thread;
   gpointer private_data;
+  SystemThread system_thread;
 };
+
+#if (GLIB_SIZEOF_SYSTEM_THREAD <= 8 && defined(G_HAVE_GINT64))               \
+  || (GLIB_SIZEOF_SYSTEM_THREAD <= 4)
+/* We can use fast setting and checks */
+#  define set_system_thread_to_zero(t) (t->system_thread.long_dummy=0)
+#  define system_thread_is_not_zero(t) (t->system_thread.long_dummy)
+#else
+/* We have to do it the hard way and hope the compiler will optimize a bit */
+static inline void
+set_system_thread_to_zero(GRealThread* thread)
+{ 
+  int i; 
+  for (i = 0; i < GLIB_SIZEOF_SYSTEM_THREAD; i++)
+    thread->system_thread.data[i] = 0;
+}
+
+static inline gboolean
+system_thread_is_not_zero(GRealThread* thread)
+{
+  int i; 
+  for (i = 0; i < GLIB_SIZEOF_SYSTEM_THREAD; i++)
+    if (thread->system_thread.data[i]) return FALSE;
+  return TRUE;
+}
+#endif
 
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 
@@ -84,9 +127,9 @@ GThreadFunctions g_thread_functions_for_glib_use = {
   (GPrivate*(*)(GDestroyNotify))g_thread_fail, /* private_new */
   NULL,                                        /* private_get */
   NULL,                                        /* private_set */
-  (gpointer(*)(GThreadFunc, gpointer, gulong, 
-	       gboolean, gboolean, 
-	       GThreadPriority))g_thread_fail, /* thread_create */
+  (void(*)(GThreadFunc, gpointer, gulong, 
+	   gboolean, gboolean, GThreadPriority, 
+	   gpointer))g_thread_fail,            /* thread_create */
   NULL,                                        /* thread_yield */
   NULL,                                        /* thread_join */
   NULL,                                        /* thread_exit */
@@ -298,7 +341,7 @@ g_thread_cleanup (gpointer data)
       if (!thread->thread.joinable)
 	{
 	  /* Just to make sure, this isn't used any more */
-	  thread->system_thread = NULL;
+	  set_system_thread_to_zero(thread);
 	  g_free (thread);
 	}
     }
@@ -347,10 +390,9 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->func = thread_func;
   result->arg = arg;
   G_LOCK (g_thread_create);
-  result->system_thread = G_THREAD_UF (thread_create, (g_thread_create_proxy, 
-						       result, stack_size, 
-						       joinable, bound, 
-						       priority));
+  G_THREAD_UF (thread_create, (g_thread_create_proxy, result, stack_size, 
+			       joinable, bound, priority,
+			       &result->system_thread));
   G_UNLOCK (g_thread_create);
   return (GThread*) result;
 }
@@ -359,16 +401,17 @@ void
 g_thread_join (GThread* thread)
 {
   GRealThread* real = (GRealThread*) thread;
+  
 
   g_return_if_fail (thread);
   g_return_if_fail (thread->joinable);
-  g_return_if_fail (real->system_thread);
+  g_return_if_fail (system_thread_is_not_zero (real));
 
-  G_THREAD_UF (thread_join, (real->system_thread));
+  G_THREAD_UF (thread_join, (&real->system_thread));
 
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
-  real->system_thread = NULL;
+  set_system_thread_to_zero (real);
 
   /* the thread structure for non-joinable threads is freed upon
      thread end. We free the memory here. This will leave loose end,
@@ -384,10 +427,10 @@ g_thread_set_priority (GThread* thread,
   GRealThread* real = (GRealThread*) thread;
 
   g_return_if_fail (thread);
-  g_return_if_fail (real->system_thread);
+  g_return_if_fail (system_thread_is_not_zero (real));
 
   thread->priority = priority;
-  G_THREAD_CF (thread_set_priority, (void)0, (real->system_thread, priority));
+  G_THREAD_CF (thread_set_priority, (void)0, (&real->system_thread, priority));
 }
 
 GThread*
@@ -407,14 +450,14 @@ g_thread_self()
 							     just a guess */
       thread->func = NULL;
       thread->arg = NULL;
-      thread->system_thread = NULL;
+      set_system_thread_to_zero (thread);
       thread->private_data = NULL;
       g_private_set (g_thread_specific_private, thread);
     }
      
-  if (g_thread_supported () && !thread->system_thread)
+  if (g_thread_supported () && !system_thread_is_not_zero(thread))
     {
-      thread->system_thread = g_thread_functions_for_glib_use.thread_self();
+      g_thread_functions_for_glib_use.thread_self(&thread->system_thread);
     }
 
   return (GThread*)thread;

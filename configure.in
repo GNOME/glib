@@ -736,7 +736,7 @@ case $have_threads in
 			
 			AC_MSG_CHECKING(for pthread_join$IN)
 			AC_TRY_LINK([#include <pthread.h>],
-				[pthread_join(NULL,NULL)],
+				[pthread_t t; pthread_join(t,NULL)],
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"
 				break],
@@ -876,12 +876,12 @@ if test x"$enable_threads" = xyes; then
 	if test x"$have_threads" = xposix; then
 		GLIB_SIZEOF([#include <pthread.h>],
 			pthread_t,
-			pthread_t)
+			system_thread)
 		# This is not AC_CHECK_FUNC to also work with function
 		# name mangling in header files.
 		AC_MSG_CHECKING(for pthread_attr_setstacksize)
 		AC_TRY_LINK([#include <pthread.h>],
-			[pthread_attr_setstacksize(NULL,0)],
+			[pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
 			[AC_MSG_RESULT(yes)
 			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
 			[AC_MSG_RESULT(no)])
@@ -942,7 +942,12 @@ if test x"$enable_threads" = xyes; then
 			posix_yield_func="$posix_yield_func()"
 		fi
 		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func)
+	else
+		# for now, the only other implementation is solaris 
+		# -> there 4 bytes are enough
+          	AC_DEFINE_UNQUOTED(GLIB_SIZEOF_SYSTEM_THREAD, 4)
 	fi
+
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"
 
@@ -978,6 +983,9 @@ GLIB_IF_VAR_EQ(mutex_has_default, yes,
 			   gmutex,
 			   $glib_cv_sizeof_gmutex,
 			   $mutex_default_init)
+	if test x"$glib_cv_byte_contents_gmutex" = xno; then
+		mutex_has_default=no
+	fi
 	if test x"$have_threads" = xposix; then 
 		GLIB_BYTE_CONTENTS([#define __USE_GNU
 #include <$mutex_header_file>],
@@ -1182,7 +1190,7 @@ _______EOF
 		# typedef GStaticMutex GStaticRecMutex to avoid silent
 		# compilation, when a GStaticRecMutex is used where a
 		# GStaticMutex should have been used and vice versa,
-		# because that micht fail on other platforms.
+		# because that might fail on other platforms.
 		cat >>$outfile <<_______EOF
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
