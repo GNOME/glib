@@ -1528,11 +1528,8 @@ gchar*   g_strecpy		(gchar       *dest,
 				 const gchar *source,
 				 const gchar *exceptions);
 
-/* deprecated function */
-gchar*	 g_strescape		(gchar	      *string);
-
-/* Define a macro for it */
-#define g_strescape(src) g_strecpy (g_malloc (strlen (src)*4+1), src, NULL)
+/* deprecated function (used to be a real function) */
+#define g_strescape(src) g_strecpy (g_new (char, strlen (src)*4+1), (src), NULL)
 
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);

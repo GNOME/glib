@@ -1188,9 +1188,9 @@ g_strecpy (gchar       *dest,
 	      if ((*p < ' ') || (*p >= 0177))
 		{
 		  *q++ = '\\';
-		  *q++ = '0' + (((*p) >> 6)&07);
-		  *q++ = '0' + (((*p) >> 3)&07);
-		  *q++ = '0' + ((*p)&07);
+		  *q++ = '0' + (((*p) >> 6) & 07);
+		  *q++ = '0' + (((*p) >> 3) & 07);
+		  *q++ = '0' + ((*p) & 07);
 		}
 	      else
 		*q++ = *p;
@@ -1201,43 +1201,6 @@ g_strecpy (gchar       *dest,
     }
   *q = 0;
   return dest;
-}
-
-gchar*
-g_strescape (gchar *string)
-{
-  gchar *q;
-  gchar *escaped;
-  guint escapes_needed = 0;
-  gchar *p = string;
-
-  g_message ("g_strescape() is deprecated");
-
-  g_return_val_if_fail (string != NULL, NULL);
-
-  while (*p != '\000')
-    {
-      escapes_needed += (*p == '\\' || *p == '"');
-      p++;
-    }
-
-  if (!escapes_needed)
-    return g_strdup (string);
-
-  escaped = g_new (gchar, strlen (string) + escapes_needed + 1);
-
-  p = string;
-  q = escaped;
-
-  while (*p != '\000')
-    {
-      if (*p == '\\' || *p == '"')
-	*q++ = '\\';
-      *q++ = *p++;
-    }
-  *q = '\000';
-
-  return escaped;
 }
 
 /* blame Elliot for these next five routines */
