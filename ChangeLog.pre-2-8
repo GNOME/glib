@@ -1,3 +1,8 @@
+Sun Dec 15 19:22:58 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: Restore a missing AC_SUBST()
+	for DATADIRNAME. (Found by Kjartan Maraas)
+
 Sun Dec 15 11:24:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: Actually set INTLLIBS
