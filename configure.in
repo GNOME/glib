@@ -814,6 +814,13 @@ if test -z "$G_MODULE_IMPL" && test "x$glib_native_beos" = "xyes"; then
       G_MODULE_IMPL=G_MODULE_IMPL_BEOS],
       [])
 fi   
+dnl *** NSLinkModule (dyld) in system libraries (Darwin)
+if test -z "$G_MODULE_IMPL"; then
+ 	AC_CHECK_FUNC(NSLinkModule,
+		      [G_MODULE_IMPL=G_MODULE_IMPL_DYLD
+		       G_MODULE_NEED_USCORE=1],
+		      [])
+fi
 dnl *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_LIB(dl, dlopen,
@@ -821,13 +828,6 @@ if test -z "$G_MODULE_IMPL"; then
 			           [G_MODULE_LIBS=-ldl
 		                   G_MODULE_IMPL=G_MODULE_IMPL_DL],[])],
 		     [])
-fi
-dnl *** NSLinkModule (dyld) in system libraries (Darwin)
-if test -z "$G_MODULE_IMPL"; then
- 	AC_CHECK_FUNC(NSLinkModule,
-		      [G_MODULE_IMPL=G_MODULE_IMPL_DYLD
-		       G_MODULE_NEED_USCORE=1],
-		      [])
 fi
 dnl *** shl_load() in libdld (HP-UX)
 if test -z "$G_MODULE_IMPL"; then
