@@ -1,3 +1,12 @@
+2001-10-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gmain.c (g_main_context_acquire, g_main_context_release,
+	g_main_context_wait): Use the right conditional (G_THREADS_ENABLED
+	instead of G_THREAD_ENABLED). Also remove wrong
+	return-statement. Unfortunately mainloop-test still does fail. Many
+	thanks to Andrea Fazekas <fazek@ludens.elte.hu> for spotting
+	this. (#63455)
+
 2001-10-31  Matthias Clasen  <matthiasc@poet.de>
 
 	* gobject/gsourceclosure.c (g_source_set_closure): Fix documentation.

@@ -1685,7 +1685,7 @@ next_valid_source (GMainContext *context,
 gboolean 
 g_main_context_acquire (GMainContext *context)
 {
-#ifdef G_THREAD_ENABLED
+#ifdef G_THREADS_ENABLED
   gboolean result = FALSE;
   GThread *self = G_THREAD_SELF;
 
@@ -1709,9 +1709,9 @@ g_main_context_acquire (GMainContext *context)
   UNLOCK_CONTEXT (context); 
   
   return result;
-#else /* !G_THREAD_ENABLED */
+#else /* !G_THREADS_ENABLED */
   return TRUE;
-#endif /* G_THREAD_ENABLED */
+#endif /* G_THREADS_ENABLED */
 }
 
 /**
@@ -1726,7 +1726,7 @@ g_main_context_acquire (GMainContext *context)
 void
 g_main_context_release (GMainContext *context)
 {
-#ifdef G_THREAD_ENABLED
+#ifdef G_THREADS_ENABLED
   if (context == NULL)
     context = g_main_context_default ();
   
@@ -1755,9 +1755,7 @@ g_main_context_release (GMainContext *context)
     }
 
   UNLOCK_CONTEXT (context); 
-
-  return result;
-#endif /* G_THREAD_ENABLED */
+#endif /* G_THREADS_ENABLED */
 }
 
 /**
@@ -1781,7 +1779,7 @@ g_main_context_wait (GMainContext *context,
 		     GCond        *cond,
 		     GMutex       *mutex)
 {
-#ifdef G_THREAD_ENABLED
+#ifdef G_THREADS_ENABLED
   gboolean result = FALSE;
   GThread *self = G_THREAD_SELF;
   gboolean loop_internal_waiter;
@@ -1828,9 +1826,9 @@ g_main_context_wait (GMainContext *context,
     UNLOCK_CONTEXT (context); 
   
   return result;
-#else /* !G_THREAD_ENABLED */
+#else /* !G_THREADS_ENABLED */
   return TRUE;
-#endif /* G_THREAD_ENABLED */
+#endif /* G_THREADS_ENABLED */
 }
 
 /**
