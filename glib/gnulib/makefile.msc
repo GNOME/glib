@@ -1,0 +1,20 @@
+!IFDEF DEBUG
+CRT=-MDd
+!ELSE
+CRT=-MD
+!ENDIF
+
+CFLAGS = -I ..\.. -DHAVE_CONFIG_H -DHAVE_LONG_LONG_FORMAT
+
+OBJECTS = \
+	asnprintf.obj \
+	printf.obj \
+	printf-args.obj \
+	printf-parse.obj \
+	vasnprintf.obj
+
+gnulib.lib : $(OBJECTS)
+	lib -out:gnulib.lib $(OBJECTS)
+
+.c.obj:
+	$(CC) $(CRT) $(CFLAGS) -Ox -GD -c $<

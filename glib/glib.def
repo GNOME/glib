@@ -8,6 +8,7 @@ EXPORTS
 	g_array_prepend_vals
 	g_array_remove_index
 	g_array_remove_index_fast
+	g_array_remove_range
 	g_array_set_size
 	g_array_sized_new
 	g_array_sort
@@ -65,6 +66,7 @@ EXPORTS
 	g_byte_array_prepend
 	g_byte_array_remove_index
 	g_byte_array_remove_index_fast
+	g_byte_array_remove_range
 	g_byte_array_set_size
 	g_byte_array_sized_new
 	g_byte_array_sort
@@ -157,6 +159,7 @@ EXPORTS
 	g_file_error_quark
 	g_file_get_contents
 	g_file_open_tmp
+	g_file_read_link
 	g_file_test
 	g_filename_from_uri
 	g_filename_from_utf8
@@ -170,6 +173,7 @@ EXPORTS
 	g_get_codeset
 	g_get_current_dir
 	g_get_current_time
+	g_getenv
 	g_get_home_dir
 	g_get_prgname
 	g_get_real_name
@@ -412,6 +416,7 @@ EXPORTS
 	g_ptr_array_remove_fast
 	g_ptr_array_remove_index
 	g_ptr_array_remove_index_fast
+	g_ptr_array_remove_range
 	g_ptr_array_set_size
 	g_ptr_array_sized_new
 	g_ptr_array_sort
@@ -483,6 +488,7 @@ EXPORTS
 	g_set_prgname
 	g_set_print_handler
 	g_set_printerr_handler
+	g_setenv
 	g_shell_error_quark
 	g_shell_parse_argv
 	g_shell_quote
@@ -716,6 +722,7 @@ EXPORTS
 	g_unichar_xdigit_value
 	g_unicode_canonical_decomposition
 	g_unicode_canonical_ordering
+	g_unsetenv
 	g_usleep
 	g_utf16_to_ucs4
 	g_utf16_to_utf8

@@ -20,6 +20,7 @@
 #define __GNULIB_PRINTF_H__
 
 #include <stdarg.h>
+#include <stdio.h>
 
 int _g_gnulib_printf    (char const *format, 
 			 ...);

@@ -42,6 +42,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef G_OS_WIN32
+#include <io.h>			/* For read(), write() etc */
+#endif
+
 static void
 test_mkstemp (void)
 {

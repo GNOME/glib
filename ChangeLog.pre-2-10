@@ -1,3 +1,18 @@
+2003-08-05  Hans Breuer  <hans@breuer.org>
+
+	* glib/gnulib/makefile.msc : (new file) for msvc build
+
+	* glib/gnulib/vasnprintf.c : use glib/galloc.h
+
+	* glib/gnulib/printf.h : #include <stdio.h> for FILE*
+
+	* glib/makefile.msc.in : replace trio with gnulib
+
+	* glib/glib.def : updated externals
+
+	* glib/guniprop.c : fix for guniprop.c(582) : error C2082: 
+	redefinition of formal parameter 'len'
+
 2003-08-04  Noah Levitt  <nlevitt@columbia.edu>
 
 	* tests/unicode-normalize.c: We do handle > BMP now, so test it.
