@@ -542,7 +542,7 @@ dnl AC_C_INLINE is useless to us since it bails out too early, we need to
 dnl truely know which ones of `inline', `__inline' and `__inline__' are
 dnl actually supported.
 AC_CACHE_CHECK([for __inline],glib_cv_has__inline,[
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([
 	__inline int foo () { return 0; }
 	int main () { return foo (); }
        	],
@@ -555,7 +555,7 @@ case x$glib_cv_has__inline in
 xyes) AC_DEFINE(G_HAVE___INLINE,1,[Have __inline keyword])
 esac
 AC_CACHE_CHECK([for __inline__],glib_cv_has__inline__,[
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([
 	__inline__ int foo () { return 0; }
 	int main () { return foo (); }
        	],
@@ -568,7 +568,7 @@ case x$glib_cv_has__inline__ in
 xyes) AC_DEFINE(G_HAVE___INLINE__,1,[Have __inline__ keyword])
 esac
 AC_CACHE_CHECK([for inline], glib_cv_hasinline,[
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([
 	#undef inline
 	inline int foo () { return 0; }
 	int main () { return foo (); }

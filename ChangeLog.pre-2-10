@@ -1,3 +1,8 @@
+Thu Jan  2 16:19:15 2003  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: use AC_COMPILE_IFELSE instead of AC_TRY_COMPILE for
+	tests for inline keywords. Fixes #101976.
+
 2003-01-02  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.h: Correct the comment telling what headers have
