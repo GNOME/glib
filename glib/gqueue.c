@@ -32,7 +32,7 @@ static GMemChunk   *queue_memchunk = NULL;
 static GTrashStack *free_queue_nodes = NULL;
 
 GQueue*
-g_queue_create (void)
+g_queue_new (void)
 {
   GQueue *queue;
 

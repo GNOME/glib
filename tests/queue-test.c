@@ -9,7 +9,7 @@ int main()
   GList *node;
   gpointer data;
 
-  q = g_queue_create ();
+  q = g_queue_new ();
 
   g_assert (g_queue_is_empty (q) == TRUE);
 

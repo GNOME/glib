@@ -1059,7 +1059,7 @@ gpointer g_slist_nth_data	(GSList		*list,
 
 /* Queues
  */
-GQueue*  g_queue_create         (void);
+GQueue*  g_queue_new            (void);
 void     g_queue_free           (GQueue  *queue);
 void     g_queue_push_head      (GQueue  *queue,
 				 gpointer data);
