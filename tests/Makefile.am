@@ -23,8 +23,17 @@ BUILT_EXTRA_DIST = \
 	makefile.mingw	\
 	makefile.msc
 
+if HAVE_CXX
+CXX_TEST = cxx-test
+cxx_test_LDADD = $(progs_LDADD)
+cxx_test_SOURCES = cxx-test.C
+else
+CXX_TEST =
+endif
+
 test_programs = \
 	array-test	\
+	$(CXX_TEST)	\
 	date-test	\
 	dirname-test	\
 	gio-test	\

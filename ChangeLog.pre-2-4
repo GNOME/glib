@@ -1,5 +1,9 @@
 2001-05-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* tests/Makefile.am, tests/cxx-test.C: Now that we check for a C++
+	compiler in configure.in anyway, I added a test, that the GLib
+	headers can be inclued into a C++ program. This fixes bug #52605.
+
 	* configure.in: Don't bail out, if no C++ compiler is
 	found. Define G_HAVE_ISO_VARARGS only if appropriate.
 

@@ -13,6 +13,7 @@ _libs
 libmoduletestplugin_a.la
 libmoduletestplugin_b.la
 array-test
+cxx-test
 date-test
 dirname-test
 hash-test
