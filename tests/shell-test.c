@@ -269,19 +269,25 @@ main (int   argc,
   CHECK_STRING_RESULT (test_shell_unquote ("\\\n"), "");
 
   CHECK_STRING_RESULT (test_shell_unquote ("'\\''"), "G_SHELL_ERROR_BAD_QUOTING");
+
+#if defined (_MSC_VER) && (_MSC_VER <= 1200)
+  /* using \x22 instead of \" to work around a msvc 5.0, 6.0 compiler bug */
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\\x22\""), "\"");
+#else
   CHECK_STRING_RESULT (test_shell_unquote ("\"\\\"\""), "\"");
+#endif
 
   CHECK_STRING_RESULT (test_shell_unquote ("\""), "G_SHELL_ERROR_BAD_QUOTING");
   CHECK_STRING_RESULT (test_shell_unquote ("'"), "G_SHELL_ERROR_BAD_QUOTING");
 
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\\\""), "\\");
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\`\""), "`");
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\$\""), "$");
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\n\""), "\n");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\\\\""), "\\");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\`\""), "`");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\$\""), "$");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\\n\""), "\n");
 
   CHECK_STRING_RESULT (test_shell_unquote ("\"\\'\""), "\\'");
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\\r\""), "\\\r");
-  CHECK_STRING_RESULT (test_shell_unquote ("\"\\n\""), "\\n");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\\r\""), "\\\r");
+  CHECK_STRING_RESULT (test_shell_unquote ("\x22\\n\""), "\\n");
 
   return any_test_failed ? 1 : 0;
 }
