@@ -734,7 +734,9 @@ else
   AC_DEFINE(HAVE_VASPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
-  TRIO_LIBS=-lm
+  if test "$glib_native_win32" != "yes" ; then
+    TRIO_LIBS=-lm
+  fi
 fi
 AC_SUBST(TRIO_LIBS)
 

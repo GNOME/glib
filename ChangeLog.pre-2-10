@@ -1,3 +1,11 @@
+2003-01-05  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Updates.
+
+	* configure.in: Don't use -lm in TRIO_LIBS on Windows, with no
+	libm. (Mingw has a dummy libm.a, but the .pc file should be
+	useable by MSVC users, too.)
+
 2003-01-04  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (BUILT_EXTRA_DIST): Don't distribute glib-zip.

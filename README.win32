@@ -59,12 +59,13 @@ Even building software that just *uses* GLib or GTK+ also require to
 have the right compiler set up the right way, so if you intend to use
 gcc, follow the relevant instructions below in that case, too.
 
-Tor uses gcc with the -fnative-struct flag, which means that in order to
-use the prebuilt DLLs (especially of GTK+), you *must* also use that
-flag. (This flag means that the struct layout rules are identical to
-those used by MSVC. This is essential if the same DLLs are to be
-usable both from gcc- and MSVC-compiled code. This definitely is
-something one wants.)
+Tor uses gcc with the -mms-bitfields flag (used to be called
+-fnative-struct in gcc 2.x), which means that in order to use the
+prebuilt DLLs (especially of GTK+), if you compile your code with gcc,
+you *must* also use that flag. (This flag means that the struct layout
+rules are identical to those used by MSVC. This is essential if the
+same DLLs are to be usable both from gcc- and MSVC-compiled code. This
+definitely is something one wants.)
 
 Building GLib
 =============
@@ -99,7 +100,7 @@ to use (after some editing).
 Building GLib with gcc
 ======================
 
-Tor uses gcc-2.95.3. Version 2.95.2 will most probably also work.
+Tor uses gcc 3.2. Version 2.95.3 also works.
 
 You can either use gcc running on Cygwin, or the "pure" mingw
 gcc. Using the latter might work better, or at least did at some
@@ -123,15 +124,13 @@ Autoconfiscated build
 It is also possible to use the auto*, ./configure and libtool
 mechanism when building with gcc. You should be running Cygwin, or
 maybe cross-compiling from real Unix, for the configure script to
-work, obviously. (It might also be possible to use "MSYS", but I
-haven't checked.) You most probably should have very new auto* and
-libtool. Tor invokes configure using:
+work, obviously. (It should also be possible to use MSYS.) Tor invokes
+configure using:
 
-CC='gcc -mpentium -fnative-struct'
-  CPPFLAGS='-I/src/libiconv-1.7/include -I/target/include'
-  LDFLAGS='-L/src/libiconv-1.7/lib -L/target/lib' ./configure
-  --with-libiconv --disable-static --prefix=/target
-  --host=i386-pc-mingw32 --enable-maintainer-mode
+CC='gcc -mcpu=pentium3' CPPFLAGS='-I/target/include' 
+  CFLAGS=-O3 LDFLAGS='-L/target/lib' ./configure --with-libiconv 
+  --disable-static --prefix=/target --host=i386-pc-mingw32 
+  --enable-maintainer-mode
 
 (on a single line)
 
@@ -146,10 +145,9 @@ Except for this and a few other minor issues, there really shouldn't
 be any reason to distribute separate GLib headers and DLLs for gcc and
 MSVC users, as both compilers generate code that uses the same C
 runtime library. Thus one either has to manually edit glibconfig.h
-afterwards, or use the supplied config.h.win32 and
-glibconfig.h.win32. These have been produced by running configure
-twice, once using gcc and once using MSVC, and merging the resulting
-files with diff -D.
+afterwards, or use the supplied glibconfig.h.win32. This has been
+produced by running configure twice, once using gcc and once using
+MSVC, and merging the resulting files with diff -D.
 
 There might be other hickups when using auto* and configure to build
 with gcc. Lately Tor has used auto*/configure/libtool exclusively when
@@ -159,12 +157,13 @@ building GLib, GTK+, GIMP etc on Win32, and it seems to work well
 The hand-written makefile.{mingw,msc} files, and the stuff in the
 "build" subdirectory, produce DLLs and import libraries that match
 what Makefile.am and libtool produces. For GLib, the DLL is called
-libglib-1.3-15.dll (at GLib 1.3.15), and the import libraries
-libglib-1.3.dll.a and glib-1.3.lib. Note that the "1.3" is part of the
-"basename" of the library, it is not something that libtool have
-tucked on. The -15 suffix is the value of "LT_CURRENT - LT_AGE". The
-15 is *not* simply the micro version number of GLib, although, for
-GLib 1.3.15, it happens to be the same. For the gory details, see
+libglib-2.0-0.dll, and the import libraries libglib-2.0.dll.a and
+glib-2.0.lib. Note that the "2.0" is part of the "basename" of the
+library, it is not something that libtool has tucked on. The -0 suffix
+is the value of "LT_CURRENT - LT_AGE". The 0 is *not* simply the micro
+version number of GLib, although, for GLib 2.2.0, it happens to be the
+same. The LT_CURRENT - LT_AGE value will on purpose be kept as zero as
+long as binary compatibility is maintained. For the gory details, see
 configure.in and libtool documentation.
 
 If you want to run the Cygwin-hosted gcc, and still want to produce
@@ -177,14 +176,14 @@ If you would want to use the Cygwin tools to generate a GLib that
 should work as if on Unix. Note that successfully producing shared
 libraries (DLLs) for Cygwin most probably requires you to have a very
 new libtool. (And a new libtool probably requires rather new autoconf
-and automake.) Tor hasn't tested this in a while.
+and automake.) Tor hasn't tested this in a while, either.
 
 Building with MSVC
 ==================
 
-All the MSVC makefiles are for the command line build with nmake.
-If you want to use the VC-UI you can simply create wrapper .dsp
-makefiles (read the VC docs how to do so).
+All the MSVC makefiles are for the command line build with nmake.  If
+you want to use the VC-UI you can simply create wrapper .dsp makefiles
+(read the VC docs how to do so).
 
 Some modules may require Perl to auto-generate files. The goal (at
 least Hans's) is to not require any more tools.
