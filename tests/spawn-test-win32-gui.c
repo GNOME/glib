@@ -1,8 +1,17 @@
 #include <windows.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+#ifdef __CYGWIN__
+/* For read() and write() */
+#include <unistd.h>
+/* Cygwin does not prototype __argc and __argv in stdlib.h */
+extern int __argc;
+extern char** __argv;
+#endif
 
 int _stdcall
 WinMain (struct HINSTANCE__ *hInstance,
