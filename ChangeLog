@@ -1,3 +1,12 @@
+2003-07-31  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn-win32.c: When possible, manage without the helper
+	process. (Part of the enhancements outlined in #98737.) Speeds up
+	GIMP 1.3's first-time-run plug-in query phase a lot.
+
+	Plug a file descriptor (and thus Win32 handle) leak: close the
+	read end of the child error report pipe after use.
+
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutils.c (g_unsetenv): Use same argument name as in header, to pacify gtk-doc.
