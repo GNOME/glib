@@ -3250,14 +3250,21 @@ g_idle_dispatch (GSource    *source,
  *
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
- * executed.
+ * executed. Note that the default priority for idle sources is
+ * %G_PRIORITY_DEFAULT_IDLE, as compared to other sources which
+ * have a default priority of %G_PRIORITY_DEFAULT.
  * 
  * Return value: the newly-created idle source
  **/
 GSource *
 g_idle_source_new (void)
 {
-  return g_source_new (&g_idle_funcs, sizeof (GSource));
+  GSource *source;
+
+  source = g_source_new (&g_idle_funcs, sizeof (GSource));
+  g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
+
+  return source;
 }
 
 /**
@@ -3287,7 +3294,7 @@ g_idle_add_full (gint           priority,
 
   source = g_idle_source_new ();
 
-  if (priority != G_PRIORITY_DEFAULT)
+  if (priority != G_PRIORITY_DEFAULT_IDLE)
     g_source_set_priority (source, priority);
 
   g_source_set_callback (source, function, data, notify);

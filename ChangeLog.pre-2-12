@@ -1,3 +1,9 @@
+Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (g_idle_source_new): Make the default priority
+	for idle sources G_PRIORITY_DEFAULT_IDLE as anybody would
+	expect and document that. (#114461, reported by Andy Wingo)
+
 2003-08-06  Noah Levitt  <nlevitt@columbia.edu>
 
 	* tests/casemap.txt:
