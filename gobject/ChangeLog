@@ -1,3 +1,10 @@
+Thu Jul 25 20:34:39 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gtype.c (g_type_interface_add_prerequisite): When
+	adding ancestral prerequisites, add the grandparents,
+	not the siblings. (Problem found by Jon Trowbridge, patch from 
+	Dave Camp, #86879)
+
 2002-07-05  Anders Carlsson  <andersca@gnu.org>
 
 	* gobject.c (g_object_base_class_finalize): Remove debugging
