@@ -1,3 +1,9 @@
+2000-10-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h: Changed alloca stuff a bit: when we have a working
+	alloca.h, we're not messing with alloca any further. Should fix a
+	bug reported by Bernd Demian <wega@csc-dd.de>.
+
 2000-09-29  Jonathan Blandford  <jrb@redhat.com>
 
 	* gnode.c (g_node_insert_after): Added function to keep symetry

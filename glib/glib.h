@@ -333,30 +333,27 @@ extern "C" {
 #endif	/* __i386__ */
 
 /* g_alloca handling */
-#ifdef GLIB_HAVE_ALLOCA_H
-#include <alloca.h>
-#endif
-
-#include <string.h>
-#ifdef __GNUC__
-/* glibc already does this for us */
-#ifndef alloca
-# define alloca(size) __builtin_alloca (size)
-#endif
-#else
+#ifdef  __GNUC__
+/* GCC does the right thing */
+# undef alloca
+# define alloca(size)   __builtin_alloca (size)
+#elif defined (GLIB_HAVE_ALLOCA_H)
+/* a native and working alloca.h is there */ 
+# include <alloca.h>
+#else /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
 # ifdef _MSC_VER
 #  include <malloc.h>
 #  define alloca _alloca
-# else
-#   ifdef _AIX
+# else /* !_MSC_VER */
+#  ifdef _AIX
  #pragma alloca
-#   else
-#    ifndef alloca /* predefined by HP cc +Olibcalls */
+#  else /* !_AIX */
+#   ifndef alloca /* predefined by HP cc +Olibcalls */
 char *alloca ();
-#    endif
-#   endif
-# endif
-#endif
+#   endif /* !alloca */
+#  endif /* !_AIX */
+# endif /* !_MSC_VER */
+#endif /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
 
 #define g_alloca(size) alloca (size)
 /* End g_alloca handling */
