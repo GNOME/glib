@@ -226,3 +226,13 @@ Frees all of the memory allocated for the pointer array.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_ptr_array_foreach ##### -->
+<para>
+
+</para>
+
+@array: 
+@func: 
+@user_data: 
+
+

@@ -1,3 +1,8 @@
+Fri Jan  9 15:34:15 2004  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: added convenience macros G_IMPLEMENT_INTERFACE() and
+	G_DEFINE_TYPE() plus variants.
+
 Fri Dec 26 01:34:01 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.c (g_type_class_peek_parent): Don't acquire a read lock 

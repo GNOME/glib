@@ -304,13 +304,47 @@ void  g_type_add_interface_dynamic	(GType			     instance_type,
 					 GTypePlugin		    *plugin);
 void  g_type_interface_add_prerequisite (GType			     interface_type,
 					 GType			     prerequisite_type);
-GType *g_type_interface_prerequisites   (GType                       interface_type,
-					 guint                       *n_prerequisites);
+GType*g_type_interface_prerequisites    (GType                       interface_type,
+					 guint                      *n_prerequisites);
+void     g_type_class_add_private       (gpointer                    g_class,
+                                         gsize                       private_size);
+gpointer g_type_instance_get_private    (GTypeInstance              *instance,
+                                         GType                       private_type);
 
-void     g_type_class_add_private    (gpointer       g_class,
-				      gsize          private_size);
-gpointer g_type_instance_get_private (GTypeInstance *instance,
-				      GType          private_type);
+
+/* --- GType boilerplate --- */
+/* convenience macros for type implementations, which for a type GtkGadget will:
+ * - prototype: static void     gtk_gadget_class_init (GtkGadgetClass *klass);
+ * - prototype: static void     gtk_gadget_init       (GtkGadget      *self);
+ * - define:    static gpointer parent_class = NULL;
+ *   parent_class is initialized prior to calling gtk_gadget_class_init()
+ * - implement: GType           gtk_gadget_get_type (void) { ... }
+ * - support custom code in gtk_gadget_get_type() after the type is registered.
+ *
+ * macro arguments: TypeName, type_name, TYPE_PARENT, CODE
+ * example: G_DEFINE_TYPE_WITH_CODE (GtkGadget, gtk_gadget, GTK_TYPE_WIDGET,
+ *                                   g_print ("GtkGadget-id: %lu\n", g_define_type_id));
+ */
+#define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, 0, parent_class, {})
+#define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)          G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, 0, parent_class, _C_)
+#define G_DEFINE_ABSTRACT_TYPE(TN, t_n, T_P)                G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, {})
+#define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) G_DEFINE_TYPE_INTERNAL (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, _C_)
+
+/* convenience macro to ease interface addition in the CODE
+ * section of G_DEFINE_TYPE_WITH_CODE() (this macro relies on
+ * the g_define_type_id present within G_DEFINE_TYPE_WITH_CODE()).
+ * usage example:
+ * G_DEFINE_TYPE_WITH_CODE (GtkTreeStore, gtk_tree_store, G_TYPE_OBJECT,
+ *                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
+ *                                                 gtk_tree_store_tree_model_init));
+ */
+#define G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
+  static const GInterfaceInfo g_implement_interface_info = { \
+    (GInterfaceInitFunc) iface_init \
+  }; \
+  g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
+}
+
 
 /* --- protected (for fundamental type implementations) --- */
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
@@ -359,6 +393,39 @@ G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
 
 
 /* --- implementation bits --- */
+#define G_DEFINE_TYPE_INTERNAL(TypeName, type_name, TYPE_PARENT, flags, type_parent_class, CODE) \
+\
+static void     type_name##_init              (TypeName        *self); \
+static void     type_name##_class_init        (TypeName##Class *klass); \
+static gpointer type_parent_class = NULL; \
+static void     type_name##_class_intern_init (gpointer klass) \
+{ \
+  type_parent_class = g_type_class_peek_parent (klass); \
+  type_name##_class_init ((TypeName##Class*) klass); \
+} \
+\
+GType \
+type_name##_get_type (void) \
+{ \
+  static GType g_define_type_id = 0; \
+  if (G_UNLIKELY (g_define_type_id == 0)) \
+    { \
+      static const GTypeInfo g_define_type_info = { \
+        sizeof (TypeName##Class), \
+        (GBaseInitFunc) NULL, \
+        (GBaseFinalizeFunc) NULL, \
+        (GClassInitFunc) type_name##_class_intern_init, \
+        (GClassFinalizeFunc) NULL, \
+        NULL,   /* class_data */ \
+        sizeof (TypeName), \
+        0,      /* n_preallocs */ \
+        (GInstanceInitFunc) type_name##_init, \
+      }; \
+      g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, flags); \
+      { CODE ; } \
+    } \
+  return g_define_type_id; \
+}
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \
     ((ct*) g_type_check_instance_cast ((GTypeInstance*) ip, gt))

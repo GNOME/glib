@@ -81,7 +81,7 @@ main (int   arg,
   GModuleFunc gmod_f;
 
   if (!g_module_supported ())
-    return 0;
+    g_error ("dynamic modules not supported");
 
   dir = g_get_current_dir ();
 
