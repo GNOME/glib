@@ -1,3 +1,8 @@
+2001-10-19  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in: Check also ac_cv_sizeof___int64 when requiring a
+	64-bit type.
+
 2001-10-17  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* glib/gconvert.c (g_iconv_open):

@@ -355,7 +355,7 @@ AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 AC_CHECK_SIZEOF(__int64)
 
-if test x$ac_cv_sizeof_long = x8 || test x$ac_cv_sizeof_long_long = x8 ; then
+if test x$ac_cv_sizeof_long = x8 || test x$ac_cv_sizeof_long_long = x8 || test x$ac_cv_sizeof___int64 = x8 ; then
   :
 else
   AC_MSG_ERROR([
