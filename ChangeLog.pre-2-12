@@ -1,3 +1,8 @@
+Thu Nov 21 14:09:44 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h: Add G_GNUC_DEPRECATED. (Tom Tromey,
+	#87969)
+
 2002-11-21  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32.in: Update to match what is currently produced by
