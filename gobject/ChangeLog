@@ -1,5 +1,7 @@
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject.symbols: Add the new attributes here, too.
+
 	* gobject.h: Use G_GNUC_NULL_TERMINATED where
 	appropriate.  (#164706, Marc Meissner)
 

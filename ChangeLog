@@ -1,5 +1,7 @@
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Add the new attributes here too.
+
 	* glib/gmacros.h: Define G_GNUC_NULL_TERMINATED.
 	(#164706, Marc Meissner)
 

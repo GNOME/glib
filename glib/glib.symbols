@@ -53,8 +53,8 @@ g_atomic_pointer_get
 #endif
 g_basename
 g_blow_chunks
-g_build_filename
-g_build_path
+g_build_filename G_GNUC_NULL_TERMINATED
+g_build_path G_GNUC_NULL_TERMINATED
 g_byte_array_append
 g_byte_array_free
 g_byte_array_new
@@ -743,7 +743,7 @@ g_strcasecmp
 g_strchomp
 g_strchug
 g_strcompress G_GNUC_MALLOC
-g_strconcat G_GNUC_MALLOC
+g_strconcat G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
 g_strdelimit
 g_strdown
 g_strdup G_GNUC_MALLOC
@@ -790,7 +790,7 @@ g_string_sized_new
 g_string_truncate
 g_string_up
 g_strip_context
-g_strjoin G_GNUC_MALLOC
+g_strjoin G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
 g_strjoinv G_GNUC_MALLOC
 g_strlcat
 g_strlcpy
