@@ -154,6 +154,13 @@ typedef struct
   GSignalAccumulator func;
   gpointer           data;
 } SignalAccumulator;
+typedef struct
+{
+  GHook hook;
+  GQuark detail;
+} SignalHook;
+#define	SIGNAL_HOOK(hook)	((SignalHook*) (hook))
+
 struct _SignalNode
 {
   /* permanent portion */
@@ -755,6 +762,7 @@ g_signal_add_emission_hook (guint               signal_id,
   static guint seq_hook_id = 1;
   SignalNode *node;
   GHook *hook;
+  SignalHook *signal_hook;
 
   g_return_val_if_fail (signal_id > 0, 0);
   g_return_val_if_fail (hook_func != NULL, 0);
@@ -776,13 +784,15 @@ g_signal_add_emission_hook (guint               signal_id,
   if (!node->emission_hooks)
     {
       node->emission_hooks = g_new (GHookList, 1);
-      g_hook_list_init (node->emission_hooks, sizeof (GHook));
+      g_hook_list_init (node->emission_hooks, sizeof (SignalHook));
       node->emission_hooks->finalize_hook = signal_finalize_hook;
     }
   hook = g_hook_alloc (node->emission_hooks);
   hook->data = hook_data;
   hook->func = hook_func;
   hook->destroy = data_destroy;
+  signal_hook = SIGNAL_HOOK (hook);
+  signal_hook->detail = detail;
   node->emission_hooks->seq_id = seq_hook_id;
   g_hook_append (node->emission_hooks, hook);
   seq_hook_id = node->emission_hooks->seq_id;
@@ -1945,14 +1955,14 @@ signal_emit_R (SignalNode   *node,
     {
       gboolean need_destroy, was_in_call, may_recurse = TRUE;
       GHook *hook;
-      
+
       emission_state = EMISSION_HOOK;
       hook = g_hook_first_valid (node->emission_hooks, may_recurse);
       while (hook)
 	{
-	  GQuark hook_detail = GPOINTER_TO_UINT (hook->func);
+	  SignalHook *signal_hook = SIGNAL_HOOK (hook);
 	  
-	  if (!hook_detail || hook_detail == detail)
+	  if (!signal_hook->detail || signal_hook->detail == detail)
 	    {
 	      GSignalEmissionHook hook_func = hook->func;
 	      
