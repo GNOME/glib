@@ -543,9 +543,7 @@ param_string_values_cmp (GParamSpec   *pspec,
 static void
 param_spec_param_init (GParamSpec *pspec)
 {
-  GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec);
-  
-  spec->param_type = G_TYPE_PARAM;
+  /* GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec); */
 }
 
 static void
@@ -559,11 +557,11 @@ static gboolean
 param_param_validate (GParamSpec *pspec,
 		      GValue     *value)
 {
-  GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec);
+  /* GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec); */
   GParamSpec *param = value->data[0].v_pointer;
   guint changed = 0;
   
-  if (param && !g_type_is_a (G_PARAM_SPEC_TYPE (param), spec->param_type))
+  if (param && !g_type_is_a (G_PARAM_SPEC_TYPE (param), G_PARAM_SPEC_VALUE_TYPE (pspec)))
     {
       g_param_spec_unref (param);
       value->data[0].v_pointer = NULL;
@@ -640,9 +638,7 @@ param_ccallback_values_cmp (GParamSpec   *pspec,
 static void
 param_spec_boxed_init (GParamSpec *pspec)
 {
-  GParamSpecBoxed *bspec = G_PARAM_SPEC_BOXED (pspec);
-  
-  bspec->boxed_type = G_TYPE_BOXED;
+  /* GParamSpecBoxed *bspec = G_PARAM_SPEC_BOXED (pspec); */
 }
 
 static void
@@ -675,9 +671,7 @@ param_boxed_values_cmp (GParamSpec    *pspec,
 static void
 param_spec_object_init (GParamSpec *pspec)
 {
-  GParamSpecObject *ospec = G_PARAM_SPEC_OBJECT (pspec);
-  
-  ospec->object_type = G_TYPE_OBJECT;
+  /* GParamSpecObject *ospec = G_PARAM_SPEC_OBJECT (pspec); */
 }
 
 static void
@@ -695,7 +689,7 @@ param_object_validate (GParamSpec *pspec,
   GObject *object = value->data[0].v_pointer;
   guint changed = 0;
   
-  if (object && !g_type_is_a (G_OBJECT_TYPE (object), ospec->object_type))
+  if (object && !g_type_is_a (G_OBJECT_TYPE (object), G_PARAM_SPEC_VALUE_TYPE (ospec)))
     {
       g_object_unref (object);
       value->data[0].v_pointer = NULL;
@@ -1496,7 +1490,7 @@ g_param_spec_param (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
-  pspec->param_type = param_type;
+  G_PARAM_SPEC (pspec)->value_type = param_type;
   
   return G_PARAM_SPEC (pspec);
 }
@@ -1543,13 +1537,14 @@ g_param_spec_boxed (const gchar *name,
   GParamSpecBoxed *bspec;
   
   g_return_val_if_fail (G_TYPE_IS_BOXED (boxed_type), NULL);
+  g_return_val_if_fail (G_TYPE_IS_DERIVED (boxed_type), NULL);
   
   bspec = g_param_spec_internal (G_TYPE_PARAM_BOXED,
 				 name,
 				 nick,
 				 blurb,
 				 flags);
-  bspec->boxed_type = boxed_type;
+  G_PARAM_SPEC (bspec)->value_type = boxed_type;
   
   return G_PARAM_SPEC (bspec);
 }
@@ -1570,7 +1565,7 @@ g_param_spec_object (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
-  ospec->object_type = object_type;
+  G_PARAM_SPEC (ospec)->value_type = object_type;
   
   return G_PARAM_SPEC (ospec);
 }

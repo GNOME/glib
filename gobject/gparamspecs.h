@@ -188,8 +188,6 @@ struct _GParamSpecString
 struct _GParamSpecParam
 {
   GParamSpec    parent_instance;
-  
-  GType         param_type;
 };
 struct _GParamSpecPointer
 {
@@ -202,14 +200,10 @@ struct _GParamSpecCCallback
 struct _GParamSpecBoxed
 {
   GParamSpec    parent_instance;
-  
-  GType         boxed_type;
 };
 struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
-  
-  GType         object_type;
 };
 
 

@@ -193,14 +193,14 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 					       GClosure		 *closure,
 					       gpointer		  func,
 					       gpointer		  data);
-
-
-/*< private >*/
 gboolean g_signal_parse_name		      (const gchar	 *detailed_signal,
 					       GType		  itype,
 					       guint		 *signal_id_p,
 					       GQuark		 *detail_p,
 					       gboolean		  force_detail_quark);
+
+
+/*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);
 

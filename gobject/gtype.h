@@ -103,6 +103,7 @@ typedef enum    /*< skip >*/
 /* Type Checking Macros
  */
 #define G_TYPE_IS_FUNDAMENTAL(type)             (G_TYPE_BRANCH_SEQNO (type) == 0)
+#define G_TYPE_IS_DERIVED(type)                 (G_TYPE_BRANCH_SEQNO (type) > 0)
 #define G_TYPE_IS_INTERFACE(type)               (G_TYPE_FUNDAMENTAL (type) == G_TYPE_INTERFACE)
 #define G_TYPE_IS_CLASSED(type)                 (g_type_check_flags ((type), G_TYPE_FLAG_CLASSED))
 #define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_check_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))

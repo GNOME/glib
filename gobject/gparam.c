@@ -34,7 +34,8 @@ static void	g_param_spec_class_base_init	 (GParamSpecClass	*class);
 static void	g_param_spec_class_base_finalize (GParamSpecClass	*class);
 static void	g_param_spec_class_init		 (GParamSpecClass	*class,
 						  gpointer               class_data);
-static void	g_param_spec_init		 (GParamSpec		*pspec);
+static void	g_param_spec_init		 (GParamSpec		*pspec,
+						  GParamSpecClass	*class);
 static void	g_param_spec_finalize		 (GParamSpec		*pspec);
 static void	value_param_init		(GValue		*value);
 static void	value_param_free_value		(GValue		*value);
@@ -120,12 +121,14 @@ g_param_spec_class_init (GParamSpecClass *class,
 }
 
 static void
-g_param_spec_init (GParamSpec *pspec)
+g_param_spec_init (GParamSpec      *pspec,
+		   GParamSpecClass *class)
 {
   pspec->name = NULL;
   pspec->nick = NULL;
   pspec->blurb = NULL;
   pspec->flags = 0;
+  pspec->value_type = class->value_type;
   pspec->owner_type = 0;
   pspec->qdata = NULL;
   pspec->ref_count = 1;

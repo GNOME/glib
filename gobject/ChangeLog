@@ -1,3 +1,8 @@
+Fri Dec 15 04:40:23 2000  Tim Janik  <timj@gtk.org>
+
+	* gparam.[hc]: add an instance member value_type so the default
+	value of the pspec class can be overridden.
+
 2000-12-14  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Update, include parts from Makefile.am to
