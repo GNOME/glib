@@ -636,7 +636,7 @@ g_win32_getlocale (void)
 	case SUBLANG_ENGLISH_CAN: sl = "CA"; break;
 	case SUBLANG_ENGLISH_NZ: sl = "NZ"; break;
 	case SUBLANG_ENGLISH_EIRE: sl = "IE"; break;
-	case SUBLANG_ENGLISH_SOUTH_AFRICA: sl = "SA"; break;
+	case SUBLANG_ENGLISH_SOUTH_AFRICA: sl = "ZA"; break;
 	case SUBLANG_ENGLISH_JAMAICA: sl = "JM"; break;
 	case SUBLANG_ENGLISH_CARIBBEAN: sl = "@caribbean"; break; /* ??? */
 	case SUBLANG_ENGLISH_BELIZE: sl = "BZ"; break;
@@ -722,7 +722,7 @@ g_win32_getlocale (void)
       switch (sub)
 	{
 	/* SUBLANG_NORWEGIAN_BOKMAL == SUBLANG_DEFAULT */
-	case SUBLANG_NORWEGIAN_NYNORSK: sl = "@nynorsk"; break;
+	case SUBLANG_NORWEGIAN_NYNORSK: l = "nn"; break;
 	}
       break;
     case LANG_ORIYA: l = "or"; break;
@@ -802,7 +802,8 @@ g_win32_getlocale (void)
   strcpy (bfr, l);
   if (sl != NULL)
     {
-      strcat (bfr, "_");
+      if (sl[0] != '@')
+	strcat (bfr, "_");
       strcat (bfr, sl);
     }
 

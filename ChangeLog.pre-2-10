@@ -1,3 +1,9 @@
+2001-02-04  Tor Lillqvist  <tml@iki.fi>
+
+	* gwin32.c (g_win32_getlocale): Use "nn" for Nynorsk, as nn.po
+	files are appearing now. If the sublanguage starts with '@', don't
+	use a '_' separator. South Africa is 'ZA', not 'SA'.
+
 Sun Feb  4 07:38:32 2001  Tim Janik  <timj@gtk.org>
 
 	* docs/debugging.txt: s/glib_trap_/g_trap_/. add comments on
