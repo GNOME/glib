@@ -1,3 +1,10 @@
+Thu Dec 12 20:46:26 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: long_long_format is always ll for trio.
+	
+	* configure.in: Error out if --disable-trio is specified
+	but the C library doesn't have the necessary features.
+
 2002-12-13  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/trio/Makefile.am (libtrio_la_LIBADD): Add -lm for pow().
