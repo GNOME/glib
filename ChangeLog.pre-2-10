@@ -1,3 +1,7 @@
+2003-05-17  Telsa Gwynne  <hobbit@aloss.ukuu.org.uk>
+
+	* configure.in: Added cy to ALL_LINGUAS
+
 2003-05-05  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_ascii_dtostr): 
