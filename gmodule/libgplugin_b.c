@@ -18,6 +18,20 @@
  */
 #include        <gmodule.h>
 
+G_MODULE_EXPORT gboolean
+g_module_check_init (GModule *module)
+{
+  g_print ("GPluginB: check-init\n");
+
+  return 0;
+}
+
+G_MODULE_EXPORT void
+g_module_de_init (GModule *module)
+{
+  g_print ("GPluginB: de-init\n");
+}
+
 G_MODULE_EXPORT void
 gplugin_b_func (void)
 {

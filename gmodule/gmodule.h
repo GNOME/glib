@@ -28,7 +28,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-/* exporting and importing functions */
+/* exporting and importing functions,
+ * we need autoconf support here for supporting windows.
+ */
 #define	G_MODULE_EXPORT
 #define	G_MODULE_IMPORT		extern
 
@@ -39,7 +41,9 @@ typedef enum
   G_MODULE_BIND_MASK	= 0x01
 } GModuleFlags;
 
-typedef	struct _GModule	GModule;
+typedef	struct	_GModule		GModule;
+typedef gboolean (*GModuleCheckInit)	(GModule	*module);
+typedef void	 (*GModuleDeInit)	(GModule	*module);
 
 /* return TRUE if dynamic module loading is supported */
 gboolean	g_module_supported	   (void);

@@ -52,7 +52,7 @@ gplugin_a_module_func (GModule *module)
   g_print ("GPluginA: retrive symbol `%s' from \"%s\"\n",
 	   string,
 	   g_basename (g_module_name (module)));
-  if (!g_module_symbol (module, string, &f))
+  if (!g_module_symbol (module, string, (gpointer) &f))
     {
       g_print ("error: %s\n", g_module_error ());
       exit (1);

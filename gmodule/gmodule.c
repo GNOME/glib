@@ -36,6 +36,7 @@ struct _GModule
   gchar	*file_name;
   gpointer handle;
   guint ref_count;
+  GModuleDeInit de_init;
   GModule *next;
 };
 
@@ -134,9 +135,10 @@ g_module_open (const gchar    *file_name,
 	    {
 	      main_module = g_new (GModule, 1);
 	      main_module->file_name = NULL;
-	      main_module->ref_count = 1;
-	      main_module->next = NULL;
 	      main_module->handle = handle;
+	      main_module->ref_count = 1;
+	      main_module->de_init = NULL;
+	      main_module->next = NULL;
 	    }
 	}
 
@@ -156,7 +158,9 @@ g_module_open (const gchar    *file_name,
   handle = _g_module_open (file_name, (flags & G_MODULE_BIND_LAZY) != 0);
   if (handle)
     {
-      GModule *module;
+      gchar *saved_error;
+      GModuleCheckInit check_init;
+      gboolean check_failed = FALSE;
 
       /* search the module list by handle, since file names are not unique */
       module = g_module_find_by_handle (handle);
@@ -169,17 +173,41 @@ g_module_open (const gchar    *file_name,
 	  return module;
 	}
 
+      saved_error = module_error;
+      module_error = NULL;
+      g_module_set_error (NULL);
+
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
       module->handle = handle;
-      module->ref_count = 1;
+      module->ref_count = 0;
+      module->de_init = NULL;
+      module->next = NULL;
+
+      /* check initialization */
+      if (g_module_symbol (module, "g_module_check_init", &check_init))
+	check_failed = check_init (module);
+
+      /* should call de_init() on failed initializations also? */
+      if (!check_failed)
+	g_module_symbol (module, "g_module_de_init", &module->de_init);
+
+      module->ref_count += 1;
       module->next = modules;
       modules = module;
 
-      return module;
+      if (check_failed)
+	{
+	  g_module_close (module);
+	  module = NULL;
+	  g_module_set_error ("GModule initialization check failed");
+	}
+      else
+	g_module_set_error (saved_error);
+      g_free (saved_error);
     }
 
-  return NULL;
+  return module;
 }
 
 gboolean
@@ -198,9 +226,6 @@ g_module_close (GModule        *module)
       GModule *last;
       GModule *node;
 
-      _g_module_close (&module->handle, FALSE);
-      g_free (module->file_name);
-
       last = NULL;
       node = modules;
       while (node)
@@ -216,6 +241,14 @@ g_module_close (GModule        *module)
 	  last = node;
 	  node = last->next;
 	}
+      module->next = NULL;
+
+      if (module->de_init)
+	module->de_init (module);
+
+      _g_module_close (&module->handle, FALSE);
+      g_free (module->file_name);
+
       g_free (module);
     }
 
