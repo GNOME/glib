@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
-"POT-Creation-Date: 2002-02-23 16:28+0100\n"
-"PO-Revision-Date: 2002-02-23 16:28+0100\n"
+"POT-Creation-Date: 2002-02-28 20:25+0100\n"
+"PO-Revision-Date: 2002-02-28 20:26+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -397,19 +397,19 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Uafbalanceret anførselstegn i kommandolinje eller anden skal-anført tekst"
 
-#: glib/gshell.c:528
+#: glib/gshell.c:529
 #, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "Tekst sluttede lige efter et '' tegn (teksten var '%s')"
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Tekst sluttede lige efter et '\\' tegn (teksten var '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekst sluttede før tilsvarende anførselstegn blev fundet for %c (teksten var "
 "'%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst var tom (eller indeholdt kun blanke tegn)"
 
