@@ -1,3 +1,13 @@
+2005-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/markups/fail-40.gmarkup: Add a test with a long entity
+	name.
+
+	* glib/gmarkup.c (unescape_text_state_inside_entity_name): Don't
+	copy the entity name into a short buffer of fixed length. Instead,
+	compare it in place with strncmp(), and do a full strdup() in the
+	error path.  (#165100, Simon Budig)
+
 2005-01-22  Tor Lillqvist  <tml@novell.com>
 
 	* glib/gdate.c (g_date_set_time): Don't g_assert that localtime()
