@@ -1,3 +1,10 @@
+2002-02-10  Hans Breuer  <hans@breuer.org>
+
+	* gvaluetransform.c : msvc 5.0 can't cast from uint64 to
+	double. Disable respective transform_func than.
+
+	* makefile.msc.in : build test programs
+
 Thu Jan 24 07:39:56 2002  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_signal_connect_object): return gulong instead

@@ -25,7 +25,9 @@ all :				\
 	gmarshal.strings \
 	gobject-query.exe \
 	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll	\
-	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib
+	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
+	testgruntime.exe	\
+	testoverride.exe
 
 gobject_OBJECTS =		\
 	gboxed.obj		\
@@ -72,3 +74,7 @@ gobject-query.exe : gobject-query.c libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_
 
 gmarshal.strings : gmarshal.list
 	perl marshal-genstrings.pl > gmarshal.strings
+
+.c.exe :
+	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -Fe$@ $< gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\gthread\gthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) user32.lib /subsystem:console

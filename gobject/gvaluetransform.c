@@ -105,8 +105,16 @@ DEFINE_CAST (uint64_uint,	v_uint64, guint,   v_uint);
 DEFINE_CAST (uint64_long,	v_uint64, glong,   v_long);
 DEFINE_CAST (uint64_ulong,	v_uint64, gulong,  v_ulong);
 DEFINE_CAST (uint64_int64,	v_uint64, gint64,  v_int64);
+#ifdef _MSC_VER
+/* work around error C2520: conversion from unsigned __int64 to double
+ * not implemented, use signed __int64
+ * If it is supported don't miss to g_value_register_transform_func() below
+ */
+#pragma message ("Check if cast from uint64 to double is supported with msvc 6.0")
+#else
 DEFINE_CAST (uint64_float,	v_uint64, gfloat,  v_float);
 DEFINE_CAST (uint64_double,	v_uint64, gdouble, v_double);
+#endif
 DEFINE_CAST (float_s8,		v_float,  gint8,   v_int);
 DEFINE_CAST (float_u8,		v_float,  guint8,  v_uint);
 DEFINE_CAST (float_int,		v_float,  gint,    v_int);
@@ -370,8 +378,11 @@ g_value_transforms_init (void)		/* sync with gtype.c */
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_UINT64,		value_transform_uint64_uint64);
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_ENUM,		value_transform_uint64_int);
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_FLAGS,		value_transform_uint64_uint);
+#ifndef _MSC_VER
+  /* required casts unsupported with msvc 5.0 */
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_FLOAT,		value_transform_uint64_float);
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_DOUBLE,		value_transform_uint64_double);
+#endif
   g_value_register_transform_func (G_TYPE_UINT64,	G_TYPE_STRING,		value_transform_uint64_string);
   g_value_register_transform_func (G_TYPE_ENUM,		G_TYPE_CHAR,		value_transform_int_s8);
   g_value_register_transform_func (G_TYPE_ENUM,		G_TYPE_UCHAR,		value_transform_int_u8);
