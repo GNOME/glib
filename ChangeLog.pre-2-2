@@ -1,3 +1,11 @@
+Fri Jul  6 00:02:41 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/gmessages.c (printf_string_upper_bound): fix negative exponent
+	handling (numbers<0).
+	
+	* glib/gutils.h (g_bit_storage): take a gulong as argument.
+	same for g_bit_nth_lsf() and g_bit_nth_msf() as mask.
+
 2001-07-08  Martin Baulig  <baulig@suse.de>
 
 	* tests/unicode-normalize.c, tests/unicode-collate.c:

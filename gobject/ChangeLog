@@ -1,3 +1,7 @@
+Tue Jul 10 18:50:16 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.h (struct _GSignalQuery): fix misplaced comment.
+
 Mon Jul  2 07:17:47 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject.c (g_object_weak_ref): 

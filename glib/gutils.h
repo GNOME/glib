@@ -195,11 +195,11 @@ gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
  */
-G_INLINE_FUNC gint	g_bit_nth_lsf (guint32 mask,
+G_INLINE_FUNC gint	g_bit_nth_lsf (gulong  mask,
 				       gint    nth_bit);
-G_INLINE_FUNC gint	g_bit_nth_msf (guint32 mask,
+G_INLINE_FUNC gint	g_bit_nth_msf (gulong  mask,
 				       gint    nth_bit);
-G_INLINE_FUNC guint	g_bit_storage (guint number);
+G_INLINE_FUNC guint	g_bit_storage (gulong  number);
 
 /* Trash Stacks
  * elements need to be >= sizeof (gpointer)
@@ -220,35 +220,35 @@ G_INLINE_FUNC guint	g_trash_stack_height	(GTrashStack **stack_p);
  */
 #if defined (G_CAN_INLINE) || defined (__G_UTILS_C__)
 G_INLINE_FUNC gint
-g_bit_nth_lsf (guint32 mask,
-	       gint    nth_bit)
+g_bit_nth_lsf (gulong mask,
+	       gint   nth_bit)
 {
   do
     {
       nth_bit++;
-      if (mask & (1 << (guint) nth_bit))
+      if (mask & (1 << (gulong) nth_bit))
 	return nth_bit;
     }
   while (nth_bit < 32);
   return -1;
 }
 G_INLINE_FUNC gint
-g_bit_nth_msf (guint32 mask,
-	       gint    nth_bit)
+g_bit_nth_msf (gulong mask,
+	       gint   nth_bit)
 {
   if (nth_bit < 0)
-    nth_bit = 32;
+    nth_bit = GLIB_SIZEOF_LONG * 8;
   do
     {
       nth_bit--;
-      if (mask & (1 << (guint) nth_bit))
+      if (mask & (1 << (gulong) nth_bit))
 	return nth_bit;
     }
   while (nth_bit > 0);
   return -1;
 }
 G_INLINE_FUNC guint
-g_bit_storage (guint number)
+g_bit_storage (gulong number)
 {
   register guint n_bits = 0;
   

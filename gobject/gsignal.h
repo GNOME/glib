@@ -82,11 +82,11 @@ struct _GSignalQuery
 {
   guint		signal_id;
   const gchar  *signal_name;
-  GType		itype;	     /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
+  GType		itype;
   GSignalFlags	signal_flags;
   GType		return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   guint		n_params;
-  const GType  *param_types;
+  const GType  *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
 };
 
 
