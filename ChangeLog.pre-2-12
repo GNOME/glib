@@ -1,5 +1,11 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* gerror.c (g_propagate_error): Free the src error if the dest
+	location is NULL - I'm pretty sure that's what this function was 
+	supposed to do.
+
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
 	* gutils.c (g_find_program_in_path): cleanup docs, sync param 
 	names to those in the header
 

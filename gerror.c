@@ -207,7 +207,7 @@ g_set_error (GError      **err,
  * @dest: error return location
  * @src: error to move into the return location
  * 
- * Does nothing if @dest is NULL; otherwise,
+ * If @dest is NULL, free @src; otherwise,
  * moves @src into *@dest. *@dest must be NULL.
  **/
 void    
@@ -215,14 +215,20 @@ g_propagate_error (GError       **dest,
 		   GError        *src)
 {
   g_return_if_fail (src != NULL);
-
-  if (dest == NULL)
-    return;
   
-  if (*dest != NULL)
-    g_warning (ERROR_OVERWRITTEN_WARNING);
- 
-  *dest = src;
+  if (dest == NULL)
+    {
+      if (src)
+        g_error_free (src);
+      return;
+    }
+  else
+    {
+      if (*dest != NULL)
+        g_warning (ERROR_OVERWRITTEN_WARNING);
+      
+      *dest = src;
+    }
 }
 
 /**

@@ -1,5 +1,9 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* glib/tmpl/error_reporting.sgml: fixes
+
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
         * glib/tmpl/spawn.sgml, glib/tmpl/markup.sgml,
 	glib/tmpl/fileutils.sgml: Added
 	

@@ -53,7 +53,7 @@ if (err != NULL)
   {
     /* Report error to user, and free error */
     g_assert (contents == NULL);
-    fprintf (stderr, "Unable to read file foo.txt: %s\n", err->message);
+    fprintf (stderr, "Unable to read file: %s\n", err->message);
     g_error_free (err);
   } 
 else
@@ -63,9 +63,10 @@ else
   }
 </programlisting>
 Note that <literal>err != NULL</literal> in this example is a
-<emphasis>reliable</emphasis> indicator of whether g_file_get_contents()
-failed. Also, g_file_get_contents() uses the convention that a NULL return value
-means an error occurred (but not all functions use this convention).
+<emphasis>reliable</emphasis> indicator of whether
+g_file_get_contents() failed. Also, g_file_get_contents() uses the
+convention that a NULL return value means an error occurred (but not
+all functions use this convention).
 </para>
 
 <para>
@@ -93,7 +94,8 @@ function will receive it), and g_clear_error() clears an error location by
 freeing the error and resetting the location to NULL. To display an error to the
 user, simply display <literal>error-&gt;message</literal>, perhaps along with
 additional context known only to the calling function (the file being opened, or
-whatever).
+whatever -- though in the g_file_get_contents() case,
+<literal>error-&gt;message</literal> already contains a filename).
 </para>
 
 <para>
@@ -248,12 +250,12 @@ The error domain is called
 <para>
 The error codes are in an enumeration called 
 <literal>&lt;Namespace&gt;_&lt;Module&gt;_Error</literal>; for example,
-#GThreadError or #GExecError.
+#GThreadError or #GSpawnError.
 </para>
 </listitem>
 <listitem>
 <para>
-Members of the error code enumeration are called <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_&lt;CODE&gt;</literal>, for example %G_EXEC_ERROR_FORK or %G_THREAD_ERROR_AGAIN. 
+Members of the error code enumeration are called <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_&lt;CODE&gt;</literal>, for example %G_SPAWN_ERROR_FORK or %G_THREAD_ERROR_AGAIN. 
 </para>
 </listitem>
 <listitem>
@@ -261,7 +263,7 @@ Members of the error code enumeration are called <literal>&lt;NAMESPACE&gt;_&lt;
 If there's a "generic" or "unknown" error code for unrecoverable errors it
 doesn't make sense to distinguish with specific codes, it should be called 
 <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_FAILED</literal>, for 
-example %G_EXEC_ERROR_FAILED or %G_THREAD_ERROR_FAILED.
+example %G_SPAWN_ERROR_FAILED or %G_THREAD_ERROR_FAILED.
 </para>
 </listitem>
 </itemizedlist>
@@ -309,7 +311,7 @@ Summary of rules for use of #GError:
           and you should not report it. If it was fatal, then you must report it 
           and discontinue whatever you were doing immediately.
         </para>
-      </listitem>      
+      </listitem>
 
 	<listitem>
 	  <para>
@@ -373,9 +375,9 @@ Summary of rules for use of #GError:
 
 </para>
 
-@domain: 
-@code: 
-@message: 
+@domain: error domain, e.g. #G_FILE_ERROR
+@code: error code, e.g. %G_FILE_ERROR_NOENT
+@message: human-readable informative error message
 
 <!-- ##### FUNCTION g_error_new ##### -->
 <para>
