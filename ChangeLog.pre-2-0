@@ -1,6 +1,17 @@
-Fri Feb 15 11:41:42 2002  Owen Taylor  <otaylor@redhat.com>
+Sun Feb 17 11:37:06 2002  Owen Taylor  <otaylor@redhat.com>
 
-	* Version 1.3.14.
+	* 1.3.14
+
+	* glib/glibintl.h: Error out of config.h wasn't included
+	rather than including it, since config.h must be the 
+	first thing included.
+
+	* glib/gconvert.c glib/gmarkup.c glib/gshell.c glib/gspawn.c
+	glib/gunibreak.c glib/gunidecomp.c glib/guniprop.c: 
+	Include config.h as the first thing. (#71704, Morten
+	Welinder)
+
+Fri Feb 15 11:41:42 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: 1.3.14, binary age 0, interface age 0.
 

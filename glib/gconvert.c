@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include <iconv.h>
 #include <errno.h>
 #include <stdio.h>
@@ -27,7 +29,6 @@
 #include <stdlib.h>
 
 #include "glib.h"
-#include "config.h"
 
 #ifdef G_PLATFORM_WIN32
 #define STRICT

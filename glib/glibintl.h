@@ -1,7 +1,9 @@
 #ifndef __GLIBINTL_H__
 #define __GLIBINTL_H__
 
-#include "config.h"
+#ifndef SIZEOF_CHAR
+#error "config.h must be included prior to glibintl.h"
+#endif
 
 #ifdef ENABLE_NLS
 

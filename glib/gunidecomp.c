@@ -19,11 +19,11 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include "glib.h"
 #include "gunidecomp.h"
 #include "gunicomp.h"
-
-#include <config.h>
 
 #include <stdlib.h>
 
