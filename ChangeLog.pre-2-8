@@ -1,3 +1,9 @@
+2001-03-08  Sven Neumann  <sven@gimp.org>
+
+	* gtree.[ch]: 
+	* docs/reference/glib/tmpl/trees-binary.sgml: added new function 
+	g_tree_lookup_extended().
+
 Thu Mar  8 16:23:34 2001  Tim Janik  <timj@gtk.org>
 
 	* ghook.[hc]: destruction cleanup. there's one

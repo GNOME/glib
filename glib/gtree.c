@@ -238,6 +238,36 @@ g_tree_lookup (GTree         *tree,
                              rtree->key_compare_data, key);
 }
 
+gboolean
+g_tree_lookup_extended (GTree         *tree,
+                        gconstpointer  lookup_key,
+                        gpointer      *orig_key,
+                        gpointer      *value)
+{
+  GRealTree *rtree;
+  GTreeNode *node;
+  
+  g_return_val_if_fail (tree != NULL, FALSE);
+  
+  rtree = (GRealTree*) tree;
+  
+  node = g_tree_node_lookup (rtree->root, 
+                             rtree->key_compare,
+                             rtree->key_compare_data, 
+                             lookup_key);
+
+  if (node)
+    {
+      if (orig_key)
+        *orig_key = node->key;
+      if (value)
+        *value = node->value;
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 void
 g_tree_traverse (GTree         *tree,
 		 GTraverseFunc  traverse_func,
