@@ -14,14 +14,18 @@ gmoduleconf.h:	gmoduleconf.h.in
 include_HEADERS = \
 		gmodule.h
 
-libglib = $(top_builddir)/libglib-@LT_RELEASE@.la # -lglib-@LT_RELEASE@
+libglib = $(top_builddir)/libglib.la # -lglib
 
-lib_LTLIBRARIES = libgmodule-1.1.la libgplugin_a.la libgplugin_b.la
+lib_LTLIBRARIES = libgmodule.la libgplugin_a.la libgplugin_b.la
 
-libgmodule_1_1_la_SOURCES = gmodule.c
-libgmodule_1_1_la_LDFLAGS = @G_MODULE_LDFLAGS@ -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
-libgmodule_1_1_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
-# we should really depend on $(libglib) for libgmodule-1.1.la, but libtool has a
+libgmodule_la_SOURCES = gmodule.c
+libgmodule_la_LDFLAGS = \
+	@G_MODULE_LDFLAGS@ \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
+	-release $(LT_RELEASE)
+
+libgmodule_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
+# we should really depend on $(libglib) for libgmodule.la, but libtool has a
 # problem with this ;(
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
@@ -34,7 +38,7 @@ libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
-testgmodule_LDADD = libgmodule-@LT_RELEASE@.la $(libglib) @G_MODULE_LIBS@
+testgmodule_LDADD = libgmodule.la $(libglib) @G_MODULE_LIBS@
 
 .PHONY: files release
 
@@ -43,10 +47,10 @@ files:
 	  echo $$p; \
 	done
 
-install-libLTLIBRARIES: libgmodule-1.1.la
+install-libLTLIBRARIES: libgmodule.la
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='libgmodule-1.1.la'; for p in $$list; do \
+	@list='libgmodule.la'; for p in $$list; do \
 	 if test -f $$p; then \
 	  echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p"; \
 	  $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p; \

@@ -17,9 +17,9 @@ EXTRA_DIST =	\
 # build . first, then SUBDIRS
 all-recursive-am: all-am
 
-lib_LTLIBRARIES = libglib-1.1.la
+lib_LTLIBRARIES = libglib.la
 
-libglib_1_1_la_SOURCES = \
+libglib_la_SOURCES = \
 		garray.c	\
 		gcache.c	\
 		gcompletion.c	\
@@ -46,12 +46,12 @@ include_HEADERS = \
 configinclude_DATA = \
 		glibconfig.h
 
-libglib_1_1_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
-
+libglib_la_LDFLAGS = \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -release $(LT_RELEASE)
 INCLUDES = -I$(top_srcdir)
 
 noinst_PROGRAMS = testglib
-testglib_LDADD = libglib-@LT_RELEASE@.la
+testglib_LDADD = libglib.la
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib.m4

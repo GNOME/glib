@@ -1,3 +1,9 @@
+Tue Sep 15 14:57:30 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am: Update to libtool-1.2b,
+	change library versioning scheme to drop LT_RELEASE
+	from the -l line, while keeping it in the soname.
+
 Thu Aug 20 07:08:16 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c: provide no operation implementation for the underlying
