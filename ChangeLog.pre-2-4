@@ -1,3 +1,10 @@
+Thu May 24 21:24:16 CEST 2001 Paolo Molaro <lupus@ximian.com>
+
+	* gmarkup.c: back out change by mitch@convergence.de and apply patch in
+	bug id #52067 that fixes the same problem in a more complete manner.
+	This fixes also a segfault for a malformed XML file and adds a new
+	test case.
+
 2001-05-24  Hans Breuer  <hans@breuer.org>
 
 	* grel.c : reflect renaming of g_string_sprintfa to g_string_printfa

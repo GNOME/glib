@@ -38,36 +38,6 @@ g_markup_error_quark ()
   return error_quark;
 }
 
-typedef struct _GMarkupAttribute GMarkupAttribute;
-
-struct _GMarkupAttribute
-{
-  gchar *name;
-  gchar *value;
-};
-
-static GMarkupAttribute*
-attribute_new (const gchar *name, const gchar *value)
-{
-  GMarkupAttribute *attr;
-
-  attr = g_new (GMarkupAttribute, 1);
-
-  /* name/value are allowed to be NULL */
-  attr->name = g_strdup (name);
-  attr->value = g_strdup (value);
-
-  return attr;
-}
-
-static void
-attribute_free (GMarkupAttribute *attr)
-{
-  g_free (attr->name);
-  g_free (attr->value);
-  g_free (attr);
-}
-
 typedef enum
 {
   STATE_START,
@@ -106,7 +76,10 @@ struct _GMarkupParseContext
 
   GMarkupParseState state;
   GSList *tag_stack;
-  GSList *attributes;
+  gchar **attr_names;
+  gchar **attr_values;
+  gint cur_attr;
+  gint alloc_attrs;
 
   const gchar *current_text;
   gint         current_text_len;
@@ -162,7 +135,10 @@ g_markup_parse_context_new (const GMarkupParser *parser,
 
   context->state = STATE_START;
   context->tag_stack = NULL;
-  context->attributes = NULL;
+  context->attr_names = NULL;
+  context->attr_values = NULL;
+  context->cur_attr = -1;
+  context->alloc_attrs = 0;
 
   context->current_text = NULL;
   context->current_text_len = -1;
@@ -195,8 +171,8 @@ g_markup_parse_context_free (GMarkupParseContext *context)
   if (context->dnotify)
     (* context->dnotify) (context->user_data);
 
-  g_slist_foreach (context->attributes, (GFunc)attribute_free, NULL);
-  g_slist_free (context->attributes);
+  g_strfreev (context->attr_names);
+  g_strfreev (context->attr_values);
 
   g_slist_foreach (context->tag_stack, (GFunc)g_free, NULL);
   g_slist_free (context->tag_stack);
@@ -208,68 +184,6 @@ g_markup_parse_context_free (GMarkupParseContext *context)
     g_string_free (context->leftover_char_portion, TRUE);
 
   g_free (context);
-}
-
-static void
-attribute_list_to_arrays (GSList  *attributes,
-                          gchar ***namesp,
-                          gchar ***valuesp,
-                          gint    *n_attributes)
-{
-  GSList *tmp_list;
-  gint len;
-  gchar **names;
-  gchar **values;
-  gint i;
-
-  len = g_slist_length (attributes);
-
-  if (namesp)
-    {
-      names = g_new (gchar*, len + 1);
-      names[len] = NULL;
-    }
-  else
-    names = NULL;
-
-  if (valuesp)
-    {
-      values = g_new (gchar*, len + 1);
-      values[len] = NULL;
-    }
-  else
-    values = NULL;
-
-  /* We want to reverse the list, since it's
-   * backward from the order the attributes appeared
-   * in the file.
-   */
-  i = len - 1;
-  tmp_list = attributes;
-  while (tmp_list)
-    {
-      GMarkupAttribute *attr = tmp_list->data;
-
-      g_assert (i >= 0);
-
-      if (namesp)
-        names[i] = attr->name;
-
-      if (valuesp)
-        values[i] = attr->value;
-
-      tmp_list = g_slist_next (tmp_list);
-      --i;
-    }
-
-  if (n_attributes)
-    *n_attributes = len;
-
-  if (namesp)
-    *namesp = names;
-
-  if (valuesp)
-    *valuesp = values;
 }
 
 static void
@@ -748,12 +662,11 @@ add_to_partial (GMarkupParseContext *context,
 }
 
 static void
-free_partial (GMarkupParseContext *context)
+truncate_partial (GMarkupParseContext *context)
 {
   if (context->partial_chunk != NULL)
     {
-      g_string_free (context->partial_chunk, TRUE);
-      context->partial_chunk = NULL;
+      context->partial_chunk = g_string_truncate (context->partial_chunk, 0);
     }
 }
 
@@ -766,7 +679,8 @@ current_element (GMarkupParseContext *context)
 static const gchar*
 current_attribute (GMarkupParseContext *context)
 {
-  return ((GMarkupAttribute*)context->attributes->data)->name;
+  g_assert (context->cur_attr >= 0);
+  return context->attr_names[context->cur_attr];
 }
 
 static void
@@ -804,6 +718,21 @@ find_current_text_end (GMarkupParseContext *context)
       context->current_text_len -= (end - p);
       context->current_text_end = p;
     }
+}
+
+static void
+add_attribute (GMarkupParseContext *context, char *name)
+{
+  if (context->cur_attr + 2 >= context->alloc_attrs)
+    {
+      context->alloc_attrs += 5; /* silly magic number */
+      context->attr_names = g_realloc (context->attr_names, sizeof(char*)*context->alloc_attrs);
+      context->attr_values = g_realloc (context->attr_values, sizeof(char*)*context->alloc_attrs);
+    }
+  context->cur_attr++;
+  context->attr_names[context->cur_attr] = name;
+  context->attr_values[context->cur_attr] = NULL;
+  context->attr_names[context->cur_attr+1] = NULL;
 }
 
 /**
@@ -1073,10 +1002,6 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                                 context->user_data,
                                                 &tmp_error);
           
-            g_free (context->tag_stack->data);
-            context->tag_stack = g_slist_delete_link (context->tag_stack,
-                                                      context->tag_stack);
-
             if (tmp_error)
               {
                 mark_error (context, tmp_error);
@@ -1102,6 +1027,10 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                current_element (context));
                   }
               }
+
+            g_free (context->tag_stack->data);
+            context->tag_stack = g_slist_delete_link (context->tag_stack,
+                                                      context->tag_stack);
           }
           break;
 
@@ -1161,19 +1090,12 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               /* The name has ended. Combine it with the partial chunk
                * if any; push it on the stack; enter next state.
                */
-              GMarkupAttribute *attr;
               add_to_partial (context, context->start, context->iter);
 
-              attr = attribute_new (NULL, NULL);
-
-              attr->name = g_string_free (context->partial_chunk,
-                                          FALSE);
+              add_attribute (context, g_string_free (context->partial_chunk, FALSE));
 
               context->partial_chunk = NULL;
               context->start = NULL;
-
-              context->attributes =
-                g_slist_prepend (context->attributes, attr);
 
               if (*context->iter == '=')
                 {
@@ -1189,7 +1111,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                              _("Odd character '%s', expected a '=' after "
                                "attribute name '%s' of element '%s'"),
                              utf8_str (context->iter, buf),
-                             attr->name,
+                             current_attribute (context),
                              current_element (context));
 
                 }
@@ -1243,17 +1165,20 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   context->state == STATE_AFTER_CLOSE_ANGLE)
                 {
                   const gchar *start_name;
-                  gchar **attr_names = NULL;
-                  gchar **attr_values = NULL;
+		  /* Ugly, but the current code expects an empty array instead of NULL */
+		  const gchar *empty = NULL;
+                  const gchar **attr_names =  &empty;
+                  const gchar **attr_values = &empty;
                   GError *tmp_error;
 
                   /* Call user callback for element start */
                   start_name = current_element (context);
 
-                  attribute_list_to_arrays (context->attributes,
-                                            &attr_names,
-                                            &attr_values,
-                                            NULL);
+		  if (context->cur_attr >= 0)
+		    {
+		      attr_names = (const gchar**)context->attr_names;
+		      attr_values = (const gchar**)context->attr_values;
+		    }
 
                   tmp_error = NULL;
                   if (context->parser->start_element)
@@ -1264,17 +1189,15 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                                         context->user_data,
                                                         &tmp_error);
 
-		  /* Free only the string arrays, as we didn't g_strdup() the attribute
-		   * list's strings
-		   */
-                  g_free (attr_names);
-                  g_free (attr_values);
-
-                  /* Go ahead and free this. */
-                  g_slist_foreach (context->attributes, (GFunc)attribute_free,
-                                   NULL);
-                  g_slist_free (context->attributes);
-                  context->attributes = NULL;
+                  /* Go ahead and free the attributes. */
+		  for (; context->cur_attr >= 0; context->cur_attr--)
+		    {
+		      int pos = context->cur_attr;
+		      g_free (context->attr_names[pos]);
+		      g_free (context->attr_values[pos]);
+		      context->attr_names[pos] = context->attr_values[pos] = NULL;
+		    }
+                  context->cur_attr = -1;
 
                   if (tmp_error != NULL)
                     {
@@ -1330,17 +1253,15 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                * with the partial chunk if any; set it for the current
                * attribute.
                */
-              GMarkupAttribute *attr;
-
               add_to_partial (context, context->start, context->iter);
 
-              attr = context->attributes->data;
+              g_assert (context->cur_attr >= 0);
               
               if (unescape_text (context,
                                  context->partial_chunk->str,
                                  context->partial_chunk->str +
                                  context->partial_chunk->len,
-                                 &attr->value,
+                                 &context->attr_values[context->cur_attr],
                                  error))
                 {
                   /* success, advance past quote and set state. */
@@ -1349,7 +1270,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   context->start = NULL;
                 }
               
-              free_partial (context);
+              truncate_partial (context);
             }
           break;
 
@@ -1409,7 +1330,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                     }
                 }
 
-              free_partial (context);
+              truncate_partial (context);
             }
           break;
 
@@ -1558,7 +1479,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                                  context->user_data,
                                                  &tmp_error);
                   
-              free_partial (context);
+              truncate_partial (context);
 
               if (tmp_error == NULL)
                 {
@@ -1608,6 +1529,12 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
   g_return_val_if_fail (context != NULL, FALSE);
   g_return_val_if_fail (!context->parsing, FALSE);
   g_return_val_if_fail (context->state != STATE_ERROR, FALSE);
+
+  if (context->partial_chunk != NULL)
+    {
+      g_string_free (context->partial_chunk, TRUE);
+      context->partial_chunk = NULL;
+    }
 
   if (context->document_empty)
     {
