@@ -2295,7 +2295,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
  * g_main_loop_new:
  * @context: a #GMainContext  (if %NULL, the default context will be used).
  * @is_running: set to %TRUE to indicate that the loop is running. This
- * is not very important since calling g_main_run() will set this to
+ * is not very important since calling g_main_loop_run() will set this to
  * %TRUE anyway.
  * 
  * Creates a new #GMainLoop structure.
@@ -2380,7 +2380,7 @@ g_main_loop_unref (GMainLoop *loop)
  * g_main_loop_run:
  * @loop: a #GMainLoop
  * 
- * Runs a main loop until g_main_quit() is called on the loop.
+ * Runs a main loop until g_main_loop_quit() is called on the loop.
  * If this is called for the thread of the loop's #GMainContext,
  * it will process events from the loop, otherwise it will
  * simply wait.
@@ -2438,8 +2438,8 @@ g_main_loop_run (GMainLoop *loop)
 
   if (loop->context->in_check_or_prepare)
     {
-      g_warning ("g_main_run(): called recursively from within a source's check() or "
-		 "prepare() member, iteration not possible.");
+      g_warning ("g_main_loop_run(): called recursively from within a source's"
+		 "check() or prepare() member, iteration not possible.");
       return;
     }
 
@@ -2486,7 +2486,7 @@ g_main_loop_quit (GMainLoop *loop)
  * g_main_loop_is_running:
  * @loop: a #GMainLoop.
  * 
- * Checks to see if the main loop is currently being run via g_main_run().
+ * Checks to see if the main loop is currently being run via g_main_loop_run().
  * 
  * Return value: %TRUE if the mainloop is currently being run.
  **/

@@ -524,8 +524,7 @@ g_tree_traverse (GTree         *tree,
  * must return exactly the same value as would be returned by the comparison 
  * function, for each pair of tree nodes, or the search will not work.
  * 
- * To search for a specific value, you can use g_tree_foreach() or 
- * g_tree_traverse().
+ * To search for a specific value, you can use g_tree_foreach().
  *
  * Return value: the value corresponding to the found key, or %NULL if the key 
  * is not found.
