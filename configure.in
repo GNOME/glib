@@ -605,14 +605,21 @@ case $have_threads in
 		for thread_lib in "" pthread pthreads c_r thread; do
 			# This is not AC_CHECK_LIB to also work with function
 			# name mangling in header files.
-			LIBS="$glib_save_LIBS -l$thread_lib"
-			IN=
-			test x"$thread_lib" = x || IN=" in -l$thread_lib"
+			if test x"$thread_lib" = x; then
+				add_thread_lib=""
+				IN=""
+			else
+				add_thread_lib="-l$thread_lib"
+				IN=" in -l$thread_lib"
+			fi
+			
+			LIBS="$glib_save_LIBS $add_thread_lib"
+			
 			AC_MSG_CHECKING(for pthread_create$IN)
 			AC_TRY_LINK([#include <pthread.h>],
 				[pthread_create(NULL,NULL,NULL,NULL)],
 				[AC_MSG_RESULT(yes)
-				G_THREAD_LIBS="-l$thread_lib"
+				G_THREAD_LIBS="$add_thread_lib"
 				break],
 				[AC_MSG_RESULT(no)])
 		done

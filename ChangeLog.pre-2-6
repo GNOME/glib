@@ -1,3 +1,8 @@
+1999-03-16  Timur Bakeyev  <mc@bat.ru>
+
+	* configure.in: Fix problem with pthread_create in libc, as running
+	"gcc test.c -l " is not legal.
+
 1999-03-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* tests/type-test.c: Added a test for the
