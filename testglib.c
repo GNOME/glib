@@ -771,6 +771,14 @@ main (int   argc,
   
   g_print ("ok\n");
 
+  g_print ("checking g_strdup_printf...");
+  string = g_strdup_printf ("%05d %-5s", 21, "test");
+  g_assert (string != NULL);
+  g_assert (strcmp(string, "00021 test ") == 0);
+  g_free (string);
+
+  g_print ("ok\n");
+
   /* g_debug (argv[0]); */
 
   /* Relation tests */
