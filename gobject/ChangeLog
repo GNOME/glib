@@ -1,3 +1,8 @@
+2002-07-05  Anders Carlsson  <andersca@gnu.org>
+
+	* gobject.c (g_object_base_class_finalize): Remove debugging
+	message, approved by Tim Janik.
+
 2002-06-11  Anders Carlsson  <andersca@gnu.org>
 
 	* gtypemodule.c: (g_type_module_complete_interface_info):
