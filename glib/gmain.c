@@ -2401,7 +2401,7 @@ g_main_loop_run (GMainLoop *loop)
       /* Another thread owns this context */
       if (!g_thread_supported ())
 	{
-	  g_warning ("g_main_loop_run() was called from second thread but"
+	  g_warning ("g_main_loop_run() was called from second thread but "
 		     "g_thread_init() was never called.");
 	  return;
 	}
@@ -2438,7 +2438,7 @@ g_main_loop_run (GMainLoop *loop)
 
   if (loop->context->in_check_or_prepare)
     {
-      g_warning ("g_main_loop_run(): called recursively from within a source's"
+      g_warning ("g_main_loop_run(): called recursively from within a source's "
 		 "check() or prepare() member, iteration not possible.");
       return;
     }
