@@ -1014,7 +1014,7 @@ main (int   argc,
   g_timer_stop(timer);
 
   elapsed = g_timer_elapsed (timer, &elapsed_usecs);
-  g_print ("\t=> total = %.6f = %d.%06ld (should be: 9.000000) (%.6f off)\n", elapsed, (int) elapsed, elapsed_usecs, ABS (elapsed - 9.));
+  g_print ("\t=> timer = %.6f = %d.%06ld (should be: 9.000000) (%.6f off)\n", elapsed, (int) elapsed, elapsed_usecs, ABS (elapsed - 9.));
 
   if (elapsed > 8.8 && elapsed < 9.2)
     g_print ("g_timer_continue ... ok\n\n");
@@ -1024,7 +1024,7 @@ main (int   argc,
   g_timer_stop(timer2);
 
   elapsed = g_timer_elapsed(timer2, &elapsed_usecs);
-  g_print ("\t=> total elapsed = %.6f = %d.%06ld (should be: %.6f) (%.6f off)\n\n", elapsed, (int) elapsed, elapsed_usecs, 9.+6.5, ABS (elapsed - (9.+6.5)));
+  g_print ("\t=> timer2 = %.6f = %d.%06ld (should be: %.6f) (%.6f off)\n\n", elapsed, (int) elapsed, elapsed_usecs, 9.+6.5, ABS (elapsed - (9.+6.5)));
 
   if (elapsed > (8.8+6.5) && elapsed < (9.2+6.5))
     g_print ("timer2 ... ok\n\n");
