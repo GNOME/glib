@@ -49,6 +49,10 @@ typedef enum
   TYPE_LONGLONGINT,
   TYPE_ULONGLONGINT,
 #endif
+#ifdef HAVE_INT64_AND_I64
+  TYPE_INT64,
+  TYPE_UINT64,
+#endif
   TYPE_DOUBLE,
 #ifdef HAVE_LONG_DOUBLE
   TYPE_LONGDOUBLE,
@@ -88,6 +92,10 @@ typedef struct
 #ifdef HAVE_LONG_LONG
     long long int		a_longlongint;
     unsigned long long int	a_ulonglongint;
+#endif
+#ifdef HAVE_INT64_AND_I64
+    __int64                     a_int64;
+    unsigned __int64            a_uint64;
 #endif
     float			a_float;
     double			a_double;

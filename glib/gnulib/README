@@ -13,10 +13,16 @@ be found at:
 
  http://www.gnu.org/software/gnulib/
 
-They have been modified to include g-gnulib.h. vasnprintf.c has also
-been modified to include support for long long printing if the system
-printf doesn't. This code is protected by #ifndef HAVE_LON_LONG_FORMAT.
- 
+All files have been modified to include g-gnulib.h. 
+
+vasnprintf.c has also been modified to include support for long long 
+printing if the system printf doesn't. This code is protected by 
+#ifndef HAVE_LONG_LONG_FORMAT.
+
+Code has been added to printf-args.[ch], printf-parse.c and vasnprintf.c
+to support printing of __int64 values with the I64 format modifier. This
+is protected by #ifdef HAVE_INT64_AND_I64.
+
 The files
 
  printf.h 
@@ -31,7 +37,7 @@ g_malloc and make sure that snprintf is only used if it implements
 C99 return value semantics. 
 
 Matthias Clasen
-July 28, 2003
+November 1, 2003
 
 
 

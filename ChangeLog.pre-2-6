@@ -1,3 +1,22 @@
+Sun Nov  2 01:47:31 2003  Matthias Clasen  <maclas@gmx.de>
+
+	Fix 64bit printing for MSVC builds (#119292, Hans Breuer):
+	
+	* configure.in (HAVE_INT64_AND_I64): Define for MSVC to 
+	include support for printing __int64 with format %I64 in 
+	the gnulib printf wrappers. 
+	* glib/gnulib/printf-args.h (enum arg_type): Add TYPE_INT64 
+	and TYPE_UINT64.
+	* glib/gnulib/printf-args.h (struct argument): Add a_int64 and 
+	a_uint64 members.
+	* glib/gnulib/printf-args.c (printf_fetchargs): Support
+	TYPE_INT64 and TYPE_UINT64.
+	* glib/gnulib/printf-parse.c (printf_parse): Parse I64 format
+	modifier and map formats to TYPE_INT64.
+	* glib/gnulib/vasnprintf.c (vasnprintf): Print TYPE_INT64 with
+	format modifier I64.
+	* glib/gnulib/README: Document the __int64 support.
+	
 Sat Nov  1 08:45:38 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_context_iterate): Set the

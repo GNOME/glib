@@ -286,6 +286,15 @@ printf_parse (const char *format, char_directives *d, arguments *a)
 		      flags += 8;
 		      cp++;
 		    }
+#ifdef HAVE_INT64_AND_I64
+		  else if (cp[0] == 'I' && 
+			   cp[1] == '6' &&
+			   cp[2] == '4')
+		    {
+		      flags = 64;
+		      cp += 3;
+		    }
+#endif
 #ifdef HAVE_INTMAX_T
 		  else if (*cp == 'j')
 		    {
@@ -342,6 +351,11 @@ printf_parse (const char *format, char_directives *d, arguments *a)
 	      switch (c)
 		{
 		case 'd': case 'i':
+#ifdef HAVE_INT64_AND_I64
+		  if (flags == 64) 
+		    type = TYPE_INT64;
+		  else
+#endif
 #ifdef HAVE_LONG_LONG
 		  if (flags >= 16 || (flags & 4))
 		    type = TYPE_LONGLONGINT;
@@ -357,6 +371,11 @@ printf_parse (const char *format, char_directives *d, arguments *a)
 		    type = TYPE_INT;
 		  break;
 		case 'o': case 'u': case 'x': case 'X':
+#ifdef HAVE_INT64_AND_I64
+		  if (flags == 64)
+		    type = TYPE_UINT64;
+		  else
+#endif
 #ifdef HAVE_LONG_LONG
 		  if (flags >= 16 || (flags & 4))
 		    type = TYPE_ULONGLONGINT;

@@ -69,6 +69,14 @@ printf_fetchargs (va_list args, arguments *a)
 	ap->a.a_ulonglongint = va_arg (args, unsigned long long int);
 	break;
 #endif
+#ifdef HAVE_INT64_AND_I64
+      case TYPE_INT64:
+	ap->a.a_int64 = va_arg (args, __int64);
+	break;
+      case TYPE_UINT64:
+	ap->a.a_uint64 = va_arg (args, unsigned __int64);
+	break;
+#endif
       case TYPE_DOUBLE:
 	ap->a.a_double = va_arg (args, double);
 	break;

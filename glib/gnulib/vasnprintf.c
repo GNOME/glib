@@ -615,6 +615,14 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 
 		switch (type)
 		  {
+#ifdef HAVE_INT64_AND_I64
+		  case TYPE_INT64:
+		  case TYPE_UINT64:
+		    *p++ = 'I';
+		    *p++ = '6';
+		    *p++ = '4';
+		    break;
+#endif
 #ifdef HAVE_LONG_LONG
 		  case TYPE_LONGLONGINT:
 		  case TYPE_ULONGLONGINT:
@@ -769,6 +777,20 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 			  SNPRINTF_BUF (arg);
 			}
 			break;
+#ifdef HAVE_INT64_AND_I64
+		      case TYPE_INT64:
+			{
+			  __int64 arg = a.arg[dp->arg_index].a.a_int64;
+			  SNPRINTF_BUF (arg);
+			}
+			break;
+		      case TYPE_UINT64:
+			{
+			  unsigned __int64 arg = a.arg[dp->arg_index].a.a_uint64;
+			  SNPRINTF_BUF (arg);
+			}
+			break;			
+#endif
 #ifdef HAVE_LONG_LONG
 #ifndef HAVE_LONG_LONG_FORMAT
 		      case TYPE_LONGLONGINT:
