@@ -154,8 +154,21 @@ struct _MamanBar {
   MamanBarPrivate *priv;
 };
 </programlisting>
-              The private structure is then defined in the .c file, instantiated in the object's XXX
-              function and destroyed in the object's XXX function.
+              The private structure is then defined in the .c file, instantiated in the object's
+              <function>init</function> function and destroyed in the object's <function>finalize</function> function.
+<programlisting>
+static void maman_bar_finalize(GObject *object) {
+  MamanBar *self = MAMAN_BAR (object);
+  ...
+  g_free (self->priv);
+}
+
+static void maman_bar_init(GTypeInstance *instance, gpointer g_class) {
+  MamanBar *self = MAMAN_BAR (instance);
+  self->priv = g_new0(MamanBarPrivate,1);
+  ...
+}
+</programlisting>
             </para></listitem>
         </itemizedlist>
       </para>
@@ -607,7 +620,7 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
     <sect2 id="howto-gobject-chainup">
      <title>Chaining up</title>
 
-     <para>Chaining up is often loosely defined by the folowing set of conditions:
+     <para>Chaining up is often loosely defined by the following set of conditions:
        <itemizedlist>
          <listitem><para>Parent class A defines a public virtual method named <function>foo</function> and 
          provides a default implementation.</para></listitem>
