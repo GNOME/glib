@@ -117,11 +117,14 @@ g_error_matches (const GError *error,
     error->code == code;
 }
 
+#define ERROR_OVERWRITTEN_WARNING "GError set over the top of a previous GError or uninitialized memory.\n" \
+               "This indicates a bug in someone's code. You must ensure an error is NULL before it's set."
+
 void
-g_set_error (GError     **err,
-             GQuark       domain,
-             gint         code,
-             const gchar *format,
+g_set_error (GError      **err,
+             GQuark        domain,
+             gint          code,
+             const gchar  *format,
              ...)
 {
   va_list args;
@@ -130,12 +133,26 @@ g_set_error (GError     **err,
     return;
 
   if (*err != NULL)
-    g_warning ("GError set over the top of a previous GError or uninitialized memory.\n"
-               "This indicates a bug in someone's code. You must ensure an error is NULL before it's set.");
+    g_warning (ERROR_OVERWRITTEN_WARNING);
   
   va_start (args, format);
   *err = g_error_new_valist (domain, code, format, args);
   va_end (args);
+}
+
+void    
+g_propagate_error (GError       **dest,
+		   GError        *src)
+{
+  g_return_if_fail (src != NULL);
+
+  if (dest == NULL)
+    return;
+  
+  if (*dest != NULL)
+    g_warning (ERROR_OVERWRITTEN_WARNING);
+ 
+  *dest = src;
 }
 
 void
