@@ -1,3 +1,8 @@
+2003-08-28  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/patterntest.c (verbose):  Fix a C99ism.  (#120821, Thomas 
+	Klausner)
+
 2003-08-26  Hans Breuer  <hans@breuer.org>
 
 	* glib/trio/makefile.msc : (new file)
@@ -102,6 +107,7 @@ Tue Aug 19 09:42:06 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib.def: Remove two dups.
 
+>>>>>>> 1.1255.2.96
 2003-08-08  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Forgot to actually switch to trio if snprintf() isn't good enough.
