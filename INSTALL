@@ -37,7 +37,7 @@ configure. This forces libiconv to be used.
 
 Note that if you have libiconv installed in your default include
 search path (for instance, in /usr/local/), but don't enable
-it, you will get an error while compiling GTK+ because the
+it, you will get an error while compiling GLib because the
 iconv.h that libiconv installs hides the system iconv.
 
 If you are using the native iconv implementation on Solaris
@@ -49,11 +49,11 @@ SUNWkiu8 packages.
 
 The native iconv on Compaq Tru64 doesn't contain support for
 UTF-8, so you'll need to use GNU libiconv instead. (When
-using GNU libiconv for GTK+, you'll need to use GNU libiconv
+using GNU libiconv for GLib, you'll need to use GNU libiconv
 for GNU gettext as well.) This probably applies to related
 operating systems as well.
 
-Finally, for message catalog handling, GTK+ requires an implementation
+Finally, for message catalog handling, GLib requires an implementation
 of gettext(). If your system doesn't provide this functionality,
 you should use the libintl library from the GNU gettext package,
 available from:
@@ -63,90 +63,14 @@ available from:
 The Nitty-Gritty
 ================
 
-The 'configure' script can be given a number of options to enable
-and disable various features. For a complete list, type:
+Complete information about installing GLib can be found 
+in the file:
 
-  ./configure --help
+ docs/reference/glib/html/glib-building.html
 
-A few of the more important ones:
+Or online at:
 
-*  --prefix=PREFIX         install architecture-independent files in PREFIX
-                           [ Defaults to /usr/local ]
-
-*  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
-                           [ Defaults to the value given to --prefix ]
-
-*  --enable-debug=[yes/no/minimum] determines the amount of debugging
-                           code to include. 'yes' will includes some
-			   extra checks and debugging features that
-                           may be useful for people developing with
-                           GLib. 'no' produces a somewhat smaller and 
-                           faster library at the expense of reduced
-                           robustness.
-                           [ Defaults to 'minimum' for stable releases ]
-
-*  --enable-gc-friendly    When enabled all memory freed by the application,
-                           but retained by GLib for performance reasons  
-                           is set to zero, thus making deployed garbage
-                           collection or memory profiling tools detect 
-                           unlinked memory correctly. This will make GLib 
-                           slightly slower.
-                           [ --disable-gc-friendly is default ]
-
-*  --disable-mem-pools     Do not cache freed objects. When specified,
-                           GLib will immediately return freed memory
-                           to the C library instead of keeping around
-                           pools of free objects such as linked list
-                           and hash table nodes. Specifying this
-                           will make GLib slower in most cases, but it
-                           will use less memory.
-                           [ --enable-mem-pools is the default ]
-
-*  --disable-threads       Do not compile GLib to be multi thread safe. GLib
-                           will be slightly faster then. This is however not
-                           recommended, as many programs rely on GLib being 
-                           multi thread safe.
-                           [ --enable-threads is the default ]
-
-*  --with-threads=[none/posix/dce/solaris/win32] Specify a thread 
-                           implementation to use. 
-                           * 'posix' and 'dce' can be used interchangeable 
-                             to mean the different versions of posix 
-                             threads. configure tries to find out, which 
-                             one is installed. 
-                           * 'solaris' uses the native Solaris thread
-                             implementation. 
-                           * 'none' means that GLib will be thread safe, 
-                             but does not have a default thread 
-                             implementation. This has to be supplied to 
-                             g_thread_init() by the programmer. 
-                           [ Determined by configure by default ]
-
-*  --enable-included-printf=[yes/no/auto] Specify whether to build using
-                           the included copy of the Trio library
-                           for string formatting functions like printf().
-                           The default is 'auto', which means that
-                           Trio will be used if configure detects
-                           missing features in your system native
-                           printf implementation.
-
-Options can be given to the compiler and linker by setting
-environment variables before running configure. A few of the more
-important ones:
-
- CC       : The C compiler to use
- CPPFLAGS : Flags for the C preprocesser such as -I and -D
- CFLAGS   : C compiler flags
-
-The most important use of this is to set the
-optimization/debugging flags. For instance, to compile with no
-debugging information at all, run configure as:
-
- CFLAGS=-O2 ./configure           # Bourne compatible shells (sh/bash/zsh)
-
-or,
-
- setenv CFLAGS -O2 ; ./configure  # csh and variants
+ http://developer.gnome.org/doc/API/2.0/glib/glib-building.html
 
 
 Installation directories
@@ -182,8 +106,13 @@ Cross-compiling GLib
 Information about cross-compilation of GLib can be found 
 in the file:
 
- docs/reference/glib/docs/reference/glib/html/glib-cross-compiling.html
+ docs/reference/glib/html/glib-cross-compiling.html
 
 Or online at:
 
  http://developer.gnome.org/doc/API/2.0/glib/glib-cross-compiling.html
+
+
+
+
+

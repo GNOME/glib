@@ -78,32 +78,6 @@ loop abstraction, and so on. It works on many UNIX-like platforms, Windows,
 OS/2 and BeOS. GLib is released under the GNU Library General Public License 
 (GNU LGPL). 
     </para>
-    <para>
-GLib depends on the following: 
-<variablelist>
-
-<varlistentry>
-<term><function>iconv()</function></term>
-<listitem><para>
-In order to implement conversions between character sets,
-GLib requires an implementation of the standard <function>iconv()</function> 
-routine. Most modern systems will have a suitable implementation, however
-many older systems lack an <function>iconv()</function> implementation. On 
-such systems, you must install the 
-<ulink url="http://clisp.cons.org/~haible/packages-libiconv.html">libiconv</ulink> library.
-</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term>a thread implementation</term>
-<listitem><para>
-The thread support in GLib can be based upon several native thread 
-implementations, e.g. POSIX threads, DCE threads or Solaris threads.
-</para></listitem>
-</varlistentry>
-
-</variablelist>    
-    </para>
 
     &glib-Building;
     &glib-Cross;

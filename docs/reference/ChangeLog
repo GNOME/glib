@@ -1,3 +1,9 @@
+2003-04-09  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-docs.sgml: Move dependencies to building.sgml.
+
+	* glib/building.sgml: Move stuff from INSTALL here.
+
 2003-04-08  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/cross.sgml: New file; cross-compilation information.

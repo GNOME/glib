@@ -1,3 +1,9 @@
+2003-04-09  Matthias Clasen  <maclas@gmx.de>
+
+	* INSTALL: 
+	* INSTALL.in: Remove list of configuration flags, since these 
+	are already documented in docs/reference/glib/building.sgml.
+
 2003-04-08  Matthias Clasen  <maclas@gmx.de>
 
 	* INSTALL: Move Cross-compliation information to reference manual.

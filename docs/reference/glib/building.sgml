@@ -10,7 +10,7 @@
 <refpurpose>
 How to compile GLib itself
 </refpurpose>
-</refnamediv>
+  </refnamediv>
 
     <refsect1 id="building">
       <title>Building the Library on UNIX</title>
@@ -39,14 +39,122 @@ How to compile GLib itself
         <command>./configure --help</command> for information about
         the standard options.
       </para>
+      <para>
+        The GTK+ documentation contains 
+        <ulink url="../gtk/gtk-building.html">further details</ulink> 
+	about the build process and ways to influence it. 
+      </para>
     </refsect1>
+    <refsect1 id="dependencies">
+      <title>Dependencies</title>
+      <para>
+        Before you can compile the GLib library, you need to have
+        various other tools and libraries installed on your
+        system. The two tools needed during the build process (as
+        differentiated from the tools used in when creating GLib
+        mentioned above such as <application>autoconf</application>)
+        are <command>pkg-config</command> and GNU make.
+      </para>
+      <itemizedlist>
+        <listitem>
+   	  <para>
+	    <ulink
+	    url="http://www.freedesktop.org/software/pkgconfig/">pkg-config</ulink>
+	    is a tool for tracking the compilation flags needed for
+	    libraries that are used by the GLib library. (For each
+	    library, a small <literal>.pc</literal> text file is 
+            installed in a standard location that contains the compilation 
+            flags needed for that library along with version number 
+            information.)  The version of <command>pkg-config</command> 
+            needed to build GLib is mirrored in the 
+	    <filename>dependencies</filename> directory
+	    on the <ulink url="ftp://ftp.gtk.org/pub/gtk/v2.2/">GTK+ FTP
+	    site.</ulink>
+	  </para>
+        </listitem>
+        <listitem>
+	  <para>
+	    The GTK+ makefiles will mostly work with different versions
+	    of <command>make</command>, however, there tends to be
+	    a few incompatibilities, so the GTK+ team recommends
+	    installing <ulink url="http://www.gnu.org/software/make">GNU
+	    make</ulink> if you don't already have it on your system
+	    and using it. (It may be called <command>gmake</command>
+	    rather than <command>make</command>.)
+	  </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        GLib depends on a number of other libraries.
+      </para>
+      <itemizedlist>
+        <listitem>
+	  <para>
+	  The <ulink url="http://www.gnu.org/software/libiconv/">GNU
+	  libiconv library</ulink> is needed to build GLib if your
+	  system doesn't have the <function>iconv()</function>
+	  function for doing conversion between character
+	  encodings. Most modern systems should have
+	  <function>iconv()</function>, however many older systems lack 
+	  an <function>iconv()</function> implementation. On such systems, 
+	  you must install the libiconv library. This can be found at:
+	  <ulink url="http://www.gnu.org/software/libiconv">http://www.gnu.org/software/libiconv</ulink>.	  
+	</para>
+        <para>
+	  If your system has an <function>iconv()</function> implementation but
+	  you want to use libiconv instead, you can pass the
+	  --with-libiconv option to configure. This forces
+	  libiconv to be used.  
+	</para>
+        <para>
+	  Note that if you have libiconv installed in your default include
+	  search path (for instance, in <filename>/usr/local/</filename>), but
+	  don't enable it, you will get an error while compiling GLib because
+	  the <filename>iconv.h</filename> that libiconv installs hides the
+	  system iconv. 
+	</para>
+	<para>
+	  If you are using the native iconv implementation on Solaris
+	  instead of libiconv, you'll need to make sure that you have 
+	  the converters between locale encodings and UTF-8 installed.
+	  At a minimum you'll need the SUNWuiu8 package. You probably
+	  should also install the SUNWciu8, SUNWhiu8, SUNWjiu8, and
+	  SUNWkiu8 packages.
+	</para>
+	<para>
+	  The native iconv on Compaq Tru64 doesn't contain support for
+	  UTF-8, so you'll need to use GNU libiconv instead. (When
+	  using GNU libiconv for GLib, you'll need to use GNU libiconv
+	  for GNU gettext as well.) This probably applies to related
+	  operating systems as well.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  The libintl library from the <ulink
+	  url="http://www.gtk.org/software/gettext">GNU gettext
+	  package</ulink> is needed if your system doesn't have the
+	  <function>gettext()</function> functionality for handling
+	  message translation databases.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  A thread implementation is needed, unless you want to compile GLib
+	  without thread support, which is not recommended. The thread support
+	  in GLib can be based upon several native thread implementations,
+	  e.g. POSIX threads, DCE threads or Solaris threads. 
+	</para>
+      </listitem>
+    </itemizedlist>
 
+    </refsect1>
     <refsect1 id="extra-configuration-options">
       <title>Extra Configuration Options</title>
 
       <para>
         In addition to the normal options, the
-        <command>configure</command> script in the GTK+
+        <command>configure</command> script in the GLib
         library supports these additional arguments:
 
         <cmdsynopsis>
@@ -70,8 +178,8 @@ How to compile GLib itself
             <arg>--with-threads=[none|posix|dce|solaris|win32]</arg>
           </group>
 	  <group>
-            <arg>--disable-included-printf</arg>
-            <arg>--enable-included-printf</arg>
+             <arg>--disable-included-printf</arg>
+             <arg>--enable-included-printf</arg>
           </group>
           <group>
             <arg>--disable-gtk-doc</arg>
@@ -93,7 +201,7 @@ How to compile GLib itself
          even mostly bug-free software by changing the effect of many bugs
          from simple warnings into fatal crashes. Thus
          <option>--enable-debug=no</option> should <emphasis>not</emphasis>
-         be used for stable releases of gtk+.
+         be used for stable releases of GLib.
         </para>
       </formalpara>
 
@@ -127,7 +235,8 @@ How to compile GLib itself
         <listitem>
         <para>
          <structname>GList</structname>, <structname>GSList</structname>,
-         <structname>GNode</structname> allocations
+         <structname>GNode</structname>, <structname>GHash</structname> 
+         allocations
         </para>
         </listitem>
         <listitem>
@@ -178,7 +287,7 @@ How to compile GLib itself
           <itemizedlist>
               <listitem><para>
                 'posix' and 'dce' can be used interchangeable
-                to mean the different versions of posix
+                to mean the different versions of Posix
                 threads. configure tries to find out, which
                 one is installed.
               </para></listitem>
@@ -191,7 +300,7 @@ How to compile GLib itself
                 'none' means that GLib will be thread safe,
                 but does not have a default thread
                 implementation. This has to be supplied to
-                g_thread_init() by the programmer.
+                <function>g_thread_init()</function> by the programmer.
               </para></listitem>
         </itemizedlist>
 
@@ -199,8 +308,8 @@ How to compile GLib itself
       </formalpara>
 
       <formalpara>
-        <title><systemitem>--disable-included-printf</systemitem> and
-          <systemitem>--enable-included-printf</systemitem></title>
+         <title><systemitem>--disable-included-printf</systemitem> and
+           <systemitem>--enable-included-printf</systemitem></title>
 
         <para>
           By default the <command>configure</command> script will try
