@@ -1,3 +1,10 @@
+2002-11-02  Daniel Elstner  <daniel.elstner@gmx.net>
+
+	* glib/giochannel.c (g_io_channel_write_chars): Fix left_len
+	calculation in the from UTF-8 to UTF-8 case: left_len should
+	be the number of bytes left in the input buffer rather than
+	channel->write_buf. (#96373)
+
 2002-10-27  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in (G_MODULE_LDFLAGS): Don't set on Win32, only causes
