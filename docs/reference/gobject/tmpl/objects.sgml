@@ -162,55 +162,64 @@ Installs a new property. This is usually done in the class initializer.
 
 <!-- ##### FUNCTION g_object_class_find_property ##### -->
 <para>
-
+Looks up the #GParamSpec for a property of a class.
 </para>
 
-@oclass: 
-@property_name: 
-@Returns: 
+@oclass: a #GObjectClass
+@property_name: the name of the property to look up
+@Returns: the #GParamSpec for the property, or %NULL if the class doesn't have
+a property of that name
 
 
 <!-- ##### FUNCTION g_object_class_list_properties ##### -->
 <para>
-
+Returns an array of #GParamSpec* for all properties of a class.
 </para>
 
-@oclass: 
-@n_properties: 
-@Returns: 
+@oclass: a #GObjectClass
+@n_properties: return location for the length of the returned array
+@Returns: an array of #GParamSpec* which should be freed after use
 
 
 <!-- ##### FUNCTION g_object_new ##### -->
 <para>
-
+Creates a new instance of a #GObject subtype and sets its properties.
+</para>
+<para>
+Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+which are not explicitly specified are set to their default values.
 </para>
 
-@object_type: 
-@first_property_name: 
-@Varargs: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
+@object_type: the type id of the #GObject subtype to instantiate
+@first_property_name: the name of the first property
+@Varargs: the value of the first property, followed optionally by more
+     name/value pairs, followed by %NULL
+@Returns: a new instance of @object_type
 
 
 <!-- ##### FUNCTION g_object_newv ##### -->
 <para>
-
+Creates a new instance of a #GObject subtype and sets its properties.
+</para>
+<para>
+Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+which are not explicitly specified are set to their default values.
 </para>
 
-@object_type: 
-@n_parameters: 
-@parameters: 
-@Returns: 
+@object_type: the type id of the #GObject subtype to instantiate
+@n_parameters: the length of the @parameters array
+@parameters: an array of #GParameter
+@Returns: a new instance of @object_type
 
 
 <!-- ##### STRUCT GParameter ##### -->
 <para>
-
+The <structname>GParameter</structname> struct is an auxiliary structure used
+to hand parameter name/value pairs to g_object_newv().
 </para>
 
-@name: 
-@value: 
+@name: the parameter name
+@value: the parameter value
 
 <!-- ##### FUNCTION g_object_ref ##### -->
 <para>
@@ -358,7 +367,7 @@ equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNE
 </informalexample>
 
 @object: a #GObject
-@signal_spec: the spec for the first signal 
+@signal_spec: the spec for the first signal
 @Varargs: #GCallback for the first signal, followed by data for the first signal, 
           followed optionally by more signal spec/callback/data triples, 
           followed by %NULL
@@ -376,7 +385,7 @@ means to disconnect any signal with matching callback and data, or
 </para>
 
 @object: a #GObject
-@signal_spec: the spec for the first signal 
+@signal_spec: the spec for the first signal
 @Varargs: #GCallback for the first signal, followed by data for the first signal, 
           followed optionally by more signal spec/callback/data triples, 
           followed by %NULL
@@ -395,8 +404,37 @@ Sets properties on an object.
 
 <!-- ##### FUNCTION g_object_get ##### -->
 <para>
-Gets properties of an object. 
+Gets properties of an object.
 </para>
+<para>
+In general, a copy is made of the property contents and the caller is
+responsible for freeing the memory in the appropriate manner for the type, 
+for instance by calling g_free() or g_object_unref().
+</para>
+<example>
+<title>Using g_object_get(<!-- -->)</title>
+<para>
+An example of using g_object_get() to get the contents
+of three properties - one of type #G_TYPE_INT,
+one of type #G_TYPE_STRING, and one of type #G_TYPE_OBJECT:
+</para>
+<programlisting>
+ gint intval;
+ gchar *strval;
+ GObject *objval; 
+ 
+ g_object_get (my_object,
+               "intproperty", &amp;intval,
+               "strproperty", &amp;strval,
+               "objproperty", &amp;objval,
+               NULL);
+
+ /* Do something with intval, strval, objval */
+ 
+ g_free (strval);
+ g_object_unref (objval);
+</programlisting>
+</example>
 
 @object: a #GObject
 @first_property_name: name of the first property to get
@@ -580,6 +618,14 @@ Sets a property on an object.
 <para>
 Gets a property of an object.
 </para>
+<para>
+In general, a copy is made of the property contents and the caller is
+responsible for freeing the memory in the appropriate manner for the type, 
+for instance by calling g_free() or g_object_unref(). 
+</para>
+<para>
+See g_object_get().
+</para>
 
 @object: a #GObject
 @property_name: the name of the property to get
@@ -588,13 +634,18 @@ Gets a property of an object.
 
 <!-- ##### FUNCTION g_object_new_valist ##### -->
 <para>
-
+Creates a new instance of a #GObject subtype and sets its properties.
+</para>
+<para>
+Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY) 
+which are not explicitly specified are set to their default values.
 </para>
 
-@object_type: 
-@first_property_name: 
-@var_args: 
-@Returns: 
+@object_type: the type id of the #GObject subtype to instantiate
+@first_property_name: the name of the first property
+@var_args: the value of the first property, followed optionally by more
+     name/value pairs, followed by %NULL
+@Returns: a new instance of @object_type
 
 
 <!-- ##### FUNCTION g_object_set_valist ##### -->
@@ -611,6 +662,14 @@ Sets properties on an object.
 <!-- ##### FUNCTION g_object_get_valist ##### -->
 <para>
 Gets properties of an object. 
+</para>
+<para>
+In general, a copy is made of the property contents and the caller is
+responsible for freeing the memory in the appropriate manner for the type, 
+for instance by calling g_free() or g_object_unref().
+</para>
+<para>
+See g_object_get().
 </para>
 
 @object: a #GObject
@@ -638,30 +697,24 @@ as closure data.
 
 <!-- ##### FUNCTION g_object_run_dispose ##### -->
 <para>
-
+Releases all references to other objects. This can be used to break 
+reference cycles.
 </para>
+<note><para>
+This functions should only be called from object system implementations.
+</para></note>
 
-@object: 
-
-
-<!-- ##### MACRO G_OBJECT_WARN_INVALID_PSPEC ##### -->
-<para>
-
-</para>
-
-@object: 
-@pname: 
-@property_id: 
-@pspec: 
+@object: a #GObject
 
 
 <!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->
 <para>
-
+This macros should be used to emit a standard warning about unexpected 
+properties in set_property() and get_property() implementations.
 </para>
 
-@object: 
-@property_id: 
-@pspec: 
+@object: the #GObject on which set_property() or get_property() was called
+@property_id: the numeric id of the property
+@pspec: the #GParamSpec of the property
 
 

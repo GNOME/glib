@@ -879,10 +879,10 @@ Cast a #GParamSpec instance into a #GParamSpecEnum.
 
 <!-- ##### MACRO G_VALUE_HOLDS_ENUM ##### -->
 <para>
-
+Return whether the given #GValue can hold values derived from type %G_TYPE_ENUM.
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_ENUM ##### -->
@@ -951,10 +951,10 @@ Cast a #GParamSpec instance into a #GParamSpecChar.
 
 <!-- ##### MACRO G_VALUE_HOLDS_FLAGS ##### -->
 <para>
-
+Returns whether the given #GValue can hold values derived from type %G_TYPE_FLAGS.
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_FLAGS ##### -->
@@ -1023,10 +1023,10 @@ Casts a #GParamSpec instance into a #GParamSpecString.
 
 <!-- ##### MACRO G_VALUE_HOLDS_STRING ##### -->
 <para>
-
+Return whether the given #GValue can hold values of type %G_TYPE_STRING.
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_STRING ##### -->
@@ -1131,10 +1131,10 @@ Casts a #GParamSpec instance into a #GParamSpecParam.
 
 <!-- ##### MACRO G_VALUE_HOLDS_PARAM ##### -->
 <para>
-
+Return whether the given #GValue can hold values derived from type %G_TYPE_PARAM.
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_PARAM ##### -->
@@ -1230,7 +1230,6 @@ The #GType of #GParamSpecBoxed.
 </para>
 
 
-
 <!-- ##### STRUCT GParamSpecBoxed ##### -->
 <para>
 A #GParamSpec derived structure that contains the meta data for boxed properties.
@@ -1322,10 +1321,11 @@ Casts a #GParamSpec instance into a #GParamSpecPointer.
 
 <!-- ##### MACRO G_VALUE_HOLDS_POINTER ##### -->
 <para>
+Return whether the given #GValue can hold values of type %G_TYPE_POINTER.
 
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_POINTER ##### -->
@@ -1390,10 +1390,10 @@ Casts a #GParamSpec instance into a #GParamSpecObject.
 
 <!-- ##### MACRO G_VALUE_HOLDS_OBJECT ##### -->
 <para>
-
+Return whether the given #GValue can hold values derived from type %G_TYPE_OBJECT.
 </para>
 
-@value: 
+@value: a valid #GValue structure
 
 
 <!-- ##### MACRO G_TYPE_PARAM_OBJECT ##### -->

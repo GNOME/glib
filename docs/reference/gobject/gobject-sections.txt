@@ -234,9 +234,9 @@ g_object_set_valist
 g_object_get_valist
 g_object_watch_closure
 g_object_run_dispose
-G_OBJECT_WARN_INVALID_PSPEC
 G_OBJECT_WARN_INVALID_PROPERTY_ID
 <SUBSECTION Private>
+G_OBJECT_WARN_INVALID_PSPEC
 GObjectConstructParam
 </SECTION>
 
