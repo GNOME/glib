@@ -3325,11 +3325,11 @@ guint           g_thread_pool_get_num_unused_threads (void);
 /* Stop all currently unused threads, but leave the limit untouched */
 void            g_thread_pool_stop_unused_threads    (void);
 
-#include <gunicode.h>
-#include <gerror.h>
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#include <gunicode.h>
+#include <gerror.h>
 
 #endif /* __G_LIB_H__ */

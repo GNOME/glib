@@ -1,3 +1,9 @@
+2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule.h: include glib.h before doing extern "C". Makes some C++
+	compiler happy. Reported by Denis Vakatov
+	<vakatov@peony.nlm.nih.gov>.
+
 2000-07-19  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-win32.c: Don't #include <tlhelp32.h> when compiling with

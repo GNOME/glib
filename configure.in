@@ -399,7 +399,7 @@ fi
 AC_MSG_CHECKING(for sys_siglist)
 AC_TRY_LINK(, [
 extern char *sys_siglist[];
-strlen (sys_siglist[0]);
+exit (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
@@ -1113,10 +1113,6 @@ case "$CONFIG_OTHER" in
 #ifndef GLIBCONFIG_H
 #define GLIBCONFIG_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 _______EOF
 
 	if test x$glib_limits_h = xyes; then
@@ -1136,6 +1132,10 @@ _______EOF
 	fi
 
 	cat >> $outfile <<_______EOF
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 #define G_MINFLOAT	$glib_mf
 #define G_MAXFLOAT	$glib_Mf

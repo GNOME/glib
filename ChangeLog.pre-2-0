@@ -1,3 +1,9 @@
+2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in, glib.h: glibconfig.h and glib.h now include files
+	outside of the extern "C" block. Makes some C++ compiler
+	happy. Reported by Denis Vakatov <vakatov@peony.nlm.nih.gov>.
+
 Sat Jul 15 23:49:03 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib.texi: Remove incomplete start of info file -
