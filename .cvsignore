@@ -1,0 +1,17 @@
+*.lo
+Makefile
+Makefile.in
+configure
+aclocal.m4
+.deps
+_libs
+libglib-1.1.la
+config.log
+glibconfig.h
+glib.h
+libtool
+config.status
+stamp-h
+.libs
+testglib
+config.cache

@@ -1,0 +1,221 @@
+# Process this file with autoconf to produce a configure script.
+AC_INIT(glist.c)
+
+# Save this value here, since automake will set cflags later
+cflags_set=${CFLAGS+set}
+
+# Making releases:
+#   GLIB_MICRO_VERSION += 1;
+#   GLIB_INTERFACE_AGE += 1;
+#   GLIB_BINARY_AGE += 1;
+# if any functions have been added, set GLIB_INTERFACE_AGE to 0.
+# if backwards compatibility has been broken,
+# set GLIB_BINARY_AGE and GLIB_INTERFACE_AGE to 0.
+#
+GLIB_MAJOR_VERSION=1
+GLIB_MINOR_VERSION=1
+GLIB_MICRO_VERSION=0
+GLIB_INTERFACE_AGE=0
+GLIB_BINARY_AGE=0
+GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
+AC_SUBST(GLIB_VERSION)
+
+# libtool versioning
+LT_RELEASE=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION
+LT_CURRENT=`expr $GLIB_MICRO_VERSION - $GLIB_INTERFACE_AGE`
+LT_REVISION=$GLIB_INTERFACE_AGE
+LT_AGE=`expr $GLIB_BINARY_AGE - $GLIB_INTERFACE_AGE`
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+VERSION=$GLIB_VERSION
+PACKAGE=glib
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+# Specify a configuration file
+AM_CONFIG_HEADER(glibconfig.h)
+
+AC_DEFINE_UNQUOTED(GLIB_MAJOR_VERSION, $GLIB_MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(GLIB_MINOR_VERSION, $GLIB_MINOR_VERSION)
+AC_DEFINE_UNQUOTED(GLIB_MICRO_VERSION, $GLIB_MICRO_VERSION)
+
+dnl Initialize libtool
+AM_PROG_LIBTOOL
+
+dnl Initialize maintainer mode
+AM_MAINTAINER_MODE
+
+AC_CANONICAL_HOST
+
+AC_ARG_ENABLE(debug, [  --enable-debug=[no/minimum/yes] turn on debugging [default=minimum]],,enable_debug=minimum)
+AC_ARG_ENABLE(mem_check, [  --enable-mem-check=[no/yes] turn on malloc/free sanity checking [default=no]],,enable_mem_check=no)
+AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile=[no/yes] turn on malloc profiling atexit [default=no]],,enable_mem_profile=no)
+
+AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
+		    , enable_ansi=no)
+
+echo -n "Enabling memory checking... "
+if test "x$enable_mem_check" = "xyes"; then
+  AC_DEFINE(ENABLE_MEM_CHECK, 1)
+  AC_SUBST(ENABLE_MEM_CHECK)
+  echo "yes"
+else
+  echo "no"
+fi
+
+echo -n "Enabling memory profiling... "
+if test "x$enable_mem_profile" = "xyes"; then
+  AC_DEFINE(ENABLE_MEM_PROFILE, 1)
+  AC_SUBST(ENABLE_MEM_PROFILE)
+  echo "yes"
+else
+  echo "no"
+fi
+
+if test "x$enable_debug" = "xyes"; then
+  test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
+  CFLAGS="$CFLAGS -DG_ENABLE_DEBUG"
+else
+  if test "x$enable_debug" = "xno"; then
+    CFLAGS="$CFLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
+  fi
+fi
+
+AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}")
+
+# Checks for programs.
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_PROG_INSTALL
+
+if eval "test x$GCC = xyes"; then
+  if eval test -z \"`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`\" ; then
+    CFLAGS="$CFLAGS -Wall"
+  fi
+
+  if eval "test x$enable_ansi = xyes"; then
+    if eval test -z \"`echo "$CFLAGS" | grep "\-ansi" 2> /dev/null`\" ; then
+      CFLAGS="$CFLAGS -ansi"
+    fi
+
+    if eval test -z \"`echo "$CFLAGS" | grep "\-pedantic" 2> /dev/null`\" ; then
+      CFLAGS="$CFLAGS -pedantic"
+    fi
+  fi
+fi
+
+# Checks for header files.
+AC_HEADER_STDC
+
+# Checks for library functions.
+AC_FUNC_VPRINTF
+
+AC_CHECK_FUNCS(atexit on_exit)
+
+AC_CHECK_SIZEOF(char)
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(void *)
+
+# long doubles were not used, and a portability problem 
+# AC_C_LONG_DOUBLE
+AC_C_CONST
+AC_C_INLINE
+
+AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
+AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
+AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
+
+# Check for strerror, strsignal, memmove, vsnprintf, and strcasecmp functions
+AC_CHECK_FUNCS(strerror strsignal memmove vsnprintf strcasecmp)
+
+# Check for sys_errlist
+AC_MSG_CHECKING(sys_errlist)
+AC_TRY_LINK(, [
+extern char *sys_errlist[];
+extern int sys_nerr;
+sys_errlist[sys_nerr-1][0] = 0;
+], glib_ok=yes, glib_ok=no)
+AC_MSG_RESULT($glib_ok)
+if test $glib_ok = no; then
+    AC_DEFINE(NO_SYS_ERRLIST)
+fi
+
+# Check for sys_siglist
+AC_MSG_CHECKING(sys_siglist)
+AC_TRY_LINK(, [
+extern char *sys_siglist[];
+sys_siglist[1][0] = 0;
+], glib_ok=yes, glib_ok=no)
+AC_MSG_RESULT($glib_ok)
+if test $glib_ok = no; then
+    AC_DEFINE(NO_SYS_SIGLIST)
+fi
+
+# Check for sys/select.h
+
+AC_MSG_CHECKING([fd_set and sys/select])
+AC_TRY_COMPILE([#include <sys/types.h>],
+        [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
+if test $gtk_ok = no; then
+    AC_HEADER_EGREP(fd_mask, sys/select.h, gtk_ok=yes)
+    if test $gtk_ok = yes; then
+        AC_DEFINE(HAVE_SYS_SELECT_H)
+    fi
+fi
+AC_MSG_RESULT($gtk_ok)
+if test $gtk_ok = no; then
+    AC_DEFINE(NO_FD_SET)
+fi
+
+# This stuff is here, only so that we can define these
+# things in glibconfig.h. If ../config.h was installed
+# (under some other name?) then the definitions would
+# belong there. (They are only used in GDK)
+
+# Check for wchar.h
+
+AC_MSG_CHECKING(for wchar.h)
+AC_TRY_CPP([#include <wchar.h>], gtk_ok=yes, gtk_ok=no)
+if test $gtk_ok = yes; then
+   AC_DEFINE(HAVE_WCHAR_H)
+fi
+AC_MSG_RESULT($gtk_ok)
+
+# Check for wctype.h (for iswalnum)
+
+AC_MSG_CHECKING(for wctype.h)
+AC_TRY_CPP([#include <wctype.h>], gtk_ok=yes, gtk_ok=no)
+if test $gtk_ok = yes; then
+   AC_DEFINE(HAVE_WCTYPE_H)
+fi
+AC_MSG_RESULT($gtk_ok)
+
+# The following is necessary for Linux libc-5.4.38
+
+AC_MSG_CHECKING(if iswalnum() and friends are properly defined)
+AC_TRY_LINK([#include <stdlib.h>],[
+#if (defined(HAVE_WCTYPE_H) || defined(HAVE_WCHAR_H))
+#  ifdef HAVE_WCTYPE_H
+#    include <wctype.h>
+#  else
+#    ifdef HAVE_WCHAR_H
+#      include <wchar.h>
+#    endif
+#  endif
+#else
+#  define iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
+#endif
+iswalnum((wchar_t) 0);
+], gtk_ok=yes, gtk_ok=no)
+
+if test $gtk_ok = no; then
+   AC_DEFINE(HAVE_BROKEN_WCTYPE)
+fi
+AC_MSG_RESULT($gtk_ok)
+
+AC_OUTPUT([Makefile glib-config],[chmod +x glib-config])

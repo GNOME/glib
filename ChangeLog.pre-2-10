@@ -1,0 +1,443 @@
+Wed Jun 10 12:56:07 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* glib.h: renamed g_const_pointer => gconstpointer
+
+Tue Jun  9 17:47:33 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* glib.h: Remove #error - HP/UX.
+
+Sat May 23 19:00:01 1998  Owen Taylor  <otaylor@gtk.org>
+  [ Combination of:
+     gtk-rrh-980412-0.patch (Raja R Harinath <harinath@cs.umn.edu>)
+     gtk-jbuhler-980516-0 (Jeremy Buhler <jbuhler@cs.washington.edu>) ]
+	
+	* glib.h ghash.c gstring.c gdataset.c gutils.c:
+	- Added new typedef g_const_pointer; expunged all incorrect
+	  uses of 'const gpointer'.
+	- Fixed up warnings that that created,
+	- Changed GHashFunc and GCompareFunc to take g_const_pointer
+	  arguments. (Necessary, but will cause warnings in existing
+	  code until fixed)
+	- Added other new const in harmless positions.
+
+Mon Jun  8 01:06:47 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: added enum-helper macros for code generation.
+	added G_BREAKPOINT().
+
+Sat Jun  6 14:09:22 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* gmem.c: commented out MEM_PROFILE and MEM_CHECK, causing weird
+	problems
+
+Wed Jun  3 06:19:42 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (g_chunk_new0): convenience macro, for allocating small chunks 
+	like g_chunk_new() with additional 0 initialization.
+
+Mon Jun  1 04:43:27 1998  Tim Janik  <timj@gtk.org>
+
+	* ghash.c (g_hash_table_insert): wrote a comment describing why
+	a hash node's key should not also get replaced when overriding
+ 	previous entries.
+
+Tue May 26 18:30:06 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (g_string_sized_new): new function to controll the preallocated
+	size of a GString.
+
+	* glib.h (g_strreversed): new function to reverse a string.
+
+Mon May 18 22:14:39 1998  Owen Taylor  <otaylor@gtk.org>
+(Yasuhiro SHIRASAKI <joke@awa.tohoku.ac.jp> : gtk-joke-980517-0.patch)
+	
+	* gutils.c: Restored a missing prototype for g_vsprintf.
+
+Wed May 20 05:02:26 1998  Tim Janik  <timj@gtk.org>
+
+        * glib.h: conditionally define NULL, FALSE and TRUE.
+        (g_mem_chunk_create): new convenience macro as a short hand for
+        g_mem_chunk_new().
+        (g_chunk_free): new convenience macro to be consistent with g_chunk_new.
+
+Tue, 19 May 1998 09:00:02 +0200  §Paolo Molaro <lupus@debian.org>
+
+	* gcompletion.c: generic functions for com<TAB>pletion...
+
+Sun May 17 10:48:27 1998  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): provide usefull default
+ 	specifications for identifier_spec and symbol_spec.
+
+	* glib.h: new functions g_slist_nth_data and g_list_nth_data to return
+ 	the data of the nth element in the list.
+
+Fri May 15 22:31:49 1998  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): removed spurious va_end(args)
+ 	that for some reason didn't produce a compiler wrning on my machine
+ 	(is va_end undefined for i386?).
+
+Fri May 15 12:32:08 1998  rodo  <doulik@karlin.mff.cuni.cz>
+
+	* gscanner.c: replaced some snprintf with g_snprintf
+
+Fri May 15 00:56:59 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: further support for gcc function attributes: G_GNUC_FORMAT,
+	G_GNUC_NORETURN and G_GNUC_CONST.
+
+	* gscanner.c (g_scanner_stat_mode): changed stat() to lstat().
+	(g_scanner_msg_handler): "\n" at end of line!
+	(g_scanner_foreach_symbol): new function to iterate over the symbol
+ 	table (GScanner does value-wrapping).
+
+Thu May 14 04:14:12 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: typedef gint gboolean;
+	this is needed to provide portability with big-endian platforms (e.g.
+	try sizeof(bool) for c++ on big-endians - it's 4).
+	this is also needed to maintain some_union.d_gint==some_union.d_gboolean.
+ 	plus, gint to gboolean casts and vice versa need to be possible without
+ 	loss.
+
+Tue May 12 19:22:58 1998  Owen Taylor  <otaylor@gtk.org>
+
+ 	* glib/glib.h: Added macros G[U]INT_TO_POINTER() and
+	GPOINTER_TO_[U]INT for storing small integers integers
+	inside pointers. 
+	
+	* glib/testglib.c: Print sizeof() results
+	as g_print("%ld", (glong)sizeof(foo)), to deal with
+	size_t being long on Alpha's.
+
+Tue May 12 16:54:15 1998  Owen Taylor  <otaylor@gtk.org>
+	(James A <jamesa@demon.net> : gtk-jamesa-980511-4.patch)
+	
+	* glib.h gstring.c gmessages.c: Added some missing
+	const to arguments.
+
+	* gutils.c (g_strsignal.c): Added missing return statements.
+
+Mon May 11 21:11:54 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* gutils.c gmessages.c: Moved g_error, g_warning, g_message and
+	g_print from gutils.c to new file gmessages.c, to avoid having to
+	include <unistd.h> in gutils.c which was causing problems for the
+	g_strsignal implementation on FreeBSD boxes.
+
+Mon May 11 09:53:43 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: preserve automake CFLAGS.
+
+	* Makefile.am: fully rename the created library to libglib-1.1.la.
+	this means we need to change certain portions of the Makefile.am on
+	major/minor version bumps.
+
+	* ltmain.sh: the -release option is not required anymore.
+
+        * glib.h: provide G_GNUC_FUNCTION and G_GNUC_PRETTY_FUNCTION to
+	avoid conditionals. unconditionally define NULL, TRUE, FALSE, MAX,
+	MIN, ABS and CLAMP, these macros might be screwed from other headers.
+
+Mon May 11 01:44:10 1998  Tim Janik  <timj@gtk.org>
+
+	* gdataset.c: new file, gdatasets implement the object data
+	mechanism from GtkObject. a generic data pointer is associated with
+	a certain location and a key id.
+
+Sat May  9 20:08:12 1998  Owen Taylor  <otaylor@gtk.org>
+
+        * glib/gmem.c: Experimentally restore GMemChunk
+        to its primeval state - where mem areas are
+        freed incrementally instead of searching the tree
+        every time a mem area is completely empty. Also,
+        always keep one mem chunk around. (Reduced calls
+        to malloc() a lot, but doesn't really improve
+        performance significiantly)
+
+Thu May  7 08:17:28 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (G_GNUC_PRINTF):
+	(G_GNUC_SCANF): macros to facilitate the printf/scanf format argument
+	checking of gcc.
+
+	* gstring.c: const corrections, string!=NULL checks at function entry.
+	(g_string_down): new function for tolower(3) conversion.
+	(g_string_up): new function for toupper(3) conversion.
+
+	* gutils.c: const corrections.
+	(g_strdown): g_string_down() counterpart.
+	(g_strup): g_string_up() counterpart.
+
+	* gscanner.c (g_scanner_unexp_token):
+ 	(g_scanner_error):
+	(g_scanner_warn): new functions to let a scanner put out warnings
+ 	or errors, especially to react on unexpected tokens.
+
+	* gslist.c:
+ 	(g_slist_index): find out about about the position of a
+	certain data pointer.
+ 	(g_slist_position): find out about about the position of a
+	certain node.
+
+	* glist.c:
+ 	(g_list_index): find out about about the position of a
+	certain data pointer.
+
+Thu May  7 05:14:19 1998  Tim Janik  <timj@gtk.org>
+
+	* ltmain.sh: added a new commandline flag -postfix similar to -release,
+	but will immediately change the library name.
+
+	* Makefile.am: specify -postfix and -version-info
+
+	* configure.in: version bump to 1.1.0. added GLIB_INTERFACE_AGE and
+	GLIB_BINARY_AGE. calculate LT_* variables for libtool.
+
+Fri May  1 16:36:08 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* gutils.c: (g_strcasecmp). Check for isupper before
+	taking tolower, and account for macroized tolower.
+
+	* gutils.c (g_error): Check for recursion.
+
+1998-04-27  Elliot Lee  <sopwith@cuc.ml.org>
+
+	* glist.c (g_list_position): New function to find the position of
+	a link in a list - should be the inverse of g_list_nth(), but
+	haven't tested it so poof.
+
+Thu Apr 30 21:41:30 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* gstring.c : Check arguments more carefully, 
+	(gtk-draco-980423-1.patch; ramsey@rhrk.uni-kl.de) 
+
+Tue Apr  7 19:36:48 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gutils.c (g_direct_compare): Removed, because that's what
+	a NULL comparison function means. And it wasn't 64 bit safe.
+
+Mon Apr  6 18:43:25 1998  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_get_token_ll): fixed a bug that caused floats
+	of the format ".xxx" to be parsed as "xxx".
+
+Fri Apr  3 20:36:35 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gutils.c (g_parse_debug_string): Make debug string
+	parsine case-insensitive
+
+Fri Apr  3 17:03:18 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* gstring.c: corrected possible overrun when inserting into
+	GStrings (thanks Elrond)
+
+Fri Apr  3 18:05:45 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* testglib.c: Removed literal german from strings
+	to appease SGI compiler.
+	
+Thu Mar 26 20:47:21 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* configure.in glib glibconfig.h.in: Add test for atexit/on_exit -
+	use on_exit if atexit not found in definition of ATEXIT.
+
+Wed Mar 25 15:23:37 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* Makefile.am: Switched glibconfig.h rule from HEADERS
+	to DATA, so that it is not added to DISTFILES
+
+Wed Mar 18 22:27:08 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* garray.c: g_rarray_truncate length done correctly
+
+Sun Mar 15 07:13:34 1998  Tim Janik  <timj@gimp.org>
+
+	* gutils.c: changed *_handler variables to be named glib_*_handler,
+	so you can easily access them from gdb.
+
+Sat Mar 14 17:47:43 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* Makefile.am: Don't refer to current directory as $(top_builddir)
+	to avoid confusing non-gmakes
+
+Sat Mar 14 01:37:35 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* Makefile.am (configincludedir): Moved glibconfig.h to
+          $(pkglibdir)/include
+
+Tue Mar 10 02:03:12 1998  Tim Janik  <timj@gimp.org>
+
+	* gscanner.c (g_scanner_destroy_symbol_table_entry): new function to
+	free symbol table entries upon destruction
+ 	(gtk-gronlund-980309-0.patch.gz).
+
+Mon Mar  9 15:02:21 1998  Tim Janik  <timj@gimp.org>
+
+	* glib.h: changed *_length functions to return guint.
+	changed *_nth functions to take guint as argument.
+
+	* glist.c: adapted g_list_length and g_list_length.
+
+	* gslist.c: adapted g_slist_length and g_slist_length.
+
+Mon Mar  2 17:51:18 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* glib.h gutils.c : changed g_strcasecmp
+	  to take gchar* not guchar*
+
+	* testglib.c: Remove trailing ; after functions
+	
+Sun Mar  1 19:04:40 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* glib.h gstring.c: Added g_string_insert[_c]()
+	  and g_string_erase().
+
+	  From: Stefan Wille  <1wille@vsys1.informatik.uni-hamburg.de>
+
+Mon Feb 16 23:05:06 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* glist.c (g_list_insert_sorted): Changed function
+	  so elements are always inserted, even if they compare
+	  equal with another.
+
+Thu Feb 12 22:48:11 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gstring.c glib.h: removed deprecated g_string_equal
+	  and g_string_hash.
+
+Tue Feb 10 13:04:36 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* configure.in: Add check to see if the C library's
+	  iswalnum can actually be used. (Not true for
+	  Linux libc-5.4.38)
+
+Sat Feb  7 11:48:09 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gstring.c gutils.c: added some additional consts in
+	  appropriate places to remove a warning
+
+Sat Feb  7 11:15:54 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gutils.c: include <ctype.h> for tolower()
+
+Fri Jan 30 23:57:17 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* added and autoconfigured in a new utility function
+	g_strcasecmp
+
+Wed Jan 28 23:53:27 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* glist.c
+	* gslist.c
+	* testglib.c: the sort functions compared backwards. Fixed
+	* glib.h: list iterator macros now check for NULL pointers
+
+Tue Jan 27 09:46:57 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* gstring.c: g_string_prepend and g_string_prepend_c had
+	interchanged src and dest parameters for g_memmove. Fixed.
+
+Tue Jan 27 01:38:52 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* gslist.c: fixed a really, really lame error. g_slist_insert
+	didn't hook the data in! Reworked the routine to reflect the
+	functionality of g_list
+
+Wed Jan 21 01:13:25 1998  Tim Janik  <timj@psynet.net>
+
+	* Applied patch from (Raja R Harinath <harinath@cs.umn.edu>)
+	  to add function g_snprintf.
+        * configure.in (AC_CHECK_FUNCS): Check for vsnprintf.
+        * glib.h: Add prototype for g_snprintf.
+        * glibconfig.h.in: Add HAVE_VSNPRINTF.
+        * gutils.c (g_snprintf): new function.
+
+Sat Jan 17 23:52:40 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* gstring.{c,h} gscanner.c:
+	   renamed g_string_equal => g_str_equal
+	   renamed g_string_hash => g_str_hash
+	  And const corrected. Old functions left in for now.
+	
+Fri Jan  9 20:03:46 1998  Tim Janik  <timj@psynet.net>
+
+	* gutils.c (g_strerror): changed message for EAGAIN from
+	"no more processes" to "try again" since EAGAIN is used with
+	functions else than fork().
+
+	* gscanner.c (g_scanner_get_token_ll): use strtol() instead of
+	strtoul() to avoid conflicts with solaris.
+
+	* merged the glib portions from Jan 2 to Jan 7 out of gtk+/ChangeLog
+ 	into this file.
+
+Wed Jan  7 02:14:30 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h:
+	* glist.c:
+	* gslist.c:
+	* testglib.c: Added g_[s]list_insert_sorted function
+	and appropriate tests in testglib
+
+Sat Jan  3 20:23:25 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* glib.h: Changed guint32 -> guint for bitfields.
+	(Bitfields must be int or unsigned int?)
+
+Fri Jan  2 23:52 PST 1998 Jay Painter <jpaint@serv.net>
+
+	* glib_pre1.h: 
+	* glib_pre2.h: 
+	* glib.h: reverted glibconfig.h and glib.h files back to the
+	way they were before my ugly hack.
+
+	* gscanner.c: removed inlines from clist and gscanner
+
+Tue Dec 23 02:49:51 1997  Tim Janik  <timj@psynet.net>
+
+	* gscanner.c: new file for GScanner: Flexible lexical scanner for
+ 	general purpose.
+	* glib_pre2.h: added GScanner includes. added g_strconcat and g_strtod.
+	gutils.c (g_strconcat): new function for string concatenation of NULL
+ 	terminated parameter list.
+	(g_strtod): new function to perform best string to double conversion
+	with or without consideration of the current locale.
+
+Mon Dec 15 19:33:58 1997  Tim Janik  <timj@psynet.net>
+
+	* glist.c: minor optimizations:
+ 	(g_list_append): `if' optimized for common code path, commented out
+ 	unneccessary `assert', saved one variable assignment.
+	(g_list_prepend): saved two (conditioned) variable assignment.
+	(g_list_insert): saved one  (conditioned) variable assignment,
+	saved one variable assignment.
+	(g_list_remove): `if' optimized for common code path, saved two
+	variable assignments by using `g_list_free_1' (which is even
+ 	faster) instead of `g_list_free'.
+	(g_list_reverse): saved allocation of one variable, saved one
+	variable assignment.
+
+Wed Dec 10 23:27:20 1997  Tim Janik  <timj@psynet.net>
+
+	* glib_pre1.h: 
+	* glib_pre2.h: 
+	* glib.h: this file now gets concatenated by makeglib_h from
+	glib_pre1.h and glib_pre2.h to merge in glibconfig.h wich got
+	created by configure (done by Jay Painter).
+
+	* glib_pre2.h: the g_assert*() and g_return_*_fail() macros
+	are wrapped by G_STMT_START and G_STMT_END now, to avoid conflicts
+	when used within if (...) g_macro(); else ... conditionals.
+	
+Tue Dec 17 13:14:07 1996  Peter Mattis  <pmattis@charnley.HIP.Berkeley.EDU>
+
+	* glib.h: Changed 'g_return_if_fail' and 'g_return_val_if_fail' to
+	not call 'g_string' but to simply stringify the
+	expression. Calling 'g_string' causes the expression to be
+	expanded which is undesired.
+
+Sun Dec  1 01:30:48 1996  Peter Mattis  <pmattis@charnley.HIP.Berkeley.EDU>
+
+	* Started ChangeLog
