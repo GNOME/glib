@@ -1,3 +1,7 @@
+2003-01-12  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add some missing entries. Thanks to Kenichi SUTO.
+
 2003-01-05  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Updates.

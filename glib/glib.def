@@ -19,6 +19,7 @@ EXPORTS
 	g_ascii_strdown
 	g_ascii_strncasecmp
 	g_ascii_strtod
+	g_ascii_strtoull
 	g_ascii_strup
 	g_ascii_table
 	g_ascii_tolower
@@ -342,6 +343,7 @@ EXPORTS
 	g_markup_escape_text
 	g_markup_parse_context_end_parse
 	g_markup_parse_context_free
+	g_markup_parse_context_get_element
 	g_markup_parse_context_get_position
 	g_markup_parse_context_new
 	g_markup_parse_context_parse
@@ -737,6 +739,7 @@ EXPORTS
 	g_utf8_strlen
 	g_utf8_strncpy
 	g_utf8_strrchr
+	g_utf8_strreverse
 	g_utf8_strup
 	g_utf8_to_ucs4
 	g_utf8_to_ucs4_fast
