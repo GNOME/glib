@@ -601,8 +601,11 @@ value if @s1 > @s2.
 
 <!-- ##### FUNCTION g_strreverse ##### -->
 <para>
-Reverses all of the characters in a string.
+Reverses all of the bytes in a string.
 For example, <literal>g_strreverse ("abcdef")</literal> will result in "fedcba".
+</para>
+<para>
+Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte characters.
 </para>
 
 @string: the string to reverse.

@@ -1,3 +1,7 @@
+2002-03-11  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Add a note about g_strreverse() and UTF-8.
+
 2002-02-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/Makefile.am (IGNORE_HFILES): Add gdebug.h.

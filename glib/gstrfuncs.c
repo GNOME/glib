@@ -257,22 +257,22 @@ g_strconcat (const gchar *string1, ...)
 /**
  * g_strtod:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-NULL, it returns the character after
+ * @endptr:  if non-%NULL, it returns the character after
  *           the last character used in the conversion.
  * 
- * Converts a string to a gdouble value.
+ * Converts a string to a #gdouble value.
  * It calls the standard strtod() function to handle the conversion, but
  * if the string is not completely converted it attempts the conversion
- * again with @g_ascii_strtod, and returns the best match.
+ * again with g_ascii_strtod(), and returns the best match.
  *
- * This function should seldom be used. The normal situation when reading
- * numbers not for human consumption is to use @g_ascii_strtod(). Only when
- * you know that you must expect both locale formated and C formated numbers
+ * This function should seldomly be used. The normal situation when reading
+ * numbers not for human consumption is to use g_ascii_strtod(). Only when
+ * you know that you must expect both locale formatted and C formatted numbers
  * should you use this. Make sure that you don't pass strings such as comma
  * separated lists of values, since the commas may be interpreted as a decimal
  * point in some locales, causing unexpected results.
  * 
- * Return value: the gdouble value.
+ * Return value: the #gdouble value.
  **/
 gdouble
 g_strtod (const gchar *nptr,
@@ -310,10 +310,10 @@ g_strtod (const gchar *nptr,
 /**
  * g_ascii_strtod:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-NULL, it returns the character after
+ * @endptr:  if non-%NULL, it returns the character after
  *           the last character used in the conversion.
  * 
- * Converts a string to a gdouble value.
+ * Converts a string to a #gdouble value.
  * This function behaves like the standard strtod() function
  * does in the C locale. It does this without actually
  * changing the current locale, since that would not be
@@ -322,20 +322,20 @@ g_strtod (const gchar *nptr,
  * This function is typically used when reading configuration
  * files or other non-user input that should be locale dependent.
  * To handle input from the user you should normally use the
- * locale-sensitive system strtod function.
+ * locale-sensitive system strtod() function.
  *
- * To convert from a string to double in a locale-insensitive
- * way, use @g_ascii_dtostr.
+ * To convert from a string to #gdouble in a locale-insensitive
+ * way, use g_ascii_dtostr().
  *
- * If the correct value would cause overflow, plus or minus HUGE_VAL
- * is returned (according to the sign of the value), and ERANGE is
- * stored in errno. If the correct value would cause underflow,
- * zero is returned and ERANGE is stored in errno.
+ * If the correct value would cause overflow, plus or minus %HUGE_VAL
+ * is returned (according to the sign of the value), and %ERANGE is
+ * stored in %errno. If the correct value would cause underflow,
+ * zero is returned and %ERANGE is stored in %errno.
  * 
- * This function resets errno before calling strtod() so that
+ * This function resets %errno before calling strtod() so that
  * you can reliably detect overflow and underflow.
  *
- * Return value: the gdouble value.
+ * Return value: the #gdouble value.
  **/
 gdouble
 g_ascii_strtod (const gchar *nptr,
@@ -467,13 +467,13 @@ g_ascii_strtod (const gchar *nptr,
  * g_ascii_dtostr:
  * @buffer: A buffer to place the resulting string in
  * @buf_len: The length of the buffer.
- * @d: The double to convert
+ * @d: The #gdouble to convert
  *
- * Converts a double to a string, using the '.' as
- * decimal_point. 
+ * Converts a #gdouble to a string, using the '.' as
+ * decimal point. 
  * 
  * This functions generates enough precision that converting
- * the string back using @g_strtod gives the same machine-number
+ * the string back using g_strtod() gives the same machine-number
  * (on machines with IEEE compatible 64bit doubles). It is
  * guaranteed that the size of the resulting string will never
  * be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes.
@@ -494,15 +494,15 @@ g_ascii_dtostr (gchar       *buffer,
  * @buf_len: The length of the buffer.
  * @format: The printf-style format to use for the
  *          code to use for converting. 
- * @d: The double to convert
+ * @d: The #gdouble to convert
  *
- * Converts a double to a string, using the '.' as
- * decimal_point. To format the number you pass in
+ * Converts a #gdouble to a string, using the '.' as
+ * decimal point. To format the number you pass in
  * a printf-style formating string. Allowed conversion
- * specifiers are eEfFgG. 
+ * specifiers are 'e', 'E', 'f', 'F', 'g' and 'G'. 
  * 
  * If you just want to want to serialize the value into a
- * string, use @g_ascii_dtostr.
+ * string, use g_ascii_dtostr().
  *
  * Return value: The pointer to the buffer with the converted string.
  **/
