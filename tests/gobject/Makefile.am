@@ -16,7 +16,9 @@ noinst_LTLIBRARIES = libtestgobject.la
 libtestgobject_la_SOURCES =	\
 	testcommon.h		\
 	testmarshal.h		\
-	testmarshal.c
+	testmarshal.c		\
+	testmodule.c		\
+	testmodule.h
 
 if CROSS_COMPILING
   glib_genmarshal=$(GLIB_GENMARSHAL)
@@ -44,6 +46,7 @@ LDADD = $(libgobject) libtestgobject.la
 
 test_programs =					\
 	accumulator				\
+	defaultiface				\
 	ifaceinit				\
 	override
 

@@ -1,3 +1,12 @@
+Thu Sep 25 15:43:08 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/gobject/testmodule.[ch] test/gobject/Makefile.am:
+	Dummy dynamic type module for testing type plugin code
+	and dynamic types.
+
+	* test/gobject/defaultiface.c: Test of g_default_interface_ref,
+	etc.
+
 2003-09-28  Gediminas Paulauskas  <menesis@delfi.lt>
 
     * configure.in: Added lt to ALL_LINGUAS.
