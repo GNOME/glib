@@ -1,5 +1,9 @@
 2005-03-10  Sven Neumann  <sven@gimp.org>
 
+	* tests/file-test.c: include <gstdio.h>.
+
+2005-03-10  Sven Neumann  <sven@gimp.org>
+
 	* glib/gfileutils.c (get_contents_stdio): delay memory allocation
 	until after the first read. Saves a bunch of reallocs. Also
 	increased the buffer size to 4096 bytes. (bug #165954)

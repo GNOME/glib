@@ -33,10 +33,11 @@
 #undef GLIB_COMPILATION
 #endif
 
-#include <stdio.h>
 #include <string.h>
 
 #include <glib.h>
+
+#include <gstdio.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
