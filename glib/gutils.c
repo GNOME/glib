@@ -425,7 +425,10 @@ g_get_current_dir (void)
 {
   gchar *buffer = NULL;
   gchar *dir = NULL;
-  static gulong max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
+  static gulong max_len = 0;
+
+  if (max_len == 0) 
+    max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
   
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.

@@ -1,3 +1,8 @@
+2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_current_dir): max_len can't be initialized
+	statically as it might call a function. So do it at first call.
+
 Tue Sep 26 2000 Elliot Lee <sopwith@redhat.com>
 	* glib.h: Add G_GNUC_PURE macro (but don't use it anywhere).
 
