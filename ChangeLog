@@ -1,3 +1,7 @@
+Thu Apr 24 19:12:05 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* autogen.sh (have_libtool): Accept libtool-1.5. (#111483)
+
 Mon Apr  7 13:40:28 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_loop_run): When waiting for
