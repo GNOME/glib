@@ -1,3 +1,13 @@
+Thu Jul 25 19:12:43 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_set_encoding): Clarify
+	that only one of the conditions listed in the docs
+	need to be true, not all of them. (#87176,
+	Sebastian Rittau)
+
+	* glib/giochannel.c (g_io_channel_read_line): Fix 
+	description of the return value. (#87754, Manuel Clos)
+
 Thu Jul 25 19:02:53 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_timeout_add): Remove reference
