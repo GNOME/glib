@@ -85,6 +85,11 @@ Key files allow only comments before the first group.
 <listitem><para>
 Key files are always encoded in UTF-8.
 </para></listitem>
+</para></listitem>
+<listitem><para>
+Key and Group names are case-sensitive, for example a group called
+<literal>[GROUP]</literal> is a different group from <literal>[group]</literal>.
+</para></listitem>
 </itemizedlist>
 </para>
 

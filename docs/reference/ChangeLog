@@ -1,3 +1,8 @@
+2005-01-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/keyfile.sgml: Add hint about group name 
+	case sensitivity.  (#163029, Bastien Nocera)
+
 2005-01-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Small addition. (#145158,
