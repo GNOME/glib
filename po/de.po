@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-03-07 04:05+0100\n"
+"POT-Creation-Date: 2001-03-30 10:31+0200\n"
 "PO-Revision-Date: 2001-03-07 04:04+0100\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -13,30 +13,30 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gconvert.c:95
+#: gconvert.c:97
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konvertierung von Zeichensatz `%s' nach `%s' wird nicht unterstützt"
 
-#: gconvert.c:99
+#: gconvert.c:101
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Konverter von `%s' nach `%s' konnte nicht geöffnet werden: `%s'"
 
-#: gconvert.c:214 gutf8.c:735 gutf8.c:1181
+#: gconvert.c:216 gutf8.c:751 gutf8.c:1197
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Byte-Sequenz in Konvertierungseingabe"
 
-#: gconvert.c:219 gconvert.c:444
+#: gconvert.c:221 gconvert.c:446
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler während der Konvertierung: %s"
 
-#: gconvert.c:239 gutf8.c:731 gutf8.c:931 gutf8.c:1072 gutf8.c:1177
+#: gconvert.c:241 gutf8.c:747 gutf8.c:947 gutf8.c:1088 gutf8.c:1193
 msgid "Partial character sequence at end of input"
 msgstr ""
 
-#: gconvert.c:419
+#: gconvert.c:421
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
@@ -51,34 +51,34 @@ msgstr "Fehler beim Lesen der Datei `%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei `%s' gelesen werden: %s"
 
-#: gfileutils.c:388 gfileutils.c:456
+#: gfileutils.c:389 gfileutils.c:457
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: %s"
 
-#: gfileutils.c:402
+#: gfileutils.c:403
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Attribute der Datei `%s' konnten nicht geholt werden: fstat() "
 "fehlgeschlagen: %s"
 
-#: gfileutils.c:428
+#: gfileutils.c:429
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: gfileutils.c:637
+#: gfileutils.c:638
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr "Vorlage `%s' ungültig, sollte `%s' nicht enthalten"
 
-#: gfileutils.c:649
+#: gfileutils.c:650
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Vorlage `%s' endet nicht auf XXXXXX"
 
-#: gfileutils.c:670
+#: gfileutils.c:671
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei `%s' konnte nicht erstellt werden: %s"
@@ -161,6 +161,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
+"'%s' ist kein gültiges Zeichen nach einem '<'-Zeichen; es darf keinen "
+"Elementnamen beginnen"
 
 #: gmarkup.c:1099
 #, c-format
@@ -168,12 +170,15 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
+"Seltsames Zeichen '%s', '>' erwartet um Start-Tag des Elements '%s' "
+"abzuschließen"
 
 #: gmarkup.c:1189
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
+"Seltsames Zeichen '%s', '=' erwartet nach Attributname '%s' des Elements '%s'"
 
 #: gmarkup.c:1230
 #, c-format
@@ -189,6 +194,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"Seltsames Zeichen '%s', Anführungszeichen nach dem Gleichheitszeichen "
+"erwartet, wenn Angabe von Wert für Attribut '%s' von Element '%s'"
 
 #: gmarkup.c:1431
 #, c-format
@@ -196,6 +203,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
+"'%s' ist kein gültiges Zeichen, das auf die Zeichen '</' folgt; '%s' darf "
+"keinen Elementnamen beginnen"
 
 #: gmarkup.c:1468
 #, c-format
@@ -206,6 +215,7 @@ msgstr "Element `%s' wurde geschlossen, kein Element ist derzeit offen"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
+"Element '%s' wurde geschlossen aber das derzeit offene Element ist '%s'"
 
 #: gmarkup.c:1488
 #, c-format
@@ -213,14 +223,16 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
+"'%s' ist kein gültiges Zeichen, das auf den Schließen-Elementnamen '%s' "
+"folgt; das erlaubte Zeichen ist '>'"
 
 #: gmarkup.c:1615
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "Dokument ist leer oder enthält nur Leerzeichen"
 
 #: gmarkup.c:1629
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Dokument endete unerwartet nach einer offenen eckigen Klammer '<'"
 
 #: gmarkup.c:1637 gmarkup.c:1680
 #, c-format
@@ -228,6 +240,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"Dokument endete unerwartet mit noch offenen Elementen - '%s' war das letzte "
+"offenen Element"
 
 #: gmarkup.c:1645
 #, c-format
@@ -235,14 +249,16 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
+"Dokument endete unerwartet, es wurde eine eckige Klammer '>', das den den "
+"Tag <%s/> schließt erwartet"
 
 #: gmarkup.c:1651
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
 #: gmarkup.c:1656
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Dokuement endete unerwartet innerhalb eines Attributnamens"
 
 #: gmarkup.c:1661
 msgid "Document ended unexpectedly inside an element-opening tag."
@@ -256,16 +272,18 @@ msgstr ""
 
 #: gmarkup.c:1673
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
 #: gmarkup.c:1688
 #, c-format
 msgid "Document ended unexpectedly inside the close tag forelement '%s'"
 msgstr ""
+"Dokument endete unerwartet innerhalb eines Schließen-Tags für Element '%s'"
 
 #: gmarkup.c:1694
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
+"Dokument endete unerwartet innerhalb eines Kommentars oder Vorgehensanweisung"
 
 #: gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -278,46 +296,51 @@ msgstr ""
 #: gshell.c:519
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr ""
+msgstr "Text endete nach einem ''-Zeichen. (Der Text war '%s'"
 
 #: gshell.c:526
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
+"Text endete vor passendem Anführungszeichen für %s gefunden wurde. (Der Text "
+"war '%s')"
 
 #: gshell.c:538
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
+msgstr "Text war leer (oder enthielt nur Leerzeichen)"
 
-#: gspawn-win32.c:213
+#: gspawn-win32.c:215
 msgid "Failed to read data from child process"
 msgstr "Daten konnten nicht vom Kindprozess gelesen werden"
 
-#: gspawn-win32.c:362
+#: gspawn-win32.c:364
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen von Kindprozess"
 
-#: gspawn-win32.c:838 gspawn.c:896
+#: gspawn-win32.c:840 gspawn.c:896
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Lesen von Kind-Weiterleitung (%s) fehlgeschlagen"
 
-#: gspawn-win32.c:927 gspawn.c:1102
+#: gspawn-win32.c:929 gspawn.c:1102
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Verzeichnis `%s' (%s) konnte nicht gewechselt werden"
+msgstr "In Verzeichnis `%s' (%s) konnte nicht gewechselt werden"
 
-#: gspawn-win32.c:936 gspawn.c:1112
+#: gspawn-win32.c:938 gspawn.c:1112
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kindprozess konnte nicht ausgeführt werden (%s)"
 
-#: gspawn-win32.c:977 gspawn.c:1209
+#: gspawn-win32.c:979 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
+"Weiterleitung für Kommunikation mit Kindprozess (%s) konnte nicht erzeugt "
+"werden"
 
 #: gspawn.c:158
 #, c-format
@@ -344,6 +367,7 @@ msgstr "Abspalten fehlgeschlagen (%s)"
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
+"Umleiten der Ausgabe oder Eingabe des Kindprozesses (%s) fehlgeschlagen"
 
 #: gspawn.c:1130
 #, c-format
@@ -358,15 +382,16 @@ msgstr "Unbekannter Fehler beim Verlassen des Kindprozesses"
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
+"Es konnten nicht genug Daten von Kind-PID-Weiterleitung (%s) gelesen werden"
 
-#: gutf8.c:810
+#: gutf8.c:826
 msgid "Character out of range for UTF-8"
 msgstr "Zeichen ausserhalb des Bereiches für UTF-8"
 
-#: gutf8.c:899 gutf8.c:908 gutf8.c:1040 gutf8.c:1049 gutf8.c:1191 gutf8.c:1287
+#: gutf8.c:915 gutf8.c:924 gutf8.c:1056 gutf8.c:1065 gutf8.c:1207 gutf8.c:1303
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Sequenz in Konvertierungseingabe"
 
-#: gutf8.c:1202 gutf8.c:1298
+#: gutf8.c:1218 gutf8.c:1314
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen ausserhalb des Bereiches für UTF-16"
