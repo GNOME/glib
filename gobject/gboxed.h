@@ -29,7 +29,6 @@ G_BEGIN_DECLS
 
 
 /* --- typedefs --- */
-typedef gpointer (*GBoxedInitFunc)	(void);
 typedef gpointer (*GBoxedCopyFunc)	(gpointer	 boxed);
 typedef void     (*GBoxedFreeFunc)	(gpointer	 boxed);
 
@@ -49,10 +48,8 @@ gpointer	g_value_dup_boxed		(const GValue	*value);
 
 /* --- convenience --- */
 GType	g_boxed_type_register_static		(const gchar	*name,
-						 GBoxedInitFunc	 boxed_init,
 						 GBoxedCopyFunc	 boxed_copy,
-						 GBoxedFreeFunc	 boxed_free,
-						 gboolean	 is_refcounted);
+						 GBoxedFreeFunc	 boxed_free);
 
 
 /* --- marshaller specific --- */

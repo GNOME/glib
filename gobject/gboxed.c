@@ -30,10 +30,8 @@
 typedef struct
 {
   GType		 type;
-  GBoxedInitFunc init;
   GBoxedCopyFunc copy;
   GBoxedFreeFunc free;
-  gboolean	 is_refcounted;
 } BoxedNode;
 
 
@@ -89,18 +87,6 @@ value_free (gpointer boxed)
 }
 
 static gpointer
-value_array_init (void)
-{
-  return g_value_array_new (0);
-}
-
-static gpointer
-gstring_init (void)
-{
-  return g_string_new ("");
-}
-
-static gpointer
 gstring_copy (gpointer boxed)
 {
   const GString *src_gstring = boxed;
@@ -143,38 +129,30 @@ g_boxed_type_init (void)  /* sync with gtype.c */
   /* boxed: G_TYPE_CLOSURE
    */
   type = g_boxed_type_register_static ("GClosure",
-				       (GBoxedInitFunc) NULL,
 				       (GBoxedCopyFunc) g_closure_ref,
-				       (GBoxedFreeFunc) g_closure_unref,
-				       TRUE);
+				       (GBoxedFreeFunc) g_closure_unref);
   g_assert (type == G_TYPE_CLOSURE);
 
   /* boxed: G_TYPE_VALUE
    */
   type = g_boxed_type_register_static ("GValue",
-				       (GBoxedInitFunc) NULL,
 				       value_copy,
-				       value_free,
-				       FALSE);
+				       value_free);
   g_assert (type == G_TYPE_VALUE);
 
   /* boxed: G_TYPE_VALUE_ARRAY
    */
   type = g_boxed_type_register_static ("GValueArray",
-				       value_array_init,	/* don't allow NULL values */
 				       (GBoxedCopyFunc) g_value_array_copy,
-				       (GBoxedFreeFunc) g_value_array_free,
-				       FALSE);
+				       (GBoxedFreeFunc) g_value_array_free);
   g_assert (type == G_TYPE_VALUE_ARRAY);
 
   /* boxed: G_TYPE_GSTRING
    * yes, the naming is a bit odd, but GString is obviously not G_TYPE_STRING
    */
   type = g_boxed_type_register_static ("GString",
-				       gstring_init,		/* don't allow NULL values */
 				       gstring_copy,
-				       gstring_free,
-				       FALSE);
+				       gstring_free);
   g_assert (type == G_TYPE_GSTRING);
 }
 
@@ -185,7 +163,7 @@ boxed_proxy_value_init (GValue *value)
 
   key.type = G_VALUE_TYPE (value);
   node = g_bsearch_array_lookup (&boxed_bsa, &key);
-  value->data[0].v_pointer = node->init ? node->init () : NULL;
+  value->data[0].v_pointer = NULL;
 }
 
 static void
@@ -234,13 +212,11 @@ boxed_proxy_collect_value (GValue      *value,
   key.type = G_VALUE_TYPE (value);
   node = g_bsearch_array_lookup (&boxed_bsa, &key);
 
-  /* for NULL values, we have to call GBoxedInitFunc */
   if (!collect_values[0].v_pointer)
-    value->data[0].v_pointer = node->init ? node->init () : NULL;
+    value->data[0].v_pointer = NULL;
   else
     {
-      /* never honour G_VALUE_NOCOPY_CONTENTS for ref-counted types */
-      if (!node->is_refcounted && (collect_flags & G_VALUE_NOCOPY_CONTENTS))
+      if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
 	{
 	  value->data[0].v_pointer = collect_values[0].v_pointer;
 	  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
@@ -281,10 +257,8 @@ boxed_proxy_lcopy_value (const GValue *value,
 
 GType
 g_boxed_type_register_static (const gchar   *name,
-			      GBoxedInitFunc boxed_init,
 			      GBoxedCopyFunc boxed_copy,
-			      GBoxedFreeFunc boxed_free,
-			      gboolean	     is_refcounted)
+			      GBoxedFreeFunc boxed_free)
 {
   static const GTypeValueTable vtable = {
     boxed_proxy_value_init,
@@ -323,10 +297,8 @@ g_boxed_type_register_static (const gchar   *name,
       BoxedNode key;
 
       key.type = type;
-      key.init = boxed_init;
       key.copy = boxed_copy;
       key.free = boxed_free;
-      key.is_refcounted = is_refcounted != FALSE;
       g_bsearch_array_insert (&boxed_bsa, &key, TRUE);
     }
 

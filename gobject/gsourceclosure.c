@@ -31,10 +31,8 @@ g_io_channel_get_type (void)
   
   if (our_type == 0)
     our_type = g_boxed_type_register_static ("GIOChannel",
-					     NULL,
 					     (GBoxedCopyFunc) g_io_channel_ref,
-					     (GBoxedFreeFunc) g_io_channel_unref,
-					     FALSE);
+					     (GBoxedFreeFunc) g_io_channel_unref);
 
   return our_type;
 }

@@ -1,3 +1,10 @@
+2001-09-10  Alex Larsson  <alexl@redhat.com>
+
+	* gobject/gboxed.[ch]:
+	* gobject/gsourceclosure.c:
+	Removed is_refcounted and GBoxedInitFunc from
+	g_boxed_type_register_static().
+
 Mon Sep 10 11:42:58 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutf8.c glib/gstring.c glib/gfileutils.c glib/gmain.c: 
