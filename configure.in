@@ -372,6 +372,7 @@ xyes) AC_DEFINE(G_HAVE___INLINE__,1,[Have __inline__ keyword])
 esac
 AC_CACHE_CHECK([for inline], glib_cv_hasinline,[
         AC_TRY_RUN([
+	#undef inline
 	inline int foo () { return 0; }
 	int main () { return foo (); }
        	],

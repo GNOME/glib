@@ -1,9 +1,13 @@
 2001-07-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: #undef inline before testing whether it works to
+	avoid false positives. Patch from Garry R. Osgood
+	<grosgood@rcn.com>. Fixes bug #58272.
+
 	* gmodule/gmodule.c (parse_libtool_archive): build the library
 	name ourselfs ... so we can load the library specified and not
 	mangle any name not beggining in 'lib'. Patch from Michael Meeks
-	<michael@ximian.com>.
+	<michael@ximian.com>. Fixes bug #58226.
 
 2001-07-29  Ron Steinke  <rsteinke@w-link.net>
 
