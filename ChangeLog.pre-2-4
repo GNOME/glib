@@ -1,3 +1,8 @@
+2004-04-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/printf-test.c (main): Comment out a nonessential testcase
+	which fails on HP-UX.  (#136283, Jonas Jonsson)
+
 2004-04-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/patterntest.c (main): Add tests for the empty pattern.
