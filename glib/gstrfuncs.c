@@ -433,7 +433,7 @@ g_ascii_strtod (const gchar *nptr,
 
       if (fail_pos)
 	{
-	  if (fail_pos > decimal_point_pos)
+	  if (fail_pos - copy > decimal_point_pos - nptr)
 	    fail_pos = (char *)nptr + (fail_pos - copy) - (decimal_point_len - 1);
 	  else
 	    fail_pos = (char *)nptr + (fail_pos - copy);

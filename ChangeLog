@@ -1,3 +1,11 @@
+Wed Nov 26 16:45:16 2003  Roozbeh Pournader  <roozbeh@sharif.edu>
+
+	* glib/gstrfuncs.c: Fixed a bad pointer comparison in
+	g_ascii_strtod that came up in fa_IR locale (#126640, Behdad
+	Esfahbod).
+
+	* tests/strtod-test.c: Fixed the tests to catch the above.
+
 ﻿Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
 
 	* glib/giowin32.c: Bind inter-thread comminication 

@@ -13,6 +13,14 @@ test_string (char *number, double res)
   char *locales[] = {"sv_SE", "en_US", "fa_IR", "C"};
   int l;
   char *end;
+  char *dummy;
+  
+  /* we try a copy of number, with some free space for malloc before that. 
+   * This is supposed to smash the some wrong pointer calculations. */
+
+  dummy = g_malloc (100000);
+  number = g_strdup (number);
+  g_free (dummy);
 
   for (l = 0; l < G_N_ELEMENTS (locales); l++)
     {
@@ -20,9 +28,11 @@ test_string (char *number, double res)
       d = g_ascii_strtod (number, &end);
       if (d != res)
 	g_print ("g_ascii_strtod for locale %s failed\n", locales[l]);
-      if (*end != 0)
+      if (end - number != strlen(number))
 	g_print ("g_ascii_strtod for locale %s endptr was wrong\n", locales[l]);
     }
+  
+  g_free (number);
 }
 
 
