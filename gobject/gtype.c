@@ -1163,6 +1163,21 @@ g_type_interface_add_prerequisite (GType interface_type,
   if (prerequisite_node->is_instantiatable)
     {
       guint i;
+      
+      for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
+	{
+	  TypeNode *prnode = lookup_type_node_L (IFACE_NODE_PREREQUISITES (iface)[i]);
+
+	  if (prnode->is_instantiatable)
+	    {
+	      g_warning ("adding prerequisite `%s' to interface `%s' conflicts with existing prerequisite `%s'",
+			 type_descriptive_name_L (prerequisite_type),
+			 type_descriptive_name_L (interface_type),
+			 type_descriptive_name_L (NODE_TYPE (prnode)));
+	      G_WRITE_UNLOCK (&type_rw_lock);
+	      return;
+	    }
+	}
 
       for (i = 0; i < prerequisite_node->n_supers + 1; i++)
 	type_iface_add_prerequisite_W (iface, lookup_type_node_L (prerequisite_node->supers[i]));
@@ -2584,10 +2599,30 @@ type_check_is_value_type_U (GType type)
   TypeNode *node;
 
   G_READ_LOCK (&type_rw_lock);
+ restart_check:
   node = lookup_type_node_L (type);
-  if (node && node->data && node->data->common.ref_count > 0 &&
-      node->data->common.value_table->value_init)
-    tflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
+  if (node)
+    {
+      if (node->data && node->data->common.ref_count > 0 &&
+	  node->data->common.value_table->value_init)
+	tflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
+      else if (NODE_IS_IFACE (node))
+	{
+	  guint i;
+
+	  for (i = 0; i < IFACE_NODE_N_PREREQUISITES (node); i++)
+	    {
+	      GType prtype = IFACE_NODE_PREREQUISITES (node)[i];
+	      TypeNode *prnode = lookup_type_node_L (prtype);
+
+	      if (prnode->is_instantiatable)
+		{
+		  type = prtype;
+		  goto restart_check;
+		}
+	    }
+	}
+    }
   G_READ_UNLOCK (&type_rw_lock);
 
   return !(tflags & G_TYPE_FLAG_VALUE_ABSTRACT);
@@ -2616,13 +2651,45 @@ GTypeValueTable*
 g_type_value_table_peek (GType type)
 {
   TypeNode *node;
-  GTypeValueTable *vtable = NULL;
+  GTypeValueTable *vtable;
   
   G_READ_LOCK (&type_rw_lock);
+ restart_table_peek:
   node = lookup_type_node_L (type);
-  if (node && node->data && node->data->common.ref_count > 0 &&
-      node->data->common.value_table->value_init)
+  if (!node)
+    {
+      g_warning ("type id `%u' is invalid", type);
+      G_READ_UNLOCK (&type_rw_lock);
+      return NULL;
+    }
+  if (!node->data || node->data->common.ref_count < 1)
+    {
+      g_warning ("can't peek value table for type `%s' which is not currently referenced",
+		 type_descriptive_name_L (type));
+      G_READ_UNLOCK (&type_rw_lock);
+      return NULL;
+    }
+  if (node->data->common.value_table->value_init)
     vtable = node->data->common.value_table;
+  else if (NODE_IS_IFACE (node))
+    {
+      guint i;
+
+      for (i = 0; i < IFACE_NODE_N_PREREQUISITES (node); i++)
+	{
+	  GType prtype = IFACE_NODE_PREREQUISITES (node)[i];
+	  TypeNode *prnode = lookup_type_node_L (prtype);
+
+	  if (prnode->is_instantiatable)
+	    {
+	      type = prtype;
+	      goto restart_table_peek;
+	    }
+	}
+      vtable = NULL;
+    }
+  else
+    vtable = NULL;
   G_READ_UNLOCK (&type_rw_lock);
   
   return vtable;

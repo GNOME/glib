@@ -364,7 +364,7 @@ generate_marshal (const gchar *signame,
 		  if (iarg->getter)
 		    a++;
 		}
-	      fprintf (fout, "  g_return_if_fail (n_param_values >= %u);\n", 1 + a);
+	      fprintf (fout, "  g_return_if_fail (n_param_values == %u);\n", 1 + a);
 	    }
 	}
 

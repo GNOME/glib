@@ -1040,7 +1040,7 @@ g_signal_newc (const gchar	 *signal_name,
   va_start (args, n_params);
 
   signal_id = g_signal_new_valist (signal_name, itype, signal_flags,
-                                   g_signal_type_cclosure_new (itype, class_offset),
+                                   class_offset ? g_signal_type_cclosure_new (itype, class_offset) : NULL,
 				   accumulator, accu_data, c_marshaller,
                                    return_type, n_params, args);
 
@@ -1069,6 +1069,7 @@ g_signal_newv (const gchar       *signal_name,
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   if (n_params)
     g_return_val_if_fail (param_types != NULL, 0);
+  g_return_val_if_fail ((return_type & G_SIGNAL_TYPE_STATIC_SCOPE) == 0, 0);
   if (return_type == (G_TYPE_NONE & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     g_return_val_if_fail (accumulator == NULL, 0);
   if (!accumulator)
@@ -1885,7 +1886,7 @@ signal_emit_R (SignalNode   *node,
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (SIGNALS, g_trace_instance_signals == instance || g_trap_instance_signals == instance)
     {
-      g_message ("%s::%s(%u) emitted (instance=%p signal-node=%p)\n",
+      g_message ("%s::%s(%u) emitted (instance=%p, signal-node=%p)",
 		 g_type_name (G_TYPE_FROM_INSTANCE (instance)),
 		 node->name, detail,
 		 instance, node);

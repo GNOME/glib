@@ -1,3 +1,20 @@
+Fri Mar  9 14:57:17 2001  Tim Janik  <timj@gtk.org>
+
+	* testgruntime.c: test program. covers run first/last/cleanup signal
+	handlers, return value accumulator, signal string returns, and
+	interface types in signal arguments.
+
+	* gtype.c (g_type_value_table_peek): for interface types without
+	value table, try looking up a value table from an instantiatable
+	prerequisite type (this is safe as an interface may only have
+	one instantiatable prerequisiste).
+	(type_check_is_value_type_U): same here.
+
+	* gsignal.c (g_signal_newv): assert that return types never have
+	G_SIGNAL_TYPE_STATIC_SCOPE set.
+	(g_signal_newc): only create class closure if the class_offset is not
+	0.
+
 Fri Mar  9 10:14:00 2001  Tim Janik  <timj@gtk.org>
 
 	* gparamspecs.c (g_param_spec_object): use g_type_is_a() to check
