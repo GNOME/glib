@@ -1,3 +1,8 @@
+Wed Aug 15 11:09:56 2001  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: let the generated .pc files depend on config.status,
+	so they get correctly remade.
+
 Sun Aug 12 21:05:13 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gmessages.h: fix g_return_if_fail, g_assert and friends to

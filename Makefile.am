@@ -62,6 +62,8 @@ stamp-gc-h: config.status
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gthread-2.0.pc
 
+$(pkgconfig_DATA): config.status
+
 glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
