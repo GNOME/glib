@@ -59,7 +59,7 @@ libgthread_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgthread_2_0_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
+libgthread_2_0_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS_FOR_GTHREAD@ $(libglib)
 
 libgthread_2_0_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@ @GTHREAD_DEF@
 

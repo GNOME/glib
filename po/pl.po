@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-02-28 16:49+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -29,8 +29,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nie można otworzyć konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "Niepoprawna sekwencja bajtów na wejściu konwersji"
 
@@ -40,8 +40,8 @@ msgstr "Niepoprawna sekwencja bajtów na wejściu konwersji"
 msgid "Error during conversion: %s"
 msgstr "Błąd podczas konwersji: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "Na końcu wejścia występuje sekwencja odpowiadająca części znaku"
 
@@ -90,48 +90,48 @@ msgstr "Niepoprawna nazwa komputera"
 msgid "Error opening directory '%s': %s"
 msgstr "Wystąpił błąd przy otwieraniu katalogu \"%s\": %s"
 
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nie można zaalokować %lu bajtów do odczytu pliku \"%s\""
 
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Wystąpił błąd przy odczycie pliku \"%s\": %s"
 
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nie można odczytać z pliku \"%s\": %s"
 
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nie można otworzyć pliku \"%s\": %s"
 
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Nie można uzyskać atrybutów pliku \"%s\": funkcja fstat() zwróciła błąd: %s"
 
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nie można otworzyć pliku \"%s\": funcja fdopen() zwróciła błąd: %s"
 
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Szablon \"%s\" jest niepoprawny, nie powinien on zawierać \"%s\""
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Szablon \"%s\" nie jest zakończony znakami XXXXXX"
 
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nie można stworzyć pliku \"%s\": %s"
@@ -448,27 +448,27 @@ msgstr ""
 "Przy odczycie danych z procesu potomnego w g_io_channel_win32_poll() "
 "wystąpił nieznany błąd"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nie można odczytać danych z potoku łączącego z procesem potomnym (%s)"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Nie można wykonać procesu potomnego (%s)"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nie można zmienić katalogu na \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nie można wykonać procesu potomnego (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nie można stworzyć potoku do komunikacji z procesem potomnym (%s)"
@@ -522,15 +522,15 @@ msgstr ""
 "Nie można odczytać odpowiedniej liczby danych z potoku do odczytu PID-u od "
 "procesu potomnego (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Niepoprawna sekwencja na wejściu konwersji"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -24,8 +24,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nisem mogel odpreti pretvornika iz '%s' v '%s': %s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neveljavna sekvenca bajtov na vhodu pretvorbe"
 
@@ -35,8 +35,8 @@ msgstr "Neveljavna sekvenca bajtov na vhodu pretvorbe"
 msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "Delna (nedokončana) sekvenca znakov na koncu vhoda"
 
@@ -84,47 +84,47 @@ msgstr "Neveljavno ime gostitelja"
 msgid "Error opening directory '%s': %s"
 msgstr "Napaka ob odpiranju imenika '%s': %s"
 
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nisem mogel rezervirati %lu bajtov za branje datoteke \"%s\""
 
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Napaka ob branju datoteke '%s': %s"
 
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nisem uspel brati iz datoteke '%s': %s"
 
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nisem uspel odpreti datoteke '%s': %s"
 
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nisem uspel dobiti atributov datoteke '%s': fstat() ni uspel: %s"
 
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nisem uspel odpreti datoteke '%s': fdopen() ni uspel: %s"
 
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablona '%s' je neveljavna, ne bi smela vsebovati '%s'"
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablona '%s' se ne konča z XXXXXX"
 
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nisem uspel ustvariti datoteke '%s' %s"
@@ -421,26 +421,26 @@ msgstr ""
 "Nepričakovana napaka v g_io_channel_win32_poll() med branjem podatkov "
 "procesa otroka"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nisem uspel brati iz cevi otroka (%s)"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 msgid "Failed to execute helper program"
 msgstr "Nisem uspel izvesti pomožnega programa "
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nisem uspel spremeniti imenika v '%s' (%s)"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nisem uspel izvesti procesa otroka (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nisem uspel ustvariti cevi za komunikacijo s procesom otroka (%s)"
@@ -491,15 +491,15 @@ msgstr "Neznana napaka med izvajanjem procesa otroka \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nisem uspel prebrati dovolj podatkov iz cevi otroka (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "Znak izven intervala za UTF-8"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Neveljavna sekvenca na vhodu pretvorbe"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak izven intervala za UTF-16"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2.x\n"
-"POT-Creation-Date: 2002-12-15 21:45+0100\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-11-25 10:59+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -441,26 +441,26 @@ msgstr ""
 "Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen aus dem "
 "Kindprozess"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lesen aus Weiterleitung zum Kind (%s) fehlgeschlagen"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 msgid "Failed to execute helper program"
 msgstr "Hilfsprogramm konnte nicht ausgeführt werden"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "In Verzeichnis »%s« (%s) konnte nicht gewechselt werden"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kindprozess konnte nicht ausgeführt werden (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""

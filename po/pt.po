@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-05-16 01:38+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -24,8 +24,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Incapaz de abrir conversor de '%s' para '%s': %s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequência de bytes inválida na entrada de conversão"
 
@@ -35,8 +35,8 @@ msgstr "Sequência de bytes inválida na entrada de conversão"
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "Sequência de caracteres parcial no final da entrada"
 
@@ -84,47 +84,47 @@ msgstr "Nome de servidor inválido"
 msgid "Error opening directory '%s': %s"
 msgstr "Erro ao abrir o directório '%s': %s"
 
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Incapaz de alocar %lu bytes para ler ficheiro \"%s\""
 
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Erro ao ler ficheiro '%s': %s"
 
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Falha ao ler do ficheiro '%s': %s"
 
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Falha ao abrir ficheiro '%s': %s"
 
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Falha ao obter atributos do ficheiro '%s': fstat() falhou: %s"
 
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Falha ao abrir ficheiro '%s': fdopen() falhou: %s"
 
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Modelo '%s' inválido, não deveria conter um '%s'"
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Modelo '%s' não termina com XXXXXX"
 
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falha ao criar ficheiro '%s': %s"
@@ -434,27 +434,27 @@ msgstr ""
 "Erro inesperado no g_io_channel_win32_poll() ao ler dados de um processo "
 "filho"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Falha ao executar processo filho (%s)"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para directório '%s' (%s)"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Falha ao executar processo filho (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com com processo filho (%s)"
@@ -504,15 +504,15 @@ msgstr "Erro desconhecido ao executar processo filho \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "Caracter fora do limite para UTF-8 "
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Sequência inválida na conversão da entrada"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Caracter fora do limite para UTF-16"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-12-03 17:03+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -25,8 +25,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nepodařilo se otevřít převaděč z %s do %s: %s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu"
 
@@ -36,8 +36,8 @@ msgstr "Neplatná posloupnost bajtů na vstupu"
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "Částečná sekvence znaků na konci vstupu"
 
@@ -85,47 +85,47 @@ msgstr "Neplatné jméno hostitele"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba při otevírání adresáře '%s': %s"
 
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepodařilo se alokovat %lu bytů pro přečtení souboru \"%s\""
 
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba čtení souboru '%s': %s"
 
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Chyba při čtení ze souboru '%s': %s"
 
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodařilo se otevřít soubor '%s': %s"
 
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodařilo se získat atributy souboru '%s': selhání fstat(): %s"
 
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodařilo se otevřít soubor '%s': selhání fdopen(): %s"
 
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablona '%s' je chybná, neměla by obsahovat '%s'"
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablona '%s' není ukončena pomocí XXXXXX"
 
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodařilo se vytvořit soubor '%s': %s"
@@ -424,26 +424,26 @@ msgid ""
 msgstr ""
 "Neočekávaná chyba v g_io_channel_win32_poll() při čtení dat z procesu potomka"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepodařilo se čtení z roury (%s)"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 msgid "Failed to execute helper program"
 msgstr "Nepodařilo se spustit pomocný program"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nepodařilo se změnit adresář '%s' (%s)"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Nepodařilo se spustit proces potomka (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nepodařilo se vytvořit rouru pro komunikaci s procesem potomka (%s)"
@@ -493,15 +493,15 @@ msgstr "Neznámá chyba při běhu procesu potomka \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nepodařilo se přečíst dostatek dat z roury potomka (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "Znak je mimo rozsah UTF-8"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Neplatná posloupnost na vstupu převodu"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"

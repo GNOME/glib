@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-08-18 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -24,8 +24,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' þÄ¢ÕóÐ `%s' ìÌ Á¡üÚõ ¿¢¨Ä Á¡üÈ¢¨Âò ¾¢Èì¸ ÓÊÂÅ¢ø¨Ä: %s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "¿¢¨Ä Á¡üÈ¢Â¢ý ¯ûÇ£ÎìÌ ¾ÅÈ¡É ¨Àð ÅÃ¢¨ºÓ¨È"
 
@@ -35,8 +35,8 @@ msgstr "¿¢¨Ä Á¡üÈ¢Â¢ý ¯ûÇ£ÎìÌ ¾ÅÈ¡É ¨Àð ÅÃ¢¨ºÓ�
 msgid "Error during conversion: %s"
 msgstr "Á¡üÚõ §À¡Ð À¢¨Æ: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "¯ûÇ£Êý ÓÊÅ¢ø â÷ò¾¢Â¡¸¡¾ ÅÃ¢ÔÕ ÅÃ¢¨ºÓ¨È"
 
@@ -84,47 +84,47 @@ msgstr "À¢¨ÆÂ¡É Å¢Õó§¾¡õÒô-¦ÀÂ÷"
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' «¨¼× ¾¢ÈìÌõ§À¡Ð À¢¨Æ: %s"
 
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu ¨ÀðÎ¸¨Ç \"%s\" §¸¡ôÒ Å¡º¢ôÀ¾üÌ ´Ðì¸¢¨Åì¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' §¸¡ôÒ Å¡º¢ìÌõ §À¡Ð À¢¨Æ: %s"
 
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' §¸¡ôÀ¢Ä¢ÕóÐ Å¡º¢ì¸ ÓÊÂÅ¢ø¨Ä: %s"
 
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' §¸¡ôÒ ¾¢Èì¸ ÓÊÂÅ¢ø¨Ä: %s"
 
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' §¸¡ôÀ¢ý ÀñÒ¸¨Ç ¦ÀÈÓÊÂÅ¢ø¨Ä: fstat() ¦¿¡ÊôÀ¨¼ó¾Ð: %s"
 
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' §¸¡ô¨À ¾¢Èì¸ ÓÊÂÅ¢ø¨Ä: fdopen() ¦¿¡ÊôÀ¨¼ó¾Ð: %s"
 
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' ÀÊÁ «îÍ ¦ºøÖÀÊÂ¡¸¡¾Ð; «¾É¢ø '%s' ­Õì¸ì Ü¼¡Ð"
 
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s' ÀÊÁ «îÍ XXXXXX ¦¸¡ñÎ ÓÊÅ¾¢ø¨Ä"
 
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' §¸¡ô¨À À¨¼ì¸ ÓÊÂÅ¢ø¨Ä: %s"
@@ -419,27 +419,27 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) §ºö ¸Æ¡öò ¦¾¡¼Ã¢ø ­ÕóÐ Å¡º¢ì¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "(%s) §ºö-¦ºÂ¨Ä ­Âì¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) «¨¼×ìÌ §À¡¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) §ºö-¦ºÂ¨Ä ­Âì¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) §ºö-¦ºÂÄ¢¼ý ¦¾¡¼÷Ò ¦¸¡øÄ ¸Æ¡öò-¦¾¡¼¨Ãô À¨¼ì¸ ÓÊÂÅ¢ø¨Ä"
@@ -489,15 +489,15 @@ msgstr "§ºö ¦ºÂÄ¸ò¨¾ ­ÂìÌõ§À¡Ð ¦¾Ã¢Â¡¾ À¢¨Æ"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 ìÌ ÅÃ¢ÔÕ Å£îÍ ±ø¨ÄìÌ ¦ÅÇ¢§Â"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ìÌ ÅÃ¢ÔÕ Å£îÍ ±ø¨ÄìÌ ¦ÅÇ¢§Â"

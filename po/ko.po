@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.4\n"
-"POT-Creation-Date: 2002-12-12 11:37+0900\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-12-12 11:42+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -25,8 +25,8 @@ msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s'에서 '%s'로 변환하는 변환기를 열수 없습니다 :%s"
 
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "변환 입력에서 잘못된 바이트 순서"
 
@@ -36,8 +36,8 @@ msgstr "변환 입력에서 잘못된 바이트 순서"
 msgid "Error during conversion: %s"
 msgstr "변환중 오류: %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "입력의 끝에서 부분적인 문자 순서"
 
@@ -432,26 +432,26 @@ msgstr ""
 "자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll() 에서 기대되지않"
 "은 오류"
 
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "자식 파이프로 부터 읽기 실패 (%s)"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 msgid "Failed to execute helper program"
 msgstr "도움 프로그램 실행 실패"
 
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "디렉토리 '%s'로 바꾸기 실패 (%s)"
 
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "자식 프로세스 실행 실패 (%s)"
 
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "자식 프로세스와 통신을 위한 파이프를 만드는 중 실패 (%s)"
@@ -502,15 +502,15 @@ msgstr "자식 프로세스 \"%s\"를 실행하는 중 알수없는 오류"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "자식 pid 파이프에서 필요한 데이타를 읽는 데 실패했습니다 (%s)"
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 범위 밖의 문자"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "변환 입력에서 잘못된 순서"
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"

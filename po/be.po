@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-11 18:06-0500\n"
+"POT-Creation-Date: 2002-12-16 17:42-0500\n"
 "PO-Revision-Date: 2002-11-20 17:52+0200\n"
 "Last-Translator: Ales Nyakhaychyk <i18n@infonet.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -30,8 +30,8 @@ msgstr "Ня атрымалася адчыніць пераўтваральні�
 # glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 # glib/gutf8.c:1320
 #: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 "Недапушчальная пасьлядоўнасьць байтаў для пераўтварэньня ў уваходным радку"
@@ -46,8 +46,8 @@ msgstr "Памылка пад час пераўтварэньня: %s"
 
 # glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 # glib/gutf8.c:1316
-#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
+#: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
 msgstr "Няпоўны сымбаль у канцы ўваходнага радка"
 
@@ -106,55 +106,55 @@ msgid "Error opening directory '%s': %s"
 msgstr "Памылка пад час адкрыцьця каталёгу \"%s\": %s"
 
 # glib/gfileutils.c:337 glib/gfileutils.c:402
-#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ня атрымалася разьмеркаваць %lu байтаў для чытаньня файлу \"%s\""
 
 # glib/gfileutils.c:348
-#: glib/gfileutils.c:393
+#: glib/gfileutils.c:395
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Памылка пад час чытаньня файлу \"%s\": %s"
 
 # glib/gfileutils.c:426
-#: glib/gfileutils.c:469
+#: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Збой пад час чытаньня з файлу \"%s\": %s"
 
 # glib/gfileutils.c:465 glib/gfileutils.c:533
-#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Збой пад час адкрыцьця файлу \"%s\": %s"
 
 # glib/gfileutils.c:479
-#: glib/gfileutils.c:530
+#: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Збой пад час атрыманьня атрыбутаў файлу \"%s\": збой fstat(): %s"
 
 # glib/gfileutils.c:505
-#: glib/gfileutils.c:556
+#: glib/gfileutils.c:558
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Збой пад час адкрыцьця файлу \"%s\": збой fdopen(): %s"
 
 # glib/gfileutils.c:712
-#: glib/gfileutils.c:763
+#: glib/gfileutils.c:765
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблён \"%s\" нядапушчальны, ня павінны ўтрымліваць \"%s\""
 
 # glib/gfileutils.c:724
-#: glib/gfileutils.c:775
+#: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблён \"%s\" сканчаецца не на XXXXXX"
 
 # glib/gfileutils.c:745
-#: glib/gfileutils.c:796
+#: glib/gfileutils.c:798
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Збой пад час стварэньня файлу \"%s\": %s"
@@ -505,30 +505,30 @@ msgstr ""
 "даньняў з працэса-нашчадка"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Збой пад час чытаньня даньняў з каналу нашчадка (%s)"
 
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:784
 msgid "Failed to execute helper program"
 msgstr "Памылка пад час выкананьня праграмы дапамогі"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Збой пад час зьмены каталёгу \"%s\" (%s)"
 
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:825
+#: glib/gspawn-win32.c:826
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка (%s)"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збой пад час стварэньня каналу для абмену з працэсам-нашчадкам (%s)"
@@ -591,18 +591,18 @@ msgstr ""
 "Збой пад час чытаньня патрэбнае колькасьці даньняў з канала нашчадку (%s)"
 
 # glib/gutf8.c:950
-#: glib/gutf8.c:950
+#: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
 msgstr "Сымбаль па-за дыяпазонам UTF-8"
 
 # glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 # glib/gutf8.c:1330 glib/gutf8.c:1426
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
+#: glib/gutf8.c:1362 glib/gutf8.c:1458
 msgid "Invalid sequence in conversion input"
 msgstr "Нядапушчальная пасьлядоўнасьць для пераўтварэньня"
 
 # glib/gutf8.c:1341 glib/gutf8.c:1437
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"

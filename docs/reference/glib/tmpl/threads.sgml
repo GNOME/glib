@@ -262,10 +262,6 @@ g_thread_join() is called for that thread.
 </para>
 </note>
 
-@func: the function executing in that thread
-@data: the argument to the function
-@joinable: is this thread joinable?
-@priority: the priority of the thread
 
 <!-- ##### FUNCTION g_thread_create ##### -->
 <para>
@@ -891,9 +887,6 @@ All of the <function>g_static_rec_mutex_*</function> functions can also
 be used, if g_thread_init() has not been called.
 </para>
 
-@mutex: 
-@depth: 
-@owner: 
 
 <!-- ##### MACRO G_STATIC_REC_MUTEX_INIT ##### -->
 <para>
@@ -1089,13 +1082,6 @@ a #GStaticMutex.
 </para>
 </note>
 
-@mutex: 
-@read_cond: 
-@write_cond: 
-@read_counter: 
-@write: 
-@want_to_read: 
-@want_to_write: 
 
 <!-- ##### MACRO G_STATIC_RW_LOCK_INIT ##### -->
 <para>
@@ -1539,7 +1525,6 @@ the difference between #GMutex and #GStaticMutex. Now look at our
 </example>
 </para>
 
-@index: 
 
 <!-- ##### MACRO G_STATIC_PRIVATE_INIT ##### -->
 <para>

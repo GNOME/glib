@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.1.4 to GLib-2.1.5
+=================================================
+
+* Win32 bug fixes [Tor Lillqvist]
+* Various post-rewrite fixes for glib-gettext.m4 [Owen Taylor,
+  Jody Goldberg, Kjartan Maraas, Johannes Stezenbach]
+* Ensure we have a GUINT64_FORMAT by pulling in Trio
+  if necessary [Manish Singh]
+* Further Trio build fixes [Matthias Clasen, Owen]
+* Hack around gcc, libtool issues with -pthread [Owen]
+* Docs improvements [Matthiass]
+* Bug and portability fixes 
+* Updated and new translations (bg,de,fi,fr,sq,fr)
+
+Other contributors: Kai Poitschke, Morten Welinder
+
 Overview of Changes from GLib 2.1.3 to GLib-2.1.4
 =================================================
 
