@@ -1,5 +1,9 @@
 2001-12-12  Matthias Clasen  <matthiasc@poet.de>
 
+	* glib/tmpl/string_utils.sgml: Correct docs for g_[v]snprintf.
+
+2001-12-12  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/tmpl/allocators.sgml, glib/tmpl/arrays.sgml, 
 	glib/tmpl/arrays_byte.sgml, glib/tmpl/arrays_pointer.sgml,
 	glib/tmpl/caches.sgml, glib/tmpl/completion.sgml, 

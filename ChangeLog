@@ -1,5 +1,13 @@
 2001-12-12  Matthias Clasen  <matthiasc@poet.de>
 
+	This fixes #60543:
+
+	* glib/gutils.c (g_snprintf, g_vsnprintf): Switch to C99-[v]snprintf().
+
+	* tests/strfunc-test.c: Add some tests for g_snprintf().
+
+2001-12-12  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/gconvert.c, glib/grand.c, glib/ghash.c,
 	glib/gthreadpool.c, glib/gtree.c: Documentation fixes.
 

@@ -341,44 +341,14 @@ g_snprintf (gchar	*str,
 	    gchar const *fmt,
 	    ...)
 {
-#ifdef	HAVE_VSNPRINTF
   va_list args;
   gint retval;
-  
-  g_return_val_if_fail (str != NULL, 0);
-  g_return_val_if_fail (n > 0, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
 
   va_start (args, fmt);
-  retval = vsnprintf (str, n, fmt, args);
+  retval = g_vsnprintf (str, n, fmt, args);
   va_end (args);
-
-  if (retval < 0)
-    {
-      str[n-1] = '\0';
-      retval = strlen (str);
-    }
-
+  
   return retval;
-#else	/* !HAVE_VSNPRINTF */
-  gchar *printed;
-  va_list args;
-  
-  g_return_val_if_fail (str != NULL, 0);
-  g_return_val_if_fail (n > 0, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
-
-  va_start (args, fmt);
-  printed = g_strdup_vprintf (fmt, args);
-  va_end (args);
-  
-  strncpy (str, printed, n);
-  str[n-1] = '\0';
-
-  g_free (printed);
-  
-  return strlen (str);
-#endif	/* !HAVE_VSNPRINTF */
 }
 
 gint
@@ -387,37 +357,30 @@ g_vsnprintf (gchar	 *str,
 	     gchar const *fmt,
 	     va_list      args)
 {
-#ifdef	HAVE_VSNPRINTF
-  gint retval;
-  
-  g_return_val_if_fail (str != NULL, 0);
-  g_return_val_if_fail (n > 0, 0);
+#ifdef	HAVE_VSNPRINTF_C99
+  g_return_val_if_fail (n == 0 || str != NULL, 0);
   g_return_val_if_fail (fmt != NULL, 0);
 
-  retval = vsnprintf (str, n, fmt, args);
-  
-  if (retval < 0)
-    {
-      str[n-1] = '\0';
-      retval = strlen (str);
-    }
-
-  return retval;
-#else	/* !HAVE_VSNPRINTF */
+  return vsnprintf (str, n, fmt, args);
+#else	/* !HAVE_VSNPRINTF_C99 */
   gchar *printed;
-  
-  g_return_val_if_fail (str != NULL, 0);
-  g_return_val_if_fail (n > 0, 0);
+  gint retval;
+
+  g_return_val_if_fail (n == 0 || str != NULL, 0);
   g_return_val_if_fail (fmt != NULL, 0);
 
   printed = g_strdup_vprintf (fmt, args);
-  strncpy (str, printed, n);
-  str[n-1] = '\0';
+  retval = strlen (printed);
+  if (n > 0)
+    {
+      strncpy (str, printed, n - 1);
+      str[n-1] = '\0';
+    }
 
   g_free (printed);
   
-  return strlen (str);
-#endif /* !HAVE_VSNPRINTF */
+  return retval;
+#endif /* !HAVE_VSNPRINTF_C99 */
 }
 
 guint	     

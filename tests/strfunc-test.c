@@ -383,5 +383,15 @@ main (int   argc,
 
 #undef S
 
+  {
+    gchar buf[5];
+    
+    TEST (NULL, 3 == g_snprintf (buf, 0, "%s", "abc"));
+    TEST (NULL, 3 == g_snprintf (NULL,0, "%s", "abc"));
+    TEST (NULL, 3 == g_snprintf (buf, 5, "%s", "abc"));
+    TEST (NULL, 4 == g_snprintf (buf, 5, "%s", "abcd"));
+    TEST (NULL, 9 == g_snprintf (buf, 5, "%s", "abcdefghi"));
+  }
+
   return any_failed;
 }
