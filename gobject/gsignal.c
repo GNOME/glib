@@ -241,15 +241,21 @@ typedef struct
 
 /* --- variables --- */
 static GBSearchArray *g_signal_key_bsa = NULL;
-static GBSearchConfig g_signal_key_bconfig = G_STATIC_BCONFIG (sizeof (SignalKey),
-							       signal_key_cmp,
-							       G_BSEARCH_ARRAY_ALIGN_POWER2);
-static GBSearchConfig g_signal_hlbsa_bconfig = G_STATIC_BCONFIG (sizeof (HandlerList),
-								 handler_lists_cmp,
-								 G_BSEARCH_ARRAY_DEFER_SHRINK);
-static GBSearchConfig g_class_closure_bconfig = G_STATIC_BCONFIG (sizeof (ClassClosure),
-								  class_closures_cmp,
-								  0);
+static const GBSearchConfig g_signal_key_bconfig = {
+  sizeof (SignalKey),
+  signal_key_cmp,
+  G_BSEARCH_ARRAY_ALIGN_POWER2,
+};
+static GBSearchConfig g_signal_hlbsa_bconfig = {
+  sizeof (HandlerList),
+  handler_lists_cmp,
+  0,
+};
+static GBSearchConfig g_class_closure_bconfig = {
+  sizeof (ClassClosure),
+  class_closures_cmp,
+  0,
+};
 static GHashTable    *g_handler_list_bsa_ht = NULL;
 static Emission      *g_recursive_emissions = NULL;
 static Emission      *g_restart_emissions = NULL;
@@ -351,15 +357,15 @@ handler_list_ensure (guint    signal_id,
   key.handlers = NULL;
   if (!hlbsa)
     {
-      hlbsa = g_bsearch_array_new (&g_signal_hlbsa_bconfig);
-      hlbsa = g_bsearch_array_insert (hlbsa, &g_signal_hlbsa_bconfig, &key, FALSE);
+      hlbsa = g_bsearch_array_create (&g_signal_hlbsa_bconfig);
+      hlbsa = g_bsearch_array_insert (hlbsa, &g_signal_hlbsa_bconfig, &key);
       g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
     }
   else
     {
       GBSearchArray *o = hlbsa;
 
-      hlbsa = g_bsearch_array_insert (o, &g_signal_hlbsa_bconfig, &key, FALSE);
+      hlbsa = g_bsearch_array_insert (o, &g_signal_hlbsa_bconfig, &key);
       if (hlbsa != o)
 	g_hash_table_insert (g_handler_list_bsa_ht, instance, hlbsa);
     }
@@ -713,7 +719,7 @@ g_signal_init (void) /* sync with gtype.c */
       
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
-      g_signal_key_bsa = g_bsearch_array_new (&g_signal_key_bconfig);
+      g_signal_key_bsa = g_bsearch_array_create (&g_signal_key_bconfig);
       
       /* invalid (0) signal_id */
       g_n_signal_nodes = 1;
@@ -1029,8 +1035,8 @@ g_signal_list_ids (GType  itype,
   g_return_val_if_fail (n_ids != NULL, NULL);
   
   SIGNAL_LOCK ();
-  keys = G_BSEARCH_ARRAY_NODES (g_signal_key_bsa);
-  n_nodes = g_signal_key_bsa->n_nodes;
+  keys = g_bsearch_array_get_nth (g_signal_key_bsa, &g_signal_key_bconfig, 0);
+  n_nodes = g_bsearch_array_get_n_nodes (g_signal_key_bsa);
   result = g_array_new (FALSE, FALSE, sizeof (guint));
   
   for (i = 0; i < n_nodes; i++)
@@ -1175,8 +1181,8 @@ signal_lookup_closure (SignalNode    *node,
 {
   ClassClosure *cc;
 
-  if (node->class_closure_bsa && node->class_closure_bsa->n_nodes == 1)
-    cc = G_BSEARCH_ARRAY_NODES (node->class_closure_bsa);
+  if (node->class_closure_bsa && g_bsearch_array_get_n_nodes (node->class_closure_bsa) == 1)
+    cc = g_bsearch_array_get_nth (node->class_closure_bsa, &g_class_closure_bconfig, 0);
   else
     cc = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
   return cc ? cc->closure : NULL;
@@ -1193,13 +1199,12 @@ signal_add_class_closure (SignalNode *node,
   node->test_class_offset = 0;
 
   if (!node->class_closure_bsa)
-    node->class_closure_bsa = g_bsearch_array_new (&g_class_closure_bconfig);
+    node->class_closure_bsa = g_bsearch_array_create (&g_class_closure_bconfig);
   key.instance_type = itype;
   key.closure = g_closure_ref (closure);
   node->class_closure_bsa = g_bsearch_array_insert (node->class_closure_bsa,
 						    &g_class_closure_bconfig,
-						    &key,
-						    FALSE);
+						    &key);
   g_closure_sink (closure);
   if (node->c_marshaller && closure && G_CLOSURE_NEEDS_MARSHAL (closure))
     g_closure_set_marshal (closure, node->c_marshaller);
@@ -1300,10 +1305,10 @@ g_signal_newv (const gchar       *signal_name,
       key.itype = itype;
       key.quark = g_quark_from_string (node->name);
       key.signal_id = signal_id;
-      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key, FALSE);
+      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
       g_strdelimit (node->name, "_", '-');
       key.quark = g_quark_from_static_string (node->name);
-      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key, FALSE);
+      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
     }
   node->destroyed = FALSE;
   node->test_class_offset = 0;
@@ -1414,7 +1419,7 @@ signal_destroy_R (SignalNode *signal_node)
 
 	  g_closure_unref (cc->closure);
 	}
-      g_bsearch_array_destroy (node.class_closure_bsa, &g_class_closure_bconfig);
+      g_bsearch_array_free (node.class_closure_bsa, &g_class_closure_bconfig);
     }
   g_free (node.accumulator);
   if (node.emission_hooks)
@@ -1789,7 +1794,7 @@ g_signal_handlers_destroy (gpointer instance)
 		}
             }
         }
-      g_bsearch_array_destroy (hlbsa, &g_signal_hlbsa_bconfig);
+      g_bsearch_array_free (hlbsa, &g_signal_hlbsa_bconfig);
     }
   SIGNAL_UNLOCK ();
 }

@@ -1,3 +1,13 @@
+Tue Aug 19 04:08:14 2003  Tim Janik  <timj@gtk.org>
+
+	* gvalue.c: adapt to new gbsearcharray.h code.
+	(g_value_register_transform_func): turn transform function
+	replacement into a valid operation.
+
+        * gsignal.c: adapt to new gbsearcharray.h code.
+	
+	* gboxed.c: adapt to new gbsearcharray.h code.
+
 Tue Aug 19 01:31:28 2003  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c: added optimizations to skip NOP signal emissions.

@@ -42,7 +42,11 @@ static gint	boxed_nodes_cmp		(gconstpointer	p1,
 
 /* --- variables --- */
 static GBSearchArray *boxed_bsa = NULL;
-static GBSearchConfig boxed_bconfig = G_STATIC_BCONFIG (sizeof (BoxedNode), boxed_nodes_cmp, 0);
+static const GBSearchConfig boxed_bconfig = {
+  sizeof (BoxedNode),
+  boxed_nodes_cmp,
+  0,
+};
 
 
 /* --- functions --- */
@@ -121,7 +125,7 @@ g_boxed_type_init (void)  /* sync with gtype.c */
   const GTypeFundamentalInfo finfo = { G_TYPE_FLAG_DERIVABLE, };
   GType type;
 
-  boxed_bsa = g_bsearch_array_new (&boxed_bconfig);
+  boxed_bsa = g_bsearch_array_create (&boxed_bconfig);
 
   /* G_TYPE_BOXED
    */
@@ -317,7 +321,7 @@ g_boxed_type_register_static (const gchar   *name,
       key.type = type;
       key.copy = boxed_copy;
       key.free = boxed_free;
-      boxed_bsa = g_bsearch_array_insert (boxed_bsa, &boxed_bconfig, &key, TRUE);
+      boxed_bsa = g_bsearch_array_insert (boxed_bsa, &boxed_bconfig, &key);
     }
 
   return type;

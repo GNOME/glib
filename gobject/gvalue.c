@@ -43,16 +43,18 @@ static gint	transform_entries_cmp	(gconstpointer bsearch_node1,
 
 /* --- variables --- */
 static GBSearchArray *transform_array = NULL;
-static GBSearchConfig transform_bconfig = G_STATIC_BCONFIG (sizeof (TransformEntry),
-							    transform_entries_cmp,
-							    0);
+static GBSearchConfig transform_bconfig = {
+  sizeof (TransformEntry),
+  transform_entries_cmp,
+  0,
+};
 
 
 /* --- functions --- */
 void
 g_value_c_init (void)	/* sync with gtype.c */
 {
-  transform_array = g_bsearch_array_new (&transform_bconfig);
+  transform_array = g_bsearch_array_create (&transform_bconfig);
 }
 
 static inline void		/* keep this function in sync with gvaluecollector.h and gboxed.c */
@@ -285,16 +287,17 @@ g_value_register_transform_func (GType           src_type,
 
   entry.src_type = src_type;
   entry.dest_type = dest_type;
-  
+
+#if 0 /* let transform function replacement be a valid operation */
   if (g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry))
     g_warning ("reregistering value transformation function (%p) for `%s' to `%s'",
 	       transform_func,
 	       g_type_name (src_type),
 	       g_type_name (dest_type));
+#endif
 
   entry.func = transform_func;
-
-  transform_array = g_bsearch_array_insert (transform_array, &transform_bconfig, &entry, TRUE);
+  transform_array = g_bsearch_array_replace (transform_array, &transform_bconfig, &entry);
 }
 
 gboolean
