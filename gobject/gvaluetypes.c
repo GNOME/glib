@@ -686,7 +686,7 @@ g_value_set_pointer (GValue  *value,
 }
 
 gpointer
-g_value_get_pointer (GValue *value)
+g_value_get_pointer (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_POINTER (value), NULL);
 

@@ -80,7 +80,7 @@ gchar*		g_value_get_string		(const GValue	*value);
 gchar*		g_value_dup_string		(const GValue	*value);
 void            g_value_set_pointer     	(GValue         *value,
 						 gpointer        v_pointer);
-gpointer        g_value_get_pointer     	(GValue         *value);
+gpointer        g_value_get_pointer     	(const GValue   *value);
 
 
 
