@@ -1,5 +1,9 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* glib/tmpl/markup.sgml: Write docs
+
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
 	* glib/glib-sections.txt: remove parens from section name,
 	confuses gtk-doc
 

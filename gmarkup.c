@@ -1702,7 +1702,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
  * @line_number: return location for a line number, or %NULL
  * @char_number: return location for a char-on-line number, or %NULL
  *
- * Returns the current line number and the number of the character on
+ * Retrieves the current line number and the number of the character on
  * that line. Intended for use in error messages; there are no strict
  * semantics for what constitutes the "current" line number other than
  * "the best number we could come up with for error messages."

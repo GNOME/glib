@@ -1,5 +1,12 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* gmarkup.h: rename G_MARKUP_FOO to
+	G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG
+
+	* gmarkup.c: don't start doc comments with "Returns"
+	
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
 	* gmarkup.c: inline docs
 	(unescape_text): properly check strtoul for failure.
 	
