@@ -86,6 +86,9 @@ gchar* 		g_win32_getlocale  (void);
  */
 gchar*          g_win32_error_message (gint error);
 
+#define g_win32_get_package_installation_directory g_win32_get_package_installation_directory_utf8
+#define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
+
 gchar*          g_win32_get_package_installation_directory (gchar *package,
 							    gchar *dll_name);
 

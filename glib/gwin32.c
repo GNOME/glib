@@ -1198,7 +1198,7 @@ get_package_directory_from_module (gchar *module_name)
 /**
  * g_win32_get_package_installation_directory:
  * @package: An identifier for a software package, or %NULL, in UTF-8
- * @dll_name: The name of a DLL that a package provides, or %NULL, in the GLib file name encoding, which is UTF-8 on Windows.
+ * @dll_name: The name of a DLL that a package provides, or %NULL, in UTF-8
  *
  * Try to determine the installation directory for a software package.
  * Typically used by GNU software packages.
@@ -1331,11 +1331,41 @@ g_win32_get_package_installation_directory (gchar *package,
   return result;
 }
 
+#undef g_win32_get_package_installation_directory
+
+/* DLL ABI binary compatibility version that uses system codepage file names */
+
+gchar *
+g_win32_get_package_installation_directory (gchar *package,
+					    gchar *dll_name)
+{
+  gchar *utf8_package = NULL, *utf8_dll_name = NULL;
+  gchar *utf8_retval, *retval;
+
+  if (package != NULL)
+    utf8_package = g_locale_to_utf8 (package, -1, NULL, NULL, NULL);
+
+  if (dll_name != NULL)
+    utf8_dll_name = g_locale_to_utf8 (dll_name, -1, NULL, NULL, NULL);
+
+  utf8_retval =
+    g_win32_get_package_installation_directory_utf8 (utf8_package,
+						     utf8_dll_name);
+
+  retval = g_locale_from_utf8 (utf8_retval, -1, NULL, NULL, NULL);
+
+  g_free (utf8_package);
+  g_free (utf8_dll_name);
+  g_free (utf8_retval);
+
+  return retval;
+}
+
 /**
  * g_win32_get_package_installation_subdirectory:
- * @package: An identifier for a software package, or %NULL.
- * @dll_name: The name of a DLL that a package provides, or %NULL.
- * @subdir: A subdirectory of the package installation directory.
+ * @package: An identifier for a software package, in UTF-8, or %NULL
+ * @dll_name: The name of a DLL that a package provides, in UTF-8, or %NULL
+ * @subdir: A subdirectory of the package installation directory, also in UTF-8
  *
  * Returns a newly-allocated string containing the path of the
  * subdirectory @subdir in the return value from calling
@@ -1343,10 +1373,30 @@ g_win32_get_package_installation_directory (gchar *package,
  * @dll_name parameters. 
  *
  * Returns: a string containing the complete path to @subdir inside
- * the installation directory of @package. The string is in the GLib
- * file name encoding, i.e. UTF-8 on Windows. The return value should
- * be freed with g_free() when no longer needed.
+ * the installation directory of @package. The returned string is in
+ * the GLib file name encoding, i.e. UTF-8 on Windows. The return
+ * value should be freed with g_free() when no longer needed.
  **/
+
+gchar *
+g_win32_get_package_installation_subdirectory (gchar *package,
+					       gchar *dll_name,
+					       gchar *subdir)
+{
+  gchar *prefix;
+  gchar *dirname;
+
+  prefix = g_win32_get_package_installation_directory_utf8 (package, dll_name);
+
+  dirname = g_build_filename (prefix, subdir, NULL);
+  g_free (prefix);
+
+  return dirname;
+}
+
+#undef g_win32_get_package_installation_subdirectory
+
+/* DLL ABI binary compatibility version that uses system codepage file names */
 
 gchar *
 g_win32_get_package_installation_subdirectory (gchar *package,
