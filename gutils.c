@@ -1006,20 +1006,27 @@ g_get_codeset (void)
 
 #include <libintl.h>
 
+
 #ifdef G_OS_WIN32
 
-#define GLIB_LOCALE_DIR \
+#define GLIB_LOCALE_DIR 				\
   g_strconcat (g_win32_get_package_installation_directory (GETTEXT_PACKAGE), \
 	       G_DIR_SEPARATOR_S,			\
 	       "locale",				\
 	       NULL)
-#endif
 
-int _glib_gettext_initialized = 0;
+#endif /* G_OS_WIN32 */
 
-char *_glib_gettext_init (const char *str)
+gchar *
+_glib_gettext (const gchar *str)
 {
-  bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+  gboolean _glib_gettext_initialized = FALSE;
+
+  if (!_glib_gettext_initialized)
+    {
+      bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+      _glib_gettext_initialized = TRUE;
+    }
   
   return dgettext (GETTEXT_PACKAGE, str);
 }

@@ -58,6 +58,7 @@ libglib_1_3_la_SOURCES = 	\
 	ghook.c			\
 	giochannel.c    	\
 	giounix.c       	\
+	glibintl.h		\
 	glist.c			\
 	gmain.c         	\
 	gmarkup.c		\

@@ -5,15 +5,10 @@
 
 #ifdef ENABLE_NLS
 
-extern int _glib_gettext_initialized;
+gchar *_glib_gettext (const gchar *str);
 
-char *_glib_gettext_init (const char *str);
-
-#include<libintl.h>
-#define _(String)                         \
-   (_glib_gettext_initialized ?            \
-      dgettext(GETTEXT_PACKAGE,String) :  \
-      _glib_gettext_init(String))
+#include <libintl.h>
+#define _(String) _glib_gettext(String)
 
 #ifdef gettext_noop
 #define N_(String) gettext_noop(String)
