@@ -514,6 +514,7 @@ g_main_context_destroy (GMainContext *context)
   
   g_mem_chunk_destroy (context->poll_chunk);
 
+#ifdef G_THREADS_ENABLED
   if (g_thread_supported())
     {
 #ifndef G_OS_WIN32
@@ -523,6 +524,7 @@ g_main_context_destroy (GMainContext *context)
       CloseHandle (context->wake_up_semaphore);
 #endif
     }
+#endif
   
   g_free (context);
 }
@@ -1735,8 +1737,10 @@ g_main_context_query (GMainContext *context,
       pollrec = pollrec->next;
     }
 
+#ifdef G_THREADS_ENABLED
   context->poll_changed = FALSE;
-
+#endif
+  
   if (timeout)
     {
       *timeout = context->timeout;
@@ -1791,14 +1795,14 @@ g_main_context_check (GMainContext *context,
     }
   else
     context->poll_waiting = FALSE;
-#endif /* G_THREADS_ENABLED */
 
   /* If the set of poll file descriptors changed, bail out
    * and let the main loop rerun
    */
   if (context->poll_changed)
     return 0;
-
+#endif /* G_THREADS_ENABLED */
+  
   pollrec = context->poll_records;
   i = 0;
   while (i < n_fds)
@@ -2093,8 +2097,10 @@ g_main_loop_quit (GMainLoop *loop)
   LOCK_LOOP (loop);
   loop->is_running = FALSE;
 
+#ifdef G_THREADS_ENABLED
   if (loop->sem_cond)
     g_cond_broadcast (loop->sem_cond);
+#endif
   
   UNLOCK_LOOP (loop);
 
