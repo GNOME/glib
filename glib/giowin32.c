@@ -737,8 +737,8 @@ g_io_win32_finalize (GSource *source)
     send (channel->reset_send, send_buffer, sizeof (send_buffer), 0);
   }
 
-  g_io_channel_unref (watch->channel);
   UNLOCK (channel->mutex);
+  g_io_channel_unref (watch->channel);
 }
 
 GSourceFuncs g_io_watch_funcs = {

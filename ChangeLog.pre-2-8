@@ -1,3 +1,8 @@
+2004-12-06  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giowin32.c (g_io_win32_finalize): Fix a write to freed
+	memory: Unlock the channel's mutex before unrefing the channel.
+
 2004-12-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Remove a no longer needed hack for 
