@@ -1,3 +1,8 @@
+1999-06-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Changed test for pthread_attr_setstacksize from
+	AC_TRY_COMPILE to AC_TRY_LINK.
+
 1999-06-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, acglib.m4, acconfig.h, glib.h, gthread.c:

@@ -828,7 +828,7 @@ if test x"$enable_threads" = xyes; then
 		# This is not AC_CHECK_FUNC to also work with function
 		# name mangling in header files.
 		AC_MSG_CHECKING(for pthread_attr_setstacksize)
-		AC_TRY_COMPILE([#include <pthread.h>],
+		AC_TRY_LINK([#include <pthread.h>],
 			[pthread_attr_setstacksize(NULL,0)],
 			[AC_MSG_RESULT(yes)
 			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
