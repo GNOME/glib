@@ -1,3 +1,17 @@
+Thu Jun  5 23:40:31 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c: When dispatching a source that is
+	!CAN_RECURSE, temporarily remove any file descriptors
+	that that source has registered from the main loop, to keep
+	recursive main loops from busy-waiting if input
+	becomes available on one of those file descriptors.
+	(#112222, Christian Krause)
+
+	* glib/gmain.c (g_source_set_priority): Properly
+	remove the source from the context's source list
+	and reinsert it sorted, rather than simply setting
+	source->next/prev to NULL! (#114274)
+
 2003-06-06  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstring.c (g_string_append_printf_internal): Use
