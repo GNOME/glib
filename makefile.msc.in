@@ -91,7 +91,7 @@ gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS)
 	$(CC) $(CFLAGS) -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule\gmodule.def
 
 gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c
-	$(CC) $(CFLAGS) -GD -Igmodule -c -DG_LOG_DOMAIN=g_log_domain_gmodule gmodule\gmodule.c
+	$(CC) $(CFLAGS) -GD -Igmodule -c -DG_LOG_DOMAIN=\"GModule\" gmodule\gmodule.c
 
 gmodule\gmoduleconf.h: gmodule\gmoduleconf.h.win32
 	copy gmodule\gmoduleconf.h.win32 gmodule\gmoduleconf.h

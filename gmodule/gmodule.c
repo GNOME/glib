@@ -72,7 +72,6 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 
 /* --- variables --- */
 G_LOCK_DEFINE_STATIC (GModule);
-const char           *g_log_domain_gmodule = "GModule";
 static GModule	     *modules = NULL;
 static GModule	     *main_module = NULL;
 static GStaticPrivate module_error_private = G_STATIC_PRIVATE_INIT;

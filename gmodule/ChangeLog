@@ -1,3 +1,11 @@
+2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am: Set G_LOG_DOMAIN to \"GModule\" instead of
+	g_log_domain_gmodule. 
+
+	* gmodule.c, gmodule.def, gmodule.h: Removed
+	g_log_domain_gmodule. This fixes Bug #51643 for good.
+
 Sat Feb 17 07:33:21 2001  Tim Janik  <timj@gtk.org>
 
 	* gmodule-dl.c: fix systems with broken RTLD_GLOBAL.

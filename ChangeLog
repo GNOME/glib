@@ -1,3 +1,9 @@
+2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* makefile.cygwin.in, makefile.msc.in: Set G_LOG_DOMAIN to
+	\"GModule\" instead of g_log_domain_gmodule. This fixes Bug
+	#51643 for good.
+
 Fri Mar  2 12:35:40 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Release 1.2.9
