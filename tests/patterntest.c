@@ -19,13 +19,25 @@
 
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
-#undef NOISY
 
 #include <string.h>
 
 #include "glib.h"
 #include "glib/gpattern.h"
 
+static gboolean noisy = FALSE;
+
+static void
+verbose (const gchar *format, ...)
+{
+  va_list args;
+  va_start (args, format);
+  gchar *msg = g_strdup_vprintf (format, args);
+  va_end (args);
+  if (noisy) 
+    g_print (msg);
+  g_free (msg);
+}
 
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
 typedef enum
@@ -73,12 +85,6 @@ match_type_name (GMatchType match_type)
     }
 }
 
-/* This leakes memory, but we don't care. The utf8 macro used to convert utf8 
-   back to Latin1 for feeding it to g_print. As of 2.0.1, g_print expects utf8,
-   so this is no longer necessary */
-#define utf8(str) str
-#define latin1(str) g_convert (str, -1, "UTF-8", "Latin1", NULL, NULL, NULL)
-
 static gboolean
 test_compilation (gchar *src, 
 		  GMatchType match_type, 
@@ -87,9 +93,7 @@ test_compilation (gchar *src,
 {
   GPatternSpec *spec; 
 
-#ifdef NOISY
-  g_print ("compiling \"%s\" \t", utf8(src));
-#endif
+  verbose ("compiling \"%s\" \t", src);
   spec = g_pattern_spec_new (src);
 
   if (spec->match_type != match_type)
@@ -103,8 +107,8 @@ test_compilation (gchar *src,
   if (strcmp (spec->pattern, pattern) != 0)
     {
       g_print ("failed \t(pattern: \"%s\", expected \"%s\")\n",
-	       utf8(spec->pattern),
-	       utf8(pattern));
+	       spec->pattern,
+	       pattern);
       return FALSE;
     }
   
@@ -124,11 +128,9 @@ test_compilation (gchar *src,
       return FALSE;
     }
   
-#ifdef NOISY  
-  g_print ("passed (%s: \"%s\")\n",
+  verbose ("passed (%s: \"%s\")\n",
 	   match_type_name (spec->match_type),
 	   spec->pattern);
-#endif
   
   return TRUE;
 }
@@ -138,9 +140,7 @@ test_match (gchar *pattern,
 	    gchar *string, 
 	    gboolean match)
 {
-#ifdef NOISY
-  g_print ("matching \"%s\" against \"%s\" \t", utf8(string), utf8(pattern));
-#endif
+  verbose ("matching \"%s\" against \"%s\" \t", string, pattern);
   
   if (g_pattern_match_simple (pattern, string) != match)
     {
@@ -148,9 +148,8 @@ test_match (gchar *pattern,
       return FALSE;
     }
   
-#ifdef NOISY
-  g_print ("passed (%s)\n", match ? "match" : "nomatch");
-#endif
+  verbose ("passed (%s)\n", match ? "match" : "nomatch");
+
   return TRUE;
 }
 
@@ -163,21 +162,17 @@ test_equal (gchar *pattern1,
   GPatternSpec *p2 = g_pattern_spec_new (pattern2);
   gboolean equal = g_pattern_spec_equal (p1, p2);
 
-#ifdef NOISY
-  g_print ("comparing \"%s\" with \"%s\" \t", utf8(pattern1), utf8(pattern2));
-#endif
+  verbose ("comparing \"%s\" with \"%s\" \t", pattern1, pattern2);
 
   if (expected != equal)
     {
       g_print ("failed \t{%s, %u, \"%s\"} %s {%s, %u, \"%s\"}\n",
-	       match_type_name (p1->match_type), p1->pattern_length, utf8(p1->pattern),
+	       match_type_name (p1->match_type), p1->pattern_length, p1->pattern,
 	       expected ? "!=" : "==",
-	       match_type_name (p2->match_type), p2->pattern_length, utf8(p2->pattern));
+	       match_type_name (p2->match_type), p2->pattern_length, p2->pattern);
     }
-#ifdef NOISY
   else
-    g_print ("passed (%s)\n", equal ? "equal" : "unequal");
-#endif
+    verbose ("passed (%s)\n", equal ? "equal" : "unequal");
   
   g_pattern_spec_free (p1);
   g_pattern_spec_free (p2);
@@ -187,7 +182,7 @@ test_equal (gchar *pattern1,
 
 #define TEST_COMPILATION(src, type, pattern, min) { \
   total++; \
-  if (test_compilation (latin1(src), type, latin1(pattern), min)) \
+  if (test_compilation (src, type, pattern, min)) \
     passed++; \
   else \
     failed++; \
@@ -195,7 +190,7 @@ test_equal (gchar *pattern1,
 
 #define TEST_MATCH(pattern, string, match) { \
   total++; \
-  if (test_match (latin1(pattern), latin1(string), match)) \
+  if (test_match (pattern, string, match)) \
     passed++; \
   else \
     failed++; \
@@ -203,7 +198,7 @@ test_equal (gchar *pattern1,
 
 #define TEST_EQUAL(pattern1, pattern2, match) { \
   total++; \
-  if (test_equal (latin1(pattern1), latin1(pattern2), match)) \
+  if (test_equal (pattern1, pattern2, match)) \
     passed++; \
   else \
     failed++; \
@@ -215,6 +210,11 @@ main (int argc, char** argv)
   gint total = 0;
   gint passed = 0;
   gint failed = 0;
+  gint i;
+
+  for (i = 1; i < argc; i++) 
+      if (strcmp ("--noisy", argv[i]) == 0)
+	noisy = TRUE;
 
   TEST_COMPILATION("*A?B*", G_MATCH_ALL, "*A?B*", 3);
   TEST_COMPILATION("ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8);
@@ -257,23 +257,21 @@ main (int argc, char** argv)
   TEST_MATCH("*?*x", "yx", TRUE);
   TEST_MATCH("*?*x", "xxxx", TRUE);
   TEST_MATCH("x*??", "xyzw", TRUE);
-  TEST_MATCH("*x", "\xc4x", TRUE);
-  TEST_MATCH("?x", "\xc4x", TRUE);
-  TEST_MATCH("??x", "\xc4x", FALSE);
-  TEST_MATCH("ab\xe4\xf6", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab\xe4\xf6", "abao", FALSE);
-  TEST_MATCH("ab?\xf6", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab?\xf6", "abao", FALSE);
-  TEST_MATCH("ab\xe4?", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab\xe4?", "abao", FALSE);
-  TEST_MATCH("ab??", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab*", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab*\xf6", "ab\xe4\xf6", TRUE);
-  TEST_MATCH("ab*\xf6", "aba\xf6x\xf6", TRUE);
+  TEST_MATCH("*x", "\xc3\x84x", TRUE);
+  TEST_MATCH("?x", "\xc3\x84x", TRUE);
+  TEST_MATCH("??x", "\xc3\x84x", FALSE);
+  TEST_MATCH("ab\xc3\xa4\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab\xc3\xa4\xc3\xb6", "abao", FALSE);
+  TEST_MATCH("ab?\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab?\xc3\xb6", "abao", FALSE);
+  TEST_MATCH("ab\xc3\xa4?", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab\xc3\xa4?", "abao", FALSE);
+  TEST_MATCH("ab??", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab*", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab*\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
+  TEST_MATCH("ab*\xc3\xb6", "aba\xc3\xb6x\xc3\xb6", TRUE);
   
-#ifdef NOISY  
-  g_print ("\n%u tests passed, %u failed\n", passed, failed);
-#endif  
+  verbose ("\n%u tests passed, %u failed\n", passed, failed);
 
   return failed;
 }

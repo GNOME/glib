@@ -1,3 +1,8 @@
+2003-08-07  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/patterntest.c: Specify test strings in UTF-8, remove all charset conversion.
+	Replace the NOISY define by a cmdline arg --noisy.   (#115757)
+
 Thu Aug  7 15:01:09 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: Set $LIBS to include
