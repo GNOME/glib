@@ -18,7 +18,7 @@ DIE=0
 (libtool --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have libtool installed to compile $PROJECT."
-	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.0h.tar.gz"
+	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.2b.tar.gz"
 	echo "(or a newer version if it is available)"
 	DIE=1
 }
