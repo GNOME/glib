@@ -219,7 +219,7 @@ typedef void   (*GInterfaceFinalizeFunc)     (gpointer         g_iface,
 					      gpointer         iface_data);
 typedef gboolean (*GTypeClassCacheFunc)	     (gpointer	       cache_data,
 					      GTypeClass      *g_class);
-typedef void     (*GTypeInterfaceCheckFunc)  (gpointer	       func_data,
+typedef void     (*GTypeInterfaceCheckFunc)  (gpointer	       check_data,
 					      gpointer         g_iface);
 typedef enum    /*< skip >*/
 {
@@ -399,7 +399,7 @@ void             g_type_class_unref_uncached    (gpointer            g_class);
 void             g_type_add_interface_check     (gpointer	         check_data,
 						 GTypeInterfaceCheckFunc check_func);
 void             g_type_remove_interface_check  (gpointer	         check_data,
-						 GTypeInterfaceCheckFunc chec_func);
+						 GTypeInterfaceCheckFunc check_func);
 
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
