@@ -1,3 +1,22 @@
+Fri Oct 12 18:24:02 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/gpattern.[hc]: make struct _GPatternSpec and GMatchType
+	private.
+	(g_pattern_equal): new function to return equality of two patterns
+	(required because GPatternSpec is private now).
+	(g_pattern_spec_new): fix bug wrg wildcard counting which produced
+	incorrect pattern specs (discovered by Matthias Clasen).
+	optimized code so we just keep one compiled pattern string now.
+	correctly canonicalize patterns. reduce string walks, optimize
+	decision about MATCH_ALL vs. MATCH_ALL_TAIL.
+	(g_pattern_match_string): call just g_pattern_match() with NULL
+	reversed string.
+	(g_pattern_match): allow NULL reversed strings now, reverse_dup
+	strings on demand.
+
+	* tests/patterntest.c (test_compilation): added an extended testcase
+	for pattern matching from Matthias Clasen <matthiasc@poet.de>.
+
 2001-10-11  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (ac_cv_sizeof_long_long): Avoid '==' and '-a' in

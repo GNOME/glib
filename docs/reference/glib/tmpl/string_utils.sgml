@@ -555,11 +555,11 @@ value if @s1 > @s2.
 <!-- ##### FUNCTION g_strreverse ##### -->
 <para>
 Reverses all of the characters in a string.
-For example, g_strreverse ("abcdef") would be "fedcba".
+For example, g_strreverse ("abcdef") will result in "fedcba".
 </para>
 
 @string: the string to reverse.
-@Returns: 
+@Returns: the same pointer passed in as @string.
 
 
 <!-- ##### FUNCTION g_strtod ##### -->

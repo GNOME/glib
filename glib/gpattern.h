@@ -23,27 +23,13 @@
 
 G_BEGIN_DECLS
 
-typedef enum
-{
-  G_MATCH_ALL,       /* "*A?A*" */
-  G_MATCH_ALL_TAIL,  /* "*A?AA" */
-  G_MATCH_HEAD,      /* "AAAA*" */
-  G_MATCH_TAIL,      /* "*AAAA" */
-  G_MATCH_EXACT,     /* "AAAAA" */
-  G_MATCH_LAST
-} GMatchType;
 
 typedef struct _GPatternSpec    GPatternSpec;
-struct _GPatternSpec
-{
-  GMatchType match_type;
-  guint      pattern_length;
-  gchar     *pattern;
-  gchar     *pattern_reversed;
-};
 
 GPatternSpec* g_pattern_spec_new       (const gchar  *pattern);
 void          g_pattern_spec_free      (GPatternSpec *pspec);
+gboolean      g_pattern_spec_equal     (GPatternSpec *pspec1,
+					GPatternSpec *pspec2);
 gboolean      g_pattern_match          (GPatternSpec *pspec,
 					guint         string_length,
 					const gchar  *string,

@@ -78,6 +78,20 @@ Specifies the type of function passed to g_set_error_handler().
 @G_IO_FILE_MODE_READ_WRITE_TRUNCATE: 
 @G_IO_FILE_MODE_READ_WRITE_APPEND: 
 
+<!-- ##### ENUM GMatchType ##### -->
+<para>
+Enumeration representing different kinds of patterns. This is only used
+internally for optimizing the match algorithm.
+</para>
+
+@G_MATCH_ALL: a general pattern.
+@G_MATCH_ALL_TAIL: a general pattern which contains a fixed part matching
+the end of the string.
+@G_MATCH_HEAD: a pattern matching every string with a certain prefix.
+@G_MATCH_TAIL: a pattern matching every string with a certain suffix.
+@G_MATCH_EXACT: a pattern matching exactly one string.
+@G_MATCH_LAST: 
+
 <!-- ##### USER_FUNCTION GWarningFunc ##### -->
 <para>
 Specifies the type of function passed to g_set_warning_handler().

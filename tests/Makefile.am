@@ -39,8 +39,9 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
-noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
+noinst_PROGRAMS = testglib patterntest testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
 testglib_LDADD = $(libglib)
+patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
 unicode_normalize_LDADD = $(libglib)

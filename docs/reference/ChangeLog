@@ -1,3 +1,7 @@
+Sat Oct 13 06:58:23 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/tmpl/patterns.sgml: amended documentation.
+
 2001-10-11  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/patterns.sgml, glib/tmpl/shell.sgml: Updates.

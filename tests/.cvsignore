@@ -52,3 +52,4 @@ uri-test
 unicode-caseconv
 unicode-collate
 unicode-normalize
+patterntest

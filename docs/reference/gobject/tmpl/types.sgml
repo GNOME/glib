@@ -213,6 +213,8 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_UINT: 		Identifier for the "#GParamSpecUInt" type.
 @G_TYPE_PARAM_LONG: 		Identifier for the "#GParamSpecLong" type.
 @G_TYPE_PARAM_ULONG: 		Identifier for the "#GParamSpecULong" type.
+@G_TYPE_PARAM_INT64: 
+@G_TYPE_PARAM_UINT64: 
 @G_TYPE_PARAM_UNICHAR: 
 @G_TYPE_PARAM_ENUM: 		Identifier for the "#GParamSpecEnum" type.
 @G_TYPE_PARAM_FLAGS: 		Identifier for the "#GParamSpecFlags" type.
@@ -225,8 +227,6 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_VALUE_ARRAY: 	Identifier for the "#GParamSpecValueArray" type.
 @G_TYPE_PARAM_CLOSURE: 		Identifier for the "#GParamClosure" type.
 @G_TYPE_PARAM_OBJECT: 	 	Identifier for the "#GParamSpecObject" type.
-@G_TYPE_PARAM_INT64: 
-@G_TYPE_PARAM_UINT64: 
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
