@@ -4,7 +4,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule
 DEFS += -DG_LOG_DOMAIN=g_log_domain_gmodule
 
 EXTRA_DIST =	\
-		gmoduleconf.h.in
+		gmoduleconf.h.in \
+		gmodule-dl.c	\
+		gmodule-dld.c
 
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
