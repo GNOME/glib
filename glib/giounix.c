@@ -514,7 +514,6 @@ g_io_channel_new_file (const gchar *filename,
 
   channel = (GIOChannel *) g_new (GIOUnixChannel, 1);
 
-  channel->close_on_unref = TRUE;
   channel->is_seekable = S_ISREG (buffer.st_mode) || S_ISCHR (buffer.st_mode)
                          || S_ISBLK (buffer.st_mode);
 
@@ -540,6 +539,7 @@ g_io_channel_new_file (const gchar *filename,
     }
 
   g_io_channel_init (channel);
+  channel->close_on_unref = TRUE; /* must be after g_io_channel_init () */
   channel->funcs = &unix_channel_funcs;
 
   ((GIOUnixChannel *) channel)->fd = fid;

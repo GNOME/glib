@@ -1,4 +1,9 @@
-2001-08-15  Ron Steinke  <rsteinke@w-link.net>
+2001-08-16  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giounix.c: fixed an error in setting close_on_unref
+	in g_io_channel_new_file ()
+
+2001-08-16  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c glib/glib.def glib/giochannel.h: Added
 	new functions g_io_channel_[set,get]_close_on_unref ()
