@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <stdlib.h>
 
 #define main testglib_main
@@ -163,7 +165,11 @@ test_private_func (void *data)
   wait_thread (1);
   while (i < TEST_PRIVATE_ROUNDS)
     {
+#ifdef HAVE_RAND_R
       guint random_value = rand_r (&seed) % 10000;
+#else
+      guint random_value = rand() % 10000;
+#endif
       guint *data = g_static_private_get (&private_key);
       if (!data)
 	{

@@ -254,7 +254,7 @@ AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 AC_CHECK_HEADER(alloca.h, glib_have_alloca_h=yes, glib_have_alloca_h=no)
 
 # Check for some functions
-AC_CHECK_FUNCS(localtime_r lstat strerror strsignal memmove vsnprintf vasprintf strcasecmp strncasecmp poll)
+AC_CHECK_FUNCS(localtime_r rand_r lstat strerror strsignal memmove vsnprintf vasprintf strcasecmp strncasecmp poll)
 
 # Check for sys_errlist
 AC_MSG_CHECKING(for sys_errlist)
@@ -587,6 +587,9 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
      	        AC_CHECK_LIB(pthreads, pthread_attr_init, have_threads=posix)
 	fi
         if test "x$have_threads" = xnone; then
+     	        AC_CHECK_LIB(c_r, pthread_attr_init, have_threads=posix)
+	fi
+        if test "x$have_threads" = xnone; then
 		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
 	fi
 fi
@@ -620,6 +623,10 @@ case $have_threads in
 		if test "x$G_THREAD_LIBS" = xerror; then
                 	AC_CHECK_LIB(pthreads, pthread_attr_init,
 			     	G_THREAD_LIBS="-lpthreads")
+		fi
+		if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(c_r, pthread_attr_init,
+			     	G_THREAD_LIBS="-lc_r")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
 			AC_CHECK_FUNC(pthread_attr_init, G_THREAD_LIBS="")
