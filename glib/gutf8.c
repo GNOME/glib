@@ -99,7 +99,7 @@
     ((Char) < 0x110000 &&                     \
      (((Char) & 0xFFFFF800) != 0xD800) &&     \
      ((Char) < 0xFDD0 || (Char) > 0xFDEF) &&  \
-     ((Char) & 0xFFFF) != 0xFFFF)
+     ((Char) & 0xFFFE) != 0xFFFE)
    
      
 static const gchar utf8_skip_data[256] = {

@@ -1,5 +1,9 @@
 2003-05-23  Noah Levitt  <nlevitt@columbia.edu>
 
+	* glib/gutf8.c: Fix typo in UNICODE_VALID (related to #107427).
+
+2003-05-23  Noah Levitt  <nlevitt@columbia.edu>
+
 	* glib/guniprop.c: Remove stale comment.
 
 2003-05-22  Noah Levitt  <nlevitt@columbia.edu>
