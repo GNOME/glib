@@ -1,3 +1,8 @@
+2002-05-08  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: fixed yesterdays fix for cross compiling: simply
+	check the variable "cross_compiling" which gets set by autoconf.
+
 2002-05-07  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmarkup.c (unescape_text): Report unfinished entity
