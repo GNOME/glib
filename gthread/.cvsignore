@@ -5,4 +5,5 @@ Makefile
 *.o
 .libs
 *.la
+so_locations
 testgthread

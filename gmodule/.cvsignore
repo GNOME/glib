@@ -4,6 +4,7 @@ Makefile.in
 .deps
 _libs
 .libs
+so_locations
 libgmodule-1.1.la
 libgplugin_a.la
 libgplugin_b.la

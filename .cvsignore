@@ -5,6 +5,7 @@ configure
 aclocal.m4
 .deps
 _libs
+so_locations
 libglib-1.1.la
 config.log
 glibconfig.h
