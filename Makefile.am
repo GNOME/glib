@@ -25,6 +25,7 @@ EXTRA_DIST = 			\
 	glibconfig.h.win32.in	\
 	gwin32.c		\
 	gspawn-win32.c		\
+	gspawn-win32-helper.c	\
 	config.h.win32.in	\
 	build-dll		\
 	glib.rc.in		\

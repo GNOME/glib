@@ -1,3 +1,7 @@
+2000-11-28  Tor Lillqvist  <tml@iki.fi>
+
+	* gboxed.c: Include <string.h> for memset ().
+
 2000-11-22  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Update.

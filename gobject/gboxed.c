@@ -22,7 +22,7 @@
 #include	"gvalue.h"
 #include	"gvaluecollector.h"
 
-
+#include <string.h>
 
 /* --- typedefs & structures --- */
 typedef struct

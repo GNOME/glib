@@ -778,7 +778,7 @@ find_current_text_end (GMarkupParseContext *context)
   const gchar *p;
   const gchar *next;
 
-  g_assert (p != end);
+  g_assert (context->current_text_len > 0);
 
   p = context->current_text;
   next = g_utf8_find_next_char (p, end);

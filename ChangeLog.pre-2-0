@@ -1,3 +1,19 @@
+2000-11-28  Tor Lillqvist  <tml@iki.fi>
+
+	Patches by Hans Breuer:
+	
+	* gspawn-win32.c: Move the code for gspawn-win32-helper to its own
+	file.
+
+	* makefile.{mingw,msc}.in: Change accordingly.
+
+	* gspawn-win32-helper.c: New file.
+
+	* Makefile.am (EXTRA_DIST): Add it.
+
+	* gmarkup.c (find_current_text_end): Fix assertion not to check an
+	uninitialised variable.
+
 2000-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c: Set the thread data before locking the mutex, because
