@@ -83,10 +83,10 @@ fi
 
 if test "x$enable_debug" = "xyes"; then
   test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-  CFLAGS="$CFLAGS -DG_ENABLE_DEBUG"
+  CPPFLAGS="$CPPFLAGS -DG_ENABLE_DEBUG"
 else
   if test "x$enable_debug" = "xno"; then
-    CFLAGS="$CFLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
+    CPPFLAGS="$CPPFLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
   fi
 fi
 

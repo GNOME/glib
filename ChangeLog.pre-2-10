@@ -1,3 +1,8 @@
+Sun Nov 29 14:17:09 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: put debug -DFOO stuff into CPPFLAGS, not CFLAGS,
+	so CFLAGS can be overridden at make time properly
+
 Sat Nov 28 01:23:25 1998  Tim Janik  <timj@gtk.org>
 
 	* ghash.c: implemented incremental freezing facility.
