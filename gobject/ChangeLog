@@ -1,3 +1,8 @@
+2003-03-24  Sven Neumann  <sven@gimp.org>
+
+	* gtype.c (type_data_finalize_class_ifaces_Wm): removed leftover
+	debugging message (bug #109093).
+
 Thu Feb 27 17:33:19 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.[ch] testgobject.c: Add support for instance-private data. 
