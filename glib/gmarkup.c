@@ -1715,7 +1715,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
 G_CONST_RETURN gchar *
 g_markup_parse_context_get_element (GMarkupParseContext *context)
 {
-  g_return_if_fail (context != NULL);
+  g_return_val_if_fail (context != NULL, NULL);
 
   if (context->tag_stack == NULL) 
     return NULL;
