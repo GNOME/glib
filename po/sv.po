@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-05-22 15:07-0400\n"
+"POT-Creation-Date: 2002-05-23 14:42-0400\n"
 "PO-Revision-Date: 2002-05-19 04:34+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -450,7 +450,7 @@ msgstr "Misslyckades med att byta till katalogen \"%s\" (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Misslyckades med att köra barnprocess (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1243
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Misslyckades med att skapa rör för kommunikation med barnprocess (%s)"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.5\n"
-"POT-Creation-Date: 2002-05-22 15:07-0400\n"
+"POT-Creation-Date: 2002-05-23 14:42-0400\n"
 "PO-Revision-Date: 2001-09-28 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -435,7 +435,7 @@ msgstr "'%s' (%s) «¨¼×ìÌ §À¡¸ ÓÊÂÅ¢ø¨Ä"
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) §ºö-¦ºÂ¨Ä ­Âì¸ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1243
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) §ºö-¦ºÂÄ¢¼ý ¦¾¡¼÷Ò ¦¸¡øÄ ¸Æ¡öò-¦¾¡¼¨Ãô À¨¼ì¸ ÓÊÂÅ¢ø¨Ä"

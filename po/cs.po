@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-05-22 15:07-0400\n"
+"POT-Creation-Date: 2002-05-23 14:42-0400\n"
 "PO-Revision-Date: 2002-04-05 10:47+0100\n"
 "Last-Translator:  Petr Pytelka <pyta@lightcomp.cz>\n"
 "Language-Team: LightComp Czech Localization Group <cz_local@lightcomp.cz>\n"
@@ -436,7 +436,7 @@ msgstr "Nepodařilo se změnit adresář '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Nepodařilo se spustit proces potomka (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1243
+#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nepodařilo se vytvořit rouru pro komunikaci s procesem potomka (%s)"
