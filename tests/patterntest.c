@@ -105,7 +105,7 @@ test_compilation (gchar *src,
     {
       g_print ("failed \t(pattern_length: %d, expected %d)\n",
 	       spec->pattern_length,
-	       strlen (spec->pattern));
+	       (gint)strlen (spec->pattern));
       return FALSE;
     }
   

@@ -358,9 +358,9 @@ open_converter (const gchar *to_codeset,
 	   * NULL for anything but inbuf; work around that. (NULL outbuf
 	   * or NULL *outbuf is allowed by Unix98.)
 	   */
-	  gint inbytes_left = 0;
+	  gsize inbytes_left = 0;
 	  gchar *outbuf = NULL;
-	  gint outbytes_left = 0;
+	  gsize outbytes_left = 0;
 		
           cd = bucket->cd;
           bucket->used = TRUE;
