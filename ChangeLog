@@ -1,3 +1,7 @@
+2003-06-04  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* configure.in: Added "li" (Limburgish) to ALL_LINGUAS.
+
 2003-06-03  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in: Test for pthread_setschedparam. If not existant,
