@@ -39,10 +39,6 @@
 #define _g_vsprintf  vsprintf
 #define _g_vsnprintf vsnprintf
 
-#ifdef HAVE_VASPRINTF
-#define _g_vasprintf vasprintf
-#endif
-
 #else
 
 #include "gnulib/printf.h"
@@ -56,8 +52,6 @@
 #define _g_vfprintf  _g_gnulib_vfprintf
 #define _g_vsprintf  _g_gnulib_vsprintf
 #define _g_vsnprintf _g_gnulib_vsnprintf
-
-#define _g_vasprintf _g_gnulib_vasprintf
 
 #endif
 

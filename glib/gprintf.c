@@ -300,17 +300,27 @@ g_vasprintf (gchar      **string,
   gint len;
   g_return_val_if_fail (string != NULL, -1);
 
-#ifdef _g_vasprintf
-  len = _g_vasprintf (string, format, args);
+#if !defined(HAVE_GOOD_PRINTF)
+
+  len = _g_gnulib_vasprintf (string, format, args);
+  if (len < 0)
+    *string = NULL;
+
+#elif defined (HAVE_VASPRINTF)
+
+  len = vasprintf (string, format, args);
   if (len < 0)
     *string = NULL;
   else if (!g_mem_is_system_malloc ()) 
     {
+      /* vasprintf returns malloc-allocated memory */
       gchar *string1 = g_strndup (*string, len);
       free (*string);
       *string = string1;
     }
+
 #else
+
   {
     va_list args2;
 
@@ -325,6 +335,7 @@ g_vasprintf (gchar      **string,
 
   return len;
 }
+
 
 
 
