@@ -9,6 +9,8 @@ EXPORTS
 	g_cclosure_marshal_VOID__POINTER
 	g_cclosure_marshal_VOID__UINT
 	g_cclosure_marshal_VOID__UINT_POINTER
+	g_cclosure_marshal_VOID__OBJECT
+	g_cclosure_marshal_VOID__STRING
 	g_cclosure_marshal_VOID__VOID
 	g_cclosure_new
 	g_cclosure_new_object
@@ -40,6 +42,7 @@ EXPORTS
 	g_object_class_find_property
 	g_object_class_install_property
 	g_object_freeze_notify
+	g_object_connect
 	g_object_get
 	g_object_get_data
 	g_object_get_property
@@ -88,6 +91,7 @@ EXPORTS
 	g_param_value_set_default
 	g_param_value_validate
 	g_param_values_cmp
+	g_signal_add_emission_hook
 	g_signal_connect_closure
 	g_signal_connect_closure_by_id
 	g_signal_connect_data
@@ -113,6 +117,7 @@ EXPORTS
 	g_signal_new_valist
 	g_signal_parse_name
 	g_signal_query
+	g_signal_remove_emission_hook
 	g_signal_stop_emission
 	g_signal_type_cclosure_new
 	g_type_add_class_cache_func
@@ -139,6 +144,7 @@ EXPORTS
 	g_type_get_qdata
 	g_type_init
 	g_type_instance_is_a
+	g_type_interface_add_prerequisite
 	g_type_interface_peek
 	g_type_interfaces
 	g_type_is_a
@@ -162,11 +168,14 @@ EXPORTS
 	g_type_register_static
 	g_type_remove_class_cache_func
 	g_type_set_qdata
+;	g_type_value_is_a
 	g_type_value_table_peek
+;	g_value_convert
 	g_value_copy
 	g_value_dup_boxed
 	g_value_dup_object
 	g_value_dup_string
+;	g_value_get_as_pointer
 	g_value_get_boolean
 	g_value_get_boxed
 	g_value_get_char
@@ -183,6 +192,7 @@ EXPORTS
 	g_value_get_uint
 	g_value_get_ulong
 	g_value_init
+	g_value_peek_pointer
 	g_value_reset
 	g_value_set_boolean
 	g_value_set_boxed
@@ -203,3 +213,4 @@ EXPORTS
 	g_value_set_ulong
 	g_value_types_init
 	g_value_unset
+;	g_values_exchange
