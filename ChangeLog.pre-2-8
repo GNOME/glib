@@ -1,6 +1,10 @@
-Mon Aug 25 20:30:06 2003  Owen Taylor  <otaylor@redhat.com>
+Tue Aug 26 12:40:57 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.3 ===
+
+	* configure.in: Added is to ALL_LINGUAS.
+
+Mon Aug 25 20:30:06 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Version 2.2.3, interface age 3.
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2\n"
-"POT-Creation-Date: 2003-08-18 17:58+0000\n"
+"POT-Creation-Date: 2003-08-25 20:40-0400\n"
 "PO-Revision-Date: 2003-08-18 18:05+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: is <is@li.org>\n"
@@ -197,8 +197,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess "
-"að ætla að byrja viðfang. Ritaðu það sem &amp;"
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess að "
+"ætla að byrja viðfang. Ritaðu það sem &amp;"
 
 #: glib/gmarkup.c:531
 #, c-format
@@ -206,8 +206,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Gat ekki þáttað '%s' sem ætti að vera tölustafur innan í tilvísun í "
-"tákn (til dæmis &#234;). Ef til vill er talan of stór"
+"Gat ekki þáttað '%s' sem ætti að vera tölustafur innan í tilvísun í tákn "
+"(til dæmis &#234;). Ef til vill er talan of stór"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -224,8 +224,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess "
-"að ætla að byrja viðfang. Ritaðu það sem &amp;"
+"Viðfangið endar ekki á semikommu; líklega notaðir þú og-merkið án þess að "
+"ætla að byrja viðfang. Ritaðu það sem &amp;"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
@@ -257,8 +257,7 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr ""
-"Undarlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
+msgstr "Undarlegt tákn '%s', átti von á '>' tákninu til að enda viðfangið '%s'"
 
 #: glib/gmarkup.c:1150
 #, c-format
@@ -293,8 +292,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' er ekki gilt tákn strax á eftir '</'; '%s' má ekki vera fyrsta tákn "
-"í heiti mengis"
+"'%s' er ekki gilt tákn strax á eftir '</'; '%s' má ekki vera fyrsta tákn í "
+"heiti mengis"
 
 #: glib/gmarkup.c:1452
 #, c-format
@@ -302,8 +301,7 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' er ekki gilt tákn strax á eftir lokun mengis '%s'. Leyfilegt tákn "
-"er '>'"
+"'%s' er ekki gilt tákn strax á eftir lokun mengis '%s'. Leyfilegt tákn er '>'"
 
 #: glib/gmarkup.c:1463
 #, c-format
@@ -338,8 +336,7 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu "
-"<%s/>"
+"Skjalið endar óvænt. Átti von á að sjá stærraen merki sem lokar taginu <%s/>"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly inside an element name"
@@ -358,8 +355,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og "
-"það er ekkert gildi"
+"Skjalið endar óvænt eftir samasem merkið sem fylgir heiti eiginleika og það "
+"er ekkert gildi"
 
 #: glib/gmarkup.c:1678
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -404,8 +401,7 @@ msgstr "Gat ekki lesið gögn frá undirferli"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"Óvænt villa í g_io_channel_win32_poll() við lestur úr undirferli"
+msgstr "Óvænt villa í g_io_channel_win32_poll() við lestur úr undirferli"
 
 #: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
