@@ -1,3 +1,7 @@
+Thu Oct  7 12:28:27 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.6
+
 Sun Oct  3 12:07:44 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* Makefile.am: list acglib.m4 in CONFIGURE_DEPENDENCIES so we hook
