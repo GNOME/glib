@@ -137,6 +137,7 @@ glib_DEFUN([GLIB_WITH_NLS],
         if test "$gt_cv_func_dgettext_libintl" = "yes" ; then
           glib_save_LIBS="$LIBS"
           LIBS="$LIBS -lintl $libintl_extra_libs"
+          unset ac_cv_func_bind_textdomain_codeset
           AC_CHECK_FUNCS(bind_textdomain_codeset)
           LIBS="$glib_save_LIBS"
 

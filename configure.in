@@ -351,8 +351,6 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",
 
 GLIB_DEFINE_LOCALEDIR(GLIB_LOCALE_DIR)
 
-AC_CHECK_FUNCS(bind_textdomain_codeset)
-
 dnl
 dnl Now we are done with gettext checks, figure out ICONV_LIBS
 dnl
