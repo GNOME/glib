@@ -19,7 +19,6 @@
 #include	"gobject.h"
 
 
-#include	"gvalue.h"
 #include	"gvaluecollector.h"
 
 
@@ -31,18 +30,29 @@
 
 
 /* --- prototypes --- */
-extern void	g_object_type_init			(void);
 static void	g_object_base_class_init		(GObjectClass	*class);
 static void	g_object_base_class_finalize		(GObjectClass	*class);
 static void	g_object_do_class_init			(GObjectClass	*class);
 static void	g_object_do_init			(GObject	*object);
-static void	g_object_do_queue_param_changed 	(GObject        *object,
-							 GParamSpec     *pspec);
-static void	g_object_do_dispatch_param_changed	(GObject        *object,
-							 GParamSpec     *pspec);
+static void	g_object_do_queue_param_changed		(GObject	*object,
+							 GParamSpec	*pspec);
+static void	g_object_do_dispatch_param_changed	(GObject	*object,
+							 GParamSpec	*pspec);
 static void	g_object_last_unref			(GObject	*object);
 static void	g_object_do_shutdown			(GObject	*object);
 static void	g_object_do_finalize			(GObject	*object);
+static void	g_value_object_init			(GValue		*value);
+static void	g_value_object_free_value		(GValue		*value);
+static void	g_value_object_copy_value		(const GValue	*src_value,
+							 GValue		*dest_value);
+static gchar*	g_value_object_collect_value		(GValue		*value,
+							 guint		 nth_value,
+							 GType		*collect_type,
+							 GTypeCValue	*collect_value);
+static gchar*	g_value_object_lcopy_value		(const GValue	*value,
+							 guint		 nth_value,
+							 GType		*collect_type,
+							 GTypeCValue	*collect_value);
 
 
 /* --- variables --- */
@@ -61,7 +71,7 @@ debug_objects_foreach (gpointer key,
 		       gpointer user_data)
 {
   GObject *object = value;
-
+  
   g_message ("[%p] stale %s\tref_count=%u",
 	     object,
 	     G_OBJECT_TYPE_NAME (object),
@@ -79,13 +89,11 @@ debug_objects_atexit (void)
 #endif	DEBUG_OBJECTS
 
 void
-g_object_type_init (void)	/* sync with glib-gtype.c */
+g_object_type_init (void)	/* sync with gtype.c */
 {
   static gboolean initialized = FALSE;
   static const GTypeFundamentalInfo finfo = {
     G_TYPE_FLAG_CLASSED | G_TYPE_FLAG_INSTANTIATABLE | G_TYPE_FLAG_DERIVABLE | G_TYPE_FLAG_DEEP_DERIVABLE,
-    0       /* n_collect_bytes */,
-    NULL    /* GTypeParamCollector */,
   };
   static GTypeInfo info = {
     sizeof (GObjectClass),
@@ -97,6 +105,16 @@ g_object_type_init (void)	/* sync with glib-gtype.c */
     sizeof (GObject),
     0		/* n_preallocs */,
     (GInstanceInitFunc) g_object_do_init,
+    NULL,	/* value_table */
+  };
+  static const GTypeValueTable value_table = {
+    g_value_object_init,	  /* value_init */
+    g_value_object_free_value,	  /* value_free */
+    g_value_object_copy_value,	  /* value_copy */
+    G_VALUE_COLLECT_POINTER,	  /* collect_type */
+    g_value_object_collect_value, /* collect_value */
+    G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
+    g_value_object_lcopy_value,	  /* lcopy_value */
   };
   GType type;
   
@@ -105,12 +123,13 @@ g_object_type_init (void)	/* sync with glib-gtype.c */
   
   /* G_TYPE_OBJECT
    */
-  type = g_type_register_fundamental (G_TYPE_OBJECT, "GObject", &finfo, &info);
+  info.value_table = &value_table;
+  type = g_type_register_fundamental (G_TYPE_OBJECT, "GObject", &info, &finfo);
   g_assert (type == G_TYPE_OBJECT);
-
-#ifdef  DEBUG_OBJECTS
+  
+#ifdef	DEBUG_OBJECTS
   g_atexit (debug_objects_atexit);
-#endif  DEBUG_OBJECTS
+#endif	DEBUG_OBJECTS
 }
 
 static void
@@ -127,7 +146,7 @@ static void
 g_object_base_class_finalize (GObjectClass *class)
 {
   guint i;
-
+  
   g_message ("finallizing base class of %s", G_OBJECT_CLASS_NAME (class));
   
   for (i = 0; i < class->n_param_specs; i++)
@@ -158,11 +177,11 @@ g_object_do_class_init (GObjectClass *class)
 
 void
 g_object_class_install_param (GObjectClass *class,
-			      guint         param_id,
+			      guint	    param_id,
 			      GParamSpec   *pspec /* 1 ref_count taken over */)
 {
   guint i;
-
+  
   g_return_if_fail (G_IS_OBJECT_CLASS (class));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   if (pspec->flags & G_PARAM_WRITABLE)
@@ -171,7 +190,7 @@ g_object_class_install_param (GObjectClass *class,
     g_return_if_fail (class->get_param != NULL);
   g_return_if_fail (param_id > 0);
   g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
-
+  
   /* expensive paranoia checks ;( */
   for (i = 0; i < class->n_param_specs; i++)
     if (PARAM_SPEC_PARAM_ID (class->param_specs[i]) == param_id)
@@ -191,7 +210,7 @@ g_object_class_install_param (GObjectClass *class,
 		 pspec->name);
       return;
     }
-
+  
   g_param_spec_set_qdata (pspec, quark_param_id, GUINT_TO_POINTER (param_id));
   g_param_spec_hash_table_insert (param_spec_hash_table, pspec, G_OBJECT_CLASS_TYPE (class));
   i = class->n_param_specs++;
@@ -205,7 +224,7 @@ g_object_class_find_param_spec (GObjectClass *class,
 {
   g_return_val_if_fail (G_IS_OBJECT_CLASS (class), NULL);
   g_return_val_if_fail (param_name != NULL, NULL);
-
+  
   return g_param_spec_hash_table_lookup (param_spec_hash_table,
 					 param_name,
 					 G_OBJECT_CLASS_TYPE (class),
@@ -217,7 +236,7 @@ g_object_do_init (GObject *object)
 {
   object->ref_count = 1;
   object->qdata = NULL;
-
+  
 #ifdef	DEBUG_OBJECTS
   if (!debug_objects_ht)
     debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
@@ -230,12 +249,12 @@ static void
 g_object_last_unref (GObject *object)
 {
   g_return_if_fail (object->ref_count > 0);
-
+  
   if (object->ref_count == 1)	/* may have been re-referenced meanwhile */
     G_OBJECT_GET_CLASS (object)->shutdown (object);
-
+  
   object->ref_count -= 1;
-
+  
   if (object->ref_count == 0)	/* may have been re-referenced meanwhile */
     G_OBJECT_GET_CLASS (object)->finalize (object);
 }
@@ -265,31 +284,31 @@ g_object_do_finalize (GObject *object)
 }
 
 gpointer
-g_object_new (GType        object_type,
+g_object_new (GType	   object_type,
 	      const gchar *first_param_name,
 	      ...)
 {
   GObject *object;
   va_list var_args;
-
+  
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
-
+  
   va_start (var_args, first_param_name);
   object = g_object_new_valist (object_type, first_param_name, var_args);
   va_end (var_args);
-
+  
   return object;
 }
 
 gpointer
-g_object_new_valist (GType        object_type,
+g_object_new_valist (GType	  object_type,
 		     const gchar *first_param_name,
-		     va_list      var_args)
+		     va_list	  var_args)
 {
   GObject *object;
-
+  
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
-
+  
   object = (GObject*) g_type_create_instance (object_type);
   if (first_param_name)
     g_object_set_valist (object, first_param_name, var_args);
@@ -312,15 +331,15 @@ notify_param_changed_handler (gpointer data)
   GObject *object;
   GObjectClass *class;
   GSList *slist;
-
+  
   /* FIXME: need GDK_THREADS lock */
-
+  
   object = G_OBJECT (data);
   class = G_OBJECT_GET_CLASS (object);
   slist = g_datalist_id_get_data (&object->qdata, quark_param_changed_queue);
-
+  
   /* a reference count is still being held */
-
+  
   for (; slist; slist = slist->next)
     if (slist->data)
       {
@@ -376,11 +395,11 @@ object_get_param (GObject     *object,
 		  const gchar *trailer)
 {
   GObjectClass *class;
-
+  
   g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (object), pspec->owner_type));	/* paranoid */
-
+  
   class = g_type_class_peek (pspec->owner_type);
-
+  
   class->get_param (object, PARAM_SPEC_PARAM_ID (pspec), value, pspec, trailer);
 }
 
@@ -391,36 +410,36 @@ object_set_param (GObject     *object,
 		  const gchar *trailer)
 {
   GObjectClass *class;
-
+  
   g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (object), pspec->owner_type));	/* paranoid */
-
+  
   class = g_type_class_peek (pspec->owner_type);
-
+  
   class->set_param (object, PARAM_SPEC_PARAM_ID (pspec), value, pspec, trailer);
-
+  
   class->queue_param_changed (object, pspec);
 }
 
 void
-g_object_set_valist (GObject     *object,
+g_object_set_valist (GObject	 *object,
 		     const gchar *first_param_name,
-		     va_list      var_args)
+		     va_list	  var_args)
 {
   const gchar *name;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
-
+  
   g_object_ref (object);
-
+  
   name = first_param_name;
-
+  
   while (name)
     {
       const gchar *trailer = NULL;
       GValue value = { 0, };
       GParamSpec *pspec;
       gchar *error = NULL;
-
+      
       pspec = g_param_spec_hash_table_lookup (param_spec_hash_table,
 					      name,
 					      G_OBJECT_TYPE (object),
@@ -442,10 +461,10 @@ g_object_set_valist (GObject     *object,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-
-      g_value_init (&value, G_PARAM_SPEC_TYPE (pspec));
-
-      G_PARAM_COLLECT_VALUE (&value, pspec, var_args, &error);
+      
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      
+      G_VALUE_COLLECT (&value, var_args, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
@@ -456,37 +475,37 @@ g_object_set_valist (GObject     *object,
 	   */
 	  break;
 	}
-
+      
       object_set_param (object, &value, pspec, trailer);
       
       g_value_unset (&value);
-
+      
       name = va_arg (var_args, gchar*);
     }
-
+  
   g_object_unref (object);
 }
 
 void
-g_object_get_valist (GObject     *object,
+g_object_get_valist (GObject	 *object,
 		     const gchar *first_param_name,
-		     va_list      var_args)
+		     va_list	  var_args)
 {
   const gchar *name;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
-
+  
   g_object_ref (object);
-
+  
   name = first_param_name;
-
+  
   while (name)
     {
       const gchar *trailer = NULL;
       GValue value = { 0, };
       GParamSpec *pspec;
       gchar *error = NULL;
-
+      
       pspec = g_param_spec_hash_table_lookup (param_spec_hash_table,
 					      name,
 					      G_OBJECT_TYPE (object),
@@ -508,12 +527,12 @@ g_object_get_valist (GObject     *object,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-
-      g_value_init (&value, G_PARAM_SPEC_TYPE (pspec));
-
+      
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      
       object_get_param (object, &value, pspec, trailer);
-
-      G_PARAM_LCOPY_VALUE (&value, pspec, var_args, &error);
+      
+      G_VALUE_LCOPY (&value, var_args, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", G_STRLOC, error);
@@ -526,55 +545,55 @@ g_object_get_valist (GObject     *object,
 	}
       
       g_value_unset (&value);
-
+      
       name = va_arg (var_args, gchar*);
     }
-
+  
   g_object_unref (object);
 }
 
 void
-g_object_set (GObject     *object,
+g_object_set (GObject	  *object,
 	      const gchar *first_param_name,
 	      ...)
 {
   va_list var_args;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
-
+  
   va_start (var_args, first_param_name);
   g_object_set_valist (object, first_param_name, var_args);
   va_end (var_args);
 }
 
 void
-g_object_get (GObject     *object,
+g_object_get (GObject	  *object,
 	      const gchar *first_param_name,
 	      ...)
 {
   va_list var_args;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
-
+  
   va_start (var_args, first_param_name);
   g_object_get_valist (object, first_param_name, var_args);
   va_end (var_args);
 }
 
 void
-g_object_set_param (GObject      *object,
-		    const gchar  *param_name,
+g_object_set_param (GObject	 *object,
+		    const gchar	 *param_name,
 		    const GValue *value)
 {
   GParamSpec *pspec;
   const gchar *trailer;
-
+  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (param_name != NULL);
   g_return_if_fail (G_IS_VALUE (value));
-
+  
   g_object_ref (object);
-
+  
   pspec = g_param_spec_hash_table_lookup (param_spec_hash_table,
 					  param_name,
 					  G_OBJECT_TYPE (object),
@@ -588,17 +607,17 @@ g_object_set_param (GObject      *object,
   else
     {
       GValue tmp_value = { 0, };
-
+      
       /* provide a copy to work from and convert if necessary */
-      g_value_init (&tmp_value, G_PARAM_SPEC_TYPE (pspec));
-
+      g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      
       if (!g_value_convert (value, &tmp_value) ||
-	  g_value_validate (&tmp_value, pspec))
-	g_warning ("%s: can't convert `%s' value to parameter `%s' of type `%s'",
+	  g_param_value_validate (pspec, &tmp_value))
+	g_warning ("%s: cannot convert `%s' value to parameter `%s' value of type `%s'",
 		   G_STRLOC,
 		   G_VALUE_TYPE_NAME (value),
 		   pspec->name,
-		   G_PARAM_SPEC_TYPE_NAME (pspec));
+		   g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
       else
 	object_set_param (object, &tmp_value, pspec, trailer);
       
@@ -609,9 +628,9 @@ g_object_set_param (GObject      *object,
 }
 
 void
-g_object_get_param (GObject     *object,
+g_object_get_param (GObject	*object,
 		    const gchar *param_name,
-		    GValue      *value)
+		    GValue	*value)
 {
   GParamSpec *pspec;
   const gchar *trailer;
@@ -642,13 +661,13 @@ g_object_get_param (GObject     *object,
        * (though, at this point, GValue should exclusively be modified
        * through the accessor functions anyways)
        */
-      g_value_init (&tmp_value, G_PARAM_SPEC_TYPE (pspec));
+      g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       
-      if (!g_value_types_exchangable (G_VALUE_TYPE (value), G_PARAM_SPEC_TYPE (pspec)))
-	g_warning ("%s: can't retrive parameter `%s' of type `%s' as value of type `%s'",
+      if (!g_value_types_exchangable (G_VALUE_TYPE (value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
+	g_warning ("%s: can't retrive parameter `%s' value of type `%s' as value of type `%s'",
 		   G_STRLOC,
 		   pspec->name,
-		   G_PARAM_SPEC_TYPE_NAME (pspec),
+		   g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
 		   G_VALUE_TYPE_NAME (value));
       else
 	{
@@ -664,14 +683,14 @@ g_object_get_param (GObject     *object,
 }
 
 void
-g_object_queue_param_changed (GObject     *object,
+g_object_queue_param_changed (GObject	  *object,
 			      const gchar *param_name)
 {
   GParamSpec *pspec;
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (param_name != NULL);
-
+  
   pspec = g_param_spec_hash_table_lookup (param_spec_hash_table,
 					  param_name,
 					  G_OBJECT_TYPE (object),
@@ -690,9 +709,9 @@ g_object_ref (GObject *object)
 {
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (object->ref_count > 0, NULL);
-
+  
   object->ref_count += 1;
-
+  
   return object;
 }
 
@@ -701,7 +720,7 @@ g_object_unref (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count > 0);
-
+  
   if (object->ref_count > 1)
     object->ref_count -= 1;
   else
@@ -713,7 +732,7 @@ g_object_get_qdata (GObject *object,
 		    GQuark   quark)
 {
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-
+  
   return quark ? g_datalist_id_get_data (&object->qdata, quark) : NULL;
 }
 
@@ -730,8 +749,8 @@ g_object_set_qdata (GObject *object,
 
 void
 g_object_set_qdata_full (GObject       *object,
-			 GQuark         quark,
-			 gpointer       data,
+			 GQuark		quark,
+			 gpointer	data,
 			 GDestroyNotify destroy)
 {
   g_return_if_fail (G_IS_OBJECT (object));
@@ -748,4 +767,106 @@ g_object_steal_qdata (GObject *object,
   g_return_val_if_fail (quark > 0, NULL);
   
   return g_datalist_id_remove_no_notify (&object->qdata, quark);
+}
+
+static void
+g_value_object_init (GValue *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static void
+g_value_object_free_value (GValue *value)
+{
+  if (value->data[0].v_pointer)
+    g_object_unref (value->data[0].v_pointer);
+}
+
+static void
+g_value_object_copy_value (const GValue *src_value,
+			   GValue	*dest_value)
+{
+  if (src_value->data[0].v_pointer)
+    dest_value->data[0].v_pointer = g_object_ref (src_value->data[0].v_pointer);
+  else
+    dest_value->data[0].v_pointer = NULL;
+}
+
+static gchar*
+g_value_object_collect_value (GValue	  *value,
+			      guint	   nth_value,
+			      GType	  *collect_type,
+			      GTypeCValue *collect_value)
+{
+  if (collect_value->v_pointer)
+    {
+      GObject *object = collect_value->v_pointer;
+      
+      if (object->g_type_instance.g_class == NULL)
+	return g_strconcat ("invalid unclassed object pointer for value type `",
+			    G_VALUE_TYPE_NAME (value),
+			    "'",
+			    NULL);
+      else if (!g_type_is_a (G_OBJECT_TYPE (object), G_VALUE_TYPE (value)))
+	return g_strconcat ("invalid object type `",
+			    G_OBJECT_TYPE_NAME (object),
+			    "' for value type `",
+			    G_VALUE_TYPE_NAME (value),
+			    "'",
+			    NULL);
+      value->data[0].v_pointer = g_object_ref (object);
+    }
+  else
+    value->data[0].v_pointer = NULL;
+  
+  *collect_type = 0;
+  return NULL;
+}
+
+static gchar*
+g_value_object_lcopy_value (const GValue *value,
+			    guint	  nth_value,
+			    GType	 *collect_type,
+			    GTypeCValue  *collect_value)
+{
+  GObject **object_p = collect_value->v_pointer;
+  
+  if (!object_p)
+    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+  
+  *object_p = value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
+  
+  *collect_type = 0;
+  return NULL;
+}
+
+void
+g_value_set_object (GValue  *value,
+		    GObject *v_object)
+{
+  g_return_if_fail (G_IS_VALUE_OBJECT (value));
+  if (v_object)
+    g_return_if_fail (G_IS_OBJECT (v_object));
+  
+  if (value->data[0].v_pointer)
+    g_object_unref (value->data[0].v_pointer);
+  value->data[0].v_pointer = v_object;
+  if (value->data[0].v_pointer)
+    g_object_ref (value->data[0].v_pointer);
+}
+
+GObject*
+g_value_get_object (GValue *value)
+{
+  g_return_val_if_fail (G_IS_VALUE_OBJECT (value), NULL);
+  
+  return value->data[0].v_pointer;
+}
+
+GObject*
+g_value_dup_object (GValue *value)
+{
+  g_return_val_if_fail (G_IS_VALUE_OBJECT (value), NULL);
+  
+  return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
 }

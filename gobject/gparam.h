@@ -22,7 +22,7 @@
 #define __G_PARAM_H__
 
 
-#include	<gobject/gtype.h>
+#include	<gobject/gvalue.h>
 
 
 #ifdef __cplusplus
@@ -37,7 +37,8 @@ extern "C" {
 #define G_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM, GParamSpec))
 #define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
 #define G_PARAM_SPEC_GET_CLASS(pspec)	(G_TYPE_INSTANCE_GET_CLASS ((pspec), G_TYPE_PARAM, GParamSpecClass))
-#define	G_IS_VALUE(value)		(G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_PARAM))
+#define	G_IS_PARAM_VALUE(pspec, value)	(g_type_is_a (G_VALUE_TYPE (value), G_PARAM_SPEC_VALUE_TYPE (pspec))) // FIXME
+#define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC_GET_CLASS (pspec)->value_type)
 
 
 /* --- flags --- */
@@ -54,39 +55,22 @@ typedef enum
 /* --- typedefs & structures --- */
 typedef struct _GParamSpecClass GParamSpecClass;
 typedef struct _GParamSpec      GParamSpec;
-typedef struct _GValue          GValue;
-typedef union  _GParamCValue	GParamCValue;
-typedef void  (*GValueExchange) (GValue*, GValue*);
 struct _GParamSpecClass
 {
   GTypeClass      g_type_class;
 
+  GType		  value_type;
+
   void	        (*finalize)		(GParamSpec   *pspec);
 
   /* GParam methods */
-  void          (*param_init)           (GValue       *value,
-					 GParamSpec   *pspec);
-  void          (*param_free_value)     (GValue       *value);
-  gboolean      (*param_validate)       (GValue       *value,
-					 GParamSpec   *pspec);
-  gint          (*param_values_cmp)     (const GValue *value1,
-					 const GValue *value2,
-					 GParamSpec   *pspec);
-  void          (*param_copy_value)     (const GValue *src_value,
-					 GValue       *dest_value);
-  /* varargs functionality (optional) */
-  guint		  collect_type;
-  gchar*        (*param_collect_value)	(GValue       *value,
-					 GParamSpec   *pspec,
-					 guint         nth_value,
-					 GType	      *collect_type,
-					 GParamCValue *collect_value);
-  guint		  lcopy_type;
-  gchar*        (*param_lcopy_value)	(const GValue *value,
-					 GParamSpec   *pspec,
-					 guint         nth_value,
-					 GType        *collect_type,
-					 GParamCValue *collect_value);
+  void          (*value_set_default)    (GParamSpec   *pspec,
+					 GValue       *value);
+  gboolean      (*value_validate)       (GParamSpec   *pspec,
+					 GValue       *value);
+  gint          (*values_cmp)           (GParamSpec   *pspec,
+					 const GValue *value1,
+					 const GValue *value2);
 };
 struct _GParamSpec
 {
@@ -118,6 +102,15 @@ void            g_param_spec_set_qdata_full	(GParamSpec    *pspec,
 						 GDestroyNotify destroy);
 gpointer        g_param_spec_steal_qdata	(GParamSpec    *pspec,
 						 GQuark         quark);
+void		g_param_value_set_default	(GParamSpec    *pspec,
+						 GValue	       *value);
+gboolean	g_param_value_defaults		(GParamSpec    *pspec,
+						 GValue	       *value);
+gboolean	g_param_value_validate		(GParamSpec    *pspec,
+						 GValue	       *value);
+gint		g_param_values_cmp		(GParamSpec    *pspec,
+						 const GValue  *value1,
+						 const GValue  *value2);
 
 
 /* --- private --- */
@@ -140,6 +133,8 @@ GParamSpec*	g_param_spec_hash_table_lookup	(GHashTable    *hash_table,
 
 
 /* contracts:
+ *
+ * +++ OUTDATED +++
  *
  * class functions may not evaluate param->pspec directly,
  * instead, pspec will be passed as argument if required.

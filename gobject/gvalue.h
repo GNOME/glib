@@ -22,7 +22,7 @@
 #define __G_VALUE_H__
 
 
-#include	<gobject/gparam.h>
+#include	<gobject/gtype.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,18 +30,21 @@ extern "C" {
 
 
 /* --- type macros --- */
-#define G_TYPE_IS_VALUE(type)		(G_TYPE_FUNDAMENTAL (type) == G_TYPE_PARAM)
-#define	G_IS_VALUE(value)		(G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_PARAM))
+#define	G_TYPE_IS_VALUE(type)		(g_type_value_table_peek (type) != NULL)
+#define	G_IS_VALUE(value)		(G_TYPE_IS_VALUE (G_VALUE_TYPE (value))) // FIXME
 #define	G_VALUE_TYPE(value)		(G_TYPE_FROM_CLASS (value))
 #define	G_VALUE_TYPE_NAME(value)	(g_type_name (G_VALUE_TYPE (value)))
 
 
 /* --- typedefs & structures --- */
-/* typedef struct _GValue           GValue; */
+typedef void (*GValueExchange) (GValue	*value1,
+				GValue	*value2);
 struct _GValue
 {
-  GType           g_type;	/* param value type */
+  /*< private >*/
+  GType		g_type;
 
+  /* public for GTypeValueTable methods */
   union {
     gint	v_int;
     guint	v_uint;
@@ -57,28 +60,17 @@ struct _GValue
 /* --- prototypes --- */
 void            g_value_init	   	(GValue       *value,
 					 GType         g_type);
-void            g_value_init_default  	(GValue       *value,
-					 GParamSpec   *pspec);
-gboolean        g_value_validate      	(GValue       *value,
-					 GParamSpec   *pspec);
-gboolean        g_value_defaults      	(const GValue *value,
-					 GParamSpec   *pspec);
-void            g_value_set_default   	(GValue       *value,
-					 GParamSpec   *pspec);
-gint            g_values_cmp    	(const GValue *value1,
-					 const GValue *value2,
-					 GParamSpec   *pspec);
 void            g_value_copy    	(const GValue *src_value,
 					 GValue       *dest_value);
 gboolean	g_value_convert		(const GValue *src_value,
 					 GValue       *dest_value);
-gboolean        g_values_exchange	(GValue       *value1,
-					 GValue       *value2);
 void            g_value_reset   	(GValue       *value);
 void            g_value_unset   	(GValue       *value);
 
 
-/* --- implementation bits --- */
+/* --- implementation details --- */
+gboolean g_values_exchange		(GValue       *value1,
+					 GValue       *value2);
 gboolean g_value_types_exchangable	(GType         value_type1,
 					 GType         value_type2);
 void     g_value_register_exchange_func	(GType         value_type1,

@@ -28,6 +28,7 @@ libgobject_la_LIBADD = # $(libglib)
 # GObject header files for public installation (non-generated)
 gobject_public_h_sources = @STRIP_BEGIN@ \
 	gvalue.h \
+	gvaluetypes.h \
 	gparam.h \
 	gparamspecs.h \
 	genums.h \
@@ -42,6 +43,7 @@ gobject_private_h_sources = @STRIP_BEGIN@ \
 # GObject C sources to build the library from
 gobject_c_sources = @STRIP_BEGIN@ \
 	gvalue.c \
+	gvaluetypes.c \
 	gparam.c \
 	gparamspecs.c \
 	genums.c \

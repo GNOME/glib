@@ -23,6 +23,7 @@
 #include	<gobject/gtype.h>
 #include	<gobject/genums.h>
 #include	<gobject/gvalue.h>
+#include	<gobject/gvaluetypes.h>
 #include	<gobject/gparam.h>
 #include	<gobject/gparamspecs.h>
 #include	<gobject/gobject.h>

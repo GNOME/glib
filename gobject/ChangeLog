@@ -1,3 +1,79 @@
+Sat Jun 24 23:03:04 2000  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: provide G_TYPE_CHAR, G_TYPE_UCHAR, G_TYPE_BOOLEAN,
+	G_TYPE_INT, G_TYPE_UINT, G_TYPE_LONG, G_TYPE_ULONG, G_TYPE_FLOAT,
+	G_TYPE_DOUBLE and G_TYPE_STRING fundamental types.
+	added a GTypeValueTable* pointer to GTypeInfo structure for types
+	to implement GValue handling functions.
+	GTypeValueTable contains the following members:
+	  value_init(): initialize a GValue structure.
+	  value_free(): free GValue structure contents (optional).
+	  value_copy(): copy one GValue contents to another GValue structure of
+	  collect_type: varargs collection type for the first variable argument
+	  to be collected by collect_value().
+	  collect_value(): variable arguments collection function (optional).
+	  lcopy_type: varargs collection type for the first variable argument
+	  to be location copyied by lcopy_value().
+	  lcopy_value(): variable arguments location copy function (optional).
+	g_type_value_table_peek(): new function to retrive the GTypeValueTable*
+	for a type node. ValueTables get inherited from parent types, unless
+	overridden through the GTypeInfo structure. internally, GTypeValueTable
+	support means an added overhead of one pointer per static or used
+	dynamic type node.
+	g_type_add_class_cache_func(): provide a cache_func/data pair to be
+	called 	prior to a type nodes last_unref() function, this can be used
+	to prevent premature class destruction. multiple installed cache_func()
+	will be chained upon last_unref() untill one of them returns TRUE.
+	the cache_func()s have to check the type id passed in to figure whether
+	they actually wants to cache the class of this type (since any types are
+	routed through the cache_func() chain).
+	g_type_remove_class_cache_func(): remove a previously installed
+	cache_func/data pair. the cache maintained by this function has to be
+	clear when calling g_type_remove_class_cache_func() to avoid leaks.
+	g_type_class_unref_uncached(): class unref function for cache_func()
+	implementations, unreferences a class omitting the cache chain (and
+	therefore unref->cache->unref->... loops).
+
+	* gvaluetypes.[hc]: provide the value setters/getters for the primitive
+	fundamental types boolean, char, uchar, int, uint, long, ulong, float,
+	double and string.
+
+	* gvalue.[hc]: provide G_TYPE_IS_VALUE() in terms of whether a
+	GTypeValueTable is provided for this type.
+	removed g_value_init_default(), g_value_validate(), g_value_defaults(),
+	g_value_set_default() and g_values_cmp() as these are supplied by the
+	GParamSpec API now.
+	moved g_values_exchange() into the "implementation details" section,
+	since it just provides the underlying functionality for
+	g_value_convert().
+
+	* gvaluecollector.h: renamed the varargs value container from
+	GParamCValue to GTypeCValue as the value collection methods are
+	supplied by the type system now.
+	G_PARAM_COLLECT_VALUE() and G_PARAM_LCOPY_VALUE() got renamed to
+	G_VALUE_COLLECT() and G_VALUE_LCOPY() and operate without a
+	GParamSpec structure now.
+
+	* genums.h: macros cleanups/fixes.
+
+	* genum.c: provide G_TYPE_ENUM and G_TYPE_FLAGS type
+	and assorted g_value_{s|g}et_{enum|flags}() implementations.
+
+	* gobject.[hc]:
+	provide G_IS_VALUE_OBJECT(), G_TYPE_OBJECT ValueTable methods
+	and g_value_{s|g}et_object().
+
+	* gparam.[hc]: reduced class to value_set_default(),
+	value_validate() and values_cmp(). also parameters now need to fill
+	in a GType value_type; field to indicate the GValue type they
+	are handling. provide g_param_value_set_default(),
+	g_param_value_defaults(), g_param_value_validate() and
+	g_param_values_cmp().
+
+	* gparamspecs.[hc]: got rid of the g_value_* functions and
+	the G_IS_VALUE_* macros. adapted param spec implementations
+	according to the GParamSpecClass changes.
+
 Sat Jun 10 08:38:27 2000  Tim Janik  <timj@gtk.org>
 
 	* gtype.c (type_class_init): fetch the nth iface entry of the

@@ -500,6 +500,7 @@ typedef short  gshort;
 typedef long   glong;
 typedef int    gint;
 typedef gint   gboolean;
+typedef gchar* gstring;
 
 typedef unsigned char	guchar;
 typedef unsigned short	gushort;

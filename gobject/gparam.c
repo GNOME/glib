@@ -28,8 +28,6 @@
 
 
 /* --- prototypes --- */
-extern void	g_param_types_init		 (void);
-extern void	g_param_spec_types_init		 (void);	/* sync with glib-gparamspecs.c */
 static void	g_param_spec_class_base_init	 (GParamSpecClass	*class);
 static void	g_param_spec_class_base_finalize (GParamSpecClass	*class);
 static void	g_param_spec_class_init		 (GParamSpecClass	*class,
@@ -40,15 +38,13 @@ static void	g_param_spec_finalize		 (GParamSpec		*pspec);
 
 /* --- functions --- */
 void
-g_param_types_init (void)	/* sync with glib-gtype.c */
+g_param_type_init (void)	/* sync with gtype.c */
 {
   static const GTypeFundamentalInfo finfo = {
     (G_TYPE_FLAG_CLASSED |
      G_TYPE_FLAG_INSTANTIATABLE |
      G_TYPE_FLAG_DERIVABLE |
      G_TYPE_FLAG_DEEP_DERIVABLE),
-    0           /* n_collect_bytes */,
-    NULL        /* GTypeParamCollector */,
   };
   static const GTypeInfo param_spec_info = {
     sizeof (GParamSpecClass),
@@ -57,20 +53,18 @@ g_param_types_init (void)	/* sync with glib-gtype.c */
     (GBaseFinalizeFunc) g_param_spec_class_base_finalize,
     (GClassInitFunc) g_param_spec_class_init,
     (GClassFinalizeFunc) NULL,
-    NULL /* class_data */,
+    NULL,	/* class_data */
 
     sizeof (GParamSpec),
-    0 /* n_preallocs */,
+    0,		/* n_preallocs */
     (GInstanceInitFunc) g_param_spec_init,
+
+    NULL,	/* value_table */
   };
   GType type;
 
-  type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &finfo, &param_spec_info);
+  type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &param_spec_info, &finfo);
   g_assert (type == G_TYPE_PARAM);
-
-  /* derived param specs
-   */
-  g_param_spec_types_init ();
 }
 
 static void
@@ -87,16 +81,11 @@ static void
 g_param_spec_class_init (GParamSpecClass *class,
 			 gpointer         class_data)
 {
+  class->value_type = G_TYPE_NONE;
   class->finalize = g_param_spec_finalize;
-  class->param_init = NULL;
-  class->param_free_value = NULL;
-  class->param_validate = NULL;
-  class->param_values_cmp = NULL;
-  class->param_copy_value = NULL;
-  class->collect_type = 0;
-  class->param_collect_value = NULL;
-  class->lcopy_type = 0;
-  class->param_lcopy_value = NULL;
+  class->value_set_default = NULL;
+  class->value_validate = NULL;
+  class->values_cmp = NULL;
 }
 
 static void
@@ -207,6 +196,81 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
   g_return_val_if_fail (quark > 0, NULL);
   
   return g_datalist_id_remove_no_notify (&pspec->qdata, quark);
+}
+
+void
+g_param_value_set_default (GParamSpec *pspec,
+			   GValue     *value)
+{
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (G_IS_VALUE (value));
+  g_return_if_fail (G_IS_PARAM_VALUE (pspec, value));
+
+  g_value_reset (value);
+  G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, value);
+}
+
+gboolean
+g_param_value_defaults (GParamSpec *pspec,
+			GValue     *value)
+{
+  GValue dflt_value = { 0, };
+  gboolean defaults;
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+  g_return_val_if_fail (G_IS_VALUE (value), FALSE);
+  g_return_val_if_fail (G_IS_PARAM_VALUE (pspec, value), FALSE);
+
+  g_value_init (&dflt_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, value);
+  defaults = G_PARAM_SPEC_GET_CLASS (pspec)->values_cmp (pspec, value, &dflt_value) == 0;
+  g_value_unset (&dflt_value);
+
+  return defaults;
+}
+
+gboolean
+g_param_value_validate (GParamSpec *pspec,
+			GValue     *value)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+  g_return_val_if_fail (G_IS_VALUE (value), FALSE);
+  g_return_val_if_fail (G_IS_PARAM_VALUE (pspec, value), FALSE);
+
+  if (G_PARAM_SPEC_GET_CLASS (pspec)->value_validate)
+    {
+      GValue oval = *value;
+
+      if (G_PARAM_SPEC_GET_CLASS (pspec)->value_validate (pspec, value) ||
+	  memcmp (&oval.data, &value->data, sizeof (oval.data)))
+	return TRUE;
+    }
+
+  return FALSE;
+}
+
+gint
+g_param_values_cmp (GParamSpec   *pspec,
+		    const GValue *value1,
+		    const GValue *value2)
+{
+  gint cmp;
+
+  /* param_values_cmp() effectively does: value1 - value2
+   * so the return values are:
+   * -1)  value1 < value2
+   *  0)  value1 == value2
+   *  1)  value1 > value2
+   */
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), 0);
+  g_return_val_if_fail (G_IS_VALUE (value1), 0);
+  g_return_val_if_fail (G_IS_VALUE (value2), 0);
+  g_return_val_if_fail (G_IS_PARAM_VALUE (pspec, value1), 0);
+  g_return_val_if_fail (G_IS_PARAM_VALUE (pspec, value2), 0);
+
+  cmp = G_PARAM_SPEC_GET_CLASS (pspec)->values_cmp (pspec, value1, value2);
+
+  return CLAMP (cmp, -1, 1);
 }
 
 static guint

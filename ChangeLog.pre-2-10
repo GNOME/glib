@@ -1,3 +1,8 @@
+Fri Jun 23 17:20:26 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h: define gstring in terms of gchar*. this typedef reflects
+	the type name of the primitive G_TYPE_STRING in the gobject module.
+
 Wed Jun 21 12:09:03 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gunicode.h gutf8.c guniprop.c gunidecomp.[ch] gunichartables.h

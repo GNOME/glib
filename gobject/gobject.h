@@ -20,6 +20,7 @@
 #define __G_GOBJECT_H__
 
 #include	<gobject/gtype.h>
+#include	<gobject/gvalue.h>
 #include	<gobject/gparam.h>
 
 
@@ -43,6 +44,7 @@ extern "C" {
 #define G_OBJECT_TYPE_NAME(object) (g_type_name (G_OBJECT_TYPE (object)))
 #define G_OBJECT_CLASS_TYPE(class) (G_TYPE_FROM_CLASS (class))
 #define G_OBJECT_CLASS_NAME(class) (g_type_name (G_OBJECT_CLASS_TYPE (class)))
+#define G_IS_VALUE_OBJECT(value)   (G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_OBJECT))
 
 #define	G_NOTIFY_PRIORITY	   (G_PRIORITY_HIGH_IDLE + 20)
 
@@ -140,6 +142,10 @@ void	    g_object_set_qdata_full	   (GObject	   *object,
 					    GDestroyNotify  destroy);
 gpointer    g_object_steal_qdata	   (GObject	   *object,
 					    GQuark	    quark);
+void        g_value_set_object		   (GValue         *value,
+					    GObject        *v_object);
+GObject*    g_value_get_object		   (GValue         *value);
+GObject*    g_value_dup_object		   (GValue         *value);
 
 
 /* --- implementation macros --- */

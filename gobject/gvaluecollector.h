@@ -41,7 +41,7 @@ enum	/*< skip >*/
   G_VALUE_COLLECT_POINTER
 };
 
-union _GParamCValue
+union _GTypeCValue
 {
   gint     v_int;
   glong    v_long;
@@ -50,33 +50,28 @@ union _GParamCValue
 };
 
 
-/* G_PARAM_COLLECT_VALUE() collects a parameter's variable arguments
+/* G_VALUE_COLLECT() collects a variable argument value
  * from a va_list. we have to implement the varargs collection as a
  * macro, because on some systems va_list variables cannot be passed
  * by reference.
- * param_value is supposed to be initialized according to the param
+ * value is supposed to be initialized according to the value
  * type to be collected.
- * the param_spec argument is optional, but probably needed by most
- * param class' param_collect_value() implementations.
  * var_args is the va_list variable and may be evaluated multiple times.
  * __error is a gchar** variable that will be modified to hold a g_new()
  * allocated error messages if something fails.
  */
-#define G_PARAM_COLLECT_VALUE(param_value, param_spec, var_args, __error)		\
+#define G_VALUE_COLLECT(value, var_args, __error)					\
 G_STMT_START {										\
-  GValue *_value = (param_value);							\
-  GParamSpecClass *_pclass = g_type_class_ref (_value->g_type);				\
-  GParamSpec *_pspec = (param_spec);							\
+  GValue *_value = (value);								\
+  GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
   gchar *_error_msg = NULL;								\
-  guint _collect_type = _pclass->collect_type;						\
+  guint _collect_type = _vtable->collect_type;						\
   guint _nth_value = 0;									\
                                                                                         \
-  if (_pspec)										\
-    g_param_spec_ref (_pspec);								\
   g_value_reset (_value);								\
   while (_collect_type && !_error_msg)							\
     {											\
-      GParamCValue _cvalue;								\
+      GTypeCValue _cvalue;								\
                                                                                         \
       memset (&_cvalue, 0, sizeof (_cvalue));						\
       switch (_collect_type)								\
@@ -97,39 +92,32 @@ G_STMT_START {										\
 	  _error_msg  = g_strdup_printf ("%s: invalid collect type (%d) used for %s",	\
 					 G_STRLOC,					\
 					 _collect_type,					\
-					 "G_PARAM_COLLECT_VALUE()");			\
+					 "G_VALUE_COLLECT()");				\
 	  continue;									\
 	}										\
-      _error_msg = _pclass->param_collect_value (_value,				\
-						 _pspec,				\
-						 _nth_value++,				\
-						 &_collect_type,			\
-						 &_cvalue);				\
+      _error_msg = _vtable->collect_value (_value,					\
+					   _nth_value++,				\
+					   &_collect_type,				\
+					   &_cvalue);					\
     }											\
   *(__error) = _error_msg;								\
-  if (_pspec)										\
-    g_param_spec_unref (_pspec);							\
-  g_type_class_unref (_pclass);								\
 } G_STMT_END
 
 
-/* G_PARAM_LCOPY_VALUE() collects a parameter's variable argument
- * locations from a va_list. usage is analogous to G_PARAM_COLLECT_VALUE().
+/* G_VALUE_LCOPY() collects a value's variable argument
+ * locations from a va_list. usage is analogous to G_VALUE_COLLECT().
  */
-#define G_PARAM_LCOPY_VALUE(param_value, param_spec, var_args, __error)			\
+#define G_VALUE_LCOPY(value, var_args, __error)						\
 G_STMT_START {										\
-  GValue *_value = (param_value);							\
-  GParamSpecClass *_pclass = g_type_class_ref (_value->g_type);				\
-  GParamSpec *_pspec = (param_spec);							\
+  GValue *_value = (value);								\
+  GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
   gchar *_error_msg = NULL;								\
-  guint _lcopy_type = _pclass->lcopy_type;						\
+  guint _lcopy_type = _vtable->lcopy_type;						\
   guint _nth_value = 0;									\
                                                                                         \
-  if (_pspec)										\
-    g_param_spec_ref (_pspec);								\
   while (_lcopy_type && !_error_msg)							\
     {											\
-      GParamCValue _cvalue;								\
+      GTypeCValue _cvalue;								\
                                                                                         \
       memset (&_cvalue, 0, sizeof (_cvalue));						\
       switch (_lcopy_type)								\
@@ -150,19 +138,15 @@ G_STMT_START {										\
 	  _error_msg  = g_strdup_printf ("%s: invalid collect type (%d) used for %s",	\
 					 G_STRLOC,					\
 					 _lcopy_type,					\
-					 "G_PARAM_LCOPY_VALUE()");			\
+					 "G_VALUE_LCOPY()");				\
 	  continue;									\
 	}										\
-      _error_msg = _pclass->param_lcopy_value (_value,					\
-					       _pspec,					\
-					       _nth_value++,				\
-					       &_lcopy_type,				\
-					       &_cvalue);				\
+      _error_msg = _vtable->lcopy_value (_value,					\
+					 _nth_value++,					\
+					 &_lcopy_type,					\
+					 &_cvalue);					\
     }											\
   *(__error) = _error_msg;								\
-  if (_pspec)										\
-    g_param_spec_unref (_pspec);							\
-  g_type_class_unref (_pclass);								\
 } G_STMT_END
 
 

@@ -28,16 +28,18 @@ extern "C" {
 
 
 /* --- type macros --- */
-#define G_TYPE_IS_ENUM(type)	(G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
-#define G_ENUM_TYPE(class)	(G_TYPE_FROM_CLASS (class))
-#define G_ENUM_NAME(class)	(g_type_name (G_ENUM_TYPE (class)))
-#define G_ENUM_CLASS(class)	(G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_ENUM, GEnumClass))
-#define G_IS_ENUM_CLASS(class)	(G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ENUM))
-#define G_TYPE_IS_FLAGS(type)	(G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
-#define G_FLAGS_TYPE(class)	(G_TYPE_FROM_CLASS (class))
-#define G_FLAGS_NAME(class)	(g_type_name (G_FLAGS_TYPE (class)))
-#define G_FLAGS_CLASS(class)	(G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
-#define G_IS_FLAGS_CLASS(class) (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_FLAGS))
+#define G_TYPE_IS_ENUM(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
+#define G_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_ENUM, GEnumClass))
+#define G_IS_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ENUM))
+#define G_ENUM_CLASS_TYPE(class)       (G_TYPE_FROM_CLASS (class))
+#define G_ENUM_CLASS_TYPE_NAME(class)  (g_type_name (G_ENUM_TYPE (class)))
+#define G_TYPE_IS_FLAGS(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
+#define G_FLAGS_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
+#define G_IS_FLAGS_CLASS(class)        (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_FLAGS))
+#define G_FLAGS_CLASS_TYPE(class)      (G_TYPE_FROM_CLASS (class))
+#define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_TYPE (class)))
+#define G_IS_VALUE_ENUM(value)         (G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_ENUM))
+#define G_IS_VALUE_FLAGS(value)        (G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_FLAGS))
 
 
 /* --- enum/flag values & classes --- */
@@ -89,6 +91,13 @@ GFlagsValue*	g_flags_get_value_by_name	(GFlagsClass	*flags_class,
 						 const gchar	*name);
 GFlagsValue*	g_flags_get_value_by_nick	(GFlagsClass	*flags_class,
 						 const gchar	*nick);
+void            g_value_set_enum        	(GValue         *value,
+						 gint            v_enum);
+gint            g_value_get_enum        	(GValue         *value);
+void            g_value_set_flags       	(GValue         *value,
+						 guint           v_flags);
+guint           g_value_get_flags       	(GValue         *value);
+
 
 
 /* --- registration functions --- */
