@@ -1187,7 +1187,7 @@ main (int   argc,
   g_print ("Ditto, only from GLib DLL name: %s\n",
 	   g_win32_get_package_installation_directory (NULL, glib_dll));
   g_print ("locale subdirectory of GLib installation directory: %s\n",
-	   g_win32_get_package_installation_subdirectory (NULL, glib_dll, "share\\locale"));
+	   g_win32_get_package_installation_subdirectory (NULL, glib_dll, "lib\\locale"));
   g_print ("GTK+ 2.0 installation directory, if available: %s\n",
 	   g_win32_get_package_installation_directory ("gtk20", NULL));
 

@@ -771,8 +771,12 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 
   prefix = g_win32_get_package_installation_directory (package, dll_name);
 
-  sep = ((subdir != NULL && strlen (subdir) > 0) || prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR ?
-	 "" : G_DIR_SEPARATOR_S);
+  if (subdir == NULL)
+    subdir = "";
+
+  sep = (subdir[0] == '\0' ||
+	 prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR) ?
+    "" : G_DIR_SEPARATOR_S;
 
   return g_strconcat (prefix, sep, subdir, NULL);
 }

@@ -369,7 +369,9 @@ EXPORTS
 	g_path_is_absolute
 	g_path_skip_root
 	g_pattern_match
+	g_pattern_match_simple
 	g_pattern_match_string
+	g_pattern_spec_equal
 	g_pattern_spec_free
 	g_pattern_spec_new
 	g_print
