@@ -1,3 +1,7 @@
+Wed Aug 27 19:53:26 2003  Manish Singh  <yosh@gimp.org>
+
+	* gobject.c: removed stray change from previous commit.
+
 Wed Aug 27 01:25:40 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am testifaceinit.c: Add a detailed test case
