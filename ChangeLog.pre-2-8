@@ -1,3 +1,10 @@
+Tue Dec  3 21:10:28 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Add 3rd argument to remaining AC_DEFINES(),
+	so we can get rid of acconfig.h. (#76334, Daniel Egger)
+
+	* acconfig.h: Removed.
+
 Tue Dec  3 20:22:27 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/*.c: Patch from Sven Neumann to make the
