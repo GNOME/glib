@@ -214,6 +214,7 @@ g_utf8_strlen (const gchar *p,
 {
   glong len = 0;
   const gchar *start = p;
+  g_return_val_if_fail (p != NULL || max == 0, 0);
 
   if (max < 0)
     {
