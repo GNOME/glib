@@ -1,3 +1,8 @@
+Sun Oct 29 02:31:03 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gsignal.c (g_type_signals): Fix problem where signals
+	with "_" in them appeared twice in the result array.
+
 Sun Oct 29 01:58:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.h: Add g_type_signals() - a function to list

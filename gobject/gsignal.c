@@ -19,6 +19,8 @@
  * this code is based on the original GtkSignal implementation
  * for the Gtk+ library by Peter Mattis <petm@xcf.berkeley.edu>
  */
+#include <string.h> 
+
 #include        "gsignal.h"
 
 #include        "gbsearcharray.h"
@@ -718,7 +720,14 @@ g_type_signals (GType    itype,
   for (i = 0; i < n_nodes; i++)
     {
       if (keys[i].itype == itype)
-	g_array_append_val (result, keys[i].signal_id);
+	{
+	  gchar *name = g_quark_to_string (keys[i].quark);
+	  /* Signal names with "_" in them are aliases to the same
+	   * name with "-" instead of "_".
+	   */
+	  if (!strchr (name, '_'))
+	    g_array_append_val (result, keys[i].signal_id);
+	}
     }
 
   *n_ids = result->len;
