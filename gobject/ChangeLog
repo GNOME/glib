@@ -3,6 +3,9 @@ Wed Feb 21 18:31:46 2001  Jonathan Blandford  <jrb@redhat.com>
 	* gsignal.h (g_signal_connect): Add g_signal_connect define to
 	make porting from gtk_signal_connect easy.
 
+	* gsignal.c (g_signal_emit_valist): Use G_TYPE_FROM_INSTANCE
+	(instance) instead of node->itype when initting the value.
+
 2001-02-17  Havoc Pennington  <hp@pobox.com>
 
         Applied patch from Soeren Sandmann:

@@ -154,6 +154,8 @@ gboolean g_signal_has_handler_pending	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       gboolean		  may_be_blocked);
+#define g_signal_connect(instance, detailed_signal, c_handler, data) \
+	g_signal_connect_data (instance, detailed_signal, c_handler, data, NULL, FALSE, FALSE)
 guint	 g_signal_connect_closure_by_id	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
