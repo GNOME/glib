@@ -1,3 +1,7 @@
+2000-04-19  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.def: Update entry point list.
+
 2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h (G_TRYLOCK): Made the debugging G_TRYLOCK call also work

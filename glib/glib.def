@@ -7,6 +7,7 @@ EXPORTS
 	g_array_remove_index
 	g_array_remove_index_fast
 	g_array_set_size
+	g_array_sized_new
 	g_atexit
 	g_basename
 	g_bit_nth_lsf
@@ -20,6 +21,7 @@ EXPORTS
 	g_byte_array_remove_index
 	g_byte_array_remove_index_fast
 	g_byte_array_set_size
+	g_byte_array_sized_new
 	g_cache_destroy
 	g_cache_insert
 	g_cache_key_foreach
@@ -254,13 +256,14 @@ EXPORTS
 	g_ptr_array_remove_index
 	g_ptr_array_remove_index_fast
 	g_ptr_array_set_size
+	g_ptr_array_sized_new
 	g_quark_from_static_string
 	g_quark_from_string
 	g_quark_to_string
 	g_quark_try_string
-	g_queue_create
 	g_queue_free
 	g_queue_is_empty
+	g_queue_new
 	g_queue_peek_head
 	g_queue_peek_tail
 	g_queue_pop_head
