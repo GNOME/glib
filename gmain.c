@@ -95,7 +95,7 @@ struct _GMainContext
   GMemChunk *poll_chunk;
   guint n_poll_records;
   GPollFD *cached_poll_array;
-  gint cached_poll_array_size;
+  guint cached_poll_array_size;
 
 #ifdef G_THREADS_ENABLED  
 #ifndef G_OS_WIN32
@@ -1533,7 +1533,7 @@ g_get_current_time (GTimeVal *result)
 static void
 g_main_dispatch (GMainContext *context)
 {
-  gint i;
+  guint i;
 
   for (i = 0; i < context->pending_dispatches->len; i++)
     {
@@ -2619,29 +2619,51 @@ static gboolean
 g_timeout_prepare  (GSource  *source,
 		    gint     *timeout)
 {
+  glong sec;
   glong msec;
   GTimeVal current_time;
   
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
   g_source_get_current_time (source, &current_time);
-  
-  msec = ((timeout_source->expiration.tv_sec  - current_time.tv_sec) * 1000 +
-	  (timeout_source->expiration.tv_usec - current_time.tv_usec) / 1000);
 
-  if (msec < 0)
+  sec = timeout_source->expiration.tv_sec - current_time.tv_sec;
+  msec = (timeout_source->expiration.tv_usec - current_time.tv_usec) / 1000;
+
+  /* We do the following in a rather convoluted fashion to deal with
+   * the fact that we don't have an integral type big enough to hold
+   * the difference of two timevals in millseconds.
+   */
+  if (sec < 0 || (sec == 0 && msec < 0))
     msec = 0;
-  else if (msec > timeout_source->interval)
+  else
     {
-      /* The system time has been set backwards, so we
-       * reset the expiration time to now + timeout_source->interval;
-       * this at least avoids hanging for long periods of time.
-       */
-      g_timeout_set_expiration (timeout_source, &current_time);
-      msec = timeout_source->interval;
+      glong interval_sec = timeout_source->interval / 1000;
+      glong interval_msec = timeout_source->interval % 1000;
+
+      if (msec < 0)
+	{
+	  msec += 1000;
+	  sec -= 1;
+	}
+      
+      if (sec > interval_sec ||
+	  (sec == interval_sec && msec > interval_msec))
+	{
+	  /* The system time has been set backwards, so we
+	   * reset the expiration time to now + timeout_source->interval;
+	   * this at least avoids hanging for long periods of time.
+	   */
+	  g_timeout_set_expiration (timeout_source, &current_time);
+	  msec = timeout_source->interval;
+	}
+      else
+	{
+	  msec += sec * 1000;
+	}
     }
-  
-  *timeout = msec;
+
+  *timeout = (gint)msec;
   
   return msec == 0;
 }

@@ -232,7 +232,8 @@ The rest of the #GString is shifted down to fill the gap.
 
 @string: a #GString.
 @pos: the position of the characters to remove.
-@len: the number of characters to remove.
+@len: the number of characters to remove, or -1 to remove all
+      following characters.
 @Returns: the #GString.
 
 

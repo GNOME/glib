@@ -46,11 +46,11 @@ gdouble	              g_strtod	       (const gchar *nptr,
 					gchar	    **endptr);
 G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;
 G_CONST_RETURN gchar* g_strsignal      (gint	      signum) G_GNUC_CONST;
-gint	              g_strcasecmp     (const gchar *s1,
+gint                  g_strcasecmp     (const gchar *s1,  
 					const gchar *s2);
-gint	              g_strncasecmp    (const gchar *s1,
+gint                  g_strncasecmp    (const gchar *s1,  
 					const gchar *s2,
-					guint        n);
+					gsize        n);    
 gchar*	              g_strdown	       (gchar	     *string);
 gchar*	              g_strup	       (gchar	     *string);
 gchar*	              g_strreverse     (gchar	     *string);
@@ -61,12 +61,12 @@ gsize	              g_strlcat        (gchar	     *dest,
 					const gchar  *src,
 					gsize         dest_size);
 gchar *               g_strstr_len     (const gchar  *haystack,
-					gint          haystack_len,
+					gssize        haystack_len,
 					const gchar  *needle);
 gchar *               g_strrstr        (const gchar  *haystack,
 					const gchar  *needle);
 gchar *               g_strrstr_len    (const gchar  *haystack,
-					gint          haystack_len,
+					gssize        haystack_len,
 					const gchar  *needle);
 
 /* removes leading spaces */
@@ -85,8 +85,8 @@ gchar*	              g_strdup_printf  (const gchar *format,
 gchar*	              g_strdup_vprintf (const gchar *format,
 					va_list      args);
 gchar*	              g_strndup	       (const gchar *str,
-					guint        n);
-gchar*	              g_strnfill       (guint        length,
+					gsize        n);  
+gchar*	              g_strnfill       (gsize        length,  
 					gchar        fill_char);
 gchar*	              g_strconcat      (const gchar *string1,
 					...); /* NULL terminated */

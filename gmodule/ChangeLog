@@ -1,3 +1,9 @@
+2001-05-21  Mark Murnane  <Mark.Murnane@ireland.sun.com>
+
+	* gmodule.c (g_str_check_suffix):  Modified type of string_len
+	and suffix_len to be gsize.  Properly accommodates return from
+	strlen().
+
 2001-05-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.c (g_module_set_error_unduped): Do not g_strdup, as

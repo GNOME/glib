@@ -135,8 +135,8 @@ read_data (GString *str,
            gint     fd,
            GError **error)
 {
-  gint bytes;
-  gchar buf[4096];
+  gssize bytes;        
+  gchar buf[4096];    
 
  again:
   
@@ -875,15 +875,15 @@ do_exec (gint                  child_err_report_fd,
 static gboolean
 read_ints (int      fd,
            gint*    buf,
-           gint     n_ints_in_buf,
-           gint    *n_ints_read,
+           gint     n_ints_in_buf,    
+           gint    *n_ints_read,      
            GError **error)
 {
-  gint bytes = 0;
+  gsize bytes = 0;    
   
   while (TRUE)
     {
-      gint chunk;
+      gssize chunk;    
 
       if (bytes >= sizeof(gint)*2)
         break; /* give up, who knows what happened, should not be
@@ -893,7 +893,7 @@ read_ints (int      fd,
     again:
       chunk = read (fd,
                     ((gchar*)buf) + bytes,
-                    sizeof(gint)*n_ints_in_buf - bytes);
+                    sizeof(gint) * n_ints_in_buf - bytes);
       if (chunk < 0 && errno == EINTR)
         goto again;
           
@@ -911,15 +911,11 @@ read_ints (int      fd,
         }
       else if (chunk == 0)
         break; /* EOF */
-      else
-        {
-          g_assert (chunk > 0);
-              
-          bytes += chunk;
-        }
+      else /* chunk > 0 */
+	bytes += chunk;
     }
 
-  *n_ints_read = bytes/4;
+  *n_ints_read = (gint)(bytes / sizeof(gint));
 
   return TRUE;
 }
@@ -1072,7 +1068,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
       /* Parent */
       
       gint buf[2];
-      gint n_ints = 0;
+      gint n_ints = 0;    
 
       /* Close the uncared-about ends of the pipes */
       close_and_invalidate (&child_err_report_pipe[1]);

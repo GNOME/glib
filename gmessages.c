@@ -71,9 +71,9 @@ struct _GLogHandler
 
 
 /* --- prototypes --- */
-static inline guint printf_string_upper_bound (const gchar *format,
-					       gboolean     may_warn,
-					       va_list      args);
+static guint printf_string_upper_bound (const gchar *format,
+					gboolean     may_warn,
+					va_list      args);
 
 
 /* --- variables --- */
@@ -156,9 +156,9 @@ ensure_stdout_valid (void)
 #endif
 
 static void
-write_unsigned (GFileDescriptor   fd,
-		gulong num,
-		guint  radix)
+write_unsigned (GFileDescriptor fd,
+		gulong          num,
+		guint           radix)
 {
   char buffer[64];
   gulong tmp;
@@ -939,13 +939,13 @@ typedef struct
   gboolean mod_half, mod_long, mod_extra_long;
 } PrintfArgSpec;
 
-static inline guint
+static gsize
 printf_string_upper_bound (const gchar *format,
 			   gboolean     may_warn,
 			   va_list      args)
 {
   static const gboolean honour_longs = SIZEOF_LONG > 4 || SIZEOF_VOID_P > 4;
-  guint len = 1;
+  gsize len = 1;
 
   if (!format)
     return len;
@@ -960,7 +960,7 @@ printf_string_upper_bound (const gchar *format,
 	{
 	  PrintfArgSpec spec = { 0, };
 	  gboolean seen_l = FALSE, conv_done = FALSE;
-	  guint conv_len = 0;
+	  gsize conv_len = 0;
 	  const gchar *spec_start = format;
 
 	  do
@@ -1241,7 +1241,7 @@ printf_string_upper_bound (const gchar *format,
   return len;
 }
 
-guint
+gsize
 g_printf_string_upper_bound (const gchar *format,
 			     va_list      args)
 {

@@ -6,7 +6,7 @@
 
 static gint exit_status = 0;
 
-void
+static void
 croak (char *format, ...)
 {
   va_list va;
@@ -18,7 +18,7 @@ croak (char *format, ...)
   exit (1);
 }
 
-void
+static void
 fail (char *format, ...)
 {
   va_list va;
@@ -84,7 +84,7 @@ process (gint      line,
   const gchar *end;
   gboolean is_valid = g_utf8_validate (utf8, -1, &end);
   GError *error = NULL;
-  gint items_read, items_written;
+  glong items_read, items_written;
 
   switch (status)
     {
@@ -188,7 +188,7 @@ process (gint      line,
       gunichar2 *utf16_from_utf8;
       gunichar2 *utf16_from_ucs4;
       gunichar *ucs4_result;
-      gint bytes_written;
+      gsize bytes_written;
       gint n_chars;
       gchar *utf8_result;
 

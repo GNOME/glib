@@ -201,11 +201,11 @@ g_utf8_prev_char (const gchar *p)
  * 
  * Return value: the length of the string in characters
  **/
-gint
+glong
 g_utf8_strlen (const gchar *p,
-               gint         max)
+               gssize       max)
 {
-  int len = 0;
+  glong len = 0;
   const gchar *start = p;
 
   if (max < 0)
@@ -276,7 +276,7 @@ g_utf8_get_char (const gchar *p)
  **/
 gchar *
 g_utf8_offset_to_pointer  (const gchar *str,
-			   gint         offset)
+			   glong        offset)    
 {
   const gchar *s = str;
   while (offset--)
@@ -295,12 +295,12 @@ g_utf8_offset_to_pointer  (const gchar *str,
  * 
  * Return value: the resulting character offset
  **/
-gint
+glong    
 g_utf8_pointer_to_offset (const gchar *str,
 			  const gchar *pos)
 {
   const gchar *s = str;
-  gint offset = 0;
+  glong offset = 0;    
   
   while (s < pos)
     {
@@ -413,7 +413,7 @@ static char *utf8_charset_cache = NULL;
  * Return value: %TRUE if the returned charset is UTF-8
  **/
 gboolean
-g_get_charset (char **charset) 
+g_get_charset (G_CONST_RETURN char **charset) 
 {
   if (utf8_locale_cache != -1)
     {
@@ -441,9 +441,10 @@ g_get_charset (char **charset)
  * Return value: number of bytes written
  **/
 int
-g_unichar_to_utf8 (gunichar c, gchar *outbuf)
+g_unichar_to_utf8 (gunichar c,
+		   gchar   *outbuf)
 {
-  size_t len = 0;
+  guint len = 0;    
   int first;
   int i;
 
@@ -506,7 +507,7 @@ g_unichar_to_utf8 (gunichar c, gchar *outbuf)
  **/
 gchar *
 g_utf8_strchr (const char *p,
-	       gint        p_len,
+	       gssize      p_len,
 	       gunichar    c)
 {
   gchar ch[10];
@@ -533,7 +534,7 @@ g_utf8_strchr (const char *p,
  **/
 gchar *
 g_utf8_strrchr (const char *p,
-		gint        p_len,
+		gssize      p_len,
 		gunichar    c)
 {
   gchar ch[10];
@@ -549,9 +550,9 @@ g_utf8_strrchr (const char *p,
  * and return (gunichar)-2 on incomplete trailing character
  */
 static inline gunichar
-g_utf8_get_char_extended (const gchar *p, int max_len)
+g_utf8_get_char_extended (const gchar *p, gsize max_len)  
 {
-  gint i, len;
+  guint i, len;
   gunichar wc = (guchar) *p;
 
   if (wc < 0x80)
@@ -592,8 +593,6 @@ g_utf8_get_char_extended (const gchar *p, int max_len)
       return (gunichar)-1;
     }
   
-  if (len == -1)
-    return (gunichar)-1;
   if (max_len >= 0 && len > max_len)
     {
       for (i = 1; i < max_len; i++)
@@ -644,8 +643,8 @@ g_utf8_get_char_extended (const gchar *p, int max_len)
  **/
 gunichar *
 g_utf8_to_ucs4_fast (const gchar *str,
-		     gint         len,
-		     gint        *items_written)
+		     glong        len,              
+		     glong       *items_written)    
 {
   gint j, charlen;
   gunichar *result;
@@ -759,9 +758,9 @@ g_utf8_to_ucs4_fast (const gchar *str,
  **/
 gunichar *
 g_utf8_to_ucs4 (const gchar *str,
-		gint         len,
-		gint        *items_read,
-		gint        *items_written,
+		glong        len,             
+		glong       *items_read,      
+		glong       *items_written,   
 		GError     **error)
 {
   gunichar *result = NULL;
@@ -838,9 +837,9 @@ g_utf8_to_ucs4 (const gchar *str,
  **/
 gchar *
 g_ucs4_to_utf8 (const gunichar *str,
-		gint            len,
-		gint           *items_read,
-		gint           *items_written,
+		glong           len,              
+		glong          *items_read,       
+		glong          *items_written,    
 		GError        **error)
 {
   gint result_length;
@@ -915,9 +914,9 @@ g_ucs4_to_utf8 (const gunichar *str,
  **/
 gchar *
 g_utf16_to_utf8 (const gunichar2  *str,
-		 gint              len,
-		 gint             *items_read,
-		 gint             *items_written,
+		 glong             len,              
+		 glong            *items_read,       
+		 glong            *items_written,    
 		 GError          **error)
 {
   /* This function and g_utf16_to_ucs4 are almost exactly identical - The lines that differ
@@ -1059,9 +1058,9 @@ g_utf16_to_utf8 (const gunichar2  *str,
  **/
 gunichar *
 g_utf16_to_ucs4 (const gunichar2  *str,
-		 gint              len,
-		 gint             *items_read,
-		 gint             *items_written,
+		 glong             len,              
+		 glong            *items_read,       
+		 glong            *items_written,    
 		 GError          **error)
 {
   const gunichar2 *in;
@@ -1202,9 +1201,9 @@ g_utf16_to_ucs4 (const gunichar2  *str,
  **/
 gunichar2 *
 g_utf8_to_utf16 (const gchar *str,
-		 gint         len,
-		 gint        *items_read,
-		 gint        *items_written,
+		 glong        len,              
+		 glong       *items_read,       
+		 glong       *items_written,    
 		 GError     **error)
 {
   gunichar2 *result = NULL;
@@ -1317,9 +1316,9 @@ g_utf8_to_utf16 (const gchar *str,
  **/
 gunichar2 *
 g_ucs4_to_utf16 (const gunichar  *str,
-		 gint             len,
-		 gint            *items_read,
-		 gint            *items_written,
+		 glong            len,              
+		 glong           *items_read,       
+		 glong           *items_written,    
 		 GError         **error)
 {
   gunichar2 *result = NULL;
@@ -1407,7 +1406,7 @@ g_ucs4_to_utf16 (const gunichar  *str,
  **/
 gboolean
 g_utf8_validate (const gchar  *str,
-                 gint          max_len,
+                 gssize        max_len,    
                  const gchar **end)
 {
 

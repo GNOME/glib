@@ -72,7 +72,7 @@ struct _GMarkupParser
   /* text is not nul-terminated */
   void (*text)           (GMarkupParseContext *context,
                           const gchar         *text,
-                          gint                 text_len,
+                          gsize                text_len,  
                           gpointer             user_data,
                           GError             **error);
 
@@ -83,7 +83,7 @@ struct _GMarkupParser
   /* text is not nul-terminated. */
   void (*passthrough)    (GMarkupParseContext *context,
                           const gchar         *passthrough_text,
-                          gint                 text_len,
+                          gsize                text_len,  
                           gpointer             user_data,
                           GError             **error);
 
@@ -102,7 +102,7 @@ GMarkupParseContext *g_markup_parse_context_new   (const GMarkupParser *parser,
 void                 g_markup_parse_context_free  (GMarkupParseContext *context);
 gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
                                                    const gchar         *text,
-                                                   gint                 text_len,
+                                                   gssize               text_len,  
                                                    GError             **error);
                                                    
 gboolean             g_markup_parse_context_end_parse (GMarkupParseContext *context,
@@ -115,7 +115,7 @@ void                 g_markup_parse_context_get_position (GMarkupParseContext *c
 
 /* useful when saving */
 gchar* g_markup_escape_text (const gchar *text,
-                             gint         length);
+                             gssize       length);  
 
 G_END_DECLS
 

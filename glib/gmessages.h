@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 
 /* calculate a string size, guarranteed to fit format + args.
  */
-guint	g_printf_string_upper_bound (const gchar* format,
+gsize	g_printf_string_upper_bound (const gchar* format,
 				     va_list	  args);
 
 /* Log level shift offset for user defined

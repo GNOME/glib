@@ -121,9 +121,9 @@ completion_check_cache (GCompletion* cmp,
 			gchar**	     new_prefix)
 {
   register GList* list;
-  register gint len;
-  register gint i;
-  register gint plen;
+  register gsize len;  
+  register gsize i;
+  register gsize plen;
   gchar* postfix;
   gchar* s;
   
@@ -165,8 +165,8 @@ g_completion_complete (GCompletion* cmp,
 		       gchar*	    prefix,
 		       gchar**	    new_prefix)
 {
-  gint plen, len;
-  gint done = 0;
+  gsize plen, len;
+  gboolean done = FALSE;
   GList* list;
   
   g_return_val_if_fail (cmp != NULL, NULL);
@@ -193,7 +193,7 @@ g_completion_complete (GCompletion* cmp,
 	      else
 		list = list->next;
 	    }
-	  done = 1;
+	  done = TRUE;
 	}
     }
   

@@ -82,7 +82,7 @@ struct _GMarkupParseContext
   gint alloc_attrs;
 
   const gchar *current_text;
-  gint         current_text_len;
+  gssize       current_text_len;      
   const gchar *current_text_end;
 
   GString *leftover_char_portion;
@@ -540,8 +540,7 @@ unescape_text (GMarkupParseContext *context,
                             (l >= 0x10000 && l <= 0x10FFFF))
                           {
                             gchar buf[7];
-                            g_string_append (str,
-                                             char_str (l, buf));
+                            g_string_append (str, char_str (l, buf));
                           }
                         else
                           {
@@ -756,7 +755,7 @@ add_attribute (GMarkupParseContext *context, char *name)
 gboolean
 g_markup_parse_context_parse (GMarkupParseContext *context,
                               const gchar         *text,
-                              gint                 text_len,
+                              gssize               text_len,
                               GError             **error)
 {
   const gchar *first_invalid;
@@ -1662,7 +1661,7 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
 static void
 append_escaped_text (GString     *str,
                      const gchar *text,
-                     gint         length)
+                     gssize       length)    
 {
   const gchar *p;
   const gchar *end;
@@ -1720,7 +1719,7 @@ append_escaped_text (GString     *str,
  **/
 gchar*
 g_markup_escape_text (const gchar *text,
-                      gint         length)
+                      gssize       length)  
 {
   GString *str;
 

@@ -41,7 +41,7 @@ typedef enum
 } GConvertError;
 
 #define G_CONVERT_ERROR g_convert_error_quark()
-GQuark g_convert_error_quark();
+GQuark g_convert_error_quark (void);
 
 /* Thin wrappers around iconv
  */
@@ -51,54 +51,54 @@ GIConv g_iconv_open   (const gchar  *to_codeset,
 		       const gchar  *from_codeset);
 size_t g_iconv        (GIConv        converter,
 		       gchar       **inbuf,
-		       size_t       *inbytes_left,
+		       gsize        *inbytes_left,
 		       gchar       **outbuf,
-		       size_t       *outbytes_left);
+		       gsize        *outbytes_left);
 gint   g_iconv_close  (GIConv        converter);
 
 
 gchar* g_convert               (const gchar  *str,
-				gint          len,
+				gssize        len,            
 				const gchar  *to_codeset,
 				const gchar  *from_codeset,
-				gint         *bytes_read,
-				gint         *bytes_written,
+				gsize        *bytes_read,     
+				gsize        *bytes_written,  
 				GError      **error);
 gchar* g_convert_with_fallback (const gchar  *str,
-				gint          len,
+				gssize        len,            
 				const gchar  *to_codeset,
 				const gchar  *from_codeset,
 				gchar        *fallback,
-				gint         *bytes_read,
-				gint         *bytes_written,
+				gsize        *bytes_read,     
+				gsize        *bytes_written,  
 				GError      **error);
 
 
 /* Convert between libc's idea of strings and UTF-8.
  */
 gchar* g_locale_to_utf8   (const gchar  *opsysstring,
-			   gint          len,
-			   gint         *bytes_read,
-			   gint         *bytes_written,
+			   gssize        len,            
+			   gsize        *bytes_read,     
+			   gsize        *bytes_written,  
 			   GError      **error);
 gchar* g_locale_from_utf8 (const gchar  *utf8string,
-			   gint          len,
-			   gint         *bytes_read,
-			   gint         *bytes_written,
+			   gssize        len,            
+			   gsize        *bytes_read,     
+			   gsize        *bytes_written,  
 			   GError      **error);
 
 /* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
  */
 gchar* g_filename_to_utf8   (const gchar  *opsysstring,
-			     gint          len,
-			     gint         *bytes_read,
-			     gint         *bytes_written,
+			     gssize        len,            
+			     gsize        *bytes_read,     
+			     gsize        *bytes_written,  
 			     GError      **error);
 gchar* g_filename_from_utf8 (const gchar  *utf8string,
-			     gint          len,
-			     gint         *bytes_read,
-			     gint         *bytes_written,
+			     gssize        len,            
+			     gsize        *bytes_read,     
+			     gsize        *bytes_written,  
 			     GError      **error);
 
 G_END_DECLS

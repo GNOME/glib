@@ -285,7 +285,7 @@ static gboolean
 get_contents_stdio (const gchar *filename,
                     FILE        *f,
                     gchar      **contents,
-                    guint       *length,
+                    gsize       *length, 
                     GError     **error)
 {
   gchar buf[2048];
@@ -333,7 +333,7 @@ get_contents_regfile (const gchar *filename,
                       struct stat *stat_buf,
                       gint         fd,
                       gchar      **contents,
-                      guint       *length,
+                      gsize       *length,
                       GError     **error)
 {
   gchar *buf;
@@ -347,7 +347,7 @@ get_contents_regfile (const gchar *filename,
   bytes_read = 0;
   while (bytes_read < size)
     {
-      gint rc;
+      gssize rc;
           
       rc = read (fd, buf + bytes_read, size - bytes_read);
 
@@ -387,7 +387,7 @@ get_contents_regfile (const gchar *filename,
 static gboolean
 get_contents_posix (const gchar *filename,
                     gchar      **contents,
-                    guint       *length,
+                    gsize       *length,
                     GError     **error)
 {
   struct stat stat_buf;
@@ -456,7 +456,7 @@ get_contents_posix (const gchar *filename,
 static gboolean
 get_contents_win32 (const gchar *filename,
                     gchar      **contents,
-                    guint       *length,
+                    gsize       *length,
                     GError     **error)
 {
   FILE *f;
@@ -503,7 +503,7 @@ get_contents_win32 (const gchar *filename,
 gboolean
 g_file_get_contents (const gchar *filename,
                      gchar      **contents,
-                     guint       *length,
+                     gsize       *length,
                      GError     **error)
 {  
   g_return_val_if_fail (filename != NULL, FALSE);

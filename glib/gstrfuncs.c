@@ -88,7 +88,7 @@ g_memdup (gconstpointer mem,
 
 gchar*
 g_strndup (const gchar *str,
-	   guint        n)
+	   gsize        n)    
 {
   gchar *new_str;
 
@@ -105,7 +105,7 @@ g_strndup (const gchar *str,
 }
 
 gchar*
-g_strnfill (guint length,
+g_strnfill (gsize length,     
 	    gchar fill_char)
 {
   register gchar *str, *s, *end;
@@ -188,7 +188,7 @@ g_strdup_printf (const gchar *format,
 gchar*
 g_strconcat (const gchar *string1, ...)
 {
-  guint	  l;
+  gsize	  l;     
   va_list args;
   gchar	  *s;
   gchar	  *concat;
@@ -1062,7 +1062,7 @@ g_strcasecmp (const gchar *s1,
 gint
 g_strncasecmp (const gchar *s1,
 	       const gchar *s2,
-	       guint n)
+	       gsize n)     
 {
 #ifdef HAVE_STRNCASECMP
   return strncasecmp (s1, s2, n);
@@ -1319,11 +1319,11 @@ g_strsplit (const gchar *string,
   s = strstr (string, delimiter);
   if (s)
     {
-      guint delimiter_len = strlen (delimiter);
+      gsize delimiter_len = strlen (delimiter);   
 
       do
 	{
-	  guint len;
+	  gsize len;     
 	  gchar *new_string;
 
 	  len = s - string;
@@ -1417,8 +1417,9 @@ g_strjoinv (const gchar  *separator,
 
   if (*str_array)
     {
-      guint i, len;
-      guint separator_len;
+      gint i;
+      gsize len;
+      gsize separator_len;     
 
       separator_len = strlen (separator);
       /* First part, getting length */
@@ -1448,8 +1449,8 @@ g_strjoin (const gchar  *separator,
 {
   gchar *string, *s;
   va_list args;
-  guint len;
-  guint separator_len;
+  gsize len;               
+  gsize separator_len;     
   gchar *ptr;
 
   if (separator == NULL)
@@ -1514,11 +1515,9 @@ g_strjoin (const gchar  *separator,
  **/
 gchar *
 g_strstr_len (const gchar *haystack,
-	      gint         haystack_len,
+	      gssize       haystack_len,
 	      const gchar *needle)
 {
-  int i;
-
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
   
@@ -1526,27 +1525,33 @@ g_strstr_len (const gchar *haystack,
     return strstr (haystack, needle);
   else
     {
-      const char *p = haystack;
-      int needle_len = strlen (needle);
-      const char *end = haystack + haystack_len - needle_len;
-      
-      if (needle_len == 0)
-	return (char *)haystack;
+      const gchar *p = haystack;
+      gsize needle_len = strlen (needle);
+      const gchar *end;
+      gsize i;
 
+      if (needle_len == 0)
+	return (gchar *)haystack;
+
+      if (haystack_len < needle_len)
+	return NULL;
+      
+      end = haystack + haystack_len - needle_len;
+      
       while (*p && p <= end)
 	{
 	  for (i = 0; i < needle_len; i++)
 	    if (p[i] != needle[i])
 	      goto next;
 	  
-	  return (char *)p;
+	  return (gchar *)p;
 	  
 	next:
 	  p++;
 	}
+      
+      return NULL;
     }
-  
-  return NULL;
 }
 
 /**
@@ -1564,24 +1569,32 @@ gchar *
 g_strrstr (const gchar *haystack,
 	   const gchar *needle)
 {
-  int i;
-  int needle_len = strlen (needle);
-  int haystack_len = strlen (haystack);
-  const char *p = haystack + haystack_len - needle_len;
+  gsize i;
+  gsize needle_len;
+  gsize haystack_len;
+  const gchar *p;
       
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
-  
+
+  needle_len = strlen (needle);
+  haystack_len = strlen (haystack);
+
   if (needle_len == 0)
-    return (char *)p;
+    return (gchar *)haystack;
+
+  if (haystack_len < needle_len)
+    return NULL;
   
+  p = haystack + haystack_len - needle_len;
+
   while (p >= haystack)
     {
       for (i = 0; i < needle_len; i++)
 	if (p[i] != needle[i])
 	  goto next;
       
-      return (char *)p;
+      return (gchar *)p;
       
     next:
       p--;
@@ -1608,8 +1621,6 @@ g_strrstr_len (const gchar *haystack,
 	       gint         haystack_len,
 	       const gchar *needle)
 {
-  int i;
-      
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
   
@@ -1617,13 +1628,17 @@ g_strrstr_len (const gchar *haystack,
     return g_strrstr (haystack, needle);
   else
     {
-      int needle_len = strlen (needle);
-      const char *haystack_max = haystack + haystack_len;
-      const char *p = haystack;
+      gsize needle_len = strlen (needle);
+      const gchar *haystack_max = haystack + haystack_len;
+      const gchar *p = haystack;
+      gsize i;
 
       while (p < haystack_max && *p)
 	p++;
 
+      if (p < haystack + needle_len)
+	return NULL;
+	
       p -= needle_len;
 
       while (p >= haystack)
@@ -1632,14 +1647,14 @@ g_strrstr_len (const gchar *haystack,
 	    if (p[i] != needle[i])
 	      goto next;
 	  
-	  return (char *)p;
+	  return (gchar *)p;
 	  
 	next:
 	  p--;
 	}
-    }
 
-  return NULL;
+      return NULL;
+    }
 }
 
 

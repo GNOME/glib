@@ -279,8 +279,8 @@ static inline gboolean
 str_check_suffix (const gchar* string,
 		  const gchar* suffix)
 {
-  guint string_len = strlen (string);
-  guint suffix_len = strlen (suffix);
+  gsize string_len = strlen (string);    
+  gsize suffix_len = strlen (suffix);    
 
   return string_len >= suffix_len && 
     strcmp (string + string_len - suffix_len, suffix) == 0;

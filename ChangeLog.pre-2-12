@@ -1,3 +1,76 @@
+Wed Jun 20 12:00:54 2001  Owen Taylor  <otaylor@redhat.com>
+
+        Changes for 64-bit cleanliness, loosely based on patch 
+	from Mark Murnane.
+	
+	* gconvert.c (g_convert/g_convert_with_fallback): Remove
+	workarounds for since-fixed GNU libc bugs. Minor
+	doc fix.
+
+	* gconvert.[ch]: Change gint to gsize/gssize as
+	appropriate.
+
+	* gconvert.c (g_locale/filename_to/from_utf8): Fix incorrect
+	computation of bytes_read / bytes_written.
+
+	* gfileutils.[ch] (g_file_get_contents): Make length
+	out parameter 'gsize *len'.
+
+	* ghook.c (g_hook_compare_ids): Don't compare a
+	and b as 'a - b'.
+
+	* gmacros.h (GSIZE_TO_POINTER): Add GPOINTER_TO_SIZE,
+	GSIZE_TO_POINTER.
+
+	* gmain.c (g_timeout_prepare): Rewrite to avoid
+	overflows. (Fixes bug when system clock skews
+	backwards more than 24 days.)
+
+	* gmarkup.[ch]: Make lengths passed to callbacks
+	gsize, length for g_markup_parse-context_parse(),
+	g_markup_escape_text() gssize.
+
+	* gmessages.[ch] (g_printf_string_upper_bound): Change
+	return value to gsize.
+
+	* gmessages.c (printf_string_upper_bound): Remove
+	a ridiculous use of 'inline' on a 300 line function.
+
+	* gstring.[ch]: Represent size of string as a gsize,
+	not gint. Make parameters to functions take gsize,
+	or gssize where -1 is allowed.
+
+	* gstring.c (g_string_erase): Make
+	g_string_erase (string, pos, -1) a synonym for
+	g_string_truncate for consistency with other G*
+	APIs.
+
+	* gstrfuncs.[ch]: Make all functions taking a string
+	length, take a gsize, or gssize if -1 is allowed.
+	(g_strstr_len, g_strrstr_len). Also fix some boundary
+	conditions in g_str[r]str[_len].
+
+	* gutf8.c tests/unicode-encoding.c: Make parameters that 
+	are byte lengths gsize, gssize as appropriate. Make 
+	character offsets, other counts, glong.
+
+	* gasyncqueue.c gcompletion.c
+          timeloop.c timeloop-basic.c gutils.c gspawn.c.
+	Small 64 bit cleanliness fixups.
+
+	* glist.c (g_list_sort2, g_list_sort_real): Fix functions
+	that should have been static.
+
+	* gdate.c (g_date_fill_parse_tokens): Fix extra
+	declaration that was shadowing another.
+
+	* tests/module-test.c: Include string.h
+
+Mon Jun 18 15:43:29 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gutf8.c (g_get_charset): Make argument
+	G_CONST_RETURN char **.
+
 2001-06-22  Andrew Lanoix <alanoix@umich.edu>
 	
 	*giowin32.c: Debug and partial rewrite of async socket code

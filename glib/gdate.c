@@ -513,7 +513,6 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
   if (pt->num_ints < 3)
     {
       gchar lcstr[128];
-      int i = 1;
       
       strncpy (lcstr, str, 127);
       g_strdown (lcstr);

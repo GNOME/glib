@@ -76,7 +76,7 @@ gboolean g_file_test         (const gchar  *filename,
                               GFileTest     test);
 gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
-                              guint        *length,
+                              gsize        *length,    
                               GError      **error);
 
 

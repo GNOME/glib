@@ -631,5 +631,10 @@ gint
 g_hook_compare_ids (GHook *new_hook,
 		    GHook *sibling)
 {
-  return ((glong) new_hook->hook_id) - ((glong) sibling->hook_id);
+  if (new_hook->hook_id < sibling->hook_id)
+    return -1;
+  else if (new_hook->hook_id > sibling->hook_id)
+    return 1;
+  
+  return 0;
 }

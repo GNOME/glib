@@ -36,13 +36,13 @@ typedef struct _GStringChunk	GStringChunk;
 
 struct _GString
 {
-  gchar *str;
-  gint len;
+  gchar  *str;
+  gssize len;    
 };
 
 /* String Chunks
  */
-GStringChunk* g_string_chunk_new	   (gint size);
+GStringChunk* g_string_chunk_new	   (gsize size);  
 void	      g_string_chunk_free	   (GStringChunk *chunk);
 gchar*	      g_string_chunk_insert	   (GStringChunk *chunk,
 					    const gchar	 *string);
@@ -54,8 +54,8 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
  */
 GString*     g_string_new	        (const gchar	 *init);
 GString*     g_string_new_len           (const gchar     *init,
-                                         gint             len);
-GString*     g_string_sized_new         (guint		  dfl_size);
+                                         gssize           len);   
+GString*     g_string_sized_new         (gsize            dfl_size);  
 gchar*	     g_string_free	        (GString	 *string,
 					 gboolean	  free_segment);
 gboolean     g_string_equal             (const GString	 *v,
@@ -64,16 +64,16 @@ guint        g_string_hash              (const GString   *str);
 GString*     g_string_assign            (GString	 *string,
 					 const gchar	 *rval);
 GString*     g_string_truncate          (GString	 *string,
-					 guint		  len);
+					 gsize		  len);    
 GString*     g_string_insert_len        (GString         *string,
-                                         gint             pos,
+                                         gssize           pos,   
                                          const gchar     *val,
-                                         gint             len);
+                                         gssize           len);  
 GString*     g_string_append            (GString	 *string,
 			                 const gchar	 *val);
 GString*     g_string_append_len        (GString	 *string,
 			                 const gchar	 *val,
-                                         gint             len);
+                                         gssize           len);  
 GString*     g_string_append_c          (GString	 *string,
 					 gchar		  c);
 GString*     g_string_prepend           (GString	 *string,
@@ -82,16 +82,16 @@ GString*     g_string_prepend_c         (GString	 *string,
 					 gchar		  c);
 GString*     g_string_prepend_len       (GString	 *string,
 			                 const gchar	 *val,
-                                         gint             len);
+                                         gssize           len);  
 GString*     g_string_insert            (GString	 *string,
-					 gint		  pos,
+					 gssize		  pos,    
 					 const gchar	 *val);
 GString*     g_string_insert_c          (GString	 *string,
-					 gint		  pos,
+					 gssize		  pos,    
 					 gchar		  c);
 GString*     g_string_erase	        (GString	 *string,
-					 gint		  pos,
-					 gint		  len);
+					 gsize		  pos,    
+					 gsize		  len);   
 GString*     g_string_down              (GString	 *string);
 GString*     g_string_up                (GString	 *string);
 void         g_string_printf            (GString	 *string,

@@ -96,9 +96,9 @@ g_iconv_open (const gchar  *to_codeset,
 size_t 
 g_iconv (GIConv   converter,
 	 gchar  **inbuf,
-	 size_t  *inbytes_left,
+	 gsize   *inbytes_left,
 	 gchar  **outbuf,
-	 size_t  *outbytes_left)
+	 gsize   *outbytes_left)
 {
   iconv_t cd = (iconv_t)converter;
 
@@ -179,21 +179,21 @@ open_converter (const gchar *to_codeset,
  **/
 gchar*
 g_convert (const gchar *str,
-           gint         len,
+           gssize       len,  
            const gchar *to_codeset,
            const gchar *from_codeset,
-           gint        *bytes_read,
-	   gint        *bytes_written,
+           gsize       *bytes_read, 
+	   gsize       *bytes_written, 
 	   GError     **error)
 {
   gchar *dest;
   gchar *outp;
   const gchar *p;
-  size_t inbytes_remaining;
-  size_t outbytes_remaining;
-  size_t err;
+  gsize inbytes_remaining;
+  gsize outbytes_remaining;
+  gsize err;
   GIConv cd;
-  size_t outbuf_size;
+  gsize outbuf_size;
   gboolean have_error = FALSE;
   
   g_return_val_if_fail (str != NULL, NULL);
@@ -218,10 +218,7 @@ g_convert (const gchar *str,
 
   p = str;
   inbytes_remaining = len;
-
-  /* Due to a GLIBC bug, round outbuf_size up to a multiple of 4 */
-  /* + 1 for nul in case len == 1 */
-  outbuf_size = ((len + 3) & ~3) + 1;
+  outbuf_size = len + 1; /* + 1 for nul in case len == 1 */
   
   outbytes_remaining = outbuf_size - 1; /* -1 for nul */
   outp = dest = g_malloc (outbuf_size);
@@ -241,19 +238,11 @@ g_convert (const gchar *str,
 	  {
 	    size_t used = outp - dest;
 
-	    /* glibc's iconv can return E2BIG even if there is space
-	     * remaining if an internal buffer is exhausted. The
-	     * folllowing is a heuristic to catch this. The 16 is
-	     * pretty arbitrary.
-	     */
-	    if (used + 16 > outbuf_size)
-	      {
-		outbuf_size = (outbuf_size - 1) * 2 + 1;
-		dest = g_realloc (dest, outbuf_size);
+	    outbuf_size *= 2;
+	    dest = g_realloc (dest, outbuf_size);
 		
-		outp = dest + used;
-		outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
-	      }
+	    outp = dest + used;
+	    outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
 
 	    goto again;
 	  }
@@ -317,10 +306,7 @@ g_convert (const gchar *str,
  *                input string that were successfully converted, or %NULL.
  *                Even if the conversion was succesful, this may be 
  *                less than len if there were partial characters
- *                at the end of the input. If the error
- *                G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                stored will the byte fofset after the last valid
- *                input sequence.
+ *                at the end of the input.
  * @bytes_written: the stored in the output buffer (not including the
  *                 terminating nul.
  * @error:        location to store the error occuring, or %NULL to ignore
@@ -340,12 +326,12 @@ g_convert (const gchar *str,
  **/
 gchar*
 g_convert_with_fallback (const gchar *str,
-			 gint         len,
+			 gssize       len,    
 			 const gchar *to_codeset,
 			 const gchar *from_codeset,
 			 gchar       *fallback,
-			 gint        *bytes_read,
-			 gint        *bytes_written,
+			 gsize       *bytes_read,
+			 gsize       *bytes_written,
 			 GError     **error)
 {
   gchar *utf8;
@@ -353,13 +339,13 @@ g_convert_with_fallback (const gchar *str,
   gchar *outp;
   const gchar *insert_str = NULL;
   const gchar *p;
-  int inbytes_remaining;
+  gsize inbytes_remaining;   
   const gchar *save_p = NULL;
-  size_t save_inbytes = 0;
-  size_t outbytes_remaining;
-  size_t err;
+  gsize save_inbytes = 0;
+  gsize outbytes_remaining; 
+  gsize err;
   GIConv cd;
-  size_t outbuf_size;
+  gsize outbuf_size;
   gboolean have_error = FALSE;
   gboolean done = FALSE;
 
@@ -419,9 +405,8 @@ g_convert_with_fallback (const gchar *str,
    * for the original string while we are converting the fallback
    */
   p = utf8;
-  /* Due to a GLIBC bug, round outbuf_size up to a multiple of 4 */
-  /* + 1 for nul in case len == 1 */
-  outbuf_size = ((len + 3) & ~3) + 1;
+
+  outbuf_size = len + 1; /* + 1 for nul in case len == 1 */
   outbytes_remaining = outbuf_size - 1; /* -1 for nul */
   outp = dest = g_malloc (outbuf_size);
 
@@ -442,19 +427,11 @@ g_convert_with_fallback (const gchar *str,
 	      {
 		size_t used = outp - dest;
 
-		/* glibc's iconv can return E2BIG even if there is space
-		 * remaining if an internal buffer is exhausted. The
-		 * folllowing is a heuristic to catch this. The 16 is
-		 * pretty arbitrary.
-		 */
-		if (used + 16 > outbuf_size)
-		  {
-		    outbuf_size = (outbuf_size - 1) * 2 + 1;
-		    dest = g_realloc (dest, outbuf_size);
-		    
-		    outp = dest + used;
-		    outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
-		  }
+		outbuf_size *= 2;
+		dest = g_realloc (dest, outbuf_size);
+		
+		outp = dest + used;
+		outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
 		
 		break;
 	      }
@@ -538,6 +515,33 @@ g_convert_with_fallback (const gchar *str,
  * 
  */
 
+static gchar *
+strdup_len (const gchar *string,
+	    gssize       len,
+	    gsize       *bytes_written,
+	    gsize       *bytes_read)
+	 
+{
+  gsize real_len;
+
+  if (len < 0)
+    real_len = strlen (string);
+  else
+    {
+      real_len = 0;
+      
+      while (real_len < len && string[real_len])
+	real_len++;
+    }
+  
+  if (bytes_read)
+    *bytes_read = real_len;
+  if (bytes_written)
+    *bytes_written = real_len;
+
+  return g_strndup (string, real_len);
+}
+
 /**
  * g_locale_to_utf8:
  * @opsysstring:   a string in the encoding of the current locale
@@ -564,9 +568,9 @@ g_convert_with_fallback (const gchar *str,
  **/
 gchar *
 g_locale_to_utf8 (const gchar  *opsysstring,
-		  gint          len,
-		  gint         *bytes_read,
-		  gint         *bytes_written,
+		  gssize        len,            
+		  gsize        *bytes_read,    
+		  gsize        *bytes_written,
 		  GError      **error)
 {
 #ifdef G_PLATFORM_WIN32
@@ -667,15 +671,14 @@ g_locale_to_utf8 (const gchar  *opsysstring,
 
 #else  /* !G_PLATFORM_WIN32 */
 
-  char *charset, *str;
+  const char *charset;
 
   if (g_get_charset (&charset))
-    return g_strdup (opsysstring);
+    return strdup_len (opsysstring, len, bytes_read, bytes_written);
+  else
+    return g_convert (opsysstring, len, 
+		      "UTF-8", charset, bytes_read, bytes_written, error);
 
-  str = g_convert (opsysstring, len, 
-		   "UTF-8", charset, bytes_read, bytes_written, error);
-  
-  return str;
 #endif /* !G_PLATFORM_WIN32 */
 }
 
@@ -705,9 +708,9 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  **/
 gchar *
 g_locale_from_utf8 (const gchar *utf8string,
-		    gint         len,
-		    gint        *bytes_read,
-		    gint        *bytes_written,
+		    gssize       len,            
+		    gsize       *bytes_read,    
+		    gsize       *bytes_written,
 		    GError     **error)
 {
 #ifdef G_PLATFORM_WIN32
@@ -813,17 +816,15 @@ g_locale_from_utf8 (const gchar *utf8string,
   return result;
 
 #else  /* !G_PLATFORM_WIN32 */
-
-  gchar *charset, *str;
+  
+  const gchar *charset;
 
   if (g_get_charset (&charset))
-    return g_strdup (utf8string);
+    return strdup_len (utf8string, len, bytes_read, bytes_written);
+  else
+    return g_convert (utf8string, len,
+		      charset, "UTF-8", bytes_read, bytes_written, error);
 
-  str = g_convert (utf8string, strlen (utf8string), 
-		   charset, "UTF-8", bytes_read, bytes_written, error);
-
-  return str;
-  
 #endif /* !G_PLATFORM_WIN32 */
 }
 
@@ -852,9 +853,9 @@ g_locale_from_utf8 (const gchar *utf8string,
  **/
 gchar*
 g_filename_to_utf8 (const gchar *opsysstring, 
-		    gint         len,
-		    gint        *bytes_read,
-		    gint        *bytes_written,
+		    gssize       len,           
+		    gsize       *bytes_read,   
+		    gsize       *bytes_written,
 		    GError     **error)
 {
 #ifdef G_PLATFORM_WIN32
@@ -866,21 +867,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
     return g_locale_to_utf8 (opsysstring, len,
 			     bytes_read, bytes_written,
 			     error);
-
-  if (bytes_read || bytes_written)
-    {
-      gint len = strlen (opsysstring);
-
-      if (bytes_read)
-	*bytes_read = len;
-      if (bytes_written)
-	*bytes_written = len;
-    }
-  
-  if (len < 0)
-    return g_strdup (opsysstring);
   else
-    return g_strndup (opsysstring, len);
+    return strdup_len (opsysstring, len, bytes_read, bytes_written);
 #endif /* !G_PLATFORM_WIN32 */
 }
 
@@ -908,9 +896,9 @@ g_filename_to_utf8 (const gchar *opsysstring,
  **/
 gchar*
 g_filename_from_utf8 (const gchar *utf8string,
-		      gint         len,
-		      gint        *bytes_read,
-		      gint        *bytes_written,
+		      gssize       len,            
+		      gsize       *bytes_read,    
+		      gsize       *bytes_written,
 		      GError     **error)
 {
 #ifdef G_PLATFORM_WIN32
@@ -922,20 +910,7 @@ g_filename_from_utf8 (const gchar *utf8string,
     return g_locale_from_utf8 (utf8string, len,
 			       bytes_read, bytes_written,
 			       error);
-
-  if (bytes_read || bytes_written)
-    {
-      gint len = strlen (utf8string);
-
-      if (bytes_read)
-	*bytes_read = len;
-      if (bytes_written)
-	*bytes_written = len;
-    }
-
-  if (len < 0)
-    return g_strdup (utf8string);
   else
-    return g_strndup (utf8string, len);
+    return strdup_len (utf8string, len, bytes_read, bytes_written);
 #endif /* !G_PLATFORM_WIN32 */
 }

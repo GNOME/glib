@@ -109,7 +109,7 @@ typedef enum
  * in case the locale's charset will be changed later using setlocale()
  * or in some other way.
  */
-gboolean g_get_charset (char **charset);
+gboolean g_get_charset (G_CONST_RETURN char **charset);
 
 /* These are all analogs of the <ctype.h> functions.
  */
@@ -169,8 +169,8 @@ GLIB_VAR char g_utf8_skip[256];
 
 gunichar g_utf8_get_char          (const gchar *p);
 gchar*   g_utf8_offset_to_pointer (const gchar *str,
-                                   gint         offset);
-gint     g_utf8_pointer_to_offset (const gchar *str,
+                                   glong        offset);  
+glong    g_utf8_pointer_to_offset (const gchar *str,      
 				   const gchar *pos);
 gchar*   g_utf8_prev_char         (const gchar *p);
 gchar*   g_utf8_find_next_char    (const gchar *p,
@@ -178,8 +178,8 @@ gchar*   g_utf8_find_next_char    (const gchar *p,
 gchar*   g_utf8_find_prev_char    (const gchar *str,
 				   const gchar *p);
 
-gint g_utf8_strlen (const gchar *p,
-		    gint         max);
+glong g_utf8_strlen (const gchar *p,  
+		     gssize       max);        
 
 /* Copies n characters from src to dest */
 gchar* g_utf8_strncpy (gchar       *dest,
@@ -189,44 +189,44 @@ gchar* g_utf8_strncpy (gchar       *dest,
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
 gchar* g_utf8_strchr  (const gchar *p,
-		       gint         len,
+		       gssize       len,
 		       gunichar     c);
 gchar* g_utf8_strrchr (const gchar *p,
-		       gint         len,
+		       gssize       len,
 		       gunichar     c);
 
 gunichar2 *g_utf8_to_utf16     (const gchar      *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 gunichar * g_utf8_to_ucs4      (const gchar      *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 gunichar * g_utf8_to_ucs4_fast (const gchar      *str,
-				gint              len,
-				gint             *items_written);
+				glong             len,            
+				glong            *items_written); 
 gunichar * g_utf16_to_ucs4     (const gunichar2  *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 gchar*     g_utf16_to_utf8     (const gunichar2  *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 gunichar2 *g_ucs4_to_utf16     (const gunichar   *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 gchar*     g_ucs4_to_utf8      (const gunichar   *str,
-				gint              len,
-				gint             *items_read,
-				gint             *items_written,
+				glong             len,            
+				glong            *items_read,     
+				glong            *items_written,  
 				GError          **error);
 
 /* Convert a single character into UTF-8. outbuf must have at
@@ -234,14 +234,14 @@ gchar*     g_ucs4_to_utf8      (const gunichar   *str,
  * result.
  */
 gint      g_unichar_to_utf8 (gunichar    c,
-			     char       *outbuf);
+			     gchar      *outbuf);
 
 /* Validate a UTF8 string, return TRUE if valid, put pointer to
  * first invalid char in **end
  */
 
 gboolean g_utf8_validate (const gchar  *str,
-                          gint          max_len,
+                          gssize        max_len,  
                           const gchar **end);
 
 /* Validate a Unicode character */

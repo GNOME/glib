@@ -56,7 +56,7 @@ end_element_handler    (GMarkupParseContext *context,
 static void
 text_handler           (GMarkupParseContext *context,
                         const gchar         *text,
-                        gint                 text_len,
+                        gsize                text_len,
                         gpointer             user_data,
                         GError             **error)
 {
@@ -68,7 +68,7 @@ text_handler           (GMarkupParseContext *context,
 static void
 passthrough_handler    (GMarkupParseContext *context,
                         const gchar         *passthrough_text,
-                        gint                 text_len,
+                        gsize                text_len,
                         gpointer             user_data,
                         GError             **error)
 {

@@ -25,6 +25,7 @@
  */
 
 #include <gmodule.h>
+#include <string.h>
 
 gchar* global_state;
 

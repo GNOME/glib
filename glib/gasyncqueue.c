@@ -405,7 +405,7 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue* queue, GTimeVal *end_time)
 gint
 g_async_queue_length (GAsyncQueue* queue)
 {
-  glong retval;
+  gint retval;
 
   g_return_val_if_fail (queue, 0);
   g_return_val_if_fail (queue->ref_count > 0, 0);

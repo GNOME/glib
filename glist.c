@@ -717,7 +717,7 @@ g_list_sort_merge (GList     *l1,
   return list.next;
 }
 
-GList* 
+static GList* 
 g_list_sort_real (GList    *list,
 		  GFunc     compare_func,
 		  gboolean  use_data,
@@ -765,7 +765,7 @@ g_list_sort_with_data (GList            *list,
   return g_list_sort_real (list, (GFunc) compare_func, TRUE, user_data);
 }
 
-GList* 
+static GList* 
 g_list_sort2 (GList       *list,
 	      GCompareFunc compare_func)
 {

@@ -484,17 +484,17 @@ g_basename (const gchar	   *file_name)
 gchar*
 g_path_get_basename (const gchar   *file_name)
 {
-  register gint base;
-  register gint last_nonslash;
-  guint len;
+  register gssize base;             
+  register gssize last_nonslash;    
+  gsize len;    
   gchar *retval;
  
   g_return_val_if_fail (file_name != NULL, NULL);
-  
+
   if (file_name[0] == '\0')
     /* empty string */
     return g_strdup (".");
-
+  
   last_nonslash = strlen (file_name) - 1;
 
   while (last_nonslash >= 0 && file_name [last_nonslash] == G_DIR_SEPARATOR)
@@ -595,7 +595,7 @@ gchar*
 g_path_get_dirname (const gchar	   *file_name)
 {
   register gchar *base;
-  register guint len;
+  register gsize len;    
   
   g_return_val_if_fail (file_name != NULL, NULL);
   
@@ -759,11 +759,11 @@ g_get_any_init (void)
 #ifdef P_tmpdir
       if (!g_tmp_dir)
 	{
-	  int k;
+	  gsize k;    
 	  g_tmp_dir = g_strdup (P_tmpdir);
 	  k = strlen (g_tmp_dir);
-	  if (g_tmp_dir[k-1] == G_DIR_SEPARATOR)
-	    g_tmp_dir[k-1] = '\0';
+	  if (k > 1 && g_tmp_dir[k - 1] == G_DIR_SEPARATOR)
+	    g_tmp_dir[k - 1] = '\0';
 	}
 #endif
       
@@ -827,9 +827,9 @@ g_get_any_init (void)
         struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX  
 	/* This reurns the maximum length */
-        guint bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
+        glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);  
 #    else /* _SC_GETPW_R_SIZE_MAX */
-        guint bufsize = 64;
+        glong bufsize = 64;
 #    endif /* _SC_GETPW_R_SIZE_MAX */
         gint error;
 	

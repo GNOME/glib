@@ -12,7 +12,7 @@ static int n_active_children;
 static int n_iters = 10000;
 static GMainLoop *loop;
 
-void
+static void
 io_pipe (GIOChannel **channels)
 {
   int fds[2];
@@ -27,11 +27,11 @@ io_pipe (GIOChannel **channels)
   channels[1] = g_io_channel_unix_new (fds[1]);
 }
 
-gboolean
+static gboolean
 read_all (GIOChannel *channel, char *buf, int len)
 {
-  int bytes_read = 0;
-  int count;
+  gsize bytes_read = 0;
+  gsize count;
   GIOError err;
 
   while (bytes_read < len)
@@ -51,11 +51,11 @@ read_all (GIOChannel *channel, char *buf, int len)
   return TRUE;
 }
 
-gboolean
+static gboolean
 write_all (GIOChannel *channel, char *buf, int len)
 {
-  int bytes_written = 0;
-  int count;
+  gsize bytes_written = 0;
+  gsize count;
   GIOError err;
 
   while (bytes_written < len)
@@ -70,7 +70,7 @@ write_all (GIOChannel *channel, char *buf, int len)
   return TRUE;
 }
 
-void
+static void
 run_child (GIOChannel *in_channel, GIOChannel *out_channel)
 {
   int i;
@@ -94,7 +94,7 @@ run_child (GIOChannel *in_channel, GIOChannel *out_channel)
   exit (0);
 }
 
-gboolean
+static gboolean
 input_callback (GIOChannel   *source,
 		GIOCondition  condition,
 		gpointer      data)
@@ -130,7 +130,7 @@ input_callback (GIOChannel   *source,
     }
 }
 
-void
+static void
 create_child ()
 {
   int pid;

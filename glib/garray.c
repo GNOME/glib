@@ -515,7 +515,7 @@ g_ptr_array_remove (GPtrArray* farray,
 		    gpointer data)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
-  int i;
+  guint i;
 
   g_return_val_if_fail (array, FALSE);
 
@@ -536,7 +536,7 @@ g_ptr_array_remove_fast (GPtrArray* farray,
 			 gpointer data)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
-  int i;
+  guint i;
 
   g_return_val_if_fail (array, FALSE);
 
