@@ -1692,7 +1692,7 @@ int main () {
 			AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
 			AC_MSG_CHECKING(for pthread_setschedparam)
 			AC_TRY_LINK([#include <pthread.h>],
-		          [pthread_t t; pthread_setschedparam(&t, 0, NULL)],
+		          [pthread_t t; pthread_setschedparam(t, 0, NULL)],
 			  [AC_MSG_RESULT(yes)
 			AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min,[Minimum POSIX RT priority])
 			   AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max,[Maximum POSIX RT priority])],

@@ -1,3 +1,8 @@
+2003-06-11  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in: Remove false &. Spotted by Albert Chin
+	<gtk-devel-list@thewrittenword.com>.
+
 2003-06-08  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c: Fix indentation and spacing. Use
