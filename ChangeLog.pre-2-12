@@ -1,5 +1,14 @@
 2001-10-23  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gutils.h: Remove G_HARDCODED_PATH_WRAPPER, Owen didn't like
+ 	it.
+	
+	* glib/gutils.c: Instead, expand it on Win32 as
+ 	_glib_get_locale_dir(), and #define GLIB_LOCALE_DIR as a call to
+ 	it.
+
+2001-10-23  Tor Lillqvist  <tml@iki.fi>
+
 	* config.h.win32.in: Typo.
 
 	* glibconfig.h.win32.in: Minor update to correspond to what
@@ -13,7 +22,7 @@
 	G_HARDCODED_PATH_WRAPPER. These are used to avoid hardcoding path
 	names into Windows DLLs.
 
-	* glib/gutils.c: Use them for GLIB_LOCALEDIR.
+	* glib/gutils.c: Use them for GLIB_LOCALE_DIR.
 
 	* glib/gwin32.c (get_package_directory_from_module): Plug a small
 	memory leak. Minor code reordering.

@@ -365,47 +365,4 @@ DllMain (HINSTANCE hinstDLL,						   \
 }
 #endif /* G_PLATFORM_WIN32 */
 
-/*
- * Expands to a function called FUNCTION that on non-Windows
- * returns HARDCODED_VALUE. On Windows, deduce a pathname from
- * the MODULE_NAME, PACKAGE and SUBDIR. If the code being compiled
- * goes into a DLL, MODULE_NAME should be the dll_name passed to
- * G_WIN32_DLLMAIN_FOR_DLL_NAME. If the code is for a .EXE, use NULL.
- *
- * An example: Wherever you would be tempted to write the name of a
- * compile-time path macro, like FOOBAR_LIBDIR, instead use
- * _get_foobar_libdir(). This requires you to insert in one place in
- * your code something like this:
-
-G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)
-G_HARDCODED_PATH_WRAPPER(FOOBAR_LIBDIR, GETTEXT_PACKAGE, _get_foobar_libdir, dll_name, "lib")
-
- * This will on Windows define the DllMain function, and always define
- * the _get_foobar_libdir() function. On Windows, this function
- * calculates the value corresponding to FOOBAR_LIBDIR at run-time, on
- * other systems it returns said constant, as configured before
- * compilation.
- */
-
-#ifndef G_PLATFORM_WIN32
-# define G_HARDCODED_PATH_WRAPPER(hardcoded_value, package, function, module_name, subdir) \
-const gchar *			\
-function (void)			\
-{				\
-  return hardcoded_value;	\
-}
-#else
-# define G_HARDCODED_PATH_WRAPPER(hardcoded_value, package, function, module_name, subdir) \
-const gchar *							\
-function (void)							\
-{								\
-  static char *cache = NULL;					\
-  if (cache == NULL)						\
-    cache = g_win32_get_package_installation_subdirectory	\
-      (package, module_name, subdir);				\
-								\
-  return cache;							\
-}
-#endif
-
 #endif /* __G_UTILS_H__ */

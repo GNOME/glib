@@ -1093,8 +1093,25 @@ g_get_codeset (void)
 
 #include <libintl.h>
 
+#ifdef G_PLATFORM_WIN32
+
 G_WIN32_DLLMAIN_FOR_DLL_NAME (static, dll_name)
-G_HARDCODED_PATH_WRAPPER (GLIB_LOCALE_DIR, GETTEXT_PACKAGE, _glib_get_locale_dir, dll_name, "lib/locale")
+
+static const gchar *
+_glib_get_locale_dir (void)
+{
+  static const gchar *cache = NULL;
+  if (cache == NULL)
+    cache = g_win32_get_package_installation_subdirectory
+      (GETTEXT_PACKAGE, dll_name, "lib\\locale");
+
+  return cache;
+}
+
+#undef GLIB_LOCALE_DIR
+#define GLIB_LOCALE_DIR _glib_get_locale_dir ()
+
+#endif /* G_PLATFORM_WIN32 */
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)
@@ -1103,7 +1120,7 @@ _glib_gettext (const gchar *str)
 
   if (!_glib_gettext_initialized)
     {
-      bindtextdomain(GETTEXT_PACKAGE, _glib_get_locale_dir ());
+      bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
       _glib_gettext_initialized = TRUE;
     }
   
