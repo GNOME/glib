@@ -1,3 +1,11 @@
+Sun Jan 11 01:25:44 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: Improve docs for G_DEFINE_TYPE_* macros.
+
+Sun Jan 11 01:25:29 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Add G_DEFINE_TYPE_EXTENDED.
+
 Sat Jan 10 02:18:32 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: Document the new GType boilerplate macros

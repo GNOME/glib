@@ -101,6 +101,8 @@ G_DEFINE_TYPE_WITH_CODE
 G_DEFINE_ABSTRACT_TYPE
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE
 G_IMPLEMENT_INTERFACE
+G_DEFINE_TYPE_EXTENDED
+
 <SUBSECTION Private>
 G_TYPE_FUNDAMENTAL_SHIFT
 g_type_check_instance
@@ -115,7 +117,6 @@ g_type_instance_get_private
 g_type_test_flags
 g_type_name_from_instance
 g_type_name_from_class
-G_DEFINE_TYPE_INTERNAL
 
 <SUBSECTION>
 G_TYPE_INVALID

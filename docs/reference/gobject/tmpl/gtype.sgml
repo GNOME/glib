@@ -1462,8 +1462,15 @@ that implements or has internal knowledge of the implementation of
 
 <!-- ##### MACRO G_DEFINE_TYPE ##### -->
 <para>
-A convenience macro for type implementations. 
-See G_DEFINE_TYPE_WITH_CODE() for an example.
+A convenience macro for type implementations, which declares a 
+class initialization function, an instance initialization function (see #GTypeInfo for information about 
+these) and a static variable named parent_class pointing to the parent class. Furthermore, it defines 
+a *_get_type() function. See G_DEFINE_TYPE_EXTENDED() for an example.
+</para>
+<para>
+Note that you can't use this macro if you want to define multiple types in one file, 
+since the parent_class variables will clash. In this case, use
+G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
 </para>
 
 @TN: The name of the new type, in Camel case.
@@ -1472,25 +1479,105 @@ See G_DEFINE_TYPE_WITH_CODE() for an example.
 @T_P: The #GType of the parent type.
 @Since: 2.4
 
+
 <!-- ##### MACRO G_DEFINE_TYPE_WITH_CODE ##### -->
 <para>
 A convenience macro for type implementations.  
+Similar to G_DEFINE_TYPE(), but allows to insert custom code into the 
+*_get_type() function, e.g. interface implementations via G_IMPLEMENT_INTERFACE().
+See G_DEFINE_TYPE_EXTENDED() for an example.
+</para>
+<para>
+Note that you can't use this macro if you want to define multiple types in one file, 
+since the parent_class variables will clash. In this case, use
+G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
+</para>
+
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type in lowercase, with words separated by '_'.
+@T_P: The #GType of the parent type.
+@_C_: Custom code that gets inserted in the *_get_type() function.
+@Since: 2.4
+
+
+<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE ##### -->
+<para>
+A convenience macro for type implementations. 
+Similar to G_DEFINE_TYPE(), but defines an abstract type. 
+See G_DEFINE_TYPE_EXTENDED() for an example.
+</para>
+<para>
+Note that you can't use this macro if you want to define multiple types in one file, 
+since the parent_class variables will clash. In this case, use
+G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
+</para>
+
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words 
+  separated by '_'.
+@T_P: The #GType of the parent type.
+@Since: 2.4
+
+
+<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE_WITH_CODE ##### -->
+<para>
+A convenience macro for type implementations.
+Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and allows to 
+insert custom code into the *_get_type() function, e.g. interface implementations 
+via G_IMPLEMENT_INTERFACE(). See G_DEFINE_TYPE_EXTENDED() for an example.
+</para>
+<para>
+Note that you can't use this macro if you want to define multiple types in one file, 
+since the parent_class variables will clash. In this case, use
+G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
+</para>
+
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words 
+  separated by '_'.
+@T_P: The #GType of the parent type.
+@_C_: Custom code that gets inserted in the @type_name_get_type() function.
+@Since: 2.4
+
+
+<!-- ##### MACRO G_IMPLEMENT_INTERFACE ##### -->
+<para>
+A convenience macro to ease interface addition in the @_C_ section
+of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE(). 
+See G_DEFINE_TYPE_EXTENDED() for an example.
+</para>
+<para>
+Note that this macro can only be used together with the G_DEFINE_TYPE_*
+macros, since it depends on variable names from those macros.
+</para>
+
+@TYPE_IFACE: The #GType of the interface to add
+@iface_init: The interface init function
+@Since: 2.4
+
+
+<!-- ##### MACRO G_DEFINE_TYPE_EXTENDED ##### -->
+<para>
+The most general convenience macro for type implementations, on which 
+G_DEFINE_TYPE(), etc are based. 
 </para>
 <informalexample><programlisting>
-G_DEFINE_TYPE_WITH_CODE (GtkGadget, 
-                         gtk_gadget, 
-                         GTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO, 
-                                                gtk_gadget_gizmo_init));
+G_DEFINE_TYPE_EXTENDED (GtkGadget, 
+                        gtk_gadget, 
+                        GTK_TYPE_WIDGET,
+                        0, 
+                        gtk_gadget_parent_class,
+                        G_IMPLEMENT_INTERFACE (TYPE_GIZMO, 
+                                               gtk_gadget_gizmo_init));
 </programlisting>
-exands to
+expands to
 <programlisting>
 static void     gtk_gadget_init       (GtkGadget      *self);
 static void     gtk_gadget_class_init (GtkGadgetClass *klass);
-static gpointer parent_class = NULL;
+static gpointer gtk_gadget_parent_class = NULL;
 static void     gtk_gadget_class_intern_init (gpointer klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
+  gtk_gadget_parent_class = g_type_class_peek_parent (klass);
   gtk_gadget_class_init ((GtkGadgetClass*) klass);
 }
 <!-- -->
@@ -1527,52 +1614,15 @@ instance and class structure and the definitions of the instance and class
 init functions.
 </informalexample>
 
-@TN: The name of the new type, in Camel case.
-@t_n: The name of the new type in lowercase, with words separated by '_'.
-@T_P: The #GType of the parent type.
-@_C_: Custom code that gets inserted in the *_get_type() function. 
-@Since: 2.4
-
-
-<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE ##### -->
-<para>
-A convenience macro for type implementations. 
-Similar to G_DEFINE_TYPE(), but defines an abstract type. 
-See G_DEFINE_TYPE_WITH_CODE() for an example.
-</para>
-
-@TN: The name of the new type, in Camel case.
-@t_n: The name of the new type, in lowercase, with words 
+@TypeName: The name of the new type, in Camel case.
+@type_name: The name of the new type, in lowercase, with words 
   separated by '_'.
-@T_P: The #GType of the parent type.
+@TYPE_PARENT: The #GType of the parent type.
+@flags: #GTypeFlags to pass to g_type_register_static()
+@type_parent_class: the identifier for the static variable holding the parent class
+@CODE: Custom code that gets inserted in the *_get_type() function.
 @Since: 2.4
 
-
-<!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE_WITH_CODE ##### -->
-<para>
-A convenience macro for type implementations.
-Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type. 
-See G_DEFINE_TYPE_WITH_CODE() for an example.
-</para>
-
-@TN: The name of the new type, in Camel case.
-@t_n: The name of the new type, in lowercase, with words 
-  separated by '_'.
-@T_P: The #GType of the parent type.
-@_C_: Custom code that gets inserted in the @type_name_get_type() function. 
-@Since: 2.4
-
-
-<!-- ##### MACRO G_IMPLEMENT_INTERFACE ##### -->
-<para>
-A convenience macro to ease interface addition in the @Code section
-of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE(). 
-See G_DEFINE_TYPE_WITH_CODE() for an example.
-</para>
-
-@TYPE_IFACE: The #GType of the interface to add
-@iface_init: The interface init function
-@Since: 2.4
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->
 <para>
