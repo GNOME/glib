@@ -1,3 +1,9 @@
+Fri May 31 1:17:45 2003  Ray Strode  <halfline@hawaii.rr.com>
+
+	* glib/giochannel.c (g_io_channel_error_from_errno):
+	Fix typo: should be G_IO_ERROR_UNKNOWN not
+	G_ERROR_ERROR_UNKNOWN
+
 Fri May 30 19:23:47 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_ascii_strncasecmp)
