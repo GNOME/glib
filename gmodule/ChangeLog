@@ -1,3 +1,11 @@
+Mon Aug 17 03:41:52 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.h:
+	* gmodule.c (g_module_open): changed the return type for the
+	GModuleCheckInit function to be a string, describing the error
+	condition.
+	(g_module_symbol): show the failing symbol on error messages.
+
 Fri Aug 14 02:24:39 1998  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: feature the G_LOG_DOMAIN macro to set the log domain

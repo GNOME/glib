@@ -165,7 +165,7 @@ g_module_open (const gchar    *file_name,
     {
       gchar *saved_error;
       GModuleCheckInit check_init;
-      gboolean check_failed = FALSE;
+      const gchar *check_failed = NULL;
       
       /* search the module list by handle, since file names are not unique */
       module = g_module_find_by_handle (handle);
@@ -200,9 +200,13 @@ g_module_open (const gchar    *file_name,
       
       if (check_failed)
 	{
+	  gchar *error;
+
+	  error = g_strconcat ("GModule initialization check failed: ", check_failed, NULL);
 	  g_module_close (module);
 	  module = NULL;
-	  g_module_set_error ("GModule initialization check failed");
+	  g_module_set_error (error);
+	  g_free (error);
 	}
       else
 	g_module_set_error (saved_error);
@@ -285,6 +289,11 @@ g_module_symbol (GModule	*module,
   
   if (module_error)
     {
+      gchar *error;
+
+      error = g_strconcat ("`", symbol_name, "': ", module_error, NULL);
+      g_module_set_error (error);
+      g_free (error);
       *symbol = NULL;
       return FALSE;
     }

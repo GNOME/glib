@@ -39,12 +39,12 @@ extern const char      *g_log_domain_gmodule;
 typedef enum
 {
   G_MODULE_BIND_LAZY	= 1 << 0,
-  G_MODULE_BIND_MASK	= 0x01
+    G_MODULE_BIND_MASK	= 0x01
 } GModuleFlags;
 
-typedef	struct	_GModule		GModule;
-typedef gboolean (*GModuleCheckInit)	(GModule	*module);
-typedef void	 (*GModuleDeInit)	(GModule	*module);
+typedef	struct _GModule			 GModule;
+typedef const gchar* (*GModuleCheckInit) (GModule	*module);
+typedef void	     (*GModuleDeInit)	 (GModule	*module);
 
 /* return TRUE if dynamic module loading is supported */
 gboolean	g_module_supported	   (void);

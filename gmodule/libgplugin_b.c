@@ -18,12 +18,12 @@
  */
 #include        <gmodule.h>
 
-G_MODULE_EXPORT gboolean
+G_MODULE_EXPORT const gchar*
 g_module_check_init (GModule *module)
 {
   g_print ("GPluginB: check-init\n");
 
-  return 0;
+  return NULL;
 }
 
 G_MODULE_EXPORT void
