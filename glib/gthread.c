@@ -74,7 +74,6 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  GMainContext *context;
   gpointer private_data;
   gpointer retval;
   GSystemThread system_thread;
@@ -465,8 +464,6 @@ g_static_private_free (GStaticPrivate *private_key)
   G_UNLOCK (g_thread);
 }
 
-void g_main_context_destroy (GMainContext *context);
-
 static void
 g_thread_cleanup (gpointer data)
 {
@@ -487,8 +484,6 @@ g_thread_cleanup (gpointer data)
 	    }
 	  g_array_free (array, TRUE);
 	}
-      if (thread->context)
-	g_main_context_destroy (thread->context);
 
       /* We only free the thread structure, if it isn't joinable. If
          it is, the structure is freed in g_thread_join */
@@ -560,7 +555,6 @@ g_thread_create_full (GThreadFunc 		 func,
   result->thread.func = func;
   result->thread.data = data;
   result->private_data = NULL; 
-  result->context = NULL;
   G_LOCK (g_thread);
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result, 
 			       stack_size, joinable, bound, priority,
@@ -657,7 +651,6 @@ g_thread_self (void)
       thread->thread.func = NULL;
       thread->thread.data = NULL;
       thread->private_data = NULL;
-      thread->context = NULL;
 
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));

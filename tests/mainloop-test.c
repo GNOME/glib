@@ -133,7 +133,7 @@ adder_thread (gpointer data)
   GIOChannel **channels = data;
   AddrData addr_data;
 
-  context = g_main_context_get (g_thread_self());
+  context = g_main_context_new ();
 
   g_mutex_lock (context_array_mutex);
   

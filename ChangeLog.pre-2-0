@@ -1,3 +1,33 @@
+Sat Jun 30 15:49:10 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.[ch]: (Mostly patch from Sebastian Wilhemi)
+	Make some changes to the way that GMainContext works:
+
+	 - a GMainContext is no longer associated with a single
+	   thread, but any thread can acquire ownership 
+	   of thread and iterate.
+
+	 - There is a facility g_main_context_wait() for
+	   non-owner-threads to wait either for ownership
+	   or for a condition to be broadcast.
+
+	 - For efficiency, GMainLoop just piggybacks of
+	   of the loops mutex / condition instead of
+	   having a separate mutex/condition for each
+	   GMainLoop.
+
+	* glib/gthread.[ch]: Remove hacks to store the thread's
+	GMainContext in the GThread structures, since we
+	no longer have the GMainContext <=> GThread correspondence.
+	
+        * glib/gmain.[ch]: Make g_main_context_wakeup() public
+	so someone could completely duplicate GMainLoop 
+	with the public API.
+
+	* tests/mainloop-test: Fix up to the new API. Decidedly
+	doesn't work at the moment, but that may be the IO
+	channel changes, or preexisting locking problems.
+
 Sat Jun 30 13:18:28 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c glib/gstring.h: Try compiling

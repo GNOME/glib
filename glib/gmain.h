@@ -124,7 +124,9 @@ struct _GPollFD
 
 /* GMainContext: */
 
-GMainContext *g_main_context_get       (GThread      *thread);
+GMainContext *g_main_context_new       (void);
+void          g_main_context_ref       (GMainContext *context);
+void          g_main_context_unref     (GMainContext *context);
 GMainContext *g_main_context_default   (void);
 
 gboolean      g_main_context_iteration (GMainContext *context,
@@ -143,6 +145,13 @@ GSource      *g_main_context_find_source_by_funcs_user_data (GMainContext *conte
 
 /* Low level functions for implementing custom main loops.
  */
+void     g_main_context_wakeup  (GMainContext *context);
+gboolean g_main_context_acquire (GMainContext *context);
+void     g_main_context_release (GMainContext *context);
+gboolean g_main_context_wait    (GMainContext *context,
+				 GCond        *cond,
+				 GMutex       *mutex);
+
 gboolean g_main_context_prepare  (GMainContext *context,
 				  gint         *priority);
 gint     g_main_context_query    (GMainContext *context,
@@ -177,6 +186,7 @@ void       g_main_loop_quit       (GMainLoop    *loop);
 GMainLoop *g_main_loop_ref        (GMainLoop    *loop);
 void       g_main_loop_unref      (GMainLoop    *loop);
 gboolean   g_main_loop_is_running (GMainLoop    *loop);
+GMainContext *g_main_loop_get_context (GMainLoop    *loop);
 
 /* GSource: */
 

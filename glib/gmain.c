@@ -73,15 +73,30 @@ typedef enum
   G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1)
 } GSourceFlags;
 
+#ifdef G_THREADS_ENABLED
+typedef struct _GMainWaiter GMainWaiter;
+
+struct _GMainWaiter
+{
+  GCond *cond;
+  GMutex *mutex;
+};
+#endif  
+
 struct _GMainContext
 {
 #ifdef G_THREADS_ENABLED
   /* The following lock is used for both the list of sources
    * and the list of poll records
    */
-  GMutex *mutex;
-  GThread *thread;
+  GStaticMutex mutex;
+  GCond *cond;
+  GThread *owner;
+  guint owner_count;
+  GSList *waiters;
 #endif  
+
+  guint ref_count;
 
   GPtrArray *pending_dispatches;
   gint timeout;			/* Timeout for current iteration */
@@ -132,11 +147,6 @@ struct _GMainLoop
   GMainContext *context;
   gboolean is_running;
   guint ref_count;
-
-#ifdef G_THREADS_ENABLED
-  GMutex *mutex;
-  GCond *sem_cond;
-#endif /* G_THREADS_ENABLED */
 };
 
 struct _GTimeoutSource
@@ -154,15 +164,13 @@ struct _GPollRec
 };
 
 #ifdef G_THREADS_ENABLED
-#define LOCK_CONTEXT(context) g_mutex_lock(context->mutex)
-#define UNLOCK_CONTEXT(context) g_mutex_unlock(context->mutex)
-#define LOCK_LOOP(loop) g_mutex_lock(loop->mutex)
-#define UNLOCK_LOOP(loop) g_mutex_unlock(loop->mutex)
+#define LOCK_CONTEXT(context) g_static_mutex_lock (&context->mutex)
+#define UNLOCK_CONTEXT(context) g_static_mutex_unlock (&context->mutex)
+#define G_THREAD_SELF g_thread_self ()
 #else
 #define LOCK_CONTEXT(context) (void)0
 #define UNLOCK_CONTEXT(context) (void)0
-#define LOCK_LOOP(context) (void)0
-#define UNLOCK_LOOP(context) (void)0
+#define G_THREAD_SELF NULL
 #endif
 
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
@@ -194,7 +202,7 @@ static void g_main_context_add_poll_unlocked    (GMainContext *context,
 						 GPollFD      *fd);
 static void g_main_context_remove_poll_unlocked (GMainContext *context,
 						 GPollFD      *fd);
-static void g_main_context_wakeup               (GMainContext *context);
+static void g_main_context_wakeup_unlocked      (GMainContext *context);
 
 static gboolean g_timeout_prepare  (GSource     *source,
 				    gint        *timeout);
@@ -494,17 +502,38 @@ g_poll (GPollFD *fds,
 
 #endif	/* !HAVE_POLL */
 
-/* Called to clean up when a thread terminates
- */
+/**
+ * g_main_context_ref:
+ * @loop: a #GMainContext
+ * 
+ * Increases the reference count on a #GMainContext object by one.
+ **/
 void
-g_main_context_destroy (GMainContext *context)
+g_main_context_ref (GMainContext *context)
+{
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (context->ref_count > 0); 
+
+  LOCK_CONTEXT (context);
+  
+  context->ref_count++;
+
+  UNLOCK_CONTEXT (context);
+}
+
+static void
+g_main_context_unref_and_unlock (GMainContext *context)
 {
   GSource *source;
 
-  /* We need the lock here only because g_source_destroy expects
-   * to be able to unlock when destroying the source's data
-   */
-  LOCK_CONTEXT (context);
+  context->ref_count--;
+
+  if (context->ref_count != 0)
+    {
+      UNLOCK_CONTEXT (context);
+      return;
+    }
+
   source = context->source_list;
   while (source)
     {
@@ -515,7 +544,7 @@ g_main_context_destroy (GMainContext *context)
   UNLOCK_CONTEXT (context);
 
 #ifdef G_THREADS_ENABLED  
-  g_mutex_free (context->mutex);
+  g_static_mutex_free (&context->mutex);
 #endif
 
   g_ptr_array_free (context->pending_dispatches, TRUE);
@@ -538,49 +567,44 @@ g_main_context_destroy (GMainContext *context)
   g_free (context);
 }
 
-/* This is an imcomplete (only the members up till context) version of
- * GRealThread from gthread.h. Keep them in sync */
-typedef struct _GRealThread GRealThread;
-struct  _GRealThread
+/**
+ * g_main_context_unref:
+ * @loop: a #GMainContext
+ * 
+ * Decreases the reference count on a #GMainContext object by one. If
+ * the result is zero, free the context and free all associated memory.
+ **/
+void
+g_main_context_unref (GMainContext *context)
 {
-  GThread thread;
-  GMainContext *context;
-};
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (context->ref_count > 0); 
+
+  LOCK_CONTEXT (context);
+  g_main_context_unref_and_unlock (context);
+}
 
 /**
- * g_main_context_get:
- * @thread: a #GThread
+ * g_main_context_new:
  * 
- * Retrieves the main loop context for a particular thread. This
- * will create the main context for the thread if none previously
- * existed. The context will exist until the thread terminates.
+ * Creates a new #GMainContext strcuture
  * 
- * Return value: the main loop context for @thread.
+ * Return value: the new #GMainContext
  **/
 GMainContext *
-g_main_context_get (GThread *thread)
+g_main_context_new ()
 {
-  GRealThread *real_thread = (GRealThread*)thread;
-  GMainContext *context;
-
-  g_return_val_if_fail (thread != NULL, NULL);
-
-  if (g_thread_supported ())
-    context = real_thread->context;
-  else
-    context = default_main_context;
-
-  if (!context)
-    {
-      context = g_new0 (GMainContext, 1);
+  GMainContext *context = g_new0 (GMainContext, 1);
 
 #ifdef G_THREADS_ENABLED
-      if (g_thread_supported ())
-	context->mutex = g_mutex_new();
+  g_static_mutex_init (&context->mutex);
 
-      context->thread = thread;
+  context->owner = NULL;
+  context->waiters = NULL;
 #endif
       
+  context->ref_count = 1;
+
       context->next_id = 1;
       
       context->source_list = NULL;
@@ -624,12 +648,6 @@ g_main_context_get (GThread *thread)
 	}
 #endif
 
-      if (g_thread_supported ())
-	real_thread->context = context;
-      else
-	default_main_context = context;
-    }
-
   return context;
 }
 
@@ -650,7 +668,7 @@ g_main_context_default (void)
   G_LOCK (main_loop);
 
   if (!default_main_context)
-    default_main_context = g_main_context_get (g_thread_self ());
+    default_main_context = g_main_context_new ();
 
   G_UNLOCK (main_loop);
 
@@ -784,7 +802,7 @@ g_source_attach (GSource      *source,
 
 #ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup (context);
+  g_main_context_wakeup_unlocked (context);
 #endif
 
   UNLOCK_CONTEXT (context);
@@ -1623,6 +1641,177 @@ next_valid_source (GMainContext *context,
   return new_source;
 }
 
+/**
+ * g_main_context_acquire:
+ * @context: a #GMainContext
+ * 
+ * Tries to become the owner of the specified context.
+ * If some other context is the owner of the context,
+ * returns %FALSE immediately. Ownership is properly
+ * recursive: the owner can require ownership again
+ * and will release ownership when g_main_context_release()
+ * is called as many times as g_main_context_acquire().
+ *
+ * You must be the owner of a context before you
+ * can call g_main_context_prepare(), g_main_context_query(),
+ * g_main_context_check(), g_main_context_dispatch().
+ * 
+ * Return value: %TRUE if the operation succeeded, and
+ *   this thread is now the owner of @context.
+ **/
+gboolean 
+g_main_context_acquire (GMainContext *context)
+{
+#ifdef G_THREAD_ENABLED
+  gboolean result = FALSE;
+  GThread *self = G_THREAD_SELF;
+
+  if (context == NULL)
+    context = g_main_context_default ();
+  
+  LOCK_CONTEXT (context);
+
+  if (!context->owner)
+    context->owner = self;
+
+  if (context->owner == self)
+    {
+      context->owner_count++;
+      result = TRUE;
+    }
+
+  UNLOCK_CONTEXT (context); 
+  
+  return result;
+#else /* !G_THREAD_ENABLED */
+  return TRUE;
+#endif /* G_THREAD_ENABLED */
+}
+
+/**
+ * g_main_context_release:
+ * @context: a #GMainContext
+ * 
+ * Release ownership of a context previously acquired by this thread
+ * with g_main_context_acquire(). If the context was acquired multiple
+ * times, the only release ownership when g_main_context_release()
+ * is called as many times as it was acquired.
+ **/
+void
+g_main_context_release (GMainContext *context)
+{
+#ifdef G_THREAD_ENABLED
+  GMainWaiter *waiter_to_notify = NULL;
+
+  if (context == NULL)
+    context = g_main_context_default ();
+  
+  LOCK_CONTEXT (context);
+
+  context->owner_count--;
+  if (context->owner_count == 0)
+    {
+      context->owner = NULL;
+
+      if (context->waiters)
+	{
+	  waiter_to_notify = context->waiters;
+	  context->waiters = g_slist_delete_link (context->waiters,
+						  context->waiters);
+	}
+    }
+
+  if (waiter_to_notify)
+    {
+      gboolean loop_internal_waiter =
+	(waiter_to_notify->mutex == g_static_mutex_get_mutex (&context->mutex));
+
+      if (!loop_internal_waiter)
+	g_mutex_lock (waiter_to_notify->mutex);
+      
+      g_cond_signal (waiter_to_notify->cond);
+      
+      if (!loop_internal_waiter)
+	g_mutex_unlock (waiter_to_notify->mutex);
+      else
+	UNLOCK_CONTEXT (context); 
+    }
+  else
+    UNLOCK_CONTEXT (context); 
+
+  return result;
+#endif /* G_THREAD_ENABLED */
+}
+
+/**
+ * g_main_context_wait:
+ * @context: a #GMainContext
+ * @cond: a condition variable
+ * @mutex: a mutex, currently held
+ * 
+ * Tries to become the owner of the specified context,
+ * as with g_main_context_acquire. But if another thread
+ * is the owner, atomically drop @mutex and wait on
+ * @cond until wait until that owner releases
+ * ownership or until @cond is signaled, then
+ * try again (once) to become the owner.
+ * 
+ * Return value: %TRUE if the operation succeeded, and
+ *   this thread is now the owner of @context.
+ **/
+gboolean
+g_main_context_wait (GMainContext *context,
+		     GCond        *cond,
+		     GMutex       *mutex)
+{
+#ifdef G_THREAD_ENABLED
+  gboolean result = FALSE;
+  GThread *self = G_THREAD_SELF;
+  gboolean loop_internal_waiter;
+  
+  if (context == NULL)
+    context = g_main_context_default ();
+
+  loop_internal_waiter = (mutex == g_static_mutex_get_mutex (&context->mutex));
+  
+  if (!loop_internal_waiter)
+    LOCK_CONTEXT (context);
+
+  if (context->owner && context->owner != self)
+    {
+      GMainWaiter waiter;
+
+      waiter.cond = cond;
+      waiter.mutex = mutex;
+
+      context->waiters = g_slist_append (context->waiters, &waiter);
+      
+      if (!loop_internal_waiter)
+	UNLOCK_CONTEXT (context);
+      g_cond_wait (cond, mutex);
+      if (!loop_internal_waiter)      
+	LOCK_CONTEXT (context);
+
+      context->waiters = g_slist_remove (context->waiters, &waiter);
+    }
+
+  if (!context->owner)
+    context->owner = self;
+
+  if (context->owner == self)
+    {
+      context->owner_count++;
+      result = TRUE;
+    }
+
+  if (!loop_internal_waiter)
+    UNLOCK_CONTEXT (context); 
+  
+  return result;
+#else /* !G_THREAD_ENABLED */
+  return TRUE;
+#endif /* G_THREAD_ENABLED */
+}
 
 /**
  * g_main_context_prepare:
@@ -1943,63 +2132,88 @@ g_main_context_dispatch (GMainContext *context)
   UNLOCK_CONTEXT (context);
 }
 
+/* HOLDS context lock */
 static gboolean
 g_main_context_iterate (GMainContext *context,
 			gboolean      block,
-			gboolean      dispatch)
+			gboolean      dispatch,
+			GThread      *self)
 {
   gint max_priority;
   gint timeout;
   gboolean some_ready;
-  gint nfds, new_nfds;
-  GPollFD *fds;
+  gint nfds, allocated_nfds;
+  GPollFD *fds = NULL;
   
-  some_ready = g_main_context_prepare (context, &max_priority);
+  UNLOCK_CONTEXT (context);
 
-  do
+#ifdef G_THREADS_ENABLED
+  if (!g_main_context_acquire (context))
+    {
+      gboolean got_ownership;
+      
+      g_return_val_if_fail (g_thread_supported (), FALSE);
+
+      if (!block)
+	return FALSE;
+
+      LOCK_CONTEXT (context);
+      
+      if (!context->cond)
+	context->cond = g_cond_new ();
+          
+      got_ownership = g_main_context_wait (context,
+					   context->cond,
+					   g_static_mutex_get_mutex (&context->mutex));
+
+      if (!got_ownership)
+	{
+	  UNLOCK_CONTEXT (context);
+	  return FALSE;
+	}
+    }
+  else
+    LOCK_CONTEXT (context);
+#endif G_THREADS_ENABLED
+  
+  if (!context->cached_poll_array)
+    {
+      context->cached_poll_array_size = context->n_poll_records;
+      context->cached_poll_array = g_new (GPollFD, context->n_poll_records);
+    }
+
+  allocated_nfds = context->cached_poll_array_size;
+  fds = context->cached_poll_array;
+  
+  UNLOCK_CONTEXT (context);
+
+  some_ready = g_main_context_prepare (context, &max_priority); 
+  
+  while ((nfds = g_main_context_query (context, max_priority, &timeout, fds, 
+				       allocated_nfds)) > allocated_nfds)
     {
       LOCK_CONTEXT (context);
-
-      if (context->cached_poll_array)
-	{
-	  nfds = context->cached_poll_array_size;
-	  fds = context->cached_poll_array;
-	  context->cached_poll_array = NULL;
-	}
-      else
-	{
-	  nfds = context->cached_poll_array_size = context->n_poll_records;
-	  fds = g_new (GPollFD, nfds);
-	}
-
+      g_free (fds);
+      context->cached_poll_array_size = allocated_nfds = nfds;
+      context->cached_poll_array = fds = g_new (GPollFD, nfds);
       UNLOCK_CONTEXT (context);
-  
-      new_nfds = g_main_context_query (context, max_priority,
-				       &timeout, fds, nfds);
     }
-  while (new_nfds > nfds);
 
   if (!block)
     timeout = 0;
   
-  g_main_context_poll (context, timeout, max_priority,
-		       fds, new_nfds);
-
-  g_main_context_check (context,
-			max_priority,
-			fds, new_nfds);
-
-  LOCK_CONTEXT (context);
-
-  g_assert (!context->cached_poll_array);
+  g_main_context_poll (context, timeout, max_priority, fds, nfds);
   
-  context->cached_poll_array = fds;
-  context->cached_poll_array_size = nfds;
-
-  UNLOCK_CONTEXT (context);
+  g_main_context_check (context, max_priority, fds, nfds);
   
   if (dispatch)
     g_main_context_dispatch (context);
+  
+#ifdef G_THREADS_ENABLED
+  g_main_context_release (context);
+#endif /* G_THREADS_ENABLED */    
+
+  LOCK_CONTEXT (context);
 
   return some_ready;
 }
@@ -2015,10 +2229,16 @@ g_main_context_iterate (GMainContext *context,
 gboolean 
 g_main_context_pending (GMainContext *context)
 {
+  gboolean retval;
+
   if (!context)
     context = g_main_context_default();
+
+  LOCK_CONTEXT (context);
+  retval = g_main_context_iterate (context, FALSE, FALSE, G_THREAD_SELF);
+  UNLOCK_CONTEXT (context);
   
-  return g_main_context_iterate (context, FALSE, FALSE);
+  return retval;
 }
 
 /**
@@ -2040,10 +2260,16 @@ g_main_context_pending (GMainContext *context)
 gboolean
 g_main_context_iteration (GMainContext *context, gboolean may_block)
 {
+  gboolean retval;
+
   if (!context)
     context = g_main_context_default();
   
-  return g_main_context_iterate (context, may_block, TRUE);
+  LOCK_CONTEXT (context);
+  retval = g_main_context_iterate (context, may_block, TRUE, G_THREAD_SELF);
+  UNLOCK_CONTEXT (context);
+  
+  return retval;
 }
 
 /**
@@ -2066,19 +2292,13 @@ g_main_loop_new (GMainContext *context,
   if (!context)
     context = g_main_context_default();
   
+  g_main_context_ref (context);
+
   loop = g_new0 (GMainLoop, 1);
   loop->context = context;
   loop->is_running = is_running != FALSE;
   loop->ref_count = 1;
   
-#ifdef G_THREADS_ENABLED
-  if (g_thread_supported ())
-    loop->mutex = g_mutex_new ();
-  else
-    loop->mutex = NULL;
-  loop->sem_cond = NULL;
-#endif /* G_THREADS_ENABLED */
-
   return loop;
 }
 
@@ -2094,24 +2314,29 @@ GMainLoop *
 g_main_loop_ref (GMainLoop *loop)
 {
   g_return_val_if_fail (loop != NULL, NULL);
+  g_return_val_if_fail (loop->ref_count > 0, NULL);
 
-  LOCK_LOOP (loop);
+  LOCK_CONTEXT (loop->context);
   loop->ref_count++;
-  UNLOCK_LOOP (loop);
+  UNLOCK_CONTEXT (loop->context);
 
   return loop;
 }
 
 static void
-main_loop_destroy (GMainLoop *loop)
+g_main_loop_unref_and_unlock (GMainLoop *loop)
 {
-#ifdef G_THREADS_ENABLED
-  g_mutex_free (loop->mutex);
-  if (loop->sem_cond)
-    g_cond_free (loop->sem_cond);
-#endif /* G_THREADS_ENABLED */  
-  
+  loop->ref_count--;
+  if (loop->ref_count == 0)
+    {
+      /* When the ref_count is 0, there can be nobody else using the
+       * loop, so it is safe to unlock before destroying.
+       */
+      g_main_context_unref_and_unlock (loop->context);
   g_free (loop);
+    }
+  else
+    UNLOCK_CONTEXT (loop->context);
 }
 
 /**
@@ -2127,19 +2352,9 @@ g_main_loop_unref (GMainLoop *loop)
   g_return_if_fail (loop != NULL);
   g_return_if_fail (loop->ref_count > 0);
 
-  LOCK_LOOP (loop);
+  LOCK_CONTEXT (loop->context);
   
-  loop->ref_count--;
-  if (loop->ref_count == 0)
-    {
-      /* When the ref_count is 0, there can be nobody else using the
-       * loop, so it is safe to unlock before destroying.
-       */
-      UNLOCK_LOOP (loop);
-      main_loop_destroy (loop);
-    }
-  else
-    UNLOCK_LOOP (loop);
+  g_main_loop_unref_and_unlock (loop);
 }
 
 /**
@@ -2154,70 +2369,71 @@ g_main_loop_unref (GMainLoop *loop)
 void 
 g_main_loop_run (GMainLoop *loop)
 {
+  GThread *self = G_THREAD_SELF;
+
   g_return_if_fail (loop != NULL);
+  g_return_if_fail (loop->ref_count > 0);
 
-  /* The assumption here is that a reference is held to the loop
-   * until we recursively iterate
-   */
 #ifdef G_THREADS_ENABLED
-  if (loop->context->thread != g_thread_self ())
+  if (!g_main_context_acquire (loop->context))
     {
-      LOCK_LOOP (loop);
-
-      loop->ref_count++;
+      gboolean got_ownership = FALSE;
       
+      /* Another thread owns this context */
       if (!g_thread_supported ())
 	{
 	  g_warning ("g_main_loop_run() was called from second thread but"
 		     "g_thread_init() was never called.");
-	}
-      else
-	{
-	  if (!loop->sem_cond)
-	    loop->sem_cond = g_cond_new ();
-	  
-	  if (!loop->is_running)
-	    loop->is_running = TRUE;
-	  
-	  while (loop->is_running)
-	    g_cond_wait (loop->sem_cond, loop->mutex);
-	}
-    }
-  else
-#endif /* G_THREADS_ENABLED */    
-    {
-      LOCK_CONTEXT (loop->context);
-      if (loop->context->in_check_or_prepare)
-	{
-	  g_warning ("g_main_run(): called recursively from within a source's check() or "
-		     "prepare() member, iteration not possible.");
+	  UNLOCK_CONTEXT (loop->context);
 	  return;
 	}
-      UNLOCK_CONTEXT (loop->context);
       
-      LOCK_LOOP (loop);
+      LOCK_CONTEXT (loop->context);
 
       loop->ref_count++;
-      loop->is_running = TRUE;
-      while (loop->is_running)
-	{
-	  UNLOCK_LOOP (loop);
-	  g_main_context_iterate (loop->context, TRUE, TRUE);
-	  LOCK_LOOP (loop);
-	}
-    }
 
-  /* We inline this here rather than calling g_main_loop_unref() to
-   * avoid an extra unlock/lock.
-   */
-  loop->ref_count--;
-  if (loop->ref_count == 0)
-    {
-      UNLOCK_LOOP (loop);
-      main_loop_destroy (loop);
+      if (!loop->is_running)
+	loop->is_running = TRUE;
+
+      if (!loop->context->cond)
+	loop->context->cond = g_cond_new ();
+          
+      while (loop->is_running || !got_ownership)
+	got_ownership = g_main_context_wait (loop->context,
+					     loop->context->cond,
+					     g_static_mutex_get_mutex (&loop->context->mutex));
+      
+      if (!loop->is_running)
+	{
+	  if (got_ownership)
+	    g_main_context_release (loop->context);
+	  g_main_loop_unref_and_unlock (loop);
+	  return;
+	}
+
+      g_assert (got_ownership);
     }
   else
-    UNLOCK_LOOP (loop);
+    LOCK_CONTEXT (loop->context);
+#endif /* G_THREADS_ENABLED */ 
+
+  if (loop->context->in_check_or_prepare)
+    {
+      g_warning ("g_main_run(): called recursively from within a source's check() or "
+		 "prepare() member, iteration not possible.");
+      return;
+    }
+
+  loop->ref_count++;
+  loop->is_running = TRUE;
+  while (loop->is_running)
+    g_main_context_iterate (loop->context, TRUE, TRUE, self);
+
+#ifdef G_THREADS_ENABLED
+  g_main_context_release (loop->context);
+#endif /* G_THREADS_ENABLED */    
+  
+  g_main_loop_unref_and_unlock (loop);
 }
 
 /**
@@ -2231,20 +2447,14 @@ void
 g_main_loop_quit (GMainLoop *loop)
 {
   g_return_if_fail (loop != NULL);
-
-  LOCK_LOOP (loop);
-  loop->is_running = FALSE;
-
-#ifdef G_THREADS_ENABLED
-  if (loop->sem_cond)
-    g_cond_broadcast (loop->sem_cond);
-#endif
-  
-  UNLOCK_LOOP (loop);
+  g_return_if_fail (loop->ref_count > 0);
 
   LOCK_CONTEXT (loop->context);
-  
-  g_main_context_wakeup (loop->context);
+  loop->is_running = FALSE;
+  g_main_context_wakeup_unlocked (loop->context);
+
+  if (loop->context->cond)
+    g_cond_broadcast (loop->context->cond);
   UNLOCK_CONTEXT (loop->context);
 }
 
@@ -2259,15 +2469,27 @@ g_main_loop_quit (GMainLoop *loop)
 gboolean
 g_main_loop_is_running (GMainLoop *loop)
 {
-  gboolean result;
-  
   g_return_val_if_fail (loop != NULL, FALSE);
+  g_return_val_if_fail (loop->ref_count > 0, FALSE);
 
-  LOCK_LOOP (loop);
-  result = loop->is_running;
-  UNLOCK_LOOP (loop);
+  return loop->is_running;
+}
 
-  return result;
+/**
+ * g_main_loop_get_context:
+ * @loop: a #GMainLoop.
+ * 
+ * Returns the #GMainContext of @loop.
+ * 
+ * Return value: the #GMainContext of @loop
+ **/
+GMainContext *
+g_main_loop_get_context (GMainLoop *loop)
+{
+  g_return_val_if_fail (loop != NULL, NULL);
+  g_return_val_if_fail (loop->ref_count > 0, NULL);
+ 
+  return loop->context;
 }
 
 /* HOLDS: context's lock */
@@ -2365,6 +2587,9 @@ g_main_context_add_poll (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
+  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (fd);
+
   LOCK_CONTEXT (context);
   g_main_context_add_poll_unlocked (context, priority, fd);
   UNLOCK_CONTEXT (context);
@@ -2421,7 +2646,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
 
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup (context);
+  g_main_context_wakeup_unlocked (context);
 #endif
 }
 
@@ -2440,10 +2665,11 @@ g_main_context_remove_poll (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
-  LOCK_CONTEXT (context);
+  g_return_if_fail (context->ref_count > 0);
+  g_return_if_fail (fd);
 
+  LOCK_CONTEXT (context);
   g_main_context_remove_poll_unlocked (context, fd);
-  
   UNLOCK_CONTEXT (context);
 }
 
@@ -2483,7 +2709,7 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
   
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup (context);
+  g_main_context_wakeup_unlocked (context);
 #endif
 }
 
@@ -2540,6 +2766,8 @@ g_main_context_set_poll_func (GMainContext *context,
   if (!context)
     context = g_main_context_default ();
   
+  g_return_if_fail (context->ref_count > 0);
+
   LOCK_CONTEXT (context);
   
   if (func)
@@ -2572,6 +2800,8 @@ g_main_context_get_poll_func (GMainContext *context)
   if (!context)
     context = g_main_context_default ();
   
+  g_return_val_if_fail (context->ref_count > 0, NULL);
+
   LOCK_CONTEXT (context);
   result = context->poll_func;
   UNLOCK_CONTEXT (context);
@@ -2582,7 +2812,7 @@ g_main_context_get_poll_func (GMainContext *context)
 /* HOLDS: context's lock */
 /* Wake the main loop up from a poll() */
 static void
-g_main_context_wakeup (GMainContext *context)
+g_main_context_wakeup_unlocked (GMainContext *context)
 {
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported() && context->poll_waiting)
@@ -2595,6 +2825,26 @@ g_main_context_wakeup (GMainContext *context)
 #endif
     }
 #endif
+}
+
+/**
+ * g_main_context_wakeup:
+ * @context: a #GMainContext
+ * 
+ * If @context is currently waiting in a poll(), interrupt
+ * the poll(), and continue the iteration process.
+ **/
+void
+g_main_context_wakeup (GMainContext *context)
+{
+  if (!context)
+    context = g_main_context_default ();
+  
+  g_return_if_fail (context->ref_count > 0);
+
+  LOCK_CONTEXT (context);
+  g_main_context_wakeup_unlocked (context);
+  UNLOCK_CONTEXT (context);
 }
 
 /* Timeouts */
