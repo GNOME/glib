@@ -1,3 +1,12 @@
+2004-07-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gconvert.c (g_unescape_uri_string): Don't validate
+	for UTF-8 here.  (#148420, Robert Ögren)
+
+	* tests/uri-test.c (run_roundtrip_tests): Add tests for 
+	roundtrip compatibility. Going from filename to uri and 
+	back should always give you the same filename back. 
+
 2004-07-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/markups/valid-{9,10,11}.gmarkup: 
