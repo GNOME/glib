@@ -1,3 +1,8 @@
+2004-10-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (get_change): Don't return the wrong 
+	change.  (#155856, Lucas Rocha)
+
 2004-10-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h (G_IS_DIR_SEPARATOR): 

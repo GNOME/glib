@@ -428,18 +428,17 @@ get_change (GOptionContext *context,
       change = list->data;
 
       if (change->arg_data == arg_data)
-	break;
+	goto found;
     }
 
-  if (!change)
-    {
-      change = g_new0 (Change, 1);
-      change->arg_type = arg_type;
-      change->arg_data = arg_data;
-
-      context->changes = g_list_prepend (context->changes, change);
-    }
+  change = g_new0 (Change, 1);
+  change->arg_type = arg_type;
+  change->arg_data = arg_data;
   
+  context->changes = g_list_prepend (context->changes, change);
+  
+ found:
+
   return change;
 }
 
