@@ -1,3 +1,9 @@
+Sat Feb 14 01:25:23 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add GPid, GChildWatchFunc,
+	g_child_watch_source_new, g_child_watch_add,
+	g_child_watch_add_full.
+
 Fri Feb 13 23:16:25 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/macros_misc.sgml: Fix a typo. 

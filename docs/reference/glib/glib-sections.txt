@@ -427,6 +427,12 @@ g_idle_add_full
 g_idle_remove_by_data
 
 <SUBSECTION>
+GPid
+GChildWatchFunc
+g_child_watch_source_new
+g_child_watch_add
+g_child_watch_add_full
+<SUBSECTION>
 GPollFD
 
 <SUBSECTION>
@@ -468,6 +474,7 @@ GLIB_SYSDEF_POLLPRI
 G_WIN32_MSG_HANDLE
 g_idle_funcs
 g_timeout_funcs
+g_child_watch_funcs
 </SECTION>
 
 <SECTION>

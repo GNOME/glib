@@ -1,3 +1,18 @@
+Sat Feb 14 01:21:34 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.h: 
+	* glib/gmain.c (g_child_watch_source_new): 
+	* glib/gmain.c (g_child_watch_add): 
+	* glib/gmain.c (g_child_watch_add_full): Wrap waitpid() as a
+	GSource. This is a partial implementation of the "Unix signal 
+	source".  (#50296, Jonathan R. Blandford)
+
+	* configure.in: Add the necessary configury to typedef GPid
+	appropriately.
+
+	* tests/Makefile.am:
+	* tests/child-test.c: Test child_watch sources.
+
 Sat Feb  7 15:02:01 2004  Manish Singh  <yosh@gimp.org>
 
 	* tests/type-test.c: Fix broken test for gsize formats.

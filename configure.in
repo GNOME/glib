@@ -131,6 +131,7 @@ case "$host" in
     GOBJECT_DEF=gobject.def
     GTHREAD_DEF=gthread.def
     TESTGMODULE_EXP=testgmodule.exp
+    glib_pid_type=HANDLE
     ;;
   *)
     glib_native_win32=no
@@ -143,6 +144,7 @@ case "$host" in
     GOBJECT_DEF=
     GTHREAD_DEF=
     TESTGMODULE_EXP=
+    glib_pid_type=int
     ;;
 esac
 AC_MSG_RESULT([$glib_native_win32])
@@ -2265,6 +2267,8 @@ _______EOF
 
 #define G_MODULE_SUFFIX "$g_module_suffix"
 
+typedef $g_pid_type GPid;
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
@@ -2536,6 +2540,7 @@ g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 g_module_suffix="$glib_gmodule_suffix"
 
+g_pid_type="$glib_pid_type"
 case $host in
   *-*-beos*)
     glib_os="#define G_OS_BEOS"

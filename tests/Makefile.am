@@ -66,6 +66,7 @@ endif
 test_programs =					\
 	array-test				\
 	$(CXX_TEST)				\
+	child-test				\
 	completion-test				\
 	date-test				\
 	dirname-test				\
@@ -115,6 +116,7 @@ thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
 module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 array_test_LDADD = $(progs_ldadd)
+child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
 dirname_test_LDADD = $(progs_ldadd)
