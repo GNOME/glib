@@ -20,6 +20,7 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 INCLUDES = \
 	-I$(top_srcdir) 		\
 	-I$(top_builddir) 		\
+	-I$(top_builddir)/glib 		\
 	$(GLIB_DEBUG_FLAGS)
 GTKDOC_LIBS = \
 	$(top_builddir)/glib/libglib-2.0.la	\

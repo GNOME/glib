@@ -1,5 +1,5 @@
 #include <glib/glib-object.h>
-#include "gobject.i"
+#include "gobject.cI"
 
 g_object_get_type
 g_type_module_get_type

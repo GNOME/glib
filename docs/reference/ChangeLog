@@ -1,3 +1,15 @@
+Mon Oct 20 20:38:06 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject.i: Removed...
+	* gobject/gobject.cI: ...and readded.
+	* gobject/gobject.types: Change to the standard file 
+	extension for included hunks of C code.
+
+Mon Oct 20 20:34:33 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am (INCLUDES): Add $(top_builddir)/glib
+	as an include dir again, this time for real.  
+
 Mon Oct 20 01:12:46 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: 
