@@ -24,9 +24,9 @@ Sat Jun 24 23:03:04 2000  Tim Janik  <timj@gtk.org>
 	called 	prior to a type nodes last_unref() function, this can be used
 	to prevent premature class destruction. multiple installed cache_func()
 	will be chained upon last_unref() untill one of them returns TRUE.
-	the cache_func()s have to check the type id passed in to figure whether
-	they actually wants to cache the class of this type (since any types are
-	routed through the cache_func() chain).
+	the cache_func()s have to check the class id passed in to figure whether
+	they actually want to cache the class of this type (since all classes
+	are routed through the cache_func() chain).
 	g_type_remove_class_cache_func(): remove a previously installed
 	cache_func/data pair. the cache maintained by this function has to be
 	clear when calling g_type_remove_class_cache_func() to avoid leaks.
