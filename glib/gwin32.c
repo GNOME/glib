@@ -219,7 +219,7 @@ g_win32_ftruncate (gint  fd,
  * a string of the above form for use in forming file names etc. The
  * returned string should be deallocated with g_free().
  *
- * Returns: allocated locale name
+ * Returns: newly-allocated locale name.
  */
 
 gchar *
@@ -542,15 +542,15 @@ g_win32_getlocale (void)
 
 /**
  * g_win32_error_message:
- * @error: error code
+ * @error: error code.
  *
  * Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The message is either language neutral,
  * or in the thread's language, or the user's language, the system's
- * langauge, or US English (see docs for FormatMessage). The returned
- * string should be deallocated with g_free().
+ * language, or US English (see docs for <function>FormatMessage()</function>). *
+ * The returned string should be deallocated with g_free().
  *
- * Returns: allocated error message
+ * Returns: newly-allocated error message
  */
 gchar *
 g_win32_error_message (gint error)
@@ -642,34 +642,38 @@ get_package_directory_from_module (gchar *module_name)
 
 /**
  * g_win32_get_package_installation_directory:
- * @package: An identifier for a software package, or NULL
- * @dll_name: The name of a DLL that a package provides, or NULL
+ * @package: An identifier for a software package, or %NULL
+ * @dll_name: The name of a DLL that a package provides, or %NULL.
  *
  * Try to determine the installation directory for a software package.
  * Typically used by GNU software packages.
  *
  * @package should be a short identifier for the package. Typically it
- * is the same identifier as used for GETTEXT_PACKAGE in software
- * configured accoring to GNU standards. The function first looks in
- * the Windows Registry for the value #InstallationDirectory in the
- * key #HKLM\Software\@package, and if that value exists and is a
- * string, returns that.
+ * is the same identifier as used for
+ * <literal>GETTEXT_PACKAGE</literal> in software configured according
+ * to GNU standards. The function first looks in the Windows Registry
+ * for the value <literal>#InstallationDirectory</literal> in the key
+ * <literal>#HKLM\Software\@package</literal>, and if that value
+ * exists and is a string, returns that.
  *
- * If @package is NULL, or the above value isn't found in the
- * Registry, but @dll_name is non-NULL, it should name a DLL loaded
+ * If @package is %NULL, or the above value isn't found in the
+ * Registry, but @dll_name is non-%NULL, it should name a DLL loaded
  * into the current process. Typically that would be the name of the
  * DLL calling this function, looking for its installation
  * directory. The function then asks Windows what directory that DLL
  * was loaded from. If that directory's last component is "bin" or
  * "lib", the parent directory is returned, otherwise the directory
  * itself. If that DLL isn't loaded, the function proceeds as if
- * @dll_name was NULL.
+ * @dll_name was %NULL.
  *
  * If both @package and @dll_name are NULL, the directory from where
  * the main executable of the process was loaded is uses instead in
  * the same way as above.
  *
- * The return value should be freed with g_free() when not needed any longer.  */
+ * Returns: a string containing the installation directory for @package.
+ * The return value should be freed with g_free() when not needed any longer.
+ **/
+
 
 gchar *
 g_win32_get_package_installation_directory (gchar *package,
@@ -743,12 +747,12 @@ g_win32_get_package_installation_directory (gchar *package,
 
 /**
  * g_win32_get_package_installation_subdirectory:
- * @package: An identifier for a software package, or NULL
- * @dll_name: The name of a DLL that a package provides, or NULL
+ * @package: An identifier for a software package, or %NULL
+ * @dll_name: The name of a DLL that a package provides, or %NULL
  * @subdir: A subdirectory of the package installation directory.
  *
- * Returns a string containg the path of the subdirectory @subdir in
- * the return value from calling
+ * Returns: a newly-allocated string containg the path of the
+ * subdirectory @subdir in the return value from calling
  * g_win32_get_package_installation_directory() with the @package and
  * @dll_name parameters. The return value should be freed with
  * g_free() when no longer needed.

@@ -1,3 +1,7 @@
+2001-10-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c: Documentation cleanups. (#61487)
+
 2001-10-01  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gscanner.h (GScannerMsgFunc): make third argument
