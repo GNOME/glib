@@ -1,7 +1,12 @@
+2004-07-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* gtype.c (g_type_instance_get_private): Catch cases of 
+	forgotten g_type_add_private().  (#148368, Tommi Komulainen) 
+
 2004-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-genmarshal.c (put_marshal_value_getters): Use the 
-	correct fields for enums and flags.  (#145015,Tommi Komulainen) 
+	correct fields for enums and flags.  (#145015, Tommi Komulainen) 
 
 Sun Jul 18 18:03:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
