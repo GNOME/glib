@@ -1634,6 +1634,10 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		  gstring = g_string_append_c (gstring, ch);
 		  ch = g_scanner_get_char (scanner, line_p, position_p);
 		}
+	      /* ignore a missing newline at EOF for single line comments */
+	      if (in_comment_single &&
+		  config->cpair_comment_single[1] == '\n')
+		in_comment_single = FALSE;
 	    }
 	  else if (config->scan_identifier && ch &&
 		   strchr (config->cset_identifier_first, ch))
