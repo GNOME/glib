@@ -1,3 +1,12 @@
+2001-07-30  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c docs/reference/glib/glib-sections.txt
+	tests/iochannel-test.c: removed G_IO_CHANNEL_*_LINE_TERM macros
+
+	* glib/giochannel.c put /*<public>*/ and /*<private>*/ tags in
+	the GIOChannel structure
+
+
 2001-07-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: #undef inline before testing whether it works to

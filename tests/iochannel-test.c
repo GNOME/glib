@@ -15,7 +15,7 @@ gint main (gint argc, gchar * argv[])
     GString *buffer;
     gint rlength = 0, wlength = 0, length_out, line_term_len;
     gboolean block;
-    const gchar encoding[] = "EUC-JP", line_term[] = G_IO_CHANNEL_UNIX_LINE_TERM;
+    const gchar encoding[] = "EUC-JP", line_term[] = "\n";
     GIOStatus status;
     GIOFlags flags;
 

@@ -634,9 +634,6 @@ g_io_channel_set_flags
 GIOFlags
 g_io_channel_get_line_term
 g_io_channel_set_line_term
-G_IO_CHANNEL_UNIX_LINE_TERM
-G_IO_CHANNEL_DOS_LINE_TERM
-G_IO_CHANNEL_MACINTOSH_LINE_TERM
 g_io_channel_get_buffered
 g_io_channel_set_buffered
 g_io_channel_get_encoding
