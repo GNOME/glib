@@ -1,3 +1,8 @@
+1999-01-04  Andrew T. Veliath  <andrewtv@usa.net>
+
+	* glib.h (g_array_insert_val): fix macro to be shorthand of
+	g_array_insert_vals.
+
 Mon Jan  4 15:35:29 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acglib.m4: some echos interpret \n's and some don't. Deal with

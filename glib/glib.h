@@ -1706,7 +1706,7 @@ void	 g_string_sprintfa  (GString	 *string,
 
 #define g_array_append_val(a,v) g_array_append_vals(a,&v,1)
 #define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
-#define g_array_insert_val(a,i,v) g_array_prepend_vals(a,i,&v,1)
+#define g_array_insert_val(a,i,v) g_array_insert_vals(a,i,&v,1)
 #define g_array_index(a,t,i) (((t*)a->data)[i])
 
 GArray* g_array_new	          (gboolean	    zero_terminated,
