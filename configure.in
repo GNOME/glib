@@ -551,6 +551,7 @@ outfile_EOF
     echo '#include <values.h>' >> $outfile
   fi
   if test x$glib_sys_poll_h = xyes; then
+    echo '#include <sys/types.h>' >> $outfile
     echo '#include <sys/poll.h>' >> $outfile
   fi
 
