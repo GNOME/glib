@@ -1,3 +1,9 @@
+2004-11-06  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Cosmetics: move the G_GNUC_INTERNAL
+	define to the same place where it is in a configure-generated
+	glibconfig.h
+
 2004-11-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/strtod-test.c: Portability fixes and extra sanity

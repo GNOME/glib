@@ -8,9 +8,6 @@
 #define __G_LIBCONFIG_H__
 
 #include <glib/gmacros.h>
-#ifndef __GNUC__
-#define G_GNUC_INTERNAL /* wont have that */
-#endif
 #include <limits.h>
 #include <float.h>
 
@@ -132,6 +129,8 @@ typedef unsigned int gsize;
 #endif /* not _MSC_VER */
 #define G_HAVE_GROWING_STACK 0
 
+
+#define G_GNUC_INTERNAL
 
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_WIN32
