@@ -1551,7 +1551,11 @@ gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gchar*   g_strjoin		(const gchar  *separator,
 				 ...); /* NULL terminated */
+/* Return a duplicate of the string with \ and " characters escaped by
+ * a \. The returned string should be freed with g_free().
+ */
 gchar*	 g_strescape		(gchar	      *string);
+
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
 

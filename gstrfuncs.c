@@ -1074,25 +1074,28 @@ g_strescape (gchar *string)
 {
   gchar *q;
   gchar *escaped;
-  guint backslashes = 0;
+  guint escapes_needed = 0;
   gchar *p = string;
 
   g_return_val_if_fail (string != NULL, NULL);
 
   while (*p != '\000')
-    backslashes += (*p++ == '\\');
+    {
+      escapes_needed += (*p == '\\' || *p == '"');
+      p++;
+    }
 
-  if (!backslashes)
+  if (!escapes_needed)
     return g_strdup (string);
 
-  escaped = g_new (gchar, strlen (string) + backslashes + 1);
+  escaped = g_new (gchar, strlen (string) + escapes_needed + 1);
 
   p = string;
   q = escaped;
 
   while (*p != '\000')
     {
-      if (*p == '\\')
+      if (*p == '\\' || *p == '"')
 	*q++ = '\\';
       *q++ = *p++;
     }
