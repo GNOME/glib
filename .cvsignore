@@ -25,3 +25,4 @@ testgdateparser
 glibconfig-sysdefs.h
 glib.spec
 stamp-h.in
+glibconfig.win32
