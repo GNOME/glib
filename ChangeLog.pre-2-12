@@ -1,5 +1,8 @@
 2001-10-23  Tor Lillqvist  <tml@iki.fi>
 
+	* config.h.win32.in: Typo: GLIB_MICRO_VERSION and
+	GLIB_MINOR_VERSION were swapped.
+
 	* glib/gutils.h: Remove G_HARDCODED_PATH_WRAPPER, Owen didn't like
  	it.
 	

@@ -84,10 +84,10 @@
 #define GLIB_MAJOR_VERSION @GLIB_MAJOR_VERSION@
 
 /* Define to the GLIB micro version */
-#define GLIB_MICRO_VERSION @GLIB_MINOR_VERSION@
+#define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
 
 /* Define to the GLIB minor version */
-#define GLIB_MINOR_VERSION @GLIB_MICRO_VERSION@
+#define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
 
 /* Size of gmutex */
 /* #undef GLIB_SIZEOF_GMUTEX */
