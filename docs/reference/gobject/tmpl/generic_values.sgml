@@ -80,15 +80,6 @@ Returns #TRUE if @value is a valid and initialized #GValue structure.
 @value: A #GValue structure.
 
 
-<!-- ##### USER_FUNCTION GValueExchange ##### -->
-<para>
-
-</para>
-
-@value1: 
-@value2: 
-
-
 <!-- ##### STRUCT GValue ##### -->
 <para>
 An opaque structure used to hold different types of values.

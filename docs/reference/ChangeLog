@@ -1,3 +1,9 @@
+2002-02-20  Sven Neumann  <sven@gimp.org>
+
+	* gobject/gobject-sections.txt
+	* gobject/tmpl/generic_values.sgml
+	* gobject/tmpl/param_value_types.sgml: updated for GValue changes.
+
 Tue Feb 19 17:45:43 2002  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/generic_values.sgml: added GValue documentation.
