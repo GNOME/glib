@@ -1722,6 +1722,7 @@ _______EOF
 
 #define GLIB_SIZEOF_VOID_P $glib_void_p
 #define GLIB_SIZEOF_LONG   $glib_long
+#define GLIB_SIZEOF_SIZE_T $glib_size_t
 
 _______EOF
 
