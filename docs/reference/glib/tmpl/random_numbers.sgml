@@ -32,14 +32,6 @@ distributed random numbers, whereas for example the
 yield equally distributed numbers.
 </para>
 
-<para>
-A random binary decision is best implemented by using
-<literal>if(g_random_int()&amp;(1<<@a))</literal>, where @a can be every
-integer constant from 0 to 31. The Mersenne Twister PRNG is said to
-produce highly random lower bits too, but it is common not to rely on
-that, so choosing @a to be from 4 to 31 might be wise.
-</para>
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
@@ -78,6 +70,16 @@ accessed through the g_rand_* functions.
 @seed: 
 
 
+<!-- ##### MACRO g_rand_boolean ##### -->
+<para>
+Return a random #gboolean from @rand. This corresponds to a unbiased
+coin toss.
+</para>
+
+@rand: a #GRand.
+@Returns: a random #gboolean.
+
+
 <!-- ##### FUNCTION g_rand_int ##### -->
 
 
@@ -89,8 +91,8 @@ accessed through the g_rand_* functions.
 
 
 @rand: 
-@min: 
-@max: 
+@begin: 
+@end: 
 @Returns: 
 
 
@@ -105,8 +107,8 @@ accessed through the g_rand_* functions.
 
 
 @rand: 
-@min: 
-@max: 
+@begin: 
+@end: 
 @Returns: 
 
 
@@ -114,6 +116,14 @@ accessed through the g_rand_* functions.
 
 
 @seed: 
+
+
+<!-- ##### MACRO g_random_boolean ##### -->
+<para>
+Return a random #gboolean. This corresponds to a unbiased coin toss.
+</para>
+
+@Returns: a random #gboolean.
 
 
 <!-- ##### FUNCTION g_random_int ##### -->
@@ -125,8 +135,8 @@ accessed through the g_rand_* functions.
 <!-- ##### FUNCTION g_random_int_range ##### -->
 
 
-@min: 
-@max: 
+@begin: 
+@end: 
 @Returns: 
 
 
@@ -139,8 +149,8 @@ accessed through the g_rand_* functions.
 <!-- ##### FUNCTION g_random_double_range ##### -->
 
 
-@min: 
-@max: 
+@begin: 
+@end: 
 @Returns: 
 
 

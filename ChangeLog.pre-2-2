@@ -1,5 +1,21 @@
 2000-12-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* grand.c: Updated G_RAND_DOUBLE_TRANSFORM to be more
+	accurate. Redid g_rand_double() such that it returns 52 bits after
+	the point instead of 32 as before. That OTOH requires calling
+	g_rand_int() twice. Overhauled g_rand_int_range(), which is easier
+	now thanks to the new precision of g_rand_double(). Thanks to
+	Sverre Johansen <sj@ifi.uio.no> for the hint.
+
+	* grand.h: Added g_rand_boolean() and g_random_boolean()
+	macros. While they could be omitted due to extreme simplicity,
+	they make intention clearer in code and are therefore good to have.
+
+	* grand.c, grand.h: Renamed all 'min' and 'max' parameters to'
+	begin' and 'end' resp. to avoid making people think, that 'max' is
+	included in the interval. 'end' now isn't, whereas 'begin'
+	is. That's similar to the use in the STL.
+
 	* gslist.c, glist.c: Ok, I'm a moron. When I originally
 	implemented ENABLE_GC_FRIENDLY, I forgot to include config.h into
 	the affected files. Now that Alex did that for those two,

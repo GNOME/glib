@@ -200,70 +200,60 @@ g_rand_int (GRand* rand)
   return y; 
 }
 
+/* transform [0..2^32] -> [0..1] */
+#define G_RAND_DOUBLE_TRANSFORM 2.3283064365386962890625e-10
+
 /**
  * g_rand_int_range:
  * @rand: a #GRand.
- * @min: lower closed bound of the interval.
- * @max: upper open bound of the interval.
+ * @begin: lower closed bound of the interval.
+ * @end: upper open bound of the interval.
  *
  * Return the next random #gint32 from @rand equaly distributed over
- * the range [@min..@max-1].
+ * the range [@begin..@end-1].
  *
  * Return value: A random number.
  **/
 gint32 
-g_rand_int_range (GRand* rand, gint32 min, gint32 max)
+g_rand_int_range (GRand* rand, gint32 begin, gint32 end)
 {
-  guint32 dist = max - min;
+  guint32 dist = end - begin;
   guint32 random;
 
-  g_return_val_if_fail (rand != NULL, min);
-  g_return_val_if_fail (max > min, min);
+  g_return_val_if_fail (rand != NULL, begin);
+  g_return_val_if_fail (end > begin, begin);
 
+  /* All tricks doing modulo calculations do not have a perfect
+   * distribution -> We must use the slower way through gdouble for
+   * maximal quality. */
+   
   if (dist <= 0x10000L) /* 2^16 */
     {
-      /* All tricks doing modulo calculations do not have a good
-	 distribution -> We must use this slower method for maximal
-	 quality, but this method is only good for (max - min) <= 2^16 */
+      /* This method, which only calls g_rand_int once is only good
+       * for (end - begin) <= 2^16, because we only have 32 bits set
+       * from the one call to g_rand_int (). */
+
+      /* we are using (trans + trans * trans), because g_rand_int only
+       * covers [0..2^32-1] and thus g_rand_int * trans only covers
+       * [0..1-2^-32], but the biggest double < 1 is 1-2^-52. 
+       */
+
+      gdouble double_rand = g_rand_int (rand) * 
+	(G_RAND_DOUBLE_TRANSFORM +
+	 G_RAND_DOUBLE_TRANSFORM * G_RAND_DOUBLE_TRANSFORM);
       
-      random = (gint32) g_rand_double_range (rand, 0, dist);
-      /* we'd rather use the following, if -lm is allowed later on:
-	 random = (gint32) floor (g_rand_double_range (rand, 0, dist));  */
+      random = (gint32) (double_rand * dist);
     }
   else
     {
-      /* Now it's harder to make it right. We calculate the smallest m,
-         such that dist < 2 ^ m, then we calculate a random number in
-         [1..2^32-1] and rightshift it by 32 - m. Then we test, if it
-         is smaller than dist and if not, get a new number and so
-         forth until we get a number smaller than dist. We just return
-         this. */
-      guint32 border = 0x20000L; /* 2^17 */
-      guint right_shift = 15; /* 32 - 17 */
-
-      if (dist >= 0x80000000) /* in the case of dist > 2^31 our loop
-				below will be infinite */
-	{
-	  right_shift = 0;
-	}
-      else
-	{
-	  while (dist >= border) 
-	    {
-	      border <<= 1;
-	      right_shift--;
-	    }
-	}
-      do 
-	{ 
-	  random = g_rand_int (rand) >> right_shift; 
-	} while (random >= dist);
+      /* Now we use g_rand_double_range (), which will set 52 bits for
+         us, so that it is safe to round and still get a decent
+         distribution */
+       random = (gint32) g_rand_double_range (rand, 0, dist);
     }
-  return min + random;
+ 
+  return begin + random;
 }
-
-/* transform [0..2^32-1] -> [0..1) */
-#define G_RAND_DOUBLE_TRANSFORM 2.3283064365386963e-10
 
 /**
  * g_rand_double:
@@ -276,25 +266,35 @@ g_rand_int_range (GRand* rand, gint32 min, gint32 max)
  **/
 gdouble 
 g_rand_double (GRand* rand)
-{                            
-  return g_rand_int (rand) * G_RAND_DOUBLE_TRANSFORM;
+{    
+  /* We set all 52 bits after the point for this, not only the first
+     32. Thats why we need two calls to g_rand_int */
+  gdouble retval = g_rand_int (rand) * G_RAND_DOUBLE_TRANSFORM;
+  retval = (retval + g_rand_int (rand)) * G_RAND_DOUBLE_TRANSFORM;
+
+  /* The following might happen due to very bad rounding luck, but
+   * actually this should be more than rare, we just try again then */
+  if (retval >= 1.0) 
+    return g_rand_double (rand);
+
+  return retval;
 }
 
 /**
  * g_rand_double_range:
  * @rand: a #GRand.
- * @min: lower closed bound of the interval.
- * @max: upper open bound of the interval.
+ * @begin: lower closed bound of the interval.
+ * @end: upper open bound of the interval.
  *
  * Return the next random #gdouble from @rand equaly distributed over
- * the range [@min..@max).
+ * the range [@begin..@end).
  *
  * Return value: A random number.
  **/
 gdouble 
-g_rand_double_range (GRand* rand, gdouble min, gdouble max)
+g_rand_double_range (GRand* rand, gdouble begin, gdouble end)
 {
-  return g_rand_int (rand) * ((max - min) * G_RAND_DOUBLE_TRANSFORM)  + min;
+  return g_rand_double (rand) * (end - begin) + begin;
 }
 
 /**
@@ -320,23 +320,23 @@ g_random_int (void)
 
 /**
  * g_random_int_range:
- * @min: lower closed bound of the interval.
- * @max: upper open bound of the interval.
+ * @begin: lower closed bound of the interval.
+ * @end: upper open bound of the interval.
  *
  * Return a random #gint32 equaly distributed over the range
- * [@min..@max-1].
+ * [@begin..@end-1].
  *
  * Return value: A random number.
  **/
 gint32 
-g_random_int_range (gint32 min, gint32 max)
+g_random_int_range (gint32 begin, gint32 end)
 {
   gint32 result;
   G_LOCK (global_random);
   if (!global_random)
     global_random = g_rand_new ();
   
-  result = g_rand_int_range (global_random, min, max);
+  result = g_rand_int_range (global_random, begin, end);
   G_UNLOCK (global_random);
   return result;
 }
@@ -363,22 +363,22 @@ g_random_double (void)
 
 /**
  * g_random_double_range:
- * @min: lower closed bound of the interval.
- * @max: upper open bound of the interval.
+ * @begin: lower closed bound of the interval.
+ * @end: upper open bound of the interval.
  *
- * Return a random #gdouble equaly distributed over the range [@min..@max).
+ * Return a random #gdouble equaly distributed over the range [@begin..@end).
  *
  * Return value: A random number.
  **/
 gdouble 
-g_random_double_range (gdouble min, gdouble max)
+g_random_double_range (gdouble begin, gdouble end)
 {
   double result;
   G_LOCK (global_random);
   if (!global_random)
     global_random = g_rand_new ();
  
-  result = g_rand_double_range (global_random, min, max);
+  result = g_rand_double_range (global_random, begin, end);
   G_UNLOCK (global_random);
   return result;
 }

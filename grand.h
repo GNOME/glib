@@ -35,11 +35,11 @@ typedef struct _GRand           GRand;
 
 /* GRand - a good and fast random number generator: Mersenne Twister
  * see http://www.math.keio.ac.jp/~matumoto/emt.html for more info.
- * The range functions return a value in the intervall [min,max).
+ * The range functions return a value in the intervall [begin, end).
  * int          -> [0..2^32-1]
- * int_range    -> [min..max-1]
+ * int_range    -> [begin..end-1]
  * double       -> [0..1)
- * double_range -> [min..max)
+ * double_range -> [begin..end)
  */
 
 GRand*  g_rand_new_with_seed   (guint32     seed);
@@ -48,22 +48,28 @@ void    g_rand_free            (GRand      *rand);
 
 void    g_rand_set_seed        (GRand      *rand,
                                 guint32     seed);
+
+#define g_rand_boolean(rand) (g_rand_int ((rand)) & (1<<15))
+
 guint32 g_rand_int             (GRand      *rand);
 gint32  g_rand_int_range       (GRand      *rand,
-                                gint32      min,
-                                gint32      max);
+                                gint32      begin,
+                                gint32      end);
 gdouble g_rand_double          (GRand      *rand);
 gdouble g_rand_double_range    (GRand      *rand,
-                                gdouble     min,
-                                gdouble     max);
+                                gdouble     begin,
+                                gdouble     end);
 
 void    g_random_set_seed      (guint32     seed);
+
+#define g_random_boolean() (g_rand_boolean ((rand)))
+
 guint32 g_random_int           (void);
-gint32  g_random_int_range     (gint32      min,
-                                gint32      max);
+gint32  g_random_int_range     (gint32      begin,
+                                gint32      end);
 gdouble g_random_double        (void);
-gdouble g_random_double_range  (gdouble     min,
-                                gdouble     max);
+gdouble g_random_double_range  (gdouble     begin,
+                                gdouble     end);
 
 G_END_DECLS
 

@@ -1,3 +1,10 @@
+2000-12-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/glib-sections.txt: Added g_rand_boolean and
+	g_random_boolean macros.
+
+	* glib/tmpl/random_numbers.sgml: Updated.
+	
 Tue Dec  5 15:41:23 2000  Owen Taylor  <otaylor@redhat.com>
 
         * glib/Makefile.am glib/mainloop-states*: add images
