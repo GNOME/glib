@@ -1,5 +1,7 @@
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/glib-docs.sgml: Add paragraph about multi-threading policy.
+
 	* glib/glib-sections.txt: Rename g_read_link to g_file_read_link.
 
 2003-07-29  Matthias Clasen  <maclas@gmx.de>
