@@ -303,16 +303,16 @@ extern "C" {
  */
 
 #ifdef __DMALLOC_H__
-
-#define g_new(type, count)	 (ALLOC (type, count))
-#define g_new0(type, count)	 (CALLOC (type, count))
-
+#  define g_new(type, count)	 	(ALLOC (type, count))
+#  define g_new0(type, count)	 	(CALLOC (type, count))
+#  define g_renew(type, mem, count)	(REALLOC (mem, type, count))
 #else /* __DMALLOC_H__ */
-
-#define g_new(type, count)	  \
-    ((type *) g_malloc ((unsigned) sizeof (type) * (count)))
-#define g_new0(type, count)	  \
-    ((type *) g_malloc0 ((unsigned) sizeof (type) * (count)))
+#  define g_new(type, count)	  \
+      ((type *) g_malloc ((unsigned) sizeof (type) * (count)))
+#  define g_new0(type, count)	  \
+      ((type *) g_malloc0 ((unsigned) sizeof (type) * (count)))
+#  define g_renew(type, mem, count)	  \
+      ((type *) g_realloc (mem, (unsigned) sizeof (type) * (count)))
 #endif /* __DMALLOC_H__ */
 
 #define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \

@@ -1,3 +1,7 @@
+Mon Sep 21 07:43:13 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: added g_renew() which works as g_new() for g_realloc().
+
 Mon Sep 21 02:22:12 1998  Tim Janik  <timj@gtk.org>
 
 	* NEWS file update for upcoming release of GLib + GModule
