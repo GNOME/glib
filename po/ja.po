@@ -1,0 +1,482 @@
+# Japanese translation of glib.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# KUSANO Takayuki <AE5T-KSN@asahi-net.or.jp>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 1.3.x\n"
+"POT-Creation-Date: 2001-11-15 16:48+0900\n"
+"PO-Revision-Date: 2001-10-27 02:34+0900\n"
+"Last-Translator: KUSANO Takayuki <AE5T-KSN@asahi-net.or.jp>\n"
+"Language-Team: Japanese <translation@gnome.gr.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:202
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "文字セット '%s' から '%s' への変換はサポートされていません"
+
+#: glib/gconvert.c:206
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "'%s' から '%s' へのコンバータを開けません: %s"
+
+#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2164 glib/gutf8.c:875
+#: glib/gutf8.c:1321
+msgid "Invalid byte sequence in conversion input"
+msgstr "変換への入力に正しくないバイトの並びがあります"
+
+#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/giochannel.c:2176
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "変換中にエラー: %s"
+
+#: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1317
+msgid "Partial character sequence at end of input"
+msgstr "入力の最後に不完全な文字シーケンスがあります"
+
+#: glib/gconvert.c:547
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "フォールバック '%s' を文字セット '%s' に変換できません"
+
+#: glib/gconvert.c:1261
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI '%s' は file スキームの絶対 URI ではありません"
+
+#: glib/gconvert.c:1271
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "ローカルファイル URI '%s' は '#' は含みません"
+
+#: glib/gconvert.c:1288
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI '%s' は正しくありません"
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+msgstr "URI のホスト名 '%s' におかしなエスケープ文字が含まれています"
+
+#: glib/gconvert.c:1313
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI %s' におかしなエスケープ文字が含まれています"
+
+#: glib/gconvert.c:1356
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "パス名 '%s' が絶対パスではありません"
+
+#: glib/gconvert.c:1370
+msgid "Invalid byte sequence in hostname"
+msgstr "ホスト名におかしなバイト並びがあります"
+
+#: glib/gfileutils.c:309
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "ファイル '%s' の読み出し中にエラー: %s"
+
+#: glib/gfileutils.c:367
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "ファイル '%s' を読めません: %s"
+
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "ファイル '%s' を開けません: %s"
+
+#: glib/gfileutils.c:420
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "ファイル '%s' の属性の取得できません: fstat() 失敗: %s"
+
+#: glib/gfileutils.c:446
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "ファイル '%s' を開けません: fdopen() 失敗: %s"
+
+#: glib/gfileutils.c:655
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "テンプレート '%s' が正しくありません。'%s' を含んではいけません"
+
+#: glib/gfileutils.c:667
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "テンプレート '%s' が XXXXXX で終わっていません"
+
+#: glib/gfileutils.c:688
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "ファイル '%s' を作成できません: %s"
+
+#: glib/giochannel.c:1110
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "文字セット '%s' から '%s' への変換はサポートされていません"
+
+#: glib/giochannel.c:1114
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "'%s' から '%s' へのコンバータを開けません: %s"
+
+#: glib/giochannel.c:1461
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "g_io_channel_read_line_string では raw モードで読めません"
+
+#: glib/giochannel.c:1508 glib/giochannel.c:1762 glib/giochannel.c:1848
+msgid "Leftover unconverted data in read buffer"
+msgstr "変換されていないデータが読みこみバッファに残っています"
+
+#: glib/giochannel.c:1588 glib/giochannel.c:1662
+msgid "Channel terminates in a partial character"
+msgstr "チャンネルが不完全な文字で終わっています"
+
+#: glib/giochannel.c:1648
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "g_io_channel_read_to_end では raw モードで読めません"
+
+#: glib/giowin32.c:701 glib/giowin32.c:730
+msgid "Incorrect message size"
+msgstr "メッセージの大きさが変です"
+
+#: glib/giowin32.c:1024 glib/giowin32.c:1077
+msgid "Socket error"
+msgstr "Socket のエラー"
+
+#: glib/giowin32.c:1277
+msgid "Channel set flags unsupported"
+msgstr "フラグの設定がサポートされていません"
+
+#: glib/gmarkup.c:216
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "行 %d の %d 文字目でエラー: %s"
+
+#: glib/gmarkup.c:300
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "%d 行目でエラー: %s"
+
+#: glib/gmarkup.c:379
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"空のエンティティ '&;' があります; 正しいエンティティは: &amp; &quot; &lt; "
+"&gt; &apos;"
+
+#: glib/gmarkup.c:389
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"文字 '%s' はエンティティ名の最初には使えません。文字 & はエンティティの開始を"
+"表わします。もしアンパサンドがエンティティでなければ、&amp; のようにエスケー"
+"プしてください"
+
+#: glib/gmarkup.c:425
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "文字 '%s' はエンティティ名として使えません"
+
+#: glib/gmarkup.c:469
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "エンティティ名 '%s' というのは不明です"
+
+#: glib/gmarkup.c:479
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"エンティティがセミコロンで終わってません。エンティティでもないのにアンパサン"
+"ドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてく"
+"ださい"
+
+#: glib/gmarkup.c:525
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"'%s' をパースできません。文字参照中には数字がなくてはなりません (例: &#234;) "
+"おそらく数字が大きすぎます"
+
+#: glib/gmarkup.c:550
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "文字参照 '%s' が使用可能な文字をエンコードしていません"
+
+#: glib/gmarkup.c:567
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "空の文字参照です。&#454; のように数字がなくてはなりません"
+
+#: glib/gmarkup.c:577
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"文字参照がセミコロンで終わっていません。エンティティのつもりもないのにアンパ"
+"サンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープして"
+"ください"
+
+#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+msgid "Invalid UTF-8 encoded text"
+msgstr "UTF-8 として正しくないテキストです"
+
+#: glib/gmarkup.c:922
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "ドキュメントはエレメントで始まってなくてはなりません (例 <book>)"
+
+#: glib/gmarkup.c:960
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' は文字 '<' に続く文字としては正しくありません。おそらくエレメント名の開"
+"始になっていません"
+
+#: glib/gmarkup.c:1023
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"おかしな文字 '%s' があります。エレメント '%s' の開始タグの最後は文字 '>' でな"
+"くてはなりません"
+
+#: glib/gmarkup.c:1110
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"おかしな文字 '%s' です。属性名'%s' (エレメント '%s') の後には '=' が必要です"
+
+#: glib/gmarkup.c:1151
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"おかしな文字 '%s' です。エレメント '%s' の開始タグの末尾は '>' または '/' で"
+"なくてはなりません。あるいは属性になります。おかしな文字を属性名に使ったのか"
+"もしれません"
+
+#: glib/gmarkup.c:1224
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"おかしな文字 '%s' です。属性 '%s' (エレメント '%s') の値を設定するには等号記"
+"号の後は引用記号で始まってなくてはなりません"
+
+#: glib/gmarkup.c:1351
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' は '</' に続く文字としては正しくありません。'%s' ではエレメント名は始"
+"まってません"
+
+#: glib/gmarkup.c:1388
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "エレメント '%s' は閉じています。エレメントは何も開かれてません"
+
+#: glib/gmarkup.c:1397
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "エレメント '%s' が閉ました。しかし現在開いているエレメントは '%s' です"
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' は閉じエレメント名 '%s' に続く文字としては正しくありあません。'>' のみが"
+"使用できます"
+
+#: glib/gmarkup.c:1541
+msgid "Document was empty or contained only whitespace"
+msgstr "ドキュメントが空か、空白だけが含まれています"
+
+#: glib/gmarkup.c:1555
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "ドキュメントが開きカギカッコ '<' の直後で突然終わっています"
+
+#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"ドキュメントが突然終わっています。エレメントが開きっぱなしです。最後に開いた"
+"エレメントは '%s' です。"
+
+#: glib/gmarkup.c:1571
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"ドキュメントが突然終わっています。閉じカギカッコでタグ <%s/> が終わっていませ"
+"ん"
+
+#: glib/gmarkup.c:1577
+msgid "Document ended unexpectedly inside an element name"
+msgstr "エレメント名の途中でドキュメントが突然終わっています"
+
+#: glib/gmarkup.c:1582
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "属性名の途中でドキュメントが突然終わっています"
+
+#: glib/gmarkup.c:1587
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "エレメントの開始タグの途中でドキュメントが突然終わっています"
+
+#: glib/gmarkup.c:1593
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"属性名の後の等号記号の後でドキュメントが突然終わっています: 属性値がありませ"
+"ん"
+
+#: glib/gmarkup.c:1599
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "ドキュメントが属性値の途中で突然終わっています"
+
+#: glib/gmarkup.c:1614
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "ドキュメントがエレメント '%s' の閉じタグの途中で突然終わっています"
+
+#: glib/gmarkup.c:1620
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"ドキュメントがコメントあるいはプロセシング指示子の途中で突然終わっています"
+
+#: glib/gshell.c:69
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "引用テキストが引用記号で始まっていません"
+
+#: glib/gshell.c:159
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"コマンドライン、あるいはシェルの引用テキストにおいて引用記号の対応が取れてい"
+"ません"
+
+#: glib/gshell.c:526
+#, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr "テキストが '' 文字の直後に終わっています (テキストは '%s')"
+
+#: glib/gshell.c:533
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "テキストが %c に対応する引用記号の前に終わっています (テキストは '%s')"
+
+#: glib/gshell.c:545
+msgid "Text was empty (or contained only whitespace)"
+msgstr "テキストが空です (あるいは空白のみ)"
+
+#: glib/gspawn-win32.c:212
+msgid "Failed to read data from child process"
+msgstr "子プロセスからデータを読み出せません"
+
+#: glib/gspawn-win32.c:361
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"g_io_channel_win32_poll() が子プロセスからデータを読み出す途中で予期しないエ"
+"ラー"
+
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "子パイプから読み出せません (%s) "
+
+#: glib/gspawn-win32.c:925 glib/gspawn.c:1112
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "ディレクトリ '%s' へ移動できません (%s)"
+
+#: glib/gspawn-win32.c:934 glib/gspawn.c:1122
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "子プロセスを起動できません (%s)"
+
+#: glib/gspawn-win32.c:975 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "子プロセスとの通信用のパイプを作成できません (%s)"
+
+#: glib/gspawn.c:159
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "子プロセスからデータを読めません (%s)"
+
+#: glib/gspawn.c:290
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "子プロセスからのデータ読む出し中に select() で予期しないエラー (%s)"
+
+#: glib/gspawn.c:373
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "waitpid() で予期せぬエラー (%s)"
+
+#: glib/gspawn.c:972
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "fork 失敗 (%s)"
+
+#: glib/gspawn.c:1131
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "子プロセスの出力、または入力をリダイレクトできません (%s)"
+
+#: glib/gspawn.c:1140
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "子プロセスを fork できません (%s)"
+
+#: glib/gspawn.c:1148
+msgid "Unknown error executing child process"
+msgstr "子プロセスの実行時に不明なエラー"
+
+#: glib/gspawn.c:1169
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "子 pid パイプから十分なデータを読めません (%s)"
+
+#: glib/gutf8.c:950
+msgid "Character out of range for UTF-8"
+msgstr "UTF-8 の範囲外の文字"
+
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1331 glib/gutf8.c:1427
+msgid "Invalid sequence in conversion input"
+msgstr "変換への入力でおかしなシーケンス"
+
+#: glib/gutf8.c:1342 glib/gutf8.c:1438
+msgid "Character out of range for UTF-16"
+msgstr "UTF-16 の範囲外の文字"
