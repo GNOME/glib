@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.3.4:
+
+* Efficiency improvements for GThreadPool
+* A few bug fixes
+* Build fixes
+* Documentation improvements
+
 Overview of Changes in GLib 1.3.3:
 
 * More user_data support in various functions.

@@ -1,3 +1,9 @@
+Tue Apr 17 11:47:07 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 1.3.4
+
+	* NEWS: Updated
+
 Tue Apr 17 10:43:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gstrfuncs.c: Define _GNU_SOURCE for stpcpy
