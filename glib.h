@@ -1831,6 +1831,8 @@ gchar*  g_getenv		(const gchar *variable);
  */
 void	g_atexit		(GVoidFunc    func);
 
+/* Look for an executable in PATH, following execvp() rules */
+gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
  */
@@ -3506,5 +3508,9 @@ gchar* g_convert_with_fallback (const gchar  *str,
 #endif /* __cplusplus */
 
 #include <gunicode.h>
+#include <gerror.h>
+#include <gshell.h>
+#include <gspawn.h>
+#include <gfileutils.h>
 
 #endif /* __G_LIB_H__ */

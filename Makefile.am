@@ -49,6 +49,7 @@ libglib_1_3_la_SOURCES = 	\
 	gdataset.c		\
 	gdate.c         	\
 	gerror.c		\
+	gfileutils.c		\
 	ghash.c			\
 	ghook.c			\
 	giochannel.c    	\
@@ -63,7 +64,9 @@ libglib_1_3_la_SOURCES = 	\
 	grel.c			\
 	grand.c			\
 	gscanner.c		\
+	gshell.c		\
 	gslist.c		\
+	gspawn.c		\
 	gstrfuncs.c		\
 	gstring.c		\
 	gthread.c       	\
@@ -81,8 +84,11 @@ libglib_1_3_la_SOURCES = 	\
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
 	gerror.h	\
+	gfileutils.h	\
 	glib.h 		\
 	glib-object.h	\
+	gshell.h	\
+	gspawn.h	\
 	gunicode.h
 
 configexecincludedir = $(libdir)/glib-2.0/include

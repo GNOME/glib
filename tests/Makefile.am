@@ -1,6 +1,8 @@
 
 INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
+EFENCE=
+
 EXTRA_DIST = \
 	makefile.msc	\
 	makefile.msc.in	\
@@ -18,7 +20,9 @@ TESTS = \
 	queue-test	\
 	rand-test	\
 	relation-test	\
+	shell-test	\
 	slist-test	\
+	spawn-test	\
 	strfunc-test	\
 	string-test	\
 	thread-test	\
@@ -28,7 +32,7 @@ TESTS = \
 
 noinst_PROGRAMS = $(TESTS)
 
-progs_LDADD = $(top_builddir)/libglib-1.3.la
+progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
 thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
 
 array_test_LDADD = $(progs_LDADD)
@@ -41,7 +45,9 @@ node_test_LDADD = $(progs_LDADD)
 queue_test_LDADD = $(progs_LDADD)
 rand_test_LDADD = $(progs_LDADD)
 relation_test_LDADD = $(progs_LDADD)
+shell_test_LDADD = $(progs_LDADD)
 slist_test_LDADD = $(progs_LDADD)
+spawn_test_LDADD = $(progs_LDADD)
 strfunc_test_LDADD = $(progs_LDADD)
 string_test_LDADD = $(progs_LDADD)
 thread_test_LDADD = $(thread_LDADD)

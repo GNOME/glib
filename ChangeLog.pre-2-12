@@ -1,3 +1,27 @@
+2000-10-09  Havoc Pennington  <hp@redhat.com>
+
+        * Makefile.am, tests/Makefile.am: Add new files.
+	
+	* tests/spawn-test.c, tests/shell-test.c: new tests for
+	the shell/spawn stuff
+
+	* gutils.c (g_find_program_in_path): convert a relative
+	program name into an absolute pathname to an existing 
+	executable
+
+	* gspawn.h, gspawn.c: New fork/exec API
+
+	* gshell.h, gshell.c: Shell-related utilities, at the moment
+	simply routines to parse argv and quote/unquote strings
+
+	* guniprop.c (g_unichar_isspace): Return TRUE for the 
+	ASCII space characters isspace() returns TRUE for.
+
+	* gfileutils.c (g_file_get_contents): Convenience function 
+	to slurp entire file into a string and return it. Partially
+	written by Joel Becker.
+	(g_file_test): file test function
+
 2000-10-06  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.msc.in: Revamp to be like makefile.mingw.in, make

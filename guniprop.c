@@ -118,9 +118,16 @@ g_unichar_ispunct (gunichar c)
 gboolean
 g_unichar_isspace (gunichar c)
 {
-  int t = TYPE (c);
-  return (t == G_UNICODE_SPACE_SEPARATOR || t == G_UNICODE_LINE_SEPARATOR
-	  || t == G_UNICODE_PARAGRAPH_SEPARATOR);
+  /* special-case these since Unicode thinks they are not spaces */
+  if (c == ' ' || c == '\t' || c == '\n' || c == '\r' ||
+      c == '\f' || c == '\v') /* "the mythical vertical tab" */
+    return TRUE;
+  else
+    {
+      int t = TYPE (c);
+      return (t == G_UNICODE_SPACE_SEPARATOR || t == G_UNICODE_LINE_SEPARATOR
+              || t == G_UNICODE_PARAGRAPH_SEPARATOR);
+    }
 }
 
 /**

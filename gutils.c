@@ -143,6 +143,106 @@ g_atexit (GVoidFunc func)
     g_error ("Could not register atexit() function: %s", error);
 }
 
+/* Based on execvp() from GNU Libc.
+ * Some of this code is cut-and-pasted into gspawn.c
+ */
+
+static gchar*
+my_strchrnul (const gchar *str, gchar c)
+{
+  gchar *p = (gchar*)str;
+  while (*p && (*p != c))
+    ++p;
+
+  return p;
+}
+
+/**
+ * g_find_program_in_path:
+ * @file: a program name
+ * 
+ * Locates the first executable named @file in the user's path, in the
+ * same way that execvp() would locate it. Returns an allocated string
+ * with the absolute path name, or NULL if the program is not found in
+ * the path. If @file is already an absolute path, returns a copy of
+ * @file if @file exists and is executable, and NULL otherwise.
+ * 
+ * Return value: absolute path, or NULL
+ **/
+gchar*
+g_find_program_in_path (const gchar *file)
+{
+  gchar *path, *p, *name, *freeme;
+  size_t len;
+  size_t pathlen;
+
+  g_return_val_if_fail (file != NULL, NULL);
+
+  if (*file == '/')
+    {
+      if (g_file_test (file, G_FILE_TEST_IS_EXECUTABLE))
+        return g_strdup (file);
+      else
+        return NULL;
+    }
+  
+  path = g_getenv ("PATH");
+  if (path == NULL)
+    {
+      /* There is no `PATH' in the environment.  The default
+       * search path in libc is the current directory followed by
+       * the path `confstr' returns for `_CS_PATH'.
+       */
+      
+      /* In GLib we put . last, for security, and don't use the
+       * unportable confstr(); UNIX98 does not actually specify
+       * what to search if PATH is unset. POSIX may, dunno.
+       */
+      
+      path = "/bin:/usr/bin:.";
+    }
+  
+  len = strlen (file) + 1;
+  pathlen = strlen (path);
+  freeme = name = g_malloc (pathlen + len + 1);
+  
+  /* Copy the file name at the top, including '\0'  */
+  memcpy (name + pathlen + 1, file, len);
+  name = name + pathlen;
+  /* And add the slash before the filename  */
+  *name = '/';
+  
+  p = path;
+  do
+    {
+      char *startp;
+
+      path = p;
+      p = my_strchrnul (path, ':');
+
+      if (p == path)
+        /* Two adjacent colons, or a colon at the beginning or the end
+         * of `PATH' means to search the current directory.
+         */
+        startp = name + 1;
+      else
+        startp = memcpy (name - (p - path), path, p - path);
+
+      if (g_file_test (startp, G_FILE_TEST_IS_EXECUTABLE))
+        {
+          gchar *ret;
+          ret = g_strdup (startp);
+          g_free (freeme);
+          return ret;
+        }
+    }
+  while (*p++ != '\0');
+  
+  g_free (freeme);
+
+  return NULL;
+}
+
 gint
 g_snprintf (gchar	*str,
 	    gulong	 n,
