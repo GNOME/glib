@@ -1464,13 +1464,8 @@ that implements or has internal knowledge of the implementation of
 <para>
 A convenience macro for type implementations, which declares a 
 class initialization function, an instance initialization function (see #GTypeInfo for information about 
-these) and a static variable named parent_class pointing to the parent class. Furthermore, it defines 
+these) and a static variable named @t_n<!-- -->_parent_class pointing to the parent class. Furthermore, it defines 
 a *_get_type() function. See G_DEFINE_TYPE_EXTENDED() for an example.
-</para>
-<para>
-Note that you can't use this macro if you want to define multiple types in one file, 
-since the parent_class variables will clash. In this case, use
-G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
 </para>
 
 @TN: The name of the new type, in Camel case.
@@ -1487,11 +1482,6 @@ Similar to G_DEFINE_TYPE(), but allows to insert custom code into the
 *_get_type() function, e.g. interface implementations via G_IMPLEMENT_INTERFACE().
 See G_DEFINE_TYPE_EXTENDED() for an example.
 </para>
-<para>
-Note that you can't use this macro if you want to define multiple types in one file, 
-since the parent_class variables will clash. In this case, use
-G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
-</para>
 
 @TN: The name of the new type, in Camel case.
 @t_n: The name of the new type in lowercase, with words separated by '_'.
@@ -1505,11 +1495,6 @@ G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class
 A convenience macro for type implementations. 
 Similar to G_DEFINE_TYPE(), but defines an abstract type. 
 See G_DEFINE_TYPE_EXTENDED() for an example.
-</para>
-<para>
-Note that you can't use this macro if you want to define multiple types in one file, 
-since the parent_class variables will clash. In this case, use
-G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
 </para>
 
 @TN: The name of the new type, in Camel case.
@@ -1525,11 +1510,6 @@ A convenience macro for type implementations.
 Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and allows to 
 insert custom code into the *_get_type() function, e.g. interface implementations 
 via G_IMPLEMENT_INTERFACE(). See G_DEFINE_TYPE_EXTENDED() for an example.
-</para>
-<para>
-Note that you can't use this macro if you want to define multiple types in one file, 
-since the parent_class variables will clash. In this case, use
-G_DEFINE_TYPE_EXTENDED() and choose different identifiers for @type_parent_class.
 </para>
 
 @TN: The name of the new type, in Camel case.
@@ -1566,7 +1546,6 @@ G_DEFINE_TYPE_EXTENDED (GtkGadget,
                         gtk_gadget, 
                         GTK_TYPE_WIDGET,
                         0, 
-                        gtk_gadget_parent_class,
                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO, 
                                                gtk_gadget_gizmo_init));
 </programlisting>
@@ -1621,8 +1600,6 @@ init functions.
 @flags: #GTypeFlags to pass to g_type_register_static()
 @CODE: Custom code that gets inserted in the *_get_type() function.
 @Since: 2.4
-<!-- # Unused Parameters # -->
-@type_parent_class: the identifier for the static variable holding the parent class
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->
