@@ -51,6 +51,7 @@ gpointer g_realloc        (gpointer	 mem,
 			   gulong	 n_bytes);
 void	 g_free	          (gpointer	 mem);
 gpointer g_try_malloc     (gulong	 n_bytes) G_GNUC_MALLOC;
+gpointer g_try_malloc0    (gulong	 n_bytes) G_GNUC_MALLOC;
 gpointer g_try_realloc    (gpointer	 mem,
 			   gulong	 n_bytes);
 

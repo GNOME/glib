@@ -144,6 +144,17 @@ Contrast with g_malloc(), which aborts the program on failure.
 @Returns: the allocated memory, or %NULL.
 
 
+<!-- ##### FUNCTION g_try_malloc0 ##### -->
+<para>
+Attempts to allocate @n_bytes, initialized to 0's, and returns %NULL on 
+failure. Contrast with g_malloc0(), which aborts the program on failure.
+</para>
+
+@n_bytes: number of bytes to allocate.
+@Returns: the allocated memory, or %NULL.
+@Since: 2.8
+
+
 <!-- ##### FUNCTION g_try_realloc ##### -->
 <para>
 Attempts to realloc @mem to a new size, @n_bytes, and returns %NULL

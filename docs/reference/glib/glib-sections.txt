@@ -772,6 +772,7 @@ g_malloc
 g_malloc0
 g_realloc
 g_try_malloc
+g_try_malloc0
 g_try_realloc
 
 <SUBSECTION>

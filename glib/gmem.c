@@ -197,6 +197,19 @@ g_try_malloc (gulong n_bytes)
 }
 
 gpointer
+g_try_malloc0 (gulong n_bytes)
+{ 
+  gpointer mem;
+
+  mem = g_try_malloc (n_bytes);
+  
+  if (mem)
+    memset (mem, 0, n_bytes);
+
+  return mem;
+}
+
+gpointer
 g_try_realloc (gpointer mem,
 	       gulong   n_bytes)
 {

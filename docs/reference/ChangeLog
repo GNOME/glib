@@ -2,7 +2,7 @@
 
 	* glib/glib-sections.txt: 
 	* glib/tmpl/memory.sgml: Document g_try_new, g_try_new0 
-	and g_try_renew.
+	and g_try_renew, g_try_malloc0.
 
 2005-03-20  Matthias Clasen  <mclasen@redhat.com>
 
