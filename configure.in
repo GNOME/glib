@@ -1264,8 +1264,23 @@ fi
 
 AC_SUBST(HTML_DIR)
 
-
 AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
+
+gtk_doc_min_version=0.6
+if $GTKDOC ; then 
+    gtk_doc_version=`gtkdoc-mkdb --version`
+    AC_MSG_CHECKING([gtk-doc version ($gtk_doc_version) >= $gtk_doc_min_version])
+    if perl <<EOF ; then
+      exit (("$gtk_doc_version" =~ /^[[0-9]]+\.[[0-9]]+$/) &&
+            ("$gtk_doc_version" >= "$gtk_doc_min_version") ? 0 : 1);
+EOF
+      AC_MSG_RESULT(yes)
+   else
+      AC_MSG_RESULT(no)
+      GTKDOC=false
+   fi
+fi
+
 AM_CONDITIONAL(HAVE_GTK_DOC, $GTKDOC)
 AC_SUBST(HAVE_GTK_DOC)
 

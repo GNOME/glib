@@ -1,3 +1,7 @@
+Mon Feb 12 15:01:09 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (gtk_doc_min_version): Add check for gtk-doc version.
+
 2001-02-10  Tor Lillqvist  <tml@iki.fi>
 
 	* gtypes.h
