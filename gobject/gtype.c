@@ -1014,14 +1014,14 @@ type_class_init (TypeNode   *node,
   /* ok, we got the class done, now initialize all interfaces */
   for (entry = NULL, i = 0; i < node->n_ifaces; i++)
     if (!node->private.iface_entries[i].vtable)
-      entry = node->private.iface_entries;
+      entry = node->private.iface_entries + i;
   while (entry)
     {
       type_iface_vtable_init (LOOKUP_TYPE_NODE (entry->iface_type), node);
-
+      
       for (entry = NULL, i = 0; i < node->n_ifaces; i++)
 	if (!node->private.iface_entries[i].vtable)
-	  entry = node->private.iface_entries;
+	  entry = node->private.iface_entries + i;
     }
 }
 
@@ -1036,19 +1036,19 @@ type_data_finalize_class_ifaces (TypeNode *node)
   g_message ("finalizing interfaces for %sClass `%s'",
 	     type_descriptive_name (G_TYPE_FUNDAMENTAL (NODE_TYPE (node))),
 	     type_descriptive_name (NODE_TYPE (node)));
-
+  
   for (entry = NULL, i = 0; i < node->n_ifaces; i++)
     if (node->private.iface_entries[i].vtable &&
 	node->private.iface_entries[i].vtable->g_instance_type == NODE_TYPE (node))
-      entry = node->private.iface_entries;
+      entry = node->private.iface_entries + i;
   while (entry)
     {
       type_iface_vtable_finalize (LOOKUP_TYPE_NODE (entry->iface_type), node, entry->vtable);
-
-  for (entry = NULL, i = 0; i < node->n_ifaces; i++)
-    if (node->private.iface_entries[i].vtable &&
-	node->private.iface_entries[i].vtable->g_instance_type == NODE_TYPE (node))
-      entry = node->private.iface_entries;
+      
+      for (entry = NULL, i = 0; i < node->n_ifaces; i++)
+	if (node->private.iface_entries[i].vtable &&
+	    node->private.iface_entries[i].vtable->g_instance_type == NODE_TYPE (node))
+	  entry = node->private.iface_entries + i;
     }
 }
 
