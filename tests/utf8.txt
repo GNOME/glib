@@ -91,8 +91,12 @@ e000
 VALID
 fffd
 
-ô¿¿
+ô¿½
 VALID
+0010fffd
+
+ô¿¿
+NOTUNICODE
 0010ffff
 
 ô€€
@@ -292,6 +296,6 @@ ffff
 
 # Mixed plane 0 and higher planes
 
-Ağ€€Bô¿¿C
+Ağ€€Bô¿½C
 VALID
-41 00010000 42 10ffff 43
+41 00010000 42 10fffd 43
