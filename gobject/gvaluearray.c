@@ -23,6 +23,7 @@
 
 #include <config.h>
 
+#include 	"gobjectalias.h"
 #include	"gvaluearray.h"
 #include	<string.h>
 #include	<stdlib.h>	/* qsort() */

@@ -21,6 +21,7 @@
  * MT safe
  */
 
+#include	"gobjectalias.h"
 #include	"gparam.h"
 #include        "gparamspecs.h"
 
@@ -68,7 +69,7 @@ G_LOCK_DEFINE_STATIC (pspec_ref_count);
 
 /* --- functions --- */
 void
-g_param_type_init (void)	/* sync with gtype.c */
+g_param_type_init (void)
 {
   static const GTypeFundamentalInfo finfo = {
     (G_TYPE_FLAG_CLASSED |

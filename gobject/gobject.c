@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include	"gobjectalias.h"
 #include	"gobject.h"
 
 /*
@@ -144,7 +145,7 @@ debug_objects_atexit (void)
 #endif	/* G_ENABLE_DEBUG */
 
 void
-g_object_type_init (void)	/* sync with gtype.c */
+g_object_type_init (void)
 {
   static gboolean initialized = FALSE;
   static const GTypeFundamentalInfo finfo = {

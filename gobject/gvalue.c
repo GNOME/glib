@@ -23,6 +23,7 @@
 
 #include <string.h>
 
+#include "gobjectalias.h"
 #include "gvalue.h"
 #include "gvaluecollector.h"
 #include "gbsearcharray.h"
@@ -52,7 +53,7 @@ static GBSearchConfig transform_bconfig = {
 
 /* --- functions --- */
 void
-g_value_c_init (void)	/* sync with gtype.c */
+g_value_c_init (void)
 {
   transform_array = g_bsearch_array_create (&transform_bconfig);
 }

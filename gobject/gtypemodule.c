@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 
+#include "gobjectalias.h"
 #include "gtypeplugin.h"
 #include "gtypemodule.h"
 

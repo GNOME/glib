@@ -23,6 +23,7 @@
 
 #include	"../config.h"
 
+#include	"gobjectalias.h"
 #include	"gparamspecs.h"
 
 #include	"gvaluecollector.h"
@@ -1019,7 +1020,7 @@ param_override_values_cmp (GParamSpec   *pspec,
 GType *g_param_spec_types = NULL;
 
 void
-g_param_spec_types_init (void)	/* sync with gtype.c */
+g_param_spec_types_init (void)	
 {
   const guint n_types = 21;
   GType type, *spec_types, *spec_types_bound;

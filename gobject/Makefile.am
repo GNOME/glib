@@ -16,6 +16,9 @@ INCLUDES = \
 gobject.def: gobject.symbols
 	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/\t/' | sort) > gobject.def
 
+gobjectalias.h: gobject.symbols
+	./makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
+
 if OS_UNIX
 TESTS = abicheck.sh
 endif
@@ -112,7 +115,7 @@ gobject_c_sources = \
 	gvaluetypes.c
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = gmarshal.h gmarshal.c 
+BUILT_SOURCES = gmarshal.h gmarshal.c gobjectalias.h
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have

@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "gobjectalias.h"
 #include "gsourceclosure.h"
 #include "gboxed.h"
 #include "genums.h"

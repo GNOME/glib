@@ -26,6 +26,7 @@
 
 #include <config.h>
 
+#include	"gobjectalias.h"
 #include        "gsignal.h"
 #include        "gbsearcharray.h"
 #include        "gvaluecollector.h"
@@ -709,7 +710,7 @@ signal_key_cmp (gconstpointer node1,
 }
 
 void
-g_signal_init (void) /* sync with gtype.c */
+g_signal_init (void)
 {
   SIGNAL_LOCK ();
   if (!g_n_signal_nodes)

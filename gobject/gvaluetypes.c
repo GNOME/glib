@@ -21,6 +21,7 @@
  * MT safe
  */
 
+#include	"gobjectalias.h"
 #include	"gvaluetypes.h"
 
 #include	"gvaluecollector.h"
@@ -357,7 +358,7 @@ value_lcopy_pointer (const GValue *value,
 
 /* --- type initialization --- */
 void
-g_value_types_init (void)  /* sync with gtype.c */
+g_value_types_init (void)
 {
   GTypeInfo info = {
     0,				/* class_size */

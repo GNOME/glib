@@ -18,6 +18,7 @@
  */
 #include        <string.h>
 
+#include	"gobjectalias.h"
 #include        "gvalue.h"
 #include        "genums.h"
 
@@ -242,7 +243,7 @@ value_transform_flags_string (const GValue *src_value,
 /* registration
  */
 void
-g_value_transforms_init (void)          /* sync with gtype.c */
+g_value_transforms_init (void)
 {
   /* some transformations are a bit questionable,
    * we currently skip those

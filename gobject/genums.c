@@ -23,6 +23,7 @@
 
 #include        <string.h>
 
+#include	"gobjectalias.h"
 #include	"genums.h"
 
 #include	"gvalue.h"
@@ -46,10 +47,9 @@ static gchar*	value_flags_enum_lcopy_value	(const GValue	*value,
 						 GTypeCValue    *collect_values,
 						 guint           collect_flags);
 
-
 /* --- functions --- */
 void
-g_enum_types_init (void)	/* sync with gtype.c */
+g_enum_types_init (void)
 {
   static gboolean initialized = FALSE;
   static const GTypeValueTable flags_enum_value_table = {
