@@ -1,3 +1,7 @@
+Wed Sep  1 20:27:59 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add g_date_get_iso8601_week_of_year.
+
 Sun Aug 29 23:50:45 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/fileutils.sgml: Fix a typo.  (#151109, Stepan Kasal)
