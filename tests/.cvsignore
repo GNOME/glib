@@ -11,6 +11,7 @@ date-test
 dirname-test
 hash-test
 list-test
+markup-test
 node-test
 queue-test
 rand-test
