@@ -1,3 +1,8 @@
+Tue May 20 14:14:55 PDT 2003  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: wrap 64-bit MIN/MAX limit constants in
+	G_GINT64_CONSTANT. Fixes bug #108699.
+
 2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gunibreak.c: Fix cut-and-pasto: g_unichar_break_type should
