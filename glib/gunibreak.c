@@ -26,12 +26,10 @@
 #include <stdlib.h>
 
 
-/* We cheat a bit and cast type values to (char *).  We detect these
-   using the &0xff trick.  */
 #define TPROP(Page, Char) \
-  (((GPOINTER_TO_INT(break_property_table[Page]) & 0xff) == GPOINTER_TO_INT(break_property_table[Page])) \
-   ? GPOINTER_TO_INT(break_property_table[Page]) \
-   : (break_property_table[Page][Char]))
+  ((break_property_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (break_property_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (break_property_data[break_property_table[Page]][Char]))
 
 #define PROP(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TPROP ((Char) >> 8, (Char) & 0xff))
 

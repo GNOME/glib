@@ -27,13 +27,10 @@
 
 #include <stdlib.h>
 
-/* We cheat a bit and cast type values to (char *).  We detect these
-   using the &0xff trick.  */
 #define CC(Page, Char) \
-  ((((GPOINTER_TO_INT(combining_class_table[Page])) & 0xff) \
-    == GPOINTER_TO_INT(combining_class_table[Page])) \
-   ? GPOINTER_TO_INT(combining_class_table[Page]) \
-   : (combining_class_table[Page][Char]))
+  ((combining_class_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (combining_class_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (cclass_data[combining_class_table[Page]][Char]))
 
 #define COMBINING_CLASS(Char) \
      (((Char) > (G_UNICODE_LAST_CHAR)) ? 0 : CC((Char) >> 8, (Char) & 0xff))
@@ -181,10 +178,9 @@ g_unicode_canonical_decomposition (gunichar ch,
 }
 
 #define CI(Page, Char) \
-  ((((GPOINTER_TO_INT(compose_table[Page])) & 0xff) \
-    == GPOINTER_TO_INT(compose_table[Page])) \
-   ? GPOINTER_TO_INT(compose_table[Page]) \
-   : (compose_table[Page][Char]))
+  ((compose_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (compose_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (compose_data[compose_table[Page]][Char]))
 
 #define COMPOSE_INDEX(Char) \
      (((Char) > (G_UNICODE_LAST_CHAR)) ? 0 : CI((Char) >> 8, (Char) & 0xff))

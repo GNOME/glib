@@ -170,6 +170,9 @@ int main (int argc, char **argv)
 	}
       
       columns = g_strsplit (buffer->str, ";", -1);
+      if (!columns[0])
+	goto next;
+      
       if (!process_one (line, columns))
 	return 1;
       g_strfreev (columns);

@@ -29,14 +29,15 @@
 #include <locale.h>
 
 #define ATTTABLE(Page, Char) \
-  ((attr_table[Page] == 0) ? 0 : (attr_table[Page][Char]))
+  ((attr_table[Page] == G_UNICODE_MAX_TABLE_INDEX) ? 0 : (attr_data[attr_table[Page]][Char]))
 
 /* We cheat a bit and cast type values to (char *).  We detect these
    using the &0xff trick.  */
 #define TTYPE(Page, Char) \
-  (((GPOINTER_TO_INT(type_table[Page]) & 0xff) == GPOINTER_TO_INT(type_table[Page])) \
-   ? GPOINTER_TO_INT(type_table[Page]) \
-   : (type_table[Page][Char]))
+  ((type_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (type_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (type_data[type_table[Page]][Char]))
+
 
 #define TYPE(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TTYPE ((Char) >> 8, (Char) & 0xff))
 

@@ -1,3 +1,14 @@
+Tue Nov 13 21:25:35 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/{gen-unicode-tables.pl,gunibreak.c,gunibreak.h,
+	gunichartables.h, gunicomp.h, gunidecomp.[ch], 
+	guniprop.c}: Patch from Andrew Taylor to improve
+	tables and reduce relocations by using indices 
+	rather than pointers. (#64433)
+	
+	* tests/unicode-normalize.c (main): Fix for changes
+	to g_strsplit().
+
 2001-11-12  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gstrfuncs.c: (g_strsplit): Fix max_tokens == 1 case to

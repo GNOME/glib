@@ -18,6 +18,9 @@
 #    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #    02111-1307, USA.
 
+# Contributer(s):
+#   Andrew Taylor <andrew.taylor@montage.ca>
+
 # gen-unicode-tables.pl - Generate tables for libunicode from Unicode data.
 # See http://www.unicode.org/Public/UNIDATA/UnicodeCharacterDatabase.html
 # Usage: gen-unicode-tables.pl [-decomp | -both] UNICODE-VERSION UnicodeData.txt LineBreak.txt SpecialCasing.txt CaseFolding.txt
@@ -25,8 +28,6 @@
 # you will.
 
 # FIXME:
-# * We could save even more space in the generated table by using
-#   indexes and not pointers.
 # * For decomp table it might make sense to use a shift count other
 #   than 8.  We could easily compute the perfect shift count.
 
@@ -525,18 +526,22 @@ sub print_tables
 
     printf OUT "#define G_UNICODE_LAST_CHAR 0x%04x\n\n", $last;
 
+    printf OUT "#define G_UNICODE_MAX_TABLE_INDEX 1000\n\n";
+
+    $table_index = 0;
+    printf OUT "static const char type_data[][256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
-	$row[$count / 256] = &print_row ($count, '(char *) ', 'char', 1,
-					 'page', \&fetch_type);
+	$row[$count / 256] = &print_row ($count, 1, \&fetch_type);
     }
+    printf OUT "\n};\n\n";
 
-    print OUT "static const char *type_table[256] = {\n";
+    print OUT "static const short type_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
 	print OUT "  ", $row[$count / 256];
-	$bytes_out += 4;
+	$bytes_out += 2;
     }
     print OUT "\n};\n\n";
 
@@ -545,17 +550,20 @@ sub print_tables
     # Now print attribute table.
     #
 
+    $table_index = 0;
+    printf OUT "static const unsigned short attr_data[][256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
-	$row[$count / 256] = &print_row ($count, '', 'unsigned short', 2,
-					 'attrpage', \&fetch_attr);
+	$row[$count / 256] = &print_row ($count, 2, \&fetch_attr);
     }
-    print OUT "static const unsigned short *attr_table[256] = {\n";
+    printf OUT "\n};\n\n";
+
+    print OUT "static const short attr_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
 	print OUT "  ", $row[$count / 256];
-	$bytes_out += 4;
+	$bytes_out += 2;
     }
     print OUT "\n};\n\n";
 
@@ -611,10 +619,9 @@ sub fetch_attr
       }
 }
 
-# Print a single "row" of a two-level table.
 sub print_row
 {
-    my ($start, $def_pfx, $typname, $typsize, $name, $fetcher) = @_;
+    my ($start, $typsize, $fetcher) = @_;
 
     my ($i);
     my (@values);
@@ -631,11 +638,12 @@ sub print_row
     }
     if ($flag)
     {
-	return $def_pfx . $values[0];
+	return $values[0] . " + G_UNICODE_MAX_TABLE_INDEX";
     }
 
-    printf OUT "static const %s %s%d[256] = {\n  ", $typname, $name, $start / 256;
-    my ($column) = 2;
+    printf OUT ",\n" if ($table_index != 0);
+    printf OUT "  { /* page %d, index %d */\n    ", $start / 256, $table_index;
+    my ($column) = 4;
     for ($i = $start; $i < $start + 256; ++$i)
     {
 	print OUT ", "
@@ -643,17 +651,17 @@ sub print_row
 	my ($text) = $values[$i - $start];
 	if (length ($text) + $column + 2 > 78)
 	{
-	    print OUT "\n  ";
-	    $column = 2;
+	    print OUT "\n    ";
+	    $column = 4;
 	}
 	print OUT $text;
 	$column += length ($text) + 2;
     }
-    print OUT "\n};\n\n";
+    print OUT "\n  }";
 
     $bytes_out += 256 * $typsize;
 
-    return sprintf "%s%d", $name, $start / 256;
+    return sprintf "%d /* page %d */", $table_index++, $start / 256;
 }
 
 # Generate the character decomposition header.
@@ -674,20 +682,23 @@ sub print_decomp
 
     printf OUT "#define G_UNICODE_LAST_CHAR 0x%04x\n\n", $last;
 
+    printf OUT "#define G_UNICODE_MAX_TABLE_INDEX 1000\n\n";
+
     my ($count, @row);
+    $table_index = 0;
+    printf OUT "static const unsigned char cclass_data[][256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
-	$row[$count / 256] = &print_row ($count, '(unsigned char *) ',
-					 'unsigned char', 1, 'cclass',
-					 \&fetch_cclass);
+	$row[$count / 256] = &print_row ($count, 1, \&fetch_cclass);
     }
+    printf OUT "\n};\n\n";
 
-    print OUT "static const unsigned char *combining_class_table[256] = {\n";
+    print OUT "static const short combining_class_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
 	print OUT "  ", $row[$count / 256];
-	$bytes_out += 4;
+	$bytes_out += 2;
     }
     print OUT "\n};\n\n";
 
@@ -776,19 +787,22 @@ sub print_line_break
 
     printf OUT "#define G_UNICODE_LAST_CHAR 0x%04x\n\n", $last;
 
+    printf OUT "#define G_UNICODE_MAX_TABLE_INDEX 1000\n\n";
+
+    $table_index = 0;
+    printf OUT "static const char break_property_data[][256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
-	$row[$count / 256] = &print_row ($count, '(char *) ', 'char', 1,
-					 'page',
-                                         \&fetch_break_type);
+	$row[$count / 256] = &print_row ($count, 1, \&fetch_break_type);
     }
+    printf OUT "\n};\n\n";
 
-    print OUT "static const char *break_property_table[256] = {\n";
+    print OUT "static const short break_property_table[256] = {\n";
     for ($count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
 	print OUT "  ", $row[$count / 256];
-	$bytes_out += 4;
+	$bytes_out += 2;
     }
     print OUT "\n};\n\n";
 
@@ -1039,14 +1053,15 @@ sub output_composition_table
     # Output lookup table
 
     my @row;						  
+    $table_index = 0;
+    printf OUT "static const gushort compose_data[][256] = {\n";
     for (my $count = 0; $count <= $last; $count += 256)
     {
-	$row[$count / 256] = &print_row ($count, '(gushort *) ', 'gushort', 2,
-					 'compose_page', 
-					 sub { exists $vals{$_[0]} ? $vals{$_[0]} : 0; });
+	$row[$count / 256] = &print_row ($count, 2, sub { exists $vals{$_[0]} ? $vals{$_[0]} : 0; });
     }
+    printf OUT "\n};\n\n";
 
-    print OUT "static const unsigned short *compose_table[256] = {\n";
+    print OUT "static const short compose_table[256] = {\n";
     for (my $count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
