@@ -1146,6 +1146,17 @@ type_iface_add_prerequisite_W (TypeNode *iface,
     type_iface_add_prerequisite_W (lookup_type_node_I (dependants[i]), prerequisite_node);
 }
 
+/**
+ * g_type_interface_add_prerequisite:
+ * @interface_type: #GType value of an interface type.
+ * @prerequisite_type: #GType value of an interface or instantiatable type.
+ * 
+ * Adds @prerequisite_type to the list of prerequisites of @interface_type.
+ * This means that any type implementing @interface_type must also implement
+ * @prerequisite_type. Prerequisites can be thought of as an alternative to
+ * interface derivation (which GType doesn't support). An interface can have
+ * at most one instantiatable prerequisite type.
+ **/
 void
 g_type_interface_add_prerequisite (GType interface_type,
 				   GType prerequisite_type)
@@ -2428,6 +2439,16 @@ type_get_qdata_L (TypeNode *node,
   return NULL;
 }
 
+/**
+ * g_type_get_qdata:
+ * @type: a #GType
+ * @quark: a #GQuark id to identify the data
+ * 
+ * Obtains data which has previously been attached to @type
+ * with g_type_set_qdata().
+ * 
+ * Return value: the data, or %NULL if no data was found
+ **/
 gpointer
 g_type_get_qdata (GType  type,
 		  GQuark quark)
@@ -2485,6 +2506,14 @@ type_set_qdata_W (TypeNode *node,
   qdata[i].data = data;
 }
 
+/**
+ * g_type_set_qdata:
+ * @type: a #GType 
+ * @quark: a #GQuark id to identify the data
+ * @data: the data
+ * 
+ * Attaches arbitrary data to a type.
+ **/
 void
 g_type_set_qdata (GType    type,
 		  GQuark   quark,

@@ -1,3 +1,9 @@
+2002-12-03  Matthias Clasen  <maclas@gmx.de>
+
+	* gtype.c (g_type_get_qdata): 
+	(g_type_set_qdata): 
+	(g_type_interface_add_prerequisite): Add docs.
+
 2002-12-02  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject.c (g_signal_connect_object): Add docs.
