@@ -1,6 +1,14 @@
+2005-04-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_child_watch_source_new): Add a note regarding
+	waitpid(-1).
+	(g_child_watch_source_init_multi_threaded): 
+	(g_child_watch_source_init_single): Don't use SA_RESTART,
+	since it causes problems on at least one platform. (#168352)
+
 2005-03-30  Steve Murphy  <murf@e-tools.com>
 
-        * configure.in: Added "rw" to ALL_LINGUAS.
+	* configure.in: Added "rw" to ALL_LINGUAS.
 
 2005-03-30  Sven Neumann  <sven@gimp.org>
 
