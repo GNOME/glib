@@ -171,9 +171,9 @@ Decrement the reference count of a @pspec.
 <!-- ##### FUNCTION g_param_spec_sink ##### -->
 <para>
 The initial reference count of a newly created #GParamSpec is 1,
-eventhough no one has explicitely called g_param_spec_ref() on it yet.
-So the einital reference count is flagged as "floating", untill someone
-calls: g_param_spec_ref (@pspec); g_param_spec_sink (@pspec);
+even though no one has explicitly called g_param_spec_ref() on it yet.
+So the inital reference count is flagged as "floating", until someone
+calls g_param_spec_ref (@pspec); g_param_spec_sink (@pspec);
 in sequence on it, taking over the initial reference count (thus
 ending up with a @pspec that has a reference count of 1 still, but is
 not flagged "floating" anymore).
