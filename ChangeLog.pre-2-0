@@ -1,3 +1,9 @@
+1998-11-30  Havoc Pennington  <hp@pobox.com>
+
+	* gdate.c: New file, implements calendrical calculations.
+	
+	* glib.h: Added declarations for GDate module.
+
 Mon Nov 30 07:12:10 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

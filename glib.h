@@ -2030,6 +2030,211 @@ GList*	     g_completion_complete     (GCompletion*	cmp,
 void	     g_completion_free	       (GCompletion*	cmp);
 
 
+
+
+/* Date calculations (not time for now, to be resolved). These are a
+ * mutant combination of Steffen Beyer's DateCalc routines
+ * (http://www.perl.com/CPAN/authors/id/STBEY/) and Jon Trowbridge's
+ * date routines (written for in-house software).  Written by Havoc
+ * Pennington <hp@pobox.com> 
+ */
+
+#include <time.h>
+
+/* this enum is used to specify order of appearance in parsed date
+ *  strings
+ */
+
+typedef enum {
+  G_DATE_MONTH = 0,
+  G_DATE_DAY   = 1,
+  G_DATE_YEAR  = 2
+} GDateMDY;
+
+/* These other types specify the actual values. */
+
+typedef enum {
+  G_DATE_BAD_WEEKDAY  = 0,
+  G_DATE_MONDAY       = 1,
+  G_DATE_TUESDAY      = 2,
+  G_DATE_WEDNESDAY    = 3,
+  G_DATE_THURSDAY     = 4,
+  G_DATE_FRIDAY       = 5,
+  G_DATE_SATURDAY     = 6,
+  G_DATE_SUNDAY       = 7
+} GDateWeekday;
+
+typedef enum {
+  G_DATE_BAD_MONTH = 0,
+  G_DATE_JANUARY   = 1,
+  G_DATE_FEBRUARY  = 2,
+  G_DATE_MARCH     = 3,
+  G_DATE_APRIL     = 4,
+  G_DATE_MAY       = 5,
+  G_DATE_JUNE      = 6,
+  G_DATE_JULY      = 7,
+  G_DATE_AUGUST    = 8,
+  G_DATE_SEPTEMBER = 9,
+  G_DATE_OCTOBER   = 10,
+  G_DATE_NOVEMBER  = 11,
+  G_DATE_DECEMBER  = 12
+} GDateMonth;
+
+typedef guint16 GDateYear;
+typedef guint8  GDateDay;   /* day of the month */
+
+#define G_DATE_BAD_JULIAN 0U
+#define G_DATE_BAD_DAY    0U
+#define G_DATE_BAD_YEAR   0U
+
+typedef struct _GDate GDate;
+
+/* Note: directly manipulating structs is generally a bad idea, but
+ * in this case it's an *incredibly* bad idea, because all or part
+ * of this struct can be invalid at any given time. Use the functions,
+ * or you will get hosed, I promise.
+ */
+
+struct _GDate { 
+  guint julian_days : 32; /* julian days representation - we use a
+                           *  bitfield hoping that 64 bit platforms
+                           *  will pack this whole struct in one big
+                           *  int 
+                           */
+
+  guint julian : 1;    /* julian is valid */
+  guint mdy    : 1;    /* mdy is valid */
+
+  /* MDY representation */
+  guint month  : 4; 
+  guint day    : 6;  
+  guint year   : 16; 
+};
+
+/* _new with no args returns an invalid date, you then have to _set() stuff 
+ * to get a usable object. You can also allocate a GDate statically,
+ * then call g_date_clear() to initialize.
+ */
+
+GDate*       g_date_new                   (void);
+GDate*       g_date_new_mdy               (GDateMonth   m, 
+                                           GDateDay     d, 
+                                           GDateYear    y);
+GDate*       g_date_new_julian            (guint32      julian_day);
+void         g_date_free                  (GDate       *d);
+
+/* check g_date_valid() after doing an operation that might fail, like
+ * _parse.  Almost all g_date operations are undefined on invalid
+ * dates (the exceptions are the mutators, since you need those to
+ * return to validity).  
+ */
+
+gboolean     g_date_valid                 (GDate       *d);
+gboolean     g_date_valid_month           (GDateMonth   m);
+gboolean     g_date_valid_year            (GDateYear    y);
+gboolean     g_date_valid_day             (GDateDay     d);
+gboolean     g_date_valid_weekday         (GDateWeekday w);
+gboolean     g_date_valid_julian          (guint32      j);
+gboolean     g_date_valid_mdy             (GDateMonth   m,
+                                           GDateDay     d,
+                                           GDateYear    y);
+
+GDateWeekday g_date_weekday               (GDate       *d);
+GDateMonth   g_date_month                 (GDate       *d);
+GDateYear    g_date_year                  (GDate       *d);
+GDateDay     g_date_day                   (GDate       *d);
+guint32      g_date_julian                (GDate       *d);
+
+guint        g_date_day_of_year           (GDate       *d);
+
+/* First monday/sunday is the start of week 1; if we haven't reached
+ *  that day, return 0. These are not ISO weeks of the year; that
+ *  routine should be added.
+ */
+
+guint        g_date_monday_week_of_year   (GDate      *d); /* # weeks, starting on Monday */
+guint        g_date_sunday_week_of_year   (GDate      *d); /* # weeks, starting on Sunday */
+
+/* If you create a static date struct you need to clear it to get it
+ * in a sane state before use. You can clear a whole array at
+ * once with the ndates argument.
+ */
+
+void         g_date_clear                 (GDate       *d, 
+                                           guint        ndates);
+
+/* The parse routine is meant for dates typed in by a user, so it
+ * permits many formats but tries to catch common typos. If your data
+ * needs to be strictly validated, it is not an appropriate function.
+ */
+
+void         g_date_set_parse             (GDate       *d,
+                                           const gchar *str);
+
+void         g_date_set_time              (GDate       *d, 
+                                           time_t       t);
+
+void         g_date_set_month             (GDate       *d, 
+                                           GDateMonth   m);
+void         g_date_set_day               (GDate       *d, 
+                                           GDateDay     day);
+void         g_date_set_year              (GDate       *d,
+                                           GDateYear    y);
+void         g_date_set_mdy               (GDate       *d,
+                                           GDateMonth   m,
+                                           GDateDay     day,
+                                           GDateYear    y);
+
+void         g_date_set_julian            (GDate       *d,
+                                           guint32      j);
+
+gboolean     g_date_is_first_of_month     (GDate       *d);
+gboolean     g_date_is_last_of_month      (GDate       *d);
+
+
+/* To go forward by some number of weeks just go forward weeks*7 days */
+void         g_date_add_days              (GDate       *d, 
+                                           guint        ndays);
+void         g_date_subtract_days         (GDate       *d, 
+                                           guint        ndays);
+
+/* If you add/sub months while day > 28, the day might change */
+void         g_date_add_months            (GDate       *d,
+                                           guint        nmonths);
+void         g_date_subtract_months       (GDate       *d,
+                                           guint        nmonths);
+
+/* If it's feb 29, changing years can move you to the 28th */
+void         g_date_add_years             (GDate       *d,
+                                           guint        nyears);
+void         g_date_subtract_years        (GDate       *d,
+                                           guint        nyears);
+
+gboolean     g_date_is_leap_year          (GDateYear    year);
+guint8       g_date_days_in_month         (GDateMonth   month, 
+                                           GDateYear    year);
+guint8       g_date_monday_weeks_in_year  (GDateYear    year);
+guint8       g_date_sunday_weeks_in_year  (GDateYear    year);
+
+/* qsort-friendly (with a cast...) */
+gint         g_date_compare               (GDate       *lhs,
+                                           GDate       *rhs);
+
+
+void         g_date_to_struct_tm          (GDate       *d,
+                                           struct tm   *tm);
+
+/* Just like strftime() except you can only use date-related formats.
+ *   Using a time format is undefined.
+ */
+gsize        g_date_strftime              (gchar       *s,
+                                           gsize        slen,
+                                           const gchar *format,
+                                           GDate       *d);
+
+
+
+
 /* GRelation: Indexed Relations.  Imagine a really simple table in a
  * database.  Relations are not ordered.  This data type is meant for
  * maintaining a N-way mapping.

@@ -31,6 +31,7 @@ libglib_la_SOURCES = \
 		gcache.c	\
 		gcompletion.c	\
 		gdataset.c	\
+                gdate.c         \
 		gerror.c	\
 		ghash.c		\
 		ghook.c		\
