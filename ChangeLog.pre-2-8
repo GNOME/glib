@@ -1,3 +1,8 @@
+Thu Jun  3 16:30:31 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* gerror.c (g_on_error_query): check isatty() before querying so
+	we don't loop endlessly
+
 Sat May 29 11:16:29 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
