@@ -69,6 +69,10 @@ pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gthread-2.0.pc
 
 $(pkgconfig_DATA): config.status
 
+# install mkinstalldirs for glib-gettextize's benefit
+gettextdir = $(datadir)/glib-2.0/gettext
+gettext_SCRIPTS = mkinstalldirs
+
 # build documentation when doing distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
