@@ -1,3 +1,7 @@
+2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am: Avoid rebuilding everything everytime.
+
 Mon Mar  5 15:26:30 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* gparamspecs.c (g_param_spec_interface): add a new param spec to

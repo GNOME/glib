@@ -101,10 +101,8 @@ EXTRA_DIST += $(gruntime_built_sources)
 # setup autogeneration dependancies
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
-# Makefile: oldest-source-stamp	# oh boy, does automake SUCK!
-oldest-source-stamp: $(gruntime_built_sources)
 
-$(OBJECTS): oldest-source-stamp  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
+$(libgobject_1_3_la_OBJECTS): $(gruntime_built_sources)  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
 # initial creation of the real stamp-* files
 gmarshal.h:	# never add deps here
 	test -f "$(srcdir)/$@" || touch $(srcdir)/$@
