@@ -1,12 +1,14 @@
-# glib20's Portuguese Translation
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002
+# glib's Portuguese Translation
+# Copyright (C) 2001, 2003 glib
+# Distributed under the same licence as the glib package
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
-"PO-Revision-Date: 2002-05-16 01:38+0000\n"
+"Project-Id-Version: 2.6\n"
+"Report-Msgid-Bugs-To: Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"POT-Creation-Date: 2003-12-03 01:31+0000\n"
+"PO-Revision-Date: 2003-12-03 01:50+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +29,7 @@ msgstr "Incapaz de abrir conversor de '%s' para '%s': %s"
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr "Sequência de bytes inválida na entrada de conversão"
+msgstr "Sequência de bytes inválida na origem da conversão"
 
 #: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
@@ -38,12 +40,12 @@ msgstr "Erro durante a conversão: %s"
 #: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
-msgstr "Sequência de caracteres parcial no final da entrada"
+msgstr "Sequência de caracteres parcial no final da origem"
 
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Incapaz de converter recurso '%s' para conjunto caracteres '%s'"
+msgstr "Incapaz de converter recurso '%s' para conjunto de caracteres '%s'"
 
 #: glib/gconvert.c:1492
 #, c-format
@@ -53,7 +55,7 @@ msgstr "O URI '%s' não é um URI absoluto que utilize o esquema de ficheiros"
 #: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "O URI de ficheiro local '%s' não pode incluir um '#'"
+msgstr "O URI de ficheiro local '%s' não deverá incluir um '#'"
 
 #: glib/gconvert.c:1519
 #, c-format
@@ -63,12 +65,12 @@ msgstr "O URI '%s' é inválido"
 #: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "O nome de servidor do URI '%s' é inválido"
+msgstr "O nome de máquina do URI '%s' é inválido"
 
 #: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "O URI '%s' contém caracteres mascarados inválidos"
+msgstr "O URI '%s' contém caracteres incorrectamente mascarados"
 
 #: glib/gconvert.c:1618
 #, c-format
@@ -77,7 +79,7 @@ msgstr "O nome de caminho '%s' não é um caminho absoluto"
 
 #: glib/gconvert.c:1628
 msgid "Invalid hostname"
-msgstr "Nome de servidor inválido"
+msgstr "Nome de máquina inválido"
 
 #: glib/gdir.c:80
 #, c-format
@@ -87,12 +89,12 @@ msgstr "Erro ao abrir o directório '%s': %s"
 #: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Incapaz de alocar %lu bytes para ler ficheiro \"%s\""
+msgstr "Incapaz de alocar %lu bytes para ler o ficheiro \"%s\""
 
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Erro ao ler ficheiro '%s': %s"
+msgstr "Erro ao ler o ficheiro '%s': %s"
 
 #: glib/gfileutils.c:477
 #, c-format
@@ -102,17 +104,17 @@ msgstr "Falha ao ler do ficheiro '%s': %s"
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Falha ao abrir ficheiro '%s': %s"
+msgstr "Falha ao abrir o ficheiro '%s': %s"
 
 #: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Falha ao obter atributos do ficheiro '%s': fstat() falhou: %s"
+msgstr "Falha ao obter atributos do ficheiro '%s': falha no fstat(): %s"
 
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Falha ao abrir ficheiro '%s': fdopen() falhou: %s"
+msgstr "Falha ao abrir o ficheiro '%s': falha no fdopen(): %s"
 
 #: glib/gfileutils.c:776
 #, c-format
@@ -122,26 +124,26 @@ msgstr "Modelo '%s' inválido, não deveria conter um '%s'"
 #: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Modelo '%s' não termina com XXXXXX"
+msgstr "Modelo '%s' não termina em XXXXXX"
 
 #: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Falha ao criar ficheiro '%s': %s"
+msgstr "Falha ao criar o ficheiro '%s': %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Falha ao criar ficheiro '%s': %s"
+msgstr "Falha ao ler o atalho '%s': %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Atalhos não são suportados"
 
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Conversão do conjunto de caracteres `%s' para `%s' não suportado"
+msgstr "Conversão do conjunto de caracteres `%s' para `%s' não é suportada"
 
 #: glib/giochannel.c:1147
 #, c-format
@@ -150,7 +152,7 @@ msgstr "Incapaz de abrir conversor de `%s' para `%s': %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Incapaz de fazer uma leitura em bruto em g_io_channel_read_line_string"
+msgstr "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -162,12 +164,12 @@ msgstr "Canal termina num caracter parcial"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Incapaz de fazer uma leitura em bruto de g_io_channel_read_to_end"
+msgstr "Incapaz de efectuar uma leitura em bruto sobre g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Erro na linha %d car %d: %s"
+msgstr "Erro na linha %d caracter %d: %s"
 
 #: glib/gmarkup.c:307
 #, c-format
@@ -178,7 +180,7 @@ msgstr "Erro na linha %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Entidade vazia '&;' vista; entidades válidas são: &amp; &quot; &lt; &gt; "
+"Detectada entidade vazia '&;'; entidades válidas são: &amp; &quot; &lt; &gt; "
 "&apos;"
 
 #: glib/gmarkup.c:422
@@ -188,27 +190,27 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Caracter '%s' não é válido no início do nome da entidade; o caracter & "
+"Caracter '%s' não é válido no início do nome de uma entidade; o caracter & "
 "inicia uma entidade; se este 'i comercial' não é suposto ser uma entidade, "
 "mascare-o como &amp;"
 
 #: glib/gmarkup.c:458
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Caracter '%s' não é válido dentro de um nome de entidade"
+msgstr "Caracter '%s' não é válido dentro do nome de uma entidade"
 
 #: glib/gmarkup.c:502
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Nome de entidade '%s' não é conhecido"
+msgstr "Nome de entidade '%s' desconhecido"
 
 #: glib/gmarkup.c:512
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entidade não termina com um ponto e vírgula; provavelmente você utilizou um "
-"'i comercial' sem desejar iniciar uma entidade - mascare-o com &amp;"
+"Entidade não termina com um ponto e vírgula; provavelmente foi utilizado um "
+"caracter 'i comercial' sem intenção de iniciar uma entidade - mascare-o como &amp;"
 
 #: glib/gmarkup.c:558
 #, c-format
@@ -216,9 +218,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Falha ao parsear '%s', que deveria ter sido um dígito dentro de uma "
-"referência de caracter (&#234; por exemplo) - talvez o dígito seja demasiado "
-"grande"
+"Falha ao parsear '%s', que deveria ser um dígito dentro de uma referência "
+"de caracter (&#234; por exemplo) - talvez o dígito seja demasiado grande"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -228,7 +229,7 @@ msgstr "Referência de caracter '%s' não codifica um caracter permitido"
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
-"Referência de caracter vazia; deveria incluir um dígito tal como &#454;"
+"Referência de caracter vazia; deverá incluir um dígito tal como &#454;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -236,9 +237,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Referência de caracter não terminou com um ponto e vírgula; provavelmente "
-"utilizou um caracter 'i comercial' sem desejar iniciar uma entidade - "
-"mascare-o com &amp;"
+"Referência de caracter não termina com um ponto e vírgula; provavelmente foi "
+"utilizado um caracter 'i comercial' sem intenção de iniciar uma entidade - "
+"mascare-o como &amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -262,7 +263,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' não é um caracter válido após um caracter '<'; não poderá começar um "
+"'%s' não é um caracter válido após um caracter '<'; não pode iniciar um "
 "nome de elemento"
 
 #: glib/gmarkup.c:1085
@@ -271,7 +272,7 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Caracter estranho '%s', esperava-se um caracter '>' para terminar a etiqueta "
+"Caracter estranho '%s', era esperado um caracter '>' para terminar a etiqueta "
 "inicial do elemento '%s'"
 
 #: glib/gmarkup.c:1172
@@ -279,7 +280,7 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Caracter estranho '%s', esperava-se um '=' após o nome do atributo '%s' do "
+"Caracter estranho '%s', era esperado um '=' após o nome do atributo '%s' do "
 "elemento '%s'"
 
 #: glib/gmarkup.c:1213
@@ -289,9 +290,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Caracter estranho '%s', esperava-se um caracter '>' ou '/' para terminar a "
+"Caracter estranho '%s', era esperado um caracter '>' ou '/' para terminar a "
 "etiqueta inicial do elemento '%s', ou opcionalmente um atributo; talvez "
-"tenha utilizado um caracter inválido no nome de atributo"
+"tenha sido utilizado um caracter inválido no nome de um atributo"
 
 #: glib/gmarkup.c:1296
 #, c-format
@@ -299,8 +300,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Caracter estranho '%s', esperava-se uma aspa aberta após o sinal de igual ao "
-"atribuir o valor ao atributo '%s' do elemento '%s'"
+"Caracter estranho '%s', era esperada uma abertura de aspa após o sinal de "
+"igual ao atribuir valor ao atributo '%s' do elemento '%s'"
 
 #: glib/gmarkup.c:1436
 #, c-format
@@ -308,8 +309,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' não é um caracter válido após os caracteres '</'; '%s' não poderá "
-"começar o nome de um elemento"
+"'%s' não é um caracter válido após os caracteres '</'; '%s' não pode "
+"iniciar o nome de um elemento"
 
 #: glib/gmarkup.c:1474
 #, c-format
@@ -336,7 +337,7 @@ msgstr "Documento estava vazio ou apenas continha espaços"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Documento terminou inesperadamente logo após um menor que '<'"
+msgstr "Documento terminou inesperadamente logo após um caracter menor que '<'"
 
 #: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
@@ -353,21 +354,21 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Documento terminou inesperadamente, esperava-se ver um maior que '>' a "
+"Documento terminou inesperadamente, era esperado um maior que '>' para "
 "terminar a etiqueta <%s/>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Documento terminou inesperadamente dentro de um nome de elemento"
+msgstr "Documento terminou inesperadamente dentro do nome de um elemento"
 
 #: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Documento terminou inesperadamente dentro de um nome de atributo"
+msgstr "Documento terminou inesperadamente dentro do nome de um atributo"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
-"Documento terminou inesperadamente dentro de uma etiqueta de abertura de "
+"Documento terminou inesperadamente dentro da etiqueta de abertura de um "
 "elemento."
 
 #: glib/gmarkup.c:1693
@@ -375,18 +376,18 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Documento terminou inesperadamente após o sinal de igual que se seguiu a um "
+"Documento terminou inesperadamente após o sinal de igual posterior a um "
 "nome de atributo; nenhum valor de atributo"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Documento terminou inesperadamente dentro de um valor de atributo"
+msgstr "Documento terminou inesperadamente dentro do valor de um atributo"
 
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
-"Documento terminou inesperadamente dentro ta etiqueta de fecho do elemento '%"
+"Documento terminou inesperadamente dentro da etiqueta de fecho do elemento '%"
 "s'"
 
 #: glib/gmarkup.c:1721
@@ -397,7 +398,7 @@ msgstr ""
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Texto citado não começa com uma aspa"
+msgstr "Texto citado não é iniciado com um caracter de aspa"
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
@@ -406,13 +407,13 @@ msgstr "Aspa sem par na linha de comando ou outro texto de consola citado"
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Texto terminou logo após um caracter '\\'. (O texto era '%s')"
+msgstr "Texto terminou após um caracter '\\'. (O texto era '%s')"
 
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Texto terminou antes da aspa equivalente ter sido encontrada para %c. (texto "
+"Texto terminou antes de ser encontrada a aspa equivalente para %c. (O texto "
 "era '%s')"
 
 #: glib/gshell.c:549
@@ -437,9 +438,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
 #: glib/gspawn-win32.c:922
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Falha ao executar processo filho (%s)"
+msgstr "Falha ao executar aplicação auxiliar"
 
 #: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
 #, c-format
@@ -454,7 +454,7 @@ msgstr "Falha ao ir para directório '%s' (%s)"
 #: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Falha ao criar canal para comunicar com com processo filho (%s)"
+msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
 #: glib/gspawn.c:167
 #, c-format
@@ -474,7 +474,7 @@ msgstr "Erro inesperado em waitpid() (%s)"
 #: glib/gspawn.c:1063
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Falha no fork (%s)"
+msgstr "Falha ao efectuar fork (%s)"
 
 #: glib/gspawn.c:1213
 #, c-format
@@ -484,12 +484,12 @@ msgstr "Falha ao executar processo filho \"%s\" (%s)"
 #: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Falha ao redireccionar saida ou entrada do processo filho (%s)"
+msgstr "Falha ao redireccionar saida ou entrada de processo filho (%s)"
 
 #: glib/gspawn.c:1232
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Falha no fork de processo filho (%s)"
+msgstr "Falha ao efectuar fork de processo filho (%s)"
 
 #: glib/gspawn.c:1240
 #, c-format
@@ -499,7 +499,7 @@ msgstr "Erro desconhecido ao executar processo filho \"%s\""
 #: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
+msgstr "Incapaz de ler dados suficientes de canal pid do filho (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
@@ -521,4 +521,4 @@ msgstr "Caracter fora do limite para UTF-16"
 #~ msgstr "Erro de socket"
 
 #~ msgid "Channel set flags unsupported"
-#~ msgstr "Canal definiu flags não suportadas"
+#~ msgstr "Canal definiu parâmetros não suportados"
