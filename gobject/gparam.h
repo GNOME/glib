@@ -53,7 +53,9 @@ typedef enum
   G_PARAM_CONSTRUCT	      = 1 << 2,
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
   G_PARAM_LAX_VALIDATION      = 1 << 4,
-  G_PARAM_PRIVATE	      = 1 << 5
+  G_PARAM_STATIC_NAME	      = 1 << 5,
+  G_PARAM_STATIC_NICK	      = 1 << 6,
+  G_PARAM_STATIC_BLURB	      = 1 << 7
 } GParamFlags;
 #define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
 #define	G_PARAM_MASK		(0x000000ff)

@@ -152,10 +152,15 @@ static void
 g_param_spec_finalize (GParamSpec *pspec)
 {
   g_datalist_clear (&pspec->qdata);
+
+  if (!(pspec->flags & G_PARAM_STATIC_NAME))
+    g_free (pspec->name);
   
-  g_free (pspec->name);
-  g_free (pspec->_nick);
-  g_free (pspec->_blurb);
+  if (!(pspec->flags & G_PARAM_STATIC_NICK))
+    g_free (pspec->_nick);
+
+  if (!(pspec->flags & G_PARAM_STATIC_BLURB))
+    g_free (pspec->_blurb);
 
   g_type_free_instance ((GTypeInstance*) pspec);
 }
@@ -297,6 +302,25 @@ canonicalize_key (gchar *key)
     }
 }
 
+static gboolean
+is_canonical (gchar *key)
+{
+  gchar *p;
+
+  for (p = key; *p != 0; p++)
+    {
+      gchar c = *p;
+      
+      if (c != '-' &&
+	  (c < '0' || c > '9') &&
+	  (c < 'A' || c > 'Z') &&
+	  (c < 'a' || c > 'z'))
+	return FALSE;
+    }
+
+  return TRUE;
+}
+
 gpointer
 g_param_spec_internal (GType        param_type,
 		       const gchar *name,
@@ -309,12 +333,28 @@ g_param_spec_internal (GType        param_type,
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
   g_return_val_if_fail ((name[0] >= 'A' && name[0] <= 'Z') || (name[0] >= 'a' && name[0] <= 'z'), NULL);
+  g_return_val_if_fail (!(flags & G_PARAM_STATIC_NAME) || is_canonical (name), NULL);
   
   pspec = (gpointer) g_type_create_instance (param_type);
-  pspec->name = g_strdup (name);
-  canonicalize_key (pspec->name);
-  pspec->_nick = g_strdup (nick);
-  pspec->_blurb = g_strdup (blurb);
+
+  if ((flags & G_PARAM_STATIC_NAME))
+    pspec->name = name;
+  else
+    {
+      pspec->name = g_strdup (name);
+      canonicalize_key (pspec->name);
+    }
+
+  if (flags & G_PARAM_STATIC_NICK)
+    pspec->_nick = nick;
+  else
+    pspec->_nick = g_strdup (nick);
+
+  if (flags & G_PARAM_STATIC_BLURB)
+    pspec->_blurb = blurb;
+  else
+    pspec->_blurb = g_strdup (blurb);
+
   pspec->flags = (flags & G_PARAM_USER_MASK) | (flags & G_PARAM_MASK);
   
   return pspec;

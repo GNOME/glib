@@ -1,3 +1,12 @@
+2005-03-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* gparam.c (g_param_spec_internal): Don't copy strings
+	which are marked as static. Don't allow non-canonical static 
+	names.
+
+	* gparam.h (GParamFlags): Add G_PARAM_STATIC_{NAME,NICK,BLURB}
+	flags.  (#160655, Ben Maurer)
+	
 2005-03-18  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : handle gobjectaliasdef.c
