@@ -1,3 +1,8 @@
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/arrays.sgml: Improve g_array_free() docs.  (#146875,
+	Ed Griffiths)
+
 Tue Jul  6 00:54:38 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-sections.txt: 
