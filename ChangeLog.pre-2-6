@@ -1,3 +1,10 @@
+1998-12-15  Havoc Pennington  <hp@pobox.com>
+
+	* gdate.c (g_date_prepare_to_parse): Solaris has a broken strftime
+	that produced garbage output for the test date I was using to 
+	set up the parser. So use a different date that Solaris seems
+	to like.
+
 1998-12-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Dont complain, if --without-threads or

@@ -566,7 +566,9 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
       
       /* Determine DMY order */
       
-      g_date_set_dmy (&d, 4, 7, 1776); /* had to pick a random day */
+      /* had to pick a random day - don't change this, some strftimes
+       * are broken on some days, and this one is good so far. */
+      g_date_set_dmy (&d, 4, 7, 1976);
       
       g_date_strftime (buf, 127, "%x", &d);
       
@@ -585,7 +587,7 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
               break;
             case 76:
               using_twodigit_years = TRUE; /* FALL THRU */
-            case 1776:
+            case 1976:
               dmy_order[i] = G_DATE_YEAR;
               break;
             default:
