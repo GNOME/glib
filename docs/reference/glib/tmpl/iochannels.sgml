@@ -533,6 +533,7 @@ generic way.
 </para>
 
 @channel: 
+@length: 
 @Returns: 
 
 
@@ -543,6 +544,7 @@ generic way.
 
 @channel: 
 @line_term: 
+@length: 
 
 
 <!-- ##### FUNCTION g_io_channel_get_buffered ##### -->

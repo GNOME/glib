@@ -1,3 +1,11 @@
+Tue Sep 18 18:19:33 2001  Tim Janik  <timj@gtk.org>
+
+	* tests/testglib.c: add simple test for g_path_get_basename().
+
+	* glib/gfileutils.c (g_file_open_tmp): 
+	* glib/gstrfuncs.c (g_strerror): scratch erroneous usages
+	of "illegal".
+
 2001-09-18  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gmain.c

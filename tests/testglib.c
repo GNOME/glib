@@ -440,6 +440,15 @@ main (int   argc,
 #endif	/* G_HAVE_GINT64 */
   g_print ("\n");
 
+  g_print ("checking g_path_get_basename()...");
+  string = g_path_get_basename ("/foo/dir/");
+  g_assert (strcmp (string, "dir") == 0);
+  g_free (string);
+  string = g_path_get_basename ("/foo/file");
+  g_assert (strcmp (string, "file") == 0);
+  g_free (string);
+  g_print ("ok\n");
+
   g_print ("checking g_path_get_dirname()...");
   for (i = 0; i < n_dirname_checks; i++)
     {

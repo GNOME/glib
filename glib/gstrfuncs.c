@@ -435,7 +435,7 @@ g_strerror (gint errnum)
     case EISCONN: return "socket is already connected";
 #endif
 #ifdef EISDIR
-    case EISDIR: return "illegal operation on a directory";
+    case EISDIR: return "is a directory";
 #endif
 #ifdef EISNAME
     case EISNAM: return "is a name file";

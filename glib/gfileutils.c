@@ -652,7 +652,7 @@ g_file_open_tmp (const char *tmpl,
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
-		   _("Template '%s' illegal, should not contain a '%s'"),
+		   _("Template '%s' invalid, should not contain a '%s'"),
 		   tmpl, G_DIR_SEPARATOR_S);
 
       return -1;
