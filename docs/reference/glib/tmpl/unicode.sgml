@@ -46,8 +46,9 @@ A type which can hold any UTF-16 character code.
 
 </para>
 
-@charset: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@charset: 
 
 
 <!-- ##### FUNCTION g_unichar_validate ##### -->

@@ -536,9 +536,12 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
  * @func: the function to call for each key/value pair.
  * @user_data: user data to pass to the function.
  * 
- * Calls the given function for each of the key/value pairs in the #GHashTable.
- * The function is passed the key and value of each pair, and the given
- * @user_data parameter.
+ * Calls the given function for each of the key/value pairs in the
+ * #GHashTable.  The function is passed the key and value of each
+ * pair, and the given @user_data parameter.  The hash table may not
+ * be modified while iterating over it (you can't add/remove
+ * items). To remove all items matching a predicate, use
+ * g_hash_table_remove().
  **/
 void
 g_hash_table_foreach (GHashTable *hash_table,

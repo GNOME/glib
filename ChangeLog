@@ -1,3 +1,11 @@
+2001-11-29  Havoc Pennington  <hp@redhat.com>
+
+	* glib/gtree.c (g_tree_foreach):
+	* glib/ghash.c (g_hash_table_foreach): 
+
+	Add notes about how you shouldn't modify these data structures as
+	you iterate over them.
+	
 Thu Nov 29 11:16:03 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* HACKING: Update (#65721, Dave Neary)

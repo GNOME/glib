@@ -37,6 +37,10 @@ A <structname>GPatternSpec</structname> is the 'compiled' form of a pattern.
 This structure is opaque and its fields cannot be accessed directly.
 </para>
 
+@match_type: 
+@pattern_length: 
+@pattern: 
+@pattern_reversed: 
 
 <!-- ##### FUNCTION g_pattern_spec_new ##### -->
 <para>

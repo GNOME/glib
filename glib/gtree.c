@@ -442,7 +442,11 @@ g_tree_lookup_extended (GTree         *tree,
  * 
  * Calls the given function for each of the key/value pairs in the #GTree.
  * The function is passed the key and value of each pair, and the given
- * @data parameter.
+ * @data parameter. The tree may not be modified while iterating over
+ * it (you can't add/remove items). To remove all items matching
+ * a predicate, you need to add each item to a list as in your
+ * #GTraverseFunc as you walk over the tree, then walk the list
+ * and remove each item.
  **/
 void
 g_tree_foreach (GTree         *tree,
