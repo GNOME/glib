@@ -1,3 +1,8 @@
+2004-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* abicheck.sh: Don't include symbols which are just in the 
+	symbols list for .defs file compatibility.
+
 2004-10-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* gtype.h (GTypeInterfaceCheckFunc): Rename first parameter to 
