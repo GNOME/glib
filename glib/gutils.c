@@ -96,6 +96,53 @@ const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
+/**
+ * glib_check_version:
+ * @required_major: the required major version.
+ * @required_minor: the required major version.
+ * @required_micro: the required major version.
+ *
+ * Checks that the GLib library in use is compatible with the
+ * given version. Generally you would pass in the constants
+ * #GLIB_MAJOR_VERSION, #GLIB_MINOR_VERSION, #GLIB_MICRO_VERSION
+ * as the three arguments to this function; that produces
+ * a check that the library in use is compatible with
+ * the version of GLib the application or module was compiled
+ * against.
+ *
+ * Compatibility is defined by two things: first the version
+ * of the running library is newer than the version
+ * @required_major.required_minor.@required_micro. Second
+ * the running library must be binary compatible with the
+ * version @required_major.required_minor.@required_micro
+ * (same major version.)
+ *
+ * Return value: %NULL if the GLib library is compatible with the
+ *   given version, or a string describing the version mismatch.
+ *   The returned string is owned by GLib and must not be modified
+ *   or freed.
+ *
+ * Since: 2.6
+ **/
+const gchar *
+glib_check_version (guint required_major,
+                    guint required_minor,
+                    guint required_micro)
+{
+  gint glib_effective_micro = 100 * GLIB_MINOR_VERSION + GLIB_MICRO_VERSION;
+  gint required_effective_micro = 100 * required_minor + required_micro;
+
+  if (required_major > GLIB_MAJOR_VERSION)
+    return "GLib version too old (major mismatch)";
+  if (required_major < GLIB_MAJOR_VERSION)
+    return "GLib version too new (major mismatch)";
+  if (required_effective_micro < glib_effective_micro - GLIB_BINARY_AGE)
+    return "GLib version too new (micro mismatch)";
+  if (required_effective_micro > glib_effective_micro)
+    return "GLib version too old (micro mismatch)";
+  return NULL;
+}
+
 #if !defined (HAVE_MEMMOVE) && !defined (HAVE_WORKING_BCOPY)
 void 
 g_memmove (gpointer dest, gconstpointer src, gulong len)

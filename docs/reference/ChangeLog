@@ -1,3 +1,10 @@
+Tue Aug  3 15:34:16 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add a separate section for
+	version information.
+	* glib/glib-docs.sgml: Include version section.
+	* glib/tmpl/version.sgml: New template.
+
 2004-08-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: 

@@ -95,19 +95,29 @@ G_MAXDOUBLE
 </SECTION>
 
 <SECTION>
-<TITLE>Standard Macros</TITLE>
-<FILE>macros</FILE>
+<TITLE>Version Information</TITLE>
+<FILE>version</FILE>
+glib_major_version
+glib_minor_version
+glib_micro_version
+glib_binary_age
+glib_interface_age
+glib_check_version
+
+<SUBSECTION>
 GLIB_MAJOR_VERSION
 GLIB_MINOR_VERSION
 GLIB_MICRO_VERSION
+GLIB_CHECK_VERSION
+</SECTION>
 
+<SECTION>
+<TITLE>Standard Macros</TITLE>
+<FILE>macros</FILE>
 <SUBSECTION>
 G_OS_WIN32
 G_OS_BEOS
 G_OS_UNIX
-
-<SUBSECTION>
-GLIB_CHECK_VERSION
 
 <SUBSECTION>
 G_DIR_SEPARATOR
@@ -141,12 +151,6 @@ G_MEM_ALIGN
 <SUBSECTION>
 G_CONST_RETURN
 
-<SUBSECTION Private>
-glib_major_version
-glib_micro_version
-glib_minor_version
-glib_interface_age
-glib_binary_age
 </SECTION>
 
 <SECTION>

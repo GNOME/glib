@@ -55,6 +55,7 @@
 <!ENTITY glib-Shell SYSTEM "xml/shell.xml">
 <!ENTITY glib-Markup SYSTEM "xml/markup.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
+<!ENTITY glib-Version SYSTEM "xml/version.xml">
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
 <!ENTITY glib-Building SYSTEM "building.sgml">
@@ -100,6 +101,7 @@ synchronize their operation.
 
   <chapter id="glib-fundamentals">
     <title>GLib Fundamentals</title>
+    &glib-Version;
     &glib-Basic-Types;
     &glib-Limits-of-Basic-Types;
     &glib-Standard-Macros;

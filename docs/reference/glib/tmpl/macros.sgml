@@ -14,27 +14,6 @@ These macros provide a few commonly-used features.
 
 </para>
 
-<!-- ##### MACRO GLIB_MAJOR_VERSION ##### -->
-<para>
-The major version number of the GLib library.
-</para>
-
-
-
-<!-- ##### MACRO GLIB_MINOR_VERSION ##### -->
-<para>
-The minor version number of the GLib library.
-</para>
-
-
-
-<!-- ##### MACRO GLIB_MICRO_VERSION ##### -->
-<para>
-The micro version number of the GLib library.
-</para>
-
-
-
 <!-- ##### MACRO G_OS_WIN32 ##### -->
 <para>
 This macro is defined only on Windows. So you can bracket
@@ -57,26 +36,6 @@ This macro is defined only on UNIX. So you can bracket
 UNIX-specific code in "&num;ifdef G_OS_UNIX".
 </para>
 
-
-
-<!-- ##### MACRO GLIB_CHECK_VERSION ##### -->
-<para>
-Checks the version of the GLib library.
-It returns %TRUE if the GLib library is the same or newer than the given
-version.
-
-<example>
-<title>Checking the version of the GLib library</title>
-<programlisting>
-  if (!GLIB_CHECK_VERSION (1, 2, 0))
-    g_error ("GLib version 1.2.0 or above is needed");
-</programlisting>
-</example>
-</para>
-
-@major: the major version number.
-@minor: the minor version number.
-@micro: the micro version number.
 
 
 <!-- ##### MACRO G_DIR_SEPARATOR ##### -->
