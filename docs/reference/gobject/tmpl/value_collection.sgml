@@ -27,6 +27,7 @@ Varargs Value Collection
 
 @value: 
 @var_args: 
+@flags: 
 @__error: 
 
 
@@ -37,6 +38,7 @@ Varargs Value Collection
 
 @value: 
 @var_args: 
+@flags: 
 @__error: 
 
 

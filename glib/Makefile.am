@@ -191,6 +191,10 @@ makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/makefile.mingw.in
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+bin_SCRIPTS=glib-config-2.0
+BUILT_SOURCES=glib-config-2.0
+glib-config-2.0: glib-config-2.0.in
+
 .PHONY: files release sanity snapshot
 
 files:

@@ -7,13 +7,14 @@ exec_prefix_set=no
 usage()
 {
 	cat <<EOF
-Usage: glib-config [OPTIONS] [LIBRARIES]
+Usage: glib-config-2.0 [OPTIONS] [LIBRARIES]
 Options:
 	[--prefix[=DIR]]
 	[--exec-prefix[=DIR]]
 	[--version]
 	[--libs]
 	[--cflags]
+	[--help]
 Libraries:
 	glib
 	gmodule
@@ -74,6 +75,9 @@ while test $# -gt 0; do
       ;;
     gthread)
       lib_gthread=yes
+      ;;
+    --help | -h)
+      usage 0 1>&2
       ;;
     *)
       usage 1 1>&2
