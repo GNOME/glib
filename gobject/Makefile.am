@@ -13,6 +13,13 @@ INCLUDES = \
 	-DGOBJECT_COMPILATION			\
 	-DG_DISABLE_CONST_RETURNS
 
+gobject.def: gobject.symbols
+	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/\t/' | sort) > gobject.def
+
+if OS_UNIX
+TESTS = abicheck.sh
+endif
+
 libglib = $(top_builddir)/glib/libglib-2.0.la
 
 # libraries to compile and install
@@ -47,6 +54,8 @@ uninstall-libtool-import-lib:
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
+
+export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 # libtool stuff: set version and export symbols for resolving
@@ -103,14 +112,15 @@ gobject_c_sources = \
 	gvaluetypes.c
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = gmarshal.h gmarshal.c
+BUILT_SOURCES = gmarshal.h gmarshal.c 
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
 gobject_extra_sources = \
 	gmarshal.list		\
-	gmarshal.strings
+	gmarshal.strings	\
+	gobject.symbols
 
 
 #
@@ -197,7 +207,8 @@ EXTRA_DIST += 			\
 	gobject.rc.in		\
 	glib-genmarshal.1	\
 	glib-mkenums.in		\
-	glib-mkenums.1
+	glib-mkenums.1		\
+	abicheck.sh
 
 BUILT_EXTRA_DIST = \
 	makefile.msc		\

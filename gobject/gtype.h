@@ -427,6 +427,18 @@ G_CONST_RETURN gchar* g_type_name_from_instance	(GTypeInstance	*instance);
 G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
 
 
+/* --- internal functions --- */
+void    g_value_c_init          (void) G_GNUC_INTERNAL; /* sync with gvalue.c */
+void    g_value_types_init      (void) G_GNUC_INTERNAL; /* sync with gvaluetypes.c */
+void    g_enum_types_init       (void) G_GNUC_INTERNAL; /* sync with genums.c */
+void    g_param_type_init       (void) G_GNUC_INTERNAL; /* sync with gparam.c */
+void    g_boxed_type_init       (void) G_GNUC_INTERNAL; /* sync with gboxed.c */
+void    g_object_type_init      (void) G_GNUC_INTERNAL; /* sync with gobject.c */
+void    g_param_spec_types_init (void) G_GNUC_INTERNAL; /* sync with gparamspecs.c */
+void    g_value_transforms_init (void) G_GNUC_INTERNAL; /* sync with gvaluetransform.c */
+void    g_signal_init           (void) G_GNUC_INTERNAL; /* sync with gsignal.c */
+
+
 /* --- implementation bits --- */
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \

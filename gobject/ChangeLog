@@ -1,3 +1,20 @@
+2004-09-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Add ABI control using the same technique that is used in GTK+.
+	
+	* gobject.symbols: Master list of symbols.
+
+	* gobject.def: Removed. It is now generated from gobject.symbols.
+
+	* Makefile.am (gobject.def): Generate from gobject.symbols.
+	(TESTS): Add abicheck.sh
+	(EXTRA_DIST): Add abicheck.sh
+	(export_symbols): Don't export _-prefixed symbols.
+
+	* gtype.h: 
+	* gtype.c: Move the declarations of the various _init() functions
+	to the header, and mark them as G_GNUC_INTERNAL.
+
 2004-08-25 Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.2 ===

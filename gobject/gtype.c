@@ -3374,18 +3374,6 @@ g_type_name_from_class (GTypeClass *g_class)
 }
 
 
-/* --- foreign prototypes --- */
-extern void	g_value_c_init		(void); /* sync with gvalue.c */
-extern void	g_value_types_init	(void); /* sync with gvaluetypes.c */
-extern void	g_enum_types_init	(void);	/* sync with genums.c */
-extern void     g_param_type_init       (void);	/* sync with gparam.c */
-extern void     g_boxed_type_init       (void);	/* sync with gboxed.c */
-extern void     g_object_type_init      (void);	/* sync with gobject.c */
-extern void	g_param_spec_types_init	(void);	/* sync with gparamspecs.c */
-extern void	g_value_transforms_init	(void); /* sync with gvaluetransform.c */
-extern void	g_signal_init		(void);	/* sync with gsignal.c */
-
-
 /* --- initialization --- */
 void
 g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
