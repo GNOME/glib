@@ -1,3 +1,18 @@
+2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c (g_thread_init): Move the thread implementation
+	initialization to before assigning GThreadFuncs, which now is just
+	struct assigned and not memcpy'ed. Completed check for zero
+	members of GThreadFuncs. 
+
+	* makefile.mingw: Don't link to pthread anymore.
+
+	* gthread-win32.c: New file for native thread support for
+	win32. Thanks to Hans Breuer <hans@breuer.org> to got me
+	kickstarted.
+
+	* Makefile.am: Also distribute gthread-win32.c.
+
 Fri May  4 04:14:45 2001  Tim Janik  <timj@gtk.org>
 
 	* gthread-posix.c (g_cond_timed_wait_posix_impl): don't g_assert()

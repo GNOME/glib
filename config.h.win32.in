@@ -66,11 +66,7 @@
 #define GLIB_SIZEOF_PTRDIFF_T 4
 #define GLIB_SIZEOF_INTMAX_T 4
 
-#define POSIX_MIN_PRIORITY -2
-#define POSIX_MAX_PRIORITY 2
-#define POSIX_YIELD_FUNC Sleep(0)
-
-#define G_THREAD_SOURCE "gthread-posix.c"
+#define G_THREAD_SOURCE "gthread-win32.c"
 
 /* The number of bytes in a char.  */
 #define SIZEOF_CHAR 1

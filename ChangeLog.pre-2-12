@@ -1,5 +1,13 @@
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* config.h.win32.in: Removed POSIX_*. Defined G_THREAD_SOURCE to
+	"gthread-win32.c".
+
+	* glibconfig.h.win32.in: Define G_HAVE_ISO_VARARGS for gcc, don't
+	know about MSC. Define G_THREADS_IMPL_WIN32 instead of
+	G_THREADS_IMPL_POSIX and define the right static mutex macros and
+	types.
+
 	* glib.def: g_thread_create renamed to g_thread_create_full.
 
 	* gthread.c: memcpy is not necessary here. We can simply use

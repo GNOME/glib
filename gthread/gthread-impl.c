@@ -314,19 +314,23 @@ g_thread_init (GThreadFunctions* init)
   thread_system_already_initialized = TRUE;
 
   if (init == NULL)
-    init = &g_thread_functions_for_glib_use_default;
+    {
+#ifdef HAVE_G_THREAD_IMPL_INIT
+      /* now do any initialization stuff required by the
+       * implementation, but only if called with a NULL argument, of
+       * course. Otherwise it's up to the user to do so. */
+      g_thread_impl_init();
+#endif /* HAVE_G_THREAD_IMPL_INIT */
+      init = &g_thread_functions_for_glib_use_default;
+    }
   else
     g_thread_use_default_impl = FALSE;
 
-#if defined (G_PLATFORM_WIN32) && defined (__GNUC__)
-  memcpy(&g_thread_functions_for_glib_use, init, sizeof (*init));
-#else
   g_thread_functions_for_glib_use = *init;
-#endif
+
   /* It is important, that g_threads_got_initialized is not set before the
    * thread initialization functions of the different modules are called
    */
-
   supported = (init->mutex_new &&  
 	       init->mutex_lock && 
 	       init->mutex_trylock && 
@@ -340,7 +344,13 @@ g_thread_init (GThreadFunctions* init)
 	       init->cond_free &&
 	       init->private_new &&
 	       init->private_get &&
-	       init->private_get);
+	       init->private_get &&
+	       init->thread_create &&
+	       init->thread_yield &&
+	       init->thread_join &&
+	       init->thread_exit &&
+	       init->thread_set_priority &&
+	       init->thread_self);
 
   /* if somebody is calling g_thread_init (), it means that he wants to
    * have thread support, so check this
@@ -352,15 +362,6 @@ g_thread_init (GThreadFunctions* init)
       else
 	g_error ("The supplied thread function vector is invalid.");
     }
-
-  /* now do any initialization stuff required by the implementation,
-   * but only if called with a NULL argument, of course. Otherwise
-   * it's up to the user to do so. */
-
-#ifdef HAVE_G_THREAD_IMPL_INIT
-  if (g_thread_use_default_impl)
-    g_thread_impl_init();
-#endif
 
   g_thread_priority_map [G_THREAD_PRIORITY_LOW] = PRIORITY_LOW_VALUE;
   g_thread_priority_map [G_THREAD_PRIORITY_NORMAL] = PRIORITY_NORMAL_VALUE;
