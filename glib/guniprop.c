@@ -758,17 +758,22 @@ real_tolower (const gchar *str,
 	}
       else if (c == 0x03A3)	/* GREEK CAPITAL LETTER SIGMA */
 	{
-	  gunichar next_c = g_utf8_get_char (p);
-	  int next_t = TYPE(next_c);
+	  if ((max_len < 0 || p < str + max_len) && *p)
+	    {
+	      gunichar next_c = g_utf8_get_char (p);
+	      int next_type = TYPE(next_c);
 
-	  /* SIGMA mapps differently depending on whether it is
-	   * final or not. The following simplified test would
-	   * fail in the case of combining marks following the
-	   * sigma, but I don't think that occurs in real text.
-	   * The test here matches that in ICU.
-	   */
-	  if (ISALPHA(next_t)) /* Lu,Ll,Lt,Lm,Lo */
-	    val = 0x3c3;	/* GREEK SMALL SIGMA */
+	      /* SIGMA mapps differently depending on whether it is
+	       * final or not. The following simplified test would
+	       * fail in the case of combining marks following the
+	       * sigma, but I don't think that occurs in real text.
+	       * The test here matches that in ICU.
+	       */
+	      if (ISALPHA(next_type)) /* Lu,Ll,Lt,Lm,Lo */
+		val = 0x3c3;	/* GREEK SMALL SIGMA */
+	      else
+		val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
+	    }
 	  else
 	    val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
 

@@ -1,3 +1,13 @@
+Thu Jul 25 19:52:41 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/guniprop.c (real_tolower): Handle the 
+	end of the string properly when max_len is set.
+	(#88545, Morten Welinder.) Rename the next_t
+	variable to next_type to make cc-mode happy.
+
+	* glib/gconvert.c (g_iconv_open): Fix missing
+	label from previous commit.
+
 Thu Jul 25 19:41:03 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_channel_get_flags): Fix 

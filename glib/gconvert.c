@@ -135,6 +135,7 @@ g_iconv_open (const gchar  *to_codeset,
 	goto out;
     }
 
+ out:
   return (cd == (iconv_t)-1) ? (GIConv)-1 : (GIConv)cd;
 }
 
