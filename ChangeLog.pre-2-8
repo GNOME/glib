@@ -1,3 +1,10 @@
+Thu Nov 25 14:02:43 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/abicheck.sh: filter out G_GNUC stuff when doing the compare.
+
+	* glib/gmessages.c (g_assert_warning): call abort() at the end, so
+	gcc doesn't warn.
+
 2004-11-25  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Add «nb» to ALL_LINGUAS.

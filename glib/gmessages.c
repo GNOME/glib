@@ -548,6 +548,7 @@ g_assert_warning (const char *log_domain,
 	 line, 
 	 pretty_function,
 	 expression);
+  abort ();
 }
 
 #define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
