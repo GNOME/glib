@@ -7,21 +7,15 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 TOP = ../..
 
-# This is the location of pthreads for Win32, 
-# see http://sourceware.cygnus.com/pthreads-win32/
-# We want the 1999-05-30 snapshot.
-PTHREADS = $(TOP)/pthreads-snap-1999-05-30
-PTHREAD_LIBS = -L $(PTHREADS) -lpthread32
-PTHREAD_INC = -I $(PTHREADS)
-
 include ../build/win32/make.mingw
 
 ################################################################
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I . $(PTHREAD_INC)
+INCLUDES = -I .. -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\"
+DEPCFLAGS = $(PTHREAD_CFLAGS)
 
 BUILD_DLL = ../build-dll
 

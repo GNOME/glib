@@ -27,6 +27,7 @@
 /* #undef HAVE_BROKEN_WCTYPE */
 /* #undef HAVE_DOPRNT */
 #define HAVE_FLOAT_H 1
+#define HAVE_GETCWD 1
 #define HAVE_LIMITS_H 1
 /* #undef HAVE_LOCALTIME_R */
 /* #undef HAVE_LONG_DOUBLE */

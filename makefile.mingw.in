@@ -19,6 +19,7 @@ include build/win32/make.mingw
 
 INCLUDES = -I .
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
+DEPCFLAGS = $(LIBICONV_CFLAGS)
 
 DLLS_TO_BUILD = \
  	glib-$(GLIB_VER).dll \
@@ -44,6 +45,7 @@ glib_OBJECTS = \
 	gbacktrace.o \
 	gcache.o \
 	gcompletion.o \
+	gconvert.o \
 	gdataset.o \
 	gdate.o \
 	gerror.o \
@@ -87,7 +89,7 @@ makefile.mingw: makefile.mingw.in
 ################ glib
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 ################ subdirectories
 

@@ -1,3 +1,11 @@
+2000-09-21  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in: Add gconvert.o. Use libiconv.
+
+	* config.h.win32.in: Define HAVE_GETCWD.
+
+	* glib.def: Add new entry points.
+
 2000-09-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: The last released automake (1.4) still requires
