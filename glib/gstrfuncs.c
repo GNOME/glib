@@ -1888,8 +1888,6 @@ g_strsplit (const gchar *string,
 
   if (max_tokens < 1)
     max_tokens = G_MAXINT;
-  else
-    --max_tokens;
 
   remainder = string;
   s = strstr (remainder, delimiter);
@@ -1897,7 +1895,7 @@ g_strsplit (const gchar *string,
     {
       gsize delimiter_len = strlen (delimiter);   
 
-      do
+      while (--max_tokens && s)
 	{
 	  gsize len;     
 	  gchar *new_string;
@@ -1911,7 +1909,6 @@ g_strsplit (const gchar *string,
 	  remainder = s + delimiter_len;
 	  s = strstr (remainder, delimiter);
 	}
-      while (--max_tokens && s);
     }
   if (*string)
     {

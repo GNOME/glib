@@ -284,6 +284,19 @@ main (int   argc,
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",", 0), "", "", "x", "", "y", "", "z", "", "", NULL));
   TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",,", 0), "", "x", "y", "z", "", NULL));
 
+  TEST (NULL, strv_check (g_strsplit ("", ",", 1), NULL));
+  TEST (NULL, strv_check (g_strsplit ("x", ",", 1), "x", NULL));
+  TEST (NULL, strv_check (g_strsplit ("x,y", ",", 1), "x,y", NULL));
+  TEST (NULL, strv_check (g_strsplit ("x,y,", ",", 1), "x,y,", NULL));
+  TEST (NULL, strv_check (g_strsplit (",x,y", ",", 1), ",x,y", NULL));
+  TEST (NULL, strv_check (g_strsplit (",x,y,", ",", 1), ",x,y,", NULL));
+  TEST (NULL, strv_check (g_strsplit ("x,y,z", ",", 1), "x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit ("x,y,z,", ",", 1), "x,y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit (",x,y,z", ",", 1), ",x,y,z", NULL));
+  TEST (NULL, strv_check (g_strsplit (",x,y,z,", ",", 1), ",x,y,z,", NULL));
+  TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",", 1), ",,x,,y,,z,,", NULL));
+  TEST (NULL, strv_check (g_strsplit (",,x,,y,,z,,", ",,", 1), ",,x,,y,,z,,", NULL));
+
   TEST (NULL, strv_check (g_strsplit ("", ",", 2), NULL));
   TEST (NULL, strv_check (g_strsplit ("x", ",", 2), "x", NULL));
   TEST (NULL, strv_check (g_strsplit ("x,y", ",", 2), "x", "y", NULL));

@@ -1,3 +1,11 @@
+2001-11-12  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gstrfuncs.c: (g_strsplit): Fix max_tokens == 1 case to
+	match documentation.
+	* tests/strfunc-test.c: (main): Add tests.
+
+	* tests/.cvsignore: Recently-added test.
+
 Mon Nov 12 03:01:28 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gscanner.c (g_scanner_eof): G_TOKEN_ERROR is also an end

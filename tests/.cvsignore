@@ -35,6 +35,7 @@ stamp-gc-h
 stamp-h
 strfunc-test
 string-test
+strtod-test
 thread-test
 threadpool-test
 timeloop-closure
