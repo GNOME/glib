@@ -1,3 +1,8 @@
+Mon Oct  1 15:59:46 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/strings.sgml docs/glib-sections.txt: Rename
+	g_string_printfa(). to g_string_append_printf().
+
 2001-10-01  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/glib-sections.txt: Move all *_error_quark()

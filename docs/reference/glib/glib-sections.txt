@@ -552,7 +552,6 @@ g_threads_got_initialized
 g_thread_functions_for_glib_use
 <SUBSECTION Private>
 g_thread_error_quark
-</SUBSECTION>
 </SECTION>
 
 <SECTION>
@@ -1489,7 +1488,7 @@ g_string_assign
 g_string_sprintf
 g_string_sprintfa
 g_string_printf
-g_string_printfa
+g_string_append_printf
 g_string_append
 g_string_append_c
 g_string_append_unichar
