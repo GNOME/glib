@@ -1,3 +1,8 @@
+Sun Mar 14 13:23:36 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gspawn.c: Use fork1() not fork for 
+	G_THREADS_IMPL_SOLARIS. (#136971, Sebastian Wilhelmi)
+
 Sun Mar 14 12:58:30 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c: if _POLL_EMUL_H is defined, undefine

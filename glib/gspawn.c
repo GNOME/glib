@@ -39,6 +39,17 @@
 
 #include "glibintl.h"
 
+/* With solaris threads, fork() duplicates all threads, which
+ * a) could cause unexpected side-effects, and b) is expensive.
+ * Once we remove support for solaris threads, the FORK1 #define
+ * should be removedl
+ */
+#ifdef G_THREADS_IMPL_SOLARIS
+#define FORK1() fork1()
+#else
+#define FORK1() fork()
+#endif
+
 static gint g_execute (const gchar  *file,
                        gchar **argv,
                        gchar **envp,
@@ -1056,7 +1067,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
-  pid = fork ();
+  pid = FORK1 ();
 
   if (pid < 0)
     {      
@@ -1098,7 +1109,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
            */
           GPid grandchild_pid;
 
-          grandchild_pid = fork ();
+          grandchild_pid = FORK1 ();
 
           if (grandchild_pid < 0)
             {
