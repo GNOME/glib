@@ -4,7 +4,8 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-pushd $srcdir
+ORIGDIR=`pwd`
+cd $srcdir
 PROJECT=GLib
 TEST_TYPE=-f
 FILE=glib.h
@@ -60,7 +61,7 @@ aclocal $ACLOCAL_FLAGS
 
 automake $am_opt
 autoconf
-popd
+cd $ORIGDIR
 
 $srcdir/configure "$@"
 
