@@ -1879,7 +1879,7 @@ g_strrstr (const gchar *haystack,
  **/
 gchar *
 g_strrstr_len (const gchar *haystack,
-	       gint         haystack_len,
+	       gssize        haystack_len,
 	       const gchar *needle)
 {
   g_return_val_if_fail (haystack != NULL, NULL);

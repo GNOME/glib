@@ -71,7 +71,7 @@ struct _GLogHandler
 
 
 /* --- prototypes --- */
-static guint printf_string_upper_bound (const gchar *format,
+static gsize printf_string_upper_bound (const gchar *format,
 					gboolean     may_warn,
 					va_list      args);
 

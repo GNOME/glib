@@ -1,3 +1,11 @@
+2001-07-12  Mark Murnane  <Mark.Murnane@sun.com>
+
+	* glib/gmessages.c: Changed prototype of printf_string_upper_bound
+	to return gsize.  Now matches the actual function body.
+
+	* glib/gstrfuncs.c (g_strrstr_len): Changed type of parameter #2 
+	from gint to gssize.  Now matches the prototype in gstrfuncs.h.
+	
 2001-07-11  Darin Adler  <darin@bentspoon.com>
 
 	* .cvsignore: Add some generated files.
