@@ -1,3 +1,13 @@
+Sat Oct 28 00:28:09 2000  Tim Janik  <timj@gtk.org>
+
+	* gclosure.c (g_closure_add_marshal_guards): fixed notifier position
+	for post_marshal guard which was off at 0.
+
+Fri Oct 27 21:49:31 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject.[hc]: doh, fix argument order in for
+	g_cclosure_new_object_swap and g_cclosure_new_object.
+
 2000-10-28  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in: Make glib-genmarshal.exe.

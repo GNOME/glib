@@ -151,10 +151,10 @@ gpointer    g_object_steal_qdata	   (GObject	   *object,
 					    GQuark	    quark);
 void	    g_object_watch_closure	   (GObject	   *object,
 					    GClosure	   *closure);
-GClosure*   g_cclosure_new_object	   (gpointer        object,
-					    GCallback	    callback_func);
-GClosure*   g_cclosure_new_object_swap	   (gpointer        object,
-					    GCallback	    callback_func);
+GClosure*   g_cclosure_new_object	   (GCallback	    callback_func,
+					    gpointer        object);
+GClosure*   g_cclosure_new_object_swap	   (GCallback	    callback_func,
+					    gpointer        object);
 GClosure*   g_closure_new_object	   (guint           sizeof_closure,
 					    GObject	   *object);
 void        g_value_set_object		   (GValue         *value,

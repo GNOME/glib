@@ -215,8 +215,8 @@ g_closure_add_marshal_guards (GClosure      *closure,
   i = closure->n_guards++;
   closure->notifiers[closure->meta_marshal + i].data = pre_marshal_data;
   closure->notifiers[closure->meta_marshal + i].notify = pre_marshal_notify;
-  closure->notifiers[closure->meta_marshal + i + i].data = post_marshal_data;
-  closure->notifiers[closure->meta_marshal + i + i].notify = post_marshal_notify;
+  closure->notifiers[closure->meta_marshal + i + 1].data = post_marshal_data;
+  closure->notifiers[closure->meta_marshal + i + 1].notify = post_marshal_notify;
 }
 
 void

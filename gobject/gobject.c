@@ -995,8 +995,8 @@ g_closure_new_object (guint    sizeof_closure,
 }
 
 GClosure*
-g_cclosure_new_object (gpointer  _object,
-		       GCallback callback_func)
+g_cclosure_new_object (GCallback callback_func,
+		       gpointer  _object)
 {
   GObject *object = _object;
   GClosure *closure;
@@ -1012,8 +1012,8 @@ g_cclosure_new_object (gpointer  _object,
 }
 
 GClosure*
-g_cclosure_new_object_swap (gpointer  _object,
-			    GCallback callback_func)
+g_cclosure_new_object_swap (GCallback callback_func,
+			    gpointer  _object)
 {
   GObject *object = _object;
   GClosure *closure;
