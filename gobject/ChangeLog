@@ -1,3 +1,9 @@
+Mon Aug 25 14:16:48 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gtypemodule.c (g_type_module_register_type): Clarify
+	docs on the return. Fix a memory leak if a type with a
+	value table is reloaded.
+
 Fri May 30 14:42:24 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject.c (g_value_set_object): Order refs/unrefs

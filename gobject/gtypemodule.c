@@ -312,14 +312,18 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
  * @flags:          flags field providing details about the type           
  * 
  * Looks up or registers a type that is implemented with a particular
- * type plugin. If a type with name @type_name is already registered,
+ * type plugin. If a type with name @type_name was previously registered,
  * the #GType identifier for the type is returned, otherwise the type
  * is newly registered, and the resulting #GType identifier returned.
+ *
+ * When reregistering a type (typically because a module is unloaded
+ * then reloaded, and reinitialized), @module and @parent_type must
+ * be the same as they were previously.
  *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
  *
- * Return value: the type ID for the class.
+ * Return value: the new or existing type ID
  **/
 GType
 g_type_module_register_type (GTypeModule     *module,
@@ -361,6 +365,9 @@ g_type_module_register_type (GTypeModule     *module,
 		     parent_type_name ? parent_type_name : "(unknown)");
 	  return 0;
 	}
+
+      if (module_type_info->info.value_table)
+	g_free (odule_type_info->info.value_table);
     }
   else
     {
