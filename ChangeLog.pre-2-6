@@ -1,3 +1,14 @@
+2001-10-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib-zip.in: New file, used to build distribution packages for
+	Windows.
+
+	* configure.in: Expand it.
+
+	* Makefile.am: Distribute it.
+
+	* config.h.win32.in: Update to match currently produced config.h
+
 2001-10-29  Daniel Egger  <degger@fhm.edu>
 
 	* glib/gbacktrace.h: Fix non-Intel/-Alpha version of the 

@@ -180,6 +180,15 @@
 /* Define if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
 
+/* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
+/* #undef HAVE_LANGINFO_CODESET */
+
+/* Define if you have the <langinfo.h> header file. */
+/* #undef HAVE_LANGINFO_H */
+
+/* Define if your <locale.h> file defines LC_MESSAGES. */
+/* #undef HAVE_LC_MESSAGES */
+
 /* Define if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
 
@@ -213,6 +222,9 @@
 /* Define if you have the `nanosleep' function. */
 /* #undef HAVE_NANOSLEEP */
 
+/* Define if you have the `nl_langinfo' function. */
+/* #undef HAVE_NL_LANGINFO */
+
 /* Define if you have the <nl_types.h> header file. */
 /* #undef HAVE_NL_TYPES_H */
 
@@ -245,6 +257,9 @@
 
 /* Define if you have the `setlocale' function. */
 #define HAVE_SETLOCALE 1
+
+/* Define if you have the <stddef.h> header file. */
+#define HAVE_STDDEF_H 1
 
 /* Define if you have the <stdint.h> header file. */
 #ifndef _MSC_VER

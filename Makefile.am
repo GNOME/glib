@@ -12,6 +12,7 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
 	glib.spec.in		\
+	glib-zip.in		\
 	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
@@ -35,7 +36,8 @@ EXTRA_DIST = 			\
 BUILT_EXTRA_DIST = 		\
 	glibconfig.h.win32	\
 	config.h.win32		\
-	glib.spec
+	glib.spec		\
+	glib-zip
 
 configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h
