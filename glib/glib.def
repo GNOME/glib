@@ -634,6 +634,7 @@ EXPORTS
 	g_strrstr_len
 	g_strsignal
 	g_strsplit
+	g_strsplit_set
 	g_strstr_len
 	g_strtod
 	g_strup

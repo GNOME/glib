@@ -1,3 +1,7 @@
+2004-02-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add g_strsplit_set.
+
 Sat Jan 31 03:13:56 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/garray.c (g_byte_array_remove_range): Don't return FALSE
