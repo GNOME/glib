@@ -1,3 +1,7 @@
+2002-02-07  Changwoo Ryu  <cwryu@debian.org>
+
+	* configure.in (ALL_LINGUAS): Added "ko".
+
 Wed Feb  6 14:44:18 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_context_prepare): Handle 
