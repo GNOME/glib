@@ -56,6 +56,7 @@ test_command_lines[] =
   /*  9 */ "foo \\\" la la la",
   /* 10 */ "foo \\ foo woo woo\\ ",
   /* 11 */ "foo \"yada yada \\$\\\"\"",
+  /* 12 */ "foo \"c:\\\\\"",
   NULL
 };
 
@@ -71,6 +72,7 @@ static const gchar *result8[] = { "foo", "", "", NULL };
 static const gchar *result9[] = { "foo", "\"", "la", "la", "la", NULL };
 static const gchar *result10[] = { "foo", " foo", "woo", "woo ", NULL };
 static const gchar *result11[] = { "foo", "yada yada $\"", NULL };
+static const gchar *result12[] = { "foo", "c:\\", NULL };
 
 static const TestResult
 correct_results[] =
@@ -86,7 +88,8 @@ correct_results[] =
   { G_N_ELEMENTS (result8) - 1, result8 },
   { G_N_ELEMENTS (result9) - 1, result9 },
   { G_N_ELEMENTS (result10) - 1, result10 },
-  { G_N_ELEMENTS (result11) - 1, result11 }
+  { G_N_ELEMENTS (result11) - 1, result11 },
+  { G_N_ELEMENTS (result12) - 1, result12 }
 };
 
 static void

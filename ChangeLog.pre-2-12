@@ -1,3 +1,11 @@
+Sat Jul 31 20:33:07 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/shell-test.c: Include a test involving consecutive
+	backslashes followed by a non-escaped doublequote.
+	
+	* glib/gshell.c (tokenize_command_line): Count consecutive
+	backslashes mod 2 to detect escaped doubleqotes.  (#127306)
+
 2004-07-30  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c (g_unescape_uri_string): Don't validate

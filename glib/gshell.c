@@ -413,10 +413,12 @@ tokenize_command_line (const gchar *command_line,
   const gchar *p;
   GString *current_token = NULL;
   GSList *retval = NULL;
-  
-  current_quote = '\0';
-  p = command_line;
+  gboolean quoted;;
 
+  current_quote = '\0';
+  quoted = FALSE;
+  p = command_line;
+ 
   while (*p)
     {
       if (current_quote == '\\')
@@ -452,7 +454,7 @@ tokenize_command_line (const gchar *command_line,
         {
           if (*p == current_quote &&
               /* check that it isn't an escaped double quote */
-              !(current_quote == '"' && p != command_line && *(p - 1) == '\\'))
+              !(current_quote == '"' && quoted))
             {
               /* close the quote */
               current_quote = '\0';
@@ -515,6 +517,14 @@ tokenize_command_line (const gchar *command_line,
               break;
             }
         }
+
+      /* We need to count consecutive backslashes mod 2, 
+       * to detect escaped doublequotes.
+       */
+      if (*p != '\\')
+	quoted = FALSE;
+      else
+	quoted = !quoted;
 
       ++p;
     }
