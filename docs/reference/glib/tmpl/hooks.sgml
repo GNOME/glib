@@ -31,7 +31,6 @@ list of hook functions.
 @finalize_hook: the function to call to finalize a #GHook element. The
 default behaviour is to call the hooks <function>destroy</function> function.
 
-
 <!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
 <para>
 Defines the type of function to be called when a hook in a 
@@ -59,7 +58,6 @@ predefined flags.
 signatures for this function are #GHookFunc and #GHookCheckFunc.
 @destroy: the default <function>finalize_hook</function> function of a 
 #GHookList calls this member of the hook that is being finalized.
-
 
 <!-- ##### USER_FUNCTION GHookFunc ##### -->
 <para>

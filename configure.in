@@ -432,6 +432,21 @@ fi
 AC_MSG_RESULT($SANE_MALLOC_PROTOS)
 CFLAGS=$glib_save_CFLAGS
 
+dnl
+dnl check in which direction the stack grows
+dnl
+AC_CACHE_CHECK([for growing stack pointer],glib_cv_stack_grows,[
+        AC_TRY_RUN([
+	volatile int *a = 0, *b = 0;
+	void foo (void);
+	int main () { volatile int y = 7; a = &y; foo (); return b > a; }
+	void foo (void) { volatile int x = 5; b = &x; }
+       	],
+	glib_cv_stack_grows=no
+        ,
+	glib_cv_stack_grows=yes
+        ,)
+])
 
 dnl AC_C_INLINE is useless to us since it bails out too early, we need to
 dnl truely know which ones of `inline', `__inline' and `__inline__' are
@@ -1779,6 +1794,12 @@ _______EOF
 _______EOF
 	fi
 
+	case x$g_stack_grows in
+	xyes) echo "#define G_HAVE_GROWING_STACK 1" >>$outfile ;;
+	*)    echo "#define G_HAVE_GROWING_STACK 0" >>$outfile ;;
+	esac
+
+
 	echo >>$outfile
 	if test x$g_have_eilseq = xno; then
 		cat >>$outfile <<_______EOF
@@ -2085,6 +2106,8 @@ x$ac_cv_c_bigendian)
   g_bs_alien=BE
   ;;
 esac
+
+g_stack_grows=$glib_cv_stack_grows
 
 g_have_eilseq=$have_eilseq
 
