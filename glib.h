@@ -1273,7 +1273,7 @@ GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 					       G_LOG_LEVEL_WARNING, \
 					       format, ##args)
 #else	/* !__GNUC__ */
-static inline void
+static void
 g_error (const gchar *format,
 	 ...)
 {
@@ -1282,7 +1282,7 @@ g_error (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, args);
   va_end (args);
 }
-static inline void
+static void
 g_message (const gchar *format,
 	   ...)
 {
@@ -1291,7 +1291,7 @@ g_message (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
   va_end (args);
 }
-static inline void
+static void
 g_warning (const gchar *format,
 	   ...)
 {

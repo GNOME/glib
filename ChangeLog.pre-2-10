@@ -1,3 +1,9 @@
+Wed Jan 13 11:27:24 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* glib.h: don't use inline for !__GNUC__ case with g_warning,
+	g_error, and g_message wrappers since some compilers throw
+	away arguments in this case
+
 Tue Jan 12 21:59:14 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
