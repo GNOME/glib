@@ -67,13 +67,13 @@ don't want it to be reallocated too often.
 
 <!-- ##### FUNCTION g_string_assign ##### -->
 <para>
-Copies the characters from one #GString into another, destroying any previous
+Copies the characters from a string into a #GString, destroying any previous
 contents. It is rather like the standard <function>strcpy()</function> function, except that
 you do not have to worry about having enough space to copy the string.
 </para>
 
 @string: the destination #GString. Its current contents are destroyed.
-@rval: the source #GString.
+@val: the string to copy into @string.
 @Returns: the destination #GString.
 
 

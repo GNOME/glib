@@ -1,3 +1,12 @@
+2002-04-24  Matthias Clasen  <maclas@gmx.de>
+
+	Merged from HEAD:
+
+	* gobject/gobject-sections.txt: Documentation fix.  (#78728)
+
+	* gobject/tmpl/gtype.sgml:
+	* glib/tmpl/strings.sgml: Documentation enhancements.
+
 2002-03-25  Sven Neumann  <sven@gimp.org>
 
 	* glib/tmpl/scanner.sgml: Fixed documentation about unused struct 
