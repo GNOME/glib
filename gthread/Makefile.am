@@ -47,8 +47,10 @@ export_symbols = -export-symbols gthread.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgthread-2.0.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
+
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgthread-2.0.dll.a
+	-rm $(DESTDIR)$(libdir)/libgthread-2.0.dll.a $(DESTDIR)$(libdir)/gthread-2.0.def
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
