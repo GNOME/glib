@@ -147,9 +147,17 @@ case "$host" in
     glib_pid_type=int
     ;;
 esac
+case $host in
+  *-*-linux*)
+    glib_os_linux=yes
+    ;;
+esac
+
+
 AC_MSG_RESULT([$glib_native_win32])
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
+AM_CONDITIONAL(OS_LINUX, [test "$glib_os_linux" = "yes"])
 AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)

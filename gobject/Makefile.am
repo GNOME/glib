@@ -19,7 +19,7 @@ gobject.def: gobject.symbols
 gobjectalias.h: gobject.symbols
 	$(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
 
-if OS_UNIX
+if OS_LINUX
 TESTS = abicheck.sh
 endif
 

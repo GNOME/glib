@@ -1,3 +1,11 @@
+2004-12-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Add an OS_LINUX conditional.
+
+	* glib/Makefile.am (TESTS): Only check the ABI on 
+	linux, since the shell script is not portable, and libtool
+	deficiencies may distort the ABI on other platforms.  (#161741)
+
 2004-12-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (print_entry): Don't show

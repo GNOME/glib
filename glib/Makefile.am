@@ -19,7 +19,7 @@ glib.def: glib.symbols
 galias.h: glib.symbols
 	  $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
 
-if OS_UNIX
+if OS_LINUX
 TESTS = abicheck.sh
 endif
 

@@ -1,3 +1,8 @@
+2004-12-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* Makefile.am: Only check the ABI on linux, since
+	the shell script is not portable.  (#161734, Adrian Bunk)
+
 2004-12-16  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.6.0 ===
