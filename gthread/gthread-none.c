@@ -25,4 +25,4 @@
  */
 
 static GThreadFunctions
-g_mutex_functions_for_glib_use_default; /* is NULLified */
+g_thread_functions_for_glib_use_default; /* is NULLified */

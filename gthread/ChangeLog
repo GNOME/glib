@@ -1,0 +1,8 @@
+1998-12-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-none.c: 
+	s/g_mutex_functions_for_glib_use/g_thread_functions_for_glib_use/
+
+	* ChangeLog: from now on there is an extra ChangeLog for gthread
+	
+
