@@ -1,5 +1,7 @@
 2002-12-15  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/glib.def: Add g_rand_init.
+
 	* config.h.win32.in: Slight update to match what is currently
 	produced by configure.
 

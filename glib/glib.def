@@ -440,6 +440,7 @@ EXPORTS
 	g_rand_double
 	g_rand_double_range
 	g_rand_free
+	g_rand_init
 	g_rand_int
 	g_rand_int_range
 	g_rand_new
