@@ -44,12 +44,12 @@ EXPORTS
 	g_async_queue_unref
 	g_async_queue_unref_and_unlock
 	g_atexit
-	g_atomic_int_add_fallback
-	g_atomic_int_compare_and_exchange_fallback
-	g_atomic_int_exchange_and_add_fallback
-;	g_atomic_int_get_fallback
-	g_atomic_pointer_compare_and_exchange_fallback
-;	g_atomic_pointer_get_fallback
+	g_atomic_int_add
+	g_atomic_int_compare_and_exchange
+	g_atomic_int_exchange_and_add
+;	g_atomic_int_get
+	g_atomic_pointer_compare_and_exchange
+;	g_atomic_pointer_get
 	g_basename
 	g_bit_nth_lsf
 	g_bit_nth_msf

@@ -417,8 +417,51 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 #  define DEFINE_WITH_MUTEXES
 # endif /* G_ATOMIC */
 #else /* !__GNUC__ */
-# define DEFINE_WITH_MUTEXES
+# ifdef G_PLATFORM_WIN32
+#  define DEFINE_WITH_WIN32_INTERLOCKED
+# else
+#  define DEFINE_WITH_MUTEXES
+# endif
 #endif /* __GNUC__ */
+
+#ifdef DEFINE_WITH_WIN32_INTERLOCKED
+# include <windows.h>
+gint32   
+g_atomic_int_exchange_and_add (gint32   *atomic, 
+			       gint32    val)
+{
+  return InterlockedExchangeAdd (atomic, val);
+}
+
+void     
+g_atomic_int_add (gint32   *atomic, 
+		  gint32    val)
+{
+  InterlockedExchangeAdd (atomic, val);
+}
+
+gboolean 
+g_atomic_int_compare_and_exchange (gint32   *atomic, 
+				   gint32    oldval, 
+				   gint32    newval)
+{
+  return (guint32)InterlockedCompareExchange ((PVOID*)atomic, 
+                                              (PVOID)newval, 
+                                              (PVOID)oldval) == oldval;
+}
+
+gboolean 
+g_atomic_pointer_compare_and_exchange (gpointer *atomic, 
+				       gpointer  oldval, 
+				       gpointer  newval)
+{
+# if GLIB_SIZEOF_VOID_P != 4 /* no 32-bit system */
+#  error "InterlockedCompareExchangePointer needed"
+# else
+   return InterlockedCompareExchange (atomic, newval, oldval) == oldval;
+# endif
+}
+#endif /* DEFINE_WITH_WIN32_INTERLOCKED */
 
 #ifdef DEFINE_WITH_MUTEXES
 /* We have to use the slow, but safe locking method */

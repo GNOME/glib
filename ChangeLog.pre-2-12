@@ -1,3 +1,10 @@
+2003-02-29  Hans Breuer  <hans@breuer.org>
+
+	* glib/gatomic.c : added win32 api based implementation
+	for G_PLATFORM_WIN32, !__GNUC__
+
+	* glb/glib.def : change to g_atomi_* no _fallback
+
 2004-02-29  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in, glib/gatomic.c, glib/gatomic.h: Moved the
