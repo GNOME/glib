@@ -1,3 +1,8 @@
+Sun Oct 17 18:11:40 1999  Tim Janik  <timj@gtk.org>
+
+	* gdataset.c (g_data_set_internal): remove g_dataset_global_lock around
+	destroy() notification here as well.
+
 1999-10-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gdataset.c (g_datalist_clear_i): Avoid Freezing, when g_datalist

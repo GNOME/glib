@@ -237,7 +237,11 @@ g_data_set_internal (GData	  **datalist,
 	       * data without destroy notification
 	       */
 	      if (list->destroy_func && !destroy_func)
-		list->destroy_func (list->data);
+		{
+		  G_UNLOCK (g_dataset_global);
+		  list->destroy_func (list->data);
+		  G_LOCK (g_dataset_global);
+		}
 	      
 	      if (g_data_cache_length < G_DATA_CACHE_MAX)
 		{
@@ -279,7 +283,9 @@ g_data_set_internal (GData	  **datalist,
 		  /* we need to have updated all structures prior to
 		   * invokation of the destroy function
 		   */
+		  G_UNLOCK (g_dataset_global);
 		  dfunc (ddata);
+		  G_LOCK (g_dataset_global);
 		}
 	      
 	      return;
