@@ -1,3 +1,14 @@
+2005-01-04  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix the inlining magic.  (#157536, Jens Hatlak, and
+	#149907, Morten Welinder)
+	
+	* configure.in: Define G_CAN_INLINE in glibconfig.h
+
+	* glib/gutils.h: Streamline the inlining magic a bit,
+	don't use extern when implementing the non-inlined 
+	version.
+
 2005-01-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c (g_find_program_in_path): Don't return

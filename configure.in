@@ -662,6 +662,34 @@ case x$glib_cv_hasinline in
 xyes) AC_DEFINE(G_HAVE_INLINE,1,[Have inline keyword])
 esac
 
+# if we can use inline functions in headers
+AC_MSG_CHECKING(if inline functions in headers work)
+AC_LINK_IFELSE([
+#if defined (G_HAVE_INLINE) && defined (__GNUC__) && defined (__STRICT_ANSI__)
+#  undef inline
+#  define inline __inline__
+#elif !defined (G_HAVE_INLINE)
+#  undef inline
+#  if defined (G_HAVE___INLINE__)
+#    define inline __inline__
+#  elif defined (G_HAVE___INLINE)
+#    define inline __inline
+#  endif
+#endif
+
+int glib_test_func2 (int);
+
+static inline int
+glib_test_func1 (void) {
+  return glib_test_func2 (1);
+}
+
+int
+main (void) {
+  int i = 1;
+}],[g_can_inline=yes],[g_can_inline=no])
+AC_MSG_RESULT($g_can_inline)
+
 # check for flavours of varargs macros
 AC_MSG_CHECKING(for ISO C99 varargs macros in C)
 AC_TRY_COMPILE([],[
@@ -2212,6 +2240,20 @@ $glib_vacopy
 $glib_inline
 #endif	/* !__cplusplus */
 
+#ifdef	__cplusplus
+#define G_CAN_INLINE	1
+_______EOF
+
+	if test x$g_can_inline = xyes ; then
+		cat >>$outfile <<_______EOF
+#else	/* !__cplusplus */
+#define G_CAN_INLINE	1
+_______EOF
+	fi
+
+	cat >>$outfile <<_______EOF
+#endif
+
 _______EOF
 
 	if test x$g_have_iso_c_varargs = xyes ; then
@@ -2591,6 +2633,7 @@ g_have_gnuc_varargs=$g_have_gnuc_varargs
 g_have_iso_c_varargs=$g_have_iso_c_varargs
 g_have_iso_cxx_varargs=$g_have_iso_cxx_varargs
 
+g_can_inline=$g_can_inline
 g_have_gnuc_visibility=$g_have_gnuc_visibility
 
 case xyes in
