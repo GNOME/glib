@@ -1291,8 +1291,6 @@ g_filename_from_utf8 (const gchar *utf8string)
 #endif
 }
 
-
-/* blame Elliot for these next five routines */
 gchar*
 g_strchug (gchar *string)
 {
@@ -1303,7 +1301,7 @@ g_strchug (gchar *string)
   for (start = string; *start && isspace (*start); start++)
     ;
 
-  g_memmove(string, start, strlen(start) + 1);
+  g_memmove (string, start, strlen( start) + 1);
 
   return string;
 }

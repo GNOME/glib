@@ -377,32 +377,26 @@ g_slist_copy (GSList *list)
 GSList*
 g_slist_reverse (GSList *list)
 {
-  GSList *tmp;
-  GSList *prev;
-  GSList *last;
-
-  last = NULL;
-  prev = NULL;
-
+  GSList *prev = NULL;
+  GSList *next = NULL;
+  
   while (list)
     {
-      last = list;
-
-      tmp = list->next;
+      next = list->next;
       list->next = prev;
-
+      
       prev = list;
-      list = tmp;
+      list = next;
     }
-
-  return last;
+  
+  return prev;
 }
 
 GSList*
 g_slist_nth (GSList *list,
 	     guint   n)
 {
-  while ((n-- > 0) && list)
+  while (n-- > 0 && list)
     list = list->next;
 
   return list;
@@ -412,7 +406,7 @@ gpointer
 g_slist_nth_data (GSList   *list,
 		  guint     n)
 {
-  while ((n-- > 0) && list)
+  while (n-- > 0 && list)
     list = list->next;
 
   return list ? list->data : NULL;

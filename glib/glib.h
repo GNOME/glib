@@ -1159,6 +1159,7 @@ void     g_node_pop_allocator   (void);
 GNode*	 g_node_new		(gpointer	   data);
 void	 g_node_destroy		(GNode		  *root);
 void	 g_node_unlink		(GNode		  *node);
+GNode*   g_node_copy            (GNode            *node);
 GNode*	 g_node_insert		(GNode		  *parent,
 				 gint		   position,
 				 GNode		  *node);
@@ -1598,24 +1599,22 @@ gchar*   g_strjoin		(const gchar  *separator,
  */
 gchar*   g_strcompress		(const gchar *source);
 
-/* Copy a string escaping nonprintable characters like in C strings.
- * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
- * to a string containing characters that are not to be escaped.
- */
-gchar*   g_strescape		(const gchar *source,
-				 const gchar *exceptions);
-/*
- * Convert between the operating system (or C runtime)
+/* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
  */
 gchar*   g_filename_to_utf8 (const gchar *opsysstring);
 gchar*   g_filename_from_utf8 (const gchar *utf8string);
 
-/* Deprecated API:
- * gchar* g_strescape (const gchar *source);
- * Luckily this function wasn't much used.
- * Add a second NULL parameter in calls for mostly identical semantics.
+/* Copy a string escaping nonprintable characters like in C strings.
+ * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
+ * to a string containing characters that are not to be escaped.
+ *
+ * Deprecated API: gchar* g_strescape (const gchar *source);
+ * Luckily this function wasn't used much, using NULL as second parameter
+ * provides mostly identical semantics.
  */
+gchar*   g_strescape		(const gchar *source,
+				 const gchar *exceptions);
 
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);

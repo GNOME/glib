@@ -77,7 +77,7 @@ g_node_test (void)
   GNode *node_G;
   GNode *node_J;
   guint i;
-  gchar *tstring;
+  gchar *tstring, *cstring;
 
   g_print ("checking n-way trees: ");
   failed = FALSE;
@@ -165,7 +165,18 @@ g_node_test (void)
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   TEST (tstring, strcmp (tstring, "ABFEDCGKJIH") == 0);
   g_free (tstring); tstring = NULL;
-  
+
+  cstring = NULL;
+  node = g_node_copy (root);
+  TEST (NULL, g_node_n_nodes (root, G_TRAVERSE_ALL) == g_node_n_nodes (node, G_TRAVERSE_ALL));
+  TEST (NULL, g_node_max_height (root) == g_node_max_height (node));
+  g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
+  g_node_traverse (node, G_IN_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &cstring);
+  TEST (cstring, strcmp (tstring, cstring) == 0);
+  g_free (tstring); tstring = NULL;
+  g_free (cstring); cstring = NULL;
+  g_node_destroy (node);
+
   g_node_destroy (root);
 
   /* allocation tests */

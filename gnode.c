@@ -190,6 +190,24 @@ g_node_unlink (GNode *node)
 }
 
 GNode*
+g_node_copy (GNode *node)
+{
+  GNode *new_node = NULL;
+  
+  if (node)
+    {
+      GNode *child;
+      
+      new_node = g_node_new (node->data);
+      
+      for (child = g_node_last_child (node); child; child = child->prev)
+	g_node_prepend (new_node, g_node_copy (child));
+    }
+  
+  return new_node;
+}
+
+GNode*
 g_node_insert (GNode *parent,
 	       gint   position,
 	       GNode *node)
@@ -916,6 +934,9 @@ GNode*
 g_node_first_sibling (GNode *node)
 {
   g_return_val_if_fail (node != NULL, NULL);
+  
+  if (node->parent)
+    return node->parent->children;
   
   while (node->prev)
     node = node->prev;

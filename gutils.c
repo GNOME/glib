@@ -515,8 +515,8 @@ g_get_any_init (void)
 		 */
 		if (error == 0 || error == ENOENT)
 		  {
-		    g_warning ("getpwuid_r(): failed due to: " 
-			       "No such user: %lu.", (unsigned long)getuid ());
+		    g_warning ("getpwuid_r(): failed due to unknown user id (%lu)",
+			       (gulong) getuid ());
 		    break;
 		  }
 		if (bufsize > 32 * 1024)
@@ -541,11 +541,7 @@ g_get_any_init (void)
 	if (pw)
 	  {
 	    g_user_name = g_strdup (pw->pw_name);
-#ifdef HAVE_PW_GECOS
 	    g_real_name = g_strdup (pw->pw_gecos);
-#else
-	    g_real_name = g_strdup (g_user_name);
-#endif
 	    if (!g_home_dir)
 	      g_home_dir = g_strdup (pw->pw_dir);
 	  }

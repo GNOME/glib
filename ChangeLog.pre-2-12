@@ -1,3 +1,37 @@
+Wed Mar  1 10:39:39 2000  Tim Janik  <timj@gtk.org>
+
+	* gslist.c (g_slist_reverse): minor optimization.
+
+	* testglib.c (g_node_test): added a couple of tests for
+	g_node_copy().
+
+	* glib.h:
+	* gnode.c (g_node_copy): new function to copy subtrees,
+	supplied by dbsears@ix.netcom.com.
+	changed iterator to walk the children list backwards, so
+	we get down from O(n^2) to O(n).
+
+	* gnode.c (g_node_first_sibling): applied patch from
+	dbsears@ix.netcom.com to optimize access if node->parent
+	is present.
+
+	* gutils.c (g_get_any_init): backed out HAVE_PW_GECOS check around
+	assignment of g_real_name, sicne HAVE_PW_GECOS is never defined and
+	thus breaks the original code.
+
+	* merged changes from 1.2.7.
+
+Fri Jan 28 11:37:41 2000  Owen Taylor  <otaylor@redhat.com>
+
+        Bug #4156 - Changes vaguely modelled after Scott Gifford's patch
+
+        * gtimer.c (g_timer_elapsed): Never report negative times -
+        clip times to 0.
+
+        * gmain.c (g_timeout_prepare): Guard against unexpected
+        clock shifts by never setting a timeout of more than
+        data->interval msecs.
+
 2000-02-27  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Add new functions.

@@ -22,6 +22,11 @@ Wed Mar  1 05:34:47 2000  Tim Janik  <timj@gtk.org>
 
 	* merges from glib-1-2.
 
+Sat Feb 19 19:43:29 2000  Tim Janik  <timj@gtk.org>
+
+        * testgmodule.c (main): added test to check that not yet bound symbols
+        in shared libraries of the main module are retrievable, from David Gero.
+
 2000-01-13  Martin Baulig  <martin@home-of-linux.org>
 
 	* gmodule.c (g_module_open): Check whether `check_init' is not NULL

@@ -1236,21 +1236,49 @@ g_main_wakeup (void)
 
 /* Timeouts */
 
-static gboolean 
-g_timeout_prepare  (gpointer  source_data, 
+static void
+g_timeout_set_expiration (GTimeoutData *data,
+			  GTimeVal     *current_time)
+{
+  guint seconds = data->interval / 1000;
+  guint msecs = data->interval - seconds * 1000;
+
+  data->expiration.tv_sec = current_time->tv_sec + seconds;
+  data->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
+  if (data->expiration.tv_usec >= 1000000)
+    {
+      data->expiration.tv_usec -= 1000000;
+      data->expiration.tv_sec++;
+    }
+}
+
+static gboolean
+g_timeout_prepare  (gpointer  source_data,
 		    GTimeVal *current_time,
 		    gint     *timeout,
 		    gpointer  user_data)
 {
   glong msec;
   GTimeoutData *data = source_data;
-
-  msec = (data->expiration.tv_sec  - current_time->tv_sec) * 1000 +
-         (data->expiration.tv_usec - current_time->tv_usec) / 1000;
-
-  *timeout = (msec <= 0) ? 0 : msec;
-
-  return (msec <= 0);
+  
+  msec = ((data->expiration.tv_sec  - current_time->tv_sec) * 1000 +
+	  (data->expiration.tv_usec - current_time->tv_usec) / 1000);
+  
+  if (msec < 0)
+    msec = 0;
+  else if (msec > data->interval)
+    {
+      /* The system time has been set backwards, so we
+       * reset the expiration time to now + data->interval;
+       * this at least avoids hanging for long periods of time.
+       */
+      g_timeout_set_expiration (data, current_time);
+      msec = data->interval;
+    }
+  
+  *timeout = msec;
+  
+  return msec == 0;
 }
 
 static gboolean 
@@ -1259,14 +1287,14 @@ g_timeout_check (gpointer  source_data,
 		 gpointer  user_data)
 {
   GTimeoutData *data = source_data;
-
-  return (data->expiration.tv_sec < current_time->tv_sec) ||
-         ((data->expiration.tv_sec == current_time->tv_sec) &&
-	  (data->expiration.tv_usec <= current_time->tv_usec));
+  
+  return ((data->expiration.tv_sec < current_time->tv_sec) ||
+	  ((data->expiration.tv_sec == current_time->tv_sec) &&
+	   (data->expiration.tv_usec <= current_time->tv_usec)));
 }
 
 static gboolean
-g_timeout_dispatch (gpointer source_data, 
+g_timeout_dispatch (gpointer source_data,
 		    GTimeVal *dispatch_time,
 		    gpointer user_data)
 {
@@ -1274,47 +1302,29 @@ g_timeout_dispatch (gpointer source_data,
 
   if (data->callback (user_data))
     {
-      guint seconds = data->interval / 1000;
-      guint msecs = data->interval - seconds * 1000;
+      g_timeout_set_expiration (data, dispatch_time);
 
-      data->expiration.tv_sec = dispatch_time->tv_sec + seconds;
-      data->expiration.tv_usec = dispatch_time->tv_usec + msecs * 1000;
-      if (data->expiration.tv_usec >= 1000000)
-	{
-	  data->expiration.tv_usec -= 1000000;
-	  data->expiration.tv_sec++;
-	}
       return TRUE;
     }
   else
     return FALSE;
 }
 
-guint 
+guint
 g_timeout_add_full (gint           priority,
-		    guint          interval, 
+		    guint          interval,
 		    GSourceFunc    function,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
-  guint seconds;
-  guint msecs;
   GTimeoutData *timeout_data = g_new (GTimeoutData, 1);
+  GTimeVal current_time;
 
   timeout_data->interval = interval;
   timeout_data->callback = function;
-  g_get_current_time (&timeout_data->expiration);
+  g_get_current_time (&current_time);
 
-  seconds = timeout_data->interval / 1000;
-  msecs = timeout_data->interval - seconds * 1000;
-
-  timeout_data->expiration.tv_sec += seconds;
-  timeout_data->expiration.tv_usec += msecs * 1000;
-  if (timeout_data->expiration.tv_usec >= 1000000)
-    {
-      timeout_data->expiration.tv_usec -= 1000000;
-      timeout_data->expiration.tv_sec++;
-    }
+  g_timeout_set_expiration (timeout_data, &current_time);
 
   return g_source_add (priority, FALSE, &timeout_funcs, timeout_data, data, notify);
 }
