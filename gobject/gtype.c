@@ -151,6 +151,10 @@ static inline void			type_set_qdata_W		(TypeNode		*node,
 									 gpointer		 data);
 static IFaceHolder*			type_iface_peek_holder_L	(TypeNode		*iface,
 									 GType			 instance_type);
+static gboolean                         type_iface_vtable_base_init_Wm  (TypeNode               *iface,
+                                                                         TypeNode               *node);
+static void                             type_iface_vtable_iface_init_Wm (TypeNode               *iface,
+                                                                         TypeNode               *node);
 static gboolean				type_node_is_a_L		(TypeNode		*node,
 									 TypeNode		*iface_node);
 
@@ -1104,8 +1108,9 @@ type_data_unref_Wm (TypeNode *node,
 }
 
 static void
-type_node_add_iface_entry_W (TypeNode *node,
-			     GType     iface_type)
+type_node_add_iface_entry_W (TypeNode   *node,
+			     GType       iface_type,
+                             IFaceEntry *parent_entry)
 {
   IFaceEntry *entries;
   guint i;
@@ -1116,13 +1121,23 @@ type_node_add_iface_entry_W (TypeNode *node,
   for (i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
     if (entries[i].iface_type == iface_type)
       {
-	/* this can (should) only happen if our parent type already conformed
-	 * to iface_type and node got it's own holder info. here, our
-	 * children should already have entries with NULL vtables, so
-	 * we're actually done.
+	/* this can happen in two cases:
+         * - our parent type already conformed to iface_type and node
+         *   got it's own holder info. here, our children already have
+         *   entries and NULL vtables, since this will only work for
+         *   uninitialized classes.
+	 * - an interface type is added to an ancestor after it was
+         *   added to a child type.
 	 */
-	g_assert (entries[i].vtable == NULL);
-	return;
+        if (!parent_entry)
+          g_assert (entries[i].vtable == NULL && entries[i].init_state == UNINITIALIZED);
+        else
+          {
+            /* sick, interface is added to ancestor *after* child type;
+             * nothing todo, the entry and our children were already setup correctly
+             */
+          }
+        return;
       }
     else if (entries[i].iface_type > iface_type)
       break;
@@ -1135,22 +1150,29 @@ type_node_add_iface_entry_W (TypeNode *node,
   entries[i].iface_type = iface_type;
   entries[i].vtable = NULL;
   entries[i].init_state = UNINITIALIZED;
-  
-  for (i = 0; i < node->n_children; i++)
-    type_node_add_iface_entry_W (lookup_type_node_I (node->children[i]), iface_type);
+
+  if (parent_entry)
+    {
+      if (node->data && node->data->class.init_state >= BASE_IFACE_INIT)
+        {
+          entries[i].init_state = INITIALIZED;
+          entries[i].vtable = parent_entry->vtable;
+        }
+      for (i = 0; i < node->n_children; i++)
+        type_node_add_iface_entry_W (lookup_type_node_I (node->children[i]), iface_type, &entries[i]);
+    }
 }
 
 static void
-type_add_interface_W (TypeNode             *node,
-		      TypeNode             *iface,
-		      const GInterfaceInfo *info,
-		      GTypePlugin          *plugin)
+type_add_interface_Wm (TypeNode             *node,
+                       TypeNode             *iface,
+                       const GInterfaceInfo *info,
+                       GTypePlugin          *plugin)
 {
   IFaceHolder *iholder = g_new0 (IFaceHolder, 1);
+  IFaceEntry *entry;
+  guint i;
   
-  /* we must not call any functions of GInterfaceInfo from within here, since
-   * we got most probably called from _within_ a type registration function
-   */
   g_assert (node->is_instantiatable && NODE_IS_IFACE (iface) && ((info && !plugin) || (!info && plugin)));
   
   iholder->next = iface_node_get_holders_L (iface);
@@ -1158,8 +1180,28 @@ type_add_interface_W (TypeNode             *node,
   iholder->instance_type = NODE_TYPE (node);
   iholder->info = info ? g_memdup (info, sizeof (*info)) : NULL;
   iholder->plugin = plugin;
+
+  /* create an iface entry for this type */
+  type_node_add_iface_entry_W (node, NODE_TYPE (iface), NULL);
   
-  type_node_add_iface_entry_W (node, NODE_TYPE (iface));
+  /* if the class is already (partly) initialized, we may need to base
+   * initalize and/or initialize the new interface.
+   */
+  if (node->data)
+    {
+      InitState class_state = node->data->class.init_state;
+      
+      if (class_state >= BASE_IFACE_INIT)
+        type_iface_vtable_base_init_Wm (iface, node);
+      
+      if (class_state >= IFACE_INIT)
+        type_iface_vtable_iface_init_Wm (iface, node);
+    }
+  
+  /* create iface entries for children of this type */
+  entry = type_lookup_iface_entry_L (node, iface);
+  for (i = 0; i < node->n_children; i++)
+    type_node_add_iface_entry_W (lookup_type_node_I (node->children[i]), NODE_TYPE (iface), entry);
 }
 
 static void
@@ -1675,6 +1717,9 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
 
 /* Finishes what type_iface_vtable_base_init_Wm started by
  * calling the interface init function.
+ * this function may only be called for types with their
+ * own interface holder info, i.e. types for which
+ * g_type_add_interface*() was called and not children thereof.
  */
 static void
 type_iface_vtable_iface_init_Wm (TypeNode *iface,
@@ -1687,6 +1732,7 @@ type_iface_vtable_iface_init_Wm (TypeNode *iface,
   
   /* iholder->info should have been filled in by type_iface_vtable_base_init_Wm() */
   g_assert (iface->data && entry && iholder && iholder->info);
+  g_assert (entry->init_state == IFACE_INIT); /* assert prior base_init() */
   
   entry->init_state = INITIALIZED;
       
@@ -1861,10 +1907,14 @@ type_class_init_Wm (TypeNode   *node,
     node->data->class.class_init (class, (gpointer) node->data->class.class_data);
   
   G_WRITE_LOCK (&type_rw_lock);
-
+  
   node->data->class.init_state = IFACE_INIT;
   
-  /* finish initialize the interfaces through our holder info
+  /* finish initializing the interfaces through our holder info.
+   * inherited interfaces are already init_state == INITIALIZED, because
+   * they either got setup in the above base_init loop, or during
+   * class_init from within type_add_interface_Wm() for this or
+   * an anchestor type.
    */
   i = 0;
   while (TRUE)
@@ -1890,26 +1940,6 @@ type_class_init_Wm (TypeNode   *node,
     }
   
   node->data->class.init_state = INITIALIZED;
-}
-
-/* This function is called when we add a new interface to an existing type;
- * depending on whether the type already has a class or not, we call
- * base-init and interface-init functions. If we are called *while* the
- * class is being initialized, then we need to update an array saying which
- * interfaces for the class have been initialized.
- */
-static void
-type_iface_vtable_init_Wm (TypeNode *node,
-			   TypeNode *iface)
-{
-  InitState class_state =
-    node->data ? node->data->class.init_state : UNINITIALIZED;
-  
-  if (class_state >= BASE_IFACE_INIT)
-    type_iface_vtable_base_init_Wm (iface, node);
-  
-  if (class_state >= IFACE_INIT)
-    type_iface_vtable_iface_init_Wm (iface, node);
 }
 
 static void
@@ -2295,13 +2325,7 @@ g_type_add_interface_static (GType                 instance_type,
       TypeNode *iface = lookup_type_node_I (interface_type);
       
       if (check_interface_info_I (iface, NODE_TYPE (node), info))
-	{
-	  type_add_interface_W (node, iface, info, NULL);
-	  /* If we have a class already, we may need to base initalize
-	   * and/or initialize the new interface.
-	   */
-	  type_iface_vtable_init_Wm (node, iface);
-	}
+        type_add_interface_Wm (node, iface, info, NULL);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
 }
@@ -2326,11 +2350,7 @@ g_type_add_interface_dynamic (GType        instance_type,
     {
       TypeNode *iface = lookup_type_node_I (interface_type);
       
-      type_add_interface_W (node, iface, NULL, plugin);
-      /* If we have a class already, we may need to base initalize
-       * and/or initialize the new interface.
-       */
-      type_iface_vtable_init_Wm (node, iface);
+      type_add_interface_Wm (node, iface, NULL, plugin);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
 }

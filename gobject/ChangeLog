@@ -1,3 +1,8 @@
+Thu Oct  2 07:37:12 2003  Tim Janik  <timj@gtk.org>
+
+	* gtype.c: fix post class_init interface initialization logic
+	for child types.
+
 Thu Oct  2 01:16:50 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.[ch]: Add g_type_add/remove_interface_check(),
