@@ -93,6 +93,71 @@ AC_MSG_RESULT([$glib_native_beos])
 
 dnl
 
+AC_MSG_CHECKING([for Win32])
+case "$host" in
+  *-*-mingw*)
+    os_win32=yes
+    # Make config vars match MSVC, too.  The mingw32 library that the
+    # mingw gcc always links with contains a few Unixish emulation
+    # functions. The mingw gcc also provides some headers that MSVC
+    # doesn't. As we want to be able to use the same config.h and
+    # glibconfig.h for both gcc and MSVC (because they use the same
+    # "real" C library, msvcrt.dll), hack around that.
+    ac_cv_func_getpagesize=no
+    ac_cv_func_strcasecmp=no
+    ac_cv_func_strncasecmp=no
+    ac_cv_header_dirent_h=no
+    ac_cv_header_stdint_h=no
+    ac_cv_header_sys_time_h=no
+    ac_cv_header_unistd_h=no
+    ac_cv_header_values_h=no
+
+    # Also hide some gcc features
+    ac_cv_c_inline=__inline
+    glib_cv_hasinline=no
+    glib_cv_has__inline__=no
+
+    G_LIB_WIN32_RESOURCE=glib-win32res.lo
+    G_MODULE_WIN32_RESOURCE=gmodule-win32res.lo
+    G_OBJECT_WIN32_RESOURCE=gobject-win32res.lo
+    G_THREAD_WIN32_RESOURCE=gthread-win32res.lo
+    GLIB_DEF=glib.def
+    GMODULE_DEF=gmodule.def
+    GOBJECT_DEF=gobject.def
+    GTHREAD_DEF=gthread.def
+    TESTGMODULE_EXP=testgmodule.exp
+    ;;
+  *)
+    os_win32=no
+    G_LIB_WIN32_RESOURCE=
+    G_MODULE_WIN32_RESOURCE=
+    G_OBJECT_WIN32_RESOURCE=
+    G_THREAD_WIN32_RESOURCE=
+    GLIB_DEF=
+    GMODULE_DEF=
+    GOBJECT_DEF=
+    GTHREAD_DEF=
+    TESTGMODULE_EXP=
+    ;;
+esac
+AC_MSG_RESULT($os_win32)
+AM_CONDITIONAL(OS_WIN32, test x$os_win32 = xyes)
+AC_SUBST(G_LIB_WIN32_RESOURCE)
+AC_SUBST(G_MODULE_WIN32_RESOURCE)
+AC_SUBST(G_OBJECT_WIN32_RESOURCE)
+AC_SUBST(G_THREAD_WIN32_RESOURCE)
+AC_SUBST(GLIB_DEF)
+AC_SUBST(GMODULE_DEF)
+AC_SUBST(GOBJECT_DEF)
+AC_SUBST(GTHREAD_DEF)
+AC_SUBST(TESTGMODULE_EXP)
+
+ms_linker_available=no
+if test $os_win32 = yes; then
+	AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
+fi
+AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
+
 GLIB_AC_DIVERT_BEFORE_HELP([
 # figure debugging default, prior to $ac_help setup
 case $GLIB_MINOR_VERSION in
@@ -921,52 +986,6 @@ esac
 AC_MSG_RESULT($platform_win32)
 AM_CONDITIONAL(PLATFORM_WIN32, test x$platform_win32 = xyes)
 
-AC_MSG_CHECKING([if building for pure Win32])
-ms_linker_available=no
-case "$host" in
-  *-*-mingw*)
-    os_win32=yes
-    G_LIB_WIN32_RESOURCE=glib-win32res.lo
-    G_MODULE_WIN32_RESOURCE=gmodule-win32res.lo
-    G_OBJECT_WIN32_RESOURCE=gobject-win32res.lo
-    G_THREAD_WIN32_RESOURCE=gthread-win32res.lo
-    GLIB_DEF=glib.def
-    GMODULE_DEF=gmodule.def
-    GOBJECT_DEF=gobject.def
-    GTHREAD_DEF=gthread.def
-    TESTGMODULE_EXP=testgmodule.exp
-    ;;
-  *)
-    os_win32=no
-    G_LIB_WIN32_RESOURCE=
-    G_MODULE_WIN32_RESOURCE=
-    G_OBJECT_WIN32_RESOURCE=
-    G_THREAD_WIN32_RESOURCE=
-    GLIB_DEF=
-    GMODULE_DEF=
-    GOBJECT_DEF=
-    GTHREAD_DEF=
-    TESTGMODULE_EXP=
-    ;;
-esac
-AC_MSG_RESULT($os_win32)
-AM_CONDITIONAL(OS_WIN32, test x$os_win32 = xyes)
-AC_SUBST(G_LIB_WIN32_RESOURCE)
-AC_SUBST(G_MODULE_WIN32_RESOURCE)
-AC_SUBST(G_OBJECT_WIN32_RESOURCE)
-AC_SUBST(G_THREAD_WIN32_RESOURCE)
-AC_SUBST(GLIB_DEF)
-AC_SUBST(GMODULE_DEF)
-AC_SUBST(GOBJECT_DEF)
-AC_SUBST(GTHREAD_DEF)
-AC_SUBST(TESTGMODULE_EXP)
-
-if test $os_win32 = yes; then
-	AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
-	AC_MSG_RESULT($ms_librarian)
-fi
-AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
-
 dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
@@ -1665,7 +1684,22 @@ _______EOF
 
 
 	if test -n "$gint64"; then
-	  cat >>$outfile <<_______EOF
+	  if test x$glib_os_win32 = xyes; then
+	    cat >>$outfile <<_______EOF
+#define G_HAVE_GINT64 1
+
+#ifdef _MSC_VER
+typedef __int64 gint64;
+typedef unsigned __int64 guint64;
+#define G_GINT64_CONSTANT(val)	(val##i64)
+#elif __GNUC__
+typedef long long gint64;
+typedef unsigned long long guint64;
+#define G_GINT64_CONSTANT(val)	(val##LL)
+#endif
+_______EOF
+	  else
+	    cat >>$outfile <<_______EOF
 #define G_HAVE_GINT64 1
 
 ${glib_extension}typedef signed $gint64 gint64;
@@ -1673,6 +1707,7 @@ ${glib_extension}typedef unsigned $gint64 guint64;
 
 #define G_GINT64_CONSTANT(val)	$gint64_constant
 _______EOF
+	   fi
 		if test -n "$gint64_format"; then
 	  cat >>$outfile <<_______EOF
 #define G_GINT64_FORMAT $gint64_format
@@ -1750,7 +1785,9 @@ _______EOF
 	if test x$g_have_gnuc_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
+#ifdef __GNUC__
 #define G_HAVE_GNUC_VARARGS 1
+#endif
 _______EOF
 	fi
 
@@ -1873,6 +1910,10 @@ if test "x${ac_cv_working_alloca_h+set}" = xset ; then
   glib_header_alloca_h="$ac_cv_working_alloca_h"
 else
   glib_header_alloca_h="$ac_cv_header_alloca_h"
+fi
+
+if test $os_win32 = yes; then
+  glib_os_win32=yes
 fi
 
 case xyes in
