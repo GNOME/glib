@@ -104,6 +104,7 @@ child_watch_callback (GPid pid, gint status, gpointer data)
   return TRUE;
 }
 
+#ifdef TEST_THREAD
 static gpointer
 test_thread (gpointer data)
 {
@@ -126,6 +127,7 @@ test_thread (gpointer data)
 
   return NULL;
 }
+#endif
 
 int
 main (int argc, char *argv[])
@@ -148,7 +150,11 @@ main (int argc, char *argv[])
    * implementation is available.
    */
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
-   g_thread_init (NULL);
+#ifdef TEST_THREAD
+  g_thread_init (NULL);
+#else
+  GPid pid;
+#endif
   main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32
@@ -158,8 +164,15 @@ main (int argc, char *argv[])
 #endif
 
   alive = 2;
+#ifdef TEST_THREAD
   g_thread_create (test_thread, GINT_TO_POINTER (10), FALSE, NULL);
   g_thread_create (test_thread, GINT_TO_POINTER (20), FALSE, NULL);
+#else
+  pid = get_a_child (10);
+  g_child_watch_add (pid, child_watch_callback, GINT_TO_POINTER (10));
+  pid = get_a_child (20);
+  g_child_watch_add (pid, child_watch_callback, GINT_TO_POINTER (20));
+#endif
   
   g_main_loop_run (main_loop);
 

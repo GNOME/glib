@@ -1,3 +1,9 @@
+2004-03-09  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* tests/child-test.c: Do not run the g_child_watch_* test
+	multi-threaded, as that doesn't work on linux prior 2.6. Fixes
+	#136539.
+
 2004-03-08 Alastair McKinstry <mckinstry@computer.org>
 
 	* configure.in: Added "ga" (Irish) to ALL_LINGUAS.
