@@ -50,8 +50,11 @@
 #if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
 #define G_GNUC_PURE                            \
   __attribute__((__pure__))
+#define G_GNUC_MALLOC    			\
+  __attribute__((__malloc__))
 #else
 #define G_GNUC_PURE
+#define G_GNUC_MALLOC
 #endif
 
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
@@ -69,8 +72,6 @@
   __attribute__((__unused__))
 #define G_GNUC_NO_INSTRUMENT			\
   __attribute__((__no_instrument_function__))
-#define G_GNUC_MALLOC    			\
-  __attribute__((__malloc__))
 #else   /* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
@@ -79,7 +80,6 @@
 #define G_GNUC_CONST
 #define G_GNUC_UNUSED
 #define G_GNUC_NO_INSTRUMENT
-#define G_GNUC_MALLOC
 #endif  /* !__GNUC__ */
 
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)

@@ -1,5 +1,12 @@
 2004-11-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmacros.h (G_GNUC_MALLOC): Define empty for gcc 2.95.
+
+	* glib/gmarkup.c (unescape_text_state_after_charref_hash): 
+	Avoid a strndup() here, noticed by Morten Welinder.
+
+2004-11-29  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gmarkup.c: Remove leftover noinline attributes.
 	(is_name_start_char, is_name_char): Avoid possible reads
 	beyond the end of g_ascii_table.

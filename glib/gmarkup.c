@@ -278,7 +278,7 @@ static gchar*
 char_str (gunichar c,
           gchar   *buf)
 {
-  memset (buf, 0, 7);
+  memset (buf, 0, 8);
   g_unichar_to_utf8 (c, buf);
   return buf;
 }
@@ -430,7 +430,7 @@ unescape_text_state_after_ampersand (UnescapeContext *ucontext,
         }
       else
         {
-          gchar buf[7];
+          gchar buf[8];
 
           set_unescape_error (ucontext->context, error,
                               p, ucontext->text_end,
@@ -470,7 +470,7 @@ unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
         break;
       else if (!is_name_char (p))
         {
-          gchar ubuf[7];
+          gchar ubuf[8];
 
           set_unescape_error (ucontext->context, error,
                               p, ucontext->text_end,
@@ -567,28 +567,26 @@ unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
 
       if (start != p)
         {
-          gchar *digit = g_strndup (start, p - start);
           gulong l;
           gchar *end = NULL;
-          gchar *digit_end = digit + (p - start);
                     
           errno = 0;
           if (is_hex)
-            l = strtoul (digit, &end, 16);
+            l = strtoul (start, &end, 16);
           else
-            l = strtoul (digit, &end, 10);
+            l = strtoul (start, &end, 10);
 
-          if (end != digit_end || errno != 0)
+          if (end != p || errno != 0)
             {
               set_unescape_error (ucontext->context, error,
                                   start, ucontext->text_end,
                                   G_MARKUP_ERROR_PARSE,
-                                  _("Failed to parse '%s', which "
+                                  _("Failed to parse '%-.*s', which "
                                     "should have been a digit "
                                     "inside a character reference "
                                     "(&#234; for example) - perhaps "
                                     "the digit is too large"),
-                                  digit);
+                                  p - start, start);
             }
           else
             {
@@ -600,7 +598,7 @@ unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
                   (l >= 0xE000 && l <= 0xFFFD) ||
                   (l >= 0x10000 && l <= 0x10FFFF))
                 {
-                  gchar buf[7];
+                  gchar buf[8];
                   g_string_append (ucontext->str, char_str (l, buf));
                 }
               else
@@ -608,12 +606,11 @@ unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
                   set_unescape_error (ucontext->context, error,
                                       start, ucontext->text_end,
                                       G_MARKUP_ERROR_PARSE,
-                                      _("Character reference '%s' does not encode a permitted character"),
-                                      digit);
+                                      _("Character reference '%-.*s' does not "
+					"encode a permitted character"),
+                                      p - start, start);
                 }
             }
-
-          g_free (digit);
 
           /* Move to next state */
           p = g_utf8_next_char (p); /* past semicolon */
@@ -1099,7 +1096,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
             }
           else
             {
-              gchar buf[7];
+              gchar buf[8];
+
               set_error (context,
                          error,
                          G_MARKUP_ERROR_PARSE,
@@ -1162,7 +1160,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   }
                 else
                   {
-                    gchar buf[7];
+                    gchar buf[8];
+
                     set_error (context,
                                error,
                                G_MARKUP_ERROR_PARSE,
@@ -1250,7 +1249,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                 }
               else
                 {
-                  gchar buf[7];
+                  gchar buf[8];
+
                   set_error (context,
                              error,
                              G_MARKUP_ERROR_PARSE,
@@ -1291,7 +1291,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                 }
               else
                 {
-                  gchar buf[7];
+                  gchar buf[8];
+
                   set_error (context,
                              error,
                              G_MARKUP_ERROR_PARSE,
@@ -1379,7 +1380,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 		}
 	      else
 		{
-		  gchar buf[7];
+		  gchar buf[8];
+		  
 		  set_error (context,
 			     error,
 			     G_MARKUP_ERROR_PARSE,
@@ -1523,7 +1525,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
             }
           else
             {
-              gchar buf[7];
+              gchar buf[8];
+
               set_error (context,
                          error,
                          G_MARKUP_ERROR_PARSE,
@@ -1562,7 +1565,8 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
               
 	      if (*context->iter != '>')
 		{
-		  gchar buf[7];
+		  gchar buf[8];
+
 		  set_error (context,
 			     error,
 			     G_MARKUP_ERROR_PARSE,
