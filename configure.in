@@ -15,10 +15,10 @@ cflags_set=${CFLAGS+set}
 # we rewrite this file
 rm -f glibconfig-sysdefs.h
 
-GLIB_DIVERT_BEFORE_HELP([
+GLIB_AC_DIVERT_BEFORE_HELP([
 #
-# The following version number definitions apply to GLib, GModule, GObject and GThread
-# as a whole, so if changes occoured in any of them, they are all
+# The following version number definitions apply to GLib, GModule, GObject 
+# and GThread as a whole, so if changes occoured in any of them, they are all
 # treated with the same interface and binary age.
 #
 # Making releases:
@@ -91,13 +91,12 @@ AC_MSG_RESULT([$glib_native_beos])
 
 dnl
 
-GLIB_DIVERT_BEFORE_HELP([
+GLIB_AC_DIVERT_BEFORE_HELP([
 # figure debugging default, prior to $ac_help setup
-if test `expr $GLIB_MINOR_VERSION \% 2` = 1 ; then
-  debug_default=yes
-else
-  debug_default=minimum
-fi[]dnl
+case $GLIB_MINOR_VERSION in
+*[[13579]]) debug_default=yes ;;
+*)          debug_default=minimum ;;
+esac[]dnl
 ])
 
 dnl declare --enable-* args and collect ac_help strings
@@ -418,7 +417,7 @@ AC_TRY_COMPILE([#include <sys/types.h>],
 if test $gtk_ok = yes; then
     AC_MSG_RESULT([yes, found in sys/types.h])
 else
-    AC_HEADER_EGREP(fd_set, sys/select.h, gtk_ok=yes)
+    AC_EGREP_HEADER(fd_set, sys/select.h, gtk_ok=yes)
     if test $gtk_ok = yes; then
 	# *** FIXME: give it a different name
         AC_DEFINE(HAVE_SYS_SELECT_H,1,[found fd_set in sys/select.h])

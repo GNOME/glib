@@ -1,5 +1,12 @@
 2000-12-08  Raja R Harinath  <harinath@cs.umn.edu>
 
+	* acglib.m4 (GLIB_AC_DIVERT_BEFORE_HELP): 
+	Rename from GLIB_DIVERT_BEFORE_HELP.  
+	Update to track autoconf 2.49b.
+	* configure.in: Reflect above change.
+	(AC_EGREP_HEADER): Rename from really obselete AC_HEADER_EGREP.
+	(debug_default): Replace "if test `expr ...`" with "case". 
+
 	* tests/Makefile.am (TESTS): Rearrange into other variables, and
 	include run-markup-tests.sh.
 	(TESTS_ENVIRONMENT): New.  Pass $srcdir to tests.
