@@ -1,3 +1,7 @@
+2001-02-08  Fatih Demir	<kabalak@kabalak.net>
+
+	* configure.in: Added "tr" to ALL_LINGUAS.
+
 2001-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* gwin32.c (g_win32_getlocale): Use "nn" for Nynorsk, as nn.po
