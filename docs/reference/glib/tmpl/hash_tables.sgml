@@ -204,17 +204,19 @@ It should return TRUE if the key/value pair should be removed from the
 @Returns: TRUE if the key/value pair should be removed from the #GHashTable.
 
 
-<!-- ##### FUNCTION g_hash_table_freeze ##### -->
+<!-- ##### MACRO g_hash_table_freeze ##### -->
 <para>
-
+This function is deprecated and will be removed in the next major
+ release of GLib. It does nothing.
 </para>
 
 @hash_table: 
 
 
-<!-- ##### FUNCTION g_hash_table_thaw ##### -->
+<!-- ##### MACRO g_hash_table_thaw ##### -->
 <para>
-
+This function is deprecated and will be removed in the next major
+ release of GLib. It does nothing.
 </para>
 
 @hash_table: 

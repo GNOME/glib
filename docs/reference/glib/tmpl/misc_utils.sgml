@@ -103,7 +103,7 @@ string.
 @Returns: the name of the file without any leading directory components.
 
 
-<!-- ##### FUNCTION g_dirname ##### -->
+<!-- ##### MACRO g_dirname ##### -->
 <para>
 This function is deprecated and will be removed in the next major
 release of GLib. Use g_path_get_dirname() instead.
@@ -115,7 +115,6 @@ If the file name has no directory components "." is returned.
 The returned string should be freed when no longer needed.
 </para>
 
-@file_name: the name of the file.
 @Returns: the directory components of the file.
 
 

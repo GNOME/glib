@@ -1,3 +1,8 @@
+2001-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/tmpl/hash_tables.sgml, glib/tmpl/misc_utils.sgml,
+	glib/tmpl/scanner.sgml: Changes due to deprecation update.
+
 Mon Apr 16 12:18:26 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* {glib,gobject}/Makefile.am (tmpl-build.stamp): More tweaks
