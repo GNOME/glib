@@ -247,6 +247,8 @@ adder_response (GIOChannel   *source,
 
       g_io_channel_unref (source);
       g_io_channel_unref (test_data->in);
+
+      g_free (test_data);
       
       return FALSE;
     }
