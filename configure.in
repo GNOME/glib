@@ -122,7 +122,7 @@ case "$host" in
     ;;
 esac
 AC_MSG_RESULT([$glib_native_win32])
-AM_CONDITIONAL(OS_WIN32, test x$glib_native_win32 = xyes)
+AM_CONDITIONAL(OS_WIN32, test "$glib_native_win32" = "yes")
 AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)
@@ -134,10 +134,10 @@ AC_SUBST(GTHREAD_DEF)
 AC_SUBST(TESTGMODULE_EXP)
 
 ms_librarian=no
-if test $glib_native_win32 = yes; then
+if test "$glib_native_win32" = "yes"; then
   AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
 fi
-AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
+AM_CONDITIONAL(MS_LIB_AVAILABLE, test x$ms_librarian = xyes)
 
 GLIB_AC_DIVERT_BEFORE_HELP([
 # figure debugging default, prior to $ac_help setup
@@ -577,7 +577,7 @@ extern int sys_nerr;
 sys_errlist[sys_nerr-1][0] = 0;
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
+if test "$glib_ok" = "no"; then
     AC_DEFINE(NO_SYS_ERRLIST,1,[global 'sys_errlist' not found])
 fi
 
@@ -588,7 +588,7 @@ extern char *sys_siglist[];
 exit (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
+if test "$glib_ok" = "no"; then
     AC_DEFINE(NO_SYS_SIGLIST,1,[global 'sys_siglist' not found])
 fi
 
@@ -598,7 +598,7 @@ AC_TRY_COMPILE([#include <signal.h>], [
 strlen (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
+if test "$glib_ok" = "no"; then
     AC_DEFINE(NO_SYS_SIGLIST_DECL,1,[global 'sys_siglist' not declared])
 fi
 
@@ -606,11 +606,11 @@ fi
 AC_MSG_CHECKING([for fd_set])
 AC_TRY_COMPILE([#include <sys/types.h>],
         [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
+if test "$gtk_ok" = "yes"; then
     AC_MSG_RESULT([yes, found in sys/types.h])
 else
     AC_EGREP_HEADER(fd_set, sys/select.h, gtk_ok=yes)
-    if test $gtk_ok = yes; then
+    if test "$gtk_ok" = "yes"; then
 	# *** FIXME: give it a different name
         AC_DEFINE(HAVE_SYS_SELECT_H,1,[found fd_set in sys/select.h])
         AC_MSG_RESULT([yes, found in sys/select.h])
@@ -658,7 +658,7 @@ char *p = malloc(10);
 (void) strlcat(p, "bye", 10);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = yes; then
+if test "$glib_ok" = "yes"; then
     AC_DEFINE(HAVE_STRLCPY,1,[Have functions strlcpy and strlcat])
 fi
   

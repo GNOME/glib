@@ -1,3 +1,8 @@
+2001-09-29  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in: Add quotes around test values. This fixes a minor
+	  annoying warning if platform is not win32.
+
 2001-09-27  Manish Singh  <yosh@gimp.org>
 
 	* glib/grand.c (g_rand_new): fix typo (#if->#ifdef) so it compiles
