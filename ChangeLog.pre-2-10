@@ -1,3 +1,10 @@
+2004-05-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Merge from 2.4:
+	
+	* glib/gmain.c (block_source, unblock_source): Make these 
+	static.  (#142230, Morten Welinder)
+
 2004-05-10  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_win32_print_gioflags): Remove two duplicated
