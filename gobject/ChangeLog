@@ -1,3 +1,10 @@
+2000-07-19  Tor Lillqvist  <tml@iki.fi>
+
+	* gparam.h
+	* gvalue.h
+	* gparam.c
+	* gtype.c: Shut up Sun's picky compiler.
+
 2000-07-14  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_type_get_plugin.

@@ -31,7 +31,7 @@ extern "C" {
 
 /* --- type macros --- */
 #define	G_TYPE_IS_VALUE(type)		(g_type_value_table_peek (type) != NULL)
-#define	G_IS_VALUE(value)		(G_TYPE_IS_VALUE (G_VALUE_TYPE (value))) // FIXME
+#define	G_IS_VALUE(value)		(G_TYPE_IS_VALUE (G_VALUE_TYPE (value))) /* FIXME */
 #define	G_VALUE_TYPE(value)		(G_TYPE_FROM_CLASS (value))
 #define	G_VALUE_TYPE_NAME(value)	(g_type_name (G_VALUE_TYPE (value)))
 

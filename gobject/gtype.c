@@ -778,7 +778,7 @@ type_data_make (TypeNode              *node,
     *vtable = *value_table;
   node->data->common.value_table = vtable;
 
-  g_assert (node->data->common.value_table != NULL); // FIXME: paranoid
+  g_assert (node->data->common.value_table != NULL); /* FIXME: paranoid */
 }
 
 static inline void
@@ -1983,7 +1983,7 @@ g_type_init (void)
   memset (&info, 0, sizeof (info));
   node = type_node_fundamental_new (G_TYPE_INTERFACE, "GInterface", G_TYPE_FLAG_DERIVABLE);
   type = NODE_TYPE (node);
-  type_data_make (node, &info, NULL); // FIXME
+  type_data_make (node, &info, NULL); /* FIXME */
   g_assert (type == G_TYPE_INTERFACE);
 
   /* G_TYPE_* value types

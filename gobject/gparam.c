@@ -185,7 +185,7 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (quark > 0);
 
-  g_datalist_id_set_data_full (&pspec->qdata, quark, data, data ? destroy : NULL);
+  g_datalist_id_set_data_full (&pspec->qdata, quark, data, data ? destroy : (GDestroyNotify) NULL);
 }
 
 gpointer
@@ -331,10 +331,10 @@ g_param_spec_hash_table_remove (GHashTable *hash_table,
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
 
-  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) != NULL); // FIXME: paranoid
+  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) != NULL); /* FIXME: paranoid */
 
   g_hash_table_remove (hash_table, pspec);
-  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) == NULL); // FIXME: paranoid
+  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) == NULL); /* FIXME: paranoid */
   pspec->owner_type = 0;
 }
 

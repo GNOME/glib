@@ -37,7 +37,7 @@ extern "C" {
 #define G_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM, GParamSpec))
 #define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
 #define G_PARAM_SPEC_GET_CLASS(pspec)	(G_TYPE_INSTANCE_GET_CLASS ((pspec), G_TYPE_PARAM, GParamSpecClass))
-#define	G_IS_PARAM_VALUE(pspec, value)	(g_type_is_a (G_VALUE_TYPE (value), G_PARAM_SPEC_VALUE_TYPE (pspec))) // FIXME
+#define	G_IS_PARAM_VALUE(pspec, value)	(g_type_is_a (G_VALUE_TYPE (value), G_PARAM_SPEC_VALUE_TYPE (pspec))) /* FIXME */
 #define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC_GET_CLASS (pspec)->value_type)
 
 
