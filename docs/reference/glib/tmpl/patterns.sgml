@@ -3,12 +3,25 @@ Glob-style pattern matching
 
 <!-- ##### SECTION Short_Description ##### -->
 
+Matches strings against patterns containing '*' and '?' wildcards.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The <function>g_pattern_match*</function> match a string against
+a pattern containing '*' and '?' wildcards with similar semantics 
+as the standard <function>glob()</function> function: '*' matches an
+arbitrary, possibly empty, string, '?' matches an arbitrary character.
 </para>
-
+<para>
+There is no way to include literal '*' or '?' characters in a pattern. 
+</para>
+<para>
+When multiple string must be matched against the same pattern, it
+is better to compile the pattern to a #GPatternSpec using 
+g_pattern_spec_new() and use g_pattern_match_string() instead of 
+g_pattern_match_simple().  This avoids the overhead of repeated 
+pattern compilation.
+</para>
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
@@ -16,72 +29,74 @@ Glob-style pattern matching
 
 <!-- ##### ENUM GMatchType ##### -->
 <para>
-
+Enumeration representing different kinds of patterns. This is only used
+internally for optimizing the match algorithm.
 </para>
 
-@G_MATCH_ALL: 
-@G_MATCH_ALL_TAIL: 
-@G_MATCH_HEAD: 
-@G_MATCH_TAIL: 
-@G_MATCH_EXACT: 
+@G_MATCH_ALL: a general pattern. 
+@G_MATCH_ALL_TAIL: a general pattern which contains a fixed part matching
+the end of the string.
+@G_MATCH_HEAD: a pattern matching every string with a certain prefix.
+@G_MATCH_TAIL: a pattern matching every string with a certain suffix. 
+@G_MATCH_EXACT: a pattern matching exactly one string.
 @G_MATCH_LAST: 
 
 <!-- ##### STRUCT GPatternSpec ##### -->
 <para>
-
+A <structname>GPatternSpec</structname> is the 'compiled' form of a pattern.
+There should be no need to access its fields.
 </para>
 
-@match_type: 
-@pattern_length: 
-@pattern: 
-@pattern_reversed: 
+@match_type: the #GMatchType of the pattern.
+@pattern_length: the length of the pattern.
+@pattern: the pattern. Note that this may be different from the @pattern 
+used to construct this <structname>GPatternSpec</structname>.
+@pattern_reversed: the reverse of @pattern.
 
 <!-- ##### FUNCTION g_pattern_spec_new ##### -->
 <para>
-
+Compiles a pattern to a #GPatternSpec.
 </para>
 
-@pattern: 
-@Returns: 
+@pattern: a string.
+@Returns: a newly-allocated #GPatternSpec.
 
 
 <!-- ##### FUNCTION g_pattern_spec_free ##### -->
 <para>
-
+Frees the memory allocated for the #GPatternSpec.
 </para>
 
-@pspec: 
+@pspec: a #GPatternSpec.
 
 
 <!-- ##### FUNCTION g_pattern_match ##### -->
 <para>
-
+Matches a string against a compiled pattern.
 </para>
 
-@pspec: 
-@string_length: 
-@string: 
-@string_reversed: 
-@Returns: 
+@pspec: a #GPatternSpec.
+@string_length: the length of @string.
+@string: the string to match.
+@string_reversed: the reverse of @string.
+@Returns: %TRUE if @string matches @pspec.
 
 
 <!-- ##### FUNCTION g_pattern_match_string ##### -->
 <para>
-
+Matches a string against a compiled pattern.
 </para>
 
-@pspec: 
-@string: 
-@Returns: 
+@pspec: a #GPatternSpec.
+@string: the string to match.
+@Returns: %TRUE if @string matches @pspec.
 
 
 <!-- ##### FUNCTION g_pattern_match_simple ##### -->
 <para>
-
+Matches a string against a pattern.
 </para>
 
-@pattern: 
-@string: 
-@Returns: 
-
-
+@pattern: the pattern.
+@string: the string to match.
+@Returns: %TRUE if @string matches @pspec. 

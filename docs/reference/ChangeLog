@@ -1,5 +1,9 @@
 2001-10-05  Matthias Clasen  <matthiasc@poet.de>
 
+	* glib/tmpl/patterns.sgml: Update.
+
+2001-10-05  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/tmpl/hooks.sgml, glib/tmpl/spawn.sgml,
 	glib/tmpl/macros_misc.sgml: Update. 
 
