@@ -303,9 +303,9 @@ canonicalize_key (gchar *key)
 }
 
 static gboolean
-is_canonical (gchar *key)
+is_canonical (const gchar *key)
 {
-  gchar *p;
+  const gchar *p;
 
   for (p = key; *p != 0; p++)
     {
@@ -338,7 +338,7 @@ g_param_spec_internal (GType        param_type,
   pspec = (gpointer) g_type_create_instance (param_type);
 
   if ((flags & G_PARAM_STATIC_NAME))
-    pspec->name = name;
+    pspec->name = (gchar *) name;
   else
     {
       pspec->name = g_strdup (name);
@@ -346,12 +346,12 @@ g_param_spec_internal (GType        param_type,
     }
 
   if (flags & G_PARAM_STATIC_NICK)
-    pspec->_nick = nick;
+    pspec->_nick = (gchar *) nick;
   else
     pspec->_nick = g_strdup (nick);
 
   if (flags & G_PARAM_STATIC_BLURB)
-    pspec->_blurb = blurb;
+    pspec->_blurb = (gchar *) blurb;
   else
     pspec->_blurb = g_strdup (blurb);
 

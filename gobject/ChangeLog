@@ -1,3 +1,8 @@
+Tue Mar 22 14:15:23 2005  Manish Singh <yosh@gimp.org>
+
+	* gparam.c (g_param_spec_internal): cast away any constness on
+	assignment.
+
 2005-03-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib-mkenums.in: Avoid forcing extra newlines when using
