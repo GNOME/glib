@@ -123,9 +123,9 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	 if (__builtin_constant_p (val))		\
 	   __v = GUINT16_SWAP_LE_BE_CONSTANT (val);	\
 	 else						\
-	   __asm__ __const__ ("rorw $8, %w0"		\
-			      : "=r" (__v)		\
-			      : "0" ((guint16) (val)));	\
+	   __asm__ ("rorw $8, %w0"			\
+		      : "=r" (__v)			\
+		      : "0" ((guint16) (val)));		\
 	__v; }))
 #  define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_X86 (val))
 #  if !defined(__i486__) && !defined(__i586__) \
@@ -136,11 +136,11 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	    if (__builtin_constant_p (val))			\
 	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
 	  else							\
-	    __asm__ __const__ ("rorw $8, %w0\n\t"		\
-			       "rorl $16, %0\n\t"		\
-			       "rorw $8, %w0"			\
-			       : "=r" (__v)			\
-			       : "0" ((guint32) (val)));	\
+	    __asm__ ("rorw $8, %w0\n\t"				\
+		       "rorl $16, %0\n\t"			\
+		       "rorw $8, %w0"				\
+		       : "=r" (__v)				\
+		       : "0" ((guint32) (val)));		\
 	__v; }))
 #  else /* 486 and higher has bswap */
 #     define GUINT32_SWAP_LE_BE_X86(val) \
@@ -149,9 +149,9 @@ typedef void            (*GFreeFunc)            (gpointer       data);
 	    if (__builtin_constant_p (val))			\
 	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
 	  else							\
-	    __asm__ __const__ ("bswap %0"			\
-			       : "=r" (__v)			\
-			       : "0" ((guint32) (val)));	\
+	    __asm__ ("bswap %0"					\
+		       : "=r" (__v)				\
+		       : "0" ((guint32) (val)));		\
 	__v; }))
 #  endif /* processor specific 32-bit stuff */
 #  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_X86 (val))

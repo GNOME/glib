@@ -1,3 +1,10 @@
+Mon Mar 25 18:13:06 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gtypes.h (GUINT*_SWAP_LE_BE_X86): Remove __const__
+	qualifier from __asm__ statements... GCC since at least
+	2.96 has assumed no side effects automaticaly, and gcc-3.1
+	will warn about this usage. (#73308, Cody Russell)
+
 Fri Mar 22 17:59:27 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmem.c (g_mem_chunk_reset): Fix problem where
