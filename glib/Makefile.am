@@ -233,7 +233,7 @@ snapcheck:
 
 dist-hook: $(BUILT_EXTRA_DIST)
 	cd $(top_builddir) && CONFIG_FILES="INSTALL README" CONFIG_HEADERS= $(SHELL) ./config.status
-	files='$(BUILT_EXTRA_DIST)' INSTALL README; \
+	files='$(BUILT_EXTRA_DIST) INSTALL README'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  rm -f $(distdir)/$$f && cp $$d/$$f $(distdir) || exit 1; done

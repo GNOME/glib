@@ -1,3 +1,11 @@
+2001-05-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* makefile.mingw.in: Add gpattern.o to objects.
+
+	* glib.def: Export g_thread_exit as well.
+
+	* Makefile.am: Fix BUILT_EXTRA_DIST exporting.
+
 Sun May 13 10:31:17 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am gobject/Makefile.am gmodule/Makefile.am:

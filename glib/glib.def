@@ -535,6 +535,7 @@ EXPORTS
 	g_thread_error_quark
 	g_thread_functions_for_glib_use
 	g_thread_join
+	g_thread_exit
 	g_thread_pool_free
 	g_thread_pool_new
 	g_thread_pool_push
