@@ -1,3 +1,13 @@
+2000-08-07  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/gio-test.c (shutdown_source): New function, that calls
+	g_source_remove(). Check return value of g_source_remove(), and
+	decrement running subprocess counter only if g_source_remove()
+	actually did remove the source.
+
+	(recv_message): Call shutdown_source() on EOF condition. Return
+	FALSE on G_IO_HUP and G_IO_ERR condition. Fix printf format typo.
+
 Sun Aug  6 20:06:02 2000  Tim Janik  <timj@gtk.org>
 
         * gmessages.c (g_log_domain_check_free): keep *last updated while

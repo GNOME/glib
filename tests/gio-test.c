@@ -18,7 +18,7 @@
  */
 
 /* A test program for the main loop and IO channel code.
- * Just run it.
+ * Just run it. Optional parameter is number of sub-processes.
  */
 
 #include "config.h"
@@ -93,6 +93,16 @@ read_all (int         fd,
   return error;
 }
 
+static void
+shutdown_source (gpointer data)
+{
+  if (g_source_remove (*(guint *) data))
+    {
+      nrunning--;
+      if (nrunning == 0)
+	g_main_quit (main_loop);
+    }
+}
 
 static gboolean
 recv_message (GIOChannel  *channel,
@@ -100,6 +110,7 @@ recv_message (GIOChannel  *channel,
 	      gpointer    data)
 {
   gint fd = g_io_channel_unix_get_fd (channel);
+  gboolean retval = TRUE;
 
   g_print ("gio-test: ...from %d:%s%s%s%s\n", fd,
 	   (cond & G_IO_ERR) ? " ERR" : "",
@@ -109,10 +120,8 @@ recv_message (GIOChannel  *channel,
 
   if (cond & (G_IO_ERR | G_IO_HUP))
     {
-      g_source_remove (*(guint *) data);
-      nrunning--;
-      if (nrunning == 0)
-	g_main_quit (main_loop);
+      shutdown_source (data);
+      retval = FALSE;
     }
 
   if (cond & G_IO_IN)
@@ -129,6 +138,7 @@ recv_message (GIOChannel  *channel,
 	  if (nb == 0)
 	    {
 	      g_print ("gio-test: ...from %d: EOF\n", fd);
+	      shutdown_source (data);
 	      return FALSE;
 	    }
 	  
@@ -139,7 +149,7 @@ recv_message (GIOChannel  *channel,
 	      {
 		if (seq != seqtab[i].seq)
 		  {
-		    g_print ("gio-test: ...from &d: invalid sequence number %d, expected %d\n",
+		    g_print ("gio-test: ...from %d: invalid sequence number %d, expected %d\n",
 			     seq, seqtab[i].seq);
 		    g_assert_not_reached ();
 		  }
@@ -156,6 +166,7 @@ recv_message (GIOChannel  *channel,
       if (nb == 0)
 	{
 	  g_print ("gio-test: ...from %d: EOF\n", fd);
+	  shutdown_source (data);
 	  return FALSE;
 	}
       
@@ -180,6 +191,7 @@ recv_message (GIOChannel  *channel,
 	  if (nb == 0)
 	    {
 	      g_print ("gio-test: ...from %d: EOF\n", fd);
+	      shutdown_source (data);
 	      return FALSE;
 	    }
       
@@ -193,7 +205,7 @@ recv_message (GIOChannel  *channel,
 	  g_print ("gio-test: ...from %d: OK\n", fd);
 	}
     }
-  return TRUE;
+  return retval;
 }
 
 int
