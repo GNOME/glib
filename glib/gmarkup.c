@@ -458,12 +458,6 @@ unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
                                         const gchar     *p,
                                         GError         **error)
 {
-#define MAX_ENT_LEN 5
-  gchar buf[MAX_ENT_LEN+1] = {
-    '\0', '\0', '\0', '\0', '\0', '\0'
-  };
-  gchar *dest;
-
   while (p != ucontext->text_end)
     {
       if (*p == ';')
@@ -488,38 +482,33 @@ unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
     {
       if (p != ucontext->text_end)
         {
-          const gchar *src;
-                
-          src = ucontext->entity_start;
-          dest = buf;
-          while (src != p)
-            {
-              *dest = *src;
-              ++dest;
-              ++src;
-            }
+	  gint len = p - ucontext->entity_start;
 
           /* move to after semicolon */
           p = g_utf8_next_char (p);
           ucontext->state = USTATE_INSIDE_TEXT;
 
-          if (strcmp (buf, "lt") == 0)
+          if (strncmp (ucontext->entity_start, "lt", len) == 0)
             g_string_append_c (ucontext->str, '<');
-          else if (strcmp (buf, "gt") == 0)
+          else if (strncmp (ucontext->entity_start, "gt", len) == 0)
             g_string_append_c (ucontext->str, '>');
-          else if (strcmp (buf, "amp") == 0)
+          else if (strncmp (ucontext->entity_start, "amp", len) == 0)
             g_string_append_c (ucontext->str, '&');
-          else if (strcmp (buf, "quot") == 0)
+          else if (strncmp (ucontext->entity_start, "quot", len) == 0)
             g_string_append_c (ucontext->str, '"');
-          else if (strcmp (buf, "apos") == 0)
+          else if (strncmp (ucontext->entity_start, "apos", len) == 0)
             g_string_append_c (ucontext->str, '\'');
           else
             {
+	      gchar *name;
+
+	      name = g_strndup (ucontext->entity_start, len);
               set_unescape_error (ucontext->context, error,
                                   p, ucontext->text_end,
                                   G_MARKUP_ERROR_PARSE,
                                   _("Entity name '%s' is not known"),
-                                  buf);
+                                  name);
+	      g_free (name);
             }
         }
       else
