@@ -485,8 +485,9 @@ g_key_file_load_from_file (GKeyFile       *key_file,
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
  *
- * Loads a key file from memory into an empty #GKeyFile structure.  
- * If the object cannot be created then %error is set to a #GKeyFileError.
+ * Loads a key file from memory into an empty #GKeyFile structure.  If
+ * the object cannot be created then %error is set to a
+ * #GKeyFileError. 
  *
  * Return value: %TRUE if a key file could be loaded, %FALSE othewise
  * Since: 2.6
@@ -503,6 +504,9 @@ g_key_file_load_from_data (GKeyFile       *key_file,
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
   g_return_val_if_fail (length != 0, FALSE);
+
+  if (length == (gsize)-1)
+    length = strlen (data);
 
   if (key_file->approximate_size > 0)
     {
@@ -847,6 +851,11 @@ g_key_file_parse_data (GKeyFile     *key_file,
     {
       if (data[i] == '\n')
         {
+	  if (i > 0 && data[i - 1] == '\r')
+	    g_string_erase (key_file->parse_buffer,
+			    key_file->parse_buffer->len - 1,
+			    1);
+	    
           /* When a newline is encountered flush the parse buffer so that the
            * line can be parsed.  Note that completely blank lines won't show
            * up in the parse buffer, so they get parsed directly.
