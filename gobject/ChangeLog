@@ -1,3 +1,9 @@
+Sun Nov  5 13:21:28 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am gtypemodule.[ch]: New basic implementation of
+	GTypePlugin interface as a GObject. Dynamically loaded modules can
+	register any number of types and interface on the module.
+
 Sun Nov  5 10:25:40 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.c (handlers_find): When appending handlers and

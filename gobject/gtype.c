@@ -1910,6 +1910,32 @@ g_type_get_plugin (GType type)
   return node ? node->plugin : NULL;
 }
 
+GTypePlugin*
+g_type_interface_get_plugin (GType instance_type,
+			     GType interface_type)
+{
+  TypeNode *node = LOOKUP_TYPE_NODE (instance_type);  
+  TypeNode *iface = LOOKUP_TYPE_NODE (interface_type);
+  IFaceHolder *iholder;
+
+  g_return_val_if_fail (node == NULL, NULL);
+  g_return_val_if_fail (iface == NULL, NULL);
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), NULL);
+  
+  iholder = iface->private.iface_conformants;
+  
+  while (iholder && iholder->instance_type != instance_type)
+    iholder = iholder->next;
+
+  if (!iholder)
+    {
+      g_warning (G_STRLOC ": Attempt to look up plugin for invalid instance/interface type pair.");
+      return NULL;
+    }
+
+  return iholder->plugin;
+}
+
 GType
 g_type_fundamental_last (void)
 {

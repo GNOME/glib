@@ -295,6 +295,9 @@ void  g_type_add_interface_dynamic (GType                       instance_type,
 
 /* --- protected (for fundamental type implementations) --- */
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
+GTypePlugin*	 g_type_interface_get_plugin	(GType		     instance_type,
+						 GType               implementation_type);
+
 GType		 g_type_fundamental_last	(void);
 gboolean         g_type_check_flags             (GType               type,
 						 guint               flags);
