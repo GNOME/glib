@@ -47,9 +47,9 @@ type.
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL ##### -->
 <para>
-Returns %TRUE if @type is a fundamental data type such as #G_TYPE_INT or
-#G_TYPE_POINTER. Fundamental types are types that serve as fundaments for
-the derived types, thus they are the roots of distinct inheritance hierarchies.
+Returns the fundamental type which is the ancestor of @type.
+Fundamental types are types that serve as fundaments for the derived types, 
+thus they are the roots of distinct inheritance hierarchies.
 </para>
 
 @type: A #GType value.

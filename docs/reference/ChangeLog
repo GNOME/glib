@@ -1,3 +1,8 @@
+2003-01-15  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: Fix the description of
+	G_TYPE_FUNDAMENTAL.  (#103119, Josh Parsons)
+
 2003-01-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/tmpl/messages.sgml: Remove comment that only stdout would
