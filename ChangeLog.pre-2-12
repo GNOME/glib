@@ -1,5 +1,10 @@
 2004-10-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gasyncqueue.c, glib/gatomic.c, glib/gdate.c, 
+	glib/giochannel.c, glib/gmain.c, glib/gspawn.c, 
+	glib/libcharset/localcharset.c: Apply a patch to fix
+	sparse warnings. (#154696, Kjartan Maraas)
+
 	* glib/gnulib/g-gnulib.h: Undef libc functions before defining
 	them, since they may also be macros.  (#155177, Andrea Campi)
 

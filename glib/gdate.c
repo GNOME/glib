@@ -44,7 +44,7 @@
 #include <locale.h>
 
 GDate*
-g_date_new ()
+g_date_new (void)
 {
   GDate *d = g_new0 (GDate, 1); /* happily, 0 is the invalid flag for everything. */
   

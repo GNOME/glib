@@ -110,7 +110,7 @@ static const char * volatile charset_aliases;
 
 /* Return a pointer to the contents of the charset.alias file.  */
 const char *
-_g_locale_get_charset_aliases ()
+_g_locale_get_charset_aliases (void)
 {
   const char *cp;
 
@@ -246,7 +246,7 @@ _g_locale_get_charset_aliases ()
    name.  */
 
 const char *
-_g_locale_charset_raw ()
+_g_locale_charset_raw (void)
 {
   const char *codeset;
 

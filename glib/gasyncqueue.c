@@ -47,7 +47,7 @@ struct _GAsyncQueue
  * Return value: the new #GAsyncQueue.
  **/
 GAsyncQueue*
-g_async_queue_new ()
+g_async_queue_new (void)
 {
   GAsyncQueue* retval = g_new (GAsyncQueue, 1);
   retval->mutex = g_mutex_new ();

@@ -707,7 +707,7 @@ G_CONST_RETURN gchar*
 g_io_channel_get_line_term (GIOChannel	*channel,
 			    gint        *length)
 {
-  g_return_val_if_fail (channel != NULL, 0);
+  g_return_val_if_fail (channel != NULL, NULL);
 
   if (length)
     *length = channel->line_term_len;

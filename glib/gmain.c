@@ -711,7 +711,7 @@ g_main_context_init_pipe (GMainContext *context)
 }
 
 void
-_g_main_thread_init ()
+_g_main_thread_init (void)
 {
   GSList *curr = main_contexts_without_pipe;
   while (curr)
@@ -732,7 +732,7 @@ _g_main_thread_init ()
  * Return value: the new #GMainContext
  **/
 GMainContext *
-g_main_context_new ()
+g_main_context_new (void)
 {
   GMainContext *context = g_new0 (GMainContext, 1);
 

@@ -640,7 +640,7 @@ g_atomic_int_add (gint *atomic,
 #endif /* ATOMIC_INT_CMP_XCHG */
 
 void 
-_g_atomic_thread_init ()
+_g_atomic_thread_init (void)
 {
 #ifdef DEFINE_WITH_MUTEXES
   g_atomic_mutex = g_mutex_new ();

@@ -629,7 +629,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
                            GError      **error)
 {
   gboolean retval;
-  gchar **argv = 0;
+  gchar **argv = NULL;
 
   g_return_val_if_fail (command_line != NULL, FALSE);
   
@@ -675,7 +675,7 @@ g_spawn_command_line_async (const gchar *command_line,
                             GError     **error)
 {
   gboolean retval;
-  gchar **argv = 0;
+  gchar **argv = NULL;
 
   g_return_val_if_fail (command_line != NULL, FALSE);
 
