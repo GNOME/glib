@@ -1,3 +1,8 @@
+2001-09-27  Manish Singh  <yosh@gimp.org>
+
+	* glib/grand.c (g_rand_new): fix typo (#if->#ifdef) so it compiles
+	again.
+
 2001-09-24  Bruno Haible  <haible@clisp.cons.org>
 
 	* glib/gwin32.c (g_win32_getlocale): When the sublangid is

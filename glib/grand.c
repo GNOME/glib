@@ -94,7 +94,7 @@ g_rand_new (void)
 {
   guint32 seed;
   GTimeVal now;
-#if G_OS_UNIX
+#ifdef G_OS_UNIX
   static gboolean dev_urandom_exists = TRUE;
 
   if (dev_urandom_exists)
