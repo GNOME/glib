@@ -1,7 +1,27 @@
+Fri Jan 22 13:41:41 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in:
+	Add checks for alloca, defining G_NATIVE_ALLOCA if present.
+
+	* galloca.c:
+	Import replacement alloca implementation from gettext 0.10.35.
+	Begin to convert to using GLib types and functions.
+
+	* glib.h:
+	New macros g_alloca, g_alloca_gc, g_alloca_new, to perform
+	stack-based memory allocations.
+
+	* tests/Makefile.am, tests/queue-test.c, tests/alloca-test.c:
+	New tests for g_alloca_*, GQueue ADT.
+
+	* tests/stack-test.c:
+	Fix pointer casts, include config.h, and
+	call g_stack_free at end of run.
+
 Fri Jan 22 11:58:13 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* Makefile.am:
-	Add gqueue.c
+	Add gqueue.c.
 
 	* glib.h:
 	Add GQueue struct and prototypes.

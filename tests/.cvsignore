@@ -34,3 +34,5 @@ dirname-test
 type-test
 strfunc-test
 stack-test
+queue-test
+alloca-test

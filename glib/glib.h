@@ -318,6 +318,24 @@ extern "C" {
 } G_STMT_END
 
 
+
+/* Stack-based temporary allocation
+ */
+
+#if G_NATIVE_ALLOCA
+#  define g_alloca		alloca
+#  define g_alloca_gc()         /* nothing to do for garbage collection */
+#else /* !G_NATIVE_ALLOCA */
+gpointer _g_alloca (gulong size);
+#  define g_alloca		_g_alloca
+#  define g_alloca_gc()         _g_alloca (0)
+#endif /* !G_NATIVE_ALLOCA */
+
+#define g_alloca_new(type, count)	  \
+      ((type *) g_alloca ((unsigned) sizeof (type) * (count)))
+
+
+
 #define g_string(x) #x
 
 
@@ -977,8 +995,8 @@ void		g_queue_push_back	(GQueue *q, gpointer data);
 gpointer	g_queue_pop_front	(GQueue *q);
 gpointer	g_queue_pop_back	(GQueue *q);
 
-#define		q_queue_push		q_queue_push_back
-#define		q_queue_pop		q_queue_pop_front
+#define		g_queue_push		g_queue_push_back
+#define		g_queue_pop		g_queue_pop_front
 
 
 
