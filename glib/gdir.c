@@ -58,7 +58,7 @@ struct _GDir
  * @flags: Currently must be set to 0. Reserved for future use.
  * @error: return location for a #GError, or %NULL.
  *         If non-%NULL, an error will be set if and only if
- *         g_dir_open_fails.
+ *         g_dir_open() fails.
  *
  * Opens a directory for reading. The names of the files in the
  * directory can then be retrieved using g_dir_read_name().
