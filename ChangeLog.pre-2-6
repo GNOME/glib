@@ -1,3 +1,21 @@
+Tue Nov 24 09:40:00 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: removed the GListAllocator type and its g_*_allocator_*()
+ 	function variants (which weren't working anyways) in favour of a
+ 	generic GAllocator type. new functions:
+	g_allocator_new, g_allocator_free, g_slist_push_allocator,
+	g_slist_pop_allocator, g_list_push_allocator, g_list_pop_allocator,
+	g_node_push_allocator and g_node_pop_allocator.
+
+	* gstring.c: removed bogus slist allocator code.
+	* gtree.c: maintain own list of free tree nodes and don't waste
+	GSLists for that, removed bogus slist allocator code.
+	* glist.c: use GAllocators for node allocation.
+	* gslist.c: use GAllocators for node allocation.
+	* gnode.c: use GAllocators for node allocation.
+
+	* gdataset.c: cleanups wrt automatic initialization.
+
 Mon Nov 23 10:03:58 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* glib.h garray.[ch]: added g_array_insert_vals() to

@@ -19,75 +19,103 @@
 #include "glib.h"
 
 
-typedef struct _GRealListAllocator GRealListAllocator;
-
-struct _GRealListAllocator
+struct _GAllocator /* from gmem.c */
 {
-  GMemChunk *list_mem_chunk;
-  GSList    *free_list;
+  gchar         *name;
+  guint16        n_preallocs;
+  guint          is_unused : 1;
+  guint          type : 4;
+  GAllocator    *last;
+  GMemChunk     *mem_chunk;
+  GSList        *free_lists; /* implementation specific */
 };
 
+static GAllocator       *current_allocator = NULL;
 
-static GRealListAllocator *default_allocator = NULL;
-static GRealListAllocator *current_allocator = NULL;
-
-GListAllocator*
-g_slist_set_allocator (GListAllocator* fallocator)
+void
+g_slist_push_allocator (GAllocator *allocator)
 {
-  GRealListAllocator* allocator = (GRealListAllocator *) fallocator;
-  GRealListAllocator* old_allocator = current_allocator;
+  g_return_if_fail (allocator != NULL);
+  g_return_if_fail (allocator->is_unused == TRUE);
 
-  if (allocator)
-    current_allocator = allocator;
-  else
+  if (allocator->type != G_ALLOCATOR_SLIST)
     {
-      if (!default_allocator)
-	default_allocator = (GRealListAllocator*) g_list_allocator_new ();
-      current_allocator = default_allocator;
+      allocator->type = G_ALLOCATOR_SLIST;
+      if (allocator->mem_chunk)
+	{
+	  g_mem_chunk_destroy (allocator->mem_chunk);
+	  allocator->mem_chunk = NULL;
+	}
     }
 
-  if (!current_allocator->list_mem_chunk)
-    current_allocator->list_mem_chunk = g_mem_chunk_new ("slist mem chunk",
-							 sizeof (GSList),
-							 1024,
-							 G_ALLOC_ONLY);
+  if (!allocator->mem_chunk)
+    {
+      allocator->mem_chunk = g_mem_chunk_new (allocator->name,
+					      sizeof (GSList),
+					      sizeof (GSList) * allocator->n_preallocs,
+					      G_ALLOC_ONLY);
+      allocator->free_lists = NULL;
+    }
 
-  return (GListAllocator*) (old_allocator == default_allocator ? NULL : old_allocator);
+  allocator->is_unused = FALSE;
+  allocator->last = current_allocator;
+  current_allocator = allocator;
 }
 
+void
+g_slist_pop_allocator (void)
+{
+  if (current_allocator)
+    {
+      GAllocator *allocator;
+
+      allocator = current_allocator;
+      current_allocator = allocator->last;
+      allocator->last = NULL;
+      allocator->is_unused = TRUE;
+    }
+}
 
 GSList*
 g_slist_alloc (void)
 {
-  GSList *new_list;
+  GSList *list;
 
-  g_slist_set_allocator (NULL);
-  if (current_allocator->free_list)
+  if (!current_allocator)
+    g_slist_push_allocator (g_allocator_new ("GLib default GSList allocator", 1024));
+
+  if (!current_allocator->free_lists)
     {
-      new_list = current_allocator->free_list;
-      current_allocator->free_list = current_allocator->free_list->next;
+      list = g_chunk_new (GSList, current_allocator->mem_chunk);
+      list->data = NULL;
     }
   else
     {
-      new_list = g_chunk_new (GSList, current_allocator->list_mem_chunk);
+      if (current_allocator->free_lists->data)
+	{
+	  list = current_allocator->free_lists->data;
+	  current_allocator->free_lists->data = list->next;
+	  list->data = NULL;
+	}
+      else
+	{
+	  list = current_allocator->free_lists;
+	  current_allocator->free_lists = list->next;
+	}
     }
+  list->next = NULL;
 
-  new_list->data = NULL;
-  new_list->next = NULL;
-
-  return new_list;
+  return list;
 }
 
 void
 g_slist_free (GSList *list)
 {
-  GSList *last;
-
   if (list)
     {
-      last = g_slist_last (list);
-      last->next = current_allocator->free_list;
-      current_allocator->free_list = list;
+      list->data = list->next;
+      list->next = current_allocator->free_lists;
+      current_allocator->free_lists = list;
     }
 }
 
@@ -96,8 +124,9 @@ g_slist_free_1 (GSList *list)
 {
   if (list)
     {
-      list->next = current_allocator->free_list;
-      current_allocator->free_list = list;
+      list->data = NULL;
+      list->next = current_allocator->free_lists;
+      current_allocator->free_lists = list;
     }
 }
 

@@ -79,7 +79,51 @@ static void       g_tree_node_check                 (GTreeNode      *node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
-static GSList *node_free_list = NULL;
+static GTreeNode *node_free_list = NULL;
+
+
+static GTreeNode*
+g_tree_node_new (gpointer key,
+		 gpointer value)
+{
+  GTreeNode *node;
+
+  if (node_free_list)
+    {
+      node = node_free_list;
+      node_free_list = node->right;
+    }
+  else
+    {
+      if (!node_mem_chunk)
+	node_mem_chunk = g_mem_chunk_new ("GLib GTreeNode mem chunk",
+					  sizeof (GTreeNode),
+					  1024,
+					  G_ALLOC_ONLY);
+
+      node = g_chunk_new (GTreeNode, node_mem_chunk);
+    }
+
+  node->balance = 0;
+  node->left = NULL;
+  node->right = NULL;
+  node->key = key;
+  node->value = value;
+
+  return node;
+}
+
+static void
+g_tree_node_destroy (GTreeNode *node)
+{
+  if (node)
+    {
+      g_tree_node_destroy (node->right);
+      g_tree_node_destroy (node->left);
+      node->right = node_free_list;
+      node_free_list = node;
+    }
+}
 
 
 GTree*
@@ -230,55 +274,6 @@ g_tree_nnodes (GTree *tree)
   return 0;
 }
 
-
-static GTreeNode*
-g_tree_node_new (gpointer key,
-		 gpointer value)
-{
-  GTreeNode *node;
-  GSList *tmp_list;
-
-  if (node_free_list)
-    {
-      tmp_list = node_free_list;
-      node_free_list = node_free_list->next;
-
-      node = tmp_list->data;
-
-      {
-	GListAllocator *tmp_allocator = g_list_set_allocator (NULL);
-	g_slist_free_1 (tmp_list);
-	g_list_set_allocator (tmp_allocator);
-      }
-    }
-  else
-    {
-      if (!node_mem_chunk)
-	node_mem_chunk = g_mem_chunk_new ("tree node mem chunk", sizeof (GTreeNode), 1024, G_ALLOC_ONLY);
-
-      node = g_chunk_new (GTreeNode, node_mem_chunk);
-    }
-
-  node->balance = 0;
-  node->left = NULL;
-  node->right = NULL;
-  node->key = key;
-  node->value = value;
-
-  return node;
-}
-
-static void
-g_tree_node_destroy (GTreeNode *node)
-{
-  if (node)
-    {
-      node_free_list = g_slist_prepend (node_free_list, node);
-      g_tree_node_destroy (node->right);
-      g_tree_node_destroy (node->left);
-    }
-}
-
 static GTreeNode*
 g_tree_node_insert (GTreeNode    *node,
 		    GCompareFunc  compare,
@@ -352,7 +347,6 @@ g_tree_node_remove (GTreeNode    *node,
 		    GCompareFunc  compare,
 		    gpointer      key)
 {
-  GTreeNode *garbage;
   GTreeNode *new_root;
   gint old_balance;
   gint cmp;
@@ -363,6 +357,8 @@ g_tree_node_remove (GTreeNode    *node,
   cmp = (* compare) (key, node->key);
   if (cmp == 0)
     {
+      GTreeNode *garbage;
+
       garbage = node;
 
       if (!node->right)
@@ -379,7 +375,8 @@ g_tree_node_remove (GTreeNode    *node,
 	  node = g_tree_node_restore_right_balance (new_root, old_balance);
 	}
 
-      node_free_list = g_slist_prepend (node_free_list, garbage);
+      garbage->right = node_free_list;
+      node_free_list = garbage;
     }
   else if (cmp < 0)
     {

@@ -894,3 +894,49 @@ g_mem_chunk_area_search (GMemArea *a,
     }
   return -1;
 }
+
+/* generic allocators
+ */
+struct _GAllocator /* from gmem.c */
+{
+  gchar		*name;
+  guint16	 n_preallocs;
+  guint		 is_unused : 1;
+  guint		 type : 4;
+  GAllocator	*last;
+  GMemChunk	*mem_chunk;
+  gpointer	 dummy; /* implementation specific */
+};
+
+GAllocator*
+g_allocator_new (const gchar *name,
+		 guint        n_preallocs)
+{
+  GAllocator *allocator;
+
+  g_return_val_if_fail (name != NULL, NULL);
+
+  allocator = g_new0 (GAllocator, 1);
+  allocator->name = g_strdup (name);
+  allocator->n_preallocs = CLAMP (n_preallocs, 1, 65535);
+  allocator->is_unused = TRUE;
+  allocator->type = 0;
+  allocator->last = NULL;
+  allocator->mem_chunk = NULL;
+  allocator->dummy = NULL;
+
+  return allocator;
+}
+
+void
+g_allocator_free (GAllocator *allocator)
+{
+  g_return_if_fail (allocator != NULL);
+  g_return_if_fail (allocator->is_unused == TRUE);
+
+  g_free (allocator->name);
+  if (allocator->mem_chunk)
+    g_mem_chunk_destroy (allocator->mem_chunk);
+
+  g_free (allocator);
+}

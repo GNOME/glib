@@ -695,6 +695,7 @@ GUTILS_C_VAR const guint glib_binary_age;
 /* Forward declarations of glib types.
  */
 
+typedef struct _GAllocator	GAllocator;
 typedef struct _GArray		GArray;
 typedef struct _GByteArray	GByteArray;
 typedef struct _GCache		GCache;
@@ -705,7 +706,6 @@ typedef struct _GHashTable	GHashTable;
 typedef struct _GHook		GHook;
 typedef struct _GHookList	GHookList;
 typedef struct _GList		GList;
-typedef struct _GListAllocator	GListAllocator;
 typedef struct _GMemChunk	GMemChunk;
 typedef struct _GNode		GNode;
 typedef struct _GPtrArray	GPtrArray;
@@ -865,6 +865,8 @@ struct _GDebugKey
 
 /* Doubly linked lists
  */
+void   g_list_push_allocator    (GAllocator     *allocator);
+void   g_list_pop_allocator     (void);
 GList* g_list_alloc		(void);
 void   g_list_free		(GList		*list);
 void   g_list_free_1		(GList		*list);
@@ -913,6 +915,8 @@ gpointer g_list_nth_data	(GList		*list,
 
 /* Singly linked lists
  */
+void    g_slist_push_allocator  (GAllocator     *allocator);
+void    g_slist_pop_allocator   (void);
 GSList* g_slist_alloc		(void);
 void	g_slist_free		(GSList		*list);
 void	g_slist_free_1		(GSList		*list);
@@ -955,14 +959,6 @@ GSList*  g_slist_sort           (GSList          *list,
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
-
-
-/* List Allocators
- */
-GListAllocator* g_list_allocator_new  (void);
-void		g_list_allocator_free (GListAllocator* allocator);
-GListAllocator* g_slist_set_allocator (GListAllocator* allocator);
-GListAllocator* g_list_set_allocator  (GListAllocator* allocator);
 
 
 /* Hash tables
@@ -1053,6 +1049,8 @@ struct _GNode
 				 ((GNode*) (node))->next == NULL)
 #define	 G_NODE_IS_LEAF(node)	(((GNode*) (node))->children == NULL)
 
+void     g_node_push_allocator  (GAllocator       *allocator);
+void     g_node_pop_allocator   (void);
 GNode*	 g_node_new		(gpointer	   data);
 void	 g_node_destroy		(GNode		  *root);
 void	 g_node_unlink		(GNode		  *node);
@@ -1362,6 +1360,16 @@ void	 g_free	       (gpointer  mem);
 
 void	 g_mem_profile (void);
 void	 g_mem_check   (gpointer  mem);
+
+/* Generic allocators
+ */
+GAllocator* g_allocator_new   (const gchar  *name,
+			       guint         n_preallocs);
+void        g_allocator_free  (GAllocator   *allocator);
+
+#define	G_ALLOCATOR_LIST	(1)
+#define	G_ALLOCATOR_SLIST	(2)
+#define	G_ALLOCATOR_NODE	(3)
 
 
 /* "g_mem_chunk_new" creates a new memory chunk.

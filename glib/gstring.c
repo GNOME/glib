@@ -106,14 +106,10 @@ g_string_chunk_free (GStringChunk *fchunk)
 
   if (chunk->storage_list)
     {
-      GListAllocator *tmp_allocator = g_slist_set_allocator (NULL);
-
       for (tmp_list = chunk->storage_list; tmp_list; tmp_list = tmp_list->next)
 	g_free (tmp_list->data);
 
       g_slist_free (chunk->storage_list);
-
-      g_slist_set_allocator (tmp_allocator);
     }
 
   if (chunk->const_table)
@@ -134,7 +130,6 @@ g_string_chunk_insert (GStringChunk *fchunk,
 
   if ((chunk->storage_next + len + 1) > chunk->this_size)
     {
-      GListAllocator *tmp_allocator = g_slist_set_allocator (NULL);
       gint new_size = chunk->default_size;
 
       while (new_size < len+1)
@@ -145,8 +140,6 @@ g_string_chunk_insert (GStringChunk *fchunk,
 
       chunk->this_size = new_size;
       chunk->storage_next = 0;
-
-      g_slist_set_allocator (tmp_allocator);
     }
 
   pos = ((char*)chunk->storage_list->data) + chunk->storage_next;

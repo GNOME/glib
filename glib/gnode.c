@@ -21,33 +21,82 @@
  */
 #include "glib.h"
 
+/* node allocation
+ */
+struct _GAllocator /* from gmem.c */
+{
+  gchar         *name;
+  guint16        n_preallocs;
+  guint          is_unused : 1;
+  guint          type : 4;
+  GAllocator    *last;
+  GMemChunk     *mem_chunk;
+  GNode         *free_nodes; /* implementation specific */
+};
 
-#define	KEEP_NODES	(1024)
+static GAllocator *current_allocator = NULL;
 
+void
+g_node_push_allocator (GAllocator *allocator)
+{
+  g_return_if_fail (allocator != NULL);
+  g_return_if_fail (allocator->is_unused == TRUE);
 
-/* --- variables --- */
-static	GMemChunk	*g_tree_node_chunk = NULL;
-static	GNode		*free_nodes = NULL;
-static	guint		n_free_nodes = 0;
+  if (allocator->type != G_ALLOCATOR_NODE)
+    {
+      allocator->type = G_ALLOCATOR_NODE;
+      if (allocator->mem_chunk)
+	{
+	  g_mem_chunk_destroy (allocator->mem_chunk);
+	  allocator->mem_chunk = NULL;
+	}
+    }
+
+  if (!allocator->mem_chunk)
+    {
+      allocator->mem_chunk = g_mem_chunk_new (allocator->name,
+					      sizeof (GNode),
+					      sizeof (GNode) * allocator->n_preallocs,
+					      G_ALLOC_ONLY);
+      allocator->free_nodes = NULL;
+    }
+
+  allocator->is_unused = FALSE;
+  allocator->last = current_allocator;
+  current_allocator = allocator;
+}
+
+void
+g_node_pop_allocator (void)
+{
+  if (current_allocator)
+    {
+      GAllocator *allocator;
+
+      allocator = current_allocator;
+      current_allocator = allocator->last;
+      allocator->last = NULL;
+      allocator->is_unused = TRUE;
+    }
+}
 
 
 /* --- functions --- */
 GNode*
 g_node_new (gpointer data)
 {
-  register GNode *node;
-  
-  if (!g_tree_node_chunk)
-    g_tree_node_chunk = g_mem_chunk_create (GNode, 1024, G_ALLOC_AND_FREE);
-  
-  if (n_free_nodes)
-    {
-      node = free_nodes;
-      free_nodes = free_nodes->next;
-      n_free_nodes--;
-    }
+  GNode *node;
+
+  if (!current_allocator)
+    g_node_push_allocator (g_allocator_new ("GLib default GNode allocator", 1024));
+
+  if (!current_allocator->free_nodes)
+    node = g_chunk_new (GNode, current_allocator->mem_chunk);
   else
-    node = g_chunk_new (GNode, g_tree_node_chunk);
+    {
+      node = current_allocator->free_nodes;
+      current_allocator->free_nodes = node->next;
+    }
   
   node->data = data;
   node->next = NULL;
@@ -59,29 +108,23 @@ g_node_new (gpointer data)
 }
 
 static void
-g_node_free (GNode *parent)
+g_nodes_free (GNode *node)
 {
-  GNode *node;
+  GNode *parent;
 
-  node = parent->children;
-  
-  while (node)
+  parent = node;
+  while (1)
     {
-      register GNode *free_node;
-
-      free_node = node;
-      node = free_node->next;
-      g_node_free (free_node);
+      if (parent->children)
+	g_nodes_free (parent->children);
+      if (parent->next)
+	parent = parent->next;
+      else
+	break;
     }
 
-  if (n_free_nodes < KEEP_NODES)
-    {
-      parent->next = free_nodes;
-      free_nodes = parent;
-      n_free_nodes++;
-    }
-  else
-    g_chunk_free (parent, g_tree_node_chunk);
+  parent->next = current_allocator->free_nodes;
+  current_allocator->free_nodes = node;
 }
 
 void
@@ -92,7 +135,7 @@ g_node_destroy (GNode *root)
   if (!G_NODE_IS_ROOT (root))
     g_node_unlink (root);
   
-  g_node_free (root);
+  g_nodes_free (root);
 }
 
 void
