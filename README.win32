@@ -12,7 +12,7 @@ To build GLib on Win32, you can use either gcc or the Microsoft
 compiler and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0
 have been used successfully. However, the makefiles for MSVC are not
 up-to-date, sorry. If you fix the makefile.msc files, and manage to
-build with MSVC, please send the updates makefile.msc files to the
+build with MSVC, please send the updated makefile.msc files to the
 gimpwin-dev list.
 
 With gcc I mean gcc-2.95 or gcc-2.95.2 as distributed by Mumit Khan,
@@ -20,6 +20,10 @@ either as a mingw version (preferred), or running under cygwin. To
 successfully use gcc, follow the instructions below. We want to use
 gcc -mno-cygwin, i.e. produce executables (.exe and .dll files) that
 do *not* require the cygwin runtime library. This is called "mingw".
+I also use the -fnative-struct flag, which means that in order to use
+the prebuilt DLLs (especiall of GTK+), you *must* also use that flag.
+(This flag means that the struct layout is identical to that used by
+MSVC.)
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.mingw check`.
