@@ -1,5 +1,14 @@
 2004-12-11  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gstdio.c (g_rename, g_unlink, g_remove): Add doc comments
+	about Windows restrictions on renaming and removing.
+
+	(g_remove): Mimic POSIX remove() on Windows: Try also to rmdir if
+	removal as a file fails. Document this.
+
+	* glib/gstdio.h: Clarify comment about file name encoding on
+	Windows.
+
 	* glib/gspawn-win32.c: Fix #157255. Also some refactoring of this
 	still very ugly source file.
 

@@ -106,7 +106,11 @@ g_open (const gchar *filename,
  * A wrapper for the POSIX rename() function. The rename() function 
  * renames a file, moving it between directories if required.
  * 
- * See the C library manual for more details about rename().
+ * See your C library manual for more details about how rename() works
+ * on your system. Note in particular that on Windows, it is in
+ * general not possible to rename a file if a file with the new name
+ * already exists. Also it is not possible in general to rename an
+ * open file.
  *
  * Returns: 0 if the renaming succeeded, -1 if an error occurred
  * 
@@ -283,9 +287,11 @@ g_lstat (const gchar *filename,
  * file and no processes have it opened, the diskspace occupied by the
  * file is freed.
  * 
- * See the C library manual for more details about unlink().
+ * See your C library manual for more details about unlink(). Note
+ * that on Windows, it is in general not possible to delete files that
+ * are open to some process, or mapped into memory.
  *
- * Returns: 0 if the directory was successfully created, -1 if an error 
+ * Returns: 0 if the name was successfully deleted, -1 if an error 
  *    occurred
  * 
  * Since: 2.6
@@ -325,13 +331,19 @@ g_unlink (const gchar *filename)
  * g_remove:
  * @filename: a pathname in the GLib file name encoding
  *
- * A wrapper for the POSIX remove() function. The remove() function 
- * deletes a name from the filesystem. It calls unlink() for files
- * and rmdir() for directories.
+ * A wrapper for the POSIX remove() function. The remove() function
+ * deletes a name from the filesystem.
  * 
- * See the C library manual for more details about remove().
+ * See your C library manual for more details about how remove() works
+ * on your system. On Unix, remove() removes also directories, as it
+ * calls unlink() for files and rmdir() for directories. On Windows,
+ * although remove() in the C library only works for files, this
+ * function tries both remove() and rmdir(), and thus works like on
+ * Unix. Note however, that on Windows, it is in general not possible
+ * to remove a file that is open to some process, or mapped into
+ * memory.
  *
- * Returns: 0 if the directory was successfully created, -1 if an error 
+ * Returns: 0 if the file was successfully removed, -1 if an error 
  *    occurred
  * 
  * Since: 2.6
@@ -343,8 +355,13 @@ g_remove (const gchar *filename)
   if (G_WIN32_HAVE_WIDECHAR_API ())
     {
       wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-      int retval = _wremove (wfilename);
-      int save_errno = errno;
+      int retval;
+      int save_errno;
+
+      retval = _wremove (wfilename);
+      if (retval == -1)
+	retval = _wrmdir (wfilename);
+      save_errno = errno;
 
       g_free (wfilename);
 
@@ -354,8 +371,13 @@ g_remove (const gchar *filename)
   else
     {
       gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
-      int retval = remove (cp_filename);
-      int save_errno = errno;
+      int retval;
+      int save_errno;
+      
+      retval = remove (cp_filename);
+      if (retval == -1)
+	retval = rmdir (cp_filename);
+      save_errno = errno;
 
       g_free (cp_filename);
 
