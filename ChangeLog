@@ -1,3 +1,6 @@
+Mon Sep 25 2000 Elliot Lee <sopwith@redhat.com>
+	* garray.c, glib.h, gmem.c: Add a few missing G_GNUC_CONST's.
+
 2000-09-21  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Add gconvert.o. Use libiconv.

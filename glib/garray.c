@@ -55,7 +55,7 @@ struct _GRealArray
     g_array_elt_zero ((array), (array)->len, 1);			\
 }G_STMT_END
 
-static gint g_nearest_pow        (gint        num);
+static gint g_nearest_pow        (gint        num) G_GNUC_CONST;
 static void g_array_maybe_expand (GRealArray *array,
 				  gint        len);
 

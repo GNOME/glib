@@ -125,7 +125,7 @@ struct _GRealMemChunk
 
 
 static gulong g_mem_chunk_compute_size (gulong    size,
-					gulong    min_size);
+					gulong    min_size) G_GNUC_CONST;
 static gint   g_mem_chunk_area_compare (GMemArea *a,
 					GMemArea *b);
 static gint   g_mem_chunk_area_search  (GMemArea *a,

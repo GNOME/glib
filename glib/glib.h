@@ -1683,8 +1683,8 @@ gchar*	 g_strcanon		(gchar       *string,
 				 gchar        subsitutor);
 gdouble	 g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
-gchar*	 g_strerror		(gint	      errnum);
-gchar*	 g_strsignal		(gint	      signum);
+gchar*	 g_strerror		(gint	      errnum) G_GNUC_CONST;
+gchar*	 g_strsignal		(gint	      signum) G_GNUC_CONST;
 gint	 g_strcasecmp		(const gchar *s1,
 				 const gchar *s2);
 gint	 g_strncasecmp		(const gchar *s1,
@@ -2509,14 +2509,14 @@ void         g_date_free                  (GDate       *date);
  * return to validity).  
  */
 gboolean     g_date_valid                 (GDate       *date);
-gboolean     g_date_valid_day             (GDateDay     day);
-gboolean     g_date_valid_month           (GDateMonth   month);
-gboolean     g_date_valid_year            (GDateYear    year);
-gboolean     g_date_valid_weekday         (GDateWeekday weekday);
-gboolean     g_date_valid_julian          (guint32      julian_date);
+gboolean     g_date_valid_day             (GDateDay     day) G_GNUC_CONST;
+gboolean     g_date_valid_month           (GDateMonth month) G_GNUC_CONST;
+gboolean     g_date_valid_year            (GDateYear  year) G_GNUC_CONST;
+gboolean     g_date_valid_weekday         (GDateWeekday weekday) G_GNUC_CONST;
+gboolean     g_date_valid_julian          (guint32 julian_date) G_GNUC_CONST;
 gboolean     g_date_valid_dmy             (GDateDay     day,
                                            GDateMonth   month,
-                                           GDateYear    year);
+                                           GDateYear    year) G_GNUC_CONST;
 
 GDateWeekday g_date_weekday               (GDate       *date);
 GDateMonth   g_date_month                 (GDate       *date);
