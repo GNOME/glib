@@ -1,3 +1,62 @@
+2004-10-26  Ray Strode  <rstrode@redhat.com>
+
+	* glib/gkeyfile.c: Add Matthias to "Written by" lines
+	 (GKeyFileGroup): add field to hold comments about groups
+	 (g_key_file_load_from_fd): return TRUE on success and
+	 FALSE on failure.  Don't close fd's opened by other
+	 parent function.  
+	 (g_key_file_load_from_file): run FILE_IS_REGULAR test
+	 before trying to open file, to save an fd from being
+	 leaked (would probably be better to use fstat()). Close
+	 fd when done with it. Return TRUE on success and FALSE
+	 on failure.
+	 (g_key_file_load_from_data): Return TRUE on success and
+	 FALSE on failure.
+	 (g_key_file_load_from_data_dirs): remove superfluous
+	 const modifier.  Return TRUE on success and FALSE on
+	 failure.  Stop trying to load files when one succeeds.
+	 (g_key_file_parse_key_value_pair): don't validate input
+	 for UTF-8 until users uses a getter that does
+	 validation.  Don't leak copy of start_group_name.
+	 (g_key_file_to_data): serialize new comment field for
+	 groups.
+	 (g_key_file_get_keys): Remove convenience code to let
+	 NULL group mean start group.  Get rid of unneeded NULL
+	 check before g_strdup.
+	 (g_key_file_get_groups): Reverse groups list before
+	 sending to user because it is maintained in backward
+	 order internally. 
+	 (g_key_file_get_value),
+	 (g_key_file_set_value): add g_return checks at top of
+	 public functions.
+	 (g_key_file_get_string), 
+	 (g_key_file_get_string_list): validate key value is UTF-8.
+	 (g_key_file_[sg]et_*comment): new functions for
+	 setting/getting comments
+	 (g_key_file_remove_comment): new function to remove
+	 comment block
+	 (g_key_file_remove_key_value_pair_node): new function to
+	 pull a key-value pair out of the list and free it.
+	 (g_key_file_remove_group_node): call
+	 g_key_file_remove_key_value_pair_node instead of 
+	 freeing the list immediately to get better statistics
+	 for approximate_size.
+	 (g_key_file_remove_group): use lookup_group_node instead
+	 of lookup_group to prevent a g_list_find call.
+	 (g_key_file_add_key): report group also when unable to
+	 find key.
+	 (g_key_file_lookup_group_node): new function to make
+	 getting the group node from a group name easier.
+	 (g_key_file_lookup_group): use lookup_group_node under
+	 the hood.
+	 (g_key_file_lookup_key_value_pair_node): new function to
+	 make getting the key-value pair from a group and key
+	 name eaiser.
+	 (g_key_file_parse_comment_as_value): new function to add '#' to the
+	 beginning of every line.
+	 (g_key_file_parse_value_as_comment): new function that
+	 attempts to be the inverse of comment as value.
+
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c: 

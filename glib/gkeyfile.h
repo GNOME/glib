@@ -54,16 +54,16 @@ GKeyFile *g_key_file_new                    (void);
 void      g_key_file_free                   (GKeyFile             *key_file);
 void      g_key_file_set_list_separator     (GKeyFile             *key_file,
 					     gchar                 separator);
-void      g_key_file_load_from_file         (GKeyFile             *key_file,
+gboolean  g_key_file_load_from_file         (GKeyFile             *key_file,
 					     const gchar          *file,
 					     GKeyFileFlags         flags,
 					     GError              **error);
-void      g_key_file_load_from_data         (GKeyFile             *key_file,
+gboolean  g_key_file_load_from_data         (GKeyFile             *key_file,
 					     const gchar          *data,
 					     gsize                 length,
 					     GKeyFileFlags         flags,
 					     GError              **error);
-void      g_key_file_load_from_data_dirs    (GKeyFile             *key_file,
+gboolean g_key_file_load_from_data_dirs    (GKeyFile             *key_file,
 					     const gchar          *file,
 					     gchar               **full_path,
 					     GKeyFileFlags         flags,
@@ -168,6 +168,20 @@ void      g_key_file_set_integer_list       (GKeyFile             *key_file,
 					     const gchar          *key,
 					     gint                  list[],
 					     gsize                 length);
+void      g_key_file_set_comment            (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             const gchar          *comment,
+                                             GError              **error);
+gchar    *g_key_file_get_comment            (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+                                             GError              **error);
+
+void      g_key_file_remove_comment         (GKeyFile             *key_file,
+                                             const gchar          *group_name,
+                                             const gchar          *key,
+					     GError              **error);
 void      g_key_file_remove_key             (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
