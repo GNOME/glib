@@ -1,3 +1,8 @@
+2005-03-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-mkenums.in: Avoid forcing extra newlines when using
+	template files.  (#171005)
+
 2005-03-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* gparam.c (g_param_spec_internal): Don't copy strings
