@@ -1,3 +1,8 @@
+2005-01-15  Tor Lillqvist  <tlillqvist@novell.com>
+
+	* configure.in: sh portability fix. Use "test" and not [.
+	(#163144, Robert Ögren)
+
 2005-01-13  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gqsort.c: Sync to glibc.  (#133994, Morten Welinder, 
