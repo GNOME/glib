@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2001-01-22 11:23+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -156,15 +156,15 @@ msgstr ""
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr ""
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr ""
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr ""
 
@@ -372,32 +372,32 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr ""
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "Зб╕й зчитування даних з спадко╓много процесу"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Зб╕й зчитування з спадко╓много каналу (%s)"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Не вдалося перейти в каталог \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Зб╕й виконання спадко╓много процесу (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Зб╕й створення каналу для обм╕ну з спадко╓мним процесом (%s)"

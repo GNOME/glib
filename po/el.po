@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2002-02-20 13:27+0000\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2002-02-20 14:33+0000\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -23,17 +23,21 @@ msgstr ""
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Δεν ήταν δυνατή η μετονομασία του φακέλου %s στο %s: %s"
 
-#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282 glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875 glib/gutf8.c:1320
+#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
+#: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
+#: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 
 # gconf/gconftool.c:1181
-#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289 glib/giochannel.c:2175
+#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
+#: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212 glib/gutf8.c:1316
+#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr ""
 
@@ -194,8 +198,8 @@ msgstr ""
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape it "
-"as &amp;"
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
 msgstr ""
 
 #: glib/gmarkup.c:428
@@ -322,8 +326,8 @@ msgstr ""
 #: glib/gmarkup.c:1604
 #, c-format
 msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending the "
-"tag <%s/>"
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
 msgstr ""
 
 #: glib/gmarkup.c:1610
@@ -466,11 +470,11 @@ msgstr ""
 msgid "Character out of range for UTF-8"
 msgstr "Αριθμός χαρακτήρων (χωρίς κενά)"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189 glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr ""
 
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr ""
-

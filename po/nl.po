@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2001-11-23 13:07+0100\n"
 "Last-Translator: Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -159,15 +159,15 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Een kale ('raw') leesoperatie is niet mogelijk in g_io_channel_read_to_end"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "Ongeldige berichtlengte"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "Socketfout"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "Kanaalsetvlaggen worden niet ondersteund"
 
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "De tekst was leeg (of bevatte slechts witte ruimte)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "Lezen van data van kindprocessen mislukt"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -427,22 +427,22 @@ msgstr ""
 "Onverwachte fout in g_io_channel_win32_poll() bij het lezen van data van een "
 "kindproces"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lezen van pijp naar kind (%s) mislukt"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Veranderen naar directory '%s' mislukt (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Uitvoeren van kindproces mislukt (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Creëren van pijp voor het communiceren met kindproces mislukt (%s)"

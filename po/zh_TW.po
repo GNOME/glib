@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.13\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2002-02-07 08:25+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -156,15 +156,15 @@ msgstr "輸入管道在字元未完成前就終止"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 中無法讀入原始資料"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "訊息長度不正確"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "Socket 發生錯誤"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "不支援設定管道旗標的操作"
 
@@ -383,32 +383,32 @@ msgstr "字串完結前仍沒有對應於 %c 的引號（字串為 '%s'）"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "文字是空白的（或只含有空白字元）"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "無法由副程序讀入資料"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "當 g_io_channel_win32_poll() 由副程序讀入資料時發生非預期的錯誤"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "無法由副管道讀入資料（%s）"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "無法進入目錄 '%s'（%s）"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "無法執行副程序（%s）"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "無法建立管道來和副程序溝通（%s）"

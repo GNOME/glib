@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2002-02-17 17:56+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -155,15 +155,15 @@ msgstr "通道终止于未尽字符"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "不正确的消息大小"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "套接字错误"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "不支持通道设置标志"
 
@@ -379,32 +379,32 @@ msgstr "文本在找到与 %c 匹配的引号之前结束。(文本为“%s”)"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "空文本(或仅含空白字符)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "无法从子进程中读取数据"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "g_io_channel_win32_poll() 从子进程中读取数据时出现异常错误"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "无法从子管道中读取 (%s)"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "无法切换到目录“%s” (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "无法执行子进程 (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "无法创建与子进程通讯的管道 (%s)"

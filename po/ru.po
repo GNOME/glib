@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2001-12-15 21:17+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -158,15 +158,15 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в g_io_channel_read_to_end"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "Неправильный размер сообщения"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "Ошибка сокета"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "Набор флагов канала не поддерживается"
 
@@ -374,32 +374,32 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Текст был пуст (или содержал только пробелы)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "Сбой чтения данных из процесса-потомка"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Сбой смены каталога \"%s\" (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Сбой выполнения процесса-потомка (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""

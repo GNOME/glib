@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2001-10-05 19:45+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
@@ -160,15 +160,15 @@ msgstr "El canal acaba en un caràcter parcial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "Mida incorrecta del missatge"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "Error de sòcol"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "No es permet l'ús dels indicadors de definició del canal"
 
@@ -424,11 +424,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "El texte era buit (o només contenia espais en blanc)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "És impossible llegir dades del procés fill"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -436,22 +436,22 @@ msgstr ""
 "S'ha produït un error inesperat a g_io_chanel_win32_poll() en llegir dades "
 "d'un procés fill"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "És impossible llegir des del conducte fill (%s)"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "És impossible canviar al directori '%s' (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "És impossible executar el procés fill (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "És impossible crear el conducte per comunicar amb el procés fill (%s)"

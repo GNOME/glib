@@ -1,3 +1,9 @@
+Sat Feb 23 21:36:51 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: 1.3.15, binary, interface age 0.
+
+	* NEWS: Updated.
+
 Sat Feb 23 14:54:13 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.h (struct _GIOChannel): Add a little bit

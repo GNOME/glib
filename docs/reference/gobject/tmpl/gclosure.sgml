@@ -58,6 +58,7 @@ Closures
 
 </para>
 
+@in_marshal: 
 @is_invalid: Indicates whether the closure has been invalidated by g_closure_invalidate()
 
 <!-- ##### MACRO G_TYPE_CLOSURE ##### -->

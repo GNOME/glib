@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.10\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2001-10-22 09:35-0400\n"
 "Last-Translator: Marius Andreiana <mandreiana@yahoo.com>\n"
 "Language-Team: Română <ro@li.org>\n"
@@ -156,15 +156,15 @@ msgstr "Canalul se termină într-un caracter parţial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nu pot face o citire brută în g_io_channel_read_to_end"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "Marime mesaj incorectă"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "Eroare socket"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "Setare flaguri canal nesuportată"
 
@@ -410,11 +410,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textul era gol (sau conţinea doar spaţiu alb)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "Eşuare la citirea datelor de la procesul copil"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -422,22 +422,22 @@ msgstr ""
 "Eroare neaşteptată în g_io_channel_win32_poll() la citirea datelor din "
 "procesul copil"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Eşuare la citirea datelor din conectorul pipe copil (%s)"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Eşuare la schimbarea directorului '%s' (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Eşuare la execuţia procesului copil (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""

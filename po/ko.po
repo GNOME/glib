@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $PACKAGE $VERSION, no-define\n"
-"POT-Creation-Date: 2002-02-17 18:18-0500\n"
+"POT-Creation-Date: 2002-02-23 22:04-0500\n"
 "PO-Revision-Date: 2002-01-07 02:44+0900\n"
 "Last-Translator: Young-Ho Cha <ganadist@chollian.net>\n"
 "Language-Team: korean <ko@li.org>\n"
@@ -156,15 +156,15 @@ msgstr "일부 문자에서 채널 끝냄"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_endi로 raw 읽기를 할수 없습니다"
 
-#: glib/giowin32.c:702 glib/giowin32.c:731
+#: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
 msgstr "잘못된 메세지 크기"
 
-#: glib/giowin32.c:1035 glib/giowin32.c:1088
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
 msgstr "소켓 오류"
 
-#: glib/giowin32.c:1288
+#: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
 msgstr "채널 프래그 지정을 지원하지 않습니다"
 
@@ -374,11 +374,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "텍스트가 비어있음 (또는 공백만 포함됨)"
 
-#: glib/gspawn-win32.c:212
+#: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
 msgstr "자식 프로세스에서 데이터 읽기 실패"
 
-#: glib/gspawn-win32.c:361
+#: glib/gspawn-win32.c:365
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -386,22 +386,22 @@ msgstr ""
 "자식 프로세스에서 데이터를 읽는중 g_io_channel_win32_poll() 에서 기대되지않"
 "은 오류"
 
-#: glib/gspawn-win32.c:839 glib/gspawn.c:914
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "자식 파이프로 부터 읽기 실패 (%s)"
 
-#: glib/gspawn-win32.c:927 glib/gspawn.c:1119
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "디렉토리 '%s'로 바꾸기 실패 (%s)"
 
-#: glib/gspawn-win32.c:936
+#: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "자식 프로세스 실행 실패 (%s)"
 
-#: glib/gspawn-win32.c:977 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "자식 프로세스와 통신을 위한 파이프를 만드는 중 실패 (%s)"
