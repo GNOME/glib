@@ -1,3 +1,17 @@
+Fri Jul 31 22:17:05 1998  Tim Janik  <timj@gtk.org>
+
+	* testglib.c (g_node_test): added a GNode test.
+
+Fri Jul 31 09:08:16 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: compile gnode.c.
+
+	* glib.h: 
+	* gnode.c: added implementation of n-way trees.
+
+	* gtree.c (g_tree_traverse): added a warning to the switch() statement
+	which says that G_LEVEL_ORDER is not implemented.
+
 Mon Jul 27 00:17:30 CDT 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.0

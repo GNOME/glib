@@ -475,6 +475,7 @@ typedef union  _GValue		GValue;
 typedef struct _GCompletion	GCompletion;
 typedef struct _GRelation	GRelation;
 typedef struct _GTuples		GTuples;
+typedef struct _GNode		GNode;
 
 
 typedef void		(*GFunc)		(gpointer  data,
@@ -487,6 +488,10 @@ typedef gpointer	(*GCacheDupFunc)	(gpointer  value);
 typedef void		(*GCacheDestroyFunc)	(gpointer  value);
 typedef gint		(*GTraverseFunc)	(gpointer  key,
 						 gpointer  value,
+						 gpointer  data);
+typedef gboolean	(*GNodeTraverseFunc)	(GNode	  *node,
+						 gpointer  data);
+typedef void		(*GNodeForeachFunc)	(GNode	  *node,
 						 gpointer  data);
 typedef gint		(*GSearchFunc)		(gpointer  key,
 						 gpointer  data);
@@ -562,8 +567,17 @@ typedef enum
 {
   G_IN_ORDER,
   G_PRE_ORDER,
-  G_POST_ORDER
+  G_POST_ORDER,
+  G_LEVEL_ORDER
 } GTraverseType;
+
+typedef enum
+{
+  G_TRAVERSE_LEAFS	= 1 << 0,
+  G_TRAVERSE_NON_LEAFS	= 1 << 1,
+  G_TRAVERSE_ALL	= G_TRAVERSE_LEAFS | G_TRAVERSE_NON_LEAFS,
+  G_TRAVERSE_MASK	= 0x03
+} GTraverseFlags;
 
 /* Doubly linked lists
  */
@@ -707,7 +721,7 @@ void	 g_cache_value_foreach (GCache		  *cache,
 				gpointer	   user_data);
 
 
-/* Trees
+/* Balanced binary trees
  */
 GTree*	 g_tree_new	 (GCompareFunc	 key_compare_func);
 void	 g_tree_destroy	 (GTree		*tree);
@@ -727,6 +741,99 @@ gpointer g_tree_search	 (GTree		*tree,
 			  gpointer	 data);
 gint	 g_tree_height	 (GTree		*tree);
 gint	 g_tree_nnodes	 (GTree		*tree);
+
+
+
+/* N-way tree implementation
+ */
+struct _GNode
+{
+  GNode *prev;
+  GNode *next;
+  GNode *parent;
+  GNode *children;
+  
+  gpointer data;
+};
+
+#define	 G_NODE_IS_ROOT(node)	(((GNode*) (node))->parent == NULL && \
+				 ((GNode*) (node))->prev == NULL && \
+				 ((GNode*) (node))->next == NULL)
+#define	 G_NODE_IS_LEAF(node)	(((GNode*) (node))->children == NULL)
+
+GNode*	 g_node_new		(gpointer	   data);
+void	 g_node_destroy		(GNode		  *root);
+void	 g_node_unlink		(GNode		  *node);
+void	 g_node_insert		(GNode		  *parent,
+				 gint		   position,
+				 GNode		  *node);
+void	 g_node_insert_before	(GNode		  *parent,
+				 GNode		  *sibling,
+				 GNode		  *node);
+void	 g_node_prepend		(GNode		  *parent,
+				 GNode		  *node);
+guint	 g_node_n_nodes		(GNode		  *root,
+				 GTraverseFlags	   flags);
+GNode*	 g_node_get_root	(GNode		  *node);
+gboolean g_node_is_ancestor	(GNode		  *node,
+				 GNode		  *descendant);
+guint	 g_node_depth		(GNode		  *node);
+GNode*	 g_node_find		(GNode		  *root,
+				 GTraverseType	   order,
+				 GTraverseFlags	   flags,
+				 gpointer	   data);
+
+/* traversal function, assumes that `node' is root
+ * (only traverses `node' and its subtree).
+ * this function is just a high level interface to
+ * low level traversal functions, optimized for speed.
+ */
+void	 g_node_traverse	(GNode		  *root,
+				 GTraverseType	   order,
+				 GTraverseFlags	   flags,
+				 gint		   max_depth,
+				 GNodeTraverseFunc func,
+				 gpointer	   data);
+
+/* return the maximum tree height starting with `node', this is an expensive
+ * operation, since we need to visit all nodes. this could be shortened by
+ * adding `guint height' to struct _GNode, but then again, this is not very
+ * often needed, and would make g_node_insert() more time consuming.
+ */
+guint	 g_node_max_height	 (GNode *root);
+
+void	 g_node_children_foreach (GNode		  *node,
+				  GTraverseFlags   flags,
+				  GNodeForeachFunc func,
+				  gpointer	   data);
+void	 g_node_reverse_children (GNode		  *node);
+guint	 g_node_n_children	 (GNode		  *node);
+GNode*	 g_node_nth_child	 (GNode		  *node,
+				  guint		   n);
+GNode*	 g_node_last_child	 (GNode		  *node);
+GNode*	 g_node_find_child	 (GNode		  *node,
+				  GTraverseFlags   flags,
+				  gpointer	   data);
+gint	 g_node_child_position	 (GNode		  *node,
+				  GNode		  *child);
+gint	 g_node_child_index	 (GNode		  *node,
+				  gpointer	   data);
+
+GNode*	 g_node_first_sibling	 (GNode		  *node);
+GNode*	 g_node_last_sibling	 (GNode		  *node);
+
+#define	 g_node_prev_sibling(node)	((node) ? \
+					 ((GNode*) (node))->prev : NULL)
+#define	 g_node_next_sibling(node)	((node) ? \
+					 ((GNode*) (node))->next : NULL)
+#define	 g_node_first_child(node)	((node) ? \
+					 ((GNode*) (node))->children : NULL)
+#define	 g_node_append(parent, node)	G_STMT_START { \
+					  g_node_insert_before ((parent), \
+								NULL, \
+								(node)); \
+					} G_STMT_END
+
 
 
 /* Memory

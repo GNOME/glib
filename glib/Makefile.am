@@ -20,6 +20,7 @@ libglib_1_1_la_SOURCES = \
 		glist.c		\
 		gmem.c		\
 		gmessages.c	\
+		gnode.c		\
 		gprimes.c	\
 		gslist.c	\
 		gtimer.c	\

@@ -177,6 +177,10 @@ g_tree_traverse (GTree         *tree,
     case G_POST_ORDER:
       g_tree_node_post_order (rtree->root, traverse_func, data);
       break;
+    
+    case G_LEVEL_ORDER:
+      g_warning ("g_tree_traverse(): traverse type G_LEVEL_ORDER isn't implemented.");
+      break;
     }
 }
 
