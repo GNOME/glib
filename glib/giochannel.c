@@ -477,9 +477,16 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 {
   GIOCondition condition = 0;
 
-  if ((channel->read_buf && (channel->read_buf->len > 0)) /* FIXME full chars how? */
-    || (channel->encoded_read_buf && (channel->encoded_read_buf->len > 0)))
-    condition |= G_IO_IN;
+  if (channel->encoding)
+    {
+      if (channel->encoded_read_buf && (channel->encoded_read_buf->len > 0))
+        condition |= G_IO_IN; /* Only return if we have full characters */
+    }
+  else
+    {
+      if (channel->read_buf && (channel->read_buf->len > 0))
+        condition |= G_IO_IN;
+    }
 
   if (channel->write_buf && (channel->write_buf->len < channel->buf_size))
     condition |= G_IO_OUT;
@@ -727,7 +734,8 @@ g_io_channel_seek_position	(GIOChannel* channel,
       case G_SEEK_CUR: /* The user is seeking relative to the head of the buffer */
         if (channel->use_buffer)
           {
-            if (channel->encoded_read_buf && channel->encoded_read_buf->len > 0)
+            if (channel->do_encode && channel->encoded_read_buf
+                && channel->encoded_read_buf->len > 0)
               {
                 g_warning ("Seek type G_SEEK_CUR not allowed for this"
                   " channel's encoding.\n");
@@ -735,6 +743,17 @@ g_io_channel_seek_position	(GIOChannel* channel,
               }
           if (channel->read_buf)
             offset -= channel->read_buf->len;
+          if (channel->encoded_read_buf)
+            {
+              g_assert (channel->encoded_read_buf->len == 0 && !channel->do_encode);
+
+              /* If there's anything here, it's because the encoding is UTF-8,
+               * so we can just subtract the buffer length, the same as for
+               * the unencoded data.
+               */
+
+              offset -= channel->encoded_read_buf->len;
+            }
           }
         break;
       case G_SEEK_SET:
@@ -758,13 +777,19 @@ g_io_channel_seek_position	(GIOChannel* channel,
     {
       if (channel->read_buf)
         g_string_truncate (channel->read_buf, 0);
-      if (channel->do_encode) /* Conversion state no longer matches position in file */
+
+      /* Conversion state no longer matches position in file */
+      if (channel->read_cd != (GIConv) -1)
+        g_iconv (channel->read_cd, NULL, NULL, NULL, NULL);
+      if (channel->write_cd != (GIConv) -1)
+        g_iconv (channel->write_cd, NULL, NULL, NULL, NULL);
+
+      if (channel->encoded_read_buf)
         {
-          g_iconv (channel->read_cd, NULL, NULL, NULL, NULL);
-          g_iconv (channel->write_cd, NULL, NULL, NULL, NULL);
-          if (channel->encoded_read_buf)
-            g_string_truncate (channel->encoded_read_buf, 0);
+          g_assert (channel->encoded_read_buf->len == 0 || !channel->do_encode);
+          g_string_truncate (channel->encoded_read_buf, 0);
         }
+
       if (channel->partial_write_buf[0] != '\0')
         {
           g_warning ("Partial character at end of write buffer not flushed.\n");

@@ -1,3 +1,11 @@
+2001-07-23  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: fixed g_io_channel_seek_position() so that
+	G_SEEK_CUR works for UTF-8 channel encoding, and unallocated
+	converters are not flushed after the seek; fixed
+	g_io_channel_get_buffer_condition() so that G_IO_IN is only
+	set if the read buffer contains at least one full character
+
 2001-07-23  Sven Neumann  <sven@gimp.org>
 
 	* Makefile.am: removed glib.def from EXTRA_DIST ...
