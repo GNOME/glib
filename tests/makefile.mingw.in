@@ -1,11 +1,12 @@
 ## Makefile for building the GLib test programs with gcc for mingw.
 ## Use: make -f makefile.mingw check
 
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 TOP = ../..
 
 include ../build/win32/make.mingw
+
+# Possibly override GLib version in build\win32\module.defs
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 ################################################################
 
@@ -21,6 +22,7 @@ TESTS = \
 	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
+	markup-test.exe	\
 	node-test.exe	\
 	queue-test.exe	\
 	rand-test.exe	\
@@ -50,6 +52,3 @@ makefile.mingw: makefile.mingw.in
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done
 	@echo All tests successful.
-
-clean::
-	-rm *.exe *.o

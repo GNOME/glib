@@ -55,6 +55,7 @@ glib_OBJECTS =			\
 	giowin32.obj		\
 	glist.obj		\
 	gmain.obj		\
+	gmarkup.obj		\
 	gmem.obj		\
 	gmessages.obj		\
 	gnode.obj		\

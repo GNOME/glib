@@ -1,3 +1,11 @@
+2000-10-27  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.{mingw,msc}.in (glib_OBJECTS): Add gmarkup.
+
+	* glib.def: Add missing functions.
+
+	* tests/makefile.{mingw,msc}.in (TESTS): Add markup-test.
+
 2000-10-24  Havoc Pennington  <hp@pobox.com>
 
         * gmarkup.h, gmarkup.c: New module to parse a simple

@@ -13,7 +13,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 # Nothing much configurable below
 
 INCLUDES = -I..
-DEFINES =  -DHAVE_CONFIG_H
+DEFINES = -DHAVE_CONFIG_H
 
 TESTS = \
 	array-test.exe	\
@@ -22,6 +22,7 @@ TESTS = \
 	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
+	markup-test.exe	\
 	node-test.exe	\
 	queue-test.exe	\
 	rand-test.exe	\

@@ -99,6 +99,7 @@ EXPORTS
 	g_error_matches
 	g_error_new
 	g_error_new_literal
+	g_file_get_contents
 	g_file_test
 	g_filename_from_utf8
 	g_filename_to_utf8
@@ -218,6 +219,12 @@ EXPORTS
 	g_main_win32_get_poll_func
 	g_malloc
 	g_malloc0
+	g_markup_escape_text
+	g_markup_parse_context_end_parse
+	g_markup_parse_context_free
+	g_markup_parse_context_get_position
+	g_markup_parse_context_new
+	g_markup_parse_context_parse
 	g_mem_check
 	g_mem_chunk_alloc
 	g_mem_chunk_alloc0
