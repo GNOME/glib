@@ -1,3 +1,7 @@
+2003-01-29  Tõivo Leedjärv  <toivo@linux.ee>
+
+	* et.po: Fixed a small bug in Estonian translation.
+
 2003-01-22  Paisa Seeluangsawat  <paisa@colorado.edu>
 
 	* th.po: Added Thai file

@@ -28,7 +28,7 @@ msgstr "Ei saa avada konverterit '%s'-st '%s'-ks: %s"
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
-msgstr "Vigane baitide jada teisendus sisendis"
+msgstr "Vigane baitide jada teisendussisendis"
 
 #: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
