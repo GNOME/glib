@@ -1,3 +1,10 @@
+2003-06-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add g_vasprintf().
+
+	* glib/tmpl/string_utils.sgml: Add a hint about g_vasprintf() to
+	the g_strdup_printf() docs.
+
 2003-05-28  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Document that g_strdup() and

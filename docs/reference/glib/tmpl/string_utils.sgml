@@ -181,6 +181,10 @@ but safer, since it calculates the maximum space required and allocates
 memory to hold the result.
 The returned string should be freed when no longer needed.
 </para>
+<para>
+See also g_vasprintf(), which offers the same functionality, but additionally
+returns the length of the allocated string. 
+</para>
 
 @format: the standard <function>sprintf()</function> format string.
 @args: the list of parameters to insert into the format string.

@@ -904,6 +904,7 @@ g_sprintf
 g_vsprintf
 g_snprintf
 g_vsnprintf
+g_vasprintf
 g_printf_string_upper_bound
 
 <SUBSECTION>
