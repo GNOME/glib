@@ -1,3 +1,7 @@
+2004-03-16  Gareth Owen  <gowen72@yahoo.com>
+
+	* configure.in: Added en_GB to ALL_LINGUAS
+
 Tue Mar 16 11:50:56 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.4.0 ===
