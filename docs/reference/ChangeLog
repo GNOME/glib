@@ -1,3 +1,15 @@
+1999-12-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib-sections.txt, tmpl/threads.sgml: Removed
+	G_THREADS_IMPL_NSPR. Shouldn't be used anyway.
+
+	* glib-overrides.txt: New file, that makes most of the thread
+	related macros look like functions.
+
+	* Makefile.am: Added glib-overrides.txt to EXTRA_DIST.
+
+	* tmpl/threads.sgml: Minor updates.
+	
 Tue Aug 17 08:42:17 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* tmpl/datasets.sgml: Added missing </para>

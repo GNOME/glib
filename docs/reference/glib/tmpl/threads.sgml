@@ -32,12 +32,11 @@ that every thread has a private instance of (#GPrivate,
 
 <para>
 Currently there is only as much thread support included in GLib as is
-necessary to make GLib itself multithread safe. Future versions of
-GLib might contain functions to actually create threads and the
-like. For now the most portable way to create threads is to require
-the macro #G_THREADS_IMPL_POSIX to be defined and use POSIX threads
-then. This will work on almost all platforms (except most notably
-Solaris).
+necessary to make GLib itself multithread safe. Version 1.4 of GLib
+will contain full thread support. For now the most portable way to
+create threads is to require the macro #G_THREADS_IMPL_POSIX to be
+defined and use POSIX threads then. This will work on almost all
+platforms (except most notably Solaris and DCE threads.).
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -69,15 +68,6 @@ This macro is defined, if POSIX style threads are used.
 
 <para>
 This macro is defined, if the SOLARIS thread system is used.
-</para>
-
-
-
-<!-- ##### MACRO G_THREADS_IMPL_NSPR ##### -->
-
-<para>
-This macro is defined, if the NSPR thread implementation is used.
-NSPR is the cross platform library of mozilla.
 </para>
 
 
@@ -501,11 +491,12 @@ give_me_next_number() example using the G_LOCK_* macros:
 <example>
 <title>Using the G_LOCK_* convenience macros</title>
 <programlisting>
+G_LOCK_DEFINE (current_number);
+
 int give_me_next_number ()
   {
     static int current_number = 0;
     int ret_val;
-    G_LOCK_DEFINE_STATIC (current_number);
 
     G_LOCK (current_number);
     ret_val = current_number = calc_next_number (current_number); 

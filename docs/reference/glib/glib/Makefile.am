@@ -37,7 +37,8 @@ install-data-local:
 EXTRA_DIST = \
 	$(DOC_MAIN_SGML_FILE) \
 	$(DOC_MODULE)-sections.txt \
-	glib-decl.txt
+	glib-decl.txt \
+	glib-overrides.txt
 
 dist-hook:
 	mkdir $(distdir)/tmpl

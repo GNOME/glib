@@ -1,0 +1,191 @@
+# This file makes most of the thread related macros look like
+# functions, which they really were, if possible easy.
+
+# default thread implementation
+
+<MACRO>
+<NAME>G_THREADS_IMPL_POSIX</NAME>
+#define G_THREADS_IMPL_POSIX
+</MACRO>
+
+<MACRO>
+<NAME>G_THREADS_IMPL_SOLARIS</NAME>
+#define G_THREADS_IMPL_SOLARIS
+</MACRO>
+
+<MACRO>
+<NAME>G_THREADS_IMPL_NONE</NAME>
+#define G_THREADS_IMPL_NONE
+</MACRO>
+
+# threads supported?
+
+<FUNCTION>
+<NAME>g_thread_supported</NAME>
+<RETURNS>gboolean</RETURNS>
+</FUNCTION>
+
+# GMutex
+
+<FUNCTION>
+<NAME>g_mutex_new</NAME>
+<RETURNS>GMutex *</RETURNS>
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_mutex_lock</NAME>
+<RETURNS>void</RETURNS>
+GMutex *mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_mutex_trylock</NAME>
+<RETURNS>gboolean</RETURNS>
+GMutex *mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_mutex_unlock</NAME>
+<RETURNS>void</RETURNS>
+GMutex *mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_mutex_free</NAME>
+<RETURNS>void</RETURNS>
+GMutex *mutex
+</FUNCTION>
+
+# GStaticMutex
+
+<STRUCT>
+<NAME>GStaticMutex</NAME>
+</STRUCT>
+
+<MACRO>
+<NAME>G_STATIC_MUTEX_INIT</NAME>
+#define G_STATIC_MUTEX_INIT
+</MACRO>
+
+<FUNCTION>
+<NAME>g_static_mutex_lock</NAME>
+<RETURNS>void</RETURNS>
+GStaticMutex* mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_static_mutex_trylock</NAME>
+<RETURNS>gboolean</RETURNS>
+GStaticMutex* mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_static_mutex_unlock</NAME>
+<RETURNS>void</RETURNS>
+GStaticMutex* mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_static_mutex_get_mutex</NAME>
+<RETURNS>GMutex *</RETURNS>
+GStaticMutex* mutex
+</FUNCTION>
+
+# G_LOCK_* macros
+
+<MACRO>
+<NAME>G_LOCK_DEFINE</NAME>
+#define G_LOCK_DEFINE(name)    
+</MACRO>
+
+<MACRO>
+<NAME>G_LOCK_DEFINE_STATIC</NAME>
+#define G_LOCK_DEFINE_STATIC(name)
+</MACRO>
+
+<MACRO>
+<NAME>G_LOCK_EXTERN</NAME>
+#define G_LOCK_EXTERN(name)    
+</MACRO>
+
+<MACRO>
+<NAME>G_LOCK</NAME>
+#define G_LOCK(name)
+</MACRO>
+
+<MACRO>
+<NAME>G_UNLOCK</NAME>
+#define G_UNLOCK(name)
+</MACRO>
+
+<MACRO>
+<NAME>G_TRYLOCK</NAME>
+#define G_TRYLOCK(name)
+</MACRO>
+
+# GCond
+
+<FUNCTION>
+<NAME>g_cond_new</NAME>
+<RETURNS>GCond*</RETURNS>
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_cond_signal</NAME>
+<RETURNS>void</RETURNS>
+GCond *cond
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_cond_broadcast</NAME>
+<RETURNS>void</RETURNS>
+GCond *cond
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_cond_wait</NAME>
+<RETURNS>void</RETURNS>
+GCond *cond, GMutex *mutex
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_cond_timed_wait</NAME>
+<RETURNS>gboolean</RETURNS>
+GCond *cond, GMutex *mutex, GTimeVal *abs_time
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_cond_free</NAME>
+<RETURNS>void</RETURNS>
+GCond *cond
+</FUNCTION>
+
+# GPrivate
+
+<FUNCTION>
+<NAME>g_private_new</NAME>
+<RETURNS>GPrivate*</RETURNS>
+GDestroyNotify destructor
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_private_get</NAME>
+<RETURNS>gpointer</RETURNS>
+GPrivate *private_key
+</FUNCTION>
+
+<FUNCTION>
+<NAME>g_private_set</NAME>
+<RETURNS>void</RETURNS>
+GPrivate *private_key, gpointer data
+</FUNCTION>
+
+# GStaticPrivate
+
+<MACRO>
+<NAME>G_STATIC_PRIVATE_INIT</NAME>
+#define G_STATIC_PRIVATE_INIT 
+</MACRO>
+
+
+
