@@ -70,7 +70,8 @@ Specifies the prototype of log handler functions.
 </para>
 
 @log_domain: the log domain of the message.
-@log_level: the log level of the message.
+@log_level: the log level of the message (including the fatal and recursion
+flags).
 @message: the message to process.
 @user_data: user data, set in g_log_set_handler().
 
@@ -152,11 +153,23 @@ documentation.
 
 <!-- ##### FUNCTION g_log_set_handler ##### -->
 <para>
-Sets the log handler for a domain and set of log levels.
+Sets the log handler for a domain and a set of log levels.
+Note that to handle fatal and recursive messages the @log_levels parameter
+must be combined with the G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
+
+<example>
+<title>Adding a log handler for all warning messages</title>
+<programlisting>
+  g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
+                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+</programlisting>
+</example>
 </para>
 
 @log_domain: the log domain, or NULL for the default "" application domain.
-@log_levels: the levels to apply the log handler.
+@log_levels: the log levels to apply the log handler for. To handle fatal
+and recursive messages as well, comine the log levels with the G_LOG_FLAG_FATAL
+and G_LOG_FLAG_RECURSIVE bit flags.
 @log_func: the log handler function.
 @user_data: data passed to the log handler.
 @Returns: the id of the new handler.
