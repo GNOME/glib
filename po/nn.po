@@ -5,58 +5,58 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KDEADMIN/kcron\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
-"PO-Revision-Date: 2001-06-25 18:55+02:00\n"
-"Last-Translator: Gaute Hvoslef Kvalnes <ai98ghk@stud.hib.no>\n"
-"Language-Team: Norwegian (Nynorsk)\n"
+"POT-Creation-Date: 2001-09-05 23:39+0200\n"
+"PO-Revision-Date: 2001-09-06 00:24GMT\n"
+"Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
+"Language-Team: nynorsk <nn@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.7.1\n"
+"X-Generator: KBabel 0.9.5\n"
 
 #: glib/gconvert.c:143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
+msgstr "Konvertering frå teiknsett %s' til '%s' er ikkje støtta"
 
 #: glib/gconvert.c:147
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Kunne ikkje konvertera fila frå PDF- til PS-format."
+msgstr "Kunne ikkje opne konverterar frå '%s' til '%s': %s"
 
 #: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
 #: glib/gconvert.c:302 glib/gconvert.c:513
-#, fuzzy, c-format
+#, c-format
 msgid "Error during conversion: %s"
-msgstr "Feil ved lesing av gruppe: "
+msgstr "Feil under konvertering: %s"
 
 #: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
 #: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
-msgstr ""
+msgstr "Delvis teiknsekvens på slutten av inndata"
 
 #: glib/gconvert.c:488
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "kan ikkje skifte tilbake til filkatalog \"%s\""
+msgstr "Kan ikkje konvertere 'fallback' '%s' til kodesett '%s'"
 
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "URIen '%s' er ikkje ein absolutt URI som brukar file måten"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "Lokal fil URIen '%s' kan ikkje innehalde ein #"
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "URIen '%s' er ugyldig"
 
 #: glib/gconvert.c:1238
 #, c-format
@@ -71,76 +71,64 @@ msgstr ""
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "Filstien '%s' er ikkje ein absolutt sti"
 
 #: glib/gconvert.c:1311
-#, fuzzy
 msgid "Invalid byte sequence in hostname"
-msgstr "Ugyldig celle i ResultX"
+msgstr "Ugyldig bytesekvens i maskinnamn"
 
 #: glib/gfileutils.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading file '%s': %s"
-msgstr ""
-"Feil ved lesing a fil:\n"
-"%1"
+msgstr "Feil ved lesing a fil '%s': %s"
 
 #: glib/gfileutils.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr ""
-"Kunne ikkje laga mellombels fil\n"
-"%1:\n"
-"%2"
+msgstr "Klarte ikkje å lese frå fila '%s': %s"
 
 #: glib/gfileutils.c:405 glib/gfileutils.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': %s"
-msgstr ""
-"Kunne ikkje opna fil:\n"
-"%s"
+msgstr "Kunne ikkje opna fil: %s: %s"
 
 #: glib/gfileutils.c:419
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
+msgstr "Klarte ikkje å få tak i eigenskapar for fila '%s' fstat() feila: %s"
 
 #: glib/gfileutils.c:445
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Kunne ikkje laga mappa '%1', den finst alt."
+msgstr "Kunne ikkje opne fila '%s': fdopen() feila: %s"
 
 #: glib/gfileutils.c:654
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
-msgstr ""
+msgstr "Mal '%s' er ugyldig, kan ikkje ikkje innehalde ein '%s'"
 
 #: glib/gfileutils.c:666
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Malfila %1 finst ikkje!"
+msgstr "Malfila '%s' er ikkje avslutta med XXXXXX"
 
 #: glib/gfileutils.c:687
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create file '%s': %s"
-msgstr ""
-"Kunne ikkje laga mellombels fil\n"
-"%1:\n"
-"%2"
+msgstr "Klarte ikkje å opprette fila '%s': %s"
 
 #: glib/gmarkup.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Feil på tenar: %1"
+msgstr "Feil på linje %s teikn %d: %s"
 
 #: glib/gmarkup.c:300
-#, fuzzy, c-format
+#, c-format
 msgid "Error on line %d: %s"
-msgstr "Feil på tenar: %1"
+msgstr "Feil på linje %d: %s"
 
 #: glib/gmarkup.c:379
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 
 #: glib/gmarkup.c:389
@@ -152,14 +140,14 @@ msgid ""
 msgstr ""
 
 #: glib/gmarkup.c:425
-#, fuzzy, c-format
+#, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Teiknet %1 er ikkje definert i skrifttypen %2"
+msgstr "Teiknet '%s' er ikkje gyldig inne i eit entitetsnamn"
 
 #: glib/gmarkup.c:469
-#, fuzzy, c-format
+#, c-format
 msgid "Entity name '%s' is not known"
-msgstr "ukjend namn eller teneste"
+msgstr "Entitet namn '%s' er ikkje kjent"
 
 #: glib/gmarkup.c:479
 msgid ""
@@ -177,11 +165,11 @@ msgstr ""
 #: glib/gmarkup.c:550
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Teiknreferansen '%s' kan ikkje kodast til eit lovleg teikn"
 
 #: glib/gmarkup.c:567
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Tom teiknreferanse, bør innehelad eit nummer slik som &#454;"
 
 #: glib/gmarkup.c:577
 msgid ""
@@ -192,11 +180,11 @@ msgstr ""
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
-msgstr ""
+msgstr "Ugyldig UTF-8 koda tekst"
 
 #: glib/gmarkup.c:922
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr ""
+msgstr "Dokumentet må byrje med eit element (t.d. <book>)"
 
 #: glib/gmarkup.c:960
 #, c-format
@@ -214,8 +202,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1110
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1151
@@ -243,12 +230,12 @@ msgstr ""
 #: glib/gmarkup.c:1388
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
+msgstr "Element '%s' vart lukka, ikkje noko element er i augneblinken open."
 
 #: glib/gmarkup.c:1397
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
+msgstr "Element '%s' vart avslutta, men det aktive elementet er '%s'"
 
 #: glib/gmarkup.c:1408
 #, c-format
@@ -258,13 +245,12 @@ msgid ""
 msgstr ""
 
 #: glib/gmarkup.c:1541
-#, fuzzy
 msgid "Document was empty or contained only whitespace"
-msgstr "Klassenamnet kan ikkje innehalda 'kvite teikn'"
+msgstr "Dokumentet var tomt eller innheldt kun tome teikn"
 
 #: glib/gmarkup.c:1555
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Dokument avslutta uventa rett etter ein open vinkel hake '<'"
 
 #: glib/gmarkup.c:1563 glib/gmarkup.c:1606
 #, c-format
@@ -282,15 +268,15 @@ msgstr ""
 
 #: glib/gmarkup.c:1577
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Dokumentet tok uventa slutt inn i eit element namn"
 
 #: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Dokumentet tok uventa slutte inni i eit attributt namn"
 
 #: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "Dokumentet vart uventa avslutta inne i ein element opnings tag."
 
 #: glib/gmarkup.c:1593
 msgid ""
@@ -322,101 +308,96 @@ msgstr ""
 #: glib/gshell.c:526
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr ""
+msgstr "Teksta tok slutt rett etter eit \" teikn (Teksta var '%s')"
 
 #: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Teksta tok slutt før avsluttane sitatteikn var funne for %c (Teksta var '%s')"
 
 #: glib/gshell.c:545
-#, fuzzy
 msgid "Text was empty (or contained only whitespace)"
-msgstr "Klassenamnet kan ikkje innehalda 'kvite teikn'"
+msgstr "Teksta var tom (eller innehdlt kun tome teikn)"
 
 #: glib/gspawn-win32.c:212
-#, fuzzy
 msgid "Failed to read data from child process"
-msgstr "Kunne ikkje starta barneprosess '%1'."
+msgstr "Failed to read data from child process"
 
 #: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
+msgstr "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
 #: glib/gspawn-win32.c:837 glib/gspawn.c:907
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Kunne ikkje lesa katalog."
+msgstr "Klarte ikkje å lese frå røyr frå barn (%s)"
 
 #: glib/gspawn-win32.c:926 glib/gspawn.c:1112
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "kan ikkje skifte til filkatalog \"%s\""
+msgstr "Klarte ikkje å skifte katalog '%s' (%s)"
 
 #: glib/gspawn-win32.c:935 glib/gspawn.c:1122
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Kunne ikkje køyra e-postprogram"
+msgstr "Klarte ikkje å utføre barnproess (%s)"
 
 #: glib/gspawn-win32.c:976 glib/gspawn.c:1219
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Kan ikkje laga sokkel for kommunikasjon med Piloten"
+msgstr "Klarte ikkje å opprette røyr for å kommuniksere med barneprosess (%s)"
 
 #: glib/gspawn.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Kunne ikkje starta barneprosess '%1'."
+msgstr "Klarte ikkje å lese data frå barneprosess (%s)"
 
 #: glib/gspawn.c:290
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
+msgstr "Uventa feil i select() ved lesing av data frå barneprosess (%s)"
 
 #: glib/gspawn.c:373
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr ""
+msgstr "Uventa feil i waitpid() (%s)"
 
 #: glib/gspawn.c:972
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fork (%s)"
-msgstr "Kunne ikkje lasta %1."
+msgstr "Kunne ikkje starta barneprosess (%s)"
 
 #: glib/gspawn.c:1131
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "Klarte ikkje å redirigere utdata eller inndata frå barneprosess (%s)"
 
 #: glib/gspawn.c:1140
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Kunne ikkje starta barneprosess '%1'."
+msgstr "Kunne ikkje starta barneprosess (%s)"
 
 #: glib/gspawn.c:1148
-#, fuzzy
 msgid "Unknown error executing child process"
-msgstr "Vel ingen barneprosessar"
+msgstr "Ukjend feil ved køyring av barneprosess"
 
 #: glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Klarte ikkje å lese nok data frå pid røyr frå barn (%s)"
 
 #: glib/gutf8.c:898
-#, fuzzy
 msgid "Character out of range for UTF-8"
-msgstr "Ignorer teikn:"
+msgstr "Teikn ikkje gyldig for UTF-8"
 
 #: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
 #: glib/gutf8.c:1279 glib/gutf8.c:1375
-#, fuzzy
 msgid "Invalid sequence in conversion input"
-msgstr "Ugyldig celle i ResultX"
+msgstr "Ugyldig sekvens i inndata konvertering"
 
 #: glib/gutf8.c:1290 glib/gutf8.c:1386
-#, fuzzy
 msgid "Character out of range for UTF-16"
-msgstr "Ignorer teikn:"
+msgstr "Teikn ikkje gyldig for UTF-16"
+

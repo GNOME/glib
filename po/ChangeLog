@@ -1,3 +1,7 @@
+2001-09-06  Roy-Magne Mo  <rmo@sunnmore.net>
+
+	* nn.po: Updated Norwegian nynorsk translation
+
 2001-09-05  Ross Golder  <rossg@golder.org>
 
 	* Makefile.in.in (install-data-yes): Take DESTDIR into account
