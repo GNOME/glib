@@ -971,10 +971,11 @@ if test x"$have_threads" != xnone; then
 				int main () { char buffer[10000], *pointer; 
 				char getpwuid_r (long, void*, void*,
 					int, void*);
+				int error;
 				errno = 0;
-				getpwuid_r (0, &buffer, &buffer, 
+				error = getpwuid_r (0, &buffer, &buffer, 
 					sizeof (buffer), &pointer);
-				return errno == ENOSYS;}],
+				return errno == ENOSYS || error == ENOSYS;}],
 				[ac_cv_func_getpwuid_r=yes],
 				[ac_cv_func_getpwuid_r=no])])
 		if test "$ac_cv_func_getpwuid_r" = yes; then

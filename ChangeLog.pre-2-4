@@ -1,5 +1,9 @@
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: Adjusted the test for an unimplemented
+	 getpwuid_r. Info from Michael Pruett. This is just a forward
+	 merge from glib-1-2.
+
 	* configure.in: Moved determination of G_THREAD_FLAGS before
 	G_THREAD_LIBS. Check for UnixWare systems and set the right cflags
 	and libs there (it needs -Kthread for the native compiler and
