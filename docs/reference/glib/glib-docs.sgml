@@ -53,6 +53,7 @@
 <!ENTITY glib-Spawn SYSTEM "xml/spawn.xml">
 <!ENTITY glib-Fileutils SYSTEM "xml/fileutils.xml">
 <!ENTITY glib-Shell SYSTEM "xml/shell.xml">
+<!ENTITY glib-Option SYSTEM "xml/option.xml">
 <!ENTITY glib-Markup SYSTEM "xml/markup.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
@@ -142,6 +143,7 @@ synchronize their operation.
     &glib-Spawn;
     &glib-Fileutils;
     &glib-Shell;
+    &glib-Option;
     &glib-Pattern-Matching;
     &glib-Markup;
     &glib-Windows-Compatability-Functions;

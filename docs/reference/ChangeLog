@@ -1,3 +1,9 @@
+Tue Aug  3 16:43:22 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add a section for GOption.
+	* glib/glib-docs.sgml: Include GOption section.
+	* glib/tmpl/option.sgml: New template.
+
 Tue Aug  3 15:34:16 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add a separate section for
