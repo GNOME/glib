@@ -61,23 +61,12 @@ It should only be accessed via the following functions.
 
 <!-- ##### FUNCTION g_hash_table_new ##### -->
 <para>
-Creates a new #GHashTable.
+
 </para>
 
-@hash_func: a function to create a hash value from a key.
-Hash values are used to determine where keys are stored within the
-#GHashTable data structure.
-The g_direct_hash(), g_int_hash() and g_str_hash() functions are provided for
-some common types of keys. If hash_func is NULL, g_direct_hash() is used.
-@key_equal_func: a function to check two keys for equality.  This is
-used when looking up keys in the #GHashTable.  The g_direct_equal(),
-g_int_equal() and g_str_equal() functions are provided for the most
-common types of keys. If @key_equal_func is NULL, keys are compared
-directly in a similar fashion to g_direct_equal(), but without the
-overhead of a function call.
-@Returns: a new #GHashTable.
-<!-- # Unused Parameters # -->
-@key_compare_func: 
+@hash_func: 
+@key_equal_func: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GHashFunc ##### -->
@@ -118,69 +107,53 @@ FALSE otherwise.
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
 <para>
-Inserts a new key and value into a #GHashTable.
-If the key already exists in the #GHashTable its current value is replaced
-with the new value.
-</para>
-<note>
-<para>
-If the keys or values use dynamically allocated memory, then you should
-first check if the key already exists in the GHashTable. If it does,
-you should free the existing key and/or value before inserting the
-new key and value.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
-@key: a key to insert.
-@value: the value to associate with the key.
+</para>
+
+@hash_table: 
+@key: 
+@value: 
 
 
 <!-- ##### FUNCTION g_hash_table_size ##### -->
 <para>
-Returns the number of key/value pairs in a #GHashTable.
+
 </para>
 
-@hash_table: a #GHashTable.
-@Returns: the number of key/value pairs in the #GHashTable.
+@hash_table: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_lookup ##### -->
 <para>
-Looks up a key in the #GHashTable, returning the associated value or NULL
-if the key is not found.
+
 </para>
 
-@hash_table: a #GHashTable.
-@key: the key to look up.
-@Returns: the associated value, or NULL if the key is not found.
+@hash_table: 
+@key: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_lookup_extended ##### -->
 <para>
-Looks up a key in the #GHashTable, returning the original key and the
-associated value and a gboolean which is TRUE if the key was found.
-This is useful if you need to free the memory allocated for the
-original key, for example before calling g_hash_table_remove().
+
 </para>
 
-@hash_table: a #GHashTable.
-@lookup_key: the key to look up.
-@orig_key: returns the original key.
-@value: returns the value associated with the key.
-@Returns: TRUE if the key was found in the #GHashTable.
+@hash_table: 
+@lookup_key: 
+@orig_key: 
+@value: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_foreach ##### -->
 <para>
-Calls the given function for each of the key/value pairs in the #GHashTable.
-The function is passed the key and value of each pair, and the given
-@user_data parameter.
+
 </para>
 
-@hash_table: a #GHashTable.
-@func: the function to call for each key/value pair.
-@user_data: use data to pass to the function.
+@hash_table: 
+@func: 
+@user_data: 
 
 
 <!-- ##### USER_FUNCTION GHFunc ##### -->
@@ -197,31 +170,23 @@ which is passed to g_hash_table_foreach().
 
 <!-- ##### FUNCTION g_hash_table_remove ##### -->
 <para>
-Removes a key and its associated value from a #GHashTable.
-</para>
-<note>
-<para>
-As with g_hash_table_insert(), you should make sure that any dynamically
-allocated values are freed yourself.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
-@key: the key to remove.
+</para>
+
+@hash_table: 
+@key: 
 @Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_foreach_remove ##### -->
 <para>
-Calls the given function for each key/value pair in the #GHashTable.
-If the function returns TRUE, then the key/value pair is removed from the
-#GHashTable.
+
 </para>
 
-@hash_table: a #GHashTable.
-@func: the function to call for each key/value pair.
-@user_data: user data to pass to the function.
-@Returns: the number of key/value paris removed.
+@hash_table: 
+@func: 
+@user_data: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GHRFunc ##### -->
@@ -241,8 +206,7 @@ It should return TRUE if the key/value pair should be removed from the
 
 <!-- ##### FUNCTION g_hash_table_freeze ##### -->
 <para>
-This function is deprecated and will be removed in the next major
-release of GLib. It does nothing.
+
 </para>
 
 @hash_table: 
@@ -250,8 +214,7 @@ release of GLib. It does nothing.
 
 <!-- ##### FUNCTION g_hash_table_thaw ##### -->
 <para>
-This function is deprecated and will be removed in the next major
-release of GLib. It does nothing.
+
 </para>
 
 @hash_table: 
@@ -259,16 +222,10 @@ release of GLib. It does nothing.
 
 <!-- ##### FUNCTION g_hash_table_destroy ##### -->
 <para>
-Destroys the #GHashTable.
-</para>
-<note>
-<para>
-If keys and/or values are dynamically allocated, you should free them
-first.
-</para>
-</note>
 
-@hash_table: a #GHashTable.
+</para>
+
+@hash_table: 
 
 
 <!-- ##### FUNCTION g_direct_equal ##### -->

@@ -43,28 +43,38 @@ typedef struct _GHashNode      GHashNode;
 
 struct _GHashNode
 {
-  gpointer key;
-  gpointer value;
+  gpointer   key;
+  gpointer   value;
   GHashNode *next;
 };
 
 struct _GHashTable
 {
-  gint size;
-  gint nnodes;
-  GHashNode **nodes;
-  GHashFunc hash_func;
-  GEqualFunc key_equal_func;
+  gint             size;
+  gint             nnodes;
+  GHashNode      **nodes;
+  GHashFunc        hash_func;
+  GEqualFunc       key_equal_func;
+  GDestroyNotify   key_destroy_func;
+  GDestroyNotify   value_destroy_func;
 };
 
 
-static void		g_hash_table_resize	 (GHashTable	*hash_table);
-static GHashNode**	g_hash_table_lookup_node (GHashTable	*hash_table,
-						  gconstpointer	 key);
-static GHashNode*	g_hash_node_new		 (gpointer	 key,
-						  gpointer	 value);
-static void		g_hash_node_destroy	 (GHashNode	*hash_node);
-static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
+static void		g_hash_table_resize	  (GHashTable	  *hash_table);
+static GHashNode**	g_hash_table_lookup_node  (GHashTable     *hash_table,
+                                                   gconstpointer   key);
+static GHashNode*	g_hash_node_new		  (gpointer	   key,
+                                                   gpointer        value);
+static void		g_hash_node_destroy	  (GHashNode	  *hash_node,
+                                                   GDestroyNotify  key_destroy_func,
+                                                   GDestroyNotify  value_destroy_func);
+static void		g_hash_nodes_destroy	  (GHashNode	  *hash_node,
+						  GDestroyNotify   key_destroy_func,
+						  GDestroyNotify   value_destroy_func);
+static guint g_hash_table_foreach_remove_or_steal (GHashTable     *hash_table,
+                                                   GHRFunc	   func,
+                                                   gpointer	   user_data,
+                                                   gboolean        notify);
 
 
 G_LOCK_DEFINE_STATIC (g_hash_global);
@@ -72,20 +82,66 @@ G_LOCK_DEFINE_STATIC (g_hash_global);
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;
 
-
+/**
+ * g_hash_table_new:
+ * @hash_func: a function to create a hash value from a key.
+ *   Hash values are used to determine where keys are stored within the
+ *   #GHashTable data structure. The g_direct_hash(), g_int_hash() and 
+ *   g_str_hash() functions are provided for some common types of keys. 
+ *   If hash_func is NULL, g_direct_hash() is used.
+ * @key_equal_func: a function to check two keys for equality.  This is
+ *   used when looking up keys in the #GHashTable.  The g_direct_equal(),
+ *   g_int_equal() and g_str_equal() functions are provided for the most
+ *   common types of keys. If @key_equal_func is NULL, keys are compared
+ *   directly in a similar fashion to g_direct_equal(), but without the
+ *   overhead of a function call.
+ *
+ * Creates a new #GHashTable.
+ * 
+ * Return value: a new #GHashTable.
+ **/
 GHashTable*
 g_hash_table_new (GHashFunc    hash_func,
 		  GEqualFunc   key_equal_func)
+{
+  return g_hash_table_new_full (hash_func, key_equal_func, NULL, NULL);
+}
+
+
+/**
+ * g_hash_table_new_full:
+ * @hash_func: a function to create a hash value from a key.
+ * @key_equal_func: a function to check two keys for equality.
+ * @key_destroy_func: a function to free the memory allocated for the key 
+ *   used when removing the entry from the #GHashTable or #NULL if you 
+ *   you don't want to supply such a function.
+ * @value_destroy_func: a function to free the memory allocated for the 
+ *   value used when removing the entry from the #GHashTable or #NULL if 
+ *   you don't want to supply such a function.
+ * 
+ * Creates a new #GHashTable like g_hash_table_new() and allows to specify
+ * functions to free the memory allocated for the key and value that get 
+ * called when removing the entry from the #GHashTable.
+ * 
+ * Return value: a new #GHashTable.
+ **/
+GHashTable*
+g_hash_table_new_full (GHashFunc       hash_func,
+		       GEqualFunc      key_equal_func,
+		       GDestroyNotify  key_destroy_func,
+		       GDestroyNotify  value_destroy_func)
 {
   GHashTable *hash_table;
   guint i;
   
   hash_table = g_new (GHashTable, 1);
-  hash_table->size = HASH_TABLE_MIN_SIZE;
-  hash_table->nnodes = 0;
-  hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
-  hash_table->key_equal_func = key_equal_func;
-  hash_table->nodes = g_new (GHashNode*, hash_table->size);
+  hash_table->size               = HASH_TABLE_MIN_SIZE;
+  hash_table->nnodes             = 0;
+  hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
+  hash_table->key_equal_func     = key_equal_func;
+  hash_table->key_destroy_func   = key_destroy_func;
+  hash_table->value_destroy_func = value_destroy_func;
+  hash_table->nodes              = g_new (GHashNode*, hash_table->size);
   
   for (i = 0; i < hash_table->size; i++)
     hash_table->nodes[i] = NULL;
@@ -93,6 +149,16 @@ g_hash_table_new (GHashFunc    hash_func,
   return hash_table;
 }
 
+/**
+ * g_hash_table_destroy:
+ * @hash_table: a #GHashTable.
+ * 
+ * Destroys the #GHashTable. If keys and/or values are dynamically 
+ * allocated, you should either free them first or create the #GHashTable
+ * using g_hash_table_new_full(). In the latter case the destroy functions 
+ * you supplied will be called on all keys and values before destroying 
+ * the #GHashTable.
+ **/
 void
 g_hash_table_destroy (GHashTable *hash_table)
 {
@@ -101,7 +167,9 @@ g_hash_table_destroy (GHashTable *hash_table)
   g_return_if_fail (hash_table != NULL);
   
   for (i = 0; i < hash_table->size; i++)
-    g_hash_nodes_destroy (hash_table->nodes[i]);
+    g_hash_nodes_destroy (hash_table->nodes[i], 
+			  hash_table->key_destroy_func,
+			  hash_table->value_destroy_func);
   
   g_free (hash_table->nodes);
   g_free (hash_table);
@@ -131,6 +199,15 @@ g_hash_table_lookup_node (GHashTable	*hash_table,
   return node;
 }
 
+/**
+ * g_hash_table_lookup:
+ * @hash_table: a #GHashTable.
+ * @key: the key to look up.
+ * 
+ * Looks up a key in a #GHashTable.
+ * 
+ * Return value: the associated value, or NULL if the key is not found.
+ **/
 gpointer
 g_hash_table_lookup (GHashTable	  *hash_table,
 		     gconstpointer key)
@@ -144,64 +221,25 @@ g_hash_table_lookup (GHashTable	  *hash_table,
   return node ? node->value : NULL;
 }
 
-void
-g_hash_table_insert (GHashTable *hash_table,
-		     gpointer	 key,
-		     gpointer	 value)
-{
-  GHashNode **node;
-  
-  g_return_if_fail (hash_table != NULL);
-  
-  node = g_hash_table_lookup_node (hash_table, key);
-  
-  if (*node)
-    {
-      /* do not reset node->key in this place, keeping
-       * the old key might be intended.
-       * a g_hash_table_remove/g_hash_table_insert pair
-       * can be used otherwise.
-       *
-       * node->key = key; */
-      (*node)->value = value;
-    }
-  else
-    {
-      *node = g_hash_node_new (key, value);
-      hash_table->nnodes++;
-      g_hash_table_resize (hash_table);
-    }
-}
-
+/**
+ * g_hash_table_lookup_extended:
+ * @hash_table: a #GHashTable.
+ * @lookup_key: the key to look up.
+ * @orig_key: returns the original key.
+ * @value: returns the value associated with the key.
+ * 
+ * Looks up a key in the #GHashTable, returning the original key and the
+ * associated value and a gboolean which is TRUE if the key was found. This 
+ * is useful if you need to free the memory allocated for the original key, 
+ * for example before calling g_hash_table_remove().
+ * 
+ * Return value: #TRUE if the key was found in the #GHashTable.
+ **/
 gboolean
-g_hash_table_remove (GHashTable	  *hash_table,
-		     gconstpointer key)
-{
-  GHashNode **node, *dest;
-  
-  g_return_val_if_fail (hash_table != NULL, FALSE);
-  
-  node = g_hash_table_lookup_node (hash_table, key);
-  if (*node)
-    {
-      dest = *node;
-      (*node) = dest->next;
-      g_hash_node_destroy (dest);
-      hash_table->nnodes--;
-  
-      g_hash_table_resize (hash_table);
-
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-gboolean
-g_hash_table_lookup_extended (GHashTable	*hash_table,
-			      gconstpointer	 lookup_key,
-			      gpointer		*orig_key,
-			      gpointer		*value)
+g_hash_table_lookup_extended (GHashTable    *hash_table,
+			      gconstpointer  lookup_key,
+			      gpointer	    *orig_key,
+			      gpointer	    *value)
 {
   GHashNode *node;
   
@@ -221,36 +259,229 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
     return FALSE;
 }
 
+/**
+ * g_hash_table_insert:
+ * @hash_table: a #GHashTable.
+ * @key: a key to insert.
+ * @value: the value to associate with the key.
+ * 
+ * Inserts a new key and value into a #GHashTable.
+ * 
+ * If the key already exists in the #GHashTable its current value is replaced
+ * with the new value. If you supplied a value_destroy_func when creating the 
+ * #GHashTable, the old value is freed using that function. If you supplied
+ * a key_destroy_func when creating the #GHashTable, the passed key is freed 
+ * using that function.
+ **/
 void
-g_hash_table_freeze (GHashTable *hash_table)
+g_hash_table_insert (GHashTable *hash_table,
+		     gpointer	 key,
+		     gpointer	 value)
 {
-#ifdef G_ENABLE_DEBUG
-  static gboolean first_call = TRUE;
-
-  if (first_call)
+  GHashNode **node;
+  
+  g_return_if_fail (hash_table != NULL);
+  
+  node = g_hash_table_lookup_node (hash_table, key);
+  
+  if (*node)
     {
-      g_warning("g_hash_table_freeze and g_hash_table_thaw are deprecated.");
-      first_call = FALSE;
+      /* do not reset node->key in this place, keeping
+       * the old key is the intended behaviour. 
+       * g_hash_table_replace() can be used instead.
+       */
+
+      /* free the passed key */
+      if (hash_table->key_destroy_func)
+	hash_table->key_destroy_func (key);
+      
+      if (hash_table->value_destroy_func)
+	hash_table->value_destroy_func ((*node)->value);
+
+      (*node)->value = value;
     }
-#endif /* G_ENABLE_DEBUG */
+  else
+    {
+      *node = g_hash_node_new (key, value);
+      hash_table->nnodes++;
+      g_hash_table_resize (hash_table);
+    }
 }
 
+/**
+ * g_hash_table_replace:
+ * @hash_table: a #GHashTable.
+ * @key: a key to insert.
+ * @value: the value to associate with the key.
+ * 
+ * Inserts a new key and value into a #GHashTable similar to 
+ * g_hash_table_insert(). The difference is that if the key already exists 
+ * in the #GHashTable, it gets replaced by the new key. If you supplied a 
+ * value_destroy_func when creating the #GHashTable, the old value is freed 
+ * using that function. If you supplied a key_destroy_func when creating the 
+ * #GHashTable, the old key is freed using that function. 
+ **/
 void
-g_hash_table_thaw (GHashTable *hash_table)
+g_hash_table_replace (GHashTable *hash_table,
+		      gpointer	  key,
+		      gpointer	  value)
 {
+  GHashNode **node;
+  
+  g_return_if_fail (hash_table != NULL);
+  
+  node = g_hash_table_lookup_node (hash_table, key);
+  
+  if (*node)
+    {
+      if (hash_table->key_destroy_func)
+	hash_table->key_destroy_func ((*node)->key);
+      
+      if (hash_table->value_destroy_func)
+	hash_table->value_destroy_func ((*node)->value);
+
+      (*node)->key   = key;
+      (*node)->value = value;
+    }
+  else
+    {
+      *node = g_hash_node_new (key, value);
+      hash_table->nnodes++;
+      g_hash_table_resize (hash_table);
+    }
 }
 
+/**
+ * g_hash_table_remove:
+ * @hash_table: a #GHashTable.
+ * @key: the key to remove.
+ * 
+ * Removes a key and its associated value from a #GHashTable.
+ *
+ * If the #GHashTable was created using g_hash_table_new_full(), the
+ * key and value are freed using the supplied destroy_functions, otherwise
+ * you have to make sure that any dynamically allocated values are freed 
+ * yourself.
+ * 
+ * Return value: #TRUE if the key was found and removed from the #GHashTable.
+ **/
+gboolean
+g_hash_table_remove (GHashTable	   *hash_table,
+		     gconstpointer  key)
+{
+  GHashNode **node, *dest;
+  
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+  
+  node = g_hash_table_lookup_node (hash_table, key);
+  if (*node)
+    {
+      dest = *node;
+      (*node) = dest->next;
+      g_hash_node_destroy (dest, 
+			   hash_table->key_destroy_func,
+			   hash_table->value_destroy_func);
+      hash_table->nnodes--;
+  
+      g_hash_table_resize (hash_table);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_hash_table_steal:
+ * @hash_table: a #GHashTable.
+ * @key: the key to remove.
+ * 
+ * Removes a key and its associated value from a #GHashTable without
+ * calling the key and value destroy functions.
+ *
+ * Return value: #TRUE if the key was found and removed from the #GHashTable.
+ **/
+gboolean
+g_hash_table_steal (GHashTable    *hash_table,
+                    gconstpointer  key)
+{
+  GHashNode **node, *dest;
+  
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+  
+  node = g_hash_table_lookup_node (hash_table, key);
+  if (*node)
+    {
+      dest = *node;
+      (*node) = dest->next;
+      g_hash_node_destroy (dest, NULL, NULL);
+      hash_table->nnodes--;
+  
+      g_hash_table_resize (hash_table);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_hash_table_foreach_remove:
+ * @hash_table: a #GHashTable.
+ * @func: the function to call for each key/value pair.
+ * @user_data: user data to pass to the function.
+ * 
+ * Calls the given function for each key/value pair in the #GHashTable.
+ * If the function returns TRUE, then the key/value pair is removed from the
+ * #GHashTable. If you supplied key or value destroy functions when creating
+ * the #GHashTable, they are used to free the memory allocated for the removed
+ * keys and values.
+ * 
+ * Return value: the number of key/value pairs removed.
+ **/
 guint
 g_hash_table_foreach_remove (GHashTable	*hash_table,
 			     GHRFunc	 func,
 			     gpointer	 user_data)
 {
+  g_return_val_if_fail (hash_table != NULL, 0);
+  g_return_val_if_fail (func != NULL, 0);
+  
+  return g_hash_table_foreach_remove_or_steal (hash_table, func, user_data, TRUE);
+}
+
+/**
+ * g_hash_table_foreach_steal:
+ * @hash_table: a #GHashTable.
+ * @func: the function to call for each key/value pair.
+ * @user_data: user data to pass to the function.
+ * 
+ * Calls the given function for each key/value pair in the #GHashTable.
+ * If the function returns TRUE, then the key/value pair is removed from the
+ * #GHashTable, but no key or value destroy functions are called.
+ * 
+ * Return value: the number of key/value pairs removed.
+ **/
+guint
+g_hash_table_foreach_steal (GHashTable *hash_table,
+                            GHRFunc	func,
+                            gpointer	user_data)
+{
+  g_return_val_if_fail (hash_table != NULL, 0);
+  g_return_val_if_fail (func != NULL, 0);
+  
+  return g_hash_table_foreach_remove_or_steal (hash_table, func, user_data, FALSE);
+}
+
+static guint
+g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
+                                      GHRFunc	  func,
+                                      gpointer	  user_data,
+                                      gboolean    notify)
+{
   GHashNode *node, *prev;
   guint i;
   guint deleted = 0;
-  
-  g_return_val_if_fail (hash_table != NULL, 0);
-  g_return_val_if_fail (func != NULL, 0);
   
   for (i = 0; i < hash_table->size; i++)
     {
@@ -269,13 +500,17 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
 	      if (prev)
 		{
 		  prev->next = node->next;
-		  g_hash_node_destroy (node);
+		  g_hash_node_destroy (node,
+				       notify ? hash_table->value_destroy_func : NULL,
+				       notify ? hash_table->key_destroy_func : NULL);
 		  node = prev;
 		}
 	      else
 		{
 		  hash_table->nodes[i] = node->next;
-		  g_hash_node_destroy (node);
+		  g_hash_node_destroy (node,
+				       notify ? hash_table->value_destroy_func : NULL,
+				       notify ? hash_table->key_destroy_func : NULL);
 		  goto restart;
 		}
 	    }
@@ -287,6 +522,16 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
   return deleted;
 }
 
+/**
+ * g_hash_table_foreach:
+ * @hash_table: a #GHashTable.
+ * @func: the function to call for each key/value pair.
+ * @user_data: user data to pass to the function.
+ * 
+ * Calls the given function for each of the key/value pairs in the #GHashTable.
+ * The function is passed the key and value of each pair, and the given
+ * @user_data parameter.
+ **/
 void
 g_hash_table_foreach (GHashTable *hash_table,
 		      GHFunc	  func,
@@ -303,13 +548,53 @@ g_hash_table_foreach (GHashTable *hash_table,
       (* func) (node->key, node->value, user_data);
 }
 
-/* Returns the number of elements contained in the hash table. */
+/**
+ * g_hash_table_size:
+ * @hash_table: a #GHashTable.
+ * 
+ * Returns the number of elements contained in the #GHashTable.
+ * 
+ * Return value: the number of key/value pairs in the #GHashTable.
+ **/
 guint
 g_hash_table_size (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, 0);
   
   return hash_table->nnodes;
+}
+
+/**
+ * g_hash_table_freeze:
+ * @hash_table: a #GHashTable.
+ * 
+ * This function is deprecated and will be removed in the next major
+ * release of GLib. It does nothing.
+ **/
+void
+g_hash_table_freeze (GHashTable *hash_table)
+{
+#ifdef G_ENABLE_DEBUG
+  static gboolean first_call = TRUE;
+
+  if (first_call)
+    {
+      g_warning("g_hash_table_freeze and g_hash_table_thaw are deprecated.");
+      first_call = FALSE;
+    }
+#endif /* G_ENABLE_DEBUG */
+}
+
+/**
+ * g_hash_table_thaw:
+ * @hash_table: a #GHashTable.
+ * 
+ * This function is deprecated and will be removed in the next major
+ * release of GLib. It does nothing.
+ **/
+void
+g_hash_table_thaw (GHashTable *hash_table)
+{
 }
 
 static void
@@ -381,9 +666,15 @@ g_hash_node_new (gpointer key,
 }
 
 static void
-g_hash_node_destroy (GHashNode *hash_node)
+g_hash_node_destroy (GHashNode      *hash_node,
+		     GDestroyNotify  key_destroy_func,
+		     GDestroyNotify  value_destroy_func)
 {
-
+  if (key_destroy_func)
+    key_destroy_func (hash_node->key);
+  if (value_destroy_func)
+    value_destroy_func (hash_node->value);
+  
 #ifdef ENABLE_GC_FRIENDLY
   hash_node->key = NULL;
   hash_node->value = NULL;
@@ -396,7 +687,9 @@ g_hash_node_destroy (GHashNode *hash_node)
 }
 
 static void
-g_hash_nodes_destroy (GHashNode *hash_node)
+g_hash_nodes_destroy (GHashNode *hash_node,
+		      GFreeFunc  key_destroy_func,
+		      GFreeFunc  value_destroy_func)
 {
   if (hash_node)
     {
@@ -404,12 +697,23 @@ g_hash_nodes_destroy (GHashNode *hash_node)
   
       while (node->next)
 	{
+	  if (key_destroy_func)
+	    key_destroy_func (node->key);
+	  if (value_destroy_func)
+	    value_destroy_func (node->value);
+
 #ifdef ENABLE_GC_FRIENDLY
 	  node->key = NULL;
 	  node->value = NULL;
 #endif /* ENABLE_GC_FRIENDLY */
+
 	  node = node->next;
 	}
+
+  if (key_destroy_func)
+    key_destroy_func (node->key);
+  if (value_destroy_func)
+    value_destroy_func (node->value);
 
 #ifdef ENABLE_GC_FRIENDLY
       node->key = NULL;

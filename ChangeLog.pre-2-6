@@ -1,3 +1,11 @@
+2001-03-30  Sven Neumann  <sven@gimp.org>
+
+	* ghash.[ch]
+	* docs/reference/glib/tmpl/hash_tables.sgml: added new functions
+	g_hash_table_new_full, g_hash_table_replace, g_hash_table_steal and
+	g_hash_table_foreach_steal. Moved most docs out of the template
+	file into the C file. Please proofread the new documentation.
+
 2001-03-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Updates.
