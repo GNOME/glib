@@ -69,9 +69,28 @@ accessed through the <function>g_rand_*</function> functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_rand_new_with_seed_array ##### -->
+<para>
+
+</para>
+
+@seed: 
+@seed_length: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_new ##### -->
 
 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_rand_copy ##### -->
+<para>
+
+</para>
+
+@rand_: 
 @Returns: 
 
 
@@ -86,6 +105,16 @@ accessed through the <function>g_rand_*</function> functions.
 
 @rand_: 
 @seed: 
+
+
+<!-- ##### FUNCTION g_rand_set_seed_array ##### -->
+<para>
+
+</para>
+
+@rand_: 
+@seed: 
+@seed_length: 
 
 
 <!-- ##### MACRO g_rand_boolean ##### -->
