@@ -50,10 +50,12 @@ case $CC in
 esac
 
 aclocal $ACLOCAL_FLAGS
-automake $am_opt
-autoconf
+
 # optionally feature autoheader
 (autoheader --version)  < /dev/null > /dev/null 2>&1 && autoheader
+
+automake $am_opt
+autoconf
 
 ./configure "$@"
 
