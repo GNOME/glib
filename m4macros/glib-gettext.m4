@@ -58,7 +58,8 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
 
 	  if test "$gt_cv_func_dgettext_libc" = "yes" \
 	    || test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	    AC_DEFINE(HAVE_GETTEXT)
+	    AC_DEFINE(HAVE_GETTEXT,1,
+              [Define if the GNU gettext() function is already present or preinstalled.])
 	    AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
  	      [test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], no)dnl
 	    if test "$MSGFMT" != "no"; then
@@ -92,7 +93,8 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
     fi
 
     if test "$nls_cv_use_gnu_gettext" != "yes"; then
-      AC_DEFINE(ENABLE_NLS)
+      AC_DEFINE(ENABLE_NLS, 1,
+        [always defined to indicate that i18n is enabled])
     else
       dnl Unset this variable since we use the non-zero value as a flag.
       CATOBJEXT=

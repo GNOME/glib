@@ -1,3 +1,9 @@
+2002-02-14  James Henstridge  <james@daa.com.au>
+
+	* m4macros/glib-gettext.m4: add third argument to the AC_DEFINE
+	calls, so users of the macro don't need to add entries to
+	acconfig.h in their package.
+
 2002-02-13  Havoc Pennington  <hp@redhat.com>
 
 	* glib/gmain.c (g_main_context_check): never dispatch sources of
