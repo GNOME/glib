@@ -1,3 +1,9 @@
+2000-07-26  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def
+	* gobject.c: Mark glib_debug_objects for export/import as it is
+	used by GTK+.
+
 Sun Jul 23 17:23:35 2000  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: make g_type_fundamental_last() a function, avoiding all
