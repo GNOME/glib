@@ -46,7 +46,7 @@ struct _GSource
 
   gint priority;
   guint flags;
-  guint id;
+  guint source_id;
 
   GSList *poll_fds;
   
@@ -143,7 +143,7 @@ gboolean      g_main_context_pending   (GMainContext *context);
 /* For implementation of legacy interfaces
  */
 GSource      *g_main_context_find_source_by_id              (GMainContext *context,
-							     guint         id);
+							     guint         source_id);
 GSource      *g_main_context_find_source_by_user_data       (GMainContext *context,
 							     gpointer      user_data);
 GSource      *g_main_context_find_source_by_funcs_user_data (GMainContext *context,

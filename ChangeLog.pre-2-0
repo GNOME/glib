@@ -1,3 +1,10 @@
+Wed Nov 28 18:34:22 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.[ch]: Rename (private) GSource.id and 
+	id parameter to g_main_context_find_source_by_id()
+	to avoid problems with Objective C where 'id' is 
+	a keyword. (#65616)
+
 2001-11-28  Daniel Elstner  <daniel.elstner@gmx.net>
 
 	* glib/gutf8.c (utf8_skip_data): In order to avoid infinite loops

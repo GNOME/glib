@@ -224,7 +224,7 @@ Specifies which nodes are visited during several of the tree functions,
 including g_node_traverse() and g_node_find().
 </para>
 
-@G_TRAVERSE_LEAFS: only leaf nodes should be visited. 
+@G_TRAVERSE_LEAFS: only leaf nodes should be visited.
 @G_TRAVERSE_NON_LEAFS: only non-leaf nodes should be visited.
 @G_TRAVERSE_ALL: all nodes should be visited.
 @G_TRAVERSE_MASK: 

@@ -794,7 +794,7 @@ g_source_attach (GSource      *source,
   LOCK_CONTEXT (context);
 
   source->context = context;
-  result = source->id = context->next_id++;
+  result = source->source_id = context->next_id++;
 
   source->ref_count++;
   g_source_list_add (source, context);
@@ -901,7 +901,7 @@ g_source_get_id (GSource *source)
   g_return_val_if_fail (source->context != NULL, 0);
 
   LOCK_CONTEXT (source->context);
-  result = source->id;
+  result = source->source_id;
   UNLOCK_CONTEXT (source->context);
   
   return result;
@@ -1317,7 +1317,7 @@ g_source_unref (GSource *source)
 /**
  * g_main_context_find_source_by_id:
  * @context: a #GMainContext (if %NULL, the default context will be used)
- * @id: the source ID, as returned by g_source_get_id()
+ * @source_id: the source ID, as returned by g_source_get_id()
  * 
  * Finds a #GSource given a pair of context and ID
  * 
@@ -1325,11 +1325,11 @@ g_source_unref (GSource *source)
  **/
 GSource *
 g_main_context_find_source_by_id (GMainContext *context,
-				  guint         id)
+				  guint         source_id)
 {
   GSource *source;
   
-  g_return_val_if_fail (id > 0, FALSE);
+  g_return_val_if_fail (source_id > 0, FALSE);
 
   if (context == NULL)
     context = g_main_context_default ();
@@ -1340,7 +1340,7 @@ g_main_context_find_source_by_id (GMainContext *context,
   while (source)
     {
       if (!SOURCE_DESTROYED (source) &&
-	  source->id == id)
+	  source->source_id == source_id)
 	break;
       source = source->next;
     }
