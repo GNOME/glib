@@ -88,6 +88,12 @@ int     g_file_open_tmp      (const char   *tmpl,
 			      char        **name_used,
 			      GError      **error);
 
+gchar *g_build_path     (const gchar *separator,
+			 const gchar *first_element,
+			 ...);
+gchar *g_build_filename (const gchar *first_element,
+			 ...);
+
 G_END_DECLS
 
 #endif /* __G_FILEUTILS_H__ */

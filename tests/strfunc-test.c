@@ -81,6 +81,17 @@ strv_check (gchar **strv, ...)
 }
 
 static gboolean
+str_check (gchar *str,
+	   gchar *expected)
+{
+  gboolean ok = (strcmp (str, expected) == 0);
+
+  g_free (str);
+
+  return ok;
+}
+
+static gboolean
 test_isalnum (gchar c)
 {
   return g_ascii_isalnum (c);
@@ -353,6 +364,59 @@ main (int   argc,
   TEST_DIGIT (xdigit);
 
   #undef TEST_DIGIT
+
+  /* Tests for g_build_path, g_build_filename */
+
+  TEST (NULL, str_check (g_build_path ("", NULL), ""));
+  TEST (NULL, str_check (g_build_path ("", "", NULL), ""));
+  TEST (NULL, str_check (g_build_path ("", "x", NULL), "x"));
+  TEST (NULL, str_check (g_build_path ("", "x", "y",  NULL), "xy"));
+  TEST (NULL, str_check (g_build_path ("", "x", "y", "z", NULL), "xyz"));
+
+  TEST (NULL, str_check (g_build_path (":", NULL), ""));
+  TEST (NULL, str_check (g_build_path (":", ":", NULL), ":"));
+  TEST (NULL, str_check (g_build_path (":", ":x", NULL), ":x"));
+  TEST (NULL, str_check (g_build_path (":", "x:", NULL), "x:"));
+  TEST (NULL, str_check (g_build_path (":", "x", "y",  NULL), "x:y"));
+  TEST (NULL, str_check (g_build_path (":", ":x", "y", NULL), ":x:y"));
+  TEST (NULL, str_check (g_build_path (":", "x", "y:", NULL), "x:y:"));
+  TEST (NULL, str_check (g_build_path (":", ":x:", ":y:", NULL), ":x:y:"));
+  TEST (NULL, str_check (g_build_path (":", ":x::", "::y:", NULL), ":x:y:"));
+  TEST (NULL, str_check (g_build_path (":", "x", "y", "z", NULL), "x:y:z"));
+  TEST (NULL, str_check (g_build_path (":", ":x:", ":y:", ":z:", NULL), ":x:y:z:"));
+  TEST (NULL, str_check (g_build_path (":", "::x::", "::y::", "::z::", NULL), "::x:y:z::"));
+
+  TEST (NULL, str_check (g_build_path ("::", NULL), ""));
+  TEST (NULL, str_check (g_build_path ("::", "::", NULL), "::"));
+  TEST (NULL, str_check (g_build_path ("::", "::x", NULL), "::x"));
+  TEST (NULL, str_check (g_build_path ("::", "x::", NULL), "x::"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "y",  NULL), "x::y"));
+  TEST (NULL, str_check (g_build_path ("::", "::x", "y", NULL), "::x::y"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "y::", NULL), "x::y::"));
+  TEST (NULL, str_check (g_build_path ("::", "::x::", "::y::", NULL), "::x::y::"));
+  TEST (NULL, str_check (g_build_path ("::", "::x:::", ":::y::", NULL), "::x::::y::"));
+  TEST (NULL, str_check (g_build_path ("::", "::x::::", "::::y::", NULL), "::x::y::"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "y", "z", NULL), "x::y::z"));
+  TEST (NULL, str_check (g_build_path ("::", "::x::", "::y::", "::z::", NULL), "::x::y::z::"));
+  TEST (NULL, str_check (g_build_path ("::", ":::x:::", ":::y:::", ":::z:::", NULL), ":::x::::y::::z:::"));
+  TEST (NULL, str_check (g_build_path ("::", "::::x::::", "::::y::::", "::::z::::", NULL), "::::x::y::z::::"));
+
+#define S G_DIR_SEPARATOR_S
+
+  TEST (NULL, str_check (g_build_filename (NULL), ""));
+  TEST (NULL, str_check (g_build_filename (S, NULL), S));
+  TEST (NULL, str_check (g_build_filename (S"x", NULL), S"x"));
+  TEST (NULL, str_check (g_build_filename ("x"S, NULL), "x"S));
+  TEST (NULL, str_check (g_build_filename ("x", "y",  NULL), "x"S"y"));
+  TEST (NULL, str_check (g_build_filename (S"x", "y", NULL), S"x"S"y"));
+  TEST (NULL, str_check (g_build_filename ("x", "y"S, NULL), "x"S"y"S));
+  TEST (NULL, str_check (g_build_filename (S"x"S, S"y"S, NULL), S"x"S"y"S));
+  TEST (NULL, str_check (g_build_filename (S"x"S S, S S"y"S, NULL), S"x"S"y"S));
+  TEST (NULL, str_check (g_build_filename ("x", "y", "z", NULL), "x"S"y"S"z"));
+  TEST (NULL, str_check (g_build_filename (S"x"S, S"y"S, S"z"S, NULL), S"x"S"y"S"z"S));
+  TEST (NULL, str_check (g_build_filename (S S"x"S S, S S"y"S S, S S"z"S S, NULL), S S"x"S"y"S"z"S S));
+
+#undef S
 
   return any_failed;
 }

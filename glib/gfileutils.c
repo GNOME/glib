@@ -28,6 +28,7 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -696,4 +697,122 @@ g_file_open_tmp (const char *tmpl,
     g_free (fulltemplate);
 
   return retval;
+}
+
+static gchar *
+g_build_pathv (const gchar *separator,
+	       const gchar *first_element,
+	       va_list      args)
+{
+  GString *result;
+  gint separator_len = strlen (separator);
+  gboolean is_first = TRUE;
+  const gchar *next_element;
+
+  result = g_string_new (NULL);
+
+  next_element = first_element;
+
+  while (TRUE)
+    {
+      const gchar *element;
+      const gchar *start;
+      const gchar *end;
+
+      if (next_element)
+	{
+	  element = next_element;
+	  next_element = va_arg (args, gchar *);
+	}
+      else
+	break;
+
+      start = element;
+      
+      if (is_first)
+	is_first = FALSE;
+      else if (separator_len)
+	{
+	  while (start &&
+		 strncmp (start, separator, separator_len) == 0)
+	    start += separator_len;
+	}
+
+      end = start + strlen (start);
+      
+      if (next_element && separator_len)
+	{
+	  while (end > start + separator_len &&
+		 strncmp (end - separator_len, separator, separator_len) == 0)
+	    end -= separator_len;
+	}
+
+      if (end > start)
+	{
+	  if (result->len > 0)
+	    g_string_append (result, separator);
+
+	  g_string_append_len (result, start, end - start);
+	}
+    }
+  
+  return g_string_free (result, FALSE);
+}
+
+/**
+ * g_build_path:
+ * @separator: a string used to separator the elements of the path.
+ * @first_element: the first element in the path
+ * 
+ * Create a path from a series of elements using @separator as the
+ * separator between elements. At the boundary between two elements,
+ * any trailing occurrences of separator in the first element, or
+ * leading occurrences of separator in the second element are removed
+ * and exactly one copy of the separator is inserted.
+ * 
+ * Return value: a newly allocated string that must be freed with g_free().
+ **/
+gchar *
+g_build_path (const gchar *separator,
+	      const gchar *first_element,
+	      ...)
+{
+  gchar *str;
+  va_list args;
+
+  g_return_val_if_fail (separator != NULL, NULL);
+
+  va_start (args, first_element);
+  str = g_build_pathv (separator, first_element, args);
+  va_end (args);
+
+  return str;
+}
+
+/**
+ * g_build_filename:
+ * @first_element: the first element in the path
+ * 
+ * Create a filename from a series of elements using the correct
+ * separator for filenames. This function behaves identically
+ * to g_build_path (G_DIR_SEPARATOR_S, first_element, ....)
+ *
+ * No attempt is made to force the resulting filename to be an absolute
+ * path. If the first element is a relative path, the result will
+ * be a relative path. 
+ * 
+ * Return value: a newly allocated string that must be freed with g_free().
+ **/
+gchar *
+g_build_filename (const gchar *first_element, 
+		  ...)
+{
+  gchar *str;
+  va_list args;
+
+  va_start (args, first_element);
+  str = g_build_pathv (G_DIR_SEPARATOR_S, first_element, args);
+  va_end (args);
+
+  return str;
 }
