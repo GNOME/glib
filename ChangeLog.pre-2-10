@@ -1,10 +1,10 @@
 2004-09-22  Tor Lillqvist  <tml@iki.fi>
 
-	* glib/gmessages.c: [Win32] Don't open a console window if
-	standard output or standard error are invalid (as they are for GUI
-	applications). These console windows that open up unexpectedly
-	have caused endless amounts of confusion among
-	end-users. (#141102, #151175)
+	* glib/gmessages.c: [Win32] Don't ever open a console
+	window. (Which we used to do if standard output or standard error
+	are invalid, as they are for GUI applications.) These console
+	windows that open up unexpectedly have caused endless amounts of
+	confusion among end-users. (#141102, #151175)
 
 	Don't output the process id on Windows. Only output the program
 	name. If not set with g_set_prgname(), fetch the application
