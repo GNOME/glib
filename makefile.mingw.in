@@ -98,20 +98,23 @@ gobject/gobject-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
 
 ################ test progs
 
+testglib.o : testglib.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testglib\" $<
+
 testglib.exe : glib-$(GLIB_VER).dll testglib.o
 	$(CC) $(CFLAGS) -o testglib testglib.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
+
+testgdate.o : testgdate.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdate\" $<
 
 testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
 	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
 
-testgdate.o : testgdate.c
-	$(CC) -c $(CFLAGS) testgdate.c
+testgdateparser.o : testgdateparser.c
+	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdateparser\" $<
 
 testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.o
 	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
-
-testgdateparser.o : testgdateparser.c
-	$(CC) -c $(CFLAGS) testgdateparser.c
 
 
 ################ other stuff
