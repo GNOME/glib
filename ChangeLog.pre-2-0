@@ -1,3 +1,8 @@
+Fri Jun 12 15:39:06 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (GScanner): cleanups of the structure fields (binary
+	incompatible).
+
 Fri Jun 12 00:39:28 1998  Josh MacDonald  <jmacd@icw.EECS.Berkeley.EDU>
 
 	* glib.h: add new hash and equal functions g_int_*.  complement

@@ -1118,30 +1118,42 @@ struct	_GScannerConfig
 
 struct	_GScanner
 {
-  /* unused portions */
+  /* unused fields */
   gpointer		user_data;
-  const gchar		*input_name;
-  guint			parse_errors;
   guint			max_parse_errors;
-  
-  /* maintained/used by the g_scanner_*() functions */
+
+  /* g_scanner_error() increments this field */
+  guint			parse_errors;
+
+  /* name of input stream, featured by the default message handler */
+  const gchar		*input_name;
+
+  /* data pointer for derived structures */
+  gpointer		derived_data;
+
+  /* link into the scanner configuration */
   GScannerConfig	*config;
+
+  /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
   GValue		value;
   guint			line;
   guint			position;
-  
-  /* to be considered private */
+
+  /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
   GValue		next_value;
   guint			next_line;
   guint			next_position;
+
+  /* to be considered private */
   GHashTable		*symbol_table;
   const gchar		*text;
   guint			text_len;
   gint			input_fd;
   gint			peeked_char;
 
+  /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };
 

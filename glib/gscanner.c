@@ -159,9 +159,10 @@ g_scanner_new (GScannerConfig	*config_templ)
   scanner = g_new0 (GScanner, 1);
   
   scanner->user_data = NULL;
-  scanner->input_name = NULL;
-  scanner->parse_errors	= 0;
   scanner->max_parse_errors = 0;
+  scanner->parse_errors	= 0;
+  scanner->input_name = NULL;
+  scanner->derived_data = NULL;
   
   scanner->config = g_new0 (GScannerConfig, 1);
   
@@ -199,7 +200,7 @@ g_scanner_new (GScannerConfig	*config_templ)
   scanner->next_value.v_int = 0;
   scanner->next_line = 1;
   scanner->next_position = 0;
-  
+
   scanner->symbol_table = g_hash_table_new (g_str_hash, g_str_equal);
   scanner->text = NULL;
   scanner->text_len = 0;
