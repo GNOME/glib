@@ -1,3 +1,9 @@
+Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
+
+        * gscanner.c (g_scanner_new): make sure that
+        scanner->config->cset_skip_characters is "" instead of NULL, so we
+        don't segfault further on.
+
 2000-04-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h, glist.h, gslist.h: Changed the 'data' parameters from

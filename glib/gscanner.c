@@ -189,6 +189,8 @@ g_scanner_new (GScannerConfig	*config_templ)
   
   scanner->config->case_sensitive	= config_templ->case_sensitive;
   scanner->config->cset_skip_characters	= config_templ->cset_skip_characters;
+  if (!scanner->config->cset_skip_characters)
+    scanner->config->cset_skip_characters = "";
   scanner->config->cset_identifier_first= config_templ->cset_identifier_first;
   scanner->config->cset_identifier_nth	= config_templ->cset_identifier_nth;
   scanner->config->cpair_comment_single	= config_templ->cpair_comment_single;
