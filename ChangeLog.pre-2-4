@@ -1,3 +1,9 @@
+1999-01-23  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gutils.c (g_get_any_init) [HAVE_GETPWUID_R]:
+	Rewrite not to look at `errno' if library call succeeds, since
+	`errno' is not reset to 0.
+	
 Sat Jan 23 16:17:04 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32: Update the magic values for

@@ -443,29 +443,42 @@ g_get_any_init (void)
 
 #  ifdef HAVE_GETPWUID_R
 	struct passwd pwd;
-	guint bufsize = 1; // sizeof (struct passwd);
+	guint bufsize = 1;	/* sizeof (struct passwd); */
 	gint error;
 
-	do
-	  {
-	    g_free (buffer);
-	    buffer = g_malloc (bufsize);
-
+      pw_retry:
+	buffer = g_malloc (bufsize);
+	
 #    ifdef HAVE_GETPWUID_R_POSIX
-	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	    error = error ? errno : 0;
+	error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	if (!error)
+	  goto pw_out;
+	/* error = errno;          According to the Solaris man page,
+				       this is not necessary. */
+	    
 #    else /* !HAVE_GETPWUID_R_POSIX */
-	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	    error = errno;
+	pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	if (pw == NULL)
+	  goto pw_out;
+	error = errno;
 #    endif /* !HAVE_GETPWUID_R_POSIX */
 
+	/* If it came here, there's some kind of error.  */
+	g_free (buffer);
+
+	if (error == ERANGE)
+	  {
 	    bufsize *= 2;
+	    goto pw_retry;
 	  }
-	while (error == ERANGE);
 
-	if (error)
-	  g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
-
+	g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
+	/* Make any subsequent g_free (buffer) a no-op.  */
+	buffer = NULL;
+	
+      pw_out:
+	;
+	
 #  else /* !HAVE_GETPWUID_R */
 
 #    ifdef G_THREADS_ENABLED
