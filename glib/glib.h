@@ -1559,7 +1559,7 @@ g_bit_nth_msf (guint32 mask,
 	       gint    nth_bit)
 {
   if (nth_bit < 0)
-    nth_bit = 33;
+    nth_bit = 32;
   do
     {
       nth_bit--;

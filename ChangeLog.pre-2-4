@@ -1,3 +1,9 @@
+Mon Nov 16 07:48:06 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h (g_bit_nth_msf): fixed off-by-one error, so we don't waste
+	a loop iteration if (-1) was passed, reported by Andreas Bombe
+ 	<andreas.bombe@munich.netsurf.de>.
+
 Fri Nov 13 15:17:34 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* glist.c gslist.c glib.h: Added g_list_sort() and
