@@ -1,3 +1,7 @@
+Sat Jan 10 23:55:42 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib-mkenums.1: Document the lowercase_name trigraph option.
+
 Sat Jan 10 02:43:20 2004  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: made G_DEFINE_TYPE_INTERNAL() public by renaming it to
