@@ -649,7 +649,7 @@ g_tree_node_search (GTreeNode     *node,
       node = node->left;
     else if (dir > 0)
       node = node->right;
-  } while (node && (dir != 0));
+  } while (node);
 
   return NULL;
 }
