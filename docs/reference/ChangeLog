@@ -1,3 +1,8 @@
+Sun Feb 29 02:35:00 2004  Sven Herzberg  <herzi@gnome-de.org>
+
+	* glib/tmpl/limits.sgml: exchange non-existing G_MAX_DOUBLE for
+	G_MAXDOUBLE (fixes #135723)
+
 Fri Feb 27 22:10:25 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/modules.sgml: Reformat a bit.

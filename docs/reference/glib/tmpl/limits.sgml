@@ -202,7 +202,7 @@ The minimum positive value which can be held in a #gdouble.
 </para>
 <para>
 If you are interested in the smallest value which can be held in a #gdouble,
-use -G_MAX_DOUBLE.
+use -G_MAXDOUBLE.
 </para>
 
 
