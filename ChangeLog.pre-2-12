@@ -1,3 +1,7 @@
+2003-05-19 Arafat Medini <lumina@silverpen.de>
+
+	* ar.po: Added ar to ALL_LINGUAS
+
 2003-05-17  Telsa Gwynne  <hobbit@aloss.ukuu.org.uk>
 
 	* configure.in: Added cy to ALL_LINGUAS
