@@ -409,7 +409,8 @@ _g_charset_get_aliases (const char *canonical_name)
 }
 
 static gboolean
-g_utf8_get_charset_internal (const char **a)
+g_utf8_get_charset_internal (const char  *raw_data,
+			     const char **a)
 {
   const char *charset = getenv("CHARSET");
 
@@ -428,7 +429,7 @@ g_utf8_get_charset_internal (const char **a)
    * barrier, so we lock for it
    */
   G_LOCK (aliases);
-  charset = _g_locale_charset ();
+  charset = _g_locale_charset_unalias (raw_data);
   G_UNLOCK (aliases);
   
   if (charset && *charset)
@@ -447,8 +448,22 @@ g_utf8_get_charset_internal (const char **a)
   return FALSE;
 }
 
-static int utf8_locale_cache = -1;
-static const char *utf8_charset_cache = NULL;
+typedef struct _GCharsetCache GCharsetCache;
+
+struct _GCharsetCache {
+  gboolean is_utf8;
+  gchar *raw;
+  gchar *charset;
+};
+
+static void
+charset_cache_free (gpointer data)
+{
+  GCharsetCache *cache = data;
+  g_free (cache->raw);
+  g_free (cache->charset);
+  g_free (cache);
+}
 
 /**
  * g_get_charset:
@@ -471,16 +486,33 @@ static const char *utf8_charset_cache = NULL;
 gboolean
 g_get_charset (G_CONST_RETURN char **charset) 
 {
-  if (utf8_locale_cache != -1)
+  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
+  GCharsetCache *cache = g_static_private_get (&cache_private);
+  const gchar *raw;
+
+  if (!cache)
     {
-      if (charset)
-	*charset = utf8_charset_cache;
-      return utf8_locale_cache;
+      cache = g_new0 (GCharsetCache, 1);
+      g_static_private_set (&cache_private, cache, charset_cache_free);
     }
-  utf8_locale_cache = g_utf8_get_charset_internal (&utf8_charset_cache);
-  if (charset) 
-    *charset = utf8_charset_cache;
-  return utf8_locale_cache;
+
+  raw = _g_locale_charset_raw ();
+  
+  if (!(cache->raw && strcmp (cache->raw, raw) == 0))
+    {
+      const gchar *new_charset;
+	    
+      g_free (cache->raw);
+      g_free (cache->charset);
+      cache->raw = g_strdup (raw);
+      cache->is_utf8 = g_utf8_get_charset_internal (raw, &new_charset);
+      cache->charset = g_strdup (new_charset);
+    }
+
+  if (charset)
+    *charset = cache->charset;
+  
+  return cache->is_utf8;
 }
 
 /* unicode_strchr */

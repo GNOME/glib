@@ -235,14 +235,10 @@ _g_locale_get_charset_aliases ()
    If the canonical name cannot be determined, the result is a non-canonical
    name.  */
 
-#ifdef STATIC
-STATIC
-#endif
 const char *
-_g_locale_charset ()
+_g_locale_charset_raw ()
 {
   const char *codeset;
-  const char *aliases;
 
 #if !(defined WIN32 || defined OS2)
 
@@ -343,6 +339,17 @@ _g_locale_charset ()
     }
 
 #endif
+
+  return codeset;
+}
+
+#ifdef STATIC
+STATIC
+#endif
+const char *
+_g_locale_charset_unalias (const char *codeset)
+{
+  const char *aliases;
 
   if (codeset == NULL)
     /* The canonical name cannot be determined.  */

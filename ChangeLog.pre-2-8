@@ -1,3 +1,11 @@
+Sat Dec 14 20:11:41 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/libcharset/{localcharset.[ch] libcharset-glib.patch}
+	glib/gutf8.c: Break _g_locale_charset() into two pieces 
+	- a fast "raw" piece, and a slow "unalias pieces". 
+	Always call the "raw" piece, and call the unalias bit
+	if it changes. Use a per-thread cache. (#79529)
+
 2002-12-15  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Set TRIO_LIBS when building with trio.
