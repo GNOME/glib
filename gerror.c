@@ -111,7 +111,14 @@ g_on_error_query (const gchar *prg_name)
 	     query3);
   fflush (stdout);
   
-  fgets (buf, 8, stdin);
+#ifndef NATIVE_WIN32
+  if (isatty(0) && isatty(1))
+    fgets (buf, 8, stdin); 
+  else
+    strcpy (buf, "E\n");
+#else
+  fgets (buf, 8, stdin); 
+#endif
 
   if ((buf[0] == 'E' || buf[0] == 'e')
       && buf[1] == '\n')

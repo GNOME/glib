@@ -127,7 +127,7 @@ g_module_set_error (const gchar *error)
 
 
 /* --- include platform specifc code --- */
-#define	CHECK_ERROR(rv)	{ g_module_set_error (NULL); }
+#define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error (NULL); }
 #if	(G_MODULE_IMPL == G_MODULE_IMPL_DL)
 #include "gmodule-dl.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_DLD)
@@ -139,8 +139,8 @@ g_module_set_error (const gchar *error)
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_BEOS)
 #include "gmodule-beos.c"
 #else
-#undef	CHECK_ERROR
-#define	CHECK_ERROR(rv)	{ g_module_set_error ("dynamic modules are " \
+#undef	SUPPORT_OR_RETURN
+#define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error ("dynamic modules are " \
                                               "not supported by this system"); return rv; }
 static gpointer
 _g_module_open (const gchar	*file_name,
@@ -176,7 +176,7 @@ _g_module_build_path (const gchar *directory,
 gboolean
 g_module_supported (void)
 {
-  CHECK_ERROR (FALSE);
+  SUPPORT_OR_RETURN (FALSE);
   
   return TRUE;
 }
@@ -188,7 +188,7 @@ g_module_open (const gchar    *file_name,
   GModule *module;
   gpointer handle;
   
-  CHECK_ERROR (NULL);
+  SUPPORT_OR_RETURN (NULL);
   
   if (!file_name)
     {      
@@ -284,7 +284,7 @@ g_module_open (const gchar    *file_name,
 gboolean
 g_module_close (GModule	       *module)
 {
-  CHECK_ERROR (FALSE);
+  SUPPORT_OR_RETURN (FALSE);
   
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (module->ref_count > 0, FALSE);
@@ -354,9 +354,10 @@ g_module_symbol (GModule	*module,
 		 gpointer	*symbol)
 {
   gchar *module_error;
+
   if (symbol)
     *symbol = NULL;
-  CHECK_ERROR (FALSE);
+  SUPPORT_OR_RETURN (FALSE);
   
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (symbol_name != NULL, FALSE);
@@ -374,7 +375,8 @@ g_module_symbol (GModule	*module,
   *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */
   
-  if ((module_error = g_module_error()))
+  module_error = g_module_error();
+  if (module_error)
     {
       gchar *error;
 

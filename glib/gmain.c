@@ -33,6 +33,11 @@
 
 #include "config.h"
 
+/* uncomment the next line to get poll() debugging info */
+/* #define G_MAIN_POLL_DEBUG */
+
+
+
 #include "glib.h"
 #include <sys/types.h>
 #include <time.h>
@@ -107,20 +112,25 @@ static void     g_main_poll               (gint      timeout,
 					   gint      priority);
 static void     g_main_add_poll_unlocked  (gint      priority,
 					   GPollFD  *fd);
+static void     g_main_wakeup             (void);
 
 static gboolean g_timeout_prepare      (gpointer  source_data, 
 					GTimeVal *current_time,
-					gint     *timeout);
+					gint     *timeout,
+					gpointer  user_data);
 static gboolean g_timeout_check        (gpointer  source_data,
-					GTimeVal *current_time);
+					GTimeVal *current_time,
+					gpointer  user_data);
 static gboolean g_timeout_dispatch     (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
 static gboolean g_idle_prepare         (gpointer  source_data, 
 					GTimeVal *current_time,
-					gint     *timeout);
+					gint     *timeout,
+					gpointer  user_data);
 static gboolean g_idle_check           (gpointer  source_data,
-					GTimeVal *current_time);
+					GTimeVal *current_time,
+					gpointer  user_data);
 static gboolean g_idle_dispatch        (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
@@ -167,9 +177,16 @@ static HANDLE wake_up_semaphore = NULL;
 #endif /* NATIVE_WIN32 */
 static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
+
+/* Flag indicating whether the set of fd's changed during a poll */
+static gboolean poll_changed = FALSE;
 #endif /* G_THREADS_ENABLED */
 
 #ifdef HAVE_POLL
+/* SunOS has poll, but doesn't provide a prototype. */
+#  if defined (sun) && !defined (__SVR4)
+extern gint poll (GPollFD *ufds, guint nfsd, gint timeout);
+#  endif  /* !sun */
 static GPollFunc poll_func = (GPollFunc) poll;
 #else	/* !HAVE_POLL */
 #ifdef NATIVE_WIN32
@@ -329,6 +346,9 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
 #else /* !NO_FD_SET */
+#  ifndef _AIX
+typedef long fd_mask;
+#  endif /* _AIX */
 #  ifdef _IBMR2
 #    define SELECT_MASK void
 #  else /* !_IBMR2 */
@@ -467,17 +487,9 @@ g_source_add (gint           priority,
 
 #ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
-
-  if (poll_waiting)
-    {
-      poll_waiting = FALSE;
-#ifndef NATIVE_WIN32
-      write (wake_up_pipe[1], "A", 1);
-#else
-      ReleaseSemaphore (wake_up_semaphore, 1, NULL);
+  g_main_wakeup ();
 #endif
-    }
-#endif
+  
   G_UNLOCK (main_loop);
 
   return return_val;
@@ -706,6 +718,15 @@ g_main_iterate (gboolean block,
   g_get_current_time (&current_time);
 
   G_LOCK (main_loop);
+
+#ifdef G_THREADS_ENABLED
+  if (poll_waiting)
+    {
+      g_warning("g_main_iterate(): main loop already active in another thread");
+      G_UNLOCK (main_loop);
+      return FALSE;
+    }
+#endif G_THREADS_ENABLED  
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
@@ -725,7 +746,7 @@ g_main_iterate (gboolean block,
   hook = g_hook_first_valid (&source_list, TRUE);
   while (hook)
     {
-      GSource *source = (GSource *)hook;
+      GSource *source = (GSource*) hook;
       gint source_timeout = -1;
 
       if ((n_ready > 0) && (source->priority > current_priority))
@@ -743,13 +764,14 @@ g_main_iterate (gboolean block,
 	{
 	  gboolean (*prepare)  (gpointer  source_data, 
 				GTimeVal *current_time,
-				gint     *timeout);
+				gint     *timeout,
+				gpointer  user_data);
 
 	  prepare = ((GSourceFuncs *) hook->func)->prepare;
 	  in_check_or_prepare++;
 	  G_UNLOCK (main_loop);
 
-	  if ((*prepare) (source->source_data, &current_time, &source_timeout))
+	  if ((*prepare) (source->source_data, &current_time, &source_timeout, source->hook.data))
 	    hook->flags |= G_SOURCE_READY;
 	  
 	  G_LOCK (main_loop);
@@ -811,13 +833,14 @@ g_main_iterate (gboolean block,
       if (!(hook->flags & G_SOURCE_READY))
 	{
 	  gboolean (*check) (gpointer  source_data,
-			     GTimeVal *current_time);
+			     GTimeVal *current_time,
+			     gpointer  user_data);
 
 	  check = ((GSourceFuncs *) hook->func)->check;
 	  in_check_or_prepare++;
 	  G_UNLOCK (main_loop);
 	  
-	  if ((*check) (source->source_data, &current_time))
+	  if ((*check) (source->source_data, &current_time, source->hook.data))
 	    hook->flags |= G_SOURCE_READY;
 
 	  G_LOCK (main_loop);
@@ -845,7 +868,7 @@ g_main_iterate (gboolean block,
       
       hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
-
+ 
   /* Now invoke the callbacks */
 
   if (pending_dispatches)
@@ -906,7 +929,7 @@ g_main_run (GMainLoop *loop)
 		 "prepare() member or from a second thread, iteration not possible");
       return;
     }
-
+  
   loop->is_running = TRUE;
   while (loop->is_running)
     g_main_iterate (TRUE, TRUE);
@@ -942,11 +965,14 @@ g_main_poll (gint     timeout,
 	     gboolean use_priority,
 	     gint     priority)
 {
+#ifdef  G_MAIN_POLL_DEBUG
+  GTimer *poll_timer;
+#endif
   GPollFD *fd_array;
   GPollRec *pollrec;
-
   gint i;
   gint npoll;
+
 #ifdef G_THREADS_ENABLED
 #ifndef NATIVE_WIN32
   if (wake_up_pipe[0] < 0)
@@ -976,21 +1002,75 @@ g_main_poll (gint     timeout,
   i = 0;
   while (pollrec && (!use_priority || priority >= pollrec->priority))
     {
-      fd_array[i].fd = pollrec->fd->fd;
-      fd_array[i].events = pollrec->fd->events;
-      fd_array[i].revents = 0;
-	
+      if (pollrec->fd->events)
+	{
+	  fd_array[i].fd = pollrec->fd->fd;
+	  /* In direct contradiction to the Unix98 spec, IRIX runs into
+	   * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
+	   * flags in the events field of the pollfd while it should
+	   * just ignoring them. So we mask them out here.
+	   */
+	  fd_array[i].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
+	  fd_array[i].revents = 0;
+	  i++;
+	}
+      
       pollrec = pollrec->next;
-      i++;
     }
 #ifdef G_THREADS_ENABLED
   poll_waiting = TRUE;
+  poll_changed = FALSE;
 #endif
-  G_UNLOCK (main_loop);
+  
   npoll = i;
-  (*poll_func) (fd_array, npoll, timeout);
-  G_LOCK (main_loop);
-
+  if (npoll || timeout != 0)
+    {
+#ifdef	G_MAIN_POLL_DEBUG
+      g_print ("g_main_poll(%d) timeout: %d\r", npoll, timeout);
+      poll_timer = g_timer_new ();
+#endif
+      
+      G_UNLOCK (main_loop);
+      (*poll_func) (fd_array, npoll, timeout);
+      G_LOCK (main_loop);
+      
+#ifdef	G_MAIN_POLL_DEBUG
+      g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
+	       npoll,
+	       timeout,
+	       g_timer_elapsed (poll_timer, NULL));
+      g_timer_destroy (poll_timer);
+      pollrec = poll_records;
+      i = 0;
+      while (i < npoll)
+	{
+	  if (pollrec->fd->events)
+	    {
+	      if (fd_array[i].revents)
+		{
+		  g_print (" [%d:", fd_array[i].fd);
+		  if (fd_array[i].revents & G_IO_IN)
+		    g_print ("i");
+		  if (fd_array[i].revents & G_IO_OUT)
+		    g_print ("o");
+		  if (fd_array[i].revents & G_IO_PRI)
+		    g_print ("p");
+		  if (fd_array[i].revents & G_IO_ERR)
+		    g_print ("e");
+		  if (fd_array[i].revents & G_IO_HUP)
+		    g_print ("h");
+		  if (fd_array[i].revents & G_IO_NVAL)
+		    g_print ("n");
+		  g_print ("]");
+		}
+	      i++;
+	    }
+	  pollrec = pollrec->next;
+	}
+      g_print ("\n");
+#endif
+    } /* if (npoll || timeout != 0) */
+  
 #ifdef G_THREADS_ENABLED
   if (!poll_waiting)
     {
@@ -1001,15 +1081,27 @@ g_main_poll (gint     timeout,
     }
   else
     poll_waiting = FALSE;
+
+  /* If the set of poll file descriptors changed, bail out
+   * and let the main loop rerun
+   */
+  if (poll_changed)
+    {
+      g_free (fd_array);
+      return;
+    }
 #endif
 
   pollrec = poll_records;
   i = 0;
   while (i < npoll)
     {
-      pollrec->fd->revents = fd_array[i].revents;
+      if (pollrec->fd->events)
+	{
+	  pollrec->fd->revents = fd_array[i].revents;
+	  i++;
+	}
       pollrec = pollrec->next;
-      i++;
     }
 
   g_free (fd_array);
@@ -1061,6 +1153,13 @@ g_main_add_poll_unlocked (gint     priority,
   newrec->next = pollrec;
 
   n_poll_records++;
+
+#ifdef G_THREADS_ENABLED
+  poll_changed = TRUE;
+
+  /* Now wake up the main loop if it is waiting in the poll() */
+  g_main_wakeup ();
+#endif
 }
 
 void 
@@ -1092,6 +1191,13 @@ g_main_remove_poll (GPollFD *fd)
       pollrec = pollrec->next;
     }
 
+#ifdef G_THREADS_ENABLED
+  poll_changed = TRUE;
+  
+  /* Now wake up the main loop if it is waiting in the poll() */
+  g_main_wakeup ();
+#endif
+
   G_UNLOCK (main_loop);
 }
 
@@ -1108,12 +1214,30 @@ g_main_set_poll_func (GPollFunc func)
 #endif
 }
 
+/* Wake the main loop up from a poll() */
+static void
+g_main_wakeup (void)
+{
+#ifdef G_THREADS_ENABLED
+  if (poll_waiting)
+    {
+      poll_waiting = FALSE;
+#ifndef NATIVE_WIN32
+      write (wake_up_pipe[1], "A", 1);
+#else
+      ReleaseSemaphore (wake_up_semaphore, 1, NULL);
+#endif
+    }
+#endif
+}
+
 /* Timeouts */
 
 static gboolean 
-g_timeout_prepare  (gpointer source_data, 
+g_timeout_prepare  (gpointer  source_data, 
 		    GTimeVal *current_time,
-		    gint    *timeout)
+		    gint     *timeout,
+		    gpointer  user_data)
 {
   glong msec;
   GTimeoutData *data = source_data;
@@ -1127,8 +1251,9 @@ g_timeout_prepare  (gpointer source_data,
 }
 
 static gboolean 
-g_timeout_check    (gpointer source_data,
-		    GTimeVal *current_time)
+g_timeout_check (gpointer  source_data,
+		 GTimeVal *current_time,
+		 gpointer  user_data)
 {
   GTimeoutData *data = source_data;
 
@@ -1203,9 +1328,10 @@ g_timeout_add (guint32        interval,
 /* Idle functions */
 
 static gboolean 
-g_idle_prepare  (gpointer source_data, 
+g_idle_prepare  (gpointer  source_data, 
 		 GTimeVal *current_time,
-		 gint     *timeout)
+		 gint     *timeout,
+		 gpointer  user_data)
 {
   timeout = 0;
   return TRUE;
@@ -1213,7 +1339,8 @@ g_idle_prepare  (gpointer source_data,
 
 static gboolean 
 g_idle_check    (gpointer  source_data,
-		 GTimeVal *current_time)
+		 GTimeVal *current_time,
+		 gpointer  user_data)
 {
   return TRUE;
 }

@@ -100,7 +100,7 @@ g_slist_pop_allocator (void)
   G_UNLOCK (current_allocator);
 }
 
-GSList*
+inline GSList*
 g_slist_alloc (void)
 {
   GSList *list;
@@ -153,7 +153,7 @@ g_slist_free (GSList *list)
     }
 }
 
-void
+inline void
 g_slist_free_1 (GSList *list)
 {
   if (list)
@@ -290,7 +290,7 @@ g_slist_remove (GSList   *list,
   return list;
 }
 
-GSList*
+inline GSList*
 g_slist_remove_link (GSList *list,
 		     GSList *link)
 {
@@ -316,6 +316,16 @@ g_slist_remove_link (GSList *list,
       prev = tmp;
       tmp = tmp->next;
     }
+
+  return list;
+}
+
+GSList*
+g_slist_delete_link (GSList *list,
+		     GSList *link)
+{
+  list = g_slist_remove_link (list, link);
+  g_slist_free_1 (link);
 
   return list;
 }

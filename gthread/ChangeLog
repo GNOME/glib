@@ -43,6 +43,11 @@
 	glib-1-2/gthread/gthread-posix.c from 1999-03-03, as the current
 	change will take care of that too.
 
+1999-03-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Fixed broken mutex_trylock and slightly broken
+	cond_timed_wait functions.
+
 1999-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* testgthread.c (test_mutexes): Use new signature of

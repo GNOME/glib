@@ -49,16 +49,12 @@
  * And it provides a way to store and retrieve a `gint' in/from a `gpointer'.
  * This is useful to pass an integer instead of a pointer to a callback.
  *
- *  GINT_TO_POINTER(i), GUINT_TO_POINTER(i)
- *  GPOINTER_TO_INT(p), GPOINTER_TO_UINT(p)
+ *  GINT_TO_POINTER (i), GUINT_TO_POINTER (i)
+ *  GPOINTER_TO_INT (p), GPOINTER_TO_UINT (p)
  *
- * Finally, it provide the following wrappers to STDC functions:
+ * Finally, it provides the following wrappers to STDC functions:
  *
- *  g_ATEXIT
- *    To register hooks which are executed on exit().
- *    Usually a wrapper for STDC atexit.
- *
- *  void g_memmove(gpointer dest, gconstpointer void *src, gulong count);
+ *  void g_memmove (gpointer dest, gconstpointer void *src, gulong count);
  *    A wrapper for STDC memmove, or an implementation, if memmove doesn't
  *    exist.  The prototype looks like the above, give or take a const,
  *    or size_t.
@@ -262,11 +258,11 @@ extern "C" {
  * macros, so we can refer to them as strings unconditionally.
  */
 #ifdef	__GNUC__
-#define	G_GNUC_FUNCTION		(__FUNCTION__)
-#define	G_GNUC_PRETTY_FUNCTION	(__PRETTY_FUNCTION__)
+#define	G_GNUC_FUNCTION		__FUNCTION__
+#define	G_GNUC_PRETTY_FUNCTION	__PRETTY_FUNCTION__
 #else	/* !__GNUC__ */
-#define	G_GNUC_FUNCTION		("")
-#define	G_GNUC_PRETTY_FUNCTION	("")
+#define	G_GNUC_FUNCTION		""
+#define	G_GNUC_PRETTY_FUNCTION	""
 #endif	/* !__GNUC__ */
 
 /* we try to provide a usefull equivalent for ATEXIT if it is
@@ -703,15 +699,16 @@ typedef struct _GRelation	GRelation;
 typedef struct _GScanner	GScanner;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GSList		GSList;
-typedef struct _GStack		GStack;
 typedef struct _GString		GString;
 typedef struct _GStringChunk	GStringChunk;
 typedef struct _GTimer		GTimer;
+typedef struct _GTrashStack     GTrashStack;
 typedef struct _GTree		GTree;
 typedef struct _GTuples		GTuples;
 typedef union  _GTokenValue	GTokenValue;
 typedef struct _GIOChannel	GIOChannel;
 
+/* Tree traverse flags */
 typedef enum
 {
   G_TRAVERSE_LEAFS	= 1 << 0,
@@ -720,6 +717,7 @@ typedef enum
   G_TRAVERSE_MASK	= 0x03
 } GTraverseFlags;
 
+/* Tree traverse orders */
 typedef enum
 {
   G_IN_ORDER,
@@ -807,37 +805,6 @@ typedef gint		(*GTraverseFunc)	(gpointer	key,
 typedef	void		(*GVoidFunc)		(void);
 
 
-struct _GList
-{
-  gpointer data;
-  GList *next;
-  GList *prev;
-};
-
-struct _GSList
-{
-  gpointer data;
-  GSList *next;
-};
-
-struct _GStack
-{
-  GList *list;
-};
-
-struct _GQueue
-{
-  GList *list;
-  GList *list_end;
-  guint list_size;
-};
-
-struct _GString
-{
-  gchar *str;
-  gint len;
-};
-
 struct _GArray
 {
   gchar *data;
@@ -850,21 +817,52 @@ struct _GByteArray
   guint	  len;
 };
 
+struct _GDebugKey
+{
+  gchar *key;
+  guint	 value;
+};
+
+struct _GList
+{
+  gpointer data;
+  GList *next;
+  GList *prev;
+};
+
 struct _GPtrArray
 {
   gpointer *pdata;
   guint	    len;
 };
 
+struct _GQueue
+{
+  GList *head;
+  GList *tail;
+  guint  length;
+};
+
+struct _GSList
+{
+  gpointer data;
+  GSList *next;
+};
+
+struct _GString
+{
+  gchar *str;
+  gint len;
+};
+
+struct _GTrashStack
+{
+  GTrashStack *next;
+};
+
 struct _GTuples
 {
   guint len;
-};
-
-struct _GDebugKey
-{
-  gchar *key;
-  guint	 value;
 };
 
 
@@ -887,12 +885,12 @@ GList* g_list_insert_sorted	(GList		*list,
 				 GCompareFunc	 func);
 GList* g_list_concat		(GList		*list1,
 				 GList		*list2);
-GList* g_list_delete     	(GList		*list,
-				 GList		*link);
 GList* g_list_remove		(GList		*list,
 				 gpointer	 data);
 GList* g_list_remove_link	(GList		*list,
 				 GList		*llink);
+GList* g_list_delete_link     	(GList		*list,
+				 GList		*link);
 GList* g_list_reverse		(GList		*list);
 GList* g_list_copy		(GList		*list);
 GList* g_list_nth		(GList		*list,
@@ -942,7 +940,9 @@ GSList* g_slist_concat		(GSList		*list1,
 GSList* g_slist_remove		(GSList		*list,
 				 gpointer	 data);
 GSList* g_slist_remove_link	(GSList		*list,
-				 GSList		*llink);
+				 GSList		*link);
+GSList* g_slist_delete_link     (GSList         *list,
+				 GSList         *link);
 GSList* g_slist_reverse		(GSList		*list);
 GSList*	g_slist_copy		(GSList		*list);
 GSList* g_slist_nth		(GSList		*list,
@@ -965,67 +965,28 @@ GSList*  g_slist_sort           (GSList          *list,
 		                 GCompareFunc    compare_func);
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
-#define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
-
-
-/* Stacks
- */
-
-GStack * g_stack_new	(void);
-void	 g_stack_free	(GStack *stack);
-gpointer g_stack_pop	(GStack *stack);
-
-#define g_stack_empty(stack) \
-	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? FALSE : TRUE)
-
-#define g_stack_peek(stack) \
-	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? \
-		((GStack *)(stack))->list->data : NULL)
-
-#define g_stack_index(stack,ptr) \
-	((((GStack *)(stack)) && ((GStack *)(stack))->list) ? \
-		g_list_index (((GStack *)(stack))->list, (ptr)) : -1)
-
-#define g_stack_push(stack,data) G_STMT_START {				\
-	    if ((GStack *)(stack))					\
-	      ((GStack *)(stack))->list =				\
-	    	  g_list_prepend (((GStack *)(stack))->list, (data));	\
-	  } G_STMT_END
-
+#define  g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
 
 
 /* Queues
  */
-
-GQueue *	g_queue_new		(void);
-void		g_queue_free		(GQueue *q);
-guint		g_queue_get_size	(GQueue *q);
-void		g_queue_push_front	(GQueue *q, gpointer data);
-void		g_queue_push_back	(GQueue *q, gpointer data);
-gpointer	g_queue_pop_front	(GQueue *q);
-gpointer	g_queue_pop_back	(GQueue *q);
-
-#define g_queue_empty(queue) \
-	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? FALSE : TRUE)
-
-#define g_queue_peek_front(queue) \
-	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? \
-		((GQueue *)(queue))->list->data : NULL)
-
-#define g_queue_peek_back(queue) \
-	((((GQueue *)(queue)) && ((GQueue *)(queue))->list_end) ? \
-		((GQueue *)(queue))->list_end->data : NULL)
-
-#define g_queue_index(queue,ptr) \
-	((((GQueue *)(queue)) && ((GQueue *)(queue))->list) ? \
-		g_list_index (((GQueue *)(queue))->list, (ptr)) : -1)
-
-#define		g_queue_push		g_queue_push_back
-#define		g_queue_pop		g_queue_pop_front
-#define		g_queue_peek		g_queue_peek_front
-
-
-
+GQueue*  g_queue_create         (void);
+void     g_queue_free           (GQueue  *queue);
+void     g_queue_push_head      (GQueue  *queue,
+				 gpointer data);
+void     g_queue_push_tail      (GQueue  *queue,
+				 gpointer data);
+gpointer g_queue_pop_head       (GQueue  *queue);
+gpointer g_queue_pop_tail       (GQueue  *queue);
+gboolean g_queue_is_empty       (GQueue  *queue);
+gpointer g_queue_peek_head      (GQueue  *queue);
+gpointer g_queue_peek_tail      (GQueue  *queue);
+void     g_queue_push_head_link (GQueue  *queue,
+				 GList   *link);
+void     g_queue_push_tail_link (GQueue  *queue,
+				 GList   *link);
+GList*   g_queue_pop_head_link  (GQueue  *queue);
+GList*   g_queue_pop_tail_link  (GQueue  *queue);
 
 
 /* Hash tables
@@ -1554,9 +1515,7 @@ gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gchar*   g_strjoin		(const gchar  *separator,
 				 ...); /* NULL terminated */
-/* Return a duplicate of the string with \ and " characters escaped by
- * a \. The returned string should be freed with g_free().
- */
+/* deprecated function */
 gchar*	 g_strescape		(gchar	      *string);
 
 gpointer g_memdup		(gconstpointer mem,
@@ -1684,6 +1643,71 @@ g_bit_storage (guint number)
 }
 #endif	/* G_CAN_INLINE */
 
+
+/* Trash Stacks
+ * elements need to be >= sizeof (gpointer)
+ */
+G_INLINE_FUNC void	g_trash_stack_push	(GTrashStack **stack_p,
+						 gpointer      data_p);
+#ifdef G_CAN_INLINE
+G_INLINE_FUNC void
+g_trash_stack_push (GTrashStack **stack_p,
+		    gpointer      data_p)
+{
+  GTrashStack *data = data_p;
+
+  data->next = *stack_p;
+  *stack_p = data;
+}
+#endif	/* G_CAN_INLINE */
+
+G_INLINE_FUNC gpointer	g_trash_stack_pop	(GTrashStack **stack_p);
+#ifdef G_CAN_INLINE
+G_INLINE_FUNC gpointer
+g_trash_stack_pop (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+  if (data)
+    {
+      *stack_p = data->next;
+      memset (data, 0, sizeof (GTrashStack));
+    }
+
+  return data;
+}
+#endif  /* G_CAN_INLINE */
+
+G_INLINE_FUNC gpointer	g_trash_stack_peek	(GTrashStack **stack_p);
+#ifdef G_CAN_INLINE
+G_INLINE_FUNC gpointer
+g_trash_stack_peek (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+
+  return data;
+}
+#endif  /* G_CAN_INLINE */
+
+G_INLINE_FUNC guint	g_trash_stack_height	(GTrashStack **stack_p);
+#ifdef G_CAN_INLINE
+G_INLINE_FUNC guint
+g_trash_stack_height (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+  guint i = 0;
+
+  for (data = *stack_p; data; data = data->next)
+    i++;
+
+  return i;
+}
+#endif  /* G_CAN_INLINE */
+
+
 /* String Chunks
  */
 GStringChunk* g_string_chunk_new	   (gint size);
@@ -1696,36 +1720,6 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
 
 /* Strings
  */
-typedef enum
-{
-  G_STRING_ERROR_NONE,    /* No error occurred */
-  G_STRING_ERROR_INVAL,   /* Invalid input value to function */ 
-  G_STRING_ERROR_READ,    /* read() returned an error - check errno */
-  G_STRING_ERROR_NODATA,  /* No more input data - result string may contain data */
-  G_STRING_ERROR_LENGTH   /* max_length reached */
-} GStringError;
-
-#define      g_string_length(fstring)    (fstring ? fstring->len : 0)
-#define      g_string_str(fstring)       (fstring ? fstring->str : NULL)
-#define      g_string_char(fstring, n)   (fstring->str[n])
-
-#define      g_string_copy(a,b)          (g_string_assign(a, b->str))
-#define      g_string_dup(fstring)       (fstring ? g_string_new(fstring->str) :\
-                                                    g_string_new(NULL))
-
-#define      g_string_cmp(a,b)           (strcmp(g_string_str(a), \
-                                                 g_string_str(b)))
-#define      g_string_ncmp(a,b,n)        (strncmp(g_string_str(a), \
-                                                  g_string_str(b), n))
-#define      g_string_casecmp(a,b)       (g_strcasecmp(g_string_str(a), \
-                                                       g_string_str(b)))
-#define      g_string_ncasecmp(a,b,n)    (g_strncasecmp(g_string_str(a), \
-                                                        g_string_str(b), n))
- 
-#define      g_string_strcmp(a,b)        (strcmp(g_string_str(a), b))
-#define      g_string_strcasecmp(a,b)    (g_strcasecmp(g_string_str(a), b))
-#define      g_string_strncasecmp(a,b,n) (g_strncasecmp(g_string_str(a), b, n))
-
 GString*     g_string_new	        (const gchar	 *init);
 GString*     g_string_sized_new         (guint		  dfl_size);
 void	     g_string_free	        (GString	 *string,
@@ -1759,20 +1753,6 @@ void         g_string_sprintf           (GString	 *string,
 void         g_string_sprintfa          (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
-GStringError g_string_readline          (GString	 *dest_str,
-					 gint		 max_length,
-					 gint		 fd);
-GStringError g_string_readline_buffered (GString	 *dest_str,
-					 GString	 *buff_str,
-					 gint		  max_length,
-					 gint		  fd,
-					 gint		  match_bare_cr);
-GList*       g_string_tokenise          (GString	 *string,
-					 gchar		 *delims,
-					 gint		  max_tokens,
-					 gint		  allow_empty);
-void         g_string_tokenise_free     (GList		 *tokens,
-					 gint		  free_token);
 
 
 /* Resizable arrays, remove fills any cleared spot and shortens the
@@ -2370,6 +2350,7 @@ gsize        g_date_strftime              (gchar       *s,
                                            const gchar *format,
                                            GDate       *date);
 
+
 /* GRelation
  *
  * Indexed Relations.  Imagine a really simple table in a
@@ -2567,9 +2548,11 @@ struct _GSourceFuncs
 {
   gboolean (*prepare)  (gpointer  source_data, 
 			GTimeVal *current_time,
-			gint     *timeout);
+			gint     *timeout,
+			gpointer  user_data);
   gboolean (*check)    (gpointer  source_data,
-			GTimeVal *current_time);
+			GTimeVal *current_time,
+			gpointer  user_data);
   gboolean (*dispatch) (gpointer  source_data, 
 			GTimeVal *current_time,
 			gpointer  user_data);

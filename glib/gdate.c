@@ -28,6 +28,11 @@
  * MT safe
  */
 
+#define DEBUG_MSG(x)	/* */
+#ifdef G_ENABLE_DEBUG
+/* #define DEBUG_MSG(args)	g_message args ; */
+#endif
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -453,7 +458,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 {
   gchar num[4][NUM_LEN+1];
   gint i;
-  const gchar *s;
+  const guchar *s;
   
   /* We count 4, but store 3; so we can give an error
    * if there are 4.
@@ -609,23 +614,15 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
         }
       
 #ifdef G_ENABLE_DEBUG
-#  if 0
-      g_message ("**GDate prepared a new set of locale-specific parse rules.");
-#  endif
+      DEBUG_MSG (("**GDate prepared a new set of locale-specific parse rules."));
       i = 1;
       while (i < 13) 
         {
-#  if 0
-          g_message ("  %s   %s", long_month_names[i], short_month_names[i]);
-#  endif
+          DEBUG_MSG (("  %s   %s", long_month_names[i], short_month_names[i]));
           ++i;
         }
       if (using_twodigit_years)
-        {
-#  if 0
-          g_message ("**Using twodigit years with cutoff year: %u", twodigit_start_year);
-#  endif
-        }
+	DEBUG_MSG (("**Using twodigit years with cutoff year: %u", twodigit_start_year));
       { 
         gchar *strings[3];
         i = 0;
@@ -648,10 +645,8 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
               }
             ++i;
           }
-#  if 0
-        g_message ("**Order: %s, %s, %s", strings[0], strings[1], strings[2]);
-        g_message ("**Sample date in this locale: `%s'", buf);
-#  endif
+        DEBUG_MSG (("**Order: %s, %s, %s", strings[0], strings[1], strings[2]));
+        DEBUG_MSG (("**Sample date in this locale: `%s'", buf));
       }
 #endif
     }
@@ -675,12 +670,8 @@ g_date_set_parse (GDate       *d,
 
   g_date_prepare_to_parse (str, &pt);
   
-#ifdef G_ENABLE_DEBUG
-#  if 0
-  g_message ("Found %d ints, `%d' `%d' `%d' and written out month %d", 
-	     pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month);
-#  endif
-#endif
+  DEBUG_MSG (("Found %d ints, `%d' `%d' `%d' and written out month %d", 
+	      pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month));
   
   
   if (pt.num_ints == 4) 
@@ -801,7 +792,7 @@ g_date_set_parse (GDate       *d,
     }
 #ifdef G_ENABLE_DEBUG
   else 
-    g_message ("Rejected DMY %u %u %u", day, m, y);
+    DEBUG_MSG (("Rejected DMY %u %u %u", day, m, y));
 #endif
   G_UNLOCK (g_date_global);
 }

@@ -48,7 +48,6 @@ libglib_la_SOURCES = \
 	grand.c		\
 	gscanner.c	\
 	gslist.c	\
-	gstack.c	\
 	gstrfuncs.c	\
 	gstring.c	\
 	gthread.c       \

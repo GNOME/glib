@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 %define ver      @VERSION@
-%define rel      SNAP
+%define rel      1
 %define prefix   /usr
 
 Summary: Handy library of utility functions

@@ -5,6 +5,9 @@ EXTRA_DIST = \
 	makefile.msc	\
 	makefile.cygwin
 
+EXTRA_DIST = \
+	makefile.msc
+
 TESTS = \
 	array-test	\
 	date-test	\
@@ -16,7 +19,6 @@ TESTS = \
 	rand-test	\
 	relation-test	\
 	slist-test	\
-	stack-test	\
 	strfunc-test	\
 	string-test	\
 	thread-test	\
@@ -35,7 +37,6 @@ queue_test_LDADD = $(top_builddir)/libglib.la
 rand_test_LDADD = $(top_builddir)/libglib.la
 relation_test_LDADD = $(top_builddir)/libglib.la
 slist_test_LDADD = $(top_builddir)/libglib.la
-stack_test_LDADD = $(top_builddir)/libglib.la
 strfunc_test_LDADD = $(top_builddir)/libglib.la
 string_test_LDADD = $(top_builddir)/libglib.la
 thread_test_LDADD = $(top_builddir)/libglib.la \

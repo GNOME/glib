@@ -973,7 +973,7 @@ g_scanner_unexp_token (GScanner		*scanner,
 		  "%s%s `%s'",
 		  print_unexp ? "" : "invalid ",
 		  identifier_spec,
-		  scanner->value.v_string);
+		  scanner->token == G_TOKEN_IDENTIFIER ? scanner->value.v_string : "null");
       break;
       
     case G_TOKEN_BINARY:
@@ -1075,6 +1075,10 @@ g_scanner_unexp_token (GScanner		*scanner,
 		  identifier_spec);
       break;
       
+    case G_TOKEN_EOF:
+      g_snprintf (expected_string, expected_string_len, "end of file");
+      break;
+
     case G_TOKEN_NONE:
       break;
     }

@@ -1,6 +1,23 @@
-What's new in GLib 1.3.0:
+What's new in GLib 1.3.1:
 
-* Look at ChangeLog.
+* Multiple fixes from the 1.2.x branch.
+* Upgrade to libtool 1.3.3
+* Full thread support (thread creation and destruction).
+* BeOS port, BeOS dynamic modules.
+* Many improvements to the Windows ports.
+* Improvements to the OS/2 port, OS/2 module support.
+* Double ended queue implementation.
+* GLib macros for printf() formatting, e.g. G_GULONG_FORMAT = "lu"
+* New thread-safe random number generator Mersenne Twister.
+
+
+Overview of Changes in GLib 1.2.1:
+
+* g_realloc() fix for SunOS (please report further problems).
+* Continued the never ending fix vendetta regarding getpwuid(),
+  this time AIX has been the culprit.
+* Upgrade to libtool 1.2f
+* Miscellaneous other buglets fixed.
 
 What's new in GLib 1.2.0 (since GLib 1.0.x):
 
@@ -14,7 +31,7 @@ What's new in GLib 1.2.0 (since GLib 1.0.x):
 * GRelations for n-way mapping of certain data
 * An n-way tree implementation
 * GDate functionality for calendar date manipulations
-* GAllocator type and assocated functions
+* GAllocator type and associated functions
 * Added generic callback maintenance functions (ghook)
 * Generic functions for TAB completions
 * Endian defines (G_*_ENDIAN)
@@ -93,7 +110,7 @@ Overview of Changes in GLib 1.1.7:
 Overview of Changes in GLib 1.1.6:
 
 * New GDate functionality for calendar date manipulations (g_date_*)
-* New GAllocator type and assocated functions
+* New GAllocator type and associated functions
 * New functions g_slist_copy and g_list_copy to duplicate a list with all
   its data pointers.
 * New function g_array_insert_vals and new macro g_array_insert_val to

@@ -1,6 +1,5 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
- * Portions Copyright (C) 1999 Tony Gale
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -42,12 +41,6 @@
 #include <string.h>
 #include <ctype.h>
 #include "glib.h"
-
-#ifdef NATIVE_WIN32
-#include <io.h>			/* For _read */
-#endif
-
-#define G_STRING_BLOCK_SIZE 512
 
 typedef struct _GRealStringChunk GRealStringChunk;
 typedef struct _GRealString      GRealString;
@@ -201,24 +194,13 @@ g_string_chunk_insert_const (GStringChunk *fchunk,
 
 /* Strings.
  */
-static gint
+static inline gint
 nearest_power (gint num)
 {
   gint n = 1;
 
   while (n < num)
     n <<= 1;
-
-  return n;
-}
-
-static gint
-nearest_multiple (int num, const int block)
-{
-  gint n = block;
-
-  while (n < num)
-    n += block;
 
   return n;
 }
@@ -231,15 +213,6 @@ g_string_maybe_expand (GRealString* string, gint len)
       string->alloc = nearest_power (string->len + len + 1);
       string->str = g_realloc (string->str, string->alloc);
     }
-}
-
-static void
-g_string_set_size (GRealString* string, gint size)
-{
-  if (string->alloc <= size) {
-    string->alloc = nearest_power(size + 1);
-    string->str = g_realloc (string->str, string->alloc);
-  }
 }
 
 GString*
@@ -474,7 +447,7 @@ GString*
 g_string_down (GString *fstring)
 {
   GRealString *string = (GRealString*)fstring;
-  gchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -493,7 +466,7 @@ GString*
 g_string_up (GString *fstring)
 {
   GRealString *string = (GRealString*)fstring;
-  gchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -544,193 +517,4 @@ g_string_sprintfa (GString *string,
   va_start (args, fmt);
   g_string_sprintfa_int (string, fmt, args);
   va_end (args);
-}
-
-GStringError
-g_string_readline (GString *dest_str,
-		   gint     max_length,
-		   gint     fd)
-{
-  gint count=0, retval;
-  gchar c;
-
-  g_return_val_if_fail (dest_str != NULL, G_STRING_ERROR_INVAL);
-  g_return_val_if_fail (max_length > 0, G_STRING_ERROR_INVAL);
-  g_string_truncate(dest_str, 0);
-
-  for (count = 0; count < max_length; count++) {
-    if ( (retval = read(fd, &c, 1)) == 1 ) {
-      if (c == '\r') {
-        continue;
-      }
-      if (c == '\n') {
-        return(G_STRING_ERROR_NONE);
-      }
-      g_string_maybe_expand ((GRealString *) dest_str, 1);
-      dest_str->str[dest_str->len++] = c;
-      dest_str->str[dest_str->len] = 0;
-    } else if (retval == 0) {
-	return(G_STRING_ERROR_NODATA);
-    } else {
-      return(G_STRING_ERROR_READ);
-    }
-  }
-  return(G_STRING_ERROR_LENGTH);
-}
-
-GStringError
-g_string_readline_buffered (GString *dest_str,
-			    GString *buff_str,
-			    gint     max_length,
-			    gint     fd,
-			    gint     match_bare_cr)
-{
-  guint count, i=0, buff_size;
-
-  g_return_val_if_fail (dest_str != NULL, G_STRING_ERROR_INVAL);
-  g_return_val_if_fail (buff_str != NULL, G_STRING_ERROR_INVAL);
-  g_return_val_if_fail (max_length > 0, G_STRING_ERROR_INVAL);
-
-  /* Make the buffer a multiple of G_STRING_BLOCK_SIZE and
-   * bigger then max_length */
-  buff_size = nearest_multiple(max_length, G_STRING_BLOCK_SIZE);
-  g_string_set_size( (GRealString *) buff_str, buff_size);
-
-  do {
-    /* Allow the buffer to empty before reading more data.
-     * Prevents blocking on read() when data in the buffer */
-
-    if (buff_str->len != 0) {
-      /* Search for a CRLF, CR or LF */
-      for (i = 0; i < max_length-1; i++) {
-
-	/* Look for a CR */
-	if (buff_str->str[i] == '\r') {
-
-	  /* Check for CRLF */
-	  if (buff_str->str[i+1] == '\n') {
-	    buff_str->str[i] = '\0';
-	    i++;
-	  } else if (match_bare_cr) {
-	    buff_str->str[i] = '\0';
-	  } else {
-	    continue;
-	  }
-
-	  /* Copy the line to the destination string and
-	   * remove it from the buffer */
-	  g_string_assign( dest_str, buff_str->str );
-	  g_string_erase( buff_str, 0, i+1);
-	  return (G_STRING_ERROR_NONE);
-	}
-
-	/* Look for LF */
-	if (buff_str->str[i] == '\n') {
-	  buff_str->str[i] = '\0';
-
-	  /* Copy the line to the destination string and
-	   * remove it from the buffer */
-	  g_string_assign( dest_str, buff_str->str );
-	  g_string_erase( buff_str, 0, i+1);
-	  return (G_STRING_ERROR_NONE);      
-	}
-
-	/* If we hit a '\0' then we've exhausted the buffer */
-	if (buff_str->str[i] == '\0') {
-	  break;
-	}
-      }
-    }
-
-    /* Read in a block of data, appending it to the buffer */
-    if ( (count = read(fd, buff_str->str + buff_str->len,
-		       buff_size - buff_str->len - 1)) < 0) {
-      return (G_STRING_ERROR_READ);
-    } else if (count == 0) {
-      return (G_STRING_ERROR_NODATA);
-    } else {
-      /* Fix up the buffer */
-      buff_str->len += count;
-      buff_str->str[buff_str->len] = '\0';
-    }
-
-  } while (i != max_length-1);
-
-  /* If we get here then we have reached max_length */
-  g_string_assign (dest_str, buff_str->str);
-  g_string_truncate (dest_str, max_length-1);
-  g_string_erase (buff_str, 0, max_length-1);
-
-  return (G_STRING_ERROR_LENGTH);
-}
-
-GList*
-g_string_tokenise (GString *string,
-		   gchar   *delims,
-		   gint     max_tokens,
-		   gint     allow_empty)
-{
-  GList *tokens=NULL;
-  GString *token;
-  gchar *current, *start, c;
-  guint count=1;
-
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (delims != NULL, NULL);
-
-  if (max_tokens < 1) {
-    max_tokens = G_MAXINT;
-  }
-
-  current = string->str;
-  while (*current) {
-    /* Remove any leading delimiters */
-    if (!allow_empty) {
-      while ( *current && (strchr(delims, *current) != NULL) ) {
-        current++;
-      }
-    }
-
-    /* If we've reached max_tokens, use the remaining input string
-     * as the last token */
-    if (count == max_tokens) {
-      token = g_string_new(current);
-      tokens = g_list_append(tokens, token);
-      return (tokens);
-    }
-
-    /* Find the extent of the current token */
-    if ( *current ) {
-      start = current;
-      while ( *current && (strchr(delims, *current) == NULL) ) {
-        current++;
-      }
-      c = *current;
-      *current = '\0';
-      token = g_string_new( start );
-      *current = c;
-      tokens = g_list_append(tokens, token);
-      count++;
-      if (*current) {
-        current++;
-      }
-    }
-  }
-
-  return (tokens);
-}
-
-void
-g_string_tokenise_free (GList *tokens,
-			gint   free_token)
-{
-
-  if (free_token) {
-    while(tokens) {
-      g_string_free( (GString *) tokens->data, TRUE );
-      tokens = g_list_next(tokens);
-    }
-  }
-
-  g_list_free(tokens);
 }

@@ -78,9 +78,11 @@ static guint  g_io_unix_add_watch (GIOChannel      *channel,
 				   GDestroyNotify notify);
 static gboolean g_io_unix_prepare  (gpointer source_data, 
 				    GTimeVal *current_time,
-				    gint *timeout);
+				    gint *timeout,
+				    gpointer user_data);
 static gboolean g_io_unix_check    (gpointer source_data,
-				    GTimeVal *current_time);
+				    GTimeVal *current_time,
+				    gpointer user_data);
 static gboolean g_io_unix_dispatch (gpointer source_data,
 				    GTimeVal *current_time,
 				    gpointer user_data);
@@ -105,7 +107,8 @@ GIOFuncs unix_channel_funcs = {
 static gboolean 
 g_io_unix_prepare  (gpointer source_data, 
 		    GTimeVal *current_time,
-		    gint    *timeout)
+		    gint     *timeout,
+		    gpointer user_data)
 {
   *timeout = -1;
   return FALSE;
@@ -113,7 +116,8 @@ g_io_unix_prepare  (gpointer source_data,
 
 static gboolean 
 g_io_unix_check    (gpointer source_data,
-		    GTimeVal *current_time)
+		    GTimeVal *current_time,
+		    gpointer user_data)
 {
   GIOUnixWatch *data = source_data;
 

@@ -15,12 +15,12 @@ cflags_set=${CFLAGS+set}
 # we rewrite this file
 rm -f glibconfig-sysdefs.h
 
-dnl we to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
+dnl we need to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
 dnl are available for $ac_help expansion (don't we all *love* autoconf?)
 AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #
-# The following version number definitions apply to GLib and GModule
-# as a whole, so if changes occoured in either of them, they are both
+# The following version number definitions apply to GLib, GModule and GThread
+# as a whole, so if changes occoured in any of them, they are all
 # treated with the same interface and binary age.
 #
 # Making releases:
@@ -29,11 +29,11 @@ AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #   GLIB_BINARY_AGE += 1;
 # if any functions have been added, set GLIB_INTERFACE_AGE to 0.
 # if backwards compatibility has been broken,
-# set GLIB_BINARY_AGE and GLIB_INTERFACE_AGE to 0.
+# set GLIB_BINARY_AGE _and_ GLIB_INTERFACE_AGE to 0.
 #
 GLIB_MAJOR_VERSION=1
 GLIB_MINOR_VERSION=3
-GLIB_MICRO_VERSION=0
+GLIB_MICRO_VERSION=1
 GLIB_INTERFACE_AGE=0
 GLIB_BINARY_AGE=0
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
@@ -42,6 +42,7 @@ AC_DIVERT_POP()dnl
 
 AC_SUBST(GLIB_MAJOR_VERSION)
 AC_SUBST(GLIB_MINOR_VERSION)
+AC_SUBST(GLIB_MICRO_VERSION)
 AC_SUBST(GLIB_VERSION)
 AC_SUBST(GLIB_INTERFACE_AGE)
 AC_SUBST(GLIB_BINARY_AGE)

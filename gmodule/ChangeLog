@@ -1,3 +1,7 @@
+Sat Jul 24 20:47:18 1999  Tim Janik  <timj@gtk.org>
+
+	* merged changes from GLib-1-2 branch.
+
 1999-05-06  Tor Lillqvist  <tml@iki.fi>
 	
 	* gmodule.c: Remove LibMain.
@@ -15,6 +19,11 @@ Wed Apr  7 20:12:58 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
 	* gmodule-os2.c: OS/2 specific file for gmodule.
 	* gmodule.c (_g_module_open): Add gmodule-os2.c if G_MODULE_IMPL_OS2.
 	* gmoduleconf.h.in: Add G_MODULE_IMPL_OS2.
+
+Fri Apr 23 09:03:48 1999  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_symbol): removed inline variable assignment.
+	s/CHECK_ERROR/SUPPORT_OR_RETURN/ to make the code more self descriptive.
 
 Wed Feb 10 12:06:30 1999  Tim Janik  <timj@gtk.org>
 
