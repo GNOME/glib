@@ -1,7 +1,8 @@
 2003-08-11  Matthias Clasen  <maclas@gmx.de>
 
-	* acinclude.m4: Copy newer versions of JH_CHECK_XML_CATALOG and JH_PATH_XML_CATALOG from
-	gtk-doc to enable configuring without xmlcatalog in PATH.  (#119115)
+	* acinclude.m4: Copy newer versions of JH_CHECK_XML_CATALOG and
+	JH_PATH_XML_CATALOG from gtk-doc to enable configuring without
+	xmlcatalog in PATH.  (#119115) 
 
 2003-08-10  Tor Lillqvist  <tml@iki.fi>
 
@@ -22,20 +23,22 @@
 
 2003-08-08  Matthias Clasen  <maclas@gmx.de>
 
-	* tests/env-test.c (main): Remove a test for getenv() behaviour which isn't specified by SUS
-	and doesn't work on Solaris.
+	* tests/env-test.c (main): Remove a test for getenv() behaviour
+	which isn't specified by SUS and doesn't work on Solaris.
 
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/env-test.c: Add tests for '=' in names and values.
 
-	* glib/gutils.c (g_setenv, g_unsetenv): Check that the variable name doesn't contain '='. Add a
-	declaration for environ.  (#119338)
+	* glib/gutils.c (g_setenv, g_unsetenv): Check that the variable
+	name doesn't contain '='. Add a declaration for environ.  (#119338)
 
-	* acinclude.m4: Tighten the snprintf() test to check behaviour on zero-size buffers.  (#106091)
+	* acinclude.m4: Tighten the snprintf() test to check behaviour on
+	zero-size buffers.  (#106091) 
 
-	* tests/patterntest.c: Specify test strings in UTF-8, remove all charset conversion.
-	Replace the NOISY define by a cmdline arg --noisy.   (#115757)
+	* tests/patterntest.c: Specify test strings in UTF-8, remove all
+	charset conversion. Replace the NOISY define by a cmdline arg
+	--noisy.   (#115757) 
 
 Thu Aug  7 15:01:09 2003  Owen Taylor  <otaylor@redhat.com>
 
@@ -86,7 +89,8 @@ Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 
 2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
 
-	* tests/unicode-encoding.c: Return nonzero exit status if the test fails. (#118729)
+	* tests/unicode-encoding.c: Return nonzero exit status if the test
+	fails. (#118729) 
 
 2003-07-31  Noah Levitt  <nlevitt@columbia.edu>
 
@@ -121,41 +125,52 @@ Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
-	* glib/gutils.c (g_unsetenv): Use same argument name as in header, to pacify gtk-doc.
-	(g_getenv): Move docs inline, add comment about lifespan of return value.
+	* glib/gutils.c (g_unsetenv): Use same argument name as in header,
+	to pacify gtk-doc. 
+	(g_getenv): Move docs inline, add comment about lifespan of return
+	value. 
 
-	* glib-2.0.pc.in (Libs): Remove forgotten @TRIO_LIBS@.  (#118616, Noah Levitt)
+	* glib-2.0.pc.in (Libs): Remove forgotten @TRIO_LIBS@.  (#118616,
+	Noah Levitt) 
 
-	* glib/gfileutils.[hc]: Rename g_read_link() to g_file_read_link() to better match the remaining file
-	utilities in the g_file_ namespace and to better separate it from readlink(). This is hopefully no problem 
-	as the function is just 2 days old.
+	* glib/gfileutils.[hc]: Rename g_read_link() to g_file_read_link()
+	to better match the remaining file utilities in the g_file_
+	namespace and to better separate it from readlink(). This is
+	hopefully no problem as the function is just 2 days old.
 
 2003-07-29  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gqsort.[hc] (g_qsort_with_data): 
 	* glib/gconvert.[hc] (g_filename_to_uri, g_filename_from_uri): 
-	* glib/gfileutils.[hc] (g_mkstemp, g_file_open_tmp): Use gchar, gint, gsize instead of char, int, size_t 
-	in the interface for consistency.  (#118567)
+	* glib/gfileutils.[hc] (g_mkstemp, g_file_open_tmp): Use gchar,
+	gint, gsize instead of char, int, size_t in the interface for
+	consistency.  (#118567) 
 
 	Replace trio printf() by gnulib vasnprintf():  (#101874)
 	
-	* configure.in: Define HAVE_LONG_LONG_FORMAT if system printf understands %llu; rename enable_trio to 
-	enable_included_printf; add misc. tests needed for gnulib vasnprintf(); define G_GINT{16,32,64}_MODIFIER
-	in glibconfig.h.
+	* configure.in: Define HAVE_LONG_LONG_FORMAT if system printf
+	understands %llu; rename enable_trio to enable_included_printf;
+	add misc. tests needed for gnulib vasnprintf(); define
+	G_GINT{16,32,64}_MODIFIER in glibconfig.h.
 
-	* acinclude.m4: Misc tests needed for gnulib vasnprintf(): AC_FUNC_SNPRINTF_C99, bh_C_SIGNED, jm_AC_TYPE_LONG_LONG,
-	gt_TYPE_LONGDOUBLE, gt_TYPE_WCHAR_T, gt_TYPE_WINT_T, gt_AC_TYPE_INTMAX_T, jm_AC_HEADER_STDINT_H, 
+	* acinclude.m4: Misc tests needed for gnulib vasnprintf():
+	AC_FUNC_SNPRINTF_C99, bh_C_SIGNED, jm_AC_TYPE_LONG_LONG, 
+	gt_TYPE_LONGDOUBLE, gt_TYPE_WCHAR_T, gt_TYPE_WINT_T,
+	gt_AC_TYPE_INTMAX_T, jm_AC_HEADER_STDINT_H,  
 	jm_AC_HEADER_INTTYPES_H. 
 
-	* glib/Makefile.am: Replace TRIO_SUBDIR by PRINTF_SUBDIR and trio_libtrio_la by printf_la. 
+	* glib/Makefile.am: Replace TRIO_SUBDIR by PRINTF_SUBDIR and
+	trio_libtrio_la by printf_la.  
 
-	* glib/gprintfint.h: Include gnulib/printf.h and use _g_gnulib_ functions instead of _g_trio_ functions.
+	* glib/gprintfint.h: Include gnulib/printf.h and use _g_gnulib_
+	functions instead of _g_trio_ functions. 
 
 	* glib/trio/*: Removed
 
-	* glib/gnulib/*: vasnprintf() implementation from gnulib, patched to live in the _g_gnulib namespace, use
-	g_malloc instead of malloc, and support long long printing even if system printf doesn't. For more details,
-	see glib/gnulib/README.
+	* glib/gnulib/*: vasnprintf() implementation from gnulib, patched
+	to live in the _g_gnulib namespace, use g_malloc instead of
+	malloc, and support long long printing even if system printf
+	doesn't. For more details, see glib/gnulib/README.
 	
 	* tests/printf-test.c: Add tests for 64 bit printing.
 
@@ -166,8 +181,8 @@ Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Check for setenv, unsetenv, readlink and symlink.
 
-	* tests/file-test.c (test_readlink): Test for g_read_link() (only on systems supporting
-	symbolic links).
+	* tests/file-test.c (test_readlink): Test for g_read_link() (only
+	on systems supporting symbolic links).
 
 	* tests/env-test.c: New test for g_{get,set,unset}env().
 
@@ -178,22 +193,23 @@ Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 
-	* tests/printf-test.c: New test, tests printf behaviour. This was already mentioned in Makefile.am
-	by accident.
+	* tests/printf-test.c: New test, tests printf behaviour. This was
+	already mentioned in Makefile.am by accident.
 
-	* tests/file-test.c: New test, currently contains mkstemp tests copied from testglib.c.
+	* tests/file-test.c: New test, currently contains mkstemp tests
+	copied from testglib.c. 
 
 	* tests/Makefile.am (test_programs): Add file-test.
 
-	* glib/gprintf.c: Fix all g_return_val_if_fail () checks to return -1 on error to match the
-	behaviour of the stdio printf() family.
+	* glib/gprintf.c: Fix all g_return_val_if_fail () checks to return
+	-1 on error to match the behaviour of the stdio printf() family.
 
 	* glib/garray.h: 
-	* glib/garray.c (g_{,byte,pointer}_remove_range): New functions to remove a range of elements
-	from an array.  (#94879, Nalin Dahyabhai)
+	* glib/garray.c (g_{,byte,pointer}_remove_range): New functions to
+	remove a range of elements from an array.  (#94879, Nalin Dahyabhai)
 
-	* glib/gmessages.c (g_logv): Remove the 1024 char limit in the common (non-recursive)
-	case.
+	* glib/gmessages.c (g_logv): Remove the 1024 char limit in the
+	common (non-recursive) case.
 
 2003-07-25  Matthias Clasen  <maclas@gmx.de>
 
@@ -208,8 +224,8 @@ Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 	* glib/gerror.c: 
 	* glib/gconvert.c: 
 	* glib/gasyncqueue.c: 
-	* glib/gmem.c: Remove some explicit Docbook markup which is no longer necessary
-	since gtk-doc does the right thing.
+	* glib/gmem.c: Remove some explicit Docbook markup which is no
+	longer necessary since gtk-doc does the right thing.
 
 	* glib/gutf8.c (g_utf8_get_char_validated): Work around gtk-doc stupidity.
 
@@ -252,13 +268,14 @@ Wed Jul  9 16:27:26 2003  Manish Singh  <yosh@gimp.org>
 
 2003-07-09  Matthias Clasen  <maclas@gmx.de>
 
-	Support for one-time initialization functions.  (#69668, Sebastian Wilhelmi)
+	Support for one-time initialization functions.  (#69668, Sebastian
+	Wilhelmi) 
 
-	* configure.in: Check whether double checked locking is safe, define g_once() in
-	glibconfig.h accordingly.
+	* configure.in: Check whether double checked locking is safe,
+	define g_once() in glibconfig.h accordingly.
 	* glib/gthread.h: Add GOnce, GOnceStatus, G_ONCE_INIT and g_once_impl.
-	* glib/gthread.c (g_once_impl): Fallback implementation using a mutex if double checked
-	locking is unsafe.
+	* glib/gthread.c (g_once_impl): Fallback implementation using a
+	mutex if double checked locking is unsafe.
 	* tests/thread-test.c: Add tests for g_once().
 
 2003-07-02  Matthias Clasen  <maclas@gmx.de>
