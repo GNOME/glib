@@ -1,3 +1,7 @@
+1998-12-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* giounix.c (g_io_channel_unix_get_fd): Fixed small bug.
+
 1998-12-16  Joel Becker  <jlbec@ocala.cs.miami.edu>
 
 	* glib.h, gscanner.c: changed func_data to user_data in

@@ -297,6 +297,6 @@ g_io_channel_unix_new (gint fd)
 gint
 g_io_channel_unix_get_fd (GIOChannel *channel)
 {
-  GIOUnixChannel *unix_channel = g_new (GIOUnixChannel, 1);
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   return unix_channel->fd;
 }
