@@ -1,3 +1,9 @@
+Fri Dec  6 12:40:00 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/libcharset/Makefile.am (EXTRA_DIST): Don't
+	distribute ref-add/del.sed., fixing problem with
+	srcdir != destdir. (#99813, Phuc LeHong)
+
 Fri Dec  6 12:31:30 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* configure.in: chmod 0755 scripts in AC_OUTPUT(), since 

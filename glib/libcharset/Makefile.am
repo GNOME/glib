@@ -12,8 +12,6 @@ libcharset_la_SOURCES =    	\
 EXTRA_DIST = 			\
 	README			\
 	config.charset		\
-	ref-add.sed		\
-	ref-del.sed		\
 	ref-add.sin		\
 	ref-del.sin		\
 	glibc21.m4		\
