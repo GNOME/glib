@@ -1,3 +1,10 @@
+Sat Feb 23 14:54:13 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.h (struct _GIOChannel): Add a little bit
+	of padding.
+	
+	* glib/gmain.h (struct _GSource): Add a little bit of padding.
+
 2002-02-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gdebug.h: New header containing GTK_DEBUG-style debugging

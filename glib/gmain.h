@@ -52,6 +52,9 @@ struct _GSource
   
   GSource *prev;
   GSource *next;
+
+  gpointer reserved1;
+  gpointer reserved2;
 };
 
 struct _GSourceCallbackFuncs

@@ -127,6 +127,9 @@ struct _GIOChannel
   guint is_readable    : 1;	/* Cached GIOFlag */
   guint is_writeable   : 1;	/* ditto */
   guint is_seekable    : 1;	/* ditto */
+
+  gpointer reserved1;	
+  gpointer reserved2;	
 };
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
