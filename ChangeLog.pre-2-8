@@ -26,7 +26,7 @@
 
 	* glib/giowin32.c (g_io_win32_fd_get_flags_internal): Always claim
 	file descriptors open to devices are readable, since we can't
-	know. fstat() doesn't give any useful information.
+	know. fstat() doesn't give any useful information. (#145326)
 
 2005-03-29  Tor Lillqvist  <tml@novell.com>
 
