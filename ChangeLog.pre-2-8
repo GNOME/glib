@@ -1,3 +1,9 @@
+2000-11-22  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.{mingw,msc}.in: Add gqsort.
+
+	* glib.def: Update.
+
 2000-11-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Add a surrogate for thread priorities using PID

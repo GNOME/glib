@@ -205,6 +205,7 @@ EXPORTS
 	g_list_remove_link
 	g_list_reverse
 	g_list_sort
+	g_list_sort_with_data
 	g_locale_from_utf8
 	g_locale_to_utf8
 	g_log
@@ -296,6 +297,7 @@ EXPORTS
 	g_ptr_array_remove_index_fast
 	g_ptr_array_set_size
 	g_ptr_array_sized_new
+	g_qsort_with_data
 	g_quark_from_static_string
 	g_quark_from_string
 	g_quark_to_string
@@ -393,6 +395,7 @@ EXPORTS
 	g_slist_remove_link
 	g_slist_reverse
 	g_slist_sort
+	g_slist_sort_with_data
 	g_snprintf
 	g_source_add
 	g_source_remove

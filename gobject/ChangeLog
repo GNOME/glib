@@ -1,3 +1,7 @@
+2000-11-22  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Update.
+
 2000-11-20  Havoc Pennington  <hp@redhat.com>
 
 	* gobject.c (g_object_get_data)

@@ -60,6 +60,7 @@ glib_OBJECTS =			\
 	gmessages.obj		\
 	gnode.obj		\
 	gprimes.obj		\
+	gqsort.obj		\
 	gqueue.obj		\
 	grand.obj		\
 	grel.obj		\
