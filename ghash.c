@@ -40,7 +40,6 @@ struct _GHashTable
   GHashNode **nodes;
   GHashFunc hash_func;
   GCompareFunc key_compare_func;
-  GFreeFunc *free_func;
 };
 
 
@@ -49,10 +48,8 @@ static GHashNode**	g_hash_table_lookup_node (GHashTable	*hash_table,
 						  gconstpointer	 key);
 static GHashNode*	g_hash_node_new		 (gpointer	 key,
 						  gpointer	 value);
-static void		g_hash_node_destroy	 (GHashNode	*hash_node,
-						  GFreeFunc	*free_func);
-static void		g_hash_nodes_destroy	 (GHashNode	*hash_node,
-						  GFreeFunc	*free_func);
+static void		g_hash_node_destroy	 (GHashNode	*hash_node);
+static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
@@ -73,7 +70,6 @@ g_hash_table_new (GHashFunc    hash_func,
   hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
   hash_table->key_compare_func = key_compare_func;
   hash_table->nodes = g_new (GHashNode*, hash_table->size);
-  hash_table->free_func = NULL;
   
   for (i = 0; i < hash_table->size; i++)
     hash_table->nodes[i] = NULL;
@@ -89,7 +85,7 @@ g_hash_table_destroy (GHashTable *hash_table)
   g_return_if_fail (hash_table != NULL);
   
   for (i = 0; i < hash_table->size; i++)
-    g_hash_nodes_destroy (hash_table->nodes[i], hash_table->free_func);
+    g_hash_nodes_destroy (hash_table->nodes[i]);
   
   g_free (hash_table->nodes);
   g_free (hash_table);
@@ -174,7 +170,7 @@ g_hash_table_remove (GHashTable	     *hash_table,
     {
       dest = *node;
       (*node) = dest->next;
-      g_hash_node_destroy (dest, hash_table->free_func);
+      g_hash_node_destroy (dest);
       hash_table->nnodes--;
     }
   
@@ -253,13 +249,13 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
 	      if (prev)
 		{
 		  prev->next = node->next;
-		  g_hash_node_destroy (node, hash_table->free_func);
+		  g_hash_node_destroy (node);
 		  node = prev;
 		}
 	      else
 		{
 		  hash_table->nodes[i] = node->next;
-		  g_hash_node_destroy (node, hash_table->free_func);
+		  g_hash_node_destroy (node);
 		  goto restart;
 		}
 	    }
@@ -295,12 +291,6 @@ g_hash_table_size (GHashTable *hash_table)
   g_return_val_if_fail (hash_table != NULL, 0);
   
   return hash_table->nnodes;
-}
-
-void
-g_hash_table_set_key_freefunc (GHashTable *hash_table, GFreeFunc *free_func)
-{
-  hash_table->free_func = free_func;
 }
 
 static void
@@ -371,15 +361,14 @@ g_hash_node_new (gpointer key,
 }
 
 static void
-g_hash_node_destroy (GHashNode *hash_node, GFreeFunc *free_func)
+g_hash_node_destroy (GHashNode *hash_node)
 {
-  if (free_func) (*free_func)(hash_node->key);
   hash_node->next = node_free_list;
   node_free_list = hash_node;
 }
 
 static void
-g_hash_nodes_destroy (GHashNode *hash_node, GFreeFunc *free_func)
+g_hash_nodes_destroy (GHashNode *hash_node)
 {
   GHashNode *node;
   
@@ -389,10 +378,7 @@ g_hash_nodes_destroy (GHashNode *hash_node, GFreeFunc *free_func)
   node = hash_node;
   
   while (node->next)
-    {
-      if (free_func) (*free_func)(node->key);
-      node = node->next;
-    }
+    node = node->next;
   
   node->next = node_free_list;
   node_free_list = hash_node;

@@ -1,3 +1,10 @@
+Thu Nov 26 01:36:20 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* ghash.c: reverted the g_hash_table_set_key_freefunc() addition,
+	since it's to specialized and needs to be resolved in a generic
+	fashion.
+
 Tue Nov 24 18:57:59 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* applied glib-tml-981120-0, change log appended below.
