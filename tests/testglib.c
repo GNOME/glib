@@ -42,6 +42,11 @@ else \
 #define GLIB_TEST_STRING "el dorado "
 #define GLIB_TEST_STRING_5 "el do"
 
+typedef struct {
+	guint age;
+	gchar name[40];
+} GlibTestInfo;
+
 static gboolean
 node_build_string (GNode    *node,
 		   gpointer  data)
@@ -294,6 +299,7 @@ main (int   argc,
   GRelation *relation;
   GTuples *tuples;
   gint data [1024];
+  GlibTestInfo *gti;
   struct {
     gchar *filename;
     gchar *dirname;
@@ -905,6 +911,34 @@ main (int   argc,
   g_print ("ok\n");
 
 #ifdef G_HAVE_ALLOCA
+  g_print ("checking alloca()-based allocation routines...");
+
+  string = g_alloca(80);
+  g_assert(string != NULL);
+  for (i = 0; i < 80; i++)
+    string[i] = 'x';
+  string[79] = 0;
+  g_assert(strlen(string) == 79);
+
+  gti = g_new_a(GlibTestInfo, 2);
+  string = g_alloca(2);
+  strcpy(string, "x");
+  for (i = 0; i < 2; i++) {
+    for (j = 0; j < 40; j++)
+      gti[i].name[j] = 'x';
+    gti[i].name[39] = 0;
+    g_assert(strlen(gti[i].name) == 39);
+    gti[i].age = 42;
+  }
+  g_assert(strcmp(string, "x") == 0);
+
+  string = g_new0_a(char, 40);
+  for (i = 0; i < 39; i++)
+    string[i] = 'x';
+  g_assert(strlen(string) == 39);
+
+  g_print ("ok\n");
+
   g_print ("checking alloca()-based string duplication routines...");
 
   g_strdup_a(string, GLIB_TEST_STRING);

@@ -301,6 +301,16 @@ extern "C" {
       ((type *) g_realloc (mem, (unsigned) sizeof (type) * (count)))
 #endif /* __DMALLOC_H__ */
 
+/* alloca-based counterparts of the above routines */
+#if G_HAVE_ALLOCA
+#  define g_alloca alloca
+#  define g_new_a(type, count)	  \
+      ((type *) alloca ((unsigned) sizeof (type) * (count)))
+#  define g_new0_a(type, count)	  \
+      ((type *) memset (alloca ((unsigned) sizeof (type) * (count)), 0, \
+      			((unsigned) sizeof (type) * (count))))
+#endif
+
 #define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \
   g_mem_chunk_new (#type " mem chunks (" #pre_alloc ")", \
 		   sizeof (type), \
