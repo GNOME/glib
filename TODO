@@ -28,8 +28,6 @@ Ideas for GLib 1.3:
 * 'make check' tests one per module, plus bug report regression tests
   and such
 
-* new func g_list_delete, combines g_list_remove_link and g_list_free1
-
 * primitive memory leak checking by g_malloc, g_free
 
 * alloca-based convenience macros, counterparts to:

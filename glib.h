@@ -681,6 +681,7 @@ typedef struct _GRelation	GRelation;
 typedef struct _GScanner	GScanner;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GSList		GSList;
+typedef struct _GStack		GStack;
 typedef struct _GString		GString;
 typedef struct _GStringChunk	GStringChunk;
 typedef struct _GTimer		GTimer;
@@ -795,6 +796,11 @@ struct _GSList
 {
   gpointer data;
   GSList *next;
+};
+
+struct _GStack
+{
+  GList *list;
 };
 
 struct _GString
@@ -931,6 +937,34 @@ GSList*  g_slist_sort           (GSList          *list,
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
+
+
+/* Stacks
+ */
+GStack * g_stack_new	(void);
+#ifndef G_STACK_MACROIZE
+void	 g_stack_free	(GStack *stack);
+void	 g_stack_push	(GStack *stack, gpointer data);
+#endif
+gpointer g_stack_pop	(GStack *stack);
+
+#if G_STACK_MACROIZE
+#define g_stack_free(stack) G_STMT_START {		\
+	  if ((GStack *)(stack)) {			\
+	    if ((GStack *)(stack)->list)		\
+	      g_list_free ((GStack *)(stack)->list);	\
+	    g_free (stack);				\
+	  }						\
+	} G_STMT_END
+
+#define g_stack_push(stack) G_STMT_START {			\
+	  if ((GStack *)(stack))				\
+	    (GStack *)(stack)->list =				\
+	    	g_list_prepend ((GStack *)(stack)->list, data);	\
+	} G_STMT_END
+
+#endif
+
 
 
 /* Hash tables
