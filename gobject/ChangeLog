@@ -1,3 +1,17 @@
+2000-07-10  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject-query.c: Include ../config.h for HAVE_UNISTD_H. Use it
+	to guard inclusion of <unistd.h>.
+
+	* gtype.h: Fix copy-paste errors in the ifdefs on how to declare a
+	variable for export. Call the macro GOBJECT_VAR.
+
+	* gtype.c: Declare _g_type_fundamental_last for export here, too.
+	(type_node_any_new): Use only constant expressions for sizeof
+	operator (for instance MSVC requires this).
+
+	* makefile.mingw.in: Define GOBJECT_COMPILATION.
+
 Sun Jul  9 21:21:46 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* genums.c: Move string.h include into the .c file

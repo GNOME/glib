@@ -163,7 +163,7 @@ static ClassCacheFunc *class_cache_funcs = NULL;
 
 /* --- externs --- */
 const char *g_log_domain_gobject = "GLib-Object";
-GType       _g_type_fundamental_last = 0;
+GOBJECT_VAR GType _g_type_fundamental_last = 0;
 
 
 /* --- type nodes --- */
@@ -206,7 +206,7 @@ type_node_any_new (TypeNode    *pnode,
   if (!pnode)
     node_size += sizeof (GTypeFundamentalInfo);	 /* fundamental type info */
   node_size += SIZEOF_BASE_TYPE_NODE ();	 /* TypeNode structure */
-  node_size += sizeof (GType[1 + n_supers + 1]); /* self + anchestors + 0 for ->supers[] */
+  node_size += (sizeof (GType) * (1 + n_supers + 1)); /* self + ancestors + 0 for ->supers[] */
   node = g_malloc0 (node_size);
   if (!pnode)					 /* fundamental type */
     node = G_STRUCT_MEMBER_P (node, sizeof (GTypeFundamentalInfo));
@@ -231,7 +231,7 @@ type_node_any_new (TypeNode    *pnode,
   else
     {
       node->supers[0] = type;
-      memcpy (node->supers + 1, pnode->supers, sizeof (GType[1 + pnode->n_supers + 1]));
+      memcpy (node->supers + 1, pnode->supers, sizeof (GType) * (1 + pnode->n_supers + 1));
 
       node->is_classed = pnode->is_classed;
       node->is_instantiatable = pnode->is_instantiatable;

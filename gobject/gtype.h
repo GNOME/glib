@@ -334,16 +334,16 @@ void             g_type_class_unref_uncached    (gpointer            g_class);
 #define _G_TYPE_CCT(cp, gt)             (g_type_class_is_a ((GTypeClass*) cp, gt))
 
 #ifdef G_OS_WIN32
-#  ifdef GMODULE_COMPILATION
-#    define GTYPE_C_VAR __declspec(dllexport)
-#  else /* !GLIB_COMPILATION */
-#    define GTYPE_C_VAR extern __declspec(dllimport)
-#  endif /* !GLIB_COMPILATION */
+#  ifdef GOBJECT_COMPILATION
+#    define GOBJECT_VAR __declspec(dllexport)
+#  else /* !GOBJECT_COMPILATION */
+#    define GOBJECT_VAR extern __declspec(dllimport)
+#  endif /* !GOBJECT_COMPILATION */
 #else /* !G_OS_WIN32 */
-#  define GTYPE_C_VAR extern
+#  define GOBJECT_VAR extern
 #endif /* !G_OS_WIN32 */
 
-GTYPE_C_VAR GType    _g_type_fundamental_last;
+GOBJECT_VAR GType    _g_type_fundamental_last;
 
 #ifdef __cplusplus
 }
