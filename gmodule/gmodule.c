@@ -129,7 +129,8 @@ g_module_set_error (const gchar *error)
 #include "gmodule-win32.c"
 #else
 #undef	CHECK_ERROR
-#define	CHECK_ERROR(rv)	{ g_module_set_error ("unsupported"); return rv; }
+#define	CHECK_ERROR(rv)	{ g_module_set_error ("dynamic modules are " \
+                                              "not supported by this system"); return rv; }
 static gpointer
 _g_module_open (const gchar	*file_name,
 		gboolean	 bind_lazy)

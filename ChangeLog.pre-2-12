@@ -1,3 +1,8 @@
+Wed Feb 10 12:01:42 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: don't reset G_MODULE_IMPL, so it can be overridden
+	from the command line.
+
 1999-02-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h: s/G_LOCK_DECLARE/G_LOCK_DEFINE/ throuhout glib. Added

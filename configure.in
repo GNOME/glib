@@ -440,7 +440,7 @@ dnl *** g_module checks ***
 dnl ***********************
 G_MODULE_LIBS=
 G_MODULE_LDFLAGS=
-G_MODULE_IMPL=
+dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
 G_MODULE_HAVE_DLERROR=0
 dnl *** dlopen() and dlsym() in system libraries

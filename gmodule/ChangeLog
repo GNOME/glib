@@ -1,3 +1,7 @@
+Wed Feb 10 12:06:30 1999  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (CHECK_ERROR): be more descriptive on unsupported systems.
+
 Wed Feb 10 07:56:33 1999  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (g_module_error): fixed errernerous code wrt to thread
