@@ -1,3 +1,17 @@
+Tue Nov 10 17:12:45 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: use __extension__ for long long on gcc >= 2.8 and
+	egcs, and provide a G_GINT64_CONSTANT wrapper so -ansi -pedantic
+	compiles clean.
+
+	* glib.h: make the endian x86 asm __const__ so the compiler can do
+	better optimizations. Also remove the cc clobber, these shouldn't
+	be changing condition codes. Ditch some redundant casts. Add an
+	optimization for 64-bit endian conversions in x86. Use constant
+	wrapper for the generic method.
+
+	* testglib.c: use constant wrappers for 64-bit constants
+
 1998-11-04  Phil Schwan  <pschwan@cmu.edu>
 
 	* configure.in: Added 'strncasecmp' to the list of functions to be

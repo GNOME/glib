@@ -584,9 +584,12 @@ outfile_EOF
   fi 
   if test -n "$gint64"; then
     cat >>$outfile <<outfile_EOF
-#define G_HAVE_GINT64 1
-typedef signed $gint64 gint64;
-typedef unsigned $gint64 guint64;
+${glib_warning_guard}#define G_HAVE_GINT64 1
+
+${glib_extension}typedef signed $gint64 gint64;
+${glib_extension}typedef unsigned $gint64 guint64;
+
+#define G_GINT64_CONSTANT(val)	$gint64_constant
 outfile_EOF
   fi 
 
@@ -703,9 +706,31 @@ $ac_cv_sizeof_int)		gint32=int;;
 $ac_cv_sizeof_long)		gint32=long;;
 esac
 case 8 in
-$ac_cv_sizeof_int)		gint64=int;;
-$ac_cv_sizeof_long)		gint64=long;;
-$ac_cv_sizeof_long_long)	gint64='long long';;
+$ac_cv_sizeof_int)
+  gint64=int
+  glib_extension=
+  glib_warning_guard=
+  gint64_constant='(val)'
+  ;;
+$ac_cv_sizeof_long)
+  gint64=long
+  glib_extension=
+  glib_warning_guard=
+  gint64_constant='(val##L)'
+  ;;
+$ac_cv_sizeof_long_long)
+  gint64='long long'
+  glib_extension='GLIB_WARNINGS_MAKE_PEOPLE_CRY '
+  glib_warning_guard="
+#if defined (__GNUC__) && __GNUC__ >= 2 && __GNUC_MINOR__ >= 8
+#  define GLIB_WARNINGS_MAKE_PEOPLE_CRY __extension__
+#else
+#  define GLIB_WARNINGS_MAKE_PEOPLE_CRY
+#endif
+
+"
+  gint64_constant='(GLIB_WARNINGS_MAKE_PEOPLE_CRY (val##LL))'
+  ;;
 esac
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`

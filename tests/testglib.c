@@ -324,7 +324,8 @@ main (int   argc,
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
 #ifdef G_HAVE_GINT64
-  guint64 gu64t1 = 0x1d636b02300a7aa7U, gu64t2 = 0xa77a0a30026b631dU;
+  guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
+	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
 #endif
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
