@@ -264,6 +264,43 @@ else
 fi
 AC_SUBST(PERL_PATH)
 
+dnl ***********************
+dnl *** Tests for iconv ***
+dnl ***********************
+dnl
+dnl We do this before the gettext checks, to avoid distortion
+
+AC_ARG_WITH(libiconv, [  --with-libiconv=[no/gnu/native] use the libiconv library ],,with_libiconv=maybe)
+
+found_iconv=no
+case $with_libiconv in
+  maybe)
+    # Check in the C library first
+    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    # Check if we have GNU libiconv
+    if test $found_iconv = "no"; then
+      AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+    fi
+    # Check if we have a iconv in -liconv, possibly from vendor
+    if test $found_iconv = "no"; then
+      AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+    fi
+    ;;
+  no)
+    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+    ;;
+  gnu|yes)
+    AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
+    ;;
+  native)
+    AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
+    ;;
+esac
+
+if test "x$found_iconv" = "xno" ; then
+   AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
+fi
+
 dnl
 dnl gettext support
 dnl
@@ -292,6 +329,27 @@ GLIB_LOCALE_DIR="${prefix}/${DATADIRNAME}/locale"
 AC_DEFINE_UNQUOTED(GLIB_LOCALE_DIR,"$GLIB_LOCALE_DIR")
 
 AC_CHECK_FUNCS(bind_textdomain_codeset)
+
+dnl
+dnl Now we are done with gettext checks, figure out ICONV_LIBS
+dnl
+
+if test x$with_iconv != xno ; then
+  case " $INTLLIBS " in
+  *[[\ \	]]-liconv[[\ \	]]*) ;;
+  *) ICONV_LIBS="-liconv" ;;
+  esac
+fi
+AC_SUBST(ICONV_LIBS)
+
+case $with_libiconv in
+  gnu)
+    AC_DEFINE(USE_LIBICONV_GNU, [Using GNU libiconv])
+    ;;
+  native)
+    AC_DEFINE(USE_LIBICONV_NATIVE, [Using a native implementation of iconv in a separate library])
+    ;;
+esac
 
 dnl Initialize libtool
 AM_DISABLE_STATIC
@@ -1567,53 +1625,6 @@ case $host in
     ;;
 esac
 AC_SUBST(G_LIBS_EXTRA)
-
-dnl ***********************
-dnl *** Tests for iconv ***
-dnl ***********************
-
-AC_ARG_WITH(libiconv, [  --with-libiconv=[no/gnu/native] use the libiconv library ],,with_libiconv=maybe)
-
-found_iconv=no
-case $with_libiconv in
-  maybe)
-    # Check in the C library first
-    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
-    # Check if we have GNU libiconv
-    if test $found_iconv = "no"; then
-      AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
-    fi
-    # Check if we have a iconv in -liconv, possibly from vendor
-    if test $found_iconv = "no"; then
-      AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
-    fi
-    ;;
-  no)
-    AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
-    ;;
-  gnu|yes)
-    AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=gnu; found_iconv=yes)
-    ;;
-  native)
-    AC_CHECK_LIB(iconv, iconv_open, with_libiconv=native; found_iconv=yes)
-    ;;
-esac
-
-if test "x$found_iconv" = "xno" ; then
-   AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
-fi
-
-case $with_libiconv in
-  gnu)
-    ICONV_LIBS="-liconv"
-    AC_DEFINE(USE_LIBICONV_GNU, [Using GNU libiconv])
-    ;;
-  native)
-    ICONV_LIBS="-liconv"
-    AC_DEFINE(USE_LIBICONV_NATIVE, [Using a native implementation of iconv in a separate library])
-    ;;
-esac
-AC_SUBST(ICONV_LIBS)
 
 dnl If the system doesn't define EILSEQ, we should define EILSEQ ourselves
 dnl since we need it for g_iconv()

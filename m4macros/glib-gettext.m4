@@ -85,24 +85,32 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
       nls_cv_header_intl=
       nls_cv_header_libgt=
       CATOBJEXT=NONE
+      XGETTEXT=:
 
       AC_CHECK_HEADER(libintl.h,
         [AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
 	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgettext ("","")],
 	    gt_cv_func_dgettext_libc=yes, gt_cv_func_dgettext_libc=no)])
 
-	  if test "$gt_cv_func_dgettext_libc" != "yes"; then
+          gt_cv_func_dgettext_libintl="no"
+          libintl_extra_libs=""
+
+	  if test "$gt_cv_func_dgettext_libc" != "yes" ; then
 	    AC_CHECK_LIB(intl, bindtextdomain,
-	      [AC_CACHE_CHECK([for dgettext in libintl],
-	        gt_cv_func_dgettext_libintl,
-	        [AC_CHECK_LIB(intl, dgettext,
-		  gt_cv_func_dgettext_libintl=yes,
-		  gt_cv_func_dgettext_libintl=no)],
-	        gt_cv_func_dgettext_libintl=no)])
-	  fi
+              [AC_CHECK_LIB(intl, dgettext,
+                            gt_cv_func_dgettext_libintl=yes)])
+
+	    if test "$gt_cv_func_dgettext_libc" != "yes" ; then
+              AC_MSG_NOTICE([Seeing if -liconv is needed to use gettext])
+              AC_CHECK_LIB(intl, dcgettext,
+                           [gt_cv_func_dgettext_libintl=yes
+                            libintl_extra_libs=-liconv],
+                           :,-liconv)
+            fi
+          fi
 
           if test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	    LIBS="$LIBS -lintl";
+	    LIBS="$LIBS -lintl $libintl_extra_libs";
           fi
 
 	  if test "$gt_cv_func_dgettext_libc" = "yes" \
@@ -129,7 +137,7 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
 	  # Added by Martin Baulig 12/15/98 for libc5 systems
 	  if test "$gt_cv_func_dgettext_libc" != "yes" \
 	    && test "$gt_cv_func_dgettext_libintl" = "yes"; then
-	    INTLLIBS=-lintl
+	    INTLLIBS="-lintl $libintl_extra_libs"
 	    LIBS=`echo $LIBS | sed -e 's/-lintl//'`
 	  fi
       ])

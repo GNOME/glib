@@ -1,3 +1,17 @@
+Mon May 20 18:02:46 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Move iconv tests before gettext
+	checks. (#81999)
+
+	* m4macros/glib-gettext.m4 acinclude.m4: If we can't
+	link to gettext, try adding in -liconv. (#80076,
+	Boyd Lynn Gerber)
+
+	* m4macros/glib-gettext.m4 acinclude.m4: Suppress
+	warnings about xgettext not being GNU gettext when
+	libintl wasn't found at all. 
+	(#79016, Andrew P. Lentvorski, Jr.)
+	 
 2002-05-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmarkup.c (g_markup_parse_context_parse): Added
