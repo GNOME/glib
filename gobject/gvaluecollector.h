@@ -87,7 +87,7 @@ G_STMT_START {										\
 	  _cvalue->v_long = va_arg ((var_args), glong);					\
 	  break;									\
 	case G_VALUE_COLLECT_INT64:							\
-	  _cvalue->v_int64 = va_arg ((var_args), gint64);					\
+	  _cvalue->v_int64 = va_arg ((var_args), gint64);				\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
 	  _cvalue->v_double = va_arg ((var_args), gdouble);				\
@@ -132,7 +132,7 @@ G_STMT_START {										\
 	  _cvalue->v_long = va_arg ((var_args), glong);					\
 	  break;									\
 	case G_VALUE_COLLECT_INT64:							\
-	  _cvalue->v_int64 = va_arg ((var_args), gint64);					\
+	  _cvalue->v_int64 = va_arg ((var_args), gint64);				\
 	  break;									\
 	case G_VALUE_COLLECT_DOUBLE:							\
 	  _cvalue->v_double = va_arg ((var_args), gdouble);				\

@@ -1543,15 +1543,15 @@ g_param_spec_ulong (const gchar *name,
 
 GParamSpec*
 g_param_spec_int64 (const gchar *name,
-		   const gchar *nick,
-		   const gchar *blurb,
-		   gint64	minimum,
-		   gint64	maximum,
-		   gint64	default_value,
-		   GParamFlags	flags)
+		    const gchar *nick,
+		    const gchar *blurb,
+		    gint64	 minimum,
+		    gint64	 maximum,
+		    gint64	 default_value,
+		    GParamFlags	 flags)
 {
   GParamSpecInt64 *lspec;
-
+  
   g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
 
   lspec = g_param_spec_internal (G_TYPE_PARAM_INT64,
@@ -1569,17 +1569,17 @@ g_param_spec_int64 (const gchar *name,
 
 GParamSpec*
 g_param_spec_uint64 (const gchar *name,
-		    const gchar *nick,
-		    const gchar *blurb,
-		    guint64	 minimum,
-		    guint64	 maximum,
-		    guint64	 default_value,
-		    GParamFlags	 flags)
+		     const gchar *nick,
+		     const gchar *blurb,
+		     guint64	  minimum,
+		     guint64	  maximum,
+		     guint64	  default_value,
+		     GParamFlags  flags)
 {
   GParamSpecUInt64 *uspec;
-
+  
   g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
-
+  
   uspec = g_param_spec_internal (G_TYPE_PARAM_UINT64,
 				 name,
 				 nick,
