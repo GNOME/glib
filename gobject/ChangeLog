@@ -1,3 +1,8 @@
+Thu Dec 12 15:00:10 2002  Manish Singh  <yosh@gimp.org>
+
+	* gvaluetransform.c: use G_G[U]INT64_FORMAT unconditionally,
+	since we'll always have it now.
+
 2002-12-07  Matthias Clasen  <maclas@gmx.de>
 
 	* gparam.c (canonalize_key): Rename to canonicalize_key. Adjust

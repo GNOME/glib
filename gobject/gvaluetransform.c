@@ -20,7 +20,6 @@
 
 #include        "gvalue.h"
 #include        "genums.h"
-#include        "glibconfig.h" /* G_G[U]INT64_FORMAT */
 
 
 /* same type transforms
@@ -166,12 +165,8 @@ DEFINE_SPRINTF (int_string,     v_int,    "%d");
 DEFINE_SPRINTF (uint_string,    v_uint,   "%u");
 DEFINE_SPRINTF (long_string,    v_long,   "%ld");
 DEFINE_SPRINTF (ulong_string,   v_ulong,  "%lu");
-#ifdef G_GINT64_FORMAT
 DEFINE_SPRINTF (int64_string,   v_int64,  "%" G_GINT64_FORMAT);
-#endif
-#ifdef G_GUINT64_FORMAT
 DEFINE_SPRINTF (uint64_string,  v_uint64, "%" G_GUINT64_FORMAT);
-#endif
 DEFINE_SPRINTF (float_string,   v_float,  "%f");
 DEFINE_SPRINTF (double_string,  v_double, "%f");
 
@@ -367,9 +362,7 @@ g_value_transforms_init (void)          /* sync with gtype.c */
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_FLAGS,           value_transform_int64_uint);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_FLOAT,           value_transform_int64_float);
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_DOUBLE,          value_transform_int64_double);
-#ifdef G_GINT64_FORMAT
   g_value_register_transform_func (G_TYPE_INT64,        G_TYPE_STRING,          value_transform_int64_string);
-#endif
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_CHAR,            value_transform_uint64_s8);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_UCHAR,           value_transform_uint64_u8);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_BOOLEAN,         value_transform_uint64_bool);
@@ -386,9 +379,7 @@ g_value_transforms_init (void)          /* sync with gtype.c */
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_FLOAT,           value_transform_uint64_float);
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_DOUBLE,          value_transform_uint64_double);
 #endif
-#ifdef G_GUINT64_FORMAT
   g_value_register_transform_func (G_TYPE_UINT64,       G_TYPE_STRING,          value_transform_uint64_string);
-#endif
   g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_CHAR,            value_transform_int_s8);
   g_value_register_transform_func (G_TYPE_ENUM,         G_TYPE_UCHAR,           value_transform_int_u8);
   SKIP____register_transform_func (G_TYPE_ENUM,         G_TYPE_BOOLEAN,         value_transform_int_bool);
