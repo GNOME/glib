@@ -1035,8 +1035,8 @@ g_getenv (const gchar *variable)
  * they can be any sequence of bytes. On Windows, they should be in
  * UTF-8.
  *
- * Note that on some systems, the memory used for the variable and its value 
- * can't be reclaimed later.
+ * Note that on some systems, when variables are overwritten, the memory 
+ * used for the previous variables and its value isn't reclaimed.
  *
  * Returns: %FALSE if the environment variable couldn't be set.
  *
@@ -1149,8 +1149,9 @@ extern char **environ;
  * 
  * Removes an environment variable from the environment.
  *
- * Note that on some systems, the memory used for the variable and its value 
- * can't be reclaimed. Furthermore, this function can't be guaranteed to operate in a 
+ * Note that on some systems, when variables are overwritten, the memory 
+ * used for the previous variables and its value isn't reclaimed.
+ * Furthermore, this function can't be guaranteed to operate in a 
  * threadsafe way.
  *
  * Since: 2.4 

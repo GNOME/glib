@@ -1,3 +1,8 @@
+2005-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_setenv, g_unsetenv): Clarify the 
+	docs.  (#162747, Crispin Flowerday)
+
 2005-01-01  J. Ali Harlow  <ali@juiblex.co.uk>
 
 	* configure.in: Don't use AC_TRY_RUN to test for long long format
