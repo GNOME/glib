@@ -2,6 +2,8 @@
 
 	* glib/tmpl/threads.sgml, glib/glib-overrides.txt: Updated.
 
+	* glib/tmpl/threads.sgml: Clarification for g_mutex_trylock.
+
 2001-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/hash_tables.sgml, glib/tmpl/misc_utils.sgml,

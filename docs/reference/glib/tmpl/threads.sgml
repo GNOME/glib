@@ -550,7 +550,7 @@ called and will do nothing then.
 <note>
 <para>
 #GMutex is not recursive, i.e. a thread will deadlock, if it already
-has locked the #GMutex while calling g_mutex_lock(). Use
+has locked @mutex while calling g_mutex_lock(). Use
 #GStaticRecMutex instead, if you need recursive mutexes.
 </para>
 </note>
@@ -570,6 +570,14 @@ and returns TRUE.
 This function can also be used, if g_thread_init() has not yet been
 called and will immediately return TRUE then.
 </para>
+
+<note>
+<para>
+#GMutex is not recursive, i.e. g_mutex_trylock() will return FALSE,
+if the current thread already has locked @mutex. Use
+#GStaticRecMutex instead, if you need recursive mutexes.
+</para>
+</note>
 
 @mutex: a #GMutex
 @Returns: TRUE, if @mutex could be locked
