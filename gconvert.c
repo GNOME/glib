@@ -233,9 +233,12 @@ g_convert (const gchar *str,
     {
       if ((p - str) != len) 
 	{
-	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-		       _("Partial character sequence at end of input"));
-	  have_error = TRUE;
+          if (!have_error)
+            {
+              g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                           _("Partial character sequence at end of input"));
+              have_error = TRUE;
+            }
 	}
     }
 
@@ -337,6 +340,8 @@ g_convert_with_fallback (const gchar *str,
   else
     g_error_free (local_error);
 
+  local_error = NULL;
+  
   /* No go; to proceed, we need a converter from "UTF-8" to
    * to_codeset, and the string as UTF-8.
    */

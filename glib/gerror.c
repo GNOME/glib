@@ -169,7 +169,8 @@ g_error_matches (const GError *error,
 }
 
 #define ERROR_OVERWRITTEN_WARNING "GError set over the top of a previous GError or uninitialized memory.\n" \
-               "This indicates a bug in someone's code. You must ensure an error is NULL before it's set."
+               "This indicates a bug in someone's code. You must ensure an error is NULL before it's set.\n" \
+               "The overwriting error message was: %s"
 
 /**
  * g_set_error:
@@ -189,17 +190,21 @@ g_set_error (GError      **err,
              const gchar  *format,
              ...)
 {
+  GError *new;
+  
   va_list args;
 
   if (err == NULL)
     return;
-
-  if (*err != NULL)
-    g_warning (ERROR_OVERWRITTEN_WARNING);
   
   va_start (args, format);
-  *err = g_error_new_valist (domain, code, format, args);
+  new = g_error_new_valist (domain, code, format, args);
   va_end (args);
+
+  if (*err == NULL)
+    *err = new;
+  else
+    g_warning (ERROR_OVERWRITTEN_WARNING, new->message);    
 }
 
 /**
@@ -225,9 +230,9 @@ g_propagate_error (GError       **dest,
   else
     {
       if (*dest != NULL)
-        g_warning (ERROR_OVERWRITTEN_WARNING);
-      
-      *dest = src;
+        g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
+      else
+        *dest = src;
     }
 }
 

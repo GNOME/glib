@@ -1,3 +1,11 @@
+2001-02-09  Havoc Pennington  <hp@redhat.com>
+
+	* gconvert.c (g_convert): don't overwrite errors
+
+	* gerror.c (g_set_error): improve warning message if an error is
+	overwritten	
+	(g_propagate_error): ditto
+
 2001-02-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c, gthread.h: Added functions g_static_rec_mutex_init,
