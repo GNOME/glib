@@ -23,6 +23,8 @@ Items in the completion can be simple strings (e.g. file names),
 or pointers to arbitrary data structures. If data structures are used
 you must provide a #GCompletionFunc in g_completion_new(),
 which retrieves the item's string from the data structure.
+You can change the way in which strings are compared by setting
+a different #GCompletionStrncmpFunc in g_completion_set_compare().
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -55,7 +57,7 @@ Creates a new #GCompletion.
 </para>
 
 @func: the function to be called to return the string representing an item
-in the #GCompletion, or NULL if strings are going to be used as the
+in the #GCompletion, or %NULL if strings are going to be used as the
 #GCompletion items.
 @Returns: the new #GCompletion.
 
@@ -105,8 +107,8 @@ Attempts to complete the string @prefix using the #GCompletion target items.
 @cmp: the #GCompletion.
 @prefix: the prefix string, typically typed by the user, which is compared
 with each of the items.
-@new_prefix: if non-NULL, returns the longest prefix which is common to all
-items that matched @prefix, or NULL if no items matched @prefix.
+@new_prefix: if non-%NULL, returns the longest prefix which is common to all
+items that matched @prefix, or %NULL if no items matched @prefix.
 This string should be freed when no longer needed.
 @Returns: the list of items whose strings begin with @prefix. This should
 not be changed.
@@ -114,24 +116,28 @@ not be changed.
 
 <!-- ##### FUNCTION g_completion_set_compare ##### -->
 <para>
-
+Sets the function to use for string comparisons. The default
+string comparison function is <function>strncmp()</function>.
 </para>
 
-@cmp: 
-@strncmp_func: 
+@cmp: a #GCompletion.
+@strncmp_func: the string comparison function.
 
 
 <!-- ##### USER_FUNCTION GCompletionStrncmpFunc ##### -->
 <para>
-
+Specifies the type of the function passed to g_completion_set_compare().
+This is used when you use strings as #GCompletion items.
 </para>
 
-@s1: 
-@s2: 
-@n: 
-@Returns: 
+@s1: string to compare with @s2.
+@s2: string to compare with @s1.
+@n: maximal number of bytes to compare.
+@Returns: an integer less than, equal to, or greater than zero if the 
+first @n bytes of @s1 is found, respectively, to be less than, to match, 
+or to be greater than the first @n bytes of @s2.
 
-
+ 
 <!-- ##### FUNCTION g_completion_free ##### -->
 <para>
 Frees all memory used by the #GCompletion.

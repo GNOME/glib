@@ -85,7 +85,7 @@ widget or a log file for example.
 <!-- ##### MACRO g_return_if_fail ##### -->
 <para>
 Returns from the current function if the expression is not true.
-If the expression evaluates to FALSE, a critical message is logged and
+If the expression evaluates to %FALSE, a critical message is logged and
 the function returns. This can only be used in functions which do not return
 a value.
 </para>
@@ -97,7 +97,7 @@ a value.
 <para>
 Returns from the current function, returning the value @val, if the expression
 is not true.
-If the expression evaluates to FALSE, a critical message is logged and
+If the expression evaluates to %FALSE, a critical message is logged and
 @val is returned.
 </para>
 
@@ -108,17 +108,18 @@ true.
 
 <!-- ##### MACRO g_return_if_reached ##### -->
 <para>
-
+Logs a critical message and returns from the current function. 
+This can only be used in functions which do not return a value.
 </para>
 
 
 
 <!-- ##### MACRO g_return_val_if_reached ##### -->
 <para>
-
+Logs a critical message and returns @val. 
 </para>
 
-@val: 
+@val: the value to return from the current function.
 
 
 <!-- ##### MACRO g_assert ##### -->
@@ -129,7 +130,7 @@ is logged and the application is terminated.
 </para>
 <para>
 The macro can be turned off in final releases of code by defining
-G_DISABLE_ASSERT when compiling the application.
+#G_DISABLE_ASSERT when compiling the application.
 </para>
 
 @expr: the expression to check.
@@ -142,54 +143,54 @@ If it is reached, an error message is logged and the application is terminated.
 </para>
 <para>
 The macro can be turned off in final releases of code by defining
-G_DISABLE_ASSERT when compiling the application.
+#G_DISABLE_ASSERT when compiling the application.
 </para>
 
 
 
 <!-- ##### FUNCTION g_on_error_query ##### -->
 <para>
-Prompts the user with "[E]xit, [H]alt, show [S]tack trace or [P]roceed".
+Prompts the user with <computeroutput>[E]xit, [H]alt, show [S]tack trace or [P]roceed</computeroutput>.
 This function is intended to be used for debugging use only.
 FIXME: How do you set it up?
 </para>
 <para>
-If Exit is selected, the application terminates with a call to
+If [E]xit is selected, the application terminates with a call to
 <function>_exit(0)</function>.
 </para>
 <para>
-If Halt is selected, the application enters an infinite loop.
+If [H]alt is selected, the application enters an infinite loop.
 The infinite loop can only be stopped by killing the application,
-or by setting glib_on_error_halt to FALSE (possibly via a debugger).
+or by setting #glib_on_error_halt to %FALSE (possibly via a debugger).
 </para>
 <para>
-If Stack trace is selected, g_on_error_stack_trace() is called. This
-invokes gdb, which attaches to the current process and shows a stack trace.
+If [S]tack trace is selected, g_on_error_stack_trace() is called. This
+invokes <command>gdb</command>, which attaches to the current process and shows a stack trace.
 The prompt is then shown again.
 </para>
 <para>
-If Proceed is selected, the function returns.
+If [P]roceed is selected, the function returns.
 </para>
 <para>
 This function may cause different actions on non-unix platforms.
 </para>
 
-@prg_name: the program name, needed by gdb for the [S]tack trace option.
-If @prg_name is NULL, g_get_prgname() is called to get the program name
+@prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.
+If @prg_name is %NULL, g_get_prgname() is called to get the program name
 (which will work correctly if gdk_init() or gtk_init() has been called).
 
 
 <!-- ##### FUNCTION g_on_error_stack_trace ##### -->
 <para>
-Invokes gdb, which attaches to the current process and shows a stack trace.
+Invokes <command>gdb</command>, which attaches to the current process and shows a stack trace.
 Called by g_on_error_query() when the [S]tack trace option is selected.
 </para>
 <para>
 This function may cause different actions on non-unix platforms.
 </para>
 
-@prg_name: the program name, needed by gdb for the [S]tack trace option.
-If @prg_name is NULL, g_get_prgname() is called to get the program name
+@prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.
+If @prg_name is %NULL, g_get_prgname() is called to get the program name
 (which will work correctly if gdk_init() or gtk_init() has been called).
 
 

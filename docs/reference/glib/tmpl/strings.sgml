@@ -22,10 +22,10 @@ The #GString struct contains the public fields of a #GString.
 The <structfield>str</structfield> field points to the character data.
 It may move as text is added.
 The <structfield>len</structfield> field contains the length of the string,
-not including the terminating null character.
+not including the terminating nul character.
 </para>
 <para>
-The str field is zero-terminated and so can be used as an ordinary C
+The <structfield>str</structfield> field is nul-terminated and so can be used as an ordinary C
 string. But it may be moved when text is appended or inserted into the
 string.
 </para>
@@ -49,14 +49,14 @@ Creates a new #GString with @len bytes of the @init buffer.  Because a length is
 provided, @init need not be nul-terminated, and can contain embedded nul bytes.
 </para>
 
-@init: initial contents of string
-@len: length of @init to use
-@Returns: a new #GString
+@init: initial contents of string.
+@len: length of @init to use.
+@Returns: a new #GString.
 
 
 <!-- ##### FUNCTION g_string_sized_new ##### -->
 <para>
-Creates a new GString, with enough space for @dfl_size characters.
+Creates a new #GString, with enough space for @dfl_size characters.
 This is useful if you are going to add a lot of text to the string and
 don't want it to be reallocated too often.
 </para>
@@ -68,7 +68,7 @@ don't want it to be reallocated too often.
 <!-- ##### FUNCTION g_string_assign ##### -->
 <para>
 Copies the characters from one #GString into another, destroying any previous
-contents. It is rather like the standard strcpy() function, except that
+contents. It is rather like the standard <function>strcpy()</function> function, except that
 you do not have to worry about having enough space to copy the string.
 </para>
 
@@ -81,8 +81,8 @@ you do not have to worry about having enough space to copy the string.
 <para>
 Writes a formatted string into a #GString.
 This is similar to the standard <function>sprintf()</function> function,
-except that the GString buffer automatically expands to contain the results.
-The previous contents of the GString are destroyed.
+except that the #GString buffer automatically expands to contain the results.
+The previous contents of the #GString are destroyed.
 </para>
 
 <!-- # Unused Parameters # -->
@@ -96,7 +96,7 @@ documentation.
 <para>
 Appends a formatted string onto the end of a #GString.
 This function is is similar to g_string_sprintf() except that
-the text is appended to the GString.
+the text is appended to the #GString.
 </para>
 
 <!-- # Unused Parameters # -->
@@ -108,22 +108,29 @@ documentation.
 
 <!-- ##### FUNCTION g_string_printf ##### -->
 <para>
-
+Writes a formatted string into a #GString.
+This is similar to the standard <function>sprintf()</function> function,
+except that the #GString buffer automatically expands to contain the results.
+The previous contents of the #GString are destroyed.
 </para>
 
-@string: 
-@format: 
-@Varargs: 
+@string: a #GString.
+@format: the string format. See the <function>sprintf()</function>
+documentation.
+@Varargs: the parameters to insert into the format string.
 
 
 <!-- ##### FUNCTION g_string_printfa ##### -->
 <para>
-
+Appends a formatted string onto the end of a #GString.
+This function is is similar to g_string_sprintf() except that
+the text is appended to the #GString.
 </para>
 
-@string: 
-@format: 
-@Varargs: 
+@string: a #GString.
+@format: the string format. See the <function>sprintf()</function>
+documentation.
+@Varargs: the parameters to insert into the format string.
 
 
 <!-- ##### FUNCTION g_string_append ##### -->
@@ -162,10 +169,10 @@ Appends @len bytes of @val to @string. Because @len is provided,
 @val may contain embedded nuls and need not be nul-terminated.
 </para>
 
-@string: a #GString
-@val: bytes to append
-@len: number of bytes of @val to use
-@Returns: the #GString
+@string: a #GString.
+@val: bytes to append.
+@len: number of bytes of @val to use.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_prepend ##### -->
@@ -204,10 +211,10 @@ Prepends @len bytes of @val to @string. Because @len is provided,
 @val may contain embedded nuls and need not be nul-terminated.
 </para>
 
-@string: a #GString
-@val: bytes to prepend
-@len: number of bytes in @val to prepend
-@Returns: the #GString passed in
+@string: a #GString.
+@val: bytes to prepend.
+@len: number of bytes in @val to prepend.
+@Returns: the #GString passed in.
 
 
 <!-- ##### FUNCTION g_string_insert ##### -->
@@ -249,11 +256,11 @@ Inserts @len bytes of @val into @string at @pos.  Because @len is provided, @val
  may contain embedded nuls and need not be nul-terminated. If @pos is -1, bytes are inserted at the end of the string.
 </para>
 
-@string: a #GString
-@pos: position in @string where insertion should happen, or -1 for at the end
-@val: bytes to insert
-@len: number of bytes of @val to insert
-@Returns: the #GString
+@string: a #GString.
+@pos: position in @string where insertion should happen, or -1 for at the end.
+@val: bytes to insert.
+@len: number of bytes of @val to insert.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_erase ##### -->
@@ -292,12 +299,11 @@ Cuts off the end of the GString, leaving the first @len characters.
 <!-- ##### FUNCTION g_string_free ##### -->
 <para>
 Frees the memory allocated for the #GString.
-If free_segment is TRUE it also frees the character data.
+If @free_segment is %TRUE it also frees the character data.
 </para>
 
 @string: a #GString.
-@free_segment: if TRUE the actual character data is freed as well.
-@Returns: 
+@free_segment: if %TRUE the actual character data is freed as well.
 
 
 <!-- ##### FUNCTION g_string_up ##### -->
@@ -323,8 +329,8 @@ Converts a #GString to lower case.
 Creates a hash code for @str; for use with #GHashTable.
 </para>
 
-@str: a string to hash
-@Returns: hash code for @str
+@str: a string to hash.
+@Returns: hash code for @str.
 
 
 <!-- ##### FUNCTION g_string_equal ##### -->
@@ -333,8 +339,8 @@ Compares two strings for equality, returning %TRUE if they are equal.
 For use with #GHashTable.
 </para>
 
-@v: a #GString
-@v2: another #GString
-@Returns: %TRUE if they strings are the same length and contain the same bytes
+@v: a #GString.
+@v2: another #GString.
+@Returns: %TRUE if they strings are the same length and contain the same bytes.
 
 

@@ -34,8 +34,8 @@ the first element in the list. The functions which insert elements return
 the new start of the list, which may have changed.
 </para>
 <para>
-There is no function to create a #GList. NULL is considered to be the empty
-list so you simply set a #GList* to NULL.
+There is no function to create a #GList. %NULL is considered to be the empty
+list so you simply set a #GList* to %NULL.
 </para>
 <para>
 To add elements, use g_list_append(), g_list_prepend(), g_list_insert()
@@ -143,13 +143,14 @@ to the end of the list.
 
 <!-- ##### FUNCTION g_list_insert_before ##### -->
 <para>
-
+Inserts a new element into the list before the given position.
 </para>
 
-@list: 
-@sibling: 
-@data: 
-@Returns: 
+@list: a pointer to a #GList.
+@sibling: the list element before which the new element is inserted
+  or %NULL to insert at the end of the list.
+@data: the data for the new element.
+@Returns: the new start of the #GList.
 
 
 <!-- ##### FUNCTION g_list_insert_sorted ##### -->
@@ -181,7 +182,7 @@ If none of the elements contain the data, the #GList is unchanged.
 <!-- ##### FUNCTION g_list_remove_link ##### -->
 <para>
 Removes an element from a #GList, without freeing the element.
-The removed element's prev and next links are set to NULL, so that it becomes a
+The removed element's prev and next links are set to %NULL, so that it becomes a
 self-contained list with one element.
 </para>
 
@@ -195,9 +196,9 @@ self-contained list with one element.
 Deletes the node @link from @list.
 </para>
 
-@list: a #GList
-@link: node to delete from @list
-@Returns: the new head of @list
+@list: a #GList.
+@link: node to delete from @list.
+@Returns: the new head of @list.
 
 
 <!-- ##### FUNCTION g_list_remove_all ##### -->
@@ -207,9 +208,9 @@ head of the list. Contrast with g_list_remove() which removes only
 the first node matching the given data.
 </para>
 
-@list: a #GList
-@data: data to remove
-@Returns: new head of @list
+@list: a #GList.
+@data: data to remove.
+@Returns: new head of @list.
 
 
 <!-- ##### FUNCTION g_list_free ##### -->
@@ -224,7 +225,7 @@ first.
 </para>
 </note>
 
-@list: 
+@list: a #GList.
 
 
 <!-- ##### FUNCTION g_list_alloc ##### -->
@@ -296,10 +297,10 @@ value if the first element comes after the second.
 Like g_list_sort(), but the comparison function accepts a user data argument.
 </para>
 
-@list: a #GList
-@compare_func: comparison function
-@user_data: user data to pass to comparison function
-@Returns: the new head of @list
+@list: a #GList.
+@compare_func: comparison function.
+@user_data: user data to pass to comparison function.
+@Returns: the new head of @list.
 
 
 <!-- ##### USER_FUNCTION GCompareFunc ##### -->
@@ -354,7 +355,7 @@ Gets the first element in a #GList.
 </para>
 
 @list: a #GList.
-@Returns: the first element in a #GList, or NULL if the #GList has no elements.
+@Returns: the first element in a #GList, or %NULL if the #GList has no elements.
 
 
 <!-- ##### FUNCTION g_list_last ##### -->
@@ -363,7 +364,7 @@ Gets the last element in a #GList.
 </para>
 
 @list: a #GList.
-@Returns: the last element in the #GList, or NULL if the #GList has no
+@Returns: the last element in the #GList, or %NULL if the #GList has no
 elements.
 
 
@@ -373,7 +374,7 @@ A convenience macro to gets the previous element in a #GList.
 </para>
 
 @list: an element in a #GList.
-@Returns: the previous element, or NULL if there are no previous elements.
+@Returns: the previous element, or %NULL if there are no previous elements.
 
 
 <!-- ##### MACRO g_list_next ##### -->
@@ -382,7 +383,7 @@ A convenience macro to gets the next element in a #GList.
 </para>
 
 @list: an element in a #GList.
-@Returns: the next element, or NULL if there are no more elements.
+@Returns: the next element, or %NULL if there are no more elements.
 
 
 <!-- ##### FUNCTION g_list_nth ##### -->
@@ -392,7 +393,7 @@ Gets the element at the given position in a #GList.
 
 @list: a #GList.
 @n: the position of the element, counting from 0.
-@Returns: the element, or NULL if the position is off the end of the #GList.
+@Returns: the element, or %NULL if the position is off the end of the #GList.
 
 
 <!-- ##### FUNCTION g_list_nth_data ##### -->
@@ -402,18 +403,18 @@ Gets the data of the element at the given position.
 
 @list: a #GList.
 @n: the position of the element.
-@Returns: the element's data, or NULL if the position is off the end of the
+@Returns: the element's data, or %NULL if the position is off the end of the
 #GList.
 
 
 <!-- ##### FUNCTION g_list_nth_prev ##### -->
 <para>
-
+Gets the element @n places before @list.
 </para>
 
-@list: 
-@n: 
-@Returns: 
+@list: a #GList.
+@n: the position of the element, counting from 0.
+@Returns: the element, or %NULL if the position is off the end of the #GList.
 
 
 <!-- ##### FUNCTION g_list_find ##### -->
@@ -423,7 +424,7 @@ Finds the element in a #GList which contains the given data.
 
 @list: a #GList.
 @data: the element data to find.
-@Returns: the found #GList element, or NULL if it is not found.
+@Returns: the found #GList element, or %NULL if it is not found.
 
 
 <!-- ##### FUNCTION g_list_find_custom ##### -->
@@ -440,7 +441,7 @@ and the given user data.
 @data: user data passed to the function.
 @func: the function to call for each element. It should return 0 when the
 desired element is found.
-@Returns: the found #GList element, or NULL if it is not found.
+@Returns: the found #GList element, or %NULL if it is not found.
 
 
 <!-- ##### FUNCTION g_list_position ##### -->

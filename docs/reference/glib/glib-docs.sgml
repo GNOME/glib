@@ -10,6 +10,7 @@
 <!entity glib-Error-Reporting SYSTEM "sgml/error_reporting.sgml">
 <!entity glib-Warnings-and-Assertions SYSTEM "sgml/warnings.sgml">
 <!entity glib-Message-Logging SYSTEM "sgml/messages.sgml">
+<!entity glib-Pattern-Matching SYSTEM "sgml/patterns.sgml">
 <!entity glib-Timers SYSTEM "sgml/timers.sgml">
 <!entity glib-String-Utility-Functions SYSTEM "sgml/string_utils.sgml">
 <!entity glib-Character-Set-Conversion SYSTEM "sgml/conversions.sgml">
@@ -97,6 +98,7 @@
     &glib-Spawn;
     &glib-Fileutils;
     &glib-Shell;
+    &glib-Pattern-Matching;
     &glib-Markup;
     &glib-Windows-Compatability-Functions;
   </chapter>
