@@ -1,3 +1,8 @@
+2003-06-18  Matthias Clasen  <maclas@gmx.de>
+
+	* Makefile.am (man_MANS): Removed, these are now installed from
+	docs/reference/gobject.
+
 Fri May 30 14:42:24 2003  Owen Taylor  <otaylor@redhat.com>
  
  	* gobject.c (g_value_set_object): Order refs/unrefs
