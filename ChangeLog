@@ -1,3 +1,9 @@
+Tue Jan 27 18:45:47 2004  Manish Singh  <yosh@gimp.org>
+
+        * m4macros/glib-2.0.m4
+        * m4macros/glib-gettext.m4: quote AC_DEFUN macro names so automake
+        1.8 won't whine at us.
+
 2004-01-16  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/trio/Makefile.am: Distribute makefile.msc.
