@@ -49,15 +49,6 @@ EXPORTS
 	g_bit_nth_msf
 	g_bit_storage
 	g_blow_chunks
-	g_bsearch_array_destroy
-	g_bsearch_array_get_index
-	g_bsearch_array_get_nth
-	g_bsearch_array_insert
-	g_bsearch_array_insert
-	g_bsearch_array_lookup
-	g_bsearch_array_new
-	g_bsearch_array_remove
-	g_bsearch_array_remove_node
 	g_build_filename
 	g_build_path
 	g_byte_array_append
