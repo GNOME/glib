@@ -494,32 +494,20 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 # else /* !__GNU__ */
 #   define G_ATOMIC_USE_FALLBACK_IMPLEMENTATION
 # endif /* __GNUC__ */
-#else /* !G_THREADS_ENABLED */
-gint32 g_atomic_int_exchange_and_add (gint32 *atomic, gint32  val);
-# define g_atomic_int_add(atomic, val) (void)(*(atomic) += (val))
-# define g_atomic_int_compare_and_exchange(atomic, oldval, newval)		\
-  (*(atomic) == (oldval) ? (*(atomic) = (newval), TRUE) : FALSE)
-# define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval)	\
-  (*(atomic) == (oldval) ? (*(atomic) = (newval), TRUE) : FALSE)
-# define g_atomic_int_get(atomic) (*(atomic))
-# define g_atomic_pointer_get(atomic) (*(atomic))
-# define G_ATOMIC_MEMORY_BARRIER() /* Not needed */
-#endif /* G_THREADS_ENABLED */
-
-#ifdef G_ATOMIC_USE_FALLBACK_IMPLEMENTATION
-# define g_atomic_int_exchange_and_add					\
+# ifdef G_ATOMIC_USE_FALLBACK_IMPLEMENTATION
+#  define g_atomic_int_exchange_and_add					\
     g_atomic_int_exchange_and_add_fallback
-# define g_atomic_int_add						\
+#  define g_atomic_int_add						\
     g_atomic_int_add_fallback
-# define g_atomic_int_compare_and_exchange					\
+#  define g_atomic_int_compare_and_exchange				\
     g_atomic_int_compare_and_exchange_fallback
-# define g_atomic_pointer_compare_and_exchange 				\
+#  define g_atomic_pointer_compare_and_exchange 			\
     g_atomic_pointer_compare_and_exchange_fallback
-# define g_atomic_int_get 						\
+#  define g_atomic_int_get 						\
     g_atomic_int_get_fallback
-# define g_atomic_pointer_get 						\
+#  define g_atomic_pointer_get 						\
     g_atomic_pointer_get_fallback
-#else /* !G_ATOMIC_USE_FALLBACK_IMPLEMENTATION */
+# else /* !G_ATOMIC_USE_FALLBACK_IMPLEMENTATION */
 static inline gint32
 g_atomic_int_get (gint32 *atomic)
 {
@@ -535,7 +523,18 @@ g_atomic_pointer_get (gpointer *atomic)
   G_ATOMIC_MEMORY_BARRIER ();
   return result;
 }   
-#endif /* G_ATOMIC_USE_FALLBACK_IMPLEMENTATION */
+# endif /* G_ATOMIC_USE_FALLBACK_IMPLEMENTATION */
+#else /* !G_THREADS_ENABLED */
+gint32 g_atomic_int_exchange_and_add (gint32 *atomic, gint32  val);
+# define g_atomic_int_add(atomic, val) (void)(*(atomic) += (val))
+# define g_atomic_int_compare_and_exchange(atomic, oldval, newval)	\
+  (*(atomic) == (oldval) ? (*(atomic) = (newval), TRUE) : FALSE)
+# define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval)	\
+  (*(atomic) == (oldval) ? (*(atomic) = (newval), TRUE) : FALSE)
+# define g_atomic_int_get(atomic) (*(atomic))
+# define g_atomic_pointer_get(atomic) (*(atomic))
+# define G_ATOMIC_MEMORY_BARRIER() /* Not needed */
+#endif /* G_THREADS_ENABLED */
 
 #define g_atomic_int_inc(atomic) (g_atomic_int_add ((atomic), 1))
 #define g_atomic_int_dec_and_test(atomic)				\
