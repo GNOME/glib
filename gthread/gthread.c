@@ -83,7 +83,7 @@ g_thread_init (GThreadFunctions* init)
 	       init->cond_free &&
 	       init->private_new &&
 	       init->private_get &&
-	       init->private_get);
+	       init->private_set);
 
   /* if somebody is calling g_thread_init (), it means that he wants to
    * have thread support, so check this
