@@ -1,3 +1,8 @@
+2002-05-01  jacob berkman  <jacob@ximian.com>
+
+	* configure.in: fix typo on 64-bit printf formatting string
+	configure message (fixes #80389)
+
 2002-04-29  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS

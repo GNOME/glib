@@ -378,7 +378,7 @@ fi
 
 if test x$ac_cv_sizeof_long_long = x8; then
 	# long long is a 64 bit integer.
-	AC_MSG_CHECKING(for format to printf and scanf a gint64)
+	AC_MSG_CHECKING(for format to printf and scanf a guint64)
 	AC_CACHE_VAL(glib_cv_long_long_format,[
 		for format in ll q I64; do
 		  AC_TRY_RUN([#include <stdio.h>  
@@ -401,7 +401,7 @@ if test x$ac_cv_sizeof_long_long = x8; then
         fi
 elif test x$ac_cv_sizeof___int64 = x8; then
 	# __int64 is a 64 bit integer.
-	AC_MSG_CHECKING(for format to printf and scanf a gint64)
+	AC_MSG_CHECKING(for format to printf and scanf a guint64)
 	# We know this is MSVC, and what the formats are
 	glib_cv_long_long_format=I64
 	AC_MSG_RESULT(%${glib_cv_long_long_format}u)
