@@ -48,7 +48,7 @@ struct _GPatternSpec
 /* --- functions --- */
 /**
  * g_utf8_reverse:
- * string: a UTF-8 string.
+ * @string: a UTF-8 string.
  *
  * Reverses a UTF-8 string. The @string must be valid UTF-8 encoded text. 
  * (Use g_utf8_validate() on all text before trying to use UTF-8 

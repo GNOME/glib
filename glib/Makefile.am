@@ -6,6 +6,9 @@ INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\
+	makefile.mingw.in	\
+	makefile.msc.in		\
+	glib.rc.in		\
 	gen-unicode-tables.pl	\
 	glib.def
 

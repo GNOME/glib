@@ -16,9 +16,7 @@ DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
 all : \
 	gmoduleconf.h \
-	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a \
-	testgmodule.exe \
-	libgplugin_a.dll libgplugin_b.dll
+	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a
 
 gmodule_OBJECTS = \
 	gmodule.o
@@ -33,20 +31,6 @@ libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a : $(gmodule_OBJECTS) gmod
 
 gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.rc : gmodule.rc
 	cp $< $@
-
-################ test prog
-
-testgmodule.exe : libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.a testgmodule.o 
-# We have to generate an .exp file separately with dlltool, and link
-# with that. Sigh.
-	dlltool --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -o testgmodule.exe testgmodule.o testgmodule.exp -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ $(LFLAGS)
-
-libgplugin_a.dll : libgplugin_a.o
-	$(BUILD_DLL) libgplugin_a - libgplugin_a.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
-libgplugin_b.dll : libgplugin_b.o
-	$(BUILD_DLL) libgplugin_b - libgplugin_b.o -L ../glib -lglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@ -L . -lgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 ################ Other stuff
 

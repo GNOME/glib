@@ -34,7 +34,6 @@ libglib = $(top_builddir)/glib/libglib-1.3.la
 top_builddir_full=`cd \$(top_builddir); pwd`
 
 lib_LTLIBRARIES = libgmodule-1.3.la
-noinst_LTLIBRARIES = libgplugin_a.la libgplugin_b.la
 
 if MS_LIB_AVAILABLE
 noinst_DATA = gmodule-1.3.lib
@@ -55,7 +54,6 @@ endif
 
 if OS_WIN32
 export_symbols = -export-symbols gmodule.def
-plugin_rpath = -rpath `pwd`
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgmodule-1.3.dll.a $(DESTDIR)$(libdir)
@@ -75,19 +73,6 @@ libgmodule_1_3_la_LDFLAGS = \
 libgmodule_1_3_la_LIBADD = @G_MODULE_WIN32_RESOURCE@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
 
 libgmodule_1_3_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@ @GMODULE_DEF@
-
-libgplugin_a_la_SOURCES = libgplugin_a.c
-libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) $(plugin_rpath)
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
-
-libgplugin_b_la_SOURCES = libgplugin_b.c
-libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) $(plugin_rpath)
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
-
-noinst_PROGRAMS = testgmodule
-testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
-testgmodule_LDADD = @TESTGMODULE_EXP@ libgmodule-1.3.la $(libglib) @G_MODULE_LIBS@
-testgmodule_DEPENDENCIES = @TESTGMODULE_EXP@
 
 if OS_WIN32
 @G_MODULE_WIN32_RESOURCE@ : gmodule.rc

@@ -1,3 +1,26 @@
+Thu Nov 22 13:14:18 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (GLIB_MICRO_VERSION): Version 11, 
+	interface, binary age 0.
+
+	* NEWS: Updated.
+
+ 	* tests/Makefile.am (libmoduletestplugin_[ab]_la_LDFLAGS): 
+ 	Add dummy -rpath argument. On some (but not all) platforms,
+ 	libtool will only build a convenience library without this.
+ 	(#63486, Dan Winship)
+ 
+	* Makefile.am (EXTRA_DIST): Add README.in, INSTALL.in - 
+	autoconf-2.5x checks for 'make dist' in the tarball
+	when you make distcheck.
+
+	* glib/Makefile.am (EXTRA_DIST): Distribute 
+	makefile.msc/mingw.in, glib.rc.in.
+
+	* tests/patterntest.c: Include string.h.
+
+	* glib/gpattern.c (g_utf8_reverse): doc parsing fix.
+
 Thu Nov 22 02:50:18 2001  Tim Janik  <timj@gtk.org>
 
 	* NEWS: merged with gobject/NEWS.
@@ -292,7 +315,7 @@ Mon Oct 29 10:55:12 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/config.charset (os): Match also mingw*.
 
-	* tests/testglib.c (main): (Win32): Print the lib/locale
+	* tests/testglib.c (main): (Wibn32): Print the lib/locale
 	subdirectory, as that is what actually gets used.
 
 Wed Oct 24 11:10:54 2001  Owen Taylor  <otaylor@redhat.com>

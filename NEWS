@@ -1,3 +1,23 @@
+Overview of Changes in GLib 1.3.11:
+===================================
+
+* Win32 fixes [Hans Breuer, Tor Lillqvist]
+* Documentation improvements [Matthias Clasen]
+* Portable directory handling API [Hans]
+* Threading fixes [Sebastian Wilhelmi, Havoc Pennington]
+* Fix excess relocations in Unicode tables [Andrew Taylor]
+* Fix gpattern for UTF-8 [Matthias Clasen]
+* Support overriding class closures [Tim Janik]
+* Support for derivation from G_TYPE_POINTER [Owen Taylor]
+* Hide pointers to type information inside GType to reduce locking
+  [Alex Larsson, Tim]
+* Adds check for direct inclusion of gobject/*.h [Owen]
+* GObject API cleanups [Tim]
+
+Other contributors: Darin Adler, Jacob Berkman, Daniel Egger, Eric Lemings, 
+  Michael Meeks, Mark McLoughlin, Arkadiusz Miskiewicz, Dan Winship
+
+
 Overview of Changes in GLib 1.3.10:
 ===================================
 

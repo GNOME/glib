@@ -1,3 +1,9 @@
+Mon Nov 19 16:12:12 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am makefile.msc.in makefile.mingw.in: Remove
+	testgmodule and associated plugin files; we don't need _both_ this
+	and ../tests/module-test.c
+
 2001-11-16  Michael Meeks  <michael@ximian.com>
 
 	* gmodule.c (parse_libtool_archive): fix leak.

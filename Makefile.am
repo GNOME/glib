@@ -16,6 +16,8 @@ EXTRA_DIST = 			\
 	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
+	README.in		\
+	INSTALL.in		\
 	README.win32		\
 	TODO.xml		\
 	makefile.msc		\

@@ -136,11 +136,11 @@ install-libLTLIBRARIES:
 	:
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
-libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libmoduletestplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) -rpath $(libdir)
 libmoduletestplugin_a_la_LIBADD = @G_MODULE_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
-libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libmoduletestplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) -rpath $(libdir)
 libmoduletestplugin_b_la_LIBADD = @G_MODULE_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in

@@ -16,6 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include <string.h>
+
 #include "glib.h"
 #include "glib/gpattern.h"
 
@@ -195,7 +197,6 @@ main (int argc, char** argv)
   gint total = 0;
   gint passed = 0;
   gint failed = 0;
-  gchar *string, *pattern;
 
   TEST_COMPILATION("*A?B*", G_MATCH_ALL, "*A?B*", 3);
   TEST_COMPILATION("ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8);

@@ -12,8 +12,7 @@ DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\"
 
 all : \
 	gmoduleconf.h \
-	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll \
-	testgmodule.exe
+	libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
 
 gmodule_OBJECTS = \
 	gmodule.obj
@@ -24,20 +23,6 @@ gmoduleconf.h: gmoduleconf.h.win32
 libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll : $(gmodule_OBJECTS) gmodule.def
 	$(CC) $(CFLAGS) -LD -Fe$@ $(gmodule_OBJECTS) \
 	..\glib\glib-$(GLIB_VER).lib $(LDFLAGS) /implib:gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib /def:gmodule.def
-
-################ test prog
-
-testgmodule.exe : libgmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll testgmodule.obj libgplugin_a.dll libgplugin_b.dll
-	$(CC) $(CFLAGS) testgmodule.obj gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) /subsystem:console 
-
-libgplugin_a.dll : libgplugin_a.obj
-	$(CC) $(CFLAGS) -LD libgplugin_a.obj gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS)
-
-libgplugin_b.dll : libgplugin_b.obj
-	$(CC) $(CFLAGS) -LD libgplugin_b.obj gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS)
 
 clean::
 	del gmoduleconf.h
