@@ -41,8 +41,10 @@ export_symbols = -export-symbols gobject.def
 
 install-libtool-import-lib:
 	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
+
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a
+	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a $(DESTDIR)$(libdir)/gobject-2.0.def
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
