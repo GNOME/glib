@@ -642,8 +642,7 @@ if test x"$have_threads" != xnone; then
 	G_THREAD_CFLAGS="-D_REENTRANT" # good default
 
 	case $host in
- 	       -aix*)
-			# FIXME: can somebody confirm this -D_THREAD_SAFE ???
+ 	       *-aix*)
 			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
 			if test x"$GCC" = xyes; then 
                 	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"

@@ -1,3 +1,9 @@
+Wed Dec 16 22:29:48 1998  Joel Becker  <jlbec@ocala.cs.miami.edu>
+
+	* configure.in: fixed the AIX thread checking.
+	Just an error on the wildcard.  BTW, -D_THREAD_SAFE
+	is correct for AIX.
+
 Wed Dec 16 02:02:48 1998  Tim Janik  <timj@gtk.org>
 
 	* glib-config.in (lib_glib): fixed library and flag ordering for
