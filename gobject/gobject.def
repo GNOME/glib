@@ -142,6 +142,7 @@ EXPORTS
 	g_signal_emit_by_name
 	g_signal_emit_valist
 	g_signal_emitv
+	g_signal_get_invocation_hint
 	g_signal_handler_block
 	g_signal_handler_disconnect
 	g_signal_handler_find

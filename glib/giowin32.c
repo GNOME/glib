@@ -119,7 +119,6 @@ struct _GIOWin32Watch {
   GPollFD       pollfd;
   GIOChannel   *channel;
   GIOCondition  condition;
-  GIOFunc       callback;
 };
 
 static void

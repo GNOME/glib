@@ -35,7 +35,7 @@ BUILT_EXTRA_DIST =				\
 
 if HAVE_CXX
 CXX_TEST = cxx-test
-cxx_test_LDADD = $(progs_LDADD)
+cxx_test_LDADD = $(progs_ldadd)
 cxx_test_SOURCES = cxx-test.C
 else
 CXX_TEST =
@@ -96,39 +96,39 @@ TESTS = $(test_programs) $(test_scripts)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
 
-progs_LDADD = $(EFENCE) $(libglib) $(EFENCE)
-thread_LDADD = $(libgthread) @G_THREAD_LIBS@ $(progs_LDADD)
-module_LDADD = $(libgmodule) @G_MODULE_LIBS@ $(progs_LDADD)
+progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
+thread_ldadd = $(libgthread) @G_THREAD_LIBS@ $(progs_ldadd)
+module_ldadd = $(libgmodule) @G_MODULE_LIBS@ $(progs_ldadd)
 
-array_test_LDADD = $(progs_LDADD)
-date_test_LDADD = $(progs_LDADD)
-dirname_test_LDADD = $(progs_LDADD)
-gio_test_LDADD = $(progs_LDADD)
-hash_test_LDADD = $(progs_LDADD)
-iochannel_test_LDADD = $(progs_LDADD)
-list_test_LDADD = $(progs_LDADD)
-mainloop_test_LDADD = $(thread_LDADD)
-markup_test_LDADD = $(progs_LDADD)
-module_test_LDADD = $(module_LDADD) $(module_test_exp)
+array_test_LDADD = $(progs_ldadd)
+date_test_LDADD = $(progs_ldadd)
+dirname_test_LDADD = $(progs_ldadd)
+gio_test_LDADD = $(progs_ldadd)
+hash_test_LDADD = $(progs_ldadd)
+iochannel_test_LDADD = $(progs_ldadd)
+list_test_LDADD = $(progs_ldadd)
+mainloop_test_LDADD = $(thread_ldadd)
+markup_test_LDADD = $(progs_ldadd)
+module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = @G_MODULE_LDFLAGS@
-node_test_LDADD = $(progs_LDADD)
-queue_test_LDADD = $(progs_LDADD)
-qsort_test_LDADD = $(progs_LDADD)
-rand_test_LDADD = $(progs_LDADD)
-relation_test_LDADD = $(progs_LDADD)
-shell_test_LDADD = $(progs_LDADD)
-slist_test_LDADD = $(progs_LDADD)
-spawn_test_LDADD = $(progs_LDADD)
-strfunc_test_LDADD = $(progs_LDADD)
-string_test_LDADD = $(progs_LDADD)
-strtod_test_LDADD = $(progs_LDADD) -lm
-thread_test_LDADD = $(thread_LDADD)
-threadpool_test_LDADD = $(thread_LDADD)
-tree_test_LDADD = $(progs_LDADD)
-type_test_LDADD = $(progs_LDADD)
-unicode_encoding_LDADD = $(progs_LDADD)
-unicode_caseconv_LDADD = $(progs_LDADD)
-uri_test_LDADD = $(progs_LDADD)
+node_test_LDADD = $(progs_ldadd)
+queue_test_LDADD = $(progs_ldadd)
+qsort_test_LDADD = $(progs_ldadd)
+rand_test_LDADD = $(progs_ldadd)
+relation_test_LDADD = $(progs_ldadd)
+shell_test_LDADD = $(progs_ldadd)
+slist_test_LDADD = $(progs_ldadd)
+spawn_test_LDADD = $(progs_ldadd)
+strfunc_test_LDADD = $(progs_ldadd)
+string_test_LDADD = $(progs_ldadd)
+strtod_test_LDADD = $(progs_ldadd) -lm
+thread_test_LDADD = $(thread_ldadd)
+threadpool_test_LDADD = $(thread_ldadd)
+tree_test_LDADD = $(progs_ldadd)
+type_test_LDADD = $(progs_ldadd)
+unicode_encoding_LDADD = $(progs_ldadd)
+unicode_caseconv_LDADD = $(progs_ldadd)
+uri_test_LDADD = $(progs_ldadd)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 

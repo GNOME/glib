@@ -138,6 +138,7 @@ typedef guint32 gsize;
 
 #define G_HAVE_GNUC_VARARGS 1
 #endif /* not _MSC_VER */
+#define G_HAVE_GROWING_STACK 0
 
 
 #define G_THREADS_ENABLED

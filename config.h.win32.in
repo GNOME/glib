@@ -152,6 +152,10 @@
 /* Define if you have the `atexit' function. */
 #define HAVE_ATEXIT 1
 
+/* Define if you have a version of the vsnprintf function with semantics as
+   specified by the ISO C99 standard. */
+/* #undef HAVE_C99_VSNPRINTF */
+
 /* Have nl_langinfo (CODESET) */
 /* #undef HAVE_CODESET */
 

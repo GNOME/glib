@@ -1,3 +1,17 @@
+2001-12-21  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Add (undefined) HAVE_C99_VSNPRINTF.
+
+	* glibconfig.h.win32.in: Add definition of G_HAVE_GROWING_STACK.
+
+	* tests/Makefile.am: Rename the progs_LDADD, thread_LDADD and
+	module_LDADD Make macros to progs_ldadd, thread_ldadd and
+	module_ldadd. Newer automakes reserve macros named *_LDADD for
+	the use as LDADDs for targets it knows.
+
+	* glib/giowin32.c: (struct _GIOWin32Watch): 'callback' wasn't used
+	here, either.
+
 2001-12-21  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gfileutils.c (g_file_get_contents): Remove FIXME. (#67063)
