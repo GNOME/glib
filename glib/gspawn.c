@@ -1119,7 +1119,8 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            exec_err_to_g_error (buf[1]),
-                           _("Failed to execute child process (%s)"),
+                           _("Failed to execute child process \"%s\" (%s)"),
+                           argv[0],
                            g_strerror (buf[1]));
 
               break;
@@ -1145,7 +1146,8 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,
-                           _("Unknown error executing child process"));
+                           _("Unknown error executing child process \"%s\""),
+                           argv[0]);
               break;
             }
 

@@ -579,7 +579,7 @@ tokenize_command_line (const gchar *command_line,
  * contains none of the unsupported shell expansions. If the input
  * does contain such expansions, they are passed through
  * literally. Possible errors are those from the #G_SHELL_ERROR
- * domain.
+ * domain. Free the returned vector with g_strfreev().
  * 
  * Return value: TRUE on success, FALSE if error set
  **/

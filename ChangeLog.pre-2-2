@@ -1,3 +1,13 @@
+2001-12-14  Havoc Pennington  <hp@pobox.com>
+
+	* glib/gshell.c (g_shell_parse_argv): note on how to free returned
+	vector
+
+2001-12-08  Havoc Pennington  <hp@pobox.com>
+
+	* glib/gspawn.c (fork_exec_with_pipes): include argv[0] in error
+	message about failure to exec
+
 2001-12-13  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gconvert.c, glib/giochannel.c, glib/gmain.c,
