@@ -2417,4 +2417,8 @@ docs/reference/gobject/Makefile
 docs/reference/gobject/version.xml
 tests/Makefile
 m4macros/Makefile
+],[
+chmod 0755 glib-zip
+chmod 0755 glib-gettextize
+chmod 0755 gobject/glib-mkenums
 ])

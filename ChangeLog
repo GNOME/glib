@@ -1,3 +1,9 @@
+Fri Dec  6 12:31:30 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* configure.in: chmod 0755 scripts in AC_OUTPUT(), since 
+ 	install -c won't necessarily do that. (#74376, Martin
+	Gansser, Joshua Weage)
+ 
 Thu Dec  5 16:05:55 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Use AC_LINK_IFELSE(), not AC_TRY_RUN()
