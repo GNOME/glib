@@ -536,14 +536,18 @@ connection.
 
 <!-- ##### FUNCTION g_signal_connect_data ##### -->
 <para>
-Connects a #GCallback function to a signal for a particular object.
+Connects a #GCallback function to a signal for a particular object. Similar
+to g_signal_connect(), but allows to provide a #GDestroyNotify for the data
+which will be called when the signal handler is disconnected and no longer
+used. Specify @connect_flags if you need <literal>..._after()</literal> pr
+<literal>..._swapped()</literal> variants of this function.
 </para>
 
 @instance: the instance to connect to.
 @detailed_signal: a string of the form "signal-name::detail".
 @c_handler: the #GCallback to connect.
 @data: data to pass to @c_handler calls.
-@destroy_data: a #GDestroyNotify for @data.
+@destroy_data: a #GDestroyNotify for @data. 
 @connect_flags: a combination of #GConnectFlags.
 @Returns: the handler id
 
@@ -555,7 +559,7 @@ Connects a closure to a signal for a particular object.
 
 @instance: the instance to connect to.
 @detailed_signal: a string of the form "signal-name::detail".
-@closure: the closure to connect.
+@closure: the closure to connect. 
 @after: whether the handler should be called before or after the 
         default handler of the signal.
 @Returns: the handler id
