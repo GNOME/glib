@@ -247,7 +247,7 @@ AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 
 # Check for some functions
-AC_CHECK_FUNCS(localtime_r rand_r lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
 
 # Check for sys_errlist
 AC_MSG_CHECKING(for sys_errlist)
@@ -678,6 +678,15 @@ fi
 AC_MSG_CHECKING(necessary linker options)
 AC_MSG_RESULT($G_THREAD_LIBS)
 
+dnl check for mt safe function variants
+dnl ***********************************
+
+if test x"$have_threads" != xnone; then
+	glib_save_LIBS="$LIBS"
+	LIBS="$LIBS $G_THREAD_LIBS"
+	AC_CHECK_FUNCS(localtime_r rand_r)
+	LIBS="$glib_save_LIBS"
+fi
 
 dnl determination of G_THREAD_CFLAGS
 dnl ********************************

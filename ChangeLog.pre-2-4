@@ -1,3 +1,11 @@
+1999-01-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Moved test for localtime_r and rand_r to a place
+	after the determination of the G_THREAD_LIBS and use them for
+	finding those functions, necessary on systems with a different C
+	library libc_r for threaded progs, like FreeBSD 2.2.x. Info from
+	Timur I. Bakeyev <timur@comtat.ru>.
+
 Tue Jan 19 00:44:24 1999  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 
 	* gstrfuncs.c (g_strsignal): The "extern char* sys_siglist"
