@@ -80,14 +80,14 @@ msgid "Invalid byte sequence in hostname"
 msgstr "Ongeldige bytereeks in machinenaam"
 
 #: glib/gdir.c:75
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Fout bij lezen van bestand '%s': %s"
+msgstr "Fout bij het openen van map '%s': %s"
 
 #: glib/gfileutils.c:320 glib/gfileutils.c:385
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Allocatie van %lu bytes om bestand \"%s\" te lezen is mislukt"
 
 #: glib/gfileutils.c:331
 #, c-format
@@ -468,9 +468,9 @@ msgid "Failed to fork (%s)"
 msgstr "fork mislukt (%s)"
 
 #: glib/gspawn.c:1127
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Uitvoeren van kindproces mislukt (%s)"
+msgstr "Uitvoeren van kindproces \\\"%s\\\" mislukt (%s)"
 
 #: glib/gspawn.c:1137
 #, c-format
@@ -483,9 +483,9 @@ msgid "Failed to fork child process (%s)"
 msgstr "Het forken van een kindproces is mislukt (%s)"
 
 #: glib/gspawn.c:1154
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Onbekende fout bij het uitvoeren van een kindproces"
+msgstr "Onbekende fout bij het uitvoeren van kindproces \"%s\""
 
 #: glib/gspawn.c:1176
 #, c-format
