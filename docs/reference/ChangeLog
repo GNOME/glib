@@ -1,3 +1,8 @@
+2003-02-11  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Fix an off-by-one error in the
+	g_strescape() docs.  (#105431, Phillip Vandry)
+
 2003-02-07  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtypemodule.sgml: 
