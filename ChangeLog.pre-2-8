@@ -1,3 +1,8 @@
+Mon May 13 23:20:00 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* autogen.sh (have_gettext): Add a check for GNU gettext.
+	(Pointed out by Dan Winship in #59386.)
+
 Mon May 13 11:55:33 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in acglib.m4: If sizeof(int) == sizeof(long)
