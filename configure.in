@@ -721,7 +721,7 @@ if test "x$enable_trio" = "xno" &&
    test "x$need_trio" = "xyes" ; then
   AC_MSG_ERROR([
 *** Your C library's printf doesn't appear to have the features that
-*** GLib needs, but you specified --enable-trio=no.])
+*** GLib needs, but you specified --enable-included-printf=no.])
 fi
 
 enable_trio=$need_trio
@@ -734,7 +734,9 @@ else
   AC_DEFINE(HAVE_VASPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
+  TRIO_LIBS=-lm
 fi
+AC_SUBST(TRIO_LIBS)
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.
 # The check is borrowed from the PERL Configure script.

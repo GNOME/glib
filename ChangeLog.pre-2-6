@@ -1,5 +1,11 @@
 2002-12-15  Matthias Clasen  <maclas@gmx.de>
 
+	* configure.in: Set TRIO_LIBS when building with trio.
+
+	* glib-2.0.pc.in (Libs): Add @TRIO_LIBS@.
+
+	* glib/trio/Makefile.am (libtrio_la_LIBADD): Use @TRIO_LIBS@.
+
 	* glib/trio/glibtrio.h: New file, redefining all trio symbols to
 	fall into the _G/_g_ private glib namespace.
 

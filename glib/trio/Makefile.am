@@ -2,7 +2,7 @@
 
 noinst_LTLIBRARIES = libtrio.la
 
-libtrio_la_LIBADD = -lm
+libtrio_la_LIBADD = @TRIO_LIBS@
 
 libtrio_la_SOURCES = 	\
 	trio.c		\
