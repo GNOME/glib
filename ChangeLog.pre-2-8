@@ -1,3 +1,9 @@
+2005-03-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Update the documentation, reflecting the
+	fact that the special case for !group_name --> start_group
+	got removed.  (#170566, Tim-Philipp Müller)
+
 2005-03-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (g_option_context_set_main_group): Warn 

@@ -1608,8 +1608,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  *
  * Returns the values associated with @key under @group_name
  * translated in the given @locale if available.  If @locale is
- * %NULL then the current locale is assumed. If @group_name is
- * %NULL, then the start group is used.
+ * %NULL then the current locale is assumed.
 
  * If @key cannot be found then %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
@@ -1674,8 +1673,7 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
  *
  * Associates a list of string values for @key and @locale under
  * @group_name.  If the translation for @key cannot be found then
- * it is created. If @group_name is %NULL, the start group is
- * used.
+ * it is created. 
  *
  * Since: 2.6
  **/
@@ -1724,7 +1722,7 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
  * @error: return location for a #GError
  *
  * Returns the value associated with @key under @group_name as a
- * boolean. If @group_name is %NULL, the start group is used.
+ * boolean. 
  *
  * If @key cannot be found then the return value is undefined and
  * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
@@ -1789,8 +1787,7 @@ g_key_file_get_boolean (GKeyFile     *key_file,
  * @value: %TRUE or %FALSE
  *
  * Associates a new boolean value with @key under @group_name.
- * If @key cannot be found then it is created. If @group_name
- * is %NULL, the start group is used.
+ * If @key cannot be found then it is created. 
  *
  * Since: 2.6
  **/
@@ -2006,8 +2003,7 @@ g_key_file_get_integer (GKeyFile     *key_file,
  * @value: an integer value
  *
  * Associates a new integer value with @key under @group_name.
- * If @key cannot be found then it is created. If @group_name
- * is %NULL, the start group is used.
+ * If @key cannot be found then it is created.
  *
  * Since: 2.6
  **/
@@ -2037,7 +2033,7 @@ g_key_file_set_integer (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
- * integers. If @group_name is %NULL, the start group is used.
+ * integers. 
  *
  * If @key cannot be found then the return value is undefined and
  * @error is set to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if
@@ -2109,7 +2105,6 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
  *
  * Associates a list of integer values with @key under
  * @group_name.  If @key cannot be found then it is created.
- * If @group_name is %NULL the start group is used.
  *
  * Since: 2.6
  **/
@@ -2570,8 +2565,7 @@ g_key_file_has_group (GKeyFile    *key_file,
  * @error: return location for a #GError
  *
  * Looks whether the key file has the key @key in the group
- * @group_name. If @group_name is %NULL, the start group is
- * used.
+ * @group_name. 
  *
  * Return value: %TRUE if @key is a part of @group_name, %FALSE
  * otherwise.
