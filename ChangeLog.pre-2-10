@@ -1,3 +1,11 @@
+Wed Jun  2 11:42:46 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* config.guess
+	* config.status
+	* ltconfig
+	* ltmain.sh: upgrade to libtool 1.3.2 (BeOS changes merged)
+
 1999-05-29  Tor Lillqvist  <tml@iki.fi>
 
 	* gstrfuncs.c (g_strescape): Backslashify also '"' characters.
