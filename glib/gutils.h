@@ -39,6 +39,7 @@ G_BEGIN_DECLS
  */
 #define G_DIR_SEPARATOR '\\'
 #define G_DIR_SEPARATOR_S "\\"
+#define G_IS_DIR_SEPARATOR(c) ((c) == G_DIR_SEPARATOR || (c) == '/')
 #define G_SEARCHPATH_SEPARATOR ';'
 #define G_SEARCHPATH_SEPARATOR_S ";"
 
@@ -48,6 +49,7 @@ G_BEGIN_DECLS
 
 #define G_DIR_SEPARATOR '/'
 #define G_DIR_SEPARATOR_S "/"
+#define G_IS_DIR_SEPARATOR(c) ((c) == G_DIR_SEPARATOR)
 #define G_SEARCHPATH_SEPARATOR ':'
 #define G_SEARCHPATH_SEPARATOR_S ":"
 

@@ -88,13 +88,6 @@
 #include <libintl.h>
 #endif
 
-/* G_IS_DIR_SEPARATOR probably should be made public in GLib 2.4 */
-#ifdef G_OS_WIN32
-#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR || c == '/')
-#else
-#define G_IS_DIR_SEPARATOR(c) (c == G_DIR_SEPARATOR)
-#endif
-
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;

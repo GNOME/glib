@@ -54,6 +54,17 @@ This is "/" on UNIX machines and "\" under Windows.
 
 
 
+<!-- ##### MACRO G_IS_DIR_SEPARATOR ##### -->
+<para>
+Checks whether a character is a directory 
+separator. It returns %TRUE for '/' on UNIX
+machines and for '\' or '/' under Windows.
+</para>
+
+@c: a character
+@Since: 2.6
+
+
 <!-- ##### MACRO G_SEARCHPATH_SEPARATOR ##### -->
 <para>
 The search path separator character.
