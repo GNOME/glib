@@ -19,15 +19,13 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GUNICODE_H__
-#define __GUNICODE_H__
+#ifndef __G_UNICODE_H__
+#define __G_UNICODE_H__
 
 #include <stddef.h>      /* For size_t */
+#include <gtypes.h>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+G_BEGIN_DECLS
 
 typedef guint32 gunichar;
 typedef guint16 gunichar2;
@@ -193,8 +191,6 @@ gboolean g_utf8_validate (const gchar  *str,
                           gint          len,
                           const gchar **end);
 
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
-#endif /* GUNICODE_H */
+#endif /* __G_UNICODE_H__ */

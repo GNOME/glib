@@ -1175,8 +1175,10 @@ case "$CONFIG_OTHER" in
  * This is a generated file.  Please modify 'configure.in'
  */
 
-#ifndef GLIBCONFIG_H
-#define GLIBCONFIG_H
+#ifndef __G_LIBCONFIG_H__
+#define __G_LIBCONFIG_H__
+
+#include <gmacros.h>
 
 _______EOF
 
@@ -1198,9 +1200,7 @@ _______EOF
 
 	cat >> $outfile <<_______EOF
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 #define G_MINFLOAT	$glib_mf
 #define G_MAXFLOAT	$glib_Mf
@@ -1389,9 +1389,7 @@ _______EOF
 
 	cat >>$outfile <<_______EOF
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
 _______EOF

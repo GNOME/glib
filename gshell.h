@@ -18,15 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GSHELL_H__
-#define __GSHELL_H__
+#ifndef __G_SHELL_H__
+#define __G_SHELL_H__
 
 #include <gerror.h>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+G_BEGIN_DECLS
 
 #define G_SHELL_ERROR g_shell_error_quark ()
 
@@ -49,11 +46,8 @@ gboolean g_shell_parse_argv (const gchar   *command_line,
                              gchar       ***argv,
                              GError       **error);
 
+G_END_DECLS
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __GSHELL_H__ */
+#endif /* __G_SHELL_H__ */
 
 

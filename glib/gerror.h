@@ -18,13 +18,12 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GERROR_H__
-#define __GERROR_H__
+#ifndef __G_ERROR_H__
+#define __G_ERROR_H__
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include <gquark.h>
+
+G_BEGIN_DECLS
 
 typedef struct _GError GError;
 
@@ -69,9 +68,7 @@ void     g_propagate_error     (GError       **dest,
 void     g_clear_error         (GError       **err);
 
 
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
-#endif /* __GERROR_H__ */
+#endif /* __G_ERROR_H__ */
 

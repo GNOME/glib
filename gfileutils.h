@@ -18,13 +18,12 @@
  *   Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GFILEUTILS_H__
-#define __GFILEUTILS_H__
+#ifndef __G_FILEUTILS_H__
+#define __G_FILEUTILS_H__
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include <gerror.h>
+
+G_BEGIN_DECLS
 
 #define G_FILE_ERROR g_file_error_quark ()
 
@@ -82,10 +81,8 @@ gboolean g_file_get_contents (const gchar  *filename,
 
 
 
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
-#endif /* __GFILEUTILS_H__ */
+#endif /* __G_FILEUTILS_H__ */
 
 

@@ -18,15 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GSPAWN_H__
-#define __GSPAWN_H__
+#ifndef __G_SPAWN_H__
+#define __G_SPAWN_H__
 
 #include <gerror.h>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+G_BEGIN_DECLS
 
 /* I'm not sure I remember our proposed naming convention here. */
 #define G_SPAWN_ERROR g_spawn_error_quark ()
@@ -123,10 +120,8 @@ gboolean g_spawn_command_line_async (const gchar          *command_line,
                                      GError              **error);
 
 
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
-#endif /* __GSPAWN_H__ */
+#endif /* __G_SPAWN_H__ */
 
 
