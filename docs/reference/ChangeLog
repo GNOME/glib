@@ -5,6 +5,8 @@
 
 	* glib/tmpl/threads.sgml: Updated.
 
+	* glib/tmpl/thread_pools.sgml: Added GThreadPool documentation.
+
 Mon Mar 26 14:20:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am (SCAN_OPTIONS): Add --deprecated-guards
