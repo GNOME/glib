@@ -1,3 +1,9 @@
+2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_current_dir): Allocate only up to 128KB for a
+	pathname. While this is an arbitrary value just like 2048, it
+	seems to be enough (after all, even 4GB is an arbitrary value).
+
 2000-03-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmain.c (g_main_poll): Warn in case of an error during the call
