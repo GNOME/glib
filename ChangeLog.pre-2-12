@@ -1,3 +1,12 @@
+Tue Jan  5 12:23:52 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: ditch whitespace before GLIB_SYSDEFS #includes,
+	the # needs to be in column 1
+
+	* gthread/testgthread.c: cleanups
+
+	* tests/node-test.c: #include unistd.h for exit()
+
 1999-01-04  Andrew T. Veliath  <andrewtv@usa.net>
 
 	* glib.h (g_array_insert_val): fix macro to be shorthand of
