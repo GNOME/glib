@@ -2083,8 +2083,13 @@ _______EOF
 
 _______EOF
 
-echo "typedef signed $glib_size_type_define gssize;" >> $outfile
-echo "typedef unsigned $glib_size_type_define gsize;" >> $outfile
+        cat >>$outfile <<_______EOF
+typedef signed $glib_size_type_define gssize;
+typedef unsigned $glib_size_type_define gsize;
+#define G_GSIZE_MODIFIER $gsize_modifier
+#define G_GSSIZE_FORMAT $gssize_format
+#define G_GSIZE_FORMAT $gsize_format
+_______EOF
 
 	if test -z "$glib_unknown_void_p"; then
 	  cat >>$outfile <<_______EOF
@@ -2395,6 +2400,24 @@ glib_size_t=$ac_cv_sizeof_size_t
 glib_size_type_define=$glib_size_type
 glib_void_p=$ac_cv_sizeof_long
 glib_long=$ac_cv_sizeof_void_p
+
+case $glib_size_type in
+short)
+  gsize_modifier='"h"'
+  gsize_format='"hu"'
+  gssize_format='"hi"'
+  ;;
+int)
+  gsize_modifier='""'
+  gsize_format='"u"'
+  gssize_format='"i"'
+  ;;
+long)
+  gsize_modifier='"l"'
+  gsize_format='"lu"'
+  gssize_format='"li"'
+  ;;
+esac
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`
 glongbits=`expr $ac_cv_sizeof_long \* 8`

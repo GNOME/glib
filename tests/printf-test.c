@@ -93,6 +93,8 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%" G_GUINT32_FORMAT, (guint32)5) == 1 && !strcmp (buf, "5"));
   TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_FORMAT, (gint64)-5) == 2 && !strcmp (buf, "-5"));
   TEST (NULL, g_snprintf (buf, 128, "%" G_GUINT64_FORMAT, (guint64)5) == 1 && !strcmp (buf, "5"));
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GSSIZE_FORMAT, (gssize)-5) == 2 && !strcmp (buf, "-5"));
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GSIZE_FORMAT, (gsize)5) == 1 && !strcmp (buf, "5"));
   /* %d, flags */
   TEST (NULL, g_snprintf (buf, 128, "%-d", 5) == 1 && !strcmp (buf, "5"));
   TEST (NULL, g_snprintf (buf, 128, "%-+d", 5) == 2 && !strcmp (buf, "+5"));

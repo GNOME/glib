@@ -54,6 +54,10 @@ main (int   argc,
 	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
   gint64 gi64t1;
   gint64 gi64t2;
+  gssize gsst1;
+  gssize gsst2;
+  gsize  gst1;
+  gsize  gst2;
 
   /* type sizes */
   g_assert (sizeof (gint8) == 1);
@@ -117,6 +121,16 @@ main (int   argc,
   g_free (string);
   g_assert (gi64t1 == gi64t2);
   g_assert (gu64t1 == gu64t2);
+
+  gsst1 = -0x3AFAFAFA;
+  gst1 = 0xFAFAFAFA; 
+
+#define FORMATSIZE "%" G_GSSIZE_FORMAT " %" G_GSIZE_FORMAT "\n"
+  string = g_strdup_printf (FORMATSIZE, gsst1, gst1);
+  sscanf (string, FORMAT64, &gsst2, &gst2);
+  g_free (string);
+  g_assert (gsst1 == gsst2);
+  g_assert (gst1 == gst2);
   
   return 0;
 }

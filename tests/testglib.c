@@ -425,14 +425,14 @@ main (int   argc,
   g_print ("tmp-dir: %s\n", g_get_tmp_dir ());
 
   /* type sizes */
-  g_print ("checking size of gint8: %d", (int)sizeof (gint8));
+  g_print ("checking size of gint8: %"    G_GSIZE_FORMAT, sizeof (gint8));
   TEST (NULL, sizeof (gint8) == 1);
-  g_print ("\nchecking size of gint16: %d", (int)sizeof (gint16));
+  g_print ("\nchecking size of gint16: %" G_GSIZE_FORMAT, sizeof (gint16));
   TEST (NULL, sizeof (gint16) == 2);
-  g_print ("\nchecking size of gint32: %d", (int)sizeof (gint32));
+  g_print ("\nchecking size of gint32: %" G_GSIZE_FORMAT, sizeof (gint32));
   TEST (NULL, sizeof (gint32) == 4);
-  g_print ("\nchecking size of gsize: %d", (int)sizeof (gsize));
-  g_print ("\nchecking size of gint64: %d", (int)sizeof (gint64));
+  g_print ("\nchecking size of gsize: %"  G_GSIZE_FORMAT, sizeof (gsize));
+  g_print ("\nchecking size of gint64: %" G_GSIZE_FORMAT, sizeof (gint64));
   TEST (NULL, sizeof (gint64) == 8);
   g_print ("\n");
 

@@ -1,3 +1,11 @@
+Thu Nov 20 15:09:40 2003  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: Added G_GSIZE_FORMAT and friends.
+
+	* tests/printf-test.c
+	* tests/testglib.c
+	* tests/type-test.c: Add tests for the above.
+
 Mon Nov 17 17:28:10 2003  Manish Singh  <yosh@gimp.org>
 
 	* tests/thread-test.c (test_g_thread_once): Use GUINT_TO_POINTER
