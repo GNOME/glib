@@ -79,7 +79,10 @@ EXPORTS
 	g_signal_handler_disconnect
 	g_signal_handler_find
 	g_signal_handler_unblock
+	g_signal_handlers_block_matched
 	g_signal_handlers_destroy
+	g_signal_handlers_disconnect_matched
+	g_signal_handlers_unblock_matched
 	g_signal_lookup
 	g_signal_name
 	g_signal_newv

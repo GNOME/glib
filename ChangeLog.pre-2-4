@@ -1,5 +1,7 @@
 2000-11-11  Tor Lillqvist  <tml@iki.fi>
 
+	* glib.def: Add missing entry points.
+
 	* gfileutils.c (g_mkstemp): Improve chance to generate unique
 	names with less effort a bit.
 

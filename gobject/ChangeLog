@@ -4,7 +4,7 @@
 
 	* makefile.{mingw,msc}.in (gobject_OBJECTS): Add gtypemodule.
 
-	* gobject.def: Add new functions.
+	* gobject.def: Add missing functions.
 
 Sun Nov  5 13:21:28 2000  Owen Taylor  <otaylor@redhat.com>
 

@@ -222,6 +222,7 @@ EXPORTS
 	g_main_win32_get_poll_func
 	g_malloc
 	g_malloc0
+	g_markup_error_quark
 	g_markup_escape_text
 	g_markup_parse_context_end_parse
 	g_markup_parse_context_free
