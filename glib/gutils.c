@@ -344,7 +344,7 @@ g_get_current_dir (void)
   *buffer = 0;
   dir = getwd (buffer);
 #else	/* !sun */
-  while (max_len < 128 * 1024)
+  while (max_len < G_MAXULONG / 2)
     {
       buffer = g_new (gchar, max_len + 1);
       *buffer = 0;

@@ -1,5 +1,10 @@
 2000-03-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gutils.c (g_get_current_dir): Ok, Marcus Brinkmann
+	<Marcus.Brinkmann@ruhr-uni-bochum.de> convinced me, that 128 KB
+	path length might not be enough for the HURD. So I changed the
+	loop to at least avoid an integer overflow.
+
 	* configure.in: Test for sched_yield as the native yield function
 	first. Corrected typo g_thread_sleep -> g_usleep. Corrected
 	message for the pthread_create test. Negative Priorities are
