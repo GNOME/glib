@@ -634,7 +634,7 @@ g_slist_sort_merge (GSList   *l1,
   while (l1 && l2)
     {
       if (use_data)
-	cmp = ((GCompareFuncData) compare_func) (l1->data, l2->data, user_data);
+	cmp = ((GCompareDataFunc) compare_func) (l1->data, l2->data, user_data);
       else
 	cmp = ((GCompareFunc) compare_func) (l1->data, l2->data);
 
@@ -695,7 +695,7 @@ g_slist_sort (GSList       *list,
 
 GSList *
 g_slist_sort_with_data (GSList           *list,
-			GCompareFuncData  compare_func,
+			GCompareDataFunc  compare_func,
 			gpointer          user_data)
 {
   return g_slist_sort_real (list, (GFunc) compare_func, TRUE, user_data);

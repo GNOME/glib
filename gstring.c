@@ -565,9 +565,9 @@ g_string_up (GString *fstring)
 }
 
 static void
-g_string_sprintfa_int (GString     *string,
-		       const gchar *fmt,
-		       va_list      args)
+g_string_printfa_internal (GString     *string,
+			   const gchar *fmt,
+			   va_list      args)
 {
   gchar *buffer;
 
@@ -577,27 +577,27 @@ g_string_sprintfa_int (GString     *string,
 }
 
 void
-g_string_sprintf (GString *string,
-		  const gchar *fmt,
-		  ...)
+g_string_printf (GString *string,
+		 const gchar *fmt,
+		 ...)
 {
   va_list args;
 
   g_string_truncate (string, 0);
 
   va_start (args, fmt);
-  g_string_sprintfa_int (string, fmt, args);
+  g_string_printfa_internal (string, fmt, args);
   va_end (args);
 }
 
 void
-g_string_sprintfa (GString *string,
-		   const gchar *fmt,
-		   ...)
+g_string_printfa (GString *string,
+		  const gchar *fmt,
+		  ...)
 {
   va_list args;
 
   va_start (args, fmt);
-  g_string_sprintfa_int (string, fmt, args);
+  g_string_printfa_internal (string, fmt, args);
   va_end (args);
 }

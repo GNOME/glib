@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,17 +31,17 @@ extern "C" {
 
 
 /* --- type macros --- */
-#define G_TYPE_IS_OBJECT(type)     (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
-#define G_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_OBJECT, GObject))
-#define G_OBJECT_CLASS(class)      (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_OBJECT, GObjectClass))
-#define G_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_OBJECT))
-#define G_IS_OBJECT_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_OBJECT))
-#define G_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_OBJECT, GObjectClass))
-#define G_OBJECT_TYPE(object)      (G_TYPE_FROM_INSTANCE (object))
-#define G_OBJECT_TYPE_NAME(object) (g_type_name (G_OBJECT_TYPE (object)))
-#define G_OBJECT_CLASS_TYPE(class) (G_TYPE_FROM_CLASS (class))
-#define G_OBJECT_CLASS_NAME(class) (g_type_name (G_OBJECT_CLASS_TYPE (class)))
-#define G_IS_VALUE_OBJECT(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
+#define G_TYPE_IS_OBJECT(type)      (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
+#define G_OBJECT(object)            (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_OBJECT, GObject))
+#define G_OBJECT_CLASS(class)       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_OBJECT, GObjectClass))
+#define G_IS_OBJECT(object)         (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_OBJECT))
+#define G_IS_OBJECT_CLASS(class)    (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_OBJECT))
+#define G_OBJECT_GET_CLASS(object)  (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_OBJECT, GObjectClass))
+#define G_OBJECT_TYPE(object)       (G_TYPE_FROM_INSTANCE (object))
+#define G_OBJECT_TYPE_NAME(object)  (g_type_name (G_OBJECT_TYPE (object)))
+#define G_OBJECT_CLASS_TYPE(class)  (G_TYPE_FROM_CLASS (class))
+#define G_OBJECT_CLASS_NAME(class)  (g_type_name (G_OBJECT_CLASS_TYPE (class)))
+#define G_VALUE_HOLDS_OBJECT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
 
 
 /* --- typedefs & structures --- */
@@ -51,13 +51,11 @@ typedef struct _GObjectConstructParam    GObjectConstructParam;
 typedef void (*GObjectGetPropertyFunc)  (GObject      *object,
                                          guint         property_id,
                                          GValue       *value,
-                                         GParamSpec   *pspec,
-                                         const gchar  *trailer);
+                                         GParamSpec   *pspec);
 typedef void (*GObjectSetPropertyFunc)  (GObject      *object,
                                          guint         property_id,
                                          const GValue *value,
-                                         GParamSpec   *pspec,
-                                         const gchar  *trailer);
+                                         GParamSpec   *pspec);
 typedef void (*GObjectFinalizeFunc)     (GObject      *object);
 struct  _GObject
 {
@@ -83,13 +81,11 @@ struct  _GObjectClass
   void       (*set_property)            (GObject        *object,
                                          guint           property_id,
                                          const GValue   *value,
-                                         GParamSpec     *pspec,
-                                         const gchar    *trailer);
+                                         GParamSpec     *pspec);
   void       (*get_property)            (GObject        *object,
                                          guint           property_id,
                                          GValue         *value,
-                                         GParamSpec     *pspec,
-                                         const gchar    *trailer);
+                                         GParamSpec     *pspec);
   void       (*shutdown)                (GObject        *object);
   void       (*finalize)                (GObject        *object);
 
@@ -109,7 +105,6 @@ struct _GObjectConstructParam
 {
   GParamSpec  *pspec;
   GValue      *value;
-  const gchar *trailer;
 };
 
 
@@ -125,11 +120,17 @@ gpointer    g_object_new                      (GType           object_type,
 gpointer    g_object_new_valist               (GType           object_type,
 					       const gchar    *first_property_name,
 					       va_list         var_args);
-void        g_object_set                      (gpointer	       object,
+gpointer    g_object_set                      (gpointer	       object,
 					       const gchar    *first_property_name,
 					       ...);
 void        g_object_get                      (gpointer        object,
 					       const gchar    *first_property_name,
+					       ...);
+gpointer    g_object_connect                  (gpointer	       object,
+					       const gchar    *signal_spec,
+					       ...);
+gpointer    g_object_disconnect               (gpointer	       object,
+					       const gchar    *signal_spec,
 					       ...);
 void        g_object_set_valist               (GObject        *object,
 					       const gchar    *first_property_name,
@@ -181,7 +182,7 @@ GClosure*   g_closure_new_object              (guint           sizeof_closure,
 					       GObject        *object);
 void        g_value_set_object                (GValue         *value,
 					       GObject        *v_object);
-GObject*    g_value_get_object                (const GValue   *value);
+gpointer    g_value_get_object                (const GValue   *value);
 GObject*    g_value_dup_object                (const GValue   *value);
 guint	    g_signal_connect_object           (gpointer	       instance,
 					       const gchar    *detailed_signal,

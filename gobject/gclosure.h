@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000-2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ extern "C" {
 /* -- typedefs --- */
 typedef struct _GClosure		 GClosure;
 typedef struct _GClosureNotifyData	 GClosureNotifyData;
-typedef	gpointer GCallback;
+typedef	gpointer			 GCallback;
 typedef void  (*GClosureNotify)		(gpointer	 data,
 					 GClosure	*closure);
 typedef void  (*GClosureMarshal)	(GClosure	*closure,
@@ -85,7 +85,7 @@ struct _GClosure
    * - order of inotifiers is random
    *   inotifiers may _not_ free/invalidate parameter values (e.g. ->data)
    * - order of fnotifiers is random
-   * - notifiers may only be removed before or during their invocation
+   * - each notifier may only be removed before or during its invocation
    * - reference counting may only happen prior to fnotify invocation
    *   (in that sense, fnotifiers are really finalization handlers)
    */

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000-2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,12 +28,13 @@ extern "C" {
 
 
 /* --- type macros --- */
-#define G_TYPE_IS_BOXED(type)	(G_TYPE_FUNDAMENTAL (type) == G_TYPE_BOXED)
-#define G_IS_VALUE_BOXED(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOXED))
+#define G_TYPE_IS_BOXED(type)	   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_BOXED)
+#define G_VALUE_HOLDS_BOXED(value) (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOXED))
 
 
 /* --- typedefs --- */
 typedef struct _GBoxed	GBoxed;
+typedef gpointer (*GBoxedInitFunc)	(void);
 typedef gpointer (*GBoxedCopyFunc)	(gpointer	 boxed);
 typedef void     (*GBoxedFreeFunc)	(gpointer	 boxed);
 
@@ -43,19 +44,25 @@ GBoxed*		g_boxed_copy			(GType		 boxed_type,
 						 gconstpointer	 src_boxed);
 void		g_boxed_free			(GType		 boxed_type,
 						 gpointer	 boxed);
-void            g_value_set_boxed       	(GValue         *value,
-						 gconstpointer   boxed);
-void            g_value_set_static_boxed	(GValue         *value,
-						 gconstpointer   boxed);
-gpointer	g_value_get_boxed       	(const GValue   *value);
-gpointer	g_value_dup_boxed       	(GValue         *value);
+void		g_value_set_boxed		(GValue		*value,
+						 gconstpointer	 boxed);
+void		g_value_set_static_boxed	(GValue		*value,
+						 gconstpointer	 boxed);
+gpointer	g_value_get_boxed		(const GValue	*value);
+gpointer	g_value_dup_boxed		(GValue		*value);
 
 
 /* --- convenience --- */
-GType	g_boxed_type_register_static	(const gchar   *name,
-					 GBoxedCopyFunc	boxed_copy,
-					 GBoxedFreeFunc	boxed_free);
+GType	g_boxed_type_register_static		(const gchar	*name,
+						 GBoxedInitFunc	 boxed_init,
+						 GBoxedCopyFunc	 boxed_copy,
+						 GBoxedFreeFunc	 boxed_free,
+						 gboolean	 is_refcounted);
 
+
+/* --- marshaller specific --- */
+void	g_value_set_boxed_take_ownership	(GValue		*value,
+						 gconstpointer	 boxed);
 
 
 

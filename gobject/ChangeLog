@@ -2,10 +2,87 @@
 
 	* Makefile.am: Avoid rebuilding everything everytime.
 
-Mon Mar  5 15:26:30 2001  Jonathan Blandford  <jrb@redhat.com>
+Wed Mar  7 09:36:33 2001  Tim Janik  <timj@gtk.org>
 
-	* gparamspecs.c (g_param_spec_interface): add a new param spec to
-	handle interfaces.
+	* gboxed.[hc]: changed prototype of g_boxed_type_register_static()
+	to contain an optional init function and a hint at whether the
+	boxed structure uses ref counting internally.
+	added g_value_set_boxed_take_ownership().
+	made G_TYPE_BOXED an abstract value type.
+
+	* genums.[hc]: made G_TYPE_ENUM and G_TYPE_FLAGS abstract value
+	types.
+
+	* glib-genmarshal.c: argument type changes, preparation for third-party
+	arg specification.
+
+	* gobject.[hc]: cleaned up get/set property code.
+	added g_strdup_value_contents() to improve warnings.
+
+	* gparam.[hc]: added g_param_value_convert(), taking over responsibility
+	of the old g_value_convert(). added G_PARAM_LAX_VALIDATION flag so
+	validation alterations may be valid a part of the property setting
+	process.
+
+	* gparamspecs.[hc]: made value comparisons stable (for sort applications).
+	added GParamSpecValueArray, a param spec for value arrays and
+	GParamSpecClosure. nuked the value exchange functions and
+	GParamSpecCCallback.
+
+	* gtype.[hc]: catch unintialized usages of the type system with
+	g_return_val_if_uninitialized(). introduced G_TYPE_FLAG_VALUE_ABSTRACT
+	to flag types that introduce a value table, but can't be used for
+	g_value_init(). cleaned up reserved type ids.
+
+	* gvalue.[hc]: code cleanups and saner checking.
+	nuked the value exchange API. implemented value transformations, we
+	can't really "convert" values, rather transforms are an anylogy to
+	C casts, real conversions need a param spec for validation, which is
+	why g_param_value_convert() does real conversions now.
+
+	* gvaluearray.[hc]: new files that implement a GValueArray, a struct
+	that can hold inhomogeneous arrays of value (to that extend that it
+	also allowes undefined values, i.e. G_VALUE_TYPE(value)==0).
+	this is exposed to the type system as a boxed type.
+
+	* gvaluetransform.c: new file implementing most of the former value
+	exchange functions as single-sided transformations.
+
+	* gvaluetypes.[hc]: nuked G_TYPE_CCALLBACK, added
+	g_value_set_string_take_ownership().
+
+	* *.h: s/G_IS_VALUE_/G_VALUE_HOLDS_/.
+
+	* *.[hc]: many fixes and cleanups.
+
+	* many warning improvements.
+
+Tue Feb 27 18:35:15 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (g_object_get_valist): urg, pass G_VALUE_NOCOPY_CONTENTS
+	into G_VALUE_LCOPY(), this needs proper documenting.
+
+	* gparam.c: fixed G_PARAM_USER_MASK.
+
+	* gtype.c (type_data_make_W): 
+	(type_data_last_unref_Wm): fixed invalid memory freeing.
+
+	* gobject.c (g_object_last_unref): destroy signal handlers associated
+	with object, right before finalization.
+
+	* gsignal.c (g_signal_parse_name): catch destroyed nodes or signals
+	that don't actually support details.
+
+	* gobject.[hc]: got rid of property trailers. nuked GObject
+	properties "data" and the "signal" variants.
+	(g_object_connect): new convenience function to do multiple
+	signal connections at once.
+	(g_object_disconnect): likewise, for disconnections.
+
+	* gparam.[hc] (g_param_spec_pool_lookup): took out trailer support.
+
+	* gvalue.[hc]: marked g_value_fits_pointer() and g_value_peek_pointer()
+	as private (the latter got renamed from g_value_get_as_pointer()).
 
 Wed Feb 21 18:31:46 2001  Jonathan Blandford  <jrb@redhat.com>
 

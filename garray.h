@@ -91,7 +91,7 @@ GArray* g_array_remove_index_fast (GArray           *array,
 void    g_array_sort              (GArray           *array,
 				   GCompareFunc      compare_func);
 void    g_array_sort_with_data    (GArray           *array,
-				   GCompareFuncData  compare_func,
+				   GCompareDataFunc  compare_func,
 				   gpointer          user_data);
 
 /* Resizable pointer array.  This interface is much less complicated
@@ -119,7 +119,7 @@ void       g_ptr_array_add                (GPtrArray        *array,
 void       g_ptr_array_sort               (GPtrArray        *array,
 					   GCompareFunc      compare_func);
 void       g_ptr_array_sort_with_data     (GPtrArray        *array,
-					   GCompareFuncData  compare_func,
+					   GCompareDataFunc  compare_func,
 					   gpointer          user_data);
 
 
@@ -146,7 +146,7 @@ GByteArray* g_byte_array_remove_index_fast (GByteArray       *array,
 void        g_byte_array_sort              (GByteArray       *array,
 					    GCompareFunc      compare_func);
 void        g_byte_array_sort_with_data    (GByteArray       *array,
-					    GCompareFuncData  compare_func,
+					    GCompareDataFunc  compare_func,
 					    gpointer          user_data);
 
 

@@ -94,12 +94,15 @@ GString*     g_string_erase	        (GString	 *string,
 					 gint		  len);
 GString*     g_string_down              (GString	 *string);
 GString*     g_string_up                (GString	 *string);
-void         g_string_sprintf           (GString	 *string,
+void         g_string_printf            (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
-void         g_string_sprintfa          (GString	 *string,
+void         g_string_printfa           (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
+/* compatibility */
+#define	g_string_sprintf	g_string_printf
+#define	g_string_sprintfa	g_string_printfa
 
 G_END_DECLS
 

@@ -178,50 +178,48 @@ interfaces and C++ classes containing only pure virtual functions.
 The predefined identifiers of the reserved fundamental types.
 </para>
 
-@G_TYPE_INVALID: 	Usually a return value indicating an error.
-@G_TYPE_NONE: 		A synonym for the "void" type in C.
-@G_TYPE_INTERFACE: 	Root type of all interface types.
-@G_TYPE_CHAR: 		Identifier for the built-in type "gchar".
-@G_TYPE_UCHAR: 		Identifier for the built-in type "guchar".
-@G_TYPE_BOOLEAN: 	Identifier for the built-in type "gboolean".
-@G_TYPE_INT: 		Identifier for the built-in type "gint".
-@G_TYPE_UINT: 		Identifier for the built-in type "guint".
-@G_TYPE_LONG: 		Identifier for the built-in type "glong".
-@G_TYPE_ULONG: 		Identifier for the built-in type "gulong".
-@G_TYPE_ENUM: 		Identifier for the "#GEnum" type.
-@G_TYPE_FLAGS: 		Identifier for the "#GFlags" type.
-@G_TYPE_FLOAT: 		Identifier for the built-in type "gfloat".
+@G_TYPE_INVALID: 		Usually a return value indicating an error.
+@G_TYPE_NONE: 			A synonym for the "void" type in C.
+@G_TYPE_INTERFACE: 		Root type of all interface types.
+@G_TYPE_CHAR: 			Identifier for the built-in type "gchar".
+@G_TYPE_UCHAR: 			Identifier for the built-in type "guchar".
+@G_TYPE_BOOLEAN: 		Identifier for the built-in type "gboolean".
+@G_TYPE_INT: 			Identifier for the built-in type "gint".
+@G_TYPE_UINT: 			Identifier for the built-in type "guint".
+@G_TYPE_LONG: 			Identifier for the built-in type "glong".
+@G_TYPE_ULONG: 			Identifier for the built-in type "gulong".
+@G_TYPE_ENUM: 			Identifier for the "#GEnum" type.
+@G_TYPE_FLAGS: 			Identifier for the "#GFlags" type.
+@G_TYPE_FLOAT: 			Identifier for the built-in type "gfloat".
 @G_TYPE_DOUBLE: 		Identifier for the built-in type "gdouble".
 @G_TYPE_STRING: 		Identifier for a pointer to a null-terminated string "gchar*".
-@G_TYPE_PARAM: 		Identifier for the "#GParam" type.
-@G_TYPE_BOXED: 		Identifier for the "#GBoxed" type.
-@G_TYPE_POINTER: 	Identifier for anonymous pointers "void*".
-@G_TYPE_CCALLBACK: 	Identifier for a pointer to a C function.
+@G_TYPE_POINTER: 		Identifier for anonymous pointers "void*".
+@G_TYPE_BOXED: 			Identifier for the "#GBoxed" type.
+@G_TYPE_PARAM: 			Identifier for the "#GParam" type.
 @G_TYPE_OBJECT: 		Identifier for the "#GObject" type.
-@G_TYPE_GTK_SIGNAL: 	Reserved for use by the Gtk+ software package.
-@G_TYPE_BSE_PROCEDURE: 	Reserved for use by the BSE software package.
-@G_TYPE_BSE_TIME: 	Reserved for use by the BSE software package.
-@G_TYPE_BSE_NOTE: 	Reserved for use by the BSE software package.
-@G_TYPE_BSE_DOTS: 	Reserved for use by the BSE software package.
-@G_TYPE_GLE_GOBJECT: 	Reserved for use by the GLE software package.
-@G_TYPE_LAST_RESERVED_FUNDAMENTAL: New third-party fundamental types have to use IDs higher than this.
-@G_TYPE_PARAM_CHAR: 	Identifier for the "#GParamSpecChar" type.
-@G_TYPE_PARAM_UCHAR: 	Identifier for the "#GParamSpecUChar" type.
-@G_TYPE_PARAM_BOOLEAN: 	Identifier for the "#GParamSpecBoolean" type.
-@G_TYPE_PARAM_INT: 	Identifier for the "#GParamSpecInt" type.
-@G_TYPE_PARAM_UINT: 	Identifier for the "#GParamSpecUInt" type.
-@G_TYPE_PARAM_LONG: 	Identifier for the "#GParamSpecLong" type.
-@G_TYPE_PARAM_ULONG: 	Identifier for the "#GParamSpecULong" type.
-@G_TYPE_PARAM_ENUM: 	Identifier for the "#GParamSpecEnum" type.
-@G_TYPE_PARAM_FLAGS: 	Identifier for the "#GParamSpecFlags" type.
-@G_TYPE_PARAM_FLOAT: 	Identifier for the "#GParamSpecFloat" type.
-@G_TYPE_PARAM_DOUBLE: 	Identifier for the "#GParamSpecDouble" type.
-@G_TYPE_PARAM_STRING: 	Identifier for the "#GParamSpecString" type.
-@G_TYPE_PARAM_PARAM: 	Identifier for the "#GParamSpecParam" type.
-@G_TYPE_PARAM_POINTER: 	Identifier for the "#GParamSpecPointer" type.
-@G_TYPE_PARAM_CCALLBACK: Identifier for the "#GParamSpecCCallback" type.
-@G_TYPE_PARAM_BOXED: 	Identifier for the "#GParamSpecBoxed" type.
-@G_TYPE_PARAM_OBJECT: 	Identifier for the "#GParamSpecObject" type.
+@G_TYPE_RESERVED_BSE_FIRST: 	First fundamental type ID reserved for BSE.
+@G_TYPE_RESERVED_BSE_LAST: 	Last fundamental type ID reserved for BSE.
+@G_TYPE_RESERVED_LAST_FUNDAMENTAL: Last reserved fundamental type ID.
+@G_TYPE_CLOSURE: 
+@G_TYPE_VALUE_ARRAY: 
+@G_TYPE_PARAM_CHAR: 		Identifier for the "#GParamSpecChar" type.
+@G_TYPE_PARAM_UCHAR: 		Identifier for the "#GParamSpecUChar" type.
+@G_TYPE_PARAM_BOOLEAN: 		Identifier for the "#GParamSpecBoolean" type.
+@G_TYPE_PARAM_INT: 		Identifier for the "#GParamSpecInt" type.
+@G_TYPE_PARAM_UINT: 		Identifier for the "#GParamSpecUInt" type.
+@G_TYPE_PARAM_LONG: 		Identifier for the "#GParamSpecLong" type.
+@G_TYPE_PARAM_ULONG: 		Identifier for the "#GParamSpecULong" type.
+@G_TYPE_PARAM_ENUM: 		Identifier for the "#GParamSpecEnum" type.
+@G_TYPE_PARAM_FLAGS: 		Identifier for the "#GParamSpecFlags" type.
+@G_TYPE_PARAM_FLOAT: 		Identifier for the "#GParamSpecFloat" type.
+@G_TYPE_PARAM_DOUBLE: 		Identifier for the "#GParamSpecDouble" type.
+@G_TYPE_PARAM_STRING: 		Identifier for the "#GParamSpecString" type.
+@G_TYPE_PARAM_PARAM: 		Identifier for the "#GParamSpecParam" type.
+@G_TYPE_PARAM_BOXED: 		Identifier for the "#GParamSpecBoxed" type.
+@G_TYPE_PARAM_POINTER: 		Identifier for the "#GParamSpecPointer" type.
+@G_TYPE_PARAM_VALUE_ARRAY: 	Identifier for the "#GParamSpecValueArray" type.
+@G_TYPE_PARAM_CLOSURE: 		Identifier for the "#GParamClosure" type.
+@G_TYPE_PARAM_OBJECT: 	 	Identifier for the "#GParamSpecObject" type.
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
@@ -256,8 +254,8 @@ across invocation of g_type_register_static().
 @instance_size:  Size of the instance (object) structure (required for instantiatable types only).
 @n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
 @instance_init:  Location of the instance initialization function (optional, for instantiatable types only).
-@value_table: 	 Function table for generic handling of GValues of this type (usualy only usefull for
-		 fundamental types).
+@value_table: 	 A #GTypeValueTable function table for generic handling of GValues of this type (usualy only
+		 usefull for fundamental types).
 
 <!-- ##### STRUCT GTypeFundamentalInfo ##### -->
 <para>
@@ -277,20 +275,6 @@ used specifically for managing interface types.
 @interface_finalize: 	Location of the function that finalizes the interface.
 @interface_data: 	Location of user data passed to the @interface_init and
 	 		@interface_finalize functions (optional).
-
-<!-- ##### STRUCT GTypeValueTable ##### -->
-<para>
-
-</para>
-
-@value_init: 
-@value_free: 
-@value_copy: 
-@value_peek_pointer: 
-@collect_format: 
-@collect_value: 
-@lcopy_format: 
-@lcopy_value: 
 
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
 <para>
@@ -423,8 +407,8 @@ Return the unique name that is assigned to a type ID (this is the preferred meth
 to find out whether a specific type has been registered for the passed in ID yet).
 </para>
 
-@type:    Type to return name for.
-@Returns: Static type name or NULL.
+@type: 		Type to return name for.
+@Returns: 	Static type name or NULL.
 
 
 <!-- ##### FUNCTION g_type_qname ##### -->
@@ -458,17 +442,17 @@ If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
 
 <!-- ##### FUNCTION g_type_next_base ##### -->
 <para>
-Given a @type and a @base_type which is contained in its anchestry, return
-the type that @base_type is the direct parent type for.
-In other words, for a given type branch, e.g. Root-Derived1-Derived2-Leaf, specified
-through @type=Leaf, return the nextmost child of @base_type. In this example, for
-@base_type=Derived1, the returned value would be Derived2, for @base_type=Root, the
-returned value would be Derived1.
+Given a @leaf_type and a @root_type which is contained in its anchestry, return
+the type that @root_type is the immediate parent of.
+In other words, this function determines the type that is derived directly from
+@root_type which is also a base class of @leaf_type.  Given a root type and a
+leaf type, this function can be used to determine the types and order in which
+the leaf type is descended from the root type.
 </para>
 
-@type:      Descendant of @base_type and the type to be returned.
-@base_type: Direct parent of the returned type.
-@Returns:   Immediate child of @base_type and anchestor of @type.
+@leaf_type: 	Descendant of @root_type and the type to be returned.
+@root_type: 	Immediate parent of the returned type.
+@Returns: 	Immediate child of @root_type and anchestor of @leaf_type.
 
 
 <!-- ##### FUNCTION g_type_is_a ##### -->
@@ -799,6 +783,7 @@ Bit masks used to check or determine characteristics of a type.
 
 @G_TYPE_FLAG_ABSTRACT: 	Indicates an abstract type. No instances can be
 			created for an abstract type.
+@G_TYPE_FLAG_VALUE_ABSTRACT: 
 
 <!-- ##### ENUM GTypeFundamentalFlags ##### -->
 <para>
@@ -1032,16 +1017,6 @@ the anchestry of @instance.
 
 @value: 
 @Returns: 
-
-
-<!-- ##### FUNCTION g_type_value_is_a ##### -->
-<para>
-Determines if @value is a #GValue whose type conforms to @type.
-</para>
-
-@value: 	  A valid #GValue structure.
-@type:    A #GType value.
-@Returns: #TRUE if @value is a #GValue of @type or #FALSE if not.
 
 
 <!-- ##### FUNCTION g_type_value_table_peek ##### -->

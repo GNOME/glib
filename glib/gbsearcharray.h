@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Tim Janik
+ * Copyright (C) 2000-2001 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -69,6 +69,9 @@ gpointer	g_bsearch_array_lookup		(GBSearchArray	*barray,
 G_INLINE_FUNC
 gpointer	g_bsearch_array_get_nth		(GBSearchArray	*barray,
 						 guint		 n);
+G_INLINE_FUNC
+guint		g_bsearch_array_get_index	(GBSearchArray	*barray,
+						 gpointer	 node_in_array);
 
 
 /* --- implementation details --- */
@@ -115,14 +118,25 @@ g_bsearch_array_get_nth (GBSearchArray *barray,
 {
   if (n < barray->n_nodes)
     {
-      guint8 *nodes = (guint8 *) barray->nodes;
+      guint8 *nodes = (guint8*) barray->nodes;
 
       return nodes + n * barray->sizeof_node;
     }
   else
     return NULL;
 }
-#endif  /* G_CAN_INLINE && __G_BSEARCHARRAY_C__ */
+G_INLINE_FUNC
+guint
+g_bsearch_array_get_index (GBSearchArray *barray,
+			   gpointer       node_in_array)
+{
+  guint distance = ((guint8*) node_in_array) - ((guint8*) barray->nodes);
+
+  distance /= barray->sizeof_node;
+
+  return MIN (distance, barray->n_nodes);
+}
+#endif  /* G_CAN_INLINE || __G_BSEARCHARRAY_C__ */
 
 
 

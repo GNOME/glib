@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,8 +38,8 @@ extern "C" {
 #define G_IS_FLAGS_CLASS(class)        (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_FLAGS))
 #define G_FLAGS_CLASS_TYPE(class)      (G_TYPE_FROM_CLASS (class))
 #define G_FLAGS_CLASS_TYPE_NAME(class) (g_type_name (G_FLAGS_TYPE (class)))
-#define G_IS_VALUE_ENUM(value)         (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ENUM))
-#define G_IS_VALUE_FLAGS(value)        (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLAGS))
+#define G_VALUE_HOLDS_ENUM(value)      (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ENUM))
+#define G_VALUE_HOLDS_FLAGS(value)     (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLAGS))
 
 
 /* --- enum/flag values & classes --- */

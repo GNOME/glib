@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -66,12 +66,16 @@ union _GTypeCValue
 G_STMT_START {										\
   GValue *_value = (value);								\
   guint _flags = (flags);								\
-  GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
+  GType _value_type = G_VALUE_TYPE (_value);						\
+  GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
   gchar *_collect_format = _vtable->collect_format;					\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\
                                                                                         \
-  g_value_reset (_value);								\
+  if (_vtable->value_free)								\
+    _vtable->value_free (_value);							\
+  _value->g_type = _value_type;		/* value_meminit() from gvalue.c */		\
+  memset (_value->data, 0, sizeof (_value->data));					\
   while (*_collect_format)								\
     {											\
       GTypeCValue *_cvalue = _cvalues + _n_values++;					\
@@ -108,7 +112,8 @@ G_STMT_START {										\
 G_STMT_START {										\
   GValue *_value = (value);								\
   guint _flags = (flags);								\
-  GTypeValueTable *_vtable = g_type_value_table_peek (G_VALUE_TYPE (_value));		\
+  GType _value_type = G_VALUE_TYPE (_value);						\
+  GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
   gchar *_lcopy_format = _vtable->lcopy_format;						\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1997, 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1997-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@
 
 /* --- defines --- */
 #define G_PARAM_SPEC_CLASS(class)		(G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_PARAM, GParamSpecClass))
-#define	G_PARAM_USER_MASK			((1 << G_PARAM_USER_SHIFT) - 1)
+#define	G_PARAM_USER_MASK			(~0 << G_PARAM_USER_SHIFT)
 #define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
 #define	G_SLOCK(mutex)				g_static_mutex_lock (mutex)
 #define	G_SUNLOCK(mutex)			g_static_mutex_unlock (mutex)
@@ -48,6 +48,8 @@ static void	g_param_spec_finalize		 (GParamSpec		*pspec);
 static void	value_param_init		(GValue		*value);
 static void	value_param_free_value		(GValue		*value);
 static void	value_param_copy_value		(const GValue	*src_value,
+						 GValue		*dest_value);
+static void	value_param_transform_value	(const GValue	*src_value,
 						 GValue		*dest_value);
 static gpointer	value_param_peek_pointer	(const GValue	*value);
 static gchar*	value_param_collect_value	(GValue		*value,
@@ -104,6 +106,7 @@ g_param_type_init (void)	/* sync with gtype.c */
 
   type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
+  g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
 }
 
 static void
@@ -345,6 +348,40 @@ g_param_value_validate (GParamSpec *pspec,
   return FALSE;
 }
 
+gboolean
+g_param_value_convert (GParamSpec   *pspec,
+		       const GValue *src_value,
+		       GValue       *dest_value,
+		       gboolean	     strict_validation)
+{
+  GValue tmp_value = { 0, };
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+  g_return_val_if_fail (G_IS_VALUE (src_value), FALSE);
+  g_return_val_if_fail (G_IS_VALUE (dest_value), FALSE);
+  g_return_val_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, dest_value), FALSE);
+
+  /* better leave dest_value untouched when returning FALSE */
+
+  g_value_init (&tmp_value, G_VALUE_TYPE (dest_value));
+  if (g_value_transform (src_value, &tmp_value) &&
+      (!g_param_value_validate (pspec, &tmp_value) || !strict_validation))
+    {
+      g_value_unset (dest_value);
+      
+      /* values are relocatable */
+      memcpy (dest_value, &tmp_value, sizeof (tmp_value));
+      
+      return TRUE;
+    }
+  else
+    {
+      g_value_unset (&tmp_value);
+      
+      return FALSE;
+    }
+}
+
 gint
 g_param_values_cmp (GParamSpec   *pspec,
 		    const GValue *value1,
@@ -386,9 +423,21 @@ static void
 value_param_copy_value (const GValue *src_value,
 			GValue       *dest_value)
 {
-  dest_value->data[0].v_pointer = (src_value->data[0].v_pointer
-				   ? g_param_spec_ref (src_value->data[0].v_pointer)
-				   : NULL);
+  if (src_value->data[0].v_pointer)
+    dest_value->data[0].v_pointer = g_param_spec_ref (src_value->data[0].v_pointer);
+  else
+    dest_value->data[0].v_pointer = NULL;
+}
+
+static void
+value_param_transform_value (const GValue *src_value,
+			     GValue       *dest_value)
+{
+  if (src_value->data[0].v_pointer &&
+      g_type_is_a (G_PARAM_SPEC_TYPE (dest_value->data[0].v_pointer), G_VALUE_TYPE (dest_value)))
+    dest_value->data[0].v_pointer = g_param_spec_ref (src_value->data[0].v_pointer);
+  else
+    dest_value->data[0].v_pointer = NULL;
 }
 
 static gpointer
@@ -412,7 +461,7 @@ value_param_collect_value (GValue      *value,
 			    G_VALUE_TYPE_NAME (value),
 			    "'",
 			    NULL);
-      else if (!g_type_is_a (G_PARAM_SPEC_TYPE (param), G_VALUE_TYPE (value)))
+      else if (!g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_VALUE_TYPE (value)))
 	return g_strconcat ("invalid param spec type `",
 			    G_PARAM_SPEC_TYPE_NAME (param),
 			    "' for value type `",
@@ -601,8 +650,7 @@ GParamSpec*
 g_param_spec_pool_lookup (GParamSpecPool *pool,
 			  const gchar    *param_name,
 			  GType           owner_type,
-			  gboolean        walk_ancestors,
-			  const gchar   **trailer_p)
+			  gboolean        walk_ancestors)
 {
   GParamSpec *pspec;
   gchar *delim;
@@ -615,13 +663,11 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 
   G_SLOCK (&pool->smutex);
 
-  delim = strchr (param_name, ':');
+  delim = pool->type_prefixing ? strchr (param_name, ':') : NULL;
 
-  /* try quick and away, i.e. no prefix, no trailer */
+  /* try quick and away, i.e. without prefix */
   if (!delim)
     {
-      if (trailer_p)
-	*trailer_p = NULL;
       pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
       G_SUNLOCK (&pool->smutex);
 
@@ -645,48 +691,20 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 	  /* sanity check, these cases don't make a whole lot of sense */
 	  if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))
 	    {
-	      if (trailer_p)
-		*trailer_p = NULL;
 	      G_SUNLOCK (&pool->smutex);
 
 	      return NULL;
 	    }
 	  owner_type = type;
 	  param_name += l + 2;
-	  delim = strchr (param_name, ':');
-	  if (!delim)		/* good, can still forget about trailer */
-	    {
-	      if (trailer_p)
-		*trailer_p = NULL;
-	      pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
-              G_SUNLOCK (&pool->smutex);
+	  pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+	  G_SUNLOCK (&pool->smutex);
 
-	      return pspec;
-	    }
+	  return pspec;
 	}
     }
-
-  /* ok, no prefix, handle trailer */
-  if (delim[1] == ':')
-    {
-      guint l = delim - param_name;
-      gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
-      
-      strncpy (buffer, param_name, delim - param_name);
-      buffer[l] = 0;
-      pspec = param_spec_ht_lookup (pool->hash_table, buffer, owner_type, walk_ancestors);
-      if (l >= 32)
-	g_free (buffer);
-      if (trailer_p)
-	*trailer_p = pspec ? delim + 2 : NULL;
-      G_SUNLOCK (&pool->smutex);
-
-      return pspec;
-    }
-
   /* malformed param_name */
-  if (trailer_p)
-    *trailer_p = NULL;
+
   G_SUNLOCK (&pool->smutex);
 
   return NULL;
@@ -784,7 +802,7 @@ void
 g_value_set_param (GValue     *value,
 		   GParamSpec *param)
 {
-  g_return_if_fail (G_IS_VALUE_PARAM (value));
+  g_return_if_fail (G_VALUE_HOLDS_PARAM (value));
   if (param)
     g_return_if_fail (G_IS_PARAM_SPEC (param));
 
@@ -798,7 +816,7 @@ g_value_set_param (GValue     *value,
 GParamSpec*
 g_value_get_param (const GValue *value)
 {
-  g_return_val_if_fail (G_IS_VALUE_PARAM (value), NULL);
+  g_return_val_if_fail (G_VALUE_HOLDS_PARAM (value), NULL);
 
   return value->data[0].v_pointer;
 }
@@ -806,7 +824,7 @@ g_value_get_param (const GValue *value)
 GParamSpec*
 g_value_dup_param (const GValue *value)
 {
-  g_return_val_if_fail (G_IS_VALUE_PARAM (value), NULL);
+  g_return_val_if_fail (G_VALUE_HOLDS_PARAM (value), NULL);
 
   return value->data[0].v_pointer ? g_param_spec_ref (value->data[0].v_pointer) : NULL;
 }

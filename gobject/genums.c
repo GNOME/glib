@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -85,13 +85,15 @@ g_enum_types_init (void)	/* sync with gtype.c */
   /* G_TYPE_ENUM
    */
   info.class_size = sizeof (GEnumClass);
-  type = g_type_register_fundamental (G_TYPE_ENUM, "GEnum", &info, &finfo, G_TYPE_FLAG_ABSTRACT);
+  type = g_type_register_fundamental (G_TYPE_ENUM, "GEnum", &info, &finfo,
+				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_ENUM);
   
   /* G_TYPE_FLAGS
    */
   info.class_size = sizeof (GFlagsClass);
-  type = g_type_register_fundamental (G_TYPE_FLAGS, "GFlags", &info, &finfo, G_TYPE_FLAG_ABSTRACT);
+  type = g_type_register_fundamental (G_TYPE_FLAGS, "GFlags", &info, &finfo,
+				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
   g_assert (type == G_TYPE_FLAGS);
 }
 
@@ -378,7 +380,7 @@ g_flags_get_first_value (GFlagsClass *flags_class,
       GFlagsValue *flags_value;
       
       for (flags_value = flags_class->values; flags_value->value_name; flags_value++)
-	if ((flags_value->value & value) > 0)
+	if ((flags_value->value & value) == flags_value->value)
 	  return flags_value;
     }
   
@@ -389,7 +391,7 @@ void
 g_value_set_enum (GValue *value,
 		  gint    v_enum)
 {
-  g_return_if_fail (G_IS_VALUE_ENUM (value));
+  g_return_if_fail (G_VALUE_HOLDS_ENUM (value));
   
   value->data[0].v_long = v_enum;
 }
@@ -397,7 +399,7 @@ g_value_set_enum (GValue *value,
 gint
 g_value_get_enum (const GValue *value)
 {
-  g_return_val_if_fail (G_IS_VALUE_ENUM (value), 0);
+  g_return_val_if_fail (G_VALUE_HOLDS_ENUM (value), 0);
   
   return value->data[0].v_long;
 }
@@ -406,7 +408,7 @@ void
 g_value_set_flags (GValue *value,
 		   guint   v_flags)
 {
-  g_return_if_fail (G_IS_VALUE_FLAGS (value));
+  g_return_if_fail (G_VALUE_HOLDS_FLAGS (value));
   
   value->data[0].v_ulong = v_flags;
 }
@@ -414,7 +416,7 @@ g_value_set_flags (GValue *value,
 guint
 g_value_get_flags (const GValue *value)
 {
-  g_return_val_if_fail (G_IS_VALUE_FLAGS (value), 0);
+  g_return_val_if_fail (G_VALUE_HOLDS_FLAGS (value), 0);
   
   return value->data[0].v_ulong;
 }

@@ -74,6 +74,15 @@ gboxed
 @boxed: 
 
 
+<!-- ##### FUNCTION g_value_set_boxed_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value: 
+@boxed: 
+
+
 <!-- ##### FUNCTION g_value_get_boxed ##### -->
 <para>
 
@@ -98,8 +107,10 @@ gboxed
 </para>
 
 @name: 
+@boxed_init: 
 @boxed_copy: 
 @boxed_free: 
+@is_refcounted: 
 @Returns: 
 
 

@@ -40,7 +40,7 @@ typedef gint		(*GTraverseFunc)	(gpointer	key,
 /* Balanced binary trees
  */
 GTree*   g_tree_new           (GCompareFunc      key_compare_func);
-GTree*   g_tree_new_with_data (GCompareFuncData  key_compare_func,
+GTree*   g_tree_new_with_data (GCompareDataFunc  key_compare_func,
 			       gpointer          user_data);
 void     g_tree_destroy       (GTree            *tree);
 void     g_tree_insert        (GTree            *tree,

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000-2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -158,7 +158,7 @@ g_closure_set_meta_marshal (GClosure       *closure,
   g_return_if_fail (meta_marshal != NULL);
   g_return_if_fail (closure->is_invalid == FALSE);
   g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (closure->meta_marshal == FALSE);
+  g_return_if_fail (closure->meta_marshal == 0);
 
   n = CLOSURE_N_NOTIFIERS (closure);
   notifiers = closure->notifiers;
@@ -506,7 +506,7 @@ g_type_class_meta_marshal (GClosure       *closure,
   /* GType itype = GPOINTER_TO_UINT (closure->data); */
   guint offset = GPOINTER_TO_UINT (marshal_data);
   
-  class = G_TYPE_INSTANCE_GET_CLASS (g_value_get_as_pointer (param_values + 0), itype, GTypeClass);
+  class = G_TYPE_INSTANCE_GET_CLASS (g_value_peek_pointer (param_values + 0), itype, GTypeClass);
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     closure->marshal (closure,
@@ -529,7 +529,7 @@ g_type_iface_meta_marshal (GClosure       *closure,
   GType itype = GPOINTER_TO_UINT (closure->data);
   guint offset = GPOINTER_TO_UINT (marshal_data);
   
-  class = G_TYPE_INSTANCE_GET_INTERFACE (g_value_get_as_pointer (param_values + 0), itype, GTypeClass);
+  class = G_TYPE_INSTANCE_GET_INTERFACE (g_value_peek_pointer (param_values + 0), itype, GTypeClass);
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     closure->marshal (closure,

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -119,16 +119,21 @@ int
 main (gint   argc,
       gchar *argv[])
 {
+  GLogLevelFlags fatal_mask;
   gboolean gen_froots = 0;
   gboolean gen_tree = 0;
   guint i;
   gchar *iindent = "";
-  
+
   f_out = stdout;
   
-  g_type_init (0);
+  fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+  fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
+  g_log_set_always_fatal (fatal_mask);
   
   root = G_TYPE_OBJECT;
+
+  g_type_init (0);
   
   for (i = 1; i < argc; i++)
     {
@@ -194,6 +199,7 @@ main (gint   argc,
       else
 	return help (argv[i]);
     }
+  
   if (!gen_froots && !gen_tree)
     return help (argv[i-1]);
   

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1997, 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1997-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ extern "C" {
 #define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
 #define G_PARAM_SPEC_GET_CLASS(pspec)	(G_TYPE_INSTANCE_GET_CLASS ((pspec), G_TYPE_PARAM, GParamSpecClass))
 #define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC (pspec)->value_type)
-#define G_IS_VALUE_PARAM(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_PARAM))
+#define G_VALUE_HOLDS_PARAM(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_PARAM))
        
 
 /* --- flags --- */
@@ -48,7 +48,8 @@ typedef enum
   G_PARAM_WRITABLE            = 1 << 1,
   G_PARAM_CONSTRUCT	      = 1 << 2,
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
-  G_PARAM_PRIVATE	      = 1 << 4
+  G_PARAM_LAX_VALIDATION      = 1 << 4,
+  G_PARAM_PRIVATE	      = 1 << 5
 } GParamFlags;
 #define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
 #define	G_PARAM_MASK		(0x000000ff)
@@ -115,6 +116,10 @@ gboolean	g_param_value_defaults		(GParamSpec    *pspec,
 						 GValue	       *value);
 gboolean	g_param_value_validate		(GParamSpec    *pspec,
 						 GValue	       *value);
+gboolean	g_param_value_convert		(GParamSpec    *dest_value_spec,
+						 const GValue  *src_value,
+						 GValue	       *dest_value,
+						 gboolean	strict_validation);
 gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value1,
 						 const GValue  *value2);
@@ -163,8 +168,7 @@ void		g_param_spec_pool_remove	(GParamSpecPool	*pool,
 GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
 						 const gchar	*param_name,
 						 GType		 owner_type,
-						 gboolean	 walk_ancestors,
-						 const gchar   **trailer_p);
+						 gboolean	 walk_ancestors);
 
 
 /* contracts:

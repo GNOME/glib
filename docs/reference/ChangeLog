@@ -1,3 +1,13 @@
+Wed Mar  7 09:33:27 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/Makefile.am: shuffled rules to avoid excessive
+	rebuilds.
+
+	* gobject/gobject-sections.txt: updates.
+
+	* gobject/tmpl/*: bunch of updates, added another patch
+	from Eric Lemings <eric.b.lemings@lmco.com>.
+
 2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/glib-sections.txt, glib/tmpl/messages.sgml: Removed

@@ -15,18 +15,31 @@
 #   FLOAT       for single-precision float types (gfloat)
 #   DOUBLE      for double-precision float types (gdouble)
 #   STRING      for string types (gchar*)
+#   PARAM       for GParamSpec or derived types  (GParamSpec*)
 #   BOXED       for boxed (anonymous but reference counted) types (GBoxed*)
 #   POINTER     for anonymous pointer types (gpointer)
-#   PARAM       for GParamSpec or derived types  (GParamSpec*)
 #   OBJECT      for GObject or derived types (GObject*)
 #   NONE        deprecated alias for VOID
 #   BOOL        deprecated alias for BOOLEAN
 
+# standard VOID return marshallers
 VOID:VOID
-VOID:UINT,POINTER
-VOID:PARAM
+VOID:BOOLEAN
+VOID:CHAR
+VOID:UCHAR
 VOID:INT
-VOID:OBJECT
-VOID:POINTER
-VOID:STRING
 VOID:UINT
+VOID:LONG
+VOID:ULONG
+VOID:ENUM
+VOID:FLAGS
+VOID:FLOAT
+VOID:DOUBLE
+VOID:STRING
+VOID:PARAM
+VOID:BOXED
+VOID:POINTER
+VOID:OBJECT
+
+# GRuntime specific marshallers
+VOID:UINT,POINTER

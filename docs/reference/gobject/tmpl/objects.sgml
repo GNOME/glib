@@ -34,7 +34,6 @@ The Base Object Type
 
 @pspec: 
 @value: 
-@trailer: 
 
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
 <para>
@@ -45,6 +44,7 @@ The Base Object Type
 @property_id: 
 @value: 
 @pspec: 
+<!-- # Unused Parameters # -->
 @trailer: 
 
 
@@ -57,7 +57,24 @@ The Base Object Type
 @property_id: 
 @value: 
 @pspec: 
+<!-- # Unused Parameters # -->
 @trailer: 
+
+
+<!-- ##### USER_FUNCTION GObjectFinalizeFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_TYPE_IS_OBJECT ##### -->
+<para>
+
+</para>
+
+@type: 
 
 
 <!-- ##### MACRO G_OBJECT ##### -->
@@ -66,6 +83,30 @@ The Base Object Type
 </para>
 
 @object: 
+
+
+<!-- ##### MACRO G_IS_OBJECT ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### MACRO G_OBJECT_CLASS ##### -->
+<para>
+
+</para>
+
+@class: 
+
+
+<!-- ##### MACRO G_IS_OBJECT_CLASS ##### -->
+<para>
+
+</para>
+
+@class: 
 
 
 <!-- ##### MACRO G_OBJECT_GET_CLASS ##### -->
@@ -108,52 +149,12 @@ The Base Object Type
 @class: 
 
 
-<!-- ##### MACRO G_IS_VALUE_OBJECT ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_OBJECT ##### -->
 <para>
 
 </para>
 
 @value: 
-
-
-<!-- ##### MACRO G_TYPE_IS_OBJECT ##### -->
-<para>
-
-</para>
-
-@type: 
-
-
-<!-- ##### MACRO G_IS_OBJECT ##### -->
-<para>
-
-</para>
-
-@object: 
-
-
-<!-- ##### MACRO G_OBJECT_CLASS ##### -->
-<para>
-
-</para>
-
-@class: 
-
-
-<!-- ##### MACRO G_IS_OBJECT_CLASS ##### -->
-<para>
-
-</para>
-
-@class: 
-
-
-<!-- ##### USER_FUNCTION GObjectFinalizeFunc ##### -->
-<para>
-
-</para>
-
-@object: 
 
 
 <!-- ##### FUNCTION g_object_class_install_property ##### -->
@@ -189,112 +190,6 @@ The Base Object Type
 @first_param_name: 
 
 
-<!-- ##### FUNCTION g_object_new_valist ##### -->
-<para>
-
-</para>
-
-@object_type: 
-@first_property_name: 
-@var_args: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
-
-
-<!-- ##### FUNCTION g_object_set ##### -->
-<para>
-
-</para>
-
-@object: 
-@first_property_name: 
-@Varargs: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
-
-
-<!-- ##### FUNCTION g_object_get ##### -->
-<para>
-
-</para>
-
-@object: 
-@first_property_name: 
-@Varargs: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
-
-
-<!-- ##### FUNCTION g_object_set_valist ##### -->
-<para>
-
-</para>
-
-@object: 
-@first_property_name: 
-@var_args: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
-
-
-<!-- ##### FUNCTION g_object_get_valist ##### -->
-<para>
-
-</para>
-
-@object: 
-@first_property_name: 
-@var_args: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
-
-
-<!-- ##### FUNCTION g_object_set_property ##### -->
-<para>
-
-</para>
-
-@object: 
-@property_name: 
-@value: 
-
-
-<!-- ##### FUNCTION g_object_get_property ##### -->
-<para>
-
-</para>
-
-@object: 
-@property_name: 
-@value: 
-
-
-<!-- ##### FUNCTION g_object_freeze_notify ##### -->
-<para>
-
-</para>
-
-@object: 
-
-
-<!-- ##### FUNCTION g_object_notify ##### -->
-<para>
-
-</para>
-
-@object: 
-@property_name: 
-
-
-<!-- ##### FUNCTION g_object_thaw_notify ##### -->
-<para>
-
-</para>
-
-@object: 
-
-
 <!-- ##### FUNCTION g_object_ref ##### -->
 <para>
 
@@ -312,45 +207,76 @@ The Base Object Type
 @object: 
 
 
-<!-- ##### FUNCTION g_object_get_qdata ##### -->
+<!-- ##### FUNCTION g_object_connect ##### -->
 <para>
 
 </para>
 
 @object: 
-@quark: 
+@signal_spec: 
+@Varargs: 
 @Returns: 
 
 
-<!-- ##### FUNCTION g_object_set_qdata ##### -->
+<!-- ##### FUNCTION g_object_disconnect ##### -->
 <para>
 
 </para>
 
 @object: 
-@quark: 
-@data: 
-
-
-<!-- ##### FUNCTION g_object_set_qdata_full ##### -->
-<para>
-
-</para>
-
-@object: 
-@quark: 
-@data: 
-@destroy: 
-
-
-<!-- ##### FUNCTION g_object_steal_qdata ##### -->
-<para>
-
-</para>
-
-@object: 
-@quark: 
+@signal_spec: 
+@Varargs: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_object_set ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_property_name: 
+@Varargs: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_get ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_property_name: 
+@Varargs: 
+<!-- # Unused Parameters # -->
+@first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_notify ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+
+
+<!-- ##### FUNCTION g_object_freeze_notify ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION g_object_thaw_notify ##### -->
+<para>
+
+</para>
+
+@object: 
 
 
 <!-- ##### FUNCTION g_object_get_data ##### -->
@@ -394,6 +320,113 @@ The Base Object Type
 @Returns: 
 
 
+<!-- ##### FUNCTION g_object_get_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_set_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@data: 
+
+
+<!-- ##### FUNCTION g_object_set_qdata_full ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION g_object_steal_qdata ##### -->
+<para>
+
+</para>
+
+@object: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_object_set_property ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_get_property ##### -->
+<para>
+
+</para>
+
+@object: 
+@property_name: 
+@value: 
+
+
+<!-- ##### FUNCTION g_object_new_valist ##### -->
+<para>
+
+</para>
+
+@object_type: 
+@first_property_name: 
+@var_args: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_set_valist ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_property_name: 
+@var_args: 
+<!-- # Unused Parameters # -->
+@first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_get_valist ##### -->
+<para>
+
+</para>
+
+@object: 
+@first_property_name: 
+@var_args: 
+<!-- # Unused Parameters # -->
+@first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_watch_closure ##### -->
+<para>
+
+</para>
+
+@object: 
+@closure: 
+
+
 <!-- ##### FUNCTION g_value_set_object ##### -->
 <para>
 
@@ -419,15 +452,6 @@ The Base Object Type
 
 @value: 
 @Returns: 
-
-
-<!-- ##### FUNCTION g_object_watch_closure ##### -->
-<para>
-
-</para>
-
-@object: 
-@closure: 
 
 
 <!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->

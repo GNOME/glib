@@ -41,7 +41,7 @@ typedef struct _GTreeNode  GTreeNode;
 struct _GRealTree
 {
   GTreeNode *root;
-  GCompareFuncData key_compare;
+  GCompareDataFunc key_compare;
   gpointer key_compare_data;
 };
 
@@ -59,13 +59,13 @@ static GTreeNode* g_tree_node_new                   (gpointer        key,
 						     gpointer        value);
 static void       g_tree_node_destroy               (GTreeNode      *node);
 static GTreeNode* g_tree_node_insert                (GTreeNode      *node,
-						     GCompareFuncData compare,
+						     GCompareDataFunc compare,
 						     gpointer        comp_data,
 						     gpointer        key,
 						     gpointer        value,
 						     gint           *inserted);
 static GTreeNode* g_tree_node_remove                (GTreeNode      *node,
-						     GCompareFuncData compare,
+						     GCompareDataFunc compare,
 						     gpointer        comp_data,
 						     gconstpointer   key);
 static GTreeNode* g_tree_node_balance               (GTreeNode      *node);
@@ -76,7 +76,7 @@ static GTreeNode* g_tree_node_restore_left_balance  (GTreeNode      *node,
 static GTreeNode* g_tree_node_restore_right_balance (GTreeNode      *node,
 						     gint            old_balance);
 static gpointer   g_tree_node_lookup                (GTreeNode      *node,
-						     GCompareFuncData compare,
+						     GCompareDataFunc compare,
 						     gpointer        comp_data,
 						     gconstpointer   key);
 static gint       g_tree_node_count                 (GTreeNode      *node);
@@ -157,7 +157,7 @@ g_tree_node_destroy (GTreeNode *node)
    }
 }
 
-GTree*	 g_tree_new_udata(GCompareFuncData key_compare_func,
+GTree*	 g_tree_new_udata(GCompareDataFunc key_compare_func,
                           gpointer        key_compare_data)
 {
   GRealTree *rtree;
@@ -175,7 +175,7 @@ GTree*	 g_tree_new_udata(GCompareFuncData key_compare_func,
 GTree*
 g_tree_new (GCompareFunc key_compare_func)
 {
-  return g_tree_new_udata ((GCompareFuncData) key_compare_func, NULL);
+  return g_tree_new_udata ((GCompareDataFunc) key_compare_func, NULL);
 }
 
 
@@ -322,7 +322,7 @@ g_tree_nnodes (GTree *tree)
 
 static GTreeNode*
 g_tree_node_insert (GTreeNode      *node,
-		    GCompareFuncData compare,
+		    GCompareDataFunc compare,
 		    gpointer        compare_data,
 		    gpointer        key,
 		    gpointer        value,
@@ -393,7 +393,7 @@ g_tree_node_insert (GTreeNode      *node,
 
 static GTreeNode*
 g_tree_node_remove (GTreeNode      *node,
-		    GCompareFuncData compare,
+		    GCompareDataFunc compare,
 		    gpointer        compare_data,
 		    gconstpointer   key)
 {
@@ -526,7 +526,7 @@ g_tree_node_restore_right_balance (GTreeNode *node,
 
 static gpointer
 g_tree_node_lookup (GTreeNode      *node,
-		    GCompareFuncData compare,
+		    GCompareDataFunc compare,
 		    gpointer        compare_data,
 		    gconstpointer   key)
 {

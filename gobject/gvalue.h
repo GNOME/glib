@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1997, 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1997-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,14 +32,16 @@ extern "C" {
 /* --- type macros --- */
 #define	G_TYPE_IS_VALUE(type)		(g_type_value_table_peek (type) != NULL)
 #define	G_IS_VALUE(value)		(G_TYPE_CHECK_VALUE (value))
-#define	G_VALUE_HOLDS(value, g_type)	(G_TYPE_CHECK_VALUE_TYPE ((value), (g_type)))
 #define	G_VALUE_TYPE(value)		(((GValue*) (value))->g_type)
 #define	G_VALUE_TYPE_NAME(value)	(g_type_name (G_VALUE_TYPE (value)))
+#define G_VALUE_HOLDS(value,type)	(G_TYPE_CHECK_VALUE_TYPE ((value), (type)))
 
 
 /* --- typedefs & structures --- */
-typedef void (*GValueExchange) (GValue	*value1,
-				GValue	*value2);
+typedef void (*GValueExchange)  (GValue	      *value1,
+				 GValue	      *value2);
+typedef void (*GValueTransform) (const GValue *src_value,
+				 GValue       *dest_value);
 struct _GValue
 {
   /*< private >*/
@@ -59,28 +61,33 @@ struct _GValue
 
 
 /* --- prototypes --- */
-void            g_value_init	   	(GValue       *value,
+GValue*         g_value_init	   	(GValue       *value,
 					 GType         g_type);
 void            g_value_copy    	(const GValue *src_value,
 					 GValue       *dest_value);
 gboolean	g_value_convert		(const GValue *src_value,
 					 GValue       *dest_value);
-void            g_value_reset   	(GValue       *value);
+GValue*         g_value_reset   	(GValue       *value);
 void            g_value_unset   	(GValue       *value);
-gboolean	g_value_fits_pointer	(const GValue *value);
-gpointer	g_value_get_as_pointer	(const GValue *value);
 void		g_value_set_instance	(GValue	      *value,
 					 gpointer      instance);
 
 
+/* --- private --- */
+gboolean	g_value_fits_pointer	(const GValue *value);
+gpointer	g_value_peek_pointer	(const GValue *value);
+
+
 /* --- implementation details --- */
-gboolean g_values_exchange		(GValue       *value1,
-					 GValue       *value2);
-gboolean g_value_types_exchangable	(GType         value_type1,
-					 GType         value_type2);
-void     g_value_register_exchange_func	(GType         value_type1,
-					 GType         value_type2,
-					 GValueExchange func);
+gboolean g_value_type_compatible	(GType		 src_type,
+					 GType		 dest_type);
+gboolean g_value_type_transformable	(GType           src_type,
+					 GType           dest_type);
+gboolean g_value_transform		(const GValue   *src_value,
+					 GValue         *dest_value);
+void	g_value_register_transform_func	(GType		 src_type,
+					 GType		 dest_type,
+					 GValueTransform transform_func);
 #define G_VALUE_NOCOPY_CONTENTS		(1 << 27)
 
 

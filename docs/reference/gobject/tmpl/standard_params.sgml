@@ -238,22 +238,6 @@ Standard Parameter Types
 @pspec: 
 
 
-<!-- ##### MACRO G_IS_PARAM_SPEC_CCALLBACK ##### -->
-<para>
-
-</para>
-
-@pspec: 
-
-
-<!-- ##### MACRO G_PARAM_SPEC_CCALLBACK ##### -->
-<para>
-
-</para>
-
-@pspec: 
-
-
 <!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
 <para>
 
@@ -408,13 +392,6 @@ Standard Parameter Types
 @ensure_non_null: 
 
 <!-- ##### STRUCT GParamSpecBoxed ##### -->
-<para>
-
-</para>
-
-@parent_instance: 
-
-<!-- ##### STRUCT GParamSpecCCallback ##### -->
 <para>
 
 </para>
@@ -638,18 +615,6 @@ Standard Parameter Types
 @nick: 
 @blurb: 
 @boxed_type: 
-@flags: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_param_spec_ccallback ##### -->
-<para>
-
-</para>
-
-@name: 
-@nick: 
-@blurb: 
 @flags: 
 @Returns: 
 

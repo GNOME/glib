@@ -78,7 +78,7 @@ you do not have to worry about having enough space to copy the string.
 @Returns: the destination #GString.
 
 
-<!-- ##### FUNCTION g_string_sprintf ##### -->
+<!-- ##### MACRO g_string_sprintf ##### -->
 <para>
 Writes a formatted string into a #GString.
 This is similar to the standard <function>sprintf()</function> function,
@@ -86,19 +86,21 @@ except that the GString buffer automatically expands to contain the results.
 The previous contents of the GString are destroyed.
 </para>
 
+<!-- # Unused Parameters # -->
 @string: a #GString.
 @format: the string format. See the <function>sprintf()</function>
 documentation.
 @Varargs: the parameters to insert into the format string.
 
 
-<!-- ##### FUNCTION g_string_sprintfa ##### -->
+<!-- ##### MACRO g_string_sprintfa ##### -->
 <para>
 Appends a formatted string onto the end of a #GString.
 This function is is similar to g_string_sprintf() except that
 the text is appended to the GString.
 </para>
 
+<!-- # Unused Parameters # -->
 @string: a #GString.
 @format: the string format. See the <function>sprintf()</function>
 documentation.

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,16 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
     else \
       g_error ("%s()%s`%s'", _fname, _action, _tname); \
 }G_STMT_END
+#define	g_return_val_if_uninitialized(condition, init_function, return_value) G_STMT_START{	\
+  if (!(condition))										\
+    {												\
+      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,						\
+	     "%s: initialization assertion failed, use %s() prior to this function",		\
+	     G_STRLOC, G_STRINGIFY (init_function));						\
+      return (return_value);									\
+    }												\
+}G_STMT_END
+
 #ifdef  G_ENABLE_DEBUG
 #define DEBUG_CODE(debug_type, code_block)  G_STMT_START {    \
     if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) \
@@ -87,7 +97,7 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
-#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT)
+#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT)
 
 
 /* --- typedefs --- */
@@ -811,7 +821,15 @@ type_data_make_W (TypeNode              *node,
 	}
     }
   if (value_table)
-    vtable_size = sizeof (GTypeValueTable);
+    {
+      /* need to setup vtable_size since we have to allocate it with data in one chunk */
+      vtable_size = sizeof (GTypeValueTable);
+      if (value_table->collect_format)
+	vtable_size += strlen (value_table->collect_format);
+      if (value_table->lcopy_format)
+	vtable_size += strlen (value_table->lcopy_format);
+      vtable_size += 2;
+    }
   
   if (node->is_instantiatable) /* carefull, is_instantiatable is also is_classed */
     {
@@ -868,9 +886,26 @@ type_data_make_W (TypeNode              *node,
   
   if (vtable_size)
     {
+      gchar *p;
+
+      /* we allocate the vtable and its strings together with the type data, so
+       * children can take over their parent's vtable pointer, and we don't
+       * need to worry freeing it or not when the child data is destroyed
+       */
       *vtable = *value_table;
-      vtable->collect_format = g_strdup (value_table->collect_format ? value_table->collect_format : "");
-      vtable->lcopy_format = g_strdup (value_table->lcopy_format ? value_table->lcopy_format : "");
+      p = G_STRUCT_MEMBER_P (vtable, sizeof (*vtable));
+      p[0] = 0;
+      vtable->collect_format = p;
+      if (value_table->collect_format)
+	{
+	  strcat (p, value_table->collect_format);
+	  p += strlen (value_table->collect_format);
+	}
+      p++;
+      p[0] = 0;
+      vtable->lcopy_format = p;
+      if (value_table->lcopy_format)
+	strcat  (p, value_table->lcopy_format);
     }
   node->data->common.value_table = vtable;
   
@@ -1323,10 +1358,6 @@ type_data_finalize_class_U (TypeNode  *node,
   
   g_assert (cdata->class && cdata->common.ref_count == 0);
   
-  g_message ("finalizing %sClass `%s'",
-	     type_descriptive_name_U (G_TYPE_FUNDAMENTAL (NODE_TYPE (node))),
-	     type_descriptive_name_U (NODE_TYPE (node)));
-  
   if (cdata->class_finalize)
     cdata->class_finalize (class, (gpointer) cdata->class_data);
   
@@ -1415,11 +1446,9 @@ type_data_last_unref_Wm (GType    type,
       else
 	node->data = NULL;
 
-      if (tdata->common.value_table)
-	{
-	  g_free (tdata->common.value_table->collect_format);
-	  g_free (tdata->common.value_table->lcopy_format);
-	}
+      /* freeing tdata->common.value_table and its contents is taking care of
+       * by allocating it in one chunk with tdata
+       */
       g_free (tdata);
       
       if (ptype)
@@ -1487,6 +1516,7 @@ g_type_register_fundamental (GType                       type_id,
   GTypeFundamentalInfo *node_finfo;
   TypeNode *node;
   
+  g_return_val_if_uninitialized (static_last_fundamental_id, g_type_init, 0);
   g_return_val_if_fail (type_id > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -1539,6 +1569,7 @@ g_type_register_static (GType            parent_type,
   TypeNode *pnode, *node;
   GType type = 0;
   
+  g_return_val_if_uninitialized (static_last_fundamental_id, g_type_init, 0);
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -1578,6 +1609,7 @@ g_type_register_dynamic (GType        parent_type,
   TypeNode *pnode, *node;
   GType type;
   
+  g_return_val_if_uninitialized (static_last_fundamental_id, g_type_init, 0);
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (plugin != NULL, 0);
@@ -1800,27 +1832,13 @@ g_type_interface_peek (gpointer instance_class,
   return vtable;
 }
 
-GTypeValueTable*
-g_type_value_table_peek (GType type)
-{
-  TypeNode *node;
-  GTypeValueTable *vtable = NULL;
-  
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (type);
-  if (node && node->data && node->data->common.ref_count > 0 &&
-      node->data->common.value_table->value_init)
-    vtable = node->data->common.value_table;
-  G_READ_UNLOCK (&type_rw_lock);
-  
-  return vtable;
-}
-
 G_CONST_RETURN gchar*
 g_type_name (GType type)
 {
   TypeNode *node;
   
+  g_return_val_if_uninitialized (static_last_fundamental_id, g_type_init, NULL);
+
   G_READ_LOCK (&type_rw_lock);
   node = lookup_type_node_L (type);
   G_READ_UNLOCK (&type_rw_lock);
@@ -2140,7 +2158,7 @@ type_add_flags_W (TypeNode  *node,
   g_return_if_fail ((flags & ~TYPE_FLAG_MASK) == 0);
   g_return_if_fail (node != NULL);
   
-  if ((flags & G_TYPE_FLAG_ABSTRACT) && node->is_classed && node->data && node->data->class.class)
+  if ((flags & TYPE_FLAG_MASK) && node->is_classed && node->data && node->data->class.class)
     g_warning ("tagging type `%s' as abstract after class initialization", NODE_NAME (node));
   dflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
   dflags |= flags;
@@ -2261,39 +2279,6 @@ g_type_class_is_a (GTypeClass *type_class,
 	  g_type_is_a (type_class->g_type, is_a_type));
 }
 
-gboolean
-g_type_value_is_a (GValue *value,
-		   GType   type)
-{
-  TypeNode *node;
-  
-  if (!value)
-    return FALSE;
-  
-  G_READ_LOCK (&type_rw_lock);
-  node = lookup_type_node_L (value->g_type);
-#if 0
-  if (!G_TYPE_IS_FUNDAMENTAL (value->g_type) && !node || !node->data)
-    node = lookup_type_node_L (G_TYPE_FUNDAMENTAL (value->g_type));
-#endif
-  if (!node || !node->data || node->data->common.ref_count < 1 ||
-      !node->data->common.value_table->value_init)
-    {
-      G_READ_UNLOCK (&type_rw_lock);
-      
-      return FALSE;
-    }
-  G_READ_UNLOCK (&type_rw_lock);
-  
-  return g_type_is_a (value->g_type, type);
-}
-
-gboolean
-g_type_check_value (GValue *value)
-{
-  return value && g_type_value_is_a (value, value->g_type);
-}
-
 GTypeInstance*
 g_type_check_instance_cast (GTypeInstance *type_instance,
 			    GType          iface_type)
@@ -2392,6 +2377,57 @@ g_type_check_instance (GTypeInstance *type_instance)
   return TRUE;
 }
 
+static inline gboolean
+type_check_is_value_type_U (GType type)
+{
+  GTypeFlags tflags = G_TYPE_FLAG_VALUE_ABSTRACT;
+  TypeNode *node;
+
+  G_READ_LOCK (&type_rw_lock);
+  node = lookup_type_node_L (type);
+  if (node && node->data && node->data->common.ref_count > 0 &&
+      node->data->common.value_table->value_init)
+    tflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
+  G_READ_UNLOCK (&type_rw_lock);
+
+  return !(tflags & G_TYPE_FLAG_VALUE_ABSTRACT);
+}
+
+gboolean
+g_type_check_is_value_type (GType type)
+{
+  return type_check_is_value_type_U (type);
+}
+
+gboolean
+g_type_check_value (GValue *value)
+{
+  return value && type_check_is_value_type_U (value->g_type);
+}
+
+gboolean
+g_type_check_value_holds (GValue *value,
+			  GType   type)
+{
+  return value && type_check_is_value_type_U (value->g_type) && g_type_is_a (value->g_type, type);
+}
+
+GTypeValueTable*
+g_type_value_table_peek (GType type)
+{
+  TypeNode *node;
+  GTypeValueTable *vtable = NULL;
+  
+  G_READ_LOCK (&type_rw_lock);
+  node = lookup_type_node_L (type);
+  if (node && node->data && node->data->common.ref_count > 0 &&
+      node->data->common.value_table->value_init)
+    vtable = node->data->common.value_table;
+  G_READ_UNLOCK (&type_rw_lock);
+  
+  return vtable;
+}
+
 
 /* --- foreign prototypes --- */
 extern void	g_value_types_init	(void); /* sync with gvaluetypes.c */
@@ -2400,6 +2436,7 @@ extern void     g_param_type_init       (void);	/* sync with gparam.c */
 extern void     g_boxed_type_init       (void);	/* sync with gboxed.c */
 extern void     g_object_type_init      (void);	/* sync with gobject.c */
 extern void	g_param_spec_types_init	(void);	/* sync with gparamspecs.c */
+extern void	g_value_transforms_init	(void); /* sync with gvaluetransform.c */
 extern void	g_signal_init		(void);	/* sync with gsignal.c */
 
 
@@ -2483,13 +2520,13 @@ g_type_init (GTypeDebugFlags debug_flags)
    */
   g_enum_types_init ();
   
-  /* G_TYPE_PARAM
+  /* G_TYPE_BOXED
    */
-  g_param_type_init ();
+  g_boxed_type_init ();
   
   /* G_TYPE_PARAM
    */
-  g_boxed_type_init ();
+  g_param_type_init ();
   
   /* G_TYPE_OBJECT
    */
@@ -2499,6 +2536,10 @@ g_type_init (GTypeDebugFlags debug_flags)
    */
   g_param_spec_types_init ();
   
+  /* Value Transformations
+   */
+  g_value_transforms_init ();
+
   /* Signal system
    */
   g_signal_init ();

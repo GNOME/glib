@@ -8,6 +8,7 @@ INCLUDES = @STRIP_BEGIN@ \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
 	@GLIB_DEBUG_FLAGS@			\
+	-DG_DISABLE_CONST_RETURNS		\
 @STRIP_END@
 
 # libraries to compile and install
@@ -38,6 +39,7 @@ gruntime_public_h_sources = @STRIP_BEGIN@ \
 	gtypemodule.h		\
 	gtypeplugin.h		\
 	gvalue.h		\
+	gvaluearray.h		\
 	gvaluecollector.h	\
 	gvaluetypes.h		\
 @STRIP_END@
@@ -57,6 +59,8 @@ gruntime_c_sources = @STRIP_BEGIN@ \
 	gtypemodule.c		\
 	gtypeplugin.c		\
 	gvalue.c		\
+	gvaluearray.c		\
+	gvaluetransform.c	\
 	gvaluetypes.c		\
 @STRIP_END@
 

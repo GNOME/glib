@@ -69,7 +69,7 @@ typedef const void *gconstpointer;
 
 typedef gint            (*GCompareFunc)         (gconstpointer  a,
                                                  gconstpointer  b);
-typedef gint            (*GCompareFuncData)     (gconstpointer  a,
+typedef gint            (*GCompareDataFunc)     (gconstpointer  a,
                                                  gconstpointer  b,
 						 gpointer       user_data);
 typedef gboolean        (*GEqualFunc)           (gconstpointer  a,

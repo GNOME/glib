@@ -9,12 +9,14 @@ Standard value types
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
-<!-- ##### MACRO G_IS_VALUE_CHAR ##### -->
+
+<!-- ##### MACRO G_VALUE_HOLDS_CHAR ##### -->
 <para>
 
 </para>
@@ -22,7 +24,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_UCHAR ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_UCHAR ##### -->
 <para>
 
 </para>
@@ -30,7 +32,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_BOOLEAN ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_BOOLEAN ##### -->
 <para>
 
 </para>
@@ -38,7 +40,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_INT ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_INT ##### -->
 <para>
 
 </para>
@@ -46,7 +48,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_UINT ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_UINT ##### -->
 <para>
 
 </para>
@@ -54,7 +56,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_LONG ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_LONG ##### -->
 <para>
 
 </para>
@@ -62,7 +64,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_ULONG ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_ULONG ##### -->
 <para>
 
 </para>
@@ -70,7 +72,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_FLOAT ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_FLOAT ##### -->
 <para>
 
 </para>
@@ -78,7 +80,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_DOUBLE ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_DOUBLE ##### -->
 <para>
 
 </para>
@@ -86,7 +88,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_STRING ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_STRING ##### -->
 <para>
 
 </para>
@@ -94,7 +96,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_POINTER ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_POINTER ##### -->
 <para>
 
 </para>
@@ -102,15 +104,7 @@ Standard value types
 @value: 
 
 
-<!-- ##### MACRO G_IS_VALUE_CCALLBACK ##### -->
-<para>
-
-</para>
-
-@value: 
-
-
-<!-- ##### MACRO G_IS_VALUE_PARAM ##### -->
+<!-- ##### MACRO G_VALUE_HOLDS_PARAM ##### -->
 <para>
 
 </para>
@@ -298,6 +292,15 @@ Standard value types
 @v_string: 
 
 
+<!-- ##### FUNCTION g_value_set_string_take_ownership ##### -->
+<para>
+This is an internal function introduced mainly for C marshallers.
+</para>
+
+@value: 
+@v_string: 
+
+
 <!-- ##### FUNCTION g_value_get_string ##### -->
 <para>
 
@@ -343,16 +346,6 @@ Standard value types
 @Returns: 
 
 
-<!-- ##### FUNCTION g_value_get_ccallback ##### -->
-<para>
-
-</para>
-
-@value: 
-@callback_func: 
-@callback_data: 
-
-
 <!-- ##### FUNCTION g_value_get_pointer ##### -->
 <para>
 
@@ -369,25 +362,6 @@ Standard value types
 
 @value: 
 @v_pointer: 
-
-
-<!-- ##### FUNCTION g_value_get_as_pointer ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_value_set_ccallback ##### -->
-<para>
-
-</para>
-
-@value: 
-@callback_func: 
-@callback_data: 
 
 
 <!-- ##### FUNCTION g_value_set_instance ##### -->

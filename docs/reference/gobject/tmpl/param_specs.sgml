@@ -118,6 +118,7 @@ Parameter Specifications
 @G_PARAM_WRITABLE: 
 @G_PARAM_CONSTRUCT: 
 @G_PARAM_CONSTRUCT_ONLY: 
+@G_PARAM_LAX_VALIDATION: 
 @G_PARAM_PRIVATE: 
 
 <!-- ##### FUNCTION g_param_spec_ref ##### -->
@@ -293,8 +294,9 @@ Parameter Specifications
 @param_name: 
 @owner_type: 
 @walk_ancestors: 
-@trailer_p: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@trailer_p: 
 
 
 <!-- ##### FUNCTION g_param_spec_internal ##### -->

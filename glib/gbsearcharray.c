@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Tim Janik
+ * Copyright (C) 2000-2001 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -94,7 +94,7 @@ bsearch_array_insert (GBSearchArray *barray,
 	}
       else
 	barray->nodes = g_realloc (barray->nodes, barray->n_nodes * sizeof_node);
-      check = (char *) barray->nodes + i * sizeof_node;
+      check = ((guint8*) barray->nodes) + i * sizeof_node;
       g_memmove (check + sizeof_node, check, (n_nodes - i) * sizeof_node);
       replace = TRUE;
     SKIP_GROW:

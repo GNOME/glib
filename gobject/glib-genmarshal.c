@@ -1,5 +1,5 @@
 /* GLIB-GenMarshal - Marshaller generator for GObject library
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000-2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,21 +48,27 @@ char *g_log_domain_gruntime = "GLib-Genmarshal";
 
 
 /* --- typedefs & structures --- */
-typedef struct _Argument  Argument;
-typedef struct _Signature Signature;
-struct _Argument
+typedef struct
 {
-  gchar       *pname;		/* parsed name */
-  const gchar *sname;		/* signature name */
-  const gchar *func;		/* functional extension */
-  const gchar *cname;		/* C name */
-};
-struct _Signature
+  gchar	      *keyword;		/* marhaller list keyword [MY_STRING] */
+  const gchar *sig_name;	/* signature name [STRING] */
+  const gchar *ctype;		/* C type name [gchar*] */
+  const gchar *getter;		/* value getter function [g_value_get_string] */
+} InArgument;
+typedef struct
 {
-  gchar    *ploc;
-  Argument *rarg;
-  GList    *args;	/* of type Argument* */
-};
+  gchar	      *keyword;		/* marhaller list keyword [MY_STRING] */
+  const gchar *sig_name;	/* signature name [STRING] */
+  const gchar *ctype;		/* C type name [gchar*] */
+  const gchar *setter;		/* value setter function [g_value_set_string] */
+  const gchar *release;		/* value release function [g_free] */
+} OutArgument;
+typedef struct
+{
+  gchar       *ploc;
+  OutArgument *rarg;
+  GList       *args;	/* of type InArgument* */
+} Signature;
 
 
 /* --- prototypes --- */
@@ -125,72 +131,89 @@ static gboolean		 std_includes = TRUE;
 
 /* --- functions --- */
 static gboolean
-complete_arg (Argument *arg,
-	      gboolean  is_return)
+complete_in_arg (InArgument *iarg)
 {
-  static const Argument inout_arguments[] = {
-    /* pname,		sname,		func,			cname		*/
-    { "VOID",		"VOID",		NULL,			"void",		},
-    { "BOOLEAN",	"BOOLEAN",	"boolean",		"gboolean",	},
-    { "CHAR",		"CHAR",		"char",			"gchar",	},
-    { "UCHAR",		"UCHAR",	"uchar",		"guchar",	},
-    { "INT",		"INT",		"int",			"gint",		},
-    { "UINT",		"UINT",		"uint",			"guint",	},
-    { "LONG",		"LONG",		"long",			"glong",	},
-    { "ULONG",		"ULONG",	"ulong",		"gulong",	},
-    { "ENUM",		"ENUM",		"enum",			"gint",		},
-    { "FLAGS",		"FLAGS",	"flags",		"guint",	},
-    { "FLOAT",		"FLOAT",	"float",		"gfloat",	},
-    { "DOUBLE",		"DOUBLE",	"double",		"gdouble",	},
+  static const InArgument args[] = {
+    /* keyword		sig_name	ctype		getter			*/
+    { "VOID",		"VOID",		"void",		NULL,			},
+    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_get_boolean",	},
+    { "CHAR",		"CHAR",		"gchar",	"g_value_get_char",	},
+    { "UCHAR",		"UCHAR",	"guchar",	"g_value_get_uchar",	},
+    { "INT",		"INT",		"gint",		"g_value_get_int",	},
+    { "UINT",		"UINT",		"guint",	"g_value_get_uint",	},
+    { "LONG",		"LONG",		"glong",	"g_value_get_long",	},
+    { "ULONG",		"ULONG",	"gulong",	"g_value_get_ulong",	},
+    { "ENUM",		"ENUM",		"gint",		"g_value_get_enum",	},
+    { "FLAGS",		"FLAGS",	"guint",	"g_value_get_flags",	},
+    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_get_float",	},
+    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_get_double",	},
+    { "STRING",		"STRING",	"gpointer",	"(char*) g_value_get_string",	},
+    { "PARAM",		"PARAM",	"gpointer",	"g_value_get_param",	},
+    { "BOXED",		"BOXED",	"gpointer",	"g_value_get_boxed",	},
+    { "POINTER",	"POINTER",	"gpointer",	"g_value_get_pointer",	},
+    { "OBJECT",		"OBJECT",	"gpointer",	"g_value_get_object",	},
     /* deprecated: */
-    { "NONE",		"VOID",		NULL,			"void",		},
-    { "BOOL",		"BOOLEAN",	"boolean",		"gboolean",	},
+    { "NONE",		"VOID",		"void",		NULL,			},
+    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_get_boolean",	},
   };
-  static const Argument in_arguments[] = {
-    { "STRING",		"POINTER",	"as_pointer",		"gpointer",	},
-    { "BOXED",		"POINTER",	"as_pointer",		"gpointer",	},
-    { "POINTER",	"POINTER",	"as_pointer",		"gpointer",	},
-    { "PARAM",		"POINTER",	"as_pointer",		"gpointer",	},
-    { "OBJECT",		"POINTER",	"as_pointer",		"gpointer",	},
-  };
-  static const Argument out_arguments[] = {
-    { "STRING",		"STRING",	"string",		"gchar*",	},
-    { "BOXED",		"BOXED",	"boxed",		"gpointer",	},
-    { "POINTER",	"POINTER",	"pointer",		"gpointer",	},
-    { "PARAM",		"PARAM",	"param",		"GParamSpec*",	},
-    { "OBJECT",		"OBJECT",	"object",		"GObject*",	},
-  };
-  const guint n_inout_arguments = sizeof (inout_arguments) / sizeof (inout_arguments[0]);
-  const guint n_out_arguments = sizeof (out_arguments) / sizeof (out_arguments[0]);
-  const guint n_in_arguments = sizeof (in_arguments) / sizeof (in_arguments[0]);
-  const Argument *arguments;
-  guint i, n_arguments;
+  const guint n_args = sizeof (args) / sizeof (args[0]);
+  guint i;
 
-  g_return_val_if_fail (arg != NULL, FALSE);
+  g_return_val_if_fail (iarg != NULL, FALSE);
 
-  arguments = inout_arguments;
-  n_arguments = n_inout_arguments;
-  for (i = 0; i < n_arguments; i++)
-    if (strcmp (arguments[i].pname, arg->pname) == 0)
+  for (i = 0; i < n_args; i++)
+    if (strcmp (args[i].keyword, iarg->keyword) == 0)
       {
-	arg->sname = arguments[i].sname;
-	arg->func = arguments[i].func;
-	arg->cname = arguments[i].cname;
+	iarg->sig_name = args[i].sig_name;
+	iarg->ctype = args[i].ctype;
+	iarg->getter = args[i].getter;
 
 	return TRUE;
       }
-  arguments = is_return ? out_arguments : in_arguments;
-  n_arguments = is_return ? n_out_arguments : n_in_arguments;
-  for (i = 0; i < n_arguments; i++)
-    if (strcmp (arguments[i].pname, arg->pname) == 0)
+  return FALSE;
+}
+
+static gboolean
+complete_out_arg (OutArgument *oarg)
+{
+  static const OutArgument args[] = {
+    /* keyword		sig_name	ctype		setter			release */
+    { "VOID",		"VOID",		"void",		NULL,			NULL,			},
+    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			},
+    { "CHAR",		"CHAR",		"gchar",	"g_value_set_char",	NULL,			},
+    { "UCHAR",		"UCHAR",	"guchar",	"g_value_set_uchar",	NULL,			},
+    { "INT",		"INT",		"gint",		"g_value_set_int",	NULL,			},
+    { "UINT",		"UINT",		"guint",	"g_value_set_uint",	NULL,			},
+    { "LONG",		"LONG",		"glong",	"g_value_set_long",	NULL,			},
+    { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",	NULL,			},
+    { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",	NULL,			},
+    { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",	NULL,			},
+    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",	NULL,			},
+    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_set_double",	NULL,			},
+    { "STRING",		"STRING",	"gchar*",	"g_value_set_string_take_ownership", NULL,	},
+    { "PARAM",		"PARAM",	"GParamSpec*",	"g_value_set_param",	"g_param_spec_unref",	},
+    { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership", NULL,	},
+    { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",	NULL,			},
+    { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object",	"g_object_unref",	},
+    /* deprecated: */
+    { "NONE",		"VOID",		"void",		NULL,			NULL,			},
+    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			},
+  };
+  const guint n_args = sizeof (args) / sizeof (args[0]);
+  guint i;
+
+  g_return_val_if_fail (oarg != NULL, FALSE);
+
+  for (i = 0; i < n_args; i++)
+    if (strcmp (args[i].keyword, oarg->keyword) == 0)
       {
-	arg->sname = arguments[i].sname;
-	arg->func = arguments[i].func;
-	arg->cname = arguments[i].cname;
+	oarg->sig_name = args[i].sig_name;
+	oarg->ctype = args[i].ctype;
+	oarg->setter = args[i].setter;
+	oarg->release = args[i].release;
 
 	return TRUE;
       }
-
   return FALSE;
 }
 
@@ -230,7 +253,7 @@ pad (const gchar *string)
 static const gchar*
 indent (guint n_spaces)
 {
-  static gchar *buffer;
+  static gchar *buffer = NULL;
   static guint blength = 0;
 
   if (blength <= n_spaces)
@@ -307,38 +330,38 @@ generate_marshal (const gchar *signame,
       fprintf (fout, "%sgpointer      marshal_data)\n", indent (ind));
       fprintf (fout, "{\n");
 
-      /* cfile GSignalFunc typedef */
-      ind = fprintf (fout, "  typedef %s (*GSignalFunc_%s) (", sig->rarg->cname, signame);
+      /* cfile GMarshalFunc typedef */
+      ind = fprintf (fout, "  typedef %s (*GMarshalFunc_%s) (", sig->rarg->ctype, signame);
       fprintf (fout, "%s data1,\n", pad ("gpointer"));
       for (a = 1, node = sig->args; node; node = node->next)
 	{
-	  Argument *arg = node->data;
+	  InArgument *iarg = node->data;
 
-	  if (arg->func)
-	    fprintf (fout, "%s%s arg_%d,\n", indent (ind), pad (arg->cname), a++);
+	  if (iarg->getter)
+	    fprintf (fout, "%s%s arg_%d,\n", indent (ind), pad (iarg->ctype), a++);
 	}
       fprintf (fout, "%s%s data2);\n", indent (ind), pad ("gpointer"));
 
       /* cfile marshal variables */
-      fprintf (fout, "  register GSignalFunc_%s callback;\n", signame);
+      fprintf (fout, "  register GMarshalFunc_%s callback;\n", signame);
       fprintf (fout, "  register GCClosure *cc = (GCClosure*) closure;\n");
       fprintf (fout, "  register gpointer data1, data2;\n");
-      if (sig->rarg->func)
-	fprintf (fout, "  %s v_return;\n", sig->rarg->cname);
+      if (sig->rarg->setter)
+	fprintf (fout, "  %s v_return;\n", sig->rarg->ctype);
 
-      if (sig->args || sig->rarg->func)
+      if (sig->args || sig->rarg->setter)
 	{
 	  fprintf (fout, "\n");
 
-	  if (sig->rarg->func)
+	  if (sig->rarg->setter)
 	    fprintf (fout, "  g_return_if_fail (return_value != NULL);\n");
 	  if (sig->args)
 	    {
 	      for (a = 0, node = sig->args; node; node = node->next)
 		{
-		  Argument *arg = node->data;
+		  InArgument *iarg = node->data;
 
-		  if (arg->func)
+		  if (iarg->getter)
 		    a++;
 		}
 	      fprintf (fout, "  g_return_if_fail (n_param_values >= %u);\n", 1 + a);
@@ -349,31 +372,33 @@ generate_marshal (const gchar *signame,
       fprintf (fout, "\n");
       fprintf (fout, "  if (G_CCLOSURE_SWAP_DATA (closure))\n    {\n");
       fprintf (fout, "      data1 = closure->data;\n");
-      fprintf (fout, "      data2 = g_value_get_as_pointer (param_values + 0);\n");
+      fprintf (fout, "      data2 = g_value_peek_pointer (param_values + 0);\n");
       fprintf (fout, "    }\n  else\n    {\n");
-      fprintf (fout, "      data1 = g_value_get_as_pointer (param_values + 0);\n");
+      fprintf (fout, "      data1 = g_value_peek_pointer (param_values + 0);\n");
       fprintf (fout, "      data2 = closure->data;\n");
       fprintf (fout, "    }\n");
-      fprintf (fout, "  callback = (GSignalFunc_%s) (marshal_data ? marshal_data : cc->callback);\n", signame);
+      fprintf (fout, "  callback = (GMarshalFunc_%s) (marshal_data ? marshal_data : cc->callback);\n", signame);
 
       /* cfile marshal callback action */
       fprintf (fout, "\n");
-      ind = fprintf (fout, " %s callback (", sig->rarg->func ? " v_return =" : "");
+      ind = fprintf (fout, " %s callback (", sig->rarg->setter ? " v_return =" : "");
       fprintf (fout, "data1,\n");
       for (a = 1, node = sig->args; node; node = node->next)
 	{
-	  Argument *arg = node->data;
+	  InArgument *iarg = node->data;
 
-	  if (arg->func)
-	    fprintf (fout, "%sg_value_get_%s (param_values + %d),\n", indent (ind), arg->func, a++);
+	  if (iarg->getter)
+	    fprintf (fout, "%s%s (param_values + %d),\n", indent (ind), iarg->getter, a++);
 	}
       fprintf (fout, "%sdata2);\n", indent (ind));
 
       /* cfile marshal return value storage */
-      if (sig->rarg->func)
+      if (sig->rarg->setter)
 	{
 	  fprintf (fout, "\n");
-	  fprintf (fout, "  g_value_set_%s (return_value, v_return);\n", sig->rarg->func);
+	  fprintf (fout, "  %s (return_value, v_return);\n", sig->rarg->setter);
+	  if (sig->rarg->release)
+	    fprintf (fout, "  %s (v_return);\n", sig->rarg->release);
 	}
 
       /* cfile marshal footer */
@@ -388,45 +413,45 @@ process_signature (Signature *sig)
   GList *node;
 
   /* lookup and complete info on arguments */
-  if (!complete_arg (sig->rarg, TRUE))
+  if (!complete_out_arg (sig->rarg))
     {
-      g_warning ("unknown type: %s", sig->rarg->pname);
+      g_warning ("unknown type: %s", sig->rarg->keyword);
       return;
     }
   for (node = sig->args; node; node = node->next)
     {
-      Argument *arg = node->data;
+      InArgument *iarg = node->data;
 
-      if (!complete_arg (arg, FALSE))
+      if (!complete_in_arg (iarg))
 	{
-	  g_warning ("unknown type: %s", arg->pname);
+	  g_warning ("unknown type: %s", iarg->keyword);
 	  return;
 	}
     }
 
   /* construct requested marshaller name and technical marshaller name */
-  pname = g_strconcat (sig->rarg->pname, "_", NULL);
-  sname = g_strconcat (sig->rarg->sname, "_", NULL);
+  pname = g_strconcat (sig->rarg->keyword, "_", NULL);
+  sname = g_strconcat (sig->rarg->sig_name, "_", NULL);
   for (node = sig->args; node; node = node->next)
     {
-      Argument *arg = node->data;
+      InArgument *iarg = node->data;
       gchar *tmp;
 
       tmp = sname;
-      sname = g_strconcat (tmp, "_", arg->sname, NULL);
+      sname = g_strconcat (tmp, "_", iarg->sig_name, NULL);
       g_free (tmp);
       tmp = pname;
-      pname = g_strconcat (tmp, "_", arg->pname, NULL);
+      pname = g_strconcat (tmp, "_", iarg->keyword, NULL);
       g_free (tmp);
     }
 
   /* introductionary comment */
-  fprintf (fout, "\n/* %s", sig->rarg->pname);
+  fprintf (fout, "\n/* %s", sig->rarg->keyword);
   for (node = sig->args; node; node = node->next)
     {
-      Argument *arg = node->data;
+      InArgument *iarg = node->data;
 
-      fprintf (fout, "%c%s", node->prev ? ',' : ':', arg->pname);
+      fprintf (fout, "%c%s", node->prev ? ',' : ':', iarg->keyword);
     }
   if (!skip_ploc)
     fprintf (fout, " (%s)", sig->ploc);
@@ -450,14 +475,24 @@ process_signature (Signature *sig)
   g_free (sname);
 }
 
-static Argument*
-new_arg (const gchar *pname)
+static InArgument*
+new_in_arg (const gchar *pname)
 {
-  Argument *arg = g_new0 (Argument, 1);
+  InArgument *iarg = g_new0 (InArgument, 1);
 
-  arg->pname = g_strdup (pname);
+  iarg->keyword = g_strdup (pname);
 
-  return arg;
+  return iarg;
+}
+
+static OutArgument*
+new_out_arg (const gchar *pname)
+{
+  OutArgument *oarg = g_new0 (OutArgument, 1);
+
+  oarg->keyword = g_strdup (pname);
+
+  return oarg;
 }
 
 static guint
@@ -467,7 +502,7 @@ parse_line (GScanner  *scanner,
   /* parse identifier for return value */
   if (g_scanner_get_next_token (scanner) != G_TOKEN_IDENTIFIER)
     return G_TOKEN_IDENTIFIER;
-  sig->rarg = new_arg (scanner->value.v_identifier);
+  sig->rarg = new_out_arg (scanner->value.v_identifier);
 
   /* keep a note on the location */
   sig->ploc = g_strdup_printf ("%s:%u", scanner->input_name, scanner->line);
@@ -479,7 +514,7 @@ parse_line (GScanner  *scanner,
   /* parse first argument */
   if (g_scanner_get_next_token (scanner) != G_TOKEN_IDENTIFIER)
     return G_TOKEN_IDENTIFIER;
-  sig->args = g_list_append (sig->args, new_arg (scanner->value.v_identifier));
+  sig->args = g_list_append (sig->args, new_in_arg (scanner->value.v_identifier));
 
   /* parse rest of argument list */
   while (g_scanner_peek_next_token (scanner) == ',')
@@ -490,7 +525,7 @@ parse_line (GScanner  *scanner,
       /* parse arg identifier */
       if (g_scanner_get_next_token (scanner) != G_TOKEN_IDENTIFIER)
 	return G_TOKEN_IDENTIFIER;
-      sig->args = g_list_append (sig->args, new_arg (scanner->value.v_identifier));
+      sig->args = g_list_append (sig->args, new_in_arg (scanner->value.v_identifier));
     }
   
   /* expect end of line, done */
@@ -605,14 +640,14 @@ main (int   argc,
 		/* clean up signature contents */
 		g_free (signature.ploc);
 		if (signature.rarg)
-		  g_free (signature.rarg->pname);
+		  g_free (signature.rarg->keyword);
 		g_free (signature.rarg);
 		for (node = signature.args; node; node = node->next)
 		  {
-		    Argument *arg = node->data;
+		    InArgument *iarg = node->data;
 		    
-		    g_free (arg->pname);
-		    g_free (arg);
+		    g_free (iarg->keyword);
+		    g_free (iarg);
 		  }
 		g_list_free (signature.args);
 	      }

@@ -278,17 +278,6 @@ and has no return value. It is not currently used in GLib or GTK+.
 @data: 
 
 
-<!-- ##### USER_FUNCTION GCompareFuncData ##### -->
-<para>
-
-</para>
-
-@a: 
-@b: 
-@user_data: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_qsort_with_data ##### -->
 <para>
 

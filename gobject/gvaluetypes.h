@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 1997, 1998, 1999, 2000 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 1997-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,63 +31,63 @@ extern "C" {
 
 
 /* --- type macros --- */
-#define G_IS_VALUE_CHAR(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CHAR))
-#define G_IS_VALUE_UCHAR(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UCHAR))
-#define G_IS_VALUE_BOOLEAN(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOOLEAN))
-#define G_IS_VALUE_INT(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_INT))
-#define G_IS_VALUE_UINT(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UINT))
-#define G_IS_VALUE_LONG(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_LONG))
-#define G_IS_VALUE_ULONG(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ULONG))
-#define G_IS_VALUE_FLOAT(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLOAT))
-#define G_IS_VALUE_DOUBLE(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
-#define G_IS_VALUE_STRING(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
-#define G_IS_VALUE_POINTER(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
-#define G_IS_VALUE_CCALLBACK(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CCALLBACK))
+#define G_VALUE_HOLDS_CHAR(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CHAR))
+#define G_VALUE_HOLDS_UCHAR(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UCHAR))
+#define G_VALUE_HOLDS_BOOLEAN(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOOLEAN))
+#define G_VALUE_HOLDS_INT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_INT))
+#define G_VALUE_HOLDS_UINT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_UINT))
+#define G_VALUE_HOLDS_LONG(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_LONG))
+#define G_VALUE_HOLDS_ULONG(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_ULONG))
+#define G_VALUE_HOLDS_FLOAT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_FLOAT))
+#define G_VALUE_HOLDS_DOUBLE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
+#define G_VALUE_HOLDS_STRING(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
+#define G_VALUE_HOLDS_POINTER(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
 
 
 /* --- prototypes --- */
-void                  g_value_set_char          (GValue       *value,
-						 gint8         v_char);
-gint8                 g_value_get_char          (const GValue *value);
-void                  g_value_set_uchar         (GValue       *value,
-						 guint8        v_uchar);
-guint8                g_value_get_uchar         (const GValue *value);
-void                  g_value_set_boolean       (GValue       *value,
+void		      g_value_set_char		(GValue	      *value,
+						 gchar	       v_char);
+gchar		      g_value_get_char		(const GValue *value);
+void		      g_value_set_uchar		(GValue	      *value,
+						 guchar	       v_uchar);
+guchar		      g_value_get_uchar		(const GValue *value);
+void		      g_value_set_boolean	(GValue	      *value,
 						 gboolean      v_boolean);
-gboolean              g_value_get_boolean       (const GValue *value);
-void                  g_value_set_int           (GValue       *value,
-						 gint          v_int);
-gint                  g_value_get_int           (const GValue *value);
-void                  g_value_set_uint          (GValue       *value,
-						 guint         v_uint);
-guint                 g_value_get_uint          (const GValue *value);
-void                  g_value_set_long          (GValue       *value,
-						 glong         v_long);
-glong                 g_value_get_long          (const GValue *value);
-void                  g_value_set_ulong         (GValue       *value,
-						 gulong        v_ulong);
-gulong                g_value_get_ulong         (const GValue *value);
-void                  g_value_set_float         (GValue       *value,
-						 gfloat        v_float);
-gfloat                g_value_get_float         (const GValue *value);
-void                  g_value_set_double        (GValue       *value,
+gboolean	      g_value_get_boolean	(const GValue *value);
+void		      g_value_set_int		(GValue	      *value,
+						 gint	       v_int);
+gint		      g_value_get_int		(const GValue *value);
+void		      g_value_set_uint		(GValue	      *value,
+						 guint	       v_uint);
+guint		      g_value_get_uint		(const GValue *value);
+void		      g_value_set_long		(GValue	      *value,
+						 glong	       v_long);
+glong		      g_value_get_long		(const GValue *value);
+void		      g_value_set_ulong		(GValue	      *value,
+						 gulong	       v_ulong);
+gulong		      g_value_get_ulong		(const GValue *value);
+void		      g_value_set_float		(GValue	      *value,
+						 gfloat	       v_float);
+gfloat		      g_value_get_float		(const GValue *value);
+void		      g_value_set_double	(GValue	      *value,
 						 gdouble       v_double);
-gdouble               g_value_get_double        (const GValue *value);
-void                  g_value_set_string        (GValue       *value,
+gdouble		      g_value_get_double	(const GValue *value);
+void		      g_value_set_string	(GValue	      *value,
 						 const gchar  *v_string);
-void                  g_value_set_static_string (GValue       *value,
+void		      g_value_set_static_string (GValue	      *value,
 						 const gchar  *v_string);
-G_CONST_RETURN gchar* g_value_get_string        (const GValue *value);
-gchar*                g_value_dup_string        (const GValue *value);
-void                  g_value_set_pointer       (GValue       *value,
+G_CONST_RETURN gchar* g_value_get_string	(const GValue *value);
+gchar*		      g_value_dup_string	(const GValue *value);
+void		      g_value_set_pointer	(GValue	      *value,
 						 gpointer      v_pointer);
-gpointer              g_value_get_pointer       (const GValue *value);
-void                  g_value_set_ccallback     (GValue       *value,
-						 gpointer      callback_func,
-						 gpointer      callback_data);
-void                  g_value_get_ccallback     (const GValue *value,
-						 gpointer     *callback_func,
-						 gpointer     *callback_data);
+gpointer	      g_value_get_pointer	(const GValue *value);
+
+
+/* --- marshaller specific --- */
+void g_value_set_string_take_ownership		(GValue		   *value,
+						 gchar		   *v_string);
+
+
 
 #ifdef __cplusplus
 }

@@ -286,7 +286,7 @@ g_array_sort (GArray       *farray,
 
 void
 g_array_sort_with_data (GArray           *farray,
-			GCompareFuncData  compare_func,
+			GCompareDataFunc  compare_func,
 			gpointer          user_data)
 {
   GRealArray *array = (GRealArray*) farray;
@@ -580,7 +580,7 @@ g_ptr_array_sort (GPtrArray    *array,
 
 void
 g_ptr_array_sort_with_data (GPtrArray        *array,
-			    GCompareFuncData  compare_func,
+			    GCompareDataFunc  compare_func,
 			    gpointer          user_data)
 {
   g_return_if_fail (array != NULL);
@@ -663,7 +663,7 @@ g_byte_array_sort (GByteArray   *array,
 
 void
 g_byte_array_sort_with_data (GByteArray       *array,
-			     GCompareFuncData  compare_func,
+			     GCompareDataFunc  compare_func,
 			     gpointer          user_data)
 {
   g_array_sort_with_data ((GArray *) array, compare_func, user_data);

@@ -1,5 +1,5 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000-2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -774,6 +774,7 @@ g_signal_parse_name (const gchar *detailed_signal,
 		     GQuark      *detail_p,
 		     gboolean	  force_detail_quark)
 {
+  SignalNode *node;
   GQuark detail = 0;
   guint signal_id;
   
@@ -783,18 +784,18 @@ g_signal_parse_name (const gchar *detailed_signal,
   G_LOCK (g_signal_mutex);
   signal_id = signal_parse_name (detailed_signal, itype, &detail, force_detail_quark);
   G_UNLOCK (g_signal_mutex);
-  
-  if (signal_id)
-    {
-      if (signal_id_p)
-	*signal_id_p = signal_id;
-      if (detail_p)
-	*detail_p = detail;
-      
-      return TRUE;
-    }
-  else
+
+  node = signal_id ? LOOKUP_SIGNAL_NODE (signal_id) : NULL;
+  if (!node || node->destroyed ||
+      (detail && !(node->flags & G_SIGNAL_DETAILED)))
     return FALSE;
+
+  if (signal_id_p)
+    *signal_id_p = signal_id;
+  if (detail_p)
+    *detail_p = detail;
+  
+  return TRUE;
 }
 
 guint
@@ -1000,9 +1001,7 @@ g_signal_newv (const gchar       *signal_name,
       return 0;
     }
   for (i = 0; i < n_params; i++)
-    if (!G_TYPE_IS_VALUE (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) ||
-	(param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) == G_TYPE_ENUM ||
-	(param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE) == G_TYPE_FLAGS) /* FIXME: kludge */
+    if (!G_TYPE_IS_VALUE (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
 	g_warning (G_STRLOC ": parameter %d of type `%s' for signal \"%s::%s\" is not a value type",
 		   i + 1, g_type_name (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE), g_type_name (itype), name);
@@ -1537,7 +1536,7 @@ g_signal_emitv (const GValue *instance_and_params,
   guint i;
   
   g_return_if_fail (instance_and_params != NULL);
-  instance = g_value_get_as_pointer (instance_and_params);
+  instance = g_value_peek_pointer (instance_and_params);
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (signal_id > 0);
 
@@ -1559,7 +1558,7 @@ g_signal_emitv (const GValue *instance_and_params,
       return;
     }
   for (i = 0; i < node->n_params; i++)
-    if (!G_VALUE_HOLDS (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
+    if (!G_TYPE_CHECK_VALUE_TYPE (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
 	g_critical ("%s: value for `%s' parameter %u for signal \"%s\" is of type `%s'",
 		    G_STRLOC,
@@ -1581,7 +1580,7 @@ g_signal_emitv (const GValue *instance_and_params,
 	  G_UNLOCK (g_signal_mutex);
 	  return;
 	}
-      else if (!node->accumulator && !G_VALUE_HOLDS (return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
+      else if (!node->accumulator && !G_TYPE_CHECK_VALUE_TYPE (return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
 	{
 	  g_critical ("%s: return value `%s' for signal \"%s\" is of type `%s'",
 		      G_STRLOC,
@@ -2045,4 +2044,7 @@ signal_emit_R (SignalNode   *node,
 
 /* --- compile standard marshallers --- */
 #include	"gvaluetypes.h"
+#include	"gobject.h"
+#include	"genums.h"
+#include	"gboxed.h"
 #include        "gmarshal.c"

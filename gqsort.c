@@ -96,7 +96,7 @@ void
 g_qsort_with_data (gconstpointer    pbase,
 		   gint             total_elems,
 		   size_t           size,
-		   GCompareFuncData compare_func,
+		   GCompareDataFunc compare_func,
 		   gpointer         user_data)
 {
   register char *base_ptr = (char *) pbase;

@@ -87,7 +87,7 @@ void     g_list_foreach        (GList            *list,
 GList*   g_list_sort           (GList            *list,
 				GCompareFunc      compare_func);
 GList*   g_list_sort_with_data (GList            *list,
-				GCompareFuncData  compare_func,
+				GCompareDataFunc  compare_func,
 				gpointer          user_data);
 gpointer g_list_nth_data       (GList            *list,
 				guint             n);

@@ -31,6 +31,7 @@
 #include	<gobject/gtypemodule.h>
 #include	<gobject/gtypeplugin.h>
 #include	<gobject/gvalue.h>
+#include	<gobject/gvaluearray.h>
 #include	<gobject/gvaluetypes.h>
 
 

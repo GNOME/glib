@@ -15,8 +15,8 @@ so basically they are a per-type facility that is inherited.
 A signal emission mainly involves invocation of a certain set of callbacks in
 precisely defined manner. There are two main categories of such callbacks,
 per-object
-	<footnote><para> Although signals can deal with any kind of type, i'm
-	referring to those types as "object types" in the following, simply
+	<footnote><para> Although signals can deal with any kind of instantiatable type,
+	i'm referring to those types as "object types" in the following, simply
 	because that is the context most users will encounter signals in.
 	</para></footnote>
 ones and user provided ones.
@@ -181,6 +181,27 @@ filled in by the g_signal_query() function.
                       [#param_types param_names,]
                        #gpointer     data2);
 </programlisting></msgtext>
+
+<!-- ##### MACRO G_SIGNAL_TYPE_STATIC_SCOPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_SIGNAL_MATCH_MASK ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_SIGNAL_FLAGS_MASK ##### -->
+<para>
+
+</para>
+
+
 
 <!-- ##### FUNCTION g_signal_newc ##### -->
 <para>
