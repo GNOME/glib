@@ -1,3 +1,23 @@
+2003-10-05  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Make the various printf feature test macros
+	reflect the system printf, even when using the included printf.
+	In particular, don't force HAVE_C99_SNPRINTF, since g-gnulib.h 
+	needs that test result.  (#122973)
+
+	* glib/gprintf.c (g_vasprintf): Don't rely on HAVE_VASPRINTF,
+	directly check for _g_vasprintf.
+
+	* glib/gprintfint.h (_g_vasprintf): Only define _g_vasprintf()
+	if vasprintf() is available.
+
+	* glib/gnulib/printf.c (_g_gnulib_vfprintf): Don't write
+	trailing nul to the file. (#122973)
+
+	* acinclude.m4 (AC_FUNC_VSNPRINTF_C99): Make the test 
+	detect non-C99-compliance of AIX 5.1 and Solaris 
+	vsnprintf().  (#122496)
+
 Thu Oct  2 01:15:46 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/gobject/ifacecheck.c: Test case for

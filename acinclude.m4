@@ -23,6 +23,16 @@ doit(char * s, ...)
   if (r != 7)
     exit(1);
 
+  /* AIX 5.1 and Solaris seems to have a half-baked vsnprintf()
+     implementation. The above will return 7 but if you replace
+     the size of the buffer with 0, it borks! */
+  va_start(args, s);
+  r = vsnprintf(buffer, 0, s, args);
+  va_end(args);
+
+  if (r != 7)
+    exit(1);
+
   exit(0);
 }
 

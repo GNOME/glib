@@ -39,7 +39,9 @@
 #define _g_vsprintf  vsprintf
 #define _g_vsnprintf vsnprintf
 
+#ifdef HAVE_VASPRINTF
 #define _g_vasprintf vasprintf
+#endif
 
 #else
 

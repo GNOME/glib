@@ -300,7 +300,7 @@ g_vasprintf (gchar      **string,
   gint len;
   g_return_val_if_fail (string != NULL, -1);
 
-#ifdef HAVE_VASPRINTF
+#ifdef _g_vasprintf
   len = _g_vasprintf (string, format, args);
   if (len < 0)
     *string = NULL;

@@ -773,9 +773,6 @@ if test "$enable_included_printf" != "yes" ; then
 else
   glib_cv_long_long_format="ll"
   AC_DEFINE(HAVE_VASPRINTF,1)
-  AC_DEFINE(HAVE_C99_VSNPRINTF,1)
-  AC_DEFINE(HAVE_C99_SNPRINTF,1)
-  AC_DEFINE(HAVE_UNIX98_PRINTF,1)
 fi
 
 # Checks needed for gnulib vasnprintf
@@ -1932,7 +1929,6 @@ AC_ARG_ENABLE(man,
               [AC_HELP_STRING([--enable-man],
                               [regenerate man pages from Docbook [default=no]])],enable_man=yes,
               enable_man=no)
-
 dnl
 dnl Check for xsltproc
 dnl

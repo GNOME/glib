@@ -96,7 +96,7 @@ int _g_gnulib_vfprintf (FILE *file, char const *format, va_list args)
   if (result == NULL) 
     return -1;
 
-  fwrite (result, 1, length + 1, file);
+  fwrite (result, 1, length, file);
   free (result);
   
   return length;
