@@ -1,3 +1,9 @@
+Sat Nov 17 17:21:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/Makefile.am glib/*.c glib/gmessages.h: Get
+	rid of g_log_domain_glib variable in favor of just
+	using a string constant.
+
 Sat Nov 17 14:10:35 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gbsearcharray.h: Include gtypes.h not gobject/gtype.h
