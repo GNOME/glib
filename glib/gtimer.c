@@ -240,18 +240,8 @@ g_usleep (gulong microseconds)
   struct timespec request, remaining;
   request.tv_sec = microseconds / G_USEC_PER_SEC;
   request.tv_nsec = 1000 * (microseconds % G_USEC_PER_SEC);
-  while (1)
-    {
-      if (nanosleep (&request, &remaining) == -1)
-	{
-          if (errno == EINTR)
-	    request = remaining;
-	  else 
-	    break;
-	} 
-      else 
-	break;
-    }
+  while (nanosleep (&request, &remaining) == -1 && errno == EINTR)
+    request = remaining;
 # else /* !HAVE_NANOSLEEP */
   if (g_thread_supported ())
     {

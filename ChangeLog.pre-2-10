@@ -1,3 +1,7 @@
+Tue Feb 22 18:33:07 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/gtimer.c (g_usleep): Simplify the loop for the fix below.
+
 2005-02-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gqueue.c (g_queue_new): Use a memchunk for
