@@ -2,14 +2,15 @@
 # Copyright (C) 2001-2004 Free Software Foundation, Inc.
 # Christian Meyer <chrisime@gnome.org>, 2001, 2002.
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
+# Hendrik Richter <hendrik@gnome-de.org>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
-"PO-Revision-Date: 2004-01-06 14:58+0100\n"
-"Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
+"POT-Creation-Date: 2004-11-15 15:46+0100\n"
+"PO-Revision-Date: 2004-11-15 15:28+0100\n"
+"Last-Translator: Hendrik Richter <hendrik@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,9 +22,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Umwandlung von Zeichensatz »%s« in »%s« wird nicht unterstützt"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden: %s"
+msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
 #: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
@@ -47,11 +48,10 @@ msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel »%s« kann nicht in Kodierung »%s« umgewandelt werden"
 
-# CHECK
 #: glib/gconvert.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "Der URI »%s« ist kein absoluter URI, der das Dateischema verwendet"
+msgstr "Der URI »%s« ist kein absoluter URI, der das »file«-Schema verwendet"
 
 #: glib/gconvert.c:1607
 #, c-format
@@ -528,42 +528,42 @@ msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Aufruf:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPTION...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr ""
+msgstr "Hilfeoptionen"
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr ""
+msgstr "Hilfeoptionen anzeigen"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr ""
+msgstr "Alle Hilfeoptionen anzeigen"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr ""
+msgstr "Anwendungsoptionen"
 
 #: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "»%s« konnte nicht als ganzzahliger Wert für --%s interpretiert werden"
 
 #: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
 
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Unbekannte Option %s"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Falsche Nachrichtengröße"
