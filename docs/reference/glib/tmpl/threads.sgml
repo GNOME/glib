@@ -22,7 +22,7 @@ the programmer through synchronization primitives.
 
 <para>
 The aim of the thread related functions in GLib is to provide a
-portable means for writing multithreaded software. There are
+portable means for writing multi-threaded software. There are
 primitives for mutexes to protect the access to portions of memory
 (#GMutex, #GStaticMutex, #G_LOCK_DEFINE, #GStaticRecMutex and
 #GStaticRWLock), there are primitives for condition variables to allow
@@ -55,7 +55,7 @@ primitives to portably create and manage threads (#GThread).
 This macro is defined, if GLib was compiled with thread support. This
 does not necessarily mean, that there is a thread implementation
 available, but the infrastructure is in place and once you provide a
-thread implementation to g_thread_init(), GLib will be multithread
+thread implementation to g_thread_init(), GLib will be multi-thread
 safe. It isn't and cannot be, if #G_THREADS_ENABLED is not defined.
 </para>
 
@@ -81,7 +81,7 @@ This macro is defined, if the Solaris thread system is used.
 
 <para>
 This macro is defined, if no thread implementation is used. You can
-however provide one to g_thread_init() to make GLib multithread safe.
+however provide one to g_thread_init() to make GLib multi-thread safe.
 </para>
 
 
@@ -157,7 +157,7 @@ really know, what you are doing.
 <note>
 <para>
 g_thread_init() must not be called directly or indirectly as a
-callback from GLib. Also no mutexes may be currently locked, while
+call-back from GLib. Also no mutexes may be currently locked, while
 calling g_thread_init().
 </para>
 </note>
@@ -403,7 +403,7 @@ access. Take for example the following function:
 </para>
 
 <para>
-It is easy to see, that this won't work in a multithreaded
+It is easy to see, that this won't work in a multi-threaded
 application. There current_number must be protected against shared
 access. A first naive implementation would be:
 </para>
@@ -923,7 +923,7 @@ The #GStaticRWLock struct represents a read-write lock. A read-write
 lock can be used for protecting data, that some portions of code only
 read from, while others also write. In such situations it is
 desirable, that several readers can read at once, whereas of course
-only one writer may write at a time. Take a look at the followin
+only one writer may write at a time. Take a look at the following
 example:
 
 <example>
@@ -970,11 +970,11 @@ example:
 
 <para>
 This example shows an array, which can be accessed by many readers
-(the my_array_get function) simultaniously, whereas the writers (the
+(the my_array_get function) simultaneously, whereas the writers (the
 my_array_set function) only will be allowed once a time and only if no
 readers currently access the array. This is because of the potentially
 dangerous resizing of the array. Using that functions is fully
-multithread safe now. 
+multi-thread safe now. 
 </para>
 
 <para>
@@ -987,7 +987,7 @@ the writer will lock it.
 </para>
 
 <para>
-Even though #GStaticRWLoc is not opaque, it should only be used with
+Even though #GStaticRWLock is not opaque, it should only be used with
 the following functions.
 </para>
 
@@ -1093,7 +1093,7 @@ and can lock @lock for writing.
 <para>
 Locks @lock for writing. If @lock is already locked for writing or
 reading by other threads, this function will block until @lock is
-completly unlocked and then lock @lock for writing. While this
+completely unlocked and then lock @lock for writing. While this
 functions waits to lock @lock, no other thread can lock @lock for
 reading. When @lock is locked for writing, no other thread can lock
 @lock (neither for reading nor writing). This lock has to be unlocked
