@@ -1,3 +1,13 @@
+2003-08-10  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_getenv): Don't use a cache of variable name to
+	value mappings on Win32, as that breaks g_setenv() and
+	g_unsetenv(). Only call ExpandEnvironmentStrings() if necessary,
+	and in that case return a quarkified string. It is still
+	questionable how necessary expanding embedded environment variable
+	references is. Possibly the whole Win32-specific g_getenv()
+	implementation could be removed. (#119520)
+
 2003-08-08  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_once_impl.

@@ -627,71 +627,46 @@ g_getenv (const gchar *variable)
 
   return getenv (variable);
 #else
-  G_LOCK_DEFINE_STATIC (getenv);
-  struct env_struct
-  {
-    gchar *key;
-    gchar *value;
-  } *env;
-  static GArray *environs = NULL;
+  GQuark quark;
   gchar *system_env;
-  guint length, i;
+  gchar *expanded_env;
+  guint length;
   gchar dummy[2];
 
   g_return_val_if_fail (variable != NULL, NULL);
   
-  G_LOCK (getenv);
-
-  if (!environs)
-    environs = g_array_new (FALSE, FALSE, sizeof (struct env_struct));
-
-  /* First we try to find the environment variable inside the already
-   * found ones.
-   */
-
-  for (i = 0; i < environs->len; i++)
-    {
-      env = &g_array_index (environs, struct env_struct, i);
-      if (strcmp (env->key, variable) == 0)
-	{
-	  g_assert (env->value);
-	  G_UNLOCK (getenv);
-	  return env->value;
-	}
-    }
-
-  /* If not found, we ask the system */
-
   system_env = getenv (variable);
   if (!system_env)
-    {
-      G_UNLOCK (getenv);
-      return NULL;
-    }
+    return NULL;
 
-  /* On Windows NT, it is relatively typical that environment variables
-   * contain references to other environment variables. Handle that by
-   * calling ExpandEnvironmentStrings.
+  /* On Windows NT, it is relatively typical that environment
+   * variables contain references to other environment variables. If
+   * so, use ExpandEnvironmentStrings(). (If all software was written
+   * in the best possible way, such environment variables would be
+   * stored in the Registry as REG_EXPAND_SZ type values, and would
+   * then get automatically expanded before the program sees them. But
+   * there is broken software that stores environment variables as
+   * REG_SZ values even if they contain references to other
+   * environment variables.
    */
 
-  g_array_set_size (environs, environs->len + 1);
-
-  env = &g_array_index (environs, struct env_struct, environs->len - 1);
+  if (strchr (system_env, '%') == NULL)
+    {
+      /* No reference to other variable(s), return value as such. */
+      return system_env;
+    }
 
   /* First check how much space we need */
   length = ExpandEnvironmentStrings (system_env, dummy, 2);
-
-  /* Then allocate that much, and actualy do the expansion and insert
-   * the new found pair into our buffer 
-   */
-
-  env->value = g_malloc (length);
-  env->key = g_strdup (variable);
-
-  ExpandEnvironmentStrings (system_env, env->value, length);
-
-  G_UNLOCK (getenv);
-  return env->value;
+  
+  expanded_env = g_malloc (length);
+  
+  ExpandEnvironmentStrings (system_env, expanded_env, length);
+  
+  quark = g_quark_from_string (expanded_env);
+  g_free (expanded_env);
+  
+  return g_quark_to_string (quark);
 #endif
 }
 
@@ -765,7 +740,7 @@ g_unsetenv (const gchar *variable)
 
   unsetenv (variable);
 #else
-  int i, len;
+  int len;
   gchar **e, **f;
 
   g_return_if_fail (strchr (variable, '=') == NULL);
