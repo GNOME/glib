@@ -309,7 +309,13 @@ g_realloc (gpointer mem,
   
   
   if (!mem)
-    p = (gpointer) realloc (NULL, size);
+    {
+#ifdef REALLOC_0_WORKS
+      p = (gpointer) realloc (NULL, size);
+#else /* !REALLOC_0_WORKS */
+      p = (gpointer) malloc (size);
+#endif /* !REALLOC_0_WORKS */
+    }
   else
     {
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)

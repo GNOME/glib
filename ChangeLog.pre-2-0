@@ -1,3 +1,10 @@
+Tue Mar  9 23:25:50 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: check for working realloc (NULL,).
+	* gmem.c (g_realloc): use malloc() for initial allocation on systems
+	where realloc(NULL,) will not work (this is the case on SunOS, reported
+	by Tom Geiger).
+
 Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
 
 	* ghook.c (g_hook_unref): when !hook_list->is_setup, wrap the

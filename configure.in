@@ -370,6 +370,22 @@ if test $glib_working_wctype = no; then
 fi
 AC_MSG_RESULT($glib_working_wctype)
 
+dnl *** check for sane realloc() ***
+AC_MSG_CHECKING(whether realloc (NULL,) will work)
+AC_CACHE_VAL(glib_cv_sane_realloc,[
+	AC_TRY_RUN([
+	#include <stdlib.h>
+	int main() {
+	  return realloc (0, sizeof (int)) == 0;
+	}],
+	glib_cv_sane_realloc=yes
+	AC_DEFINE(REALLOC_0_WORKS)
+	,
+	glib_cv_sane_realloc=no
+	,)
+])
+AC_MSG_RESULT($glib_cv_sane_realloc)
+
 
 dnl **********************
 dnl *** va_copy checks ***
