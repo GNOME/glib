@@ -613,5 +613,6 @@ EXPORTS
 	glib_binary_age
 	glib_interface_age
 	glib_major_version
+	glib_mem_profiler_table
 	glib_micro_version
 	glib_minor_version

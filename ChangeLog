@@ -1,5 +1,11 @@
 2001-02-10  Tor Lillqvist  <tml@iki.fi>
 
+	* gtypes.h
+	* gutils.h: Move GLIB_VAR definition from gutils.h to gtypes.h
+
+	* glib.def
+	* gmem.h: Mark glib_mem_profiler_table for export.
+
 	* gwin32.c (get_package_directory_from_module): Don't store
 	address of local variable in hashtable.
 

@@ -305,16 +305,6 @@ g_trash_stack_height (GTrashStack **stack_p)
  * we prefix variable declarations so they can
  * properly get exported in windows dlls.
  */
-#ifdef G_OS_WIN32
-#  ifdef GLIB_COMPILATION
-#    define GLIB_VAR __declspec(dllexport)
-#  else /* !GLIB_COMPILATION */
-#    define GLIB_VAR extern __declspec(dllimport)
-#  endif /* !GLIB_COMPILATION */
-#else /* !G_OS_WIN32 */
-#  define GLIB_VAR extern
-#endif /* !G_OS_WIN32 */
-
 GLIB_VAR const guint glib_major_version;
 GLIB_VAR const guint glib_minor_version;
 GLIB_VAR const guint glib_micro_version;

@@ -87,7 +87,7 @@ void	 g_mem_set_vtable (GMemVTable	*vtable);
 
 /* Memory profiler and checker, has to be enabled via g_mem_set_vtable()
  */
-extern GMemVTable	*glib_mem_profiler_table;
+GLIB_VAR GMemVTable	*glib_mem_profiler_table;
 void	g_mem_profile	(void);
 
 
