@@ -97,27 +97,7 @@ dnl
 AC_MSG_CHECKING([for Win32])
 case "$host" in
   *-*-mingw*)
-    os_win32=yes
-    # Make config vars match MSVC, too.  The mingw32 library that the
-    # mingw gcc always links with contains a few Unixish emulation
-    # functions. The mingw gcc also provides some headers that MSVC
-    # doesn't. As we want to be able to use the same config.h and
-    # glibconfig.h for both gcc and MSVC (because they use the same
-    # "real" C library, msvcrt.dll), hack around that.
-    ac_cv_func_getpagesize=no
-    ac_cv_func_strcasecmp=no
-    ac_cv_func_strncasecmp=no
-    ac_cv_header_dirent_h=no
-    ac_cv_header_stdint_h=no
-    ac_cv_header_sys_time_h=no
-    ac_cv_header_unistd_h=no
-    ac_cv_header_values_h=no
-
-    # Also hide some gcc features
-    ac_cv_c_inline=__inline
-    glib_cv_hasinline=no
-    glib_cv_has__inline__=no
-
+    glib_native_win32=yes
     G_LIB_WIN32_RESOURCE=glib-win32res.lo
     G_MODULE_WIN32_RESOURCE=gmodule-win32res.lo
     G_OBJECT_WIN32_RESOURCE=gobject-win32res.lo
@@ -129,7 +109,7 @@ case "$host" in
     TESTGMODULE_EXP=testgmodule.exp
     ;;
   *)
-    os_win32=no
+    glib_native_win32=no
     G_LIB_WIN32_RESOURCE=
     G_MODULE_WIN32_RESOURCE=
     G_OBJECT_WIN32_RESOURCE=
@@ -141,8 +121,8 @@ case "$host" in
     TESTGMODULE_EXP=
     ;;
 esac
-AC_MSG_RESULT($os_win32)
-AM_CONDITIONAL(OS_WIN32, test x$os_win32 = xyes)
+AC_MSG_RESULT([$glib_native_win32])
+AM_CONDITIONAL(OS_WIN32, test x$glib_native_win32 = xyes)
 AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)
@@ -154,7 +134,7 @@ AC_SUBST(GTHREAD_DEF)
 AC_SUBST(TESTGMODULE_EXP)
 
 ms_librarian=no
-if test $os_win32 = yes; then
+if test $glib_native_win32 = yes; then
   AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
 fi
 AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
@@ -242,6 +222,16 @@ if test "x$enable_debug" = "xyes"; then
 else
   if test "x$enable_debug" = "xno"; then
     GLIB_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
+  fi
+fi
+
+# Ensure -fnative-struct is used when compiling for Win32
+if test "x$glib_native_win32" = "xyes"; then
+  if test "x$GCC" = "xyes"; then
+    case " $CFLAGS " in
+    *[[\ \	]]-fnative-struct[[\ \	]]*) ;;
+    *) CFLAGS="$CFLAGS -fnative-struct" ;;
+    esac
   fi
 fi
 
@@ -362,6 +352,7 @@ AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
+AC_CHECK_SIZEOF(__int64)
 
 if test x$ac_cv_sizeof_long_long = x8; then
 	# long long is a 64 bit integer.
@@ -386,6 +377,12 @@ if test x$ac_cv_sizeof_long_long = x8; then
         else
 	  AC_MSG_RESULT(none)
         fi
+elif test x$ac_cv_sizeof___int64 = x8; then
+	# __int64 is a 64 bit integer.
+	AC_MSG_CHECKING(for format to printf and scanf a gint64)
+	# We know this is MSVC, and what the formats are
+	glib_cv_long_long_format=I64
+	AC_MSG_RESULT(%${glib_cv_long_long_format}u)
 fi
 
 dnl long doubles were not used, and a portability problem
@@ -1691,21 +1688,6 @@ _______EOF
 
 
 	if test -n "$gint64"; then
-	  if test x$glib_os_win32 = xyes; then
-	    cat >>$outfile <<_______EOF
-#define G_HAVE_GINT64 1
-
-#ifdef _MSC_VER
-typedef __int64 gint64;
-typedef unsigned __int64 guint64;
-#define G_GINT64_CONSTANT(val)	(val##i64)
-#elif __GNUC__
-typedef long long gint64;
-typedef unsigned long long guint64;
-#define G_GINT64_CONSTANT(val)	(val##LL)
-#endif
-_______EOF
-	  else
 	    cat >>$outfile <<_______EOF
 #define G_HAVE_GINT64 1
 
@@ -1714,7 +1696,6 @@ ${glib_extension}typedef unsigned $gint64 guint64;
 
 #define G_GINT64_CONSTANT(val)	$gint64_constant
 _______EOF
-	   fi
 		if test -n "$gint64_format"; then
 	  cat >>$outfile <<_______EOF
 #define G_GINT64_FORMAT $gint64_format
@@ -1792,9 +1773,7 @@ _______EOF
 	if test x$g_have_gnuc_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
-#ifdef __GNUC__
 #define G_HAVE_GNUC_VARARGS 1
-#endif
 _______EOF
 	fi
 
@@ -1919,10 +1898,6 @@ else
   glib_header_alloca_h="$ac_cv_header_alloca_h"
 fi
 
-if test $os_win32 = yes; then
-  glib_os_win32=yes
-fi
-
 case xyes in
 x$ac_cv_header_float_h)
   glib_float_h=yes
@@ -2007,6 +1982,15 @@ $ac_cv_sizeof_long_long)
   fi
   glib_extension='G_GNUC_EXTENSION '
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
+  ;;
+$ac_cv_sizeof___int64)
+  gint64='__int64'
+  if test -n "$glib_cv_long_long_format"; then
+    gint64_format='"'$glib_cv_long_long_format'i"'
+    guint64_format='"'$glib_cv_long_long_format'u"'
+  fi
+  glib_extension=
+  gint64_constant='(val##i64)'
   ;;
 esac
 glib_size_t=$glib_cv_sizeof_size_t
