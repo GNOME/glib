@@ -14,3 +14,4 @@ stamp-h
 .libs
 testglib
 config.cache
+glib-config

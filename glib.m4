@@ -2,7 +2,7 @@
 # Owen Taylor     97-11-3
 
 dnl AM_PATH_GLIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
-dnl Test for GTK, and define GLIB_CFLAGS and GLIB_LIBS
+dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS
 dnl
 AC_DEFUN(AM_PATH_GLIB,
 [dnl 
