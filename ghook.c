@@ -177,6 +177,7 @@ g_hook_unref (GHookList *hook_list,
 	      GHook	*hook)
 {
   g_return_if_fail (hook_list != NULL);
+  g_return_if_fail (hook_list->hook_memchunk != NULL);
   g_return_if_fail (hook != NULL);
   g_return_if_fail (hook->ref_count > 0);
   
@@ -196,15 +197,21 @@ g_hook_unref (GHookList *hook_list,
 	  hook->next = NULL;
 	}
       hook->prev = NULL;
-      
-      g_hook_free (hook_list, hook);
-      
-      if (!hook_list->hooks &&
-	  !hook_list->is_setup)
+
+      if (!hook_list->is_setup)
 	{
-	  g_mem_chunk_destroy (hook_list->hook_memchunk);
-	  hook_list->hook_memchunk = NULL;
+	  hook_list->is_setup = TRUE;
+	  g_hook_free (hook_list, hook);
+	  hook_list->is_setup = FALSE;
+      
+	  if (!hook_list->hooks)
+	    {
+	      g_mem_chunk_destroy (hook_list->hook_memchunk);
+	      hook_list->hook_memchunk = NULL;
+	    }
 	}
+      else
+	g_hook_free (hook_list, hook);
     }
 }
 

@@ -1,3 +1,9 @@
+Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
+
+	* ghook.c (g_hook_unref): when !hook_list->is_setup, wrap the
+	flag around the call to g_hook_free() to avoid spurious
+	warnings (happens during destruction phase).
+
 1999-03-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glibconfig.h.win32, config.h.win32: Moved G_THREADS_IMPL_POSIX
