@@ -3,8 +3,6 @@
 #
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS =
-
 INCLUDES = -I$(top_srcdir) -I$(top_builddir) -I. @GLIB_DEBUG_FLAGS@
 
 # libraries to compile and install

@@ -1,3 +1,8 @@
+2000-09-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am: Remove empty SUBDIRS line, as that prevents make
+	dist from working.
+
 Sat Sep  9 20:04:13 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject.c (g_object_last_unref): Move call to
