@@ -1,3 +1,7 @@
+2002-02-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gfileutils.c (g_file_test): Extended documentation.
+
 2002-02-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gfileutils.c (g_file_test): Do not follow symbolic links

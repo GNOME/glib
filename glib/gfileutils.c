@@ -81,6 +81,9 @@
  * so for a symbolic link to a regular file g_file_test() will return
  * %TRUE for both #G_FILE_TEST_IS_SYMLINK and #G_FILE_TEST_IS_REGULAR.
  *
+ * Note, that for a dangling symbolic link g_file_test() will return
+ * %TRUE for #G_FILE_TEST_IS_SYMLINK and %FALSE for all other flags.
+ *
  * Return value: whether a test was %TRUE
  **/
 gboolean
