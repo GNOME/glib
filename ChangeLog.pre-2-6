@@ -1,3 +1,8 @@
+2002-03-05  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.c (g_source_set_priority): Finish docs.  
+	(#67064)
+
 Tue Mar  5 00:38:54 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutils.c (g_get_any_init): Where we have

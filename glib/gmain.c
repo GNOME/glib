@@ -1114,7 +1114,8 @@ g_source_set_callback (GSource        *source,
  * @priority: the new priority.
  * 
  * Sets the priority of a source. While the main loop is being
- * run, a source will 
+ * run, a source will be dispatched if it is ready to be dispatched and no sources 
+ * at a higher (numerically smaller) priority are ready to be dispatched.
  **/
 void
 g_source_set_priority (GSource  *source,
