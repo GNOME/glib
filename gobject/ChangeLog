@@ -1,3 +1,8 @@
+2001-11-16  Mark McLoughlin  <mark@skynet.ie>
+
+	* glib-mkenums.in: allow the enums name to not be on the same
+	line as the trailing '}'. (#64714)
+
 2001-11-18  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : remove g_log_domain_gruntime usage

@@ -27,6 +27,7 @@ sub parse_trigraph {
 sub parse_entries {
     my $file = shift;
     my $file_name = shift;
+    my $looking_for_name = 0;
     
     while (<$file>) {
 	
@@ -46,6 +47,13 @@ sub parse_entries {
 	next if m@^\s*$@;
 	
 #	print STDERR "xxx $_\n";
+
+	if ($looking_for_name) {
+	    if (/^\s*(\w+)/) {
+		$enumname = $1;
+		return 1;
+	    }
+	}
 	
 	# Handle include files
 	if (/^\#include\s*<([^>]*)>/ ) {
@@ -74,6 +82,12 @@ sub parse_entries {
 	    return 1;
 	}
 	
+	if (/^\s*\}/) {
+	    $enumindex++;
+	    $looking_for_name = 1;
+	    next;
+	}
+
         if (m@^\s*
               (\w+)\s*                   # name
               (?:=(                      # value
