@@ -872,51 +872,18 @@ g_io_channel_win32_set_debug (GIOChannel *channel,
 }
 
 gint
-g_io_channel_win32_poll (GIOChannel **channels,
-			 gint         n_channels,
+g_io_channel_win32_poll (GPollFD     *fds,
+			 gint         n_fds,
 			 GIOCondition condition,
 			 gint         timeout)
 {
-  GPollFD *pollfd;
-  GIOWin32Channel *win32_channel;
   int i;
   int result;
   gboolean debug = FALSE;
 
-  g_return_val_if_fail (n_channels >= 0, 0);
+  g_return_val_if_fail (n_fds >= 0, 0);
 
-  pollfd = g_new (GPollFD, n_channels);
-
-  for (i = 0; i < n_channels; i++)
-    {
-      win32_channel = (GIOWin32Channel *) channels[i];
-      debug |= win32_channel->debug;
-      pollfd[i].fd = (gint) win32_channel->data_avail_event;
-      pollfd[i].events = condition;
-    }
-
-  if (debug)
-    {
-      g_print ("g_io_channel_win32_poll: ");
-      for (i = 0; i < n_channels; i++)
-	{
-	  win32_channel = (GIOWin32Channel *) channels[i];
-	  g_print ("fd:%d event:%#x ", win32_channel->fd, pollfd[i].fd);
-	}
-      g_print ("condition:%s%s%s%s timeout:%d\n",
-	       (condition & G_IO_ERR) ? " ERR" : "",
-	       (condition & G_IO_HUP) ? " HUP" : "",
-	       (condition & G_IO_IN)  ? " IN"  : "",
-	       (condition & G_IO_PRI) ? " PRI" : "",
-	       timeout);
-    }
-
-  result = (*g_main_win32_get_poll_func ()) (pollfd, n_channels, timeout);
-
-  if (debug)
-    g_print ("g_io_channel_win32_poll: done:%d\n", result);
-
-  g_free (pollfd);
+  result = (*g_main_win32_get_poll_func ()) (fds, n_fds, timeout);
 
   return result;
 }
@@ -926,7 +893,13 @@ g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
 				       GIOCondition condition,
 				       gint         timeout)
 {
-  return g_io_channel_win32_poll (&channel, 1, condition, timeout);
+  GPollFD pollfd;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+
+  pollfd.fd = (gint) win32_channel->data_avail_event;
+  pollfd.events = condition;
+  
+  return g_io_channel_win32_poll (&pollfd, 1, condition, timeout);
 }
 
 /* This variable and the functions below are present just to be 

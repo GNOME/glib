@@ -2,7 +2,7 @@
 
 	* giowin32.c (g_io_channel_win32_poll): New function, otherwise
 	like g_io_channel_win32_wait_for_condition(), but accept several
-	GIOChannels.
+	GPollFDs.
 	(g_io_channel_win32_wait_for_condition): Call
 	g_io_channel_win32_poll().
 

@@ -2925,8 +2925,8 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
  * On Unix you would do a select() on the file descriptors of the channels.
  * This should probably be available for all platforms?
  */
-gint        g_io_channel_win32_poll (GIOChannel **channels,
-				     gint         n_channels,
+gint        g_io_channel_win32_poll (GPollFD     *fds,
+				     gint         n_fds,
 				     GIOCondition condition,
 				     gint         timeout);
 
