@@ -1,5 +1,20 @@
 2004-08-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmacros.h: Add a G_GNUC_INTERNAL macro to mark function
+	declarations as internal and avoid PLT indirections for 
+	them.  (#145465, Arjan van de Ven)
+
+	* glib/gunicodeprivate.h: 
+	* glib/gthreadinit.h: 
+	* glib/gmessages.h: 
+	* glib/gdebug.h: 
+	* glib/gconvert.c: Use G_GNUC_INTERNAL for _g_charset_get_aliases(),
+	_g_debug_init(), _g_log_fallback_handler(), _g_mem_thread_init(),
+	_g_messages_thread_init(), _g_convert_thread_init(), 
+	_g_rand_thread_init(), _g_main_thread_init(), _g_atomic_thread_init(),
+	_g_mem_thread_private_init(), _g_messages_thread_private_init(),
+	_g_utf8_normalize_wc() and _g_unichar_combining_class().
+
 	* glib/gatomic.c: Include gthreadinit.h here to see the declaration
 	for _g_atomic_thread_init().
 

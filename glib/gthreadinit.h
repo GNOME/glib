@@ -27,16 +27,16 @@ G_BEGIN_DECLS
 void g_thread_init_glib (void);
 
 /* Are called from glib/gthread.c. May not contain g_private_new calls */
-void _g_mem_thread_init (void);
-void _g_messages_thread_init (void);
-void _g_convert_thread_init (void);
-void _g_rand_thread_init (void);
-void _g_main_thread_init (void);
-void _g_atomic_thread_init (void);
+void _g_mem_thread_init (void) G_GNUC_INTERNAL;
+void _g_messages_thread_init (void) G_GNUC_INTERNAL;
+void _g_convert_thread_init (void) G_GNUC_INTERNAL;
+void _g_rand_thread_init (void) G_GNUC_INTERNAL;
+void _g_main_thread_init (void) G_GNUC_INTERNAL;
+void _g_atomic_thread_init (void) G_GNUC_INTERNAL;
 
 /* Are called from glib/gthread.c. Must only contain g_private_new calls */
-void _g_mem_thread_private_init (void);
-void _g_messages_thread_private_init (void);
+void _g_mem_thread_private_init (void) G_GNUC_INTERNAL;
+void _g_messages_thread_private_init (void) G_GNUC_INTERNAL;
 
 G_END_DECLS
  

@@ -250,6 +250,16 @@ See the GNU C documentation for details.
 </para>
 
 
+<!-- ##### MACRO G_GNUC_INTERNAL ##### -->
+<para>
+Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 
+compiler is <command>gcc</command>. This attribute can be used for marking 
+library functions as being used internally to the lib only, to not create 
+inefficient PLT entries. Note that static functions do not need to be marked 
+as internal in this way. See the GNU C documentation for details. 
+</para>
+
+Since: 2.6
 
 <!-- ##### MACRO G_LIKELY ##### -->
 <para>

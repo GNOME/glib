@@ -90,7 +90,7 @@ try_to_aliases (const char **to_aliases,
   return FALSE;
 }
 
-extern const char **_g_charset_get_aliases (const char *canonical_name);
+extern const char **_g_charset_get_aliases (const char *canonical_name) G_GNUC_INTERNAL;
 
 /**
  * g_iconv_open:

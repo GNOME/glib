@@ -54,6 +54,17 @@
 #define G_GNUC_PURE
 #endif
 
+/*
+ * Provide G_GNUC_INTERNAL that is used for marking library 
+ * functions as being used internally to the lib only, to not 
+ * create inefficient PLT entries.
+ */
+#if defined (__GNUC__) 
+#define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+#else
+#define G_GNUC_INTERNAL
+#endif
+
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
 #define G_GNUC_PRINTF( format_idx, arg_idx )    \
   __attribute__((__format__ (__printf__, format_idx, arg_idx)))

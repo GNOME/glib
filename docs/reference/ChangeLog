@@ -1,7 +1,12 @@
+2004-08-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/glib-sections.txt: 
+	* glib/tmpl/macros_misc.sgml: Document G_GNUC_INTERNAL.
+
 2004-08-01 Matthias Clasen  <mclasen@redhat.com>
-                                                                                
+                                                                               
         * === Released 2.5.1 ===
-                                                                                
+
 2004-07-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/misc_utils.sgml: Clarify docs for 

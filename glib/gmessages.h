@@ -104,7 +104,7 @@ GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 void	_g_log_fallback_handler	(const gchar   *log_domain,
 				 GLogLevelFlags log_level,
 				 const gchar   *message,
-				 gpointer       unused_data);
+				 gpointer       unused_data) G_GNUC_INTERNAL;
 
 
 #ifndef G_LOG_DOMAIN

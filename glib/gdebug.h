@@ -53,7 +53,7 @@ typedef enum {
 GLIB_VAR gboolean _g_debug_initialized;
 GLIB_VAR guint _g_debug_flags;
 
-void _g_debug_init ();
+void _g_debug_init () G_GNUC_INTERNAL;
 
 #ifdef __cplusplus
 }
