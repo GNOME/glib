@@ -1,3 +1,12 @@
+Fri May  4 11:49:18 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 1.3.5
+
+	* NEWS: Updated
+
+	* configure.in (GLIB_MICRO_VERSION): Up version to 1.3.5,
+	interface/binary age 0.
+
 2001-05-04  Sven Neumann  <sven@convergence.de>
 
 	* ghash.c: fixed a typo in a comment.

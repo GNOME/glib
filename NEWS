@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.3.5:
+
+* Added an installed glib-mkenums Perl program for parsing enumeration
+  declarations from header files.
+* Mark some additional deprecated functions.
+* Bug and Portability fixes
+
 Overview of Changes in GLib 1.3.4:
 
 * Efficiency improvements for GThreadPool
