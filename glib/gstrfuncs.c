@@ -2207,11 +2207,11 @@ g_strsplit (const gchar *string,
  * contain any of the characters in @delimiters. If @max_tokens is reached, the
  * remainder is appended to the last token.
  *
- * For example the result of g_strtokenize ("abc:def/ghi", ":/", -1) is a
+ * For example the result of g_strsplit_set ("abc:def/ghi", ":/", -1) is a
  * %NULL-terminated vector containing the three strings "abc", "def", 
  * and "ghi".
  *
- * The result if g_strtokenize (":def/ghi:", ":/", -1) is a %NULL-terminated
+ * The result if g_strsplit_set (":def/ghi:", ":/", -1) is a %NULL-terminated
  * vector containing the four strings "", "def", "ghi", and "".
  * 
  * As a special case, the result of splitting the empty string "" is an empty
