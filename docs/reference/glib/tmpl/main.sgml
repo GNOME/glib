@@ -626,6 +626,13 @@ an event source.
 </para>
 
 
+<!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT GSourceFuncs ##### -->
 <para>
 The #GSourceFuncs struct contains a table of functions used to handle
@@ -718,13 +725,6 @@ functions for managing callback objects.
 @ref: Called when a reference is added to the callback object.
 @unref: Called when a reference to the callback object is dropped.
 @get: Called to extract the callback function and data from the callback object.
-
-<!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
-<para>
-
-</para>
-
-
 
 <!-- ##### FUNCTION g_source_new ##### -->
 <para>

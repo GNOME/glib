@@ -7,15 +7,16 @@ lists of data elements which are accessible by a string or #GQuark identifier.
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 Keyed data lists provide lists of arbitrary data elements which can be accessed
-either with a string or with a #GQuark corresponding to the string.
+either with a string or with a #GQuark corresponding to the
+string.
 </para>
 <para>
 The #GQuark methods are quicker, since the strings have to be converted to
 #GQuarks anyway.
 </para>
 <para>
-Data lists are used in GTK+ for associating arbitrary data with
-#GtkObjects, using gtk_object_set_data() and related functions.
+Data lists are used for associating arbitrary data with
+#GObjects, using g_object_set_data() and related functions.
 </para>
 
 <para>
@@ -72,7 +73,8 @@ destroy function is called.
 
 @dl: a datalist.
 @q: the #GQuark to identify the data element.
-@d: the data element.
+@d: the data element, or %NULL to remove any previous element
+corresponding to @q.
 
 
 <!-- ##### FUNCTION g_datalist_id_set_data_full ##### -->
@@ -85,15 +87,17 @@ destroy function is called.
 
 @datalist: a datalist.
 @key_id: the #GQuark to identify the data element.
-@data: the data element.
+@data: the data element or %NULL to remove any previous element
+corresponding to @key_id.
 @destroy_func: the function to call when the data element is removed. This
 function will be called with the data element and can be used to free any
-memory allocated for it.
+memory allocated for it. If @data is %NULL, then @destroy_func must
+also be %NULL.
 
 
 <!-- ##### FUNCTION g_datalist_id_get_data ##### -->
 <para>
-Gets a data element.
+Retrieves the data element corresponding to @key_id. 
 </para>
 
 @datalist: a datalist.
@@ -127,7 +131,8 @@ Sets the data element corresponding to the given string identifier.
 
 @dl: a datalist.
 @k: the string to identify the data element.
-@d: the data element.
+@d: the data element, or %NULL to remove any previous element
+corresponding to @k.
 
 
 <!-- ##### MACRO g_datalist_set_data_full ##### -->
@@ -138,10 +143,11 @@ function to be called when the data element is removed.
 
 @dl: a datalist.
 @k: the string to identify the data element.
-@d: the data element.
+@d: the data element, or %NULL to remove any previous element corresponding to
+@k.
 @f: the function to call when the data element is removed. This
 function will be called with the data element and can be used to free any
-memory allocated for it.
+memory allocated for it. If @d is %NULL, then @f must also be %NULL.
 
 
 <!-- ##### MACRO g_datalist_get_data ##### -->

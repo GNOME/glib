@@ -181,6 +181,15 @@ passthrough text back out in the same position
 @char_number: 
 
 
+<!-- ##### FUNCTION g_markup_parse_context_get_element ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_markup_parse_context_new ##### -->
 <para>
 

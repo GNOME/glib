@@ -1111,7 +1111,15 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * @data: the data to pass to callback function
  * @notify: a function to call when @data is no longer in use, or %NULL.
  * 
- * Sets the callback function for a source.
+ * Sets the callback function for a source. The callback for a source is
+ * called from the source's dispatch function.
+ *
+ * The exact type of @func depends on the type of source; ie. you
+ * should not count on @func being called with @data as its first
+ * parameter.
+ * 
+ * Typically, you won't use this function. Instead use functions specific
+ * to the type of source you are using.
  **/
 void
 g_source_set_callback (GSource        *source,

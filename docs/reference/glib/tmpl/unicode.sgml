@@ -463,6 +463,16 @@ that may contain invalid UTF-8.
 @ch: 
 
 
+<!-- ##### FUNCTION g_utf8_strreverse ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_utf8_validate ##### -->
 <para>
 
