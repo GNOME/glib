@@ -204,7 +204,10 @@ g_type_module_use (GTypeModule *module)
       GSList *tmp_list;
       
       if (!G_TYPE_MODULE_GET_CLASS (module)->load (module))
-	return FALSE;
+	{
+	  module->use_count--;
+	  return FALSE;
+	}
 
       tmp_list = module->type_infos;
       while (tmp_list)

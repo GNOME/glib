@@ -1,3 +1,8 @@
+Wed Nov 15 20:58:05 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gtypemodule.c (g_type_module_use): If loading the
+	module fails, don't increment the use count.
+
 Thu Nov  9 01:49:43 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject.h (G_WARN_INVALID_PARAM_ID): doh,
