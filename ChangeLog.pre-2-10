@@ -1,3 +1,7 @@
+2004-10-26  Gora Mohanty  <gmohanty@cvs.gnome.org>
+ 
+        * configure.in: Added 'or' to ALL_LINGUAS.
+  
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Add new symbols.
