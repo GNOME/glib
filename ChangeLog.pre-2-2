@@ -1,3 +1,8 @@
+1999-06-21  Jose Mercado  <jmercado@mit.edu>
+
+	* glib.spec.in: Changed version number (1.1->1.3) in files section
+	to allow rpm to build packages again.
+
 1999-06-21  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Update the pthreads snapshot version we want.
