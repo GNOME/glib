@@ -97,7 +97,7 @@ GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */
-#if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#ifdef G_HAVE_ISO_VARARGS
 #define g_error(...)    g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_ERROR,    \
                                __VA_ARGS__)
@@ -110,7 +110,7 @@ GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 #define g_warning(...)  g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_WARNING,  \
                                __VA_ARGS__)
-#elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 4)
+#elif defined(G_HAVE_GNUC_VARARGS)
 #define g_error(format...)      g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_ERROR,    \
                                        format)
@@ -123,7 +123,7 @@ GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 #define g_warning(format...)    g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_WARNING,  \
                                        format)
-#else   /* !__GNUC__ */
+#else   /* no varargs macros */
 static void
 g_error (const gchar *format,
          ...)

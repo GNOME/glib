@@ -376,6 +376,23 @@ case x$glib_cv_hasinline in
 xyes) AC_DEFINE(G_HAVE_INLINE,1,[Have inline keyword])
 esac
 
+# check for flavours of varargs macros
+AC_MSG_CHECKING(for ISO C99 varargs macros)
+AC_TRY_COMPILE([],[
+int a(int p1, int p2, int p3);
+#define call_a(...) a(1,__VA_ARGS__)
+call_a(2,3);
+],g_have_iso_varargs=yes,g_have_iso_varargs=no)
+AC_MSG_RESULT($g_have_iso_varargs)
+
+AC_MSG_CHECKING(for GNUC varargs macros)
+AC_TRY_COMPILE([],[
+int a(int p1, int p2, int p3);
+#define call_a(params...) a(1,params)
+call_a(2,3);
+],g_have_gnuc_varargs=yes,g_have_gnuc_varargs=no)
+AC_MSG_RESULT($g_have_gnuc_varargs)
+
 # check for bytesex stuff
 AC_C_BIGENDIAN
 
@@ -1627,6 +1644,20 @@ $glib_inline
 #endif	/* !__cplusplus */
 _______EOF
 
+	if test x$g_have_iso_varargs ; then
+		cat >>$outfile <<_______EOF
+
+#define G_HAVE_ISO_VARARGS
+_______EOF
+	fi
+	if test x$g_have_gnuc_varargs ; then
+		cat >>$outfile <<_______EOF
+
+#define G_HAVE_GNUC_VARARGS
+_______EOF
+	fi
+
+
 	echo >>$outfile
 	if test x$g_have_eilseq = xno; then
 		cat >>$outfile <<_______EOF
@@ -1906,6 +1937,9 @@ if test x$glib_cv_has__inline__ = xyes; then
     glib_inline="\$glib_inline
 #define G_HAVE___INLINE__ 1"
 fi
+
+g_have_gnuc_varargs=$g_have_gnuc_varargs
+g_have_iso_varargs=$g_have_iso_varargs
 
 case xyes in
 x$ac_cv_c_bigendian)

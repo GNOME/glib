@@ -1,3 +1,10 @@
+Fri May 18 10:52:23 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in gmessages.h: Use compile checks for ISO C99 and GNU
+	extension varargs macros syntax and store result in glibconfig.h
+	(G_HAVE_ISO_VARARGS, G_HAVE_GNUC_VARARGS) rather than relying
+	on checking predefined macros.
+
 2001-05-18  Michael Natterer  <mitch@convergence.de>
 
 	* gmarkup.c: don't g_strdup()/g_free() all parsed attributes and
@@ -60,7 +67,7 @@ Sun May 13 10:31:17 2001  Owen Taylor  <otaylor@redhat.com>
 
 Thu May 10 23:21:30 2001  Owen Taylor  <otaylor@redhat.com>
 
-	* gmessages.c (g_log_write_prefix): Avoid using stderr
+	* gmessages.c (g_log_write_prefix): Avoid using stdio
 	to be as robust as possible in out-of-memory.
 
 	* gmessages.c (g_log_default_handler): Remove some dead
