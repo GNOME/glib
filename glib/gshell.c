@@ -24,6 +24,7 @@
 
 #include <string.h>
 
+#include "galias.h"
 #include "glib.h"
 
 #ifdef _

@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#include "galias.h"
 #include "glib.h"
 
 #include "glibintl.h"

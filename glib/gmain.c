@@ -36,6 +36,7 @@
 /* uncomment the next line to get poll() debugging info */
 /* #define G_MAIN_POLL_DEBUG */
 
+#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
 #include <signal.h>

@@ -1,3 +1,24 @@
+Thu Sep 16 02:03:15 2004  Matthias Clasen  <maclas@gmx.de>
+
+	Implement the same PLT reduction technique used in GTK+:
+	
+	* glib/glib.symbols: Master list of symbols
+
+	* glib/makegalias.pl: Perl script which creates galias.h
+
+	* glib/abicheck.sh: Compares actual exports against glib.symbols 
+
+	* glib/glib.def: Removed. This file is now generated from
+	glib.symbols
+	
+	* glib/Makefile.am: Add rules to generate galias.h and glib.def,
+	and add abicheck.sh to TESTS. Don't export _-prefixed symbols.
+	
+	* configure.in: Add --disable-visibility to suppress the 
+	use of ELF visibility attributes.
+
+	* glib/*.c: Include galias.h
+
 2004-09-15  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c (g_win32_error_message): Convert message to

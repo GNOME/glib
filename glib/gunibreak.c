@@ -22,6 +22,7 @@
 
 #include <stdlib.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gunibreak.h"
 

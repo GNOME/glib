@@ -42,6 +42,7 @@
 
 #undef G_DISABLE_DEPRECATED
 
+#include "galias.h"
 #include "glib.h"
 
 #include "giochannel.h"

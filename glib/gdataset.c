@@ -34,7 +34,7 @@
 #include "config.h"
 
 #include <string.h>
-
+#include "galias.h"
 #include "glib.h"
 
 

@@ -53,6 +53,7 @@
  */
 #define	G_IMPLEMENT_INLINES 1
 #define	__G_UTILS_C__
+#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 

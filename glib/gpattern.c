@@ -21,6 +21,7 @@
 
 #include <string.h>
 
+#include "galias.h"
 #include "gpattern.h"
 
 #include "gmacros.h"

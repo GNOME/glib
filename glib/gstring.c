@@ -39,6 +39,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gprintf.h"
 

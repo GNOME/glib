@@ -26,6 +26,7 @@
 #include <wchar.h>
 #endif
 
+#include "galias.h"
 #include "glib.h"
 #include "gunicodeprivate.h"
 

@@ -28,6 +28,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 #include "gthreadinit.h"

@@ -35,6 +35,7 @@
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
+#include "galias.h"
 #include "glib.h"
 
 #include "glibintl.h"

@@ -13,16 +13,31 @@ DIST_SUBDIRS = libcharset gnulib
 INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
+glib.def: glib.symbols
+	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/\t/') > glib.def
+
+galias.h: glib.symbols
+	  ./makegalias.pl < $(srcdir)/glib.symbols > galias.h
+
+if OS_UNIX
+TESTS = abicheck.sh
+endif
+
+BUILT_SOURCES = galias.h
+
 EXTRA_DIST = 			\
 	makefile.msc.in		\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
-	glib.def
+	makegalias.pl		\
+	glib.symbols
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
-	glib.rc
+	glib.rc			\
+	glib.def		\
+	galias.h
 
 lib_LTLIBRARIES = libglib-2.0.la
 
@@ -184,6 +199,8 @@ uninstall-libtool-import-lib:
 else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
+
+export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 

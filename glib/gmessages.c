@@ -41,6 +41,7 @@
 #include <locale.h>
 #include <errno.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gdebug.h"
 #include "gprintfint.h"

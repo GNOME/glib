@@ -47,6 +47,7 @@
 #include <unistd.h>
 #endif
 
+#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
 

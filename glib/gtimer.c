@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include "galias.h"
 #include "glibconfig.h"
 
 #ifdef HAVE_UNISTD_H

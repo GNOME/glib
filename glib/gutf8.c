@@ -27,6 +27,7 @@
 #endif
 #include <string.h>
 
+#include "galias.h"
 #include "glib.h"
 
 #ifdef G_PLATFORM_WIN32

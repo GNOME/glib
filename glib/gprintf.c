@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"

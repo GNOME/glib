@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include "galias.h"
 #include "glib.h"
 
 #include <sys/stat.h>

@@ -149,6 +149,7 @@ case "$host" in
 esac
 AC_MSG_RESULT([$glib_native_win32])
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
+AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
 AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)
@@ -163,6 +164,16 @@ if test "$glib_native_win32" = "yes"; then
   AC_CHECK_PROG(ms_librarian, [lib.exe], [yes], [no])
 fi
 AM_CONDITIONAL(MS_LIB_AVAILABLE, [test x$ms_librarian = xyes])
+
+if test "$glib_native_win32" != yes; then
+    # libtool option to control which symbols are exported
+    # right now, symbols starting with _ are not exported
+    LIBTOOL_EXPORT_OPTIONS='-export-symbols-regex "^[[^_]].*"'
+else
+    # We currently use .def files on Windows
+    LIBTOOL_EXPORT_OPTIONS=
+fi
+AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
@@ -191,6 +202,10 @@ AC_ARG_ENABLE(rebuilds,
               [AC_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
+AC_ARG_ENABLE(visibility,
+              [AC_HELP_STRING([--disable-visibility],
+                              [don't use ELF visibility attributes])],,
+              [enable_visibility=yes])
 
 if test "x$enable_threads" != "xyes"; then
   enable_threads=no
@@ -273,6 +288,10 @@ else
   if test "x$enable_debug" = "xno"; then
     GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
   fi
+fi
+
+if test "x$enable_visibility" = "xno"; then
+  GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DDISABLE_VISIBILITY"
 fi
 
 # Ensure MSVC-compatible struct packing convention is used when

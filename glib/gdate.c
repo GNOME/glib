@@ -35,6 +35,7 @@
 /* #define DEBUG_MSG(args)	g_message args ; */
 #endif
 
+#include "galias.h"
 #include "glib.h"
 
 #include <time.h>

@@ -40,6 +40,7 @@
 
 #include <string.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
 

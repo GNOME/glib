@@ -21,6 +21,7 @@
 
 #include "goption.h"
 
+#include "galias.h"
 #include "glib.h"
 #include "gi18n.h"
 

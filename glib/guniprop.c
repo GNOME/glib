@@ -25,6 +25,7 @@
 #include <string.h>
 #include <locale.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gunichartables.h"
 #include "gunicodeprivate.h"

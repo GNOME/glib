@@ -35,6 +35,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 

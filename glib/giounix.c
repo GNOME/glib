@@ -43,6 +43,7 @@
 #include <string.h>
 #include <fcntl.h>
 
+#include "galias.h"
 #include "glib.h"
 
 /*

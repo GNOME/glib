@@ -31,6 +31,7 @@
 #include <dirent.h>
 #endif
 
+#include "galias.h"
 #include "glib.h"
 #include "gdir.h"
 

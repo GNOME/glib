@@ -23,6 +23,7 @@
 
 #include <stdlib.h>
 
+#include "galias.h"
 #include "glib.h"
 #include "gunidecomp.h"
 #include "gunicomp.h"

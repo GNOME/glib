@@ -31,6 +31,7 @@
 
 #include "config.h"
 
+#include "galias.h"
 #include "glibconfig.h"
 
 #include <stdlib.h>
