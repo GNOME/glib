@@ -1,3 +1,8 @@
+2000-03-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gqueue.c (g_queue_push_tail_link, g_queue_push_head_link): We
+	want the next and prev pointer of the inserted link to be NULL.
+
 2000-03-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Another small change to the pthread_.. search

@@ -87,8 +87,8 @@ g_queue_push_head_link (GQueue *queue,
 {
   g_return_if_fail (queue != NULL);
   g_return_if_fail (link != NULL);
-  g_return_if_fail (link->prev != NULL);
-  g_return_if_fail (link->next != NULL);
+  g_return_if_fail (link->prev == NULL);
+  g_return_if_fail (link->next == NULL);
 
   link->next = queue->head;
   if (queue->head)
@@ -119,8 +119,8 @@ g_queue_push_tail_link (GQueue *queue,
 {
   g_return_if_fail (queue != NULL);
   g_return_if_fail (link != NULL);
-  g_return_if_fail (link->prev != NULL);
-  g_return_if_fail (link->next != NULL);
+  g_return_if_fail (link->prev == NULL);
+  g_return_if_fail (link->next == NULL);
 
   link->prev = queue->tail;
   if (queue->tail)
