@@ -1,3 +1,9 @@
+Tue Oct  6 14:29:47 1998  Tim Janik  <timj@gtk.org>
+
+	* gmem.c (g_malloc0): fixed memory offsett when ENABLE_MEM_CHECK is
+	defined and ENABLE_MEM_PROFILE is not (patch from Martin Pool
+ 	<mbp@wistful.humbug.org.au>).
+
 Sat Oct  3 01:18:10 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

@@ -24,6 +24,23 @@
 /* #define ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS */
 /* #define ENABLE_MEM_CHECK */
 
+/*
+ * This library can check for some attempts to do illegal things to
+ * memory (ENABLE_MEM_CHECK), and can do profiling
+ * (ENABLE_MEM_PROFILE).  Both features are implemented by storing
+ * words before the start of the memory chunk.
+ *
+ * The first, at offset -2*SIZEOF_LONG, is used only if
+ * ENABLE_MEM_CHECK is set, and stores 0 after the memory has been
+ * allocated and 1 when it has been freed.  The second, at offset
+ * -SIZEOF_LONG, is used if either flag is set and stores the size of
+ * the block.
+ *
+ * The MEM_CHECK flag is checked when memory is realloc'd and free'd,
+ * and it can be explicitly checked before using a block by calling
+ * g_mem_check().
+ */
+
 #if defined(ENABLE_MEM_PROFILE) && defined(ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS)
 #define ENTER_MEM_CHUNK_ROUTINE() allocating_for_mem_chunk++
 #define LEAVE_MEM_CHUNK_ROUTINE() allocating_for_mem_chunk--
@@ -151,17 +168,17 @@ g_malloc (gulong size)
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+#  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!allocating_for_mem_chunk) {
-#endif
+#  endif
     if (size <= 4095)
       allocations[size-1] += 1;
     else
       allocations[4095] += 1;
     allocated_mem += size;
-#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+#  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
-#endif
+#  endif
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -184,9 +201,9 @@ g_malloc0 (gulong size)
     return NULL;
   
   
-#ifdef ENABLE_MEM_PROFILE
+#if defined (ENABLE_MEM_PROFILE) || defined (ENABLE_MEM_CHECK)
   size += SIZEOF_LONG;
-#endif /* ENABLE_MEM_PROFILE */
+#endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
 #ifdef ENABLE_MEM_CHECK
   size += SIZEOF_LONG;
@@ -213,19 +230,19 @@ g_malloc0 (gulong size)
   p = ((guchar*) p + SIZEOF_LONG);
   *t = size;
   
-#ifdef ENABLE_MEM_PROFILE
-#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+#  ifdef ENABLE_MEM_PROFILE
+#    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!allocating_for_mem_chunk) {
-#endif
+#    endif
     if (size <= 4095)
       allocations[size-1] += 1;
     else
       allocations[4095] += 1;
     allocated_mem += size;
-#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+#    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
-#endif
-#endif /* ENABLE_MEM_PROFILE */
+#    endif
+#  endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE */
   
   
@@ -279,7 +296,7 @@ g_realloc (gpointer mem,
     }
   
   if (!p)
-    g_error ("could not reallocate %ld bytes", size);
+    g_error ("could not reallocate %lu bytes", (gulong) size);
   
   
 #ifdef ENABLE_MEM_CHECK
@@ -381,7 +398,7 @@ g_mem_check (gpointer mem)
   t = (gulong*) ((guchar*) mem - SIZEOF_LONG - SIZEOF_LONG);
   
   if (*t >= 1)
-    g_warning ("mem: 0x%08x has been freed: %lu\n", (gulong) mem, *t);
+    g_warning ("mem: 0x%08x has been freed %lu times\n", (gulong) mem, *t);
 #endif /* ENABLE_MEM_CHECK */
 }
 
