@@ -174,6 +174,9 @@ g_data_set_internal (GData	  **datalist,
 {
   register GData *list;
   
+  if (!g_dataset_location_ht)
+    g_data_initialize ();
+  
   list = *datalist;
   if (!data)
     {

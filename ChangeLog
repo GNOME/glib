@@ -1,3 +1,11 @@
+Wed Nov 18 1998 Elliot Lee <sopwith@redhat.com>
+	. gdataset.c: There was a code path into g_data_set_internal
+	  through a function (g_datalist_id_set_full). Neither function
+	  checked for g_dataset_init having been run, but
+	  g_data_set_internal used the memchunk. I added
+	  a check into g_data_set_internal so it will do the
+	  initialization if needed. (There's probably a better way.)
+
 Mon Nov 16 07:48:06 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h (g_bit_nth_msf): fixed off-by-one error, so we don't waste
