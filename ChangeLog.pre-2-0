@@ -1,6 +1,6 @@
 2000-12-08  Raja R Harinath  <harinath@cs.umn.edu>
 
-	* tests/Makefile.am (TESTS): Rearrange into other veriables, and
+	* tests/Makefile.am (TESTS): Rearrange into other variables, and
 	include run-markup-tests.sh.
 	(TESTS_ENVIRONMENT): New.  Pass $srcdir to tests.
 	(noinst_PROGRAMS): Rename to ...
@@ -74,7 +74,8 @@ Tue Dec  5 12:23:04 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-11-29  Havoc Pennington  <hp@redhat.com>
 
-	* gunidecomp.c (COMBINING_CLASS): s/UNICODE_LAST_CHAR/G_UNICODE_LAST_CHAR/
+	* gunidecomp.c (COMBINING_CLASS): 
+	s/UNICODE_LAST_CHAR/G_UNICODE_LAST_CHAR/
 
 	* gunichartables.h: Update for data in Unicode 3.0.1
 
@@ -399,7 +400,7 @@ Sun Nov  5 13:20:54 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-10-24  Havoc Pennington  <hp@pobox.com>
 
-        * gmarkup.h, gmarkup.c: New module to parse a simple
+	* gmarkup.h, gmarkup.c: New module to parse a simple
 	markup language
 	
 	* Makefile.am: add gmarkup.h, gmarkup.c
@@ -419,7 +420,7 @@ Sun Nov  5 13:20:54 2000  Owen Taylor  <otaylor@redhat.com>
 	* gstrfuncs.c (g_strsplit): When the string is ended by a
 	delimiter, return an extra empty string just like for a delimiter
 	at the start of the string. This makes the function behave more
-	consitent and also fixes Bug #15026.
+	consistent and also fixes Bug #15026.
 
 Tue Oct 24 22:09:14 2000  Tim Janik  <timj@gtk.org>
 
@@ -646,7 +647,7 @@ Mon Sep 11 10:03:24 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-09-29  Jonathan Blandford  <jrb@redhat.com>
 
-	* gnode.c (g_node_insert_after): Added function to keep symetry
+	* gnode.c (g_node_insert_after): Added function to keep symmetry
 	with g_node_insert_before. 
 
 2000-09-29  Martin Baulig  <baulig@suse.de>
@@ -839,7 +840,7 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 	functions.
 
 	* gthread.c, gthreadpool.c, glib.h: Enable error reporting for
-	thread creation, namly for g_thread_create, g_thread_pool_new,
+	thread creation, namely for g_thread_create, g_thread_pool_new,
 	g_thread_pool_push and g_thread_pool_set_max_threads.
 
 	* tests/thread-test.c, tests/threadpool-test.c: Adapted
@@ -876,17 +877,18 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 2000-08-25 Elliot Lee <sopwith@redhat.com>
 
 	* glib.h, gunicode.h, gmodule/gmodule.h:
-	: Mark the following functions G_GNUC_CONST (to allow
-	optimization) because their results are a function of only their parameters:
-	g_int_hash, g_int_equal, g_direct_hash, g_direct_equal, g_quark_to_string,
-	g_date_is_leap_year, g_date_days_in_month, g_date_monday_weeks_in_year,
-	g_date_sunday_weeks_in_year, g_spaced_primes_closest, g_unichar_is*,
-	g_unichar_to*, g_unichar_*digit_value, g_unichar_type
+	Mark the following functions G_GNUC_CONST (to allow optimization)
+	because their results are a function of only their parameters: 
+	g_int_hash, g_int_equal, g_direct_hash, g_direct_equal,
+	g_quark_to_string, g_date_is_leap_year, g_date_days_in_month,
+	g_date_monday_weeks_in_year, g_date_sunday_weeks_in_year,
+	g_spaced_primes_closest, g_unichar_is*, g_unichar_to*,
+	g_unichar_*digit_value, g_unichar_type
 
 2000-08-21 Elliot Lee <sopwith@redhat.com>
 
-	* gobject/Makefile.am, gobject/gobject-query.c, gobject/gparamspecs.c: Fix inclusion of
-	config.h
+	* gobject/Makefile.am, gobject/gobject-query.c,
+	gobject/gparamspecs.c: Fix inclusion of config.h
 
 Mon Aug 21 14:46:23 2000  Owen Taylor  <otaylor@redhat.com>
 
@@ -1016,7 +1018,7 @@ Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 	out of the buffer.
 
 	The separate reader thread(s), and the circular buffer(s) with
-	associated events mean lots of possibilities for fun parallellism
+	associated events mean lots of possibilities for fun parallelism
 	errors. But it seems to work OK, i.e. GIMP runs.
 
 	* gmain.c: Small changes to the Win32 polling function.
@@ -1978,8 +1980,8 @@ Tue Oct 12 14:17:12 1999  Tim Janik  <timj@gtk.org>
 
 Tue Oct 12 12:16:12 1999  Tim Janik  <timj@gtk.org>
 
-	* gmessages.c (g_printf_string_upper_bound): completly new implementation
-	for printf string upper bounds calculation.
+	* gmessages.c (g_printf_string_upper_bound): completly new
+	implementation for printf string upper bounds calculation.
 	we handle all glibc 2.1 format specifiers now, except for positional
 	parameters (%nn$...) and wide char strings, plus some obscure upper
 	case variants of the standard conversions. this fixes a lot of
@@ -2069,12 +2071,13 @@ Wed Sep 22 01:53:18 1999  Tim Janik  <timj@gtk.org>
 
 Fri Sep 17 10:24:45 1999  Tim Janik  <timj@gtk.org>
 
-	* gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied patch
-	from Soeren Sandmann <sandmann@daimi.au.dk>, to force mem chunk's area
-	sizes to be a multitiple of atom_size, and to eliminate the MAX_MEM_AREA
-	restriction of 65536 bytes. we also catch cases where users pass an area
-	size < atom size with a return_if_fail statement now (which is ok,
-	because previously this lead to memory corruption anyways).
+	* gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied
+	patch from Soeren Sandmann <sandmann@daimi.au.dk>, to force mem
+	chunk's area sizes to be a multitiple of atom_size, and to
+	eliminate the MAX_MEM_AREA restriction of 65536 bytes. we also
+	catch cases where users pass an area size < atom size with a
+	return_if_fail statement now (which is ok, because previously this
+	lead to memory corruption anyways).
 
 Thu Sep 16 13:19:54 1999  Tim Janik  <timj@gtk.org>
 
@@ -2493,8 +2496,8 @@ Sun Apr 11 14:37:06 1999  Tim Janik  <timj@gtk.org>
 Sat Apr 10 19:30:50 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed braces around inline strings for the G_GNUC_FUNCTION
-	and G_GNUC_PRETTY_FUNCTION macros, so the macros can be used for compile
-	time string concatenation.
+	and G_GNUC_PRETTY_FUNCTION macros, so the macros can be used for
+	compile time string concatenation.
 
 Thu Apr  8 19:53:19 1999  Owen Taylor  <otaylor@redhat.com>
 
@@ -2540,8 +2543,8 @@ Tue Mar 23 13:43:39 PST 1999 Manish Singh <yosh@gimp.org>
 Mon Mar 22 03:54:43 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h:
-	* gmain.c: add user_data to the GSource ->check and ->prepare functions,
-	so it can be used to e.g. pass a GPollFd.
+	* gmain.c: add user_data to the GSource ->check and ->prepare
+	functions, so it can be used to e.g. pass a GPollFd.
 	(g_main_poll): only add poll records with an events mask != 0 to the
 	fd_array. don't even bother calling poll_func() if fds=timeout=0.
 	added debugging printouts around poll_func() invokation that can be
