@@ -16,8 +16,10 @@ INCLUDES = -I .. -I .
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime -DG_ENABLE_DEBUG
 
 all :				\
+	glib-genmarshal.exe \
+	gmarshal.h \
+	gmarshal.c \
 	gobject-$(GLIB_VER).dll	\
-	glib-genmarshal.exe
 
 gobject_OBJECTS =		\
 	gboxed.obj		\
@@ -32,7 +34,9 @@ gobject_OBJECTS =		\
 	gtypemodule.obj		\
 	gtypeplugin.obj		\
 	gvalue.obj		\
-	gvaluetypes.obj
+	gvaluearray.obj		\
+	gvaluetypes.obj	\
+	gvaluetransform.obj
 
 gmarshal.h : gmarshal.list glib-genmarshal.exe
 	echo #ifndef __G_MARSHAL_H__ > xgen-gmh
@@ -51,5 +55,6 @@ makefile.msc: makefile.msc.in
 gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(CC) $(CFLAGS) -LD -Fegobject-$(GLIB_VER).dll $(gobject_OBJECTS) ..\glib-$(GLIB_VER).lib $(LDFLAGS) /def:gobject.def
 
-glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER).lib
+# link glib's static version to avoid installing 
+glib-genmarshal.exe : glib-genmarshal.c ..\glib-$(GLIB_VER)s.lib
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c ..\glib-$(GLIB_VER)s.lib user32.lib advapi32.lib $(INTL_LIBS)

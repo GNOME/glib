@@ -11,6 +11,7 @@ EXPORTS
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
 	g_cclosure_marshal_STRING__OBJECT_POINTER
+	g_cclosure_marshal_VOID__BOOLEAN
 	g_cclosure_marshal_VOID__INT
 	g_cclosure_marshal_VOID__POINTER
 	g_cclosure_marshal_VOID__UINT
