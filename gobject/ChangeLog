@@ -1,3 +1,9 @@
+2002-10-16  Matthias Clasen  <maclas@gmx.de>
+
+	* glib-mkenums.in: Support for template files.
+	
+	* glib-mkenums.1: Document --template.
+
 2002-10-15  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.c (g_type_interface_prerequisites): New function to obtain

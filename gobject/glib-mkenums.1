@@ -1,4 +1,4 @@
-.TH GLIB-MKENUMS 1 "20 Apr 2001"
+.TH GLIB-MKENUMS 1 "27 Jul 2002"
 .SH NAME
 glib-mkenums \- C language enum description generation utility
 .SH SYNOPSIS
@@ -44,6 +44,20 @@ Put out <text> after iterating over all values of an enum.
 \fI--comments <text>
 Template for auto-generated comments, the default (for C code generations) is
 "/* @comment@ */".
+.TP
+\fI--template file
+Read templates from the given file. The templates are enclosed in
+specially-formatted C comments
+.PP
+.RS
+.nf
+/*** BEGIN section ***/ 
+/*** END section ***/
+.fi
+.PP
+where section may be file-header, file-production, file-tail,
+enumeration-production, value-header, value-production, value-tail or
+comment.
 .TP
 \fI-h, --help\fP 
 Print brief help and exit.
