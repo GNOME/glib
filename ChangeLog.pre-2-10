@@ -1,3 +1,8 @@
+2001-03-01  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Make a note that this version of GLib preferrably
+	shouldn't be used on Windows.
+
 Wed Feb 28 21:26:18 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* README.in: Propagate changes commited to the README.in

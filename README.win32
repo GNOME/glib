@@ -1,3 +1,14 @@
+You most probably should not be using this version of GLib on
+Windows. Use the latest glib, 1.3.x, instead. Even if glib 1.2 is
+currently advertised as being the "stable" version, that is mainly
+significant on Unix. On Windows, there has been many important
+enhancements and bugfixes to the 1.3 branch, that have not been
+backported to this version, glib 1.2.
+
+--Tor Lillqvist <tml@iki.fi>, Mar 1, 2001.
+
+The rest of this file is from April 1999:
+
 For more information about the port or GLib, GTk+ and the GIMP to
 native Windows, and pre-built binary packages, see
 http://www.iki.fi/tml/gimp/win32/ . "Native" means that we use the
