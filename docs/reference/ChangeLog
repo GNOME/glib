@@ -1,3 +1,8 @@
+2004-09-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/messages.sgml: Correct the docs for the default log
+	handler wrt to which messages go to stderr. (#153041, Philippe Blain)
+
 Sun Aug 29 23:50:45 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/fileutils.sgml: Fix a typo.  (#151109, Stepan Kasal)
