@@ -28,10 +28,6 @@ G_BEGIN_DECLS
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
 
-#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
-#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
-#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
-
 typedef signed char gint8;
 typedef unsigned char guint8;
 typedef signed short gint16;
@@ -69,6 +65,11 @@ typedef unsigned __int64 guint64;
 
 typedef signed int gssize;
 typedef unsigned int gsize;
+#define G_GSIZE_MODIFIER ""
+#define G_GSSIZE_FORMAT "i"
+#define G_GSIZE_FORMAT "u"
+
+#define G_MAXSIZE	G_MAXUINT
 
 #define GPOINTER_TO_INT(p)	((gint)   (p))
 #define GPOINTER_TO_UINT(p)	((guint)  (p))

@@ -1,3 +1,11 @@
+Sun Jan 11 16:13:20 2004  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: Add G_MAXSIZE, define in terms of G_MAXUfoo.
+
+	* tests/type-test.c: Add test for G_MAXSIZE.
+
+	* glibconfig.h.win32.in: Cleanup, add some missing bits.
+
 Sun Jan 11 16:05:35 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/giounix.c: #define _POSIX_SOURCE for SSIZE_MAX. Fixes #128853.

@@ -2085,6 +2085,8 @@ typedef unsigned $glib_size_type_define gsize;
 #define G_GSIZE_MODIFIER $gsize_modifier
 #define G_GSSIZE_FORMAT $gssize_format
 #define G_GSIZE_FORMAT $gsize_format
+
+#define G_MAXSIZE	G_MAXU$glib_msize_type
 _______EOF
 
 	if test -z "$glib_unknown_void_p"; then
@@ -2402,16 +2404,19 @@ short)
   gsize_modifier='"h"'
   gsize_format='"hu"'
   gssize_format='"hi"'
+  glib_msize_type='SHRT'
   ;;
 int)
   gsize_modifier='""'
   gsize_format='"u"'
   gssize_format='"i"'
+  glib_msize_type='INT'
   ;;
 long)
   gsize_modifier='"l"'
   gsize_format='"lu"'
   gssize_format='"li"'
+  glib_msize_type='LONG'
   ;;
 esac
 
