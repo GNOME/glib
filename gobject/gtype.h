@@ -372,6 +372,7 @@ type_name##_get_type (void) \
         sizeof (TypeName), \
         0,      /* n_preallocs */ \
         (GInstanceInitFunc) type_name##_init, \
+        NULL    /* value_table */ \
       }; \
       g_define_type_id = g_type_register_static (TYPE_PARENT, #TypeName, &g_define_type_info, (GTypeFlags) flags); \
       { CODE ; } \
