@@ -1,3 +1,7 @@
+Mon Feb 12 12:42:45 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* {glib,gobject}/Makefile.am: The ultimate gtk-doc makefile.
+
 2001-02-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/tmpl/threads.sgml, glib/glib-sections.txt: Added

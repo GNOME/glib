@@ -6,31 +6,47 @@ DOC_MODULE=gobject
 # The top-level SGML file.
 DOC_MAIN_SGML_FILE=gobject-docs.sgml
 
-# The directory containing the source code (if it contains documentation).
+# The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=../../../gobject
+
+# Extra options to supply to gtkdoc-scan
+SCAN_OPTIONS=
+
+# Extra options to supply to gtkdoc-mkdb
+MKDB_OPTIONS=
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
+
+# Used for dependencies
+HFILE_GLOB=$(top_srcdir)/gobject/*.h
+CFILE_GLOB=$(top_srcdir)/gobject/*.c
 
 # Headers to ignore
 IGNORE_HFILES=				\
 	gbsearcharray.h
 
-tmpl_sources =				\
-	tmpl/closures.sgml		\
-	tmpl/enumerations_flags.sgml	\
-	tmpl/gboxed.sgml		\
-	tmpl/generic_values.sgml	\
-	tmpl/gobject-unused.sgml	\
-	tmpl/gtypemodule.sgml		\
-	tmpl/gtypeplugin.sgml		\
-	tmpl/objects.sgml		\
-	tmpl/param_specs.sgml		\
-	tmpl/signals.sgml		\
-	tmpl/standard_params.sgml	\
-	tmpl/types.sgml			\
-	tmpl/value_collection.sgml	\
-	tmpl/value_types.sgml
+# Extra files to add when scanning
+EXTRA_HFILES=
+
+# Images to copy into HTML directory
+HTML_IMAGES =
+
+# Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
+content_files =
+
+# Other files to distribute
+extra_files =
+
+# CFLAGS and LDFLAGS for compiling scan program. Only needed
+# if $(DOC_MODULE).types is non-empty.
+GTKDOC_CFLAGS =
+GTKDOC_LIBS =
+
+# Commands for compiling and linking 
+GTKDOC_CC=$(LIBTOOL) --mode=compile $(CC)
+GTKDOC_LD=$(LIBTOOL) --mode=link $(CC)
+
 
 ####################################
 # Everything below here is generic #
@@ -39,58 +55,79 @@ tmpl_sources =				\
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = 				\
+	$(content_files)		\
+	$(extra_files)			\
+	$(HTML_IMAGES)			\
 	$(DOC_MAIN_SGML_FILE)		\
-	$(DOC_MODULE)-decl.txt		\
+	$(DOC_MODULE).types		\
 	$(DOC_MODULE)-sections.txt	\
 	$(DOC_MODULE)-overrides.txt
 
-if ENABLE_GTK_DOC
-all-local:
-	$(MAKE) scan
-	$(MAKE) templates
-	$(MAKE) sgml
-	$(MAKE) html.stamp
-html.stamp: sgml.stamp $(EXTRA_SGML_FILES)
-	$(MAKE) html
-DOC_STAMPS= html.stamp sgml.stamp
+DOC_STAMPS=scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp
 
-#all-local: html/index.html
-#
-#$(DOC_MODULE)-decl.txt: 
-#	$(MAKE) scan
-#
-#$(tmpl_sources): $(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
-#	$(MAKE) templates
-#
-#sgml/$(DOC_MODULE)-doc.bottom: $(tmpl_sources) $(DOC_MODULE)-decl.txt
-#	$(MAKE) sgml
-#
-#html/index.html: sgml/$(DOC_MODULE)-doc.bottom $(DOC_MAIN_SGML_FILE)
-#	$(MAKE) html
+if ENABLE_GTK_DOC
+all-local: html-build.stamp
+
+SCANOBJ_FILES = 		\
+	$(DOC_MODULE).args 	\
+	$(DOC_MODULE).hierarchy \
+	$(DOC_MODULE).signal
+
+scan-build.stamp: $(HFILE_GLOB)
+	@echo '*** Scanning header files ***'
+	cd $(srcdir) && ( \
+	if grep -l '^.+$$' $(DOC_MODULE).types > /dev/null ; then \
+	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj --module=$(DOC_MODULE) ; \
+	else \
+	    for i in $(SCANOBJ_FILES) ; do \
+               test -f $$i || touch $$i ; \
+	    done \
+	fi )
+	cd $(srcdir) && \
+	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
+	touch scan-build.stamp
+
+check_scan:
+	$(MAKE) scan-build.stamp
+
+$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): check_scan
+
+tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
+	@echo '*** Rebuilding template files ***'
+	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
+	touch tmpl-build.stamp
+
+check_templates: 
+	$(MAKE) tmpl-build.stamp
+
+tmpl.stamp: check_templates
+
+sgml-build.stamp: tmpl.stamp $(CFILE_GLOB)
+	@echo '*** Building SGML ***'
+	cd $(srcdir) && \
+	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) $(MKDB_OPTIONS)
+	touch sgml-build.stamp
+
+check_sgml:
+	$(MAKE) sgml-build.stamp
+
+sgml.stamp: check_sgml
+
+html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE)
+	@echo '*** Building HTML ***'
+	test -d $(srcdir)/html || mkdir $(srcdir)/html
+	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
+	@echo '-- Fixing Crossreferences' 
+	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
+	touch html-build.stamp
 endif
 
-scan:
-	-(cd $(srcdir) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)")
-
-templates: 
-	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
-
-sgml:
-	cd $(srcdir) \
-	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
-
-html:
-	test -d $(srcdir)/html || mkdir $(srcdir)/html
-	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
-	@echo '-- Fixing Crossreferences' 
-	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
-
 clean-local:
-	rm -f *~ *.bak *.signals *-unused.txt
+	rm -f *~ *.bak $(SCANOBJ_FILES) *-unused.txt $(DOC_STAMPS) $(srcdir)/sgml.stamp 
 
 maintainer-clean-local: clean
-	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt $(DOC_STAMPS)
+	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
@@ -117,7 +154,7 @@ dist-check-gtkdoc:
 	@false
 endif
 
-dist-hook: dist-check-gtkdoc
+dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/tmpl
 	mkdir $(distdir)/sgml
 	mkdir $(distdir)/html
@@ -126,5 +163,8 @@ dist-hook: dist-check-gtkdoc
 	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 	-cp $(srcdir)/html/index.sgml $(distdir)/html
 	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
+	for i in $(HTML_IMAGES) ; do          \
+	  cp $(srcdir)/$$i $(distdir)/html ;  \
+        done
 
-.PHONY : html sgml templates scan
+.PHONY : check_sgml check_templates check_scan dist-hook-local

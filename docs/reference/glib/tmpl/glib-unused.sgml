@@ -1,33 +1,36 @@
-<!-- ##### FUNCTION g_source_connect_indirect ##### -->
+<!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
 <para>
 
 </para>
 
-@source: 
-@callback_data: 
-@callback_funcs: 
+@s1: 
+@s2: 
+@Returns: 
 
-<!-- ##### MACRO popen ##### -->
+<!-- ##### MACRO access ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION g_mem_check ##### -->
-<para>
-Checks if the given memory has already been freed. If it has it outputs
-a warning message.
-To use this function you must configure glib with the flag
-'--enable-mem-check=yes' before compiling.
-</para>
-
-@mem: the memory to check.
-
-<!-- ##### MACRO pclose ##### -->
+<!-- ##### MACRO close ##### -->
 <para>
 
 </para>
 
+
+<!-- ##### MACRO fdopen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_convert_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 <!-- ##### FUNCTION g_main_add_poll ##### -->
 <para>
@@ -45,36 +48,36 @@ the results may be needed.
 See #G_PRIORITY_DEFAULT, #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH,
 #G_PRIORITY_HIGH_IDLE, and #G_PRIORITY_LOW.
 
-<!-- ##### MACRO lseek ##### -->
+<!-- ##### FUNCTION g_main_loop_destroy ##### -->
 <para>
 
 </para>
 
+@loop: 
 
-<!-- ##### MACRO getpid ##### -->
+<!-- ##### FUNCTION g_main_remove_poll ##### -->
+<para>
+Removes a file descriptor from the list being polled.
+</para>
+
+@fd: the #GPollFD to remove.
+
+<!-- ##### FUNCTION g_main_win32_get_poll_func ##### -->
 <para>
 
 </para>
 
+@Returns: 
 
-<!-- ##### FUNCTION g_source_remove_by_source_data ##### -->
+<!-- ##### FUNCTION g_mem_check ##### -->
 <para>
-Removes the first event source found with the given source data.
-</para>
-<para>
-Event sources are sorted with the highest priority first. Sources with equal
-priority are stored in the order in which they were added.
-</para>
-
-@source_data: the source data, which contains information specific to the
-type of source.
-@Returns: TRUE if an event source was found and removed.
-
-<!-- ##### MACRO close ##### -->
-<para>
-
+Checks if the given memory has already been freed. If it has it outputs
+a warning message.
+To use this function you must configure glib with the flag
+'--enable-mem-check=yes' before compiling.
 </para>
 
+@mem: the memory to check.
 
 <!-- ##### FUNCTION g_source_add ##### -->
 <para>
@@ -90,21 +93,6 @@ type of source.
 @source: 
 @context: 
 
-<!-- ##### MACRO fdopen ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
-<para>
-
-</para>
-
-@s1: 
-@s2: 
-@Returns: 
-
 <!-- ##### FUNCTION g_source_connect ##### -->
 <para>
 
@@ -115,30 +103,27 @@ type of source.
 @data: 
 @notify: 
 
-<!-- ##### MACRO getcwd ##### -->
+<!-- ##### FUNCTION g_source_connect_indirect ##### -->
 <para>
 
 </para>
 
+@source: 
+@callback_data: 
+@callback_funcs: 
 
-<!-- ##### MACRO write ##### -->
+<!-- ##### FUNCTION g_source_remove_by_source_data ##### -->
 <para>
-
+Removes the first event source found with the given source data.
+</para>
+<para>
+Event sources are sorted with the highest priority first. Sources with equal
+priority are stored in the order in which they were added.
 </para>
 
-
-<!-- ##### FUNCTION g_main_remove_poll ##### -->
-<para>
-Removes a file descriptor from the list being polled.
-</para>
-
-@fd: the #GPollFD to remove.
-
-<!-- ##### MACRO access ##### -->
-<para>
-
-</para>
-
+@source_data: the source data, which contains information specific to the
+type of source.
+@Returns: TRUE if an event source was found and removed.
 
 <!-- ##### MACRO g_string ##### -->
 <para>
@@ -147,12 +132,41 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
-<!-- ##### FUNCTION g_main_win32_get_poll_func ##### -->
+<!-- ##### MACRO getcwd ##### -->
 <para>
 
 </para>
 
-@Returns: 
+
+<!-- ##### MACRO getpid ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO lseek ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO open ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO pclose ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO popen ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### MACRO read ##### -->
 <para>
@@ -160,21 +174,7 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 
-<!-- ##### FUNCTION g_main_loop_destroy ##### -->
-<para>
-
-</para>
-
-@loop: 
-
-<!-- ##### FUNCTION g_convert_error_quark ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### MACRO open ##### -->
+<!-- ##### MACRO write ##### -->
 <para>
 
 </para>
