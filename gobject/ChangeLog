@@ -1,3 +1,8 @@
+2003-03-24  Sven Neumann  <sven@gimp.org>
+
+	* gtype.c (type_data_finalize_class_ifaces_Wm): removed leftover
+	debugging message (bug #109093).
+
 2003-03-06  Matthias Clasen  <maclas@gmx.de>
 
 	* gsignal.c (g_signal_handlers_block_matched): 

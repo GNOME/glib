@@ -1628,10 +1628,6 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
 
   g_assert (node->is_instantiatable && node->data && node->data->class.class && node->data->common.ref_count == 0);
 
-  g_message ("finalizing interfaces for %sClass `%s'",
-	     type_descriptive_name_I (NODE_FUNDAMENTAL_TYPE (node)),
-	     type_descriptive_name_I (NODE_TYPE (node)));
-
  reiterate:
   for (i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
     {
