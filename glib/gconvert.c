@@ -1857,12 +1857,15 @@ make_valid_utf8 (const gchar *name)
 
 /**
  * g_filename_display_name:
- * @filename: a pathname in the GLib filename encoding
+ * @filename: a pathname hopefully in the GLib file name encoding
  * 
  * Converts a filename into a valid UTF-8 string. The 
  * conversion is not necessarily reversible, so you 
  * should keep the original around and use the return
  * value of this function only for display purposes.
+ * Unlike g_filename_to_utf8(), the result is guaranteed 
+ * to be non-NULL even if the filename actually isn't in the GLib
+ * file name encoding.
  *
  * Return value: a newly allocated string containing
  *   a rendition of the filename in valid UTF-8

@@ -465,7 +465,7 @@ g_file_error_from_errno (gint err_no)
 }
 
 static gboolean
-get_contents_stdio (const gchar *utf8_filename,
+get_contents_stdio (const gchar *display_filename,
                     FILE        *f,
                     gchar      **contents,
                     gsize       *length, 
@@ -501,7 +501,7 @@ get_contents_stdio (const gchar *utf8_filename,
                            G_FILE_ERROR_NOMEM,
                            _("Could not allocate %lu bytes to read file \"%s\""),
                            (gulong) total_allocated, 
-			   utf8_filename ? utf8_filename : "???");
+			   display_filename);
 
               goto error;
             }
@@ -513,7 +513,7 @@ get_contents_stdio (const gchar *utf8_filename,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Error reading file '%s': %s"),
-                       utf8_filename ? utf8_filename : "???", 
+                       display_filename,
 		       g_strerror (errno));
 
           goto error;
@@ -545,7 +545,7 @@ get_contents_stdio (const gchar *utf8_filename,
 #ifndef G_OS_WIN32
 
 static gboolean
-get_contents_regfile (const gchar *utf8_filename,
+get_contents_regfile (const gchar *display_filename,
                       struct stat *stat_buf,
                       gint         fd,
                       gchar      **contents,
@@ -569,7 +569,7 @@ get_contents_regfile (const gchar *utf8_filename,
                    G_FILE_ERROR_NOMEM,
                    _("Could not allocate %lu bytes to read file \"%s\""),
                    (gulong) alloc_size, 
-		   utf8_filename ? utf8_filename : "???");
+		   display_filename);
 
       goto error;
     }
@@ -590,7 +590,7 @@ get_contents_regfile (const gchar *utf8_filename,
                            G_FILE_ERROR,
                            g_file_error_from_errno (errno),
                            _("Failed to read from file '%s': %s"),
-                           utf8_filename ? utf8_filename : "???", 
+                           display_filename, 
 			   g_strerror (errno));
 
 	      goto error;
@@ -628,7 +628,7 @@ get_contents_posix (const gchar *filename,
 {
   struct stat stat_buf;
   gint fd;
-  gchar *utf8_filename = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+  gchar *display_filename = g_filename_display_name (filename);
 
   /* O_BINARY useful on Cygwin */
   fd = open (filename, O_RDONLY|O_BINARY);
@@ -639,9 +639,9 @@ get_contents_posix (const gchar *filename,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   utf8_filename ? utf8_filename : "???", 
+                   display_filename, 
 		   g_strerror (errno));
-      g_free (utf8_filename);
+      g_free (display_filename);
 
       return FALSE;
     }
@@ -654,22 +654,22 @@ get_contents_posix (const gchar *filename,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to get attributes of file '%s': fstat() failed: %s"),
-                   utf8_filename ? utf8_filename : "???", 
+                   display_filename, 
 		   g_strerror (errno));
-      g_free (utf8_filename);
+      g_free (display_filename);
 
       return FALSE;
     }
 
   if (stat_buf.st_size > 0 && S_ISREG (stat_buf.st_mode))
     {
-      gboolean retval = get_contents_regfile (utf8_filename,
+      gboolean retval = get_contents_regfile (display_filename,
 					      &stat_buf,
 					      fd,
 					      contents,
 					      length,
 					      error);
-      g_free (utf8_filename);
+      g_free (display_filename);
 
       return retval;
     }
@@ -686,15 +686,15 @@ get_contents_posix (const gchar *filename,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Failed to open file '%s': fdopen() failed: %s"),
-                       utf8_filename ? utf8_filename : "???", 
+                       display_filename, 
 		       g_strerror (errno));
-          g_free (utf8_filename);
+          g_free (display_filename);
 
           return FALSE;
         }
   
-      retval = get_contents_stdio (utf8_filename, f, contents, length, error);
-      g_free (utf8_filename);
+      retval = get_contents_stdio (display_filename, f, contents, length, error);
+      g_free (display_filename);
 
       return retval;
     }
@@ -711,27 +711,26 @@ get_contents_win32 (const gchar *filename,
   FILE *f;
   gboolean retval;
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  gchar *display_filename = g_filename_display_name (filename);
   
   f = _wfopen (wfilename, L"rb");
   g_free (wfilename);
 
   if (f == NULL)
     {
-      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
-						 NULL, NULL, NULL);
-      
       g_set_error (error,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   utf8_filename ? utf8_filename : "???", 
+                   display_filename,
 		   g_strerror (errno));
-      g_free (utf8_filename);
+      g_free (display_filename);
 
       return FALSE;
     }
   
-  retval = get_contents_stdio (filename, f, contents, length, error);
+  retval = get_contents_stdio (display_filename, f, contents, length, error);
+  g_free (display_filename);
 
   return retval;
 }
@@ -740,7 +739,7 @@ get_contents_win32 (const gchar *filename,
 
 /**
  * g_file_get_contents:
- * @filename: name of a file to read contents from, in the encoding used for filenames
+ * @filename: name of a file to read contents from, in the GLib file name encoding
  * @contents: location to store an allocated string
  * @length: location to store length in bytes of the contents
  * @error: return location for a #GError
@@ -818,6 +817,8 @@ g_file_get_contents (const gchar *filename,
  * The parameter is a string that should match the rules for
  * mkstemp(), i.e. end in "XXXXXX". The X string will 
  * be modified to form the name of a file that didn't exist.
+ * The string should be in the GLib file name encoding. Most importantly, 
+ * on Windows it should be in UTF-8.
  *
  * Return value: A file handle (as from open()) to the file
  * opened for reading and writing. The file is opened in binary mode
@@ -961,17 +962,18 @@ g_mkstemp (gchar *tmpl)
  * Opens a file for writing in the preferred directory for temporary
  * files (as returned by g_get_tmp_dir()). 
  *
- * @tmpl should be a string ending with six 'X' characters, as the
- * parameter to g_mkstemp() (or mkstemp()). 
- * However, unlike these functions, the template should only be a 
- * basename, no directory components are allowed. If template is %NULL, 
- * a default template is used.
+ * @tmpl should be a string in the GLib file name encoding ending with
+ * six 'X' characters, as the parameter to g_mkstemp() (or mkstemp()).
+ * However, unlike these functions, the template should only be a
+ * basename, no directory components are allowed. If template is
+ * %NULL, a default template is used.
  *
  * Note that in contrast to g_mkstemp() (and mkstemp()) 
  * @tmpl is not modified, and might thus be a read-only literal string.
  *
  * The actual name used is returned in @name_used if non-%NULL. This
  * string should be freed with g_free() when not needed any longer.
+ * The returned name is in the GLib file name encoding.
  *
  * Return value: A file handle (as from open()) to 
  * the file opened for reading and writing. The file is opened in binary 
@@ -999,6 +1001,7 @@ g_file_open_tmp (const gchar *tmpl,
 #endif
       )
     {
+      gchar *display_tmpl = g_filename_display_name (tmpl);
       char c[2];
       c[0] = *slash;
       c[1] = '\0';
@@ -1007,7 +1010,8 @@ g_file_open_tmp (const gchar *tmpl,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
 		   _("Template '%s' invalid, should not contain a '%s'"),
-		   tmpl, c);
+		   display_tmpl, c);
+      g_free (display_tmpl);
 
       return -1;
     }
@@ -1015,11 +1019,13 @@ g_file_open_tmp (const gchar *tmpl,
   if (strlen (tmpl) < 6 ||
       strcmp (tmpl + strlen (tmpl) - 6, "XXXXXX") != 0)
     {
+      gchar *display_tmpl = g_filename_display_name (tmpl);
       g_set_error (error,
 		   G_FILE_ERROR,
 		   G_FILE_ERROR_FAILED,
 		   _("Template '%s' doesn't end with XXXXXX"),
-		   tmpl);
+		   display_tmpl);
+      g_free (display_tmpl);
       return -1;
     }
 
@@ -1036,11 +1042,13 @@ g_file_open_tmp (const gchar *tmpl,
 
   if (retval == -1)
     {
+      gchar *display_fulltemplate = g_filename_display_name (fulltemplate);
       g_set_error (error,
 		   G_FILE_ERROR,
 		   g_file_error_from_errno (errno),
 		   _("Failed to create file '%s': %s"),
-		   fulltemplate, g_strerror (errno));
+		   display_fulltemplate, g_strerror (errno));
+      g_free (display_fulltemplate);
       g_free (fulltemplate);
       return -1;
     }
@@ -1384,9 +1392,9 @@ g_build_filename (const gchar *first_element,
  * @filename: the symbolic link
  * @error: return location for a #GError
  *
- * Reads the contents of the symbolic link @filename like the POSIX readlink() function.
- * The returned string is in the encoding used for filenames. Use g_filename_to_utf8() to 
- * convert it to UTF-8.
+ * Reads the contents of the symbolic link @filename like the POSIX
+ * readlink() function.  The returned string is in the encoding used
+ * for filenames. Use g_filename_to_utf8() to convert it to UTF-8.
  *
  * Returns: A newly allocated string with the contents of the symbolic link, 
  *          or %NULL if an error occurred.
@@ -1409,16 +1417,15 @@ g_file_read_link (const gchar *filename,
     {
       read_size = readlink (filename, buffer, size);
       if (read_size < 0) {
-	gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
-						   NULL, NULL, NULL);
+	gchar *display_filename = g_filename_display_name (filename);
 	g_free (buffer);
 	g_set_error (error,
 		     G_FILE_ERROR,
 		     g_file_error_from_errno (errno),
 		     _("Failed to read the symbolic link '%s': %s"),
-		     utf8_filename ? utf8_filename : "???", 
+		     display_filename, 
 		     g_strerror (errno));
-	g_free (utf8_filename);
+	g_free (display_filename);
 	
 	return NULL;
       }

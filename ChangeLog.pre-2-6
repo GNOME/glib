@@ -1,3 +1,17 @@
+2004-11-04  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gconvert.c (g_filename_display_name): Document that the
+	result is guaranteed to be non-NULL.
+
+	* glib/gfileutils.c (get_contents_stdio, get_contents_regfile,
+	get_contents_posix, get_contents_win32, g_file_open_tmp,
+	g_file_read_link): Use g_filename_display_name() for error
+	messages.
+	(g_mkstemp): Document that the template should be in the GLib file
+	name encoding.
+	(g_file_open_tmp): Ditto. Also document that the actual name
+	returned is also in the GLib file name encoding.
+
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c (g_filename_display_name): New function 
