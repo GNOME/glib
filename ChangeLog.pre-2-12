@@ -1,6 +1,13 @@
+Mon Feb  1 19:04:28 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_iterate): Release the main_loop
+	 lock around calls to prepare() and check() so
+	 that we are not holding the main loop lock
+	 over user code.
+
 1999-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-	* configure.in: Moved the check for MT save function variants
+	* configure.in: Moved the check for MT safe function variants
 	after the determination of the MT cflags and use them there.
 
 1999-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>

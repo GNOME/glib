@@ -732,16 +732,27 @@ g_main_iterate (gboolean block,
 	  continue;
 	}
 
-      in_check_or_prepare++;
-      if (hook->flags & G_SOURCE_READY ||
-	  ((GSourceFuncs *) hook->func)->prepare (source->source_data,
-						  &current_time,
-						  &source_timeout))
+      if (!(hook->flags & G_SOURCE_READY))
 	{
+	  gboolean (*prepare)  (gpointer  source_data, 
+				GTimeVal *current_time,
+				gint     *timeout);
+
+	  prepare = ((GSourceFuncs *) hook->func)->prepare;
+	  in_check_or_prepare++;
+	  G_UNLOCK (main_loop);
+
+	  if ((*prepare) (source->source_data, &current_time, &source_timeout))
+	    hook->flags |= G_SOURCE_READY;
+	  
+	  G_LOCK (main_loop);
 	  in_check_or_prepare--;
+	}
+
+      if (hook->flags & G_SOURCE_READY)
+	{
 	  if (!dispatch)
 	    {
-	      hook->flags |= G_SOURCE_READY;
 	      g_hook_unref (&source_list, hook);
 	      G_UNLOCK (main_loop);
 
@@ -749,14 +760,11 @@ g_main_iterate (gboolean block,
 	    }
 	  else
 	    {
-	      hook->flags |= G_SOURCE_READY;
 	      n_ready++;
 	      current_priority = source->priority;
 	      timeout = 0;
 	    }
 	}
-      else
-	in_check_or_prepare--;
       
       if (source_timeout >= 0)
 	{
@@ -793,12 +801,24 @@ g_main_iterate (gboolean block,
 	  continue;
 	}
 
-      in_check_or_prepare++;
-      if (hook->flags & G_SOURCE_READY ||
-	  ((GSourceFuncs *) hook->func)->check (source->source_data,
-						&current_time))
+      if (!(hook->flags & G_SOURCE_READY))
 	{
+	  gboolean (*check) (gpointer  source_data,
+			     GTimeVal *current_time);
+
+	  check = ((GSourceFuncs *) hook->func)->check;
+	  in_check_or_prepare++;
+	  G_UNLOCK (main_loop);
+	  
+	  if ((*check) (source->source_data, &current_time))
+	    hook->flags |= G_SOURCE_READY;
+
+	  G_LOCK (main_loop);
 	  in_check_or_prepare--;
+	}
+
+      if (hook->flags & G_SOURCE_READY)
+	{
 	  if (dispatch)
 	    {
 	      hook->flags &= ~G_SOURCE_READY;
@@ -815,8 +835,6 @@ g_main_iterate (gboolean block,
 	      return TRUE;
 	    }
 	}
-      else
-	in_check_or_prepare--;
       
       hook = g_hook_next_valid (&source_list, hook, TRUE);
     }
@@ -852,7 +870,7 @@ g_main_iteration (gboolean block)
   if (in_check_or_prepare)
     {
       g_warning ("g_main_iteration(): called recursively from within a source's check() or "
-		 "prepare() member, iteration not possible");
+		 "prepare() member or from a second thread, iteration not possible");
       return FALSE;
     }
   else
@@ -878,7 +896,7 @@ g_main_run (GMainLoop *loop)
   if (in_check_or_prepare)
     {
       g_warning ("g_main_run(): called recursively from within a source's check() or "
-		 "prepare() member, iteration not possible");
+		 "prepare() member or from a second thread, iteration not possible");
       return;
     }
 
