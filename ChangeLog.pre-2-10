@@ -1,3 +1,13 @@
+Thu Jul 25 17:57:07 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gconvert.c (g_iconv_open): Document the
+	(GIConv)-1 return value on failure. (#87559, 
+	Jarek Dukat)
+
+	* glib/gconvert.c (g_iconv_open): Fix potential
+	problems with the assumption that (GIConv)(iconv_t)-1
+	is the same as (GIConv)-1.
+	
 2002-07-15  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmarkup.h: 
