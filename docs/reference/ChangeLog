@@ -1,5 +1,7 @@
 2002-11-23  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/building.sgml: Explain --enable-include-printf.
+
 	* glib/Makefile.am (extra_files): 
 	* gobject/Makefile.am (extra_files): Add version.xml.in.
 

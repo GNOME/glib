@@ -69,6 +69,10 @@ How to compile GLib itself
           <group>
             <arg>--with-threads=[none|posix|dce|solaris|win32]</arg>
           </group>
+	  <group>
+            <arg>--disable-included-printf</arg>
+            <arg>--enable-included-printf</arg>
+          </group>
           <group>
             <arg>--disable-gtk-doc</arg>
             <arg>--enable-gtk-doc</arg>
@@ -191,6 +195,26 @@ How to compile GLib itself
               </para></listitem>
         </itemizedlist>
 
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-included-printf</systemitem> and
+          <systemitem>--enable-included-printf</systemitem></title>
+
+        <para>
+          By default the <command>configure</command> script will try
+          to auto-detect whether the C library provides a suitable set
+	  of <function>printf()</function> functions. In detail, 
+	  <command>configure</command> checks that the semantics of
+          <function>snprintf()</function> are as specified by C99 and
+	  that positional parameters as specified in the Single Unix
+	  Specification are supported. If this not the case, GLib will
+	  include an implementation of the <function>printf()</function> 
+          family.
+          These options can be used to explicitly control whether
+          an implementation fo the <function>printf()</function> family
+          should be included or not.
         </para>
       </formalpara>
 
