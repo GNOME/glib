@@ -1,3 +1,46 @@
+2002-12-17  Tor Lillqvist  <tml@iki.fi>
+
+	Improvement based on suggestion by Thorsten Maerz:
+
+	* glib/giowin32.c (struct _GIOWin32Channel): Don't need thread_handle.
+
+	(create_thread): We can close thread handle right away, it isn't
+	used for anything.
+
+	(read_thread, select_thread): Thus, don't close it here.
+
+	Fix #57690, partial fix for #57689:
+	
+	* glib/giowin32.c (g_io_win32_set_flags): Don't set the GError,
+	instead call g_warning().
+
+	(g_io_win32_fd_get_flags_internal): New function, sets the
+	is_readable, is_writeable and is_seekable flags based on the
+	actual access modes of the underlying Win32 HANDLE, by trying
+	Win32 ReadFile() and WriteFile() of zero bytes, and
+	PeekNamedPipe(). Should work for disk files and pipes. For devices
+	(consoles) unfortunately not.
+
+	(g_io_win32_fd_get_flags): Don't set the
+	G_IO_FLAG_IS_{READ,WRITE}ABLE flags, g_io_channel_get_flags()
+	already does. Call g_io_win32_fd_get_flags_internal() to set the
+	is_* flags.
+
+	(g_io_win32_msg_get_flags, g_io_win32_sock_get_flags): Splice the
+	generic g_io_win32_get_flags() into these specific functions, as
+	they need to do different things. Not implemented yet, though.
+
+	(g_io_channel_win32_new_fd_internal): New function, to avoid
+	duplicate fstat() calls. Most code from g_io_channel_win32_new_fd() 
+	moved here. Call g_io_win32_fd_get_flags_internal() to set the
+	is_* flags.
+
+	(g_io_channel_win32_new_fd, g_io_channel_unix_new): Call
+	g_io_channel_win32_new_fd_internal().
+
+	(g_io_win32_no_seek): Remove. Don't set is_seekable for those
+	channel types.
+
 Mon Dec 16 17:31:50 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.1.5 ===

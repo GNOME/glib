@@ -87,7 +87,6 @@ struct _GIOWin32Channel {
 				 */
   guint thread_id;		/* If non-NULL has a reader thread, or has
 				 * had.*/
-  HANDLE thread_handle;
   HANDLE data_avail_event;
 
   gushort revents;
@@ -319,8 +318,6 @@ read_thread (void *parameter)
    * _endthreadex() for us.
    */
 
-  CloseHandle (channel->thread_handle);
-
   return 0;
 }
 
@@ -329,12 +326,17 @@ create_thread (GIOWin32Channel     *channel,
 	       GIOCondition         condition,
 	       unsigned (__stdcall *thread) (void *parameter))
 {
-  channel->thread_handle =
-    (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
-			     &channel->thread_id);
-  if (channel->thread_handle == 0)
+  HANDLE thread_handle;
+
+  thread_handle = (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
+					   &channel->thread_id);
+  if (thread_handle == 0)
     g_warning (G_STRLOC ": Error creating reader thread: %s",
 	       g_strerror (errno));
+  else if (!CloseHandle (thread_handle))
+    g_warning (G_STRLOC ": Error closing thread handle: %s\n",
+	       g_win32_error_message (GetLastError ()));
+
   WaitForSingleObject (channel->space_avail_event, INFINITE);
 }
 
@@ -525,8 +527,6 @@ select_thread (void *parameter)
    * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
    * _endthreadex() for us.
    */
-
-  CloseHandle (channel->thread_handle);
 
   return 0;
 }
@@ -755,17 +755,6 @@ g_io_win32_msg_write (GIOChannel  *channel,
   *bytes_written = sizeof (MSG);
 
   return G_IO_STATUS_NORMAL;
-}
-
-static GIOStatus
-g_io_win32_no_seek (GIOChannel *channel,
-		    glong       offset,
-		    GSeekType   type,
-		    GError     **err)
-{
-  g_assert_not_reached ();
-
-  return G_IO_STATUS_ERROR;
 }
 
 static GIOStatus
@@ -1115,24 +1104,24 @@ g_io_win32_sock_close (GIOChannel *channel,
 
   LOCK(win32_channel->mutex);
   if (win32_channel->running)
-  {
-    if (win32_channel->debug)
+    {
+      if (win32_channel->debug)
 	g_print ("thread %#x: running, marking for later close\n",
 		 win32_channel->thread_id);
-    win32_channel->running = FALSE;
-    win32_channel->needs_close = TRUE;
-    SetEvent(win32_channel->data_avail_noticed_event);
-  }
+      win32_channel->running = FALSE;
+      win32_channel->needs_close = TRUE;
+      SetEvent(win32_channel->data_avail_noticed_event);
+    }
   if (win32_channel->fd != -1)
-  {
-    if (win32_channel->debug)
-       g_print ("thread %#x: closing socket %d\n",
-	     win32_channel->thread_id,
-	     win32_channel->fd);
-  
-    closesocket (win32_channel->fd);
-    win32_channel->fd = -1;
-  }
+    {
+      if (win32_channel->debug)
+	g_print ("thread %#x: closing socket %d\n",
+		 win32_channel->thread_id,
+		 win32_channel->fd);
+      
+      closesocket (win32_channel->fd);
+      win32_channel->fd = -1;
+    }
   UNLOCK(win32_channel->mutex);
 
   /* FIXME error detection? */
@@ -1178,7 +1167,7 @@ g_io_channel_new_file (const gchar  *filename,
         mode_num = MODE_A;
         break;
       default:
-        g_warning (G_STRLOC ": Invalid GIOFileMode %s.\n", mode);
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
         return NULL;
     }
 
@@ -1194,7 +1183,7 @@ g_io_channel_new_file (const gchar  *filename,
           }
         /* Fall through */
       default:
-        g_warning (G_STRLOC ": Invalid GIOFileMode %s.\n", mode);
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
         return NULL;
     }
 
@@ -1254,22 +1243,22 @@ g_io_channel_new_file (const gchar  *filename,
   channel->close_on_unref = TRUE;
   channel->is_seekable = TRUE;
 
+  /* g_io_channel_win32_new_fd sets is_readable and is_writeable to
+   * correspond to actual readability/writeability. Set to FALSE those
+   * that mode doesn't allow
+   */
   switch (mode_num)
     {
       case MODE_R:
-        channel->is_readable = TRUE;
         channel->is_writeable = FALSE;
         break;
       case MODE_W:
       case MODE_A:
         channel->is_readable = FALSE;
-        channel->is_writeable = TRUE;
         break;
       case MODE_R | MODE_PLUS:
       case MODE_W | MODE_PLUS:
       case MODE_A | MODE_PLUS:
-        channel->is_readable = TRUE;
-        channel->is_writeable = TRUE;
         break;
       default:
         g_assert_not_reached ();
@@ -1279,9 +1268,9 @@ g_io_channel_new_file (const gchar  *filename,
 }
 
 static GIOStatus
-g_io_win32_set_flags (GIOChannel     *channel,
-                      GIOFlags        flags,
-                      GError        **err)
+g_io_win32_set_flags (GIOChannel *channel,
+                      GIOFlags    flags,
+                      GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
@@ -1292,60 +1281,95 @@ g_io_win32_set_flags (GIOChannel     *channel,
       g_print ("\n");
     }
 
-  g_set_error (err, 
-               G_IO_CHANNEL_ERROR, 
-               g_file_error_from_errno (EACCES), 
-               _("Channel set flags unsupported"));
-  return G_IO_STATUS_ERROR;
+  g_warning ("g_io_win32_set_flags () not implemented.\n");
+
+  return G_IO_STATUS_NORMAL;
 }
 
 static GIOFlags
-g_io_win32_fd_get_flags (GIOChannel     *channel)
+g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
+				  struct stat *st)
 {
-  GIOFlags flags = 0;
-  struct _stat st;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  gchar c;
+  DWORD count;
+
+  if (st->st_mode & _S_IFIFO)
+    {
+      channel->is_readable =
+	(PeekNamedPipe ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL, NULL) == 0);
+      channel->is_writeable =
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+      channel->is_seekable  = FALSE;
+    }
+  else if (st->st_mode & _S_IFCHR)
+    {
+      /* XXX Seems there is no way to find out the readability of file
+       * handles to device files (consoles, mostly) without doing a
+       * blocking read. So punt, use st->st_mode.
+       */
+      channel->is_readable  = !!(st->st_mode & _S_IREAD);
+
+      channel->is_writeable =
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+
+      /* XXX What about devices that actually *are* seekable? But those would probably
+       * not be handled using the C runtime anyway, but using Windows-specific code.
+       */
+      channel->is_seekable = FALSE;
+    }
+  else
+    {
+      channel->is_readable =
+	(ReadFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+      channel->is_writeable =
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+      channel->is_seekable = TRUE;
+    }
+
+  /* XXX: G_IO_FLAG_APPEND */
+  /* XXX: G_IO_FLAG_NONBLOCK */
+
+  return 0;
+}
+
+static GIOFlags
+g_io_win32_fd_get_flags (GIOChannel *channel)
+{
+  struct stat st;
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   g_return_val_if_fail (win32_channel != NULL, 0);
   g_return_val_if_fail (win32_channel->type == G_IO_WIN32_FILE_DESC, 0);
 
-  if (0 == _fstat (win32_channel->fd, &st))
-    {
-       /* XXX: G_IO_FLAG_APPEND */
-       /* XXX: G_IO_FLAG_NONBLOCK */
-       if (st.st_mode & _S_IREAD)    flags |= G_IO_FLAG_IS_READABLE;
-       if (st.st_mode & _S_IWRITE)   flags |= G_IO_FLAG_IS_WRITEABLE;
-       /* XXX: */
-       if (!(st.st_mode & _S_IFIFO)) flags |= G_IO_FLAG_IS_SEEKABLE;
-    }
-
-  return flags;
+  if (0 == fstat (win32_channel->fd, &st))
+    return g_io_win32_fd_get_flags_internal (channel, &st);
+  else
+    return 0;
 }
 
-/*
- * Generic implementation, just translating createion flags
- */
 static GIOFlags
-g_io_win32_get_flags (GIOChannel     *channel)
+g_io_win32_msg_get_flags (GIOChannel *channel)
 {
-  GIOFlags flags;
+  return 0;
+}
 
-  flags =   (channel->is_readable ? G_IO_FLAG_IS_READABLE : 0)
-          | (channel->is_writeable ? G_IO_FLAG_IS_READABLE : 0)
-          | (channel->is_seekable ? G_IO_FLAG_IS_SEEKABLE : 0);
-
-  return flags;
+static GIOFlags
+g_io_win32_sock_get_flags (GIOChannel *channel)
+{
+  /* XXX Could do something here. */
+  return 0;
 }
 
 static GIOFuncs win32_channel_msg_funcs = {
   g_io_win32_msg_read,
   g_io_win32_msg_write,
-  g_io_win32_no_seek,
+  NULL,
   g_io_win32_msg_close,
   g_io_win32_msg_create_watch,
   g_io_win32_free,
   g_io_win32_set_flags,
-  g_io_win32_get_flags,
+  g_io_win32_msg_get_flags,
 };
 
 static GIOFuncs win32_channel_fd_funcs = {
@@ -1362,12 +1386,12 @@ static GIOFuncs win32_channel_fd_funcs = {
 static GIOFuncs win32_channel_sock_funcs = {
   g_io_win32_sock_read,
   g_io_win32_sock_write,
-  g_io_win32_no_seek,
+  NULL,
   g_io_win32_sock_close,
   g_io_win32_sock_create_watch,
   g_io_win32_free,
   g_io_win32_set_flags,
-  g_io_win32_get_flags,
+  g_io_win32_sock_get_flags,
 };
 
 GIOChannel *
@@ -1393,18 +1417,12 @@ g_io_channel_win32_new_messages (guint hwnd)
   return channel;
 }
 
-GIOChannel *
-g_io_channel_win32_new_fd (gint fd)
+static GIOChannel *
+g_io_channel_win32_new_fd_internal (gint         fd,
+				    struct stat *st)
 {
   GIOWin32Channel *win32_channel;
   GIOChannel *channel;
-  struct stat st;
-
-  if (fstat (fd, &st) == -1)
-    {
-      g_warning (G_STRLOC ": %d isn't a (emulated) file descriptor", fd);
-      return NULL;
-    }
 
   win32_channel = g_new (GIOWin32Channel, 1);
   channel = (GIOChannel *)win32_channel;
@@ -1417,25 +1435,23 @@ g_io_channel_win32_new_fd (gint fd)
   win32_channel->type = G_IO_WIN32_FILE_DESC;
   win32_channel->fd = fd;
 
-
-  /* fstat doesn't deliver senseful values, but
-   * fcntl isn't available, so guess ...
-   */
-  if (st.st_mode & _S_IFIFO)
-    {
-      channel->is_readable  = TRUE;
-      channel->is_writeable = TRUE;
-      channel->is_seekable  = FALSE;
-    }
-  else
-    {
-      channel->is_readable  = !!(st.st_mode & _S_IREAD);
-      channel->is_writeable = !!(st.st_mode & _S_IWRITE);
-      /* XXX What about "device files" (COM1: and the like) */
-      channel->is_seekable = TRUE;
-    }
-
+  g_io_win32_fd_get_flags_internal (channel, st);
+  
   return channel;
+}
+
+GIOChannel *
+g_io_channel_win32_new_fd (gint fd)
+{
+  struct stat st;
+
+  if (fstat (fd, &st) == -1)
+    {
+      g_warning (G_STRLOC ": %d isn't a C library file descriptor", fd);
+      return NULL;
+    }
+
+  return g_io_channel_win32_new_fd_internal (fd, &st);
 }
 
 gint
@@ -1463,6 +1479,7 @@ g_io_channel_win32_new_socket (int socket)
   /* XXX: check this */
   channel->is_readable = TRUE;
   channel->is_writeable = TRUE;
+
   channel->is_seekable = FALSE;
 
   return channel;
@@ -1474,7 +1491,7 @@ g_io_channel_unix_new (gint fd)
   struct stat st;
 
   if (fstat (fd, &st) == 0)
-    return g_io_channel_win32_new_fd (fd);
+    return g_io_channel_win32_new_fd_internal (fd, &st);
   
   if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SO_ERROR)
     return g_io_channel_win32_new_socket(fd);
