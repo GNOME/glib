@@ -1,3 +1,7 @@
+2004-09-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: More updates.
+
 Thu Sep 16 18:42:46 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/abicheck.sh: don't hardcode lengths for cut, instead split on

@@ -3,6 +3,10 @@ Overview of Changes from GLib 2.5.2 to GLib 2.5.3
 * GOption
  - set the program name from argv[0] [Masatake YAMATO] 
  - make contexts work without a main group [Anders Carlsson]
+* Performance 
+ - Get rid of many PLT entries for internally used exported symbols,
+   and clean up the ABI at the same time and make make check check the
+   list of exported symbols.  [Matthias Clasen]
 * Add API to get ISO 8601 week numbers [Niklas Lundell]
 * Add API to install an alternate default log handler [Darin Adler]
 * Add API to obtain a list of applicable locale names [Hidetoshi Tajima]
@@ -11,8 +15,9 @@ Overview of Changes from GLib 2.5.2 to GLib 2.5.3
 * Add g_strv_length [Tim-Philipp Müller]
 * Win32 changes
  - Add API to determine the Windows version [Tor Lillqvist]
-* Other bug fixes [Stepan Kasal, Anders, Tor]
-* Documentation improvements [Morten Welinder, Matthias Clasen]
+* Other bug fixes [Stepan Kasal, Anders, Tor, Kazuki Iwamoto,
+  Manish Singh]
+* Documentation improvements [Morten Welinder, Matthias]
 * New and updated translations (es,nn,ro)
 
 Overview of Changes from GLib 2.5.1 to GLib 2.5.2
