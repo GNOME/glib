@@ -67,12 +67,13 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 
   <para>
     If this environment variable is set to '2.0', the outdated
-    pseudo-random number seeding algorithm from GLib-2.0 is used
-    instead of the new better one. Use the GLib-2.0 algorithm only if
-    you have sequences of numbers generated with Glib-2.0 that you
-    need to reproduce exactly.
-  </para> 
+    pseudo-random number seeding and generation algorithms from
+    GLib-2.0 are used instead of the new better ones. Use the GLib-2.0
+    algorithms only if you have sequences of numbers generated with
+    Glib-2.0 that you need to reproduce exactly.  
+  </para>
 </formalpara> 
+
 </refsect2>
 
 <refsect2>

@@ -1,3 +1,13 @@
+2002-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/grand.c (g_rand_int_range): Improve generation of
+	pseudo-random integers. (#99720, Morten Welinder <terra@diku.dk>)
+
+	* README.in, docs/reference/glib/running.sgml,
+	docs/reference/glib/tmpl/random_numbers.sgml,
+	docs/reference/glib/changes.sgml: Added notes about the new
+	algorithm.
+
 2002-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: use 0 instead of $defattr, as it isn't defined
