@@ -1,3 +1,7 @@
+2004-10-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Update
+
 2004-10-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmem.c (g_mem_set_vtable): Only set vtable_set if the
