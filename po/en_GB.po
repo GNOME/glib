@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 21:32-0500\n"
-"PO-Revision-Date: 2004-03-07 17:10-0500\n"
+"POT-Creation-Date: 2004-04-25 23:25-0400\n"
+"PO-Revision-Date: 2004-04-25 23:25-0400\n"
 "Last-Translator: Gareth Owen <gowen72@yahoo.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,8 +22,8 @@ msgstr "Conversion from character set '%s' to '%s' is not supported"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Could not open converter from '%s' to '%s': %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Could not open converter from '%s' to '%s'"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
