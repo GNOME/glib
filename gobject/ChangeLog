@@ -1,3 +1,7 @@
+2001-11-18  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc.in : remove g_log_domain_gruntime usage
+
 Sat Nov 17 18:14:40 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-genmarshal.c: Exit with non-zero exit status if
