@@ -258,7 +258,7 @@ g_param_spec_get_blurb (GParamSpec *pspec)
 }
 
 static void
-canonalize_key (gchar *key)
+canonicalize_key (gchar *key)
 {
   gchar *p;
   
@@ -289,7 +289,7 @@ g_param_spec_internal (GType        param_type,
   
   pspec = (gpointer) g_type_create_instance (param_type);
   pspec->name = g_strdup (name);
-  canonalize_key (pspec->name);
+  canonicalize_key (pspec->name);
   pspec->_nick = g_strdup (nick);
   pspec->_blurb = g_strdup (blurb);
   pspec->flags = (flags & G_PARAM_USER_MASK) | (flags & G_PARAM_MASK);
@@ -667,7 +667,7 @@ param_spec_ht_lookup (GHashTable  *hash_table,
       key.name = g_strdup (param_name);
       key.owner_type = owner_type;
       
-      canonalize_key (key.name);
+      canonicalize_key (key.name);
       if (walk_ancestors)
 	do
 	  {
