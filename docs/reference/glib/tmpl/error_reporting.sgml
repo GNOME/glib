@@ -39,14 +39,17 @@ This is why most functions in GLib and GTK+ do not use the #GError facility.
 Functions that can fail take a return location for a #GError as their last argument. 
 For example:
 <informalexample><programlisting>
-gchar* g_file_get_contents (const gchar *filename, GError **error);
+gboolean g_file_get_contents (const gchar *filename, 
+	                      gchar      **contents,
+                              gsize       *length,
+                              GError     **error);
 </programlisting></informalexample>
 If you pass a non-%NULL value for the <literal>error</literal> argument, it should 
 point to a location where an error can be placed. For example:
 <informalexample><programlisting>
 gchar *contents;
 GError *err = NULL;
-contents = g_file_get_contents ("foo.txt", &amp;err);
+g_file_get_contents ("foo.txt", &amp;contents, NULL, &amp;err);
 g_assert ((contents == NULL &amp;&amp; err != NULL) || (contents != NULL &amp;&amp; err == NULL));
 if (err != NULL)
   {
@@ -63,18 +66,16 @@ else
 </programlisting></informalexample>
 Note that <literal>err != NULL</literal> in this example is a
 <emphasis>reliable</emphasis> indicator of whether
-g_file_get_contents() failed. Also, g_file_get_contents() uses the
-convention that a %NULL return value means an error occurred (but not
-all functions use this convention).
+g_file_get_contents() failed. Additionally, g_file_get_contents() returns
+a boolean which indicates whether it was successful.
 </para>
 
 <para>
-Because g_file_get_contents() returns %NULL on failure, if you are only
+Because g_file_get_contents() returns %FALSE on failure, if you are only
 interested in whether it failed and don't need to display an error message, you
 can pass %NULL for the <literal>error</literal> argument:
 <informalexample><programlisting>
-contents = g_file_get_contents ("foo.txt", NULL); /* ignore errors */
-if (contents != NULL)
+if (g_file_get_contents ("foo.txt", &contents, NULL, NULL)) /* ignore errors */
   /* no error occurred */ ;
 else
   /* error */ ;
