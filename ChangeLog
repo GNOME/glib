@@ -1,3 +1,7 @@
+Thu Sep 20 20:33:45 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Rename g_mem_vtable_is_set() to g_mem_is_system_malloc().
+
 2001-09-20  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_path_is_absolute): (Win32:) Accept also forward
