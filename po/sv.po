@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-09-03 19:08-0400\n"
-"PO-Revision-Date: 2001-07-06 20:23+0200\n"
+"POT-Creation-Date: 2001-09-11 21:19+0200\n"
+"PO-Revision-Date: 2001-09-11 21:20+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,76 +48,75 @@ msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "URI:n \"%s\" är ingen absolut URI som använder filschemat"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "Lokala fil-URI:n \"%s\" får inte inkludera en \"#\""
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "URI:n \"%s\" är ogiltig"
 
 #: glib/gconvert.c:1238
 #, c-format
 msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
-msgstr ""
+msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
 
 #: glib/gconvert.c:1254
 #, c-format
 msgid "The URI `%s' is contains invalidly escaped characters"
-msgstr ""
+msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
 
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 
 #: glib/gconvert.c:1311
-#, fuzzy
 msgid "Invalid byte sequence in hostname"
-msgstr "Ogiltig bytesekvens i konverteringsindata"
+msgstr "Ogiltig bytesekvens i värdnamn"
 
-#: glib/gfileutils.c:308
+#: glib/gfileutils.c:309
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fel vid läsning av filen \"%s\": %s"
 
-#: glib/gfileutils.c:366
+#: glib/gfileutils.c:367
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Misslyckades med att läsa från filen \"%s\": %s"
 
-#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#: glib/gfileutils.c:406 glib/gfileutils.c:474
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Misslyckades med att öppna filen \"%s\": %s"
 
-#: glib/gfileutils.c:419
+#: glib/gfileutils.c:420
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Misslyckades med att få tag på attributen till filen \"%s\": fstat() "
 "misslyckades: %s"
 
-#: glib/gfileutils.c:445
+#: glib/gfileutils.c:446
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Misslyckades med att öppna filen \"%s\": fdopen() misslyckades: %s"
 
-#: glib/gfileutils.c:654
+#: glib/gfileutils.c:655
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr "Mallen \"%s\" är ogiltig, den får inte innehålla ett \"%s\""
 
-#: glib/gfileutils.c:666
+#: glib/gfileutils.c:667
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mallen \"%s\" slutar inte med XXXXXX"
 
-#: glib/gfileutils.c:687
+#: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Misslyckades med att skapa filen \"%s\": %s"
@@ -191,8 +190,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett &-"
-"tecken utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
+"Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett "
+"&-tecken utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
@@ -451,3 +450,9 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 #: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
+
+#~ msgid "The hostname of the URI `%s' contains invalidly escaped characters"
+#~ msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"
+
+#~ msgid "The URI `%s' contains invalidly escaped characters"
+#~ msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
