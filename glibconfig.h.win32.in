@@ -95,11 +95,6 @@ typedef guint32 gsize;
 
 #define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END
 
-#define GLIB_HAVE_ALLOCA_H 1
-#ifdef _MSC_VER
-#define alloca _alloca
-#endif
-
 #define GLIB_MAJOR_VERSION @GLIB_MAJOR_VERSION@
 #define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
 #define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@

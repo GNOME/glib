@@ -1,5 +1,8 @@
 2000-10-16  Tor Lillqvist  <tml@iki.fi>
 
+	* glibconfig.h.win32.in: Remove alloca stuff from here. galloca.h
+	takes care of it, correctly.
+
 	* giowin32.c (reader_thread): Some more debugging output.
 	(g_io_channel_win32_poll): Remove unused vars.
 
