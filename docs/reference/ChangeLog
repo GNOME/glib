@@ -1,3 +1,8 @@
+2001-02-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/tmpl/threads.sgml, glib/glib-sections.txt: Added
+	documentation for g_static_mutex_init().
+
 Wed Jan 31 07:14:22 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/Makefile.am: adapt to work with new CVS gtk-doc, leaving the old

@@ -371,6 +371,12 @@ not use such constructs in your own programs. One working solution is:
 </para>
 
 <para>
+If you want to use a mutex, but your code should also work without
+calling g_thread_init() first, you can not use a #GMutex, as
+g_mutex_new() requires that. Use a #GStaticMutex instead.
+</para>
+
+<para>
 A #GMutex should only be accessed via the following functions.
 </para>
 
@@ -473,10 +479,10 @@ Sometimes you would like to dynamically create a mutex. If you don't
 want to require prior calling to g_thread_init(), because your code
 should also be usable in non-threaded programs, you are not able to
 use g_mutex_new() and thus #GMutex, as that requires a prior call to
-g_thread_init(). In theses cases you can also use a #GStaticMutex, but
-you should remember to free the #GStaticMutex with
-g_static_mutex_free() when not needed anymore to free up any
-allocated recourses.
+g_thread_init(). In theses cases you can also use a #GStaticMutex. It
+must be initialized with g_static_mutex_init() before using it and
+freed with with g_static_mutex_free() when not needed anymore to free
+up any allocated recourses.
 </para>
 
 <para>
@@ -520,8 +526,10 @@ functions.
 <!-- ##### MACRO G_STATIC_MUTEX_INIT ##### -->
 
 <para>
-Every #GStaticMutex must be initialized with this macro, before it can
-be used.
+A #GStaticMutex must be initialized with this macro, before it can be
+used. This macro can used be to initialize a variable, but it cannot
+be assigned to a variable. In that case you have to use
+g_static_mutex_init().
 </para>
 
 <para>
@@ -533,6 +541,16 @@ GStaticMutex my_mutex = G_STATIC_MUTEX_INIT;
 </example>
 </para>
 
+
+
+<!-- ##### FUNCTION g_static_mutex_init ##### -->
+<para>
+A #GStaticMutex must be initialized with this function, before it can
+be used. Alternatively you can initialize it with
+#G_STATIC_MUTEX_INIT.
+</para>
+
+@mutex: a #GStaticMutex to be initialized.
 
 
 <!-- ##### FUNCTION g_static_mutex_lock ##### -->

@@ -159,6 +159,16 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
   return *mutex;
 }
 
+void 
+g_static_mutex_init (GStaticMutex *mutex)
+{
+  static GStaticMutex init_mutex = G_STATIC_MUTEX_INIT;
+
+  g_return_if_fail (mutex);
+
+  memcpy (mutex, &init_mutex, sizeof (GStaticMutex));
+}
+
 void
 g_static_mutex_free (GStaticMutex* mutex)
 {

@@ -461,6 +461,7 @@ g_mutex_free
 <SUBSECTION>
 GStaticMutex
 G_STATIC_MUTEX_INIT
+g_static_mutex_init
 g_static_mutex_lock
 g_static_mutex_trylock
 g_static_mutex_unlock
