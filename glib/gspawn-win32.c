@@ -444,9 +444,18 @@ do_spawn_with_pipes (gboolean              dont_wait,
 	  goto cleanup_and_fail;
 	}
 
-      if (child_handle && dont_wait && !dont_return_handle)
-	*child_handle = (GPid) rc;
-      else if (!dont_wait && exit_status)
+      if (dont_wait)
+	{
+	  if (child_handle && !dont_return_handle)
+	    *child_handle = (GPid) rc;
+	  else
+	    {
+	      CloseHandle (rc);
+	      if (child_handle)
+		*child_handle = 0;
+	    }
+	}
+      else if (exit_status)
 	*exit_status = rc;
       
       return TRUE;
@@ -685,7 +694,6 @@ g_spawn_sync (const gchar          *working_directory,
   gint outpipe = -1;
   gint errpipe = -1;
   gint reportpipe = -1;
-  GPid pid;
   GIOChannel *outchannel = NULL;
   GIOChannel *errchannel = NULL;
   GPollFD outfd, errfd;
@@ -723,7 +731,7 @@ g_spawn_sync (const gchar          *working_directory,
 			    flags,
 			    child_setup,
 			    user_data,
-			    &pid,
+			    NULL,
 			    NULL,
 			    standard_output ? &outpipe : NULL,
 			    standard_error ? &errpipe : NULL,
@@ -890,8 +898,6 @@ g_spawn_sync (const gchar          *working_directory,
   if (errpipe >= 0)
     close_and_invalidate (&errpipe);
   
-  g_spawn_close_pid (pid);
-
   if (failed)
     {
       if (outstr)
