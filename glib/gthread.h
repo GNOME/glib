@@ -243,7 +243,7 @@ typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
 {
   GStaticMutex mutex;
-  unsigned int depth;
+  guint depth;
   GSystemThread owner;
 };
 

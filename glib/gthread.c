@@ -318,7 +318,7 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 guint    
 g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
-  gint depth;
+  guint depth;
 
   g_return_val_if_fail (mutex, 0);
 
@@ -549,12 +549,14 @@ g_thread_create_full (GThreadFunc 		 func,
 		      GThreadPriority 	 priority,
 		      GError                **error)
 {
-  GRealThread* result = g_new (GRealThread, 1);
+  GRealThread* result;
   GError *local_error = NULL;
   g_return_val_if_fail (func, NULL);
   g_return_val_if_fail (priority >= G_THREAD_PRIORITY_LOW, NULL);
   g_return_val_if_fail (priority <= G_THREAD_PRIORITY_URGENT, NULL);
   
+  result = g_new (GRealThread, 1);
+
   result->thread.joinable = joinable;
   result->thread.priority = priority;
   result->thread.func = func;
