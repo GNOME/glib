@@ -31,4 +31,5 @@ thread-test
 threadpool-test
 tree-test
 type-test
+unicode-encoding
 gio-test

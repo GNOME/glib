@@ -4,4 +4,6 @@ glib-decl-list.txt
 glib-decl.txt
 glib-unused.txt
 html
+html.stamp
 sgml
+sgml.stamp
