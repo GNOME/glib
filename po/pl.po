@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "POT-Creation-Date: 2002-01-28 22:59+0100\n"
-"PO-Revision-Date: 2002-01-28 23:00+0100\n"
+"PO-Revision-Date: 2002-01-29 13:47+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,12 +43,13 @@ msgstr "Błąd podczas konwersji: %s"
 #: glib/gconvert.c:1 glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1
 msgid "Partial character sequence at end of input"
-msgstr ""
+msgstr "Na końcu wejścia występuje sekwencja odpowiadająca części znaku"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
+"Nie można przekonwertować napisu zastępczego \"%s\" na zestaw znaków \"%s\""
 
 #: glib/gconvert.c:1
 #, c-format
@@ -68,12 +69,12 @@ msgstr "URI \"%s\" jest niepoprawny"
 #: glib/gconvert.c:1
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "Nazwa komputera w URI \"%s\" zawiera niewłaściwie zacytowane znaki"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "URI \"%s\" zawiera niewłaściwie zacytowane znaki"
 
 #: glib/gconvert.c:1
 #, c-format
@@ -148,19 +149,19 @@ msgstr "Nie można otworzyć konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/giochannel.c:1
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "Nie można wykonać surowego odczytu w g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1 glib/giochannel.c:1 glib/giochannel.c:1
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "W buforze odczytu pozostały nieprzekonwertowane dane"
 
 #: glib/giochannel.c:1 glib/giochannel.c:1
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Na końcu kanału występuje sekwencja odpowiadająca części znaku"
 
 #: glib/giochannel.c:1
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Nie można wykonać surowego odczytu w g_io_channel_read_to_end"
 
 #: glib/giowin32.c:1 glib/giowin32.c:1
 msgid "Incorrect message size"
@@ -172,7 +173,7 @@ msgstr "Błąd przy operacji na gnieździe"
 
 #: glib/giowin32.c:1
 msgid "Channel set flags unsupported"
-msgstr ""
+msgstr "Ustawianie znaczników kanału nie jest obsługiwane"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -198,6 +199,9 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
+"Znak \"%s\" nie jest dopuszczalny na początku nazwy jednostki; znak & "
+"rozpoczyna jednostkę; jeśli znak ten nie powinien rozpoczynać jednostki, "
+"należy go zapisać jako &amp;"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -223,15 +227,18 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"Nie można odczytać znaczenia \"%s\", w miejscu którego powinna wystąpić "
+"liczba, będąca częścią odniesienia do znaku (np. &#234;) - być może liczba "
+"jest zbyt duża"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Odniesienie do znaku \"%s\" nie jest zapisem dozwolonego znaku"
 
 #: glib/gmarkup.c:1
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Puste odniesienie do znaku; powinno ono zawierać cyfry, np. &#454;"
 
 #: glib/gmarkup.c:1
 msgid ""
@@ -239,6 +246,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"Odniesienie do znaku nie jest zakończone średnikiem; najprawdopodobniej "
+"został użyty znak &, który nie miał oznaczać jednostki - należy go zapisać "
+"jako &amp;"
 
 #: glib/gmarkup.c:1 glib/gmarkup.c:1 glib/gmarkup.c:1
 msgid "Invalid UTF-8 encoded text"
@@ -348,6 +358,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
+"Nastąpił nieoczekiwany koniec dokumentu; oczekiwano znaku \">\", kończącego "
+"znacznik <%s/>"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an element name"
@@ -390,11 +402,13 @@ msgstr ""
 
 #: glib/gshell.c:1
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "Cytowany znak nie rozpoczyna się znakiem cytowania"
 
 #: glib/gshell.c:1
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
+"W wierszu poleceń lub innym napisie cytowanym jak w powłoce wystąpił "
+"niesparowany znak cytowania"
 
 #: glib/gshell.c:1
 #, c-format
@@ -406,6 +420,8 @@ msgstr ""
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
+"Tekst zakończył się przed odnalezieniem domykającego znaku cytowania dla %c "
+"(tekstem jest \"%s\")"
 
 #: glib/gshell.c:1
 msgid "Text was empty (or contained only whitespace)"
@@ -420,11 +436,13 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"Przy odczycie danych z procesu potomnego w g_io_channel_win32_poll() "
+"wystąpił nieznany błąd"
 
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Nie można odczytać danych z potoku łączącego z procesem potomnym (%s)"
 
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
@@ -487,6 +505,8 @@ msgstr "Przy wykonywaniu procesu potomnego \"%s\" wystąpił nieznany błąd"
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
+"Nie można odczytać odpowiedniej liczby danych z potoku do odczytu PID-u od "
+"procesu potomnego (%s)"
 
 #: glib/gutf8.c:1
 msgid "Character out of range for UTF-8"
