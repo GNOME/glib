@@ -1,3 +1,7 @@
+2004-02-05  Robert Sedak  <robert.sedak@sk.htnet.hr>
+
+        * configure.in: Added "hr" (Croatian) to ALL_LINGUAS.
+
 Wed Feb  4 17:58:51 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gcompletion.h: Add prototype for g_completion_complete_utf8().

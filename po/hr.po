@@ -1,11 +1,11 @@
-# Translation of glib to Croatian
-# Copyright (C) Croatian team
+# Translation of glib to Croatiann
+# Copyright (C) Croatiann team
 # Translators: Denis Lackovic <delacko@fly.srk.fer.hr>,Robert Sedak <robert.sedak@sk.tel.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
-"POT-Creation-Date: 2003-11-06 18:08+0100\n"
-"PO-Revision-Date: 2003-12-31 18:41+CET\n"
+"POT-Creation-Date: 2004-02-01 16:59+0100\n"
+"PO-Revision-Date: 2004-02-05 23:47+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -45,37 +45,37 @@ msgstr "Djelomična znakovna sekvenca pri kraju izlaza"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne mogu prevesti '%s' u znakovni skup '%s'"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI '%s' nije apsolutni URI"
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI lokalne datoteke '%s' ne smije uključivati '#'"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' nije ispravan"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime računala URI-ja '%s' je neispravno"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sadrži neispravne escape znakove"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1623
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja '%s' nije apsolutna putanja"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1633
 msgid "Invalid hostname"
 msgstr "Neispravno ime računala"
 
@@ -84,57 +84,57 @@ msgstr "Neispravno ime računala"
 msgid "Error opening directory '%s': %s"
 msgstr "Greška pri otvaranju mape '%s': %s"
 
-#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ne mogu alocirati %lu bajtova za čitanje datoteke \"%s\""
 
-#: glib/gfileutils.c:401
+#: glib/gfileutils.c:404
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Greška pri čitanju datoteke '%s': %s"
 
-#: glib/gfileutils.c:477
+#: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Greška pri čitanju iz datoteke '%s': %s"
 
-#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Greška pri otvaranju datoteke '%s': %s"
 
-#: glib/gfileutils.c:538
+#: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Greška pri dohvatu atributa datoteke '%s': fstat() nije uspio: %s"
 
-#: glib/gfileutils.c:564
+#: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Grepka pri otvaranju datoteke '%s': fdopen() nije uspio: %s"
 
-#: glib/gfileutils.c:776
+#: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Predložak '%s' nije ispravan, ne smije sadržavati'%s'"
 
-#: glib/gfileutils.c:788
+#: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Predložak '%s' ne završava sa XXXXXX"
 
-#: glib/gfileutils.c:809
+#: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Greška pri stvaranju datoteke '%s': %s"
 
-#: glib/gfileutils.c:1150
+#: glib/gfileutils.c:1153
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nisam uspio pročitati simboličku vezu '%s': %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
 msgstr "Nisu podržane simboličke veze"
 
