@@ -1,3 +1,8 @@
+Tue Jun 30 11:58:25 1998  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): take symbol_2_token into
+	account. react on valid/invalid string pairs.
+
 Sat Jun 27 21:55:46 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.m4: ftp.glib.org -> ftp.gtk.org, since glib.org isn't
