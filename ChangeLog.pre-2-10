@@ -1,5 +1,10 @@
 2005-03-13  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gatomic.c:
+	* glib/gcache.c: Small fixes to the previous commit.
+
+2005-03-13  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gatomic.c: Include galias.h last.
 
 2005-03-13  Matthias Clasen  <mclasen@redhat.com>

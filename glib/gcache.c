@@ -30,8 +30,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 typedef struct _GCacheNode  GCacheNode;
@@ -214,5 +214,5 @@ g_cache_node_destroy (GCacheNode *node)
   G_UNLOCK (node_mem_chunk);
 }
 
-#define IN_FILE_gcache 1
+#define __G_CACHE_C__
 #include "galiasdef.c"
