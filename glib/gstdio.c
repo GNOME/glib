@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include "glib.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -29,12 +31,12 @@
 #endif
 
 #ifdef G_OS_WIN32
+#include <errno.h>
 #include <wchar.h>
 #include <io.h>
 #endif
 
 #include "galias.h"
-#include "glib.h"
 #include "gstdio.h"
 
 #if !defined (G_OS_UNIX) && !defined (G_OS_WIN32)
@@ -48,12 +50,17 @@
  * @flags: as in open()
  * @mode: as in open()
  *
- * A wrapper for the POSIX open() function. The open() function is used 
- * to convert a pathname into a file descriptor.
+ * A wrapper for the POSIX open() function. The open() function is
+ * used to convert a pathname into a file descriptor. Note that on
+ * POSIX systems file descriptors are implemented by the operating
+ * system. On Windows, it's the C library that implements open() and
+ * file descriptors. The actual Windows API for opening files is
+ * something different.
  *
  * See the C library manual for more details about open().
  *
- * Returns: a new file descriptor, or -1 if an error occurred
+ * Returns: a new file descriptor, or -1 if an error occurred. The
+ * return value can be used exactly like the return value from open().
  * 
  * Since: 2.6
  */

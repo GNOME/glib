@@ -1,5 +1,8 @@
 2004-10-28  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gstdio.c: Include glib.h early to get G_OS_WIN32. Include
+	errno.h for errno.
+
 	* glib/gkeyfile.c: Include gstdio.h and use g_open().
 
 2004-10-27  Ray Strode  <rstrode@redhat.com>
