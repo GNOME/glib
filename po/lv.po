@@ -1,13 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# glib for Latvian.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Artis Trops <hornet@navigator.lv>, 2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-08-22 05:01+0200\n"
-"PO-Revision-Date: 2002-08-31 08:55+0200\n"
-"Last-Translator: Artis Trops <hornet@navigators.lv>\n"
+"POT-Creation-Date: 2002-10-28 05:01+0100\n"
+"PO-Revision-Date: 2002-10-29 01:39+0200\n"
+"Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -27,7 +27,7 @@ msgstr "Nevarēju atvērt konvertātoru no '%s' uz '%s': %s"
 #: glib/gconvert.c:892
 #: glib/giochannel.c:1291
 #: glib/giochannel.c:1333
-#: glib/giochannel.c:2171
+#: glib/giochannel.c:2174
 #: glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
@@ -36,7 +36,7 @@ msgstr "Nepareiza baitu secība konversijas ievadē"
 #: glib/gconvert.c:607
 #: glib/gconvert.c:823
 #: glib/giochannel.c:1298
-#: glib/giochannel.c:2183
+#: glib/giochannel.c:2186
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Kļūda konversējot: %s"
@@ -72,7 +72,7 @@ msgstr "URI '%s' ir nepareizs"
 #: glib/gconvert.c:1671
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Resursdatora nosaukuma URI '%s' ir nepareizs"
+msgstr "Hostdatora nosaukuma URI '%s' ir nepareizs"
 
 #: glib/gconvert.c:1687
 #, c-format
@@ -86,7 +86,7 @@ msgstr "Ceļvārds '%s' nav absolutais ceļš"
 
 #: glib/gconvert.c:1768
 msgid "Invalid hostname"
-msgstr "Nepareizs resursdatora nosaukums"
+msgstr "Nepareizs hostdatora nosaukums"
 
 #: glib/gdir.c:80
 #, c-format
@@ -155,17 +155,17 @@ msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1515
-#: glib/giochannel.c:1769
-#: glib/giochannel.c:1855
+#: glib/giochannel.c:1772
+#: glib/giochannel.c:1858
 msgid "Leftover unconverted data in read buffer"
 msgstr "Pāpalikušie nepārveidotie dati nolasīšanas buferī"
 
 #: glib/giochannel.c:1595
-#: glib/giochannel.c:1669
+#: glib/giochannel.c:1672
 msgid "Channel terminates in a partial character"
 msgstr "Kanāls pārtrūkst daļējā rakstzīmē"
 
-#: glib/giochannel.c:1655
+#: glib/giochannel.c:1658
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_to_end"
 
@@ -393,7 +393,7 @@ msgid "Failed to execute child process (%s)"
 msgstr "Nevarēju izpildīt bērnprocesu (%s)"
 
 #: glib/gspawn-win32.c:828
-#: glib/gspawn.c:1245
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nevarēju izveidot programkanālu komunikācijai ar bērnprocesu (%s)"
