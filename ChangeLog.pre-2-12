@@ -1,3 +1,12 @@
+2003-09-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn-win32.c (do_spawn): Call protect_argv() in
+	do_spawn() instead of in do_spawn_with_pipes() so that we can use
+	the original argv[0] as the program file name parameter to
+	spawnv() in the shortcut (doing without helper process)
+	code. Fixes problem if GIMP 1.3 was installed in a path with
+	spaces in the name.
+
 Tue Sep 30 15:31:16 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* glib/guniprop.c (has_more_above): make the argument const to
