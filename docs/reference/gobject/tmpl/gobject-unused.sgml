@@ -122,6 +122,12 @@ The predefined identifiers of the reserved fundamental types.
 </para>
 
 
+<!-- ##### MACRO G_TYPE_FUNDAMENTAL_SHIFT ##### -->
+<para>
+Shift value used in converting numbers to type IDs.
+</para>
+
+
 <!-- ##### FUNCTION g_closure_add_fnotify ##### -->
 <para>
 

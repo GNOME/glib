@@ -17,7 +17,7 @@
 #   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 #   USA.
 #
-# Written by Bruno Haible <haible@clisp.cons.org>.
+# Written by Bruno Haible <bruno@clisp.org>.
 #
 /^# Packages using this file: / {
   s/# Packages using this file://

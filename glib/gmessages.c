@@ -534,7 +534,27 @@ strdup_convert (const gchar *string,
   if (!g_utf8_validate (string, -1, NULL))
     return g_strconcat ("[Invalid UTF-8] ", string, NULL);
   else
-    return g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, NULL);
+    {
+      GError *err = NULL;
+      
+      gchar *result = g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, &err);
+      if (result)
+	return result;
+      else
+	{
+	  /* Not thread-safe, but doesn't matter if we print the warning twice
+	   */
+	  static gboolean warned = FALSE; 
+	  if (!warned)
+	    {
+	      warned = TRUE;
+	      fprintf (stderr, "GLib: Cannot convert message: %s\n", err->message);
+	    }
+	  g_error_free (err);
+	  
+	  return g_strdup (string);
+	}
+    }
 }
 
 /* For a radix of 8 we need at most 3 output bytes for 1 input

@@ -1,6 +1,6 @@
 /* Determine a canonical name for the current locale's character encoding.
 
-   Copyright (C) 2000-2001 Free Software Foundation, Inc.
+   Copyright (C) 2000-2002 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU Library General Public License as published
@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
    USA.  */
 
-/* Written by Bruno Haible <haible@clisp.cons.org>.  */
+/* Written by Bruno Haible <bruno@clisp.org>.  */
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -42,7 +42,12 @@
 # define WIN32
 #endif
 
-#ifndef WIN32
+#if defined __EMX__
+/* Assume EMX program runs on OS/2, even if compiled under DOS.  */
+# define OS2
+#endif
+
+#if !defined WIN32
 # if HAVE_LANGINFO_CODESET
 #  include <langinfo.h>
 # else
@@ -50,9 +55,18 @@
 #   include <locale.h>
 #  endif
 # endif
-#else /* WIN32 */
+#elif defined WIN32
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
+#endif
+#if defined OS2
+# define INCL_DOS
+# include <os2.h>
+#endif
+
+#if defined _WIN32 || defined __WIN32__ || defined __EMX__ || defined __DJGPP__
+  /* Win32, OS/2, DOS */
+# define ISSLASH(C) ((C) == '/' || (C) == '\\')
 #endif
 
 #ifndef DIRECTORY_SEPARATOR
@@ -61,6 +75,11 @@
 
 #ifndef ISSLASH
 # define ISSLASH(C) ((C) == DIRECTORY_SEPARATOR)
+#endif
+
+#ifdef HAVE_GETC_UNLOCKED
+# undef getc
+# define getc getc_unlocked
 #endif
 
 #ifdef __cplusplus
@@ -91,14 +110,11 @@ _g_locale_get_charset_aliases ()
   cp = charset_aliases;
   if (cp == NULL)
     {
-#ifndef WIN32
+#if !defined WIN32
       FILE *fp;
-      const char *dir = getenv ("LIBCHARSET_ALIAS_DIR");
+      const char *dir = LIBDIR;
       const char *base = "charset.alias";
       char *file_name;
-
-      if (dir == NULL)
-	dir = LIBDIR;
 
       /* Concatenate dir and base into freshly allocated file_name.  */
       {
@@ -146,7 +162,7 @@ _g_locale_get_charset_aliases ()
 		  continue;
 		}
 	      ungetc (c, fp);
-	      if (fscanf(fp, "%50s %50s", buf1, buf2) < 2)
+	      if (fscanf (fp, "%50s %50s", buf1, buf2) < 2)
 		break;
 	      l1 = strlen (buf1);
 	      l2 = strlen (buf2);
@@ -182,14 +198,29 @@ _g_locale_get_charset_aliases ()
       if (file_name != NULL)
 	free (file_name);
 
-#else /* WIN32 */
+#else
 
       /* To avoid the troubles of installing a separate file in the same
 	 directory as the DLL and of retrieving the DLL's directory at
 	 runtime, simply inline the aliases here.  */
 
+# if defined WIN32
       cp = "CP936" "\0" "GBK" "\0"
-	   "CP1361" "\0" "JOHAB" "\0";
+	   "CP1361" "\0" "JOHAB" "\0"
+	   "CP20127" "\0" "ASCII" "\0"
+	   "CP20866" "\0" "KOI8-R" "\0"
+	   "CP21866" "\0" "KOI8-RU" "\0"
+	   "CP28591" "\0" "ISO-8859-1" "\0"
+	   "CP28592" "\0" "ISO-8859-2" "\0"
+	   "CP28593" "\0" "ISO-8859-3" "\0"
+	   "CP28594" "\0" "ISO-8859-4" "\0"
+	   "CP28595" "\0" "ISO-8859-5" "\0"
+	   "CP28596" "\0" "ISO-8859-6" "\0"
+	   "CP28597" "\0" "ISO-8859-7" "\0"
+	   "CP28598" "\0" "ISO-8859-8" "\0"
+	   "CP28599" "\0" "ISO-8859-9" "\0"
+	   "CP28605" "\0" "ISO-8859-15" "\0";
+# endif
 #endif
 
       charset_aliases = cp;
@@ -213,7 +244,7 @@ _g_locale_charset ()
   const char *codeset;
   const char *aliases;
 
-#ifndef WIN32
+#if !(defined WIN32 || defined OS2)
 
 # if HAVE_LANGINFO_CODESET
 
@@ -250,13 +281,66 @@ _g_locale_charset ()
 
 # endif
 
-#else /* WIN32 */
+#elif defined WIN32
 
   static char buf[2 + 10 + 1];
 
-  /* Win32 has a function returning the locale's codepage as a number.  */
+  /* Woe32 has a function returning the locale's codepage as a number.  */
   sprintf (buf, "CP%u", GetACP ());
   codeset = buf;
+
+#elif defined OS2
+
+  const char *locale;
+  static char buf[2 + 10 + 1];
+  ULONG cp[3];
+  ULONG cplen;
+
+  /* Allow user to override the codeset, as set in the operating system,
+     with standard language environment variables.  */
+  locale = getenv ("LC_ALL");
+  if (locale == NULL || locale[0] == '\0')
+    {
+      locale = getenv ("LC_CTYPE");
+      if (locale == NULL || locale[0] == '\0')
+	locale = getenv ("LANG");
+    }
+  if (locale != NULL && locale[0] != '\0')
+    {
+      /* If the locale name contains an encoding after the dot, return it.  */
+      const char *dot = strchr (locale, '.');
+
+      if (dot != NULL)
+	{
+	  const char *modifier;
+
+	  dot++;
+	  /* Look for the possible @... trailer and remove it, if any.  */
+	  modifier = strchr (dot, '@');
+	  if (modifier == NULL)
+	    return dot;
+	  if (modifier - dot < sizeof (buf))
+	    {
+	      memcpy (buf, dot, modifier - dot);
+	      buf [modifier - dot] = '\0';
+	      return buf;
+	    }
+	}
+
+      /* Resolve through the charset.alias file.  */
+      codeset = locale;
+    }
+  else
+    {
+      /* OS/2 has a function returning the locale's codepage as a number.  */
+      if (DosQueryCp (sizeof (cp), cp, &cplen))
+	codeset = "";
+      else
+	{
+	  sprintf (buf, "CP%u", cp[0]);
+	  codeset = buf;
+	}
+    }
 
 #endif
 
@@ -274,6 +358,12 @@ _g_locale_charset ()
 	codeset = aliases + strlen (aliases) + 1;
 	break;
       }
+
+  /* Don't return an empty string.  GNU libc and GNU libiconv interpret
+     the empty string as denoting "the locale's character encoding",
+     thus GNU libiconv would call this function a second time.  */
+  if (codeset[0] == '\0')
+    codeset = "ASCII";
 
   return codeset;
 }

@@ -63,13 +63,6 @@ for types that are assigned at compile-time.
 
 
 
-<!-- ##### MACRO G_TYPE_FUNDAMENTAL_SHIFT ##### -->
-<para>
-Shift value used in converting numbers to type IDs.
-</para>
-
-
-
 <!-- ##### MACRO G_TYPE_MAKE_FUNDAMENTAL ##### -->
 <para>
 Returns the type ID for the fundamental type number @x.
@@ -540,6 +533,7 @@ type implementations or the signal system).
 </para>
 
 
+
 <!-- ##### ENUM GTypeDebugFlags ##### -->
 <para>
 The <type>GTypeDebugFlags</type> enumeration values can be passed to
@@ -608,7 +602,7 @@ Returns the length of the ancestry of the passed in type. This includes the
 type itself, so that e.g. a fundamental type has depth 1.
 </para>
 
-@type:    A #GType value. 
+@type:    A #GType value.
 @Returns: The depth of @type.
 
 
@@ -702,7 +696,6 @@ class conforms.
 @iface_type:     An interface ID which this class conforms to.
 @Returns:        The #GTypeInterface structure of @iface_type, or %NULL if the
                  class is not instantiated.
-
 
 
 <!-- ##### FUNCTION g_type_interface_peek_parent ##### -->
