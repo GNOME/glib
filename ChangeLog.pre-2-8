@@ -1,3 +1,13 @@
+Tue Aug  3 15:50:55 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/goption.[hc]: Pedantically use g types throughout.
+
+Tue Aug  3 14:58:20 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutils.h: 
+	* glib/gutils.c (glib_check_version): New function to
+	check the version of GLib at runtime.  (#149175, Michael Natterer)
+
 2004-08-03  Anders Carlsson  <andersca@gnome.org>
 
 	* glib/goption.h:

@@ -42,7 +42,7 @@ typedef struct {
   union {
     gchar *str;
     struct {
-      int len;
+      gint len;
       gchar **data;
     } array;
   } allocated;
@@ -380,10 +380,10 @@ print_help (GOptionContext *context,
 }
 
 static gboolean
-parse_int (const char *arg_name,
-	   const char *arg,
-	   gint       *result,
-	   GError    **error)
+parse_int (const gchar *arg_name,
+	   const gchar *arg,
+	   gint        *result,
+	   GError     **error)
 {
   gchar *end;
   glong tmp = strtol (arg, &end, 0);
@@ -573,7 +573,7 @@ parse_arg (GOptionContext *context,
       
     case G_OPTION_ARG_INT:
       {
-	int data;
+	gint data;
 
 	if (!parse_int (option_name, value,
  			&data,
@@ -622,7 +622,7 @@ parse_short_option (GOptionContext *context,
 		    GError        **error,
 		    gboolean       *parsed)
 {
-  int j;
+  gint j;
     
   for (j = 0; j < group->n_entries; j++)
     {
@@ -683,7 +683,7 @@ parse_long_option (GOptionContext *context,
 		   GError        **error,
 		   gboolean       *parsed)
 {
-  int j;
+  gint j;
 
   for (j = 0; j < group->n_entries; j++)
     {
@@ -1123,8 +1123,8 @@ void
 g_option_group_add_entries (GOptionGroup       *group,
 			    const GOptionEntry *entries)
 {
-  int n_entries;
-  int i;
+  gint n_entries;
+  gint i;
   
   g_return_if_fail (entries != NULL);
 

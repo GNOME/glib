@@ -76,15 +76,15 @@ GQuark g_option_context_error_quark (void) G_GNUC_CONST;
 
 struct _GOptionEntry
 {
-  const char *long_name;
-  char        short_name;
-  int         flags;
+  const gchar *long_name;
+  gchar        short_name;
+  gint         flags;
 
-  GOptionArg  arg;
-  gpointer    arg_data;
+  GOptionArg   arg;
+  gpointer     arg_data;
   
-  const char *description;
-  const char *arg_description;
+  const gchar *description;
+  const gchar *arg_description;
 };
 
 GOptionContext *g_option_context_new              (const gchar         *parameter_string);
@@ -113,7 +113,7 @@ GOptionGroup *g_option_context_get_main_group (GOptionContext *context);
 
 GOptionGroup *g_option_group_new                    (const gchar        *name,
 						     const gchar        *description,
-						     const char         *help_description,
+						     const gchar        *help_description,
 						     gpointer            user_data,
 						     GDestroyNotify      destroy);
 void	      g_option_group_set_parse_hooks	    (GOptionGroup       *group,
