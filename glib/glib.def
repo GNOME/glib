@@ -164,6 +164,7 @@ EXPORTS
 	g_io_channel_win32_new_pipe
 	g_io_channel_win32_new_pipe_with_wakeups
 	g_io_channel_win32_new_stream_socket
+	g_io_channel_win32_make_pollfd
 	g_io_channel_win32_pipe_readable
 	g_io_channel_win32_pipe_request_wakeups
 	g_io_channel_win32_poll

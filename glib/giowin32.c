@@ -872,9 +872,9 @@ g_io_channel_win32_set_debug (GIOChannel *channel,
 }
 
 gint
-g_io_channel_win32_poll (GPollFD     *fds,
-			 gint         n_fds,
-			 gint         timeout)
+g_io_channel_win32_poll (GPollFD *fds,
+			 gint     n_fds,
+			 gint     timeout)
 {
   int i;
   int result;
@@ -887,6 +887,26 @@ g_io_channel_win32_poll (GPollFD     *fds,
   return result;
 }
 
+void
+g_io_channel_win32_make_pollfd (GIOChannel   *channel,
+				GIOCondition  condition,
+				GPollFD      *fd)
+{
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+
+  if (win32_channel->data_avail_event == NULL)
+    create_events (win32_channel);
+  
+  fd->fd = win32_channel->data_avail_event;
+  fd->events = condition;
+
+  if (win32_channel->thread_id == 0)
+    if (win32_channel->type == G_IO_FILE_DESC)
+      create_reader_thread (win32_channel, fd_reader);
+    else if (win32_channel->type == G_IO_STREAM_SOCKET)
+      create_reader_thread (win32_channel, sock_reader);
+}
+
 gint
 g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
 				       GIOCondition condition,
@@ -895,8 +915,7 @@ g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
   GPollFD pollfd;
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
 
-  pollfd.fd = (gint) win32_channel->data_avail_event;
-  pollfd.events = condition;
+  g_io_channel_win32_make_pollfd (channel, condition, &pollfd);
   
   return g_io_channel_win32_poll (&pollfd, 1, timeout);
 }

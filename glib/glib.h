@@ -2921,13 +2921,22 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
 #define G_WIN32_MSG_HANDLE 19981206
 
+/* Use this to get a GPollFD from a GIOChannel, so that you can call
+ * g_io_channel_win32_poll(). After calling this you should only use
+ * g_io_channel_read() to read from the GIOChannel, i.e. never read()
+ * or recv() from the underlying file descriptor or SOCKET.
+ */
+void        g_io_channel_win32_make_pollfd (GIOChannel   *channel,
+					    GIOCondition  condition,
+					    GPollFD      *fd);
+
 /* This can be used to wait a until at least one of the channels is readable.
  * On Unix you would do a select() on the file descriptors of the channels.
  * This should probably be available for all platforms?
  */
-gint        g_io_channel_win32_poll (GPollFD     *fds,
-				     gint         n_fds,
-				     gint         timeout);
+gint        g_io_channel_win32_poll   (GPollFD    *fds,
+				       gint        n_fds,
+				       gint        timeout);
 
 /* This is used to add polling for Windows messages. GDK (GTk+) programs
  * should *not* use this.
@@ -2941,14 +2950,18 @@ GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
 
 /* An IO channel for C runtime (emulated Unix-like) file
  * descriptors. Identical to g_io_channel_unix_new above.
+ * After calling g_io_add_watch() on a IO channel returned
+ * by this function, you shouldn't call read() on the file
+ * descriptor.
  */
 GIOChannel* g_io_channel_win32_new_fd (int         fd);
 
 /* Get the C runtime file descriptor of a channel. */
 gint        g_io_channel_win32_get_fd (GIOChannel *channel);
 
-/* An IO channel for a SOCK_STREAM winsock socket. The parameter should
- * be a SOCKET.
+/* An IO channel for a SOCK_STREAM winsock socket. The parameter
+ * should be a SOCKET. After calling g_io_add_watch() on a IO channel
+ * returned by this function, you shouldn't call recv() on the SOCKET.
  */
 GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
 
