@@ -1,3 +1,7 @@
+Wed Sep 11 16:50:20 2002  Dom Lachowicz <cinamod@hotmail.com>
+
+	* gtype.h: Fix problems with excessive C++ warnings: "ISO C++ forbids nested groups within expressions"
+	
 Fri Jul 26 15:46:36 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gvaluetransform.c: Fix problems with excess ';'
