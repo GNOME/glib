@@ -2715,9 +2715,6 @@ g_type_check_instance_cast (GTypeInstance *type_instance,
 	g_warning ("invalid unclassed pointer in cast to `%s'",
 		   type_descriptive_name_I (iface_type));
     }
-  else
-    g_warning ("invalid cast from (NULL) pointer to `%s'",
-	       type_descriptive_name_I (iface_type));
   
   return type_instance;
 }
