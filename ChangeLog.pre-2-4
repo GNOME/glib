@@ -1,3 +1,7 @@
+2002-03-31  Hasbullah Bin Pit <sebol@ikhlas.com>
+
+	* configure.in: Added Malay (ms)to ALL_LINGUAS.
+
 2002-03-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_convert_init.
