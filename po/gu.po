@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-26 12:25+0200\n"
+"POT-Creation-Date: 2004-12-02 15:44-0500\n"
 "PO-Revision-Date: 2004-10-26 19:20+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "<magnet@magnet-i.com>\n"
 "X-Generator: KBabel 1.3.1\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 
@@ -160,7 +161,8 @@ msgstr "g_10_channe_lread_line_string માં આડી હરોળમાં 
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
-msgstr "વાંચવા માટેના બફર (થોડા સમય માટેનું સંગ્રહસ્થાન)માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
+msgstr ""
+"વાંચવા માટેના બફર (થોડા સમય માટેનું સંગ્રહસ્થાન)માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
 
 #: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
@@ -181,7 +183,8 @@ msgid "Error on line %d: %s"
 msgstr "%d લીટી પર ભૂલ: %s"
 
 #: glib/gmarkup.c:414
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "'&;' વસ્તુ ખાલી દેખાય છે: યોગ્ય વસ્તુઓ છે: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:424
@@ -208,7 +211,9 @@ msgstr "'%s' વસ્તુ નામ જાણીતુ નથી"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr "વસ્તુનો ; સાથે અંત થતો નથી; ઘણી વખતે & અક્ષર ચિન્હ વગર તમે વસ્તુ વાપરી શકો છો- & &amp; તરીકે લો"
+msgstr ""
+"વસ્તુનો ; સાથે અંત થતો નથી; ઘણી વખતે & અક્ષર ચિન્હ વગર તમે વસ્તુ વાપરી શકો છો- & &amp; "
+"તરીકે લો"
 
 #: glib/gmarkup.c:560
 #, c-format
@@ -234,8 +239,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"અક્ષર સંદર્ભ અર્ધવિરામથી અંત થતો નથી; તમે વસ્તુ શરુ કરવા એમ્પરસંડ અક્ષર ને વાપરો એમ્પરસંડ "
-"ને &amp; તરીકે લો"
+"અક્ષર સંદર્ભ અર્ધવિરામથી અંત થતો નથી; તમે વસ્તુ શરુ કરવા એમ્પરસંડ અક્ષર ને વાપરો એમ્પરસંડ ને "
+"&amp; તરીકે લો"
 
 #: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
@@ -269,7 +274,8 @@ msgstr "અસંગત અક્ષર '%s', વસ્તુ '%s' ની શર
 
 #: glib/gmarkup.c:1180
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
 #: glib/gmarkup.c:1221
@@ -336,8 +342,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"દસ્તાવેજનો અણધારી રીતે અંત થાય છે, તે અંતિમ ટેગ <%s/> માં કૌંસને બંધ કરતુ ખૂણાનુ ચિન્હ "
-"જોવા માગે છે"
+"દસ્તાવેજનો અણધારી રીતે અંત થાય છે, તે અંતિમ ટેગ <%s/> માં કૌંસને બંધ કરતુ ખૂણાનુ ચિન્હ જોવા "
+"માગે છે"
 
 #: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
@@ -402,7 +408,8 @@ msgstr "બાળ-પ્રક્રિયામાંથી માહિતી 
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
+msgstr ""
+"બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
 
 #: glib/gspawn-win32.c:850 glib/gspawn.c:1012
 #, c-format
@@ -485,4 +492,3 @@ msgstr "પરીવર્તિત ઈનપુટની અંદર અયો
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-૧૬ ની સીમાની બહાર નો અક્ષર"
-

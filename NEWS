@@ -8,7 +8,6 @@ Overview of Changes from GLib 2.4.7 to GLib 2.4.8
   - Make the very first SIGCHLD work [Gustavo Carneiro]
 * Win32 bug fixes [Tor Lillqvist, Bruce Hochstetler]
 * Other bug fixes [Andrea Campi, Dave MacLachlan]
-* Bugs fixed 155177,156446,136867,154827,157528,155178,153727
 
 Overview of Changes from GLib 2.4.6 to GLib 2.4.7
 =================================================
