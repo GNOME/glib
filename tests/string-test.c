@@ -120,6 +120,65 @@ main (int   argc,
 		    string1->str,
 		    10, 666, 15, 15, 666.666666666, 666.666666666);
 #endif
+  
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+
+  /* append */
+  string1 = g_string_new ("firsthalf");
+  g_string_append (string1, "lasthalf");
+  g_assert (strcmp (string1->str, "firsthalflasthalf") == 0);
+  g_string_free (string1, TRUE);
+
+  /* append_len */
+
+  string1 = g_string_new ("firsthalf");
+  g_string_append_len (string1, "lasthalfjunkjunk", strlen ("lasthalf"));
+  g_assert (strcmp (string1->str, "firsthalflasthalf") == 0);
+  g_string_free (string1, TRUE);  
+  
+  /* prepend */
+  string1 = g_string_new ("lasthalf");
+  g_string_prepend (string1, "firsthalf");
+  g_assert (strcmp (string1->str, "firsthalflasthalf") == 0);
+  g_string_free (string1, TRUE);
+
+  /* prepend_len */
+  string1 = g_string_new ("lasthalf");
+  g_string_prepend_len (string1, "firsthalfjunkjunk", strlen ("firsthalf"));
+  g_assert (strcmp (string1->str, "firsthalflasthalf") == 0);
+  g_string_free (string1, TRUE);
+  
+  /* insert */
+  string1 = g_string_new ("firstlast");
+  g_string_insert (string1, 5, "middle");
+  g_assert (strcmp (string1->str, "firstmiddlelast") == 0);
+  g_string_free (string1, TRUE);
+
+  /* insert with pos == end of the string */
+  string1 = g_string_new ("firstmiddle");
+  g_string_insert (string1, strlen ("firstmiddle"), "last");
+  g_assert (strcmp (string1->str, "firstmiddlelast") == 0);
+  g_string_free (string1, TRUE);
+  
+  /* insert_len */
+
+  string1 = g_string_new ("firstlast");
+  g_string_insert_len (string1, 5, "middlejunkjunk", strlen ("middle"));
+  g_assert (strcmp (string1->str, "firstmiddlelast") == 0);
+  g_string_free (string1, TRUE);
+
+  /* insert_len with magic -1 pos for append */
+  string1 = g_string_new ("first");
+  g_string_insert_len (string1, -1, "lastjunkjunk", strlen ("last"));
+  g_assert (strcmp (string1->str, "firstlast") == 0);
+  g_string_free (string1, TRUE);
+  
+  /* insert_len with magic -1 len for strlen-the-string */
+  string1 = g_string_new ("first");
+  g_string_insert_len (string1, 5, "last", -1);
+  g_assert (strcmp (string1->str, "firstlast") == 0);
+  g_string_free (string1, TRUE);
 
   return 0;
 }

@@ -1,3 +1,33 @@
+Thu Feb 17 12:53:44 2000  Tim Janik  <timj@gtk.org>
+
+        * gstring.c: changed g_str_hash() to a 31 bit version based on
+	a submission by Karl Nelson and hand optimized ad absurdum by
+	various people ;)
+
+	* gstring.c: applied patch from havoc for new gstring functions,
+	added some more sanity checks, coding style fixups.
+
+2000-02-13  Havoc Pennington  <hp@pobox.com>
+
+	* tests/string-test.c (main): Add tests for the new GString 
+	features
+
+	* testglib.c (main): Add tests for the new GString features
+
+	* gstring.c (g_string_insert_len): New function; insert 
+	a given length of string at a given position. 
+	(g_string_append): reimplement in terms of g_string_insert_len
+	(g_string_append_len): new function
+	(g_string_insert_c): accept -1 for "pos" arg to mean "append"
+	(g_string_append_c): reimplement in terms of g_string_insert_c
+	(g_string_prepend): reimplement in terms of g_string_insert_len
+	(g_string_prepend_len): new function
+	(g_string_prepend_c): reimplement in terms of g_string_insert_c
+	(g_string_insert): reimplement in terms of g_string_insert_len
+
+	* glib.h: Declare g_string_insert_len, g_string_append_len,
+	g_string_prepend_len
+	
 Sun Feb 13 08:16:47 2000  Tim Janik  <timj@gtk.org>
 
 	* configure.in: wtf??? someone destroyed the configure.in, reverting to

@@ -68,28 +68,27 @@ static GMemChunk *string_mem_chunk = NULL;
  */
 
 gint
-g_str_equal (gconstpointer v, gconstpointer v2)
+g_str_equal (gconstpointer v1,
+	     gconstpointer v2)
 {
-  return strcmp ((const gchar*) v, (const gchar*)v2) == 0;
+  const gchar *string1 = v1;
+  const gchar *string2 = v2;
+  
+  return strcmp (string1, string2) == 0;
 }
 
-/* a char* hash function from ASU */
+/* 31 bit hash function */
 guint
-g_str_hash (gconstpointer v)
+g_str_hash (gconstpointer key)
 {
-  const char *s = (char*)v;
-  const char *p;
-  guint h=0, g;
+  const char *p = key;
+  guint h = *p;
 
-  for(p = s; *p != '\0'; p += 1) {
-    h = ( h << 4 ) + *p;
-    if ( ( g = h & 0xf0000000 ) ) {
-      h = h ^ (g >> 24);
-      h = h ^ g;
-    }
-  }
+  if (h)
+    for (p += 1; *p != '\0'; p++)
+      h = (h << 5) - h + *p;
 
-  return h /* % M */;
+  return h;
 }
 
 
@@ -160,7 +159,7 @@ g_string_chunk_insert (GStringChunk *fchunk,
       chunk->storage_next = 0;
     }
 
-  pos = ((char*)chunk->storage_list->data) + chunk->storage_next;
+  pos = ((char *) chunk->storage_list->data) + chunk->storage_next;
 
   strcpy (pos, string);
 
@@ -254,7 +253,7 @@ g_string_new (const gchar *init)
 
 void
 g_string_free (GString *string,
-	       gint free_segment)
+	       gboolean free_segment)
 {
   g_return_if_fail (string != NULL);
 
@@ -267,127 +266,60 @@ g_string_free (GString *string,
 }
 
 GString*
-g_string_assign (GString *lval,
+g_string_assign (GString     *string,
 		 const gchar *rval)
 {
-  g_string_truncate (lval, 0);
-  g_string_append (lval, rval);
-
-  return lval;
-}
-
-GString*
-g_string_truncate (GString* fstring,
-		   gint len)
-{
-  GRealString *string = (GRealString*)fstring;
-
   g_return_val_if_fail (string != NULL, NULL);
-
-  string->len = len;
-
-  string->str[len] = 0;
-
-  return fstring;
-}
-
-GString*
-g_string_append (GString *fstring,
-		 const gchar *val)
-{
-  GRealString *string = (GRealString*)fstring;
-  int len;
-
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (rval != NULL, string);
   
-  len = strlen (val);
-  g_string_maybe_expand (string, len);
+  g_string_truncate (string, 0);
+  g_string_append (string, rval);
 
-  strcpy (string->str + string->len, val);
-
-  string->len += len;
-
-  return fstring;
+  return string;
 }
 
 GString*
-g_string_append_c (GString *fstring,
-		   gchar c)
+g_string_truncate (GString *fstring,
+		   gint     len)
 {
-  GRealString *string = (GRealString*)fstring;
+  GRealString *string = (GRealString *) fstring;
 
   g_return_val_if_fail (string != NULL, NULL);
-  g_string_maybe_expand (string, 1);
 
-  string->str[string->len++] = c;
+  string->len = MIN (len, string->len);
+
   string->str[string->len] = 0;
 
   return fstring;
 }
 
 GString*
-g_string_prepend (GString *fstring,
-		  const gchar *val)
+g_string_insert_len (GString     *fstring,
+		     gint         pos,
+		     const gchar *val,
+		     gint         len)
 {
-  GRealString *string = (GRealString*)fstring;
-  gint len;
+  GRealString *string = (GRealString *) fstring;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (val != NULL, fstring);
-
-  len = strlen (val);
-  g_string_maybe_expand (string, len);
-
-  g_memmove (string->str + len, string->str, string->len);
-
-  strncpy (string->str, val, len);
-
-  string->len += len;
-
-  string->str[string->len] = 0;
-
-  return fstring;
-}
-
-GString*
-g_string_prepend_c (GString *fstring,
-		    gchar    c)
-{
-  GRealString *string = (GRealString*)fstring;
-
-  g_return_val_if_fail (string != NULL, NULL);
-  g_string_maybe_expand (string, 1);
-
-  g_memmove (string->str + 1, string->str, string->len);
-
-  string->str[0] = c;
-
-  string->len += 1;
-
-  string->str[string->len] = 0;
-
-  return fstring;
-}
-
-GString*
-g_string_insert (GString     *fstring,
-		 gint         pos,
-		 const gchar *val)
-{
-  GRealString *string = (GRealString*)fstring;
-  gint len;
-
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
-  g_return_val_if_fail (pos >= 0, fstring);
   g_return_val_if_fail (pos <= string->len, fstring);
 
-  len = strlen (val);
+  if (len < 0)
+    len = strlen (val);
+
+  if (pos < 0)
+    pos = string->len;
+  
   g_string_maybe_expand (string, len);
 
-  g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
-
+  /* If we aren't appending at the end, move a hunk
+   * of the old string to the end, opening up space
+   */
+  if (pos < string->len)
+    g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+  
+  /* insert the new string */
   strncpy (string->str + pos, val, len);
 
   string->len += len;
@@ -397,19 +329,96 @@ g_string_insert (GString     *fstring,
   return fstring;
 }
 
-GString *
+GString*
+g_string_append (GString     *fstring,
+		 const gchar *val)
+{  
+  g_return_val_if_fail (fstring != NULL, NULL);
+  g_return_val_if_fail (val != NULL, fstring);
+
+  return g_string_insert_len (fstring, -1, val, -1);
+}
+
+GString*
+g_string_append_len (GString	 *string,
+                     const gchar *val,
+                     gint         len)
+{
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (val != NULL, string);
+
+  return g_string_insert_len (string, -1, val, len);
+}
+
+GString*
+g_string_append_c (GString *fstring,
+		   gchar    c)
+{
+  g_return_val_if_fail (fstring != NULL, NULL);
+
+  return g_string_insert_c (fstring, -1, c);
+}
+
+GString*
+g_string_prepend (GString     *fstring,
+		  const gchar *val)
+{
+  g_return_val_if_fail (fstring != NULL, NULL);
+  g_return_val_if_fail (val != NULL, fstring);
+  
+  return g_string_insert_len (fstring, 0, val, -1);
+}
+
+GString*
+g_string_prepend_len (GString	  *string,
+                      const gchar *val,
+                      gint         len)
+{
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (val != NULL, string);
+
+  return g_string_insert_len (string, 0, val, len);
+}
+
+GString*
+g_string_prepend_c (GString *fstring,
+		    gchar    c)
+{  
+  g_return_val_if_fail (fstring != NULL, NULL);
+  
+  return g_string_insert_c (fstring, 0, c);
+}
+
+GString*
+g_string_insert (GString     *fstring,
+		 gint         pos,
+		 const gchar *val)
+{
+  g_return_val_if_fail (fstring != NULL, NULL);
+  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (pos <= fstring->len, fstring);
+  
+  return g_string_insert_len (fstring, pos, val, -1);
+}
+
+GString*
 g_string_insert_c (GString *fstring,
 		   gint     pos,
 		   gchar    c)
 {
-  GRealString *string = (GRealString*)fstring;
+  GRealString *string = (GRealString *) fstring;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (pos <= string->len, fstring);
 
   g_string_maybe_expand (string, 1);
 
-  g_memmove (string->str + pos + 1, string->str + pos, string->len - pos);
+  if (pos < 0)
+    pos = string->len;
+  
+  /* If not just an append, move the old stuff */
+  if (pos < string->len)
+    g_memmove (string->str + pos + 1, string->str + pos, string->len - pos);
 
   string->str[pos] = c;
 
@@ -422,8 +431,8 @@ g_string_insert_c (GString *fstring,
 
 GString*
 g_string_erase (GString *fstring,
-		gint pos,
-		gint len)
+		gint     pos,
+		gint     len)
 {
   GRealString *string = (GRealString*)fstring;
 
@@ -446,7 +455,7 @@ g_string_erase (GString *fstring,
 GString*
 g_string_down (GString *fstring)
 {
-  GRealString *string = (GRealString*)fstring;
+  GRealString *string = (GRealString *) fstring;
   guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
@@ -465,7 +474,7 @@ g_string_down (GString *fstring)
 GString*
 g_string_up (GString *fstring)
 {
-  GRealString *string = (GRealString*)fstring;
+  GRealString *string = (GRealString *) fstring;
   guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);

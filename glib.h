@@ -1825,19 +1825,29 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
 GString*     g_string_new	        (const gchar	 *init);
 GString*     g_string_sized_new         (guint		  dfl_size);
 void	     g_string_free	        (GString	 *string,
-					 gint		  free_segment);
-GString*     g_string_assign            (GString	 *lval,
+					 gboolean	  free_segment);
+GString*     g_string_assign            (GString	 *string,
 					 const gchar	 *rval);
 GString*     g_string_truncate          (GString	 *string,
 					 gint		  len);
+GString*     g_string_insert_len        (GString         *string,
+                                         gint             pos,
+                                         const gchar     *val,
+                                         gint             len);
 GString*     g_string_append            (GString	 *string,
 			                 const gchar	 *val);
+GString*     g_string_append_len        (GString	 *string,
+			                 const gchar	 *val,
+                                         gint             len);
 GString*     g_string_append_c          (GString	 *string,
 					 gchar		  c);
 GString*     g_string_prepend           (GString	 *string,
 					 const gchar	 *val);
 GString*     g_string_prepend_c         (GString	 *string,
 					 gchar		  c);
+GString*     g_string_prepend_len       (GString	 *string,
+			                 const gchar	 *val,
+                                         gint             len);
 GString*     g_string_insert            (GString	 *string,
 					 gint		  pos,
 					 const gchar	 *val);
