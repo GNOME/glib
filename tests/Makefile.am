@@ -49,7 +49,7 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop timeloop-closure
 endif
-noinst_PROGRAMS = testglib patterntest testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
+noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
 testglib_LDADD = $(libglib)
 patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
@@ -73,6 +73,8 @@ test_programs =					\
 	mainloop-test				\
 	module-test				\
 	node-test				\
+	patterntest				\
+	printf-test				\
 	queue-test				\
 	qsort-test				\
 	rand-test				\
@@ -118,6 +120,7 @@ markup_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 node_test_LDADD = $(progs_ldadd)
+printf_test_LDADD = $(progs_ldadd)
 queue_test_LDADD = $(progs_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 rand_test_LDADD = $(progs_ldadd)

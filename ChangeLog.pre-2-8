@@ -1,3 +1,14 @@
+2003-05-28  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/patterntest.c: Remain silent when sucessful. 
+
+	* tests/Makefile.am: Add patterntest to make check.  (113143)
+
+2003-05-27  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strdup): Use memcpy instead of
+	strcpy. (#106988, Christian Biere)
+
 2003-05-27  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strdup): Use memcpy instead of
