@@ -1,3 +1,9 @@
+Sat Mar 13 23:30:53 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h (G_STMT_START): Add __extension__
+	to G_STMT_START to quite gcc -pedantic. (#131899,
+	Olivier Biot)
+
 Sat Mar 13 23:18:45 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/env-test.c (main): Remove critical log handler;

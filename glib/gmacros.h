@@ -191,7 +191,7 @@
  */
 #if !(defined (G_STMT_START) && defined (G_STMT_END))
 #  if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
-#    define G_STMT_START	(void)(
+#    define G_STMT_START	(void) __extension__ (
 #    define G_STMT_END		)
 #  else
 #    if (defined (sun) || defined (__sun__))
