@@ -735,7 +735,7 @@ g_io_channel_get_flags (GIOChannel *channel)
 {
   GIOFlags flags;
 
-  g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail (channel != NULL, 0);
 
   flags = (* channel->funcs->io_get_flags) (channel);
 
