@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.5.7 to GLib 2.6.0
+=================================================
+* GOption: Don't list help options if group-specific
+  options have been requested [Glynn Foster]
+* Make g_get_language_names() track locale changes [Christian Persch]
+* Win32 bug fixes [Tor Lillqvist]
+* Bug fixes [Philippe Blain, Owen Taylor, Sebastian Wilhelmi]
+* New and updated translations (da,es,ja,lt,zh_CN)
+Bugs fixed: 159530,100697,160271,160645,157255
+
 Overview of Changes from GLib 2.5.6 to GLib 2.5.7
 =================================================
 * Optimize g_utf8_validate() [Owen Taylor, Matthias Clasen]
