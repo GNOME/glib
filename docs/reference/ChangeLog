@@ -1,3 +1,11 @@
+2004-12-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/building.sgml: 
+	* glib/tmpl/linked_lists_single.sgml: 
+	* glib/tmpl/linked_lists_double.sgml: 
+	* glib/tmpl/trees-nary.sgml: Add some warnings regarding
+	--disable-mem-pools.
+
 2004-12-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/iochannels.sgml: Fix a typo.  (#160162, Tom Copeland)

@@ -407,6 +407,10 @@ is not found.
 Sets the allocator to use to allocate #GSList elements.
 Use g_slist_pop_allocator() to restore the previous allocator.
 </para>
+<para>
+Note that this function is not available if GLib has been compiled
+with <option>--disable-mem-pools</option>
+</para>
 
 @allocator: the #GAllocator to use when allocating #GSList elements.
 
@@ -414,6 +418,10 @@ Use g_slist_pop_allocator() to restore the previous allocator.
 <!-- ##### FUNCTION g_slist_pop_allocator ##### -->
 <para>
 Restores the previous #GAllocator, used when allocating #GSList elements.
+</para>
+<para>
+Note that this function is not available if GLib has been compiled
+with <option>--disable-mem-pools</option>
 </para>
 
 
