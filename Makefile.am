@@ -19,7 +19,6 @@ EXTRA_DIST = 			\
 	README.in		\
 	INSTALL.in		\
 	README.win32		\
-	TODO.xml		\
 	makefile.msc		\
 	makefile.mingw		\
 	glibconfig.h.win32.in	\

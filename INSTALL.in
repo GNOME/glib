@@ -13,13 +13,23 @@ Simple install procedure
 Requirements
 ============
 
+GLib-2.0 requires pkg-config, which is tool for tracking the
+compilation flags needed for libraries. (For each library, a small .pc
+text file is installed in a standard location that contains the
+compilation flags needed for that library along with version number
+information.) Information about pkg-config can be found at:
+
+  http://www.freedesktop.org/software/pkgconfig/
+
+GNU make (http://www.gnu.org/software/make) is also recommended.
+
 In order to implement conversions between character sets,
 GLib requires an implementation of the standard iconv() routine.
 Most modern systems will have a suitable implementation, however
 many older systems lack an iconv() implementation. On such systems, 
 you must install the libiconv library. This can be found at:
 
- http://clisp.cons.org/~haible/packages-libiconv.html
+ http://www.gnu.org/software/libiconv/
 
 If your system has an iconv implementation but you want to use
 libiconv instead, you can pass the --with-libiconv option to
@@ -29,6 +39,13 @@ Note that if you have libiconv installed in your default include
 search path (for instance, in /usr/local/), but don't enable
 it, you will get an error while compiling GTK+ because the
 iconv.h that libiconv installs hides the system iconv.
+
+Finally, for message catalog handling, GTK+ requires an implementation
+of gettext(). If your system doesn't provide this functionality,
+you should use the libintl library from the GNU gettext package,
+available from:
+
+ http://www.gnu.org/software/gettext/
 
 The Nitty-Gritty
 ================
@@ -104,14 +121,18 @@ use of these flags is not tested.
 One particular detail to note, is that the architecture-dependent
 include file glibconfig.h is installed in:
 
-  $exec_pref/lib/glib/include/
+  $exec_prefix/lib/glib/include/
 
 if you have a version in $prefix/include, this is out of date
 and should be deleted.
 
-A shell script glib-config is created during the configure
-process, and installed in the bin/ directory
-($exec_prefix/bin). This is used to determine the location of glib
-when building applications.  If you move glib after installation,
-it will be necessary to edit this file.
+.pc files for the various libraries are installed in 
+$exec_prefix/lib/pkgconfig to provide information when compiling
+other packages that depend on GTK+. If you set PKG_CONFIG_PATH
+so that it points to this directory, then you can get the 
+correct include flags and library flags for compiling a GLib
+application with:
+
+ pkg-config --cflags glib-2.0
+ pkg-config --libs glib-2.0
 

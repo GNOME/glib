@@ -80,6 +80,10 @@
 #include <langinfo.h>
 #endif
 
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+#include <libintl.h>
+#endif
+
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
@@ -1090,6 +1094,9 @@ _glib_gettext (const gchar *str)
   if (!_glib_gettext_initialized)
     {
       bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#    endif
       _glib_gettext_initialized = TRUE;
     }
   

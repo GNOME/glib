@@ -1,21 +1,11 @@
- *** IMPORTANT *** 
-
-This is a development version of GLib.  You should be using a stable
-version, which is available at ftp://ftp.gtk.org/pub/gtk/v1.2/.  This
-version is meant for developers of GLib only:
-
- * You should not base stable software on this version of GLib.
- * GNOME developers should use a stable version of GLib.
-
-*** You should be using GLib 1.2 instead. ***
-
-
 General Information
 ===================
 
-This is GLib version @GLIB_VERSION@. GLib is a library which includes support
-routines for C such as lists, trees, hashes, memory allocation, and
-many other things.
+This is GLib version @GLIB_VERSION@. GLib is the low-level core
+library that forms the basis for projects such as GTK+ and GNOME. It
+provides data structure handling for C, portability wrappers, and
+interfaces for such runtime functionality as an event loop, threads,
+dynamic loading, and an object system.
 
 The official ftp site is:
   ftp://ftp.gtk.org/pub/gtk
@@ -33,6 +23,27 @@ Installation
 ============
 
 See the file 'INSTALL'
+
+Notes about GLib-2.0.0
+======================
+
+* On systems without the libintl from GNU gettext() or a recent version
+  of the GNU C library, the encoding of translated error messages will be 
+  incorrect (they should be in UTF-8). A workaround for this is to install 
+  GNU gettext and use that libintl. This is expected to be fixed in GLib-2.0.1.
+  Application programmers should not call g_locale_to_utf8() on these
+  strings.
+
+* The results of g_strerror() are currently in the encoding of the locale
+  rather than in UTF-8. Again, this is a bug, and not behavior that
+  should be relied upon.
+
+* Similarly, the GLib error logging functions such as g_print(), g_warning(),
+  g_error(), currently do not convert the strings they are passed from
+  UTF-8 to the encoding of the locale, or check that the strings they
+  are passed are valid UTF-8. They should, despite this, be assumed to take
+  UTF-8 arguments.
+
 
 How to report bugs
 ==================

@@ -2,7 +2,7 @@
 
 SUBDIRS = reference
 
-EXTRA_DIST = debugging.txt macros.txt Changes-2.0.txt 
+EXTRA_DIST = debugging.txt macros.txt
 
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \

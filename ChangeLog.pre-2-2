@@ -1,3 +1,24 @@
+Fri Mar  8 00:15:29 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* README.in: Updates.
+
+	* README.in: Add warnings about current encoding problems with .po
+	files and error logging functions.
+
+	* configure.in: Check for bind_textdomain_codeset().
+
+	* glib/gutils.c (_glib_gettext): Call 
+	bind_textdomain_codeset, if present.
+
+	* INSTALL.in: Some updates.
+
+	* AUTHORS: Updates.
+
+	* Makefile.am (EXTRA_DIST): Remove TODO.xml from EXTRA_DIST.
+
+	* docs/Makefile.am (EXTRA_DIST): Remove Changes-2.0.txt
+	from EXTRA_DIST.
+
 2002-03-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed recognition of dce. Do not use -lc_r on
@@ -5636,7 +5657,7 @@ Wed May 10 19:52:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* makefile.{cygwin,msc}.in (glib_OBJECTS): Add new object files.
 
-	* tests/makefile.{cygwin,msc}.in: Add threadpool-test.
+	* tests/makefile.{cygwin,msc}.in: Add thread pool-test.
 
 2000-04-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
