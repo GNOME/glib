@@ -1,3 +1,34 @@
+2001-08-05  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: Replaced the local use_buf variable with a macro
+	in most places. This allows us to check some things without worrying
+	whether we have allocated the read buffers yet, and allows us to allocate
+	the buffers later in some cases.
+
+	* glib/giochannel.c: Introduced a MAX_CHAR_SIZE macro, which is
+	supposed to be greater than or equal to the length in bytes
+	of the longest character in any encoding. This is necessary
+	to get the minimum buffer size for successful writing.
+
+	* glib/giochannel.c: Fixed g_io_channel_set_encoding () so
+	that it just prints a warning if partial_write_buf isn't
+	empty instead of failing.
+
+	* glib/giochannel.c: Fixed several functions so they can accept
+	NULL parameters for pointers to return values.
+
+	* glib/giochannel.c: Altered the error handling for
+	g_io_channel_read_chars () to only return an error if
+	it doesn't have any buffered data.
+
+	* glib/giochannel.c: Rewrote g_io_channel_write_chars ()
+	to fix the error handling and remove duplicate sections
+	of code.
+
+	* glib/giounix.c: Fixed g_io_channel_new_file () to
+	call fstat () to set the is_seekable flag, in case someone
+	uses it on a FIFO.
+
 Sun Aug  5 08:25:30 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmacros.h: Include stddef.h so that we use

@@ -49,6 +49,17 @@
 
 #define G_IO_NICE_BUF_SIZE	1024
 
+/* This needs to be as wide as the largest character in any possible encoding */
+#define MAX_CHAR_SIZE		10
+
+/* Some simplifying macros, which reduce the need to worry whether the
+ * buffers have been allocated. These also make USE_BUF () an lvalue,
+ * which is used in g_io_channel_read_to_end ().
+ */
+#define USE_BUF(channel)	((channel)->encoding ? (channel)->encoded_read_buf \
+				 : (channel)->read_buf)
+#define BUF_LEN(string)		((string) ? (string)->len : 0)
+
 static GIOError		g_io_error_get_from_g_error	(GIOStatus    status,
 							 GError      *err);
 static void		g_io_channel_purge		(GIOChannel  *channel);
@@ -587,8 +598,8 @@ g_io_channel_set_buffer_size (GIOChannel	*channel,
   if (size == 0)
     size = G_IO_NICE_BUF_SIZE;
 
-  if (size < 10) /* Needs to be larger than the widest char in any encoding */
-    size = 10;
+  if (size < MAX_CHAR_SIZE)
+    size = MAX_CHAR_SIZE;
 
   channel->buf_size = size;
 }
@@ -933,7 +944,6 @@ g_io_channel_set_encoding (GIOChannel	*channel,
 
   g_return_val_if_fail (!channel->do_encode || !channel->encoded_read_buf ||
 			channel->encoded_read_buf->len == 0, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (channel->partial_write_buf[0] == '\0', G_IO_STATUS_ERROR);
 
   if (!channel->use_buffer)
     {
@@ -941,6 +951,12 @@ g_io_channel_set_encoding (GIOChannel	*channel,
       g_warning ("Assuming this is what you meant and acting accordingly.\n");
 
       channel->use_buffer = TRUE;
+    }
+
+  if (channel->partial_write_buf[0] != '\0')
+    {
+      g_warning ("Partial character at end of write buffer not flushed.\n");
+      channel->partial_write_buf[0] = '\0';
     }
 
   did_encode = channel->do_encode;
@@ -1102,13 +1118,16 @@ g_io_channel_fill_buffer (GIOChannel *channel,
   else
     {
       oldlen = 0;
-      channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
+      if (channel->encoding)
+        channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
     }
 
   if (channel->do_encode)
     {
       size_t errnum, inbytes_left, outbytes_left;
       gchar *inbuf, *outbuf;
+
+      g_assert (channel->encoded_read_buf);
 
 reencode:
 
@@ -1169,6 +1188,8 @@ reencode:
     {
       gchar *nextchar, *lastchar;
 
+      g_assert (channel->encoded_read_buf);
+
       nextchar = channel->read_buf->str;
       lastchar = channel->read_buf->str + channel->read_buf->len;
 
@@ -1205,9 +1226,6 @@ reencode:
       if (lastchar > channel->read_buf->str)
         {
           gint copy_len = lastchar - channel->read_buf->str;
-
-          if (!channel->encoded_read_buf)
-            channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
 
           g_string_append_len (channel->encoded_read_buf, channel->read_buf->str,
                                copy_len);
@@ -1247,6 +1265,7 @@ g_io_channel_read_line (GIOChannel *channel,
 		        GError    **error)
 {
   GIOStatus status;
+  gsize got_length;
   
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail (str_return != NULL, G_IO_STATUS_ERROR);
@@ -1254,21 +1273,16 @@ g_io_channel_read_line (GIOChannel *channel,
 			G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_readable, G_IO_STATUS_ERROR);
 
-  status = g_io_channel_read_line_backend (channel, length, terminator_pos, error);
+  status = g_io_channel_read_line_backend (channel, &got_length, terminator_pos, error);
+
+  if (length)
+    *length = got_length;
 
   if (status == G_IO_STATUS_NORMAL)
     {
-      GString *use_buf;
-
-      if (channel->encoding)
-        use_buf = channel->encoded_read_buf;
-      else
-        use_buf = channel->read_buf;
-
-      g_assert (use_buf);
-
-      *str_return = g_strndup (use_buf->str, *length);
-      g_string_erase (use_buf, 0, *length);
+      g_assert (USE_BUF (channel));
+      *str_return = g_strndup (USE_BUF (channel)->str, got_length);
+      g_string_erase (USE_BUF (channel), 0, got_length);
     }
   else
     *str_return = NULL;
@@ -1312,17 +1326,9 @@ g_io_channel_read_line_string (GIOChannel *channel,
 
   if (status == G_IO_STATUS_NORMAL)
     {
-      GString *use_buf;
-
-      if (channel->encoding)
-        use_buf = channel->encoded_read_buf;
-      else
-        use_buf = channel->read_buf;
-
-      g_assert (use_buf);
-
-      g_string_append_len (buffer, use_buf->str, length);
-      g_string_erase (use_buf, 0, length);
+      g_assert (USE_BUF (channel));
+      g_string_append_len (buffer, USE_BUF (channel)->str, length);
+      g_string_erase (USE_BUF (channel), 0, length);
     }
 
   return status;
@@ -1337,7 +1343,6 @@ g_io_channel_read_line_backend	(GIOChannel *channel,
 {
   GIOStatus status;
   gsize checked_to, line_term_len, line_length, got_term_len;
-  GString *use_buf;
   gboolean first_time = TRUE;
 
   if (!channel->use_buffer)
@@ -1346,19 +1351,6 @@ g_io_channel_read_line_backend	(GIOChannel *channel,
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
                    _("Can't do a raw read in g_io_channel_read_line_string"));
       return G_IO_STATUS_ERROR;
-    }
-
-  if (channel->encoding)
-    {
-      if (!channel->encoded_read_buf)
-        channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
-      use_buf = channel->encoded_read_buf;
-    }
-  else
-    {
-      if (!channel->read_buf)
-        channel->read_buf = g_string_sized_new (channel->buf_size);
-      use_buf = channel->read_buf;
     }
 
   status = G_IO_STATUS_NORMAL;
@@ -1376,15 +1368,16 @@ g_io_channel_read_line_backend	(GIOChannel *channel,
   while (TRUE)
     {
       gchar *nextchar, *lastchar;
+      GString *use_buf;
 
-      if (!first_time || (use_buf->len == 0))
+      if (!first_time || (BUF_LEN (USE_BUF (channel)) == 0))
         {
 read_again:
           status = g_io_channel_fill_buffer (channel, error);
           switch (status)
             {
               case G_IO_STATUS_NORMAL:
-                if (use_buf->len == 0)
+                if (BUF_LEN (USE_BUF (channel)) == 0)
                   /* Can happen when using conversion and only read
                    * part of a character
                    */
@@ -1394,9 +1387,10 @@ read_again:
                   }
                 break;
               case G_IO_STATUS_EOF:
-                if (use_buf->len == 0)
+                if (BUF_LEN (USE_BUF (channel)) == 0)
                   {
-                    *length = 0;
+                    if (length)
+                      *length = 0;
 
                     if (channel->encoding && channel->read_buf->len != 0)
                       {
@@ -1410,12 +1404,15 @@ read_again:
                   }
                 break;
               default:
-                *length = 0;
+                if (length)
+                  *length = 0;
                 return status;
             }
         }
 
-      g_assert (use_buf->len > 0);
+      g_assert (BUF_LEN (USE_BUF (channel)) != 0);
+
+      use_buf = USE_BUF (channel); /* The buffer has been created by this point */
 
       first_time = FALSE;
 
@@ -1502,7 +1499,8 @@ done:
   if (terminator_pos)
     *terminator_pos = line_length;
 
-  *length = line_length + got_term_len;
+  if (length)
+    *length = line_length + got_term_len;
 
   return G_IO_STATUS_NORMAL;
 }
@@ -1532,17 +1530,16 @@ g_io_channel_read_to_end (GIOChannel	*channel,
                           GError       **error)
 {
   GIOStatus status;
-  GString **use_buf;
     
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (str_return != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (length != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL),
     G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_readable, G_IO_STATUS_ERROR);
 
-  *str_return = NULL;
-  *length = 0;
+  if (str_return)
+    *str_return = NULL;
+  if (length)
+    *length = 0;
 
   if (!channel->use_buffer)
     {
@@ -1558,39 +1555,32 @@ g_io_channel_read_to_end (GIOChannel	*channel,
   if (status != G_IO_STATUS_EOF)
     return status;
 
-  if (channel->encoding)
+  if (channel->encoding && channel->read_buf->len > 0)
     {
-      if (channel->read_buf->len > 0)
-        {
-          g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-                       "Channel terminates in a partial character");
-          return G_IO_STATUS_ERROR;
-        }
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                   "Channel terminates in a partial character");
+      return G_IO_STATUS_ERROR;
+    }
 
-      if (!channel->encoded_read_buf)
-        {
-          if (length)
-            *length = 0;
-          if (str_return)
-            *str_return = g_strdup ("");
-        }
-
-      use_buf = &channel->encoded_read_buf;
+  if (USE_BUF (channel) == NULL)
+    {
+      /* length is already set to zero */
+      if (str_return)
+        *str_return = g_strdup ("");
     }
   else
-    use_buf = &channel->read_buf;
+    {
+      if (length)
+        *length = USE_BUF (channel)->len;
 
-  g_assert (*use_buf); /* Created by fill_buffer if it didn't previously exist */
+      if (str_return)
+        *str_return = g_string_free (USE_BUF (channel), FALSE);
+      else
+        g_string_free (USE_BUF (channel), TRUE);
 
-  if (length)
-    *length = (*use_buf)->len;
-
-  if (str_return)
-    *str_return = g_string_free (*use_buf, FALSE);
-  else
-    g_string_free (*use_buf, TRUE);
-  
-  *use_buf = NULL;
+      /* This only works because USE_BUF () is a macro */
+      USE_BUF (channel) = NULL;
+    }
 
   return G_IO_STATUS_NORMAL;
 }
@@ -1619,12 +1609,11 @@ g_io_channel_read_chars (GIOChannel	*channel,
                          GError        **error)
 {
   GIOStatus status;
-  GString *use_buf;
+  gsize got_bytes;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL),
 			G_IO_STATUS_ERROR);
-  g_return_val_if_fail (bytes_read != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_readable, G_IO_STATUS_ERROR);
 
   if (count == 0)
@@ -1641,84 +1630,66 @@ g_io_channel_read_chars (GIOChannel	*channel,
       return channel->funcs->io_read (channel, buf, count, bytes_read, error);
     }
 
-  if (channel->encoding)
-    {
-      if (!channel->encoded_read_buf)
-        channel->encoded_read_buf = g_string_sized_new (channel->buf_size);
-      use_buf = channel->encoded_read_buf;
-    }
-  else
-    {
-      if (!channel->read_buf)
-        channel->read_buf = g_string_sized_new (channel->buf_size);
-      use_buf = channel->read_buf;
-    }
-
   status = G_IO_STATUS_NORMAL;
 
-  while (use_buf->len < MAX (count, 6) && status == G_IO_STATUS_NORMAL)
-    /* Be sure to read in at least one full UTF-8 character
-     * (max length 6)
-     */
+  while (BUF_LEN (USE_BUF (channel)) < count && status == G_IO_STATUS_NORMAL)
     status = g_io_channel_fill_buffer (channel, error);
 
-  switch (status)
-    {
-    case G_IO_STATUS_NORMAL:
-      g_assert (use_buf->len > 0);
-      break;
-    case G_IO_STATUS_EOF:
-      if (use_buf->len == 0)
-	{
-	  *bytes_read = 0;
+  /* Only return an error if we have no data */
 
-          if (channel->encoding && channel->read_buf->len != 0)
-            {
-              g_set_error (error, G_CONVERT_ERROR,
-                           G_CONVERT_ERROR_PARTIAL_INPUT,
-                           "Leftover unconverted data in read buffer");
-              return G_IO_STATUS_ERROR;
-            }
-          else
-            return G_IO_STATUS_EOF;
-	}
-      break;
-    case G_IO_STATUS_AGAIN:
-      if (use_buf->len > 0)
-        break; /* return what we have */
-      else
+  if (BUF_LEN (USE_BUF (channel)) == 0)
+    {
+      g_assert (status != G_IO_STATUS_NORMAL);
+
+      if (status == G_IO_STATUS_EOF && channel->encoding
+          && BUF_LEN (channel->read_buf) > 0)
         {
-          *bytes_read = 0;
-          return G_IO_STATUS_AGAIN;
+          g_set_error (error, G_CONVERT_ERROR,
+                       G_CONVERT_ERROR_PARTIAL_INPUT,
+                       "Leftover unconverted data in read buffer");
+          status = G_IO_STATUS_ERROR;
         }
-    default:
-      *bytes_read = 0;
+
+      if (bytes_read)
+        *bytes_read = 0;
+
       return status;
     }
 
-  *bytes_read = MIN (count, use_buf->len);
+  if (status == G_IO_STATUS_ERROR)
+    g_clear_error (error);
 
-  if (channel->encoding && *bytes_read > 0)
+  got_bytes = MIN (count, BUF_LEN (USE_BUF (channel)));
+
+  g_assert (got_bytes > 0);
+
+  if (channel->encoding)
     /* Don't validate for NULL encoding, binary safe */
     {
-      gchar *nextchar, *prevchar = NULL;
+      gchar *nextchar, *prevchar;
 
-      nextchar = use_buf->str;
+      g_assert (USE_BUF (channel) == channel->encoded_read_buf);
 
-      while (nextchar < use_buf->str + *bytes_read)
+      nextchar = channel->encoded_read_buf->str;
+
+      do
         {
           prevchar = nextchar;
           nextchar = g_utf8_next_char (nextchar);
         }
+      while (nextchar < channel->encoded_read_buf->str + got_bytes);
 
-      if (nextchar > use_buf->str + *bytes_read)
-        *bytes_read = prevchar - use_buf->str;
+      if (nextchar > channel->encoded_read_buf->str + got_bytes)
+        got_bytes = prevchar - channel->encoded_read_buf->str;
 
-      g_assert (*bytes_read > 0 || count < 6);
+      g_assert (got_bytes > 0 || count < 6);
     }
 
-  memcpy (buf, use_buf->str, *bytes_read);
-  g_string_erase (use_buf, 0, *bytes_read);
+  memcpy (buf, USE_BUF (channel)->str, got_bytes);
+  g_string_erase (USE_BUF (channel), 0, got_bytes);
+
+  if (bytes_read)
+    *bytes_read = got_bytes;
 
   return G_IO_STATUS_NORMAL;
 }
@@ -1746,6 +1717,7 @@ g_io_channel_write_chars (GIOChannel	*channel,
                           GError       **error)
 {
   GIOStatus status;
+  gssize wrote_bytes = 0;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail (bytes_written != NULL, G_IO_STATUS_ERROR);
@@ -1773,10 +1745,10 @@ g_io_channel_write_chars (GIOChannel	*channel,
 
   /* General case */
 
-  if (channel->is_seekable && ((channel->read_buf && channel->read_buf->len > 0)
-    || (channel->encoded_read_buf && channel->encoded_read_buf->len > 0)))
+  if (channel->is_seekable && (( BUF_LEN (channel->read_buf) > 0)
+    || (BUF_LEN (channel->encoded_read_buf) > 0)))
     {
-      if (channel->encoded_read_buf && channel->encoded_read_buf->len > 0)
+      if (channel->do_encode && BUF_LEN (channel->encoded_read_buf) > 0)
         {
           g_warning("Mixed reading and writing not allowed on encoded files");
           return G_IO_STATUS_ERROR;
@@ -1789,298 +1761,238 @@ g_io_channel_write_chars (GIOChannel	*channel,
   if (!channel->write_buf)
     channel->write_buf = g_string_sized_new (channel->buf_size);
 
-  if (!channel->do_encode)
+  while (wrote_bytes < count)
     {
-      guint copy_bytes;
+      gsize space_in_buf;
 
-      if (channel->encoding)
-        { 
-          const gchar *badchar;
+      /* If the buffer is full, try a write immediately. In
+       * the nonblocking case, this prevents the user from
+       * writing just a little bit to the buffer every time
+       * and never receiving an EAGAIN.
+       */
+
+      if (channel->write_buf->len >= channel->buf_size)
+        {
+          gsize did_write = 0, this_time;
+
+          do
+            {
+              status = channel->funcs->io_write (channel, channel->write_buf->str
+                                                 + did_write, channel->write_buf->len
+                                                 - did_write, &this_time, error);
+              did_write += this_time;
+            }
+          while (status == G_IO_STATUS_NORMAL &&
+                 did_write < MIN (channel->write_buf->len,
+                             MAX (MAX_CHAR_SIZE, channel->buf_size / 4)));
+
+          g_string_erase (channel->write_buf, 0, did_write);
+
+          if (status != G_IO_STATUS_NORMAL)
+            {
+              if (status == G_IO_STATUS_AGAIN && wrote_bytes > 0)
+                status = G_IO_STATUS_NORMAL;
+              if (bytes_written)
+                *bytes_written = wrote_bytes;
+              return status;
+            }
+        }
+
+      space_in_buf = MAX (channel->buf_size, channel->write_buf->allocated_len)
+                     - channel->write_buf->len;
+
+      /* This is only true because g_io_channel_set_buffer_size ()
+       * ensures that channel->buf_size >= MAX_CHAR_SIZE.
+       */
+      g_assert (space_in_buf >= MAX_CHAR_SIZE);
+
+      if (!channel->encoding)
+        {
+          gssize write_this = MIN (space_in_buf, count - wrote_bytes);
+
+          g_string_append_len (channel->write_buf, buf, write_this);
+          buf += write_this;
+          wrote_bytes += write_this;
+        }
+      else
+        {
+          const gchar *from_buf;
+          gsize from_buf_len, from_buf_old_len, left_len;
+          size_t err;
+          gint errnum;
 
           if (channel->partial_write_buf[0] != '\0')
             {
-              guint partial_chars = strlen (channel->partial_write_buf);
-              guint chars_in_buf = MIN (6, partial_chars + count);
-              gint skip;
+              g_assert (wrote_bytes == 0);
 
-              memcpy (channel->partial_write_buf + partial_chars, buf,
-                chars_in_buf - partial_chars);
+              from_buf = channel->partial_write_buf;
+              from_buf_old_len = strlen (channel->partial_write_buf);
+              g_assert (from_buf_old_len > 0);
+              from_buf_len = MIN (6, from_buf_old_len + count);
 
-              g_utf8_validate (channel->partial_write_buf, chars_in_buf, &badchar);
+              memcpy (channel->partial_write_buf + from_buf_old_len, buf,
+                      from_buf_len - from_buf_old_len);
+            }
+          else
+            {
+              from_buf = buf;
+              from_buf_len = count - wrote_bytes;
+              from_buf_old_len = 0;
+            }
 
-              if (badchar < channel->partial_write_buf + partial_chars)
+reconvert:
+
+          if (!channel->do_encode)
+            {
+              const gchar *badchar;
+
+              /* UTF-8, just validate, emulate g_iconv */
+
+              if (!g_utf8_validate (from_buf, from_buf_len, &badchar))
                 {
                   gunichar try_char;
-                  gsize left_len = chars_in_buf;
 
-                  g_assert (badchar == channel->partial_write_buf);
+                  left_len = from_buf + from_buf_len - badchar;
 
                   try_char = g_utf8_get_char_validated (badchar, left_len);
 
                   switch (try_char)
                     {
                       case -2:
-                        g_assert (chars_in_buf < 6);
-                        channel->partial_write_buf[chars_in_buf] = '\0';
-                        *bytes_written = count;
-                        return G_IO_STATUS_NORMAL;
+                        g_assert (left_len < 6);
+                        errnum = EINVAL;
+                        break;
                       case -1:
-                        g_set_error (error, G_CONVERT_ERROR,
-                                     G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                                     "Illegal UTF-8 sequence");
-                        *bytes_written = 0;
-                        return G_IO_STATUS_ERROR;
+                        errnum = EILSEQ;
+                        break;
                       default:
                         g_assert_not_reached ();
-                        return G_IO_STATUS_ERROR; /* keep the compiler happy */
+                        errnum = 0; /* Don't confunse the compiler */
                     }
-                }
-
-              skip = badchar - (channel->partial_write_buf + partial_chars);
-
-              buf += skip;
-              copy_bytes = count - skip;
-
-              g_string_append_len (channel->write_buf, channel->partial_write_buf,
-                                  badchar - channel->partial_write_buf);
-              channel->partial_write_buf[0] = '\0';
-            }
-          else
-            copy_bytes = count;
-
-          if (!g_utf8_validate (buf, copy_bytes, &badchar))
-            {
-              gunichar try_char;
-              gsize left_len = buf + copy_bytes - badchar;
-
-              try_char = g_utf8_get_char_validated (badchar, left_len);
-
-              switch (try_char)
-                {
-                  case -2:
-                    g_assert (left_len < 6);
-                    break;
-                  case -1:
-                    g_set_error (error, G_CONVERT_ERROR,
-                                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                                 "Illegal UTF-8 sequence");
-                    *bytes_written = count - copy_bytes;
-                    return G_IO_STATUS_ERROR;
-                  default:
-                    g_assert_not_reached ();
-                    return G_IO_STATUS_ERROR; /* Don't confunse the compiler */
-                }
-
-              g_string_append (channel->write_buf, channel->partial_write_buf);
-              memcpy (channel->partial_write_buf, badchar, left_len);
-              channel->partial_write_buf[left_len] = '\0';
-              copy_bytes = count - left_len;
-            }
-          else
-            {
-              g_string_append (channel->write_buf, channel->partial_write_buf);
-              channel->partial_write_buf[0] = '\0';
-              copy_bytes = count;
-            }
-        }
-      else
-        {
-          copy_bytes = count;
-          g_assert (channel->partial_write_buf[0] == '\0');
-        }
-
-      while (copy_bytes > channel->write_buf->allocated_len - channel->write_buf->len)
-        {
-          gsize wrote_bytes;
-
-          if (channel->write_buf->len > 0)
-            {
-              status = channel->funcs->io_write (channel, channel->write_buf->str,
-                                                 channel->write_buf->len, &wrote_bytes,
-                                                 error);
-              g_string_erase (channel->write_buf, 0, wrote_bytes);
-            }
-          else
-            {
-              status = channel->funcs->io_write (channel, buf, copy_bytes, &wrote_bytes,
-                                                 error);
-              copy_bytes -= wrote_bytes;
-              buf += wrote_bytes;
-            }
-
-          if (status != G_IO_STATUS_NORMAL)
-            {
-              *bytes_written = count - copy_bytes;
-              if (channel->partial_write_buf[0] != '\0')
-                {
-                  *bytes_written -= strlen (channel->partial_write_buf);
-                  channel->partial_write_buf[0] = '\0';
-                }
-              return status;
-            }
-        }
-
-      g_string_append_len (channel->write_buf, buf, copy_bytes);
-      *bytes_written = count;
-    }
-  else
-    {
-      gsize bytes_to_go = count, buf_space, err;
-      gchar *outbuf;
-      gsize oldlen = channel->write_buf->len;
-
-      if (channel->partial_write_buf[0] != '\0')
-        {
-          gsize partial_chars = strlen (channel->partial_write_buf);
-          gsize partial_buf_size = MIN (6, partial_chars + count);
-          guint chars_in_buf = partial_buf_size;
-          gchar *inbuf;
-
-          g_assert (partial_chars < 6);
-
-          memcpy (channel->partial_write_buf + partial_chars, buf,
-            chars_in_buf - partial_chars);
-          inbuf = channel->partial_write_buf;
-redo:
-          buf_space = MIN (channel->buf_size / 4, channel->write_buf->allocated_len
-                           - channel->write_buf->len);
-	  g_string_set_size (channel->write_buf, channel->write_buf->len
-                             + buf_space);
-          outbuf = channel->write_buf->str + channel->write_buf->len - buf_space;
-
-          err = g_iconv (channel->write_cd, &inbuf, &partial_buf_size,
-                         &outbuf, &buf_space);
-
-          g_string_truncate (channel->write_buf, channel->write_buf->len - buf_space);
-
-          if (err == (size_t) -1)
-            {
-              if (errno == E2BIG)
-                goto redo;
-
-              if (errno == EINVAL)
-                {
-                  if (chars_in_buf == partial_buf_size)
-                    {
-                      /* Didn't convert anything */
-
-                      g_assert (chars_in_buf < 6); /* More of the same character */
-                      g_assert (chars_in_buf == count + partial_chars);
-
-                      channel->partial_write_buf[chars_in_buf] = '\0';
-                      *bytes_written = count;
-                      return G_IO_STATUS_NORMAL;
-                    }
-
-                  g_assert (chars_in_buf - partial_buf_size > partial_chars);
-                  /* Converted the character of which a part was sitting in
-                   * the partial character buffer before the write.
-                   */
+                  err = (size_t) -1;
                 }
               else
                 {
-                  switch (errno)
-        	    {
-                      case EINVAL:
-                      case E2BIG:
-                        g_assert_not_reached ();
-                      case EILSEQ:
-                        g_set_error (error, G_CONVERT_ERROR,
-                          G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                          _("Invalid byte sequence in conversion input"));
-                      default:
-                        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                          _("Error during conversion: %s"), strerror (errno));
-        	    }
-
-                  g_string_truncate (channel->write_buf, oldlen);
-                  *bytes_written = 0;
-                  channel->partial_write_buf[partial_chars] = '\0';
-
-                  return G_IO_STATUS_ERROR;
+                  err = (size_t) 0;
+                  errnum = 0;
+                  left_len = 0;
                 }
+
+              g_string_append_len (channel->write_buf, from_buf,
+                                   from_buf_len - left_len);
+              from_buf += from_buf_len - left_len;
             }
+          else
+            {
+               gchar *outbuf;
 
-          *bytes_written = (chars_in_buf - partial_buf_size) - partial_chars;
-          buf += *bytes_written;
-          bytes_to_go -= *bytes_written;
-          channel->partial_write_buf[0] = '\0';
-        }
-
-      do
-        {
-          buf_space = MIN (channel->write_buf->allocated_len
-                           - channel->write_buf->len, channel->buf_size / 4);
-
-	  g_string_set_size (channel->write_buf, channel->write_buf->len + buf_space);
-          outbuf = channel->write_buf->str + channel->write_buf->len - buf_space;
-    
-          err = g_iconv (channel->write_cd, (gchar**) &buf, &bytes_to_go,
-			 &outbuf, &buf_space);
-
-          g_string_truncate (channel->write_buf, channel->write_buf->len - buf_space);
-          *bytes_written = count - bytes_to_go;
+               left_len = from_buf_len;
+               outbuf = channel->write_buf->str + channel->write_buf->len;
+               g_string_set_size (channel->write_buf, channel->write_buf->len
+                                  + space_in_buf);
+               err = g_iconv (channel->write_cd, (gchar **) &from_buf, &left_len,
+                              &outbuf, &space_in_buf);
+               errnum = errno;
+               g_string_truncate (channel->write_buf, channel->write_buf->len
+                                  - space_in_buf);
+            }
 
           if (err == (size_t) -1)
             {
-              switch (errno)
+              switch (errnum)
         	{
                   case EINVAL:
-                    {
-                      gint bytes_left = count - *bytes_written;
+                    g_assert (left_len < 6);
 
-                      g_assert (bytes_left < 6);
+                    if (from_buf_old_len == 0)
+                      {
+                        /* Not from partial_write_buf */
 
-                      memcpy (channel->partial_write_buf, buf, bytes_left);
-                      channel->partial_write_buf[bytes_left] = '\0';
-                    }
-                    *bytes_written = count;
+                        memcpy (channel->partial_write_buf, from_buf, left_len);
+                        channel->partial_write_buf[left_len] = '\0';
+                        return G_IO_STATUS_NORMAL;
+                      }
 
-                    return G_IO_STATUS_NORMAL;
+                    /* Working in partial_write_buf */
+
+                    if (left_len == from_buf_len)
+                      {
+                        /* Didn't convert anything, must still have
+                         * less than a full character
+                         */
+
+                        g_assert (count == from_buf_len - from_buf_old_len);
+
+                        channel->partial_write_buf[from_buf_len] = '\0';
+
+                        if (bytes_written)
+                          *bytes_written = count;
+
+                        return G_IO_STATUS_NORMAL;
+                      }
+
+                    g_assert (from_buf_len - left_len >= from_buf_old_len);
+
+                    /* We converted all the old data. This is fine */
+
+                    break;
                   case E2BIG:
-                    {
-                      gsize wrote_bytes;
-
-                      status = channel->funcs->io_write (channel,
-                        channel->write_buf->str, channel->write_buf->len,
-                        &wrote_bytes, error);
-                      g_string_erase (channel->write_buf, 0, wrote_bytes);
-
-                      if (status != G_IO_STATUS_NORMAL)
-                        return status;
-                    }
-                    continue;
+                    if (from_buf_len == left_len)
+                      {
+                        /* Nothing was written, add enough space for
+                         * at least one character.
+                         */
+                        space_in_buf += MAX_CHAR_SIZE;
+                        goto reconvert;
+                      }
+                    break;
                   case EILSEQ:
                     g_set_error (error, G_CONVERT_ERROR,
                       G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
                       _("Invalid byte sequence in conversion input"));
+                    if (from_buf_old_len > 0 && from_buf_len == left_len)
+                      g_warning ("Illegal sequence due to partial character "
+                                 "at the end of a previous write.\n");
+                    else
+                      wrote_bytes += from_buf_len - left_len - from_buf_old_len;
+                    if (bytes_written)
+                      *bytes_written = wrote_bytes;
+                    channel->partial_write_buf[0] = '\0';
                     return G_IO_STATUS_ERROR;
                   default:
                     g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
                       _("Error during conversion: %s"), strerror (errno));
+                    if (from_buf_len >= left_len + from_buf_old_len)
+                      wrote_bytes += from_buf_len - left_len - from_buf_old_len;
+                    if (bytes_written)
+                      *bytes_written = wrote_bytes;
+                    channel->partial_write_buf[0] = '\0';
                     return G_IO_STATUS_ERROR;
-        	}
-
+                }
             }
+
+          g_assert (from_buf_len - left_len >= from_buf_old_len);
+
+          wrote_bytes += from_buf_len - left_len - from_buf_old_len;
+
+          if (from_buf_old_len > 0)
+            {
+              /* We were working in partial_write_buf */
+
+              buf += from_buf_len - left_len - from_buf_old_len;
+              channel->partial_write_buf[0] = '\0';
+            }
+          else
+            buf = from_buf;
         }
-      while (bytes_to_go > 0);
     }
 
-  if (channel->write_buf->len > channel->buf_size)
-    {
-      gsize wrote_bytes;
+  if (bytes_written)
+    *bytes_written = wrote_bytes;
 
-      status = channel->funcs->io_write (channel, channel->write_buf->str,
-                                         channel->write_buf->len, &wrote_bytes, error);
-
-      if (wrote_bytes > 0)
-        g_string_erase (channel->write_buf, 0, wrote_bytes);
-
-      return status;
-    }
-  else
-    return G_IO_STATUS_NORMAL;
+  return G_IO_STATUS_NORMAL;
 }
+
 
 /**
  * g_io_channel_error_quark:

@@ -418,6 +418,7 @@ g_io_channel_new_file (const gchar *filename,
     MODE_A = 1 << 2,
     MODE_PLUS = 1 << 3,
   } mode_num;
+  struct stat buffer;
 
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (mode != NULL, NULL);
@@ -482,8 +483,17 @@ g_io_channel_new_file (const gchar *filename,
 
   create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
   fid = open (filename, flags, create_mode);
-  if (fid < 0)
+  if (fid == -1)
     {
+      g_set_error (error, G_FILE_ERROR,
+                   g_file_error_from_errno (errno),
+                   strerror (errno));
+      return (GIOChannel *)NULL;
+    }
+
+  if (fstat (fid, &buffer) == -1) /* In case someone opens a FIFO */
+    {
+      close (fid);
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    strerror (errno));
@@ -493,7 +503,8 @@ g_io_channel_new_file (const gchar *filename,
   channel = (GIOChannel *) g_new (GIOUnixChannel, 1);
 
   channel->close_on_unref = TRUE;
-  channel->is_seekable = TRUE;
+  channel->is_seekable = S_ISREG (buffer.st_mode) || S_ISCHR (buffer.st_mode)
+                         || S_ISBLK (buffer.st_mode);
 
   switch (mode_num)
     {
