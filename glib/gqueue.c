@@ -35,6 +35,13 @@ G_LOCK_DEFINE_STATIC (queue_memchunk);
 static GMemChunk   *queue_memchunk = NULL;
 static GTrashStack *free_queue_nodes = NULL;
 
+/**
+ * g_queue_new:
+ *
+ * Creates a new #GQueue. 
+ *
+ * Returns: a new #GQueue.
+ **/
 GQueue*
 g_queue_new (void)
 {
@@ -61,6 +68,12 @@ g_queue_new (void)
   return queue;
 }
 
+/**
+ * g_queue_free:
+ * @queue: a #GQueue.
+ *
+ * Frees the memory allocated for the #GQueue.
+ **/
 void
 g_queue_free (GQueue *queue)
 {
@@ -78,6 +91,13 @@ g_queue_free (GQueue *queue)
   G_UNLOCK (queue_memchunk);
 }
 
+/**
+ * g_queue_push_head:
+ * @queue: a #GQueue.
+ * @data: the data for the new element.
+ *
+ * Adds a new element at the head of the queue.
+ **/
 void
 g_queue_push_head (GQueue  *queue,
 		   gpointer data)
@@ -90,6 +110,14 @@ g_queue_push_head (GQueue  *queue,
   queue->length++;
 }
 
+/**
+ * g_queue_push_head_link:
+ * @queue: a #GQueue.
+ * @link: a single #GList element, <emphasis>not</emphasis> a list with
+ *   more than one element.
+ *
+ * Adds a new element at the head of the queue.
+ **/
 void
 g_queue_push_head_link (GQueue *queue,
 			GList  *link)
@@ -108,6 +136,13 @@ g_queue_push_head_link (GQueue *queue,
   queue->length++;
 }
 
+/**
+ * g_queue_push_tail:
+ * @queue: a #GQueue.
+ * @data: the data for the new element.
+ *
+ * Adds a new element at the tail of the queue.
+ **/
 void
 g_queue_push_tail (GQueue  *queue,
 		   gpointer data)
@@ -122,6 +157,14 @@ g_queue_push_tail (GQueue  *queue,
   queue->length++;
 }
 
+/**
+ * g_queue_push_tail_link:
+ * @queue: a #GQueue.
+ * @link: a single #GList element, <emphasis>not</emphasis> a list with
+ *   more than one element.
+ *
+ * Adds a new element at the tail of the queue.
+ **/
 void
 g_queue_push_tail_link (GQueue *queue,
 			GList  *link)
@@ -140,6 +183,15 @@ g_queue_push_tail_link (GQueue *queue,
   queue->length++;
 }
 
+/**
+ * g_queue_pop_head:
+ * @queue: a #GQueue.
+ *
+ * Removes the first element of the queue.
+ *
+ * Returns: the data of the first element in the queue, or %NULL if the queue
+ *   is empty.
+ **/
 gpointer
 g_queue_pop_head (GQueue *queue)
 {
@@ -164,6 +216,15 @@ g_queue_pop_head (GQueue *queue)
   return NULL;
 }
 
+/**
+ * g_queue_pop_head_link:
+ * @queue: a #GQueue.
+ *
+ * Removes the first element of the queue.
+ *
+ * Returns: the #GList element at the head of the queue, or %NULL if the queue
+ *   is empty.
+ **/
 GList*
 g_queue_pop_head_link (GQueue *queue)
 {
@@ -189,6 +250,15 @@ g_queue_pop_head_link (GQueue *queue)
   return NULL;
 }
 
+/**
+ * g_queue_pop_tail:
+ * @queue: a #GQueue.
+ *
+ * Removes the last element of the queue.
+ *
+ * Returns: the data of the last element in the queue, or %NULL if the queue
+ *   is empty.
+ **/
 gpointer
 g_queue_pop_tail (GQueue *queue)
 {
@@ -213,6 +283,15 @@ g_queue_pop_tail (GQueue *queue)
   return NULL;
 }
 
+/**
+ * g_queue_pop_tail_link:
+ * @queue: a #GQueue.
+ *
+ * Removes the last element of the queue.
+ *
+ * Returns: the #GList element at the tail of the queue, or %NULL if the queue
+ *   is empty.
+ **/
 GList*
 g_queue_pop_tail_link (GQueue *queue)
 {
@@ -238,6 +317,14 @@ g_queue_pop_tail_link (GQueue *queue)
   return NULL;
 }
 
+/**
+ * g_queue_is_empty:
+ * @queue: a #GQueue.
+ *
+ * Returns %TRUE if the queue is empty.
+ *
+ * Returns: %TRUE if the queue is empty.
+ **/
 gboolean
 g_queue_is_empty (GQueue *queue)
 {
@@ -246,6 +333,15 @@ g_queue_is_empty (GQueue *queue)
   return queue->head == NULL;
 }
 
+/**
+ * g_queue_peek_head:
+ * @queue: a #GQueue.
+ *
+ * Returns the first element of the queue.
+ *
+ * Returns: the data of the first element in the queue, or %NULL if the queue
+ *   is empty.
+ **/
 gpointer
 g_queue_peek_head (GQueue *queue)
 {
@@ -254,6 +350,15 @@ g_queue_peek_head (GQueue *queue)
   return queue->head ? queue->head->data : NULL;
 }
 
+/**
+ * g_queue_peek_tail:
+ * @queue: a #GQueue.
+ *
+ * Returns the last element of the queue.
+ *
+ * Returns: the data of the last element in the queue, or %NULL if the queue
+ *   is empty.
+ **/
 gpointer
 g_queue_peek_tail (GQueue *queue)
 {

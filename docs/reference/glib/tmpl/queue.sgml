@@ -2,12 +2,32 @@
 Double-ended Queues
 
 <!-- ##### SECTION Short_Description ##### -->
-
-Double-ended queue data structure
+double-ended queue data structure
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The #GQueue structure and its associated functions provide a standard
+queue data structure. Internally, #GQueue uses the same data structure as 
+#GList to store elements.  
+</para>
+<para>
+The data contained in each element can be either integer values, by using one
+of the
+<link linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>,
+or simply pointers to any type of data.
+</para>
+<para>
+To create a new #GQueue, use g_queue_new().
+</para>
+<para>
+To add elements, use g_queue_push_head(), g_queue_push_head_link(), 
+g_queue_push_tail() and g_queue_push_tail_link().
+</para>
+<para>
+To remove elements, use g_queue_pop_head() and g_queue_pop_tail().
+</para>
+<para>
+To free the entire queue, use g_queue_free().
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,12 +37,12 @@ Double-ended queue data structure
 
 <!-- ##### STRUCT GQueue ##### -->
 <para>
-
+Contains the public fields of a <link linkend="glib-queues">Queue</link>.
 </para>
 
-@head: 
-@tail: 
-@length: 
+@head: a pointer to the first element of the queue.
+@tail: a pointer to the last element of the queue.
+@length: the number of elements in the queue.
 
 <!-- ##### FUNCTION g_queue_new ##### -->
 <para>

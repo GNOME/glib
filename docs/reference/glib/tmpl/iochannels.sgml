@@ -295,7 +295,7 @@ Error codes returned by #GIOChannel operations.
 @G_IO_CHANNEL_ERROR_ISDIR: File is a directory.
 @G_IO_CHANNEL_ERROR_NOSPC: No space left on device.
 @G_IO_CHANNEL_ERROR_NXIO: No such device or address.
-@G_IO_CHANNEL_ERROR_OVERFLOW: 
+@G_IO_CHANNEL_ERROR_OVERFLOW: Value too large for defined datatype.
 @G_IO_CHANNEL_ERROR_PIPE: Broken pipe.
 @G_IO_CHANNEL_ERROR_FAILED: Some other error.
 

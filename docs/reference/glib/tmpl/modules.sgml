@@ -14,8 +14,8 @@ an implementation of <function>dlopen()</function> (e.g. Linux/Sun), as well as 
 </para>
 
 <para>
-A program, which wants to use these functions must be linked to the
-libraries output by the command <command>glib-config --libs gmodule</command>.
+A program which wants to use these functions must be linked to the
+libraries output by the command <command>pkg-config --libs gmodule-2.0</command>.
 </para>
 
 <para>

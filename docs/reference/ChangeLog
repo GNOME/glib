@@ -1,3 +1,11 @@
+2001-10-02  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/iochannel.sgml, glib/tmpl/macros_misc.sgml,
+	glib/tmpl/queue.sgml: update docs.
+
+	* glib/tmpl/modules.sgml, glib/tmpl/threads.sgml: Remove 
+	references to glib-config.
+
 2001-10-01  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/iochannels.sgml, glib/tmpl/shell.sgml,

@@ -191,10 +191,9 @@ elements of @vtable are non-%NULL, then g_thread_init() will abort.
 <note>
 <para>
 To use g_thread_init() in your program, you have to link with the
-libraries, that the command "glib-config --libs gthread" outputs. This
-is not the case for all the other thread related functions of
-GLib. Those can be used without having to link with the thread
-libraries.
+libraries that the command <command>pkg-config --libs gthread-2.0</command> 
+outputs. This is not the case for all the other thread related functions of
+GLib. Those can be used without having to link with the thread libraries.
 </para>
 </note>
 

@@ -144,8 +144,8 @@ g_strnfill (gsize length,
 
 /**
  * g_stpcpy:
- * @dest: destination buffer
- * @src: source string
+ * @dest: destination buffer.
+ * @src: source string.
  * 
  * Copies a nul-terminated string into the dest buffer, include the
  * trailing nul, and return a pointer to the trailing nul byte.
@@ -996,15 +996,15 @@ g_strlcat (gchar       *dest,
 
 /**
  * g_ascii_strdown:
- * @str: a string
+ * @str: a string.
  * @len: length of @str in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all upper case ASCII letters to lower case ASCII letters.
  * 
- * Return value: a newly allocated string, with all the upper case
+ * Return value: a newly-allocated string, with all the upper case
  *               characters in @str converted to lower case, with
- *               semantics that exactly match g_ascii_tolower. (Note
- *               that this is unlike the old g_strdown, which modified
+ *               semantics that exactly match g_ascii_tolower(). (Note
+ *               that this is unlike the old g_strdown(), which modified
  *               the string in place.)
  **/
 gchar*
@@ -1027,15 +1027,15 @@ g_ascii_strdown (const gchar *str,
 
 /**
  * g_ascii_strup:
- * @str: a string
+ * @str: a string.
  * @len: length of @str in bytes, or -1 if @str is nul-terminated.
  * 
  * Converts all lower case ASCII letters to upper case ASCII letters.
  * 
  * Return value: a newly allocated string, with all the lower case
  *               characters in @str converted to upper case, with
- *               semantics that exactly match g_ascii_toupper. (Note
- *               that this is unlike the old g_strup, which modified
+ *               semantics that exactly match g_ascii_toupper(). (Note
+ *               that this is unlike the old g_strup(), which modified
  *               the string in place.)
  **/
 gchar*
@@ -1123,16 +1123,16 @@ g_strreverse (gchar *string)
 
 /**
  * g_ascii_tolower:
- * @c: any character
+ * @c: any character.
  * 
  * Convert a character to ASCII lower case.
  *
- * Unlike the standard C library tolower function, this only
+ * Unlike the standard C library tolower() function, this only
  * recognizes standard ASCII letters and ignores the locale, returning
  * all non-ASCII characters unchanged, even if they are lower case
  * letters in a particular character set. Also unlike the standard
  * library function, this takes and returns a char, not an int, so
- * don't call it on EOF but no need to worry about casting to guchar
+ * don't call it on %EOF but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  * 
  * Return value: the result of converting @c to lower case.
@@ -1147,16 +1147,16 @@ g_ascii_tolower (gchar c)
 
 /**
  * g_ascii_toupper:
- * @c: any character
+ * @c: any character.
  * 
  * Convert a character to ASCII upper case.
  *
- * Unlike the standard C library toupper function, this only
+ * Unlike the standard C library toupper() function, this only
  * recognizes standard ASCII letters and ignores the locale, returning
  * all non-ASCII characters unchanged, even if they are upper case
  * letters in a particular character set. Also unlike the standard
  * library function, this takes and returns a char, not an int, so
- * don't call it on EOF but no need to worry about casting to guchar
+ * don't call it on %EOF but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  * 
  * Return value: the result of converting @c to upper case.
@@ -1171,15 +1171,15 @@ g_ascii_toupper (gchar c)
 
 /**
  * g_ascii_digit_value:
- * @c: an ASCII character
+ * @c: an ASCII character.
  *
  * Determines the numeric value of a character as a decimal
- * digit. Differs from g_unichar_digit_value because it takes
+ * digit. Differs from g_unichar_digit_value() because it takes
  * a char, so there's no worry about sign extension if characters
  * are signed.
  *
  * Return value: If @c is a decimal digit (according to
- * `g_ascii_isdigit'), its numeric value. Otherwise, -1.
+ * g_ascii_isdigit()), its numeric value. Otherwise, -1.
  **/
 int
 g_ascii_digit_value (gchar c)
@@ -1191,15 +1191,15 @@ g_ascii_digit_value (gchar c)
 
 /**
  * g_ascii_xdigit_value:
- * @c: an ASCII character
+ * @c: an ASCII character.
  *
  * Determines the numeric value of a character as a hexidecimal
- * digit. Differs from g_unichar_xdigit_value because it takes
+ * digit. Differs from g_unichar_xdigit_value() because it takes
  * a char, so there's no worry about sign extension if characters
  * are signed.
  *
  * Return value: If @c is a hex digit (according to
- * `g_ascii_isxdigit'), its numeric value. Otherwise, -1.
+ * g_ascii_isxdigit()), its numeric value. Otherwise, -1.
  **/
 int
 g_ascii_xdigit_value (gchar c)
@@ -1213,12 +1213,12 @@ g_ascii_xdigit_value (gchar c)
 
 /**
  * g_ascii_strcasecmp:
- * @s1: string to compare with @s2
- * @s2: string to compare with @s1
+ * @s1: string to compare with @s2.
+ * @s2: string to compare with @s1.
  * 
  * Compare two strings, ignoring the case of ASCII characters.
  *
- * Unlike the BSD strcasecmp function, this only recognizes standard
+ * Unlike the BSD strcasecmp() function, this only recognizes standard
  * ASCII letters and ignores the locale, treating all non-ASCII
  * characters as if they are not letters.
  * 
@@ -1249,14 +1249,14 @@ g_ascii_strcasecmp (const gchar *s1,
 
 /**
  * g_ascii_strncasecmp:
- * @s1: string to compare with @s2
- * @s2: string to compare with @s1
- * @n:  number of characters to compare
+ * @s1: string to compare with @s2.
+ * @s2: string to compare with @s1.
+ * @n:  number of characters to compare.
  * 
  * Compare @s1 and @s2, ignoring the case of ASCII characters and any
  * characters after the first @n in each string.
  *
- * Unlike the BSD strcasecmp function, this only recognizes standard
+ * Unlike the BSD strcasecmp() function, this only recognizes standard
  * ASCII letters and ignores the locale, treating all non-ASCII
  * characters as if they are not letters.
  * 
@@ -1569,7 +1569,7 @@ g_strchomp (gchar *string)
  * @string: a string to split.
  * @delimiter: a string which specifies the places at which to split the string.
  *     The delimiter is not included in any of the resulting strings, unless
- *     max_tokens is reached.
+ *     @max_tokens is reached.
  * @max_tokens: the maximum number of pieces to split @string into. If this is
  *              less than 1, the string is split completely.
  * 
@@ -1584,8 +1584,8 @@ g_strchomp (gchar *string)
  * to represent empty elements, you'll need to check for the empty string
  * before calling g_strsplit().
  * 
- * Return value: a newly-allocated %NULL-terminated array of strings. Use g_strfreev()
- *    to free it.
+ * Return value: a newly-allocated %NULL-terminated array of strings. Use 
+ *    g_strfreev() to free it.
  **/
 gchar**
 g_strsplit (const gchar *string,
@@ -1661,14 +1661,14 @@ g_strfreev (gchar **str_array)
 
 /**
  * g_strdupv:
- * @str_array: %NULL-terminated array of strings
+ * @str_array: %NULL-terminated array of strings.
  * 
  * Copies %NULL-terminated array of strings. The copy is a deep copy;
  * the new array should be freed by first freeing each string, then
  * the array itself. g_strfreev() does this for you. If called
  * on a %NULL value, g_strdupv() simply returns %NULL.
  * 
- * Return value: a new %NULL-terminated array of strings
+ * Return value: a new %NULL-terminated array of strings.
  **/
 gchar**
 g_strdupv (gchar **str_array)
@@ -1797,16 +1797,16 @@ g_strjoin (const gchar  *separator,
 
 /**
  * g_strstr_len:
- * @haystack: a string
- * @haystack_len: The maximum length of haystack
- * @needle: The string to search for.
+ * @haystack: a string.
+ * @haystack_len: the maximum length of @haystack.
+ * @needle: the string to search for.
  *
- * Searches the string haystack for the first occurrence
- * of the string needle, limiting the length of the search
- * to haystack_len. 
+ * Searches the string @haystack for the first occurrence
+ * of the string @needle, limiting the length of the search
+ * to @haystack_len. 
  *
- * Return value: A pointer to the found occurrence, or
- * NULL if not found.
+ * Return value: a pointer to the found occurrence, or
+ *    %NULL if not found.
  **/
 gchar *
 g_strstr_len (const gchar *haystack,
@@ -1850,15 +1850,15 @@ g_strstr_len (const gchar *haystack,
 }
 
 /**
- * g_strrstr_len:
- * @haystack: a nul-terminated string
- * @needle: The nul-terminated string to search for.
+ * g_strrstr:
+ * @haystack: a nul-terminated string.
+ * @needle: the nul-terminated string to search for.
  *
- * Searches the string haystack for the last occurrence
- * of the string needle.
+ * Searches the string @haystack for the last occurrence
+ * of the string @needle.
  *
- * Return value: A pointer to the found occurrence, or
- * NULL if not found.
+ * Return value: a pointer to the found occurrence, or
+ *    %NULL if not found.
  **/
 gchar *
 g_strrstr (const gchar *haystack,
@@ -1900,16 +1900,16 @@ g_strrstr (const gchar *haystack,
 
 /**
  * g_strrstr_len:
- * @haystack: a nul-terminated string
- * @haystack_len: The maximum length of haystack
- * @needle: The nul-terminated string to search for.
+ * @haystack: a nul-terminated string.
+ * @haystack_len: the maximum length of @haystack.
+ * @needle: the nul-terminated string to search for.
  *
- * Searches the string haystack for the last occurrence
- * of the string needle, limiting the length of the search
- * to haystack_len. 
+ * Searches the string @haystack for the last occurrence
+ * of the string @needle, limiting the length of the search
+ * to @haystack_len. 
  *
- * Return value: A pointer to the found occurrence, or
- * NULL if not found.
+ * Return value: a pointer to the found occurrence, or
+ *    %NULL if not found.
  **/
 gchar *
 g_strrstr_len (const gchar *haystack,

@@ -333,7 +333,7 @@ g_io_channel_close (GIOChannel *channel)
  * flushed if @flush is %TRUE. The channel will not be freed until the
  * last reference is dropped using g_io_channel_unref().
  *
- * Return value:
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_shutdown (GIOChannel *channel,
@@ -512,9 +512,11 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 
 /**
  * g_io_channel_error_from_errno:
- * @en: An errno error number, e.g. EINVAL
+ * @en: an <literal>errno</literal> error number, e.g. %EINVAL.
  *
- * Return value: A #GIOChannelError error number, e.g. %G_IO_CHANNEL_ERROR_INVAL
+ * Converts an <literal>errno</literal> error number to a #GIOChannelError.
+ *
+ * Return value: a #GIOChannelError error number, e.g. %G_IO_CHANNEL_ERROR_INVAL.
  **/
 GIOChannelError
 g_io_channel_error_from_errno (gint en)
@@ -682,11 +684,13 @@ g_io_channel_get_line_term (GIOChannel	*channel,
 
 /**
  * g_io_channel_set_flags:
- * @channel: a #GIOChannel
- * @flags: the flags to set on the channel
- * @error: A location to return an error of type #GIOChannelError
+ * @channel: a #GIOChannel.
+ * @flags: the flags to set on the channel.
+ * @error: A location to return an error of type #GIOChannelError.
  *
- * Return value:
+ * Sets flags on the channel.
+ *
+ * Return value: the status of the operation. 
  **/
 GIOStatus
 g_io_channel_set_flags (GIOChannel *channel,
@@ -761,12 +765,15 @@ g_io_channel_set_close_on_unref	(GIOChannel *channel,
 
 /**
  * g_io_channel_get_close_on_unref:
- * @channel: a #GIOChannel
+ * @channel: a #GIOChannel.
  *
- * Return value: Whether the channel will be closedi on the final unref of
- *               the GIOChannel data structure. The default value of
- *               this is %TRUE for channels created by g_io_channel_new_file (),
- *               and %FALSE for all other channels.
+ * Returns whether the channel will be closed on the final unref of the 
+ * #GIOChannel data structure. The default value of this is %TRUE for 
+ * channels created by g_io_channel_new_file(), and %FALSE for all other 
+ * channels.
+ * 
+ * Return value: %TRUE if the channel will be closed on the final unref of
+ *               the #GIOChannel data structure. 
  **/
 gboolean
 g_io_channel_get_close_on_unref	(GIOChannel *channel)
@@ -788,7 +795,7 @@ g_io_channel_get_close_on_unref	(GIOChannel *channel)
  *
  * Replacement for g_io_channel_seek() with the new API.
  *
- * Return value:
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_seek_position	(GIOChannel* channel,
@@ -966,9 +973,11 @@ g_io_channel_set_buffered	(GIOChannel *channel,
 
 /**
  * g_io_channel_get_buffered:
- * @channel: a #GIOChannel
+ * @channel: a #GIOChannel.
  *
- * Return Value: the buffering state of the channel
+ * Returns the buffering state of the channel.
+ *
+ * Return Value: %TRUE if the @channel is buffered. 
  **/
 gboolean
 g_io_channel_get_buffered	(GIOChannel *channel)
@@ -1402,7 +1411,7 @@ g_io_channel_read_line (GIOChannel *channel,
  *
  * Read a line from a #GIOChannel, using a #GString as a buffer.
  *
- * Return value:
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_read_line_string (GIOChannel *channel,
@@ -1696,7 +1705,7 @@ g_io_channel_read_to_end (GIOChannel	*channel,
  *
  * Replacement for g_io_channel_read() with the new API.
  *
- * Return value:
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_read_chars (GIOChannel	*channel,
@@ -1880,7 +1889,7 @@ g_io_channel_read_unichar     (GIOChannel   *channel,
  * may only be made on a channel from which data has been read in the
  * cases described in the documentation for g_io_channel_set_encoding ().
  *
- * Return value:
+ * Return value: the status of the operation.
  **/
 GIOStatus
 g_io_channel_write_chars (GIOChannel	*channel,

@@ -98,15 +98,6 @@ when compiling with the <literal>-pedantic</literal> option.
 
 
 
-<!-- ##### MACRO G_GNUC_CONST ##### -->
-<para>
-Expands to the GNU C const function attribute if the compiler is GNU C.
-This enables optimization of the function.
-See the GNU C documentation for details. 
-</para>
-
-
-
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
 Expands to the GNU C noreturn function attribute if the compiler is GNU C.
@@ -129,9 +120,20 @@ It avoids possible compiler warnings. See the GNU C documentation for details.
 <!-- ##### MACRO G_GNUC_PURE ##### -->
 <para>
 Expands to the GNU C pure function attribute if the compiler is GNU C.
+Declaring a function as pure enables better optimization of the function.
+A pure function has no effects except its return value and the return 
+value depends only on the parameters and/or global variables.
 See the GNU C documentation for details. 
+</para>
 
-FIXME: Explain what pure functions are.
+
+<!-- ##### MACRO G_GNUC_CONST ##### -->
+<para>
+Expands to the GNU C const function attribute if the compiler is GNU C.
+Declaring a function as const enables better optimization of the function.
+A const function doesn't examine any values except its parameters,
+and has no effects except its return value.
+See the GNU C documentation for details. 
 </para>
 
 
@@ -144,6 +146,12 @@ arguments, with the same syntax as <function>printf()</function>.
 It allows the compiler to type-check the arguments passed to the function.
 See the GNU C documentation for details. 
 </para>
+<informalexample><programlisting>
+gint g_snprintf (gchar  *string,
+                 gulong       n,
+                 gchar const *format,
+                 ...) G_GNUC_PRINTF (3, 4);
+</programlisting></informalexample>
 
 @format_idx: the index of the argument corresponding to the format string.
 (The arguments are numbered from 1).
@@ -167,12 +175,19 @@ See the GNU C documentation for details.
 <!-- ##### MACRO G_GNUC_FORMAT ##### -->
 <para>
 Expands to the GNU C format_arg function attribute if the compiler is GNU C.
-This is used for declaring functions which take a variable number of
-parameters, like <function>printf()</function> and
-<function>scanf()</function>. See the GNU C documentation for details. 
-
-FIXME: I can't find this in my GNU C documentation. Take out?
+The format_arg function attribute specifies that a function takes a format
+string for a <function>printf()</function>, <function>scanf()</function>, 
+<function>strftime()</function> or <function>strfmon()</function> style
+function and modifies it, so that the result can be passed to a 
+<function>printf()</function>, <function>scanf()</function>, 
+<function>strftime()</function> or <function>strfmon()</function> style 
+function (with the remaining arguments to the format function the same as 
+they would have been for the unmodified string). 
+See the GNU C documentation for details. 
 </para>
+<informalexample><programlisting>
+gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
+</programlisting></informalexample>
 
 @arg_idx: the index of the argument.
 
@@ -203,10 +218,10 @@ GNU C documentation for details.
 <!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
 <para>
 Expands to the GNU C no_instrument_function function attribute if 
-the compiler is GNU C.
+the compiler is GNU C. Functions with this attribute will not be 
+instrumented for profiling, when the compiler is called with the
+<option>-finstrument-functions</option> option.
 See the GNU C documentation for details. 
-
-FIXME: Explain no_instrument_function.
 </para>
 
 

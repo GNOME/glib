@@ -1,3 +1,9 @@
+2001-10-02  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gstrfuncs.c, glib/giochannel.c: documentation update.
+
+	* glib/gqueue.c: add documentation.
+
 2001-10-02  Sven Neumann  <sven@gimp.org>
 
 	* glib/gstring.h (g_string_sprintfa): let the compatibility definition
