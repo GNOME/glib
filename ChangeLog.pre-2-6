@@ -1,3 +1,9 @@
+2002-02-11  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gmessages.h: Use "if (expr) else" rather than
+	"if (!(expr))" so the parentheses don't disable the gcc
+	warnings about = vs. ==.
+
 2002-02-11  jacob berkman  <jacob@ximian.com>
 
 	* glib/gmarkup.h (g_markup_error_quark): match the signature in

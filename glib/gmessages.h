@@ -193,7 +193,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 #ifdef __GNUC__
 
 #define g_assert(expr)			G_STMT_START{		\
-     if (!(expr))						\
+     if (expr) else						\
        g_log (G_LOG_DOMAIN,					\
 	      G_LOG_LEVEL_ERROR,				\
 	      "file %s: line %d (%s): assertion failed: (%s)",	\
@@ -213,7 +213,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 #else /* !__GNUC__ */
 
 #define g_assert(expr)			G_STMT_START{		\
-     if (!(expr))						\
+     if (expr) else						\
        g_log (G_LOG_DOMAIN,					\
 	      G_LOG_LEVEL_ERROR,				\
 	      "file %s: line %d: assertion failed: (%s)",	\
@@ -245,7 +245,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 #ifdef __GNUC__
 
 #define g_return_if_fail(expr)		G_STMT_START{			\
-     if (!(expr))							\
+     if (expr) else							\
        {								\
 	 g_log (G_LOG_DOMAIN,						\
 		G_LOG_LEVEL_CRITICAL,					\
@@ -258,7 +258,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        };				}G_STMT_END
 
 #define g_return_val_if_fail(expr,val)	G_STMT_START{			\
-     if (!(expr))							\
+     if (expr) else							\
        {								\
 	 g_log (G_LOG_DOMAIN,						\
 		G_LOG_LEVEL_CRITICAL,					\
@@ -291,7 +291,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 #else /* !__GNUC__ */
 
 #define g_return_if_fail(expr)		G_STMT_START{		\
-     if (!(expr))						\
+     if (expr) else						\
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
@@ -303,7 +303,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        };				}G_STMT_END
 
 #define g_return_val_if_fail(expr, val)	G_STMT_START{		\
-     if (!(expr))						\
+     if (expr) else						\
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
