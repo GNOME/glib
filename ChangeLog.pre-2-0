@@ -26,7 +26,7 @@
 	(g_filename_to_uri): On Windows, if the hostname is "localhost",
 	don't use it, for consistency with g_filename_from_uri().
 	
-	tests/uri-test.c: Change accordingly, so that all tests pass on
+	* tests/uri-test.c: Change accordingly, so that all tests pass on
 	Windows. Unix, too, I hope, though I couldn't check that now.
 
 	(main): Unset the G_BROKEN_FILENAMES environment variable on Unix,
