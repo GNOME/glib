@@ -1,3 +1,8 @@
+Wed Feb 10 07:56:33 1999  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_error): fixed errernerous code wrt to thread
+	specific error string allocation handling.
+
 Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
         * gmodule-dl.c (_g_module_build_path):

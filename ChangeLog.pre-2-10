@@ -1,3 +1,17 @@
+Wed Feb 10 06:20:30 1999  Tim Janik  <timj@gtk.org>
+
+	* gmutex.c (g_static_private_set): invoke destroy notifier when
+	overwriting values, initialize new array fields with NULL.
+	(g_static_private_free_data): do not skip destroy notification for
+	data == NULL.
+
+	* gutils.c (g_direct_equal): compare pointer values directly instead
+	of just their guint values which is a loosing conversion for
+	sizeof(gpointer)==8 systems.
+	(g_get_any_init): restructured code so we don't use endless loops like
+	while (1), which boil down to an ugly alias for goto.
+	strip ,.* from the real name.
+
 February 9, 1999 sopwith@redhat.com
 
 	. glist.c, gnode.c, gslist.c: allocate pools of 128 items instead

@@ -644,13 +644,14 @@ g_strerror (gint errnum)
 #endif /* NO_SYS_ERRLIST */
 
   msg = g_static_private_get (&msg_private);
-  if( !msg )
+  if (!msg)
     {
-      msg = g_new( gchar, 64 );
+      msg = g_new (gchar, 64);
       g_static_private_set (&msg_private, msg, g_free);
     }
 
   sprintf (msg, "unknown error (%d)", errnum);
+
   return msg;
 }
 
@@ -770,13 +771,14 @@ g_strsignal (gint signum)
 #endif /* NO_SYS_SIGLIST */
 
   msg = g_static_private_get (&msg_private);
-  if( !msg )
+  if (!msg)
     {
-      msg = g_new( gchar, 64 );
+      msg = g_new (gchar, 64);
       g_static_private_set (&msg_private, msg, g_free);
     }
 
   sprintf (msg, "unknown signal (%d)", signum);
+
   return msg;
 }
 

@@ -1632,10 +1632,10 @@ void	 g_string_sprintfa  (GString	 *string,
  * order by moving the last element to the position of the removed 
  */
 
-#define g_array_append_val(a,v) g_array_append_vals(a,&v,1)
-#define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
-#define g_array_insert_val(a,i,v) g_array_insert_vals(a,i,&v,1)
-#define g_array_index(a,t,i) (((t*)a->data)[i])
+#define g_array_append_val(a,v)	  g_array_append_vals (a, &v, 1)
+#define g_array_prepend_val(a,v)  g_array_prepend_vals (a, &v, 1)
+#define g_array_insert_val(a,i,v) g_array_insert_vals (a, i, &v, 1)
+#define g_array_index(a,t,i)      (((t*) (a)->data) [(i)])
 
 GArray* g_array_new	          (gboolean	    zero_terminated,
 				   gboolean	    clear,
@@ -1715,6 +1715,8 @@ guint g_int_hash  (gconstpointer   v);
 /* This "hash" function will just return the key's adress as an
  * unsigned integer. Useful for hashing on plain adresses or
  * simple integer values.
+ * passing NULL into g_hash_table_new() as GHashFunc has the
+ * same effect as passing g_direct_hash().
  */
 guint g_direct_hash  (gconstpointer v);
 gint  g_direct_equal (gconstpointer v,

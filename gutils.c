@@ -401,7 +401,7 @@ g_get_any_init (void)
 	    g_tmp_dir[k-1] = '\0';
 	}
 #endif
-
+      
       if (!g_tmp_dir)
 	{
 #ifndef NATIVE_WIN32
@@ -442,18 +442,18 @@ g_get_any_init (void)
       {
 	struct passwd *pw = NULL;
 	gpointer buffer = NULL;
-
+	
 #  ifdef HAVE_GETPWUID_R
         struct passwd pwd;
         guint bufsize = 64;
         gint error;
-
-        while (1)
+	
+        do
           {
             g_free (buffer);
             buffer = g_malloc (bufsize);
 	    errno = 0;
-
+	    
 #    ifdef HAVE_GETPWUID_R_POSIX
             error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
             error = error < 0 ? errno : error;
@@ -461,33 +461,33 @@ g_get_any_init (void)
             pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
             error = pw ? 0 : errno;
 #    endif /* !HAVE_GETPWUID_R_POSIX */
-
-	    /* Now there are actually only 3 cases to leave the loop:
-	       1. pw != NULL -> all went fine.
-	       2. pw == NULL && ( error == 0 || error == ENOENT ) 
-	            -> no such user (unlikely in the case of getuid ())
-	       3. bufsize > 32k -> the problem can't be of ERANGE type */  
-	    if (pw)
-	      break;
-
-	    if (pw == NULL && ( error == 0 || error == ENOENT))
+	    
+	    if (!pw)
 	      {
-		g_warning ("getpwuid_r(): failed due to: No such user %d.",
-			   getuid ());
-		break;
+		/* we bail out prematurely if the user id can't be found
+		 * (should be pretty rare case actually), or if the buffer
+		 * should be sufficiently big and lookups are still not
+		 * successfull.
+		 */
+		if (error == 0 || error == ENOENT)
+		  {
+		    g_warning ("getpwuid_r(): failed due to: No such user %d.",
+			       getuid ());
+		    break;
+		  }
+		if (bufsize > 32 * 1024)
+		  {
+		    g_warning ("getpwuid_r(): failed due to: %s.",
+			       g_strerror (error));
+		    break;
+		  }
+		
+		bufsize *= 2;
 	      }
-      
-	    if (bufsize > 32 * 1024)
-	      {
-		g_warning ("getpwuid_r(): failed due to: %s.",
-			   g_strerror (error));
-		break;
-	      }
-	      
-            bufsize *= 2;
-         }
+	  }
+	while (!pw);
 #  endif /* !HAVE_GETPWUID_R */
-
+	
 	if (!pw)
 	  {
 	    setpwent ();
@@ -503,9 +503,9 @@ g_get_any_init (void)
 	  }
 	g_free (buffer);
       }
-
+      
 #else /* !HAVE_PWD_H */
-
+      
 #  ifdef NATIVE_WIN32
       {
 	guint len = 17;
@@ -518,14 +518,28 @@ g_get_any_init (void)
 	  }
       }
 #  endif /* NATIVE_WIN32 */
-
+      
 #endif /* !HAVE_PWD_H */
-
+      
       if (!g_user_name)
 	g_user_name = g_strdup ("somebody");
       if (!g_real_name)
 	g_real_name = g_strdup ("Unknown");
-    }  
+      else
+	{
+	  gchar *p;
+
+	  for (p = g_real_name; *p; p++)
+	    if (*p == ',')
+	      {
+		*p = 0;
+		p = g_strdup (g_real_name);
+		g_free (g_real_name);
+		g_real_name = p;
+		break;
+	      }
+	}
+    }
 }
 
 gchar*
@@ -621,7 +635,7 @@ gint
 g_direct_equal (gconstpointer v1,
 		gconstpointer v2)
 {
-  return GPOINTER_TO_UINT (v1) == GPOINTER_TO_UINT (v2);
+  return v1 == v2;
 }
 
 gint

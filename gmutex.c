@@ -29,7 +29,8 @@
 
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 
-struct _GStaticPrivateNode {
+struct _GStaticPrivateNode
+{
   gpointer       data;
   GDestroyNotify destroy;
 };
@@ -72,12 +73,15 @@ void
 g_mutex_init (void)
 {
   /* We let the main thread (the one that calls g_thread_init) inherit
-     the data, that it set before calling g_thread_init */
+   * the data, that it set before calling g_thread_init
+   */
   gpointer private_old = g_thread_specific_private;
+
   g_thread_specific_private = g_private_new (g_static_private_free_data);
 
   /* we can not use g_private_set here, as g_threads_got_initialized is not
-     yet set TRUE, whereas the private_set function is already set. */
+   * yet set TRUE, whereas the private_set function is already set.
+   */
   g_thread_functions_for_glib_use.private_set (g_thread_specific_private, 
 					       private_old);
 
@@ -115,7 +119,7 @@ g_static_private_get (GStaticPrivate *private_key)
   if (!private_key->index)
     return NULL;
   else if (private_key->index <= array->len)
-    return g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).data;
+    return g_array_index (array, GStaticPrivateNode, private_key->index - 1).data;
   else
     return NULL;
 }
@@ -127,11 +131,12 @@ g_static_private_set (GStaticPrivate *private_key,
 {
   GArray *array;
   static guint next_index = 0;
+  GStaticPrivateNode *node;
   
   array = g_private_get (g_thread_specific_private);
   if (!array)
     {
-      array = g_array_new (FALSE, FALSE, sizeof(GStaticPrivateNode));
+      array = g_array_new (FALSE, TRUE, sizeof (GStaticPrivateNode));
       g_private_set (g_thread_specific_private, array);
     }
 
@@ -148,8 +153,22 @@ g_static_private_set (GStaticPrivate *private_key,
   if (private_key->index > array->len)
     g_array_set_size (array, private_key->index);
 
-  g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).data = data;
-  g_array_index (array, GStaticPrivateNode, (private_key->index - 1)).destroy = notify;
+  node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
+  if (node->destroy)
+    {
+      gpointer ddata = node->data;
+      GDestroyNotify ddestroy = node->destroy;
+
+      node->data = data;
+      node->destroy = notify;
+
+      ddestroy (ddata);
+    }
+  else
+    {
+      node->data = data;
+      node->destroy = notify;
+    }
 }
 
 static void
@@ -163,7 +182,7 @@ g_static_private_free_data (gpointer data)
       for (i = 0; i < array->len; i++ )
 	{
 	  GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
-	  if (node->data && node->destroy)
+	  if (node->destroy)
 	    node->destroy (node->data);
 	}
     }
