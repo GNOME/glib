@@ -1,10 +1,10 @@
-If you want to hack on the GLib project, it will make you life easier
-to have the following packages installed:
+If you want to hack on the GLib project, you'll need to have the
+following packages installed:
 
 	- GNU autoconf 2.13
 	- GNU automake 1.4
-	        (Beta releases are at ftp://ftp.cygnus.com/pub/tromey)
-	- GNU libtool 1.2d
+	- GNU libtool 1.4
+        - GNU gettext 0.10.40
 
 These should be available by ftp from ftp.gnu.org or any of the
 fine GNU mirrors.  Beta software can be found at alpha.gnu.org.
