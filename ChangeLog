@@ -1,3 +1,9 @@
+Mon Jul  3 17:18:19 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h: Comment g_get_codeset() out of the header file
+	temporarily. (Very similar to g_get_charset(), need
+	to resolve the two.)
+
 2000-07-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Add new entry points.

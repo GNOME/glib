@@ -1710,7 +1710,7 @@ gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
 
 /* Get the codeset for the current locale */
-gchar * g_get_codeset    (void);
+/* gchar * g_get_codeset    (void); */
 
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
