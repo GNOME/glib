@@ -9,7 +9,7 @@ EXTRA_DIST = glib-config.1	\
 	     glib_toc.html
 
 glib.html glib_toc.html:
-	texi2html $(srcdir)/glib.texi
+	(cd $(srcdir); texi2html glib.texi)
 
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
