@@ -1,5 +1,8 @@
 2002-05-17  Tor Lillqvist  <tml@iki.fi>
 
+	* config.h.win32.in: Match new additions in a configure-produced
+	config.h.
+
 	* glib/glib.def: Add new functions.
 
 Thu May 16 12:24:00 2002  Owen Taylor  <otaylor@redhat.com>

@@ -55,7 +55,8 @@
 #else /* _MSC_VER */
 /* #undef SANE_MALLOC_PROTOS */
 #endif /* _MSC_VER */
-#define USE_LIBICONV_GNU 1
+#define USE_LIBICONV_GNU Using GNU libiconv
+/* #undef USE_LIBICONV_NATIVE */
 
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
@@ -152,6 +153,9 @@
 /* Define if you have the `atexit' function. */
 #define HAVE_ATEXIT 1
 
+/* Define if you have the `bind_textdomain_codeset' function. */
+#define HAVE_BIND_TEXTDOMAIN_CODESET 1
+
 /* Define if you have a version of the vsnprintf function with semantics as
    specified by the ISO C99 standard. */
 /* #undef HAVE_C99_VSNPRINTF */
@@ -176,6 +180,9 @@
 
 /* Define if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
+
+/* Define if you have the `getc_unlocked' function. */
+/* #undef HAVE_GETC_UNLOCKED */
 
 /* Define if you have the `getpagesize' function. */
 #ifndef _MSC_VER
