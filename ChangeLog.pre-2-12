@@ -1,3 +1,10 @@
+2001-07-26  Darin Adler  <darin@bentspoon.com>
+
+	* configure.in:
+	* m4macros/glib-2.0.m4:
+	Update location of pkgconfig from sourceforge.net to new
+	location at freedeskop.org.
+
 2001-07-26  Michael Natterer  <mitch@convergence.de>
 
 	* gobject/glib-genmarshal.c: added a "release_check" to the

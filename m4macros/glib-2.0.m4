@@ -163,7 +163,7 @@ main ()
      AC_MSG_RESULT(no)
      if test "$PKG_CONFIG" = "no" ; then
        echo "*** A new enough version of pkg-config was not found."
-       echo "*** See http://pkgconfig.sourceforge.net"
+       echo "*** See http://www.freedesktop.org/software/pkgconfig/"
      else
        if test -f conf.glibtest ; then
         :

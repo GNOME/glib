@@ -153,7 +153,7 @@ AC_PROG_INSTALL
 #
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test x$PKG_CONFIG = xno ; then
-  AC_MSG_ERROR([*** pkg-config not found. See http://pkgconfig.sourceforge.net])
+  AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
 fi
 
 if pkg-config --atleast-pkgconfig-version 0.5 ; then
