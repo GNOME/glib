@@ -31,8 +31,12 @@ The example demonstrates a number of features of the GOption commandline parser
   option name.
 </para></listitem>
 <listitem><para>
+  Non-option arguments are returned to the application as rest arguments.
+</para></listitem>
+<listitem><para>
   An argument consisting solely of two dashes turns off further parsing, any remaining
-  arguments are returned to the application as rest arguments.
+  arguments (even those starting with a dash) are returned to the application as rest 
+  arguments.
 </para></listitem>
 </itemizedlist>
 </para>
@@ -81,6 +85,7 @@ filenames are returned in the GLib filename encoding.
 
 </para>
 
+
 <!-- ##### ENUM GOptionError ##### -->
 <para>
 Error codes returned by option parsing.
@@ -89,8 +94,9 @@ Error codes returned by option parsing.
 @G_OPTION_ERROR_UNKNOWN_OPTION: An option was not known to the parser.
   This error will only be reported, if the parser hasn't been instructed
   to ignore unknown options, see g_option_context_set_ignore_unknown_options().
-@G_OPTION_ERROR_BAD_VALUE: A value couldn't be parsed.
+@G_OPTION_ERROR_BAD_VALUE: A value couldn't be parsed. 
 @G_OPTION_ERROR_FAILED: A #GOptionArgFunc callback failed.
+
 
 <!-- ##### MACRO G_OPTION_ERROR ##### -->
 <para>
@@ -100,6 +106,36 @@ error domains.
 </para>
 
 
+<!-- ##### ENUM GOptionFlags ##### -->
+<para>
+Flags which modify individual options.
+</para>
+
+@G_OPTION_FLAG_HIDDEN: The option doesn't appear in <option>--help</option>
+   output.
+@G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
+   <option>--help</option> output, even if it is defined in a group.
+
+
+<!-- ##### ENUM GOptionArg ##### -->
+<para>
+The #GOptionArg enum values determine which type of extra argument the
+options expect to find. If an option expects an extra argument, it
+can be specified in several ways; with a short option:
+<option>-x arg</option>, with a long option: <option>--name arg</option>
+or combined in a single argument: <option>--name=arg</option>.
+</para>
+
+@G_OPTION_ARG_NONE: No extra argument. This is useful for simple flags.
+@G_OPTION_ARG_STRING: The option takes a string argument.
+@G_OPTION_ARG_INT: The option takes an integer argument.
+@G_OPTION_ARG_CALLBACK: The option provides a callback to parse the
+  extra argument.
+@G_OPTION_ARG_FILENAME: The option takes a filename as argument.
+@G_OPTION_ARG_STRING_ARRAY: The option takes a string argument, multiple
+  uses of the option are collected into an array of strings.
+@G_OPTION_ARG_FILENAME_ARRAY: The option takes a filename as argument, 
+  multiple uses of the option are collected into an array of strings.
 
 <!-- ##### USER_FUNCTION GOptionArgFunc ##### -->
 <para>
@@ -192,35 +228,22 @@ fields and should not be directly accessed.
 @Returns: 
 
 
-<!-- ##### ENUM GOptionArg ##### -->
+<!-- ##### MACRO G_OPTION_REMAINING ##### -->
 <para>
-The #GOptionArg enum values determine which type of extra argument the
-options expect to find. If an option expects an extra argument, it
-can be specified in several ways; with a short option:
-<option>-x arg</option>, with a long option: <option>--name arg</option>
-or combined in a single argument: <option>--name=arg</option>.
+If a long option in the main group has this name, it is not treated as a 
+regular option. Instead it collects all non-option arguments which would
+otherwise be left in <literal>argv</literal>. The option must be of type
+%G_OPTION_ARG_STRING_ARRAY or %G_OPTION_ARG_FILENAME_ARRAY.
 </para>
 
-@G_OPTION_ARG_NONE: No extra argument. This is useful for simple flags.
-@G_OPTION_ARG_STRING: The option takes a string argument.
-@G_OPTION_ARG_INT: The option takes an integer argument.
-@G_OPTION_ARG_CALLBACK: The option provides a callback to parse the
-  extra argument.
-@G_OPTION_ARG_FILENAME: The option takes a filename as argument.
-@G_OPTION_ARG_STRING_ARRAY: The option takes a string argument, multiple
-  uses of the option are collected into an array of strings.
-@G_OPTION_ARG_FILENAME_ARRAY: The option takes a filename as argument, 
-  multiple uses of the option are collected into an array of strings.
-
-<!-- ##### ENUM GOptionFlags ##### -->
 <para>
-Flags which modify individual options.
+Using #G_OPTION_REMAINING instead of simply scanning <literal>argv</literal>
+for leftover arguments has the advantage that GOption takes care of 
+necessary encoding conversions for strings or filenames.
 </para>
 
-@G_OPTION_FLAG_HIDDEN: The option doesn't appear in <option>--help</option>
-   output.
-@G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
-   <option>--help</option> output, even if it is defined in a group.
+@Since: 2.6
+
 
 <!-- ##### STRUCT GOptionEntry ##### -->
 <para>
@@ -233,7 +256,7 @@ g_option_context_add_main_entries() or g_option_group_add_entries().
   in a commandline as --<replaceable>long_name</replaceable>. Every
   option must have a long name.
 @short_name: If an option has a short name, it can be specified
-  -<replaceable>short_name</replaceable> in a commandline.
+  -<replaceable>short_name</replaceable> in a commandline. 
 @flags: Flags from #GOptionEntryFlags.
 @arg: The type of the option, as a #GOptionArg.
 @arg_data:  If the @arg type is %G_OPTION_ARG_CALLBACK, then @arg_data must 
@@ -359,16 +382,13 @@ the application can then add to its #GOptionContext.
 The type of function that can be called before and after parsing.
 </para>
 
-@context The active #GOptionContext
-
-@context: 
+@context The active #GOptionContext 
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()
 @error: A return location for error details
 @Returns: %TRUE if the function completed successfully, %FALSE if an error 
   occurred
-
 
 <!-- ##### FUNCTION g_option_group_set_parse_hooks ##### -->
 <para>
@@ -386,9 +406,7 @@ The type of function to be used as callback when a parse error
 occurs.
 </para>
 
-@context The active #GOptionContext
-
-@context: 
+@context The active #GOptionContext 
 @group: The group to which the function belongs
 @data: User data added to the #GOptionGroup containing the option when it
   was created with g_option_group_new()
