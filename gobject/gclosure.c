@@ -104,7 +104,7 @@ closure_invoke_notifiers (GClosure *closure,
 	  register guint n = --closure->n_fnotifiers;
 
 	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + n;
-	  closure->marshal = (gpointer) ndata->notify;
+	  closure->marshal = (GClosureMarshal) ndata->notify;
 	  closure->data = ndata->data;
 	  ndata->notify (ndata->data, closure);
 	}
@@ -118,7 +118,7 @@ closure_invoke_notifiers (GClosure *closure,
           register guint n = --closure->n_inotifiers;
 
 	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers + n;
-	  closure->marshal = (gpointer) ndata->notify;
+	  closure->marshal = (GClosureMarshal) ndata->notify;
 	  closure->data = ndata->data;
 	  ndata->notify (ndata->data, closure);
 	}
@@ -472,7 +472,7 @@ g_cclosure_new (GCallback      callback_func,
   closure = g_closure_new_simple (sizeof (GCClosure), user_data);
   if (destroy_data)
     g_closure_add_finalize_notifier (closure, user_data, destroy_data);
-  ((GCClosure*) closure)->callback = callback_func;
+  ((GCClosure*) closure)->callback = (gpointer) callback_func;
   
   return closure;
 }
@@ -489,7 +489,7 @@ g_cclosure_new_swap (GCallback      callback_func,
   closure = g_closure_new_simple (sizeof (GCClosure), user_data);
   if (destroy_data)
     g_closure_add_finalize_notifier (closure, user_data, destroy_data);
-  ((GCClosure*) closure)->callback = callback_func;
+  ((GCClosure*) closure)->callback = (gpointer) callback_func;
   closure->derivative_flag = TRUE;
   
   return closure;

@@ -4019,7 +4019,7 @@ static const decomposition decomp_table[] =
   { 0xffee, 255, 0, 16468 }
 };
 
-static const char decomp_expansion_string[] = 
+static const guchar decomp_expansion_string[] = 
   "\x00\x20\0\0" /* offset 0 */
   "\x00\x20\x03\x08\0\0" /* offset 4 */
   "\x00\x61\0\0" /* offset 10 */

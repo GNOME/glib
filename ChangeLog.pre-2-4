@@ -1,3 +1,9 @@
+2002-03-13  Erwann Chenede  <erwann.chenede@sun.com>
+        * glib/gconvert.c 
+	  glib/gen-unicode-tables.pl
+	  glib/gunidecomp.h : fixed cast/type problems to 
+	  avoid warnings (with forte compiler) (#73898)
+	
 2002-03-12  Alexander Larsson  <alla@lysator.liu.se>
 
 	* glib/gconvert.c:

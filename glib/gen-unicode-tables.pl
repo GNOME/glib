@@ -768,7 +768,7 @@ sub print_decomp
     }
     print OUT "\n};\n\n";
 
-    printf OUT "static const char decomp_expansion_string[] = %s;\n\n", $decomp_string;
+    printf OUT "static const guchar decomp_expansion_string[] = %s;\n\n", $decomp_string;
 
     print OUT "#endif /* DECOMP_H */\n";
 

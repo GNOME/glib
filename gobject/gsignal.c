@@ -829,7 +829,7 @@ g_signal_add_emission_hook (guint               signal_id,
     }
   hook = g_hook_alloc (node->emission_hooks);
   hook->data = hook_data;
-  hook->func = hook_func;
+  hook->func = (gpointer) hook_func;
   hook->destroy = data_destroy;
   signal_hook = SIGNAL_HOOK (hook);
   signal_hook->detail = detail;
@@ -2298,7 +2298,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 	  
 	  if (!signal_hook->detail || signal_hook->detail == detail)
 	    {
-	      GSignalEmissionHook hook_func = hook->func;
+	      GSignalEmissionHook hook_func = (GSignalEmissionHook) hook->func;
 	      
 	      was_in_call = G_HOOK_IN_CALL (hook);
 	      hook->flags |= G_HOOK_FLAG_IN_CALL;

@@ -1,3 +1,10 @@
+2002-03-13  Erwann Chenede  <erwann.chenede@sun.com>
+        * gobject/gclosure.c  
+	* gobject/gobject.c 
+	* gobject/gsignal.c: fixed cast problems with function pointer
+	to avoid warnings (with forte compiler) (#73898)
+	
+
 2002-03-05  Sven Neumann  <sven@gimp.org>
 
 	* gvaluetransform.c (g_value_transforms_init): don't try to 

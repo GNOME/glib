@@ -196,7 +196,7 @@ struct _iconv_cache_bucket {
   gchar *key;
   guint32 refcount;
   gboolean used;
-  iconv_t cd;
+  GIConv cd;
 };
 
 static GList *iconv_cache_list;
@@ -233,7 +233,7 @@ iconv_cache_init (void)
  * Returns a pointer to the newly allocated cache bucket.
  **/
 struct _iconv_cache_bucket *
-iconv_cache_bucket_new (const gchar *key, iconv_t cd)
+iconv_cache_bucket_new (const gchar *key, GIConv cd)
 {
   struct _iconv_cache_bucket *bucket;
   
@@ -349,7 +349,7 @@ open_converter (const gchar *to_codeset,
       if (bucket->used)
         {
           cd = g_iconv_open (to_codeset, from_codeset);
-          if (cd == (iconv_t) -1)
+          if (cd == (GIConv) -1)
             goto error;
         }
       else
@@ -366,7 +366,7 @@ open_converter (const gchar *to_codeset,
   else
     {
       cd = g_iconv_open (to_codeset, from_codeset);
-      if (cd == (iconv_t) -1)
+      if (cd == (GIConv) -1)
         goto error;
       
       iconv_cache_expire_unused ();
@@ -402,11 +402,11 @@ close_converter (GIConv converter)
 {
   struct _iconv_cache_bucket *bucket;
   const gchar *key;
-  iconv_t cd;
+  GIConv cd;
   
-  cd = (iconv_t) converter;
+  cd = converter;
   
-  if (cd == (iconv_t) -1)
+  if (cd == (GIConv) -1)
     return 0;
   
   G_LOCK (iconv_cache_lock);

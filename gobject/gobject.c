@@ -1168,7 +1168,7 @@ g_object_disconnect (gpointer     _object,
 	g_warning ("%s: invalid signal name \"%s\"", G_STRLOC, signal_spec);
       else if (!g_signal_handlers_disconnect_matched (object, mask | (detail ? G_SIGNAL_MATCH_DETAIL : 0),
 						      sid, detail,
-						      NULL, callback, data))
+						      NULL, (gpointer)callback, data))
 	g_warning (G_STRLOC ": signal handler %p(%p) is not connected", callback, data);
       signal_spec = va_arg (var_args, gchar*);
     }
