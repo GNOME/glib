@@ -1,3 +1,7 @@
+2001-12-17  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gspawn.c, glib/gspawn-win32.c: Use <envar>, not <envvar>.
+
 2001-12-15  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gshell.c, glib/gspawn.c, glib/gspawn-win32.c, glib/gerror.c,

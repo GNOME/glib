@@ -471,7 +471,7 @@ g_spawn_sync (const gchar          *working_directory,
  * should be a %NULL-terminated array of strings, to be passed as the
  * argument vector for the child. The first string in @argv is of
  * course the name of the program to execute. By default, the name of
- * the program must be a full path; the <envvar>PATH</envvar> shell variable will only
+ * the program must be a full path; the <envar>PATH</envar> shell variable will only
  * be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  *
  * @envp is a %NULL-terminated array of strings, where each string
@@ -488,7 +488,7 @@ g_spawn_sync (const gchar          *working_directory,
  * otherwise all descriptors except stdin/stdout/stderr will be closed before
  * calling <function>exec()</function> in the child. %G_SPAWN_SEARCH_PATH 
  * means that <literal>argv[0]</literal> need not be an absolute path, it
- * will be looked for in the user's <envvar>PATH</envvar>. 
+ * will be looked for in the user's <envar>PATH</envar>. 
  * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output 
  * will be discarded, instead of going to the same location as the parent's 
  * standard output. %G_SPAWN_STDERR_TO_DEV_NULL means that the child's 
