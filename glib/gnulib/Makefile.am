@@ -15,6 +15,7 @@ libgnulib_la_SOURCES = 	\
 	g-gnulib.h
 
 
+EXTRA_DIST = makefile.msc
 
 
 

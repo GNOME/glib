@@ -1,3 +1,8 @@
+2004-05-01  Hans Breuer  <hans@breuer.org>
+
+	* glib/gnulib/Makefile.am : added makefile.msc to EXTRA_DIST
+	fixes #141563, Steve Lhomme
+
 2004-04-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c (g_win32_get_package_installation_subdirectory):
