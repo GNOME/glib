@@ -1,3 +1,10 @@
+2001-04-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Added special case for priorities on
+	  FreeBSD. Thanks to David Reid <dreid@jetnet.co.uk> for the info.
+
+	* gthread-impl.c: Made two macros safe with ().
+
 2001-03-10  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use the _LIBADD dependency on libglib only on

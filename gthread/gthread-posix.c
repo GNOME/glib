@@ -97,8 +97,18 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
 
 #if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
 # define HAVE_PRIORITIES 1
-# define PRIORITY_LOW_VALUE POSIX_MIN_PRIORITY
-# define PRIORITY_URGENT_VALUE POSIX_MAX_PRIORITY
+# ifdef __FreeBSD__
+   /* FreeBSD threads use different priority values from the POSIX_
+    * defines so we just set them here. The corresponding macros
+    * PTHREAD_MIN_PRIORITY and PTHREAD_MAX_PRIORITY are implied to be
+    * exported by the docs, but they aren't.
+    */
+#  define PRIORITY_LOW_VALUE      0
+#  define PRIORITY_URGENT_VALUE   31
+# else /* !__FreeBSD__ */
+#  define PRIORITY_LOW_VALUE POSIX_MIN_PRIORITY
+#  define PRIORITY_URGENT_VALUE POSIX_MAX_PRIORITY
+# endif /* !__FreeBSD__ */
 #endif /* POSIX_MIN_PRIORITY && POSIX_MAX_PRIORITY */
 
 static gulong g_thread_min_stack_size = 0;
