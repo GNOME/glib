@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-01 17:05-0500\n"
-"PO-Revision-Date: 2002-03-17 16:34+0800\n"
+"POT-Creation-Date: 2004-03-03 15:11+0100\n"
+"PO-Revision-Date: 2004-03-04 02:33+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -131,13 +131,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "无法创建文件“%s”：%s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "无法创建文件“%s”：%s"
+msgstr "读取符号连接“%s”失败：%s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "不支持符号连接"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -205,7 +205,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体－将这个 & 变为 "
+"实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
 "&amp;"
 
 #: glib/gmarkup.c:558
@@ -213,7 +213,7 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "无法解析“%s”。它应该是字符引用中的数字(如&#234;)－可能该数字太大了"
+msgstr "无法解析“%s”。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -230,16 +230,16 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体－将这个 & 变为 "
+"字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
 "&amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "未完成的实体引用"
 
 #: glib/gmarkup.c:642
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "未完成的字符引用"
 
 #: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
@@ -323,7 +323,7 @@ msgstr "文档在一个打开的尖括号“<”后意外结束"
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "文档在还存在未结束元素时意外结束－最后的未结束元素是“%s”"
+msgstr "文档在还存在未结束元素时意外结束 - 最后的未结束元素是“%s”"
 
 #: glib/gmarkup.c:1671
 #, c-format
@@ -401,9 +401,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "无法从子管道中读取 (%s)"
 
 #: glib/gspawn-win32.c:924
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "无法执行子进程 (%s)"
+msgstr "无法执行助手程序"
 
 #: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
@@ -478,11 +477,3 @@ msgstr "转换输入中出现无效序列"
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
-#~ msgid "Incorrect message size"
-#~ msgstr "不正确的消息大小"
-
-#~ msgid "Socket error"
-#~ msgstr "套接字错误"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "不支持通道设置标志"
