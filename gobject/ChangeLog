@@ -2,7 +2,7 @@ Mon Aug 25 14:16:48 2003  Owen Taylor  <otaylor@redhat.com>
  
  	* gtypemodule.c (g_type_module_register_type): Clarify
  	docs on the return. Fix a memory leak if a type with a
- 	value table is reloaded.
+ 	value table is reloaded. (#112439, Daniel Yacob)
  
 Tue Aug 19 05:21:04 2003  Tim Janik  <timj@gtk.org>
 
