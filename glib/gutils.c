@@ -577,7 +577,8 @@ g_path_skip_root (const gchar *file_name)
   /* Skip \\server\share or //server/share */
   if (G_IS_DIR_SEPARATOR (file_name[0]) &&
       G_IS_DIR_SEPARATOR (file_name[1]) &&
-      file_name[2])
+      file_name[2] &&
+      !G_IS_DIR_SEPARATOR (file_name[2]))
     {
       gchar *p;
 
@@ -662,8 +663,47 @@ g_path_get_dirname (const gchar	   *file_name)
     base--;
 
 #ifdef G_OS_WIN32
+  /* base points to the char before the last slash.
+   *
+   * In case file_name is the root of a drive (X:\) or a child of the
+   * root of a drive (X:\foo), include the slash.
+   *
+   * In case file_name is the root share of an UNC path
+   * (\\server\share), add a slash, returning \\server\share\ .
+   *
+   * In case file_name is a direct child of a share in an UNC path
+   * (\\server\share\foo), include the slash after the share name,
+   * returning \\server\share\ .
+   */
   if (base == file_name + 1 && g_ascii_isalpha (file_name[0]) && file_name[1] == ':')
-      base++;
+    base++;
+  else if (G_IS_DIR_SEPARATOR (file_name[0]) &&
+	   G_IS_DIR_SEPARATOR (file_name[1]) &&
+	   file_name[2] &&
+	   !G_IS_DIR_SEPARATOR (file_name[2]) &&
+	   base >= file_name + 2)
+    {
+      const gchar *p = file_name + 2;
+      while (*p && !G_IS_DIR_SEPARATOR (*p))
+	p++;
+      if (p == base + 1)
+	{
+	  len = (guint) strlen (file_name) + 1;
+	  base = g_new (gchar, len + 1);
+	  strcpy (base, file_name);
+	  base[len-1] = G_DIR_SEPARATOR;
+	  base[len] = 0;
+	  return base;
+	}
+      if (G_IS_DIR_SEPARATOR (*p))
+	{
+	  p++;
+	  while (*p && !G_IS_DIR_SEPARATOR (*p))
+	    p++;
+	  if (p == base + 1)
+	    base++;
+	}
+    }
 #endif
 
   len = (guint) 1 + base - file_name;
@@ -685,6 +725,28 @@ g_get_current_dir (void)
   if (max_len == 0) 
     max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
   
+#ifdef G_OS_WIN32
+  if (G_WIN32_HAVE_WIDECHAR_API ())
+    {
+      wchar_t *wdir = _wgetcwd (NULL, max_len);
+      if (wdir)
+	dir = g_utf16_to_utf8 (wdir, -1, NULL, NULL, NULL);
+      else
+	dir = g_strdup (G_DIR_SEPARATOR_S);
+      free (wdir);
+    }
+  else
+    {
+      char *cpdir = getcwd (NULL, max_len);
+      if (cpdir)
+	dir = g_locale_to_utf8 (cpdir, -1, NULL, NULL, NULL);
+      else
+	dir = g_strdup (G_DIR_SEPARATOR_S);
+      free (cpdir);
+    }
+
+  return dir;
+#else
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.
    */
@@ -716,14 +778,11 @@ g_get_current_dir (void)
       buffer[1] = 0;
     }
 
-#ifdef G_OS_WIN32
-  dir = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
-#else
   dir = g_strdup (buffer);
-#endif
   g_free (buffer);
   
   return dir;
+#endif /* !Win32 */
 }
 
 #ifdef G_OS_WIN32
@@ -1010,7 +1069,7 @@ g_get_any_init (void)
        * where we prefer the results of getpwuid().
        */
       {
-	gchar *home = g_getenv ("HOME");
+	const gchar *home = g_getenv ("HOME");
 	gchar *home_utf8 = NULL;
 
 	if (home)

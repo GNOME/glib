@@ -1,3 +1,11 @@
+2004-12-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_path_skip_root): Require UNC paths to start
+	with exactly two slashes.
+	(g_get_current_dir): Use wide character API when available.
+	(g_path_get_dirname): Handle UNC paths better. Part of fix for
+	#161797.
+
 2004-12-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Add an OS_LINUX conditional.
