@@ -1,3 +1,7 @@
+Sun Nov 28 13:21:12 2004  Manish Singh  <yosh@gimp.org>
+
+	* abicheck.sh: filter G_GNUC before PRIVATE so $ is still true.
+
 Sun Nov 28 01:37:54 2004    <timj@birnet.org>
 
 	* gsignal.c: applied patch by sven@gimp.org (#153727) to reduce
