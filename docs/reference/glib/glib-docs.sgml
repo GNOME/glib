@@ -55,6 +55,7 @@
 <!ENTITY glib-Shell SYSTEM "xml/shell.xml">
 <!ENTITY glib-Option SYSTEM "xml/option.xml">
 <!ENTITY glib-Markup SYSTEM "xml/markup.xml">
+<!ENTITY glib-Keyfile SYSTEM "xml/keyfile.xml">
 <!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 <!ENTITY glib-Version SYSTEM "xml/version.xml">
 
@@ -146,6 +147,7 @@ synchronize their operation.
     &glib-Option;
     &glib-Pattern-Matching;
     &glib-Markup;
+    &glib-Keyfile;
     &glib-Windows-Compatability-Functions;
   </chapter>
 
@@ -189,6 +191,9 @@ synchronize their operation.
   </index>
   <index role="2.4">
     <title>Index of new symbols in 2.4</title>
+  </index>  
+  <index role="2.6">
+    <title>Index of new symbols in 2.6</title>
   </index>  
 
 </book>
