@@ -33,15 +33,15 @@ g_date_new ()
 }
 
 GDate*
-g_date_new_mdy (GDateMonth m, GDateDay day, GDateYear y)
+g_date_new_dmy (GDateDay day, GDateMonth m, GDateYear y)
 {
   GDate *d;
-  g_return_val_if_fail (g_date_valid_mdy (m, day, y), NULL);
+  g_return_val_if_fail (g_date_valid_dmy (day, m, y), NULL);
   
   d = g_new (GDate, 1);
   
   d->julian = FALSE;
-  d->mdy    = TRUE;
+  d->dmy    = TRUE;
   
   d->month = m;
   d->day   = day;
@@ -61,7 +61,7 @@ g_date_new_julian (guint32 j)
   d = g_new (GDate, 1);
   
   d->julian = TRUE;
-  d->mdy    = FALSE;
+  d->dmy    = FALSE;
   
   d->julian_days = j;
   
@@ -78,29 +78,12 @@ g_date_free (GDate *d)
   g_free (d);
 }
 
-
-
 gboolean     
 g_date_valid (GDate       *d)
 {
   g_return_val_if_fail (d != NULL, FALSE);
   
-  if (d->julian && d->mdy) 
-    {
-      return ( g_date_valid_julian (d->julian_days) && 
-               g_date_valid_mdy (d->month, d->day, d->year) );
-      
-    }
-  else if (d->mdy)
-    {
-      return g_date_valid_mdy (d->month, d->day, d->year);
-    }
-  else if (d->julian)
-    {
-      return g_date_valid_julian (d->julian_days);
-    }
-  else 
-    return FALSE;
+  return (d->julian || d->dmy);
 }
 
 static const guint8 days_in_months[2][13] = 
@@ -146,8 +129,8 @@ g_date_valid_julian (guint32      j)
 }
 
 gboolean     
-g_date_valid_mdy (GDateMonth   m, 
-		  GDateDay     d, 
+g_date_valid_dmy (GDateDay     d, 
+                  GDateMonth   m, 
 		  GDateYear    y)
 {
   return ( (m > G_DATE_BAD_MONTH) &&
@@ -169,9 +152,9 @@ g_date_update_julian (GDate *d)
   gint index;
   
   g_return_if_fail (d != NULL);
-  g_return_if_fail (d->mdy);
+  g_return_if_fail (d->dmy);
   g_return_if_fail (!d->julian);
-  g_return_if_fail (g_date_valid_mdy (d->month, d->day, d->year));
+  g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
   
   /* What we actually do is: multiply years * 365 days in the year,
    *  add the number of years divided by 4, subtract the number of
@@ -197,7 +180,7 @@ g_date_update_julian (GDate *d)
 }
 
 static void 
-g_date_update_mdy (GDate *d)
+g_date_update_dmy (GDate *d)
 {
   GDateYear y;
   GDateMonth m;
@@ -207,7 +190,7 @@ g_date_update_mdy (GDate *d)
   
   g_return_if_fail (d != NULL);
   g_return_if_fail (d->julian);
-  g_return_if_fail (!d->mdy);
+  g_return_if_fail (!d->dmy);
   g_return_if_fail (g_date_valid_julian (d->julian_days));
   
   /* Formula taken from the Calendar FAQ; the formula was for the
@@ -230,10 +213,10 @@ g_date_update_mdy (GDate *d)
   y = 100 * B + D - 4800 + (M/10);
   
 #ifdef G_ENABLE_DEBUG
-  if (!g_date_valid_mdy (m, day, y)) 
+  if (!g_date_valid_dmy (day, m, y)) 
     {
-      g_warning ("\nOOPS julian: %u  computed mdy: %u %u %u\n", 
-		 d->julian_days, m, day, y);
+      g_warning ("\nOOPS julian: %u  computed dmy: %u %u %u\n", 
+		 d->julian_days, day, m, y);
     }
 #endif
   
@@ -241,7 +224,7 @@ g_date_update_mdy (GDate *d)
   d->day   = day;
   d->year  = y;
   
-  d->mdy = TRUE;
+  d->dmy = TRUE;
 }
 
 GDateWeekday 
@@ -265,11 +248,11 @@ g_date_month (GDate *d)
   g_return_val_if_fail (d != NULL, G_DATE_BAD_MONTH);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_MONTH);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, G_DATE_BAD_MONTH);
+  g_return_val_if_fail (d->dmy, G_DATE_BAD_MONTH);
   
   return d->month;
 }
@@ -280,11 +263,11 @@ g_date_year (GDate *d)
   g_return_val_if_fail (d != NULL, G_DATE_BAD_YEAR);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_YEAR);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, G_DATE_BAD_YEAR);  
+  g_return_val_if_fail (d->dmy, G_DATE_BAD_YEAR);  
   
   return d->year;
 }
@@ -295,11 +278,11 @@ g_date_day (GDate *d)
   g_return_val_if_fail (d != NULL, G_DATE_BAD_DAY);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_DAY);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, G_DATE_BAD_DAY);  
+  g_return_val_if_fail (d->dmy, G_DATE_BAD_DAY);  
   
   return d->day;
 }
@@ -327,11 +310,11 @@ g_date_day_of_year (GDate *d)
   g_return_val_if_fail (d != NULL, 0);
   g_return_val_if_fail (g_date_valid (d), 0);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, 0);  
+  g_return_val_if_fail (d->dmy, 0);  
   
   index = g_date_is_leap_year (d->year) ? 1 : 0;
   
@@ -348,15 +331,15 @@ g_date_monday_week_of_year (GDate *d)
   g_return_val_if_fail (d != NULL, 0);
   g_return_val_if_fail (g_date_valid (d), 0);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, 0);  
+  g_return_val_if_fail (d->dmy, 0);  
   
   g_date_clear (&first, 1);
   
-  g_date_set_mdy (&first, 1, 1, d->year);
+  g_date_set_dmy (&first, 1, 1, d->year);
   
   wd = g_date_weekday (&first) - 1; /* make Monday day 0 */
   day = g_date_day_of_year (d) - 1;
@@ -374,15 +357,15 @@ g_date_sunday_week_of_year (GDate *d)
   g_return_val_if_fail (d != NULL, 0);
   g_return_val_if_fail (g_date_valid (d), 0);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, 0);  
+  g_return_val_if_fail (d->dmy, 0);  
   
   g_date_clear (&first, 1);
   
-  g_date_set_mdy (&first, 1, 1, d->year);
+  g_date_set_dmy (&first, 1, 1, d->year);
   
   wd = g_date_weekday (&first);
   if (wd == 7) wd = 0; /* make Sunday day 0 */
@@ -419,9 +402,9 @@ static gchar *short_month_names[13] =
 static gchar *current_locale = NULL;
 
 /* order of these in the current locale */
-static GDateMDY mdy_order[3] = 
+static GDateDMY dmy_order[3] = 
 {
-  G_DATE_MONTH, G_DATE_DAY, G_DATE_YEAR
+   G_DATE_DAY, G_DATE_MONTH, G_DATE_YEAR
 };
 
 /* Where to chop two-digit years: i.e., for the 1930 default, numbers
@@ -553,7 +536,7 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
       
       while (i < 13) 
         {
-          g_date_set_mdy (&d, i, 1, 1);
+          g_date_set_dmy (&d, 1, i, 1);
 	  
           g_return_if_fail (g_date_valid (&d));
 	  
@@ -572,9 +555,9 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
           ++i;
         }
       
-      /* Determine MDY order */
+      /* Determine DMY order */
       
-      g_date_set_mdy (&d, 7, 4, 1776); /* had to pick a random day */
+      g_date_set_dmy (&d, 4, 7, 1776); /* had to pick a random day */
       
       g_date_strftime (buf, 127, "%x", &d);
       
@@ -586,15 +569,15 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
           switch (testpt.n[i])
             {
             case 7:
-              mdy_order[i] = G_DATE_MONTH;
+              dmy_order[i] = G_DATE_MONTH;
               break;
             case 4:
-              mdy_order[i] = G_DATE_DAY;
+              dmy_order[i] = G_DATE_DAY;
               break;
             case 76:
               using_twodigit_years = TRUE; /* FALL THRU */
             case 1776:
-              mdy_order[i] = G_DATE_YEAR;
+              dmy_order[i] = G_DATE_YEAR;
               break;
             default:
               /* leave it unchanged */
@@ -620,7 +603,7 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
         i = 0;
         while (i < 3)
           {
-            switch (mdy_order[i])
+            switch (dmy_order[i])
               {
               case G_DATE_MONTH:
                 strings[i] = "Month";
@@ -677,7 +660,7 @@ g_date_set_parse (GDate       *d,
       
       while (i < pt.num_ints && j < 3) 
         {
-          switch (mdy_order[j])
+          switch (dmy_order[j])
             {
             case G_DATE_MONTH:
 	    {
@@ -727,7 +710,7 @@ g_date_set_parse (GDate       *d,
         }
       
       
-      if (pt.num_ints == 3 && !g_date_valid_mdy (m, day, y))
+      if (pt.num_ints == 3 && !g_date_valid_dmy (day, m, y))
         {
           /* Try YYYY MM DD */
           y   = pt.n[0];
@@ -771,16 +754,16 @@ g_date_set_parse (GDate       *d,
   
   /* See if we got anything valid out of all this. */
   /* y < 8000 is to catch 19998 style typos; the library is OK up to 65535 or so */
-  if (y < 8000 && g_date_valid_mdy (m, day, y)) 
+  if (y < 8000 && g_date_valid_dmy (day, m, y)) 
     {
       d->month = m;
       d->day   = day;
       d->year  = y;
-      d->mdy   = TRUE;
+      d->dmy   = TRUE;
     }
 #ifdef G_ENABLE_DEBUG
   else 
-    g_message ("Rejected MDY %u %u %u", m, day, y);
+    g_message ("Rejected DMY %u %u %u", day, m, y);
 #endif
 }
 
@@ -803,9 +786,9 @@ g_date_set_time (GDate *d,
       d->day   = tm->tm_mday;
       d->year  = tm->tm_year + 1900;
       
-      g_return_if_fail (g_date_valid_mdy (d->month, d->day, d->year));
+      g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
       
-      d->mdy    = TRUE;
+      d->dmy    = TRUE;
     }
   else 
     {
@@ -824,10 +807,10 @@ g_date_set_month (GDate     *d,
   
   d->month = m;
   
-  if (g_date_valid_mdy (d->month, d->day, d->year))
-    d->mdy = TRUE;
+  if (g_date_valid_dmy (d->day, d->month, d->year))
+    d->dmy = TRUE;
   else 
-    d->mdy = FALSE;
+    d->dmy = FALSE;
 }
 
 void         
@@ -841,10 +824,10 @@ g_date_set_day (GDate     *d,
   
   d->day = day;
   
-  if (g_date_valid_mdy (d->month, d->day, d->year))
-    d->mdy = TRUE;
+  if (g_date_valid_dmy (d->day, d->month, d->year))
+    d->dmy = TRUE;
   else 
-    d->mdy = FALSE;
+    d->dmy = FALSE;
 }
 
 void         
@@ -858,20 +841,20 @@ g_date_set_year (GDate     *d,
   
   d->year = y;
   
-  if (g_date_valid_mdy (d->month, d->day, d->year))
-    d->mdy = TRUE;
+  if (g_date_valid_dmy (d->day, d->month, d->year))
+    d->dmy = TRUE;
   else 
-    d->mdy = FALSE;
+    d->dmy = FALSE;
 }
 
 void         
-g_date_set_mdy (GDate     *d, 
-                GDateMonth m, 
+g_date_set_dmy (GDate     *d, 
                 GDateDay   day, 
+                GDateMonth m, 
                 GDateYear  y)
 {
   g_return_if_fail (d != NULL);
-  g_return_if_fail (g_date_valid_mdy (m, day, y));
+  g_return_if_fail (g_date_valid_dmy (day, m, y));
   
   d->julian = FALSE;
   
@@ -879,7 +862,7 @@ g_date_set_mdy (GDate     *d,
   d->day   = day;
   d->year  = y;
   
-  d->mdy = TRUE;
+  d->dmy = TRUE;
 }
 
 void         
@@ -890,7 +873,7 @@ g_date_set_julian (GDate *d, guint32 j)
   
   d->julian_days = j;
   d->julian = TRUE;
-  d->mdy = FALSE;
+  d->dmy = FALSE;
 }
 
 
@@ -900,11 +883,11 @@ g_date_is_first_of_month (GDate *d)
   g_return_val_if_fail (d != NULL, FALSE);
   g_return_val_if_fail (g_date_valid (d), FALSE);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, FALSE);  
+  g_return_val_if_fail (d->dmy, FALSE);  
   
   if (d->day == 1) return TRUE;
   else return FALSE;
@@ -918,11 +901,11 @@ g_date_is_last_of_month (GDate *d)
   g_return_val_if_fail (d != NULL, FALSE);
   g_return_val_if_fail (g_date_valid (d), FALSE);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_val_if_fail (d->mdy, FALSE);  
+  g_return_val_if_fail (d->dmy, FALSE);  
   
   index = g_date_is_leap_year (d->year) ? 1 : 0;
   
@@ -943,7 +926,7 @@ g_date_add_days (GDate *d, guint ndays)
   g_return_if_fail (d->julian);
   
   d->julian_days += ndays;
-  d->mdy = FALSE;
+  d->dmy = FALSE;
 }
 
 void         
@@ -960,7 +943,7 @@ g_date_subtract_days (GDate *d, guint ndays)
   g_return_if_fail (d->julian_days > ndays);
   
   d->julian_days -= ndays;
-  d->mdy = FALSE;
+  d->dmy = FALSE;
 }
 
 void         
@@ -973,11 +956,11 @@ g_date_add_months (GDate       *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid (d));
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_if_fail (d->mdy);  
+  g_return_if_fail (d->dmy);  
   
   nmonths += d->month - 1;
   
@@ -1007,11 +990,11 @@ g_date_subtract_months (GDate       *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid (d));
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_if_fail (d->mdy);  
+  g_return_if_fail (d->dmy);  
   
   years  = nmonths/12;
   months = nmonths%12;
@@ -1045,11 +1028,11 @@ g_date_add_years (GDate       *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid (d));
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_if_fail (d->mdy);  
+  g_return_if_fail (d->dmy);  
   
   d->year += nyears;
   
@@ -1071,11 +1054,11 @@ g_date_subtract_years (GDate       *d,
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid (d));
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_if_fail (d->mdy);  
+  g_return_if_fail (d->dmy);  
   g_return_if_fail (d->year > nyears);
   
   d->year -= nyears;
@@ -1123,15 +1106,15 @@ g_date_monday_weeks_in_year (GDateYear  year)
   g_return_val_if_fail (g_date_valid_year (year), 0);
   
   g_date_clear (&d, 1);
-  g_date_set_mdy (&d, 1, 1, year);
+  g_date_set_dmy (&d, 1, 1, year);
   if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
-  g_date_set_mdy (&d, 12, 31, year);
+  g_date_set_dmy (&d, 31, 12, year);
   if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
   if (g_date_is_leap_year (year)) 
     {
-      g_date_set_mdy (&d, 1, 2, year);
+      g_date_set_dmy (&d, 2, 1, year);
       if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
-      g_date_set_mdy (&d, 12, 30, year);
+      g_date_set_dmy (&d, 30, 12, year);
       if (g_date_weekday (&d) == G_DATE_MONDAY) return 53;
     }
   return 52;
@@ -1145,15 +1128,15 @@ g_date_sunday_weeks_in_year (GDateYear  year)
   g_return_val_if_fail (g_date_valid_year (year), 0);
   
   g_date_clear (&d, 1);
-  g_date_set_mdy (&d, 1, 1, year);
+  g_date_set_dmy (&d, 1, 1, year);
   if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
-  g_date_set_mdy (&d, 12, 31, year);
+  g_date_set_dmy (&d, 31, 12, year);
   if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
   if (g_date_is_leap_year (year)) 
     {
-      g_date_set_mdy (&d, 1, 2, year);
+      g_date_set_dmy (&d, 2, 1, year);
       if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
-      g_date_set_mdy (&d, 12, 30, year);
+      g_date_set_dmy (&d, 30, 12, year);
       if (g_date_weekday (&d) == G_DATE_SUNDAY) return 53;
     }
   return 52;
@@ -1179,7 +1162,7 @@ g_date_compare (GDate     *lhs,
           else if (lhs->julian_days > rhs->julian_days) return 1;
           else                                          return 0;
         }
-      else if (lhs->mdy && rhs->mdy) 
+      else if (lhs->dmy && rhs->dmy) 
         {
           if (lhs->year < rhs->year)               return -1;
           else if (lhs->year > rhs->year)               return 1;
@@ -1220,11 +1203,11 @@ g_date_to_struct_tm (GDate      *d,
   g_return_if_fail (g_date_valid (d));
   g_return_if_fail (tm != NULL);
   
-  if (!d->mdy) 
+  if (!d->dmy) 
     {
-      g_date_update_mdy (d);
+      g_date_update_dmy (d);
     }
-  g_return_if_fail (d->mdy);
+  g_return_if_fail (d->dmy);
   
   /* zero all the irrelevant fields to be sure they're valid */
   

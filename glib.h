@@ -2044,10 +2044,10 @@ void	     g_completion_free	       (GCompletion*	cmp);
  */
 
 typedef enum {
-  G_DATE_MONTH = 0,
-  G_DATE_DAY   = 1,
+  G_DATE_DAY   = 0,
+  G_DATE_MONTH = 1,
   G_DATE_YEAR  = 2
-} GDateMDY;
+} GDateDMY;
 
 /* These other types specify the actual values. */
 
@@ -2101,11 +2101,11 @@ struct _GDate {
                            */
 
   guint julian : 1;    /* julian is valid */
-  guint mdy    : 1;    /* mdy is valid */
+  guint dmy    : 1;    /* dmy is valid */
 
-  /* MDY representation */
-  guint month  : 4; 
+  /* DMY representation */
   guint day    : 6;  
+  guint month  : 4; 
   guint year   : 16; 
 };
 
@@ -2115,8 +2115,8 @@ struct _GDate {
  */
 
 GDate*       g_date_new                   (void);
-GDate*       g_date_new_mdy               (GDateMonth   m, 
-                                           GDateDay     d, 
+GDate*       g_date_new_dmy               (GDateDay     d, 
+                                           GDateMonth   m, 
                                            GDateYear    y);
 GDate*       g_date_new_julian            (guint32      julian_day);
 void         g_date_free                  (GDate       *d);
@@ -2128,13 +2128,13 @@ void         g_date_free                  (GDate       *d);
  */
 
 gboolean     g_date_valid                 (GDate       *d);
+gboolean     g_date_valid_day             (GDateDay     d);
 gboolean     g_date_valid_month           (GDateMonth   m);
 gboolean     g_date_valid_year            (GDateYear    y);
-gboolean     g_date_valid_day             (GDateDay     d);
 gboolean     g_date_valid_weekday         (GDateWeekday w);
 gboolean     g_date_valid_julian          (guint32      j);
-gboolean     g_date_valid_mdy             (GDateMonth   m,
-                                           GDateDay     d,
+gboolean     g_date_valid_dmy             (GDateDay     d,
+                                           GDateMonth   m,
                                            GDateYear    y);
 
 GDateWeekday g_date_weekday               (GDate       *d);
@@ -2178,9 +2178,9 @@ void         g_date_set_day               (GDate       *d,
                                            GDateDay     day);
 void         g_date_set_year              (GDate       *d,
                                            GDateYear    y);
-void         g_date_set_mdy               (GDate       *d,
-                                           GDateMonth   m,
+void         g_date_set_dmy               (GDate       *d,
                                            GDateDay     day,
+                                           GDateMonth   m,
                                            GDateYear    y);
 
 void         g_date_set_julian            (GDate       *d,
