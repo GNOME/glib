@@ -7,7 +7,7 @@ TOP = ..\..
 
 ################################################################
 
-INCLUDES = -I . -I ..
+INCLUDES = -FImsvc_recommended_pragmas.h -I . -I ..
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG
 DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
 

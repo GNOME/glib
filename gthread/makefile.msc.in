@@ -9,7 +9,7 @@ TOP = ..\..
 
 ################################################################
 
-INCLUDES = -I .. -I . -I ..\glib
+INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\"
 all : \
 	libgthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll

@@ -7,7 +7,7 @@ TOP = ..\..
 
 ################################################################
 
-INCLUDES = -I .. -I . -I ..\glib
+INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\"
 
 all : \
