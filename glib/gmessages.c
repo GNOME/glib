@@ -510,7 +510,8 @@ g_logv (const gchar   *log_domain,
 #ifdef G_OS_WIN32
 	      gchar *locale_msg = g_locale_from_utf8 (fatal_msg_buf, -1, NULL, NULL, NULL);
 	      
-	      MessageBox (NULL, locale_msg, NULL, MB_OK);
+	      MessageBox (NULL, locale_msg, NULL,
+			  MB_ICONERROR|MB_SETFOREGROUND);
 #endif
 #if defined (G_ENABLE_DEBUG) && (defined (SIGTRAP) || defined (G_OS_WIN32))
 	      if (!(test_level & G_LOG_FLAG_RECURSION))

@@ -1,3 +1,9 @@
+2003-08-19  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gmessages.c (g_logv): [Win32] Make the fatal error message
+	box easier to notice with MB_SETFOREGROUND. Also use MB_ICONERROR
+	to get a nice stop-sign icon.
+
 Tue Aug 19 09:42:06 2003  Owen Taylor  <otaylor@redhat.com>
  
  	* m4macros/glib-gettext.m4: Add $INTLLIBS to $LIBS
