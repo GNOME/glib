@@ -806,8 +806,8 @@ g_win32_error_message (gint error)
 			  |FORMAT_MESSAGE_FROM_SYSTEM,
 			  NULL, error, 0,
 			  (LPTSTR) &msg, 0, NULL);
-  if (nbytes > 2 && error[nbytes-1] == '\n' && error[nbytes-2] == '\r')
-    error[nbytes-2] = '\0';
+  if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
+    msg[nbytes-2] = '\0';
   
   retval = g_strdup (msg);
 
