@@ -516,6 +516,7 @@ if test x$ac_cv_sizeof_long_long = x8; then
 		done])
 	if test -n "$glib_cv_long_long_format"; then
 	  AC_MSG_RESULT(%${glib_cv_long_long_format}u)
+	  AC_DEFINE(HAVE_LONG_LONG_FORMAT,1,[define if system printf can print long long])
         else
 	  AC_MSG_RESULT(none)
         fi
@@ -525,6 +526,7 @@ elif test x$ac_cv_sizeof___int64 = x8; then
 	# We know this is MSVC, and what the formats are
 	glib_cv_long_long_format=I64
 	AC_MSG_RESULT(%${glib_cv_long_long_format}u)
+        AC_DEFINE(HAVE_LONG_LONG_FORMAT,1,[define if system printf can print long long])
 fi
 
 dnl long doubles were not used, and a portability problem
@@ -733,51 +735,60 @@ AC_FUNC_VSNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
 
 #
-# Check whether to use trio printf
+# Check whether to use an included printf
 #
 
 AC_ARG_ENABLE(included-printf,
               [AC_HELP_STRING([--enable-included-printf],
                               [use included printf [default=auto]])],
-              enable_trio="$enableval")
+              enable_included_printf="$enableval")
 
-need_trio=no
-if test "x$enable_trio" = "xyes" ; then
-  need_trio=yes
+need_included_printf=no
+if test "x$enable_included_printf" = "xyes" ; then
+  need_included_printf=yes
 fi
 if test "$ac_cv_func_vsnprintf_c99" != "yes" ; then
-  need_trio=yes
+  need_included_printf=yes
 fi
 if test "$ac_cv_func_printf_unix98" != "yes" ; then
-  need_trio=yes
+  need_included_printf=yes
 fi
 if test "x$ac_cv_sizeof_long_long" = "x8" &&
    test -z "$glib_cv_long_long_format" ; then
-  need_trio=yes
+  need_included_printf=yes
 fi
 
-if test "x$enable_trio" = "xno" && 
-   test "x$need_trio" = "xyes" ; then
+if test "x$enable_included_printf" = "xno" && 
+   test "x$need_included_printf" = "xyes" ; then
   AC_MSG_ERROR([
 *** Your C library's printf doesn't appear to have the features that
 *** GLib needs, but you specified --enable-included-printf=no.])
 fi
 
-enable_trio=$need_trio
+enable_included_printf=$need_included_printf
 
-AM_CONDITIONAL(HAVE_GOOD_PRINTF, test "$enable_trio" != "yes")
-if test "$enable_trio" != "yes" ; then 
+AM_CONDITIONAL(HAVE_GOOD_PRINTF, test "$enable_included_printf" != "yes")
+if test "$enable_included_printf" != "yes" ; then 
   AC_DEFINE(HAVE_GOOD_PRINTF,1,[define to use system printf])
 else
   glib_cv_long_long_format="ll"
   AC_DEFINE(HAVE_VASPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
+  AC_DEFINE(HAVE_C99_SNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
-  if test "$glib_native_win32" != "yes" ; then
-    TRIO_LIBS=-lm
-  fi
 fi
-AC_SUBST(TRIO_LIBS)
+
+# Checks needed for gnulib vasnprintf
+bh_C_SIGNED
+jm_AC_TYPE_LONG_LONG
+gt_TYPE_LONGDOUBLE
+gt_TYPE_WCHAR_T
+gt_TYPE_WINT_T
+AC_TYPE_SIZE_T
+AC_CHECK_TYPES(ptrdiff_t)
+jm_AC_TYPE_INTMAX_T
+AC_CHECK_FUNCS(snprintf)
+AC_FUNC_SNPRINTF_C99
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.
 # The check is borrowed from the PERL Configure script.
@@ -2011,6 +2022,7 @@ _______EOF
 	  cat >>$outfile <<_______EOF
 typedef signed $gint16 gint16;
 typedef unsigned $gint16 guint16;
+#define G_GINT16_MODIFIER $gint16_modifier
 #define G_GINT16_FORMAT $gint16_format
 #define G_GUINT16_FORMAT $guint16_format
 _______EOF
@@ -2021,6 +2033,7 @@ _______EOF
 	  cat >>$outfile <<_______EOF
 typedef signed $gint32 gint32;
 typedef unsigned $gint32 guint32;
+#define G_GINT32_MODIFIER $gint32_modifier
 #define G_GINT32_FORMAT $gint32_format
 #define G_GUINT32_FORMAT $guint32_format
 _______EOF
@@ -2037,11 +2050,13 @@ _______EOF
 
 	if test x$gint64_format != x ; then
 	  cat >>$outfile <<_______EOF
+#define G_GINT64_MODIFIER $gint64_modifier
 #define G_GINT64_FORMAT $gint64_format
 #define G_GUINT64_FORMAT $guint64_format
 _______EOF
         else
 	  cat >>$outfile <<_______EOF
+#undef G_GINT64_MODIFIER
 #undef G_GINT64_FORMAT
 #undef G_GUINT64_FORMAT
 _______EOF
@@ -2294,11 +2309,13 @@ fi
 case 2 in
 $ac_cv_sizeof_short)		
   gint16=short
+  gint16_modifier='"h"'
   gint16_format='"hi"'
   guint16_format='"hu"'
   ;;
 $ac_cv_sizeof_int)		
   gint16=int
+  gint16_modifier='""'
   gint16_format='"i"'
   guint16_format='"u"'
   ;;
@@ -2306,16 +2323,19 @@ esac
 case 4 in
 $ac_cv_sizeof_short)		
   gint32=short
+  gint32_modifier='"h"'
   gint32_format='"hi"'
   guint32_format='"hu"'
   ;;
 $ac_cv_sizeof_int)		
   gint32=int
+  gint32_modifier='""'
   gint32_format='"i"'
   guint32_format='"u"'
   ;;
 $ac_cv_sizeof_long)		
   gint32=long
+  gint32_modifier='"l"'
   gint32_format='"li"'
   guint32_format='"lu"'
   ;;
@@ -2323,6 +2343,7 @@ esac
 case 8 in
 $ac_cv_sizeof_int)
   gint64=int
+  gint64_modifier='""'
   gint64_format='"i"'
   guint64_format='"u"'
   glib_extension=
@@ -2330,6 +2351,7 @@ $ac_cv_sizeof_int)
   ;;
 $ac_cv_sizeof_long)
   gint64=long
+  gint64_modifier='"l"'
   gint64_format='"li"'
   guint64_format='"lu"'
   glib_extension=
@@ -2338,6 +2360,7 @@ $ac_cv_sizeof_long)
 $ac_cv_sizeof_long_long)
   gint64='long long'
   if test -n "$glib_cv_long_long_format"; then
+    gint64_modifier='"'$glib_cv_long_long_format'"'
     gint64_format='"'$glib_cv_long_long_format'i"'
     guint64_format='"'$glib_cv_long_long_format'u"'
   fi
@@ -2347,6 +2370,7 @@ $ac_cv_sizeof_long_long)
 $ac_cv_sizeof___int64)
   gint64='__int64'
   if test -n "$glib_cv_long_long_format"; then
+    gint64_modifier='"'$glib_cv_long_long_format'"'
     gint64_format='"'$glib_cv_long_long_format'i"'
     guint64_format='"'$glib_cv_long_long_format'u"'
   fi
@@ -2511,7 +2535,7 @@ build/win32/Makefile
 build/win32/dirent/Makefile
 glib/Makefile
 glib/libcharset/Makefile
-glib/trio/Makefile
+glib/gnulib/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile

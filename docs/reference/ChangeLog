@@ -1,3 +1,9 @@
+2003-07-29  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/macros_misc.sgml: Document G_GINT{16,32,64}_MODIFIER, add note about scanning.
+
+	* glib/glib-sections.txt: Add G_GINT{16,32,64}_MODIFIER.
+
 2003-07-28  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add g_setenv(), g_unsetenv() and g_read_link().  (#100763, #72545)

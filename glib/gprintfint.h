@@ -43,20 +43,19 @@
 
 #else
 
-#include "trio/glibtrio.h"
-#include "trio/trio.h"
+#include "gnulib/printf.h"
 
-#define _g_printf    _g_trio_printf
-#define _g_fprintf   _g_trio_fprintf
-#define _g_sprintf   _g_trio_sprintf
-#define _g_snprintf  _g_trio_snprintf
+#define _g_printf    _g_gnulib_printf
+#define _g_fprintf   _g_gnulib_fprintf
+#define _g_sprintf   _g_gnulib_sprintf
+#define _g_snprintf  _g_gnulib_snprintf
 
-#define _g_vprintf   _g_trio_vprintf
-#define _g_vfprintf  _g_trio_vfprintf
-#define _g_vsprintf  _g_trio_vsprintf
-#define _g_vsnprintf _g_trio_vsnprintf
+#define _g_vprintf   _g_gnulib_vprintf
+#define _g_vfprintf  _g_gnulib_vfprintf
+#define _g_vsprintf  _g_gnulib_vsprintf
+#define _g_vsnprintf _g_gnulib_vsnprintf
 
-#define _g_vasprintf _g_trio_vasprintf
+#define _g_vasprintf _g_gnulib_vasprintf
 
 #endif
 

@@ -2,13 +2,13 @@
 
 if HAVE_GOOD_PRINTF
 else
-TRIO_SUBDIR = trio
-trio_libtrio_la = trio/libtrio.la
+PRINTF_SUBDIR = gnulib
+printf_la = gnulib/libgnulib.la
 endif 
 
-SUBDIRS = libcharset $(TRIO_SUBDIR)
+SUBDIRS = libcharset $(PRINTF_SUBDIR)
 
-DIST_SUBDIRS = libcharset trio
+DIST_SUBDIRS = libcharset gnulib
 
 INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
@@ -182,8 +182,8 @@ install-libtool-import-lib:
 uninstall-libtool-import-lib:
 endif
 
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(trio_libtrio_la) $(GIO) $(GSPAWN) $(PLATFORMDEP) $(G_LIB_WIN32_RESOURCE) $(ICONV_LIBS) $(G_LIBS_EXTRA)
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(trio_libtrio_la) $(GIO) $(GSPAWN) $(PLATFORMDEP) $(G_LIB_WIN32_RESOURCE) $(GLIB_DEF)
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
 
 libglib_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \

@@ -39,7 +39,7 @@ if (failed) \
     else \
       g_print ("(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), message ? (gchar*)message : ""); \
     fflush (stdout); \
-    any_failed = TRUE; \
+    any_failed; \
   } \
 } G_STMT_END
 
@@ -52,8 +52,8 @@ main (int   argc,
       char *argv[])
 {
   gchar buf[128];
-  long l;
   int i;
+  long l;
   
   /* truncation and return value */
   TEST (NULL, g_snprintf (buf, 0, "abc") == 3);
@@ -190,6 +190,16 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%1$*2$.*3$s", "abc", 5, 2) == 5 && !strcmp (buf, "   ab"));
   TEST (NULL, g_snprintf (buf, 128, "%1$s%1$s", "abc") == 6 && !strcmp (buf, "abcabc"));
   
+  /* 64 bit support */
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_FORMAT, (gint64)123456) == 6 && !strcmp (buf, "123456")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_FORMAT, (gint64)-123456) == 7 && !strcmp (buf, "-123456"));   
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GUINT64_FORMAT, (guint64)123456) == 6 && !strcmp (buf, "123456")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_MODIFIER "o", (gint64)123456) == 6 && !strcmp (buf, "361100")); 
+  TEST (NULL, g_snprintf (buf, 128, "%#" G_GINT64_MODIFIER "o", (gint64)123456) == 7 && !strcmp (buf, "0361100")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_MODIFIER "x", (gint64)123456) == 5 && !strcmp (buf, "1e240")); 
+  TEST (NULL, g_snprintf (buf, 128, "%#" G_GINT64_MODIFIER "x", (gint64)123456) == 7 && !strcmp (buf, "0x1e240")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_MODIFIER "X", (gint64)123456) == 5 && !strcmp (buf, "1E240")); 
+
   return any_failed;
 }
 
