@@ -1,3 +1,8 @@
+2001-06-27  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* no.po: Completed Norwegian translation.
+	* POTFILES.in: Adjusted to fit the move of the .c files.
+	
 2001-06-08  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* az.po: Added Azeri file

@@ -5,363 +5,392 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
-"POT-Creation-Date: 2001-01-18 20:06+0100\n"
-"PO-Revision-Date: 2001-01-18 20:16+01:00\n"
+"POT-Creation-Date: 2001-06-27 20:42+0200\n"
+"PO-Revision-Date: 2001-06-27 21:09+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: gconvert.c:95
+#: glib/gconvert.c:143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Konvertering fra tegnsett `%s' til `%s' er ikke støttet"
 
-#: gconvert.c:99
+#: glib/gconvert.c:147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunne ikke åpne konverterer fra `%s' til `%s': %s"
 
-#: gconvert.c:214 gutf8.c:733 gutf8.c:1179
+#: glib/gconvert.c:251 glib/gutf8.c:787 glib/gutf8.c:1233
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
-#: gconvert.c:219 gconvert.c:439
+#: glib/gconvert.c:256 glib/gconvert.c:469
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: gconvert.c:237 gutf8.c:729 gutf8.c:929 gutf8.c:1070 gutf8.c:1175
+#: glib/gconvert.c:276 glib/gutf8.c:783 glib/gutf8.c:983 glib/gutf8.c:1124
+#: glib/gutf8.c:1229
 msgid "Partial character sequence at end of input"
 msgstr "Delvis tegnsekvens ved slutten på inndata"
 
-#: gconvert.c:414
+#: glib/gconvert.c:444
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" '%s' til tegnsett '%s'"
 
-#: gfileutils.c:293
+#: glib/gfileutils.c:308
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil '%s': %s"
 
-#: gfileutils.c:350
+#: glib/gfileutils.c:365
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil '%s': %s"
 
-#: gfileutils.c:388 gfileutils.c:456
+#: glib/gfileutils.c:404 glib/gfileutils.c:472
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil '%s': %s"
 
-#: gfileutils.c:402
+#: glib/gfileutils.c:418
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil '%s': fstat() feilet: %s"
 
-#: gfileutils.c:428
+#: glib/gfileutils.c:444
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil '%s': fdopen() feilet: %s"
 
-#: gfileutils.c:637
+#: glib/gfileutils.c:653
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr "Mal '%s' er ugyldig, skulle inneholdt en '%s'"
 
-#: gfileutils.c:649
+#: glib/gfileutils.c:665
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mal '%s' slutter ikke med XXXXXX"
 
-#: gfileutils.c:670
+#: glib/gfileutils.c:686
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil '%s': %s"
 
-#: gmarkup.c:302
+#: glib/gmarkup.c:216
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Feil på linje %d tegn %d: %s"
 
-#: gmarkup.c:386
+#: glib/gmarkup.c:300
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Feil på linje %d: %s"
 
-#: gmarkup.c:465
+#: glib/gmarkup.c:379
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Tom entitet '&;' funnet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Tom entitet '&;' funnet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
 
-#: gmarkup.c:475
+#: glib/gmarkup.c:389
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "Tegn '%s' er ikke gyldig ved starten på navnet til en entitet; &-tegnet starter en entitet; hvis dette og-tegnet ikke er ment å være en entitet, unngå dette ved å bruke &amp; i stedet"
+msgstr ""
+"Tegn '%s' er ikke gyldig ved starten på navnet til en entitet; &-tegnet "
+"starter en entitet; hvis dette og-tegnet ikke er ment å være en entitet, "
+"unngå dette ved å bruke &amp; i stedet"
 
-#: gmarkup.c:511
+#: glib/gmarkup.c:425
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Tegn '%s' er ikke gyldig inne i et entitetsnavn"
 
-#: gmarkup.c:555
+#: glib/gmarkup.c:469
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitetsnavn '%s' er ikke kjent"
 
-#: gmarkup.c:565
+#: glib/gmarkup.c:479
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Entiteten sluttet ikke med et semikolon; du har sannsynligvis brukt et og-tegn uten at det var ment å starte en entitet - ungå ved å bruke &amp; i stedet"
+msgstr ""
+"Entiteten sluttet ikke med et semikolon; du har sannsynligvis brukt et og-"
+"tegn uten at det var ment å starte en entitet - ungå ved å bruke &amp; i "
+"stedet"
 
-#: gmarkup.c:611
+#: glib/gmarkup.c:525
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Feil under lesing av '%s', som skulle vært et tall inne i en tegnreferanse (&#234; for eksempel) - kanskje tallet er for stort"
+msgstr ""
+"Feil under lesing av '%s', som skulle vært et tall inne i en tegnreferanse "
+"(&#234; for eksempel) - kanskje tallet er for stort"
 
-#: gmarkup.c:637
+#: glib/gmarkup.c:550
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Tegnreferanse '%s' koder ikke et tillatt tegn"
 
-#: gmarkup.c:654
+#: glib/gmarkup.c:567
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tom tegnreferanse; skulle inkludert et tall slik som &#454;"
 
-#: gmarkup.c:664
+#: glib/gmarkup.c:577
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr "Tegnreferansen sluttet ikke med et semikolon; du har sannsynligvis brukt et og-tegn uten at det var ment å starte en entitet - unngå ved å bruke &amp; i stedet"
+msgstr ""
+"Tegnreferansen sluttet ikke med et semikolon; du har sannsynligvis brukt et "
+"og-tegn uten at det var ment å starte en entitet - unngå ved å bruke &amp; i "
+"stedet"
 
-#: gmarkup.c:899 gmarkup.c:927 gmarkup.c:958
+#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ugyldig UTF-8 kodet tekst"
 
-#: gmarkup.c:994
+#: glib/gmarkup.c:922
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet må starte med et element (f.eks <book>)"
 
-#: gmarkup.c:1032
+#: glib/gmarkup.c:960
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "'%s' er ikke et gyldig tegn etter en '<' tegn; det kan ikke være begynnelsen på et elementnavn"
+msgstr ""
+"'%s' er ikke et gyldig tegn etter en '<' tegn; det kan ikke være begynnelsen "
+"på et elementnavn"
 
-#: gmarkup.c:1099
+#: glib/gmarkup.c:1023
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr "Rart tegn '%s', forventet et '>' tegn for å avslutte start-taggen til elementet '%s'"
+msgstr ""
+"Rart tegn '%s', forventet et '>' tegn for å avslutte start-taggen til "
+"elementet '%s'"
 
-#: gmarkup.c:1189
+#: glib/gmarkup.c:1110
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Rart tegn '%s', forventet et '=' etter attributtnavn '%s' for element '%s'"
+msgstr ""
+"Rart tegn '%s', forventet et '=' etter attributtnavn '%s' for element '%s'"
 
-#: gmarkup.c:1230
+#: glib/gmarkup.c:1151
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr "Rart tegn '%s', forventet '>' eller '/' tegn for å avslutte start-taggen til element '%s', eller alternativt en attributt; kanskje du brukte et ugyldig tegn i attributtnavnet"
+msgstr ""
+"Rart tegn '%s', forventet '>' eller '/' tegn for å avslutte start-taggen til "
+"element '%s', eller alternativt en attributt; kanskje du brukte et ugyldig "
+"tegn i attributtnavnet"
 
-#: gmarkup.c:1302
+#: glib/gmarkup.c:1224
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr ""
+msgstr "Rart tegn '%s', ventet et åpent sitattegn etter likhetstegnet når verdi for attributt '%s' for element '%s' oppgis"
 
-#: gmarkup.c:1431
+#: glib/gmarkup.c:1351
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
+msgstr "'%s' er ikke et gyldig tegn etter tegnene '</'; '%s' er kanskje ikke begynnelsen på et elementnavn"
 
-#: gmarkup.c:1468
+#: glib/gmarkup.c:1388
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
+msgstr "Element '%s' ble lukket, ingen åpne elementer nå"
 
-#: gmarkup.c:1477
+#: glib/gmarkup.c:1397
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
+msgstr "Element '%s' ble lukket, men aktivt åpent element er '%s'"
 
-#: gmarkup.c:1488
+#: glib/gmarkup.c:1408
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
+"'%s' er ikke et gyldig tegn etter element for lukking med navn '%s'; tillatt "
+"tegn er '>'"
 
-#: gmarkup.c:1615
+#: glib/gmarkup.c:1541
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "Dokumentet var tomt eller inneholdt kun blanke tegn"
 
-#: gmarkup.c:1629
+#: glib/gmarkup.c:1555
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Dokumentet sluttet uventet rett etter en åpen vinkelparantes '<'"
 
-#: gmarkup.c:1637 gmarkup.c:1680
+#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"Dokumentet sluttet uventet med åpne elementer - '%s' var siste åpne element"
 
-#: gmarkup.c:1645
+#: glib/gmarkup.c:1571
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
+"Dokumentet sluttet uventet, forventet å se en vinkelparantes for å slutte av "
+"den siste taggen <%s/>"
 
-#: gmarkup.c:1651
+#: glib/gmarkup.c:1577
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Dokumentet sluttet uventet inni et elementnavn"
 
-#: gmarkup.c:1656
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Dokumentet sluttet uventet inni et attributtnavn"
 
-#: gmarkup.c:1661
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "Dokumentet sluttet uventet inni en tagg for åpning av element."
 
-#: gmarkup.c:1667
+#: glib/gmarkup.c:1593
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"Dokumentet sluttet uventet etter likhetstegnet som følger et attributtnavn; "
+"ingen attributtverdi"
 
-#: gmarkup.c:1673
+#: glib/gmarkup.c:1599
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Dokumentet sluttet uventet inni en attributtverdi"
 
-#: gmarkup.c:1688
+#: glib/gmarkup.c:1614
 #, c-format
-msgid "Document ended unexpectedly inside the close tag forelement '%s'"
-msgstr ""
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Dokumentet sluttet uventet inni tagg for lukking av element '%s'"
 
-#: gmarkup.c:1694
+#: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
 
-#: gshell.c:69
+#: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "Sitert tekst begynner ikke med sitattegn"
 
-#: gshell.c:159
+#: glib/gshell.c:159
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Ubalansert sitattegn i kommandolinje eller annen skall-sitert tekst"
 
-#: gshell.c:519
+#: glib/gshell.c:519
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr ""
+msgstr "Tekst sluttet rett etter et '' tegn. (Teksten var '%s')"
 
-#: gshell.c:526
+#: glib/gshell.c:526
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Teksten sluttet før likt sitattegn ble funnet for %c. (Teksten var '%s')"
 
-#: gshell.c:538
+#: glib/gshell.c:538
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
+msgstr "Teksten var tom (eller inneholdt kun blanke tegn)"
 
-#: gspawn-win32.c:213
+#: glib/gspawn-win32.c:215
 msgid "Failed to read data from child process"
-msgstr ""
+msgstr "Feil under lesing av data fra underprosess"
 
-#: gspawn-win32.c:362
+#: glib/gspawn-win32.c:364
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
+msgstr "Uventet feil i g_io_channel_win32_poll() under lesing av data fra en underprosess"
 
-#: gspawn-win32.c:838 gspawn.c:896
+#: glib/gspawn-win32.c:840 glib/gspawn.c:907
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Feil under lesing fra \"child pipe\" (%s)"
 
-#: gspawn-win32.c:927 gspawn.c:1102
+#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr ""
+msgstr "Feil ved skifte til katalog '%s' (%s)"
 
-#: gspawn-win32.c:936 gspawn.c:1112
+#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr ""
+msgstr "Feil under kjøring av underprosess (%s)"
 
-#: gspawn-win32.c:977 gspawn.c:1209
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
 
-#: gspawn.c:158
+#: glib/gspawn.c:159
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr ""
+msgstr "Feil under lesing av data fra underprosess (%s)"
 
-#: gspawn.c:288
+#: glib/gspawn.c:290
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
+msgstr "Uventet feil i select() ved lesing av data fra underprosess (%s)"
 
-#: gspawn.c:371
+#: glib/gspawn.c:373
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr ""
+msgstr "Uventet feil i waitpid() (%s)"
 
-#: gspawn.c:964
+#: glib/gspawn.c:972
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Feil under kjøring av fork (%s)"
 
-#: gspawn.c:1121
+#: glib/gspawn.c:1131
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "Feil under omdirigering av utdata eller inndata for underprosess (%s)"
 
-#: gspawn.c:1130
+#: glib/gspawn.c:1140
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "Feil under kjøring av fork() for underprosess (%s)"
 
-#: gspawn.c:1138
+#: glib/gspawn.c:1148
 msgid "Unknown error executing child process"
-msgstr ""
+msgstr "Ukjent feil under kjøring av underprosess"
 
-#: gspawn.c:1159
+#: glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Klarte ikke å lese nok data fra underprosessens pid-rør (%s)"
 
-#: gutf8.c:808
+#: glib/gutf8.c:862
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "Tegn utenfor gyldig område for UTF-8"
 
-#: gutf8.c:897 gutf8.c:906 gutf8.c:1038 gutf8.c:1047 gutf8.c:1189 gutf8.c:1285
+#: glib/gutf8.c:951 glib/gutf8.c:960 glib/gutf8.c:1092 glib/gutf8.c:1101
+#: glib/gutf8.c:1243 glib/gutf8.c:1339
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Ugyldig sekvens i inndata for konvertering"
 
-#: gutf8.c:1200 gutf8.c:1296
+#: glib/gutf8.c:1254 glib/gutf8.c:1350
 msgid "Character out of range for UTF-16"
-msgstr ""
+msgstr "Tegn utenfor gyldig område for UTF-16"
