@@ -83,6 +83,7 @@ EXPORTS
 	g_completion_remove_items
 	g_convert
 	g_convert_error_quark
+	g_convert_init
 	g_convert_with_fallback
 	g_convert_with_iconv
 	g_datalist_clear
