@@ -1,3 +1,22 @@
+1999-04-24  Tor Lillqvist  <tml@iki.fi>
+
+	Support added for building using a GNU toolchain on Win32,
+	i.e. gcc -mno-cygwin on cygwin (a.k.a. mingw32, using egcs-1.1.2).
+
+	* README.win32: Updated.
+	* build-dll makefile.cygwin tests/makefile.cygwin: New files.
+	* glib.h glib.def glibconfig.h.win32: Slight updates. 
+	* gmain.c: No need to include <fcntl.h> and <io.h> on Win32.
+	* gmain.c gutils.c testglib.c tests/string-test.c: Test for
+	NATIVE_WIN32, not _MSC_VER.
+	* gmutex.c: Must declare g_thread_functions_for_glib_use as
+	exported (using the GUTILS_C_VAR macro).
+	* gutils.c gmodule/libgplugin_[ab].c: LibMain not needed.
+	* gmodule/gmoduleconf.h.win32: Need underscore with gcc.
+	* gthread/gthread.c: With gcc on Win32, must use memcpy to assign
+	value of g_thread_functions_for_glib_use (?).
+	* makefile.msc tests/makefile.msc: Cosmetics.
+
 Fri Apr 23 14:29:25 BST 1999  Tony Gale <gale@gtk.org>
 
 	* glib.h: Fix typo in g_string_ncasecmp macro (by me).

@@ -2750,8 +2750,10 @@ GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
  */
 #ifdef NATIVE_WIN32
 #  define MAXPATHLEN 1024
-#  ifdef _MSC_VER
+
+#ifdef _MSC_VER
 typedef int pid_t;
+#endif
 
 /* These POSIXish functions are available in the Microsoft C library
  * prefixed with underscore (which of course technically speaking is
@@ -2768,6 +2770,9 @@ typedef int pid_t;
 #    define getcwd		_getcwd
 #    define getpid		_getpid
 #    define access		_access
+#ifdef __GNUC__
+#    define stat		_stat
+#endif
 #    define open		_open
 #    define read		_read
 #    define write		_write
@@ -2802,7 +2807,6 @@ DIR*		gwin_opendir	(const gchar	*dirname);
 struct dirent*	gwin_readdir  	(DIR		*dir);
 void		gwin_rewinddir 	(DIR		*dir);
 gint		gwin_closedir  	(DIR		*dir);
-#  endif /* _MSC_VER */
 #endif	 /* NATIVE_WIN32 */
 
 

@@ -699,8 +699,8 @@ main (int   argc,
   for (i = 0; i < 10000; i++)
     g_string_append_c (string1, 'a'+(i%26));
 
-#if !(defined (_MSC_VER) || defined (__LCC__))
-  /* MSVC and LCC use the same run-time C library, which doesn't like
+#ifndef NATIVE_WIN32
+  /* MSVC, mingw32 and LCC use the same run-time C library, which doesn't like
      the %10000.10000f format... */
   g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",
 		    "this pete guy sure is a wuss, like he's the number ",

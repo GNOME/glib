@@ -103,8 +103,8 @@ main (int   argc,
   g_assert((strlen("hi pete!") + 10000) == string1->len);
   g_assert((strlen("hi pete!") + 10000) == strlen(string1->str));
 
-#if !(defined (_MSC_VER) || defined (__LCC__))
-  /* MSVC and LCC use the same run-time C library, which doesn't like
+#ifndef NATIVE_WIN32
+  /* MSVC and mingw32 use the same run-time C library, which doesn't like
      the %10000.10000f format... */
   g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",
 		    "this pete guy sure is a wuss, like he's the number ",

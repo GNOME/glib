@@ -1,5 +1,5 @@
 /* glibconfig.h.win32 */
-/* Handcrafted for Microsoft C. */
+/* Handcrafted for Microsoft C and gcc -mno-cygwin ("mingw32"). */
 
 #ifndef GLIBCONFIG_H
 #define GLIBCONFIG_H
@@ -65,11 +65,22 @@ typedef unsigned int guint32;
 
 #define G_HAVE_GINT64 1
 
+/* These are compiler specific */
+#ifdef _MSC_VER
 typedef __int64 gint64;
 typedef unsigned __int64 guint64;
+#define G_GINT64_CONSTANT(val)	(val##i64)
+#elif __GNUC__
+typedef long long gint64;
+typedef unsigned long long guint64;
+#define G_GINT64_CONSTANT(val)	(val##LL)
+#endif
+
+/* These depend on the C library. Using this file means the we
+ * use the (bundled) Microsoft msvcrt.dll.
+ */
 #define G_GINT64_FORMAT "I64i"
 #define G_GUINT64_FORMAT "I64u"
-#define G_GINT64_CONSTANT(val)	(val##i64)
 
 #define GPOINTER_TO_INT(p)	((gint)(p))
 #define GPOINTER_TO_UINT(p)	((guint)(p))
@@ -82,7 +93,9 @@ typedef unsigned __int64 guint64;
 #define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END
 
 #define G_HAVE_ALLOCA 1
+#ifdef _MSC_VER
 #define alloca _alloca
+#endif
 
 #define GLIB_MAJOR_VERSION 1
 #define GLIB_MINOR_VERSION 3
@@ -106,7 +119,7 @@ typedef unsigned __int64 guint64;
  *   printf ("sizeof (pthread_mutex_t) = %d\n", sizeof (pthread_mutex_t));
  *   printf ("PTHREAD_MUTEX_INITIALIZER = ");
  *   for (i = 0; i < sizeof (pthread_mutex_t); i++)
- *     printf ("%u, ", (unsigned) ((char *) &m)[i]);
+ *     printf ("%u, ", (unsigned) ((unsigned char *) &m)[i]);
  *   printf ("\n");
  *   exit(0);
  * }
@@ -119,7 +132,7 @@ struct _GStaticMutex
   struct _GMutex *runtime_mutex;
   union {
     /* The size of the pad array should be sizeof (pthread_mutext_t) */
-    /* This value corresponds to the 1999-03-16 version of pthreads-win32 */
+    /* This value corresponds to the 1999-04-07 version of pthreads-win32 */
     char   pad[4];
     double dummy_double;
     void  *dummy_pointer;
@@ -127,7 +140,7 @@ struct _GStaticMutex
   } aligned_pad_u;
 };
 /* This should be NULL followed by the bytes in PTHREAD_MUTEX_INITIALIZER */
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { 1, 0, 0, 0 } } }
+#define	G_STATIC_MUTEX_INIT	{ NULL, { { 255, 255, 255, 255 } } }
 #define	g_static_mutex_get_mutex(mutex) \
   (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
@@ -172,7 +185,7 @@ struct _GStaticMutex
 /* Define if this is Win32, possibly using the Cygwin emulation layer. */
 #define WIN32 1
 
-/* Define if this is Win32 without Cygwin.  */
+/* Define if this is Win32 using the Microsoft C runtime.  */
 #define NATIVE_WIN32 1
 
 #ifdef __cplusplus

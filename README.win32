@@ -5,32 +5,35 @@ Win32 API only, and not any POSIX emulation layer except that provided
 by the Microsoft runtime C library. Additionally, a pthreads emulation
 library is used.
 
-As for now, to build GLib on Win32, you need the Microsoft compiler
-and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0 have been
-used successfully.
+To build GLib on Win32, you can use either the Microsoft compiler and
+tools, or egcs-1.1.2 running under cygwin-b20.1. Both the compiler
+from MSVC 5.0 and from MSVC 6.0 have been used successfully. If you
+build with egcs, note that the produced executables and DLLs do *not*
+require the cygwin dll ("mingw32"). That's the whole point of this
+porting effort, more or less.
+
+The egcs support was added quite recently, but seems to work in all
+respects. Debugging with gdk works.
 
 Before building you must get the pthreads library for Windows from
 http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
-snapshot from 1999-03-16 is mostly OK. Edit the location of the
-pthreads library and include files in makefile.msc. Also edit the BIN
-definition in makefile.msc.
+snapshot from 1999-04-07 is the one that should be used. Edit the
+location of the pthreads library and include files in
+makefile.msc.
 
-Build with `nmake -f makefile.msc`. Install with `nmake -f
-makefile.msc install`.
+If using the Microsoft toolchain, build with `nmake -f
+makefile.msc`. Install with `nmake -f makefile.msc install`.
+If using egcs, build using `make -f makefile.cygwin`.
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check`.
 
-Support for building using the cygwin tools (without depending on the
-cygwin runtime, i.e. "mingw32"), and maybe LCC-Win32 might be added
-later. When using the cygwin tools *with* the cygwin runtime the
-normal Unix configuration method should work as if on Unix (knock on
-wood).
+If you would want to use the cygwin tools to generate executables that
+*do* usethe cygwin runtime the normal Unix configuration method should
+work as if on Unix (knock on wood).
 
 With a little work, it might be possible to use the ./configure
-mechanism also with a "mingw32" configuration. I.e. building GLib for
-Win32 would use the cygwin tools (and runtime), but the produced
-libraries would not depend on the cygwin runtime being present.
+mechanism also with a "mingw32" configuration.
 
 The following preprocessor macros are used for conditional compilation 
 related to Win32:
@@ -42,17 +45,20 @@ related to Win32:
 
 - NATIVE_WIN32 is defined when compiling for Win32, *and* without
   any POSIX emulation, other that to the extent provided by the
-  (Microsoft) C library, or the pthreads-win32 library. For instance,
-  pathnames use the native Windows syntax.
+  bundled Microsoft C library and the pthreads-win32 library. For
+  instance, pathnames are in the native Windows syntax.
 
-- _MSC_VER is defined when using the Microsoft compiler.
+The Win32 port uses the combination with both of those on.
 
-Currently the Win32 port uses the combination with all three of those
-on, but eventually "gcc -mno-cygwin" will be supported also, and in
-that case _MSC_VER wouldn't be defined.
+Additionally, there are the compiler-specific macros:
+- _MSC_VER is defined when using the Microsoft compiler
+- __GNUC__ is defined when using GCC (i.e. egcs)
 
-Some of the usage of these macros is probably a bit mixed up, and will
-have to be straightened out when actually trying other combinations.
+Some of the usage of these macros was a bit mixed up, and had to be
+straightened out when adding the gcc support. In particular, I used to
+check for _MSC_VER in some places where I really wanted to check for
+the Microsoft C library, and those checks has now been changed to
+NATIVE_WIN32.
 
 The pthreads for Win32 package that the thread support uses isn't
 quite ready yet, and thus threads really should not be relied upon.

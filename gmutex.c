@@ -50,7 +50,7 @@ static void g_thread_fail (void);
 gboolean g_thread_use_default_impl = TRUE;
 gboolean g_threads_got_initialized = FALSE;
 
-GThreadFunctions g_thread_functions_for_glib_use = {
+GUTILS_C_VAR GThreadFunctions g_thread_functions_for_glib_use = {
   (GMutex*(*)())g_thread_fail,                 /* mutex_new */
   NULL,                                        /* mutex_lock */
   NULL,                                        /* mutex_trylock */

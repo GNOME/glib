@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Temporary hack until building dlls with gcc -mno-cygwin is easier
+
+LD=ld
+DLLTOOL=dlltool
+AS=as
+
+library=$1; shift
+version=$1; shift;
+def=$1; shift
+ldargs="$*"
+
+defswitch=""
+[ -n "$def" -a "$def" != '-' ] && defswitch="--def $def"
+
+libname=$library
+[ $version != '-' ] && libname=$library-$version
+dllfile=$libname.dll
+
+for F in $ldargs; do
+    case $F in
+	*.o)	objs="$objs $F";;
+    esac
+done
+
+$LD -s --base-file $library.base --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
+$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs
+$LD -s --base-file $library.base $library.exp --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
+$DLLTOOL --as=$AS --dllname $dllfile $defswitch --base-file $library.base --output-exp $library.exp $objs
+$LD $library.exp --dll -o $dllfile $ldargs -e _DllMain@12 -lmingw32
+$DLLTOOL --as=$AS --dllname $dllfile $defswitch --output-lib lib$libname.a $objs
+rm $library.base $library.exp

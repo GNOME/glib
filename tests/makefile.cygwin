@@ -1,12 +1,12 @@
-## Makefile for building the GLib test programs with Microsoft C
-## Use: nmake -f makefile.msc check
+## Makefile for building the GLib test programs with egcs on cygwin.
+## Use: make -f makefile.cygwin check
 
 ################################################################
 
 # Nothing much configurable below
 
 # cl -? described the options
-CC = cl -G5 -GF -Ox -W3 -MD -nologo
+CC = gcc -mno-cygwin -mpentium
 
 # No general LDFLAGS needes
 LDFLAGS = /link
@@ -34,20 +34,17 @@ TESTS = \
 
 all :	$(TESTS)
 
+.SUFFIXES: .c .exe
+
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -Fe$@ $< ..\glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
+	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER) -lmsvcrt
 
 check:	all
-	for %p in ($(TESTS)) do %p
+	@for P in $(TESTS) ; do echo $$P; ./$$P; done
 
 clean:
-	del *.exe
-	del *.obj
-	del *.dll
-	del *.lib
-	del *.err
-	del *.map
-	del *.sym
-	del *.exp
-	del *.pdb
+	rm *.exe
+	rm *.o
+	rm *.dll
+	rm *.exp

@@ -81,16 +81,6 @@ const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
-#if defined (NATIVE_WIN32) && defined (__LCC__)
-int __stdcall 
-LibMain (void         *hinstDll,
-	 unsigned long dwReason,
-	 void         *reserved)
-{
-  return 1;
-}
-#endif /* NATIVE_WIN32 && __LCC__ */
-
 void
 g_atexit (GVoidFunc func)
 {
@@ -736,7 +726,6 @@ g_iochannel_wakeup_peer (GIOChannel *channel)
 #endif /* Old IO Channels */
 
 #ifdef NATIVE_WIN32
-#ifdef _MSC_VER
 
 int
 gwin_ftruncate (gint  fd,
@@ -897,7 +886,5 @@ gwin_closedir (DIR *dir)
 
   return 0;
 }
-
-#endif /* _MSC_VER */
 
 #endif /* NATIVE_WIN32 */

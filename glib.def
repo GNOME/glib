@@ -56,7 +56,6 @@ EXPORTS
 	g_date_is_last_of_month
 	g_date_is_leap_year
 	g_date_julian
-	g_date_julian
 	g_date_monday_week_of_year
 	g_date_monday_weeks_in_year
 	g_date_new
@@ -377,9 +376,13 @@ EXPORTS
 	g_string_new
 	g_string_prepend
 	g_string_prepend_c
+	g_string_readline
+	g_string_readline_buffered
 	g_string_sized_new
 	g_string_sprintf
 	g_string_sprintfa
+	g_string_tokenise
+	g_string_tokenise_free
 	g_string_truncate
 	g_string_up
 	g_strjoinv

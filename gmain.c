@@ -54,11 +54,6 @@
 #include <windows.h>
 #endif /* NATIVE_WIN32 */
 
-#ifdef _MSC_VER
-#include <fcntl.h>
-#include <io.h>
-#endif /* _MSC_VER */
-
 /* Types */
 
 typedef struct _GTimeoutData GTimeoutData;
@@ -576,7 +571,7 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
 void
 g_get_current_time (GTimeVal *result)
 {
-#ifndef _MSC_VER
+#ifndef NATIVE_WIN32
   struct timeval r;
   g_return_if_fail (result != NULL);
 

@@ -64,8 +64,11 @@ g_thread_init (GThreadFunctions* init)
   else
     g_thread_use_default_impl = FALSE;
 
+#if defined (WIN32) && defined (__GNUC__)
+  memcpy(&g_thread_functions_for_glib_use, init, sizeof (*init));
+#else
   g_thread_functions_for_glib_use = *init;
-
+#endif
   /* It is important, that g_threads_got_initialized is not set before the
    * thread initialization functions of the different modules are called
    */

@@ -7,8 +7,9 @@ BIN = C:\bin
 
 # This is the location of pthreads for Win32, 
 # see http://sourceware.cygnus.com/pthreads-win32/
-PTHREAD_LIB = ..\lib\pthread.lib
-PTHREAD_INC = ..\include
+PTHREADS = ..\pthreads-snap-1999-04-07
+PTHREAD_LIB = $(PTHREADS)\pthread.lib
+PTHREAD_INC = -I $(PTHREADS)
 
 ################################################################
 
@@ -18,7 +19,7 @@ PTHREAD_INC = ..\include
 CC = cl -G5 -GF -Ox -W3 -MD -nologo
 
 # No general LDFLAGS needes
-LDFLAGS = /link
+LDFLAGS = /link 
 INSTALL = copy
 
 GLIB_VER = 1.3
@@ -88,7 +89,7 @@ config.h: config.h.win32
 gmodule_OBJECTS = \
 	gmodule.obj
 
-gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS)
+gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule\gmodule.def
 	$(CC) $(CFLAGS) -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule\gmodule.def
 
 gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c
@@ -100,11 +101,11 @@ gmodule\gmoduleconf.h: gmodule\gmoduleconf.h.win32
 gthread_OBJECTS = \
 	gthread.obj
 
-gthread-$(GLIB_VER).dll : $(gthread_OBJECTS)
-	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) glib-$(GLIB_VER).lib $(PTHREAD_LIB) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gthread\gthread.def
+gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) gthread\gthread.def
+	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) glib-$(GLIB_VER).lib $(PTHREAD_LIB) $(LDFLAGS) /def:gthread\gthread.def
 
 gthread.obj : gthread\gthread.c gthread\gthread-posix.c
-	$(CC) $(CFLAGS) -GD -I$(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread\gthread.c
+	$(CC) $(CFLAGS) -GD $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread\gthread.c
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.obj
 	$(CC) $(CFLAGS) -Fetestglib.exe testglib.obj glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:console
@@ -146,7 +147,7 @@ testgthread.exe : glib-$(GLIB_VER).dll gthread-$(GLIB_VER).dll testgthread.obj
 	$(CC) $(CFLAGS) testgthread.obj glib-$(GLIB_VER).lib gthread-$(GLIB_VER).lib $(PTHREAD_LIB) $(LDFLAGS) /subsystem:console 
 
 testgthread.obj : gthread\testgthread.c
-	$(CC) $(CFLAGS) -I$(PTHREAD_INC) -c gthread\testgthread.c
+	$(CC) $(CFLAGS) $(PTHREAD_INC) -c gthread\testgthread.c
 
 clean:
 	del config.h

@@ -1,0 +1,169 @@
+## Makefile for building the GLib, gmodule and gthread DLLs with
+## egcs on cygwin.
+## Use: make -f makefile.cygwin install
+
+# Change this to wherever you want to install the DLLs. This directory
+# should be in your PATH.
+BIN = /bin
+
+# This is the location of pthreads for Win32, 
+# see http://sourceware.cygnus.com/pthreads-win32/
+PTHREADS = ../pthreads-snap-1999-04-07
+PTHREAD_LIB = -L$(PTHREADS) -lpthread
+PTHREAD_INC = -I $(PTHREADS)
+
+################################################################
+
+# Nothing much configurable below
+
+CC = gcc -mno-cygwin -mpentium
+
+CP = cp
+LD = ld
+DLLTOOL = dlltool
+INSTALL = install
+
+GLIB_VER = 1.3
+
+CFLAGS = -g -O2 -I. -DHAVE_CONFIG_H
+
+all : \
+	glibconfig.h	\
+	config.h	\
+	glib-$(GLIB_VER).dll	\
+	gthread-$(GLIB_VER).dll \
+	gmodule/gmoduleconf.h \
+	gmodule-$(GLIB_VER).dll	\
+	testglib.exe	\
+	testgmodule.exe	\
+	testgdate.exe	\
+	testgdateparser.exe \
+	testgthread.exe
+
+install : all
+	$(INSTALL) glib-$(GLIB_VER).dll $(BIN)
+	$(INSTALL) gmodule-$(GLIB_VER).dll $(BIN)
+	$(INSTALL) gthread-$(GLIB_VER).dll $(BIN)
+
+glib_OBJECTS = \
+	garray.o	\
+	gcache.o	\
+	gcompletion.o	\
+	gdataset.o	\
+	gdate.o		\
+	gerror.o	\
+	ghook.o		\
+	ghash.o		\
+	giochannel.o	\
+	giowin32.o	\
+	glist.o		\
+	gmain.o		\
+	gmem.o		\
+	gmessages.o	\
+	gmutex.o	\
+	gnode.o		\
+	gprimes.o	\
+	gqueue.o	\
+	grand.o		\
+	gslist.o	\
+	gstack.o	\
+	gtimer.o	\
+	gtree.o		\
+	grel.o		\
+	gstring.o	\
+	gstrfuncs.o	\
+	gscanner.o	\
+	gutils.o
+
+glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+
+glibconfig.h: glibconfig.h.win32
+	$(CP) glibconfig.h.win32 glibconfig.h
+
+config.h: config.h.win32
+	$(CP) config.h.win32 config.h
+
+.c.o :
+	$(CC) $(CFLAGS) -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+gmodule_OBJECTS = \
+	gmodule.o
+
+gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule/gmodule.def
+	./build-dll gmodule $(GLIB_VER) gmodule/gmodule.def $(gmodule_OBJECTS) -L. -lglib-$(GLIB_VER) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+
+gmodule.o : gmodule/gmodule.c gmodule/gmodule-win32.c
+	$(CC) $(CFLAGS) -Igmodule -c -DG_LOG_DOMAIN=g_log_domain_gmodule gmodule/gmodule.c
+
+gmodule/gmoduleconf.h: gmodule/gmoduleconf.h.win32
+	$(CP) gmodule/gmoduleconf.h.win32 gmodule/gmoduleconf.h
+
+gthread_OBJECTS = \
+	gthread.o
+
+gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) glib-$(GLIB_VER).dll gthread/gthread.def
+	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB) -lmsvcrt -lkernel32 -luser32 -ladvapi32 -lwsock32
+
+gthread.o : gthread/gthread.c gthread/gthread-posix.c
+	$(CC) $(CFLAGS) $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread/gthread.c
+
+testglib.exe : glib-$(GLIB_VER).dll testglib.o
+	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+
+testglib.o : testglib.c
+	$(CC) -c $(CFLAGS) testglib.c
+
+testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
+	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+
+testgdate.o : testgdate.c
+	$(CC) -c $(CFLAGS) testgdate.c
+
+testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.o
+	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L. -lglib-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+
+testgdateparser.o : testgdateparser.c
+	$(CC) -c $(CFLAGS) testgdateparser.c
+
+testgmodule.exe : glib-$(GLIB_VER).dll gmodule-$(GLIB_VER).dll testgmodule.o libgplugin_a.dll libgplugin_b.dll
+# Wow, do we really have to do it like this to get some symbols
+# exported from a .exe? Apparently yes. Does the __declspec(dllexport) 
+# actually do anything in egcs-1.1.2?
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
+	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt $(LDFLAGS)
+
+testgmodule.o : gmodule/testgmodule.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule/testgmodule.c
+
+libgplugin_a.dll : libgplugin_a.o
+	./build-dll libgplugin_a - - libgplugin_a.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt
+
+libgplugin_a.o : gmodule/libgplugin_a.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_a.c
+
+libgplugin_b.dll : libgplugin_b.o
+	./build-dll libgplugin_b - - libgplugin_b.o -L. -lglib-$(GLIB_VER) -lgmodule-$(GLIB_VER) -lmsvcrt
+
+libgplugin_b.o : gmodule/libgplugin_b.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_b.c
+
+testgthread.exe : glib-$(GLIB_VER).dll gthread-$(GLIB_VER).dll testgthread.o
+	$(CC) $(CFLAGS) -o testgthread.exe testgthread.o -L. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER) $(PTHREAD_LIB) $(LDFLAGS)
+
+testgthread.o : gthread/testgthread.c
+	$(CC) $(CFLAGS) $(PTHREAD_INC) -c gthread/testgthread.c
+
+clean:
+	-rm config.h
+	-rm glibconfig.h
+	-rm gmodule/gmoduleconf.h
+	-rm *.exe
+	-rm *.o
+	-rm *.dll
+	-rm *.a
+	-rm *.base
+	-rm *.exp
