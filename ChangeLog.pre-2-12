@@ -1,3 +1,8 @@
+Wed Dec  1 17:04:37 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gstring.h (g_string_append_c_inline): actually enable (and
+	fix up the length test).
+
 2004-11-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/Makefile.am (glib.def): gcc -E complains "linker input file

@@ -122,7 +122,7 @@ static inline GString*
 g_string_append_c_inline (GString *gstring,
                           gchar    c)
 {
-  if (gstring->len < gstring->allocated_len && 0)
+  if (gstring->len + 1 < gstring->allocated_len)
     {
       gstring->str[gstring->len++] = c;
       gstring->str[gstring->len] = 0;
