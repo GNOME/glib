@@ -879,6 +879,15 @@ Joins a number of strings together to form one long string, with the optional
 together, with @separator between them.
 
 
+<!-- ##### FUNCTION g_strv_length ##### -->
+<para>
+
+</para>
+
+@str_array: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strerror ##### -->
 <para>
 Returns a string corresponding to the given error code, e.g. "no such process".

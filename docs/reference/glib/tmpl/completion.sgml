@@ -15,7 +15,8 @@ A #GCompletion is created using g_completion_new().
 Target items are added and removed with
 g_completion_add_items(), g_completion_remove_items() and
 g_completion_clear_items().
-A completion attempt is requested with g_completion_complete().
+A completion attempt is requested with g_completion_complete() or 
+g_completion_complete_utf8().
 When no longer needed, the #GCompletion is freed with g_completion_free().
 </para>
 <para>
@@ -40,7 +41,8 @@ The data structure used for automatic completion.
 @items: list of target items (strings or data structures).
 @func: function which is called to get the string associated with a target 
   item. It is %NULL if the target items are strings.
-@prefix: the last prefix passed to g_completion_complete().
+@prefix: the last prefix passed to g_completion_complete() or 
+  g_completion_complete_utf8().
 @cache: the list of items which begin with @prefix.
 @strncmp_func: 
 

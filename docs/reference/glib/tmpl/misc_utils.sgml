@@ -123,13 +123,29 @@ returned.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_get_home_dir ##### -->
 <para>
 Gets the current user's home directory. 
 </para>
 <para>
 Note that in contrast to traditional Unix tools, this function 
-prefers <filename>passwd</filename> entries over the <envar>HOME<envar> 
+prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 
 environment variable.
 </para>
 

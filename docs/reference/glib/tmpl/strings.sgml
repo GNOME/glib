@@ -155,6 +155,8 @@ Adds a character onto the end of a #GString, expanding it if necessary.
 @string: a #GString.
 @c: the character to append onto the end of the #GString.
 @Returns: the #GString.
+<!-- # Unused Parameters # -->
+@gstr: 
 
 
 <!-- ##### FUNCTION g_string_append_unichar ##### -->

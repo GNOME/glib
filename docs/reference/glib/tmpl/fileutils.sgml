@@ -94,7 +94,7 @@ differences in when a system will report a given error, etc.
      file (or other resource) or processes with special privileges can
      perform the operation.
 @G_FILE_ERROR_NOSYS: Function not implemented; this indicates that the
-    system is missing some functionality.  
+    system is missing some functionality.
 @G_FILE_ERROR_FAILED: Does not correspond to a UNIX error code; this
   is the standard "failed for unspecified reason" error code present in 
   all #GError error code enumerations. Returned if no specific

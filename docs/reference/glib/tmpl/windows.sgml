@@ -38,16 +38,6 @@ in any UNIX manual.
 @phandles: 
 
 
-<!-- ##### MACRO ftruncate ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for <function>ftruncate()</function>
-in any UNIX manual.
-</para>
-
-@fd: 
-@size: 
-
-
 <!-- ##### FUNCTION g_win32_error_message ##### -->
 <para>
 

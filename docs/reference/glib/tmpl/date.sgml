@@ -614,6 +614,15 @@ to be a Sunday.)
 @Returns: number of weeks.
 
 
+<!-- ##### FUNCTION g_date_get_iso8601_week_of_year ##### -->
+<para>
+
+</para>
+
+@date: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_date_strftime ##### -->
 <para>
 Generates a printed representation of the date, in a locale-specific
