@@ -479,12 +479,6 @@ g_get_any_init (void)
 	
 #  else /* !HAVE_GETPWUID_R */
 
-#    ifdef G_THREADS_ENABLED
-#    warning "the `g_get_(user_name|real_name|home_dir|tmp_dir)'"
-#    warning "functions will not be MT-safe during their first call"
-#    warning "because there is no `getpwuid_r' on your system."
-#    endif /* G_THREADS_ENABLED */
-
 	setpwent ();
 	pw = getpwuid (getuid ());
 	endpwent ();

@@ -1,3 +1,9 @@
+Sat Jan 23 20:40:06 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* gutils.c: removed the #warning about MT without getpwuid_r
+
+	* configure.in: and moved it here
+
 Sat Jan 23 22:45:59 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* ghash.c (g_hash_table_lookup_node, g_hash_table_lookup,

@@ -570,6 +570,10 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
 		provide informationon your thread implementation."
 
+FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
+		functions will not be MT-safe during their first call because
+		there is no 'getpwuid_r' on your system."
+
 dnl determination of thread implementation
 dnl ***************************************
 
@@ -704,6 +708,12 @@ if test x"$have_threads" != xnone; then
 		fi
 	fi
 	LIBS="$glib_save_LIBS"
+fi
+
+if test "x$enable_threads" = "xyes"; then
+	if test "$ac_cv_func_getpwuid_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
+	fi
 fi
 
 dnl determination of G_THREAD_CFLAGS
