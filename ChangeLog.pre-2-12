@@ -1,3 +1,8 @@
+Thu Jul  8 00:54:32 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gi18n.h: Remove the ENABLE_NLS check, since GLib can't
+	be built without anyway.  (#135899, Murray Cumming)
+
 Mon Jul  5 18:50:27 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.h (g_debug): Complete the g_log() 
