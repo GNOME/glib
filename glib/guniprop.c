@@ -560,7 +560,7 @@ output_marks (const char **p_inout,
       if (ISMARK(t))
 	{
 	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
-	    len += g_unichar_to_utf8 (c, out_buffer);
+	    len += g_unichar_to_utf8 (c, out_buffer ? out_buffer + len : NULL);
 	  p = g_utf8_next_char (p);
 	}
       else
