@@ -1,3 +1,7 @@
+2004-07-20  Crispin Flowerday  <gnome@flowerday.cx>
+
+	* NEWS: Fix a typo in my name
+
 Tue Jul 20 04:31:40 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* configure.in: Bump version number
