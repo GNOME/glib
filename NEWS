@@ -1,3 +1,8 @@
+Overview of Changes in GLib 1.2.4:
+
+* Upgrade to libtool 1.3.3.
+* Minor portability fixes.
+
 Overview of Changes in GLib 1.2.3:
 
 * Minor fixes.

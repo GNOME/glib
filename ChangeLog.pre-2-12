@@ -1,3 +1,17 @@
+Mon Aug 23 18:29:45 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: update version to 1.2.4, interface age 4, binary age 4.
+
+	* NEWS: updates.
+
+	* Makefile.am: require automake 1.4, build README from README.in and
+        INSTALL from INSTALL.in in dist-hook.
+        
+        * README.in:
+	* INSTALL.in: new files to autogenerate README and INSTALL from.
+	
+	* COPYING: update to the GNU LESSER GENERAL PUBLIC LICENSE.
+
 Thursday July 29, 1999 Elliot Lee <sopwith@redhat.com>
 
 	* Makefile.am, tests/Makefile.am: Distribution the .in versions
