@@ -1,3 +1,20 @@
+2003-03-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.c (g_main_context_find_source_by_id): 
+	(g_main_context_find_source_by_funcs_user_data): Fix FALSE/NULL
+	confusion.  (#107646, Morten Welinder)
+
+2003-02-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h: 
+	* glib/gmem.h: 
+	* glib/ghash.h: 
+	* glib/gasyncqueue.h: 
+	* glib/garray.h: 
+	* glib/ghook.h: 
+	* glib/gtypes.h: Fix a bunch of typos in header comments.
+	(#102422, Morten Welinder)
+
 2003-03-05  James Henstridge  <james@daa.com.au>
 
 	* po/Makefile.in.in: merge changes from trunk, to allow "make
