@@ -1,3 +1,8 @@
+2005-03-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_find_program_in_path): Mark the last
+	paragraph of the docs as Windows-specific.  (#169433)
+
 2005-03-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmarkup.c: Add G_GNUC_PRINTF attribute
