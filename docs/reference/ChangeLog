@@ -1,3 +1,8 @@
+2001-11-12  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/markup.sgml: Remove excess listitem from long 
+	description.
+ 
 2001-11-11  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/unicode.sgml: Document GNormalizeMode enum.
