@@ -342,6 +342,8 @@ find_file_in_data_dirs (const gchar   *file,
   if (output_file != NULL && fd > 0)
     *output_file = g_strdup (path);
 
+  g_free (path);
+
   return fd;
 }
 
