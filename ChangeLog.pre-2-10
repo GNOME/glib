@@ -1,3 +1,12 @@
+2000-09-28  Havoc Pennington  <hp@pobox.com>
+
+	* glib.h (GThreadPriority): fix indentation
+	(GConvertError): generic error is conventionally called
+	_FAILED rather than _OTHER, at least at the moment, 
+	according to GError docs in docs/reference.
+	
+	* gconvert.c: s/_OTHER/_FAILED/
+	
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Adjusted the test for an unimplemented

@@ -50,7 +50,7 @@ open_converter (const gchar *to_codeset,
 		     "Conversion from character set `%s' to `%s' is not supported",
 		     from_codeset, to_codeset);
       else
-        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_OTHER,
+        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 		     "Could not open converter from `%s' to `%s': %s",
 		     from_codeset, to_codeset, strerror (errno));
     }
@@ -155,7 +155,7 @@ g_convert (const gchar *str,
 	  have_error = TRUE;
 	  break;
 	default:
-	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_OTHER,
+	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 		       "Error during conversion: %s",
 		       strerror (errno));
 	  have_error = TRUE;
@@ -353,7 +353,7 @@ g_convert_with_fallback (const gchar *str,
 		}
 	      break;
 	    default:
-	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_OTHER,
+	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 			   "Error during conversion: %s",
 			   strerror (errno));
 	      have_error = TRUE;

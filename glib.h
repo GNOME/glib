@@ -3079,10 +3079,10 @@ typedef void		(*GThreadFunc)		(gpointer	value);
 
 typedef enum
 {
-    G_THREAD_PRIORITY_LOW,
-    G_THREAD_PRIORITY_NORMAL,
-    G_THREAD_PRIORITY_HIGH,
-    G_THREAD_PRIORITY_URGENT
+  G_THREAD_PRIORITY_LOW,
+  G_THREAD_PRIORITY_NORMAL,
+  G_THREAD_PRIORITY_HIGH,
+  G_THREAD_PRIORITY_URGENT
 } GThreadPriority;
 
 typedef struct _GThread         GThread;
@@ -3442,7 +3442,7 @@ typedef enum
 {
   G_CONVERT_ERROR_NO_CONVERSION,
   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-  G_CONVERT_ERROR_OTHER
+  G_CONVERT_ERROR_FAILED
 } GConvertError;
 
 #define G_CONVERT_ERROR g_convert_error_quark()
