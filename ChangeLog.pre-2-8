@@ -1,3 +1,37 @@
+2002-11-17  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn-win32.c (g_spawn_async_with_pipes): Ignore the
+	G_SPAWN_DO_NOT_REAP_CHILD flag, can't be meaninfully implemented
+	on Windows, at least not now. Always pass dont_wait as TRUE to
+	do_spawn_with_pipes(). The semantics of the dont_wait parameter is
+	very different from the semantics of the intermediate_child
+	parameter to fork_exec_with_pipes() in the Unix version. This
+	fixes a serious bug, g_spawn_async() in fact behaved
+	synchronously.
+
+	(do_spawn_with_pipes, do_spawn): Rename from
+	fork_exec_with_pipes() and do_exec(), those names were from the
+	Unix bersion, and misleading.
+
+	(close_and_invalidate): Don't try to close invalid fds.
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Add warning about
+	Windows behaviour. There is no fork(), so the child_setup()
+	function is in fact called in the parent.
+	
+	* glib/gspawn-win32-helper.c (WinMain): Insert spaces in argv
+	debugging output.
+
+	* tests/spawn-test-win32-gui.c: New file. Test program to be
+	linked as a GUI application. Behaves differently depending on how
+	invoked (by spawn-test).
+
+	* tests/spawn-test.c (run_tests): On Win32, run the
+	spawn-test-win32-gui program, too, in several ways, synchronously
+	and asynchronously.
+
+	* tests/Makefile.am: Corresponding change.
+
 Fri Nov  8 19:44:20 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* docs/reference/glib/tmpl/arrays.sgml:

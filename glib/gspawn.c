@@ -462,13 +462,20 @@ g_spawn_sync (const gchar          *working_directory,
  * g_spawn_async_with_pipes() uses @argv[0] as the file to execute, and
  * passes all of @argv to the child.
  *
- * @child_setup and @user_data are a function and user data to be
- * called in the child after GLib has performed all the setup it plans
- * to perform (including creating pipes, closing file descriptors,
- * etc.) but before calling <function>exec()</function>. That is, 
- * @child_setup is called just before calling <function>exec()</function> 
- * in the child. Obviously actions taken in this function will only affect 
- * the child, not the parent. 
+ * @child_setup and @user_data are a function and user data. On POSIX
+ * platforms, the function is called in the child after GLib has
+ * performed all the setup it plans to perform (including creating
+ * pipes, closing file descriptors, etc.) but before calling
+ * <function>exec()</function>. That is, @child_setup is called just
+ * before calling <function>exec()</function> in the child. Obviously
+ * actions taken in this function will only affect the child, not the
+ * parent. On Windows, there is no separate
+ * <function>fork()</function> and <function>exec()</function>
+ * functionality. Child processes are created and run right away with
+ * one API call, <function>CreateProcess()</function>. @child_setup is
+ * called in the parent process just before creating the child
+ * process. You should carefully consider what you do in @child_setup
+ * if you intend your software to be portable to Windows.
  *
  * If non-%NULL, @child_pid will be filled with the child's process
  * ID. You can use the process ID to send signals to the child, or

@@ -98,7 +98,7 @@ enum {
 
 static gboolean make_pipe            (gint                  p[2],
                                       GError              **error);
-static gboolean fork_exec_with_pipes (gboolean              dont_wait,
+static gboolean do_spawn_with_pipes  (gboolean              dont_wait,
 				      const gchar          *working_directory,
                                       gchar               **argv,
                                       gchar               **envp,
@@ -155,8 +155,13 @@ close_and_invalidate (gint *fd)
 {
   gint ret;
 
-  ret = close (*fd);
-  *fd = -1;
+  if (*fd < 0)
+    return -1;
+  else
+    {
+      ret = close (*fd);
+      *fd = -1;
+    }
 
   return ret;
 }
@@ -174,7 +179,7 @@ read_data (GString     *str,
            GError     **error)
 {
   GIOStatus giostatus;
-  gint bytes;
+  gssize bytes;
   gchar buf[4096];
 
  again:
@@ -246,22 +251,22 @@ g_spawn_sync (const gchar          *working_directory,
   if (standard_error)
     *standard_error = NULL;
   
-  if (!fork_exec_with_pipes (FALSE,
-                             working_directory,
-                             argv,
-                             envp,
-                             !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                             (flags & G_SPAWN_SEARCH_PATH) != 0,
-                             (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                             child_setup,
-                             user_data,
-                             NULL,
-                             standard_output ? &outpipe : NULL,
-                             standard_error ? &errpipe : NULL,
-			     &status,
-                             error))
+  if (!do_spawn_with_pipes (FALSE,
+			    working_directory,
+			    argv,
+			    envp,
+			    !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+			    (flags & G_SPAWN_SEARCH_PATH) != 0,
+			    (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
+			    (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
+			    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+			    child_setup,
+			    user_data,
+			    NULL,
+			    standard_output ? &outpipe : NULL,
+			    standard_error ? &errpipe : NULL,
+			    &status,
+			    error))
     return FALSE;
 
   /* Read data from child. */
@@ -435,22 +440,22 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
   g_return_val_if_fail (standard_input == NULL ||
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
   
-  return fork_exec_with_pipes (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
-                               working_directory,
-                               argv,
-                               envp,
-                               !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                               (flags & G_SPAWN_SEARCH_PATH) != 0,
-                               (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                               (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                               (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                               child_setup,
-                               user_data,
-                               standard_input,
-                               standard_output,
-                               standard_error,
-			       NULL,
-                               error);
+  return do_spawn_with_pipes (TRUE,
+			      working_directory,
+			      argv,
+			      envp,
+			      !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+			      (flags & G_SPAWN_SEARCH_PATH) != 0,
+			      (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
+			      (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
+			      (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+			      child_setup,
+			      user_data,
+			      standard_input,
+			      standard_output,
+			      standard_error,
+			      NULL,
+			      error);
 }
 
 gboolean
@@ -513,21 +518,21 @@ g_spawn_command_line_async (const gchar *command_line,
 }
 
 static gint
-do_exec (gboolean              dont_wait,
-	 gint                  child_err_report_fd,
-         gint                  stdin_fd,
-         gint                  stdout_fd,
-         gint                  stderr_fd,
-         const gchar          *working_directory,
-         gchar               **argv,
-         gchar               **envp,
-         gboolean              close_descriptors,
-         gboolean              search_path,
-         gboolean              stdout_to_null,
-         gboolean              stderr_to_null,
-         gboolean              child_inherits_stdin,
-         GSpawnChildSetupFunc  child_setup,
-         gpointer              user_data)
+do_spawn (gboolean              dont_wait,
+	  gint                  child_err_report_fd,
+	  gint                  stdin_fd,
+	  gint                  stdout_fd,
+	  gint                  stderr_fd,
+	  const gchar          *working_directory,
+	  gchar               **argv,
+	  gchar               **envp,
+	  gboolean              close_descriptors,
+	  gboolean              search_path,
+	  gboolean              stdout_to_null,
+	  gboolean              stderr_to_null,
+	  gboolean              child_inherits_stdin,
+	  GSpawnChildSetupFunc  child_setup,
+	  gpointer              user_data)
 {
   gchar **new_argv;
   gchar args[ARG_COUNT][10];
@@ -704,22 +709,22 @@ read_ints (int      fd,
 }
 
 static gboolean
-fork_exec_with_pipes (gboolean              dont_wait,
-                      const gchar          *working_directory,
-                      gchar               **argv,
-                      gchar               **envp,
-                      gboolean              close_descriptors,
-                      gboolean              search_path,
-                      gboolean              stdout_to_null,
-                      gboolean              stderr_to_null,
-		      gboolean              child_inherits_stdin,
-                      GSpawnChildSetupFunc  child_setup,
-                      gpointer              user_data,
-                      gint                 *standard_input,
-                      gint                 *standard_output,
-                      gint                 *standard_error,
-		      gint                 *exit_status,
-                      GError              **error)     
+do_spawn_with_pipes (gboolean              dont_wait,
+		     const gchar          *working_directory,
+		     gchar               **argv,
+		     gchar               **envp,
+		     gboolean              close_descriptors,
+		     gboolean              search_path,
+		     gboolean              stdout_to_null,
+		     gboolean              stderr_to_null,
+		     gboolean              child_inherits_stdin,
+		     GSpawnChildSetupFunc  child_setup,
+		     gpointer              user_data,
+		     gint                 *standard_input,
+		     gint                 *standard_output,
+		     gint                 *standard_error,
+		     gint                 *exit_status,
+		     GError              **error)     
 {
   gint stdin_pipe[2] = { -1, -1 };
   gint stdout_pipe[2] = { -1, -1 };
@@ -741,21 +746,21 @@ fork_exec_with_pipes (gboolean              dont_wait,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
-  status = do_exec (dont_wait,
-		    child_err_report_pipe[1],
-		    stdin_pipe[0],
-		    stdout_pipe[1],
-		    stderr_pipe[1],
-		    working_directory,
-		    argv,
-		    envp,
-		    close_descriptors,
-		    search_path,
-		    stdout_to_null,
-		    stderr_to_null,
-		    child_inherits_stdin,
-		    child_setup,
-		    user_data);
+  status = do_spawn (dont_wait,
+		     child_err_report_pipe[1],
+		     stdin_pipe[0],
+		     stdout_pipe[1],
+		     stderr_pipe[1],
+		     working_directory,
+		     argv,
+		     envp,
+		     close_descriptors,
+		     search_path,
+		     stdout_to_null,
+		     stderr_to_null,
+		     child_inherits_stdin,
+		     child_setup,
+		     user_data);
       
   if (!read_ints (child_err_report_pipe[0],
 		  buf, 2, &n_ints,

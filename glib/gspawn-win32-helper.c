@@ -209,7 +209,11 @@ WinMain (struct HINSTANCE__ *hInstance,
 					__argv[ARG_PROGRAM]));
       i = ARG_PROGRAM+1;
       while (__argv[i])
-	g_string_append (debugstring, __argv[i++]);
+	{
+	  g_string_append (debugstring, __argv[i++]);
+	  if (__argv[i])
+	    g_string_append (debugstring, " ");
+	}
       MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
     }
 
