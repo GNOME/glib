@@ -233,7 +233,7 @@ g_bit_nth_lsf (gulong mask,
       if (mask & (1 << (gulong) nth_bit))
 	return nth_bit;
     }
-  while (nth_bit < 32);
+  while (nth_bit < 31);
   return -1;
 }
 G_INLINE_FUNC gint

@@ -89,7 +89,7 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
 
       AC_CHECK_HEADER(libintl.h,
         [AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
-	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgettext ("","")],
+	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgWettext ("","")],
 	    gt_cv_func_dgettext_libc=yes, gt_cv_func_dgettext_libc=no)])
 
           gt_cv_func_dgettext_libintl="no"
@@ -101,7 +101,8 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
                             gt_cv_func_dgettext_libintl=yes)])
 
 	    if test "$gt_cv_func_dgettext_libc" != "yes" ; then
-              AC_MSG_NOTICE([Seeing if -liconv is needed to use gettext])
+              AC_MSG_CHECKING([if -liconv is needed to use gettext])
+              AC_MSG_RESULT([])
               AC_CHECK_LIB(intl, dcgettext,
                            [gt_cv_func_dgettext_libintl=yes
                             libintl_extra_libs=-liconv],

@@ -75,7 +75,6 @@ you do not have to worry about having enough space to copy the string.
 @string: the destination #GString. Its current contents are destroyed.
 @rval:  the string to copy into @string.
 @Returns: the destination #GString.
-<!-- # Unused Parameters # -->
 
 
 <!-- ##### MACRO g_string_sprintf ##### -->

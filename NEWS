@@ -1,3 +1,21 @@
+Overview of Changes in GLib 2.0.2
+=================================
+
+* Handle sorting 0-length arrays (Ron Arts)
+* Threading fixes (Sebastian Wilhelmi)
+* Portability fixes (Miroslaw Dobrzanski-Neumann, Jacob Berkman, Gareth Pierce, 
+  Sebastian, Qingjiang Yuan)
+* Various fixes for glib-2.0.m4. (Jim Gettys, others.)
+* Locate right glib-genmarshal when cross-compiling. (Mitch Natterer)
+* Win32 fixes (Tor Lillqvist)
+* Try to fix g_get_charset() related segfaults. (Owen)
+* Fixes for gettext detection. (Dan Winship, HideToshi Tajima, Boyd Lynn Gerber,
+  Andrew P. Lentvorski, Jr.)
+* Fix g_scanner_unexp_token() (Tim Janik, Sven Neumann)
+* g_markup fixes. (Matthias Clasen.)
+* Bug fixes and cleanups (Daniel Elstner, Matthias, Laszlo Peter, Morten Welinder,
+  Wayne Schuller)
+
 Overview of Changes in GLib 2.0.1
 =================================
 
