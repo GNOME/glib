@@ -304,8 +304,6 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 @G_UNICODE_BREAK_COMPLEX_CONTEXT: 
 @G_UNICODE_BREAK_AMBIGUOUS: 
 @G_UNICODE_BREAK_UNKNOWN: 
-@G_UNICODE_BREAK_NEXT_LINE: 
-@G_UNICODE_BREAK_WORD_JOINER: 
 
 <!-- ##### FUNCTION g_unichar_break_type ##### -->
 <para>
