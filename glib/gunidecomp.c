@@ -41,9 +41,9 @@
 /* Compute the canonical ordering of a string in-place.  */
 void
 g_unicode_canonical_ordering (gunichar *string,
-			      size_t len)
+			      gsize     len)
 {
-  size_t i;
+  gsize i;
   int swap = 1;
 
   while (swap)
@@ -56,7 +56,7 @@ g_unicode_canonical_ordering (gunichar *string,
 	  int next = COMBINING_CLASS (string[i + 1]);
 	  if (next != 0 && last > next)
 	    {
-	      size_t j;
+	      gsize j;
 	      /* Percolate item leftward through string.  */
 	      for (j = i; j > 0; --j)
 		{
@@ -123,7 +123,7 @@ find_decomposition (gunichar ch,
 
 gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
-				   size_t  *result_len)
+				   gsize   *result_len)
 {
   guchar *decomp = find_decomposition (ch, FALSE);
   gunichar *r;
@@ -263,7 +263,7 @@ _g_utf8_normalize_wc (const gchar    *str,
       gunichar wc = g_utf8_get_char (p);
       guchar *decomp;
       int cc;
-      size_t old_n_wc = n_wc;
+      gsize old_n_wc = n_wc;
 	  
       decomp = find_decomposition (wc, do_compat);
 	  

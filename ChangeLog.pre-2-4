@@ -1,3 +1,17 @@
+Fri Jul 20 14:11:29 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gutf8.c glib/gunidecomp.c: s/size_t/gsize/ to match
+	prototypes.
+
+Thu Jul 19 16:05:21 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gcompletion.c (g_completion_complete): Fix memory
+	leak and dubious list manipulation. (Found by 
+	Ron Koerner, #53408)
+
+	* glib/gfileutils.c (get_contents_stdio): Call fclose()
+	on FILE * on error. (#57057)
+
 2001-07-20  Hans Breuer  <hans@breuer.org>
 
 	* glib/glib/giowin32.c : make it compile again
@@ -127,7 +141,6 @@ Fri Jul  6 22:34:32 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: added Basque (eu) to ALL_LINGUAS
 
->>>>>>> 1.757
 Mon Jul  2 19:48:52  2001 Andrew Lanoix <alanoix@umich.edu>
 
 	*giowin32.c: g_source_remove()ing an socket iochannel closes

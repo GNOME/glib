@@ -328,7 +328,9 @@ g_utf8_pointer_to_offset (const gchar *str,
  * Return value: @dest
  **/
 gchar *
-g_utf8_strncpy (gchar *dest, const gchar *src, size_t n)
+g_utf8_strncpy (gchar       *dest,
+		const gchar *src,
+		gsize        n)
 {
   const gchar *s = src;
   while (n && *s)
