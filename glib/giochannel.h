@@ -120,12 +120,12 @@ struct _GIOChannel
 
   /* Group the flags together, immediately after partial_write_buf, to save memory */
 
-  gboolean use_buffer : 1;	/* The encoding uses the buffers */
-  gboolean do_encode : 1;	/* The encoding uses the GIConv coverters */
-  gboolean close_on_unref : 1;	/* Close the channel on final unref */
-  gboolean is_readable : 1;	/* Cached GIOFlag */
-  gboolean is_writeable : 1;	/* ditto */
-  gboolean is_seekable : 1;	/* ditto */
+  guint use_buffer     : 1;	/* The encoding uses the buffers */
+  guint do_encode      : 1;	/* The encoding uses the GIConv coverters */
+  guint close_on_unref : 1;	/* Close the channel on final unref */
+  guint is_readable    : 1;	/* Cached GIOFlag */
+  guint is_writeable   : 1;	/* ditto */
+  guint is_seekable    : 1;	/* ditto */
 };
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
