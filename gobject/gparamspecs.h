@@ -155,14 +155,14 @@ struct _GParamSpecEnum
   GParamSpec    parent_instance;
   
   GEnumClass   *enum_class;
-  glong         default_value;
+  gint          default_value;
 };
 struct _GParamSpecFlags
 {
   GParamSpec    parent_instance;
   
   GFlagsClass  *flags_class;
-  gulong        default_value;
+  guint         default_value;
 };
 struct _GParamSpecFloat
 {

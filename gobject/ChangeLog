@@ -1,3 +1,8 @@
+Thu Jun 21 02:43:10 2001  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.h: s/long/int/ for default_value in enum and flags
+	pspecs.
+
 Wed Jun 20 03:59:42 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: added debugging variants g_type_name_from_class(),
