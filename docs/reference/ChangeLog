@@ -1,3 +1,8 @@
+2004-07-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/misc_utils.sgml: Clarify docs for 
+	g_get_real_name().  (#143552, Danek Duvall)
+
 Fri Jul 23 10:38:24 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/limits.sgml: Fix docs for G_MAXSIZE.  (#148262, 

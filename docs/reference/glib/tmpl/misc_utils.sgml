@@ -92,7 +92,8 @@ Gets the user name of the current user.
 <para>
 Gets the real name of the user. This usually comes from the user's entry in the
 <filename>passwd</filename> file. The encoding of the returned string is system
-defined.
+defined. If the real user name cannot be determined, the string "Unknown" is 
+returned.
 </para>
 
 @Returns: the user's real name.
