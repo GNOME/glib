@@ -68,7 +68,7 @@ static GStaticRWLock            type_rw_lock = G_STATIC_RW_LOCK_INIT;
 #define G_WRITE_UNLOCK(rw_lock) g_static_rw_lock_writer_unlock (rw_lock)
 #define	INVALID_RECURSION(func, arg, type_name) G_STMT_START{ \
     static const gchar *_action = " invalidly modified type "; \
-    gpointer _arg = (gpointer) (arg); gchar *_tname = (type_name), *_fname = (func); \
+    gpointer _arg = (gpointer) (arg); const gchar *_tname = (type_name), *_fname = (func); \
     if (_arg) \
       g_error ("%s(%p)%s`%s'", _fname, _arg, _action, _tname); \
     else \
@@ -145,7 +145,7 @@ struct _TypeNode
 #define MAX_N_IFACES    	(511)
 #define NODE_TYPE(node)         (node->supers[0])
 #define NODE_PARENT_TYPE(node)  (node->supers[1])
-#define NODE_NAME(node)         (g_quark_to_string (node->qname))
+#define NODE_NAME(node)         ((gchar*)g_quark_to_string (node->qname))
 
 struct _IFaceHolder
 {
@@ -431,13 +431,13 @@ type_descriptive_name_L (GType type)
 static inline gchar*
 type_descriptive_name_U (GType type)
 {
-  gchar *name;
+  const gchar *name;
   
   G_READ_LOCK (&type_rw_lock);
   name = type_descriptive_name_L (type);
   G_READ_UNLOCK (&type_rw_lock);
   
-  return name;
+  return (gchar *)name;
 }
 
 
@@ -1816,7 +1816,7 @@ g_type_value_table_peek (GType type)
   return vtable;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_type_name (GType type)
 {
   TypeNode *node;
@@ -2409,7 +2409,7 @@ g_type_init (GTypeDebugFlags debug_flags)
 {
   G_LOCK_DEFINE_STATIC (type_init_lock);
   static TypeNode *type0_node = NULL;
-  gchar *env_string;
+  const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
   GType type;

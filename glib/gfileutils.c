@@ -618,7 +618,7 @@ g_file_open_tmp (const char *tmpl,
 		 GError    **error)
 {
   int retval;
-  char *tmpdir;
+  const char *tmpdir;
   char *sep;
   char *fulltemplate;
 

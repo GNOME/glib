@@ -735,7 +735,7 @@ g_value_set_static_string (GValue      *value,
   value->data[0].v_pointer = (gchar*) v_string;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_value_get_string (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_STRING (value), NULL);

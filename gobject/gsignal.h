@@ -88,55 +88,56 @@ struct _GSignalQuery
 
 
 /* --- signals --- */
-guint	g_signal_newv			      (const gchar	 *signal_name,
-					       GType		  itype,
-					       GSignalFlags	  signal_flags,
-					       GClosure		 *class_closure,
-					       GSignalAccumulator accumulator,
-					       GSignalCMarshaller c_marshaller,
-					       GType		  return_type,
-					       guint		  n_params,
-					       GType		 *param_types);
-guint	g_signal_new_valist                   (const gchar	 *signal_name,
-					       GType		  itype,
-					       GSignalFlags	  signal_flags,
-					       GClosure		 *class_closure,
-					       GSignalAccumulator accumulator,
-					       GSignalCMarshaller c_marshaller,
-					       GType		  return_type,
-					       guint		  n_params,
-					       va_list            args);
-guint	g_signal_newc			      (const gchar	 *signal_name,
-					       GType		  itype,
-					       GSignalFlags	  signal_flags,
-                                               guint              class_offset,
-					       GSignalAccumulator accumulator,
-					       GSignalCMarshaller c_marshaller,
-					       GType		  return_type,
-					       guint		  n_params,
-					       ...);
-void	g_signal_emitv			      (const GValue	 *instance_and_params,
-					       guint		  signal_id,
-					       GQuark		  detail,
-					       GValue		 *return_value);
-void	g_signal_emit_valist		      (gpointer		  instance,
-					       guint		  signal_id,
-					       GQuark		  detail,
-					       va_list		  var_args);
-void	g_signal_emit			      (gpointer		  instance,
-					       guint		  signal_id,
-					       GQuark		  detail,
-					       ...);
-void	g_signal_emit_by_name		      (gpointer		  instance,
-					       const gchar	 *detailed_signal,
-					       ...);
-guint	g_signal_lookup			      (const gchar	 *name,
-					       GType		  itype);
-gchar*	g_signal_name			      (guint		  signal_id);
-void	g_signal_query			      (guint		  signal_id,
-					       GSignalQuery	 *query);
-guint*	g_signal_list_ids		      (GType		  itype,
-					       guint		 *n_ids);
+guint                 g_signal_newv         (const gchar        *signal_name,
+					     GType               itype,
+					     GSignalFlags        signal_flags,
+					     GClosure           *class_closure,
+					     GSignalAccumulator  accumulator,
+					     GSignalCMarshaller  c_marshaller,
+					     GType               return_type,
+					     guint               n_params,
+					     GType              *param_types);
+guint                 g_signal_new_valist   (const gchar        *signal_name,
+					     GType               itype,
+					     GSignalFlags        signal_flags,
+					     GClosure           *class_closure,
+					     GSignalAccumulator  accumulator,
+					     GSignalCMarshaller  c_marshaller,
+					     GType               return_type,
+					     guint               n_params,
+					     va_list             args);
+guint                 g_signal_newc         (const gchar        *signal_name,
+					     GType               itype,
+					     GSignalFlags        signal_flags,
+					     guint               class_offset,
+					     GSignalAccumulator  accumulator,
+					     GSignalCMarshaller  c_marshaller,
+					     GType               return_type,
+					     guint               n_params,
+					     ...);
+void                  g_signal_emitv        (const GValue       *instance_and_params,
+					     guint               signal_id,
+					     GQuark              detail,
+					     GValue             *return_value);
+void                  g_signal_emit_valist  (gpointer            instance,
+					     guint               signal_id,
+					     GQuark              detail,
+					     va_list             var_args);
+void                  g_signal_emit         (gpointer            instance,
+					     guint               signal_id,
+					     GQuark              detail,
+					     ...);
+void                  g_signal_emit_by_name (gpointer            instance,
+					     const gchar        *detailed_signal,
+					     ...);
+guint                 g_signal_lookup       (const gchar        *name,
+					     GType               itype);
+G_CONST_RETURN gchar* g_signal_name         (guint               signal_id);
+void                  g_signal_query        (guint               signal_id,
+					     GSignalQuery       *query);
+guint*                g_signal_list_ids     (GType               itype,
+					     guint              *n_ids);
+
 
 /* --- signal emissions --- */
 void	g_signal_stop_emission		      (gpointer		  instance,

@@ -813,7 +813,7 @@ g_signal_lookup (const gchar *name,
   return signal_id;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_signal_name (guint signal_id)
 {
   SignalNode *node;
@@ -873,7 +873,7 @@ g_signal_list_ids (GType  itype,
   for (i = 0; i < n_nodes; i++)
     if (keys[i].itype == itype)
       {
-	gchar *name = g_quark_to_string (keys[i].quark);
+	const gchar *name = g_quark_to_string (keys[i].quark);
 	
 	/* Signal names with "_" in them are aliases to the same
 	 * name with "-" instead of "_".

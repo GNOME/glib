@@ -1,3 +1,10 @@
+2001-02-17  Havoc Pennington  <hp@pobox.com>
+
+        Applied patch from Soeren Sandmann:
+	
+	* gmodule.c (g_module_error): G_CONST_RETURN
+	(g_module_name): G_CONST_RETURN
+
 Sat Feb 17 07:27:15 2001  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c: work around platforms that have broken RTLD_GLOBAL.

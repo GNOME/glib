@@ -1,3 +1,15 @@
+2001-02-17  Havoc Pennington  <hp@pobox.com>
+
+        Applied patch from Soeren Sandmann:
+	
+	* gvaluetypes.c (g_value_get_string): G_CONST_RETURN
+
+	* gtype.c (g_type_name): G_CONST_RETURN
+
+	* gsignal.c (g_signal_name): G_CONST_RETURN
+
+	* gobject-query.c (main): const fix
+
 Sat Feb 17 07:58:46 2001  Tim Janik  <timj@gtk.org>
 
 	* genums.h (G_TYPE_IS_FLAGS): patch from sven to fixup

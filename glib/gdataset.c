@@ -595,7 +595,7 @@ g_quark_from_static_string (const gchar *string)
   return quark;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_quark_to_string (GQuark quark)
 {
   gchar* result = NULL;

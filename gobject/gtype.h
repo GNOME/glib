@@ -179,34 +179,36 @@ typedef enum	/*< skip >*/
 
 
 /* --- prototypes --- */
-void     g_type_init                    (GTypeDebugFlags	 debug_flags);
-gchar*   g_type_name                    (GType                   type);
-GQuark   g_type_qname                   (GType                   type);
-GType    g_type_from_name               (const gchar            *name);
-GType    g_type_parent                  (GType                   type);
-GType    g_type_next_base               (GType                   type,
-                                         GType                   base_type);
-gboolean g_type_is_a                    (GType                   type,
-                                         GType                   is_a_type);
-guint    g_type_fundamental_branch_last (GType                   type);
-gpointer g_type_class_ref               (GType                   type);
-gpointer g_type_class_peek              (GType                   type);
-void     g_type_class_unref             (gpointer                g_class);
-gpointer g_type_class_peek_parent       (gpointer                g_class);
-gpointer g_type_interface_peek          (gpointer                instance_class,
-                                         GType                   iface_type);
+void                  g_type_init                    (GTypeDebugFlags  debug_flags);
+G_CONST_RETURN gchar* g_type_name                    (GType            type);
+GQuark                g_type_qname                   (GType            type);
+GType                 g_type_from_name               (const gchar     *name);
+GType                 g_type_parent                  (GType            type);
+GType                 g_type_next_base               (GType            type,
+						      GType            base_type);
+gboolean              g_type_is_a                    (GType            type,
+						      GType            is_a_type);
+guint                 g_type_fundamental_branch_last (GType            type);
+gpointer              g_type_class_ref               (GType            type);
+gpointer              g_type_class_peek              (GType            type);
+void                  g_type_class_unref             (gpointer         g_class);
+gpointer              g_type_class_peek_parent       (gpointer         g_class);
+gpointer              g_type_interface_peek          (gpointer         instance_class,
+						      GType            iface_type);
+
 /* g_free() the returned arrays */
-GType*   g_type_children                (GType                   type,
-                                         guint                  *n_children);
-GType*   g_type_interfaces              (GType                   type,
-                                         guint                  *n_interfaces);
+GType*                g_type_children                (GType            type,
+						      guint           *n_children);
+GType*                g_type_interfaces              (GType            type,
+						      guint           *n_interfaces);
+
 /* per-type _static_ data */
-void     g_type_set_qdata               (GType                   type,
-                                         GQuark                  quark,
-                                         gpointer                data);
-gpointer g_type_get_qdata               (GType                   type,
-                                         GQuark                  quark);
-                                          
+void                  g_type_set_qdata               (GType            type,
+						      GQuark           quark,
+						      gpointer         data);
+gpointer              g_type_get_qdata               (GType            type,
+						      GQuark           quark);
+
 
 /* --- type registration --- */
 typedef void   (*GBaseInitFunc)              (gpointer         g_class);

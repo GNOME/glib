@@ -445,7 +445,7 @@ main (int   argc,
   g_print ("checking g_path_skip_root()...");
   for (i = 0; i < n_skip_root_checks; i++)
     {
-      gchar *skipped;
+      const gchar *skipped;
 
       skipped = g_path_skip_root (skip_root_checks[i].filename);
       if ((skipped && !skip_root_checks[i].without_root) ||

@@ -591,7 +591,7 @@ struct _GMemArea
 
 struct _GRealMemChunk
 {
-  gchar *name;               /* name of this MemChunk...used for debugging output */
+  const gchar *name;         /* name of this MemChunk...used for debugging output */
   gint type;                 /* the type of MemChunk: ALLOC_ONLY or ALLOC_AND_FREE */
   gint num_mem_areas;        /* the number of memory areas */
   gint num_marked_areas;     /* the number of areas marked for deletion */
@@ -622,10 +622,10 @@ static GMutex        *mem_chunks_lock = NULL;
 static GRealMemChunk *mem_chunks = NULL;
 
 GMemChunk*
-g_mem_chunk_new (gchar  *name,
-		 gint    atom_size,
-		 gulong  area_size,
-		 gint    type)
+g_mem_chunk_new (const gchar  *name,
+		 gint          atom_size,
+		 gulong        area_size,
+		 gint          type)
 {
   GRealMemChunk *mem_chunk;
   gulong rarea_size;
@@ -705,8 +705,8 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
   g_mutex_unlock (mem_chunks_lock);
   
   if (rmem_chunk->type == G_ALLOC_AND_FREE)
-    g_tree_destroy (rmem_chunk->mem_tree);
-  
+    g_tree_destroy (rmem_chunk->mem_tree);  
+
   g_free (rmem_chunk);
 
   LEAVE_MEM_CHUNK_ROUTINE ();
@@ -1135,10 +1135,10 @@ typedef struct {
 }  GMinimalMemChunk;
 
 GMemChunk*
-g_mem_chunk_new (gchar  *name,
-		 gint    atom_size,
-		 gulong  area_size,
-		 gint    type)
+g_mem_chunk_new (const gchar  *name,
+		 gint          atom_size,
+		 gulong        area_size,
+		 gint          type)
 {
   GMinimalMemChunk *mem_chunk;
 

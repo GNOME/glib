@@ -226,7 +226,7 @@ g_strtod (const gchar *nptr,
     }
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_strerror (gint errnum)
 {
   static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
@@ -669,7 +669,7 @@ g_strerror (gint errnum)
   return msg;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_strsignal (gint signum)
 {
   static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;

@@ -111,7 +111,7 @@ void
 g_atexit (GVoidFunc func)
 {
   gint result;
-  gchar *error = NULL;
+  const gchar *error = NULL;
 
   /* keep this in sync with glib.h */
 
@@ -171,7 +171,8 @@ my_strchrnul (const gchar *str, gchar c)
 gchar*
 g_find_program_in_path (const gchar *program)
 {
-  gchar *path, *p, *name, *freeme;
+  const gchar *path, *p;
+  gchar *name, *freeme;
   size_t len;
   size_t pathlen;
 
@@ -373,7 +374,7 @@ g_parse_debug_string  (const gchar *string,
   return result;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_basename (const gchar	   *file_name)
 {
   register gchar *base;
@@ -465,8 +466,8 @@ g_path_is_absolute (const gchar *file_name)
   return FALSE;
 }
 
-gchar*
-g_path_skip_root (gchar *file_name)
+G_CONST_RETURN gchar*
+g_path_skip_root (const gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, NULL);
   
@@ -490,7 +491,7 @@ g_path_skip_root (gchar *file_name)
 	  if (file_name[0] == G_DIR_SEPARATOR)
 	    file_name++;
 
-	  return file_name;
+	  return (gchar *)file_name;
 	}
     }
 #endif
@@ -500,13 +501,13 @@ g_path_skip_root (gchar *file_name)
     {
       while (file_name[0] == G_DIR_SEPARATOR)
 	file_name++;
-      return file_name;
+      return (gchar *)file_name;
     }
 
 #ifdef G_OS_WIN32
   /* Skip X:\ */
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
-    return file_name + 3;
+    return (gchar *)file_name + 3;
 #endif
 
   return NULL;
@@ -597,7 +598,7 @@ g_get_current_dir (void)
   return dir;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_getenv (const gchar *variable)
 {
 #ifndef G_OS_WIN32
@@ -864,7 +865,7 @@ g_get_any_init (void)
     }
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
   G_LOCK (g_utils_global);
@@ -875,7 +876,7 @@ g_get_user_name (void)
   return g_user_name;
 }
 
-gchar*
+G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
   G_LOCK (g_utils_global);
@@ -892,7 +893,7 @@ g_get_real_name (void)
  * deduced, return NULL.
  */
 
-gchar*
+G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
   G_LOCK (g_utils_global);
@@ -910,7 +911,7 @@ g_get_home_dir (void)
  * and C:\ on Windows.
  */
 
-gchar*
+G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
   G_LOCK (g_utils_global);
@@ -1014,7 +1015,7 @@ g_get_codeset (void)
 
 #endif /* G_OS_WIN32 */
 
-gchar *
+G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)
 {
   gboolean _glib_gettext_initialized = FALSE;

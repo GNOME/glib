@@ -213,7 +213,7 @@ main (gint   argc,
       root = ~0;
       for (i = 0; i < 256; i++)
 	{
-	  gchar *name = g_type_name (i);
+	  const gchar *name = g_type_name (i);
 	  
 	  if (name)
 	    show_nodes (i, 0, iindent);

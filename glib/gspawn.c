@@ -1288,7 +1288,8 @@ g_execute (const gchar *file,
   else
     {
       gboolean got_eacces = 0;
-      char *path, *p, *name, *freeme;
+      const gchar *path, *p;
+      gchar *name, *freeme;
       size_t len;
       size_t pathlen;
 

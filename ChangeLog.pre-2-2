@@ -1,3 +1,42 @@
+2001-02-17  Havoc Pennington  <hp@pobox.com>
+
+	* gthread.c: include string.h
+
+        Applied patch from Soeren Sandmann:
+	
+	* testglib.c: const fixes
+
+	* gwin32.h: format cleanups
+
+	* gutils.c (g_atexit): constify a variable
+	(g_find_program_in_path): constification
+	(g_basename): G_CONST_RETURN
+	(g_path_skip_root): G_CONST_RETURN
+	(g_getenv): G_CONST_RETURN
+	(g_get_user_name): G_CONST_RETURN
+	(g_get_real_name): G_CONST_RETURN
+	(g_get_home_dir): G_CONST_RETURN
+	(g_get_tmp_dir): G_CONST_RETURN
+	(g_get_prgname): G_CONST_RETURN
+	(_glib_gettext): G_CONST_RETURN
+
+	* gunicode.h: formatting cleanups
+
+	* gstrfuncs.c (g_strerror): G_CONST_RETURN
+	(g_strsignal): G_CONST_RETURN
+
+	* gspawn.c (g_execute): const on variables
+
+	* gmessages.c (printf_string_upper_bound): fix const on a variable
+
+	* gmem.c (g_mem_chunk_new): make the "name" arg const
+	(struct _GRealMemChunk): make the "name" field const
+
+	* gfileutils.c (g_file_open_tmp): store const return in a const
+	gchar* variable
+
+	* gdataset.c (g_quark_to_string): G_CONST_RETURN
+
 Sat Feb 17 07:26:33 2001  Tim Janik  <timj@gtk.org>
 
 	* configure.in (G_MODULE_HAVE_DLERROR): add check for broken RTLD_GLOBAL

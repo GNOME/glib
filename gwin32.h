@@ -102,18 +102,18 @@ gint		g_win32_closedir  	(DIR		*dir);
  * returns it as a string of the above form for use in forming file
  * names etc. The returned string should be deallocated with g_free().
  */
-gchar *		g_win32_getlocale  (void);
+gchar* 		g_win32_getlocale  (void);
 
 /* Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The returned string should be deallocated
  * with g_free().
  */
-gchar *         g_win32_error_message (gint error);
+gchar*          g_win32_error_message (gint error);
 
-gchar *         g_win32_get_package_installation_directory (gchar *package,
+gchar*          g_win32_get_package_installation_directory (gchar *package,
 							    gchar *dll_name);
 
-gchar *         g_win32_get_package_installation_subdirectory (gchar *package,
+gchar*          g_win32_get_package_installation_subdirectory (gchar *package,
 							       gchar *dll_name,
 							       gchar *subdir);
 

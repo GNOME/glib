@@ -36,58 +36,58 @@ G_BEGIN_DECLS
  * return a constant string that must not be freed.
  */
 #define	 G_STR_DELIMITERS	"_-|> <."
-gchar*	 g_strdelimit		(gchar	     *string,
-				 const gchar *delimiters,
-				 gchar	      new_delimiter);
-gchar*	 g_strcanon		(gchar       *string,
-				 const gchar *valid_chars,
-				 gchar        subsitutor);
-gdouble	 g_strtod		(const gchar *nptr,
-				 gchar	    **endptr);
-gchar*	 g_strerror		(gint	      errnum) G_GNUC_CONST;
-gchar*	 g_strsignal		(gint	      signum) G_GNUC_CONST;
-gint	 g_strcasecmp		(const gchar *s1,
-				 const gchar *s2);
-gint	 g_strncasecmp		(const gchar *s1,
-				 const gchar *s2,
-				 guint 	      n);
-gchar*	 g_strdown		(gchar	     *string);
-gchar*	 g_strup		(gchar	     *string);
-gchar*	 g_strreverse		(gchar	     *string);
-gsize	 g_strlcpy		(gchar	     *dest,
-				 const gchar *src,
-				 gsize        dest_size);
-gsize	 g_strlcat              (gchar	     *dest,
-				 const gchar *src,
-				 gsize        dest_size);
+gchar*	              g_strdelimit     (gchar	     *string,
+					const gchar *delimiters,
+					gchar	      new_delimiter);
+gchar*	              g_strcanon       (gchar       *string,
+					const gchar *valid_chars,
+					gchar        subsitutor);
+gdouble	              g_strtod	       (const gchar *nptr,
+					gchar	    **endptr);
+G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;
+G_CONST_RETURN gchar* g_strsignal      (gint	      signum) G_GNUC_CONST;
+gint	              g_strcasecmp     (const gchar *s1,
+					const gchar *s2);
+gint	              g_strncasecmp    (const gchar *s1,
+					const gchar *s2,
+					guint        n);
+gchar*	              g_strdown	       (gchar	     *string);
+gchar*	              g_strup	       (gchar	     *string);
+gchar*	              g_strreverse     (gchar	     *string);
+gsize	              g_strlcpy	       (gchar	     *dest,
+					const gchar  *src,
+					gsize         dest_size);
+gsize	              g_strlcat        (gchar	     *dest,
+					const gchar  *src,
+					gsize         dest_size);
 /* removes leading spaces */
-gchar*   g_strchug              (gchar        *string);
+gchar*                g_strchug        (gchar        *string);
 /* removes trailing spaces */
-gchar*  g_strchomp              (gchar        *string);
+gchar*                g_strchomp       (gchar        *string);
 /* removes leading & trailing spaces */
 #define g_strstrip( string )	g_strchomp (g_strchug (string))
 
 /* String utility functions that return a newly allocated string which
  * ought to be freed with g_free from the caller at some point.
  */
-gchar*	 g_strdup		(const gchar *str);
-gchar*	 g_strdup_printf	(const gchar *format,
-				 ...) G_GNUC_PRINTF (1, 2);
-gchar*	 g_strdup_vprintf	(const gchar *format,
-				 va_list      args);
-gchar*	 g_strndup		(const gchar *str,
-				 guint	      n);
-gchar*	 g_strnfill		(guint	      length,
-				 gchar	      fill_char);
-gchar*	 g_strconcat		(const gchar *string1,
-				 ...); /* NULL terminated */
-gchar*   g_strjoin		(const gchar  *separator,
-				 ...); /* NULL terminated */
+gchar*	              g_strdup	       (const gchar *str);
+gchar*	              g_strdup_printf  (const gchar *format,
+					...) G_GNUC_PRINTF (1, 2);
+gchar*	              g_strdup_vprintf (const gchar *format,
+					va_list      args);
+gchar*	              g_strndup	       (const gchar *str,
+					guint        n);
+gchar*	              g_strnfill       (guint        length,
+					gchar        fill_char);
+gchar*	              g_strconcat      (const gchar *string1,
+					...); /* NULL terminated */
+gchar*                g_strjoin	       (const gchar  *separator,
+					...); /* NULL terminated */
 /* Make a copy of a string interpreting C string -style escape
  * sequences. Inverse of g_strescape. The recognized sequences are \b
  * \f \n \r \t \\ \" and the octal format.
  */
-gchar*   g_strcompress		(const gchar *source);
+gchar*                g_strcompress    (const gchar *source);
 
 /* Copy a string escaping nonprintable characters like in C strings.
  * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
@@ -97,11 +97,11 @@ gchar*   g_strcompress		(const gchar *source);
  * Luckily this function wasn't used much, using NULL as second parameter
  * provides mostly identical semantics.
  */
-gchar*   g_strescape		(const gchar *source,
-				 const gchar *exceptions);
+gchar*                g_strescape      (const gchar *source,
+					const gchar *exceptions);
 
-gpointer g_memdup		(gconstpointer mem,
-				 guint	       byte_size);
+gpointer              g_memdup	       (gconstpointer mem,
+					guint	       byte_size);
 
 /* NULL terminated string arrays.
  * g_strsplit() splits up string into max_tokens tokens at delim and
@@ -111,13 +111,13 @@ gpointer g_memdup		(gconstpointer mem,
  * g_strfreev() frees the array itself and all of its strings.
  * g_strdupv() copies a NULL-terminated array of strings
  */
-gchar**	 g_strsplit		(const gchar  *string,
-				 const gchar  *delimiter,
-				 gint          max_tokens);
-gchar*   g_strjoinv		(const gchar  *separator,
-				 gchar       **str_array);
-void     g_strfreev		(gchar       **str_array);
-gchar**  g_strdupv              (gchar       **str_array);
+gchar**	              g_strsplit       (const gchar  *string,
+					const gchar  *delimiter,
+					gint          max_tokens);
+gchar*                g_strjoinv       (const gchar  *separator,
+					gchar       **str_array);
+void                  g_strfreev       (gchar       **str_array);
+gchar**               g_strdupv        (gchar       **str_array);
 
 G_END_DECLS
 

@@ -132,19 +132,19 @@ void	g_mem_profile	(void);
 #define G_ALLOC_ONLY	  1
 #define G_ALLOC_AND_FREE  2
 
-GMemChunk* g_mem_chunk_new     (gchar	  *name,
-				gint	   atom_size,
-				gulong	   area_size,
-				gint	   type);
-void	   g_mem_chunk_destroy (GMemChunk *mem_chunk);
-gpointer   g_mem_chunk_alloc   (GMemChunk *mem_chunk);
-gpointer   g_mem_chunk_alloc0  (GMemChunk *mem_chunk);
-void	   g_mem_chunk_free    (GMemChunk *mem_chunk,
-				gpointer   mem);
-void	   g_mem_chunk_clean   (GMemChunk *mem_chunk);
-void	   g_mem_chunk_reset   (GMemChunk *mem_chunk);
-void	   g_mem_chunk_print   (GMemChunk *mem_chunk);
-void	   g_mem_chunk_info    (void);
+GMemChunk* g_mem_chunk_new     (const gchar *name,
+				gint         atom_size,
+				gulong       area_size,
+				gint         type);
+void       g_mem_chunk_destroy (GMemChunk   *mem_chunk);
+gpointer   g_mem_chunk_alloc   (GMemChunk   *mem_chunk);
+gpointer   g_mem_chunk_alloc0  (GMemChunk   *mem_chunk);
+void       g_mem_chunk_free    (GMemChunk   *mem_chunk,
+				gpointer     mem);
+void       g_mem_chunk_clean   (GMemChunk   *mem_chunk);
+void       g_mem_chunk_reset   (GMemChunk   *mem_chunk);
+void       g_mem_chunk_print   (GMemChunk   *mem_chunk);
+void       g_mem_chunk_info    (void);
 
 /* Ah yes...we have a "g_blow_chunks" function.
  * "g_blow_chunks" simply compresses all the chunks. This operation

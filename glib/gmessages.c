@@ -879,7 +879,7 @@ printf_string_upper_bound (const gchar *format,
 		  GDoubleIEEE754 u_double;
 		  guint v_uint;
 		  gint v_int;
-		  gchar *v_string;
+		  const gchar *v_string;
 
 		  /* beware of positional parameters
 		   */

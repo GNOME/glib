@@ -46,51 +46,48 @@ extern "C" {
 
 
 /* --- prototypes --- */
-void		g_value_set_char		(GValue		*value,
-						 gint8		 v_char);
-gint8		g_value_get_char		(const GValue	*value);
-void		g_value_set_uchar		(GValue		*value,
-						 guint8		 v_uchar);
-guint8		g_value_get_uchar		(const GValue	*value);
-void		g_value_set_boolean		(GValue		*value,
-						 gboolean	 v_boolean);
-gboolean	g_value_get_boolean		(const GValue	*value);
-void		g_value_set_int			(GValue		*value,
-						 gint		 v_int);
-gint		g_value_get_int			(const GValue	*value);
-void		g_value_set_uint		(GValue		*value,
-						 guint		 v_uint);
-guint		g_value_get_uint		(const GValue	*value);
-void		g_value_set_long		(GValue		*value,
-						 glong		 v_long);
-glong		g_value_get_long		(const GValue	*value);
-void		g_value_set_ulong		(GValue		*value,
-						 gulong		 v_ulong);
-gulong		g_value_get_ulong		(const GValue	*value);
-void		g_value_set_float		(GValue		*value,
-						 gfloat		 v_float);
-gfloat		g_value_get_float		(const GValue	*value);
-void		g_value_set_double		(GValue		*value,
-						 gdouble	 v_double);
-gdouble		g_value_get_double		(const GValue	*value);
-void		g_value_set_string		(GValue		*value,
-						 const gchar	*v_string);
-void		g_value_set_static_string	(GValue		*value,
-						 const gchar	*v_string);
-gchar*		g_value_get_string		(const GValue	*value);
-gchar*		g_value_dup_string		(const GValue	*value);
-void            g_value_set_pointer     	(GValue         *value,
-						 gpointer        v_pointer);
-gpointer        g_value_get_pointer     	(const GValue   *value);
-void            g_value_set_ccallback     	(GValue         *value,
-						 gpointer	 callback_func,
-						 gpointer	 callback_data);
-void            g_value_get_ccallback     	(const GValue   *value,
-						 gpointer	*callback_func,
-						 gpointer	*callback_data);
-
-
-
+void                  g_value_set_char          (GValue       *value,
+						 gint8         v_char);
+gint8                 g_value_get_char          (const GValue *value);
+void                  g_value_set_uchar         (GValue       *value,
+						 guint8        v_uchar);
+guint8                g_value_get_uchar         (const GValue *value);
+void                  g_value_set_boolean       (GValue       *value,
+						 gboolean      v_boolean);
+gboolean              g_value_get_boolean       (const GValue *value);
+void                  g_value_set_int           (GValue       *value,
+						 gint          v_int);
+gint                  g_value_get_int           (const GValue *value);
+void                  g_value_set_uint          (GValue       *value,
+						 guint         v_uint);
+guint                 g_value_get_uint          (const GValue *value);
+void                  g_value_set_long          (GValue       *value,
+						 glong         v_long);
+glong                 g_value_get_long          (const GValue *value);
+void                  g_value_set_ulong         (GValue       *value,
+						 gulong        v_ulong);
+gulong                g_value_get_ulong         (const GValue *value);
+void                  g_value_set_float         (GValue       *value,
+						 gfloat        v_float);
+gfloat                g_value_get_float         (const GValue *value);
+void                  g_value_set_double        (GValue       *value,
+						 gdouble       v_double);
+gdouble               g_value_get_double        (const GValue *value);
+void                  g_value_set_string        (GValue       *value,
+						 const gchar  *v_string);
+void                  g_value_set_static_string (GValue       *value,
+						 const gchar  *v_string);
+G_CONST_RETURN gchar* g_value_get_string        (const GValue *value);
+gchar*                g_value_dup_string        (const GValue *value);
+void                  g_value_set_pointer       (GValue       *value,
+						 gpointer      v_pointer);
+gpointer              g_value_get_pointer       (const GValue *value);
+void                  g_value_set_ccallback     (GValue       *value,
+						 gpointer      callback_func,
+						 gpointer      callback_data);
+void                  g_value_get_ccallback     (const GValue *value,
+						 gpointer     *callback_func,
+						 gpointer     *callback_data);
 
 #ifdef __cplusplus
 }

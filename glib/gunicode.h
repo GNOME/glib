@@ -180,30 +180,30 @@ GLIB_VAR char g_utf8_skip[256];
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(guchar *)(p)])
 
 gunichar g_utf8_get_char          (const gchar *p);
-gchar *  g_utf8_offset_to_pointer  (const gchar *str,
-				    gint         offset);
+gchar*   g_utf8_offset_to_pointer (const gchar *str,
+                                   gint         offset);
 gint     g_utf8_pointer_to_offset (const gchar *str,
 				   const gchar *pos);
-gchar *  g_utf8_prev_char         (const gchar *p);
-gchar *  g_utf8_find_next_char    (const gchar *p,
+gchar*   g_utf8_prev_char         (const gchar *p);
+gchar*   g_utf8_find_next_char    (const gchar *p,
 				   const gchar *end);
-gchar *  g_utf8_find_prev_char    (const gchar *str,
+gchar*   g_utf8_find_prev_char    (const gchar *str,
 				   const gchar *p);
 
 gint g_utf8_strlen (const gchar *p,
 		    gint         max);
 
 /* Copies n characters from src to dest */
-gchar *g_utf8_strncpy (gchar       *dest,
+gchar* g_utf8_strncpy (gchar       *dest,
 		       const gchar *src,
 		       size_t       n);
 
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
 
-gchar *g_utf8_strchr  (const gchar *p,
+gchar* g_utf8_strchr  (const gchar *p,
 		       gunichar     c);
-gchar *g_utf8_strrchr (const gchar *p,
+gchar* g_utf8_strrchr (const gchar *p,
 		       gunichar     c);
 
 gunichar2 *g_utf8_to_utf16     (const gchar      *str,
@@ -224,7 +224,7 @@ gunichar * g_utf16_to_ucs4     (const gunichar2  *str,
 				gint             *items_read,
 				gint             *items_written,
 				GError          **error);
-gchar *    g_utf16_to_utf8     (const gunichar2  *str,
+gchar*     g_utf16_to_utf8     (const gunichar2  *str,
 				gint              len,
 				gint             *items_read,
 				gint             *items_written,
@@ -234,7 +234,7 @@ gunichar2 *g_ucs4_to_utf16     (const gunichar   *str,
 				gint             *items_read,
 				gint             *items_written,
 				GError          **error);
-gchar *    g_ucs4_to_utf8      (const gunichar   *str,
+gchar*     g_ucs4_to_utf8      (const gunichar   *str,
 				gint              len,
 				gint             *items_read,
 				gint             *items_written,

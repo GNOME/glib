@@ -113,12 +113,12 @@ G_BEGIN_DECLS
 
 /* Retrive static string info
  */
-gchar*	g_get_user_name		(void);
-gchar*	g_get_real_name		(void);
-gchar*	g_get_home_dir		(void);
-gchar*	g_get_tmp_dir		(void);
-gchar*	g_get_prgname		(void);
-void	g_set_prgname		(const gchar *prgname);
+G_CONST_RETURN gchar* g_get_user_name      (void);
+G_CONST_RETURN gchar* g_get_real_name      (void);
+G_CONST_RETURN gchar* g_get_home_dir       (void);
+G_CONST_RETURN gchar* g_get_tmp_dir        (void);
+gchar*                g_get_prgname        (void);
+void                  g_set_prgname        (const gchar *prgname);
 
 
 typedef struct _GDebugKey	GDebugKey;
@@ -130,40 +130,42 @@ struct _GDebugKey
 
 /* Miscellaneous utility functions
  */
-guint	g_parse_debug_string	(const gchar *string,
-				 GDebugKey   *keys,
-				 guint	      nkeys);
-gint	g_snprintf		(gchar	     *string,
-				 gulong	      n,
-				 gchar const *format,
-				 ...) G_GNUC_PRINTF (3, 4);
-gint	g_vsnprintf		(gchar	     *string,
-				 gulong	      n,
-				 gchar const *format,
-				 va_list      args);
+guint                 g_parse_debug_string (const gchar *string,
+					    GDebugKey   *keys,
+					    guint        nkeys);
+gint                  g_snprintf           (gchar       *string,
+					    gulong       n,
+					    gchar const *format,
+					    ...) G_GNUC_PRINTF (3, 4);
+gint                  g_vsnprintf          (gchar       *string,
+					    gulong       n,
+					    gchar const *format,
+					    va_list      args);
+
 /* Check if a file name is an absolute path */
-gboolean g_path_is_absolute	(const gchar *file_name);
+gboolean              g_path_is_absolute   (const gchar *file_name);
+
 /* In case of absolute paths, skip the root part */
-gchar*  g_path_skip_root	(gchar       *file_name);
+G_CONST_RETURN gchar* g_path_skip_root     (const gchar *file_name);
 
 /* These two functions are deprecated and will be removed in the next
  * major release of GLib. Use g_path_get_dirname/g_path_get_basename
  * instead. Whatch out! The string returned by g_path_get_basename
  * must be g_freed, while the string returned by g_basename must not.*/
-gchar*	g_basename		(const gchar *file_name);
-gchar*	g_dirname		(const gchar *file_name);
+G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
+gchar*                g_dirname            (const gchar *file_name);
 
 /* The returned strings are newly allocated with g_malloc() */
-gchar*	g_get_current_dir	(void);
-gchar*	g_path_get_basename	(const gchar *file_name);
-gchar*	g_path_get_dirname	(const gchar *file_name);
+gchar*                g_get_current_dir    (void);
+gchar*                g_path_get_basename  (const gchar *file_name);
+gchar*                g_path_get_dirname   (const gchar *file_name);
 
 /* Get the codeset for the current locale */
 /* gchar * g_get_codeset    (void); */
 
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
-gchar*  g_getenv		(const gchar *variable);
+G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
 
 
 /* we try to provide a usefull equivalent for ATEXIT if it is

@@ -46,6 +46,8 @@
 #include <unistd.h>
 #endif
 
+#include <string.h>
+
 #if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
 # define g_system_thread_equal(thread1, thread2) 			\
    (thread1.dummy_pointer == thread2.dummy_pointer)
