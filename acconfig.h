@@ -58,9 +58,7 @@
 #undef HAVE_STRERROR
 #undef HAVE_STRSIGNAL
 #undef HAVE_UNISTD_H
-#undef HAVE_VSNPRINTF
 #undef HAVE_VALUES_H
-#undef HAVE_VPRINTF
 #undef HAVE_WCHAR_H
 #undef HAVE_WCTYPE_H
 

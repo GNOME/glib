@@ -1,3 +1,19 @@
+Sat Jan  9 13:53:00 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in:
+	Add checks for vasprintf, localtime_r.
+
+	* gdate.c (g_date_set_time):
+	Use localtime if localtime_r is not available.
+
+	* gstrfuncs.c (g_strdup_vprintf):
+	Use glibc vasprintf if possible; it's a bit faster than using
+	GLib routines, and makes output code a bit smaller.
+
+	* acconfig.h:
+	Remove HAVE_VSNPRINTF and HAVE_VPRINTF.  autoheader picks these
+	up automatically and puts them in config.h.in.
+
 Thu Jan  7 15:14:08 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_source_free_func): Call the source-specific

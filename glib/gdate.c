@@ -790,11 +790,16 @@ g_date_set_time (GDate *d,
 		 GTime  time)
 {
   time_t t = time;
-  struct tm tm;
+  struct tm tm, *ptm;
   
   g_return_if_fail (d != NULL);
   
+#if HAVE_LOCALTIME_R
   localtime_r (&t, &tm);
+#else
+  ptm = localtime (&t);
+  memcpy((void *) &tm, (void *) ptm, sizeof(struct tm));
+#endif
   
   d->julian = FALSE;
   
