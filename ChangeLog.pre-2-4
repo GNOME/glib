@@ -1,3 +1,8 @@
+2003-09-29  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/testglib.c (main): Use hardcoded name for DLL, as there is
+	no reliable way to determine it at compile or run time anyway. 
+
 2003-09-29  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/guniprop.c (g_unichar_get_mirror_char): Add "Since: 2.4" 

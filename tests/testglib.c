@@ -401,16 +401,11 @@ main (int   argc,
   GError *error;
   char *name_used;
 #ifdef G_OS_WIN32
-  gchar *glib_dll = g_strdup_printf ("libglib-%d.%d-%d.dll",
-				     GLIB_MAJOR_VERSION,
-				     GLIB_MINOR_VERSION,
-				     GLIB_MICRO_VERSION - GLIB_BINARY_AGE);
+  /* Can't calculate GLib DLL name at runtime. */
+  gchar *glib_dll = "libglib-2.0-0.dll";
 #endif
 #ifdef G_WITH_CYGWIN
-  gchar *glib_dll = g_strdup_printf ("cygglib-%d.%d-%d.dll",
-				     GLIB_MAJOR_VERSION,
-				     GLIB_MINOR_VERSION,
-				     GLIB_MICRO_VERSION - GLIB_BINARY_AGE);
+  gchar *glib_dll = "cygglib-2.0-0.dll";
 #endif
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
