@@ -1,3 +1,9 @@
+Wed Jun 23 12:55:34 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gtype.h (G_DEFINE_TYPE_EXTENDED): Add an initializer for
+	the g_define_type_info.value_table.  (#144678,Mariano 
+	Suárez-Alvarez) 
+
 Tue Jun 22 21:50:47 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gsignal.c: Fix a couple of typos.
