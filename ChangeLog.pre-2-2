@@ -1,7 +1,7 @@
 Tue Feb 26 14:56:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-2.0.pc.in: Reorder @INTL_LIBS@ and @ICONV_LIBS@ in case
-	-lintl depends on -licon. (Miroslaw Dobrzanski-Neumann #72717)
+	-lintl depends on -licon. (Miroslaw Dobrzanski-Neumann #72708)
 
 Mon Feb 25 23:01:53 2002  Owen Taylor  <otaylor@redhat.com>
 
