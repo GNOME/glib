@@ -322,14 +322,16 @@ g_get_current_dir (void)
 gchar*
 g_getenv (const gchar *variable)
 {
+#ifndef NATIVE_WIN32
   g_return_val_if_fail (variable != NULL, NULL);
 
-#ifndef NATIVE_WIN32
   return getenv (variable);
 #else
   gchar *v;
   guint l, k;
   gchar *p;
+
+  g_return_val_if_fail (variable != NULL, NULL);
   
   v = getenv (variable);
   if (!v)

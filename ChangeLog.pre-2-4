@@ -1,3 +1,10 @@
+Mon Oct 26 22:42:01 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* glibconfig.h.win32
+	* gutils.c
+	* makefile.msc: win32 patch from Tor Lillqvist (glib-tml-981027-0),
+	fixes some minor win32 buglets
+
 Mon Oct 26 22:12:03 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: reimplemented the endian stuff, using inline asm

@@ -63,7 +63,7 @@ gmodule_OBJECTS = \
 	gmodule.obj
 
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS)
-	$(CC) $(CFLAGS) -MD -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule.def
+	$(CC) $(CFLAGS) -MD -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule\gmodule.def
 
 gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c
 	$(CC) $(CFLAGS) -Igmodule -c -DG_LIB_DOMAIN=g_log_domain_gmodule gmodule\gmodule.c
