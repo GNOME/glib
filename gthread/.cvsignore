@@ -7,3 +7,4 @@ Makefile
 *.la
 so_locations
 testgthread
+gthread.rc

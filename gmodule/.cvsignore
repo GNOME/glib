@@ -12,3 +12,4 @@ gmoduleconf.h
 stamp-h
 testgmodule
 libgmodule.la
+gmodule.rc

@@ -23,6 +23,7 @@ libglib.la
 libtool
 list-test
 makefile.msc
+makefile.cygwin
 node-test
 queue-test
 rand-test
