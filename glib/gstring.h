@@ -106,8 +106,6 @@ void         g_string_printfa           (GString	 *string,
 
 #ifndef G_DISABLE_DEPRECATED
 
-#ifndef G_DISABLE_DEPRECATED
-
 /* The following two functions are deprecated and will be removed in
  * the next major release. They use the locale-specific tolower and
  * toupper, which is almost never the right thing.

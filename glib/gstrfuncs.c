@@ -1000,7 +1000,7 @@ g_ascii_strdown (gchar *string)
 gchar*
 g_ascii_strup (gchar *string)
 {
-  gchar *s;
+  gchar *result, *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -1094,7 +1094,7 @@ g_strreverse (gchar *string)
 gboolean
 g_ascii_isalpha (gchar c)
 {
-  return g_ascii_is_lower (c) || g_ascii_is_upper (c);
+  return g_ascii_islower (c) || g_ascii_isupper (c);
 }
 
 /**
@@ -1115,7 +1115,7 @@ g_ascii_isalpha (gchar c)
 gboolean
 g_ascii_isalnum (gchar c)
 {
-  return g_ascii_is_alpha (c) || isdigit (c);
+  return g_ascii_isalpha (c) || isdigit (c);
 }
 
 

@@ -1,3 +1,9 @@
+Sat Jun 30 13:18:28 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c glib/gstring.h: Try compiling
+	before committing, why don't you? Simple fixes
+	for my stupid typos. 
+
 Sat Jun 30 12:49:26 2001  Owen Taylor  <otaylor@redhat.com>
 
         Patch from Darin Adler (#54166)
