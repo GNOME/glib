@@ -410,13 +410,14 @@ g_closure_invoke (GClosure       *closure,
 		  gpointer        invocation_hint)
 {
   g_return_if_fail (closure != NULL);
-  g_return_if_fail (closure->marshal || closure->meta_marshal);
 
   if (!closure->is_invalid)
     {
       GClosureMarshal marshal;
       gpointer marshal_data;
       gboolean in_marshal = closure->in_marshal;
+
+      g_return_if_fail (closure->marshal || closure->meta_marshal);
 
       closure->ref_count += 1;	/* preserve floating flag */
       closure->in_marshal = TRUE;
