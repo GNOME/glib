@@ -473,7 +473,7 @@ GLIB_SIZEOF([$size_includes], ptrdiff_t, ptrdiff_t)
 GLIB_SIZEOF([$size_includes], intmax_t, intmax_t)
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf)
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.
 # The check is borrowed from the PERL Configure script.
