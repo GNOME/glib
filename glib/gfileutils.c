@@ -841,7 +841,7 @@ rename_file (const char *old_name,
 
 static gchar *
 write_to_temp_file (const gchar *contents,
-		    gsize length,
+		    gssize length,
 		    const gchar *template,
 		    GError **err)
 {
@@ -854,7 +854,7 @@ write_to_temp_file (const gchar *contents,
 
   retval = NULL;
   
-  tmp_name = g_strdup_printf (".%s.XXXXXX", template);
+  tmp_name = g_strdup_printf ("%s.XXXXXX", template);
 
   errno = 0;
   fd = g_mkstemp (tmp_name);
@@ -954,7 +954,8 @@ write_to_temp_file (const gchar *contents,
  * <listitem>
  *    On Unix, if @filename already exists hard links to @filename will break.
  *    Also since the file is recreated, existing permissions, access control
- *    lists, metadata etc. may be lost.
+ *    lists, metadata etc. may be lost. If @filename is a symbolic link,
+ *    the link itself will be replaced, not the linked file.
  * </listitem>
  * <listitem>
  *   On Windows renaming a file will not remove an existing file with the
@@ -989,7 +990,8 @@ g_file_replace (const gchar *filename,
   g_return_val_if_fail (filename != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail (contents != NULL || length == 0, FALSE);
- 
+  g_return_val_if_fail (length >= -1, FALSE);
+  
   if (length == -1)
     length = strlen (contents);
 

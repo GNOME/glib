@@ -1,3 +1,10 @@
+Fri Mar 11 23:51:12 2005  Soeren Sandmann  <sandmann@redhat.com>
+
+	* glib/gfileutils.c (write_to_temp_file): Don't try and generate
+	a dotfile from the name -- it doesn't work with absolute
+	paths. Also make documentation indicate that symlinks will be
+	overwritten. Both pointed out by Alexis S. L. Carvalho.
+
 2005-03-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* m4macros/glib-gettext.m4: Avoid stupid compiler complaints
