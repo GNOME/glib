@@ -1,3 +1,10 @@
+Sun Sep 20 02:09:44 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
+
+	* glib.h: New function g_hash_table_foreach_remove is similar to
+ 	g_hash_table_foreach, but the callback's return value indicates
+ 	whether to remove the element (if TRUE) or not (if FALSE).  
+	Returns the number of elements deleted.
+
 Fri Sep 18 11:31:50 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h

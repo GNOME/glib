@@ -177,6 +177,30 @@ g_node_test (void)
     g_print ("ok\n");
 }
 
+gboolean
+my_hash_callback_remove (gpointer key,
+			 gpointer value,
+			 gpointer user_data)
+{
+  int *d = value;
+
+  if ((*d) % 2)
+    return TRUE;
+
+  return FALSE;
+}
+
+void
+my_hash_callback_remove_test (gpointer key,
+			      gpointer value,
+			      gpointer user_data)
+{
+  int *d = value;
+
+  if ((*d) % 2)
+    g_print ("bad!\n");
+}
+
 void
 my_hash_callback (gpointer key,
 		  gpointer value,
@@ -521,6 +545,19 @@ main (int   argc,
 
   for (i = 0; i < 10000; i++)
     g_hash_table_remove (hash_table, &array[i]);
+
+  for (i = 0; i < 10000; i++)
+    {
+      array[i] = i;
+      g_hash_table_insert (hash_table, &array[i], &array[i]);
+    }
+
+  if (g_hash_table_foreach_remove (hash_table, my_hash_callback_remove, NULL) != 5000 ||
+      g_hash_table_size (hash_table) != 5000)
+    g_print ("bad!\n");
+
+  g_hash_table_foreach (hash_table, my_hash_callback_remove_test, NULL);
+
 
   g_hash_table_destroy (hash_table);
 

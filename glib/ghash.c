@@ -194,6 +194,52 @@ g_hash_table_thaw (GHashTable *hash_table)
   g_hash_table_resize (hash_table);
 }
 
+gint
+g_hash_table_foreach_remove	(GHashTable	*hash_table,
+				 GHRFunc	 func,
+				 gpointer	 user_data)
+{
+  gint deleted = 0, i;
+  GHashNode *node, *prev;
+
+  g_return_val_if_fail (hash_table && func, -1);
+
+  for (i = 0; i < hash_table->size; i++)
+    {
+    restart:
+
+      prev = NULL;
+
+      for (node = hash_table->nodes[i]; node; prev = node, node = node->next)
+	{
+	  if ((* func) (node->key, node->value, user_data))
+	    {
+	      deleted += 1;
+
+	      hash_table->nnodes -= 1;
+
+	      if (prev)
+		{
+		  prev->next = node->next;
+		  g_hash_node_destroy (node);
+		  node = prev;
+		}
+	      else
+		{
+		  hash_table->nodes[i] = node->next;
+		  g_hash_node_destroy (node);
+		  goto restart;
+		}
+	    }
+	}
+    }
+
+  if (! hash_table->frozen)
+    g_hash_table_resize (hash_table);
+
+  return deleted;
+}
+
 void
 g_hash_table_foreach (GHashTable *hash_table,
 		      GHFunc      func,
