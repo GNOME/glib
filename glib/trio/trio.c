@@ -125,6 +125,8 @@
 # include <unistd.h>
 #endif
 #if defined(TRIO_PLATFORM_WIN32)
+# include <locale.h>
+# define USE_LOCALE
 # include <io.h>
 # define read _read
 # define write _write
