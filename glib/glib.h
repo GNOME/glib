@@ -959,6 +959,7 @@ void		g_logv			(const gchar	*log_domain,
 					 va_list	*args2);
 GLogLevelFlags	g_log_set_fatal_mask	(const gchar	*log_domain,
 					 GLogLevelFlags	 fatal_mask);
+GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 #ifndef	G_LOG_DOMAIN
 #define	G_LOG_DOMAIN	(NULL)
 #endif	/* G_LOG_DOMAIN */

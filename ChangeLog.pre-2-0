@@ -1,4 +1,20 @@
+Tue Aug 18 04:40:17 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gmessages.c: new function g_log_set_always_fatal() to set an
+	additional fatal_mask for log levels that are considered to be fatal
+	globally (required by gtk). since this mask is not domain-associated,
+	it is restricted to the log levels, introduced by glib itself.
+
+	* gmem.c:
+	* grel.c:
+	* gtree.c (g_tree_node_check):
+	don't use g_print() calls for informational/debugging output,
+	but log all this stuff through g_log() with G_LOG_LEVEL_INFO.
+	libraries shouldn't use printf(), g_print() or g_printerr() at all.
+
 Tue Aug 18 02:46:44 1998  Tim Janik  <timj@gtk.org>
+
 
 	* glib.h (__STRICT_ANSI__): if __STRICT_ANSI__ is defined, make
 	`inline' a noop, since strict ANSI rules don't permit `inline'.

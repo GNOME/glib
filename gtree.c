@@ -699,22 +699,23 @@ g_tree_node_check (GTreeNode *node)
   gint left_height;
   gint right_height;
   gint balance;
-
+  
   if (node)
     {
       left_height = 0;
       right_height = 0;
-
+      
       if (node->left)
 	left_height = g_tree_node_height (node->left);
       if (node->right)
 	right_height = g_tree_node_height (node->right);
-
+      
       balance = right_height - left_height;
       if (balance != node->balance)
-	g_print ("g_tree_node_check: failed: %d ( %d )\n",
-		 balance, node->balance);
-
+	g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
+	       "g_tree_node_check: failed: %d ( %d )\n",
+	       balance, node->balance);
+      
       if (node->left)
 	g_tree_node_check (node->left);
       if (node->right)

@@ -52,6 +52,7 @@ extern gchar* g_vsprintf (const gchar *fmt,
 /* --- variables --- */
 const gchar	     *g_log_domain_glib = "GLib";
 static GLogDomain    *g_log_domains = NULL;
+static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
 static GErrorFunc     glib_error_func = NULL;
@@ -138,6 +139,24 @@ g_log_domain_get_handler (GLogDomain	*domain,
 	}
     }
   return g_log_default_handler;
+}
+
+GLogLevelFlags
+g_log_set_always_fatal (GLogLevelFlags fatal_mask)
+{
+  GLogLevelFlags old_mask;
+
+  /* restrict the global mask to levels that are known to glib */
+  fatal_mask &= (1 << G_LOG_LEVEL_USER_SHIFT) - 1;
+  /* force errors to be fatal */
+  fatal_mask |= G_LOG_LEVEL_ERROR;
+  /* remove bogus flag */
+  fatal_mask &= ~G_LOG_FLAG_FATAL;
+
+  old_mask = g_log_always_fatal;
+  g_log_always_fatal = fatal_mask;
+
+  return old_mask;
 }
 
 GLogLevelFlags
@@ -271,7 +290,8 @@ g_logv (const gchar    *log_domain,
 	  if (g_log_depth++)
 	    test_level |= G_LOG_FLAG_RECURSION;
 	  
-	  if (((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) & test_level) != 0)
+	  if ((((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) | g_log_always_fatal) &
+	       test_level) != 0)
 	    test_level |= G_LOG_FLAG_FATAL;
 	  log_func = g_log_domain_get_handler (domain, test_level, &data);
 	  log_func (log_domain, test_level, buffer, data);
