@@ -1,3 +1,10 @@
+1999-10-12  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Define the new GLIB_SIZEOF_* constants here,
+	too.
+
+	* glib.h: Small Win32 comments improvement.
+
 Tue Oct 12 12:16:12 1999  Tim Janik  <timj@gtk.org>
 
 	* gmessages.c (g_printf_string_upper_bound): completly new implementation

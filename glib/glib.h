@@ -2836,7 +2836,8 @@ typedef int pid_t;
  * unlink: <stdio.h> or <io.h>
  * open, read, write, lseek, close: <io.h>
  * rmdir: <direct.h>
- * pipe: <direct.h> */
+ * pipe: <direct.h>
+ */
 
 /* pipe is not in OLDNAMES.LIB or -lmoldname-msvc. */
 #define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
@@ -2845,6 +2846,10 @@ typedef int pid_t;
  * we provide emulators in glib, which are prefixed with gwin_.
  */
 #    define ftruncate(fd, size)	gwin_ftruncate (fd, size)
+
+/* -lmingw32 also has emulations for these, but we need our own
+ * for MSVC anyhow, so we might aswell use them always.
+ */
 #    define opendir		gwin_opendir
 #    define readdir		gwin_readdir
 #    define rewinddir		gwin_rewinddir

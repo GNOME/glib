@@ -61,6 +61,10 @@
 #define GLIB_BINARY_AGE @GLIB_BINARY_AGE@
 
 #define GLIB_SIZEOF_PTHREAD_T 4
+#define GLIB_SIZEOF_SIZE_T 4
+#define GLIB_SIZEOF_PTRDIFF_T 4
+#define GLIB_SIZEOF_INTMAX_T 4
+
 #define POSIX_MIN_PRIORITY -2
 #define POSIX_MAX_PRIORITY 2
 #define POSIX_YIELD_FUNC Sleep(0)
@@ -98,7 +102,7 @@
 /* #undef HAVE_ON_EXIT */
 
 /* Define if you have the strcasecmp function.  */
-/* #undef HAVE_STRCASECMP ^*/
+/* #undef HAVE_STRCASECMP */
 
 /* Define if you have the strerror function.  */
 #define HAVE_STRERROR 1
