@@ -481,10 +481,13 @@ g_dataset_foreach (gconstpointer    dataset_location,
       G_UNLOCK (g_dataset_global);
       if (dataset)
 	{
-	  register GData *list;
+	  register GData *list, *next;
 	  
-	  for (list = dataset->datalist; list; list = list->next)
+	  for (list = dataset->datalist; list; list = next)
+	    {
+	      next = list->next;
 	      func (list->id, list->data, user_data);
+	    }
 	}
     }
   else
@@ -498,13 +501,16 @@ g_datalist_foreach (GData	   **datalist,
 		    GDataForeachFunc func,
 		    gpointer         user_data)
 {
-  register GData *list;
+  register GData *list, *next;
 
   g_return_if_fail (datalist != NULL);
   g_return_if_fail (func != NULL);
   
-  for (list = *datalist; list; list = list->next)
-    func (list->id, list->data, user_data);
+  for (list = *datalist; list; list = next)
+    {
+      next = list->next;
+      func (list->id, list->data, user_data);
+    }
 }
 
 void

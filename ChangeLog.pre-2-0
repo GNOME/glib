@@ -1,3 +1,10 @@
+Fri May 11 18:25:23 2001  Tim Janik  <timj@gtk.org>
+
+	* gdataset.c:
+	(g_dataset_foreach):
+	(g_datalist_foreach): make these safe against removal of the
+	current element.
+
 2001-05-10  Havoc Pennington  <hp@pobox.com>
 
 	* gmessages.c (g_log_write_prefix): change env variable to
