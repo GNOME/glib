@@ -28,7 +28,7 @@
 #include "glibintl.h"
 
 GQuark
-g_markup_error_quark ()
+g_markup_error_quark (void)
 {
   static GQuark error_quark = 0;
 
@@ -624,12 +624,18 @@ advance_char (GMarkupParseContext *context)
   return context->iter != context->current_text_end;
 }
 
+static gboolean
+xml_isspace (char c)
+{
+  return c == ' ' || c == '\t' || c == '\n' || c == '\r';
+}
+
 static void
 skip_spaces (GMarkupParseContext *context)
 {
   do
     {
-      if (!g_unichar_isspace (g_utf8_get_char (context->iter)))
+      if (!xml_isspace (*context->iter))
         return;
     }
   while (advance_char (context));

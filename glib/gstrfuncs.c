@@ -365,7 +365,7 @@ g_ascii_strtod (const gchar *nptr,
     {
       p = nptr;
       /* Skip leading space */
-      while (isspace ((guchar)*p))
+      while (g_ascii_isspace (*p))
 	p++;
       
       /* Skip leading optional sign */
@@ -378,42 +378,42 @@ g_ascii_strtod (const gchar *nptr,
 	  p += 2;
 	  /* HEX - find the (optional) decimal point */
 	  
-	  while (isxdigit ((guchar)*p))
+	  while (g_ascii_isxdigit (*p))
 	    p++;
 	  
 	  if (*p == '.')
 	    {
 	      decimal_point_pos = p++;
 	      
-	      while (isxdigit ((guchar)*p))
+	      while (g_ascii_isxdigit (*p))
 		p++;
 	      
 	      if (*p == 'p' || *p == 'P')
 		p++;
 	      if (*p == '+' || *p == '-')
 		p++;
-	      while (isdigit ((guchar)*p))
+	      while (g_ascii_isdigit (*p))
 		p++;
 	      end = p;
 	    }
 	}
       else
 	{
-	  while (isdigit ((guchar)*p))
+	  while (g_ascii_isdigit (*p))
 	    p++;
 	  
 	  if (*p == '.')
 	    {
 	      decimal_point_pos = p++;
 	      
-	      while (isdigit ((guchar)*p))
+	      while (g_ascii_isdigit (*p))
 		p++;
 	      
 	      if (*p == 'e' || *p == 'E')
 		p++;
 	      if (*p == '+' || *p == '-')
 		p++;
-	      while (isdigit ((guchar)*p))
+	      while (g_ascii_isdigit (*p))
 		p++;
 	      end = p;
 	    }

@@ -1,3 +1,10 @@
+2002-02-09  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gmarkup.c: (xml_isspace): New.
+	(skip_spaces): g_unichar_isspace -> xml_isspace
+	* glib/gstrfuncs.c: (g_ascii_strtod): isspace -> g_ascii_isspace
+	isxdigit -> g_ascii_isxdigit, isdigit -> g_ascii_isdigit
+
 2002-02-09  Matthias Clasen  <matthias@local>
 
 	* tests/markups/valid-4.gmarkup: Test attribute value delimiters.
