@@ -1,3 +1,9 @@
+Tue Aug 19 09:42:06 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: Add $INTLLIBS to $LIBS
+	temporarily, not -lintl. (Problem with fix for 
+	#119171, pointed out by James Henstridge)
+
 2003-08-16  Tor Lillqvist  <tml@iki.fi>
 
 	Fix #117925 (Dov Grobgeld):
