@@ -1,3 +1,8 @@
+2000-11-11  Havoc Pennington  <hp@pobox.com>
+
+	* gmarkup.c (g_markup_parse_context_parse): Handle a long stream
+	of bytes containing no UTF-8 character starts
+
 2000-11-11  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Add missing entry points.

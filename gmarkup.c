@@ -889,6 +889,17 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           g_string_append_len (context->leftover_char_portion,
                                text, text_len);
 
+          if (context->leftover_char_portion->len > 7)
+            {
+              /* The leftover char portion is too big to be
+               * a UTF-8 character
+               */
+              set_error (context,
+                         error,
+                         G_MARKUP_ERROR_BAD_UTF8,
+                         _("Invalid UTF-8 encoded text"));
+            }
+          
           goto finished;
         }
     }
