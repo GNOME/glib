@@ -1,3 +1,9 @@
+2004-10-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmain.c (g_child_watch_add_full): 
+	* glib/gmain.c (g_child_watch_add): Document that GLib supports only
+	a single callback per pid. (#154828, Gustavo Carneiro)
+
 2004-10-06  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gfileutils.c: Fix some C99isms.  (#154676, Kjartan Maraas)

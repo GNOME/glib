@@ -3716,6 +3716,8 @@ g_child_watch_source_new (GPid pid)
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
  * 
+ * GLib supports only a single callback per process id.
+ *
  * Return value: the id of event source.
  *
  * Since: 2.4
@@ -3757,6 +3759,8 @@ g_child_watch_add_full (gint            priority,
  * (see g_spawn_close_pid()) @pid must not be closed while the
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
+ *
+ * GLib supports only a single callback per process id.
  *
  * Return value: the id of event source.
  *
