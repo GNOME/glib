@@ -2023,16 +2023,18 @@ g_strchug (gchar *string)
 gchar*
 g_strchomp (gchar *string)
 {
-  gchar *s;
+  gsize len;
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  if (!*string)
-    return string;
-
-  for (s = string + strlen (string) - 1; s >= string && g_ascii_isspace ((guchar)*s); 
-       s--)
-    *s = '\0';
+  len = strlen (string);
+  while (len--)
+    {
+      if (g_ascii_isspace ((guchar) string[len]))
+	string[len] = '\0';
+      else
+	break;
+    }
 
   return string;
 }

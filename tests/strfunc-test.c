@@ -92,6 +92,20 @@ str_check (gchar *str,
   return ok;
 }
 
+static gboolean
+strchomp_check (gchar *str,
+		gchar *expected)
+{
+  gchar *tmp = strdup (str);
+  gboolean ok;
+
+  g_strchomp (tmp);
+  ok = (strcmp (tmp, expected) == 0);
+  g_free (tmp);
+
+  return ok;
+}
+
 #define FOR_ALL_CTYPE(macro)	\
 	macro(isalnum)		\
 	macro(isalpha)		\
@@ -330,6 +344,15 @@ main (int   argc,
   TEST_DIGIT (xdigit);
 
   #undef TEST_DIGIT
+
+  /* Tests for strchomp () */
+  TEST (NULL, strchomp_check ("", ""));
+  TEST (NULL, strchomp_check (" ", ""));
+  TEST (NULL, strchomp_check (" \t\r\n", ""));
+  TEST (NULL, strchomp_check ("a ", "a"));
+  TEST (NULL, strchomp_check ("a  ", "a"));
+  TEST (NULL, strchomp_check ("a a", "a a"));
+  TEST (NULL, strchomp_check ("a a ", "a a"));
 
   /* Tests for g_build_path, g_build_filename */
 
