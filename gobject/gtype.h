@@ -200,6 +200,7 @@ void                  g_type_class_unref             (gpointer         g_class);
 gpointer              g_type_class_peek_parent       (gpointer         g_class);
 gpointer              g_type_interface_peek          (gpointer         instance_class,
 						      GType            iface_type);
+gpointer              g_type_interface_peek_parent   (gpointer         g_iface);
 
 /* g_free() the returned arrays */
 GType*                g_type_children                (GType            type,

@@ -777,14 +777,6 @@ g_log_set_always_fatal
 g_log_set_fatal_mask
 g_log_default_handler
 
-<SUBSECTION>
-g_set_error_handler
-GErrorFunc
-g_set_warning_handler
-GWarningFunc
-g_set_message_handler
-</SECTION>
-
 <SECTION>
 <TITLE>Timers</TITLE>
 <FILE>timers</FILE>

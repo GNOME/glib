@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-gboxed
+GBoxed
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Mechanism to wrap opaque C structures registered by the type system.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -11,52 +11,55 @@ gboxed
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GParamSpecBoxed, g_param_spec_boxed()
 </para>
 
 <!-- ##### USER_FUNCTION GBoxedCopyFunc ##### -->
 <para>
-
+This function is provided by the user and should produce a copy of the passed
+in boxed structure.
 </para>
 
-@boxed: 
-@Returns: 
+@boxed:   The boxed structure to be copied.
+@Returns: The newly created copy of the boxed structure.
 
 
 <!-- ##### USER_FUNCTION GBoxedFreeFunc ##### -->
 <para>
-
+This function is provided by the user and should free the boxed
+structure passed.
 </para>
 
-@boxed: 
+@boxed: The boxed structure to be freed.
 
 
 <!-- ##### FUNCTION g_boxed_copy ##### -->
 <para>
-
+Provide a copy of a boxed structure @src_boxed which is of type @boxed_type.
 </para>
 
-@boxed_type: 
-@src_boxed: 
-@Returns: 
+@boxed_type: The type of @src_boxed.
+@src_boxed:  The boxed structure to be copied.
+@Returns:    The newly created copy of the boxed structure.
 
 
 <!-- ##### FUNCTION g_boxed_free ##### -->
 <para>
-
+Free the boxed structure @boxed which is of type @boxed_type.
 </para>
 
-@boxed_type: 
-@boxed: 
+@boxed_type: The type of @boxed.
+@boxed:      The boxed structure to be freed.
 
 
 <!-- ##### FUNCTION g_value_set_boxed ##### -->
 <para>
-
+Assign a #GValue which is initialized with a certain boxed type a
+boxed structure of that very same type.
 </para>
 
-@value: 
-@boxed: 
+@value: The #GValue to be assigned a value to.
+@boxed: The boxed structure which has to be of the same type the #GValue got initialized with.
 
 
 <!-- ##### FUNCTION g_value_set_static_boxed ##### -->
@@ -97,14 +100,17 @@ This is an internal function introduced mainly for C marshallers.
 
 <!-- ##### FUNCTION g_boxed_type_register_static ##### -->
 <para>
-
+This function creates a new %G_TYPE_BOXED derived type id for a new
+boxed type with name @name. Boxed type handling functions have to be
+provided to copy and free opaque boxed structures of this type.
 </para>
 
-@name: 
+@name: Name of the new boxed type.
+@boxed_copy: Boxed structure copy function.
+@boxed_free: Boxed structure free function.
+@Returns: New %G_TYPE_BOXED derived type id for @name.
+<!-- # Unused Parameters # -->
 @boxed_init: 
-@boxed_copy: 
-@boxed_free: 
 @is_refcounted: 
-@Returns: 
 
 

@@ -1,3 +1,9 @@
+Wed Sep  5 05:24:07 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/gboxed.sgml: documented some functions.
+
+	* gobject/tmpl/objects.sgml: some fixups.
+
 Mon Sep 10 11:37:02 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/glib-sections.txt: Update.

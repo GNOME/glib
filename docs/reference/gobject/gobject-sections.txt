@@ -234,6 +234,7 @@ g_flags_complete_type_info
 <FILE>gboxed</FILE>
 <TITLE>Boxed Types</TITLE>
 GBoxed
+GBoxedInitFunc
 GBoxedCopyFunc
 GBoxedFreeFunc
 g_boxed_copy

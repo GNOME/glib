@@ -40,3 +40,8 @@
     @max_tokens + 1
 
   Code depending on either of these bugs will need to be fixed.
+
+* deprecated functions that got removed:
+  g_set_error_handler(), g_set_warning_handler(),
+  g_set_message_handler(), use g_log_set_handler() instead.
+  

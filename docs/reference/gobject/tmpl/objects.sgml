@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-The Base Object Type
+GObject
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The base object type.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -16,7 +16,8 @@ The Base Object Type
 
 <!-- ##### STRUCT GObject ##### -->
 <para>
-
+All the fields in the GObject structure are private to the #GObject implementation
+and should never be accessed directly.
 </para>
 
 @g_type_instance: 
@@ -71,26 +72,30 @@ The Base Object Type
 
 <!-- ##### MACRO G_TYPE_IS_OBJECT ##### -->
 <para>
-
+Return a boolean value of %FALSE or %TRUE indicating whether
+the passed in type id is a %G_TYPE_OBJECT or derived from it.
 </para>
 
-@type: 
+@type: Type id to check for is a %G_TYPE_OBJECT relationship.
+@Returns: %FALSE or %TRUE, indicating whether @type is a %G_TYPE_OBJECT.
 
 
 <!-- ##### MACRO G_OBJECT ##### -->
 <para>
-
+Cast a #GObject or derived pointer into a (GObject*) pointer.
+Depending on the current debugging level, this function may invoke
+certain runtime checks to identify invalid casts.
 </para>
 
-@object: 
+@object: Object which is subject to casting.
 
 
 <!-- ##### MACRO G_IS_OBJECT ##### -->
 <para>
-
+Check whether a valid #GTypeInstance pointer is of type %G_TYPE_OBJECT.
 </para>
 
-@object: 
+@object: Instance to check for being a %G_TYPE_OBJECT.
 
 
 <!-- ##### MACRO G_OBJECT_CLASS ##### -->
@@ -119,10 +124,11 @@ The Base Object Type
 
 <!-- ##### MACRO G_OBJECT_TYPE ##### -->
 <para>
-
+Return the type id of an object.
 </para>
 
-@object: 
+@object: Object to return the type id for.
+@Returns: Type id of @object.
 
 
 <!-- ##### MACRO G_OBJECT_TYPE_NAME ##### -->
@@ -256,8 +262,8 @@ lifetime of @object. When the @object is finalized, @weak_pointer will
 be set to %NULL.
 </para>
 
-@object: the object that should be weak referenced.
-@weak_pointer_location: the memory address of a pointer.
+@object: The object that should be weak referenced.
+@weak_pointer_location: The memory address of a pointer.
 
 
 <!-- ##### FUNCTION g_object_remove_weak_pointer ##### -->
@@ -267,8 +273,8 @@ using g_object_add_weak_pointer(). The @weak_pointer_location has
 to match the one used with g_object_add_weak_pointer().
 </para>
 
-@object: the object that is weak referenced.
-@weak_pointer_location: the memory address of a pointer.
+@object: The object that is weak referenced.
+@weak_pointer_location: The memory address of a pointer.
 
 
 <!-- ##### FUNCTION g_object_connect ##### -->
@@ -302,8 +308,6 @@ to match the one used with g_object_add_weak_pointer().
 @first_property_name: 
 @Varargs: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
 
 
 <!-- ##### FUNCTION g_object_get ##### -->
@@ -314,8 +318,6 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @first_property_name: 
 @Varargs: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
 
 
 <!-- ##### FUNCTION g_object_notify ##### -->
@@ -454,8 +456,6 @@ to match the one used with g_object_add_weak_pointer().
 @first_property_name: 
 @var_args: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
 
 
 <!-- ##### FUNCTION g_object_set_valist ##### -->
@@ -466,8 +466,6 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @first_property_name: 
 @var_args: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
 
 
 <!-- ##### FUNCTION g_object_get_valist ##### -->
@@ -478,8 +476,6 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @first_property_name: 
 @var_args: 
-<!-- # Unused Parameters # -->
-@first_param_name: 
 
 
 <!-- ##### FUNCTION g_object_watch_closure ##### -->

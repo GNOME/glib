@@ -1,9 +1,7 @@
-2001-09-10  Alex Larsson  <alexl@redhat.com>
+Mon Sep 10 17:13:36 2001  Tim Janik  <timj@gtk.org>
 
-	* gobject/gboxed.[ch]:
-	* gobject/gsourceclosure.c:
-	Removed is_refcounted and GBoxedInitFunc from
-	g_boxed_type_register_static().
+	* glib/gmessages.h: got rid of g_set_error_handler(),
+	g_set_warning_handler(), g_set_message_handler().
 
 Mon Sep 10 11:42:58 2001  Owen Taylor  <otaylor@redhat.com>
 

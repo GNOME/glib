@@ -85,9 +85,6 @@ static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
-static GErrorFunc     glib_error_func = NULL;
-static GWarningFunc   glib_warning_func = NULL;
-static GPrintFunc     glib_message_func = NULL;
 
 static GPrivate* g_log_depth = NULL;
 
@@ -581,9 +578,6 @@ g_log_default_handler (const gchar    *log_domain,
   GFileDescriptor fd;
   gboolean in_recursion;
   gboolean is_fatal;  
-  GErrorFunc local_glib_error_func;
-  GWarningFunc local_glib_warning_func;
-  GPrintFunc local_glib_message_func;
   
   in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
@@ -602,21 +596,9 @@ g_log_default_handler (const gchar    *log_domain,
   fd = (log_level > G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
   
-  g_mutex_lock (g_messages_lock);
-  local_glib_error_func = glib_error_func;
-  local_glib_warning_func = glib_warning_func;
-  local_glib_message_func = glib_message_func;
-  g_mutex_unlock (g_messages_lock);
-
   switch (log_level)
     {
     case G_LOG_LEVEL_ERROR:
-      if (!log_domain && local_glib_error_func)
-	{
-	  /* compatibility code */
-	  local_glib_error_func (message);  
-	  return;
-	}
       /* use write(2) for output, in case we are out of memeory */
       ensure_stdout_valid ();
       write (fd, "\n", 1);
@@ -662,12 +644,6 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_WARNING:
-      if (!log_domain && local_glib_warning_func)
-	{
-	  /* compatibility code */
-	  local_glib_warning_func (message);
-	  return;
-	}
       ensure_stdout_valid ();
       write (fd, "\n", 1);
       g_log_write_prefix (fd, log_level);
@@ -690,12 +666,6 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_MESSAGE:
-      if (!log_domain && local_glib_message_func)
-	{
-	  /* compatibility code */
-	  local_glib_message_func (message);
-	  return;
-	}
       ensure_stdout_valid ();
 
       g_log_write_prefix (fd, log_level);
@@ -882,48 +852,6 @@ g_printerr (const gchar *format,
       fflush (stderr);
     }
   g_free (string);
-}
-
-/* compatibility code */
-GErrorFunc
-g_set_error_handler (GErrorFunc func)
-{
-  GErrorFunc old_error_func;
-  
-  g_mutex_lock (g_messages_lock);
-  old_error_func = glib_error_func;
-  glib_error_func = func;
-  g_mutex_unlock (g_messages_lock);
- 
-  return old_error_func;
-}
-
-/* compatibility code */
-GWarningFunc
-g_set_warning_handler (GWarningFunc func)
-{
-  GWarningFunc old_warning_func;
-  
-  g_mutex_lock (g_messages_lock);
-  old_warning_func = glib_warning_func;
-  glib_warning_func = func;
-  g_mutex_unlock (g_messages_lock);
-  
-  return old_warning_func;
-}
-
-/* compatibility code */
-GPrintFunc
-g_set_message_handler (GPrintFunc func)
-{
-  GPrintFunc old_message_func;
-  
-  g_mutex_lock (g_messages_lock);
-  old_message_func = glib_message_func;
-  glib_message_func = func;
-  g_mutex_unlock (g_messages_lock);
-  
-  return old_message_func;
 }
 
 #ifndef MB_LEN_MAX

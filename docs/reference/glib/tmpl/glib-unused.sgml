@@ -1,3 +1,29 @@
+<!-- ##### SECTION ./tmpl/messages.sgml:Long_Description ##### -->
+<para>
+These functions provide support for logging error messages or messages
+used for debugging.
+</para>
+
+<para>
+There are several built-in levels of messages, defined in #GLogLevelFlags.
+These can be extended with user-defined levels.
+</para>
+
+
+<!-- ##### SECTION ./tmpl/messages.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/messages.sgml:Short_Description ##### -->
+versatile support for logging messages with different levels of importance.
+
+
+<!-- ##### SECTION ./tmpl/messages.sgml:Title ##### -->
+Message Logging
+
+
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 
@@ -51,6 +77,13 @@
 @s2: 
 @Returns: 
 
+<!-- ##### USER_FUNCTION GErrorFunc ##### -->
+<para>
+Specifies the type of function passed to g_set_error_handler().
+</para>
+
+@str: the error message.
+
 <!-- ##### USER_FUNCTION GHookFreeFunc ##### -->
 <para>
 
@@ -70,6 +103,13 @@
 @G_IO_FILE_MODE_READ_WRITE: 
 @G_IO_FILE_MODE_READ_WRITE_TRUNCATE: 
 @G_IO_FILE_MODE_READ_WRITE_APPEND: 
+
+<!-- ##### USER_FUNCTION GWarningFunc ##### -->
+<para>
+Specifies the type of function passed to g_set_warning_handler().
+</para>
+
+@str: the warning message.
 
 <!-- ##### MACRO G_CHANNEL_ERROR ##### -->
 <para>
@@ -222,6 +262,33 @@ documentation.
 
 @filename: the file name.
 @Returns: the file attributes.
+
+<!-- ##### FUNCTION g_set_error_handler ##### -->
+<para>
+Sets the function to be called to handle error messages.
+This function is deprecated in favour of the new logging facilities.
+</para>
+
+@func: the function to be called to handle error messages.
+@Returns: the old error handler.
+
+<!-- ##### FUNCTION g_set_message_handler ##### -->
+<para>
+Sets the function to be called to handle messages.
+This function is deprecated in favour of the new logging facilities.
+</para>
+
+@func: the function to be called to handle normal messages.
+@Returns: the old message handler.
+
+<!-- ##### FUNCTION g_set_warning_handler ##### -->
+<para>
+Sets the function to be called to handle warning messages.
+This function is deprecated in favour of the new logging facilities.
+</para>
+
+@func: the function to be called to handle warning messages.
+@Returns: the old warning handler.
 
 <!-- ##### FUNCTION g_source_add ##### -->
 <para>

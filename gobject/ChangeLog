@@ -1,3 +1,22 @@
+Mon Sep 10 19:27:47 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]:
+	g_type_add_interface*(): implement the ability to add an interface to
+	a type whose parents already conform to this interface.
+	such "overriding" interfaces, when initialized, are not just initialized
+	with 0, but with a copy of the interface they override.
+	g_type_interface_peek_parent(): new function, return the interface
+	that this interface "overrides", if any.
+
+	* testgruntime.c: test new interface stuff.
+
+2001-09-10  Alex Larsson  <alexl@redhat.com>
+
+        * gobject/gboxed.[ch]:
+        * gobject/gsourceclosure.c:
+        Removed is_refcounted and GBoxedInitFunc from
+        g_boxed_type_register_static().
+
 Sat Sep  8 14:13:57 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/Makefile.am: Move gbsearcharray.[ch] to glib

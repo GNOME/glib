@@ -170,12 +170,6 @@ void            g_printerr              (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
 GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
-/* deprecated compatibility functions, use g_log_set_handler() instead */
-typedef void            (*GErrorFunc)           (const gchar *str);
-typedef void            (*GWarningFunc)         (const gchar *str);
-GErrorFunc   g_set_error_handler   (GErrorFunc   func);
-GWarningFunc g_set_warning_handler (GWarningFunc func);
-GPrintFunc   g_set_message_handler (GPrintFunc func);
 
 /* Provide macros for error handling. The "assert" macros will
  *  exit on failure. The "return" macros will exit the current

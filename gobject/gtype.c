@@ -132,6 +132,8 @@ static inline gpointer			type_get_qdata_L		(TypeNode		*node,
 static inline void			type_set_qdata_W		(TypeNode		*node,
 									 GQuark			 quark,
 									 gpointer		 data);
+static IFaceHolder*			type_iface_peek_holder_L	(TypeNode		*iface,
+									 GType			 instance_type);
 
 
 /* --- structures --- */
@@ -333,10 +335,14 @@ type_node_any_new_W (TypeNode             *pnode,
 	}
       else
 	{
+	  guint j;
+
 	  CLASSED_NODE_N_IFACES (node) = CLASSED_NODE_N_IFACES (pnode);
 	  CLASSED_NODE_IFACES_ENTRIES (node) = g_memdup (CLASSED_NODE_IFACES_ENTRIES (pnode),
 							 sizeof (CLASSED_NODE_IFACES_ENTRIES (pnode)[0]) *
 							 CLASSED_NODE_N_IFACES (node));
+	  for (j = 0; j < CLASSED_NODE_N_IFACES (node); j++)
+	    CLASSED_NODE_IFACES_ENTRIES (node)[j].vtable = NULL;
 	}
       
       i = pnode->n_children++;
@@ -778,8 +784,8 @@ check_type_info_L (TypeNode        *pnode,
 }
 
 static TypeNode*
-find_conforming_type_L (TypeNode *pnode,
-			TypeNode *iface)
+find_conforming_child_type_L (TypeNode *pnode,
+			      TypeNode *iface)
 {
   TypeNode *node = NULL;
   guint i;
@@ -788,7 +794,7 @@ find_conforming_type_L (TypeNode *pnode,
     return pnode;
   
   for (i = 0; i < pnode->n_children && !node; i++)
-    node = find_conforming_type_L (lookup_type_node_L (pnode->children[i]), iface);
+    node = find_conforming_child_type_L (lookup_type_node_L (pnode->children[i]), iface);
   
   return node;
 }
@@ -799,6 +805,7 @@ check_add_interface_L (GType instance_type,
 {
   TypeNode *node = lookup_type_node_L (instance_type);
   TypeNode *iface = lookup_type_node_L (iface_type);
+  IFaceEntry *entry;
   TypeNode *tnode;
   
   if (!node || !node->is_instantiatable)
@@ -824,7 +831,20 @@ check_add_interface_L (GType instance_type,
 		 NODE_NAME (tnode));
       return FALSE;
     }
-  tnode = find_conforming_type_L (node, iface);  // FIXME: iface overriding
+  /* allow overriding of interface type introduced for parent type */
+  entry = type_lookup_iface_entry_L (node, iface);
+  if (entry && entry->vtable == NULL && !type_iface_peek_holder_L (iface, NODE_TYPE (node)))
+    {
+      /* ok, we do conform to this interface already, but the interface vtable was not
+       * yet intialized, and we just conform to the interface because it got added to
+       * one of our parents. so we allow overriding of holder info here.
+       */
+      return TRUE;
+    }
+  /* check whether one of our children already conforms (or whether the interface
+   * got added to this node already)
+   */
+  tnode = find_conforming_child_type_L (node, iface);  /* tnode is_a node */
   if (tnode)
     {
       g_warning ("cannot add interface type `%s' to type `%s', since type `%s' already conforms to interface",
@@ -1044,9 +1064,12 @@ type_node_add_iface_entry_W (TypeNode *node,
   for (i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
     if (entries[i].iface_type == iface_type)
       {
-	g_warning ("failed to add interface, type `%s' already conforms to interface type `%s'",
-		   type_descriptive_name_L (NODE_TYPE (node)),
-		   type_descriptive_name_L (iface_type));
+	/* this can (should) only happen if our parent type already conformed
+	 * to iface_type and node got it's own holder info. here, our
+	 * children should already have entries with NULL vtables, so
+	 * we're actually done.
+	 */
+	g_assert (entries[i].vtable == NULL);
 	return;
       }
     else if (entries[i].iface_type > iface_type)
@@ -1206,17 +1229,27 @@ g_type_interface_add_prerequisite (GType interface_type,
 }
 
 static IFaceHolder*
-type_iface_retrive_holder_info_Wm (TypeNode *iface,
-				   GType     instance_type)
+type_iface_peek_holder_L (TypeNode *iface,
+			  GType     instance_type)
 {
-  IFaceHolder *iholder = iface_node_get_holders_L (iface);
-  
+  IFaceHolder *iholder;
+
   g_assert (NODE_IS_IFACE (iface));
-  
-  while (iholder->instance_type != instance_type)
+
+  iholder = iface_node_get_holders_L (iface);
+  while (iholder && iholder->instance_type != instance_type)
     iholder = iholder->next;
-  
-  if (!iholder->info)
+  return iholder;
+}
+
+static IFaceHolder*
+type_iface_retrive_holder_info_Wm (TypeNode *iface,
+				   GType     instance_type,
+				   gboolean  need_info)
+{
+  IFaceHolder *iholder = type_iface_peek_holder_L (iface, instance_type);
+
+  if (iholder && !iholder->info && need_info)
     {
       GInterfaceInfo tmp_info;
       
@@ -1239,7 +1272,7 @@ type_iface_retrive_holder_info_Wm (TypeNode *iface,
       iholder->info = g_memdup (&tmp_info, sizeof (tmp_info));
     }
   
-  return iholder;
+  return iholder;	/* we don't modify write lock upon returning NULL */
 }
 
 static void
@@ -1372,37 +1405,33 @@ g_type_free_instance (GTypeInstance *instance)
   g_type_class_unref (class);
 }
 
-static void
-type_propagate_iface_vtable_W (TypeNode       *pnode,
-			       TypeNode       *iface,
-			       GTypeInterface *vtable)
-{
-  IFaceEntry *entry = type_lookup_iface_entry_L (pnode, iface);
-  guint i;
-  
-  entry->vtable = vtable;
-  for (i = 0; i < pnode->n_children; i++)
-    {
-      TypeNode *node = lookup_type_node_L (pnode->children[i]);
-      
-      type_propagate_iface_vtable_W (node, iface, vtable);
-    }
-}
-
-static void
+static gboolean
 type_iface_vtable_init_Wm (TypeNode *iface,
 			   TypeNode *node)
 {
-#ifndef G_DISABLE_ASSERT
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
-#endif
-  IFaceHolder *iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node));
-  GTypeInterface *vtable;
+  IFaceHolder *iholder;
+  GTypeInterface *vtable = NULL;
+  TypeNode *pnode;
+
+  /* type_iface_retrive_holder_info_Wm() doesn't modify write lock for returning NULL */
+  iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node), TRUE);
+  if (!iholder)
+    return FALSE;	/* we don't modify write lock upon FALSE */
   
   g_assert (iface->data && entry && entry->vtable == NULL && iholder && iholder->info);
   
-  vtable = g_malloc0 (iface->data->iface.vtable_size);
-  type_propagate_iface_vtable_W (node, iface, vtable);
+  pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+  if (pnode)	/* want to copy over parent iface contents */
+    {
+      IFaceEntry *pentry = type_lookup_iface_entry_L (pnode, iface);
+
+      if (pentry)
+	vtable = g_memdup (pentry->vtable, iface->data->iface.vtable_size);
+    }
+  if (!vtable)
+    vtable = g_malloc0 (iface->data->iface.vtable_size);
+  entry->vtable = vtable;
   vtable->g_type = NODE_TYPE (iface);
   vtable->g_instance_type = NODE_TYPE (node);
   
@@ -1415,25 +1444,25 @@ type_iface_vtable_init_Wm (TypeNode *iface,
 	iholder->info->interface_init (vtable, iholder->info->interface_data);
       G_WRITE_LOCK (&type_rw_lock);
     }
+  return TRUE;	/* write lock modified */
 }
 
-static void
+static gboolean
 type_iface_vtable_finalize_Wm (TypeNode       *iface,
 			       TypeNode       *node,
 			       GTypeInterface *vtable)
 {
-#ifndef G_DISABLE_ASSERT
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
-#endif
-  IFaceHolder *iholder = iface_node_get_holders_L (iface);
+  IFaceHolder *iholder;
+
+  /* type_iface_retrive_holder_info_Wm() doesn't modify write lock for returning NULL */
+  iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node), FALSE);
+  if (!iholder)
+    return FALSE;	/* we don't modify write lock upon FALSE */
   
-  g_assert (entry && entry->vtable == vtable);
+  g_assert (entry && entry->vtable == vtable && iholder->info);
   
-  while (iholder->instance_type != NODE_TYPE (node))
-    iholder = iholder->next;
-  g_assert (iholder && iholder->info);
-  
-  type_propagate_iface_vtable_W (node, iface, NULL);
+  entry->vtable = NULL;
   if (iholder->info->interface_finalize || iface->data->iface.vtable_finalize_base)
     {
       G_WRITE_UNLOCK (&type_rw_lock);
@@ -1448,6 +1477,8 @@ type_iface_vtable_finalize_Wm (TypeNode       *iface,
   g_free (vtable);
   
   type_iface_blow_holder_info_Wm (iface, NODE_TYPE (node));
+
+  return TRUE;	/* write lock modified */
 }
 
 static void
@@ -1457,7 +1488,7 @@ type_class_init_Wm (TypeNode   *node,
   GSList *slist, *init_slist = NULL;
   GTypeClass *class;
   IFaceEntry *entry;
-  TypeNode *bnode;
+  TypeNode *bnode, *pnode;
   guint i;
   
   g_assert (node->is_classed && node->data &&
@@ -1498,14 +1529,38 @@ type_class_init_Wm (TypeNode   *node,
   
   G_WRITE_LOCK (&type_rw_lock);
   
-  /* ok, we got the class done, now initialize all interfaces */
-  for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
-    if (!CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable)
-      entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
+  /* ok, we got the class done, now initialize all interfaces, either
+   * from parent, or through our holder info
+   */
+  pnode = lookup_type_node_L (NODE_PARENT_TYPE (node));
+  entry = CLASSED_NODE_IFACES_ENTRIES (node) + 0;
   while (entry)
     {
-      type_iface_vtable_init_Wm (lookup_type_node_L (entry->iface_type), node);
+      g_assert (entry->vtable == NULL);
       
+      if (!type_iface_vtable_init_Wm (lookup_type_node_L (entry->iface_type), node))
+	{
+	  guint j;
+
+	  /* type_iface_vtable_init_Wm() doesn't modify write lock upon FALSE,
+	   * need to get this interface from parent
+	   */
+	  g_assert (pnode != NULL);
+
+	  for (j = 0; j < CLASSED_NODE_N_IFACES (pnode); j++)
+	    {
+	      IFaceEntry *pentry = CLASSED_NODE_IFACES_ENTRIES (pnode) + j;
+
+	      if (pentry->iface_type == entry->iface_type)
+		{
+		  entry->vtable = pentry->vtable;
+		  break;
+		}
+	    }
+	  g_assert (entry->vtable != NULL);
+	}
+
+      /* refetch entry, IFACES_ENTRIES might be modified */
       for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
 	if (!CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable)
 	  entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
@@ -1530,8 +1585,15 @@ type_data_finalize_class_ifaces_Wm (TypeNode *node)
       entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
   while (entry)
     {
-      type_iface_vtable_finalize_Wm (lookup_type_node_L (entry->iface_type), node, entry->vtable);
+      if (!type_iface_vtable_finalize_Wm (lookup_type_node_L (entry->iface_type), node, entry->vtable))
+	{
+	  /* type_iface_vtable_finalize_Wm() doesn't modify write lock upon FALSE,
+	   * iface vtable came from parent
+	   */
+	  entry->vtable = NULL;
+	}
       
+      /* refetch entry, IFACES_ENTRIES might be modified */
       for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
 	if (CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable &&
 	    CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable->g_instance_type == NODE_TYPE (node))
@@ -1835,7 +1897,14 @@ g_type_add_interface_static (GType                 instance_type,
       TypeNode *iface = lookup_type_node_L (interface_type);
       
       if (check_interface_info_L (iface, NODE_TYPE (node), info))
-	type_add_interface_W (node, iface, info, NULL);
+	{
+	  type_add_interface_W (node, iface, info, NULL);
+	  /* if we have a class already, the interface vtable needs to
+	   * be initialized as well
+	   */
+	  if (node->data && node->data->class.class)
+	    type_iface_vtable_init_Wm (iface, node);
+	}
     }
   G_WRITE_UNLOCK (&type_rw_lock);
 }
@@ -1863,6 +1932,11 @@ g_type_add_interface_dynamic (GType        instance_type,
       TypeNode *iface = lookup_type_node_L (interface_type);
       
       type_add_interface_W (node, iface, NULL, plugin);
+      /* if we have a class already, the interface vtable needs to
+       * be initialized as well
+       */
+      if (node->data && node->data->class.class)
+	type_iface_vtable_init_Wm (iface, node);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
 }
@@ -1978,7 +2052,7 @@ gpointer
 g_type_class_peek_parent (gpointer g_class)
 {
   TypeNode *node;
-  gpointer class;
+  gpointer class = NULL;
   
   g_return_val_if_fail (g_class != NULL, NULL);
   
@@ -1989,8 +2063,8 @@ g_type_class_peek_parent (gpointer g_class)
       node = lookup_type_node_L (NODE_PARENT_TYPE (node));
       class = node->data->class.class;
     }
-  else
-    class = NULL;
+  else if (NODE_PARENT_TYPE (node))
+    g_warning (G_STRLOC ": invalid class pointer `%p'", g_class);
   G_READ_UNLOCK (&type_rw_lock);
   
   return class;
@@ -2017,8 +2091,39 @@ g_type_interface_peek (gpointer instance_class,
       if (entry && entry->vtable)
 	vtable = entry->vtable;
     }
+  else
+    g_warning (G_STRLOC ": invalid class pointer `%p'", class);
   G_READ_UNLOCK (&type_rw_lock);
   
+  return vtable;
+}
+
+gpointer
+g_type_interface_peek_parent (gpointer g_iface)
+{
+  TypeNode *node;
+  TypeNode *iface;
+  gpointer vtable = NULL;
+  GTypeInterface *iface_class = g_iface;
+
+  g_return_val_if_fail (g_iface != NULL, NULL);
+
+  G_READ_LOCK (&type_rw_lock);
+  iface = lookup_type_node_L (iface_class->g_type);
+  node = lookup_type_node_L (iface_class->g_instance_type);
+  if (node)
+    node = lookup_type_node_L (NODE_PARENT_TYPE (node));
+  if (node && node->is_instantiatable && iface)
+    {
+      IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+
+      if (entry && entry->vtable)
+	vtable = entry->vtable;
+    }
+  else if (node)
+    g_warning (G_STRLOC ": invalid interface pointer `%p'", g_iface);
+  G_READ_UNLOCK (&type_rw_lock);
+
   return vtable;
 }
 

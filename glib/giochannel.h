@@ -98,7 +98,7 @@ typedef enum
   G_IO_FLAG_IS_SEEKABLE = 1 << 4,	/* Read only flag */
   G_IO_FLAG_MASK = (1 << 5) - 1,
   G_IO_FLAG_GET_MASK = G_IO_FLAG_MASK,
-  G_IO_FLAG_SET_MASK = G_IO_FLAG_APPEND | G_IO_FLAG_NONBLOCK,
+  G_IO_FLAG_SET_MASK = G_IO_FLAG_APPEND | G_IO_FLAG_NONBLOCK
 } GIOFlags;
 
 struct _GIOChannel

@@ -13,7 +13,7 @@ in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#GValue, #GParamSpecValueArray
+#GValue, #GParamSpecValueArray, g_param_spec_value_array()
 </para>
 
 <!-- ##### STRUCT GValueArray ##### -->
