@@ -101,7 +101,8 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
                             gt_cv_func_dgettext_libintl=yes)])
 
 	    if test "$gt_cv_func_dgettext_libc" != "yes" ; then
-              AC_MSG_NOTICE([Seeing if -liconv is needed to use gettext])
+              AC_MSG_CHECKING([if -liconv is needed to use gettext])
+              AC_MSG_RESULT([])
               AC_CHECK_LIB(intl, dcgettext,
                            [gt_cv_func_dgettext_libintl=yes
                             libintl_extra_libs=-liconv],

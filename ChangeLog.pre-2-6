@@ -1,3 +1,19 @@
+Wed May 22 15:40:47 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* README.in: Remove notes about now-fixed-bugs.
+
+	* m4macros/glib-gettext.m4 acinclude.m4: Get rid
+	of AC_MSG_NOTICE() usage, since some broken systems
+	(Hi Debian!) might not be using autoconf-2.5x for
+	downstream packages even though we require it for
+	glib itself.
+
+	* INSTALL.in: Add a note about installing extra
+	converters for Solaris.
+
+	* glib/gutils.h (g_bit_nth_msf): Fix termination
+	condition. (#82582, Paolo Molaro)
+ 
 Tue May 21 15:51:17 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: $with_libiconv, not $with_iconv.

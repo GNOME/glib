@@ -179,7 +179,8 @@ msgid "Error on line %d: %s"
 msgstr "Kļūda rindā %d: %s"
 
 #: glib/gmarkup.c:379
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 
 #: glib/gmarkup.c:389
@@ -253,7 +254,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1110
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
 #: glib/gmarkup.c:1151
@@ -457,4 +459,3 @@ msgstr ""
 #: glib/gutf8.c:1342 glib/gutf8.c:1438
 msgid "Character out of range for UTF-16"
 msgstr ""
-
