@@ -8,11 +8,11 @@ matches strings against patterns containing '*' (wildcard) and '?' (joker).
 <para>
 The <function>g_pattern_match*</function> functions match a string 
 against a pattern containing '*' and '?' wildcards with similar semantics 
-as the standard <function>glob()</function> function: '*' matches an
-arbitrary, possibly empty, string, '?' matches an arbitrary character.
+as the standard glob() function: '*' matches an arbitrary, possibly empty, 
+string, '?' matches an arbitrary character.
 </para>
 <para>
-Note that in contrast to <function>glob()</function>, the '/' character
+Note that in contrast to glob(), the '/' character
 <emphasis>can</emphasis> be matched by the wildcards, there are no
 '[...]' character ranges and '*' and '?' can <emphasis>not</emphasis>
 be escaped to include them literally in a pattern. 
@@ -82,9 +82,9 @@ g_pattern_match().
 </para>
 <para>
 Note also that the reverse of a UTF-8 encoded string can in general 
-<emphasis>not</emphasis> be obtained by <function>g_strreverse()</function>.
+<emphasis>not</emphasis> be obtained by g_strreverse().
 This works only if the string doesn't contain any multibyte characters.
-Glib doesn't currently offer a function to reverse UTF-8 encoded strings.
+Glib offers the g_utf_strreverse() function to reverse UTF-8 encoded strings.
 </para>
 
 @pspec: a #GPatternSpec.

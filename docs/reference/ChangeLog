@@ -1,3 +1,8 @@
+Sun Sep 19 23:15:17 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/patterns.sgml: Point to g_utf8_strreverse() for
+	reversing UTF-8 strings.  (#153091, Adam Hooper)
+
 2004-09-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.3 ===
