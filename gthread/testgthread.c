@@ -79,7 +79,9 @@ new_thread(GHookFunc func, gpointer data)
   pthread_t thread;
   pthread_attr_t pthread_attr;
   pthread_attr_init (&pthread_attr);
-  pthread_attr_setdetachstate (&pthread_attr, PTHREAD_CREATE_JOINABLE);
+  /* This is the default, it seems, so leave that out for now 
+     pthread_attr_setdetachstate (&pthread_attr, PTHREAD_CREATE_JOINABLE);
+  */
   pthread_create (&thread, &pthread_attr, (void *(*)(void *)) func, data);
   return GUINT_TO_POINTER (thread);
 }

@@ -572,9 +572,6 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
      	        AC_CHECK_LIB(pthreads, pthread_attr_init, have_threads=posix)
 	fi
         if test "x$have_threads" = xnone; then
-		# dont let us be fooled by a defined pthread_cond_init
-		# function in the standard c-lib, that doesn't have too mean, 
-		# there is full thread support, it might be a weak symbol.
 		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
 	fi
 fi
@@ -609,7 +606,7 @@ case $have_threads in
 			     	G_THREAD_LIBS="-lpthreads")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
-			AC_CHECK_FUNC(pthread_cond_init, G_THREAD_LIBS="")
+			AC_CHECK_FUNC(pthread_attr_init, G_THREAD_LIBS="")
 		fi
                 ;;
         solaris)

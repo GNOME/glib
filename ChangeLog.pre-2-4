@@ -1,3 +1,8 @@
+1998-12-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in (have_threads): Changed the last pthread_cond_init
+	to pthread_attr_init.
+
 Fri Dec 18 00:03:17 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 
