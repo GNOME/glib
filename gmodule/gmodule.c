@@ -349,13 +349,13 @@ g_module_open (const gchar    *file_name,
     }
 
   /* check whether we have a readable file right away */
-  if (g_file_test (file_name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+  if (g_file_test (file_name, G_FILE_TEST_IS_REGULAR))
     name = g_strdup (file_name);
   /* try completing file name with standard library suffix */
   if (!name)
     {
       name = g_strconcat (file_name, "." G_MODULE_SUFFIX, NULL);
-      if (!g_file_test (name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+      if (!g_file_test (name, G_FILE_TEST_IS_REGULAR))
 	{
 	  g_free (name);
 	  name = NULL;
@@ -365,7 +365,7 @@ g_module_open (const gchar    *file_name,
   if (!name)
     {
       name = g_strconcat (file_name, ".la", NULL);
-      if (!g_file_test (name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+      if (!g_file_test (name, G_FILE_TEST_IS_REGULAR))
 	{
 	  g_free (name);
 	  name = NULL;
