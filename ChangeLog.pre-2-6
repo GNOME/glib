@@ -1,3 +1,9 @@
+2001-01-02  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in: remove glib-config-2.0
+
+	* Makefile.am: remove glib-config-2.0
+
 2001-01-03  Havoc Pennington  <hp@pobox.com>
 
 	* tests/Makefile.am (INCLUDES): -I$(top_srcdir)/gmodule, 
@@ -16,7 +22,7 @@ Wed Dec 13 20:41:49 2000  Owen Taylor  <otaylor@redhat.com>
 	if it was still set when the source is freed. (Usually, this
 	will be done by g_source_destroy.)
 
- 2001-01-02  Dan Winship  <danw@helixcode.com>
+2001-01-02  Dan Winship  <danw@helixcode.com>
 
 	* garray.h (g_array_append_val, g_array_prepend_val,
 	g_array_insert_val): Use parentheses around an argument to make

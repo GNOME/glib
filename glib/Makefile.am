@@ -4,10 +4,6 @@ AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS = . gobject gmodule gthread docs tests build
 
-bin_SCRIPTS=glib-config-2.0
-BUILT_SOURCES=glib-config-2.0
-glib-config-2.0: glib-config-2.0.in
-
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_COMPAT_H
 
