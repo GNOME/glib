@@ -1,3 +1,9 @@
+2001-08-06  Sven Neumann  <sven@gimp.org>
+
+	* docs/reference/gobject/gobject-sections.txt
+	* docs/reference/gobject/tmpl/objects.sgml: added documentation for
+	g_object_[add|remove]_weak_pointer().
+
 2001-07-19  Darin Adler  <darin@bentspoon.com>
 
 	reviewed by: <delete if not using a buddy>

@@ -1262,6 +1262,30 @@ g_object_weak_unref (GObject    *object,
     g_warning (G_STRLOC ": couldn't find weak ref %p(%p)", notify, data);
 }
 
+void
+g_object_add_weak_pointer (GObject  *object, 
+                           gpointer *weak_pointer_location)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (weak_pointer_location != NULL);
+
+  g_object_weak_ref (object, 
+                     (GWeakNotify) g_nullify_pointer, 
+                     weak_pointer_location);
+}
+
+void
+g_object_remove_weak_pointer (GObject  *object, 
+                              gpointer *weak_pointer_location)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (weak_pointer_location != NULL);
+
+  g_object_weak_unref (object, 
+                       (GWeakNotify) g_nullify_pointer, 
+                       weak_pointer_location);
+}
+
 gpointer
 g_object_ref (gpointer _object)
 {

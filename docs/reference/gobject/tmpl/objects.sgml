@@ -207,6 +207,49 @@ The Base Object Type
 @object: 
 
 
+<!-- ##### FUNCTION g_object_weak_ref ##### -->
+<para>
+
+</para>
+
+@object: 
+@notify: 
+@data: 
+
+
+<!-- ##### FUNCTION g_object_weak_unref ##### -->
+<para>
+
+</para>
+
+@object: 
+@notify: 
+@data: 
+
+
+<!-- ##### FUNCTION g_object_add_weak_pointer ##### -->
+<para>
+Adds a weak reference from weak_pointer to @object to indicate that
+the pointer located at @weak_pointer_location is only valid during the 
+lifetime of @object. When the @object is finalized, @weak_pointer will 
+be set to %NULL.
+</para>
+
+@object: the object that should be weak referenced.
+@weak_pointer_location: the memory address of a pointer.
+
+
+<!-- ##### FUNCTION g_object_remove_weak_pointer ##### -->
+<para>
+Removes a weak reference from @object that was previously added
+using g_object_add_weak_pointer(). The @weak_pointer_location has
+to match the one used with g_object_add_weak_pointer().
+</para>
+
+@object: the object that is weak referenced.
+@weak_pointer_location: the memory address of a pointer.
+
+
 <!-- ##### FUNCTION g_object_connect ##### -->
 <para>
 

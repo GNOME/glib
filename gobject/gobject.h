@@ -154,6 +154,10 @@ void	    g_object_weak_ref		      (GObject	      *object,
 void	    g_object_weak_unref		      (GObject	      *object,
 					       GWeakNotify     notify,
 					       gpointer	       data);
+void        g_object_add_weak_pointer         (GObject        *object, 
+                                               gpointer       *weak_pointer_location);
+void        g_object_remove_weak_pointer      (GObject        *object, 
+                                               gpointer       *weak_pointer_location);
 gpointer    g_object_get_qdata                (GObject        *object,
 					       GQuark          quark);
 void        g_object_set_qdata                (GObject        *object,

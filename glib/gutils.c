@@ -1046,6 +1046,20 @@ g_int_hash (gconstpointer v)
 }
 
 /**
+ * g_nullify_pointer:
+ * @nullify_location: the memory address of the pointer.
+ * 
+ * Set the pointer at the specified location to %NULL.
+ **/
+void
+g_nullify_pointer (gpointer *nullify_location)
+{
+  g_return_if_fail (nullify_location != NULL);
+
+  *nullify_location = NULL;
+}
+
+/**
  * g_get_codeset:
  * 
  * Get the codeset for the current locale.

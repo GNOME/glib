@@ -165,6 +165,10 @@ gchar*                g_get_current_dir    (void);
 gchar*                g_path_get_basename  (const gchar *file_name);
 gchar*                g_path_get_dirname   (const gchar *file_name);
 
+
+/* Set the pointer at the specified location to NULL */
+void                  g_nullify_pointer    (gpointer    *nullify_location);
+
 /* Get the codeset for the current locale */
 /* gchar * g_get_codeset    (void); */
 
