@@ -1,3 +1,7 @@
+Sun Jan 11 16:05:35 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/giounix.c: #define _POSIX_SOURCE for SSIZE_MAX. Fixes #128853.
+
 Sat Jan 10 00:11:12 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gutils.h (g_bit_nth_lsf,g_bit_nth_msf): 64-bit cleanliness
