@@ -1,12 +1,13 @@
 # translation of glib to Persian
-# Copyright (C) 2002 The FarsiWeb Project Group
-# Roozbeh Pournader <roozbeh@sharif.edu>, 2002
+# Copyright (C) 2002, 2004 Sharif FarsiWeb, Inc.
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Roozbeh Pournader <roozbeh@sharif.edu>, 2002, 2004
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib\n"
+"Project-Id-Version: glib 2.3.1\n"
 "POT-Creation-Date: 2003-12-08 12:13-0500\n"
-"PO-Revision-Date: 2002-08-23 23:11+0430\n"
+"PO-Revision-Date: 2004-01-01 18:36+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
 "MIME-Version: 1.0\n"
@@ -136,7 +137,7 @@ msgstr "ایجاد پرونده‌ی '%s' شکست خورد: %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "پیوند‌های نمادی پشتیبانی نمی‌شود"
 
 #: glib/giochannel.c:1143
 #, c-format
