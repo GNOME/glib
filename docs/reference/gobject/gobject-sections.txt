@@ -209,6 +209,10 @@ G_OBJECT_CLASS_NAME
 g_object_class_install_property
 g_object_class_find_property
 g_object_class_list_properties
+g_object_class_override_property
+g_object_interface_install_property
+g_object_interface_find_property
+g_object_interface_list_properties
 g_object_new
 g_object_newv
 GParameter
@@ -375,6 +379,7 @@ g_param_spec_get_qdata
 g_param_spec_set_qdata
 g_param_spec_set_qdata_full
 g_param_spec_steal_qdata
+g_param_spec_get_redirect_target
 g_param_spec_internal
 GParamSpecTypeInfo
 g_param_type_register_static
@@ -599,6 +604,13 @@ G_PARAM_SPEC_VALUE_ARRAY
 G_TYPE_PARAM_VALUE_ARRAY
 GParamSpecValueArray
 g_param_spec_value_array
+
+<SUBSECTION Override>
+G_IS_PARAM_SPEC_OVERRIDE
+G_PARAM_SPEC_OVERRIDE
+G_TYPE_PARAM_OVERRIDE
+GParamSpecOverride
+g_param_spec_override
 
 <SUBSECTION Private>
 g_value_set_instance

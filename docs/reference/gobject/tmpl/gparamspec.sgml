@@ -330,6 +330,22 @@ user data pointers with a destroy notifier.
 @Returns: the user data pointer set, or %NULL
 
 
+<!-- ##### FUNCTION g_param_spec_get_redirect_target ##### -->
+<para>
+If the paramspec redirects operations to another paramspec,
+returns that paramspec. Redirect is used typically for
+providing a new implementation of a property in a derived
+type while perserving all the properties from the parent
+type. Redirection is established by creating a property
+of type #GParamSpecOverride. See g_object_override_property()
+for an example of the use of this capability.
+</para>
+
+@pspec: a #GParamSpec
+@Returns: paramspec to which requests on this paramspec should
+  be redirected, or %NULL if none.
+
+
 <!-- ##### FUNCTION g_param_spec_internal ##### -->
 <para>
 Creates a new #GParamSpec instance.

@@ -335,6 +335,16 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 @Returns: 
 
 
+<!-- ##### FUNCTION g_unichar_get_mirror_char ##### -->
+<para>
+
+</para>
+
+@ch: 
+@mirrored_ch: 
+@Returns: 
+
+
 <!-- ##### MACRO g_utf8_next_char ##### -->
 <para>
 Skips to the next character in a UTF-8 string. The string must be

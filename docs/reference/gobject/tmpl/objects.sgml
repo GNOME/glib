@@ -210,6 +210,92 @@ Returns an array of #GParamSpec* for all properties of a class.
 @Returns: an array of #GParamSpec* which should be freed after use
 
 
+<!-- ##### FUNCTION g_object_class_override_property ##### -->
+<para>
+Registers @property_id as referring to a property with the
+name @name in a parent class or in an interface implemented
+by @oclass. This allows this class to <firstterm>override</firstterm>
+a property implementation in a parent class or to provide
+the implementation of a property from an interface.
+</para>
+<note>
+<para>
+Internally, overriding is implemented by creating a property of type
+#GParamSpecOverride; generally operations that query the properties of
+the object class, such as g_object_class_find_property() or
+g_object_class_list_properties() will return the overridden
+property. However, in one case, the @construct_properties argument of
+the @constructor virtual function, the #GParamSpecOverride is passed
+instead, so that the @param_id field of the #GParamSpec will be
+correct.  For virtually all uses, this makes no difference. If you
+need to get the overridden property, you can call
+g_param_spec_get_redirect_target().
+</para>
+</note>
+
+@oclass: a #GObjectClass
+@property_id: the new property ID
+@name: the name of a property registered in a parent class or
+       in an interface of this class.
+
+
+<!-- ##### FUNCTION g_object_interface_install_property ##### -->
+<para>
+Add a property to an interface; this is only useful for interfaces
+that are added to GObject-derived types. Adding a property to an
+interface forces all objects classes with that interface to have a
+compatible property. The compatible property could be a newly
+created #GParamSpec, but normally
+g_object_class_override_property() will be used so that the object
+class only needs to provide an implementation and inherits the
+property description, default value, bounds, and so forth from the
+interface property.
+</para>
+<para>
+This function is meant to be called from the interface's default
+vtable initialization function (the @class_init member of
+#GTypeInfo.) It must not be called after after @class_init has
+been called for any object types implementing this interface.
+</para>
+
+@g_iface: any interface vtable for the interface, or the default
+ vtable for the interface.
+@pspec: the #GParamSpec for the new property
+
+
+<!-- ##### FUNCTION g_object_interface_find_property ##### -->
+<para>
+Find the #GParamSpec with the given name for an
+interface. Generally, the interface vtable passed in as @g_iface
+will be the default vtable from g_type_default_interface_ref(), or,
+if you know the interface has already been loaded,
+g_type_default_interface_peek().
+</para>
+
+@g_iface: any interface vtable for the interface, or the default
+  vtable for the interface
+@property_name: name of a property to lookup.
+@Returns: the #GParamSpec for the property of the
+  interface with the name @property_name, or %NULL
+  if no such property exists.
+
+
+<!-- ##### FUNCTION g_object_interface_list_properties ##### -->
+<para>
+Lists the properties of an interface.Generally, the interface
+vtable passed in as @g_iface will be the default vtable from
+g_type_default_interface_ref(), or, if you know the interface has
+already been loaded, g_type_default_interface_peek().
+</para>
+
+@g_iface: any interface vtable for the interface, or the default
+ vtable for the interface
+@n_properties_p: location to store number of properties returned.
+@Returns: a pointer to an array of pointers to #GParamSpec structures.
+  The paramspecs are owned by GLib, but the array should
+  be freed with g_free() when you are done with it.
+
+
 <!-- ##### FUNCTION g_object_new ##### -->
 <para>
 Creates a new instance of a #GObject subtype and sets its properties.

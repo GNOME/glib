@@ -1640,3 +1640,51 @@ See g_param_spec_internal() for details on property names.
 @Returns: a newly created parameter specification
 
 
+<!-- ##### MACRO G_IS_PARAM_SPEC_OVERRIDE ##### -->
+<para>
+Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
+</para>
+
+@pspec: a #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_OVERRIDE ##### -->
+<para>
+Casts a #GParamSpec into a #GParamSpecObject.
+</para>
+
+@pspec:  a #GParamSpec
+
+
+<!-- ##### MACRO G_TYPE_PARAM_OVERRIDE ##### -->
+<para>
+The #GType of #GParamSpecOverride.
+</para>
+
+
+
+<!-- ##### STRUCT GParamSpecOverride ##### -->
+<para>
+This is a type of #GParamSpec type that simply redirects operations to
+another paramspec.  All operations other than getting or
+setting the value are redirected, including accessing the nick and
+blurb, validating a value, and so forth. See
+g_param_spec_get_redirect_target() for retrieving the overidden
+property. #GParamSpecOverride is used in implementing
+g_object_class_override_property(), and will not be directly useful
+unless you are implementing a new base type similar to GObject.
+</para>
+
+
+<!-- ##### FUNCTION g_param_spec_override ##### -->
+<para>
+Creates a new property of type #GParamSpecOverride. This is used
+to direct operations to another paramspec, and will not be directly
+useful unless you are implementing a new base type similar to GObject.
+</para>
+
+@name: the name of the property.
+@overridden: The property that is being overridden
+@Returns: the newly created #GParamSpec
+
+
