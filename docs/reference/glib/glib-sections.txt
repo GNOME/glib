@@ -679,7 +679,7 @@ g_timer_destroy
 </SECTION>
 
 <SECTION>
-<TITLE>Spawning Processes (fork/exec)</TITLE>
+<TITLE>Spawning Processes</TITLE>
 <FILE>spawn</FILE>
 GSpawnError
 G_SPAWN_ERROR

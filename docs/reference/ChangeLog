@@ -1,5 +1,14 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* glib/glib-sections.txt: remove parens from section name,
+	confuses gtk-doc
+
+	* glib/glib-docs.sgml: Add the new files here, doh.
+
+	* glib/tmpl/shell.sgml: add gshell.[hc] docs
+
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
 	* glib/tmpl/error_reporting.sgml: fixes
 
 2000-11-05  Havoc Pennington  <hp@pobox.com>

@@ -46,6 +46,11 @@
 <!entity glib-Relations-and-Tuples SYSTEM "sgml/relations.sgml">
 <!entity glib-Caches SYSTEM "sgml/caches.sgml">
 <!entity glib-Memory-Allocators SYSTEM "sgml/allocators.sgml">
+<!entity glib-Spawn SYSTEM "sgml/spawn.sgml">
+<!entity glib-Fileutils SYSTEM "sgml/fileutils.sgml">
+<!entity glib-Shell SYSTEM "sgml/shell.sgml">
+<!entity glib-Markup SYSTEM "sgml/markup.sgml">
+
 ]>
 <book id="index">
   <bookinfo>
@@ -89,6 +94,10 @@
     &glib-Lexical-Scanner;
     &glib-Automatic-String-Completion;
     &glib-Timers;
+    &glib-Spawn;
+    &glib-Fileutils;
+    &glib-Shell;
+    &glib-Markup;
     &glib-Windows-Compatability-Functions;
   </chapter>
 
