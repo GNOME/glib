@@ -1,3 +1,9 @@
+2001-12-09  Christopher Blizzard  <blizzard@redhat.com>
+
+	* glib/gmessages.h: Add pragma that will prevent warnings when you
+	are not using -std=99 and newer gcc compilers.  Patch from Red
+	Hat's gtk+ 1.2 rpm.
+
 2001-12-06  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gmacros.h: Do the same for "pure".

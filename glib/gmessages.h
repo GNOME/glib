@@ -30,6 +30,12 @@
 #include <stdarg.h>
 #include <glib/gtypes.h>
 
+/* Suppress warnings when GCC is in -pedantic mode and not -std=c99
+ */
+#if (__GNUC__ >= 3 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96))
+#pragma GCC system_header
+#endif
+
 G_BEGIN_DECLS
 
 /* calculate a string size, guarranteed to fit format + args.
