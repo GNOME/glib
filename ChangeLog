@@ -1,3 +1,7 @@
+2004-06-08  Pawan Chitrakar  <pawan@nplinux.org>
+
+	* configure.in:Added "ne" (Nepali) in ALL_LINGUAS
+
 2004-06-07  Federico Mena Quintero  <federico@ximian.com>
 
 	* README.in: Added a note about the changes below.
