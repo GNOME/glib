@@ -1,3 +1,12 @@
+Thu Jan 22 13:55:44 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gtimer.c: Add g_timer_continue().
+	(#98536, Tim-Philipp Müller)
+
+	* configure.in: Version 2.3.2, interface age 0.
+
+	* NEWS: tweak, finish.
+
 Thu Jan 22 20:50:55 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutils.c (g_get_any_init): Protect against

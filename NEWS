@@ -1,21 +1,26 @@
 Overview of Changes from GLib 2.3.1 to GLib 2.3.2
 =================================================
 
-* Add G_MAXSIZE.  [Manish Singh]
+* Add G_MAXSIZE. [Manish Singh]
 * Add g_rand_new_with_seed_array(), g_rand_set_seed_array(),
   implementing the init-by-array functionality of the 
-  original mersenne twister. [George Lebl]
+  original mersenne twister. Add g_rand_copy(). Improve seeding. 
+  [George Lebl]
 * Add a lowercase_name option to glib-mkenums. [Murray Cumming]
 * Add g_ptr_array_foreach(). [Matthias Clasen]
-* Fix a threadsafety issue in mem chunks. [Matthias]
+* Add g_timer_continue(). [Tim-Philipp Müller]
+* Fix a threadsafety issue in mem chunks. [Matthias, Balazs Scheidler]
 * Fix g_filename_{to,from}_utf8() on Win32 and improve 
   g_file_test() there too [Hans Breuer] 
 * Add a boxed type for NULL-terminated string arrays.  [Matthias]
 * Add G_DEFINE_TYPE() plus variants to ease the constuction
   of GObject boilerplate code.  [Tim Janik]
+* Support & in password GECOS field [Matthias, Soeren Boll Overgaard]
 * Documentation improvements [Matthias, Manish]
-* Misc bug fixes [Manish, Matthias, Owen Taylor]
-* Updated translations (ar,nn,fa,de,mn,no,ga)
+* Win32 build fixes [Hans]
+* Misc bug fixes [Damien Carbery, Matthias, Manish, Olivier Poncet, 
+  Zack Rusin]
+* Updated translations (ar,de,fa,ga,mn,nn,no,sq)
 
 Overview of Changes from GLib 2.3.0 to GLib-2.3.1
 =================================================

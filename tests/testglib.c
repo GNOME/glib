@@ -316,7 +316,7 @@ main (int   argc,
   GHashTable *hash_table;
   GMemChunk *mem_chunk;
   GStringChunk *string_chunk;
-  GTimer *timer;
+  GTimer *timer, *timer2;
   gint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
@@ -945,6 +945,56 @@ main (int   argc,
   g_timer_destroy (timer);
 
   g_print ("ok\n");
+
+  g_print ("checking g_timer_continue...\n");
+
+  timer2 = g_timer_new ();
+
+  g_print ("\trun for 1 second...\n");
+  timer = g_timer_new();
+  g_usleep(G_USEC_PER_SEC); /* run timer for 1 second */
+  g_timer_stop(timer);
+
+  g_print ("\tstop for 1 second...\n");
+  g_usleep(G_USEC_PER_SEC); /* wait for 1 second */
+  g_print ("\trun for 2 seconds...\n");
+
+  g_timer_continue(timer);
+  g_usleep(2*G_USEC_PER_SEC); /* run timer for 2 seconds */
+  g_timer_stop(timer);
+
+  g_print ("\tstop for 1.5 seconds...\n");
+  g_usleep((3*G_USEC_PER_SEC)/2); /* wait for 1.5 seconds */
+  g_print ("\trun for 0.2 seconds...\n");
+
+  g_timer_continue(timer);
+  g_usleep(G_USEC_PER_SEC/5); /* run timer for 0.2 seconds */
+  g_timer_stop(timer);
+
+  g_print ("\tstop for 4 seconds...\n");
+  g_usleep(4*G_USEC_PER_SEC); /* wait for 4 seconds */
+  g_print ("\trun for 5.8 seconds...\n");
+
+  g_timer_continue(timer);
+  g_usleep((29*G_USEC_PER_SEC)/5); /* run timer for 5.8 seconds */
+  g_timer_stop(timer);
+
+  g_print ("\t=> total elapsed = %.2f seconds (should be: 9.00 seconds)\n\n", g_timer_elapsed(timer, NULL));
+
+  if (g_timer_elapsed(timer, NULL) > 8.8 && g_timer_elapsed(timer, NULL) < 9.2)
+    g_print ("g_timer_continue ... ok\n\n");
+  else
+    g_print ("g_timer_continue ... ***** FAILED *****\n\n");
+
+  g_timer_stop(timer2);
+
+  if (g_timer_elapsed(timer2, NULL) > (8.8+6.5) && g_timer_elapsed(timer2, NULL) < (9.2+6.5))
+    g_print ("timer2 ... ok\n\n");
+  else
+    g_print ("timer2 ... ***** FAILED *****\n\n");
+
+  g_timer_destroy(timer);
+  g_timer_destroy(timer2);
 
   g_print ("checking g_ascii_strcasecmp...");
   g_assert (g_ascii_strcasecmp ("FroboZZ", "frobozz") == 0);

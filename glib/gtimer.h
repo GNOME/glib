@@ -44,6 +44,7 @@ void	g_timer_destroy (GTimer	  *timer);
 void	g_timer_start	(GTimer	  *timer);
 void	g_timer_stop	(GTimer	  *timer);
 void	g_timer_reset	(GTimer	  *timer);
+void	g_timer_continue	(GTimer   *timer);
 gdouble g_timer_elapsed (GTimer	  *timer,
 			 gulong	  *microseconds);
 

@@ -118,6 +118,58 @@ g_timer_reset (GTimer *timer)
   GETTIME (timer->start);
 }
 
+void
+g_timer_continue (GTimer *timer)
+{
+#ifdef G_OS_WIN32
+  DWORD elapsed;
+#else
+  struct timeval elapsed;
+#endif /* G_OS_WIN32 */
+
+  g_return_if_fail (timer != NULL);
+  g_return_if_fail (timer->active == FALSE);
+
+  /* Get elapsed time and reset timer start time
+   *  to the current time minus the previously
+   *  elapsed interval.
+   */
+
+#ifdef G_OS_WIN32
+
+  elapsed = timer->end - timer->start;
+
+  GETTIME (timer->start);
+
+  timer->start -= elapsed;
+
+#else /* !G_OS_WIN32 */
+
+  if (timer->start.tv_usec > timer->end.tv_usec)
+    {
+      timer->end.tv_usec += G_USEC_PER_SEC;
+      timer->end.tv_sec--;
+    }
+
+  elapsed.tv_usec = timer->end.tv_usec - timer->start.tv_usec;
+  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
+
+  GETTIME (timer->start);
+
+  if (timer->start.tv_usec < elapsed.tv_usec)
+    {
+      timer->start.tv_usec += G_USEC_PER_SEC;
+      timer->start.tv_sec--;
+    }
+
+  timer->start.tv_usec -= elapsed.tv_usec;
+  timer->start.tv_sec -= elapsed.tv_sec;
+
+#endif /* !G_OS_WIN32 */
+
+  timer->active = TRUE;
+}
+
 gdouble
 g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)

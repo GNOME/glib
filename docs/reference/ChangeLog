@@ -1,3 +1,8 @@
+Thu Jan 22 14:51:19 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/glib-sections.txt glib/tmpl/timers.sgml: Document
+	g_timer_continue. (Tim-Philipp Müller)
+
 Sun Jan 11 01:25:44 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: Improve docs for G_DEFINE_TYPE_* macros.
