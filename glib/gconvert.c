@@ -1608,9 +1608,9 @@ hostname_validate (const char *hostname)
  *               filename, or %NULL on an error.
  **/
 gchar *
-g_filename_from_uri (const char *uri,
-		     char      **hostname,
-		     GError    **error)
+g_filename_from_uri (const gchar *uri,
+		     gchar      **hostname,
+		     GError     **error)
 {
   const char *path_part;
   const char *host_part;
@@ -1742,9 +1742,9 @@ g_filename_from_uri (const char *uri,
  *               URI, or %NULL on an error.
  **/
 gchar *
-g_filename_to_uri   (const char *filename,
-		     const char *hostname,
-		     GError    **error)
+g_filename_to_uri   (const gchar *filename,
+		     const gchar *hostname,
+		     GError     **error)
 {
   char *escaped_uri;
   char *utf8_filename;

@@ -653,8 +653,8 @@ g_file_get_contents (const gchar *filename,
  * on platforms where there is a difference. The file handle should be
  * closed with close(). In case of errors, -1 is returned.
  */
-int
-g_mkstemp (char *tmpl)
+gint
+g_mkstemp (gchar *tmpl)
 {
 #ifdef HAVE_MKSTEMP
   return mkstemp (tmpl);
@@ -740,10 +740,10 @@ g_mkstemp (char *tmpl)
  * closed with close(). In case of errors, -1 is returned 
  * and @error will be set.
  **/
-int
-g_file_open_tmp (const char *tmpl,
-		 char      **name_used,
-		 GError    **error)
+gint
+g_file_open_tmp (const gchar *tmpl,
+		 gchar      **name_used,
+		 GError     **error)
 {
   int retval;
   const char *tmpdir;

@@ -111,7 +111,7 @@ stack_node;
 void
 g_qsort_with_data (gconstpointer    pbase,
 		   gint             total_elems,
-		   size_t           size,
+		   gsize            size,
 		   GCompareDataFunc compare_func,
 		   gpointer         user_data)
 {

@@ -109,13 +109,13 @@ gchar* g_filename_from_utf8 (const gchar  *utf8string,
 			     gsize        *bytes_written,  
 			     GError      **error);
 
-gchar *g_filename_from_uri (const char *uri,
-			    char      **hostname,
-			    GError    **error);
+gchar *g_filename_from_uri (const gchar *uri,
+			    gchar      **hostname,
+			    GError     **error);
   
-gchar *g_filename_to_uri   (const char *filename,
-			    const char *hostname,
-			    GError    **error);
+gchar *g_filename_to_uri   (const gchar *filename,
+			    const gchar *hostname,
+			    GError     **error);
 
 
 G_END_DECLS

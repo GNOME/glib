@@ -1,5 +1,10 @@
 2003-07-29  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gqsort.[hc] (g_qsort_with_data): 
+	* glib/gconvert.[hc] (g_filename_to_uri, g_filename_from_uri): 
+	* glib/gfileutils.[hc] (g_mkstemp, g_file_open_tmp): Use gchar, gint, gsize instead of char, int, size_t 
+	in the interface for consistency.  (#118567)
+
 	Replace trio printf() by gnulib vasnprintf():  (#101874)
 	
 	* configure.in: Define HAVE_LONG_LONG_FORMAT if system printf understands %llu; rename enable_trio to 
