@@ -1,3 +1,8 @@
+2003-01-20  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Farsi (fa), Italian (it), Latvian (lv),
+	Macedonian (mk) to ALL_LINGUAS
+
 2003-01-16  Daniel Yacob <locales@geez.org>
 
 	* configure.in: added am to ALL_LINGUAS

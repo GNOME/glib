@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
-"POT-Creation-Date: 2002-12-20 10:12-0500\n"
-"PO-Revision-Date: 2002-05-06 16:33GMT\n"
+"POT-Creation-Date: 2003-01-19 04:54+0100\n"
+"PO-Revision-Date: 2003-01-19 20:08+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -25,14 +25,14 @@ msgstr "Không hỗ trợ  việc chuyển từ đặt ký tự '%s' thành '%s'
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ '%s' thành '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1304
+#: glib/giochannel.c:1346 glib/giochannel.c:2188 glib/gutf8.c:907
 #: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
-#: glib/giochannel.c:2191
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1311
+#: glib/giochannel.c:2200
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Lỗi khi chuyển đổi: %s"
@@ -131,29 +131,29 @@ msgstr "Template '%s' không kết thúc bằng XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "Không tạo được tập tin '%s': %s"
 
-#: glib/giochannel.c:1123
+#: glib/giochannel.c:1132
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Không hỗ trợ việc chuyển đổi từ bộ ký tự `%s' thành `%s'"
 
-#: glib/giochannel.c:1127
+#: glib/giochannel.c:1136
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Không thể mở trình chuyển đổi từ `%s' thành `%s': %s"
 
-#: glib/giochannel.c:1472
+#: glib/giochannel.c:1481
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
+#: glib/giochannel.c:1528 glib/giochannel.c:1785 glib/giochannel.c:1871
 msgid "Leftover unconverted data in read buffer"
 msgstr "Để lại dữ liệu chưa được chuyển đổi trong buffer đọc"
 
-#: glib/giochannel.c:1599 glib/giochannel.c:1676
+#: glib/giochannel.c:1608 glib/giochannel.c:1685
 msgid "Channel terminates in a partial character"
 msgstr "Kênh tận hết trong ký tự riêng phần"
 
-#: glib/giochannel.c:1662
+#: glib/giochannel.c:1671
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_to_end"
 
@@ -240,11 +240,11 @@ msgstr ""
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Tham chiếu thực thể chưa hoàn chỉnh"
 
 #: glib/gmarkup.c:615
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Tham chiếu ký tự chưa hoàn chỉnh"
 
 #: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
 msgid "Invalid UTF-8 encoded text"
@@ -433,9 +433,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Không đọc được từ pipe con (%s)"
 
 #: glib/gspawn-win32.c:784
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Không thực thi được tiến trình con (%s)"
+msgstr "Lỗi thực thi chương trình bổ trợ"
 
 #: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format

@@ -6,11 +6,11 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: glib VERSION\n"
 "POT-Creation-Date: 2002-12-20 10:12-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2002-12-20 10:12-0500\n"
+"Last-Translator: Unknown :-(\n"
+"Language-Team: Hindi <hi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +21,7 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "कैरेक्टर समूह %s से %s में परिवर्तन नहीं किया जा सकता (संभव नहीं है)"
 
 #: glib/gconvert.c:405
-#, c-format
+#, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "%s से %s परिवर्तक नहीं खोला जा सका"
 
@@ -89,30 +89,30 @@ msgstr "डायरेक्टरी %s को खोलने में त�
 #: glib/gfileutils.c:384 glib/gfileutils.c:449
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "फाइल %s को पढ़ने के लिए %lu बाइट allocate नहीं किया जा सकता"
+msgstr "फाइल %2$s को पढ़ने के लिए %1$lu बाइट allocate नहीं किया जा सकता"
 
 #: glib/gfileutils.c:395
-#, c-format
+#, fuzzy, c-format
 msgid "Error reading file '%s': %s"
 msgstr "%s फाइल को पढ़ने में त्रुटि"
 
 #: glib/gfileutils.c:471
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "%s फाइल को फढ़ने में असफल"
 
 #: glib/gfileutils.c:518 glib/gfileutils.c:586
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "%s फाइल को खोलने में असफल"
 
 #: glib/gfileutils.c:532
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "फाइल %s के एटीट्यूट ग्यात करने में असफल"
 
 #: glib/gfileutils.c:558
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "फाइल %s को खोलने में असफल"
 
@@ -127,17 +127,17 @@ msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "टैम्पलेट %s xxxx पर समाप्त नहीं हो रहा है"
 
 #: glib/gfileutils.c:798
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "फाइल %s को निर्मित करने में असफल"
 
 #: glib/giochannel.c:1123
-#, c-format
+#, fuzzy, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "कैरेक्टर समूह %s में परिवर्तन सफल नहीं"
 
 #: glib/giochannel.c:1127
-#, c-format
+#, fuzzy, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "%s से %s का परिवर्तक नहीं खोला जा सका"
 
@@ -166,7 +166,7 @@ msgid "Socket error"
 msgstr "साकेत त्रुटि"
 
 #: glib/gmarkup.c:222
-#, c-format
+#, fuzzy, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "पंक्ति %d कैरेक्टर %d कैरेक्टर %d पर त्रुटि %s"
 
@@ -258,7 +258,7 @@ msgstr ""
 "%s एक वैध कैरेक्टर नहीं है यह किसी वस्तु के नाम से प्रारंभ नहीं होता है < के पश्चात आया"
 
 #: glib/gmarkup.c:1057
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
