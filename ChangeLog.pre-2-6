@@ -1,3 +1,12 @@
+Mon Mar  1 20:32:06 2004  Tim Janik  <timj@gtk.org>
+
+	* autogen.sh:
+	- exit with $? instead of 1 in case of failure
+	- exit with $? if ./configure failed
+	  (that's so autogen.sh && make lines work)
+	- removed --enable-gtk-doc option
+	- added $AUTOGEN_CONFIGURE_ARGS
+
 Mon Mar  1 09:17:32 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_depth): Clarify doc comment.
