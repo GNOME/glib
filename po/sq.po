@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2004-02-20 02:07+0100\n"
+"POT-Creation-Date: 2004-03-01 11:20+0100\n"
+"PO-Revision-Date: 2004-03-01 11:27+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -118,12 +118,12 @@ msgstr "Dështoi hapja e file '%s': fdopen() dështoi: %s"
 #: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Template '%s' e pavlefshme, nuk mund të përmbajë një '%s'"
+msgstr "Shabllon '%s' i pavlefshëm, nuk mund të përmbajë një '%s'"
 
 #: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Template '%s' nuk mbaron me XXXXXX"
+msgstr "Shablloni '%s' nuk mbaron me XXXXXX"
 
 #: glib/gfileutils.c:812
 #, c-format
@@ -360,7 +360,7 @@ msgstr "Dokumenti u mbyll papritur, pritet simboli i mbylljes për tag-un <%s/>"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Dokumeti përfundoi papritur në brendësi të emrit të një elementi"
+msgstr "Dokumenti përfundoi papritur në brendësi të emrit të një elementi"
 
 #: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
@@ -368,7 +368,7 @@ msgstr "Dokumenti u mbyll papritur në brendësi të emrit të një atributi"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Dokumenti u mbyll papritur brënda një tag-u hapje elementi"
+msgstr "Dokumenti u mbyll papritur brënda një tag-u hapës të elementit"
 
 #: glib/gmarkup.c:1693
 msgid ""
@@ -396,7 +396,7 @@ msgstr ""
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Teksti i sjellë nuk fillon me shenjën e kuotimit"
+msgstr "Teksti i kuotuar nuk fillon me shenjën e kuotimit"
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
@@ -413,7 +413,7 @@ msgstr "Teksti përfundoi menjëherë pas një simboli '\\'. (Teksti ishte '%s')
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Teksti përfundoi para se të gjente tekstin e kërkuar për %c. (Teksti ishte '%"
+"Teksti përfundoi përpara se të gjente tekstin e kërkuar për %c. (Teksti ishte '%"
 "s')"
 
 #: glib/gshell.c:549
