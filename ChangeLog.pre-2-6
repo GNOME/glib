@@ -1,3 +1,8 @@
+Tue May 25 12:23:07 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gstrfuncs.c (g_strchug): Use g_memmove() not memmove().
+	(Reported by Charles Levert <charles@comm.polymtl.ca>)
+
 Mon May 10 22:03:52 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.3

@@ -1110,7 +1110,7 @@ g_strchug (gchar *string)
   for (start = string; *start && isspace (*start); start++)
     ;
 
-  memmove(string, start, strlen(start) + 1);
+  g_memmove(string, start, strlen(start) + 1);
 
   return string;
 }
