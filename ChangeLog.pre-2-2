@@ -1,3 +1,21 @@
+Sat Jun 30 12:49:26 2001  Owen Taylor  <otaylor@redhat.com>
+
+        Patch from Darin Adler (#54166)
+	
+	* glib/gstrfuncs.[ch]: Add ascii-only, locale-insensitive
+	g_ascii_to[lower/upper], g_ascii_str[down/up],
+	g_ascii_is[upper/lower] and deprecate the locale-affected
+	versions which break for UTF-8, etc. Make
+	g_ascii_strup/strdown duplicating,
+	not in-place for consistency with UTF-8 functions.
+
+	* glib/gstring.[ch]: Add ascii-only, locale-insensitive
+	g_string_ascii_[down/up], and deprecate the locale-affected
+	versions which break for UTF-8, etc.
+
+	* glib/gutils.c glib/gwin32.c test/testglib.c: Use
+	the g_ascii_* functions where appropriate.
+
 Fri Jun 29 13:36:39 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstring.[ch] (g_string_set_size): Add function to 

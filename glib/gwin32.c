@@ -904,8 +904,8 @@ get_package_directory_from_module (gchar *module_name)
   if (module_name)
     {
       p = strrchr (fn, G_DIR_SEPARATOR);
-      if (p && (g_strcasecmp (p + 1, "bin") == 0 ||
-		g_strcasecmp (p + 1, "lib") == 0))
+      if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
+		g_ascii_strcasecmp (p + 1, "lib") == 0))
 	*p = '\0';
     }
 

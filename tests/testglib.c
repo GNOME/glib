@@ -929,21 +929,21 @@ main (int   argc,
 
   g_print ("ok\n");
 
-  g_print ("checking g_strcasecmp...");
-  g_assert (g_strcasecmp ("FroboZZ", "frobozz") == 0);
-  g_assert (g_strcasecmp ("frobozz", "frobozz") == 0);
-  g_assert (g_strcasecmp ("frobozz", "FROBOZZ") == 0);
-  g_assert (g_strcasecmp ("FROBOZZ", "froboz") != 0);
-  g_assert (g_strcasecmp ("", "") == 0);
-  g_assert (g_strcasecmp ("!#%&/()", "!#%&/()") == 0);
-  g_assert (g_strcasecmp ("a", "b") < 0);
-  g_assert (g_strcasecmp ("a", "B") < 0);
-  g_assert (g_strcasecmp ("A", "b") < 0);
-  g_assert (g_strcasecmp ("A", "B") < 0);
-  g_assert (g_strcasecmp ("b", "a") > 0);
-  g_assert (g_strcasecmp ("b", "A") > 0);
-  g_assert (g_strcasecmp ("B", "a") > 0);
-  g_assert (g_strcasecmp ("B", "A") > 0);
+  g_print ("checking g_ascii_strcasecmp...");
+  g_assert (g_ascii_strcasecmp ("FroboZZ", "frobozz") == 0);
+  g_assert (g_ascii_strcasecmp ("frobozz", "frobozz") == 0);
+  g_assert (g_ascii_strcasecmp ("frobozz", "FROBOZZ") == 0);
+  g_assert (g_ascii_strcasecmp ("FROBOZZ", "froboz") > 0);
+  g_assert (g_ascii_strcasecmp ("", "") == 0);
+  g_assert (g_ascii_strcasecmp ("!#%&/()", "!#%&/()") == 0);
+  g_assert (g_ascii_strcasecmp ("a", "b") < 0);
+  g_assert (g_ascii_strcasecmp ("a", "B") < 0);
+  g_assert (g_ascii_strcasecmp ("A", "b") < 0);
+  g_assert (g_ascii_strcasecmp ("A", "B") < 0);
+  g_assert (g_ascii_strcasecmp ("b", "a") > 0);
+  g_assert (g_ascii_strcasecmp ("b", "A") > 0);
+  g_assert (g_ascii_strcasecmp ("B", "a") > 0);
+  g_assert (g_ascii_strcasecmp ("B", "A") > 0);
 
   g_print ("ok\n");
 

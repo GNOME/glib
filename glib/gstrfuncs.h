@@ -32,6 +32,14 @@
 
 G_BEGIN_DECLS
 
+/* Functions like the ones in <ctype.h> that are not affected by locale. */
+gboolean              g_ascii_isalpha  (gchar        c) G_GNUC_CONST;
+gboolean              g_ascii_isalnum  (gchar        c) G_GNUC_CONST;
+gboolean              g_ascii_islower  (gchar        c) G_GNUC_CONST;
+gboolean              g_ascii_isupper  (gchar        c) G_GNUC_CONST;
+gchar                 g_ascii_tolower  (gchar        c) G_GNUC_CONST;
+gchar                 g_ascii_toupper  (gchar        c) G_GNUC_CONST;
+
 /* String utility functions that modify a string argument or
  * return a constant string that must not be freed.
  */
@@ -46,13 +54,6 @@ gdouble	              g_strtod	       (const gchar *nptr,
 					gchar	    **endptr);
 G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;
 G_CONST_RETURN gchar* g_strsignal      (gint	      signum) G_GNUC_CONST;
-gint                  g_strcasecmp     (const gchar *s1,  
-					const gchar *s2);
-gint                  g_strncasecmp    (const gchar *s1,  
-					const gchar *s2,
-					gsize        n);    
-gchar*	              g_strdown	       (gchar	     *string);
-gchar*	              g_strup	       (gchar	     *string);
 gchar*	              g_strreverse     (gchar	     *string);
 gsize	              g_strlcpy	       (gchar	     *dest,
 					const gchar  *src,
@@ -75,6 +76,31 @@ gchar*                g_strchug        (gchar        *string);
 gchar*                g_strchomp       (gchar        *string);
 /* removes leading & trailing spaces */
 #define g_strstrip( string )	g_strchomp (g_strchug (string))
+
+gint                  g_ascii_strcasecmp  (const gchar *s1,
+					   const gchar *s2);
+gint                  g_ascii_strncasecmp (const gchar *s1,
+					   const gchar *s2,
+					   guint        n);
+gchar*                g_ascii_strdown     (gchar       *string);
+gchar*                g_ascii_strup       (gchar       *string);
+
+#ifndef G_DISABLE_DEPRECATED
+
+/* The following four functions are deprecated and will be removed in
+ * the next major release. They use the locale-specific tolower and
+ * toupper, which is almost never the right thing.
+ */
+
+gint	              g_strcasecmp     (const gchar *s1,
+					const gchar *s2);
+gint	              g_strncasecmp    (const gchar *s1,
+					const gchar *s2,
+					guint        n);
+gchar*	              g_strdown	       (gchar	     *string);
+gchar*	              g_strup	       (gchar	     *string);
+
+#endif /* G_DISABLE_DEPRECATED */
 
 /* String utility functions that return a newly allocated string which
  * ought to be freed with g_free from the caller at some point.

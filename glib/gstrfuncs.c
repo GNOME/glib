@@ -963,6 +963,54 @@ g_strlcat (gchar       *dest,
 }
 #endif /* ! HAVE_STRLCPY */
 
+/**
+ * g_ascii_strdown:
+ * @string: a string
+ * 
+ * Converts all upper case ASCII letters to lower case ASCII letters.
+ * 
+ * Return value: a newly allocated string, with all the upper case
+ *               characters in @string converted to lower case, with
+ *               semantics that exactly match g_ascii_tolower.
+ **/
+gchar*
+g_ascii_strdown (gchar *string)
+{
+  gchar *result, *s;
+  
+  g_return_val_if_fail (string != NULL, NULL);
+
+  result = g_strdup (string);
+  for (s = result; *s; s++)
+    *s = g_ascii_tolower (*s);
+  
+  return result;
+}
+
+/**
+ * g_ascii_strup:
+ * @string: a string
+ * 
+ * Converts all lower case ASCII letters to upper case ASCII letters.
+ * 
+ * Return value: a newly allocated string, with all the lower case
+ *               characters in @string converted to upper case, with
+ *               semantics that exactly match g_ascii_toupper.
+ **/
+gchar*
+g_ascii_strup (gchar *string)
+{
+  gchar *s;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  result = g_strdup (string);
+  for (s = result; *s; s++)
+    *s = g_ascii_toupper (*s);
+
+  return result;
+}
+
 gchar*
 g_strdown (gchar *string)
 {
@@ -1026,6 +1074,219 @@ g_strreverse (gchar *string)
     }
 
   return string;
+}
+
+/**
+ * g_ascii_isalpha:
+ * @c: any character
+ * 
+ * Determines whether a character is alphabetic (i.e. a letter).
+ *
+ * Unlike the standard C library isalpha function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * %FALSE for all non-ASCII characters. Also unlike the standard
+ * library function, this takes a char, not an int, so don't call it
+ * on EOF but no need to cast to guchar before passing a possibly
+ * non-ASCII character in.
+ * 
+ * Return value: %TRUE if @c is an ASCII alphabetic character
+ **/
+gboolean
+g_ascii_isalpha (gchar c)
+{
+  return g_ascii_is_lower (c) || g_ascii_is_upper (c);
+}
+
+/**
+ * g_ascii_isalnum:
+ * @c: any character
+ * 
+ * Determines whether a character is alphanumeric.
+ *
+ * Unlike the standard C library isalnum function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * %FALSE for all non-ASCII characters. Also unlike the standard
+ * library function, this takes a char, not an int, so don't call it
+ * on EOF but no need to cast to guchar before passing a possibly
+ * non-ASCII character in.
+ * 
+ * Return value: %TRUE if @c is an ASCII alphanumeric character
+ **/
+gboolean
+g_ascii_isalnum (gchar c)
+{
+  return g_ascii_is_alpha (c) || isdigit (c);
+}
+
+
+/**
+ * g_ascii_islower:
+ * @c: any character
+ * 
+ * Determines whether a character is an ASCII lower case letter.
+ *
+ * Unlike the standard C library islower function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * %FALSE for all non-ASCII characters. Also unlike the standard
+ * library function, this takes a char, not an int, so don't call it
+ * on EOF but no need to worry about casting to guchar before passing
+ * a possibly non-ASCII character in.
+ * 
+ * Return value: %TRUE if @c is an ASCII lower case letter
+ **/
+gboolean
+g_ascii_islower (gchar c)
+{
+  return c >= 'a' && c <= 'z';
+}
+
+/**
+ * g_ascii_isupper:
+ * @c: any character
+ * 
+ * Determines whether a character is an ASCII upper case letter.
+ *
+ * Unlike the standard C library isupper function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * %FALSE for all non-ASCII characters. Also unlike the standard
+ * library function, this takes a char, not an int, so don't call it
+ * on EOF but no need to worry about casting to guchar before passing
+ * a possibly non-ASCII character in.
+ * 
+ * Return value: %TRUE if @c is an ASCII upper case letter
+ **/
+gboolean
+g_ascii_isupper (gchar c)
+{
+  return c >= 'A' && c <= 'Z';
+}
+
+/**
+ * g_ascii_tolower:
+ * @c: any character
+ * 
+ * Convert a character to ASCII lower case.
+ *
+ * Unlike the standard C library tolower function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * all non-ASCII characters unchanged, even if they are lower case
+ * letters in a particular character set. Also unlike the standard
+ * library function, this takes and returns a char, not an int, so
+ * don't call it on EOF but no need to worry about casting to guchar
+ * before passing a possibly non-ASCII character in.
+ * 
+ * Return value: the result of converting @c to lower case.
+ *               If @c is not an ASCII upper case letter,
+ *               @c is returned unchanged.
+ **/
+gchar
+g_ascii_tolower (gchar c)
+{
+  return g_ascii_isupper (c) ? c - 'A' + 'a' : c;
+}
+
+/**
+ * g_ascii_toupper:
+ * @c: any character
+ * 
+ * Convert a character to ASCII upper case.
+ *
+ * Unlike the standard C library toupper function, this only
+ * recognizes standard ASCII letters and ignores the locale, returning
+ * all non-ASCII characters unchanged, even if they are upper case
+ * letters in a particular character set. Also unlike the standard
+ * library function, this takes and returns a char, not an int, so
+ * don't call it on EOF but no need to worry about casting to guchar
+ * before passing a possibly non-ASCII character in.
+ * 
+ * Return value: the result of converting @c to upper case.
+ *               If @c is not an ASCII lower case letter,
+ *               @c is returned unchanged.
+ **/
+gchar
+g_ascii_toupper (gchar c)
+{
+  return g_ascii_islower (c) ? c - 'a' + 'A' : c;
+}
+
+/**
+ * g_ascii_strcasecmp:
+ * @s1: string to compare with @s2
+ * @s2: string to compare with @s1
+ * 
+ * Compare two strings, ignoring the case of ASCII characters.
+ *
+ * Unlike the BSD strcasecmp function, this only recognizes standard
+ * ASCII letters and ignores the locale, treating all non-ASCII
+ * characters as if they are not letters.
+ * 
+ * Return value: an integer less than, equal to, or greater than
+ *               zero if @s1 is found, respectively, to be less than,
+ *               to match, or to be greater than @s2.
+ **/
+gint
+g_ascii_strcasecmp (const gchar *s1,
+		    const gchar *s2)
+{
+  gint c1, c2;
+
+  g_return_val_if_fail (s1 != NULL, 0);
+  g_return_val_if_fail (s2 != NULL, 0);
+
+  while (*s1 && *s2)
+    {
+      c1 = (gint)(guchar) g_ascii_tolower (*s1);
+      c2 = (gint)(guchar) g_ascii_tolower (*s2);
+      if (c1 != c2)
+	return (c1 - c2);
+      s1++; s2++;
+    }
+
+  return (((gint)(guchar) *s1) - ((gint)(guchar) *s2));
+}
+
+/**
+ * g_ascii_strncasecmp:
+ * @s1: string to compare with @s2
+ * @s2: string to compare with @s1
+ * @n:  number of characters to compare
+ * 
+ * Compare @s1 and @s2, ignoring the case of ASCII characters and any
+ * characters after the first @n in each string.
+ *
+ * Unlike the BSD strcasecmp function, this only recognizes standard
+ * ASCII letters and ignores the locale, treating all non-ASCII
+ * characters as if they are not letters.
+ * 
+ * Return value: an integer less than, equal to, or greater than zero
+ *               if the first @n bytes of @s1 is found, respectively,
+ *               to be less than, to match, or to be greater than the
+ *               first @n bytes of @s2.
+ **/
+gint
+g_ascii_strncasecmp (const gchar *s1,
+		     const gchar *s2,
+		     guint n)
+{
+  gint c1, c2;
+
+  g_return_val_if_fail (s1 != NULL, 0);
+  g_return_val_if_fail (s2 != NULL, 0);
+
+  while (n && *s1 && *s2)
+    {
+      n -= 1;
+      c1 = (gint)(guchar) g_ascii_tolower (*s1);
+      c2 = (gint)(guchar) g_ascii_tolower (*s2);
+      if (c1 != c2)
+	return (c1 - c2);
+      s1++; s2++;
+    }
+
+  if (n)
+    return (((gint) (guchar) *s1) - ((gint) (guchar) *s2));
+  else
+    return 0;
 }
 
 gint

@@ -48,7 +48,7 @@
 #include <sys/param.h>
 #endif
 
-/* implement Glib's inline functions
+/* implement gutils's inline functions
  */
 #define	G_IMPLEMENT_INLINES 1
 #define	__G_UTILS_C__
@@ -430,7 +430,7 @@ g_parse_debug_string  (const gchar     *string,
   
   g_return_val_if_fail (string != NULL, 0);
   
-  if (!g_strcasecmp (string, "all"))
+  if (!g_ascii_strcasecmp (string, "all"))
     {
       for (i=0; i<nkeys; i++)
 	result |= keys[i].value;
@@ -451,7 +451,7 @@ g_parse_debug_string  (const gchar     *string,
 	    }
 	  
 	  for (i=0; i<nkeys; i++)
-	    if (g_strncasecmp(keys[i].key, p, q - p) == 0 &&
+	    if (g_ascii_strncasecmp(keys[i].key, p, q - p) == 0 &&
 		keys[i].key[q - p] == '\0')
 	      result |= keys[i].value;
 	  
@@ -474,7 +474,7 @@ g_basename (const gchar	   *file_name)
     return base + 1;
 
 #ifdef G_OS_WIN32
-  if (isalpha (file_name[0]) && file_name[1] == ':')
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':')
     return (gchar*) file_name + 2;
 #endif /* G_OS_WIN32 */
   
@@ -505,7 +505,7 @@ g_path_get_basename (const gchar   *file_name)
     return g_strdup (G_DIR_SEPARATOR_S);
 
 #ifdef G_OS_WIN32
-  if (last_nonslash == 1 && isalpha (file_name[0]) && file_name[1] == ':')
+  if (last_nonslash == 1 && g_ascii_isalpha (file_name[0]) && file_name[1] == ':')
     /* string only containing slashes and a drive */
     return g_strdup (G_DIR_SEPARATOR_S);
 #endif /* G_OS_WIN32 */
@@ -516,7 +516,7 @@ g_path_get_basename (const gchar   *file_name)
     base--;
 
 #ifdef G_OS_WIN32
-  if (base == -1 && isalpha (file_name[0]) && file_name[1] == ':')
+  if (base == -1 && g_ascii_isalpha (file_name[0]) && file_name[1] == ':')
     base = 1;
 #endif /* G_OS_WIN32 */
 
@@ -537,7 +537,7 @@ g_path_is_absolute (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   /* Recognize drive letter on native Windows */
-  if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return TRUE;
 #endif /* G_OS_WIN32 */
 
@@ -584,7 +584,7 @@ g_path_skip_root (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   /* Skip X:\ */
-  if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return (gchar *)file_name + 3;
 #endif
 

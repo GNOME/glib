@@ -32,7 +32,7 @@ string.
 
 @str: 
 @len: 
-@alloc: 
+@allocated_len: 
 
 <!-- ##### FUNCTION g_string_new ##### -->
 <para>

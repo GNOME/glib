@@ -95,17 +95,32 @@ GString*     g_string_insert_c          (GString	 *string,
 GString*     g_string_erase	        (GString	 *string,
 					 gsize		  pos,    
 					 gsize		  len);   
-GString*     g_string_down              (GString	 *string);
-GString*     g_string_up                (GString	 *string);
+GString*     g_string_ascii_down        (GString	 *string);
+GString*     g_string_ascii_up          (GString	 *string);
 void         g_string_printf            (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
 void         g_string_printfa           (GString	 *string,
 					 const gchar	 *format,
 					 ...) G_GNUC_PRINTF (2, 3);
-/* compatibility */
+
+#ifndef G_DISABLE_DEPRECATED
+
+#ifndef G_DISABLE_DEPRECATED
+
+/* The following two functions are deprecated and will be removed in
+ * the next major release. They use the locale-specific tolower and
+ * toupper, which is almost never the right thing.
+ */
+
+GString*     g_string_down              (GString	 *string);
+GString*     g_string_up                (GString	 *string);
+
+/* These aliases are included for compatibility. */
 #define	g_string_sprintf	g_string_printf
 #define	g_string_sprintfa	g_string_printfa
+
+#endif /* G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

@@ -565,6 +565,66 @@ g_string_erase (GString *fstring,
   return fstring;
 }
 
+/**
+ * g_string_ascii_down:
+ * @string: a GString
+ * 
+ * Converts all upper case ASCII letters to lower case ASCII letters.
+ * 
+ * Return value: passed-in @string pointer, with all the upper case
+ *               characters converted to lower case in place, with
+ *               semantics that exactly match g_ascii_tolower.
+ **/
+GString*
+g_string_ascii_down (GString *string)
+{
+  gchar *s;
+  gint n = string->len;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  s = string->str;
+
+  while (n)
+    {
+      *s = g_ascii_tolower (*s);
+      s++;
+      n--;
+    }
+
+  return string;
+}
+
+/**
+ * g_string_ascii_up:
+ * @string: a GString
+ * 
+ * Converts all lower case ASCII letters to upper case ASCII letters.
+ * 
+ * Return value: passed-in @string pointer, with all the lower case
+ *               characters converted to upper case in place, with
+ *               semantics that exactly match g_ascii_toupper.
+ **/
+GString*
+g_string_ascii_up (GString *string)
+{
+  gchar *s;
+  gint n = string->len;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  s = string->str;
+
+  while (n)
+    {
+      *s = g_ascii_toupper (*s);
+      s++;
+      n--;
+    }
+
+  return string;
+}
+
 GString*
 g_string_down (GString *fstring)
 {
@@ -578,7 +638,8 @@ g_string_down (GString *fstring)
 
   while (n)
     {
-      *s = tolower (*s);
+      if (isupper (*s))
+	*s = tolower (*s);
       s++;
       n--;
     }
@@ -599,7 +660,8 @@ g_string_up (GString *fstring)
 
   while (n)
     {
-      *s = toupper (*s);
+      if (islower (*s))
+	*s = toupper (*s);
       s++;
       n--;
     }
