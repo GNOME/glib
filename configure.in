@@ -1282,7 +1282,19 @@ main()
    pthread_create (&t, 0, func, 0);
    pthread_join (t, &ret);
    exit (check_me != 42 || ret != 42);
- }])
+}])
+
+dnl
+dnl Test program for sched_get_priority_min()
+dnl
+m4_define([glib_sched_priority_test],[
+#include <sched.h>
+#include <errno.h>
+int main() {
+    errno = 0;
+    return sched_get_priority_min(SCHED_OTHER)==-1
+ 	   && errno != 0;
+}])
 
 if test x"$have_threads" != xno; then
 
@@ -1297,9 +1309,9 @@ if test x"$have_threads" != xno; then
       AC_TRY_RUN(glib_thread_test,
                  glib_flag_works=yes,
                  glib_flag_works=no,
-                 AC_LINK_IFELSE(glib_thread_test,
-                                glib_flag_works=yes,
-                                glib_flag_works=no))
+                 [AC_LINK_IFELSE(glib_thread_test,
+                                 glib_flag_works=yes,
+                                 glib_flag_works=no)])
       CFLAGS="$glib_save_CFLAGS"
       if test $glib_flag_works = yes ; then
          G_THREAD_CFLAGS=-$flag
@@ -1422,10 +1434,17 @@ case $have_threads in
 			
 			AC_MSG_CHECKING(for pthread_create/pthread_join$IN)
 			AC_TRY_RUN(glib_thread_test,
-				[AC_MSG_RESULT(yes)
-				G_THREAD_LIBS="$add_thread_lib"
-				break],
-				[AC_MSG_RESULT(no)])
+                                   glib_result=yes,
+                                   glib_result=no,
+                                   [AC_LINK_IFELSE(glib_thread_test,
+                                                   glib_result=yes
+                                                   glib_result=no)])
+                        AC_MSG_RESULT($glib_result)
+			
+                        if test "$glib_result" = "yes" ; then
+			  G_THREAD_LIBS="$add_thread_lib"
+                          break
+                        fi
 		done
 		if test "x$G_THREAD_LIBS" = xerror; then
 		  AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
@@ -1445,22 +1464,22 @@ case $have_threads in
 	      IN=" in -l$thread_lib"
 	    fi
 	    LIBS="$glib_save_LIBS $add_thread_lib"
-	
+	    
             AC_MSG_CHECKING(for sched_get_priority_min$IN)
-	    AC_TRY_RUN([
-#include <sched.h>
-#include <errno.h>
-int main() {
-    errno = 0;
-    return sched_get_priority_min(SCHED_OTHER)==-1
- 	   && errno != 0;
-}                       ],
-	 		[AC_MSG_RESULT(yes)
-		 	 G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
-			 posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-		     	 posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
-			 break],
-			[AC_MSG_RESULT(no)])
+	    AC_TRY_RUN(glib_sched_priority_test,
+                       glib_result=yes,
+                       glib_result=no,
+                       [AC_LINK_IFELSE(glib_sched_priority_test,
+                                       glib_result=yes
+                                       glib_result=no)])
+	    AC_MSG_RESULT($glib_result)
+
+	    if test "$glib_result" = "yes" ; then	    
+ 	       G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
+	       posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
+	       posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
+	       break
+            fi
 	  done
 	  LIBS="$glib_save_LIBS"
           mutex_has_default=yes
@@ -1622,8 +1641,9 @@ int main () {
 		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func,[The POSIX RT yield function])
 		CPPFLAGS="$glib_save_CPPFLAGS"
 
-		AC_MSG_CHECKING(whether to use the PID niceness surrogate for thread priorities)
-		AC_TRY_RUN([
+		AC_CACHE_CHECK([whether to use the PID niceness surrogate for thread priorities], 
+                               glib_cv_use_pid_surrogate, 
+                 [AC_TRY_RUN([
 #include <pthread.h> 
 #include <sys/types.h>
 #include <unistd.h>
@@ -1637,11 +1657,15 @@ main()
   pthread_join (t, &ret);
   exit (getpid()==other_pid || 
 	$posix_priority_min != $posix_priority_max);
-}                       ],
-			[AC_MSG_RESULT(yes)
-			  AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, [whether to use the PID niceness surrogate for thread priorities])
-                        ],
-			[AC_MSG_RESULT(no)])
+}               ],
+		[glib_cv_use_pid_surrogate=yes],
+                [glib_cv_use_pid_surrogate=no],
+                [])])
+          if test "$glib_cv_use_pid_surrogate" = "yes" ; then
+	    AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, 
+                      [whether to use the PID niceness surrogate for thread priorities])
+          fi
+           
 	elif test x"$have_threads" = xwin32; then
 		# It's a pointer to a private struct
 		GLIB_SIZEOF(,struct _GThreadData *, system_thread)

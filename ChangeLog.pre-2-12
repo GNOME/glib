@@ -1,3 +1,11 @@
+Wed Dec 11 15:52:01 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Also assume AC_LINK_IFELSE() is
+	OK when cross-compiling for the libs checks, and for
+	the sched_get_priority_min() check.
+
+	* configure.in: Add cached value glib_cv_use_pid_surrogate.
+	
 Wed Dec 11 15:10:25 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Factor out repeated thread test into
