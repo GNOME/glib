@@ -75,31 +75,29 @@ g_rand_new_with_seed (guint32 seed)
 GRand* 
 g_rand_new (void)
 {
-  guint32 seed = 0;
+  guint32 seed;
   GTimeVal now;
-  static gboolean dev_random_exists = TRUE;
+  static gboolean dev_urandom_exists = TRUE;
   
-  if (dev_random_exists)
+  if (dev_urandom_exists)
     {
-      FILE* dev_random = fopen("/dev/random", "rb");
-      if (dev_random)
+      FILE* dev_urandom = fopen("/dev/urandom", "rb");
+      if (dev_urandom)
 	{
-	  if (fread (&seed, sizeof (seed), 1, dev_random) != 1)
+	  if (fread (&seed, sizeof (seed), 1, dev_urandom) != 1)
 	    seed = 0;
 	  else
-	    dev_random_exists = FALSE;
-	  fclose (dev_random);
+	    dev_urandom_exists = FALSE;
+	  fclose (dev_urandom);
 	}	
       else
-	dev_random_exists = FALSE;
+	dev_urandom_exists = FALSE;
     }
-
-  /* Using /dev/random alone makes the seed computable for the
-     outside. This might pose security problems somewhere. This should
-     yield better values */
-
-  g_get_current_time (&now);
-  seed ^= now.tv_sec ^ now.tv_usec;
+  if (!dev_urandom_exists)
+    {  
+      g_get_current_time (&now);
+      seed = now.tv_sec ^ now.tv_usec;
+    }
 
   return g_rand_new_with_seed (seed);
 }
@@ -121,6 +119,10 @@ g_rand_set_seed (GRand* rand, guint32 seed)
   /* the generator Line 25 of Table 1 in          */
   /* [KNUTH 1981, The Art of Computer Programming */
   /*    Vol. 2 (2nd Ed.), pp102]                  */
+  
+  if (seed == 0) /* This would make the PRNG procude only zeros */
+    seed = 0x6b842128; /* Just set it to another number */
+
   rand->mt[0]= seed & 0xffffffff;
   for (rand->mti=1; rand->mti<N; rand->mti++)
     rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]) & 0xffffffff;

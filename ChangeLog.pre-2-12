@@ -1,3 +1,11 @@
+1999-07-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* grand.c (g_rand_new): Use /dev/urandom, as it doesn't block,
+	which /dev/random might do. Do not XOR the time, when getting the
+	seed form /dev/urandom, as this is good itself. Prevent the
+	initial seed from being zero, which causes the PRNG to produce
+	only zeros. Hints from Colin Plumb <colin@pgp.com>.
+
 1999-08-17  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h (g_trash_stack_push): Add a cast.
