@@ -1,3 +1,14 @@
+2002-11-25  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h (g_assert): 
+	(g_return_if_fail): 
+	(g_return_val_if_fail): Remove the (no longer effective) empty
+	if-branch.
+
+	* glib/gmacros.h: Change the definition of G_LIKELY, so that
+	g_return_if_fail() and friends still trigger a gcc warning if
+	the expr is an assignment. 
+
 2002-11-23  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Generate docs/reference/*/version.xml.
