@@ -133,7 +133,8 @@ g_option_context_free (GOptionContext *context)
   g_list_foreach (context->groups, (GFunc)g_option_group_free, NULL);
   g_list_free (context->groups);
 
-  g_option_group_free (context->main_group);
+  if (context->main_group) 
+    g_option_group_free (context->main_group);
 
   free_changes_list (context, FALSE);
   free_pending_nulls (context, FALSE);
@@ -357,8 +358,9 @@ print_help (GOptionContext *context,
 
       g_print ("%s\n", _("Application Options:"));
 
-      for (i = 0; i < context->main_group->n_entries; i++) 
-	print_entry (context->main_group, max_length, &context->main_group->entries[i]);
+      if (context->main_group)
+	for (i = 0; i < context->main_group->n_entries; i++) 
+	  print_entry (context->main_group, max_length, &context->main_group->entries[i]);
 
       while (list != NULL)
 	{
@@ -836,7 +838,7 @@ g_option_context_parse (GOptionContext   *context,
       list = list->next;
     }
 
-  if (context->main_group->pre_parse_func)
+  if (context->main_group && context->main_group->pre_parse_func)
     {
       if (!(* context->main_group->pre_parse_func) (context, context->main_group,
 						    context->main_group->user_data, error))
@@ -900,7 +902,8 @@ g_option_context_parse (GOptionContext   *context,
 			}
 		    }
 
-		  if (!parse_long_option (context, context->main_group, &i, arg,
+		  if (context->main_group &&
+		      !parse_long_option (context, context->main_group, &i, arg,
 					  argc, argv, error, &parsed))
 		    goto fail;
 
@@ -942,7 +945,8 @@ g_option_context_parse (GOptionContext   *context,
 		    {
 		      parsed = FALSE;
 		      
-		      if (!parse_short_option (context, context->main_group,
+		      if (context->main_group &&
+			  !parse_short_option (context, context->main_group,
 					       i, &new_i, arg[j],
 					       argc, argv, error, &parsed))
 			{
@@ -1034,7 +1038,7 @@ g_option_context_parse (GOptionContext   *context,
 	  list = list->next;
 	}
 
-      if (context->main_group->post_parse_func)
+      if (context->main_group && context->main_group->post_parse_func)
 	{
 	  if (!(* context->main_group->post_parse_func) (context, context->main_group,
 							 context->main_group->user_data, error))
@@ -1080,7 +1084,7 @@ g_option_context_parse (GOptionContext   *context,
       list = list->next;
     }
 
-  if (context->main_group->error_func)
+  if (context->main_group && context->main_group->error_func)
     (* context->main_group->error_func) (context, context->main_group,
 					 context->main_group->user_data, error);
   
