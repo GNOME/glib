@@ -1,14 +1,16 @@
+Thu Oct  2 01:15:46 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/gobject/ifacecheck.c: Test case for
+	g_type_add_interface_check().
+
+	* tests/gobject/ifaceinit.c: Add #undef G_DISABLE_ASSERT.
+
 Thu Oct  2 01:11:39 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/gobject/ifaceinherit.c: Remove some tests that
 	were testing things that weren't supposed to work; add
 	a test for adding an interface first to the child class,
 	then to the parent class.
-
-Thu Oct  2 01:08:13 2003  Owen Taylor  <otaylor@redhat.com>
-
-	* tests/gobject/ifaceinherit.c (main): Remove some tests
-	that 
 
 Thu Oct  2 00:02:55 2003  Owen Taylor  <otaylor@redhat.com>
 

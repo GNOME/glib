@@ -47,6 +47,7 @@ LDADD = $(libgobject) libtestgobject.la
 test_programs =					\
 	accumulator				\
 	defaultiface				\
+	ifacecheck				\
 	ifaceinit				\
 	ifaceinherit				\
 	override

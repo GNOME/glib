@@ -19,7 +19,12 @@
 
 #undef	G_LOG_DOMAIN
 #define	G_LOG_DOMAIN "TestIfaceInit"
-#include	<glib-object.h>
+
+#undef G_DISABLE_ASSERT
+#undef G_DISABLE_CHECKS
+#undef G_DISABLE_CAST_CHECKS
+
+#include <glib-object.h>
 
 #include "testcommon.h"
 
