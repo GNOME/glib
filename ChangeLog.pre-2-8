@@ -12,6 +12,10 @@
 
 	* build-dll: Don't strip.
 
+	* tests/string-test.c tests/dirname-test.c: Use G_OS_WIN32.
+
+	* glib.def: Add g_thread_use_default_impl.
+
 Sun Oct  3 19:46:55 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: use G_HAVE_CYGWIN instead of G_OS_FEATURE_CYGWIN

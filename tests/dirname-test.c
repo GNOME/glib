@@ -59,7 +59,7 @@ main (int   argc,
     gchar *filename;
     gchar *dirname;
   } dirname_checks[] = {
-#ifndef NATIVE_WIN32
+#ifndef G_OS_WIN32
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },

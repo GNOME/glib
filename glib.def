@@ -410,6 +410,7 @@ EXPORTS
 	g_thread_join
 	g_thread_self
 	g_thread_set_priority
+	g_thread_use_default_impl
 	g_threads_got_initialized
 	g_timeout_add
 	g_timeout_add_full
