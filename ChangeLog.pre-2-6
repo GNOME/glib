@@ -1,3 +1,7 @@
+2003-03-26  Christian Rose  <menthos@menthos.com>
+
+	* configure.in: Added "yi" to ALL_LINGUAS.
+
 2003-03-19  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/giochannel.c (g_io_channel_read_to_end): Fix docs.

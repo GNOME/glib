@@ -1,3 +1,8 @@
+2003-03-26  Christian Rose  <menthos@menthos.com>
+
+	* yi.po: Added Yiddish translation by
+	Raphael Finkel <raphael@cs.uky.edu>.
+
 2003-02-27  James Henstridge  <james@daa.com.au>
 
 	* Makefile.in.in (uninstall): fix uninstall target so that it
