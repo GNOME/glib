@@ -1,7 +1,3 @@
-2002-12-28  Tõivo Leedjärv  <toivo@linux.ee>
-
-	* configure.in: Added et to ALL_LINGUAS.
-
 Fri Dec 20 10:45:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.0 ===
