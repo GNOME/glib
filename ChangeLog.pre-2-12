@@ -1,3 +1,28 @@
+Fri Dec 18 00:03:17 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* gmain.c:
+	(g_main_is_running): new function to check whether a main loop has been
+	quitted.
+	(g_main_new): added a gboolean argument to determine whether the loop
+	should be considered initially running or not. however, g_main_run ()
+ 	will still reset the main loops running state to TRUE upon initial
+ 	entrance.
+
+	* gmain.c:
+ 	(g_main_iterate): documented this function's purpose in 5 steps.
+ 	for step 2), flag sources as G_SOURCE_READY even if !dispatch and
+	check G_SOURCE_READY prior to (*prepare), so we don't call (*prepare)
+ 	on them multiple times.
+
+Thu Dec 17 23:43:47 1998  Tim Janik  <timj@gtk.org>
+
+	* gmain.c (g_main_add_poll): reordered arguments, so GPollFD* comes
+	first, <sigh> (sorry Snorfle, i should have let you know in the first
+ 	place).
+	(g_main_dispatch): stack G_HOOK_FLAG_IN_CALL flags. call source's
+	destructor when destroying a source.
+
 1998-12-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* garray.c (g_ptr_array_remove_index): Fixed size in g_memmove,

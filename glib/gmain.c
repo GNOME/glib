@@ -52,7 +52,7 @@ struct _GSource
 
 struct _GMainLoop
 {
-  gboolean flag;
+  gboolean is_running;
 };
 
 struct _GIdleData
@@ -365,6 +365,7 @@ g_main_dispatch (GTimeVal *current_time)
 
       if (G_HOOK_IS_VALID (source))
 	{
+	  gboolean was_in_call;
 	  gpointer hook_data = source->hook.data;
 	  gpointer source_data = source->source_data;
 	  gboolean (*dispatch) (gpointer,
@@ -373,6 +374,7 @@ g_main_dispatch (GTimeVal *current_time)
 
 	  dispatch = ((GSourceFuncs *) source->hook.func)->dispatch;
 	  
+	  was_in_call = G_HOOK_IN_CALL (source);
 	  source->hook.flags |= G_HOOK_FLAG_IN_CALL;
 
 	  G_UNLOCK (main_loop);
@@ -381,19 +383,49 @@ g_main_dispatch (GTimeVal *current_time)
 				     hook_data);
 	  G_LOCK (main_loop);
 
-	  source->hook.flags &= ~G_HOOK_FLAG_IN_CALL;
+	  if (!was_in_call)
+	    source->hook.flags &= ~G_HOOK_FLAG_IN_CALL;
 	  
-	  if (need_destroy)
-	    g_hook_destroy_link (&source_list, (GHook *) source);
+	  if (need_destroy && G_HOOK_IS_VALID (source))
+	    {
+	      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
+	      g_hook_destroy_link (&source_list, (GHook *) source);
+	    }
 	}
 
       g_hook_unref (&source_list, (GHook *)source);
     }
 }
 
-/* Run a single iteration of the mainloop, or, if !dispatch
- * check to see if any events need dispatching, but don't
- * run the loop.
+/* g_main_iterate () runs a single iteration of the mainloop, or,
+ * if !dispatch checks to see if any sources need dispatching.
+ * basic algorithm for dispatch=TRUE:
+ *
+ * 1) while the list of currently pending sources is non-empty,
+ *    we call (*dispatch) on those that are !IN_CALL or can_recurse,
+ *    removing sources from the list after each returns.
+ *    the return value of (*dispatch) determines whether the source
+ *    itself is kept alive.
+ *
+ * 2) call (*prepare) for sources that are not yet SOURCE_READY and
+ *    are !IN_CALL or can_recurse. a return value of TRUE determines
+ *    that the source would like to be dispatched immediatedly, it
+ *    is then flagged as SOURCE_READY.
+ *
+ * 3) poll with the pollfds from all sources at the priority of the
+ *    first source flagged as SOURCE_READY. if there are any sources
+ *    flagged as SOURCE_READY, we use a timeout of 0 or the minimum
+ *    of all timouts otherwise.
+ *
+ * 4) for each source !IN_CALL or can_recurse, if SOURCE_READY or
+ *    (*check) returns true, add the source to the pending list.
+ *    once one source returns true, stop after checking all sources
+ *    at that priority.
+ *
+ * 5) while the list of currently pending sources is non-empty,
+ *    call (*dispatch) on each source, removing the source
+ *    after the call.
+ *
  */
 static gboolean
 g_main_iterate (gboolean block,
@@ -401,7 +433,7 @@ g_main_iterate (gboolean block,
 {
   GHook *hook;
   GTimeVal current_time;
-  gint nready = 0;
+  gint n_ready = 0;
   gint current_priority = 0;
   gint timeout;
   gboolean retval = FALSE;
@@ -419,6 +451,7 @@ g_main_iterate (gboolean block,
 	g_main_dispatch (&current_time);
       
       G_UNLOCK (main_loop);
+
       return TRUE;
     }
 
@@ -433,30 +466,33 @@ g_main_iterate (gboolean block,
       GHook *tmp;
       gint source_timeout;
 
-      if ((nready > 0) && (source->priority > current_priority))
+      if ((n_ready > 0) && (source->priority > current_priority))
 	break;
-      if (!(hook->flags & G_SOURCE_CAN_RECURSE) && G_HOOK_IN_CALL (hook))
+      if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
 	  hook = g_hook_next_valid (hook, TRUE);
 	  continue;
 	}
 
       g_hook_ref (&source_list, hook);
-
-      if (((GSourceFuncs *)hook->func)->prepare (source->source_data,
-						 &current_time,
-						 &source_timeout))
+      
+      if (hook->flags & G_SOURCE_READY ||
+	  ((GSourceFuncs *) hook->func)->prepare (source->source_data,
+						  &current_time,
+						  &source_timeout))
 	{
 	  if (!dispatch)
 	    {
+	      hook->flags |= G_SOURCE_READY;
 	      g_hook_unref (&source_list, hook);
 	      G_UNLOCK (main_loop);
+
 	      return TRUE;
 	    }
 	  else
 	    {
 	      hook->flags |= G_SOURCE_READY;
-	      nready++;
+	      n_ready++;
 	      current_priority = source->priority;
 	      timeout = 0;
 	    }
@@ -478,11 +514,11 @@ g_main_iterate (gboolean block,
 
   /* poll(), if necessary */
 
-  g_main_poll (timeout, nready > 0, current_priority);
+  g_main_poll (timeout, n_ready > 0, current_priority);
 
   /* Check to see what sources need to be dispatched */
 
-  nready = 0;
+  n_ready = 0;
   
   hook = g_hook_first_valid (&source_list, TRUE);
   while (hook)
@@ -490,9 +526,9 @@ g_main_iterate (gboolean block,
       GSource *source = (GSource *)hook;
       GHook *tmp;
 
-      if ((nready > 0) && (source->priority > current_priority))
+      if ((n_ready > 0) && (source->priority > current_priority))
 	break;
-      if (!(hook->flags & G_SOURCE_CAN_RECURSE) && G_HOOK_IN_CALL (hook))
+      if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
 	  hook = g_hook_next_valid (hook, TRUE);
 	  continue;
@@ -500,9 +536,9 @@ g_main_iterate (gboolean block,
 
       g_hook_ref (&source_list, hook);
 
-      if ((hook->flags & G_SOURCE_READY) ||
-	  ((GSourceFuncs *)hook->func)->check (source->source_data,
-					       &current_time))
+      if (hook->flags & G_SOURCE_READY ||
+	  ((GSourceFuncs *) hook->func)->check (source->source_data,
+						&current_time))
 	{
 	  if (dispatch)
 	    {
@@ -510,12 +546,13 @@ g_main_iterate (gboolean block,
 	      g_hook_ref (&source_list, hook);
 	      pending_dispatches = g_slist_prepend (pending_dispatches, source);
 	      current_priority = source->priority;
-	      nready++;
+	      n_ready++;
 	    }
 	  else
 	    {
 	      g_hook_unref (&source_list, hook);
 	      G_UNLOCK (main_loop);
+
 	      return TRUE;
 	    }
 	}
@@ -557,38 +594,56 @@ g_main_iteration (gboolean block)
   return g_main_iterate (block, TRUE);
 }
 
-GMainLoop *
-g_main_new ()
+GMainLoop*
+g_main_new (gboolean is_running)
 {
-  GMainLoop *result = g_new (GMainLoop, 1);
-  result->flag = FALSE;
+  GMainLoop *loop;
 
-  return result;
+  loop = g_new0 (GMainLoop, 1);
+  loop->is_running = is_running != FALSE;
+
+  return loop;
 }
 
 void 
 g_main_run (GMainLoop *loop)
 {
-  loop->flag = FALSE;
-  while (!loop->flag)
+  g_return_if_fail (loop != NULL);
+
+  loop->is_running = TRUE;
+  while (loop->is_running)
     g_main_iterate (TRUE, TRUE);
 }
 
 void 
 g_main_quit (GMainLoop *loop)
 {
-  loop->flag = TRUE;
+  g_return_if_fail (loop != NULL);
+
+  loop->is_running = FALSE;
 }
 
 void 
 g_main_destroy (GMainLoop *loop)
 {
+  g_return_if_fail (loop != NULL);
+
   g_free (loop);
+}
+
+gboolean
+g_main_is_running (GMainLoop *loop)
+{
+  g_return_val_if_fail (loop != NULL, FALSE);
+
+  return loop->is_running;
 }
 
 /* HOLDS: main_loop_lock */
 static void
-g_main_poll (gint timeout, gboolean use_priority, gint priority)
+g_main_poll (gint     timeout,
+	     gboolean use_priority,
+	     gint     priority)
 {
   GPollFD *fd_array = g_new (GPollFD, n_poll_records);
   GPollRec *pollrec;
@@ -600,7 +655,7 @@ g_main_poll (gint timeout, gboolean use_priority, gint priority)
     {
       if (pipe (wake_up_pipe) < 0)
 	g_error ("Cannot create pipe main loop wake-up: %s\n",
-		 g_strerror(errno));
+		 g_strerror (errno));
 
       wake_up_rec.fd = wake_up_pipe[0];
       wake_up_rec.events = G_IO_IN;
@@ -647,8 +702,8 @@ g_main_poll (gint timeout, gboolean use_priority, gint priority)
 }
 
 void 
-g_main_add_poll (gint     priority,
-		 GPollFD *fd)
+g_main_add_poll (GPollFD *fd,
+		 gint     priority)
 {
   G_LOCK (main_loop);
   g_main_add_unlocking_poll (priority, fd);

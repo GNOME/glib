@@ -276,7 +276,7 @@ g_io_unix_add_watch (GIOChannel    *channel,
   watch->pollfd.fd = unix_channel->fd;
   watch->pollfd.events = condition;
 
-  g_main_add_poll (priority, &watch->pollfd);
+  g_main_add_poll (&watch->pollfd, priority);
 
   return g_source_add (priority, TRUE, &unix_watch_funcs, watch, user_data, notify);
 }

@@ -2427,10 +2427,11 @@ void g_source_remove_by_source_data (gpointer       source_data);
 void g_get_current_time		    (GTimeVal	   *result);
 
 /* Running the main loop */
-GMainLoop*	g_main_new		(void);
+GMainLoop*	g_main_new		(gboolean	 is_running);
 void		g_main_run		(GMainLoop	*loop);
 void		g_main_quit		(GMainLoop	*loop);
 void		g_main_destroy		(GMainLoop	*loop);
+gboolean	g_main_is_running	(GMainLoop	*loop);
 
 /* Run a single iteration of the mainloop. If block is FALSE,
  * will never block
@@ -2472,8 +2473,8 @@ struct _GPollFD
   gushort 	revents;
 };
 
-void        g_main_add_poll          (gint        priority,
-				      GPollFD    *fd);
+void        g_main_add_poll          (GPollFD    *fd,
+				      gint        priority);
 void        g_main_remove_poll       (GPollFD    *fd);
 void        g_main_set_poll_func     (GPollFunc   func);
 
