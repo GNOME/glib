@@ -1,3 +1,9 @@
+2001-05-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Remove G_HAVE_ISO_CXX_VARARGS and
+	G_HAVE_ISO_C_VARARGS and define G_HAVE_ISO_VARARGS directly
+	guarded by #if(n)def __cplusplus.
+
 2001-05-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-2.0.pc.in: Add @G_THREAD_CFLAGS@ to Cflags.

@@ -1665,27 +1665,23 @@ $glib_vacopy
 #else	/* !__cplusplus */
 $glib_inline
 #endif	/* !__cplusplus */
+
 _______EOF
 
 	if test x$g_have_iso_c_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
-
-#define G_HAVE_ISO_C_VARARGS 1
+#ifndef __cplusplus
+# define G_HAVE_ISO_VARARGS 1
+#endif
 _______EOF
 	fi
 	if test x$g_have_iso_cxx_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
-
-#define G_HAVE_ISO_CXX_VARARGS 1
-_______EOF
-	fi
-	cat >>$outfile <<_______EOF
-
-#if (defined(__cplusplus) ? defined(G_HAVE_ISO_CXX_VARARGS) : defined(G_HAVE_ISO_C_VARARGS))
+#ifdef __cplusplus
 # define G_HAVE_ISO_VARARGS 1
 #endif
 _______EOF
-
+	fi
 	if test x$g_have_gnuc_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
