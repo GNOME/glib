@@ -1,3 +1,7 @@
+Sat Feb 17 07:33:21 2001  Tim Janik  <timj@gtk.org>
+
+	* gmodule-dl.c: fix systems with broken RTLD_GLOBAL.
+
 2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.h: include glib.h before doing extern "C". Makes some

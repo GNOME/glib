@@ -481,6 +481,7 @@ G_MODULE_LIBS=
 G_MODULE_LDFLAGS=
 dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
+G_MODULE_BROKEN_RTLD_GLOBAL=0
 G_MODULE_HAVE_DLERROR=0
 dnl *** dlopen() and dlsym() in system libraries
 if test -z "$G_MODULE_IMPL"; then
@@ -533,6 +534,36 @@ if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
 	LDFLAGS_orig="$LDFLAGS"
 	LIBS="$LIBS $G_MODULE_LIBS"
 	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
+dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
+        AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
+                glib_cv_rtldglobal_broken,[
+                AC_TRY_RUN([
+                #include <dlfcn.h>
+                #ifndef RTLD_GLOBAL
+                #define RTLD_GLOBAL 0
+                #endif
+                #ifndef RTLD_LAZY
+                #define RTLD_LAZY 0
+                #endif
+                int pthread_create;
+                int main () {
+                void *handle, *global, *local;
+                global = &pthread_create;
+                handle = dlopen ("libpthread.so", RTLD_GLOBAL | RTLD_LAZY);
+                if (!handle) return 0;
+                local = dlsym (handle, "pthread_create");
+                return global == local;
+                }],
+                        [glib_cv_rtldglobal_broken=no],
+                        [glib_cv_rtldglobal_broken=yes],
+                        [])
+                rm -f plugin.c plugin.o plugin.lo
+        ])
+        if test "x$glib_cv_rtldglobal_broken" = "xyes"; then
+                G_MODULE_BROKEN_RTLD_GLOBAL=1
+        else
+                G_MODULE_BROKEN_RTLD_GLOBAL=0
+        fi
 dnl *** check whether we need preceeding underscores
 	AC_MSG_CHECKING(for preceeding underscore in symbols)
 	AC_CACHE_VAL(glib_cv_uscore,[
@@ -575,6 +606,7 @@ AC_SUBST(G_MODULE_LIBS)
 AC_SUBST(G_MODULE_LDFLAGS)
 AC_SUBST(G_MODULE_HAVE_DLERROR)
 AC_SUBST(G_MODULE_NEED_USCORE)
+AC_SUBST(G_MODULE_BROKEN_RTLD_GLOBAL)
 AC_SUBST(GLIB_DEBUG_FLAGS)
 
 

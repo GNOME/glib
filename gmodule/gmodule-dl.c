@@ -58,15 +58,19 @@
  * RTLD_GLOBAL - the external symbols defined in the library will be made
  *		 available to subsequently loaded libraries.
  */
-#ifndef	RTLD_GLOBAL
-#define	RTLD_GLOBAL	0
-#endif	/* RTLD_GLOBAL */
 #ifndef	RTLD_LAZY
 #define	RTLD_LAZY	1
 #endif	/* RTLD_LAZY */
 #ifndef	RTLD_NOW
 #define	RTLD_NOW	0
 #endif	/* RTLD_NOW */
+/* some systems (OSF1 V5.0) have broken RTLD_GLOBAL linkage */
+#ifdef G_MODULE_BROKEN_RTLD_GLOBAL
+#undef  RTLD_GLOBAL
+#endif /* G_MODULE_BROKEN_RTLD_GLOBAL */
+#ifndef	RTLD_GLOBAL
+#define	RTLD_GLOBAL	0
+#endif	/* RTLD_GLOBAL */
 
 
 /* --- functions --- */

@@ -38,6 +38,9 @@ extern "C" {
 #if	(@G_MODULE_NEED_USCORE@) || defined (hp9000s300) || defined (__hp9000s300) || defined (__hp9000s300__)
 #define	G_MODULE_NEED_USCORE
 #endif
+#if     (@G_MODULE_BROKEN_RTLD_GLOBAL@)
+#define G_MODULE_BROKEN_RTLD_GLOBAL
+#endif
 
 
 #ifdef __cplusplus
