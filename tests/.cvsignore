@@ -27,6 +27,7 @@ iochannel-test-outfile
 list-test
 mainloop-test
 markup-test
+markup-escape-test
 module-test
 node-test
 printf-test
