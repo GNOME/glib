@@ -1,3 +1,8 @@
+Sun Oct 19 22:18:28 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am (INCLUDES): Add $(top_builddir)/glib
+	as an include dir.  (#124934, Mariano Suárez-Alvarez)
+
 Sun Oct 19 00:33:28 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: 
