@@ -38,6 +38,7 @@ lib_LTLIBRARIES = libglib.la
 libglib_la_SOURCES = 		\
 	garray.c		\
 	gasyncqueue.c		\
+	gbacktrace.c		\
 	gcache.c		\
 	gcompletion.c		\
 	gdataset.c		\
@@ -71,7 +72,7 @@ libglib_la_SOURCES = 		\
 	gunidecomp.c		\
 	gutils.c
 
-include_HEADERS = glib.h glib-object.h gunicode.h
+include_HEADERS = glib.h glib-object.h gunicode.h gerror.h
 
 configexecincludedir = $(pkglibdir)/include
 #configexecinclude_DATA = glibconfig.h

@@ -1,3 +1,18 @@
+2000-07-12  Havoc Pennington  <hp@redhat.com>
+
+	* glib.h: #include <gerror.h>
+
+	* Makefile.am (include_HEADERS): Add gerror.h
+	(libglib_la_SOURCES): Add gbacktrace.c
+
+	* gbacktrace.c: Move g_on_error_query() in here (moved on the 
+	server, so history is preserved)
+
+	* gerror.h: GError interface
+
+	* gerror.c: GError implementation replaces stuff that's now in 
+	gbacktrace.c
+
 Sun Jul  9 21:20:45 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gunicode.h: Include stddef.h instead of stdlib.h
