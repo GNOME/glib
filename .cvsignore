@@ -44,3 +44,4 @@ gmodule-2.0.pc
 gthread-2.0.pc
 gobject-2.0.pc
 glib-config-2.0
+.saved
