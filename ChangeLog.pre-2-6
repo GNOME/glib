@@ -1,3 +1,7 @@
+2003-04-08  Matthias Clasen  <maclas@gmx.de>
+
+	* INSTALL: Move Cross-compliation information to reference manual.
+
 Mon Apr  7 13:40:28 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_loop_run): When waiting for

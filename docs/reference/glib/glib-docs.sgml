@@ -56,6 +56,7 @@
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
 <!ENTITY glib-Building SYSTEM "building.sgml">
+<!ENTITY glib-Cross SYSTEM "cross.sgml">
 <!ENTITY glib-Running SYSTEM "running.sgml">
 <!ENTITY glib-Resources SYSTEM "resources.sgml">
 <!ENTITY glib-Changes SYSTEM "changes.sgml">
@@ -105,6 +106,7 @@ implementations, e.g. POSIX threads, DCE threads or Solaris threads.
     </para>
 
     &glib-Building;
+    &glib-Cross;
     &glib-Compiling;
     &glib-Running;
     &glib-Changes;

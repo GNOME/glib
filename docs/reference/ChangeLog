@@ -1,3 +1,8 @@
+2003-04-08  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/cross.sgml: New file; cross-compilation information.
+	* glib/glib-docs.sgml: Include cross.sgml.
+
 2003-04-07  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/enumerations_flags.sgml: Additions.
