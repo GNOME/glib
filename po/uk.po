@@ -313,12 +313,12 @@ msgstr "Зб╕й виконання спадко╓много процесу (%s)"
 #: gspawn-win32.c:979 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "Зб╕й створення каналу для обм╕ну з спадко╓мним процесом (%s)"
 
 #: gspawn.c:158
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Зю╕й зчитування даних з спадко╓много процесу (%s)"
+msgstr "Зб╕й зчитування даних з спадко╓много процесу (%s)"
 
 #: gspawn.c:288
 #, c-format
@@ -360,7 +360,7 @@ msgstr ""
 
 #: gutf8.c:946 gutf8.c:955 gutf8.c:1087 gutf8.c:1096 gutf8.c:1238 gutf8.c:1334
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Нев╕рна посл╕довн╕сть у перетворюваному ввод╕"
 
 #: gutf8.c:1249 gutf8.c:1345
 msgid "Character out of range for UTF-16"
