@@ -1,3 +1,8 @@
+2005-01-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gqsort.c: Sync to glibc.  (#133994, Morten Welinder, 
+	patch by Kjartan Maraas)
+
 2005-01-11  Owen Taylor <otaylor@redhat.com>
 
 	* configure.in: Add gmodule-export-2.0.pc to AC_CONFIG_FILES.
