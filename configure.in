@@ -1187,12 +1187,13 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
         if test "x$have_threads" = xno; then
                 AC_TRY_COMPILE([#include <pthread.h>],
-			[pthread_attr_t attr; pthread_attr_init(&attr);],
+			[pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;],
 			have_threads=posix)
         fi
         if test "x$have_threads" = xno; then
                 AC_TRY_COMPILE([#include <pthread.h>],
-			[pthread_attr_t attr; pthread_attr_create(&attr);],
+			[pthread_mutex_t m; 
+                         pthread_mutex_init (&m, pthread_mutexattr_default);],
 			have_threads=dce)
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"

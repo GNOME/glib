@@ -1,3 +1,10 @@
+2002-07-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Improve checks for dce/posix threads to also do
+	the right thing, if the thread functions are not declared in
+	pthread.h. Idea from Miroslaw Dobrzanski-Neumann
+	<mne@mosaic-ag.com> in #77981. Merged from HEAD.
+
 2002-07-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/garray.h: Add parenthesis to protect macro
