@@ -305,6 +305,7 @@ g_shell_unquote (const gchar *quoted_string,
         }
     }
 
+  g_free (unquoted);
   return g_string_free (retval, FALSE);
   
  error:

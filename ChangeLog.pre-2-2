@@ -1,3 +1,8 @@
+Thu Feb 28 11:13:49 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gshell.c (g_shell_unquote): Fix memory leak.
+	(#72990, Paoloo Maggi)
+
 2002-02-28  Sven Neumann  <sven@gimp.org>
 
 	* m4macros/glib-2.0.m4: nicer output of configure --help.
