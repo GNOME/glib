@@ -1,3 +1,7 @@
+2005-02-16  Adi Attar  <aattar@cvs.gnome.org>
+
+	* configure.in: Added "xh" to ALL_LINGUAS.
+
 2005-02-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (print_help): Take main group options into
