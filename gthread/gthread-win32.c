@@ -237,8 +237,11 @@ g_cond_wait_internal (GCond *cond,
       g_ptr_array_remove (cond->array, event);
 
       /* In the meantime we could have been signaled, so we must again
-       * wait for the signal, this time with no timeout, to reset it */
-      win32_check_for_error (WAIT_FAILED != WaitForSingleObject (event, 0));
+       * wait for the signal, this time with no timeout, to reset
+       * it. retval is set again to honour the late arrival of the
+       * signal */
+      win32_check_for_error (WAIT_FAILED != 
+			     (retval = WaitForSingleObject (event, 0)));
 
       LeaveCriticalSection (&cond->lock);
     }

@@ -1,5 +1,9 @@
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gthread-win32.c (g_cond_wait_internal): Also return TRUE for
+	late arrived signals. Thanks to Steven Brooks
+	<umbrook0@cs.umanitoba.ca> for pointing out.
+
 	* gthread-impl.c (g_thread_init): Move the thread implementation
 	initialization to before assigning GThreadFuncs, which now is just
 	struct assigned and not memcpy'ed. Completed check for zero
