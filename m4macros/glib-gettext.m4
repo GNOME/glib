@@ -192,8 +192,24 @@ glib_DEFUN([GLIB_WITH_NLS],
 			 return _nl_msg_cat_cntr],
 	    [CATOBJEXT=.gmo 
              DATADIRNAME=share],
-	    [CATOBJEXT=.mo
-             DATADIRNAME=lib])
+	    [case $host in
+	    *-*-solaris*)
+	    dnl On Solaris, if bind_textdomain_codeset is in libc,
+	    dnl GNU format message catalog is always supported,
+            dnl since both are added to the libc all together.
+	    dnl Hence, we'd like to go with DATADIRNAME=share and
+	    dnl and CATOBJEXT=.gmo in this case.
+            AC_CHECK_FUNC(bind_textdomain_codeset,
+	      [CATOBJEXT=.gmo 
+               DATADIRNAME=share],
+	      [CATOBJEXT=.mo
+               DATADIRNAME=lib])
+	    ;;
+	    *)
+	    CATOBJEXT=.mo
+            DATADIRNAME=lib
+	    ;;
+	    esac])
 	  INSTOBJEXT=.mo
 	else
 	  gt_cv_have_gettext=no
