@@ -532,12 +532,16 @@ g_path_is_absolute (const gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, FALSE);
   
-  if (file_name[0] == G_DIR_SEPARATOR)
+  if (file_name[0] == G_DIR_SEPARATOR
+#ifdef G_OS_WIN32
+      || file_name[0] == '/'
+#endif
+				     )
     return TRUE;
 
 #ifdef G_OS_WIN32
   /* Recognize drive letter on native Windows */
-  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && (file_name[2] == G_DIR_SEPARATOR || file_name[2] == '/'))
     return TRUE;
 #endif /* G_OS_WIN32 */
 
@@ -1092,9 +1096,13 @@ g_get_codeset (void)
 #include <libintl.h>
 
 
-#ifndef GLIB_LOCALE_DIR
-#ifdef G_PLATFORM_WIN32
+#ifdef G_OS_WIN32
 
+/* On Windows we don't want any hard-coded path names */
+
+#undef GLIB_LOCALE_DIR
+/* It's OK to leak the g_win32_get_...() and g_strdup_printf() results
+ * below, as this macro is called only once. */
 #define GLIB_LOCALE_DIR					      	\
   g_win32_get_package_installation_subdirectory			\
   (GETTEXT_PACKAGE,						\
@@ -1102,10 +1110,9 @@ g_get_codeset (void)
 		    GLIB_MAJOR_VERSION,				\
 		    GLIB_MINOR_VERSION,				\
 		    GLIB_MICRO_VERSION - GLIB_BINARY_AGE),	\
-   "locale")
+   "share\\locale")
 
-#endif /* G_PLATFORM_WIN32 */
-#endif /* !GLIB_LOCALE_DIR */
+#endif /* !G_OS_WIN32 */
 
 G_CONST_RETURN gchar *
 _glib_gettext (const gchar *str)

@@ -401,14 +401,16 @@ main (int   argc,
   GError *error;
   char *name_used;
 #ifdef G_OS_WIN32
-  gchar *glib_dll = g_strdup_printf ("glib-%d.%d.dll",
+  gchar *glib_dll = g_strdup_printf ("libglib-%d.%d-%d.dll",
 				     GLIB_MAJOR_VERSION,
-				     GLIB_MINOR_VERSION);
+				     GLIB_MINOR_VERSION,
+				     GLIB_MICRO_VERSION - GLIB_BINARY_AGE);
 #endif
 #ifdef G_WITH_CYGWIN
-  gchar *glib_dll = g_strdup_printf ("cygglib-%d.%d.dll",
+  gchar *glib_dll = g_strdup_printf ("cygglib-%d.%d-%d.dll",
 				     GLIB_MAJOR_VERSION,
-				     GLIB_MINOR_VERSION);
+				     GLIB_MINOR_VERSION,
+				     GLIB_MICRO_VERSION - GLIB_BINARY_AGE);
 #endif
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
@@ -441,10 +443,10 @@ main (int   argc,
   g_print ("\n");
 
   g_print ("checking g_path_get_basename()...");
-  string = g_path_get_basename ("/foo/dir/");
+  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "dir" G_DIR_SEPARATOR_S);
   g_assert (strcmp (string, "dir") == 0);
   g_free (string);
-  string = g_path_get_basename ("/foo/file");
+  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "file");
   g_assert (strcmp (string, "file") == 0);
   g_free (string);
   g_print ("ok\n");
@@ -1175,6 +1177,7 @@ main (int   argc,
 
 #ifdef G_PLATFORM_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
+  g_print ("GLib DLL name tested for: %s\n", glib_dll);
 
   g_print ("GLib installation directory, from Registry entry for %s if available: %s\n",
 	   GETTEXT_PACKAGE,
@@ -1184,7 +1187,7 @@ main (int   argc,
   g_print ("Ditto, only from GLib DLL name: %s\n",
 	   g_win32_get_package_installation_directory (NULL, glib_dll));
   g_print ("locale subdirectory of GLib installation directory: %s\n",
-	   g_win32_get_package_installation_subdirectory (NULL, glib_dll, "locale"));
+	   g_win32_get_package_installation_subdirectory (NULL, glib_dll, "share\\locale"));
   g_print ("GTK+ 2.0 installation directory, if available: %s\n",
 	   g_win32_get_package_installation_directory ("gtk20", NULL));
 

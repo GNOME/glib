@@ -1,3 +1,26 @@
+2001-09-20  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_path_is_absolute): (Win32:) Accept also forward
+	slashes. (But still don't accept them in the other functions
+	here. This is a thorny issue. Windows in fact does treat / like \
+	on input (at least as local directory separators, dunno about
+	server/share separators). But GLib only has the one
+	G_DIR_SEPARATOR value, that apps should scan for, and use when
+	building pathnames. To properly fix this would require totally
+	abstracting pathnames, and don't having any path name scanning and
+	building in applications at all. Fat chance.)
+	(GLIB_LOCALE_DIR): Redefine only on "pure" Win32, not Cygwin. Use
+	subdirectory "share\locale", as on Unix.
+
+	* glib/gwin32.c: Don't need to define those langiage and
+	sublanguage constants here, current mingw (w32api) headers have
+	them.
+
+	* glib/glib.def: Add a few missing entry points.
+
+	* tests/testglib.c (main): Use same name for DLL as libtool does.
+	Use G_DIR_SEPARATOR in g_path_get_basename tests.
+
 Wed Sep 19 16:35:22 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_main_context_find_source_by[_funcs]_user_data): 
