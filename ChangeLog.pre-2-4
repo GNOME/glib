@@ -1,3 +1,7 @@
+Sat Dec 19 04:27:17 1998  Tim Janik  <timj@gtk.org>
+
+	* fixed up sys/poll.h and sys/types.h inclusions.
+
 Sat Dec 19 03:10:50 1998  Tim Janik  <timj@gtk.org>
 
 	* fixed up gthread includes, cleaned up glibconfig.h a little bit.

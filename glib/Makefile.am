@@ -17,6 +17,7 @@ INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 EXTRA_DIST = \
 	glib.m4		\
 	glib.spec	\
+	acglib.m4	\
 	sanity_check	\
 	README.win32	\
 	glib.def	\
@@ -58,6 +59,8 @@ include_HEADERS = \
 
 configinclude_DATA = \
 		glibconfig.h
+
+configure: configure.in acglib.m4		
 
 BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
 glibconfig.h: stamp-gc-h

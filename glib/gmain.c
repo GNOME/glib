@@ -25,7 +25,11 @@
  */
 
 #include "glib.h"
+#include <sys/types.h>
 #include <sys/time.h>
+#ifdef	GLIB_HAVE_SYS_POLL_H
+#include <sys/poll.h>
+#endif	/* GLIB_HAVE_SYS_POLL_H */
 #include <unistd.h>
 #include <errno.h>
 #include "config.h"

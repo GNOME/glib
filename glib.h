@@ -2294,31 +2294,12 @@ typedef enum
 } GSeekType;
 typedef enum
 {
-  G_IO_IN  
-#ifdef POLLIN
-            = POLLIN
-#endif
-  , G_IO_OUT  
-#ifdef POLLOUT
-            = POLLOUT
-#endif
-  , G_IO_PRI  
-#ifdef POLLPRI
-            = POLLPRI
-#endif
-
-  , G_IO_ERR  
-#ifdef POLLERR
-           = POLLERR
-#endif
-  , G_IO_HUP  
-#ifdef POLLHUP
-           = POLLHUP
-#endif
-  , G_IO_NVAL  
-#ifdef POLLNVAL
-           = POLLNVAL
-#endif
+  G_IO_IN	GLIB_SYSDEF_POLLIN,
+  G_IO_OUT	GLIB_SYSDEF_POLLOUT,
+  G_IO_PRI	GLIB_SYSDEF_POLLPRI,
+  G_IO_ERR	GLIB_SYSDEF_POLLERR,
+  G_IO_HUP	GLIB_SYSDEF_POLLHUP,
+  G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
 } GIOCondition;
 
 struct _GIOChannel

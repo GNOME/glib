@@ -68,6 +68,7 @@ main()
   char *p = (char*) &tv;
   int i;
   FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
   for (i = 0; i < $4; i++)
     fprintf(f, "%s%d", i?",":"", *(p++));
   fprintf(f, "\n");
@@ -77,4 +78,31 @@ AC_MSG_RESULT($AC_CV_NAME)
 AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
 undefine([AC_TYPE_NAME])dnl
 undefine([AC_CV_NAME])dnl
+])
+
+dnl GLIB_SYSDEFS (INCLUDES, DEFS_LIST, OFILE [, PREFIX])
+AC_DEFUN(GLIB_SYSDEFS,
+[glib_sysdefso="translit($3, [-_a-zA-Z0-9 *], [-_a-zA-Z0-9])"
+AC_MSG_CHECKING(system definitions for $2)
+cat >confrun.c <<_______EOF
+#include <stdio.h>
+$1
+int main (int c, char **v) {
+  FILE *f = fopen ("$glib_sysdefso", "a");
+  if (!f) return 1;
+_______EOF
+for glib_sysdef in $2 ; do
+        echo "#ifdef $glib_sysdef" >>confrun.c
+        echo "  fprintf (f, \"#define GLIB_SYSDEF_%s %s%d\\n\", \"$glib_sysdef\", \"$4\", $glib_sysdef);" >>confrun.c
+        echo "#else" >>confrun.c
+        echo "  fprintf (f, \"#define GLIB_SYSDEF_%s\\n\", \"$glib_sysdef\");" >>confrun.c
+        echo "#endif" >>confrun.c
+done
+echo "return 0; }" >>confrun.c
+AC_TRY_RUN(`cat confrun.c`, AC_MSG_RESULT(done),
+	for glib_sysdef in $2 ; do
+		echo "#define GLIB_SYSDEF_$glib_sysdef" >>$glib_sysdefso
+	done
+	AC_MSG_RESULT(failed),)
+rm -f confrun.c
 ])
