@@ -1,3 +1,19 @@
+2000-03-23  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c (_g_module_symbol): When looking for symbols in
+	the "main" module we must search both the main program and all
+	currently loaded DLLs. Not only the main program, or even just the
+	DLLs loaded as gmodules.  Libglade requires this.
+
+	Thus we need to get a list of all modules in the current
+	process. There are two alternative APIs to do this: PSAPI and
+	Toolhelp. The former is only available on NT (including Win2k),
+	the latter on Win9x and Win2k. Check which one works, and use
+	that.
+
+	Code for using PSAPI and Toolhelp was borrowed from the Dr. Mingw
+	tool written by José Fonseca <em96115@fe.up.pt>. Thanks.
+
 2000-03-04  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-win32.c: Call g_win32_error_message() to get the error
