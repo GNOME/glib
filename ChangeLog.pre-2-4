@@ -1,3 +1,9 @@
+2003-06-25  Abigail Brady  <morwen@evilmagic.org>
+ 
+ 	* glib/gconvert.c (g_convert_with_fallback): Use C99 style \uxxxx
+ 	and \Uxxxxyyyy escapes instead for fallback instead of perl-style
+ 	\X{xxxx} ones, fixing bug #114284.
+
 2003-06-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_channel_unix_new): Pass real &optval and

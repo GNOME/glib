@@ -652,7 +652,7 @@ g_convert_with_iconv (const gchar *str,
  *                present in the target encoding. (This must be
  *                in the target encoding), if %NULL, characters
  *                not in the target encoding will be represented
- *                as Unicode escapes \x{XXXX} or \x{XXXXXX}.
+ *                as Unicode escapes \uxxxx or \Uxxxxyyyy.
  * @bytes_read:   location to store the number of bytes in the
  *                input string that were successfully converted, or %NULL.
  *                Even if the conversion was successful, this may be 
@@ -807,8 +807,7 @@ g_convert_with_fallback (const gchar *str,
 		  if (!fallback)
 		    { 
 		      gunichar ch = g_utf8_get_char (p);
-		      insert_str = g_strdup_printf ("\\x{%0*X}",
-						    (ch < 0x10000) ? 4 : 6,
+		      insert_str = g_strdup_printf (ch < 0x10000 ? "\\u%04x" : "\\U%08x",
 						    ch);
 		    }
 		  else
