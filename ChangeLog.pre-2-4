@@ -1,3 +1,11 @@
+2003-11-07  Mark McLoughlin  <mark@skynet.ie>
+
+	* glib/gconvert.c: (get_filename_charset): re-work to
+	retain a copy of the cached charset rather than the
+	actual return value from g_get_charset (which may
+	change). Also, re-initialize the cache if it does
+	change.	See bug #126454.
+
 Thu Nov  6 00:04:46 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gconvert.c (get_filename_charset): Replacement for

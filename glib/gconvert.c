@@ -992,6 +992,23 @@ g_locale_from_utf8 (const gchar *utf8string,
 
 #ifndef G_PLATFORM_WIN32
 
+typedef struct _GFilenameCharsetCache GFilenameCharsetCache;
+
+struct _GFilenameCharsetCache {
+  gboolean is_utf8;
+  gchar *charset;
+  gchar *filename_charset;
+};
+
+static void
+filename_charset_cache_free (gpointer data)
+{
+  GFilenameCharsetCache *cache = data;
+  g_free (cache->charset);
+  g_free (cache->filename_charset);
+  g_free (cache);
+}
+
 /*
  * get_filename_charset:
  * @charset: return location for the name of the filename encoding 
@@ -1011,17 +1028,28 @@ g_locale_from_utf8 (const gchar *utf8string,
  * Return value: %TRUE if the charset used for filename is UTF-8.
  */
 static gboolean
-get_filename_charset (const gchar **charset)
+get_filename_charset (const gchar **filename_charset)
 {
-  static gboolean initialized = FALSE;
-  static const gchar *filename_charset;
-  static gboolean is_utf8;
+  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
+  GFilenameCharsetCache *cache = g_static_private_get (&cache_private);
+  const gchar *charset;
   
-  if (!initialized)
+  if (!cache)
     {
+      cache = g_new0 (GFilenameCharsetCache, 1);
+      g_static_private_set (&cache_private, cache, filename_charset_cache_free);
+    }
+
+  g_get_charset (&charset);
+
+  if (!(cache->charset && strcmp (cache->charset, charset) == 0))
+    {
+      const gchar *new_charset;
       gchar *p, *q;
 
-      initialized = TRUE;
+      g_free (cache->charset);
+      g_free (cache->filename_charset);
+      cache->charset = g_strdup (charset);
       
       p = getenv ("G_FILENAME_ENCODING");
       if (p != NULL) 
@@ -1031,26 +1059,34 @@ get_filename_charset (const gchar **charset)
 	    q = p + strlen (p);
 
 	  if (strncmp ("@locale", p, q - p) == 0)
-	    is_utf8 = g_get_charset (&filename_charset);
+	    {
+	      cache->is_utf8 = g_get_charset (&new_charset);
+	      cache->filename_charset = g_strdup (new_charset);
+	    }
 	  else
 	    {
-	      filename_charset = g_strndup (p, q - p);
-	      is_utf8 = (strcmp (filename_charset, "UTF-8") == 0);
+	      cache->filename_charset = g_strndup (p, q - p);
+	      cache->is_utf8 = (strcmp (cache->filename_charset, "UTF-8") == 0);
 	    }
 	}
       else if (getenv ("G_BROKEN_FILENAMES") != NULL)
-	is_utf8 = g_get_charset (&filename_charset);
+	{
+	  cache->is_utf8 = g_get_charset (&new_charset);
+	  cache->filename_charset = g_strdup (new_charset);
+	}
       else 
 	{
-	  filename_charset = "UTF-8";
-	  is_utf8 = TRUE;
+	  cache->filename_charset = g_strdup ("UTF-8");
+	  cache->is_utf8 = TRUE;
 	}
     }
 
-  *charset = filename_charset;
+  if (filename_charset)
+    *filename_charset = cache->filename_charset;
 
-  return is_utf8;
+  return cache->is_utf8;
 }
+
 #else /* G_PLATFORM_WIN32 */
 #define get_filename_charset (charset) TRUE
 #endif /* G_PLATFORM_WIN32 */
