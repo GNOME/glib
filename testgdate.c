@@ -1,3 +1,6 @@
+#ifdef GLIB_COMPILATION
+#undef GLIB_COMPILATION
+#endif
 
 #include "glib.h"
 

@@ -461,6 +461,9 @@ g_path_is_absolute (const gchar *file_name)
 #ifdef G_OS_WIN32
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
     return TRUE;
+
+  if (file_name[0] == G_DIR_SEPARATOR && file_name[1] == G_DIR_SEPARATOR)
+    return TRUE;
 #endif
 
   return FALSE;
@@ -727,11 +730,20 @@ g_get_any_init (void)
 	  while ((p = strchr (g_home_dir, '/')) != NULL)
 	    *p = '\\';
 	}
-      else
+
+      if (!g_home_dir)
 	{
-	  /* The official way to specify a home directory on NT is
-	   * the HOMEDRIVE and HOMEPATH environment variables. At least
-	   * it was at some time.
+	  /* USERPROFILE is probably the closest equivalent to $HOME? */
+	  if (getenv ("USERPROFILE") != NULL)
+	    g_home_dir = g_getenv ("USERPROFILE");
+	}
+
+      if (!g_home_dir)
+	{
+	  /* At least at some time, HOMEDRIVE and HOMEPATH were used
+	   * to point to the home directory, I think. But on Windows
+	   * 2000 HOMEDRIVE seems to be equal to SYSTEMDRIVE, and
+	   * HOMEPATH is its root "\"?
 	   */
 	  if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
 	    {

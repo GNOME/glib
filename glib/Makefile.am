@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = 1.4
 SUBDIRS = . gobject gmodule gthread docs tests build
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
-	-DG_DISABLE_COMPAT_H
+	-DG_DISABLE_COMPAT_H -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\

@@ -1,4 +1,8 @@
 *.lo
+*.obj
+*.lib
+*.dll
+*.exe
 Makefile
 Makefile.in
 makefile.msc

@@ -28,20 +28,9 @@
 #define __G_THREAD_H__
 
 #include <gerror.h>
+#include <gtypes.h>
 
 G_BEGIN_DECLS
-
-#ifndef GLIB_VAR
-#  ifdef G_OS_WIN32
-#    ifdef GLIB_COMPILATION
-#      define GLIB_VAR __declspec(dllexport)
-#    else /* !GLIB_COMPILATION */
-#      define GLIB_VAR extern __declspec(dllimport)
-#    endif /* !GLIB_COMPILATION */
-#  else /* !G_OS_WIN32 */
-#    define GLIB_VAR extern
-#  endif /* !G_OS_WIN32 */
-#endif /* GLIB_VAR */
 
 /* GLib Thread support
  */

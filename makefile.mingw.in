@@ -3,10 +3,6 @@
 
 ## Use: make -f makefile.mingw
 
-# Change this to wherever you want to install the DLLs. This directory
-# should be in your PATH.
-BIN = /bin
-
 TOP = ..
 
 include build/win32/make.mingw
@@ -23,7 +19,7 @@ DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -D
 DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 
 DLLS_TO_BUILD =				\
- 	glib-$(GLIB_VER).dll		\
+	glib-$(GLIB_VER).dll		\
 	sub-gmodule			\
 	sub-gthread			\
 	sub-gobject
@@ -36,9 +32,6 @@ all :				\
 	testglib.exe		\
 	testgdate.exe		\
 	testgdateparser.exe
-
-install : all
-	$(INSTALL) $(DLLS_TO_BUILD) $(BIN)
 
 glib_OBJECTS =			\
 	garray.o		\

@@ -5,6 +5,9 @@ Makefile
 .deps
 *.lo
 *.o
+*.obj
+*.lib
+*.dll
 .libs
 *.la
 so_locations

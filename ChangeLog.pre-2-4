@@ -1,3 +1,28 @@
+2001-02-21  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c (g_path_is_absolute): Match also UNC paths on Win32.
+
+	* gthread.h: Include gtypes.h to be sure to get GLIB_VAR
+	definition, remove definition from here.
+
+	* gunicode.h: Remove duplicate GLIB_VAR definition from here, too.
+
+	* gutils.c: (Win32) Use USERPROFILE as home dir if present. On
+	Win2k, HOMEDRIVE and HOMEPATH aren't reliable.
+	
+	* Makefile.am (INCLUDES): Add -DGLIB_COMPILATION.
+
+	* makefile.mingw.in: Remove install target, Windows isn't Unix.
+
+	* testgdate.c
+	* testgdateparser.c
+	* testglib.c: Undefine GLIB_COMPILATION.
+
+	* glib.def: Updates.
+
+	* .cvsignore
+	* */.cvsignore: Ignore also .obj, .dll, .lib and .exe files.
+
 2001-02-19  Hans Breuer <hans@breuer.org>
 
 	* glib/glib.def, gobject/gobject.def : added nissing symbols

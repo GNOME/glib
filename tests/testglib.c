@@ -28,6 +28,10 @@
 
 #undef G_LOG_DOMAIN
 
+#ifdef GLIB_COMPILATION
+#undef GLIB_COMPILATION
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
