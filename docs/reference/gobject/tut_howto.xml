@@ -143,7 +143,7 @@ struct _MamanBar {
             </para></listitem>
           <listitem><para>
               All of Nautilus code and a lot of Gnome libraries use private indirection members, as described
-              by Herb Sutter in his Pimpl articles (see <ulink></ulink>: Herb summarizes the different
+              by Herb Sutter in his Pimpl articles (see <ulink>http://www.gotw.ca/publications/mill04.htm</ulink>: Herb summarizes the different
               issues better than I will):
 <programlisting>
 typedef struct _MamanBarPrivate MamanBarPrivate;
@@ -436,7 +436,7 @@ if (self->private->dispose_has_run) {
         Just as with C++, there are many different ways to define object
         methods and extend them: the following list and sections draw on C++ vocabulary.
         (Readers are expected to know basic C++ buzzwords. Those who have not had to
-        write C++ code recently can refer to <ulink>XXXX</ulink> to refresh their 
+        write C++ code recently can refer to <ulink>http://www.cplusplus.com/doc/tutorial/</ulink> to refresh their 
         memories.)
         <itemizedlist>
           <listitem><para>
