@@ -52,7 +52,6 @@ main (int   argc,
       char *argv[])
 {
   GStringChunk *string_chunk;
-  gchar *string;
 
   gchar *tmp_string, *tmp_string_2;
   gint i;
@@ -84,6 +83,9 @@ main (int   argc,
 
   g_assert (string1 != NULL);
   g_assert (string2 != NULL);
+  g_assert (strlen (string1->str) == string1->len);
+  g_assert (strlen (string2->str) == string2->len);
+  g_assert (string2->len == 0);
   g_assert (strcmp ("hi pete!", string1->str) == 0);
   g_assert (strcmp ("", string2->str) == 0);
 
@@ -110,44 +112,6 @@ main (int   argc,
 		    string1->str,
 		    10, 666, 15, 15, 666.666666666, 666.666666666);
 #endif
-
-  g_assert (g_strcasecmp ("FroboZZ", "frobozz") == 0);
-  g_assert (g_strcasecmp ("frobozz", "frobozz") == 0);
-  g_assert (g_strcasecmp ("frobozz", "FROBOZZ") == 0);
-  g_assert (g_strcasecmp ("FROBOZZ", "froboz") != 0);
-  g_assert (g_strcasecmp ("", "") == 0);
-  g_assert (g_strcasecmp ("!#%&/()", "!#%&/()") == 0);
-  g_assert (g_strcasecmp ("a", "b") < 0);
-  g_assert (g_strcasecmp ("a", "B") < 0);
-  g_assert (g_strcasecmp ("A", "b") < 0);
-  g_assert (g_strcasecmp ("A", "B") < 0);
-  g_assert (g_strcasecmp ("b", "a") > 0);
-  g_assert (g_strcasecmp ("b", "A") > 0);
-  g_assert (g_strcasecmp ("B", "a") > 0);
-  g_assert (g_strcasecmp ("B", "A") > 0);
-
-  g_assert(g_strdup(NULL) == NULL);
-  string = g_strdup(GLIB_TEST_STRING);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
-  g_free(string);
-
-  string = g_strconcat(GLIB_TEST_STRING, NULL);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
-  g_free(string);
-
-  string = g_strconcat(GLIB_TEST_STRING, GLIB_TEST_STRING, 
-  		       GLIB_TEST_STRING, NULL);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
-  			  GLIB_TEST_STRING) == 0);
-  g_free(string);
-  
-  string = g_strdup_printf ("%05d %-5s", 21, "test");
-  g_assert (string != NULL);
-  g_assert (strcmp(string, "00021 test ") == 0);
-  g_free (string);
 
   return 0;
 }
