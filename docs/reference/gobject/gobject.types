@@ -1,0 +1,4 @@
+#include <glib/glib-object.h>
+
+g_type_module_get_type
+g_type_plugin_get_type

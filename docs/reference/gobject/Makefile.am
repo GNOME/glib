@@ -17,9 +17,13 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
-INCLUDES =
-GTKDOC_LIBS =
-
+INCLUDES = \
+	-I$(top_srcdir) 		\
+	-I$(top_builddir) 		\
+	$(GLIB_DEBUG_FLAGS)
+GTKDOC_LIBS = \
+	$(top_builddir)/glib/libglib-2.0.la	\
+	$(top_builddir)/gobject/libgobject-2.0.la
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=
