@@ -1,3 +1,7 @@
+Sat Feb  7 15:02:01 2004  Manish Singh  <yosh@gimp.org>
+
+	* tests/type-test.c: Fix broken test for gsize formats.
+
 2004-02-05  Robert Sedak  <robert.sedak@sk.htnet.hr>
 
         * configure.in: Added "hr" (Croatian) to ALL_LINGUAS.
