@@ -21,6 +21,9 @@
  * Just run it. Optional parameter is number of sub-processes.
  */
 
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include "config.h"
 
 #include <glib.h>

@@ -1,3 +1,6 @@
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #ifdef GLIB_COMPILATION
 #undef GLIB_COMPILATION
 #endif

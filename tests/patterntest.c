@@ -16,6 +16,10 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#undef G_DISABLE_ASSERT
+#undef G_LOG_DOMAIN
+
 #include <string.h>
 
 #include "glib.h"
