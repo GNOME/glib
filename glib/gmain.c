@@ -135,7 +135,7 @@ struct _GMainLoop
 #ifdef G_THREADS_ENABLED
   GMutex *mutex;
   GCond *sem_cond;
-#endif G_THREADS_ENABLED  
+#endif /* G_THREADS_ENABLED */
 };
 
 struct _GTimeoutSource
@@ -1601,7 +1601,7 @@ g_main_context_prepare (GMainContext *context,
     }
   
   context->poll_waiting = TRUE;
-#endif G_THREADS_ENABLED  
+#endif /* G_THREADS_ENABLED */
 
 #if 0
   /* If recursing, finish up current dispatch, before starting over */
@@ -2003,7 +2003,7 @@ g_main_loop_new (GMainContext *context,
   else
     loop->mutex = NULL;
   loop->sem_cond = NULL;
-#endif G_THREADS_ENABLED  
+#endif /* G_THREADS_ENABLED */
 
   return loop;
 }

@@ -279,7 +279,7 @@ gboolean	g_idle_remove_by_data	(gpointer	data);
 void        g_main_poll_win32_msg_add (gint        priority,
 				       GPollFD    *fd,
 				       guint       hwnd);
-#endif G_OS_WIN32
+#endif /* G_OS_WIN32 */
 
 G_END_DECLS
 

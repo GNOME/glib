@@ -1,3 +1,8 @@
+2000-12-07  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gmain.h: Don't put anything after an #endif.
+	* gmain.c: Likewise.
+
 2000-12-06  Havoc Pennington  <hp@pobox.com>
 
 	* tests/strfunc-test.c (main): add g_strdupv test
