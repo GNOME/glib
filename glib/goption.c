@@ -312,6 +312,13 @@ g_option_context_set_main_group (GOptionContext *context,
   g_return_if_fail (context != NULL);
   g_return_if_fail (group != NULL);
 
+  if (context->main_group)
+    {
+      g_warning ("This GOptionContext already has a main group");
+
+      return;
+    }
+  
   context->main_group = group;
 }
 

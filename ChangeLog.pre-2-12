@@ -1,3 +1,8 @@
+2005-03-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (g_option_context_set_main_group): Warn 
+	if there already is a main group.  (#170445, Jeff Franks)
+
 Sun Mar 13 22:01:17 2005  Manish Singh  <yosh@gimp.org>
 
 	* tests/array-test.c: delete a bunch of dead code.
