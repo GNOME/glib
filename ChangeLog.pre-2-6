@@ -1,3 +1,7 @@
+2004-02-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.def: Add g_completion_complete_utf8.
+
 Thu Feb  5 01:19:12 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/file-test.c (test_mkstemp): Weaken an g_assert() to a 
@@ -13,7 +17,6 @@ Thu Feb  5 00:56:28 2004  Matthias Clasen  <maclas@gmx.de>
 	* tests/completion-test.c (main): Some GCompletion tests.
 
 	* tests/Makefile.am: Add completion-test.
-
 
 2004-02-01  Tor Lillqvist  <tml@iki.fi>
 
