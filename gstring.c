@@ -258,6 +258,9 @@ GString*
 g_string_assign (GString *lval,
 		 const gchar *rval)
 {
+  g_return_val_if_fail (lval != NULL, NULL);
+  g_return_val_if_fail (rval != NULL, NULL);
+  
   g_string_truncate (lval, 0);
   g_string_append (lval, rval);
 
@@ -271,6 +274,7 @@ g_string_truncate (GString* fstring,
   GRealString *string = (GRealString*)fstring;
 
   g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (len >= 0, NULL);
 
   string->len = len;
 

@@ -1,3 +1,11 @@
+Fri May 19 11:37:54 2000  Tim Janik  <timj@gtk.org>
+
+	* gutils.c (g_snprintf): 
+	(g_vsnprintf): added argument assertments.
+
+	* gstring.c (g_string_assign):
+	(g_string_truncate): added argument assertments.
+
 Fri May 19 09:00:44 2000  Tim Janik  <timj@gtk.org>
 
         * gmem.c (g_free): fixed SIZEOF_LONG==4 assumption with
