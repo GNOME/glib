@@ -991,6 +991,7 @@ g_open
 g_rename
 g_mkdir
 g_stat
+g_lstat
 g_unlink
 g_remove
 g_fopen

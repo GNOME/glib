@@ -1313,12 +1313,15 @@ _g_win32_thread_init (void)
  * version and feature information should use Win32 API like
  * GetVersionEx() and VerifyVersionInfo().
  *
- * If there is an environment variable G_WIN32_PRETEND_WIN9X defined
- * (with any value), this function always returns a version code for
- * Windows 9x. This is mainly an internal debugging aid for GTK and
- * GLib developers, to be able to check the code paths for Win9x.
+ * If there is an environment variable <envar>G_WIN32_PRETEND_WIN9X</envar> 
+ * defined (with any value), this function always returns a version 
+ * code for Windows 9x. This is mainly an internal debugging aid for 
+ * GTK+ and GLib developers, to be able to check the code paths for 
+ * Windows 9x.
  *
  * Returns: The version information.
+ * 
+ * Since: 2.6
  **/
 guint
 g_win32_get_windows_version (void)

@@ -1,3 +1,12 @@
+2004-10-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/windows.sgml: Document G_WIN32_IS_NT_BASED,
+	G_WIN32_HAVE_WIDECHAR_API.
+
+	* glib/glib-sections.txt: Add g_lstat
+
+	* glib/running.sgml: Document G_WIN32_PRETEND_WIN9X.
+
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Add an example.
