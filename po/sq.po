@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-06-23 14:49+0200\n"
 "PO-Revision-Date: 2004-05-08 10:11+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -71,12 +71,12 @@ msgstr "Emri i host të URI '%s' është i pasaktë"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' përmban simbole escape të pavlefshëm"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Pozicioni me emër '%s' nuk është një pozicion absolut"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Emër host i pasaktë"
 
@@ -100,10 +100,11 @@ msgstr "Gabim gjatë leximit të file '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "I pamundur leximi nga file '%s': %s"
 
+#. GRUT modified this item
 #: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "E pamundur hapja e file '%s': %s"
+msgstr "Hapja e file '%s' dështoi: %s"
 
 #: glib/gfileutils.c:541
 #, c-format
@@ -517,3 +518,4 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
+
