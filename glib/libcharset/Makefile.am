@@ -12,7 +12,6 @@ libcharset_la_SOURCES =    	\
 EXTRA_DIST = 			\
 	README			\
 	config.charset		\
-	charset.alias		\
 	ref-add.sed		\
 	ref-del.sed		\
 	ref-add.sin		\

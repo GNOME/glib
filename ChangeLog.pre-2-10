@@ -1,3 +1,11 @@
+Mon Feb 18 20:18:23 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/libcharset/Makefile.am (EXTRA_DIST): Remove
+	charset.alias from EXTRA_DIST; we don't want the
+	charset.alias from the make distcheck machine
+	on the target system!. (#70974, reported by
+	Ryan Lovett)
+
 Mon Feb 18 12:40:36 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Turn off ISO varargs support for gcc-2.95
