@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2002-09-22 01:32+0200\n"
+"POT-Creation-Date: 2004-01-29 03:46+0100\n"
+"PO-Revision-Date: 2004-01-29 10:41+0100\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@pluto.linux.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -131,13 +131,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "Impossibile creare il file '%s': %s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Impossibile creare il file '%s': %s"
+msgstr "Impossibile leggere il link simbolico '%s': %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Link simbolici non supportati"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -450,9 +450,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Impossibile leggere dalla pipe figlia (%s)"
 
 #: glib/gspawn-win32.c:922
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Impossibile eseguire il processo figlio (%s)"
+msgstr "Impossibile eseguire il programma helper"
 
 #: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
 #, c-format
@@ -531,13 +530,4 @@ msgstr "Sequenza non valida in ingresso per la conversione"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
-msgstr "Carattere non disponibili in UTF-8"
-
-#~ msgid "Incorrect message size"
-#~ msgstr "Dimensione messaggio non corretta"
-
-#~ msgid "Socket error"
-#~ msgstr "Errore socket"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "Impostazione dei flags sul canale non supportata"
+msgstr "Carattere non disponibile in UTF-16"
