@@ -34,17 +34,33 @@ the setter for the property is called to reinstate the previous value.
 
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
-
+The class structure for the <structname>GObject</structname> type.
 </para>
 
-@g_type_class: 
-@constructor: 
-@set_property: 
-@get_property: 
-@dispose: 
-@finalize: 
-@dispatch_properties_changed: 
-@notify: 
+@g_type_class: the parent class
+@constructor:  the @constructor function is called by g_object_new () to 
+  complete the object initialization after all the construction properties are
+  set. The first thing a @constructor implementation must do is chain up to the
+  @constructor of the parent class. Overriding @constructor should be rarely 
+  needed.
+@set_property: the generic setter for all properties of this type. Should be
+  overridden for every type with properties. Implementations of @set_property
+  don't need to emit property change notification explicitly, this is handled
+  by the type system.
+@get_property: the generic getter for all properties of this type. Should be
+  overridden for every type with properties.
+@dispose: the @dispose function is supposed to drop all references to other 
+  objects, but keep the instance otherwise intact, so that client method 
+  invocations still work. It may be run multiple times (due to reference 
+  loops). Before returning, @dispose should chain up to the @dispose method 
+  of the parent class.
+@finalize: instance finalization function, should finish the finalization of 
+  the instance begun in @dispose and chain up to the @finalize method of the 
+  parent class.
+@dispatch_properties_changed: emits property change notification for a bunch
+  of properties. Overriding @dispatch_properties_changed should be rarely 
+  needed.
+@notify: the class closure for the notify signal
 
 <!-- ##### STRUCT GObjectConstructParam ##### -->
 <para>

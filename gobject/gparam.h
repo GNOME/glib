@@ -98,6 +98,7 @@ struct _GParamSpecClass
   gint          (*values_cmp)           (GParamSpec   *pspec,
 					 const GValue *value1,
 					 const GValue *value2);
+  /*< private >*/
   gpointer	  dummy[4];
 };
 struct _GParameter /* auxillary structure for _setv() variants */

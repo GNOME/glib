@@ -93,7 +93,8 @@ Retrieves the #GType to initialize a #GValue for this parameter.
 
 <!-- ##### STRUCT GParamSpec ##### -->
 <para>
-
+All fields of the <structname>GParamSpec</structname> struct are private and
+should not be used directly, except for the following:
 </para>
 
 @g_type_instance: private #GTypeInstance portion
@@ -104,16 +105,23 @@ Retrieves the #GType to initialize a #GValue for this parameter.
 
 <!-- ##### STRUCT GParamSpecClass ##### -->
 <para>
-
+The class structure for the <structname>GParamSpec</structname> type.
+Normally, <structname>GParamSpec</structname> classes are filled by
+g_param_type_register_static().
 </para>
 
-@g_type_class: 
-@value_type: 
-@finalize: 
-@value_set_default: 
-@value_validate: 
-@values_cmp: 
-@dummy: 
+@g_type_class: the parent class
+@value_type: the #GValue type for this parameter
+@finalize: The instance finalization function (optional), should chain 
+  up to the finalize method of the parent class.
+@value_set_default: Resets a @value to the default value for this type
+  (recommended, the default is g_value_reset()), see 
+  g_param_value_set_default().
+@value_validate: Ensures that the contents of @value comply with the 
+  specifications set out by this type (optional), see 
+  g_param_value_set_validate().
+@values_cmp: Compares @value1 with @value2 according to this type
+  (recommended, the default is memcmp()), see g_param_values_cmp().
 
 <!-- ##### ENUM GParamFlags ##### -->
 <para>
