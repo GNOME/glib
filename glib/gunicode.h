@@ -243,6 +243,9 @@ gboolean g_utf8_validate (const gchar  *str,
                           gint          max_len,
                           const gchar **end);
 
+/* Validate a Unicode character */
+gboolean g_unichar_validate (gunichar ch);
+
 G_END_DECLS
 
 #endif /* __G_UNICODE_H__ */

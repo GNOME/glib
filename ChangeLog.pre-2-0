@@ -1,3 +1,7 @@
+2001-03-19  Havoc Pennington  <hp@redhat.com>
+
+	* gutf8.c (g_unichar_validate): added this function
+
 2001-03-18  Tor Lillqvist  <tml@iki.fi>
 
 	* gspawn-win32.c (SETUP_DEBUG): Add braces to silence gcc -Wall.

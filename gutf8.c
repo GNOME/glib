@@ -1414,4 +1414,18 @@ g_utf8_validate (const gchar  *str,
     return TRUE;
 }
 
-
+/**
+ * g_unichar_validate:
+ * @ch: a Unicode character
+ * 
+ * Checks whether @ch is a valid Unicode character. Some possible
+ * integer values of @ch will not be valid. 0 is considered a valid
+ * character, though it's normally a string terminator.
+ * 
+ * Return value: %TRUE if @ch is a valid Unicode character
+ **/
+gboolean
+g_unichar_validate (gunichar ch)
+{
+  return UNICODE_VALID (ch);
+}
