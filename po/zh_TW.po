@@ -1,12 +1,12 @@
-# Traditional chinese translation for glib 2.
-# Copyright (C) 2001-2002 Free Software Foundation, Inc.
-# Abel Cheung <maddog@linux.org.hk>, 2001-2002.
+# Traditional chinese translation for glib 2.x
+# Copyright (C) 2001-2003 Free Software Foundation, Inc.
+# Abel Cheung <maddog@linux.org.hk>, 2001-2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-12-20 10:12-0500\n"
-"PO-Revision-Date: 2002-03-31 05:02+0800\n"
+"Project-Id-Version: glib 2.2.0\n"
+"POT-Creation-Date: 2003-01-02 03:31+0800\n"
+"PO-Revision-Date: 2003-01-02 03:42+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "無法開啟將‘%s’轉換至‘%s’的程序：%s"
 #: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
 #: glib/gutf8.c:1352
 msgid "Invalid byte sequence in conversion input"
-msgstr "轉換輸入資料時遇到不正確的位元組次序"
+msgstr "轉換輸入數據時遇到不正確的位元組次序"
 
 #: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
 #: glib/giochannel.c:2191
@@ -38,7 +38,7 @@ msgstr "轉換時發生錯誤：%s"
 #: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
 #: glib/gutf8.c:1348
 msgid "Partial character sequence at end of input"
-msgstr "輸入資料結束時出現未完成的字元次序"
+msgstr "輸入數據結束時出現未完成的字元次序"
 
 #: glib/gconvert.c:799
 #, c-format
@@ -97,17 +97,17 @@ msgstr "讀取檔案‘%s’時發生錯誤：%s"
 #: glib/gfileutils.c:471
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "讀取檔案失敗‘%s’：%s"
+msgstr "讀取檔案‘%s’失敗：%s"
 
 #: glib/gfileutils.c:518 glib/gfileutils.c:586
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "開啟檔案失敗‘%s’：%s"
+msgstr "開啟檔案‘%s’失敗：%s"
 
 #: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "無法取得檔案‘%s’的屬性：fstat() 失敗：%s"
+msgstr "無法獲取檔案‘%s’的屬性：fstat() 失敗：%s"
 
 #: glib/gfileutils.c:558
 #, c-format
@@ -122,7 +122,7 @@ msgstr "樣式‘%s’不正確，不應含有‘%s’"
 #: glib/gfileutils.c:777
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "樣式‘%s’結尾不是 XXXXXX"
+msgstr "樣式‘%s’末端不是 XXXXXX"
 
 #: glib/gfileutils.c:798
 #, c-format
@@ -141,11 +141,11 @@ msgstr "無法開啟將‘%s’轉換至‘%s’的程序：%s"
 
 #: glib/giochannel.c:1472
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "g_io_channel_read_line_string 中無法讀取原始資料"
+msgstr "g_io_channel_read_line_string 中無法讀取原始數據"
 
 #: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
 msgid "Leftover unconverted data in read buffer"
-msgstr "用來讀取資料的緩衝區中仍有未轉換的資料"
+msgstr "用來讀取數據的緩衝區中仍有未轉換的數據"
 
 #: glib/giochannel.c:1599 glib/giochannel.c:1676
 msgid "Channel terminates in a partial character"
@@ -153,7 +153,7 @@ msgstr "輸入管道在字元未完成前已經結束"
 
 #: glib/giochannel.c:1662
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "g_io_channel_read_to_end 中無法讀取原始資料"
+msgstr "g_io_channel_read_to_end 中無法讀取原始數據"
 
 #: glib/giowin32.c:712 glib/giowin32.c:741
 msgid "Incorrect message size"
@@ -203,7 +203,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"實體的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換為 "
+"實體的末端不是分號；很可能您想使用 & 字元但未將它變為實體 ─ 請將 & 轉換為 "
 "&amp;"
 
 #: glib/gmarkup.c:531
@@ -228,20 +228,20 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"字元參引的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
+"字元參引的末端不是分號；很可能您想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
 "為 &amp;"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "未完成的實體參引"
 
 #: glib/gmarkup.c:615
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "未完成的字元參引"
 
 #: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
 msgid "Invalid UTF-8 encoded text"
-msgstr "不正確的 UTF-8 編碼文字"
+msgstr "無效的 UTF-8 編碼文字"
 
 #: glib/gmarkup.c:955
 msgid "Document must begin with an element (e.g. <book>)"
@@ -275,7 +275,7 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "不尋常的字元‘%s’，元素‘%s’的開始標籤應該以‘>’或‘/’字元終結，也可以是屬性；或"
-"許你在屬性名稱中使用了無效的字元"
+"許您在屬性名稱中使用了無效的字元"
 
 #: glib/gmarkup.c:1268
 #, c-format
@@ -386,23 +386,22 @@ msgstr "文字是空白的 (或只含有空白字元)"
 
 #: glib/gspawn-win32.c:208
 msgid "Failed to read data from child process"
-msgstr "無法由副程序讀取資料"
+msgstr "無法由副程序讀取數據"
 
 #: glib/gspawn-win32.c:336
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "當 g_io_channel_win32_poll() 由副程序讀取資料時發生預期外的錯誤"
+msgstr "當 g_io_channel_win32_poll() 由副程序讀取數據時發生不可預計的錯誤"
 
 #: glib/gspawn-win32.c:706 glib/gspawn.c:961
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "無法由副管道讀取資料 (%s)"
+msgstr "無法由副管道讀取數據 (%s)"
 
 #: glib/gspawn-win32.c:784
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "無法執行副程序 (%s)"
+msgstr "無法執行輔助程式"
 
 #: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
@@ -422,17 +421,17 @@ msgstr "無法建立管道來和副程序溝通 (%s)"
 #: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "無法由副程序讀取資料 (%s)"
+msgstr "無法由副程序讀取數據 (%s)"
 
 #: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "當 select() 由副程序讀取資料時發生預期外的錯誤 (%s)"
+msgstr "當 select() 由副程序讀取數據時發生不可預計的錯誤 (%s)"
 
 #: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "waitpid() 時發生預期外的錯誤 (%s)"
+msgstr "waitpid() 時發生不可預計的錯誤 (%s)"
 
 #: glib/gspawn.c:1026
 #, c-format
@@ -462,7 +461,7 @@ msgstr "執行副程序“%s”時發生不明的錯誤"
 #: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "無法由副程序 pid 管道讀取足夠資料 (%s)"
+msgstr "無法由副程序 pid 管道讀取足夠的數據 (%s)"
 
 #: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
@@ -476,6 +475,3 @@ msgstr "轉換輸入時遇到不正確的次序"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "不支援設定管道旗標的操作"
