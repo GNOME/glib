@@ -19,13 +19,31 @@ lib_LTLIBRARIES = libgobject-1.3.la
 
 if MS_LIB_AVAILABLE
 noinst_DATA = gobject-1.3.lib
+
+install-ms-lib:
+	$(INSTALL) gobject-1.3.lib $(DESTDIR)$(libdir)
+
+uninstall-ms-lib:
+	-rm $(DESTDIR)$(libdir)/gobject-1.3.lib
+else
+install-ms-lib:
+uninstall-ms-lib:
 endif
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
+
 if OS_WIN32
 export_symbols = -export-symbols gobject.def
+
+install-libtool-import-lib:
+	$(INSTALL) .libs/libgobject-1.3.dll.a $(DESTDIR)$(libdir)
+uninstall-libtool-import-lib:
+	-rm $(DESTDIR)$(libdir)/libgobject-1.3.dll.a
+else
+install-libtool-import-lib:
+uninstall-libtool-import-lib:
 endif
 
 # libtool stuff: set version and export symbols for resolving
@@ -225,3 +243,7 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
+
+install-data-local: install-ms-lib install-libtool-import-lib
+
+uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib

@@ -1,3 +1,9 @@
+2001-10-23  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am: (Win32): If we have built the MSVC import library,
+	install it. Install the gcc import library. Also support
+	uninstall.
+
 2001-09-28  Tor Lillqvist  <tml@iki.fi>
 
 	* gthread-win32.c: Use an extra level of indirection for GMutex.

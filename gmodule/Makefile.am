@@ -37,14 +37,32 @@ noinst_LTLIBRARIES = libgplugin_a.la libgplugin_b.la
 
 if MS_LIB_AVAILABLE
 noinst_DATA = gmodule-1.3.lib
+
+install-ms-lib:
+	$(INSTALL) gmodule-1.3.lib $(DESTDIR)$(libdir)
+
+uninstall-ms-lib:
+	-rm $(DESTDIR)$(libdir)/gmodule-1.3.lib
+else
+install-ms-lib:
+uninstall-ms-lib:
 endif
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
+
 if OS_WIN32
 export_symbols = -export-symbols gmodule.def
 plugin_rpath = -rpath `pwd`
+
+install-libtool-import-lib:
+	$(INSTALL) .libs/libgmodule-1.3.dll.a $(DESTDIR)$(libdir)
+uninstall-libtool-import-lib:
+	-rm $(DESTDIR)$(libdir)/libgmodule-1.3.dll.a
+else
+install-libtool-import-lib:
+uninstall-libtool-import-lib:
 endif
 
 libgmodule_1_3_la_SOURCES = gmodule.c
@@ -106,3 +124,7 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
 
+
+install-data-local: install-ms-lib install-libtool-import-lib
+
+uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib

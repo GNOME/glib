@@ -19,6 +19,15 @@ lib_LTLIBRARIES = libglib-1.3.la
 
 if MS_LIB_AVAILABLE
 noinst_DATA = glib-1.3.lib
+
+install-ms-lib:
+	$(INSTALL) glib-1.3.lib $(DESTDIR)$(libdir)
+
+uninstall-ms-lib:
+	-rm $(DESTDIR)$(libdir)/glib-1.3.lib
+else
+install-ms-lib:
+uninstall-ms-lib:
 endif
 
 libglib_1_3_la_SOURCES = 	\
@@ -127,12 +136,14 @@ glibsubinclude_HEADERS =   \
 	gutils.h	\
 	gwin32.h
 
-install-data-local:
+install-data-local: install-ms-lib install-libtool-import-lib
 	@if test -f $(glibincludedir)/glist.h ; then					\
 	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
 	  echo "*** contents of this directory and type 'make install' again." ;	\
 	  false ;									\
         fi
+
+uninstall-local: uninstall-ms-lib uninstall-libtool-import-lib
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -141,6 +152,14 @@ endif
 if OS_WIN32
 # This requires a very new libtool
 export_symbols = -export-symbols glib.def
+
+install-libtool-import-lib:
+	$(INSTALL) .libs/libglib-1.3.dll.a $(DESTDIR)$(libdir)
+uninstall-libtool-import-lib:
+	-rm $(DESTDIR)$(libdir)/libglib-1.3.dll.a
+else
+install-libtool-import-lib:
+uninstall-libtool-import-lib:
 endif
 
 libglib_1_3_la_LIBADD = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
