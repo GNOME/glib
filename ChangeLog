@@ -1,6 +1,16 @@
+Sat Sep  5 04:40:02 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	(g_chunk_new0): use g_mem_chunk_alloc0() to allocate the memchunk,
+	so the correct size of the memchunk is allocated with 0's and not
+	a memory portion of the size of the desired type.
+
+	* gmem.c: new function g_mem_chunk_alloc0() which will initialize
+	a memory area allocated with g_mem_chunk_alloc() with 0's.
+
 Wed Sep  2 19:13:28 1998  Owen Taylor  <otaylor@redhat.com>
 
-	* garray.c glib.h (g_array_[ap/pr]epend_vals): make
+	* garray.c glib.h (g_array_[ap/pre]pend_vals): make
 	data argument const.
 
 Wed Aug 26 06:32:40 1998  Tim Janik  <timj@gtk.org>

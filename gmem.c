@@ -617,6 +617,22 @@ outa_here:
   return mem;
 }
 
+gpointer
+g_mem_chunk_alloc0 (GMemChunk *mem_chunk)
+{
+  gpointer mem;
+
+  mem = g_mem_chunk_alloc (mem_chunk);
+  if (mem)
+    {
+      GRealMemChunk *rmem_chunk = (GRealMemChunk*) mem_chunk;
+
+      memset (mem, 0, rmem_chunk->atom_size);
+    }
+
+  return mem;
+}
+
 void
 g_mem_chunk_free (GMemChunk *mem_chunk,
 		  gpointer   mem)

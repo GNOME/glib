@@ -273,7 +273,7 @@
   (type *) g_mem_chunk_alloc (chunk) \
 )
 #define g_chunk_new0(type, chunk)	( \
-  (type *) memset (g_mem_chunk_alloc (chunk), 0, sizeof (type)) \
+  (type *) g_mem_chunk_alloc0 (chunk) \
 )
 #define g_chunk_free(mem, mem_chunk)	G_STMT_START { \
   g_mem_chunk_free ((mem_chunk), (mem)); \
@@ -1087,6 +1087,7 @@ GMemChunk* g_mem_chunk_new     (gchar	  *name,
 				gint	   type);
 void	   g_mem_chunk_destroy (GMemChunk *mem_chunk);
 gpointer   g_mem_chunk_alloc   (GMemChunk *mem_chunk);
+gpointer   g_mem_chunk_alloc0  (GMemChunk *mem_chunk);
 void	   g_mem_chunk_free    (GMemChunk *mem_chunk,
 				gpointer   mem);
 void	   g_mem_chunk_clean   (GMemChunk *mem_chunk);
