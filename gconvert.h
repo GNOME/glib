@@ -35,7 +35,8 @@ typedef enum
 {
   G_CONVERT_ERROR_NO_CONVERSION,
   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-  G_CONVERT_ERROR_FAILED
+  G_CONVERT_ERROR_FAILED,
+  G_CONVERT_ERROR_PARTIAL_INPUT,
 } GConvertError;
 
 #define G_CONVERT_ERROR g_convert_error_quark()
@@ -56,6 +57,18 @@ gchar* g_convert_with_fallback (const gchar  *str,
 				gint         *bytes_read,
 				gint         *bytes_written,
 				GError      **error);
+
+
+/* Convert between libc's idea of strings and UTF-8.
+ */
+gchar*   g_locale_to_utf8 (const gchar *opsysstring, GError **error);
+gchar*   g_locale_from_utf8 (const gchar *utf8string, GError **error);
+
+/* Convert between the operating system (or C runtime)
+ * representation of file names and UTF-8.
+ */
+gchar*   g_filename_to_utf8 (const gchar *opsysstring, GError **error);
+gchar*   g_filename_from_utf8 (const gchar *utf8string, GError **error);
 
 G_END_DECLS
 

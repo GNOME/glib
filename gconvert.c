@@ -23,6 +23,11 @@
 #include <iconv.h>
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 #include "glib.h"
 
@@ -173,6 +178,15 @@ g_convert (const gchar *str,
 
   if (bytes_read)
     *bytes_read = p - str;
+  else
+    {
+      if ((p - str) != len) 
+	{
+	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+		       _("Partial character sequence at end of input"));
+	  have_error = TRUE;
+	}
+    }
 
   if (bytes_written)
     *bytes_written = outp - dest;	/* Doesn't include '\0' */
@@ -402,3 +416,265 @@ g_convert_with_fallback (const gchar *str,
   else
     return dest;
 }
+
+/*
+ * g_locale_to_utf8
+ *
+ * Converts a string which is in the encoding used for strings by
+ * the C runtime (usually the same as that used by the operating
+ * system) in the current locale into a UTF-8 string.
+ */
+
+gchar *
+g_locale_to_utf8 (const gchar *opsysstring, GError **error)
+{
+#ifdef G_OS_WIN32
+
+  gint i, clen, wclen, first;
+  const gint len = strlen (opsysstring);
+  wchar_t *wcs, wc;
+  gchar *result, *bp;
+  const wchar_t *wcp;
+
+  wcs = g_new (wchar_t, len);
+  wclen = MultiByteToWideChar (CP_ACP, 0, opsysstring, len, wcs, len);
+
+  wcp = wcs;
+  clen = 0;
+  for (i = 0; i < wclen; i++)
+    {
+      wc = *wcp++;
+
+      if (wc < 0x80)
+	clen += 1;
+      else if (wc < 0x800)
+	clen += 2;
+      else if (wc < 0x10000)
+	clen += 3;
+      else if (wc < 0x200000)
+	clen += 4;
+      else if (wc < 0x4000000)
+	clen += 5;
+      else
+	clen += 6;
+    }
+
+  result = g_malloc (clen + 1);
+  
+  wcp = wcs;
+  bp = result;
+  for (i = 0; i < wclen; i++)
+    {
+      wc = *wcp++;
+
+      if (wc < 0x80)
+	{
+	  first = 0;
+	  clen = 1;
+	}
+      else if (wc < 0x800)
+	{
+	  first = 0xc0;
+	  clen = 2;
+	}
+      else if (wc < 0x10000)
+	{
+	  first = 0xe0;
+	  clen = 3;
+	}
+      else if (wc < 0x200000)
+	{
+	  first = 0xf0;
+	  clen = 4;
+	}
+      else if (wc < 0x4000000)
+	{
+	  first = 0xf8;
+	  clen = 5;
+	}
+      else
+	{
+	  first = 0xfc;
+	  clen = 6;
+	}
+      
+      /* Woo-hoo! */
+      switch (clen)
+	{
+	case 6: bp[5] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+	case 5: bp[4] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+	case 4: bp[3] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+	case 3: bp[2] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+	case 2: bp[1] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+	case 1: bp[0] = wc | first;
+	}
+
+      bp += clen;
+    }
+  *bp = 0;
+
+  g_free (wcs);
+
+  return result;
+
+#else
+
+  char *charset, *str;
+
+  if (g_get_charset (&charset))
+    return g_strdup (opsysstring);
+
+  str = g_convert (opsysstring, strlen (opsysstring), 
+		   "UTF-8", charset, NULL, NULL, error);
+  
+  return str;
+#endif
+}
+
+/*
+ * g_locale_from_utf8
+ *
+ * The reverse of g_locale_to_utf8.
+ */
+
+gchar *
+g_locale_from_utf8 (const gchar *utf8string, GError **error)
+{
+#ifdef G_OS_WIN32
+
+  gint i, mask, clen, mblen;
+  const gint len = strlen (utf8string);
+  wchar_t *wcs, *wcp;
+  gchar *result;
+  guchar *cp, *end, c;
+  gint n;
+  
+  /* First convert to wide chars */
+  cp = (guchar *) utf8string;
+  end = cp + len;
+  n = 0;
+  wcs = g_new (wchar_t, len + 1);
+  wcp = wcs;
+  while (cp != end)
+    {
+      mask = 0;
+      c = *cp;
+
+      if (c < 0x80)
+	{
+	  clen = 1;
+	  mask = 0x7f;
+	}
+      else if ((c & 0xe0) == 0xc0)
+	{
+	  clen = 2;
+	  mask = 0x1f;
+	}
+      else if ((c & 0xf0) == 0xe0)
+	{
+	  clen = 3;
+	  mask = 0x0f;
+	}
+      else if ((c & 0xf8) == 0xf0)
+	{
+	  clen = 4;
+	  mask = 0x07;
+	}
+      else if ((c & 0xfc) == 0xf8)
+	{
+	  clen = 5;
+	  mask = 0x03;
+	}
+      else if ((c & 0xfc) == 0xfc)
+	{
+	  clen = 6;
+	  mask = 0x01;
+	}
+      else
+	{
+	  g_free (wcs);
+	  return NULL;
+	}
+
+      if (cp + clen > end)
+	{
+	  g_free (wcs);
+	  return NULL;
+	}
+
+      *wcp = (cp[0] & mask);
+      for (i = 1; i < clen; i++)
+	{
+	  if ((cp[i] & 0xc0) != 0x80)
+	    {
+	      g_free (wcs);
+	      return NULL;
+	    }
+	  *wcp <<= 6;
+	  *wcp |= (cp[i] & 0x3f);
+	}
+
+      cp += clen;
+      wcp++;
+      n++;
+    }
+  if (cp != end)
+    {
+      g_free (wcs);
+      return NULL;
+    }
+
+  /* n is the number of wide chars constructed */
+
+  /* Convert to a string in the current ANSI codepage */
+
+  result = g_new (gchar, 3 * n + 1);
+  mblen = WideCharToMultiByte (CP_ACP, 0, wcs, n, result, 3*n, NULL, NULL);
+  result[mblen] = 0;
+  g_free (wcs);
+
+  return result;
+
+#else
+
+  gchar *charset, *str;
+
+  if (g_get_charset (&charset))
+    return g_strdup (utf8string);
+
+  str = g_convert (utf8string, strlen (utf8string), 
+		   charset, "UTF-8", NULL, NULL, error);
+
+  return str;
+  
+#endif
+}
+
+/* Filenames are in UTF-8 unless specificially requested otherwise */
+
+gchar*
+g_filename_to_utf8 (const gchar *string, GError **error)
+{
+#ifdef G_OS_WIN32
+  return g_locale_to_utf8 (string, error);
+#else
+  if (getenv ("G_BROKEN_FILENAMES"))
+    return g_locale_to_utf8 (string, error);
+
+  return g_strdup (string);
+#endif
+}
+
+gchar*
+g_filename_from_utf8 (const gchar *string, GError **error)
+{
+#ifdef G_OS_WIN32
+  return g_locale_from_utf8 (string, error);
+#else
+  if (getenv ("G_BROKEN_FILENAMES"))
+    return g_locale_from_utf8 (string, error);
+
+  return g_strdup (string);
+#endif
+}
+

@@ -103,12 +103,6 @@ gchar*   g_strescape		(const gchar *source,
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
 
-/* Convert between the operating system (or C runtime)
- * representation of file names and UTF-8.
- */
-gchar*   g_filename_to_utf8 (const gchar *opsysstring);
-gchar*   g_filename_from_utf8 (const gchar *utf8string);
-
 /* NULL terminated string arrays.
  * g_strsplit() splits up string into max_tokens tokens at delim and
  * returns a newly allocated string array.

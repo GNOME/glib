@@ -1,3 +1,15 @@
+2000-11-12  Robert Brady  <robert@suse.co.uk>
+
+	* gstrfuncs.c, gstrfuncs.h: Remove g_filename_{to,from}_utf8
+
+	* gconvert.c, gconvert.h: Add g_filename_{to,from}_utf8 and
+	g_locale_{to.from}_utf8.  The locale_ variant honours 
+	nl_langinfo(CODESET), the filename_ variant uses UTF-8 unless
+	asked otherwise.
+
+	(g_convert): Add G_CONVERT_ERROR_PARTIAL_INPUT error, if bytesread
+	!= length and no bytesread pointer passed.
+
 Sun Nov 12 15:29:53 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gfileutils.[ch]: template is a reserved word in
