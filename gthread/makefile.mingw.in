@@ -14,7 +14,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I .
+INCLUDES = -I .. -I ../glib -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\" -DG_ENABLE_DEBUG
 
 BUILD_DLL = ../build-dll
@@ -32,4 +32,4 @@ gthread_OBJECTS = \
 	gthread-impl.o
 
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) gthread.def
-	$(BUILD_DLL) gthread $(GLIB_VER) gthread.def $(gthread_OBJECTS) -L .. -lglib-$(GLIB_VER)
+	$(BUILD_DLL) gthread $(GLIB_VER) gthread.def $(gthread_OBJECTS) -L ../glib -lglib-$(GLIB_VER)

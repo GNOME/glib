@@ -1,10 +1,6 @@
 ## Makefile for building the GLib dlls with Microsoft C
 ## Use: nmake -f makefile.msc
 
-TOP = ..
-
-!INCLUDE $(TOP)\build\win32\make.msc
-
 PARTS = glib gmodule gthread gobject tests
 
 all : \
@@ -12,15 +8,17 @@ all : \
 	sub-all
 
 sub-all: 
-	for %d in ($(PARTS)) do nmake -nologo -f makefile.msc sub-one THIS=%d
+	for %d in ($(PARTS)) do nmake -nologo -f makefile.msc sub-one THIS=%d TARGET=all
+
+clean : sub-clean
+
+sub-clean:
+	for %d in ($(PARTS)) do nmake -nologo -f makefile.msc sub-one THIS=%d TARGET=clean
 
 sub-one:
 	@cd $(THIS)
-	@nmake -nologo -f makefile.msc
+	@nmake -nologo -f makefile.msc $(TARGET)
 	@cd ..
 
 config.h: config.h.win32
 	copy config.h.win32 config.h
-
-glibconfig.h: glibconfig.h.win32
-	copy glibconfig.h.win32 glibconfig.h

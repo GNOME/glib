@@ -14,7 +14,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I .
+INCLUDES = -I .. -I ../glib -I .
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gruntime -DG_ENABLE_DEBUG
 
 srcdir=.

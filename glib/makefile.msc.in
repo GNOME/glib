@@ -94,4 +94,4 @@ gspawn-win32-helper.exe : gspawn-win32-helper.c glib-$(GLIB_VER).dll
 
 clean::
 	del ..\config.h
-	del glibconfig.h
+	del ..\glibconfig.h

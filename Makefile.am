@@ -15,12 +15,11 @@ EXTRA_DIST = 			\
 	sanity_check		\
 	README.win32		\
 	TODO.xml		\
-	makefile.msc.in		\
-	makefile.mingw.in	\
+	makefile.msc		\
+	makefile.mingw		\
 	glibconfig.h.win32.in	\
 	config.h.win32.in	\
 	build-dll		\
-	glib.rc.in		\
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
@@ -32,8 +31,6 @@ EXTRA_DIST = 			\
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
-	makefile.msc		\
-	makefile.mingw		\
 	glibconfig.h.win32	\
 	config.h.win32		\
 	glib.rc			\
@@ -68,12 +65,6 @@ glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.msc: $(top_builddir)/config.status $(top_srcdir)/makefile.msc.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in

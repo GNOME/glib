@@ -1,0 +1,12 @@
+## Makefile for building the GLib DLLs with gcc for mingw. The build
+## uses tools running on cygwin, however.
+
+## Use: make -f makefile.mingw
+
+PARTS=glib gmodule gthread gobject tests
+
+all :
+	for D in $(PARTS); do (cd $$D && $(MAKE) -f makefile.mingw all); done
+
+clean :
+	for D in $(PARTS); do (cd $$D && $(MAKE) -f makefile.mingw clean); done

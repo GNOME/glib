@@ -14,7 +14,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I .
+INCLUDES = -I .. -I ../glib -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
 BUILD_DLL = ../build-dll
@@ -37,7 +37,7 @@ gmoduleconf.h: gmoduleconf.h.win32
 	cp $< $@
 
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule.def
-	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) -L .. -lglib-$(GLIB_VER)
+	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib-$(GLIB_VER)
 
 ################ test prog
 
@@ -45,14 +45,14 @@ testgmodule.exe : gmodule-$(GLIB_VER).dll testgmodule.o libgplugin_a.dll libgplu
 # Wow, do we really have to do it like this to get some symbols
 # exported from a .exe? Apparently yes. Does the __declspec(dllexport) 
 # actually do anything in gcc?
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
 	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
 	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
 
 libgplugin_a.dll : libgplugin_a.o
-	$(BUILD_DLL) libgplugin_a - - libgplugin_a.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libgplugin_a - - libgplugin_a.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
 
 libgplugin_b.dll : libgplugin_b.o
-	$(BUILD_DLL) libgplugin_b - - libgplugin_b.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libgplugin_b - - libgplugin_b.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)

@@ -12,10 +12,15 @@ EXPORTS
 	g_array_sized_new
 	g_array_sort
 	g_array_sort_with_data
+	g_ascii_digit_value
 	g_ascii_strcasecmp
 	g_ascii_strncasecmp
 	g_ascii_strdown
 	g_ascii_strup
+	g_ascii_table
+	g_ascii_tolower
+	g_ascii_toupper
+	g_ascii_xdigit_value
 	g_async_queue_length
 	g_async_queue_length_unlocked
 	g_async_queue_lock
@@ -194,7 +199,7 @@ EXPORTS
 	g_io_channel_get_buffer_condition
 	g_io_channel_get_buffer_size
 	g_io_channel_get_buffered
-	g_io_channel_get_close_of_unref
+	g_io_channel_get_close_on_unref
 	g_io_channel_get_encoding
 	g_io_channel_get_flags
 	g_io_channel_get_line_term
@@ -211,7 +216,7 @@ EXPORTS
 	g_io_channel_seek_position
 	g_io_channel_set_buffer_size
 	g_io_channel_set_buffered
-	g_io_channel_set_close_of_unref
+	g_io_channel_set_close_on_unref
 	g_io_channel_set_encoding
 	g_io_channel_set_flags
 	g_io_channel_set_line_term
@@ -338,6 +343,7 @@ EXPORTS
 	g_node_reverse_children
 	g_node_traverse
 	g_node_unlink
+	g_nullify_pointer
 	g_on_error_query
 	g_on_error_stack_trace
 	g_parse_debug_string
@@ -433,6 +439,7 @@ EXPORTS
 	g_set_print_handler
 	g_set_printerr_handler
 	g_set_warning_handler
+	g_shell_error_quark
 	g_shell_parse_argv
 	g_shell_quote
 	g_shell_unquote
@@ -562,6 +569,9 @@ EXPORTS
 	g_strreverse
 	g_strsignal
 	g_strsplit
+	g_strrstr
+	g_strrstr_len
+	g_strstr_len
 	g_strtod
 	g_strup
 	g_thread_create_full

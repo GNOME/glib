@@ -7,6 +7,12 @@ EXTRA_DIST = 			\
 	gen-unicode-tables.pl	\
 	glib.def
 
+# These may be in the builddir too
+BUILT_EXTRA_DIST = 		\
+	makefile.msc		\
+	makefile.mingw		\
+	glib.rc
+
 lib_LTLIBRARIES = libglib-1.3.la
 
 libglib_1_3_la_SOURCES = 	\

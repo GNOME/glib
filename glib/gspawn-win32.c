@@ -32,13 +32,10 @@
  * Thus, we must in most cases use a helper program to handle closing
  * of (inherited) file descriptors and changing of directory. In fact,
  * we do it all the time.
- *
- * This source file contains the source for that helper program.
- * To compile it, #define GSPAWN_HELPER.
  */
 
 /* Define this to get some logging all the time */
-/* #define G_SPAWN_WIN32_DEBUG */
+#define G_SPAWN_WIN32_DEBUG
 
 #include "glib.h"
 

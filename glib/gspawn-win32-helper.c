@@ -24,12 +24,23 @@
 #define GSPAWN_HELPER
 #include "gspawn-win32.c"	/* For shared definitions */
 
+static GString *debugstring;
+
 static void
 write_err_and_exit (gint fd,
 		    gint msg)
 {
   gint en = errno;
   
+  if (debug)
+    {
+      debugstring = g_string_new ("");
+      g_string_append (debugstring,
+		       g_strdup_printf ("writing error code %d and errno %d",
+					msg, en));
+      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
+    }
+
   write (fd, &msg, sizeof(msg));
   write (fd, &en, sizeof(en));
   
@@ -59,7 +70,7 @@ WinMain (struct HINSTANCE__ *hInstance,
   int i;
   int fd;
   int mode;
-  GString *debugstring;
+  gint zero = 0;
 
   SETUP_DEBUG();
 
@@ -212,7 +223,9 @@ WinMain (struct HINSTANCE__ *hInstance,
       if (spawnv (mode, __argv[ARG_PROGRAM], __argv+ARG_PROGRAM) < 0)
 	write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
     }
-
+  write (child_err_report_fd, &zero, sizeof (zero));
+  write (child_err_report_fd, &zero, sizeof (zero));
+  Sleep (10000);
   return 0;
 }
 

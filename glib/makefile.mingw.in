@@ -83,11 +83,11 @@ endif
 
 ################ glib
 
-#glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-#	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
-
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	dllwrap --mno-cygwin --dllname glib-$(GLIB_VER).dll --implib glib-$(GLIB_VER).lib --def glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+	../build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+
+#glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+#	dllwrap --mno-cygwin --dllname glib-$(GLIB_VER).dll --implib glib-$(GLIB_VER).lib --def glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
 	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)

@@ -1,3 +1,36 @@
+2001-08-30  Tor Lillqvist  <tml@iki.fi>
+
+	After being away for about five months, I'm back working on
+	this...  For now, still using same build setup for Win32. Probably
+	will change to not including version numbers in the import library
+	names, though. (But the DLL names would still include them,
+	possibly even also the micro version number.) That would be more
+	Unix-like. Also, will have to check out newest mingw tool versions
+	to see if the build-dll script now can be retired.
+	
+	* makefile.mingw
+	* makefile.msc: New files, no need to generate from .in as
+	they don't contain references to automake variables.
+	
+	* makefile.mingw.in
+	* makefile.msc.in: Removed.
+	
+	* glib.rc.in: Remove
+	* glib/glib.rc.in: Moved here.
+	
+	* Makefile.am
+	* glib/Makefile.am: Corresponding changes.
+
+	* glib/glib.def: Fix typo, add new entries.
+
+	* glib/gspawn-win32-helper.c: More debugging. Doesn't work
+	currently (or then it never has on Win2k, which I now use?)
+
+	* glib/gstrfuncs.c
+	* glib/gstrfuncs.h: Mark g_ascii_table for export/import on Win32.
+
+	* */makefile.mingw.in: Reflect new location of glib library.
+	
 2001-08-30  Michael Natterer  <mitch@gimp.org>
 
 	* glib/giochannel.h: (struct GIOChannel): "gboolean foo : 1"
