@@ -1,5 +1,11 @@
 2005-03-20  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gmessages.c (g_log_default_handler)
+	* glib/gutils.c (g_get_prgname): Move the Win32 code that asks the
+	program name from the system to g_get_prgname(). Do output the pid
+	also on Win32 (useful in case there are several instances of the
+	same program running).
+
 	* tests/testglib.c (main): Print more detailled output from the
 	timer tests. Don't print home directory twice. Test
 	g_win32_error_message().

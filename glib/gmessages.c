@@ -883,53 +883,10 @@ g_log_default_handler (const gchar   *log_domain,
     {
       const gchar *prg_name = g_get_prgname ();
       
-#ifdef G_OS_WIN32
-      if (prg_name)
-	prg_name = g_strdup (prg_name);
-      else
-	{
-	  if (G_WIN32_HAVE_WIDECHAR_API ())
-	    {
-	      wchar_t buf[MAX_PATH+1];
-	      if (GetModuleFileNameW (GetModuleHandle (NULL),
-				      buf, G_N_ELEMENTS (buf)) > 0)
-		{
-		  gchar *utf8_buf = g_utf16_to_utf8 (buf, -1,
-						     NULL, NULL, NULL);
-		  if (utf8_buf)
-		    {
-		      prg_name = g_path_get_basename (utf8_buf);
-		      g_free (utf8_buf);
-		    }
-		}
-	    }
-	  else
-	    {
-	      gchar buf[MAX_PATH+1];
-	      if (GetModuleFileNameA (GetModuleHandle (NULL),
-				      buf, G_N_ELEMENTS (buf)) > 0)
-		{
-		  gchar *locale_buf = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
-		  if (locale_buf)
-		    {
-		      prg_name = g_path_get_basename (locale_buf);
-		      g_free (locale_buf);
-		    }
-		}
-	    }
-	}
-
-      if (prg_name)
-	{
-	  g_string_append_printf (gstring, "(%s): ", prg_name);
-	  g_free ((gchar *) prg_name);
-	}
-#else
       if (!prg_name)
 	g_string_append_printf (gstring, "(process:%lu): ", (gulong)getpid ());
       else
 	g_string_append_printf (gstring, "(%s:%lu): ", prg_name, (gulong)getpid ());
-#endif
     }
 
   if (log_domain)
