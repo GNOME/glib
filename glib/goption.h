@@ -33,7 +33,7 @@ typedef struct _GOptionEntry   GOptionEntry;
 typedef enum
 {
   G_OPTION_FLAG_HIDDEN       = 1 << 0,
-  G_OPTION_FLAG_IN_MAIN      = 1 << 1,
+  G_OPTION_FLAG_IN_MAIN      = 1 << 1
 } GOptionFlags;
 
 typedef enum
@@ -44,7 +44,7 @@ typedef enum
   G_OPTION_ARG_CALLBACK,
   G_OPTION_ARG_FILENAME,
   G_OPTION_ARG_STRING_ARRAY,
-  G_OPTION_ARG_FILENAME_ARRAY,
+  G_OPTION_ARG_FILENAME_ARRAY
 } GOptionArg;
 
 typedef gboolean (*GOptionArgFunc) (const gchar    *option_name,
