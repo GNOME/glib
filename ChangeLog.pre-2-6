@@ -1,3 +1,8 @@
+2002-09-20  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gscanner.c (g_scanner_msg_handler): Don't print
+	scanner->input_name when it is NULL.  (#93752)
+
 2002-09-06  Havoc Pennington  <hp@redhat.com>
 
 	* autogen.sh: automake 1.4
