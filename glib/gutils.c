@@ -189,7 +189,9 @@ g_get_any_init (void)
     {
       struct passwd *pw;
       
-      g_tmp_dir = g_strdup (getenv ("TMP"));
+      g_tmp_dir = g_strdup (getenv ("TMPDIR"));
+      if (!g_tmp_dir)
+	g_tmp_dir = g_strdup (getenv ("TMP"));
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (getenv ("TEMP"));
       if (!g_tmp_dir)
