@@ -195,7 +195,10 @@ _g_module_symbol (gpointer     handle,
   gpointer p;
   
   if (handle == null_module_handle)
-    p = find_in_any_module (symbol_name);
+    {
+      if ((p = GetProcAddress (GetModuleHandle (NULL), symbol_name)) == NULL)
+	p = find_in_any_module (symbol_name);
+    }
   else
     p = GetProcAddress (handle, symbol_name);
 

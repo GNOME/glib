@@ -11,6 +11,9 @@
 	the latter on Win9x and Win2k. Check which one works, and use
 	that.
 
+	First check for the symbol in the main program, and if not found
+	there, in all the modules.
+
 	Code for using PSAPI and Toolhelp was borrowed from the Dr. Mingw
 	tool written by José Fonseca <em96115@fe.up.pt>. Thanks.
 
