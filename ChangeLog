@@ -1,3 +1,8 @@
+2004-04-25  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c (g_win32_get_package_installation_subdirectory):
+	Plug memory leak. (#140770, John Ehresman)
+
 2004-04-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/libcharset/localcharset.c (_g_locale_get_charset_aliases): 

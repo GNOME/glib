@@ -1288,8 +1288,12 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 					       gchar *subdir)
 {
   gchar *prefix;
+  gchar *dirname;
 
   prefix = g_win32_get_package_installation_directory (package, dll_name);
 
-  return g_build_filename (prefix, subdir, NULL);
+  dirname = g_build_filename (prefix, subdir, NULL);
+  g_free (prefix);
+
+  return dirname;
 }
