@@ -456,8 +456,24 @@ AC_TRY_COMPILE([#include <langinfo.h>],
    AC_DEFINE(HAVE_CODESET)
    have_codeset=yes,
    have_codeset=no)
-
 AC_MSG_RESULT($have_codeset)
+
+
+dnl ****************************************
+dnl *** strlcpy/strlcat                  ***
+dnl ****************************************
+# Check for strlcpy
+AC_MSG_CHECKING(for strlcpy/strlcat)
+AC_TRY_LINK([#include <stdlib.h>
+#include <string.h>], [
+char *p = malloc(10);
+(void) strlcpy(p, "hi", 10);
+(void) strlcat(p, "bye", 10);
+], glib_ok=yes, glib_ok=no)
+AC_MSG_RESULT($glib_ok)
+if test $glib_ok = yes; then
+    AC_DEFINE(HAVE_STRLCPY)
+fi
   
 
 dnl **********************

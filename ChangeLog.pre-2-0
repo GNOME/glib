@@ -1,3 +1,24 @@
+Wed Jul 26 05:47:48 2000  Tim Janik  <timj@gtk.org>
+
+	* configure.in:
+	* testglib.c:
+	* gstrfuncs.c:
+	* glib.h: added g_strlcat() and g_strlcpy() wrappers, supplied by
+	David Wheeler <dwheeler@ida.org>:
+
+        * glib.h, gstrfuncs.c: added g_strlcpy and g_strlcat to support
+          safe manipulation of fixed-length string buffers.
+          These functions were originally developed by Todd Miller to simplify
+          development of security-related programs, and
+          are available on many (but not all) Unix-like systems,
+          including OpenBSD, FreeBSD, and Solaris.  See
+          ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/strlcpy.3
+          and http://www.openbsd.org/security.html.
+          If there's a strlcpy/strlcat on the system, it's called, otherwise
+          an implementation is provided.
+
+        * testglib.c: Added tests for g_strlcpy, g_strlcat.
+
 Wed Jul 26 05:03:24 2000  Tim Janik  <timj@gtk.org>
 
 	* acglib.m4 (GLIB_SIZEOF): include <stdlib.h> and <stddef.h> if

@@ -372,6 +372,7 @@ main (int   argc,
   TEST (NULL, sizeof (gint16) == 2);
   g_print ("\nchecking size of gint32: %d", (int)sizeof (gint32));
   TEST (NULL, sizeof (gint32) == 4);
+  g_print ("\nchecking size of gsize: %d", (int)sizeof (gsize));
 #ifdef	G_HAVE_GINT64
   g_print ("\nchecking size of gint64: %d", (int)sizeof (gint64));
   TEST (NULL, sizeof (gint64) == 8);
@@ -879,9 +880,66 @@ main (int   argc,
   g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
   			  GLIB_TEST_STRING) == 0);
   g_free(string);
-  
   g_print ("ok\n");
+  
 
+  g_print("checking g_strlcpy/g_strlcat...");
+  /* The following is a torture test for strlcpy/strlcat, with lots of
+   * checking; normal users wouldn't use them this way!
+   */
+  string = g_malloc (6);
+  *(string + 5) = 'Z'; /* guard value, shouldn't change during test */
+  *string = 'q';
+  g_assert (g_strlcpy(string, "" , 5) == 0);
+  g_assert ( *string == '\0' );
+  *string = 'q';
+  g_assert (g_strlcpy(string, "abc" , 5) == 3);
+  g_assert ( *(string + 3) == '\0' );
+  g_assert (g_str_equal(string, "abc"));
+  g_assert (g_strlcpy(string, "abcd" , 5) == 4);
+  g_assert ( *(string + 4) == '\0' );
+  g_assert ( *(string + 5) == 'Z' );
+  g_assert (g_str_equal(string, "abcd"));
+  g_assert (g_strlcpy(string, "abcde" , 5) == 5);
+  g_assert ( *(string + 4) == '\0' );
+  g_assert ( *(string + 5) == 'Z' );
+  g_assert (g_str_equal(string, "abcd"));
+  g_assert (g_strlcpy(string, "abcdef" , 5) == 6);
+  g_assert ( *(string + 4) == '\0' );
+  g_assert ( *(string + 5) == 'Z' );
+  g_assert (g_str_equal(string, "abcd"));
+  *string = 'Y';
+  *(string + 1)= '\0';
+  g_assert (g_strlcpy(string, "Hello" , 0) == 5);
+  g_assert (*string == 'Y');
+  *string = '\0';
+  g_assert (g_strlcat(string, "123" , 5) == 3);
+  g_assert ( *(string + 3) == '\0' );
+  g_assert (g_str_equal(string, "123"));
+  g_assert (g_strlcat(string, "" , 5) == 3);
+  g_assert ( *(string + 3) == '\0' );
+  g_assert (g_str_equal(string, "123"));
+  g_assert (g_strlcat(string, "4", 5) == 4);
+  g_assert (g_str_equal(string, "1234"));
+  g_assert (g_strlcat(string, "5", 5) == 5);
+  g_assert ( *(string + 4) == '\0' );
+  g_assert (g_str_equal(string, "1234"));
+  g_assert ( *(string + 5) == 'Z' );
+  *string = 'Y';
+  *(string + 1)= '\0';
+  g_assert (g_strlcat(string, "123" , 0) == 3);
+  g_assert (*string == 'Y');
+  
+  /* A few more tests, demonstrating more "normal" use  */
+  g_assert (g_strlcpy(string, "hi", 5) == 2);
+  g_assert (g_str_equal(string, "hi"));
+  g_assert (g_strlcat(string, "t", 5) == 3);
+  g_assert (g_str_equal(string, "hit"));
+  g_free(string);
+
+  g_print ("ok\n");
+  
+  
   g_print ("checking g_strdup_printf...");
   string = g_strdup_printf ("%05d %-5s", 21, "test");
   g_assert (string != NULL);

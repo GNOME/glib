@@ -797,25 +797,150 @@ extern const char * strsignal(int);
     }
 
   sprintf (msg, "unknown signal (%d)", signum);
-
+  
   return msg;
 }
+
+/* Functions g_strlcpy and g_strlcat were originally developed by
+ * Todd C. Miller <Todd.Miller@courtesan.com> to simplify writing secure code.
+ * See ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/strlcpy.3
+ * for more information.
+ */
+
+#ifdef HAVE_STRLCPY
+/* Use the native ones, if available; they might be implemented in assembly */
+gsize
+g_strlcpy (gchar       *dest,
+	   const gchar *src,
+	   gsize        dest_size)
+{
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src  != NULL, NULL);
+  
+  return strlcpy (dest, src, dest_size);
+}
+
+gsize
+g_strlcat (gchar       *dest,
+	   const gchar *src,
+	   gsize        dest_size)
+{
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src  != NULL, NULL);
+  
+  return strlcat (dest, src, dest_size);
+}
+
+#else /* ! HAVE_STRLCPY */
+/* g_strlcpy
+ *
+ * Copy string src to buffer dest (of buffer size dest_size).  At most
+ * dest_size-1 characters will be copied.  Always NUL terminates
+ * (unless dest_size == 0).  This function does NOT allocate memory.
+ * Unlike strncpy, this function doesn't pad dest (so it's often faster).
+ * Returns size of attempted result, strlen(src),
+ * so if retval >= dest_size, truncation occurred.
+ */
+gsize
+g_strlcpy (gchar       *dest,
+           const gchar *src,
+           gsize        dest_size)
+{
+  register gchar *d = dest;
+  register const gchar *s = src;
+  register gsize n = dest_size;
+  
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src  != NULL, NULL);
+  
+  /* Copy as many bytes as will fit */
+  if (n != 0 && --n != 0)
+    do
+      {
+	register gchar c = *s++;
+	
+	*d++ = c;
+	if (c == 0)
+	  break;
+      }
+    while (--n != 0);
+  
+  /* If not enough room in dest, add NUL and traverse rest of src */
+  if (n == 0)
+    {
+      if (dest_size != 0)
+	*d = 0;
+      while (*s++)
+	;
+    }
+  
+  return s - src - 1;  /* count does not include NUL */
+}
+
+/* g_strlcat
+ *
+ * Appends string src to buffer dest (of buffer size dest_size).
+ * At most dest_size-1 characters will be copied.
+ * Unlike strncat, dest_size is the full size of dest, not the space left over.
+ * This function does NOT allocate memory.
+ * This always NUL terminates (unless siz == 0 or there were no NUL characters
+ * in the dest_size characters of dest to start with).
+ * Returns size of attempted result, which is
+ * MIN (dest_size, strlen (original dest)) + strlen (src),
+ * so if retval >= dest_size, truncation occurred.
+ */
+gsize
+g_strlcat (gchar       *dest,
+           const gchar *src,
+           gsize        dest_size)
+{
+  register gchar *d = dest;
+  register const gchar *s = src;
+  register gsize bytes_left = dest_size;
+  gsize dlength;  /* Logically, MIN (strlen (d), dest_size) */
+  
+  g_return_val_if_fail (dest != NULL, NULL);
+  g_return_val_if_fail (src  != NULL, NULL);
+  
+  /* Find the end of dst and adjust bytes left but don't go past end */
+  while (*d != 0 && bytes_left-- != 0)
+    d++;
+  dlength = d - dest;
+  bytes_left = dest_size - dlength;
+  
+  if (bytes_left == 0)
+    return dlength + strlen (s);
+  
+  while (*s != 0)
+    {
+      if (bytes_left != 1)
+	{
+	  *d++ = *s;
+	  bytes_left--;
+	}
+      s++;
+    }
+  *d = 0;
+  
+  return dlength + (s - src);  /* count does not include NUL */
+}
+#endif /* ! HAVE_STRLCPY */
 
 gchar*
 g_strdown (gchar *string)
 {
   register guchar *s;
-
+  
   g_return_val_if_fail (string != NULL, NULL);
-
+  
   s = string;
-
+  
   while (*s)
     {
       *s = tolower (*s);
       s++;
     }
-
+  
   return string;
 }
 

@@ -1654,6 +1654,12 @@ gint	 g_strncasecmp		(const gchar *s1,
 gchar*	 g_strdown		(gchar	     *string);
 gchar*	 g_strup		(gchar	     *string);
 gchar*	 g_strreverse		(gchar	     *string);
+gsize	 g_strlcpy		(gchar	     *dest,
+				 const gchar *src,
+				 gsize        dest_size);
+gsize	 g_strlcat              (gchar	     *dest,
+				 const gchar *src,
+				 gsize        dest_size);
 /* removes leading spaces */
 gchar*   g_strchug              (gchar        *string);
 /* removes trailing spaces */
