@@ -1,3 +1,41 @@
+Tue Oct 12 12:16:12 1999  Tim Janik  <timj@gtk.org>
+
+	* gmessages.c (g_printf_string_upper_bound): completly new implementation
+	for printf string upper bounds calculation.
+	we handle all glibc 2.1 format specifiers now, except for positional
+	parameters (%nn$...) and wide char strings, plus some obscure upper
+	case variants of the standard conversions. this fixes a lot of
+	bugs in the old code, i.e.
+	- NULL format strings
+	- floats with exponents >+24
+	- %G
+	- precision specifications in general
+	- negative field widths
+	- %p for SIZEOF_VOID_P > 4 platforms
+	we now issue warnigns in places where the old code would have
+	caused buffer overruns anyways. warnings are suppressed when invoked
+	from glogv(), to avoid infinite recursions if someone passes a log
+	message that comes with really obscure format specifications.
+
+Tue Oct 12 11:49:00 1999  Tim Janik  <timj@gtk.org>
+
+	* gstrfuncs.c: nuked old g_printf_string_upper_bound() version.
+
+Tue Oct 12 03:34:40 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h: added GFloatIEEE754 and GDoubleIEEE754 unions to access sign,
+	mantissa and exponent of IEEE floats and doubles (required by the new
+	version of g_printf_string_upper_bound). the unions are endian specific,
+	we handle G_LITTLE_ENDIAN and G_BIG_ENDIAN as of currently. ieee floats
+	and doubles are supported (used for storage) by at least intel, ppc and
+	sparc, reference:
+        http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
+	
+Mon Oct 11 18:01:49 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: added additional checks to figure sizes of size_t,
+	ptrdiff_t and intmax_t (required by g_printf_string_upper_bound).
+
 Wed Oct  6 12:44:23 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: blah. use G_WITH_CYGWIN instead of G_HAVE_CYGWIN

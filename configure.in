@@ -292,10 +292,10 @@ case x$glib_cv_hasinline in
 xyes) AC_DEFINE(G_HAVE_INLINE)
 esac
 
-dnl for bytesex stuff
+# check for bytesex stuff
 AC_C_BIGENDIAN
 
-dnl header file checks
+# xhexk for header files
 AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
 AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
 AC_CHECK_HEADERS(pwd.h, AC_DEFINE(HAVE_PWD_H))
@@ -306,6 +306,29 @@ AC_CHECK_HEADERS(sys/time.h, AC_DEFINE(HAVE_SYS_TIME_H))
 AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
 AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
+AC_CHECK_HEADERS(stdint.h, AC_DEFINE(HAVE_VALUES_H))
+
+# check additional type sizes
+size_includes=["
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+"]
+if test "x$ac_cv_header_stdint_h" = "xyes"; then
+  size_includes=["$size_includes
+#include <stdint.h>
+"]
+fi
+if test "x$ac_cv_header_unistd_h" = "xyes"; then
+  size_includes=["$size_includes
+#include <unistd.h>
+"]
+fi
+GLIB_SIZEOF([$size_includes], size_t, size_t)
+GLIB_SIZEOF([$size_includes], ptrdiff_t, ptrdiff_t)
+GLIB_SIZEOF([$size_includes], intmax_t, intmax_t)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
