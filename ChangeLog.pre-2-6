@@ -1,3 +1,9 @@
+2004-12-12  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/glib.symbols
+	* glib/gconvert.[ch]: Implement Windows DLL ABI stability also for
+	g_filename_{to,from}_uri().
+
 2004-12-11  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gstdio.c (g_rename, g_unlink, g_remove): Add doc comments

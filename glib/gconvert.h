@@ -101,6 +101,8 @@ gchar* g_locale_from_utf8 (const gchar  *utf8string,
 #ifdef G_OS_WIN32
 #define g_filename_to_utf8 g_filename_to_utf8_utf8
 #define g_filename_from_utf8 g_filename_from_utf8_utf8
+#define g_filename_from_uri g_filename_from_uri_utf8
+#define g_filename_to_uri g_filename_to_uri_utf8 
 #endif
 
 gchar* g_filename_to_utf8   (const gchar  *opsysstring,

@@ -1019,8 +1019,11 @@ filename_charset_cache_free (gpointer data)
  * subsequent character sets are used when trying to generate a displayable
  * representation of a filename, see g_filename_display_name().
  *
- * The character sets are determined by consulting the environment variables 
- * <envar>G_FILENAME_ENCODING</envar> and <envar>G_BROKEN_FILENAMES</envar>.
+ * On Unix, the character sets are determined by consulting the
+ * environment variables <envar>G_FILENAME_ENCODING</envar> and
+ * <envar>G_BROKEN_FILENAMES</envar>. On Windows, the character set
+ * used in the GLib API is always UTF-8 and said environment variables
+ * have no effect.
  *
  * <envar>G_FILENAME_ENCODING</envar> may be set to a comma-separated list 
  * of character set names. The special token "@locale" is taken to mean the 
@@ -1176,7 +1179,7 @@ _g_convert_thread_init (void)
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
- * Converts a string which is in the encoding used for filenames
+ * Converts a string which is in the encoding used by GLib for filenames
  * into a UTF-8 string.
  * 
  * Return value: The converted string, or %NULL on an error.
@@ -1694,6 +1697,29 @@ g_filename_from_uri (const gchar *uri,
   return result;
 }
 
+#ifdef G_OS_WIN32
+
+#undef g_filename_from_uri
+
+gchar *
+g_filename_from_uri (const gchar *uri,
+		     gchar      **hostname,
+		     GError     **error)
+{
+  gchar *utf8_filename;
+  gchar *retval = NULL;
+
+  utf8_filename = g_filename_from_uri_utf8 (uri, hostname, error);
+  if (utf8_filename)
+    {
+      retval = g_locale_from_utf8 (utf8_filename, -1, NULL, NULL, error);
+      g_free (utf8_filename);
+    }
+  return retval;
+}
+
+#endif
+
 /**
  * g_filename_to_uri:
  * @filename: an absolute filename specified in the encoding
@@ -1743,6 +1769,31 @@ g_filename_to_uri (const gchar *filename,
 
   return escaped_uri;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_filename_to_uri
+
+gchar *
+g_filename_to_uri (const gchar *filename,
+		   const gchar *hostname,
+		   GError     **error)
+{
+  gchar *utf8_filename;
+  gchar *retval = NULL;
+
+  utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
+
+  if (utf8_filename)
+    {
+      retval = g_filename_to_uri_utf8 (utf8_filename, hostname, error);
+      g_free (utf8_filename);
+    }
+
+  return retval;
+}
+
+#endif
 
 /**
  * g_uri_list_extract_uris:
