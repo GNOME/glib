@@ -1055,6 +1055,8 @@ g_signal_stop_emission_by_name (gpointer     instance,
  * somewhat faster than using the name each time.
  *
  * Also tries the ancestors of the given type.
+ *
+ * See g_signal_new() for details on allowed signal names.
  * 
  * Return value: the signal's identifying number, or 0 if no signal was found.
  **/
@@ -1227,7 +1229,13 @@ g_signal_query (guint         signal_id,
  * 
  * Creates a new signal. (This is usually done in the class initializer.)
  *
- * Note that you can use '-' and '_' interchangeably in signal names.
+ * A signal name consists of segments consisting of ASCII letters and
+ * digits, separated by either the '-' or '_' character. The first
+ * character of a signal names must be a letter. Names which violate these
+ * rules lead to undefined behaviour of the GSignal system. 
+ *
+ * When registering a signal and looking up a signal, either separator can
+ * be used, but they cannot be mixed. 
  * 
  * Return value: the signal id
  **/
@@ -1338,8 +1346,8 @@ signal_add_class_closure (SignalNode *node,
  * @param_types: an array types, one for each parameter.
  * 
  * Creates a new signal. (This is usually done in the class initializer.)
- * 
- * Note that you can use '-' and '_' interchangeably in signal names.
+ *
+ * See g_signal_new() for details on allowed signal names.
  *
  * Return value: the signal id
  **/
@@ -1487,8 +1495,8 @@ g_signal_newv (const gchar       *signal_name,
  * @args: va_list of #GType, one for each parameter.
  * 
  * Creates a new signal. (This is usually done in the class initializer.)
- * 
- * Note that you can use '-' and '_' interchangeably in signal names.
+ *
+ * See g_signal_new() for details on allowed signal names.
  *
  * Return value: the signal id
  **/
