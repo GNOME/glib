@@ -1,3 +1,14 @@
+1999-11-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c, gthread-solaris.c: Changed the prototype of
+	thread_create and thread_self to return the system thread into
+	provided memory instead of a return value. This is necessary, as
+	HPUX has a pthread_t, that is bigger than the biggest integral
+	type there. Made some more functions static.
+
+	* gthread-posix.c: Small fixes for DCE threads: Detaching has to
+	be done after thread creation for DCE.
+
 1999-06-21  Tor Lillqvist  <tml@iki.fi>
 
 	* gthread-posix.c: Guard pthread_attr_setscope call with test

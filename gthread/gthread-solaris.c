@@ -173,52 +173,56 @@ g_private_get_solaris_impl (GPrivate * private_key)
   return result;
 }
 
-void
+static void
 g_thread_set_priority_solaris_impl (gpointer thread, GThreadPriority priority)
 {
-  solaris_check_for_error (thr_setprio (GPOINTER_TO_INT (thread),  
+  solaris_check_for_error (thr_setprio (*(thread_t*)thread,  
 					g_thread_map_priority (priority)));
 }
 
-gpointer 
+static void
 g_thread_create_solaris_impl (GThreadFunc thread_func, 
 			      gpointer arg, 
 			      gulong stack_size,
 			      gboolean joinable,
 			      gboolean bound,
-			      GThreadPriority priority)
+			      GThreadPriority priority,
+			      gpointer thread)
 {     
-  thread_t thread;
   long flags = (bound ? THR_BOUND : 0) | (joinable ? 0: THR_DETACHED);
   
-  g_return_val_if_fail (thread_func, NULL);
+  g_return_if_fail (thread_func);
   
   solaris_check_for_error (thr_create (NULL, stack_size,  
 				       (void* (*)(void*))thread_func,
-				       arg, flags, &thread));
+				       arg, flags, thread));
   
-  g_thread_set_priority_solaris_impl (GINT_TO_POINTER (thread), priority);
-
-  return GINT_TO_POINTER (thread);
+  g_thread_set_priority_solaris_impl (thread, priority);
 }
 
-void 
+static void 
 g_thread_yield_solaris_impl (void)
 {
   thr_yield ();
 }
 
-void
+static void
 g_thread_join_solaris_impl (gpointer thread)
 {     
   gpointer ignore;
-  solaris_check_for_error (thr_join (GPOINTER_TO_INT (thread), NULL, &ignore));
+  solaris_check_for_error (thr_join (*(thread_t*)thread, NULL, &ignore));
 }
 
-void 
+static void 
 g_thread_exit_solaris_impl (void) 
 {
   thr_exit (NULL);
+}
+
+static void
+g_thread_self_solaris_impl (gpointer thread)
+{
+  *(thread_t*)thread = thr_self();
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =
@@ -242,5 +246,5 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_join_solaris_impl,
   g_thread_exit_solaris_impl,
   g_thread_set_priority_solaris_impl,
-  (gpointer (*)())thr_self
+  g_thread_self_solaris_impl
 };
