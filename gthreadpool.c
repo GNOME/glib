@@ -125,7 +125,7 @@ g_thread_pool_thread_proxy (gpointer data)
 	  g_async_queue_lock (unused_thread_queue[priority]);
 
 	  G_LOCK (unused_threads);
-	  if (unused_threads >= max_unused_threads)
+	  if (unused_threads >= max_unused_threads && max_unused_threads != -1)
 	    {
 	      G_UNLOCK (unused_threads);
 	      g_async_queue_unlock (unused_thread_queue[priority]);
