@@ -1207,15 +1207,16 @@ g_io_channel_fill_buffer (GIOChannel *channel,
 reencode:
 
       inbytes_left = channel->read_buf->len;
-      outbytes_left = MAX (6, MAX (channel->read_buf->len,
+      outbytes_left = MAX (channel->read_buf->len,
                            channel->encoded_read_buf->allocated_len
-                           - channel->encoded_read_buf->len));
+                           - channel->encoded_read_buf->len - 1); /* 1 for NULL */
+      outbytes_left = MAX (outbytes_left, 6);
 
       inbuf = channel->read_buf->str;
-      outbuf = channel->encoded_read_buf->str + channel->encoded_read_buf->len;
-
       g_string_set_size (channel->encoded_read_buf,
                          channel->encoded_read_buf->len + outbytes_left);
+      outbuf = channel->encoded_read_buf->str + channel->encoded_read_buf->len
+               - outbytes_left;
 
       errnum = g_iconv (channel->read_cd, &inbuf, &inbytes_left,
 			&outbuf, &outbytes_left);
@@ -1958,8 +1959,8 @@ g_io_channel_write_chars (GIOChannel	*channel,
             }
         }
 
-      space_in_buf = MAX (channel->buf_size, channel->write_buf->allocated_len)
-                     - channel->write_buf->len;
+      space_in_buf = MAX (channel->buf_size, channel->write_buf->allocated_len - 1)
+                     - channel->write_buf->len; /* 1 for NULL */
 
       /* This is only true because g_io_channel_set_buffer_size ()
        * ensures that channel->buf_size >= MAX_CHAR_SIZE.
@@ -2002,17 +2003,18 @@ g_io_channel_write_chars (GIOChannel	*channel,
 
 reconvert:
 
-          if (!channel->do_encode)
+          if (!channel->do_encode) /* UTF-8 encoding */
             {
               const gchar *badchar;
+              gsize try_len = MIN (from_buf_len, space_in_buf);
 
               /* UTF-8, just validate, emulate g_iconv */
 
-              if (!g_utf8_validate (from_buf, from_buf_len, &badchar))
+              if (!g_utf8_validate (from_buf, try_len, &badchar))
                 {
                   gunichar try_char;
 
-                  left_len = from_buf + from_buf_len - badchar;
+                  left_len = from_buf + try_len - badchar;
 
                   try_char = g_utf8_get_char_validated (badchar, left_len);
 
@@ -2020,16 +2022,27 @@ reconvert:
                     {
                       case -2:
                         g_assert (left_len < 6);
-                        errnum = EINVAL;
+                        if (try_len == from_buf_len)
+                          {
+                            errnum = EINVAL;
+                            err = (size_t) -1;
+                          }
+                        else
+                          {
+                            errnum = 0;
+                            err = (size_t) -1;
+                          }
                         break;
                       case -1:
+                        g_warning ("Invalid UTF-8 passed to g_io_channel_write_chars().");
+                        /* FIXME bail here? */
                         errnum = EILSEQ;
+                        err = (size_t) -1;
                         break;
                       default:
                         g_assert_not_reached ();
                         errnum = 0; /* Don't confunse the compiler */
                     }
-                  err = (size_t) -1;
                 }
               else
                 {
@@ -2039,17 +2052,18 @@ reconvert:
                 }
 
               g_string_append_len (channel->write_buf, from_buf,
-                                   from_buf_len - left_len);
-              from_buf += from_buf_len - left_len;
+                                   try_len - left_len);
+              from_buf += try_len - left_len;
             }
           else
             {
                gchar *outbuf;
 
                left_len = from_buf_len;
-               outbuf = channel->write_buf->str + channel->write_buf->len;
                g_string_set_size (channel->write_buf, channel->write_buf->len
                                   + space_in_buf);
+               outbuf = channel->write_buf->str + channel->write_buf->len
+                        - space_in_buf;
                err = g_iconv (channel->write_cd, (gchar **) &from_buf, &left_len,
                               &outbuf, &space_in_buf);
                errnum = errno;

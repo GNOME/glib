@@ -1,3 +1,17 @@
+2001-08-24  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: Matthias Clasen's fix for
+	the buffer corruption bug by setting outbuf _after_
+	the call to g_string_set_size()
+
+	* glib/giochannel.c: kept the buffers from perpetually
+	growing by subtracting 1 from allocated_len in the calculation
+	of available space to account for the null at the end of the
+	buffer
+
+	* glib/giochannel.c: fixed g_io_channel_write_chars()
+	to not write more than space_in_buf bytes for the UTF-8 case
+
 Fri Aug 24 11:15:46 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c docs/Changes-2.0.txt: Patch from Darin
