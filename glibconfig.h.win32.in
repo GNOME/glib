@@ -74,8 +74,6 @@ typedef unsigned int gsize;
 #define G_GSSIZE_FORMAT "i"
 #define G_GSIZE_FORMAT "u"
 
-#define G_MAXSIZE	G_MAXUINT
-
 #define GPOINTER_TO_INT(p)	((gint)   (p))
 #define GPOINTER_TO_UINT(p)	((guint)  (p))
 
@@ -192,7 +190,7 @@ union _GSystemThread
 
 #define G_MODULE_SUFFIX "dll"
 
-typedef int GPid;
+typedef void* GPid;
 
 G_END_DECLS
 

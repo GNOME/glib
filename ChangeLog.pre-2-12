@@ -1,3 +1,17 @@
+2003-02-28  Hans Breuer  <hans@breuer.org>
+
+	* glib/glib.def : updated externals, including those
+	from bug #135386
+
+	* glib/makefile.msc.in : build gatomic.c
+
+	* glibconfig.h.win32.in : removed duplicate definition
+	of G_MAXSIZE, typedef void* GPid instead of int
+
+	* tests/child-test.c  glib/gmain.c : 
+	applied patch from J. Ali Harlow <ali@juiblex.co.uk> to fix 
+	g_child_watch implementation on win32, bug #50296
+
 Fri Feb 27 22:13:22 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gqueue.c: Trivial doc changes.

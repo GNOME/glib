@@ -44,6 +44,12 @@ EXPORTS
 	g_async_queue_unref
 	g_async_queue_unref_and_unlock
 	g_atexit
+	g_atomic_int_add_fallback
+	g_atomic_int_compare_and_exchange_fallback
+	g_atomic_int_exchange_and_add_fallback
+;	g_atomic_int_get_fallback
+	g_atomic_pointer_compare_and_exchange_fallback
+;	g_atomic_pointer_get_fallback
 	g_basename
 	g_bit_nth_lsf
 	g_bit_nth_msf
@@ -68,6 +74,9 @@ EXPORTS
 	g_cache_new
 	g_cache_remove
 	g_cache_value_foreach
+	g_child_watch_add
+	g_child_watch_add_full
+	g_child_watch_source_new
 	g_clear_error
 	g_completion_add_items
 	g_completion_clear_items
@@ -363,6 +372,7 @@ EXPORTS
 	g_node_child_position
 	g_node_children_foreach
 	g_node_copy
+	g_node_copy_deep
 	g_node_depth
 	g_node_destroy
 	g_node_find
@@ -427,6 +437,7 @@ EXPORTS
 	g_queue_copy
 	g_queue_delete_link
 	g_queue_find
+	g_queue_find_custom
 	g_queue_foreach
 	g_queue_free
 	g_queue_get_length
@@ -648,6 +659,7 @@ EXPORTS
 	g_string_sized_new
 	g_string_truncate
 	g_string_up
+	g_strip_context
 	g_strjoin
 	g_strjoinv
 	g_strlcat

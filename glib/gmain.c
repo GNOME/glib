@@ -168,8 +168,12 @@ struct _GChildWatchSource
   GSource     source;
   GPid        pid;
   gint        child_status;
-  gint        count;
-  gboolean    child_exited;
+#ifdef G_OS_WIN32
+  GPollFD     poll;
+#else /* G_OS_WIN32 */
+   gint        count;
+   gboolean    child_exited;
+#endif /* G_OS_WIN32 */
 };
 
 struct _GPollRec
@@ -243,6 +247,7 @@ G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
 static GSList *main_contexts_without_pipe = NULL;
 
+#ifndef G_OS_WIN32
 /* Child status monitoring code */
 enum {
   CHILD_WATCH_UNINITIALIZED,
@@ -251,11 +256,8 @@ enum {
 };
 static gint child_watch_init_state = CHILD_WATCH_UNINITIALIZED;
 static gint child_watch_count = 0;
-#ifndef G_OS_WIN32
 static gint child_watch_wake_up_pipe[2] = {0, 0};
-#else
-static HANDLE child_watch_wake_up_semaphore = NULL;
-#endif
+#endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
 
@@ -3250,6 +3252,54 @@ g_timeout_add (guint32        interval,
 
 /* Child watch functions */
 
+#ifdef G_OS_WIN32
+
+static gboolean
+g_child_watch_prepare (GSource *source,
+		       gint    *timeout)
+{
+  *timeout = -1;
+  return FALSE;
+}
+
+
+static gboolean 
+g_child_watch_check (GSource  *source)
+{
+  GChildWatchSource *child_watch_source;
+  gboolean child_exited;
+
+  child_watch_source = (GChildWatchSource *) source;
+
+  child_exited = child_watch_source->poll.revents & G_IO_IN;
+
+  if (child_exited)
+    {
+      DWORD child_status;
+
+      /*
+       * Note: We do _not_ check for the special value of STILL_ACTIVE
+       * since we know that the process has exited and doing so runs into
+       * problems if the child process "happens to return STILL_ACTIVE(259)"
+       * as Microsoft's Platform SDK puts it.
+       */
+      if (!GetExitCodeProcess (child_watch_source->pid, &child_status))
+        {
+	  gchar *emsg = g_win32_error_message (GetLastError ());
+	  g_warning (G_STRLOC ": GetExitCodeProcess() failed: %s", emsg);
+	  g_free (emsg);
+
+	  child_watch_source->child_status = -1;
+	}
+      else
+	child_watch_source->child_status = child_status;
+    }
+
+  return child_exited;
+}
+
+#else /* G_OS_WIN32 */
+
 static void
 check_for_child_exited (GSource *source)
 {
@@ -3263,15 +3313,9 @@ check_for_child_exited (GSource *source)
 
   if (child_watch_source->count < count)
     {
-#ifndef G_OS_WIN32
       gint child_status;
 
       if (waitpid (child_watch_source->pid, &child_status, WNOHANG) > 0)
-#else
-      DWORD child_status;
-      if (GetExitCodeProcess (child_watch_source->pid, &child_status) &&
-          child_status != STILL_ACTIVE)
-#endif
 	{
 	  child_watch_source->child_status = child_status;
 	  child_watch_source->child_exited = TRUE;
@@ -3305,6 +3349,8 @@ g_child_watch_check (GSource  *source)
   return (child_watch_source->count < child_watch_count);
 }
 
+#endif /* G_OS_WIN32 */
+
 static gboolean
 g_child_watch_dispatch (GSource    *source, 
 			GSourceFunc callback,
@@ -3328,6 +3374,8 @@ g_child_watch_dispatch (GSource    *source,
   return FALSE;
 }
 
+#ifndef G_OS_WIN32
+
 static void
 g_child_watch_signal_handler (int signum)
 {
@@ -3335,11 +3383,7 @@ g_child_watch_signal_handler (int signum)
 
   if (child_watch_init_state == CHILD_WATCH_INITIALIZED_THREADED)
     {
-#ifndef G_OS_WIN32
       write (child_watch_wake_up_pipe[1], "B", 1);
-#else
-      ReleaseSemaphore(child_watch_wake_up_semaphore, 1, NULL);
-#endif
     }
   else
     {
@@ -3356,11 +3400,7 @@ g_child_watch_source_init_single (void)
 
   child_watch_init_state = CHILD_WATCH_INITIALIZED_SINGLE;
 
-#ifndef G_OS_WIN32
   signal (SIGCHLD, g_child_watch_signal_handler);
-#else
-  /* FIXME: really nothing to be done ? --hb */
-#endif
 }
 
 static gpointer
@@ -3375,21 +3415,15 @@ child_watch_helper_thread (gpointer data)
       poll_func = g_poll;
 #endif
 
-#ifndef G_OS_WIN32
   fds.fd = child_watch_wake_up_pipe[0];
   fds.events = G_IO_IN;
-#endif
 
   while (1)
     {
       gchar b[20];
       GSList *list;
 
-#ifndef G_OS_WIN32
       read (child_watch_wake_up_pipe[0], b, 20);
-#else
-      WaitForSingleObject(child_watch_wake_up_semaphore, INFINITE);
-#endif
 
       /* We were woken up.  Wake up all other contexts in all other threads */
       G_UNLOCK (main_context_list);
@@ -3412,24 +3446,16 @@ g_child_watch_source_init_multi_threaded (void)
 
   g_assert (g_thread_supported());
 
-#ifndef G_OS_WIN32
   if (pipe (child_watch_wake_up_pipe) < 0)
     g_error ("Cannot create wake up pipe: %s\n", g_strerror (errno));
   fcntl (child_watch_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (child_watch_wake_up_pipe[1], F_GETFL));
-#else
-  child_watch_wake_up_semaphore = CreateSemaphore (NULL, 0, G_MAXINT, NULL);
-#endif
 
   /* We create a helper thread that polls on the wakeup pipe indefinitely */
   /* FIXME: Think this through for races */
   if (g_thread_create (child_watch_helper_thread, NULL, FALSE, &error) == NULL)
     g_error ("Cannot create a thread to monitor child exit status: %s\n", error->message);
   child_watch_init_state = CHILD_WATCH_INITIALIZED_THREADED;
-#ifndef G_OS_WIN32
   signal (SIGCHLD, g_child_watch_signal_handler);
-#else
-  /* FIXME: really nothing to be done ? --hb */
-#endif
 }
 
 static void
@@ -3455,6 +3481,8 @@ g_child_watch_source_init (void)
     }
 }
 
+#endif /* !G_OS_WIN32 */
+
 /**
  * g_child_watch_source_new:
  * @pid: process id of a child process to watch
@@ -3475,7 +3503,14 @@ g_child_watch_source_new (GPid pid)
   GSource *source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
   GChildWatchSource *child_watch_source = (GChildWatchSource *)source;
 
+#ifdef G_OS_WIN32
+  child_watch_source->poll.fd = (int)pid;
+  child_watch_source->poll.events = G_IO_IN;
+
+  g_source_add_poll (source, &child_watch_source->poll);
+#else /* G_OS_WIN32 */
   g_child_watch_source_init ();
+#endif /* G_OS_WIN32 */
 
   child_watch_source->pid = pid;
 

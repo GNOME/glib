@@ -89,7 +89,7 @@ localcharset.c : libcharset/localcharset.c
 glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib
 	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib
 
-libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) glib.def
+libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def
 	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) \
 	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
