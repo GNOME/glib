@@ -22,8 +22,6 @@ are in glib-devel.
 %package devel
 Summary: GIMP Toolkit and GIMP Drawing Kit support library
 Group: X11/Libraries
-Requires: gtk+
-Obsoletes: gtk-devel
 
 %description devel
 Static libraries and header files for the support library for the GIMP's X
