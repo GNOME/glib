@@ -39,7 +39,7 @@ if (failed) \
     else \
       g_print ("(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), message ? (gchar*)message : ""); \
     fflush (stdout); \
-    any_failed; \
+    any_failed = TRUE; \
   } \
 } G_STMT_END
 
