@@ -749,7 +749,7 @@ g_io_win32_msg_create_watch (GIOChannel    *channel,
   GIOWin32Watch *watch;
   GSource *source;
 
-  source = g_source_new (&win32_watch_funcs, sizeof (GIOWin32Watch));
+  source = g_source_new (&g_io_watch_funcs, sizeof (GIOWin32Watch));
   watch = (GIOWin32Watch *)source;
   
   watch->channel = channel;

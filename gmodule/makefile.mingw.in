@@ -7,9 +7,6 @@ TOP = ../..
 
 include ../build/win32/make.mingw
 
-# Possibly override GLib version in build\win32\module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 ################################################################
 
 # Nothing much configurable below
@@ -17,17 +14,15 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 INCLUDES = -I .. -I ../glib -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
-BUILD_DLL = ../build-dll
-
 all : \
 	gmoduleconf.h \
-	gmodule-$(GLIB_VER).dll \
-	testgmodule.exe
+	gmodule-@GLIB_VERSION@.dll \
+	testgmodule.exe \
+	libgplugin_a.dll libgplugin_b.dll
 
 ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
-	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' <$< >$@
 endif
 
 gmodule_OBJECTS = \
@@ -36,23 +31,26 @@ gmodule_OBJECTS = \
 gmoduleconf.h: gmoduleconf.h.win32
 	cp $< $@
 
-gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule.def
-	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib-$(GLIB_VER)
+################ The gmodule DLL
+
+gmodule-@GLIB_VERSION@.dll : $(gmodule_OBJECTS) gmodule.def
+	$(BUILD_DLL) gmodule @GLIB_VERSION@ $(CFLAGS) gmodule.def $(gmodule_OBJECTS) -L ../glib -lglib
 
 ################ test prog
 
-testgmodule.exe : gmodule-$(GLIB_VER).dll testgmodule.o libgplugin_a.dll libgplugin_b.dll
-# Wow, do we really have to do it like this to get some symbols
-# exported from a .exe? Apparently yes. Does the __declspec(dllexport) 
-# actually do anything in gcc?
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
-	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
-	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
-	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+testgmodule.exe : gmodule-@GLIB_VERSION@.dll testgmodule.o 
+# We have to generate an .exp file separately with dlltool, and link
+# with that. Sigh.
+	dlltool --output-exp testgmodule.exp testgmodule.o
+	$(CC) $(CFLAGS) -o testgmodule.exe testgmodule.o testgmodule.exp -L ../glib -lglib -L . -lgmodule $(LFLAGS)
 
 libgplugin_a.dll : libgplugin_a.o
-	$(BUILD_DLL) libgplugin_a - - libgplugin_a.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libgplugin_a - libgplugin_a.o -L ../glib -lglib -L . -lgmodule
 
 libgplugin_b.dll : libgplugin_b.o
-	$(BUILD_DLL) libgplugin_b - - libgplugin_b.o -L ../glib -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libgplugin_b - libgplugin_b.o -L ../glib -lglib -L . -lgmodule
+
+################ Other stuff
+
+clean::
+	-rm gmoduleconf.h

@@ -5,10 +5,7 @@
 
 TOP = ../..
 
-include $(TOP)/build/win32/make.mingw
-
-# Possibly override GLib version in build/win32/module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+include ../build/win32/make.mingw
 
 ################################################################
 
@@ -21,7 +18,7 @@ DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 all :				\
 	../config.h		\
 	../glibconfig.h		\
-	glib-$(GLIB_VER).dll \
+	glib-@GLIB_VERSION@.dll \
 	gspawn-win32-helper.exe
 
 glib_OBJECTS =			\
@@ -77,54 +74,14 @@ glib_OBJECTS =			\
 
 ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
-	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' <$< >$@
 endif
 
-################ glib
+################ The glib DLL
 
-glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	../build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
-
-#glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-#	dllwrap --mno-cygwin --dllname glib-$(GLIB_VER).dll --implib glib-$(GLIB_VER).lib --def glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
+glib-@GLIB_VERSION@.dll : $(glib_OBJECTS) glib.def
+	$(BUILD_DLL) glib @GLIB_VERSION@ glib.def $(glib_OBJECTS) $(INTL_LIBS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c
-	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)
+	$(CC) $(CFLAGS) -mwindows -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib
 
-################ subdirectories
-
-sub-gmodule :
-	cd gmodule && $(MAKE) -f makefile.mingw all
-
-sub-gthread :
-	cd gthread && $(MAKE) -f makefile.mingw all
-
-sub-gobject :
-	cd gobject && $(MAKE) -f makefile.mingw all
-
-################ test progs
-
-testglib.o : testglib.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testglib\" $<
-
-testglib.exe : glib-$(GLIB_VER).dll testglib.o
-	$(CC) $(CFLAGS) -o testglib testglib.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
-
-testgdate.o : testgdate.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdate\" $<
-
-testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
-	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
-
-testgdateparser.o : testgdateparser.c
-	$(CC) -c $(CFLAGS) -DG_LOG_DOMAIN=\"testgdateparser\" $<
-
-testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.o
-	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
-
-
-################ other stuff
-
-clean::
-	-rm config.h glibconfig.h gmodule/gmoduleconf.h

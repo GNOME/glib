@@ -5,7 +5,7 @@ For more information about the port or GLib, GTk+ and the GIMP to
 native Windows, and pre-built binaries (DLLs), surf to
 http://www.gimp.org/win32/ . "Native" means that we use the Win32 API
 only, and no POSIX (Unix) emulation layer except that provided by the
-Microsoft runtime C library, and a pthreads emulation library.
+Microsoft runtime C library.
 
 To build GLib on Win32, you can use either gcc or the Microsoft
 compiler and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0
@@ -14,29 +14,29 @@ have been used successfully.
 But note that to just *use* GLib on Windows, there is no need to build
 it, prebuilt DLLs are available from the webiste above.
 
-With gcc I mean gcc-2.95.2 as distributed by Mumit Khan, either as a
-mingw version (preferred), or running under cygwin. To successfully
-use gcc, follow the instructions below. We want to use gcc
--mno-cygwin, i.e. produce executables (.exe and .dll files) that do
-*not* require the cygwin runtime library. This is called "mingw".  I
-also use the -fnative-struct flag, which means that in order to use
-the prebuilt DLLs (especially of GTK+), you *must* also use that flag.
+With gcc I mean gcc-2.95.3 from www.mingw.org. It might be possible
+also to use gcc from Cygwin. (But also in that case, we want to use
+gcc -mno-cygwin, i.e. produce executables (.exe and .dll files) that
+do *not* require the cygwin runtime library. This is called "mingw".)
+
+To successfully use gcc, follow the instructions below.  I also use
+the -fnative-struct flag, which means that in order to use the
+prebuilt DLLs (especially of GTK+), you *must* also use that flag.
 (This flag means that the struct layout is identical to that used by
 MSVC.)
 
-If you would want to use the cygwin tools to generate a GLib that
-*does* use the cygwin runtime, the normal Unix configuration method
+If you would want to use the Cygwin tools to generate a GLib that
+*does* use the Cygwin runtime, the normal Unix configuration method
 should work as if on Unix. Note that successfully producing shared
-libraries (DLLs) most probably requires you to have a very new libtool
-(from March 2001), and to replace the libtool.m4 included in
-acinclude.m4 with the new one, and to replace ltmain.sh.
+libraries (DLLs) most probably requires you to have a very new
+libtool. (And a new libtool probably requires rather new autoconf and
+automake.)
 
-It is also possible to use the ./configure mechanism when building for
-a mingw configuration. You should be running cygwin for the configure
-script to work, obviously. The same libtool issue has to be taken into
-account as when building for Cygwin: You most probably should have a
-libtool from March 2001 or so, and replace libtool.m4 (in
-acinclude.m4) and ltmain.sh.
+It might also be possible to use the ./configure mechanism when
+building for a mingw configuration. You should be running Cygwin for
+the configure script to work, obviously. The same libtool issue has to
+be taken into account as when building for Cygwin: You most probably
+should have a very new libtool.
 
 The following preprocessor macros are used for conditional compilation
 related to Win32:
@@ -62,9 +62,9 @@ Additionally, there are the compiler-specific macros:
 - __GNUC__ is defined when using GCC
 - _MSC_VER is defined when using the Microsoft compiler
 
-G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib or
-software using it is not known to work with the older CRTDLL.DLL
-runtime.
+G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib is
+not known to work with the older CRTDLL.DLL runtime, or the static
+Microsoft C runtime libraries.
 
 Building software that use GLib or GTk+
 =======================================
@@ -73,27 +73,14 @@ Even building software that just *use* GLib or GTk+ also require to
 have the right compiler set up the right way, so if you intend to use
 gcc, follow the relevant instructions below in that case, too.
 
-Pthreads library
-================
-
-Before building you must get the pthreads library for Win32 from
-http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
-snapshot from 1999-05-30 is the one that should be used. Edit the
-location of the pthreads library and include files in makefile.msc or
-makefile.mingw. The pthreads distribution includes the precompiled dll
-and import libraries both for MSVC and gcc. Later versions might also
-work.
-
-The pthreads for Win32 package that the thread support uses supposedly
-isn't quite ready yet, and thus threads stuff should not be relied
-upon for anything serious.
-
 Libiconv
 ========
 
 Before building GLib you must also have the libiconv library, either
 from the same website mentioned above, or from it's homepage at
-http://clisp.cons.org/~haible/packages-libiconv.html.
+http://clisp.cons.org/~haible/packages-libiconv.html. Libiconv has
+makefiles for building with MS Visual C only, but as it is one source
+file only, building iot "by hand" with gcc isn't hard.
 
 Where are the makefiles?
 ========================
@@ -101,7 +88,7 @@ Where are the makefiles?
 If you are building from a CVS snapshot, you will not have any
 makefile.mingw or makefile.msc file. You should copy the corresponding
 makefile.mingw.in or makefile.msc.in file to that name, and edit the
-line that sets GLIB_VER to the correct version number.
+@GLIB_VERSION@ strings to the correct version number.
 
 This is done automatically when an official GLib source distribution
 package is built.
@@ -109,36 +96,28 @@ package is built.
 Building GLib with gcc
 ======================
 
-I use the latest gcc, gcc-2.95.2. Version 2.95 will most probably also
-work.
+I use the latest gcc, gcc-2.95.3. Version 2.95.2 will most probably
+also work.
 
-You can either use gcc running on cygwin, or the "pure" mingw
+You can either use gcc running on Cygwin, or the "pure" mingw
 gcc. Using the latter is much easier. 
 
 Just fetch the latest version of gcc for mingw and the msvcrt runtime,
-currently from
-ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/mingw32/snapshots/gcc-2.95.2-1/
-.
-
-Download the three zip archives: the gcc-<version>-msvcrt,
-mingw-msvcrt-<timestamp> and binutils-<timestamp>-msvcrt, and unpack
-them in a suitable directory.
+from www.mingw.org..
 
 Set up your PATH so that the gcc from the bin directory that got
-created above is the one that gets used. You can skip steps 1--5
-below. Even if you run the mingw gcc, you still want to have cygwin to
-run make in.
+created above is the one that gets used. Even if you run the mingw
+gcc, you still want to have Cygwin to run make in.
 
-If you want to run a cygwin-based gcc, it gets a bit more
+If you want to run a Cygwin-based gcc, it gets a bit more
 complicated. We still want gcc to produce code that does not use
-cygwin, but the msvcrt runtime. The way to do this can be quite
-complex, and the instructions are not included here. Contact me if you
-want some possibly outdated, misleading and incomplete advice.
+Cygwin, but the msvcrt runtime. In theory it should work to use the
+-no-cygwin flag, but I haven't tested that lately.
 
 Building with MSVC
 ==================
 
 If using the Microsoft toolchain, build with `nmake -f
-makefile.msc`. Install with `nmake -f makefile.msc install`. 
+makefile.msc`.
 
 --Tor Lillqvist <tml@iki.fi>

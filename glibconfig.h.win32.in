@@ -124,8 +124,8 @@ typedef struct _GMutex* GStaticMutex;
 typedef union _GSystemThread GSystemThread;
 union _GSystemThread
 {
-  /* The size of the data array should be sizeof (pthread_t) */
-  /* This value corresponds to the 1999-05-30 version of pthreads-win32 */
+  /* The size of the data array is sizeof (GThreadData *), from
+   * gthread-win32.c  */
   char   data[4];
   double dummy_double;
   void  *dummy_pointer;

@@ -53,9 +53,6 @@
  * inteferes with g_strsignal() on some OSes
  */
 
-#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
-__declspec(dllexport)
-#endif
 static const guint16 ascii_table_data[256] = {
   0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
   0x004, 0x104, 0x104, 0x004, 0x104, 0x104, 0x004, 0x004,
@@ -76,6 +73,9 @@ static const guint16 ascii_table_data[256] = {
   /* the upper 128 are all zeroes */
 };
 
+#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
+__declspec(dllexport)
+#endif
 const guint16 * const g_ascii_table = ascii_table_data;
 
 gchar*

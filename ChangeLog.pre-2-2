@@ -1,3 +1,20 @@
+2001-09-04  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update. Don't mention pthreads.
+
+	* build-dll: Remove, moved to the build module.
+
+	* glibconfig.h.win32.in: Don't mention pthreds here, either.
+
+	* glib/gstrfuncs.c: Mark the correct variable for export from DLL.
+
+	* glib/giowin32.c (g_io_win32_msg_create_watch): Owen forgot to
+	rename the win32_watch_funcs variable here, too.
+
+	* */makefile.mingw.in: Don't use version number in import library
+	name. Use whole version number in DLL name. Use build-dll from the
+	build module.
+
 Tue Sep  4 01:50:24 2001  Tim Janik  <timj@gtk.org>
 
 	* NEWS: updates for 1.3.7 release.

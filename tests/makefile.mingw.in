@@ -5,17 +5,12 @@ TOP = ../..
 
 include ../build/win32/make.mingw
 
-# Possibly override GLib version in build\win32\module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 ################################################################
 
 # Nothing much configurable below
 
 INCLUDES = -I .. -I ../glib -I ../gmodule
 DEFINES = -DHAVE_CONFIG_H
-
-BUILD_DLL = ../build-dll
 
 TESTS = \
 	testglib.exe	\
@@ -53,27 +48,26 @@ all:	$(TESTS) $(DLLS)
 
 ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
-	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' <$< >$@
 endif
 
 .SUFFIXES: .c .i .exe
 
 .c.exe:
-	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread-$(GLIB_VER) -L ../glib -lglib-$(GLIB_VER) 
+	$(CC) $(CFLAGS) -o $@ $< -L ../gthread -lgthread -L ../glib -lglib
 
 module-test.exe : module-test.o
-	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L ../glib -lglib-$(GLIB_VER) -L ../gmodule -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base -o module-test.exe module-test.o -L ../glib -lglib -L ../gmodule -lgmodule $(LDFLAGS)
 	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
-	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-$(GLIB_VER) -L ../gmodule -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,--base-file,module-test.base,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib -L ../gmodule -lgmodule $(LDFLAGS)
 	$(DLLTOOL) --base-file module-test.base --output-exp module-test.exp module-test.o
-	$(CC) $(CFLAGS) -Wl,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib-$(GLIB_VER) -L ../gmodule -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(CC) $(CFLAGS) -Wl,module-test.exp -o module-test.exe module-test.o -L ../glib -lglib -L ../gmodule -lgmodule $(LDFLAGS)
 
 libmoduletestplugin_a.dll : libmoduletestplugin_a.o
-	$(BUILD_DLL) libmoduletestplugin_a - - libmoduletestplugin_a.o -L ../glib -lglib-$(GLIB_VER) -L ../gmodule -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libmoduletestplugin_a - libmoduletestplugin_a.o -L ../glib -lglib -L ../gmodule -lgmodule
 
 libmoduletestplugin_b.dll : libmoduletestplugin_b.o
-	$(BUILD_DLL) libmoduletestplugin_b - - libmoduletestplugin_b.o -L ../glib -lglib-$(GLIB_VER) -L ../gmodule -lgmodule-$(GLIB_VER)
+	$(BUILD_DLL) libmoduletestplugin_b - libmoduletestplugin_b.o -L ../glib -lglib -L ../gmodule -lgmodule
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done

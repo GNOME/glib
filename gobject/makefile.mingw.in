@@ -7,9 +7,6 @@ TOP = ../..
 
 include ../build/win32/make.mingw
 
-# Possibly override GLib version in build/win32/module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 ################################################################
 
 # Nothing much configurable below
@@ -22,13 +19,12 @@ srcdir=.
 BUILD_DLL = ../build-dll
 
 all : \
-	gobject-$(GLIB_VER).dll	\
+	gobject-@GLIB_VERSION@.dll	\
 	glib-genmarshal.exe
 
 ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
-	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
-	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' \
+	sed -e 's,@GLIB[_]VERSION@,@GLIB_VERSION@,' \
 	    -e 's,@RE[B]UILD@,,' <$< >$@
 endif
 
@@ -49,11 +45,11 @@ gobject_OBJECTS =		\
 	gvaluetransform.o	\
 	gvaluetypes.o
 
-gobject-$(GLIB_VER).dll : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
-	$(BUILD_DLL) gobject $(GLIB_VER) gobject.def $(gobject_OBJECTS) -L .. -lglib-$(GLIB_VER)
+gobject-@GLIB_VERSION@.dll : $(srcdir)/stamp-gmarshal.h gmarshal.c $(gobject_OBJECTS) gobject.def 
+	$(BUILD_DLL) gobject @GLIB_VERSION@ gobject.def $(gobject_OBJECTS) -L ../glib -lglib
 
 glib-genmarshal.exe : glib-genmarshal.c
-	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L .. -lglib-$(GLIB_VER)
+	$(CC) -o $@ $(CFLAGS) -UGOBJECT_COMPILATION $< -L ../glib -lglib
 
 # Copied from Makefile.am:
 # initial creation of the real stamp-* files
