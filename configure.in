@@ -830,7 +830,7 @@ if test x"$have_threads" != xnone; then
 			struct timeval tval;
 			struct timespec tspec;
 			gettimeofday (&tval, NULL);
-			tspec.tv_sec += tval.tv_sec;
+			tspec.tv_sec = tval.tv_sec;
 			tspec.tv_nsec = 0;
 			return pthread_cond_timedwait (&cond,&mutex,&tspec) 
 				!= -1;}],

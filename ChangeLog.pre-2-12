@@ -1,3 +1,10 @@
+1999-03-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fixed slight bug, that made configure hang on some
+	systems. Please do not merge this into 1.3 branch. It's taken care
+	of differently there. Info from J. Rhett Aultman
+	<cuplan@alley.gator.net>
+	
 Wed Mar 24 21:23:47 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.1
