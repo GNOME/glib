@@ -1,13 +1,13 @@
-# Copyright (C) 1998-2001 Free Software Foundation, Inc.
-# Valek Filippov <frob@df.ru>, 2001.
+# Copyright (C) 1998-2002 Free Software Foundation, Inc.
+# Valek Filippov <frob@df.ru>, 2001-2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-02-23 22:04-0500\n"
-"PO-Revision-Date: 2001-12-15 21:17+03:00\n"
+"POT-Creation-Date: 2002-02-25 14:36+0300\n"
+"PO-Revision-Date: 2002-02-25 14:38+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
-"Language-Team: Russian <ru@li.org>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -76,9 +76,8 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
 #: glib/gconvert.c:1729
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "Неправильная последовательность байтов в названии компьютера"
+msgstr "Недопуcтимое название компьютера"
 
 #: glib/gdir.c:79
 #, c-format
@@ -88,7 +87,7 @@ msgstr "Ошибка при открытии каталога \"%s\": %s"
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "Не удалось получить %lu байт для чтения файла \"%s\""
 
 #: glib/gfileutils.c:348
 #, c-format
