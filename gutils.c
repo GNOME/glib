@@ -451,10 +451,9 @@ g_get_any_init (void)
             g_free (buffer);
             buffer = g_malloc (bufsize);
 
-	    errno = 0;
 #    ifdef HAVE_GETPWUID_R_POSIX
             error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-            error = error < 1 ? errno : error;
+            error = error < 0 ? errno : error;
 #    else /* !HAVE_GETPWUID_R_POSIX */
             pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
             error = pw ? 0 : errno;

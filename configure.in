@@ -690,7 +690,9 @@ dnl ***********************************
 
 if test x"$have_threads" != xnone; then
 	glib_save_LIBS="$LIBS"
-	LIBS="$LIBS $G_THREAD_LIBS"
+	# we are not doing the following for now, as this might require glib 
+	# to always be linked with the thread libs on some platforms. 
+	# LIBS="$LIBS $G_THREAD_LIBS"
 	AC_CHECK_FUNCS(localtime_r rand_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
 	 	AC_CHECK_FUNCS(getpwuid_r)

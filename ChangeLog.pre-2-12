@@ -1,3 +1,17 @@
+1999-01-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Do not use the thread libs, when searching for
+	some functions, as this might require glib to always be linked
+	with the thread libs on some platforms.
+
+	* gutils.c (g_get_any_init): Don't set errno to zero and use it
+	only as the error code, if the function returned a value less
+	0. It might happen, that the call succeeds, even though the errno
+	is set during the call (i.e. it first looks for a passwd file,
+	which is not found). Submitted by Michael Natterer
+	<mitschel@cs.tu-berlin.de>. BTW: Sorry for all the mess with that
+	`getpwuid_r' change, but it had to be done once.
+
 Sun Jan 24 10:33:30 1999  Tim Janik  <timj@gtk.org>
 
 	* gutils.c (g_get_any_init): reverted raja's changes, since they leaked
