@@ -45,6 +45,7 @@ libglib_1_3_la_SOURCES = 	\
 	gbacktrace.c		\
 	gcache.c		\
 	gcompletion.c		\
+	gconvert.c		\
 	gdataset.c		\
 	gdate.c         	\
 	gerror.c		\

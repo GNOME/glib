@@ -3403,6 +3403,32 @@ guint           g_thread_pool_get_num_unused_threads (void);
 /* Stop all currently unused threads, but leave the limit untouched */
 void            g_thread_pool_stop_unused_threads    (void);
 
+typedef enum 
+{
+  G_CONVERT_ERROR_NO_CONVERSION,
+  G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+  G_CONVERT_ERROR_OTHER
+} GConvertError;
+
+#define G_CONVERT_ERROR g_convert_error_quark()
+GQuark g_convert_error_quark();
+
+gchar* g_convert               (const gchar  *str,
+				gint          len,
+				const gchar  *to_codeset,
+				const gchar  *from_codeset,
+				gint         *bytes_read,
+				gint         *bytes_written,
+				GError      **error);
+gchar* g_convert_with_fallback (const gchar  *str,
+				gint          len,
+				const gchar  *to_codeset,
+				const gchar  *from_codeset,
+				gchar        *fallback,
+				gint         *bytes_read,
+				gint         *bytes_written,
+				GError      **error);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

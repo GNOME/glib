@@ -1,3 +1,14 @@
+Sun Sep 10 12:37:40 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h gconvert.c (g_convert): Havoc Pennington's implementation 
+	of convenient character set conversion using iconv, with
+	the addition of GError. We probably need a fallback that
+	just does conversions between, say UTF-8,16,32 and ISO-8859-1
+	for targets without iconv at all.
+
+	Also add g_convert_with_fallback() to take care of conversions 
+	where we accept some loss going to the target encoding.
+	
 2000-09-10  Havoc Pennington  <hp@redhat.com>
 
 	* gutf8.c (g_utf8_validate): Add this function.
