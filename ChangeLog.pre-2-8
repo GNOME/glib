@@ -1,3 +1,21 @@
+Fri Jun 19 03:11:02 1998  Tim Janik  <timj@gtk.org>
+
+	* gdataset.c: removed g_dataset_try_key, g_dataset_force_id and
+ 	g_dataset_retrive_key in favour of GQuarks.
+	a GQuark is an numeric id wich is associated with a certain string.
+	(g_quark_try_string): try to get the quark associated with this string,
+ 	if the lookup failed return 0.
+	(g_quark_from_string): get the associated quark for a string, if there
+ 	isn't currently a GQuark associated with this string, then allocate a
+ 	new quark and return that.
+	(g_quark_from_static_string): like the above function, but the string
+ 	isn't strdup()ed to save memory.
+	(g_quark_to_string): get the string that is associated with a certain
+	GQuark.
+
+	* gdataset.c (g_dataset_id_set_data_full): invoke the destroy function
+	_after_ the new data has been setup.
+
 Thu Jun 18 02:35:21 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* glib.h: Changed messages for g_return_[val]_if_fail to

@@ -436,7 +436,7 @@ typedef unsigned long	guint32;
 typedef gint32  gssize;
 typedef guint32 gsize;
 typedef gint32  gtime;
-
+typedef guint32 GQuark;
 
 typedef struct _GList		GList;
 typedef struct _GSList		GSList;
@@ -975,28 +975,31 @@ gint  g_direct_equal (gconstpointer v,
 		      gconstpointer v2);
 
 
+/* Quarks (string<->id association)
+ */
+GQuark	  g_quark_try_string		(const gchar	*string);
+GQuark	  g_quark_from_static_string	(const gchar    *string);
+GQuark	  g_quark_from_string		(const gchar    *string);
+gchar*	  g_quark_to_string		(GQuark		 quark);
 
 /* Location Associated Data
  */
 void	  g_dataset_destroy		(gconstpointer   dataset_location);
-guint	  g_dataset_try_key		(const gchar    *key);
-guint	  g_dataset_force_id		(const gchar    *key);
-gchar*	  g_dataset_retrive_key		(guint           key_id);
 gpointer  g_dataset_id_get_data		(gconstpointer   dataset_location,
-					 guint		 key_id);
+					 GQuark		 key_id);
 void	  g_dataset_id_set_data_full	(gconstpointer   dataset_location,
-					 guint		 key_id,
+					 GQuark		 key_id,
 					 gpointer        data,
 					 GDestroyNotify	 destroy_func);
 void	  g_dataset_id_set_destroy	(gconstpointer   dataset_location,
-					 guint		 key_id,
+					 GQuark		 key_id,
 					 GDestroyNotify	 destroy_func);
 
 #define	  g_dataset_id_set_data(l,k,d)	G_STMT_START{g_dataset_id_set_data_full((l),(k),(d),NULL);}G_STMT_END
 #define	  g_dataset_id_remove_data(l,k)	G_STMT_START{g_dataset_id_set_data((l),(k),NULL);}G_STMT_END
-#define	  g_dataset_get_data(l,k)	(g_dataset_id_get_data((l),g_dataset_try_key(k)))
-#define	  g_dataset_set_data_full(l,k,d,f) G_STMT_START{g_dataset_id_set_data_full((l),g_dataset_force_id(k),(d),(f));}G_STMT_END
-#define	  g_dataset_set_destroy(l,k,f)  G_STMT_START{g_dataset_id_set_destroy((l),g_dataset_force_id(k),(f));}G_STMT_END
+#define	  g_dataset_get_data(l,k)	(g_dataset_id_get_data((l),g_quark_try_string(k)))
+#define	  g_dataset_set_data_full(l,k,d,f) G_STMT_START{g_dataset_id_set_data_full((l),g_quark_from_string(k),(d),(f));}G_STMT_END
+#define	  g_dataset_set_destroy(l,k,f)  G_STMT_START{g_dataset_id_set_destroy((l),g_quark_from_string(k),(f));}G_STMT_END
 #define	  g_dataset_set_data(l,k,d)	G_STMT_START{g_dataset_set_data_full((l),(k),(d),NULL);}G_STMT_END
 #define	  g_dataset_remove_data(l,k)	G_STMT_START{g_dataset_set_data((l),(k),NULL);}G_STMT_END
 
