@@ -126,6 +126,8 @@ gchar *g_filename_to_uri   (const gchar *filename,
 gchar *g_filename_display_name (const gchar *filename) G_GNUC_MALLOC;
 gboolean g_get_filename_charsets (G_CONST_RETURN gchar ***charsets);
 
+gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
+
 gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
 
 G_END_DECLS

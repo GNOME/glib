@@ -1,3 +1,8 @@
+2004-12-15  Alexander Larsson  <alexl@redhat.com>
+
+	* glib/gconvert.[ch]:
+	Add g_filename_display_basename.
+
 2004-12-14  Matthias Clasen  <mclasen@redhat.com>
 
 	* README.in: Updates

@@ -1907,6 +1907,38 @@ make_valid_utf8 (const gchar *name)
 }
 
 /**
+ * g_filename_display_basename:
+ * @filename: an absolute pathname in the GLib file name encoding
+ *
+ * Returns the display basename for the particular filename, guaranteed
+ * to be valid UTF-8. The display name might not be identical to the filename,
+ * for instance there might be problems converting it to UTF-8, and some files
+ * can be translated in the display
+ *
+ * You must pass the whole absolute pathname to this functions so that
+ * translation of well known locations can be done.
+ *
+ * This function is prefered over g_filename_display_name() if you know the
+ * whole path, as it allows translation.
+ *
+ * Return value: a newly allocated string containing
+ *   a rendition of the basename of the filename in valid UTF-8
+ *
+ * Since: 2.6
+ **/
+gchar *
+g_filename_display_basename (const gchar *filename)
+{
+  char *basename;
+  char *display_name;
+  
+  basename = g_path_get_basename (filename);
+  display_name = g_filename_display_name (basename);
+  g_free (basename);
+  return display_name;
+}
+
+/**
  * g_filename_display_name:
  * @filename: a pathname hopefully in the GLib file name encoding
  * 
@@ -1917,6 +1949,10 @@ make_valid_utf8 (const gchar *name)
  * Unlike g_filename_to_utf8(), the result is guaranteed 
  * to be non-NULL even if the filename actually isn't in the GLib
  * file name encoding.
+ *
+ * If you know the whole pathname of the file you should use
+ * g_filename_display_basename(), since that allows location-based
+ * translation of filenames.
  *
  * Return value: a newly allocated string containing
  *   a rendition of the filename in valid UTF-8
