@@ -1257,7 +1257,7 @@ g_io_channel_new_file (const gchar  *filename,
   return channel;
 }
 
-GIOStatus
+static GIOStatus
 g_io_win32_set_flags (GIOChannel     *channel,
                       GIOFlags        flags,
                       GError        **err)
@@ -1278,7 +1278,7 @@ g_io_win32_set_flags (GIOChannel     *channel,
   return G_IO_STATUS_ERROR;
 }
 
-GIOFlags
+static GIOFlags
 g_io_win32_fd_get_flags (GIOChannel     *channel)
 {
   GIOFlags flags = 0;
@@ -1304,7 +1304,7 @@ g_io_win32_fd_get_flags (GIOChannel     *channel)
 /*
  * Generic implementation, just translating createion flags
  */
-GIOFlags
+static GIOFlags
 g_io_win32_get_flags (GIOChannel     *channel)
 {
   GIOFlags flags;

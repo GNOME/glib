@@ -278,12 +278,14 @@ g_win32_getlocale (void)
     case LANG_ASSAMESE: l = "as"; sl = "IN"; break;
     case LANG_AZERI:
       l = "az";
+#if defined (SUBLANG_AZERI_LATIN) && defined (SUBLANG_AZERI_CYRILLIC)
       switch (sub)
 	{
 	/* FIXME: Adjust this when Azerbaijani locales appear on Unix.  */
 	case SUBLANG_AZERI_LATIN: sl = "@latin"; break;
 	case SUBLANG_AZERI_CYRILLIC: sl = "@cyrillic"; break;
 	}
+#endif
       break;
     case LANG_BASQUE:
       l = "eu"; /* sl could be "ES" or "FR".  */
@@ -414,7 +416,9 @@ g_win32_getlocale (void)
       l = "ms";
       switch (sub)
 	{
+#ifdef SUBLANG_MALAY_MALAYSIA
 	case SUBLANG_MALAY_MALAYSIA: sl = "MY"; break;
+#endif
 	case SUBLANG_MALAY_BRUNEI_DARUSSALAM: sl = "BN"; break;
 	}
       break;
@@ -522,7 +526,9 @@ g_win32_getlocale (void)
       switch (sub)
 	{
 	/* FIXME: Adjust this when Uzbek locales appear on Unix.  */
+#ifdef SUBLANG_UZBEK_LATIN
 	case SUBLANG_UZBEK_LATIN: sl = "UZ@latin"; break;
+#endif
 	case SUBLANG_UZBEK_CYRILLIC: sl = "UZ@cyrillic"; break;
 	}
       break;
@@ -767,16 +773,8 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 					       gchar *subdir)
 {
   gchar *prefix;
-  gchar *sep;
 
   prefix = g_win32_get_package_installation_directory (package, dll_name);
 
-  if (subdir == NULL)
-    subdir = "";
-
-  sep = (subdir[0] == '\0' ||
-	 prefix[strlen (prefix) - 1] == G_DIR_SEPARATOR) ?
-    "" : G_DIR_SEPARATOR_S;
-
-  return g_strconcat (prefix, sep, subdir, NULL);
+  return g_build_filename (prefix, subdir, NULL);
 }
