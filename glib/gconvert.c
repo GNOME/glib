@@ -37,8 +37,15 @@
 
 #include "glibintl.h"
 
+#if defined(USE_LIBICONV) && !defined (_LIBICONV_H)
+#error libiconv in use but included iconv.h not from libiconv
+#endif
+#if !defined(USE_LIBICONV) && defined (_LIBICONV_H)
+#error libiconv not in use but included iconv.h is from libiconv
+#endif
+
 GQuark 
-g_convert_error_quark()
+g_convert_error_quark (void)
 {
   static GQuark quark;
   if (!quark)
@@ -46,13 +53,6 @@ g_convert_error_quark()
 
   return quark;
 }
-
-#if defined(USE_LIBICONV) && !defined (_LIBICONV_H)
-#error libiconv in use but included iconv.h not from libiconv
-#endif
-#if !defined(USE_LIBICONV) && defined (_LIBICONV_H)
-#error libiconv not in use but included iconv.h is from libiconv
-#endif
 
 static gboolean
 try_conversion (const char *to_codeset,
@@ -1433,12 +1433,11 @@ unescape_character (const char *scanner)
   int first_digit;
   int second_digit;
 
-  first_digit = g_ascii_xdigit_value (*scanner++);
-  
+  first_digit = g_ascii_xdigit_value (scanner[0]);
   if (first_digit < 0) 
     return -1;
   
-  second_digit = g_ascii_xdigit_value (*scanner++);
+  second_digit = g_ascii_xdigit_value (scanner[1]);
   if (second_digit < 0) 
     return -1;
   
@@ -1446,13 +1445,14 @@ unescape_character (const char *scanner)
 }
 
 static gchar *
-g_unescape_uri_string (const gchar *escaped,
-		       const gchar *illegal_characters,
-		       int          len)
+g_unescape_uri_string (const char *escaped,
+		       int         len,
+		       const char *illegal_escaped_characters,
+		       gboolean    ascii_must_not_be_escaped)
 {
   const gchar *in, *in_end;
   gchar *out, *result;
-  int character;
+  int c;
   
   if (escaped == NULL)
     return NULL;
@@ -1460,40 +1460,97 @@ g_unescape_uri_string (const gchar *escaped,
   if (len < 0)
     len = strlen (escaped);
 
-    result = g_malloc (len + 1);
+  result = g_malloc (len + 1);
   
   out = result;
-  for (in = escaped, in_end = escaped + len; in < in_end && *in != '\0'; in++)
+  for (in = escaped, in_end = escaped + len; in < in_end; in++)
     {
-      character = *in;
-      if (character == '%')
+      c = *in;
+
+      if (c == '%')
 	{
-	  character = unescape_character (in + 1);
-      
-	  /* Check for an illegal character. We consider '\0' illegal here. */
-	  if (character == 0
-	      || (illegal_characters != NULL
-		  && strchr (illegal_characters, (char)character) != NULL))
-	    {
-	      g_free (result);
-	      return NULL;
-	    }
+	  /* catch partial escape sequences past the end of the substring */
+	  if (in + 3 > in_end)
+	    break;
+
+	  c = unescape_character (in + 1);
+
+	  /* catch bad escape sequences and NUL characters */
+	  if (c <= 0)
+	    break;
+
+	  /* catch escaped ASCII */
+	  if (ascii_must_not_be_escaped && c <= 0x7F)
+	    break;
+
+	  /* catch other illegal escaped characters */
+	  if (strchr (illegal_escaped_characters, c) != NULL)
+	    break;
+
 	  in += 2;
 	}
-      *out++ = character;
+
+      *out++ = c;
     }
   
+  g_assert (out - result <= len);
   *out = '\0';
-  
-  g_assert (out - result <= strlen (escaped));
 
-  if (!g_utf8_validate (result, -1, NULL))
+  if (in != in_end || !g_utf8_validate (result, -1, NULL))
     {
       g_free (result);
       return NULL;
     }
-  
+
   return result;
+}
+
+static gboolean
+is_escalphanum (gunichar c)
+{
+  return c > 0x7F || g_ascii_isalnum (c);
+}
+
+static gboolean
+is_escalpha (gunichar c)
+{
+  return c > 0x7F || g_ascii_isalpha (c);
+}
+
+/* allows an empty string */
+static gboolean
+hostname_validate (const char *hostname)
+{
+  const char *p;
+  gunichar c, first_char, last_char;
+
+  p = hostname;
+  if (*p == '\0')
+    return TRUE;
+  do
+    {
+      /* read in a label */
+      c = g_utf8_get_char (p);
+      p = g_utf8_next_char (p);
+      if (!is_escalphanum (c))
+	return FALSE;
+      first_char = c;
+      do
+	{
+	  last_char = c;
+	  c = g_utf8_get_char (p);
+	  p = g_utf8_next_char (p);
+	}
+      while (is_escalphanum (c) || c == '-');
+      if (last_char == '-')
+	return FALSE;
+      
+      /* if that was the last label, check that it was a toplabel */
+      if (c == '\0' || (c == '.' && *p == '\0'))
+	return is_escalpha (first_char);
+    }
+  while (c == '.');
+  return FALSE;
 }
 
 /**
@@ -1564,11 +1621,14 @@ g_filename_from_uri (const char *uri,
 	  return NULL;
 	}
 
-      unescaped_hostname = g_unescape_uri_string (host_part, "", path_part - host_part);
-      if (unescaped_hostname == NULL)
+      unescaped_hostname = g_unescape_uri_string (host_part, path_part - host_part, "", TRUE);
+
+      if (unescaped_hostname == NULL ||
+	  !hostname_validate (unescaped_hostname))
 	{
+	  g_free (unescaped_hostname);
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		       _("The hostname of the URI '%s' contains invalidly escaped characters"),
+		       _("The hostname of the URI '%s' is invalid"),
 		       uri);
 	  return NULL;
 	}
@@ -1579,7 +1639,7 @@ g_filename_from_uri (const char *uri,
 	g_free (unescaped_hostname);
     }
 
-  filename = g_unescape_uri_string (path_part, "/", -1);
+  filename = g_unescape_uri_string (path_part, -1, "/", FALSE);
 
   if (filename == NULL)
     {
@@ -1644,7 +1704,7 @@ g_filename_from_uri (const char *uri,
  **/
 gchar *
 g_filename_to_uri   (const char *filename,
-		     char       *hostname,
+		     const char *hostname,
 		     GError    **error)
 {
   char *escaped_uri;
@@ -1660,18 +1720,18 @@ g_filename_to_uri   (const char *filename,
       return NULL;
     }
 
+  if (hostname &&
+      !(g_utf8_validate (hostname, -1, NULL)
+	&& hostname_validate (hostname)))
+    {
+      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+		   _("Invalid hostname"));
+      return NULL;
+    }
+  
   utf8_filename = g_filename_to_utf8 (filename, -1, NULL, NULL, error);
   if (utf8_filename == NULL)
     return NULL;
-  
-  if (hostname &&
-      !g_utf8_validate (hostname, -1, NULL))
-    {
-      g_free (utf8_filename);
-      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-		   _("Invalid byte sequence in hostname"));
-      return NULL;
-    }
   
 #ifdef G_OS_WIN32
   /* Don't use localhost unnecessarily */

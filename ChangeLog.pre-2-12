@@ -1,3 +1,24 @@
+2002-02-08  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gconvert.h: Make hostname parameter const char *.
+	* glib/gconvert.c: (g_unescape_uri_string): Added a new
+	"ASCII must not be escaped" feature, and some missing error
+	checking.
+	(is_escalphanum): New.
+	(is_escalpha): New.
+	(hostname_validate): New.
+	(g_filename_from_uri): Don't allow hostnames to include
+	escaped ASCII, validate hostnames with the new
+	hostname_validate.
+	(g_filename_to_uri): Validate hostnames with the new
+	hostname_validate.
+
+	* tests/uri-test.c: Updated tests to reflect the hostname
+	validation changes above.
+
+	* glib/gdate.c: (g_date_fill_parse_tokens): Remove the
+	<ctype.h> include and do isdigit -> g_ascii_isdigit.
+
 Fri Feb  8 12:32:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/hash-test.c (second_hash_test): Fix access to

@@ -63,11 +63,11 @@ to_uri_tests[] = {
   /* g_filename_to_utf8 uses current code page on Win32, these tests assume that
    * local filenames *are* in UTF-8.
    */
-  { "/etc/öäå", NULL, NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
-  { "/etc/Ã¶Ã¤Ã¥", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5"},
+  { "/etc/\xE5\xE4\xF6", NULL, NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/etc/\xC3\xB6\xC3\xA4\xC3\xA5", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5"},
 #endif
-  { "/etc", "Ã¶Ã¤Ã¥", "file://%C3%B6%C3%A4%C3%A5/etc"},
-  { "/etc", "åäö", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5", "file://%C3%B6%C3%A4%C3%A5/etc"},
+  { "/etc", "\xE5\xE4\xF6", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25"},
   { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "", "", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
@@ -90,14 +90,14 @@ to_uri_tests[] = {
    */
   { "/:", NULL, "file:///:"},
   { "/?&=", NULL, "file:///?&="}, /* these are not escaped and other reserved characters are -- is that really what we want? */
-  { "/", "0123456789", "file://0123456789/"},
+  { "/", "0123456789-", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/"},
   { "/", "abcdefghijklmnopqrstuvwxyz", "file://abcdefghijklmnopqrstuvwxyz/"},
-  { "/", "-_.!~*'()", "file://-_.!~*'()/"},
-  { "/", "\"#%<>[\\]^`{|}\x7F", "file://%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F/"},
-  { "/", ";?&=+$,", "file://%3B%3F%26%3D%2B%24%2C/"},
-  { "/", "/", "file:////"}, /* should be "file://%2F/" or an error */
-  { "/", "@:", "file://@:/"}, /* these are not escaped and other reserved characters are -- is that really what we want? */
+  { "/", "_.!~*'()", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/", "\"#%<>[\\]^`{|}\x7F", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/", ";?&=+$,", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/", "/", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
+  { "/", "@:", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "\x80\xFF", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "\xC3\x80\xC3\xBF", "file://%C3%80%C3%BF/"},
 };
@@ -127,10 +127,12 @@ from_uri_tests[] = {
 #endif
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
-  { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "Ã¶Ã¤Ã¥"},
+  { "file://%C3%B6%C3%A4%C3%A5/etc", "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5"},
   { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://localhost/åäö", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://åäö/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://localhost/\xE5\xE4\xF6", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://\xE5\xE4\xF6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://localhost/%E5%E4%F6", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://%E5%E4%F6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://some", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -152,18 +154,18 @@ from_uri_tests[] = {
   { "file:///c:/foo", "/c:/foo"},
   { "file:////c:/foo", "//c:/foo"},
 #endif
-  { "file://0123456789/", "/", "0123456789"},
+  { "file://0123456789/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
   { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz"},
-  { "file://-_.!~*'()/", "/", "-_.!~*'()"},
-  { "file://\"<>[\\]^`{|}\x7F/", "/", "\"<>[\\]^`{|}\x7F"},
-  { "file://;?&=+$,/", "/", ";?&=+$,"},
+  { "file://-_.!~*'()/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://\"<>[\\]^`{|}\x7F/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://;?&=+$,/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://%C3%80%C3%BF/", "/", "\xC3\x80\xC3\xBF"},
-  { "file://@/", "/", "@"},
-  { "file://:/", "/", ":"},
+  { "file://@/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://:/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://#/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://%23/", "/", "#"}, /* is it dangerous to return a hostname with a "#" character in it? */
-  { "file://%2F/", "/", "/"}, /* is it dangerous to return a hostname with a "/" character in it? */
+  { "file://%23/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://%2F/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
 };
 
 

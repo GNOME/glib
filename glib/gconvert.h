@@ -114,7 +114,7 @@ gchar *g_filename_from_uri (const char *uri,
 			    GError    **error);
   
 gchar *g_filename_to_uri   (const char *filename,
-			    char       *hostname,
+			    const char *hostname,
 			    GError    **error);
 
 

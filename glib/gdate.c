@@ -41,7 +41,6 @@
 
 #include <time.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 #include <locale.h>
 
@@ -486,7 +485,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
     {
       
       i = 0;
-      while (*s && isdigit (*s) && i <= NUM_LEN)
+      while (*s && g_ascii_isdigit (*s) && i <= NUM_LEN)
         {
           num[pt->num_ints][i] = *s;
           ++s; 
