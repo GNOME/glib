@@ -1441,7 +1441,36 @@ GQuark	  g_quark_from_string		(const gchar	*string);
 gchar*	  g_quark_to_string		(GQuark		 quark);
 
 
-/* Location Associated Data
+/* Keyed Data List
+ */
+void	  g_datalist_init		(gpointer	*datalist);
+void	  g_datalist_clear		(gpointer	*datalist);
+gpointer  g_datalist_id_get_data	(gpointer	*datalist,
+					 GQuark		 key_id);
+void	  g_datalist_id_set_data_full	(gpointer	*datalist,
+					 GQuark		 key_id,
+					 gpointer	 data,
+					 GDestroyNotify	 destroy_func);
+void	  g_datalist_id_set_destroy	(gpointer	*datalist,
+					 GQuark		 key_id,
+					 GDestroyNotify	 destroy_func);
+#define	  g_datalist_id_set_data(dl, q, d)	\
+     g_datalist_id_set_data_full ((dl), (q), (d), NULL)
+#define	  g_datalist_id_remove_data(dl, q)	\
+     g_datalist_id_set_data ((dl), (q), NULL)
+#define	  g_datalist_get_data(dl, k)		\
+     (g_datalist_id_get_data ((dl), g_quark_try_string ((k))))
+#define	  g_datalist_set_data_full(dl, k, d, f)	\
+     g_datalist_id_set_data_full ((dl), g_quark_from_string ((k)), (d), (f))
+#define	  g_datalist_set_destroy(dl, k, f)	\
+     g_datalist_id_set_destroy ((dl), g_quark_try_string ((k)), (f))
+#define	  g_datalist_set_data(dl, k, d)		\
+     g_datalist_set_data_full ((dl), (k), (d), NULL)
+#define	  g_datalist_remove_data(dl, k)		\
+     g_datalist_id_set_data ((dl), g_quark_try_string ((k)), NULL)
+
+
+/* Location Associated Keyed Data
  */
 void	  g_dataset_destroy		(gconstpointer	 dataset_location);
 gpointer  g_dataset_id_get_data		(gconstpointer	 dataset_location,
@@ -1458,15 +1487,15 @@ void	  g_dataset_id_set_destroy	(gconstpointer	 dataset_location,
 #define	  g_dataset_id_remove_data(l, k)	\
      g_dataset_id_set_data ((l), (k), NULL)
 #define	  g_dataset_get_data(l, k)		\
-     (g_dataset_id_get_data ((l), g_quark_try_string (k)))
+     (g_dataset_id_get_data ((l), g_quark_try_string ((k))))
 #define	  g_dataset_set_data_full(l, k, d, f)	\
-     g_dataset_id_set_data_full ((l), g_quark_from_string (k), (d), (f))
+     g_dataset_id_set_data_full ((l), g_quark_from_string ((k)), (d), (f))
 #define	  g_dataset_set_destroy(l, k, f)	\
-     g_dataset_id_set_destroy ((l), g_quark_from_string (k), (f))
+     g_dataset_id_set_destroy ((l), g_quark_try_string ((k)), (f))
 #define	  g_dataset_set_data(l, k, d)		\
      g_dataset_set_data_full ((l), (k), (d), NULL)
-#define	  g_dataset_remove_data(l,k)		\
-     g_dataset_set_data ((l), (k), NULL)
+#define	  g_dataset_remove_data(l, k)		\
+     g_dataset_id_set_data ((l), g_quark_try_string ((k)), NULL)
 
 
 /* GScanner: Flexible lexical scanner for general purpose.

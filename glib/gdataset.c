@@ -24,17 +24,18 @@
 
 
 /* --- defines --- */
-#define	G_DATASET_BLOCK_SIZE			(512)
-#define	G_DATASET_MEM_CHUNK_PREALLOC		(64)
-#define	G_DATASET_DATA_MEM_CHUNK_PREALLOC	(128)
+#define	G_QUARK_BLOCK_SIZE			(512)
+#define	G_DATA_MEM_CHUNK_PREALLOC		(128)
+#define	G_DATA_CACHE_MAX			(512)
+#define	G_DATASET_MEM_CHUNK_PREALLOC		(32)
 
 
 /* --- structures --- */
-typedef struct _GDatasetData GDatasetData;
+typedef struct _GData GData;
 typedef struct _GDataset GDataset;
-struct _GDatasetData
+struct _GData
 {
-  GDatasetData *next;
+  GData *next;
   guint id;
   gpointer data;
   GDestroyNotify destroy_func;
@@ -43,15 +44,21 @@ struct _GDatasetData
 struct _GDataset
 {
   gconstpointer location;
-  GDatasetData *data_list;
+  gpointer datalist;
 };
 
 
 /* --- prototypes --- */
-static inline GDataset*	g_dataset_lookup	(gconstpointer dataset_location);
-static inline void	g_dataset_destroy_i	(GDataset     *dataset);
-static void		g_dataset_initialize	(void);
-static inline GQuark	g_quark_new		(const gchar  *string);
+static inline GDataset*	g_dataset_lookup		(gconstpointer	 dataset_location);
+static inline void	g_datalist_clear_i		(gpointer	*datalist);
+static void		g_dataset_destroy_internal	(GDataset	*dataset);
+static inline void	g_data_set_internal		(gpointer      	*datalist,
+							 GQuark          key_id,
+							 gpointer        data,
+							 GDestroyNotify  destroy_func,
+							 GDataset       *d_dataset);
+static void		g_data_initialize		(void);
+static inline GQuark	g_quark_new			(const gchar  	*string);
 
 
 /* --- variables --- */
@@ -61,11 +68,52 @@ static GQuark        g_quark_seq_id = 0;
 static GHashTable   *g_dataset_location_ht = NULL;
 static GDataset     *g_dataset_cached = NULL;
 static GMemChunk    *g_dataset_mem_chunk = NULL;
-static GMemChunk    *g_dataset_data_mem_chunk = NULL;
-
+static GMemChunk    *g_data_mem_chunk = NULL;
+static GData	    *g_data_cache = NULL;
+static guint	     g_data_cache_length = 0;
 
 
 /* --- functions --- */
+static inline void
+g_datalist_clear_i (gpointer *datalist)
+{
+  register GData *list;
+  
+  /* unlink *all* items before walking their destructors
+   */
+  list = *datalist;
+  *datalist = NULL;
+  
+  while (list)
+    {
+      register GData *prev;
+      
+      prev = list;
+      list = prev->next;
+      
+      if (prev->destroy_func)
+	prev->destroy_func (prev->data);
+      
+      if (g_data_cache_length < G_DATA_CACHE_MAX)
+	{
+	  prev->next = g_data_cache;
+	  g_data_cache = prev;
+	  g_data_cache_length++;
+	}
+      else
+	g_mem_chunk_free (g_data_mem_chunk, prev);
+    }
+}
+
+void
+g_datalist_clear (gpointer       *datalist)
+{
+  g_return_if_fail (datalist != NULL);
+  
+  while (*datalist)
+    g_datalist_clear_i (datalist);
+}
+
 static inline GDataset*
 g_dataset_lookup (gconstpointer	dataset_location)
 {
@@ -74,9 +122,6 @@ g_dataset_lookup (gconstpointer	dataset_location)
   if (g_dataset_cached && g_dataset_cached->location == dataset_location)
     return g_dataset_cached;
   
-  if (!g_dataset_location_ht)
-    g_dataset_initialize ();
-  
   dataset = g_hash_table_lookup (g_dataset_location_ht, dataset_location);
   if (dataset)
     g_dataset_cached = dataset;
@@ -84,30 +129,19 @@ g_dataset_lookup (gconstpointer	dataset_location)
   return dataset;
 }
 
-static inline void
-g_dataset_destroy_i (GDataset *dataset)
+static void
+g_dataset_destroy_internal (GDataset *dataset)
 {
-  register GDatasetData *list;
+  gpointer datalist;
   
   if (dataset == g_dataset_cached)
     g_dataset_cached = NULL;
   g_hash_table_remove (g_dataset_location_ht, dataset->location);
   
-  list = dataset->data_list;
+  datalist = dataset->datalist;
   g_mem_chunk_free (g_dataset_mem_chunk, dataset);
   
-  while (list)
-    {
-      register GDatasetData *prev;
-      
-      prev = list;
-      list = prev->next;
-      
-      if (prev->destroy_func)
-	prev->destroy_func (prev->data);
-      
-      g_mem_chunk_free (g_dataset_data_mem_chunk, prev);
-    }
+  g_datalist_clear_i (&datalist);
 }
 
 void
@@ -117,91 +151,27 @@ g_dataset_destroy (gconstpointer  dataset_location)
   
   g_return_if_fail (dataset_location != NULL);
   
-  dataset = g_dataset_lookup (dataset_location);
-  if (dataset)
-    g_dataset_destroy_i (dataset);
-}
-
-void
-g_dataset_id_set_destroy (gconstpointer  dataset_location,
-			  GQuark         key_id,
-			  GDestroyNotify destroy_func)
-{
-  g_return_if_fail (dataset_location != NULL);
-  
-  if (key_id)
+  if (g_dataset_location_ht)
     {
-      register GDataset *dataset;
-      
       dataset = g_dataset_lookup (dataset_location);
       if (dataset)
-	{
-	  register GDatasetData *list;
-	  
-	  list = dataset->data_list;
-	  while (list)
-	    {
-	      if (list->id == key_id)
-		{
-		  list->destroy_func = destroy_func;
-		  return;
-		}
-	    }
-	}
+	g_dataset_destroy_internal (dataset);
     }
 }
 
-gpointer
-g_dataset_id_get_data (gconstpointer  dataset_location,
-		       GQuark         key_id)
+static inline void
+g_data_set_internal (gpointer      *datalist,
+		     GQuark         key_id,
+		     gpointer       data,
+		     GDestroyNotify destroy_func,
+		     GDataset      *d_dataset)
 {
-  g_return_val_if_fail (dataset_location != NULL, NULL);
+  register GData *list;
   
-  if (key_id)
-    {
-      register GDataset *dataset;
-      
-      dataset = g_dataset_lookup (dataset_location);
-      if (dataset)
-	{
-	  register GDatasetData *list;
-	  
-	  for (list = dataset->data_list; list; list = list->next)
-	    if (list->id == key_id)
-	      return list->data;
-	}
-    }
-  
-  return NULL;
-}
-
-void
-g_dataset_id_set_data_full (gconstpointer  dataset_location,
-			    GQuark         key_id,
-			    gpointer       data,
-			    GDestroyNotify destroy_func)
-{
-  register GDataset *dataset;
-  register GDatasetData *list;
-  
-  g_return_if_fail (dataset_location != NULL);
-  g_return_if_fail (key_id > 0);
-  
-  dataset = g_dataset_lookup (dataset_location);
-  if (!dataset)
-    {
-      dataset = g_chunk_new (GDataset, g_dataset_mem_chunk);
-      dataset->location = dataset_location;
-      dataset->data_list = NULL;
-      g_hash_table_insert (g_dataset_location_ht, 
-			   (gpointer) dataset->location, /* Yuck */
-			   dataset);
-    }
-  
-  list = dataset->data_list;
+  list = *datalist;
   if (!data)
     {
-      register GDatasetData *prev;
+      register GData *prev;
       
       prev = NULL;
       while (list)
@@ -212,19 +182,30 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 		prev->next = list->next;
 	      else
 		{
-		  dataset->data_list = list->next;
+		  *datalist = list->next;
 		  
-		  if (!dataset->data_list)
-		    g_dataset_destroy_i (dataset);
+		  /* the dataset destruction *must* be done
+		   * prior to invokation of the data destroy function
+		   */
+		  if (!*datalist && d_dataset)
+		    g_dataset_destroy_internal (d_dataset);
 		}
 	      
-	      /* we need to have unlinked before invoking the destroy function
+	      /* the GData struct *must* already be unlinked
+	       * when invoking the destroy function
 	       */
 	      if (list->destroy_func)
 		list->destroy_func (list->data);
 	      
-	      g_mem_chunk_free (g_dataset_data_mem_chunk, list);
-
+	      if (g_data_cache_length < G_DATA_CACHE_MAX)
+		{
+		  list->next = g_data_cache;
+		  g_data_cache = list;
+		  g_data_cache_length++;
+		}
+	      else
+		g_mem_chunk_free (g_data_mem_chunk, list);
+	      
 	      return;
 	    }
 	  
@@ -238,37 +219,198 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 	{
 	  if (list->id == key_id)
 	    {
-	      register GDestroyNotify dfunc;
-	      register gpointer ddata;
+	      if (!list->destroy_func)
+		{
+		  list->data = data;
+		  list->destroy_func = destroy_func;
+		}
+	      else
+		{
+		  register GDestroyNotify dfunc;
+		  register gpointer ddata;
+		  
+		  dfunc = list->destroy_func;
+		  ddata = list->data;
+		  list->data = data;
+		  list->destroy_func = destroy_func;
+		  
+		  /* we need to have updated all structures prior to
+		   * invokation of the destroy function
+		   */
+		  dfunc (ddata);
+		}
 	      
-	      dfunc = list->destroy_func;
-	      ddata = list->data;
-	      list->data = data;
-	      list->destroy_func = destroy_func;
-	      
-	      /* we need to have updated all structures prior to
-	       * invokation of the destroy function
-	       */
-	      if (dfunc)
-		dfunc (ddata);
-
 	      return;
 	    }
 	  
 	  list = list->next;
 	}
       
-      list = g_chunk_new (GDatasetData, g_dataset_data_mem_chunk);
-      list->next = dataset->data_list;
+      if (g_data_cache)
+	{
+	  list = g_data_cache;
+	  g_data_cache = list->next;
+	  g_data_cache_length--;
+	}
+      else
+	list = g_chunk_new (GData, g_data_mem_chunk);
+      list->next = *datalist;
       list->id = key_id;
       list->data = data;
       list->destroy_func = destroy_func;
-      dataset->data_list = list;
+      *datalist = list;
     }
 }
 
+void
+g_dataset_id_set_data_full (gconstpointer  dataset_location,
+			    GQuark         key_id,
+			    gpointer       data,
+			    GDestroyNotify destroy_func)
+{
+  register GDataset *dataset;
+  
+  g_return_if_fail (dataset_location != NULL);
+  if (!key_id)
+    {
+      if (data)
+	g_return_if_fail (key_id > 0);
+      else
+	return;
+    }
+  
+  if (!g_dataset_location_ht)
+    g_data_initialize ();
+  
+  dataset = g_dataset_lookup (dataset_location);
+  if (!dataset)
+    {
+      dataset = g_chunk_new (GDataset, g_dataset_mem_chunk);
+      dataset->location = dataset_location;
+      dataset->datalist = NULL;
+      g_hash_table_insert (g_dataset_location_ht, 
+			   (gpointer) dataset->location,
+			   dataset);
+    }
+  
+  g_data_set_internal (&dataset->datalist, key_id, data, destroy_func, dataset);
+}
+
+void
+g_datalist_id_set_data_full (gpointer       *datalist,
+			     GQuark          key_id,
+			     gpointer        data,
+			     GDestroyNotify  destroy_func)
+{
+  g_return_if_fail (datalist != NULL);
+  if (!key_id)
+    {
+      if (data)
+	g_return_if_fail (key_id > 0);
+      else
+	return;
+    }
+  
+  g_data_set_internal (datalist, key_id, data, destroy_func, NULL);
+}
+
+void
+g_dataset_id_set_destroy (gconstpointer  dataset_location,
+			  GQuark         key_id,
+			  GDestroyNotify destroy_func)
+{
+  register GDataset *dataset;
+  
+  g_return_if_fail (dataset_location != NULL);
+  g_return_if_fail (key_id > 0);
+  
+  if (g_dataset_location_ht)
+    {
+      dataset = g_dataset_lookup (dataset_location);
+      if (dataset)
+	{
+	  register GData *list;
+	  
+	  for (list = dataset->datalist; list; list = list->next)
+	    if (list->id == key_id)
+	      {
+		list->destroy_func = destroy_func;
+		break;
+	      }
+	}
+    }
+}
+
+void
+g_datalist_id_set_destroy (gpointer       *datalist,
+			   GQuark          key_id,
+			   GDestroyNotify  destroy_func)
+{
+  register GData *list;
+  
+  g_return_if_fail (datalist != NULL);
+  g_return_if_fail (key_id > 0);
+  
+  for (list = *datalist; list; list = list->next)
+    if (list->id == key_id)
+      {
+	list->destroy_func = destroy_func;
+	break;
+      }
+}
+
+gpointer
+g_dataset_id_get_data (gconstpointer  dataset_location,
+		       GQuark         key_id)
+{
+  g_return_val_if_fail (dataset_location != NULL, NULL);
+  
+  if (key_id && g_dataset_location_ht)
+    {
+      register GDataset *dataset;
+      
+      dataset = g_dataset_lookup (dataset_location);
+      if (dataset)
+	{
+	  register GData *list;
+	  
+	  for (list = dataset->datalist; list; list = list->next)
+	    if (list->id == key_id)
+	      return list->data;
+	}
+    }
+  
+  return NULL;
+}
+
+gpointer
+g_datalist_id_get_data (gpointer *datalist,
+			GQuark    key_id)
+{
+  g_return_val_if_fail (datalist != NULL, NULL);
+  
+  if (key_id)
+    {
+      register GData *list;
+      
+      for (list = *datalist; list; list = list->next)
+	if (list->id == key_id)
+	  return list->data;
+    }
+  
+  return NULL;
+}
+
+void
+g_datalist_init (gpointer       *datalist)
+{
+  g_return_if_fail (datalist != NULL);
+  
+  *datalist = NULL;
+}
+
 static void
-g_dataset_initialize (void)
+g_data_initialize (void)
 {
   if (!g_dataset_location_ht)
     {
@@ -280,10 +422,10 @@ g_dataset_initialize (void)
 			 sizeof (GDataset),
 			 sizeof (GDataset) * G_DATASET_MEM_CHUNK_PREALLOC,
 			 G_ALLOC_AND_FREE);
-      g_dataset_data_mem_chunk =
-	g_mem_chunk_new ("GDatasetData MemChunk",
-			 sizeof (GDatasetData),
-			 sizeof (GDatasetData) * G_DATASET_DATA_MEM_CHUNK_PREALLOC,
+      g_data_mem_chunk =
+	g_mem_chunk_new ("GData MemChunk",
+			 sizeof (GData),
+			 sizeof (GData) * G_DATA_MEM_CHUNK_PREALLOC,
 			 G_ALLOC_AND_FREE);
     }
 }
@@ -307,7 +449,7 @@ g_quark_from_string (const gchar *string)
   g_return_val_if_fail (string != NULL, 0);
   
   if (!g_quark_ht)
-    g_dataset_initialize ();
+    g_data_initialize ();
   
   quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
   if (!quark)
@@ -324,7 +466,7 @@ g_quark_from_static_string (const gchar *string)
   g_return_val_if_fail (string != NULL, 0);
   
   if (!g_quark_ht)
-    g_dataset_initialize ();
+    g_data_initialize ();
   
   quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
   if (!quark)
@@ -347,9 +489,9 @@ g_quark_new (const gchar *string)
 {
   GQuark quark;
   
-  if (g_quark_seq_id % G_DATASET_BLOCK_SIZE == 0)
+  if (g_quark_seq_id % G_QUARK_BLOCK_SIZE == 0)
     g_quarks = g_realloc (g_quarks,
-			  (g_quark_seq_id + G_DATASET_BLOCK_SIZE) * sizeof (gchar*));
+			  (g_quark_seq_id + G_QUARK_BLOCK_SIZE) * sizeof (gchar*));
   
   
   g_quarks[g_quark_seq_id] = (gchar*) string;

@@ -1,3 +1,11 @@
+Thu Sep 17 06:34:22 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.h: 
+	* gmodule.c: implemented g_module_make_resident() which can be
+	used to make modules resident.
+	fixed a buglet about the optional "g_module_de_init" function in
+	modules, which could get invoked twice on very obscure occasions.
+
 Tue Sep 15 14:57:30 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am: Update to libtool-1.2b,
@@ -51,7 +59,7 @@ Sun Aug  9 15:57:38 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.h: 
 	* gmodule.c: GModule library implementation, which is basically
-	a wrapper about system specifc dynamic loading functions.
+	a wrapper about system specifc dynamic loading facilities.
 	
 
 Sun Aug  9 10:31:05 1998  Tim Janik  <timj@gtk.org>

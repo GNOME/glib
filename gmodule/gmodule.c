@@ -36,7 +36,8 @@ struct _GModule
 {
   gchar	*file_name;
   gpointer handle;
-  guint ref_count;
+  guint ref_count : 31;
+  guint is_resident : 1;
   GModuleDeInit de_init;
   GModule *next;
 };
@@ -164,6 +165,7 @@ g_module_open (const gchar    *file_name,
 	      main_module->file_name = NULL;
 	      main_module->handle = handle;
 	      main_module->ref_count = 1;
+	      main_module->is_resident = TRUE;
 	      main_module->de_init = NULL;
 	      main_module->next = NULL;
 	    }
@@ -208,6 +210,7 @@ g_module_open (const gchar    *file_name,
       module->file_name = g_strdup (file_name);
       module->handle = handle;
       module->ref_count = 1;
+      module->is_resident = FALSE;
       module->de_init = NULL;
       module->next = modules;
       modules = module;
@@ -246,12 +249,18 @@ g_module_close (GModule	       *module)
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (module->ref_count > 0, FALSE);
   
-  if (module != main_module)
-    module->ref_count--;
+  module->ref_count--;
   
-  if (!module->ref_count && module->de_init)
-    module->de_init (module);
-  if (!module->ref_count)
+  if (!module->ref_count && !module->is_resident && module->de_init)
+    {
+      GModuleDeInit de_init;
+
+      de_init = module->de_init;
+      module->de_init = NULL;
+      de_init (module);
+    }
+
+  if (!module->ref_count && !module->is_resident)
     {
       GModule *last;
       GModule *node;
@@ -280,6 +289,14 @@ g_module_close (GModule	       *module)
     }
   
   return module_error == NULL;
+}
+
+void
+g_module_make_resident (GModule *module)
+{
+  g_return_if_fail (module != NULL);
+
+  module->is_resident = TRUE;
 }
 
 gchar*

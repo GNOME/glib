@@ -1,3 +1,12 @@
+Thu Sep 17 06:36:25 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gdataset.c: implemented g_datalist_* along the lines of g_dataset,
+	but operates on an opaque gpointer *datalist; pointer, e.g. for the
+	implementation of GtkObject named data.
+	we cache a certain portion of the already freed data entries now, to
+ 	gain a slight performance improve with data reallocation.
+
 Tue Sep 15 14:57:30 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am glib-config.in l*: Update to libtool-1.2b,

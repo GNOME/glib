@@ -56,6 +56,9 @@ GModule*	g_module_open		   (const gchar		*file_name,
 /* close a previously opened module, returns TRUE on success */
 gboolean	g_module_close		   (GModule		*module);
 
+/* make a module resident so g_module_close on it will be ignored */
+void		g_module_make_resident	   (GModule		*module);
+
 /* query the last module error as a string */
 gchar*		g_module_error		   (void);
 
