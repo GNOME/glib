@@ -844,18 +844,19 @@ dnl ****************************************
 dnl *** strlcpy/strlcat                  ***
 dnl ****************************************
 # Check for strlcpy
-AC_MSG_CHECKING(for OpenBSD strlcpy/strlcat)
-AC_TRY_RUN([
+AC_CACHE_CHECK([for OpenBSD strlcpy/strlcat],glib_cv_have_strlcpy,[
+AC_TRY_RUN([#include <stdlib.h>
 #include <string.h>
 int main() {
-  char *p = malloc (10);
+  char p[10];
   (void) strlcpy (p, "hi", 10);
   if (strlcat (p, "bye", 0) != 3) 
-    exit (1);
+    return 1;
   return 0;
-}], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test "$glib_ok" = "yes"; then
+}], glib_cv_have_strlcpy=yes, 
+    glib_cv_have_strlcpy=no,
+    glib_cv_have_strlcpy=no)])
+if test "$glib_cv_have_strlcpy" = "yes"; then
     AC_DEFINE(HAVE_STRLCPY,1,[Have functions strlcpy and strlcat])
 fi
   
