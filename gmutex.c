@@ -1,0 +1,144 @@
+/* GLIB - Library of useful routines for C programming
+ * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ *
+ * gmutex.c:
+ * Copyright 1998 Sebastian Wilhelmi; University of Karlsruhe
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+/* 
+ * MT safe
+ */
+
+#include "glib.h"
+
+typedef struct _GStaticPrivateNode GStaticPrivateNode;
+
+struct _GStaticPrivateNode {
+  gpointer       data;
+  GDestroyNotify destroy;
+};
+
+static void g_static_private_free_data (gpointer data);
+
+/* Global variables */
+
+gboolean g_thread_use_default_impl = TRUE;
+gboolean g_thread_supported = FALSE;
+GThreadFunctions g_thread_functions_for_glib_use; /* is NULLified as default */
+
+/* Local data */
+
+static GMutex   *g_mutex_protect_static_mutex_allocation = NULL;
+static GMutex   *g_thread_specific_mutex = NULL;
+static GPrivate *g_thread_specific_private = NULL;
+
+/* This must be called only once, before any threads are created.
+ * It will only be called from g_thread_init() in -lgthread.
+ */
+void
+g_mutex_init (void)
+{
+  g_mutex_protect_static_mutex_allocation = g_mutex_new();
+  g_thread_specific_mutex = g_mutex_new();
+  
+  g_thread_specific_private = g_private_new (g_static_private_free_data);
+}
+
+GMutex *
+g_static_mutex_get_mutex_impl (GMutex** mutex)
+{
+  if (!g_thread_supported)
+    return NULL;
+
+  g_assert (g_mutex_protect_static_mutex_allocation);
+
+  g_mutex_lock (g_mutex_protect_static_mutex_allocation);
+
+  if (!(*mutex)) 
+    *mutex = g_mutex_new(); 
+
+  g_mutex_unlock (g_mutex_protect_static_mutex_allocation);
+  
+  return *mutex;
+}
+
+gpointer
+g_static_private_get (GStaticPrivate *private)
+{
+  GArray *array;
+
+  array = g_private_get (g_thread_specific_private);
+  if (!array)
+    return NULL;
+
+  if (!private->index)
+    return NULL;
+  else if (private->index <= array->len)
+    return g_array_index (array, GStaticPrivateNode, (private->index - 1)).data;
+  else
+    return NULL;
+}
+
+void
+g_static_private_set (GStaticPrivate *private, 
+		      gpointer        data,
+		      GDestroyNotify  notify)
+{
+  GArray *array;
+  static guint next_index = 0;
+  
+  array = g_private_get (g_thread_specific_private);
+  if (!array)
+    {
+      array = g_array_new (FALSE, FALSE, sizeof(GStaticPrivateNode));
+      g_private_set (g_thread_specific_private, array);
+    }
+
+  if (!private->index)
+    {
+      g_mutex_lock (g_thread_specific_mutex);
+
+      if (!private->index)
+	private->index = ++next_index;
+
+      g_mutex_unlock (g_thread_specific_mutex);
+    }
+
+  if (private->index > array->len)
+    g_array_set_size (array, private->index);
+
+  g_array_index (array, GStaticPrivateNode, (private->index - 1)).data = data;
+  g_array_index (array, GStaticPrivateNode, (private->index - 1)).destroy = notify;
+}
+
+static void
+g_static_private_free_data (gpointer data)
+{
+  if (data)
+    {
+      GArray* array = data;
+      guint i;
+      
+      for (i = 0; i < array->len; i++ )
+	{
+	  GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
+	  if (node->data && node->destroy)
+	    node->destroy (node->data);
+	}
+    }
+}
