@@ -1,8 +1,8 @@
 Overview of Changes in GLib 1.3.13:
 ===================================
 
-* Bug fixes [Sven Neumamnn, Owen Taylor, Matthias Clasen, Jeffrey Stedfast, Laszlo Peter,
-  Havoc Pennington, Tim Janik]
+* Bug fixes [Sven Neumann, Owen Taylor, Matthias Clasen, Jeffrey Stedfast, 
+  Laszlo Peter, Havoc Pennington, Tim Janik]
 * Fix g_filename_to/from_uri for Win32 [Tor Lillqvist, Darin Adler]
 * Miscellaneous win32 fixes [Tor, Hans Breuer]
 * Fix thread options for gcc on AIX [Jerome Zago, Sebastian Wilhelmi]
