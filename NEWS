@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.1.15:
+
+* HPUX 11 thread system detection should now work
+* Release the main loop lock around calls to prepare() and
+  check() so it is not held over user code
+* A few Win32 fixups
+
 Overview of Changes in GLib 1.1.14:
 
 * Check for dlsym() in system libraries and -dl
