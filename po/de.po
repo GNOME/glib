@@ -5,80 +5,78 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-03-30 10:31+0200\n"
-"PO-Revision-Date: 2001-03-07 04:04+0100\n"
+"POT-Creation-Date: 2001-05-15 18:05+0200\n"
+"PO-Revision-Date: 2001-05-15 18:16+02:00\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gconvert.c:97
+#: gconvert.c:143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Konvertierung von Zeichensatz `%s' nach `%s' wird nicht unterstützt"
+msgstr "Umwadnlung von Zeichensatz `%s' in `%s' wird nicht unterstützt"
 
-#: gconvert.c:101
+#: gconvert.c:147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Konverter von `%s' nach `%s' konnte nicht geöffnet werden: `%s'"
+msgstr "Konverter von `%s' in `%s' konnte nicht geöffnet werden: `%s'"
 
-#: gconvert.c:216 gutf8.c:751 gutf8.c:1197
+#: gconvert.c:262 gutf8.c:782 gutf8.c:1228
 msgid "Invalid byte sequence in conversion input"
-msgstr "Ungültige Byte-Sequenz in Konvertierungseingabe"
+msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
-#: gconvert.c:221 gconvert.c:446
+#: gconvert.c:267 gconvert.c:492
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Fehler während der Konvertierung: %s"
+msgstr "Fehler während der Umwandlung: %s"
 
-#: gconvert.c:241 gutf8.c:747 gutf8.c:947 gutf8.c:1088 gutf8.c:1193
+#: gconvert.c:287 gutf8.c:778 gutf8.c:978 gutf8.c:1119 gutf8.c:1224
 msgid "Partial character sequence at end of input"
-msgstr ""
+msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
-#: gconvert.c:421
+#: gconvert.c:467
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr ""
+msgstr "Notnagel `%s' kann nicht in Codierung `%s' umgewandelt werden"
 
-#: gfileutils.c:293
+#: gfileutils.c:308
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fehler beim Lesen der Datei `%s': %s"
 
-#: gfileutils.c:350
+#: gfileutils.c:365
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei `%s' gelesen werden: %s"
 
-#: gfileutils.c:389 gfileutils.c:457
+#: gfileutils.c:404 gfileutils.c:472
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: %s"
 
-#: gfileutils.c:403
+#: gfileutils.c:418
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
-"Attribute der Datei `%s' konnten nicht geholt werden: fstat() "
-"fehlgeschlagen: %s"
+msgstr "Attribute der Datei `%s' konnten nicht ermittelt werden: fstat() fehlgeschlagen: %s"
 
-#: gfileutils.c:429
+#: gfileutils.c:444
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei `%s' konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: gfileutils.c:638
+#: gfileutils.c:653
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
-msgstr "Vorlage `%s' ungültig, sollte `%s' nicht enthalten"
+msgstr "Vorlage `%s' ungültig, sollte kein `%s' enthalten"
 
-#: gfileutils.c:650
+#: gfileutils.c:665
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Vorlage `%s' endet nicht auf XXXXXX"
 
-#: gfileutils.c:671
+#: gfileutils.c:686
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei `%s' konnte nicht erstellt werden: %s"
@@ -86,7 +84,7 @@ msgstr "Datei `%s' konnte nicht erstellt werden: %s"
 #: gmarkup.c:302
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Fehler in Zeile %d Zeichen %d: %s"
+msgstr "Fehler in Zeile %d, Zeichen %d: %s"
 
 #: gmarkup.c:386
 #, c-format
@@ -96,9 +94,7 @@ msgstr "Fehler in Zeile %d: %s"
 #: gmarkup.c:465
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Leere Entität `&;' gefunden; gültige Entitäten sind &amp; &quot; &lt; &gt; "
-"&apros;"
+msgstr "Leere Entity `&;' gefunden; gültige Entities sind &amp; &quot; &lt; &gt; &apos;"
 
 #: gmarkup.c:475
 #, c-format
@@ -106,50 +102,50 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr ""
+msgstr "Zeichen `%s' ist am Anfang eines Entity-Namens ungültig; eine Entity beginnt mit dem Zeichen &; wenn das Et keine Entity sein soll, es als &amp; umschreiben"
 
 #: gmarkup.c:511
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Zeichen `%s' ist nicht gültig in einem Entität-Namen"
+msgstr "Zeichen `%s' ist in einem Entity-Namen ungültig"
 
 #: gmarkup.c:555
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Entität-Name `%s' ist unbekannt"
+msgstr "Entity-Name `%s' ist unbekannt"
 
 #: gmarkup.c:565
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
+msgstr "Entity endete nicht mit einem Semikolon; wahrscheinlich haben Sie ein Et benutzt, ohne eine Entity beginnen zu wollen - umschreiben Sie das Et als &amp;"
 
 #: gmarkup.c:611
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
+msgstr "`%s', was eine Zahl in einer Zeichenangabe (wie &#234;) sein sollte, konnte nicht verstanden werden - vielleicht ist die Zahl zu groß"
 
 #: gmarkup.c:637
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Zeichenreferenz `%s' kodiert ein nicht erlaubtes Zeichen"
+msgstr "Zeichenangabe `%s' kodiert ein nicht erlaubtes Zeichen"
 
 #: gmarkup.c:654
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Leere Zeichenreferenz; sollte eine Zahl, wie z.B. &#454; enthalten"
+msgstr "Leere Zeichenangabe; sollte eine Zahl wie z.B. &#454; enthalten"
 
 #: gmarkup.c:664
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
-msgstr ""
+msgstr "Zeichenangabe endete nicht mit einem Semikolon; wahrscheinlich haben Sie ein Et-Zeichen benutzt, ohne eine Entity beginnen zu wollen - umschreiben Sie das Et als &amp;"
 
 #: gmarkup.c:899 gmarkup.c:927 gmarkup.c:958
 msgid "Invalid UTF-8 encoded text"
-msgstr "Ungültiger UTF-8 kodierter Text"
+msgstr "Ungültiger UTF-8-kodierter Text"
 
 #: gmarkup.c:994
 msgid "Document must begin with an element (e.g. <book>)"
@@ -186,25 +182,21 @@ msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr ""
+msgstr "Seltsames Zeichen `%s', es wurde entweder ein Attribut oder aber `>' oder `/' erwartet, um das Start-Tag des Elements `%s' abzuschließen; vielleicht haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
 #: gmarkup.c:1302
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr ""
-"Seltsames Zeichen '%s', Anführungszeichen nach dem Gleichheitszeichen "
-"erwartet, wenn Angabe von Wert für Attribut '%s' von Element '%s'"
+msgstr "Seltsames Zeichen '%s'; bei der Wertangabe für das Attribut '%s' des Elemente '%s' wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
 
 #: gmarkup.c:1431
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
-"'%s' ist kein gültiges Zeichen, das auf die Zeichen '</' folgt; '%s' darf "
-"keinen Elementnamen beginnen"
+msgstr "'%s' ist kein gültiges Zeichen, wenn es auf die Zeichen '</' folgt; '%s' darf keinen Elementnamen beginnen"
 
 #: gmarkup.c:1468
 #, c-format
@@ -214,43 +206,36 @@ msgstr "Element `%s' wurde geschlossen, kein Element ist derzeit offen"
 #: gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"Element '%s' wurde geschlossen aber das derzeit offene Element ist '%s'"
+msgstr "Element '%s' wurde geschlossen, aber das derzeit offene Element ist '%s'"
 
 #: gmarkup.c:1488
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
-"'%s' ist kein gültiges Zeichen, das auf den Schließen-Elementnamen '%s' "
-"folgt; das erlaubte Zeichen ist '>'"
+msgstr "'%s' ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen '%s' folgt; das erlaubte Zeichen ist '>'"
 
 #: gmarkup.c:1615
 msgid "Document was empty or contained only whitespace"
-msgstr "Dokument ist leer oder enthält nur Leerzeichen"
+msgstr "Dokument ist leer oder enthält nur Leerraum"
 
 #: gmarkup.c:1629
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Dokument endete unerwartet nach einer offenen eckigen Klammer '<'"
+msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer '<'"
 
 #: gmarkup.c:1637 gmarkup.c:1680
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr ""
-"Dokument endete unerwartet mit noch offenen Elementen - '%s' war das letzte "
-"offenen Element"
+msgstr "Dokument endete unerwartet mit noch offenen Elementen - '%s' war das letzte offene Element"
 
 #: gmarkup.c:1645
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr ""
-"Dokument endete unerwartet, es wurde eine eckige Klammer '>', das den den "
-"Tag <%s/> schließt erwartet"
+msgstr "Dokument endete unerwartet, es wurde eine spitze Klammer '>', die das Tag <%s/> schließt, erwartet"
 
 #: gmarkup.c:1651
 msgid "Document ended unexpectedly inside an element name"
@@ -258,17 +243,17 @@ msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
 #: gmarkup.c:1656
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Dokuement endete unerwartet innerhalb eines Attributnamens"
+msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
 #: gmarkup.c:1661
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "Dokument endet unerwartet innerhalb eines Element-öffnenden Tags."
 
 #: gmarkup.c:1667
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr ""
+msgstr "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem Attributnamen folgt; kein Attributwert"
 
 #: gmarkup.c:1673
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -277,13 +262,11 @@ msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 #: gmarkup.c:1688
 #, c-format
 msgid "Document ended unexpectedly inside the close tag forelement '%s'"
-msgstr ""
-"Dokument endete unerwartet innerhalb eines Schließen-Tags für Element '%s'"
+msgstr "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element '%s'"
 
 #: gmarkup.c:1694
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Dokument endete unerwartet innerhalb eines Kommentars oder Vorgehensanweisung"
+msgstr "Dokument endete unerwartet innerhalb eines Kommentars oder Verarbeitungsanweisung"
 
 #: gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -291,7 +274,7 @@ msgstr "Zitierter Text beginnt nicht mit einem Anführungszeichen"
 
 #: gshell.c:159
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Unbalanciertes Anführungszeichen in Befehlszeile oder anderem Text in Shellquotes"
 
 #: gshell.c:519
 #, c-format
@@ -301,13 +284,11 @@ msgstr "Text endete nach einem ''-Zeichen. (Der Text war '%s'"
 #: gshell.c:526
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Text endete vor passendem Anführungszeichen für %s gefunden wurde. (Der Text "
-"war '%s')"
+msgstr "Text endete, bevor ein passendes Anführungszeichen für %c gefunden wurde. (Der Text war '%s')"
 
 #: gshell.c:538
 msgid "Text was empty (or contained only whitespace)"
-msgstr "Text war leer (oder enthielt nur Leerzeichen)"
+msgstr "Text war leer (oder enthielt nur Leerraum)"
 
 #: gspawn-win32.c:215
 msgid "Failed to read data from child process"
@@ -317,13 +298,12 @@ msgstr "Daten konnten nicht vom Kindprozess gelesen werden"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen von Kindprozess"
+msgstr "Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen aus dem Kindprozess"
 
 #: gspawn-win32.c:840 gspawn.c:896
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Lesen von Kind-Weiterleitung (%s) fehlgeschlagen"
+msgstr "Lesen aus Pipe zum Kind (%s) fehlgeschlagen"
 
 #: gspawn-win32.c:929 gspawn.c:1102
 #, c-format
@@ -338,9 +318,7 @@ msgstr "Kindprozess konnte nicht ausgeführt werden (%s)"
 #: gspawn-win32.c:979 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
-"Weiterleitung für Kommunikation mit Kindprozess (%s) konnte nicht erzeugt "
-"werden"
+msgstr "Pipe für Kommunikation mit Kindprozess (%s) konnte nicht erzeugt werden"
 
 #: gspawn.c:158
 #, c-format
@@ -381,17 +359,16 @@ msgstr "Unbekannter Fehler beim Verlassen des Kindprozesses"
 #: gspawn.c:1159
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
-"Es konnten nicht genug Daten von Kind-PID-Weiterleitung (%s) gelesen werden"
+msgstr "Es konnten nicht genug Daten von Kind-PID-Pipe (%s) gelesen werden"
 
-#: gutf8.c:826
+#: gutf8.c:857
 msgid "Character out of range for UTF-8"
-msgstr "Zeichen ausserhalb des Bereiches für UTF-8"
+msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
-#: gutf8.c:915 gutf8.c:924 gutf8.c:1056 gutf8.c:1065 gutf8.c:1207 gutf8.c:1303
+#: gutf8.c:946 gutf8.c:955 gutf8.c:1087 gutf8.c:1096 gutf8.c:1238 gutf8.c:1334
 msgid "Invalid sequence in conversion input"
-msgstr "Ungültige Sequenz in Konvertierungseingabe"
+msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: gutf8.c:1218 gutf8.c:1314
+#: gutf8.c:1249 gutf8.c:1345
 msgid "Character out of range for UTF-16"
-msgstr "Zeichen ausserhalb des Bereiches für UTF-16"
+msgstr "Zeichen außerhalb des Bereiches für UTF-16"
