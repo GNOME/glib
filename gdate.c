@@ -749,6 +749,13 @@ g_date_set_parse (GDate       *d,
           if (using_twodigit_years && y < 100) 
             y = G_DATE_BAD_YEAR; /* avoids ambiguity */
         }
+      else if (pt.num_ints == 2)
+	{
+	  if (m == G_DATE_BAD_MONTH && pt.month != G_DATE_BAD_MONTH)
+	    {
+	      m = pt.month;
+	    }
+	}
     }
   else if (pt.num_ints == 1) 
     {

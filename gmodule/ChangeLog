@@ -1,3 +1,10 @@
+2001-03-13  Tor Lillqvist  <tml@iki.fi>
+
+	From Edward M. Lee  <tailbert@yahoo.com>:
+
+	* gmodule-win32.c (_g_module_build_path): use (cygwin friendly) dir
+	separator.
+
 2001-03-12  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (libgplugin_a_la_LIBADD, libgplugin_b_la_LIBADD):

@@ -253,9 +253,9 @@ _g_module_build_path (const gchar *directory,
   k = strlen (module_name);
   if (directory && *directory)
     if (k > 4 && g_strcasecmp (module_name + k - 4, ".dll") == 0)
-      return g_strconcat (directory, "\\", module_name, NULL);
+      return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, NULL);
     else
-      return g_strconcat (directory, "\\", module_name, ".dll", NULL);
+      return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
   else if (k > 4 && g_strcasecmp (module_name + k - 4, ".dll") == 0)
     return g_strdup (module_name);
   else

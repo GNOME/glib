@@ -1,3 +1,10 @@
+2001-03-13  Tor Lillqvist  <tml@iki.fi>
+
+	From Edward M. Lee  <tailbert@yahoo.com>:
+
+	* gdate.c (g_date_set_parse): add support for dates that in the
+	form "Wed Mar 14 2001". Running testgdate on cygwin requires this.
+
 Fri Mar  9 18:01:43 2001  Tim Janik  <timj@gtk.org>
 
 	* gscanner.[hc]: made config arg to g_scanner_new() const.
