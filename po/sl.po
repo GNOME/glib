@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-05-23 14:42-0400\n"
+"POT-Creation-Date: 2002-06-09 20:23+0200\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -241,11 +241,11 @@ msgstr ""
 
 #: glib/gmarkup.c:647
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Nedokončano nanašanje na entiteto"
 
 #: glib/gmarkup.c:653
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Nedokončano nanašanje na znak"
 
 #: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
 msgid "Invalid UTF-8 encoded text"
