@@ -1,3 +1,8 @@
+2004-10-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/signals.sgml: Improve docs for 
+	g_signal_add_emission_hook.  (#154299, Nickolay V. Shmyrev)
+
 2004-09-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/messages.sgml: Correct the docs for the default log
