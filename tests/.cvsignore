@@ -27,6 +27,7 @@ file-test
 hash-test
 iochannel-test
 iochannel-test-outfile
+keyfile-test
 list-test
 mainloop-test
 markup-test
