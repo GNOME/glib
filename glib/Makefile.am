@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS = . gmodule gthread docs tests
 
-configincludedir = $(pkglibdir)/include
+configexecincludedir = $(pkglibdir)/include
 
 bin_SCRIPTS=glib-config
 BUILT_SOURCES=glib-config
@@ -58,7 +58,7 @@ libglib_la_SOURCES = \
 include_HEADERS = \
 	glib.h
 
-configinclude_DATA = \
+configexecinclude_DATA = \
 	glibconfig.h
 
 configure: configure.in acglib.m4		

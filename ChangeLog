@@ -1,3 +1,9 @@
+1999-03-26  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (configexecincludedir): Rename from 
+	configincludedir so that glibconfig.h will be installed 
+	as part of `make install-exec'. 
+
 Thu Mar 25 22:45:47 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32: Update version numbers.
