@@ -1,3 +1,10 @@
+1999-01-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* testgthread.c: conditionally compile according to the
+	G_THREADS_IMPL_??? macros.
+	(test_private_func): use rand_r instead of rand to make it
+	thread safe.
+
 1998-12-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* testgthread.c (new_thread): As a joinable thread seems to be the

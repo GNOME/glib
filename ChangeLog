@@ -1,3 +1,17 @@
+1999-01-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_any_init): Here we must replace getpwuid by
+	getpwuid_r, but as I do not know how for now, I just made a FIXME
+	note ;-)
+
+	* gdate.c (g_date_set_time): localtime --> localtime_r to make it
+	thread safe.
+
+	* configure.in: We do not need to check for broken solaris mutex
+	intitializer any longer. Provide a macro to show the used thread
+	implementation. Not nice, but this is needed until thread support
+	is completed here inside glib.
+
 Tue Jan  5 12:23:52 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: ditch whitespace before GLIB_SYSDEFS #includes,

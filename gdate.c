@@ -790,28 +790,21 @@ g_date_set_time (GDate *d,
 		 GTime  time)
 {
   time_t t = time;
-  struct tm *tm;
+  struct tm tm;
   
   g_return_if_fail (d != NULL);
   
-  tm = localtime (&t);
+  localtime_r (&t, &tm);
   
-  if (tm) 
-    {
-      d->julian = FALSE;
-      
-      d->month = tm->tm_mon + 1;
-      d->day   = tm->tm_mday;
-      d->year  = tm->tm_year + 1900;
-      
-      g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
-      
-      d->dmy    = TRUE;
-    }
-  else 
-    {
-      g_date_clear (d, 1);
-    }
+  d->julian = FALSE;
+  
+  d->month = tm.tm_mon + 1;
+  d->day   = tm.tm_mday;
+  d->year  = tm.tm_year + 1900;
+  
+  g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
+  
+  d->dmy    = TRUE;
 }
 
 void         

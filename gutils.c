@@ -416,6 +416,19 @@ g_get_any_init (void)
       g_home_dir = g_strdup (g_getenv ("HOME"));
       
 #ifdef HAVE_PWD_H
+      /* FIXME: we must actually use the getpwuid_r function here, as
+	 getpwuid is not MT-safe, but the prototype doesn't seem to be
+	 agreed upon on the different systems, i.e. it is
+
+	 struct passwd *getpwuid_r(uid_t uid, struct passwd * pwd, 
+	                           char *buffer, int buflen); 
+
+         on solaris, but 
+	 
+	 int getpwuid_r(uid_t uid, struct passwd *pwd, char *buffer, 
+	                size_t bufsize  struct passwd **result); 
+ 
+         on posix. weird. */
       setpwent ();
       pw = getpwuid (getuid ());
       endpwent ();

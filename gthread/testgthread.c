@@ -40,12 +40,11 @@ test_mutexes (void)
     }
 }
 
-#if defined(NSPR)		/* we are using nspr threads */
-/* this option must be specified by hand during compile of
-   testgthread. also note, that you have to link with whatever library
-   nspr is building upon, it might otherwise (as on solaris) lead to
-   run time failure, as the mutex functions are defined in libc, but
-   as noops, that will make some nspr assertions fail. */
+#if defined(G_THREADS_IMPL_NSPR)	
+#warning "note, that you have to link with whatever library"
+#warning "nspr is building upon, it might otherwise (as on solaris) lead to"
+#warning "run time failure, as the mutex functions are defined in libc, but"
+#warning "as noops, that will make some nspr assertions fail."
 #include <prthread.h>
 
 gpointer
@@ -59,7 +58,8 @@ new_thread (GHookFunc func, gpointer data)
 #define join_thread(thread) PR_JoinThread (thread)
 #define self_thread() PR_GetCurrentThread ()
 
-#elif defined(DEFAULTMUTEX)	/* we are using solaris threads */
+#elif defined(G_THREADS_IMPL_SOLARIS)	
+#include <thread.h>
 
 gpointer
 new_thread (GHookFunc func, gpointer data)
@@ -72,7 +72,9 @@ new_thread (GHookFunc func, gpointer data)
   thr_join ((thread_t)GPOINTER_TO_UINT (thread), NULL, NULL)
 #define self_thread()  GUINT_TO_POINTER (thr_self ())
 
-#elif defined(PTHREAD_MUTEX_INITIALIZER) /* we are using posix threads */
+#elif defined(G_THREADS_IMPL_POSIX)
+#include <pthread.h>
+
 gpointer
 new_thread(GHookFunc func, gpointer data)
 {
@@ -151,10 +153,17 @@ void
 test_private_func (void *data)
 {
   guint i = 0;
+  static unsigned int seed = 0;
+  if (!seed)
+    {
+      GTimeVal now;
+      g_get_current_time (&now);
+      seed = now.tv_usec;
+    }
   wait_thread (1);
   while (i < TEST_PRIVATE_ROUNDS)
     {
-      guint random_value = rand () % 10000;
+      guint random_value = rand_r (&seed) % 10000;
       guint *data = g_static_private_get (&private_key);
       if (!data)
 	{
