@@ -344,7 +344,7 @@ for an example of the use of this capability.
 @pspec: a #GParamSpec
 @Returns: paramspec to which requests on this paramspec should
   be redirected, or %NULL if none.
-
+@Since: 2.4
 
 <!-- ##### FUNCTION g_param_spec_internal ##### -->
 <para>
@@ -403,7 +403,7 @@ Registers @name as the name of a new static type derived from
 type and its instances. 
 </para>
 
-@name: 0-terminated string used as the name of the new #GParamSpec type. 
+@name: 0-terminated string used as the name of the new #GParamSpec type.
 @pspec_info: The #GParamSpecTypeInfo for this #GParamSpec type.
 @Returns: The new type identifier.
 
@@ -474,7 +474,6 @@ Gets an array of all #GParamSpec<!-- -->s owned by @owner_type in the pool.
 @n_pspecs_p: return location for the length of the returned array
 @Returns: a newly allocated array containing pointers to all 
   #GParamSpec<!-- -->s owned by @owner_type in the pool
-
 
 
 <!-- ##### FUNCTION g_param_spec_pool_list_owned ##### -->

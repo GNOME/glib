@@ -889,5 +889,5 @@ and no further handling is needed.
 @handler_return: standard #GSignalAccumulator parameter
 @dummy: standard #GSignalAccumulator parameter
 @Returns: standard #GSignalAccumulator result
-
+@Since: 2.4
 

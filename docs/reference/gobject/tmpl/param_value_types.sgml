@@ -1646,7 +1646,7 @@ Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
 </para>
 
 @pspec: a #GParamSpec
-
+@Since: 2.4
 
 <!-- ##### MACRO G_PARAM_SPEC_OVERRIDE ##### -->
 <para>
@@ -1654,6 +1654,7 @@ Casts a #GParamSpec into a #GParamSpecObject.
 </para>
 
 @pspec:  a #GParamSpec
+@Since: 2.4
 
 
 <!-- ##### MACRO G_TYPE_PARAM_OVERRIDE ##### -->
@@ -1661,6 +1662,7 @@ Casts a #GParamSpec into a #GParamSpecObject.
 The #GType of #GParamSpecOverride.
 </para>
 
+@Since: 2.4
 
 
 <!-- ##### STRUCT GParamSpecOverride ##### -->
@@ -1675,6 +1677,7 @@ g_object_class_override_property(), and will not be directly useful
 unless you are implementing a new base type similar to GObject.
 </para>
 
+@Since: 2.4
 
 <!-- ##### FUNCTION g_param_spec_override ##### -->
 <para>
@@ -1686,5 +1689,6 @@ useful unless you are implementing a new base type similar to GObject.
 @name: the name of the property.
 @overridden: The property that is being overridden
 @Returns: the newly created #GParamSpec
+@Since: 2.4
 
 

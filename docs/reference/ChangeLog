@@ -1,3 +1,11 @@
+Tue Oct 21 23:09:15 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gparamspec.sgml: 
+	* gobject/tmpl/param_value_types.sgml:
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/signals.sgml: Add "Since 2.4" markers where
+	appropriate.
+
 Tue Oct 14 17:45:33 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/gobject-sections.txt gobject/tmpl/objects.sgml

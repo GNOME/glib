@@ -849,7 +849,7 @@ have been installed.
 @Returns: the default vtable for the interface; call 
  g_type_default_interface_unref() when you are done using
  the interface.
-
+@Since: 2.4
 
 <!-- ##### FUNCTION g_type_default_interface_peek ##### -->
 <para>
@@ -860,6 +860,7 @@ its default interface vtable.
 @g_type: an interface type
 @Returns: the default vtable for the interface; or %NULL
  if the type is not currently in use.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_type_default_interface_unref ##### -->
@@ -874,6 +875,7 @@ vtable (the <structfield>class_finalize</structfield> member of
 
 @g_iface: the default vtable structure for a interface, as
   returned by g_type_default_interface_ref()
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_type_children ##### -->
@@ -1407,6 +1409,7 @@ defined on its interfaces.
 @check_data: data to pass to @check_func
 @check_func: function to be called after each interface
    is initialized.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_type_remove_interface_check ##### -->
@@ -1417,6 +1420,7 @@ g_type_add_interface_check().
 
 @check_data: callback data passed to g_type_add_interface_check()
 @chec_func: callback function passed to g_type_add_interface_check()
+@Since: 2.4
 
 
 <!-- ##### USER_FUNCTION GTypeInterfaceCheckFunc ##### -->
@@ -1427,6 +1431,7 @@ See g_type_add_interface_check().
 
 @func_data: data passed to g_type_add_interface_check().
 @g_iface: the interface that has been initialized
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_type_value_table_peek ##### -->

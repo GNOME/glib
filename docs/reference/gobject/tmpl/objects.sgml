@@ -21,17 +21,6 @@ to the #GObject implementation and should never be accessed directly.
 </para>
 
 
-<!-- ##### SIGNAL GObject::notify ##### -->
-<para>
-The notify signal is emitted on an object when one of its properties 
-has been changed. Note that getting this signal doesn't guarantee that the
-value of the property has actually changed, it may also be emitted when
-the setter for the property is called to reinstate the previous value.
-</para>
-
-@gobject: the object which received the signal.
-@pspec: the #GParamSpec of the property which changed
-
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
 
@@ -53,7 +42,7 @@ structure used to hand #GParamSpec/#GValue pairs to the @constructor of
 a #GObjectClass.
 </para>
 
-@pspec: the #GParamSpec of the construct parameter 
+@pspec: the #GParamSpec of the construct parameter
 @value: the value to set the parameter to
 
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
@@ -261,6 +250,7 @@ been called for any object types implementing this interface.
 @g_iface: any interface vtable for the interface, or the default
  vtable for the interface.
 @pspec: the #GParamSpec for the new property
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_object_interface_find_property ##### -->
@@ -278,6 +268,7 @@ g_type_default_interface_peek().
 @Returns: the #GParamSpec for the property of the
   interface with the name @property_name, or %NULL
   if no such property exists.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_object_interface_list_properties ##### -->
@@ -294,6 +285,7 @@ already been loaded, g_type_default_interface_peek().
 @Returns: a pointer to an array of pointers to #GParamSpec structures.
   The paramspecs are owned by GLib, but the array should
   be freed with g_free() when you are done with it.
+@Since: 2.4
 
 
 <!-- ##### FUNCTION g_object_new ##### -->
@@ -839,4 +831,15 @@ properties in set_property() and get_property() implementations.
 @property_id: the numeric id of the property
 @pspec: the #GParamSpec of the property
 
+
+<!-- ##### SIGNAL GObject::notify ##### -->
+<para>
+The notify signal is emitted on an object when one of its properties 
+has been changed. Note that getting this signal doesn't guarantee that the
+value of the property has actually changed, it may also be emitted when
+the setter for the property is called to reinstate the previous value.
+</para>
+
+@gobject: the object which received the signal.
+@pspec: the #GParamSpec of the property which changed
 
