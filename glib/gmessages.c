@@ -86,7 +86,6 @@ static GPrintFunc     glib_message_func = NULL;
 
 static GPrivate* g_log_depth = NULL;
 
-
 /* --- functions --- */
 #ifdef G_OS_WIN32
 #  define STRICT
@@ -150,7 +149,59 @@ ensure_stdout_valid (void)
 #else
 #define ensure_stdout_valid()	/* Define as empty */
 #endif
-	
+
+static void
+g_log_write_prefix (gint           fd,
+                    GLogLevelFlags mask)
+{
+  static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
+  static gboolean initted = FALSE;
+  
+  g_mutex_lock (g_messages_lock);
+
+  if (!initted)
+    {
+      const gchar *val;
+      initted = TRUE;
+
+      val = g_getenv ("G_PREFIX_MESSAGES");
+      
+      if (val)
+        {
+          static const GDebugKey keys[] = {
+            { "error", G_LOG_LEVEL_ERROR },
+            { "critical", G_LOG_LEVEL_CRITICAL },
+            { "warning", G_LOG_LEVEL_WARNING },
+            { "message", G_LOG_LEVEL_MESSAGE },
+            { "info", G_LOG_LEVEL_INFO },
+            { "debug", G_LOG_LEVEL_DEBUG }
+          };
+          
+          g_log_msg_prefix = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+        }
+    }
+  
+  g_mutex_unlock (g_messages_lock);
+  
+  if ((g_log_msg_prefix & mask) == mask)
+    {
+      gchar prg_pid[64], *prg_name;
+
+      prg_name = g_get_prgname ();
+      
+      if (!prg_name)
+        {
+          prg_name = "(process";
+          sprintf (prg_pid, ":%u): ", getpid ());
+        }
+      else
+        sprintf (prg_pid, " (pid:%u): ", getpid ());
+      
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+    }
+}
+
 static inline GLogDomain*
 g_log_find_domain (const gchar *log_domain)
 {
@@ -480,7 +531,7 @@ g_log_default_handler (const gchar    *log_domain,
   GWarningFunc local_glib_warning_func;
   GPrintFunc local_glib_message_func;
   gchar prg_pid[64], *prg_name = g_get_prgname ();
-
+  
   in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   log_level &= G_LOG_LEVEL_MASK;
@@ -523,10 +574,8 @@ g_log_default_handler (const gchar    *log_domain,
       /* use write(2) for output, in case we are out of memeory */
       ensure_stdout_valid ();
       write (fd, "\n", 1);
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -547,10 +596,8 @@ g_log_default_handler (const gchar    *log_domain,
     case G_LOG_LEVEL_CRITICAL:
       ensure_stdout_valid ();
       write (fd, "\n", 1);
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -577,10 +624,8 @@ g_log_default_handler (const gchar    *log_domain,
 	}
       ensure_stdout_valid ();
       write (fd, "\n", 1);
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -606,10 +651,9 @@ g_log_default_handler (const gchar    *log_domain,
 	  return;
 	}
       ensure_stdout_valid ();
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -627,10 +671,9 @@ g_log_default_handler (const gchar    *log_domain,
       break;
     case G_LOG_LEVEL_INFO:
       ensure_stdout_valid ();
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -648,10 +691,9 @@ g_log_default_handler (const gchar    *log_domain,
       break;
     case G_LOG_LEVEL_DEBUG:
       ensure_stdout_valid ();
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -672,10 +714,9 @@ g_log_default_handler (const gchar    *log_domain,
        * try to make the best out of it.
        */
       ensure_stdout_valid ();
-#ifdef G_ENABLE_MSG_PREFIX
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
-#endif /* G_ENABLE_MSG_PREFIX */
+
+      g_log_write_prefix (fd, log_level);
+
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
