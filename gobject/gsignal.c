@@ -1666,7 +1666,7 @@ g_signal_emit_valist (gpointer instance,
 	}
     }
   instance_and_params->g_type = 0;
-  g_value_init (instance_and_params, node->itype);
+  g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
   g_value_set_instance (instance_and_params, instance);
   if (node->return_type == G_TYPE_NONE)
     signal_emit_R (node, detail, instance, NULL, instance_and_params);

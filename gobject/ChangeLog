@@ -1,3 +1,8 @@
+Wed Feb 21 18:31:46 2001  Jonathan Blandford  <jrb@redhat.com>
+
+	* gsignal.h (g_signal_connect): Add g_signal_connect define to
+	make porting from gtk_signal_connect easy.
+
 2001-02-17  Havoc Pennington  <hp@pobox.com>
 
         Applied patch from Soeren Sandmann:
