@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
-"PO-Revision-Date: 2004-04-23 22:33+0200\n"
+"POT-Creation-Date: 2004-12-18 15:58+0100\n"
+"PO-Revision-Date: 2004-12-18 15:59+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,9 +50,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
 #: glib/gconvert.c:1600
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI:n \"%s\" är ingen absolut URI som använder filschemat"
+msgstr "URI:n \"%s\" är ingen absolut URI som använder \"file\"-schemat"
 
 #: glib/gconvert.c:1610
 #, c-format
@@ -217,18 +217,18 @@ msgstr ""
 "utan att avse att starta en entitet. Skriv om &-tecknet som &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Misslyckades med att tolka \"%s\", som skulle ha varit ett tal inuti en "
+"Misslyckades med att tolka \"%-.*s\", som skulle ha varit ett tal inuti en "
 "teckenreferens (&#234; till exempel). Talet är kanske för stort"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Teckenreferensen \"%s\" innehåller inte koden för ett tillåtet tecken"
+msgstr "Teckenreferensen \"%-.*s\" kodar inte ett tillåtet tecken"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -520,91 +520,95 @@ msgstr "Tecknet är utanför intervallet för UTF-16"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Användning:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[FLAGGA...]"
 
 #: glib/goption.c:491
 msgid "Help Options:"
-msgstr ""
+msgstr "Hjälpflaggor:"
 
 #: glib/goption.c:491
 msgid "Show help options"
-msgstr ""
+msgstr "Visa hjälpflaggor"
 
 #: glib/goption.c:495
 msgid "Show all help options"
-msgstr ""
+msgstr "Visa alla hjälpflaggor"
 
 #: glib/goption.c:544
 msgid "Application Options:"
-msgstr ""
+msgstr "Programflaggor:"
 
 #: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Kan inte tolka heltalsvärdet \"%s\" för --%s"
 
 #: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Heltalsvärdet \"%s\" för %s är utanför intervallet"
 
 #: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Okänd flagga %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Giltig nyckelfil kunde inte hittas i datakataloger"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "Inte en vanlig fil"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "Filen är tom"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Nyckelfilen innehåller raden \"%s\" som inte är ett nyckel-värde-par, grupp "
+"eller kommentar"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Nyckelfilen börjar inte med en grupp"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Nyckelfilen innehåller kodningen \"%s\" som inte stöds"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Nyckelfilen har inte gruppen \"%s\""
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Nyckelfilen har inte nyckeln \"%s\""
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
+"Nyckelfilen innehåller nyckeln \"%s\" med värdet \"%s\" som inte är UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
+"Nyckelfilen innehåller nyckeln \"%s\" som har värde som inte kan tolkas."
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -612,30 +616,42 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Nyckelfilen innehåller nyckeln \"%s\" i gruppen \"%s\" som har värde som "
+"inte kan tolkas."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Nyckelfilen har inte nyckeln \"%s\" i gruppen \"%s\""
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "URI:n \"%s\" innehåller ogiltigt inbäddade tecken"
+msgstr "Nyckelfilen innehåller ogiltiga kontrollsekvensen \"%s\""
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Nyckelfilen innehåller kontrolltecken i slutet på en rad"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Värdet \"%s\" kan inte tolkas som ett tal."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Värdet \"%s\" kan inte tolkas som ett booleskt värde."
+
+#~ msgid ""
+#~ "Failed to parse '%s', which should have been a digit inside a character "
+#~ "reference (&#234; for example) - perhaps the digit is too large"
+#~ msgstr ""
+#~ "Misslyckades med att tolka \"%s\", som skulle ha varit ett tal inuti en "
+#~ "teckenreferens (&#234; till exempel). Talet är kanske för stort"
+
+#~ msgid "Character reference '%s' does not encode a permitted character"
+#~ msgstr "Teckenreferensen \"%s\" kodar inte ett tillåtet tecken"
 
 #~ msgid "Could not open converter from '%s' to '%s': %s"
 #~ msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
