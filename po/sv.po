@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-04-05 02:47+0200\n"
-"PO-Revision-Date: 2001-04-05 02:48+0200\n"
+"POT-Creation-Date: 2001-04-05 11:38+0200\n"
+"PO-Revision-Date: 2001-04-05 13:03+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "Misslyckades med att öppna filen \"%s\": %s"
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Misslyckades med att få tag i attributen till filen \"%s\": fstat() "
+"Misslyckades med att få tag på attributen till filen \"%s\": fstat() "
 "misslyckades: %s"
 
 #: gfileutils.c:429
@@ -88,7 +88,7 @@ msgstr "Misslyckades med att skapa filen \"%s\": %s"
 #: gmarkup.c:302
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Fel på rad %d tecken %d: %s"
+msgstr "Fel på rad %d kolumn %d: %s"
 
 #: gmarkup.c:386
 #, c-format
@@ -99,8 +99,7 @@ msgstr "Fel på rad %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Tomma enheten \"&;\" hittades, giltiga enheter är: &amp; &quot; &lt; &gt; "
-"&apos;"
+"Tom enhet \"&;\" hittades, giltiga enheter är: &amp; &quot; &lt; &gt; &apos;"
 
 #: gmarkup.c:475
 #, c-format
@@ -109,8 +108,8 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Tecknet \"%s\" är inte giltigt i början på ett enhetsnamn; tecknet & inleder "
-"en enhet; om denna ampersand inte ska vara en enhet måste du skriva om det "
+"Tecknet \"%s\" är inte giltigt i början på ett enhetsnamn. Tecknet & inleder "
+"en enhet; om detta &-tecken inte ska vara en enhet måste du skriva om det "
 "som &amp;"
 
 #: gmarkup.c:511
@@ -121,15 +120,15 @@ msgstr "Tecknet \"%s\" är inte giltigt inuti ett enhetsnamn"
 #: gmarkup.c:555
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Enhetsnamnet \"%s\" är inte känt"
+msgstr "Enhetsnamnet \"%s\" är okänt"
 
 #: gmarkup.c:565
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Enheten slutade inte med ett semikolon; troligtvis använde du en ampersand "
-"utan att avse att starta en enhet - skriv om ampersanden som &amp;"
+"Enheten slutade inte med ett semikolon. Troligtvis använde du ett &-tecken "
+"utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
 
 #: gmarkup.c:611
 #, c-format
@@ -137,8 +136,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Misslyckades med att tolka \"%s\", som skulle ha varit en siffra inuti en "
-"teckenreferens (&#234; till exempel) - kanske siffran är för stor"
+"Misslyckades med att tolka \"%s\", som skulle ha varit ett tal inuti en "
+"teckenreferens (&#234; till exempel). Talet är kanske för stort"
 
 #: gmarkup.c:637
 #, c-format
@@ -147,7 +146,7 @@ msgstr "Teckenreferensen \"%s\" innehåller inte koden för ett tillåtet tecken"
 
 #: gmarkup.c:654
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Tom teckenreferens; måste innehålla en siffra som exempelvis &#454;"
+msgstr "Tom teckenreferens, måste innehålla ett tal som exempelvis &#454;"
 
 #: gmarkup.c:664
 msgid ""
@@ -155,12 +154,12 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Teckenreferensen slutade inte med ett semikolon; troligtvis använde du en "
-"ampersand utan att avse att starta en enhet - skriv om ampersanden som &amp;"
+"Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett "
+"&-tecken utan att avse att starta en enhet. Skriv om &-tecknet som &amp;"
 
 #: gmarkup.c:899 gmarkup.c:927 gmarkup.c:958
 msgid "Invalid UTF-8 encoded text"
-msgstr "Ogiltig UTF-8-kodad text"
+msgstr "Ogiltigt UTF-8-kodad text"
 
 #: gmarkup.c:994
 msgid "Document must begin with an element (e.g. <book>)"
@@ -172,7 +171,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"\"%s\" är inte ett giltigt tecken efter ett \"<\"-tecken; det kan inte "
+"\"%s\" är inte ett giltigt tecken efter ett \"<\"-tecken. Det kan inte "
 "inleda ett elementnamn"
 
 #: gmarkup.c:1099
@@ -181,16 +180,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Udda tecken \"%s\", förväntade ett \">\"-tecken för att sluta starttaggen "
-"för elementet \"%s\""
+"Konstigt tecken \"%s\", ett \">\"-tecken förväntades för att avsluta "
+"starttaggen för elementet \"%s\""
 
 #: gmarkup.c:1189
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Udda tecken \"%s\", förväntade ett \"=\" efter attributnamnet \"%s\" till "
-"elementet \"%s\""
+"Konstigt tecken \"%s\", ett \"=\" förväntades efter attributnamnet \"%s\" "
+"till elementet \"%s\""
 
 #: gmarkup.c:1230
 #, c-format
@@ -199,9 +198,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Udda tecken \"%s\", förväntade ett \">\"- eller \"/\"-tecken för att sluta "
-"starttaggen för elementet \"%s\", eller ett valfritt attribut; du kanske "
-"använde ett ogiltigt tecken i ett attributnamn"
+"Konstigt tecken \"%s\", ett \">\"- eller \"/\"-tecken förväntades för att "
+"avsluta starttaggen för elementet \"%s\", eller ett valfritt attribut. Du "
+"kanske använde ett ogiltigt tecken i ett attributnamn"
 
 #: gmarkup.c:1302
 #, c-format
@@ -209,8 +208,9 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Udda tecken \"%s\", förväntade ett startcitattecken efter likamedtecknet när "
-"värdet av attributet \"%s\" till elementet \"%s\" gavs"
+"Konstigt tecken \"%s\", ett startcitationstecken förväntades efter "
+"likhetstecknet när värdet av attributet \"%s\" till elementet \"%s\" "
+"tilldelades"
 
 #: gmarkup.c:1431
 #, c-format
@@ -218,19 +218,20 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"\"%s\" är inte ett giltigt tecken efter tecknen \"</\"; \"%s\" får inte "
+"\"%s\" är inte ett giltigt tecken efter tecknen \"</\". \"%s\" får inte "
 "inleda ett elementnamn"
 
 #: gmarkup.c:1468
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Elementet \"%s\" var stängt, inget element är öppet just nu"
+msgstr "Elementet \"%s\" var stängt, inget element är öppet för tillfället"
 
 #: gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Elementet \"%s\" var stängt, men det element som är öppet just nu är \"%s\""
+"Elementet \"%s\" var stängt, men det element som är öppet för tillfället är "
+"\"%s\""
 
 #: gmarkup.c:1488
 #, c-format
@@ -238,8 +239,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"\"%s\" är inte ett giltigt tecken efter stängelementnamnet \"%s\"; det "
-"tillåtna tecknet är \">\""
+"\"%s\" är inte ett giltigt tecken efter stängelementnamnet \"%s\". Det "
+"giltiga tecknet är \">\""
 
 #: gmarkup.c:1615
 msgid "Document was empty or contained only whitespace"
@@ -255,7 +256,7 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokumentet tog oväntat slut med fortfarande öppna element - \"%s\" var det "
+"Dokumentet tog oväntat slut då element fortfarande var öppna. \"%s\" var det "
 "senast öppnade elementet"
 
 #: gmarkup.c:1645
@@ -264,7 +265,7 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokumentet tog oväntat slut, förväntade en stängningsklammer för att avsluta "
+"Dokumentet tog oväntat slut, en stängningsklammer föräntades för att avsluta "
 "taggen <%s/>"
 
 #: gmarkup.c:1651
@@ -284,8 +285,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Dokumentet tog oväntat slut efter likamedtecknet som följde attributnamnet; "
-"inget attributvärde"
+"Dokumentet tog oväntat slut efter likhetstecknet som följde ett "
+"attributnamn. Inget attributvärde"
 
 #: gmarkup.c:1673
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -308,7 +309,7 @@ msgstr "Citerad text börjar inte med citationstecken"
 
 #: gshell.c:159
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Ensamt citattecken på kommandoraden eller annan skalciterad text"
+msgstr "Ensamt citationstecken på kommandoraden eller annan skalciterad text"
 
 #: gshell.c:519
 #, c-format
@@ -319,7 +320,7 @@ msgstr "Texten slutade efter ett \"\"-tecken (texten var \"%s\")."
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Texten slutade innan matchande citattecken hittades för %c (texten var "
+"Texten slutade innan matchande citationstecken hittades för %c (texten var "
 "\"%s\")."
 
 #: gshell.c:538
@@ -335,13 +336,13 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Oväntat fel i g_io_channel_win32_poll() vid inläsning av data från "
-"barnprocessen"
+"Oväntat fel i g_io_channel_win32_poll() vid inläsning av data från en "
+"barnprocess"
 
 #: gspawn-win32.c:840 gspawn.c:896
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Misslyckades med att läsa från barnrör (%s)"
+msgstr "Misslyckades med att läsa från rör till barnet (%s)"
 
 #: gspawn-win32.c:929 gspawn.c:1102
 #, c-format
@@ -356,7 +357,7 @@ msgstr "Misslyckades med att köra barnprocess (%s)"
 #: gspawn-win32.c:979 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Misslyckades med att skapa rör för kommunikation med barnprodess (%s)"
+msgstr "Misslyckades med att skapa rör för kommunikation med barnprocess (%s)"
 
 #: gspawn.c:158
 #, c-format
@@ -366,7 +367,7 @@ msgstr "Misslyckades med att läsa data från barnprocess (%s)"
 #: gspawn.c:288
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Oväntat fel i select() vid inläsning av data från en barnprocess (%s)"
+msgstr "Oväntat fel i select() vid läsning av data från en barnprocess (%s)"
 
 #: gspawn.c:371
 #, c-format
@@ -387,7 +388,7 @@ msgstr ""
 #: gspawn.c:1130
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Misslyckades med att grena barnprocess (%s)"
+msgstr "Misslyckades med att skapa barnprocess (%s)"
 
 #: gspawn.c:1138
 msgid "Unknown error executing child process"
@@ -397,7 +398,8 @@ msgstr "Okänt fel vid körning av barnprocess"
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
-"Misslyckades med att läsa tillräckligt med data från barn-pid-röret (%s)"
+"Misslyckades med att läsa tillräckligt med data från röret till barnets pid "
+"(%s)"
 
 #: gutf8.c:826
 msgid "Character out of range for UTF-8"
