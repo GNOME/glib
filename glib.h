@@ -858,8 +858,10 @@ gint	g_snprintf		(gchar	     *string,
 				 gchar const *format,
 				 ...) G_GNUC_PRINTF (3, 4);
 gchar*	g_basename		(const gchar *file_name);
-gchar*	g_getcwd		(void);
 gchar*	g_dirname		(const gchar *file_name);
+#if 0
+gchar*	g_getcwd		(void);
+#endif
 
 
 /* We make the assumption that if memmove isn't available, then

@@ -1,7 +1,8 @@
 Mon Jul 27 01:02:27 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: #if 0'ed out the GTime definition, until it is definitively
- 	needed.
+ 	needed. #if 0'ed out the g_getcwd() version, because it is the wrong
+ 	implementation.
 
 Sat Jul 25 16:09:00 1998  Mark Crichton <crichton@expert.cc.purdue.edu>
 	
