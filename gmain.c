@@ -752,6 +752,7 @@ g_source_attach (GSource      *source,
   source->context = context;
   result = source->id = context->next_id++;
 
+  source->ref_count++;
   g_source_list_add (source, context);
 
   tmp_list = source->poll_fds;
@@ -2618,6 +2619,7 @@ g_timeout_add_full (gint           priority,
 		    GDestroyNotify notify)
 {
   GSource *source;
+  guint id;
   
   g_return_val_if_fail (function != NULL, 0);
 
@@ -2627,7 +2629,10 @@ g_timeout_add_full (gint           priority,
     g_source_set_priority (source, priority);
 
   g_source_set_callback (source, function, data, notify);
-  return g_source_attach (source, NULL);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
 }
 
 /**
@@ -2731,6 +2736,7 @@ g_idle_add_full (gint           priority,
 		 GDestroyNotify notify)
 {
   GSource *source;
+  guint id;
   
   g_return_val_if_fail (function != NULL, 0);
 
@@ -2740,7 +2746,10 @@ g_idle_add_full (gint           priority,
     g_source_set_priority (source, priority);
 
   g_source_set_callback (source, function, data, notify);
-  return g_source_attach (source, NULL);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
 }
 
 /**
