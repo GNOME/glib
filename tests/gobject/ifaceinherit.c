@@ -39,13 +39,17 @@
  * I3) During DerivedObject's class_init
  * I4) After DerivedObject's class init
  *
- * We also do some tests of overriding. We add an interface
- * to BaseObject, then add the *same* interface to DerivedObject
+ * We also do some tests of overriding.
+ * 
+ * I5) We add an interface to BaseObject, then add the same
+ *     interface to DerivedObject. (Note that this is only legal
+ *     before DerivedObject's class_init; the results of
+ *     g_type_interface_peek() are not allowed to change from one
+ *     non-NULL vtable to another non-NULL vtable)
  *
- * I5) After DerivedObject is registered, but before
- *     DerivedObject is class initialized
- * I6) During DerivedObject's class_init
- * I7) After DerivedObject's class_init
+ * I6) We add an interface to DerivedObject, then add the
+ *     same interface to BaseObject. This is rather pathological,
+ *     but should work.
  */
    
 /*
@@ -93,7 +97,6 @@ typedef struct _TestIfaceClass TestIface3Class;
 typedef struct _TestIfaceClass TestIface4Class;
 typedef struct _TestIfaceClass TestIface5Class;
 typedef struct _TestIfaceClass TestIface6Class;
-typedef struct _TestIfaceClass TestIface7Class;
 
 struct _TestIfaceClass
 {
@@ -107,7 +110,6 @@ struct _TestIfaceClass
 #define TEST_TYPE_IFACE4 (test_iface4_get_type ())
 #define TEST_TYPE_IFACE5 (test_iface5_get_type ())
 #define TEST_TYPE_IFACE6 (test_iface6_get_type ())
-#define TEST_TYPE_IFACE7 (test_iface7_get_type ())
 
 static DEFINE_IFACE (TestIface1, test_iface1,  NULL, NULL)
 static DEFINE_IFACE (TestIface2, test_iface2,  NULL, NULL)
@@ -115,7 +117,6 @@ static DEFINE_IFACE (TestIface3, test_iface3,  NULL, NULL)
 static DEFINE_IFACE (TestIface4, test_iface4,  NULL, NULL)
 static DEFINE_IFACE (TestIface5, test_iface5,  NULL, NULL)
 static DEFINE_IFACE (TestIface6, test_iface6,  NULL, NULL)
-static DEFINE_IFACE (TestIface7, test_iface7,  NULL, NULL)
 
 static void
 add_interface (GType              object_type,
@@ -179,7 +180,6 @@ static void
 derived_object_class_init (BaseObjectClass *class)
 {
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE3);
-  add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE6);
 }
 
 static DEFINE_TYPE(BaseObject, base_object,
@@ -202,8 +202,6 @@ main (int   argc,
   BASE_TYPE_OBJECT;
   
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE5);
-  add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE6);
-  add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE7);
 
   /* Class init BaseObject */
   g_type_class_ref (BASE_TYPE_OBJECT);
@@ -215,12 +213,13 @@ main (int   argc,
 
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE2);
   add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE5);
+  add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE6);
 
   /* Class init DerivedObject */
   g_type_class_ref (DERIVED_TYPE_OBJECT);
   
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE4);
-  add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE7);
+  add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE6);
 
   /* Check that all the non-overridden interfaces were properly inherited
    */
@@ -233,7 +232,6 @@ main (int   argc,
    */
   g_assert (interface_is_derived (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE5));
   g_assert (interface_is_derived (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE6));
-  g_assert (interface_is_derived (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE7));
 
   return 0;
 }
