@@ -7,30 +7,30 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-12-08 12:13-0500\n"
-"PO-Revision-Date: 2003-04-27 22:34+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-01 03:46+0100\n"
+"PO-Revision-Date: 2003-12-19 01:22+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.1\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "التّحويل من مجموعة المحارف '%s' الى '%s' غير مدعوم"
+msgstr "التحويل من مجموعة المحارف '%s' إلى '%s' غير مدعوم"
 
 #: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "لم يمكن فتح المحوّل من '%s' الى '%s': %s"
+msgstr "لم يمكن فتح المحول من '%s' الى '%s': %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
-msgstr "سلسلة بايتات غير سليمة في مُدخلات التحويل"
+msgstr "سلسلة بايتات غير سليمة في مدخلات التحويل"
 
 #: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
 #: glib/giochannel.c:2211
@@ -41,44 +41,44 @@ msgstr "خطأ أثناء التحويل: %s"
 #: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
-msgstr "سلسلة حرفيّات جزئي عند نهاية المُدخل"
+msgstr "سلسلة حرفيات جزئي عند نهاية المدخل"
 
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "لم يمكن تحويل fallback '%s' الى مجموعة المحارف '%s'"
 
-#: glib/gconvert.c:1492
+#: glib/gconvert.c:1411
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "الـURI '%s' ليس URI كامل باستخدام مخطّط الملفات"
+msgstr "الـURI '%s' ليس URI كامل باستخدام مخطط الملفات"
 
-#: glib/gconvert.c:1502
+#: glib/gconvert.c:1421
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ملف الـ URI المحلي '%s' قد لا يحتوي على '#'"
 
-#: glib/gconvert.c:1519
+#: glib/gconvert.c:1438
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1531
+#: glib/gconvert.c:1450
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "اسم مستضيف الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1466
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "الـURI '%s' يحتوي على حروف هربت بطريقة غير سليمة "
 
-#: glib/gconvert.c:1618
+#: glib/gconvert.c:1537
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "اسم المسار '%s' ليس مسارا كاملا"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1547
 msgid "Invalid hostname"
 msgstr "اسم المستضيف غير سليم"
 
@@ -133,13 +133,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "فشل انشاء الملف '%s': %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "فشل انشاء الملف '%s': %s"
+msgstr "فشلت قراءة الوصلة الرمزية '%s': %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "الوصلات الرمزية غير مدعومة"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -149,7 +149,7 @@ msgstr "التحويل من مجموعة المحارف `%s' الى `%s' غير 
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "لم يمكن فتح المحوِّل من `%s' الى `%s': %s"
+msgstr "لم يمكن فتح المحول من `%s' الى `%s': %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -157,7 +157,7 @@ msgstr "لا يمكن عمل قراءة خام في g_io_channel_read_line_strin
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
-msgstr "بيانات غير محوّلة باقية في حاجز القراءة الخلفي"
+msgstr "بيانات غير محولة باقية في حاجز القراءة الخلفي"
 
 #: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
@@ -190,7 +190,7 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"الرمز '%s' غير سليم عند بداية اسم الكيان; الرمز & يبدأ كياناً, ان كان علامة "
+"الرمز '%s' غير سليم عند بداية اسم الكيان; الرمز & يبدأ كيانا, ان كان علامة "
 "اﻻمبارساند هذه غير موضوعة على انها كيان, تخطاها باعتبارها &amp;"
 
 #: glib/gmarkup.c:458
@@ -227,7 +227,7 @@ msgstr "مرجع الرمز '%s' لا يقوم بتشفير رمز مسموح ب
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "مرجع رمز فارغ; يجب أن يتضمن رقماَ مثل &#454;"
+msgstr "مرجع رمز فارغ; يجب أن يتضمن رقما مثل &#454;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -252,7 +252,7 @@ msgstr "نص UTF-8 مشفر غير سليم"
 
 #: glib/gmarkup.c:983
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "يجب أن يبدأ المستند  بعنصر (<book> مثلا)"
+msgstr "يجب أن يبدأ المستند بعنصر (<book> مثلا)"
 
 #: glib/gmarkup.c:1022
 #, c-format
