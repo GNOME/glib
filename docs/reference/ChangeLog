@@ -1,3 +1,13 @@
+Tue Nov 13 21:31:58 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmp/param_value_types.sgml: list parameter and
+	value types.
+
+	* gobject/tmpl/gparamspec.sgml: more docs for g_param_spec*()
+	functions.
+	
+	* gobject/*: section cleanups.
+
 Tue Nov 13 19:49:16 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/gparamspec.sgml: param spec updates.

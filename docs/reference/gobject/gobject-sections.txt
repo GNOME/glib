@@ -1,8 +1,8 @@
 <INCLUDE>gobject.h</INCLUDE>
 
 <SECTION>
+<FILE>gtype</FILE>
 <TITLE>Type Information</TITLE>
-<FILE>types</FILE>
 GType
 G_TYPE_FUNDAMENTAL
 G_TYPE_FUNDAMENTAL_MAX
@@ -24,7 +24,7 @@ GTypeInstance
 GTypeInfo
 GTypeFundamentalInfo
 GInterfaceInfo
-
+GTypeValueTable
 <TITLE>GType</TITLE>
 G_TYPE_FROM_INSTANCE
 G_TYPE_FROM_CLASS
@@ -54,6 +54,7 @@ g_type_class_peek
 g_type_class_unref
 g_type_class_peek_parent
 g_type_interface_peek
+g_type_interface_peek_parent
 g_type_children
 g_type_interfaces
 g_type_set_qdata
@@ -78,21 +79,24 @@ g_type_interface_add_prerequisite
 g_type_get_plugin
 g_type_interface_get_plugin
 g_type_fundamental_last
-g_type_check_flags
 g_type_create_instance
 g_type_free_instance
 g_type_add_class_cache_func
 g_type_remove_class_cache_func
 g_type_class_unref_uncached
-g_type_check_instance
-g_type_check_instance_cast
-g_type_instance_is_a
-g_type_check_class_cast
-g_type_class_is_a
-g_type_check_value
-g_type_value_is_a
 g_type_value_table_peek
 <SUBSECTION Private>
+g_type_check_instance
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_check_class_cast
+g_type_check_class_is_a
+g_type_check_is_value_type
+g_type_check_value
+g_type_check_value_holds
+g_type_test_flags
+g_type_name_from_instance
+g_type_name_from_class
 </SECTION>
 
 <SECTION>
@@ -141,7 +145,6 @@ G_TYPE_MODULE_GET_CLASS
 <FILE>objects</FILE>
 GObject
 GObjectClass
-GObjectConstructParam
 GObjectGetPropertyFunc
 GObjectSetPropertyFunc
 GObjectFinalizeFunc
@@ -155,7 +158,6 @@ G_OBJECT_TYPE
 G_OBJECT_TYPE_NAME
 G_OBJECT_CLASS_TYPE
 G_OBJECT_CLASS_NAME
-G_VALUE_HOLDS_OBJECT
 g_object_class_install_property
 g_object_class_find_property
 g_object_class_list_properties
@@ -163,6 +165,7 @@ g_object_new
 g_object_newv
 g_object_ref
 g_object_unref
+GWeakNotify
 g_object_weak_ref
 g_object_weak_unref
 g_object_add_weak_pointer
@@ -189,10 +192,9 @@ g_object_set_valist
 g_object_get_valist
 g_object_watch_closure
 g_object_run_dispose
-g_value_set_object
-g_value_get_object
-g_value_dup_object
 G_OBJECT_WARN_INVALID_PROPERTY_ID
+<SUBSECTION Private>
+GObjectConstructParam
 </SECTION>
 
 <SECTION>
@@ -210,8 +212,6 @@ G_FLAGS_CLASS
 G_IS_FLAGS_CLASS
 G_FLAGS_CLASS_TYPE
 G_FLAGS_CLASS_TYPE_NAME
-G_VALUE_HOLDS_ENUM
-G_VALUE_HOLDS_FLAGS
 GEnumValue
 GFlagsValue
 g_enum_get_value
@@ -220,10 +220,6 @@ g_enum_get_value_by_nick
 g_flags_get_first_value
 g_flags_get_value_by_name
 g_flags_get_value_by_nick
-g_value_set_enum
-g_value_get_enum
-g_value_set_flags
-g_value_get_flags
 g_enum_register_static
 g_flags_register_static
 g_enum_complete_type_info
@@ -233,20 +229,13 @@ g_flags_complete_type_info
 <SECTION>
 <FILE>gboxed</FILE>
 <TITLE>Boxed Types</TITLE>
-GBoxed
-GBoxedInitFunc
 GBoxedCopyFunc
 GBoxedFreeFunc
 g_boxed_copy
 g_boxed_free
-g_value_set_boxed
-g_value_set_static_boxed
-g_value_set_boxed_take_ownership
-g_value_get_boxed
-g_value_dup_boxed
 g_boxed_type_register_static
+g_pointer_type_register_static
 <SUBSECTION Standard>
-G_VALUE_HOLDS_BOXED
 G_TYPE_IS_BOXED
 </SECTION>
 
@@ -266,11 +255,11 @@ g_value_reset
 g_value_unset
 g_value_fits_pointer
 g_value_peek_pointer
-g_value_convert
-g_values_exchange
-g_value_types_exchangable
-g_value_register_exchange_func
-GTypeValueTable
+g_value_type_compatible
+g_value_type_transformable
+g_value_transform
+GValueTransform
+g_value_register_transform_func
 </SECTION>
 
 <SECTION>
@@ -281,7 +270,6 @@ g_value_array_get_nth
 g_value_array_new
 g_value_array_copy
 g_value_array_free
-g_value_array_index
 g_value_array_append
 g_value_array_prepend
 g_value_array_insert
@@ -291,61 +279,16 @@ g_value_array_sort_with_data
 </SECTION>
 
 <SECTION>
-<TITLE>Standard value types</TITLE>
-<FILE>value_types</FILE>
-G_VALUE_HOLDS_CHAR
-G_VALUE_HOLDS_UCHAR
-G_VALUE_HOLDS_BOOLEAN
-G_VALUE_HOLDS_INT
-G_VALUE_HOLDS_UINT
-G_VALUE_HOLDS_LONG
-G_VALUE_HOLDS_ULONG
-G_VALUE_HOLDS_FLOAT
-G_VALUE_HOLDS_DOUBLE
-G_VALUE_HOLDS_STRING
-G_VALUE_HOLDS_POINTER
-G_VALUE_HOLDS_PARAM
-g_value_set_char
-g_value_get_char
-g_value_set_uchar
-g_value_get_uchar
-g_value_set_boolean
-g_value_get_boolean
-g_value_set_int
-g_value_get_int
-g_value_set_uint
-g_value_get_uint
-g_value_set_long
-g_value_get_long
-g_value_set_ulong
-g_value_get_ulong
-g_value_set_float
-g_value_get_float
-g_value_set_double
-g_value_get_double
-g_value_set_string
-g_value_set_static_string
-g_value_set_string_take_ownership
-g_value_get_string
-g_value_dup_string
-g_value_set_param
-g_value_get_param
-g_value_dup_param
-g_value_get_pointer
-g_value_set_pointer
-g_value_set_instance
-</SECTION>
-
-<SECTION>
 <TITLE>GParamSpec</TITLE>
 <FILE>gparamspec</FILE>
-G_PARAM_SPEC_TYPE
+G_TYPE_PARAM
 G_TYPE_IS_PARAM
 G_PARAM_SPEC
 G_IS_PARAM_SPEC
 G_PARAM_SPEC_CLASS
 G_IS_PARAM_SPEC_CLASS
 G_PARAM_SPEC_GET_CLASS
+G_PARAM_SPEC_TYPE
 G_PARAM_SPEC_TYPE_NAME
 G_PARAM_SPEC_VALUE_TYPE
 GParamSpec
@@ -366,6 +309,7 @@ g_param_spec_get_qdata
 g_param_spec_set_qdata
 g_param_spec_set_qdata_full
 g_param_spec_steal_qdata
+g_param_spec_internal
 GParamSpecTypeInfo
 g_param_type_register_static
 GParamSpecPool
@@ -373,86 +317,197 @@ g_param_spec_pool_new
 g_param_spec_pool_insert
 g_param_spec_pool_remove
 g_param_spec_pool_lookup
-g_param_spec_internal
+g_param_spec_pool_list
 </SECTION>
 
 <SECTION>
-<TITLE>Standard Parameter Types</TITLE>
-<FILE>standard_params</FILE>
-G_IS_PARAM_SPEC_CHAR
-G_PARAM_SPEC_CHAR
-G_IS_PARAM_SPEC_UCHAR
-G_PARAM_SPEC_UCHAR
+<TITLE>Standard Parameter and Value Types</TITLE>
+<FILE>param_value_types</FILE>
+
+<SUBSECTION gboolean>
 G_IS_PARAM_SPEC_BOOLEAN
 G_PARAM_SPEC_BOOLEAN
+G_VALUE_HOLDS_BOOLEAN
+GParamSpecBoolean
+g_param_spec_boolean
+g_value_set_boolean
+g_value_get_boolean
+
+<SUBSECTION gchar>
+G_IS_PARAM_SPEC_CHAR
+G_PARAM_SPEC_CHAR
+G_VALUE_HOLDS_CHAR
+GParamSpecChar
+g_param_spec_char
+g_value_set_char
+g_value_get_char
+
+<SUBSECTION guchar>
+G_IS_PARAM_SPEC_UCHAR
+G_PARAM_SPEC_UCHAR
+G_VALUE_HOLDS_UCHAR
+GParamSpecUChar
+g_param_spec_uchar
+g_value_set_uchar
+g_value_get_uchar
+
+<SUBSECTION gint>
 G_IS_PARAM_SPEC_INT
 G_PARAM_SPEC_INT
+G_VALUE_HOLDS_INT  
+GParamSpecInt
+g_param_spec_int
+g_value_set_int
+g_value_get_int
+
+<SUBSECTION guint>
 G_IS_PARAM_SPEC_UINT
 G_PARAM_SPEC_UINT
+G_VALUE_HOLDS_UINT  
+GParamSpecUInt
+g_param_spec_uint
+g_value_set_uint
+g_value_get_uint
+
+<SUBSECTION glong>
 G_IS_PARAM_SPEC_LONG
 G_PARAM_SPEC_LONG
+G_VALUE_HOLDS_LONG 
+GParamSpecLong
+g_param_spec_long
+g_value_set_long
+g_value_get_long
+
+<SUBSECTION gulong>
 G_IS_PARAM_SPEC_ULONG
 G_PARAM_SPEC_ULONG
-G_IS_PARAM_SPEC_ENUM
-G_PARAM_SPEC_ENUM
-G_IS_PARAM_SPEC_FLAGS
-G_PARAM_SPEC_FLAGS
+G_VALUE_HOLDS_ULONG 
+GParamSpecULong
+g_param_spec_ulong
+g_value_set_ulong
+g_value_get_ulong
+
+<SUBSECTION gint64>
+G_IS_PARAM_SPEC_INT64
+G_PARAM_SPEC_INT64
+G_VALUE_HOLDS_INT64
+GParamSpecInt64
+g_param_spec_int64
+g_value_set_int64
+g_value_get_int64
+
+<SUBSECTION guint64>
+G_IS_PARAM_SPEC_UINT64
+G_PARAM_SPEC_UINT64
+G_VALUE_HOLDS_UINT64
+GParamSpecUInt64
+g_param_spec_uint64
+g_value_set_uint64
+g_value_get_uint64
+
+<SUBSECTION gfloat>
 G_IS_PARAM_SPEC_FLOAT
 G_PARAM_SPEC_FLOAT
+G_VALUE_HOLDS_FLOAT
+GParamSpecFloat
+g_param_spec_float
+g_value_set_float
+g_value_get_float
+
+<SUBSECTION gdouble>
 G_IS_PARAM_SPEC_DOUBLE
 G_PARAM_SPEC_DOUBLE
+G_VALUE_HOLDS_DOUBLE
+GParamSpecDouble
+g_param_spec_double
+g_value_set_double
+g_value_get_double
+
+<SUBSECTION GEnum>
+G_IS_PARAM_SPEC_ENUM
+G_PARAM_SPEC_ENUM
+G_VALUE_HOLDS_ENUM
+GParamSpecEnum
+g_param_spec_enum
+g_value_set_enum
+g_value_get_enum
+
+<SUBSECTION GFLags>
+G_IS_PARAM_SPEC_FLAGS
+G_PARAM_SPEC_FLAGS
+G_VALUE_HOLDS_FLAGS
+GParamSpecFlags
+g_param_spec_flags
+g_value_set_flags
+g_value_get_flags
+
+<SUBSECTION gchararray>
 G_IS_PARAM_SPEC_STRING
 G_PARAM_SPEC_STRING
+G_VALUE_HOLDS_STRING
+GParamSpecString
+g_param_spec_string
+g_value_set_string
+g_value_set_static_string
+g_value_set_string_take_ownership
+g_value_get_string
+g_value_dup_string
+
+<SUBSECTION GParamSpec>
 G_IS_PARAM_SPEC_PARAM
 G_PARAM_SPEC_PARAM
+G_VALUE_HOLDS_PARAM
+GParamSpecParam
+g_param_spec_param
+g_value_set_param
+g_value_get_param
+g_value_dup_param
+
+<SUBSECTION GBoxed>
 G_IS_PARAM_SPEC_BOXED
 G_PARAM_SPEC_BOXED
+G_VALUE_HOLDS_BOXED
+GParamSpecBoxed
+g_param_spec_boxed
+g_value_set_boxed
+g_value_set_static_boxed
+g_value_set_boxed_take_ownership
+g_value_get_boxed
+g_value_dup_boxed
+
+<SUBSECTION gpointer>
 G_IS_PARAM_SPEC_POINTER
 G_PARAM_SPEC_POINTER
-G_IS_PARAM_SPEC_VALUE_ARRAY
-G_PARAM_SPEC_VALUE_ARRAY
-G_IS_PARAM_SPEC_CLOSURE
-G_PARAM_SPEC_CLOSURE
+G_VALUE_HOLDS_POINTER
+GParamSpecPointer
+g_param_spec_pointer
+g_value_set_pointer
+g_value_get_pointer
+
+<SUBSECTION GObject>
 G_IS_PARAM_SPEC_OBJECT
 G_PARAM_SPEC_OBJECT
-GParamSpecChar
-GParamSpecUChar
-GParamSpecBoolean
-GParamSpecInt
-GParamSpecUInt
-GParamSpecLong
-GParamSpecULong
-GParamSpecUnichar
-GParamSpecEnum
-GParamSpecFlags
-GParamSpecFloat
-GParamSpecDouble
-GParamSpecString
-GParamSpecParam
-GParamSpecBoxed
-GParamSpecPointer
-GParamSpecValueArray
-GParamSpecClosure
+G_VALUE_HOLDS_OBJECT
 GParamSpecObject
-g_param_spec_char
-g_param_spec_uchar
-g_param_spec_boolean
-g_param_spec_int
-g_param_spec_uint
-g_param_spec_long
-g_param_spec_ulong
-g_param_spec_unichar
-g_param_spec_enum
-g_param_spec_flags
-g_param_spec_float
-g_param_spec_double
-g_param_spec_string
-g_param_spec_param
-g_param_spec_boxed
-g_param_spec_pointer
-g_param_spec_value_array
-g_param_spec_closure
 g_param_spec_object
+g_value_set_object
+g_value_get_object
+g_value_dup_object
+
+<SUBSECTION gunichar>
+G_IS_PARAM_SPEC_UNICHAR
+G_PARAM_SPEC_UNICHAR
+GParamSpecUnichar
+g_param_spec_unichar
+
+<SUBSECTION GValueArray>
+G_IS_PARAM_SPEC_VALUE_ARRAY
+G_PARAM_SPEC_VALUE_ARRAY
+GParamSpecValueArray
+g_param_spec_value_array
+
+<SUBSECTION Private>
+g_value_set_instance
 </SECTION>
 
 <SECTION>
@@ -487,11 +542,12 @@ g_signal_emit
 g_signal_emit_by_name
 g_signal_emitv
 g_signal_emit_valist
-g_signal_connect_data
 g_signal_connect
 g_signal_connect_after
 g_signal_connect_swapped
 g_signal_connect_object
+GConnectFlags
+g_signal_connect_data
 g_signal_connect_closure
 g_signal_connect_closure_by_id
 g_signal_handler_block
@@ -509,7 +565,6 @@ g_signal_has_handler_pending
 g_signal_stop_emission
 g_signal_stop_emission_by_name
 g_signal_add_emission_hook
-g_signal_add_emission_hook_full
 g_signal_remove_emission_hook
 g_signal_parse_name
 g_signal_handlers_destroy
@@ -517,8 +572,8 @@ g_signal_type_cclosure_new
 </SECTION>
 
 <SECTION>
+<FILE>gclosure</FILE>
 <TITLE>Closures</TITLE>
-<FILE>closures</FILE>
 G_CLOSURE_NEEDS_MARSHAL
 G_CCLOSURE_SWAP_DATA
 G_CALLBACK

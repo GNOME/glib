@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-
+GParamSpec
 
 <!-- ##### SECTION Short_Description ##### -->
-Parameter Specifications
+Meta data object for parameter specifications.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -13,23 +13,15 @@ required to specify parameters, such as e.g. #GObject properties.
 <!-- ##### SECTION See_Also ##### -->
 <para>
 g_object_class_install_property(), g_object_set(), g_object_get(),
-g_object_set_property(), g_object_get_property()
+g_object_set_property(), g_object_get_property(), g_value_register_transform_func()
 </para>
-
-<!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
-<para>
-Retrive the #GType of this @pspec.
-</para>
-
-@pspec: a valid #GParamSpec
-
 
 <!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
 <para>
-
+Returns whether @type "is a" %G_TYPE_PARAM.
 </para>
 
-@type: 
+@type: a #GType ID
 
 
 <!-- ##### MACRO G_PARAM_SPEC ##### -->
@@ -43,15 +35,41 @@ a #GParamSpec object.
 
 <!-- ##### MACRO G_IS_PARAM_SPEC ##### -->
 <para>
+Check whether @pspec "is a" valid #GParamSpec structure of type %G_TYPE_PARAM
+or derived.
+</para>
 
+@pspec: a #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_CLASS ##### -->
+<para>
+Cast a derived #GParamSpecClass structure into a #GParamSpecClass structure.
+</para>
+
+@pclass: a valid #GParamSpecClass
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CLASS ##### -->
+<para>
+Check whether @pclass "is a" valid #GParamSpecClass structure of type %G_TYPE_PARAM
+or derived.
+</para>
+
+@pclass: a #GParamSpecClass
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GET_CLASS ##### -->
+<para>
+Retrieve the #GParamSpecClass of a #GParamSpec.
 </para>
 
 @pspec: a valid #GParamSpec
 
 
-<!-- ##### MACRO G_PARAM_SPEC_GET_CLASS ##### -->
+<!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
 <para>
-
+Retrive the #GType of this @pspec.
 </para>
 
 @pspec: a valid #GParamSpec
@@ -159,54 +177,68 @@ not flagged "floating" anymore).
 
 <!-- ##### FUNCTION g_param_value_set_default ##### -->
 <para>
-
+Set @value to its default value as specified in @pspec.
 </para>
 
-@pspec: 
-@value: 
+@pspec: a valid #GParamSpec
+@value: a #GValue of correct type for @pspec
 
 
 <!-- ##### FUNCTION g_param_value_defaults ##### -->
 <para>
-
+Check whether @value contains the default value as specified in @pspec.
 </para>
 
-@pspec: 
-@value: 
-@Returns: 
+@pspec:   a valid #GParamSpec
+@value:   a #GValue of correct type for @pspec
+@Returns: whether @value contains the canonical defualt for this @pspec
 
 
 <!-- ##### FUNCTION g_param_value_validate ##### -->
 <para>
-
+Ensure that the contents of @value comply with the specifications
+set out by @pspec. For example, a #GParamSpecInt might require
+that integers stored in @value may not be smaller than -42 and not be
+greater than +42. If @value contains an integer outside of this range,
+it is modified accordingly, so the resulting value will fit into the
+range -42 .. +42.
 </para>
 
-@pspec: 
-@value: 
-@Returns: 
+@pspec:   a valid #GParamSpec
+@value:   a #GValue of correct type for @pspec
+@Returns: whether modifying @value was necessary to ensure validity
 
 
 <!-- ##### FUNCTION g_param_value_convert ##### -->
 <para>
+This function transforms @src_value into @dest_value if possible,
+and then validates @dest_value, in order for it to conform to
+@pspec.
+If @strict_validation is %TRUE this function will only suceed if
+the transformed @dest_value complied to @pspec without modifications.
 
+See also g_value_type_transformable(), g_value_transform() and
+g_param_value_validate().
 </para>
 
-@dest_value_spec: 
-@src_value: 
-@dest_value: 
-@strict_validation: 
-@Returns: 
+@pspec:             a valid #GParamSpec
+@src_value:         souce #GValue
+@dest_value:        destination #GValue of correct type for @pspec
+@strict_validation: $TRUE requires @dest_value to conform to @pspec without modifications
+@Returns:           %TRUE if transformation and validation were successfull,
+                    %FALSE otherwise and @dest_value is left untouched.
 
 
 <!-- ##### FUNCTION g_param_values_cmp ##### -->
 <para>
-
+Compare @value1 with @value2 according to @pspec, and return -1, 0 or +1,
+if @value1 is found to be less than, equal to or greater than @value2, respectively.
 </para>
 
-@pspec: 
-@value1: 
-@value2: 
-@Returns: 
+@pspec:   a valid #GParamSpec
+@value1:  a #GValue of correct type for @pspec
+@value2:  a #GValue of correct type for @pspec
+@Returns: -1, 0 or +1, for a less than, equal to or greater than result
 
 
 <!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
@@ -247,6 +279,19 @@ not flagged "floating" anymore).
 
 @pspec: 
 @quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<para>
+
+</para>
+
+@param_type: 
+@name: 
+@nick: 
+@blurb: 
+@flags: 
 @Returns: 
 
 
@@ -322,16 +367,14 @@ not flagged "floating" anymore).
 @trailer_p: 
 
 
-<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<!-- ##### FUNCTION g_param_spec_pool_list ##### -->
 <para>
 
 </para>
 
-@param_type: 
-@name: 
-@nick: 
-@blurb: 
-@flags: 
+@pool: 
+@owner_type: 
+@n_pspecs_p: 
 @Returns: 
 
 

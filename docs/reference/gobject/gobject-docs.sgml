@@ -1,17 +1,16 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!entity gobject-GType SYSTEM "sgml/types.sgml">
+<!entity gobject-GType SYSTEM "sgml/gtype.sgml">
 <!entity gobject-GTypePlugin SYSTEM "sgml/gtypeplugin.sgml">
 <!entity gobject-GTypeModule SYSTEM "sgml/gtypemodule.sgml">
 <!entity gobject-The-Base-Object-Type SYSTEM "sgml/objects.sgml">
 <!entity gobject-Enumeration-and-Flag-Types SYSTEM "sgml/enumerations_flags.sgml">
 <!entity gobject-Boxed-Types SYSTEM "sgml/gboxed.sgml">
 <!entity gobject-Generic-values SYSTEM "sgml/generic_values.sgml">
-<!entity gobject-Standard-value-types SYSTEM "sgml/value_types.sgml">
+<!entity gobject-param-value-types SYSTEM "sgml/param_value_types.sgml">
 <!entity gobject-GParamSpec SYSTEM "sgml/gparamspec.sgml">
-<!entity gobject-Standard-Parameter-Types SYSTEM "sgml/standard_params.sgml">
 <!entity gobject-Varargs-Value-Collection SYSTEM "sgml/value_collection.sgml">
 <!entity gobject-Signals SYSTEM "sgml/signals.sgml">
-<!entity gobject-Closures SYSTEM "sgml/closures.sgml">
+<!entity gobject-Closures SYSTEM "sgml/gclosure.sgml">
 <!entity gobject-Value-Arrays SYSTEM "sgml/value_arrays.sgml">
 ]>
 <book id="index">
@@ -73,10 +72,9 @@
       &gobject-Enumeration-and-Flag-Types;
       &gobject-Boxed-Types;
       &gobject-Generic-values;
-      &gobject-Standard-value-types;
+      &gobject-param-value-types;
       &gobject-Varargs-Value-Collection;
       &gobject-GParamSpec;
-      &gobject-Standard-Parameter-Types;
       &gobject-Signals;
       &gobject-Closures;
       &gobject-Value-Arrays;

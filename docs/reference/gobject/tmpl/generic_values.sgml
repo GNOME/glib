@@ -151,191 +151,52 @@ This is an internal function introduced mainly for C marshallers.
 @Returns: 	#TRUE if @value will fit inside a pointer value.
 
 
-<!-- ##### STRUCT GTypeValueTable ##### -->
+<!-- ##### FUNCTION g_value_type_compatible ##### -->
 <para>
-The #GTypeValueTable provides the functions required by the #GValue implementation,
-to serve as a container for values of a type.
+
 </para>
 
-@value_init: 		Default initialize @values contents by poking values
-			directly into the value-&gt;data array. The data array of
-			the #GValue passed into this function was zero-filled
-			with memset, so no care has to be taken to free any
-			old contents. E.g. for the implementation of a string
-			value that may never be NULL, the implementation might
-			look like:
-<msgtext><programlisting>
-{
-  value-&gt;data[0].v_pointer = g_strdup ("");
-}
-</programlisting></msgtext>
-@value_free: 		Free any old contents that might be left in the
-			data array of the passed in @value. No resources may
-			remain allocated through the #GValue contents after
-			this function returns. E.g. for our above string type:
-<msgtext><programlisting>
-{
-  /* only free strings without a specific flag for static storage */
-  if (!(value-&gt;data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
-    g_free (value-&gt;data[0].v_pointer);
-}
-</programlisting></msgtext>
-@value_copy: 		@dest_value is a #GValue with zero-filled data section
-			and @src_value is a properly setup #GValue of same or
-			derived type.
-			The purpose of this function is to copy the contents of
-			@src_value into @dest_value in a way, that even after
-			@src_value has been freed, the contents of @dest_value
-			remain valid. String type example:
-<msgtext><programlisting>
-{
-  dest_value-&gt;data[0].v_pointer = g_strdup (src_value-&gt;data[0].v_pointer);
-}
-</programlisting></msgtext>
-@value_peek_pointer: 	If the value contents fit into a pointer, such as objects
-			or strings, return this pointer, so the caller can peek at
-			the current contents. To extend on our above string example:
-<msgtext><programlisting>
-{
-  return value-&gt;data[0].v_pointer;
-}
-</programlisting></msgtext>
-@collect_format: 	A string format describing how to collect the contents of
-			this value, bit-by-bit. Each character in the format represents
-			an argument to be collected, the characters themselves indicate
-			the type of the argument. Currently supported arguments are:
-<msgtext><variablelist>
-  <varlistentry><term></term><listitem><para>
-        'i' - Integers. passed as collect_values[].v_int.
-  </para></listitem></varlistentry>
-  <varlistentry><term></term><listitem><para>
-        'l' - Longs. passed as collect_values[].v_long.
-  </para></listitem></varlistentry>
-  <varlistentry><term></term><listitem><para>
-        'd' - Doubles. passed as collect_values[].v_double.
-  </para></listitem></varlistentry>
-  <varlistentry><term></term><listitem><para>
-        'p' - Pointers. passed as collect_values[].v_pointer.
-  </para></listitem></varlistentry>
-</variablelist></msgtext>
-			It should be noted, that for variable argument list construction,
-			ANSI C promotes every type smaller than an integer to an int, and
-			floats to doubles. So for collection of short int or char, 'i'
-			needs to be used, and for collection of floats 'd'.
-@collect_value: 	The collect_value() function is responsible for converting the
-			values collected from a variable argument list into contents
-			suitable for storage in a GValue. This function should setup
-			@value similar to value_init(), e.g. for a string value that
-			does not allow NULL pointers, it needs to either spew an error,
-			or do an implicit conversion by storing an empty string.
-			The @value passed in to this function has a zero-filled data
-			array, so just like for @value_init it is guaranteed to not
-			contain any old contents that might need freeing.
-			@n_collect_values is exactly the string length of @collect_format,
-			and @collect_values is an array of unions #GTypeCValue with
-			length @n_collect_values, containing the collected values
-			according to @collect_format.
-			@collect_flags is an argument provided as a hint by the caller,
-			which may contain the flag #G_VALUE_NOCOPY_CONTENTS indicating,
-			that the collected value contents may be considered "static"
-			for the duration of the #@value lifetime.
-			Thus an extra copy of the contents stored in @collect_values is
-			not required for assignment to @value.
-			For our above string example, we continue with:
-<msgtext><programlisting>
-{
-  if (!collect_values[0].v_pointer)
-    value->data[0].v_pointer = g_strdup ("");
-  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
-    {
-      value-&gt;data[0].v_pointer = collect_values[0].v_pointer;
-      /* keep a flag for the value_free() implementation to not free this string */
-      value-&gt;data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
-    }
-  else
-    value-&gt;data[0].v_pointer = g_strdup (collect_values[0].v_pointer);
+@src_type: 
+@dest_type: 
+@Returns: 
 
-  return NULL;
-}
-</programlisting></msgtext>
-			It should be noted, that it is generally a bad idea to follow the
-			#G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
-			reentrancy requirements and reference count assertions performed
-			by the GSignal code, reference counts should always be incremented
-			for reference counted contents stored in the value-&gt;data array.
-			To deviate from our string example for a moment, and taking a look
-			at an exemplary implementation for collect_value() of #GObject:
-<msgtext><programlisting>
-{
-  if (collect_values[0].v_pointer)
-    {
-      GObject *object = G_OBJECT (collect_values[0].v_pointer);
 
-      /* never honour G_VALUE_NOCOPY_CONTENTS for ref-counted types */
-      value-&gt;data[0].v_pointer = g_object_ref (object);
-      return NULL;
-    }
-  else
-    return g_strdup_printf ("Object passed as invalid NULL pointer");
-}
-</programlisting></msgtext>
-			The reference count for valid objects is always incremented,
-			regardless of @collect_flags. For invalid objects, the example
-			returns a newly allocated string without altering @value.
-			Upon success, collect_value() needs to return NULL, if however
-			a malicious condition occurred, collect_value() may spew an
-			error by returning a newly allocated non-NULL string, giving
-			a suitable description of the error condition.
-			The calling code makes no assumptions about the @value
-			contents being valid upon error returns, @value
-			is simply thrown away without further freeing. As such, it is
-			a good idea to not allocate #GValue contents, prior to returning
-			an error, however, collect_values() is not obliged to return
-			a correctly setup @value for error returns, simply because
-			any non-NULL return is considered a fatal condition so further
-			program behaviour is undefined.
-@lcopy_format: 		Format description of the arguments to collect for @lcopy_value,
-			analogous to @collect_format. Usually, @lcopy_format string consists
-			only of 'p's to provide lcopy_value() with pointers to storage locations.
-@lcopy_value: 		This function is responsible for storing the @value contents into
-			arguments passed through a variable argument list which got
-			collected into @collect_values according to @lcopy_format.
-			@n_collect_values equals the string length of @lcopy_format,
-			and @collect_flags may contain #G_VALUE_NOCOPY_CONTENTS.
-			In contrast to collect_value(), lcopy_value() is obliged to
-			always properly support #G_VALUE_NOCOPY_CONTENTS.
-			Similar to collect_value() the function may prematurely abort
-			by returning a newly allocated string describing an error condition.
-			To complete the string example:
-<msgtext><programlisting>
-{
-  gchar **string_p = collect_values[0].v_pointer;
+<!-- ##### FUNCTION g_value_type_transformable ##### -->
+<para>
 
-  if (!string_p)
-    return g_strdup_printf ("string location passed as NULL");
+</para>
 
-  if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
-    *string_p = value-&gt;data[0].v_pointer;
-  else
-    *string_p = g_strdup (value-&gt;data[0].v_pointer);
+@src_type: 
+@dest_type: 
+@Returns: 
 
-}
-</programlisting></msgtext>
-			And an exemplary version of lcopy_value() for
-			reference-counted types:
-<msgtext><programlisting>
-{
-  GObject **object_p = collect_values[0].v_pointer;
 
-  if (!object_p)
-    return g_strdup_printf ("object location passed as NULL");
-  if (!value-&gt;data[0].v_pointer)
-    *object_p = NULL;
-  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) /* always honour */
-    *object_p = value-&gt;data[0].v_pointer;
-  else
-    *object_p = g_object_ref (value-&gt;data[0].v_pointer);
-  return NULL;
-}
-</programlisting></msgtext>
+<!-- ##### FUNCTION g_value_transform ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GValueTransform ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+
+
+<!-- ##### FUNCTION g_value_register_transform_func ##### -->
+<para>
+
+</para>
+
+@src_type: 
+@dest_type: 
+@transform_func: 
+
 

@@ -28,14 +28,6 @@ and should never be accessed directly.
 </para>
 
 
-<!-- ##### STRUCT GObjectConstructParam ##### -->
-<para>
-
-</para>
-
-@pspec: 
-@value: 
-
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
 <para>
 
@@ -155,14 +147,6 @@ Return the type id of an object.
 @class: 
 
 
-<!-- ##### MACRO G_VALUE_HOLDS_OBJECT ##### -->
-<para>
-
-</para>
-
-@value: 
-
-
 <!-- ##### FUNCTION g_object_class_install_property ##### -->
 <para>
 
@@ -232,6 +216,15 @@ Return the type id of an object.
 </para>
 
 @object: 
+
+
+<!-- ##### USER_FUNCTION GWeakNotify ##### -->
+<para>
+
+</para>
+
+@data: 
+@where_the_object_was: 
 
 
 <!-- ##### FUNCTION g_object_weak_ref ##### -->
@@ -495,33 +488,6 @@ to match the one used with g_object_add_weak_pointer().
 </para>
 
 @object: 
-
-
-<!-- ##### FUNCTION g_value_set_object ##### -->
-<para>
-
-</para>
-
-@value: 
-@v_object: 
-
-
-<!-- ##### FUNCTION g_value_get_object ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_value_dup_object ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
 
 
 <!-- ##### MACRO G_OBJECT_WARN_INVALID_PROPERTY_ID ##### -->

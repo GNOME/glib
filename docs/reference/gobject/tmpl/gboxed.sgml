@@ -52,52 +52,6 @@ Free the boxed structure @boxed which is of type @boxed_type.
 @boxed:      The boxed structure to be freed.
 
 
-<!-- ##### FUNCTION g_value_set_boxed ##### -->
-<para>
-Assign a #GValue which is initialized with a certain boxed type a
-boxed structure of that very same type.
-</para>
-
-@value: The #GValue to be assigned a value to.
-@boxed: The boxed structure which has to be of the same type the #GValue got initialized with.
-
-
-<!-- ##### FUNCTION g_value_set_static_boxed ##### -->
-<para>
-
-</para>
-
-@value: 
-@boxed: 
-
-
-<!-- ##### FUNCTION g_value_set_boxed_take_ownership ##### -->
-<para>
-This is an internal function introduced mainly for C marshallers.
-</para>
-
-@value: 
-@boxed: 
-
-
-<!-- ##### FUNCTION g_value_get_boxed ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_value_dup_boxed ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_boxed_type_register_static ##### -->
 <para>
 This function creates a new %G_TYPE_BOXED derived type id for a new
@@ -112,5 +66,14 @@ provided to copy and free opaque boxed structures of this type.
 <!-- # Unused Parameters # -->
 @boxed_init: 
 @is_refcounted: 
+
+
+<!-- ##### FUNCTION g_pointer_type_register_static ##### -->
+<para>
+
+</para>
+
+@name: 
+@Returns: 
 
 

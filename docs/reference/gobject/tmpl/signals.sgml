@@ -350,23 +350,6 @@ g_signal_query().
 @var_args: 
 
 
-<!-- ##### FUNCTION g_signal_connect_data ##### -->
-<para>
-
-</para>
-
-@instance: 
-@detailed_signal: 
-@c_handler: 
-@data: 
-@destroy_data: 
-@connect_flags: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@swapped: 
-@after: 
-
-
 <!-- ##### MACRO g_signal_connect ##### -->
 <para>
 
@@ -409,6 +392,31 @@ g_signal_query().
 @detailed_signal: 
 @c_handler: 
 @gobject: 
+@connect_flags: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@swapped: 
+@after: 
+
+
+<!-- ##### ENUM GConnectFlags ##### -->
+<para>
+
+</para>
+
+@G_CONNECT_AFTER: 
+@G_CONNECT_SWAPPED: 
+
+<!-- ##### FUNCTION g_signal_connect_data ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@data: 
+@destroy_data: 
 @connect_flags: 
 @Returns: 
 <!-- # Unused Parameters # -->

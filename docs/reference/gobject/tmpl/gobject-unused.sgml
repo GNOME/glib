@@ -31,6 +31,35 @@ Parameter Specifications
 
 @Returns: 
 
+<!-- ##### STRUCT GObjectConstructParam ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+
+<!-- ##### STRUCT GParamSpecClosure ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CLOSURE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+<!-- ##### MACRO G_PARAM_SPEC_CLOSURE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
 <!-- ##### FUNCTION g_closure_add_fnotify ##### -->
 <para>
 
@@ -66,6 +95,17 @@ Parameter Specifications
 @closure: 
 @notify_data: 
 @notify_func: 
+
+<!-- ##### FUNCTION g_param_spec_closure ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
 
 <!-- ##### FUNCTION g_param_spec_string_c ##### -->
 <para>
@@ -104,6 +144,77 @@ Parameter Specifications
 @return_type: 
 @n_params: 
 @Varargs: 
+
+<!-- ##### FUNCTION g_type_check_class_cast ##### -->
+<para>
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_check_flags ##### -->
+<para>
+Determines whether a given set of #GTypeFlags and #GTypeFundamentalFlags
+are set for @type.
+</para>
+
+@type: 	  The type to check for flags.
+@flags:   Bitwise combination of #GTypeFlags and #GTypeFundamentalFlags.
+@Returns: #TRUE if all @flags are set for @type, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_check_instance ##### -->
+<para>
+Private helper function to aid implementation of the G_TYPE_CHECK_INSTANCE()
+macro.
+</para>
+
+@instance: A valid #GTypeInstance structure.
+@Returns:  #TRUE if @instance is valid, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_check_instance_cast ##### -->
+<para>
+</para>
+
+@instance: 
+@iface_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_check_value ##### -->
+<para>
+</para>
+
+@value: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_class_is_a ##### -->
+<para>
+</para>
+
+@g_class: 
+@is_a_type: 
+@Returns: 
+
+<!-- ##### FUNCTION g_type_instance_is_a ##### -->
+<para>
+Determines if @instance adheres to the interface exported
+by @iface_type. @iface_type is either a type that @instance
+is derived from, or an interface type that is supported by
+the anchestry of @instance.
+</para>
+
+@instance: 	A valid #GTypeInstance structure.
+@iface_type: 	A #GType value.
+@Returns: 	#TRUE if @instance conforms to @iface_type, #FALSE otherwise.
+
+<!-- ##### FUNCTION g_type_test_flags ##### -->
+<para>
+
+</para>
+
+@type: 
+@flags: 
+@Returns: 
 
 <!-- ##### FUNCTION g_type_value_is_a ##### -->
 <para>
