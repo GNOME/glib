@@ -83,7 +83,9 @@ sub parse_entries {
         if (m@^\s*
               (\w+)\s*                   # name
               (?:=(                      # value
-                   (?:[^,/]|/(?!\*))*
+		   \s*\w+\s*\(.*\)\s*       # macro with multiple args
+		   |                        # OR
+                   (?:[^,/]|/(?!\*))*       # anything but a comma or comment
                   ))?,?\s*
               (?:/\*<                    # options
                 (([^*]|\*(?!/))*)
