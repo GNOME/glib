@@ -39,6 +39,9 @@ else \
 #define	C2P(c)		((gpointer) ((long) (c)))
 #define	P2C(p)		((gchar) ((long) (p)))
 
+#define GLIB_TEST_STRING "el dorado "
+#define GLIB_TEST_STRING_5 "el do"
+
 static gboolean
 node_build_string (GNode    *node,
 		   gpointer  data)
@@ -859,16 +862,35 @@ main (int   argc,
 
   g_print ("endian macro tests...");
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  g_print ("big endian...");
+  g_print ("big endian...\n");
 #else
-  g_print ("little endian...");
+  g_print ("little endian...\n");
 #endif
   g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);  
   g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);  
 #ifdef G_HAVE_GINT64
   g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
 #endif
+
+#ifdef G_HAVE_ALLOCA
+  /* test alloca()-based string duplication routines */
+  g_strdup_a(string, GLIB_TEST_STRING);
+  g_assert(string != NULL);
+  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
+
+  g_strndup_a(string, GLIB_TEST_STRING, 5);
+  g_assert(string != NULL);
+  g_assert(strlen(string) == 5);
+  g_assert(strcmp(string, GLIB_TEST_STRING_5) == 0);
+
+  g_strconcat_a(string, GLIB_TEST_STRING, GLIB_TEST_STRING, GLIB_TEST_STRING);
+  g_assert(string != NULL);
+  g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
+  			  GLIB_TEST_STRING) == 0);
+#endif
+
   g_print ("ok\n");
 
   return 0;
 }
+
