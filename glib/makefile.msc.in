@@ -12,20 +12,25 @@ PTHREADS = ..\pthreads-snap-1999-05-30
 PTHREAD_LIB = $(PTHREADS)\pthread.lib
 PTHREAD_INC = -I $(PTHREADS)
 
+!IFNDEF DEBUG
 # Full optimization:
-OPTIMIZE = -Ox
+OPTIMIZE = -Ox -MD
+LINKDEBUG =
+!ELSE
 # Debugging:
-#OPTIMIZE = -Zi
+OPTIMIZE = -Zi -MDd
+LINKDEBUG = /debug
+!ENDIF
 
 ################################################################
 
 # Nothing much configurable below
 
 # cl -? describes the options
-CC = cl -G5 -GF $(OPTIMIZE) -W3 -MD -nologo
+CC = cl -G5 -GF $(OPTIMIZE) -W3 -nologo
 
 # No general LDFLAGS needed
-LDFLAGS = /link # /debug
+LDFLAGS = /link $(LINKDEBUG)
 INSTALL = copy
 
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@

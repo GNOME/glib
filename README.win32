@@ -114,10 +114,13 @@ in crtdll.dll), and defines __MSVCRT__.
 --Di386 -D_WIN32   -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386)
 +-Di386 -D_WIN32 %{mno-cygwin:-D__MSVCRT__ } -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386) 
 
-You should also fix the definition of _dev_t in the header
-mingw32/sys/types.h to correspond to what type actually is used by
-msvcrt.dll. It should be unsigned int, not short. Otherwise stat()
-calls will fail.
+You should also fix two bugs in the mingw32 headers: The type of
+_dev_t in the header mingw32/sys/types.h should be unsigned int, not
+short. The type for st_uid in sys/stat.h to be short, not int. This is
+what the Microsoft's headers and runtime library use. Otherwise
+accessing the fields in a stat struct as filled in by the stat and
+fstat functions in the MS library will cause various interesting
+failures.
 
 You also will have to get the mingw32 source snapshot from
 http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz (this
