@@ -2017,10 +2017,6 @@ G_BEGIN_DECLS
 #define G_MAXLONG	$glib_Ml
 #define G_MAXULONG	$glib_Mul
 
-#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
-#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
-#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
-
 _______EOF
 
 

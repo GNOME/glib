@@ -1,3 +1,8 @@
+Tue Dec  2 02:31:15 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/limits.sgml:
+	* glib/glib-sections.txt: Add G_{MIN,MAX,MAXU}INT{8,16,32}.
+
 Thu Nov  6 01:42:36 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add an i18n section.

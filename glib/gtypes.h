@@ -52,16 +52,22 @@ typedef unsigned int    guint;
 typedef float   gfloat;
 typedef double  gdouble;
 
-/* HAVE_LONG_DOUBLE doesn't work correctly on all platforms.
- * Since gldouble isn't used anywhere, just disable it for now */
+/* Define min and max constants for the fixed size numerical types */
+#define G_MININT8	((gint8)  0x80)
+#define G_MAXINT8	((gint8)  0x7f)
+#define G_MAXUINT8	((guint8) 0xff)
 
-#if 0
-#ifdef HAVE_LONG_DOUBLE
-typedef long double gldouble;
-#else /* HAVE_LONG_DOUBLE */
-typedef double gldouble;
-#endif /* HAVE_LONG_DOUBLE */
-#endif /* 0 */
+#define G_MININT16	((gint16)  0x8000)
+#define G_MAXINT16	((gint16)  0x7fff)
+#define G_MAXUINT16	((guint16) 0xffff)
+
+#define G_MININT32	((gint32)  0x80000000)
+#define G_MAXINT32	((gint32)  0x7fffffff)
+#define G_MAXUINT32	((guint32) 0xffffffff)
+
+#define G_MININT64	G_GINT64_CONSTANT(0x8000000000000000)
+#define G_MAXINT64	G_GINT64_CONSTANT(0x7fffffffffffffff)
+#define G_MAXUINT64	G_GINT64_CONSTANT(0xffffffffffffffffU)
 
 typedef void* gpointer;
 typedef const void *gconstpointer;

@@ -78,6 +78,78 @@ The maximum value which can be held in a #gulong.
 
 
 
+<!-- ##### MACRO G_MININT8 ##### -->
+<para>
+The minimum value which can be held in a #gint8.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXINT8 ##### -->
+<para>
+The maximum value which can be held in a #gint8.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXUINT8 ##### -->
+<para>
+The maximum value which can be held in a #guint8.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MININT16 ##### -->
+<para>
+The minimum value which can be held in a #gint16.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXINT16 ##### -->
+<para>
+The maximum value which can be held in a #gint16.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXUINT16 ##### -->
+<para>
+The maximum value which can be held in a #guint16.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MININT32 ##### -->
+<para>
+The minimum value which can be held in a #gint32.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXINT32 ##### -->
+<para>
+The maximum value which can be held in a #gint32.
+</para>
+
+@Since: 2.4
+
+
+<!-- ##### MACRO G_MAXUINT32 ##### -->
+<para>
+The maximum value which can be held in a #guint32.
+</para>
+
+@Since: 2.4
+
+
 <!-- ##### MACRO G_MININT64 ##### -->
 <para>
 The minimum value which can be held in a #gint64.

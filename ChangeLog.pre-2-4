@@ -1,3 +1,10 @@
+Tue Dec  2 02:29:41 2003  Matthias Clasen  <maclas@gmx.de>
+
+	Fix for #103710, Mark Jones:
+	
+	* glib/gtypes.h (G_MAXINT64): Define G_{MIN,MAX,MAXU}INT{8,16,32,64}.
+	* configure.in: Don't put G_{MIN,MAX,MAXU}INT64 in glibconfig.h.
+
 Thu Nov 27 17:04:08 2003  Tim Janik  <timj@gtk.org>
 
 	* glib/gstrfuncs.c (g_strconcat): handle NULL arguments
