@@ -16,13 +16,13 @@ Unicode Manipulation
 
 <!-- ##### TYPEDEF gunichar ##### -->
 <para>
-
+A type which can hold any UCS-4 character code.
 </para>
 
 
 <!-- ##### TYPEDEF gunichar2 ##### -->
 <para>
-
+A type which can hold any UTF-16 character code. 
 </para>
 
 
@@ -217,7 +217,9 @@ Unicode Manipulation
 
 <!-- ##### ENUM GUnicodeType ##### -->
 <para>
-
+These are the possible character classifications.
+See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html"
+>http://www.unicode.org/Public/UNIDATA/UnicodeData.html</ulink>.
 </para>
 
 @G_UNICODE_CONTROL: 
@@ -262,7 +264,9 @@ Unicode Manipulation
 
 <!-- ##### ENUM GUnicodeBreakType ##### -->
 <para>
-
+These are the possible line break classifications.
+See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
+>http://www.unicode.org/unicode/reports/tr14/</ulink>.
 </para>
 
 @G_UNICODE_BREAK_MANDATORY: 

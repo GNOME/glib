@@ -155,14 +155,14 @@ static GSourceCallbackFuncs closure_callback_funcs = {
 };
 
 /**
- * g_source_set_callback:
+ * g_source_set_closure:
  * @source: the source
  * @func: a #GClosure
  *
  * Set the callback for a source as a #GClosure.
  *
- * If the source is not one of the standard GLib types, the closure_callback
- * and closure_marshal fields of the GSourceFuncs structure must have been
+ * If the source is not one of the standard GLib types, the @closure_callback
+ * and @closure_marshal fields of the GSourceFuncs structure must have been
  * filled in with pointers to appropriate functions.
  **/
 void

@@ -40,7 +40,7 @@ INCLUDES = \
 
 <!-- ##### VARIABLE g_log_domain_glib ##### -->
 <para>
-
+The log domain used for messages logged by GLib itself.
 </para>
 
 

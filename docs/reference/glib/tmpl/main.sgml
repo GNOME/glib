@@ -371,8 +371,6 @@ g_main_context_pending().
 @funcs: 
 @user_data: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@source_data: 
 
 
 <!-- ##### FUNCTION g_main_context_wakeup ##### -->
@@ -669,9 +667,9 @@ whatever additional parameters are needed for this type of event source.
 </row>
 
 <row>
-<entry>destroy</entry>
+<entry>finalize</entry>
 <entry>
-Called when the source is destroyed.
+Called when the source is finalized.
 </entry>
 </row>
 </tbody></tgroup></informaltable>

@@ -1,3 +1,7 @@
+2001-10-31  Matthias Clasen  <matthiasc@poet.de>
+
+	* gobject/gsourceclosure.c (g_source_set_closure): Fix documentation.
+
 2001-10-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib-zip.in: New file, used to build distribution packages for
