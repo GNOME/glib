@@ -319,9 +319,13 @@ g_module_symbol (GModule	*module,
   g_return_val_if_fail (symbol != NULL, FALSE);
   
 #ifdef	G_MODULE_NEED_USCORE
-  symbol_name = g_strconcat ("_", symbol_name, NULL);
-  *symbol = _g_module_symbol (module->handle, symbol_name);
-  g_free (symbol_name);
+  {
+    gchar *name;
+
+    name = g_strconcat ("_", symbol_name, NULL);
+    *symbol = _g_module_symbol (module->handle, name);
+    g_free (name);
+  }
 #else	/* !G_MODULE_NEED_USCORE */
   *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */

@@ -1,3 +1,13 @@
+Wed Oct 21 19:22:58 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in (G_MODULE_HAVE_DLERROR): reverted part of the changes
+ 	from Sebastian Wilhelmi (1998-10-20). don't specify a specific loading
+	behaviour (i.e. RTLD_NOW) when we are not sure whether it is supplied.
+	changed the return value from (!f2 && f1) to (!f2 || f1) so we default
+	to not needing an underscore. reverted the extra plugin.c building,
+	because .lo files are not ELF libraries, this can't work. This needs
+	further investigation on Solaris...
+
 Wed Oct 21 17:03:05 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

@@ -1,3 +1,9 @@
+Wed Oct 21 19:58:27 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_symbol): fixed a string pointer bug that could
+ 	cause garbage error messages from g_module_symbol() for systems that
+	NEED_USCORE.
+
 Mon Sep 21 01:54:48 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.h: 
