@@ -100,8 +100,7 @@ struct _GSourceFuncs
  * WSAEventSelect to signal events when a SOCKET is readable).
  *
  * On Win32, fd can also be the special value G_WIN32_MSG_HANDLE to
- * indicate polling for messages. These message queue GPollFDs should
- * be added with the g_main_poll_win32_msg_add function.
+ * indicate polling for messages.
  *
  * But note that G_WIN32_MSG_HANDLE GPollFDs should not be used by GDK
  * (GTK) programs, as GDK itself wants to read messages and convert them
@@ -299,16 +298,6 @@ gboolean	g_idle_remove_by_data	(gpointer	data);
 /* Hook for GClosure / GSource integration. Don't touch */
 GLIB_VAR GSourceFuncs g_timeout_funcs;
 GLIB_VAR GSourceFuncs g_idle_funcs;
-
-#ifdef G_OS_WIN32
-
-/* This is used to add polling for Windows messages. GDK (GTK+) programs
- * should *not* use this.
- */
-void        g_main_poll_win32_msg_add (gint        priority,
-				       GPollFD    *fd,
-				       guint       hwnd);
-#endif /* G_OS_WIN32 */
 
 G_END_DECLS
 

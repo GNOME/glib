@@ -1,3 +1,12 @@
+2003-06-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giochannel.h
+	* glib/gmain.h: Remove bogus (Win32-only) declaration of
+	g_main_poll_win32_msg_add(). No such function exists.
+
+	* glib/gmain.c (g_poll) [Win32]: Use g_win32_error_message() for
+	better warning messages.
+
 2003-06-04  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gunidecomp.h (combine): Fix typo (#114375). Also, make the

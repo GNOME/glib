@@ -307,7 +307,11 @@ g_poll (GPollFD *fds,
 		  g_print ("WaitMessage\n");
 #endif
 		  if (!WaitMessage ())
-		    g_warning (G_STRLOC ": WaitMessage() failed");
+		    {
+		      gchar *emsg = g_win32_error_message (GetLastError ());
+		      g_warning (G_STRLOC ": WaitMessage() failed: %s", emsg);
+		      g_free (emsg);
+		    }
 		  ready = WAIT_OBJECT_0 + nhandles;
 		}
 	      else if (timeout == 0)
@@ -326,7 +330,9 @@ g_poll (GPollFD *fds,
 		  timer = SetTimer (NULL, 0, timeout, NULL);
 		  if (timer == 0)
 		    {
-		      g_warning (G_STRLOC ": SetTimer() failed");
+		      gchar *emsg = g_win32_error_message (GetLastError ());
+		      g_warning (G_STRLOC ": SetTimer() failed: %s", emsg);
+		      g_free (emsg);
 		      ready = WAIT_TIMEOUT;
 		    }
 		  else
@@ -359,7 +365,11 @@ g_poll (GPollFD *fds,
 						 timeout, QS_ALLINPUT);
 
 	      if (ready == WAIT_FAILED)
-		g_warning (G_STRLOC ": MsgWaitForMultipleObjects() failed");
+		{
+		  gchar *emsg = g_win32_error_message (GetLastError ());
+		  g_warning (G_STRLOC ": MsgWaitForMultipleObjects() failed: %s", emsg);
+		  g_free (emsg);
+		}
 	    }
 	}
     }
@@ -378,7 +388,11 @@ g_poll (GPollFD *fds,
 #endif
       ready = WaitForMultipleObjects (nhandles, handles, FALSE, timeout);
       if (ready == WAIT_FAILED)
-	g_warning (G_STRLOC ": WaitForMultipleObjects() failed");
+	{
+	  gchar *emsg = g_win32_error_message (GetLastError ());
+	  g_warning (G_STRLOC ": WaitForMultipleObjects() failed: %s", emsg);
+	  g_free (emsg);
+	}
     }
 
 #ifdef G_MAIN_POLL_DEBUG
@@ -2595,8 +2609,14 @@ g_main_context_poll (GMainContext *context,
       
       UNLOCK_CONTEXT (context);
       if ((*poll_func) (fds, n_fds, timeout) < 0 && errno != EINTR)
-	g_warning ("poll(2) failed due to: %s.",
-		   g_strerror (errno));
+	{
+#ifndef G_OS_WIN32
+	  g_warning ("poll(2) failed due to: %s.",
+		     g_strerror (errno));
+#else
+	  /* If g_poll () returns -1, it has already called g_warning() */
+#endif
+	}
       
 #ifdef	G_MAIN_POLL_DEBUG
       LOCK_CONTEXT (context);
