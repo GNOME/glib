@@ -1,3 +1,7 @@
+2001-10-30  Dan Winship  <danw@ximian.com>
+
+	* Makefile.am (EXTRA_DIST): Add gmodule-dyld.c
+
 2001-10-23  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: (Win32): If we have built the MSVC import library,

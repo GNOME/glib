@@ -10,6 +10,7 @@ EXTRA_DIST =	\
 		gmodule.def	\
 		gmodule-dl.c	\
 		gmodule-dld.c	\
+		gmodule-dyld.c	\
 		gmodule-os2.c	\
 		gmodule-win32.c	\
 		gmodule-beos.c	\
