@@ -1,3 +1,11 @@
+1999-04-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h: Moved struct declaration up. Style fixes.
+
+	* grand.c: Style fixes. Only try to open /dev/random once.
+
+	* tests/rand-test.c (main): New tests; Slight bug fix. 
+
 1999-04-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* grand.c, tests/rand-test.c: New files to implement the Mersenne

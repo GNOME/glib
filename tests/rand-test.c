@@ -29,12 +29,27 @@ const gint length = sizeof (first_numbers) / sizeof (first_numbers[0]);
 
 int main()
 {
-  guint i;
+  guint n;
 
   GRand* rand = g_rand_new_with_seed (first_numbers[0]);
 
-  for (i = 1; i < length; i++)
-    g_assert (first_numbers[i]);
+  for (n = 1; n < length; n++)
+    g_assert (first_numbers[n] == g_rand_int (rand));
+
+  for (n = 1; n < 100000; n++)
+    {
+      gint32 i;
+      gdouble d;
+
+      i = g_rand_int_range (rand, 8,16);
+      g_assert (i >= 8 && i < 16);
+      
+      d = g_rand_double (rand);
+      g_assert (d >= 0 && d < 1);
+
+      d = g_rand_double_range (rand, -8, 32);
+      g_assert (d >= -8 && d < 32);
+    }
 
   g_rand_free (rand);
 

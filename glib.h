@@ -698,6 +698,7 @@ typedef struct _GMemChunk	GMemChunk;
 typedef struct _GNode		GNode;
 typedef struct _GPtrArray	GPtrArray;
 typedef struct _GQueue		GQueue;
+typedef struct _GRand 		GRand;
 typedef struct _GRelation	GRelation;
 typedef struct _GScanner	GScanner;
 typedef struct _GScannerConfig	GScannerConfig;
@@ -2378,9 +2379,8 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
  * double_range -> [min..max)
  */
 
-typedef struct _GRand GRand;
 GRand*  g_rand_new_with_seed   (guint32     seed);
-GRand*  g_rand_new             ();
+GRand*  g_rand_new             (void);
 void    g_rand_free            (GRand      *rand);
 
 void    g_rand_set_seed        (GRand      *rand, 
@@ -2400,10 +2400,10 @@ gdouble g_rand_normal          (GRand      *rand,
 */
 
 void    g_random_set_seed      (guint32     seed);
-guint32 g_random_int           ();
+guint32 g_random_int           (void);
 gint32  g_random_int_range     (gint32      min, 
 				gint32      max);
-gdouble g_random_double        ();
+gdouble g_random_double        (void);
 gdouble g_random_double_range  (gdouble     min, 
 				gdouble     max);
 /* dito

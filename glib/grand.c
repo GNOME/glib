@@ -22,6 +22,7 @@
  * code from this file in your own programs or libraries.
  * Further information on the Mersenne Twister can be found at
  * http://www.math.keio.ac.jp/~matumoto/emt.html
+ * This code was adapted to glib by Sebastian Wilhelmi <wilhelmi@ira.uka.de>.
  */
 
 /*
@@ -29,6 +30,10 @@
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
  * GLib at ftp://ftp.gtk.org/pub/gtk/.  
+ */
+
+/* 
+ * MT safe
  */
 
 #include <glib.h>
@@ -70,17 +75,25 @@ g_rand_new_with_seed (guint32 seed)
 }
 
 GRand* 
-g_rand_new ()
+g_rand_new (void)
 {
   guint32 seed = 0;
   GTimeVal now;
-  FILE* dev_random = fopen("/dev/random", "rb");
-
-  if (dev_random)
+  static gboolean dev_random_exists = TRUE;
+  
+  if (dev_random_exists)
     {
-      if (fread (&seed, sizeof (seed), 1, dev_random) != 1)
-	seed = 0;
-      fclose (dev_random);
+      FILE* dev_random = fopen("/dev/random", "rb");
+      if (dev_random)
+	{
+	  if (fread (&seed, sizeof (seed), 1, dev_random) != 1)
+	    seed = 0;
+	  else
+	    dev_random_exists = FALSE;
+	  fclose (dev_random);
+	}	
+      else
+	dev_random_exists = FALSE;
     }
 
   /* Using /dev/random alone makes the seed computable for the
@@ -96,7 +109,7 @@ g_rand_new ()
 void
 g_rand_free (GRand* rand)
 {
-  g_return_if_fail (rand);
+  g_return_if_fail (rand != NULL);
 
   g_free (rand);
 }
@@ -104,7 +117,7 @@ g_rand_free (GRand* rand)
 void
 g_rand_set_seed (GRand* rand, guint32 seed)
 {
-  g_return_if_fail (rand);
+  g_return_if_fail (rand != NULL);
 
   /* setting initial seeds to mt[N] using         */
   /* the generator Line 25 of Table 1 in          */
@@ -124,7 +137,7 @@ g_rand_int (GRand* rand)
   static const guint32 mag01[2]={0x0, MATRIX_A};
   /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
-  g_return_val_if_fail (rand, 0);
+  g_return_val_if_fail (rand != NULL, 0);
 
   if (rand->mti >= N) { /* generate N words at one time */
     int kk;
@@ -158,7 +171,7 @@ g_rand_int_range (GRand* rand, gint32 min, gint32 max)
   guint32 dist = max - min;
   guint32 random;
 
-  g_return_val_if_fail (rand, min);
+  g_return_val_if_fail (rand != NULL, min);
   g_return_val_if_fail (max > min, min);
 
   if (dist <= 0x10000L) /* 2^16 */
@@ -227,7 +240,7 @@ g_rand_normal (GRand* rand, gdouble mean, gdouble standard_deviation)
      Computer Programming", Vol.2, Second Edition, Page 117: Polar
      method for normal deviates due to Box, Muller, Marsaglia */
   gdouble normal;
-  g_return_val_if_fail (rand, 0);
+  g_return_val_if_fail (rand != NULL, 0);
 
   if (rand->have_next_normal) 
     {
