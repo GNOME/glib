@@ -1,3 +1,16 @@
+Sat Jun 28 16:25:31.15 2003  Andrew Lanoix  <alanoix@umich.edu>
+
+	Copy glib/giowin32.c MAIN to glib-2-2 branch for:
+
+	* glib/giowin32.c: Resolved thread deadlocks in socket 
+	ichannel code to support Add-Cancel-Add watch functionality 
+	on windows. Also cleaned up socket error handling to not 
+	segfault and do the right thing. <alanoix@umich.edu>
+
+	* glib/giowin32.c: Fix indentation and spacing. Use
+	INADDR_LOOPBACK instead of inet_addr("127.0.0.1") and
+	gethostbyaddr(). <tml@iki.fi>
+
 2003-06-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_channel_unix_new): Pass real &optval and

@@ -4,7 +4,7 @@
  * giowin32.c: IO Channels for Win32.
  * Copyright 1998 Owen Taylor and Tor Lillqvist
  * Copyright 1999-2000 Tor Lillqvist and Craig Setera
- * Copyright 2001 Andrew Lanoix
+ * Copyright 2001-2003 Andrew Lanoix
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -110,6 +110,8 @@ struct _GIOWin32Channel {
   /* Following fields used by socket channels */
   GSList *watches;
   HANDLE data_avail_noticed_event;
+  gint reset_send; /* socket used to send data so select_thread() can reset/re-loop */
+  gint reset_recv; /* socket used to recv data so select_thread() can reset/re-loop */
 };
 
 #define LOCK(mutex) EnterCriticalSection (&mutex)
@@ -311,7 +313,7 @@ read_thread (void *parameter)
   SetEvent (channel->data_avail_event);
   UNLOCK (channel->mutex);
   
-  g_io_channel_unref((GIOChannel *)channel);
+  g_io_channel_unref ((GIOChannel *)channel);
   
   /* No need to call _endthreadex(), the actual thread starter routine
    * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
@@ -338,6 +340,66 @@ create_thread (GIOWin32Channel     *channel,
 	       g_win32_error_message (GetLastError ()));
 
   WaitForSingleObject (channel->space_avail_event, INFINITE);
+}
+
+static void
+init_reset_sockets (GIOWin32Channel *channel)
+{
+  struct sockaddr_in local, local2, server;
+  int len;
+
+  channel->reset_send = (gint) socket (AF_INET, SOCK_DGRAM, 0);
+  if (channel->reset_send == INVALID_SOCKET)
+    {
+      g_warning (G_STRLOC ": Error creating reset_send socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+    }
+
+  local.sin_family = AF_INET;
+  local.sin_port = 0;
+  local.sin_addr.s_addr = htonl (INADDR_ANY);
+
+  if (bind (channel->reset_send, (struct sockaddr *)&local, sizeof (local)) == SOCKET_ERROR)
+    {
+      g_warning (G_STRLOC ": Error binding to reset_send socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+  }
+
+  local2.sin_family = AF_INET;
+  local2.sin_port = 0;
+  local2.sin_addr.s_addr = htonl (INADDR_ANY);
+
+  channel->reset_recv = (gint) socket (AF_INET, SOCK_DGRAM, 0);
+  if (channel->reset_recv == INVALID_SOCKET)
+    {
+      g_warning (G_STRLOC ": Error creating reset_recv socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+  }
+
+  if (bind (channel->reset_recv, (struct sockaddr *)&local2, sizeof (local)) == SOCKET_ERROR)
+    {
+      g_warning (G_STRLOC ": Error binding to reset_recv socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+    }
+  
+  len = sizeof (local2);
+  if (getsockname (channel->reset_recv, (struct sockaddr *)&local2, &len) == SOCKET_ERROR)
+    {
+      g_warning (G_STRLOC ": Error getsockname with reset_recv socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+    }
+
+  memset (&server, 0, sizeof (server));
+  server.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
+  server.sin_family = AF_INET;
+  server.sin_port = local2.sin_port;
+
+  if (connect (channel->reset_send, (struct sockaddr  *)&server, sizeof (server)) == SOCKET_ERROR)
+    {
+      g_warning (G_STRLOC ": connect to reset_recv socket: %s\n",
+		 g_win32_error_message (WSAGetLastError ()));
+  }
+
 }
 
 static GIOStatus
@@ -417,6 +479,7 @@ select_thread (void *parameter)
   fd_set read_fds, write_fds, except_fds;
   GSList *tmp;
   int n;
+  char buffer[8];
 
   g_io_channel_ref ((GIOChannel *)channel);
 
@@ -437,7 +500,9 @@ select_thread (void *parameter)
       FD_ZERO (&read_fds);
       FD_ZERO (&write_fds);
       FD_ZERO (&except_fds);
+      FD_SET (channel->reset_recv, &read_fds);
 
+      LOCK (channel->mutex);
       tmp = channel->watches;
       while (tmp)
 	{
@@ -452,43 +517,17 @@ select_thread (void *parameter)
 	  
 	  tmp = tmp->next;
 	}
+      UNLOCK (channel->mutex);
+
       if (channel->debug)
 	g_print ("select_thread %#x: calling select() for%s%s%s\n",
 		 channel->thread_id,
 		 (FD_ISSET (channel->fd, &read_fds) ? " IN" : ""),
 		 (FD_ISSET (channel->fd, &write_fds) ? " OUT" : ""),
 		 (FD_ISSET (channel->fd, &except_fds) ? " ERR" : ""));
-
+      
       n = select (1, &read_fds, &write_fds, &except_fds, NULL);
       
-      if (n == SOCKET_ERROR)
-	{
-	  if (channel->debug)
-	    g_print ("select_thread %#x: select returned SOCKET_ERROR\n",
-		     channel->thread_id);
-	  break;
-	}
-
-      if (channel->debug)
-	g_print ("select_thread %#x: got%s%s%s\n",
-		 channel->thread_id,
-		 (FD_ISSET (channel->fd, &read_fds) ? " IN" : ""),
-		 (FD_ISSET (channel->fd, &write_fds) ? " OUT" : ""),
-		 (FD_ISSET (channel->fd, &except_fds) ? " ERR" : ""));
-
-      if (FD_ISSET (channel->fd, &read_fds))
-	channel->revents |= G_IO_IN;
-      if (FD_ISSET (channel->fd, &write_fds))
-	channel->revents |= G_IO_OUT;
-      if (FD_ISSET (channel->fd, &except_fds))
-	channel->revents |= G_IO_ERR;
-
-      if (channel->debug)
-	g_print ("select_thread %#x: resetting data_avail_noticed, setting data_avail\n",
-		 channel->thread_id);
-      ResetEvent (channel->data_avail_noticed_event);
-      SetEvent (channel->data_avail_event);
-
       LOCK (channel->mutex);
       if (channel->needs_close)
 	{
@@ -497,32 +536,70 @@ select_thread (void *parameter)
 	}
       UNLOCK (channel->mutex);
 
-      if (channel->debug)
-	g_print ("select_thread %#x: waiting for data_avail_noticed\n",
-		 channel->thread_id);
+      if (n == SOCKET_ERROR)
+	{
+	  if (channel->debug)
+	    g_print ("select_thread %#x: select returned SOCKET_ERROR\n",
+		     channel->thread_id);
+	  break;
+	}
 
-      WaitForSingleObject (channel->data_avail_noticed_event, INFINITE);
-      if (channel->debug)
-	g_print ("select_thread %#x: got data_avail_noticed\n",
-		 channel->thread_id);
-    }
-  
-  channel->running = FALSE;
-  LOCK (channel->mutex);
-  if (channel->fd != -1)
+    if (FD_ISSET (channel->reset_recv, &read_fds))
     {
-      /* DO NOT close the fd here */
-      channel->fd = -1;
+      if (channel->debug)
+        g_print ("select_thread %#x: re-looping\n",
+            channel->thread_id);
+      recv (channel->reset_recv,  (char *)&buffer, (int) sizeof (buffer), 0);
+      continue;
     }
 
+    if (channel->debug)
+      g_print ("select_thread %#x: got%s%s%s\n",
+	       channel->thread_id,
+	       (FD_ISSET (channel->fd, &read_fds) ? " IN" : ""),
+	       (FD_ISSET (channel->fd, &write_fds) ? " OUT" : ""),
+	       (FD_ISSET (channel->fd, &except_fds) ? " ERR" : ""));
+    
+    if (FD_ISSET (channel->fd, &read_fds))
+      channel->revents |= G_IO_IN;
+    if (FD_ISSET (channel->fd, &write_fds))
+      channel->revents |= G_IO_OUT;
+    if (FD_ISSET (channel->fd, &except_fds))
+      channel->revents |= G_IO_ERR;
+
+    if (channel->debug)
+      g_print ("select_thread %#x: resetting data_avail_noticed, setting data_avail\n",
+	       channel->thread_id);
+
+    LOCK (channel->mutex);
+    ResetEvent (channel->data_avail_noticed_event);
+    SetEvent (channel->data_avail_event);
+    if (channel->needs_close)
+      {
+	UNLOCK (channel->mutex);
+	break;
+      }
+    UNLOCK (channel->mutex);
+
+    if (channel->debug)
+      g_print ("select_thread %#x: waiting for data_avail_noticed\n",
+        channel->thread_id);
+
+    WaitForSingleObject (channel->data_avail_noticed_event, INFINITE);
+    if (channel->debug)
+      g_print ("select_thread %#x: got data_avail_noticed\n",
+		 channel->thread_id);
+    }
+
+  LOCK (channel->mutex);
+  channel->running = FALSE;
   if (channel->debug)
     g_print ("select_thread %#x: got error, setting data_avail\n",
 	     channel->thread_id);
   SetEvent (channel->data_avail_event);
+  g_io_channel_unref ((GIOChannel *)channel);
   UNLOCK (channel->mutex);
-  
-  g_io_channel_unref((GIOChannel *)channel);
-  
+
   /* No need to call _endthreadex(), the actual thread starter routine
    * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
    * _endthreadex() for us.
@@ -561,8 +638,8 @@ g_io_win32_prepare (GSource *source,
     }
   else if (channel->type == G_IO_WIN32_SOCKET)
     {
+      LOCK (channel->mutex);
       channel->revents = 0;
-
       if (channel->debug)
 	g_print ("g_io_win32_prepare: for thread %#x, setting data_avail_noticed\n",
 		 channel->thread_id);
@@ -570,6 +647,7 @@ g_io_win32_prepare (GSource *source,
       if (channel->debug)
 	g_print ("g_io_win32_prepare: thread %#x, there.\n",
 		 channel->thread_id);
+      UNLOCK (channel->mutex);
     }
 
   return ((watch->condition & buffer_condition) == watch->condition);
@@ -600,6 +678,7 @@ g_io_win32_check (GSource *source)
   
   if (channel->type == G_IO_WIN32_SOCKET)
     {
+      LOCK (channel->mutex);
       if (channel->debug)
 	g_print ("g_io_win32_check: thread %#x, resetting data_avail\n",
 		 channel->thread_id);
@@ -607,6 +686,7 @@ g_io_win32_check (GSource *source)
       if (channel->debug)
 	g_print ("g_io_win32_check: thread %#x, there.\n",
 		 channel->thread_id);
+      UNLOCK (channel->mutex);
     }
 
   return ((watch->pollfd.revents | buffer_condition) & watch->condition);
@@ -638,7 +718,9 @@ g_io_win32_finalize (GSource *source)
 {
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
+  char send_buffer[] = "f";
   
+  LOCK (channel->mutex);
   if (channel->debug)
     g_print ("g_io_win32_finalize: channel with thread %#x\n",
 	     channel->thread_id);
@@ -646,7 +728,11 @@ g_io_win32_finalize (GSource *source)
   channel->watches = g_slist_remove (channel->watches, watch);
 
   SetEvent (channel->data_avail_noticed_event);
+  if (channel->type == G_IO_WIN32_SOCKET)
+    send (channel->reset_send, send_buffer, sizeof (send_buffer), 0);
+
   g_io_channel_unref (watch->channel);
+  UNLOCK (channel->mutex);
 }
 
 #if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
@@ -667,6 +753,7 @@ g_io_win32_create_watch (GIOChannel    *channel,
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   GIOWin32Watch *watch;
   GSource *source;
+  char send_buffer[] = "c";
 
   source = g_source_new (&g_io_watch_funcs, sizeof (GIOWin32Watch));
   watch = (GIOWin32Watch *)source;
@@ -685,14 +772,18 @@ g_io_win32_create_watch (GIOChannel    *channel,
   if (win32_channel->debug)
     g_print ("g_io_win32_create_watch: fd:%d condition:%#x handle:%#x\n",
 	     win32_channel->fd, condition, watch->pollfd.fd);
-  
+
+  LOCK (win32_channel->mutex);
   win32_channel->watches = g_slist_append (win32_channel->watches, watch);
 
   if (win32_channel->thread_id == 0)
     create_thread (win32_channel, condition, thread);
+  else
+    send (win32_channel->reset_send, send_buffer, sizeof (send_buffer), 0);
 
   g_source_add_poll (source, &watch->pollfd);
-  
+  UNLOCK (win32_channel->mutex);
+
   return source;
 }
 
@@ -708,8 +799,8 @@ g_io_win32_msg_read (GIOChannel *channel,
   
   if (count < sizeof (MSG))
     {
-      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-        _("Incorrect message size")); /* Informative enough error message? */
+      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
+		   "Incorrect message size"); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
@@ -737,8 +828,8 @@ g_io_win32_msg_write (GIOChannel  *channel,
   
   if (count != sizeof (MSG))
     {
-      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-        _("Incorrect message size")); /* Informative enough error message? */
+      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
+		   "Incorrect message size"); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
@@ -747,7 +838,7 @@ g_io_win32_msg_write (GIOChannel  *channel,
   if (!PostMessage (win32_channel->hwnd, msg.message, msg.wParam, msg.lParam))
     {
       gchar *emsg = g_win32_error_message (GetLastError ());
-      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED, emsg);
+      g_set_error (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED, emsg);
       g_free (emsg);
       return G_IO_STATUS_ERROR;
     }
@@ -776,6 +867,10 @@ g_io_win32_free (GIOChannel *channel)
 	     win32_channel->thread_id,
 	     win32_channel->fd);
 
+  if (win32_channel->reset_send)
+    closesocket (win32_channel->reset_send);
+  if (win32_channel->reset_recv)
+    closesocket (win32_channel->reset_recv);
   if (win32_channel->data_avail_event)
     CloseHandle (win32_channel->data_avail_event);
   if (win32_channel->space_avail_event)
@@ -840,17 +935,17 @@ g_io_win32_fd_read (GIOChannel *channel,
     {
       *bytes_read = 0;
 
-      switch(errno)
+      switch (errno)
         {
 #ifdef EAGAIN
-          case EAGAIN:
-            return G_IO_STATUS_AGAIN;
+	case EAGAIN:
+	  return G_IO_STATUS_AGAIN;
 #endif
-          default:
-            g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_io_channel_error_from_errno (errno),
-                         g_strerror (errno));
-            return G_IO_STATUS_ERROR;
+	default:
+	  g_set_error (err, G_IO_CHANNEL_ERROR,
+		       g_io_channel_error_from_errno (errno),
+		       g_strerror (errno));
+	  return G_IO_STATUS_ERROR;
         }
     }
 
@@ -878,17 +973,17 @@ g_io_win32_fd_write (GIOChannel  *channel,
     {
       *bytes_written = 0;
 
-      switch(errno)
+      switch (errno)
         {
 #ifdef EAGAIN
-          case EAGAIN:
-            return G_IO_STATUS_AGAIN;
+	case EAGAIN:
+	  return G_IO_STATUS_AGAIN;
 #endif
-          default:
-            g_set_error (err, G_IO_CHANNEL_ERROR,
-                         g_io_channel_error_from_errno (errno),
-                         g_strerror (errno));
-            return G_IO_STATUS_ERROR;
+	default:
+	  g_set_error (err, G_IO_CHANNEL_ERROR,
+		       g_io_channel_error_from_errno (errno),
+		       g_strerror (errno));
+	  return G_IO_STATUS_ERROR;
         }
     }
 
@@ -921,7 +1016,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
       break;
     default:
       whence = -1; /* Keep the compiler quiet */
-      g_assert_not_reached();
+      g_assert_not_reached ();
     }
 
   tmp_offset = offset;
@@ -999,7 +1094,9 @@ g_io_win32_sock_read (GIOChannel *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
-  GIOChannelError error;
+  GIOChannelError error = G_IO_STATUS_NORMAL;
+  GIOStatus internal_status = G_IO_STATUS_NORMAL;
+  char send_buffer[] = "sr";
 
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_read: sockfd:%d count:%d\n",
@@ -1031,16 +1128,27 @@ repeat:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error(err, G_IO_CHANNEL_ERROR, error, _("Socket error"));
-      return G_IO_STATUS_ERROR;
+      g_set_error (err, G_IO_CHANNEL_ERROR, error, "Socket read error");
+      internal_status = G_IO_STATUS_ERROR;
       /* FIXME get all errors, better error messages */
     }
   else
     {
       *bytes_read = result;
-
-      return (result > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
+      if (result == 0)
+	internal_status = G_IO_STATUS_EOF;
     }
+
+  if ((internal_status == G_IO_STATUS_EOF) || 
+      (internal_status == G_IO_STATUS_ERROR))
+    {
+      LOCK (win32_channel->mutex);
+      SetEvent (win32_channel->data_avail_noticed_event);
+      win32_channel->needs_close = 1;
+      send (win32_channel->reset_send, send_buffer, sizeof (send_buffer), 0);
+      UNLOCK (win32_channel->mutex);
+    }
+  return internal_status;
 }
 
 static GIOStatus
@@ -1052,7 +1160,8 @@ g_io_win32_sock_write (GIOChannel  *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
-  GIOChannelError error;
+  GIOChannelError error = G_IO_STATUS_NORMAL;
+  char send_buffer[] = "sw";
   
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_write: sockfd:%d count:%d\n",
@@ -1084,7 +1193,12 @@ repeat:
 	  error = G_IO_CHANNEL_ERROR_FAILED;
           break;
 	}
-      g_set_error(err, G_IO_CHANNEL_ERROR, error, _("Socket error"));
+      g_set_error (err, G_IO_CHANNEL_ERROR, error, "Socket write error");
+      LOCK (win32_channel->mutex);
+      SetEvent (win32_channel->data_avail_noticed_event);
+      win32_channel->needs_close = 1;
+      send (win32_channel->reset_send, send_buffer, sizeof (send_buffer), 0);
+      UNLOCK (win32_channel->mutex);
       return G_IO_STATUS_ERROR;
       /* FIXME get all errors, better error messages */
     }
@@ -1102,7 +1216,7 @@ g_io_win32_sock_close (GIOChannel *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
-  LOCK(win32_channel->mutex);
+  LOCK (win32_channel->mutex);
   if (win32_channel->running)
     {
       if (win32_channel->debug)
@@ -1122,7 +1236,7 @@ g_io_win32_sock_close (GIOChannel *channel,
       closesocket (win32_channel->fd);
       win32_channel->fd = -1;
     }
-  UNLOCK(win32_channel->mutex);
+  UNLOCK (win32_channel->mutex);
 
   /* FIXME error detection? */
 
@@ -1471,6 +1585,7 @@ g_io_channel_win32_new_socket (int socket)
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
+  init_reset_sockets (win32_channel);
   if (win32_channel->debug)
     g_print ("g_io_channel_win32_new_socket: sockfd:%d\n", socket);
   channel->funcs = &win32_channel_sock_funcs;
