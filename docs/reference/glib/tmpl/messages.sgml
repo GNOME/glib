@@ -127,6 +127,7 @@ A convenience function/macro to log a debug message.
 </para>
 
 @...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+@Since: 2.6
 
 <!-- ##### MACRO g_critical ##### -->
 <para>
