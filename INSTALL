@@ -5,8 +5,23 @@ Simple install procedure
   % cd glib-1.2.9                           # change to the toplevel directory
   % ./configure                             # run the `configure' script
   % make                                    # build GLIB
+
   [ Become root if necessary ]
+  % rm -rf /install-prefix/include/glib.h /install-prefix/include/gmodule.h
   % make install                            # install GLIB
+
+Special note for GLib+-1.2.9
+============================
+
+Between GLib-1.2.8 and GLib-1.2.9, the include files for GLib
+have been moved to $(includedir)/gtk-1-2/ to allow parallel installations
+of GLib-1.2 and GLib-2.0 to work correctly. If you are installing
+on top of an old installation of GLib, you should remove the files:
+
+ $(includedir)/glib.h
+ $(includedir)/gmodule.h
+
+Before running 'make install'
 
 The Nitty-Gritty
 ================

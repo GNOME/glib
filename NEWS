@@ -1,10 +1,13 @@
 Overview of Changes in GLib 1.2.9:
 
-* Addition of .pc files
-* Include file movement into a glib-1.2 subdir
-* One or two pieces of sugar for your pet C++ compiler 
+* Move include files into a glib-1-2/ subdir to support parallel
+  installation with GLib-2.0. If you are installing from source
+  on top of a previous version, you should to remove $(includedir)/glib.h
+  $(includedir)/module.h manually before installing the new version.
+* Fix warnings about varargs macros with recent GCC versions
 * Miscellaneous important bug fixes 
-  (g_strncasecmp, varags warnings, some g_printf_string_upper_bound fixes)
+  (g_strncasecmp, some g_printf_string_upper_bound fixes)
+* Addition of .pc files
 
 Overview of Changes in GLib 1.2.8:
 

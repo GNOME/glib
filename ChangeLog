@@ -1,3 +1,12 @@
+Fri Mar  2 12:35:40 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Release 1.2.9
+
+        * NEWS: Final update for 1.2.9
+	 
+	* INSTALL INSTALL.in: Add note about the movement of
+	the include files.
+
 2001-03-01  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Make a note that this version of GLib preferrably
