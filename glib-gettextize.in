@@ -98,6 +98,20 @@ test -f configure.in || test -f configure.ac || {
   exit 1
 }
 
+configure_in=NONE
+if test -f configure.in; then
+  configure_in=configure.in
+else
+  if test -f configure.ac; then
+    configure_in=configure.ac
+  fi
+fi
+# Check in which directory config.rpath, mkinstalldirs etc. belong.
+auxdir=`cat "$configure_in" | grep '^AC_CONFIG_AUX_DIR' | sed -n -e 's/AC_CONFIG_AUX_DIR(\([^()]*\))/\1/p' | sed -e 's/^\[\(.*\)\]$/\1/' | sed -e 1q`
+if test -n "$auxdir"; then
+  auxdir="$auxdir/"
+fi
+
 if test -f po/Makefile.in.in && test $force -eq 0; then
   $echo "\
 po/Makefile.in.in exists: use option -f if you really want to delete it."
@@ -122,6 +136,11 @@ cd $gettext_dir || {
 for file in *; do
   case $file in
     intl | po)
+      ;;
+    mkinstalldirs)
+      rm -f "$srcdir/$auxdir$file"
+      ($try_ln_s && ln -s $gettext_dir/$file "$srcdir/$auxdir$file" && $echo "Symlinking file $file") 2>/dev/null ||
+      { $echo "Copying file $file"; cp $file "$srcdir/$auxdir$file"; }
       ;;
     *)
       rm -f "$srcdir/$file"

@@ -1,5 +1,14 @@
 2004-07-21  Matthias Clasen  <mclasen@redhat.com>
 
+	Fix #132858, Sven Neumann, patch by James Henstridge:
+	
+	* glib-gettextize.in: modify so that mkinstalldirs will 
+	get installed into auxdir.
+
+	* Makefile.am (gettext_SCRIPTS): install mkinstalldirs.
+
+2004-07-21  Matthias Clasen  <mclasen@redhat.com>
+
 	Fix #147651, reported by Oliver Guntermann:
 
 	* glib/gprintfint.h (_g_vasprintf): Don't wrap vasprintf(),
