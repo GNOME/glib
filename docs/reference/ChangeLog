@@ -1,5 +1,6 @@
 2004-05-05  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject/gobject-docs.sgml: 
 	* glib/glib-docs.sgml: Add multiple indices.
 
 2004-04-30  Matthias Clasen  <mclasen@redhat.com>
