@@ -1056,6 +1056,12 @@ free_pending_nulls (GOptionContext *context,
  * removed from the array and @argc and @argv are updated 
  * accordingly. In case of an error, @argc and @argv are
  * left unmodified.
+ *
+ * If automatic <option>--help</option> support is enabled
+ * (see g_option_context_set_help_enabled()), and the 
+ * @argv array contains one of the recognized help options,
+ * this function will produce help output to stdout and
+ * call <literal>exit (0)</literal>.
  * 
  * Return value: %TRUE if the parsing was successful, 
  *               %FALSE if an error occurred

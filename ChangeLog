@@ -1,3 +1,8 @@
+2004-11-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (g_option_context_parse): Document that
+	this function may not return.
+
 2004-11-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: Make gtkdoc-scan happy by removing spaces
