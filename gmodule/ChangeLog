@@ -1,3 +1,9 @@
+2004-12-06  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am
+	* gmodule.def
+	* gmodule.[hc]: Win32 DLL ABI stability cruft like in ../glib.
+
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.7 ===

@@ -59,6 +59,9 @@
 struct _GModule
 {
   gchar	*file_name;
+#ifdef G_OS_WIN32
+  gchar *cp_file_name;
+#endif
   gpointer handle;
   guint ref_count : 31;
   guint is_resident : 1;
@@ -318,6 +321,9 @@ g_module_open (const gchar    *file_name,
 	    {
 	      main_module = g_new (GModule, 1);
 	      main_module->file_name = NULL;
+#ifdef G_OS_WIN32
+	      main_module->cp_file_name = NULL;
+#endif
 	      main_module->handle = handle;
 	      main_module->ref_count = 1;
 	      main_module->is_resident = TRUE;
@@ -427,6 +433,10 @@ g_module_open (const gchar    *file_name,
       
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
+#ifdef G_OS_WIN32
+      module->cp_file_name = g_locale_from_utf8 (file_name, -1,
+						 NULL, NULL, NULL);
+#endif
       module->handle = handle;
       module->ref_count = 1;
       module->is_resident = FALSE;
@@ -461,6 +471,24 @@ g_module_open (const gchar    *file_name,
   g_static_rec_mutex_unlock (&g_module_global_lock);
   return module;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_module_open
+
+GModule*
+g_module_open (const gchar    *file_name,
+	       GModuleFlags    flags)
+{
+  gchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
+  GModule *retval = g_module_open_utf8 (utf8_file_name, flags);
+
+  g_free (utf8_file_name);
+
+  return retval;
+}
+
+#endif
 
 gboolean
 g_module_close (GModule	       *module)
@@ -508,7 +536,9 @@ g_module_close (GModule	       *module)
       
       _g_module_close (module->handle, FALSE);
       g_free (module->file_name);
-      
+#ifdef G_OS_WIN32
+      g_free (module->cp_file_name);
+#endif
       g_free (module);
     }
   
@@ -584,6 +614,23 @@ g_module_name (GModule *module)
   
   return module->file_name;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_module_name
+
+G_CONST_RETURN gchar*
+g_module_name (GModule *module)
+{
+  g_return_val_if_fail (module != NULL, NULL);
+  
+  if (module == main_module)
+    return "main";
+  
+  return module->cp_file_name;
+}
+
+#endif
 
 gchar*
 g_module_build_path (const gchar *directory,
