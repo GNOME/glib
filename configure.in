@@ -459,6 +459,7 @@ dnl ***********************
 dnl *** g_module checks ***
 dnl ***********************
 G_MODULE_LIBS=
+G_MODULE_LIBS_EXTRA=
 G_MODULE_PLUGIN_LIBS=
 G_MODULE_LDFLAGS=
 dnl G_MODULE_IMPL= don't reset, so cmd-line can override
@@ -475,7 +476,8 @@ fi
 dnl *** load_image (BeOS)
 if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
   AC_CHECK_LIB(root, load_image,
-      G_MODULE_LIBS="-lbe -lroot -L\$(top_builddir_full)/.libs -lglib"
+      G_MODULE_LIBS="-lbe -lroot -lglib"
+      G_MODULE_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
       G_MODULE_PLUGIN_LIBS="-L\$(top_builddir_full)/gmodule/.libs -lgmodule"
       G_MODULE_IMPL=G_MODULE_IMPL_BEOS 
 ,)
@@ -562,6 +564,7 @@ if test -z "$G_MODULE_IMPL"; then
 fi
 AC_SUBST(G_MODULE_IMPL)
 AC_SUBST(G_MODULE_LIBS)
+AC_SUBST(G_MODULE_LIBS_EXTRA)
 AC_SUBST(G_MODULE_PLUGIN_LIBS)
 AC_SUBST(G_MODULE_LDFLAGS)
 AC_SUBST(G_MODULE_HAVE_DLERROR)
@@ -663,6 +666,7 @@ dnl determination of G_THREAD_LIBS
 dnl ******************************
 
 G_THREAD_LIBS=
+G_THREAD_LIBS_EXTRA=
 G_THREAD_CFLAGS=
 
 mutex_has_default=no
@@ -733,7 +737,8 @@ fi
 
 case $host in
   *-*-beos*)
-    G_THREAD_LIBS="-lbe -lroot -L\$(top_builddir_full)/.libs -lglib "
+    G_THREAD_LIBS="-lbe -lroot -lglib "
+    G_THREAD_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
     ;;
   *)
     ;;
@@ -840,6 +845,7 @@ fi
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
+AC_SUBST(G_THREAD_LIBS_EXTRA)
 
 CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 

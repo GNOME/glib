@@ -1,4 +1,11 @@
-Sat May  8 01:52:29 CDT 1999 Shawn T. Amundson
+Sat May  8 06:00:17 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* configure.in
+	  gmodule/Makefile.am
+	  gthread/Makefile.am: Better testing reveals better
+	  methods.  Fixes for BeOS.
+
+Sat May  8 01:52:29 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* configure.in
 	  gerror.c

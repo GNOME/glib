@@ -31,7 +31,7 @@ libgmodule_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-release $(LT_RELEASE)
 
-libgmodule_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
+libgmodule_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ # $(libglib)
 # we should really depend on $(libglib) for libgmodule.la, but libtool has a
 # problem with this ;(
 

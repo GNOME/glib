@@ -21,7 +21,7 @@ libgthread_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-release $(LT_RELEASE)
 
-libgthread_la_LIBADD = @G_THREAD_LIBS@
+libgthread_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
 
 noinst_PROGRAMS = testgthread
 testgthread_LDADD = ../libglib.la libgthread.la
