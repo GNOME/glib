@@ -1,3 +1,8 @@
+
+2001-10-13  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib-genmarshal.1, glib-mkenums.1: Typo fixes.
+
 Fri Oct 12 18:40:18 2001  Tim Janik  <timj@gtk.org>
 
 	* cosmetic fixups.
