@@ -7,7 +7,62 @@ as general purpose notification mechanism.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The basic concept of the signal system is that of the @emission of a signal.
+Signals are introduced per-type and are identified through strings.
+Signals introduced for a parent type are availale in derived types as well,
+so basically they are a per-type facility that is inherited.
+A signal emission mainly involves invocation of a certain set of callbacks in
+precisely defined manner. There are two main categories of such callbacks,
+per-object
+	<footnote><para> Although signals can deal with any kind of type, i'm
+	referring to those types as "@object @types" in the following, simply
+	because that is the context most users will encounter signals in.
+	</para></footnote>
+ones and user provided ones.
+The per-object callbacks are most often referred to as "object method
+handler" or "default (signal) handler", while user provided callbacks are
+usually just called "signal handler".
+The object method handler is provided at signal creation time (this most
+frequently happens at the end of an object class' creation), while user
+provided handlers are frequently @connected and @disconnected to/from a certain
+signal on certain object instances.
+</para>
+<para>
+A signal emission consists of five stages, unless prematurely stopped:
+<variablelist>
+  <varlistentry><term></term><listitem><para>
+	1 - Invocation of the object method handler for @G_SIGNAL_RUN_FIRST signals
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	2 - Invocation of normal user-provided signal handlers (@after flag @FALSE)
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	3 - Invocation of the object method handler for @G_SIGNAL_RUN_LAST signals
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	4 - Invocation of user provided signal handlers, connected with an @after flag of @TRUE
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	5 - Invocation of the object method handler for @G_SIGNAL_RUN_CLEANUP signals
+  </para></listitem></varlistentry>
+</variablelist>
+The user provided signal handlers are called in the order they were
+connected in.
+All handlers may prematurely stop a signal emission, and any number of
+handlers may be connected, disconnected, blocked or unblocked during
+a signal emission.
+There are certain criteria for skipping user handlers in stages 2 and 4
+of a signal emission.
+First, user handlers may be @blocked, blocked handlers are omitted
+during callback invocation, to return from the "blocked" state, a
+handler has to get unblocked exactly the same amount of times
+it has been blocked before.
+Second, upon emission of a @G_SIGNAL_DETAILED signal, an additional
+"detail" argument passed in to g_signal_emit() has to match the detail
+argument of the signal handler currently subject to invocation.
+Specification of no detail argument for signal handlers (omission of the
+detail part of the signal specification upon connection) serves as a
+wildcard and matches any detail argument passed in to emission.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -21,27 +76,27 @@ The @GSignalInvocationHint structure is used to pass on additional information
 to callbacks during a signal emission.
 </para>
 
-@signal_id: The signal id of the signal invoking the callback
-@detail: The detail passed on for this emission
-@run_type: The stage the signal emission is currently in, this
-		field will contain either of @G_SIGNAL_RUN_FIRST,
+@signal_id:	The signal id of the signal invoking the callback
+@detail:	The detail passed on for this emission
+@run_type:	The stage the signal emission is currently in, this
+		field will contain one of @G_SIGNAL_RUN_FIRST,
 		@G_SIGNAL_RUN_LAST or @G_SIGNAL_RUN_CLEANUP.
 
 <!-- ##### USER_FUNCTION GSignalAccumulator ##### -->
 <para>
 The signal accumulator is a special callback function that can be used
 to collect return values of the various callbacks that are called
-during a signal emission. The signal accumulator is at signal creation
-time, if it is left NULL, no accumulation of callback return values is
-perfomed, the return value of the signal emission is the value returned
-by the last callback.
+during a signal emission. The signal accumulator is specified at signal
+creation time, if it is left NULL, no accumulation of callback return
+values is perfomed. The return value of signal emissions is then the
+value returned by the last callback.
 </para>
 
-@ihint: Signal invokation hint, see @GSignalInvocationHint
-@return_accu: Accumulator to collect callback return values in, this
+@ihint:		Signal invokation hint, see @GSignalInvocationHint
+@return_accu:	Accumulator to collect callback return values in, this
 		is the return value of the current signal emission
-@return_value: The return value of the most recent callback function
-@Returns: The accumulator function returns whether signal emission
+@return_value:	The return value of the most recent callback function
+@Returns:	The accumulator function returns whether the signal emission
 		should be aborted. Returning @FALSE means to abort the
 		current emission and @TRUE is returned for continuation.
 
@@ -95,7 +150,7 @@ by the last callback.
 <!-- ##### STRUCT GSignalQuery ##### -->
 <para>
 A structure holding in-depth information for a specific signal. It is
-filled in by the @g_signal_query() function.
+filled in by the g_signal_query() function.
 </para>
 
 @signal_id:	The signal id of the signal being querried, or 0 if the
@@ -107,7 +162,11 @@ filled in by the @g_signal_query() function.
 @n_params:	The number of parameters that user callbacks take
 @param_types:	The individual parameter types for user callbacks, note that the
 		effective callback signature is:
-		@return_type callback (gpointer data1, @[parameters], gpointer data2);
+<msgtext><programlisting>
+@return_type callback (@gpointer     data1,
+                      [@param_types param_names,]
+                      @gpointer     data2);
+</programlisting></msgtext>
 
 <!-- ##### FUNCTION g_signal_newv ##### -->
 <para>
@@ -175,7 +234,7 @@ be considered constant and have to be left untouched.
 <para>
 List the signals by id, that a certain instance or interface type
 created. Further information about the signals can be aquired through
-@g_signal_query().
+g_signal_query().
 </para>
 
 @itype:		Instance or interface type

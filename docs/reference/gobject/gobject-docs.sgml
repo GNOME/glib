@@ -14,9 +14,54 @@
     <title>GObject Reference Manual</title>
   </bookinfo>
 
+  <preface>
+    <title>Introduction</title>
+      <para>
+	Most modern programming languages come with their own native object
+	systems and additional fundamental algorithmic language constructs.
+	Just as GLib serves as an implementation of such fundamental
+	types and algorithms (linked lists, hash tables and so forth), the
+	GLib Object System provides the required implementations of a
+	flexible extensible and intentionally easy to map (into other
+	languages) object oriented framework for C.
+	The substantial elements that are provided can be summarized as:
+	<variablelist>
+	  <varlistentry><term></term><listitem><para>
+	    * A generic type system to register arbitrary single-inherited
+	      flat and deep derived types as well as interfaces for
+	      structured types.
+	      It takes care of creation, initialization and memory management
+	      of the assorted object and class structures, maintains
+	      parent/child relationships and deals with dynamic implementations
+	      of such types. That is, their type specific implementations are
+	      relocatable/unloadable during runtime.
+	  </para></listitem></varlistentry>
+	  <varlistentry><term></term><listitem><para>
+	    * A collection of fundamental type implementations, such as integers,
+	      doubles, enums and structured types, to name a few.
+	  </para></listitem></varlistentry>
+	  <varlistentry><term></term><listitem><para>
+	    * A sample fundamental type implementation to base object hirachies
+	      upon - the GObject fundamental type.
+	  </para></listitem></varlistentry>
+	  <varlistentry><term></term><listitem><para>
+	    * A signal system that allowes very flexible user customization of
+	      virtual/overridable object methods and can serve as a powerfull
+	      notification mechanism.
+	  </para></listitem></varlistentry>
+	  <varlistentry><term></term><listitem><para>
+	    * An extensible parameter/value system, supporting all the provided
+	      fundamental types that can be used to generically handle object
+	      properties or otherwise parameterized types.
+	  </para></listitem></varlistentry>
+	  <varlistentry><term></term><listitem><para>
+	</variablelist>
+      </para>
+  </preface>
+
   <reference>
     <title>API Reference</title>
-
+    
       &gobject-types;
       &gobject-objects;
       &gobject-enumerations-flags;
@@ -26,6 +71,6 @@
       &gobject-param-specs;
       &gobject-standard-params;
       &gobject-signals;
-
   </reference>
+  
 </book>

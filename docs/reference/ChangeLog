@@ -1,3 +1,9 @@
+Mon Oct 30 11:13:12 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/signals.sgml: start at general description.
+
+	* gobject/gobject-docs.sgml: added introduction.
+
 Mon Oct 30 06:01:43 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject/gobject-sections.txt: opened up a new section on signals.
