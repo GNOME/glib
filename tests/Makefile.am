@@ -34,39 +34,42 @@ endif
 if ENABLE_TIMELOOP
 timeloop = timeloop
 endif
-noinst_PROGRAMS = testglib testgdate testgdateparser $(timeloop)
+noinst_PROGRAMS = testglib testgdate testgdateparser unicode-normalize unicode-collate $(timeloop)
 testglib_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
+unicode_normalize_LDADD = $(libglib)
+unicode_collate_LDADD = $(libglib)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
 endif
 
-test_programs = \
-	array-test	\
-	$(CXX_TEST)	\
-	date-test	\
-	dirname-test	\
-	gio-test	\
-	hash-test	\
-	iochannel-test	\
-	list-test	\
-	mainloop-test	\
-	module-test	\
-	node-test	\
-	queue-test	\
-	qsort-test	\
-	rand-test	\
-	relation-test	\
-	shell-test	\
-	slist-test	\
-	spawn-test	\
-	strfunc-test	\
-	string-test	\
-	thread-test	\
-	threadpool-test \
-	tree-test	\
-	type-test	\
+test_programs =					\
+	array-test				\
+	$(CXX_TEST)				\
+	date-test				\
+	dirname-test				\
+	gio-test				\
+	hash-test				\
+	iochannel-test				\
+	list-test				\
+	mainloop-test				\
+	module-test				\
+	node-test				\
+	queue-test				\
+	qsort-test				\
+	rand-test				\
+	relation-test				\
+	shell-test				\
+	slist-test				\
+	spawn-test				\
+	strfunc-test				\
+	string-test				\
+	thread-test				\
+	threadpool-test				\
+	tree-test				\
+	type-test				\
+	unicode-caseconv			\
 	unicode-encoding
 
 test_scripts = run-markup-tests.sh
@@ -108,6 +111,7 @@ threadpool_test_LDADD = $(thread_LDADD)
 tree_test_LDADD = $(progs_LDADD)
 type_test_LDADD = $(progs_LDADD)
 unicode_encoding_LDADD = $(progs_LDADD)
+unicode_caseconv_LDADD = $(progs_LDADD)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 

@@ -512,16 +512,19 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
   
   if (pt->num_ints < 3)
     {
-      gchar lcstr[128];
+      gchar *casefold;
+      gchar *normalized;
       
-      strncpy (lcstr, str, 127);
-      g_strdown (lcstr);
-      
+      casefold = g_utf8_casefold (str);
+      normalized = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+      g_free (casefold);
+
+      i = 1;
       while (i < 13)
         {
           if (long_month_names[i] != NULL) 
             {
-              const gchar *found = strstr (lcstr, long_month_names[i]);
+              const gchar *found = strstr (normalized, long_month_names[i]);
 	      
               if (found != NULL)
                 {
@@ -532,7 +535,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 	  
           if (short_month_names[i] != NULL) 
             {
-              const gchar *found = strstr (lcstr, short_month_names[i]);
+              const gchar *found = strstr (normalized, short_month_names[i]);
 	      
               if (found != NULL)
                 {
@@ -575,21 +578,24 @@ g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
       
       while (i < 13) 
         {
+	  gchar *casefold;
+	  
           g_date_set_dmy (&d, 1, i, 1);
 	  
           g_return_if_fail (g_date_valid (&d));
 	  
           g_date_strftime (buf, 127, "%b", &d);
+
+	  casefold = g_utf8_casefold (buf);
           g_free (short_month_names[i]);
-          g_strdown (buf);
-          short_month_names[i] = g_strdup (buf);
-	  
-          
+          short_month_names[i] = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+	  g_free (casefold);
 	  
           g_date_strftime (buf, 127, "%B", &d);
+	  casefold = g_utf8_casefold (buf);
           g_free (long_month_names[i]);
-          g_strdown (buf);
-          long_month_names[i] = g_strdup (buf);
+          long_month_names[i] = g_utf8_normalize (casefold, G_NORMALIZE_ALL);
+	  g_free (casefold);
           
           ++i;
         }
@@ -1331,7 +1337,7 @@ g_date_strftime (gchar       *s,
                  const GDate *d)
 {
   struct tm tm;
-  gsize retval;
+  const gchar *charset;
   
   g_return_val_if_fail (d != NULL, 0);
   g_return_val_if_fail (g_date_valid (d), 0);
@@ -1340,14 +1346,100 @@ g_date_strftime (gchar       *s,
   g_return_val_if_fail (s != 0, 0);
   
   g_date_to_struct_tm (d, &tm);
-  
-  retval = strftime (s, slen, format, &tm);
-  if (retval == 0)
+
+  if (g_get_charset (&charset))
     {
-      /* If retval == 0, the contents of s are undefined.  We define
-       *  them. 
-       */
-      s[0] = '\0';
+      gint retval = strftime (s, slen, format, &tm);
+      if (retval == 0)
+	{
+	  /* If retval == 0, the contents of s are undefined.  We define
+	   *  them. 
+	   */
+	  s[0] = '\0';
+	}
+
+      return retval;
     }
-  return retval;
+  else
+    {
+      gchar *locale_format;
+      gsize tmplen;
+      gchar *tmpbuf;
+      gsize tmpbufsize;
+      gsize convlen = 0;
+      gchar *convbuf;
+      GError *error = NULL;
+      
+      locale_format = g_convert (format, -1 , "UTF-8", charset,
+				 NULL, NULL, &error);
+      if (error)
+	{
+	  g_warning (G_STRLOC "Error converting format to %s: %s\n",
+		     charset, error->message);
+	  g_error_free (error);
+
+	  return 0;
+	}
+      
+      tmpbufsize = MAX (128, strlen (locale_format) * 2);
+      while (TRUE)
+	{
+	  tmpbuf = g_malloc (tmpbufsize + 1);
+	  tmplen = strftime (tmpbuf, tmpbufsize + 1, locale_format, &tm);
+	  if (tmplen == tmpbufsize + 1)
+	    {
+	      g_free (tmpbuf);
+	      tmpbufsize *= 2;
+	    }
+	  else
+	    break;
+	}
+      g_free (locale_format);
+
+      if (tmplen == 0)
+	{
+	  /* If retval == 0, the contents of s are undefined.  We define
+	   *  them. 
+	   */
+	  g_free (locale_format);
+	  s[0] = '\0';
+	  return 0;
+	}
+
+      convbuf = g_convert (tmpbuf, tmplen, "UTF-8", charset, NULL, &convlen, &error);
+      g_free (tmpbuf);
+      
+      if (error)
+	{
+	  g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s\n", error->message);
+	  g_error_free (error);
+	}
+      else
+	{
+	  /* Only copy whole characters into the buffer
+	   */
+	  gchar *in = convbuf;
+	  gchar *out = s;
+	  gchar *end = s + slen - 1;
+
+	  while (*in)
+	    {
+	      int len = g_utf8_skip[*(guchar *)in];
+	      if (out + len < end)
+		{
+		  out += len;
+		  in += len;
+		}
+	      else
+		break;
+	    }
+
+	  memcpy (s, convbuf, out - s);
+	  *out = '\0';
+	}
+
+      g_free (convbuf);
+
+      return convlen;
+    }
 }

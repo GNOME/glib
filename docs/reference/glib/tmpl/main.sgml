@@ -259,15 +259,6 @@ It is not used within GLib or GTK+.
 </para>
 
 
-<!-- ##### FUNCTION g_main_context_get ##### -->
-<para>
-
-</para>
-
-@thread: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_main_context_default ##### -->
 <para>
 
@@ -644,7 +635,7 @@ the required condition has been met, and returns TRUE if so.
 @prepare: 
 @check: 
 @dispatch: 
-@destroy: 
+@finalize: 
 
 <!-- ##### STRUCT GSourceCallbackFuncs ##### -->
 <para>

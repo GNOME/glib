@@ -28,3 +28,7 @@
 
   It's not recommended to mutate the list in the callback to these
   functions in any case.
+
+* GDate now works in UTF-8, not in the current locale. If you
+  want to use it with the encoding of the locale, you need
+  to convert strings using g_locale_to_utf8 first.

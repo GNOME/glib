@@ -706,7 +706,6 @@ g_io_channel_seek_position	(GIOChannel* channel,
         }
     }
 
-
   status = channel->funcs->io_seek (channel, offset, type, error);
 
   if ((status == G_IO_STATUS_NORMAL) && (channel->use_buffer))

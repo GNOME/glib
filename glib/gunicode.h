@@ -247,6 +247,28 @@ gboolean g_utf8_validate (const gchar  *str,
 /* Validate a Unicode character */
 gboolean g_unichar_validate (gunichar ch);
 
+gchar *g_utf8_strup   (const gchar *str);
+gchar *g_utf8_strdown (const gchar *str);
+gchar *g_utf8_casefold (const gchar *str);
+
+typedef enum {
+  G_NORMALIZE_DEFAULT,
+  G_NORMALIZE_NFD = G_NORMALIZE_DEFAULT,
+  G_NORMALIZE_DEFAULT_COMPOSE,
+  G_NORMALIZE_NFC = G_NORMALIZE_DEFAULT_COMPOSE,
+  G_NORMALIZE_ALL,
+  G_NORMALIZE_NFKD = G_NORMALIZE_ALL,
+  G_NORMALIZE_ALL_COMPOSE,
+  G_NORMALIZE_NFKC = G_NORMALIZE_ALL_COMPOSE
+} GNormalizeMode;
+
+gchar *g_utf8_normalize (const gchar   *str,
+			 GNormalizeMode mode);
+
+gint   g_utf8_collate     (const gchar *str1,
+			   const gchar *str2);
+gchar *g_utf8_collate_key (const gchar *str);
+
 G_END_DECLS
 
 #endif /* __G_UNICODE_H__ */

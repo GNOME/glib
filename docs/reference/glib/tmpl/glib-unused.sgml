@@ -120,6 +120,14 @@ the results may be needed.
 See #G_PRIORITY_DEFAULT, #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH,
 #G_PRIORITY_HIGH_IDLE, and #G_PRIORITY_LOW.
 
+<!-- ##### FUNCTION g_main_context_get ##### -->
+<para>
+
+</para>
+
+@thread: 
+@Returns: 
+
 <!-- ##### FUNCTION g_main_loop_destroy ##### -->
 <para>
 

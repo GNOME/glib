@@ -25,8 +25,8 @@
 #include <config.h>
 
 #include <stddef.h>
-
-#define asize(x)  ((sizeof (x)) / sizeof (x[0]))
+#include <string.h>
+#include <locale.h>
 
 #define ATTTABLE(Page, Char) \
   ((attr_table[Page] == 0) ? 0 : (attr_table[Page][Char]))
@@ -40,15 +40,20 @@
 
 #define TYPE(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TTYPE ((Char) >> 8, (Char) & 0xff))
 
-#define ISDIGIT(Type) ((Type) == G_UNICODE_DECIMAL_NUMBER \
-		       || (Type) == G_UNICODE_LETTER_NUMBER \
+#define ISDIGIT(Type) ((Type) == G_UNICODE_DECIMAL_NUMBER	\
+		       || (Type) == G_UNICODE_LETTER_NUMBER	\
 		       || (Type) == G_UNICODE_OTHER_NUMBER)
 
-#define ISALPHA(Type) ((Type) == G_UNICODE_LOWERCASE_LETTER \
-		       || (Type) == G_UNICODE_UPPERCASE_LETTER \
-		       || (Type) == G_UNICODE_TITLECASE_LETTER \
-		       || (Type) == G_UNICODE_MODIFIER_LETTER \
+#define ISALPHA(Type) ((Type) == G_UNICODE_LOWERCASE_LETTER	\
+		       || (Type) == G_UNICODE_UPPERCASE_LETTER	\
+		       || (Type) == G_UNICODE_TITLECASE_LETTER	\
+		       || (Type) == G_UNICODE_MODIFIER_LETTER	\
 		       || (Type) == G_UNICODE_OTHER_LETTER)
+
+#define ISMARK(Type) ((Type) == G_UNICODE_NON_SPACING_MARK ||	\
+		      (Type) == G_UNICODE_COMBINING_MARK ||	\
+		      (Type) == G_UNICODE_ENCLOSING_MARK)
+		      
 
 /**
  * g_unichar_isalnum:
@@ -270,7 +275,7 @@ gboolean
 g_unichar_istitle (gunichar c)
 {
   unsigned int i;
-  for (i = 0; i < asize (title_table); ++i)
+  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     if (title_table[i][0] == c)
       return 1;
   return 0;
@@ -350,11 +355,20 @@ g_unichar_toupper (gunichar c)
 {
   int t = TYPE (c);
   if (t == G_UNICODE_LOWERCASE_LETTER)
-    return ATTTABLE (c >> 8, c & 0xff);
+    {
+      gunichar val = ATTTABLE (c >> 8, c & 0xff);
+      if (val >= 0xd800 && val < 0xdc00)
+	{
+	  guchar *p = special_case_table[val - 0xd800];
+	  return p[0] * 256 + p[1];
+	}
+      else
+	return val;
+    }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
       unsigned int i;
-      for (i = 0; i < asize (title_table); ++i)
+      for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
 	{
 	  if (title_table[i][0] == c)
 	    return title_table[i][1];
@@ -378,11 +392,20 @@ g_unichar_tolower (gunichar c)
 {
   int t = TYPE (c);
   if (t == G_UNICODE_UPPERCASE_LETTER)
-    return ATTTABLE (c >> 8, c & 0xff);
+    {
+      gunichar val = ATTTABLE (c >> 8, c & 0xff);
+      if (val >= 0xd800 && val < 0xdc00)
+	{
+	  guchar *p = special_case_table[val - 0xd800];
+	  return p[0] * 256 + p[1];
+	}
+      else
+	return val;
+    }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
       unsigned int i;
-      for (i = 0; i < asize (title_table); ++i)
+      for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
 	{
 	  if (title_table[i][0] == c)
 	    return title_table[i][2];
@@ -405,7 +428,7 @@ gunichar
 g_unichar_totitle (gunichar c)
 {
   unsigned int i;
-  for (i = 0; i < asize (title_table); ++i)
+  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     {
       if (title_table[i][0] == c || title_table[i][1] == c
 	  || title_table[i][2] == c)
@@ -468,4 +491,417 @@ GUnicodeType
 g_unichar_type (gunichar c)
 {
   return TYPE (c);
+}
+
+/*
+ * Case mapping functions
+ */
+
+typedef enum {
+  LOCALE_NORMAL,
+  LOCALE_TURKIC,
+  LOCALE_LITHUANIAN
+} LocaleType;
+
+static LocaleType
+get_locale_type (void)
+{
+  const char *locale = setlocale (LC_CTYPE, NULL);
+
+  switch (locale[0])
+    {
+   case 'a':
+      if (locale[1] == 'z')
+	return LOCALE_TURKIC;
+      break;
+    case 'l':
+      if (locale[1] == 't')
+	return LOCALE_LITHUANIAN;
+      break;
+    case 't':
+      if (locale[1] == 'r')
+	return LOCALE_TURKIC;
+      break;
+    }
+
+  return LOCALE_NORMAL;
+}
+
+static int
+output_marks (const char **p_inout,
+	      char        *out_buffer,
+	      int          len,
+	      gboolean     remove_dot)
+{
+  const char *p = *p_inout;
+  
+  while (*p)
+    {
+      gunichar c = g_utf8_get_char (p);
+      int t = TYPE(c);
+      
+      if (ISMARK(t))
+	{
+	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
+	    len += g_unichar_to_utf8 (c, out_buffer ? out_buffer + len : NULL);
+	  p = g_utf8_next_char (p);
+	}
+      else
+	break;
+    }
+
+  *p_inout = p;
+  return len;
+}
+
+static gsize
+output_special_case (gchar *out_buffer,
+		     gsize  len,
+		     int    index,
+		     int    type,
+		     int    which)
+{
+  guchar *p = special_case_table[index];
+
+  if (type != G_UNICODE_TITLECASE_LETTER)
+    p += 2; /* +2 to skip over "best single match" */
+
+  if (which == 1)
+    {
+      while (p[0] && p[1])
+	p += 2;
+      p += 2;
+    }
+
+  while (TRUE)
+    {
+      gunichar ch = p[0] * 256 + p[1];
+      if (!ch)
+	break;
+
+      len += g_unichar_to_utf8 (ch, out_buffer ? out_buffer + len : NULL);
+      p += 2;
+    }
+
+  return len;
+}
+
+static gsize
+real_toupper (const gchar *str,
+	      gchar       *out_buffer,
+	      LocaleType   locale_type)
+{
+  const gchar *p = str;
+  const char *last = NULL;
+  gsize len = 0;
+  gboolean last_was_i = FALSE;
+
+  while (*p)
+    {
+      gunichar c = g_utf8_get_char (p);
+      int t = TYPE (c);
+      gunichar val;
+
+      last = p;
+      p = g_utf8_next_char (p);
+
+      if (locale_type == LOCALE_LITHUANIAN)
+	{
+	  if (c == 'i')
+	    last_was_i = TRUE;
+	  else 
+	    {
+	      if (last_was_i)
+		{
+		  /* Nasty, need to remove any dot above. Though
+		   * I think only E WITH DOT ABOVE occurs in practice
+		   * which could simplify this considerably.
+		   */
+		  gsize decomp_len, i;
+		  gunichar *decomp;
+
+		  decomp = g_unicode_canonical_decomposition (c, &decomp_len);
+		  for (i=0; i < decomp_len; i++)
+		    {
+		      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
+			len += g_unichar_to_utf8 (g_unichar_toupper (decomp[i]), out_buffer ? out_buffer + len : NULL);
+		    }
+		  g_free (decomp);
+		  
+		  len = output_marks (&p, out_buffer, len, TRUE);
+
+		  continue;
+		}
+
+	      if (!ISMARK(t))
+		last_was_i = FALSE;
+	    }
+	}
+      
+      if (locale_type == LOCALE_TURKIC && c == 'i')
+	{
+	  /* i => LATIN CAPITAL LETTER I WITH DOT ABOVE */
+	  len += g_unichar_to_utf8 (0x130, out_buffer ? out_buffer + len : NULL); 
+	}
+      else if (c == 0x0345)	/* COMBINING GREEK YPOGEGRAMMENI */
+	{
+	  /* Nasty, need to move it after other combining marks .. this would go away if
+	   * we normalized first.
+	   */
+	  len = output_marks (&p, out_buffer, len, FALSE);
+
+	  /* And output as GREEK CAPITAL LETTER IOTA */
+	  len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL); 	  
+	}
+      else if (t == G_UNICODE_LOWERCASE_LETTER || t == G_UNICODE_TITLECASE_LETTER)
+	{
+	  val = ATTTABLE (c >> 8, c & 0xff);
+
+	  if (val >= 0xd800 && val < 0xdc00)
+	    {
+	      len += output_special_case (out_buffer, len, val - 0xd800, t,
+					  t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
+	    }
+	  else
+	    {
+	      if (t == G_UNICODE_TITLECASE_LETTER)
+		{
+		  unsigned int i;
+		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
+		    {
+		      if (title_table[i][0] == c)
+			val = title_table[i][1];
+		    }
+		}
+
+	      len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
+	    }
+	}
+      else
+	{
+	  gsize char_len = g_utf8_skip[*(guchar *)last];
+
+	  if (out_buffer)
+	    memcpy (out_buffer + len, last, char_len);
+
+	  len += char_len;
+	}
+
+    }
+
+  return len;
+}
+
+/**
+ * g_ut8f_strup:
+ * @string: a UTF-8 encoded string
+ * 
+ * Converts all Unicode characters in the string that have a case
+ * to uppercase. The exact manner that this is done depends
+ * on the current locale, and may result in the number of
+ * characters in the string increasing. (For instance, the
+ * German ess-zet will be changed to SS.)
+ * 
+ * Return value: a newly allocated string, with all characters
+ *    converted to uppercase.  
+ **/
+gchar *
+g_utf8_strup (const gchar *str)
+{
+  gsize len;
+  LocaleType locale_type;
+  gchar *result;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  locale_type = get_locale_type ();
+  
+  /*
+   * We use a two pass approach to keep memory management simple
+   */
+  len = real_toupper (str, NULL, locale_type);
+  result = g_malloc (len + 1);
+  real_toupper (str, result, locale_type);
+  result[len] = '\0';
+
+  return result;
+}
+
+static gsize
+real_tolower (const gchar *str,
+	      gchar       *out_buffer,
+	      LocaleType   locale_type)
+{
+  const gchar *p = str;
+  const char *last = NULL;
+  gsize len = 0;
+
+  while (*p)
+    {
+      gunichar c = g_utf8_get_char (p);
+      int t = TYPE (c);
+      gunichar val;
+
+      last = p;
+      p = g_utf8_next_char (p);
+
+      if (locale_type == LOCALE_TURKIC && c == 'I')
+	{
+	  /* I => LATIN SMALL LETTER DOTLESS I */
+	  len += g_unichar_to_utf8 (0x131, out_buffer ? out_buffer + len : NULL); 
+	}
+      else if (c == 0x03A3)	/* GREEK CAPITAL LETTER SIGMA */
+	{
+	  gunichar next_c = g_utf8_get_char (p);
+	  int next_t = TYPE(next_c);
+
+	  /* SIGMA mapps differently depending on whether it is
+	   * final or not. The following simplified test would
+	   * fail in the case of combining marks following the
+	   * sigma, but I don't think that occurs in real text.
+	   * The test here matches that in ICU.
+	   */
+	  if (ISALPHA(next_t)) /* Lu,Ll,Lt,Lm,Lo */
+	    val = 0x3c3;	/* GREEK SMALL SIGMA */
+	  else
+	    val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
+
+	  len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
+	}
+      else if (t == G_UNICODE_UPPERCASE_LETTER || t == G_UNICODE_TITLECASE_LETTER)
+	{
+	  val = ATTTABLE (c >> 8, c & 0xff);
+
+	  if (val >= 0xd800 && val < 0xdc00)
+	    {
+	      len += output_special_case (out_buffer, len, val - 0xd800, t, 0);
+	    }
+	  else
+	    {
+	      if (t == G_UNICODE_TITLECASE_LETTER)
+		{
+		  unsigned int i;
+		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
+		    {
+		      if (title_table[i][0] == c)
+			val = title_table[i][2];
+		    }
+		}
+
+	      len += g_unichar_to_utf8 (val, out_buffer ? out_buffer + len : NULL);
+	    }
+	}
+      else
+	{
+	  gsize char_len = g_utf8_skip[*(guchar *)last];
+
+	  if (out_buffer)
+	    memcpy (out_buffer + len, last, char_len);
+
+	  len += char_len;
+	}
+
+    }
+
+  return len;
+}
+
+/**
+ * g_ut8f_strdown:
+ * @string: a UTF-8 encoded string
+ * 
+ * Converts all Unicode characters in the string that have a case
+ * to lowercase. The exact manner that this is done depends
+ * on the current locale, and may result in the number of
+ * characters in the string changing.
+ * 
+ * Return value: a newly allocated string, with all characters
+ *    converted to lowercase.  
+ **/
+gchar *
+g_utf8_strdown (const gchar *str)
+{
+  gsize len;
+  LocaleType locale_type;
+  gchar *result;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  locale_type = get_locale_type ();
+  
+  /*
+   * We use a two pass approach to keep memory management simple
+   */
+  len = real_tolower (str, NULL, locale_type);
+  result = g_malloc (len + 1);
+  real_tolower (str, result, locale_type);
+  result[len] = '\0';
+
+  return result;
+}
+
+/**
+ * g_utf8_casefold:
+ * @str: a UTF-8 encoded string
+ * 
+ * Converts a string into a form that is independent of case. The
+ * result will not correspond to any particular case, but can be
+ * compared for equality or ordered with the results of calling
+ * g_utf8_casefold() on other strings.
+ * 
+ * Note that calling g_utf8_casefold() followed by g_utf8_collate() is
+ * only an approximation to the correct linguistic case insensitive
+ * ordering, though it is a fairly good one. Getting this exactly
+ * right would require a more sophisticated collation function that
+ * takes case sensitivity into account. GLib does not currently
+ * provide such a function.
+ * 
+ * Return value: a newly allocated string, that is a
+ *   case independent form of @str.
+ **/
+gchar *
+g_utf8_casefold (const gchar *str)
+{
+  GString *result = g_string_new (NULL);
+  const char *p;
+  gchar buf[6];
+  int len;
+
+  p = str;
+  while (*p)
+    {
+      gunichar ch = g_utf8_get_char (p);
+
+      int start = 0;
+      int end = G_N_ELEMENTS (casefold_table);
+
+      if (ch >= casefold_table[start].ch &&
+	  ch <= casefold_table[end - 1].ch)
+	{
+	  while (TRUE)
+	    {
+	      int half = (start + end) / 2;
+	      if (ch == casefold_table[half].ch)
+		{
+		  g_string_append (result, casefold_table[half].data);
+		  goto next;
+		}
+	      else if (half == start)
+		break;
+	      else if (ch > casefold_table[half].ch)
+		start = half;
+	      else
+		end = half;
+	    }
+	}
+
+      ch = g_unichar_tolower (ch);
+      len = g_unichar_to_utf8 (ch, buf);
+      g_string_append_len (result, buf, len);
+      
+    next:
+      p = g_utf8_next_char (p);
+    }
+
+  return g_string_free (result, FALSE); 
 }

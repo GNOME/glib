@@ -1,3 +1,41 @@
+Sun Jul  1 20:16:25 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/guniprop.c (g_unichar_totitle): Use G_N_ELEMENTS
+	rather than a custom macro.
+
+	* glib/gen-unicode-tables.pl: Adapt to changes in table
+	formats for Unicode 3.1
+
+	* glib/gunicode.h glib/guniprop.c glib/gunichartables.h
+	  glib/gen-unicode-tables.pl: Add case conversion functions
+        g_utf8_casefold, g_utf8_strup, g_utf8_strdown.
+
+	* tests/unicode-caseconv.c tests/gen-casefold-txt.pl
+	  tests/gen-casemap-txt.pl tests/casefold.txt 
+	  tests/casemap.txt: Test cases for case conversion.
+
+	* glib/gunicode.h glib/gunidecomp.[ch] glib/gunicomp.h
+	  glib/gen-unicode-tables.pl: Add function to do Unicode
+        normalization g_utf8_normalize().
+
+	* tests/unicode-normalize.c: Test program for case conversion.
+
+	* glib/gunicode.h glib/gunicollate.c: Add collation functions
+	g_utf8_collate, g_utf8_collate_key.
+
+	* test/unicode-collate.c: Test program for collation.
+
+	* glib/gdate.c (g_date_fill_parse_tokens): Fix uninitialized
+	variable.
+
+	* glib/gdate.c (g_date_strftime) docs/Changes-2.0.txt:
+	Make work with UTF-8 even if the locale isn't UTF-8 based.
+	Still somewhat of broken, if the format string contains 
+	characters not representable in the current locale, will warn
+	and not work.
+	
+	* glib/gdate.c: Use UTF-8 normalization and casefolding.
+
 Sat Jun 30 16:03:16 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giowin32.c glib/giounix.c glib/gmain.[ch]:

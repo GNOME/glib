@@ -49,6 +49,7 @@ libglib_1_3_la_SOURCES = 	\
 	gunibreak.h		\
 	gunibreak.c		\
 	gunichartables.h	\
+	gunicollate.c		\
 	gunidecomp.h		\
 	gunidecomp.c		\
 	gutils.c

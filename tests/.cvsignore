@@ -44,3 +44,6 @@ testgdateparser
 testglib
 timeloop
 timeloop-basic
+unicode-caseconv
+unicode-collate
+unicode-normalize
