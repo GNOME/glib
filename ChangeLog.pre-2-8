@@ -1,3 +1,8 @@
+2005-03-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (parse_int): Fix an error message.  
+	(#168751, Hazael Maldonado Torres)
+
 2005-03-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdebug.h: Small cleanup (use G_BEGIN/END_DECLS).

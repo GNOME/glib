@@ -611,7 +611,7 @@ parse_int (const gchar *arg_name,
     {
       g_set_error (error,
 		   G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-		   _("Cannot parse integer value '%s' for --%s"),
+		   _("Cannot parse integer value '%s' for %s"),
 		   arg, arg_name);
       return FALSE;
     }
