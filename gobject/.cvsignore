@@ -26,6 +26,4 @@ gmarshal.strings
 oldest-source-stamp
 stamp-gmarshal.h
 testgobject
-testoverride
-testifaceinit
 .saved

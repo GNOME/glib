@@ -256,6 +256,11 @@ void	g_signal_chain_from_overridden	      (const GValue      *instance_and_param
 				          0, 0, NULL, (func), (data))
 
 
+gboolean g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
+					    GValue                *return_accu,
+					    const GValue          *handler_return,
+					    gpointer               dummy);
+
 /*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);

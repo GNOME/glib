@@ -1,3 +1,11 @@
+Fri Sep 12 16:31:40 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gsignal.[ch]: Add g_signal_accumulator_true_handled(), to
+	do TRUE-stops-emit signals.
+
+	* Makefile.am: Move testoverride.c and testifaceinit.c to
+	tests/gobject.
+
 2003-09-12  Matthias Clasen  <maclas@gmx.de>
 
 	Make the g_value_set_x_take_ownership() functions "official"
