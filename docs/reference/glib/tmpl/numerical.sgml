@@ -16,24 +16,24 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	sign, mantissa and exponent of IEEE floats and doubles. These
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
-	storage) by at least Intel, PPC and Sparc, for reference: <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+	storage) by at least Intel, PPC and Sparc, for reference: <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-<ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 <!-- ##### MACRO G_IEEE754_FLOAT_BIAS ##### -->
 <para>
-See <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+See <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 
 
 <!-- ##### MACRO G_IEEE754_DOUBLE_BIAS ##### -->
 <para>
-See <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+See <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 
@@ -45,7 +45,7 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
 	storage) by at least Intel, PPC and Sparc, for reference: 
-<ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 
@@ -56,7 +56,7 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
 	storage) by at least Intel, PPC and Sparc, for reference: 
-<ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 
@@ -112,7 +112,7 @@ The square root of two.
 <!-- ##### MACRO G_LOG_2_BASE_10 ##### -->
 <para>
 Used for fooling around with float formats, see 
-<ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 
