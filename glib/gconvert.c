@@ -354,11 +354,19 @@ open_converter (const gchar *to_codeset,
         }
       else
         {
+	  /* Apparently iconv on Solaris <= 7 segfaults if you pass in
+	   * NULL for anything but inbuf; work around that. (NULL outbuf
+	   * or NULL *outbuf is allowed by Unix98.)
+	   */
+	  gint inbytes_left = 0;
+	  gchar *outbuf = NULL;
+	  gint outbytes_left = 0;
+		
           cd = bucket->cd;
           bucket->used = TRUE;
           
           /* reset the descriptor */
-          g_iconv (cd, NULL, NULL, NULL, NULL);
+          g_iconv (cd, NULL, &inbytes_left, &outbuf, &outbytes_left);
         }
       
       bucket->refcount++;
