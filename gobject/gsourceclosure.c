@@ -25,16 +25,6 @@
 #include "gvalue.h"
 #include "gvaluetypes.h"
 
-/* This is needed for a proper GBoxedCopyFunc, until the g_io_channel_ref API
- * returns it's GIOChannel itself #131076.
- */
-static GIOChannel *
-wrap_g_io_channel_ref (GIOChannel *channel)
-{
-  g_io_channel_ref (channel);
-  return channel;
-}
-
 GType
 g_io_channel_get_type (void)
 {
@@ -42,7 +32,7 @@ g_io_channel_get_type (void)
   
   if (our_type == 0)
     our_type = g_boxed_type_register_static ("GIOChannel",
-					     (GBoxedCopyFunc) wrap_g_io_channel_ref,
+					     (GBoxedCopyFunc) g_io_channel_ref,
 					     (GBoxedFreeFunc) g_io_channel_unref);
 
   return our_type;
