@@ -23,7 +23,7 @@
       <contact>gtk-devel-list@redhat.com</contact>
     </entry>
         
-    <entry size="small" status="8%" target="1.4">
+    <entry size="small" status="80%" target="1.4">
       <title>Regular expression support</title>
       <description>
 	<p>
@@ -34,6 +34,20 @@
       </description>
       <contact>gtk-devel-list@redhat.com</contact>
     </entry>
+
+    <entry size="small" status="0%" target="1.4">
+      <title>Argument parsing</title>
+      <description>
+	<p>
+          Put support for command line argument parsing in glib. 
+          This should probably just be a renaming of popt. 
+          It's a larger task if you start from scratch.
+	</p>
+
+      </description>
+      <contact>gtk-devel-list@redhat.com</contact>
+    </entry>
+
 
   </section>
 </todo>
