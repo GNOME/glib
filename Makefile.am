@@ -66,6 +66,8 @@ glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win
 config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+DISTCLEANFILES = glibconfig-sysdefs.h glibconfig.h stamp-gc-h
+
 .PHONY: files release sanity snapshot
 
 files:
