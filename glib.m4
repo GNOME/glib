@@ -29,7 +29,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
      fi
   fi
 
-  for module in $4 ; do
+  for module in . $4 ; do
       case "$module" in
          gmodule) 
              glib_config_args="$glib_config_args gmodule"
