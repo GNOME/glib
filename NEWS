@@ -1,3 +1,23 @@
+Overview of Changes in GLib 2.0.0
+=================================
+
+* Thread portability fixes [Sebastian Wilhelmi]
+* Documentation updates [Owen Taylor]
+* Make g_strerror(), g_strsignal() properly return UTF-8,
+  call bind_text_domain_codeset() so that error strings
+  are in UTF-8 as well. [Owen, Tor Lillqvist]
+
+Overview of Changes in GLib 2.0.0 rc1:
+======================================
+
+* Win32 fixes [Tor Lillqvist]
+* Portability fixes [Finlay Dobbie, Miroslaw Dobrzanski-Neumann]
+* Fix up g_date_strftime [Daniel Elstner]
+* Add some structure padding [Tim Janik]
+* Make g_get_homedir() prefer the users home directory to $HOME
+
+Other contributors: Matthias Clasen, Paolo Maggi, Christian Rose
+
 Overview of Changes in GLib 1.3.15:
 ===================================
 

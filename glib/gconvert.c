@@ -392,7 +392,7 @@ open_converter (const gchar *to_codeset,
   else
     g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 		 _("Could not open converter from '%s' to '%s': %s"),
-		 from_codeset, to_codeset, strerror (errno));
+		 from_codeset, to_codeset, g_strerror (errno));
   
   return cd;
 }
@@ -595,7 +595,7 @@ g_convert_with_iconv (const gchar *str,
 	default:
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 		       _("Error during conversion: %s"),
-		       strerror (errno));
+		       g_strerror (errno));
 	  have_error = TRUE;
 	  break;
 	}
@@ -811,7 +811,7 @@ g_convert_with_fallback (const gchar *str,
 	    default:
 	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
 			   _("Error during conversion: %s"),
-			   strerror (errno));
+			   g_strerror (errno));
 	      have_error = TRUE;
 	      break;
 	    }

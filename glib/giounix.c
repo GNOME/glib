@@ -201,7 +201,7 @@ g_io_unix_read (GIOChannel *channel,
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
                          g_io_channel_error_from_errno (errno),
-                         strerror (errno));
+                         g_strerror (errno));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -241,7 +241,7 @@ g_io_unix_write (GIOChannel  *channel,
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
                          g_io_channel_error_from_errno (errno),
-                         strerror (errno));
+                         g_strerror (errno));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -283,7 +283,7 @@ g_io_unix_seek (GIOChannel *channel,
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
 		   g_io_channel_error_from_errno (EINVAL),
-		   strerror (EINVAL));
+		   g_strerror (EINVAL));
       return G_IO_STATUS_ERROR;
     }
   
@@ -293,7 +293,7 @@ g_io_unix_seek (GIOChannel *channel,
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
 		   g_io_channel_error_from_errno (errno),
-		   strerror (errno));
+		   g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
 
@@ -311,7 +311,7 @@ g_io_unix_close (GIOChannel *channel,
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
 		   g_io_channel_error_from_errno (errno),
-		   strerror (errno));
+		   g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
 
@@ -510,7 +510,7 @@ g_io_channel_new_file (const gchar *filename,
     {
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
-                   strerror (errno));
+                   g_strerror (errno));
       return (GIOChannel *)NULL;
     }
 
@@ -519,7 +519,7 @@ g_io_channel_new_file (const gchar *filename,
       close (fid);
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
-                   strerror (errno));
+                   g_strerror (errno));
       return (GIOChannel *)NULL;
     }
 

@@ -586,7 +586,24 @@ g_strerror (gint errnum)
   char *msg;
 
 #ifdef HAVE_STRERROR
-  return strerror (errnum);
+  const char *msg_locale;
+
+  msg_locale = strerror (errnum);
+  if (g_get_charset (NULL))
+    return msg_locale;
+  else
+    {
+      gchar *msg_utf8 = g_locale_to_utf8 (msg_locale, -1, NULL, NULL, NULL);
+      if (msg_utf8)
+	{
+	  /* Stick in the quark table so that we can return a static result
+	   */
+	  GQuark msg_quark = g_quark_from_string (msg_utf8);
+	  g_free (msg_utf8);
+	  
+	  return g_quark_to_string (msg_quark);
+	}
+    }
 #elif NO_SYS_ERRLIST
   switch (errnum)
     {
@@ -1029,13 +1046,30 @@ g_strsignal (gint signum)
   char *msg;
 
 #ifdef HAVE_STRSIGNAL
+  const char *msg_locale;
+  
 #if defined(G_OS_BEOS) || defined(G_WITH_CYGWIN)
 extern const char *strsignal(int);
 #else
   /* this is declared differently (const) in string.h on BeOS */
   extern char *strsignal (int sig);
 #endif /* !G_OS_BEOS && !G_WITH_CYGWIN */
-  return strsignal (signum);
+  msg_locale = strsignal (signum);
+  if (g_get_charset (NULL))
+    return msg_locale;
+  else
+    {
+      gchar *msg_utf8 = g_locale_to_utf8 (msg_locale, -1, NULL, NULL, NULL);
+      if (msg_utf8)
+	{
+	  /* Stick in the quark table so that we can return a static result
+	   */
+	  GQuark msg_quark = g_quark_from_string (msg_utf8);
+	  g_free (msg_utf8);
+	  
+	  return g_quark_to_string (msg_quark);
+	}
+    }
 #elif NO_SYS_SIGLIST
   switch (signum)
     {

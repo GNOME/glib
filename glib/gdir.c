@@ -24,7 +24,7 @@
 #include "config.h"
 
 #include <errno.h>
-#include <string.h> /* strerror, strcmp */
+#include <string.h> /* strcmp */
 
 #ifdef HAVE_DIRENT_H
 #include <dirent.h>
@@ -77,7 +77,7 @@ g_dir_open (const gchar  *path,
                G_FILE_ERROR,
                g_file_error_from_errno (errno),
                _("Error opening directory '%s': %s"),
-	       path, strerror (errno));
+	       path, g_strerror (errno));
 
   g_free (dir);
   return NULL;

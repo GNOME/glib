@@ -334,7 +334,7 @@ create_thread (GIOWin32Channel     *channel,
 			     &channel->thread_id);
   if (channel->thread_handle == 0)
     g_warning (G_STRLOC ": Error creating reader thread: %s",
-	       strerror (errno));
+	       g_strerror (errno));
   WaitForSingleObject (channel->space_avail_event, INFINITE);
 }
 
@@ -852,7 +852,7 @@ g_io_win32_fd_read (GIOChannel *channel,
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
                          g_io_channel_error_from_errno (errno),
-                         strerror (errno));
+                         g_strerror (errno));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -890,7 +890,7 @@ g_io_win32_fd_write (GIOChannel  *channel,
           default:
             g_set_error (err, G_IO_CHANNEL_ERROR,
                          g_io_channel_error_from_errno (errno),
-                         strerror (errno));
+                         g_strerror (errno));
             return G_IO_STATUS_ERROR;
         }
     }
@@ -932,7 +932,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
 		   g_io_channel_error_from_errno (EINVAL),
-		   strerror (EINVAL));
+		   g_strerror (EINVAL));
       return G_IO_STATUS_ERROR;
     }
   
@@ -942,7 +942,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
     {
       g_set_error (err, G_IO_CHANNEL_ERROR,
 		   g_io_channel_error_from_errno (errno),
-		   strerror (errno));
+		   g_strerror (errno));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1236,7 +1236,7 @@ g_io_channel_new_file (const gchar  *filename,
     {
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
-                   strerror (errno));
+                   g_strerror (errno));
       return (GIOChannel *)NULL;
     }
 

@@ -34,10 +34,6 @@ Notes about GLib-2.0.0
   Application programmers should not call g_locale_to_utf8() on these
   strings.
 
-* The results of g_strerror() are currently in the encoding of the locale
-  rather than in UTF-8. Again, this is a bug, and not behavior that
-  should be relied upon.
-
 * Similarly, the GLib error logging functions such as g_print(), g_warning(),
   g_error(), currently do not convert the strings they are passed from
   UTF-8 to the encoding of the locale, or check that the strings they

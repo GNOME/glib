@@ -1112,7 +1112,7 @@ g_io_channel_set_encoding (GIOChannel	*channel,
           else
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
                          _("Could not open converter from `%s' to `%s': %s"),
-                         from_enc, to_enc, strerror (err));
+                         from_enc, to_enc, g_strerror (err));
 
           if (read_cd != (GIConv) -1)
             g_iconv_close (read_cd);
@@ -1286,7 +1286,7 @@ reencode:
               default:
                 g_assert (errval != EBADF); /* The converter should be open */
                 g_set_error (err, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                  _("Error during conversion: %s"), strerror (errval));
+                  _("Error during conversion: %s"), g_strerror (errval));
                 return G_IO_STATUS_ERROR;
             }
         }
@@ -2172,7 +2172,7 @@ reconvert:
                     return G_IO_STATUS_ERROR;
                   default:
                     g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                      _("Error during conversion: %s"), strerror (errnum));
+                      _("Error during conversion: %s"), g_strerror (errnum));
                     if (from_buf_len >= left_len + from_buf_old_len)
                       wrote_bytes += from_buf_len - left_len - from_buf_old_len;
                     if (bytes_written)

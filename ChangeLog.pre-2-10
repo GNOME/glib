@@ -1,3 +1,13 @@
+Fri Mar  8 10:20:46 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* NEWS: Final updates for 2.0.0
+
+	* glib/gstrfuncs.c: Convert the results of strerror()
+	and strsignal() to UTF-8.
+
+	* glib/gconvert.c glib/gdir.c glib/giochannel.c glib/giounix.c
+	glib/giowin32.c: Use g_strerror(), not strerror().
+
 Fri Mar  8 00:15:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* README.in: Updates.

@@ -346,7 +346,7 @@ get_contents_stdio (const gchar *filename,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Error reading file '%s': %s"),
-                       filename, strerror (errno));
+                       filename, g_strerror (errno));
 
           goto error;
         }
@@ -424,7 +424,7 @@ get_contents_regfile (const gchar *filename,
                            G_FILE_ERROR,
                            g_file_error_from_errno (errno),
                            _("Failed to read from file '%s': %s"),
-                           filename, strerror (errno));
+                           filename, g_strerror (errno));
 
               return FALSE;
             }
@@ -463,7 +463,7 @@ get_contents_posix (const gchar *filename,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   filename, strerror (errno));
+                   filename, g_strerror (errno));
 
       return FALSE;
     }
@@ -477,7 +477,7 @@ get_contents_posix (const gchar *filename,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to get attributes of file '%s': fstat() failed: %s"),
-                   filename, strerror (errno));
+                   filename, g_strerror (errno));
 
       return FALSE;
     }
@@ -503,7 +503,7 @@ get_contents_posix (const gchar *filename,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Failed to open file '%s': fdopen() failed: %s"),
-                       filename, strerror (errno));
+                       filename, g_strerror (errno));
           
           return FALSE;
         }
@@ -531,7 +531,7 @@ get_contents_win32 (const gchar *filename,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   filename, strerror (errno));
+                   filename, g_strerror (errno));
       
       return FALSE;
     }
@@ -743,7 +743,7 @@ g_file_open_tmp (const char *tmpl,
 		   G_FILE_ERROR,
 		   g_file_error_from_errno (errno),
 		   _("Failed to create file '%s': %s"),
-		   fulltemplate, strerror (errno));
+		   fulltemplate, g_strerror (errno));
       g_free (fulltemplate);
       return -1;
     }
