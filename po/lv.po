@@ -4,14 +4,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-08-19 05:01+0200\n"
-"PO-Revision-Date: 2002-08-06 11:34+0200\n"
-"Last-Translator: Peteris Krisjanis <peteris.krisjanis@ttc.lv>\n"
-"Language-Team: Latvian <ll10nt@ttc.lv>\n"
+"Project-Id-Version: glib\n"
+"POT-Creation-Date: 2002-08-22 05:01+0200\n"
+"PO-Revision-Date: 2002-08-23 12:38+0300\n"
+"Last-Translator: Peteris Krisjanis <peteris.krisjanis@os.lv>\n"
+"Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: glib/gconvert.c:400
 #, c-format
@@ -21,21 +22,30 @@ msgstr "Konversija no rakstzīmju kopas '%s' uz '%s' nav atbalstīta"
 #: glib/gconvert.c:404
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Nevarēja atvērt konvertātoru no '%s' uz '%s': %s"
+msgstr "Nevarēju atvērt konvertātoru no '%s' uz '%s': %s"
 
-#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
-#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:602
+#: glib/gconvert.c:892
+#: glib/giochannel.c:1291
+#: glib/giochannel.c:1333
+#: glib/giochannel.c:2171
+#: glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nepareiza baitu secība konversijas ievadē"
 
-#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
+#: glib/gconvert.c:607
+#: glib/gconvert.c:823
+#: glib/giochannel.c:1298
 #: glib/giochannel.c:2183
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Kļūda konvertējot: %s"
+msgstr "Kļūda konversējot: %s"
 
-#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:625
+#: glib/gutf8.c:871
+#: glib/gutf8.c:1071
+#: glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Daļēja simbolu secība ievades beigās"
@@ -48,27 +58,27 @@ msgstr "Nevar pārveidot atkritienu '%s' uz rakstzīmju kopu '%s'"
 #: glib/gconvert.c:1632
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI '%s' nav absolūtais URI lietojot failu shēmu"
+msgstr "URI '%s' nav absolūtais URI, lietojot failu shēmu"
 
 #: glib/gconvert.c:1642
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Lokālā faila URI '%s' nevarētu saturēt '#'"
+msgstr "Lokālā faila URI '%s' nedrīkst saturēt '#'"
 
 #: glib/gconvert.c:1659
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI '%s' nav pareizs"
+msgstr "URI '%s' ir nepareizs"
 
 #: glib/gconvert.c:1671
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Resursdatora nosaukuma URI ir nepareizs"
+msgstr "Resursdatora nosaukuma URI '%s' ir nepareizs"
 
 #: glib/gconvert.c:1687
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s' satur nepareizi eskeipētas rakstzīmes"
+msgstr "URI '%s' satur nepareizi izvairīgas rakstzīmes"
 
 #: glib/gconvert.c:1758
 #, c-format
@@ -84,10 +94,11 @@ msgstr "Nepareizs resursdatora nosaukums"
 msgid "Error opening directory '%s': %s"
 msgstr "Kļūda atverot direktoriju '%s': %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:337
+#: glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Nevarēju atrast %lu baitus lai nolasītu failu \"%s\""
+msgstr "Nevarēju atrast %lu baitus, lai nolasītu failu \"%s\""
 
 #: glib/gfileutils.c:348
 #, c-format
@@ -97,32 +108,33 @@ msgstr "Kļūda nolasot failu '%s': %s"
 #: glib/gfileutils.c:424
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Nespēja nolasīt no faila '%s': %s"
+msgstr "Nespēju nolasīt no faila '%s': %s"
 
-#: glib/gfileutils.c:471 glib/gfileutils.c:539
+#: glib/gfileutils.c:471
+#: glib/gfileutils.c:539
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Nevarēja atvērt failu '%s': %s"
+msgstr "Nevarēju atvērt failu '%s': %s"
 
 #: glib/gfileutils.c:485
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Nevarēja dabūt faila '%s' atribūtus: fstat() neizdevās: %s"
+msgstr "Nevarēju dabūt faila '%s' atribūtus: fstat() neizdevās: %s"
 
 #: glib/gfileutils.c:511
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Nevarēja atvērt '%s': fdopen() neizdevās: %s"
+msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 
 #: glib/gfileutils.c:718
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Šablons '%s' nepareizs, nedrīkstētu saturēt '%s'"
+msgstr "Veidne '%s' nepareizs, nedrīkstētu saturēt '%s'"
 
 #: glib/gfileutils.c:730
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Paraugs '%s' nebeidzas ar XXXXXX"
+msgstr "Veidne '%s' nebeidzas ar XXXXXX"
 
 #: glib/gfileutils.c:751
 #, c-format
@@ -137,29 +149,34 @@ msgstr "Konvertācija no rakstzīmju kopas '%s' uz '%s' nav atbalstīta"
 #: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nevar atvērt konvertātoru no `%s' uz '%s': %s"
+msgstr "Nevarēju atvērt konvertātoru no `%s' uz '%s': %s"
 
 #: glib/giochannel.c:1468
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Nevar nolasīt dabiski g_io_channel_read_line_string"
+msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
+#: glib/giochannel.c:1515
+#: glib/giochannel.c:1769
+#: glib/giochannel.c:1855
 msgid "Leftover unconverted data in read buffer"
-msgstr "Palikušie nepārveidotie dati nolasīšanas buferī"
+msgstr "Pāpalikušie nepārveidotie dati nolasīšanas buferī"
 
-#: glib/giochannel.c:1595 glib/giochannel.c:1669
+#: glib/giochannel.c:1595
+#: glib/giochannel.c:1669
 msgid "Channel terminates in a partial character"
 msgstr "Kanāls pārtrūkst daļējā rakstzīmē"
 
 #: glib/giochannel.c:1655
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Nevar nolasīt dabiski g_io_channel_read_to_end"
+msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_to_end"
 
-#: glib/giowin32.c:712 glib/giowin32.c:741
+#: glib/giowin32.c:712
+#: glib/giowin32.c:741
 msgid "Incorrect message size"
-msgstr "Nekorekts ziņas izmērs"
+msgstr "Nepareizs ziņas izmērs"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1045
+#: glib/giowin32.c:1098
 msgid "Socket error"
 msgstr "Kontakta kļūda"
 
@@ -178,22 +195,18 @@ msgid "Error on line %d: %s"
 msgstr "Kļūda rindā %d: %s"
 
 #: glib/gmarkup.c:422
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Pamanīta tukša entītija '&;'; derīgas entītijas ir: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:432
 #, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
+msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+msgstr "Rakstzīme '%s' nav derīga entītijas nosaukuma sākumā; rakstzīme & sāk entītiju; ja šī zīme netiek atbalstīta, lai būtu entītija, aizvieto to ar &amp;"
 
 #: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr ""
+msgstr "Rakstzīme '%s' nav derīga entītijas nosaukumā"
 
 #: glib/gmarkup.c:498
 #, c-format
@@ -201,181 +214,155 @@ msgid "Entity name '%s' is not known"
 msgstr "Entītijas nosaukums \"%s\" nav zināms"
 
 #: glib/gmarkup.c:509
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Entītija nebeidzās ar semikolu; visdrīzāk jūs lietojāt & zīmi bez nodoma sākt entītiju - aizvieto & zīmes ar &amp;"
 
 #: glib/gmarkup.c:555
 #, c-format
-msgid ""
-"Failed to parse '%s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
+msgid "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Nevarēju parsēt '%s', kur vajadzētu būt ciparam iekš rakstzīmes atsauces (&#234; piemēram) - iespējams, ka cipars ir pārāk liels"
 
 #: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "Rakstzīmes atsauce '%s' nešifrē atļautu rakstzīmi"
 
 #: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "Tukša rakstzīmes atsauce; būtu jāiekļauj cipars, kā &#454;"
 
 #: glib/gmarkup.c:607
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Rakstzīmes atsauce nebeidzās ar semikolu; visdrīzāk jūs lietojāt & zīmi bez nodoma sākt entītiju - aizvieto & zīmes ar &amp;"
 
 #: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "Nepabeigta entītijas atsauce"
 
 #: glib/gmarkup.c:639
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "Nepabeigta rakstzīmes atsauce"
 
-#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
+#: glib/gmarkup.c:880
+#: glib/gmarkup.c:908
+#: glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "Nepareizi kodēts UTF-8 teksts"
 
 #: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "Dokumentam jāsākās ar elementu (piem. <book>)"
+msgstr "Dokumentam jāsākās ar elementu (piem., <book>)"
 
 #: glib/gmarkup.c:1014
 #, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr ""
-"'%s' nav atļauta rakstzīme, kas varētu sekot aiz rakstzīmes '<'; tas "
-"nevarētu iesākt elementa vārdu."
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "'%s' nav atļauta rakstzīme, sekojoša aiz rakstzīmes '<'; tā nedrīkst iesākt elementa vārdu."
 
 #: glib/gmarkup.c:1077
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
-msgstr ""
+msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgstr "Savāda rakstzīme '%s', gaidīju '>' rakstzīmi, kas nobeigtu sākuma tagu elementam '%s'"
 
 #: glib/gmarkup.c:1164
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "Savāda rakstzīme '%s', gaidīju '=' aiz atribūta nosaukuma '%s' elementam '%s'"
 
 #: glib/gmarkup.c:1205
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "Savāda rakstzīme '%s', gaidīju '>' vai '/' rakstzīmi, kas nobeigtu sākuma tagu elementam '%s' vai fakultatīvi atribūtu; iespējams, jūs lietojāt nepareizu rakstzīmi atribūta nosaukumā"
 
 #: glib/gmarkup.c:1288
 #, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "Savāda rakstzīme '%s', gaidīju atvērtās pēdiņas pēc vienādības zīmes, nosakot vērtību atribūtam '%s' no elementa '%s'"
 
 #: glib/gmarkup.c:1428
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "'%s' nav derīga rakstzīme, sekojot rakstzīmēm '</'; '%s' nevar sākt elementa nosaukumu"
 
 #: glib/gmarkup.c:1466
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s' nav derīga rakstzīme, sekojot aizverošā eementa nosaukumam '%s'; atļautā rakstzīme ir '>'"
 
 #: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
+msgstr "Elements '%s' tika aizvērts, neviens elements pašlaik nav atvērts"
 
 #: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
+msgstr "Elements '%s' tika aizvērts, bet pašlaik atvērtais elements ir '%s'"
 
 #: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
-msgstr ""
+msgstr "Dokuments bija tukšs vai saturēja tikai tukšu atstarpi"
 
 #: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās tieši pēc atvērtās stūra iekavas '<'"
 
-#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
+#: glib/gmarkup.c:1667
+#: glib/gmarkup.c:1711
 #, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "Dokuments negaidīti izbeidzās ar joprojām atvērtiem elementiem - '%s' bija pēdējais atvērtais elements"
 
 #: glib/gmarkup.c:1675
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "Dokuments negaidīti izbeidzās, cerēju ieraudzīt aizverošo stūra iekavu, beidzoties ar tagu <%s/>"
 
 #: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās iekšā elementa nosaukumā"
 
 #: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās iekšā atribūta nosaukumā"
 
 #: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās elementa-atverošajā tagā."
 
 #: glib/gmarkup.c:1697
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr ""
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "Dokuments negaidīti izbeidzās aiz vienādības zīmes, sekojot atribūta nosaukumam; nav atribūta vētības"
 
 #: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās kamēr iekšā atribūta vērtībā"
 
 #: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās iekšā elementa '%s' aizverošajā tagā"
 
 #: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "Dokuments negaidīti izbeidzās iekšā komentārā vai apstrādes instrukcijā"
 
 #: glib/gshell.c:71
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "Citētais teksts nesākas ar jautājuma zīmi"
 
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Neatbilstoša jautājuma zīme komandrindā vai citā čaulas-citētā tekstā"
 
 #: glib/gshell.c:529
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
+msgstr "Teksts beidzās tieši pēc '\\' rakstzīmes. (Teksts bija '%s')"
 
 #: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Teksts beidzās pirms atbilstošais citāts tika atrasts priekš %c. (Teksts bija '%s')"
 
 #: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
@@ -383,48 +370,49 @@ msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 
 #: glib/gspawn-win32.c:198
 msgid "Failed to read data from child process"
-msgstr ""
+msgstr "Nevarēju nolasīt datus no atvasinātā procesa"
 
 #: glib/gspawn-win32.c:323
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no atvasinātā procesa"
 
-#: glib/gspawn-win32.c:690 glib/gspawn.c:929
+#: glib/gspawn-win32.c:690
+#: glib/gspawn.c:929
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Nevarēju nolasīt no atvasinātā programkanāla (%s)"
 
-#: glib/gspawn-win32.c:778 glib/gspawn.c:1134
+#: glib/gspawn-win32.c:778
+#: glib/gspawn.c:1134
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr ""
+msgstr "Nevarēju pāriet uz direktoriju '%s' (%s)"
 
 #: glib/gspawn-win32.c:787
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr ""
+msgstr "Nevarēju izpildīt atvasināto procesu (%s)"
 
-#: glib/gspawn-win32.c:828 glib/gspawn.c:1245
+#: glib/gspawn-win32.c:828
+#: glib/gspawn.c:1245
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "Nevarēju izveidot programkanālu komunikācijai ar atvasināto procesu (%s)"
 
 #: glib/gspawn.c:166
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr ""
+msgstr "Nevarēju nolasīt datus no atvasinātā procesa (%s)"
 
 #: glib/gspawn.c:298
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
+msgstr "Negaidīta kļūda iekš select(), lasot datus no atvasinātā procesa (%s)"
 
 #: glib/gspawn.c:381
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr ""
+msgstr "Negaidīta kļūda waitpid() (%s)"
 
 #: glib/gspawn.c:994
 #, c-format
@@ -434,37 +422,43 @@ msgstr "Neizdevās sadalīt (%s)"
 #: glib/gspawn.c:1144
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr ""
+msgstr "Nevarēju izpildīt atvasināto procesu \"%s\" (%s)"
 
 #: glib/gspawn.c:1154
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "Nevarēju novadīt atvasinātā procesa (%s) izvadi vai ievadi"
 
 #: glib/gspawn.c:1163
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "Nevarēju sazarot atvasināto procesu (%s)"
 
 #: glib/gspawn.c:1171
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr ""
+msgstr "Nezināma kļūda, izpildot atvasināto procesu \"%s\""
 
 #: glib/gspawn.c:1193
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Nevarēju nolasīt pietiekami daudz datus no atvasinātā pid programkanāla (%s)"
 
 #: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "Rakstzīme nav UTF-8 laukā"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1039
+#: glib/gutf8.c:1048
+#: glib/gutf8.c:1180
+#: glib/gutf8.c:1189
+#: glib/gutf8.c:1330
+#: glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Nepareiza secība konversijas ievadē "
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1341
+#: glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
-msgstr "rakstzīme nav UTF-16 laukā"
+msgstr "Rakstzīme nav UTF-16 laukā"
+
