@@ -16,7 +16,7 @@ msgstr ""
 #: glib/gconvert.c:390
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Umwadnlung von Zeichensatz '%s' in '%s' wird nicht unterstützt"
+msgstr "Umwandlung von Zeichensatz '%s' in '%s' wird nicht unterstützt"
 
 #: glib/gconvert.c:394
 #, c-format
