@@ -1,3 +1,9 @@
+2000-03-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c (posix_check_for_error): Forgot a '}' in a macro
+	for DCE-threads. Thanks to Karl Nelson <kenelson@ece.ucdavis.edu>
+	for pointing that out.
+
 2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c: Don't use priorities for threads, when the

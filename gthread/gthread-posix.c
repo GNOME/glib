@@ -55,7 +55,7 @@
 # define condattr_default NULL
 #elif defined(G_THREADS_IMPL_DCE)
 # define posix_check_for_error( what ) G_STMT_START{			\
-    if( (what) == -1 ) { posix_print_error( what, errno ); 		\
+    if( (what) == -1 ) { posix_print_error( what, errno ); }		\
     }G_STMT_END
 # define pthread_key_create(a, b) pthread_keycreate (a, b)
 # define pthread_attr_init(a) pthread_attr_create (a)
