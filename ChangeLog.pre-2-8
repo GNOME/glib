@@ -1,3 +1,9 @@
+Fri Mar 19 15:21:09 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c: Fix the accidental revert of the
+	fixes from #112222 that happened when the GChildWatch
+	code was added.
+
 Fri Mar 19 11:07:06 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/atomic-test.c (main): Make computation

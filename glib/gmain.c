@@ -202,6 +202,8 @@ struct _GPollRec
 #endif
 
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
+#define SOURCE_BLOCKED(source) (((source)->flags & G_HOOK_FLAG_IN_CALL) != 0 && \
+		                ((source)->flags & G_SOURCE_CAN_RECURSE) == 0)
 
 #define SOURCE_UNREF(source, context)                       \
    G_STMT_START {                                           \
@@ -974,14 +976,17 @@ g_source_destroy_internal (GSource      *source,
 	  old_cb_funcs->unref (old_cb_data);
 	  LOCK_CONTEXT (context);
 	}
-      
-      tmp_list = source->poll_fds;
-      while (tmp_list)
+
+      if (!SOURCE_BLOCKED (source))
 	{
-	  g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	  tmp_list = tmp_list->next;
+	  tmp_list = source->poll_fds;
+	  while (tmp_list)
+	    {
+	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
+	      tmp_list = tmp_list->next;
+	    }
 	}
-      
+	  
       g_source_unref_internal (source, context, TRUE);
     }
 
@@ -1087,7 +1092,8 @@ g_source_add_poll (GSource *source,
 
   if (context)
     {
-      g_main_context_add_poll_unlocked (context, source->priority, fd);
+      if (!SOURCE_BLOCKED (source))
+	g_main_context_add_poll_unlocked (context, source->priority, fd);
       UNLOCK_CONTEXT (context);
     }
 }
@@ -1119,7 +1125,8 @@ g_source_remove_poll (GSource *source,
 
   if (context)
     {
-      g_main_context_remove_poll_unlocked (context, fd);
+      if (!SOURCE_BLOCKED (source))
+	g_main_context_remove_poll_unlocked (context, fd);
       UNLOCK_CONTEXT (context);
     }
 }
@@ -1273,16 +1280,22 @@ g_source_set_priority (GSource  *source,
 
   if (context)
     {
-      source->next = NULL;
-      source->prev = NULL;
-      
-      tmp_list = source->poll_fds;
-      while (tmp_list)
+      /* Remove the source from the context's source and then
+       * add it back so it is sorted in the correct plcae
+       */
+      g_source_list_remove (source, source->context);
+      g_source_list_add (source, source->context);
+
+      if (!SOURCE_BLOCKED (source))
 	{
-	  g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	  g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
-      
-	  tmp_list = tmp_list->next;
+	  tmp_list = source->poll_fds;
+	  while (tmp_list)
+	    {
+	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
+	      g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
+	      
+	      tmp_list = tmp_list->next;
+	    }
 	}
       
       UNLOCK_CONTEXT (source->context);
@@ -1847,6 +1860,43 @@ g_main_depth (void)
   return *depth;
 }
 
+/* Temporarily remove all this source's file descriptors from the
+ * poll(), so that if data comes available for one of the file descriptors
+ * we don't continually spin in the poll()
+ */
+/* HOLDS: source->context's lock */
+void
+block_source (GSource *source)
+{
+  GSList *tmp_list;
+
+  g_return_if_fail (!SOURCE_BLOCKED (source));
+
+  tmp_list = source->poll_fds;
+  while (tmp_list)
+    {
+      g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+      tmp_list = tmp_list->next;
+    }
+}
+
+/* HOLDS: source->context's lock */
+void
+unblock_source (GSource *source)
+{
+  GSList *tmp_list;
+  
+  g_return_if_fail (!SOURCE_BLOCKED (source)); /* Source already unblocked */
+  g_return_if_fail (!SOURCE_DESTROYED (source));
+  
+  tmp_list = source->poll_fds;
+  while (tmp_list)
+    {
+      g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
+      tmp_list = tmp_list->next;
+    }
+}
+
 /* HOLDS: context's lock */
 static void
 g_main_dispatch (GMainContext *context)
@@ -1883,6 +1933,9 @@ g_main_dispatch (GMainContext *context)
 	  if (cb_funcs)
 	    cb_funcs->ref (cb_data);
 	  
+	  if ((source->flags & G_SOURCE_CAN_RECURSE) == 0)
+	    block_source (source);
+	  
 	  was_in_call = source->flags & G_HOOK_FLAG_IN_CALL;
 	  source->flags |= G_HOOK_FLAG_IN_CALL;
 
@@ -1905,6 +1958,10 @@ g_main_dispatch (GMainContext *context)
 	 if (!was_in_call)
 	    source->flags &= ~G_HOOK_FLAG_IN_CALL;
 
+	  if ((source->flags & G_SOURCE_CAN_RECURSE) == 0 &&
+	      !SOURCE_DESTROYED (source))
+	    unblock_source (source);
+	  
 	  /* Note: this depends on the fact that we can't switch
 	   * sources from one main context to another
 	   */
@@ -2193,7 +2250,7 @@ g_main_context_prepare (GMainContext *context,
 	  SOURCE_UNREF (source, context);
 	  break;
 	}
-      if ((source->flags & G_HOOK_FLAG_IN_CALL) && !(source->flags & G_SOURCE_CAN_RECURSE))
+      if (SOURCE_BLOCKED (source))
 	goto next;
 
       if (!(source->flags & G_SOURCE_READY))
@@ -2381,7 +2438,7 @@ g_main_context_check (GMainContext *context,
 	  SOURCE_UNREF (source, context);
 	  break;
 	}
-      if ((source->flags & G_HOOK_FLAG_IN_CALL) && !(source->flags & G_SOURCE_CAN_RECURSE))
+      if (SOURCE_BLOCKED (source))
 	goto next;
 
       if (!(source->flags & G_SOURCE_READY))
