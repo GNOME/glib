@@ -1,3 +1,8 @@
+2002-11-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+        * configure.in: Fixed typo: PTHREAD_PRIO_MIN ->
+	PTHREAD_PRIO_MAX. (Laurent Vivier, #99293). Merged from HEAD.
+
 Thu Nov 21 16:19:21 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/ghash.c: Patch from Morten Welinder to 
