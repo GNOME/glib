@@ -2449,11 +2449,13 @@ g_main_loop_run (GMainLoop *loop)
   while (loop->is_running)
     g_main_context_iterate (loop->context, TRUE, TRUE, self);
 
+  UNLOCK_CONTEXT (loop->context);
+  
 #ifdef G_THREADS_ENABLED
   g_main_context_release (loop->context);
 #endif /* G_THREADS_ENABLED */    
   
-  g_main_loop_unref_and_unlock (loop);
+  g_main_loop_unref (loop);
 }
 
 /**

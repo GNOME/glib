@@ -1,3 +1,8 @@
+2001-10-31  Havoc Pennington  <hp@redhat.com>
+
+	* glib/gmain.c (g_main_loop_run): fix to the locking so we don't
+	hang
+
 2001-10-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Make --with-threads=none mean, that we want thread
