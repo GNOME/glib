@@ -913,6 +913,16 @@ static	gchar	*g_user_name = NULL;
 static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
 
+#ifdef G_OS_WIN32
+/* System codepage versions of the above, kept at file level so that they,
+ * too, are produced only once.
+ */
+static	gchar	*g_tmp_dir_cp = NULL;
+static	gchar	*g_user_name_cp = NULL;
+static	gchar	*g_real_name_cp = NULL;
+static	gchar	*g_home_dir_cp = NULL;
+#endif
+
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
 static  gchar   *g_user_cache_dir = NULL;
@@ -961,6 +971,13 @@ g_get_any_init (void)
 {
   if (!g_tmp_dir)
     {
+#ifdef G_OS_WIN32
+      /* g_tmp_dir is kept in the system codepage for most of this
+       * function, and converted at the end. home_dir, user_name and
+       * real_name are handled in UTF-8 all the way.
+       */
+#endif
+
       g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
       if (!g_tmp_dir)
 	g_tmp_dir = g_strdup (g_getenv ("TMP"));
@@ -993,10 +1010,20 @@ g_get_any_init (void)
        */
       {
 	gchar *home = g_getenv ("HOME");
-      
+	gchar *home_utf8 = NULL;
+
+	if (home)
+	  home_utf8 = g_locale_to_utf8 (home, -1, NULL, NULL, NULL);
+
 	/* Only believe HOME if it is an absolute path and exists */
-	if (home && g_path_is_absolute (home) && g_file_test (home, G_FILE_TEST_IS_DIR))
-	  g_home_dir = g_strdup (home);
+	if (home_utf8)
+	  {
+	    if (g_path_is_absolute (home_utf8) &&
+		g_file_test (home_utf8, G_FILE_TEST_IS_DIR))
+	      g_home_dir = home_utf8;
+	    else 
+	      g_free (home_utf8);
+	  }
       }
       
       /* In case HOME is Unix-style (it happens), convert it to
@@ -1013,7 +1040,8 @@ g_get_any_init (void)
 	{
 	  /* USERPROFILE is probably the closest equivalent to $HOME? */
 	  if (getenv ("USERPROFILE") != NULL)
-	    g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
+	    g_home_dir = g_locale_to_utf8 (g_getenv ("USERPROFILE"),
+					   -1, NULL, NULL, NULL);
 	}
 
       if (!g_home_dir)
@@ -1031,7 +1059,8 @@ g_get_any_init (void)
 	      gchar *homedrive, *homepath;
 	      
 	      homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
-	      homepath = g_strdup (g_getenv ("HOMEPATH"));
+	      homepath = g_locale_to_utf8 (g_getenv ("HOMEPATH"),
+					   -1, NULL, NULL, NULL);
 	      
 	      g_home_dir = g_strconcat (homedrive, homepath, NULL);
 	      g_free (homedrive);
@@ -1139,24 +1168,38 @@ g_get_any_init (void)
       
 #else /* !HAVE_PWD_H */
       
-#  ifdef G_OS_WIN32
-      {
-	guint len = UNLEN+1;
-	gchar buffer[UNLEN+1];
-	
-	if (GetUserName ((LPTSTR) buffer, (LPDWORD) &len))
-	  {
-	    g_user_name = g_strdup (buffer);
-	    g_real_name = g_strdup (buffer);
-	  }
-      }
-#  endif /* G_OS_WIN32 */
+#ifdef G_OS_WIN32
+      if (G_WIN32_HAVE_WIDECHAR_API ())
+	{
+	  guint len = UNLEN+1;
+	  wchar_t buffer[UNLEN+1];
+	  
+	  if (GetUserNameW (buffer, (LPDWORD) &len))
+	    {
+	      g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+	      g_real_name = g_strdup (g_user_name);
+	    }
+	}
+      else
+	{
+	  guint len = UNLEN+1;
+	  char buffer[UNLEN+1];
+	  
+	  if (GetUserNameA (buffer, (LPDWORD) &len))
+	    {
+	      g_user_name = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+	      g_real_name = g_strdup (g_user_name);
+	    }
+	}
+#endif /* G_OS_WIN32 */
 
 #endif /* !HAVE_PWD_H */
 
+#ifndef G_OS_WIN32
       if (!g_home_dir)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
-      
+#endif
+
 #ifdef __EMX__
       /* change '\\' in %HOME% to '/' */
       g_strdelimit (g_home_dir, "\\",'/');
@@ -1165,6 +1208,23 @@ g_get_any_init (void)
 	g_user_name = g_strdup ("somebody");
       if (!g_real_name)
 	g_real_name = g_strdup ("Unknown");
+
+#ifdef G_OS_WIN32
+      g_tmp_dir_cp = g_tmp_dir;
+      g_tmp_dir = g_locale_to_utf8 (g_tmp_dir_cp, -1, NULL, NULL, NULL);
+
+      g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
+
+      g_real_name_cp = g_locale_from_utf8 (g_real_name, -1, NULL, NULL, NULL);
+
+      /* home_dir might be NULL, unlike tmp_dir, user_name and
+       * real_name.
+       */
+      if (g_home_dir)
+	g_home_dir_cp = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
+      else
+	g_home_dir_cp = NULL;
+#endif /* G_OS_WIN32 */
     }
 }
 
@@ -1179,6 +1239,25 @@ g_get_user_name (void)
   return g_user_name;
 }
 
+#ifdef G_OS_WIN32
+
+#undef g_get_user_name
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+G_CONST_RETURN gchar*
+g_get_user_name (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+  
+  return g_user_name_cp;
+}
+
+#endif
+
 G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
@@ -1189,6 +1268,25 @@ g_get_real_name (void)
  
   return g_real_name;
 }
+
+#ifdef G_OS_WIN32
+
+#undef g_get_real_name
+
+/* Binary compatibility version. Not for newly compiled code. */
+
+G_CONST_RETURN gchar*
+g_get_real_name (void)
+{
+  G_LOCK (g_utils_global);
+  if (!g_tmp_dir)
+    g_get_any_init ();
+  G_UNLOCK (g_utils_global);
+ 
+  return g_real_name_cp;
+}
+
+#endif
 
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
@@ -1205,19 +1303,17 @@ g_get_home_dir (void)
 
 #undef g_get_home_dir
 
+/* Binary compatibility version. Not for newly compiled code. */
+
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
-  static gchar *home_dir = NULL;
-
   G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  if (!home_dir && g_home_dir)
-    home_dir = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
   G_UNLOCK (g_utils_global);
 
-  return home_dir;
+  return g_home_dir_cp;
 }
 
 #endif
@@ -1244,22 +1340,17 @@ g_get_tmp_dir (void)
 
 #undef g_get_tmp_dir
 
+/* Binary compatibility version. Not for newly compiled code. */
+
 G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
-  static gchar *tmp_dir = NULL;
-
   G_LOCK (g_utils_global);
   if (!g_tmp_dir)
     g_get_any_init ();
-  if (!tmp_dir)
-    tmp_dir = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
-
-  if (tmp_dir == NULL)
-    tmp_dir = "C:\\";
   G_UNLOCK (g_utils_global);
 
-  return tmp_dir;
+  return g_tmp_dir_cp;
 }
 
 #endif

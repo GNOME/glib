@@ -1,3 +1,16 @@
+2004-11-28  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.[hc]
+	* glib/glib.symbols: [Win32] Make also g_get_user_name() and
+	g_get_real() name return UTF-8. As for the similar changes to fix
+	#101792, for DLL ABI stability we use preprocessor defines to get
+	the new UTF-8 versions, and keep the old names for versions
+	returning strings in the system codepage.
+
+	Fix g_get_tmp_dir() and g_get_home_dir() to actually return UTF-8
+	as was intended in the fix for bug #101792. (#159664, noticed by
+	Robert Ögren)
+
 2004-11-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmarkup.c: Optimizations; don't scan the entire text
@@ -420,7 +433,7 @@ Mon Nov  8 10:45:50 2004  Manish Singh  <yosh@gimp.org>
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
 	Introduce the idea of a filename encoding, which is 
-	*literally* the filename encoding on Unix. On windows, 
+	*literally* the filename encoding on Unix. On Windows, 
 	use the Unicode name converted to UTF-8. (#101792,
 	Tor Lillqvist, Owen Taylor)
 	

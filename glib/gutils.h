@@ -116,9 +116,12 @@ G_BEGIN_DECLS
 /* Retrive static string info
  */
 #ifdef G_OS_WIN32
+#define g_get_user_name g_get_user_name_utf8
+#define g_get_real_name g_get_real_name_utf8
 #define g_get_home_dir g_get_home_dir_utf8
 #define g_get_tmp_dir g_get_tmp_dir_utf8
 #endif
+
 G_CONST_RETURN gchar* g_get_user_name        (void);
 G_CONST_RETURN gchar* g_get_real_name        (void);
 G_CONST_RETURN gchar* g_get_home_dir         (void);
