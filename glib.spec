@@ -11,7 +11,6 @@ Copyright: LGPL
 Group: Libraries
 Source: ftp://ftp.gimp.org/pub/gtk/v1.0/glib-%{ver}.tar.gz
 BuildRoot: /tmp/glib-root
-Packager: Dick Porter <dick@cymru.net>
 URL: http://www.gtk.org
 Docdir: %{prefix}/doc
 
