@@ -1,3 +1,16 @@
+Overview of Changes from GLib 2.4.4 to GLib 2.4.5
+=================================================
+
+* Fix g_filename_from_uri() to work with non-UTF-8 
+  filenames  [Robert Ögren, Matthias Clasen]
+* Make GMarkup parser handle of whitespace inside tags 
+  according to XML 1.1  [Hiroyuki Ikezoe, Matthias]
+* Documentation improvements [Soeren Sandmann, Christophe Fergeau,
+  Danek Duvall]
+* Other bug fixes [Oliver Guntermann, Sven Neumann, 
+  James Henstridge, Murray Cumming, Matthias, Tommi Komulainen]
+* New and updated translations (bg,hi,sq)
+
 Overview of Changes from GLib 2.4.2 to GLib 2.4.4
 =================================================
 

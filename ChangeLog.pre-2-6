@@ -1,5 +1,11 @@
 2004-07-30  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.4.5 ===
+
+	* NEWS: Updates 
+
+2004-07-30  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gconvert.c (g_unescape_uri_string): Don't validate
 	for UTF-8 here.  (#148420, Robert Ögren)
 

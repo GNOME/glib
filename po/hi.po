@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-09 09:33-0400\n"
+"POT-Creation-Date: 2004-07-30 15:30-0400\n"
 "PO-Revision-Date: 2002-12-20 10:12-0500\n"
 "Last-Translator: Unknown :-(\n"
 "Language-Team: Hindi <hi@li.org>\n"
@@ -167,22 +167,22 @@ msgstr "आशिक कैरेक्टर में चैनल समा�
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "145 का"
 
-#: glib/gmarkup.c:223
+#: glib/gmarkup.c:225
 #, fuzzy, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "पंक्ति %d कैरेक्टर %d कैरेक्टर %d पर त्रुटि %s"
 
-#: glib/gmarkup.c:307
+#: glib/gmarkup.c:309
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "पंक्ति %d पर त्रुटि %s"
 
-#: glib/gmarkup.c:412
+#: glib/gmarkup.c:414
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "रिक्त चिन्ह & देखा गया। वैध चिन्ह है :...."
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:424
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -192,23 +192,23 @@ msgstr ""
 "नाम के प्रथम अछर के स्थान पर कैरेक्टर %s वैध नहीं है। नाम & कैरेक्टर से प्रारंभ होना चाहिए। "
 "यदि यह एम्परसेन्ड के एक Entity नहीं है तब इस्केप को एक & amp माना जाए"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:460
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "कैरेक्टर %s का प्रयोग नाम के बीच में बैध नहीं है"
 
-#: glib/gmarkup.c:502
+#: glib/gmarkup.c:504
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entity नाम %s ग्यात नहीं है"
 
-#: glib/gmarkup.c:512
+#: glib/gmarkup.c:514
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr "नाम सेमीकालन पर समाप्त नहीं हो सकता, आप एम्परसेन्ड का प्रयोग कर सकते हैं"
 
-#: glib/gmarkup.c:558
+#: glib/gmarkup.c:560
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -217,16 +217,16 @@ msgstr ""
 "%s को parse करने में असफल ऐसा हो सकता है कि कैरेक्टर के बीच संख्या हो (उदा. के लिए "
 "&#234) या शायद संख्या काफी बड़ी हो"
 
-#: glib/gmarkup.c:583
+#: glib/gmarkup.c:585
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "कैरेक्टर संदर्भ %s एक ग्राह्य कैरेक्टर को इनकोड नहीं कर पा रहा है"
 
-#: glib/gmarkup.c:600
+#: glib/gmarkup.c:602
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "रिक्त कैरेक्टर संदर्भ, संख्या जैसे &#454 को अवश्य सम्मिलित करें "
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:612
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -235,23 +235,23 @@ msgstr ""
 "कैरेक्टर संदर्भ सेमीकालन चिन्ह के साथ समाप्त नहीं आप वस्तु का नाम प्रारंभ करने के लिए बिना "
 "इंनडेडिंग के एमपरसेंड कैरेक्टर का उपयोग करें इस्केप एमपरसेंड को &amp;"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
 msgstr ""
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:644
 msgid "Unfinished character reference"
 msgstr ""
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "अवैध utf-8 इनकोडेड पाठ्य"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:990
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "यह आवश्यक है कि प्रपत्र किसी वस्तु के नाम से प्रारंभ हो"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1029
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -259,20 +259,20 @@ msgid ""
 msgstr ""
 "%s एक वैध कैरेक्टर नहीं है यह किसी वस्तु के नाम से प्रारंभ नहीं होता है < के पश्चात आया"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1092
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "असंगत कैरेक्टर %s, > कैरेक्टर आवश्यक है वस्तु के प्रारंभ टैग को समाप्त करने के लिए"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1180
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "असंगत कैरेक्टर %s वस्तु %s के एट्रीव्यूट्स नाम %s के बाद में एक = का चिन्ह आवश्यक है"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1221
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -280,87 +280,87 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1450
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1489
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1500
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1509
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1656
 msgid "Document was empty or contained only whitespace"
 msgstr ""
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1708
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 
