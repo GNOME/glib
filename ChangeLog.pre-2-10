@@ -1,3 +1,7 @@
+2001-09-27  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gstring.c: Fix inline docs for g_string_prepend_unichar.
+
 2001-09-29  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in: Add quotes around test values. This fixes a minor
