@@ -1,3 +1,8 @@
+Sun Sep 20 18:21:46 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* ltconfig.sh: Patch to libtool-1.2b to make --disable-static
+	work.
+
 Sun Sep 20 02:09:44 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 
 	* glib.h: New function g_hash_table_foreach_remove is similar to

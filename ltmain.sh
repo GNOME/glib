@@ -932,7 +932,7 @@ if test -z "$show_help"; then
       install_libdir="$2"
 
       # Now set the variables for building old libraries.
-      oldlibs="$objdir/$libname.a"
+      oldlibs=
       if test -z "$rpath"; then
 	# Building a libtool convenience library.
 	oldlibs="$objdir/$libname.al $oldlibs"
@@ -1074,6 +1074,14 @@ if test -z "$show_help"; then
         fi
       fi
 
+      # Now set the variables for building old libraries.
+      if test "$build_old_libs" = yes && test "$build_libtool_libs" != convenience ; then
+        oldlibs="$oldlibs $objdir/$libname.a"
+
+	# Transform .lo files to .o files.
+	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
+      fi
+
       if test "$build_libtool_libs" = yes; then
 	# Get the real and link names of the library.
 	eval library_names=\"$library_names_spec\"
@@ -1095,9 +1103,6 @@ if test -z "$show_help"; then
 
 	# Use standard objects if they are PIC.
 	test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//g'`
-
-	# Transform .lo files to .o files.
-	test "$build_old_libs" = yes && oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
 
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
