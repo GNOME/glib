@@ -40,7 +40,7 @@ PACKAGE=glib
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
 # Specify a configuration file
-AM_CONFIG_HEADER(glibconfig.h)
+AM_CONFIG_HEADER(config.h)
 
 AC_DEFINE_UNQUOTED(GLIB_MAJOR_VERSION, $GLIB_MAJOR_VERSION)
 AC_DEFINE_UNQUOTED(GLIB_MINOR_VERSION, $GLIB_MINOR_VERSION)
@@ -97,21 +97,26 @@ AC_PROG_CC
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
-if eval "test x$GCC = xyes"; then
-  if eval test -z \"`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`\" ; then
-    CFLAGS="$CFLAGS -Wall"
-  fi
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
 
-  if eval "test x$enable_ansi = xyes"; then
-    if eval test -z \"`echo "$CFLAGS" | grep "\-ansi" 2> /dev/null`\" ; then
-      CFLAGS="$CFLAGS -ansi"
-    fi
+  if test "x$enable_ansi" = "xyes"; then
+    case " $CFLAGS " in
+    *[\ \	]-ansi[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -ansi" ;;
+    esac
 
-    if eval test -z \"`echo "$CFLAGS" | grep "\-pedantic" 2> /dev/null`\" ; then
-      CFLAGS="$CFLAGS -pedantic"
-    fi
+    case " $CFLAGS " in
+    *[\ \	]-pedantic[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -pedantic" ;;
+    esac
   fi
 fi
+changequote([,])dnl
 
 dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
 AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
@@ -270,31 +275,34 @@ else
     fi
 fi
 
-# This stuff is here, only so that we can define these
-# things in glibconfig.h. If ../config.h was installed
-# (under some other name?) then the definitions would
-# belong there. (They are only used in GDK)
+# These are used only in GDK (gdki18n.h)
+# This stuff is here only so that we can define these
+# things in glibconfig.h. If gtk+ started using an installed
+# gdkconfig.h file, then the definitions would belong there. 
 
 # Check for wchar.h
 
 AC_MSG_CHECKING(for wchar.h)
-AC_TRY_CPP([#include <wchar.h>], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
+AC_TRY_CPP([#include <wchar.h>], glib_wchar_h=yes, glib_wchar_h=no)
+if test $glib_wchar_h = yes; then
    AC_DEFINE(HAVE_WCHAR_H)
 fi
-AC_MSG_RESULT($gtk_ok)
+AC_MSG_RESULT($glib_wchar_h)
 
 # Check for wctype.h (for iswalnum)
 
 AC_MSG_CHECKING(for wctype.h)
-AC_TRY_CPP([#include <wctype.h>], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
+AC_TRY_CPP([#include <wctype.h>], glib_wctype_h=yes, glib_wctype_h=no)
+if test $glib_wctype_h = yes; then
    AC_DEFINE(HAVE_WCTYPE_H)
 fi
-AC_MSG_RESULT($gtk_ok)
+AC_MSG_RESULT($glib_wctype_h)
+
+oLIBS="$LIBS"
+# in Solaris 2.5, `iswalnum' is in -lw
+AC_CHECK_FUNC(iswalnum,,[AC_CHECK_LIB(w,iswalnum)])
 
 # The following is necessary for Linux libc-5.4.38
-
 AC_MSG_CHECKING(if iswalnum() and friends are properly defined)
 AC_TRY_LINK([#include <stdlib.h>],[
 #if (defined(HAVE_WCTYPE_H) || defined(HAVE_WCHAR_H))
@@ -309,12 +317,14 @@ AC_TRY_LINK([#include <stdlib.h>],[
 #  define iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
 #endif
 iswalnum((wchar_t) 0);
-], gtk_ok=yes, gtk_ok=no)
+], glib_working_wctype=yes, glib_working_wctype=no)
+LIBS="$oLIBS"
 
-if test $gtk_ok = no; then
+if test $glib_working_wctype = no; then
    AC_DEFINE(HAVE_BROKEN_WCTYPE)
 fi
-AC_MSG_RESULT($gtk_ok)
+AC_MSG_RESULT($glib_working_wctype)
+
 
 dnl **********************
 dnl *** va_copy checks ***
@@ -496,6 +506,264 @@ AC_SUBST(G_MODULE_LDFLAGS)
 AC_SUBST(G_MODULE_HAVE_DLERROR)
 AC_SUBST(G_MODULE_NEED_USCORE)
 
+AC_OUTPUT_COMMANDS([
+
+## Generate `glibconfig.h' in two cases
+## 1. `config.status' is run either explicitly, or via configure.
+##     Esp. not when it is run in `Makefile' to generate makefiles and
+##     config.h
+## 2. CONFIG_OTHER is set explicitly
+##
+## Case 1 is difficult.  We know that `automake' sets one of
+## CONFIG_FILES or CONFIG_HEADERS to empty.  This heuristic works
+## only when AM_CONFIG_HEADER is set, however.  
+
+if test -n "${CONFIG_FILES}" && test -n "${CONFIG_HEADERS}"; then
+  # Both CONFIG_FILES and CONFIG_HEADERS are non-empty ==> Case 1
+  CONFIG_OTHER=${CONFIG_OTHER:-glibconfig.h}
+fi
+case "$CONFIG_OTHER" in
+*glibconfig.h*)
+  echo creating glibconfig.h
+  outfile=glibconfig.h-tmp
+  cat > $outfile <<\outfile_EOF
+/* glibconfig.h */
+/* This is a generated file.  Please modify `configure.in' */
+
+#ifndef GLIBCONFIG_H
+#define GLIBCONFIG_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+outfile_EOF
+
+  if test x$glib_limits_h = xyes; then
+    echo '#include <limits.h>' >> $outfile
+  fi 
+  if test x$glib_float_h = xyes; then
+    echo '#include <float.h>' >> $outfile
+  fi 
+  if test x$glib_values_h = xyes; then
+    echo '#include <values.h>' >> $outfile
+  fi
+
+  cat >> $outfile <<outfile_EOF
+
+#define G_MINFLOAT $glib_mf
+#define G_MAXFLOAT $glib_Mf
+#define G_MINDOUBLE $glib_md
+#define G_MAXDOUBLE $glib_Md
+#define G_MINSHORT $glib_ms
+#define G_MAXSHORT $glib_Ms
+#define G_MININT $glib_mi
+#define G_MAXINT $glib_Mi
+#define G_MINLONG $glib_ml
+#define G_MAXLONG $glib_Ml
+
+outfile_EOF
+
+  ## this should always be true in a modern C/C++ compiler
+  cat >>$outfile <<outfile_EOF
+typedef signed char gint8;
+typedef unsigned char guint8;
+outfile_EOF
+
+  if test -n "$gint16"; then
+    cat >>$outfile <<outfile_EOF
+typedef signed $gint16 gint16;
+typedef unsigned $gint16 guint16;
+outfile_EOF
+  fi
+  if test -n "$gint32"; then
+    cat >>$outfile <<outfile_EOF
+typedef signed $gint32 gint32;
+typedef unsigned $gint32 guint32;
+outfile_EOF
+  fi 
+  if test -n "$gint64"; then
+    cat >>$outfile <<outfile_EOF
+#define G_HAVE_GINT64 1
+typedef signed $gint64 gint64;
+typedef unsigned $gint64 guint64;
+outfile_EOF
+  fi 
+
+  if test -z "$glib_unknown_void_p"; then
+    cat >>$outfile <<outfile_EOF
+
+#define GPOINTER_TO_INT(p)	((gint)${glib_gpi_cast}(p))
+#define GPOINTER_TO_UINT(p)	((guint)${glib_gpui_cast}(p))
+
+#define GINT_TO_POINTER(i)	((gpointer)${glib_gpi_cast}(i))
+#define GUINT_TO_POINTER(u)	((gpointer)${glib_gpui_cast}(u))
+outfile_EOF
+  else
+    echo '#error SIZEOF_VOID_P unknown - This should never happen' >>$outfile
+  fi
+
+  cat >>$outfile <<outfile_EOF
+$glib_atexit
+$glib_memmove
+$glib_defines
+
+$glib_vacopy
+
+$glib_inline
+
+#define G_BYTE_ORDER $g_byte_order
+$glib_wc
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* GLIBCONFIG_H */
+
+outfile_EOF
+
+  if cmp -s $outfile glibconfig.h; then
+    echo glibconfig.h is unchanged
+    rm -f $outfile
+  else
+    mv $outfile glibconfig.h
+  fi ;;
+esac
+],[
+
+# Note that if two cases are the same, case goes with the first one.
+# Note also that this is inside an AC_OUTPUT_COMMAND.  We do not depend
+# on variable expansion in case labels.  Look at the generated config.status
+# for a hint.
+
+case xyes in
+x$ac_cv_header_float_h)
+  glib_float_h=yes
+  glib_mf=FLT_MIN glib_Mf=FLT_MAX
+  glib_md=DBL_MIN glib_Md=DBL_MAX
+  ;;
+x$ac_cv_header_values_h)
+  glib_values_h=yes
+  glib_mf=MINFLOAT  glib_Mf=MAXFLOAT
+  glib_md=MINDOUBLE glib_Md=MAXDOUBLE
+  ;;
+esac
+
+case xyes in
+x$ac_cv_header_limits_h)
+  glib_limits_h=yes
+  glib_ms=SHRT_MIN glib_Ms=SHRT_MAX
+  glib_mi=INT_MIN  glib_Mi=INT_MAX
+  glib_ml=LONG_MIN glib_Ml=LONG_MAX
+  ;;
+x$ac_cv_header_values_h)
+  glib_values_h=yes
+  glib_ms=MINSHORT glib_Ms=MAXSHORT
+  glib_mi=MININT   glib_Mi=MAXINT
+  glib_ml=MINLONG  glib_Ml=MAXLONG
+  ;;
+esac
+
+case 2 in
+$ac_cv_sizeof_short) 		gint16=short;;
+$ac_cv_sizeof_int)   		gint16=int;;
+esac
+case 4 in
+$ac_cv_sizeof_short) 		gint32=short;;
+$ac_cv_sizeof_int)  		gint32=int;;
+$ac_cv_sizeof_long) 		gint32=long;;
+esac
+case 8 in
+$ac_cv_sizeof_int)  		gint64=int;;
+$ac_cv_sizeof_long) 		gint64=long;;
+$ac_cv_sizeof_long_long) 	gint64='long long';;
+esac
+
+case $ac_cv_sizeof_void_p in
+$ac_cv_sizeof_int)  	glib_gpi_cast=''        glib_gpui_cast=''         ;;
+$ac_cv_sizeof_long) 	glib_gpi_cast='(glong)' glib_gpui_cast='(gulong)' ;;
+*) 			glib_unknown_void_p=yes ;;
+esac
+
+
+case xyes in
+x$ac_cv_func_atexit)
+  glib_atexit="
+#ifdef NeXT /* @#%@! NeXTStep */
+# define g_ATEXIT(proc)	(!atexit (proc))
+#else
+# define g_ATEXIT(proc)	(atexit (proc))
+#endif"
+  ;;
+x$ac_cv_func_on_exit)
+  glib_atexit="
+#define g_ATEXIT(proc)	(on_exit ((void (*)(int, void*))(proc), NULL))"
+  ;;
+esac
+
+case xyes in
+x$ac_cv_func_memmove)
+  glib_memmove='
+#define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END'
+  ;;
+*)
+  glib_memmove="
+/* We make the assumption that if memmove isn't available, then
+ * bcopy will do the job. This isn't safe everywhere. (bcopy can't
+ * necessarily handle overlapping copies) */
+#define g_memmove(d,s,n) G_STMT_START { bcopy ((s), (d), (n)); } G_STMT_END"
+  ;;
+esac
+
+glib_defines="
+#define GLIB_MAJOR_VERSION $GLIB_MAJOR_VERSION
+#define GLIB_MINOR_VERSION $GLIB_MINOR_VERSION
+#define GLIB_MICRO_VERSION $GLIB_MICRO_VERSION
+
+#define G_COMPILED_WITH_DEBUGGING \"$enable_debug\""
+
+case xyes in
+x$glib_cv_va_copy)	glib_vacopy='#define G_VA_COPY	va_copy' ;;
+x$glib_cv___va_copy)	glib_vacopy='#define G_VA_COPY	__va_copy' ;;
+*)			glib_vacopy=''
+esac
+
+if test x$glib_cv_va_val_copy = xno; then
+  glib_vacopy="\$glib_vacopy
+#define G_VA_COPY_AS_ARRAY 1"
+fi
+
+if test x$glib_cv_hasinline = xyes; then
+    glib_inline='#define G_HAVE_INLINE 1'
+fi
+if test x$glib_cv_has__inline = xyes; then
+    glib_inline="\$glib_inline
+#define G_HAVE___INLINE 1"
+fi
+if test x$glib_cv_has__inline__ = xyes; then
+    glib_inline="\$glib_inline
+#define G_HAVE___INLINE__ 1"
+fi
+
+case xyes in
+x$ac_cv_c_bigendian)	g_byte_order=G_BIG_ENDIAN 	;;
+*)			g_byte_order=G_LITTLE_ENDIAN	;;
+esac
+
+if test x$glib_wchar_h = xyes; then
+  glib_wc='
+#define G_HAVE_WCHAR_H 1'
+fi
+if test x$glib_wctype_h = xyes; then
+  glib_wc="\$glib_wc
+#define G_HAVE_WCTYPE_H 1"
+fi
+if test x$glib_working_wctype = xno; then
+  glib_wc="\$glib_wc
+#define G_HAVE_BROKEN_WCTYPE 1"
+fi
+])
 
 AC_OUTPUT([
 Makefile
@@ -503,4 +771,6 @@ glib-config
 gmodule/gmoduleconf.h
 gmodule/Makefile
 docs/Makefile
-],[chmod +x glib-config])
+],[case "$CONFIG_FILES" in
+*glib-config*)chmod +x glib-config;;
+esac])

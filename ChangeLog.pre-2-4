@@ -1,3 +1,20 @@
+1998-10-31  Raja R Harinath  <harinath@cs.umn.edu>
+
+	Land glib-rrh-19981025-0.patch.
+	* Makefile.am (glibconfig.h): New rule.  
+	(stamp-gc-h): New rule.  Generate `glibconfig.h'.
+	* configure.in (AM_CONFIG_HEADER): It is now `config.h'.
+	(HAVE_BROKEN_WCTYPE): On Solaris, look for iswalnum in -lw before
+	concluding "broken wctype".
+	(glibconfig.h): Use AC_OUTPUT_COMMANDS to put generation code into
+	config.status.
+	* glib.h: Remove a lot of tests and defines.  All these have been
+	moved to `configure.in (glibconfig.h)'.
+	* gerror.c: Include <config.h>.
+	* gmem.c: Likewise.
+	* gstrfuncs.c: Likewise.
+	* gutils.c: Likewise.
+	
 Sat Oct 31 05:08:26 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed old G_ENUM(), G_FLAGS(), G_NV() and G_SV() macros.

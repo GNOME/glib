@@ -1,6 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
+# build . first, then SUBDIRS
 SUBDIRS = gmodule docs
+all-recursive-am: all-am
+# alpha `automake' supports this better
+#SUBDIRS = . gmodule docs
 
 configincludedir = $(pkglibdir)/include
 
@@ -19,10 +23,6 @@ EXTRA_DIST = \
 	makefile.lcc	\
 	makefile.msc	\
 	glibconfig.h.win32
-
-
-# build . first, then SUBDIRS
-all-recursive-am: all-am
 
 lib_LTLIBRARIES = libglib.la
 
@@ -53,6 +53,13 @@ include_HEADERS = \
 
 configinclude_DATA = \
 		glibconfig.h
+
+BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
+glibconfig.h: stamp-gc-h
+	@:
+stamp-gc-h: config.status
+	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
+	echo timestamp > stamp-gc-h
 
 libglib_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -release $(LT_RELEASE)

@@ -19,7 +19,41 @@
 #ifndef __G_LIB_H__
 #define __G_LIB_H__
 
-/* system specific config file
+/* system specific config file glibconfig.h provides definitions for
+ * the extrema of many of the standard types. These are:
+ *
+ *  G_MINSHORT, G_MAXSHORT
+ *  G_MININT, G_MAXINT
+ *  G_MINLONG, G_MAXLONG
+ *  G_MINFLOAT, G_MAXFLOAT
+ *  G_MINDOUBLE, G_MAXDOUBLE
+ *
+ * It also provides the following typedefs:
+ *
+ *  gint8, guint8
+ *  gint16, guint16
+ *  gint32, guint32
+ *  gint64, guint64
+ *
+ * It defines the G_BYTE_ORDER symbol to one of G_*_ENDIAN (see later in
+ * this file). 
+ *
+ * And it provides a way to store and retrieve a `gint' in/from a `gpointer'.
+ * This is useful to pass an integer instead of a pointer to a callback.
+ *
+ *  GINT_TO_POINTER(i), GUINT_TO_POINTER(i)
+ *  GPOINTER_TO_INT(p), GPOINTER_TO_UINT(p)
+ *
+ * Finally, it provide the following wrappers to STDC functions:
+ *
+ *  g_ATEXIT
+ *    To register hooks which are executed on exit().
+ *    Usually a wrapper for STDC atexit.
+ *
+ *  void *g_memmove(void *dest, const void *src, guint count);
+ *    A wrapper for STDC memmove, or an implementation, if memmove doesn't
+ *    exist.  The prototype looks like the above, give or take a const,
+ *    or size_t.
  */
 #include <glibconfig.h>
 
@@ -80,56 +114,6 @@
 
 #pragma warning(disable:4244)	/* No possible loss of data warnings, please */
 #endif /* _MSC_VER */
-
-/* glib provides definitions for the extrema of many
- *  of the standard types. These are:
- * G_MINFLOAT
- * G_MAXFLOAT
- * G_MINDOUBLE
- * G_MAXDOUBLE
- * G_MINSHORT
- * G_MAXSHORT
- * G_MININT
- * G_MAXINT
- * G_MINLONG
- * G_MAXLONG
- *
- * We include limits.h before float.h to work around a egcs 1.1
- * oddity on Solaris 2.5.1
- */
-#ifdef HAVE_LIMITS_H
-#  include <limits.h>
-#  define G_MINSHORT  SHRT_MIN
-#  define G_MAXSHORT  SHRT_MAX
-#  define G_MININT    INT_MIN
-#  define G_MAXINT    INT_MAX
-#  define G_MINLONG   LONG_MIN
-#  define G_MAXLONG   LONG_MAX
-#elif HAVE_VALUES_H
-#  ifdef HAVE_FLOAT_H
-#    include <values.h>
-#  endif /* HAVE_FLOAT_H */
-#  define G_MINSHORT  MINSHORT
-#  define G_MAXSHORT  MAXSHORT
-#  define G_MININT    MININT
-#  define G_MAXINT    MAXINT
-#  define G_MINLONG   MINLONG
-#  define G_MAXLONG   MAXLONG
-#endif /* HAVE_VALUES_H */
-
-#ifdef HAVE_FLOAT_H
-#  include <float.h>
-#  define G_MINFLOAT   FLT_MIN
-#  define G_MAXFLOAT   FLT_MAX
-#  define G_MINDOUBLE  DBL_MIN
-#  define G_MAXDOUBLE  DBL_MAX
-#elif HAVE_VALUES_H
-#  include <values.h>
-#  define G_MINFLOAT  MINFLOAT
-#  define G_MAXFLOAT  MAXFLOAT
-#  define G_MINDOUBLE MINDOUBLE
-#  define G_MAXDOUBLE MAXDOUBLE
-#endif /* HAVE_VALUES_H */
 
 
 #ifdef __cplusplus
@@ -304,26 +288,14 @@ extern "C" {
 #define	G_GNUC_PRETTY_FUNCTION	("")
 #endif	/* !__GNUC__ */
 
-
 /* we try to provide a usefull equivalent for ATEXIT if it is
  * not defined, but use is actually abandoned. people should
  * use g_atexit() instead.
- * keep this in sync with gutils.c.
  */
 #ifndef ATEXIT
-#  ifdef HAVE_ATEXIT
-#    ifdef NeXT /* @#%@! NeXTStep */
-#      define ATEXIT(proc)   (!atexit (proc))
-#    else /* !NeXT */
-#      define ATEXIT(proc)   (atexit (proc))
-#    endif /* !NeXT */
-#  elif defined (HAVE_ON_EXIT)
-#    define ATEXIT(proc)   (on_exit ((void (*)(int, void *))(proc), NULL))
-#  else
-#  error Could not determine proper atexit() implementation
-#  endif
+# define ATEXIT(proc)	g_ATEXIT(proc)
 #else
-#  define G_NATIVE_ATEXIT
+# define G_NATIVE_ATEXIT
 #endif /* ATEXIT */
 
 /* Hacker macro to place breakpoints for x86 machines.
@@ -534,59 +506,6 @@ typedef double gldouble;
 typedef void* gpointer;
 typedef const void *gconstpointer;
 
-#if (SIZEOF_CHAR == 1)
-typedef signed char	gint8;
-typedef unsigned char	guint8;
-#endif /* SIZEOF_CHAR */
-
-#if (SIZEOF_SHORT == 2)
-typedef signed short	gint16;
-typedef unsigned short	guint16;
-#endif /* SIZEOF_SHORT */
-
-#if (SIZEOF_INT == 4)
-typedef signed int	gint32;
-typedef unsigned int	guint32;
-#elif (SIZEOF_LONG == 4)
-typedef signed long	gint32;
-typedef unsigned long	guint32;
-#endif /* SIZEOF_INT */
-
-#if (SIZEOF_LONG == 8)
-#define HAVE_GINT64 1
-typedef signed long gint64;
-typedef unsigned long guint64;
-#elif (SIZEOF_LONG_LONG == 8)
-#define HAVE_GINT64 1
-typedef signed long long gint64;
-typedef unsigned long long guint64;
-#else
-/* No gint64 */
-#undef HAVE_GINT64
-#endif
-
-
-/* Define macros for storing integers inside pointers
- */
-#if (SIZEOF_INT == SIZEOF_VOID_P)
-
-#define GPOINTER_TO_INT(p) ((gint)(p))
-#define GPOINTER_TO_UINT(p) ((guint)(p))
-
-#define GINT_TO_POINTER(i) ((gpointer)(i))
-#define GUINT_TO_POINTER(u) ((gpointer)(u))
-
-#elif (SIZEOF_LONG == SIZEOF_VOID_P)
-
-#define GPOINTER_TO_INT(p) ((gint)(glong)(p))
-#define GPOINTER_TO_UINT(p) ((guint)(gulong)(p))
-
-#define GINT_TO_POINTER(i) ((gpointer)(glong)(i))
-#define GUINT_TO_POINTER(u) ((gpointer)(gulong)(u))
-
-#else
-#error SIZEOF_VOID_P unknown - This should never happen
-#endif
 
 typedef gint32	gssize;
 typedef guint32 gsize;
@@ -600,12 +519,6 @@ typedef gint32	GTime;
 #define G_LITTLE_ENDIAN 1234
 #define G_BIG_ENDIAN    4321
 #define G_PDP_ENDIAN    3412		/* unused, need specific PDP check */	
-
-#ifdef WORDS_BIGENDIAN
-#define G_BYTE_ORDER G_BIG_ENDIAN
-#else
-#define G_BYTE_ORDER G_LITTLE_ENDIAN
-#endif
 
 /* Basic bit swapping functions
  */
@@ -1653,20 +1566,6 @@ gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
 gchar*  g_getenv		(const gchar *variable);
 
-/* We make the assumption that if memmove isn't available, then
- * bcopy will do the job. This isn't safe everywhere. (bcopy can't
- * necessarily handle overlapping copies).
- * Either way, g_memmove() will not return a value.
- */
-#ifdef HAVE_MEMMOVE
-#define g_memmove(dest, src, size)	G_STMT_START {	\
-     memmove ((dest), (src), (size));			\
-} G_STMT_END
-#else
-#define g_memmove(dest, src, size)	G_STMT_START {	\
-     bcopy ((src), (dest), (size));			\
-} G_STMT_END
-#endif
 
 /* we use a GLib function as a replacement for ATEXIT, so
  * the programmer is not required to check the return value
