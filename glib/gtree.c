@@ -218,7 +218,8 @@ g_tree_traverse (GTree         *tree,
 
   rtree = (GRealTree*) tree;
 
-  g_return_if_fail (rtree->root != NULL);
+  if (!rtree->root)
+    return;
 
   switch (traverse_type)
     {
@@ -253,7 +254,8 @@ g_tree_search (GTree       *tree,
 
   if (rtree->root)
     return g_tree_node_search (rtree->root, search_func, data);
-  return NULL;
+  else
+    return NULL;
 }
 
 gint
@@ -267,7 +269,8 @@ g_tree_height (GTree *tree)
 
   if (rtree->root)
     return g_tree_node_height (rtree->root);
-  return 0;
+  else
+    return 0;
 }
 
 gint
@@ -281,7 +284,8 @@ g_tree_nnodes (GTree *tree)
 
   if (rtree->root)
     return g_tree_node_count (rtree->root);
-  return 0;
+  else
+    return 0;
 }
 
 static GTreeNode*
