@@ -525,7 +525,7 @@ tokenize_command_line (const gchar *command_line,
         g_set_error (error,
                      G_SHELL_ERROR,
                      G_SHELL_ERROR_BAD_QUOTING,
-                     _("Text ended just after a '\' character."
+                     _("Text ended just after a '\\' character."
                        " (The text was '%s')"),
                      command_line);
       else

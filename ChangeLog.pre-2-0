@@ -1,3 +1,8 @@
+Mon Feb 25 16:31:09 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gshell.c (tokenize_command_line): Fix quoting
+	of \' sequence (#72548, Christian Rose)
+
 2002-02-24  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Edits.
