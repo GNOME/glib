@@ -1,3 +1,8 @@
+Tue Jan 28 16:08:56 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: If msgfmt isn't found,
+	unset gt_cv_have_gettext. (#102552, Tim Mooney)
+
 Tue Jan 28 15:18:24 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* autogen.sh (have_automake): Fix version in complaint
