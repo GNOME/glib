@@ -269,29 +269,26 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 #ifdef __GNUC__
 
+/* Internal function, used to implement following macros */
+void g_return_if_fail_warning (const char *log_domain,
+			       const char *pretty_function,
+			       const char *expression);
+
 #define g_return_if_fail(expr)		G_STMT_START{			\
      if G_LIKELY(expr) { } else       					\
        {								\
-	 g_log (G_LOG_DOMAIN,						\
-		G_LOG_LEVEL_CRITICAL,					\
-		"file %s: line %d (%s): assertion `%s' failed",		\
-		__FILE__,						\
-		__LINE__,						\
-		__PRETTY_FUNCTION__,					\
-		#expr);							\
+	 g_return_if_fail_warning (G_LOG_DOMAIN,			\
+		                   __PRETTY_FUNCTION__,		        \
+		                   #expr);				\
 	 return;							\
        };				}G_STMT_END
 
 #define g_return_val_if_fail(expr,val)	G_STMT_START{			\
      if G_LIKELY(expr) { } else						\
        {								\
-	 g_log (G_LOG_DOMAIN,						\
-		G_LOG_LEVEL_CRITICAL,					\
-		"file %s: line %d (%s): assertion `%s' failed",		\
-		__FILE__,						\
-		__LINE__,						\
-		__PRETTY_FUNCTION__,					\
-		#expr);							\
+	 g_return_if_fail_warning (G_LOG_DOMAIN,			\
+		                   __PRETTY_FUNCTION__,		        \
+		                   #expr);				\
 	 return (val);							\
        };				}G_STMT_END
 
