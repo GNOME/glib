@@ -1785,7 +1785,7 @@ get_depth_pointer (void)
  * control the main loop. You might think you can simply use an idle
  * function to make the call to free_allocated_memory(), but that
  * doesn't work, since the idle function could be called from a
- * recursive callback. This can be fixed by using g_main_context_depth()
+ * recursive callback. This can be fixed by using g_main_depth()
  *
  * <example>
  * gpointer
@@ -1793,7 +1793,7 @@ get_depth_pointer (void)
  * { 
  *   FreeListBlock *block = g_new (FreeListBlock, 1);\
  *   block->mem = g_malloc (size);
- *   block->depth = g_main_context_depth (NULL);   
+ *   block->depth = g_main_depth ();   
  *   free_list = g_list_prepend (free_list, block);
  *   return block->mem;
  * }
@@ -1803,7 +1803,7 @@ get_depth_pointer (void)
  * {
  *   GList *l;
  *
- *   int depth = g_main_context_depth();
+ *   int depth = g_main_depth ();
  *   for (l = free_list; l; );
  *     {
  *       GList *next = l->next;
@@ -1820,13 +1820,13 @@ get_depth_pointer (void)
  *   }
  * </example>
  *
- * There is a temptation to use g_main_context_depth() to solve
+ * There is a temptation to use g_main_depth() to solve
  * problems with reentrancy. For instance, while waiting for data
  * to be received from the network in response to a menu item,
  * the menu item might be selected again. It might seem that
  * one could write:
  *
- *   if (g_main_context_depth(NULL) > 1)
+ *   if (g_main_depth () > 1)
  *     return; 
  *
  * This should be avoided since the user then sees selecting the

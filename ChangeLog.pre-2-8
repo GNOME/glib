@@ -1,3 +1,8 @@
+Sun Feb 29 21:42:47 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c: Fix leftover references to 
+	g_main_context_depth() in docs.
+
 Sun Feb 29 21:34:34 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.[ch]: Add g_main_depth() (Request from
