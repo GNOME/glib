@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-09 09:33-0400\n"
+"POT-Creation-Date: 2004-07-28 03:33+0200\n"
 "PO-Revision-Date: 2004-05-08 10:11+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -95,10 +95,11 @@ msgstr "I pamundur grumbullimi i %lu bytes për të lexuar file \"%s\""
 msgid "Error reading file '%s': %s"
 msgstr "Gabim gjatë leximit të file '%s': %s"
 
+#. GRUT modified this item
 #: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "I pamundur leximi nga file '%s': %s"
+msgstr "Leximi nga file '%s' dështoi: %s"
 
 #: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
@@ -517,3 +518,4 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
+
