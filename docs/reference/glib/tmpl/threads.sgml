@@ -585,9 +585,10 @@ called and will do nothing then.
 
 <note>
 <para>
-#GMutex is not recursive, i.e. a thread will deadlock, if it already
-has locked @mutex while calling g_mutex_lock(). Use
-#GStaticRecMutex instead, if you need recursive mutexes.
+#GMutex is neither guaranteed to be recursive nor to be non-recursive,
+i.e. a thread could deadlock while calling g_mutex_lock(), if it
+already has locked @mutex. Use #GStaticRecMutex, if you need recursive
+mutexes.
 </para>
 </note>
 
@@ -609,9 +610,10 @@ called and will immediately return %TRUE then.
 
 <note>
 <para>
-#GMutex is not recursive, i.e. g_mutex_trylock() will return %FALSE,
-if the current thread already has locked @mutex. Use
-#GStaticRecMutex instead, if you need recursive mutexes.
+#GMutex is neither guaranteed to be recursive nor to be non-recursive,
+i.e. the return value of g_mutex_trylock() could be both %FALSE or
+%TRUE, if the current thread already has locked @mutex. Use
+#GStaticRecMutex, if you need recursive mutexes.
 </para>
 </note>
 
@@ -1136,7 +1138,7 @@ g_static_rw_lock_reader_unlock().
 
 <para>
 #GStaticRWLock is not recursive. It might seem to be possible to
-recursivly lock for reading, but that can result in a deadlock as
+recursively lock for reading, but that can result in a deadlock as
 well, due to writer preference.
 </para>
 
