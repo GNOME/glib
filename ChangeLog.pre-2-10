@@ -1,3 +1,7 @@
+Wed Feb 16 05:18:37 CST 2000  Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.7
+
 Mon Feb 14 22:32:49 2000  Tim Janik  <timj@gtk.org>
 
 	* gstring.c: changed g_str_hash() to a 31 bit version based on
