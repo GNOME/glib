@@ -10,11 +10,12 @@ library is used.
 
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
-been used successfully. With gcc I mean egcs-1.1.2 (as distributed by
-Mumit Khan), running under cygwin-b20.1. To successfully use gcc,
-follow the instructions below. We want to use gcc -mno-cygwin,
-i.e. produce executables (.exe and .dll files) that do *not* require
-the cygwin runtime library. This is sometimes called "mingw32".
+been used successfully. With gcc I mean the gcc-2.95 pre-release as
+distributed by Mumit Khan, running under cygwin-b20.1. To successfully
+use gcc, follow the instructions below. We want to use gcc
+-mno-cygwin, i.e. produce executables (.exe and .dll files) that do
+*not* require the cygwin runtime library. This is sometimes called
+"mingw32".
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
@@ -46,7 +47,7 @@ GLib (or GTk+, which uses GLib).
 
 Additionally, there are the compiler-specific macros:
 - _MSC_VER is defined when using the Microsoft compiler
-- __GNUC__ is defined when using GCC (i.e. egcs)
+- __GNUC__ is defined when using GCC
 
 Some of the usage of these macros used to be a bit mixed up, and had
 to be straightened out when adding the gcc support. In particular, I
@@ -90,44 +91,20 @@ Building with gcc
 =================
 
 The gcc support was added quite recently, but seems to work. Debugging
-with gdb works. I prefer to use the msvcrt runtime and not the default
-crtdll. Especially, as the pthread library also uses msvcrt, using
-crtdll would probably not be a good idea at all. Using msvcrt can be
-achieved by applying the following diff to the specs file, which
-typically is installed as
-C:\cygnus\cygwin-b20\H-i586-cygwin32\lib\gcc-lib\i586-cygwin32\egcs-2.91.66\specs.
+with gdb works. I use the latest and greatest gcc and mingw32.
+Somewhat earlier versions will also work, but you are on your own.
 
-Sorry for the illegibility of this diff, but the specs file is like
-that... This patch replaces -lcrtdll with -lmsvcrt, replaces crt1 with
-crt2, removes -lmoldname (because using functions from it would pull
-in crtdll.dll), and defines __MSVCRT__.
+Fetch the gcc-2.95 developer snapshot from
+ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/cygwin/snapshots/gcc-2.95-19990715/.
+Install it somewhere, for instance \gcc-2.95.
 
---- specs.ORIG	Sun Apr 25 00:40:40 1999
-+++ specs	Sun Apr 25 00:48:04 1999
-@@ -23 +23 @@
--%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmoldname -lcrtdll}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
-+%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmsvcrt}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
-@@ -29 +29 @@
--%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt1%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt1%O%s} %{pg:gcrt0%O%s}}
-+%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt2%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt2%O%s} %{pg:gcrt0%O%s}}
-@@ -38 +38 @@
---Di386 -D_WIN32   -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386)
-+-Di386 -D_WIN32 %{mno-cygwin:-D__MSVCRT__ } -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386) 
+Fetch the mingw runtime snapshot from 1999-07-15 from
+ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/runtime/. You
+must fix two bugs in it:
 
-You should also fix two bugs in the mingw32 headers: The type of
-_dev_t in the header mingw32/sys/types.h should be unsigned int, not
-short. The type for st_uid in sys/stat.h to be short, not int. This is
-what the Microsoft's headers and runtime library use. Otherwise
-accessing the fields in a stat struct as filled in by the stat and
-fstat functions in the MS library will cause various interesting
-failures.
-
-You also will have to get the mingw32 runtime source from
-ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/runtime/source-1999-04-05.tar.gz
-(this is the source to the "mingw32" part of Mumit Khan's egcs-1.1.2
-distribution.) Unpack it and fix the prototype and call to
-__getmainargs() in init.c to include one more parameter, an int *,
-which should be passed the address of a zero int. Code snippets below:
+1) Fix the prototype and call to __getmainargs() in init.c to include
+one more parameter, an int *, which should be passed the address of a
+zero int. Code snippets below:
 
 ...
 #ifdef __MSVCRT__
@@ -140,12 +117,29 @@ extern void __getmainargs(int *, char***, char***, int, int *);
 #else
 ...
 
-Remake dllcrt2.o (which is the file which gets linked into dlls when
-using msvcrt, as per the specs file above), and move it into place
-(typically C:\cygnus\cygwin-b20\H-i586-cygwin32\i586-cygwin32\lib\dllcrt2.o).
+2) Fix the type of the function __p___argv() in stdlib.h to be char***,
+not char**.
 
-Next, go back to the GLib directory and build using `make -f makefile.cygwin`.
-Building the dlls uses the script build-dll which is an awful hack. But
-I couldn't get things working in a cleaner way.
+Build the mingw32 runtime and install the libraries in the
+gcc-2.95\H-i586-cygwin32\lib directory, and the headers in the
+gcc-2.95\H-i586-cygwin32\i586-cygwin32\include\mingw32 directory.
+Remember to build and install also the w32api import libraries and
+headers.
+
+I prefer to use the msvcrt runtime and not the default
+crtdll. Especially, as the pthread library also uses msvcrt, using
+crtdll would probably not be a good idea at all. Using msvcrt can be
+achieved by applying a few changes to the specs file.
+
+The specs file is in gcc-2.95\H-i586-cygwin32\lib\gcc-lib\i586-cygwin32\2.95
+
+The necessary changes are: replace -lcrtdll with -lmsvcrt, replace
+crt1 with crt2, change -lmoldname to -lmoldname-msvc, and define
+__MSVCRT__.
+
+Next, go back to the GLib directory and build using `make -f
+makefile.cygwin`.  Building the dlls uses the script build-dll which
+is somewhat of a hack. But I couldn't get things working in a cleaner
+way.
 
 --Tor Lillqvist <tml@iki.fi>

@@ -7,7 +7,7 @@ OPTIMIZE = -g -O
 
 # Nothing much configurable below
 
-CC = gcc -mno-cygwin -mpentium
+CC = gcc -mno-cygwin -mpentium -fnative-struct
 
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
@@ -37,7 +37,7 @@ all :	$(TESTS)
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER).gcc -lgthread-$(GLIB_VER).gcc
+	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER)
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done
