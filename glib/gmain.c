@@ -1381,8 +1381,16 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
     {
       if (!SOURCE_DESTROYED (source) &&
 	  source->source_funcs == funcs &&
-	  source->callback_data == user_data)
-	break;
+	  source->callback_funcs)
+	{
+	  GSourceFunc callback;
+	  gpointer callback_data;
+
+	  source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
+	  
+	  if (callback_data == user_data)
+	    break;
+	}
       source = source->next;
     }
 
@@ -1417,8 +1425,16 @@ g_main_context_find_source_by_user_data (GMainContext *context,
   while (source)
     {
       if (!SOURCE_DESTROYED (source) &&
-	  source->callback_data == user_data)
-	break;
+	  source->callback_funcs)
+	{
+	  GSourceFunc callback;
+	  gpointer callback_data = NULL;
+
+	  source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
+
+	  if (callback_data == user_data)
+	    break;
+	}
       source = source->next;
     }
 
@@ -1592,10 +1608,10 @@ g_main_dispatch (GMainContext *context)
 	  was_in_call = source->flags & G_HOOK_FLAG_IN_CALL;
 	  source->flags |= G_HOOK_FLAG_IN_CALL;
 
-	  UNLOCK_CONTEXT (context);
-
 	  if (cb_funcs)
 	    cb_funcs->get (cb_data, source, &callback, &user_data);
+
+	  UNLOCK_CONTEXT (context);
 
 	  need_destroy = ! dispatch (source,
 				     callback,

@@ -1,3 +1,9 @@
+Wed Sep 19 16:35:22 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (g_main_context_find_source_by[_funcs]_user_data): 
+	Fix handling of user data when locating sources. 
+	(#60414, Katsuhiro Okuno)
+
 Wed Sep 19 14:17:31 2001  Owen Taylor  <otaylor@redhat.com>
 
 	Patch from Matthias Clasen (#59806)
@@ -17,7 +23,7 @@ Wed Sep 19 14:17:31 2001  Owen Taylor  <otaylor@redhat.com>
 	* glib/gmessages.c (printf_string_upper_bound): Don't
 	segfault when warning about positional parameters.
 
-Wed Sep 19 14:05:27 2001  Owen Taylor  <otaylor@redhat.com>
+Wzed Sep 19 14:05:27 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/{gcache.c,gmem.c,grel.c,gstring.c,gtimer.c,gtree}:
 	Patch from Darin Adler to remove GReal* structures in
