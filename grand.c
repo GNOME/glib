@@ -62,8 +62,6 @@ struct _GRand
 {
   guint32 mt[N]; /* the array for the state vector  */
   guint mti; 
-  gboolean have_next_normal;
-  gdouble next_normal;
 };
 
 GRand*
@@ -126,8 +124,6 @@ g_rand_set_seed (GRand* rand, guint32 seed)
   rand->mt[0]= seed & 0xffffffff;
   for (rand->mti=1; rand->mti<N; rand->mti++)
     rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]) & 0xffffffff;
-
-  rand->have_next_normal = FALSE;
 }
 
 guint32
@@ -231,42 +227,6 @@ g_rand_double_range (GRand* rand, gdouble min, gdouble max)
   return g_rand_int (rand) * ((max - min) * G_RAND_DOUBLE_TRANSFORM)  + min;
 }
 
-
-#if WE_REALLY_WANT_HAVE_MATH_LIB_LINKED
-gdouble
-g_rand_normal (GRand* rand, gdouble mean, gdouble standard_deviation)
-{
-  /* For a description of the used algorithm see Knuth: "The Art of
-     Computer Programming", Vol.2, Second Edition, Page 117: Polar
-     method for normal deviates due to Box, Muller, Marsaglia */
-  gdouble normal;
-  g_return_val_if_fail (rand != NULL, 0);
-
-  if (rand->have_next_normal) 
-    {
-      rand->have_next_normal = FALSE;
-      normal = rand->next_normal;
-    }
-  else
-    {
-      gdouble u1;
-      gdouble u2 = g_rand_double_range (rand, -1, 1); 
-      gdouble s, f;
-      do 
-	{ 
-	  u1 = u2;
-	  u2 = g_rand_double_range (rand, -1, 1);
-	  s = u1 * u1 + u2 * u2;
-	} while (s >= 1.0);
-      f = sqrt (-2 * log (s) / s);
-      normal = u1 * f;
-      rand->next_normal = u2 * f;
-      rand->have_next_normal = TRUE;
-    }
-  return mean + normal * standard_deviation;
-}
-#endif
-
 guint32
 g_random_int (void)
 {
@@ -318,21 +278,6 @@ g_random_double_range (gdouble min, gdouble max)
   G_UNLOCK (global_random);
   return result;
 }
-
-#if WE_REALLY_WANT_HAVE_MATH_LIB_LINKED
-gdouble
-g_random_normal (gdouble mean, gdouble standard_deviation)
-{
-  double result;
-  G_LOCK (global_random);
-  if (!global_random)
-    global_random = g_rand_new ();
- 
-  result = g_rand_normal (global_random, mean, standard_deviation);
-  G_UNLOCK (global_random);
-  return result;
-}
-#endif
 
 void
 g_random_set_seed (guint32 seed)

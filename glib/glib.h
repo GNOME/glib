@@ -2443,11 +2443,6 @@ gdouble g_rand_double          (GRand      *rand);
 gdouble g_rand_double_range    (GRand      *rand, 
 				gdouble     min, 
 				gdouble     max);
-/* This might go in, if -lm is no problem for you guys
-gdouble g_rand_normal          (GRand      *rand, 
-				gdouble     mean, 
-				gdouble     standard_deviation);
-*/
 
 void    g_random_set_seed      (guint32     seed);
 guint32 g_random_int           (void);
@@ -2456,10 +2451,6 @@ gint32  g_random_int_range     (gint32      min,
 gdouble g_random_double        (void);
 gdouble g_random_double_range  (gdouble     min, 
 				gdouble     max);
-/* dito
-gdouble g_random_normal        (gdouble     mean, 
-				gdouble     standard_deviation);
-*/
  
 
 /* Prime numbers.
