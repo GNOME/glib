@@ -7,15 +7,18 @@ ZIP=/tmp/glib-@GLIB_VERSION@.zip
 DEVZIP=/tmp/glib-dev-@GLIB_VERSION@.zip
 
 cd @prefix@
-
 rm $ZIP
+
+DLLDIR=lib
+[ -f bin/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll ] && DLLDIR=bin
+
 zip $ZIP -@ <<EOF
 COPYING.LIB-2
 bin/gspawn-win32-helper.exe
-bin/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
-bin/libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll
-bin/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
-bin/libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll
+$DLLDIR/libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
+$DLLDIR/libgmodule-2.0-@LT_CURRENT_MINUS_AGE@.dll
+$DLLDIR/libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
+$DLLDIR/libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll
 EOF
 
 zip -r $ZIP lib/locale/*/LC_MESSAGES/glib20.mo

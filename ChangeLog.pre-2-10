@@ -1,3 +1,10 @@
+2003-06-15  Tor Lillqvist  <tml@iki.fi>
+
+	* glib-zip.in (DLLDIR): Test where the DLLs actually are.
+
+	* README.win32: Point to FSF's binary Win32 distributions of
+	libiconv and gettext-runtime.
+
 2003-06-11  Tor Lillqvist  <tml@iki.fi>
 
 	* glib-zip.in (DEVZIP): libtool 1.5 installs DLLs in the bin
