@@ -1140,16 +1140,22 @@ implementing a fundamental type. Also language bindings should <emphasis>not</em
 use this function but g_object_new() instead.
 </para>
 
-@type: 	  An instantiabtable type to create an instance for.
+@type: 	  An instantiatable type to create an instance for.
 @Returns: An allocated and initialized instance, subject to further
 	  treatment by the fundamental type implementation.
 
 
 <!-- ##### FUNCTION g_type_free_instance ##### -->
 <para>
+Frees an instance of a type, returning it to the instance pool for the type,
+if there is one.
+</para>
+<para>
+Like g_type_create_instance(), this function is reserved for implementors of 
+fundamental types.
 </para>
 
-@instance: 
+@instance: an instance of a type.
 
 
 <!-- ##### FUNCTION g_type_add_class_cache_func ##### -->

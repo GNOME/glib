@@ -18,21 +18,12 @@ Enumeration and flags types
 
 </para>
 
-@g_type_class: 
-@minimum: 
-@maximum: 
-@n_values: 
-@values: 
 
 <!-- ##### STRUCT GFlagsClass ##### -->
 <para>
 
 </para>
 
-@g_type_class: 
-@mask: 
-@n_values: 
-@values: 
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE ##### -->
 <para>
@@ -60,18 +51,19 @@ Returns whether @type "is a" %G_TYPE_ENUM.
 
 <!-- ##### MACRO G_ENUM_CLASS ##### -->
 <para>
-
+Casts a derived #GEnumClass structure into a #GEnumClass structure.
 </para>
 
-@class: 
+@class: a valid #GEnumClass
 
 
 <!-- ##### MACRO G_IS_ENUM_CLASS ##### -->
 <para>
-
+Checks whether @class "is a" valid #GEnumClass structure of type %G_TYPE_ENUM
+or derived.
 </para>
 
-@class: 
+@class: a #GEnumClass
 
 
 <!-- ##### MACRO G_TYPE_IS_FLAGS ##### -->
@@ -84,18 +76,19 @@ Returns whether @type "is a" %G_TYPE_FLAGS.
 
 <!-- ##### MACRO G_FLAGS_CLASS ##### -->
 <para>
-
+Casts a derived #GFlagsClass structure into a #GFlagsClass structure.
 </para>
 
-@class: 
+@class: a valid #GFlagsClass
 
 
 <!-- ##### MACRO G_IS_FLAGS_CLASS ##### -->
 <para>
-
+Checks whether @class "is a" valid #GFlagsClass structure of type %G_TYPE_FLAGS
+or derived.
 </para>
 
-@class: 
+@class: a #GFlagsClass
 
 
 <!-- ##### MACRO G_FLAGS_CLASS_TYPE ##### -->

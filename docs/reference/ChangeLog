@@ -1,5 +1,7 @@
 2002-12-09  Matthias Clasen  <maclas@gmx.de>
 
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: Add docs.
 
 	* gobject/tmpl/gtype.sgml:
 	* gobject/tmpl/gtypeplugin.sgml:
