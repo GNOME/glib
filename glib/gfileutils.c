@@ -770,7 +770,10 @@ g_build_pathv (const gchar *separator,
   GString *result;
   gint separator_len = strlen (separator);
   gboolean is_first = TRUE;
+  gboolean have_leading = FALSE;
+  const gchar *single_element = NULL;
   const gchar *next_element;
+  const gchar *last_trailing = NULL;
 
   result = g_string_new (NULL);
 
@@ -790,36 +793,69 @@ g_build_pathv (const gchar *separator,
       else
 	break;
 
-      start = element;
+      /* Ignore empty elements */
+      if (!*element)
+	continue;
       
-      if (is_first)
-	is_first = FALSE;
-      else if (separator_len)
+      start = element;
+
+      if (separator_len)
 	{
 	  while (start &&
 		 strncmp (start, separator, separator_len) == 0)
 	    start += separator_len;
-	}
+      	}
 
       end = start + strlen (start);
       
-      if (next_element && separator_len)
+      if (separator_len)
 	{
-	  while (end > start + separator_len &&
+	  while (end >= start + separator_len &&
 		 strncmp (end - separator_len, separator, separator_len) == 0)
 	    end -= separator_len;
+	  
+	  last_trailing = end;
+	  while (last_trailing >= element + separator_len &&
+		 strncmp (last_trailing - separator_len, separator, separator_len) == 0)
+	    last_trailing -= separator_len;
+
+	  if (!have_leading)
+	    {
+	      /* If the leading and trailing separator strings are in the
+	       * same element and overlap, the result is exactly that element
+	       */
+	      if (last_trailing <= start)
+		single_element = element;
+		  
+	      g_string_append_len (result, element, start - element);
+	      have_leading = TRUE;
+	    }
+	  else
+	    single_element = NULL;
 	}
 
-      if (end > start)
-	{
-	  if (result->len > 0)
-	    g_string_append (result, separator);
+      if (end == start)
+	continue;
 
-	  g_string_append_len (result, start, end - start);
-	}
+      if (!is_first)
+	g_string_append (result, separator);
+      
+      g_string_append_len (result, start, end - start);
+      is_first = FALSE;
     }
+
+  if (single_element)
+    {
+      g_string_free (result, TRUE);
+      return g_strdup (single_element);
+    }
+  else
+    {
+      if (last_trailing)
+	g_string_append (result, last_trailing);
   
-  return g_string_free (result, FALSE);
+      return g_string_free (result, FALSE);
+    }
 }
 
 /**
@@ -833,6 +869,28 @@ g_build_pathv (const gchar *separator,
  * any trailing occurrences of separator in the first element, or
  * leading occurrences of separator in the second element are removed
  * and exactly one copy of the separator is inserted.
+ *
+ * Empty elements are ignored.
+ *
+ * The number of leading copies of the separator on the result is
+ * the same as the number of leading copies of the separator on
+ * the first non-empty element.
+ *
+ * The number of trailing copies of the separator on the result is
+ * the same as the number of trailing copies of the separator on
+ * the last non-empty element. (Determination of the number of
+ * trailing copies is done without stripping leading copies, so
+ * if the separator is <literal>ABA</literal>, <literal>ABABA</literal>
+ * has 1 trailing copy.)
+ *
+ * However, if there is only a single non-empty element, and there
+ * are no characters in that element not part of the leading or
+ * trailing separators, then the result is exactly the original value
+ * of that element.
+ *
+ * Other than for determination of the number of leading and trailing
+ * copies of the separator, elements consisting only of copies
+ * of the separator are ignored.
  * 
  * Return value: a newly-allocated string that must be freed with g_free().
  **/

@@ -1,3 +1,15 @@
+Thu Jul 25 14:23:15 2002  Owen Taylor  <otaylor@redhat.com>
+
+ 	* glib/gfileutils.c: Clarify the behavior of g_build_path()
+ 	for empty elements and for leading and trailing copies
+ 	of the separator in the docs.
+ 
+ 	* glib/gfileutils.c: Fix problems with leading elements
+ 	consisting only of "/" characters. (#85928, Guillaume Chazarain)
+ 
+ 	* tests/strfunc-test.c (main): Add more test cases
+ 	for g_build_filename().
+ 
 2002-07-26  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gunicode.h: 
