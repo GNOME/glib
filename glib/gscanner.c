@@ -658,6 +658,9 @@ g_scanner_input_file (GScanner *scanner,
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (input_fd >= 0);
 
+  if (scanner->input_fd >= 0)
+    g_scanner_sync_file_offset (scanner);
+
   scanner->token = G_TOKEN_NONE;
   scanner->value.v_int = 0;
   scanner->line = 1;
@@ -682,6 +685,9 @@ g_scanner_input_text (GScanner	  *scanner,
     g_return_if_fail (text != NULL);
   else
     text = NULL;
+
+  if (scanner->input_fd >= 0)
+    g_scanner_sync_file_offset (scanner);
 
   scanner->token = G_TOKEN_NONE;
   scanner->value.v_int = 0;
@@ -737,6 +743,33 @@ g_scanner_peek_next_char (GScanner *scanner)
     return 0;
 }
 
+void
+g_scanner_sync_file_offset (GScanner *scanner)
+{
+  g_return_if_fail (scanner != NULL);
+
+  /* for file input, rewind the filedescriptor to the current
+   * buffer position and blow the file read ahead buffer. usefull for
+   * third party uses of our filedescriptor, which hooks onto the current
+   * scanning position.
+   */
+
+  if (scanner->input_fd >= 0 && scanner->text_end > scanner->text)
+    {
+      gint buffered;
+
+      buffered = scanner->text_end - scanner->text;
+      if (lseek (scanner->input_fd, - buffered, SEEK_CUR) >= 0)
+	{
+	  /* we succeeded, blow our buffer's contents now */
+	  scanner->text = NULL;
+	  scanner->text_end = NULL;
+	}
+      else
+	errno = 0;
+    }
+}
+
 static guchar
 g_scanner_get_char (GScanner	*scanner,
 		    guint	*line_p,
@@ -768,6 +801,12 @@ g_scanner_get_char (GScanner	*scanner,
 	  scanner->text = buffer + 1;
 	  scanner->text_end = buffer + count;
 	  fchar = *buffer;
+	  if (!fchar)
+	    {
+	      g_scanner_sync_file_offset (scanner);
+	      scanner->text_end = scanner->text;
+	      scanner->input_fd = -1;
+	    }
 	}
     }
   else

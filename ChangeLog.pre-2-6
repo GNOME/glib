@@ -1,3 +1,18 @@
+Tue Oct 27 07:25:53 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gscanner.c:
+	(g_scanner_sync_file_offset): new function for file input.
+	rewind the filedescriptor to the current buffer position and blow
+ 	the file read ahead buffer. usefull for third party uses of our
+ 	filedescriptor, which hooks onto the current scanning position.
+	(this became neccessary with the implementation of buffered
+	reads).
+	(g_scanner_input_file): 
+	(g_scanner_input_text): automatically blow the read ahead buffer.
+	(g_scanner_get_char): blow the read ahead buffer when the end of
+	input is reached, i.e. a '\000' char is read.
+
 Tue Oct 27 00:27:31 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: get rid of duplicate #g_htonl and friends in the

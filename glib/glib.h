@@ -2085,6 +2085,7 @@ GScanner*	g_scanner_new			(GScannerConfig *config_templ);
 void		g_scanner_destroy		(GScanner	*scanner);
 void		g_scanner_input_file		(GScanner	*scanner,
 						 gint		input_fd);
+void		g_scanner_sync_file_offset	(GScanner	*scanner);
 void		g_scanner_input_text		(GScanner	*scanner,
 						 const	gchar	*text,
 						 guint		text_len);
