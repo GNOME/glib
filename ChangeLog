@@ -1,3 +1,11 @@
+Sat Jan 10 00:11:12 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gutils.h (g_bit_nth_lsf,g_bit_nth_msf): 64-bit cleanliness
+	fixes.
+
+	* docs/reference/glib/tmpl/misc_utils.sgml: update to reflect the
+	above take gulongs now. My docs suck, someone should revisit it.
+
 Fri Dec 19 11:49:21 2003  George Lebl <jirka@5z.com>
 
         * glib/grand.c

@@ -225,10 +225,11 @@ freed when no longer needed.
 <para>
 Find the position of the first bit set in @mask, searching from (but not
 including) @nth_bit upwards. Bits are numbered from 0 (least significant)
-to 31. To start searching from the 0th bit, set @nth_bit to -1.
+to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start searching from the
+0th bit, set @nth_bit to -1.
 </para>
 
-@mask: a #guint32 containing up to 32 bit flags.
+@mask: a #gulong containing flags.
 @nth_bit: the index of the bit to start the search from.
 @Returns: the index of the first bit set which is higher than @nth_bit.
 
@@ -237,10 +238,11 @@ to 31. To start searching from the 0th bit, set @nth_bit to -1.
 <para>
 Find the position of the first bit set in @mask, searching from (but not
 including) @nth_bit downwards. Bits are numbered from 0 (least significant)
-to 31. To start searching from the 31st bit, set @nth_bit to 32 or -1.
+to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start searching from the
+last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
 </para>
 
-@mask: a #guint32 containing up to 32 bit flags.
+@mask: a #gulong containing flags.
 @nth_bit: the index of the bit to start the search from.
 @Returns: the index of the first bit set which is lower than @nth_bit.
 
