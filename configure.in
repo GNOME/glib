@@ -566,10 +566,10 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
         if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(pthread, pthread_cond_init, have_threads=posix)
+                AC_CHECK_LIB(pthread, pthread_attr_init, have_threads=posix)
 	fi
         if test "x$have_threads" = xnone; then
-     	        AC_CHECK_LIB(pthreads, pthread_cond_init, have_threads=posix)
+     	        AC_CHECK_LIB(pthreads, pthread_attr_init, have_threads=posix)
 	fi
         if test "x$have_threads" = xnone; then
 		# dont let us be fooled by a defined pthread_cond_init
@@ -602,10 +602,10 @@ G_THREAD_LIBS=
 case $have_threads in
         posix)
 		G_THREAD_LIBS=error
-		AC_CHECK_LIB(pthread, pthread_cond_init,
+		AC_CHECK_LIB(pthread, pthread_attr_init,
 			     G_THREAD_LIBS="-lpthread") 
 		if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(pthreads, pthread_cond_init,
+                	AC_CHECK_LIB(pthreads, pthread_attr_init,
 			     	G_THREAD_LIBS="-lpthreads")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
