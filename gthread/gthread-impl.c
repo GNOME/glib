@@ -38,11 +38,27 @@
 #include <glib.h>
 
 static gboolean thread_system_already_initialized = FALSE;
-static gint g_thread_map_priority (GThreadPriority priority);
-static gint g_thread_min_priority = 0;
-static gint g_thread_max_priority = 0;
+static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT];
 
 #include G_THREAD_SOURCE
+
+#ifndef PRIORITY_LOW_VALUE
+# define PRIORITY_LOW_VALUE 0
+#endif
+
+#ifndef PRIORITY_URGENT_VALUE
+# define PRIORITY_URGENT_VALUE 0
+#endif
+
+#ifndef PRIORITY_NORMAL_VALUE
+# define PRIORITY_NORMAL_VALUE 						\
+  PRIORITY_LOW_VALUE + (PRIORITY_URGENT_VALUE - PRIORITY_LOW_VALUE) * 40 / 100 
+#endif /* PRIORITY_NORMAL_VALUE */
+
+#ifndef PRIORITY_HIGH_VALUE
+# define PRIORITY_HIGH_VALUE 						\
+  PRIORITY_LOW_VALUE + (PRIORITY_URGENT_VALUE - PRIORITY_LOW_VALUE) * 80 / 100 
+#endif /* PRIORITY_HIGH_VALUE */
 
 void g_mutex_init (void);
 void g_mem_init (void);
@@ -258,6 +274,11 @@ g_thread_init (GThreadFunctions* init)
     g_thread_impl_init();
 #endif
 
+  g_thread_priority_map [G_THREAD_PRIORITY_LOW] = PRIORITY_LOW_VALUE;
+  g_thread_priority_map [G_THREAD_PRIORITY_NORMAL] = PRIORITY_NORMAL_VALUE;
+  g_thread_priority_map [G_THREAD_PRIORITY_HIGH] = PRIORITY_HIGH_VALUE;
+  g_thread_priority_map [G_THREAD_PRIORITY_URGENT] = PRIORITY_URGENT_VALUE;
+
   /* now call the thread initialization functions of the different
    * glib modules. order does matter, g_mutex_init MUST come first.
    */
@@ -272,19 +293,4 @@ g_thread_init (GThreadFunctions* init)
 
   /* we want the main thread to run with normal priority */
   g_thread_set_priority (g_thread_self(), G_THREAD_PRIORITY_NORMAL);
-}
-
-static gint 
-g_thread_map_priority (GThreadPriority priority)
-{
-  guint procent;
-  switch (priority)
-    {
-    case G_THREAD_PRIORITY_LOW:             procent =   0; break;
-    default: case G_THREAD_PRIORITY_NORMAL: procent =  40; break;
-    case G_THREAD_PRIORITY_HIGH:            procent =  80; break;
-    case G_THREAD_PRIORITY_URGENT:          procent = 100; break;
-    }
-  return g_thread_min_priority + 
-    (g_thread_max_priority - g_thread_min_priority) * procent / 100;
 }

@@ -53,16 +53,17 @@ gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (mutex_t))
 
+#define PRIORITY_LOW_VALUE 0
+#define PRIORITY_URGENT_VALUE 127
+
+#ifdef _SC_THREAD_STACK_MIN
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()
 {
-  g_thread_min_priority = 0;
-  g_thread_max_priority = 127;
-#ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
-#endif /* _SC_THREAD_STACK_MIN */
 }
+#endif /* _SC_THREAD_STACK_MIN */
 
 static GMutex *
 g_mutex_new_solaris_impl (void)
@@ -186,7 +187,7 @@ static void
 g_thread_set_priority_solaris_impl (gpointer thread, GThreadPriority priority)
 {
   solaris_check_for_error (thr_setprio (*(thread_t*)thread,  
-					g_thread_map_priority (priority)));
+					g_thread_priority_map [priority]));
 }
 
 static void
@@ -203,6 +204,8 @@ g_thread_create_solaris_impl (GThreadFunc thread_func,
   gint ret;
   
   g_return_if_fail (thread_func);
+  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
+  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
   
   stack_size = MAX (g_thread_min_stack_size, stack_size);
   

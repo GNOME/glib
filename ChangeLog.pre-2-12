@@ -1,3 +1,18 @@
+2000-11-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Add a surrogate for thread priorities using PID
+	niceness for systems with no thread priorities and different PIDs
+	for threads of the same process (most notably: Linux). Define
+	G_THREAD_USE_PID_SURROGATE in that case, as used by
+	gthread-posix.c. Also make the system thread bigger by
+	sizeof (long) to contain the thread's PID.
+
+	* gfileutils.c: Include stdlib.h for mkstemp prototype.
+
+	* gthread.c: Add priority range checks to the affected functions.
+
+	* gthreadpool.c: Remove unused variable.
+
 Mon Nov 20 18:55:17 2000  Jonathan Blandford  <jrb@redhat.com>
 
 	* gtree.[hc]: Patch from David Benson <daveb@idealab.com> to add

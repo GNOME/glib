@@ -413,6 +413,8 @@ g_thread_create (GThreadFunc 		 thread_func,
   GRealThread* result = g_new (GRealThread, 1);
   GError *local_error = NULL;
   g_return_val_if_fail (thread_func, NULL);
+  g_return_val_if_fail (priority >= G_THREAD_PRIORITY_LOW, NULL);
+  g_return_val_if_fail (priority <= G_THREAD_PRIORITY_URGENT, NULL);
   
   result->thread.joinable = joinable;
   result->thread.bound = bound;
@@ -467,6 +469,8 @@ g_thread_set_priority (GThread* thread,
 
   g_return_if_fail (thread);
   g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
+  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
+  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
   thread->priority = priority;
   G_THREAD_CF (thread_set_priority, (void)0, (&real->system_thread, priority));

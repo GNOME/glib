@@ -65,7 +65,6 @@ static void
 g_thread_pool_thread_proxy (gpointer data)
 {
   GRealThreadPool *pool = data;
-  GThread* self = g_thread_self ();
 
   g_async_queue_lock (pool->queue);
   while (TRUE)

@@ -1,3 +1,17 @@
+2000-11-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c, gthread-posix.c, gthread-solaris.c: Removed
+	g_thread_map_priority function in favour of the
+	g_thread_priority_map array.  Initialize the array with
+	PRIORITY_{...}_VALUE, if available and interpolate beetween the
+	bounds if .._NORMAL_.. and .._HIGH_.. are not available.
+
+	* gthread-posix.c: If we should use the PID niceness as a
+	surrogate for thread priorities (G_THREAD_USE_PID_SURROGATE is
+	defined), then disable normal priority handling and use PIDs and
+	setpriority() instead. Depends on the thread to write its PID into
+	the place after the thread id right after thread creation.
+
 2000-11-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c: Include <sched.h> if available.

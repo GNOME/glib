@@ -1044,6 +1044,29 @@ if test x"$have_threads" != xnone; then
 		fi
 		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func,[The POSIX RT yield function])
 		CPPFLAGS="$glib_save_CPPFLAGS"
+
+		AC_MSG_CHECKING(whether to use the PID niceness surrogate for thread priorities)
+		AC_TRY_RUN([#include <pthread.h> 
+			#include <sys/types.h>
+			#include <unistd.h>
+			pid_t other_pid = 0;
+
+			void* func(void* data) {other_pid = getpid();}
+                	main()
+			{ pthread_t t; 
+			  void *ret;
+			  pthread_create (&t, $defattr, func, NULL);
+			  pthread_join (t, &ret);
+			  exit (getpid()==other_pid || 
+				$posix_priority_min != $posix_priority_max);
+			}],
+			[AC_MSG_RESULT(yes),
+			 AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1,
+				[whether to use the PID niceness surrogate for thread priorities])
+
+			 glib_cv_sizeof_system_thread=`expr $glib_cv_sizeof_system_thread + $ac_cv_sizeof_long`],
+			[AC_MSG_RESULT(no)])
+	   
 	else # solaris threads
 		GLIB_SIZEOF([#include <thread.h>],
 			thread_t,
