@@ -176,7 +176,7 @@ g_timer_elapsed (GTimer *timer,
 
   if (rtimer->start.tv_usec > rtimer->end.tv_usec)
     {
-      rtimer->end.tv_usec += G_MICROSEC;
+      rtimer->end.tv_usec += G_USEC_PER_SEC;
       rtimer->end.tv_sec--;
     }
 
@@ -213,12 +213,12 @@ g_usleep (gulong microseconds)
       
       g_get_current_time (&end_time);
       
-      end_time.tv_sec += microseconds / G_MICROSEC;
-      end_time.tv_usec += microseconds % G_MICROSEC;
+      end_time.tv_sec += microseconds / G_USEC_PER_SEC;
+      end_time.tv_usec += microseconds % G_USEC_PER_SEC;
       
-      if (end_time.tv_usec >= G_MICROSEC)
+      if (end_time.tv_usec >= G_USEC_PER_SEC)
 	{
-	  end_time.tv_usec -= G_MICROSEC;
+	  end_time.tv_usec -= G_USEC_PER_SEC;
 	  end_time.tv_sec += 1;
 	}
       
@@ -236,8 +236,8 @@ g_usleep (gulong microseconds)
   else
     {
       struct timeval tv;
-      tv.tv_sec = microseconds / G_MICROSEC;
-      tv.tv_usec = microseconds % G_MICROSEC;
+      tv.tv_sec = microseconds / G_USEC_PER_SEC;
+      tv.tv_usec = microseconds % G_USEC_PER_SEC;
       select(0, NULL, NULL, NULL, &tv);
     }
 #endif

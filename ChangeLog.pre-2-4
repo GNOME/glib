@@ -1,5 +1,8 @@
 2000-09-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib.h, gtimer.c, tests/thread-test.c:
+	s/G_MICROSEC/G_USEC_PER_SEC/
+
 	* glib.h: Removed G_G{U}{SHORT|INT|LONG}_FORMAT from glib.h, as
 	they are really superfluous.
 

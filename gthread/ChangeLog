@@ -1,3 +1,8 @@
+2000-09-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c, gthread-solaris.c:
+	s/G_MICROSEC/G_USEC_PER_SEC/ and s/G_NANOSEC/G_NSEC_PER_SEC/	
+
 2000-09-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c (g_thread_create_posix_impl): Use GError to

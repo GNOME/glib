@@ -28,7 +28,7 @@ test_g_mutex (void)
   thread = g_thread_create (test_g_mutex_thread, 
 			    GINT_TO_POINTER (42),
 			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
-  g_usleep (G_MICROSEC);
+  g_usleep (G_USEC_PER_SEC);
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
   g_mutex_unlock (test_g_mutex_mutex);
@@ -63,14 +63,14 @@ test_g_static_rec_mutex (void)
   thread = g_thread_create (test_g_static_rec_mutex_thread, 
 			    GINT_TO_POINTER (42),
 			    0, TRUE, TRUE, G_THREAD_PRIORITY_NORMAL, NULL);
-  g_usleep (G_MICROSEC);
+  g_usleep (G_USEC_PER_SEC);
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
-  g_usleep (G_MICROSEC);
+  g_usleep (G_USEC_PER_SEC);
   test_g_static_rec_mutex_int = 41;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
   test_g_static_rec_mutex_int = 42;  
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
-  g_usleep (G_MICROSEC);
+  g_usleep (G_USEC_PER_SEC);
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   test_g_static_rec_mutex_int = 0;  
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
@@ -121,7 +121,7 @@ test_g_static_private_thread (gpointer data)
 				test_g_static_private_destructor);
 	}
       *private = number;
-      g_usleep (G_MICROSEC / 5);
+      g_usleep (G_USEC_PER_SEC / 5);
       g_assert (number == *private);
     }
 }
@@ -215,7 +215,7 @@ test_g_static_rw_lock ()
 				    0, 0, TRUE, TRUE, 
 				    G_THREAD_PRIORITY_NORMAL, NULL);      
     }
-  g_usleep (G_MICROSEC);
+  g_usleep (G_USEC_PER_SEC);
   test_g_static_rw_lock_run = FALSE;
   for (i = 0; i < THREADS; i++)
     {

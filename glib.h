@@ -1636,7 +1636,8 @@ void g_blow_chunks (void);
 /* Timer
  */
 
-#define G_MICROSEC 1000000
+/* microseconds per second */
+#define G_USEC_PER_SEC 1000000
 
 GTimer* g_timer_new	(void);
 void	g_timer_destroy (GTimer	 *timer);

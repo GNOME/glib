@@ -108,8 +108,7 @@ g_cond_new_solaris_impl ()
    without error check then!!!!, we might want to change this
    therfore. */
 
-#define G_MICROSEC 1000000
-#define G_NANOSEC 1000000000
+#define G_NSEC_PER_SEC 1000000000
 
 static gboolean
 g_cond_timed_wait_solaris_impl (GCond * cond, 
@@ -130,8 +129,8 @@ g_cond_timed_wait_solaris_impl (GCond * cond,
     }
 
   end_time.tv_sec = abs_time->tv_sec;
-  end_time.tv_nsec = abs_time->tv_usec * (G_NANOSEC / G_MICROSEC);
-  g_assert (end_time.tv_nsec < G_NANOSEC);
+  end_time.tv_nsec = abs_time->tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC);
+  g_assert (end_time.tv_nsec < G_NSEC_PER_SEC);
   result = cond_timedwait ((cond_t *) cond, (mutex_t *) entered_mutex,
 			   &end_time);
   timed_out = (result == ETIME);
