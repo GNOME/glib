@@ -1,3 +1,14 @@
+Sun Aug 19 21:32:39 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/ghash.c: Eliminate use of floating point when 
+	determining if the hash table needs to be resized,
+	and also factor out the test from g_hash_table_resize()
+	to save function calls for the common case.
+	(#59124)
+
+	* glib/gmain.c (g_main_context_query): Document the
+	return value.
+
 2001-08-19  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gshell.c: (g_shell_quote): Added missing \ character.

@@ -59,6 +59,14 @@ struct _GHashTable
   GDestroyNotify   value_destroy_func;
 };
 
+#define G_HASH_TABLE_RESIZE(hash_table)				\
+   G_STMT_START {						\
+     if ((hash_table->size >= 3 * hash_table->nnodes &&	        \
+	  hash_table->size > HASH_TABLE_MIN_SIZE) ||		\
+	 (3 * hash_table->size <= hash_table->nnodes &&	        \
+	  hash_table->size < HASH_TABLE_MAX_SIZE))		\
+	   g_hash_table_resize (hash_table);			\
+   } G_STMT_END
 
 static void		g_hash_table_resize	  (GHashTable	  *hash_table);
 static GHashNode**	g_hash_table_lookup_node  (GHashTable     *hash_table,
@@ -304,7 +312,7 @@ g_hash_table_insert (GHashTable *hash_table,
     {
       *node = g_hash_node_new (key, value);
       hash_table->nnodes++;
-      g_hash_table_resize (hash_table);
+      G_HASH_TABLE_RESIZE (hash_table);
     }
 }
 
@@ -347,7 +355,7 @@ g_hash_table_replace (GHashTable *hash_table,
     {
       *node = g_hash_node_new (key, value);
       hash_table->nnodes++;
-      g_hash_table_resize (hash_table);
+      G_HASH_TABLE_RESIZE (hash_table);
     }
 }
 
@@ -383,7 +391,7 @@ g_hash_table_remove (GHashTable	   *hash_table,
 			   hash_table->value_destroy_func);
       hash_table->nnodes--;
   
-      g_hash_table_resize (hash_table);
+      G_HASH_TABLE_RESIZE (hash_table);
 
       return TRUE;
     }
@@ -417,7 +425,7 @@ g_hash_table_steal (GHashTable    *hash_table,
       g_hash_node_destroy (dest, NULL, NULL);
       hash_table->nnodes--;
   
-      g_hash_table_resize (hash_table);
+      G_HASH_TABLE_RESIZE (hash_table);
 
       return TRUE;
     }
@@ -517,7 +525,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
 	}
     }
   
-  g_hash_table_resize (hash_table);
+  G_HASH_TABLE_RESIZE (hash_table);
   
   return deleted;
 }
@@ -570,17 +578,10 @@ g_hash_table_resize (GHashTable *hash_table)
   GHashNode **new_nodes;
   GHashNode *node;
   GHashNode *next;
-  gfloat nodes_per_list;
   guint hash_val;
   gint new_size;
   gint i;
-  
-  nodes_per_list = (gfloat) hash_table->nnodes / (gfloat) hash_table->size;
-  
-  if ((nodes_per_list > 0.3 || hash_table->size <= HASH_TABLE_MIN_SIZE) &&
-      (nodes_per_list < 3.0 || hash_table->size >= HASH_TABLE_MAX_SIZE))
-    return;
-  
+
   new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
 		   HASH_TABLE_MIN_SIZE,
 		   HASH_TABLE_MAX_SIZE);

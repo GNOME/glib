@@ -1944,7 +1944,9 @@ g_main_context_prepare (GMainContext *context,
  * 
  * Determines information necessary to poll this main loop.
  * 
- * Return value: 
+ * Return value: the number of records actually stored in @fds,
+ *   or, if more than @n_fds records need to be stored, the number
+ *   of records that need to be stored.
  **/
 gint
 g_main_context_query (GMainContext *context,
