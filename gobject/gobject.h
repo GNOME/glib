@@ -174,7 +174,7 @@ G_STMT_START { \
 	     _param_id, \
 	     _pspec->name, \
 	     g_type_name (G_PARAM_SPEC_TYPE (_pspec)), \
-	     BSE_OBJECT_TYPE_NAME (_object)); \
+	     G_OBJECT_TYPE_NAME (_object)); \
 } G_STMT_END
 
 

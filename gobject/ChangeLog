@@ -1,3 +1,9 @@
+Thu Nov  9 01:49:43 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject.h (G_WARN_INVALID_PARAM_ID): doh,
+	s/BSE_OBJECT_TYPE_NAME/G_OBJECT_TYPE_NAME/; reported by Maas-Maarten
+	Zeeman <maas@wanadoo.nl>.
+
 Mon Nov 13 00:48:39 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am (EXTRA_DIST): Add glib-genmarshal.1
