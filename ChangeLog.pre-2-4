@@ -1,3 +1,9 @@
+Mon Nov 23 10:03:58 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* glib.h garray.[ch]: added g_array_insert_vals() to
+	insert elements at an arbitrary index, and
+	g_array_insert_val() macro.
+
 Sun Nov 22 17:07:03 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h:

@@ -113,6 +113,27 @@ g_array_prepend_vals (GArray        *farray,
 }
 
 GArray*
+g_array_insert_vals (GArray        *farray,
+		     guint          index,
+		     gconstpointer  data,
+		     guint          len)
+{
+  GRealArray *array = (GRealArray*) farray;
+
+  g_array_maybe_expand (array, len);
+
+  g_memmove (array->data + array->elt_size * (len + index), 
+	     array->data + array->elt_size * index, 
+	     array->elt_size * (array->len - index));
+
+  memcpy (array->data + array->elt_size * index, data, len * array->elt_size);
+
+  array->len += len;
+
+  return farray;
+}
+
+GArray*
 g_array_set_size (GArray *farray,
 		  guint   length)
 {
