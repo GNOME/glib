@@ -744,10 +744,12 @@ g_get_any_init (void)
 #endif /* G_OS_WIN32 */
 	}
       
-      if (!g_home_dir)
-	g_home_dir = g_strdup (g_getenv ("HOME"));
-      
 #ifdef G_OS_WIN32
+      /* We check $HOME first for Win32, though it is a last resort for Unix
+       * where we prefer the results of getpwuid().
+       */
+      g_home_dir = g_strdup (g_getenv ("HOME"));
+      
       /* In case HOME is Unix-style (it happens), convert it to
        * Windows style.
        */
@@ -879,8 +881,11 @@ g_get_any_init (void)
 	  }
       }
 #  endif /* G_OS_WIN32 */
-      
+
 #endif /* !HAVE_PWD_H */
+
+      if (!g_home_dir)
+	g_home_dir = g_strdup (g_getenv ("HOME"));
       
 #ifdef __EMX__
       /* change '\\' in %HOME% to '/' */

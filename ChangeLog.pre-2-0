@@ -1,3 +1,10 @@
+Tue Mar  5 00:38:54 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gutils.c (g_get_any_init): Where we have
+	getpwuid[_r], use that in preference to $HOME, and
+	only check $HOME as a fallback if getpwuid fails.
+	(#2311)
+
 Sun Mar  3 21:09:24 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Default to --disable-gtk-doc, to avoid
