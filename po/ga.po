@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: glib HEAD \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-12-14 02:41+0100\n"
-"PO-Revision-Date: 2003-02-25 14:46+0000\n"
+"PO-Revision-Date: 2004-01-16 07:46+0000\n"
 "Last-Translator: Alastair McKinstry <mckinstry@debian.org>\n"
-"Language-Team: Irish <ga@li.org>\n"
+"Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -94,17 +94,17 @@ msgstr ""
 #: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr ""
+msgstr "Earraidh ag leámh comhad '%s': %s"
 
 #: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr ""
+msgstr "Teip ag leámh as comhad '%s: : %s"
 
 #: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr ""
+msgstr "Teip ag oscáilt comhad '%s;: %s"
 
 #: glib/gfileutils.c:538
 #, c-format
@@ -114,7 +114,7 @@ msgstr ""
 #: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr ""
+msgstr "Teip af oscáilt comhad  '%s': teipadh fdopen(): %s"
 
 #: glib/gfileutils.c:776
 #, c-format
@@ -129,7 +129,7 @@ msgstr ""
 #: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr ""
+msgstr "Teip ag cruthaigh comhad '%s':  %s"
 
 #: glib/giochannel.c:1134
 #, c-format
@@ -160,12 +160,12 @@ msgstr ""
 #: glib/gmarkup.c:222
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr ""
+msgstr "Earraidh ar líne %d char %d: %s"
 
 #: glib/gmarkup.c:306
 #, c-format
 msgid "Error on line %d: %s"
-msgstr ""
+msgstr "Earraidh ar líne %d: %s"
 
 #: glib/gmarkup.c:385
 msgid ""
@@ -421,9 +421,9 @@ msgstr ""
 #: glib/gspawn.c:1067
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Teipadh ar 'fork' (%s)"
 
-#: glib/gspawn.c:1217
+#:9 glib/gspawn.c:1217
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr ""
