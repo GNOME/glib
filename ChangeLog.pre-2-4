@@ -1,3 +1,12 @@
+Sat Mar 13 23:18:45 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/env-test.c (main): Remove critical log handler;
+	we can't trigger g_return_if_fails() in our test suite
+	even silently, because the user could have compiled
+	with --disable-debug. #if 0 the tests for
+	g_setenv/g_unsetenv with a "foo=bar" variable name.
+	(#136709, reported by Frédéric L. W. Meunier)
+
 Sat Mar 13 23:10:35 2004  Owen Taylor  <otaylor@redhat.com>
 
 	Some warning fixes for the Sun compiler (Reported by 

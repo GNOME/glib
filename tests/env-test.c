@@ -43,16 +43,6 @@
 #include <unistd.h>
 #endif
 
-static void 
-_log (const gchar   *log_domain,
-     GLogLevelFlags log_level,
-     const gchar   *message,
-     gpointer       user_data)
-{
-  /* Silence g_assert () and friends.
-   */
-}
-
 int 
 main (int argc, char *argv[])
 {
@@ -61,8 +51,6 @@ main (int argc, char *argv[])
   gchar *variable = "TEST_G_SETENV";
   gchar *value1 = "works";
   gchar *value2 = "again";
-
-  g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL, _log, NULL);
 
   data = g_getenv (variable);
   g_assert (data == NULL && "TEST_G_SETENV already set");
@@ -94,8 +82,13 @@ main (int argc, char *argv[])
   data = g_getenv (variable);
   g_assert (data == NULL && "g_unsetenv() doesn't work");
 
+#if 0
+  /* We can't test this, because it's an illegal argument that
+   * we g_return_if_fail for.
+   */
   result = g_setenv ("foo=bar", "baz", TRUE);
   g_assert (!result && "g_setenv() accepts '=' in names");
+#endif  
 
   result = g_setenv ("foo", "bar=baz", TRUE);
   g_assert (result && "g_setenv() doesn't accept '=' in values");
@@ -108,10 +101,14 @@ main (int argc, char *argv[])
 #endif
   data = g_getenv ("foo");
   g_assert (strcmp (data, "bar=baz") == 0 && "g_getenv() doesn't support '=' in values");
-  
+
+#if 0  
+  /* We can't test this, because it's an illegal argument that
+   * we g_return_if_fail for. Plus how would we check for failure,
+   * since we can't set the value...
+   */
   g_unsetenv ("foo=bar");
-  data = g_getenv ("foo");
-  g_assert (data != NULL && "g_unsetenv() accepts '=' in names");
+#endif  
   g_unsetenv ("foo");
   data = g_getenv ("foo");
   g_assert (data == NULL && "g_unsetenv() doesn't support '=' in values");
