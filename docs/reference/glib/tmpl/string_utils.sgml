@@ -509,7 +509,9 @@ possibly non-ASCII character in.
 
 <!-- ##### FUNCTION g_strup ##### -->
 <para>
-Converts a string to upper case.
+Converts a string to upper case. This function is totally broken
+for the reasons discussed in the g_strncasecmp() docs - 
+use g_ascii_strup() or g_utf8_strup() instead.
 </para>
 
 @string: the string to convert.
@@ -518,7 +520,9 @@ Converts a string to upper case.
 
 <!-- ##### FUNCTION g_strdown ##### -->
 <para>
-Converts a string to lower case.
+Converts a string to lower case.  This function is totally broken for
+the reasons discussed in the g_strncasecmp() docs - use
+g_ascii_strdown() or g_utf8_strdown() instead.
 </para>
 
 @string: the string to convert.
@@ -529,6 +533,10 @@ Converts a string to lower case.
 <para>
 A case-insensitive string comparison, corresponding to the standard
 <function>strcasecmp()</function> function on platforms which support it.
+</para>
+<para>
+See g_strncasecmp() for a discussion of why this is deprecated and
+how to replace it.
 </para>
 
 @s1: a string.
@@ -543,6 +551,23 @@ A case-insensitive string comparison, corresponding to the standard
 <function>strncasecmp()</function> function on platforms which support it.
 It is similar to g_strcasecmp() except it only compares the first @n characters
 of the strings.
+</para>
+<para>
+The problem with g_strncasecmp() is that it does the comparison by
+calling toupper()/tolower() on each byte. toupper()/tolower() are
+locale-specific and operate on single bytes. However, it is impossible
+to handle things correctly from an i18n standpoint by operating on
+bytes, since characters may be multibyte. Thus g_strncasecmp() is
+broken if your string is guaranteed to be ASCII, since it's
+locale-sensitive, and it's broken if your string is localized, since
+it doesn't work on many encodings at all, including UTF-8, EUC-JP,
+etc.
+</para>
+<para>
+There are therefore two replacement functions: g_ascii_strncasecmp(),
+which only works on ASCII and is not locale-sensitive, and
+g_utf8_casefold(), which is good for case-insensitive sorting of
+UTF-8.
 </para>
 
 @s1: a string.

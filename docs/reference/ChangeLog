@@ -1,3 +1,8 @@
+2001-10-25  Havoc Pennington  <hp@pobox.com>
+
+	* glib/tmpl/string_utils.sgml: docs on why the deprecated
+	functions are deprecated.
+
 2001-10-15  Sven Neumann  <sven@gimp.org>
 
 	* glib/tmpl/random_numbers.sgml: fixed typo.
