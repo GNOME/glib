@@ -37,8 +37,6 @@ value_transform_memcpy_data0 (const GValue *src_value,
 #define value_transform_ulong_ulong     value_transform_memcpy_data0
 #define value_transform_int64_int64     value_transform_memcpy_data0
 #define value_transform_uint64_uint64   value_transform_memcpy_data0
-#define value_transform_int64_int64     value_transform_memcpy_data0
-#define value_transform_uint64_uint64   value_transform_memcpy_data0
 #define value_transform_float_float     value_transform_memcpy_data0
 #define value_transform_double_double   value_transform_memcpy_data0
 

@@ -208,8 +208,6 @@ main (gint   argc,
       indent_inc = g_new (gchar, strlen (O_SPACE) + 1);
       *indent_inc = 0;
       strcpy (indent_inc, O_SPACE);
-      strcpy (indent_inc, O_SPACE);
-      strcpy (indent_inc, O_SPACE);
     }
   
   if (gen_tree)
