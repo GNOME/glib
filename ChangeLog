@@ -1,3 +1,8 @@
+2005-03-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-gettext.m4: Avoid stupid compiler complaints
+	about precision loss.
+
 2005-03-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdate.c: Remove a lot of pointless g_return_if_fail()
