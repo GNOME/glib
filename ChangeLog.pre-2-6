@@ -1,3 +1,9 @@
+Wed Jan 20 22:09:59 EST 1999 Mandrake <mandrake@mandrake.net>
+
+	* configure.in / Makefile.am : made some adjustments for automake 1.4
+	and autoconf 2.13 (per suggestions made by  Raja R Harinath
+	<harinath@cs.umn.edu>)
+
 Wed Jan 20 20:33:14 EST 1999 Mandrake <mandrake@mandrake.net>
 
 	* autogen.sh: automake 1.4 and libtool 1.2d notices.
