@@ -24,6 +24,7 @@
 #define __G_TYPE_MODULE_H__
 
 #include <gobject/gobject.h>
+#include <gobject/genums.h>
 
 G_BEGIN_DECLS
 
@@ -79,10 +80,10 @@ void     g_type_module_add_interface  (GTypeModule          *module,
                                        GType                 instance_type,
                                        GType                 interface_type,
                                        const GInterfaceInfo *interface_info);
-void     g_type_module_register_enum  (GTypeModule          *module,
+GType    g_type_module_register_enum  (GTypeModule          *module,
                                        const gchar          *name,
                                        const GEnumValue     *const_static_values);
-void     g_type_module_register_flags (GTypeModule          *module,
+GType    g_type_module_register_flags (GTypeModule          *module,
                                        const gchar          *name,
                                        const GFlagsValue    *const_static_values);
 

@@ -388,7 +388,7 @@ g_type_module_add_interface (GTypeModule          *module,
   module_interface_info->info = *interface_info;
 }
 
-void
+GType
 g_type_module_register_enum (GTypeModule      *module,
                              const gchar      *name,
                              const GEnumValue *const_static_values)
@@ -406,7 +406,7 @@ g_type_module_register_enum (GTypeModule      *module,
                                       G_TYPE_ENUM, name, &enum_type_info, 0);
 }
 
-void
+GType
 g_type_module_register_flags (GTypeModule      *module,
                              const gchar       *name,
                              const GFlagsValue *const_static_values)

@@ -1,6 +1,13 @@
 Tue Jul  6 00:46:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gtypemodule.h: 
+	* gtypemodule.c: Fix the declarations of the new 
+	functions to return GType, not void. 
+	Also add missing includes.  (#145508, Morten Welinder)
+
+Tue Jul  6 00:46:43 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gtypemodule.h: 
 	* gtypemodule.c (g_type_module_register_flags): 
 	* gtypemodule.c (g_type_module_register_enum): New 
 	functions to register enum and flags types from a 
