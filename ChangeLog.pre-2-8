@@ -1,3 +1,9 @@
+Fri Jun 11 22:56:46 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gscanner.c (g_scanner_get_token_ll): Ignore a 
+	missing newline at EOF for single line comments.  
+	(#83674, Sven Neumann)
+
 Thu Jun 10 23:38:02 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/printf-test.c (TEST): Actually set any_failed on 
