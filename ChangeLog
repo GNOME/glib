@@ -1,3 +1,7 @@
+1999-03-18  Jeff Garzik  <jgarzik@pobox.com>
+
+	* glib.def: Add new g_list, g_stack, g_queue functions.
+
 1999-03-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: added new AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
