@@ -336,7 +336,7 @@ AC_TRY_COMPILE([#include <sys/types.h>],
 if test $gtk_ok = yes; then
     AC_MSG_RESULT([yes, found in sys/types.h])
 else
-    AC_HEADER_EGREP(fd_mask, sys/select.h, gtk_ok=yes)
+    AC_HEADER_EGREP(fd_set, sys/select.h, gtk_ok=yes)
     if test $gtk_ok = yes; then
         AC_DEFINE(HAVE_SYS_SELECT_H)
         AC_MSG_RESULT([yes, found in sys/select.h])

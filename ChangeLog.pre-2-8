@@ -1,3 +1,12 @@
+Mon Mar 11 15:19:01 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Backport from HEAD of fix by Raja R Harinath:
+	(fd_set): Change the grep for `fd_mask' to search for `fd_set'.
+	(#56364)
+	
+	* gcompletion.c (g_completion_complete): Fix memory
+	leak. (#53408, Ron Koerner)
+
 2002-02-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fix test for posix like

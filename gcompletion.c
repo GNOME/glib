@@ -181,16 +181,17 @@ g_completion_complete (GCompletion* cmp,
 	  list = cmp->cache;
 	  while (list)
 	    {
+	      GList *next = list->next;
+	      
 	      if (strncmp (prefix,
 			   cmp->func ? cmp->func (list->data) : (gchar*) list->data,
 			   len))
 		{
-		  list = g_list_remove_link (cmp->cache, list);
-		  if (list != cmp->cache)
-		    cmp->cache = list;
+		  cmp->cache = g_list_remove_link (cmp->cache, list);
+		  g_list_free_1 (list);
 		}
-	      else
-		list = list->next;
+
+	      list = next;
 	    }
 	  done = 1;
 	}
