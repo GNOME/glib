@@ -1,0 +1,408 @@
+# Slovenian translation file for glib.
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Andraz Tori <andraz.tori1@guest.arnes.si> 2000
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib\n"
+"POT-Creation-Date: 2001-02-16 21:52+0100\n"
+"PO-Revision-Date: 2001-02-16 12:30+0200\n"
+"Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
+"Language-Team: Slovenian <sl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gconvert.c:95
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Pretvorba iz nabora znakov `%s' v `%s' ni podprta"
+
+#: gconvert.c:99
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Nisem mogel odpreti pretvornika iz `%s' v `%s': %s"
+
+#: gconvert.c:214 gutf8.c:735 gutf8.c:1181
+msgid "Invalid byte sequence in conversion input"
+msgstr "Neveljavna sekvenca bajtov na vhodu pretvorbe"
+
+#: gconvert.c:219 gconvert.c:444
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Napaka med pretvorbo: %s"
+
+#: gconvert.c:239 gutf8.c:731 gutf8.c:931 gutf8.c:1072 gutf8.c:1177
+msgid "Partial character sequence at end of input"
+msgstr "Delna (nedokonèana) sekvenca znakov na koncu vhoda"
+
+#: gconvert.c:419
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Ne morem pretvoriti '%s' v nabor znakov '%s'"
+
+#: gfileutils.c:293
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Napaka ob branju datoteke '%s': %s"
+
+#: gfileutils.c:350
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Nisem uspel brati iz datoteke '%s': %s"
+
+#: gfileutils.c:388 gfileutils.c:456
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Nisem uspel odpreti datoteke '%s': %s"
+
+#: gfileutils.c:402
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Nisem uspel dobiti atributov datoteke '%s': fstat() ni uspel: %s"
+
+#: gfileutils.c:428
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Nisem uspel odpreti datoteke '%s': fdopen() ni uspel: %s"
+
+#: gfileutils.c:637
+#, c-format
+msgid "Template '%s' illegal, should not contain a '%s'"
+msgstr "©ablona '%s' je neveljavna, ne bi smela vsebovati '%s'"
+
+#: gfileutils.c:649
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "©ablona '%s' se ne konèa z XXXXXX"
+
+#: gfileutils.c:670
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Nisem uspel ustvariti datoteke '%s' %s"
+
+#: gmarkup.c:302
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Napaka v vrstici %d, znak %d: %s"
+
+#: gmarkup.c:386
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Napaka v vrstici %d: %s"
+
+#: gmarkup.c:465
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Viden prazna entiteta '&;'; veljavne entitete so: &amp; &quot; &lt; &gt; &apos;"
+
+#: gmarkup.c:475
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Znak '%s' ni veljaven na zaèetku imena entitete; znak & zaène "
+"entiteto; èe ta znak ni mi¹ljen kot entiteta ga napi¹ite kot  &amp;"
+
+#: gmarkup.c:511
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Znak '%s' ni veljaven znotraj imena entitete"
+
+#: gmarkup.c:555
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Ime entitete '%s' ni poznano"
+
+#: gmarkup.c:565
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Entiteta se ni konèala s podpièjem; verjetno ste uporabili znak '&' brez"
+"namena, da bi zaèeli entiteto - znak '&' napi¹ite kot '&amp;'"
+
+#: gmarkup.c:611
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Nisem uspel razèleniti '%s', ki bi morala biti ¹tevilka znotraj reference znaka "
+"(na primer &#234;) - mogoèe je ¹tevilka prevelika"
+
+#: gmarkup.c:637
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Referenca znaka '%s' ne predstavlja dovoljenega znaka"
+
+#: gmarkup.c:654
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Prazna referenca znaka; vsebovati bi morala ¹tevilko kot &#454;"
+
+#: gmarkup.c:664
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Referenca znaka se ni konèala s podpièjem; verjetno ste uporabili znak '&' "
+"brez namen, da bi zaèeli entiteto - znak '&' napi¹ite kot '&amp;'"
+
+#: gmarkup.c:899 gmarkup.c:927 gmarkup.c:958
+msgid "Invalid UTF-8 encoded text"
+msgstr "Napaèno kodirano besedilo UTF-8"
+
+#: gmarkup.c:994
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Dokument se mora zaèeti z elementom (na primer <book>)"
+
+#: gmarkup.c:1032
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' ni veljaven znak, kadar sledi znaku '<'; morda se ne zaène "
+"z imenom elementa"
+
+#: gmarkup.c:1099
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Èuden znak '%s', prièakovan znak '>', da zakljuèi oznako elementa '%s'"
+
+#: gmarkup.c:1189
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Èuden znak '%s'. Po imenu atributa '%s' (elementa '%s') je prièakovan znak '='"
+
+
+#: gmarkup.c:1230
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Èuden znak '%s'. Prièakovan znak '>' ali '/', ki bi zakljuèil oznako elementa "
+"'%s' ali atribut; morda ste uporabili neveljaven znak v imenu atributa'"
+
+
+#: gmarkup.c:1302
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Èuden znak '%s'. Za enaèajem je prièakovan narekovaj znotraj katerega "
+"je podana vrednost za atribut '%s' elementa '%s'"
+
+#: gmarkup.c:1431
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' ni veljaven znak za znakoma '</'; ime elementa se ne sme zaèeti z '%s'"
+
+#: gmarkup.c:1468
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Element '%s' je bil zaprt, trenutno ni odprtega elementa"
+
+#: gmarkup.c:1477
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Element '%s' je bil zaprt, a trenutno odprt element je '%s'"
+
+#: gmarkup.c:1488
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"Znak '%s' ni veljaven kadar sledi zaprtju imena elementa '%s'; dovoljen "
+"znak je '>'"
+
+#: gmarkup.c:1615
+msgid "Document was empty or contained only whitespace"
+msgstr "Dokument je bil prazen ali pa je vseboval le presledke"
+
+#: gmarkup.c:1629
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokument neprièakovano konèan takoj za odprtjem z '<'"
+
+#: gmarkup.c:1637 gmarkup.c:1680
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Dokument neprièakovano konèan z ¹e odprtimi elementi - '%s' je bil "
+"zadnji odprt element"
+
+#: gmarkup.c:1645
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Dokument neprièakovano konèan, prièakovan je bil zakljuèni zaklepaj "
+"oznake <%s/>"
+
+#: gmarkup.c:1651
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Dokument neprièakovano konèan sredi imena elementa"
+
+#: gmarkup.c:1656
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Dokument neprièakovano konèan sredi imena atributa"
+
+#: gmarkup.c:1661
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Dokument neprièakovano konèan sredi oznake za odprtje elementa."
+
+#: gmarkup.c:1667
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Dokumen neprièakovano konèan po eneèaju, ki je sledil imenu atributa; "
+"ni vrednosti atributa"
+
+#: gmarkup.c:1673
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Dokument neprièakovano konèan sredi vrednosti atributa"
+
+#: gmarkup.c:1688
+#, c-format
+msgid "Document ended unexpectedly inside the close tag forelement '%s'"
+msgstr "Dokument neprièakovano konèan sredi oznake zaprtja elementa '%s'"
+
+#: gmarkup.c:1694
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Dokument neprièakovano konèan sredi komentarja ali ukaza"
+
+#: gshell.c:69
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Citirano besedilo se ne zaène z narekovajem"
+
+#: gshell.c:159
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "V ukazni vrstici ali v citiranem besedilu manjka konèni narekovaj"
+
+#: gshell.c:519
+#, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr "Besedilo konèano takoj po znaku ''. (Besedilo je bilo '%s')"
+
+#: gshell.c:526
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "Besedilo konèano preden je bil najden zakljuèni narekovaj za %c. (besedilo je bilo '%s')"
+
+#: gshell.c:538
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Besedilo je bilo prazno (ali vsebovalo le presledke)"
+
+#: gspawn-win32.c:213
+msgid "Failed to read data from child process"
+msgstr "Nisem uspel prebrati podatkov iz procesa otroka"
+
+#: gspawn-win32.c:362
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Neprièakovana napaka v g_io_channel_win32_poll() med branjem podatkov "
+"procesa otroka"
+
+#: gspawn-win32.c:838 gspawn.c:896
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Nisem uspel brati iz cevi otroka (%s)"
+
+#: gspawn-win32.c:927 gspawn.c:1102
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Nisem uspel spremeniti imenika v '%s' (%s)"
+
+#: gspawn-win32.c:936 gspawn.c:1112
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Nisem uspel izvesti procesa otroka (%s)"
+
+#: gspawn-win32.c:977 gspawn.c:1209
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Nisem uspel ustvariti cevi za komunikacijo z procesom otroka (%s)"
+
+#: gspawn.c:158
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Nisem uspel prebrati podatkov iz procesa otroka (%s)"
+
+#: gspawn.c:288
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "Neprièakovana napaka v select() med branjem podatkov procesa otroka (%s)"
+
+#: gspawn.c:371
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Neprièakovana napaka v waitpid() (%s)"
+
+#: gspawn.c:964
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Nisem se uspel razvejiti (%s)"
+
+#: gspawn.c:1121
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Nisem uspel preusmeriti vhoda ali izhoda procesa otroka (%s)"
+
+#: gspawn.c:1130
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Nisem uspel razvejiti procesa otroka (%s)"
+
+#: gspawn.c:1138
+msgid "Unknown error executing child process"
+msgstr "Neznana napaka med izvajanjem procesa otroka"
+
+#: gspawn.c:1159
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Nisem uspel prebrati dovolj podatkov iz cevi otroka (%s)"
+
+#: gutf8.c:810
+msgid "Character out of range for UTF-8"
+msgstr "Znak izven intervala za UTF-8"
+
+#: gutf8.c:899 gutf8.c:908 gutf8.c:1040 gutf8.c:1049 gutf8.c:1191 gutf8.c:1287
+msgid "Invalid sequence in conversion input"
+msgstr "Neveljavna sekvenca na vhodu pretvorbe"
+
+#: gutf8.c:1202 gutf8.c:1298
+msgid "Character out of range for UTF-16"
+msgstr "Znak izven intervala za UTF-16"
+
+
+# Smart report:
+# Total untranslated messages in file: 69 
+# Translations made:
+# full: 0
+# smart: 0
+# cond: 1
+# total: 1 ; distinct: 1
+
+
