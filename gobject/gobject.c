@@ -960,7 +960,7 @@ g_object_watch_closure (GObject  *object,
   g_closure_add_marshal_guards (closure,
 				object, (GClosureNotify) g_object_ref,
 				object, (GClosureNotify) g_object_unref);
-  carray = g_object_get_qdata (object, quark_closure_array);
+  carray = g_object_steal_qdata (object, quark_closure_array);
   if (!carray)
     {
       carray = g_renew (CArray, NULL, 1);
@@ -975,6 +975,7 @@ g_object_watch_closure (GObject  *object,
       
       carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
       carray->closures[i] = closure;
+      g_object_set_qdata_full (object, quark_closure_array, carray, destroy_closure_array);
     }
 }
 

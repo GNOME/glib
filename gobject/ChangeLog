@@ -1,5 +1,8 @@
 Fri Oct 27 05:35:14 2000  Tim Janik  <timj@gtk.org>
 
+	* gobject.c (g_object_watch_closure): fixed realloc bug, reported
+	by havoc.
+
 	* gsignal.c (g_signal_newv): fixed deadlock scenarion where
 	g_signal_lookup() would be called with the signal lock being
 	held. reported by james henstridge.
