@@ -1,3 +1,9 @@
+Fri Jan 30 23:25:58 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/iochannels.sgml: 
+	* glib/tmpl/main.sgml: Remove references to deprecated GTK+ and
+	GDK functions.  (#130756, Vincent Untz)
+	
 Wed Jan 28 01:39:59 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib-sections.txt: Add g_strsplit_set. (Soeren Sandmann)

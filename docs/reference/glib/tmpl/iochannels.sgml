@@ -40,13 +40,6 @@ Using g_io_add_watch() or g_io_add_watch_full() increments a channel's
 reference count.
 </para>
 <para>
-GTK+ contains the convenience function gtk_input_add_full()
-which creates a #GIOChannel from a file descriptor and adds it to the
-<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
-The event source can later be removed with gtk_input_remove().
-Similar functions can also be found in GDK.
-</para>
-<para>
 The new functions g_io_channel_read_chars(), g_io_channel_read_line(),
 g_io_channel_read_line_string(), g_io_channel_read_to_end(),
 g_io_channel_write_chars(), g_io_channel_seek_position(),

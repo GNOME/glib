@@ -46,9 +46,8 @@ manages all available sources of events.
     loops associated with that #GMainContext.
   </para>
   <para>
-    GTK+ contains wrappers of many of these functions, e.g. gtk_main(),
-    gtk_main_quit(), gtk_events_pending(), gtk_idle_add(),
-    gtk_timeout_add() and gtk_input_add_full(). 
+    GTK+ contains wrappers of some of these functions, e.g. gtk_main(),
+    gtk_main_quit() and gtk_events_pending(). 
   </para>
   <refsect2>
     <title>Creating new sources types</title>
