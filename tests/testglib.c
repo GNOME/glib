@@ -336,7 +336,6 @@ main (int   argc,
     gchar *filename;
     gchar *dirname;
   } dirname_checks[] = {
-#ifndef G_OS_WIN32
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },
@@ -345,14 +344,16 @@ main (int   argc,
     { "a/b", "a" },
     { "a/b/", "a/b" },
     { "c///", "c" },
-#else
+#ifdef G_OS_WIN32
     { "\\", "\\" },
     { ".\\\\\\\\", "." },
     { "..\\", ".." },
     { "..\\\\\\\\", ".." },
     { "a\\b", "a" },
-    { "a\\b\\", "a\\b" },
-    { "c\\\\\\", "c" },
+    { "a\\b/", "a\\b" },
+    { "a/b\\", "a/b" },
+    { "c\\\\/", "c" },
+    { "//\\", "/" },
 #endif
 #ifdef G_WITH_CYGWIN
     { "//server/share///x", "//server/share" },
@@ -367,13 +368,12 @@ main (int   argc,
     gchar *filename;
     gchar *without_root;
   } skip_root_checks[] = {
-#ifndef G_OS_WIN32
     { "/", "" },
     { "//", "" },
     { "/foo", "foo" },
     { "//foo", "foo" },
     { "a/b", NULL },
-#else
+#ifdef G_OS_WIN32
     { "\\", "" },
     { "\\foo", "foo" },
     { "\\\\server\\foo", "" },
@@ -448,6 +448,15 @@ main (int   argc,
   g_assert (strcmp (string, "file") == 0);
   g_free (string);
   g_print ("ok\n");
+#ifdef G_OS_WIN32
+  string = g_path_get_basename ("/foo/dir/");
+  g_assert (strcmp (string, "dir") == 0);
+  g_free (string);
+  string = g_path_get_basename ("/foo/file");
+  g_assert (strcmp (string, "file") == 0);
+  g_free (string);
+  g_print ("ok\n");
+#endif
 
   g_print ("checking g_path_get_dirname()...");
   for (i = 0; i < n_dirname_checks; i++)
@@ -1171,6 +1180,11 @@ main (int   argc,
 
   g_print ("ok\n");
 
+  if (g_get_charset (&string))
+    g_print ("current charset is UTF-8: %s\n", string);
+  else
+    g_print ("current charset is not UTF-8: %s\n", string);
+
 #ifdef G_PLATFORM_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
   g_print ("GLib DLL name tested for: %s\n", glib_dll);
@@ -1234,6 +1248,18 @@ main (int   argc,
 	     error->message);
   close (fd);
   g_clear_error (&error);
+
+#ifdef G_OS_WIN32
+  strcpy (template, "zap/barXXXXXX");
+  fd = g_file_open_tmp (template, &name_used, &error);
+  if (fd != -1)
+    g_print ("g_file_open_tmp works even if template contains '/'\n");
+  else
+    g_print ("g_file_open_tmp correctly returns error: %s\n",
+	     error->message);
+  close (fd);
+  g_clear_error (&error);
+#endif
 
   strcpy (template, "zapXXXXXX");
   fd = g_file_open_tmp (template, &name_used, &error);
