@@ -1860,7 +1860,7 @@ g_type_get_plugin (GType type)
 {
   TypeNode *node = LOOKUP_TYPE_NODE (type);
 
-  return node && node->plugin;
+  return node ? node->plugin : NULL;
 }
 
 gboolean
