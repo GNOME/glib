@@ -16,13 +16,14 @@
   <reference>
     <title>API Reference</title>
 
-	  &gobject-types;
-	  &gobject-objects;
-	  &gobject-enumerations-flags;
-	  &gobject-generic-values;
-	  &gobject-value-types;
-	  &gobject-value-collection;
-	  &gobject-param-specs;
-	  &gobject-standard-params;
+      &gobject-types;
+      &gobject-objects;
+      &gobject-enumerations-flags;
+      &gobject-generic-values;
+      &gobject-value-types;
+      &gobject-value-collection;
+      &gobject-param-specs;
+      &gobject-standard-params;
 
+  </reference>
 </book>

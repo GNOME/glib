@@ -1,3 +1,5 @@
+Makefile
+Makefile.in
 gobject-decl.txt
 gobject-unused.txt
 gobject-decl-list.txt

@@ -9,7 +9,8 @@ DOC_MAIN_SGML_FILE=gobject-docs.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=$(top_srcdir)/gobject
 
-TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
+# Headers to ignore
+IGNORE_HFILES=
 
 tmpl_sources =				\
 	tmpl/enumerations_flags.sgml	\
@@ -22,35 +23,38 @@ tmpl_sources =				\
 	tmpl/value_collection.sgml	\
 	tmpl/value_types.sgml
 
-gobject_docdir = $(HTML_DIR)
-gobject_doc_DATA =			\
-	gobject-sections.txt
+####################################
+# Everything below here is generic #
+####################################
 
+TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = 				\
-	$(gobject_doc_DATA)
+	$(DOC_MAIN_SGML_FILE)		\
+	$(DOC_MODULE)-sections.txt	\
+	$(DOC_MODULE)-overrides.txt
 
 if ENABLE_GTK_DOC
 all-local: html/index.html
 
-gobject-decl.txt: 
+$(DOC_MODULE)-decl.txt: 
 	$(MAKE) scan
 
-$(tmpl_sources): gobject-decl.txt gobject-sections.txt
+$(tmpl_sources): $(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
 	$(MAKE) templates
 
-sgml/gobject-doc.bottom: $(tmpl_sources) gobject-decl.txt
+sgml/$(DOC_MODULE)-doc.bottom: $(tmpl_sources) $(DOC_MODULE)-decl.txt
 	$(MAKE) sgml
 
-html/index.html: sgml/gobject-doc.bottom
+html/index.html: sgml/$(DOC_MODULE)-doc.bottom $(DOC_MAIN_SGML_FILE)
 	$(MAKE) html
 endif
 
 scan:
 	-(cd $(srcdir) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) )
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" )
 
-templates:
+templates: 
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
 sgml:
@@ -60,8 +64,8 @@ sgml:
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
-	@echo '-- Fixing Crossreferences'
-	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) --extra-dir=$(srcdir)/../glib/html
+	@echo '-- Fixing Crossreferences' 
+	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR)
 
 clean-local:
 	rm -f *~ *.bak *.signals *-unused.txt
@@ -83,7 +87,18 @@ install-data-local:
 	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
 	fi)
 
-dist-hook:
+#
+# Require gtk-doc when making dist
+#
+if ENABLE_GTK_DOC
+dist-check-gtkdoc:
+else
+dist-check-gtkdoc:
+	@echo "*** gtk-doc must be installed and enabled in order to make dist
+	@false
+endif
+
+dist-hook: dist-check-gtkdoc
 	mkdir $(distdir)/html
 	mkdir $(distdir)/sgml
 	mkdir $(distdir)/tmpl

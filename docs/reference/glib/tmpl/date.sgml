@@ -9,14 +9,12 @@ Date and Time Functions
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### MACRO G_MICROSEC ##### -->
+<!-- ##### MACRO G_USEC_PER_SEC ##### -->
 <para>
 
 </para>

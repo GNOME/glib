@@ -1,3 +1,5 @@
+Makefile
+Makefile.in
 glib-unused.txt
 glib-decl-list.txt
 glib-decl.txt

@@ -9,12 +9,10 @@ Unicode Manipulation
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### TYPEDEF gunichar ##### -->
 <para>
@@ -326,6 +324,8 @@ Unicode Manipulation
 @p: 
 @end: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@bound: 
 
 
 <!-- ##### FUNCTION g_utf8_find_prev_char ##### -->
@@ -367,6 +367,8 @@ Unicode Manipulation
 @p: 
 @c: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ch: 
 
 
 <!-- ##### FUNCTION g_utf8_strrchr ##### -->
@@ -377,6 +379,8 @@ Unicode Manipulation
 @p: 
 @c: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ch: 
 
 
 <!-- ##### FUNCTION g_utf8_to_utf16 ##### -->

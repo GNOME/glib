@@ -1606,6 +1606,8 @@ gthread/Makefile
 docs/Makefile
 docs/glib-config.1
 docs/reference/Makefile
+docs/reference/glib/Makefile
+docs/reference/gobject/Makefile
 tests/Makefile
 ],[case "$CONFIG_FILES" in
 *glib-config-2.0*)chmod +x glib-config-2.0;;

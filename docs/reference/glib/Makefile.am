@@ -6,10 +6,17 @@ DOC_MODULE=glib
 # The top-level SGML file.
 DOC_MAIN_SGML_FILE=glib-docs.sgml
 
-# The directory containing the source code (if it contains documentation).
+# The directory containing the source code
 DOC_SOURCE_DIR=$(top_srcdir)
 
-TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
+# Headers to ignore
+IGNORE_HFILES=			\
+	gobject 		\
+	config.h 		\
+	gmoduleconf.h		\
+	gunidecomp.h		\
+	gunichartables.h	\
+	glibconfig-sysdefs.h
 
 tmpl_sources =				\
 	tmpl/allocators.sgml		\
@@ -60,33 +67,37 @@ tmpl_sources =				\
 	tmpl/warnings.sgml		\
 	tmpl/windows.sgml
 
-glib_docdir = $(HTML_DIR)
-glib_doc_DATA =				\
-	glib-sections.txt		\
-	glib-overrides.txt
+
+####################################
+# Everything below here is generic #
+####################################
+
+TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = 				\
-	$(glib_doc_DATA)
+	$(DOC_MAIN_SGML_FILE)		\
+	$(DOC_MODULE)-sections.txt	\
+	$(DOC_MODULE)-overrides.txt
 
 if ENABLE_GTK_DOC
 all-local: html/index.html
 
-glib-decl.txt: 
+$(DOC_MODULE)-decl.txt: 
 	$(MAKE) scan
 
-$(tmpl_sources): glib-decl.txt glib-sections.txt glib-overrides.txt
+$(tmpl_sources): $(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
 	$(MAKE) templates
 
-sgml/glib-doc.bottom: $(tmpl_sources) glib-decl.txt
+sgml/$(DOC_MODULE)-doc.bottom: $(tmpl_sources) $(DOC_MODULE)-decl.txt
 	$(MAKE) sgml
 
-html/index.html: sgml/glib-doc.bottom
+html/index.html: sgml/$(DOC_MODULE)-doc.bottom $(DOC_MAIN_SGML_FILE)
 	$(MAKE) html
 endif
 
 scan:
 	-(cd $(srcdir) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="gobject config.h gmoduleconf.h gunidecomp.h gunichartables.h glibconfig-sysdefs.h" )
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" )
 
 templates: 
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
@@ -121,7 +132,18 @@ install-data-local:
 	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
 	fi)
 
-dist-hook:
+#
+# Require gtk-doc when making dist
+#
+if ENABLE_GTK_DOC
+dist-check-gtkdoc:
+else
+dist-check-gtkdoc:
+	@echo "*** gtk-doc must be installed and enabled in order to make dist
+	@false
+endif
+
+dist-hook: dist-check-gtkdoc
 	mkdir $(distdir)/html
 	mkdir $(distdir)/sgml
 	mkdir $(distdir)/tmpl

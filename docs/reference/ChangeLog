@@ -1,3 +1,8 @@
+Wed Sep  6 10:59:45 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am glib/Makefile.am: Improve 
+	separation of generic non-generic parts and dependencies. 
+
 Tue Sep  5 20:03:25 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Moved into glib source tree, updated glib-sections.txt

@@ -9,12 +9,10 @@ Miscellaneous Macros
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
@@ -131,48 +129,6 @@ Miscellaneous Macros
 
 
 <!-- ##### MACRO G_STRLOC ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GSHORT_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GUSHORT_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GINT_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GUINT_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GLONG_FORMAT ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO G_GULONG_FORMAT ##### -->
 <para>
 
 </para>
