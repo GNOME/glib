@@ -1,3 +1,13 @@
+Sat Oct 18 00:04:22 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject.types: List GObject here, since the
+	documentation misses the notify signal otherwise. Needs
+	a little bit of a hack to work around a gtkdoc-scangobj
+	limitation, see the comment in gobject/gobject.i.
+
+	* gobject/gobject.i: New file, containing a trivial 
+	g_object_get_type() function.
+	
 Fri Oct 17 00:23:51 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/Makefile.am (GTKDOC_LIBS): 
