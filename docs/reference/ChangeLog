@@ -1,3 +1,7 @@
+2002-12-15  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/Makefile.am (IGNORE_HFILES): Add gprintfint.h and trio.
+
 2002-12-13  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/Makefile.am (MKDB_OPTIONS): Add --ignore-files=trio to

@@ -29,33 +29,34 @@
 
 #ifdef HAVE_GOOD_PRINTF
 
-#define _g_printf printf
-#define _g_fprintf fprintf
-#define _g_sprintf sprintf
-#define _g_snprintf snprintf
+#define _g_printf    printf
+#define _g_fprintf   fprintf
+#define _g_sprintf   sprintf
+#define _g_snprintf  snprintf
 
-#define _g_vprintf vprintf
-#define _g_vfprintf vfprintf
-#define _g_vsprintf vsprintf
+#define _g_vprintf   vprintf
+#define _g_vfprintf  vfprintf
+#define _g_vsprintf  vsprintf
 #define _g_vsnprintf vsnprintf
 
 #define _g_vasprintf vasprintf
 
 #else
 
+#include "trio/glibtrio.h"
 #include "trio/trio.h"
 
-#define _g_printf trio_printf
-#define _g_fprintf trio_fprintf
-#define _g_sprintf trio_sprintf
-#define _g_snprintf trio_snprintf
+#define _g_printf    _g_trio_printf
+#define _g_fprintf   _g_trio_fprintf
+#define _g_sprintf   _g_trio_sprintf
+#define _g_snprintf  _g_trio_snprintf
 
-#define _g_vprintf trio_vprintf
-#define _g_vfprintf trio_vfprintf
-#define _g_vsprintf trio_vsprintf
-#define _g_vsnprintf trio_vsnprintf
+#define _g_vprintf   _g_trio_vprintf
+#define _g_vfprintf  _g_trio_vfprintf
+#define _g_vsprintf  _g_trio_vsprintf
+#define _g_vsnprintf _g_trio_vsnprintf
 
-#define _g_vasprintf trio_vasprintf
+#define _g_vasprintf _g_trio_vasprintf
 
 #endif
 

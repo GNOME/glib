@@ -43,6 +43,7 @@
 /*************************************************************************
  * Trio include files
  */
+#include "glibtrio.h"
 #include "triodef.h"
 #include "trio.h"
 #include "triop.h"

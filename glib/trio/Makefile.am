@@ -12,7 +12,8 @@ libtrio_la_SOURCES = 	\
 	triodef.h	\
 	trionan.h	\
 	triop.h		\
-	triostr.h	
+	triostr.h	\
+	glibtrio.h
 
 INCLUDES = -DTRIO_EXTENSION=0
 

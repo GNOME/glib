@@ -1,3 +1,19 @@
+2002-12-15  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/trio/glibtrio.h: New file, redefining all trio symbols to
+	fall into the _G/_g_ private glib namespace.
+
+	* glib/trio/Makefile.am (libtrio_la_SOURCES): Add glibtrio.h
+
+	* glib/trio/trionan.c: 
+	* glib/trio/triostr.c: 
+	* glib/trio/trio.c: Include glibtrio.h
+
+	* glib/gprintfint.h: 
+	* glib/trio/trionan.c: 
+	* glib/trio/triostr.c: 
+	* glib/trio/trio.c: Include glibtrio.h
+
 Fri Dec 13 17:10:21 2002  Manish Singh  <yosh@gimp.org>
 
 	* glib/gscanner.c (g_scanner_unexp_token): Fix typo. Missing '%'

@@ -40,6 +40,7 @@
 /*************************************************************************
  * Include files
  */
+#include "glibtrio.h"
 #include "triodef.h"
 #include "trionan.h"
 
