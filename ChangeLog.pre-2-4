@@ -1,3 +1,8 @@
+Sun Jan 17 11:01:40 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32 glibconfig.h.win32: Increment version number here
+ 	also.
+
 Sun Jan 17 05:12:17 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in: incremented version number to 1.1.13, bin age 0,
