@@ -1,3 +1,8 @@
+2000-09-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h: Removed G_G{U}{SHORT|INT|LONG}_FORMAT from glib.h, as
+	they are really superfluous.
+
 Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in docs/Makefile.am: Add gtk-doc checks

@@ -544,13 +544,6 @@ typedef unsigned short	gushort;
 typedef unsigned long	gulong;
 typedef unsigned int	guint;
 
-#define G_GSHORT_FORMAT  "hi"
-#define G_GUSHORT_FORMAT "hu"
-#define G_GINT_FORMAT    "i"
-#define G_GUINT_FORMAT   "u"
-#define G_GLONG_FORMAT   "li"
-#define G_GULONG_FORMAT  "lu"
-
 typedef float	gfloat;
 typedef double	gdouble;
 
