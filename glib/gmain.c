@@ -478,26 +478,17 @@ g_poll (GPollFD *fds,
 		f->revents |= G_IO_IN;
 	  }
     }
-#if 1 /* TEST_WITHOUT_THIS */
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {
-	if ((f->events & (G_IO_IN | G_IO_OUT))
-	    && f->fd == (gint) handles[ready - WAIT_OBJECT_0])
+	if (f->fd == (gint) handles[ready - WAIT_OBJECT_0])
 	  {
-	    if (f->events & G_IO_IN)
-	      f->revents |= G_IO_IN;
-	    else
-	      f->revents |= G_IO_OUT;
+	    f->revents = f->events;
 #ifdef G_MAIN_POLL_DEBUG
 	    g_print ("g_poll: got event %#x\n", f->fd);
 #endif
-#if 0
-	    ResetEvent ((HANDLE) f->fd);
-#endif
 	  }
       }
-#endif
     
   return 1;
 }
