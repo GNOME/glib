@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2003-01-28 17:15-0500\n"
+"POT-Creation-Date: 2003-06-08 12:16-0400\n"
 "PO-Revision-Date: 2002-12-20 10:12-0500\n"
 "Last-Translator: Unknown :-(\n"
 "Language-Team: Hindi\n"
@@ -25,20 +25,20 @@ msgstr "कैरेक्टर समूह %s से %s में परि�
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "%s से %s परिवर्तक नहीं खोला जा सका"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
-#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:907
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
+#: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
 msgstr "परिवर्तन इनपुट के अबैध बाइट क्रम"
 
-#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
-#: glib/giochannel.c:2191
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1313
+#: glib/giochannel.c:2202
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "परिवर्तन प्रक्रिया के दौरान त्रुटि %s"
 
-#: glib/gconvert.c:626 glib/gutf8.c:903 glib/gutf8.c:1103 glib/gutf8.c:1244
-#: glib/gutf8.c:1348
+#: glib/gconvert.c:626 glib/gutf8.c:905 glib/gutf8.c:1105 glib/gutf8.c:1246
+#: glib/gutf8.c:1350
 msgid "Partial character sequence at end of input"
 msgstr "इनपुट के अंत में आंशिक कैरेक्टर क्रम"
 
@@ -47,37 +47,37 @@ msgstr "इनपुट के अंत में आंशिक कैरे�
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "%s से कोड सेट %s में परिवर्तन नहीं किया जा सकता"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1631
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "फाइल योजना का उपयोग करने पर uri %s absolute uri नहीं है। (निरपेछ)"
 
-#: glib/gconvert.c:1643
+#: glib/gconvert.c:1641
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "स्थानीय फाइल uri %s में # सम्मिलित नहीं है"
 
-#: glib/gconvert.c:1660
+#: glib/gconvert.c:1658
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "uri %s अवैध है"
 
-#: glib/gconvert.c:1672
+#: glib/gconvert.c:1670
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "uri %s का होस्टनाम अवैध है"
 
-#: glib/gconvert.c:1688
+#: glib/gconvert.c:1686
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "uri %s में अवैध इस्केप कैरेक्टर सम्मिलित है"
 
-#: glib/gconvert.c:1759
+#: glib/gconvert.c:1757
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "पाथनाम %s एक absolute पाथ नहीं है"
 
-#: glib/gconvert.c:1769
+#: glib/gconvert.c:1767
 msgid "Invalid hostname"
 msgstr "अवैध होस्ट नाम"
 
@@ -131,29 +131,29 @@ msgstr "टैम्पलेट %s xxxx पर समाप्त नहीं 
 msgid "Failed to create file '%s': %s"
 msgstr "फाइल %s को निर्मित करने में असफल"
 
-#: glib/giochannel.c:1123
+#: glib/giochannel.c:1134
 #, fuzzy, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "कैरेक्टर समूह %s में परिवर्तन सफल नहीं"
 
-#: glib/giochannel.c:1127
+#: glib/giochannel.c:1138
 #, fuzzy, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "%s से %s का परिवर्तक नहीं खोला जा सका"
 
-#: glib/giochannel.c:1472
+#: glib/giochannel.c:1483
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g-10-ch में से पढ़ा नहीं जा सका"
 
-#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
+#: glib/giochannel.c:1530 glib/giochannel.c:1787 glib/giochannel.c:1873
 msgid "Leftover unconverted data in read buffer"
 msgstr "रीड बकर में शेष अपरिवर्तित डाटा"
 
-#: glib/giochannel.c:1599 glib/giochannel.c:1676
+#: glib/giochannel.c:1610 glib/giochannel.c:1687
 msgid "Channel terminates in a partial character"
 msgstr "आशिक कैरेक्टर में चैनल समाप्त"
 
-#: glib/giochannel.c:1662
+#: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "145 का"
 
@@ -241,15 +241,15 @@ msgstr ""
 msgid "Unfinished character reference"
 msgstr ""
 
-#: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
+#: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
 msgid "Invalid UTF-8 encoded text"
 msgstr "अवैध utf-8 इनकोडेड पाठ्य"
 
-#: glib/gmarkup.c:955
+#: glib/gmarkup.c:961
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "यह आवश्यक है कि प्रपत्र किसी वस्तु के नाम से प्रारंभ हो"
 
-#: glib/gmarkup.c:994
+#: glib/gmarkup.c:1000
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -257,20 +257,20 @@ msgid ""
 msgstr ""
 "%s एक वैध कैरेक्टर नहीं है यह किसी वस्तु के नाम से प्रारंभ नहीं होता है < के पश्चात आया"
 
-#: glib/gmarkup.c:1057
+#: glib/gmarkup.c:1063
 #, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "असंगत कैरेक्टर %s, > कैरेक्टर आवश्यक है वस्तु के प्रारंभ टैग को समाप्त करने के लिए"
 
-#: glib/gmarkup.c:1144
+#: glib/gmarkup.c:1150
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "असंगत कैरेक्टर %s वस्तु %s के एट्रीव्यूट्स नाम %s के बाद में एक = का चिन्ह आवश्यक है"
 
-#: glib/gmarkup.c:1185
+#: glib/gmarkup.c:1191
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -278,87 +278,87 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1268
+#: glib/gmarkup.c:1274
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1414
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1446
+#: glib/gmarkup.c:1452
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
 
-#: glib/gmarkup.c:1457
+#: glib/gmarkup.c:1463
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
 
-#: glib/gmarkup.c:1466
+#: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1613
+#: glib/gmarkup.c:1619
 msgid "Document was empty or contained only whitespace"
 msgstr ""
 
-#: glib/gmarkup.c:1627
+#: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 
-#: glib/gmarkup.c:1635 glib/gmarkup.c:1679
+#: glib/gmarkup.c:1641 glib/gmarkup.c:1685
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
 
-#: glib/gmarkup.c:1643
+#: glib/gmarkup.c:1649
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
 
-#: glib/gmarkup.c:1649
+#: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1660
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1659
+#: glib/gmarkup.c:1665
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 
-#: glib/gmarkup.c:1665
+#: glib/gmarkup.c:1671
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1672
+#: glib/gmarkup.c:1678
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1693
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1693
+#: glib/gmarkup.c:1699
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 
@@ -394,7 +394,7 @@ msgid ""
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:979
+#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr ""
@@ -403,7 +403,7 @@ msgstr ""
 msgid "Failed to execute helper program"
 msgstr ""
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1184
+#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr ""
@@ -413,7 +413,7 @@ msgstr ""
 msgid "Failed to execute child process (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1315
+#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -433,46 +433,46 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1044
+#: glib/gspawn.c:1067
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1194
+#: glib/gspawn.c:1217
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1204
+#: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1221
+#: glib/gspawn.c:1244
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr ""
 
-#: glib/gspawn.c:1243
+#: glib/gspawn.c:1266
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: glib/gutf8.c:982
+#: glib/gutf8.c:984
 msgid "Character out of range for UTF-8"
 msgstr ""
 
-#: glib/gutf8.c:1071 glib/gutf8.c:1080 glib/gutf8.c:1212 glib/gutf8.c:1221
-#: glib/gutf8.c:1362 glib/gutf8.c:1458
+#: glib/gutf8.c:1073 glib/gutf8.c:1082 glib/gutf8.c:1214 glib/gutf8.c:1223
+#: glib/gutf8.c:1364 glib/gutf8.c:1460
 msgid "Invalid sequence in conversion input"
 msgstr ""
 
-#: glib/gutf8.c:1373 glib/gutf8.c:1469
+#: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr ""
 
