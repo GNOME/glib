@@ -256,9 +256,9 @@ print_help (GOptionContext *context,
   GList *list;
   gint max_length, len;
   gint i;
-
+  
   g_print ("%s\n  %s %s %s\n\n", 
-	   _("Usage:"), g_get_prgname (), _("[OPTION...]"),
+	   _("Usage:"), g_get_prgname(), _("[OPTION...]"),
 	   context->parameter_string ? context->parameter_string : "");
 
   list = context->groups;
@@ -845,6 +845,16 @@ g_option_context_parse (GOptionContext   *context,
 
   if (argc && argv)
     {
+      gchar *prgname;
+      
+      prgname = strrchr ((*argv)[0], G_DIR_SEPARATOR);
+      if (prgname)
+	prgname++;
+      else
+	prgname = (*argv)[0];
+
+      g_set_prgname (prgname);
+
       for (i = 1; i < *argc; i++)
 	{
 	  gchar *arg;

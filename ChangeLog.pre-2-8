@@ -1,3 +1,8 @@
+Fri Aug 27 00:45:41 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/goption.c (g_option_context_parse): Set the program name
+	from argv[0], noticed by Masatake YAMATO.
+
 2004-08-26  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/testglib.c (main): Test the new XDG basedir functions.
