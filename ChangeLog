@@ -1,3 +1,9 @@
+2005-02-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/keyfile-test.c (test_locale_string): Set LANGUAGE 
+	instead of LC_ALL to shield against LANGUAGE being set in 
+	the environment.  (#168311, Suren A. Chilingaryan)
+
 Tue Feb 22 22:03:38 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/gstdio.h: On G_OS_UNIX, simple #define g_open and co. as
