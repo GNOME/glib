@@ -1,3 +1,10 @@
+2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am, makefile.mingw.in, makefile.msc.in: Set
+	G_LOG_DOMAIN to \"GModule\" instead of g_log_domain_gmodule.
+
+	* gmodule.def, gmodule.h, gmodule.c: Removed g_log_domain_gmodule.
+
 2001-02-17  Havoc Pennington  <hp@pobox.com>
 
         Applied patch from Soeren Sandmann:

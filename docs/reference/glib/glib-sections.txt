@@ -693,7 +693,6 @@ G_BREAKPOINT
 <FILE>messages</FILE>
 G_LOG_DOMAIN
 g_log_domain_glib
-g_log_domain_gmodule
 G_LOG_FATAL_MASK
 G_LOG_LEVEL_USER_SHIFT
 GLogFunc

@@ -1,5 +1,4 @@
 EXPORTS
-	g_log_domain_gmodule
 	g_module_build_path
 	g_module_close
 	g_module_error

@@ -13,7 +13,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 # Nothing much configurable below
 
 INCLUDES = -I .. -I .
-DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=g_log_domain_gmodule -DG_ENABLE_DEBUG
+DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GModule\" -DG_ENABLE_DEBUG
 
 all : \
 	gmoduleconf.h \

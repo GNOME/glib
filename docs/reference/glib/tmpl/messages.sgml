@@ -44,12 +44,6 @@ INCLUDES = \
 </para>
 
 
-<!-- ##### VARIABLE g_log_domain_gmodule ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO G_LOG_FATAL_MASK ##### -->
 <para>
 GLib log levels that are considered fatal by default.
