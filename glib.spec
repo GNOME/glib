@@ -11,7 +11,7 @@ Copyright: LGPL
 Group: Libraries
 Source: ftp://ftp.gimp.org/pub/gtk/v1.1/glib-%{ver}.tar.gz
 BuildRoot: /tmp/glib-root
-Packager: Christopher Blizzard <blizzard@appliedtheory.com>
+Packager: Christopher Blizzard <blizzard@redhat.com>
 URL: http://www.gtk.org
 Docdir: %{prefix}/doc
 
