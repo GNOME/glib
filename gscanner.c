@@ -1613,9 +1613,8 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	      token = G_TOKEN_COMMENT_SINGLE;
 	      in_comment_single = TRUE;
 	      gstring = g_string_new ("");
-	      while ((ch = g_scanner_get_char (scanner,
-					       line_p,
-					       position_p)) != 0)
+              ch = g_scanner_get_char (scanner, line_p, position_p);
+	      while (ch != 0)
 		{
 		  if (ch == config->cpair_comment_single[1])
 		    {
@@ -1625,7 +1624,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		    }
 		  
 		  gstring = g_string_append_c (gstring, ch);
-		  ch = 0;
+		  ch = g_scanner_get_char (scanner, line_p, position_p);
 		}
 	    }
 	  else if (config->scan_identifier && ch &&

@@ -1,3 +1,18 @@
+Fri May 19 09:00:44 2000  Tim Janik  <timj@gtk.org>
+
+        * gmem.c (g_free): fixed SIZEOF_LONG==4 assumption with
+        ENABLE_MEM_CHECK, from Art Haas <ahaas@neosoft.com>.
+
+	* gslist.c (g_slist_reverse): shut up compiler.
+
+	* gscanner.c (g_scanner_get_token_ll): removed inline assignment.
+
+	* garray.c: remove index>=0 checks for unsigned indices.
+
+	* gmain.c (g_idle_prepare): timeout assignment fix.
+
+	* gtree.c (g_tree_node_rotate_right): shut up compiler.
+
 2000-05-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Use strlen instead of exit in the test for

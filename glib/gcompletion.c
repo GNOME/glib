@@ -123,7 +123,7 @@ completion_check_cache (GCompletion* cmp,
   register gint len;
   register gint i;
   register gint plen;
-  gchar* postfix=NULL;
+  gchar* postfix;
   gchar* s;
   
   if (!new_prefix)

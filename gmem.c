@@ -402,11 +402,11 @@ g_free (gpointer mem)
 #ifdef ENABLE_MEM_CHECK
       t = (gulong*) ((guchar*) mem - SIZEOF_LONG);
       if (*t >= 1)
-	g_warning ("freeing previously freed memory\n");
+	g_warning ("freeing previously freed (%lu times) memory\n", *t);
       *t += 1;
       mem = t;
       
-      memset ((guchar*) mem + 8, 0, size);
+      memset ((guchar*) mem + 2 * SIZEOF_LONG, 0, size);
 #else /* ENABLE_MEM_CHECK */
       free (mem);
 #endif /* ENABLE_MEM_CHECK */
@@ -456,7 +456,7 @@ g_mem_check (gpointer mem)
   t = (gulong*) ((guchar*) mem - SIZEOF_LONG - SIZEOF_LONG);
   
   if (*t >= 1)
-    g_warning ("mem: 0x%08x has been freed %lu times\n", (gulong) mem, *t);
+    g_warning ("mem: 0x%08lx has been freed %lu times\n", (gulong) mem, *t);
 #endif /* ENABLE_MEM_CHECK */
 }
 

@@ -1342,7 +1342,8 @@ g_idle_prepare  (gpointer  source_data,
 		 gint     *timeout,
 		 gpointer  user_data)
 {
-  timeout = 0;
+  *timeout = 0;
+
   return TRUE;
 }
 

@@ -348,25 +348,19 @@ g_slist_copy (GSList *list)
 GSList*
 g_slist_reverse (GSList *list)
 {
-  GSList *tmp;
-  GSList *prev;
-  GSList *last;
-
-  last = NULL;
-  prev = NULL;
+  GSList *prev = NULL;
 
   while (list)
     {
-      last = list;
+      GSList *next = list->next;
 
-      tmp = list->next;
       list->next = prev;
 
       prev = list;
-      list = tmp;
+      list = next;
     }
 
-  return last;
+  return prev;
 }
 
 GSList*
