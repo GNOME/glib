@@ -1,3 +1,11 @@
+Sun Oct  5 23:23:53 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/glib-sections.txt: 
+	* gobject/gobject-sections.txt: Fix includes.
+
+	* gobject/tmpl/value_collection.sgml: Add docs found in the 
+	header.
+
 Thu Oct  2 01:22:46 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/gobject-sections.txt gobject/tmpl/gtype.sgml: 

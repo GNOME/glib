@@ -898,6 +898,7 @@ g_file_error_quark
 <SECTION>
 <TITLE>String Utility Functions</TITLE>
 <FILE>string_utils</FILE>
+<INCLUDE>glib.h,glib/gprintf.h</INCLUDE>
 g_strdup
 g_strndup
 g_strdupv
