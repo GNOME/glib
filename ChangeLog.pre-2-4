@@ -1,3 +1,16 @@
+Mon Apr 16 12:04:52 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Remove warnings about conflicts with the
+	stable version.
+
+	* glib-2.0.m4: Fix some of the error text to be halfway
+	up to date.
+
+	* README.in INSTALL.in: Add these to generate README, INSTAL
+	(as in the stable branch). Update.
+
+	* HACKING: Update.
+
 2001-04-16  Havoc Pennington  <hp@redhat.com>
 
 	* gqsort.c: docs

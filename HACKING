@@ -1,4 +1,4 @@
-If you want to hack on the Gtk+ project, it will make you life easier
+If you want to hack on the GLib project, it will make you life easier
 to have the following packages installed:
 
 	- GNU autoconf 2.13
@@ -30,10 +30,4 @@ Note that autogen.sh runs configure for you.  If you wish to pass
 options like --prefix=/usr to configure you can give those options
 to autogen.sh and they will be passed on to configure.
 
-Please submit patches to the gtk-list@redhat.com mailing list (you must
-subscribe before you post, e-mail gtk-list-request@redhat.com with a
-subject of "subscribe"). All kinds of contributions are accepted.
-Patches that you wish to go into the distribution should also be uploaded 
-to ftp://ftp.gimp.org/incoming.  Follow the rules there for naming your
-patches. 
-
+For information about submitting patches see the README file.

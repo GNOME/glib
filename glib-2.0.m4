@@ -2,12 +2,12 @@
 # Owen Taylor     1997-2001
 
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" or 
-dnl gthread is specified in MODULES, pass to glib-config
+dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject or 
+dnl gthread is specified in MODULES, pass to pkg-config
 dnl
 AC_DEFUN(AM_PATH_GLIB_2_0,
 [dnl 
-dnl Get the cflags and libraries from the glib-config-2.0 script
+dnl Get the cflags and libraries from pkg-config
 dnl
 AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and run a test GLIB program],
 		    , enable_glibtest=yes)
@@ -61,7 +61,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
       LIBS="$GLIB_LIBS $LIBS"
 dnl
 dnl Now check if the installed GLIB is sufficiently new. (Also sanity
-dnl checks the results of glib-config-2.0 to some extent
+dnl checks the results of pkg-config to some extent)
 dnl
       rm -f conf.glibtest
       AC_TRY_RUN([
@@ -167,12 +167,7 @@ main ()
           echo "*** is required on your system"
 	  echo "***"
           echo "*** If you have an old version installed, it is best to remove it, although"
-          echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
-          echo "***"
-          echo "*** If you have a RedHat 5.0 system, you should remove the GTK package that"
-          echo "*** came with the system with the command"
-          echo "***"
-          echo "***    rpm --erase --nodeps gtk gtk-devel" ],
+          echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH" ],
         [ echo "*** The test program failed to compile or link. See the file config.log for the"
           echo "*** exact error that occured. This usually means GLIB was incorrectly installed"
           echo "*** or that you have moved GLIB since it was installed. In the latter case, you"

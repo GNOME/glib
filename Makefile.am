@@ -30,7 +30,7 @@ EXTRA_DIST = 			\
 	gen-unicode-tables.pl
 
 # These may be in the builddir too
-BUILT_EXTRA_DIST = \
+BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
 	makefile.mingw		\
 	glibconfig.h.win32	\
@@ -235,7 +235,8 @@ snapcheck:
 	$(MAKE) distcheck distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
 
 dist-hook: $(BUILT_EXTRA_DIST)
-	files='$(BUILT_EXTRA_DIST)'; \
+	cd $(top_builddir) && CONFIG_FILES="INSTALL README" CONFIG_HEADERS= $(SHELL) ./config.status
+	files='$(BUILT_EXTRA_DIST)' INSTALL README; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
-	  cp $$d/$$f $(distdir) || exit 1; done
+	  rm -f $(distdir)/$$f && cp $$d/$$f $(distdir) || exit 1; done
