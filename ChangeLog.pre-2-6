@@ -1,3 +1,9 @@
+2004-12-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/goption.c (print_entry): Don't show
+	the special G_OPTION_REMAINING entry.  (#161934,
+	Matthew F. Barnes)
+
 2004-12-20  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gconvert.c (g_locale_to_utf8, g_filename_to_uri): Improve

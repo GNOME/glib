@@ -372,6 +372,9 @@ print_entry (GOptionGroup       *group,
   if (entry->flags & G_OPTION_FLAG_HIDDEN)
     return;
 
+  if (entry->long_name[0] == 0)
+    return;
+
   str = g_string_new (NULL);
   
   if (entry->short_name)
