@@ -10,10 +10,16 @@ glib-config: glib-config.in
 
 DEFS += -DG_LOG_DOMAIN=g_log_domain_glib
 
-EXTRA_DIST =			\
-		glib.m4		\
-		glib.spec	\
-		sanity_check
+EXTRA_DIST = \
+	glib.m4		\
+	glib.spec	\
+	sanity_check	\
+	README.win32	\
+	glib.def	\
+	makefile.lcc	\
+	makefile.msc	\
+	glibconfig.h.win32
+
 
 # build . first, then SUBDIRS
 all-recursive-am: all-am

@@ -1,3 +1,118 @@
+Tue Oct 27 03:00:50 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: removed dummy structure definitions for struct _GCache,
+ 	_GTree, _GTimer, _GMemChunk, _GListAllocator and _GStringChunk.
+
+	* gutils.c: implement glib's inline functions _after_ all include
+ 	statements have been processed.
+	removed Tor's MAXPATHLEN check since there already was one supplied
+	further down in this file.
+	(LibMain): special cased the #ifdef __LCC__ case for NATIVE_WIN32,
+ 	since lcc maybe used on other platforms as well. why in hell is this
+	stuff required?
+	(g_get_any_init): for windows, if the user name is supplied, use it as
+	realname also.
+	in general, if there is no homedir specified, use the tmpdir that
+	we already figured.
+
+	* gtimer.c (g_timer_elapsed): changed a g_assert() statement to
+ 	g_return_if_fail().
+
+	* applied glib-tml-981020-0.patch for WIN32 portability, added some
+	comments and g_return_if_fail() statements, minor indentation fixes.
+	ChangeLog entry from Tor Lillqvist is appended.
+
+	* glib.h (struct dirent): use lower case structure members.
+
+	* glib.h: 
+	* makefile.lcc:
+	* makefile.msc:
+	s/COMPILING_GLIB/GLIB_COMPILATION/
+
+1998-10-20: Tor Lillqvist <tml@iki.fi>
+
+	* README.win32 glib.def gmodule.def
+	* glibconfig.h.win32 gmodule/gmoduleconf.h.win32:
+	New files for the Windows port. The .def files list exported
+	symbols for the Microsoft linker and compatibles.
+
+	* configure.in:
+	Added checks for some platform-dependent headers: pwd.h sys/param.h
+	sys/select.h sys/time.h sys/times.h unistd.h, and the function lstat.
+
+	* gerror.c:
+	Conditionalized inclusion of system-dependent headers. Changes
+	for Windows: no gdb to do a stack trace. Just call abort().
+
+	* glib.h:
+	Changes for Windows:
+
+	Added macros G_DIR_SEPARATOR, G_DIR_SEPARATOR_S for
+	platform-dependent file name syntax elements. Added macros
+	G_SEARCHPATH_SEPARATOR, G_SEARCHPATH_SEPARATOR_S for
+	platform-dependent search path syntax conventions.
+
+	Added pragmas for Microsoft C to make it more pedantic.
+
+	Marked GLib's global variables for export from DLL.
+
+	Added the function g_strescape that escapes backslashes.
+
+	Added functions g_path_is_absolute and g_path_skip_root to
+	handle platform-dependent file name syntax.
+
+	Added the function g_getenv that expands environment variables
+	that contain references to other environment variables, as is
+	typical on Windows NT.
+
+	Added the GIOChannel structure which is used to encapsulate the
+	IPC mechanism used by the GIMP's plug-ins, and possibly other
+	things later. On Unix a GIOChannel encapsulates just a file
+	descriptor. On Windows it contains a file handle from _pipe() and a
+	few other things related to the implementation of gdk_input_add
+	and GIMP plug-in communication. Subject to change.
+
+	Removed duplicate declarations of the version variables.
+
+	For the Microsoft compiler, declare own implementation of
+	ftruncate and the <dirent.h> functions.
+
+	* gmem.c:
+	Define a symbolic name  for the profiling table size.
+
+	* gmessages.c:
+	Conditionalized inclusion of unistd.h. On Windows, output using
+	stdio to stdout.
+
+	* gscanner.c:
+	Conditionalized inclusion of unistd.h. Added changes for
+	Microsoft C. Added CR to the skipped character set. Added small
+	workaround for MSC compiler bug in g_scanner_cur_value.
+	
+	* gstrfuncs.c:
+	Added the function g_strescape, which escapes the backslash
+	character. Needed especially when printing Windows filenames.
+
+	* gtimer.c:
+	Conditionalized inclusion of unistd.h and sys/time.h. Added
+	implementations for Windows.
+
+	* gutils.c:
+	Conditionalized inclusion of platform-dependent headers. Use
+	the platform-independent file name syntax macros.
+	Conditionalize code on platform-dependent features. Added the
+	functions g_path_is_absolute g_path_skip_root and g_getenv.
+	Added the GIOChannel-related functions. Added
+	compiler-dependent Unix compatibility functions for Windows.
+
+	* makefile.lcc makefile.msc:
+	New files. Compiler-specific makefiles for LCC-Win32 and
+	Microsoft C. Only Microsoft C is actually supported currently.
+	
+	* testglib.c:
+	Added pathname check cases for Windows. Added workaround for
+	bug in the Microsoft runtime library. Improved some tests a bit.
+	
 Sun Oct 25 01:24:01 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.4

@@ -17,6 +17,17 @@
  * Boston, MA 02111-1307, USA.
  */
 #include	<gmodule.h>
+#include	<stdlib.h>
+
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain(void         *hinstDll,
+	unsigned long dwReason,
+	void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
 
 G_MODULE_EXPORT void
 gplugin_a_func (void)

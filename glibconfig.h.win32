@@ -1,0 +1,119 @@
+/* glibconfig.h.win32. Handcrafted for Microsoft C  */
+
+#if !(defined(_MSC_VER) || defined(__LCC__))
+#error Unrecognized Win32 compiler, edit glibconfig.h by hand
+#endif
+
+/* Define to empty if the keyword does not work.  */
+/* #undef const */
+
+/* Define if you don't have vprintf but do have _doprnt.  */
+/* #undef HAVE_DOPRNT */
+
+/* Define if you have the vprintf function.  */
+#define HAVE_VPRINTF 1
+
+/* Define as __inline if that's what the C compiler calls it.  */
+#if defined (_MSC_VER)
+#define G_HAVE___INLINE
+#endif
+
+/* Define if you have the ANSI C header files.  */
+#define STDC_HEADERS 1
+
+/* #undef ENABLE_MEM_CHECK */
+/* #undef ENABLE_MEM_PROFILE */
+
+/* #undef G_COMPILED_WITH_DEBUGGING */
+/* #undef HAVE_BROKEN_WCTYPE */
+/* #undef HAVE_DOPRNT */
+/* #undef HAVE_LONG_DOUBLE */
+/* #undef HAVE_PWD_H */
+/* #undef HAVE_SYS_PARAM_H */
+/* #undef HAVE_SYS_SELECT_H */
+/* #undef HAVE_SYS_TIME_H */
+/* #undef HAVE_SYS_TIMES_H */
+/* #undef HAVE_UNISTD_H */
+/* #undef HAVE_VSNPRINTF */
+#define HAVE_VPRINTF 1
+#ifdef _MSC_VER
+#define HAVE_WCHAR_H 1
+#define HAVE_WCTYPE_H 1
+#else
+#undef HAVE_WCHAR_H
+#undef HAVE_WCTYPE_H
+#endif
+
+/* #undef NO_FD_SET */
+/* #undef NO_SYS_ERRLIST */
+#define NO_SYS_SIGLIST 1
+
+#define GLIB_MAJOR_VERSION 1
+#define GLIB_MINOR_VERSION 1
+#define GLIB_MICRO_VERSION 4
+#define GLIB_INTERFACE_AGE 0
+#define GLIB_BINARY_AGE 0
+
+/* The number of bytes in a char.  */
+#define SIZEOF_CHAR 1
+
+/* The number of bytes in a int.  */
+#define SIZEOF_INT 4
+
+/* The number of bytes in a long.  */
+#define SIZEOF_LONG 4
+
+/* The number of bytes in a long long.  */
+/* #undef SIZEOF_LONG_LONG */
+
+/* The number of bytes in a short.  */
+#define SIZEOF_SHORT 2
+
+/* The number of bytes in a void *.  */
+#define SIZEOF_VOID_P 4
+
+/* Define if you have the atexit function.  */
+#define HAVE_ATEXIT 1
+
+/* Define if you have the lstat function.  */
+/* #undef HAVE_LSTAT */
+
+/* Define if you have the memmove function.  */
+#define HAVE_MEMMOVE 1
+
+/* Define if you have the on_exit function.  */
+/* #undef HAVE_ON_EXIT */
+
+/* Define if you have the strcasecmp function.  */
+/* #undef HAVE_STRCASECMP */
+
+/* Define if you have the strerror function.  */
+#define HAVE_STRERROR 1
+
+/* Define if you have the strsignal function.  */
+/* #undef HAVE_STRSIGNAL */
+
+/* Define if you have the vsnprintf function.  */
+/* #undef HAVE_VSNPRINTF */
+
+/* Define if you have the getpid function.  */
+/* #undef HAVE_GETPID */
+
+/* Define if you have the <float.h> header file.  */
+#ifdef _MSC_VER
+#define HAVE_FLOAT_H 1
+#else
+/* #undef HAVE_FLOAT_H */
+#endif
+
+/* Define if you have the <limits.h> header file.  */
+#define HAVE_LIMITS_H 1
+
+/* Define if you have the <values.h> header file.  */
+/* #undef HAVE_VALUES_H */
+
+/* Define if this is Win32, possibly using the GNU-Win32 emulation layer. */
+#define WIN32 1
+
+/* Define if this is Win32 without GNU-Win32.  */
+#define NATIVE_WIN32 1

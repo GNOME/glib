@@ -1,3 +1,45 @@
+Tue Oct 27 04:00:11 1998  Tim Janik  <timj@gtk.org>
+
+	* testgmodule.c (main): changed the #ifdef WIN32 test to NATIVE_WIN32,
+	this needs to be more constistent throughout the code, do we go for
+	NATIVE_WIN32 or WIN32?
+
+	* gmodule.c (LibMain): special cased the #ifdef __LCC__ case for
+	NATIVE_WIN32, since lcc maybe used on other platforms as well.
+	* libgplugin_a.c (LibMain): 
+	* libgplugin_b.c (LibMain): 
+	likewise. not sure i like this special requirement for lcc in here.
+
+	* gmodule-dl.c (_g_module_build_path): 
+	feature empty "" directories and prepend the module name with "lib".
+
+	* gmodule-dld.c (_g_module_build_path): 
+	* gmodule-win32.c (_g_module_build_path): 
+	feature empty "" directories.
+	
+	* we need some more magic in the _g_module_build_path variants
+	so we don't append/prepend lib and .so, .sl or .dll for those names
+	that already contain it.
+
+	* applied patch from Tor Lillqvist for g_module_build_path() and
+	windows support.
+
+1998-10-20: Tor Lillqvist <tml@iki.fi>
+        
+	* gmodule/gmodule-win32.c:
+        New file.
+
+        * gmodule/gmodule.c gmodule/gmodule.h:
+        Added the funcion g_module_build_path that builds the path to
+        a module file, decorating the name according to the system's
+        conventions.  Added the Windows implementation.
+
+	* gmodule/libgplugin_a.c gmodule/libgplugin_b.c:
+        Added LibMain for LCC-Win32.
+
+        * gmodule/testgmodule.c:
+        Handle Windows dll names.
+
 1998-10-25  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gmodule.h: Remove `#pragma }'.

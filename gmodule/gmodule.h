@@ -28,12 +28,15 @@ extern const char      *g_log_domain_gmodule;
 #include <glib.h>
 
 
-/* exporting and importing functions,
- * we need autoconf support here to feature Windows dll stubs.
+/* exporting and importing functions, this is special cased
+ * to feature Windows dll stubs.
  */
 #define	G_MODULE_IMPORT		extern
-#define	G_MODULE_EXPORT
-
+#ifdef NATIVE_WIN32
+#  define	G_MODULE_EXPORT		__declspec(dllexport)
+#else /* !NATIVE_WIN32 */
+#  define	G_MODULE_EXPORT
+#endif /* !NATIVE_WIN32 */
 
 typedef enum
 {
@@ -69,6 +72,20 @@ gboolean	g_module_symbol		   (GModule		*module,
 /* retrive the file name from an existing module */
 gchar*		g_module_name		   (GModule		*module);
 
+
+/* Build the actual file name containing a module. `directory' is the
+ * directory where the module file is supposed to be, or NULL or empty
+ * in which case it should either be in the current directory or, on
+ * some operating systems, in some standard place, for instance on the
+ * PATH. Hence, to be absoultely sure to get the correct module,
+ * always pass in a directory. The file name consists of the directory,
+ * if supplied, and `module_name' suitably decorated accoring to
+ * the operating system's conventions (for instance lib*.so or *.dll).
+ *
+ * No checks are made that the file exists, or is of correct type.
+ */
+gchar*		g_module_build_path	  (const gchar		*directory,
+					   const gchar		*module_name);
 
 #ifdef __cplusplus
 }

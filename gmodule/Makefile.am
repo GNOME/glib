@@ -5,8 +5,11 @@ DEFS += -DG_LOG_DOMAIN=g_log_domain_gmodule
 
 EXTRA_DIST =	\
 		gmoduleconf.h.in \
+		gmodule.def	\
 		gmodule-dl.c	\
-		gmodule-dld.c
+		gmodule-dld.c	\
+		gmodule-win32.c	\
+		gmoduleconf.h.win32
 
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in

@@ -1,0 +1,99 @@
+## Makefile for building glib.dll and gmodule.dll with lcc
+## Use: make -f makefile.lcc
+## Note that testglib crashes when compiled with lcc...
+
+INSTALL = copy/y
+TOUCH = copy/y makefile.lcc
+
+CFLAGS = -I. -O
+CC = lcc
+LD = lcclnk
+
+BIN = C:\bin
+
+all : \
+	glibconfig.h	\
+	glib.dll	\
+	gmodule\gmoduleconf.h \
+	gmodule.dll	\
+	testglib.exe	\
+	testgmodule.exe
+
+install : all
+	$(INSTALL) glib.dll $(BIN)
+	$(INSTALL) gmodule.dll $(BIN)
+	$(TOUCH) install
+
+glib_OBJECTS = \
+	garray.obj	\
+	gcache.obj	\
+	gcompletion.obj	\
+	gdataset.obj	\
+	gerror.obj	\
+	ghash.obj	\
+	glist.obj	\
+	gmem.obj	\
+	gmessages.obj	\
+	gnode.obj	\
+	gprimes.obj	\
+	gslist.obj	\
+	gtimer.obj	\
+	gtree.obj	\
+	grel.obj	\
+	gstring.obj	\
+	gstrfuncs.obj	\
+	gscanner.obj	\
+	gutils.obj
+
+glib.dll : $(glib_OBJECTS)
+	$(LD) -dll -o glib.dll $(glib_OBJECTS)
+	implib glib.dll
+
+glibconfig.h: glibconfig.h.win32
+	copy glibconfig.h.win32 glibconfig.h
+
+.c.obj :
+	$(CC) $(CFLAGS) -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+gmodule_OBJECTS = \
+	gmodule.obj
+
+gmodule.dll : $(gmodule_OBJECTS)
+	$(LD) -dll -o gmodule.dll $(gmodule_OBJECTS) glib.lib 
+	implib gmodule.dll
+
+gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c 
+	$(CC) $(CFLAGS) -Igmodule -DCOMPILING_GMODULE -DG_LIB_DOMAIN=g_log_domain_gmodule gmodule\gmodule.c
+
+gmodule\gmoduleconf.h: gmodule\gmoduleconf.h.win32
+	copy gmodule\gmoduleconf.h.win32 gmodule\gmoduleconf.h
+
+testglib.exe : glib.dll testglib.obj
+	$(LD) -o testglib.exe testglib.obj glib.lib
+
+testglib.obj : testglib.c
+	$(CC) $(CFLAGS) testglib.c
+
+testgmodule.exe : glib.dll gmodule.dll testgmodule.obj libgplugin_a.dll libgplugin_b.dll
+	$(LD) -o testgmodule.exe testgmodule.obj testgmodule.def glib.lib gmodule.lib
+
+testgmodule.obj : gmodule\testgmodule.c
+	$(CC) $(CFLAGS) -Igmodule gmodule\testgmodule.c
+
+libgplugin_a.dll : libgplugin_a.obj
+	$(LD) -dll -o libgplugin_a.dll libgplugin_a.obj glib.lib gmodule.lib
+
+libgplugin_a.obj : gmodule\libgplugin_a.c
+	$(CC) $(CFLAGS) -Igmodule gmodule\libgplugin_a.c
+
+libgplugin_b.dll : libgplugin_b.obj
+	$(LD) -dll -o libgplugin_b.dll libgplugin_b.obj /link glib.lib gmodule.lib
+
+libgplugin_b.obj : gmodule\libgplugin_b.c
+	$(CC) $(CFLAGS) -Igmodule gmodule\libgplugin_b.c
+
+clean:
+	del *.exe
+	del *.obj
+	del *.dll
+	del *.lib

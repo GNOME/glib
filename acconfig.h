@@ -43,9 +43,14 @@
 #undef HAVE_FLOAT_H
 #undef HAVE_LIMITS_H
 #undef HAVE_LONG_DOUBLE
+#undef HAVE_PWD_H
+#undef HAVE_SYS_PARAM_H
 #undef HAVE_SYS_SELECT_H
+#undef HAVE_SYS_TIME_H
+#undef HAVE_SYS_TIMES_H
 #undef HAVE_STRERROR
 #undef HAVE_STRSIGNAL
+#undef HAVE_UNISTD_H
 #undef HAVE_VSNPRINTF
 #undef HAVE_VALUES_H
 #undef HAVE_VPRINTF
@@ -73,6 +78,9 @@
 #undef GLIB_MICRO_VERSION
 #undef GLIB_INTERFACE_AGE
 #undef GLIB_BINARY_AGE
+
+#undef WIN32
+#undef NATIVE_WIN32
 
 /* #undef PACKAGE */
 /* #undef VERSION */

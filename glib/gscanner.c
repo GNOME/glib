@@ -25,13 +25,16 @@
 #include	<stdarg.h>
 #include	<string.h>
 #include	<stdio.h>
+#include	"glib.h"
+#ifdef HAVE_UNISTD_H
 #include	<unistd.h>
+#endif
 #include	<errno.h>
 #include	<sys/types.h>	/* needed for sys/stat.h */
 #include	<sys/stat.h>
-#include	"glib.h"
-
-
+#ifdef _MSC_VER
+#include	<io.h>		/* For _read() */
+#endif
 
 /* --- defines --- */
 #define	to_lower(c)				( \
@@ -61,7 +64,7 @@ struct	_GScannerKey
 static GScannerConfig g_scanner_config_template =
 {
   (
-   " \t\n"
+   " \t\r\n"
    )			/* cset_skip_characters */,
   (
    G_CSET_a_2_z
@@ -613,10 +616,15 @@ g_scanner_cur_value (GScanner *scanner)
 {
   GTokenValue v;
   
-  v.v_int = 0;
   g_return_val_if_fail (scanner != NULL, v);
+
+  /* MSC isn't capable of handling return scanner->value; ? */
+
+  v.v_int = 0;
   
-  return scanner->value;
+  v = scanner->value;
+
+  return v;
 }
 
 guint
@@ -1064,9 +1072,11 @@ g_scanner_stat_mode (const gchar *filename)
   gint		st_mode;
   
   stat_buf = g_new0 (struct stat, 1);
-  
+#ifdef HAVE_LSTAT  
   lstat (filename, stat_buf);
-  
+#else
+  stat (filename, stat_buf);
+#endif
   st_mode = stat_buf->st_mode;
   
   g_free (stat_buf);

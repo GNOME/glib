@@ -951,6 +951,9 @@ g_strcasecmp (const gchar *s1,
 #else
   gint c1, c2;
   
+  g_return_val_if_fail (s1 != NULL, 0);
+  g_return_val_if_fail (s2 != NULL, 0);
+
   while (*s1 && *s2)
     {
       /* According to A. Cox, some platforms have islower's that
@@ -986,6 +989,38 @@ g_strdelimit (gchar	  *string,
     }
 
   return string;
+}
+
+gchar*
+g_strescape (gchar *string)
+{
+  gchar *q;
+  gchar *escaped;
+  guint backslashes = 0;
+  gchar *p = string;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  while (*p != '\000')
+    backslashes += (*p++ == '\\');
+
+  if (!backslashes)
+    return g_strdup (string);
+
+  escaped = g_new (gchar, strlen (string) + backslashes + 1);
+
+  p = string;
+  q = escaped;
+
+  while (*p != '\000')
+    {
+      if (*p == '\\')
+	*q++ = '\\';
+      *q++ = *p++;
+    }
+  *q = '\000';
+
+  return escaped;
 }
 
 /* blame Elliot for these next five routines */

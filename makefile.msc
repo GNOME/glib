@@ -1,0 +1,110 @@
+## Makefile for building the GLib and gmodule dll with Microsoft C
+## Use: nmake -f makefile.msc install
+
+# Change this to wherever you want to install the dlls
+BIN = C:\bin
+
+# cl -? described the options
+CC = cl -G5 -GF -Ox -W3 -D_DLL -nologo
+
+LDFLAGS = /link /nodefaultlib:libc msvcrt.lib # /debug:full /debugtype:cv 
+INSTALL = copy
+TOUCH = copy makefile.msc
+
+GLIB_VER = 1.1
+
+CFLAGS = -I. 
+
+all : \
+	glibconfig.h	\
+	glib-$(GLIB_VER).dll	\
+	gmodule\gmoduleconf.h \
+	gmodule-$(GLIB_VER).dll	\
+	testglib.exe	\
+	testgmodule.exe
+
+install : all
+	$(INSTALL) glib-$(GLIB_VER).dll $(BIN)
+	$(INSTALL) gmodule-$(GLIB_VER).dll $(BIN)
+	$(TOUCH) install
+
+glib_OBJECTS = \
+	garray.obj	\
+	gcache.obj	\
+	gcompletion.obj	\
+	gdataset.obj	\
+	gerror.obj	\
+	ghook.obj	\
+	ghash.obj	\
+	glist.obj	\
+	gmem.obj	\
+	gmessages.obj	\
+	gnode.obj	\
+	gprimes.obj	\
+	gslist.obj	\
+	gtimer.obj	\
+	gtree.obj	\
+	grel.obj	\
+	gstring.obj	\
+	gstrfuncs.obj	\
+	gscanner.obj	\
+	gutils.obj
+
+glib-$(GLIB_VER).dll : $(glib_OBJECTS)
+	$(CC) $(CFLAGS) -MD -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) user32.lib advapi32.lib $(LDFLAGS) /def:glib.def
+
+glibconfig.h: glibconfig.h.win32
+	copy glibconfig.h.win32 glibconfig.h
+
+.c.obj :
+	$(CC) $(CFLAGS) -GD -c -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $<
+
+gmodule_OBJECTS = \
+	gmodule.obj
+
+gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS)
+	$(CC) $(CFLAGS) -MD -LD -Fegmodule-$(GLIB_VER).dll $(gmodule_OBJECTS) glib-$(GLIB_VER).lib $(LDFLAGS) /def:gmodule.def
+
+gmodule.obj : gmodule\gmodule.c gmodule\gmodule-win32.c
+	$(CC) $(CFLAGS) -Igmodule -c -DG_LIB_DOMAIN=g_log_domain_gmodule gmodule\gmodule.c
+
+gmodule\gmoduleconf.h: gmodule\gmoduleconf.h.win32
+	copy gmodule\gmoduleconf.h.win32 gmodule\gmoduleconf.h
+
+testglib.exe : glib-$(GLIB_VER).dll testglib.obj
+	$(CC) $(CFLAGS) -MD -Fetestglib.exe testglib.obj glib-$(GLIB_VER).lib $(LDFLAGS) /map
+
+testglib.obj : testglib.c
+	$(CC) -c $(CFLAGS) testglib.c
+
+testgmodule.exe : glib-$(GLIB_VER).dll gmodule-$(GLIB_VER).dll testgmodule.obj libgplugin_a.dll libgplugin_b.dll
+	$(CC) $(CFLAGS) -MD testgmodule.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib $(LDFLAGS)
+
+testgmodule.obj : gmodule\testgmodule.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule\testgmodule.c
+
+libgplugin_a.dll : libgplugin_a.obj
+	$(CC) $(CFLAGS) -MD -LD libgplugin_a.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib $(LDFLAGS)
+
+libgplugin_a.obj : gmodule\libgplugin_a.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule\libgplugin_a.c
+
+libgplugin_b.dll : libgplugin_b.obj
+	$(CC) $(CFLAGS) -MD -LD libgplugin_b.obj glib-$(GLIB_VER).lib gmodule-$(GLIB_VER).lib  $(LDFLAGS)
+
+libgplugin_b.obj : gmodule\libgplugin_b.c
+	$(CC) $(CFLAGS) -Igmodule -c gmodule\libgplugin_b.c
+
+clean:
+	del *.exe
+	del *.obj
+	del *.dll
+	del *.lib
+	del *.err
+	del *.map
+	del *.sym
+	del *.exp
+	del *.lk1
+	del *.mk1
+	del *.pdb
+	del *.ilk

@@ -20,7 +20,7 @@
 #include	<gmodule.h>
 
 
-void
+G_MODULE_EXPORT void
 g_clash_func (void)
 {
   g_print ("GModule: Hello global clash\n");
@@ -44,8 +44,13 @@ main (int   arg,
   string = g_get_current_dir ();
   g_print ("testgmodule (%s):\n", string);
 
+#ifdef NATIVE_WIN32
+  plugin_a = g_strconcat (string, "\\libgplugin_a.dll", NULL);
+  plugin_b = g_strconcat (string, "\\libgplugin_b.dll", NULL);
+#else /* !NATIVE_WIN32 */
   plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.so", NULL);
   plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.so", NULL);
+#endif /* NATIVE_WIN32 */
   g_free (string);
 
   /* module handles

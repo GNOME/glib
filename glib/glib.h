@@ -34,6 +34,53 @@
 #endif
 
 
+#ifdef NATIVE_WIN32
+
+/* On native Win32, directory separator is the backslash, and search path
+ * separator is the semicolon.
+ */
+#define G_DIR_SEPARATOR '\\'
+#define G_DIR_SEPARATOR_S "\\"
+#define G_SEARCHPATH_SEPARATOR ';'
+#define G_SEARCHPATH_SEPARATOR_S ";"
+
+#else  /* !NATIVE_WIN32 */
+
+/* Unix */
+
+#define G_DIR_SEPARATOR '/'
+#define G_DIR_SEPARATOR_S "/"
+#define G_SEARCHPATH_SEPARATOR ':'
+#define G_SEARCHPATH_SEPARATOR_S ":"
+
+#endif /* !NATIVE_WIN32 */
+
+#ifdef _MSC_VER
+/* Make MSVC more pedantic, this is a recommended pragma list
+ * from _Win32_Programming_ by Rector and Newcomer.
+ */
+#pragma warning(error:4002)
+#pragma warning(error:4003)
+#pragma warning(1:4010)
+#pragma warning(error:4013)
+#pragma warning(1:4016)
+#pragma warning(error:4020)
+#pragma warning(error:4021)
+#pragma warning(error:4027)
+#pragma warning(error:4029)
+#pragma warning(error:4033)
+#pragma warning(error:4035)
+#pragma warning(error:4045)
+#pragma warning(error:4047)
+#pragma warning(error:4049)
+#pragma warning(error:4053)
+#pragma warning(error:4071)
+#pragma warning(disable:4101)
+#pragma warning(error:4150)
+
+#pragma warning(disable:4244)	/* No possible loss of data warnings, please */
+#endif /* _MSC_VER */
+
 /* glib provides definitions for the extrema of many
  *  of the standard types. These are:
  * G_MINFLOAT
@@ -599,13 +646,24 @@ typedef gint32	GTime;
 
 
 /* Glib version.
+ * we prefix variable declarations so they can
+ * properly get exported in windows dlls.
  */
-extern const guint glib_major_version;
-extern const guint glib_minor_version;
-extern const guint glib_micro_version;
-extern const guint glib_interface_age;
-extern const guint glib_binary_age;
+#ifdef NATIVE_WIN32
+#  ifdef GLIB_COMPILATION
+#    define GUTILS_C_VAR __declspec(dllexport)
+#  else /* !GLIB_COMPILATION */
+#    define GUTILS_C_VAR __declspec(dllimport)
+#  endif /* !GLIB_COMPILATION */
+#else /* !NATIVE_WIN32 */
+#  define GUTILS_C_VAR extern
+#endif /* !NATIVE_WIN32 */
 
+GUTILS_C_VAR const guint glib_major_version;
+GUTILS_C_VAR const guint glib_minor_version;
+GUTILS_C_VAR const guint glib_micro_version;
+GUTILS_C_VAR const guint glib_interface_age;
+GUTILS_C_VAR const guint glib_binary_age;
 
 /* Forward declarations of glib types.
  */
@@ -634,6 +692,7 @@ typedef struct _GTimer		GTimer;
 typedef struct _GTree		GTree;
 typedef struct _GTuples		GTuples;
 typedef union  _GTokenValue	GTokenValue;
+typedef struct _GIOChannel	GIOChannel;
 
 
 typedef enum
@@ -773,13 +832,6 @@ struct _GDebugKey
   gchar *key;
   guint	 value;
 };
-
-struct _GCache { gint dummy; };
-struct _GTree { gint dummy; };
-struct _GTimer { gint dummy; };
-struct _GMemChunk { gint dummy; };
-struct _GListAllocator { gint dummy; };
-struct _GStringChunk { gint dummy; };
 
 
 /* Doubly linked lists
@@ -1172,7 +1224,7 @@ void g_on_error_stack_trace (const gchar *prg_name);
 
 /* Logging mechanism
  */
-extern const gchar			*g_log_domain_glib;
+extern	        const gchar		*g_log_domain_glib;
 guint		g_log_set_handler	(const gchar	*log_domain,
 					 GLogLevelFlags	 log_levels,
 					 GLogFunc	 log_func,
@@ -1350,8 +1402,6 @@ gint	 g_strcasecmp		(const gchar *s1,
 void	 g_strdown		(gchar	     *string);
 void	 g_strup		(gchar	     *string);
 void	 g_strreverse		(gchar	     *string);
-gpointer g_memdup		(gconstpointer mem,
-				 guint	       byte_size);
 /* removes leading spaces */
 gchar*   g_strchug              (gchar        *string);
 /* removes trailing spaces */
@@ -1375,6 +1425,9 @@ gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gchar*   g_strjoin		(const gchar  *separator,
 				 ...); /* NULL terminated */
+gchar*	 g_strescape		(gchar	      *string);
+gpointer g_memdup		(gconstpointer mem,
+				 guint	       byte_size);
 
 /* NULL terminated string arrays.
  * g_strsplit() splits up string into max_tokens tokens at delim and
@@ -1422,10 +1475,15 @@ gint	g_vsnprintf		(gchar	     *string,
 				 gchar const *format,
 				 va_list      args);
 gchar*	g_basename		(const gchar *file_name);
+/* Check if a file name is an absolute path */
+gboolean g_path_is_absolute	(const gchar *file_name);
+/* In case of absolute paths, skip the root part */
+gchar*  g_path_skip_root	(gchar       *file_name);
 
 /* strings are newly allocated with g_malloc() */
 gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
+gchar*  g_getenv		(const gchar *variable);
 
 /* We make the assumption that if memmove isn't available, then
  * bcopy will do the job. This isn't safe everywhere. (bcopy can't
@@ -1506,7 +1564,6 @@ g_bit_storage (guint number)
   return n_bits;
 }
 #endif	/* G_CAN_INLINE */
-
 
 /* String Chunks
  */
@@ -1996,14 +2053,124 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
  * next largest prime, or the highest it knows about which is about
  * MAXINT/4.
  */
-
 guint	   g_spaced_primes_closest (guint num);
 
-/* Glib version.
+
+/* IO Channels.
+ * These are used for plug-in communication in the GIMP, for instance.
+ * On Unix, it's simply an encapsulated file descriptor (a pipe).
+ * On Windows, it's a handle to an anonymouos pipe, *and* (in the case
+ * of the writable end) a thread id to post a message to when you have written
+ * stuff.
  */
-extern const guint glib_major_version;
-extern const guint glib_minor_version;
-extern const guint glib_micro_version;
+struct _GIOChannel
+{
+  gint fd;			/* file handle (pseudo such in Win32) */
+#ifdef NATIVE_WIN32
+  guint peer;			/* thread to post message to */
+  guint peer_fd;		/* read handle (in the other process) */
+  guint offset;			/* counter of accumulated bytes, to
+				 * be included in the message posted
+				 * so we keep in sync.
+				 */
+  guint peer_offset;		/* in input channels where the writer's
+				 * offset is, so we don't try to read too much
+				 */
+#endif
+};
+
+GIOChannel *g_iochannel_new            (gint        fd);
+void        g_iochannel_free           (GIOChannel *channel);
+void        g_iochannel_close_and_free (GIOChannel *channel);
+void        g_iochannel_wakeup_peer    (GIOChannel *channel);
+#ifndef NATIVE_WIN32
+#  define   g_iochannel_wakeup_peer(channel) G_STMT_START { } G_STMT_END
+#endif
+
+
+/* Windows emulation stubs for common unix functions
+ */
+#ifdef NATIVE_WIN32
+
+#define MAXPATHLEN 1024
+
+#ifdef _MSC_VER
+typedef int pid_t;
+
+/* These POSIXish functions are available in the Microsoft C library
+ * prefixed with underscore (which of course technically speaking is
+ * the Right Thing, as they are non-ANSI. Not that being non-ANSI
+ * prevents Microsoft from practically requiring you to include
+ * <windows.h> every now and then...).
+ *
+ * You still need to include the appropriate headers to get the
+ * prototypes, <io.h> or <direct.h>.
+ *
+ * For some functions, we provide emulators in glib, which are prefixed
+ * with gwin_.
+ */
+#define getcwd			_getcwd
+#define getpid			_getpid
+#define access			_access
+#define open			_open
+#define read			_read
+#define write			_write
+#define lseek			_lseek
+#define close			_close
+#define pipe(phandles)		_pipe (phandles, 4096, _O_BINARY)
+#define popen			_popen
+#define pclose			_pclose
+#define fdopen			_fdopen
+#define ftruncate(fd, size)	gwin_ftruncate (fd, size)
+#define opendir			gwin_opendir
+#define readdir			gwin_readdir
+#define rewinddir		gwin_rewinddir
+#define closedir		gwin_closedir
+
+#define NAME_MAX 255
+
+struct DIR
+{
+  gchar    *dir_name;
+
+  gboolean  just_opened;
+  guint     find_file_handle;
+  gpointer  find_file_data;
+};
+typedef struct DIR DIR;
+struct dirent
+{
+  gchar  d_name[NAME_MAX + 1];
+};
+
+/* emulation functions */
+extern int	gwin_ftruncate	(gint		 f,
+				 guint		 size);
+DIR*		gwin_opendir	(const gchar	*dirname);
+struct dirent*	gwin_readdir  	(DIR		*dir);
+void		gwin_rewinddir 	(DIR		*dir);
+gint		gwin_closedir  	(DIR		*dir);
+
+#endif /* _MSC_VER */
+
+#define g_ntohl(x) \
+  ((guint32)((((guint32)(x) & 0x000000ffU) << 24) | \
+	     (((guint32)(x) & 0x0000ff00U) <<  8) | \
+	     (((guint32)(x) & 0x00ff0000U) >>  8) | \
+	     (((guint32)(x) & 0xff000000U) >> 24)))
+
+#define g_htonl(x)	g_ntohl(x)
+
+#define g_ntohs(x) \
+  ((guint16)((((guint16)(x) & 0x00ff) << 8) | \
+	     (((guint16)(x) & 0xff00) >> 8)))
+
+#define g_htons(x)	g_ntohs(x)
+
+#endif /* NATIVE_WIN32 */
+
+
+
 
 #ifdef __cplusplus
 }

@@ -20,13 +20,19 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "glib.h"
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+#ifdef HAVE_SYS_TIMES_H
 #include <sys/times.h>
+#endif
 #include <sys/types.h>
 
 #include <time.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include "glib.h"
+#endif
 
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
@@ -36,6 +42,9 @@
 #include <string.h> /* for bzero on BSD systems */
 #endif
 
+#ifdef _MSC_VER
+#include <process.h>		/* For _getpid() */
+#endif
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
@@ -115,6 +124,7 @@ g_on_error_query (const gchar *prg_name)
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
+#ifndef NATIVE_WIN32
   pid_t pid;
   gchar buf[16];
   gchar *args[4] = { "gdb", NULL, NULL, NULL };
@@ -142,6 +152,9 @@ g_on_error_stack_trace (const gchar *prg_name)
   while (glib_on_error_halt)
     ;
   glib_on_error_halt = TRUE;
+#else
+  abort ();
+#endif
 }
 
 static gboolean stack_trace_done = FALSE;
@@ -155,6 +168,7 @@ stack_trace_sigchld (int signum)
 static void
 stack_trace (char **args)
 {
+#ifndef NATIVE_WIN32
   pid_t pid;
   int in_fd[2];
   int out_fd[2];
@@ -249,4 +263,7 @@ stack_trace (char **args)
   close (out_fd[0]);
   close (out_fd[1]);
   _exit (0);
+#else
+  abort ();
+#endif
 }

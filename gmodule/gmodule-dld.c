@@ -112,3 +112,13 @@ _g_module_symbol (gpointer	  handle,
   
   return p;
 }
+
+static gchar*
+_g_module_build_path (const gchar *directory,
+		      const gchar *module_name)
+{
+  if (directory)
+    return g_strconcat (directory, "/", module_name, ".sl", NULL);
+  else
+    return g_strconcat (module_name, ".sl", NULL);
+}

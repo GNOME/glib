@@ -51,6 +51,8 @@ static void		_g_module_close		(gpointer	 handle,
 static gpointer		_g_module_self		(void);
 static gpointer		_g_module_symbol	(gpointer	 handle,
 						 const gchar	*symbol_name);
+static gchar*		_g_module_build_path	(const gchar	*directory,
+						 const gchar	*module_name);
 static inline void	g_module_set_error	(const gchar	*error);
 static inline GModule*	g_module_find_by_handle (gpointer	 handle);
 static inline GModule*	g_module_find_by_name	(const gchar	*name);
@@ -108,6 +110,8 @@ g_module_set_error (const gchar *error)
 #include "gmodule-dl.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_DLD)
 #include "gmodule-dld.c"
+#elif	(G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
+#include "gmodule-win32.c"
 #else
 #undef	CHECK_ERROR
 #define	CHECK_ERROR(rv)	{ g_module_set_error ("unsupported"); return rv; }
@@ -134,6 +138,16 @@ _g_module_symbol (gpointer	 handle,
   return NULL;
 }
 #endif	/* no implementation */
+
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain (void         *hinstDll,
+	 unsigned long dwReason,
+	 void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
 
 
 /* --- functions --- */
@@ -353,4 +367,13 @@ g_module_name (GModule *module)
     return "main";
   
   return module->file_name;
+}
+
+gchar*
+g_module_build_path (const gchar *directory,
+		     const gchar *module_name)
+{
+  g_return_val_if_fail (module_name != NULL, NULL);
+  
+  return _g_module_build_path (directory, module_name);
 }

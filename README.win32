@@ -1,0 +1,7 @@
+For more information about the Windows port, see
+http://www.iki.fi/tml/gimp/win32/ .
+
+As for now, only Microsoft C is really supported. Before compiling,
+check the BIN definition in makefile.msc. Compile with `nmake -f
+makefile.msc`. Install with `nmake -f makefile.msc install`. Gnu-Win32
+with egcs and maybe LCC-Win32 support will be added later.

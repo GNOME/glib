@@ -20,8 +20,25 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include "glib.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef NATIVE_WIN32
+/* Just use stdio. If we're out of memroy, we're hosed anyway. */
+#undef write
+
+static inline int
+write (FILE       *fd,
+       const char *buf,
+       int         len)
+{
+  fwrite (buf, len, 1, fd);
+
+  return len;
+}
+#endif /* NATIVE_WIN32 */
 
 
 /* --- structures --- */
@@ -334,7 +351,11 @@ g_log_default_handler (const gchar    *log_domain,
 		       const gchar    *message,
 		       gpointer	       unused_data)
 {
+#ifdef NATIVE_WIN32
+  FILE *fd;
+#else
   gint fd;
+#endif
   gboolean in_recursion;
   gboolean is_fatal;
   
@@ -345,7 +366,14 @@ g_log_default_handler (const gchar    *log_domain,
   if (!message)
     message = "g_log_default_handler(): (NULL) message";
   
+#ifdef NATIVE_WIN32
+  /* Use just stdout as stderr is hard to get redirected from the
+   * DOS prompt.
+   */
+  fd = stdout;
+#else
   fd = (log_level >= G_LOG_LEVEL_MESSAGE) ? 1 : 2;
+#endif
   
   switch (log_level)
     {

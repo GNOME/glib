@@ -295,6 +295,7 @@ main (int   argc,
     gchar *filename;
     gchar *dirname;
   } dirname_checks[] = {
+#ifndef NATIVE_WIN32
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },
@@ -306,6 +307,18 @@ main (int   argc,
     { "a/b", "a" },
     { "a/b/", "a/b" },
     { "c///", "c" },
+#else
+    { "\\", "\\" },
+    { ".\\\\\\\\", "." },
+    { ".", "." },
+    { "..", "." },
+    { "..\\", ".." },
+    { "..\\\\\\\\", ".." },
+    { "", "." },
+    { "a\\b", "a" },
+    { "a\\b\\", "a\\b" },
+    { "c\\\\\\", "c" },
+#endif
   };
   guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
 
@@ -625,12 +638,32 @@ main (int   argc,
   for (i = 0; i < 10000; i++)
     g_string_append_c (string1, 'a'+(i%26));
 
+#if !(defined (_MSC_VER) || defined (__LCC__))
+  /* MSVC and LCC use the same run-time C library, which doesn't like
+     the %10000.10000f format... */
   g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%10000.10000f",
 		    "this pete guy sure is a wuss, like he's the number ",
 		    1,
 		    " wuss.  everyone agrees.\n",
 		    string1->str,
 		    10, 666, 15, 15, 666.666666666, 666.666666666);
+#else
+  g_string_sprintf (string2, "%s|%0100d|%s|%s|%0*d|%*.*f|%100.100f",
+		    "this pete guy sure is a wuss, like he's the number ",
+		    1,
+		    " wuss.  everyone agrees.\n",
+		    string1->str,
+		    10, 666, 15, 15, 666.666666666, 666.666666666);
+#endif
+
+  g_print ("string2 length = %d...\n", string2->len);
+  string2->str[70] = '\0';
+  g_print ("first 70 chars:\n%s\n", string2->str);
+  string2->str[141] = '\0';
+  g_print ("next 70 chars:\n%s\n", string2->str+71);
+  string2->str[212] = '\0';
+  g_print ("and next 70:\n%s\n", string2->str+142);
+  g_print ("last 70 chars:\n%s\n", string2->str+string2->len - 70);
 
   g_print ("ok\n");
 
@@ -648,7 +681,23 @@ main (int   argc,
 
   g_print ("ok\n");
 
-  g_print ("checking g_strcasecmp...\n");
+  g_print ("checking g_strcasecmp...");
+  g_assert (g_strcasecmp ("FroboZZ", "frobozz") == 0);
+  g_assert (g_strcasecmp ("frobozz", "frobozz") == 0);
+  g_assert (g_strcasecmp ("frobozz", "FROBOZZ") == 0);
+  g_assert (g_strcasecmp ("FROBOZZ", "froboz") != 0);
+  g_assert (g_strcasecmp ("", "") == 0);
+  g_assert (g_strcasecmp ("!#%&/()", "!#%&/()") == 0);
+  g_assert (g_strcasecmp ("a", "b") < 0);
+  g_assert (g_strcasecmp ("a", "B") < 0);
+  g_assert (g_strcasecmp ("A", "b") < 0);
+  g_assert (g_strcasecmp ("A", "B") < 0);
+  g_assert (g_strcasecmp ("b", "a") > 0);
+  g_assert (g_strcasecmp ("b", "A") > 0);
+  g_assert (g_strcasecmp ("B", "a") > 0);
+  g_assert (g_strcasecmp ("B", "A") > 0);
+
+  g_print ("ok\n");
 
   /* g_debug (argv[0]); */
 
@@ -757,7 +806,7 @@ main (int   argc,
   g_print ("ok\n");
 
   g_printerr ("g_log tests:");
-  g_warning ("harmless warning");
+  g_warning ("harmless warning with parameters: %d %s %#x", 42, "Boo", 12345);
   g_message ("the next warning is a test:");
   string = NULL;
   g_print (string);

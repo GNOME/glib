@@ -23,6 +23,7 @@
 /* #define ENABLE_MEM_PROFILE */
 /* #define ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS */
 /* #define ENABLE_MEM_CHECK */
+#define MEM_PROFILE_TABLE_SIZE 8192
 
 /*
  * This library can check for some attempts to do illegal things to
@@ -114,7 +115,7 @@ static gint   g_mem_chunk_area_search  (GMemArea *a,
 static GRealMemChunk *mem_chunks = NULL;
 
 #ifdef ENABLE_MEM_PROFILE
-static gulong allocations[4096] = { 0 };
+static gulong allocations[MEM_PROFILE_TABLE_SIZE] = { 0 };
 static gulong allocated_mem = 0;
 static gulong freed_mem = 0;
 static gint allocating_for_mem_chunk = 0;
@@ -171,10 +172,10 @@ g_malloc (gulong size)
 #  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!allocating_for_mem_chunk) {
 #  endif
-    if (size <= 4095)
+    if (size <= MEM_PROFILE_TABLE_SIZE - 1)
       allocations[size-1] += 1;
     else
-      allocations[4095] += 1;
+      allocations[MEM_PROFILE_TABLE_SIZE - 1] += 1;
     allocated_mem += size;
 #  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
@@ -234,10 +235,10 @@ g_malloc0 (gulong size)
 #    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!allocating_for_mem_chunk) {
 #    endif
-    if (size <= 4095)
+    if (size <= (MEM_PROFILE_TABLE_SIZE - 1))
       allocations[size-1] += 1;
     else
-      allocations[4095] += 1;
+      allocations[MEM_PROFILE_TABLE_SIZE - 1] += 1;
     allocated_mem += size;
 #    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
@@ -318,10 +319,10 @@ g_realloc (gpointer mem,
 #ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!allocating_for_mem_chunk) {
 #endif
-    if (size <= 4095)
+    if (size <= (MEM_PROFILE_TABLE_SIZE - 1))
       allocations[size-1] += 1;
     else
-      allocations[4095] += 1;
+      allocations[MEM_PROFILE_TABLE_SIZE - 1] += 1;
     allocated_mem += size;
 #ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
@@ -375,14 +376,15 @@ g_mem_profile (void)
 #ifdef ENABLE_MEM_PROFILE
   gint i;
   
-  for (i = 0; i < 4095; i++)
+  for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
     if (allocations[i] > 0)
       g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
 	     "%lu allocations of %d bytes\n", allocations[i], i + 1);
   
-  if (allocations[4095] > 0)
+  if (allocations[MEM_PROFILE_TABLE_SIZE - 1] > 0)
     g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
-	   "%lu allocations of greater than 4095 bytes\n", allocations[4095]);
+	   "%lu allocations of greater than %d bytes\n",
+	   allocations[MEM_PROFILE_TABLE_SIZE - 1], MEM_PROFILE_TABLE_SIZE - 1);
   g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "%lu bytes allocated\n", allocated_mem);
   g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "%lu bytes freed\n", freed_mem);
   g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "%lu bytes in use\n", allocated_mem - freed_mem);

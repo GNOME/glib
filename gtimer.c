@@ -16,20 +16,32 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include <sys/time.h>
-#include <unistd.h>
 #include "glib.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+#ifndef NATIVE_WIN32
+#include <sys/time.h>
+#endif /* NATIVE_WIN32 */
 
+#ifdef NATIVE_WIN32
+#include <windows.h>
+#endif /* NATIVE_WIN32 */
 
 typedef struct _GRealTimer GRealTimer;
 
 struct _GRealTimer
 {
+#ifdef NATIVE_WIN32
+  DWORD start;
+  DWORD end;
+#else /* !NATIVE_WIN32 */
   struct timeval start;
   struct timeval end;
-  gint active;
-};
+#endif /* !NATIVE_WIN32 */
 
+  guint active : 1;
+};
 
 GTimer*
 g_timer_new (void)
@@ -39,7 +51,11 @@ g_timer_new (void)
   timer = g_new (GRealTimer, 1);
   timer->active = TRUE;
 
+#ifdef NATIVE_WIN32
+  timer->start = GetTickCount ();
+#else /* !NATIVE_WIN32 */
   gettimeofday (&timer->start, NULL);
+#endif /* !NATIVE_WIN32 */
 
   return ((GTimer*) timer);
 }
@@ -60,8 +76,13 @@ g_timer_start (GTimer *timer)
   g_assert (timer != NULL);
 
   rtimer = (GRealTimer*) timer;
+  rtimer->active = TRUE;
+
+#ifdef NATIVE_WIN32
+  rtimer->start = GetTickCount ();
+#else /* !NATIVE_WIN32 */
   gettimeofday (&rtimer->start, NULL);
-  rtimer->active = 1;
+#endif /* !NATIVE_WIN32 */
 }
 
 void
@@ -72,8 +93,13 @@ g_timer_stop (GTimer *timer)
   g_assert (timer != NULL);
 
   rtimer = (GRealTimer*) timer;
+  rtimer->active = FALSE;
+
+#ifdef NATIVE_WIN32
+  rtimer->end = GetTickCount ();
+#else /* !NATIVE_WIN32 */
   gettimeofday (&rtimer->end, NULL);
-  rtimer->active = 0;
+#endif /* !NATIVE_WIN32 */
 }
 
 void
@@ -84,7 +110,12 @@ g_timer_reset (GTimer *timer)
   g_assert (timer != NULL);
 
   rtimer = (GRealTimer*) timer;
+
+#ifdef NATIVE_WIN32
+   rtimer->start = GetTickCount ();
+#else /* !NATIVE_WIN32 */
   gettimeofday (&rtimer->start, NULL);
+#endif /* !NATIVE_WIN32 */
 }
 
 gdouble
@@ -92,13 +123,38 @@ g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)
 {
   GRealTimer *rtimer;
-  struct timeval elapsed;
   gdouble total;
+#ifndef NATIVE_WIN32
+  struct timeval elapsed;
+#endif /* NATIVE_WIN32 */
 
-  g_assert (timer != NULL);
+  g_return_val_if_fail (timer != NULL, 0);
 
   rtimer = (GRealTimer*) timer;
 
+#ifdef NATIVE_WIN32
+  if (rtimer->active)
+    rtimer->end = GetTickCount ();
+
+  /* Check for wraparound, which happens every 49.7 days.
+   * No, Win95 machines probably are never running for that long,
+   * but NT machines are.
+   */
+  if (rtimer->end < rtimer->start)
+    total = (UINT_MAX - (rtimer->start - rtimer->end)) / 1000.0;
+  else
+    total = (rtimer->end - rtimer->start) / 1000.0;
+
+  if (microseconds)
+    {
+      if (rtimer->end < rtimer->start)
+	*microseconds =
+	  ((UINT_MAX - (rtimer->start - rtimer->end)) % 1000) * 1000;
+      else
+	*microseconds =
+	  ((rtimer->end - rtimer->start) % 1000) * 1000;
+    }
+#else /* !NATIVE_WIN32 */
   if (rtimer->active)
     gettimeofday (&rtimer->end, NULL);
 
@@ -115,6 +171,7 @@ g_timer_elapsed (GTimer *timer,
 
   if (microseconds)
     *microseconds = elapsed.tv_usec;
+#endif /* !NATIVE_WIN32 */
 
   return total;
 }

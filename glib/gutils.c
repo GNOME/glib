@@ -16,15 +16,34 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include "glibconfig.h"
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#ifdef HAVE_PWD_H
 #include <pwd.h>
+#endif
 #include <sys/types.h>
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
+#endif
+
+#ifdef NATIVE_WIN32
+#  define STRICT			/* Strict typing, please */
+#  include <windows.h>
+#  include <direct.h>
+#  include <errno.h>
+#  include <ctype.h>
+#  ifdef _MSC_VER
+#    include <io.h>
+#  endif /* _MSC_VER */
+#endif /* NATIVE_WIN32 */
 
 /* implement Glib's inline functions
  */
@@ -32,12 +51,29 @@
 #define	G_CAN_INLINE 1
 #include "glib.h"
 
+#ifdef	MAXPATHLEN
+#define	G_PATH_LENGTH	(MAXPATHLEN + 1)
+#elif	defined (PATH_MAX)
+#define	G_PATH_LENGTH	(PATH_MAX + 1)
+#else	/* !MAXPATHLEN */
+#define G_PATH_LENGTH   (2048 + 1)
+#endif	/* !MAXPATHLEN && !PATH_MAX */
+
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
 const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
+#if defined (NATIVE_WIN32) && defined (__LCC__)
+int __stdcall 
+LibMain (void         *hinstDll,
+	 unsigned long dwReason,
+	 void         *reserved)
+{
+  return 1;
+}
+#endif /* NATIVE_WIN32 && __LCC__ */
 
 void
 g_atexit (GVoidFunc func)
@@ -184,11 +220,48 @@ g_basename (const gchar	   *file_name)
   
   g_return_val_if_fail (file_name != NULL, NULL);
   
-  base = strrchr (file_name, '/');
+  base = strrchr (file_name, G_DIR_SEPARATOR);
   if (base)
     return base + 1;
+
+#ifdef NATIVE_WIN32
+  if (isalpha (file_name[0]) && file_name[1] == ':')
+    return (gchar*) file_name + 2;
+#endif /* NATIVE_WIN32 */
   
   return (gchar*) file_name;
+}
+
+gboolean
+g_path_is_absolute (const gchar *file_name)
+{
+  g_return_val_if_fail (file_name != NULL, FALSE);
+  
+  if (file_name[0] == G_DIR_SEPARATOR)
+    return TRUE;
+
+#ifdef NATIVE_WIN32
+  if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+    return TRUE;
+#endif
+
+  return FALSE;
+}
+
+gchar*
+g_path_skip_root (gchar *file_name)
+{
+  g_return_val_if_fail (file_name != NULL, NULL);
+  
+  if (file_name[0] == G_DIR_SEPARATOR)
+    return file_name + 1;
+
+#ifdef NATIVE_WIN32
+  if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
+    return file_name + 3;
+#endif
+
+  return NULL;
 }
 
 gchar*
@@ -199,10 +272,10 @@ g_dirname (const gchar	   *file_name)
   
   g_return_val_if_fail (file_name != NULL, NULL);
   
-  base = strrchr (file_name, '/');
+  base = strrchr (file_name, G_DIR_SEPARATOR);
   if (!base)
     return g_strdup (".");
-  while (base > file_name && *base == '/')
+  while (base > file_name && *base == G_DIR_SEPARATOR)
     base--;
   len = (guint) 1 + base - file_name;
   
@@ -212,14 +285,6 @@ g_dirname (const gchar	   *file_name)
   
   return base;
 }
-
-#ifdef	MAXPATHLEN
-#define	G_PATH_LENGTH	(MAXPATHLEN + 1)
-#elif	defined (PATH_MAX)
-#define	G_PATH_LENGTH	(PATH_MAX + 1)
-#else	/* !MAXPATHLEN */
-#define G_PATH_LENGTH   (2048 + 1)
-#endif	/* !MAXPATHLEN && !PATH_MAX */
 
 gchar*
 g_get_current_dir (void)
@@ -244,7 +309,7 @@ g_get_current_dir (void)
       /* hm, should we g_error() out here?
        * this can happen if e.g. "./" has mode \0000
        */
-      buffer[0] = '/';
+      buffer[0] = G_DIR_SEPARATOR;
       buffer[1] = 0;
     }
 
@@ -252,6 +317,48 @@ g_get_current_dir (void)
   g_free (buffer);
   
   return dir;
+}
+
+gchar*
+g_getenv (const gchar *variable)
+{
+  g_return_val_if_fail (variable != NULL, NULL);
+
+#ifndef NATIVE_WIN32
+  return getenv (variable);
+#else
+  gchar *v;
+  guint l, k;
+  gchar *p;
+  
+  v = getenv (variable);
+  if (!v)
+    return NULL;
+  
+  /* On Windows NT, it is relatively typical that environment variables
+   * contain references to other environment variables. Handle that by
+   * calling ExpandEnvironmentStrings.
+   */
+
+  v = g_strdup (v);
+  l = 16;
+  do
+    {
+      p = g_new (gchar, l);
+      
+      k = ExpandEnvironmentStrings (v, p, l);
+      if (k > l)
+	{
+	  g_free (p);
+	  l *= 2;
+	}
+    }
+  while (k > l);
+  
+  g_free (v);
+  
+  return p;
+#endif
 }
 
 static	gchar	*g_tmp_dir = NULL;
@@ -264,18 +371,28 @@ g_get_any_init (void)
 {
   if (!g_tmp_dir)
     {
+#ifdef HAVE_PWD_H
       struct passwd *pw;
-      
-      g_tmp_dir = g_strdup (getenv ("TMPDIR"));
+#endif
+
+      g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
       if (!g_tmp_dir)
-	g_tmp_dir = g_strdup (getenv ("TMP"));
+	g_tmp_dir = g_strdup (g_getenv ("TMP"));
       if (!g_tmp_dir)
-	g_tmp_dir = g_strdup (getenv ("TEMP"));
+	g_tmp_dir = g_strdup (g_getenv ("TEMP"));
+      
       if (!g_tmp_dir)
-	g_tmp_dir = g_strdup ("/tmp");
+	{
+#ifndef NATIVE_WIN32
+	  g_tmp_dir = g_strdup (G_DIR_SEPARATOR_S "tmp");
+#else /* !NATIVE_WIN32 */
+	  g_tmp_dir = g_strdup (".");
+#endif /* !NATIVE_WIN32 */
+	}
       
-      g_home_dir = g_strdup (getenv ("HOME"));
+      g_home_dir = g_strdup (g_getenv ("HOME"));
       
+#ifdef HAVE_PWD_H
       setpwent ();
       pw = getpwuid (getuid ());
       endpwent ();
@@ -287,7 +404,33 @@ g_get_any_init (void)
 	  if (!g_home_dir)
 	    g_home_dir = g_strdup (pw->pw_dir);
 	}
+#else /* !HAVE_PWD_H */
+#  ifdef NATIVE_WIN32
+      {
+	guint len = 17;
+	
+	g_user_name = g_new (gchar, len);
+	
+	if (!GetUserName (g_user_name, &len))
+	  {
+	    g_free (g_user_name);
+	    g_user_name = g_strdup ("somebody");
+	    g_real_name = g_strdup ("Unknown");
+	  }
+	else
+	  g_real_name = g_strdup (g_user_name);
+	g_home_dir = NULL;
+      }
+#  else /* !NATIVE_WIN32 */
+      g_user_name = g_strdup ("somebody");
+      g_real_name = g_strdup ("Unknown");
+      g_home_dir = NULL;
+#  endif /* !NATIVE_WIN32 */
+#endif /* !HAVE_PWD_H */
     }
+
+  if (!g_home_dir)
+    g_home_dir = g_strdup (g_tmp_dir);
 }
 
 gchar*
@@ -344,21 +487,23 @@ g_set_prgname (const gchar *prgname)
 }
 
 guint
-g_direct_hash(gconstpointer v)
+g_direct_hash (gconstpointer v)
 {
   return GPOINTER_TO_UINT (v);
 }
 
 gint
-g_direct_equal(gconstpointer v, gconstpointer v2)
+g_direct_equal (gconstpointer v1,
+		gconstpointer v2)
 {
-  return GPOINTER_TO_UINT (v) == GPOINTER_TO_UINT (v2);
+  return GPOINTER_TO_UINT (v1) == GPOINTER_TO_UINT (v2);
 }
 
 gint
-g_int_equal (gconstpointer v, gconstpointer v2)
+g_int_equal (gconstpointer v1,
+	     gconstpointer v2)
 {
-  return *((const gint*) v) == *((const gint*) v2);
+  return *((const gint*) v1) == *((const gint*) v2);
 }
 
 guint
@@ -366,3 +511,228 @@ g_int_hash (gconstpointer v)
 {
   return *(const gint*) v;
 }
+
+GIOChannel*
+g_iochannel_new (gint fd)
+{
+  GIOChannel *channel = g_new0 (GIOChannel, 1);
+
+  channel->fd = fd;
+
+#ifdef NATIVE_WIN32
+  channel->peer = 0;
+  channel->peer_fd = 0;
+  channel->offset = 0;
+  channel->peer_offset = 0;
+#endif /* NATIVE_WIN32 */
+
+  return channel;
+}
+
+void
+g_iochannel_free (GIOChannel *channel)
+{
+  g_return_if_fail (channel != NULL);
+
+  g_free (channel);
+}
+
+void
+g_iochannel_close_and_free (GIOChannel *channel)
+{
+  g_return_if_fail (channel != NULL);
+
+  close (channel->fd);
+
+  g_iochannel_free (channel);
+}
+
+#undef g_iochannel_wakeup_peer
+
+void
+g_iochannel_wakeup_peer (GIOChannel *channel)
+{
+  static guint message = 0;
+
+  g_return_if_fail (channel != NULL);
+
+#ifdef NATIVE_WIN32
+  if (message == 0)
+    message = RegisterWindowMessage ("gdk-pipe-readable");
+
+#  if 0
+  g_print ("g_iochannel_wakeup_peer: calling PostThreadMessage (%#x, %d, %d, %d)\n",
+	   channel->peer, message, channel->peer_fd, channel->offset);
+#  endif
+  PostThreadMessage (channel->peer, message,
+		     channel->peer_fd, channel->offset);
+#endif /* NATIVE_WIN32 */
+}
+
+
+#ifdef NATIVE_WIN32
+#ifdef _MSC_VER
+
+int
+gwin_ftruncate (gint  fd,
+		guint size)
+{
+  HANDLE hfile;
+  guint curpos;
+
+  g_return_val_if_fail (fd >= 0, -1);
+  
+  hfile = (HANDLE) _get_osfhandle (fd);
+  curpos = SetFilePointer (hfile, 0, NULL, FILE_CURRENT);
+  if (curpos == 0xFFFFFFFF
+      || SetFilePointer (hfile, size, NULL, FILE_BEGIN) == 0xFFFFFFFF
+      || !SetEndOfFile (hfile))
+    {
+      gint error = GetLastError ();
+
+      switch (error)
+	{
+	case ERROR_INVALID_HANDLE:
+	  errno = EBADF;
+	  break;
+	default:
+	  errno = EIO;
+	  break;
+	}
+
+      return -1;
+    }
+
+  return 0;
+}
+
+DIR*
+gwin_opendir (const char *dirname)
+{
+  DIR *result;
+  gchar *mask;
+  guint k;
+
+  g_return_val_if_fail (dirname != NULL, NULL);
+
+  result = g_new0 (DIR, 1);
+  result->find_file_data = g_new0 (WIN32_FIND_DATA, 1);
+  result->dir_name = g_strdup (dirname);
+  
+  k = strlen (result->dir_name);
+  if (k && result->dir_name[k - 1] == '\\')
+    {
+      result->dir_name[k - 1] = '\0';
+      k--;
+    }
+  mask = g_strdup_printf ("%s\\*", result->dir_name);
+
+  result->find_file_handle = (guint) FindFirstFile (mask,
+					     (LPWIN32_FIND_DATA) result->find_file_data);
+  g_free (mask);
+
+  if (result->find_file_handle == (guint) INVALID_HANDLE_VALUE)
+    {
+      int error = GetLastError ();
+
+      g_free (result->dir_name);
+      g_free (result->find_file_data);
+      g_free (result);
+      switch (error)
+	{
+	default:
+	  errno = EIO;
+	  return NULL;
+	}
+    }
+  result->just_opened = TRUE;
+
+  return result;
+}
+
+struct dirent*
+gwin_readdir (DIR *dir)
+{
+  static struct dirent result;
+
+  g_return_val_if_fail (dir != NULL, NULL);
+
+  if (dir->just_opened)
+    dir->just_opened = FALSE;
+  else
+    {
+      if (!FindNextFile ((HANDLE) dir->find_file_handle,
+			 (LPWIN32_FIND_DATA) dir->find_file_data))
+	{
+	  int error = GetLastError ();
+
+	  switch (error)
+	    {
+	    case ERROR_NO_MORE_FILES:
+	      return NULL;
+	    default:
+	      errno = EIO;
+	      return NULL;
+	    }
+	}
+    }
+  strcpy (result.d_name, g_basename (((LPWIN32_FIND_DATA) dir->find_file_data)->cFileName));
+      
+  return &result;
+}
+
+void
+gwin_rewinddir (DIR *dir)
+{
+  gchar *mask;
+
+  g_return_if_fail (dir != NULL);
+
+  if (!FindClose ((HANDLE) dir->find_file_handle))
+    g_warning ("gwin_rewinddir(): FindClose() failed\n");
+
+  mask = g_strdup_printf ("%s\\*", dir->dir_name);
+  dir->find_file_handle = (guint) FindFirstFile (mask,
+					  (LPWIN32_FIND_DATA) dir->find_file_data);
+  g_free (mask);
+
+  if (dir->find_file_handle == (guint) INVALID_HANDLE_VALUE)
+    {
+      int error = GetLastError ();
+
+      switch (error)
+	{
+	default:
+	  errno = EIO;
+	  return;
+	}
+    }
+  dir->just_opened = TRUE;
+}  
+
+gint
+gwin_closedir (DIR *dir)
+{
+  g_return_val_if_fail (dir != NULL, -1);
+
+  if (!FindClose ((HANDLE) dir->find_file_handle))
+    {
+      int error = GetLastError ();
+
+      switch (error)
+	{
+	default:
+	  errno = EIO; return -1;
+	}
+    }
+
+  g_free (dir->dir_name);
+  g_free (dir->find_file_data);
+  g_free (dir);
+
+  return 0;
+}
+
+#endif /* _MSC_VER */
+
+#endif /* NATIVE_WIN32 */
