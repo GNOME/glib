@@ -984,6 +984,7 @@ g_source_callback_unref (gpointer cb_data)
     {
       if (callback->notify)
 	callback->notify (callback->data);
+      g_free (callback);
     }
 }
 
@@ -1024,7 +1025,8 @@ g_source_set_callback (GSource        *source,
   g_return_if_fail (source != NULL);
 
   new_callback = g_new (GSourceCallback, 1);
-  
+
+  new_callback->ref_count = 1;
   new_callback->func = func;
   new_callback->data = data;
   new_callback->notify = notify;

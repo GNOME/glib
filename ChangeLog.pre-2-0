@@ -1,3 +1,8 @@
+2001-01-23    <alexl@redhat.com>
+
+	* gmain.c (g_source_callback_unref): Free the callback
+	(g_source_set_callback): Initialize the callback refcount
+
 2001-01-20  Tor Lillqvist  <tml@iki.fi>
 
 	* gutils.c (g_get_codeset): (Win32) Even if g_get_codeset() is
