@@ -1,5 +1,10 @@
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in, tests/type-test.c: Some platforms support 64 bit
+	'long long', but you can not printf or scanf them. In that case,
+	don't define G_G{UINT|INT}64_FORMAT. Changed the type-test program
+	to reflect that.
+
 	* gutils.c (g_get_current_dir): max_len can't be initialized
 	statically as it might call a function. So do it at first call.
 

@@ -113,7 +113,7 @@ main (int   argc,
   g_assert (gu16t1 == gu16t2);
   g_assert (gu32t1 == gu32t2);
 
-#ifdef G_HAVE_GINT64
+#if defined (G_HAVE_GINT64) && defined (G_GINT64_FORMAT)
   gi64t1 = G_GINT64_CONSTANT (-0x3AFAFAFAFAFAFAFA);
   gu64t1 = G_GINT64_CONSTANT (0xFAFAFAFAFAFAFAFA); 
 #define FORMAT64 "%" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n"

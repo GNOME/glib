@@ -236,19 +236,25 @@ if test x$ac_cv_sizeof_long_long = x8; then
 	# long long is a 64 bit integer.
 	AC_MSG_CHECKING(for format to printf and scanf a gint64)
 	AC_CACHE_VAL(glib_cv_long_long_format,[
+		for format in ll q; do
 		AC_TRY_RUN([#include <stdio.h>  
 			int main()
 			{
 			  long long b, a = -0x3AFAFAFAFAFAFAFALL;
 			  char buffer[1000];
-			  sprintf (buffer, "%llu", a);
-  			  sscanf (buffer, "%llu", &b);
+			  sprintf (buffer, "%${format}u", a);
+  			  sscanf (buffer, "%${format}u", &b);
 			  exit (b!=a);
 			}
 			],
-			glib_cv_long_long_format=ll,
-			glib_cv_long_long_format=q)])
+			glib_cv_long_long_format=${format}
+			break)
+		done])
+	if test -n "$glib_cv_long_long_format"; then
 	AC_MSG_RESULT(%${glib_cv_long_long_format}i)
+        else
+	  AC_MSG_RESULT(none)
+        fi
 fi
 
 dnl long doubles were not used, and a portability problem
@@ -1244,11 +1250,14 @@ _______EOF
 ${glib_extension}typedef signed $gint64 gint64;
 ${glib_extension}typedef unsigned $gint64 guint64;
 
+#define G_GINT64_CONSTANT(val)	$gint64_constant
+_______EOF
+		if test -n "$gint64_format"; then
+	  cat >>$outfile <<_______EOF
 #define G_GINT64_FORMAT $gint64_format
 #define G_GUINT64_FORMAT $guint64_format
-#define G_GINT64_CONSTANT(val)	$gint64_constant
-
 _______EOF
+	fi
 	fi
 
 	case x$glib_size_t in
@@ -1476,8 +1485,10 @@ $ac_cv_sizeof_long)
   ;;
 $ac_cv_sizeof_long_long)
   gint64='long long'
+  if test -n "$glib_cv_long_long_format"; then
   gint64_format='"'$glib_cv_long_long_format'i"'
   guint64_format='"'$glib_cv_long_long_format'u"'
+  fi
   glib_extension='G_GNUC_EXTENSION '
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
   ;;
