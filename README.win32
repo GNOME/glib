@@ -2,8 +2,8 @@ For more information about the port or GLib, GTk+ and the GIMP to
 native Windows, and pre-built binary packages, see
 http://www.iki.fi/tml/gimp/win32/ . "Native" means that we use the
 Win32 API only, and not any POSIX emulation layer except that provided
-by the Microsoft runtime C library. Additionally the pthreads
-emulation library is used.
+by the Microsoft runtime C library. Additionally, a pthreads emulation
+library is used.
 
 As for now, to build GLib on Win32, you need the Microsoft compiler
 and tools. Both the compiler from MSVC 5.0 and from MSVC 6.0 have been
@@ -17,6 +17,9 @@ definition in makefile.msc.
 
 Build with `nmake -f makefile.msc`. Install with `nmake -f
 makefile.msc install`.
+
+To test the GLib functions, go to the tests subdirectory and enter
+`nmake -f makefile.msc check`.
 
 Support for building using the cygwin tools (without depending on the
 cygwin runtime, i.e. "mingw32"), and maybe LCC-Win32 might be added

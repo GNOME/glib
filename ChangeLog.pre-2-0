@@ -1,3 +1,18 @@
+Tue Apr 13 23:28:32 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Mention the tests directory.
+
+	* glib.def: Add the functions from grand.c.
+
+	* glibconfig.h.win32: Add unsigned max values, and the format
+ 	strings.
+
+	* makefile.msc: Add grand.
+
+	* tests/{date-test,node-test}.c: Include <stdlib.h> for exit().
+
+	* tests/makefile.msc: New file.
+
 1999-04-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h: Moved struct declaration up. Style fixes.

@@ -62,6 +62,7 @@ glib_OBJECTS = \
 	gnode.obj	\
 	gprimes.obj	\
 	gqueue.obj	\
+	grand.obj	\
 	gslist.obj	\
 	gstack.obj	\
 	gtimer.obj	\
