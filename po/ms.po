@@ -5,12 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"POT-Creation-Date: 2002-02-26 01:02+0800\n"
+"POT-Creation-Date: 2002-03-02 08:42+0800\n"
 "PO-Revision-Date: 2002-02-26 01:02+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:390
@@ -387,17 +387,17 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Tanda petikan tidak sepadan pada arahan baris atau teks shell-quoted lain"
 
-#: glib/gshell.c:528
+#: glib/gshell.c:529
 #, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "Teks berakhir selepas aksara ''. (Teks ialah '%s')"
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Teks berakhir selepas aksara '\\'. (Teks terdahulu ialah '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "Teks berakhir sebelum quot sepadan dijumpai untuk %c (Teks ialah '%s')"
 
-#: glib/gshell.c:547
+#: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teks telah kosong (atau mengandungi hanya ruangputih)"
 
