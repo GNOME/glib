@@ -1,3 +1,9 @@
+2000-03-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Make the search for pthread_attr_... prototypes
+	find names at the start of a line also, like it is on AIX. Thanks
+	to Valdis Kletnieks <Valdis.Kletnieks@vt.edu> for the info.
+
 Wed Mar  1 10:39:39 2000  Tim Janik  <timj@gtk.org>
 
 	* gslist.c (g_slist_reverse): minor optimization.

@@ -687,12 +687,12 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
         if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_init[^a-zA-Z_]],
+                AC_EGREP_HEADER([^(|.*[^a-zA-Z_])pthread_attr_init[^a-zA-Z_]],
 			pthread.h,
 			have_threads=posix)
         fi
         if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_create[^a-zA-Z_]],
+                AC_EGREP_HEADER([^(|.*[^a-zA-Z_])pthread_attr_create[^a-zA-Z_]],
 			pthread.h,
 			have_threads=dce)
         fi
