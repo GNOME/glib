@@ -396,10 +396,10 @@ g_type_module_register_type (GTypeModule     *module,
  * not be unloaded.
  **/
 void
-g_type_module_add_interface (GTypeModule    *module,
-			     GType           instance_type,
-			     GType           interface_type,
-			     GInterfaceInfo *interface_info)
+g_type_module_add_interface (GTypeModule          *module,
+			     GType                 instance_type,
+			     GType                 interface_type,
+			     const GInterfaceInfo *interface_info)
 {
   ModuleInterfaceInfo *module_interface_info = NULL;
   

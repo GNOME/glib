@@ -1,3 +1,10 @@
+Sun Feb 24 22:08:29 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gtypemodule.[ch] (g_type_module_add_interface): Make
+	GInterfaceInfo paramter const to correspond to the
+	conventions for the g_type_add_interface() functions.
+	(#72461, Miroslaw Dobrzanski-Neumann)
+
 Sat Feb 23 13:28:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gtypeplugin.h (struct _GTypePluginClass): Add some

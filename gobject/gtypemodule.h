@@ -71,10 +71,10 @@ GType    g_type_module_register_type (GTypeModule     *module,
 				      const gchar     *type_name,
 				      const GTypeInfo *type_info,
 				      GTypeFlags       flags);
-void     g_type_module_add_interface (GTypeModule     *module,
-				      GType            instance_type,
-				      GType            interface_type,
-				      GInterfaceInfo  *interface_info);
+void     g_type_module_add_interface (GTypeModule           *module,
+				      GType                  instance_type,
+				      GType                  interface_type,
+				      const GInterfaceInfo  *interface_info);
 
 G_END_DECLS
 
