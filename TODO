@@ -1,0 +1,63 @@
+TODO for GLib 1.3:
+
+* alloca support, with replacement if native alloca not available
+	- check out gettext's implementation
+
+
+
+--------------------------------------------------------------------
+
+Ideas for GLib 1.3:
+
+(jgarzik)
+* wrap i18n routines on various platforms; wrap gettext libintl as a
+  fallback
+
+* benchmark garbage-collecting malloc (not for inclusion into GLib, just
+  general knowledge)
+
+* coneill's optimized MD5 checksum routine, maybe some other checksums
+  too, encapsulated in a GChecksum.  Allow choice between a few built-in
+  checksum functions, MD5, CRC, ?, or a user-specified checksum
+  function pointer.
+
+* New ADTs: trie, skip list, red-black tree, queue (below), stack (below)
+
+* decent random numbers (really a portability thing)
+
+* 'make check' tests one per module, plus bug report regression tests
+  and such
+
+* new func g_list_delete, combines g_list_remove_link and g_list_free1
+
+* primitive memory leak checking by g_malloc, g_free
+
+* alloca-based convenience macros, counterparts to:
+	g_new, g_new0, g_strdup, g_strndup, g_strconcat, ???
+
+* GStack, opaque ADT with interface:
+
+	stack = g_stack_new ();
+	count = g_stack_size (stack);
+
+	g_stack_push (stack, data);
+	data = g_stack_pop (stack);
+
+	slist = g_stack_get_list (stack);
+
+* GQueue, opaque ADT with interface:
+
+	q = g_queue_new ();
+	count = g_queue_size (q);
+
+	q_queue_push_front (q, data);
+	q_queue_push_back (q, data);
+	data = q_queue_pop_front (q);
+	data = q_queue_pop_back (q);
+	#define q_queue_push q_queue_push_back
+	#define q_queue_pop q_queue_pop_front
+
+	list = g_queue_get_list (q);
+	#define g_queue_get_front g_queue_get_list
+	list_end = g_queue_get_back (q);
+

@@ -1,3 +1,13 @@
+Thu Jan 21 23:55:54 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* TODO:
+	New file.  Short notes on what has been said in e-mail, plus a
+	couple other new items.
+
+	* glib.h, glist.c:
+	New function g_list_delete().  Removes a node from the list,
+	then frees it.
+
 Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* tests/{Makefile.am, string-test.c, strfunc-test.c}:
