@@ -108,6 +108,11 @@ void	_g_log_fallback_handler	(const gchar   *log_domain,
 				 const gchar   *message,
 				 gpointer       unused_data) G_GNUC_INTERNAL;
 
+/* Internal function, used to implement the following macros */
+void g_return_if_fail_warning (const char *log_domain,
+			       const char *pretty_function,
+			       const char *expression);
+
 
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
@@ -268,11 +273,6 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 #else /* !G_DISABLE_CHECKS */
 
 #ifdef __GNUC__
-
-/* Internal function, used to implement following macros */
-void g_return_if_fail_warning (const char *log_domain,
-			       const char *pretty_function,
-			       const char *expression);
 
 #define g_return_if_fail(expr)		G_STMT_START{			\
      if G_LIKELY(expr) { } else       					\

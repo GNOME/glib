@@ -1,3 +1,9 @@
+2004-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmessages.h: Move the declaration of 
+	g_return_if_fail_warning() out of the ifdefs, so that
+	building with G_DISABLE_ASSERT works.
+
 2004-09-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glib/goptions.[h|c], glib/glib.symbols: Rename 
