@@ -18,14 +18,18 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_gobj
 all : \
 	gobject-$(GLIB_VER).dll
 
-gobject_OBJECTS = \
-	gvalue.obj \
-	gvaluetypes.obj \
-	gparam.obj \
-	gparamspecs.obj \
-	genums.obj \
-	gobject.obj \
-	gtype.obj
+gobject_OBJECTS =		\
+	gboxed.obj		\
+	gbsearcharray.obj	\
+	gclosure.obj		\
+	genums.obj		\
+	gobject.obj		\
+	gparam.obj		\
+	gparamspecs.obj		\
+	gsignal.obj		\
+	gtype.obj		\
+	gvalue.obj		\
+	gvaluetypes.obj
 
 makefile.msc: makefile.msc.in
 	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \

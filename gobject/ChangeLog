@@ -1,3 +1,16 @@
+2000-10-26  Tor Lillqvist  <tml@iki.fi>
+
+	* gbsearcharray.c (bsearch_array_insert): Fix gccisms (pointer
+	arithmetic on void pointer, label without statement following.
+
+	* gtype.c (type_node_fundamental_info): Don't apply unary minus to
+	result of sizeof operator, it can be unsigned. Cast first to
+	gssize.
+
+	* gobject.def: Add new functions.
+
+	* makefile.{mingw,msc}.in: Add new objects.
+
 2000-10-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am: Remove empty SUBDIRS line _again_, as that _still_

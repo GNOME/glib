@@ -27,14 +27,18 @@ makefile.mingw: makefile.mingw.in
 	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
 	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
 
-gobject_OBJECTS = \
-	gvalue.o \
-	gvaluetypes.o \
-	gparam.o \
-	gparamspecs.o \
-	genums.o \
-	gobject.o \
-	gtype.o
+gobject_OBJECTS =		\
+	gboxed.o		\
+	gbsearcharray.o		\
+	gclosure.o		\
+	genums.o		\
+	gobject.o		\
+	gparam.o		\
+	gparamspecs.o		\
+	gsignal.o		\
+	gtype.o			\
+	gvalue.o		\
+	gvaluetypes.o
 
 gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
 	$(BUILD_DLL) gobject $(GLIB_VER) gobject.def $(gobject_OBJECTS) -L .. -lglib-$(GLIB_VER)

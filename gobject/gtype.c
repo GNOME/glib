@@ -289,7 +289,7 @@ type_node_fundamental_info (TypeNode *node)
   if (ftype != NODE_TYPE (node))
     node = LOOKUP_TYPE_NODE (ftype);
   
-  return node ? G_STRUCT_MEMBER_P (node, - sizeof (GTypeFundamentalInfo)) : NULL;
+  return node ? G_STRUCT_MEMBER_P (node, - (gssize) sizeof (GTypeFundamentalInfo)) : NULL;
 }
 
 static TypeNode*
