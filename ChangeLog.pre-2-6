@@ -1,3 +1,12 @@
+1998-12-02  Havoc Pennington  <hp@pobox.com>
+
+	* gdate.c (g_date_valid): Rely on GDate::dmy and GDate::Julian
+	flags, rather than re-checking the validity of the actual
+	values. This should be the correct behavior, the old way was
+	leftover cruft.
+
+	* glib.h, gdate.c: Changed MDY to DMY throughout.
+
 Sat Nov 28 12:53:47 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am configure.in acconfig.h giochannel.c
