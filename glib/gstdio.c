@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include "galias.h"
 
 #include "glib.h"
 
@@ -36,7 +37,6 @@
 #include <io.h>
 #endif
 
-#include "galias.h"
 #include "gstdio.h"
 
 #if !defined (G_OS_UNIX) && !defined (G_OS_WIN32)
