@@ -1690,7 +1690,7 @@ g_trash_stack_pop (GTrashStack **stack_p)
       /* NULLify private pointer here, most platforms store NULL as
        * subsequent 0 bytes
        */
-      data->next = NULL;
+      data->next = (GTrashStack*) NULL;
     }
 
   return data;
