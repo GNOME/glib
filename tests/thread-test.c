@@ -4,6 +4,7 @@
 
 static GMutex* test_g_mutex_mutex = NULL;
 static guint test_g_mutex_int = 0;
+static gboolean test_g_mutex_thread_ready;
 G_LOCK_DEFINE_STATIC (test_g_mutex);
 
 static gpointer
@@ -12,6 +13,7 @@ test_g_mutex_thread (gpointer data)
   g_assert (GPOINTER_TO_INT (data) == 42);
   g_assert (g_mutex_trylock (test_g_mutex_mutex) == FALSE);
   g_assert (G_TRYLOCK (test_g_mutex) == FALSE);
+  test_g_mutex_thread_ready = TRUE;
   g_mutex_lock (test_g_mutex_mutex);
   g_assert (test_g_mutex_int == 42);
   g_mutex_unlock (test_g_mutex_mutex);
@@ -27,9 +29,13 @@ test_g_mutex (void)
 
   g_assert (g_mutex_trylock (test_g_mutex_mutex));
   g_assert (G_TRYLOCK (test_g_mutex));
+  test_g_mutex_thread_ready = FALSE;
   thread = g_thread_create (test_g_mutex_thread, GINT_TO_POINTER (42),
 			    TRUE, NULL);
-  g_usleep (G_USEC_PER_SEC);
+  /* This busy wait is only for testing purposes and not an example of
+   * good code!*/
+  while (!test_g_mutex_thread_ready)
+    g_usleep (G_USEC_PER_SEC / 5);
   test_g_mutex_int = 42;
   G_UNLOCK (test_g_mutex);
   g_mutex_unlock (test_g_mutex_mutex);
@@ -41,6 +47,7 @@ test_g_mutex (void)
 
 static GStaticRecMutex test_g_static_rec_mutex_mutex = G_STATIC_REC_MUTEX_INIT;
 static guint test_g_static_rec_mutex_int = 0;
+static gboolean test_g_static_rec_mutex_thread_ready;
 
 static gpointer
 test_g_static_rec_mutex_thread (gpointer data)
@@ -48,9 +55,11 @@ test_g_static_rec_mutex_thread (gpointer data)
   g_assert (GPOINTER_TO_INT (data) == 42);
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex) 
 	    == FALSE);
+  test_g_static_rec_mutex_thread_ready = TRUE;
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   g_assert (test_g_static_rec_mutex_int == 42);
+  test_g_static_rec_mutex_thread_ready = FALSE;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
 
@@ -66,16 +75,25 @@ test_g_static_rec_mutex (void)
   GThread *thread;
 
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
+  test_g_static_rec_mutex_thread_ready = FALSE;
   thread = g_thread_create (test_g_static_rec_mutex_thread, 
 			    GINT_TO_POINTER (42), TRUE, NULL);
-  g_usleep (G_USEC_PER_SEC);
+  /* This busy wait is only for testing purposes and not an example of
+   * good code!*/
+  while (!test_g_static_rec_mutex_thread_ready)
+    g_usleep (G_USEC_PER_SEC / 5);
+
   g_assert (g_static_rec_mutex_trylock (&test_g_static_rec_mutex_mutex));
-  g_usleep (G_USEC_PER_SEC);
   test_g_static_rec_mutex_int = 41;
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
   test_g_static_rec_mutex_int = 42;  
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
-  g_usleep (G_USEC_PER_SEC);
+
+  /* This busy wait is only for testing purposes and not an example of
+   * good code!*/
+  while (test_g_static_rec_mutex_thread_ready)
+    g_usleep (G_USEC_PER_SEC / 5);
+
   g_static_rec_mutex_lock (&test_g_static_rec_mutex_mutex);
   test_g_static_rec_mutex_int = 0;  
   g_static_rec_mutex_unlock (&test_g_static_rec_mutex_mutex);
@@ -224,7 +242,7 @@ test_g_static_rw_lock_thread (gpointer data)
 	  test_g_static_rw_lock_state++;
 	  G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_usleep (10);
+	  g_usleep (g_random_int_range (20,1000));
 
 	  G_LOCK (test_g_static_rw_lock_state);
 	  test_g_static_rw_lock_state--;
@@ -245,7 +263,7 @@ test_g_static_rw_lock_thread (gpointer data)
 	  test_g_static_rw_lock_state = -1;
 	  G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_usleep (10);
+	  g_usleep (g_random_int_range (20,1000));
 
 	  G_LOCK (test_g_static_rw_lock_state);
 	  test_g_static_rw_lock_state = 0;
@@ -267,7 +285,7 @@ test_g_static_rw_lock ()
       threads[i] = g_thread_create (test_g_static_rw_lock_thread, 
 				    NULL, TRUE, NULL);      
     }
-  g_usleep (G_USEC_PER_SEC);
+  g_usleep (G_USEC_PER_SEC * 5);
   test_g_static_rw_lock_run = FALSE;
   for (i = 0; i < THREADS; i++)
     {

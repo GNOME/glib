@@ -1,3 +1,12 @@
+2002-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* tests/thread-test.c: Do not assume, that after
+	g_usleep(G_USEC_PER_SEC) the newly started thread began
+	running. Spotted by Miroslaw Dobrzanski-Neumann
+	<mne@mosaic-ag.com>. Make the test_g_static_rw_lock_thread threads
+	wait a random time. Make the test_g_static_rw_lock test run 5
+	seconds, not 1.
+
 2002-02-14  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gmessages.c (g_logv): Use the #if branch with
