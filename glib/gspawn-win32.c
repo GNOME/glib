@@ -109,6 +109,7 @@ static gboolean do_spawn_with_pipes  (gboolean              dont_wait,
                                       gboolean              child_inherits_stdin,
                                       GSpawnChildSetupFunc  child_setup,
                                       gpointer              user_data,
+                                      gint                 *child_pid,
                                       gint                 *standard_input,
                                       gint                 *standard_output,
                                       gint                 *standard_error,
@@ -222,6 +223,7 @@ g_spawn_sync (const gchar          *working_directory,
 {
   gint outpipe = -1;
   gint errpipe = -1;
+  gint pid;
   GIOChannel *outchannel = NULL;
   GIOChannel *errchannel = NULL;
   GPollFD outfd, errfd;
@@ -262,6 +264,7 @@ g_spawn_sync (const gchar          *working_directory,
 			    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
 			    child_setup,
 			    user_data,
+			    &pid,
 			    NULL,
 			    standard_output ? &outpipe : NULL,
 			    standard_error ? &errpipe : NULL,
@@ -451,6 +454,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 			      (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
 			      child_setup,
 			      user_data,
+			      child_pid,
 			      standard_input,
 			      standard_output,
 			      standard_error,
@@ -537,6 +541,7 @@ do_spawn (gboolean              dont_wait,
   gchar **new_argv;
   gchar args[ARG_COUNT][10];
   gint i;
+  int rc;
   int argc = 0;
 
   SETUP_DEBUG();
@@ -595,7 +600,7 @@ do_spawn (gboolean              dont_wait,
     }
 
   if (working_directory && *working_directory)
-    new_argv[ARG_WORKING_DIRECTORY] = working_directory;
+    new_argv[ARG_WORKING_DIRECTORY] = g_strdup (working_directory);
   else
     new_argv[ARG_WORKING_DIRECTORY] = "-";
 
@@ -638,11 +643,9 @@ do_spawn (gboolean              dont_wait,
     /* Let's hope envp hasn't mucked with PATH so that
      * gspawn-win32-helper.exe isn't found.
      */
-    spawnvpe (P_NOWAIT, "gspawn-win32-helper", new_argv, envp);
+    rc = spawnvpe (P_NOWAIT, "gspawn-win32-helper", new_argv, envp);
   else
-    spawnvp (P_NOWAIT, "gspawn-win32-helper", new_argv);
-
-  /* FIXME: What if gspawn-win32-helper.exe isn't found? */
+    rc = spawnvp (P_NOWAIT, "gspawn-win32-helper", new_argv);
 
   /* Close the child_err_report_fd and the other process's ends of the
    * pipes in this process, otherwise the reader will never get
@@ -656,9 +659,10 @@ do_spawn (gboolean              dont_wait,
   if (stderr_fd >= 0)
     close (stderr_fd);
 
+  g_free (new_argv[ARG_WORKING_DIRECTORY]);
   g_free (new_argv);
 
-  return 0;
+  return rc;
 }
 
 static gboolean
@@ -720,6 +724,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     gboolean              child_inherits_stdin,
 		     GSpawnChildSetupFunc  child_setup,
 		     gpointer              user_data,
+		     gint                 *child_pid,
 		     gint                 *standard_input,
 		     gint                 *standard_output,
 		     gint                 *standard_error,
@@ -730,7 +735,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   gint stdout_pipe[2] = { -1, -1 };
   gint stderr_pipe[2] = { -1, -1 };
   gint child_err_report_pipe[2] = { -1, -1 };
-  gint status;
+  gint helper = -1;
   gint buf[2];
   gint n_ints = 0;
   
@@ -746,7 +751,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
-  status = do_spawn (dont_wait,
+  helper = do_spawn (dont_wait,
 		     child_err_report_pipe[1],
 		     stdin_pipe[0],
 		     stdout_pipe[1],
@@ -762,37 +767,57 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     child_setup,
 		     user_data);
       
+  /* do_spawn() returns -1 if gspawn-win32-helper couldn't be run */
+  if (helper == -1)
+    {
+      g_set_error (error,
+		   G_SPAWN_ERROR,
+		   G_SPAWN_ERROR_FAILED,
+		   _("Failed to execute helper program"));
+      goto cleanup_and_fail;
+    }
+
   if (!read_ints (child_err_report_pipe[0],
 		  buf, 2, &n_ints,
-		  error))
+		  error) ||
+      n_ints != 2)
     goto cleanup_and_fail;
         
-  if (n_ints == 2)
+  /* Error code from gspawn-win32-helper. */
+  switch (buf[0])
     {
-      /* Error from the child. */
-      
-      switch (buf[0])
+    case CHILD_NO_ERROR:
+      if (child_pid && dont_wait)
 	{
-	case CHILD_NO_ERROR:
-	  break;
-	  
-	case CHILD_CHDIR_FAILED:
-	  g_set_error (error,
-		       G_SPAWN_ERROR,
-		       G_SPAWN_ERROR_CHDIR,
-		       _("Failed to change to directory '%s' (%s)"),
-		       working_directory,
-		       g_strerror (buf[1]));
-	  goto cleanup_and_fail;
-	  
-	case CHILD_SPAWN_FAILED:
-	  g_set_error (error,
-		       G_SPAWN_ERROR,
-		       G_SPAWN_ERROR_FAILED,
-		       _("Failed to execute child process (%s)"),
-		       g_strerror (buf[1]));
-	  goto cleanup_and_fail;
+	  /* helper is our HANDLE for gspawn-win32-helper. It has
+	   * told us the HANDLE of its child. Duplicate that into
+	   * a HANDLE valid in this process.
+	   */
+	  if (!DuplicateHandle ((HANDLE) helper, (HANDLE) buf[1],
+				GetCurrentProcess (), (LPHANDLE) child_pid,
+				0, TRUE, DUPLICATE_SAME_ACCESS))
+	    *child_pid = 0;
 	}
+      else if (child_pid)
+	*child_pid = 0;
+      break;
+      
+    case CHILD_CHDIR_FAILED:
+      g_set_error (error,
+		   G_SPAWN_ERROR,
+		   G_SPAWN_ERROR_CHDIR,
+		   _("Failed to change to directory '%s' (%s)"),
+		   working_directory,
+		   g_strerror (buf[1]));
+      goto cleanup_and_fail;
+      
+    case CHILD_SPAWN_FAILED:
+      g_set_error (error,
+		   G_SPAWN_ERROR,
+		   G_SPAWN_ERROR_FAILED,
+		   _("Failed to execute child process (%s)"),
+		   g_strerror (buf[1]));
+      goto cleanup_and_fail;
     }
 
   /* Success against all odds! return the information */
@@ -804,11 +829,13 @@ do_spawn_with_pipes (gboolean              dont_wait,
   if (standard_error)
     *standard_error = stderr_pipe[0];
   if (exit_status)
-    *exit_status = status;
+    *exit_status = buf[1];
   
   return TRUE;
 
  cleanup_and_fail:
+  if (helper != -1)
+    CloseHandle ((HANDLE) helper);
   close_and_invalidate (&child_err_report_pipe[0]);
   close_and_invalidate (&child_err_report_pipe[1]);
   close_and_invalidate (&stdin_pipe[0]);

@@ -1,3 +1,29 @@
+2002-11-18  Tor Lillqvist  <tml@iki.fi>
+
+	[Win32] Fix the asynchronous g_spawn* to return the process handle
+	of the started program properly. (Note: not the process id. The
+	spawn*() functions in the C runtime return the created process's
+	handle. There doesn't seem to be any way to get the process id of
+	a child process if you have the handle. But then, the process
+	handle usually is more useful anyway.)
+
+	* glib/gspawn-win32-helper.c (WinMain): If the spawning of the
+	child process succeeded, and if asynchronous spawn (P_NOWAIT),
+	write the result handle up to the parent process, waiting to read
+	it in do_spawn_with_pipes().
+
+	* glib/gspawn-win32.c (do_spawn): Use return value from spawning
+	the helper. If it is -1 the helper wasn't found or couldn't be run
+	for some reason. Otherwise it is the helper's process handle.
+
+	(g_spawn_async_with_pipes): Pass the child_pid parameter on to
+	do_spawn_with_pipes().
+
+	(do_spawn_with_pipes): Take also a child_pid parameter. If
+	do_spawn() returned -1, fail immediately. Otherwise make the
+	handle passed to us by the helper process into a handle valid in
+	this process by calling DuplicateHandle().
+
 2002-11-17  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c (g_spawn_async_with_pipes): Ignore the
