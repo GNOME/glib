@@ -1,5 +1,5 @@
 # Serbian translation of glib
-# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004.
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004, 2005.
 #
 # This file is distributed under the same license as the glib package.
 #
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-04 00:11-0500\n"
-"PO-Revision-Date: 2004-10-15 22:27+0200\n"
+"POT-Creation-Date: 2005-02-11 13:52+0100\n"
+"PO-Revision-Date: 2005-02-11 13:33+0100\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -217,22 +217,22 @@ msgstr ""
 "bez namere da započnete entitet — naznačite ampersand kao &amp;"
 
 #: glib/gmarkup.c:573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nisam uspeo da raščlanim „%s“, što je trebalo da predstavlja biti cifru "
-"unutar poziva znaka (na primer &#234;) — možda je cifra prevelika"
+"Nisam uspeo da raščlanim „%-.*s“, što je trebalo da predstavlja cifru unutar "
+"znakovne reference (na primer &#234;) — možda je cifra prevelika"
 
 #: glib/gmarkup.c:598
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Poziv znaka „%s“ ne stoji za dozvoljeni znak"
+msgstr "Znakovna referenca „%-.*s“ ne predstavlja dozvoljeni znak"
 
 #: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Prazan poziv znaka; morao bi sadržati cifru kao na primer &#747;"
+msgstr "Prazna znakovna referenca; mora da sadrži cifru kao na primer &#747;"
 
 #: glib/gmarkup.c:623
 msgid ""
@@ -240,8 +240,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Poziv znaka se ne završava tačka-zapetom; najverovatnije ste koristili "
-"ampersand bez namere da započnete entitet — naznačite ampersand kao &amp;"
+"Znakovna referenca se ne završava tačka-zapetom; najverovatnije ste "
+"koristili ampersand bez namere da započnete entitet — naznačite ampersand "
+"kao &amp;"
 
 #: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
@@ -250,7 +251,7 @@ msgstr "Nedovršena oznaka entiteta"
 # poziv umesto oznaka?
 #: glib/gmarkup.c:715
 msgid "Unfinished character reference"
-msgstr "Nedovršen poziv znaka"
+msgstr "Nedovršena znakovna referenca"
 
 # oznaka znaka??? neeeee
 #: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
@@ -268,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
-"njime početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
+"početi"
 
 #: glib/gmarkup.c:1157
 #, c-format
@@ -320,8 +321,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
-"znak je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
+"je „>“"
 
 #: glib/gmarkup.c:1573
 #, c-format
@@ -515,124 +516,127 @@ msgstr "Neispravan niz u unosu za pretvaranje"
 msgid "Character out of range for UTF-16"
 msgstr "Znak van opsega za UTF-16"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "Usage:"
 msgstr "Upotreba:"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "[OPTION...]"
 msgstr "[OPCIJA...]"
 
-#: glib/goption.c:494
+#: glib/goption.c:518
 msgid "Help Options:"
 msgstr "Pomoćne opcije:"
 
-#: glib/goption.c:494
+#: glib/goption.c:519
 msgid "Show help options"
 msgstr "Prikaži opcije za pomoć"
 
-#: glib/goption.c:498
+#: glib/goption.c:524
 msgid "Show all help options"
 msgstr "Prikaži sve opcije za pomoć"
 
-#: glib/goption.c:547
+#: glib/goption.c:574
 msgid "Application Options:"
 msgstr "Opcije programa:"
 
-#: glib/goption.c:586
+#: glib/goption.c:614
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Ne mogu da rašlanim celobrojnun vrednost „%s“ za --%s"
 
-#: glib/goption.c:596
+#: glib/goption.c:624
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celobrojna vrednost „%s“ za %s je izvan opsega"
 
-#: glib/goption.c:1323
+#: glib/goption.c:1354
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nepoznata opcija %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "Ne mogu da nađem ispravnu datoteku sa ključevima među podacima"
 
-#: glib/gkeyfile.c:371
+#: glib/gkeyfile.c:373
 msgid "Not a regular file"
-msgstr ""
+msgstr "Nije obična datoteka"
 
-#: glib/gkeyfile.c:379
+#: glib/gkeyfile.c:381
 msgid "File is empty"
-msgstr ""
+msgstr "Datoteka je prazna"
 
-#: glib/gkeyfile.c:689
+#: glib/gkeyfile.c:691
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"Datoteka sa ključevima sadrži red „%s“ što ne čini par ključ-vrednost, grupu "
+"ili primedbu"
 
-#: glib/gkeyfile.c:757
+#: glib/gkeyfile.c:759
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "Datoteka sa ključevima ne počinje grupom"
 
-#: glib/gkeyfile.c:800
+#: glib/gkeyfile.c:802
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "Datoteka sa ključevima sadrži nepodržano kodiranje „%s“"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
-#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
-#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
+#: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "Datoteka sa ključevima nema grupu „%s“"
 
-#: glib/gkeyfile.c:1167
+#: glib/gkeyfile.c:1169
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "Datoteka sa ključevima nema ključ „%s“"
 
-#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
+#: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "Datoteka sa ključevima sadrži ključ „%s“ vrednosti „%s“ što nije UTF-8"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
+#: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
+msgstr "Datoteka sa ključevima sadrži ključ „%s“ nerazumljive vrednosti."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1988
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"Datoteka sa ključevima sadrži ključ „%s“ u grupi „%s“ nerazumljive vrednosti."
 
-#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "Datoteka sa ključevima ne sadrži ključ „%s“ u grupi „%s“"
 
-#: glib/gkeyfile.c:3035
-#, fuzzy, c-format
-msgid "Key file contains invalid escape sequence '%s'"
-msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
-
-#: glib/gkeyfile.c:3059
+#: glib/gkeyfile.c:3022
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "Datoteka sa ključevima sadrži znak isticanja na kraju reda"
 
-#: glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:3044
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "Datoteka sa ključevima sadrži nedozvoljen niz isticanja „%s“"
+
+#: glib/gkeyfile.c:3182
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "Vrednost „%s“ se ne može smatrati brojem."
 
-#: glib/gkeyfile.c:3203
+#: glib/gkeyfile.c:3210
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "Vrednost „%s“ se ne može smatrati istinitosnom."
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Neispravna veličina poruke"
