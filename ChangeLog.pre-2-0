@@ -1,3 +1,17 @@
+Mon Jan  4 02:58:13 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+        * Released GLib 1.1.12 
+
+        * INSTALL:
+          NEWS:
+          README:
+          configure.in:
+	  glib.spec:
+          docs/glib-config.1: version=1.1.12
+
+	* tests/Makefile.am: fixed so it works properly with
+	  builddir and srcdir.
+
 Sun Jan  3 01:38:14 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* tests/Makefile.am:

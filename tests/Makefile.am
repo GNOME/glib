@@ -1,5 +1,5 @@
 
-INCLUDES = -I..
+INCLUDES = -I$(top_srcdir)
 
 TESTS = \
 	alloca-test	\
@@ -14,13 +14,13 @@ TESTS = \
 
 noinst_PROGRAMS = $(TESTS)
 
-alloca_test_LDADD = ../libglib.la
-array_test_LDADD = ../libglib.la
-hash_test_LDADD = ../libglib.la
-list_test_LDADD = ../libglib.la
-node_test_LDADD = ../libglib.la
-relation_test_LDADD = ../libglib.la
-slist_test_LDADD = ../libglib.la
-string_test_LDADD = ../libglib.la
-tree_test_LDADD = ../libglib.la
+alloca_test_LDADD = $(top_builddir)/libglib.la
+array_test_LDADD = $(top_builddir)/libglib.la
+hash_test_LDADD = $(top_builddir)/libglib.la
+list_test_LDADD = $(top_builddir)/libglib.la
+node_test_LDADD = $(top_builddir)/libglib.la
+relation_test_LDADD = $(top_builddir)/libglib.la
+slist_test_LDADD = $(top_builddir)/libglib.la
+string_test_LDADD = $(top_builddir)/libglib.la
+tree_test_LDADD = $(top_builddir)/libglib.la
 

@@ -1,3 +1,10 @@
+Overview of Changes in GLib 1.1.12:
+
+* Added alloca functions/macros: g_strdup_a, g_strconcat3_a, g_alloca,
+  g_new_a, g_new0_a
+* New tests structure.  Type 'make check' on your system to run them.
+* Avoid unnecessary extra hook referencing in g_hook_list_marshal
+
 Overview of Changes in GLib 1.1.11:
 
 * provide defaults for POLL sysdefs
