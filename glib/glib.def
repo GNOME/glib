@@ -353,6 +353,8 @@ EXPORTS
 	g_str_equal
 	g_str_hash
 	g_strcasecmp
+	g_strchomp
+	g_strchug
 	g_strconcat
 	g_strdelimit
 	g_strdown

@@ -44,14 +44,15 @@ short. Otherwise stat() calls will fail.
 Before building you must get the pthreads library for Win32 from
 http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
 snapshot from 1999-04-07 is the one that should be used. Edit the
-location of the pthreads library and include files in makefile.msc.
+location of the pthreads library and include files in makefile.msc or
+makefile.cygwin.
 
 If using the Microsoft toolchain, build with `nmake -f
 makefile.msc`. Install with `nmake -f makefile.msc install`.  If using
 egcs, build using `make -f makefile.cygwin`.
 
 To test the GLib functions, go to the tests subdirectory and enter
-`nmake -f makefile.msc check`.
+`nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
 
 If you would want to use the cygwin tools to generate executables that
 *do* use the cygwin runtime, the normal Unix configuration method
@@ -83,7 +84,7 @@ Some of the usage of these macros was a bit mixed up, and had to be
 straightened out when adding the gcc support. In particular, I used to
 check for _MSC_VER in some places where I really wanted to check for
 the Microsoft C library, and those checks has now been changed to
-NATIVE_WIN32.
+NATIVE_WIN32. NATIVE_WIN32 should maybe be renamed to USE_MSVCRT.
 
 The pthreads for Win32 package that the thread support uses isn't
 quite ready yet, and thus threads really should not be relied upon.

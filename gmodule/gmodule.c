@@ -170,17 +170,6 @@ _g_module_build_path (const gchar *directory,
 }
 #endif	/* no implementation */
 
-#if defined (NATIVE_WIN32) && defined (__LCC__)
-int __stdcall 
-LibMain (void         *hinstDll,
-	 unsigned long dwReason,
-	 void         *reserved)
-{
-  return 1;
-}
-#endif /* NATIVE_WIN32 && __LCC__ */
-
-
 /* --- functions --- */
 gboolean
 g_module_supported (void)

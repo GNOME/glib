@@ -97,9 +97,9 @@ typedef unsigned long long guint64;
 #define alloca _alloca
 #endif
 
-#define GLIB_MAJOR_VERSION 1
-#define GLIB_MINOR_VERSION 3
-#define GLIB_MICRO_VERSION 0
+#define GLIB_MAJOR_VERSION @GLIB_MAJOR_VERSION@
+#define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
+#define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
 
 #ifdef	__cplusplus
 #define	G_HAVE_INLINE	1
@@ -119,7 +119,7 @@ typedef unsigned long long guint64;
  *   printf ("sizeof (pthread_mutex_t) = %d\n", sizeof (pthread_mutex_t));
  *   printf ("PTHREAD_MUTEX_INITIALIZER = ");
  *   for (i = 0; i < sizeof (pthread_mutex_t); i++)
- *     printf ("%u, ", (unsigned) ((unsigned char *) &m)[i]);
+ *     printf ("%u, ", ((unsigned char *) &m)[i]);
  *   printf ("\n");
  *   exit(0);
  * }

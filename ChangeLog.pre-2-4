@@ -1,3 +1,21 @@
+1999-05-06  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.msc.in makefile.cygwin.in glibconfig.h.win32.in
+ 	config.h.win32.in tests/makefile.msc.in tests/makefile.cygwin.in:
+ 	New files, used to generate corresponding non-.in files when
+ 	making a dist. This is just so the version numbers will be kept in
+ 	synch automatically.
+
+	* configure.in: Also substitute @GLIB_MAJOR_VERSION@,
+ 	@GLIB_MINOR_VERSION@, and @GLIB_INTERFACE_AGE@.
+	
+	* Makefile.am tests/Makefile.am: Also distribute makefile.cygwin.
+	
+	* gerror.c (g_on_error_query): On Win32, put up a MessageBox and
+ 	then exit.
+
+	* glib.def: Add a couple of functions.
+	
 Sat May  1 10:26:20 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4

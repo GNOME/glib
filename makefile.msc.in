@@ -7,22 +7,28 @@ BIN = C:\bin
 
 # This is the location of pthreads for Win32, 
 # see http://sourceware.cygnus.com/pthreads-win32/
+# We want the 1999-04-07 snapshot.
 PTHREADS = ..\pthreads-snap-1999-04-07
 PTHREAD_LIB = $(PTHREADS)\pthread.lib
 PTHREAD_INC = -I $(PTHREADS)
+
+# Full optimization:
+OPTIMIZE = -Ox
+# Debugging:
+#OPTIMIZE = -Zi
 
 ################################################################
 
 # Nothing much configurable below
 
-# cl -? described the options
-CC = cl -G5 -GF -Ox -W3 -MD -nologo
+# cl -? describes the options
+CC = cl -G5 -GF $(OPTIMIZE) -W3 -MD -nologo
 
-# No general LDFLAGS needes
-LDFLAGS = /link 
+# No general LDFLAGS needed
+LDFLAGS = /link # /debug
 INSTALL = copy
 
-GLIB_VER = 1.3
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 CFLAGS = -I. -DHAVE_CONFIG_H
 

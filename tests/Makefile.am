@@ -1,6 +1,10 @@
 
 INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
+EXTRA_DIST = \
+	makefile.msc	\
+	makefile.cygwin
+
 TESTS = \
 	array-test	\
 	date-test	\
@@ -36,3 +40,8 @@ strfunc_test_LDADD = $(top_builddir)/libglib.la
 tree_test_LDADD = $(top_builddir)/libglib.la
 type_test_LDADD = $(top_builddir)/libglib.la
 
+makefile.msc: $(top_builddir)/config.status makefile.msc.in
+	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.cygwin: $(top_builddir)/config.status makefile.cygwin.in
+	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

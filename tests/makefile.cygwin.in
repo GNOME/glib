@@ -1,16 +1,17 @@
 ## Makefile for building the GLib test programs with egcs on cygwin.
 ## Use: make -f makefile.cygwin check
 
+OPTIMIZE = -g -O
+
 ################################################################
 
 # Nothing much configurable below
 
-# cl -? described the options
 CC = gcc -mno-cygwin -mpentium
 
-GLIB_VER = 1.3
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
-CFLAGS = -I.. -DHAVE_CONFIG_H
+CFLAGS = $(OPTIMIZE) -I.. -DHAVE_CONFIG_H
 
 TESTS = \
 	array-test.exe	\

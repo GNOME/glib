@@ -59,8 +59,10 @@
 #include <string.h> /* for bzero on BSD systems */
 #endif
 
-#ifdef _MSC_VER
-#include <process.h>		/* For _getpid() */
+#ifdef NATIVE_WIN32
+#  define STRICT		/* Strict typing, please */
+#  include <windows.h>
+#  include <process.h>		/* For _getpid() */
 #endif
 
 #ifndef NO_FD_SET
@@ -82,6 +84,7 @@ volatile gboolean glib_on_error_halt = TRUE;
 void
 g_on_error_query (const gchar *prg_name)
 {
+#ifndef NATIVE_WIN32
   static const gchar *query1 = "[E]xit, [H]alt";
   static const gchar *query2 = ", show [S]tack trace";
   static const gchar *query3 = " or [P]roceed";
@@ -133,6 +136,15 @@ g_on_error_query (const gchar *prg_name)
     }
   else
     goto retry;
+#else
+  if (!prg_name)
+    prg_name = g_get_prgname ();
+  
+  MessageBox (NULL, "Terminating",
+	      (prg_name && *prg_name) ? prg_name : NULL,
+	      MB_OK|MB_ICONERROR);
+  _exit(0);
+#endif
 }
 
 void
