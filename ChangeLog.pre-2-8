@@ -1,3 +1,10 @@
+Tue Feb 26 21:44:01 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* config.status config.guess: Remove these files
+	from CVS so we more-or-less current versions from
+	automake --add-missing. (Reported by Finlay Dobbie,
+	#60342)
+
 2002-02-26  Matthias Clasen  <maclas@gmx.de>
 
 	* docs/debugging.txt, gobject/glib-genmarshal.c,
