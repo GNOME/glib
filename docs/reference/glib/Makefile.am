@@ -115,7 +115,7 @@ tmpl.stamp: tmpl-build.stamp
 
 #### sgml ####
 
-sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) tmpl/*.sgml
+sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml
 	@echo '*** Building SGML ***'
 	cd $(srcdir) && \
 	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) $(MKDB_OPTIONS)
