@@ -2466,7 +2466,7 @@ g_main_loop_run (GMainLoop *loop)
       if (!loop->context->cond)
 	loop->context->cond = g_cond_new ();
           
-      while (loop->is_running || !got_ownership)
+      while (loop->is_running && !got_ownership)
 	got_ownership = g_main_context_wait (loop->context,
 					     loop->context->cond,
 					     g_static_mutex_get_mutex (&loop->context->mutex));

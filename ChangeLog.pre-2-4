@@ -1,3 +1,11 @@
+Mon Apr  7 13:40:28 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (g_main_loop_run): When waiting for
+	the main loop to be freed up, wait on either
+	!loop->is_running or got_ownership, not both.
+	(Caused gtk_dialog_run() not to work in other
+	threads, reported by Jean-Yves Lefort)
+
 2003-04-07  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutf8.c (g_utf8_strlen): Warn if p == NULL && max != 0.
