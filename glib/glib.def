@@ -141,6 +141,10 @@ EXPORTS
 	g_date_valid_month
 	g_date_valid_weekday
 	g_date_valid_year
+	g_dir_close
+	g_dir_open
+	g_dir_read_name
+	g_dir_rewind
 	g_direct_equal
 	g_direct_hash
 	g_error_copy

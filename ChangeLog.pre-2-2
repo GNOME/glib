@@ -1,3 +1,17 @@
+2001-11-05  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Minor edits.
+
+	* glib-zip.in: Build separate runtime and developer packages.
+
+	* glib/libcharset/config.charset (os): Don't need to match mingw
+	after all, the charset.alias file isn't even used on Win32... (see
+	localcharset.c).
+
+	* glib/makefile.mingw.in: Add gdir.
+
+	* glib/glib.def: Add g_dir_* entry points.
+
 Sun Nov  4 20:45:21 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (CFLAGS): Add check for dirent.h

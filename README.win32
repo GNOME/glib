@@ -1,7 +1,7 @@
 General
 =======
 
-For more information about the port or GLib, GTk+ and the GIMP to
+For more information about the port or GLib, GTK+ and the GIMP to
 native Windows, and pre-built binaries (DLLs), surf to
 http://www.gimp.org/win32/ . "Native" means that we use the Win32 API
 only, and no POSIX (Unix) emulation layer except that provided by the
@@ -19,8 +19,7 @@ related to Win32:
 
 - G_OS_WIN32 is defined when compiling for Win32, *and* without
   any POSIX emulation, other that to the extent provided by the
-  bundled Microsoft C library (msvcrt.dll) and the pthreads-win32
-  library. For instance, pathnames are in the native Windows syntax.
+  bundled Microsoft C library (msvcrt.dll).
 
 - G_WITH_CYGWIN is defined if compiling for the Cygwin
   environment. Note that G_OS_WIN32 is *not* defined in that case, as
@@ -32,7 +31,7 @@ related to Win32:
 
 The Win32 port of GLib and related software uses only G_OS_WIN32. As
 G_OS_WIN32 is defined in glibconfig.h, it is available to all source
-files that use GLib (or GTk+, which uses GLib).
+files that use GLib (or GTK+, which uses GLib).
 
 Additionally, there are the compiler-specific macros:
 - __GNUC__ is defined when using GCC
@@ -40,12 +39,12 @@ Additionally, there are the compiler-specific macros:
 
 G_OS_WIN32 implies using the Microsoft C runtime MSVCRT.DLL. GLib is
 not known to work with the older CRTDLL.DLL runtime, or the static
-Microsoft C runtime libraries.
+Microsoft C runtime libraries LIBC.LIB and LIBCMT.LIB. 
 
-Building software that use GLib or GTk+
+Building software that use GLib or GTK+
 =======================================
 
-Even building software that just *use* GLib or GTk+ also require to
+Even building software that just *use* GLib or GTK+ also require to
 have the right compiler set up the right way, so if you intend to use
 gcc, follow the relevant instructions below in that case, too.
 

@@ -31,6 +31,7 @@ glib_OBJECTS =			\
 	gconvert.o		\
 	gdataset.o		\
 	gdate.o			\
+	gdir.o			\
 	gerror.o		\
 	gfileutils.o		\
 	ghash.o			\

@@ -274,7 +274,7 @@ case "$os" in
 	# BeOS has a single locale, and it has UTF-8 encoding.
 	echo "* UTF-8"
 	;;
-    msdosdjgpp*|mingw*)
+    msdosdjgpp*)
 	# DJGPP 2.03 doesn't have nl_langinfo(CODESET); therefore
 	# localcharset.c falls back to using the full locale name
 	# from the environment variables.
