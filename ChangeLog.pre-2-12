@@ -1,3 +1,8 @@
+2004-08-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-gettext.m4: Require ngettext.  (#123847,
+	Danilo Segan)
+
 Thu Aug  5 20:53:00 2004  Ray Strode  <rstrode@redhat.com>
 
 	* glib/gutils.h (g_get_codeset): strdup result so caller
