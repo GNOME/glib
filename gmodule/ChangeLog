@@ -1,3 +1,10 @@
+Mon May 28 20:19:25 2001  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (g_module_open): as a last resort, if we can't access()
+	the module, leave it up to the platform backends to find it.
+	(fixes implicit search patch loading i broke with my last
+	commit, spotted by Padraig O'Briain).
+
 Thu May 24 03:43:12 2001  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (g_module_open): reordered code so we have a single

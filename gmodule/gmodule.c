@@ -343,7 +343,7 @@ g_module_open (const gchar    *file_name,
 	  name = NULL;
 	}
     }
-  /* last resort, try appending libtool suffix */
+  /* try completing by appending libtool suffix */
   if (!name)
     {
       name = g_strconcat (file_name, ".la");
@@ -353,6 +353,11 @@ g_module_open (const gchar    *file_name,
 	  name = NULL;
 	}
     }
+  /* we can't access() the file, lets hope the platform backends finds
+   * it via library paths
+   */
+  if (!name)
+    name = g_strdup (file_name);
 
   /* ok, try loading the module */
   if (name)
