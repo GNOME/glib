@@ -1,3 +1,12 @@
+Tue May 30 16:01:32 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h gutils.c: Move the g_locale_get_codeset() up in the 
+	header file to correspond to to comments about memory
+	management. Rename to g_get_codeset() to avoid 
+	polluting the g_locale_* namespace, which probably
+	would have g_locale_get_codeset (GLocale *locale).
+	Add a doc comment.
+
 Mon May 29 14:10:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gutils.c (g_locale_get_codeset): Add function to get the 

@@ -761,8 +761,16 @@ g_int_hash (gconstpointer v)
   return *(const gint*) v;
 }
 
+/**
+ * g_get_codeset:
+ * 
+ * Get the codeset for the current locale.
+ * 
+ * Return value: a newly allocated string containing the name
+ * of the codeset. This string must be freed with g_free().
+ **/
 gchar *
-g_locale_get_codeset (void)
+g_get_codeset (void)
 {
 #ifdef HAVE_CODESET  
   char *result = nl_langinfo (CODESET);
