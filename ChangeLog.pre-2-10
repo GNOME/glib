@@ -1,14 +1,13 @@
 2001-01-09  Tor Lillqvist  <tml@iki.fi>
 
-	* giowin32.c (create_reader_thread): Rework the changes needed to
-	pass mainloop-test. Now we don't need to call TerminateThread()
-	after all, which is a relief, as the docs have a BIG RED WARNING
-	SIGN about using that API. Instead, when closing a fd channel that
-	has a reader thread running, just mark it as non-running and
-	additionally mark the fd as ripe for closing. When the reader
-	thread hopefully eventually gets something (and EOF or some actual
-	data), it will note that it shouldn't be running, break out of the
-	loop, and close the fd.
+	* giowin32.c: Rework the changes needed to pass mainloop-test. Now
+	we don't need to call TerminateThread() after all, which is a
+	relief, as the docs have a BIG RED WARNING SIGN about using that
+	API. Instead, when closing a fd channel that has a reader thread
+	running, just mark it as non-running and additionally mark the fd
+	as ripe for closing. When the reader thread hopefully eventually
+	gets something (and EOF or some actual data), it will note that it
+	shouldn't be running, break out of the loop, and close the fd.
 
 	The socket channel closing code should probably be changed
 	similarily, but that will have to wait until I have a test case.
