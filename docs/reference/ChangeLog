@@ -1,3 +1,8 @@
+Sun Nov  5 13:24:50 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am gobject/gobject-sections.sgml: Updates
+	* gobject/tmpl/g{boxed,type{plugin,module}}.sgml: added
+
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
 	* glib/tmpl/markup.sgml: Write docs

@@ -1,65 +1,4 @@
-<!-- ##### MACRO popen ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO pclose ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO lseek ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO getpid ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO close ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO fdopen ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO getcwd ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO write ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO access ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO g_string ##### -->
-<para>
-Turns the argument into a string literal by using the '#' stringizing operator.
-</para>
-
-@x: text to convert to a literal string.
-
-<!-- ##### MACRO read ##### -->
 <para>
 
 </para>
@@ -72,7 +11,68 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @Returns: 
 
+<!-- ##### MACRO write ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO pclose ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO g_string ##### -->
+<para>
+Turns the argument into a string literal by using the '#' stringizing operator.
+</para>
+
+@x: text to convert to a literal string.
+
+<!-- ##### MACRO popen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO access ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO open ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO getpid ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO fdopen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO close ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO getcwd ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO read ##### -->
 <para>
 
 </para>

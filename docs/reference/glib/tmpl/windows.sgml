@@ -2,23 +2,11 @@
 Windows Compatability Functions
 
 <!-- ##### SECTION Short_Description ##### -->
-functions to support portability to the Windows environment.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions and macros are provided in the GLib library when compiled
-on the Windows platform.
-</para>
-<para>
-Many of the macros simply rename available windows functions
-so that they use the same name as the standard Unix functions.
-This means that code written for the Unix platform will work without change
-under Windows.
-</para>
-<para>
-A few additional constants, types, and functions are also provided,
-to provide a common base set of functions across both the Unix and Windows
-environments.
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

@@ -15,8 +15,6 @@ G_TYPE_IS_INSTANTIATABLE
 G_TYPE_IS_DERIVABLE
 G_TYPE_IS_DEEP_DERIVABLE
 G_TYPE_IS_INTERFACE
-GTypePlugin
-GTypePluginVTable
 GTypeInterface
 GTypeInstance
 GTypeInfo
@@ -57,10 +55,6 @@ GClassFinalizeFunc
 GInstanceInitFunc
 GInterfaceInitFunc
 GInterfaceFinalizeFunc
-GTypePluginRef
-GTypePluginUnRef
-GTypePluginFillTypeInfo
-GTypePluginFillInterfaceInfo
 GTypeClassCacheFunc
 GTypeFlags
 g_type_register_static
@@ -83,11 +77,50 @@ g_type_get_plugin
 g_type_fundamental_last
 g_type_check_instance
 g_type_check_value
-g_type_is_dynamic
 g_type_value_conforms_to
-
 <SUBSECTION Private>
 g_log_domain_gobject
+</SECTION>
+
+<SECTION>
+<FILE>gtypeplugin</FILE>
+<TITLE>GTypePlugin</TITLE>
+GTypePlugin
+GTypePluginUse
+GTypePluginUnuse
+GTypePluginCompleteTypeInfo
+GTypePluginCompleteInterfaceInfo
+g_type_plugin_use
+g_type_plugin_unuse
+g_type_plugin_complete_type_info
+g_type_plugin_complete_interface_info
+<SUBSECTION Standard>
+G_TYPE_PLUGIN
+G_IS_TYPE_PLUGIN
+G_TYPE_TYPE_PLUGIN
+g_type_plugin_get_type
+G_TYPE_PLUGIN_CLASS
+G_IS_TYPE_PLUGIN_CLASS
+G_TYPE_PLUGIN_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gtypemodule</FILE>
+<TITLE>GTypeModule</TITLE>
+GTypeModule
+g_type_module_use
+g_type_module_unuse
+g_type_module_set_name
+g_type_module_register_type
+g_type_module_add_interface
+<SUBSECTION Standard>
+G_TYPE_MODULE
+G_IS_TYPE_MODULE
+G_TYPE_TYPE_MODULE
+g_type_module_get_type
+G_TYPE_MODULE_CLASS
+G_IS_TYPE_MODULE_CLASS
+G_TYPE_MODULE_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -150,6 +183,7 @@ G_FLAGS_CLASS_TYPE
 G_FLAGS_CLASS_TYPE_NAME
 G_IS_VALUE_ENUM
 G_IS_VALUE_FLAGS
+G_IS_VALUE_POINTER
 GEnumValue
 GFlagsValue
 g_enum_get_value
@@ -169,8 +203,27 @@ g_flags_complete_type_info
 </SECTION>
 
 <SECTION>
+<FILE>gboxed</FILE>
+<TITLE>Boxed Types</TITLE>
+GBoxed
+GBoxedCopyFunc
+GBoxedFreeFunc
+g_boxed_copy
+g_boxed_free
+g_value_set_boxed
+g_value_set_static_boxed
+g_value_get_boxed
+g_value_dup_boxed
+g_boxed_type_register_static
+<SUBSECTION Standard>
+G_IS_VALUE_BOXED
+G_TYPE_IS_BOXED
+</SECTION>
+
+<SECTION>
 <TITLE>Generic values</TITLE>
 <FILE>generic_values</FILE>
+G_VALUE_HOLDS
 G_VALUE_TYPE
 G_VALUE_TYPE_NAME
 G_TYPE_IS_VALUE
@@ -182,6 +235,7 @@ g_value_copy
 g_value_convert
 g_value_reset
 g_value_unset
+g_value_fits_pointer
 g_values_exchange
 g_value_types_exchangable
 g_value_register_exchange_func
@@ -360,6 +414,7 @@ GClosureNotify
 GClosure
 GCClosure
 GClosureNotifyData
+GCallback
 G_CLOSURE_NEEDS_MARSHAL
 G_CCLOSURE_SWAP_DATA
 g_cclosure_new

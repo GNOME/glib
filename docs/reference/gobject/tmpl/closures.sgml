@@ -59,6 +59,12 @@ Closures
 @data: 
 @notify: 
 
+<!-- ##### TYPEDEF GCallback ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
 <para>
 

@@ -144,23 +144,6 @@ GType
 @type: 
 
 
-<!-- ##### STRUCT GTypePlugin ##### -->
-<para>
-
-</para>
-
-@vtable: 
-
-<!-- ##### STRUCT GTypePluginVTable ##### -->
-<para>
-
-</para>
-
-@plugin_ref: 
-@plugin_unref: 
-@complete_type_info: 
-@complete_interface_info: 
-
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
 
@@ -519,44 +502,6 @@ GType
 @iface_data: 
 
 
-<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
-<para>
-
-</para>
-
-@plugin: 
-
-
-<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
-<para>
-
-</para>
-
-@plugin: 
-
-
-<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
-<para>
-
-</para>
-
-@plugin: 
-@g_type: 
-@info: 
-@value_table: 
-
-
-<!-- ##### USER_FUNCTION GTypePluginFillInterfaceInfo ##### -->
-<para>
-
-</para>
-
-@plugin: 
-@interface_type: 
-@instance_type: 
-@info: 
-
-
 <!-- ##### USER_FUNCTION GTypeClassCacheFunc ##### -->
 <para>
 
@@ -765,16 +710,6 @@ GType
 </para>
 
 @value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_type_is_dynamic ##### -->
-<para>
-
-</para>
-
-@type: 
-@flags: 
 @Returns: 
 
 

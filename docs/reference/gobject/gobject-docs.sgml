@@ -1,14 +1,17 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!entity gobject-enumerations-flags SYSTEM "sgml/enumerations_flags.sgml">
-<!entity gobject-generic-values SYSTEM "sgml/generic_values.sgml">
-<!entity gobject-objects SYSTEM "sgml/objects.sgml">
-<!entity gobject-param-specs SYSTEM "sgml/param_specs.sgml">
-<!entity gobject-signals SYSTEM "sgml/signals.sgml">
-<!entity gobject-closures SYSTEM "sgml/closures.sgml">
-<!entity gobject-standard-params SYSTEM "sgml/standard_params.sgml">
-<!entity gobject-types SYSTEM "sgml/types.sgml">
-<!entity gobject-value-collection SYSTEM "sgml/value_collection.sgml">
-<!entity gobject-value-types SYSTEM "sgml/value_types.sgml">
+<!entity gobject-GType SYSTEM "sgml/types.sgml">
+<!entity gobject-GTypePlugin SYSTEM "sgml/gtypeplugin.sgml">
+<!entity gobject-GTypeModule SYSTEM "sgml/gtypemodule.sgml">
+<!entity gobject-The-Base-Object-Type SYSTEM "sgml/objects.sgml">
+<!entity gobject-Enumeration-and-Flag-Types SYSTEM "sgml/enumerations_flags.sgml">
+<!entity gobject-Boxed-Types SYSTEM "sgml/gboxed.sgml">
+<!entity gobject-Generic-values SYSTEM "sgml/generic_values.sgml">
+<!entity gobject-Standard-value-types SYSTEM "sgml/value_types.sgml">
+<!entity gobject-Parameter-Specifications SYSTEM "sgml/param_specs.sgml">
+<!entity gobject-Standard-Parameter-Types SYSTEM "sgml/standard_params.sgml">
+<!entity gobject-Varargs-Value-Collection SYSTEM "sgml/value_collection.sgml">
+<!entity gobject-Signals SYSTEM "sgml/signals.sgml">
+<!entity gobject-Closures SYSTEM "sgml/closures.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -63,16 +66,20 @@
   <reference>
     <title>API Reference</title>
     
-      &gobject-types;
-      &gobject-objects;
-      &gobject-enumerations-flags;
-      &gobject-generic-values;
-      &gobject-value-types;
-      &gobject-value-collection;
-      &gobject-param-specs;
-      &gobject-standard-params;
-      &gobject-signals;
-      &gobject-closures;
+      &gobject-GType;
+      &gobject-GTypePlugin;
+      &gobject-GTypeModule;
+      &gobject-The-Base-Object-Type;
+      &gobject-Enumeration-and-Flag-Types;
+      &gobject-Boxed-Types;
+      &gobject-Generic-values;
+      &gobject-Standard-value-types;
+      &gobject-Varargs-Value-Collection;
+      &gobject-Parameter-Specifications;
+      &gobject-Standard-Parameter-Types;
+      &gobject-Signals;
+      &gobject-Closures;
+      
   </reference>
   
 </book>

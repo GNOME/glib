@@ -1,0 +1,115 @@
+<!-- ##### SECTION Title ##### -->
+GTypeModule
+
+<!-- ##### SECTION Short_Description ##### -->
+Type Loading Modules
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GTypeModule provides a simple implementation of the #GTypePlugin
+interface. The model of #GTypeModule is a dynamically loaded module
+which implements some number of types and interface
+implementations. When the module is loaded, it registerse its types
+and interfaces using g_type_module_register_type() and
+g_type_module_add_interface().  As long as any instances of these
+types and interface implementations are in use, the module is kept
+loaded. When the types and interfaces are gone, the module may be
+unloaded. If the types and interfaces become used again, the module
+will be reloaded.
+</para>
+<para>
+Keeping track of whether the module should be loaded or not is done by
+using a use count - it starts at zero, and whenever it is greater than
+zero, the module is loaded. The use count is maintained internally by
+the type system, but also can be explicitely controlled by
+g_type_module_use() and g_type_module_unuse(). Typically, when loading
+a module for the first type, g_type_module_use() will be used to load
+it so that it can initialize its types. At some later point, when the
+module no longer needs to be loaded except for the type
+implementations it contains, g_type_module_unuse() is called.
+</para>
+<para>
+#GTypeModule does not actually provide any implementation of module
+loading and unloading. To create a particular module type you must
+derive from #GTypeModule and implement the load and unload functions
+in #GTypeModuleClass.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+<variablelist>
+
+<varlistentry>
+<term>#GTypePlugin</term>
+<listitem><para>The abstract type loader interface.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>#GModule</term>
+<listitem><para>Portable mechanism for dynamically loaded modules.</para></listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+
+<!-- ##### STRUCT GTypeModule ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+@use_count: 
+@type_infos: 
+@interface_infos: 
+@name: 
+
+<!-- ##### FUNCTION g_type_module_use ##### -->
+<para>
+
+</para>
+
+@module: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_module_unuse ##### -->
+<para>
+
+</para>
+
+@module: 
+
+
+<!-- ##### FUNCTION g_type_module_set_name ##### -->
+<para>
+
+</para>
+
+@module: 
+@name: 
+
+
+<!-- ##### FUNCTION g_type_module_register_type ##### -->
+<para>
+
+</para>
+
+@module: 
+@parent_type: 
+@type_name: 
+@type_info: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_type_module_add_interface ##### -->
+<para>
+
+</para>
+
+@module: 
+@instance_type: 
+@interface_type: 
+@interface_info: 
+
+

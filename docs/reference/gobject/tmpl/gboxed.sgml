@@ -1,0 +1,105 @@
+<!-- ##### SECTION Title ##### -->
+gboxed
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT GBoxed ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION GBoxedCopyFunc ##### -->
+<para>
+
+</para>
+
+@boxed: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION GBoxedFreeFunc ##### -->
+<para>
+
+</para>
+
+@boxed: 
+
+
+<!-- ##### FUNCTION g_boxed_copy ##### -->
+<para>
+
+</para>
+
+@boxed_type: 
+@src_boxed: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_boxed_free ##### -->
+<para>
+
+</para>
+
+@boxed_type: 
+@boxed: 
+
+
+<!-- ##### FUNCTION g_value_set_boxed ##### -->
+<para>
+
+</para>
+
+@value: 
+@boxed: 
+
+
+<!-- ##### FUNCTION g_value_set_static_boxed ##### -->
+<para>
+
+</para>
+
+@value: 
+@boxed: 
+
+
+<!-- ##### FUNCTION g_value_get_boxed ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_value_dup_boxed ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_boxed_type_register_static ##### -->
+<para>
+
+</para>
+
+@name: 
+@boxed_copy: 
+@boxed_free: 
+@Returns: 
+
+

@@ -14,6 +14,15 @@ Generic values
 
 </para>
 
+<!-- ##### MACRO G_VALUE_HOLDS ##### -->
+<para>
+
+</para>
+
+@value: 
+@g_type: 
+
+
 <!-- ##### MACRO G_VALUE_TYPE ##### -->
 <para>
 
@@ -103,6 +112,15 @@ Generic values
 </para>
 
 @value: 
+
+
+<!-- ##### FUNCTION g_value_fits_pointer ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_values_exchange ##### -->

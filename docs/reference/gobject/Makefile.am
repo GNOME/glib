@@ -13,16 +13,20 @@ DOC_SOURCE_DIR=../../../gobject
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
 
 # Headers to ignore
-IGNORE_HFILES=
+IGNORE_HFILES=				\
+	gbsearcharray.h
 
 tmpl_sources =				\
+	tmpl/closures.sgml		\
 	tmpl/enumerations_flags.sgml	\
+	tmpl/gboxed.sgml		\
 	tmpl/generic_values.sgml	\
 	tmpl/gobject-unused.sgml	\
+	tmpl/gtypemodule.sgml		\
+	tmpl/gtypeplugin.sgml		\
 	tmpl/objects.sgml		\
 	tmpl/param_specs.sgml		\
 	tmpl/signals.sgml		\
-	tmpl/closures.sgml		\
 	tmpl/standard_params.sgml	\
 	tmpl/types.sgml			\
 	tmpl/value_collection.sgml	\
