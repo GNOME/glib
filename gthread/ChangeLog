@@ -1,3 +1,9 @@
+2000-04-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-solaris.c (g_mutex_new_solaris_impl): Changed the scope
+	of the initialized mutex to USYNC_THREAD. Thanks to Soeren
+	Sandmann <sandmann@daimi.au.dk> for pointing that out.
+
 2000-03-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c (posix_check_for_error): Forgot a '}' in a macro

@@ -66,7 +66,7 @@ static GMutex *
 g_mutex_new_solaris_impl (void)
 {
   GMutex *result = (GMutex *) g_new (mutex_t, 1);
-  solaris_check_for_error (mutex_init ((mutex_t *) result, USYNC_PROCESS, 0));
+  solaris_check_for_error (mutex_init ((mutex_t *) result, USYNC_THREAD, 0));
   return result;
 }
 
