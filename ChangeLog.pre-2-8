@@ -1,5 +1,11 @@
 2002-09-29  Tor Lillqvist  <tml@iki.fi>
 
+	* configure.in: Instead of forcing -fnative-struct into CFLAGS
+	when using gcc for Win32, check for gcc version 3.x which uses
+	-mms-bitfields instead. Also check if either of these switches is
+	actually available at all, and warn if not. Thanks to Soren
+	Andersen for the inspiration.
+
 	* HACKING: Say we require autoconf 2.52 as that is what
 	configure.in does.
 
