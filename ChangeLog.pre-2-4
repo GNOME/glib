@@ -1,3 +1,10 @@
+Fri May 30 15:51:43 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_error_get_from_g_error): 
+	Do a g_return_val_if_fail() on err == NULL to be a
+	bit more robuts on buggy IO channel implementations.
+	(#113396, Dan Winship)
+
 Tue May 27 19:56:35 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmacros.h: __PRETTY_FUNCTION__ was made a non-token
