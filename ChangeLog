@@ -1,3 +1,8 @@
+1999-11-08  Tor Lillqvist  <tml@iki.fi>
+
+	* gwin32.c (g_win32_getlocale): Look at env vars LC_ALL, LC_CTYPE
+	and LANG first. Some refinements to the sublanguage logic.
+
 1999-11-04  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{cygwin,msc}.in: Add gwin32 object. Add rule to make .i

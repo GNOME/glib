@@ -525,11 +525,18 @@ g_win32_closedir (DIR *dir)
 gchar *
 g_win32_getlocale (void)
 {
-  LCID lcid = GetThreadLocale ();
+  LCID lcid;
+  gchar *ev;
   gint primary, sub;
   gchar *l = NULL, *sl = NULL;
   gchar bfr[20];
 
+  if ((ev = getenv ("LC_ALL")) != NULL
+      || (ev = getenv ("LC_CTYPE")) != NULL
+      || (ev = getenv ("LANG")) != NULL)
+    return g_strdup (ev);
+
+  lcid = GetThreadLocale ();
   primary = PRIMARYLANGID (LANGIDFROMLCID (lcid));
   sub = SUBLANGID (LANGIDFROMLCID (lcid));
   switch (primary)
@@ -605,7 +612,10 @@ g_win32_getlocale (void)
       l = "en";
       switch (sub)
 	{
-	case SUBLANG_ENGLISH_US: sl = "US"; break;
+	/* SUBLANG_ENGLISH_US == SUBLANG_DEFAULT. Heh. I thought
+	 * English was the language spoken in England.
+	 * Oh well.
+	 */
 	case SUBLANG_ENGLISH_UK: sl = "GB"; break;
 	case SUBLANG_ENGLISH_AUS: sl = "AU"; break;
 	case SUBLANG_ENGLISH_CAN: sl = "CA"; break;
@@ -679,7 +689,6 @@ g_win32_getlocale (void)
       l = "ms";
       switch (sub)
 	{
-	case SUBLANG_MALAY_MALAYSIA: sl = "MY"; break;
 	case SUBLANG_MALAY_BRUNEI_DARUSSALAM: sl = "BN"; break;
 	}
       break;
@@ -697,7 +706,7 @@ g_win32_getlocale (void)
       l = "no";
       switch (sub)
 	{
-	case SUBLANG_NORWEGIAN_BOKMAL: sl = "@bokmal"; break;
+	/* SUBLANG_NORWEGIAN_BOKMAL == SUBLANG_DEFAULT */
 	case SUBLANG_NORWEGIAN_NYNORSK: sl = "@nynorsk"; break;
 	}
       break;
@@ -707,6 +716,7 @@ g_win32_getlocale (void)
       l = "pt";
       switch (sub)
 	{
+	/* Hmm. SUBLANG_PORTUGUESE_BRAZILIAN == SUBLANG_DEFAULT */
 	case SUBLANG_PORTUGUESE_BRAZILIAN: sl = "BR"; break;
 	}
       break;
@@ -768,7 +778,6 @@ g_win32_getlocale (void)
       l = "uz";
       switch (sub)
 	{
-	case SUBLANG_UZBEK_LATIN: sl = "2latin"; break;
 	case SUBLANG_UZBEK_CYRILLIC: sl = "@cyrillic"; break;
 	}
       break;
