@@ -1,3 +1,15 @@
+Fri Jul 10 06:33:43 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* gutils.h: added a bunch of utility/wrapper functions:
+	g_basename(), g_getcwd(), g_get_user_name(), g_get_real_name(),
+	g_get_home_dir(), g_get_tmp_dir(), g_get_prgname() and g_set_prgname().
+
+	* gutils.c: removed all g_str* functions.
+	* gstrfuncs.c: moved the bunch g_str* functions from gutils.c in this
+	place. this file shall never include <stdlib.h> to avoid clashes for
+	some of the g_str* functions on some OSes.
+
 Fri Jul 10 00:29:03 EEST 1998 Lauri Alanko <nether@gimp.org>
 
 	* glib.h:

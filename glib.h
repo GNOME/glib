@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -171,13 +171,13 @@
   __attribute__((noreturn))
 #define G_GNUC_CONST				\
   __attribute__((const))
-#else   /* !__GNUC__ */
+#else	/* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
 #define G_GNUC_FORMAT( arg_idx )
 #define G_GNUC_NORETURN
 #define G_GNUC_CONST
-#endif  /* !__GNUC__ */
+#endif	/* !__GNUC__ */
 
 /* Hacker macro to place breakpoints for x86 machines.
  * Actuall use is strongly deprecated of course ;)
@@ -239,7 +239,7 @@
 #define g_chunk_new0(type, chunk)	( \
   (type *) memset (g_mem_chunk_alloc (chunk), 0, sizeof (type)) \
 )
-#define	g_chunk_free(mem, mem_chunk)    G_STMT_START { \
+#define	g_chunk_free(mem, mem_chunk)	G_STMT_START { \
   g_mem_chunk_free ((mem_chunk), (mem)); \
 } G_STMT_END
 
@@ -302,48 +302,48 @@
 
 #ifdef __GNUC__
 
-#define g_return_if_fail(expr)		G_STMT_START{	               \
-     if (!(expr))					               \
-       {						               \
+#define g_return_if_fail(expr)		G_STMT_START{		       \
+     if (!(expr))						       \
+       {							       \
 	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
-		    __FILE__,				               \
-		    __LINE__,				               \
-		    __PRETTY_FUNCTION__,		               \
-		    #expr);				               \
-	 return;					               \
+		    __FILE__,					       \
+		    __LINE__,					       \
+		    __PRETTY_FUNCTION__,			       \
+		    #expr);					       \
+	 return;						       \
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr,val)	G_STMT_START{	               \
-     if (!(expr))					               \
-       {						               \
+#define g_return_val_if_fail(expr,val)	G_STMT_START{		       \
+     if (!(expr))						       \
+       {							       \
 	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
-		    __FILE__,				               \
-		    __LINE__,				               \
-		    __PRETTY_FUNCTION__,		               \
-		    #expr);				               \
-	 return val;					               \
+		    __FILE__,					       \
+		    __LINE__,					       \
+		    __PRETTY_FUNCTION__,			       \
+		    #expr);					       \
+	 return val;						       \
        };				}G_STMT_END
 
 #else /* !__GNUC__ */
 
-#define g_return_if_fail(expr)		G_STMT_START{	          \
-     if (!(expr))					          \
-       {						          \
+#define g_return_if_fail(expr)		G_STMT_START{		  \
+     if (!(expr))						  \
+       {							  \
 	 g_warning ("file %s: line %d: assertion. \"%s\" failed", \
-		    __FILE__,				          \
-		    __LINE__,				          \
-		    #expr);				          \
-	 return;					          \
+		    __FILE__,					  \
+		    __LINE__,					  \
+		    #expr);					  \
+	 return;						  \
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr, val)	G_STMT_START{	          \
-     if (!(expr))					          \
-       {						          \
+#define g_return_val_if_fail(expr, val)	G_STMT_START{		  \
+     if (!(expr))						  \
+       {							  \
 	 g_warning ("file %s: line %d: assertion \"%s\" failed.", \
-		    __FILE__,				          \
-		    __LINE__,				          \
-		    #expr);				          \
-	 return val;					          \
+		    __FILE__,					  \
+		    __LINE__,					  \
+		    #expr);					  \
+	 return val;						  \
        };				}G_STMT_END
 
 #endif /* !__GNUC__ */
@@ -433,9 +433,9 @@ typedef unsigned long	guint32;
 /* This should never happen */
 #endif
 
-typedef gint32  gssize;
+typedef gint32	gssize;
 typedef guint32 gsize;
-typedef gint32  gtime;
+typedef gint32	gtime;
 typedef guint32 GQuark;
 
 typedef struct _GList		GList;
@@ -456,7 +456,7 @@ typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GScanner	GScanner;
 typedef union  _GValue		GValue;
 typedef struct _GRelation      GRelation;
-typedef struct _GTuples        GTuples;
+typedef struct _GTuples	       GTuples;
 
 
 typedef void		(*GFunc)		(gpointer  data,
@@ -473,16 +473,16 @@ typedef gint		(*GTraverseFunc)	(gpointer  key,
 typedef gint		(*GSearchFunc)		(gpointer  key,
 						 gpointer  data);
 typedef void		(*GErrorFunc)		(gchar	  *str);
-typedef void		(*GWarningFunc)		(gchar    *str);
-typedef void		(*GPrintFunc)		(gchar    *str);
+typedef void		(*GWarningFunc)		(gchar	  *str);
+typedef void		(*GPrintFunc)		(gchar	  *str);
 typedef void		(*GScannerMsgFunc)	(GScanner *scanner,
 						 gchar	  *message,
 						 gint	   error);
 typedef void		(*GDestroyNotify)	(gpointer  data);
 
-typedef guint		(*GHashFunc)		(gconstpointer    key);
-typedef gint		(*GCompareFunc)		(gconstpointer    a,
-						 gconstpointer    b);
+typedef guint		(*GHashFunc)		(gconstpointer	  key);
+typedef gint		(*GCompareFunc)		(gconstpointer	  a,
+						 gconstpointer	  b);
 
 struct _GList
 {
@@ -512,13 +512,13 @@ struct _GArray
 struct _GByteArray
 {
   guint8 *data;
-  guint   len;
+  guint	  len;
 };
 
 struct _GPtrArray
 {
   gpointer *pdata;
-  guint     len;
+  guint	    len;
 };
 
 struct _GTuples
@@ -529,7 +529,7 @@ struct _GTuples
 struct _GDebugKey
 {
   gchar *key;
-  guint  value;
+  guint	 value;
 };
 
 struct _GCache { gint dummy; };
@@ -548,89 +548,89 @@ typedef enum
 
 /* Doubly linked lists
  */
-GList* g_list_alloc	  	(void);
-void   g_list_free	  	(GList     	*list);
-void   g_list_free_1	  	(GList     	*list);
-GList* g_list_append	  	(GList     	*list,
-				 gpointer  	 data);
-GList* g_list_prepend	  	(GList     	*list,
-				 gpointer  	 data);
-GList* g_list_insert	  	(GList     	*list,
-				 gpointer  	 data,
-				 gint	     	 position);
+GList* g_list_alloc		(void);
+void   g_list_free		(GList		*list);
+void   g_list_free_1		(GList		*list);
+GList* g_list_append		(GList		*list,
+				 gpointer	 data);
+GList* g_list_prepend		(GList		*list,
+				 gpointer	 data);
+GList* g_list_insert		(GList		*list,
+				 gpointer	 data,
+				 gint		 position);
 GList* g_list_insert_sorted	(GList		*list,
-				 gpointer  	 data,
+				 gpointer	 data,
 				 GCompareFunc	 func);			    
-GList* g_list_concat	  	(GList     	*list1, 
-				 GList     	*list2);
-GList* g_list_remove	  	(GList     	*list,
-				 gpointer  	 data);
-GList* g_list_remove_link 	(GList     	*list,
-				 GList     	*link);
-GList* g_list_reverse	  	(GList     	*list);
-GList* g_list_nth	  	(GList     	*list,
-				 guint     	 n);
-GList* g_list_find	  	(GList     	*list,
-				 gpointer  	 data);
-GList* g_list_find_custom 	(GList     	*list,
-				 gpointer  	 data,
-				 GCompareFunc 	 func);
-gint   g_list_position    	(GList     	*list,
-				 GList     	*link);
-gint   g_list_index	  	(GList     	*list,
-				 gpointer  	 data);
-GList* g_list_last	  	(GList     	*list);
-GList* g_list_first	  	(GList     	*list);
-guint  g_list_length	  	(GList     	*list);
-void   g_list_foreach	  	(GList     	*list,
-				 GFunc     	 func,
-				 gpointer  	 user_data);
-gpointer g_list_nth_data  	(GList     	*list,
-				 guint      	 n);
+GList* g_list_concat		(GList		*list1, 
+				 GList		*list2);
+GList* g_list_remove		(GList		*list,
+				 gpointer	 data);
+GList* g_list_remove_link	(GList		*list,
+				 GList		*link);
+GList* g_list_reverse		(GList		*list);
+GList* g_list_nth		(GList		*list,
+				 guint		 n);
+GList* g_list_find		(GList		*list,
+				 gpointer	 data);
+GList* g_list_find_custom	(GList		*list,
+				 gpointer	 data,
+				 GCompareFunc	 func);
+gint   g_list_position		(GList		*list,
+				 GList		*link);
+gint   g_list_index		(GList		*list,
+				 gpointer	 data);
+GList* g_list_last		(GList		*list);
+GList* g_list_first		(GList		*list);
+guint  g_list_length		(GList		*list);
+void   g_list_foreach		(GList		*list,
+				 GFunc		 func,
+				 gpointer	 user_data);
+gpointer g_list_nth_data	(GList		*list,
+				 guint		 n);
 
-#define g_list_previous(list) 	((list) ? (((GList *)(list))->prev) : NULL)
+#define g_list_previous(list)	((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	((list) ? (((GList *)(list))->next) : NULL)
 
 /* Singly linked lists
  */
-GSList* g_slist_alloc	    	(void);
-void	g_slist_free	    	(GSList		*list);
-void	g_slist_free_1	    	(GSList   	*list);
-GSList* g_slist_append	    	(GSList   	*list,
-				 gpointer  	 data);
-GSList* g_slist_prepend	    	(GSList   	*list,
-				 gpointer  	 data);
-GSList* g_slist_insert	    	(GSList   	*list,
-				 gpointer 	 data,
-				 gint     	 position);
-GSList* g_slist_insert_sorted	(GSList   	*list,
-				 gpointer 	 data,
+GSList* g_slist_alloc		(void);
+void	g_slist_free		(GSList		*list);
+void	g_slist_free_1		(GSList		*list);
+GSList* g_slist_append		(GSList		*list,
+				 gpointer	 data);
+GSList* g_slist_prepend		(GSList		*list,
+				 gpointer	 data);
+GSList* g_slist_insert		(GSList		*list,
+				 gpointer	 data,
+				 gint		 position);
+GSList* g_slist_insert_sorted	(GSList		*list,
+				 gpointer	 data,
 				 GCompareFunc	 func);			    
-GSList* g_slist_concat	    	(GSList   	*list1, 
-				 GSList   	*list2);
-GSList* g_slist_remove	    	(GSList   	*list,
-				 gpointer 	 data);
-GSList* g_slist_remove_link 	(GSList   	*list,
-				 GSList   	*link);
-GSList* g_slist_reverse	    	(GSList   	*list);
-GSList* g_slist_nth	    	(GSList   	*list,
-				 guint    	 n);
-GSList* g_slist_find	    	(GSList   	*list,
-				 gpointer 	 data);
-GSList* g_slist_find_custom 	(GSList   	*list,
-				 gpointer 	 data,
+GSList* g_slist_concat		(GSList		*list1, 
+				 GSList		*list2);
+GSList* g_slist_remove		(GSList		*list,
+				 gpointer	 data);
+GSList* g_slist_remove_link	(GSList		*list,
+				 GSList		*link);
+GSList* g_slist_reverse		(GSList		*list);
+GSList* g_slist_nth		(GSList		*list,
+				 guint		 n);
+GSList* g_slist_find		(GSList		*list,
+				 gpointer	 data);
+GSList* g_slist_find_custom	(GSList		*list,
+				 gpointer	 data,
 				 GCompareFunc	 func);
-gint    g_slist_position    	(GSList   	*list,
-				 GSList   	*link);
-gint	g_slist_index	    	(GSList   	*list,
-				 gpointer 	 data);
-GSList* g_slist_last	    	(GSList   	*list);
-guint	g_slist_length	    	(GSList   	*list);
-void	g_slist_foreach	    	(GSList   	*list,
-				 GFunc    	 func,
-				 gpointer 	 user_data);
-gpointer g_slist_nth_data   	(GSList   	*list,
-				 guint    	 n);
+gint	g_slist_position	(GSList		*list,
+				 GSList		*link);
+gint	g_slist_index		(GSList		*list,
+				 gpointer	 data);
+GSList* g_slist_last		(GSList		*list);
+guint	g_slist_length		(GSList		*list);
+void	g_slist_foreach		(GSList		*list,
+				 GFunc		 func,
+				 gpointer	 user_data);
+gpointer g_slist_nth_data	(GSList		*list,
+				 guint		 n);
 
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)
 
@@ -650,10 +650,10 @@ void	    g_hash_table_destroy	(GHashTable	*hash_table);
 void	    g_hash_table_insert		(GHashTable	*hash_table,
 					 gpointer	 key,
 					 gpointer	 value);
-void	    g_hash_table_remove		(GHashTable     *hash_table,
+void	    g_hash_table_remove		(GHashTable	*hash_table,
 					 gconstpointer	 key);
-gpointer    g_hash_table_lookup		(GHashTable     *hash_table,
-					 gconstpointer   key);
+gpointer    g_hash_table_lookup		(GHashTable	*hash_table,
+					 gconstpointer	 key);
 gboolean    g_hash_table_lookup_extended(GHashTable	*hash_table,
 					 gconstpointer	 lookup_key,
 					 gpointer	*orig_key,
@@ -798,31 +798,49 @@ void g_warning (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
 void g_message (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
 void g_print   (const gchar *format, ...) G_GNUC_PRINTF (1, 2);
 
-/* Utility functions
+
+/* String utility functions
  */
 #define G_STR_DELIMITERS     "_-|> <."
-void    g_strdelimit		(gchar       *string,
+void	g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
-				 gchar        new_delimiter);
-gchar*	g_strdup     		(const gchar *str);
-gchar*	g_strconcat  		(const gchar *string1,
+				 gchar	      new_delimiter);
+gchar*	g_strdup		(const gchar *str);
+gchar*	g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
-gdouble g_strtod     		(const gchar *nptr,
-				 gchar      **endptr);
-gchar*	g_strerror   		(gint         errnum);
-gchar*	g_strsignal  		(gint         signum);
-gint    g_strcasecmp 		(const gchar *s1,
+gdouble g_strtod		(const gchar *nptr,
+				 gchar	    **endptr);
+gchar*	g_strerror		(gint	      errnum);
+gchar*	g_strsignal		(gint	      signum);
+gint	g_strcasecmp		(const gchar *s1,
 				 const gchar *s2);
-void    g_strdown    		(gchar       *string);
-void    g_strup      		(gchar       *string);
-void    g_strreverse   		(gchar       *string);
-guint   g_parse_debug_string	(const gchar *string, 
+void	g_strdown		(gchar	     *string);
+void	g_strup			(gchar	     *string);
+void	g_strreverse		(gchar	     *string);
+
+
+/* Retrive static info
+ */
+gchar*	g_get_user_name		(void);
+gchar*	g_get_real_name		(void);
+gchar*	g_get_home_dir		(void);
+gchar*	g_get_tmp_dir		(void);
+gchar*	g_get_prgname		(void);
+void	g_set_prgname		(const gchar *prgname);
+
+
+/* Miscellaneous utility functions
+ */
+guint	g_parse_debug_string	(const gchar *string, 
 				 GDebugKey   *keys, 
-				 guint        nkeys);
-gint    g_snprintf		(gchar       *string,
-				 gulong       n,
+				 guint	      nkeys);
+gint	g_snprintf		(gchar	     *string,
+				 gulong	      n,
 				 gchar const *format,
 				 ...) G_GNUC_PRINTF (3, 4);
+gchar*	g_basename		(const gchar *file_name);
+gchar*	g_getcwd		(void);
+     
 
 /* We make the assumption that if memmove isn't available, then
  * bcopy will do the job. This isn't safe everywhere. (bcopy can't
@@ -842,9 +860,9 @@ GPrintFunc   g_set_print_handler   (GPrintFunc func);
 
 void g_debug	      (const gchar *progname);
 void g_attach_process (const gchar *progname,
-		       gint         query);
+		       gint	    query);
 void g_stack_trace    (const gchar *progname,
-		       gint         query);
+		       gint	    query);
 
 
 /* String Chunks
@@ -860,35 +878,35 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
  */
 GString* g_string_new	    (const gchar *init);
 GString* g_string_sized_new (guint	  dfl_size);
-void	 g_string_free	    (GString     *string,
-			     gint         free_segment);
-GString* g_string_assign    (GString     *lval,
+void	 g_string_free	    (GString	 *string,
+			     gint	  free_segment);
+GString* g_string_assign    (GString	 *lval,
 			     const gchar *rval);
-GString* g_string_truncate  (GString     *string,
-			     gint         len);
-GString* g_string_append    (GString     *string,
+GString* g_string_truncate  (GString	 *string,
+			     gint	  len);
+GString* g_string_append    (GString	 *string,
 			     const gchar *val);
-GString* g_string_append_c  (GString     *string,
-			     gchar        c);
-GString* g_string_prepend   (GString     *string,
+GString* g_string_append_c  (GString	 *string,
+			     gchar	  c);
+GString* g_string_prepend   (GString	 *string,
 			     const gchar *val);
-GString* g_string_prepend_c (GString     *string,
-			     gchar        c);
+GString* g_string_prepend_c (GString	 *string,
+			     gchar	  c);
 GString* g_string_insert    (GString	 *string, 
-			     gint 	  pos, 
+			     gint	  pos, 
 			     const gchar *val);
-GString* g_string_insert_c  (GString     *string, 
-			     gint         pos, 
-			     gchar        c);
-GString* g_string_erase     (GString     *string, 
-			     gint         pos, 
-			     gint         len);
-GString* g_string_down      (GString     *string);
-GString* g_string_up        (GString     *string);
-void	 g_string_sprintf   (GString     *string,
+GString* g_string_insert_c  (GString	 *string, 
+			     gint	  pos, 
+			     gchar	  c);
+GString* g_string_erase	    (GString	 *string, 
+			     gint	  pos, 
+			     gint	  len);
+GString* g_string_down	    (GString	 *string);
+GString* g_string_up	    (GString	 *string);
+void	 g_string_sprintf   (GString	 *string,
 			     const gchar *format,
 			     ...) G_GNUC_PRINTF (2, 3);
-void	 g_string_sprintfa  (GString     *string,
+void	 g_string_sprintfa  (GString	 *string,
 			     const gchar *format,
 			     ...) G_GNUC_PRINTF (2, 3);
 
@@ -927,35 +945,35 @@ GArray* g_rarray_truncate (GArray   *array,
  * cleared spot and shortens the array.
  */
 
-#define     g_ptr_array_index(array,index) (array->pdata)[index]
+#define	    g_ptr_array_index(array,index) (array->pdata)[index]
 
-GPtrArray*  g_ptr_array_new	           (void);
-void   	    g_ptr_array_free	           (GPtrArray   *array,
-					    gboolean     free_seg);
-void        g_ptr_array_set_size           (GPtrArray   *array,
+GPtrArray*  g_ptr_array_new		   (void);
+void	    g_ptr_array_free		   (GPtrArray	*array,
+					    gboolean	 free_seg);
+void	    g_ptr_array_set_size	   (GPtrArray	*array,
 					    gint	 length);
-void        g_ptr_array_remove_index       (GPtrArray   *array,
-					    gint         index);
-gboolean    g_ptr_array_remove             (GPtrArray   *array,
-					    gpointer     data);
-void        g_ptr_array_add                (GPtrArray   *array,
-					    gpointer     data);
+void	    g_ptr_array_remove_index	   (GPtrArray	*array,
+					    gint	 index);
+gboolean    g_ptr_array_remove		   (GPtrArray	*array,
+					    gpointer	 data);
+void	    g_ptr_array_add		   (GPtrArray	*array,
+					    gpointer	 data);
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,
  * but type-safe.
  */
 
-GByteArray* g_byte_array_new      (void);
-void	    g_byte_array_free     (GByteArray *array,
-			           gint	       free_segment);
+GByteArray* g_byte_array_new	  (void);
+void	    g_byte_array_free	  (GByteArray *array,
+				   gint	       free_segment);
 
-GByteArray* g_byte_array_append   (GByteArray   *array,
+GByteArray* g_byte_array_append	  (GByteArray	*array,
 				   const guint8 *data,
-				   guint         len);
+				   guint	 len);
 
-GByteArray* g_byte_array_prepend  (GByteArray   *array,
+GByteArray* g_byte_array_prepend  (GByteArray	*array,
 				   const guint8 *data,
-				   guint         len);
+				   guint	 len);
 
 GByteArray* g_byte_array_truncate (GByteArray *array,
 				   gint	       length);
@@ -983,20 +1001,20 @@ gint  g_direct_equal (gconstpointer v,
 /* Quarks (string<->id association)
  */
 GQuark	  g_quark_try_string		(const gchar	*string);
-GQuark	  g_quark_from_static_string	(const gchar    *string);
-GQuark	  g_quark_from_string		(const gchar    *string);
+GQuark	  g_quark_from_static_string	(const gchar	*string);
+GQuark	  g_quark_from_string		(const gchar	*string);
 gchar*	  g_quark_to_string		(GQuark		 quark);
 
 /* Location Associated Data
  */
-void	  g_dataset_destroy		(gconstpointer   dataset_location);
-gpointer  g_dataset_id_get_data		(gconstpointer   dataset_location,
+void	  g_dataset_destroy		(gconstpointer	 dataset_location);
+gpointer  g_dataset_id_get_data		(gconstpointer	 dataset_location,
 					 GQuark		 key_id);
-void	  g_dataset_id_set_data_full	(gconstpointer   dataset_location,
+void	  g_dataset_id_set_data_full	(gconstpointer	 dataset_location,
 					 GQuark		 key_id,
-					 gpointer        data,
+					 gpointer	 data,
 					 GDestroyNotify	 destroy_func);
-void	  g_dataset_id_set_destroy	(gconstpointer   dataset_location,
+void	  g_dataset_id_set_destroy	(gconstpointer	 dataset_location,
 					 GQuark		 key_id,
 					 GDestroyNotify	 destroy_func);
 
@@ -1004,7 +1022,7 @@ void	  g_dataset_id_set_destroy	(gconstpointer   dataset_location,
 #define	  g_dataset_id_remove_data(l,k)	G_STMT_START{g_dataset_id_set_data((l),(k),NULL);}G_STMT_END
 #define	  g_dataset_get_data(l,k)	(g_dataset_id_get_data((l),g_quark_try_string(k)))
 #define	  g_dataset_set_data_full(l,k,d,f) G_STMT_START{g_dataset_id_set_data_full((l),g_quark_from_string(k),(d),(f));}G_STMT_END
-#define	  g_dataset_set_destroy(l,k,f)  G_STMT_START{g_dataset_id_set_destroy((l),g_quark_from_string(k),(f));}G_STMT_END
+#define	  g_dataset_set_destroy(l,k,f)	G_STMT_START{g_dataset_id_set_destroy((l),g_quark_from_string(k),(f));}G_STMT_END
 #define	  g_dataset_set_data(l,k,d)	G_STMT_START{g_dataset_set_data_full((l),(k),(d),NULL);}G_STMT_END
 #define	  g_dataset_remove_data(l,k)	G_STMT_START{g_dataset_set_data((l),(k),NULL);}G_STMT_END
 
@@ -1222,16 +1240,16 @@ struct _GCompletion {
 
 };
 
-GCompletion* g_completion_new          (GCompletionFunc func);
-void         g_completion_add_items    (GCompletion* cmp, 
-                                        GList* items);
-void         g_completion_remove_items (GCompletion* cmp, 
-                                        GList* items);
-void         g_completion_clear_items  (GCompletion* cmp);
-GList*       g_completion_complete     (GCompletion* cmp, 
-                                        gchar* prefix,
-                                        gchar** new_prefix);
-void         g_completion_free         (GCompletion* cmp);
+GCompletion* g_completion_new	       (GCompletionFunc func);
+void	     g_completion_add_items    (GCompletion* cmp, 
+					GList* items);
+void	     g_completion_remove_items (GCompletion* cmp, 
+					GList* items);
+void	     g_completion_clear_items  (GCompletion* cmp);
+GList*	     g_completion_complete     (GCompletion* cmp, 
+					gchar* prefix,
+					gchar** new_prefix);
+void	     g_completion_free	       (GCompletion* cmp);
 
 /* GRelation: Indexed Relations.  Imagine a really simple table in a
  * database.  Relations are not ordered.  This data type is meant for
@@ -1254,31 +1272,31 @@ void         g_completion_free         (GCompletion* cmp);
  * g_relation_count() counts ...
  */
 
-GRelation* g_relation_new     (gint         fields);
-void       g_relation_destroy (GRelation   *relation);
-void       g_relation_index   (GRelation   *relation,
-			       gint         field,
+GRelation* g_relation_new     (gint	    fields);
+void	   g_relation_destroy (GRelation   *relation);
+void	   g_relation_index   (GRelation   *relation,
+			       gint	    field,
 			       GHashFunc    hash_func,
 			       GCompareFunc key_compare_func);
-void       g_relation_insert  (GRelation   *relation,
+void	   g_relation_insert  (GRelation   *relation,
 			       ...);
-gint       g_relation_delete  (GRelation   *relation,
+gint	   g_relation_delete  (GRelation   *relation,
 			       gconstpointer  key,
-			       gint         field);
+			       gint	    field);
 GTuples*   g_relation_select  (GRelation   *relation,
 			       gconstpointer  key,
-			       gint         field);
-gint       g_relation_count   (GRelation   *relation,
+			       gint	    field);
+gint	   g_relation_count   (GRelation   *relation,
 			       gconstpointer  key,
-			       gint         field);
+			       gint	    field);
 gboolean   g_relation_exists  (GRelation   *relation,
 			       ...);
-void       g_relation_print   (GRelation   *relation);
+void	   g_relation_print   (GRelation   *relation);
 
-void       g_tuples_destroy   (GTuples     *tuples);
-gpointer   g_tuples_index     (GTuples     *tuples,
-			       gint         index,
-			       gint         field);
+void	   g_tuples_destroy   (GTuples	   *tuples);
+gpointer   g_tuples_index     (GTuples	   *tuples,
+			       gint	    index,
+			       gint	    field);
 
 
 /* Glib version.
