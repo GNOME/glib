@@ -1,3 +1,11 @@
+Sat May 29 11:16:29 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* config.guess
+	* config.status
+	* ltconfig
+	* ltmain.sh: upgrade to libtool 1.3.2
+
 1999-05-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmain.c: provide a poll prototype for SunOS, as they do not do
