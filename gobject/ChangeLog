@@ -1,3 +1,8 @@
+2000-10-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am: Remove empty SUBDIRS line _again_, as that _still_
+	prevents 'make dist' from working.
+
 Wed Oct 25 19:11:03 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gbsearcharray.h (g_bsearch_array_get_nth): Don't use implicit
