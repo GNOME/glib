@@ -1,3 +1,9 @@
+Sun Feb  6 12:09:55 2005  Manish Singh  <yosh@gimp.org>
+
+	* glib/gatomic.c: Don't use matching constraints for asm mem
+	parameters. This makes the code match with current glibc, and
+	quiets some warnings with gcc 3.4.
+
 2005-02-05  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in (G_LIBS_EXTRA)
