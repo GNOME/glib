@@ -1455,6 +1455,37 @@ gchar*	 g_strescape		(gchar	      *string);
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
 
+/* Macros for dynamic strings via fast stack allocation
+ * All macros take a special first argument: the target gchar* string
+ */
+#if G_HAVE_ALLOCA
+
+#  define g_strdup_a(newstr,str) G_STMT_START { \
+	  const char *__old = (str);		\
+	  char *__new;				\
+	  size_t __len = strlen (__old) + 1;	\
+	  __new = alloca (__len);		\
+	  memcpy (__new, __old, __len);		\
+	  (newstr) = __new;			\
+   } G_STMT_END
+
+#  define g_strconcat_a(newstr,str1,str2,str3) G_STMT_START { \
+	  size_t __len1 = ((str1) == (gchar*)NULL) ? 0 : strlen((str1)); \
+	  size_t __len2 = ((str2) == (gchar*)NULL) ? 0 : strlen((str2)); \
+	  size_t __len3 = ((str3) == (gchar*)NULL) ? 0 : strlen((str3)); \
+	  char *__sptr, *__new = \
+	  	alloca (__len1 + __len2 + __len3 + 1); \
+	  __sptr = __new; \
+	  if (__len1){memcpy (__sptr, (str1), __len1); __sptr += __len1;} \
+	  if (__len2){memcpy (__sptr, (str2), __len2); __sptr += __len2;} \
+	  if (__len3){memcpy (__sptr, (str3), __len3); __sptr += __len3;} \
+	  *__sptr = '\0'; \
+	  (newstr) = __new; \
+   } G_STMT_END
+
+#endif /* G_HAVE_ALLOCA */
+
+
 /* NULL terminated string arrays.
  * g_strsplit() splits up string into max_tokens tokens at delim and
  * returns a newly allocated string array.

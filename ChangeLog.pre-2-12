@@ -1,3 +1,11 @@
+Fri Jan  1 17:09:19 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in, glib.h:
+	Added two new alloca-based function macros, g_strdup_a and
+	g_strconcat_a.	These are stack-based and much faster than
+	their g_malloc-based counterparts.  Kudos to Ulrich Drepper
+	for help on this one.
+
 Wed Dec 30 18:24:57 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
         * Released GLib 1.1.11 

@@ -168,6 +168,12 @@ AC_HEADER_STDC
 
 # Checks for library functions.
 AC_FUNC_VPRINTF
+AC_FUNC_ALLOCA
+if test "x$ac_cv_func_alloca_works" = xyes; then
+	glib_have_alloca=yes
+else
+	glib_have_alloca=no
+fi
 
 AC_CHECK_FUNCS(atexit on_exit)
 
@@ -245,6 +251,7 @@ AC_CHECK_HEADERS(sys/time.h, AC_DEFINE(HAVE_SYS_TIME_H))
 AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
 AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
+AC_CHECK_HEADER(alloca.h, glib_have_alloca_h=yes, glib_have_alloca_h=no)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
@@ -866,6 +873,7 @@ _______EOF
 	cat >>$outfile <<_______EOF
 $glib_atexit
 $glib_memmove
+$glib_alloca
 $glib_defines
 
 $glib_vacopy
@@ -1127,6 +1135,45 @@ fi
 if test x$glib_working_wctype = xno; then
   glib_wc="\$glib_wc
 #define G_HAVE_BROKEN_WCTYPE 1"
+fi
+
+if test x$glib_have_alloca = xyes; then
+  glib_alloca="
+
+/* alloca support */"
+
+  if test x$glib_have_alloca_h = xyes; then
+    glib_alloca="\$glib_alloca
+#define G_HAVE_ALLOCA_H 1"
+  fi
+
+  glib_alloca="\$glib_alloca
+#define G_HAVE_ALLOCA 1
+
+/* BEGIN autoconf 2.13 alloca incantation
+   	 NOTE: Do not un-indent the #pragma below. */
+/* AIX requires this to be the first thing in the file.  */
+#ifdef __GNUC__
+# ifndef alloca
+#  define alloca __builtin_alloca
+# endif
+#else
+# if G_HAVE_ALLOCA_H
+#  include <alloca.h>
+# else
+#  ifdef _AIX
+ #pragma alloca
+#  else
+#   ifndef alloca /* predefined by HP cc +Olibcalls */
+char *alloca ();
+#   endif
+#  endif
+# endif
+#endif
+/* END autoconf 2.13 alloca incantation */
+
+
+"
 fi
 
 case x$enable_threads in
