@@ -1,3 +1,8 @@
+2001-09-05  Ross Golder  <ross@golder.org>
+
+	* Makefile.in.in: Updated from more recent gettext to fix
+	  problem with DESTDIR.
+
 2001-09-02  Carlos Perelló Marín <carlos@gnome-db.org>
 
 	* es.po: Added Spanish translation by josé antonio salgueiro
