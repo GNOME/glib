@@ -174,7 +174,8 @@ GMainLoop *g_main_loop_new        (GMainContext *context,
 			    	   gboolean      is_running);
 void       g_main_loop_run        (GMainLoop    *loop);
 void       g_main_loop_quit       (GMainLoop    *loop);
-void       g_main_loop_destroy    (GMainLoop    *loop);
+GMainLoop *g_main_loop_ref        (GMainLoop    *loop);
+void       g_main_loop_unref      (GMainLoop    *loop);
 gboolean   g_main_loop_is_running (GMainLoop    *loop);
 
 /* GSource: */
@@ -237,7 +238,7 @@ void g_get_current_time		        (GTimeVal	*result);
 #define 	g_main_new(is_running)	g_main_loop_new (NULL, is_running);
 #define         g_main_run(loop)        g_main_loop_run(loop)
 #define         g_main_quit(loop)       g_main_loop_quit(loop)
-#define         g_main_destroy(loop)    g_main_loop_destroy(loop)
+#define         g_main_destroy(loop)    g_main_loop_unref(loop)
 #define         g_main_is_running(loop) g_main_loop_is_running(loop)
 
 /* Source manipulation by ID */

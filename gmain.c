@@ -131,6 +131,7 @@ struct _GMainLoop
 {
   GMainContext *context;
   gboolean is_running;
+  guint ref_count;
 
 #ifdef G_THREADS_ENABLED
   GMutex *mutex;
@@ -2012,7 +2013,8 @@ g_main_loop_new (GMainContext *context,
   loop = g_new0 (GMainLoop, 1);
   loop->context = context;
   loop->is_running = is_running != FALSE;
-
+  loop->ref_count = 1;
+  
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported ())
     loop->mutex = g_mutex_new ();
@@ -2022,6 +2024,66 @@ g_main_loop_new (GMainContext *context,
 #endif /* G_THREADS_ENABLED */
 
   return loop;
+}
+
+/**
+ * g_main_loop_ref:
+ * @loop: a #GMainLoop
+ * 
+ * Increase the reference count on a #GMainLoop object by one.
+ * 
+ * Return value: @loop
+ **/
+GMainLoop *
+g_main_loop_ref (GMainLoop *loop)
+{
+  g_return_val_if_fail (loop != NULL, NULL);
+
+  LOCK_LOOP (loop);
+  loop->ref_count++;
+  UNLOCK_LOOP (loop);
+
+  return loop;
+}
+
+static void
+main_loop_destroy (GMainLoop *loop)
+{
+#ifdef G_THREADS_ENABLED
+  g_mutex_free (loop->mutex);
+  if (loop->sem_cond)
+    g_cond_free (loop->sem_cond);
+#endif /* G_THREADS_ENABLED */  
+  
+  g_free (loop);
+}
+
+/**
+ * g_main_loop_unref:
+ * @loop: a #GMainLoop
+ * 
+ * Decreases the reference count on a #GMainLoop object by one. If
+ * the result is zero, free the loop and free all associated memory.
+ **/
+void
+g_main_loop_unref (GMainLoop *loop)
+{
+  g_return_if_fail (loop != NULL);
+  g_return_if_fail (loop->ref_count > 0);
+
+  LOCK_LOOP (loop);
+  
+  loop->ref_count--;
+  if (loop->ref_count == 0)
+    {
+      /* When the ref_count is 0, there can be nobody else using the
+       * loop, so it is safe to unlock before destroying.
+       */
+      UNLOCK_LOOP (loop);
+      main_loop_destroy (loop);
+    }
+  else
+    UNLOCK_LOOP (loop);
 }
 
 /**
@@ -2038,11 +2100,16 @@ g_main_loop_run (GMainLoop *loop)
 {
   g_return_if_fail (loop != NULL);
 
+  /* The assumption here is that a reference is held to the loop
+   * until we recursively iterate
+   */
 #ifdef G_THREADS_ENABLED
   if (loop->context->thread != g_thread_self ())
     {
       LOCK_LOOP (loop);
 
+      loop->ref_count++;
+      
       if (!g_thread_supported ())
 	{
 	  g_warning ("g_main_loop_run() was called from second thread but"
@@ -2059,8 +2126,6 @@ g_main_loop_run (GMainLoop *loop)
 	  while (loop->is_running)
 	    g_cond_wait (loop->sem_cond, loop->mutex);
 	}
-	
-      UNLOCK_LOOP (loop);
     }
   else
 #endif /* G_THREADS_ENABLED */    
@@ -2076,6 +2141,7 @@ g_main_loop_run (GMainLoop *loop)
       
       LOCK_LOOP (loop);
 
+      loop->ref_count++;
       loop->is_running = TRUE;
       while (loop->is_running)
 	{
@@ -2083,8 +2149,19 @@ g_main_loop_run (GMainLoop *loop)
 	  g_main_context_iterate (loop->context, TRUE, TRUE);
 	  LOCK_LOOP (loop);
 	}
-      UNLOCK_LOOP (loop);
     }
+
+  /* We inline this here rather than calling g_main_loop_unref() to
+   * avoid an extra unlock/lock.
+   */
+  loop->ref_count--;
+  if (loop->ref_count == 0)
+    {
+      UNLOCK_LOOP (loop);
+      main_loop_destroy (loop);
+    }
+  else
+    UNLOCK_LOOP (loop);
 }
 
 /**
@@ -2113,28 +2190,6 @@ g_main_loop_quit (GMainLoop *loop)
   
   g_main_context_wakeup (loop->context);
   UNLOCK_CONTEXT (loop->context);
-}
-
-/**
- * g_main_loop_destroy:
- * @loop: a #GMainLoop
- * 
- * Destroy a #GMainLoop object and free all associated memory.
- * The loop must not currently be running via g_main_run().
- **/
-void 
-g_main_loop_destroy (GMainLoop *loop)
-{
-  g_return_if_fail (loop != NULL);
-  g_return_if_fail (!loop->is_running);
-
-#ifdef G_THREADS_ENABLED
-  g_mutex_free (loop->mutex);
-  if (loop->sem_cond)
-    g_cond_free (loop->sem_cond);
-#endif /* G_THREADS_ENABLED */  
-
-  g_free (loop);
 }
 
 /**
