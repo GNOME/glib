@@ -22,7 +22,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 extern const char      *g_log_domain_gmodule;

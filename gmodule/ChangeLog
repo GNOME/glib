@@ -1,3 +1,8 @@
+1998-10-25  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gmodule.h: Remove `#pragma }'.
+	* gmoduleconf.h.in: Likewise.
+
 Wed Oct 21 19:58:27 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (g_module_symbol): fixed a string pointer bug that could
