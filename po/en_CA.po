@@ -1,16 +1,17 @@
 # English/Canada translation of glib.
 # Copyright (C) 2004 Adam Weinberger <adamw@gnome.org>
-# This file is distributed under the same license as the glib package.
+# This file is distributed under the same licence as the glib package.
 # Adam Weinberger <adamw@gnome.org>, 2004.
 # 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
-"PO-Revision-Date: 2004-04-24 16:20-0500\n"
+"POT-Creation-Date: 2004-09-24 13:36-0400\n"
+"PO-Revision-Date: 2004-09-24 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
-"Language-Team: English/Canada <adamw@gnome.org>\n"
+"Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,7 +28,7 @@ msgstr "Could not open converter from '%s' to '%s'"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
@@ -37,8 +38,8 @@ msgstr "Invalid byte sequence in conversion input"
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
 
@@ -48,9 +49,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Cannot convert fallback '%s' to codeset '%s'"
 
 #: glib/gconvert.c:1498
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "The URI '%s' is not an absolute URI using the \"file\" scheme"
 
 #: glib/gconvert.c:1508
 #, c-format
@@ -124,7 +125,7 @@ msgstr "Template '%s' invalid, should not contain a '%s'"
 #: glib/gfileutils.c:798
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Template '%s' doesn't end with XXXXXX"
+msgstr "Template '%s' does not end with XXXXXX"
 
 #: glib/gfileutils.c:819
 #, c-format
@@ -152,7 +153,7 @@ msgstr "Could not open converter from `%s' to `%s': %s"
 
 #: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Cannot do a raw read in g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1540 glib/giochannel.c:1797 glib/giochannel.c:1883
 msgid "Leftover unconverted data in read buffer"
@@ -164,7 +165,7 @@ msgstr "Channel terminates in a partial character"
 
 #: glib/giochannel.c:1683
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Cannot do a raw read in g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:226
 #, c-format
@@ -190,7 +191,7 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"begins an entity; if this ampersand is not supposed to be an entity, escape "
 "it as &amp;"
 
 #: glib/gmarkup.c:461
@@ -389,7 +390,7 @@ msgstr "Document ended unexpectedly inside a comment or processing instruction"
 
 #: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Quoted text doesn't begin with a quotation mark"
+msgstr "Quoted text does not begin with a quotation mark"
 
 #: glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
@@ -494,50 +495,50 @@ msgstr "Failed to read enough data from child pid pipe (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
 #: glib/goption.c:263
 msgid "Usage:"
-msgstr ""
+msgstr "Usage:"
 
 #: glib/goption.c:263
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPTION...]"
 
 #: glib/goption.c:308
 msgid "Help Options:"
-msgstr ""
+msgstr "Help Options:"
 
 #: glib/goption.c:308
 msgid "Show help options"
-msgstr ""
+msgstr "Show help options"
 
 #: glib/goption.c:312
 msgid "Show all help options"
-msgstr ""
+msgstr "Show all help options"
 
 #: glib/goption.c:360
 msgid "Application Options:"
-msgstr ""
+msgstr "Application Options:"
 
 #: glib/goption.c:400
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Cannot parse integer value '%s' for --%s"
 
 #: glib/goption.c:410
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Integer value '%s' for %s out of range"
 
 #: glib/goption.c:1028
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Unknown option %s"
