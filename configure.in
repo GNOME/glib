@@ -1516,7 +1516,7 @@ case $host in
   *-*-cygwin*)
     glib_os="#define G_OS_UNIX
 #define G_WITH_CYGWIN"
-    ;;
+v    ;;
   *)
     glib_os="#define G_OS_UNIX"
     ;;
@@ -1546,12 +1546,6 @@ echo "version you just configured is meant for developers of GLib only:"
 echo ""
 echo "  * You should not base stable software on this version of GLib."
 echo "  * GNOME developers should use a stable version of GLib."
-echo ""
-echo "Distributions should *NOT* ship a development package of this GLib."
-echo "Do not ship the headers and do not ship the glib-config script.  These"
-echo "things will conflict with the stable 1.2 series.  Package only enough"
-echo "to satisfy the requirements of some other package.  Package only the"
-echo "library itself.  Doing otherwise will do no favors to the community."
 echo ""
 echo "If you install this version of GLib, we strongly recommend that you"
 echo "install it in a different prefix than GLib 1.2.  Use --prefix as an"

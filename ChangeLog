@@ -1,3 +1,11 @@
+Thu Jul  6 15:35:28 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Release 1.3.1
+
+	* Makefile.am (EXTRA_DIST): Dist fixes.
+
+	* configure.in: Moderate the warnings just a little bit.
+
 2000-07-05  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Update.

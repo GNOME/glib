@@ -10,12 +10,14 @@ glib-config: glib-config.in
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 
-EXTRA_DIST = \
+EXTRA_DIST = 			\
+	ChangeLog.pre-1-2	\
 	glib.m4			\
 	glib.spec.in		\
 	acglib.m4		\
 	sanity_check		\
 	README.win32		\
+	TODO.xml		\
 	glib.def		\
 	makefile.msc		\
 	makefile.msc.in		\
