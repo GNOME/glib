@@ -563,6 +563,7 @@ g_allocator_free
 g_allocator_new
 g_blow_chunks
 g_try_malloc G_GNUC_MALLOC
+g_try_malloc0 G_GNUC_MALLOC
 g_try_realloc
 #endif
 #endif

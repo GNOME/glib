@@ -1,5 +1,7 @@
 2005-03-21  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Add g_try_malloc0
+
 	* glib/gmem.h: Add g_try_new, g_try_new0, g_try_renew and
 	g_try_malloc0.  (#169611, Stefan Kost)
 
