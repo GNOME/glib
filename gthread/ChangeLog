@@ -1,3 +1,8 @@
+2001-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c (g_mutex_free_errorcheck_impl): Add new check to
+	errorcheck mutexes to abort, if a locked mutex is freed.
+
 2001-01-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-solaris.c, gthread-posix.c: Made g_thread_min_stack_size

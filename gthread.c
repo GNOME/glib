@@ -517,7 +517,7 @@ static void inline g_static_rw_lock_signal (GStaticRWLock* lock)
   if (lock->want_to_write && lock->write_cond)
     g_cond_signal (lock->write_cond);
   else if (lock->read_cond)
-    g_cond_signal (lock->read_cond);
+    g_cond_broadcast (lock->read_cond);
 }
 
 void g_static_rw_lock_reader_lock (GStaticRWLock* lock)
@@ -562,7 +562,8 @@ void g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
 
   g_static_mutex_lock (&lock->mutex);
   lock->read_counter--;
-  g_static_rw_lock_signal (lock);
+  if (lock->read_counter == 0)
+    g_static_rw_lock_signal (lock);
   g_static_mutex_unlock (&lock->mutex);
 }
 

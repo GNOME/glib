@@ -1,3 +1,9 @@
+2001-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.c: Broadcast the condition, if there are waiting
+	readers, as all might read at the same time. Only signal the
+	writer thread, if there are no more readers.
+
 2001-01-25  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in
