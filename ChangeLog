@@ -1,3 +1,9 @@
+Thu Jul 25 19:02:53 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c (g_timeout_add): Remove reference
+	in the docs to @notify parameter. (#87768,
+	Manuel Clos)
+
 Thu Jul 25 17:57:07 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gconvert.c (g_iconv_open): Document the

@@ -3076,8 +3076,7 @@ g_timeout_add_full (gint           priority,
  * Sets a function to be called at regular intervals, with the default
  * priority, #G_PRIORITY_DEFAULT.  The function is called repeatedly
  * until it returns %FALSE, at which point the timeout is automatically
- * destroyed and the function will not be called again.  The @notify
- * function is called when the timeout is destroyed.  The first call
+ * destroyed and the function will not be called again.  The first call
  * to the function will be at the end of the first @interval.
  *
  * Note that timeout functions may be delayed, due to the processing of other
