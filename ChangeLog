@@ -1,3 +1,8 @@
+Wed Mar 20 11:00:59 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Use $PKG_CONFIG, not pkg-config.
+	(LEE Sau Dan, #75572)
+
 2002-03-20  Sven Neumann  <sven@gimp.org>
 
 	* glib/ghash.c (g_hash_table_resize): avoid repeated call of 

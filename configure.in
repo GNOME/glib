@@ -206,7 +206,7 @@ if test x$PKG_CONFIG = xno ; then
   AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
 fi
 
-if pkg-config --atleast-pkgconfig-version 0.5 ; then
+if $PKG_CONFIG --atleast-pkgconfig-version 0.5 ; then
   :
 else
   AC_MSG_ERROR([*** pkg-config too old; version 0.5 or better required.])
