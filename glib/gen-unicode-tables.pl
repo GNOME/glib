@@ -167,9 +167,9 @@ elsif (@ARGV && $ARGV[0] eq '-both')
     shift @ARGV;
 }
 
-if (@ARGV != 6) {
+if (@ARGV != 7) {
     $0 =~ s@.*/@@;
-    die "Usage: $0 [-decomp | -both] UNICODE-VERSION UnicodeData.txt LineBreak.txt SpecialCasing.txt CaseFolding.txt CompositionExclusions.txt\n";
+    die "Usage: $0 [-decomp | -both] UNICODE-VERSION UnicodeData.txt LineBreak.txt SpecialCasing.txt CaseFolding.txt CompositionExclusions.txt BidiMirroring.txt\n";
 }
  
 print "Creating decomp table\n" if ($do_decomp);
@@ -461,6 +461,23 @@ while (<INPUT>)
 
 close INPUT;
 
+open (INPUT, "< $ARGV[6]") || exit 1;
+
+my @bidimirror;
+while (<INPUT>)
+{
+    chomp;
+
+    next if /^#/;
+    next if /^\s*$/;
+
+    s/\s*#.*//;
+
+    @fields = split ('\s*;\s*', $_, 30);
+
+    push @bidimirror, [hex ($fields[0]), hex ($fields[1])];
+}
+ 
 if ($do_props) {
     &print_tables ($last_code)
 }
@@ -636,6 +653,21 @@ sub print_tables
     #
     &output_special_case_table (\*OUT);
     &output_casefold_table (\*OUT);
+
+    print OUT "static const struct {\n";
+    print OUT "    gunichar ch;\n";
+    print OUT "    gunichar mirrored_ch;\n";
+    print OUT "} bidi_mirroring_table[] =\n";
+    print OUT "{\n";
+    $first = 1;
+    foreach $item (@bidimirror)
+    {
+        print OUT ",\n" unless $first;
+        $first = 0;
+        printf OUT "  { 0x%04x, 0x%04x }", $item->[0], $item->[1];
+        $bytes_out += 8;
+    }
+    print OUT "\n};\n\n";
 
     print OUT "#endif /* CHARTABLES_H */\n";
 

@@ -279,6 +279,9 @@ gint   g_utf8_collate     (const gchar *str1,
 gchar *g_utf8_collate_key (const gchar *str,
 			   gssize       len);
 
+gboolean g_unichar_get_mirror_char (gunichar ch,
+                                    gunichar *mirrored_ch);
+
 G_END_DECLS
 
 #endif /* __G_UNICODE_H__ */

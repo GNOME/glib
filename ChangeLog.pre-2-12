@@ -1,3 +1,10 @@
+2003-09-12  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gen-unicode-tables.pl:
+	* glib/gunichartables.h:
+	* glib/gunicode.h:
+	* glib/guniprop.c: Add g_unichar_get_mirror_char. (#114749)
+
 Thu Sep 11 20:11:05 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmarkup.c: Add g_markup_printf_escaped(), 

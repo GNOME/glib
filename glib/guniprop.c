@@ -981,3 +981,62 @@ g_utf8_casefold (const gchar *str,
 
   return g_string_free (result, FALSE); 
 }
+
+/**
+ * g_unichar_get_mirror_char:
+ * @ch: a unicode character
+ * @mirrored_ch: location to store the mirrored character
+ * 
+ * In Unicode, some characters are <firstterm>mirrored</firstterm>. This
+ * means that their images are mirrored horizontally in text that is laid
+ * out from right to left. For instance, "(" would become its mirror image,
+ * ")", in right-to-left text.
+ *
+ * If @ch has the Unicode mirrored property and there is another unicode
+ * character that typically has a glyph that is the mirror image of @ch's
+ * glyph, puts that character in the address pointed to by @mirrored_ch.
+ *
+ * Return value: %TRUE if @ch has a mirrored character and @mirrored_ch is
+ * filled in, %FALSE otherwise
+ **/
+/* This code is adapted from FriBidi (http://fribidi.sourceforge.net/). 
+ * FriBidi is: Copyright (C) 1999,2000 Dov Grobgeld, and
+ *             Copyright (C) 2001,2002 Behdad Esfahbod.
+ */
+gboolean
+g_unichar_get_mirror_char (gunichar ch,
+                           gunichar *mirrored_ch)
+{
+  gint pos, step, size;
+  gboolean found;
+
+  size = G_N_ELEMENTS (bidi_mirroring_table);
+  pos = step = (size / 2) + 1;
+
+  while (step > 1)
+    {
+      gunichar cmp_ch = bidi_mirroring_table[pos].ch;
+      step = (step + 1) / 2;
+
+      if (cmp_ch < ch)
+        {
+          pos += step;
+          if (pos > size - 1)
+            pos = size - 1;
+        }
+      else if (cmp_ch > ch)
+        {
+          pos -= step;
+          if (pos < 0)
+            pos = 0;
+        }
+      else
+        break;
+    }
+  found = bidi_mirroring_table[pos].ch == ch;
+  if (mirrored_ch)
+    *mirrored_ch = found ? bidi_mirroring_table[pos].mirrored_ch : ch;
+
+  return found;
+
+}
