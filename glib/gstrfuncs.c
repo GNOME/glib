@@ -83,11 +83,13 @@ gchar*
 g_strdup (const gchar *str)
 {
   gchar *new_str;
+  gsize length;
 
   if (str)
     {
-      new_str = g_new (char, strlen (str) + 1);
-      strcpy (new_str, str);
+      length = strlen (str) + 1;
+      new_str = g_new (char, length);
+      memcpy (new_str, str, length);
     }
   else
     new_str = NULL;

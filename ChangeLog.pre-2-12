@@ -1,3 +1,8 @@
+2003-05-27  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strdup): Use memcpy instead of
+	strcpy. (#106988, Christian Biere)
+
 2003-05-23  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gutf8.c: Fix typo in UNICODE_VALID (related to #107427).
