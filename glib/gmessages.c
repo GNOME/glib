@@ -476,17 +476,11 @@ g_logv (const gchar   *log_domain,
 #ifdef G_OS_WIN32
 	      gchar *locale_msg = g_locale_from_utf8 (fatal_msg_buf, -1, NULL, NULL, NULL);
 	      
+	      MessageBox (NULL, locale_msg, NULL,
+			  MB_ICONERROR|MB_SETFOREGROUND);
 	      if (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION))
-		{
-		  MessageBox (NULL, locale_msg, NULL,
-			      MB_ICONERROR|MB_SETFOREGROUND);
-		  G_BREAKPOINT ();
-		}
+		G_BREAKPOINT ();
 
-	      FatalAppExit (0, locale_msg);
-	      /* In case somebody runs a debug Windows and chooses to
-	       * continue, don't let her.
-	       */
 	      abort ();
 #else
 #if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)

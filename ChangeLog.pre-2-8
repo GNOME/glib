@@ -5,7 +5,7 @@
 
 	* glib/gmessages.c (g_logv): For fatal messages on Win32, use
 	G_BREAKPOINT() also without G_ENABLE_DEBUG, but only if being
-	debugged. Suggestion by Ulf Lamping. Otherwise use FatalAppExit().
+	debugged. Suggestion by Ulf Lamping.
 
 2005-01-18  Matthias Clasen  <mclasen@redhat.com>
 
