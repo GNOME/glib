@@ -4,41 +4,41 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-03-08 10:58-0500\n"
-"PO-Revision-Date: 2002-02-25 14:38+03:00\n"
+"POT-Creation-Date: 2002-03-10 23:05+0300\n"
+"PO-Revision-Date: 2002-03-10 23:21+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: glib/gconvert.c:390
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Преобразование из набора символов \"%s\" в \"%s\" не поддерживается"
+msgstr "п÷я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦п╣ п╦п╥ п╫п╟п╠п╬я─п╟ я│п╦п╪п╡п╬п╩п╬п╡ \"%s\" п╡ \"%s\" п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: glib/gconvert.c:394
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\": %s"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п╬я┌п╨я─я▀я┌я▄ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟я┌п╣п╩я▄ п╦п╥ \"%s\" п╡ \"%s\": %s"
 
 #: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
-"Неправильная последовательность байтов в входной строке для преобразования"
+"п²п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫п╬я│я┌я▄ п╠п╟п╧я┌п╬п╡ п╡ п╡я┘п╬п╢п╫п╬п╧ я│я┌я─п╬п╨п╣ п╢п╩я▐ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦я▐"
 
 #: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Ошибка при преобразовании: %s"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦п╦: %s"
 
 #: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
-msgstr "Частичная последовательность символов в конце ввода"
+msgstr "п╖п╟я│я┌п╦я┤п╫п╟я▐ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫п╬я│я┌я▄ я│п╦п╪п╡п╬п╩п╬п╡ п╡ п╨п╬п╫я├п╣ п╡п╡п╬п╢п╟"
 
 #: glib/gconvert.c:788
 #, c-format
@@ -68,85 +68,85 @@ msgstr ""
 #: glib/gconvert.c:1648
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "URI \"%s\" я│п╬п╢п╣я─п╤п╦я┌ п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╬ п╡я▀п╢я▀п╩п╣п╫п╫я▀п╣ (escaped) я│п╦п╪п╡п╬п╩я▀"
 
 #: glib/gconvert.c:1719
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "п÷я┐я┌я▄ \"%s\" п╫п╣ я▐п╡п╩я▐п╣я┌я│я▐ п╟п╠я│п╬п╩я▌я┌п╫я▀п╪"
 
 #: glib/gconvert.c:1729
 msgid "Invalid hostname"
-msgstr "Недопуcтимое название компьютера"
+msgstr "п²п╣п╢п╬п©я┐cя┌п╦п╪п╬п╣ п╫п╟п╥п╡п╟п╫п╦п╣ п╨п╬п╪п©я▄я▌я┌п╣я─п╟"
 
 #: glib/gdir.c:79
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Ошибка при открытии каталога \"%s\": %s"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ п╬я┌п╨я─я▀я┌п╦п╦ п╨п╟я┌п╟п╩п╬пЁп╟ \"%s\": %s"
 
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Не удалось получить %lu байт для чтения файла \"%s\""
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п©п╬п╩я┐я┤п╦я┌я▄ %lu п╠п╟п╧я┌ п╢п╩я▐ я┤я┌п╣п╫п╦я▐ я└п╟п╧п╩п╟ \"%s\""
 
 #: glib/gfileutils.c:348
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Ошибка при чтении файла \"%s\": %s"
+msgstr "п·я┬п╦п╠п╨п╟ п©я─п╦ я┤я┌п╣п╫п╦п╦ я└п╟п╧п╩п╟ \"%s\": %s"
 
 #: glib/gfileutils.c:426
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Сбой при чтении из файла \"%s\": %s"
+msgstr "п║п╠п╬п╧ п©я─п╦ я┤я┌п╣п╫п╦п╦ п╦п╥ я└п╟п╧п╩п╟ \"%s\": %s"
 
 #: glib/gfileutils.c:465 glib/gfileutils.c:533
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Сбой при открытии файла \"%s\": %s"
+msgstr "п║п╠п╬п╧ п©я─п╦ п╬я┌п╨я─я▀я┌п╦п╦ я└п╟п╧п╩п╟ \"%s\": %s"
 
 #: glib/gfileutils.c:479
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Не удалось получить аттрибуты файла \"%s\": сбой fstat(): %s"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п©п╬п╩я┐я┤п╦я┌я▄ п╟я┌я┌я─п╦п╠я┐я┌я▀ я└п╟п╧п╩п╟ \"%s\": я│п╠п╬п╧ fstat(): %s"
 
 #: glib/gfileutils.c:505
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Не удалось открыть файл \"%s\": сбой fdopen(): %s"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ \"%s\": я│п╠п╬п╧ fdopen(): %s"
 
 #: glib/gfileutils.c:712
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Шаблон \"%s\" испорчен, не должен содержать \"%s\""
+msgstr "п╗п╟п╠п╩п╬п╫ \"%s\" п╦я│п©п╬я─я┤п╣п╫, п╫п╣ п╢п╬п╩п╤п╣п╫ я│п╬п╢п╣я─п╤п╟я┌я▄ \"%s\""
 
 #: glib/gfileutils.c:724
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Шаблон \"%s\" заканчивается не на XXXXXX"
+msgstr "п╗п╟п╠п╩п╬п╫ \"%s\" п╥п╟п╨п╟п╫я┤п╦п╡п╟п╣я┌я│я▐ п╫п╣ п╫п╟ XXXXXX"
 
 #: glib/gfileutils.c:745
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Сбой при создания файла \"%s\": %s"
+msgstr "п║п╠п╬п╧ п©я─п╦ я│п╬п╥п╢п╟п╫п╦я▐ я└п╟п╧п╩п╟ \"%s\": %s"
 
 #: glib/giochannel.c:1110
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Преобразование из набора символов \"%s\" в \"%s\" не поддерживается"
+msgstr "п÷я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦п╣ п╦п╥ п╫п╟п╠п╬я─п╟ я│п╦п╪п╡п╬п╩п╬п╡ \"%s\" п╡ \"%s\" п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: glib/giochannel.c:1114
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Не удалось открыть преобразователь из \"%s\" в \"%s\": %s"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п╬я┌п╨я─я▀я┌я▄ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟я┌п╣п╩я▄ п╦п╥ \"%s\" п╡ \"%s\": %s"
 
 #: glib/giochannel.c:1460
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
-"Невозможно выполнить непосредственное чтение в g_io_channel_read_line_string"
+"п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╡я▀п©п╬п╩п╫п╦я┌я▄ п╫п╣п©п╬я│я─п╣п╢я│я┌п╡п╣п╫п╫п╬п╣ я┤я┌п╣п╫п╦п╣ п╡ g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "п·я│я┌п╟я┌п╬п╨ п╫п╣п©п╣я─п╣п╨п╬п╢п╦я─п╬п╡п╟п╫п╫я▀я┘ п╢п╟п╫п╫я▀я┘ п╡ п╠я┐я└п╣я─п╣ я┤я┌п╣п╫п╦я▐"
 
 #: glib/giochannel.c:1587 glib/giochannel.c:1661
 msgid "Channel terminates in a partial character"
@@ -155,29 +155,29 @@ msgstr ""
 #: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
-"Невозможно выполнить непосредственное чтение в g_io_channel_read_to_end"
+"п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╡я▀п©п╬п╩п╫п╦я┌я▄ п╫п╣п©п╬я│я─п╣п╢я│я┌п╡п╣п╫п╫п╬п╣ я┤я┌п╣п╫п╦п╣ п╡ g_io_channel_read_to_end"
 
 #: glib/giowin32.c:704 glib/giowin32.c:733
 msgid "Incorrect message size"
-msgstr "Неправильный размер сообщения"
+msgstr "п²п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╧ я─п╟п╥п╪п╣я─ я│п╬п╬п╠я┴п╣п╫п╦я▐"
 
 #: glib/giowin32.c:1037 glib/giowin32.c:1090
 msgid "Socket error"
-msgstr "Ошибка сокета"
+msgstr "п·я┬п╦п╠п╨п╟ я│п╬п╨п╣я┌п╟"
 
 #: glib/giowin32.c:1290
 msgid "Channel set flags unsupported"
-msgstr "Набор флагов канала не поддерживается"
+msgstr "п²п╟п╠п╬я─ я└п╩п╟пЁп╬п╡ п╨п╟п╫п╟п╩п╟ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: glib/gmarkup.c:219
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Ошибка в строке %d символе %d: %s"
+msgstr "п·я┬п╦п╠п╨п╟ п╡ я│я┌я─п╬п╨п╣ %d я│п╦п╪п╡п╬п╩п╣ %d: %s"
 
 #: glib/gmarkup.c:303
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "Ошибка в строке %d: %s"
+msgstr "п·я┬п╦п╠п╨п╟ п╡ я│я┌я─п╬п╨п╣ %d: %s"
 
 #: glib/gmarkup.c:382
 msgid ""
@@ -195,12 +195,12 @@ msgstr ""
 #: glib/gmarkup.c:428
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Символ \"%s\" недопустим внутри названия сущности"
+msgstr "п║п╦п╪п╡п╬п╩ \"%s\" п╫п╣п╢п╬п©я┐я│я┌п╦п╪ п╡п╫я┐я┌я─п╦ п╫п╟п╥п╡п╟п╫п╦я▐ я│я┐я┴п╫п╬я│я┌п╦"
 
 #: glib/gmarkup.c:472
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Не известно название сущности \"%s\""
+msgstr "п²п╣ п╦п╥п╡п╣я│я┌п╫п╬ п╫п╟п╥п╡п╟п╫п╦п╣ я│я┐я┴п╫п╬я│я┌п╦ \"%s\""
 
 #: glib/gmarkup.c:482
 msgid ""
@@ -233,11 +233,11 @@ msgstr ""
 
 #: glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
 msgid "Invalid UTF-8 encoded text"
-msgstr "Неправильный UTF-8 кодированный текст"
+msgstr "п²п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╧ UTF-8 п╨п╬п╢п╦я─п╬п╡п╟п╫п╫я▀п╧ я┌п╣п╨я│я┌"
 
 #: glib/gmarkup.c:932
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "Документ должен начинаться с элемента (например <book>)"
+msgstr "п■п╬п╨я┐п╪п╣п╫я┌ п╢п╬п╩п╤п╣п╫ п╫п╟я┤п╦п╫п╟я┌я▄я│я▐ я│ я█п╩п╣п╪п╣п╫я┌п╟ (п╫п╟п©я─п╦п╪п╣я─ <book>)"
 
 #: glib/gmarkup.c:970
 #, c-format
@@ -291,16 +291,16 @@ msgstr ""
 #: glib/gmarkup.c:1433
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
+msgstr "п╜п╩п╣п╪п╣п╫я┌ \"%s\" п╠я▀п╩ п╥п╟п╨я─я▀я┌, п╫п╣я┌ п╬я┌п╨я─я▀я┌п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟"
 
 #: glib/gmarkup.c:1442
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
+msgstr "п╜п╩п╣п╪п╣п╫я┌ \"%s\" п╠я▀п╩ п╥п╟п╨я─я▀я┌, я┌п╣п╨я┐я┴п╦п╧ п╬я┌п╨я─я▀я┌я▀п╧ я█п╩п╣п╪п╣п╫я┌ -- \"%s\""
 
 #: glib/gmarkup.c:1574
 msgid "Document was empty or contained only whitespace"
-msgstr "Документ был пуст или содержал только пробелы"
+msgstr "п■п╬п╨я┐п╪п╣п╫я┌ п╠я▀п╩ п©я┐я│я┌ п╦п╩п╦ я│п╬п╢п╣я─п╤п╟п╩ я┌п╬п╩я▄п╨п╬ п©я─п╬п╠п╣п╩я▀"
 
 #: glib/gmarkup.c:1588
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
@@ -322,15 +322,15 @@ msgstr ""
 
 #: glib/gmarkup.c:1610
 msgid "Document ended unexpectedly inside an element name"
-msgstr ""
+msgstr "п²п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╨п╬п╫п╣я├ п╢п╬п╨я┐п╪п╣п╫я┌п╟ п╡п╫я┐я┌я─п╦ п╦п╪п╣п╫п╦ я█п╩п╣п╪п╣п╫я┌п╟"
 
 #: glib/gmarkup.c:1615
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr ""
+msgstr "п²п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╨п╬п╫п╣я├ п╢п╬п╨я┐п╪п╣п╫я┌п╟ п╡п╫я┐я┌я─п╦ п╫п╟п╥п╡п╟п╫п╦я▐ п╟я┌я┌я─п╦п╠я┐я┌п╟"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "п²п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╨п╬п╫п╣я├ п╢п╬п╨я┐п╪п╣п╫я┌п╟ п╡п╫я┐я┌я─п╦ я┌я█пЁп╟ п╬я┌п╨я─я▀п╡п╟я▌я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌."
 
 #: glib/gmarkup.c:1626
 msgid ""
@@ -340,7 +340,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1633
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "п²п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╨п╬п╫п╣я├ п╢п╬п╨я┐п╪п╣п╫я┌п╟ п╡ п╥п╫п╟я┤п╣п╫п╦п╦ п╟я┌я┌я─п╦п╠я┐я┌п╟"
 
 #: glib/gmarkup.c:1648
 #, c-format
@@ -353,29 +353,29 @@ msgstr ""
 
 #: glib/gshell.c:71
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr "Текст в кавычках не начинается с символа кавычки"
+msgstr "п╒п╣п╨я│я┌ п╡ п╨п╟п╡я▀я┤п╨п╟я┘ п╫п╣ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ я│ я│п╦п╪п╡п╬п╩п╟ п╨п╟п╡я▀я┤п╨п╦"
 
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 
-#: glib/gshell.c:529
+#: glib/gshell.c:528
 #, c-format
-msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:536
+#: glib/gshell.c:535
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:548
+#: glib/gshell.c:547
 msgid "Text was empty (or contained only whitespace)"
-msgstr "Текст был пуст (или содержал только пробелы)"
+msgstr "п╒п╣п╨я│я┌ п╠я▀п╩ п©я┐я│я┌ (п╦п╩п╦ я│п╬п╢п╣я─п╤п╟п╩ я┌п╬п╩я▄п╨п╬ п©я─п╬п╠п╣п╩я▀)"
 
 #: glib/gspawn-win32.c:214
 msgid "Failed to read data from child process"
-msgstr "Сбой чтения данных из процесса-потомка"
+msgstr "п║п╠п╬п╧ я┤я┌п╣п╫п╦я▐ п╢п╟п╫п╫я▀я┘ п╦п╥ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟"
 
 #: glib/gspawn-win32.c:365
 msgid ""
@@ -391,22 +391,22 @@ msgstr ""
 #: glib/gspawn-win32.c:931 glib/gspawn.c:1119
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Сбой смены каталога \"%s\" (%s)"
+msgstr "п║п╠п╬п╧ я│п╪п╣п╫я▀ п╨п╟я┌п╟п╩п╬пЁп╟ \"%s\" (%s)"
 
 #: glib/gspawn-win32.c:940
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Сбой выполнения процесса-потомка (%s)"
+msgstr "п║п╠п╬п╧ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟ (%s)"
 
 #: glib/gspawn-win32.c:981 glib/gspawn.c:1228
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ я│п╬п╥п╢п╟я┌я▄ п╨п╟п╫п╟п╩ п╢п╩я▐ п╡п╥п╟п╦п╪п╬п╢п╣п╧я│я┌п╡п╦я▐ я│ п╢п╬я┤п╣я─п╫п╦п╪ п©я─п╬я├п╣я│я│п╬п╪ (%s)"
 
 #: glib/gspawn.c:161
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Сбой чтения данных от процесса-потомка (%s)"
+msgstr "п║п╠п╬п╧ я┤я┌п╣п╫п╦я▐ п╢п╟п╫п╫я▀я┘ п╬я┌ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟ (%s)"
 
 #: glib/gspawn.c:293
 #, c-format
@@ -416,7 +416,7 @@ msgstr ""
 #: glib/gspawn.c:376
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "Неожиданная ошибка в waitpid() (%s"
+msgstr "п²п╣п╬п╤п╦п╢п╟п╫п╫п╟я▐ п╬я┬п╦п╠п╨п╟ п╡ waitpid() (%s"
 
 #: glib/gspawn.c:979
 #, c-format
@@ -426,12 +426,12 @@ msgstr ""
 #: glib/gspawn.c:1129
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Сбой выполнения процесса-потомка \"%s\" (%s)"
+msgstr "п║п╠п╬п╧ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟ \"%s\" (%s)"
 
 #: glib/gspawn.c:1139
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Не удалось перенаправить вывод или ввод процесса-потомка (%s)"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п©п╣я─п╣п╫п╟п©я─п╟п╡п╦я┌я▄ п╡я▀п╡п╬п╢ п╦п╩п╦ п╡п╡п╬п╢ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟ (%s)"
 
 #: glib/gspawn.c:1148
 #, c-format
@@ -441,7 +441,7 @@ msgstr ""
 #: glib/gspawn.c:1156
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Неизвестная ошибка при выполнении процесса-потомка \"%s\""
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╫п╟я▐ п╬я┬п╦п╠п╨п╟ п©я─п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦п╦ п©я─п╬я├п╣я│я│п╟-п©п╬я┌п╬п╪п╨п╟ \"%s\""
 
 #: glib/gspawn.c:1178
 #, c-format
@@ -450,7 +450,7 @@ msgstr ""
 
 #: glib/gutf8.c:950
 msgid "Character out of range for UTF-8"
-msgstr "Символ вне диапазона для UTF-8"
+msgstr "п║п╦п╪п╡п╬п╩ п╡п╫п╣ п╢п╦п╟п©п╟п╥п╬п╫п╟ п╢п╩я▐ UTF-8"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
 #: glib/gutf8.c:1330 glib/gutf8.c:1426
@@ -459,4 +459,4 @@ msgstr ""
 
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
-msgstr "Символ вне диапазона для UTF-16"
+msgstr "п║п╦п╪п╡п╬п╩ п╡п╫п╣ п╢п╦п╟п©п╟п╥п╬п╫п╟ п╢п╩я▐ UTF-16"
