@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 11:39+0100\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2005-01-05 23:45+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -218,8 +218,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Methwyd adnabod '%-.*s', a ddylai fod yn ddigid o fewn cyfeiriant nod (&#234; "
-"er enghraifft) - hwyrach fod y digid yn rhy fawr"
+"Methwyd adnabod '%-.*s', a ddylai fod yn ddigid o fewn cyfeiriant nod "
+"(&#234; er enghraifft) - hwyrach fod y digid yn rhy fawr"
 
 #: glib/gmarkup.c:609
 #, c-format
@@ -563,8 +563,8 @@ msgstr "Ffeil yn wag"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Ffeil allwedd yn cynnwys y llinell '%s' sydd ddim yn bâr allwedd-gwerth, na'n"
-"grŵp, na'n sylw"
+"Ffeil allwedd yn cynnwys y llinell '%s' sydd ddim yn bâr allwedd-gwerth, "
+"na'ngrŵp, na'n sylw"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
@@ -590,20 +590,23 @@ msgstr "Ffeil allwedd heb fod yn cynnwys yr allwedd '%s'"
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Ffeil allwedd yn cynnwys yr allwedd '%s' gyda'r gwerth '%s' nad yw'n UTF-8"
+msgstr ""
+"Ffeil allwedd yn cynnwys yr allwedd '%s' gyda'r gwerth '%s' nad yw'n UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Ffeil allwedd yn cynnwys yr allwedd '%s' sydd â gwerth na ellir ei ddirnad."
+msgstr ""
+"Ffeil allwedd yn cynnwys yr allwedd '%s' sydd â gwerth na ellir ei ddirnad."
 
 #: glib/gkeyfile.c:1976
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "Ffeil allwedd yn cynnwys yr allwedd '%s' yng ngrŵp '%s' sydd â gwerth "
-"na ellir ei ddirnad."
+msgstr ""
+"Ffeil allwedd yn cynnwys yr allwedd '%s' yng ngrŵp '%s' sydd â gwerth na "
+"ellir ei ddirnad."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
@@ -627,11 +630,10 @@ msgstr "Ni ellir darllen y gwerth '%s' fel rhif."
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "Ni ellir darllen '%s' fel gwerth Boole." 
+msgstr "Ni ellir darllen '%s' fel gwerth Boole."
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Maint neges anghywir"
 
 #~ msgid "Socket error"
 #~ msgstr "Gwall soced"
-

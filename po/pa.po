@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-07-22 12:01+0530\n"
 "Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
 "Language-Team: Punjabi <pa@li.org>\n"
@@ -51,37 +51,37 @@ msgstr "ਸਤਰ ਦੇ ਅਖੀਰ ਤੇ ਅੱਖਰਾਂ ਦਾ ਸਰੂ
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ਤਬਦੀਲੀ ਸੰਭਵ ਨਹੀ  ਕੋਡ ਸਮੂਹ %s ਤੋ %s ਵਿੱਚ ਤਬਦੀਲੀ"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "ਯੂ ਆਰ ਐਲ %s ਫਾਇਲ ਸਕੀਮ ਨਾਲ ਅਸਲੀ ਯੂ ਆਰ ਐਲ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ਸਥਾਨਿਕ ਫਾਇਲ %s ਵਿੱਚ ਇਹ ਨਿਸ਼ਾਨ # ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ਯੂਆਰ ਆਈ  %s ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ਯੂਆਰ ਆਈ %s ਦੇ ਮੇਜਬਾਨ ਦਾ ਨਾਉ ਜਾਇਜ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ਰਾਹ %s ਇਕ ਠੀਕ (absolute) ਰਾਹ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਉ"
 
@@ -90,57 +90,57 @@ msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਉ"
 msgid "Error opening directory '%s': %s"
 msgstr "ਗਲਤੀ %s ਡਾਇਕਰੈਕਟਰੀ ਖੋਲਣ ਲਈ %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr " %lu ਬਾਇਟ ਦਿਤੇ ਨਹੀ ਜਾ ਸਕਦੇ, \"%s\"ਫਾਇਲ ਖੋਲਣ ਲਈ"
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ਗਲਤੀ '%s' ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ: %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ%s': %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s':ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਦੀਆਂ ਵਿਸ਼ੇਸਤਾਵਾਂ: fstat() failed: %s ਖੋਲ਼੍ਹਣ ਤੋ ਅਸਫਲ"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ਫਾਇਲ '%s': ਖੋਲ੍ਹਣ ਵਿੱਚ ਅਸਫਲਤਾ fdopen() ਅਸਫਲ: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ਨਮੂਨਾ %s ਸਹੀ ਨਹੀ ਹੈ, ਇਸ ਕੋਲ %s ਨਹੀ ਹੈ"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "ਨਮੂਨਾ '%s' XXXXXX ਨਾਲ ਖਤਮ ਨਹੀ ਹੋ ਰਿਹਾ ਹੈ"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ਫਾਇਲ %s' ਬਣਾਉਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ  %s' ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਨਹੀ ਹਨ"
 
@@ -498,41 +498,41 @@ msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿੱਚ ਤਰਤੀਬ ਜ�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ  "
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr ""
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

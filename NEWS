@@ -1,3 +1,25 @@
+Overview of Changes from GLib 2.6.0 to GLib 2.6.1
+=================================================
+* GOption
+ - Make gtk_init(NULL, NULL) work again [Marcin Krzyzanowski]
+ - Improve handling of -- [Matthias Clasen]
+ - Don't show G_OPTION_REMAINING in --help output [Matthew F. Barnes]
+* g_find_program_in_path() doesn't return directories [Tommi Komulainen]
+* Add gmodule-export-2.0.pc [Matthias]
+* Win32 changes
+ - Improve hangling of UNC paths [Tor Lillqvist]
+ - g_getenv(), g_setenv(), g_unsetenv(), g_find_program_in_path()
+   take and return UTF-8 now [Tor] 
+ - Make g_file_test() work more reliably, and use PATHEXT
+   when check for executables [Tor]
+ - Build and cross-compilation fixes [J. Ali Harlow]
+* Other bug fixes [Jens Hatlak, Morten Welinder, 
+  Tor, Kalpesh Shah, Adrian Bunk
+* Documentation improvements [Marcin Krzyzanowski, Tor, Crispin
+  Flowerday, Mariano Suárez-Alvarez, Christian Biere, Danny Milo,
+  Vincent Untz, Bastien Nocera
+* New and updated translations (cy,de,nl,ru,sq,sv)
+
 Overview of Changes from GLib 2.4.x to GLib 2.6.0
 =================================================
 

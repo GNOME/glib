@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-17 19:51+0100\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-18 00:15+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -50,38 +50,38 @@ msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "De URI '%s' is geen absolute URI die gebruik maakt van het \"bestand\" schema"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "De lokale bestands-URI '%s' mag geen '#' bevatten"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "De URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "De hostnaam van de URI '%s' is ongeldig"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "De URI '%s' bevat ongeldige ontsnappingstekens"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Het pad '%s' is geen absoluut pad"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Ongeldige hostnaam"
 
@@ -91,57 +91,57 @@ msgid "Error opening directory '%s': %s"
 msgstr "Fout bij het openen van map '%s': %s"
 
 # Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kon geen %lu byte geheugenruimte reserveren om bestand \"%s\" te lezen"
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fout bij lezen van bestand '%s': %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lezen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Openen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvragen gegevens van bestand '%s' mislukt: fstat() mislukte: %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is ongeldig, het zou geen '%s' moeten bevatten"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lezen van symbolische link '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Symbolische links niet ondersteund"
 
@@ -228,7 +228,9 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Verwerken van '%-.*s' is mislukt, hetgeen een getal in een tekenreferentie zou moeten zijn (bijvoorbeeld &#234;) - misschien is het getal te groot"
+msgstr ""
+"Verwerken van '%-.*s' is mislukt, hetgeen een getal in een tekenreferentie "
+"zou moeten zijn (bijvoorbeeld &#234;) - misschien is het getal te groot"
 
 # niet geoorloofd/toegestaan/ongeoorloofd
 #: glib/gmarkup.c:609
@@ -524,43 +526,43 @@ msgstr "Ongeldige reeks in conversie-invoer"
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Gebruik:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[OPTIE...]"
 
 # hulp-opties zijn opties voor de hulp
 # hulp opties zijn die opties van hulp
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Hulp opties:"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Hulp opties tonen"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Alle hulp opties tonen"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Toepassing opties:"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Kan de gehele getalswaarde '%s' voor --%s niet verwerken"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Gehele getalswaarde '%s' voor %s valt buiten bereik"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Onbekende optie %s"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-10-27 12:30+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -46,37 +46,37 @@ msgstr "Ufullstendig tegnsekvens ved slutten på inndata"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" «%s» til tegnsett «%s»"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI «%s» er ikke en absolutt URI som bruker skjema for filer"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokal fil-URI «%s» kan ikke inneholde en «#»"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI «%s» er ugyldig"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vertsnavnet for URI «%s» er ugyldig"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Vertsnavnet for URI «%s» inneholder ugyldige escape-tegn"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Stinavnet «%s» er ikke en absolutt sti"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
@@ -85,57 +85,57 @@ msgstr "Ugyldig vertsnavn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mal «%s» slutter ikke med XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -504,41 +504,41 @@ msgstr "Ugyldig sekvens i inndata for konvertering"
 msgid "Character out of range for UTF-16"
 msgstr "Tegn utenfor gyldig område for UTF-16"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Bruk:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[FLAGG...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Flagg for hjelp:"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Vis flagg for hjelp"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Vis alle flagg for hjelp"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Flagg for applikasjonen"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Kan ikke lese heltallsverdi «%s» for --%s"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltallsverdi «%s» for %s er utenfor gyldig område"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"

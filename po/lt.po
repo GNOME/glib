@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-04 19:49+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -48,37 +48,37 @@ msgstr "Nepilna simbolio seka įvedimo pabaigoje"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Negalima keisti atgalinio varianto '%s' į koduotę '%s'"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresas '%s' nėra absoliutus adresas naudojantis „file“ schemą"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Vietinės bylos adresas '%s' negali turėti simbolio '#'"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresas '%s' yra klaidingas"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Kompiuterio vardas '%s' adrese yra klaidingas"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adrese '%s' yra klaidingai perkoduoti symboliai"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Kelias '%s' nėra absoliutus"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Klaidingas kompiuterio vardas"
 
@@ -87,57 +87,57 @@ msgstr "Klaidingas kompiuterio vardas"
 msgid "Error opening directory '%s': %s"
 msgstr "Klaida atidarant katalogą '%s': %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepavyko paskirti %lu baitų reikalingų perskaityti bylą \"%s\""
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Klaida skaitant bylą '%s': %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepavyko perskaityti bylos '%s': %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepavyko atidaryti bylos '%s': %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepavyko gauti bylos '%s' požymių: fstat() klaida: %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepavyko atidaryti bylos '%s': fdopen() klaida: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablonas '%s' klaidingas, jame negali būti '%s'"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablono '%s' gale nėra XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepavyko sukurti bylos '%s': %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepavyko perskaityti simbolinės nuorodos '%s': %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
@@ -519,41 +519,41 @@ msgstr "Klaidinga seka keitimo įvedime"
 msgid "Character out of range for UTF-16"
 msgstr "Simbolis neatitinka UTF-16 simbolių diapazono"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Naudojimas:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[PARINKTIS...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Pagalbos parinktys:"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Rodyti pagalbos parinktis"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Rodyti visas pagalbos parinktis"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Programos parinktys:"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Nepavyko apdoroti sveikosios reikšmės „%s“ reikalingos --%s"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Sveikoji reikšmė „%s“ reikalinga %s viršyja ribas"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nežinoma parinktis %s"

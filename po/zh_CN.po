@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-16 00:40-0500\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-04 16:12+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -47,37 +47,37 @@ msgstr "输入末尾出现未尽字符序列"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "无法转换后备字符集“%s”到字符集“%s”"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI“%s”不是“file”格式的绝对 URI"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本地文件 URI“%s”不能包含“#”"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI“%s”无效"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI中的主机名“%s”无效"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI“%s”中包含无效的转义字符"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路径名“%s”不是绝对路径"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "无效的主机名"
 
@@ -86,57 +86,57 @@ msgstr "无效的主机名"
 msgid "Error opening directory '%s': %s"
 msgstr "打开目录“%s”时发生错误：%s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "无法分配 %lu 字节以读取文件“%s”"
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "读取文件“%s”出错：%s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "无法读取文件“%s”：%s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "无法打开文件“%s”：%s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "无法获得文件“%s”的属性：fstat() 失败：%s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "无法打开文件“%s”：fdopen() 失败：%s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "模板“%s”的结尾不是 XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "无法创建文件“%s”：%s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "读取符号连接“%s”失败：%s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "不支持符号连接"
 
@@ -478,41 +478,41 @@ msgstr "转换输入中出现无效序列"
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "用法："
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[选项...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "帮助选项："
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "显示帮助选项"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "显示全部帮助选项"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "应用程序选项："
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "无法处理 --%2$s 所用的整数值“%1$s”"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s所用的整数值“%1$s”超出范围"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"

@@ -1,3 +1,7 @@
+2005-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.6.1 ===
+
 2004-12-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* Makefile.am: Only check the ABI on linux, since

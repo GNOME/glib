@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-17 11:40+0100\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-17 15:42+0200\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team:  <gnome-cyr@gnome.org>\n"
@@ -49,41 +49,43 @@ msgstr "Неполный символ содержится в конце вхо�
 #: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
+msgstr ""
+"Невозможно корректно преобразовать символ \"%s\" в символ из набора \"%s\""
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
-"URI \"%s\" не является абсолютным идентификатором при "
-"использовании схемы \"file\""
+"URI \"%s\" не является абсолютным идентификатором при использовании схемы "
+"\"file\""
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
+msgstr ""
+"Идентификатор URI локального файла \"%s\" не может включать символ \"#\""
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Идентификатор URI \"%s\" недопустим"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Имя узла недопустимо в идентификаторе URI \"%s\""
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путь \"%s\" не является абсолютным"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Имя узла недопустимо"
 
@@ -92,59 +94,59 @@ msgstr "Имя узла недопустимо"
 msgid "Error opening directory '%s': %s"
 msgstr "Произошла ошибка при открытии каталога \"%s\": %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Не удалось распределить %lu байтов для прочтения файла \"%s\""
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Произошла ошибка при чтении файла \"%s\": %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Произошёл сбой при чтении из файла \"%s\": %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Произошёл сбой при открытии файла \"%s\": %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Произошёл сбой при получении аттрибутов файла \"%s\": сбой в функции fstat"
 "(): %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Произошёл сбой при открытии файла \"%s\": сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" недопустим: он не должен содержать \"%s\""
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблон \"%s\" не заканчивается на XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Произошёл сбой при создании файла \"%s\": %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Произошёл сбой при чтении символической ссылки \"%s\": %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Символические ссылки не поддерживаются"
 
@@ -189,7 +191,8 @@ msgid "Error on line %d: %s"
 msgstr "Произошла ошибка в строке %d: %s"
 
 #: glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая сущность \"&;\"; допустимыми сущностями являются: &amp; "
 "&quot; &lt; &gt; &apos;"
@@ -287,7 +290,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1257
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Встретился лишний символ \"%s\", ожидался символ \"=\" после имени атрибута "
 "\"%s\" элемента \"%s\""
@@ -333,7 +337,8 @@ msgstr ""
 #: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Элемент \"%s\" был закрыт, ни один элемент в настоящий момент не открыт"
+msgstr ""
+"Элемент \"%s\" был закрыт, ни один элемент в настоящий момент не открыт"
 
 #: glib/gmarkup.c:1593
 #, c-format
@@ -397,11 +402,13 @@ msgstr "Документ непредвиденно окончился внут�
 #: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
+msgstr ""
+"Документ непредвиденно окончился внутри закрывающего элемент тэга \"%s\""
 
 #: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документ непредвиденно окончился внутри комментария или инструкции обработки"
+msgstr ""
+"Документ непредвиденно окончился внутри комментария или инструкции обработки"
 
 #: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -421,7 +428,8 @@ msgstr "Текст закончился сразу после символа \"\
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Текст закончился перед соответствующей кавычкой для %c. (Текст был \"%s\")"
+msgstr ""
+"Текст закончился перед соответствующей кавычкой для %c. (Текст был \"%s\")"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -434,7 +442,8 @@ msgstr "Произошёл сбой при чтении данных из про
 #: glib/gspawn-win32.c:281 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Произошёл сбой при создании канала для сообщения с процессом-потомком (%s)"
+msgstr ""
+"Произошёл сбой при создании канала для сообщения с процессом-потомком (%s)"
 
 #: glib/gspawn-win32.c:321 glib/gspawn.c:1014
 #, c-format
@@ -493,7 +502,8 @@ msgstr "Произошёл сбой при выполнении процесса
 #: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Произошёл сбой при перенаправлении вывода или ввода процесса-потомка (%s)"
+msgstr ""
+"Произошёл сбой при перенаправлении вывода или ввода процесса-потомка (%s)"
 
 #: glib/gspawn.c:1248
 #, c-format
@@ -527,41 +537,41 @@ msgstr ""
 msgid "Character out of range for UTF-16"
 msgstr "Символ находится вне диапазона для UTF-16"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Использование:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Параметры справки:"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Показать параметры справки"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Показать все параметры справки"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Применимые параметры:"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Не удается разобрать значение '%s' для --%s"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Целое значение '%s' для %s выходит за пределы"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
@@ -580,8 +590,11 @@ msgstr "Файл пуст"
 
 #: glib/gkeyfile.c:685
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "Файл ключа содержит строку '%s', которая не является ключом - парой величин, группой или комментарием"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Файл ключа содержит строку '%s', которая не является ключом - парой величин, "
+"группой или комментарием"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
@@ -607,19 +620,24 @@ msgstr "Файл ключа не содержит ключ '%s'"
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Файл ключа содержит ключ '%s', значение которого '%s' не в кодировке UTF-8"
+msgstr ""
+"Файл ключа содержит ключ '%s', значение которого '%s' не в кодировке UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Файл ключа содержит ключ '%s', значение которого не может быть интерпретировано."
+msgstr ""
+"Файл ключа содержит ключ '%s', значение которого не может быть "
+"интерпретировано."
 
 #: glib/gkeyfile.c:1976
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "Файл ключа содержит ключ '%s' в группе '%s', значение которого не может быть интерпретировано."
+msgstr ""
+"Файл ключа содержит ключ '%s' в группе '%s', значение которого не может быть "
+"интерпретировано."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
@@ -644,4 +662,3 @@ msgstr "Значение '%s'  не может быть интерпретиро
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Значение '%s'  не может быть интерпретировано как булево."
-

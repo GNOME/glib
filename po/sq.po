@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-17 03:40+0100\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-17 12:21+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -46,37 +46,37 @@ msgstr "Sekuencë simbolesh e pjesëshme në fund të të dhënave në hyrje"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "I pamundur konvertimi i '%s' në familjen e simboleve '%s'"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' nuk është një URI absolute duke përdorur skemën e \"file\""
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI për file lokal '%s' mund të mos përdorë një '#'"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' është e pasaktë"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Emri i host të URI '%s' është i pasaktë"
 
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' përmban simbole escape të pavlefshëm"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Pozicioni me emër '%s' nuk është një pozicion absolut"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Emër host i pasaktë"
 
@@ -85,57 +85,57 @@ msgstr "Emër host i pasaktë"
 msgid "Error opening directory '%s': %s"
 msgstr "Gabim gjatë hapjes së directory '%s': %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "I pamundur grumbullimi i %lu bytes për të lexuar file \"%s\""
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Gabim gjatë leximit të file '%s': %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "I pamundur leximi nga file '%s': %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "E pamundur hapja e file '%s': %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "E pamundur marrja e pronësive të file '%s': fstat() dështoi: %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Dështoi hapja e file '%s': fdopen() dështoi: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Shabllon '%s' i pavlefshëm, nuk mund të përmbajë një '%s'"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Shablloni '%s' nuk mbaron me XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Dështoi krijimi i file '%s': %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "I pamundur leximi i lidhjes simbolike '%s': %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Lidhjet simbolike nuk suportohen"
 
@@ -165,7 +165,8 @@ msgstr "Kanali përfundon me një simbol të pjesëshëm"
 
 #: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
+msgstr ""
+"I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:226
 #, c-format
@@ -178,7 +179,8 @@ msgid "Error on line %d: %s"
 msgstr "Gabim tek rreshti %d: %s"
 
 #: glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "U gjet një entitet bosh '&;'; entitetet e vlefshme janë: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -218,8 +220,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"I pamundur analizimi i '%-.*s', duhet të ishte një numër brenda riferimeve të një "
-"simboli (p.sh. &#234;) - ndoshta numri është tepër i madh"
+"I pamundur analizimi i '%-.*s', duhet të ishte një numër brenda riferimeve "
+"të një simboli (p.sh. &#234;) - ndoshta numri është tepër i madh"
 
 #: glib/gmarkup.c:609
 #, c-format
@@ -275,7 +277,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1257
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "U gjet simboli '%s', përkundrazi pritej një '=' mbas emrit të atributit '%s' "
 "të elementit '%s'"
@@ -327,7 +330,8 @@ msgstr "Elementi '%s' është mbyllur, asnjë element aktualisht është i hapur
 #: glib/gmarkup.c:1593
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
+msgstr ""
+"Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
 
 #: glib/gmarkup.c:1740
 msgid "Document was empty or contained only whitespace"
@@ -335,7 +339,8 @@ msgstr "Dokumenti ishte bosh apo përmbante vetëm hapësira të bardha"
 
 #: glib/gmarkup.c:1754
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
+msgstr ""
+"Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
 
 #: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
@@ -380,7 +385,8 @@ msgstr "Dokumenti u mbyll papritur në brendësi të vlerës së një atributi"
 #: glib/gmarkup.c:1814
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
+msgstr ""
+"Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
 
 #: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -480,7 +486,8 @@ msgstr "I pamundur zbatimi i proçesit bir \"%s\" (%s)"
 #: glib/gspawn.c:1239
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
+msgstr ""
+"I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
 
 #: glib/gspawn.c:1248
 #, c-format
@@ -495,7 +502,8 @@ msgstr "Gabim i panjohur gjatë ekzekutimit të proçesit bir \"%s\""
 #: glib/gspawn.c:1278
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
+msgstr ""
+"I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
 
 #: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
@@ -510,41 +518,41 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 msgid "Character out of range for UTF-16"
 msgstr "Simboli nuk ekziston në UTF-16"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Përdorimi:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[OPCIONI...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Opcionet e ndihmës:"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Shfaq opcionet e ndihmës"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Shfaq të gjithë opcionet e ndihmës"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Opcionet e programit:"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "I pamundur analizimi i vlerës integer '%s' për --%s"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"
@@ -563,8 +571,10 @@ msgstr "File është bosh"
 
 #: glib/gkeyfile.c:685
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "Kyçi përmban rreshtin '%s' që nuk është një vlerë çift, grup apo koment kyçi"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Kyçi përmban rreshtin '%s' që nuk është një vlerë çift, grup apo koment kyçi"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
@@ -629,4 +639,3 @@ msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
-

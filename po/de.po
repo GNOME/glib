@@ -11,13 +11,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-18 14:38+0100\n"
+"POT-Creation-Date: 2005-01-07 11:51-0500\n"
 "PO-Revision-Date: 2004-12-18 14:51+0100\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:403
 #, c-format
@@ -51,38 +51,38 @@ msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel »%s« kann nicht in Kodierung »%s« umgewandelt werden"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Der URI »%s« ist kein absoluter URI, der das »file«-Schema verwendet"
 
-#: glib/gconvert.c:1610
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Der lokale URI »%s« darf kein »#« enthalten"
 
-#: glib/gconvert.c:1627
+#: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Der URI »%s« ist ungültig"
 
-#: glib/gconvert.c:1639
+#: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Der Rechnername der URI »%s« ist ungültig"
 
 # CHECK
-#: glib/gconvert.c:1655
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Der URI »%s« enthält ungültige Escape-Zeichen"
 
-#: glib/gconvert.c:1748
+#: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Der Pfadname »%s« ist kein absoluter Pfad"
 
-#: glib/gconvert.c:1758
+#: glib/gconvert.c:1760
 msgid "Invalid hostname"
 msgstr "Ungültiger Rechnername"
 
@@ -91,59 +91,59 @@ msgstr "Ungültiger Rechnername"
 msgid "Error opening directory '%s': %s"
 msgstr "Fehler beim Öffnen des Verzeichnisses »%s«: %s"
 
-#: glib/gfileutils.c:502 glib/gfileutils.c:570
+#: glib/gfileutils.c:490 glib/gfileutils.c:558
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu byte konnten nicht alloziiert werden, um Datei »%s« zu lesen"
 
-#: glib/gfileutils.c:515
+#: glib/gfileutils.c:503
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fehler beim Lesen der Datei »%s«: %s"
 
-#: glib/gfileutils.c:592
+#: glib/gfileutils.c:580
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Es konnte nicht aus der Datei »%s« gelesen werden: %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:724
+#: glib/gfileutils.c:629 glib/gfileutils.c:712
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: %s"
 
-#: glib/gfileutils.c:656
+#: glib/gfileutils.c:644
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Attribute der Datei »%s« konnten nicht ermittelt werden: fstat() "
 "fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:688
+#: glib/gfileutils.c:676
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: fdopen() fehlgeschlagen: %s"
 
-#: glib/gfileutils.c:1012
+#: glib/gfileutils.c:1003
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Vorlage »%s« ungültig, sollte kein »%s« enthalten"
 
-#: glib/gfileutils.c:1026
+#: glib/gfileutils.c:1017
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Vorlage »%s« endet nicht auf XXXXXX"
 
-#: glib/gfileutils.c:1049
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Datei »%s« konnte nicht angelegt werden: %s"
 
-#: glib/gfileutils.c:1425
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
 
-#: glib/gfileutils.c:1446
+#: glib/gfileutils.c:1437
 msgid "Symbolic links not supported"
 msgstr "Symbolische Verknüpfungen nicht unterstützt"
 
@@ -227,8 +227,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"»%s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, konnte "
-"nicht analysiert werden - vielleicht ist die Zahl zu groß"
+"»%s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, "
+"konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
 
 #: glib/gmarkup.c:609
 #, c-format
@@ -529,48 +529,49 @@ msgstr "Ungültige Folge in Umwandlungseingabe"
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "Usage:"
 msgstr "Aufruf:"
 
-#: glib/goption.c:402
+#: glib/goption.c:405
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Help Options:"
 msgstr "Hilfeoptionen"
 
-#: glib/goption.c:491
+#: glib/goption.c:494
 msgid "Show help options"
 msgstr "Hilfeoptionen anzeigen"
 
-#: glib/goption.c:495
+#: glib/goption.c:498
 msgid "Show all help options"
 msgstr "Alle Hilfeoptionen anzeigen"
 
-#: glib/goption.c:544
+#: glib/goption.c:547
 msgid "Application Options:"
 msgstr "Anwendungsoptionen"
 
-#: glib/goption.c:583
+#: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "»%s« konnte nicht als ganzzahliger Wert für --%s interpretiert werden"
 
-#: glib/goption.c:593
+#: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Ganzzahliger Wert »%s« für %s ist außerhalb des Bereiches."
 
-#: glib/goption.c:1313
+#: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unbekannte Option %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr "Die Schlüsselwertedatei wurde nicht in den Datenverzeichnissen gefunden"
+msgstr ""
+"Die Schlüsselwertedatei wurde nicht in den Datenverzeichnissen gefunden"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
@@ -584,8 +585,9 @@ msgstr "Datei ist leer"
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "Die Schlüsselwertedatei enthält die Zeile »%s«, welche kein zulässiges Schlüssel-Wert-Paar, keine Gruppe "
-"und kein Kommentar ist."
+msgstr ""
+"Die Schlüsselwertedatei enthält die Zeile »%s«, welche kein zulässiges "
+"Schlüssel-Wert-Paar, keine Gruppe und kein Kommentar ist."
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
@@ -611,19 +613,24 @@ msgstr "Die Schlüsselwertedatei enthält nicht den Schlüssel »%s«"
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit dem Wert »%s«, der nicht in UTF-8 kodiert ist"
+msgstr ""
+"Die Schlüsselwertedatei enthält den Schlüssel »%s« mit dem Wert »%s«, der "
+"nicht in UTF-8 kodiert ist"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit einem Wert der nicht interüretoert werden konnte."
+msgstr ""
+"Die Schlüsselwertedatei enthält den Schlüssel »%s« mit einem Wert der nicht "
+"interüretoert werden konnte."
 
 #: glib/gkeyfile.c:1976
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "Die Schlüsselwertedatei enthält den Schlüssel »%s« in der Gruppe »%s« mit "
+msgstr ""
+"Die Schlüsselwertedatei enthält den Schlüssel »%s« in der Gruppe »%s« mit "
 "einem Wert der nicht interüretoert werden konnte."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
@@ -649,5 +656,5 @@ msgstr "Der Wert »%s« konnte nicht als Zahl interpretiert werden."
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "Der Wert »%s« konnte nicht als boolescher Ausdruck interpretiert werden."
-
+msgstr ""
+"Der Wert »%s« konnte nicht als boolescher Ausdruck interpretiert werden."

@@ -1,5 +1,9 @@
 2005-01-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.6.1 ===
+
+2005-01-07  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: 
 	* Makefile.am: Generate and distribute gmodule-export-2.0.pc,
 	which is currently just a copy of gmodule-2.0.pc, but makes
