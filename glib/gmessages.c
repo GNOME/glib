@@ -261,26 +261,23 @@ g_log_write_prefix (GFileDescriptor fd,
     }
 }
 
+/* HOLDS g_messages_lock */
 static inline GLogDomain*
 g_log_find_domain (const gchar *log_domain)
 {
   register GLogDomain *domain;
   
-  g_mutex_lock (g_messages_lock);
   domain = g_log_domains;
   while (domain)
     {
       if (strcmp (domain->log_domain, log_domain) == 0)
-	{
-	  g_mutex_unlock (g_messages_lock);
-	  return domain;
-	}
+	return domain;
       domain = domain->next;
     }
-  g_mutex_unlock (g_messages_lock);
   return NULL;
 }
 
+/* HOLDS g_messages_lock */
 static inline GLogDomain*
 g_log_domain_new (const gchar *log_domain)
 {
@@ -291,14 +288,13 @@ g_log_domain_new (const gchar *log_domain)
   domain->fatal_mask = G_LOG_FATAL_MASK;
   domain->handlers = NULL;
   
-  g_mutex_lock (g_messages_lock);
   domain->next = g_log_domains;
   g_log_domains = domain;
-  g_mutex_unlock (g_messages_lock);
   
   return domain;
 }
 
+/* HOLDS g_messages_lock */
 static inline void
 g_log_domain_check_free (GLogDomain *domain)
 {
@@ -309,7 +305,6 @@ g_log_domain_check_free (GLogDomain *domain)
       
       last = NULL;  
 
-      g_mutex_lock (g_messages_lock);
       work = g_log_domains;
       while (work)
 	{
@@ -326,10 +321,10 @@ g_log_domain_check_free (GLogDomain *domain)
 	  last = work;
 	  work = last->next;
 	}  
-      g_mutex_unlock (g_messages_lock);
     }
 }
 
+/* HOLDS g_messages_lock */
 static inline GLogFunc
 g_log_domain_get_handler (GLogDomain	*domain,
 			  GLogLevelFlags log_level,
@@ -388,6 +383,8 @@ g_log_set_fatal_mask (const gchar    *log_domain,
   /* remove bogus flag */
   fatal_mask &= ~G_LOG_FLAG_FATAL;
   
+  g_mutex_lock (g_messages_lock);
+
   domain = g_log_find_domain (log_domain);
   if (!domain)
     domain = g_log_domain_new (log_domain);
@@ -395,7 +392,9 @@ g_log_set_fatal_mask (const gchar    *log_domain,
   
   domain->fatal_mask = fatal_mask;
   g_log_domain_check_free (domain);
-  
+
+  g_mutex_unlock (g_messages_lock);
+
   return old_flags;
 }
 
@@ -415,19 +414,21 @@ g_log_set_handler (const gchar	  *log_domain,
   if (!log_domain)
     log_domain = "";
   
+  g_mutex_lock (g_messages_lock);
+
   domain = g_log_find_domain (log_domain);
   if (!domain)
     domain = g_log_domain_new (log_domain);
   
   handler = g_new (GLogHandler, 1);
-  g_mutex_lock (g_messages_lock);
   handler->id = ++handler_id;
-  g_mutex_unlock (g_messages_lock);
   handler->log_level = log_levels;
   handler->log_func = log_func;
   handler->data = user_data;
   handler->next = domain->handlers;
   domain->handlers = handler;
+
+  g_mutex_unlock (g_messages_lock);
   
   return handler_id;
 }
@@ -443,6 +444,8 @@ g_log_remove_handler (const gchar *log_domain,
   if (!log_domain)
     log_domain = "";
   
+  g_mutex_lock (g_messages_lock);
+
   domain = g_log_find_domain (log_domain);
   if (domain)
     {
@@ -459,13 +462,17 @@ g_log_remove_handler (const gchar *log_domain,
 	      else
 		domain->handlers = work->next;
 	      g_free (work);
-	      g_log_domain_check_free (domain);
+	      g_log_domain_check_free (domain); 
+
+	      g_mutex_unlock (g_messages_lock);
 	      return;
 	    }
 	  last = work;
 	  work = last->next;
 	}
-    }
+    } 
+  
+  g_mutex_unlock (g_messages_lock);
   g_warning ("g_log_remove_handler(): could not find handler with id `%d' for domain \"%s\"",
 	     handler_id,
 	     log_domain);
@@ -522,6 +529,8 @@ g_logv (const gchar   *log_domain,
 	  GLogFunc log_func;
 	  gpointer data = NULL;
 	  
+	  g_mutex_lock (g_messages_lock);
+
 	  domain = g_log_find_domain (log_domain ? log_domain : "");
 	  
 	  if (depth)
@@ -529,14 +538,14 @@ g_logv (const gchar   *log_domain,
 	  
 	  depth++;
 	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
-
-	  g_mutex_lock (g_messages_lock);
+	  
 	  if ((((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) | 
 		g_log_always_fatal) & test_level) != 0)
 	    test_level |= G_LOG_FLAG_FATAL;  
-	  g_mutex_unlock (g_messages_lock);
 
 	  log_func = g_log_domain_get_handler (domain, test_level, &data);
+	  g_mutex_unlock (g_messages_lock);
+
 	  log_func (log_domain, test_level, buffer, data);
 	  
 	  /* *domain can be cluttered now */

@@ -1,3 +1,13 @@
+2002-03-14  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gmessages.c: Fixed threading issues brought up by
+	#74577. Make g_log_find_domain, g_log_domain_new,
+	g_log_domain_check_free and g_log_domain_get_handler require being
+	called with g_messages_lock held and remove all internal locking
+	in them. Then added proper locking to g_log_set_handler,
+	g_log_remove_handler and g_logv. Problem spotted by Miroslaw
+	Dobrzanski-Neumann <mne@mosaic-ag.com>. (#74577)
+
 2002-03-13  Erwann Chenede  <erwann.chenede@sun.com>
         * glib/gconvert.c 
 	  glib/gen-unicode-tables.pl
