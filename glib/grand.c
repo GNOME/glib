@@ -43,10 +43,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #include "glib.h"
 #include "gthreadinit.h"
+
+#ifdef G_OS_WIN32
+#include <process.h>		/* For getpid() */
+#endif
 
 G_LOCK_DEFINE_STATIC (global_random);
 static GRand* global_random = NULL;
@@ -202,7 +208,11 @@ g_rand_new (void)
       seed[0] = now.tv_sec;
       seed[1] = now.tv_usec;
       seed[2] = getpid ();
+#ifdef G_OS_UNIX
       seed[3] = getppid ();
+#else
+      seed[3] = 0;
+#endif
     }
 
   return g_rand_new_with_seed_array (seed, 4);

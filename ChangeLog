@@ -1,3 +1,9 @@
+2004-01-23  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/grand.c: Don't include <unistd.h> unless
+	HAVE_UNISTD_H. Include <process.h> on G_OS_WIN32.
+	(g_rand_new): Use getppid() only on G_OS_UNIX.
+
 Thu Jan 22 15:16:11 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.2 ===
@@ -215,7 +221,7 @@ Sat Nov 15 00:46:14 2003  Matthias Clasen  <maclas@gmx.de>
 	* configure.in: Don't blindly set glib_cv_long_long_format to
 	"ll" when using the included printf. As long as the native 
 	printf supports 64bit printing, use the native format.  
-	(#119525, Tor Lillquist)
+	(#119525, Tor Lillqvist)
 
 Fri Nov 14 00:28:46 2003  Matthias Clasen  <maclas@gmx.de>
 
