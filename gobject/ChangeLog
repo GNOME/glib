@@ -1,3 +1,8 @@
+Sun Feb  9 13:44:01 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* gboxed.c (boxed_proxy_value_init): remove lookup of unused
+	BoxedNode.
+
 2003-02-07  Matthias Clasen  <maclas@gmx.de>
 
 	* gtypemodule.c: 

@@ -181,10 +181,6 @@ g_gstring_get_type (void)
 static void
 boxed_proxy_value_init (GValue *value)
 {
-  BoxedNode key, *node;
-
-  key.type = G_VALUE_TYPE (value);
-  node = g_bsearch_array_lookup (boxed_bsa, &boxed_bconfig, &key);
   value->data[0].v_pointer = NULL;
 }
 
