@@ -676,7 +676,7 @@ g_strsignal (gint signum)
   char *msg;
 
 #ifdef HAVE_STRSIGNAL
-#ifdef G_OS_BEOS
+#if defined(G_OS_BEOS) || defined(G_WITH_CYGWIN)
 extern const char * strsignal(int);
 #else /* !G_OS_BEOS */
   /* this is declared differently (const) in string.h on BeOS */

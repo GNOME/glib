@@ -1,3 +1,11 @@
+2001-01-29  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32.in: Use the same GMutex structure as the
+	configure-generated glibconfig.h does.
+
+	* gstrfuncs.c (g_strsignal): Declare strsignal() on Cygwin, too,
+	says jbdoll@kepri.re.kr.
+
 2001-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c: Broadcast the condition, if there are waiting
