@@ -2,13 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4
 
-if HAVE_THREADS
-gthread = gthread
-else
-gthread =
-endif
-
-SUBDIRS = . gobject gmodule $(gthread) docs tests build
+SUBDIRS = . gobject gmodule gthread docs tests build
 
 bin_SCRIPTS=glib-config-2.0
 BUILT_SOURCES=glib-config-2.0

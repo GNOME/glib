@@ -3,12 +3,6 @@
 	* gnode.c (g_node_insert_after): Added function to keep symetry
 	with g_node_insert_before. 
 
-2000-09-30  Martin Baulig  <baulig@suse.de>
-
-	* configure.in (HAVE_THREADS): New automake conditional.
-	* Makefile.am (SUBDIRS): Only compile the gthread subdirectory if we
-	actually have threads.
-
 2000-09-29  Martin Baulig  <baulig@suse.de>
 
 	Several minor ANSI C fixes.
