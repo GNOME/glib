@@ -1,3 +1,9 @@
+2003-03-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmain.c (g_main_context_find_source_by_id): 
+	(g_main_context_find_source_by_funcs_user_data): Fix FALSE/NULL
+	confusion.  (#107646, Morten Welinder)
+
 2003-03-01  James Henstridge  <james@daa.com.au>
 
 	* autogen.sh: require automake 1.7.  Add calls to libtoolize and

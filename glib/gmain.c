@@ -1367,7 +1367,7 @@ g_main_context_find_source_by_id (GMainContext *context,
 {
   GSource *source;
   
-  g_return_val_if_fail (source_id > 0, FALSE);
+  g_return_val_if_fail (source_id > 0, NULL);
 
   if (context == NULL)
     context = g_main_context_default ();
@@ -1407,7 +1407,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
 {
   GSource *source;
   
-  g_return_val_if_fail (funcs != NULL, FALSE);
+  g_return_val_if_fail (funcs != NULL, NULL);
 
   if (context == NULL)
     context = g_main_context_default ();
