@@ -72,17 +72,19 @@ Building GLib
 
 Again, first decide whether you really want to do this.
 
-Before building GLib you must also have the libiconv library, either
-from the same website mentioned above, or from it's homepage at
-http://clisp.cons.org/~haible/packages-libiconv.html. Libiconv has
-makefiles for building with MS Visual C only, but as it is one source
-file only, building it "by hand" with gcc isn't hard.
+Before building GLib you must also have the libiconv library and GNU
+gettext. Get prebuilt binaries of libiconv (1.9.1 or newer), and
+gettext-runtime (0.12.1 or newer) from your nearest GNU ftp mirror. If
+you use gcc, you will also have to edit the libintl.h file from
+gettext a tiny bit: Change the
 
-You must also have the "intl" library from GNU tettext 0.10.40 (or
-later). Get a prebuilt version from the website mentioned above.
+# if __GNUC__ >= 2 && !defined __APPLE_CC__ && (defined __STDC__ || defined __cplusplus)
 
-Edit the correct paths to those libraries in build/win32/module.defs
-as appropriate.
+line to
+
+# if __GNUC__ >= 2 && !defined __APPLE_CC__ && !defined __MINGW32__ && (defined __STDC__ || defined __cplusplus)
+
+around line 102.
 
 Where are the makefiles?
 ========================
