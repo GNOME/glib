@@ -28,6 +28,7 @@
 #include	<gobject/gparamspecs.h>
 #include	<gobject/gsignal.h>
 #include	<gobject/gtype.h>
+#include	<gobject/gtypemodule.h>
 #include	<gobject/gtypeplugin.h>
 #include	<gobject/gvalue.h>
 #include	<gobject/gvaluetypes.h>

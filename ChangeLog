@@ -1,3 +1,7 @@
+Sun Nov  5 13:20:54 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-object.h: Add gtypemodule.h
+
 2000-11-11  Tor Lillqvist  <tml@iki.fi>
 
 	* gfileutils.c (g_file_open_tmp): New function, suggested by Havoc
