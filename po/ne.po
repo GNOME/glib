@@ -24,7 +24,7 @@ msgstr "स्वन सेट '%s' बाट '%s मा बदलने सु�
 #: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "'%s' बाट '%s मा %s अनुवादक खुलेन"
+msgstr "'%s' बाट '%s' मा अनुवादक खुलेन"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
