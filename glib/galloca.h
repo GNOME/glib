@@ -42,7 +42,7 @@
 #  define alloca _alloca
 # else /* !_MSC_VER */
 #  ifdef _AIX
- #pragma alloca
+#   pragma alloca
 #  else /* !_AIX */
 #   ifndef alloca /* predefined by HP cc +Olibcalls */
 G_BEGIN_DECLS
