@@ -573,12 +573,12 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
 		provide information on your thread implementation.
-		You can also use the '--disable-threads' flag for configure 
+		You can also run 'configure --disable-threads' 
 		to compile without thread support."
 
 FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because
-		there is no 'getpwuid_r' on your system."
+		there is no working 'getpwuid_r' on your system."
 
 FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 		because there is no 'localtime_r' on your system."
@@ -734,7 +734,24 @@ if test x"$have_threads" != xnone; then
 	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
 	AC_CHECK_FUNCS(localtime_r rand_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
-	 	AC_CHECK_FUNCS(getpwuid_r)
+		AC_MSG_CHECKING([for getpwuid_r])
+	 	AC_CACHE_VAL(ac_cv_func_getpwuid_r,
+			[AC_TRY_RUN([#include <errno.h>
+				int main () { char buffer[10000], *pointer; 
+				char getpwuid_r (long, void*, void*,
+					int, void*);
+				errno = 0;
+				getpwuid_r (0, &buffer, &buffer, 
+					sizeof (buffer), &pointer);
+				return errno == ENOSYS;}],
+				[ac_cv_func_getpwuid_r=yes],
+				[ac_cv_func_getpwuid_r=no])])
+		if test "$ac_cv_func_getpwuid_r" = yes; then
+			AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_GETPWUID_R)
+		else
+			AC_MSG_RESULT(no)
+		fi
 		if test "$ac_cv_func_getpwuid_r" = "yes"; then
 			AC_MSG_CHECKING(whether getpwuid_r is posix like)
 			# getpwuid_r(0, NULL, NULL, 0) is the signature on
@@ -747,6 +764,15 @@ if test x"$have_threads" != xnone; then
 				[AC_MSG_RESULT(yes)
 				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
 		fi
+	fi
+	if test x"$have_threads" = xposix; then
+		AC_MSG_CHECKING(whether pthread_getspecific is posix like)
+		# PCThreads has pthread_getspecific(pthread_key_t, void **);
+		AC_TRY_COMPILE([#include <pthread.h>],
+			[pthread_getspecific(0,NULL);],
+			[AC_MSG_RESULT(no)],
+			[AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_PTHREAD_GETSPECIFIC_POSIX)])
 	fi
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"

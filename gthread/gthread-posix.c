@@ -155,8 +155,15 @@ g_private_get_posix_impl (GPrivate * private_key)
 {
   if (!private_key)
     return NULL;
-
+#ifdef HAVE_PTHREAD_GETSPECIFIC_POSIX
   return pthread_getspecific (*(pthread_key_t *) private_key);
+#else /* HAVE_PTHREAD_GETSPECIFIC_POSIX */
+  {
+    void* data;
+    pthread_getspecific (*(pthread_key_t *) private_key, &data);
+    return data;
+  }
+#endif /* HAVE_PTHREAD_GETSPECIFIC_POSIX */
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =

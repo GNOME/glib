@@ -1,3 +1,9 @@
+1999-02-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c (g_private_get_posix_impl): Use the
+	HAVE_PTHREAD_GETSPECIFIC_POSIX macro to determine, which signature
+	to use for pthread_getspecific.
+
 Tue Jan 19 20:56:02 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (EXTRA_DIST): Added gthread.def.

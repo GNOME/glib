@@ -1,3 +1,10 @@
+1999-02-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in, acconfig.h: Changed the test for getpwuid_r to
+	exclude those systems (i.e. IRIX), that set ENOSYS after the call.
+	Test, if pthread_getspecific is posix like or something different,
+	as on PCThreads.	
+
 Sun Feb  7 21:56:00 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* gmem.c (g_mem_profile): Copy all elements
