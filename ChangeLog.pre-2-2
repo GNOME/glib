@@ -1,3 +1,9 @@
+2002-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: use 0 instead of $defattr, as it isn't defined
+	anymore on platforms using -pthread and linux, where this is used,
+	only uses 0 anyway and not "pthread_attr_default".
+
 Sun Dec  8 23:36:12 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gfileutils.c (g_file_test): Guard against

@@ -1632,7 +1632,7 @@ void* func(void* data) {other_pid = getpid();}
 main()
 { pthread_t t; 
   void *ret;
-  pthread_create (&t, $defattr, func, NULL);
+  pthread_create (&t, 0, func, NULL);
   pthread_join (t, &ret);
   exit (getpid()==other_pid || 
 	$posix_priority_min != $posix_priority_max);
