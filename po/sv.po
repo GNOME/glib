@@ -1,6 +1,6 @@
 # Swedish messages for glib.
-# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003.
+# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004.
 #
 # $Id$
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2003-10-04 17:48+0200\n"
+"POT-Creation-Date: 2004-04-23 22:32+0200\n"
+"PO-Revision-Date: 2004-04-23 22:33+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,8 @@ msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\""
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -517,6 +517,9 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
+
+#~ msgid "Could not open converter from '%s' to '%s': %s"
+#~ msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Felaktig meddelandestorlek"
