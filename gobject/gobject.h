@@ -80,14 +80,14 @@ struct  _GObjectClass
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
                                  GObjectConstructParam *construct_properties);
-  void       (*get_property)            (GObject        *object,
-                                         guint           property_id,
-                                         GValue         *value,
-                                         GParamSpec     *pspec,
-                                         const gchar    *trailer);
   void       (*set_property)            (GObject        *object,
                                          guint           property_id,
                                          const GValue   *value,
+                                         GParamSpec     *pspec,
+                                         const gchar    *trailer);
+  void       (*get_property)            (GObject        *object,
+                                         guint           property_id,
+                                         GValue         *value,
                                          GParamSpec     *pspec,
                                          const gchar    *trailer);
   void       (*shutdown)                (GObject        *object);

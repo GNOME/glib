@@ -430,7 +430,7 @@ static void
 g_object_init (GObject *object)
 {
   object->ref_count = 1;
-  object->qdata = NULL;
+  g_datalist_init (&object->qdata);
   
   /* freeze object's notification queue, g_object_new_valist() takes care of that */
   object_freeze_notifies (object);

@@ -638,6 +638,41 @@ param_ccallback_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+param_spec_boxed_init (GParamSpec *pspec)
+{
+  GParamSpecBoxed *bspec = G_PARAM_SPEC_BOXED (pspec);
+  
+  bspec->boxed_type = G_TYPE_BOXED;
+}
+
+static void
+param_boxed_set_default (GParamSpec *pspec,
+			 GValue     *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static gboolean
+param_boxed_validate (GParamSpec *pspec,
+		      GValue     *value)
+{
+  /* GParamSpecBoxed *bspec = G_PARAM_SPEC_BOXED (pspec); */
+  guint changed = 0;
+
+  /* can't do a whole lot here since we haven't even G_BOXED_TYPE() */
+  
+  return changed;
+}
+
+static gint
+param_boxed_values_cmp (GParamSpec    *pspec,
+			 const GValue *value1,
+			 const GValue *value2)
+{
+  return value1->data[0].v_pointer != value2->data[0].v_pointer;
+}
+
+static void
 param_spec_object_init (GParamSpec *pspec)
 {
   GParamSpecObject *ospec = G_PARAM_SPEC_OBJECT (pspec);
@@ -1067,6 +1102,23 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     g_assert (type == G_TYPE_PARAM_CCALLBACK);
   }
   
+  /* G_TYPE_PARAM_BOXED
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecBoxed),  /* instance_size */
+      4,                         /* n_preallocs */
+      param_spec_boxed_init,     /* instance_init */
+      G_TYPE_BOXED,		 /* value_type */
+      NULL,			 /* finalize */
+      param_boxed_set_default,	 /* value_set_default */
+      param_boxed_validate,	 /* value_validate */
+      param_boxed_values_cmp,	 /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamBoxed", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_BOXED);
+  }
+
   /* G_TYPE_PARAM_OBJECT
    */
   {
@@ -1479,6 +1531,27 @@ g_param_spec_ccallback (const gchar *name,
 				 blurb,
 				 flags);
   return G_PARAM_SPEC (cspec);
+}
+
+GParamSpec*
+g_param_spec_boxed (const gchar *name,
+		    const gchar *nick,
+		    const gchar *blurb,
+		    GType	 boxed_type,
+		    GParamFlags  flags)
+{
+  GParamSpecBoxed *bspec;
+  
+  g_return_val_if_fail (G_TYPE_IS_BOXED (boxed_type), NULL);
+  
+  bspec = g_param_spec_internal (G_TYPE_PARAM_BOXED,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  bspec->boxed_type = boxed_type;
+  
+  return G_PARAM_SPEC (bspec);
 }
 
 GParamSpec*

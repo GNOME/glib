@@ -24,6 +24,7 @@
 
 #include        <gobject/gvalue.h>
 #include        <gobject/genums.h>
+#include        <gobject/gboxed.h>
 #include        <gobject/gobject.h>
 
 
@@ -63,6 +64,8 @@ extern "C" {
 #define G_PARAM_SPEC_POINTER(pspec)      (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_POINTER, GParamSpecPointer))
 #define G_IS_PARAM_SPEC_CCALLBACK(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_CCALLBACK))
 #define G_PARAM_SPEC_CCALLBACK(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_CCALLBACK, GParamSpecCCallback))
+#define G_IS_PARAM_SPEC_BOXED(pspec)     (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_BOXED))
+#define G_PARAM_SPEC_BOXED(pspec)        (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_BOXED, GParamSpecBoxed))
 #define G_IS_PARAM_SPEC_OBJECT(pspec)    (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_OBJECT))
 #define G_PARAM_SPEC_OBJECT(pspec)       (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_OBJECT, GParamSpecObject))
 
@@ -83,6 +86,7 @@ typedef struct _GParamSpecString    GParamSpecString;
 typedef struct _GParamSpecParam     GParamSpecParam;
 typedef struct _GParamSpecPointer   GParamSpecPointer;
 typedef struct _GParamSpecCCallback GParamSpecCCallback;
+typedef struct _GParamSpecBoxed     GParamSpecBoxed;
 typedef struct _GParamSpecObject    GParamSpecObject;
 struct _GParamSpecChar
 {
@@ -195,6 +199,12 @@ struct _GParamSpecCCallback
 {
   GParamSpec    parent_instance;
 };
+struct _GParamSpecBoxed
+{
+  GParamSpec    parent_instance;
+  
+  GType         boxed_type;
+};
 struct _GParamSpecObject
 {
   GParamSpec    parent_instance;
@@ -299,6 +309,11 @@ GParamSpec*     g_param_spec_pointer    (const gchar    *name,
 GParamSpec*     g_param_spec_ccallback  (const gchar    *name,
                                          const gchar    *nick,
                                          const gchar    *blurb,
+                                         GParamFlags     flags);
+GParamSpec*     g_param_spec_boxed      (const gchar    *name,
+                                         const gchar    *nick,
+                                         const gchar    *blurb,
+                                         GType           boxed_type,
                                          GParamFlags     flags);
 GParamSpec*     g_param_spec_object     (const gchar    *name,
                                          const gchar    *nick,

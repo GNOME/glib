@@ -1,3 +1,9 @@
+Wed Dec 13 09:31:26 2000  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.[hc]: add G_TYPE_PARAM_BOXED implementation.
+
+	* gobject.[hc]: minor fixes.
+
 Tue Dec 12 23:38:02 2000  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: _never_ touch oldest-source-stamp.

@@ -101,7 +101,7 @@ EXTRA_DIST += $(gruntime_built_sources)
 # setup autogeneration dependancies
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
-Makefile: oldest-source-stamp	# oh boy, does automake SUCK!
+# Makefile: oldest-source-stamp	# oh boy, does automake SUCK!
 oldest-source-stamp: $(gruntime_built_sources)
 
 $(OBJECTS): oldest-source-stamp  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
