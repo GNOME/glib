@@ -60,11 +60,11 @@
 
 #if defined(ENABLE_MEM_PROFILE) && defined(ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS)
 #define ENTER_MEM_CHUNK_ROUTINE() \
-  g_static_set (allocating_for_mem_chunk, \
-		g_static_get (allocating_for_mem_chunk) + 1)
+  g_private_set (allocating_for_mem_chunk, \
+		g_private_get (allocating_for_mem_chunk) + 1)
 #define LEAVE_MEM_CHUNK_ROUTINE() \
-  g_static_set (allocating_for_mem_chunk, \
-		g_static_get (allocating_for_mem_chunk) - 1) 
+  g_private_set (allocating_for_mem_chunk, \
+		g_private_get (allocating_for_mem_chunk) - 1) 
 #else
 #define ENTER_MEM_CHUNK_ROUTINE()
 #define LEAVE_MEM_CHUNK_ROUTINE()
@@ -144,7 +144,7 @@ static gulong allocated_mem = 0;
 static gulong freed_mem = 0;
 static GPrivate* allocating_for_mem_chunk = NULL;
 #define IS_IN_MEM_CHUNK_ROUTINE() \
-  GPOINTER_TO_UINT (g_static_get (allocating_for_mem_chunk))
+  GPOINTER_TO_UINT (g_private_get (allocating_for_mem_chunk))
 #endif /* ENABLE_MEM_PROFILE */
 
 
