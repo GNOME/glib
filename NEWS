@@ -1,0 +1,19 @@
+What is new in GLib 1.1.0:
+
+* GLib is distributed seperatedly from Gtk+ now and uses a sophisticated
+  shared library versioning scheme to deal with interface and binary
+  incompatibilities.
+* There is a glib-config helper script installed now.
+* Fixups all over the place.
+* gboolean is now a gint, not a gchar anymore.
+* API extensions for GList and GSList.
+* New g_str*() functions for simple string handling.
+* GScanner extensions for scope, warning and error handling.
+* Minor performance improvements for GMemChunks.
+* Implementations of GQuarks and datasets (similar to GtkObjects data
+  mechansim, but works for generic memory locations).
+* More convenience macros for GNU C function arguments.
+* Const correction all over the place, including a new pointer type
+  gconstpointer.
+* Generic functions for TAB completions.
+* GRelations for n-way mapping of certain data.
