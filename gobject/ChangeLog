@@ -1,3 +1,7 @@
+2001-11-17  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Add g_pointer_type_register_static.
+
 2001-11-15  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Reflect recent changes.

@@ -128,6 +128,7 @@ EXPORTS
 	g_param_value_set_default
 	g_param_value_validate
 	g_param_values_cmp
+	g_pointer_type_register_static
 	g_signal_add_emission_hook
 	g_signal_chain_from_overridden
 	g_signal_connect_closure
