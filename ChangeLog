@@ -1,3 +1,10 @@
+Thu Aug 26 15:09:36 1999  Tim Janik  <timj@gtk.org>
+
+        * Makefile.am:
+        * gmodule/Makefile.am:
+        * gthread/Makefile.am: added --export-dynamic so we can load dynmic
+        modules, (required, according to the libtool 1.3.3 docu).
+
 Mon Aug 23 14:42:58 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.4

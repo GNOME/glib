@@ -16,7 +16,8 @@ lib_LTLIBRARIES = libgthread.la
 libgthread_la_SOURCES = gthread.c
 libgthread_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE)
+	-release $(LT_RELEASE) \
+	-export-dynamic
 
 libgthread_la_LIBADD = @G_THREAD_LIBS@
 
