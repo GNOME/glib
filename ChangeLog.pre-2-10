@@ -1,5 +1,7 @@
 2005-01-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/run-markup-tests.sh: Let $srcdir default to .
+
 	* tests/markups/fail-40.gmarkup: Add a test with a long entity
 	name.
 
