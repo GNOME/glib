@@ -31,7 +31,7 @@ The maximum value which can be held in a #gint.
 
 <!-- ##### MACRO G_MAXUINT ##### -->
 <para>
-
+The maximum value which can be held in a #guint.
 </para>
 
 
@@ -52,7 +52,7 @@ The maximum value which can be held in a #gshort.
 
 <!-- ##### MACRO G_MAXUSHORT ##### -->
 <para>
-
+The maximum value which can be held in a #gushort.
 </para>
 
 
@@ -73,7 +73,7 @@ The maximum value which can be held in a #glong.
 
 <!-- ##### MACRO G_MAXULONG ##### -->
 <para>
-
+The maximum value which can be held in a #gulong.
 </para>
 
 

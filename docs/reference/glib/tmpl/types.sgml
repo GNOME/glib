@@ -84,6 +84,7 @@ Values of this type can range from #G_MININT to #G_MAXINT.
 <!-- ##### TYPEDEF guint ##### -->
 <para>
 Corresponds to the standard C <type>unsigned int</type> type.
+Values of this type can range from 0 to #G_MAXUINT.
 </para>
 
 
@@ -97,6 +98,7 @@ Values of this type can range from #G_MINSHORT to #G_MAXSHORT.
 <!-- ##### TYPEDEF gushort ##### -->
 <para>
 Corresponds to the standard C <type>unsigned short</type> type.
+Values of this type can range from 0 to #G_MAXUSHORT.
 </para>
 
 
@@ -110,6 +112,7 @@ Values of this type can range from #G_MINLONG to #G_MAXLONG.
 <!-- ##### TYPEDEF gulong ##### -->
 <para>
 Corresponds to the standard C <type>unsigned long</type> type.
+Values of this type can range from 0 to #G_MAXULONG.
 </para>
 
 
