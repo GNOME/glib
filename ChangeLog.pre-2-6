@@ -1,3 +1,8 @@
+2003-06-11  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in: Remove false &. Spotted by Albert Chin
+	<gtk-devel-list@thewrittenword.com>.
+
 Sun Jun  8 12:42:39 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.2 ===
