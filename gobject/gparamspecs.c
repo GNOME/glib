@@ -825,10 +825,14 @@ param_value_array_set_default (GParamSpec *pspec,
 {
   GParamSpecValueArray *aspec = G_PARAM_SPEC_VALUE_ARRAY (pspec);
 
-  g_return_if_fail (value->data[0].v_pointer != NULL);	/* paranoid */
-  
-  /* g_value_reset (value);  already done */
-  value_array_ensure_size (value->data[0].v_pointer, aspec->fixed_n_elements);
+  if (!value->data[0].v_pointer && aspec->fixed_n_elements)
+    value->data[0].v_pointer = g_value_array_new (aspec->fixed_n_elements);
+
+  if (value->data[0].v_pointer)
+    {
+      /* g_value_reset (value);  already done */
+      value_array_ensure_size (value->data[0].v_pointer, aspec->fixed_n_elements);
+    }
 }
 
 static gboolean
@@ -839,32 +843,36 @@ param_value_array_validate (GParamSpec *pspec,
   GValueArray *value_array = value->data[0].v_pointer;
   guint changed = 0;
 
-  g_return_val_if_fail (value->data[0].v_pointer != NULL, FALSE);	/* paranoid */
+  if (!value->data[0].v_pointer && aspec->fixed_n_elements)
+    value->data[0].v_pointer = g_value_array_new (aspec->fixed_n_elements);
 
-  /* ensure array size validity */
-  changed += value_array_ensure_size (value_array, aspec->fixed_n_elements);
-
-  /* ensure array values validity against a present element spec */
-  if (aspec->element_spec)
+  if (value->data[0].v_pointer)
     {
-      GParamSpec *element_spec = aspec->element_spec;
-      guint i;
-
-      for (i = 0; i < value_array->n_values; i++)
+      /* ensure array size validity */
+      changed += value_array_ensure_size (value_array, aspec->fixed_n_elements);
+      
+      /* ensure array values validity against a present element spec */
+      if (aspec->element_spec)
 	{
-	  GValue *element = value_array->values + i;
-
-	  /* need to fixup value type, or ensure that the array value is initialized at all */
-	  if (!g_value_type_compatible (G_VALUE_TYPE (element), G_PARAM_SPEC_VALUE_TYPE (element_spec)))
+	  GParamSpec *element_spec = aspec->element_spec;
+	  guint i;
+	  
+	  for (i = 0; i < value_array->n_values; i++)
 	    {
-	      if (G_VALUE_TYPE (element) != 0)
-		g_value_unset (element);
-	      g_value_init (element, G_PARAM_SPEC_VALUE_TYPE (element_spec));
-	      g_param_value_set_default (element_spec, element);
-	      changed++;
+	      GValue *element = value_array->values + i;
+	      
+	      /* need to fixup value type, or ensure that the array value is initialized at all */
+	      if (!g_value_type_compatible (G_VALUE_TYPE (element), G_PARAM_SPEC_VALUE_TYPE (element_spec)))
+		{
+		  if (G_VALUE_TYPE (element) != 0)
+		    g_value_unset (element);
+		  g_value_init (element, G_PARAM_SPEC_VALUE_TYPE (element_spec));
+		  g_param_value_set_default (element_spec, element);
+		  changed++;
+		}
+	      /* validate array value against element_spec */
+	      changed += g_param_value_validate (element_spec, element);
 	    }
-	  /* validate array value against element_spec */
-	  changed += g_param_value_validate (element_spec, element);
 	}
     }
 
@@ -880,8 +888,8 @@ param_value_array_values_cmp (GParamSpec   *pspec,
   GValueArray *value_array1 = value1->data[0].v_pointer;
   GValueArray *value_array2 = value2->data[0].v_pointer;
 
-  g_return_val_if_fail (value1->data[0].v_pointer != NULL, -1);	/* paranoid */
-  g_return_val_if_fail (value2->data[0].v_pointer != NULL, 1);	/* paranoid */
+  if (!value_array1 || !value_array2)
+    return value_array2 ? -1 : value_array1 != value_array2;
 
   if (value_array1->n_values != value_array2->n_values)
     return value_array1->n_values < value_array2->n_values ? -1 : 1;
