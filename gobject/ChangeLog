@@ -1,3 +1,7 @@
+Thu Oct  4 01:10:52 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gparamspecs.h: Add missing G_HAVE_GINT64 conditionalization.
+
 Wed Oct  3 16:02:24 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-genmarshal.c gparamspecs.[ch] gvalue.h 

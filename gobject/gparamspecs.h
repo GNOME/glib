@@ -355,6 +355,8 @@ GParamSpec*	g_param_spec_object	 (const gchar	 *name,
 					  const gchar	 *blurb,
 					  GType		  object_type,
 					  GParamFlags	  flags);
+
+#ifdef G_HAVE_GINT64
 GParamSpec*	g_param_spec_int64	 (const gchar	 *name,
 					  const gchar	 *nick,
 					  const gchar	 *blurb,
@@ -369,7 +371,7 @@ GParamSpec*	g_param_spec_uint64	 (const gchar	 *name,
 					  guint64	  maximum,
 					  guint64	  default_value,
 					  GParamFlags	  flags);
-
+#endif /* G_HAVE_GINT64 */
 
 G_END_DECLS
 
