@@ -606,9 +606,10 @@ do_spawn (gboolean              dont_wait,
     }
 
   if (working_directory && *working_directory)
+    /* The g_strdup() to lose the constness */
     new_argv[ARG_WORKING_DIRECTORY] = g_strdup (working_directory);
   else
-    new_argv[ARG_WORKING_DIRECTORY] = "-";
+    new_argv[ARG_WORKING_DIRECTORY] = g_strdup ("-");
 
   if (close_descriptors)
     new_argv[ARG_CLOSE_DESCRIPTORS] = "y";
