@@ -87,7 +87,7 @@ function is called to terminate the program.
 @log_domain: the log domain, usually #G_LOG_DOMAIN.
 @log_level: the log level, either from #GLogLevelFlags or a user-defined level.
 @format: the message format. See the <function>printf()</function>
-documentation. 
+documentation.
 @Varargs: the parameters to insert into the format string.
 
 

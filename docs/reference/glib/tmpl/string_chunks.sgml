@@ -98,6 +98,17 @@ added with g_string_chunk_insert(), even if they do match.
 #GStringChunk.
 
 
+<!-- ##### FUNCTION g_string_chunk_insert_len ##### -->
+<para>
+
+</para>
+
+@chunk: 
+@string: 
+@len: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_string_chunk_free ##### -->
 <para>
 Frees all memory allocated by the #GStringChunk.

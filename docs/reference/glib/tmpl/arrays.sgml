@@ -220,7 +220,7 @@ Removes the given number of elements starting at the given index from a
 
 @array: a @GArray.
 @index_: the index of the first element to remove.
-@length: the number of elements to remove. 
+@length: the number of elements to remove.
 @Returns: the #GArray.
 @Since: 2.4
 

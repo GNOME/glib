@@ -1626,6 +1626,7 @@ The possible stati of a one-time initialization function controlled by a #GOnce 
 @G_ONCE_STATUS_NOTCALLED: the function has not been called yet.
 @G_ONCE_STATUS_PROGRESS: the function call is currently in progress.
 @G_ONCE_STATUS_READY: the function has been called.
+@Since: 2.4
 
 <!-- ##### MACRO G_ONCE_INIT ##### -->
 <para>
@@ -1639,6 +1640,7 @@ GOnce my_once = G_ONCE_INIT;
 </informalexample>
 </para>
 
+@Since: 2.4
 
 
 <!-- ##### MACRO g_once ##### -->
