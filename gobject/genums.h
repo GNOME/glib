@@ -19,8 +19,6 @@
 #ifndef __G_ENUMS_H__
 #define __G_ENUMS_H__
 
-#include <string.h>
-
 #include <gobject/gtype.h>
 
 

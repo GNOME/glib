@@ -22,7 +22,7 @@
 #ifndef __GUNICODE_H__
 #define __GUNICODE_H__
 
-#include <stdlib.h>      /* For size_t */
+#include <stddef.h>      /* For size_t */
 
 #ifdef __cplusplus
 extern "C"

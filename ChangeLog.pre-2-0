@@ -1,3 +1,7 @@
+Sun Jul  9 21:20:45 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gunicode.h: Include stddef.h instead of stdlib.h
+
 2000-07-08  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h (GLIB_VAR): Rename the GUTILS_C_VAR macro to GLIB_VAR.

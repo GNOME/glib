@@ -1,3 +1,8 @@
+Sun Jul  9 21:21:46 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* genums.c: Move string.h include into the .c file
+	instead of where it was in the .h file by mistake.
+
 Thu Jul  6 15:30:27 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am (EXTRA_DIST): dist fixes.
