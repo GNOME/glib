@@ -1167,7 +1167,7 @@ main (int   argc,
 	   g_win32_get_package_installation_directory ("gtk20", NULL));
 
   g_print ("found more.com as %s\n", g_find_program_in_path ("more.com"));
-  g_print ("found regedit.exe as %s\n", g_find_program_in_path ("regedit.exe"));
+  g_print ("found regedit as %s\n", g_find_program_in_path ("regedit"));
 
 #endif
 

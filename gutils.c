@@ -157,6 +157,52 @@ my_strchrnul (const gchar *str, gchar c)
   return p;
 }
 
+#ifdef G_OS_WIN32
+
+gchar *inner_find_program_in_path (const gchar *program);
+
+gchar*
+g_find_program_in_path (const gchar *program)
+{
+  const gchar *last_dot = strrchr (program, '.');
+
+  if (last_dot == NULL || strchr (last_dot, '\\') != NULL)
+    {
+      const gint program_length = strlen (program);
+      const gchar *pathext = getenv ("PATHEXT");
+      const gchar *p;
+      gchar *decorated_program;
+      gchar *retval;
+
+      if (pathext == NULL)
+	pathext = ".com;.exe;.bat";
+
+      p = pathext;
+      do
+	{
+	  pathext = p;
+	  p = my_strchrnul (pathext, ';');
+
+	  decorated_program = g_malloc (program_length + (p-pathext) + 1);
+	  memcpy (decorated_program, program, program_length);
+	  memcpy (decorated_program+program_length, pathext, p-pathext);
+	  decorated_program [program_length + (p-pathext)] = '\0';
+	  
+	  retval = inner_find_program_in_path (decorated_program);
+	  g_free (decorated_program);
+
+	  if (retval != NULL)
+	    return retval;
+	} while (*p++ != '\0');
+      return NULL;
+    }
+  else
+    return inner_find_program_in_path (program);
+}
+
+#define g_find_program_in_path inner_find_program_in_path
+#endif
+
 /**
  * g_find_program_in_path:
  * @program: a program name
@@ -167,6 +213,17 @@ my_strchrnul (const gchar *str, gchar c)
  * the path. If @program is already an absolute path, returns a copy of
  * @program if @program exists and is executable, and NULL otherwise.
  * 
+ * On Windows, if @program does not have a file type suffix, tries to
+ * append the suffixes in the PATHEXT environment variable (if that
+ * doesn't exists, the suffixes .com, .exe, and .bat) in turn, and
+ * then look for the resulting file name in the same way as
+ * CreateProcess() would. This means first in the directory where the
+ * program was loaded from, then in the current directory, then in the
+ * Windows 32-bit system directory, then in the Windows directory, and
+ * finally in the directories in the PATH environment variable. If
+ * the program is found, the return value contains the full name
+ * including the type suffix.
+ *
  * Return value: absolute path, or NULL
  **/
 gchar*
@@ -180,13 +237,13 @@ g_find_program_in_path (const gchar *program)
   size_t len;
   size_t pathlen;
 
-  /* On Win32, should we try appending .exe, .com, and the other
-   * components of %PATHEXT% ?
-   */
-
   g_return_val_if_fail (program != NULL, NULL);
 
-  if (g_path_is_absolute (program))
+  /* If it is an absolute path, or a relative path including subdirectories,
+   * don't look in PATH.
+   */
+  if (g_path_is_absolute (program)
+      || strchr (program, G_DIR_SEPARATOR) != NULL)
     {
       if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE))
         return g_strdup (program);
