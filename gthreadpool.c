@@ -151,9 +151,6 @@ g_thread_pool_thread_proxy (gpointer data)
 	  
 	  g_async_queue_lock (pool->queue);
 
-	  if (pool->pool.priority != self->priority)
-	    g_thread_set_priority (self, pool->pool.priority);
-
 	  /* pool->num_threads++ is not done here, but in
            * g_thread_pool_start_thread to make the new started thread
            * known to the pool, before itself can do it. */
@@ -184,28 +181,9 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 
   g_async_queue_unlock (queue);
 
-  if (!success)
-    {
-      /* Now we search for threads with other priorities too, but
-       * only, when there is more than one unused thread with that
-       * priority. */
-      GThreadPriority priority;
-      for (priority = G_THREAD_PRIORITY_LOW; 
-	   priority < G_THREAD_PRIORITY_URGENT + 1; priority++)
-	{
-	  queue = unused_thread_queue[priority];
-	  g_async_queue_lock (queue);
-	  
-	  if (g_async_queue_length_unlocked (queue) < -1)
-	    {
-	      g_async_queue_push_unlocked (queue, pool);
-	      success = TRUE;
-	    }
-	  
-	  g_async_queue_unlock (queue);
-	}      
-    }
-
+  /* We will not search for threads with other priorities, because changing
+   * priority is quite unportable */
+  
   if (!success)
     {
       GError *local_error = NULL;
@@ -251,7 +229,6 @@ g_thread_pool_new (GFunc            thread_func,
   retval->pool.priority = priority;
   retval->pool.exclusive = exclusive;
   retval->pool.user_data = user_data;
-
   retval->queue = g_async_queue_new ();
   retval->max_threads = max_threads;
   retval->num_threads = 0;

@@ -1,3 +1,11 @@
+2000-11-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthreadpool.c: Don't take other threads with other priorities
+	into account as changing the priority is highly
+	unportable. (Actually using it at all already is unportable, but
+	even sometimes where that works, changing priority is not
+	possible).
+
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
 	* gmarkup.h: rename G_MARKUP_FOO to
