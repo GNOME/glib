@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "POT-Creation-Date: 2002-08-20 15:10+0430\n"
-"PO-Revision-Date: 2002-08-20 16:07+0430\n"
+"PO-Revision-Date: 2002-08-20 18:27+0430\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr ""
 #: glib/gconvert.c:1642
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr ""
+msgstr "نمی‌شود نشانی جهانی '%s' که به پرونده‌ی محلی اشاره می‌کند '#' داشته باشد"
 
 #: glib/gconvert.c:1659
 #, c-format
@@ -68,7 +68,7 @@ msgstr "نام میزبان نشانی جهانی '%s' نامعتبر است"
 #: glib/gconvert.c:1687
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "نشانی جهانی '%s' نویسه‌های گریز نامعتبر دارد"
 
 #: glib/gconvert.c:1758
 #, c-format
@@ -87,7 +87,7 @@ msgstr "خطا در باز کردن شاخه‌ی '%s'‏: %s"
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr ""
+msgstr "نمی‌توان %lu بایت برای خواندن پرونده‌ی \"%s\" تخصیص داد"
 
 #: glib/gfileutils.c:348
 #, c-format
@@ -101,14 +101,13 @@ msgstr "خواندن از پرونده‌ی '%s' شکست خورد: %s"
 
 #: glib/gfileutils.c:471 glib/gfileutils.c:539
 #, c-format
-#, fuzzy
 msgid "Failed to open file '%s': %s"
 msgstr "باز کردن پرونده‌ی '%s' شکست خورد: %s"
 
 #: glib/gfileutils.c:485
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
+msgstr "گرفتن مشخصه‌های پرونده‌ی '%s' شکست خورد: fstat()‎ شکست خورد: %s"
 
 #: glib/gfileutils.c:511
 #, c-format
@@ -138,7 +137,7 @@ msgstr "تبدیل از مجموعه‌نویسه‌ی '%s' به '%s' پشتیب
 #: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr ""
+msgstr "نمی‌توان مبدل از '%s' به '%s' را باز کرد: %s"
 
 #: glib/giochannel.c:1468
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -146,7 +145,7 @@ msgstr "نمی‌توان در g_io_channel_read_line_string خواندن خام
 
 #: glib/giochannel.c:1515 glib/giochannel.c:1769 glib/giochannel.c:1855
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "داده‌ی تبدیل‌نشده در میان‌گیر خواندن باقی مانده است"
 
 #: glib/giochannel.c:1595 glib/giochannel.c:1669
 msgid "Channel terminates in a partial character"
@@ -189,6 +188,9 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
+"نویسه‌ی '%s' در ابتدای نام نهادها مجاز نیست؛ نویسه‌ی & یک نهاد "
+"را آغاز می‌کند؛ اگر این امپرسند قرار نیست نهاد شود، به‌جای آن از ‎&amp;‎ "
+"استفاده کنید"
 
 #: glib/gmarkup.c:431
 #, c-format
@@ -215,6 +217,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"تجزیه‌ی '%s'، که باید رقمی داخل یک ارجاع نویسه‌ای (مثل ‎&#234;‎) می‌بود "
+"شکست خورد - شاید رقم خیلی بزرگ است"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -231,6 +235,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"ارجاع نویسه‌ای با نقطه‌ویرگول پایان نیافت؛ به احتمال زیاد "
+"بدون این که بخواهید نهادی را آغاز کنید از یک نویسه‌ی امپرسند "
+"استفاده کرده‌اید - برای امپرسند از ‎&amp;‎ استفاده کنید"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
@@ -254,6 +261,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
+"‏'%s' نویسه‌ی مجازی برای بعد از یک نویسه‌ی '‎<‎' آمدن نیست؛ "
+"نمی‌شود ابتدای نام یک عنصر باشد"
 
 #: glib/gmarkup.c:1057
 #, c-format
@@ -261,11 +270,15 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
+"نویسه‌ی غیرعادی '%s'، برای پایان دادن به برچسب شروع عنصر '%s' انتظار "
+"یک نویسه‌ی '‎>‎' می‌رفت"
 
 #: glib/gmarkup.c:1144
 #, c-format
 msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
+"نویسه‌ی غیرعادی '%s'، بعد از نام مشخصه‌ی '%s' عنصر '%s' انتظار "
+"یک نویسه‌ی '=' می‌رفت"
 
 #: glib/gmarkup.c:1185
 #, c-format
@@ -274,6 +287,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"نویسه‌ی غیرعادی '%s'، برای پایان دادن به برچسب شروع عنصر '%s' انتظار "
+"یک نویسه‌ی '‎>‎' یا '/' می‌رفت، یا شاید یک مشخصه؛ شاید از یک نویسه‌ی نامعتبر "
+"در نام مشخصه استفاده کرده باشید"
 
 #: glib/gmarkup.c:1268
 #, c-format
@@ -281,6 +297,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"نویسه‌ی غیر عادی '%s'، هنگام مقدار دادن برای مشخصه‌ی '%s' از عنصر '%s' "
+"انتظار یک علامت نقل قول باز می‌رفت"
 
 #: glib/gmarkup.c:1408
 #, c-format
@@ -288,13 +306,15 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
+"‏'%s' نویسه‌ی معتبری برای بعد از نویسه‌های '‎</‎' آمدن نیست؛ نمی‌شود '%s' "
+"ابتدای نام یک عنصر باشد"
 
 #: glib/gmarkup.c:1446
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
+msgstr "‏'%s' نویسه‌ی معتبری برای بستن نام عنصر '%s' نیست؛ نویسه‌ی مجاز '‎>‎' است"
 
 #: glib/gmarkup.c:1457
 #, c-format
@@ -312,7 +332,7 @@ msgstr "نوشتار خالی است یا فقط فاصله دارد"
 
 #: glib/gmarkup.c:1627
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
+msgstr "نوشتار به‌طور غیرمنتظره‌ای درست بعد از یک علامت کوچکتر '‎<‎' پایان یافت"
 
 #: glib/gmarkup.c:1635 glib/gmarkup.c:1679
 #, c-format
@@ -320,6 +340,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"نوشتار وقتی که هنوز عناصری باز بودند به‌طور غیرمنتظره‌ای پایان یافت - "
+"آخرین عنصر باز '%s' بود"
 
 #: glib/gmarkup.c:1643
 #, c-format
@@ -327,6 +349,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
+"نوشتار به‌طور غیرمنتظره‌ای پایان یافت، انتظار یک علامت بزرگتر "
+"برای بستن برچسب ‎<%s/>‎ می‌رفت"
 
 #: glib/gmarkup.c:1649
 msgid "Document ended unexpectedly inside an element name"
@@ -338,13 +362,15 @@ msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل نام ی�
 
 #: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr ""
+msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل یک برچسب عنصربازکن پایان یافت."
 
 #: glib/gmarkup.c:1665
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"نوشتار به‌طور غیرمنتظره‌ای بعد از علامت مساوی‌ای که بعد از یک "
+"نام مشخصه آمده بود تمام شد؛ بدون مقداری برای مشخصه"
 
 #: glib/gmarkup.c:1672
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -353,19 +379,20 @@ msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل مقدار
 #: glib/gmarkup.c:1687
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل برچسب بستن عنصر '%s' پایان یافت"
 
 #: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "نوشتار به‌طور غیرمنتظره‌ای داخل یک توضیح یا دستورالعمل پردازشی پایان یافت"
 
 #: glib/gshell.c:71
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "متن نقل شده با علامت نقل قول شروع نمی‌شود"
 
 #: glib/gshell.c:161
+#, fuzzy
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "علامت نقل قول تکی در سطر دستور یا ؟؟؟ دیگر"
 
 #: glib/gshell.c:529
 #, c-format
@@ -375,7 +402,7 @@ msgstr "متن دقیقاً پس از یک نویسه‌ی '\\' پایان یا�
 #: glib/gshell.c:536
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "متن قبل از این که علامت نقل قول متناظر %c یافت شود پایان یافت. (متن '%s' بود)"
 
 #: glib/gshell.c:548
 msgid "Text was empty (or contained only whitespace)"
@@ -390,6 +417,8 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"خطای غیرمنتظره در g_io_channel_win32_poll()‎ هنگام خواندن داده‌ها از "
+"یک فراروند فرزند"
 
 #: glib/gspawn-win32.c:690 glib/gspawn.c:929
 #, c-format
@@ -439,7 +468,7 @@ msgstr "اجرای فراروند فرزند \"%s\" شکست خورد (%s)"
 #: glib/gspawn.c:1154
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "تغییر مسیر خروجی یا ورودی فراروند فرزند شکست خورد (%s)"
 
 #: glib/gspawn.c:1163
 #, c-format
