@@ -1,3 +1,7 @@
+2004-09-08  Gora Mohanty  <gmohanty@cvs.gnome.org>
+                                                                                
+        * configure.in: Added 'or' to ALL_LINGUAS.
+ 
 Mon Aug 30 00:01:01 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/ghash.c (g_hash_table_lookup): Point to 
