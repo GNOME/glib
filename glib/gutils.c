@@ -455,7 +455,7 @@ g_get_any_init (void)
 	    error = errno;
 #    endif /* HAVE_GETPWUID_R_POSIX */
 	    if (error != ERANGE)
-	      g_error( "Could not read account information: %s", 
+	      g_warning( "Could not read account information: %s", 
 		       g_strerror (error));
 	    bufsize *= 2;
 	  }

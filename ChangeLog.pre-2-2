@@ -1,3 +1,9 @@
+Wed Jan 20 20:48:58 GMT 1999  Adam D. Moss  <adam@gimp.org>
+
+	* gutils.c (g_get_any_init): All gtk apps were broken
+	here on my setup.  I changed the error to a warning to at
+	least get things limping.
+
 1999-01-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c (g_get_any_init): Use getpwuid_r with the right
