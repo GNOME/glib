@@ -19,12 +19,12 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "स्वन सेट '%s' बाट '%s मा बदलने सुबिधा छैन"
+msgstr "स्वन सेट '%s' बाट '%s' मा बदलने सुबिधा छैन"
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "'%s' बाट '%s मा %s अनुवादक खुलेन"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "'%s' बाट '%s'मा अनुवादक खुलेन "
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
