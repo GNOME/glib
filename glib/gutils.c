@@ -29,6 +29,8 @@
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
 const guint glib_micro_version = GLIB_MICRO_VERSION;
+const guint glib_interface_age = GLIB_INTERFACE_AGE;
+const guint glib_binary_age = GLIB_BINARY_AGE;
 
 extern char* g_vsprintf (const gchar *fmt, va_list *args, va_list *args2);
 
@@ -149,32 +151,45 @@ g_dirname (const gchar	   *file_name)
   return base;
 }
 
+#ifdef	MAXPATHLEN
+#define	G_PATH_LENGTH	(MAXPATHLEN + 1)
+#elif	defined (PATH_MAX)
+#define	G_PATH_LENGTH	(PATH_MAX + 1)
+#else	/* !MAXPATHLEN */
+#define G_PATH_LENGTH   (2048 + 1)
+#endif	/* !MAXPATHLEN && !PATH_MAX */
+
 gchar*
-g_getcwd (void)
+g_get_current_dir (void)
 {
-  static gchar g_getcwd_buf[MAXPATHLEN + 1] = { 0 };
-  register gchar *dir;
-  
-  g_getcwd_buf[0] = 0;
+  gchar *buffer;
+  gchar *dir;
+
+  buffer = g_new (gchar, G_PATH_LENGTH);
+  *buffer = 0;
   
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.
    */
 #if	defined (sun) && !defined (__SVR4)
-  dir = getwd (g_getcwd_buf);
+  dir = getwd (buffer);
 #else	/* !sun */
-  dir = getcwd (g_getcwd_buf, MAXPATHLEN);
+  dir = getcwd (buffer, G_PATH_LENGTH - 1);
 #endif	/* !sun */
   
-  if (!dir || g_getcwd_buf[0] == 0)
+  if (!dir || !*buffer)
     {
-      /* hm, we should probably g_error() out here...
+      /* hm, should we g_error() out here?
+       * this can happen if e.g. "./" has mode \0000
        */
-      g_getcwd_buf[0] = '/';
-      g_getcwd_buf[1] = 0;
+      buffer[0] = '/';
+      buffer[1] = 0;
     }
+
+  dir = g_strdup (buffer);
+  g_free (buffer);
   
-  return g_getcwd_buf;
+  return dir;
 }
 
 static	gchar	*g_tmp_dir = NULL;

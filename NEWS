@@ -1,3 +1,8 @@
+What is new in GLib 1.1.1:
+
+* An n-way tree implementation is provided now, based on the GNode structure.
+* Bugfix for pointer arrays.
+
 What is new in GLib 1.1.0:
 
 * GLib is distributed seperatedly from Gtk+ now and uses a sophisticated

@@ -1,12 +1,12 @@
 Simple install procedure
 ========================
 
-  % gzip -cd glib-1.1.0.tar.gz | tar xvf - # unpack the sources
-  % cd glib-1.1.0                          # change to the toplevel directory
+  % gzip -cd glib-1.1.1.tar.gz | tar xvf - # unpack the sources
+  % cd glib-1.1.1                          # change to the toplevel directory
   % ./configure                            # run the `configure' script
-  % make                                   # build GTK
+  % make                                   # build GLIB
   [ Become root if necessary ]
-  % make install                           # install GTK
+  % make install                           # install GLIB
 
 The Nitty-Gritty
 ================

@@ -77,8 +77,8 @@ g_node_test (void)
   g_node_append (root, node_B);
   TEST (NULL, root->children == node_B);
 
-  g_node_append (node_B, g_node_new (C2P ('E')));
-  g_node_prepend (node_B, g_node_new (C2P ('C')));
+  g_node_append_data (node_B, C2P ('E'));
+  g_node_prepend_data (node_B, C2P ('C'));
   g_node_insert (node_B, 1, g_node_new (C2P ('D')));
 
   node_F = g_node_new (C2P ('F'));
@@ -88,9 +88,9 @@ g_node_test (void)
   node_G = g_node_new (C2P ('G'));
   g_node_append (node_F, node_G);
   node_J = g_node_new (C2P ('J'));
-  g_node_insert (node_G, -1, node_J);
+  g_node_prepend (node_G, node_J);
   g_node_insert (node_G, 42, g_node_new (C2P ('K')));
-  g_node_insert (node_G, 0, g_node_new (C2P ('H')));
+  g_node_insert_data (node_G, 0, C2P ('H'));
   g_node_insert (node_G, 1, g_node_new (C2P ('I')));
 
   TEST (NULL, g_node_depth (root) == 1);
@@ -253,6 +253,7 @@ main (int   argc,
   GTimer *timer;
   gint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
+  gchar *string;
 
   gchar *mem[10000], *tmp_string, *tmp_string_2;
   gint i, j;
@@ -283,10 +284,29 @@ main (int   argc,
   };
   guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
 
-  
-  g_print ("checking size of gint8...%ld (should be 1)\n", (glong)sizeof (gint8));
-  g_print ("checking size of gint16...%ld (should be 2)\n", (glong)sizeof (gint16));
-  g_print ("checking size of gint32...%ld (should be 4)\n", (glong)sizeof (gint32));
+  g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
+	   glib_major_version,
+	   glib_minor_version,
+	   glib_micro_version,
+	   glib_interface_age,
+	   glib_binary_age);
+
+  string = g_get_current_dir ();
+  g_print ("cwd: %s\n", string);
+  g_free (string);
+
+  /* type sizes */
+  g_print ("checking size of gint8: %d", sizeof (gint8));
+  TEST (NULL, sizeof (gint8) == 1);
+  g_print ("\nchecking size of gint16: %d", sizeof (gint16));
+  TEST (NULL, sizeof (gint16) == 2);
+  g_print ("\nchecking size of gint32: %d", sizeof (gint32));
+  TEST (NULL, sizeof (gint32) == 4);
+#ifdef	HAVE_GINT64
+  g_print ("\nchecking size of gint64: %d", sizeof (gint64));
+  TEST (NULL, sizeof (gint64) == 8);
+#endif	/* HAVE_GINT64 */
+  g_print ("\n");
 
   g_print ("checking g_dirname()...");
   for (i = 0; i < n_dirname_checks; i++)
@@ -296,7 +316,7 @@ main (int   argc,
       dirname = g_dirname (dirname_checks[i].filename);
       if (strcmp (dirname, dirname_checks[i].dirname) != 0)
 	{
-	  g_print ("failed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+	  g_print ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
 		   dirname_checks[i].filename,
 		   dirname_checks[i].dirname,
 		   dirname);

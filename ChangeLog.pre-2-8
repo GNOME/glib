@@ -1,3 +1,24 @@
+Tue Aug  4 15:17:54 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: version bump to 1.1.1, binary age 1, interface age 0.
+	* NEWS: updates.
+	* README: updates.
+	* INSTALL: updates and fixes.
+	* COPYING: include the GNU LGPL, rather than shipping an empty file.
+	* AUTHORS: listed original authors here, and added people who made
+	significant improvements to glib.
+
+	* glib.h:
+	* gutils.c: implement g_get_current_dir() which returns a newly
+	allocated string, instead of a g_getcwd() variant that operates
+	on a static buffer.
+	export glib_interface_age and glib_binary_age.
+	as a convenience, macro definitions have been added for
+ 	g_node_insert_data, g_node_insert_data_before, g_node_append_data and
+	g_node_prepend_data.
+
+	* testglib.c: minor cleanups, print current dir.
+
 Mon Aug  3 16:02:26 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

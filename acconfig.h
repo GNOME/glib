@@ -65,6 +65,8 @@
 #undef GLIB_MAJOR_VERSION
 #undef GLIB_MINOR_VERSION
 #undef GLIB_MICRO_VERSION
+#undef GLIB_INTERFACE_AGE
+#undef GLIB_BINARY_AGE
 
 /* #undef PACKAGE */
 /* #undef VERSION */

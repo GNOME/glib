@@ -782,6 +782,23 @@ GNode*	 g_node_find		(GNode		  *root,
 				 GTraverseFlags	   flags,
 				 gpointer	   data);
 
+/* convenience macros */
+#define g_node_append(parent, node)	G_STMT_START { \
+  g_node_insert_before ((parent), NULL, (node)); \
+} G_STMT_END
+#define	g_node_insert_data(parent, position, data) G_STMT_START { \
+  g_node_insert ((parent), (position), g_node_new ((data))); \
+} G_STMT_END
+#define	g_node_insert_data_before(parent, sibling, data) G_STMT_START { \
+  g_node_insert_before ((parent), (sibling), g_node_new ((data))); \
+} G_STMT_END
+#define	g_node_prepend_data(parent, data)		 G_STMT_START { \
+  g_node_prepend ((parent), g_node_new ((data))); \
+} G_STMT_END
+#define	g_node_append_data(parent, data) G_STMT_START { \
+  g_node_insert_before ((parent), NULL, g_node_new ((data))); \
+} G_STMT_END
+
 /* traversal function, assumes that `node' is root
  * (only traverses `node' and its subtree).
  * this function is just a high level interface to
@@ -827,11 +844,6 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 					 ((GNode*) (node))->next : NULL)
 #define	 g_node_first_child(node)	((node) ? \
 					 ((GNode*) (node))->children : NULL)
-#define	 g_node_append(parent, node)	G_STMT_START { \
-					  g_node_insert_before ((parent), \
-								NULL, \
-								(node)); \
-					} G_STMT_END
 
 
 
@@ -964,10 +976,10 @@ gint	g_snprintf		(gchar	     *string,
 				 gchar const *format,
 				 ...) G_GNUC_PRINTF (3, 4);
 gchar*	g_basename		(const gchar *file_name);
+
+/* strings are newly allocated with g_malloc() */
 gchar*	g_dirname		(const gchar *file_name);
-#if 0
-gchar*	g_getcwd		(void);
-#endif
+gchar*	g_get_current_dir	(void);
 
 
 /* We make the assumption that if memmove isn't available, then
@@ -976,7 +988,7 @@ gchar*	g_getcwd		(void);
 #ifdef HAVE_MEMMOVE
 #define g_memmove memmove
 #else 
-#define g_memmove(a,b,c) bcopy(b,a,c)
+#define g_memmove(a,b,c)	bcopy((b), (a), (c))
 #endif
 
 /* Errors
@@ -1451,6 +1463,8 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 extern const guint glib_major_version;
 extern const guint glib_minor_version;
 extern const guint glib_micro_version;
+extern const guint glib_interface_age;
+extern const guint glib_binary_age;
 
 #ifdef __cplusplus
 }

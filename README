@@ -1,12 +1,12 @@
 General Information
 ===================
 
-This is GLib version 1.1.0.   GLib, is a library which includes support
+This is GLib version 1.1.1. GLib, is a library which includes support
 routines for C such as lists, trees, hashes, memory allocation, and
 many other things.
 
-Versions of GLib prior to 1.1.0 are distributed with GTK+ versions 1.1.0
-and earlier.
+Versions of GLib prior to 1.1.0 are distributed with GTK+ versions prior
+to 1.1.0.
 
 The official ftp site is:
   ftp://ftp.gtk.org/pub/gtk
