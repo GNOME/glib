@@ -344,7 +344,7 @@ handler_find (gpointer         instance,
 	    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
 					      handler->closure->meta_marshal == 0 &&
 					      ((GCClosure*) handler->closure)->callback == func)))
-          return handler;
+	  return handler;
     }
   else
     {
@@ -376,7 +376,7 @@ handler_find (gpointer         instance,
 		    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
 						      handler->closure->meta_marshal == 0 &&
 						      ((GCClosure*) handler->closure)->callback == func)))
-                  return handler;
+		  return handler;
             }
         }
     }
@@ -571,7 +571,6 @@ void
 g_signals_destroy (GType itype)
 {
   guint i;
-  gboolean found_one = FALSE;
   
   G_LOCK (g_signal_mutex);
   for (i = 0; i < g_n_signal_nodes; i++)
@@ -585,15 +584,9 @@ g_signals_destroy (GType itype)
                        node->name,
                        g_type_name (node->itype));
           else
-            {
-              found_one = TRUE;
-              signal_destroy_R (node);
-            }
+	    signal_destroy_R (node);
         }
     }
-  if (!found_one)
-    g_warning (G_STRLOC ": type `%s' has no signals that could be destroyed",
-               g_type_name (itype));
   G_UNLOCK (g_signal_mutex);
 }
 
@@ -918,6 +911,54 @@ g_signal_connect_closure (gpointer  instance,
 }
 
 void
+g_signal_handler_block (gpointer instance,
+                        guint    handler_id)
+{
+  Handler *handler;
+  
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (handler_id > 0);
+  
+  G_LOCK (g_signal_mutex);
+  handler = handler_lookup (instance, handler_id, NULL);
+  if (handler)
+    {
+#ifndef G_DISABLE_CHECKS
+      if (handler->block_count >= HANDLER_MAX_BLOCK_COUNT - 1)
+        g_error (G_STRLOC ": handler block_count overflow, %s", REPORT_BUG);
+#endif
+      
+      handler->block_count += 1;
+    }
+  else
+    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
+  G_UNLOCK (g_signal_mutex);
+}
+
+void
+g_signal_handler_unblock (gpointer instance,
+                          guint    handler_id)
+{
+  Handler *handler;
+  
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (handler_id > 0);
+  
+  G_LOCK (g_signal_mutex);
+  handler = handler_lookup (instance, handler_id, NULL);
+  if (handler)
+    {
+      if (handler->block_count)
+        handler->block_count -= 1;
+      else
+        g_warning (G_STRLOC ": handler `%u' of instance `%p' is not blocked", handler_id, instance);
+    }
+  else
+    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
+  G_UNLOCK (g_signal_mutex);
+}
+
+void
 g_signal_handler_disconnect (gpointer instance,
                              guint    handler_id)
 {
@@ -983,54 +1024,6 @@ g_signal_handlers_destroy (gpointer instance)
   G_UNLOCK (g_signal_mutex);
 }
 
-void
-g_signal_handler_block (gpointer instance,
-                        guint    handler_id)
-{
-  Handler *handler;
-  
-  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
-  g_return_if_fail (handler_id > 0);
-  
-  G_LOCK (g_signal_mutex);
-  handler = handler_lookup (instance, handler_id, NULL);
-  if (handler)
-    {
-#ifndef G_DISABLE_CHECKS
-      if (handler->block_count >= HANDLER_MAX_BLOCK_COUNT - 1)
-        g_error (G_STRLOC ": handler block_count overflow, %s", REPORT_BUG);
-#endif
-      
-      handler->block_count += 1;
-    }
-  else
-    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
-  G_UNLOCK (g_signal_mutex);
-}
-
-void
-g_signal_handler_unblock (gpointer instance,
-                          guint    handler_id)
-{
-  Handler *handler;
-  
-  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
-  g_return_if_fail (handler_id > 0);
-  
-  G_LOCK (g_signal_mutex);
-  handler = handler_lookup (instance, handler_id, NULL);
-  if (handler)
-    {
-      if (handler->block_count)
-        handler->block_count -= 1;
-      else
-        g_warning (G_STRLOC ": handler `%u' of instance `%p' is not blocked", handler_id, instance);
-    }
-  else
-    g_warning ("%s: instance `%p' has no handler with id `%u'", G_STRLOC, instance, handler_id);
-  G_UNLOCK (g_signal_mutex);
-}
-
 guint
 g_signal_handler_find (gpointer         instance,
                        GSignalMatchType mask,
@@ -1040,25 +1033,134 @@ g_signal_handler_find (gpointer         instance,
                        gpointer         func,
                        gpointer         data)
 {
-  Handler *handler = NULL;
-  guint handler_id;
+  Handler *handler;
+  guint handler_id = 0;
   
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
   g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, 0);
-  
-  G_LOCK (g_signal_mutex);
-  handler = handler_find (instance, mask, signal_id, detail, closure, func, data);
-  handler_id = handler ? handler->id : 0;
-  G_UNLOCK (g_signal_mutex);
-  
+
+  if (mask & G_SIGNAL_MATCH_MASK)
+    {
+      G_LOCK (g_signal_mutex);
+      handler = handler_find (instance, mask, signal_id, detail, closure, func, data);
+      handler_id = handler ? handler->id : 0;
+      G_UNLOCK (g_signal_mutex);
+    }
+
   return handler_id;
 }
 
+static guint
+signal_handlers_foreach_matched (gpointer         instance,
+				 GSignalMatchType mask,
+				 guint            signal_id,
+				 GQuark           detail,
+				 GClosure        *closure,
+				 gpointer         func,
+				 gpointer         data,
+				 void		(*callback) (gpointer instance,
+							     guint    handler_id))
+{
+  Handler *handler;
+  guint n_handlers = 0;
+
+  handler = handler_find (instance, mask, signal_id, detail, closure, func, data);
+  while (handler && handler->id)
+    {
+      n_handlers++;
+      G_UNLOCK (g_signal_mutex);
+      callback (instance, handler->id);
+      G_LOCK (g_signal_mutex);
+      /* need constant relookups due to callback */
+      handler = handler_find (instance, mask, signal_id, detail, closure, func, data);
+    }
+
+  return n_handlers;
+}
+
+guint
+g_signal_handlers_block_matched (gpointer         instance,
+				 GSignalMatchType mask,
+				 guint            signal_id,
+				 GQuark           detail,
+				 GClosure        *closure,
+				 gpointer         func,
+				 gpointer         data)
+{
+  guint n_handlers = 0;
+
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+
+  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+    {
+      G_LOCK (g_signal_mutex);
+      n_handlers = signal_handlers_foreach_matched (instance, mask, signal_id, detail,
+						    closure, func, data,
+						    g_signal_handler_block);
+      G_UNLOCK (g_signal_mutex);
+    }
+
+  return n_handlers;
+}
+
+guint
+g_signal_handlers_unblock_matched (gpointer         instance,
+				   GSignalMatchType mask,
+				   guint            signal_id,
+				   GQuark           detail,
+				   GClosure        *closure,
+				   gpointer         func,
+				   gpointer         data)
+{
+  guint n_handlers = 0;
+  
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+  
+  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+    {
+      G_LOCK (g_signal_mutex);
+      n_handlers = signal_handlers_foreach_matched (instance, mask, signal_id, detail,
+						    closure, func, data,
+						    g_signal_handler_unblock);
+      G_UNLOCK (g_signal_mutex);
+    }
+
+  return n_handlers;
+}
+
+guint
+g_signal_handlers_disconnect_matched (gpointer         instance,
+				      GSignalMatchType mask,
+				      guint            signal_id,
+				      GQuark           detail,
+				      GClosure        *closure,
+				      gpointer         func,
+				      gpointer         data)
+{
+  guint n_handlers = 0;
+
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
+  g_return_val_if_fail ((mask & ~G_SIGNAL_MATCH_MASK) == 0, FALSE);
+
+  if (mask & (G_SIGNAL_MATCH_CLOSURE | G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA))
+    {
+      G_LOCK (g_signal_mutex);
+      n_handlers = signal_handlers_foreach_matched (instance, mask, signal_id, detail,
+						    closure, func, data,
+						    g_signal_handler_disconnect);
+      G_UNLOCK (g_signal_mutex);
+    }
+
+  return n_handlers;
+}
+
 gboolean
-g_signal_handler_pending (gpointer instance,
-                          guint    signal_id,
-			  GQuark   detail,
-                          gboolean may_be_blocked)
+g_signal_has_handler_pending (gpointer instance,
+			      guint    signal_id,
+			      GQuark   detail,
+			      gboolean may_be_blocked)
 {
   Handler *handler = NULL;
   
@@ -1108,7 +1210,11 @@ g_signal_emitv (const GValue *instance_and_params,
   node = LOOKUP_SIGNAL_NODE (signal_id);
 #ifndef G_DISABLE_CHECKS
   if (!node || !g_type_conforms_to (G_TYPE_FROM_INSTANCE (instance), node->itype))
-    g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+    {
+      g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+      G_UNLOCK (g_signal_mutex);
+      return;
+    }
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
       g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);

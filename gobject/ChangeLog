@@ -1,3 +1,21 @@
+Wed Nov  1 03:36:54 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject.c (g_object_base_class_finalize): destroy all signals that
+	the finalized obejct type introduced.
+
+	* gsignal.c (g_signals_destroy): don't require itype to have
+	signals.
+
+	* gobject.c (g_object_do_finalize): make sure all signal handlers
+	are destroyed.
+
+	* gsignal.[hc]:
+	(g_signal_handler_find): only match on non-0 masks.
+	(g_signal_handlers_block_matched):
+	(g_signal_handlers_unblock_matched):
+	(g_signal_handlers_disconnect_matched): new functions to block/unblock
+	or disconnect handlers in groups.
+
 2000-10-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gvalue.c (exchange_entries_equal), gparam.c (param_spec_equals):
