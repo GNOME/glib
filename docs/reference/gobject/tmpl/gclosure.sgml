@@ -226,6 +226,10 @@ returns.
 This function sets a flag on the closure to indicate that it's
 calling environment has become invalid, and thus causes any future
 invocations of g_closure_invoke() on this @closure to be ignored.
+Also, invalidation notifiers installed on the closure will be called
+at this point, and since invalidation notifiers may unreference
+the closure, @closure should be considered an invalidated pointer
+atfer this function, unles g_closure_ref() was called beforehand.
 </para>
 
 @closure: GClosure to invalidate
