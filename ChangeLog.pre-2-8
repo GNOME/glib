@@ -1,5 +1,10 @@
 2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* giounix.c (g_io_unix_write, g_io_unix_read): Interpret EINTR as
+	G_IO_ERROR_AGAIN.
+
+2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
 	* configure.in: Added the missing POSIX_NO_YIELD and
 	POSIX_NO_PRIORITIES warning messages.
 

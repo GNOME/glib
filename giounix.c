@@ -166,6 +166,7 @@ g_io_unix_read (GIOChannel *channel,
 	case EINVAL:
 	  return G_IO_ERROR_INVAL;
 	case EAGAIN:
+	case EINTR:
 	  return G_IO_ERROR_AGAIN;
 	default:
 	  return G_IO_ERROR_UNKNOWN;
@@ -197,6 +198,7 @@ g_io_unix_write(GIOChannel *channel,
 	case EINVAL:
 	  return G_IO_ERROR_INVAL;
 	case EAGAIN:
+	case EINTR:
 	  return G_IO_ERROR_AGAIN;
 	default:
 	  return G_IO_ERROR_UNKNOWN;
