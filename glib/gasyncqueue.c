@@ -149,7 +149,7 @@ g_async_queue_unref (GAsyncQueue *queue)
  * @queue: a #GAsyncQueue.
  * 
  * Acquires the @queue's lock. After that you can only call the
- * <function>g_async_queue_*_unlocked(<!-- -->)</function> function variants on that
+ * <function>g_async_queue_*_unlocked()</function> function variants on that
  * @queue. Otherwise it will deadlock.
  **/
 void

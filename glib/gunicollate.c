@@ -41,7 +41,7 @@ extern gunichar *_g_utf8_normalize_wc (const gchar    *str,
  * correct rules for the current locale. When sorting a large
  * number of strings, it will be significantly faster to
  * obtain collation keys with g_utf8_collate_key() and 
- * compare the keys with <function>strcmp()</function> when 
+ * compare the keys with strcmp() when 
  * sorting instead of sorting the original strings.
  * 
  * Return value: -1 if @str1 compares before @str2, 0 if they
@@ -166,9 +166,9 @@ utf8_encode (char *buf, wchar_t val)
  * @len: length of @str, in bytes, or -1 if @str is nul-terminated.
  *
  * Converts a string into a collation key that can be compared
- * with other collation keys using <function>strcmp()</function>. 
+ * with other collation keys using strcmp(). 
  * The results of comparing the collation keys of two strings 
- * with <function>strcmp()</function> will always be the same as 
+ * with strcmp() will always be the same as 
  * comparing the two original keys with g_utf8_collate().
  * 
  * Return value: a newly allocated string. This string should

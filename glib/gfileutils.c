@@ -639,19 +639,19 @@ g_file_get_contents (const gchar *filename,
  * g_mkstemp:
  * @tmpl: template filename
  *
- * Opens a temporary file. See the <function>mkstemp()</function> documentation
+ * Opens a temporary file. See the mkstemp() documentation
  * on most UNIX-like systems. This is a portability wrapper, which simply calls 
- * <function>mkstemp()</function> on systems that have it, and implements 
+ * mkstemp() on systems that have it, and implements 
  * it in GLib otherwise.
  *
  * The parameter is a string that should match the rules for
- * <function>mkstemp()</function>, i.e. end in "XXXXXX". The X string will 
+ * mkstemp(), i.e. end in "XXXXXX". The X string will 
  * be modified to form the name of a file that didn't exist.
  *
- * Return value: A file handle (as from <function>open()</function>) to the file
+ * Return value: A file handle (as from open()) to the file
  * opened for reading and writing. The file is opened in binary mode
  * on platforms where there is a difference. The file handle should be
- * closed with <function>close()</function>. In case of errors, -1 is returned.
+ * closed with close(). In case of errors, -1 is returned.
  */
 int
 g_mkstemp (char *tmpl)
@@ -723,21 +723,21 @@ g_mkstemp (char *tmpl)
  * files (as returned by g_get_tmp_dir()). 
  *
  * @tmpl should be a string ending with six 'X' characters, as the
- * parameter to g_mkstemp() (or <function>mkstemp()</function>). 
+ * parameter to g_mkstemp() (or mkstemp()). 
  * However, unlike these functions, the template should only be a 
  * basename, no directory components are allowed. If template is %NULL, 
  * a default template is used.
  *
- * Note that in contrast to g_mkstemp() (and <function>mkstemp()</function>) 
+ * Note that in contrast to g_mkstemp() (and mkstemp()) 
  * @tmpl is not modified, and might thus be a read-only literal string.
  *
  * The actual name used is returned in @name_used if non-%NULL. This
  * string should be freed with g_free() when not needed any longer.
  *
- * Return value: A file handle (as from <function>open()</function>) to 
+ * Return value: A file handle (as from open()) to 
  * the file opened for reading and writing. The file is opened in binary 
  * mode on platforms where there is a difference. The file handle should be
- * closed with <function>close()</function>. In case of errors, -1 is returned 
+ * closed with close(). In case of errors, -1 is returned 
  * and @error will be set.
  **/
 int

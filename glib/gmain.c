@@ -1595,7 +1595,7 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
  * g_get_current_time:
  * @result: #GTimeVal structure in which to store current time.
  * 
- * Equivalent to the UNIX <function>gettimeofday()</function> function, but portable.
+ * Equivalent to the UNIX gettimeofday() function, but portable.
  **/
 void
 g_get_current_time (GTimeVal *result)
@@ -2899,9 +2899,9 @@ g_source_get_current_time (GSource  *source,
  * @func: the function to call to poll all file descriptors
  * 
  * Sets the function to use to handle polling of file descriptors. It
- * will be used instead of the <function>poll()</function> system call 
+ * will be used instead of the poll() system call 
  * (or GLib's replacement function, which is used where 
- * <function>poll()</function> isn't available).
+ * poll() isn't available).
  *
  * This function could possibly be used to integrate the GLib event
  * loop with an external event loop.
@@ -2978,8 +2978,8 @@ g_main_context_wakeup_unlocked (GMainContext *context)
  * g_main_context_wakeup:
  * @context: a #GMainContext
  * 
- * If @context is currently waiting in a <function>poll()</function>, interrupt
- * the <function>poll()</function>, and continue the iteration process.
+ * If @context is currently waiting in a poll(), interrupt
+ * the poll(), and continue the iteration process.
  **/
 void
 g_main_context_wakeup (GMainContext *context)

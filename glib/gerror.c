@@ -50,7 +50,7 @@ g_error_new_valist(GQuark         domain,
  * g_error_new:
  * @domain: error domain 
  * @code: error code
- * @format: <function>printf()</function>-style format for error message
+ * @format: printf()-style format for error message
  * @Varargs: parameters for message format
  * 
  * Creates a new #GError with the given @domain and @code,
@@ -84,9 +84,9 @@ g_error_new (GQuark       domain,
  * @message: error message
  * 
  * Creates a new #GError; unlike g_error_new(), @message is not
- * a <function>printf()</function>-style format string. Use this 
+ * a printf()-style format string. Use this 
  * function if @message contains text you don't have control over, 
- * that could include <function>printf()</function> escape sequences.
+ * that could include printf() escape sequences.
  * 
  * Return value: a new #GError
  **/
@@ -180,7 +180,7 @@ g_error_matches (const GError *error,
  * @err: a return location for a #GError, or %NULL
  * @domain: error domain
  * @code: error code 
- * @format: <function>printf()</function>-style format
+ * @format: printf()-style format
  * @Varargs: args for @format 
  * 
  * Does nothing if @err is %NULL; if @err is non-%NULL, then *@err must

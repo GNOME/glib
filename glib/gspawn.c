@@ -79,7 +79,7 @@ g_spawn_error_quark (void)
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
+ * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @child_pid: return location for child process ID, or %NULL
  * @error: return location for error
@@ -179,19 +179,18 @@ read_data (GString *str,
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
+ * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @standard_output: return location for child output 
  * @standard_error: return location for child error messages
- * @exit_status: child exit status, as returned by <function>waitpid()</function>
+ * @exit_status: child exit status, as returned by waitpid()
  * @error: return location for error
  *
  * Executes a child synchronously (waits for the child to exit before returning).
  * All output from the child is stored in @standard_output and @standard_error,
  * if those parameters are non-%NULL. If @exit_status is non-%NULL, the exit 
  * status of the child is stored there as it would be returned by 
- * <function>waitpid()</function>; standard UNIX macros such as 
- * <function>WIFEXITED()</function> and <function>WEXITSTATUS()</function> 
+ * waitpid(); standard UNIX macros such as WIFEXITED() and WEXITSTATUS() 
  * must be used to evaluate the exit status. If an error occurs, no data is 
  * returned in @standard_output, @standard_error, or @exit_status.
  * 
@@ -415,7 +414,7 @@ g_spawn_sync (const gchar          *working_directory,
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before <function>exec()</function>
+ * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @child_pid: return location for child process ID, or %NULL
  * @standard_input: return location for file descriptor to write to child's stdin, or %NULL
@@ -433,22 +432,21 @@ g_spawn_sync (const gchar          *working_directory,
  * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  *
  * On Windows, the low-level child process creation API
- * (<function>CreateProcess()</function>)doesn't use argument vectors,
+ * (CreateProcess())doesn't use argument vectors,
  * but a command line. The C runtime library's
  * <function>spawn*()</function> family of functions (which
  * g_spawn_async_with_pipes() eventually calls) paste the argument
  * vector elements into a command line, and the C runtime startup code
  * does a corresponding recostruction of an argument vector from the
- * command line, to be passed to
- * <function>main()</function>. Complications arise when you have
+ * command line, to be passed to main(). Complications arise when you have
  * argument vector elements that contain spaces of double quotes. The
- * <function>spawn()</function> functions don't do any quoting or
+ * <function>spawn*()</function> functions don't do any quoting or
  * escaping, but on the other hand the startup code does do unquoting
  * and unescaping in order to enable receiving arguments with embedded
  * spaces or double quotes. To work around this asymmetry,
  * g_spawn_async_with_pipes() will do quoting and escaping on argument
  * vector elements that need it before calling the C runtime
- * <function>spawn()</function> function.
+ * spawn() function.
  *
  * @envp is a %NULL-terminated array of strings, where each string
  * has the form <literal>KEY=VALUE</literal>. This will become
@@ -458,10 +456,10 @@ g_spawn_sync (const gchar          *working_directory,
  * @flags should be the bitwise OR of any flags you want to affect the
  * function's behavior. On Unix, the %G_SPAWN_DO_NOT_REAP_CHILD means
  * that the child will not be automatically reaped; you must call
- * <function>waitpid()</function> or handle %SIGCHLD yourself, or the
+ * waitpid() or handle %SIGCHLD yourself, or the
  * child will become a zombie. On Windows, the flag means that a
  * handle to the child will be returned @child_pid. You must call
- * <function>CloseHandle()</function> on it eventually (or exit the
+ * CloseHandle() on it eventually (or exit the
  * process), or the child processs will continue to take up some table
  * space even after its death. Quite similar to zombies on Unix,
  * actually.
@@ -469,7 +467,7 @@ g_spawn_sync (const gchar          *working_directory,
  * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that the parent's open file
  * descriptors will be inherited by the child; otherwise all
  * descriptors except stdin/stdout/stderr will be closed before
- * calling <function>exec()</function> in the child. %G_SPAWN_SEARCH_PATH 
+ * calling exec() in the child. %G_SPAWN_SEARCH_PATH 
  * means that <literal>argv[0]</literal> need not be an absolute path, it
  * will be looked for in the user's <envar>PATH</envar>. 
  * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will 
@@ -491,28 +489,26 @@ g_spawn_sync (const gchar          *working_directory,
  * platforms, the function is called in the child after GLib has
  * performed all the setup it plans to perform (including creating
  * pipes, closing file descriptors, etc.) but before calling
- * <function>exec()</function>. That is, @child_setup is called just
- * before calling <function>exec()</function> in the child. Obviously
+ * exec(). That is, @child_setup is called just
+ * before calling exec() in the child. Obviously
  * actions taken in this function will only affect the child, not the
- * parent. On Windows, there is no separate
- * <function>fork()</function> and <function>exec()</function>
+ * parent. On Windows, there is no separate fork() and exec()
  * functionality. Child processes are created and run right away with
- * one API call, <function>CreateProcess()</function>. @child_setup is
+ * one API call, CreateProcess(). @child_setup is
  * called in the parent process just before creating the child
  * process. You should carefully consider what you do in @child_setup
  * if you intend your software to be portable to Windows.
  *
  * If non-%NULL, @child_pid will on Unix be filled with the child's
  * process ID. You can use the process ID to send signals to the
- * child, or to <function>waitpid()</function> if you specified the
+ * child, or to waitpid() if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, @child_pid will be
  * filled with a handle to the child process only if you specified the
  * %G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child
  * process using the Win32 API, for example wait for its termination
  * with the <function>WaitFor*()</function> functions, or examine its
- * exit code with <function>GetExitCodeProcess()</function>. You
- * should close the handle with <function>CloseHandle()</function>
- * when you no longer need it.
+ * exit code with GetExitCodeProcess(). You should close the handle 
+ * with CloseHandle() when you no longer need it.
  *
  * If non-%NULL, the @standard_input, @standard_output, @standard_error
  * locations will be filled with file descriptors for writing to the child's

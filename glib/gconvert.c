@@ -97,7 +97,7 @@ extern const char **_g_charset_get_aliases (const char *canonical_name);
  * @to_codeset: destination codeset
  * @from_codeset: source codeset
  * 
- * Same as the standard UNIX routine <function>iconv_open()</function>, but
+ * Same as the standard UNIX routine iconv_open(), but
  * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  * 
@@ -149,7 +149,7 @@ g_iconv_open (const gchar  *to_codeset,
  * @outbuf: converted output bytes
  * @outbytes_left: inout parameter, bytes available to fill in @outbuf
  * 
- * Same as the standard UNIX routine <function>iconv()</function>, but
+ * Same as the standard UNIX routine iconv(), but
  * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation.
  *
@@ -174,7 +174,7 @@ g_iconv (GIConv   converter,
  * g_iconv_close:
  * @converter: a conversion descriptor from g_iconv_open()
  *
- * Same as the standard UNIX routine <function>iconv_close()</function>, but
+ * Same as the standard UNIX routine iconv_close(), but
  * may be implemented via libiconv on UNIX flavors that lack
  * a native implementation. Should be called to clean up
  * the conversion descriptor from g_iconv_open() when
@@ -668,7 +668,7 @@ g_convert_with_iconv (const gchar *str,
  * in the output. Note that it is not guaranteed that the specification
  * for the fallback sequences in @fallback will be honored. Some
  * systems may do a approximate conversion from @from_codeset
- * to @to_codeset in their <function>iconv()</function> functions, 
+ * to @to_codeset in their iconv() functions, 
  * in which case GLib will simply return that approximate conversion.
  *
  * Return value: If the conversion was successful, a newly allocated

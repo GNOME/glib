@@ -517,7 +517,7 @@ g_win32_getlocale (void)
  * Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The message is either language neutral,
  * or in the thread's language, or the user's language, the system's
- * language, or US English (see docs for <function>FormatMessage()</function>). *
+ * language, or US English (see docs for FormatMessage()). *
  * The returned string should be deallocated with g_free().
  *
  * Returns: newly-allocated error message

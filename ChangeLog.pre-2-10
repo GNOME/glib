@@ -1,5 +1,19 @@
 2003-07-25  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gwin32.c: 
+	* glib/gutf8.c: 
+	* glib/gunicollate.c: 
+	* glib/gtree.c: 
+	* glib/gspawn.c: 
+	* glib/gmain.c: 
+	* glib/giochannel.c: 
+	* glib/gfileutils.c: 
+	* glib/gerror.c: 
+	* glib/gconvert.c: 
+	* glib/gasyncqueue.c: 
+	* glib/gmem.c: Remove some explicit Docbook markup which is no longer necessary
+	since gtk-doc does the right thing.
+
 	* glib/gutf8.c (g_utf8_get_char_validated): Work around gtk-doc stupidity.
 
 2003-07-20  Hans Breuer  <hans@breuer.org>

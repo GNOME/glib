@@ -228,14 +228,13 @@ static gboolean vtable_set = FALSE;
  * 
  * Checks whether the allocator used by g_malloc() is the system's
  * malloc implementation. If it returns %TRUE memory allocated with
- * <function>malloc()</function> can be used interchangeable with 
- * memory allocated using g_malloc(). This function is useful for 
- * avoiding an extra copy of allocated memory returned by a 
- * non-GLib-based API.
+ * malloc() can be used interchangeable with memory allocated using g_malloc(). 
+ * This function is useful for avoiding an extra copy of allocated memory returned
+ * by a non-GLib-based API.
  *
  * A different allocator can be set using g_mem_set_vtable().
  *
- * Return value: if %TRUE, <function>malloc()</function> and g_malloc() can be mixed.
+ * Return value: if %TRUE, malloc() and g_malloc() can be mixed.
  **/
 gboolean
 g_mem_is_system_malloc (void)

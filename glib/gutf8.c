@@ -329,7 +329,7 @@ g_utf8_pointer_to_offset (const gchar *str,
  * @src: UTF-8 encoded string
  * @n: character count
  * 
- * Like the standard C <function>strncpy()</function> function, but 
+ * Like the standard C strncpy() function, but 
  * copies a given number of characters instead of a given number of 
  * bytes. The @src string must be valid UTF-8 encoded text. 
  * (Use g_utf8_validate() on all text before trying to use UTF-8 

@@ -170,8 +170,7 @@ g_tree_node_destroy (GTreeNode      *node,
 /**
  * g_tree_new:
  * @key_compare_func: the function used to order the nodes in the #GTree.
- *   It should return values similar to the standard 
- *   <function>strcmp()</function> function -
+ *   It should return values similar to the standard strcmp() function -
  *   0 if the two arguments are equal, a negative value if the first argument 
  *   comes before the second, or a positive value if the first argument comes 
  *   after the second.
@@ -191,7 +190,7 @@ g_tree_new (GCompareFunc key_compare_func)
 
 /**
  * g_tree_new_with_data:
- * @key_compare_func: <function>qsort()</function>-style comparison function.
+ * @key_compare_func: qsort()-style comparison function.
  * @key_compare_data: data to pass to comparison function.
  * 
  * Creates a new #GTree with a comparison function that accepts user data.
@@ -211,7 +210,7 @@ g_tree_new_with_data (GCompareDataFunc key_compare_func,
 
 /**
  * g_tree_new_full:
- * @key_compare_func: <function>qsort()</function>-style comparison function.
+ * @key_compare_func: qsort()-style comparison function.
  * @key_compare_data: data to pass to comparison function.
  * @key_destroy_func: a function to free the memory allocated for the key 
  *   used when removing the entry from the #GTree or %NULL if you don't
