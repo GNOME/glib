@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-01-22 11:23+0200\n"
+"POT-Creation-Date: 2001-05-11 14:56+0300\n"
 "PO-Revision-Date: 2001-01-22 11:23+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -13,70 +13,70 @@ msgstr ""
 "Content-Type: text/plain; charset=koi8-u\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gconvert.c:95
+#: gconvert.c:143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
+msgstr "Перетворення з набору символ╕в \"%s\" у \"%s\" не п╕дтриму╓ться"
 
-#: gconvert.c:99
+#: gconvert.c:147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr ""
+msgstr "Не вдалося в╕дкрити перетворювач з \"%s\" у \"%s\": %s"
 
-#: gconvert.c:214 gutf8.c:733 gutf8.c:1179
+#: gconvert.c:262 gutf8.c:782 gutf8.c:1228
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Нев╕рна посл╕довн╕сть байт╕в у перетворюваному ввод╕"
 
-#: gconvert.c:219 gconvert.c:439
+#: gconvert.c:267 gconvert.c:492
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Помилка п╕д час перетворення: %s"
 
-#: gconvert.c:237 gutf8.c:729 gutf8.c:929 gutf8.c:1070 gutf8.c:1175
+#: gconvert.c:287 gutf8.c:778 gutf8.c:978 gutf8.c:1119 gutf8.c:1224
 msgid "Partial character sequence at end of input"
-msgstr ""
+msgstr "Частина символьно╖ посл╕довност╕ на к╕нц╕ вводу"
 
-#: gconvert.c:414
+#: gconvert.c:467
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: gfileutils.c:293
+#: gfileutils.c:308
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Помилка зчитування файлу \"%s\": %s"
 
-#: gfileutils.c:350
+#: gfileutils.c:365
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Помилка зчитування з файлу \"%s\": %s"
 
-#: gfileutils.c:388 gfileutils.c:456
+#: gfileutils.c:404 gfileutils.c:472
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Зб╕й в╕дкриття файлу \"%s\": %s"
 
-#: gfileutils.c:402
+#: gfileutils.c:418
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
+msgstr "Не вдалось отримати ознаки файлу \"%s\": зб╕й fstat(): %s"
 
-#: gfileutils.c:428
+#: gfileutils.c:444
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Зб╕й в╕дкривання файлу \"%s\": зб╕й fdopen(): %s"
 
-#: gfileutils.c:637
+#: gfileutils.c:653
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr ""
 
-#: gfileutils.c:649
+#: gfileutils.c:665
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr ""
 
-#: gfileutils.c:670
+#: gfileutils.c:686
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Зб╕й створення файлу \"%s\": %s"
@@ -285,32 +285,32 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr ""
 
-#: gspawn-win32.c:213
+#: gspawn-win32.c:215
 msgid "Failed to read data from child process"
 msgstr "Зб╕й зчитування даних з спадко╓много процесу"
 
-#: gspawn-win32.c:362
+#: gspawn-win32.c:364
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: gspawn-win32.c:838 gspawn.c:896
+#: gspawn-win32.c:840 gspawn.c:896
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Зб╕й зчитування з спадко╓много каналу (%s)"
 
-#: gspawn-win32.c:927 gspawn.c:1102
+#: gspawn-win32.c:929 gspawn.c:1102
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Не вдалося перейти в каталог \"%s\" (%s)"
 
-#: gspawn-win32.c:936 gspawn.c:1112
+#: gspawn-win32.c:938 gspawn.c:1112
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Зб╕й виконання спадко╓много процесу (%s)"
 
-#: gspawn-win32.c:977 gspawn.c:1209
+#: gspawn-win32.c:979 gspawn.c:1209
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -354,14 +354,14 @@ msgstr "Нев╕дома помилка виконання спадко╓много процесу"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: gutf8.c:808
+#: gutf8.c:857
 msgid "Character out of range for UTF-8"
 msgstr ""
 
-#: gutf8.c:897 gutf8.c:906 gutf8.c:1038 gutf8.c:1047 gutf8.c:1189 gutf8.c:1285
+#: gutf8.c:946 gutf8.c:955 gutf8.c:1087 gutf8.c:1096 gutf8.c:1238 gutf8.c:1334
 msgid "Invalid sequence in conversion input"
 msgstr ""
 
-#: gutf8.c:1200 gutf8.c:1296
+#: gutf8.c:1249 gutf8.c:1345
 msgid "Character out of range for UTF-16"
 msgstr ""
