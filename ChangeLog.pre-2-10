@@ -1,3 +1,9 @@
+2003-03-14  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gthread.c: Do not define function g_thread_init_glib, if
+	not G_THREADS_ENABLED. It's not called bu g_thread_init() then,
+	but calls other, in that case undefined functions.
+
 2003-03-06  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmain.c (g_main_context_find_source_by_id): 

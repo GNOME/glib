@@ -155,6 +155,7 @@ static GSList   *g_thread_free_indeces = NULL;
 
 G_LOCK_DEFINE_STATIC (g_thread);
 
+#ifdef G_THREADS_ENABLED
 /* This must be called only once, before any threads are created.
  * It will only be called from g_thread_init() in -lgthread.
  */
@@ -195,6 +196,7 @@ g_thread_init_glib (void)
   _g_messages_thread_private_init ();
 
 }
+#endif /* G_THREADS_ENABLED */
 
 void 
 g_static_mutex_init (GStaticMutex *mutex)
