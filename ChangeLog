@@ -1,9 +1,15 @@
 2002-07-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+        * configure.in: Made the thread flags determination tests first
+	check for the canonical form -pthread[s], then for other
+	possibilities. Also recognize some more platforms. Modeled after
+	patch from Miroslaw Dobrzanski-Neumann <mne@mosaic-ag.com>
+	(#77981).
+	
 	* configure.in: Fixed bugs in posix thread priority
 	resolution. Also added AIX priorities. Fix from
 	Laurent Vivier <Laurent.Vivier@bull.net>. (#82599)
-
+	
 	* gthread/gthread-solaris.c: Use thr_min_stack() instead of
 	sysconf (_SC_THREAD_STACK_MIN). if stack_size is 0 on entry to
 	g_thread_create_solaris_impl, also pass 0 to thr_create. Otherwise

@@ -1163,6 +1163,12 @@ POSIX_NO_PRIORITIES="I can not find the minimal and maximal priorities for
 		priority. If you happen to know these main/max
 		priorities, please inform the GLib developers."
 
+AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
+		linking threaded applications. As GLib cannot do that 
+		automatically, you will get an linkg error everytime you are 
+		not using the right compiler. In that case you have to relink 
+		with the right compiler. Ususally just '_r' is appended 
+		to the compiler name."
 
 dnl determination of thread implementation
 dnl ***************************************
@@ -1228,37 +1234,83 @@ G_THREAD_CFLAGS=
 
 if test x"$have_threads" != xno; then
 
-    G_THREAD_CFLAGS="-D_REENTRANT" # good default guess
+  if test x"$have_threads" = xposix; then
+    # First we test for posix, whether -pthread or -pthreads do the trick as 
+    # both CPPFLAG and LIBS. 
+    # One of them does for most gcc versions and some other platforms/compilers
+    # too and could be considered as the canonical way to go. 
+    for flag in pthread pthreads; do
+      glib_save_CFLAGS="$CFLAGS"
+      CFLAGS="$CFLAGS -$flag"
+      AC_TRY_RUN([#include <pthread.h> 
+	          int check_me = 0;
+		  void* func(void* data) {return check_me = 42;}
+		  main()
+		  { pthread_t t; 
+		    void *ret;
+		    pthread_create (&t, 0, func, 0);
+		    pthread_join (t, &ret);
+		    exit (check_me != 42 || ret != 42);
+		   }],
+		   [G_THREAD_CFLAGS=-$flag
+		    G_THREAD_LIBS=-$flag])
+      CFLAGS="$glib_save_CFLAGS"
+    done
+  fi
+
+  if test x"$G_THREAD_CFLAGS" = x; then
+
+    # The canonical -pthread[s] does not work. Try something different.
 
     case $host in
 	*-aix*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
 		if test x"$GCC" = xyes; then
-			# GCC 3.0 and above needs -pthread
+			# GCC 3.0 and above needs -pthread. 
+			# Should be coverd by the case above.
 			# GCC 2.x and below needs -mthreads
-			AC_TRY_COMPILE(,[#if __GNUC__ <= 2
-					bail out here
-					#endif],
-				G_THREAD_CFLAGS="$G_THREAD_CFLAGS -pthread", 
-				G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads")
+			G_THREAD_CFLAGS="-mthreads"		
+			G_THREAD_LIBS=$G_THREAD_CFLAGS
+		else 
+			# We are probably using the aix compiler. Normaly a 
+			# program would have to be compiled with the _r variant
+			# of the corresponding compiler, but we as GLib cannot 
+			# do that: but the good news is that for compiling the
+			# only difference is the added -D_THREAD_SAFE compile 
+			# option. This is according to the "C for AIX User's 
+			# Guide".
+			G_THREAD_CFLAGS="-D_THREAD_SAFE"
 		fi
 		;;
-	*-freebsd2.2*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-
-		# FreeBSD 2.2.x shiped with gcc 2.7.2.x, which doesn't support
-		# -mthreads flag.
-		;;	
-	*-sysv5uw7*)  # UnixWare 7 
-           	if test "$GCC" != "yes"; then
-               		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -Kthread"
-           	else	
-			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -pthread"
-           	fi	
-		;;
 	*-dg-dgux*)  # DG/UX
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_POSIX4A_DRAFT10_SOURCE"
+		G_THREAD_CFLAGS="-D_REENTRANT -D_POSIX4A_DRAFT10_SOURCE"
+		;;
+	*-osf*)
+		# So we are using dce threads. posix threads are already 
+		# catched above.
+		G_THREAD_CFLAGS="-threads"
+		G_THREAD_LIBS=$G_THREAD_CFLAGS
+		;;
+	*-solaris*)
+		if test x"$GCC" = xyes; then
+		   # We are using solaris threads. posix threads are 
+		   # already catched above.
+			G_THREAD_CFLAGS="-threads"
+		else
+			G_THREAD_CFLAGS="-mt"
+		fi
+		G_THREAD_LIBS=$G_THREAD_CFLAGS
+		;;
+	*-sysv5uw7*) # UnixWare 7 
+		# We are not using gcc with -pthread. Catched above.
+		G_THREAD_CFLAGS="-Kthread"
+		G_THREAD_LIBS=$G_THREAD_CFLAGS
+		;;
+	*)
+		G_THREAD_CFLAGS="-D_REENTRANT" # good default guess otherwise
+		;;
     esac
+ 
+  fi
 
     # if we are not finding the localtime_r function, then we probably are
     # not using the proper multithread flag
@@ -1290,25 +1342,19 @@ dnl ******************************
 mutex_has_default=no
 case $have_threads in
         posix|dce)
-	   glib_save_CPPFLAGS="$CPPFLAGS"
-	   CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
-           G_THREAD_LIBS=error
-	   glib_save_LIBS="$LIBS"
-    	   case $host in
-	     *-sysv5uw7*) # UnixWare 7 
-           	if test "$GCC" != "yes"; then
-               		G_THREAD_LIBS="-Kthread"
-           	else	
-			G_THREAD_LIBS="-pthread"
-           	fi	
-		;;
-	     *-*-openbsd* | *-*-freebsd*) 
-	        # FreeBSD and OpenBSD want us to use the -pthread flag 
-                # instead of linking to -lc_r and libtool enforces that.
-		G_THREAD_LIBS="-pthread"
-		;;
-             *)
-		for thread_lib in "" pthread pthread32 pthreads thread dce; do
+          if test x"$G_THREAD_LIBS" = x; then
+            case $host in
+              *-aix*)
+                # We are not using gcc (would have set G_THREAD_LIBS) and thus 
+                # probably using the aix compiler.
+		AC_MSG_WARN($AIX_COMPILE_INFO)
+                ;;
+              *)
+	        glib_save_CPPFLAGS="$CPPFLAGS"
+	        CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
+                G_THREAD_LIBS=error
+	        glib_save_LIBS="$LIBS"
+	        for thread_lib in "" pthread pthread32 pthreads thread dce; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
 				IN=""
@@ -1340,52 +1386,54 @@ case $have_threads in
 				break],
 				[AC_MSG_RESULT(no)])
 		done
+		if test "x$G_THREAD_LIBS" = xerror; then
+		  AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
+		fi 
+		LIBS="$glib_save_LIBS"
                 ;;
-	   esac 	
-	   if test "x$G_THREAD_LIBS" = xerror; then
-             AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
-	   fi
-	   for thread_lib in "" rt rte; do
-	     if test x"$thread_lib" = x; then
-	       add_thread_lib=""
-	       IN=""
-	     else
-	       add_thread_lib="-l$thread_lib"
-	       IN=" in -l$thread_lib"
-	     fi
-	     LIBS="$glib_save_LIBS $add_thread_lib"
-			
-	     AC_MSG_CHECKING(for sched_get_priority_min$IN)
-	     AC_TRY_RUN([#include <sched.h>
-		         #include <errno.h>
-			 int main() {
-    			 errno = 0;
-                         return sched_get_priority_min(SCHED_OTHER)==-1
-				&& errno != 0;}],
-			[AC_MSG_RESULT(yes)
-			 G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
+            esac
+          fi
+
+          glib_save_LIBS="$LIBS"
+	  for thread_lib in "" rt rte; do
+	    if test x"$thread_lib" = x; then
+	      add_thread_lib=""
+	      IN=""
+	    else
+	      add_thread_lib="-l$thread_lib"
+	      IN=" in -l$thread_lib"
+	    fi
+	    LIBS="$glib_save_LIBS $add_thread_lib"
+	
+            AC_MSG_CHECKING(for sched_get_priority_min$IN)
+	    AC_TRY_RUN([#include <sched.h>
+		        #include <errno.h>
+		        int main() {
+    			  errno = 0;
+                          return sched_get_priority_min(SCHED_OTHER)==-1
+			 	&& errno != 0;}],
+	 		[AC_MSG_RESULT(yes)
+		 	 G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
 			 posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
 		     	 posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
 			 break],
 			[AC_MSG_RESULT(no)])
-	   done
-	   LIBS="$glib_save_LIBS"
-           mutex_has_default=yes
-           mutex_default_type='pthread_mutex_t'
-           mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
-           mutex_header_file='pthread.h'
-	   if test "x$have_threads" = "xposix"; then
-	     g_threads_impl="POSIX"
-	   else
-	     g_threads_impl="DCE"
-	     have_threads="posix"
-	   fi
-	   AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
-           CPPFLAGS="$glib_save_CPPFLAGS"
-           ;;
+	  done
+	  LIBS="$glib_save_LIBS"
+          mutex_has_default=yes
+          mutex_default_type='pthread_mutex_t'
+          mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
+          mutex_header_file='pthread.h'
+	  if test "x$have_threads" = "xposix"; then
+	    g_threads_impl="POSIX"
+	  else
+	    g_threads_impl="DCE"
+	    have_threads="posix"
+	  fi
+	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
+          CPPFLAGS="$glib_save_CPPFLAGS"
+          ;;
         solaris)
-	   G_THREAD_LIBS=error
-           AC_CHECK_LIB(thread, cond_init, G_THREAD_LIBS="-lthread")
            mutex_has_default=yes
            mutex_default_type='mutex_t'
 	   mutex_default_init="DEFAULTMUTEX"
@@ -1394,7 +1442,6 @@ case $have_threads in
            ;;
 	win32)
 	   g_threads_impl="WIN32"
-	   G_THREAD_LIBS=""
 	   ;;
         none|no)
 	   g_threads_impl="NONE"
