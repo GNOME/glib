@@ -77,7 +77,7 @@ static void
 g_mutex_free_solaris_impl (GMutex * mutex)
 {
   solaris_check_for_error (mutex_destroy ((mutex_t *) mutex));
-  free (mutex);
+  g_free (mutex);
 }
 
 /* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use
