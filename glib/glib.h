@@ -1128,7 +1128,9 @@ gchar*	g_strdup_printf		(const gchar *format,
 gchar*	g_strdup_vprintf	(const gchar *format,
 				 va_list      args);
 gchar*	g_strndup		(const gchar *str,
-				 gulong n);
+				 guint        n);
+gchar*  g_strnfill		(guint        length,
+				 gchar	      fill_char);
 gchar*	g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
 gdouble g_strtod		(const gchar *nptr,

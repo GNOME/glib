@@ -1,3 +1,9 @@
+Wed Aug 26 06:32:40 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gstrfuncs.c: new function g_strnfill() to return a new string
+	of specified length, filled with a specific character.
+
 Tue Sep  1 23:46:31 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 
 	* testglib.c (main): Update the array tests.  Reduce the number of

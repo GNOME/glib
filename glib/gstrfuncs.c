@@ -32,30 +32,49 @@ g_strdup (const gchar *str)
 {
   gchar *new_str;
   
-  new_str = NULL;
   if (str)
     {
       new_str = g_new (char, strlen (str) + 1);
       strcpy (new_str, str);
     }
+  else
+    new_str = NULL;
   
   return new_str;
 }
 
 gchar*
-g_strndup (const gchar *str, gulong n)
+g_strndup (const gchar *str,
+	   guint        n)
 {
-  char *new_str;
+  gchar *new_str;
 
-  new_str = NULL;
   if (str)
     {
-      new_str = g_new (char, n + 1);
+      new_str = g_new (gchar, n + 1);
       strncpy (new_str, str, n);
       new_str[n] = '\0';
     }
+  else
+    new_str = NULL;
 
   return new_str;
+}
+
+gchar*
+g_strnfill (guint length,
+	    gchar fill_char)
+{
+  register gchar *str, *s, *end;
+
+  str = g_new (gchar, length + 1);
+  s = str;
+  end = str + length;
+  while (s < end)
+    *(s++) = fill_char;
+  *s = 0;
+
+  return str;
 }
 
 gchar*
