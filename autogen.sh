@@ -72,19 +72,19 @@ if test -z "$AUTOGEN_SUBDIR_MODE"; then
         fi
 fi
 
-$ACLOCAL $ACLOCAL_FLAGS || exit 1
+$ACLOCAL $ACLOCAL_FLAGS || exit $?
 
-libtoolize --force || exit 1
-gtkdocize || exit 1
+libtoolize --force || exit $?
+gtkdocize || exit $?
 
-autoheader || exit 1
+autoheader || exit $?
 
-$AUTOMAKE --add-missing || exit 1
-autoconf || exit 1
-cd $ORIGDIR
+$AUTOMAKE --add-missing || exit $?
+autoconf || exit $?
+cd $ORIGDIR || exit $?
 
 if test -z "$AUTOGEN_SUBDIR_MODE"; then
-        $srcdir/configure --enable-maintainer-mode --enable-gtk-doc "$@"
+        $srcdir/configure --enable-maintainer-mode $AUTOGEN_CONFIGURE_ARGS "$@" || exit $?
 
         echo 
         echo "Now type 'make' to compile $PROJECT."
