@@ -22,7 +22,9 @@ Description: CVS build of the GLib library of C routines
 Package: libglib-cvs-dev
 Architecture: any
 Section: devel
-Conflicts: libgtk-dev, libglib1.1-dev
+Conflicts: libgtk-dev, libglib-dev
+Provides: libglib-dev
+Replaces: libglib-dev
 Depends: libglib-cvs-1.1 (=${Source-Version})
 Suggests: libgtk-cvs-dev, libgtk-cvs-1.1-doc
 Description: CVS header files and static libraries for the GLib library
