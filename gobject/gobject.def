@@ -53,6 +53,7 @@ EXPORTS
 	g_object_class_find_property
 	g_object_class_install_property
 	g_object_class_list_properties
+	g_object_add_weak_pointer
 	g_object_connect
 	g_object_disconnect
 	g_object_freeze_notify
@@ -66,6 +67,7 @@ EXPORTS
 	g_object_newv
 	g_object_notify
 	g_object_ref
+	g_object_remove_weak_pointer
 	g_object_run_dispose
 	g_object_set
 	g_object_set_data
@@ -81,6 +83,8 @@ EXPORTS
 	g_object_watch_closure
 	g_object_weak_ref
 	g_object_weak_unref
+	g_param_get_blurb
+	g_param_get_nick
 	g_param_spec_boolean
 	g_param_spec_boxed
 	g_param_spec_char
