@@ -2765,11 +2765,14 @@ g_key_file_remove_group (GKeyFile     *key_file,
   group_node = g_key_file_lookup_group_node (key_file, group_name);
 
   if (!group_node)
-    g_set_error (error, G_KEY_FILE_ERROR,
-		 G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-		 _("Key file does not have group '%s'"),
-		 group_name);
-  else
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+		   G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
+		   _("Key file does not have group '%s'"),
+		   group_name);
+      return;
+    }
+
     g_key_file_remove_group_node (key_file, group_node);
 }
 
@@ -2827,7 +2830,6 @@ g_key_file_remove_key (GKeyFile     *key_file,
       return;
     }
 
-  group->key_value_pairs = g_list_remove (group->key_value_pairs, key_file);
   pair = g_key_file_lookup_key_value_pair (key_file, group, key);
 
   if (!pair)
@@ -2839,9 +2841,10 @@ g_key_file_remove_key (GKeyFile     *key_file,
       return;
     }
 
-  g_hash_table_remove (group->lookup_map, pair->key);
-
   key_file->approximate_size -= strlen (pair->key) + strlen (pair->value) + 2;
+
+  group->key_value_pairs = g_list_remove (group->key_value_pairs, pair);
+  g_hash_table_remove (group->lookup_map, pair->key);  
   g_key_file_key_value_pair_free (pair);
 }
 

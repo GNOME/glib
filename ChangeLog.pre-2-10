@@ -1,5 +1,11 @@
 2005-02-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/keyfile-test.c (test_key_remove): Add test case for
+	key removal.
+
+	* glib/gkeyfile.c (g_key_file_remove_key): Actually remove 
+	the key from the list of pairs.  (#165980, David Hoover)
+
 	* glib/gkeyfile.c: Doc clarifications.  (#165907, Vincent Untz)
 
 	* tests/keyfile-test.c (test_group_remove): Add test case for
