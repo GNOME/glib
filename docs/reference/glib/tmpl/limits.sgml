@@ -101,9 +101,12 @@ The maximum value which can be held in a #guint64.
 
 <!-- ##### MACRO G_MINFLOAT ##### -->
 <para>
-The minimum value which can be held in a #gfloat.
+The minimum positive value which can be held in a #gfloat.
 </para>
-
+<para>
+If you are interested in the smallest value which can be held in a #gfloat,
+use -G_MAX_FLOAT.
+</para>
 
 
 <!-- ##### MACRO G_MAXFLOAT ##### -->
@@ -115,7 +118,11 @@ The maximum value which can be held in a #gfloat.
 
 <!-- ##### MACRO G_MINDOUBLE ##### -->
 <para>
-The minimum value which can be held in a #gdouble.
+The minimum positive value which can be held in a #gdouble.
+</para>
+<para>
+If you are interested in the smallest value which can be held in a #gdouble,
+use -G_MAX_DOUBLE.
 </para>
 
 

@@ -1,3 +1,8 @@
+2003-06-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/limits.sgml: Correct the documentation for
+	G_MINFLOAT and G_MINDOUBLE.  (#114513, Christophe Fergeau)
+
 2003-05-28  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Document that g_strdup() and
