@@ -12,9 +12,9 @@ To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
 been used successfully. With gcc I mean egcs-1.1.2 (as distributed by
 Mumit Khan), running under cygwin-b20.1. To successfully use gcc,
-follow the instructions below. I use gcc -mno-cygwin, i.e. the
-produced executables (.exe and .dll files) do *not* require the cygwin
-runtime library.
+follow the instructions below. We want to use gcc -mno-cygwin,
+i.e. produce executables (.exe and .dll files) that do *not* require
+the cygwin runtime library. This is sometimes called "mingw32".
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
@@ -27,8 +27,8 @@ haven't succeeded in that.
 With a little work, it might be possible to use the ./configure
 mechanism also with a "mingw32" configuration.
 
-The following preprocessor macros are used for conditional compilation 
-related to Win32:
+The following preprocessor macros are defined in glibconfig.h and used
+for conditional compilation related to Win32:
 
 - WIN32 is defined when compiling for the Win32 platform, regardless
   if using the X11 or Win32 windowing API (in the case of GLib, this
@@ -40,31 +40,45 @@ related to Win32:
   bundled Microsoft C library (msvcrt.dll) and the pthreads-win32
   library. For instance, pathnames are in the native Windows syntax.
 
-The Win32 port uses the combination with both of those on.
+The Win32 port uses the combination with both of those on. As these
+are in glibconfig.h, they are available to all source files that use
+GLib (or GTk+, which uses GLib).
 
 Additionally, there are the compiler-specific macros:
 - _MSC_VER is defined when using the Microsoft compiler
 - __GNUC__ is defined when using GCC (i.e. egcs)
 
-Some of the usage of these macros was a bit mixed up, and had to be
-straightened out when adding the gcc support. In particular, I used to
-check for _MSC_VER in some places where I really wanted to check for
-the Microsoft C library, and those checks has now been changed to
-NATIVE_WIN32. NATIVE_WIN32 ought to be renamed to USE_MSVCRT.
+Some of the usage of these macros used to be a bit mixed up, and had
+to be straightened out when adding the gcc support. In particular, I
+used to check for _MSC_VER in some places where I really wanted to
+check for the Microsoft C library, and those checks has now been
+changed to NATIVE_WIN32. NATIVE_WIN32 ought to be renamed to
+USE_MSVCRT.
 
 Pthreads library
 ================
 
 Before building you must get the pthreads library for Win32 from
 http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
-snapshot from 1999-04-07 is the one that should be used. Edit the
+snapshot from 1999-05-30 is the one that should be used. Edit the
 location of the pthreads library and include files in makefile.msc or
-makefile.cygwin. The ptreads distribution includes the precompiled dll
+makefile.cygwin. The pthreads distribution includes the precompiled dll
 and import libraries both for MSVC and gcc.
 
 The pthreads for Win32 package that the thread support uses supposedly
 isn't quite ready yet, and thus threads stuff should not be relied
 upon for anything serious.
+
+Where are the makefiles?
+========================
+
+If you are building from a CVS snapshot, you will not have any
+makefile.msc or makefile.cygwin file. You should copy the
+corresponding makefile.msc.in or makefile.cygwin.in file to that name,
+and edit the line that sets GLIB_VER to the correct version number.
+
+This is done automatically when an official distribution package is
+built.
 
 Building with MSVC
 ==================
@@ -85,8 +99,8 @@ C:\cygnus\cygwin-b20\H-i586-cygwin32\lib\gcc-lib\i586-cygwin32\egcs-2.91.66\spec
 
 Sorry for the illegibility of this diff, but the specs file is like
 that... This patch replaces -lcrtdll with -lmsvcrt, replaces crt1 with
-crt2, removes -lmoldname (because that might pull in crtdll.dll), and
-defines __MSVCRT__.
+crt2, removes -lmoldname (because using functions from it would pull
+in crtdll.dll), and defines __MSVCRT__.
 
 --- specs.ORIG	Sun Apr 25 00:40:40 1999
 +++ specs	Sun Apr 25 00:48:04 1999

@@ -1,3 +1,30 @@
+1999-06-21  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update the pthreads snapshot version we want.
+	Advice how to hand-expand the makefile.*.in files.
+
+	* config.h.win32.in: Define values needed by Sebastian Wilhelmi's
+	new thread stuff.
+
+	* glib.def: Add new functions.
+
+	* glibconfig.h.win32.in: Update the pthreads snapshot version.
+	Fix typo.
+
+	* gthread.c: Include config.h, guard inclusion of unistd.h.  When
+ 	using gcc on Win32, g_thread_functions_for_glib_use must be marked
+ 	for export here, too.
+
+	* gtimer.c: Implement g_usleep on native Win32 using Sleep (which
+	only has millisecond granularity, though).
+	
+	* makefile.cygwin.in
+	* makefile.msc.in: Update pthreads snapshot version. File
+	name changes. Remove testgthread.
+
+	* tests/makefile.cygwin.in
+	* tests/makefile.msc.in: Add thread-test. Link with gthread lib.
+
 1999-06-18  Jeff Garzik  <jgarzik@pobox.com>
 
 	* tests/Makefile.am:  Re-order tests in alpha order.

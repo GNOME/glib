@@ -60,6 +60,11 @@
 #define GLIB_INTERFACE_AGE @GLIB_INTERFACE_AGE@
 #define GLIB_BINARY_AGE @GLIB_BINARY_AGE@
 
+#define GLIB_SIZEOF_PTHREAD_T 4
+#define POSIX_MIN_PRIORITY -2
+#define POSIX_MAX_PRIORITY 2
+#define POSIX_YIELD_FUNC Sleep(0)
+
 #define G_THREAD_SOURCE "gthread-posix.c"
 
 /* The number of bytes in a char.  */

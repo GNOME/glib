@@ -8,9 +8,9 @@ BIN = /bin
 
 # This is the location of pthreads for Win32, 
 # see http://sourceware.cygnus.com/pthreads-win32/
-# We want the 1999-04-07 snapshot.
-PTHREADS = ../pthreads-snap-1999-04-07
-PTHREAD_LIB = -L$(PTHREADS) -lpthread
+# We want the 1999-05-30 snapshot.
+PTHREADS = ../pthreads-snap-1999-05-30
+PTHREAD_LIB = -L$(PTHREADS) -lpthread32
 PTHREAD_INC = -I $(PTHREADS)
 
 OPTIMIZE = -g -O
@@ -40,8 +40,7 @@ all : \
 	testglib.exe	\
 	testgmodule.exe	\
 	testgdate.exe	\
-	testgdateparser.exe \
-	testgthread.exe
+	testgdateparser.exe
 
 install : all
 	$(INSTALL) glib-$(GLIB_VER).dll $(BIN)
@@ -63,13 +62,13 @@ glib_OBJECTS = \
 	gmain.o		\
 	gmem.o		\
 	gmessages.o	\
-	gmutex.o	\
 	gnode.o		\
 	gprimes.o	\
 	gqueue.o	\
 	grand.o		\
 	gslist.o	\
 	gstack.o	\
+	gthread.o	\
 	gtimer.o	\
 	gtree.o		\
 	grel.o		\
@@ -103,13 +102,13 @@ gmodule/gmoduleconf.h: gmodule/gmoduleconf.h.win32
 	$(CP) gmodule/gmoduleconf.h.win32 gmodule/gmoduleconf.h
 
 gthread_OBJECTS = \
-	gthread.o
+	gthread-impl.o
 
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) glib-$(GLIB_VER).dll gthread/gthread.def
 	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB) -lwsock32
 
-gthread.o : gthread/gthread.c gthread/gthread-posix.c
-	$(CC) $(CFLAGS) $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread/gthread.c
+gthread-impl.o : gthread/gthread-impl.c gthread/gthread-posix.c
+	$(CC) $(CFLAGS) $(PTHREAD_INC) -DG_LOG_DOMAIN=\"GThread\" -c gthread/gthread-impl.c
 
 testglib.exe : glib-$(GLIB_VER).dll testglib.o
 	$(CC) $(CFLAGS) -o testglib testglib.o -L. -lglib-$(GLIB_VER) $(LDFLAGS)
@@ -153,12 +152,6 @@ libgplugin_b.dll : libgplugin_b.o
 
 libgplugin_b.o : gmodule/libgplugin_b.c
 	$(CC) $(CFLAGS) -Igmodule -c gmodule/libgplugin_b.c
-
-testgthread.exe : glib-$(GLIB_VER).dll gthread-$(GLIB_VER).dll testgthread.o
-	$(CC) $(CFLAGS) -o testgthread.exe testgthread.o -L. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER) $(PTHREAD_LIB) $(LDFLAGS)
-
-testgthread.o : gthread/testgthread.c
-	$(CC) $(CFLAGS) $(PTHREAD_INC) -c gthread/testgthread.c
 
 clean:
 	-rm config.h glibconfig.h gmodule/gmoduleconf.h

@@ -117,6 +117,7 @@ typedef unsigned long long guint64;
  *   int i;
  *   pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
  *   printf ("sizeof (pthread_mutex_t) = %d\n", sizeof (pthread_mutex_t));
+ *   printf ("sizeof (pthread_t) = %d\n", sizeof (pthread_t));
  *   printf ("PTHREAD_MUTEX_INITIALIZER = ");
  *   for (i = 0; i < sizeof (pthread_mutex_t); i++)
  *     printf ("%u, ", ((unsigned char *) &m)[i]);
@@ -131,8 +132,8 @@ struct _GStaticMutex
 {
   struct _GMutex *runtime_mutex;
   union {
-    /* The size of the pad array should be sizeof (pthread_mutext_t) */
-    /* This value corresponds to the 1999-04-07 version of pthreads-win32 */
+    /* The size of the pad array should be sizeof (pthread_mutex_t) */
+    /* This value corresponds to the 1999-05-30 version of pthreads-win32 */
     char   pad[4];
     double dummy_double;
     void  *dummy_pointer;

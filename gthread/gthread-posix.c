@@ -245,9 +245,12 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
       posix_check_for_error (pthread_attr_setstacksize (&attr, stack_size));
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
+#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
   if (bound)
      posix_check_for_error (pthread_attr_setscope (&attr, 
 						   PTHREAD_SCOPE_SYSTEM));
+#endif
+
   posix_check_for_error( pthread_attr_setdetachstate( &attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED ) );
   

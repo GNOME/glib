@@ -195,9 +195,13 @@ g_timer_elapsed (GTimer *timer,
 void
 g_usleep (gulong microseconds)
 {
+#ifdef NATIVE_WIN32
+  Sleep (microseconds / 1000);
+#else
   struct timeval tv;
   tv.tv_sec = microseconds / G_MICROSEC;
   tv.tv_usec = microseconds % G_MICROSEC;
   select(0, NULL, NULL, NULL, &tv);
+#endif
 }
 

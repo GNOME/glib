@@ -27,6 +27,7 @@ TESTS = \
 	stack-test.exe	\
 	string-test.exe	\
 	strfunc-test.exe\
+	thread-test.exe	\
 	tree-test.exe	\
 	type-test.exe
 
@@ -36,7 +37,7 @@ all :	$(TESTS)
 
 .c.exe :
 	$(CC) $(CFLAGS) -c $<
-	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER)
+	$(CC) $(CFLAGS) -o $@ $< -L.. -lglib-$(GLIB_VER) -lgthread-$(GLIB_VER)
 
 check:	all
 	@for P in $(TESTS) ; do echo $$P; ./$$P; done

@@ -350,6 +350,16 @@ EXPORTS
 	g_static_mutex_get_mutex_impl
 	g_static_private_get
 	g_static_private_set
+	g_static_rec_mutex_lock
+	g_static_rec_mutex_trylock
+	g_static_rec_mutex_unlock
+	g_static_rw_lock_free
+	g_static_rw_lock_reader_lock
+	g_static_rw_lock_reader_trylock
+	g_static_rw_lock_reader_unlock
+	g_static_rw_lock_writer_lock
+	g_static_rw_lock_writer_trylock
+	g_static_rw_lock_writer_unlock
 	g_str_equal
 	g_str_hash
 	g_strcasecmp
@@ -396,6 +406,10 @@ EXPORTS
 	g_strsplit
 	g_strtod
 	g_strup
+	g_thread_create
+	g_thread_join
+	g_thread_self
+	g_thread_set_priority
 	g_timeout_add
 	g_timeout_add_full
 	g_timer_destroy
@@ -415,6 +429,7 @@ EXPORTS
 	g_tree_traverse
 	g_tuples_destroy
 	g_tuples_index
+	g_usleep
 	g_vsnprintf
 	glib_binary_age
 	glib_interface_age

@@ -1,3 +1,9 @@
+1999-06-21  Tor Lillqvist  <tml@iki.fi>
+
+	* gthread-posix.c: Guard pthread_attr_setscope call with test
+	for _POSIX_THREAD_PRIORITY_SCHEDULING, which should be defined
+	in a <pthread.h> that supports that feature.
+	
 1999-06-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c, gthread-solaris.c: Added the native
