@@ -119,7 +119,16 @@ of a GLib or GTK+ application.
 @Returns: 
 
 
-<!-- ##### FUNCTION g_main_loop_destroy ##### -->
+<!-- ##### FUNCTION g_main_loop_ref ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_loop_unref ##### -->
 <para>
 
 </para>
@@ -673,6 +682,16 @@ the required condition has been met, and returns TRUE if so.
 @source: 
 
 
+<!-- ##### FUNCTION g_source_attach ##### -->
+<para>
+
+</para>
+
+@source: 
+@context: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_source_destroy ##### -->
 <para>
 
@@ -735,6 +754,17 @@ the required condition has been met, and returns TRUE if so.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_source_set_callback ##### -->
+<para>
+
+</para>
+
+@source: 
+@func: 
+@data: 
+@notify: 
+
+
 <!-- ##### USER_FUNCTION GSourceFunc ##### -->
 <para>
 Specifies the type of function passed to g_timeout_add(), g_timeout_add_full(),
@@ -744,6 +774,16 @@ g_idle_add(), and g_idle_add_full().
 @data: data passed to the function, set when the source was created with one
 of the above functions.
 @Returns: it should return FALSE if the source should be removed.
+
+
+<!-- ##### FUNCTION g_source_set_callback_indirect ##### -->
+<para>
+
+</para>
+
+@source: 
+@callback_data: 
+@callback_funcs: 
 
 
 <!-- ##### FUNCTION g_source_add_poll ##### -->

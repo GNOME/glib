@@ -251,6 +251,50 @@ Unicode Manipulation
 @Returns: 
 
 
+<!-- ##### ENUM GUnicodeBreakType ##### -->
+<para>
+
+</para>
+
+@G_UNICODE_BREAK_MANDATORY: 
+@G_UNICODE_BREAK_CARRIAGE_RETURN: 
+@G_UNICODE_BREAK_LINE_FEED: 
+@G_UNICODE_BREAK_COMBINING_MARK: 
+@G_UNICODE_BREAK_SURROGATE: 
+@G_UNICODE_BREAK_ZERO_WIDTH_SPACE: 
+@G_UNICODE_BREAK_INSEPARABLE: 
+@G_UNICODE_BREAK_NON_BREAKING_GLUE: 
+@G_UNICODE_BREAK_CONTINGENT: 
+@G_UNICODE_BREAK_SPACE: 
+@G_UNICODE_BREAK_AFTER: 
+@G_UNICODE_BREAK_BEFORE: 
+@G_UNICODE_BREAK_BEFORE_AND_AFTER: 
+@G_UNICODE_BREAK_HYPHEN: 
+@G_UNICODE_BREAK_NON_STARTER: 
+@G_UNICODE_BREAK_OPEN_PUNCTUATION: 
+@G_UNICODE_BREAK_CLOSE_PUNCTUATION: 
+@G_UNICODE_BREAK_QUOTATION: 
+@G_UNICODE_BREAK_EXCLAMATION: 
+@G_UNICODE_BREAK_IDEOGRAPHIC: 
+@G_UNICODE_BREAK_NUMERIC: 
+@G_UNICODE_BREAK_INFIX_SEPARATOR: 
+@G_UNICODE_BREAK_SYMBOL: 
+@G_UNICODE_BREAK_ALPHABETIC: 
+@G_UNICODE_BREAK_PREFIX: 
+@G_UNICODE_BREAK_POSTFIX: 
+@G_UNICODE_BREAK_COMPLEX_CONTEXT: 
+@G_UNICODE_BREAK_AMBIGUOUS: 
+@G_UNICODE_BREAK_UNKNOWN: 
+
+<!-- ##### FUNCTION g_unichar_break_type ##### -->
+<para>
+
+</para>
+
+@c: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unicode_canonical_ordering ##### -->
 <para>
 
@@ -403,6 +447,9 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
 @Returns: 
 
 
@@ -413,6 +460,20 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_utf8_to_ucs4_fast ##### -->
+<para>
+
+</para>
+
+@str: 
+@len: 
+@items_written: 
 @Returns: 
 
 
@@ -423,6 +484,9 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
 @Returns: 
 
 
@@ -433,6 +497,9 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
 @Returns: 
 
 
@@ -443,6 +510,9 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
 @Returns: 
 
 
@@ -453,6 +523,9 @@ Unicode Manipulation
 
 @str: 
 @len: 
+@items_read: 
+@items_written: 
+@error: 
 @Returns: 
 
 

@@ -90,6 +90,9 @@ Character Set Conversion
 </para>
 
 @opsysstring: 
+@len: 
+@bytes_read: 
+@bytes_written: 
 @error: 
 @Returns: 
 
@@ -100,6 +103,9 @@ Character Set Conversion
 </para>
 
 @opsysstring: 
+@len: 
+@bytes_read: 
+@bytes_written: 
 @error: 
 @Returns: 
 
@@ -110,6 +116,9 @@ Character Set Conversion
 </para>
 
 @utf8string: 
+@len: 
+@bytes_read: 
+@bytes_written: 
 @error: 
 @Returns: 
 
@@ -120,6 +129,9 @@ Character Set Conversion
 </para>
 
 @utf8string: 
+@len: 
+@bytes_read: 
+@bytes_written: 
 @error: 
 @Returns: 
 

@@ -39,6 +39,15 @@ The returned value should be freed when no longer needed.
 null-terminated.
 
 
+<!-- ##### FUNCTION g_strdupv ##### -->
+<para>
+
+</para>
+
+@str_array: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_strnfill ##### -->
 <para>
 Creates a new string @length characters long filled with @fill_char.

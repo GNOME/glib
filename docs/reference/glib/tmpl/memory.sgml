@@ -104,6 +104,25 @@ have been moved.
 @size: the new size of the allocated memory, in bytes.
 
 
+<!-- ##### FUNCTION g_try_malloc ##### -->
+<para>
+
+</para>
+
+@n_bytes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_try_realloc ##### -->
+<para>
+
+</para>
+
+@mem: 
+@n_bytes: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_free ##### -->
 <para>
 Frees the memory pointed to by @mem.
@@ -150,6 +169,32 @@ from @mem. If @mem is NULL it returns NULL.
 is NULL.
 
 
+<!-- ##### STRUCT GMemVTable ##### -->
+<para>
+
+</para>
+
+@malloc: 
+@realloc: 
+@free: 
+@calloc: 
+@try_malloc: 
+@try_realloc: 
+
+<!-- ##### FUNCTION g_mem_set_vtable ##### -->
+<para>
+
+</para>
+
+@vtable: 
+
+
+<!-- ##### VARIABLE glib_mem_profiler_table ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_mem_profile ##### -->
 <para>
 Outputs a summary of memory usage.
@@ -164,16 +209,5 @@ and the difference between the previous two values, i.e. the number of bytes
 still in use.
 </para>
 
-
-
-<!-- ##### FUNCTION g_mem_check ##### -->
-<para>
-Checks if the given memory has already been freed. If it has it outputs
-a warning message.
-To use this function you must configure glib with the flag
-'--enable-mem-check=yes' before compiling.
-</para>
-
-@mem: the memory to check.
 
 

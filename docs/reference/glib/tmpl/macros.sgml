@@ -226,3 +226,17 @@ Returns the offset, in bytes, of a member of a struct.
 @Returns: the offset of @member from the start of @struct_type.
 
 
+<!-- ##### MACRO G_MEM_ALIGN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_CONST_RETURN ##### -->
+<para>
+
+</para>
+
+
+

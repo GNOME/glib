@@ -1,3 +1,7 @@
+Fri Jan  5 15:47:10 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/glib-sections.txt glib/tmpl/* glib/Makefile.am: Updated.
+
 2000-12-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/glib-sections.txt: Added G_MODULE_SUFFIX.

@@ -1,69 +1,3 @@
-<!-- ##### FUNCTION g_type_conforms_to ##### -->
-<para>
-
-</para>
-
-@type: 
-@iface_type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_object_class_install_param ##### -->
-<para>
-
-</para>
-
-@oclass: 
-@param_id: 
-@pspec: 
-
-<!-- ##### FUNCTION g_param_spec_hash_table_insert ##### -->
-<para>
-
-</para>
-
-@hash_table: 
-@pspec: 
-@owner_type: 
-
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO G_IS_PARAM_VALUE ##### -->
-<para>
-
-</para>
-
-@pspec: 
-@value: 
-
-<!-- ##### FUNCTION g_type_instance_conforms_to ##### -->
-<para>
-
-</para>
-
-@instance: 
-@iface_type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_object_get_param ##### -->
-<para>
-
-</para>
-
-@object: 
-@param_name: 
-@value: 
-
-<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
-<para>
-
-</para>
-
-@plugin: 
-
 <!-- ##### FUNCTION g_object_set_param ##### -->
 <para>
 
@@ -73,28 +7,13 @@
 @param_name: 
 @value: 
 
-<!-- ##### USER_FUNCTION GObjectGetParamFunc ##### -->
+<!-- ##### FUNCTION g_param_spec_hash_table_remove ##### -->
 <para>
 
 </para>
 
-@object: 
-@param_id: 
-@value: 
+@hash_table: 
 @pspec: 
-@trailer: 
-
-<!-- ##### ENUM GSignalType ##### -->
-<para>
-
-</para>
-
-@G_SIGNAL_RUN_FIRST: 
-@G_SIGNAL_RUN_LAST: 
-@G_SIGNAL_RUN_CLEANUP: 
-@G_SIGNAL_NO_RECURSE: 
-@G_SIGNAL_ACTION: 
-@G_SIGNAL_NO_HOOKS: 
 
 <!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
 <para>
@@ -102,31 +21,40 @@
 </para>
 
 
-<!-- ##### FUNCTION g_signal_type_closure_new ##### -->
+<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
+<para>
+
+</para>
+
+@plugin: 
+
+<!-- ##### FUNCTION g_signals_destroy ##### -->
 <para>
 
 </para>
 
 @itype: 
-@struct_offset: 
-@Returns: 
 
-<!-- ##### FUNCTION g_object_class_find_param_spec ##### -->
+<!-- ##### FUNCTION g_param_spec_hash_table_new ##### -->
 <para>
 
 </para>
 
-@oclass: 
-@param_name: 
 @Returns: 
 
-<!-- ##### FUNCTION g_object_queue_param_changed ##### -->
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### STRUCT GTypePluginVTable ##### -->
 <para>
 
 </para>
 
-@object: 
-@param_name: 
+@plugin_ref: 
+@plugin_unref: 
+@complete_type_info: 
+@complete_interface_info: 
 
 <!-- ##### FUNCTION g_signal_connect_closure ##### -->
 <para>
@@ -140,27 +68,82 @@
 @after: 
 @Returns: 
 
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Title ##### -->
-gtypemodule.sgml
+<!-- ##### FUNCTION g_signal_type_closure_new ##### -->
+<para>
+
+</para>
+
+@itype: 
+@struct_offset: 
+@Returns: 
+
+<!-- ##### MACRO G_WARN_INVALID_PARAM_ID ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_id: 
+@pspec: 
+
+<!-- ##### ENUM GSignalType ##### -->
+<para>
+
+</para>
+
+@G_SIGNAL_RUN_FIRST: 
+@G_SIGNAL_RUN_LAST: 
+@G_SIGNAL_RUN_CLEANUP: 
+@G_SIGNAL_NO_RECURSE: 
+@G_SIGNAL_ACTION: 
+@G_SIGNAL_NO_HOOKS: 
+
+<!-- ##### FUNCTION g_param_spec_hash_table_insert ##### -->
+<para>
+
+</para>
+
+@hash_table: 
+@pspec: 
+@owner_type: 
+
+<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
+<para>
+
+</para>
+
+@plugin: 
+@g_type: 
+@info: 
+@value_table: 
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
+<para>
+
+</para>
 
 
-<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
+<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
 <para>
 
 </para>
 
 @plugin: 
 
-<!-- ##### FUNCTION g_param_spec_hash_table_lookup ##### -->
+<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
 <para>
 
 </para>
 
-@hash_table: 
-@param_name: 
-@owner_type: 
-@try_ancestors: 
-@trailer: 
+@instance: 
+
+<!-- ##### FUNCTION g_type_instance_conforms_to ##### -->
+<para>
+
+</para>
+
+@instance: 
+@iface_type: 
 @Returns: 
 
 <!-- ##### USER_FUNCTION GObjectSetParamFunc ##### -->
@@ -174,22 +157,6 @@ gtypemodule.sgml
 @pspec: 
 @trailer: 
 
-<!-- ##### FUNCTION g_type_value_conforms_to ##### -->
-<para>
-
-</para>
-
-@value: 
-@type: 
-@Returns: 
-
-<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
-<para>
-
-</para>
-
-@instance: 
-
 <!-- ##### FUNCTION g_type_is_dynamic ##### -->
 <para>
 
@@ -199,32 +166,90 @@ gtypemodule.sgml
 @flags: 
 @Returns: 
 
-<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
+<!-- ##### FUNCTION g_type_value_conforms_to ##### -->
 <para>
 
 </para>
 
-@plugin: 
-@g_type: 
-@info: 
-@value_table: 
+@value: 
+@type: 
+@Returns: 
 
-<!-- ##### FUNCTION g_signals_destroy ##### -->
+<!-- ##### FUNCTION g_param_spec_hash_table_lookup ##### -->
 <para>
 
 </para>
 
-@itype: 
+@hash_table: 
+@param_name: 
+@owner_type: 
+@try_ancestors: 
+@trailer: 
+@Returns: 
 
-<!-- ##### STRUCT GTypePluginVTable ##### -->
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Title ##### -->
+gtypemodule.sgml
+
+
+<!-- ##### FUNCTION g_object_queue_param_changed ##### -->
 <para>
 
 </para>
 
-@plugin_ref: 
-@plugin_unref: 
-@complete_type_info: 
-@complete_interface_info: 
+@object: 
+@param_name: 
+
+<!-- ##### USER_FUNCTION GObjectGetParamFunc ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_id: 
+@value: 
+@pspec: 
+@trailer: 
+
+<!-- ##### MACRO G_IS_PARAM_VALUE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+
+<!-- ##### FUNCTION g_object_class_install_param ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@param_id: 
+@pspec: 
+
+<!-- ##### MACRO G_NOTIFY_PRIORITY ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_object_get_param ##### -->
+<para>
+
+</para>
+
+@object: 
+@param_name: 
+@value: 
+
+<!-- ##### FUNCTION g_type_conforms_to ##### -->
+<para>
+
+</para>
+
+@type: 
+@iface_type: 
+@Returns: 
 
 <!-- ##### USER_FUNCTION GTypePluginFillInterfaceInfo ##### -->
 <para>
@@ -236,37 +261,12 @@ gtypemodule.sgml
 @instance_type: 
 @info: 
 
-<!-- ##### MACRO G_NOTIFY_PRIORITY ##### -->
+<!-- ##### FUNCTION g_object_class_find_param_spec ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### MACRO G_WARN_INVALID_PARAM_ID ##### -->
-<para>
-
-</para>
-
-@object: 
-@param_id: 
-@pspec: 
-
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Short_Description ##### -->
-
-
-
-<!-- ##### FUNCTION g_param_spec_hash_table_new ##### -->
-<para>
-
-</para>
-
+@oclass: 
+@param_name: 
 @Returns: 
-
-<!-- ##### FUNCTION g_param_spec_hash_table_remove ##### -->
-<para>
-
-</para>
-
-@hash_table: 
-@pspec: 
 

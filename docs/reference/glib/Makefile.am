@@ -17,6 +17,7 @@ IGNORE_HFILES=			\
 	gobject 		\
 	config.h 		\
 	gmoduleconf.h		\
+	gunibreak.h		\
 	gunidecomp.h		\
 	gunichartables.h	\
 	glibconfig-sysdefs.h

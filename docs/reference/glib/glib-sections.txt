@@ -42,6 +42,8 @@ gssize
 <SUBSECTION Private>
 gstring
 gldouble
+GLIB_SIZEOF_VOID_P
+GLIB_SIZEOF_LONG
 </SECTION>
 
 <SECTION>
@@ -110,6 +112,12 @@ CLAMP
 G_STRUCT_MEMBER
 G_STRUCT_MEMBER_P
 G_STRUCT_OFFSET
+
+<SUBSECTION>
+G_MEM_ALIGN
+
+<SUBSECTION>
+G_CONST_RETURN
 
 <SUBSECTION Private>
 glib_major_version
@@ -320,7 +328,8 @@ g_clear_error
 <FILE>main</FILE>
 GMainLoop
 g_main_loop_new
-g_main_loop_destroy
+g_main_loop_ref
+g_main_loop_unref
 g_main_loop_run
 g_main_loop_quit
 g_main_loop_is_running
@@ -380,7 +389,7 @@ GSourceCallbackFuncs
 g_source_new
 g_source_ref
 g_source_unref
-g_source_add
+g_source_attach
 g_source_destroy
 g_source_set_priority
 g_source_get_priority
@@ -388,9 +397,9 @@ g_source_set_can_recurse
 g_source_get_can_recurse
 g_source_get_id
 g_source_get_context
-g_source_connect
+g_source_set_callback
 GSourceFunc
-g_source_connect_indirect
+g_source_set_callback_indirect
 g_source_add_poll
 g_source_remove_poll
 g_source_get_current_time
@@ -513,9 +522,6 @@ G_THREAD_ECF
 G_THREAD_CF
 G_THREAD_UF
 g_static_mutex_get_mutex_impl
-g_mutex_lock_with_debug_name
-g_mutex_trylock_with_debug_name
-g_mutex_unlock_with_debug_name
 G_MUTEX_DEBUG_MAGIC
 g_thread_init_with_errorcheck_mutexes
 G_LOCK_NAME
@@ -623,6 +629,8 @@ g_renew
 g_malloc
 g_malloc0
 g_realloc
+g_try_malloc
+g_try_realloc
 
 <SUBSECTION>
 g_free
@@ -635,8 +643,12 @@ g_memmove
 g_memdup
 
 <SUBSECTION>
+GMemVTable
+g_mem_set_vtable
+
+<SUBSECTION>
+glib_mem_profiler_table
 g_mem_profile
-g_mem_check
 
 </SECTION>
 
@@ -784,6 +796,7 @@ g_file_error_quark
 <FILE>string_utils</FILE>
 g_strdup
 g_strndup
+g_strdupv
 g_strnfill
 
 <SUBSECTION>
@@ -908,6 +921,19 @@ g_date_valid_year
 g_date_valid_dmy
 g_date_valid_julian
 g_date_valid_weekday
+
+<SUBSECTION Private>
+g_date_weekday
+g_date_month
+g_date_year
+g_date_day
+g_date_julian
+g_date_day_of_year
+g_date_monday_week_of_year
+g_date_sunday_week_of_year
+g_date_days_in_month
+g_date_monday_weeks_in_year
+g_date_sunday_weeks_in_year
 </SECTION>
 
 <SECTION>
@@ -1011,6 +1037,10 @@ GDebugKey
 GVoidFunc
 GFreeFunc
 
+<SUBSECTION>
+GCompareFuncData
+g_qsort_with_data
+
 <SUBSECTION Private>
 G_NATIVE_ATEXIT
 g_ATEXIT
@@ -1105,11 +1135,12 @@ G_MODULE_IMPORT
 GCompletion
 g_completion_new
 GCompletionFunc
-GCompletionStrcmpFunc
 g_completion_add_items
 g_completion_remove_items
 g_completion_clear_items
 g_completion_complete
+g_completion_set_compare
+GCompletionStrncmpFunc
 g_completion_free
 </SECTION>
 
@@ -1689,6 +1720,8 @@ g_unichar_digit_value
 g_unichar_xdigit_value
 GUnicodeType
 g_unichar_type
+GUnicodeBreakType
+g_unichar_break_type
 g_unicode_canonical_ordering
 g_unicode_canonical_decomposition
 
@@ -1709,6 +1742,7 @@ g_utf8_validate
 <SUBSECTION>
 g_utf8_to_utf16
 g_utf8_to_ucs4
+g_utf8_to_ucs4_fast
 g_utf16_to_ucs4
 g_utf16_to_utf8
 g_ucs4_to_utf16

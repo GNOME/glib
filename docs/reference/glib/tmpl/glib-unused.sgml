@@ -1,19 +1,60 @@
-<!-- ##### FUNCTION g_source_connect_indirect ##### -->
+<!-- ##### FUNCTION g_mem_check ##### -->
+<para>
+Checks if the given memory has already been freed. If it has it outputs
+a warning message.
+To use this function you must configure glib with the flag
+'--enable-mem-check=yes' before compiling.
+</para>
+
+@mem: the memory to check.
+
+<!-- ##### FUNCTION g_main_remove_poll ##### -->
+<para>
+Removes a file descriptor from the list being polled.
+</para>
+
+@fd: the #GPollFD to remove.
+
+<!-- ##### FUNCTION g_source_connect ##### -->
 <para>
 
 </para>
 
 @source: 
-@callback_data: 
-@callback_funcs: 
+@func: 
+@data: 
+@notify: 
 
-<!-- ##### MACRO popen ##### -->
+<!-- ##### MACRO lseek ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO pclose ##### -->
+<!-- ##### FUNCTION g_main_loop_destroy ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+<!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
+<para>
+
+</para>
+
+@s1: 
+@s2: 
+@Returns: 
+
+<!-- ##### FUNCTION g_convert_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### MACRO write ##### -->
 <para>
 
 </para>
@@ -35,13 +76,35 @@ the results may be needed.
 See #G_PRIORITY_DEFAULT, #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH,
 #G_PRIORITY_HIGH_IDLE, and #G_PRIORITY_LOW.
 
-<!-- ##### MACRO lseek ##### -->
+<!-- ##### MACRO pclose ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO getpid ##### -->
+<!-- ##### FUNCTION g_source_connect_indirect ##### -->
+<para>
+
+</para>
+
+@source: 
+@callback_data: 
+@callback_funcs: 
+
+<!-- ##### MACRO g_string ##### -->
+<para>
+Turns the argument into a string literal by using the '#' stringizing operator.
+</para>
+
+@x: text to convert to a literal string.
+
+<!-- ##### MACRO popen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO access ##### -->
 <para>
 
 </para>
@@ -60,7 +123,13 @@ priority are stored in the order in which they were added.
 type of source.
 @Returns: TRUE if an event source was found and removed.
 
-<!-- ##### MACRO close ##### -->
+<!-- ##### MACRO open ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO getpid ##### -->
 <para>
 
 </para>
@@ -86,24 +155,11 @@ type of source.
 </para>
 
 
-<!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
+<!-- ##### MACRO close ##### -->
 <para>
 
 </para>
 
-@s1: 
-@s2: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_connect ##### -->
-<para>
-
-</para>
-
-@source: 
-@func: 
-@data: 
-@notify: 
 
 <!-- ##### MACRO getcwd ##### -->
 <para>
@@ -111,31 +167,11 @@ type of source.
 </para>
 
 
-<!-- ##### MACRO write ##### -->
+<!-- ##### MACRO read ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION g_main_remove_poll ##### -->
-<para>
-Removes a file descriptor from the list being polled.
-</para>
-
-@fd: the #GPollFD to remove.
-
-<!-- ##### MACRO access ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO g_string ##### -->
-<para>
-Turns the argument into a string literal by using the '#' stringizing operator.
-</para>
-
-@x: text to convert to a literal string.
 
 <!-- ##### FUNCTION g_main_win32_get_poll_func ##### -->
 <para>
@@ -143,23 +179,4 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 @Returns: 
-
-<!-- ##### MACRO read ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION g_convert_error_quark ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### MACRO open ##### -->
-<para>
-
-</para>
-
 
