@@ -1,3 +1,8 @@
+2001-09-25  Matthias Clasen <matthiasc@poet.de>
+
+	* glib/glib-section.txt: Add a missing SECTION 
+	endtag. (#61126)
+
 2001-09-17  Darin Adler  <darin@bentspoon.com>
 
 	* glib/tmpl/string_utils.sgml: Fix a typo and change
