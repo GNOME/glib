@@ -884,8 +884,22 @@ g_date_set_time (GDate *d,
 #else
   {
     struct tm *ptm = localtime (&t);
-    g_assert (ptm);
-    memcpy ((void *) &tm, (void *) ptm, sizeof(struct tm));
+
+    if (ptm == NULL)
+      {
+	/* Happens at least in Microsoft's C library if you pass a
+	 * negative time_t. Use 2000-01-01 as default date.
+	 */
+#ifndef G_DISABLE_CHECKS
+	g_return_if_fail_warning (G_LOG_DOMAIN, "g_date_set_time", "ptm != NULL");
+#endif
+
+	tm.tm_mon = 0;
+	tm.tm_mday = 1;
+	tm.tm_year = 100;
+      }
+    else
+      memcpy ((void *) &tm, (void *) ptm, sizeof(struct tm));
   }
 #endif
   
