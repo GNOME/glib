@@ -1,5 +1,10 @@
 2001-01-25  Tor Lillqvist  <tml@iki.fi>
 
+	* makefile.mingw.in
+	* */makefile.mingw.in: Protect the rule to rebuild makefile.mingw
+	if makefile.mingw.in has changed with a check if said .in file
+	exists. (This rule is mainly a convenience for yours truly.)
+
 	* giowin32.c: Socket support rewritten. It was utterly broken, and
 	untested in fact. We still do use a thread for each socket being
 	watched, but instead of blocking in recv() (which of course was

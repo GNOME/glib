@@ -24,9 +24,11 @@ all : \
 	gmodule-$(GLIB_VER).dll \
 	testgmodule.exe
 
+ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
 	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
 	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+endif
 
 gmodule_OBJECTS = \
 	gmodule.o

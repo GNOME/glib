@@ -89,9 +89,11 @@ glibconfig.h: glibconfig.h.win32
 config.h: config.h.win32
 	cp $< $@
 
+ifeq ($(wildcard makefile.mingw.in),makefile.mingw.in)
 makefile.mingw: makefile.mingw.in
 	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
 	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+endif
 
 ################ glib
 
