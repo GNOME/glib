@@ -1554,6 +1554,10 @@ esac
 ])
 
 AC_OUTPUT([
+glib-2.0.pc
+gmodule-2.0.pc
+gthread-2.0.pc
+gobject-2.0.pc
 glib.spec
 Makefile
 glib-config-2.0

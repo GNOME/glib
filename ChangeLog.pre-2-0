@@ -1,3 +1,12 @@
+2000-07-31  Havoc Pennington  <hp@redhat.com>
+
+        * glib-2.0.pc.in, gobject-2.0.pc.in, gmodule-2.0.pc.in,
+	gobject-2.0.pc.in: pkg-config data files	 
+	
+	* Makefile.am: Install/dist the .pc files
+
+	* configure.in: Output the .pc files
+
 2000-07-31  Tor Lillqvist  <tml@iki.fi>
 
 	* giowin32.c (buffer_read): The code didn't compile (must

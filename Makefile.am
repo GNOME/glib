@@ -110,6 +110,9 @@ testgdateparser_LDADD = libglib-1.3.la
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib-2.0.m4
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gthread-2.0.pc
+
 glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
