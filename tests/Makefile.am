@@ -79,6 +79,7 @@ test_programs =					\
 	markup-escape-test			\
 	module-test				\
 	node-test				\
+	option-test				\
 	patterntest				\
 	printf-test				\
 	queue-test				\
@@ -132,6 +133,7 @@ markup_escape_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 node_test_LDADD = $(progs_ldadd)
+option_test_LDADD = $(progs_ldadd)
 printf_test_LDADD = $(progs_ldadd)
 queue_test_LDADD = $(progs_ldadd)
 qsort_test_LDADD = $(progs_ldadd)

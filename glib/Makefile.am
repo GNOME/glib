@@ -63,6 +63,7 @@ libglib_2_0_la_SOURCES = 	\
 	gmem.c			\
 	gmessages.c		\
 	gnode.c			\
+	goption.c		\
 	gpattern.c		\
 	gprimes.c		\
 	gqsort.c		\
@@ -133,6 +134,7 @@ glibsubinclude_HEADERS =   \
 	gmem.h		\
 	gmessages.h	\
 	gnode.h		\
+	goption.h	\
 	gpattern.h	\
 	gprimes.h	\
 	gqsort.h	\

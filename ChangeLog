@@ -1,3 +1,14 @@
+2004-08-02  Anders Carlsson  <andersca@gnome.org>
+
+	* glib/Makefile.am:
+	* glib/glib.h:
+	* glib/goption.c:
+	* glib/goption.h:
+	* tests/.cvsignore:
+	* tests/Makefile.am:
+	* tests/option-test.c: 
+	Add GOption.
+
 2004-08-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmacros.h: Add a G_GNUC_INTERNAL macro to mark function

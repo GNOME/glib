@@ -50,6 +50,7 @@
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
 #include <glib/gnode.h>
+#include <glib/goption.h>
 #include <glib/gpattern.h>
 #include <glib/gprimes.h>
 #include <glib/gqsort.h>

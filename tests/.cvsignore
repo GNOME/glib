@@ -33,6 +33,7 @@ markup-test
 markup-escape-test
 module-test
 node-test
+option-test
 printf-test
 queue-test
 qsort-test
