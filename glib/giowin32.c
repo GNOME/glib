@@ -364,9 +364,11 @@ buffer_read (GIOWin32Channel *channel,
       LOCK (channel->mutex);
       if (channel->wrp == channel->rdp && !channel->running)
 	{
+	  if (channel->debug)
+	    g_print ("wrp==rdp, !running\n");
 	  UNLOCK (channel->mutex);
           *bytes_read = 0;
-	  return G_IO_STATUS_NORMAL; /* as before, normal case ? */
+	  return G_IO_STATUS_EOF;
 	}
     }
   

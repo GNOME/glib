@@ -1,3 +1,14 @@
+2002-02-19  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn-win32.c: Include <config.h> first here, too. Use
+	g_io_channel_read_chars() instead of (deprecated)
+	g_io_channel_read(). Set encoding to NULL for the channels used
+	for the pipes from the child.
+
+	* glib/giowin32.c (buffer_read): Do return G_IO_STATUS_EOF when
+	EOF has been reached. Otherwise, with the above change to
+	gspawn-win32.c, spawn-test hangs.
+
 Mon Feb 18 20:18:23 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/Makefile.am (EXTRA_DIST): Remove

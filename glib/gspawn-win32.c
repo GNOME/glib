@@ -37,6 +37,8 @@
 /* Define this to get some logging all the time */
 /* #define G_SPAWN_WIN32_DEBUG */
 
+#include <config.h>
+
 #include "glib.h"
 
 #include <string.h>
@@ -187,13 +189,13 @@ read_data (GString     *str,
            GIOChannel  *iochannel,
            GError     **error)
 {
-  GIOError gioerror;
+  GIOStatus giostatus;
   gint bytes;
   gchar buf[4096];
 
  again:
   
-  gioerror = g_io_channel_read (iochannel, buf, sizeof (buf), &bytes);
+  giostatus = g_io_channel_read_chars (iochannel, buf, sizeof (buf), &bytes, NULL);
 
   if (bytes == 0)
     return READ_EOF;
@@ -202,9 +204,9 @@ read_data (GString     *str,
       g_string_append_len (str, buf, bytes);
       return READ_OK;
     }
-  else if (gioerror == G_IO_ERROR_AGAIN)
+  else if (giostatus == G_IO_STATUS_AGAIN)
     goto again;
-  else if (gioerror != G_IO_ERROR_NONE)
+  else if (giostatus == G_IO_STATUS_ERROR)
     {
       g_set_error (error,
                    G_SPAWN_ERROR,
@@ -312,6 +314,7 @@ g_spawn_sync (const gchar          *working_directory,
     {
       outstr = g_string_new ("");
       outchannel = g_io_channel_win32_new_fd (outpipe);
+      g_io_channel_set_encoding (outchannel, NULL, NULL);
       g_io_channel_win32_make_pollfd (outchannel,
 				      G_IO_IN | G_IO_ERR | G_IO_HUP,
 				      &outfd);
@@ -321,6 +324,7 @@ g_spawn_sync (const gchar          *working_directory,
     {
       errstr = g_string_new ("");
       errchannel = g_io_channel_win32_new_fd (errpipe);
+      g_io_channel_set_encoding (errchannel, NULL, NULL);
       g_io_channel_win32_make_pollfd (errchannel,
 				      G_IO_IN | G_IO_ERR | G_IO_HUP,
 				      &errfd);
