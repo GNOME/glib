@@ -1494,7 +1494,7 @@ g_io_channel_unix_new (gint fd)
   if (fstat (fd, &st) == 0)
     return g_io_channel_win32_new_fd_internal (fd, &st);
   
-  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SO_ERROR)
+  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SOCKET_ERROR)
     return g_io_channel_win32_new_socket(fd);
 
   g_warning (G_STRLOC ": %d is neither a file descriptor or a socket", fd);
