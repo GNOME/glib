@@ -48,9 +48,6 @@
 
 #ifdef G_OS_WIN32
 #include <io.h>
-typedef FILE* GFileDescriptor;
-#else
-typedef gint GFileDescriptor;
 #endif
 
 /* --- structures --- */
@@ -88,20 +85,39 @@ static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING
 #  define STRICT
 #  include <windows.h>
 #  undef STRICT
-#  include <process.h>          /* For _getpid() */
 static gboolean win32_keep_fatal_message = FALSE;
 
+/* This function lifted from GLib HEAD */
+static guint
+g_win32_get_windows_version (void)
+{
+  static gboolean beenhere = FALSE;
+  static guint version;
+
+  if (!beenhere)
+    {
+      if (getenv ("G_WIN32_PRETEND_WIN9X"))
+	version = 0x80000004;
+      else
+	version = GetVersion ();
+      beenhere = TRUE;
+    }
+  return version;
+}
+
+#define G_WIN32_IS_NT_BASED() (g_win32_get_windows_version () < 0x80000000)
+#define G_WIN32_HAVE_WIDECHAR_API() (G_WIN32_IS_NT_BASED ())
+
 /* This default message will usually be overwritten. */
-/* Yes, a fixed size buffer is bad. So sue me. But g_error is never
- * with huge strings, is it?
+/* Yes, a fixed size buffer is bad. So sue me. But g_error() is never
+ * called with huge strings, is it?
  */
 static gchar  fatal_msg_buf[1000] = "Unspecified fatal error encountered, aborting.";
 static gchar *fatal_msg_ptr = fatal_msg_buf;
 
-/* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 static inline int
-dowrite (GFileDescriptor fd,
+dowrite (int          fd,
 	 const void  *buf,
 	 unsigned int len)
 {
@@ -113,65 +129,17 @@ dowrite (GFileDescriptor fd,
       return len;
     }
 
-  fwrite (buf, len, 1, fd);
-  fflush (fd);
+  write (fd, buf, len);
 
   return len;
 }
 #define write(fd, buf, len) dowrite(fd, buf, len)
 
-static void
-ensure_stdout_valid (void)
-{
-  static gboolean alloc_console_called = FALSE;
-  HANDLE handle;
-
-  if (win32_keep_fatal_message)
-    return;
-
-  if (!alloc_console_called)
-    {
-      handle = (HANDLE) _get_osfhandle (fileno (stdout)); 
-  
-      if (handle == INVALID_HANDLE_VALUE)
-	{
-	  AllocConsole ();
-	  alloc_console_called = TRUE;
-	  freopen ("CONOUT$", "w", stdout);
-	}
-    }
-}
-
-static void
-ensure_stderr_valid (void)
-{
-  static gboolean alloc_console_called = FALSE;
-  HANDLE handle;
-
-  if (win32_keep_fatal_message)
-    return;
-
-  if (!alloc_console_called)
-    {
-      handle = (HANDLE) _get_osfhandle (fileno (stderr)); 
-
-      if (handle == INVALID_HANDLE_VALUE)
-	{
-	  AllocConsole ();
-	  alloc_console_called = TRUE;
-	  freopen ("CONOUT$", "w", stderr);
-	}
-    }
-}
-
-#else
-#define ensure_stdout_valid()	/* Define as empty */
-#define ensure_stderr_valid()
 #endif
 
 static void
-write_string (GFileDescriptor fd,
-	      const gchar    *string)
+write_string (int          fd,
+	      const gchar *string)
 {
   write (fd, string, strlen (string));
 }
@@ -582,7 +550,6 @@ strdup_convert (const gchar *string,
 	  if (!warned)
 	    {
 	      warned = TRUE;
-	      ensure_stderr_valid ();
 	      _g_fprintf (stderr, "GLib: Cannot convert message: %s\n", err->message);
 	    }
 	  g_error_free (err);
@@ -668,7 +635,7 @@ format_unsigned (gchar  *buf,
 
 #define	ALERT_LEVELS		(G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)
 
-static GFileDescriptor
+static int
 mklevel_prefix (gchar level_prefix[STRING_BUFFER_SIZE],
 		guint log_level)
 {
@@ -717,20 +684,8 @@ mklevel_prefix (gchar level_prefix[STRING_BUFFER_SIZE],
 
 #ifdef G_OS_WIN32
   win32_keep_fatal_message = (log_level & G_LOG_FLAG_FATAL) != 0;
-
-  if (to_stdout)
-    {
-      ensure_stdout_valid ();
-      return stdout;
-    }
-  else
-    {
-      ensure_stderr_valid ();
-      return stderr;
-    }
-#else
-  return to_stdout ? 1 : 2;
 #endif
+  return to_stdout ? 1 : 2;
 }
 
 void
@@ -739,9 +694,12 @@ _g_log_fallback_handler (const gchar   *log_domain,
 			 const gchar   *message,
 			 gpointer       unused_data)
 {
-  gchar level_prefix[STRING_BUFFER_SIZE], pid_string[FORMAT_UNSIGNED_BUFSIZE];
+  gchar level_prefix[STRING_BUFFER_SIZE];
+#ifndef G_OS_WIN32
+  gchar pid_string[FORMAT_UNSIGNED_BUFSIZE];
+#endif
   gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
-  GFileDescriptor fd;
+  int fd;
 
   /* we can not call _any_ GLib functions in this fallback handler,
    * which is why we skip UTF-8 conversion, etc.
@@ -754,15 +712,21 @@ _g_log_fallback_handler (const gchar   *log_domain,
   if (!message)
     message = "(NULL) message";
 
+#ifndef G_OS_WIN32
   format_unsigned (pid_string, getpid (), 10);
+#endif
 
   if (log_domain)
     write_string (fd, "\n");
   else
     write_string (fd, "\n** ");
+
+#ifndef G_OS_WIN32
   write_string (fd, "(process:");
   write_string (fd, pid_string);
   write_string (fd, "): ");
+#endif
+
   if (log_domain)
     {
       write_string (fd, log_domain);
@@ -846,7 +810,7 @@ g_log_default_handler (const gchar   *log_domain,
   gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gchar level_prefix[STRING_BUFFER_SIZE], *string;
   GString *gstring;
-  GFileDescriptor fd;
+  int fd;
 
   /* we can be called externally with recursion for whatever reason */
   if (log_level & G_LOG_FLAG_RECURSION)
@@ -869,10 +833,53 @@ g_log_default_handler (const gchar   *log_domain,
     {
       const gchar *prg_name = g_get_prgname ();
       
+#ifdef G_OS_WIN32
+      if (prg_name)
+	prg_name = g_strdup (prg_name);
+      else
+	{
+	  if (G_WIN32_HAVE_WIDECHAR_API ())
+	    {
+	      wchar_t buf[MAX_PATH+1];
+	      if (GetModuleFileNameW (GetModuleHandle (NULL),
+				      buf, G_N_ELEMENTS (buf)) > 0)
+		{
+		  gchar *utf8_buf = g_utf16_to_utf8 (buf, -1,
+						     NULL, NULL, NULL);
+		  if (utf8_buf)
+		    {
+		      prg_name = g_path_get_basename (utf8_buf);
+		      g_free (utf8_buf);
+		    }
+		}
+	    }
+	  else
+	    {
+	      gchar buf[MAX_PATH+1];
+	      if (GetModuleFileNameA (GetModuleHandle (NULL),
+				      buf, G_N_ELEMENTS (buf)) > 0)
+		{
+		  gchar *locale_buf = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
+		  if (locale_buf)
+		    {
+		      prg_name = g_path_get_basename (locale_buf);
+		      g_free (locale_buf);
+		    }
+		}
+	    }
+	}
+
+      if (prg_name)
+	{
+	  g_string_append_printf (gstring, "(%s): ", prg_name);
+	  g_free ((gchar *) prg_name);
+	}
+#else
       if (!prg_name)
 	g_string_append_printf (gstring, "(process:%lu): ", (gulong)getpid ());
       else
 	g_string_append_printf (gstring, "(%s:%lu): ", prg_name, (gulong)getpid ());
+#endif
     }
 
   if (log_domain)
@@ -952,7 +959,6 @@ g_print (const gchar *format,
     {
       const gchar *charset;
 
-      ensure_stdout_valid ();
       if (g_get_charset (&charset))
 	fputs (string, stdout); /* charset is UTF-8 already */
       else
@@ -1004,7 +1010,6 @@ g_printerr (const gchar *format,
     {
       const gchar *charset;
 
-      ensure_stderr_valid ();
       if (g_get_charset (&charset))
 	fputs (string, stderr); /* charset is UTF-8 already */
       else
