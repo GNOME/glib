@@ -100,8 +100,8 @@ g_list_pop_allocator (void)
   G_UNLOCK (current_allocator);
 }
 
-inline GList*
-g_list_alloc (void)
+static inline GList*
+_g_list_alloc (void)
 {
   GList *list;
 
@@ -140,6 +140,12 @@ g_list_alloc (void)
   return list;
 }
 
+GList*
+g_list_alloc (void)
+{
+  return _g_list_alloc ();
+}
+
 void
 g_list_free (GList *list)
 {
@@ -153,8 +159,8 @@ g_list_free (GList *list)
     }
 }
 
-inline void
-g_list_free_1 (GList *list)
+static inline void
+_g_list_free_1 (GList *list)
 {
   if (list)
     {
@@ -166,6 +172,12 @@ g_list_free_1 (GList *list)
     }
 }
 
+void
+g_list_free_1 (GList *list)
+{
+  _g_list_free_1 (list);
+}
+
 GList*
 g_list_append (GList	*list,
 	       gpointer	 data)
@@ -173,7 +185,7 @@ g_list_append (GList	*list,
   GList *new_list;
   GList *last;
   
-  new_list = g_list_alloc ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
   
   if (list)
@@ -195,7 +207,7 @@ g_list_prepend (GList	 *list,
 {
   GList *new_list;
   
-  new_list = g_list_alloc ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
   
   if (list)
@@ -229,7 +241,7 @@ g_list_insert (GList	*list,
   if (!tmp_list)
     return g_list_append (list, data);
   
-  new_list = g_list_alloc ();
+  new_list = _g_list_alloc ();
   new_list->data = data;
   
   if (tmp_list->prev)
@@ -285,7 +297,7 @@ g_list_remove (GList	*list,
 	  if (list == tmp)
 	    list = list->next;
 	  
-	  g_list_free_1 (tmp);
+	  _g_list_free_1 (tmp);
 	  
 	  break;
 	}
@@ -293,9 +305,9 @@ g_list_remove (GList	*list,
   return list;
 }
 
-inline GList*
-g_list_remove_link (GList *list,
-		    GList *link)
+static inline GList*
+_g_list_remove_link (GList *list,
+		     GList *link)
 {
   if (link)
     {
@@ -315,11 +327,18 @@ g_list_remove_link (GList *list,
 }
 
 GList*
+g_list_remove_link (GList *list,
+		    GList *link)
+{
+  return _g_list_remove_link (list, link);
+}
+
+GList*
 g_list_delete_link (GList *list,
 		    GList *link)
 {
-  list = g_list_remove_link (list, link);
-  g_list_free_1 (link);
+  list = _g_list_remove_link (list, link);
+  _g_list_free_1 (link);
 
   return list;
 }
@@ -333,13 +352,13 @@ g_list_copy (GList *list)
     {
       GList *last;
 
-      new_list = g_list_alloc ();
+      new_list = _g_list_alloc ();
       new_list->data = list->data;
       last = new_list;
       list = list->next;
       while (list)
 	{
-	  last->next = g_list_alloc ();
+	  last->next = _g_list_alloc ();
 	  last->next->prev = last;
 	  last = last->next;
 	  last->data = list->data;
@@ -520,7 +539,7 @@ g_list_insert_sorted (GList        *list,
   
   if (!list) 
     {
-      new_list = g_list_alloc();
+      new_list = _g_list_alloc ();
       new_list->data = data;
       return new_list;
     }
@@ -533,7 +552,7 @@ g_list_insert_sorted (GList        *list,
       cmp = (*func) (data, tmp_list->data);
     }
 
-  new_list = g_list_alloc();
+  new_list = _g_list_alloc ();
   new_list->data = data;
 
   if ((!tmp_list->next) && (cmp > 0))

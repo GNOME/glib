@@ -1669,7 +1669,7 @@ G_INLINE_FUNC void
 g_trash_stack_push (GTrashStack **stack_p,
 		    gpointer      data_p)
 {
-  GTrashStack *data = data_p;
+  GTrashStack *data = (GTrashStack *) data_p;
 
   data->next = *stack_p;
   *stack_p = data;

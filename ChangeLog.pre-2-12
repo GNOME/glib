@@ -1,3 +1,12 @@
+1999-08-17  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h (g_trash_stack_push): Add a cast.
+
+	* gslist.c
+	* glist.c: Make the inline functions static inline, and add
+	separate extern wrappers. Not all compilers produce callable entry
+	points for inline functions, even if gcc does.
+
 Sun Aug 15 02:47:14 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h (g_trash_stack_pop): eliminate memset() call, since string.h
