@@ -1,5 +1,11 @@
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.5.5 ===
+
+	* NEWS: Updates
+
+2004-11-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/glib.symbols: Add new functions.
 
 	* glib/gconvert.c: Fix doc comment for 
