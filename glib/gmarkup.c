@@ -48,7 +48,8 @@ typedef enum
   STATE_INSIDE_ATTRIBUTE_NAME,
   STATE_BETWEEN_ATTRIBUTES,
   STATE_AFTER_ATTRIBUTE_EQUALS_SIGN,
-  STATE_INSIDE_ATTRIBUTE_VALUE,
+  STATE_INSIDE_ATTRIBUTE_VALUE_SQ,
+  STATE_INSIDE_ATTRIBUTE_VALUE_DQ,
   STATE_INSIDE_TEXT,
   STATE_AFTER_CLOSE_TAG_SLASH,
   STATE_INSIDE_CLOSE_TAG_NAME,
@@ -1213,11 +1214,17 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
           break;
 
         case STATE_AFTER_ATTRIBUTE_EQUALS_SIGN:
-          /* Possible next state: INSIDE_ATTRIBUTE_VALUE */
+          /* Possible next state: INSIDE_ATTRIBUTE_VALUE_[SQ/DQ] */
           if (*context->iter == '"')
             {
               advance_char (context);
-              context->state = STATE_INSIDE_ATTRIBUTE_VALUE;
+              context->state = STATE_INSIDE_ATTRIBUTE_VALUE_DQ;
+              context->start = context->iter;
+            }
+          else if (*context->iter == '\'')
+            {
+              advance_char (context);
+              context->state = STATE_INSIDE_ATTRIBUTE_VALUE_SQ;
               context->start = context->iter;
             }
           else
@@ -1235,15 +1242,28 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
             }
           break;
 
-        case STATE_INSIDE_ATTRIBUTE_VALUE:
+        case STATE_INSIDE_ATTRIBUTE_VALUE_SQ:
+        case STATE_INSIDE_ATTRIBUTE_VALUE_DQ:
           /* Possible next states: BETWEEN_ATTRIBUTES */
-          do
-            {
-              if (*context->iter == '"')
-                break;
-            }
-          while (advance_char (context));
+	  {
+	    gchar delim;
 
+	    if (context->state == STATE_INSIDE_ATTRIBUTE_VALUE_SQ) 
+	      {
+		delim = '\'';
+	      }
+	    else 
+	      {
+		delim = '"';
+	      }
+
+	    do
+	      {
+		if (*context->iter == delim)
+		  break;
+	      }
+	    while (advance_char (context));
+	  }
           if (context->iter == context->current_text_end)
             {
               /* The value hasn't necessarily ended. Merge with
@@ -1599,7 +1619,8 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
                    "following an attribute name; no attribute value"));
       break;
 
-    case STATE_INSIDE_ATTRIBUTE_VALUE:
+    case STATE_INSIDE_ATTRIBUTE_VALUE_SQ:
+    case STATE_INSIDE_ATTRIBUTE_VALUE_DQ:
       set_error (context, error, G_MARKUP_ERROR_PARSE,
                  _("Document ended unexpectedly while inside an attribute "
                    "value"));

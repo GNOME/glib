@@ -1,3 +1,10 @@
+2002-02-09  Matthias Clasen  <matthias@local>
+
+	* tests/markups/valid-4.gmarkup: Test attribute value delimiters.
+
+	* glib/gmarkup.c (g_markup_parse_context_parse): Support 
+	' and " as attribute value delimiters.  (#70677)
+
 2002-02-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Make --disable-threads work again. (#71034)
