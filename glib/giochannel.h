@@ -296,6 +296,10 @@ GLIB_VAR GSourceFuncs g_io_watch_funcs;
 
 #ifdef G_OS_WIN32
 
+/* You can use this "pseudo file descriptor" in a GPollFD to add
+ * polling for Windows messages. GTK applications should not do that.
+ */
+
 #define G_WIN32_MSG_HANDLE 19981206
 
 /* Use this to get a GPollFD from a GIOChannel, so that you can call
@@ -314,13 +318,6 @@ void        g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 gint        g_io_channel_win32_poll   (GPollFD    *fds,
 				       gint        n_fds,
 				       gint        timeout_);
-
-/* This is used to add polling for Windows messages. GDK (GTk+) programs
- * should *not* use this.
- */
-void        g_main_poll_win32_msg_add (gint        priority,
-				       GPollFD    *fd,
-				       guint       hwnd);
 
 /* Create an IO channel for Windows messages for window handle hwnd. */
 GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
