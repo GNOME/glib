@@ -37,7 +37,7 @@
 
 #include <glib.h>
 
-#ifdef G_THREAD_ENABLED
+#ifdef G_THREADS_ENABLED
 
 static gboolean thread_system_already_initialized = FALSE;
 static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
