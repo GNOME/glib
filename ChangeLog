@@ -1,3 +1,27 @@
+Mon Oct 16 11:11:06 2000  Tim Janik  <timj@gtk.org>
+
+	* configure.in: up version number to 1.2.9, interface 9, binary 9.
+
+	* gstrfuncs.c (g_printf_string_upper_bound): added patchy hack to
+	pad us around segfaults for usages of '\'' in decimal conversions.
+	applied patch from jody:
+
+2000-10-15  Jody Goldberg <jgoldberg@home.com>
+
+        * gstrfuncs.c (g_printf_string_upper_bound) : Add 'G' as a valid
+         character.
+
+Sun Aug  6 20:06:02 2000  Tim Janik  <timj@gtk.org>
+
+	* gmessages.c (g_log_domain_check_free): keep *last updated while
+	running through the domain list, so we don't screw up the removal,
+	patch provided by Gady Kozma <gadykozma@hotmail.com>.
+
+Sun Aug  6 20:03:41 2000  Tim Janik  <timj@gtk.org>
+
+	* gmessages.c (g_log_remove_handler): keep *last updated while running
+	through the handler list, so we don't screw up the removal.
+
 2000-09-30  Martin Baulig  <baulig@suse.de>
 
 	* glib.pc.in, gmodule.pc.in, gthread.pc.in: Provide

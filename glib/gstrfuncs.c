@@ -849,6 +849,9 @@ g_printf_string_upper_bound (const gchar* format,
 		  long_int = TRUE;
 		  extra_long = TRUE;
 		  break;
+		case '\'':
+		  len += 64;
+		  break;
 		case 's':
 		  string_arg = va_arg (args, char *);
 		  if (string_arg)
@@ -891,6 +894,7 @@ g_printf_string_upper_bound (const gchar* format,
 		case 'E':
 		case 'f':
 		case 'g':
+		case 'G':
 #ifdef HAVE_LONG_DOUBLE
 		  if (extra_long)
 		    (void) va_arg (args, long double);
