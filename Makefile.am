@@ -23,6 +23,7 @@ EXTRA_DIST = 			\
 	makefile.msc		\
 	makefile.mingw		\
 	glibconfig.h.win32.in	\
+	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
         po/po2tbl.sed.in        \
 	glib-2.0.pc.in 		\

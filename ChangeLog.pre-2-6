@@ -1,3 +1,15 @@
+2002-01-05  Hans Breuer  <hans@breuer.org>
+
+	* glibconfig.h.win32.in 
+	  msvc_recommended_pragmas.h (new file) : moved warning to
+	error pragmas to their own file to not force 'good practice'
+	programming in downstream libs and apps. Instead the new header
+	will be used by -FImsvc_recommended_pragmas.h in gnome/cvs
+	makefile.msc
+	* */makefile.msc.in : use -FImsvc_recommended_pragmas.h
+
+	* makefile.am : add msvc_recommended_pragmas.h to EXTRA_DIST
+
 2001-12-31  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_get_any_init): (Win32) Use longer buffer for
