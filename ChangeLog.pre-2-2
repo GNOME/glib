@@ -1,5 +1,15 @@
+Sat Nov 21 14:57:39 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* INSTALL:
+	  NEWS:
+	  README:
+	  configure.in:
+	  glib.spec: Updated to version 1.1.5
+
+	* Released GLib 1.1.5
+
 Wed Nov 18 1998 Elliot Lee <sopwith@redhat.com>
-	. gdataset.c: There was a code path into g_data_set_internal
+	* gdataset.c: There was a code path into g_data_set_internal
 	  through a function (g_datalist_id_set_full). Neither function
 	  checked for g_dataset_init having been run, but
 	  g_data_set_internal used the memchunk. I added

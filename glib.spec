@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      1.1.4
+%define ver      1.1.5
 %define rel      SNAP
 %define prefix   /usr
 
@@ -9,7 +9,7 @@ Version: %ver
 Release: %rel
 Copyright: LGPL
 Group: Libraries
-Source: ftp://ftp.gimp.org/pub/gtk/v1.0/glib-%{ver}.tar.gz
+Source: ftp://ftp.gimp.org/pub/gtk/v1.1/glib-%{ver}.tar.gz
 BuildRoot: /tmp/glib-root
 URL: http://www.gtk.org
 Docdir: %{prefix}/doc

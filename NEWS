@@ -1,3 +1,33 @@
+Overview of Changes in GLib 1.1.5:
+
+* Win32 portability
+* GIOChannel structure to encapsulate the IPC mechanism 
+* Reimplemented endian stuff, using inline asm for x86
+* New functions:
+  - g_strescape: escapes backslashes
+  - g_path_is_absolute and g_path_skip_root
+  - g_getenv: expands environment variables that contain references 
+    to other environment variables
+  - g_scanner_sync_file_offset: rewind the filedescriptor to the current
+    buffer position and blow the file read ahead buffer
+  - g_array_remove_index: remove an entry, preserving the order
+  - g_array_remove_index_fast: remove an entry, order might be distorted
+  - g_ptr_array_remove: remove an entry, preserving the order 
+  - g_ptr_array_remove_fast: remove an entry, order might be distorted
+  - g_byte_array_remove_index: wrapper for g_array_remove_index
+  - g_byte_array_remove_index_fast: wrapper for g_array_remove_index_fast
+  - g_strncasecmp: modeled closely after g_strcasecmp
+  - g_list_sort, g_slist_sort: to merge sort GLists and GSLists
+* New macros:
+  - G_DIR_SEPARATOR, G_DIR_SEPARATOR_S: platform-dependant file name
+    syntax elements
+  - G_SEARCHPATH_SEPARATOR, G_SEARCHPATH_SEPARATOR_S: platform-dependant
+    search path syntax conventions
+  - G_STRUCT_OFFSET, G_STRUCT_MEMBER_P, G_STRUCT_MEMBER: for handling
+    structure fields through their offsets
+* Removed G_ENUM, G_FLAGS, G_NV, and G_SV macros
+* Bug fixes
+
 Overview of Changes in GLib 1.1.4:
 
 * Added generic callback maintenance functions (ghook)
