@@ -1189,9 +1189,6 @@ _______EOF
 	if test x$glib_values_h = xyes; then
 	  echo '#include <values.h>' >> $outfile
 	fi
-	if test x$g_mutex_header_file != x; then
-	  echo '#include <'"$g_mutex_header_file"'>' >> $outfile
-	fi
 	if test "$glib_header_alloca_h" = "yes"; then
 	  echo '#define GLIB_HAVE_ALLOCA_H' >> $outfile
 	fi
