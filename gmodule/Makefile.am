@@ -8,6 +8,7 @@ EXTRA_DIST =	\
 		gmodule.def	\
 		gmodule-dl.c	\
 		gmodule-dld.c	\
+		gmodule-os2.c	\
 		gmodule-win32.c	\
 		gmoduleconf.h.win32
 

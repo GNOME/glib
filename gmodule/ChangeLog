@@ -1,3 +1,7 @@
+Mon Apr 19 08:43:59 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
+
+	* Makefile.am (EXTRA_DIST): Add gmodule-os2.c
+
 Wed Apr  7 20:12:58 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
 
 	* gmodule-os2.c: OS/2 specific file for gmodule.
