@@ -1,5 +1,11 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * gtree.c - balanced binary tree container
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copyright 1998 Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -80,6 +86,7 @@ static void       g_tree_node_check                 (GTreeNode      *node);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GSList *node_free_list = NULL;
+G_THREAD_SPROTECT(node_free_list)
 
 
 GTree*
@@ -238,6 +245,8 @@ g_tree_node_new (gpointer key,
   GTreeNode *node;
   GSList *tmp_list;
 
+  g_thread_lock(node_free_list);
+
   if (node_free_list)
     {
       tmp_list = node_free_list;
@@ -259,6 +268,8 @@ g_tree_node_new (gpointer key,
       node = g_chunk_new (GTreeNode, node_mem_chunk);
     }
 
+  g_thread_unlock(node_free_list);
+
   node->balance = 0;
   node->left = NULL;
   node->right = NULL;
@@ -273,7 +284,10 @@ g_tree_node_destroy (GTreeNode *node)
 {
   if (node)
     {
+      g_thread_lock(node_free_list);
       node_free_list = g_slist_prepend (node_free_list, node);
+      g_thread_unlock(node_free_list);
+
       g_tree_node_destroy (node->right);
       g_tree_node_destroy (node->left);
     }
@@ -379,7 +393,9 @@ g_tree_node_remove (GTreeNode    *node,
 	  node = g_tree_node_restore_right_balance (new_root, old_balance);
 	}
 
+      g_thread_lock(node_free_list);
       node_free_list = g_slist_prepend (node_free_list, garbage);
+      g_thread_unlock(node_free_list);
     }
   else if (cmp < 0)
     {

@@ -1,5 +1,10 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/*
+ * gprimes.c - Prime number table and function(s).
+ *
+ * MT-Level: Safe
+ *
+ * GLIB - Library of useful routines for C programming
+ * Copyright 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
