@@ -1,5 +1,9 @@
 2004-08-21  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/giowin32.c (g_io_win32_finalize): Tell select_thread to
+	break out of its loop. Prevents a thread leak. (#147392, Peter
+	Zelezny)
+
 	* glib/gunicollate.c (g_utf8_collate_key): Guard against bogus
 	return value from strxfrm(). For instance Microsoft's strxfrm()
 	returns INT_MAX on errors. (#141124)
