@@ -1,3 +1,9 @@
+1999-03-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Added a check for the right format to printf and
+	scanf long longs. It is %qi instead of %lli on FreeBSD for
+	whatever reason.
+
 1999-03-28  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (glibconfig.h): Make sure `glibconfig.h' exists

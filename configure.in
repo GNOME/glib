@@ -199,6 +199,25 @@ AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 
+if test x$ac_cv_sizeof_long_long = x8; then
+	# long long is a 64 bit integer.
+	AC_MSG_CHECKING(for format to printf and scanf a gint64)
+	AC_CACHE_VAL(glib_cv_long_long_format,[
+		AC_TRY_RUN([#include <stdio.h>  
+			int main()
+			{
+			  long long b, a = -0x3AFAFAFAFAFAFAFALL;
+			  char buffer[1000];
+			  sprintf (buffer, "%llu", a);
+  			  sscanf (buffer, "%llu", &b);
+			  exit (b!=a);
+			}
+			],
+			glib_cv_long_long_format=ll,
+			glib_cv_long_long_format=q)])
+	AC_MSG_RESULT(%${glib_cv_long_long_format}i)
+fi
+
 dnl long doubles were not used, and a portability problem
 dnl AC_C_LONG_DOUBLE
 AC_C_CONST
@@ -1128,8 +1147,8 @@ $ac_cv_sizeof_long)
   ;;
 $ac_cv_sizeof_long_long)
   gint64='long long'
-  gint64_format='"lli"'
-  guint64_format='"llu"'
+  gint64_format='"'$glib_cv_long_long_format'i"'
+  guint64_format='"'$glib_cv_long_long_format'u"'
   glib_extension='G_GNUC_EXTENSION '
   glib_warning_guard="
 #if defined (__GNUC__) && __GNUC__ >= 2 && __GNUC_MINOR__ >= 8
