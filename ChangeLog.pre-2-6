@@ -1,3 +1,12 @@
+Wed Sep 30 10:53:03 1998  Tim Janik  <timj@gtk.org>
+
+	* Makefile.am: added ghook.c.
+
+	* glib.h:
+ 	* ghook.c: generic callback maintenance functions.
+
+	* glib.h: define G_GNUC_UNUSED.
+
 Fri Sep 25 00:04:37 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in: version bump to 1.1.4, binary age 0, interface age 0.

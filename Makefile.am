@@ -26,6 +26,7 @@ libglib_la_SOURCES = \
 		gdataset.c	\
 		gerror.c	\
 		ghash.c		\
+		ghook.c		\
 		glist.c		\
 		gmem.c		\
 		gmessages.c	\

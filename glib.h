@@ -131,11 +131,11 @@ extern "C" {
  */
 #if !defined (G_VA_COPY)
 #  if defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (_WIN32))
-#  define G_VA_COPY(ap1, ap2)     (*(ap1) = *(ap2))
+#  define G_VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
 #  elif defined (G_VA_COPY_AS_ARRAY)
-#  define G_VA_COPY(ap1, ap2)     g_memmove ((ap1), (ap2), sizeof (va_list))
+#  define G_VA_COPY(ap1, ap2)	  g_memmove ((ap1), (ap2), sizeof (va_list))
 #  else /* va_list is a pointer */
-#  define G_VA_COPY(ap1, ap2)     ((ap1) = (ap2))
+#  define G_VA_COPY(ap1, ap2)	  ((ap1) = (ap2))
 #  endif /* va_list is a pointer */
 #endif /* !G_VA_COPY */
 
@@ -184,7 +184,7 @@ extern "C" {
 #    else /* !inline && !__inline__ && !__inline */
 #      define inline /* don't inline, then */
 #      ifndef G_INLINE_FUNC
-#        undef G_CAN_INLINE
+#	 undef G_CAN_INLINE
 #      endif
 #    endif
 #  endif
@@ -245,12 +245,15 @@ extern "C" {
   __attribute__((noreturn))
 #define G_GNUC_CONST				\
   __attribute__((const))
+#define G_GNUC_UNUSED				\
+  __attribute__((unused))
 #else	/* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
 #define G_GNUC_FORMAT( arg_idx )
 #define G_GNUC_NORETURN
 #define G_GNUC_CONST
+#define	G_GNUC_UNUSED
 #endif	/* !__GNUC__ */
 
 
@@ -303,8 +306,8 @@ extern "C" {
  */
 
 #ifdef __DMALLOC_H__
-#  define g_new(type, count)	 	(ALLOC (type, count))
-#  define g_new0(type, count)	 	(CALLOC (type, count))
+#  define g_new(type, count)		(ALLOC (type, count))
+#  define g_new0(type, count)		(CALLOC (type, count))
 #  define g_renew(type, mem, count)	(REALLOC (mem, type, count))
 #else /* __DMALLOC_H__ */
 #  define g_new(type, count)	  \
@@ -572,6 +575,8 @@ typedef struct _GCompletion	GCompletion;
 typedef	struct _GData		GData;
 typedef struct _GDebugKey	GDebugKey;
 typedef struct _GHashTable	GHashTable;
+typedef struct _GHook		GHook;
+typedef struct _GHookList	GHookList;
 typedef struct _GList		GList;
 typedef struct _GListAllocator	GListAllocator;
 typedef struct _GMemChunk	GMemChunk;
@@ -617,7 +622,7 @@ typedef enum
   /* log flags */
   G_LOG_FLAG_RECURSION		= 1 << 0,
   G_LOG_FLAG_FATAL		= 1 << 1,
-
+  
   /* GLib log levels */
   G_LOG_LEVEL_ERROR		= 1 << 2,	/* always fatal */
   G_LOG_LEVEL_CRITICAL		= 1 << 3,
@@ -625,7 +630,7 @@ typedef enum
   G_LOG_LEVEL_MESSAGE		= 1 << 5,
   G_LOG_LEVEL_INFO		= 1 << 6,
   G_LOG_LEVEL_DEBUG		= 1 << 7,
-
+  
   G_LOG_LEVEL_MASK		= ~(G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL)
 } GLogLevelFlags;
 
@@ -652,6 +657,14 @@ typedef void		(*GHFunc)		(gpointer	key,
 typedef gboolean	(*GHRFunc)		(gpointer	key,
 						 gpointer	value,
 						 gpointer	user_data);
+typedef gint		(*GHookCompareFunc)	(GHook		*new_hook,
+						 GHook		*sibling);
+typedef gboolean	(*GHookFindFunc)	(GHook		*hook,
+						 gpointer	 data);
+typedef void		(*GHookMarshaller)	(GHook		*hook,
+						 gpointer	 data);
+typedef void		(*GHookFunc)		(gpointer	 data);
+typedef gboolean	(*GHookCheckFunc)	(gpointer	 data);
 typedef void		(*GLogFunc)		(const gchar   *log_domain,
 						 GLogLevelFlags	log_level,
 						 const gchar   *message,
@@ -992,6 +1005,112 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 					 ((GNode*) (node))->children : NULL)
 
 
+/* Callback maintenance functions
+ */
+#define G_HOOK_FLAG_USER_SHIFT	(4)
+typedef enum
+{
+  G_HOOK_ACTIVE		= 1 << 0,
+  G_HOOK_IN_CALL	= 1 << 1,
+  G_HOOK_FLAG_MASK	= 0x0f
+} GHookFlagMask;
+
+struct _GHookList
+{
+  guint		 seq_id;
+  guint		 hook_size;
+  guint		 is_setup : 1;
+  GHook		*hooks;
+  GMemChunk	*hook_memchunk;
+};
+
+struct _GHook
+{
+  gpointer	 data;
+  GHook		*next;
+  GHook		*prev;
+  guint		 ref_count;
+  guint		 id;
+  guint		 flags;
+  gpointer	 func;
+  GDestroyNotify destroy;
+};
+
+#define	G_HOOK_IS_ACTIVE(hook)		((((GHook*) hook)->flags & \
+					  G_HOOK_ACTIVE) != 0)
+#define	G_HOOK_IS_IN_CALL(hook)		((((GHook*) hook)->flags & \
+					  G_HOOK_IN_CALL) != 0)
+#define G_HOOK_IS_VALID(hook)		(((GHook*) hook)->id != 0 && \
+					 G_HOOK_IS_ACTIVE (hook))
+#define G_HOOK_IS_UNLINKED(hook)	(((GHook*) hook)->next == NULL && \
+					 ((GHook*) hook)->prev == NULL && \
+					 ((GHook*) hook)->id == 0 && \
+					 ((GHook*) hook)->ref_count == 0)
+
+void	 g_hook_list_init		(GHookList		*hook_list,
+					 guint			 hook_size);
+void	 g_hook_list_clear		(GHookList		*hook_list);
+GHook*	 g_hook_alloc			(GHookList		*hook_list);
+void	 g_hook_free			(GHookList		*hook_list,
+					 GHook			*hook);
+void	 g_hook_ref			(GHookList		*hook_list,
+					 GHook			*hook);
+void	 g_hook_unref			(GHookList		*hook_list,
+					 GHook			*hook);
+gboolean g_hook_destroy			(GHookList		*hook_list,
+					 guint			 id);
+void	 g_hook_destroy_link		(GHookList		*hook_list,
+					 GHook			*hook);
+void	 g_hook_prepend			(GHookList		*hook_list,
+					 GHook			*hook);
+void	 g_hook_insert_before		(GHookList		*hook_list,
+					 GHook			*sibling,
+					 GHook			*hook);
+void	 g_hook_insert_sorted		(GHookList		*hook_list,
+					 GHook			*hook,
+					 GHookCompareFunc	 func);
+GHook*	 g_hook_get			(GHookList		*hook_list,
+					 guint			 id);
+GHook*	 g_hook_find			(GHookList		*hook_list,
+					 gboolean		 need_valids,
+					 GHookFindFunc		 func,
+					 gpointer		 data);
+GHook*	 g_hook_find_data		(GHookList		*hook_list,
+					 gboolean		 need_valids,
+					 gpointer		 data);
+GHook*	 g_hook_find_func		(GHookList		*hook_list,
+					 gboolean		 need_valids,
+					 gpointer		 func);
+GHook*	 g_hook_find_func_data		(GHookList		*hook_list,
+					 gboolean		 need_valids,
+					 gpointer		 func,
+					 gpointer		 data);
+GHook*	 g_hook_first_valid		(GHookList		*hook_list);
+GHook*	 g_hook_next_valid		(GHook			*hook);
+gint	 g_hook_compare_ids		(GHook			*new_hook,
+					 GHook			*sibling);
+
+/* convenience macros */
+#define	 g_hook_append( hook_list, hook )  \
+     g_hook_insert_before ((hook_list), NULL, (hook))
+
+/* invoke all valid hooks with the (*GHookFunc) signature.
+ */
+void	 g_hook_list_invoke		(GHookList		*hook_list,
+					 gboolean		 may_recurse);
+/* invoke all valid hooks with the (*GHookCheckFunc) signature,
+ * and destroy the hook if FALSE is returned.
+ */
+void	 g_hook_list_invoke_check	(GHookList		*hook_list,
+					 gboolean		 may_recurse);
+/* invoke a marshaller on all valid hooks.
+ */
+void	 g_hook_list_marshall		(GHookList		*hook_list,
+					 gboolean		 may_recurse,
+					 GHookMarshaller	 marshaller,
+					 gpointer		 data);
+
+
 /* Fatal error handlers.
  * g_on_error_query() will prompt the user to either
  * [E]xit, [H]alt, [P]roceed or show [S]tack trace.
@@ -1171,7 +1290,7 @@ gdouble g_timer_elapsed (GTimer	 *timer,
 
 /* String utility functions
  */
-#define  G_STR_DELIMITERS	"_-|> <."
+#define	 G_STR_DELIMITERS	"_-|> <."
 void	 g_strdelimit		(gchar	     *string,
 				 const gchar *delimiters,
 				 gchar	      new_delimiter);
@@ -1181,12 +1300,12 @@ gchar*	 g_strdup_printf	(const gchar *format,
 gchar*	 g_strdup_vprintf	(const gchar *format,
 				 va_list      args);
 gchar*	 g_strndup		(const gchar *str,
-				 guint        n);
-gchar*   g_strnfill		(guint        length,
+				 guint	      n);
+gchar*	 g_strnfill		(guint	      length,
 				 gchar	      fill_char);
 gchar*	 g_strconcat		(const gchar *string1,
 				 ...); /* NULL terminated */
-gdouble  g_strtod		(const gchar *nptr,
+gdouble	 g_strtod		(const gchar *nptr,
 				 gchar	    **endptr);
 gchar*	 g_strerror		(gint	      errnum);
 gchar*	 g_strsignal		(gint	      signum);
@@ -1196,12 +1315,12 @@ void	 g_strdown		(gchar	     *string);
 void	 g_strup		(gchar	     *string);
 void	 g_strreverse		(gchar	     *string);
 gpointer g_memdup		(gconstpointer mem,
-				 guint         byte_size);
+				 guint	       byte_size);
 
 /* calculate a string size, guarranteed to fit format + args.
  */
 guint	g_printf_string_upper_bound (const gchar* format,
-				     va_list      args);
+				     va_list	  args);
 
 
 /* Retrive static string info
@@ -1294,7 +1413,7 @@ g_bit_nth_msf (guint32 mask,
   while (nth_bit > 0);
   return -1;
 }
-#endif  /* G_CAN_INLINE */
+#endif	/* G_CAN_INLINE */
 
 G_INLINE_FUNC guint	g_bit_storage (guint number);
 #ifdef G_CAN_INLINE
@@ -1302,7 +1421,7 @@ G_INLINE_FUNC guint
 g_bit_storage (guint number)
 {
   register guint n_bits = 0;
-
+  
   do
     {
       n_bits++;
@@ -1311,7 +1430,7 @@ g_bit_storage (guint number)
   while (number);
   return n_bits;
 }
-#endif  /* G_CAN_INLINE */
+#endif	/* G_CAN_INLINE */
 
 
 /* String Chunks
@@ -1368,18 +1487,18 @@ void	 g_string_sprintfa  (GString	 *string,
 #define g_array_prepend_val(a,v) g_array_prepend_vals(a,&v,1)
 #define g_array_index(a,t,i) (((t*)a->data)[i])
 
-GArray* g_array_new  	     (gboolean      zero_terminated,
-			      gboolean      clear,
-			      guint         element_size);
-void	g_array_free  	     (GArray       *array,
-			      gboolean      free_segment);
-GArray* g_array_append_vals  (GArray       *array,
+GArray* g_array_new	     (gboolean	    zero_terminated,
+			      gboolean	    clear,
+			      guint	    element_size);
+void	g_array_free	     (GArray	   *array,
+			      gboolean	    free_segment);
+GArray* g_array_append_vals  (GArray	   *array,
 			      gconstpointer data,
-			      guint         len);
-GArray* g_array_prepend_vals (GArray       *array,
+			      guint	    len);
+GArray* g_array_prepend_vals (GArray	   *array,
 			      gconstpointer data,
-			      guint         len);
-GArray* g_array_set_size     (GArray       *array,
+			      guint	    len);
+GArray* g_array_set_size     (GArray	   *array,
 			      guint	    length);
 
 /* Resizable pointer array.  This interface is much less complicated
@@ -1392,28 +1511,28 @@ void	    g_ptr_array_free		   (GPtrArray	*array,
 					    gboolean	 free_seg);
 void	    g_ptr_array_set_size	   (GPtrArray	*array,
 					    gint	 length);
-gpointer    g_ptr_array_remove_index       (GPtrArray   *array,
-					    gint         index);
-gboolean    g_ptr_array_remove             (GPtrArray   *array,
-					    gpointer     data);
-void        g_ptr_array_add                (GPtrArray   *array,
-					    gpointer     data);
+gpointer    g_ptr_array_remove_index	   (GPtrArray	*array,
+					    gint	 index);
+gboolean    g_ptr_array_remove		   (GPtrArray	*array,
+					    gpointer	 data);
+void	    g_ptr_array_add		   (GPtrArray	*array,
+					    gpointer	 data);
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,
  * but type-safe.
  */
 
-GByteArray* g_byte_array_new      (void);
-void	    g_byte_array_free     (GByteArray   *array,
-			           gboolean      free_segment);
-GByteArray* g_byte_array_append   (GByteArray   *array,
+GByteArray* g_byte_array_new	  (void);
+void	    g_byte_array_free	  (GByteArray	*array,
+				   gboolean	 free_segment);
+GByteArray* g_byte_array_append	  (GByteArray	*array,
 				   const guint8 *data,
-				   guint         len);
-GByteArray* g_byte_array_prepend  (GByteArray   *array,
+				   guint	 len);
+GByteArray* g_byte_array_prepend  (GByteArray	*array,
 				   const guint8 *data,
-				   guint         len);
-GByteArray* g_byte_array_set_size (GByteArray   *array,
-				   guint         length);
+				   guint	 len);
+GByteArray* g_byte_array_set_size (GByteArray	*array,
+				   guint	 length);
 
 
 /* Hash Functions
@@ -1538,7 +1657,7 @@ typedef enum
 typedef enum
 {
   G_TOKEN_EOF			=   0,
-
+  
   G_TOKEN_LEFT_PAREN		= '(',
   G_TOKEN_RIGHT_PAREN		= ')',
   G_TOKEN_LEFT_CURLY		= '{',
@@ -1547,11 +1666,11 @@ typedef enum
   G_TOKEN_RIGHT_BRACE		= ']',
   G_TOKEN_EQUAL_SIGN		= '=',
   G_TOKEN_COMMA			= ',',
-
+  
   G_TOKEN_NONE			= 256,
-
+  
   G_TOKEN_ERROR,
-
+  
   G_TOKEN_CHAR,
   G_TOKEN_BINARY,
   G_TOKEN_OCTAL,
@@ -1559,11 +1678,11 @@ typedef enum
   G_TOKEN_HEX,
   G_TOKEN_FLOAT,
   G_TOKEN_STRING,
-
+  
   G_TOKEN_SYMBOL,
   G_TOKEN_IDENTIFIER,
   G_TOKEN_IDENTIFIER_NULL,
-
+  
   G_TOKEN_COMMENT_SINGLE,
   G_TOKEN_COMMENT_MULTI,
   G_TOKEN_LAST
@@ -1592,11 +1711,11 @@ struct	_GScannerConfig
   gchar		*cset_identifier_first;
   gchar		*cset_identifier_nth;
   gchar		*cpair_comment_single;		/* default: "#\n" */
-
+  
   /* Should symbol lookup work case sensitive?
    */
   guint		case_sensitive : 1;
-
+  
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
@@ -1627,31 +1746,31 @@ struct	_GScanner
   /* unused fields */
   gpointer		user_data;
   guint			max_parse_errors;
-
+  
   /* g_scanner_error() increments this field */
   guint			parse_errors;
-
+  
   /* name of input stream, featured by the default message handler */
   const gchar		*input_name;
-
+  
   /* data pointer for derived structures */
   gpointer		derived_data;
-
+  
   /* link into the scanner configuration */
   GScannerConfig	*config;
-
+  
   /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
   GTokenValue		value;
   guint			line;
   guint			position;
-
+  
   /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
   GTokenValue		next_value;
   guint			next_line;
   guint			next_position;
-
+  
   /* to be considered private */
   GHashTable		*symbol_table;
   gint			input_fd;
@@ -1659,7 +1778,7 @@ struct	_GScanner
   const gchar		*text_end;
   gchar			*buffer;
   guint			scope_id;
-
+  
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };
@@ -1730,7 +1849,7 @@ struct _GCompletion
 {
   GList* items;
   GCompletionFunc func;
-
+  
   gchar* prefix;
   GList* cache;
 };
@@ -1800,12 +1919,12 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 
 /* This function returns prime numbers spaced by approximately 1.5-2.0
  * and is for use in resizing data structures which prefer
- * prime-valued sizes.  The closest spaced prime function returns the
+ * prime-valued sizes.	The closest spaced prime function returns the
  * next largest prime, or the highest it knows about which is about
  * MAXINT/4.
  */
 
-guint      g_spaced_primes_closest (guint num);
+guint	   g_spaced_primes_closest (guint num);
 
 /* Glib version.
  */
