@@ -2762,7 +2762,7 @@ typedef int pid_t;
  * <windows.h> every now and then...).
  *
  * You still need to include the appropriate headers to get the
- * prototypes, <io.h> or <direct.h>.
+ * prototypes, like <stdio.h>, <io.h>, <direct.h> or <process.h>.
  *
  * For some functions, we provide emulators in glib, which are prefixed
  * with gwin_.
@@ -2772,7 +2772,9 @@ typedef int pid_t;
 #    define access		_access
 #ifdef __GNUC__
 #    define stat		_stat
+#    define fileno		_fileno
 #endif
+#    define fstat		_fstat
 #    define unlink		_unlink
 #    define open		_open
 #    define read		_read

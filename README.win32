@@ -84,14 +84,15 @@ typically is installed as
 C:/cygnus/cygwin-b20/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/egcs-2.91.66/specs.
 
 Sorry for the illegibility of this diff, but the specs file is like
-that... This diff replaces -lcrtdll with -lmsvcrt, replaces crt1 with
-crt2, and defines __MSVCRT__.
+that... This patch replaces -lcrtdll with -lmsvcrt, replaces crt1 with
+crt2, removes -lmoldname (because that might pull in crtdll.dll), and
+defines __MSVCRT__.
 
 --- specs.ORIG	Sun Apr 25 00:40:40 1999
 +++ specs	Sun Apr 25 00:48:04 1999
 @@ -23 +23 @@
 -%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmoldname -lcrtdll}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
-+%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmoldname -lmsvcrt}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
++%{pg:-lgmon}                   %{!mno-cygwin:-lcygwin}                   %{mno-cygwin:-lmingw32 -lmsvcrt}                   %{mwindows:-luser32 -lgdi32 -lcomdlg32} 		  -lkernel32 -ladvapi32 -lshell32
 @@ -29 +29 @@
 -%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt1%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt1%O%s} %{pg:gcrt0%O%s}}
 +%{mdll: %{!mno-cygwin:dllcrt0%O%s}                                 %{mno-cygwin:dllcrt2%O%s}}                         %{!mdll: %{!mno-cygwin:crt0%O%s}                                  %{mno-cygwin:crt2%O%s} %{pg:gcrt0%O%s}}

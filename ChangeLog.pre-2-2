@@ -1,3 +1,11 @@
+1999-05-12  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.h (Win32): Map fileno to _fileno for mingw32. Map fstat to
+ 	_fstat.
+
+	* README.win32: Advice also to remove -lmoldname from the
+ 	patch to the egcs-1.1.2 spec file patch.
+
 Wed May 12 00:23:55 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* gmodule/Makefile.am: Another small fix.
