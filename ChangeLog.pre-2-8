@@ -1,4 +1,4 @@
-1999-04-30  Tor Lillqvist  <tml@localhost.localdomain>
+1999-04-30  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Don't distribute glibconfig.h.win32.in, but
 	glibconfig.h.win32. Generate it when making a dist. Also generate
