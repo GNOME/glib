@@ -27,65 +27,30 @@
 #include "glib.h"
 #include <unistd.h>
 
-typedef struct _GIOChannelPrivate GIOChannelPrivate;
-
-struct _GIOChannelPrivate {
-  GIOChannel channel;
-  GIOFuncs *funcs;
-  guint ref_count;
-  gboolean closed;
-};
-
-GIOChannel *
-g_io_channel_new (GIOFuncs *funcs,
-		  gpointer  channel_data)
+void
+g_io_channel_init (GIOChannel *channel)
 {
-  GIOChannelPrivate *result;
-  GIOChannel *channel;
-  
-  g_return_val_if_fail (funcs != NULL, NULL);
-  
-  result = g_new (GIOChannelPrivate, 1);
-  channel = (GIOChannel *)result;
-  
-  result->funcs = funcs;
-  result->ref_count = 1;
-  result->closed = FALSE;
-
-  channel->channel_data = channel_data;
-  return channel;
+  channel->channel_flags = 0;
+  channel->ref_count = 1;
 }
 
 
 void 
 g_io_channel_ref (GIOChannel *channel)
 {
-  GIOChannelPrivate *private;
   g_return_if_fail (channel != NULL);
 
-  private = (GIOChannelPrivate *)channel;
-
-  private->ref_count++;
+  channel->ref_count++;
 }
 
 void 
 g_io_channel_unref (GIOChannel *channel)
 {
-  GIOChannelPrivate *private;
   g_return_if_fail (channel != NULL);
 
-  private = (GIOChannelPrivate *)channel;
-
-  private->ref_count--;
-  if (private->ref_count == 0)
-    {
-      /* We don't want to close the channel here, because
-       * the channel may just be wrapping a file or socket
-       * that the app is independently manipulating.
-       */
-      private->funcs->io_free (channel);
-      g_free (private);
-    }
+  channel->ref_count--;
+  if (channel->ref_count == 0)
+    channel->funcs->io_free (channel);
 }
 
 GIOError 
@@ -94,12 +59,9 @@ g_io_channel_read (GIOChannel *channel,
 		   guint       count,
 		   guint      *bytes_read)
 {
-  GIOChannelPrivate *private = (GIOChannelPrivate *)channel;
-
   g_return_val_if_fail (channel != NULL, G_IO_ERROR_UNKNOWN);
-  g_return_val_if_fail (!private->closed, G_IO_ERROR_UNKNOWN);
 
-  return private->funcs->io_read (channel, buf, count, bytes_read);
+  return channel->funcs->io_read (channel, buf, count, bytes_read);
 }
 
 GIOError 
@@ -108,12 +70,9 @@ g_io_channel_write (GIOChannel *channel,
 		    guint       count,
 		    guint      *bytes_written)
 {
-  GIOChannelPrivate *private = (GIOChannelPrivate *)channel;
-
   g_return_val_if_fail (channel != NULL, G_IO_ERROR_UNKNOWN);
-  g_return_val_if_fail (!private->closed, G_IO_ERROR_UNKNOWN);
 
-  return private->funcs->io_write (channel, buf, count, bytes_written);
+  return channel->funcs->io_write (channel, buf, count, bytes_written);
 }
 
 GIOError 
@@ -121,24 +80,17 @@ g_io_channel_seek  (GIOChannel   *channel,
 		    gint        offset, 
 		    GSeekType   type)
 {
-  GIOChannelPrivate *private = (GIOChannelPrivate *)channel;
-
   g_return_val_if_fail (channel != NULL, G_IO_ERROR_UNKNOWN);
-  g_return_val_if_fail (!private->closed, G_IO_ERROR_UNKNOWN);
 
-  return private->funcs->io_seek (channel, offset, type);
+  return channel->funcs->io_seek (channel, offset, type);
 }
      
 void
 g_io_channel_close (GIOChannel *channel)
 {
-  GIOChannelPrivate *private = (GIOChannelPrivate *)channel;
-
   g_return_if_fail (channel != NULL);
-  g_return_if_fail (!private->closed);
 
-  private->closed = TRUE;
-  private->funcs->io_close (channel);
+  channel->funcs->io_close (channel);
 }
 
 guint 
@@ -149,12 +101,9 @@ g_io_add_watch_full (GIOChannel      *channel,
 		     gpointer       user_data,
 		     GDestroyNotify notify)
 {
-  GIOChannelPrivate *private = (GIOChannelPrivate *)channel;
-
   g_return_val_if_fail (channel != NULL, 0);
-  g_return_val_if_fail (!private->closed, 0);
 
-  return private->funcs->io_add_watch (channel, priority, condition,
+  return channel->funcs->io_add_watch (channel, priority, condition,
 				       func, user_data, notify);
 }
 

@@ -1,3 +1,8 @@
+Tue Dec 15 17:17:46 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h giounix.c giochannel.c: Use an "inheritance"
+	scheme for IO channel memory allocation.h
+
 1998-12-15  Havoc Pennington  <hp@pobox.com>
 
 	* gdate.c (g_date_prepare_to_parse): Solaris has a broken strftime

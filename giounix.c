@@ -37,6 +37,7 @@ typedef struct _GIOUnixChannel GIOUnixChannel;
 typedef struct _GIOUnixWatch GIOUnixWatch;
 
 struct _GIOUnixChannel {
+  GIOChannel channel;
   gint fd;
 };
 
@@ -141,7 +142,7 @@ g_io_unix_read (GIOChannel *channel,
 		guint      count,
 		guint     *bytes_read)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   gint result;
 
   result = read (unix_channel->fd, buf, count);
@@ -172,7 +173,7 @@ g_io_unix_write(GIOChannel *channel,
 		guint      count,
 		guint     *bytes_written)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   gint result;
 
   result = write (unix_channel->fd, buf, count);
@@ -202,7 +203,7 @@ g_io_unix_seek (GIOChannel *channel,
 		gint      offset, 
 		GSeekType type)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   int whence;
   off_t result;
 
@@ -242,7 +243,7 @@ g_io_unix_seek (GIOChannel *channel,
 static void 
 g_io_unix_close (GIOChannel *channel)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
 
   close (unix_channel->fd);
 }
@@ -250,7 +251,7 @@ g_io_unix_close (GIOChannel *channel)
 static void 
 g_io_unix_free (GIOChannel *channel)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
 
   g_free (unix_channel);
 }
@@ -264,7 +265,7 @@ g_io_unix_add_watch (GIOChannel    *channel,
 		     GDestroyNotify notify)
 {
   GIOUnixWatch *watch = g_new (GIOUnixWatch, 1);
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   
   watch->channel = channel;
   g_io_channel_ref (channel);
@@ -284,14 +285,18 @@ GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
   GIOUnixChannel *unix_channel = g_new (GIOUnixChannel, 1);
+  GIOChannel *channel = (GIOChannel *)unix_channel;
+
+  g_io_channel_init (channel);
+  channel->funcs = &unix_channel_funcs;
 
   unix_channel->fd = fd;
-  return g_io_channel_new (&unix_channel_funcs, unix_channel);
+  return channel;
 }
 
 gint
 g_io_channel_unix_get_fd (GIOChannel *channel)
 {
-  GIOUnixChannel *unix_channel = channel->channel_data;
+  GIOUnixChannel *unix_channel = g_new (GIOUnixChannel, 1);
   return unix_channel->fd;
 }

@@ -2341,8 +2341,11 @@ typedef enum {
 #endif
 } GIOCondition;
 
-struct _GIOChannel {
-  gpointer channel_data;
+struct _GIOChannel
+{
+  guint channel_flags;
+  guint ref_count;
+  GIOFuncs *funcs;
 };
 
 typedef gboolean (*GIOFunc) (GIOChannel   *source,
@@ -2371,11 +2374,10 @@ struct _GIOFuncs {
   void (*io_free)       (GIOChannel *channel);
 };
 
-GIOChannel *g_io_channel_new    (GIOFuncs      *funcs,
-				 gpointer       channel_data);
-void      g_io_channel_ref      (GIOChannel    *channel);
-void      g_io_channel_unref    (GIOChannel    *channel);
-GIOError  g_io_channel_read     (GIOChannel    *channel, 
+void        g_io_channel_init   (GIOChannel    *channel);
+void        g_io_channel_ref    (GIOChannel    *channel);
+void        g_io_channel_unref  (GIOChannel    *channel);
+GIOError    g_io_channel_read   (GIOChannel    *channel, 
 			         gchar         *buf, 
 			         guint          count,
 			         guint         *bytes_read);
