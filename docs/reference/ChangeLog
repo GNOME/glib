@@ -1,5 +1,7 @@
 2003-08-08  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/macros_misc.sgml: Copy the G_GNUC_DEPRECATED docs from HEAD.
+
 	* glib/glib-docs.sgml: 
 	* gobject/gobject-docs.sgml: Add an index of all symbols.
 

@@ -120,8 +120,15 @@ for a const function to return void.
 
 <!-- ##### MACRO G_GNUC_DEPRECATED ##### -->
 <para>
-
+Expands to the GNU C <literal>deprecated</literal> attribute if the compiler 
+is <command>gcc</command>.
+It can be used to mark typedefs, variables and functions as deprecated. 
+When called with the <option>-Wdeprecated</option> option, the compiler will 
+generate warnings when deprecated interfaces are used.
+See the GNU C documentation for details. 
 </para>
+
+@Since: 2.2
 
 
 
