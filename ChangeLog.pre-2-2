@@ -1,3 +1,8 @@
+2002-02-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fix test for posix like
+	pthread_cond_timedwait. (#70525)
+
 2002-01-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Get the right multithread option for GCC 3.0 and

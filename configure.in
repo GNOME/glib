@@ -890,6 +890,7 @@ if test x"$have_threads" != xnone; then
 		AC_MSG_CHECKING(whether pthread_cond_timedwait is posix like)
 		# DCE Threads return -1 as failure, posix ETIMEDOUT.
 		AC_TRY_RUN([#include <pthread.h>
+			#include <sys/time.h>
 			int main () { 
 			pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 			pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
@@ -898,6 +899,7 @@ if test x"$have_threads" != xnone; then
 			gettimeofday (&tval, NULL);
 			tspec.tv_sec = tval.tv_sec;
 			tspec.tv_nsec = 0;
+			pthread_mutex_lock (&mutex);
 			return pthread_cond_timedwait (&cond,&mutex,&tspec) 
 				!= -1;}],
 			[AC_MSG_RESULT(no)],
