@@ -801,7 +801,7 @@ g_date_set_time (GDate *d,
 #ifdef HAVE_LOCALTIME_R
   localtime_r (&t, &tm);
 #else
-#  ifdef G_THREADS_ENABLED
+#  if defined(G_THREADS_ENABLED) && defined(__GNUC__)
 #  warning "the `g_date_set_time' function will not be MT-safe"
 #  warning "because there is no `localtime_r' on your system."
 #  endif

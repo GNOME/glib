@@ -1,3 +1,7 @@
+Tue Jan 12 09:57:06 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* gdate.c: #warning isn't portable, check for gcc
+
 1999-01-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
         * gdate.c: Include config.h to get HAVE_LOCALTIME_R macro.
