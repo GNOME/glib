@@ -3,6 +3,7 @@
 # Keld Simonsen <keld@dkuug.dk>, 2001.
 # Kjartan Maraas <kmaraas@gnome.org>, 2001.
 # Ole Laursen <olau@hardworking.dk>, 2002, 03.
+# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004.
 #
 # Konventioner:
 #
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-02 17:54-0500\n"
-"PO-Revision-Date: 2003-11-20 21:30+0100\n"
-"Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
+"POT-Creation-Date: 2004-11-04 13:39+0100\n"
+"PO-Revision-Date: 2004-11-04 13:39+0100\n"
+"Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +24,12 @@ msgstr ""
 #: glib/gconvert.c:403
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Konvertering fra tegnsæt '%s' til '%s' er ikke understøttet"
+msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
 #: glib/gconvert.c:407
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Kunne ikke åbne konverterer fra '%s' til '%s': %s"
+msgstr "Kunne ikke åbne konverterer fra \"%s\" til \"%s\""
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
@@ -50,37 +51,37 @@ msgstr "Delvis tegnsekvens ved slutningen af inddata"
 #: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Kan ikke konvertere tilbagefaldet '%s' til tegnsæt '%s'"
+msgstr "Kan ikke konvertere tilbagefaldet \"%s\" til tegnsæt \"%s\""
 
 #: glib/gconvert.c:1597
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI'en '%s' er ikke en absolut fil-URI"
+msgstr "URI'en \"%s\" er ikke en absolut URI, ved brug af \"fil\"-metoden"
 
 #: glib/gconvert.c:1607
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Den lokale fil-URI '%s' må ikke indeholde en '#'"
+msgstr "Den lokale fil-URI \"%s\" må ikke indeholde en '#'"
 
 #: glib/gconvert.c:1624
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI'en '%s' er ugyldig"
+msgstr "URI'en \"%s\" er ugyldig"
 
 #: glib/gconvert.c:1636
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Værtsnavnet for URI'en '%s' er ugyldig"
+msgstr "Værtsnavnet for URI'en \"%s\" er ugyldig"
 
 #: glib/gconvert.c:1652
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI'en '%s' indeholder ugyldigt beskyttede tegn"
+msgstr "URI'en \"%s\" indeholder ugyldigt beskyttede tegn"
 
 #: glib/gconvert.c:1722
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "Stinavnet '%s' er ikke en absolut sti"
+msgstr "Stinavnet \"%s\" er ikke en absolut sti"
 
 #: glib/gconvert.c:1732
 msgid "Invalid hostname"
@@ -89,7 +90,7 @@ msgstr "Ugyldigt værtsnavn"
 #: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Fejl ved åbning af mappen '%s': %s"
+msgstr "Fejl ved åbning af mappen \"%s\": %s"
 
 #: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
@@ -99,61 +100,62 @@ msgstr "Kunne ikke allokere %lu byte til at læse filen \"%s\""
 #: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Fejl ved læsning af filen '%s': %s"
+msgstr "Fejl ved læsning af filen \"%s\": %s"
 
 #: glib/gfileutils.c:592
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Fejl ved læsning fra filen '%s': %s"
+msgstr "Fejl ved læsning fra filen \"%s\": %s"
 
-#: glib/gfileutils.c:641 glib/gfileutils.c:726
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Fejl ved åbning af filen '%s': %s"
+msgstr "Fejl ved åbning af filen \"%s\": %s"
 
 #: glib/gfileutils.c:656
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Fejl ved finding af egenskaber for filen '%s': fstat() mislykkedes: %s"
+msgstr ""
+"Fejl ved finding af egenskaber for filen \"%s\": fstat() mislykkedes: %s"
 
 #: glib/gfileutils.c:688
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Fejl under åbning af filen '%s': fdopen() mislykkedes: %s"
+msgstr "Fejl under åbning af filen \"%s\": fdopen() mislykkedes: %s"
 
-#: glib/gfileutils.c:1009
+#: glib/gfileutils.c:1012
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Skabelonen '%s' er ugyldig, må ikke indeholde en '%s'"
+msgstr "Skabelonen \"%s\" er ugyldig, må ikke indeholde en \"%s\""
 
-#: glib/gfileutils.c:1021
+#: glib/gfileutils.c:1026
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Skabelonen '%s' slutter ikke med XXXXXX"
+msgstr "Skabelonen \"%s\" slutter ikke med XXXXXX"
 
-#: glib/gfileutils.c:1042
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Fejl under oprettelse af filen '%s': %s"
+msgstr "Fejl under oprettelse af filen \"%s\": %s"
 
-#: glib/gfileutils.c:1418
+#: glib/gfileutils.c:1425
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Kunne ikke læse den symbolske henvisning '%s': %s"
+msgstr "Kunne ikke læse den symbolske henvisning \"%s\": %s"
 
-#: glib/gfileutils.c:1439
+#: glib/gfileutils.c:1446
 msgid "Symbolic links not supported"
 msgstr "Symbolske henvisninger er ikke understøttet"
 
 #: glib/giochannel.c:1144
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Konvertering fra tegnsæt '%s' til '%s' er ikke understøttet"
+msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
 #: glib/giochannel.c:1148
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Kunne ikke åbne konverterer fra '%s' til '%s': %s"
+msgstr "Kunne ikke åbne konverterer fra \"%s\" til \"%s\": %s"
 
 #: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -194,19 +196,19 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Tegnet '%s' er ikke gyldigt ved starten af et entitetnavn; &-tegnet starter "
-"en entitet; hvis dette og-tegn ikke er beregnet på at være en entitet, så "
-"undgå dette ved at bruge &amp; i stedet"
+"Tegnet \"%s\" er ikke gyldigt ved starten af et entitetnavn; &-tegnet "
+"starter en entitet; hvis dette og-tegn ikke er beregnet på at være en "
+"entitet, så undgå dette ved at bruge &amp; i stedet"
 
 #: glib/gmarkup.c:461
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Tegnet '%s' er ikke gyldigt inde i et entitetsnavn"
+msgstr "Tegnet \"%s\" er ikke gyldigt inde i et entitetsnavn"
 
 #: glib/gmarkup.c:505
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "Entitetsnavnet '%s' er ikke kendt"
+msgstr "Entitetsnavnet \"%s\" er ikke kendt"
 
 #: glib/gmarkup.c:515
 msgid ""
@@ -223,13 +225,13 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Fejl ved fortolkning af '%s' som skulle have været et ciffer i en "
+"Fejl ved fortolkning af \"%s\" som skulle have været et ciffer i en "
 "tegnreference (&#234; for eksempel) - måske er cifret for stort"
 
 #: glib/gmarkup.c:586
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Tegnreferencen '%s' koder ikke et tilladt tegn"
+msgstr "Tegnreferencen \"%s\" koder ikke et tilladt tegn"
 
 #: glib/gmarkup.c:603
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -267,7 +269,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' er ikke et gyldigt tegn efter et '<'-tegn; det kan ikke være "
+"\"%s\" er ikke et gyldigt tegn efter et '<'-tegn; det kan ikke være "
 "begyndelsen på et elementnavn"
 
 #: glib/gmarkup.c:1093
@@ -276,16 +278,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Mærkeligt tegn '%s', forventede et '>'-tegn for at afslutte "
-"begyndelsesmærket til elementet '%s'"
+"Mærkeligt tegn \"%s\", forventede et '>'-tegn for at afslutte "
+"begyndelsesmærket til elementet \"%s\""
 
 #: glib/gmarkup.c:1181
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Mærkeligt tegn '%s', forventede et '=' efter egenskabsnavn '%s' for "
-"elementet '%s'"
+"Mærkeligt tegn \"%s\", forventede et '=' efter egenskabsnavn \"%s\" for "
+"elementet \"%s\""
 
 #: glib/gmarkup.c:1222
 #, c-format
@@ -294,8 +296,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Mærkeligt tegn '%s', forventede tegnet '>' eller '/' for at afslutte "
-"begyndelsesmærket til elementet '%s' eller alternativt en egenskab; måske "
+"Mærkeligt tegn \"%s\", forventede tegnet '>' eller '/' for at afslutte "
+"begyndelsesmærket til elementet \"%s\" eller alternativt en egenskab; måske "
 "brugte du et ugyldigt tegn i egenskabsnavnet"
 
 #: glib/gmarkup.c:1310
@@ -304,8 +306,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Mærkeligt tegn '%s', forventede et åbningsanførselstegn efter lighedstegnet "
-"når værdien for egenskaben '%s' for elementet '%s' angives"
+"Mærkeligt tegn \"%s\", forventede et åbningsanførselstegn efter "
+"lighedstegnet når værdien for egenskaben \"%s\" for elementet \"%s\" angives"
 
 #: glib/gmarkup.c:1451
 #, c-format
@@ -313,7 +315,7 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' er ikke et gyldigt tegn efter tegnene '</'; '%s' er måske ikke "
+"\"%s\" er ikke et gyldigt tegn efter tegnene '</'; \"%s\" er måske ikke "
 "begyndelsen på et elementnavn"
 
 #: glib/gmarkup.c:1490
@@ -322,18 +324,18 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' er ikke et gyldigt tegn efter det lukkende elementnavn '%s'; tilladt "
-"tegn er '>'"
+"\"%s\" er ikke et gyldigt tegn efter det lukkende elementnavn \"%s\"; "
+"tilladt tegn er '>'"
 
 #: glib/gmarkup.c:1501
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Element '%s' blev lukket, ingen åbne elementer nu"
+msgstr "Element \"%s\" blev lukket, ingen åbne elementer nu"
 
 #: glib/gmarkup.c:1510
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Element '%s' blev lukket, men aktivt åbent element er '%s'"
+msgstr "Element \"%s\" blev lukket, men aktivt åbent element er \"%s\""
 
 #: glib/gmarkup.c:1657
 msgid "Document was empty or contained only whitespace"
@@ -349,7 +351,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokumentet sluttede uventet med åbne elementer - '%s' var sidste åbne element"
+"Dokumentet sluttede uventet med åbne elementer - \"%s\" var sidste åbne "
+"element"
 
 #: glib/gmarkup.c:1687
 #, c-format
@@ -387,7 +390,8 @@ msgstr "Dokumentet sluttede uventet inden i en egenskabsværdi"
 #: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokumentet sluttede uventet inden i lukningsmærket for elementet '%s'"
+msgstr ""
+"Dokumentet sluttede uventet inden i lukningsmærket for elementet \"%s\""
 
 #: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -406,14 +410,14 @@ msgstr ""
 #: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Tekst sluttede lige efter et '\\' tegn (teksten var '%s')"
+msgstr "Tekst sluttede lige efter et '\\' tegn (teksten var \"%s\")"
 
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekst sluttede før tilsvarende anførselstegn blev fundet for %c (teksten var "
-"'%s')"
+"\"%s\")"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -448,7 +452,7 @@ msgstr "Fejl under kørsel af underprocess (%s)"
 #: glib/gspawn-win32.c:987 glib/gspawn.c:1218
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Fejl ved skift til mappen '%s' (%s)"
+msgstr "Fejl ved skift til mappen \"%s\" (%s)"
 
 #: glib/gspawn-win32.c:1041 glib/gspawn.c:1349
 #, c-format
@@ -516,42 +520,42 @@ msgstr "Tegn uden for gyldigt interval for UTF-16"
 
 #: glib/goption.c:402
 msgid "Usage:"
-msgstr ""
+msgstr "Brug:"
 
 #: glib/goption.c:402
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[FLAG...]"
 
 #: glib/goption.c:489
 msgid "Help Options:"
-msgstr ""
+msgstr "Flag for hjælp:"
 
 #: glib/goption.c:489
 msgid "Show help options"
-msgstr ""
+msgstr "Vis flag for hjælp"
 
 #: glib/goption.c:493
 msgid "Show all help options"
-msgstr ""
+msgstr "Vis alle flag for hjælp"
 
 #: glib/goption.c:541
 msgid "Application Options:"
-msgstr ""
+msgstr "Flag for programmet:"
 
 #: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Kan ikke fortolke heltalsværdien \"%s\" for --%s"
 
 #: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Heltalsværdien \"%s\" for %s er ikke i gyldigt interval"
 
 #: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Ukendt flag %s"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Forkert beskedsstørrelse"
