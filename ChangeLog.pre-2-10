@@ -1,3 +1,16 @@
+2004-03-03  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/child-test.c: Use a macro GPID_FORMAT for the format to
+	print GPid in (%p on Win32, %d on Unix). Maybe configure.in should
+	place that in glibconfig.h?
+
+	Print verbose error message if CreateProcess() fails.
+
+	Don't close the child handle until in the child watch callback.
+
+	Don't try to run /bin/true on Win32. Run ipconfig instead (just to
+	pick a program that should exist on all Window boxes).
+
 2004-03-02  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gatomic.c: Fixed missing definition for ppc code. Fix by

@@ -38,6 +38,12 @@
 #include <windows.h>
 #endif
 
+#ifdef G_OS_WIN32
+#define GPID_FORMAT "%p"
+#else
+#define GPID_FORMAT "%d"
+#endif
+
 GMainLoop *main_loop;
 gint alive;
 
@@ -62,7 +68,7 @@ get_a_child (gint ttl)
   cmdline = g_strdup_printf( "child-test -c%d", ttl);
 
   if (!CreateProcess (argv0, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
-    exit (1);
+    g_error ("CreateProcess failed: %s\n", g_win32_error_message (GetLastError ()));
 
   g_free(cmdline);
 
@@ -88,11 +94,9 @@ child_watch_callback (GPid pid, gint status, gpointer data)
 {
   gint ttl = GPOINTER_TO_INT (data);
 
-#ifndef G_OS_WIN32
-  g_print ("child %d (ttl %d) exited, status %d\n", pid, ttl, status);
-#else
-  g_print ("child %p (ttl %d) exited, status %d\n", pid, ttl, status);
-#endif
+  g_print ("child " GPID_FORMAT " (ttl %d) exited, status %d\n", pid, ttl, status);
+
+  g_spawn_close_pid (pid);
 
   if (--alive == 0)
     g_main_loop_quit (main_loop);
@@ -116,12 +120,7 @@ test_thread (gpointer data)
   g_source_attach (source, g_main_loop_get_context (new_main_loop));
   g_source_unref (source);
 
-#ifdef G_OS_WIN32
-  g_print ("whee! created pid: %p (ttl %d)\n", pid, ttl);
-  CloseHandle(pid);
-#else
-  g_print ("whee! created pid: %d (ttl %d)\n", pid, ttl);
-#endif
+  g_print ("whee! created pid: " GPID_FORMAT " (ttl %d)\n", pid, ttl);
 
   g_main_loop_run (new_main_loop);
 
@@ -137,16 +136,26 @@ main (int argc, char *argv[])
     {
       int ttl = atoi (argv[1] + 2);
       Sleep (ttl * 1000);
+      /* Exit on purpose with STILL_ACTIVE (which isn't a very common
+       * exit status) to verify that g_child_watch_check() in gmain.c
+       * doesn't believe a child still to be active if it happens to
+       * exit with that status.
+       */
       exit (STILL_ACTIVE);
     }
 #endif
   /* Only run the test, if threads are enabled and a default thread
-     implementation is available */
+   * implementation is available.
+   */
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
    g_thread_init (NULL);
   main_loop = g_main_loop_new (NULL, FALSE);
 
+#ifdef G_OS_WIN32
+  system ("ipconfig /all");
+#else
   system ("/bin/true");
+#endif
 
   alive = 2;
   g_thread_create (test_thread, GINT_TO_POINTER (10), FALSE, NULL);
