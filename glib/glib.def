@@ -129,6 +129,7 @@ EXPORTS
 	g_file_test
 	g_filename_from_utf8
 	g_filename_to_utf8
+	g_find_program_in_path
 	g_free
 	g_get_charset
 	g_get_codeset

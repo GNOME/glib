@@ -24,9 +24,6 @@ the prebuilt DLLs (especially of GTK+), you *must* also use that flag.
 (This flag means that the struct layout is identical to that used by
 MSVC.)
 
-To test the GLib functions, go to the tests subdirectory and enter
-`nmake -f makefile.msc check` or `make -f makefile.mingw check`.
-
 If you would want to use the cygwin tools to generate executables that
 *do* use the cygwin runtime, the normal Unix configuration method
 should work as if on Unix. But it won't produce DLLs. At least I

@@ -1,3 +1,17 @@
+2001-03-01  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c (g_path_is_absolute): (Win32) Remove test for initial
+	double backslash (UNC path), this will of course be matched by the
+	test for an initial G_DIR_SEPARATOR right up front. Silly me.
+	(g_find_program_in_path): Implement on Win32.
+	(g_get_any_init): (Win32) Also look for the USERPROFILE env var
+	indicating the home directory equivalent.
+
+	* testglib.c (main): Test g_find_program_in_path() on Win32 by
+	looking for more.com and regedit.exe.
+
+	* glib.def: Add g_find_program_in_path.
+
 2001-02-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthreadpool.c (g_thread_pool_thread_proxy): Make

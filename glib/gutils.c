@@ -67,6 +67,7 @@
 #ifdef G_OS_WIN32
 #  define STRICT			/* Strict typing, please */
 #  include <windows.h>
+#  undef STRICT
 #  include <ctype.h>
 #  include <direct.h>
 #endif /* G_OS_WIN32 */
@@ -173,12 +174,19 @@ g_find_program_in_path (const gchar *program)
 {
   const gchar *path, *p;
   gchar *name, *freeme;
+#ifdef G_OS_WIN32
+  gchar *path_tmp;
+#endif
   size_t len;
   size_t pathlen;
 
+  /* On Win32, should we try appending .exe, .com, and the other
+   * components of %PATHEXT% ?
+   */
+
   g_return_val_if_fail (program != NULL, NULL);
 
-  if (*program == '/')
+  if (g_path_is_absolute (program))
     {
       if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE))
         return g_strdup (program);
@@ -187,6 +195,7 @@ g_find_program_in_path (const gchar *program)
     }
   
   path = g_getenv ("PATH");
+#ifdef G_OS_UNIX
   if (path == NULL)
     {
       /* There is no `PATH' in the environment.  The default
@@ -201,6 +210,23 @@ g_find_program_in_path (const gchar *program)
       
       path = "/bin:/usr/bin:.";
     }
+#else
+  {
+    gchar *tmp;
+    gchar moddir[PATH_MAX], sysdir[PATH_MAX], windir[PATH_MAX];
+
+    GetModuleFileName (NULL, moddir, sizeof (moddir));
+    tmp = g_path_get_dirname (moddir);
+    GetSystemDirectory (sysdir, sizeof (sysdir));
+    GetWindowsDirectory (windir, sizeof (windir));
+    path_tmp = g_strconcat (tmp, ";.;", sysdir, ";", windir,
+			    (path != NULL ? ";" : NULL),
+			    (path != NULL ? path : NULL),
+			    NULL);
+    g_free (tmp);
+    path = path_tmp;
+  }
+#endif
   
   len = strlen (program) + 1;
   pathlen = strlen (path);
@@ -210,7 +236,7 @@ g_find_program_in_path (const gchar *program)
   memcpy (name + pathlen + 1, program, len);
   name = name + pathlen;
   /* And add the slash before the filename  */
-  *name = '/';
+  *name = G_DIR_SEPARATOR;
   
   p = path;
   do
@@ -218,7 +244,7 @@ g_find_program_in_path (const gchar *program)
       char *startp;
 
       path = p;
-      p = my_strchrnul (path, ':');
+      p = my_strchrnul (path, G_SEARCHPATH_SEPARATOR);
 
       if (p == path)
         /* Two adjacent colons, or a colon at the beginning or the end
@@ -233,12 +259,18 @@ g_find_program_in_path (const gchar *program)
           gchar *ret;
           ret = g_strdup (startp);
           g_free (freeme);
+#ifdef G_OS_WIN32
+	  g_free (path_tmp);
+#endif
           return ret;
         }
     }
   while (*p++ != '\0');
   
   g_free (freeme);
+#ifdef G_OS_WIN32
+  g_free (path_tmp);
+#endif
 
   return NULL;
 }
@@ -460,9 +492,6 @@ g_path_is_absolute (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   if (isalpha (file_name[0]) && file_name[1] == ':' && file_name[2] == G_DIR_SEPARATOR)
-    return TRUE;
-
-  if (file_name[0] == G_DIR_SEPARATOR && file_name[1] == G_DIR_SEPARATOR)
     return TRUE;
 #endif
 
@@ -735,7 +764,7 @@ g_get_any_init (void)
 	{
 	  /* USERPROFILE is probably the closest equivalent to $HOME? */
 	  if (getenv ("USERPROFILE") != NULL)
-	    g_home_dir = g_getenv ("USERPROFILE");
+	    g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
 	}
 
       if (!g_home_dir)
