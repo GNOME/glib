@@ -1697,7 +1697,7 @@ g_get_current_time (GTimeVal *result)
   /* Convert from 100s of nanoseconds since 1601-01-01
    * to Unix epoch. Yes, this is Y2038 unsafe.
    */
-  *time64 -= GUINT64_CONSTANT (116444736000000000);
+  *time64 -= G_GINT64_CONSTANT (116444736000000000);
   *time64 /= 10;
 
   result->tv_sec = *time64 / 1000000;
