@@ -403,7 +403,7 @@ g_poll (GPollFD *fds,
 		f->revents |= G_IO_IN;
 	  }
     }
-#if TEST_WITHOUT_THIS
+#if 1 /* TEST_WITHOUT_THIS */
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {

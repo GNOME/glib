@@ -873,7 +873,6 @@ fork_exec_with_pipes (gboolean              dont_wait,
   gint stderr_pipe[2] = { -1, -1 };
   gint child_err_report_pipe[2] = { -1, -1 };
   gint status;
-  gint bytes;
   gint buf[2];
   gint n_ints = 0;
   

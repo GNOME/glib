@@ -94,8 +94,9 @@ g_rand_new (void)
 {
   guint32 seed;
   GTimeVal now;
+#if G_OS_UNIX
   static gboolean dev_urandom_exists = TRUE;
-  
+
   if (dev_urandom_exists)
     {
       FILE* dev_urandom = fopen("/dev/urandom", "rb");
@@ -108,6 +109,10 @@ g_rand_new (void)
       else
 	dev_urandom_exists = FALSE;
     }
+#else
+  static gboolean dev_urandom_exists = FALSE;
+#endif
+
   if (!dev_urandom_exists)
     {  
       g_get_current_time (&now);

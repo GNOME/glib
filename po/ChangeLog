@@ -1,3 +1,9 @@
+2001-09-28  Tor Lillqvist  <tml@iki.fi>
+
+	* POTFILES.in: Add iochannel.c and giowin32.c.
+
+	* sv.po: Remove a bogus fuzziness indicator.
+
 2001-09-25  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* ca.po: Updated Catalan file

@@ -274,6 +274,19 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
   if (init)
     g_error ("Errorcheck mutexes can only be used for native " 
 	     "thread implementations. Sorry." );
+
+#ifdef HAVE_G_THREAD_IMPL_INIT
+  /* This isn't called in g_thread_init, as it doesn't think to get
+   * the default implementation, so we have to call it on our own.
+   *
+   * We must call this before copying
+   * g_thread_functions_for_glib_use_default as the
+   * implementation-specific init function might modify the contents
+   * of g_thread_functions_for_glib_use_default based on operating
+   * system version, C library version, or whatever. */
+  g_thread_impl_init();
+#endif
+
   errorcheck_functions = g_thread_functions_for_glib_use_default;
   errorcheck_functions.mutex_new = g_mutex_new_errorcheck_impl;
   errorcheck_functions.mutex_lock = 
@@ -290,12 +303,6 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
     (gboolean (*)(GCond *, GMutex *, GTimeVal *)) 
     g_cond_timed_wait_errorcheck_impl;
     
-#ifdef HAVE_G_THREAD_IMPL_INIT
-  /* This isn't called in g_thread_init, as it doesn't think to get
-   * the default implementation, so we have to call it on our own. */
-  g_thread_impl_init();
-#endif
-
   g_thread_init (&errorcheck_functions);
 }
 

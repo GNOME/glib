@@ -57,18 +57,22 @@ glib_OBJECTS =			\
 	gtimer.obj		\
 	gtree.obj		\
 	gunibreak.obj		\
-	gunicollate.obj	\
+	gunicollate.obj		\
 	gunidecomp.obj		\
 	guniprop.obj		\
 	gutf8.obj		\
 	gutils.obj		\
-	gwin32.obj
+	gwin32.obj		\
+	localcharset.obj
 
 ..\glibconfig.h: ..\glibconfig.h.win32
 	copy ..\glibconfig.h.win32 ..\glibconfig.h
 
 ..\config.h: ..\config.h.win32
 	copy ..\config.h.win32 ..\config.h
+
+localcharset.c : libcharset/localcharset.c
+	copy libcharset\localcharset.c localcharset.c
 
 ################ glib
 

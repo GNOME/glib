@@ -1,3 +1,41 @@
+2001-09-24  Bruno Haible  <haible@clisp.cons.org>
+
+	* glib/gwin32.c (g_win32_getlocale): When the sublangid is
+	SUBLANG_DEFAULT, return the locale of the language's main country,
+	not a country-neutral locale. E.g. "en_US" instead of "en". Add
+	handling of LANG_SORBIAN. Fix typo for SUBLANG_CHINESE_SIMPLIFIED
+	(China == CN, CH == Switzerland). Ignore empty environment
+	variable values.
+
+2001-09-28  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/makefile.{mingw,msc}.in: Add localcharset.o. Just copy the
+	source file from libcharset and compile in this directory.
+
+	* glib/giochannel.c: Mark rest of g_set_error strings for
+	translation, too.
+
+	* glib/giowin32.c: Add some debugging output functions, call them
+	when debugging.
+	(create_events, g_io_win32_msg_write): Free message fetched with
+	g_win32_error_message ().
+	(g_io_win32_check): Indentation fixes.
+	(g_io_win32_fd_read,g_io_win32_sock_read): Don't always return
+	G_IO_STATUS_NORMAL. Do return G_IO_STATUS_EOF if we got 0 bytes,
+	like on Unix. This helps making the test programs run
+	successfully.
+
+	* glib/gmain.c (g_poll): Return the code ifdeffed out with
+	TEST_WITHOUT_THIS. Can't remember why it was ifdeffed out. Things
+	seem to work as previously with the code in place. Especially
+	spawn-test didn't work with the code ifdeffed out (Bug#61067).
+
+	* glib/grand.c (g_rand_new): Don't try to use /dev/urandom unless
+	on Unix.
+
+	* glib/gspawn-win32-helper.c (WinMain): Remove Sleep(10000)
+	accidentally left in.
+
 Thu Sep 27 14:26:57 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gstrfuncs.c (g_ascii_strup/down): Use gssize to

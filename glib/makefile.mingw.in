@@ -65,12 +65,16 @@ glib_OBJECTS =			\
 	guniprop.o		\
 	gutf8.o			\
 	gutils.o		\
-	gwin32.o
+	gwin32.o		\
+	localcharset.o
 
 ../glibconfig.h: ../glibconfig.h.win32
 	cp $< $@
 
 ../config.h: ../config.h.win32
+	cp $< $@
+
+localcharset.c : libcharset/localcharset.c
 	cp $< $@
 
 ################ The glib DLL

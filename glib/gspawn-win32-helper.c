@@ -225,7 +225,6 @@ WinMain (struct HINSTANCE__ *hInstance,
     }
   write (child_err_report_fd, &zero, sizeof (zero));
   write (child_err_report_fd, &zero, sizeof (zero));
-  Sleep (10000);
   return 0;
 }
 

@@ -1,3 +1,19 @@
+2001-09-28  Tor Lillqvist  <tml@iki.fi>
+
+	* gthread-win32.c: Use an extra level of indirection for GMutex.
+	It is now a pointer either to a pointer to a CRITICAL_SECTION
+	struct, or to a mutex HANDLE. This is needed in case the user
+	defines G_ERRORCHECK_MUTEXES. G_MUTEX_SIZE must correctly reflect
+	the size of *GMutex, but this used to vary depending on whether we
+	at run-time chose to use CRITICAL_SECTIONs or mutexes.
+	(g_mutex_free_win32_cs_impl, g_cond_free_win32_impl): Call
+	DeleteCriticalSection() when done with it.
+
+	* gthread-impl.c (g_thread_init_with_errorcheck_mutexes): Call
+	g_thread_impl_init() before accessing
+	g_thread_functions_for_glib_use_default, as the
+	g_thread_impl_init() function might modify it.
+	
 2001-09-26  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Fix couple of typos.

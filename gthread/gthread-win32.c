@@ -43,7 +43,7 @@
 #undef STRICT
 
 #include <process.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #define win32_check_for_error(what) G_STMT_START{			\
   if (!(what))								\
@@ -52,7 +52,7 @@
 	     g_win32_error_message (GetLastError ()), #what);		\
   }G_STMT_END
 
-#define G_MUTEX_SIZE (sizeof (HANDLE))
+#define G_MUTEX_SIZE (sizeof (gpointer))
 
 #define PRIORITY_LOW_VALUE    THREAD_PRIORITY_BELOW_NORMAL
 #define PRIORITY_NORMAL_VALUE THREAD_PRIORITY_NORMAL
@@ -94,14 +94,22 @@ struct _GCond
 static GMutex *
 g_mutex_new_win32_cs_impl (void)
 {
-  CRITICAL_SECTION *retval = g_new (CRITICAL_SECTION, 1);
-  InitializeCriticalSection (retval);
+  CRITICAL_SECTION *cs = g_new (CRITICAL_SECTION, 1);
+  gpointer *retval = g_new (gpointer, 1);
+
+  InitializeCriticalSection (cs);
+  *retval = cs;
   return (GMutex *) retval;
 }
 
 static void
 g_mutex_free_win32_cs_impl (GMutex *mutex)
 {
+  gpointer *ptr = (gpointer *) mutex;
+  CRITICAL_SECTION *cs = (CRITICAL_SECTION *) *ptr;
+
+  DeleteCriticalSection (cs);
+  g_free (cs);
   g_free (mutex);
 }
 
@@ -111,33 +119,37 @@ g_mutex_free_win32_cs_impl (GMutex *mutex)
 static void
 g_mutex_lock_win32_cs_impl (GMutex *mutex)
 {
-  EnterCriticalSection ((CRITICAL_SECTION *)mutex);
+  EnterCriticalSection (*(CRITICAL_SECTION **)mutex);
 }
 
 static gboolean
 g_mutex_trylock_win32_cs_impl (GMutex * mutex)
 {
-  return try_enter_critical_section ((CRITICAL_SECTION *)mutex);
+  return try_enter_critical_section (*(CRITICAL_SECTION **)mutex);
 }
 
 static void
 g_mutex_unlock_win32_cs_impl (GMutex *mutex)
 {
-  LeaveCriticalSection ((CRITICAL_SECTION *)mutex);
+  LeaveCriticalSection (*(CRITICAL_SECTION **)mutex);
 }
 
 static GMutex *
 g_mutex_new_win32_impl (void)
 {
   HANDLE handle;
+  HANDLE *retval;
   win32_check_for_error (handle = CreateMutex (NULL, FALSE, NULL));
-  return (GMutex *) handle;
+  retval = g_new (HANDLE, 1);
+  *retval = handle;
+  return (GMutex *) retval;
 }
 
 static void
 g_mutex_free_win32_impl (GMutex *mutex)
 {
-  win32_check_for_error (CloseHandle ((HANDLE) mutex));
+  win32_check_for_error (CloseHandle (*(HANDLE *) mutex));
+  g_free (mutex);
 }
 
 /* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use
@@ -146,7 +158,7 @@ g_mutex_free_win32_impl (GMutex *mutex)
 static void
 g_mutex_lock_win32_impl (GMutex *mutex)
 {
-  WaitForSingleObject ((HANDLE) mutex, INFINITE);
+  WaitForSingleObject (*(HANDLE *) mutex, INFINITE);
 }
 
 static gboolean
@@ -154,14 +166,14 @@ g_mutex_trylock_win32_impl (GMutex * mutex)
 {
   DWORD result;
   win32_check_for_error (WAIT_FAILED != 
-			 (result = WaitForSingleObject ((HANDLE)mutex, 0)));
+			 (result = WaitForSingleObject (*(HANDLE *)mutex, 0)));
   return result != WAIT_TIMEOUT;
 }
 
 static void
 g_mutex_unlock_win32_impl (GMutex *mutex)
 {
-  ReleaseMutex ((HANDLE) mutex);
+  ReleaseMutex (*(HANDLE *) mutex);
 }
 
 static GCond *
@@ -289,6 +301,7 @@ g_cond_timed_wait_win32_impl (GCond *cond,
 static void
 g_cond_free_win32_impl (GCond * cond)
 {
+  DeleteCriticalSection (&cond->lock);
   g_ptr_array_free (cond->array, TRUE);
   g_free (cond);
 }
@@ -529,8 +542,14 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
 static void
 g_thread_impl_init ()
 {
+  static gboolean beenhere = FALSE;
   HMODULE kernel32;
 
+  if (beenhere)
+    return;
+
+  beenhere = TRUE;
+  
   win32_check_for_error (TLS_OUT_OF_INDEXES != 
 			 (g_thread_self_tls = TlsAlloc ()));
   win32_check_for_error (TLS_OUT_OF_INDEXES != 
@@ -570,4 +589,3 @@ g_thread_impl_init ()
 	}
     }
 }
-

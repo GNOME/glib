@@ -123,16 +123,59 @@ struct _GIOWin32Watch {
 };
 
 static void
-g_io_channel_win32_init (GIOWin32Channel *channel)
+g_win32_print_access_mode (int flags)
+{
+  g_print ("%s%s%s%s%s%s%s%s%s%s",
+	   ((flags & 0x3) == _O_RDWR ? "O_RDWR" :
+	    ((flags & 0x3) == _O_RDONLY ? "O_RDONLY" :
+	     ((flags & 0x3) == _O_WRONLY ? "O_WRONLY" : "0"))),
+	   (flags & _O_APPEND ? "|O_APPEND" : ""),
+	   (flags & _O_RANDOM ? "|O_RANDOM" : ""),
+	   (flags & _O_SEQUENTIAL ? "|O_SEQUENTIAL" : ""),
+	   (flags & _O_TEMPORARY ? "|O_TEMPORARY" : ""),
+	   (flags & _O_CREAT ? "|O_CREAT" : ""),
+	   (flags & _O_TRUNC ? "|O_TRUNC" : ""),
+	   (flags & _O_EXCL ? "|O_EXCL" : ""),
+	   (flags & _O_TEXT ? "|O_TEXT" : ""),
+	   (flags & _O_BINARY ? "|O_BINARY" : ""));
+}
+
+static void
+g_win32_print_gioflags (GIOFlags flags)
+{
+  char *bar = "";
+
+  if (flags & G_IO_FLAG_APPEND)
+    bar = "|", g_print ("APPEND");
+  if (flags & G_IO_FLAG_NONBLOCK)
+    g_print ("%sNONBLOCK", bar), bar = "|";
+  if (flags & G_IO_FLAG_IS_READABLE)
+    g_print ("%sREADABLE", bar), bar = "|";
+  if (flags & G_IO_FLAG_IS_WRITEABLE)
+    g_print ("%sWRITEABLE", bar), bar = "|";
+  if (flags & G_IO_FLAG_IS_WRITEABLE)
+    g_print ("%sWRITEABLE", bar), bar = "|";
+  if (flags & G_IO_FLAG_IS_SEEKABLE)
+    g_print ("%sSEEKABLE", bar), bar = "|";
+}
+
+static gboolean
+g_io_win32_get_debug_flag (void)
 {
 #ifdef G_IO_WIN32_DEBUG
-  channel->debug = TRUE;
+  return TRUE;
 #else
   if (getenv ("G_IO_WIN32_DEBUG") != NULL)
-    channel->debug = TRUE;
+    return TRUE;
   else
-    channel->debug = FALSE;
+    return FALSE;
 #endif
+}  
+
+static void
+g_io_channel_win32_init (GIOWin32Channel *channel)
+{
+  channel->debug = g_io_win32_get_debug_flag ();
   channel->buffer = NULL;
   channel->running = FALSE;
   channel->needs_close = FALSE;
@@ -150,7 +193,7 @@ create_events (GIOWin32Channel *channel)
 {
   SECURITY_ATTRIBUTES sec_attrs;
   
-  sec_attrs.nLength = sizeof(SECURITY_ATTRIBUTES);
+  sec_attrs.nLength = sizeof (SECURITY_ATTRIBUTES);
   sec_attrs.lpSecurityDescriptor = NULL;
   sec_attrs.bInheritHandle = FALSE;
 
@@ -161,8 +204,9 @@ create_events (GIOWin32Channel *channel)
       || !(channel->space_avail_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL))
       || !(channel->data_avail_noticed_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL)))
     {
-      gchar *msg = g_win32_error_message (GetLastError ());
-      g_error ("Error creating event: %s", msg);
+      gchar *emsg = g_win32_error_message (GetLastError ());
+      g_error ("Error creating event: %s", emsg);
+      g_free (emsg);
     }
 }
 
@@ -524,12 +568,11 @@ g_io_win32_prepare (GSource *source,
 static gboolean
 g_io_win32_check (GSource *source)
 {
-	MSG msg;
+  MSG msg;
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
 
-  
   if (channel->debug)
     g_print ("g_io_win32_check: for thread %#x:\n"
 	     "\twatch->pollfd.events:%#x, watch->pollfd.revents:%#x, channel->revents:%#x\n",
@@ -537,14 +580,14 @@ g_io_win32_check (GSource *source)
 	     watch->pollfd.events, watch->pollfd.revents, channel->revents);
 
   if (channel->type != G_IO_WIN32_WINDOWS_MESSAGES)
-	{
-     watch->pollfd.revents = (watch->pollfd.events & channel->revents);
-	}
-	else
-	{
-    return (PeekMessage (&msg, channel->hwnd, 0, 0, PM_NOREMOVE));
-	}
-
+    {
+      watch->pollfd.revents = (watch->pollfd.events & channel->revents);
+    }
+  else
+    {
+      return (PeekMessage (&msg, channel->hwnd, 0, 0, PM_NOREMOVE));
+    }
+  
   if (channel->type == G_IO_WIN32_SOCKET)
     {
       if (channel->debug)
@@ -655,20 +698,20 @@ g_io_win32_msg_read (GIOChannel *channel,
   if (count < sizeof (MSG))
     {
       g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-        _("Incorrect message size")); /* Correct error message? FIXME */
+        _("Incorrect message size")); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
   if (win32_channel->debug)
     g_print ("g_io_win32_msg_read: for %#x\n",
-	     win32_channel->hwnd);
+	     (guint) win32_channel->hwnd);
   if (!PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_REMOVE))
     return G_IO_STATUS_AGAIN;
 
   memmove (buf, &msg, sizeof (MSG));
   *bytes_read = sizeof (MSG);
 
-  return (*bytes_read > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
+  return G_IO_STATUS_NORMAL;
 }
 
 static GIOStatus
@@ -684,7 +727,7 @@ g_io_win32_msg_write (GIOChannel  *channel,
   if (count != sizeof (MSG))
     {
       g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
-        _("Incorrect message size")); /* Correct error message? FIXME */
+        _("Incorrect message size")); /* Informative enough error message? */
       return G_IO_STATUS_ERROR;
     }
   
@@ -692,8 +735,9 @@ g_io_win32_msg_write (GIOChannel  *channel,
   memmove (&msg, buf, sizeof (MSG));
   if (!PostMessage (win32_channel->hwnd, msg.message, msg.wParam, msg.lParam))
     {
-      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED,
-        _("Unknown error")); /* Correct error message? FIXME */
+      gchar *emsg = g_win32_error_message (GetLastError ());
+      g_set_error(err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED, emsg);
+      g_free (emsg);
       return G_IO_STATUS_ERROR;
     }
 
@@ -789,6 +833,9 @@ g_io_win32_fd_read (GIOChannel *channel,
 
   result = read (win32_channel->fd, buf, count);
 
+  if (win32_channel->debug)
+    g_print ("g_io_win32_fd_read: read() = %d\n", result);
+
   if (result < 0)
     {
       *bytes_read = 0;
@@ -809,7 +856,6 @@ g_io_win32_fd_read (GIOChannel *channel,
 
   *bytes_read = result;
 
-  return G_IO_STATUS_NORMAL; /* XXX: 0 byte read an error ?? */
   return (result > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
 }
 
@@ -948,7 +994,9 @@ g_io_win32_sock_read (GIOChannel *channel,
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_read: sockfd:%d count:%d\n",
 	     win32_channel->fd, count);
-repeat: 
+#ifdef WE_NEED_TO_HANDLE_WSAEINTR
+repeat:
+#endif
   result = recv (win32_channel->fd, buf, count, 0);
 
   if (win32_channel->debug)
@@ -981,7 +1029,6 @@ repeat:
     {
       *bytes_read = result;
 
-      return G_IO_STATUS_NORMAL; /* XXX: 0 byte read an error ?? */
       return (result > 0) ? G_IO_STATUS_NORMAL : G_IO_STATUS_EOF;
     }
 }
@@ -1000,7 +1047,9 @@ g_io_win32_sock_write (GIOChannel  *channel,
   if (win32_channel->debug)
     g_print ("g_io_win32_sock_write: sockfd:%d count:%d\n",
 	     win32_channel->fd, count);
+#ifdef WE_NEED_TO_HANDLE_WSAEINTR
 repeat:
+#endif
   result = send (win32_channel->fd, buf, count, 0);
   
   if (win32_channel->debug)
@@ -1160,9 +1209,16 @@ g_io_channel_new_file (const gchar  *filename,
         pmode = 0;
     }
 
-
   /* always open 'untranslated' */
   fid = open (filename, flags | _O_BINARY, pmode);
+
+  if (g_io_win32_get_debug_flag ())
+    {
+      g_print ("g_io_channel_win32_new_file: open(\"%s\", ", filename);
+      g_win32_print_access_mode (flags|_O_BINARY);
+      g_print (",%#o)=%d\n", pmode, fid);
+    }
+
   if (fid < 0)
     {
       g_set_error (error, G_FILE_ERROR,
@@ -1198,9 +1254,6 @@ g_io_channel_new_file (const gchar  *filename,
         g_assert_not_reached ();
     }
 
-  if (((GIOWin32Channel *)channel)->debug)
-    g_print ("g_io_channel_win32_new_file: fd = %ud\n", fid);
-
   return channel;
 }
 
@@ -1210,6 +1263,13 @@ g_io_win32_set_flags (GIOChannel     *channel,
                       GError        **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+
+  if (win32_channel->debug)
+    {
+      g_print ("g_io_win32_set_flags: ");
+      g_win32_print_gioflags (flags);
+      g_print ("\n");
+    }
 
   g_set_error (err, 
                G_IO_CHANNEL_ERROR, 
@@ -1331,7 +1391,7 @@ g_io_channel_win32_new_fd (gint fd)
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_fd: fd = %d\n", fd);
+    g_print ("g_io_channel_win32_new_fd: %u\n", fd);
   channel->funcs = &win32_channel_fd_funcs;
   win32_channel->type = G_IO_WIN32_FILE_DESC;
   win32_channel->fd = fd;
@@ -1350,8 +1410,8 @@ g_io_channel_win32_new_fd (gint fd)
     {
       channel->is_readable  = !!(st.st_mode & _S_IREAD);
       channel->is_writeable = !!(st.st_mode & _S_IWRITE);
-      /* XXX: pipes aren't seeakable, are they ? */
-      channel->is_seekable = !(st.st_mode & _S_IFIFO);
+      /* XXX What about "device files" (COM1: and the like) */
+      channel->is_seekable = TRUE;
     }
 
   return channel;
@@ -1445,10 +1505,12 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
   fd->events = condition;
 
   if (win32_channel->thread_id == 0)
-    if ((condition & G_IO_IN) && win32_channel->type == G_IO_WIN32_FILE_DESC)
-      create_thread (win32_channel, condition, read_thread);
-    else if (win32_channel->type == G_IO_WIN32_SOCKET)
-      create_thread (win32_channel, condition, select_thread);
+    {
+      if ((condition & G_IO_IN) && win32_channel->type == G_IO_WIN32_FILE_DESC)
+	create_thread (win32_channel, condition, read_thread);
+      else if (win32_channel->type == G_IO_WIN32_SOCKET)
+	create_thread (win32_channel, condition, select_thread);
+    }
 }
 
 /* Binary compatibility */
