@@ -1,3 +1,9 @@
+1998-10-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: made the check for needed _ in module's func-names
+	work on solaris. (G_MODULE_NEED_USCORE must be set outside
+	AC_CACHE_VAL, dlopen(0,0) refused to work on solaris).
+
 Tue Oct 20 03:32:58 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in

@@ -433,25 +433,30 @@ if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
 dnl *** check whether we need preceeding underscores
 	AC_MSG_CHECKING(for preceeding underscore in symbols)
 	AC_CACHE_VAL(glib_cv_uscore,[
+		echo "int glib_underscore_test (void) { return 42; }" >plugin.c
+		./libtool --mode=compile $CC -c plugin.c >/dev/null 2>&1
 		AC_TRY_RUN([
 		#include <dlfcn.h>
-		int glib_underscore_test (void) { return 42; }
 		int main() {
 		  void *f1 = (void*)0, *f2 = (void*)0, *handle;
-		  handle = dlopen ((void*)0, 0);
+		  handle = dlopen ("./plugin.lo", RTLD_NOW );
 		  if (handle) {
 		    f1 = dlsym (handle, "glib_underscore_test");
 		    f2 = dlsym (handle, "_glib_underscore_test");
-		  } return (f2 && !f1);
-		}],
-			glib_cv_uscore=yes
-			G_MODULE_NEED_USCORE=1
-		,
-			glib_cv_uscore=no
-			G_MODULE_NEED_USCORE=0
-		,)
+		  } return (!f2 && f1);
+		}],	
+			glib_cv_uscore=yes,	
+			glib_cv_uscore=no,
+		)
+		rm -f plugin.c plugin.o plugin.lo
 	])
-	AC_MSG_RESULT($glib_cv_uscore)
+	AC_MSG_RESULT($glib_cv_uscore)	
+	if test "x$glib_cv_uscore" = "xyes"; then
+  		G_MODULE_NEED_USCORE=1
+	else
+  		G_MODULE_NEED_USCORE=0
+	fi	
+	
 	LDFLAGS="$LDFLAGS_orig"
 dnl *** check for having dlerror()
 	AC_CHECK_FUNC(dlerror,
