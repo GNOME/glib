@@ -245,12 +245,15 @@ extern "C" {
   __attribute__((noreturn))
 #define G_GNUC_CONST				\
   __attribute__((const))
+#define G_GNUC_UNUSED				\
+  __attribute__((unused))
 #else	/* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
 #define G_GNUC_FORMAT( arg_idx )
 #define G_GNUC_NORETURN
 #define G_GNUC_CONST
+#define	G_GNUC_UNUSED
 #endif	/* !__GNUC__ */
 
 

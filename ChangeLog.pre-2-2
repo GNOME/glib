@@ -1,3 +1,7 @@
+Wed Sep 30 10:53:03 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: define G_GNUC_UNUSED.
+
 Mon Sep 21 23:23:10 CDT 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.3
