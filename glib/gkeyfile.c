@@ -2168,8 +2168,11 @@ g_key_file_remove_group_node (GKeyFile *key_file,
   g_list_free (group->key_value_pairs);
   group->key_value_pairs = NULL;
 
-  g_hash_table_destroy (group->lookup_map);
-  group->lookup_map = NULL;
+  if (group->lookup_map)
+    {
+      g_hash_table_destroy (group->lookup_map);
+      group->lookup_map = NULL;
+    }
 
   g_free ((gchar *) group->name);
   g_free (group);
