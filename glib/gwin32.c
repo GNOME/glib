@@ -62,33 +62,7 @@ gint
 g_win32_ftruncate (gint  fd,
 		   guint size)
 {
-  HANDLE hfile;
-  guint curpos;
-
-  g_return_val_if_fail (fd >= 0, -1);
-  
-  hfile = (HANDLE) _get_osfhandle (fd);
-  curpos = SetFilePointer (hfile, 0, NULL, FILE_CURRENT);
-  if (curpos == 0xFFFFFFFF
-      || SetFilePointer (hfile, size, NULL, FILE_BEGIN) == 0xFFFFFFFF
-      || !SetEndOfFile (hfile))
-    {
-      gint error = GetLastError ();
-
-      switch (error)
-	{
-	case ERROR_INVALID_HANDLE:
-	  errno = EBADF;
-	  break;
-	default:
-	  errno = EIO;
-	  break;
-	}
-
-      return -1;
-    }
-
-  return 0;
+  return _chsize (fd, size);
 }
 
 #endif
@@ -1068,15 +1042,16 @@ g_win32_getlocale (void)
  * Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The message is either language neutral,
  * or in the thread's language, or the user's language, the system's
- * language, or US English (see docs for FormatMessage()). *
- * The returned string should be deallocated with g_free().
+ * language, or US English (see docs for FormatMessage()). The
+ * returned string is in UTF-8. It should be deallocated with
+ * g_free().
  *
  * Returns: newly-allocated error message
  **/
 gchar *
 g_win32_error_message (gint error)
 {
-  gchar *msg;
+  gchar *msg = NULL;
   gchar *retval;
   int nbytes;
 
@@ -1085,15 +1060,19 @@ g_win32_error_message (gint error)
 		 |FORMAT_MESSAGE_FROM_SYSTEM,
 		 NULL, error, 0,
 		 (LPTSTR) &msg, 0, NULL);
-  nbytes = strlen (msg);
-
-  if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
-    msg[nbytes-2] = '\0';
-  
-  retval = g_strdup (msg);
-
   if (msg != NULL)
-    LocalFree (msg);
+    {
+      nbytes = strlen (msg);
+
+      if (nbytes > 2 && msg[nbytes-1] == '\n' && msg[nbytes-2] == '\r')
+	msg[nbytes-2] = '\0';
+  
+      retval = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
+
+      LocalFree (msg);
+    }
+  else
+    retval = g_strdup ("");
 
   return retval;
 }

@@ -64,10 +64,10 @@ typedef int pid_t;
 #define pipe(phandles)	_pipe (phandles, 4096, _O_BINARY)
 
 /* For some POSIX functions that are not provided by the MS runtime,
- * we provide emulators in glib, which are prefixed with g_win32_.
+ * we provide emulation functions in glib, which are prefixed with
+ * g_win32_. Or that was the idea at some time, but there is just one
+ * of those:
  */
-#    define ftruncate(fd, size)	g_win32_ftruncate (fd, size)
-
 gint		g_win32_ftruncate	(gint		 f,
 					 guint		 size);
 #endif /* G_OS_WIN32 */
