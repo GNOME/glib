@@ -1,3 +1,7 @@
+2004-04-08  Guntupalli Karunakar  <karunakar@freedomink.org>
+
+        * configure.in: Added "gu" (Gujarati) to ALL_LINGUAS.
+
 2004-04-03  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Remove AC_CYGWIN, obsolete. Don't let pthreads be
