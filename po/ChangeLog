@@ -1,3 +1,9 @@
+Sat Dec 14 20:36:31 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* po/Makefile.in.in: Fix problem from recent commit where
+	non GNU-format message catalogs would be installed in
+	datadir.
+
 2002-12-11  Pauli Virtanen  <pauli.virtanen@hut.fi>
 
 	* fi.po: Added Finnish translation from Lauri Nurmi.
