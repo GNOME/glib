@@ -1,5 +1,10 @@
-2005-02-09  Matthias Clasen  <mclasen@redhat.com>
+2005-02-10  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c (print_help): Take main group options into
+	account when calculating column size.  (#166921)
+	(g_option_context_parse): Accept -? as documented.  (#166977)
+
+2005-02-09  Matthias Clasen  <mclasen@redhat.com>
 	* glib/gkeyfile.c (find_file_in_data_dirs): Don't leak path
 	here.  (#166801, Kjartan Maraas)
 

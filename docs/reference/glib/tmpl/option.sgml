@@ -56,7 +56,7 @@ Usage:
   testtreemodel [OPTION...] - test tree model performance
 
 Help Options:
-  --help                   Show help options
+  -?, --help               Show help options
   --help-all               Show all help options
   --help-gtk               Show GTK+ Options
 
@@ -299,7 +299,7 @@ g_option_context_add_main_entries() or g_option_group_add_entries().
   --<replaceable>groupname</replaceable>-<replaceable>long_name</replaceable>.
 @short_name: If an option has a short name, it can be specified
   -<replaceable>short_name</replaceable> in a commandline.
-@flags: Flags from #GOptionEntryFlags.
+@flags: Flags from #GOptionFlags.
 @arg: The type of the option, as a #GOptionArg.
 @arg_data:  If the @arg type is %G_OPTION_ARG_CALLBACK, then @arg_data must 
  point to a #GOptionArgFunc callback function, which will be called to handle 

@@ -1,3 +1,7 @@
+2005-02-10  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/option.sgml: Fix a typo.  (#166985)
+
 2005-02-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib-sections.txt: Add g_listenv.
