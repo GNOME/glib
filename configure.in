@@ -678,21 +678,6 @@ jm_GLIBC21
 AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
 AC_CHECK_FUNCS(setlocale)
 
-AC_MSG_CHECKING(whether make is GNU Make)
-STRIP_BEGIN=
-STRIP_END=
-if ${MAKE} --version 2>/dev/null | grep '^GNU Make ' >/dev/null ; then
-        STRIP_BEGIN='$(strip $(STRIP_DUMMY)'
-        STRIP_END=')'
-        AC_MSG_RESULT(yes)
-else
-        AC_MSG_RESULT(no)
-fi
-STRIP_DUMMY=
-AC_SUBST(STRIP_DUMMY)
-AC_SUBST(STRIP_BEGIN)
-AC_SUBST(STRIP_END)
-
 # check additional type sizes
 AC_CHECK_SIZEOF(size_t)
 

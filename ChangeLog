@@ -1,3 +1,8 @@
+Sat Feb 14 11:05:26 2004  Manish Singh  <yosh@gimp.org>
+
+	* configure.in: Remove unnecessary STRIP_* definitions, and GNU
+	make check. Really fixes #134102.
+
 Sat Feb 14 02:11:08 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Make the check for GNU make work when MAKE is a 
