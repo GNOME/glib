@@ -164,5 +164,6 @@ If free_segment is %TRUE it frees the actual byte data.
 
 @array: a #GByteArray.
 @free_segment: if %TRUE the actual byte data is freed as well.
+@Returns: 
 
 

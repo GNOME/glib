@@ -356,7 +356,6 @@ value of each pair, and the given @user_data parameter.
 @user_data: user data to pass to the function.
 
 
-
 <!-- ##### FUNCTION g_scanner_scope_lookup_symbol ##### -->
 <para>
 Looks up a symbol in a scope and return its value. If the
@@ -367,7 +366,7 @@ symbol is not bound in the scope, %NULL is returned.
 @scope_id: the scope id.
 @symbol: the symbol to look up.
 @Returns: the value of @symbol in the given scope, or %NULL
-if @symbol is not bound in the given scope. 
+if @symbol is not bound in the given scope.
 
 
 <!-- ##### FUNCTION g_scanner_scope_remove_symbol ##### -->
@@ -386,7 +385,7 @@ This function is deprecated and will be removed in the next major
 release of GLib. It does nothing.
 </para>
 
-@scanner: a #GScanner. 
+@scanner: a #GScanner.
 
 
 <!-- ##### MACRO g_scanner_thaw_symbol_table ##### -->
@@ -404,10 +403,10 @@ Looks up a symbol in the current scope and return its value. If the
 symbol is not bound in the current scope, %NULL is returned.
 </para>
 
-@scanner: a #GScanner. 
+@scanner: a #GScanner.
 @symbol: the symbol to look up.
 @Returns: the value of @symbol in the current scope, or %NULL
-if @symbol is not bound in the current scope. 
+if @symbol is not bound in the current scope.
 
 
 <!-- ##### FUNCTION g_scanner_warn ##### -->
@@ -457,7 +456,7 @@ warning.
 Specifies the type of the message handler function.
 </para>
 
-@scanner: a #GScanner. 
+@scanner: a #GScanner.
 @message: the message.
 @error: %TRUE if the message signals an error, %FALSE if it 
   signals a warning.
@@ -478,30 +477,8 @@ The possible types of token returned from each g_scanner_get_next_token() call.
 
 @G_TOKEN_EOF: the end of the file.
 @G_TOKEN_LEFT_PAREN: a '(' character.
-@G_TOKEN_RIGHT_PAREN: a ')' character.
-@G_TOKEN_LEFT_CURLY: a '{' character. 
+@G_TOKEN_LEFT_CURLY: a '{' character.
 @G_TOKEN_RIGHT_CURLY: a '}' character.
-@G_TOKEN_LEFT_BRACE: a '[' character.
-@G_TOKEN_RIGHT_BRACE: a ']' character.
-@G_TOKEN_EQUAL_SIGN: a '=' character. 
-@G_TOKEN_COMMA: a ',' character.
-@G_TOKEN_NONE: no token.
-@G_TOKEN_ERROR: an error. See #GErrorType for a list of possible errors. 
-@G_TOKEN_CHAR: a character without special meaning.
-@G_TOKEN_BINARY: an integer, specified in binary notation with a '0b' prefix.
-@G_TOKEN_OCTAL: an integer, specified in octal notation with a '0' prefix.
-@G_TOKEN_INT: an integer, specified in the usual decimal notation.
-@G_TOKEN_HEX: an integer, specified in hexadecimal notation with a '0x' or '$' prefix.
-@G_TOKEN_FLOAT: a floating point number.
-@G_TOKEN_STRING: a string enclosed in single or double quotes.
-@G_TOKEN_SYMBOL: a symbol which has been defined before.
-@G_TOKEN_IDENTIFIER: an identifier.
-@G_TOKEN_IDENTIFIER_NULL: the special identifier <literal>NULL</literal>.
-@G_TOKEN_COMMENT_SINGLE: a single-line comment enclosed in the delimiters
-  specified by <structfield>cpair_comment_single</structfield>.
-@G_TOKEN_COMMENT_MULTI: a multi-line comment enclosed in '/*' and '*/'.
-@G_TOKEN_LAST: 
-
 
 <!-- ##### UNION GTokenValue ##### -->
 <para>
@@ -516,7 +493,7 @@ of #GTokenValue, when the token is a #G_TOKEN_ERROR.
 </para>
 
 @G_ERR_UNKNOWN: unknown error.
-@G_ERR_UNEXP_EOF: unexpected end of file. 
+@G_ERR_UNEXP_EOF: unexpected end of file.
 @G_ERR_UNEXP_EOF_IN_STRING: unterminated string constant.
 @G_ERR_UNEXP_EOF_IN_COMMENT: unterminated comment.
 @G_ERR_NON_DIGIT_IN_CONST: non-digit character in a number.

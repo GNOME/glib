@@ -24,6 +24,7 @@ g_pattern_spec_new() and use g_pattern_match_string() instead of
 g_pattern_match_simple().  This avoids the overhead of repeated 
 pattern compilation.
 </para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
@@ -35,11 +36,11 @@ Enumeration representing different kinds of patterns. This is only used
 internally for optimizing the match algorithm.
 </para>
 
-@G_MATCH_ALL: a general pattern. 
+@G_MATCH_ALL: a general pattern.
 @G_MATCH_ALL_TAIL: a general pattern which contains a fixed part matching
 the end of the string.
 @G_MATCH_HEAD: a pattern matching every string with a certain prefix.
-@G_MATCH_TAIL: a pattern matching every string with a certain suffix. 
+@G_MATCH_TAIL: a pattern matching every string with a certain suffix.
 @G_MATCH_EXACT: a pattern matching exactly one string.
 @G_MATCH_LAST: 
 
@@ -101,4 +102,6 @@ Matches a string against a pattern.
 
 @pattern: the pattern.
 @string: the string to match.
-@Returns: %TRUE if @string matches @pspec. 
+@Returns: %TRUE if @string matches @pspec.
+
+

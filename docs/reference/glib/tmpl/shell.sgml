@@ -19,7 +19,7 @@ Shell-related Utilities
 Error codes returned by shell functions.
 </para>
 
-@G_SHELL_ERROR_BAD_QUOTING: Mismatched or otherwise mangled quoting. 
+@G_SHELL_ERROR_BAD_QUOTING: Mismatched or otherwise mangled quoting.
 @G_SHELL_ERROR_EMPTY_STRING: String to be parsed was empty.
 @G_SHELL_ERROR_FAILED: Some other error.
 

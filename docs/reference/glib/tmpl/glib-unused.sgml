@@ -131,6 +131,14 @@ not work.
 </para>
 
 
+<!-- ##### MACRO NAME_MAX ##### -->
+<para>
+Provided for UNIX emulation on Windows; equivalent to UNIX macro 
+%NAME_MAX, which is the maximum length of a single path component.
+i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
+</para>
+
+
 <!-- ##### MACRO access ##### -->
 <para>
 
@@ -165,6 +173,13 @@ not work.
 @Returns: 
 
 <!-- ##### FUNCTION g_convert_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_io_channel_error_quark ##### -->
 <para>
 
 </para>
@@ -375,6 +390,13 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 <!-- ##### MACRO read ##### -->
 <para>
 
+</para>
+
+
+<!-- ##### MACRO readdir ##### -->
+<para>
+Provided for UNIX emulation on Windows; see documentation for <function>readdir()</function>
+in any UNIX manual.
 </para>
 
 

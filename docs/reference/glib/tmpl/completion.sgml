@@ -137,7 +137,7 @@ This is used when you use strings as #GCompletion items.
 first @n bytes of @s1 is found, respectively, to be less than, to match, 
 or to be greater than the first @n bytes of @s2.
 
- 
+
 <!-- ##### FUNCTION g_completion_free ##### -->
 <para>
 Frees all memory used by the #GCompletion.

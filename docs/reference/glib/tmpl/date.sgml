@@ -87,7 +87,7 @@ Equivalent to <function>gettimeofday()</function>, but also works on
 Win32. Returns the current time.
 </para>
 
-@result:
+@result: 
 
 
 <!-- ##### FUNCTION g_usleep ##### -->
@@ -554,7 +554,6 @@ Returns %TRUE if the date is the last day of the month. The date must be valid.
 
 @date: a #GDate to check.
 @Returns: %TRUE if the date is the last day of the month.
-
 
 
 <!-- ##### FUNCTION g_date_is_leap_year ##### -->

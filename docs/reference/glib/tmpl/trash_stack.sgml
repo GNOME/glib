@@ -46,7 +46,7 @@ Pops a piece of memory off a #GTrashStack.
 </para>
 
 @stack_p: a pointer to a #GTrashStack.
-@Returns: the element at the top of the stack. 
+@Returns: the element at the top of the stack.
 
 
 <!-- ##### FUNCTION g_trash_stack_peek ##### -->
@@ -55,7 +55,7 @@ Returns the element at the top of a #GTrashStack.
 </para>
 
 @stack_p: a pointer to a #GTrashStack.
-@Returns: the element at the top of the stack. 
+@Returns: the element at the top of the stack.
 
 
 <!-- ##### FUNCTION g_trash_stack_height ##### -->
@@ -64,6 +64,6 @@ Returns the height of a #GTrashStack.
 </para>
 
 @stack_p: a pointer to a #GTrashStack.
-@Returns: the height of the stack. 
+@Returns: the height of the stack.
 
 

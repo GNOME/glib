@@ -188,6 +188,8 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_UINT: 			Identifier for the built-in type "guint".
 @G_TYPE_LONG: 			Identifier for the built-in type "glong".
 @G_TYPE_ULONG: 			Identifier for the built-in type "gulong".
+@G_TYPE_INT64: 
+@G_TYPE_UINT64: 
 @G_TYPE_ENUM: 			Identifier for the "#GEnum" type.
 @G_TYPE_FLAGS: 			Identifier for the "#GFlags" type.
 @G_TYPE_FLOAT: 			Identifier for the built-in type "gfloat".
@@ -223,6 +225,8 @@ The predefined identifiers of the reserved fundamental types.
 @G_TYPE_PARAM_VALUE_ARRAY: 	Identifier for the "#GParamSpecValueArray" type.
 @G_TYPE_PARAM_CLOSURE: 		Identifier for the "#GParamClosure" type.
 @G_TYPE_PARAM_OBJECT: 	 	Identifier for the "#GParamSpecObject" type.
+@G_TYPE_PARAM_INT64: 
+@G_TYPE_PARAM_UINT64: 
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>

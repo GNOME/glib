@@ -207,5 +207,6 @@ Frees all of the memory allocated for the pointer array.
 
 @array: a #GPtrArray.
 @free_seg: if %TRUE the actual element data is freed as well.
+@Returns: 
 
 

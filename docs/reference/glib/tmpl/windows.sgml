@@ -23,15 +23,6 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 
 
-<!-- ##### MACRO NAME_MAX ##### -->
-<para>
-Provided for UNIX emulation on Windows; equivalent to UNIX macro 
-%NAME_MAX, which is the maximum length of a single path component.
-i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
-</para>
-
-
-
 <!-- ##### TYPEDEF pid_t ##### -->
 <para>
 Provided for UNIX emulation on Windows; process ID type.
@@ -57,36 +48,33 @@ in any UNIX manual.
 @size: 
 
 
-<!-- ##### MACRO opendir ##### -->
+<!-- ##### FUNCTION opendir ##### -->
 <para>
 Provided for UNIX emulation on Windows; see documentation for <function>opendir()</function>
 in any UNIX manual.
 </para>
 
+@Param1: 
+@Returns: 
 
 
-<!-- ##### MACRO readdir ##### -->
-<para>
-Provided for UNIX emulation on Windows; see documentation for <function>readdir()</function>
-in any UNIX manual.
-</para>
-
-
-
-<!-- ##### MACRO rewinddir ##### -->
+<!-- ##### FUNCTION rewinddir ##### -->
 <para>
 Provided for UNIX emulation on Windows; see documentation for <function>rewinddir()</function>
 in any UNIX manual.
 </para>
 
+@Param1: 
 
 
-<!-- ##### MACRO closedir ##### -->
+<!-- ##### FUNCTION closedir ##### -->
 <para>
 Provided for UNIX emulation on Windows; see documentation for <function>closedir()</function>
 in any UNIX manual.
 </para>
 
+@Param1: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_win32_error_message ##### -->

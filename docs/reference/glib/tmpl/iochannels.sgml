@@ -279,7 +279,7 @@ operation.
 Stati returned by most of the #GIOFuncs functions. 
 </para>
 
-@G_IO_STATUS_ERROR: An error occurred. 
+@G_IO_STATUS_ERROR: An error occurred.
 @G_IO_STATUS_NORMAL: Success.
 @G_IO_STATUS_EOF: End of file.
 @G_IO_STATUS_AGAIN: Resource temporarily unavailable.
@@ -306,14 +306,6 @@ be from the #IOChannelError enumeration. See #GError for information on
 error domains.
 </para>
 
-
-
-<!-- ##### FUNCTION g_io_channel_error_quark ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION g_io_channel_error_from_errno ##### -->

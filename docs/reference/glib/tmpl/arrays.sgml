@@ -276,5 +276,6 @@ If @free_segment is %TRUE it frees the actual element data as well.
 
 @array: a #GArray.
 @free_segment: if %TRUE the actual element data is freed as well.
+@Returns: 
 
 

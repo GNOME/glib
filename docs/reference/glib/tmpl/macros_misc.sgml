@@ -77,6 +77,7 @@ yourself, because this macro may use <function>memmove()</function> and GLib
 does not include <function>string.h</function> for you.
 </para>
 
+<!-- # Unused Parameters # -->
 @ap1: the <type>va_list</type> variable to place a copy of @ap2 in.
 @ap2: a <type>va_list</type>.
 
@@ -95,6 +96,23 @@ Expands to <literal>__extension__</literal> when GNU C is used as the compiler.
 This simply tells GNU C not to warn about the following non-standard code
 when compiling with the <literal>-pedantic</literal> option.
 </para>
+
+
+
+<!-- ##### MACRO G_GNUC_CONST ##### -->
+<para>
+Expands to the GNU C const function attribute if the compiler is GNU C.
+Declaring a function as const enables better optimization of the function.
+A const function doesn't examine any values except its parameters,
+and has no effects except its return value.
+See the GNU C documentation for details. 
+</para>
+<note><para>
+A function that has pointer arguments and examines the data pointed to 
+must <emphasis>not</emphasis> be declared const. Likewise, a function that 
+calls a non-const function usually must not be const. It doesn't make sense 
+for a const function to return void.
+</para></note>
 
 
 
@@ -126,21 +144,6 @@ value depends only on the parameters and/or global variables.
 See the GNU C documentation for details. 
 </para>
 
-
-<!-- ##### MACRO G_GNUC_CONST ##### -->
-<para>
-Expands to the GNU C const function attribute if the compiler is GNU C.
-Declaring a function as const enables better optimization of the function.
-A const function doesn't examine any values except its parameters,
-and has no effects except its return value.
-See the GNU C documentation for details. 
-</para>
-<note><para>
-A function that has pointer arguments and examines the data pointed to 
-must <emphasis>not</emphasis> be declared const. Likewise, a function that 
-calls a non-const function usually must not be const. It doesn't make sense 
-for a const function to return void.
-</para></note>
 
 
 <!-- ##### MACRO G_GNUC_PRINTF ##### -->

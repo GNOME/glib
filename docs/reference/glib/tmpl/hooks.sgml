@@ -67,7 +67,6 @@ function.</entry>
 @hook_memchunk: 
 @finalize_hook: 
 
-
 <!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
 <para>
 Defines the type of function to be called when a hook in a 
@@ -156,7 +155,7 @@ by g_hook_list_invoke_check().
 </para>
 
 @data: the data field of the #GHook is passed to the hook function here.
-@Returns: %FALSE if the #GHook should be destroyed. 
+@Returns: %FALSE if the #GHook should be destroyed.
 
 
 <!-- ##### FUNCTION g_hook_list_init ##### -->
@@ -421,8 +420,8 @@ thread) are considered valid. If set to %FALSE, these are skipped.
 Flags used internally in the #GHook implementation.
 </para>
 
-@G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed. 
-@G_HOOK_FLAG_IN_CALL: set if the hook is currently being run. 
+@G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed.
+@G_HOOK_FLAG_IN_CALL: set if the hook is currently being run.
 @G_HOOK_FLAG_MASK: 
 
 <!-- ##### MACRO G_HOOK_FLAGS ##### -->

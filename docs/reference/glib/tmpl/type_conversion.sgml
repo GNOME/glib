@@ -106,7 +106,7 @@ been stored in the pointer with GUINT_TO_POINTER().
 Stuffs a #gsize into a pointer type.
 </para>
 
-@s: #gsize to stuff into the pointer. 
+@s: #gsize to stuff into the pointer.
 
 
 <!-- ##### MACRO GPOINTER_TO_SIZE ##### -->

@@ -31,9 +31,8 @@ Unicode Manipulation
 
 </para>
 
-@Returns: 
-<!-- # Unused Parameters # -->
 @charset: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_unichar_validate ##### -->
