@@ -1,24 +1,24 @@
 # translation of glib.HEAD.po to Slovak
 # translation of sk.po to Slovak
 # glib Slovak translation.
-# Copyright (C) 2001,2002, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2004, 2005 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2001,2002.
 # Stanislav Visnovsky <visnovsky@kde.org>, 2004.
+# Marcel Telka <marcel@telka.sk>, 2005.
+#
+# $Id$
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.HEAD\n"
+"Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 15:44-0500\n"
-"PO-Revision-Date: 2004-03-18 09:16+0100\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
+"POT-Creation-Date: 2005-01-14 06:50+0100\n"
+"PO-Revision-Date: 2005-01-14 06:53+0100\n"
+"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -26,9 +26,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Prevod zo znakovej sady '%s' do '%s' nie je podporovaný"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Nepodarilo sa otvoriť program pre prevod '%s' do '%s': %s"
+msgstr "Nepodarilo sa otvoriť program na prevod z '%s' do '%s'"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -153,7 +153,7 @@ msgstr "Prevod zo znakovej sady `%s' do `%s' nie je podporovaný"
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nepodarilo sa otvoriť program pre prevod `%s' do `%s': %s"
+msgstr "Nepodarilo sa otvoriť program na prevod z `%s' do `%s': %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -410,41 +410,41 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text bol prázdny (alebo obsahoval iba medzery)"
 
-#: glib/gspawn-win32.c:295
+#: glib/gspawn-win32.c:263
 msgid "Failed to read data from child process"
 msgstr "Nepodarilo sa čítať dáta z procesu potomka"
 
-#: glib/gspawn-win32.c:424
+#: glib/gspawn-win32.c:280 glib/gspawn.c:1348
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Nepodarilo sa vytvoriť rúru pre komunikáciu s procesom potomka (%s)"
+
+#: glib/gspawn-win32.c:320 glib/gspawn.c:1012
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Nepodarilo sa čítať z rúry potomka (%s)"
+
+#: glib/gspawn-win32.c:348 glib/gspawn.c:1217
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Nepodarilo sa zmeniť priečinok na '%s' (%s)"
+
+#: glib/gspawn-win32.c:356 glib/gspawn-win32.c:441
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Nepodarilo sa spustiť proces potomka (%s)"
+
+#: glib/gspawn-win32.c:589
+msgid "Failed to execute helper program"
+msgstr "Nepodarilo sa spustiť pomocný program"
+
+#: glib/gspawn-win32.c:788
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Neočakávaná chyba v g_io_channel_win32_poll() pri čítaní dát z procesu "
 "potomka"
-
-#: glib/gspawn-win32.c:850 glib/gspawn.c:1012
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "Nepodarilo sa čítať z rúry potomka (%s)"
-
-#: glib/gspawn-win32.c:930
-msgid "Failed to execute helper program"
-msgstr "Nepodarilo sa spustiť pomocný program"
-
-#: glib/gspawn-win32.c:951 glib/gspawn-win32.c:995
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "Nepodarilo sa spustiť proces potomka (%s)"
-
-#: glib/gspawn-win32.c:986 glib/gspawn.c:1217
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Nepodarilo sa zmeniť priečinok na '%s' (%s)"
-
-#: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Nepodarilo sa vytvoriť rúru pre komunikáciu s procesom potomka (%s)"
 
 #: glib/gspawn.c:178
 #, c-format
