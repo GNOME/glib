@@ -542,12 +542,31 @@ g_log (const gchar   *log_domain,
   va_end (args);
 }
 
+#define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
+			    (wc == 0x7f) || \
+			    (wc >= 0x80 && wc < 0xa0)))
+     
 static gchar*
 strdup_convert (const gchar *string,
 		const gchar *charset)
 {
   if (!g_utf8_validate (string, -1, NULL))
-    return g_strconcat ("[Invalid UTF-8] ", string, NULL);
+    {
+      GString *gstring = g_string_new ("[Invalid UTF-8] ");
+      guchar *p;
+
+      for (p = (guchar *)string; *p; p++)
+	{
+	  if (CHAR_IS_SAFE(*p) &&
+	      !(*p == '\r' && *(p + 1) != '\n') &&
+	      *p < 0x80)
+	    g_string_append_c (gstring, *p);
+	  else
+	    g_string_append_printf (gstring, "\\%03o", *p);
+	}
+      
+      return g_string_free (gstring, FALSE);
+    }
   else
     {
       GError *err = NULL;
@@ -758,6 +777,45 @@ _g_log_fallback_handler (const gchar   *log_domain,
     write_string (fd, "\n");
 }
 
+static void
+escape_string (GString *string)
+{
+  const char *p = string->str;
+  gunichar wc;
+
+  while (p < string->str + string->len)
+    {
+      gboolean safe;
+	    
+      wc = g_utf8_get_char (p);
+      if (wc == '\r')
+	{
+	  safe = *(p + 1) == '\n';
+	}
+      else
+	{
+	  safe = CHAR_IS_SAFE (wc);
+	}
+      
+      if (!safe)
+	{
+	  gchar *tmp;
+	  
+	  g_string_erase (string, p - string->str, g_utf8_next_char (p) - p);
+	  /* Largest char we escape is 0x0a, so we don't have to worry
+	   * about 8-digit \Uxxxxyyyy
+	   */
+	  tmp = g_strdup_printf ("\\u%04x", wc); 
+	  g_string_insert (string, p - string->str, tmp);
+	  g_free (tmp);
+
+	  p += 6;		/* Skip over escape sequence */
+	}
+      else
+	p = g_utf8_next_char (p);
+    }
+}
+
 void
 g_log_default_handler (const gchar   *log_domain,
 		       GLogLevelFlags log_level,
@@ -818,6 +876,8 @@ g_log_default_handler (const gchar   *log_domain,
 	  g_string_append (gstring, string);
 	  g_free (string);
 	}
+
+      escape_string (gstring);
     }
   if (is_fatal)
     g_string_append (gstring, "\naborting...\n");
