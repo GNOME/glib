@@ -1,3 +1,8 @@
+Fri Mar 12 15:30:58 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gbacktrace.h: ia32's G_BREAKPOINT() implementation works on
+	amd64 too. Enable it.
+
 Fri Mar 12 15:21:22 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gatomic.c: Non-optimizing compile fails for two asm
