@@ -619,6 +619,7 @@ g_io_win32_dispatch (GSource     *source,
 {
   GIOFunc func = (GIOFunc)callback;
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
   
   if (!func)
     {
@@ -628,7 +629,7 @@ g_io_win32_dispatch (GSource     *source,
     }
   
   return (*func) (watch->channel,
-		  watch->pollfd.revents & watch->condition,
+		  (watch->pollfd.revents | buffer_condition) & watch->condition,
 		  user_data);
 }
 

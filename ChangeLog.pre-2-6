@@ -1,11 +1,12 @@
 2002-03-16  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c: Some debugging output formatting changes. The
-	following two changes fixes a problem with buffered GIOChannels,
-	noticed with the help of Owen's test program, thanks!
+	following changes fix a problem with buffered GIOChannels, noticed
+	with the help of Owen's test program, thanks! (#59969)
 	(g_io_win32_prepare): Return value that takes the buffer condition
 	into account, like g_io_unix_prepare() does.
 	(g_io_win32_check): Ditto, like g_io_unix_check().
+	(g_io_win32_dispatch): Ditto, like g_io_unix_dispatch().
 
 Thu Mar 14 17:37:45 2002  Owen Taylor  <otaylor@redhat.com>
 
