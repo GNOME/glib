@@ -1,3 +1,16 @@
+Mon Aug 21 14:46:23 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/gio-test.c: Fix a couple of trivial bugs that
+	were causing warnings.
+
+Mon Aug 21 14:39:36 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h: Use C99 varargs macros where possible 
+	(check __STDC_VERSION__), otherwise, on gcc, use an alternate 
+	form of gcc varargs which is more likely
+	to be supported going forward. (Based on some code
+	from Raja Harinath)
+
 2000-08-17  Darin Adler  <darin@eazel.com>
 
 	* glib.h:

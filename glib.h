@@ -1470,19 +1470,32 @@ GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 #ifndef	G_LOG_DOMAIN
 #define	G_LOG_DOMAIN	((gchar*) 0)
 #endif	/* G_LOG_DOMAIN */
-#ifdef	__GNUC__
-#define	g_error(format, args...)	g_log (G_LOG_DOMAIN, \
-					       G_LOG_LEVEL_ERROR, \
-					       format, ##args)
-#define	g_message(format, args...)	g_log (G_LOG_DOMAIN, \
-					       G_LOG_LEVEL_MESSAGE, \
-					       format, ##args)
-#define	g_critical(format, args...)	g_log (G_LOG_DOMAIN, \
-					       G_LOG_LEVEL_CRITICAL, \
-					       format, ##args)
-#define	g_warning(format, args...)	g_log (G_LOG_DOMAIN, \
-					       G_LOG_LEVEL_WARNING, \
-					       format, ##args)
+#if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#define	g_error(...)	g_log (G_LOG_DOMAIN,         \
+			       G_LOG_LEVEL_ERROR,    \
+			       __VA_ARGS__)
+#define	g_message(...)	g_log (G_LOG_DOMAIN,         \
+			       G_LOG_LEVEL_MESSAGE,  \
+			       __VA_ARGS__)
+#define	g_critical(...)	g_log (G_LOG_DOMAIN,         \
+			       G_LOG_LEVEL_CRITICAL, \
+			       __VA_ARGS__)
+#define	g_warning(...)	g_log (G_LOG_DOMAIN,         \
+			       G_LOG_LEVEL_WARNING,  \
+			       __VA_ARGS__)
+#elif defined (__GNUC__)
+#define	g_error(format...)	g_log (G_LOG_DOMAIN,         \
+				       G_LOG_LEVEL_ERROR,    \
+				       format)
+#define	g_message(format...)	g_log (G_LOG_DOMAIN,         \
+				       G_LOG_LEVEL_MESSAGE,  \
+				       format)
+#define	g_critical(format...)	g_log (G_LOG_DOMAIN,         \
+				       G_LOG_LEVEL_CRITICAL, \
+				       format)
+#define	g_warning(format...)	g_log (G_LOG_DOMAIN,         \
+				       G_LOG_LEVEL_WARNING,  \
+				       format)
 #else	/* !__GNUC__ */
 static void
 g_error (const gchar *format,

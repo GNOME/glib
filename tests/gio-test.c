@@ -63,7 +63,7 @@ read_all (int         fd,
 {
   guint left = nbytes;
   guint nb;
-  GIOError error;
+  GIOError error = G_IO_ERROR_NONE;
   char *bufp = buffer;
 
   /* g_io_channel_read() doesn't necessarily return all the
@@ -150,7 +150,7 @@ recv_message (GIOChannel  *channel,
 		if (seq != seqtab[i].seq)
 		  {
 		    g_print ("gio-test: ...from %d: invalid sequence number %d, expected %d\n",
-			     seq, seqtab[i].seq);
+			     fd, seq, seqtab[i].seq);
 		    g_assert_not_reached ();
 		  }
 		seqtab[i].seq++;
