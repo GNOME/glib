@@ -672,13 +672,30 @@ AC_MSG_CHECKING(for GNUC visibility attribute)
 GLIB_CHECK_COMPILE_WARNINGS([
 void
 __attribute__ ((visibility ("hidden")))
-     f (void)
+     f_hidden (void)
 {
 }
-
+void
+__attribute__ ((visibility ("internal")))
+     f_internal (void)
+{
+}
+void
+__attribute__ ((visibility ("protected")))
+     f_protected (void)
+{
+}
+void
+__attribute__ ((visibility ("default")))
+     f_default (void)
+{
+}
 int main (int argc, char **argv)
 {
-	f();
+	f_hidden();
+	f_internal();
+	f_protected();
+	f_default();
 	return 0;
 }
 ],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)

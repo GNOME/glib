@@ -1,3 +1,9 @@
+2004-08-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Check for all four values of the
+	visibility attribute; gcc 2.96 seems to miss 
+	"default".  (#150379, Vincent Noel)
+
 2004-08-16  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "bs" to ALL_LINGUAS.
