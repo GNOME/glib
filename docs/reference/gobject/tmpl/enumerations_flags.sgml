@@ -118,7 +118,8 @@ Returns the static type name from a given #GFlagsClass structure.
 
 <!-- ##### STRUCT GEnumValue ##### -->
 <para>
-
+A structure which contains a single enum value, its name, and it's
+nickname.
 </para>
 
 @value: 
@@ -136,62 +137,67 @@ Returns the static type name from a given #GFlagsClass structure.
 
 <!-- ##### FUNCTION g_enum_get_value ##### -->
 <para>
-
+Returns the #GEnumValue for a value.
 </para>
 
-@enum_class: 
-@value: 
-@Returns: 
+@enum_class: a #GEnumClass
+@value: the value to look up
+@Returns: the #GEnumValue for @value, or %NULL if @value is not 
+a member of the enumeration
 
 
 <!-- ##### FUNCTION g_enum_get_value_by_name ##### -->
 <para>
-
+Looks up a #GEnumValue by name.
 </para>
 
-@enum_class: 
-@name: 
-@Returns: 
+@enum_class: a #GEnumClass
+@name: the name to look up
+@Returns: the #GEnumValue with name @name, or %NULL if the enumeration doesn'
+t have a member with that name 
 
 
 <!-- ##### FUNCTION g_enum_get_value_by_nick ##### -->
 <para>
-
+Looks up a #GEnumValue by nickname.
 </para>
 
-@enum_class: 
-@nick: 
-@Returns: 
+@enum_class: a #GEnumClass
+@nick: the nickname to look up
+@Returns: the #GEnumValue with nickname @nick, or %NULL if the enumeration doesn'
+t have a member with that nickname 
 
 
 <!-- ##### FUNCTION g_flags_get_first_value ##### -->
 <para>
-
+Returns the first #GFlagsValue which is set in @value.
 </para>
 
-@flags_class: 
-@value: 
-@Returns: 
+@flags_class: a #GFlagsClass
+@value: the value 
+@Returns: the first #GFlagsValue which is set in @value, or %NULL if none is set
 
 
 <!-- ##### FUNCTION g_flags_get_value_by_name ##### -->
 <para>
-
+Looks up a #GFlagsValue by name.
 </para>
 
-@flags_class: 
-@name: 
-@Returns: 
+@flags_class: a #GFlagsClass
+@name: the name to look up
+@Returns: the #GFlagsValue with name @name, or %NULL if there is no flag with
+that name 
 
 
 <!-- ##### FUNCTION g_flags_get_value_by_nick ##### -->
 <para>
-
+Looks up a #GFlagsValue by nickname.
 </para>
 
-@flags_class: 
-@nick: 
-@Returns: 
+@flags_class: a #GFlagsClass
+@nick: the nickname to look up
+@Returns: the #GFlagsValue with nickname @nick, or %NULL if there is no flag
+with that nickname 
 
 
 <!-- ##### FUNCTION g_enum_register_static ##### -->

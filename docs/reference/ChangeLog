@@ -1,3 +1,7 @@
+2003-04-07  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/enumerations_flags.sgml: Additions.
+
 2003-04-01  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/error_reporting.sgml: 
