@@ -65,3 +65,4 @@ unicode-caseconv
 unicode-collate
 unicode-normalize
 patterntest
+utf8-validate
