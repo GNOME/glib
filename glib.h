@@ -251,7 +251,11 @@
 
 #ifndef ATEXIT
 #  ifdef HAVE_ATEXIT
-#    define ATEXIT(proc)   (atexit (proc))
+#    ifdef NeXT /* @#%@! NeXTStep */
+#      define ATEXIT(proc)   (!atexit (proc))
+#    else
+#      define ATEXIT(proc)   (atexit (proc))
+#    endif /* NeXT */
 #  elif defined (HAVE_ON_EXIT)
 #    define ATEXIT(proc)   (on_exit ((void (*)(int, void *))(proc), NULL))
 #  endif

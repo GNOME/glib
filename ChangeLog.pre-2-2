@@ -1,3 +1,7 @@
+Sun Sep  6 12:31:50 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h: provide proper ATEXIT behavior on NeXTStep by !atexit
+
 Sat Sep  5 18:03:36 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* gutils.c (GLIB_INLINE): Define.
