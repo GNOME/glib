@@ -2653,6 +2653,7 @@ AC_CONFIG_FILES([
 glib-2.0.pc
 glib-2.0-uninstalled.pc
 gmodule-2.0.pc
+gmodule-no-export-2.0.pc
 gmodule-2.0-uninstalled.pc
 gthread-2.0.pc
 gthread-2.0-uninstalled.pc
