@@ -23,7 +23,6 @@
 #include "config.h"
 #include "gkeyfile.h"
 
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>
