@@ -1,3 +1,8 @@
+Tue Mar  8 15:46:54 2005  Søren Sandmann  <sandmann@redhat.com>
+
+	* glib/gfileutils.c (g_file_replace): New API. A function to
+	atomically create a file.
+
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: Add the new attributes here too.

@@ -86,6 +86,10 @@ gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
                               gsize        *length,    
                               GError      **error);
+gboolean g_file_replace      (const gchar *filename,
+			      const gchar *contents,
+			      gssize	     length,
+			      GError	   **error);
 gchar   *g_file_read_link    (const gchar  *filename,
 			      GError      **error);
 

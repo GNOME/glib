@@ -811,6 +811,261 @@ g_file_get_contents (const gchar *filename,
 
 #endif
 
+
+static gboolean
+rename_file (const char *old_name,
+	     const char *new_name,
+	     GError **err)
+{
+  errno = 0;
+  if (g_rename (old_name, new_name) == -1)
+    {
+      int save_errno = errno;
+      gchar *display_old_name = g_filename_display_name (old_name);
+      gchar *display_new_name = g_filename_display_name (new_name);
+      
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (save_errno),
+		   _("Failed to rename file '%s' to '%s': g_rename() failed: %s"),
+		   display_old_name,
+		   display_new_name,
+		   g_strerror (save_errno));
+
+      g_free (display_old_name);
+      g_free (display_new_name);
+      
+      return FALSE;
+    }
+  
+  return TRUE;
+}
+
+static gchar *
+write_to_temp_file (const gchar *contents,
+		    gsize length,
+		    const gchar *template,
+		    GError **err)
+{
+  gchar *tmp_name;
+  gchar *display_name;
+  gchar *retval;
+  FILE *file;
+  gint fd;
+  int save_errno;
+
+  retval = NULL;
+  
+  tmp_name = g_strdup_printf (".%s.XXXXXX", template);
+
+  errno = 0;
+  fd = g_mkstemp (tmp_name);
+  save_errno = errno;
+  display_name = g_filename_display_name (tmp_name);
+      
+  if (fd == -1)
+    {
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (save_errno),
+		   _("Failed to create file '%s': %s"),
+		   display_name, g_strerror (save_errno));
+      
+      goto out;
+    }
+
+  errno = 0;
+  file = fdopen (fd, "wb");
+  if (!file)
+    {
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (errno),
+		   _("Failed to open file '%s' for writing: fdopen() failed: %s"),
+		   display_name,
+		   g_strerror (errno));
+
+      close (fd);
+      g_unlink (tmp_name);
+      
+      goto out;
+    }
+
+  if (length > 0)
+    {
+      size_t n_written;
+      
+      errno = 0;
+
+      n_written = fwrite (contents, 1, length, file);
+      
+      if (n_written < length)
+	{
+ 	  g_set_error (err,
+		       G_FILE_ERROR,
+		       g_file_error_from_errno (errno),
+		       _("Failed to write file '%s': fwrite() failed: %s"),
+		       display_name,
+		       g_strerror (errno));
+
+	  fclose (file);
+	  g_unlink (tmp_name);
+	  
+	  goto out;
+	}
+    }
+   
+  errno = 0;
+  if (fclose (file) == EOF)
+    {
+      g_set_error (err,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (errno),
+		   _("Failed to close file '%s': fclose() failed: %s"),
+		   display_name, 
+		   g_strerror (errno));
+
+      g_unlink (tmp_name);
+      
+      goto out;
+    }
+  
+  retval = g_strdup (tmp_name);
+
+ out:
+  g_free (tmp_name);
+  g_free (display_name);
+  
+  return retval;
+}
+
+/**
+ * g_file_replace:
+ * @filename: name of a file to write @contents to, in the GLib file name
+ *   encoding
+ * @contents: string to write to the file
+ * @length: length of @contents, or -1 if @contents is a nul-terminated string
+ * @error: return location for a #GError, or %NULL
+ *
+ * Writes all of @contents to a file named @filename, with good error checking.
+ * If a file called @filename already exists it will be overwritten.
+ *
+ * This write is atomic in the sense that it is first written to a temporary
+ * file which is then renamed to the final name. Notes:
+ * <itemizedlist>
+ * <listitem>
+ *    On Unix, if @filename already exists hard links to @filename will break.
+ *    Also since the file is recreated, existing permissions, access control
+ *    lists, metadata etc. may be lost.
+ * </listitem>
+ * <listitem>
+ *   On Windows renaming a file will not remove an existing file with the
+ *   new name, so on Windows there is a race condition between the existing
+ *   file being removed and the temporary file being renamed.
+ * </listitem>
+ * <listitem>
+ *   On Windows there is no way to remove a file that is open to some
+ *   process, or mapped into memory. Thus, this function will fail if
+ *   @filename already exists and is open.
+ * </listitem>
+ * </itemizedlist>
+ *
+ * If the call was sucessful, it returns %TRUE. If the call was not successful,
+ * it returns %FALSE and sets @error. The error domain is #G_FILE_ERROR.
+ * Possible error codes are those in the #GFileError enumeration.
+ *
+ * Return value: %TRUE on success, %FALSE if an error occurred
+ *
+ * Since: 2.8
+ **/
+gboolean
+g_file_replace (const gchar *filename,
+		const gchar *contents,
+		gssize	     length,
+		GError	   **error)
+{
+  char *tmp_filename = NULL;
+  char *display_filename = NULL;
+  char *display_tmpname = NULL;
+  gboolean retval;
+  GError *rename_error = NULL;
+  
+  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (contents != NULL || length == 0, FALSE);
+ 
+  if (length == -1)
+    length = strlen (contents);
+
+  tmp_filename = write_to_temp_file (contents, length, filename, error);
+  
+  if (!tmp_filename)
+    {
+      retval = FALSE;
+      goto out;
+    }
+
+  display_tmpname = g_filename_display_name (tmp_filename);
+  display_filename = g_filename_display_name (filename);
+
+  if (!rename_file (tmp_filename, filename, &rename_error))
+    {
+#ifndef G_OS_WIN32
+
+      g_unlink (tmp_filename);
+      g_propagate_error (error, rename_error);
+      retval = FALSE;
+      goto out;
+
+#else /* G_OS_WIN32 */
+      
+      /* Renaming failed, but on Windows this may just mean
+       * the file already exists. So if the target file
+       * exists, try deleting it and do the rename again.
+       */
+      if (!g_file_test (filename, G_FILE_TEST_EXISTS))
+	{
+	  g_unlink (tmp_filename);
+	  g_propagate_error (error, rename_error);
+	  retval = FALSE;
+	  goto out;
+	}
+
+      g_error_free (rename_error);
+      
+      if (g_unlink (filename) == -1)
+	{
+	  g_set_error (error,
+		       G_FILE_ERROR,
+		       g_file_error_from_errno (errno),
+		       _("Existing file '%s' could not be removed: g_unlink() failed: %s"),
+		       display_filename,
+		       g_strerror (errno));
+	  
+	  g_unlink (tmp_filename);
+	  retval = FALSE;
+	  goto out;
+	}
+      
+      if (!rename_file (tmp_filename, filename, error))
+	{
+	  g_unlink (tmp_filename);
+	  retval = FALSE;
+	  goto out;
+	}
+
+#endif
+    }
+
+  retval = TRUE;
+  
+ out:
+  g_free (display_tmpname);
+  g_free (display_filename);
+  g_free (tmp_filename);
+  return retval;
+}
+
 /*
  * mkstemp() implementation is from the GNU C library.
  * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
