@@ -1,3 +1,13 @@
+2000-09-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in, glib.h: Added errorcheck mutexes. These are
+	activated through the preprocessor symbol
+	G_ERRORCHECK_MUTEXES. Need to add an extra word to StaticMutex in
+	order to achieve this. g_(static_)mutex_* functions instrument the
+	mutex operations with mutex name and location, when compiled with
+	-DG_ERRORCHECK_MUTEXES. g_thread_init activates the errorcheck
+	mutexes, when compiled with -DG_ERRORCHECK_MUTEXES.
+
 2000-09-28  Havoc Pennington  <hp@pobox.com>
 
 	* glib.h (GThreadPriority): fix indentation

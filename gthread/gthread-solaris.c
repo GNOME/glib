@@ -51,6 +51,8 @@
 
 gulong g_thread_min_stack_size = 0;
 
+#define G_MUTEX_SIZE (sizeof (mutex_t))
+
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()

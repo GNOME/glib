@@ -3147,22 +3147,56 @@ GLIB_VAR gboolean		g_threads_got_initialized;
  */
 void	g_thread_init	(GThreadFunctions	*vtable);
 
+/* Errorcheck mutexes. If you define G_ERRORCHECK_MUTEXES, then all
+ * mutexes will check for re-locking and re-unlocking */
+
+/* Initialize thread system with errorcheck mutexes. vtable must be
+ * NULL.Do not call directly. Use #define G_ERRORCHECK_MUTEXES
+ * instead.  
+ */
+void    g_thread_init_with_errorcheck_mutexes (GThreadFunctions* vtable);
+
+/* A random number to recognize debug calls to g_mutex_... */
+#define G_MUTEX_DEBUG_MAGIC 0xf8e18ad7
+
+#ifdef G_ERRORCHECK_MUTEXES
+#define g_thread_init(vtable) g_thread_init_with_errorcheck_mutexes (vtable) 
+#endif
+
 /* internal function for fallback static mutex implementation */
 GMutex*	g_static_mutex_get_mutex_impl	(GMutex	**mutex);
 
 /* shorthands for conditional and unconditional function calls */
-#define G_THREAD_UF(name, arglist) \
-    (*g_thread_functions_for_glib_use . name) arglist
-#define G_THREAD_CF(name, fail, arg) \
-    (g_thread_supported () ? G_THREAD_UF (name, arg) : (fail))
-/* keep in mind, all those mutexes and static mutexes are not 
- * recursive in general, don't rely on that
- */
+#define G_THREAD_UF(op, arglist) \
+    (*g_thread_functions_for_glib_use . op) arglist
+#define G_THREAD_CF(op, fail, arg) \
+    (g_thread_supported () ? G_THREAD_UF (op, arg) : (fail))
+#define G_THREAD_ECF(op, fail, mutex, name, type)			\
+    (g_thread_supported () ? 						\
+     ((type(*)(GMutex*, gulong, gchar*, gchar*))			\
+      (*g_thread_functions_for_glib_use . op)) 				\
+     (mutex, G_MUTEX_DEBUG_MAGIC, G_STRINGIFY (name),  G_STRLOC) : (fail))
+#ifndef G_ERRORCHECK_MUTEXES
+#define g_mutex_lock_with_debug_name(mutex, name)  			\
+  G_THREAD_CF (mutex_lock,     (void)0, (mutex))
+#define g_mutex_trylock_with_debug_name(mutex, name) 			\
+   G_THREAD_CF (mutex_trylock,  TRUE,    (mutex))
+#define g_mutex_unlock_with_debug_name(mutex, name) 			\
+   G_THREAD_CF (mutex_unlock,   (void)0, (mutex))
+#else /* G_ERRORCHECK_MUTEXES */
+#define g_mutex_lock_with_debug_name(mutex, name)  			\
+  G_THREAD_ECF (mutex_lock,    (void)0, mutex, name, void)
+#define g_mutex_trylock_with_debug_name(mutex, name) 			\
+  G_THREAD_ECF (mutex_trylock, TRUE,    mutex, name, gboolean)
+#define g_mutex_unlock_with_debug_name(mutex, name) 			\
+  G_THREAD_ECF (mutex_unlock,  (void)0, mutex, name, void)
+#endif /* G_ERRORCHECK_MUTEXES */
+
 #define	g_thread_supported()	(g_threads_got_initialized)
 #define g_mutex_new()            G_THREAD_UF (mutex_new,      ())
-#define g_mutex_lock(mutex)      G_THREAD_CF (mutex_lock,     (void)0, (mutex))
-#define g_mutex_trylock(mutex)   G_THREAD_CF (mutex_trylock,  TRUE,    (mutex))
-#define g_mutex_unlock(mutex)    G_THREAD_CF (mutex_unlock,   (void)0, (mutex))
+#define g_mutex_lock(mutex)  	 g_mutex_lock_with_debug_name(mutex, mutex)
+#define g_mutex_trylock(mutex)   g_mutex_trylock_with_debug_name(mutex, mutex)
+#define g_mutex_unlock(mutex)    g_mutex_unlock_with_debug_name(mutex, mutex)
 #define g_mutex_free(mutex)      G_THREAD_CF (mutex_free,     (void)0, (mutex))
 #define g_cond_new()             G_THREAD_UF (cond_new,       ())
 #define g_cond_signal(cond)      G_THREAD_CF (cond_signal,    (void)0, (cond))
@@ -3203,11 +3237,11 @@ void g_thread_set_priority (GThread         *thread,
  * use
  */
 #define g_static_mutex_lock(mutex) \
-    g_mutex_lock (g_static_mutex_get_mutex (mutex))
+    g_mutex_lock_with_debug_name (g_static_mutex_get_mutex (mutex), mutex)
 #define g_static_mutex_trylock(mutex) \
-    g_mutex_trylock (g_static_mutex_get_mutex (mutex))
+    g_mutex_trylock_with_debug_name (g_static_mutex_get_mutex (mutex), mutex)
 #define g_static_mutex_unlock(mutex) \
-    g_mutex_unlock (g_static_mutex_get_mutex (mutex)) 
+    g_mutex_unlock_with_debug_name (g_static_mutex_get_mutex (mutex), mutex) 
 
 struct _GStaticPrivate
 {

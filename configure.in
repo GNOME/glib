@@ -1330,16 +1330,19 @@ typedef struct _GStaticMutex GStaticMutex;
 struct _GStaticMutex
 {
   struct _GMutex *runtime_mutex;
-  union {
-    char   pad[$g_mutex_sizeof];
-    double dummy_double;
-    void  *dummy_pointer;
-    long   dummy_long;
-  } aligned_pad_u;
+  struct {
+    union {
+      char   pad[$g_mutex_sizeof];
+      double dummy_double;
+      void  *dummy_pointer;
+      long   dummy_long;
+    } mutex;
+    void *debug_info;
+  } static_mutex;
 };
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
+#define	G_STATIC_MUTEX_INIT	{ NULL, { { { $g_mutex_contents} }, NULL } }
 #define	g_static_mutex_get_mutex(mutex) \
-  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
+  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->static_mutex)) : \
    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
 _______EOF
 	else

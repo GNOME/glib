@@ -1,3 +1,15 @@
+2000-09-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c: Added errorcheck mutexes. New exported function
+	g_thread_init_with_errorcheck_mutexes, which is called instead of
+	g_thread_init, when compiled with -DG_ERRORCHECK_MUTEXES. New
+	static functions
+	g_mutex_(new|lock|trylock|unlock|free)_errorcheck_impl to
+	implement errorcheck mutexes.
+
+	* gthread-posix.impl.c, gthread-solaris-impl.c: Define the size of
+	a mutex.
+
 2000-09-21  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Use pthreads macros from ../build.

@@ -48,6 +48,153 @@ void g_mutex_init (void);
 void g_mem_init (void);
 void g_messages_init (void);
 
+#define G_MUTEX_DEBUG_INFO(mutex) (*((gpointer*)(((char*)mutex)+G_MUTEX_SIZE)))
+
+typedef struct _ErrorCheckInfo ErrorCheckInfo;
+struct _ErrorCheckInfo
+{
+  gchar *name;
+  gchar *location;
+  GThread *owner;
+};
+
+static GMutex *
+g_mutex_new_errorcheck_impl (void)
+{
+  GMutex *retval = g_thread_functions_for_glib_use_default.mutex_new ();
+  retval = g_realloc (retval, G_MUTEX_SIZE + sizeof (gpointer));
+  G_MUTEX_DEBUG_INFO (retval) = NULL;
+  return retval;
+}
+
+static inline void
+fill_info (ErrorCheckInfo *info,
+	   GThread *self,
+	   gulong magic, 
+	   gchar *name, 
+	   gchar *location)
+{
+  info->owner = self;
+  if (magic == G_MUTEX_DEBUG_MAGIC)
+    {
+      /* We are used with special instrumented calls, where name and
+       * location is provided as well, so use them */
+      info->name = name;
+      info->location = location;
+    }
+  else
+    info->name = info->location = "unknown";
+}
+
+static void
+g_mutex_lock_errorcheck_impl (GMutex *mutex, 
+			      gulong magic, 
+			      gchar *name, 
+			      gchar *location)
+{
+  ErrorCheckInfo *info;
+  GThread *self = g_thread_self ();
+  if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
+    {
+      /* if the debug info is NULL, we have not yet locked that mutex,
+       * so we do it now */
+      g_thread_functions_for_glib_use_default.mutex_lock (mutex);
+      /* Now we have to check again, because anothe thread might mave
+       * locked the mutex at the same time, we did. This technique is
+       * not 100% save on systems without decent cache coherence,
+       * but we have no choice */ 
+      if (G_MUTEX_DEBUG_INFO (mutex) == NULL)
+	{
+	  info = G_MUTEX_DEBUG_INFO (mutex) = g_new0 (ErrorCheckInfo, 1);
+	}
+      g_thread_functions_for_glib_use_default.mutex_unlock (mutex);
+    }
+  
+  info = G_MUTEX_DEBUG_INFO (mutex);
+  if (info->owner == self)
+    g_error ("Trying to recursivly lock the mutex '%s' at '%s', "
+	     "previously locked by name '%s' at '%s'", 
+	     name, location, info->name, info->location);
+
+  g_thread_functions_for_glib_use_default.mutex_lock (mutex);
+
+  fill_info (info, self, magic, name, location);
+}
+
+static gboolean
+g_mutex_trylock_errorcheck_impl (GMutex *mutex, 
+				 gulong magic, 
+				 gchar *name, 
+				 gchar *location)
+{
+  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  GThread *self = g_thread_self ();
+  if (!info)
+    {
+      /* This mutex has not yet been used, so simply lock and return TRUE */
+      g_mutex_lock_errorcheck_impl (mutex, magic, name, location);
+      return TRUE;
+    }
+  if (info->owner == self)
+    g_error ("Trying to recursivly lock the mutex '%s' at '%s', "
+	     "previously locked by name '%s' at '%s'", 
+	     name, location, info->name, info->location);
+  
+  if (!g_thread_functions_for_glib_use_default.mutex_trylock (mutex))
+    return FALSE;
+
+  fill_info (info, self, magic, name, location);
+  return TRUE;
+}
+
+static void
+g_mutex_unlock_errorcheck_impl (GMutex *mutex, 
+				gulong magic, 
+				gchar *name, 
+				gchar *location)
+{
+  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  GThread *self = g_thread_self ();
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    name = location = "unknown";
+  if (!info || info->owner != self)
+    g_error ("Trying to unlock the unlocked mutex '%s' at '%s'",
+	     name, location);
+  info->owner = NULL;
+  info->name = info->location = NULL;
+  g_thread_functions_for_glib_use_default.mutex_unlock (mutex);
+}
+
+static void
+g_mutex_free_errorcheck_impl (GMutex *mutex)
+{
+  g_free (G_MUTEX_DEBUG_INFO (mutex));
+  g_thread_functions_for_glib_use_default.mutex_free (mutex);  
+}
+
+/* unshadow function declaration. See glib.h */
+#undef g_thread_init
+
+void 
+g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
+{
+  GThreadFunctions errorcheck_functions;
+  if (init)
+    g_error ("Errorcheck mutexes can only be used for native " 
+	     "thread implementations. Sorry." );
+  errorcheck_functions = g_thread_functions_for_glib_use_default;
+  errorcheck_functions.mutex_new = g_mutex_new_errorcheck_impl;
+  errorcheck_functions.mutex_lock = 
+    (void (*)(GMutex *)) g_mutex_lock_errorcheck_impl;
+  errorcheck_functions.mutex_trylock = 
+    (gboolean (*)(GMutex *)) g_mutex_trylock_errorcheck_impl;
+  errorcheck_functions.mutex_unlock = 
+    (void (*)(GMutex *)) g_mutex_unlock_errorcheck_impl;
+  errorcheck_functions.mutex_free = g_mutex_free_errorcheck_impl;
+    
+  g_thread_init (&errorcheck_functions);
+}
+
 void
 g_thread_init (GThreadFunctions* init)
 {
