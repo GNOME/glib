@@ -8,19 +8,18 @@ SUBDIRS =
 INCLUDES = -I$(top_srcdir) -I$(top_builddir) @GLIB_DEBUG_FLAGS@
 
 # libraries to compile and install
-lib_LTLIBRARIES = libgobject.la
+lib_LTLIBRARIES = libgobject-1.3.la
 
 # provide g_logv() domain
 DEFS += -DG_LOG_DOMAIN=g_log_domain_gobject
 
 # libtool stuff: set version and export symbols for resolving
-libgobjectincludedir = $(includedir)/gobject
-libgobject_la_LDFLAGS = @STRIP_BEGIN@ \
+libgobjectincludedir = $(includedir)/glib-2.0/gobject
+libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE) \
 	-export-dynamic \
 @STRIP_END@
-libgobject_la_LIBADD = # $(libglib)
+libgobject_1_3_la_LIBADD = # $(libglib)
 
 #
 # setup source file variables
@@ -62,7 +61,7 @@ gobject_extra_sources = @STRIP_BEGIN@ \
 #
 gobject_h_sources = $(gobject_private_h_sources) $(gobject_public_h_sources) # $(gobject_built_public_sources)
 libgobjectinclude_HEADERS = $(gobject_public_h_sources) # $(gobject_built_public_sources)
-libgobject_la_SOURCES = $(gobject_c_sources)
+libgobject_1_3_la_SOURCES = $(gobject_c_sources)
 MAINTAINERCLEANFILES += 
 # $(gobject_built_public_sources) $(gobject_built_sources)
 EXTRA_HEADERS +=
@@ -77,7 +76,7 @@ bin_PROGRAMS = gobject-query
 # source files
 gobject_query_SOURCES = gobject-query.c
 # link programs against libgobject
-progs_LDADD = ../libglib.la libgobject.la
+progs_LDADD = ../libglib-1.3.la libgobject-1.3.la
 gobject_query_LDADD = $(progs_LDADD)
 
 #

@@ -20,23 +20,23 @@ EXTRA_DIST =	\
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
 
-include_HEADERS = \
+glibincludedir=$(includedir)/glib-2.0
+glibinclude_HEADERS = \
 		gmodule.h
 
-libglib = $(top_builddir)/libglib.la # -lglib
+libglib = $(top_builddir)/libglib-1.3.la # -lglib
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 
-lib_LTLIBRARIES = libgmodule.la libgplugin_a.la libgplugin_b.la
+lib_LTLIBRARIES = libgmodule-1.3.la libgplugin_a.la libgplugin_b.la
 
-libgmodule_la_SOURCES = gmodule.c
-libgmodule_la_LDFLAGS = \
+libgmodule_1_3_la_SOURCES = gmodule.c
+libgmodule_1_3_la_LDFLAGS = \
 	@G_MODULE_LDFLAGS@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE) \
 	-export-dynamic
 
-libgmodule_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ # $(libglib)
+libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ # $(libglib)
 # we should really depend on $(libglib) for libgmodule.la, but libtool has a
 # problem with this ;(
 
@@ -50,7 +50,7 @@ libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
-testgmodule_LDADD = libgmodule.la $(libglib) @G_MODULE_LIBS@
+testgmodule_LDADD = libgmodule-1.3.la $(libglib) @G_MODULE_LIBS@
 
 gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
@@ -65,10 +65,10 @@ files:
 	  echo $$p; \
 	done
 
-install-libLTLIBRARIES: libgmodule.la
+install-libLTLIBRARIES: libgmodule-1.3.la
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='libgmodule.la'; for p in $$list; do \
+	@list='libgmodule-1.3.la'; for p in $$list; do \
 	 if test -f $$p; then \
 	  echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p"; \
 	  $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p; \

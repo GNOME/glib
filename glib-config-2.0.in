@@ -57,9 +57,7 @@ while test $# -gt 0; do
       exit 0
       ;;
     --cflags)
-      if test "@includedir@" != /usr/include ; then
-        includes="-I@includedir@"
-      fi
+      includes="-I@includedir@/glib-2.0"
       echo_cflags=yes
       ;;
     --libs)
@@ -95,23 +93,23 @@ if test "$echo_cflags" = "yes"; then
 	if test "$lib_gthread" = "yes"; then
 		cflags="$cflags @G_THREAD_CFLAGS@"
 	fi
-	echo -I@libdir@/glib/include $includes $cflags
+	echo -I@libdir@/glib-2.0/include $includes $cflags
 fi
 if test "$echo_libs" = "yes"; then
 	libsp=""
 	libsa=""
 	if test "$lib_glib" = "yes"; then
-		libsp="$libsp -lglib"
+		libsp="$libsp -lglib-1.3"
 	fi
 	if test "$lib_gobject" = "yes"; then
-		libsp="-lgobject $libsp"
+		libsp="-lgobject-1.3 $libsp"
 	fi
 	if test "$lib_gthread" = "yes"; then
-		libsp="-lgthread $libsp"
+		libsp="-lgthread-1.3 $libsp"
 		libsa="$libsa @G_THREAD_LIBS@"
 	fi
 	if test "$lib_gmodule" = "yes"; then
-		libsp="@G_MODULE_LDFLAGS@ -lgmodule $libsp"
+		libsp="@G_MODULE_LDFLAGS@ -lgmodule-1.3 $libsp"
 		libsa="$libsa @G_MODULE_LIBS@"
 	fi
 	echo -L@libdir@ $libsp $libsa

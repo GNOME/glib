@@ -1526,7 +1526,7 @@ esac
 AC_OUTPUT([
 glib.spec
 Makefile
-glib-config
+glib-config-2.0
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile
@@ -1535,7 +1535,7 @@ docs/Makefile
 docs/glib-config.1
 tests/Makefile
 ],[case "$CONFIG_FILES" in
-*glib-config*)chmod +x glib-config;;
+*glib-config-2.0*)chmod +x glib-config-2.0;;
 esac
 echo ""
 echo " *** IMPORTANT *** "

@@ -4,15 +4,15 @@ AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS = . gobject gmodule gthread docs tests
 
-bin_SCRIPTS=glib-config
-BUILT_SOURCES=glib-config
-glib-config: glib-config.in
+bin_SCRIPTS=glib-config-2.0
+BUILT_SOURCES=glib-config-2.0
+glib-config-2.0: glib-config-2.0.in
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
-	glib.m4			\
+	glib-2.0.m4		\
 	glib.spec.in		\
 	acglib.m4		\
 	sanity_check		\
@@ -33,9 +33,9 @@ EXTRA_DIST = 			\
 	glib.rc			\
 	glib.rc.in
 
-lib_LTLIBRARIES = libglib.la
+lib_LTLIBRARIES = libglib-1.3.la
 
-libglib_la_SOURCES = 		\
+libglib_1_3_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
 	gbacktrace.c		\
@@ -72,9 +72,14 @@ libglib_la_SOURCES = 		\
 	gunidecomp.c		\
 	gutils.c
 
-include_HEADERS = glib.h glib-object.h gunicode.h gerror.h
+glibincludedir=$(includedir)/glib-2.0
+glibinclude_HEADERS =   \
+	gerror.h	\
+	glib.h 		\
+	glib-object.h	\
+	gunicode.h
 
-configexecincludedir = $(pkglibdir)/include
+configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h
 
 install-exec-local: glibconfig.h
@@ -93,18 +98,17 @@ stamp-gc-h: config.status
 	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
 	echo timestamp > stamp-gc-h
 
-libglib_la_LDFLAGS = \
+libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE) \
 	-export-dynamic
 
 noinst_PROGRAMS = testglib testgdate testgdateparser
-testglib_LDADD = libglib.la
-testgdate_LDADD = libglib.la
-testgdateparser_LDADD = libglib.la
+testglib_LDADD = libglib-1.3.la
+testgdate_LDADD = libglib-1.3.la
+testgdateparser_LDADD = libglib-1.3.la
 
 m4datadir = $(datadir)/aclocal
-m4data_DATA = glib.m4
+m4data_DATA = glib-2.0.m4
 
 glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status

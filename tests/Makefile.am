@@ -27,24 +27,25 @@ TESTS = \
 
 noinst_PROGRAMS = $(TESTS)
 
-array_test_LDADD = $(top_builddir)/libglib.la
-date_test_LDADD = $(top_builddir)/libglib.la
-dirname_test_LDADD = $(top_builddir)/libglib.la
-hash_test_LDADD = $(top_builddir)/libglib.la
-list_test_LDADD = $(top_builddir)/libglib.la
-node_test_LDADD = $(top_builddir)/libglib.la
-queue_test_LDADD = $(top_builddir)/libglib.la
-rand_test_LDADD = $(top_builddir)/libglib.la
-relation_test_LDADD = $(top_builddir)/libglib.la
-slist_test_LDADD = $(top_builddir)/libglib.la
-strfunc_test_LDADD = $(top_builddir)/libglib.la
-string_test_LDADD = $(top_builddir)/libglib.la
-thread_test_LDADD = $(top_builddir)/libglib.la \
-		$(top_builddir)/gthread/libgthread.la @G_THREAD_LIBS@
-threadpool_test_LDADD = $(top_builddir)/libglib.la \
-		$(top_builddir)/gthread/libgthread.la @G_THREAD_LIBS@
-tree_test_LDADD = $(top_builddir)/libglib.la
-type_test_LDADD = $(top_builddir)/libglib.la
+progs_LDADD = $(top_builddir)/libglib-1.3.la
+thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
+
+array_test_LDADD = $(progs_LDADD)
+date_test_LDADD = $(progs_LDADD)
+dirname_test_LDADD = $(progs_LDADD)
+hash_test_LDADD = $(progs_LDADD)
+list_test_LDADD = $(progs_LDADD)
+node_test_LDADD = $(progs_LDADD)
+queue_test_LDADD = $(progs_LDADD)
+rand_test_LDADD = $(progs_LDADD)
+relation_test_LDADD = $(progs_LDADD)
+slist_test_LDADD = $(progs_LDADD)
+strfunc_test_LDADD = $(progs_LDADD)
+string_test_LDADD = $(progs_LDADD)
+thread_test_LDADD = $(thread_LDADD)
+threadpool_test_LDADD = $(thread_LDADD)
+tree_test_LDADD = $(progs_LDADD)
+type_test_LDADD = $(progs_LDADD)
 
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

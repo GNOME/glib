@@ -17,15 +17,14 @@ libglib = $(top_builddir)/libglib.la # -lglib
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 
-lib_LTLIBRARIES = libgthread.la
+lib_LTLIBRARIES = libgthread-1.3.la
 
-libgthread_la_SOURCES = gthread-impl.c
-libgthread_la_LDFLAGS = \
+libgthread_1_3_la_SOURCES = gthread-impl.c
+libgthread_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-release $(LT_RELEASE) \
 	-export-dynamic
 
-libgthread_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
+libgthread_1_3_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
