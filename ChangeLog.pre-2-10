@@ -1,3 +1,7 @@
+2001-11-15  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/giochannel.c: Documentation fixes.
+ 
 2001-11-15  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
 
 	* configure.in: Added "ja" to ALL_LINGUAS.

@@ -9,13 +9,13 @@ portable support for using files, pipes and sockets.
 The #GIOChannel data type aims to provide a portable method for using file
 descriptors, pipes, and sockets, and integrating them into the
 <link linkend="glib-The-Main-Event-Loop">main event loop</link>.
-Currently full support is available on Unix platforms, though support for
+Currently full support is available on Unix platforms, support for
 Windows is only partially complete.
 </para>
 <para>
 To create a new #GIOChannel on Unix systems use g_io_channel_unix_new().
 This works for plain file descriptors, pipes and sockets.
-Alternately, a channel can be created for a file in a system independent
+Alternatively, a channel can be created for a file in a system independent
 manner using g_io_channel_new_file().
 </para>
 <para>
@@ -51,7 +51,7 @@ The new functions g_io_channel_read_chars(), g_io_channel_read_line(),
 g_io_channel_read_line_string(), g_io_channel_read_to_end(),
 g_io_channel_write_chars(), g_io_channel_seek_position(),
 and g_io_channel_flush() should not be mixed with the
-depricated functions g_io_channel_read(), g_io_channel_write(),
+deprecated functions g_io_channel_read(), g_io_channel_write(),
 and g_io_channel_seek() on the same channel.
 </para>
 
@@ -213,8 +213,6 @@ programmer (unless you are creating a new type of #GIOChannel).
 @channel: 
 @error: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@err: 
 
 
 <!-- ##### FUNCTION g_io_channel_seek_position ##### -->
@@ -227,41 +225,17 @@ programmer (unless you are creating a new type of #GIOChannel).
 @type: 
 @error: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@err: 
 
 
 <!-- ##### ENUM GSeekType ##### -->
 <para>
 An enumeration specifying the base position for a g_io_channel_seek_position()
 operation.
-
-<informaltable pgwide=1 frame="none" role="enum">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
-<tbody>
-
-<row>
-<entry>G_SEEK_CUR</entry>
-<entry>the current position in the file.</entry>
-</row>
-
-<row>
-<entry>G_SEEK_SET</entry>
-<entry>the start of the file.</entry>
-</row>
-
-<row>
-<entry>G_SEEK_END</entry>
-<entry>the end of the file.</entry>
-</row>
-
-</tbody></tgroup></informaltable>
-
 </para>
 
-@G_SEEK_CUR: 
-@G_SEEK_SET: 
-@G_SEEK_END: 
+@G_SEEK_CUR: the current position in the file.
+@G_SEEK_SET: the start of the file.
+@G_SEEK_END: the end of the file.
 
 <!-- ##### FUNCTION g_io_channel_shutdown ##### -->
 <para>
@@ -381,52 +355,15 @@ with the given priority.
 <para>
 A bitwise combination representing a condition to watch for on an event
 source.
-
-<informaltable pgwide=1 frame="none" role="enum">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
-<tbody>
-
-<row>
-<entry>G_IO_IN</entry>
-<entry>There is data to read.</entry>
-</row>
-
-<row>
-<entry>G_IO_OUT</entry>
-<entry>Data can be written (without blocking).</entry>
-</row>
-
-<row>
-<entry>G_IO_PRI</entry>
-<entry>There is urgent data to read.</entry>
-</row>
-
-<row>
-<entry>G_IO_ERR</entry>
-<entry>Error condition.</entry>
-</row>
-
-<row>
-<entry>G_IO_HUP</entry>
-<entry>Hung up (the connection has been broken, usually for pipes and
-sockets).</entry>
-</row>
-
-<row>
-<entry>G_IO_NVAL</entry>
-<entry>Invalid request. The file descriptor is not open.</entry>
-</row>
-
-</tbody></tgroup></informaltable>
-
 </para>
 
-@G_IO_IN: 
-@G_IO_OUT: 
-@G_IO_PRI: 
-@G_IO_ERR: 
-@G_IO_HUP: 
-@G_IO_NVAL: 
+@G_IO_IN: There is data to read.
+@G_IO_OUT: Data can be written (without blocking).
+@G_IO_PRI: There is urgent data to read.
+@G_IO_ERR: Error condition.
+@G_IO_HUP: Hung up (the connection has been broken, usually for pipes 
+           and sockets).
+@G_IO_NVAL: Invalid request. The file descriptor is not open.
 
 <!-- ##### USER_FUNCTION GIOFunc ##### -->
 <para>
@@ -491,9 +428,6 @@ generic way.
 
 @channel: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@flags: 
-@error: 
 
 
 <!-- ##### FUNCTION g_io_channel_set_flags ##### -->
@@ -509,14 +443,22 @@ generic way.
 
 <!-- ##### ENUM GIOFlags ##### -->
 <para>
-
+Specifies properties of a #GIOChannel. Some of the flags can only
+be read with g_io_channel_get_flags(), but not changed with
+g_io_channel_set_flags(). 
 </para>
 
-@G_IO_FLAG_APPEND: 
-@G_IO_FLAG_NONBLOCK: 
-@G_IO_FLAG_IS_READABLE: 
-@G_IO_FLAG_IS_WRITEABLE: 
-@G_IO_FLAG_IS_SEEKABLE: 
+@G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND (see the 
+   documentation of the Unix <function>open()</function> syscall). 
+@G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to 
+   %O_NONBLOCK/%O_NDELAY (see the documentation of the Unix 
+   <function>open()</function> syscall). 
+@G_IO_FLAG_IS_READABLE: indicates that the io channel is readable. This flag 
+   can not be changed.
+@G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable. This flag 
+   can not be changed.
+@G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable, i.e. that 
+   g_io_channel_seek_position() can be used on it. This flag can not be changed.
 @G_IO_FLAG_MASK: 
 @G_IO_FLAG_GET_MASK: 
 @G_IO_FLAG_SET_MASK: 
@@ -610,7 +552,7 @@ generic way.
 
 <!-- ##### ENUM GIOError ##### -->
 <para>
-#GIOError is only used by the depricated functions g_io_channel_read(),
+#GIOError is only used by the deprecated functions g_io_channel_read(),
 g_io_channel_write(), and g_io_channel_seek().
 </para>
 

@@ -1,3 +1,12 @@
+2001-11-15  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/iochannels.sgml: Document GIOFlags, fix typos.
+
+	* glib/tmpl/conversions.sgml, glib/tmpl/unicode.sgml,
+	glib/tmpl/spawn.sgml, glib/tmpl/fileutils.sgml,
+	glib/tmpl/shell.sgml, glib/tmpl/windows.sgml: Add
+	some missing short and long descriptions.
+
 2001-11-14  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/Makefile.am (MKDB_OPTIONS): Add --sgml-mode.

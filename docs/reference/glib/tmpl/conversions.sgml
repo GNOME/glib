@@ -2,7 +2,7 @@
 Character Set Conversion
 
 <!-- ##### SECTION Short_Description ##### -->
-
+convert strings between different character sets using <function>iconv()</function>
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-Spawning Processes (fork/exec)
+Spawning Processes
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Process launching with <function>fork()</function>/<function>exec()</function>
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
