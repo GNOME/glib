@@ -1,3 +1,16 @@
+Sun Aug 12 02:07:10 2001  Tim Janik  <timj@gtk.org>
+
+	* gvaluearray.[hc]: fix preallocation logic, support DISABLE_MEM_POOLS
+	properly, group value allocations.
+	(g_value_array_new): fix semantic of n_prealloced argument, so it's
+	really just about preallocation space.
+
+2001-07-23  Padraig O'Briain <Padraig.Obriain@Sun.COM>
+	
+	* gobject/gobjectnotifyqueue.c: fix unconditional check of
+	first GParamSpec in g_object_notify_queue_thaw(); to prevent
+	property notification being lost.
+
 2001-08-06  Sven Neumann  <sven@gimp.org>
 
 	* gobject.[ch]: 

@@ -36,6 +36,9 @@ struct _GValueArray
 {
   guint   n_values;
   GValue *values;
+
+  /*< private >*/
+  guint   n_prealloced;
 };
 
 
