@@ -40,6 +40,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "glib.h"
 
@@ -339,6 +340,7 @@ g_rand_int_range (GRand* rand, gint32 begin, gint32 end)
 	}
       break;
     default:
+      random = 0;		/* Quiet GCC */
       g_assert_not_reached ();
     }      
  

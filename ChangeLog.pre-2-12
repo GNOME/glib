@@ -1,3 +1,7 @@
+Wed Dec 11 11:11:44 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/grand.c: Include string.h, supress a warning.
+
 2002-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/grand.c (g_rand_int_range): Improve generation of
