@@ -1,3 +1,8 @@
+2003-06-04  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gunidecomp.h (combine): Fix typo (#114375). Also, make the
+	function static.
+
 2003-06-03  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in: Test for pthread_setschedparam. If not existant,

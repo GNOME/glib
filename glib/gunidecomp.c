@@ -186,7 +186,7 @@ g_unicode_canonical_decomposition (gunichar ch,
 #define COMPOSE_INDEX(Char) \
      (((Char) > (G_UNICODE_LAST_CHAR)) ? 0 : CI((Char) >> 8, (Char) & 0xff))
 
-gboolean
+static gboolean
 combine (gunichar  a,
 	 gunichar  b,
 	 gunichar *result)
@@ -218,7 +218,7 @@ combine (gunichar  a,
     }
 
   if (index_a >= COMPOSE_FIRST_START && index_a < COMPOSE_FIRST_SINGLE_START &&
-      index_b >= COMPOSE_SECOND_START && index_a < COMPOSE_SECOND_SINGLE_START)
+      index_b >= COMPOSE_SECOND_START && index_b < COMPOSE_SECOND_SINGLE_START)
     {
       gunichar res = compose_array[index_a - COMPOSE_FIRST_START][index_b - COMPOSE_SECOND_START];
 
