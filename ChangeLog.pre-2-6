@@ -1,3 +1,9 @@
+Sat Jan 23 16:17:04 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32: Update the magic values for
+	pthread_mutex_t size and initializer bytes to match the
+	latest version of pthreads for Win32.
+
 Sat Jan 23 02:14:28 1999  Tim Janik  <timj@gtk.org>
 
 	* gutils.c (g_get_any_init): cleaned up the errno mess for
