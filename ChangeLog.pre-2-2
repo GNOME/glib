@@ -1,3 +1,27 @@
+2001-06-01  Jon Trowbridge  <trow@gnu.org>
+
+       * gdate.c (g_date_update_julian): Changed to take a const
+       argument, and then to cast out const.
+       (g_date_update_dmy): Changed to take a const argument, and then
+       cast out const.
+       (g_date_get_weekday): Changed argument to be const.
+       (g_date_get_month): Changed argument to be const.
+       (g_date_get_year): Changed argument to be const.
+       (g_date_get_day): Changed argument to be const.
+       (g_date_get_julian): Changed argument to be const.
+       (g_date_get_day_of_year): Changed argument to be const.
+       (g_date_get_monday_week_of_year): Changed argument to be const.
+       (g_date_get_sunday_week_of_year): Changed argument to be const.
+       (g_date_compare): Changed arguments to be const.
+       (g_date_to_struct_tm): Changed GDate argument to be const.
+       (g_date_strftime): Changed GDate argument to be const.
+       (g_date_clamp): Added.  The equivalent of the CLAMP macro for
+       GDates.
+       (g_date_order): Added.  Ensure that the first GDate argument
+       preceeds the second, swapping them if necessary.
+       (g_date_days_between): Added.  Computes the (signed) number of days
+       between two dates.
+
 Mon Jun  4 16:02:57 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gstrfuncs.c (g_strup/strdown): to match g_strcasecmp,

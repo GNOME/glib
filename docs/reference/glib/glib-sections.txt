@@ -895,7 +895,10 @@ g_date_add_months
 g_date_subtract_months
 g_date_add_years
 g_date_subtract_years
+g_date_days_between
 g_date_compare
+g_date_clamp
+g_date_order
 
 <SUBSECTION>
 g_date_get_day

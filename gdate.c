@@ -100,7 +100,7 @@ g_date_free (GDate *d)
 }
 
 gboolean     
-g_date_valid (GDate       *d)
+g_date_valid (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, FALSE);
   
@@ -167,8 +167,9 @@ g_date_valid_dmy (GDateDay     d,
  *   Jan 1, Year 1
  */
 static void
-g_date_update_julian (GDate *d)
+g_date_update_julian (const GDate *const_d)
 {
+  GDate *d = (GDate *) const_d;
   GDateYear year;
   gint index;
   
@@ -201,8 +202,9 @@ g_date_update_julian (GDate *d)
 }
 
 static void 
-g_date_update_dmy (GDate *d)
+g_date_update_dmy (const GDate *const_d)
 {
+  GDate *d = (GDate *) const_d;
   GDateYear y;
   GDateMonth m;
   GDateDay day;
@@ -249,7 +251,7 @@ g_date_update_dmy (GDate *d)
 }
 
 GDateWeekday 
-g_date_get_weekday (GDate *d)
+g_date_get_weekday (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_WEEKDAY);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_WEEKDAY);
@@ -264,7 +266,7 @@ g_date_get_weekday (GDate *d)
 }
 
 GDateMonth   
-g_date_get_month (GDate *d)
+g_date_get_month (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_MONTH);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_MONTH);
@@ -279,7 +281,7 @@ g_date_get_month (GDate *d)
 }
 
 GDateYear    
-g_date_get_year (GDate *d)
+g_date_get_year (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_YEAR);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_YEAR);
@@ -294,7 +296,7 @@ g_date_get_year (GDate *d)
 }
 
 GDateDay     
-g_date_get_day (GDate *d)
+g_date_get_day (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_DAY);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_DAY);
@@ -309,7 +311,7 @@ g_date_get_day (GDate *d)
 }
 
 guint32      
-g_date_get_julian (GDate *d)
+g_date_get_julian (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, G_DATE_BAD_JULIAN);
   g_return_val_if_fail (g_date_valid (d), G_DATE_BAD_JULIAN);
@@ -324,7 +326,7 @@ g_date_get_julian (GDate *d)
 }
 
 guint        
-g_date_get_day_of_year (GDate *d)
+g_date_get_day_of_year (const GDate *d)
 {
   gint index;
   
@@ -343,7 +345,7 @@ g_date_get_day_of_year (GDate *d)
 }
 
 guint        
-g_date_get_monday_week_of_year (GDate *d)
+g_date_get_monday_week_of_year (const GDate *d)
 {
   GDateWeekday wd;
   guint day;
@@ -369,7 +371,7 @@ g_date_get_monday_week_of_year (GDate *d)
 }
 
 guint        
-g_date_get_sunday_week_of_year (GDate *d)
+g_date_get_sunday_week_of_year (const GDate *d)
 {
   GDateWeekday wd;
   guint day;
@@ -393,6 +395,19 @@ g_date_get_sunday_week_of_year (GDate *d)
   day = g_date_get_day_of_year (d) - 1;
   
   return ((day + wd)/7U + (wd == 0 ? 1 : 0));
+}
+
+gint
+g_date_days_between (const GDate *d1,
+		     const GDate *d2)
+{
+  g_return_val_if_fail (d1 != NULL, 0);
+  g_return_val_if_fail (d2 != NULL, 0);
+
+  g_return_val_if_fail (g_date_valid (d1), 0);
+  g_return_val_if_fail (g_date_valid (d2), 0);
+
+  return (gint)g_date_get_julian (d2) - (gint)g_date_get_julian (d1);
 }
 
 void         
@@ -919,7 +934,7 @@ g_date_set_julian (GDate *d, guint32 j)
 
 
 gboolean     
-g_date_is_first_of_month (GDate *d)
+g_date_is_first_of_month (const GDate *d)
 {
   g_return_val_if_fail (d != NULL, FALSE);
   g_return_val_if_fail (g_date_valid (d), FALSE);
@@ -935,7 +950,7 @@ g_date_is_first_of_month (GDate *d)
 }
 
 gboolean     
-g_date_is_last_of_month (GDate *d)
+g_date_is_last_of_month (const GDate *d)
 {
   gint index;
   
@@ -1184,8 +1199,8 @@ g_date_get_sunday_weeks_in_year (GDateYear  year)
 }
 
 gint         
-g_date_compare (GDate     *lhs, 
-                GDate     *rhs)
+g_date_compare (const GDate *lhs, 
+                const GDate *rhs)
 {
   g_return_val_if_fail (lhs != NULL, 0);
   g_return_val_if_fail (rhs != NULL, 0);
@@ -1235,7 +1250,7 @@ g_date_compare (GDate     *lhs,
 
 
 void        
-g_date_to_struct_tm (GDate      *d, 
+g_date_to_struct_tm (const GDate *d, 
                      struct tm   *tm)
 {
   GDateWeekday day;
@@ -1273,11 +1288,48 @@ g_date_to_struct_tm (GDate      *d,
   tm->tm_isdst = -1; /* -1 means "information not available" */
 }
 
+void
+g_date_clamp (GDate *date,
+	      const GDate *min_date,
+	      const GDate *max_date)
+{
+  g_return_if_fail (date);
+  g_return_if_fail (g_date_valid (date));
+  if (min_date != NULL)
+    g_return_if_fail (g_date_valid (min_date));
+  if (max_date != NULL)
+    g_return_if_fail (g_date_valid (max_date));
+  if (min_date != NULL && max_date != NULL)
+    g_return_if_fail (g_date_compare (min_date, max_date) <= 0);
+
+  if (min_date && g_date_compare (date, min_date) < 0)
+    *date = *min_date;
+
+  if (max_date && g_date_compare (max_date, date) < 0)
+    *date = *max_date;
+}
+
+void
+g_date_order (GDate *date1,
+              GDate *date2)
+{
+  g_return_if_fail (date1 != NULL);
+  g_return_if_fail (date2 != NULL);
+  g_return_if_fail (g_date_valid (date1));
+  g_return_if_fail (g_date_valid (date2));
+
+  if (g_date_compare (date1, date2) == 1) {
+    GDate tmp = *date1;
+    *date1 = *date2;
+    *date2 = tmp;
+  }
+}
+
 gsize     
 g_date_strftime (gchar       *s, 
                  gsize        slen, 
                  const gchar *format, 
-                 GDate       *d)
+                 const GDate *d)
 {
   struct tm tm;
   gsize retval;

@@ -414,6 +414,18 @@ must be valid.
 @n_years: Number of years to move
 
 
+<!-- ##### FUNCTION g_date_days_between ##### -->
+<para>
+Compute the number of days between two dates.
+If @date2 is prior to @date1, the returned value is negative.
+Both dates must be valid.
+</para>
+
+@date1: The first date
+@date2: The second date
+@Returns: The number of days between @date1 and @date2
+
+
 <!-- ##### FUNCTION g_date_compare ##### -->
 <para>
 <function>qsort()</function>-style comparsion function for dates. Both
@@ -424,6 +436,29 @@ dates must be valid.
 @rhs: Second date to compare
 @Returns: 0 for equal, less than zero if @lhs is less than @rhs,
 greater than zero if @lhs is greater than @rhs
+
+
+<!-- ##### FUNCTION g_date_clamp ##### -->
+<para>
+If @date is prior to @min_date, set @date equal to @min_date.
+If @date falls after @max_date, set @date equal to @max_date.
+Either @min_date and @max_date may be %NULL.  All non-%NULL dates
+must be valid.
+</para>
+
+@date: Date to clamp
+@min_date: Minimum accepted value for @date
+@max_date: Maximum accepted value for @date
+
+
+<!-- ##### FUNCTION g_date_order ##### -->
+<para>
+Check if @date1 is less than or equal to @date2,
+and swap the values if this is not the case.
+</para>
+
+@date1: The first date
+@date2: The second date
 
 
 <!-- ##### FUNCTION g_date_get_day ##### -->
