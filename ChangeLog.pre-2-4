@@ -1,3 +1,7 @@
+2001-03-09  Hans Breuer  <hans@breuer.org>
+
+	* gobject/gobject.def : updated
+
 2001-03-08  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def
