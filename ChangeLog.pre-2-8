@@ -1,3 +1,11 @@
+2000-07-26  Tor Lillqvist  <tml@iki.fi>
+
+	* gstrfuncs.c (g_strlcpy, g_strlcat): Return 0 on error, not NULL.
+
+	* glib.def: Add g_strlcpy, g_strlcat.
+
+	* glibconfig.h.win32.in: Add gsize and gssize.
+
 Wed Jul 26 12:59:31 2000  Tim Janik  <timj@gtk.org>
 
 	* *.[hc]: applied patch from Andreas Persenius <ndap@swipnet.se> that

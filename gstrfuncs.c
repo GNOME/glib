@@ -850,8 +850,8 @@ g_strlcpy (gchar       *dest,
   register const gchar *s = src;
   register gsize n = dest_size;
   
-  g_return_val_if_fail (dest != NULL, NULL);
-  g_return_val_if_fail (src  != NULL, NULL);
+  g_return_val_if_fail (dest != NULL, 0);
+  g_return_val_if_fail (src  != NULL, 0);
   
   /* Copy as many bytes as will fit */
   if (n != 0 && --n != 0)
@@ -899,8 +899,8 @@ g_strlcat (gchar       *dest,
   register gsize bytes_left = dest_size;
   gsize dlength;  /* Logically, MIN (strlen (d), dest_size) */
   
-  g_return_val_if_fail (dest != NULL, NULL);
-  g_return_val_if_fail (src  != NULL, NULL);
+  g_return_val_if_fail (dest != NULL, 0);
+  g_return_val_if_fail (src  != NULL, 0);
   
   /* Find the end of dst and adjust bytes left but don't go past end */
   while (*d != 0 && bytes_left-- != 0)
@@ -1343,7 +1343,7 @@ g_filename_from_utf8 (const gchar *utf8string)
 {
 #ifdef G_OS_WIN32
 
-  gint i, mask, clen, wclen, mblen;
+  gint i, mask, clen, mblen;
   const gint len = strlen (utf8string);
   wchar_t *wcs, *wcp;
   gchar *result;

@@ -423,6 +423,8 @@ EXPORTS
 	g_string_up
 	g_strjoin
 	g_strjoinv
+	g_strlcat
+	g_strlcpy
 	g_strncasecmp
 	g_strndup
 	g_strnfill
