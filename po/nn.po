@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib/2.0\n"
-"POT-Creation-Date: 2002-01-29 14:07-0500\n"
-"PO-Revision-Date: 2002-01-17 04:23+0100\n"
+"POT-Creation-Date: 2002-01-31 19:45+0100\n"
+"PO-Revision-Date: 2002-01-31 20:07+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: nynorsk <nn@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -145,15 +145,15 @@ msgstr "Klarar ikkje å gjere ei rå lesing i g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
+msgstr "Ukonvert data til overs i lesebufferet"
 
 #: glib/giochannel.c:1587 glib/giochannel.c:1661
 msgid "Channel terminates in a partial character"
-msgstr ""
+msgstr "Kanalen avsluttar på eit delvis teikn"
 
 #: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Kan ikkje lese rått i g_io_channel_read_to_end"
 
 #: glib/giowin32.c:700 glib/giowin32.c:729
 msgid "Incorrect message size"
@@ -165,7 +165,7 @@ msgstr "Sokkelfeil"
 
 #: glib/giowin32.c:1276
 msgid "Channel set flags unsupported"
-msgstr ""
+msgstr "Kanalen set flag ustøtta"
 
 #: glib/gmarkup.c:216
 #, c-format
@@ -180,15 +180,18 @@ msgstr "Feil på linje %d: %s"
 #: glib/gmarkup.c:379
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
+msgstr "Tom entitet såg «&;»; gyldige entitetar er: &amp; &quot; &lt; &apos;"
 
 #: glib/gmarkup.c:389
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
+"begins an entity; if this ampersand isn't supposed to be an entity, escape it "
+"as &amp;"
 msgstr ""
+"Teiknet «%s» er ikkje gyldig på byrjinga av eit entitetsnamn; &-teiknet opnar "
+"ein entitet; om dette et-teiknet ikkje er meint å vere ein entitet, skriv den "
+"som &amp;"
 
 #: glib/gmarkup.c:425
 #, c-format
@@ -205,6 +208,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"Entiteten slutta ikkje med eit semikolon; sannsynlegvis bruke du eit et-teikn "
+"utan å meine å opne ein entitet - skriv et-teikn som &amp;"
 
 #: glib/gmarkup.c:525
 #, c-format
@@ -212,6 +217,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"Klarte ikkje å tolke «%s», som burde vere eit teikn i ein teiknreferanse "
+"(&#234; til dømes) - kan hende talet er for stort"
 
 #: glib/gmarkup.c:550
 #, c-format
@@ -228,6 +235,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"Teiknreferansen slutta ikkje med eit semikolon; sannsynlegvis brukte du eit "
+"et-teikn utan å ville starte ein entitet - skriv et-teikn som &amp;"
 
 #: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
@@ -243,6 +252,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
+"«%s» er ikkje eit gyldig teikn etter ein «<»-teikn; den kan ikkje byrje med "
+"eit elementnamn"
 
 #: glib/gmarkup.c:1024
 #, c-format
@@ -250,12 +261,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
+"Merkeleg teikn «%s», venta eit «>»-teikn for å avslutte startmerket av "
+"elementet «%s»"
 
 #: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
+"Merkeleg teikn «%s», venta ein «=» etter attributtnamnet «%s» av elementet "
+"«%s»"
 
 #: glib/gmarkup.c:1152
 #, c-format
@@ -264,6 +279,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"Merkeleg teikn «%s», venta eit «>» eller «/»-teikn for \"avslutte startmerket "
+"av elementet «%s», eller ein valfri attributt; kan hende du brukte eit "
+"ugyldig teikn i attributtnamnet"
 
 #: glib/gmarkup.c:1229
 #, c-format
@@ -271,6 +289,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"Merkeleg teikn «%s», venta eit opent siteringsmerket etter lik-teikna for å "
+"gi ein verdi for attributten «%s» av elementet «%s»"
 
 #: glib/gmarkup.c:1356
 #, c-format
@@ -278,23 +298,27 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
+"«%s» er ikkje ien gyldig karakter etter teikna «<»; «%s» kan ikkje starte eit "
+"elementnamn"
 
-#: glib/gmarkup.c:1393
-#, c-format
-msgid "Element '%s' was closed, no element is currently open"
-msgstr "Element '%s' vart lukka, ikkje noko element er i augneblinken open."
-
-#: glib/gmarkup.c:1402
-#, c-format
-msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Element '%s' vart avslutta, men det aktive elementet er '%s'"
-
-#: glib/gmarkup.c:1413
+#: glib/gmarkup.c:1394
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
+"«%s» er ikkje eit gyldig teikn etter avsluttande merket «%s»; det tillatne "
+"teiknet er «>»"
+
+#: glib/gmarkup.c:1405
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Element '%s' vart lukka, ikkje noko element er i augneblinken open."
+
+#: glib/gmarkup.c:1414
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "Element '%s' vart avslutta, men det aktive elementet er '%s'"
 
 #: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
@@ -310,13 +334,15 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
+"Dokumentet slutta uventa med element forsatt opne - «%s» var det siste "
+"elementet som vart opna"
 
 #: glib/gmarkup.c:1576
 #, c-format
 msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
+"Document ended unexpectedly, expected to see a close angle bracket ending the "
+"tag <%s/>"
+msgstr "Dokumentet slutta uventa, venta å sjå det avsluttande merket <%s/>"
 
 #: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
@@ -335,27 +361,30 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"Dokumentet slutta uventa etter lik-teiknet etter attributtnamnet; ingen "
+"attributtverdi"
 
 #: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr ""
+msgstr "Dokumentet avslutta uventa medan det var inne i ein attributtverdi"
 
 #: glib/gmarkup.c:1619
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
+msgstr "Dokumentet avslutta uventa i eit avsluttingsmerke for elementet «%s»"
 
 #: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
+"Dokumentet avslutta uventa inne i ein merknad eller prosseseringsinstruksjon"
 
 #: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
+msgstr "Sitert tekst startar ikkje med eit siteringsmerke"
 
 #: glib/gshell.c:159
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Upara siteringsmerke i kommandolinje eller anna skal-sitert tekst"
 
 #: glib/gshell.c:526
 #, c-format
@@ -436,7 +465,7 @@ msgstr "Klarte ikkje å redirigere utdata eller inndata frå barneprosess (%s)"
 #: glib/gspawn.c:1146
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Kunne ikkje starta barneprosess (%s)"
+msgstr "Kunne ikkje starte barneprosess (%s)"
 
 #: glib/gspawn.c:1154
 #, c-format
@@ -460,3 +489,4 @@ msgstr "Ugyldig sekvens i inndata konvertering"
 #: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "Teikn ikkje gyldig for UTF-16"
+
