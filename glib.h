@@ -2400,9 +2400,11 @@ struct _GSourceFuncs
 {
   gboolean (*prepare)  (gpointer  source_data, 
 			GTimeVal *current_time,
-			gint     *timeout);
+			gint     *timeout,
+			gpointer  user_data);
   gboolean (*check)    (gpointer  source_data,
-			GTimeVal *current_time);
+			GTimeVal *current_time,
+			gpointer  user_data);
   gboolean (*dispatch) (gpointer  source_data, 
 			GTimeVal *current_time,
 			gpointer  user_data);

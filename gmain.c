@@ -33,6 +33,11 @@
 
 #include "config.h"
 
+/* uncomment the next line to get poll() debugging info */
+/* #define G_MAIN_POLL_DEBUG */
+
+
+
 #include "glib.h"
 #include <sys/types.h>
 #include <time.h>
@@ -111,17 +116,21 @@ static void     g_main_add_poll_unlocked  (gint      priority,
 
 static gboolean g_timeout_prepare      (gpointer  source_data, 
 					GTimeVal *current_time,
-					gint     *timeout);
+					gint     *timeout,
+					gpointer  user_data);
 static gboolean g_timeout_check        (gpointer  source_data,
-					GTimeVal *current_time);
+					GTimeVal *current_time,
+					gpointer  user_data);
 static gboolean g_timeout_dispatch     (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
 static gboolean g_idle_prepare         (gpointer  source_data, 
 					GTimeVal *current_time,
-					gint     *timeout);
+					gint     *timeout,
+					gpointer  user_data);
 static gboolean g_idle_check           (gpointer  source_data,
-					GTimeVal *current_time);
+					GTimeVal *current_time,
+					gpointer  user_data);
 static gboolean g_idle_dispatch        (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
@@ -725,7 +734,7 @@ g_main_iterate (gboolean block,
   hook = g_hook_first_valid (&source_list, TRUE);
   while (hook)
     {
-      GSource *source = (GSource *)hook;
+      GSource *source = (GSource*) hook;
       gint source_timeout = -1;
 
       if ((n_ready > 0) && (source->priority > current_priority))
@@ -743,13 +752,14 @@ g_main_iterate (gboolean block,
 	{
 	  gboolean (*prepare)  (gpointer  source_data, 
 				GTimeVal *current_time,
-				gint     *timeout);
+				gint     *timeout,
+				gpointer  user_data);
 
 	  prepare = ((GSourceFuncs *) hook->func)->prepare;
 	  in_check_or_prepare++;
 	  G_UNLOCK (main_loop);
 
-	  if ((*prepare) (source->source_data, &current_time, &source_timeout))
+	  if ((*prepare) (source->source_data, &current_time, &source_timeout, source->hook.data))
 	    hook->flags |= G_SOURCE_READY;
 	  
 	  G_LOCK (main_loop);
@@ -811,13 +821,14 @@ g_main_iterate (gboolean block,
       if (!(hook->flags & G_SOURCE_READY))
 	{
 	  gboolean (*check) (gpointer  source_data,
-			     GTimeVal *current_time);
+			     GTimeVal *current_time,
+			     gpointer  user_data);
 
 	  check = ((GSourceFuncs *) hook->func)->check;
 	  in_check_or_prepare++;
 	  G_UNLOCK (main_loop);
 	  
-	  if ((*check) (source->source_data, &current_time))
+	  if ((*check) (source->source_data, &current_time, source->hook.data))
 	    hook->flags |= G_SOURCE_READY;
 
 	  G_LOCK (main_loop);
@@ -942,11 +953,14 @@ g_main_poll (gint     timeout,
 	     gboolean use_priority,
 	     gint     priority)
 {
+#ifdef  G_MAIN_POLL_DEBUG
+  GTimer *poll_timer;
+#endif
   GPollFD *fd_array;
   GPollRec *pollrec;
-
   gint i;
   gint npoll;
+
 #ifdef G_THREADS_ENABLED
 #ifndef NATIVE_WIN32
   if (wake_up_pipe[0] < 0)
@@ -976,21 +990,69 @@ g_main_poll (gint     timeout,
   i = 0;
   while (pollrec && (!use_priority || priority >= pollrec->priority))
     {
-      fd_array[i].fd = pollrec->fd->fd;
-      fd_array[i].events = pollrec->fd->events;
-      fd_array[i].revents = 0;
-	
+      if (pollrec->fd->events)
+	{
+	  fd_array[i].fd = pollrec->fd->fd;
+	  fd_array[i].events = pollrec->fd->events;
+	  fd_array[i].revents = 0;
+	  i++;
+	}
+      
       pollrec = pollrec->next;
-      i++;
     }
 #ifdef G_THREADS_ENABLED
   poll_waiting = TRUE;
 #endif
-  G_UNLOCK (main_loop);
+  
   npoll = i;
-  (*poll_func) (fd_array, npoll, timeout);
-  G_LOCK (main_loop);
-
+  if (npoll || timeout != 0)
+    {
+#ifdef	G_MAIN_POLL_DEBUG
+      g_print ("g_main_poll(%d) timeout: %d\r", npoll, timeout);
+      poll_timer = g_timer_new ();
+#endif
+      
+      G_UNLOCK (main_loop);
+      (*poll_func) (fd_array, npoll, timeout);
+      G_LOCK (main_loop);
+      
+#ifdef	G_MAIN_POLL_DEBUG
+      g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
+	       npoll,
+	       timeout,
+	       g_timer_elapsed (poll_timer, NULL));
+      g_timer_destroy (poll_timer);
+      pollrec = poll_records;
+      i = 0;
+      while (i < npoll)
+	{
+	  if (pollrec->fd->events)
+	    {
+	      if (fd_array[i].revents)
+		{
+		  g_print (" [%d:", fd_array[i].fd);
+		  if (fd_array[i].revents & G_IO_IN)
+		    g_print ("i");
+		  if (fd_array[i].revents & G_IO_OUT)
+		    g_print ("o");
+		  if (fd_array[i].revents & G_IO_PRI)
+		    g_print ("p");
+		  if (fd_array[i].revents & G_IO_ERR)
+		    g_print ("e");
+		  if (fd_array[i].revents & G_IO_HUP)
+		    g_print ("h");
+		  if (fd_array[i].revents & G_IO_NVAL)
+		    g_print ("n");
+		  g_print ("]");
+		}
+	      i++;
+	    }
+	  pollrec = pollrec->next;
+	}
+      g_print ("\n");
+#endif
+    } /* if (npoll || timeout != 0) */
+  
 #ifdef G_THREADS_ENABLED
   if (!poll_waiting)
     {
@@ -1007,9 +1069,12 @@ g_main_poll (gint     timeout,
   i = 0;
   while (i < npoll)
     {
-      pollrec->fd->revents = fd_array[i].revents;
+      if (pollrec->fd->events)
+	{
+	  pollrec->fd->revents = fd_array[i].revents;
+	  i++;
+	}
       pollrec = pollrec->next;
-      i++;
     }
 
   g_free (fd_array);
@@ -1111,9 +1176,10 @@ g_main_set_poll_func (GPollFunc func)
 /* Timeouts */
 
 static gboolean 
-g_timeout_prepare  (gpointer source_data, 
+g_timeout_prepare  (gpointer  source_data, 
 		    GTimeVal *current_time,
-		    gint    *timeout)
+		    gint     *timeout,
+		    gpointer  user_data)
 {
   glong msec;
   GTimeoutData *data = source_data;
@@ -1127,8 +1193,9 @@ g_timeout_prepare  (gpointer source_data,
 }
 
 static gboolean 
-g_timeout_check    (gpointer source_data,
-		    GTimeVal *current_time)
+g_timeout_check (gpointer  source_data,
+		 GTimeVal *current_time,
+		 gpointer  user_data)
 {
   GTimeoutData *data = source_data;
 
@@ -1203,9 +1270,10 @@ g_timeout_add (guint32        interval,
 /* Idle functions */
 
 static gboolean 
-g_idle_prepare  (gpointer source_data, 
+g_idle_prepare  (gpointer  source_data, 
 		 GTimeVal *current_time,
-		 gint     *timeout)
+		 gint     *timeout,
+		 gpointer  user_data)
 {
   timeout = 0;
   return TRUE;
@@ -1213,7 +1281,8 @@ g_idle_prepare  (gpointer source_data,
 
 static gboolean 
 g_idle_check    (gpointer  source_data,
-		 GTimeVal *current_time)
+		 GTimeVal *current_time,
+		 gpointer  user_data)
 {
   return TRUE;
 }
