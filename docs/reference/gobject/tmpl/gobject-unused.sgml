@@ -7,6 +7,15 @@ Determines if @value is a #GValue whose type conforms to @type.
 @type:    A #GType value.
 @Returns: #TRUE if @value is a #GValue of @type or #FALSE if not.
 
+<!-- ##### FUNCTION g_value_convert ##### -->
+<para>
+
+</para>
+
+@src_value: 
+@dest_value: 
+@Returns: 
+
 <!-- ##### FUNCTION g_value_register_exchange_func ##### -->
 <para>
 

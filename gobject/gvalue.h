@@ -65,8 +65,6 @@ GValue*         g_value_init	   	(GValue       *value,
 					 GType         g_type);
 void            g_value_copy    	(const GValue *src_value,
 					 GValue       *dest_value);
-gboolean	g_value_convert		(const GValue *src_value,
-					 GValue       *dest_value);
 GValue*         g_value_reset   	(GValue       *value);
 void            g_value_unset   	(GValue       *value);
 void		g_value_set_instance	(GValue	      *value,

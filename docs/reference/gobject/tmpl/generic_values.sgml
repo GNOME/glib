@@ -151,16 +151,6 @@ This is an internal function introduced mainly for C marshallers.
 @Returns: 	#TRUE if @value will fit inside a pointer value.
 
 
-<!-- ##### FUNCTION g_value_convert ##### -->
-<para>
-
-</para>
-
-@src_value: 
-@dest_value: 
-@Returns: 
-
-
 <!-- ##### STRUCT GTypeValueTable ##### -->
 <para>
 The #GTypeValueTable provides the functions required by the #GValue implementation,
