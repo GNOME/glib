@@ -81,6 +81,7 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%d", 0) == 1 && !strcmp (buf, "0"));
   TEST (NULL, g_snprintf (buf, 128, "%.0d", 0) == 0 && !strcmp (buf, ""));
   TEST (NULL, g_snprintf (buf, 128, "%.0d", 1) == 1 && !strcmp (buf, "1"));
+  TEST (NULL, g_snprintf (buf, 128, "%.d", 2) == 1 && !strcmp (buf, "2"));
   TEST (NULL, g_snprintf (buf, 128, "%d", -1) == 2 && !strcmp (buf, "-1"));
   TEST (NULL, g_snprintf (buf, 128, "%.3d", 5) == 3 && !strcmp (buf, "005"));
   TEST (NULL, g_snprintf (buf, 128, "%.3d", -5) == 4 && !strcmp (buf, "-005"));
@@ -159,6 +160,8 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%f", G_PI) == 8 && !strncmp (buf, "3.14159", 7));
   TEST (NULL, g_snprintf (buf, 128, "%.8f", G_PI) == 10 && !strncmp (buf, "3.1415926", 9));
   TEST (NULL, g_snprintf (buf, 128, "%.0f", G_PI) == 1 && !strcmp (buf, "3"));
+  TEST (NULL, g_snprintf (buf, 128, "%1.f", G_PI) == 1 && !strcmp (buf, "3"));
+  TEST (NULL, g_snprintf (buf, 128, "%3.f", G_PI) == 3 && !strcmp (buf, "  3"));
   /* %f, flags */
   TEST (NULL, g_snprintf (buf, 128, "%+f", G_PI) == 9 && !strncmp (buf, "+3.14159", 8));
   TEST (NULL, g_snprintf (buf, 128, "% f", G_PI) == 9 && !strncmp (buf, " 3.14159", 8));
@@ -220,11 +223,22 @@ main (int   argc,
   TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_MODIFIER "x", (gint64)123456) == 5 && !strcmp (buf, "1e240")); 
   TEST (NULL, g_snprintf (buf, 128, "%#" G_GINT64_MODIFIER "x", (gint64)123456) == 7 && !strcmp (buf, "0x1e240")); 
   TEST (NULL, g_snprintf (buf, 128, "%" G_GINT64_MODIFIER "X", (gint64)123456) == 5 && !strcmp (buf, "1E240")); 
+#ifdef G_OS_WIN32
+  /* On Win32, test that the "ll" modifier also works, for backward
+   * compatibility. One really should use the G_GINT64_MODIFIER (which
+   * on Win32 is the "I64" that the (msvcrt) C library's printf uses),
+   * but "ll" used to work with the "trio" g_printf implementation in
+   * GLib 2.2, so it's best if it continues to work.
+   */
+  TEST (NULL, g_snprintf (buf, 128, "%" "lli", (gint64)123456) == 6 && !strcmp (buf, "123456")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" "lli", (gint64)-123456) == 7 && !strcmp (buf, "-123456"));   
+  TEST (NULL, g_snprintf (buf, 128, "%" "llu", (guint64)123456) == 6 && !strcmp (buf, "123456")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" "ll" "o", (gint64)123456) == 6 && !strcmp (buf, "361100")); 
+  TEST (NULL, g_snprintf (buf, 128, "%#" "ll" "o", (gint64)123456) == 7 && !strcmp (buf, "0361100")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" "ll" "x", (gint64)123456) == 5 && !strcmp (buf, "1e240")); 
+  TEST (NULL, g_snprintf (buf, 128, "%#" "ll" "x", (gint64)123456) == 7 && !strcmp (buf, "0x1e240")); 
+  TEST (NULL, g_snprintf (buf, 128, "%" "ll" "X", (gint64)123456) == 5 && !strcmp (buf, "1E240")); 
+#endif
 
   return any_failed;
 }
-
-
-
-
-

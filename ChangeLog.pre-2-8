@@ -1,3 +1,14 @@
+2004-05-14  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gnulib/vasnprintf.c (vasnprintf): Handle empty digit string
+	for precision correctly. (#142400)
+
+	For backward compatibility with the Trio implementation, make "ll"
+	format modifer work on Win32, too. Change into "I64" before
+	passing to the system printf. (#142433)
+
+	* tests/printf-test.c (main): Add tests for the above.
+
 2004-05-10  Matthias Clasen  <mclasen@redhat.com>
 
 	Merge from 2.4:

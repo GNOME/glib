@@ -405,9 +405,8 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 			  const char *digitp = dp->precision_start + 1;
 
 			  precision = 0;
-			  do
+			  while (digitp != dp->precision_end)
 			    precision = precision * 10 + (*digitp++ - '0');
-			  while (digitp != dp->precision_end);
 			}
 		    }
 
@@ -626,8 +625,17 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 #ifdef HAVE_LONG_LONG
 		  case TYPE_LONGLONGINT:
 		  case TYPE_ULONGLONGINT:
+#ifdef HAVE_INT64_AND_I64	/* The system (sn)printf uses %I64. Also assume
+				 * that long long == __int64.
+				 */
+		    *p++ = 'I';
+		    *p++ = '6';
+		    *p++ = '4';
+		    break;
+#else
 		    *p++ = 'l';
 		    /*FALLTHROUGH*/
+#endif
 #endif
 		  case TYPE_LONGINT:
 		  case TYPE_ULONGINT:
