@@ -1134,6 +1134,8 @@ g_main_add_poll_unlocked (gint     priority,
   else
     newrec = g_chunk_new (GPollRec, poll_chunk);
 
+  /* This file descriptor may be checked before we ever poll */
+  fd->revents = 0;
   newrec->fd = fd;
   newrec->priority = priority;
 

@@ -1,3 +1,8 @@
+Sat Dec  2 09:24:35 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_add_poll_unlocked): Initial fd->revents
+	to zero.
+
 2000-11-29  Martin Baulig  <baulig@suse.de>
 
 	* *.pc.in: Make the pkg-config scripts actually work.
