@@ -1,3 +1,8 @@
+Tue Jan 28 15:18:24 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* autogen.sh (have_automake): Fix version in complaint
+	message about automake. (#104366, Rich Burridge)
+
 2003-01-22  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Bengali (bn) to ALL_LINGUAS
