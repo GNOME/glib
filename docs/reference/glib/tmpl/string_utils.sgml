@@ -27,15 +27,15 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_strndup ##### -->
 <para>
-Duplicates the first @n characters of a string, and null-terminates it.
-If @str is NULL, NULL is returned.
-The returned string should be freed when no longer needed.
+Duplicates the first @n characters of a string, returning a newly-allocated
+buffer @n + 1 characters long which will always be null-terminated.
+If @str is less than @n characters long the buffer is padded with nulls.
+The returned value should be freed when no longer needed.
 </para>
 
 @str: the string to duplicate part of.
-@n: the number of characters to copy, which must be less than or equal to the
-length of @str.
-@Returns: a newly-allocated copy of the first @n characters of @str,
+@n: the maximum number of characters to copy from @str.
+@Returns: a newly-allocated buffer containing the first @n characters of @str,
 null-terminated.
 
 
