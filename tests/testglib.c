@@ -50,12 +50,14 @@
 static int array[10000];
 static gboolean failed = FALSE;
 
+/* We write (m ? m : "") even in the m != NULL case to suppress a warning with GCC-3.1
+ */
 #define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
 if (failed) \
   { if (!m) \
       g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
     else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
+      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)(m ? m : "")); \
   } \
 else \
   g_print ("."); fflush (stdout); \

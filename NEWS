@@ -1,3 +1,28 @@
+Overview of Changes in GLib 2.0.1
+=================================
+
+* Portability fixes for Sun's Forte compiler [Erwann Chenede]
+* Performance improvements for GObject parameter lookup, 
+  g_filename_to/from_utf8() [Alex Larsson]
+* Actually check interface prerequisites [Matthias Clasen,
+  Miroslaw Dobrzanski-Neumann]
+* Fix problem with glib-mkenums taking huge amounts of stack. [Owen Taylor]
+* Fix g_signal_handlers_disconnect_by_func() for C++ [Damien Sandras]
+* Fixes for g_log() and threading.
+  [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann, Tim Janik]
+* Make g_print(), g_printerr(), g_warning(), etc, convert from
+  UTF-8 to the encoding of the locale [Sebastain Wilhelmi, Tim]
+* Fixes for GIOChannel on windows. [Tor Lillquist]
+* Fix gsize/gint mismatches in giochannel.c [Miroslaw Dobrzanski-Neumann]
+* Fix file descriptor leak in g_file_get_contents() [Matthias]
+* Workaround iconv() problems on older Solaris [Lauri Alanko]
+* Fix warnings with gcc-3.1 about asm const [Cody Russel]
+* Minor bug fixes.
+
+Other contributors: Hans Breuer, LEE Sau Dan, Sven Neumann, Salmaso Raffaele,
+  Akira Tagoh, Morten Welinder
+
+
 Overview of Changes in GLib 2.0.0
 =================================
 

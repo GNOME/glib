@@ -747,9 +747,9 @@ g_log_default_handler (const gchar   *log_domain,
       const gchar *prg_name = g_get_prgname ();
       
       if (!prg_name)
-	g_string_append_printf (gstring, "(process:%u): ", getpid ());
+	g_string_append_printf (gstring, "(process:%lu): ", (gulong)getpid ());
       else
-	g_string_append_printf (gstring, "(%s:%u): ", prg_name, getpid ());
+	g_string_append_printf (gstring, "(%s:%lu): ", prg_name, (gulong)getpid ());
     }
 
   if (log_domain)

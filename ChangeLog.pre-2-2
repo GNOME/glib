@@ -1,3 +1,20 @@
+Thu Mar 28 18:22:53 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* README: Remove warning about g_print, etc, encoding.
+
+	* NEWS: Updates.
+
+	* glib/gmessages.c (g_log_default_handler): Use %lu
+	(plus a cast) when printing out pid_t arguments.
+	(#76770, Morten Welinder)
+
+	* glib/gstrfuncs.c (g_strdup_vprintf): Check the
+	result of vasprintf(), return NULL on failure.
+	(#76802, Akira Tagoh)
+
+	* tests/testglib.c (TEST): Supress a warning with
+	some GCC versions. 
+
 Thu Mar 28 20:31:51 2002  Tim Janik  <timj@gtk.org>
 
 	* glib/gmessages.c:

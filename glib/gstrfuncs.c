@@ -183,8 +183,9 @@ g_strdup_vprintf (const gchar *format,
 {
   gchar *buffer;
 #ifdef HAVE_VASPRINTF
-  vasprintf (&buffer, format, args1);
-  if (!g_mem_is_system_malloc ()) 
+  if (vasprintf (&buffer, format, args1) < 0)
+    buffer = NULL;
+  else if (!g_mem_is_system_malloc ()) 
     {
       gchar *buffer1 = g_strdup (buffer);
       free (buffer);

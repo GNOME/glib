@@ -24,22 +24,15 @@ Installation
 
 See the file 'INSTALL'
 
-Notes about GLib-2.0.0
+Notes about GLib-2.0.1
 ======================
 
 * On systems without the libintl from GNU gettext() or a recent version
   of the GNU C library, the encoding of translated error messages will be 
   incorrect (they should be in UTF-8). A workaround for this is to install 
-  GNU gettext and use that libintl. This is expected to be fixed in GLib-2.0.1.
+  GNU gettext and use that libintl. This is expected to be fixed in GLib-2.0.2.
   Application programmers should not call g_locale_to_utf8() on these
   strings.
-
-* Similarly, the GLib error logging functions such as g_print(), g_warning(),
-  g_error(), currently do not convert the strings they are passed from
-  UTF-8 to the encoding of the locale, or check that the strings they
-  are passed are valid UTF-8. They should, despite this, be assumed to take
-  UTF-8 arguments.
-
 
 How to report bugs
 ==================
