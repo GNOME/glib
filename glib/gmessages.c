@@ -46,6 +46,7 @@
 #include "gprintfint.h"
 
 #ifdef G_OS_WIN32
+#include <io.h>
 typedef FILE* GFileDescriptor;
 #else
 typedef gint GFileDescriptor;
@@ -129,7 +130,7 @@ ensure_stdout_valid (void)
 
   if (!alloc_console_called)
     {
-      handle = GetStdHandle (STD_OUTPUT_HANDLE);
+      handle = (HANDLE) _get_osfhandle (fileno (stdout)); 
   
       if (handle == INVALID_HANDLE_VALUE)
 	{
@@ -151,8 +152,8 @@ ensure_stderr_valid (void)
 
   if (!alloc_console_called)
     {
-      handle = GetStdHandle (STD_ERROR_HANDLE);
-  
+      handle = (HANDLE) _get_osfhandle (fileno (stderr)); 
+
       if (handle == INVALID_HANDLE_VALUE)
 	{
 	  AllocConsole ();

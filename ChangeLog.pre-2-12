@@ -3,6 +3,8 @@
 	* glib/gmessages.c (ensure_stderr_valid): New function, parallel
 	to ensure_stdout_valid(). #defined as empty on Unix. Move the
 	alloc_console_called static flag inside these two functions.
+	(ensure_stdout_valid, ensure_stderr_valid): Check the C stdout and
+	stderr streams for validity, instead of what GetStdHandle() returns.
 	(mklevel_prefix): Do use either stderr or stdout on Windows,
 	too. Otherwise g_warning() messages (that are just warnings, by
 	definition) will get mixed with proper stdout output. Noticed in
