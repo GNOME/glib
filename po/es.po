@@ -1,3 +1,4 @@
+# traducción de es.po al Spanish
 # translation of es.po to Spanish
 # Spanish/Spain translation of glib.
 # Copyright (C) 2001, 2004 Free Software Foundation, Inc.
@@ -10,13 +11,14 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-25 00:52-0400\n"
-"PO-Revision-Date: 2004-04-24 14:09+0200\n"
+"PO-Revision-Date: 2004-08-31 23:35+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3.1\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -51,9 +53,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s»·al conjunto de códigos·«%s»"
 
 #: glib/gconvert.c:1497
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema de archivo"
+msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema «file»"
 
 #: glib/gconvert.c:1507
 #, c-format
@@ -148,8 +150,7 @@ msgstr "Enlaces simbólicos no soportados"
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr ""
-"La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
+msgstr "La conversión desde el conjunto de caracteres «%s»·a·«%s»·no está soportada"
 
 #: glib/giochannel.c:1147
 #, c-format
@@ -158,8 +159,7 @@ msgstr "No se pudo abrir el conversor de «%s»·a·«%s»:·%s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
+msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -171,8 +171,7 @@ msgstr "El canal termina en un carácter parcial"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
+msgstr "No se puede hacer una lectura en bruto (raw) en g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:225
 #, c-format
@@ -185,8 +184,7 @@ msgid "Error on line %d: %s"
 msgstr "Error·en la línea·%d:·%s"
 
 #: glib/gmarkup.c:414
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
 "·&apos;"
@@ -288,8 +286,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1180
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Carácter impropio «%s»,·se esperaba el carácter '='·después del nombre de "
 "atributo·«%s»·del elemento·«%s»"
@@ -422,8 +419,7 @@ msgstr ""
 #: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: glib/gshell.c:547
 #, c-format
@@ -540,45 +536,46 @@ msgstr "El carácter se encuentra fuera del rango para UTF-16"
 
 #: glib/goption.c:261
 msgid "Usage:"
-msgstr ""
+msgstr "Uso:"
 
 #: glib/goption.c:261
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPCIÓN...]"
 
 #: glib/goption.c:306
 msgid "Help Options:"
-msgstr ""
+msgstr "Opciones de ayuda:"
 
 #: glib/goption.c:306
 msgid "Show help options"
-msgstr ""
+msgstr "Mostrar opciones de ayuda"
 
 #: glib/goption.c:310
 msgid "Show all help options"
-msgstr ""
+msgstr "Mostrar todas las opciones de ayuda"
 
 #: glib/goption.c:358
 msgid "Application Options:"
-msgstr ""
+msgstr "Opciones de la aplicación:"
 
 #: glib/goption.c:397
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "No se puede parsear el valor entero «%s» para --%s"
 
 #: glib/goption.c:407
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "El valor entero «%s» para %s está fuera de rango"
 
 #: glib/goption.c:1005
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Opción desconocida %s"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "El tamaño del mensaje es incorrecto"
 
 #~ msgid "Socket error"
 #~ msgstr "Error de socket"
+
