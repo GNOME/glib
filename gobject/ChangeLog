@@ -1,3 +1,7 @@
+2002-11-30  Matthias Clasen  <maclas@gmx.de>
+
+	* gsignal.c: More docs.
+
 2002-11-28  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.c (g_type_interface_prerequisites): Document as 2.2 

@@ -1,3 +1,10 @@
+2002-12-01  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Mark g_signal_handlers_destroy as
+	private.
+
+	* gobject/tmpl/signals.sgml: Move some docs inline.
+
 2002-11-29  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/main.sgml: Write something about GSourceDummyMarshal.
