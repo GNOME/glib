@@ -1,3 +1,8 @@
+Mon Nov 17 17:28:10 2003  Manish Singh  <yosh@gimp.org>
+
+	* tests/thread-test.c (test_g_thread_once): Use GUINT_TO_POINTER
+	for g_thread_create data.
+
 Sat Nov 15 23:00:57 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/guniprop.c (g_utf8_casefold): Add a NULL check

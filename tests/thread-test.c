@@ -354,7 +354,7 @@ test_g_thread_once (void)
   G_LOCK (test_g_once);
   for (i = 0; i < G_ONCE_THREADS; i++)
     {
-      threads[i] = g_thread_create (test_g_once_thread, (gpointer)(i%2), 
+      threads[i] = g_thread_create (test_g_once_thread, GUINT_TO_POINTER(i%2), 
 				    TRUE, NULL);
     }
   G_UNLOCK (test_g_once);
