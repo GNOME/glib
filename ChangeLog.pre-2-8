@@ -1,3 +1,7 @@
+2005-03-30  Steve Murphy  <murf@e-tools.com>
+
+        * configure.in: Added "rw" to ALL_LINGUAS.
+
 2005-03-30  Sven Neumann  <sven@gimp.org>
 
 	* glib/gfileutils.c (get_contents_stdio): handle the unlikely case
