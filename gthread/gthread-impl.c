@@ -350,7 +350,7 @@ g_thread_init (GThreadFunctions* init)
 	       init->cond_free &&
 	       init->private_new &&
 	       init->private_get &&
-	       init->private_get &&
+	       init->private_set &&
 	       init->thread_create &&
 	       init->thread_yield &&
 	       init->thread_join &&
