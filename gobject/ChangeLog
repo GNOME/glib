@@ -1,5 +1,7 @@
 2004-11-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* gobject.symbols: Typo fix.
+
 	Fix a problem with the PLT reduction changes which caused the
 	internal aliases to lose all attributes.
 	

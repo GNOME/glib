@@ -230,7 +230,7 @@ g_type_next_base
 g_type_parent
 g_type_plugin_complete_interface_info
 g_type_plugin_complete_type_info
-g_type_plugin_get_type G_GNUC_GET_TYPE
+g_type_plugin_get_type G_GNUC_CONST
 g_type_plugin_unuse
 g_type_plugin_use
 g_type_qname
