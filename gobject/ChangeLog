@@ -1,3 +1,15 @@
+Sat Nov 17 18:14:40 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-genmarshal.c: Exit with non-zero exit status if
+	any errors were encountered.
+
+	* glib-genmarshal.c: Instead of generating gobject/gmarshal.h
+	#include only for the header, generate glib-object.h 
+	#include for both the header and body. (#63834)
+
+	* glib-genmarshal.c: Generate include guards around the 
+	content unless --nostdinc is specified.
+
 2001-11-17  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_pointer_type_register_static.

@@ -568,6 +568,7 @@ main (int   argc,
   GScanner *scanner;
   GSList *slist, *files = NULL;
   gint i;
+  gint result = 0;
 
   /* parse args and do fast exits */
   parse_args (&argc, &argv);
@@ -596,12 +597,18 @@ main (int   argc,
 
   /* put out initial heading */
   fprintf (fout, "\n");
-  if (gen_cheader)
+
+  if (gen_cheader && std_includes)
     {
-      if (std_includes)
-	fprintf (fout, "#include\t<gobject/gmarshal.h>\n\n");
-      fprintf (fout, "G_BEGIN_DECLS\n");
+      fprintf (fout, "#ifndef __%s_MARSHAL_H__\n", marshaller_prefix);
+      fprintf (fout, "#define __%s_MARSHAL_H__\n\n", marshaller_prefix);
     }
+
+  if ((gen_cheader || gen_cbody) && std_includes)
+    fprintf (fout, "#include\t<glib-object.h>\n\n");
+
+  if (gen_cheader)
+    fprintf (fout, "G_BEGIN_DECLS\n");
 
   /* process input files */
   for (slist = files; slist; slist = slist->next)
@@ -612,6 +619,7 @@ main (int   argc,
       if (fd < 0)
 	{
 	  g_warning ("failed to open \"%s\": %s", file, g_strerror (errno));
+	  result = 1;
 	  continue;
 	}
 
@@ -670,6 +678,7 @@ main (int   argc,
 	  if (expected_token != G_TOKEN_NONE)
 	    {
 	      g_scanner_unexp_token (scanner, expected_token, "type name", NULL, NULL, NULL, TRUE);
+	      result = 1;
 	      break;
 	    }
 
@@ -684,6 +693,9 @@ main (int   argc,
   if (gen_cheader)
     {
       fprintf (fout, "\nG_END_DECLS\n");
+
+      if (std_includes)
+	fprintf (fout, "\n#endif /* __%s_MARSHAL_H__ */\n", marshaller_prefix);
     }
   fprintf (fout, "\n");
 
@@ -693,7 +705,7 @@ main (int   argc,
   g_hash_table_foreach_remove (marshallers, string_key_destroy, NULL);
   g_hash_table_destroy (marshallers);
 
-  return 0;
+  return result;
 }
 
 static void
