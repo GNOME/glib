@@ -1,3 +1,16 @@
+2003-08-26  Hans Breuer  <hans@breuer.org>
+
+	* glib/trio/makefile.msc : (new file)
+	* glib/makefile.msc.in : link with trio, add gprintf.obj
+
+	* glib/gscanner.c : need to include 'glib.h' before
+	using G_OS_WIN32
+	workaround for clumsy compiler : gscanner.c(1198) : error C2520: 
+	conversion from unsigned __int64 to double not implemented, 
+	use signed __int64 ...
+
+	* tests/spawn-test.c : include <io.h> om G_OS_WIN32
+
 Tue Aug 26 12:40:57 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.3 ===

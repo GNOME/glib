@@ -1,0 +1,16 @@
+!IFDEF DEBUG
+CRT=-MDd
+!ELSE
+CRT=-MD
+!ENDIF
+
+OBJECTS = \
+	trio.obj \
+	trionan.obj \
+	triostr.obj
+
+trio.lib : $(OBJECTS)
+	lib -out:trio.lib $(OBJECTS)
+
+.c.obj:
+	$(CC) $(CRT) -Ox -GD -c $<
