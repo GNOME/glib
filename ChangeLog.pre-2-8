@@ -1,3 +1,8 @@
+2003-06-03  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in: Test for pthread_setschedparam. If not existant,
+	disable priorities. (#104718)
+
 Mon Jun  2 14:18:21 2003  Owen Taylor  <otaylor@redhat.com>
 
 	Patch from Jeffrey Stedfast <fejj@ximian.com> (#104825)
