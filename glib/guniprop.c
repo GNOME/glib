@@ -945,6 +945,8 @@ g_utf8_casefold (const gchar *str,
   GString *result = g_string_new (NULL);
   const char *p;
 
+  g_return_val_if_fail (str != NULL, NULL);
+
   p = str;
   while ((len < 0 || p < str + len) && *p)
     {

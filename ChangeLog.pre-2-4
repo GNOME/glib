@@ -1,3 +1,9 @@
+Sat Nov 15 23:00:57 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/guniprop.c (g_utf8_casefold): Add a NULL check
+	to be consistent with the other g_utf8_ functions.  (#121618,
+	Tim-Philipp Müller)
+
 2003-11-15  Tor Lillqvist  <tml@iki.fi>
 
 	* tests/makefile.msc.in: Fix for MSVC build: Skip strtod-test, use
