@@ -1566,6 +1566,29 @@ g_strchomp (gchar *string)
   return string;
 }
 
+/**
+ * g_strsplit:
+ * @string: a string to split.
+ * @delimiter: a string which specifies the places at which to split the string.
+ *     The delimiter is not included in any of the resulting strings, unless
+ *     max_tokens is reached.
+ * @max_tokens: the maximum number of pieces to split @string into. If this is
+ *              less than 1, the string is split completely.
+ * 
+ * Splits a string into a maximum of @max_tokens pieces, using the given
+ * @delimiter. If @max_tokens is reached, the remainder of @string is appended
+ * to the last token. 
+ *
+ * As a special case, the result of splitting the empty string "" is an empty
+ * vector, not a vector containing a single string. The reason for this
+ * special case is that being able to represent a empty vector is typically
+ * more useful than consistent handling of empty elements. If you do need
+ * to represent empty elements, you'll need to check for the empty string
+ * before calling g_strsplit().
+ * 
+ * Return value: a newly-allocated %NULL-terminated array of strings. Use g_strfreev()
+ *    to free it.
+ **/
 gchar**
 g_strsplit (const gchar *string,
 	    const gchar *delimiter,
@@ -1573,7 +1596,8 @@ g_strsplit (const gchar *string,
 {
   GSList *string_list = NULL, *slist;
   gchar **str_array, *s;
-  guint n = 1;
+  guint n = 0;
+  const gchar *remainder;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (delimiter != NULL, NULL);
@@ -1581,8 +1605,11 @@ g_strsplit (const gchar *string,
 
   if (max_tokens < 1)
     max_tokens = G_MAXINT;
+  else
+    --max_tokens;
 
-  s = strstr (string, delimiter);
+  remainder = string;
+  s = strstr (remainder, delimiter);
   if (s)
     {
       gsize delimiter_len = strlen (delimiter);   
@@ -1592,18 +1619,22 @@ g_strsplit (const gchar *string,
 	  gsize len;     
 	  gchar *new_string;
 
-	  len = s - string;
+	  len = s - remainder;
 	  new_string = g_new (gchar, len + 1);
-	  strncpy (new_string, string, len);
+	  strncpy (new_string, remainder, len);
 	  new_string[len] = 0;
 	  string_list = g_slist_prepend (string_list, new_string);
 	  n++;
-	  string = s + delimiter_len;
-	  s = strstr (string, delimiter);
+	  remainder = s + delimiter_len;
+	  s = strstr (remainder, delimiter);
 	}
       while (--max_tokens && s);
     }
-  string_list = g_slist_prepend (string_list, g_strdup (string));
+  if (*string)
+    {
+      n++;
+      string_list = g_slist_prepend (string_list, g_strdup (remainder));
+    }
 
   str_array = g_new (gchar*, n + 1);
 

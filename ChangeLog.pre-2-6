@@ -1,3 +1,13 @@
+Fri Aug 24 11:15:46 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c docs/Changes-2.0.txt: Patch from Darin
+	Adler to restore Glib-1.2 handling of empty strings,
+	and to fix off-by-one with @max_tokens. (#57663).
+	Doc improvements.
+
+	* tests/strfunc-test.c: Change tests to correspond to
+	new behavior of g_strsplit().
+
 Thu Aug 23 11:09:58 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/ghash.c (g_hash_table_foreach_remove_or_steal): 

@@ -32,3 +32,11 @@
 * GDate now works in UTF-8, not in the current locale. If you
   want to use it with the encoding of the locale, you need
   to convert strings using g_locale_to_utf8 first.
+
+* g_strsplit() has been fixed to:
+
+  - include trailing empty tokens, rather than stripping them
+  - split into a maximum of @max_tokens tokens, rather than 
+    @max_tokens + 1
+
+  Code depending on either of these bugs will need to be fixed.
