@@ -1,3 +1,11 @@
+2003-06-11  Tor Lillqvist  <tml@iki.fi>
+
+	* glib-zip.in (DEVZIP): libtool 1.5 installs DLLs in the bin
+	subdirectory, so get them from there.
+
+	* glib/gwin32.c (g_win32_getlocale): Use "sr@Latn" and "sr" in the
+	same way as the po files for Serbian in Latin and Cyrillic script.
+
 2003-06-11  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in: Remove false &. Spotted by Albert Chin
