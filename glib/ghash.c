@@ -560,6 +560,40 @@ g_hash_table_foreach (GHashTable *hash_table,
 }
 
 /**
+ * g_hash_table_find:
+ * @hash_table: a #GHashTable.
+ * @predicate:  function to test the key/value pairs for a certain property.
+ * @user_data:  user data to pass to the function.
+ * 
+ * Calls the given function for key/value pairs in the
+ * #GHashTable until @predicate returns %TRUE.  The function is passed 
+ * the key and value of each pair, and the given @user_data parameter.  
+ *  The hash table may not
+ * be modified while iterating over it (you can't add/remove
+ * items). 
+ * Return value: The value of the first key/value pair is returned, for which 
+ * func evaluates to %TRUE. If no pair with the requested property is found, 
+ * %NULL is returned
+ **/
+gpointer
+g_hash_table_find (GHashTable	   *hash_table,
+                   GHRFunc	    predicate,
+                   gpointer	    user_data)
+{
+  GHashNode *node;
+  gint i;
+  
+  g_return_val_if_fail (hash_table != NULL, NULL);
+  g_return_val_if_fail (predicate != NULL, NULL);
+  
+  for (i = 0; i < hash_table->size; i++)
+    for (node = hash_table->nodes[i]; node; node = node->next)
+      if (predicate (node->key, node->value, user_data))
+        return node->value;       
+  return NULL;
+}
+
+/**
  * g_hash_table_size:
  * @hash_table: a #GHashTable.
  * 

@@ -296,6 +296,15 @@ static void second_hash_test (gboolean simple_hash)
     g_hash_table_destroy (h);
 }
 
+static gboolean find_first     (gpointer key, 
+				gpointer value, 
+				gpointer user_data)
+{
+  gint *v = value; 
+  gint *test = user_data;
+  return (*v == *test);
+}
+
 
 static void direct_hash_test (void)
 {
@@ -332,13 +341,19 @@ main (int   argc,
 {
   GHashTable *hash_table;
   gint i;
-
+  gint value = 120;
+  gint *pvalue; 
+  
   hash_table = g_hash_table_new (my_hash, my_hash_equal);
   for (i = 0; i < 10000; i++)
     {
       array[i] = i;
       g_hash_table_insert (hash_table, &array[i], &array[i]);
     }
+  pvalue = g_hash_table_find (hash_table, find_first, &value);
+  if (!pvalue || *pvalue != value)
+    g_assert_not_reached();
+  
   g_hash_table_foreach (hash_table, my_hash_callback, NULL);
 
   for (i = 0; i < 10000; i++)

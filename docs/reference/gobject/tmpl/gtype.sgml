@@ -1619,9 +1619,10 @@ init functions.
   separated by '_'.
 @TYPE_PARENT: The #GType of the parent type.
 @flags: #GTypeFlags to pass to g_type_register_static()
-@type_parent_class: the identifier for the static variable holding the parent class
 @CODE: Custom code that gets inserted in the *_get_type() function.
 @Since: 2.4
+<!-- # Unused Parameters # -->
+@type_parent_class: the identifier for the static variable holding the parent class
 
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->

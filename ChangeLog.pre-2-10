@@ -1,3 +1,8 @@
+Fri Feb 20 03:02:05 2004  Tim Janik  <timj@gtk.org>
+
+	* glib/ghash.[hc]: applied patch from #131937 with slight
+	renames. provides g_hash_table_find().
+
 Fri Feb 20 02:39:03 2004  Tim Janik  <timj@gtk.org>
 
 	* applied patch from David Schleef <ds@schleef.org> which implements

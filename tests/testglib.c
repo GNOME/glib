@@ -307,6 +307,17 @@ my_traverse (gpointer key,
   return FALSE;
 }
 
+static gboolean 
+find_first_that(gpointer key, 
+		gpointer value, 
+		gpointer user_data)
+{
+  gint *v = value;
+  gint *test = user_data;
+  return (*v == *test);
+}
+
+
 int
 main (int   argc,
       char *argv[])
@@ -320,7 +331,9 @@ main (int   argc,
   gint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
-
+  gint value = 120; 
+  gint *pvalue=NULL; 
+  
   gchar *mem[10000], *tmp_string = NULL, *tmp_string_2;
   gint i, j;
   GArray *garray;
@@ -720,6 +733,10 @@ main (int   argc,
       array[i] = i;
       g_hash_table_insert (hash_table, &array[i], &array[i]);
     }
+  pvalue = g_hash_table_find (hash_table, find_first_that, &value);
+  if (*pvalue != value)
+	  g_print("g_hash_table_find failed");
+  
   g_hash_table_foreach (hash_table, my_hash_callback, NULL);
 
   for (i = 0; i < 10000; i++)
