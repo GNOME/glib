@@ -1,3 +1,7 @@
+2001-11-15  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Reflect recent changes.
+
 Tue Nov 13 23:18:10 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc]: add API for chaining:

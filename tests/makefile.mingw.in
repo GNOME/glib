@@ -20,8 +20,6 @@ NONAUTOMATIC_TESTS = \
 	unicode-normalize.exe \
 	unicode-collate.exe
 
-# mainloop-test removed for now until it is fixed
-
 TESTS = \
 	array-test.exe	\
 	date-test.exe	\
@@ -29,6 +27,7 @@ TESTS = \
 	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
+	mainloop-test.exe \
 	markup-test.exe	\
 	module-test.exe	\
 	node-test.exe	\

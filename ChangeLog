@@ -1,3 +1,11 @@
+2001-11-15  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/makefile.{mingw,msc}.in (TESTS): Add back mainloop-test
+	here, too.
+
+	* tests/Makefile.am: Remove leftover comment that claimed
+	mainloop-test is removed.
+
 2001-11-14  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gpattern.c: add UTF-8 support.

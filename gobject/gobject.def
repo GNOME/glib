@@ -85,17 +85,16 @@ EXPORTS
 	g_object_watch_closure
 	g_object_weak_ref
 	g_object_weak_unref
-	g_param_get_blurb
-	g_param_get_name
-	g_param_get_nick
 	g_param_spec_boolean
 	g_param_spec_boxed
 	g_param_spec_char
-	g_param_spec_closure
 	g_param_spec_double
 	g_param_spec_enum
 	g_param_spec_flags
 	g_param_spec_float
+	g_param_spec_get_blurb
+	g_param_spec_get_name
+	g_param_spec_get_nick
 	g_param_spec_get_qdata
 	g_param_spec_int
 	g_param_spec_int64
@@ -130,6 +129,7 @@ EXPORTS
 	g_param_value_validate
 	g_param_values_cmp
 	g_signal_add_emission_hook
+	g_signal_chain_from_overridden
 	g_signal_connect_closure
 	g_signal_connect_closure_by_id
 	g_signal_connect_data
@@ -154,6 +154,7 @@ EXPORTS
 	g_signal_new
 	g_signal_new_valist
 	g_signal_newv
+	g_signal_override_class_closure
 	g_signal_parse_name
 	g_signal_query
 	g_signal_remove_emission_hook
@@ -167,14 +168,14 @@ EXPORTS
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
 	g_type_check_class_cast
-	g_type_check_flags
+	g_type_check_class_is_a
 	g_type_check_instance
 	g_type_check_instance_cast
+	g_type_check_instance_is_a
 	g_type_check_is_value_type
 	g_type_check_value
 	g_type_check_value_holds
 	g_type_children
-	g_type_class_is_a
 	g_type_class_peek
 	g_type_class_peek_parent
 	g_type_class_ref
@@ -190,7 +191,6 @@ EXPORTS
 	g_type_get_qdata
 	g_type_init
 	g_type_init_with_debug_flags
-	g_type_instance_is_a
 	g_type_interface_add_prerequisite
 	g_type_interface_get_plugin
 	g_type_interface_peek

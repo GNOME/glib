@@ -56,8 +56,6 @@ timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
 
-# mainloop-test removed for now until it is fixed
-
 test_programs =					\
 	array-test				\
 	$(CXX_TEST)				\
