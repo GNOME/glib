@@ -1,3 +1,7 @@
+Sat Jul 31 23:17:05 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Updates.
+
 Sat Jul 31 20:33:07 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/shell-test.c: Include a test involving consecutive

@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.5.0 to GLib 2.5.1
+=================================================
+
+* Bug fixes [Oliver Guntermann, Sven Neumann, James 
+  Henstridge, Hiroyuki Ikezoe, Matthias Clasen, Robert 
+  Ögren, Tommi Komulainen]
+* Documentation improvements [Soeren Sandmann, 
+  Christophe Fergeau, Danek Duvall]
+* New and updated translations (eu,hi)
+  
 Overview of Changes from GLib 2.4.1 to GLib 2.5.0
 =================================================
 
