@@ -136,6 +136,7 @@ fi
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
@@ -377,13 +378,28 @@ xyes) AC_DEFINE(G_HAVE_INLINE,1,[Have inline keyword])
 esac
 
 # check for flavours of varargs macros
-AC_MSG_CHECKING(for ISO C99 varargs macros)
+AC_MSG_CHECKING(for ISO C99 varargs macros in C)
 AC_TRY_COMPILE([],[
 int a(int p1, int p2, int p3);
 #define call_a(...) a(1,__VA_ARGS__)
 call_a(2,3);
-],g_have_iso_varargs=yes,g_have_iso_varargs=no)
-AC_MSG_RESULT($g_have_iso_varargs)
+],g_have_iso_c_varargs=yes,g_have_iso_c_varargs=no)
+AC_MSG_RESULT($g_have_iso_c_varargs)
+
+AC_MSG_CHECKING(for ISO C99 varargs macros in C++)
+if test $CXX = gcc ; then
+dnl No C++ compiler
+  g_have_iso_cxx_varargs=no
+else
+  AC_LANG_CPLUSPLUS
+  AC_TRY_COMPILE([],[
+int a(int p1, int p2, int p3);
+#define call_a(...) a(1,__VA_ARGS__)
+call_a(2,3);
+],g_have_iso_cxx_varargs=yes,g_have_iso_cxx_varargs=no)
+  AC_LANG_C
+fi
+AC_MSG_RESULT($g_have_iso_cxx_varargs)
 
 AC_MSG_CHECKING(for GNUC varargs macros)
 AC_TRY_COMPILE([],[
@@ -1644,19 +1660,29 @@ $glib_inline
 #endif	/* !__cplusplus */
 _______EOF
 
-	if test x$g_have_iso_varargs = xyes ; then
+	if test x$g_have_iso_c_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
-#define G_HAVE_ISO_VARARGS 1
+#define G_HAVE_ISO_C_VARARGS 1
 _______EOF
 	fi
+	if test x$g_have_iso_cxx_varargs = xyes ; then
+		cat >>$outfile <<_______EOF
+
+#define G_HAVE_ISO_CXX_VARARGS 1
+_______EOF
+	fi
+	cat >>$outfile <<_______EOF
+
+#define G_HAVE_ISO_VARARGS (defined(__cplusplus) ? defined(G_HAVE_ISO_CXX_VARARGS) : defined(G_HAVE_ISO_C_VARARGS))
+_______EOF
+
 	if test x$g_have_gnuc_varargs = xyes ; then
 		cat >>$outfile <<_______EOF
 
 #define G_HAVE_GNUC_VARARGS 1
 _______EOF
 	fi
-
 
 	echo >>$outfile
 	if test x$g_have_eilseq = xno; then
@@ -1939,7 +1965,8 @@ if test x$glib_cv_has__inline__ = xyes; then
 fi
 
 g_have_gnuc_varargs=$g_have_gnuc_varargs
-g_have_iso_varargs=$g_have_iso_varargs
+g_have_iso_c_varargs=$g_have_iso_c_varargs
+g_have_iso_cxx_varargs=$g_have_iso_cxx_varargs
 
 case xyes in
 x$ac_cv_c_bigendian)

@@ -1,3 +1,7 @@
+Mon May 28 11:40:34 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Check for __VARARGS__ separately for C and C++.
+
 2001-05-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fix typo.
