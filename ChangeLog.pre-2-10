@@ -1,3 +1,8 @@
+Wed Nov 14 07:34:24 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/galloca.h (g_newa): provide g_newa(ctype, count) on top of
+	g_alloca() like we provide g_new() on top of g_malloc().
+
 Tue Nov 13 21:25:35 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/{gen-unicode-tables.pl,gunibreak.c,gunibreak.h,

@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = . m4macros glib gobject gmodule gthread docs tests build po
+SUBDIRS = . m4macros glib gobject gmodule gthread tests build po docs
 
 bin_SCRIPTS = glib-gettextize
 

@@ -518,20 +518,20 @@ character. Unicode strings should generally be normalized before comparing them.
 </para>
 
 @G_NORMALIZE_DEFAULT: standardize differences that do not affect the
-  text content, such as the above-mentioned accent representation.  
-@G_NORMALIZE_NFD: another name for %G_NORMALIZE_DEFAULT. 
+  text content, such as the above-mentioned accent representation.
+@G_NORMALIZE_NFD: another name for %G_NORMALIZE_DEFAULT.
 @G_NORMALIZE_DEFAULT_COMPOSE: like %G_NORMALIZE_DEFAULT, but with composed
-  forms rather than a maximally decomposed form. 
+  forms rather than a maximally decomposed form.
 @G_NORMALIZE_NFC: another name for %G_NORMALIZE_DEFAULT_COMPOSE.
 @G_NORMALIZE_ALL: beyond %G_NORMALIZE_DEFAULT also standardize the 
   "compatibility" characters in Unicode, such as SUPERSCRIPT THREE to the 
   standard forms (in this case DIGIT THREE). Formatting information may be 
   lost but for most text operations such characters should be considered the 
-  same. 
-@G_NORMALIZE_NFKD: another name for %G_NORMALIZE_ALL. 
+  same.
+@G_NORMALIZE_NFKD: another name for %G_NORMALIZE_ALL.
 @G_NORMALIZE_ALL_COMPOSE: like %G_NORMALIZE_ALL, but with composed
-  forms rather than a maximally decomposed form. 
-@G_NORMALIZE_NFKC: another name for %G_NORMALIZE_ALL_COMPOSE. 
+  forms rather than a maximally decomposed form.
+@G_NORMALIZE_NFKC: another name for %G_NORMALIZE_ALL_COMPOSE.
 
 <!-- ##### FUNCTION g_utf8_collate ##### -->
 <para>

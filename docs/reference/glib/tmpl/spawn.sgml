@@ -56,7 +56,7 @@ Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
 
 @G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will be 
  inherited by the child; otherwise all descriptors except stdin/stdout/stderr 
- will be closed before calling <function>exec()</function> in the child. 
+ will be closed before calling <function>exec()</function> in the child.
 @G_SPAWN_DO_NOT_REAP_CHILD: the child will not be automatically reaped; you 
   must call <function>waitpid()</function> or handle <literal>SIGCHLD</literal> 
   yourself, or the child will become a zombie.

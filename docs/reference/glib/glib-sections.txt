@@ -697,6 +697,7 @@ g_free
 
 <SUBSECTION>
 g_alloca
+g_newa
 
 <SUBSECTION>
 g_memmove
