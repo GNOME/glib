@@ -1,3 +1,12 @@
+2005-01-19  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gbacktrace.c (g_on_error_stack_trace): On Win32 call
+	G_BREAKPOINT() if being debugged.
+
+	* glib/gmessages.c (g_logv): For fatal messages on Win32, use
+	G_BREAKPOINT() also without G_ENABLE_DEBUG, but only if being
+	debugged. Suggestion by Ulf Lamping. Otherwise use FatalAppExit().
+
 2005-01-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gqsort.c: Don't include alloca.h. It is not needed,

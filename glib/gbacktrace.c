@@ -185,7 +185,10 @@ g_on_error_stack_trace (const gchar *prg_name)
     ;
   glib_on_error_halt = TRUE;
 #else
-  abort ();
+  if (IsDebuggerPresent ())
+    G_BREAKPOINT ();
+  else
+    abort ();
 #endif
 }
 
