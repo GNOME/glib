@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2002-12-20 10:12-0500\n"
+"POT-Creation-Date: 2003-01-03 05:53+0100\n"
 "PO-Revision-Date: 2002-12-12 00:20+0200\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
@@ -436,9 +436,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Lukeminen lapsiprosessin putkesta epäonnistui (%s)"
 
 #: glib/gspawn-win32.c:784
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Lapsiprosessin käynnistys epäonnistui (%s)"
+msgstr "Apuohjelman käynnistys epäonnistui"
 
 #: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
