@@ -40,7 +40,7 @@ How to cross-compile GLib
         create a file 'win32.cache' with the following contents:
       </para>
       <programlisting> 
-glib_cv_long_long_format=ll
+glib_cv_long_long_format=I64
 glib_cv_stack_grows=no
       </programlisting>
       <para>

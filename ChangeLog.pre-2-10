@@ -1,3 +1,15 @@
+2005-01-01  J. Ali Harlow  <ali@juiblex.co.uk>
+
+	* configure.in: Don't use AC_TRY_RUN to test for long long format
+	when using the MSVCRT.DLL runtime since we know the answer anyway
+	and it causes some mild inconvience when cross compiling.
+
+	* README.win32: Add a reference to the cross compiling section
+	of the reference manual.
+
+	* docs/reference/glib/cross.sgml: MinGW uses MSVCRT.DLL which
+	requires %I64i instead of %lli. (#161306)
+
 2005-01-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c: Make the g_getenv() ABI backward compatibility

@@ -1,8 +1,8 @@
 Tor Lillqvist <tml@iki.fi>
 Hans Breuer <hans@breuer.org>
 
-The general parts, and the stuff about gcc and autoconfiscated build
-are by Tor Lillqvist. The stuff about MSVC build is by Hans Breuer.
+The general parts, and the section about gcc and autoconfiscated build
+are by Tor Lillqvist. The sections about MSVC build is by Hans Breuer.
 
 General
 =======
@@ -87,7 +87,8 @@ gettext-runtime (0.13.1 or newer) from www.gimp.org/win32/downloads.html.
 Autoconfiscated build (with gcc)
 ================================
 
-Tor uses gcc 3.2. Version 2.95.3 also works.
+Tor uses gcc 3.3.1. Somewhat earlier or later versions presumably also
+work.
 
 You can either use gcc running on Cygwin, or the "pure" mingw
 gcc. Using the latter might work better, or at least did at some
@@ -149,6 +150,13 @@ libraries (DLLs) for Cygwin most probably requires you to have a very
 new libtool. (And a new libtool probably requires rather new autoconf
 and automake.) Tor hasn't tested this in a while, either.
 
+Cross-compiling
+===============
+
+It is possible to build GLib using a cross compiler. See
+docs/reference/glib/html/glib-cross-compiling.html (part of the
+GLib reference manual) for more information.
+
 Building with MSVC
 ==================
 
@@ -192,14 +200,14 @@ nmake -f makefile.msc DEBUG=1
 ]
 
 Required libraries (not build from cvs)
-==================
+------------------
   libintl (gnu-intl), libiconv
   libtiff, libpng, zlib, libjpeg
 
 are available pre-built from the website mentioned above.
 
 Versioning
-==========
+----------
 Instead of the Unix and auto* way of tracking versions and resolving
 dependencies (configure; make; make install) involving autoconf,
 automake, libtool and friends the MSVC build uses a different
@@ -232,7 +240,7 @@ headers into a common place (as it is done on Unix, and as Tor does
 when producing his zipfiles with prebuilt GLib, GTK+ etc).
 
 Special Files
-=============
+-------------
 	config.h.win32.in : @XXX_MAJOR_VERSION@ needs to be replaced by
 the current version/build number. The resulting file is to be saved
 as 'config.h.win32'. This should be automatically done if a package
@@ -259,7 +267,7 @@ exported another mechanism is needed, like :
 
 
 Directory Structure
-===================
+-------------------
 all modules should be build in a common directory tree otherwise you 
 need to adapt the file 'module.defs'. They are listed here in increasing
 dependencies order.

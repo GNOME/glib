@@ -533,7 +533,7 @@ else
 ])
 fi
 
-if test x$ac_cv_sizeof_long_long = x8; then
+if test x$glib_native_win32 != xyes && test x$ac_cv_sizeof_long_long = x8; then
 	# long long is a 64 bit integer.
 	AC_MSG_CHECKING(for format to printf and scanf a guint64)
 	AC_CACHE_VAL(glib_cv_long_long_format,[
@@ -564,7 +564,7 @@ if test x$ac_cv_sizeof_long_long = x8; then
 elif test x$ac_cv_sizeof___int64 = x8; then
 	# __int64 is a 64 bit integer.
 	AC_MSG_CHECKING(for format to printf and scanf a guint64)
-	# We know this is MSVC, and what the formats are
+	# We know this is MSVCRT.DLL, and what the formats are
 	glib_cv_long_long_format=I64
 	AC_MSG_RESULT(%${glib_cv_long_long_format}u)
         AC_DEFINE(HAVE_LONG_LONG_FORMAT,1,[define if system printf can print long long])
