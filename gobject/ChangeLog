@@ -1,3 +1,9 @@
+2001-06-12  Havoc Pennington  <hp@redhat.com>
+
+	* Makefile.am (glib-mkenums): don't put $(srcdir)/glib-mkenums in
+	bin_SCRIPTS, that breaks make install. Instead put 'glib-mkenums'
+	in bin_SCRIPTS and cp it into builddir
+
 Thu May 31 17:56:47 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject-query.c: Fix mispelling in help output.

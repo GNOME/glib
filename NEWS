@@ -1,3 +1,17 @@
+Overview of Changes in GLib 1.3.6:
+
+* Threads have a "return value" from g_thread_join
+* Removed ability to adjust thread stack size
+* Prefix warnings with progname/PID by default, change toggle for this to 
+  be an env variable G_MESSAGES_PREFIXED not a compile-time option
+* GMarkup speedups
+* GDate const, convenience fixups
+* Include test cases that headers are compilable by C++ compiler
+* Add ability to spawn processes with argv[0] != executable path.
+* g_strstr_len, g_strrstr, g_strrstr_len
+* Add length argument to g_utf8_strchr and g_utf8_strrchr.
+* Misc bug fixes
+
 Overview of Changes in GLib 1.3.5:
 
 * Added an installed glib-mkenums Perl program for parsing enumeration

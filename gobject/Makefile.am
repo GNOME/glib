@@ -154,7 +154,7 @@ libgobject_1_3_la_SOURCES = $(gruntime_target_sources)
 # programs to compile and install
 #
 bin_PROGRAMS = gobject-query glib-genmarshal
-bin_SCRIPTS = $(srcdir)/glib-mkenums
+bin_SCRIPTS = glib-mkenums
 noinst_PROGRAMS =  testgruntime
 # source files
 gobject_query_SOURCES = gobject-query.c
@@ -187,6 +187,12 @@ BUILT_EXTRA_DIST = \
 	makefile.mingw		\
 	makefile.msc		\
 	gobject.rc
+
+glib-mkenums: $(srcdir)/glib-mkenums
+	if test -e glib-mkenums; then		\
+	  rm glib-mkenums;			\
+        fi;					\
+	cp $(srcdir)/glib-mkenums glib-mkenums
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status

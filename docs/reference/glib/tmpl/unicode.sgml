@@ -423,6 +423,7 @@ that may contain invalid UTF-8.
 </para>
 
 @p: 
+@len: 
 @c: 
 @Returns: 
 <!-- # Unused Parameters # -->
@@ -435,6 +436,7 @@ that may contain invalid UTF-8.
 </para>
 
 @p: 
+@len: 
 @c: 
 @Returns: 
 <!-- # Unused Parameters # -->
