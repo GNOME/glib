@@ -126,1387 +126,1725 @@ fi
 AC_MSG_CHECKING(whether to enable memory profiling)
 if test "x$enable_mem_profile" = "xyes"; then
   AC_DEFINE(ENABLE_MEM_PROFILE, 1)
-  AC_SUBST(ENABLE_MEM_PROFILE)
-  AC_MSG_RESULT(yes)
-else
-  AC_MSG_RESULT(no)
-fi
-
-if test "x$enable_debug" = "xyes"; then
-  test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-  GLIB_DEBUG_FLAGS="-DG_ENABLE_DEBUG"
-else
-  if test "x$enable_debug" = "xno"; then
-    GLIB_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
-  fi
-fi
-
-AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}")
-
-if test "x$enable_msg_prefix" = "xyes"; then
-  AC_DEFINE_UNQUOTED(G_ENABLE_MSG_PREFIX, 1)
-fi
-
-# Checks for programs.
-AC_PROG_CC
-AM_PROG_CC_STDC
-AC_PROG_INSTALL
-
-changequote(,)dnl
-if test "x$GCC" = "xyes"; then
-  case " $CFLAGS " in
-  *[\ \	]-Wall[\ \	]*) ;;
-  *) CFLAGS="$CFLAGS -Wall" ;;
-  esac
-
-  if test "x$enable_ansi" = "xyes"; then
-    case " $CFLAGS " in
-    *[\ \	]-ansi[\ \	]*) ;;
-    *) CFLAGS="$CFLAGS -ansi" ;;
-    esac
-
-    case " $CFLAGS " in
-    *[\ \	]-pedantic[\ \	]*) ;;
-    *) CFLAGS="$CFLAGS -pedantic" ;;
-    esac
-  fi
-fi
-changequote([,])dnl
-
-dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
-AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
-glib_save_LIBS=$LIBS
-LIBS="$LIBS -lm"
-AC_TRY_RUN([#include <math.h>
-             int main (void) { return (log(1) != log(1.)); }],
-     AC_MSG_RESULT(none needed),
-     glib_save_CFLAGS=$CFLAGS
-     CFLAGS="$CFLAGS -std1"
-     AC_TRY_RUN([#include <math.h>
-                 int main (void) { return (log(1) != log(1.)); }],
-         AC_MSG_RESULT(-std1),
-         AC_MSG_RESULT()
-         CFLAGS=$glib_save_CFLAGS
-         AC_MSG_WARN(
-                [No ANSI prototypes found in library. (-std1 didn't work.)])
-     )
-)
-LIBS=$glib_save_LIBS
-
-dnl NeXTStep cc seems to need this
-AC_MSG_CHECKING([for extra flags for POSIX compliance])
-AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
-  AC_MSG_RESULT(none needed),
-  glib_save_CFLAGS=$CFLAGS
-  CFLAGS="$CFLAGS -posix"
-  AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
-    AC_MSG_RESULT(-posix),
-    AC_MSG_RESULT()
-    CFLAGS=$glib_save_CFLAGS
-    AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
-
-# Checks for header files.
-AC_HEADER_STDC
-
-# Checks for library functions.
-AC_FUNC_VPRINTF
-
-AC_CHECK_FUNCS(atexit on_exit)
-
-AC_CHECK_SIZEOF(char)
-AC_CHECK_SIZEOF(short)
-AC_CHECK_SIZEOF(long)
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(void *)
-AC_CHECK_SIZEOF(long long)
-
-if test x$ac_cv_sizeof_long_long = x8; then
-	# long long is a 64 bit integer.
-	AC_MSG_CHECKING(for format to printf and scanf a gint64)
-	AC_CACHE_VAL(glib_cv_long_long_format,[
-		AC_TRY_RUN([#include <stdio.h>  
-			int main()
-			{
-			  long long b, a = -0x3AFAFAFAFAFAFAFALL;
-			  char buffer[1000];
-			  sprintf (buffer, "%llu", a);
-  			  sscanf (buffer, "%llu", &b);
-			  exit (b!=a);
-			}
-			],
-			glib_cv_long_long_format=ll,
-			glib_cv_long_long_format=q)])
-	AC_MSG_RESULT(%${glib_cv_long_long_format}i)
-fi
-
-dnl long doubles were not used, and a portability problem
-dnl AC_C_LONG_DOUBLE
-AC_C_CONST
-
-dnl AC_C_INLINE is useless to us since it bails out too early, we need to
-dnl truely know which ones of `inline', `__inline' and `__inline__' are
-dnl actually supported.
-AC_MSG_CHECKING(for __inline)
-AC_CACHE_VAL(glib_cv_has__inline,[
-        AC_TRY_RUN([
-	__inline int foo () { return 0; }
-	int main () { return foo (); }
-       	],
-	glib_cv_has__inline=yes
-        ,
-	glib_cv_has__inline=no
-        ,)
-])
-AC_MSG_RESULT($glib_cv_has__inline)
-case x$glib_cv_has__inline in
-xyes) AC_DEFINE(G_HAVE___INLINE)
-esac
-AC_MSG_CHECKING(for __inline__)
-AC_CACHE_VAL(glib_cv_has__inline__,[
-        AC_TRY_RUN([
-	__inline__ int foo () { return 0; }
-	int main () { return foo (); }
-       	],
-	glib_cv_has__inline__=yes
-        ,
-	glib_cv_has__inline__=no
-        ,)
-])
-AC_MSG_RESULT($glib_cv_has__inline__)
-case x$glib_cv_has__inline__ in
-xyes) AC_DEFINE(G_HAVE___INLINE__)
-esac
-AC_MSG_CHECKING(for inline)
-AC_CACHE_VAL(glib_cv_hasinline,[
-        AC_TRY_RUN([
-	inline int foo () { return 0; }
-	int main () { return foo (); }
-       	],
-	glib_cv_hasinline=yes
-        ,
-	glib_cv_hasinline=no
-        ,)
-])
-AC_MSG_RESULT($glib_cv_hasinline)
-case x$glib_cv_hasinline in
-xyes) AC_DEFINE(G_HAVE_INLINE)
-esac
-
-# check for bytesex stuff
-AC_C_BIGENDIAN
-
-# xhexk for header files
-AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
-AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
-AC_CHECK_HEADERS(pwd.h, AC_DEFINE(HAVE_PWD_H))
-AC_CHECK_HEADERS(sys/param.h, AC_DEFINE(HAVE_SYS_PARAM_H))
-AC_CHECK_HEADERS(sys/poll.h, AC_DEFINE(HAVE_SYS_POLL_H))
-AC_CHECK_HEADERS(sys/select.h, AC_DEFINE(HAVE_SYS_SELECT_H))
-AC_CHECK_HEADERS(sys/time.h, AC_DEFINE(HAVE_SYS_TIME_H))
-AC_CHECK_HEADERS(sys/times.h, AC_DEFINE(HAVE_SYS_TIMES_H))
-AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
-AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
-AC_CHECK_HEADERS(stdint.h, AC_DEFINE(HAVE_VALUES_H))
-
-# check additional type sizes
-size_includes=["
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-"]
-if test "x$ac_cv_header_stdint_h" = "xyes"; then
-  size_includes=["$size_includes
-#include <stdint.h>
-"]
-fi
-if test "x$ac_cv_header_unistd_h" = "xyes"; then
-  size_includes=["$size_includes
-#include <unistd.h>
-"]
-fi
-GLIB_SIZEOF([$size_includes], size_t, size_t)
-GLIB_SIZEOF([$size_includes], ptrdiff_t, ptrdiff_t)
-GLIB_SIZEOF([$size_includes], intmax_t, intmax_t)
-
-# Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf strcasecmp strncasecmp poll)
-
-# Check if bcopy can be used for overlapping copies, if memmove isn't found.
-# The check is borrowed from the PERL Configure script.
-if test "$ac_cv_func_memmove" != "yes"; then
-  AC_CACHE_CHECK(whether bcopy can handle overlapping copies,
-    glib_cv_working_bcopy,[AC_TRY_RUN([
-      int main() {
-        char buf[128], abc[128], *b;
-        int len, off, align;
-        bcopy("abcdefghijklmnopqrstuvwxyz0123456789", abc, 36);
-        for (align = 7; align >= 0; align--) {
-          for (len = 36; len; len--) {
-            b = buf+align; bcopy(abc, b, len);
-            for (off = 1; off <= len; off++) {
-              bcopy(b, b+off, len); bcopy(b+off, b, len);
-                if (bcmp(b, abc, len)) return(1);
-            }
-          }
-        }
-        return(0);
-      }],glib_cv_working_bcopy=yes,glib_cv_working_bcopy=no)])
-  if test "$glib_cv_working_bcopy" == "yes"; then
-    AC_DEFINE(HAVE_WORKING_BCOPY)
-  fi
-fi
-
-# Check for sys_errlist
-AC_MSG_CHECKING(for sys_errlist)
-AC_TRY_LINK(, [
-extern char *sys_errlist[];
-extern int sys_nerr;
-sys_errlist[sys_nerr-1][0] = 0;
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_ERRLIST)
-fi
-
-# Check for sys_siglist
-AC_MSG_CHECKING(for sys_siglist)
-AC_TRY_LINK(, [
-extern char *sys_siglist[];
-strlen (sys_siglist[0]);
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_SIGLIST)
-fi
-
-# Check for sys_siglist decl (see Tue Jan 19 00:44:24 1999 in changelog)
-AC_MSG_CHECKING(for sys_siglist declaration)
-AC_TRY_COMPILE([#include <signal.h>], [
-strlen (sys_siglist[0]);
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_SIGLIST_DECL)
-fi
-
-# Check if <sys/select.h> needs to be included for fd_set
-AC_MSG_CHECKING([for fd_set])
-AC_TRY_COMPILE([#include <sys/types.h>],
-        [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
-    AC_MSG_RESULT([yes, found in sys/types.h])
-else
-    AC_HEADER_EGREP(fd_set, sys/select.h, gtk_ok=yes)
-    if test $gtk_ok = yes; then
-        AC_DEFINE(HAVE_SYS_SELECT_H)
-        AC_MSG_RESULT([yes, found in sys/select.h])
-    else
-	AC_DEFINE(NO_FD_SET)
-	AC_MSG_RESULT(no)
-    fi
-fi
-
-dnl *** check for sane realloc() ***
-AC_MSG_CHECKING(whether realloc (NULL,) will work)
-AC_CACHE_VAL(glib_cv_sane_realloc,[
-        AC_TRY_RUN([
-        #include <stdlib.h>
-        int main() {
-          return realloc (0, sizeof (int)) == 0;
-        }],
-        glib_cv_sane_realloc=yes
-        AC_DEFINE(REALLOC_0_WORKS)
-        ,
-        glib_cv_sane_realloc=no
-        ,)
-])
-AC_MSG_RESULT($glib_cv_sane_realloc)
-
-
-dnl **********************
-dnl *** va_copy checks ***
-dnl **********************
-dnl we currently check for all three va_copy possibilities, so we get
-dnl all results in config.log for bug reports.
-AC_MSG_CHECKING(for an implementation of va_copy())
-AC_CACHE_VAL(glib_cv_va_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
-	void f (int i, ...) {
-	va_list args1, args2;
-	va_start (args1, i);
-	va_copy (args2, args1);
-	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
-	  exit (1);
-	va_end (args1); va_end (args2);
-	}
-	int main() {
-	  f (0, 42);
-	  return 0;
-	}],
-	glib_cv_va_copy=yes
-	,
-	glib_cv_va_copy=no
-	,)
-])
-AC_MSG_RESULT($glib_cv_va_copy)
-AC_MSG_CHECKING(for an implementation of __va_copy())
-AC_CACHE_VAL(glib_cv___va_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
-	void f (int i, ...) {
-	va_list args1, args2;
-	va_start (args1, i);
-	__va_copy (args2, args1);
-	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
-	  exit (1);
-	va_end (args1); va_end (args2);
-	}
-	int main() {
-	  f (0, 42);
-	  return 0;
-	}],
-	glib_cv___va_copy=yes
-	,
-	glib_cv___va_copy=no
-	,)
-])
-AC_MSG_RESULT($glib_cv___va_copy)
-AC_MSG_CHECKING(whether va_lists can be copied by value)
-AC_CACHE_VAL(glib_cv_va_val_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
-	void f (int i, ...) {
-	va_list args1, args2;
-	va_start (args1, i);
-	args2 = args1;
-	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
-	  exit (1);
-	va_end (args1); va_end (args2);
-	}
-	int main() {
-	  f (0, 42);
-	  return 0;
-	}],
-	glib_cv_va_val_copy=yes
-	,
-	glib_cv_va_val_copy=no
-	,)
-])
-if test "x$glib_cv_va_copy" = "xyes"; then
-  AC_DEFINE(G_VA_COPY, va_copy)
-else if test "x$glib_cv___va_copy" = "xyes"; then
-  AC_DEFINE(G_VA_COPY, __va_copy)
-fi
-fi
-if test "x$glib_cv_va_val_copy" = "xno"; then
-  AC_DEFINE(G_VA_COPY_AS_ARRAY)
-fi
-AC_MSG_RESULT($glib_cv_va_val_copy)
-
-
-dnl ***********************
-dnl *** g_module checks ***
-dnl ***********************
-G_MODULE_LIBS=
-G_MODULE_LIBS_EXTRA=
-G_MODULE_PLUGIN_LIBS=
-G_MODULE_LDFLAGS=
-dnl G_MODULE_IMPL= don't reset, so cmd-line can override
-G_MODULE_NEED_USCORE=0
-G_MODULE_HAVE_DLERROR=0
-dnl *** dlopen() and dlsym() in system libraries
-if test -z "$G_MODULE_IMPL"; then
-	AC_CHECK_FUNC(dlopen,
-		AC_CHECK_FUNC(dlsym,
-			G_MODULE_IMPL=G_MODULE_IMPL_DL
-		,)
-	,)
-fi
-dnl *** load_image (BeOS)
-if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
-  AC_CHECK_LIB(root, load_image,
-      G_MODULE_LIBS="-lbe -lroot -lglib"
-      G_MODULE_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
-      G_MODULE_PLUGIN_LIBS="-L\$(top_builddir_full)/gmodule/.libs -lgmodule"
-      G_MODULE_IMPL=G_MODULE_IMPL_BEOS 
-,)
-fi   
-dnl *** dlopen() and dlsym() in libdl
-if test -z "$G_MODULE_IMPL"; then
-	AC_CHECK_LIB(dl, dlopen,
-		AC_CHECK_LIB(dl, dlsym,
-			G_MODULE_LIBS=-ldl
-			G_MODULE_IMPL=G_MODULE_IMPL_DL
-		,)
-	,)
-fi
-dnl *** shl_load() in libdld (HP-UX)
-if test -z "$G_MODULE_IMPL"; then
-        AC_MSG_CHECKING(how to export all symbols)
-        SAVED_LDFLAGS=$LDFLAGS
-        LDFLAGS="$LDFLAGS -Wl,-E"
-        AC_TRY_LINK(,[ return 0; ],
-                [ G_MODULE_LDFLAGS="-Wl,-E" ],[
-                LDFLAGS="$SAVED_LDFLAGS -bexpall"
-                AC_TRY_LINK(,[ return 0; ],
-                        G_MODULE_LDFLAGS="-bexpall",
-                        G_MODULE_LDFLAGS="none"
-                )
-        ])
-        LDFLAGS=$SAVED_LDFLAGS
-        AC_MSG_RESULT($G_MODULE_LDFLAGS)
-        if test "x$G_MODULE_LDFLAGS" = "xnone"; then
-                G_MODULE_LDFLAGS=
-        fi
-	AC_CHECK_LIB(dld, shl_load,
-		G_MODULE_LIBS=-ldld
-		G_MODULE_IMPL=G_MODULE_IMPL_DLD
-	,)
-fi
-dnl *** additional checks for G_MODULE_IMPL_DL
-if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
-	case "$host_os" in
-	  linux*)
-	    G_MODULE_LDFLAGS='-rdynamic'
-	    ;;
-	esac
-	LIBS_orig="$LIBS"
-	LDFLAGS_orig="$LDFLAGS"
-	LIBS="$LIBS $G_MODULE_LIBS"
-	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
-dnl *** check whether we need preceeding underscores
-	AC_MSG_CHECKING(for preceeding underscore in symbols)
-	AC_CACHE_VAL(glib_cv_uscore,[
-		AC_TRY_RUN([
-		#include <dlfcn.h>
-                int glib_underscore_test (void) { return 42; }
-		int main() {
-		  void *f1 = (void*)0, *f2 = (void*)0, *handle;
-		  handle = dlopen ((void*)0, 0);
-		  if (handle) {
-		    f1 = dlsym (handle, "glib_underscore_test");
-		    f2 = dlsym (handle, "_glib_underscore_test");
-		  } return (!f2 || f1);
-		}],
-			glib_cv_uscore=yes,
-			glib_cv_uscore=no,
-		)
-		rm -f plugin.c plugin.o plugin.lo
-	])
-	AC_MSG_RESULT($glib_cv_uscore)
-	if test "x$glib_cv_uscore" = "xyes"; then
-  		G_MODULE_NEED_USCORE=1
-	else
-  		G_MODULE_NEED_USCORE=0
-	fi
-
-	LDFLAGS="$LDFLAGS_orig"
-dnl *** check for having dlerror()
-	AC_CHECK_FUNC(dlerror,
-		G_MODULE_HAVE_DLERROR=1,
-		G_MODULE_HAVE_DLERROR=0)
-	LIBS="$LIBS_orig"
-fi
-dnl *** done, have e got an implementation?
-if test -z "$G_MODULE_IMPL"; then
-	G_MODULE_IMPL=0
-fi
-AC_SUBST(G_MODULE_IMPL)
-AC_SUBST(G_MODULE_LIBS)
-AC_SUBST(G_MODULE_LIBS_EXTRA)
-AC_SUBST(G_MODULE_PLUGIN_LIBS)
-AC_SUBST(G_MODULE_LDFLAGS)
-AC_SUBST(G_MODULE_HAVE_DLERROR)
-AC_SUBST(G_MODULE_NEED_USCORE)
-AC_SUBST(GLIB_DEBUG_FLAGS)
-
-
-dnl ***********************
-dnl *** g_thread checks ***
-dnl ***********************
-
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris] specify a thread implementation to use],
-	if test "x$with_threads" = x; then
-		want_threads=yes
-	else
-		want_threads=$with_threads
-	fi,
-	want_threads=yes)
-if test "x$enable_threads" = "xno"; then
-        want_threads=no
-fi
-if test "x$want_threads" = "xnone"; then
-	want_threads=no
-fi
-
-dnl error and warning message
-dnl *************************
-
-THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
-                computer. GLib will not have a default thread implementation."
-
-FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
-                platform (normaly it's "_REENTRANT"). I'll not use any flag on
-                compilation now, but then your programs might not work.
-                Please provide information on how it is done on your system."
-
-LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
-		"
-
-LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide information on your thread implementation.
-		You can also run 'configure --disable-threads' 
-		to compile without thread support."
-
-FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
-		functions will not be MT-safe during their first call because
-		there is no working 'getpwuid_r' on your system."
-
-FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
-		because there is no 'localtime_r' on your system."
-
-dnl determination of thread implementation
-dnl ***************************************
-
-have_threads=none
-if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
-       	case $host in
-               	*-*-solaris*)
-              	AC_CHECK_LIB(thread, cond_init, have_threads=solaris)
-		;;
-	esac
-fi
-if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
-				|| test "x$want_threads" = xdce; then
-	# -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
-	# -U_OSF_SOURCE if for Digital UNIX 4.0d
-	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
-	glib_save_CPPFLAGS="$CPPFLAGS"
-	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
-        if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_init[^a-zA-Z_]],
-			pthread.h,
-			have_threads=posix)
-        fi
-        if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_create[^a-zA-Z_]],
-			pthread.h,
-			have_threads=dce)
-        fi
-	CPPFLAGS="$glib_save_CPPFLAGS"
-fi
-
-AC_MSG_CHECKING(for thread implementation)
-
-if test "x$have_threads" = xnone && test "x$want_threads" != xno; then
-	AC_MSG_RESULT(none available)
-        AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
-else
-	AC_MSG_RESULT($have_threads)
-fi
-
-
-dnl determination of G_THREAD_LIBS
-dnl ******************************
-
-G_THREAD_LIBS=
-G_THREAD_LIBS_EXTRA=
-G_THREAD_CFLAGS=
-
-mutex_has_default=no
-case $have_threads in
-        posix|dce)
-		G_THREAD_LIBS=error
-		glib_save_LIBS="$LIBS"
-		for thread_lib in "" pthread pthreads c_r thread dce; do
-			# This is not AC_CHECK_LIB to also work with function
-			# name mangling in header files.
-			if test x"$thread_lib" = x; then
-				add_thread_lib=""
-				IN=""
-			else
-				add_thread_lib="-l$thread_lib"
-				IN=" in -l$thread_lib"
-			fi
-			
-			LIBS="$glib_save_LIBS $add_thread_lib"
-			
-			AC_MSG_CHECKING(for pthread_join$IN)
-			AC_TRY_LINK([#include <pthread.h>],
-				[pthread_t t; pthread_join(t,NULL)],
-				[AC_MSG_RESULT(yes)
-				G_THREAD_LIBS="$add_thread_lib"
-				break],
-				[AC_MSG_RESULT(no)])
-		done
-		LIBS="$glib_save_LIBS"
-                mutex_has_default=yes
-                mutex_default_type='pthread_mutex_t'
-                mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
-                mutex_header_file='pthread.h'
-		if test "x$have_threads" = "xposix"; then
-			g_threads_impl="POSIX"
-		else
-			g_threads_impl="DCE"
-			have_threads="posix"
-		fi
-		AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
-                ;;
-        solaris)
-		G_THREAD_LIBS=error
-                AC_CHECK_LIB(thread, cond_init, G_THREAD_LIBS="-lthread")
-                mutex_has_default=yes
-                mutex_default_type='mutex_t'
-		mutex_default_init="DEFAULTMUTEX"
-                mutex_header_file='thread.h'
-		g_threads_impl="SOLARIS"
-                ;;
-        none)
-		g_threads_impl="NONE"
-                ;;
-        *)
-		g_threads_impl="NONE"
-		G_THREAD_LIBS=error
-                ;;
-esac
-
-if test "x$G_THREAD_LIBS" = xerror; then
-        AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
-fi
-
-case $host in
-  *-*-beos*)
-    G_THREAD_LIBS="-lbe -lroot -lglib "
-    G_THREAD_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
-    ;;
-  *)
-    ;;
-esac
-
-
-AC_MSG_CHECKING(thread related libraries)
-AC_MSG_RESULT($G_THREAD_LIBS)
-
-dnl determination of G_THREAD_CFLAGS
-dnl ********************************
-
-if test x"$enable_threads" = xyes; then
-
-    G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
-
-    case $host in
-	*-aix*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-		if test x"$GCC" = xyes; then
-            	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
-		fi
-		;;
-	*-freebsd2.2*)
-		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-
-		# FreeBSD 2.2.x shiped with gcc 2.7.2.x, which doesn't support
-		# -mthreads flag.
-		;;
-    esac
-
-    # if we are not finding the ctime_r function, then we probably are
-    # not using the proper multithread flag
-    old_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
-    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
-    G_THREAD_CFLAGS=
-    AC_MSG_WARN($FLAG_DOES_NOT_WORK))
-    CPPFLAGS=$old_CPPFLAGS
-
-    AC_MSG_CHECKING(thread related cflags)
-
-    AC_MSG_RESULT($G_THREAD_CFLAGS)
-else
-    G_THREAD_CFLAGS=
-fi
-
-dnl check for mt safe function variants and some posix functions
-dnl ************************************************************
-
-if test x"$enable_threads" = xyes; then
-	glib_save_LIBS="$LIBS"
-	glib_save_CFLAGS="$CFLAGS"
-	# we are not doing the following for now, as this might require glib 
-	# to always be linked with the thread libs on some platforms. 
-	# LIBS="$LIBS $G_THREAD_LIBS"
-	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
-	AC_CHECK_FUNCS(localtime_r)
-	if test "$ac_cv_header_pwd_h" = "yes"; then
-		AC_MSG_CHECKING([for getpwuid_r])
-	 	AC_CACHE_VAL(ac_cv_func_getpwuid_r,
-			[AC_TRY_RUN([#include <errno.h>
-				int main () { char buffer[10000], *pointer; 
-				char getpwuid_r (long, void*, void*,
-					int, void*);
-				errno = 0;
-				getpwuid_r (0, &buffer, &buffer, 
-					sizeof (buffer), &pointer);
-				return errno == ENOSYS;}],
-				[ac_cv_func_getpwuid_r=yes],
-				[ac_cv_func_getpwuid_r=no])])
-		if test "$ac_cv_func_getpwuid_r" = yes; then
-			AC_MSG_RESULT(yes)
-			AC_DEFINE(HAVE_GETPWUID_R)
-		else
-			AC_MSG_RESULT(no)
-		fi
-		if test "$ac_cv_func_getpwuid_r" = "yes"; then
-			AC_MSG_CHECKING(whether getpwuid_r is posix like)
-			# The signature for the POSIX version is:
-			# int getpwuid_r(uid_t, struct passwd *, char *, size_t, struct passwd **)
-			AC_TRY_COMPILE([#include <pwd.h>
-                                        #include <sys/types.h>
-                                        #include <stdlib.h>],
-				[getpwuid_r((uid_t)0, NULL, NULL, (size_t)0, NULL);],
-				[AC_DEFINE(HAVE_GETPWUID_R_POSIX)
-				AC_MSG_RESULT(yes)],
-				[AC_MSG_RESULT(no)])
-		fi
-	fi
-	LIBS="$LIBS $G_THREAD_LIBS"
-	if test x"$have_threads" = xposix; then
-		GLIB_SIZEOF([#include <pthread.h>],
-			pthread_t,
-			system_thread)
-		# This is not AC_CHECK_FUNC to also work with function
-		# name mangling in header files.
-		AC_MSG_CHECKING(for pthread_attr_setstacksize)
-		AC_TRY_LINK([#include <pthread.h>],
-			[pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
-			[AC_MSG_RESULT(yes)
-			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
-			[AC_MSG_RESULT(no)])
-		# If sched_get_priority_min(SCHED_OTHER) returns something 
-		# negative, we ignore it. This happens on Solaris.
-		AC_MSG_CHECKING(for minimal/maximal thread priority)
-		AC_TRY_RUN([#include <pthread.h>
-		     int main () 
-		     { return sched_get_priority_min(SCHED_OTHER) < 0;}],
-		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"],
-		     [posix_priority_min=none])
-		if test x"$posix_priority_min" = xnone; then
-			AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
-				PX_PRIO_MIN],,[
-				posix_priority_min=PX_PRIO_MIN
-				posix_priority_max=PX_PRIO_MAX])
-		fi
-		if test x"$posix_priority_min" = xnone; then
-			AC_EGREP_CPP(PRI_OTHER_MIN,[#include <pthread.h>
-				PRI_OTHER_MIN],,[
-				posix_priority_min=PRI_OTHER_MIN	
-				posix_priority_max=PRI_OTHER_MAX])
-		fi
-		if test x"$posix_priority_min" = xnone; then
-			case $host in
-        	        	*-*-solaris*)
-                		posix_priority_min=1
-				posix_priority_max=127
-				;;
-			esac
-		fi
-		if test x"$posix_priority_min" = xnone; then
-			AC_MSG_RESULT(none found)
-			AC_MSG_WARN($POSIX_NO_PRIORITIES)
-	                posix_priority_min=1
-			posix_priority_max=1
-		else
-			AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
-		fi
-		AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min)
-		AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max)
-		posix_yield_func=none
-		AC_MSG_CHECKING(for posix yield function)
-		for yield_func in pthread_yield_np pthread_yield sched_yield \
-							thr_yield; do
-			AC_TRY_LINK([#include <pthread.h>],
-				[$yield_func()],
-				[posix_yield_func="$yield_func"
-				break])
-		done		
-		if test x"$posix_yield_func" = xnone; then
-			AC_MSG_RESULT(none found)
-			AC_MSG_WARN($POSIX_NO_YIELD)
-	                posix_yield_func="g_thread_sleep(1000)"
-		else
-			AC_MSG_RESULT($posix_yield_func)
-			posix_yield_func="$posix_yield_func()"
-		fi
-		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func)
-	else
-		# for now, the only other implementation is solaris 
-		# -> there 4 bytes are enough
-          	AC_DEFINE_UNQUOTED(GLIB_SIZEOF_SYSTEM_THREAD, 4)
-	fi
-
-	LIBS="$glib_save_LIBS"
-	CFLAGS="$glib_save_CFLAGS"
-
-	# now spit out all the warnings.
-	if test "$ac_cv_func_getpwuid_r" != "yes"; then
-		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
-	fi
-	if test "$ac_cv_func_localtime_r" != "yes"; then
-		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
-	fi
-fi
-
-AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
-AC_SUBST(G_THREAD_CFLAGS)
-AC_SUBST(G_THREAD_LIBS)
-AC_SUBST(G_THREAD_LIBS_EXTRA)
-
-CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
-
-dnl **********************************************
-dnl *** GDefaultMutex setup and initialization ***
-dnl **********************************************
-dnl
-dnl if mutex_has_default = yes, we also got
-dnl mutex_default_type, mutex_default_init and mutex_header_file
-GLIB_IF_VAR_EQ(mutex_has_default, yes,
-	GLIB_SIZEOF([#include <$mutex_header_file>],
-                    $mutex_default_type,
-                    gmutex,
-                    )
-	GLIB_BYTE_CONTENTS([#include <$mutex_header_file>],
-			   $mutex_default_type,
-			   gmutex,
-			   $glib_cv_sizeof_gmutex,
-			   $mutex_default_init)
-	if test x"$glib_cv_byte_contents_gmutex" = xno; then
-		mutex_has_default=no
-	fi
-	if test x"$have_threads" = xposix; then 
-		GLIB_BYTE_CONTENTS([#define __USE_GNU
-#include <$mutex_header_file>],
-				   $mutex_default_type,
-				   grecmutex,
-				   $glib_cv_sizeof_gmutex,
-				   PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP)
-	fi
-	,
-)
-
-
-dnl ****************************************
-dnl *** GLib POLL* compatibility defines ***
-dnl ****************************************
-GLIB_SYSDEFS(
-[#include <sys/types.h>
-#include <sys/poll.h>],
-	POLLIN:1 POLLOUT:4 POLLPRI:2 POLLERR:8 POLLHUP:16 POLLNVAL:32,
-	glibconfig-sysdefs.h,
-	=)
-
-
-dnl ******************************
-dnl *** output the whole stuff ***
-dnl ******************************
-
-AC_OUTPUT_COMMANDS([
-
-## Generate `glibconfig.h' in two cases
-## 1. `config.status' is run either explicitly, or via configure.
-##     Esp. not when it is run in `Makefile' to generate makefiles and
-##     config.h
-## 2. CONFIG_OTHER is set explicitly
-##
-## Case 1 is difficult.  We know that `automake' sets one of
-## CONFIG_FILES or CONFIG_HEADERS to empty.  This heuristic works
-## only when AM_CONFIG_HEADER is set, however.
-
-if test -n "${CONFIG_FILES}" && test -n "${CONFIG_HEADERS}"; then
-  # Both CONFIG_FILES and CONFIG_HEADERS are non-empty ==> Case 1
-  CONFIG_OTHER=${CONFIG_OTHER:-glibconfig.h}
-fi
-case "$CONFIG_OTHER" in
-*glibconfig.h*)
-	echo creating glibconfig.h
-	outfile=glibconfig.h-tmp
-	cat > $outfile <<\_______EOF
-/* glibconfig.h
- *
- * This is a generated file.  Please modify `configure.in'
- */
-
-#ifndef GLIBCONFIG_H
-#define GLIBCONFIG_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-_______EOF
-
-	if test x$glib_limits_h = xyes; then
-	  echo '#include <limits.h>' >> $outfile
-	fi
-	if test x$glib_float_h = xyes; then
-	  echo '#include <float.h>' >> $outfile
-	fi
-	if test x$glib_values_h = xyes; then
-	  echo '#include <values.h>' >> $outfile
-	fi
-	if test x$g_mutex_header_file != x; then
-	  echo '#include <'"$g_mutex_header_file"'>' >> $outfile
-	fi
-	if test x$glib_sys_poll_h = xyes; then
-	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
-	fi
-
-	cat >> $outfile <<_______EOF
-
-#define G_MINFLOAT	$glib_mf
-#define G_MAXFLOAT	$glib_Mf
-#define G_MINDOUBLE	$glib_md
-#define G_MAXDOUBLE	$glib_Md
-#define G_MINSHORT	$glib_ms
-#define G_MAXSHORT	$glib_Ms
-#define G_MAXUSHORT	$glib_Mus
-#define G_MININT	$glib_mi
-#define G_MAXINT	$glib_Mi
-#define G_MAXUINT	$glib_Mui
-#define G_MINLONG	$glib_ml
-#define G_MAXLONG	$glib_Ml
-#define G_MAXULONG	$glib_Mul
-
-_______EOF
-
-
-	### this should always be true in a modern C/C++ compiler
-	cat >>$outfile <<_______EOF
-typedef signed char gint8;
-typedef unsigned char guint8;
-_______EOF
-
-
-	if test -n "$gint16"; then
-	  cat >>$outfile <<_______EOF
-typedef signed $gint16 gint16;
-typedef unsigned $gint16 guint16;
-#define G_GINT16_FORMAT $gint16_format
-#define G_GUINT16_FORMAT $guint16_format
-_______EOF
-	fi
-
-
-	if test -n "$gint32"; then
-	  cat >>$outfile <<_______EOF
-typedef signed $gint32 gint32;
-typedef unsigned $gint32 guint32;
-#define G_GINT32_FORMAT $gint32_format
-#define G_GUINT32_FORMAT $guint32_format
-_______EOF
-	fi
-
-
-	if test -n "$gint64"; then
-	  cat >>$outfile <<_______EOF
-${glib_warning_guard}#define G_HAVE_GINT64 1
-
-${glib_extension}typedef signed $gint64 gint64;
-${glib_extension}typedef unsigned $gint64 guint64;
-
-#define G_GINT64_FORMAT $gint64_format
-#define G_GUINT64_FORMAT $guint64_format
-#define G_GINT64_CONSTANT(val)	$gint64_constant
-_______EOF
-	fi
-
-
-	if test -z "$glib_unknown_void_p"; then
-	  cat >>$outfile <<_______EOF
-
-#define GPOINTER_TO_INT(p)	((gint)  ${glib_gpi_cast} (p))
-#define GPOINTER_TO_UINT(p)	((guint) ${glib_gpui_cast} (p))
-
-#define GINT_TO_POINTER(i)	((gpointer) ${glib_gpi_cast} (i))
-#define GUINT_TO_POINTER(u)	((gpointer) ${glib_gpui_cast} (u))
-_______EOF
-	else
-	  echo '#error SIZEOF_VOID_P unknown - This should never happen' >>$outfile
-	fi
-
-
-
-	cat >>$outfile <<_______EOF
-$glib_atexit
-$glib_memmove
-$glib_defines
-$glib_os
-
-$glib_vacopy
-
-#ifdef	__cplusplus
-#define	G_HAVE_INLINE	1
-#else	/* !__cplusplus */
-$glib_inline
-#endif	/* !__cplusplus */
-_______EOF
-
-	echo >>$outfile
-	if test x$g_mutex_has_default = xyes; then
-		cat >>$outfile <<_______EOF
-$g_enable_threads_def G_THREADS_ENABLED
-#define G_THREADS_IMPL_$g_threads_impl_def
-typedef struct _GStaticMutex GStaticMutex;
-struct _GStaticMutex
-{
-  struct _GMutex *runtime_mutex;
-  union {
-    char   pad[$g_mutex_sizeof];
-    double dummy_double;
-    void  *dummy_pointer;
-    long   dummy_long;
-  } aligned_pad_u;
-};
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
-#define	g_static_mutex_get_mutex(mutex) \
-  (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
-   g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
-_______EOF
-	else
-		cat >>$outfile <<_______EOF
-$g_enable_threads_def G_THREADS_ENABLED
-#define G_THREADS_IMPL_$g_threads_impl_def
-typedef struct _GMutex* GStaticMutex;
-#define G_STATIC_MUTEX_INIT NULL
-#define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
-_______EOF
-	fi
-	if test x$g_recmutex_contents != xno -a \
-	        x$g_recmutex_contents != x; then
-		# the definition of GStaticRecMutex is not done via 
-		# typedef GStaticMutex GStaticRecMutex to avoid silent
-		# compilation, when a GStaticRecMutex is used where a
-		# GStaticMutex should have been used and vice versa,
-		# because that might fail on other platforms.
-		cat >>$outfile <<_______EOF
-typedef struct _GStaticRecMutex GStaticRecMutex;
-struct _GStaticRecMutex
-{
-  struct _GMutex *runtime_mutex;
-  union {
-    char   pad[$g_mutex_sizeof];
-    double dummy_double;
-    void  *dummy_pointer;
-    long   dummy_long;
-  } aligned_pad_u;
-};
-#define G_STATIC_REC_MUTEX_INIT { NULL, { { $g_recmutex_contents} } }
-#define  g_static_rec_mutex_lock(mutex) g_static_mutex_lock (mutex)
-#define  g_static_rec_mutex_trylock(mutex) g_static_mutex_trylock (mutex)
-#define  g_static_rec_mutex_unlock(mutex) g_static_mutex_unlock (mutex)
-#define  g_static_rec_mutex_get_mutex(mutex) (mutex)
-_______EOF
-	fi
-
-	echo >>$outfile
-	g_bit_sizes="16 32"
-	if test -n "$gint64"; then
-	  g_bit_sizes="$g_bit_sizes 64"
-	fi
-	for bits in $g_bit_sizes; do
-	  cat >>$outfile <<_______EOF
-#define GINT${bits}_TO_${g_bs_native}(val)	((gint${bits}) (val))
-#define GUINT${bits}_TO_${g_bs_native}(val)	((guint${bits}) (val))
-#define GINT${bits}_TO_${g_bs_alien}(val)	((gint${bits}) GUINT${bits}_SWAP_LE_BE (val))
-#define GUINT${bits}_TO_${g_bs_alien}(val)	(GUINT${bits}_SWAP_LE_BE (val))
-_______EOF
-	done
-
-	cat >>$outfile <<_______EOF
-#define GLONG_TO_LE(val)	((glong) GINT${glongbits}_TO_LE (val))
-#define GULONG_TO_LE(val)	((gulong) GUINT${glongbits}_TO_LE (val))
-#define GLONG_TO_BE(val)	((glong) GINT${glongbits}_TO_BE (val))
-#define GULONG_TO_BE(val)	((gulong) GUINT${glongbits}_TO_BE (val))
-#define GINT_TO_LE(val)		((gint) GINT${gintbits}_TO_LE (val))
-#define GUINT_TO_LE(val)	((guint) GUINT${gintbits}_TO_LE (val))
-#define GINT_TO_BE(val)		((gint) GINT${gintbits}_TO_BE (val))
-#define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
-#define G_BYTE_ORDER $g_byte_order
-
-_______EOF
-
-	if test -r glibconfig-sysdefs.h; then
-	  cat glibconfig-sysdefs.h >>$outfile
-	fi
-
-	cat >>$outfile <<_______EOF
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* GLIBCONFIG_H */
-_______EOF
-
-
-	if cmp -s $outfile glibconfig.h; then
-	  echo glibconfig.h is unchanged
-	  rm -f $outfile
-	else
-	  mv $outfile glibconfig.h
-	fi ;;
-esac
-],[
-
-# Note that if two cases are the same, case goes with the first one.
-# Note also that this is inside an AC_OUTPUT_COMMAND.  We do not depend
-# on variable expansion in case labels.  Look at the generated config.status
-# for a hint.
-
-case xyes in
-x$ac_cv_header_float_h)
-  glib_float_h=yes
-  glib_mf=FLT_MIN glib_Mf=FLT_MAX
-  glib_md=DBL_MIN glib_Md=DBL_MAX
-  ;;
-x$ac_cv_header_values_h)
-  glib_values_h=yes
-  glib_mf=MINFLOAT  glib_Mf=MAXFLOAT
-  glib_md=MINDOUBLE glib_Md=MAXDOUBLE
-  ;;
-esac
-
-case xyes in
-x$ac_cv_header_limits_h)
-  glib_limits_h=yes
-  glib_ms=SHRT_MIN glib_Ms=SHRT_MAX glib_Mus=USHRT_MAX
-  glib_mi=INT_MIN  glib_Mi=INT_MAX  glib_Mui=UINT_MAX
-  glib_ml=LONG_MIN glib_Ml=LONG_MAX glib_Mul=ULONG_MAX
-  ;;
-x$ac_cv_header_values_h)
-  glib_values_h=yes
-  glib_ms=MINSHORT glib_Ms=MAXSHORT glib_Mus="(((gushort)G_MAXSHORT)*2+1)"
-  glib_mi=MININT   glib_Mi=MAXINT   glib_Mui="(((guint)G_MAXINT)*2+1)"
-  glib_ml=MINLONG  glib_Ml=MAXLONG  glib_Mul="(((gulong)G_MAXLONG)*2+1)"
-  ;;
-esac
-
-if test x$ac_cv_header_sys_poll_h = xyes ; then
-  glib_sys_poll_h=yes
-fi
-
-case 2 in
-$ac_cv_sizeof_short)		
-  gint16=short
-  gint16_format='"hi"'
-  guint16_format='"hu"'
-  ;;
-$ac_cv_sizeof_int)		
-  gint16=int
-  gint16_format='"i"'
-  guint16_format='"u"'
-  ;;
-esac
-case 4 in
-$ac_cv_sizeof_short)		
-  gint32=short
-  gint32_format='"hi"'
-  guint32_format='"hu"'
-  ;;
-$ac_cv_sizeof_int)		
-  gint32=int
-  gint32_format='"i"'
-  guint32_format='"u"'
-  ;;
-$ac_cv_sizeof_long)		
-  gint32=long
-  gint32_format='"li"'
-  guint32_format='"lu"'
-  ;;
-esac
-case 8 in
-$ac_cv_sizeof_int)
-  gint64=int
-  gint64_format='"i"'
-  guint64_format='"u"'
-  glib_extension=
-  glib_warning_guard=
-  gint64_constant='(val)'
-  ;;
-$ac_cv_sizeof_long)
-  gint64=long
-  gint64_format='"li"'
-  guint64_format='"lu"'
-  glib_extension=
-  glib_warning_guard=
-  gint64_constant='(val##L)'
-  ;;
-$ac_cv_sizeof_long_long)
-  gint64='long long'
-  gint64_format='"'$glib_cv_long_long_format'i"'
-  guint64_format='"'$glib_cv_long_long_format'u"'
-  glib_extension='G_GNUC_EXTENSION '
-  glib_warning_guard="
-#if defined (__GNUC__) && __GNUC__ >= 2 && __GNUC_MINOR__ >= 8
-#  define G_GNUC_EXTENSION __extension__
-#else
-#  define G_GNUC_EXTENSION
-#endif
-
-"
-  gint64_constant='(G_GNUC_EXTENSION (val##LL))'
-  ;;
-esac
-
-gintbits=`expr $ac_cv_sizeof_int \* 8`
-glongbits=`expr $ac_cv_sizeof_long \* 8`
-
-
-case $ac_cv_sizeof_void_p in
-$ac_cv_sizeof_int)  	glib_gpi_cast=''        glib_gpui_cast=''         ;;
-$ac_cv_sizeof_long) 	glib_gpi_cast='(glong)' glib_gpui_cast='(gulong)' ;;
-*) 			glib_unknown_void_p=yes ;;
-esac
-
-
-case xyes in
-x$ac_cv_func_atexit)
-  glib_atexit="
-#ifdef NeXT /* @#%@! NeXTStep */
-# define g_ATEXIT(proc)	(!atexit (proc))
-#else
-# define g_ATEXIT(proc)	(atexit (proc))
-#endif"
-  ;;
-x$ac_cv_func_on_exit)
-  glib_atexit="
-#define g_ATEXIT(proc)	(on_exit ((void (*)(int, void*))(proc), NULL))"
-  ;;
-esac
-
-case xyes in
-x$ac_cv_func_memmove)
-  glib_memmove='
-#define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END'
-  ;;
-x$glib_cv_working_bcopy)
-  glib_memmove="
-/* memmove isn't available, but bcopy can copy overlapping memory regions */
-#define g_memmove(d,s,n) G_STMT_START { bcopy ((s), (d), (n)); } G_STMT_END"
-  ;;
-*)  
-  glib_memmove="
-/* memmove isn't found and bcopy can't copy overlapping memory regions, 
- * so we have to roll our own copy routine. */
-void g_memmove (void* dest, const void * src, unsigned long len);"
-  ;;
-esac
-
-glib_defines="
-#define GLIB_MAJOR_VERSION $GLIB_MAJOR_VERSION
-#define GLIB_MINOR_VERSION $GLIB_MINOR_VERSION
-#define GLIB_MICRO_VERSION $GLIB_MICRO_VERSION
-"
-
-case xyes in
-x$glib_cv_va_copy)	glib_vacopy='#define G_VA_COPY	va_copy' ;;
-x$glib_cv___va_copy)	glib_vacopy='#define G_VA_COPY	__va_copy' ;;
-*)			glib_vacopy=''
-esac
-
-if test x$glib_cv_va_val_copy = xno; then
-  glib_vacopy="\$glib_vacopy
-#define G_VA_COPY_AS_ARRAY 1"
-fi
-
-if test x$glib_cv_hasinline = xyes; then
-    glib_inline='#define G_HAVE_INLINE 1'
-fi
-if test x$glib_cv_has__inline = xyes; then
-    glib_inline="\$glib_inline
-#define G_HAVE___INLINE 1"
-fi
-if test x$glib_cv_has__inline__ = xyes; then
-    glib_inline="\$glib_inline
-#define G_HAVE___INLINE__ 1"
-fi
-
-case xyes in
-x$ac_cv_c_bigendian)
-  g_byte_order=G_BIG_ENDIAN
-  g_bs_native=BE
-  g_bs_alien=LE
-  ;;
-*)
-  g_byte_order=G_LITTLE_ENDIAN
-  g_bs_native=LE
-  g_bs_alien=BE
-  ;;
-esac
-
-case x$enable_threads in
-xyes)	g_enable_threads_def="#define";;
-*)	g_enable_threads_def="#undef ";;
-esac
-
-g_threads_impl_def=$g_threads_impl
-
-g_mutex_has_default="$mutex_has_default"
-g_mutex_sizeof="$glib_cv_sizeof_gmutex"
-g_mutex_contents="$glib_cv_byte_contents_gmutex"
-g_recmutex_contents="$glib_cv_byte_contents_grecmutex"
-
-case $host in
-  *-*-beos*)
-    glib_os="#define G_OS_BEOS"
-    ;;
-  *-*-cygwin*)
-    glib_os="#define G_OS_UNIX
-#define G_WITH_CYGWIN"
-    ;;
-  *)
-    glib_os="#define G_OS_UNIX"
-    ;;
-esac
-])
-
-AC_OUTPUT([
-glib.spec
-Makefile
-glib-config
-gmodule/gmoduleconf.h
-gmodule/Makefile
-gthread/Makefile
-docs/Makefile
-docs/glib-config.1
-tests/Makefile
-],[case "$CONFIG_FILES" in
-*glib-config*)chmod +x glib-config;;
-esac
-echo ""
-echo " *** IMPORTANT *** "
-echo ""
-echo "This is a development version of GLib.  You should be using a stable"
-echo "version, which is available at ftp://ftp.gtk.org/pub/gtk/v1.2/.  The"
-echo "version you just configured is meant for developers of GLib only:"
-echo ""
-echo "  * You should not base stable software on this version of GLib."
-echo "  * GNOME developers should use a stable version of GLib."
-echo ""
-echo "Distributions should *NOT* ship a development package of this GLib."
-echo "Do not ship the headers and do not ship the glib-config script.  These"
-echo "things will conflict with the stable 1.2 series.  Package only enough"
-echo "to satisfy the requirements of some other package.  Package only the"
-echo "library itself.  Doing otherwise will do no favors to the community."
-echo ""
-echo "If you install this version of GLib, we strongly recommend that you"
-echo "install it in a different prefix than GLib 1.2.  Use --prefix as an"
-echo "argument to configure to do this.  Otherwise, you will not be able to"
-echo "do development with GLib 1.2 any longer."
-echo ""
-echo " *** You should be using GLib 1.2 instead. ***"
-])
-
+  AC_SUBST(ENABLE_MEM_PROFIL, fuzzy
+msgid "untitled"
+msgstr "Unità"
+
+#. message_box ();
+#: plug-ins/gflare/gflare.c:3202 plug-ins/gflare/gflare.c:3270
+#, c-format
+msgid "The name `%s' is used already!"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3251
+msgid "Copy GFlare"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3252
+msgid "Enter a name for the copied GFlare"
+msgstr ""
+
+#. message_box ()
+#: plug-ins/gflare/gflare.c:3300
+msgid "Cannot delete!! There must be at least one GFlare."
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3305
+#, fuzzy
+msgid "Delete GFlare"
+msgstr "Seleziona"
+
+#. Question
+#: plug-ins/gflare/gflare.c:3317
+#, c-format
+msgid "Are you sure you want to delete \"%s\" from the list and from disk?"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3389
+#, c-format
+msgid "not found %s in gflares_list"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3436
+msgid "GFlare Editor"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3465
+#, fuzzy
+msgid "Rescan Gradients"
+msgstr "Verde"
+
+#: plug-ins/gflare/gflare.c:3584
+#, fuzzy
+msgid "Glow Opacity (%):"
+msgstr "Opacita' [%d]: "
+
+#: plug-ins/gflare/gflare.c:3590
+#, fuzzy
+msgid "Glow Mode:"
+msgstr "Modalità:"
+
+#: plug-ins/gflare/gflare.c:3592
+#, fuzzy
+msgid "Rays Opacity (%):"
+msgstr "Opacita' [%d]: "
+
+#: plug-ins/gflare/gflare.c:3598
+#, fuzzy
+msgid "Rays Mode:"
+msgstr "Modalità:"
+
+#: plug-ins/gflare/gflare.c:3600
+msgid "Second Flares Opacity (%):"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3606
+#, fuzzy
+msgid "Second Flares Mode:"
+msgstr "Colore"
+
+#.
+#. *	Create Page
+#.
+#: plug-ins/gflare/gflare.c:3614 plug-ins/gimpressionist/general.c:134
+#: plug-ins/gimpressionist/general.c:139
+#, fuzzy
+msgid "General"
+msgstr "Opzioni Generali"
+
+#: plug-ins/gflare/gflare.c:3646 plug-ins/gflare/gflare.c:3720
+#: plug-ins/gflare/gflare.c:3812
+#, fuzzy
+msgid "Radial Gradient:"
+msgstr "Verde"
+
+#: plug-ins/gflare/gflare.c:3650 plug-ins/gflare/gflare.c:3724
+#, fuzzy
+msgid "Angular Gradient:"
+msgstr "Verde"
+
+#: plug-ins/gflare/gflare.c:3654 plug-ins/gflare/gflare.c:3728
+msgid "Angular Size Gradient:"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3667 plug-ins/gflare/gflare.c:3742
+#: plug-ins/gflare/gflare.c:3834
+#, fuzzy
+msgid "Size (%):"
+msgstr "Dimensione:"
+
+#.
+#. *	Create Page
+#.
+#: plug-ins/gflare/gflare.c:3688
+#, fuzzy
+msgid "Glow"
+msgstr "Naviga"
+
+#: plug-ins/gflare/gflare.c:3754
+#, fuzzy
+msgid "# of Spikes:"
+msgstr "Modalità di movimento:"
+
+#: plug-ins/gflare/gflare.c:3758
+#, fuzzy
+msgid "Spike Thickness:"
+msgstr "Spessore"
+
+#.
+#. *	Create Pages
+#.
+#: plug-ins/gflare/gflare.c:3770
+msgid "Rays"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3816
+#, fuzzy
+msgid "Size Factor Gradient:"
+msgstr "Verde"
+
+#: plug-ins/gflare/gflare.c:3820
+msgid "Probability Gradient:"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3855 plug-ins/imagemap/imap_circle.c:59
+#: plug-ins/imagemap/imap_menu.c:386 plug-ins/imagemap/imap_popup.c:134
+#, fuzzy
+msgid "Circle"
+msgstr "File"
+
+#: plug-ins/gflare/gflare.c:3866 plug-ins/imagemap/imap_menu.c:388
+#: plug-ins/imagemap/imap_polygon.c:68 plug-ins/imagemap/imap_popup.c:137
+msgid "Polygon"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3892
+msgid "Shape of Second Flares"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:3903
+msgid "Random Seed (-1 means current time):"
+msgstr ""
+
+#.
+#. *	Create Pages
+#.
+#: plug-ins/gflare/gflare.c:3923
+#, fuzzy
+msgid "Second Flares"
+msgstr "Utilizza Colore di Sfondo"
+
+#: plug-ins/gflare/gflare.c:4560
+#, fuzzy
+msgid "none"
+msgstr "Nessuna"
+
+#: plug-ins/gflare/gflare.c:4573
+#, c-format
+msgid "Not found \"%s\": used \"%s\" instead"
+msgstr ""
+
+#: plug-ins/gflare/gflare.c:4643
+#, fuzzy
+msgid "More..."
+msgstr "Altri..."
+
+#: plug-ins/gfli/gfli.c:437 plug-ins/gfli/gfli.c:476 plug-ins/gfli/gfli.c:699
+#, fuzzy, c-format
+msgid "FLI: can't open \"%s\"\n"
+msgstr "%s: impossibile aprire \"%s\"\n"
+
+#: plug-ins/gfli/gfli.c:536
+#, fuzzy, c-format
+msgid "Frame (%i)"
+msgstr "Frame %d"
+
+#: plug-ins/gfli/gfli.c:633
+#, fuzzy
+msgid "FLI: Sorry, can't save images with Alpha.\n"
+msgstr "Impossibile salvare immagini con alpha\n"
+
+#: plug-ins/gfli/gfli.c:663
+msgid "FLI: Sorry, I can save only INDEXED and GRAY images.\n"
+msgstr ""
+
+#: plug-ins/gfli/gfli.c:832
+msgid "GFLI 1.2 - Load framestack"
+msgstr ""
+
+#: plug-ins/gfli/gfli.c:903
+msgid "GFLI 1.2 - Save framestack"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:183
+msgid "GIMPressionist: Can only save drawables!\n"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:189
+msgid "Save brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:392
+#, fuzzy
+msgid "Brush Preview:"
+msgstr "Anteprima"
+
+#.
+#. * Gamma slider...
+#.
+#: plug-ins/gimpressionist/brush.c:401 plug-ins/print/print.c:1086
+msgid "Gamma:"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:414
+msgid "Changes the gamma (brightness) of the selected brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:426
+msgid "Select:"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:431
+#, fuzzy
+msgid "Aspect ratio:"
+msgstr "Mantieni dimensioni"
+
+#: plug-ins/gimpressionist/brush.c:435 plug-ins/gimpressionist/paper.c:173
+msgid "Relief:"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:450
+#, fuzzy
+msgid "(None)"
+msgstr "Nessuna"
+
+#: plug-ins/gimpressionist/brush.c:463
+#, fuzzy
+msgid "Save..."
+msgstr "Salva"
+
+#: plug-ins/gimpressionist/brush.c:477
+msgid "Specifies the aspect ratio of the brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/brush.c:488
+msgid "Specifies the amount of embossing to apply to each brush stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/color.c:86
+msgid "Average under brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/color.c:92
+msgid "Color is computed from the average of all pixels under the brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/color.c:96
+msgid "Center of brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/color.c:102
+msgid "Samples the color from the pixel in the center of the brush"
+msgstr ""
+
+#: plug-ins/gimpressionist/color.c:111
+#, fuzzy
+msgid "Color noise:"
+msgstr "Colorify"
+
+#: plug-ins/gimpressionist/color.c:122
+msgid "Adds random noise to the color"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:156
+msgid "Edge darken:"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:173
+msgid "How much to \"darken\" the edges of each brush stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:180
+#, fuzzy
+msgid "Background:"
+msgstr "Sfondo"
+
+#: plug-ins/gimpressionist/general.c:188
+#, fuzzy
+msgid "Keep original"
+msgstr "Trattenere ambiente originale"
+
+#: plug-ins/gimpressionist/general.c:194
+msgid "Preserve the original image as a background"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:198
+#, fuzzy
+msgid "From paper"
+msgstr "Da immagine"
+
+#: plug-ins/gimpressionist/general.c:204
+msgid "Copy the texture of the selected paper as a background"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:223
+msgid "Solid colored background"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:246
+msgid "Use a transparent background; Only the strokes painted will be visible"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:261
+#, fuzzy
+msgid "Paint edges"
+msgstr "Interi Fast"
+
+#: plug-ins/gimpressionist/general.c:269
+msgid "Tileable"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:273
+msgid "Selects if the resulting image should be seamlessly tileable"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:281
+msgid "Drop Shadow"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:285
+msgid "Adds a shadow effect to each brush stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:296
+msgid "How much to \"darken\" the drop shadow"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:302
+msgid "Shadow depth:"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:313
+msgid ""
+"The depth of the drop shadow, i.e. how far apart from the object it should be"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:319
+msgid "Shadow blur:"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:330
+msgid "How much to blur the drop shadow"
+msgstr ""
+
+#: plug-ins/gimpressionist/general.c:336
+#, fuzzy
+msgid "Deviation threshold:"
+msgstr "Soglia:"
+
+#: plug-ins/gimpressionist/general.c:347
+msgid "A bailout-value for adaptive selections"
+msgstr ""
+
+#: plug-ins/gimpressionist/gimp.c:100 plug-ins/gimpressionist/gimp.c:101
+#, fuzzy
+msgid "Performs various artistic operations on an image"
+msgstr "Applica vari effetti luce ad una immagine"
+
+#: plug-ins/gimpressionist/gimp.c:105
+#, fuzzy
+msgid "<Image>/Filters/Artistic/GIMPressionist..."
+msgstr "<Image>/Filters/Artistic/Cubismo"
+
+#: plug-ins/gimpressionist/gimp.c:294
+#, fuzzy
+msgid "Painting..."
+msgstr "Stampa in corso..."
+
+#: plug-ins/gimpressionist/gimpressionist.c:90
+#, c-format
+msgid ""
+"*** Warning ***\n"
+"It is highly recommended to add\n"
+"  (gimpressionist-path \"%s\")\n"
+"(or similar) to your gimprc file.\n"
+msgstr ""
+
+#: plug-ins/gimpressionist/gimpressionist.c:107
+msgid ""
+"*** Warning ***\n"
+"No home directory!\n"
+msgstr ""
+
+#: plug-ins/gimpressionist/gimpressionist.c:358
+#: plug-ins/gimpressionist/gimpressionist.c:455
+msgid "The GIMPressionist!"
+msgstr ""
+
+#: plug-ins/gimpressionist/gimpressionist.c:497
+#, fuzzy
+msgid "Run with the selected settings"
+msgstr "Settaggi di caricamente selettivo"
+
+#: plug-ins/gimpressionist/gimpressionist.c:504
+msgid "Quit the program"
+msgstr ""
+
+#: plug-ins/gimpressionist/gimpressionist.c:506
+msgid "About..."
+msgstr "Informazioni"
+
+#: plug-ins/gimpressionist/gimpressionist.c:511
+msgid "Show some information about program"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:73
+#, fuzzy
+msgid "Directions:"
+msgstr "Vettore direzione"
+
+#: plug-ins/gimpressionist/orientation.c:77
+msgid "Start angle:"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:81
+msgid "Angle span:"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:96 plug-ins/gimpressionist/size.c:95
+msgid "The number of directions (i.e. brushes) to use"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:105
+msgid "The angle of the first brush to create"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:114
+msgid "How large an angle-span to use (360 = full circle)"
+msgstr ""
+
+#.
+#. * Orientation option menu...
+#.
+#: plug-ins/gimpressionist/orientation.c:121 plug-ins/print/print.c:889
+msgid "Orientation:"
+msgstr "Orientazione:"
+
+#: plug-ins/gimpressionist/orientation.c:137
+msgid ""
+"Let the value (brightness) of the region determine the direction of the "
+"stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:141
+#: plug-ins/gimpressionist/size.c:140
+msgid "Radius"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:147
+msgid ""
+"The distance from the center of the image determines the direction of the "
+"stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:157
+msgid "Selects a random direction of each stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:167
+msgid "Let the direction from the center determine the direction of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:176
+#: plug-ins/gimpressionist/size.c:175
+#, fuzzy
+msgid "Flowing"
+msgstr "Colorazione"
+
+#: plug-ins/gimpressionist/orientation.c:182
+#: plug-ins/gimpressionist/size.c:181
+msgid "The strokes follow a \"flowing\" pattern"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:194
+msgid "The hue of the region determines the direction of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:204
+msgid "The direction that matches the original image the closest is selected"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:213
+#: plug-ins/gimpressionist/size.c:210
+msgid "Manual"
+msgstr "Manuale"
+
+#: plug-ins/gimpressionist/orientation.c:219
+msgid "Manually specify the stroke orientation"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:223
+#: plug-ins/gimpressionist/size.c:220
+msgid "Edit..."
+msgstr ""
+
+#: plug-ins/gimpressionist/orientation.c:228
+msgid "Opens up the Orientation Map Editor"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:461
+#, fuzzy
+msgid "Orientation Map Editor"
+msgstr "Orientazione:"
+
+#: plug-ins/gimpressionist/orientmap.c:469
+msgid "Vectors"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:479
+msgid ""
+"The vector-field. Left-click to move selected vector, Right-click to point "
+"it towards mouse, Middle-click to add a new vector."
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:500
+#: plug-ins/gimpressionist/sizemap.c:400
+msgid "Adjust the preview's brightness"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:522
+#, fuzzy
+msgid "Select previous vector"
+msgstr "Vettore direzione"
+
+#: plug-ins/gimpressionist/orientmap.c:529
+#, fuzzy
+msgid "Select next vector"
+msgstr "Vettore direzione"
+
+#: plug-ins/gimpressionist/orientmap.c:536
+msgid "Add new vector"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:538
+#: plug-ins/gimpressionist/sizemap.c:438
+msgid "Kill"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:543
+msgid "Delete selected vector"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:563
+msgid "Change the angle of the selected vector"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:577
+msgid "Change the strength of the selected vector"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:596
+msgid "Vortex"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:608
+msgid "Vortex2"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:614
+msgid "Vortex3"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:631
+#: plug-ins/gimpressionist/sizemap.c:490
+msgid "Apply and exit the editor"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:638
+#: plug-ins/gimpressionist/sizemap.c:497
+msgid "Apply, but stay inside the editor"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:645
+#: plug-ins/gimpressionist/sizemap.c:504
+msgid "Cancel all changes and exit"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:653
+#: plug-ins/gimpressionist/sizemap.c:512
+msgid "Strength exp.:"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:665
+#: plug-ins/gimpressionist/sizemap.c:524
+msgid "Change the exponent of the strength"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:667
+#, fuzzy
+msgid "Angle offset:"
+msgstr "X offset"
+
+#: plug-ins/gimpressionist/orientmap.c:679
+msgid "Offset all vectors with a given angle"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:681
+#: plug-ins/gimpressionist/sizemap.c:527
+msgid "Voronoi"
+msgstr ""
+
+#: plug-ins/gimpressionist/orientmap.c:689
+msgid ""
+"Voronoi-mode makes only the vector closest to the given point have any "
+"influence"
+msgstr ""
+
+#: plug-ins/gimpressionist/paper.c:89 plug-ins/gimpressionist/paper.c:94
+msgid "Paper"
+msgstr ""
+
+#: plug-ins/gimpressionist/paper.c:130
+#, fuzzy
+msgid "Paper Preview:"
+msgstr "Anteprima Immagine"
+
+#. updatepaperprev(NULL);
+#: plug-ins/gimpressionist/paper.c:141
+#, fuzzy
+msgid "Invert"
+msgstr "Interi"
+
+#: plug-ins/gimpressionist/paper.c:148
+msgid "Inverts the Papers texture"
+msgstr ""
+
+#: plug-ins/gimpressionist/paper.c:156
+msgid "Applies the paper as it is (without embossing it)"
+msgstr ""
+
+#: plug-ins/gimpressionist/paper.c:188
+msgid "Specifies the scale of the texture (in percent of original file)"
+msgstr ""
+
+#: plug-ins/gimpressionist/paper.c:197
+msgid "Specifies the amount of embossing to apply to the image (in percent)"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:52
+#: plug-ins/gimpressionist/placement.c:57
+#, fuzzy
+msgid "Placement"
+msgstr "Percentuale"
+
+#: plug-ins/gimpressionist/placement.c:77
+msgid "Placement:"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:87
+#, fuzzy
+msgid "Randomly"
+msgstr "Seme casuale"
+
+#: plug-ins/gimpressionist/placement.c:93
+msgid "Place strokes randomly around the image"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:97
+msgid "Evenly distributed"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:103
+msgid "The strokes are evenly distributed across the image"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:112
+msgid "Stroke density:"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:123
+msgid "The relative density of the brush strokes"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:125
+msgid "Centerize"
+msgstr ""
+
+#: plug-ins/gimpressionist/placement.c:129
+msgid "Focus the brush strokes around the center of the image"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:572 plug-ins/gimpressionist/presets.c:577
+msgid "Presets"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:596
+#, fuzzy
+msgid "Save current"
+msgstr "Salva Punti"
+
+#: plug-ins/gimpressionist/presets.c:602
+msgid "Save the current settings to the specified file"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:646
+msgid "Reads the selected Preset into memory"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:654
+msgid "Deletes the selected Preset"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:656
+msgid "Refresh"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:662
+msgid "Reread the directory of Presets"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:664
+msgid "(Desc)"
+msgstr ""
+
+#: plug-ins/gimpressionist/presets.c:669
+msgid ""
+"\n"
+"If you come up with some nice Presets,\n"
+"(or Brushes and Papers for that matter)\n"
+"feel free to send them to me <vidar@prosalg.no>\n"
+"for inclusion into the next release!\n"
+msgstr ""
+
+#: plug-ins/gimpressionist/preview.c:122
+msgid "Refresh the Preview window"
+msgstr ""
+
+#: plug-ins/gimpressionist/preview.c:129
+#, fuzzy
+msgid "Revert to the original image"
+msgstr "Ruotate l'intera immagine"
+
+#: plug-ins/gimpressionist/size.c:51 plug-ins/gimpressionist/size.c:56
+msgid "Size"
+msgstr "Dimensione"
+
+#: plug-ins/gimpressionist/size.c:72
+msgid "Sizes:"
+msgstr "Dimensioni:"
+
+#: plug-ins/gimpressionist/size.c:76
+msgid "Min size:"
+msgstr "Dimensione Minima:"
+
+#: plug-ins/gimpressionist/size.c:80
+msgid "Max size:"
+msgstr "Dimensione Massima:"
+
+#: plug-ins/gimpressionist/size.c:104
+msgid "The smallest brush to create"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:113
+msgid "The largest brush to create"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:136
+msgid ""
+"Let the value (brightness) of the region determine the size of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:146
+msgid ""
+"The distance from the center of the image determines the size of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:156
+msgid "Selects a random size for each stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:166
+msgid "Let the direction from the center determine the size of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:192
+msgid "The hue of the region determines the size of the stroke"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:202
+msgid "The brush-size that matches the original image the closest is selected"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:216
+msgid "Manually specify the stroke size"
+msgstr ""
+
+#: plug-ins/gimpressionist/size.c:225
+msgid "Opens up the Size Map Editor"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:361
+msgid "Size Map Editor"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:369
+msgid "Smvectors"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:379
+msgid ""
+"The smvector-field. Left-click to move selected smvector, Right-click to "
+"point it towards mouse, Middle-click to add a new smvector."
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:422
+#, fuzzy
+msgid "Select previous smvector"
+msgstr "Vettore direzione"
+
+#: plug-ins/gimpressionist/sizemap.c:429
+#, fuzzy
+msgid "Select next smvector"
+msgstr "Vettore direzione"
+
+#: plug-ins/gimpressionist/sizemap.c:436
+msgid "Add new smvector"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:443
+msgid "Delete selected smvector"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:463
+msgid "Change the angle of the selected smvector"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:477
+msgid "Change the strength of the selected smvector"
+msgstr ""
+
+#: plug-ins/gimpressionist/sizemap.c:535
+msgid ""
+"Voronoi-mode makes only the smvector closest to the given point have any "
+"influence"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:91
+#, c-format
+msgid ""
+"<html><head><title>Document not found</title></head><body "
+"bgcolor=\"#ffffff\"><center><p>%s<h3>Couldn't find "
+"document</h3><tt>%s</tt></center><p><small>This either means that the help "
+"for this topic has not been written yet or that something is wrong with your "
+"installation. Please check carefully before you report this as a "
+"bug.</small></body></html>"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:107
+#, c-format
+msgid ""
+"<html><head><title>Directory not found</title></head><body "
+"bgcolor=\"#ffffff\"><center><p>%s<h3>Couldn't change to "
+"directory</h3><tt>%s</tt><h3>while trying to "
+"access</h3><tt>%s</tt></center><p><small>This either means that the help for "
+"this topic has not been written yet or that something is wrong with your "
+"installation. Please check carefully before you report this as a "
+"bug.</small></body></html>"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:133
+#, fuzzy
+msgid "Contents"
+msgstr "Commento GIF: "
+
+#: plug-ins/helpbrowser/helpbrowser.c:142
+msgid "Index"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:397 plug-ins/imagemap/imap_main.c:509
+#: plug-ins/imagemap/imap_settings.c:148
+msgid "<Untitled>"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:768
+msgid ""
+"GIMP Help Browser Error.\n"
+"\n"
+"Couldn't find my root html directory."
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:791
+msgid "GIMP Help Browser"
+msgstr ""
+
+#: plug-ins/helpbrowser/helpbrowser.c:806
+#, fuzzy
+msgid "Back"
+msgstr "Nero"
+
+#: plug-ins/helpbrowser/helpbrowser.c:814
+msgid "Forward"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:360
+#, fuzzy
+msgid "<Image>/Filters/Render/Nature/IfsCompose..."
+msgstr "<Image>/Filters/Render/Scacchiera"
+
+#. Asym
+#: plug-ins/ifscompose/ifscompose.c:569
+msgid "Asymmetry:"
+msgstr ""
+
+#. Shear
+#: plug-ins/ifscompose/ifscompose.c:583
+#, fuzzy
+msgid "Shear:"
+msgstr "Cerca :"
+
+#. Flip
+#: plug-ins/ifscompose/ifscompose.c:597
+msgid "Flip"
+msgstr ""
+
+#. Simple color control section
+#: plug-ins/ifscompose/ifscompose.c:628
+#, fuzzy
+msgid "Simple"
+msgstr "Dimensione"
+
+#: plug-ins/ifscompose/ifscompose.c:640
+msgid "IfsCompose: Target"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:646
+#, fuzzy
+msgid "Scale Hue by:"
+msgstr "Scala 1"
+
+#: plug-ins/ifscompose/ifscompose.c:661
+#, fuzzy
+msgid "Scale Value by:"
+msgstr "Scala 1"
+
+#. Full color control section
+#: plug-ins/ifscompose/ifscompose.c:678
+msgid "Full"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:687
+#, fuzzy
+msgid "IfsCompose: Red"
+msgstr "Composizione"
+
+#: plug-ins/ifscompose/ifscompose.c:696
+msgid "IfsCompose: Green"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:705
+#, fuzzy
+msgid "IfsCompose: Blue"
+msgstr "Composizione"
+
+#: plug-ins/ifscompose/ifscompose.c:714
+msgid "IfsCompose: Black"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:793
+#, fuzzy
+msgid "IfsCompose"
+msgstr "Composizione"
+
+#. Window radiobutton
+#: plug-ins/ifscompose/ifscompose.c:800 plug-ins/webbrowser/webbrowser.c:345
+msgid "New"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:877 plug-ins/ifscompose/ifscompose.c:1147
+#, fuzzy
+msgid "Rotate/Scale"
+msgstr "Rotazione"
+
+#: plug-ins/ifscompose/ifscompose.c:886 plug-ins/ifscompose/ifscompose.c:1159
+#, fuzzy
+msgid "Stretch"
+msgstr "Configura"
+
+#: plug-ins/ifscompose/ifscompose.c:906
+#, fuzzy
+msgid "Render Options"
+msgstr "Opzioni Salvataggio"
+
+#: plug-ins/ifscompose/ifscompose.c:920 plug-ins/print/print.c:760
+msgid "Auto"
+msgstr "Auto"
+
+#: plug-ins/ifscompose/ifscompose.c:953
+#, fuzzy
+msgid "Spatial Transformation"
+msgstr "Trasformazione Cubistica"
+
+#: plug-ins/ifscompose/ifscompose.c:959
+#, fuzzy
+msgid "Color Transformation"
+msgstr "Trasformazione Cubistica"
+
+#: plug-ins/ifscompose/ifscompose.c:969
+msgid "Relative Probability:"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:1176
+#: plug-ins/imagemap/imap_cmd_select_all.c:50
+#: plug-ins/imagemap/imap_menu.c:293
+#, fuzzy
+msgid "Select All"
+msgstr "Seleziona"
+
+#: plug-ins/ifscompose/ifscompose.c:1188
+#, fuzzy
+msgid "Recompute Center"
+msgstr "Ricalcola Anteprima Immagine"
+
+#: plug-ins/ifscompose/ifscompose.c:1212 plug-ins/imagemap/imap_toolbar.c:122
+#, fuzzy
+msgid "Redo"
+msgstr "Rosso"
+
+#: plug-ins/ifscompose/ifscompose.c:1245
+#, fuzzy
+msgid "IfsCompose Options"
+msgstr "Composizione"
+
+#: plug-ins/ifscompose/ifscompose.c:1265
+msgid "Max. Memory:"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:1292
+msgid "Subdivide:"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:1305
+msgid "Spot Radius:"
+msgstr ""
+
+#: plug-ins/ifscompose/ifscompose.c:1375
+#, fuzzy, c-format
+msgid "Rendering IFS (%d/%d)..."
+msgstr "Rendering Tile..."
+
+#. transfer the image to the drawable
+#: plug-ins/ifscompose/ifscompose.c:1394
+#, fuzzy, c-format
+msgid "Copying IFS to image (%d/%d)..."
+msgstr "Composizione..."
+
+#: plug-ins/imagemap/imap_about.c:39
+msgid ""
+"Imagemap plug-in 1.3\n"
+"\n"
+"Copyright(c) 1999 by Maurits Rijk\n"
+"lpeek.mrijk@consunet.nl \n"
+"\n"
+"  Released under the GNU General Public License  "
+msgstr ""
+
+#: plug-ins/imagemap/imap_circle.c:260
+#, fuzzy
+msgid "Center x:"
+msgstr "Centra"
+
+#: plug-ins/imagemap/imap_circle.c:266
+#, fuzzy
+msgid "Center y:"
+msgstr "Centra"
+
+#: plug-ins/imagemap/imap_cmd_create.c:52
+#, fuzzy
+msgid "Create"
+msgstr "Centra"
+
+#: plug-ins/imagemap/imap_cmd_cut.c:53
+#: plug-ins/imagemap/imap_cmd_cut_object.c:51
+#: plug-ins/imagemap/imap_menu.c:283 plug-ins/imagemap/imap_toolbar.c:128
+msgid "Cut"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_delete_point.c:57
+#: plug-ins/imagemap/imap_polygon.c:665
+#, fuzzy
+msgid "Delete Point"
+msgstr "Annulla Punti"
+
+#: plug-ins/imagemap/imap_cmd_edit_object.c:50
+msgid "Edit Object"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:70
+#, fuzzy
+msgid "Create Guides"
+msgstr "Crea nuova immagine"
+
+#: plug-ins/imagemap/imap_cmd_guides.c:110
+#, c-format
+msgid "Resulting Guide Bounds: %d,%d to %d,%d (%d areas)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:135
+msgid ""
+"Guides are pre-defined rectangles covering the image. You define\n"
+"them by their width, height, and spacing from each other. This\n"
+"allows you to rapidly create the most common image map type -\n"
+"image collection of \"thumbnails\", suitable for navigation bars."
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:163 plug-ins/imagemap/imap_grid.c:197
+msgid "Width"
+msgstr "Larghezza"
+
+#: plug-ins/imagemap/imap_cmd_guides.c:168
+msgid "Left Start at"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:173 plug-ins/imagemap/imap_grid.c:203
+#, fuzzy
+msgid "Height"
+msgstr "Altezza:"
+
+#: plug-ins/imagemap/imap_cmd_guides.c:178
+msgid "Top Start at"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:183
+#, fuzzy
+msgid "Horz. Spacing"
+msgstr "Spaziatura Tile"
+
+#: plug-ins/imagemap/imap_cmd_guides.c:188
+msgid "No. Across"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:193
+#, fuzzy
+msgid "Vert. Spacing"
+msgstr "Spaziatura Tile"
+
+#: plug-ins/imagemap/imap_cmd_guides.c:198
+msgid "No. Down"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:223
+#, c-format
+msgid "Image dimensions: %d x %d"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:228
+msgid "Resulting Guide Bounds: 0,0 to 0,0 (0 areas)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_guides.c:263
+msgid "Guides"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_insert_point.c:57
+#: plug-ins/imagemap/imap_polygon.c:679
+#, fuzzy
+msgid "Insert Point"
+msgstr "Annulla Punti"
+
+#: plug-ins/imagemap/imap_cmd_move_down.c:52
+#: plug-ins/imagemap/imap_cmd_object_down.c:51
+msgid "Move Down"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_move_sash.c:64
+#, fuzzy
+msgid "Move Sash"
+msgstr "Muovi Tracciato"
+
+#: plug-ins/imagemap/imap_cmd_move_selected.c:52
+msgid "Move Selected Objects"
+msgstr ""
+
+#: plug-ins/imagemap/imap_cmd_move_up.c:52
+#: plug-ins/imagemap/imap_cmd_object_up.c:51
+#, fuzzy
+msgid "Move Up"
+msgstr "Muovi Tracciato"
+
+#: plug-ins/imagemap/imap_cmd_paste.c:48 plug-ins/imagemap/imap_menu.c:289
+#: plug-ins/imagemap/imap_popup.c:152 plug-ins/imagemap/imap_toolbar.c:134
+#, fuzzy
+msgid "Paste"
+msgstr "Pattern:"
+
+#: plug-ins/imagemap/imap_cmd_select_next.c:51
+#, fuzzy
+msgid "Select Next"
+msgstr "Seleziona"
+
+#: plug-ins/imagemap/imap_cmd_select_region.c:63
+#, fuzzy
+msgid "Select Region"
+msgstr "Seleziona Pattern:"
+
+#: plug-ins/imagemap/imap_cmd_send_to_back.c:51
+#: plug-ins/imagemap/imap_toolbar.c:157
+#, fuzzy
+msgid "Send To Back"
+msgstr "Invia per e-mail"
+
+#: plug-ins/imagemap/imap_cmd_unselect.c:49
+#, fuzzy
+msgid "Unselect"
+msgstr "Seleziona"
+
+#: plug-ins/imagemap/imap_cmd_unselect_all.c:50
+msgid "Unselect All"
+msgstr ""
+
+#: plug-ins/imagemap/imap_default_dialog.c:123
+#, fuzzy
+msgid "Help..."
+msgstr "Aiuto"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:167
+#, fuzzy
+msgid "Link Type"
+msgstr "Tipo Media:"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:176
+msgid "Web Site"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:182
+#, fuzzy
+msgid "Ftp Site"
+msgstr "Dimensione area"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:188
+msgid "Gopher"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:194
+#, fuzzy
+msgid "Other"
+msgstr "Altri"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:200
+#: plug-ins/imagemap/imap_menu.c:210 plug-ins/print/print.c:3124
+msgid "File"
+msgstr "File"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:206
+msgid "WAIS"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:212
+#, fuzzy
+msgid "Telnet"
+msgstr "Seleziona"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:218
+msgid "e-mail"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:224
+msgid "URL to activate when this area is clicked: (required)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:234
+msgid "Relative link"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:240
+msgid "Target frame name/ID: (optional - used for FRAMES only)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:244
+msgid "Comment about this area: (optional)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_edit_area_info.c:247
+#, fuzzy
+msgid "Link"
+msgstr "Lineare"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:282
+#, fuzzy
+msgid "Dimensions"
+msgstr "Vettore direzione"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:324
+#, fuzzy
+msgid "JavaScript"
+msgstr "Salva come PostScript"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:415
+#, fuzzy
+msgid "Area Settings"
+msgstr "Configurazioni"
+
+#: plug-ins/imagemap/imap_edit_area_info.c:458
+#, fuzzy, c-format
+msgid "Area #%d Settings"
+msgstr "Configurazioni Avanzate"
+
+#: plug-ins/imagemap/imap_file.c:46 plug-ins/imagemap/imap_menu.c:65
+#, fuzzy
+msgid "Error opening file"
+msgstr "Errore di apertura file \"%s\" in lettura!\n"
+
+#: plug-ins/imagemap/imap_file.c:55
+msgid "Load Imagemap"
+msgstr ""
+
+#: plug-ins/imagemap/imap_file.c:78
+#, fuzzy
+msgid "File exists!"
+msgstr "Altezza Tile"
+
+#: plug-ins/imagemap/imap_file.c:83
+msgid ""
+"File already exists.\n"
+"  Do you really want to overwrite?  "
+msgstr ""
+
+#: plug-ins/imagemap/imap_file.c:115
+msgid "Save Imagemap"
+msgstr ""
+
+#: plug-ins/imagemap/imap_file.c:138
+msgid "Error"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:142
+#, fuzzy
+msgid "Grid Settings"
+msgstr "Configurazioni"
+
+#: plug-ins/imagemap/imap_grid.c:153
+msgid "Snap-To Grid Enabled"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:159
+msgid "Grid Visibility and Type"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:166
+msgid "Hidden"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:173
+#, fuzzy
+msgid "Lines"
+msgstr "Lineare"
+
+#: plug-ins/imagemap/imap_grid.c:182
+#, fuzzy
+msgid "Crosses"
+msgstr "Chiudi"
+
+#: plug-ins/imagemap/imap_grid.c:189
+msgid "Grid Granularity"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:212
+#, fuzzy
+msgid "Grid Offset"
+msgstr "Sposta"
+
+#: plug-ins/imagemap/imap_grid.c:223
+msgid "pixels from left"
+msgstr ""
+
+#: plug-ins/imagemap/imap_grid.c:228
+msgid "pixels from top"
+msgstr ""
+
+#: plug-ins/imagemap/imap_main.c:142
+#, fuzzy
+msgid "<Image>/Filters/Web/ImageMap..."
+msgstr "<Image>/Filters/Map/Bump Map"
+
+#: plug-ins/imagemap/imap_main.c:657
+msgid "Data changed"
+msgstr ""
+
+#: plug-ins/imagemap/imap_main.c:661
+msgid ""
+"   Some data has been changed.   \n"
+"Do you really want to continue?"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:214
+msgid "Open..."
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:220
+#, fuzzy
+msgid "Save As..."
+msgstr "Salva"
+
+#: plug-ins/imagemap/imap_menu.c:223
+#, fuzzy
+msgid "Preferences..."
+msgstr "Differenza"
+
+#: plug-ins/imagemap/imap_menu.c:242
+#, fuzzy, c-format
+msgid "Undo %s"
+msgstr "Seme casuale"
+
+#: plug-ins/imagemap/imap_menu.c:253
+#, fuzzy, c-format
+msgid "Redo %s"
+msgstr "Rosso"
+
+#: plug-ins/imagemap/imap_menu.c:300
+msgid "Edit Area Info..."
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:312
+msgid "View"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:316
+#, fuzzy
+msgid "Area List"
+msgstr "Configurazioni"
+
+#: plug-ins/imagemap/imap_menu.c:320
+#, fuzzy
+msgid "Source..."
+msgstr "Altri..."
+
+#: plug-ins/imagemap/imap_menu.c:328
+#, fuzzy
+msgid "Grayscale"
+msgstr "Scala Gradiente"
+
+#: plug-ins/imagemap/imap_menu.c:340
+msgid "Zoom In"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:343
+msgid "Zoom Out"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:348
+msgid "Zoom To"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:378
+#, fuzzy
+msgid "Mapping"
+msgstr "Assenza di memoria per il mapping dei colori"
+
+#: plug-ins/imagemap/imap_menu.c:381 plug-ins/imagemap/imap_popup.c:128
+msgid "Arrow"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:383 plug-ins/imagemap/imap_popup.c:131
+#: plug-ins/imagemap/imap_rectangle.c:59
+#, fuzzy
+msgid "Rectangle"
+msgstr "Rotazione"
+
+#: plug-ins/imagemap/imap_menu.c:391
+msgid "Edit Map Info..."
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:398
+msgid "Goodies"
+msgstr ""
+
+#: plug-ins/imagemap/imap_menu.c:400 plug-ins/imagemap/imap_popup.c:148
+#, fuzzy
+msgid "Grid Settings..."
+msgstr "Configurazioni"
+
+#: plug-ins/imagemap/imap_menu.c:402
+#, fuzzy
+msgid "Create Guides..."
+msgstr "Crea nuova immagine"
+
+#: plug-ins/imagemap/imap_menu.c:412
+#, fuzzy
+msgid "About ImageMap..."
+msgstr "Informazioni"
+
+#: plug-ins/imagemap/imap_polygon.c:390
+msgid "x (pixels)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_polygon.c:390
+msgid "y (pixels)"
+msgstr ""
+
+#: plug-ins/imagemap/imap_polygon.c:454
+msgid "Append"
+msgstr ""
+
+#: plug-ins/imagemap/imap_popup.c:124
+msgid "Map Info..."
+msgstr ""
+
+#: plug-ins/imagemap/imap_popup.c:127
+msgid "Tools"
+msgstr ""
+
+#: plug-ins/imagemap/imap_popup.c:141
+#, fuzzy
+msgid "In"
+msgstr "Pollici"
+
+#: plug-ins/imagemap/imap_popup.c:143
+#, fuzzy
+msgid "Out"
+msgstr "Uscita :"
+
+#: plug-ins/imagemap/imap_popup.c:150
+#, fuzzy
+msgid "Guides..."
+msgstr "Ghigliottina..."
+
+#: plug-ins/imagemap/imap_rectangle.c:374
+msgid "Upper left x:"
+msgstr ""
+
+#: plug-ins/imagemap/imap_rectangle.c:380
+msgid "Upper left y:"
+msgstr ""
+
+#: plug-ins/imagemap/imap_selection.c:335
+msgid "URL"
+msgstr ""
+
+#: plug-ins/imagemap/imap_selection.c:335
+#, fuzzy
+msgid "Target"
+msgstr "magenta"
+
+#: plug-ins/imagemap/imap_selection.c:335
+#, fuzzy
+msgid "Comment"
+msgstr "Commento GIF: "
+
+#. Create selection
+#: plug-ins/imagemap/imap_selection.c:356 plug-ins/rcm/rcm_dialog.c:664
+#, fuzzy
+msgid "Selection"
+msgstr "Seleziona"
+
+#: plug-ins/imagemap/imap_settings.c:67
+msgid "Settings for this Mapfile"
+msgstr ""
+
+#: plug-ins/imagemap/imap_settings.c:81
+#, fuzzy
+msgid "Image name:"
+msgstr "Nome base:"
+
+#: plug-ins/imagemap/imap_settings.c:82
+#, fuzzy
+msgid "Select Image File"
+msgstr "Seleziona Campo dei Frame"
+
+#: plug-ins/imagemap/imap_settings.c:86
+#, fuzzy
+msgid "Title:"
+msgstr "File"
+
+#: plug-ins/imagemap/imap_settings.c:88
+#: plug-ins/script-fu/script-fu-scripts.c:1927
+#, fuzzy
+msgid "Author:"
+msgstr "Autore :"
+
+#: plug-ins/imagemap/imap_settings.c:90
+#, fuzzy
+msgid "Default URL:"
+msgstr "Valori Base"
+
+#: plug-ins/imagemap/imap_settings.c:107
+#, fuzzy
+msgid "Map file format"
+msgstr "Formato video"
+
+#: plug-ins/imagemap/imap_source.c:54
+#, fuzzy
+msgid "View Source"
+msgstr "Sorgente Media:"
+
+#: plug-ins/imagemap/imap_toolbar.c:114
+#, fuzzy
+msgid "Preferences"
+msgstr "Differenza"
+
+#: plug-ins/imagemap/imap_toolbar.c:141
+msgid "Zoom in"
+msgstr ""
+
+#: plug-ins/imagemap/imap_toolbar.c:144
+msgid "Zoom out"
+msgstr ""
+
+#: plug-ins/imagemap/imap_toolbar.c:149
+msgid "Edit Map Info"
+msgstr ""
+
+#: plug-ins/imagemap/imap_toolbar.c:153
+msgid "Move To Front"
+msgstr ""
+
+#: plug-ins/imagemap/imap_tools.c:127
+#, fuzzy
+msgid "Select existing area"
+msgstr "Seleziona"
+
+#: plug-ins/imagemap/imap_tools.c:131
+#, fuzzy
+msgid "Define Rectangle area"
+msgstr "Rotazione"
+
+#: plug-ins/imagemap/imap_tools.c:135
+msgid "Define Circle/Oval area"
+msgstr ""
+
+#: plug-ins/imagemap/imap_tools.c:139
+msgid "Define Polygon area"
+msgstr ""
+
+#: plug-ins/imagemap/imap_tools.c:143
+msgid "Edit selected area info"
+msgstr ""
+
+#: plug-ins/imagemap/imap_tools.c:147
+#, fuzzy
+msgid "Delete selected area"
+msgstr "Utilizza tutti i livelli non selezionati"
+
+#: plug-ins/maze/algorithms.c:282
+msgid "Constructing maze using Prim's Algorithm..."
+msgstr ""
+
+#: plug-ins/maze/algorithms.c:451
+msgid "Constructing tileable maze using Prim's Algorithm..."
+msgstr ""
+
+#: plug-ins/maze/maze.c:154
+#, c-format
+msgid ""
+"Generates a maze using either the depth-first search method or Prim's "
+"algorithm.  Can make tileable mazes too.  See %s for more help."
+msgstr ""
+
+#: plug-ins/maze/maze.c:161
+#, fuzzy
+msgid "<Image>/Filters/Render/Pattern/Maze..."
+msgstr "<Image>/Filters/Render/Scacchiera"
+
+#: plug-ins/maze/maze.c:403
+msgid "Drawing Maze..."
+msgstr ""
+
+#: plug-ins/maze/maze_face.c:237
+#, fuzzy, c-format
+msgid "Selection is %dx%d"
+msgstr "Seleziona"
+
+#. Set up Options page
+#: plug-ins/maze/maze_face.c:251
+#, fuzzy
+msgid "Maze Options"
+msgstr "Opzioni Salvataggio"
+
+#. Tileable checkbox
+#: plug-ins/maze/maze_face.c:266
+msgid "Tileable?"
+msgstr ""
+
+#: plug-ins/maze/maze_face.c:287 plug-ins/maze/maze_face.c:315
+#, fuzzy
+msgid "Pieces:"
+msgstr "Pagine:"
+
+#: plug-ins/maze/maze_face.c:307
+#, fuzzy
+msgid "Height (Pixels):"
+msgstr "Altezza:"
+
+#. Set up other page
+#: plug-ins/maze/maze_face.c:341
+msgid "At Your Own Risk"
+msgstr ""
+
+#. Multiple input box
+#: plug-ins/maze/maze_face.c:353
+#, fuzzy
+msgid "Multiple (57):"
+msgstr "Multiplo"
+
+#. Offset input box
+#: plug-ins/maze/maze_face.c:370
+#, fuzzy

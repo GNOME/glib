@@ -23,7 +23,10 @@ EXTRA_DIST = \
 	glibconfig.h.win32	\
 	gwin32.c		\
 	config.h.win32		\
-	build-dll
+	build-dll		\
+	glib.rc			\
+	gmodule.rc		\
+	gthread.rc
 
 lib_LTLIBRARIES = libglib.la
 
@@ -101,6 +104,15 @@ makefile.msc: $(top_builddir)/config.status $(top_srcdir)/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 makefile.cygwin: $(top_builddir)/config.status $(top_srcdir)/makefile.cygwin.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule.rc.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release sanity snapshot

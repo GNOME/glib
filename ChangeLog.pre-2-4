@@ -1,3 +1,16 @@
+2000-02-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.rc.in gmodule.rc.in gthread.rc.in: New files, for putting
+	version info in the DLLs on Win32.
+
+	* Makefile.am: Generate corresponding *.rc files and distribute
+	them.
+
+	* makefile.cygwin.in: Add rules to automatically bump a "build
+	number" in the version info in the rc files each time the DLL is
+	built. But do this only for the person who releases binaries. If
+	others build the DLLs, the build number is set to zero.
+
 Fri Feb  4 19:36:05 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

@@ -1,5 +1,5 @@
 ## Makefile for building the GLib, gmodule and gthread DLLs with
-## egcs on cygwin.
+## gcc on cygwin or mingw32.
 ## Use: make -f makefile.cygwin install
 
 # Change this to wherever you want to install the DLLs. This directory
@@ -21,8 +21,6 @@ OPTIMIZE = -g -O
 
 CC = gcc -mno-cygwin -mpentium -fnative-struct
 
-CP = cp
-LD = ld
 DLLTOOL = dlltool
 INSTALL = install
 
@@ -75,16 +73,39 @@ glib_OBJECTS = \
 	gstrfuncs.o	\
 	gscanner.o	\
 	gutils.o	\
-	gwin32.o
+	gwin32.o	\
+	glib-win32res.o
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
 
+# Kludge to get the path to the win32 headers
+WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's!/winver.h!!')
+
+# The *.stamp files aren't distributed. Thus, this takes care of only
+# tml building libraries with nonzero build number.
+
+ifeq ($(wildcard glib-build.stamp),glib-build.stamp)
+# Bump the build number
+glib-build.tmp :
+	bash -c "read number && echo $$[number+1]" <glib-build.stamp >glib-build.tmp
+	cp glib-build.tmp glib-build.stamp
+else
+# Use zero as build number.
+glib-build.tmp :
+	echo 0 >glib-build.tmp
+endif
+
+%-win32res.o : %.rc %-build.tmp
+	m4 -DBUILDNUMBER=`cat $*-build.tmp` <$*.rc >$*-win32res.rc
+	windres --include-dir $(WIN32APIHEADERS) $*-win32res.rc $*-win32res.o
+	rm $*-build.tmp $*-win32res.rc
+
 glibconfig.h: glibconfig.h.win32
-	$(CP) glibconfig.h.win32 glibconfig.h
+	cp glibconfig.h.win32 glibconfig.h
 
 config.h: config.h.win32
-	$(CP) config.h.win32 config.h
+	cp config.h.win32 config.h
 
 .SUFFIXES: .c .o .i
 
@@ -95,7 +116,19 @@ config.h: config.h.win32
 	$(CC) $(CFLAGS) -E -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib $< >$@
 
 gmodule_OBJECTS = \
-	gmodule.o
+	gmodule.o	\
+	gmodule-win32res.o
+
+# Unfortunately I couldn't use a pattern rule for this, so copy-paste
+# from above.
+ifeq ($(wildcard glib-build.stamp),glib-build.stamp)
+gmodule-build.tmp :
+	bash -c "read number && echo $$[number+1]" <gmodule-build.stamp >gmodule-build.tmp
+	cp gmodule-build.tmp gmodule-build.stamp
+else
+gmodule-build.tmp :
+	echo 0 >gmodule-build.tmp
+endif
 
 gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule/gmodule.def
 	./build-dll gmodule $(GLIB_VER) gmodule/gmodule.def $(gmodule_OBJECTS) -L. -lglib-$(GLIB_VER) -lwsock32
@@ -104,10 +137,21 @@ gmodule.o : gmodule/gmodule.c gmodule/gmodule-win32.c
 	$(CC) $(CFLAGS) -Igmodule -c -DG_LOG_DOMAIN=g_log_domain_gmodule gmodule/gmodule.c
 
 gmodule/gmoduleconf.h: gmodule/gmoduleconf.h.win32
-	$(CP) gmodule/gmoduleconf.h.win32 gmodule/gmoduleconf.h
+	cp gmodule/gmoduleconf.h.win32 gmodule/gmoduleconf.h
 
 gthread_OBJECTS = \
-	gthread-impl.o
+	gthread-impl.o	\
+	gthread-win32res.o
+
+# Ditto copy-pasting
+ifeq ($(wildcard glib-build.stamp),glib-build.stamp)
+gthread-build.tmp :
+	bash -c "read number && echo $$[number+1]" <gthread-build.stamp >gthread-build.tmp
+	cp gthread-build.tmp gthread-build.stamp
+else
+gthread-build.tmp :
+	echo 0 >gthread-build.tmp
+endif
 
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) glib-$(GLIB_VER).dll gthread/gthread.def
 	./build-dll gthread $(GLIB_VER) gthread/gthread.def $(gthread_OBJECTS)  -L. -lglib-$(GLIB_VER) $(PTHREAD_LIB)
