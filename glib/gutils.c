@@ -635,7 +635,7 @@ g_getenv (const gchar *variable)
   if (!environs)
     environs = g_array_new (FALSE, FALSE, sizeof (struct env_struct));
 
-  /* First we try to find the envinronment variable inside the already
+  /* First we try to find the environment variable inside the already
    * found ones.
    */
 
@@ -685,6 +685,87 @@ g_getenv (const gchar *variable)
 #endif
 }
 
+/**
+ * g_setenv:
+ * @variable: the environment variable to set.
+ * @value: the value for to set the variable to.
+ * @overwrite: whether to change the variable if it already exists.
+ *
+ * Sets an environment variable.
+ *
+ * Note that on some systems, the memory used for the variable and its value 
+ * can't be reclaimed later.
+ *
+ * Returns: %FALSE if the environment variable couldn't be set.
+ *
+ * Since: 2.4
+ */
+gboolean
+g_setenv (const gchar *variable, 
+	  const gchar *value, 
+	  gboolean     overwrite)
+{
+  gint result;
+#ifdef HAVE_SETENV
+  result = setenv (variable, value, overwrite);
+#else
+  gchar *string;
+  
+  if (!overwrite && g_getenv (variable) != NULL)
+    return TRUE;
+  
+  /* This results in a leak when you overwrite existing
+   * settings. It would be fairly easy to fix this by keeping
+   * our own parallel array or hash table.
+   */
+  string = g_strconcat (variable, "=", value, NULL);
+  result = putenv (string);
+#endif
+  return result == 0;
+}
+                
+/**
+ * g_unsetenv:
+ * @name: the environment variable to remove.
+ * 
+ * Removes an environment variable from the environment.
+ *
+ * Note that on some systems, the memory used for the variable and its value 
+ * can't be reclaimed. Furthermore, this function can't be guaranteed to operate in a 
+ * threadsafe way.
+ *
+ * Since: 2.4 
+ **/
+void
+g_unsetenv (const gchar *variable)
+{
+#ifdef HAVE_UNSETENV
+  unsetenv (variable);
+#else
+  int i, len;
+  gchar **e, **f;
+ 
+  len = strlen (variable);
+  
+  /* Mess directly with the environ array.
+   * This seems to be the only portable way to do this.
+   *
+   * Note that we remove *all* environment entries for
+   * the variable name, not just the first.
+   */
+  e = f = environ;
+  while (*e != NULL) 
+    {
+      if (strncmp (*e, variable, len) != 0 || (*e)[len] != '=') 
+	{
+	  *f = *e;
+	  f++;
+	}
+      e++;
+    }
+  *f = NULL;
+#endif
+}
 
 G_LOCK_DEFINE_STATIC (g_utils_global);
 

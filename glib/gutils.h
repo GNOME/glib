@@ -177,6 +177,10 @@ void                  g_nullify_pointer    (gpointer    *nullify_location);
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
 G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
+gboolean              g_setenv             (const gchar *variable,
+					    const gchar *value,
+					    gboolean     overwrite);
+void                  g_unsetenv           (const gchar *variable);
 
 
 /* we try to provide a usefull equivalent for ATEXIT if it is

@@ -1,3 +1,8 @@
+2003-07-28  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutils.h: 
+	* glib/gutils.c: New functions g_setenv() and g_unsetenv().  (#100763)
+
 2003-07-26  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/printf-test.c: New test, tests printf behaviour. This was already mentioned in Makefile.am

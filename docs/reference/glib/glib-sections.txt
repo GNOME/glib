@@ -1161,6 +1161,8 @@ g_set_application_name
 g_get_prgname
 g_set_prgname
 g_getenv
+g_setenv
+g_unsetenv
 g_get_user_name
 g_get_real_name
 
