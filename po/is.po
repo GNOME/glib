@@ -357,105 +357,106 @@ msgstr ""
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
+msgstr "Textinn endaði eftir '\\' tákn. (Textinn var '%s')"
 
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Textinn endaði áður en samstaða við %c fannst. (Textinn var '%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
+msgstr "Textinn var tómur (eða innihélt eingöngu orðabil)"
 
 #: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
-msgstr ""
+msgstr "Gat ekki lesið gögn frá undirferli"
 
 #: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"Óvæn villa í g_io_channel_win32_poll() við lestur úr undirferli"
 
 #: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Gat ekki lesið úr undirferlispípu (%s)"
 
 #: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
-msgstr ""
+msgstr "Gat ekki keyrt hjálparforrit"
 
 #: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr ""
+msgstr "Gat ekki keyrt undirferli (%s)"
 
 #: glib/gspawn-win32.c:979 glib/gspawn.c:1207
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr ""
+msgstr "Gat ekki farið í möppuna '%s' (%s)"
 
 #: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr ""
+msgstr "Gat ekki búið til pípu til samskipta við undirferli (%s)"
 
 #: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr ""
+msgstr "Gat ekki lesið gögn frá undirferli (%s)"
 
 #: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
+msgstr "Óvæn villa í select() við lestur gagna frá undirferli (%s)"
 
 #: glib/gspawn.c:382
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr ""
+msgstr "Óvæn villa í waitpid() (%s)"
 
 #: glib/gspawn.c:1067
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr ""
+msgstr "Gat ekki ræst (%s)"
 
 #: glib/gspawn.c:1217
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr ""
+msgstr "Gat ekki ræst undirferli \"%s\" (%s)"
 
 #: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "Gat ekki sent frálag eða ílag underferlis annað (%s)"
 
 #: glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "Gat ekki ræst undirferli (%s)"
 
 #: glib/gspawn.c:1244
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr ""
+msgstr "Óþekkt villa við keyrslu undirferlis \"%s\""
 
 #: glib/gspawn.c:1266
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Gat ekki lesið nægjanleg gögn úr pípunni til undirferlisins (%s)"
 
 #: glib/gutf8.c:984
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "Táknið er utan UTF-8 sviðsins"
 
 #: glib/gutf8.c:1073 glib/gutf8.c:1082 glib/gutf8.c:1214 glib/gutf8.c:1223
 #: glib/gutf8.c:1364 glib/gutf8.c:1460
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Ógild runa í ílagi umbreytingar"
 
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
-msgstr ""
+msgstr "Táknið er utan UTF-16 sviðsins"
