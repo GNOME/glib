@@ -1,15 +1,15 @@
 # French translation of glib.
-# Copyright (C) 2001-2003 Free Software Foundation, Inc.
+# Copyright (C) 2001-2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
 #
-# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2003.
+# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.3.1\n"
+"Project-Id-Version: glib 2.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2003-11-22 11:38+0100\n"
+"POT-Creation-Date: 2004-04-24 20:27+0200\n"
+"PO-Revision-Date: 2004-04-24 20:21+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgstr ""
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Ne peut ouvrir le convertisseur de « %s » vers « %s » : %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Impossible d'ouvrir le convertisseur de « %s » vers « %s »"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -37,7 +37,7 @@ msgstr "Séquence d'octets non valide en entrée du convertisseur"
 #: glib/giochannel.c:2211
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Erreur durand la conversion : %s"
+msgstr "Erreur lors de la conversion : %s"
 
 #: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
@@ -47,7 +47,7 @@ msgstr "Séquence partielle de caractères à la fin de l'entrée"
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Ne peut convertir le fallback « %s » vers le jeu de code « %s »"
+msgstr "Impossible de convertir le fallback « %s » vers le jeu de codes « %s »"
 
 #: glib/gconvert.c:1497
 #, c-format
@@ -91,7 +91,7 @@ msgstr "Erreur à l'ouverture du répertoire « %s » : %s"
 #: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Ne peut allouer %lu octets pour lire le fichier « %s »"
+msgstr "Impossible d'allouer %lu octets pour lire le fichier « %s »"
 
 #: glib/gfileutils.c:404
 #, c-format
@@ -152,7 +152,7 @@ msgstr ""
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Ne peut ouvrir le convertisseur de « %s » vers « %s » : %s"
+msgstr "Impossible d'ouvrir le convertisseur de « %s » vers « %s » : %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -286,7 +286,7 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Caractère bizarre « %s », attend un caractère « = » aprés le nom de "
+"Caractère bizarre « %s », attend un caractère « = » après le nom de "
 "l'attribut « %s » de l'élément « %s »"
 
 #: glib/gmarkup.c:1213
@@ -306,7 +306,7 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Caractère bizarre « %s », attend un guillemet d'ouverture aprés le signe "
+"Caractère bizarre « %s », attend un guillemet d'ouverture après le signe "
 "égal quand on donne une valeur pour l'attribut « %s » de l'élément « %s »"
 
 #: glib/gmarkup.c:1436
@@ -344,7 +344,7 @@ msgstr "Le document était vide ou ne contenait ques des espaces"
 
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Le document s'est fini prématurément juste aprés un « < »"
+msgstr "Le document s'est fini prématurément juste après un « < »"
 
 #: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
@@ -383,7 +383,7 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Le document s'est fini prématurément aprés le signe égal suivant un nom "
+"Le document s'est fini prématurément après le signe égal suivant un nom "
 "d'attribut ; aucune valeur d'attribut"
 
 #: glib/gmarkup.c:1700
@@ -418,7 +418,7 @@ msgstr ""
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Le texte fini juste aprés un caractère « \\ ». (Le texte était « %s »)"
+msgstr "Le texte fini juste après un caractère « \\ ». (Le texte était « %s »)"
 
 #: glib/gshell.c:537
 #, c-format
@@ -440,7 +440,7 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Erreur innatendu dans g_io_channel_win32_poll() durand la lecture des "
+"Erreur inattendue dans g_io_channel_win32_poll() lors de la lecture des "
 "données depuis un processus fils"
 
 #: glib/gspawn-win32.c:850 glib/gspawn.c:1012
@@ -477,13 +477,13 @@ msgstr "La lecture des données depuis le processus fils a échoué (%s)"
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Erreur innatendue dans select() à la lecture des données depuis un processus "
+"Erreur inattendue dans select() à la lecture des données depuis un processus "
 "fils (%s)"
 
 #: glib/gspawn.c:392
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "Erreur innatendue dans waitpid() (%s)"
+msgstr "Erreur inattendue dans waitpid() (%s)"
 
 #: glib/gspawn.c:1077
 #, c-format
