@@ -68,7 +68,7 @@ msgstr ""
 #: glib/gconvert.c:1648
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "%s adresi geçersiz karakter içeriyor"
 
 #: glib/gconvert.c:1719
 #, c-format
@@ -76,14 +76,12 @@ msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
 #: glib/gconvert.c:1729
-#, fuzzy
 msgid "Invalid hostname"
-msgstr "dönüþüm girdisinde geçersiz bayt dizisi"
+msgstr "Geçersiz makine adý"
 
 #: glib/gdir.c:79
-#, fuzzy, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Dosya okuma hatasý: '%s': %s"
+msgstr "%s dizini açýlamadý: %s"
 
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
@@ -118,7 +116,6 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Dosya açma baþarýsýzlýðý '%s': fdopen() baþarýsýzlýðý: %s"
 
 #: glib/gfileutils.c:712
-#, fuzzy, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Þablon '%s' geçersiz, '%s' içermemeli"
 
