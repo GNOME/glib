@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.2.x\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
-"PO-Revision-Date: 2003-03-05 10:29+0530\n"
+"Project-Id-Version:glib.glib-2-2\n"
+"POT-Creation-Date: 2003-06-06 04:13+0200\n"
+"PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -241,9 +241,8 @@ msgid "Unfinished entity reference"
 msgstr "ജാലക നാമാവലി മുന്ഗണനകള്"
 
 #: glib/gmarkup.c:615
-#, fuzzy
 msgid "Unfinished character reference"
-msgstr "കാലാവസ്ഥാ മുന്ഗണനകള്"
+msgstr ""
 
 #: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
 #, fuzzy
