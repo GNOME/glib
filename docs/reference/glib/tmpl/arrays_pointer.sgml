@@ -161,6 +161,10 @@ Sorts the array, using @compare_func which should be a <function>qsort()</functi
 function (returns -1 for first arg is less than second arg, 0 for equal, 1 if
 first arg is greater than second arg).
 </para>
+<note><para>
+The comparison function for g_ptr_array_sort() doesn't take the pointers from the array as arguments, 
+it takes pointers to the pointers in the array.
+</para></note>
 
 @array: a #GPtrArray.
 @compare_func: comparison function.
@@ -170,6 +174,10 @@ first arg is greater than second arg).
 <para>
 Like g_ptr_array_sort(), but the comparison function has a user data argument.
 </para>
+<note><para>
+The comparison function for g_ptr_array_sort_with_data() doesn't take the pointers from the array as arguments, 
+it takes pointers to the pointers in the array.
+</para></note>
 
 @array: a #GPtrArray.
 @compare_func: comparison function.

@@ -1,3 +1,8 @@
+2003-07-18  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/arrays_pointer.sgml: Add a note about double indirection in 
+	g_ptr_array_sort[_with_data]().  (#113697, Owen Taylor)
+
 2003-07-12  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Add a paragraph about string precision, add links to it.
