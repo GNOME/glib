@@ -62,6 +62,7 @@ AC_ARG_ENABLE(mem_profile, [  --enable-mem-profile=[no/yes] turn on malloc profi
 
 AC_ARG_ENABLE(ansi, [  --enable-ansi           turn on strict ansi [default=no]],
 		    , enable_ansi=no)
+AC_ARG_WITH(threads, [  --with-threads=[posix]  support threading [default=no]])
 
 AC_MSG_CHECKING(whether to enable memory checking)
 if test "x$enable_mem_check" = "xyes"; then
@@ -91,6 +92,19 @@ else
 fi
 
 AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}")
+
+glib_use_threads=no
+if test "x$with_threads" = "xposix" || test "x$with_threads" = "xyes"; then
+  AC_CHECK_LIB(pthread, pthread_attr_init, 
+    glib_use_threads=yes
+    CFLAGS="$CFLAGS -D_REENTRANT",
+    # AIX has libpthreads, cause they're special. Special friends (TM)
+    AC_CHECK_LIB(pthreads, pthread_attr_init,
+      glib_use_threads=yes
+      CFLAGS="$CFLAGS -D_REENTRANT -D_THREAD_SAFE"))
+fi
+AC_MSG_CHECKING(whether to enable POSIX thread support)
+AC_MSG_RESULT($glib_use_threads)
 
 # Checks for programs.
 AC_PROG_CC
@@ -610,6 +624,7 @@ outfile_EOF
 $glib_atexit
 $glib_memmove
 $glib_defines
+$glib_threads
 
 $glib_vacopy
 
@@ -828,6 +843,14 @@ if test x$glib_working_wctype = xno; then
   glib_wc="\$glib_wc
 #define G_HAVE_BROKEN_WCTYPE 1"
 fi
+if test x$glib_use_threads = xyes; then
+  glib_threads='
+#define G_THREAD_SAFE 1'
+else
+  glib_threads='
+#undef G_THREAD_SAFE'
+fi
+
 ])
 
 AC_OUTPUT([
