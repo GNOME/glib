@@ -70,8 +70,8 @@ g_async_queue_new (void)
 GAsyncQueue *
 g_async_queue_ref (GAsyncQueue *queue)
 {
-  g_return_if_fail (queue);
-  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
+  g_return_val_if_fail (queue, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
   
   g_atomic_int_inc (&queue->ref_count);
 

@@ -1,3 +1,12 @@
+Mon Nov  8 10:45:50 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gasyncqueue.c
+	* glib/ghook.c
+	* glib/giochannel.c: g_return_if_fail -> g_return_val_if_fail
+
+	* glib/gmain.c: Ditto, plus also make g_main_context_ref() actually
+	return the passed in pointer.
+
 2004-11-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gasyncqueue.[hc]:

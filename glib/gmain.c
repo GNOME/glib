@@ -595,10 +595,12 @@ g_poll (GPollFD *fds,
 GMainContext *
 g_main_context_ref (GMainContext *context)
 {
-  g_return_if_fail (context != NULL);
-  g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
+  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&context->ref_count) > 0, NULL); 
 
   g_atomic_int_inc (&context->ref_count);
+
+  return context;
 }
 
 /* If DISABLE_MEM_POOLS is defined, then freeing the

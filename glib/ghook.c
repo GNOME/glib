@@ -226,9 +226,9 @@ GHook *
 g_hook_ref (GHookList *hook_list,
 	    GHook     *hook)
 {
-  g_return_if_fail (hook_list != NULL);
-  g_return_if_fail (hook != NULL);
-  g_return_if_fail (hook->ref_count > 0);
+  g_return_val_if_fail (hook_list != NULL, NULL);
+  g_return_val_if_fail (hook != NULL, NULL);
+  g_return_val_if_fail (hook->ref_count > 0, NULL);
   
   hook->ref_count++;
 

@@ -94,7 +94,7 @@ g_io_channel_init (GIOChannel *channel)
 GIOChannel *
 g_io_channel_ref (GIOChannel *channel)
 {
-  g_return_if_fail (channel != NULL);
+  g_return_val_if_fail (channel != NULL, NULL);
 
   channel->ref_count++;
 
