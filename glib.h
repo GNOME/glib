@@ -469,6 +469,7 @@ typedef struct _GDebugKey	GDebugKey;
 typedef struct _GScannerConfig	GScannerConfig;
 typedef struct _GScanner	GScanner;
 typedef union  _GValue		GValue;
+typedef struct _GCompletion	GCompletion;
 typedef struct _GRelation	GRelation;
 typedef struct _GTuples		GTuples;
 
@@ -497,6 +498,7 @@ typedef void		(*GDestroyNotify)	(gpointer  data);
 typedef guint		(*GHashFunc)		(gconstpointer	  key);
 typedef gint		(*GCompareFunc)		(gconstpointer	  a,
 						 gconstpointer	  b);
+typedef gchar*		(*GCompletionFunc)	(gpointer);
 
 struct _GList
 {
@@ -855,7 +857,7 @@ gint	g_snprintf		(gchar	     *string,
 gchar*	g_basename		(const gchar *file_name);
 gchar*	g_getcwd		(void);
 gchar*	g_dirname		(const gchar *file_name);
-     
+
 
 /* We make the assumption that if memmove isn't available, then
  * bcopy will do the job. This isn't safe everywhere. (bcopy can't
@@ -878,6 +880,7 @@ void g_attach_process (const gchar *progname,
 		       gint	    query);
 void g_stack_trace    (const gchar *progname,
 		       gint	    query);
+
 
 
 /* String Chunks
@@ -1163,31 +1166,31 @@ struct	_GScanner
   /* unused fields */
   gpointer		user_data;
   guint			max_parse_errors;
-
+  
   /* g_scanner_error() increments this field */
   guint			parse_errors;
-
+  
   /* name of input stream, featured by the default message handler */
   const gchar		*input_name;
-
+  
   /* data pointer for derived structures */
   gpointer		derived_data;
-
+  
   /* link into the scanner configuration */
   GScannerConfig	*config;
-
+  
   /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
   GValue		value;
   guint			line;
   guint			position;
-
+  
   /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
   GValue		next_value;
   guint			next_line;
   guint			next_position;
-
+  
   /* to be considered private */
   GHashTable		*symbol_table;
   const gchar		*text;
@@ -1195,7 +1198,7 @@ struct	_GScanner
   gint			input_fd;
   gint			peeked_char;
   guint			scope_id;
-
+  
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };
@@ -1263,29 +1266,26 @@ gint		g_scanner_stat_mode		(const gchar	*filename);
 
 /* Completion */
 
-typedef gchar* (*GCompletionFunc)(gpointer);
-
-typedef struct _GCompletion GCompletion;
-
-struct _GCompletion {
-	GList* items;
-	GCompletionFunc func;
-
-	gchar* prefix;
-	GList* cache;
-
+struct _GCompletion
+{
+  GList* items;
+  GCompletionFunc func;
+  
+  gchar* prefix;
+  GList* cache;
 };
 
 GCompletion* g_completion_new	       (GCompletionFunc func);
-void	     g_completion_add_items    (GCompletion* cmp, 
-					GList* items);
-void	     g_completion_remove_items (GCompletion* cmp, 
-					GList* items);
-void	     g_completion_clear_items  (GCompletion* cmp);
-GList*	     g_completion_complete     (GCompletion* cmp, 
-					gchar* prefix,
-					gchar** new_prefix);
-void	     g_completion_free	       (GCompletion* cmp);
+void	     g_completion_add_items    (GCompletion*	cmp, 
+					GList*		items);
+void	     g_completion_remove_items (GCompletion*	cmp, 
+					GList*		items);
+void	     g_completion_clear_items  (GCompletion*	cmp);
+GList*	     g_completion_complete     (GCompletion*	cmp, 
+					gchar*		prefix,
+					gchar**		new_prefix);
+void	     g_completion_free	       (GCompletion*	cmp);
+
 
 /* GRelation: Indexed Relations.  Imagine a really simple table in a
  * database.  Relations are not ordered.  This data type is meant for

@@ -86,23 +86,23 @@ g_strtod (const gchar *nptr,
   gchar *fail_pos_2;
   gdouble val_1;
   gdouble val_2 = 0;
-
+  
   g_return_val_if_fail (nptr != NULL, 0);
-
+  
   fail_pos_1 = NULL;
   fail_pos_2 = NULL;
-
+  
   val_1 = strtod (nptr, &fail_pos_1);
-
+  
   if (fail_pos_1 && fail_pos_1[0] != 0)
     {
       gchar *old_locale;
-
+      
       old_locale = setlocale (LC_NUMERIC, "C");
       val_2 = strtod (nptr, &fail_pos_2);
       setlocale (LC_NUMERIC, old_locale);
     }
-
+  
   if (!fail_pos_1 || fail_pos_1[0] == 0 || fail_pos_1 >= fail_pos_2)
     {
       if (endptr)
@@ -542,11 +542,11 @@ g_strerror (gint errnum)
 #else /* NO_SYS_ERRLIST */
   extern int sys_nerr;
   extern char *sys_errlist[];
-
+  
   if ((errnum > 0) && (errnum <= sys_nerr))
     return sys_errlist [errnum];
 #endif /* NO_SYS_ERRLIST */
-
+  
   sprintf (msg, "unknown error (%d)", errnum);
   return msg;
 }
@@ -555,7 +555,7 @@ gchar*
 g_strsignal (gint signum)
 {
   static char msg[64];
-
+  
 #ifdef HAVE_STRSIGNAL
   extern char *strsignal (int sig);
   return strsignal (signum);
@@ -660,7 +660,7 @@ g_strsignal (gint signum)
   extern char *sys_siglist[];
   return sys_siglist [signum];
 #endif /* NO_SYS_SIGLIST */
-
+  
   sprintf (msg, "unknown signal (%d)", signum);
   return msg;
 }
@@ -669,11 +669,11 @@ void
 g_strdown (gchar  *string)
 {
   register gchar *s;
-
+  
   g_return_if_fail (string != NULL);
-
+  
   s = string;
-
+  
   while (*s)
     {
       *s = tolower (*s);
@@ -682,14 +682,14 @@ g_strdown (gchar  *string)
 }
 
 void
-g_strup (gchar  *string)
+g_strup (gchar	*string)
 {
   register gchar *s;
-
+  
   g_return_if_fail (string != NULL);
-
+  
   s = string;
-
+  
   while (*s)
     {
       *s = toupper (*s);
@@ -698,14 +698,14 @@ g_strup (gchar  *string)
 }
 
 void
-g_strreverse (gchar       *string)
+g_strreverse (gchar	  *string)
 {
   g_return_if_fail (string != NULL);
-
+  
   if (*string)
     {
       register gchar *h, *t;
-
+      
       h = string;
       t = string + strlen (string) - 1;
       
@@ -730,7 +730,7 @@ g_strcasecmp (const gchar *s1,
   return strcasecmp (s1, s2);
 #else
   gint c1, c2;
-
+  
   while (*s1 && *s2)
     {
       /* According to A. Cox, some platforms have islower's that
@@ -739,26 +739,26 @@ g_strcasecmp (const gchar *s1,
       c1 = isupper ((guchar)*s1) ? tolower ((guchar)*s1) : *s1;
       c2 = isupper ((guchar)*s2) ? tolower ((guchar)*s2) : *s2;
       if (c1 != c2)
-        return (c1 - c2);
+	return (c1 - c2);
       s1++; s2++;
     }
-
+  
   return (((gint)(guchar) *s1) - ((gint)(guchar) *s2));
 #endif
 }
 
 void
-g_strdelimit (gchar       *string,
+g_strdelimit (gchar	  *string,
 	      const gchar *delimiters,
-	      gchar        new_delim)
+	      gchar	   new_delim)
 {
   register gchar *c;
-
+  
   g_return_if_fail (string != NULL);
-
+  
   if (!delimiters)
     delimiters = G_STR_DELIMITERS;
-
+  
   for (c = string; *c; c++)
     {
       if (strchr (delimiters, *c))

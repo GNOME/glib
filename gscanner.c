@@ -208,14 +208,14 @@ g_scanner_new (GScannerConfig	*config_templ)
   scanner->next_value.v_int = 0;
   scanner->next_line = 1;
   scanner->next_position = 0;
-
+  
   scanner->symbol_table = g_hash_table_new (g_scanner_key_hash, g_scanner_key_equal);
   scanner->text = NULL;
   scanner->text_len = 0;
   scanner->input_fd = -1;
   scanner->peeked_char = -1;
   scanner->scope_id = 0;
-
+  
   scanner->msg_handler = g_scanner_msg_handler;
   
   return scanner;
@@ -227,7 +227,7 @@ g_scanner_destroy_symbol_table_entry (gpointer _key,
 				      gpointer _data)
 {
   GScannerKey *key = _key;
-
+  
   g_free (key->symbol);
   g_free (key);
 }
@@ -252,7 +252,7 @@ g_scanner_msg_handler (GScanner		*scanner,
 		       gint		 is_error)
 {
   g_return_if_fail (scanner != NULL);
-
+  
   fprintf (stdout, "%s:%d: ", scanner->input_name, scanner->line);
   if (is_error)
     fprintf (stdout, "error: ");
@@ -266,9 +266,9 @@ g_scanner_error (GScanner	*scanner,
 {
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (format != NULL);
-
+  
   scanner->parse_errors++;
-
+  
   if (scanner->msg_handler)
     {
       va_list args, args2;
@@ -279,11 +279,11 @@ g_scanner_error (GScanner	*scanner,
       string = g_vsprintf ((gchar*) format, &args, &args2);
       va_end (args);
       va_end (args2);
-
+      
       string = g_strdup (string);
-
+      
       scanner->msg_handler (scanner, string, TRUE);
-	  
+      
       g_free (string);
     }
 }
@@ -358,7 +358,7 @@ g_scanner_key_equal (gconstpointer v1,
 {
   register const GScannerKey *key1 = v1;
   register const GScannerKey *key2 = v2;
-
+  
   return (key1->scope_id == key2->scope_id) && (strcmp (key1->symbol, key2->symbol) == 0);
 }
 
@@ -368,12 +368,12 @@ g_scanner_key_hash (gconstpointer v)
   register const GScannerKey *key = v;
   register gchar *c;
   register guint h;
-
+  
   h = key->scope_id;
   for (c = key->symbol; *c; c++)
     {
       register guint g;
-
+      
       h = (h << 4) + *c;
       g = h & 0xf0000000;
       if (g)
@@ -382,7 +382,7 @@ g_scanner_key_hash (gconstpointer v)
 	  h = h ^ g;
 	}
     }
-
+  
   return h;
 }
 
@@ -393,7 +393,7 @@ g_scanner_lookup_internal (GScanner	*scanner,
 {
   register GScannerKey	*key_p;
   GScannerKey key;
-
+  
   key.scope_id = scope_id;
   
   if (!scanner->config->case_sensitive)
@@ -439,7 +439,7 @@ g_scanner_scope_add_symbol (GScanner	*scanner,
       if (!scanner->config->case_sensitive)
 	{
 	  register gchar *c;
-
+	  
 	  c = key->symbol;
 	  while (*c != 0)
 	    {
@@ -462,7 +462,7 @@ g_scanner_scope_remove_symbol (GScanner	   *scanner,
   
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (symbol != NULL);
-
+  
   key = g_scanner_lookup_internal (scanner, scope_id, symbol);
   
   if (key)
@@ -484,7 +484,7 @@ g_scanner_lookup_symbol (GScanner	*scanner,
   
   if (!symbol)
     return NULL;
-
+  
   scope_id = scanner->scope_id;
   key = g_scanner_lookup_internal (scanner, scope_id, symbol);
   if (!key && scope_id && scanner->config->scope_0_fallback)
@@ -521,12 +521,12 @@ g_scanner_set_scope (GScanner	    *scanner,
 		     guint	     scope_id)
 {
   register guint old_scope_id;
-
+  
   g_return_val_if_fail (scanner != NULL, 0);
-
+  
   old_scope_id = scanner->scope_id;
   scanner->scope_id = scope_id;
-
+  
   return old_scope_id;
 }
 
@@ -540,13 +540,13 @@ g_scanner_foreach_internal (gpointer  _key,
   register GHFunc func;
   register gpointer func_data;
   register guint *scope_id;
-
+  
   d = _user_data;
   func = (GHFunc) d[0];
   func_data = d[1];
   scope_id = d[2];
   key = _value;
-
+  
   if (key->scope_id == *scope_id)
     func (key->symbol, key->value, func_data);
 }
@@ -558,13 +558,13 @@ g_scanner_scope_foreach_symbol (GScanner       *scanner,
 				gpointer	func_data)
 {
   gpointer d[3];
-
+  
   g_return_if_fail (scanner != NULL);
-
+  
   d[0] = (gpointer) func;
   d[1] = func_data;
   d[2] = &scope_id;
-
+  
   g_hash_table_foreach (scanner->symbol_table, g_scanner_foreach_internal, d);
 }
 
@@ -572,7 +572,7 @@ void
 g_scanner_freeze_symbol_table (GScanner *scanner)
 {
   g_return_if_fail (scanner != NULL);
-
+  
   g_hash_table_freeze (scanner->symbol_table);
 }
 
@@ -580,7 +580,7 @@ void
 g_scanner_thaw_symbol_table (GScanner *scanner)
 {
   g_return_if_fail (scanner != NULL);
-
+  
   g_hash_table_thaw (scanner->symbol_table);
 }
 
@@ -1046,15 +1046,15 @@ g_scanner_stat_mode (const gchar *filename)
 {
   struct stat  *stat_buf;
   gint		st_mode;
-
+  
   stat_buf = g_new0 (struct stat, 1);
-
+  
   lstat (filename, stat_buf);
-
+  
   st_mode = stat_buf->st_mode;
-
+  
   g_free (stat_buf);
-
+  
   return st_mode;
 }
 
@@ -1634,7 +1634,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
     {
       register GScannerKey	*key;
       register guint scope_id;
-
+      
       scope_id = scanner->scope_id;
       key = g_scanner_lookup_internal (scanner, scope_id, value.v_identifier);
       if (!key && scope_id && scanner->config->scope_0_fallback)
@@ -1647,7 +1647,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  value.v_symbol = key->value;
 	}
     }
-
+  
   if (token == G_TOKEN_IDENTIFIER &&
       config->scan_identifier_NULL &&
       strlen (value.v_identifier) == 4)

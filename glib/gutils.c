@@ -141,11 +141,11 @@ g_dirname (const gchar	   *file_name)
   while (base > file_name && *base == '/')
     base--;
   len = (guint) 1 + base - file_name;
-
+  
   base = g_new (gchar, len + 1);
   g_memmove (base, file_name, len);
   base[len] = 0;
-
+  
   return base;
 }
 
@@ -261,7 +261,7 @@ void
 g_set_prgname (const gchar *prgname)
 {
   gchar *c = g_prgname;
-
+  
   g_prgname = g_strdup (prgname);
   g_free (c);
 }
