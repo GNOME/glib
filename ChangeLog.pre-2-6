@@ -1,3 +1,11 @@
+2000-06-06  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c (g_io_channel_win32_pipe_readable): If we are
+	watching the same fd several times (for different conditions, with
+	different callbacks), check them all. Only call the callback for
+	G_IO_IN from here. (This bug popped up when a watch for
+	G_IO_ERR|G_IO_HUP was added to gimplib.)
+
 2000-05-30  Tor Lillqvist  <tml@iki.fi>
 
 	* gutils.c (g_locale_get_codeset): Implement on Win32.

@@ -1026,10 +1026,10 @@ g_io_channel_win32_pipe_readable (gint  fd,
   for (i = 0; i < n_watched_pipes; i++)
     if (watched_pipes[i].fd == fd)
       {
-	if (watched_pipes[i].channel->offset < offset)
+	if ((watched_pipes[i].watch->condition & G_IO_IN)
+	    && watched_pipes[i].channel->offset < offset)
 	  (*watched_pipes[i].watch->callback) (watched_pipes[i].watch->channel,
 					       G_IO_IN,
 					       watched_pipes[i].user_data);
-	break;
       }
 }
