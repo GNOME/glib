@@ -1,3 +1,8 @@
+2004-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-genmarshal.c (put_marshal_value_getters): Use the 
+	correct fields for enums and flags.  (#145015,Tommi Komulainen) 
+
 2004-07-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* gsignal.c (g_signal_handler_is_connected): Don't choke

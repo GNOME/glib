@@ -162,8 +162,8 @@ put_marshal_value_getters (void)
   fputs ("#define g_marshal_value_peek_ulong(v)    (v)->data[0].v_ulong\n", fout);
   fputs ("#define g_marshal_value_peek_int64(v)    (v)->data[0].v_int64\n", fout);
   fputs ("#define g_marshal_value_peek_uint64(v)   (v)->data[0].v_uint64\n", fout);
-  fputs ("#define g_marshal_value_peek_enum(v)     (v)->data[0].v_int\n", fout);
-  fputs ("#define g_marshal_value_peek_flags(v)    (v)->data[0].v_uint\n", fout);
+  fputs ("#define g_marshal_value_peek_enum(v)     (v)->data[0].v_long\n", fout);
+  fputs ("#define g_marshal_value_peek_flags(v)    (v)->data[0].v_ulong\n", fout);
   fputs ("#define g_marshal_value_peek_float(v)    (v)->data[0].v_float\n", fout);
   fputs ("#define g_marshal_value_peek_double(v)   (v)->data[0].v_double\n", fout);
   fputs ("#define g_marshal_value_peek_string(v)   (v)->data[0].v_pointer\n", fout);
