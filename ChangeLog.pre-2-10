@@ -1,3 +1,8 @@
+Tue Jun  1 22:01:40 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmarkup.c (advance_char): Fix an off-by-one error 
+	in g_markup_parse_context_parse().  (#142794, Morten Welinder)
+
 Sun May 16 23:23:29 2004  Matthias Clasen  <maclas@gmx.de>
 
         Merged from 2.4:
