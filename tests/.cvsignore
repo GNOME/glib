@@ -23,6 +23,7 @@ markup-test
 module-test
 node-test
 queue-test
+qsort-test
 rand-test
 relation-test
 shell-test

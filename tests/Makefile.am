@@ -43,6 +43,7 @@ test_programs = \
 	module-test	\
 	node-test	\
 	queue-test	\
+	qsort-test	\
 	rand-test	\
 	relation-test	\
 	shell-test	\
@@ -81,6 +82,7 @@ module_test_LDADD = $(module_LDADD)
 module_test_LDFLAGS = @G_MODULE_LDFLAGS@
 node_test_LDADD = $(progs_LDADD)
 queue_test_LDADD = $(progs_LDADD)
+qsort_test_LDADD = $(progs_LDADD)
 rand_test_LDADD = $(progs_LDADD)
 relation_test_LDADD = $(progs_LDADD)
 shell_test_LDADD = $(progs_LDADD)
