@@ -1,3 +1,7 @@
+2004-04-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/running.sgml: Document LIBCHARSET_ALIAS_DIR.
+
 2004-04-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/types.sgml: Correct the description of the

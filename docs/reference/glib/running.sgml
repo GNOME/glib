@@ -86,6 +86,17 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara> 
 
+<formalpara>
+  <title><envar>LIBCHARSET_ALIAS_DIR</envar></title>
+
+  <para>
+    Allows to specify a nonstandard location for the 
+    <filename>charset.aliases</filename> file that is used by the
+    character set conversion routines. The default location is the 
+    <replaceable>libdir</replaceable> specified at compilation time.
+  </para>
+</formalpara> 
+
 </refsect2>
 
 <refsect2>

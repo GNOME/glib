@@ -1,5 +1,9 @@
 2004-04-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/libcharset/localcharset.c (_g_locale_get_charset_aliases): 
+	Reinstate LIBCHARSET_ALIAS_DIR support which got lost at some
+	point.  (#139134, Piotr Klaban)
+
 	* glib/gconvert.c (open_converter): Don't call g_strerror() here, 
 	since it can lead to infinite recursion.  (#139133, Piotr Klaban)
 

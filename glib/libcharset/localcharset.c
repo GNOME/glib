@@ -119,9 +119,12 @@ _g_locale_get_charset_aliases ()
     {
 #if !defined WIN32
       FILE *fp;
-      const char *dir = LIBDIR;
+      const char *dir = getenv ("LIBCHARSET_ALIAS_DIR");
       const char *base = "charset.alias";
       char *file_name;
+
+      if (dir == NULL)
+	dir = LIBDIR;
 
       /* Concatenate dir and base into freshly allocated file_name.  */
       {
