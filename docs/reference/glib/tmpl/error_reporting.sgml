@@ -46,7 +46,7 @@ point to a location where an error can be placed. For example:
 <informalexample><programlisting>
 gchar *contents;
 GError *err = NULL;
-contents = g_file_get_contents ("foo.txt", &amp;err);
+contents = g_file_get_contents ("foo.txt", NULL, &amp;err);
 g_assert ((contents == NULL &amp;&amp; err != NULL) || (contents != NULL &amp;&amp; err == NULL));
 if (err != NULL)
   {
