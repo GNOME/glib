@@ -1,3 +1,9 @@
+2001-11-04  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/Makefile.am: On Win32, create separate .exp file for
+	module-test.o and link with that. Otherwise the GNU linker doesn't
+	export the g_clash_func.
+
 2001-11-03  Hans Breuer  <hans@breuer.org>
 
 	* glib/giowin32.c : static correctness

@@ -11,6 +11,11 @@ if PLATFORM_WIN32
 libadd_libgmodule = $(libgmodule)
 libadd_libglib = $(libglib)
 no_undefined = -no-undefined
+
+module_test_exp = module-test.exp
+
+module-test.exp: module-test.o
+	dlltool --output-exp module-test.exp module-test.o
 endif
 
 EXTRA_DIST =					\
@@ -105,7 +110,7 @@ iochannel_test_LDADD = $(progs_LDADD)
 list_test_LDADD = $(progs_LDADD)
 mainloop_test_LDADD = $(thread_LDADD)
 markup_test_LDADD = $(progs_LDADD)
-module_test_LDADD = $(module_LDADD)
+module_test_LDADD = $(module_LDADD) $(module_test_exp)
 module_test_LDFLAGS = @G_MODULE_LDFLAGS@
 node_test_LDADD = $(progs_LDADD)
 queue_test_LDADD = $(progs_LDADD)
