@@ -951,7 +951,7 @@ _______EOF
 	else
 		cat >>$outfile <<_______EOF
 $g_enable_threads_def G_THREADS_ENABLED
-#define $g_threads_impl_def
+#define G_THREADS_IMPL_$g_threads_impl_def
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
 #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (&(mutex)))

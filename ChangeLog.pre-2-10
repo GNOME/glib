@@ -1,3 +1,9 @@
+Mon Jan 25 10:07:53 1999  Raph Levien  <raph@gimp.org>
+
+	* configure.in: (#define G_THREADS_IMPL...) Changed the #define,
+	adding the G_THREADS_IMPL_ prefix to $g_threads_impl_def because
+	it looked wrong to me and was breaking gimp compile.
+
 Mon Jan 25 15:34:43 1999  Timur Bakeyev <mc@bat.ru>
 
 	* configure.in, gstrfuncs.c: Inverted logic of NO_SYS_SYGLIST_DECL -
