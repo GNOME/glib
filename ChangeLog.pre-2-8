@@ -1,3 +1,13 @@
+Fri Jul 23 10:40:43 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/type-test.c (main): Actually test G_MAXSIZE with a 
+	gsize variable.
+
+Thu Jul  8 00:51:30 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gi18n.h: Remove the ENABLE_NLS check, since GLib can't
+	be built without anyway.  (#135899, Murray Cumming)
+
 2004-07-21  Matthias Clasen  <mclasen@redhat.com>
 
 	Fix #132858, Sven Neumann, patch by James Henstridge:

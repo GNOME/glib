@@ -41,7 +41,7 @@ main (int   argc,
   gushort gus;
   guint gui;
   gulong gul;
-  gssize gsz;
+  gsize gsz;
   gshort gs;
   gint gi;
   glong gl;

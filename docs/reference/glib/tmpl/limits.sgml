@@ -173,7 +173,7 @@ The maximum value which can be held in a #guint64.
 
 <!-- ##### MACRO G_MAXSIZE ##### -->
 <para>
-The maximum value which can be held in a #gssize.
+The maximum value which can be held in a #gsize.
 </para>
 
 @Since: 2.4
