@@ -1,3 +1,7 @@
+2001-10-04  Havoc Pennington  <hp@redhat.com>
+
+	* glib/libcharset/Makefile.am (EXTRA_DIST): add config.charset
+
 2001-10-03  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (Win32) (DllMain): New function (DLL entry point)
