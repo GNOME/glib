@@ -41,7 +41,7 @@ main (int   argc,
   gushort gus;
   guint gui;
   gulong gul;
-  gssize gsz;
+  gsize gsz;
   gshort gs;
   gint gi;
   glong gl;
@@ -86,6 +86,7 @@ main (int   argc,
 
   gsz = G_MAXSIZE;
   gsz++;
+  
   g_assert (gsz == 0);
 
   gs = G_MAXSHORT;

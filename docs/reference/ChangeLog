@@ -1,3 +1,8 @@
+Fri Jul 23 10:38:24 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/limits.sgml: Fix docs for G_MAXSIZE.  (#148262, 
+	Christophe Fergeau)
+
 Sun Jul 18 18:03:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* === Released 2.5.0 ===
