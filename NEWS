@@ -1,3 +1,8 @@
+Overview of Changes in GLib 1.2.10:
+
+* Fix compilation problem on some compilers where 
+  g_log_domain_gmodule was not being declared properly.
+
 Overview of Changes in GLib 1.2.9:
 
 * Move include files into a glib-1-2/ subdir to support parallel

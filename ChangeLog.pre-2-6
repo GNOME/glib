@@ -1,3 +1,11 @@
+Thu Mar 15 10:37:49 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 1.2.10
+
+	* NEWS: Update
+
+	* configure.in: Up micro/interface-age/binary-age to 10.
+
 2001-03-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in (FLAG_DOES_NOT_WORK): Fix typo and thus bug #51862.

@@ -31,5 +31,3 @@ options like --prefix=/usr to configure you can give those options
 to autogen.sh and they will be passed on to configure.
 
 For information about submitting patches see the README file.
-
-
