@@ -67,16 +67,13 @@ To free the entire list, use g_list_free().
 <!-- ##### STRUCT GList ##### -->
 <para>
 The #GList struct is used for each element in a doubly-linked list.
-The <structfield>data</structfield> field holds the element's data, which can
-be a pointer to any kind of data, or any integer value using the
-<link linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>.
-The <structfield>next</structfield> and <structfield>prev</structfield>
-pointers are the links to the next and previous elements in the list.
 </para>
 
-@data: 
-@next: 
-@prev: 
+@data: holds the element's data, which can be a pointer to any kind of data, 
+  or any integer value using the
+  <link linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>.
+@next: contains the link to the next element in the list.
+@prev: contains the link to the previous element in the list.
 
 <!-- ##### FUNCTION g_list_append ##### -->
 <para>
@@ -86,6 +83,14 @@ Adds a new element on to the end of the list.
 <para>
 The return value is the new start of the list, which may have changed, so
 make sure you store the new value.
+</para>
+</note>
+<note>
+<para>
+Note that g_list_append() has to traverse the entire list to find the end,
+which is inefficient when adding multiple elements. A common idiom to
+avoid the inefficiency is to prepend the elements and reverse the list 
+when all elements have been added. 
 </para>
 </note>
 <informalexample><programlisting>

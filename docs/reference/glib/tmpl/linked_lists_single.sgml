@@ -67,15 +67,13 @@ To free the entire list, use g_slist_free().
 <!-- ##### STRUCT GSList ##### -->
 <para>
 The #GSList struct is used for each element in the singly-linked list.
-The <structfield>data</structfield> field holds the element's data, which can
-be a pointer to any kind of data, or any integer value using the
-<link linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>.
-The <structfield>next</structfield> field contains the link to the next
-element in the list.
 </para>
 
-@data: 
-@next: 
+@data: holds the element's data, which can be a pointer to any kind of data, 
+  or any integer value using the 
+  <link linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>.
+@next: contains the link to the next element in the list.
+
 
 <!-- ##### FUNCTION g_slist_alloc ##### -->
 <para>
@@ -95,6 +93,14 @@ Adds a new element on to the end of the list.
 <para>
 The return value is the new start of the list, which may have changed, so
 make sure you store the new value.
+</para>
+</note>
+<note>
+<para>
+Note that g_slist_append() has to traverse the entire list to find the end,
+which is inefficient when adding multiple elements. A common idiom to
+avoid the inefficiency is to prepend the elements and reverse the list 
+when all elements have been added. 
 </para>
 </note>
 <informalexample><programlisting>

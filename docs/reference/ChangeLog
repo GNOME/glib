@@ -1,3 +1,10 @@
+2005-02-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/linked_lists_double.sgml: 
+	* glib/tmpl/linked_lists_single.sgml: Add a note 
+	regarding inefficiency of repeated appends. (#166271,
+	Olivier Sessink)
+
 2005-02-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/quarks.sgml: Add a warning against
