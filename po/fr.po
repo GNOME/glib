@@ -177,7 +177,7 @@ msgstr ""
 "semble pas commencer un nom d'élément"
 
 #: gmarkup.c:1099
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
