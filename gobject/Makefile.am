@@ -101,7 +101,8 @@ EXTRA_DIST += 			\
 	makefile.mingw.in 	\
 	makefile.msc.in 	\
 	gobject.def		\
-	gobject.rc.in
+	gobject.rc.in		\
+	glib-genmarshal.1
 
 BUILT_EXTRA_DIST = \
 	makefile.mingw		\

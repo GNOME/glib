@@ -1,3 +1,7 @@
+Mon Nov 13 00:48:39 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (EXTRA_DIST): Add glib-genmarshal.1
+
 2000-11-11  Tor Lillqvist  <tml@iki.fi>
 
 	* gtypemodule.c: Include stdlib.h for exit().

@@ -522,7 +522,6 @@ g_file_get_contents (const gchar *filename,
  * opened for reading and writing. The file is opened in binary mode
  * on platforms where there is a difference. The file handle should be
  * closed with close(). In case of errors, -1 is returned.
- *
  */
 int
 g_mkstemp (char *tmpl)
@@ -605,9 +604,11 @@ g_mkstemp (char *tmpl)
  * The actual name used is returned in @name_used if non-NULL. This
  * string should be freed with g_free when not needed any longer.
  *
- * If some error occurs, @error is set, and -1 is returned. Otherwise,
- * the file descriptor to a file opened for reading and writing with
- * g_mkstemp() is returned.
+ * Return value: A file handle (as from open()) to the file
+ * opened for reading and writing. The file is opened in binary mode
+ * on platforms where there is a difference. The file handle should be
+ * closed with close(). In case of errors, -1 is returned and
+ * @error will be set.
  **/
 int
 g_file_open_tmp (const char *tmpl,
