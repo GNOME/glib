@@ -408,9 +408,9 @@ g_hook_first_valid (GHookList *hook_list,
       GHook *hook;
       
       hook = hook_list->hooks;
-      g_hook_ref (hook_list, hook);
       if (hook)
 	{
+	  g_hook_ref (hook_list, hook);
 	  if (G_HOOK_IS_VALID (hook) && (may_be_in_call || !G_HOOK_IN_CALL (hook)))
 	    return hook;
 	  else

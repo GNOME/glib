@@ -1,3 +1,8 @@
+Tue Dec 22 10:32:11 1998  Tim Janik  <timj@gtk.org>
+
+	* ghook.c (g_hook_first_valid): fixed buglet that could cause bogus
+	warnings.
+
 Mon Dec 21 21:48:29 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 
