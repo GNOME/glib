@@ -1,16 +1,15 @@
-# glib2
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# glib
 # Young-Ho Cha <ganadist@chollian.net>, 2002
-# Changwoo Ryu <cwryu@debian.org>, 2002
+# Changwoo Ryu <cwryu@debian.org>, 2002, 2004
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2003-12-03 17:30+0900\n"
-"Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
-"Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
+"PO-Revision-Date: 2004-01-30 03:56+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
+"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -367,7 +366,7 @@ msgstr "에트리뷰트 이름에서 문서가 갑작스럽게 끝났습니다"
 
 #: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "엘리먼트의 열기 태그 안에서 문서가 갑작스럽게 끝났습니다"
+msgstr "엘리먼트의 열기 태그 안에서 문서가 갑작스럽게 끝났습니다."
 
 #: glib/gmarkup.c:1693
 msgid ""
