@@ -3,7 +3,7 @@ Overview of Changes in GLib 1.2.7:
 * Threadsafety fixes to quarked data lists.
 * Better getpwuid_r() checks for newer AIXens.
 * Locale fix to g_strtod().
-* Timer fixups to the main loop and teh timer functions.
+* Timer fixups to the main loop and the timer functions.
 * Upgrade to libtool 1.3.4.
 
 Overview of Changes in GLib 1.2.6:
