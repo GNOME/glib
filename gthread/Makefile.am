@@ -25,6 +25,10 @@ top_builddir_full=`cd \$(top_builddir); pwd`
 
 lib_LTLIBRARIES = libgthread-1.3.la
 
+if MS_LIB_AVAILABLE
+noinst_DATA = gthread-1.3.lib
+endif
+
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
@@ -39,12 +43,15 @@ libgthread_1_3_la_LDFLAGS = \
 
 libgthread_1_3_la_LIBADD = @G_THREAD_WIN32_RESOURCE@ @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@ $(libglib)
 
-libgthread_1_3_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@
+libgthread_1_3_la_DEPENDENCIES = @G_THREAD_WIN32_RESOURCE@ @GTHREAD_DEF@
 
 if OS_WIN32
 @G_THREAD_WIN32_RESOURCE@ : gthread.rc
 	$(top_srcdir)/build/win32/lt-compile-resource gthread.rc @G_THREAD_WIN32_RESOURCE@
 endif
+
+gthread-1.3.lib: libgthread-1.3.la gthread.def
+	lib -name:libgthread-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gthread.def -out:$@
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status

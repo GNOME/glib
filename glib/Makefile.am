@@ -15,6 +15,10 @@ BUILT_EXTRA_DIST = 		\
 
 lib_LTLIBRARIES = libglib-1.3.la
 
+if MS_LIB_AVAILABLE
+noinst_DATA = glib-1.3.lib
+endif
+
 libglib_1_3_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
@@ -138,7 +142,7 @@ export_symbols = -export-symbols glib.def
 endif
 
 libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@
+libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
 
 libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
@@ -151,6 +155,9 @@ gspawn_win32_helper_LDADD = libglib-1.3.la
 @G_LIB_WIN32_RESOURCE@ : glib.rc
 	$(top_srcdir)/build/win32/lt-compile-resource glib.rc @G_LIB_WIN32_RESOURCE@
 endif
+
+glib-1.3.lib: libglib-1.3.la glib.def
+	lib -name:libglib-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:glib.def -out:$@
 
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib/glib.rc.in
 	cd $(top_builddir) && CONFIG_FILES=glib/$@ CONFIG_HEADERS= $(SHELL) ./config.status

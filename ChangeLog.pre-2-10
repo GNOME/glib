@@ -1,3 +1,21 @@
+2001-09-25  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in: More Win32 automake macros. For .def files:
+	GLIB_DEF, GMODULE_DEF, GOBJECT_DEF and GTHREAD_DEF. For .exp
+	files: TESTGMODULE_EXP (for programs that need to export symbols,
+	just testgmodule here). A new conditional, MS_LIB_AVAILABLE to
+	test whether the Microsoft librarian ("ar") is available to build
+	MS import libraries.
+ 
+	* glib/Makefile.am
+	* gmodule/Makefile.am: Use above. New rule to build MS import
+	library.
+
+	* glib/makefile.msc.in
+	* tests/makefile.msc.in
+	* tests/makefile.mingw.in: Use same DLL and import library names as
+	libtool.
+
 2001-09-24  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gutf8.c, glib/gunibreak.c, glib/gunicollate.c,

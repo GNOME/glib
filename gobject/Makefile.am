@@ -17,6 +17,10 @@ libglib = $(top_builddir)/glib/libglib-1.3.la
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject-1.3.la
 
+if MS_LIB_AVAILABLE
+noinst_DATA = gobject-1.3.lib
+endif
+
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
@@ -33,7 +37,7 @@ libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
 
 libgobject_1_3_la_LIBADD = @G_OBJECT_WIN32_RESOURCE@ $(libglib)
 
-libgobject_1_3_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@
+libgobject_1_3_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@ @GOBJECT_DEF@
 
 #
 # setup source file variables
@@ -203,6 +207,9 @@ if OS_WIN32
 @G_OBJECT_WIN32_RESOURCE@ : gobject.rc
 	$(top_srcdir)/build/win32/lt-compile-resource gobject.rc @G_OBJECT_WIN32_RESOURCE@
 endif
+
+gobject-1.3.lib: libgobject-1.3.la gobject.def
+	lib -name:libgobject-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gobject.def -out:$@
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status

@@ -35,6 +35,10 @@ top_builddir_full=`cd \$(top_builddir); pwd`
 lib_LTLIBRARIES = libgmodule-1.3.la
 noinst_LTLIBRARIES = libgplugin_a.la libgplugin_b.la
 
+if MS_LIB_AVAILABLE
+noinst_DATA = gmodule-1.3.lib
+endif
+
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
@@ -51,7 +55,7 @@ libgmodule_1_3_la_LDFLAGS = \
 
 libgmodule_1_3_la_LIBADD = @G_MODULE_WIN32_RESOURCE@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
 
-libgmodule_1_3_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@
+libgmodule_1_3_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@ @GMODULE_DEF@
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) $(plugin_rpath)
@@ -63,12 +67,19 @@ libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
-testgmodule_LDADD = libgmodule-1.3.la $(libglib) @G_MODULE_LIBS@
+testgmodule_LDADD = @TESTGMODULE_EXP@ libgmodule-1.3.la $(libglib) @G_MODULE_LIBS@
+testgmodule_DEPENDENCIES = @TESTGMODULE_EXP@
 
 if OS_WIN32
 @G_MODULE_WIN32_RESOURCE@ : gmodule.rc
 	$(top_srcdir)/build/win32/lt-compile-resource gmodule.rc @G_MODULE_WIN32_RESOURCE@
 endif
+
+gmodule-1.3.lib: libgmodule-1.3.la gmodule.def
+	lib -name:libgmodule-1.3-@LT_CURRENT_MINUS_AGE@.dll -def:gmodule.def -out:$@
+
+testgmodule.exp: testgmodule.o
+	dlltool --output-exp testgmodule.exp testgmodule.o
 
 gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status

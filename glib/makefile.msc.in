@@ -5,12 +5,7 @@ TOP = ..\..
 
 !INCLUDE $(TOP)\build\win32\make.msc
 
-# Possibly override GLib version in build\win32\module.defs
-GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
-
 ################################################################
-
-# Nothing much configurable below
 
 INCLUDES = -I . -I ..
 DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
@@ -19,8 +14,8 @@ DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS)
 all :				\
 	..\config.h		\
 	..\glibconfig.h	\
-	glib-$(GLIB_VER).dll \
-	glib-$(GLIB_VER)s.lib \
+	libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll \
+	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
 	gspawn-win32-helper.exe	\
 
 glib_OBJECTS =			\
@@ -75,21 +70,17 @@ glib_OBJECTS =			\
 ..\config.h: ..\config.h.win32
 	copy ..\config.h.win32 ..\config.h
 
-makefile.msc: makefile.msc.in
-	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
-	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
-
 ################ glib
 
 # create a static libary
-glib-$(GLIB_VER)s.lib : $(glib_OBJECTS)
-	lib /out:glib-$(GLIB_VER)s.lib $(glib_OBJECTS)
+glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS)
+	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS)
 
-glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
-	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
+libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) glib.def
+	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /implib:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib /def:glib.def
 
-gspawn-win32-helper.exe : gspawn-win32-helper.c glib-$(GLIB_VER).dll
-	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows user32.lib
+gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
+	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS) /subsystem:windows user32.lib
 
 ################ other stuff
 

@@ -922,6 +922,7 @@ AC_MSG_RESULT($platform_win32)
 AM_CONDITIONAL(PLATFORM_WIN32, test x$platform_win32 = xyes)
 
 AC_MSG_CHECKING([if building for pure Win32])
+ms_linker_available=no
 case "$host" in
   *-*-mingw*)
     os_win32=yes
@@ -929,6 +930,11 @@ case "$host" in
     G_MODULE_WIN32_RESOURCE=gmodule-win32res.lo
     G_OBJECT_WIN32_RESOURCE=gobject-win32res.lo
     G_THREAD_WIN32_RESOURCE=gthread-win32res.lo
+    GLIB_DEF=glib.def
+    GMODULE_DEF=gmodule.def
+    GOBJECT_DEF=gobject.def
+    GTHREAD_DEF=gthread.def
+    TESTGMODULE_EXP=testgmodule.exp
     ;;
   *)
     os_win32=no
@@ -936,6 +942,11 @@ case "$host" in
     G_MODULE_WIN32_RESOURCE=
     G_OBJECT_WIN32_RESOURCE=
     G_THREAD_WIN32_RESOURCE=
+    GLIB_DEF=
+    GMODULE_DEF=
+    GOBJECT_DEF=
+    GTHREAD_DEF=
+    TESTGMODULE_EXP=
     ;;
 esac
 AC_MSG_RESULT($os_win32)
@@ -944,6 +955,17 @@ AC_SUBST(G_LIB_WIN32_RESOURCE)
 AC_SUBST(G_MODULE_WIN32_RESOURCE)
 AC_SUBST(G_OBJECT_WIN32_RESOURCE)
 AC_SUBST(G_THREAD_WIN32_RESOURCE)
+AC_SUBST(GLIB_DEF)
+AC_SUBST(GMODULE_DEF)
+AC_SUBST(GOBJECT_DEF)
+AC_SUBST(GTHREAD_DEF)
+AC_SUBST(TESTGMODULE_EXP)
+
+if test $os_win32 = yes; then
+	AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
+	AC_MSG_RESULT($ms_librarian)
+fi
+AM_CONDITIONAL(MS_LIB_AVAILABLE, test $ms_librarian = yes)
 
 dnl ***********************
 dnl *** g_thread checks ***
