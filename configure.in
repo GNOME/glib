@@ -837,8 +837,8 @@ struct _GStaticMutex
 };
 #define G_STATIC_MUTEX_INIT { $g_mutex_default_init, NULL }
 #define g_static_mutex_get_mutex(mutex) \
-  ( g_thread_use_default_impl ? (GMutex*)&mutex.default_mutex : \
-    g_static_mutex_get_mutex_impl(&mutex.runtime_mutex) )
+  ( g_thread_use_default_impl ? (GMutex*)&(mutex).default_mutex : \
+    g_static_mutex_get_mutex_impl(&(mutex).runtime_mutex) )
 outfile_EOF
   else
 cat >>$outfile <<outfile_EOF                                               

@@ -1,5 +1,8 @@
 1998-12-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: Fixed stupid bug, that made
+	g_static_mutex_lock(*mutex) not work as expected.
+
 	* docs/glib-config.1: Updated to reflect the existence of gthread.
 
 	* gmain.c (g_main_poll_add_unlocking): Changed
