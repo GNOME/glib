@@ -1,3 +1,9 @@
+Sat Jul 25 16:09:00 1998  Mark Crichton <crichton@expert.cc.purdue.edu>
+	
+	* glib.h: gtime changed to g_time.  gtime is used in 
+	/usr/include/time.h in NetBSD, causing multiple headaches.
+	If this isn't the right way of fixing it.... ;)
+
 Thu Jul 23 00:29:14 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 
