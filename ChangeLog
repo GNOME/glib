@@ -1,3 +1,11 @@
+2005-03-18  Hans Breuer  <hans@breuer.org>
+
+	* glib/makefile.msc.in : handle galiasdef.c (although completely 
+	useless for msvc build)
+
+	* glib/gbacktrace.c glib/gmessage.c : need at least _WIN_VER 0x0401
+	for IsDebuggerPresent()
+
 2005-03-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Update the documentation, reflecting the

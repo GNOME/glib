@@ -61,6 +61,7 @@
 
 #ifdef G_OS_WIN32
 #  define STRICT		/* Strict typing, please */
+#  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
 #  undef STRICT
 #endif

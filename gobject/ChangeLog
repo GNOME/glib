@@ -1,3 +1,7 @@
+2005-03-18  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc.in : handle gobjectaliasdef.c
+
 2005-03-14  Matthias Clasen  <mclasen@redhat.com>
 
 	Make PLT-reduction work with gcc4, and don't include

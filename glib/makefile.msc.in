@@ -15,6 +15,7 @@ all :				\
 	..\config.h		\
 	..\glibconfig.h	\
 	galias.h		\
+	galiasdef.c		\
 	gnulib\gnulib.lib	\
 	libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll \
 	glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
@@ -87,12 +88,15 @@ glib_OBJECTS =			\
 galias.h: glib.symbols
 	perl makegalias.pl < glib.symbols > galias.h
 
+galiasdef.c: glib.symbols
+	  perl makegalias.pl -def < glib.symbols > galiasdef.c
+
 localcharset.c : libcharset/localcharset.c
 	copy libcharset\localcharset.c localcharset.c
 
 glib.def: glib.symbols
 	echo EXPORTS > glib.def
-	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS glib.symbols >> glib.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES glib.symbols >> glib.def
 
 glib.res : glib.rc
 	rc -DBUILDNUMBER=0 -r -fo glib.res glib.rc

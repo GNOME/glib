@@ -18,6 +18,7 @@ all :				\
 	gmarshal.h              \
 	gmarshal.c              \
 	gobjectalias.h	\
+	gobjectaliasdef.c \
 	gmarshal.strings \
 	gobject-query.exe \
 	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
@@ -44,9 +45,12 @@ gobject_OBJECTS =		\
 gobjectalias.h: gobject.symbols
 	perl makegobjectalias.pl < gobject.symbols > gobjectalias.h
 
+gobjectaliasdef.c: gobject.symbols
+	perl makegobjectalias.pl -def < gobject.symbols > gobjectaliasdef.c
+
 gobject.def: gobject.symbols
 	echo EXPORTS > gobject.def
-	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 gobject.symbols >> gobject.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES gobject.symbols >> gobject.def
 
 gobject.res : gobject.rc
 	rc -DBUILDNUMBER=0 -r -fo gobject.res gobject.rc
