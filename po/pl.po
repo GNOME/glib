@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-03-03 21:13-0500\n"
+"POT-Creation-Date: 2002-03-08 10:58-0500\n"
 "PO-Revision-Date: 2002-02-28 16:49+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.5\n"
-"POT-Creation-Date: 2002-03-03 21:13-0500\n"
+"POT-Creation-Date: 2002-03-08 10:58-0500\n"
 "PO-Revision-Date: 2001-09-28 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2002-03-03 21:13-0500\n"
+"POT-Creation-Date: 2002-03-08 10:58-0500\n"
 "PO-Revision-Date: 2002-02-20 14:33+0000\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
