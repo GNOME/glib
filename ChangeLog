@@ -1,3 +1,11 @@
+2002-07-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread/gthread-solaris.c: Use thr_min_stack() instead of
+	sysconf (_SC_THREAD_STACK_MIN). if stack_size is 0 on entry to
+	g_thread_create_solaris_impl, also pass 0 to thr_create. Otherwise
+	the stack might be to small for any nontrivial thread. Discovered
+	on intel-solaris by Rajkumar Sivasamy <rajkumar.siva@wipro.com>.
+
 2002-07-03  Anders Carlsson  <andersca@gnu.org>
 
 	* configure.in: Add a forgotten trailing ` in the 
@@ -8,7 +16,7 @@
 	* configure.in: Set binary age to 0 to make it compile.
 
 	* configure.in: Improve checks for dce/posix threads to also do
-	the right thing, if the thread functions are not declared in the
+	the right thing, if the thread functions are not declared in
 	pthread.h. Idea from Miroslaw Dobrzanski-Neumann
 	<mne@mosaic-ag.com> in #77981.
 
