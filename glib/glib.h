@@ -2321,23 +2321,7 @@ gint		gwin_closedir  	(DIR		*dir);
 
 #endif /* _MSC_VER */
 
-#define g_ntohl(x) \
-  ((guint32)((((guint32)(x) & 0x000000ffU) << 24) | \
-	     (((guint32)(x) & 0x0000ff00U) <<  8) | \
-	     (((guint32)(x) & 0x00ff0000U) >>  8) | \
-	     (((guint32)(x) & 0xff000000U) >> 24)))
-
-#define g_htonl(x)	g_ntohl(x)
-
-#define g_ntohs(x) \
-  ((guint16)((((guint16)(x) & 0x00ff) << 8) | \
-	     (((guint16)(x) & 0xff00) >> 8)))
-
-#define g_htons(x)	g_ntohs(x)
-
 #endif /* NATIVE_WIN32 */
-
-
 
 
 #ifdef __cplusplus
