@@ -159,7 +159,7 @@ documentation.
 <para>
 Sets the log handler for a domain and a set of log levels.
 To handle fatal and recursive messages the @log_levels parameter
-must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSIVE bit flags.
+must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION bit flags.
 </para>
 <para>
 Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if you want
@@ -170,7 +170,7 @@ to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 <title>Adding a log handler for all warning messages in the default (application) domain</title>
 <programlisting>
   g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
-                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+                     | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 </programlisting>
 </example>
 
@@ -178,7 +178,7 @@ to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 <title>Adding a log handler for all critical messages from GTK+</title>
 <programlisting>
   g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
-                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+                     | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 </programlisting>
 </example>
 
@@ -186,14 +186,14 @@ to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 <title>Adding a log handler for <emphasis>all</emphasis> messages from GLib</title>
 <programlisting>
   g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
-                     | G_LOG_FLAG_RECURSIVE, my_log_handler, NULL);
+                     | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 </programlisting>
 </example>
 
 @log_domain: the log domain, or %NULL for the default "" application domain.
 @log_levels: the log levels to apply the log handler for. To handle fatal
 and recursive messages as well, combine the log levels with the
-#G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSIVE bit flags.
+#G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION bit flags.
 @log_func: the log handler function.
 @user_data: data passed to the log handler.
 @Returns: the id of the new handler.
