@@ -2854,9 +2854,9 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
       return;
     }
   
-  /* setup GRuntime wide debugging flags */
+  /* setup GObject library wide debugging flags */
   _g_type_debug_flags = debug_flags & G_TYPE_DEBUG_MASK;
-  env_string = g_getenv ("GRUNTIME_DEBUG");
+  env_string = g_getenv ("GOBJECT_DEBUG");
   if (env_string != NULL)
     {
       static GDebugKey debug_keys[] = {

@@ -595,7 +595,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  const gchar *gruntime_marshallers[] = {
+  const gchar *gobject_marshallers[] = {
 #include	"gmarshal.strings"
   };
   GScanner *scanner;
@@ -619,11 +619,11 @@ main (int   argc,
   fout = stdout;
   marshallers = g_hash_table_new (g_str_hash, g_str_equal);
 
-  /* add GRuntime standard marshallers */
+  /* add standard marshallers of the GObject library */
   if (std_includes)
-    for (i = 0; i < sizeof (gruntime_marshallers) / sizeof (gruntime_marshallers[0]); i++)
+    for (i = 0; i < sizeof (gobject_marshallers) / sizeof (gobject_marshallers[0]); i++)
       {
-	gchar *tmp = g_strdup (gruntime_marshallers[i]);
+	gchar *tmp = g_strdup (gobject_marshallers[i]);
 	
 	g_hash_table_insert (marshallers, tmp, tmp);
       }
@@ -861,7 +861,7 @@ print_blurb (FILE    *bout,
       fprintf (bout, "  --body                     generate C code\n");
       fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
       fprintf (bout, "  --skip-source              skip source location comments\n");
-      fprintf (bout, "  --stdinc, --nostdinc       include/use GRuntime standard marshallers\n");
+      fprintf (bout, "  --stdinc, --nostdinc       include/use standard marshallers\n");
       fprintf (bout, "  -h, --help                 show this help message\n");
       fprintf (bout, "  -v, --version              print version informations\n");
       fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");

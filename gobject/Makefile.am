@@ -1,4 +1,4 @@
-# GRuntime - GLib Type, Object, Parameter and Signal Library
+# GObject - GLib Type, Object, Parameter and Signal Library
 # Copyright (C) 1997,98,99,2000 Tim Janik and Red Hat, Inc.
 #
 ## Process this file with automake to produce Makefile.in
@@ -61,8 +61,8 @@ libgobject_1_3_la_DEPENDENCIES = @G_OBJECT_WIN32_RESOURCE@ @GOBJECT_DEF@
 #
 # setup source file variables
 #
-# GRuntime header files for public installation (non-generated)
-gruntime_public_h_sources = @STRIP_BEGIN@ \
+# GObject library header files for public installation (non-generated)
+gobject_public_h_sources = @STRIP_BEGIN@ \
 	gboxed.h		\
 	gclosure.h		\
 	genums.h		\
@@ -80,11 +80,11 @@ gruntime_public_h_sources = @STRIP_BEGIN@ \
 	gvaluetypes.h		\
 	gobjectnotifyqueue.c	\
 @STRIP_END@
-# GRuntime header files that don't get installed
-gruntime_private_h_sources = @STRIP_BEGIN@ \
+# GObject library header files that don't get installed
+gobject_private_h_sources = @STRIP_BEGIN@ \
 @STRIP_END@
-# GRuntime C sources to build the library from
-gruntime_c_sources = @STRIP_BEGIN@ \
+# GObject library C sources to build the library from
+gobject_c_sources = @STRIP_BEGIN@ \
 	gboxed.c		\
 	gclosure.c		\
 	genums.c		\
@@ -109,33 +109,33 @@ gruntime_c_sources = @STRIP_BEGIN@ \
 # content
 
 # built sources that get installed with the header files
-gruntime_built_public_sources = @STRIP_BEGIN@ \
+gobject_built_public_sources = @STRIP_BEGIN@ \
 	gmarshal.h	\
 @STRIP_END@
 # built sources that don't get installed
-gruntime_built_sources = @STRIP_BEGIN@ \
+gobject_built_sources = @STRIP_BEGIN@ \
 	stamp-gmarshal.h		 \
 	gmarshal.c			 \
-	${gruntime_built_public_sources} \
+	${gobject_built_public_sources} \
 @STRIP_END@
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
-gruntime_extra_sources = @STRIP_BEGIN@ \
+gobject_extra_sources = @STRIP_BEGIN@ \
 	gmarshal.list		\
 	gmarshal.strings	\
 @STRIP_END@
 
 
 #
-# setup GRuntime sources and their dependancies
+# setup GObject library sources and their dependancies
 #
-gruntime_target_headers = $(gruntime_public_h_sources) $(gruntime_built_public_sources)
-gruntime_target_sources = $(gruntime_c_sources)
-MAINTAINERCLEANFILES += $(gruntime_built_sources)
+gobject_target_headers = $(gobject_public_h_sources) $(gobject_built_public_sources)
+gobject_target_sources = $(gobject_c_sources)
+MAINTAINERCLEANFILES += $(gobject_built_sources)
 EXTRA_HEADERS +=
-EXTRA_DIST += $(gruntime_private_h_sources) $(gruntime_extra_sources)
-EXTRA_DIST += $(gruntime_built_sources)
+EXTRA_DIST += $(gobject_private_h_sources) $(gobject_extra_sources)
+EXTRA_DIST += $(gobject_built_sources)
 
 #
 # rules to generate built sources
@@ -144,7 +144,7 @@ EXTRA_DIST += $(gruntime_built_sources)
 gen_sources = xgen-gmh xgen-gmc xgen-gms
 CLEANFILES += $(gen_sources)
 
-$(libgobject_1_3_la_OBJECTS): $(gruntime_built_sources)  ${gruntime_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
+$(libgobject_1_3_la_OBJECTS): $(gobject_built_sources)  ${gobject_built_public_sources} # this is our oldest file, used for implicit auto-generation deps
 # initial creation of the real stamp-* files
 gmarshal.h:	# never add deps here
 	test -f "$(srcdir)/$@" || touch $(srcdir)/$@
@@ -175,8 +175,8 @@ glib-genmarshal.o: gmarshal.strings
 
 
 # target platform:
-libgobjectinclude_HEADERS = $(gruntime_target_headers)
-libgobject_1_3_la_SOURCES = $(gruntime_target_sources)
+libgobjectinclude_HEADERS = $(gobject_target_headers)
+libgobject_1_3_la_SOURCES = $(gobject_target_sources)
 
 #
 # programs to compile and install

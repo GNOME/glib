@@ -1,3 +1,11 @@
+2002-02-26  Matthias Clasen  <maclas@gmx.de>
+
+	* docs/debugging.txt, gobject/glib-genmarshal.c,
+	gobject/glib-genmarshal.1, gobject/Makefile.am, gobject/gtype.c:
+	Remove references to gruntime. This includes renaming the test
+	program testgruntime to testgobject and the debug envvar
+	GRUNTIME_DEBUG to GOBJECT_DEBUG.  (#50877)
+
 Tue Feb 26 14:56:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-2.0.pc.in: Reorder @INTL_LIBS@ and @ICONV_LIBS@ in case

@@ -31,8 +31,8 @@ static volatile gpointer *g_trace_instance_signals;
 
 Environment variables for debugging
 ===================================
-When G_ENABLE_DEBUG was defined upon compilation, GRuntime supports
-an environment variable GRUNTIME_DEBUG that can be set to a
+When G_ENABLE_DEBUG was defined upon compilation, the GObject library 
+supports an environment variable GOBJECT_DEBUG that can be set to a
 combination of the flags passed in to g_type_init() (currently
 "objects" and "signals") to trigger debugging messages about
 object bookkeeping and signal emissions during runtime.
