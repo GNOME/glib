@@ -31,17 +31,26 @@ Notes about GLib 2.6.0
   on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions
   returning or accepting pathnames have been changed to expect
   filenames in this encoding, and the common POSIX functions dealing
-  with pathnames have been wrapped. On Windows these wrappers use the
-  wide-character API to do the actual file handling, so applications
-  can handle file names containing any Unicode characters, not just
-  those in the system codepage. (Wide character API is not available
-  on Win9x.)
+  with pathnames have been wrapped. These wrappers are declared in the
+  header <glib/gstdio.h> which must be included explicitly, it is not
+  included through <glib.h>.
+
+  On current (NT-based) Windows versions, where the on-disk file names
+  are Unicode, these wrappers use the wide-character API in the C
+  library. Thus applications can handle file names containing any
+  Unicode characters through GLib's own API and its POSIX wrappers,
+  not just file names restricted to characters in the system codepage.
 
   To keep binary compatibility with applications compiled against
   older versions of GLib, the Windows DLL still provides entry points
   with the old semantics using the old names, and applications
-  compiled agains GLib 2.6 will actually use new names for the
+  compiled against GLib 2.6 will actually use new names for the
   functions. This is transparent to the programmer.
+
+  When compiling against GLib 2.6, applications intended to be
+  portable to Windows must take the UTF-8 file name encoding into
+  consideration, and use the gstdio wrappers to access files whose
+  names have been constructed from strings returned from GLib.
 
 * Likewise, g_get_user_name() and g_get_real_name() have been changed to return
   UTF-8 on Windows, while keeping the old semantics for applications compiled
