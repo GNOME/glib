@@ -4,7 +4,8 @@ INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=g_log_domain_glib \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\
-	gen-unicode-tables.pl
+	gen-unicode-tables.pl	\
+	glib.def
 
 lib_LTLIBRARIES = libglib-1.3.la
 

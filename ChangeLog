@@ -1,3 +1,8 @@
+2001-07-23  Sven Neumann  <sven@gimp.org>
+
+	* Makefile.am: removed glib.def from EXTRA_DIST ...
+	* glib/Makefile.am: ... and added it here.
+
 2001-07-22  Hans Breuer  <hans@breuer.org>
 
 	* glib/giochannel.c (g_io_channel_get_buffer_condition) : make

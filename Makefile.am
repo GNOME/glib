@@ -15,7 +15,6 @@ EXTRA_DIST = 			\
 	sanity_check		\
 	README.win32		\
 	TODO.xml		\
-	glib.def		\
 	makefile.msc.in		\
 	makefile.mingw.in	\
 	glibconfig.h.win32.in	\
