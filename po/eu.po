@@ -1,0 +1,403 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# Joseba Bidaurrazaga van Dierdonck <jepibi-san@ej-gv.es>, 2001
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 1.3\n"
+"POT-Creation-Date: 2001-07-06 14:23+0200\n"
+"PO-Revision-Date: 2001-07-06 14:23+0200\n"
+"Last-Translator: Joseba Bidaurrazaga van Dierdonck <jepibi-san@ej-gv.es>\n"
+"Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:143
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
+
+#: glib/gconvert.c:147
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"
+
+#: glib/gconvert.c:251 glib/gutf8.c:787 glib/gutf8.c:1233
+msgid "Invalid byte sequence in conversion input"
+msgstr "Baliogabeko byte segida itzulketa sarreran"
+
+#: glib/gconvert.c:256 glib/gconvert.c:469
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Errorea itzultzerakoan: %s"
+
+#: glib/gconvert.c:276 glib/gutf8.c:783 glib/gutf8.c:983 glib/gutf8.c:1124
+#: glib/gutf8.c:1229
+msgid "Partial character sequence at end of input"
+msgstr "Zatia besterik ez dan karaktere segida sarreraren bukaeran"
+
+#: glib/gconvert.c:444
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Ezin itzuli fallback '%s'tik '%s' kodera"
+
+#: glib/gfileutils.c:308
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Errore fitxategia irakurtzerakoan'%s': %s"
+
+#: glib/gfileutils.c:365
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Ezin irakurri fitxategi '%s'-tik: %s"
+
+#: glib/gfileutils.c:404 glib/gfileutils.c:472
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Ezin ireki fitxategi '%s'-a: %s"
+
+#: glib/gfileutils.c:418
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Ezin lortu atributuak fitxategitik '%s': fstat() failed: %s"
+
+#: glib/gfileutils.c:444
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Ezin ireki fitzategia '%s': fdopen() failed: %s"
+
+#: glib/gfileutils.c:653
+#, c-format
+msgid "Template '%s' illegal, should not contain a '%s'"
+msgstr "Eredu '%s'-a ezlegezkoa, ezin du '%s'-rik izan"
+
+#: glib/gfileutils.c:665
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "Eredu '%s'-ak ez du amaierako XXXXXX"
+
+#: glib/gfileutils.c:686
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Ezin eratu fitxategia '%s': %s"
+
+#: glib/gmarkup.c:216
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Errorea  %d lerroan  %d hizkia: %s"
+
+#: glib/gmarkup.c:300
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Errorea %d lerroan: %s"
+
+#: glib/gmarkup.c:379
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Hutsa den '&;' aurkitua; balekoak: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:389
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"'%s' hizkia ezinezkoa da izenaren hasieran; & hizkia hasieran; ampersand-a "
+"ez badateke izaerakorik, escape &amp-a baita;"
+
+#: glib/gmarkup.c:425
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "'%s' hizkia ezin daiteke egon izenaren baitan"
+
+#: glib/gmarkup.c:469
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Izaerakoaren izena '%s' ezezaguna"
+
+#: glib/gmarkup.c:479
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Izaerakoa ez da bukatzen erthabez; ziurrenik ampersand-a erabili duzu "
+"izaerakorik sortu nahi ezean - escape ampersand &amp legez;"
+
+#: glib/gmarkup.c:525
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Ezin kudeatu '%s', zein bere baitako behar du zenbakia hizkiaren "
+"erreferentzian (&#234; adibideko) - zenbakia handiegia dateke"
+
+#: glib/gmarkup.c:550
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Hizki eerreferentzi '%s'-ek ez du koderatzen baimendutako hizkirik "
+
+#: glib/gmarkup.c:567
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+"Hizkiaren erreferentzia hutsik; behar du zenbakia bere baitan &#454 edo;"
+
+#: glib/gmarkup.c:577
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Hizki erreferentziak ez du bukaerako erthaberik; litekeena da erabili duzula "
+"ampersand hizkia izaerakorik sortu nahi ezean - escape ampersand &amp legez;"
+
+#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+msgid "Invalid UTF-8 encoded text"
+msgstr "Ezinezko UTF-8 kodetutako textua"
+
+#: glib/gmarkup.c:922
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Dokumentua zernahi gaiez hasi behar du (ad. <liburu>"
+
+#: glib/gmarkup.c:960
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr "'%s' ezin du '<'-ren aurretik; ezin du hasi elementuaren izenik"
+
+#: glib/gmarkup.c:1023
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Banakako hizki '%s'-k, behar du '>'  hasierako zatia sortzeko'%s' elementuari"
+
+#: glib/gmarkup.c:1110
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Banakako hizki '%s'-k, behar du '='atributu izen '%s'-ren ostean, '%s' "
+"elementuarena"
+
+#: glib/gmarkup.c:1151
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Banakako hizki '%s'-k, behar du '>' edo '/' hasierako zatia bukatzeko '%s' "
+"elementuan, edo bestera atributua; litekkena da ezinezko hizkia erabili "
+"duzula atributu izenean"
+
+#: glib/gmarkup.c:1224
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Banakako hizki '%s'-k, behar du parentesi hasiera berdin ikurraren ostean  '%"
+"s' atributaren balioa ematerakoan, '%s' elementuari"
+
+#: glib/gmarkup.c:1351
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' ezin du '</'-ren atzetik joan; '%s'-k ezin du hasi elementu izenik"
+
+#: glib/gmarkup.c:1388
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "'%s' elementua itxirik, ez dago elementu irekirik"
+
+#: glib/gmarkup.c:1397
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "'%s' elementua itxirik, irekirik dagoena '%s' da"
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' hizkiak ezin du itxitako '%s' elementuaren izenean joan; baimendutako "
+"hizkia '>' da"
+
+#: glib/gmarkup.c:1541
+msgid "Document was empty or contained only whitespace"
+msgstr "Dokumentua hutsik dago"
+
+#: glib/gmarkup.c:1555
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokumentua ezustean bukatzen da '<' batez"
+
+#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Dokumentua ezustean bukatzen da elementuak oraindik irekita mantenduz - '%s' "
+"izan da irekitako  azken elementua"
+
+#: glib/gmarkup.c:1571
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Dokumentua ezustean bukatzen da, beharko luke izan parentesi itxierarik  <%s/"
+"> ikurraren amaieran"
+
+#: glib/gmarkup.c:1577
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Dokumentua ezustean bukatzen da elementuaren izenaren baitan"
+
+#: glib/gmarkup.c:1582
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Dokumentua ezustean bukatzen da atributu izenaren baitan"
+
+#: glib/gmarkup.c:1587
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+"Dokumentua ezustean bukatzen da elementuaren hasierako ikurraren baitan"
+
+#: glib/gmarkup.c:1593
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Dokumentua ezustean bukatzen da atributaaren izenaren osteko berdin "
+"ikurbatez; ez du atributuaren baliorik"
+
+#: glib/gmarkup.c:1599
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Dokumentua ezustean bukatzen da atributuaren balioaren baitan"
+
+#: glib/gmarkup.c:1614
+#, fuzzy, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+"Dokumentua ezustean bukatzen da '%s' elementurako bukareako ikurraren baitan"
+
+#: glib/gmarkup.c:1620
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "Dokumentua ezustean bukatzen da aipamen edo eginkuzun baten baitan"
+
+#: glib/gshell.c:69
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Nabarmendutako textua ez da nabartze ikurraz hasten"
+
+#: glib/gshell.c:159
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"Nabarmen ikur galdua komando lerroan edo maskorreko nabarmentze texturen "
+"batetan"
+
+#: glib/gshell.c:519
+#, fuzzy, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr "Textua bukatzen da  '%s' batez. (Textua: '%s')"
+
+#: glib/gshell.c:526
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"Textua bukatua %c-rako nabarmentze ikurra aurkitu aurretik. (Textua: '%s')"
+
+#: glib/gshell.c:538
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Textua hutzik (edo zuriz)"
+
+#: glib/gspawn-win32.c:215
+msgid "Failed to read data from child process"
+msgstr "Ezin irakurri daturik child prozeduran"
+
+#: glib/gspawn-win32.c:364
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Ezusteko errora g_io_channel_win32_poll()-n child prozedurako datuak "
+"irakurtzekoan"
+
+#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Ezin irakurri child hodian (%s)"
+
+#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Ezin aldatu  '%s' direktoriora (%s)"
+
+#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Ezin abiarazi chil prozedura (%s)"
+
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Ezin eratu hodirik child prozedurarekin bat egiteko (%s)"
+
+#: glib/gspawn.c:159
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Ezin irakurri daturik child prozeduran (%s)"
+
+#: glib/gspawn.c:290
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+"Ezusteko errorea select()-n child prozeduratik (%s) datuak irakurtzerakoan"
+
+#: glib/gspawn.c:373
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Ezusteko errorea waitpid()-en (%s)"
+
+#: glib/gspawn.c:972
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Ezin ziztatu (%s)"
+
+#: glib/gspawn.c:1131
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Ezin bideratu irteera edo sarrera child prozeduran (%s)"
+
+#: glib/gspawn.c:1140
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Ezin ziztatu chil prozedura (%s)"
+
+#: glib/gspawn.c:1148
+msgid "Unknown error executing child process"
+msgstr "Errore eezaguna child prozeduran"
+
+#: glib/gspawn.c:1169
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "Ezin irakurri datu nahikorik child-en pid hodian (%s)"
+
+#: glib/gutf8.c:862
+msgid "Character out of range for UTF-8"
+msgstr "Hizkia ildotik at UTF-8-n"
+
+#: glib/gutf8.c:951 glib/gutf8.c:960 glib/gutf8.c:1092 glib/gutf8.c:1101
+#: glib/gutf8.c:1243 glib/gutf8.c:1339
+msgid "Invalid sequence in conversion input"
+msgstr "Ezinezko segida itzulpen sarreran"
+
+#: glib/gutf8.c:1254 glib/gutf8.c:1350
+msgid "Character out of range for UTF-16"
+msgstr "Hizkia ildotik at UTF-16-en"

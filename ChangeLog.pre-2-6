@@ -1,3 +1,8 @@
+2001-07-06  Pablo Saratxaga <pablo@mandrakesoft.com>
+
+	* configure.in: added Basque (eu) to ALL_LINGUAS
+
+
 Mon Jul  2 19:48:52  2001 Andrew Lanoix <alanoix@umich.edu>
 
 	*giowin32.c: g_source_remove()ing an socket iochannel closes
