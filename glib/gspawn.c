@@ -449,7 +449,7 @@ g_spawn_sync (const gchar          *working_directory,
  * <function>spawn*()</function> family of functions (which
  * g_spawn_async_with_pipes() eventually calls) paste the argument
  * vector elements into a command line, and the C runtime startup code
- * does a corresponding recostruction of an argument vector from the
+ * does a corresponding reconstruction of an argument vector from the
  * command line, to be passed to main(). Complications arise when you have
  * argument vector elements that contain spaces of double quotes. The
  * <function>spawn*()</function> functions don't do any quoting or
@@ -466,15 +466,16 @@ g_spawn_sync (const gchar          *working_directory,
  * parent's environment.
  *
  * @flags should be the bitwise OR of any flags you want to affect the
- * function's behavior. On Unix, the %G_SPAWN_DO_NOT_REAP_CHILD means
- * that the child will not be automatically reaped; you must call
- * waitpid() or handle %SIGCHLD yourself, or the
- * child will become a zombie. On Windows, the flag means that a
- * handle to the child will be returned @child_pid. You must call
- * CloseHandle() on it eventually (or exit the
- * process), or the child processs will continue to take up some table
- * space even after its death. Quite similar to zombies on Unix,
- * actually.
+ * function's behaviour. The %G_SPAWN_DO_NOT_REAP_CHILD means that 
+ * the child will not automatically be reaped; you must use a
+ * #GChildWatch source to be notified about the death of the child 
+ * process. Eventually you must call g_spawn_close_pid() on the
+ * @child_pid, in order to free resources which may be associated
+ * with the child process. (On Unix, using a #GChildWatch source is
+ * equivalent to calling waitpid() or handling the %SIGCHLD signal 
+ * manually. On Windows, calling g_spawn_close_pid() is equivalent
+ * to calling CloseHandle() on the process handle returned in 
+ * @child_pid).
  *
  * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that the parent's open file
  * descriptors will be inherited by the child; otherwise all

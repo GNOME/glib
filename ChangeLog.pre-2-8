@@ -1,3 +1,9 @@
+2004-11-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gspawn.c (g_spawn_async_with_pipes): Update the @flags
+	documentation with references to GChildWatch and 
+	g_spawn_close_pid().  (#136255, noted by Owen Taylor)
+
 2004-11-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_value_as_string): 
