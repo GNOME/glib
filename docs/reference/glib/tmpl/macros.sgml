@@ -66,7 +66,7 @@ It returns %TRUE if the GLib library is the same or newer than the given
 version.
 
 <example>
-<title>Checking the version of the GLib library.</title>
+<title>Checking the version of the GLib library</title>
 <programlisting>
   if (!GLIB_CHECK_VERSION (1, 2, 0))
     g_error ("GLib version 1.2.0 or above is needed");

@@ -2,7 +2,7 @@
 Generic Values
 
 <!-- ##### SECTION Short_Description ##### -->
-A polymorphic type that can hold values of any other type.
+A polymorphic type that can hold values of any other type
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

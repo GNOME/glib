@@ -1,5 +1,22 @@
 2002-11-23  Matthias Clasen  <maclas@gmx.de>
 
+	* gobject/tmpl/gclosure.sgml: 
+	* gobject/tmpl/signals.sgml: 
+	* gobject/tmpl/gparamspec.sgml: 
+	* gobject/tmpl/value_collection.sgml: 
+	* gobject/tmpl/generic_values.sgml: 
+	* gobject/tmpl/param_value_types.sgml: 
+	* gobject/tmpl/gboxed.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: 
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/gtypemodule.sgml: 
+	* gobject/tmpl/gtypeplugin.sgml: Add missing short descriptions, 
+	standardize them to start with a capital and end without a period. 
+
+	* glib/tmpl/arrays.sgml: 
+	* glib/tmpl/memory_chunks.sgml: 
+	* glib/tmpl/macros.sgml: Remove periods from titles in examples.
+
 	* glib/building.sgml: Explain --enable-include-printf.
 
 	* glib/Makefile.am (extra_files): 

@@ -2,7 +2,7 @@
 GObject
 
 <!-- ##### SECTION Short_Description ##### -->
-The base object type.
+The base object type
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

@@ -2,7 +2,7 @@
 GTypePlugin
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An interface for dynamically loadable types
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

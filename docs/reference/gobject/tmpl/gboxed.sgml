@@ -2,7 +2,7 @@
 GBoxed
 
 <!-- ##### SECTION Short_Description ##### -->
-Mechanism to wrap opaque C structures registered by the type system.
+A mechanism to wrap opaque C structures registered by the type system
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

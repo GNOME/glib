@@ -2,8 +2,7 @@
 Signals
 
 <!-- ##### SECTION Short_Description ##### -->
-Signals provide a means for customization of object behaviour and are used
-as general purpose notification mechanism.
+A means for customization of object behaviour and a general purpose notification mechanism
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

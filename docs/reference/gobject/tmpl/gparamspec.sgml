@@ -2,11 +2,11 @@
 GParamSpec
 
 <!-- ##### SECTION Short_Description ##### -->
-Meta data object for parameter specifications.
+Metadata for parameter specifications
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-#GParamSpec is an object structure that encapsulates the meta data
+#GParamSpec is an object structure that encapsulates the metadata
 required to specify parameters, such as e.g. #GObject properties.
 </para>
 
@@ -69,7 +69,7 @@ Retrieve the #GParamSpecClass of a #GParamSpec.
 
 <!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
 <para>
-Retrive the #GType of this @pspec.
+Retrieve the #GType of this @pspec.
 </para>
 
 @pspec: a valid #GParamSpec
@@ -77,7 +77,7 @@ Retrive the #GType of this @pspec.
 
 <!-- ##### MACRO G_PARAM_SPEC_TYPE_NAME ##### -->
 <para>
-Retrive the #GType name of this @pspec.
+Retrieve the #GType name of this @pspec.
 </para>
 
 @pspec: a valid #GParamSpec
@@ -85,7 +85,7 @@ Retrive the #GType name of this @pspec.
 
 <!-- ##### MACRO G_PARAM_SPEC_VALUE_TYPE ##### -->
 <para>
-Retrive the #GType to intiialize a #GValue for this parameter.
+Retrieve the #GType to intiialize a #GValue for this parameter.
 </para>
 
 @pspec: a valid #GParamSpec

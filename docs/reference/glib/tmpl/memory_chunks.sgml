@@ -56,7 +56,7 @@ To help debug memory chunks, use g_mem_chunk_info() and g_mem_chunk_print().
 </para>
 
 <example>
-<title>Using a GMemChunk.</title>
+<title>Using a <structname>GMemChunk</structname></title>
 <programlisting>
   GMemChunk *mem_chunk;
   gchar *mem[10000];
@@ -89,7 +89,7 @@ To help debug memory chunks, use g_mem_chunk_info() and g_mem_chunk_print().
 </programlisting></example>
 
 <example>
-<title>Using a GMemChunk with data structures.</title>
+<title>Using a <structname>GMemChunk</structname> with data structures</title>
 <programlisting>
   GMemChunk *array_mem_chunk;
   GRealArray *array;
