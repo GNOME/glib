@@ -140,8 +140,6 @@ Calculates the minimum of @a and @b.
 @a: a numeric value.
 @b: a numeric value.
 @Returns: the minimum of @a and @b.
-<!-- # Unused Parameters # -->
-@Param1: 
 
 
 <!-- ##### MACRO MAX ##### -->
