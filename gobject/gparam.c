@@ -398,8 +398,16 @@ value_param_lcopy_value (const GValue *value,
   return NULL;
 }
 
+
+/* --- param spec pool --- */
+struct _GParamSpecPool
+{
+  gboolean    type_prefixing;
+  GHashTable *hash_table;
+};
+
 static guint
-param_spec_hash (gconstpointer key_spec)
+param_spec_pool_hash (gconstpointer key_spec)
 {
   const GParamSpec *key = key_spec;
   const gchar *p;
@@ -412,8 +420,8 @@ param_spec_hash (gconstpointer key_spec)
 }
 
 static gboolean
-param_spec_equals (gconstpointer key_spec_1,
-		   gconstpointer key_spec_2)
+param_spec_pool_equals (gconstpointer key_spec_1,
+			gconstpointer key_spec_2)
 {
   const GParamSpec *key1 = key_spec_1;
   const GParamSpec *key2 = key_spec_2;
@@ -422,88 +430,181 @@ param_spec_equals (gconstpointer key_spec_1,
 	  strcmp (key1->name, key2->name) == 0);
 }
 
-GHashTable*
-g_param_spec_hash_table_new (void)
+GParamSpecPool*
+g_param_spec_pool_new (gboolean type_prefixing)
 {
-  return g_hash_table_new (param_spec_hash, param_spec_equals);
+  GParamSpecPool *pool = g_new (GParamSpecPool, 1);
+
+  pool->type_prefixing = type_prefixing != FALSE;
+  pool->hash_table = g_hash_table_new (param_spec_pool_hash, param_spec_pool_equals);
+
+  return pool;
 }
 
 void
-g_param_spec_hash_table_insert (GHashTable *hash_table,
-				GParamSpec *pspec,
-				GType       owner_type)
+g_param_spec_pool_insert (GParamSpecPool *pool,
+			  GParamSpec     *pspec,
+			  GType           owner_type)
 {
-  g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (pspec->name != NULL);
-  if (pspec->owner_type != owner_type)
-    g_return_if_fail (pspec->owner_type == 0);
+  gchar *p;
 
-  if (strchr (pspec->name, ':'))
-    g_warning (G_STRLOC ": parameter name `%s' contains field-delimeter",
-	       pspec->name);
-  else
+  g_return_if_fail (pool != NULL);
+  g_return_if_fail (pspec);
+  g_return_if_fail (owner_type > 0);
+  g_return_if_fail (pspec->owner_type == 0);
+
+  for (p = pspec->name; *p; p++)
     {
-      pspec->owner_type = owner_type;
-      g_hash_table_insert (hash_table, pspec, pspec);
+      if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
+	{
+	  g_warning (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
+	  return;
+	}
     }
+
+  pspec->owner_type = owner_type;
+  g_param_spec_ref (pspec);
+  g_hash_table_insert (pool->hash_table, pspec, pspec);
 }
 
 void
-g_param_spec_hash_table_remove (GHashTable *hash_table,
-				GParamSpec *pspec)
+g_param_spec_pool_remove (GParamSpecPool *pool,
+			  GParamSpec     *pspec)
 {
-  g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (pool != NULL);
+  g_return_if_fail (pspec);
 
-  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) != NULL); /* FIXME: paranoid */
+  if (g_hash_table_remove (pool->hash_table, pspec))
+    g_param_spec_unref (pspec);
+  else
+    g_warning (G_STRLOC ": attempt to remove unknown pspec `%s' from pool", pspec->name);
+}
 
-  g_hash_table_remove (hash_table, pspec);
-  g_assert (g_param_spec_hash_table_lookup (hash_table, pspec->name, pspec->owner_type, FALSE, NULL) == NULL); /* FIXME: paranoid */
-  pspec->owner_type = 0;
+static inline GParamSpec*
+param_spec_ht_lookup (GHashTable  *hash_table,
+		      const gchar *param_name,
+		      GType        owner_type,
+		      gboolean     walk_ancestors)
+{
+  GParamSpec key, *pspec;
+
+  key.owner_type = owner_type;
+  key.name = (gchar*) param_name;
+  if (walk_ancestors)
+    do
+      {
+	pspec = g_hash_table_lookup (hash_table, &key);
+	if (pspec)
+	  return pspec;
+	key.owner_type = g_type_parent (key.owner_type);
+      }
+    while (key.owner_type);
+  else
+    pspec = g_hash_table_lookup (hash_table, &key);
+
+  if (!pspec)
+    {
+      /* sigh, try canonicalization */
+      key.name = g_strdup (param_name);
+      key.owner_type = owner_type;
+      
+      g_strcanon (key.name, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-", '-');
+      if (walk_ancestors)
+	do
+	  {
+	    pspec = g_hash_table_lookup (hash_table, &key);
+	    if (pspec)
+	      {
+		g_free (key.name);
+		return pspec;
+	      }
+	    key.owner_type = g_type_parent (key.owner_type);
+	  }
+	while (key.owner_type);
+      else
+	pspec = g_hash_table_lookup (hash_table, &key);
+      g_free (key.name);
+    }
+
+  return pspec;
 }
 
 GParamSpec*
-g_param_spec_hash_table_lookup (GHashTable   *hash_table,
-				const gchar  *param_name,
-				GType         owner_type,
-				gboolean      try_ancestors,
-				const gchar **trailer)
+g_param_spec_pool_lookup (GParamSpecPool *pool,
+			  const gchar    *param_name,
+			  GType           owner_type,
+			  gboolean        walk_ancestors,
+			  const gchar   **trailer_p)
 {
   GParamSpec *pspec;
-  GParamSpec key;
   gchar *delim;
-  
-  g_return_val_if_fail (hash_table != NULL, NULL);
-  g_return_val_if_fail (param_name != NULL, NULL);
-  
-  key.owner_type = owner_type;
-  delim = strchr (param_name, ':');
-  if (delim)
-    key.name = g_strndup (param_name, delim - param_name);
-  else
-    key.name = g_strdup (param_name);
-  g_strcanon (key.name, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-", '-');
 
-  if (trailer)
-    *trailer = delim;
-  
-  pspec = g_hash_table_lookup (hash_table, &key);
-  if (!pspec && try_ancestors)
+  g_return_val_if_fail (pool != NULL, NULL);
+  g_return_val_if_fail (param_name, NULL);
+
+  delim = strchr (param_name, ':');
+
+  /* try quick and away, i.e. no prefix, no trailer */
+  if (!delim)
     {
-      key.owner_type = g_type_parent (key.owner_type);
-      while (key.owner_type)
+      if (trailer_p)
+	*trailer_p = NULL;
+      return param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+    }
+
+  /* strip type prefix */
+  if (pool->type_prefixing && delim[1] == ':')
+    {
+      guint l = delim - param_name;
+      gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
+      GType type;
+      
+      strncpy (buffer, param_name, delim - param_name);
+      buffer[l] = 0;
+      type = g_type_from_name (buffer);
+      if (l >= 32)
+	g_free (buffer);
+      if (type)		/* type==0 isn't a valid type pefix */
 	{
-	  pspec = g_hash_table_lookup (hash_table, &key);
-	  if (pspec)
-	    break;
-	  key.owner_type = g_type_parent (key.owner_type);
+	  /* sanity check, these cases don't make a whole lot of sense */
+	  if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))
+	    {
+	      if (trailer_p)
+		*trailer_p = NULL;
+	      return NULL;
+	    }
+	  owner_type = type;
+	  param_name += l + 2;
+	  delim = strchr (param_name, ':');
+	  if (!delim)		/* good, can still forget about trailer */
+	    {
+	      if (trailer_p)
+		*trailer_p = NULL;
+	      return param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+	    }
 	}
     }
-  
-  g_free (key.name);
-  
-  return pspec;
+
+  /* ok, no prefix, handle trailer */
+  if (delim[1] == ':')
+    {
+      guint l = delim - param_name;
+      gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
+      
+      strncpy (buffer, param_name, delim - param_name);
+      buffer[l] = 0;
+      pspec = param_spec_ht_lookup (pool->hash_table, buffer, owner_type, walk_ancestors);
+      if (l >= 32)
+	g_free (buffer);
+      if (trailer_p)
+	*trailer_p = pspec ? delim + 2 : NULL;
+      return pspec;
+    }
+
+  /* malformed param_name */
+  if (trailer_p)
+    *trailer_p = NULL;
+  return NULL;
 }
 
 

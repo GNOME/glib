@@ -345,7 +345,7 @@ type_lookup_iface_entry (TypeNode *node,
       guint n_ifaces = node->n_ifaces;
       GType iface_type = NODE_TYPE (iface);
 
-      do		/* FIXME: should optimize iface lookups for <= 4 */
+      do
 	{
 	  guint i;
 	  IFaceEntry *check;

@@ -169,16 +169,15 @@ g_hash_table_insert (GHashTable *hash_table,
     }
 }
 
-void
-g_hash_table_remove (GHashTable	     *hash_table,
-		     gconstpointer    key)
+gboolean
+g_hash_table_remove (GHashTable	  *hash_table,
+		     gconstpointer key)
 {
   GHashNode **node, *dest;
   
-  g_return_if_fail (hash_table != NULL);
+  g_return_val_if_fail (hash_table != NULL, FALSE);
   
   node = g_hash_table_lookup_node (hash_table, key);
-
   if (*node)
     {
       dest = *node;
@@ -187,7 +186,11 @@ g_hash_table_remove (GHashTable	     *hash_table,
       hash_table->nnodes--;
   
       g_hash_table_resize (hash_table);
+
+      return TRUE;
     }
+
+  return FALSE;
 }
 
 gboolean

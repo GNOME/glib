@@ -45,7 +45,7 @@ void	    g_hash_table_destroy	(GHashTable	*hash_table);
 void	    g_hash_table_insert		(GHashTable	*hash_table,
 					 gpointer	 key,
 					 gpointer	 value);
-void	    g_hash_table_remove		(GHashTable	*hash_table,
+gboolean    g_hash_table_remove		(GHashTable	*hash_table,
 					 gconstpointer	 key);
 gpointer    g_hash_table_lookup		(GHashTable	*hash_table,
 					 gconstpointer	 key);

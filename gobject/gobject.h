@@ -74,11 +74,12 @@ struct  _GObjectClass
   /* private, these fields might vanish */
   guint        n_property_specs;
   GParamSpec **property_specs;
+  GSList      *construct_properties;
 
   /* public overridable methods */
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
-                                 GObjectConstructParam *construct_params);
+                                 GObjectConstructParam *construct_properties);
   void       (*get_property)            (GObject        *object,
                                          guint           property_id,
                                          GValue         *value,
@@ -124,10 +125,10 @@ gpointer    g_object_new                      (GType           object_type,
 gpointer    g_object_new_valist               (GType           object_type,
 					       const gchar    *first_property_name,
 					       va_list         var_args);
-void        g_object_set                      (GObject        *object,
+void        g_object_set                      (gpointer	       object,
 					       const gchar    *first_property_name,
 					       ...);
-void        g_object_get                      (GObject        *object,
+void        g_object_get                      (gpointer        object,
 					       const gchar    *first_property_name,
 					       ...);
 void        g_object_set_valist               (GObject        *object,
@@ -146,8 +147,8 @@ void        g_object_freeze_notify            (GObject        *object);
 void        g_object_notify                   (GObject        *object,
 					       const gchar    *property_name);
 void        g_object_thaw_notify              (GObject        *object);
-GObject*    g_object_ref                      (GObject        *object);
-void        g_object_unref                    (GObject        *object);
+gpointer    g_object_ref                      (gpointer        object);
+void        g_object_unref                    (gpointer        object);
 gpointer    g_object_get_qdata                (GObject        *object,
 					       GQuark          quark);
 void        g_object_set_qdata                (GObject        *object,

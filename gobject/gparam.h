@@ -48,15 +48,17 @@ typedef enum
   G_PARAM_WRITABLE            = 1 << 1,
   G_PARAM_CONSTRUCT	      = 1 << 2,
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
-#define	G_PARAM_MASK		(0x000f)
-  /* bits in the range 0xfff0 are reserved for 3rd party usage */
-#define	G_PARAM_USER_MASK	(0xfff0)
+  G_PARAM_PRIVATE	      = 1 << 4,
+#define	G_PARAM_MASK		(0x000000ff)
+  /* bits in the range 0xffffff00 are reserved for 3rd party usage */
+#define	G_PARAM_USER_MASK	(0xffffff00)
 } GParamFlags;
 
 
 /* --- typedefs & structures --- */
 typedef struct _GParamSpec      GParamSpec;
 typedef struct _GParamSpecClass GParamSpecClass;
+typedef struct _GParamSpecPool  GParamSpecPool;
 struct _GParamSpec
 {
   GTypeInstance  g_type_instance;
@@ -144,23 +146,23 @@ GType	g_param_type_register_static	(const gchar		  *name,
 					 const GParamSpecTypeInfo *pspec_info);
 
 
-/* --- private --- */
+/* --- protected --- */
 gpointer	g_param_spec_internal		(GType	        param_type,
 						 const gchar   *name,
 						 const gchar   *nick,
 						 const gchar   *blurb,
 						 GParamFlags    flags);
-GHashTable*	g_param_spec_hash_table_new	(void);
-void		g_param_spec_hash_table_insert	(GHashTable    *hash_table,
-						 GParamSpec    *pspec,
-						 GType		owner_type);
-void		g_param_spec_hash_table_remove	(GHashTable    *hash_table,
-						 GParamSpec    *pspec);
-GParamSpec*	g_param_spec_hash_table_lookup	(GHashTable    *hash_table,
-						 const gchar   *param_name,
-						 GType		owner_type,
-						 gboolean       try_ancestors,
-						 const gchar  **trailer);
+GParamSpecPool* g_param_spec_pool_new		(gboolean	type_prefixing);
+void		g_param_spec_pool_insert	(GParamSpecPool	*pool,
+						 GParamSpec	*pspec,
+						 GType		 owner_type);
+void		g_param_spec_pool_remove	(GParamSpecPool	*pool,
+						 GParamSpec	*pspec);
+GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
+						 const gchar	*param_name,
+						 GType		 owner_type,
+						 gboolean	 walk_ancestors,
+						 const gchar   **trailer_p);
 
 
 /* contracts:

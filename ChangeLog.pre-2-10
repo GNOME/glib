@@ -1,3 +1,8 @@
+Tue Dec 12 18:58:22 2000  Tim Janik  <timj@gtk.org>
+
+	* ghash.c (g_hash_table_remove): return whether a value
+	got removed.
+
 Tue Dec 12 15:18:10 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.[ch]: Revert unauthorized changes.
