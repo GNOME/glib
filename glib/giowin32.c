@@ -582,13 +582,13 @@ g_io_win32_dispatch (GSource     *source,
 }
 
 static void
-g_io_win32_destroy (GSource *source)
+g_io_win32_finalize (GSource *source)
 {
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
   if (channel->debug)
-    g_print ("g_io_win32_destroy: channel with thread %#x\n",
+    g_print ("g_io_win32_finalize: channel with thread %#x\n",
 	     channel->thread_id);
 
   channel->watches = g_slist_remove (channel->watches, watch);
@@ -601,7 +601,7 @@ static GSourceFuncs win32_watch_funcs = {
   g_io_win32_prepare,
   g_io_win32_check,
   g_io_win32_dispatch,
-  g_io_win32_destroy
+  g_io_win32_finalize
 };
 
 static GSource *

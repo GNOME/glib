@@ -93,13 +93,13 @@ static gboolean g_io_unix_check    (GSource     *source);
 static gboolean g_io_unix_dispatch (GSource     *source,
 				    GSourceFunc  callback,
 				    gpointer     user_data);
-static void     g_io_unix_destroy  (GSource     *source);
+static void     g_io_unix_finalize (GSource     *source);
 
 GSourceFuncs unix_watch_funcs = {
   g_io_unix_prepare,
   g_io_unix_check,
   g_io_unix_dispatch,
-  g_io_unix_destroy
+  g_io_unix_finalize
 };
 
 GIOFuncs unix_channel_funcs = {
@@ -163,7 +163,7 @@ g_io_unix_dispatch (GSource     *source,
 }
 
 static void 
-g_io_unix_destroy (GSource *source)
+g_io_unix_finalize (GSource *source)
 {
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
 

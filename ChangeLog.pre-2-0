@@ -1,3 +1,9 @@
+Sat Jun 30 16:03:16 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giowin32.c glib/giounix.c glib/gmain.[ch]:
+	Rename GSourceFuncs::destroy to GSourceFuncs::finalize.
+	(#56858)
+
 Sat Jun 30 15:49:10 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.[ch]: (Mostly patch from Sebastian Wilhemi)

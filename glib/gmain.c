@@ -1268,8 +1268,8 @@ g_source_unref_internal (GSource      *source,
       else if (context)
 	g_source_list_remove (source, context);
 
-      if (source->source_funcs->destroy)
-	source->source_funcs->destroy (source);
+      if (source->source_funcs->finalize)
+	source->source_funcs->finalize (source);
       
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
