@@ -39,6 +39,7 @@
 
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <io.h>
 #endif /* G_OS_WIN32 */
 
 #ifndef S_ISLNK
