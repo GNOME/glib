@@ -575,27 +575,28 @@ extern const guint glib_binary_age;
 /* Forward declarations of glib types.
  */
 
-typedef struct _GList		GList;
-typedef struct _GSList		GSList;
-typedef struct _GHashTable	GHashTable;
-typedef struct _GCache		GCache;
-typedef struct _GTree		GTree;
-typedef struct _GTimer		GTimer;
-typedef struct _GMemChunk	GMemChunk;
-typedef struct _GListAllocator	GListAllocator;
-typedef struct _GStringChunk	GStringChunk;
-typedef struct _GString		GString;
 typedef struct _GArray		GArray;
-typedef struct _GPtrArray	GPtrArray;
 typedef struct _GByteArray	GByteArray;
-typedef struct _GDebugKey	GDebugKey;
-typedef struct _GScannerConfig	GScannerConfig;
-typedef struct _GScanner	GScanner;
-typedef union  _GValue		GValue;
+typedef struct _GCache		GCache;
 typedef struct _GCompletion	GCompletion;
-typedef struct _GRelation	GRelation;
-typedef struct _GTuples		GTuples;
+typedef	struct _GData		GData;
+typedef struct _GDebugKey	GDebugKey;
+typedef struct _GHashTable	GHashTable;
+typedef struct _GList		GList;
+typedef struct _GListAllocator	GListAllocator;
+typedef struct _GMemChunk	GMemChunk;
 typedef struct _GNode		GNode;
+typedef struct _GPtrArray	GPtrArray;
+typedef struct _GRelation	GRelation;
+typedef struct _GScanner	GScanner;
+typedef struct _GScannerConfig	GScannerConfig;
+typedef struct _GSList		GSList;
+typedef struct _GString		GString;
+typedef struct _GStringChunk	GStringChunk;
+typedef struct _GTimer		GTimer;
+typedef struct _GTree		GTree;
+typedef struct _GTuples		GTuples;
+typedef union  _GValue		GValue;
 
 
 typedef enum
@@ -649,6 +650,9 @@ typedef gint		(*GCompareFunc)		(gconstpointer	a,
 						 gconstpointer	b);
 typedef gchar*		(*GCompletionFunc)	(gpointer);
 typedef void		(*GDestroyNotify)	(gpointer	data);
+typedef void		(*GDataForeachFunc)	(GQuark		key_id,
+						 gpointer	data,
+						 gpointer	user_data);
 typedef void		(*GFunc)		(gpointer	data,
 						 gpointer	user_data);
 typedef guint		(*GHashFunc)		(gconstpointer	key);
@@ -1443,17 +1447,20 @@ gchar*	  g_quark_to_string		(GQuark		 quark);
 
 /* Keyed Data List
  */
-void	  g_datalist_init		(gpointer	*datalist);
-void	  g_datalist_clear		(gpointer	*datalist);
-gpointer  g_datalist_id_get_data	(gpointer	*datalist,
-					 GQuark		 key_id);
-void	  g_datalist_id_set_data_full	(gpointer	*datalist,
-					 GQuark		 key_id,
-					 gpointer	 data,
-					 GDestroyNotify	 destroy_func);
-void	  g_datalist_id_set_destroy	(gpointer	*datalist,
-					 GQuark		 key_id,
-					 GDestroyNotify	 destroy_func);
+void	  g_datalist_init		(GData		**datalist);
+void	  g_datalist_clear		(GData		**datalist);
+gpointer  g_datalist_id_get_data	(GData		**datalist,
+					 GQuark		  key_id);
+void	  g_datalist_id_set_data_full	(GData		**datalist,
+					 GQuark		  key_id,
+					 gpointer	  data,
+					 GDestroyNotify	  destroy_func);
+void	  g_datalist_id_set_destroy	(GData		**datalist,
+					 GQuark		  key_id,
+					 GDestroyNotify	  destroy_func);
+void	  g_datalist_foreach		(GData		**datalist,
+					 GDataForeachFunc func,
+					 gpointer	  user_data);
 #define	  g_datalist_id_set_data(dl, q, d)	\
      g_datalist_id_set_data_full ((dl), (q), (d), NULL)
 #define	  g_datalist_id_remove_data(dl, q)	\
@@ -1472,16 +1479,19 @@ void	  g_datalist_id_set_destroy	(gpointer	*datalist,
 
 /* Location Associated Keyed Data
  */
-void	  g_dataset_destroy		(gconstpointer	 dataset_location);
-gpointer  g_dataset_id_get_data		(gconstpointer	 dataset_location,
-					 GQuark		 key_id);
-void	  g_dataset_id_set_data_full	(gconstpointer	 dataset_location,
-					 GQuark		 key_id,
-					 gpointer	 data,
-					 GDestroyNotify	 destroy_func);
-void	  g_dataset_id_set_destroy	(gconstpointer	 dataset_location,
-					 GQuark		 key_id,
-					 GDestroyNotify	 destroy_func);
+void	  g_dataset_destroy		(gconstpointer	  dataset_location);
+gpointer  g_dataset_id_get_data		(gconstpointer	  dataset_location,
+					 GQuark		  key_id);
+void	  g_dataset_id_set_data_full	(gconstpointer	  dataset_location,
+					 GQuark		  key_id,
+					 gpointer	  data,
+					 GDestroyNotify	  destroy_func);
+void	  g_dataset_id_set_destroy	(gconstpointer	  dataset_location,
+					 GQuark		  key_id,
+					 GDestroyNotify	  destroy_func);
+void	  g_dataset_foreach		(gconstpointer	  dataset_location,
+					 GDataForeachFunc func,
+					 gpointer	  user_data);
 #define	  g_dataset_id_set_data(l, k, d)	\
      g_dataset_id_set_data_full ((l), (k), (d), NULL)
 #define	  g_dataset_id_remove_data(l, k)	\

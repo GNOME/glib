@@ -1,3 +1,15 @@
+Fri Sep 18 18:46:14 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gdataset.c: make the datalists a safe type (not using a generic
+	gpointer) by expecting a GData* argument in the g_datalist functions.
+	provide g_dataset_foreach() and g_datalist_foreach() functions that
+ 	allow a GDataForeachFunc function to walk the data lists.
+	(g_dataset_destroy_internal): made this function truely reentrant (i.e.
+	can be called from within destroy notifiers as well).
+	the *_foreach functions are _not_ reentrant (unless all the other
+	dataset and datalist functions).
+
 Fri Sep 18 03:41:20 1998  Tim Janik  <timj@gtk.org>
 
 	* gtree.c (g_tree_new): check for key_compare_func != NULL (reported

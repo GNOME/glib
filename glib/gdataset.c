@@ -31,12 +31,11 @@
 
 
 /* --- structures --- */
-typedef struct _GData GData;
 typedef struct _GDataset GDataset;
 struct _GData
 {
   GData *next;
-  guint id;
+  GQuark id;
   gpointer data;
   GDestroyNotify destroy_func;
 };
@@ -44,19 +43,19 @@ struct _GData
 struct _GDataset
 {
   gconstpointer location;
-  gpointer datalist;
+  GData        *datalist;
 };
 
 
 /* --- prototypes --- */
-static inline GDataset*	g_dataset_lookup		(gconstpointer	 dataset_location);
-static inline void	g_datalist_clear_i		(gpointer	*datalist);
-static void		g_dataset_destroy_internal	(GDataset	*dataset);
-static inline void	g_data_set_internal		(gpointer      	*datalist,
-							 GQuark          key_id,
-							 gpointer        data,
-							 GDestroyNotify  destroy_func,
-							 GDataset       *d_dataset);
+static inline GDataset*	g_dataset_lookup		(gconstpointer	  dataset_location);
+static inline void	g_datalist_clear_i		(GData		**datalist);
+static void		g_dataset_destroy_internal	(GDataset	 *dataset);
+static inline void	g_data_set_internal		(GData     	**datalist,
+							 GQuark   	  key_id,
+							 gpointer         data,
+							 GDestroyNotify   destroy_func,
+							 GDataset	 *dataset);
 static void		g_data_initialize		(void);
 static inline GQuark	g_quark_new			(const gchar  	*string);
 
@@ -75,7 +74,7 @@ static guint	     g_data_cache_length = 0;
 
 /* --- functions --- */
 static inline void
-g_datalist_clear_i (gpointer *datalist)
+g_datalist_clear_i (GData **datalist)
 {
   register GData *list;
   
@@ -106,7 +105,7 @@ g_datalist_clear_i (gpointer *datalist)
 }
 
 void
-g_datalist_clear (gpointer       *datalist)
+g_datalist_clear (GData **datalist)
 {
   g_return_if_fail (datalist != NULL);
   
@@ -132,27 +131,34 @@ g_dataset_lookup (gconstpointer	dataset_location)
 static void
 g_dataset_destroy_internal (GDataset *dataset)
 {
-  gpointer datalist;
+  register gconstpointer dataset_location;
   
-  if (dataset == g_dataset_cached)
-    g_dataset_cached = NULL;
-  g_hash_table_remove (g_dataset_location_ht, dataset->location);
-  
-  datalist = dataset->datalist;
-  g_mem_chunk_free (g_dataset_mem_chunk, dataset);
-  
-  g_datalist_clear_i (&datalist);
+  dataset_location = dataset->location;
+  while (dataset)
+    {
+      if (!dataset->datalist)
+	{
+	  if (dataset == g_dataset_cached)
+	    g_dataset_cached = NULL;
+	  g_hash_table_remove (g_dataset_location_ht, dataset_location);
+	  g_mem_chunk_free (g_dataset_mem_chunk, dataset);
+	  break;
+	}
+      
+      g_datalist_clear_i (&dataset->datalist);
+      dataset = g_dataset_lookup (dataset_location);
+    }
 }
 
 void
 g_dataset_destroy (gconstpointer  dataset_location)
 {
-  register GDataset *dataset;
-  
   g_return_if_fail (dataset_location != NULL);
   
   if (g_dataset_location_ht)
     {
+      register GDataset *dataset;
+
       dataset = g_dataset_lookup (dataset_location);
       if (dataset)
 	g_dataset_destroy_internal (dataset);
@@ -160,11 +166,11 @@ g_dataset_destroy (gconstpointer  dataset_location)
 }
 
 static inline void
-g_data_set_internal (gpointer      *datalist,
+g_data_set_internal (GData	  **datalist,
 		     GQuark         key_id,
 		     gpointer       data,
 		     GDestroyNotify destroy_func,
-		     GDataset      *d_dataset)
+		     GDataset	   *dataset)
 {
   register GData *list;
   
@@ -187,8 +193,8 @@ g_data_set_internal (gpointer      *datalist,
 		  /* the dataset destruction *must* be done
 		   * prior to invokation of the data destroy function
 		   */
-		  if (!*datalist && d_dataset)
-		    g_dataset_destroy_internal (d_dataset);
+		  if (!*datalist && dataset)
+		    g_dataset_destroy_internal (dataset);
 		}
 	      
 	      /* the GData struct *must* already be unlinked
@@ -287,7 +293,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
     {
       dataset = g_chunk_new (GDataset, g_dataset_mem_chunk);
       dataset->location = dataset_location;
-      dataset->datalist = NULL;
+      g_datalist_init (&dataset->datalist);
       g_hash_table_insert (g_dataset_location_ht, 
 			   (gpointer) dataset->location,
 			   dataset);
@@ -297,10 +303,10 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 }
 
 void
-g_datalist_id_set_data_full (gpointer       *datalist,
-			     GQuark          key_id,
-			     gpointer        data,
-			     GDestroyNotify  destroy_func)
+g_datalist_id_set_data_full (GData	  **datalist,
+			     GQuark         key_id,
+			     gpointer       data,
+			     GDestroyNotify destroy_func)
 {
   g_return_if_fail (datalist != NULL);
   if (!key_id)
@@ -342,9 +348,9 @@ g_dataset_id_set_destroy (gconstpointer  dataset_location,
 }
 
 void
-g_datalist_id_set_destroy (gpointer       *datalist,
-			   GQuark          key_id,
-			   GDestroyNotify  destroy_func)
+g_datalist_id_set_destroy (GData	**datalist,
+			   GQuark         key_id,
+			   GDestroyNotify destroy_func)
 {
   register GData *list;
   
@@ -384,8 +390,8 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
 }
 
 gpointer
-g_datalist_id_get_data (gpointer *datalist,
-			GQuark    key_id)
+g_datalist_id_get_data (GData	 **datalist,
+			GQuark     key_id)
 {
   g_return_val_if_fail (datalist != NULL, NULL);
   
@@ -402,7 +408,41 @@ g_datalist_id_get_data (gpointer *datalist,
 }
 
 void
-g_datalist_init (gpointer       *datalist)
+g_dataset_foreach (gconstpointer    dataset_location,
+		   GDataForeachFunc func,
+		   gpointer         user_data)
+{
+  register GDataset *dataset;
+  
+  g_return_if_fail (dataset_location != NULL);
+  g_return_if_fail (func != NULL);
+  
+  dataset = g_dataset_lookup (dataset_location);
+  if (dataset)
+    {
+      register GData *list;
+      
+      for (list = dataset->datalist; list; list = list->next)
+	func (list->id, list->data, user_data);
+    }
+}
+
+void
+g_datalist_foreach (GData	   **datalist,
+		    GDataForeachFunc func,
+		    gpointer         user_data)
+{
+  register GData *list;
+
+  g_return_if_fail (datalist != NULL);
+  g_return_if_fail (func != NULL);
+  
+  for (list = *datalist; list; list = list->next)
+    func (list->id, list->data, user_data);
+}
+
+void
+g_datalist_init (GData **datalist)
 {
   g_return_if_fail (datalist != NULL);
   
