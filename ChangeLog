@@ -1,3 +1,12 @@
+2005-01-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: 
+	* Makefile.am: Generate and distribute gmodule-export-2.0.pc,
+	which is currently just a copy of gmodule-2.0.pc, but makes
+	it explicit that it adds --export-dynamic.
+	
+	* gmodule-export-2.0.pc.in: Copy of gmodule-2.0.pc.in.
+
 2005-01-06  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/Makefile.am

@@ -28,6 +28,7 @@ EXTRA_DIST = 			\
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
+	gmodule-export-2.0.pc.in	\
 	gmodule-no-export-2.0.pc.in	\
 	gthread-2.0.pc.in	\
 	glib-2.0-uninstalled.pc.in 	\
@@ -66,7 +67,7 @@ stamp-gc-h: config.status
 	echo timestamp > stamp-gc-h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc
+pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc
 
 $(pkgconfig_DATA): config.status
 
