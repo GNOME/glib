@@ -1,3 +1,7 @@
+2004-10-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Add a missing "Since: 2.6" comment.
+
 2004-10-28  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gstdio.c: Include glib.h early to get G_OS_WIN32. Include
@@ -40,6 +44,12 @@
 	* configure.in: Bump version.
 
 	* === Released 2.5.4 ===
+
+2004-10-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/abicheck.sh: Strip Win32 specific defs file syntax.
+
+	* NEWS: Updates. 
 
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 

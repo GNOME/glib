@@ -1822,6 +1822,8 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the values associated with the key as a boolean
+ * 
+ * Since: 2.6
  **/
 gboolean *
 g_key_file_get_boolean_list (GKeyFile     *key_file,
@@ -1936,6 +1938,7 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the value associated with the key as an integer.
+ *
  * Since: 2.6
  **/
 gint
@@ -2032,6 +2035,7 @@ g_key_file_set_integer (GKeyFile    *key_file,
  * #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Return value: the values associated with the key as a integer
+ *
  * Since: 2.6
  **/
 gint *
@@ -2568,6 +2572,7 @@ g_key_file_has_group (GKeyFile    *key_file,
  *
  * Return value: %TRUE if @key is a part of @group_name, %FALSE
  * otherwise.
+ *
  * Since: 2.6
  **/
 gboolean
