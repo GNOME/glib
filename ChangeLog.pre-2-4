@@ -1,3 +1,39 @@
+Wed Mar 17 01:46:28 1999  Tim Janik  <timj@gtk.org>
+
+        * merges from glib-1-2:
+        
+Sun Mar 14 17:50:35 1999  Tim Janik  <timj@gtk.org>
+
+        * gmem.c (g_mem_chunk_*): changed a bunch of g_assert() statements
+        to g_return_if_fail().
+        (g_mem_profile):
+        (g_mem_chunk_print):
+        (g_mem_chunk_info): removed some extraneous "\n"s at the end of the log
+        messages.
+
+        * gtimer.c (g_timer_*): changed a bunch of g_assert() statements
+        to g_return_if_fail().
+        * grel.c (g_*): changed a bunch of g_assert() statements to
+        g_return_if_fail() and added some extra ones to check relation != NULL.
+
+Tue Mar  9 23:25:50 1999  Tim Janik  <timj@gtk.org>
+
+        * configure.in: check for working realloc (NULL,).
+        * gmem.c (g_realloc): use malloc() for initial allocation on systems
+        where realloc(NULL,) will not work (this is the case on SunOS, reported
+        by Tom Geiger).
+
+Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
+
+        * ghook.c (g_hook_unref): when !hook_list->is_setup, wrap the
+        flag around the call to g_hook_free() to avoid spurious
+        warnings (happens during destruction phase).
+
+1999-03-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+        * gmem.c: Fixed a stupid cut'n'paste error of mine. Thanks to
+        Friedrich Dominicus <Friedrich.Dominicus@inka.de>
+
 1999-03-16  Timur Bakeyev  <mc@bat.ru>
 
 	* configure.in: Fix problem with pthread_create in libc, as running
