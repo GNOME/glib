@@ -4,6 +4,11 @@
 	* gobject/Makefile.am: glib.def and gobject.def are generated, not
 	in $(srcdir). (#163143, J. Ali Harlow)
 
+	* configure.in
+	* glib/Makefile.am
+	* gobject/Makefile.am: Win32 cross-compilation fixes. (#163144,
+	J. Ali Harlow)
+
 2005-01-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: Simplify the inlining magic to make it

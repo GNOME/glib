@@ -201,9 +201,10 @@ install-libtool-import-lib:
 #	directive in .def files.)
 #
 	for entry in `grep PRIVATE glib.def | sed -e 's/PRIVATE//'`; do \
-	  file=`nm -A .libs/libglib-2.0.dll.a | tr -d '\r' | grep -m 1 -E $$entry'$$' | cut -d: -f2`; \
+	  file=`$(NM) -A .libs/libglib-2.0.dll.a | tr -d '\r' | grep -m 1 -E $$entry'$$' | cut -d: -f2`; \
 	  ar d .libs/libglib-2.0.dll.a $$file; \
 	done
+	$(RANLIB) .libs/libglib-2.0.dll.a
 	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
 	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
 
