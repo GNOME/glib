@@ -1,5 +1,8 @@
 2000-10-12  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glibconfig.h.win32.in: Adapted accordingly to header separation
+	and GLIB_HAVE_ALLOCA_H renaming.
+
 	* Makefile.am: Added the new headers to glibinclude_HEADERS.
 
 	* glib.h: Forgot to include gerror.h.

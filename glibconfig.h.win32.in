@@ -1,12 +1,10 @@
 /* glibconfig.h.win32 */
 /* Handcrafted for Microsoft C and gcc -mno-cygwin ("mingw32"). */
 
-#ifndef GLIBCONFIG_H
-#define GLIBCONFIG_H
+#ifndef __G_LIBCONFIG_H__
+#define __G_LIBCONFIG_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#include <gmacros.h>
 
 #ifdef _MSC_VER
 /* Make MSVC more pedantic, this is a recommended pragma list
@@ -52,6 +50,8 @@ extern "C" {
 #define G_MAXLONG	LONG_MAX
 #define G_MAXULONG	ULONG_MAX
 
+G_BEGIN_DECLS
+
 typedef signed char gint8;
 typedef unsigned char guint8;
 typedef signed short gint16;
@@ -95,7 +95,7 @@ typedef guint32 gsize;
 
 #define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END
 
-#define G_HAVE_ALLOCA 1
+#define GLIB_HAVE_ALLOCA_H 1
 #ifdef _MSC_VER
 #define alloca _alloca
 #endif
@@ -201,8 +201,6 @@ union _GSystemThread
 #define G_HAVE_WCHAR_H 1
 #define G_HAVE_WCTYPE_H 1
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
-#endif /* GLIBCONFIG_H */
+#endif /* __G_LIBCONFIG_H__ */
