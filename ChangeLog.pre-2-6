@@ -1,3 +1,20 @@
+2000-10-19  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.msc.in: Pass -DGSPAWN_HELPER when building it. Link
+	with user32.lib.
+
+	* gspawn-win32.c
+	* gfileutils.c: Make them compile with picky MSVC.
+
+	* gwin32.h: New file. Move Win32-only stuff that isn't related to
+	GIOChannels here from giochannel.h.
+
+	* Makefile.am: Add it here.
+
+	* giochannel.h: Move stuff to gwin32.h.
+
+	* glib.h: On Win32, include gwin32.h.
+
 Mon Sep 11 10:03:24 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h convert.c (g_convert_with_fallback): Change

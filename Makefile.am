@@ -129,7 +129,8 @@ glibinclude_HEADERS =   \
 	gtree.h		\
 	gtypes.h	\
 	gunicode.h	\
-	gutils.h
+	gutils.h	\
+	gwin32.h
 
 configexecincludedir = $(libdir)/glib-2.0/include
 #configexecinclude_DATA = glibconfig.h

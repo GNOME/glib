@@ -94,7 +94,7 @@ glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32.c glib-$(GLIB_VER).dll
-	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows
+	$(CC) $(CFLAGS) -Fe$@ -DGSPAWN_HELPER -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows user32.lib
 
 ################ subdirectories
 

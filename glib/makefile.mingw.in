@@ -97,7 +97,7 @@ glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(LIBICONV_LIBS) -luser32 -lwsock32
 
 gspawn-win32-helper.exe : gspawn-win32.c
-	$(CC) $(CFLAGS) -mwindows -DGSPAWN_HELPER  -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)
+	$(CC) $(CFLAGS) -mwindows -DGSPAWN_HELPER -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)
 
 ################ subdirectories
 

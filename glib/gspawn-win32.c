@@ -44,12 +44,14 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include <windows.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <io.h>
 #include <process.h>
+#include <direct.h>
 
 #ifdef _
 #warning "FIXME remove gettext hack"

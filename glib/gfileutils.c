@@ -33,8 +33,27 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#ifndef F_OK
+#define	F_OK 0
+#define	X_OK 1
+#define	W_OK 2
+#define	R_OK 4
+#endif /* !F_OK */
+
+#ifndef S_ISREG
+#define S_ISREG(mode) ((mode)&_S_IFREG)
+#endif
+
+#ifndef S_ISDIR
+#define S_ISDIR(mode) ((mode)&_S_IFDIR)
+#endif
+
+#endif /* G_OS_WIN32 */
+
 #ifndef S_ISLNK
-# define S_ISLNK(x) 0
+#define S_ISLNK(x) 0
 #endif
 
 #define _(x) x
