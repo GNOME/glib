@@ -1,3 +1,12 @@
+2001-10-09  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c (_g_module_build_path): More Unix compatibility:
+	Add "lib" prefix in case the module name doesn't already have it,
+	except if it ends with ".dll" (in which case it probably already
+	is the name of an existing DLL). This is needed for instance for
+	the gdk-pixbuf loaders, which are called "lib*.dll", but
+	gdk-pixbuf-io calls g_module_build_path without the "lib" prefix.
+
 2001-10-03  jacob berkman  <jacob@ximian.com>
 
 	* libgplugin_a.c: (gplugin_a_module_func): 
