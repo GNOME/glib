@@ -1,8 +1,13 @@
 2004-10-26  Gora Mohanty  <gmohanty@cvs.gnome.org>
- 
-        * configure.in: Added 'or' to ALL_LINGUAS.
-  
+
+	* configure.in: Added 'or' to ALL_LINGUAS.
+
 2004-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c: Include galias.h.
+	
+	* glib/gkeyfile.c (g_key_file_parse_value_as_comment): 
+	Don't compare strings and chars.
 
 	* glib/glib.symbols: Add new symbols.
 

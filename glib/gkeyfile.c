@@ -22,6 +22,8 @@
  */
 
 #include "config.h"
+#include "galias.h"
+
 #include "gkeyfile.h"
 
 #include <errno.h>
@@ -629,7 +631,7 @@ static gboolean
 g_key_file_locale_is_interesting (GKeyFile    *key_file,
 				  const gchar *locale)
 {
-  const const gchar * const * current_locales;
+  const gchar * const * current_locales;
   gsize i;
 
   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
@@ -3134,7 +3136,7 @@ g_key_file_parse_value_as_comment (GKeyFile    *key_file,
 
   for (i = 0; lines[i] != NULL; i++)
     {
-        if (lines[i][0] != "#")
+        if (lines[i][0] != '#')
            g_string_append_printf (string, "%s\n", lines[i]);
         else 
            g_string_append_printf (string, "%s\n", lines[i] + 1);
