@@ -1243,7 +1243,7 @@ type_iface_peek_holder_L (TypeNode *iface,
 }
 
 static IFaceHolder*
-type_iface_retrive_holder_info_Wm (TypeNode *iface,
+type_iface_retrieve_holder_info_Wm (TypeNode *iface,
 				   GType     instance_type,
 				   gboolean  need_info)
 {
@@ -1414,8 +1414,8 @@ type_iface_vtable_init_Wm (TypeNode *iface,
   GTypeInterface *vtable = NULL;
   TypeNode *pnode;
 
-  /* type_iface_retrive_holder_info_Wm() doesn't modify write lock for returning NULL */
-  iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node), TRUE);
+  /* type_iface_retrieve_holder_info_Wm() doesn't modify write lock for returning NULL */
+  iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), TRUE);
   if (!iholder)
     return FALSE;	/* we don't modify write lock upon FALSE */
   
@@ -1455,8 +1455,8 @@ type_iface_vtable_finalize_Wm (TypeNode       *iface,
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
   IFaceHolder *iholder;
 
-  /* type_iface_retrive_holder_info_Wm() doesn't modify write lock for returning NULL */
-  iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node), FALSE);
+  /* type_iface_retrieve_holder_info_Wm() doesn't modify write lock for returning NULL */
+  iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), FALSE);
   if (!iholder)
     return FALSE;	/* we don't modify write lock upon FALSE */
   
@@ -1965,7 +1965,7 @@ g_type_class_ref (GType type)
       (node->data && node->data->common.ref_count < 1))
     {
       G_WRITE_UNLOCK (&type_rw_lock);
-      g_warning ("cannot retrive class for invalid (unclassed) type `%s'",
+      g_warning ("cannot retrieve class for invalid (unclassed) type `%s'",
 		 type_descriptive_name_U (type));
       return NULL;
     }

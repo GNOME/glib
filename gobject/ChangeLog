@@ -1,3 +1,12 @@
+2001-10-03  jacob berkman  <jacob@ximian.com>
+
+	* gtype.c (type_iface_retrieve_holder_info_Wm): 
+	(type_iface_vtable_init_Wm): 
+	(type_iface_vtable_finalize_Wm): 
+	(g_type_class_ref): 
+
+	* gobject.c (g_object_get_property): s/retrive/retrieve/
+
 2001-09-25  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use new macros for .def file, and check for
