@@ -124,7 +124,7 @@ g_module_find_by_name (const gchar *name)
 }
 
 static inline void
-g_module_set_error_unduped (const gchar *error)
+g_module_set_error_unduped (gchar *error)
 {
   g_static_private_set (&module_error_private, error, g_free);
   errno = 0;

@@ -1391,7 +1391,9 @@ static void
 type_iface_vtable_init_Wm (TypeNode *iface,
 			   TypeNode *node)
 {
+#ifndef G_DISABLE_ASSERT
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+#endif
   IFaceHolder *iholder = type_iface_retrive_holder_info_Wm (iface, NODE_TYPE (node));
   GTypeInterface *vtable;
   
@@ -1418,7 +1420,9 @@ type_iface_vtable_finalize_Wm (TypeNode       *iface,
 			       TypeNode       *node,
 			       GTypeInterface *vtable)
 {
+#ifndef G_DISABLE_ASSERT
   IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+#endif
   IFaceHolder *iholder = iface_node_get_holders_L (iface);
   
   g_assert (entry && entry->vtable == vtable);

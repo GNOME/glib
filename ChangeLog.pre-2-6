@@ -1,3 +1,22 @@
+2001-07-11  Darin Adler  <darin@bentspoon.com>
+
+	* .cvsignore: Add some generated files.
+
+	* glib/gmain.c: (g_main_context_iterate): Comment out cruft
+	after #endif to avoid gcc warning.
+	* gmodule/gmodule.c: (g_module_set_error_unduped): Remove
+	const from type to avoid gcc warning.
+	* gobject/gsignal.c: (g_signal_emitv): ifdef variable used
+	only if G_ENABLE_DEBUG to avoid gcc warning.
+	* gobject/gtype.c: (type_iface_vtable_init_Wm),
+	(type_iface_vtable_finalize_Wm): ifdef call needed only
+	if !G_DISABLE_ASSERT to avoid gcc warning.
+	* tests/testglib.c: (main): ifdef call needed only if
+	!G_DISABLE_ASSERT to avoid gcc warning. Maybe later we
+	should make the test to #undef G_DISABLE_ASSERT.
+	* tests/unicode-collate.c: Add include of <string.h> to
+	avoid gcc warning.
+
 Wed Jul 11 11:13:50 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am (libglib_1_3_la_SOURCES): Add gunicomp.h

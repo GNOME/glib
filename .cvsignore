@@ -36,3 +36,4 @@ gthread-2.0-uninstalled.pc
 gobject-2.0-uninstalled.pc
 glib-config-2.0
 .saved
+sgml

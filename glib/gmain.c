@@ -2174,7 +2174,7 @@ g_main_context_iterate (GMainContext *context,
     }
   else
     LOCK_CONTEXT (context);
-#endif G_THREADS_ENABLED
+#endif /* G_THREADS_ENABLED */
   
   if (!context->cached_poll_array)
     {

@@ -1736,7 +1736,9 @@ g_signal_emitv (const GValue *instance_and_params,
   const GValue *param_values;
   gpointer instance;
   SignalNode *node;
+#ifdef G_ENABLE_DEBUG
   guint i;
+#endif
   
   g_return_if_fail (instance_and_params != NULL);
   instance = g_value_peek_pointer (instance_and_params);
