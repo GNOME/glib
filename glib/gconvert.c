@@ -186,15 +186,8 @@ g_convert (const gchar *str,
 	   gsize       *bytes_written, 
 	   GError     **error)
 {
-  gchar *dest;
-  gchar *outp;
-  const gchar *p;
-  gsize inbytes_remaining;
-  gsize outbytes_remaining;
-  gsize err;
+  gchar *res;
   GIConv cd;
-  gsize outbuf_size;
-  gboolean have_error = FALSE;
   
   g_return_val_if_fail (str != NULL, NULL);
   g_return_val_if_fail (to_codeset != NULL, NULL);
@@ -213,6 +206,59 @@ g_convert (const gchar *str,
       return NULL;
     }
 
+  res = g_convert_with_iconv (str, len, cd,
+			      bytes_read, bytes_written,
+			      error);
+  
+  g_iconv_close (cd);
+
+  return res;
+}
+
+/**
+ * g_convert_with_iconv:
+ * @str:           the string to convert
+ * @len:           the length of the string
+ * @converter:     conversion descriptor from g_iconv_open()
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error:         location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ *
+ * Convert a string from one character set to another.
+ *
+ * Return value: If the conversion was successful, a newly allocated
+ *               NUL-terminated string, which must be freed with
+ *               g_free. Otherwise %NULL and @error will be set.
+ **/
+gchar*
+g_convert_with_iconv (const gchar *str,
+		      gssize       len,
+		      GIConv       converter,
+		      gsize       *bytes_read, 
+		      gsize       *bytes_written, 
+		      GError     **error)
+{
+  gchar *dest;
+  gchar *outp;
+  const gchar *p;
+  gsize inbytes_remaining;
+  gsize outbytes_remaining;
+  gsize err;
+  gsize outbuf_size;
+  gboolean have_error = FALSE;
+  
+  g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (converter != (GIConv) -1, NULL);
+     
   if (len < 0)
     len = strlen (str);
 
@@ -225,7 +271,7 @@ g_convert (const gchar *str,
 
  again:
   
-  err = g_iconv (cd, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
+  err = g_iconv (converter, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
 
   if (err == (size_t) -1)
     {
@@ -262,8 +308,6 @@ g_convert (const gchar *str,
 
   *outp = '\0';
   
-  g_iconv_close (cd);
-
   if (bytes_read)
     *bytes_read = p - str;
   else

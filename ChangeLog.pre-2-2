@@ -1,3 +1,10 @@
+2001-08-24  Alexander Larsson  <alla@lysator.liu.se>
+
+	* glib/gconvert.[ch] (g_convert_with_iconv):
+	New function, doing the same as g_convert but taking
+	a GIConv argument. The old g_convert is just
+	a call to this with a newly opened GIConv.
+
 2001-08-24  Darin Adler  <darin@bentspoon.com>
 
 	* tests/shell-test.c: (check_string_result): Fix bad indenting.

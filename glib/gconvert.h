@@ -64,6 +64,12 @@ gchar* g_convert               (const gchar  *str,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
 				GError      **error);
+gchar* g_convert_with_iconv    (const gchar  *str,
+				gssize        len,
+				GIConv        converter,
+				gsize        *bytes_read,     
+				gsize        *bytes_written,  
+				GError      **error);
 gchar* g_convert_with_fallback (const gchar  *str,
 				gssize        len,            
 				const gchar  *to_codeset,
