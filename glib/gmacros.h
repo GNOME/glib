@@ -67,6 +67,8 @@
   __attribute__((const))
 #define G_GNUC_UNUSED                           \
   __attribute__((unused))
+#define G_GNUC_NO_INSTRUMENT			\
+  __attribute__((no_instrument_function))
 #else   /* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
@@ -74,6 +76,7 @@
 #define G_GNUC_NORETURN
 #define G_GNUC_CONST
 #define G_GNUC_UNUSED
+#define G_GNUC_NO_INSTRUMENT
 #endif  /* !__GNUC__ */
 
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
