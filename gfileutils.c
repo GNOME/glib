@@ -497,3 +497,78 @@ g_file_get_contents (const gchar *filename,
   return get_contents_posix (filename, contents, length, error);
 #endif
 }
+
+/**
+ * g_mkstemp:
+ *
+ * Open a temporary file
+ *
+ * The parameter is a string that should match the rules for mktemp, i.e.
+ * end in "XXXXXX". The X string will be modified to form the name
+ * of a file that didn't exist.
+ *
+ * Return value: A file handle (as from open()) to the file file
+ * opened for reading and writing. The file is opened in binary mode
+ * on platforms where there is a difference. The file handle should be
+ * closed with close(). In case of errors, -1 is returned.
+ *
+ * From the GNU C library.
+ * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
+ */
+int
+g_mkstemp (char *tmpl)
+{
+#ifdef HAVE_MKSTEMP
+  return mkstemp (tmpl);
+#else
+  int len;
+  char *XXXXXX;
+  int count, fd;
+  static const char letters[] =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  glong value;
+  GTimeVal tv;
+
+  len = strlen (tmpl);
+  if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
+    return -1;
+
+  /* This is where the Xs start.  */
+  XXXXXX = &tmpl[len - 6];
+
+  /* Get some more or less random data.  */
+  g_get_current_time (&tv);
+  value = tv.tv_usec ^ tv.tv_sec;
+
+  for (count = 0; count < 100; value += 7777, ++count)
+    {
+      glong v = value;
+
+      /* Fill in the random bits.  */
+      XXXXXX[0] = letters[v % 62];
+      v /= 62;
+      XXXXXX[1] = letters[v % 62];
+      v /= 62;
+      XXXXXX[2] = letters[v % 62];
+      v /= 62;
+      XXXXXX[3] = letters[v % 62];
+      v /= 62;
+      XXXXXX[4] = letters[v % 62];
+      v /= 62;
+      XXXXXX[5] = letters[v % 62];
+
+      fd = open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0600);
+
+      if (fd >= 0)
+	return fd;
+      else if (errno != EEXIST)
+	/* Any other error will apply also to other names we might
+	 *  try, and there are 2^32 or so of them, so give up now.
+	 */
+	return -1;
+    }
+
+  /* We got out of the loop because we ran out of combinations to try.  */
+  return -1;
+#endif
+}

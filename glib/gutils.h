@@ -161,9 +161,6 @@ gchar*	g_path_get_dirname	(const gchar *file_name);
 /* Get the codeset for the current locale */
 /* gchar * g_get_codeset    (void); */
 
-/* Wrapper / workalike for mkstemp() */
-int     g_mkstemp (char *tmpl);
-
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
 gchar*  g_getenv		(const gchar *variable);

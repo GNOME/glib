@@ -1,3 +1,10 @@
+2000-10-31  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c
+	* gutils.h
+	* gfileutils.c
+	* gfileutils.h: Actually, g_mkstemp() is better suited in gfileutils.
+
 2000-10-30  Tor Lillqvist  <tml@iki.fi>
 
 	* configure.in: Check for mkstemp.
@@ -7,7 +14,7 @@
 
 	* gutils.h: Declare it.
 
-	* glib.def: Here, too.
+	* glib.def: Here, too. Plus two missing functions.
 
 2000-10-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 

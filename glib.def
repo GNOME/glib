@@ -99,6 +99,8 @@ EXPORTS
 	g_error_matches
 	g_error_new
 	g_error_new_literal
+	g_file_error_from_errno
+	g_file_error_quark
 	g_file_get_contents
 	g_file_test
 	g_filename_from_utf8

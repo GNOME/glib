@@ -80,6 +80,8 @@ gboolean g_file_get_contents (const gchar  *filename,
                               GError      **error);
 
 
+/* Wrapper / workalike for mkstemp() */
+int     g_mkstemp (char *tmpl);
 
 G_END_DECLS
 
