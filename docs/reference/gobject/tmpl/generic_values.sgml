@@ -91,23 +91,29 @@ Returns #TRUE if @value is a valid and initialized #GValue structure.
 
 <!-- ##### STRUCT GValue ##### -->
 <para>
-A mostly opaque structure used to hold a #GValue object.  Mostly because
-the data within the structure has protected scope: it is accessible only
+An opaque structure used to hold different types of values.
+The data within the structure has protected scope: it is accessible only
 to functions within a #GTypeValueTable structure, or implementations of
-the g_value_*() API.
+the g_value_*() API. That is, code portions which implement new fundamental
+types.
+#GValue users can not make any assumptions about how data is stored
+within the 2 element #GValue.data[] union, and the g_type member should
+only be accessed through the G_VALUE_TYPE() macro.
 </para>
 
 
 <!-- ##### MACRO G_TYPE_VALUE ##### -->
 <para>
-
+Returns the type ID of the "GValue" type which is a boxed type,
+used to pass around pointers to GValues.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_VALUE_ARRAY ##### -->
 <para>
-
+Returns the type ID of the "GValueArray" type which is a boxed type,
+used to pass around pointers to GValueArrays.
 </para>
 
 
@@ -175,12 +181,13 @@ This is an internal function introduced mainly for C marshallers.
 
 <!-- ##### FUNCTION g_value_type_compatible ##### -->
 <para>
-
+Returns whether a #GValue of type @src_type can be copied into
+a #GValue of type @dest_type.
 </para>
 
-@src_type: 
-@dest_type: 
-@Returns: 
+@src_type:  source type to be copied.
+@dest_type: destination type for copying.
+@Returns:   %TRUE if g_value_copy() is possible with @src_type and @dest_type.
 
 
 <!-- ##### FUNCTION g_value_type_transformable ##### -->
@@ -232,10 +239,13 @@ as rcfile value or object property serialization).
 
 <!-- ##### FUNCTION g_strdup_value_contents ##### -->
 <para>
-
+Return a newly allocated string, which describes the contents of a #GValue.
+The main purpose of this function is to describe #GValue contents for debugging
+output, the way in which the contents are described may change between different
+GLib versions.
 </para>
 
-@value: 
-@Returns: 
+@value:   #GValue which contents are to be described.
+@Returns: Newly allocated string.
 
 

@@ -1,3 +1,7 @@
+Tue Feb 19 17:45:43 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/generic_values.sgml: added GValue documentation.
+
 Thu Feb  7 12:07:06 2002  Tim Janik  <timj@gtk.org>
 
 	* gobject/tmpl/generic_values.sgml: document value transformation.
