@@ -1,3 +1,7 @@
+Sat Jul  4 13:38:52 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h: added g_array_length
+
 Tue Jun 30 11:58:25 1998  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c (g_scanner_unexp_token): take symbol_2_token into

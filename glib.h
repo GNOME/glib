@@ -891,6 +891,8 @@ void	 g_string_sprintfa  (GString     *string,
 
 /* Resizable arrays
  */
+#define g_array_length(array,type) \
+     (((array)->len)/sizeof(type))
 #define g_array_append_val(array,type,val) \
      g_rarray_append (array, (gpointer) &val, sizeof (type))
 #define g_array_append_vals(array,type,vals,nvals) \
