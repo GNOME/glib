@@ -1,3 +1,21 @@
+2003-08-12  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gconvert.c (g_locale_from_utf8): Drop the Win32-specific
+	implementation. It used WideCharToMultiByte(), which is broken as
+	it stores unconvertable characters as fallback characters
+	(question marks) in the destination string without being able to
+	tell how much of the conversion succeeded. Using g_convert() like
+	on Unix is better and simpler. (#117872)
+
+	(g_locale_to_utf8): No need for the Win32-specific implementation
+	here, either.
+
+	(have_broken_filenames): Define as TRUE on Win32.
+
+	(g_filename_to_utf8, g_filename_from_utf8): Drop Win32 ifdefs. As
+	have_broken_filenames() now is defined TRUE on Win32, works as
+	before.
+	
 2003-08-11  Matthias Clasen  <maclas@gmx.de>
 
 	* acinclude.m4: Copy newer versions of JH_CHECK_XML_CATALOG and

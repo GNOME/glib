@@ -870,8 +870,6 @@ g_convert_with_fallback (const gchar *str,
  * 
  */
 
-#ifndef G_PLATFORM_WIN32
-
 static gchar *
 strdup_len (const gchar *string,
 	    gssize       len,
@@ -912,8 +910,6 @@ strdup_len (const gchar *string,
   return g_strndup (string, real_len);
 }
 
-#endif
-
 /**
  * g_locale_to_utf8:
  * @opsysstring:   a string in the encoding of the current locale
@@ -945,104 +941,6 @@ g_locale_to_utf8 (const gchar  *opsysstring,
 		  gsize        *bytes_written,
 		  GError      **error)
 {
-#ifdef G_PLATFORM_WIN32
-
-  gint i, clen, total_len, wclen, first;
-  wchar_t *wcs, wc;
-  gchar *result, *bp;
-  const wchar_t *wcp;
-
-  if (len == -1)
-    len = strlen (opsysstring);
-  
-  wcs = g_new (wchar_t, len);
-  wclen = MultiByteToWideChar (CP_ACP, 0, opsysstring, len, wcs, len);
-
-  wcp = wcs;
-  total_len = 0;
-  for (i = 0; i < wclen; i++)
-    {
-      wc = *wcp++;
-
-      if (wc < 0x80)
-	total_len += 1;
-      else if (wc < 0x800)
-	total_len += 2;
-      else if (wc < 0x10000)
-	total_len += 3;
-      else if (wc < 0x200000)
-	total_len += 4;
-      else if (wc < 0x4000000)
-	total_len += 5;
-      else
-	total_len += 6;
-    }
-
-  result = g_malloc (total_len + 1);
-  
-  wcp = wcs;
-  bp = result;
-  for (i = 0; i < wclen; i++)
-    {
-      wc = *wcp++;
-
-      if (wc < 0x80)
-	{
-	  first = 0;
-	  clen = 1;
-	}
-      else if (wc < 0x800)
-	{
-	  first = 0xc0;
-	  clen = 2;
-	}
-      else if (wc < 0x10000)
-	{
-	  first = 0xe0;
-	  clen = 3;
-	}
-      else if (wc < 0x200000)
-	{
-	  first = 0xf0;
-	  clen = 4;
-	}
-      else if (wc < 0x4000000)
-	{
-	  first = 0xf8;
-	  clen = 5;
-	}
-      else
-	{
-	  first = 0xfc;
-	  clen = 6;
-	}
-      
-      /* Woo-hoo! */
-      switch (clen)
-	{
-	case 6: bp[5] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
-	case 5: bp[4] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
-	case 4: bp[3] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
-	case 3: bp[2] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
-	case 2: bp[1] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
-	case 1: bp[0] = wc | first;
-	}
-
-      bp += clen;
-    }
-  *bp = 0;
-
-  g_free (wcs);
-
-  if (bytes_read)
-    *bytes_read = len;
-  if (bytes_written)
-    *bytes_written = total_len;
-  
-  return result;
-
-#else  /* !G_PLATFORM_WIN32 */
-
   const char *charset;
 
   if (g_get_charset (&charset))
@@ -1050,8 +948,6 @@ g_locale_to_utf8 (const gchar  *opsysstring,
   else
     return g_convert (opsysstring, len, 
 		      "UTF-8", charset, bytes_read, bytes_written, error);
-
-#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -1085,110 +981,6 @@ g_locale_from_utf8 (const gchar *utf8string,
 		    gsize       *bytes_written,
 		    GError     **error)
 {
-#ifdef G_PLATFORM_WIN32
-
-  gint i, mask, clen, mblen;
-  wchar_t *wcs, *wcp;
-  gchar *result;
-  guchar *cp, *end, c;
-  gint n;
-  
-  if (len == -1)
-    len = strlen (utf8string);
-  
-  /* First convert to wide chars */
-  cp = (guchar *) utf8string;
-  end = cp + len;
-  n = 0;
-  wcs = g_new (wchar_t, len + 1);
-  wcp = wcs;
-  while (cp != end)
-    {
-      mask = 0;
-      c = *cp;
-
-      if (c < 0x80)
-	{
-	  clen = 1;
-	  mask = 0x7f;
-	}
-      else if ((c & 0xe0) == 0xc0)
-	{
-	  clen = 2;
-	  mask = 0x1f;
-	}
-      else if ((c & 0xf0) == 0xe0)
-	{
-	  clen = 3;
-	  mask = 0x0f;
-	}
-      else if ((c & 0xf8) == 0xf0)
-	{
-	  clen = 4;
-	  mask = 0x07;
-	}
-      else if ((c & 0xfc) == 0xf8)
-	{
-	  clen = 5;
-	  mask = 0x03;
-	}
-      else if ((c & 0xfc) == 0xfc)
-	{
-	  clen = 6;
-	  mask = 0x01;
-	}
-      else
-	{
-	  g_free (wcs);
-	  return NULL;
-	}
-
-      if (cp + clen > end)
-	{
-	  g_free (wcs);
-	  return NULL;
-	}
-
-      *wcp = (cp[0] & mask);
-      for (i = 1; i < clen; i++)
-	{
-	  if ((cp[i] & 0xc0) != 0x80)
-	    {
-	      g_free (wcs);
-	      return NULL;
-	    }
-	  *wcp <<= 6;
-	  *wcp |= (cp[i] & 0x3f);
-	}
-
-      cp += clen;
-      wcp++;
-      n++;
-    }
-  if (cp != end)
-    {
-      g_free (wcs);
-      return NULL;
-    }
-
-  /* n is the number of wide chars constructed */
-
-  /* Convert to a string in the current ANSI codepage */
-
-  result = g_new (gchar, 3 * n + 1);
-  mblen = WideCharToMultiByte (CP_ACP, 0, wcs, n, result, 3*n, NULL, NULL);
-  result[mblen] = 0;
-  g_free (wcs);
-
-  if (bytes_read)
-    *bytes_read = len;
-  if (bytes_written)
-    *bytes_written = mblen;
-  
-  return result;
-
-#else  /* !G_PLATFORM_WIN32 */
-  
   const gchar *charset;
 
   if (g_get_charset (&charset))
@@ -1196,11 +988,10 @@ g_locale_from_utf8 (const gchar *utf8string,
   else
     return g_convert (utf8string, len,
 		      charset, "UTF-8", bytes_read, bytes_written, error);
-
-#endif /* !G_PLATFORM_WIN32 */
 }
 
 #ifndef G_PLATFORM_WIN32
+
 static gboolean
 have_broken_filenames (void)
 {
@@ -1216,7 +1007,11 @@ have_broken_filenames (void)
   
   return broken;
 }
-#endif /* !G_PLATFORM_WIN32 */
+#else /* G_PLATFORM_WIN32 */
+
+#define have_broken_filenames() TRUE
+
+#endif /* G_PLATFORM_WIN32 */
 
 /* This is called from g_thread_init(). It's used to
  * initialize some static data in a threadsafe way.
@@ -1224,9 +1019,7 @@ have_broken_filenames (void)
 void 
 _g_convert_thread_init (void)
 {
-#ifndef G_PLATFORM_WIN32
   (void)have_broken_filenames ();
-#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -1259,19 +1052,12 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		    gsize       *bytes_written,
 		    GError     **error)
 {
-#ifdef G_PLATFORM_WIN32
-  return g_locale_to_utf8 (opsysstring, len,
-			   bytes_read, bytes_written,
-			   error);
-#else  /* !G_PLATFORM_WIN32 */
-      
   if (have_broken_filenames ())
     return g_locale_to_utf8 (opsysstring, len,
 			     bytes_read, bytes_written,
 			     error);
   else
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
-#endif /* !G_PLATFORM_WIN32 */
 }
 
 /**
@@ -1303,18 +1089,12 @@ g_filename_from_utf8 (const gchar *utf8string,
 		      gsize       *bytes_written,
 		      GError     **error)
 {
-#ifdef G_PLATFORM_WIN32
-  return g_locale_from_utf8 (utf8string, len,
-			     bytes_read, bytes_written,
-			     error);
-#else  /* !G_PLATFORM_WIN32 */
   if (have_broken_filenames ())
     return g_locale_from_utf8 (utf8string, len,
 			       bytes_read, bytes_written,
 			       error);
   else
     return strdup_len (utf8string, len, bytes_read, bytes_written, error);
-#endif /* !G_PLATFORM_WIN32 */
 }
 
 /* Test of haystack has the needle prefix, comparing case
