@@ -60,10 +60,12 @@
 <!ENTITY glib-Resources SYSTEM "resources.sgml">
 <!ENTITY glib-Changes-2-0 SYSTEM "changes-2.0.sgml">
 
+<!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
   <bookinfo>
     <title>GLib Reference Manual</title>
+    <releaseinfo>for GLib &version;</releaseinfo>
   </bookinfo>
 
   <chapter id="glib">

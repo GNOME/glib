@@ -50,14 +50,16 @@ content_files =				\
 	building.sgml			\
 	changes-2.0.sgml		\
 	compiling.sgml			\
-	resources.sgml
- 
+	resources.sgml			\
+	version.xml
+
 
 # Other files to distribute
 extra_files =				\
 	mainloop-states.fig		\
 	mainloop-states.png		\
-	mainloop-states.eps
+	mainloop-states.eps		\
+	version.xml.in
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.

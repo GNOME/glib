@@ -14,10 +14,12 @@
 <!ENTITY gobject-Signals SYSTEM "xml/signals.xml">
 <!ENTITY gobject-Closures SYSTEM "xml/gclosure.xml">
 <!ENTITY gobject-Value-Arrays SYSTEM "xml/value_arrays.xml">
+<!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
   <bookinfo>
     <title>GObject Reference Manual</title>
+    <releaseinfo>for GLib &version;</releaseinfo>
   </bookinfo>
 
   <preface>

@@ -1,5 +1,7 @@
 2002-11-23  Matthias Clasen  <maclas@gmx.de>
 
+	* configure.in: Generate docs/reference/*/version.xml.
+
 	* glib/gdir.h: Add Copyright notice.
 
 2002-11-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>

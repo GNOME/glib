@@ -1,3 +1,18 @@
+2002-11-23  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/Makefile.am (extra_files): 
+	* gobject/Makefile.am (extra_files): Add version.xml.in.
+
+	* glib/Makefile.am (content_files): 
+	* gobject/Makefile.am (content_files): Add version.xml.
+
+	* glib/version.xml.in: 
+	* gobject/version.xml.in: New files to let configure dump the version in.
+
+	* glib/glib-docs.sgml:
+	* gobject/gobject-docs.sgml: Add version information.
+
+
 Thu Nov 21 15:52:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/iochannels.sgml: Add helpful comments about
