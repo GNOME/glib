@@ -1,3 +1,8 @@
+Thu Jul 25 18:58:29 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* glib/tmpl/threads.sgml: Fix reference to non-existing
+ 	@priority parameter. (#88500, Linux Walleij)
+ 
 2002-06-03  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-docs.sgml: 
