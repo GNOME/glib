@@ -70,7 +70,9 @@ WinMain (struct HINSTANCE__ *hInstance,
   int i;
   int fd;
   int mode;
-  gint zero = 0;
+  int handle;
+  int no_error = CHILD_NO_ERROR;
+  int zero = 0;
 
   SETUP_DEBUG();
 
@@ -203,10 +205,12 @@ WinMain (struct HINSTANCE__ *hInstance,
     {
       debugstring = g_string_new ("");
       g_string_append (debugstring,
-		       g_strdup_printf ("calling %s on program %s, __argv: ",
+		       g_strdup_printf ("calling %s %s mode=%s argv: ",
 					(__argv[ARG_USE_PATH][0] == 'y' ?
 					 "spawnvp" : "spawnv"),
-					__argv[ARG_PROGRAM]));
+					__argv[ARG_PROGRAM],
+					(mode == P_WAIT ?
+					 "P_WAIT" : "P_NOWAIT")));
       i = ARG_PROGRAM+1;
       while (__argv[i])
 	{
@@ -218,17 +222,29 @@ WinMain (struct HINSTANCE__ *hInstance,
     }
 
   if (__argv[ARG_USE_PATH][0] == 'y')
-    {
-      if (spawnvp (mode, __argv[ARG_PROGRAM], __argv+ARG_PROGRAM) < 0)
-	write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
-    }
+    handle = spawnvp (mode, __argv[ARG_PROGRAM], __argv+ARG_PROGRAM);
   else
+    handle = spawnv (mode, __argv[ARG_PROGRAM], __argv+ARG_PROGRAM);
+
+  if (debug)
     {
-      if (spawnv (mode, __argv[ARG_PROGRAM], __argv+ARG_PROGRAM) < 0)
-	write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
+      debugstring = g_string_new ("");
+      g_string_append (debugstring,
+		       g_strdup_printf ("%s returned %#x",
+					(__argv[ARG_USE_PATH][0] == 'y' ?
+					 "spawnvp" : "spawnv"),
+					handle));
+      MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
     }
-  write (child_err_report_fd, &zero, sizeof (zero));
-  write (child_err_report_fd, &zero, sizeof (zero));
+
+  if (handle < 0)
+    write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
+
+  write (child_err_report_fd, &no_error, sizeof (no_error));
+  if (mode == P_NOWAIT)
+    write (child_err_report_fd, &handle, sizeof (handle));
+  else
+    write (child_err_report_fd, &zero, sizeof (zero));
   return 0;
 }
 
