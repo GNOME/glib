@@ -1,3 +1,7 @@
+1999-11-18  Tor Lillqvist  <tml@iki.fi>
+
+	* glib.def: g_strjoin was missing.
+
 1999-11-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* acconfig.h, config.h.win32.in, configure.in: Renamed

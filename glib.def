@@ -397,6 +397,7 @@ EXPORTS
 	g_string_sprintfa
 	g_string_truncate
 	g_string_up
+	g_strjoin
 	g_strjoinv
 	g_strncasecmp
 	g_strndup
