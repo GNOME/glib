@@ -242,15 +242,18 @@ void	g_signal_chain_from_overridden	      (const GValue      *instance_and_param
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_AFTER)
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
-#define	g_signal_handlers_disconnect_by_func(instance, func, data) \
-    g_signal_handlers_disconnect_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
+#define	g_signal_handlers_disconnect_by_func(instance, func, data)						\
+    g_signal_handlers_disconnect_matched ((instance),								\
+					  (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA),	\
 					  0, 0, NULL, (func), (data))
-#define	g_signal_handlers_block_by_func(instance, func, data) \
-    g_signal_handlers_block_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
-				     0, 0, NULL, (func), (data))
-#define	g_signal_handlers_unblock_by_func(instance, func, data) \
-    g_signal_handlers_unblock_matched ((instance), G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA, \
-				       0, 0, NULL, (func), (data))
+#define	g_signal_handlers_block_by_func(instance, func, data)							\
+    g_signal_handlers_block_matched      ((instance),								\
+				          (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA),	\
+				          0, 0, NULL, (func), (data))
+#define	g_signal_handlers_unblock_by_func(instance, func, data)							\
+    g_signal_handlers_unblock_matched    ((instance),								\
+				          (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA),	\
+				          0, 0, NULL, (func), (data))
 
 
 /*< private >*/

@@ -1,3 +1,10 @@
+Tue Mar 26 15:21:47 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gsignal.h (g_signal_handlers_*_by_func): Add explicit
+	cast of G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA to
+	GSignalMatchType so that these macros work for C++.
+	(#76454, Damien Sandras)
+
 Mon Mar 25 17:51:05 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib-mkenums.in (parse_entries): Fix various bugs and
