@@ -497,7 +497,12 @@ g_convert_with_fallback (const gchar *str,
   utf8 = g_convert (str, len, "UTF-8", from_codeset, 
 		    bytes_read, &inbytes_remaining, error);
   if (!utf8)
-    return NULL;
+    {
+      g_iconv_close (cd);
+      if (bytes_written)
+        *bytes_written = 0;
+      return NULL;
+    }
 
   /* Now the heart of the code. We loop through the UTF-8 string, and
    * whenever we hit an offending character, we form fallback, convert
@@ -597,7 +602,7 @@ g_convert_with_fallback (const gchar *str,
   g_iconv_close (cd);
 
   if (bytes_written)
-    *bytes_written = outp - str;	/* Doesn't include '\0' */
+    *bytes_written = outp - dest;	/* Doesn't include '\0' */
 
   g_free (utf8);
 
