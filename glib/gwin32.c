@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <wchar.h>
 #include <errno.h>
 
 #define STRICT			/* Strict typing, please */
