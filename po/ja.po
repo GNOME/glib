@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.3\n"
-"POT-Creation-Date: 2002-12-20 10:12-0500\n"
+"POT-Creation-Date: 2003-01-28 17:15-0500\n"
 "PO-Revision-Date: 2002-12-05 01:51+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -411,11 +411,11 @@ msgstr "テキストが %c に対応する引用記号の前に終わってい�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "テキストが空です (あるいは空白のみ)"
 
-#: glib/gspawn-win32.c:208
+#: glib/gspawn-win32.c:286
 msgid "Failed to read data from child process"
 msgstr "子プロセスからデータを読み出せません"
 
-#: glib/gspawn-win32.c:336
+#: glib/gspawn-win32.c:414
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -423,26 +423,26 @@ msgstr ""
 "g_io_channel_win32_poll() が子プロセスからデータを読み出す途中で予期しないエ"
 "ラー"
 
-#: glib/gspawn-win32.c:706 glib/gspawn.c:961
+#: glib/gspawn-win32.c:784 glib/gspawn.c:979
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "子パイプから読み出せません (%s) "
 
-#: glib/gspawn-win32.c:784
+#: glib/gspawn-win32.c:871
 msgid "Failed to execute helper program"
 msgstr "ヘルパープログラムの起動に失敗しました"
 
-#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:904 glib/gspawn.c:1184
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "ディレクトリ '%s' へ移動できません (%s)"
 
-#: glib/gspawn-win32.c:826
+#: glib/gspawn-win32.c:913
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "子プロセスを起動できません (%s)"
 
-#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:956 glib/gspawn.c:1315
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "子プロセスとの通信用のパイプを作成できません (%s)"
@@ -462,32 +462,32 @@ msgstr "子プロセスからのデータ読む出し中に select() で予期�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() で予期せぬエラー (%s)"
 
-#: glib/gspawn.c:1026
+#: glib/gspawn.c:1044
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失敗 (%s)"
 
-#: glib/gspawn.c:1176
+#: glib/gspawn.c:1194
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "子プロセスを起動できません \"%s\" (%s)"
 
-#: glib/gspawn.c:1186
+#: glib/gspawn.c:1204
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "子プロセスの出力、または入力をリダイレクトできません (%s)"
 
-#: glib/gspawn.c:1195
+#: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "子プロセスを fork できません (%s)"
 
-#: glib/gspawn.c:1203
+#: glib/gspawn.c:1221
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "子プロセスの実行時に不明なエラー \"%s\""
 
-#: glib/gspawn.c:1225
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "子 pid パイプから十分なデータを読めません (%s)"

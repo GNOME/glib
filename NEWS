@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.2.0 to GLib-2.2.1
+=================================================
+* Win32 [Tor Lillqvist]
+  - Improve handling of stderr/stdout
+  - Install .def files
+  - Fix quoting for GSpawn [Alex Shaduri]
+  - Miscellaneous bug fixes
+* configure fixes [Owne Taylor, Manish Singh, Rich Burridge, Tim Mooney]
+* New and updated translations (am,bn,et,fi,mn,nl,pl,pt_BR,ru,zh_TW,uk)
+
 Overview of Changes from GLib 2.1.5 to GLib-2.2.0
 =================================================
 

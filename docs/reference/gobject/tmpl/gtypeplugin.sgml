@@ -25,6 +25,11 @@ An interface for dynamically loadable types
 
 </para>
 
+@base_iface: 
+@use_plugin: 
+@unuse_plugin: 
+@complete_type_info: 
+@complete_interface_info: 
 
 <!-- ##### USER_FUNCTION GTypePluginUse ##### -->
 <para>

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-20 10:12-0500\n"
+"POT-Creation-Date: 2003-01-28 17:15-0500\n"
 "PO-Revision-Date: 2001-12-19 21:39+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -422,11 +422,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "O texto estaba baleiro (ou contiña espacios en branco namais)"
 
-#: glib/gspawn-win32.c:208
+#: glib/gspawn-win32.c:286
 msgid "Failed to read data from child process"
 msgstr "Fallo ao ler datos de proceso fillo"
 
-#: glib/gspawn-win32.c:336
+#: glib/gspawn-win32.c:414
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -434,27 +434,27 @@ msgstr ""
 "Erro non agardado en g_io_channel_win32_poll() lendo datos desde un proceso "
 "fillo"
 
-#: glib/gspawn-win32.c:706 glib/gspawn.c:961
+#: glib/gspawn-win32.c:784 glib/gspawn.c:979
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Fallo ao ler desde tubería filla (%s)"
 
-#: glib/gspawn-win32.c:784
+#: glib/gspawn-win32.c:871
 #, fuzzy
 msgid "Failed to execute helper program"
 msgstr "Fallo ao executar proceso fillo (%s)"
 
-#: glib/gspawn-win32.c:817 glib/gspawn.c:1166
+#: glib/gspawn-win32.c:904 glib/gspawn.c:1184
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Fallo ao cambiar ao directorio '%s' (%s)"
 
-#: glib/gspawn-win32.c:826
+#: glib/gspawn-win32.c:913
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Fallo ao executar proceso fillo (%s)"
 
-#: glib/gspawn-win32.c:869 glib/gspawn.c:1297
+#: glib/gspawn-win32.c:956 glib/gspawn.c:1315
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Fallo ao crear unha tubería para comunicarse con proceso fillo (%s)"
@@ -474,32 +474,32 @@ msgstr "Erro non agargado en select() lendo datos dun proceso fillo (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro non agardado en waitpid() (%s)"
 
-#: glib/gspawn.c:1026
+#: glib/gspawn.c:1044
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Fallo ao bifurcar (%s)"
 
-#: glib/gspawn.c:1176
+#: glib/gspawn.c:1194
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Fallo ao executar proceso fillo \"%s\" (%s)"
 
-#: glib/gspawn.c:1186
+#: glib/gspawn.c:1204
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Fallo ao redirixir a saída ou entrada do proceso fillo (%s)"
 
-#: glib/gspawn.c:1195
+#: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Fallo ao bifurcar proceso fillo (%s)"
 
-#: glib/gspawn.c:1203
+#: glib/gspawn.c:1221
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro descoñecido executando o proceso fillo \"%s\""
 
-#: glib/gspawn.c:1225
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""

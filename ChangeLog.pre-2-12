@@ -1,3 +1,11 @@
+Tue Jan 28 17:00:03 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.2.1 ===
+
+	* configure.in: Version 2.2.1, interface age 1.
+
+	* NEWS: Updated.
+
 Tue Jan 28 16:08:56 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-gettext.m4: If msgfmt isn't found,

@@ -107,6 +107,13 @@ Retrieve the #GType to intiialize a #GValue for this parameter.
 
 </para>
 
+@g_type_class: 
+@value_type: 
+@finalize: 
+@value_set_default: 
+@value_validate: 
+@values_cmp: 
+@dummy: 
 
 <!-- ##### ENUM GParamFlags ##### -->
 <para>
