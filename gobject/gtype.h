@@ -316,8 +316,8 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
 /* convenience macros for type implementations, which for a type GtkGadget will:
  * - prototype: static void     gtk_gadget_class_init (GtkGadgetClass *klass);
  * - prototype: static void     gtk_gadget_init       (GtkGadget      *self);
- * - define:    static gpointer parent_class = NULL;
- *   parent_class is initialized prior to calling gtk_gadget_class_init()
+ * - define:    static gpointer gtk_gadget_parent_class = NULL;
+ *   gtk_gadget_parent_class is initialized prior to calling gtk_gadget_class_init()
  * - implement: GType           gtk_gadget_get_type (void) { ... }
  * - support custom code in gtk_gadget_get_type() after the type is registered.
  *
@@ -325,10 +325,10 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
  * example: G_DEFINE_TYPE_WITH_CODE (GtkGadget, gtk_gadget, GTK_TYPE_WIDGET,
  *                                   g_print ("GtkGadget-id: %lu\n", g_define_type_id));
  */
-#define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, parent_class, {})
-#define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)          G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, parent_class, _C_)
-#define G_DEFINE_ABSTRACT_TYPE(TN, t_n, T_P)                G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, {})
-#define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, parent_class, _C_)
+#define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+#define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)          G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, _C_)
+#define G_DEFINE_ABSTRACT_TYPE(TN, t_n, T_P)                G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, {})
+#define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, _C_)
 
 /* convenience macro to ease interface addition in the CODE
  * section of G_DEFINE_TYPE_WITH_CODE() (this macro relies on
@@ -345,14 +345,14 @@ gpointer g_type_instance_get_private    (GTypeInstance              *instance,
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
 
-#define G_DEFINE_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, type_parent_class, CODE) \
+#define G_DEFINE_TYPE_EXTENDED(TypeName, type_name, TYPE_PARENT, flags, CODE) \
 \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
-static gpointer type_parent_class = NULL; \
+static gpointer type_name##_parent_class = NULL; \
 static void     type_name##_class_intern_init (gpointer klass) \
 { \
-  type_parent_class = g_type_class_peek_parent (klass); \
+  type_name##_parent_class = g_type_class_peek_parent (klass); \
   type_name##_class_init ((TypeName##Class*) klass); \
 } \
 \

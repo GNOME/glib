@@ -1,3 +1,9 @@
+Sat Jan 24 18:20:13 2004  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: prefixed the parent_class variable defined by G_DEFINE_TYPE()
+	with type_name. removed type_parent_class argument
+	from G_DEFINE_TYPE_EXTENDED().
+
 2004-01-24  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add a missing entry.
