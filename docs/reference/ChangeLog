@@ -1,3 +1,7 @@
+2001-12-14  Matthias Clasen  <matthias@poet.de>
+
+	* glib/tmpl/memory.sgml: Typo fixes.
+
 2001-12-13  Matthias Clasen  <matthiasc@poet.de>
 
         * glib/tmpl/completion.sgml, glib/tmpl/date.sgml,
