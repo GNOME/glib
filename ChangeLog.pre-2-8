@@ -1,3 +1,8 @@
+2003-02-10  Mohammad DAMT  <mdamt@bisnisweb.com>
+
+	* po/id.po: Added Indonesian translation
+	* configure.in: Added "id" to ALL_LINGUAS
+
 2003-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_channel_unix_new): Fix typo: Should be
