@@ -1,3 +1,9 @@
+2003-03-05  James Henstridge  <james@daa.com.au>
+
+	* po/Makefile.in.in: merge changes from trunk, to allow "make
+	distcheck" to pass with newer automakes.  This helps packages
+	using glib-gettextize that want to upgrade to automake > 1.4.
+
 2003-02-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add a couple of missing entries, thanks to Cedric
