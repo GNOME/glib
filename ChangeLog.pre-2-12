@@ -1,3 +1,15 @@
+2004-07-21  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix #147651, reported by Oliver Guntermann:
+
+	* glib/gprintfint.h (_g_vasprintf): Don't wrap vasprintf(),
+	_g_gnulib_vasprintf() in a macro, since they behave 
+	differently wrt. to memory allocation.
+
+	* glib/gprintf.c (g_vasprintf): Instead, differentiate 
+	here between the three cases: system vasprintf(), 
+	_g_gnulib_vasprintf(), no vasprintf().  
+
 2004-07-20  Crispin Flowerday  <gnome@flowerday.cx>
 
 	* NEWS: Fix a typo in my name
