@@ -1,3 +1,9 @@
+Wed Jul 26 00:46:03 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h: applied patch from Darin Adler <darin@eazel.com> which
+	supplies g_return_if_reached(), g_return_val_if_reached() and
+	g_critical().
+
 2000-07-22  Tor Lillqvist  <tml@iki.fi>
 
 	* build-dll: Fix resource handling, the resource file got left out

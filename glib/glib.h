@@ -426,6 +426,8 @@ extern "C" {
 
 #define g_return_if_fail(expr)
 #define g_return_val_if_fail(expr,val)
+#define g_return_if_reached() return
+#define g_return_val_if_reached(val) return (val)
 
 #else /* !G_DISABLE_CHECKS */
 
@@ -436,7 +438,7 @@ extern "C" {
        {								\
 	 g_log (G_LOG_DOMAIN,						\
 		G_LOG_LEVEL_CRITICAL,					\
-		"file %s: line %d (%s): assertion `%s' failed.",	\
+		"file %s: line %d (%s): assertion `%s' failed",		\
 		__FILE__,						\
 		__LINE__,						\
 		__PRETTY_FUNCTION__,					\
@@ -449,13 +451,31 @@ extern "C" {
        {								\
 	 g_log (G_LOG_DOMAIN,						\
 		G_LOG_LEVEL_CRITICAL,					\
-		"file %s: line %d (%s): assertion `%s' failed.",	\
+		"file %s: line %d (%s): assertion `%s' failed",		\
 		__FILE__,						\
 		__LINE__,						\
 		__PRETTY_FUNCTION__,					\
 		#expr);							\
-	 return val;							\
+	 return (val);							\
        };				}G_STMT_END
+
+#define g_return_if_reached()		G_STMT_START{			\
+     g_log (G_LOG_DOMAIN,						\
+	    G_LOG_LEVEL_CRITICAL,					\
+	    "file %s: line %d (%s): assertion `%s' failed",		\
+	    __FILE__,							\
+	    __LINE__,							\
+	    __PRETTY_FUNCTION__);					\
+     return;				}G_STMT_END
+
+#define g_return_val_if_reached(val)	G_STMT_START{			\
+     g_log (G_LOG_DOMAIN,						\
+	    G_LOG_LEVEL_CRITICAL,					\
+	    "file %s: line %d (%s): should not be reached",		\
+	    __FILE__,							\
+	    __LINE__,							\
+	    __PRETTY_FUNCTION__);					\
+     return (val);			}G_STMT_END
 
 #else /* !__GNUC__ */
 
@@ -464,7 +484,7 @@ extern "C" {
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed.",	\
+		"file %s: line %d: assertion `%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
@@ -476,12 +496,28 @@ extern "C" {
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed.",	\
+		"file %s: line %d: assertion `%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
-	 return val;						\
+	 return (val);						\
        };				}G_STMT_END
+
+#define g_return_if_reached()		G_STMT_START{		\
+     g_log (G_LOG_DOMAIN,					\
+	    G_LOG_LEVEL_CRITICAL,				\
+	    "file %s: line %d: assertion `%s' failed",		\
+	    __FILE__,						\
+	    __LINE__);						\
+     return;				}G_STMT_END
+
+#define g_return_val_if_reached(val)	G_STMT_START{		\
+     g_log (G_LOG_DOMAIN,					\
+	    G_LOG_LEVEL_CRITICAL,				\
+	    "file %s: line %d: should not be reached",		\
+	    __FILE__,						\
+	    __LINE__);						\
+     return (val);			}G_STMT_END
 
 #endif /* !__GNUC__ */
 
@@ -1442,6 +1478,9 @@ GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 #define	g_message(format, args...)	g_log (G_LOG_DOMAIN, \
 					       G_LOG_LEVEL_MESSAGE, \
 					       format, ##args)
+#define	g_critical(format, args...)	g_log (G_LOG_DOMAIN, \
+					       G_LOG_LEVEL_CRITICAL, \
+					       format, ##args)
 #define	g_warning(format, args...)	g_log (G_LOG_DOMAIN, \
 					       G_LOG_LEVEL_WARNING, \
 					       format, ##args)
@@ -1462,6 +1501,15 @@ g_message (const gchar *format,
   va_list args;
   va_start (args, format);
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
+  va_end (args);
+}
+static void
+g_critical (const gchar *format,
+	    ...)
+{
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, format, args);
   va_end (args);
 }
 static void
