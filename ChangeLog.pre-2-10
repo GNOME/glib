@@ -1,3 +1,9 @@
+Sun Mar 14 12:58:30 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmain.c: if _POLL_EMUL_H is defined, undefine
+	HAVE_POLL to prefer our own poll() emulation to the
+	lame OS/X one. (#136956, Manish Singh)
+
 Sat Mar 13 23:30:53 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmacros.h (G_STMT_START): Add __extension__

@@ -48,6 +48,14 @@
 #  include <sys/poll.h>
 #  undef events	 /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
 #  undef revents /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
+
+/* The poll() emulation on OS/X doesn't handle fds=NULL, nfds=0,
+ * so we prefer our own poll emulation.
+ */
+#ifdef _POLL_EMUL_H_
+#undef HAVE_POLL
+#endif
+   
 #endif /* GLIB_HAVE_SYS_POLL_H */
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
