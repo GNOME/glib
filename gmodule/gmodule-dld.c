@@ -122,8 +122,13 @@ static gchar*
 _g_module_build_path (const gchar *directory,
 		      const gchar *module_name)
 {
-  if (directory)
-    return g_strconcat (directory, "/", module_name, ".sl", NULL);
+  if (directory && *directory)
+    if (strncmp (module_name, "lib", 3) == 0)
+      return g_strconcat (directory, "/", module_name, NULL);
+    else
+      return g_strconcat (directory, "/lib", module_name, ".sl", NULL);
+  else if (strncmp (module_name, "lib", 3) == 0)
+    return g_strdup (module_name);
   else
-    return g_strconcat (module_name, ".sl", NULL);
+    return g_strconcat ("lib", module_name, ".sl", NULL);
 }

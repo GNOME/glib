@@ -1,6 +1,7 @@
 EXPORTS
 	g_array_append_vals
 	g_array_free
+	g_array_insert_vals
 	g_array_new
 	g_array_prepend_vals
 	g_array_remove_index
@@ -42,11 +43,55 @@ EXPORTS
 	g_dataset_id_get_data
 	g_dataset_id_remove_no_notify
 	g_dataset_id_set_data_full
+	g_date_add_days
+	g_date_add_months
+	g_date_add_years
+	g_date_clear
+	g_date_compare
+	g_date_day
+	g_date_day_of_year
+	g_date_days_in_month
+	g_date_free
+	g_date_is_first_of_month
+	g_date_is_last_of_month
+	g_date_is_leap_year
+	g_date_julian
+	g_date_julian
+	g_date_monday_week_of_year
+	g_date_monday_weeks_in_year
+	g_date_new
+	g_date_new_dmy
+	g_date_new_julian
+	g_date_month
+	g_date_set_day
+	g_date_set_dmy
+	g_date_set_julian
+	g_date_set_month
+	g_date_set_parse
+	g_date_set_time
+	g_date_set_year
+	g_date_strftime
+	g_date_subtract_days
+	g_date_subtract_months
+	g_date_subtract_years
+	g_date_sunday_week_of_year
+	g_date_sunday_weeks_in_year
+	g_date_to_struct_tm
+	g_date_valid
+	g_date_valid_day
+	g_date_valid_dmy
+	g_date_valid_julian
+	g_date_valid_month
+	g_date_valid_weekday
+	g_date_valid_year
+	g_date_weekday
+	g_date_year
 	g_direct_equal
 	g_direct_hash
 	g_dirname
 	g_free
 	g_get_current_dir
+	g_get_current_time
 	g_get_home_dir
 	g_get_prgname
 	g_get_real_name
@@ -81,22 +126,38 @@ EXPORTS
 	g_hook_list_invoke
 	g_hook_list_invoke_check
 	g_hook_list_marshal
+	g_hook_list_marshal_check
 	g_hook_list_clear
 	g_hook_next_valid
 	g_hook_prepend
 	g_hook_ref
 	g_hook_unref
+	g_idle_add
+	g_idle_add_full
 	g_int_equal
 	g_int_hash
-	g_iochannel_new
-	g_iochannel_free
-	g_iochannel_close_and_free
-	g_iochannel_wakeup_peer
+	g_io_add_watch
+	g_io_add_watch_full
+	g_io_channel_close
+	g_io_channel_init
+	g_io_channel_read
+	g_io_channel_ref
+	g_io_channel_seek
+	g_io_channel_unix_get_fd
+	g_io_channel_unix_new
+	g_io_channel_unref
+	g_io_channel_win32_get_fd
+	g_io_channel_win32_new_messages
+	g_io_channel_win32_new_pipe
+	g_io_channel_win32_new_pipe_with_wakeups
+	g_io_channel_win32_new_stream_socket
+	g_io_channel_win32_pipe_readable
+	g_io_channel_win32_pipe_request_wakeups
+	g_io_channel_write
 	g_list_alloc
-	g_list_allocator_free
-	g_list_allocator_new
 	g_list_append
 	g_list_concat
+	g_list_copy
 	g_list_find
 	g_list_find_custom
 	g_list_first
@@ -115,7 +176,6 @@ EXPORTS
 	g_list_remove
 	g_list_remove_link
 	g_list_reverse
-	g_list_set_allocator
 	g_list_sort
 	g_log
 	g_log_default_handler
@@ -124,6 +184,16 @@ EXPORTS
 	g_log_set_fatal_mask
 	g_log_set_handler
 	g_logv
+	g_main_add_poll
+	g_main_destroy
+	g_main_is_running
+	g_main_iteration
+	g_main_new
+	g_main_pending
+	g_main_remove_poll
+	g_main_quit
+	g_main_run
+	g_main_set_poll_func
 	g_malloc
 	g_malloc0
 	g_mem_check
@@ -136,8 +206,11 @@ EXPORTS
 	g_mem_chunk_new
 	g_mem_chunk_print
 	g_mem_chunk_reset
+	g_mem_init
 	g_mem_profile
 	g_memdup
+	g_messages_init
+	g_mutex_init
 	g_node_child_index
 	g_node_child_position
 	g_node_children_foreach
@@ -166,6 +239,7 @@ EXPORTS
 	g_parse_debug_string
 	g_path_is_absolute
 	g_path_skip_root
+	g_pipe_readable_msg
 	g_print
 	g_printerr
 	g_printf_string_upper_bound
@@ -224,6 +298,7 @@ EXPORTS
 	g_slist_alloc
 	g_slist_append
 	g_slist_concat
+	g_slist_copy
 	g_slist_find
 	g_slist_find_custom
 	g_slist_foreach
@@ -241,9 +316,15 @@ EXPORTS
 	g_slist_remove
 	g_slist_remove_link
 	g_slist_reverse
-	g_slist_set_allocator
 	g_slist_sort
 	g_snprintf
+	g_source_add
+	g_source_remove
+	g_source_remove_by_source_data
+	g_source_remove_by_user_data
+	g_static_mutex_get_mutex_impl
+	g_static_private_get
+	g_static_private_set
 	g_str_equal
 	g_str_hash
 	g_strcasecmp
@@ -284,6 +365,8 @@ EXPORTS
 	g_strsplit
 	g_strtod
 	g_strup
+	g_timeout_add
+	g_timeout_add_full
 	g_timer_destroy
 	g_timer_elapsed
 	g_timer_new

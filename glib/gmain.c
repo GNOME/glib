@@ -24,17 +24,33 @@
  * MT safe
  */
 
+#include "config.h"
+
 #include "glib.h"
 #include <sys/types.h>
+#include <time.h>
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 #ifdef	GLIB_HAVE_SYS_POLL_H
 #  include <sys/poll.h>
 #  undef events	 /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
 #  undef revents /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
 #endif	/* GLIB_HAVE_SYS_POLL_H */
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <errno.h>
-#include "config.h"
+
+#ifdef NATIVE_WIN32
+#define STRICT
+#include <windows.h>
+#endif
+
+#ifdef _MSC_VER
+#include <fcntl.h>
+#include <io.h>
+#endif
 
 /* Types */
 
@@ -138,15 +154,160 @@ static GPollRec *poll_free_list = NULL;
 static GMemChunk *poll_chunk;
 static guint n_poll_records = 0;
 
+#ifdef G_THREADS_ENABLED
+#ifndef NATIVE_WIN32
 /* this pipe is used to wake up the main loop when a source is added.
  */
 static gint wake_up_pipe[2] = { -1, -1 };
+#else
+static HANDLE wake_up_semaphore = NULL;
+#endif
 static GPollFD wake_up_rec;
 static gboolean poll_waiting = FALSE;
+#endif
 
 #ifdef HAVE_POLL
 static GPollFunc poll_func = (GPollFunc) poll;
 #else	/* !HAVE_POLL */
+#ifdef NATIVE_WIN32
+
+static gint
+g_poll (GPollFD *fds, guint nfds, gint timeout)
+{
+  HANDLE handles[MAXIMUM_WAIT_OBJECTS];
+  GPollFD *f;
+  DWORD ready;
+  MSG msg;
+  UINT timer;
+  LONG prevcnt;
+  gint poll_msgs = -1;
+  gint nhandles = 0;
+
+  for (f = fds; f < &fds[nfds]; ++f)
+    if (f->fd >= 0)
+      {
+	if (f->events & G_IO_IN)
+	  if (f->fd == G_WIN32_MSG_HANDLE)
+	    poll_msgs = f - fds;
+	  else
+	    {
+	      /* g_print ("g_poll: waiting for handle %#x\n", f->fd); */
+	      handles[nhandles++] = (HANDLE) f->fd;
+	    }
+      }
+
+  if (timeout == -1)
+    timeout = INFINITE;
+
+  if (poll_msgs >= 0)
+    {
+      /* Waiting for messages, and maybe events */
+      if (nhandles == 0)
+	{
+	  if (timeout == INFINITE)
+	    {
+	      /* Waiting just for messages, infinite timeout
+	       * -> Use PeekMessage, then WaitMessage
+	       */
+	      /* g_print ("WaitMessage, PeekMessage\n"); */
+	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+		ready = WAIT_OBJECT_0;
+	      else if (!WaitMessage ())
+		g_warning ("g_poll: WaitMessage failed");
+	      ready = WAIT_OBJECT_0;
+	    }
+	  else if (timeout == 0)
+	    {
+	      /* Waiting just for messages, zero timeout
+	       * -> Use PeekMessage
+	       */
+	      /* g_print ("PeekMessage\n"); */
+	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+		ready = WAIT_OBJECT_0;
+	      else
+		ready = WAIT_TIMEOUT;
+	    }
+	  else
+	    {
+	      /* Waiting just for messages, some timeout
+	       * -> First try PeekMessage, then set a timer, wait for message,
+	       * kill timer, use PeekMessage
+	       */
+	      /* g_print ("PeekMessage\n"); */
+	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+		ready = WAIT_OBJECT_0;
+	      else if ((timer = SetTimer (NULL, 0, timeout, NULL)) == 0)
+		g_warning ("g_poll: SetTimer failed");
+	      else
+		{
+		  /* g_print ("WaitMessage\n"); */
+		  WaitMessage ();
+		  KillTimer (NULL, timer);
+		  if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+		    ready = WAIT_OBJECT_0;
+		  else
+		    ready = WAIT_TIMEOUT;
+		}
+	    }
+	}
+      else
+	{
+	  /* Wait for either message or event
+	   * -> Use MsgWaitForMultipleObjects
+	   */
+	  /* g_print ("MsgWaitForMultipleObjects(%d, %d)\n", nhandles, timeout); */
+	  ready = MsgWaitForMultipleObjects (nhandles, handles, FALSE,
+					     timeout, QS_ALLINPUT);
+	  /* g_print("=%d\n", ready); */
+	  if (ready == WAIT_FAILED)
+	    g_warning ("g_poll: MsgWaitForMultipleObjects failed");
+	}
+    }
+  else if (nhandles == 0)
+    {
+      /* Wait for nothing (huh?) */
+      return 0;
+    }
+  else
+    {
+      /* Wait for just events
+       * -> Use WaitForMultipleObjects
+       */
+      /* g_print ("WaitForMultipleObjects(%d, %d)\n", nhandles, timeout); */
+      ready = WaitForMultipleObjects (nhandles, handles, FALSE, timeout);
+      /* g_print("=%d\n", ready); */
+      if (ready == WAIT_FAILED)
+	g_warning ("g_poll: WaitForMultipleObjects failed");
+    }
+
+  for (f = fds; f < &fds[nfds]; ++f)
+    f->revents = 0;
+
+  if (ready == WAIT_FAILED)
+    return -1;
+  else if (poll_msgs >= 0 && ready == WAIT_OBJECT_0 + nhandles)
+    {
+      fds[poll_msgs].revents |= G_IO_IN;
+    }
+  else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
+    for (f = fds; f < &fds[nfds]; ++f)
+      {
+	if ((f->events & G_IO_IN)
+	    && f->fd == (gint) handles[ready - WAIT_OBJECT_0])
+	  {
+	    f->revents |= G_IO_IN;
+	    /* g_print ("event %#x\n", f->fd); */
+	    ResetEvent ((HANDLE) f->fd);
+	  }
+      }
+    
+  if (ready == WAIT_TIMEOUT)
+    return 0;
+  else
+    return 1;
+}
+
+#else  /* !NATIVE_WIN32 */
 
 /* The following implementation of poll() comes from the GNU C Library.
  * Copyright (C) 1994, 1996, 1997 Free Software Foundation, Inc.
@@ -219,6 +380,8 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 
   return ready;
 }
+#endif /* !NATIVE_WIN32 */
+
 static GPollFunc poll_func = g_poll;
 #endif	/* !HAVE_POLL */
 
@@ -280,14 +443,19 @@ g_source_add (gint           priority,
 
   return_val = source->hook.hook_id;
 
+#ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
 
   if (poll_waiting)
     {
       poll_waiting = FALSE;
+#ifndef NATIVE_WIN32
       write (wake_up_pipe[1], "A", 1);
+#else
+      ReleaseSemaphore (wake_up_semaphore, 1, NULL);
+#endif
     }
-
+#endif
   G_UNLOCK (main_loop);
 
   return return_val;
@@ -348,6 +516,7 @@ g_source_remove_by_source_data (gpointer source_data)
 void
 g_get_current_time (GTimeVal *result)
 {
+#ifndef _MSC_VER
   struct timeval r;
   g_return_if_fail (result != NULL);
 
@@ -356,6 +525,29 @@ g_get_current_time (GTimeVal *result)
   gettimeofday (&r, NULL);
   result->tv_sec = r.tv_sec;
   result->tv_usec = r.tv_usec;
+#else
+  /* Avoid calling time() except for the first time.
+   * GetTickCount() should be pretty fast and low-level?
+   * I could also use ftime() but it seems unnecessarily overheady.
+   */
+  static DWORD start_tick = 0;
+  static time_t start_time;
+  DWORD tick;
+  time_t t;
+
+  g_return_if_fail (result != NULL);
+ 
+  if (start_tick == 0)
+    {
+      start_tick = GetTickCount ();
+      time (&start_time);
+    }
+
+  tick = GetTickCount ();
+
+  result->tv_sec = (tick - start_tick) / 1000 + start_time;
+  result->tv_usec = ((tick - start_tick) % 1000) * 1000;
+#endif
 }
 
 /* Running the main loop */
@@ -652,7 +844,8 @@ g_main_poll (gint     timeout,
 
   gint i;
   gint npoll;
-
+#ifdef G_THREADS_ENABLED
+#ifndef NATIVE_WIN32
   if (wake_up_pipe[0] < 0)
     {
       if (pipe (wake_up_pipe) < 0)
@@ -663,7 +856,17 @@ g_main_poll (gint     timeout,
       wake_up_rec.events = G_IO_IN;
       g_main_add_poll_unlocked (0, &wake_up_rec);
     }
-  
+#else
+  if (wake_up_semaphore == NULL)
+    {
+      if ((wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL)) == NULL)
+	g_error ("Cannot create wake-up semaphore: %d", GetLastError ());
+      wake_up_rec.fd = (gint) wake_up_semaphore;
+      wake_up_rec.events = G_IO_IN;
+      g_main_add_poll_unlocked (0, &wake_up_rec);
+    }
+#endif
+#endif
   fd_array = g_new (GPollFD, n_poll_records);
  
   pollrec = poll_records;
@@ -677,21 +880,25 @@ g_main_poll (gint     timeout,
       pollrec = pollrec->next;
       i++;
     }
-
+#ifdef G_THREADS_ENABLED
   poll_waiting = TRUE;
-  
+#endif
   G_UNLOCK (main_loop);
   npoll = i;
   (*poll_func) (fd_array, npoll, timeout);
   G_LOCK (main_loop);
 
+#ifdef G_THREADS_ENABLED
   if (!poll_waiting)
     {
+#ifndef NATIVE_WIN32
       gchar c;
       read (wake_up_pipe[0], &c, 1);
+#endif
     }
   else
     poll_waiting = FALSE;
+#endif
 
   pollrec = poll_records;
   i = 0;

@@ -1,7 +1,16 @@
-For more information about the Windows port, see
-http://www.iki.fi/tml/gimp/win32/ .
+For more information about the port or GLib, GTk+ and the GIMP to
+native Windows, see http://www.iki.fi/tml/gimp/win32/ . ("Native"
+means that we use the Win32 API only, and not any POSIX emulation
+layer except that provided by the Microsoft runtime C library, and the
+pthreads emulation library from Cygnus.)
 
-As for now, only Microsoft C is really supported. Before compiling,
-check the BIN definition in makefile.msc. Compile with `nmake -f
-makefile.msc`. Install with `nmake -f makefile.msc install`. Gnu-Win32
-with egcs and maybe LCC-Win32 support will be added later.
+As for now, only the Microsoft compiler and tools are really
+supported. Before compiling, check the BIN definition in
+makefile.msc. Compile with `nmake -f makefile.msc`. Install with
+`nmake -f makefile.msc install`. Cygwin (without cygwin runtime,
+i.e. "mingw32") and maybe LCC-Win32 support will be added later.  Note
+that when using the cygwin compiler and other tools *with* the cygwin
+runtime the normal Unix configuration method should work.
+
+The thread support uses the pthreads package from Cygnus, which isn't
+ready yet, and thus really should not be relied upon.

@@ -23,13 +23,17 @@
 /* #undef ENABLE_MEM_PROFILE */
 
 #define G_COMPILED_WITH_DEBUGGING "minimum"
+
 /* #undef HAVE_BROKEN_WCTYPE */
 /* #undef HAVE_DOPRNT */
 #define HAVE_FLOAT_H 1
 #define HAVE_LIMITS_H 1
+/* #undef HAVE_LOCALTIME_R */
 /* #undef HAVE_LONG_DOUBLE */
+/* #undef HAVE_POLL */
 /* #undef HAVE_PWD_H */
 /* #undef HAVE_SYS_PARAM_H */
+/* #undef HAVE_SYS_POLL_H */
 /* #undef HAVE_SYS_SELECT_H */
 /* #undef HAVE_SYS_TIME_H */
 /* #undef HAVE_SYS_TIMES_H */
@@ -52,9 +56,12 @@
 
 #define GLIB_MAJOR_VERSION 1
 #define GLIB_MINOR_VERSION 1
-#define GLIB_MICRO_VERSION 4
+#define GLIB_MICRO_VERSION 12
 #define GLIB_INTERFACE_AGE 0
 #define GLIB_BINARY_AGE 0
+
+#define G_THREAD_SOURCE "gthread-posix.c"
+#define G_THREADS_IMPL_POSIX
 
 /* The number of bytes in a char.  */
 #define SIZEOF_CHAR 1

@@ -35,6 +35,9 @@
 #endif
 
 #ifdef NATIVE_WIN32
+#define STRICT
+#include <windows.h>
+
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 
@@ -49,6 +52,22 @@ write (FILE       *fd,
 }
 #endif /* NATIVE_WIN32 */
 
+static void
+ensure_stdout_valid (void)
+{
+#ifdef NATIVE_WIN32
+  HANDLE handle;
+
+  handle = GetStdHandle (STD_OUTPUT_HANDLE);
+  
+  if (handle == INVALID_HANDLE_VALUE)
+    {
+      AllocConsole ();
+      freopen ("CONOUT$", "w", stdout);
+    }
+#endif
+}
+	
 
 /* --- structures --- */
 typedef struct _GLogDomain	GLogDomain;
@@ -410,6 +429,7 @@ g_log_default_handler (const gchar    *log_domain,
    * DOS prompt.
    */
   fd = stdout;
+  ensure_stdout_valid ();
 #else
   fd = (log_level >= G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
@@ -623,6 +643,7 @@ g_print (const gchar *format,
     local_glib_print_func (string);
   else
     {
+      ensure_stdout_valid ();
       fputs (string, stdout);
       fflush (stdout);
     }

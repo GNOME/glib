@@ -27,7 +27,9 @@
 #include <pthread.h>
 #include <errno.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 
 #define posix_print_error( name, num )                          \
   g_error( "file %s: line %d (%s): error %s during %s",         \

@@ -1,3 +1,11 @@
+1999-01-16  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-dl.c gmodule-dld.c: In
+ 	_g_module_build_path, don't add the "lib" prefix and
+ 	".so" or ".sl" suffix if already there.
+
+	* gmodule-win32.c: Likewise for the ".dll" suffix.
+
 1998-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.c: Made it MT safe, the g_module_error() is now thread

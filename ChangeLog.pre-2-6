@@ -1,3 +1,45 @@
+1999-01-16  Tor Lillqvist  <tml@iki.fi>
+
+	* Merge in current Win32 version:
+
+	* README.win32: More text.
+
+	* config.h.win32 glibconfig.h.win32: Update to match the
+	corresponding generated files on Unix.
+
+	* makefile.msc: Update with new source files, and gthread
+ 	library. Use the compiler flag -MD instead of using -D_DLL and
+	/nodefaultlib:libc msvcrt.lib in the link phase.
+
+	* glib.def: Update to include new functions, drop removed ones.
+
+	* glib.h: Add comments about main loop and polling on Win32. (In
+	general, it's only for the GIMP's use.) Add Win32 IO Channel
+	functions. Remove the obsoleted old IO Channel stuff (which was
+	in #if 0 already).
+
+	* giowin32.c: New file.
+
+	* gmain.c: Include config.h, conditionalize <sys/time.h>
+ 	inclusion.  Add g_poll implementation for Win32 (only for the
+ 	GIMP's needs for now, it's hard or even impossible to be as clean
+ 	and generic as on Unix). Implement g_get_current_time on Win32. If
+ 	threads aren't supported, don't try to wake up main thread's
+ 	loop. On Win32, use a semaphore and not a pipe to wake up the main
+ 	loop.
+
+	* gmessages.c: On Win32, allocate a console window if the standard
+	output handle is invalid before writing to stdout, and reopen stdout
+	to that console window.
+
+	* giochannel.c: Conditionalize unistd.h inclusion. Some indentation
+	cleanup.
+
+	* gstrfuncs.c: Include <signal.h>.
+
+	* gutils.c: On Win32, also check the HOMEDRIVE and HOMEPATH
+	environment variables.
+
 Sun Jan 17 01:06:38 1999 Timur Bakeyev <mc@bat.ru>
 
 	* configure.in: Add support for FreeBSD 2.2.x macro _THREAD_SAFE.

@@ -24,8 +24,12 @@
  * MT safe
  */
 
+#include "config.h"
+
 #include "glib.h"
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 void
 g_io_channel_init (GIOChannel *channel)
@@ -94,7 +98,7 @@ g_io_channel_close (GIOChannel *channel)
 }
 
 guint 
-g_io_add_watch_full (GIOChannel      *channel,
+g_io_add_watch_full (GIOChannel    *channel,
 		     gint           priority,
 		     GIOCondition   condition,
 		     GIOFunc        func,
@@ -108,7 +112,7 @@ g_io_add_watch_full (GIOChannel      *channel,
 }
 
 guint 
-g_io_add_watch (GIOChannel      *channel,
+g_io_add_watch (GIOChannel    *channel,
 		GIOCondition   condition,
 		GIOFunc        func,
 		gpointer       user_data)

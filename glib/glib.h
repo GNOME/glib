@@ -2447,7 +2447,26 @@ guint	   	g_idle_add_full		(gint   	priority,
 
 /* GPollFD
  *
- * Unix-specific IO and main loop calls
+ * System-specific IO and main loop calls
+ *
+ * On Win32, the fd in a GPollFD should be Win32 HANDLE (*not* a file
+ * descriptor as provided by the C runtime) that can be used by
+ * MsgWaitForMultipleObjects. This does *not* include file handles
+ * from CreateFile, SOCKETs, nor pipe handles. (But you can use
+ * WSAEventSelect to signal events when a SOCKET is readable).
+ *
+ * On Win32, fd can also be the special value G_WIN32_MSG_HANDLE to
+ * indicate polling for messages. These message queue GPollFDs should
+ * be added with the g_main_poll_win32_msg_add function.
+ *
+ * But note that G_WIN32_MSG_HANDLE GPollFDs should not be used by GDK
+ * (GTK) programs, as GDK itself wants to read messages and convert them
+ * to GDK events.
+ *
+ * So, unless you really know what you are doing, it's best not to try
+ * to use the main loop polling stuff for your own needs on
+ * Win32. It's really only written for the GIMP's needs so
+ * far.
  */
 
 typedef struct _GPollFD GPollFD;
@@ -2466,45 +2485,77 @@ void        g_main_add_poll          (GPollFD    *fd,
 void        g_main_remove_poll       (GPollFD    *fd);
 void        g_main_set_poll_func     (GPollFunc   func);
 
+/* On Unix, IO channels created with this function for any file
+ * descriptor or socket.
+ *
+ * On Win32, use this only for plain files opened with the MSVCRT (the
+ * Microsoft run-time C library) _open(), including file descriptors
+ * 0, 1 and 2 (corresponding to stdin, stdout and stderr).
+ * Actually, don't do even that, this code isn't done yet.
+ *
+ * The term file descriptor as used in the context of Win32 refers to
+ * the emulated Unix-like file descriptors MSVCRT provides.
+ */
 GIOChannel* g_io_channel_unix_new    (int         fd);
 gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 
-
-/* old IO Channels */
-#if 0
-/* IO Channels.
- * These are used for plug-in communication in the GIMP, for instance.
- * On Unix, it's simply an encapsulated file descriptor (a pipe).
- * On Windows, it's a handle to an anonymouos pipe, *and* (in the case
- * of the writable end) a thread id to post a message to when you have written
- * stuff.
- */
-struct _GIOChannel
-{
-  gint fd;			/* file handle (pseudo such in Win32) */
 #ifdef NATIVE_WIN32
-  guint peer;			/* thread to post message to */
-  guint peer_fd;		/* read handle (in the other process) */
-  guint offset;			/* counter of accumulated bytes, to
-				 * be included in the message posted
-				 * so we keep in sync.
-				 */
-  guint need_wakeups;		/* in output channels whether the reader
-				 * needs wakeups
-				 */
-#endif
-};
-GIOChannel *g_iochannel_new            (gint        fd);
-void        g_iochannel_free           (GIOChannel *channel);
-void        g_iochannel_close_and_free (GIOChannel *channel);
-void        g_iochannel_wakeup_peer    (GIOChannel *channel);
-#ifndef NATIVE_WIN32
-#  define   g_iochannel_wakeup_peer(channel) G_STMT_START { } G_STMT_END
-#endif
-#endif	/* old IO Channels */
 
+GUTILS_C_VAR guint g_pipe_readable_msg;
 
-/* Windows emulation stubs for common unix functions
+#define G_WIN32_MSG_HANDLE 19981206
+
+/* This is used to add polling for Windows messages. GDK (GTk+) programs
+ * should *not* use this. (In fact, I can't think of any program that
+ * would want to use this, but it's here just for completeness's sake.
+ */
+void        g_main_poll_win32_msg_add(gint        priority,
+				      GPollFD    *fd,
+				      guint       hwnd);
+
+/* An IO channel for Windows messages for window handle hwnd. */
+GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
+
+/* An IO channel for an anonymous pipe as returned from the MSVCRT
+ * _pipe(), with no mechanism for the writer to tell the reader when
+ * there is data in the pipe.
+ *
+ * This is not really implemented yet.
+ */
+GIOChannel *g_io_channel_win32_new_pipe (int fd);
+
+/* An IO channel for a pipe as returned from the MSVCRT _pipe(), with
+ * Windows user messages used to signal data in the pipe for the
+ * reader.
+ *
+ * fd is the file descriptor. For the write end, peer is the thread id
+ * of the reader, and peer_fd is his file descriptor for the read end
+ * of the pipe.
+ *
+ * This is used by the GIMP, and works.
+ */
+GIOChannel *g_io_channel_win32_new_pipe_with_wakeups (int   fd,
+						      guint peer,
+						      int   peer_fd);
+
+void        g_io_channel_win32_pipe_request_wakeups (GIOChannel *channel,
+						     guint       peer,
+						     int         peer_fd);
+
+void        g_io_channel_win32_pipe_readable (int   fd,
+					      guint offset);
+
+/* Get the C runtime file descriptor of a channel. */
+gint        g_io_channel_win32_get_fd (GIOChannel *channel);
+
+/* An IO channel for a SOCK_STREAM winsock socket. The parameter is
+ * actually a SOCKET.
+ */
+GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
+
+#endif
+
+/* Windows emulation stubs for common Unix functions
  */
 #ifdef NATIVE_WIN32
 #  define MAXPATHLEN 1024
