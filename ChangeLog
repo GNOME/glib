@@ -1,3 +1,9 @@
+Tue Aug 19 09:42:06 2003  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* m4macros/glib-gettext.m4: Add $INTLLIBS to $LIBS
+ 	temporarily, not -lintl. (Problem with fix for 
+ 	#119171, pointed out by James Henstridge)
+ 
 Tue Aug 19 03:55:29 2003  Tim Janik  <timj@gtk.org>
 
 	* glib/gbsearcharray.h: license change, no restrictions are made
