@@ -265,7 +265,7 @@ parse_libtool_archive (const gchar* libtool_name)
       lt_libdir = g_strconcat (dir, G_DIR_SEPARATOR_S ".libs", NULL);
     }
 
-  name = g_module_build_path (lt_libdir, lt_dlname);
+  name = g_strconcat (lt_libdir, G_DIR_SEPARATOR_S, lt_dlname, NULL);
   
   g_free (lt_dlname);
   g_free (lt_libdir);

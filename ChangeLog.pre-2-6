@@ -1,3 +1,10 @@
+2001-07-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule/gmodule.c (parse_libtool_archive): build the library
+	name ourselfs ... so we can load the library specified and not
+	mangle any name not beggining in 'lib'. Patch from Michael Meeks
+	<michael@ximian.com>.
+
 2001-07-29  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: Matthias Classen's patch to give
