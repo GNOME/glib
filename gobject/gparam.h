@@ -37,24 +37,40 @@ extern "C" {
 #define G_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM, GParamSpec))
 #define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
 #define G_PARAM_SPEC_GET_CLASS(pspec)	(G_TYPE_INSTANCE_GET_CLASS ((pspec), G_TYPE_PARAM, GParamSpecClass))
-#define	G_IS_PARAM_VALUE(pspec, value)	(g_type_is_a (G_VALUE_TYPE (value), G_PARAM_SPEC_VALUE_TYPE (pspec))) /* FIXME */
 #define	G_PARAM_SPEC_VALUE_TYPE(pspec)	(G_PARAM_SPEC_GET_CLASS (pspec)->value_type)
-
+#define G_IS_VALUE_PARAM(value)		(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_PARAM))
+       
 
 /* --- flags --- */
 typedef enum
 {
   G_PARAM_READABLE            = 1 << 0,
   G_PARAM_WRITABLE            = 1 << 1,
-  G_PARAM_MASK                = 0x000f,
+  G_PARAM_CONSTRUCT	      = 1 << 2,
+  G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
+#define	G_PARAM_MASK		(0x000f)
   /* bits in the range 0xfff0 are reserved for 3rd party usage */
-  G_PARAM_USER_MASK           = 0xfff0
+#define	G_PARAM_USER_MASK	(0xfff0)
 } GParamFlags;
 
 
 /* --- typedefs & structures --- */
-typedef struct _GParamSpecClass GParamSpecClass;
 typedef struct _GParamSpec      GParamSpec;
+typedef struct _GParamSpecClass GParamSpecClass;
+struct _GParamSpec
+{
+  GTypeInstance  g_type_instance;
+
+  gchar         *name;
+  gchar         *nick;
+  gchar         *blurb;
+  GParamFlags    flags;
+
+  /*< private >*/
+  GType		 owner_type;
+  GData		*qdata;
+  guint          ref_count;
+};
 struct _GParamSpecClass
 {
   GTypeClass      g_type_class;
@@ -72,25 +88,12 @@ struct _GParamSpecClass
 					 const GValue *value1,
 					 const GValue *value2);
 };
-struct _GParamSpec
-{
-  GTypeInstance  g_instance;
-
-  gchar         *name;
-  gchar         *nick;
-  gchar         *blurb;
-  GParamFlags    flags;
-
-  /*< private >*/
-  GType		 owner_type;
-  GData		*qdata;
-  guint          ref_count;
-};
 
 
 /* --- prototypes --- */
 GParamSpec*	g_param_spec_ref		(GParamSpec    *pspec);
 void		g_param_spec_unref		(GParamSpec    *pspec);
+void		g_param_spec_sink		(GParamSpec    *pspec);
 gpointer        g_param_spec_get_qdata		(GParamSpec    *pspec,
 						 GQuark         quark);
 void            g_param_spec_set_qdata		(GParamSpec    *pspec,
@@ -111,6 +114,10 @@ gboolean	g_param_value_validate		(GParamSpec    *pspec,
 gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value1,
 						 const GValue  *value2);
+void            g_value_set_param               (GValue	       *value,
+						 GParamSpec    *param);
+GParamSpec*     g_value_get_param               (const GValue  *value);
+GParamSpec*     g_value_dup_param               (const GValue  *value);
 
 
 /* --- convenience functions --- */

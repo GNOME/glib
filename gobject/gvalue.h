@@ -69,6 +69,8 @@ void            g_value_reset   	(GValue       *value);
 void            g_value_unset   	(GValue       *value);
 gboolean	g_value_fits_pointer	(const GValue *value);
 gpointer	g_value_get_as_pointer	(const GValue *value);
+void		g_value_set_instance	(GValue	      *value,
+					 gpointer      instance);
 
 
 /* --- implementation details --- */

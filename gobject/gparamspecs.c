@@ -541,6 +541,103 @@ param_string_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+param_spec_param_init (GParamSpec *pspec)
+{
+  GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec);
+  
+  spec->param_type = G_TYPE_PARAM;
+}
+
+static void
+param_param_set_default (GParamSpec *pspec,
+			 GValue     *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static gboolean
+param_param_validate (GParamSpec *pspec,
+		      GValue     *value)
+{
+  GParamSpecParam *spec = G_PARAM_SPEC_PARAM (pspec);
+  GParamSpec *param = value->data[0].v_pointer;
+  guint changed = 0;
+  
+  if (param && !g_type_is_a (G_PARAM_SPEC_TYPE (param), spec->param_type))
+    {
+      g_param_spec_unref (param);
+      value->data[0].v_pointer = NULL;
+      changed++;
+    }
+  
+  return changed;
+}
+
+static void
+param_spec_pointer_init (GParamSpec *pspec)
+{
+  /* GParamSpecPointer *spec = G_PARAM_SPEC_POINTER (pspec); */
+}
+
+static void
+param_pointer_set_default (GParamSpec *pspec,
+			   GValue     *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static gboolean
+param_pointer_validate (GParamSpec *pspec,
+			GValue     *value)
+{
+  /* GParamSpecPointer *spec = G_PARAM_SPEC_POINTER (pspec); */
+  guint changed = 0;
+  
+  return changed;
+}
+
+static gint
+param_pointer_values_cmp (GParamSpec   *pspec,
+			  const GValue *value1,
+			  const GValue *value2)
+{
+  return value1->data[0].v_pointer != value2->data[0].v_pointer;
+}
+
+static void
+param_spec_ccallback_init (GParamSpec *pspec)
+{
+  /* GParamSpecCCallback *spec = G_PARAM_SPEC_CCALLBACK (pspec); */
+}
+
+static void
+param_ccallback_set_default (GParamSpec *pspec,
+			     GValue     *value)
+{
+  value->data[0].v_pointer = NULL;
+  value->data[1].v_pointer = NULL;
+}
+
+static gboolean
+param_ccallback_validate (GParamSpec *pspec,
+			  GValue     *value)
+{
+  /* GParamSpecCCallback *spec = G_PARAM_SPEC_CCALLBACK (pspec); */
+  guint changed = 0;
+  
+  return changed;
+}
+
+static gint
+param_ccallback_values_cmp (GParamSpec   *pspec,
+			    const GValue *value1,
+			    const GValue *value2)
+{
+  return (value1->data[0].v_pointer != value2->data[0].v_pointer ||
+	  value1->data[1].v_pointer != value2->data[1].v_pointer);
+}
+
+static void
 param_spec_object_init (GParamSpec *pspec)
 {
   GParamSpecObject *ospec = G_PARAM_SPEC_OBJECT (pspec);
@@ -919,6 +1016,57 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
     g_assert (type == G_TYPE_PARAM_STRING);
   }
   
+  /* G_TYPE_PARAM_PARAM
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecParam),  /* instance_size */
+      16,                        /* n_preallocs */
+      param_spec_param_init,     /* instance_init */
+      G_TYPE_PARAM,		 /* value_type */
+      NULL,			 /* finalize */
+      param_param_set_default,	 /* value_set_default */
+      param_param_validate,	 /* value_validate */
+      param_pointer_values_cmp,	 /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamParam", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_PARAM);
+  }
+  
+  /* G_TYPE_PARAM_POINTER
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecPointer),  /* instance_size */
+      0,                           /* n_preallocs */
+      param_spec_pointer_init,     /* instance_init */
+      G_TYPE_POINTER,  		   /* value_type */
+      NULL,			   /* finalize */
+      param_pointer_set_default,   /* value_set_default */
+      param_pointer_validate,	   /* value_validate */
+      param_pointer_values_cmp,	   /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamPointer", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_POINTER);
+  }
+  
+  /* G_TYPE_PARAM_CCALLBACK
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecCCallback), /* instance_size */
+      0,                            /* n_preallocs */
+      param_spec_ccallback_init,    /* instance_init */
+      G_TYPE_CCALLBACK,		    /* value_type */
+      NULL,			    /* finalize */
+      param_ccallback_set_default,  /* value_set_default */
+      param_ccallback_validate,	    /* value_validate */
+      param_ccallback_values_cmp,   /* values_cmp */
+    };
+    type = g_param_type_register_static ("GParamCCallback", &pspec_info);
+    g_assert (type == G_TYPE_PARAM_CCALLBACK);
+  }
+  
   /* G_TYPE_PARAM_OBJECT
    */
   {
@@ -1278,6 +1426,59 @@ g_param_spec_string_c (const gchar *name,
 			      G_CSET_A_2_Z);
   
   return G_PARAM_SPEC (sspec);
+}
+
+GParamSpec*
+g_param_spec_param (const gchar *name,
+		    const gchar *nick,
+		    const gchar *blurb,
+		    GType	 param_type,
+		    GParamFlags  flags)
+{
+  GParamSpecParam *pspec;
+  
+  g_return_val_if_fail (G_TYPE_IS_PARAM (param_type), NULL);
+  
+  pspec = g_param_spec_internal (G_TYPE_PARAM_PARAM,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  pspec->param_type = param_type;
+  
+  return G_PARAM_SPEC (pspec);
+}
+
+GParamSpec*
+g_param_spec_pointer (const gchar *name,
+		      const gchar *nick,
+		      const gchar *blurb,
+		      GParamFlags  flags)
+{
+  GParamSpecPointer *pspec;
+  
+  pspec = g_param_spec_internal (G_TYPE_PARAM_POINTER,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  return G_PARAM_SPEC (pspec);
+}
+
+GParamSpec*
+g_param_spec_ccallback (const gchar *name,
+			const gchar *nick,
+			const gchar *blurb,
+			GParamFlags  flags)
+{
+  GParamSpecCCallback *cspec;
+  
+  cspec = g_param_spec_internal (G_TYPE_PARAM_CCALLBACK,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  return G_PARAM_SPEC (cspec);
 }
 
 GParamSpec*

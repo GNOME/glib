@@ -19,7 +19,7 @@
 #ifndef __G_TYPE_H__
 #define __G_TYPE_H__
 
-extern const char *g_log_domain_gobject;
+extern const char *g_log_domain_gruntime;
 #include        <glib.h>
 
 
@@ -62,6 +62,7 @@ typedef enum    /*< skip >*/
   G_TYPE_PARAM,
   G_TYPE_BOXED,
   G_TYPE_POINTER,
+  G_TYPE_CCALLBACK,
   G_TYPE_OBJECT,
 
   /* the following reserved ids should vanish soon */
@@ -79,7 +80,6 @@ typedef enum    /*< skip >*/
   G_TYPE_LAST_RESERVED_FUNDAMENTAL,
 
   /* derived type ids */
-  /* FIXME: G_TYPE_PARAM_INTERFACE */
   G_TYPE_PARAM_CHAR             = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 1),
   G_TYPE_PARAM_UCHAR            = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 2),
   G_TYPE_PARAM_BOOLEAN          = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 3),
@@ -92,8 +92,10 @@ typedef enum    /*< skip >*/
   G_TYPE_PARAM_FLOAT            = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 10),
   G_TYPE_PARAM_DOUBLE           = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 11),
   G_TYPE_PARAM_STRING           = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 12),
-  /* FIXME: G_TYPE_PARAM_PARAM */
-  G_TYPE_PARAM_OBJECT           = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 13)
+  G_TYPE_PARAM_PARAM            = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 13),
+  G_TYPE_PARAM_POINTER          = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 14),
+  G_TYPE_PARAM_CCALLBACK        = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 15),
+  G_TYPE_PARAM_OBJECT           = G_TYPE_DERIVE_ID (G_TYPE_PARAM, 16)
 } GTypeFundamentals;
 
 
@@ -174,8 +176,6 @@ GType    g_type_next_base               (GType                   type,
                                          GType                   base_type);
 gboolean g_type_is_a                    (GType                   type,
                                          GType                   is_a_type);
-gboolean g_type_conforms_to             (GType                   type,
-                                         GType                   iface_type);
 guint    g_type_fundamental_branch_last (GType                   type);
 gpointer g_type_class_ref               (GType                   type);
 gpointer g_type_class_peek              (GType                   type);
@@ -317,10 +317,10 @@ gboolean         g_type_class_is_a              (GTypeClass         *g_class,
 						 GType               is_a_type);
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
-gboolean         g_type_instance_conforms_to    (GTypeInstance      *instance,
+gboolean         g_type_instance_is_a		(GTypeInstance      *instance,
 						 GType               iface_type);
 gboolean	 g_type_check_value             (GValue		    *value);
-gboolean	 g_type_value_conforms_to       (GValue		    *value,
+gboolean	 g_type_value_is_a		(GValue		    *value,
 						 GType		     type);
 gboolean	 g_type_check_instance          (GTypeInstance      *instance);
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
@@ -336,9 +336,9 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 #  define _G_TYPE_CCC(cp, gt, ct)       ((ct*) cp)
 #endif /* G_DISABLE_CAST_CHECKS */
 #define _G_TYPE_CHI(ip)			(g_type_check_instance ((GTypeInstance*) ip))
-#define _G_TYPE_CIT(ip, gt)             (g_type_instance_conforms_to ((GTypeInstance*) ip, gt))
+#define _G_TYPE_CIT(ip, gt)             (g_type_instance_is_a ((GTypeInstance*) ip, gt))
 #define _G_TYPE_CCT(cp, gt)             (g_type_class_is_a ((GTypeClass*) cp, gt))
-#define _G_TYPE_CVT(vl, gt)             (g_type_value_conforms_to ((GValue*) vl, gt))
+#define _G_TYPE_CVT(vl, gt)             (g_type_value_is_a ((GValue*) vl, gt))
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))

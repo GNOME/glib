@@ -156,25 +156,6 @@ g_ptr_array_remove_index().
 @Returns: the pointer which was removed.
 
 
-<!-- ##### FUNCTION g_ptr_array_sort ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-
-
-<!-- ##### FUNCTION g_ptr_array_sort_with_data ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-@user_data: 
-
-
 <!-- ##### FUNCTION g_ptr_array_set_size ##### -->
 <para>
 Sets the size of the array, expanding it if necessary.

@@ -42,6 +42,7 @@ extern "C" {
 #define G_IS_VALUE_DOUBLE(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_DOUBLE))
 #define G_IS_VALUE_STRING(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_STRING))
 #define G_IS_VALUE_POINTER(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_POINTER))
+#define G_IS_VALUE_CCALLBACK(value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_CCALLBACK))
 
 
 /* --- prototypes --- */
@@ -81,7 +82,12 @@ gchar*		g_value_dup_string		(const GValue	*value);
 void            g_value_set_pointer     	(GValue         *value,
 						 gpointer        v_pointer);
 gpointer        g_value_get_pointer     	(const GValue   *value);
-
+void            g_value_set_ccallback     	(GValue         *value,
+						 gpointer	 callback_func,
+						 gpointer	 callback_data);
+void            g_value_get_ccallback     	(const GValue   *value,
+						 gpointer	*callback_func,
+						 gpointer	*callback_data);
 
 
 

@@ -127,7 +127,7 @@ boxed_proxy_collect_value (GValue      *value,
 
   key.type = value->g_type;
   node = g_bsearch_array_lookup (&boxed_bsa, &key);
-  value->data[0].v_pointer = node->copy (collect_value->v_pointer);
+  value->data[0].v_pointer = collect_value->v_pointer ? node->copy (collect_value->v_pointer) : NULL;
 
   *collect_type = 0;
   return NULL;
@@ -147,7 +147,7 @@ boxed_proxy_lcopy_value (const GValue *value,
 
   key.type = value->g_type;
   node = g_bsearch_array_lookup (&boxed_bsa, &key);
-  *boxed_p = node->copy (value->data[0].v_pointer);
+  *boxed_p = value->data[0].v_pointer ? node->copy (value->data[0].v_pointer) : NULL;
 
   *collect_type = 0;
   return NULL;

@@ -524,8 +524,8 @@ g_type_iface_meta_marshal (GClosure       *closure,
 }
 
 GClosure*
-g_signal_type_closure_new (GType    itype,
-			   guint    struct_offset)
+g_signal_type_cclosure_new (GType    itype,
+			    guint    struct_offset)
 {
   GClosure *closure;
   

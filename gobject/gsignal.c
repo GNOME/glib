@@ -22,12 +22,13 @@
 #include <string.h> 
 
 #include        "gsignal.h"
-
 #include        "gbsearcharray.h"
+#include        "gvaluecollector.h"
 
 
 /* pre allocation configurations
  */
+#define	MAX_STACK_VALUES	(16)
 #define BSA_PRE_ALLOC           (20)
 #define HANDLER_PRE_ALLOC       (48)
 #define EMISSION_PRE_ALLOC      (16)
@@ -131,7 +132,7 @@ static inline Emission*		emission_find		(Emission	 *emission_list,
 							 guint		  signal_id,
 							 GQuark		  detail,
 							 gpointer	  instance);
-static	      void		signal_emit_R		(SignalNode	 *node,
+static	      gboolean		signal_emit_R		(SignalNode	 *node,
 							 GQuark		  detail,
 							 gpointer	  instance,
 							 GValue		 *return_value,
@@ -233,21 +234,43 @@ static inline guint
 signal_id_lookup (GQuark quark,
 		  GType  itype)
 {
+  GType *ifaces, type = itype;
+  SignalKey key;
+  guint n_ifaces;
+
+  key.quark = quark;
+
+  /* try looking up signals for this type and its anchestors */
   do
     {
-      SignalKey key, *signal_key;
+      SignalKey *signal_key;
       
-      key.itype = itype;
-      key.quark = quark;
-      
+      key.itype = type;
       signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
       
       if (signal_key)
 	return signal_key->signal_id;
       
-      itype = g_type_parent (itype);
+      type = g_type_parent (type);
     }
-  while (itype);
+  while (type);
+
+  /* no luck, try interfaces it exports */
+  ifaces = g_type_interfaces (itype, &n_ifaces);
+  while (n_ifaces--)
+    {
+      SignalKey *signal_key;
+
+      key.itype = ifaces[n_ifaces];
+      signal_key = g_bsearch_array_lookup (&g_signal_key_bsa, &key);
+
+      if (signal_key)
+	{
+	  g_free (ifaces);
+	  return signal_key->signal_id;
+	}
+    }
+  g_free (ifaces);
   
   return 0;
 }
@@ -515,7 +538,7 @@ handler_insert (guint    signal_id,
 {
   HandlerList *hlist;
   
-  g_assert (handler->prev == NULL && handler->next == NULL); // FIXME: paranoid
+  g_assert (handler->prev == NULL && handler->next == NULL); /* paranoid */
   
   hlist = handler_list_ensure (signal_id, instance);
   if (!hlist->handlers)
@@ -671,7 +694,7 @@ g_signal_stop_emission (gpointer instance,
       G_UNLOCK (g_signal_mutex);
       return;
     }
-  if (node && g_type_conforms_to (G_TYPE_FROM_INSTANCE (instance), node->itype))
+  if (node && g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
       Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
       Emission *emission = emission_find (emission_list, signal_id, detail, instance);
@@ -860,6 +883,44 @@ g_signal_list_ids (GType  itype,
 }
 
 guint
+g_signal_new (const gchar       *signal_name,
+	      GType              itype,
+	      GSignalFlags       signal_flags,
+	      GClosure          *class_closure,
+	      GSignalAccumulator accumulator,
+	      GSignalCMarshaller c_marshaller,
+	      GType              return_type,
+	      guint              n_params,
+	      ...)
+{
+  GType *param_types;
+  guint i;
+  va_list args;
+  guint signal_id;
+
+  if (n_params > 0)
+    {
+      param_types = g_new (GType, n_params);
+
+      va_start (args, n_params);
+
+      for (i = 0; i < n_params; i++)
+	param_types[i] = va_arg (args, GType);
+
+      va_end (args);
+    }
+  else
+    param_types = NULL;
+
+  signal_id = g_signal_newv (signal_name, itype, signal_flags,
+			     class_closure, accumulator, c_marshaller,
+			     return_type, n_params, param_types);
+  g_free (param_types);
+
+  return signal_id;
+}
+
+guint
 g_signal_newv (const gchar       *signal_name,
                GType              itype,
                GSignalFlags       signal_flags,
@@ -1023,27 +1084,119 @@ g_signal_connect_closure_by_id (gpointer  instance,
   
   G_LOCK (g_signal_mutex);
   node = LOOKUP_SIGNAL_NODE (signal_id);
-  if (node && detail && !(node->flags & G_SIGNAL_DETAILED))
+  if (node)
     {
-      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
-      G_UNLOCK (g_signal_mutex);
-      return 0;
-    }
-  if (node && g_type_conforms_to (G_TYPE_FROM_INSTANCE (instance), node->itype))
-    {
-      Handler *handler = handler_new (after);
-      
-      handler_id = handler->id;
-      handler->detail = detail;
-      handler->closure = g_closure_ref (closure);
-      handler_insert (signal_id, instance, handler);
-      if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (closure))
-	g_closure_set_marshal (closure, node->c_marshaller);
+      if (detail && !(node->flags & G_SIGNAL_DETAILED))
+	g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      else if (!g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
+	g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+      else
+	{
+	  Handler *handler = handler_new (after);
+	  
+	  handler_id = handler->id;
+	  handler->detail = detail;
+	  handler->closure = g_closure_ref (closure);
+	  handler_insert (signal_id, instance, handler);
+	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (closure))
+	    g_closure_set_marshal (closure, node->c_marshaller);
+	}
     }
   else
     g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
   G_UNLOCK (g_signal_mutex);
   
+  return handler_id;
+}
+
+guint
+g_signal_connect_closure (gpointer     instance,
+			  const gchar *detailed_signal,
+			  GClosure    *closure,
+			  gboolean     after)
+{
+  guint signal_id, handler_id = 0;
+  GQuark detail = 0;
+  GType itype;
+
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
+  g_return_val_if_fail (detailed_signal != NULL, 0);
+  g_return_val_if_fail (closure != NULL, 0);
+
+  G_LOCK (g_signal_mutex);
+  itype = G_TYPE_FROM_INSTANCE (instance);
+  signal_id = signal_parse_name (detailed_signal, itype, &detail, TRUE);
+  if (signal_id)
+    {
+      SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
+
+      if (detail && !(node->flags & G_SIGNAL_DETAILED))
+	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+      else if (!g_type_is_a (itype, node->itype))
+	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+      else
+	{
+	  Handler *handler = handler_new (after);
+
+	  handler_id = handler->id;
+	  handler->detail = detail;
+	  handler->closure = g_closure_ref (closure);
+	  handler_insert (signal_id, instance, handler);
+	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
+	    g_closure_set_marshal (handler->closure, node->c_marshaller);
+	}
+    }
+  else
+    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+  G_UNLOCK (g_signal_mutex);
+
+  return handler_id;
+}
+
+guint
+g_signal_connect_data (gpointer       instance,
+		       const gchar   *detailed_signal,
+		       GCallback      c_handler,
+		       gpointer       data,
+		       GClosureNotify destroy_data,
+		       gboolean       swapped,
+		       gboolean       after)
+{
+  guint signal_id, handler_id = 0;
+  GQuark detail = 0;
+  GType itype;
+
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), 0);
+  g_return_val_if_fail (detailed_signal != NULL, 0);
+  g_return_val_if_fail (c_handler != NULL, 0);
+
+  G_LOCK (g_signal_mutex);
+  itype = G_TYPE_FROM_INSTANCE (instance);
+  signal_id = signal_parse_name (detailed_signal, itype, &detail, TRUE);
+  if (signal_id)
+    {
+      SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
+
+      if (detail && !(node->flags & G_SIGNAL_DETAILED))
+	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+      else if (!g_type_is_a (itype, node->itype))
+	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+      else
+	{
+	  Handler *handler = handler_new (after);
+
+	  handler_id = handler->id;
+	  handler->detail = detail;
+	  handler->closure = g_closure_ref ((swapped ? g_cclosure_new_swap : g_cclosure_new) (c_handler, data, destroy_data));
+	  handler_insert (signal_id, instance, handler);
+	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
+	    g_closure_set_marshal (handler->closure, node->c_marshaller);
+	}
+    }
+  else
+    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+  G_UNLOCK (g_signal_mutex);
+
   return handler_id;
 }
 
@@ -1342,27 +1495,27 @@ g_signal_emitv (const GValue *instance_and_params,
 		GQuark	      detail,
 		GValue       *return_value)
 {
-  SignalNode *node;
-  gpointer instance;
   const GValue *param_values;
+  gpointer instance;
+  SignalNode *node;
   guint i;
   
   g_return_if_fail (instance_and_params != NULL);
   instance = g_value_get_as_pointer (instance_and_params);
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (signal_id > 0);
-  
+
   param_values = instance_and_params + 1;
   
   G_LOCK (g_signal_mutex);
   node = LOOKUP_SIGNAL_NODE (signal_id);
-#ifndef G_DISABLE_CHECKS
-  if (!node || !g_type_conforms_to (G_TYPE_FROM_INSTANCE (instance), node->itype))
+  if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
       g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
       G_UNLOCK (g_signal_mutex);
       return;
     }
+#ifndef G_DISABLE_CHECKS
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
       g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
@@ -1372,7 +1525,8 @@ g_signal_emitv (const GValue *instance_and_params,
   for (i = 0; i < node->n_params; i++)
     if (!G_VALUE_HOLDS (param_values + i, node->param_types[i]))
       {
-	g_critical (G_STRLOC ": value for `%s' parameter %u for signal \"%s\" is of type `%s'",
+	g_critical ("%s: value for `%s' parameter %u for signal \"%s\" is of type `%s'",
+		    G_STRLOC,
 		    g_type_name (node->param_types[i]),
 		    i,
 		    node->name,
@@ -1384,7 +1538,8 @@ g_signal_emitv (const GValue *instance_and_params,
     {
       if (!return_value)
 	{
-	  g_critical (G_STRLOC ": return value `%s' for signal \"%s\" is (NULL)",
+	  g_critical ("%s: return value `%s' for signal \"%s\" is (NULL)",
+		      G_STRLOC,
 		      g_type_name (node->return_type),
 		      node->name);
 	  G_UNLOCK (g_signal_mutex);
@@ -1392,7 +1547,8 @@ g_signal_emitv (const GValue *instance_and_params,
 	}
       else if (!node->accumulator && !G_VALUE_HOLDS (return_value, node->return_type))
 	{
-	  g_critical (G_STRLOC ": return value `%s' for signal \"%s\" is of type `%s'",
+	  g_critical ("%s: return value `%s' for signal \"%s\" is of type `%s'",
+		      G_STRLOC,
 		      g_type_name (node->return_type),
 		      node->name,
 		      G_VALUE_TYPE_NAME (return_value));
@@ -1403,13 +1559,147 @@ g_signal_emitv (const GValue *instance_and_params,
   else
     return_value = NULL;
 #endif	/* !G_DISABLE_CHECKS */
-  
+
   signal_emit_R (node, detail, instance, return_value, instance_and_params);
-  
   G_UNLOCK (g_signal_mutex);
 }
 
-static void
+void
+g_signal_emit_valist (gpointer instance,
+		      guint    signal_id,
+		      GQuark   detail,
+		      va_list  var_args)
+{
+  GValue *instance_and_params, stack_values[MAX_STACK_VALUES], *free_me = NULL;
+  GValue *param_values;
+  SignalNode *node;
+  guint i;
+
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (signal_id > 0);
+
+  G_LOCK (g_signal_mutex);
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
+    {
+      g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+      G_UNLOCK (g_signal_mutex);
+      return;
+    }
+#ifndef G_DISABLE_CHECKS
+  if (detail && !(node->flags & G_SIGNAL_DETAILED))
+    {
+      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      G_UNLOCK (g_signal_mutex);
+      return;
+    }
+#endif  /* !G_DISABLE_CHECKS */
+
+  if (node->n_params < MAX_STACK_VALUES)
+    instance_and_params = stack_values;
+  else
+    {
+      free_me = g_new (GValue, node->n_params + 1);
+      instance_and_params = free_me;
+    }
+  param_values = instance_and_params + 1;
+  for (i = 0; i < node->n_params; i++)
+    {
+      gchar *error;
+
+      param_values[i].g_type = 0;
+      g_value_init (param_values + i, node->param_types[i]);
+      G_VALUE_COLLECT (param_values + i, var_args, &error);
+      if (error)
+	{
+	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_free (error);
+
+	  /* we purposely leak the value here, it might not be
+	   * in a sane state if an error condition occoured
+	   */
+	  while (i--)
+	    g_value_unset (param_values + i);
+
+	  G_UNLOCK (g_signal_mutex);
+	  g_free (free_me);
+	  return;
+	}
+    }
+  instance_and_params->g_type = 0;
+  g_value_init (instance_and_params, node->itype);
+  g_value_set_instance (instance_and_params, instance);
+  if (node->return_type == G_TYPE_NONE)
+    signal_emit_R (node, detail, instance, NULL, instance_and_params);
+  else
+    {
+      GValue return_value = { 0, };
+      gchar *error = NULL;
+
+      g_value_init (&return_value, node->return_type);
+      if (signal_emit_R (node, detail, instance, &return_value, instance_and_params))
+	G_VALUE_LCOPY (&return_value, var_args, &error);
+      if (!error)
+	g_value_unset (&return_value);
+      else
+	{
+	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_free (error);
+
+	  /* we purposely leak the value here, it might not be
+	   * in a sane state if an error condition occoured
+	   */
+	}
+    }
+  for (i = 0; i < node->n_params; i++)
+    g_value_unset (param_values + i);
+  g_value_unset (instance_and_params);
+  if (free_me)
+    g_free (free_me);
+  G_UNLOCK (g_signal_mutex);
+}
+
+void
+g_signal_emit (gpointer instance,
+	       guint    signal_id,
+	       GQuark   detail,
+	       ...)
+{
+  va_list var_args;
+
+  va_start (var_args, detail);
+  g_signal_emit_valist (instance, signal_id, detail, var_args);
+  va_end (var_args);
+}
+
+void
+g_signal_emit_by_name (gpointer     instance,
+		       const gchar *detailed_signal,
+		       ...)
+{
+  GQuark detail = 0;
+  guint signal_id;
+
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+  g_return_if_fail (detailed_signal != NULL);
+
+  G_LOCK (g_signal_mutex);
+  signal_id = signal_parse_name (detailed_signal, G_TYPE_FROM_INSTANCE (instance), &detail, TRUE);
+  G_UNLOCK (g_signal_mutex);
+
+  if (signal_id)
+    {
+      va_list var_args;
+
+      va_start (var_args, detailed_signal);
+      g_signal_emit_valist (instance, signal_id, detail, var_args);
+      va_end (var_args);
+    }
+  else
+    g_warning ("%s: signal name `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+}
+
+static gboolean
 signal_emit_R (SignalNode   *node,
 	       GQuark	     detail,
 	       gpointer      instance,
@@ -1422,9 +1712,10 @@ signal_emit_R (SignalNode   *node,
   GClosure *class_closure;
   HandlerList *hlist;
   Handler *handler_list = NULL;
-  GValue accu;
+  GValue accu = { 0, };
   gboolean accu_used = FALSE;
   guint signal_id = node->signal_id;
+  gboolean return_value_altered = FALSE;
   
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
@@ -1433,18 +1724,14 @@ signal_emit_R (SignalNode   *node,
       if (emission)
 	{
 	  *emission->state_p = EMISSION_RESTART;
-	  return;
+	  return return_value_altered;
 	}
     }
   ihint.signal_id = node->signal_id;
   ihint.detail = detail;
   accumulator = node->accumulator;
   if (accumulator)
-    {
-      G_UNLOCK (g_signal_mutex);
-      g_value_init (&accu, node->return_type);
-      G_LOCK (g_signal_mutex);
-    }
+    g_value_init (&accu, node->return_type);
   emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions,
 		 signal_id, detail, instance, &emission_state);
   class_closure = node->class_closure;
@@ -1486,6 +1773,7 @@ signal_emit_R (SignalNode   *node,
 			  instance_and_params,
 			  &ihint);
       G_LOCK (g_signal_mutex);
+      return_value_altered = TRUE;
       
       if (emission_state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
@@ -1545,6 +1833,7 @@ signal_emit_R (SignalNode   *node,
 				  instance_and_params,
 				  &ihint);
 	      G_LOCK (g_signal_mutex);
+	      return_value_altered = TRUE;
 	      
 	      tmp = emission_state == EMISSION_RUN ? handler->next : NULL;
 	    }
@@ -1593,6 +1882,7 @@ signal_emit_R (SignalNode   *node,
 			  instance_and_params,
 			  &ihint);
       G_LOCK (g_signal_mutex);
+      return_value_altered = TRUE;
       
       if (emission_state == EMISSION_STOP)
 	goto EMIT_CLEANUP;
@@ -1634,6 +1924,7 @@ signal_emit_R (SignalNode   *node,
 				  instance_and_params,
 				  &ihint);
 	      G_LOCK (g_signal_mutex);
+	      return_value_altered = TRUE;
 	      
 	      tmp = emission_state == EMISSION_RUN ? handler->next : NULL;
 	    }
@@ -1692,9 +1983,12 @@ signal_emit_R (SignalNode   *node,
   
   emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission_state);
   if (accumulator)
-    {
-      G_UNLOCK (g_signal_mutex);
-      g_value_unset (&accu);
-      G_LOCK (g_signal_mutex);
-    }
+    g_value_unset (&accu);
+
+  return return_value_altered;
 }
+
+
+/* compile standard marshallers */
+#include	"gvaluetypes.h"
+#include        "gmarshal.c"

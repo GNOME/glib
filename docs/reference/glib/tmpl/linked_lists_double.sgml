@@ -268,17 +268,6 @@ value if the first element comes after the second.
 @Returns: the start of the sorted #GList.
 
 
-<!-- ##### FUNCTION g_list_sort_with_data ##### -->
-<para>
-
-</para>
-
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
-
-
 <!-- ##### USER_FUNCTION GCompareFunc ##### -->
 <para>
 Specifies the type of a comparison function used to compare two

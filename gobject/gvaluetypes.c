@@ -264,7 +264,7 @@ value_string_lcopy_value (const GValue *value,
 static void
 value_pointer_init (GValue *value)
 {
-  value->data[0].v_pointer = 0;
+  value->data[0].v_pointer = NULL;
 }
 
 static void
@@ -306,6 +306,76 @@ value_pointer_lcopy_value (const GValue *value,
   *pointer_p = value->data[0].v_pointer;
 
   *collect_type = 0;
+  return NULL;
+}
+
+static void
+value_ccallback_init (GValue *value)
+{
+  value->data[0].v_pointer = NULL;
+  value->data[1].v_pointer = NULL;
+}
+
+static void
+value_ccallback_copy (const GValue *src_value,
+		      GValue       *dest_value)
+{
+  dest_value->data[0].v_pointer = src_value->data[0].v_pointer;
+  dest_value->data[1].v_pointer = src_value->data[1].v_pointer;
+}
+
+static gchar*
+value_ccallback_collect_value (GValue      *value,
+			       guint        nth_value,
+			       GType       *collect_type,
+			       GTypeCValue *collect_value)
+{
+  gchar *error = NULL;
+
+  switch (nth_value)
+    {
+    case 0:
+      value->data[0].v_pointer = collect_value->v_pointer;
+      *collect_type = G_VALUE_COLLECT_POINTER;
+      if (!value->data[0].v_pointer)
+	error = g_strconcat ("invalid (NULL) pointer callback function for value type `",
+			     G_VALUE_TYPE_NAME (value),
+			     "'",
+			     NULL);
+      break;
+    case 1:
+      value->data[1].v_pointer = collect_value->v_pointer;
+      *collect_type = 0;
+      break;
+    }
+
+  return error;
+}
+
+static gchar*
+value_ccallback_lcopy_value (const GValue *value,
+			     guint         nth_value,
+			     GType        *collect_type,
+			     GTypeCValue  *collect_value)
+{
+  gpointer *pointer_p = collect_value->v_pointer;
+
+  if (!pointer_p)
+    return g_strdup_printf ("%s location for `%s' passed as NULL",
+			    nth_value ? "data" : "callback",
+			    G_VALUE_TYPE_NAME (value));
+  switch (nth_value)
+    {
+    case 0:
+      *pointer_p = value->data[0].v_pointer;
+      *collect_type = G_VALUE_COLLECT_POINTER;
+      break;
+    case 1:
+      *pointer_p = value->data[1].v_pointer;
+      *collect_type = 0;
+      break;
+    }
+
   return NULL;
 }
 
@@ -477,6 +547,24 @@ g_value_types_init (void)  /* sync with gtype.c */
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_POINTER, "gpointer", &info, &finfo, 0);
     g_assert (type == G_TYPE_POINTER);
+  }
+
+  /* G_TYPE_CCALLBACK
+   */
+  {
+    static const GTypeValueTable value_table = {
+      value_ccallback_init,          /* value_init */
+      NULL,                          /* value_free */
+      value_ccallback_copy,          /* value_copy */
+      NULL,                          /* value_peek_pointer */
+      G_VALUE_COLLECT_POINTER,       /* collect_type */
+      value_ccallback_collect_value, /* collect_value */
+      G_VALUE_COLLECT_POINTER,       /* lcopy_type */
+      value_ccallback_lcopy_value,   /* lcopy_value */
+    };
+    info.value_table = &value_table;
+    type = g_type_register_fundamental (G_TYPE_CCALLBACK, "GCCallback", &info, &finfo, 0);
+    g_assert (type == G_TYPE_CCALLBACK);
   }
 }
 
@@ -691,4 +779,28 @@ g_value_get_pointer (const GValue *value)
   g_return_val_if_fail (G_IS_VALUE_POINTER (value), NULL);
 
   return value->data[0].v_pointer;
+}
+
+void
+g_value_set_ccallback (GValue  *value,
+		       gpointer callback_func,
+		       gpointer callback_data)
+{
+  g_return_if_fail (G_IS_VALUE_CCALLBACK (value));
+  
+  value->data[0].v_pointer = callback_func;
+  value->data[1].v_pointer = callback_data;
+}
+
+void
+g_value_get_ccallback (const GValue *value,
+		       gpointer     *callback_func,
+		       gpointer     *callback_data)
+{
+  g_return_if_fail (G_IS_VALUE_CCALLBACK (value));
+
+  if (callback_func)
+    *callback_func = value->data[0].v_pointer;
+  if (callback_data)
+    *callback_data = value->data[1].v_pointer;
 }

@@ -1,3 +1,82 @@
+Mon Dec 11 04:44:11 2000  Tim Janik  <timj@gtk.org>
+
+	* gboxed.c: fixed dealing with collection/lcopy of NULL values.
+	
+	* gclosure.h: removed insane ramblings, added G_CALLBACK() a casting
+	convenience macro.
+	
+	* Makefile.am: cleanups, marshaller generation rules.
+	
+	* gmarshal.[hc]: new files with GRuntime standard marshallers.
+	
+	* glib-genmarshal.c: fix log domain, support gruntime standard 
+	marshallers, suport G_TYPE_PARAM, come with extern "C" and
+	#include gmarshal.h.
+	
+	* glib-genmarshal.1: reflect glib-genmarshal.c updates.
+	
+	* gobject.[hc]: implement object constructor. rework parameter
+	changed notification queueing, we support queue freezes now and
+	don't dispatch from an idle handler anymore.
+	parameter->property rename hassle.
+	implemented ::properties_changed and ::notify::* signals for
+	property change notification (the later supports property names
+	as details). added signal connection and named data properties.
+	(g_signal_connect_object): new function to setup while_alive
+	connections.
+	(g_object_class_install_property): sink properties now, since they
+	are initially floating.
+	(g_object_steal_data):
+	(g_object_set_data_full):
+	(g_object_set_data):
+	(g_object_get_data): set/get data by using g_datalist_*() functions
+	directly.
+	(g_object_queue_param_changed): nuked.
+	(g_object_freeze_notify): start queueing of property changes (freeze/
+	thaw calls stack).
+	(g_object_notify): announce changes of a certain property directly.
+	(g_object_thaw_notify): process queue of property changes, therefore
+	emitting GObject::notify::detail with detail being the changed
+	properties names.
+	(G_OBJECT_WARN_INVALID_PROPERTY_ID): saner macro variant of former
+	G_WARN_INVALID_PARAM_ID().
+	
+	* gparam.[hc]: param specs are now initially floating and need to be
+	sunken with g_param_spec_sink(), support G_TYPE_PARAM values.
+	added G_PARAM_CONSTRUCT and G_PARAM_CONSTRUCT_ONLY parameter flags,
+	required by GObjectClass.constructor().
+	
+	* gparamspecs.[hc]: added GParamSpecParam, GParamSpecPointer and
+	GParamSpecCCallback, param specs for G_TYPE_PARAM, G_TYPE_POINTER
+	and G_TYPE_CCALLBACK respectively.
+	
+	* gsignal.[hc]: cleanups.
+	(signal_id_lookup): after walking the anchestry, try interfaces as well.
+	(g_signal_new): new function to create signals from varargs type list.
+	(g_signal_connect_closure): closure connection variant that works from
+	signal name+detail.
+	(g_signal_connect_data): c handler connection variant that works from
+	signal name+detail.
+	(g_signal_emit_valist): emit signal for an instance with paraneters
+	collected from a va_list.
+	(g_signal_emit): emit signal, taking parameters from varargs list.
+	(g_signal_emit_by_name): same as g_signal_emit, working from
+	signal name+detail.
+	(signal_emit_R): return whether return_value needs to be altered.
+	
+	* gtype.[hc]: set log-domain to GRuntime, i'm slowly getting to all
+	the points that need to reflect the upcoming rename.
+	melt g_type_conforms_to() functionality into g_type_is_a(), as that
+	is what we really want (liskov substitution principle).
+	assorted changes to other files due to conforms_to->is_a.
+
+	* gvalue.[hc]: implemented g_value_set_instance() that sets a value
+	from an instantiatable type via the value_table's collect_value()
+	function (based on an idea from James Henstridge <james@daa.com.au>).
+	cleanups/fixes.
+	
+	* gvaluetypes.[hc]: implement G_TYPE_CCALLBACK and G_TYPE_PARAM.
+
 Wed Nov 29 13:30:05 2000  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c (handlers_find): fix elliots "logic fix" that dereferences

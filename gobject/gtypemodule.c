@@ -406,7 +406,7 @@ g_type_module_add_interface (GTypeModule    *module,
   g_return_if_fail (module != NULL);
   g_return_if_fail (interface_info != NULL);
 
-  if (g_type_conforms_to (instance_type, interface_type))
+  if (g_type_is_a (instance_type, interface_type))
     {
       GTypePlugin *old_plugin = g_type_interface_get_plugin (instance_type,
 							     interface_type);

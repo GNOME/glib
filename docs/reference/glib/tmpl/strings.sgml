@@ -45,16 +45,6 @@ Creates a new #GString, initialized with the given string.
 @Returns: the new #GString.
 
 
-<!-- ##### FUNCTION g_string_new_len ##### -->
-<para>
-
-</para>
-
-@init: 
-@len: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_string_sized_new ##### -->
 <para>
 Creates a new GString, with enough space for @dfl_size characters.

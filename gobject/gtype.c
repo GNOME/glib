@@ -21,7 +21,7 @@
 #include	"gtypeplugin.h"
 #include	<string.h>
 
-#define FIXME_DISABLE_PREALLOCATIONS
+#undef FIXME_DISABLE_PREALLOCATIONS
 
 /* NOTE: some functions (some internal variants and exported ones)
  * invalidate data portions of the TypeNodes. if external functions/callbacks
@@ -173,7 +173,7 @@ static GQuark          quark_type_flags = 0;
 
 
 /* --- externs --- */
-const char  *g_log_domain_gobject = "GLib-Object";
+const char  *g_log_domain_gruntime = "GRuntime";
 
 
 /* --- type nodes --- */
@@ -796,7 +796,7 @@ type_data_make (TypeNode              *node,
     *vtable = *value_table;
   node->data->common.value_table = vtable;
 
-  g_assert (node->data->common.value_table != NULL); /* FIXME: paranoid */
+  g_assert (node->data->common.value_table != NULL); /* paranoid */
 }
 
 static inline void
@@ -1024,7 +1024,7 @@ g_type_free_instance (GTypeInstance *instance)
     }
 
   instance->g_class = NULL;
-  memset (instance, 0xaa, node->data->instance.instance_size);	// FIXME
+  memset (instance, 0xaa, node->data->instance.instance_size);	// FIXME: debugging hack
   if (node->data->instance.n_preallocs)
     g_chunk_free (instance, node->data->instance.mem_chunk);
   else
@@ -1667,6 +1667,7 @@ g_type_next_base (GType type,
   return 0;
 }
 
+#if 0
 gboolean
 g_type_is_a (GType type,
 	     GType is_a_type)
@@ -1688,10 +1689,11 @@ g_type_is_a (GType type,
 
   return FALSE;
 }
+#endif
 
 gboolean
-g_type_conforms_to (GType type,
-		    GType iface_type)
+g_type_is_a (GType type,
+	     GType iface_type)
 {
   if (type != iface_type)
     {
@@ -1807,7 +1809,7 @@ g_type_get_qdata (GType  type,
       QData *qdatas = gdata->qdatas - 1;
       guint n_qdatas = gdata->n_qdatas;
 
-      do                /* FIXME: should optimize qdata lookups for <= 4 */
+      do
 	{
 	  guint i;
 	  QData *check;
@@ -1943,12 +1945,12 @@ g_type_fundamental_last (void)
 }
 
 gboolean
-g_type_instance_conforms_to (GTypeInstance *type_instance,
-			     GType          iface_type)
+g_type_instance_is_a (GTypeInstance *type_instance,
+		      GType          iface_type)
 {
   return (type_instance && type_instance->g_class &&
 	  G_TYPE_IS_INSTANTIATABLE (type_instance->g_class->g_type) &&
-	  g_type_conforms_to (type_instance->g_class->g_type, iface_type));
+	  g_type_is_a (type_instance->g_class->g_type, iface_type));
 }
 
 gboolean
@@ -1960,8 +1962,8 @@ g_type_class_is_a (GTypeClass *type_class,
 }
 
 gboolean
-g_type_value_conforms_to (GValue *value,
-			  GType   type)
+g_type_value_is_a (GValue *value,
+		   GType   type)
 {
   TypeNode *node;
   
@@ -1974,7 +1976,7 @@ g_type_value_conforms_to (GValue *value,
 #endif
   if (!node || !node->data || node->data->common.ref_count < 1 ||
       !node->data->common.value_table->value_init ||
-      !g_type_conforms_to (value->g_type, type))
+      !g_type_is_a (value->g_type, type))
     return FALSE;
   
   return TRUE;
@@ -1983,7 +1985,7 @@ g_type_value_conforms_to (GValue *value,
 gboolean
 g_type_check_value (GValue *value)
 {
-  return value && g_type_value_conforms_to (value, value->g_type);
+  return value && g_type_value_is_a (value, value->g_type);
 }
 
 GTypeInstance*
@@ -2009,7 +2011,7 @@ g_type_check_instance_cast (GTypeInstance *type_instance,
 		 type_descriptive_name (iface_type));
       return type_instance;
     }
-  if (!g_type_conforms_to (type_instance->g_class->g_type, iface_type))
+  if (!g_type_is_a (type_instance->g_class->g_type, iface_type))
     {
       g_warning ("invalid cast from `%s' to `%s'",
 		 type_descriptive_name (type_instance->g_class->g_type),
@@ -2125,7 +2127,7 @@ g_type_init (void)
   memset (&info, 0, sizeof (info));
   node = type_node_fundamental_new (G_TYPE_INTERFACE, "GInterface", G_TYPE_FLAG_DERIVABLE);
   type = NODE_TYPE (node);
-  type_data_make (node, &info, NULL); /* FIXME */
+  type_data_make (node, &info, NULL);
   g_assert (type == G_TYPE_INTERFACE);
 
   /* G_TYPE_TYPE_PLUGIN

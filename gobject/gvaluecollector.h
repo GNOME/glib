@@ -71,9 +71,8 @@ G_STMT_START {										\
   g_value_reset (_value);								\
   while (_collect_type && !_error_msg)							\
     {											\
-      GTypeCValue _cvalue;								\
+      GTypeCValue _cvalue = { 0, };							\
                                                                                         \
-      memset (&_cvalue, 0, sizeof (_cvalue));						\
       switch (_collect_type)								\
 	{										\
 	case G_VALUE_COLLECT_INT:							\
@@ -117,9 +116,8 @@ G_STMT_START {										\
                                                                                         \
   while (_lcopy_type && !_error_msg)							\
     {											\
-      GTypeCValue _cvalue;								\
+      GTypeCValue _cvalue = { 0, };							\
                                                                                         \
-      memset (&_cvalue, 0, sizeof (_cvalue));						\
       switch (_lcopy_type)								\
 	{										\
 	case G_VALUE_COLLECT_INT:							\

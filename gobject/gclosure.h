@@ -32,6 +32,7 @@ extern "C" {
 /* --- defines --- */
 #define	G_CLOSURE_NEEDS_MARSHAL(closure) (((GClosure*) (closure))->marshal == NULL)
 #define	G_CCLOSURE_SWAP_DATA(cclosure)	 (((GClosure*) (closure))->derivative_flag)
+#define	G_CALLBACK(f)			 ((GCallback) (f))
 
 
 /* -- typedefs --- */
@@ -105,7 +106,7 @@ GClosure*	g_cclosure_new			(GCallback	callback_func,
 GClosure*	g_cclosure_new_swap		(GCallback	callback_func,
 						 gpointer	user_data,
 						 GClosureNotify destroy_data);
-GClosure*	g_signal_type_closure_new	(GType          itype,
+GClosure*	g_signal_type_cclosure_new	(GType          itype,
 						 guint          struct_offset);
 
 
@@ -146,35 +147,14 @@ void		g_closure_invoke		(GClosure 	*closure,
 
 
 /* FIXME:
-  data_object::destroy		-> closure_invalidate();
-  closure_invalidate()		-> disconnect(closure);
-  disconnect(closure)		-> (unlink) closure_unref();
-  closure_finalize()		-> g_free (data_string);
-  
-  1) need GObject and GType in glib
-  2) need GParam
-  3) need to resolve dtor cycles
-  4) need GSignal move
-  5) destroy on last caller ref or last data ref?
-  
-  
-  random remarks:
-  - don't mandate signals for GObject
-  - OTOH, don't mandate GObject for GSignal
-  - need marshaller repo with decent aliasing to base types
-  - provide marshaller collection, virtually covering anything out there
-  - at that point, still need GSignalCMarhsaller to g_signal_new() ?
-  - can we combine varargs collect mechanisms with marshaller stubs?
-  for out values (i.e. returntypes), that might get rid of the following
-  point...
-  - char* return signals with connections ala:
-  connect({ return "static data that can't work"; }),
-  connect({ return g_strdup ("properly duplicated string"); })
-  won't work anymore. CRASH
+   OK:  data_object::destroy		-> closure_invalidate();
+   MIS:	closure_invalidate()		-> disconnect(closure);
+   MIS:	disconnect(closure)		-> (unlink) closure_unref();
+   OK:	closure_finalize()		-> g_free (data_string);
 
-  problems:
-  - accumulator needs gboolean to indicate EMISSION_STOP
-  - accumulator needs data
+   random remarks:
+   - need marshaller repo with decent aliasing to base types
+   - provide marshaller collection, virtually covering anything out there
 */
 
 

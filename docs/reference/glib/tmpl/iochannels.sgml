@@ -209,16 +209,6 @@ Decrements the reference count of a #GIOChannel.
 @channel: a #GIOChannel.
 
 
-<!-- ##### FUNCTION g_io_create_watch ##### -->
-<para>
-
-</para>
-
-@channel: 
-@condition: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_io_add_watch ##### -->
 <para>
 Adds the #GIOChannel into the
@@ -324,6 +314,6 @@ generic way.
 @io_write: 
 @io_seek: 
 @io_close: 
-@io_create_watch: 
+@io_add_watch: 
 @io_free: 
 

@@ -18,7 +18,13 @@
  */
 #include	"config.h"
 
-#include	<glib-object.h>
+
+/* ok, this is a bit hackish, have to provide gruntime log domain as
+ * we don't link against -lgruntime
+ */
+char *g_log_domain_gruntime = "GLib-Genmarshal";
+
+#include	<glib.h>
 
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -108,11 +114,13 @@ static GScannerConfig scanner_config_template =
   FALSE                 /* symbol_2_token */,
   FALSE                 /* scope_0_fallback */,
 };
-static gchar		*marshaller_prefix = "g_cclosure_marshal";
+static gchar		*std_marshaller_prefix = "g_cclosure_marshal";
+static gchar		*marshaller_prefix = "g_cclosure_user_marshal";
 static GHashTable	*marshallers = NULL;
 static gboolean		 gen_cheader = FALSE;
 static gboolean		 gen_cbody = FALSE;
 static gboolean		 skip_ploc = FALSE;
+static gboolean		 std_includes = TRUE;
 
 
 /* --- functions --- */
@@ -142,12 +150,14 @@ complete_arg (Argument *arg,
     { "STRING",		"POINTER",	"as_pointer",		"gpointer",	},
     { "BOXED",		"POINTER",	"as_pointer",		"gpointer",	},
     { "POINTER",	"POINTER",	"as_pointer",		"gpointer",	},
+    { "PARAM",		"POINTER",	"as_pointer",		"gpointer",	},
     { "OBJECT",		"POINTER",	"as_pointer",		"gpointer",	},
   };
   static const Argument out_arguments[] = {
     { "STRING",		"STRING",	"string",		"gchar*",	},
     { "BOXED",		"BOXED",	"boxed",		"gpointer",	},
     { "POINTER",	"POINTER",	"pointer",		"gpointer",	},
+    { "PARAM",		"PARAM",	"param",		"GParamSpec*",	},
     { "OBJECT",		"OBJECT",	"object",		"GObject*",	},
   };
   const guint n_inout_arguments = sizeof (inout_arguments) / sizeof (inout_arguments[0]);
@@ -201,7 +211,7 @@ pad (const gchar *string)
     {
       g_free (buffer);
       buffer = g_strdup_printf ("%s ", string);
-      g_warning ("overfull string (%lu bytes) for padspace", strlen (string));
+      g_warning ("overfull string (%u bytes) for padspace", (guint) strlen (string));
 
       return buffer;
     }
@@ -241,17 +251,39 @@ generate_marshal (const gchar *signame,
 {
   guint ind, a;
   GList *node;
+  gchar *tmp = g_strconcat (marshaller_prefix, "_", signame, NULL);
+  gboolean have_std_marshaller = FALSE;
 
-  if (g_hash_table_lookup (marshallers, signame))
-    return;
+  /* here we have to make sure a marshaller named <marshaller_prefix>_<signame>
+   * exists. we might have put it out already, can revert to a standard marshaller
+   * provided by glib, or need to generate one.
+   */
+
+  if (g_hash_table_lookup (marshallers, tmp))
+    {
+      /* done, marshaller already generated */
+      g_free (tmp);
+      return;
+    }
   else
     {
-      gchar *tmp = g_strdup (signame);
-
+      /* need to alias/generate marshaller, register name */
       g_hash_table_insert (marshallers, tmp, tmp);
     }
-  
-  if (gen_cheader)
+
+  /* can we revert to a standard marshaller? */
+  if (std_includes)
+    {
+      tmp = g_strconcat (std_marshaller_prefix, "_", signame, NULL);
+      have_std_marshaller = g_hash_table_lookup (marshallers, tmp) != NULL;
+      g_free (tmp);
+    }
+
+  if (gen_cheader && have_std_marshaller)
+    {
+      fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, signame, std_marshaller_prefix, signame);
+    }
+  if (gen_cheader && !have_std_marshaller)
     {
       ind = fprintf (fout, "extern void ");
       ind += fprintf (fout, "%s_%s (", marshaller_prefix, signame);
@@ -262,7 +294,7 @@ generate_marshal (const gchar *signame,
       fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
       fprintf (fout, "%sgpointer      marshal_data);\n", indent (ind));
     }
-  if (gen_cbody)
+  if (gen_cbody && !have_std_marshaller)
     {
       /* cfile marhsal header */
       fprintf (fout, "void\n");
@@ -352,7 +384,7 @@ generate_marshal (const gchar *signame,
 static void
 process_signature (Signature *sig)
 {
-  gchar *pname, *sname;
+  gchar *pname, *sname, *tmp;
   GList *node;
 
   /* lookup and complete info on arguments */
@@ -400,18 +432,19 @@ process_signature (Signature *sig)
     fprintf (fout, " (%s)", sig->ploc);
   fprintf (fout, " */\n");
 
-  /* generate signature marshaller */
+  /* ensure technical marshaller exists (<marshaller_prefix>_<sname>) */
   generate_marshal (sname, sig);
 
-  /* put out marshaler alias if required */
-  if (gen_cheader && !g_hash_table_lookup (marshallers, pname))
+  /* put out marshaller alias for requested name if required (<marshaller_prefix>_<pname>) */
+  tmp = g_strconcat (marshaller_prefix, "_", pname, NULL);
+  if (gen_cheader && !g_hash_table_lookup (marshallers, tmp))
     {
-      gchar *tmp = g_strdup (pname);
-
       fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, pname, marshaller_prefix, sname);
 
       g_hash_table_insert (marshallers, tmp, tmp);
     }
+  else
+    g_free (tmp);
 
   g_free (pname);
   g_free (sname);
@@ -482,6 +515,9 @@ int
 main (int   argc,
       char *argv[])
 {
+  const gchar *gruntime_marshallers[] = {
+#include	"gmarshal.strings"
+  };
   GScanner *scanner;
   GSList *slist, *files = NULL;
   gint i;
@@ -501,6 +537,24 @@ main (int   argc,
   scanner = g_scanner_new (&scanner_config_template);
   fout = stdout;
   marshallers = g_hash_table_new (g_str_hash, g_str_equal);
+
+  /* add GRuntime standard marshallers */
+  if (std_includes)
+    for (i = 0; i < sizeof (gruntime_marshallers) / sizeof (gruntime_marshallers[0]); i++)
+      {
+	gchar *tmp = g_strdup (gruntime_marshallers[i]);
+	
+	g_hash_table_insert (marshallers, tmp, tmp);
+      }
+
+  /* put out initial heading */
+  fprintf (fout, "\n");
+  if (gen_cheader)
+    {
+      if (std_includes)
+	fprintf (fout, "#include\t<gobject/gmarshal.h>\n\n");
+      fprintf (fout, "#ifdef __cplusplus\nextern \"C\" {\n#endif /* __cplusplus */\n");
+    }
 
   /* process input files */
   for (slist = files; slist; slist = slist->next)
@@ -579,6 +633,13 @@ main (int   argc,
       close (fd);
     }
 
+  /* put out trailer */
+  if (gen_cheader)
+    {
+      fprintf (fout, "\n#ifdef __cplusplus\n}\n#endif /* __cplusplus */\n");
+    }
+  fprintf (fout, "\n");
+
   /* clean up */
   g_slist_free (files);
   g_scanner_destroy (scanner);
@@ -611,6 +672,16 @@ parse_args (gint    *argc_p,
       else if (strcmp ("--skip-source", argv[i]) == 0)
 	{
 	  skip_ploc = TRUE;
+	  argv[i] = NULL;
+	}
+      else if (strcmp ("--nostdinc", argv[i]) == 0)
+	{
+	  std_includes = FALSE;
+	  argv[i] = NULL;
+	}
+      else if (strcmp ("--stdinc", argv[i]) == 0)
+	{
+	  std_includes = TRUE;
 	  argv[i] = NULL;
 	}
       else if ((strcmp ("--prefix", argv[i]) == 0) ||
@@ -690,12 +761,13 @@ print_blurb (FILE    *bout,
   else
     {
       fprintf (bout, "Usage: %s [options] [files...]\n", PRG_NAME);
-      fprintf (bout, "  --header                        generate C headers\n");
-      fprintf (bout, "  --body                          generate C code\n");
-      fprintf (bout, "  --prefix=string                 specify marshaller prefix\n");
-      fprintf (bout, "  --skip-source                   skip source location comments\n");
-      fprintf (bout, "  -h, --help                      show this help message\n");
-      fprintf (bout, "  -v, --version                   print version informations\n");
-      fprintf (bout, "  --g-fatal-warnings              make warnings fatal (abort)\n");
+      fprintf (bout, "  --header                   generate C headers\n");
+      fprintf (bout, "  --body                     generate C code\n");
+      fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
+      fprintf (bout, "  --skip-source              skip source location comments\n");
+      fprintf (bout, "  --stdinc, --nostdinc       include/use GRuntime standard marshallers\n");
+      fprintf (bout, "  -h, --help                 show this help message\n");
+      fprintf (bout, "  -v, --version              print version informations\n");
+      fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");
     }
 }

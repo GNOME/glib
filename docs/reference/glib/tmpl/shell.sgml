@@ -36,13 +36,13 @@ Shell-related Utilities
 </para>
 
 @command_line: 
-@argcp: 
-@argvp: 
+@argc: 
+@argv: 
 @error: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@argc: 
-@argv: 
+@argcp: 
+@argvp: 
 
 
 <!-- ##### FUNCTION g_shell_quote ##### -->

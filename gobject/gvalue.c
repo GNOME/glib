@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include "gvalue.h"
+#include "gvaluecollector.h"
 
 
 /* --- typedefs & structures --- */
@@ -66,7 +67,7 @@ g_value_copy (const GValue *src_value,
   g_return_if_fail (G_IS_VALUE (src_value));
   g_return_if_fail (G_IS_VALUE (dest_value));
   g_return_if_fail (g_type_is_a (G_VALUE_TYPE (src_value), G_VALUE_TYPE (dest_value)));
-
+  
   value_table = g_type_value_table_peek (G_VALUE_TYPE (dest_value));
   if (!value_table)
     g_return_if_fail (g_type_value_table_peek (G_VALUE_TYPE (dest_value)) != NULL);
@@ -111,6 +112,54 @@ g_value_get_as_pointer (const GValue *value)
 }
 
 void
+g_value_set_instance (GValue  *value,
+		      gpointer instance)
+{
+  g_return_if_fail (G_IS_VALUE (value));
+  
+  g_value_reset (value);
+  if (instance)
+    {
+      GType g_type = G_VALUE_TYPE (value);
+      GTypeValueTable *value_table = g_type_value_table_peek (g_type);
+      GTypeCValue cvalue = { 0, };
+      guint nth_value = 0;
+      guint collect_type = value_table->collect_type;
+      gchar *error_msg;
+      
+      g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+      g_return_if_fail (g_type_is_a (G_TYPE_FROM_INSTANCE (instance), G_VALUE_TYPE (value)));
+      g_return_if_fail (value_table->collect_type == G_VALUE_COLLECT_POINTER);
+      
+      cvalue.v_pointer = instance;
+      error_msg = value_table->collect_value (value, nth_value++, &collect_type, &cvalue);
+      
+      /* this shouldn't be triggered, instance types should collect just one pointer,
+       * but since we have to follow the calling conventions for collect_value(),
+       * we can attempt to feed them with 0s if they insist on extra args.
+       */
+      while (collect_type && !error_msg)
+	{
+	  memset (&cvalue, 0, sizeof (cvalue));
+	  error_msg = value_table->collect_value (value, nth_value++, &collect_type, &cvalue);
+	}
+      
+      if (error_msg)
+	{
+	  g_warning ("%s: %s", G_STRLOC, error_msg);
+	  g_free (error_msg);
+	  
+	  /* we purposely leak the value here, it might not be
+	   * in a sane state if an error condition occoured
+	   */
+	  memset (value, 0, sizeof (*value));
+	  value->g_type = g_type;
+	  value_table->value_init (value);
+	}
+    }
+}
+
+void
 g_value_unset (GValue *value)
 {
   GTypeValueTable *value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
@@ -127,11 +176,12 @@ g_value_unset (GValue *value)
 void
 g_value_reset (GValue *value)
 {
-  GTypeValueTable *value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  GTypeValueTable *value_table;
   GType g_type;
   
   g_return_if_fail (G_IS_VALUE (value));
   
+  value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
   g_type = G_VALUE_TYPE (value);
   
   if (value_table->value_free)

@@ -271,17 +271,6 @@ value if the first element comes after the second.
 @Returns: the start of the sorted #GList.
 
 
-<!-- ##### FUNCTION g_slist_sort_with_data ##### -->
-<para>
-
-</para>
-
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_slist_concat ##### -->
 <para>
 Adds the second #GSList onto the end of the first #GSList.

@@ -23,6 +23,7 @@
 #include	<gobject/gclosure.h>
 #include	<gobject/gvalue.h>
 #include	<gobject/gparam.h>
+#include	<gobject/gmarshal.h>
 
 
 #ifdef __cplusplus
@@ -86,9 +87,18 @@ struct _GSignalQuery
 
 
 /* --- signals --- */
+guint	g_signal_new			      (const gchar	 *signal_name,
+					       GType		  itype,
+					       GSignalFlags	  signal_flags,
+					       GClosure		 *class_closure,
+					       GSignalAccumulator accumulator,
+					       GSignalCMarshaller c_marshaller,
+					       GType		  return_type,
+					       guint		  n_params,
+					       ...);
 guint	g_signal_newv			      (const gchar	 *signal_name,
 					       GType		  itype,
-					       GSignalFlags	   signal_flags,
+					       GSignalFlags	  signal_flags,
 					       GClosure		 *class_closure,
 					       GSignalAccumulator accumulator,
 					       GSignalCMarshaller c_marshaller,
@@ -99,6 +109,17 @@ void	g_signal_emitv			      (const GValue	 *instance_and_params,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       GValue		 *return_value);
+void	g_signal_emit_valist		      (gpointer		  instance,
+					       guint		  signal_id,
+					       GQuark		  detail,
+					       va_list		  var_args);
+void	g_signal_emit			      (gpointer		  instance,
+					       guint		  signal_id,
+					       GQuark		  detail,
+					       ...);
+void	g_signal_emit_by_name		      (gpointer		  instance,
+					       const gchar	 *detailed_signal,
+					       ...);
 guint	g_signal_lookup			      (const gchar	 *name,
 					       GType		  itype);
 gchar*	g_signal_name			      (guint		  signal_id);
@@ -126,6 +147,17 @@ guint	 g_signal_connect_closure_by_id	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       GClosure		 *closure,
+					       gboolean		  after);
+guint	 g_signal_connect_closure	      (gpointer		  instance,
+					       const gchar       *detailed_signal,
+					       GClosure		 *closure,
+					       gboolean		  after);
+guint	 g_signal_connect_data		      (gpointer		  instance,
+					       const gchar	 *detailed_signal,
+					       GCallback	  c_handler,
+					       gpointer		  data,
+					       GClosureNotify	  destroy_data,
+					       gboolean		  swapped,
 					       gboolean		  after);
 void	 g_signal_handler_block		      (gpointer		  instance,
 					       guint		  handler_id);
