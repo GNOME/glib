@@ -62,7 +62,7 @@ typedef void (*GOptionErrorFunc) (GOptionContext *context,
 				  gpointer        data,
 				  GError        **error);
 
-#define G_OPTION_ERROR (g_option_context_error_quark ())
+#define G_OPTION_ERROR (g_option_error_quark ())
 
 typedef enum
 {
@@ -71,7 +71,7 @@ typedef enum
   G_OPTION_ERROR_FAILED
 } GOptionError;
 
-GQuark g_option_context_error_quark (void) G_GNUC_CONST;
+GQuark g_option_error_quark (void) G_GNUC_CONST;
 
 
 struct _GOptionEntry

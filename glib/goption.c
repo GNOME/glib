@@ -102,7 +102,7 @@ static void free_pending_nulls (GOptionContext *context,
 				gboolean        perform_nulls);
 
 GQuark
-g_option_context_error_quark (void)
+g_option_error_quark (void)
 {
   static GQuark q = 0;
   

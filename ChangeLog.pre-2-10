@@ -1,4 +1,10 @@
-2004-09-26  Matthias Clasen  <mclasen@redhat.com>
+2004-09-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glib/goptions.[h|c], glib/glib.symbols: Rename 
+	g_context_option_error_quark() to g_option_error_quark(), because that 
+	is consistent with normal naming conventions, and what bindings expect.
+
+.2004-09-26  Matthias Clasen  <mclasen@redhat.com>
 
 	Fix #153649, Hidetaka Iwai:
 	
