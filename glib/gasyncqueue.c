@@ -64,14 +64,18 @@ g_async_queue_new (void)
  *
  * Increases the reference count of the asynchronous @queue by 1. You
  * do not need to hold the lock to call this function.
+ *
+ * Returns: the @queue that was passed in (since 2.6)
  **/
-void 
+GAsyncQueue *
 g_async_queue_ref (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
   g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   
   g_atomic_int_inc (&queue->ref_count);
+
+  return queue;
 }
 
 /**

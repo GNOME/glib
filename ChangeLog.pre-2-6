@@ -1,5 +1,12 @@
 2004-11-08  Matthias Clasen  <mclasen@redhat.com>
-	
+
+	* glib/gasyncqueue.[hc]:
+	* glib/ghook.[hc]: 
+	* glib/gmain.[hc]:
+	* glib/giochannel.[hc]: Make g_io_channel_ref(), 
+	g_main_context_ref(), g_hook_ref(), g_async_queue_ref()
+	return the passed in pointer. (#151663, Manish Singh)
+
 	* glib/gmain.c: Initialize child_watch_count to 1, so 
 	that we don't miss the very first child if it exits 
 	before we set up the child watch. In that case we had 

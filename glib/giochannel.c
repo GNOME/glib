@@ -91,12 +91,14 @@ g_io_channel_init (GIOChannel *channel)
   channel->close_on_unref = FALSE;
 }
 
-void 
+GIOChannel *
 g_io_channel_ref (GIOChannel *channel)
 {
   g_return_if_fail (channel != NULL);
 
   channel->ref_count++;
+
+  return channel;
 }
 
 void 

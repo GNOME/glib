@@ -47,7 +47,7 @@ void          g_async_queue_lock               (GAsyncQueue *queue);
 void          g_async_queue_unlock             (GAsyncQueue *queue);
 
 /* Ref and unref the GAsyncQueue. */
-void          g_async_queue_ref                (GAsyncQueue *queue);
+GAsyncQueue*  g_async_queue_ref                (GAsyncQueue *queue);
 void          g_async_queue_unref              (GAsyncQueue *queue);
 #ifndef G_DISABLE_DEPRECATED
 /* You don't have to hold the lock for calling *_ref and *_unref anymore. */

@@ -589,8 +589,10 @@ g_poll (GPollFD *fds,
  * @context: a #GMainContext
  * 
  * Increases the reference count on a #GMainContext object by one.
+ *
+ * Returns: the @context that was passed in (since 2.6)
  **/
-void
+GMainContext *
 g_main_context_ref (GMainContext *context)
 {
   g_return_if_fail (context != NULL);

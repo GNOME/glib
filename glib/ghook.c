@@ -222,7 +222,7 @@ g_hook_unref (GHookList *hook_list,
     }
 }
 
-void
+GHook *
 g_hook_ref (GHookList *hook_list,
 	    GHook     *hook)
 {
@@ -231,6 +231,8 @@ g_hook_ref (GHookList *hook_list,
   g_return_if_fail (hook->ref_count > 0);
   
   hook->ref_count++;
+
+  return hook;
 }
 
 void

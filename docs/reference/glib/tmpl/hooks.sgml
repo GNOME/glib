@@ -417,7 +417,7 @@ Increments the reference count for a #GHook.
 
 @hook_list: a #GHookList.
 @hook: the #GHook to increment the reference count of.
-
+@returns: the @hook that was passed in (since 2.6)
 
 <!-- ##### FUNCTION g_hook_unref ##### -->
 <para>

@@ -163,7 +163,7 @@ struct _GIOFuncs
 };
 
 void        g_io_channel_init   (GIOChannel    *channel);
-void        g_io_channel_ref    (GIOChannel    *channel);
+GIOChannel *g_io_channel_ref    (GIOChannel    *channel);
 void        g_io_channel_unref  (GIOChannel    *channel);
 
 #ifndef G_DISABLE_DEPRECATED

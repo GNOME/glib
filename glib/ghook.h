@@ -105,7 +105,7 @@ void	 g_hook_list_clear		(GHookList		*hook_list);
 GHook*	 g_hook_alloc			(GHookList		*hook_list);
 void	 g_hook_free			(GHookList		*hook_list,
 					 GHook			*hook);
-void	 g_hook_ref			(GHookList		*hook_list,
+GHook *	 g_hook_ref			(GHookList		*hook_list,
 					 GHook			*hook);
 void	 g_hook_unref			(GHookList		*hook_list,
 					 GHook			*hook);

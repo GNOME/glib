@@ -136,7 +136,7 @@ struct _GPollFD
 /* GMainContext: */
 
 GMainContext *g_main_context_new       (void);
-void          g_main_context_ref       (GMainContext *context);
+GMainContext *g_main_context_ref       (GMainContext *context);
 void          g_main_context_unref     (GMainContext *context);
 GMainContext *g_main_context_default   (void);
 
