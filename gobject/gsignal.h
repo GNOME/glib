@@ -169,7 +169,7 @@ gboolean g_signal_parse_name		      (const gchar	 *detailed_signal,
 					       guint		 *signal_id_p,
 					       GQuark		 *detail_p,
 					       gboolean		  force_detail_quark);
-void	 _g_signal_handlers_destroy	      (gpointer		  instance);
+void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);
 
 

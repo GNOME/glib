@@ -1,3 +1,25 @@
+Sun Nov  5 05:22:55 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c:
+	fixed a bag full of subtle bugs of immensive screw-up potential in
+	handlers_find(), luckily no one found out about them yet ;)
+	fixed signal_handlers_foreach_matched_R() so it operates on an
+	initial handler list snapshot provided by handlers_find() to work
+	around general reentrancy problems and to avoid multiple callback()
+	invocations on the same handlers.
+	this code is now officially 80% bug free (10% remaining for interface
+	types, and 10% remaining for destroyed signals ;)
+	
+Sat Nov  4 02:01:33 2000  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (_g_signals_destroy): valid signal nodes start out at 1.
+
+	* gtypeplugin.[hc]: new files holding a GTypePlugin interface
+	implementation that provides the API required by GType to deal with
+	dynamically loadable types.
+
+	* gtype.[hc]: displace any GTypePlugin business to gtypeplugin.h.
+
 Fri Nov  3 07:35:00 2000  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc]: prefix internal functions with '_'. renamed

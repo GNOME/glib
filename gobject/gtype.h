@@ -116,7 +116,6 @@ typedef guint32                         GType;
 typedef struct _GValue                  GValue;
 typedef union  _GTypeCValue             GTypeCValue;
 typedef struct _GTypePlugin             GTypePlugin;
-typedef struct _GTypePluginVTable       GTypePluginVTable;
 typedef struct _GTypeClass              GTypeClass;
 typedef struct _GTypeInterface          GTypeInterface;
 typedef struct _GTypeInstance           GTypeInstance;
@@ -154,7 +153,7 @@ struct _GTypeInterface
 #define G_TYPE_CHECK_INSTANCE(instance)				(_G_TYPE_CHI ((GTypeInstance*) (instance)))
 #define G_TYPE_CHECK_INSTANCE_CAST(instance, g_type, c_type)    (_G_TYPE_CIC ((instance), (g_type), c_type))
 #define G_TYPE_CHECK_INSTANCE_TYPE(instance, g_type)            (_G_TYPE_CIT ((instance), (g_type)))
-#define G_TYPE_INSTANCE_GET_CLASS(instance, g_type, c_type)     (_G_TYPE_IGC ((instance), c_type))
+#define G_TYPE_INSTANCE_GET_CLASS(instance, g_type, c_type)     (_G_TYPE_IGC ((instance), (g_type), c_type))
 #define G_TYPE_INSTANCE_GET_INTERFACE(instance, g_type, c_type) (_G_TYPE_IGI ((instance), (g_type), c_type))
 #define G_TYPE_CHECK_CLASS_CAST(g_class, g_type, c_type)        (_G_TYPE_CCC ((g_class), (g_type), c_type))
 #define G_TYPE_CHECK_CLASS_TYPE(g_class, g_type)                (_G_TYPE_CCT ((g_class), (g_type)))
@@ -210,29 +209,8 @@ typedef void   (*GInterfaceInitFunc)         (gpointer         g_iface,
 					      gpointer         iface_data);
 typedef void   (*GInterfaceFinalizeFunc)     (gpointer         g_iface,
 					      gpointer         iface_data);
-typedef void (*GTypePluginRef)               (GTypePlugin     *plugin);
-typedef void (*GTypePluginUnRef)             (GTypePlugin     *plugin);
-typedef void (*GTypePluginFillTypeInfo)      (GTypePlugin     *plugin,
-                                              GType            g_type,
-                                              GTypeInfo       *info,
-					      GTypeValueTable *value_table);
-typedef void (*GTypePluginFillInterfaceInfo) (GTypePlugin     *plugin,
-                                              GType            interface_type,
-                                              GType            instance_type,
-                                              GInterfaceInfo  *info);
 typedef gboolean (*GTypeClassCacheFunc)	     (gpointer	       cache_data,
 					      GTypeClass      *g_class);
-struct _GTypePlugin
-{
-  GTypePluginVTable     *vtable;
-};
-struct _GTypePluginVTable
-{
-  GTypePluginRef                plugin_ref;
-  GTypePluginUnRef              plugin_unref;
-  GTypePluginFillTypeInfo       complete_type_info;
-  GTypePluginFillInterfaceInfo  complete_interface_info;
-};
 typedef enum    /*< skip >*/
 {
   G_TYPE_FLAG_CLASSED           = (1 << 0),
@@ -359,7 +337,7 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 #define _G_TYPE_CCT(cp, gt)             (g_type_class_is_a ((GTypeClass*) cp, gt))
 #define _G_TYPE_CVT(vl, gt)             (g_type_value_conforms_to ((GValue*) vl, gt))
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
-#define _G_TYPE_IGC(ip, ct)             ((ct*) (((GTypeInstance*) ip)->g_class))
+#define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
 
 

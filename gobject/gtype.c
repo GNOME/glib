@@ -18,6 +18,7 @@
  */
 #include	"gtype.h"
 
+#include	"gtypeplugin.h"
 #include	<string.h>
 
 #define FIXME_DISABLE_PREALLOCATIONS
@@ -45,10 +46,6 @@
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
 #define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT)
 
-#define	g_type_plugin_ref(p)				((p)->vtable->plugin_ref (p))
-#define g_type_plugin_unref(p)				((p)->vtable->plugin_unref (p))
-#define	g_type_plugin_complete_type_info(p,t,i,v)	((p)->vtable->complete_type_info ((p), (t), (i), (v)))
-#define	g_type_plugin_complete_interface_info(p,f,t,i)	((p)->vtable->complete_interface_info ((p), (f), (t), (i)))
 
 
 /* --- typedefs --- */
@@ -398,31 +395,19 @@ check_plugin (GTypePlugin *plugin,
 		 type_name);
       return FALSE;
     }
-  if (!plugin->vtable)
+  if (!G_IS_TYPE_PLUGIN (plugin))
     {
-      g_warning ("plugin for type `%s' has no function table",
-		 type_name);
+      g_warning ("plugin pointer (%p) for type `%s' is invalid",
+		 plugin, type_name);
       return FALSE;
     }
-  if (!plugin->vtable->plugin_ref)
-    {
-      g_warning ("plugin for type `%s' has no plugin_ref() implementation",
-		 type_name);
-      return FALSE;
-    }
-  if (!plugin->vtable->plugin_unref)
-    {
-      g_warning ("plugin for type `%s' has no plugin_unref() implementation",
-		 type_name);
-      return FALSE;
-    }
-  if (need_complete_type_info && !plugin->vtable->complete_type_info)
+  if (need_complete_type_info && !G_TYPE_PLUGIN_GET_CLASS (plugin)->complete_type_info)
     {
       g_warning ("plugin for type `%s' has no complete_type_info() implementation",
 		 type_name);
       return FALSE;
     }
-  if (need_complete_interface_info && !plugin->vtable->complete_interface_info)
+  if (need_complete_interface_info && !G_TYPE_PLUGIN_GET_CLASS (plugin)->complete_interface_info)
     {
       g_warning ("plugin for type `%s' has no complete_interface_info() implementation",
 		 type_name);
@@ -830,7 +815,7 @@ type_data_ref (TypeNode *node)
       
       memset (&tmp_info, 0, sizeof (tmp_info));
       memset (&tmp_value_table, 0, sizeof (tmp_value_table));
-      g_type_plugin_ref (node->plugin);
+      g_type_plugin_use (node->plugin);
       g_type_plugin_complete_type_info (node->plugin, NODE_TYPE (node), &tmp_info, &tmp_value_table);
       check_type_info (pnode, G_TYPE_FUNDAMENTAL (NODE_TYPE (node)), NODE_NAME (node), &tmp_info);
       type_data_make (node, &tmp_info,
@@ -930,7 +915,7 @@ type_iface_retrive_holder_info (TypeNode *iface,
       type_data_ref (iface);
 
       memset (&tmp_info, 0, sizeof (tmp_info));
-      g_type_plugin_ref (iholder->plugin);
+      g_type_plugin_use (iholder->plugin);
       g_type_plugin_complete_interface_info (iholder->plugin, NODE_TYPE (iface), instance_type, &tmp_info);
       check_interface_info (iface, instance_type, &tmp_info);
       iholder->info = g_memdup (&tmp_info, sizeof (tmp_info));
@@ -954,7 +939,7 @@ type_iface_blow_holder_info (TypeNode *iface,
     {
       g_free (iholder->info);
       iholder->info = NULL;
-      g_type_plugin_unref (iholder->plugin);
+      g_type_plugin_unuse (iholder->plugin);
 
       type_data_unref (iface, FALSE);
     }
@@ -1279,7 +1264,7 @@ type_data_last_unref (GType    type,
       
       if (ptype)
 	type_data_unref (LOOKUP_TYPE_NODE (ptype), FALSE);
-      g_type_plugin_unref (node->plugin);
+      g_type_plugin_unuse (node->plugin);
     }
 }
 
@@ -2116,6 +2101,10 @@ g_type_init (void)
   type = NODE_TYPE (node);
   type_data_make (node, &info, NULL); /* FIXME */
   g_assert (type == G_TYPE_INTERFACE);
+
+  /* G_TYPE_TYPE_PLUGIN
+   */
+  g_type_plugin_get_type ();
 
   /* G_TYPE_* value types
    */

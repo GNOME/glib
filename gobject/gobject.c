@@ -295,7 +295,7 @@ g_object_do_shutdown (GObject *object)
 static void
 g_object_do_finalize (GObject *object)
 {
-  _g_signal_handlers_destroy (object);
+  g_signal_handlers_destroy (object);
   g_datalist_clear (&object->qdata);
   
 #ifdef	DEBUG_OBJECTS
