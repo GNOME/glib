@@ -1,5 +1,7 @@
 2003-08-07  Matthias Clasen  <maclas@gmx.de>
 
+	* acinclude.m4: Tighten the snprintf() test to check behaviour on zero-size buffers.  (#106091)
+
 	* tests/patterntest.c: Specify test strings in UTF-8, remove all charset conversion.
 	Replace the NOISY define by a cmdline arg --noisy.   (#115757)
 
