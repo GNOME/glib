@@ -12,7 +12,7 @@ How to cross-compile GLib
 </refpurpose>
 </refnamediv>
 
-    <refsect1 id="building">
+    <refsect1 id="cross">
       <title>Building the Library for a different architecture</title>
       <para>
         Cross-compilation is the process of compiling a program or

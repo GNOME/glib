@@ -1,3 +1,8 @@
+2003-05-12  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/cross.sgml: Fix a duplicate id left by copy-and-paste.
+	(#112785, Owen Taylor)
+
 2003-04-18  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/signals.sgml: Correct the documentation
