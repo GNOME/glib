@@ -595,10 +595,12 @@ g_io_channel_init
 <SUBSECTION>
 g_io_channel_new_file
 g_io_channel_read_chars
+g_io_channel_read_unichar
 g_io_channel_read_line
 g_io_channel_read_line_string
 g_io_channel_read_to_end
 g_io_channel_write_chars
+g_io_channel_write_unichar
 g_io_channel_flush
 g_io_channel_seek_position
 GSeekType

@@ -1,5 +1,17 @@
 2001-08-05  Ron Steinke  <rsteinke@w-link.net>
 
+	* glib/giochannel.c glib/giochannel.c glib/glib.def
+	docs/reference/glib/glib-sections.txt: Added new functions
+	g_io_channel_[read,write]_unichar ()
+
+	* glib/giochannel.h: Finally remembered to remove the
+	old error message G_IO_CHANNEL_ERROR_PCHAR_FLUSH
+
+	* glib/giochannel.c: Some fixes to g_io_channel_fill_buffer ()
+	and g_io_channel_write_chars ()
+
+2001-08-05  Ron Steinke  <rsteinke@w-link.net>
+
 	* glib/giochannel.c: Replaced the local use_buf variable with a macro
 	in most places. This allows us to check some things without worrying
 	whether we have allocated the read buffers yet, and allows us to allocate

@@ -204,6 +204,7 @@ EXPORTS
 	g_io_channel_read_line
 	g_io_channel_read_line_string
 	g_io_channel_read_to_end
+	g_io_channel_read_unichar
 	g_io_channel_ref
 	g_io_channel_seek
 	g_io_channel_seek_position
@@ -225,6 +226,7 @@ EXPORTS
 	g_io_channel_win32_set_debug
 	g_io_channel_write
 	g_io_channel_write_chars
+	g_io_channel_write_unichar
 	g_io_create_watch
 	g_list_alloc
 	g_list_append

@@ -61,8 +61,6 @@ typedef enum
   G_IO_CHANNEL_ERROR_OVERFLOW,
   G_IO_CHANNEL_ERROR_PIPE,
   /* Other */
-  G_IO_CHANNEL_ERROR_PCHAR_FLUSH,
-  /* Unconverted partial UTF-8 chars in buffer during flush */
   G_IO_CHANNEL_ERROR_FAILED
 } GIOChannelError;
 
@@ -252,10 +250,16 @@ GIOStatus   g_io_channel_read_chars       (GIOChannel   *channel,
 					   gsize         count,
 					   gsize        *bytes_read,
 					   GError      **error);
+GIOStatus   g_io_channel_read_unichar     (GIOChannel   *channel,
+					   gunichar     *thechar,
+					   GError      **error);
 GIOStatus   g_io_channel_write_chars      (GIOChannel   *channel,
 					   const gchar  *buf,
 					   gssize        count,
 					   gsize        *bytes_written,
+					   GError      **error);
+GIOStatus   g_io_channel_write_unichar    (GIOChannel   *channel,
+					   gunichar      thechar,
 					   GError      **error);
 GIOStatus   g_io_channel_seek_position    (GIOChannel   *channel,
 					   glong         offset,

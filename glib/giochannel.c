@@ -1132,16 +1132,15 @@ g_io_channel_fill_buffer (GIOChannel *channel,
 reencode:
 
       inbytes_left = channel->read_buf->len;
-      outbytes_left = MIN (channel->buf_size / 4,
+      outbytes_left = MAX (6, MAX (channel->read_buf->len,
                            channel->encoded_read_buf->allocated_len
-                           - channel->encoded_read_buf->len);
+                           - channel->encoded_read_buf->len));
+
+      inbuf = channel->read_buf->str;
+      outbuf = channel->encoded_read_buf->str + channel->encoded_read_buf->len;
 
       g_string_set_size (channel->encoded_read_buf,
                          channel->encoded_read_buf->len + outbytes_left);
-
-      inbuf = channel->read_buf->str;
-      outbuf = channel->encoded_read_buf->str + channel->encoded_read_buf->len
-               - outbytes_left;
 
       errnum = g_iconv (channel->read_cd, &inbuf, &inbytes_left,
 			&outbuf, &outbytes_left);
@@ -1163,6 +1162,8 @@ reencode:
                   status = G_IO_STATUS_NORMAL;
                 break;
               case E2BIG:
+                /* Buffer size at least 6, wrote at least on character */
+                g_assert (inbuf != channel->read_buf->str);
                 goto reencode;
               case EILSEQ:
                 if (oldlen < channel->encoded_read_buf->len)
@@ -1695,6 +1696,66 @@ g_io_channel_read_chars (GIOChannel	*channel,
 }
 
 /**
+ * g_io_channel_read_unichar:
+ * @channel: a #GIOChannel
+ * @thechar: a location to return a character
+ * @error: A location to return an error of type #GConvertError
+ *         or #GIOChannelError
+ *
+ * This function cannot be called on a channel with %NULL encoding.
+ *
+ * Return value: a #GIOStatus
+ **/
+GIOStatus
+g_io_channel_read_unichar     (GIOChannel   *channel,
+			       gunichar     *thechar,
+			       GError      **error)
+{
+  GIOStatus status = G_IO_STATUS_NORMAL;
+
+  g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail (channel->encoding != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail ((error == NULL) || (*error == NULL),
+			G_IO_STATUS_ERROR);
+  g_return_val_if_fail (channel->is_readable, G_IO_STATUS_ERROR);
+
+  while (BUF_LEN (channel->encoded_read_buf) == 0 && status == G_IO_STATUS_NORMAL)
+    status = g_io_channel_fill_buffer (channel, error);
+
+  /* Only return an error if we have no data */
+
+  if (BUF_LEN (USE_BUF (channel)) == 0)
+    {
+      g_assert (status != G_IO_STATUS_NORMAL);
+
+      if (status == G_IO_STATUS_EOF && BUF_LEN (channel->read_buf) > 0)
+        {
+          g_set_error (error, G_CONVERT_ERROR,
+                       G_CONVERT_ERROR_PARTIAL_INPUT,
+                       "Leftover unconverted data in read buffer");
+          status = G_IO_STATUS_ERROR;
+        }
+
+      if (thechar)
+        *thechar = (gunichar) -1;
+
+      return status;
+    }
+
+  if (status == G_IO_STATUS_ERROR)
+    g_clear_error (error);
+
+  if (thechar)
+    *thechar = g_utf8_get_char (channel->encoded_read_buf->str);
+
+  g_string_erase (channel->encoded_read_buf, 0,
+                  g_utf8_next_char (channel->encoded_read_buf->str)
+                  - channel->encoded_read_buf->str);
+
+  return G_IO_STATUS_NORMAL;
+}
+
+/**
  * g_io_channel_write_chars:
  * @channel: a #GIOChannel
  * @buf: a buffer to write data from
@@ -1720,7 +1781,6 @@ g_io_channel_write_chars (GIOChannel	*channel,
   gssize wrote_bytes = 0;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail (bytes_written != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL),
 			G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_writeable, G_IO_STATUS_ERROR);
@@ -1783,8 +1843,7 @@ g_io_channel_write_chars (GIOChannel	*channel,
               did_write += this_time;
             }
           while (status == G_IO_STATUS_NORMAL &&
-                 did_write < MIN (channel->write_buf->len,
-                             MAX (MAX_CHAR_SIZE, channel->buf_size / 4)));
+                 did_write < MIN (channel->write_buf->len, MAX_CHAR_SIZE));
 
           g_string_erase (channel->write_buf, 0, did_write);
 
@@ -1993,6 +2052,49 @@ reconvert:
   return G_IO_STATUS_NORMAL;
 }
 
+/**
+ * g_io_channel_write_unichar:
+ * @channel: a #GIOChannel
+ * @thechar: a character
+ * @error: A location to return an error of type #GConvertError
+ *         or #GIOChannelError
+ *
+ * This function cannot be called on a channel with %NULL encoding.
+ *
+ * Return value: a #GIOStatus
+ **/
+GIOStatus
+g_io_channel_write_unichar    (GIOChannel   *channel,
+			       gunichar      thechar,
+			       GError      **error)
+{
+  GIOStatus status;
+  gchar static_buf[6];
+  gsize char_len, wrote_len;
+
+  g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail (channel->encoding != NULL, G_IO_STATUS_ERROR);
+  g_return_val_if_fail ((error == NULL) || (*error == NULL),
+			G_IO_STATUS_ERROR);
+  g_return_val_if_fail (channel->is_writeable, G_IO_STATUS_ERROR);
+
+  char_len = g_unichar_to_utf8 (thechar, static_buf);
+
+  if (channel->partial_write_buf[0] != '\0')
+    {
+      g_warning ("Partial charater written before writing unichar.\n");
+      channel->partial_write_buf[0] = '\0';
+    }
+
+  status = g_io_channel_write_chars (channel, static_buf,
+                                     char_len, &wrote_len, error);
+
+  /* We validate UTF-8, so we can't get a partial write */
+
+  g_assert (wrote_len == char_len || status != G_IO_STATUS_NORMAL);
+
+  return status;
+}
 
 /**
  * g_io_channel_error_quark:
