@@ -274,27 +274,6 @@ canonicalize_key (gchar *key)
     }
 }
 
-/**
- * g_param_spec_internal:
- * @param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
- * @name: the canonical name of the property
- * @nick: the nickname of the property
- * @blurb: a short description of the property
- * @flags: a combination of #GParamFlags 
- * 
- * Creates a new #GParamSpec instance.
- *
- * A property name consists of segments consisting of ASCII letters and
- * digits, separated by either the '-' or '_' character. The first
- * character of a property name must be a letter. Names which violate these
- * rules lead to undefined behaviour. 
- *
- * When creating and looking up a #GParamSpec, either separator can be used, 
- * but they cannot be mixed. Using '-' is considerably more efficient and in 
- * fact required when using property names as detail strings for signals.
- * 
- * Return value: a newly allocated #GParamSpec instance
- **/
 gpointer
 g_param_spec_internal (GType        param_type,
 		       const gchar *name,

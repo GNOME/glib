@@ -1,3 +1,14 @@
+2003-02-07  Matthias Clasen  <maclas@gmx.de>
+
+	* gtypemodule.c: 
+	* gtype.c: 
+	* gsourceclosure.c: 
+	* gparamspecs.c: 
+	* gparam.c: 
+	* gobject.c: 
+	* gsignal.c: Remove all docs from gobject at Tims
+	request. Documentation is only for weenies anyway...	
+
 2003-01-12  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_type_interface_prerequisites. Thanks to

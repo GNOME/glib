@@ -258,14 +258,6 @@ g_object_do_class_init (GObjectClass *class)
 		  1, G_TYPE_PARAM);
 }
 
-/**
- * g_object_class_install_property:
- * @class: a #GObjectClass
- * @property_id: the id for the new property
- * @pspec: the #GParamSpec for the new property
- * 
- * Installs a new property. This is usually done in the class initializer.
- **/
 void
 g_object_class_install_property (GObjectClass *class,
 				 guint	       property_id,
@@ -475,13 +467,6 @@ g_object_run_dispose (GObject *object)
   g_object_unref (object);
 }
 
-/**
- * g_object_freeze_notify:
- * @object: a #GObject
- * 
- * Stops emission of "notify" signals on @object. The signals are
- * queued until g_object_thaw_notify() is called on @object. 
- **/
 void
 g_object_freeze_notify (GObject *object)
 {
@@ -494,13 +479,6 @@ g_object_freeze_notify (GObject *object)
   g_object_unref (object);
 }
 
-/**
- * g_object_notify:
- * @object: a #GObject
- * @property_name: the name of a property installed on the class of @object.
- * 
- * Emits a "notify" signal for the property @property_name on @object. 
- **/
 void
 g_object_notify (GObject     *object,
 		 const gchar *property_name)
@@ -532,14 +510,6 @@ g_object_notify (GObject     *object,
   g_object_unref (object);
 }
 
-/**
- * g_object_thaw_notify:
- * @object: a #GObject
- * 
- * Reverts the effect of a previous call to g_object_freeze_notify().
- * This causes all queued "notify" signals on @object to be emitted.
-
- **/
 void
 g_object_thaw_notify (GObject *object)
 {
@@ -1593,19 +1563,6 @@ g_value_dup_object (const GValue *value)
   return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
 }
 
-/**
- * g_signal_connect_object:
- * @instance: the instance to connect to.
- * @detailed_signal: a string of the form "signal-name::detail".
- * @c_handler: the #GCallback to connect.
- * @gobject: the object to pass as data to @c_handler.
- * @connect_flags: a combination of #GConnnectFlags.
- * 
- * This is similar to g_signal_connect_data(), but uses a closure which
- * ensures that the object stays alive during the call to @c_handler.
- * 
- * Return value: the handler id.
- **/
 gulong
 g_signal_connect_object (gpointer      instance,
 			 const gchar  *detailed_signal,

@@ -1,3 +1,14 @@
+2003-02-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h: 
+	* glib/gmem.h: 
+	* glib/ghash.h: 
+	* glib/gasyncqueue.h: 
+	* glib/garray.h: 
+	* glib/ghook.h: 
+	* glib/gtypes.h: Fix a bunch of typos in header comments.
+	(#102422, Morten Welinder)
+
 2003-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/giowin32.c (g_io_channel_unix_new): Fix typo: Should be

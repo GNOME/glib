@@ -130,13 +130,6 @@ g_type_module_get_type (void)
   return type_module_type;
 }
 
-/**
- * g_type_module_set_name
- * @module: a #GTypeModule.
- * @name: a human-readable name to use in error messages.
- * 
- * Sets the name for a #GTypeModule 
- **/
 void
 g_type_module_set_name (GTypeModule  *module,
 			const gchar  *name)
@@ -183,16 +176,6 @@ g_type_module_find_interface_info (GTypeModule *module,
   return NULL;
 }
 
-/**
- * g_type_module_use:
- * @module: a #GTypeModule
- * 
- * Increases the use count of a #GTypeModule by one. If the
- * use count was zero before, the plugin will be loaded.
- *
- * Return Value: %FALSE if the plugin needed to be loaded and
- *               loading the plugin failed.
- **/
 gboolean
 g_type_module_use (GTypeModule *module)
 {
@@ -228,16 +211,6 @@ g_type_module_use (GTypeModule *module)
   return TRUE;
 }
 
-/**
- * g_type_module_unuse:
- * @module: a #GTypeModule
- * 
- * Decreases the use count of a #GTypeModule by one. If the
- * result is zero, the module will be unloaded. (However, the
- * #GTypeModule will not be freed, and types associated with the
- * #GTypeModule are not unregistered. Once a #GTypeModule is 
- * initialized, it must exist forever.)
- **/
 void
 g_type_module_unuse (GTypeModule *module)
 {
@@ -303,24 +276,6 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
   *info = module_interface_info->info;
 }
 
-/**
- * g_type_module_register_type:
- * @module:  a #GTypeModule
- * @parent_type:    the type for the parent class
- * @type_name:      name for the type
- * @type_info:      type information structure
- * @flags:          flags field providing details about the type           
- * 
- * Looks up or registers a type that is implemented with a particular
- * type plugin. If a type with name @type_name is already registered,
- * the #GType identifier for the type is returned, otherwise the type
- * is newly registered, and the resulting #GType identifier returned.
- *
- * As long as any instances of the type exist, the type plugin will
- * not be unloaded.
- *
- * Return value: the type ID for the class.
- **/
 GType
 g_type_module_register_type (GTypeModule     *module,
 			     GType            parent_type,
@@ -381,20 +336,6 @@ g_type_module_register_type (GTypeModule     *module,
   return module_type_info->type;
 }
 
-/**
- * g_type_module_add_interface:
- * @module: a #GTypeModule
- * @instance_type: type to which to add the interface.
- * @interface_type: interface type to add
- * @interface_info: type information structure
- * 
- * Registers an additional interface for a type, whose interface
- * lives in the given type plugin. If the interface was already registered
- * for the type in this plugin, nothing will be done. 
- *
- * As long as any instances of the type exist, the type plugin will
- * not be unloaded.
- **/
 void
 g_type_module_add_interface (GTypeModule          *module,
 			     GType                 instance_type,
