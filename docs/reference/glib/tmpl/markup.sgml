@@ -87,3 +87,118 @@ Character references
 
 </para>
 
+<!-- ##### ENUM GMarkupError ##### -->
+<para>
+
+</para>
+
+@G_MARKUP_ERROR_BAD_UTF8: text being parsed was not valid UTF-8
+@G_MARKUP_ERROR_EMPTY: document contained nothing, or only whitespace
+@G_MARKUP_ERROR_PARSE: document was ill-formed
+@G_MARKUP_ERROR_UNKNOWN_ELEMENT: error should be set by #GMarkupParser functions; element wasn't known
+@G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE: error should be set by #GMarkupParser functions; attribute wasn't known
+@G_MARKUP_ERROR_INVALID_CONTENT: error should be set by #GMarkupParser functions; something was wrong with contents of the document, e.g. invalid attribute value
+
+<!-- ##### MACRO G_MARKUP_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM GMarkupParseFlags ##### -->
+<para>
+There are no flags right now
+</para>
+
+@G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: 
+
+<!-- ##### STRUCT GMarkupParseContext ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GMarkupParser ##### -->
+<para>
+Any of the fields in #GMarkupParser can be %NULL, in which case they
+will be ignored. Except for the @error function, any of these
+callbacks can set an error; in particular the
+%G_MARKUP_ERROR_UNKNOWN_ELEMENT, %G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
+and %G_MARKUP_ERROR_INVALID_CONTENT errors are intended to be set 
+from these callbacks. If you set an error from a callback,
+g_markup_parse_context_parse() will report that error back to its caller.
+</para>
+
+@start_element: Callback to invoke when the opening tag of an element
+is seen.
+@end_element: Callback to invoke when the closing tag of an element is seen
+@text: Callback to invoke when some text is seen (text is always
+inside an element)
+@passthrough: Callback to invoke for comments and processing
+instructions; if you're re-writing the parsed document, write the
+passthrough text back out in the same position
+@error: Callback to invoke when an error occurs
+
+<!-- ##### FUNCTION g_markup_escape_text ##### -->
+<para>
+
+</para>
+
+@text: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_end_parse ##### -->
+<para>
+
+</para>
+
+@context: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_free ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_get_position ##### -->
+<para>
+
+</para>
+
+@context: 
+@line_number: 
+@char_number: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_new ##### -->
+<para>
+
+</para>
+
+@parser: 
+@flags: 
+@user_data: 
+@user_data_dnotify: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_markup_parse_context_parse ##### -->
+<para>
+
+</para>
+
+@context: 
+@text: 
+@text_len: 
+@error: 
+@Returns: 
+
+

@@ -209,6 +209,25 @@ g_array_remove_index().
 @Returns: the #GArray.
 
 
+<!-- ##### FUNCTION g_array_sort ##### -->
+<para>
+
+</para>
+
+@array: 
+@compare_func: 
+
+
+<!-- ##### FUNCTION g_array_sort_with_data ##### -->
+<para>
+
+</para>
+
+@array: 
+@compare_func: 
+@user_data: 
+
+
 <!-- ##### MACRO g_array_index ##### -->
 <para>
 Returns the element of a #GArray at the given index.

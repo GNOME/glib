@@ -27,9 +27,12 @@ The returned pointer is cast to a pointer to the given type.
 If @count is 0 it returns NULL.
 </para>
 
+@struct_type: 
+@n_structs: 
+@Returns: a pointer to the allocated memory, cast to a pointer to @type.
+<!-- # Unused Parameters # -->
 @type: the type of the elements to allocate.
 @count: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
 
 
 <!-- ##### MACRO g_new0 ##### -->
@@ -39,9 +42,12 @@ The returned pointer is cast to a pointer to the given type.
 If @count is 0 it returns NULL.
 </para>
 
+@struct_type: 
+@n_structs: 
+@Returns: a pointer to the allocated memory, cast to a pointer to @type.
+<!-- # Unused Parameters # -->
 @type: the type of the elements to allocate.
 @count: the number of elements to allocate.
-@Returns: a pointer to the allocated memory, cast to a pointer to @type.
 
 
 <!-- ##### MACRO g_renew ##### -->
@@ -51,10 +57,13 @@ Reallocates the memory pointed to by @mem, so that it now has space for
 which may have been moved.
 </para>
 
-@type: the type of the elements to allocate.
+@struct_type: 
 @mem: the currently allocated memory.
-@count: the number of elements to allocate.
+@n_structs: 
 @Returns: a pointer to the new allocated memory, cast to a pointer to @type.
+<!-- # Unused Parameters # -->
+@type: the type of the elements to allocate.
+@count: the number of elements to allocate.
 
 
 <!-- ##### FUNCTION g_malloc ##### -->
@@ -63,8 +72,10 @@ Allocates @size bytes of memory.
 If @size is 0 it returns NULL.
 </para>
 
-@size: the number of bytes to allocate.
+@n_bytes: 
 @Returns: a pointer to the allocated memory.
+<!-- # Unused Parameters # -->
+@size: the number of bytes to allocate.
 
 
 <!-- ##### FUNCTION g_malloc0 ##### -->
@@ -73,8 +84,10 @@ Allocates @size bytes of memory, initialized to 0's.
 If @size is 0 it returns NULL.
 </para>
 
-@size: the number of bytes to allocate.
+@n_bytes: 
 @Returns: a pointer to the allocated memory.
+<!-- # Unused Parameters # -->
+@size: the number of bytes to allocate.
 
 
 <!-- ##### FUNCTION g_realloc ##### -->
@@ -85,8 +98,10 @@ have been moved.
 </para>
 
 @mem: the memory to reallocate.
-@size: the new size of the allocated memory, in bytes.
+@n_bytes: 
 @Returns: the new address of the allocated memory.
+<!-- # Unused Parameters # -->
+@size: the new size of the allocated memory, in bytes.
 
 
 <!-- ##### FUNCTION g_free ##### -->

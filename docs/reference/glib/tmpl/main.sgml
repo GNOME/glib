@@ -109,7 +109,50 @@ of a GLib or GTK+ application.
 </para>
 
 
-<!-- ##### FUNCTION g_main_new ##### -->
+<!-- ##### FUNCTION g_main_loop_new ##### -->
+<para>
+
+</para>
+
+@context: 
+@is_running: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_loop_destroy ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_run ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_quit ##### -->
+<para>
+
+</para>
+
+@loop: 
+
+
+<!-- ##### FUNCTION g_main_loop_is_running ##### -->
+<para>
+
+</para>
+
+@loop: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_new ##### -->
 <para>
 Creates a new #GMainLoop for the default main loop. A compatibility
 macro, see g_main_loop_new().
@@ -120,7 +163,7 @@ very important since calling g_main_run() will set this to TRUE anyway.
 @Returns: a new #GMainLoop.
 
 
-<!-- ##### FUNCTION g_main_destroy ##### -->
+<!-- ##### MACRO g_main_destroy ##### -->
 <para>
 Frees the memory allocated for the #GMainLoop. A compatibility macro, see
 g_main_loop_destroy().
@@ -129,7 +172,7 @@ g_main_loop_destroy().
 @loop: a #GMainLoop.
 
 
-<!-- ##### FUNCTION g_main_run ##### -->
+<!-- ##### MACRO g_main_run ##### -->
 <para>
 Runs a main loop until it stops running. A compatibility macro, see g_main_loop_run().
 </para>
@@ -137,7 +180,7 @@ Runs a main loop until it stops running. A compatibility macro, see g_main_loop_
 @loop: a #GMainLoop.
 
 
-<!-- ##### FUNCTION g_main_quit ##### -->
+<!-- ##### MACRO g_main_quit ##### -->
 <para>
 Stops the #GMainLoop. If g_main_run() was called to run the #GMainLoop,
 it will now return. A compatibility macro, see g_main_loop_quit().
@@ -146,7 +189,7 @@ it will now return. A compatibility macro, see g_main_loop_quit().
 @loop: a #GMainLoop.
 
 
-<!-- ##### FUNCTION g_main_is_running ##### -->
+<!-- ##### MACRO g_main_is_running ##### -->
 <para>
 Checks if the main loop is running. A compatibility macro, see
 g_main_loop_is_running().    
@@ -201,7 +244,40 @@ It is not used within GLib or GTK+.
 
 
 
-<!-- ##### FUNCTION g_main_iteration ##### -->
+<!-- ##### STRUCT GMainContext ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_main_context_get ##### -->
+<para>
+
+</para>
+
+@thread: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_default ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_iteration ##### -->
+<para>
+
+</para>
+
+@context: 
+@may_block: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_iteration ##### -->
 <para>
 Runs a single iteration for the default #GMainContext.
 A compatibility macro, see g_main_context_iteration().
@@ -214,7 +290,16 @@ processed.
 @Returns: TRUE if more events are pending.
 
 
-<!-- ##### FUNCTION g_main_pending ##### -->
+<!-- ##### FUNCTION g_main_context_pending ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
+
+
+<!-- ##### MACRO g_main_pending ##### -->
 <para>
 Checks if any events are pending for the default #GMainContext
 (i.e. ready to be processed).  A compatibility macro, see
@@ -222,6 +307,100 @@ g_main_context_pending().
 </para>
 
 @Returns: %TRUE if any events are pending.
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_id ##### -->
+<para>
+
+</para>
+
+@context: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_user_data ##### -->
+<para>
+
+</para>
+
+@context: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_find_source_by_funcs_user_data ##### -->
+<para>
+
+</para>
+
+@context: 
+@funcs: 
+@user_data: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@source_data: 
+
+
+<!-- ##### FUNCTION g_main_context_prepare ##### -->
+<para>
+
+</para>
+
+@context: 
+@priority: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_query ##### -->
+<para>
+
+</para>
+
+@context: 
+@max_priority: 
+@timeout: 
+@fds: 
+@n_fds: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_check ##### -->
+<para>
+
+</para>
+
+@context: 
+@max_priority: 
+@fds: 
+@n_fds: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_main_context_dispatch ##### -->
+<para>
+
+</para>
+
+@context: 
+
+
+<!-- ##### FUNCTION g_main_context_set_poll_func ##### -->
+<para>
+
+</para>
+
+@context: 
+@func: 
+
+
+<!-- ##### FUNCTION g_main_context_get_poll_func ##### -->
+<para>
+
+</para>
+
+@context: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GPollFunc ##### -->
@@ -239,7 +418,26 @@ The semantics of the function should match those of the
 or -1 if an error occurred.
 
 
-<!-- ##### FUNCTION g_main_set_poll_func ##### -->
+<!-- ##### FUNCTION g_main_context_add_poll ##### -->
+<para>
+
+</para>
+
+@context: 
+@fd: 
+@priority: 
+
+
+<!-- ##### FUNCTION g_main_context_remove_poll ##### -->
+<para>
+
+</para>
+
+@context: 
+@fd: 
+
+
+<!-- ##### MACRO g_main_set_poll_func ##### -->
 <para>
 Sets the function to use for the handle polling of file descriptors
 for the default main context. This is a compatability macro, see
@@ -247,6 +445,15 @@ g_main_context_set_poll_func() for full details.
 </para>
 
 @func: the function to call to poll all file descriptors.
+
+
+<!-- ##### FUNCTION g_timeout_source_new ##### -->
+<para>
+
+</para>
+
+@interval: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_timeout_add ##### -->
@@ -271,6 +478,14 @@ g_main_context_set_poll_func() for full details.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_idle_source_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_idle_add ##### -->
 <para>
 </para>
@@ -287,10 +502,10 @@ g_main_context_set_poll_func() for full details.
 @priority: 
 @function: 
 @data: 
-@destroy: 
+@notify: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@notify: 
+@destroy: 
 
 
 <!-- ##### FUNCTION g_idle_remove_by_data ##### -->
@@ -335,6 +550,12 @@ poll() function to indicate which events occurred.
 @fd: 
 @events: 
 @revents: 
+
+<!-- ##### STRUCT GSource ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### STRUCT GSourceFuncs ##### -->
 <para>
@@ -416,20 +637,102 @@ the required condition has been met, and returns TRUE if so.
 @dispatch: 
 @destroy: 
 
-<!-- ##### FUNCTION g_source_add ##### -->
+<!-- ##### STRUCT GSourceCallbackFuncs ##### -->
 <para>
+
 </para>
 
-@priority: 
-@can_recurse: 
-@funcs: 
-@source_data: 
-@user_data: 
-@notify: 
+@ref: 
+@unref: 
+@get: 
+
+<!-- ##### FUNCTION g_source_new ##### -->
+<para>
+
+</para>
+
+@source_funcs: 
+@struct_size: 
 @Returns: 
-<!-- # Unused Parameters # -->
+
+
+<!-- ##### FUNCTION g_source_ref ##### -->
+<para>
+
+</para>
+
 @source: 
-@context: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_unref ##### -->
+<para>
+
+</para>
+
+@source: 
+
+
+<!-- ##### FUNCTION g_source_destroy ##### -->
+<para>
+
+</para>
+
+@source: 
+
+
+<!-- ##### FUNCTION g_source_set_priority ##### -->
+<para>
+
+</para>
+
+@source: 
+@priority: 
+
+
+<!-- ##### FUNCTION g_source_get_priority ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_set_can_recurse ##### -->
+<para>
+
+</para>
+
+@source: 
+@can_recurse: 
+
+
+<!-- ##### FUNCTION g_source_get_can_recurse ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_get_id ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_get_context ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
 
 
 <!-- ##### USER_FUNCTION GSourceFunc ##### -->
@@ -441,6 +744,33 @@ g_idle_add(), and g_idle_add_full().
 @data: data passed to the function, set when the source was created with one
 of the above functions.
 @Returns: it should return FALSE if the source should be removed.
+
+
+<!-- ##### FUNCTION g_source_add_poll ##### -->
+<para>
+
+</para>
+
+@source: 
+@fd: 
+
+
+<!-- ##### FUNCTION g_source_remove_poll ##### -->
+<para>
+
+</para>
+
+@source: 
+@fd: 
+
+
+<!-- ##### FUNCTION g_source_get_current_time ##### -->
+<para>
+
+</para>
+
+@source: 
+@timeval: 
 
 
 <!-- ##### FUNCTION g_source_remove ##### -->

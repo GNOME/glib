@@ -93,3 +93,23 @@ File Utilities
 @Returns: 
 
 
+<!-- ##### FUNCTION g_mkstemp ##### -->
+<para>
+
+</para>
+
+@tmpl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_file_open_tmp ##### -->
+<para>
+
+</para>
+
+@tmpl: 
+@name_used: 
+@error: 
+@Returns: 
+
+

@@ -1,28 +1,3 @@
-<!-- ##### FUNCTION g_date_get_day ##### -->
-<para>
-Return the day of the month; the #GDate must be valid.
-</para>
-
-@date: Date to extract the day of the month from
-@Returns: Day of the month
-
-<!-- ##### FUNCTION g_markup_parse_context_parse ##### -->
-<para>
-
-</para>
-
-@context: 
-@text: 
-@text_len: 
-@error: 
-@Returns: 
-
-<!-- ##### STRUCT GSource ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION g_source_connect_indirect ##### -->
 <para>
 
@@ -32,69 +7,11 @@ Return the day of the month; the #GDate must be valid.
 @callback_data: 
 @callback_funcs: 
 
-<!-- ##### FUNCTION g_date_get_sunday_weeks_in_year ##### -->
-<para>
-Return the number of weeks in the year, where weeks are taken to start
-on Sunday. Will be 52 or 53. Date must be valid. (Years always have 52
-7-day periods, plus 1 or 2 extra days depending on whether it's a leap
-year. This function is basically telling you how many Sundays are in
-the year, i.e. there are 53 Sundays if one of the extra days happens
-to be a Sunday.)
-</para>
-
-@year: Year to count weeks in
-@Returns: Number of weeks
-
-<!-- ##### FUNCTION g_locale_to_utf8 ##### -->
-<para>
-
-</para>
-
-@opsysstring: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_iconv_close ##### -->
-<para>
-
-</para>
-
-@converter: 
-@Returns: 
-
 <!-- ##### MACRO popen ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION g_source_set_can_recurse ##### -->
-<para>
-
-</para>
-
-@source: 
-@can_recurse: 
-
-<!-- ##### FUNCTION g_date_get_days_in_month ##### -->
-<para>
-Return the number of days in a month, taking leap years into account.
-</para>
-
-@month: Month
-@year: Year
-@Returns: Number of days in @month during the year @year.
-
-<!-- ##### FUNCTION g_date_get_julian ##### -->
-<para>
-Accessor, returns the Julian day or "serial number" of the #GDate. The
-Julian day is simply the number of days since January 1, Year 1; i.e.,
-January 1, Year 1 is Julian day 1; January 2, Year 1 is Julian day 2,
-etc. Date must be valid.
-</para>
-
-@date: Date to extract the Julian day from
-@Returns: Julian day
 
 <!-- ##### MACRO pclose ##### -->
 <para>
@@ -118,130 +35,11 @@ the results may be needed.
 See #G_PRIORITY_DEFAULT, #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH,
 #G_PRIORITY_HIGH_IDLE, and #G_PRIORITY_LOW.
 
-<!-- ##### ENUM GMarkupError ##### -->
-<para>
-
-</para>
-
-@G_MARKUP_ERROR_BAD_UTF8: text being parsed was not valid UTF-8
-@G_MARKUP_ERROR_EMPTY: document contained nothing, or only whitespace
-@G_MARKUP_ERROR_PARSE: document was ill-formed
-@G_MARKUP_ERROR_UNKNOWN_ELEMENT: error should be set by #GMarkupParser functions; element wasn't known
-@G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE: error should be set by #GMarkupParser functions; attribute wasn't known
-@G_MARKUP_ERROR_INVALID_CONTENT: error should be set by #GMarkupParser functions; something was wrong with contents of the document, e.g. invalid attribute value
-
-<!-- ##### FUNCTION g_main_context_add_poll ##### -->
-<para>
-
-</para>
-
-@context: 
-@fd: 
-@priority: 
-
 <!-- ##### MACRO lseek ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION g_string_new_len ##### -->
-<para>
-
-</para>
-
-@init: 
-@len: 
-@Returns: 
-
-<!-- ##### STRUCT GSourceCallbackFuncs ##### -->
-<para>
-
-</para>
-
-@ref: 
-@unref: 
-@get: 
-
-<!-- ##### FUNCTION g_array_sort ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-
-<!-- ##### FUNCTION g_main_context_find_source_by_funcs_user_data ##### -->
-<para>
-
-</para>
-
-@context: 
-@funcs: 
-@user_data: 
-@Returns: 
-@source_data: 
-
-<!-- ##### FUNCTION g_markup_parse_context_free ##### -->
-<para>
-
-</para>
-
-@context: 
-
-<!-- ##### STRUCT GMarkupParseContext ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION g_ptr_array_sort ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-
-<!-- ##### FUNCTION g_main_context_query ##### -->
-<para>
-
-</para>
-
-@context: 
-@max_priority: 
-@timeout: 
-@fds: 
-@n_fds: 
-@Returns: 
-
-<!-- ##### FUNCTION g_iconv_open ##### -->
-<para>
-
-</para>
-
-@to_codeset: 
-@from_codeset: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_new ##### -->
-<para>
-
-</para>
-
-@source_funcs: 
-@struct_size: 
-@Returns: 
-
-<!-- ##### FUNCTION g_date_get_monday_week_of_year ##### -->
-<para>
-Return the week of the year, where weeks are understood to start on
-Monday. If the date is before the first Monday of the year, return
-0. Date must be valid.
-</para>
-
-@date: Date to use
-@Returns: Week of the year
 
 <!-- ##### MACRO getpid ##### -->
 <para>
@@ -268,53 +66,19 @@ type of source.
 </para>
 
 
-<!-- ##### FUNCTION g_source_get_id ##### -->
+<!-- ##### FUNCTION g_source_add ##### -->
 <para>
-
 </para>
 
+@priority: 
+@can_recurse: 
+@funcs: 
+@source_data: 
+@user_data: 
+@notify: 
+@Returns: 
 @source: 
-@Returns: 
-
-<!-- ##### FUNCTION g_date_get_year ##### -->
-<para>
-Accessor; returns the year of a #GDate. The date must be valid.
-</para>
-
-@date: Date
-@Returns: Year in which the date falls
-
-<!-- ##### FUNCTION g_mkstemp ##### -->
-<para>
-
-</para>
-
-@tmpl: 
-@Returns: 
-
-<!-- ##### FUNCTION g_date_get_month ##### -->
-<para>
-Accessor for the month of the year. Date must be valid.
-</para>
-
-@date: Date to get the month from
-@Returns: A #GDateMonth
-
-<!-- ##### FUNCTION g_main_context_get_poll_func ##### -->
-<para>
-
-</para>
-
 @context: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_add_poll ##### -->
-<para>
-
-</para>
-
-@source: 
-@fd: 
 
 <!-- ##### MACRO fdopen ##### -->
 <para>
@@ -331,163 +95,6 @@ Accessor for the month of the year. Date must be valid.
 @s2: 
 @Returns: 
 
-<!-- ##### FUNCTION g_source_get_current_time ##### -->
-<para>
-
-</para>
-
-@source: 
-@timeval: 
-
-<!-- ##### FUNCTION g_main_loop_new ##### -->
-<para>
-
-</para>
-
-@context: 
-@is_running: 
-@Returns: 
-
-<!-- ##### FUNCTION g_iconv ##### -->
-<para>
-
-</para>
-
-@converter: 
-@inbuf: 
-@inbytes_left: 
-@outbuf: 
-@outbytes_left: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_ref ##### -->
-<para>
-
-</para>
-
-@source: 
-@Returns: 
-
-<!-- ##### FUNCTION g_byte_array_sort ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-
-<!-- ##### MACRO G_MODULE_SUFFIX ##### -->
-<para>
-Expands to the proper shared library suffix for the current platform
-without the leading dot. For the most Unices and Linux this is "so",
-for some HPUX versions this is "sl" and for Windows this is "dll".
-</para>
-
-
-<!-- ##### FUNCTION g_markup_parse_context_get_position ##### -->
-<para>
-
-</para>
-
-@context: 
-@line_number: 
-@char_number: 
-
-<!-- ##### FUNCTION g_locale_from_utf8 ##### -->
-<para>
-
-</para>
-
-@utf8string: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_main_loop_is_running ##### -->
-<para>
-
-</para>
-
-@loop: 
-@Returns: 
-
-<!-- ##### FUNCTION g_main_context_remove_poll ##### -->
-<para>
-
-</para>
-
-@context: 
-@fd: 
-
-<!-- ##### FUNCTION g_byte_array_sort_with_data ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-@user_data: 
-
-<!-- ##### FUNCTION g_markup_parse_context_new ##### -->
-<para>
-
-</para>
-
-@parser: 
-@flags: 
-@user_data: 
-@user_data_dnotify: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_get_can_recurse ##### -->
-<para>
-
-</para>
-
-@source: 
-@Returns: 
-
-<!-- ##### FUNCTION g_main_context_get ##### -->
-<para>
-
-</para>
-
-@thread: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_remove_poll ##### -->
-<para>
-
-</para>
-
-@source: 
-@fd: 
-
-<!-- ##### FUNCTION g_date_get_day_of_year ##### -->
-<para>
-Return the day of the year, where Jan 1 is the first day of the
-year. Date must be valid.
-</para>
-
-@date: Date to extract day of year from
-@Returns: Day of the year
-
-<!-- ##### FUNCTION g_tree_new_with_data ##### -->
-<para>
-
-</para>
-
-@key_compare_func: 
-@user_data: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_get_priority ##### -->
-<para>
-
-</para>
-
-@source: 
-@Returns: 
-
 <!-- ##### FUNCTION g_source_connect ##### -->
 <para>
 
@@ -498,150 +105,17 @@ year. Date must be valid.
 @data: 
 @notify: 
 
-<!-- ##### FUNCTION g_main_context_iteration ##### -->
-<para>
-
-</para>
-
-@context: 
-@may_block: 
-@Returns: 
-
-<!-- ##### FUNCTION g_main_context_dispatch ##### -->
-<para>
-
-</para>
-
-@context: 
-
-<!-- ##### FUNCTION g_main_loop_quit ##### -->
-<para>
-
-</para>
-
-@loop: 
-
-<!-- ##### FUNCTION g_main_context_prepare ##### -->
-<para>
-
-</para>
-
-@context: 
-@priority: 
-@Returns: 
-
-<!-- ##### FUNCTION g_date_get_sunday_week_of_year ##### -->
-<para>
-Week of the year during which this date falls, if weeks are understood
-to being on Sunday. Date must be valid. Can return 0 if the day is
-before the first Sunday of the year.
-</para>
-
-@date: Date
-@Returns: Week number
-
-<!-- ##### FUNCTION g_source_set_priority ##### -->
-<para>
-
-</para>
-
-@source: 
-@priority: 
-
-<!-- ##### FUNCTION g_ptr_array_sort_with_data ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-@user_data: 
-
-<!-- ##### FUNCTION g_list_sort_with_data ##### -->
-<para>
-
-</para>
-
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
-
-<!-- ##### FUNCTION g_date_get_monday_weeks_in_year ##### -->
-<para>
-Return the number of weeks in the year, where weeks are taken to start
-on Monday. Will be 52 or 53. Date must be valid. (Years always have 52
-7-day periods, plus 1 or 2 extra days depending on whether it's a leap
-year. This function is basically telling you how many Mondays are in
-the year, i.e. there are 53 Mondays if one of the extra days happens
-to be a Monday.)
-</para>
-
-@year: Year
-@Returns: Number of Mondays in the year
-
-<!-- ##### FUNCTION g_main_context_find_source_by_user_data ##### -->
-<para>
-
-</para>
-
-@context: 
-@user_data: 
-@Returns: 
-
-<!-- ##### FUNCTION g_main_context_set_poll_func ##### -->
-<para>
-
-</para>
-
-@context: 
-@func: 
-
 <!-- ##### MACRO getcwd ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO g_rand_boolean ##### -->
-<para>
-Return a random #gboolean from @rand. This corresponds to a unbiased
-coin toss.
-</para>
-
-@rand: a #GRand.
-@Returns: a random #gboolean.
-
-<!-- ##### FUNCTION g_io_create_watch ##### -->
-<para>
-
-</para>
-
-@channel: 
-@condition: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_unref ##### -->
-<para>
-
-</para>
-
-@source: 
-
 <!-- ##### MACRO write ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION g_main_context_find_source_by_id ##### -->
-<para>
-
-</para>
-
-@context: 
-@id: 
-@Returns: 
 
 <!-- ##### FUNCTION g_main_remove_poll ##### -->
 <para>
@@ -656,27 +130,12 @@ Removes a file descriptor from the list being polled.
 </para>
 
 
-<!-- ##### FUNCTION g_idle_source_new ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
 <!-- ##### MACRO g_string ##### -->
 <para>
 Turns the argument into a string literal by using the '#' stringizing operator.
 </para>
 
 @x: text to convert to a literal string.
-
-<!-- ##### FUNCTION g_main_context_pending ##### -->
-<para>
-
-</para>
-
-@context: 
-@Returns: 
 
 <!-- ##### FUNCTION g_main_win32_get_poll_func ##### -->
 <para>
@@ -685,185 +144,17 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @Returns: 
 
-<!-- ##### FUNCTION g_main_loop_run ##### -->
-<para>
-
-</para>
-
-@loop: 
-
-<!-- ##### FUNCTION g_date_get_weekday ##### -->
-<para>
-Returns the day of the week for a #GDate. The date must be valid.
-</para>
-
-@date: Date
-@Returns: Day of the week as a #GDateWeekday
-
 <!-- ##### MACRO read ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION g_array_sort_with_data ##### -->
-<para>
-
-</para>
-
-@array: 
-@compare_func: 
-@user_data: 
-
-<!-- ##### MACRO G_MARKUP_ERROR ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION g_main_context_default ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-<!-- ##### ENUM GMarkupParseFlags ##### -->
-<para>
-There are no flags right now
-</para>
-
-@G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: 
-
-<!-- ##### MACRO g_random_boolean ##### -->
-<para>
-Return a random #gboolean. This corresponds to a unbiased coin toss.
-</para>
-
-@Returns: a random #gboolean.
-
-<!-- ##### FUNCTION g_slist_sort_with_data ##### -->
-<para>
-
-</para>
-
-@list: 
-@compare_func: 
-@user_data: 
-@Returns: 
-
-<!-- ##### FUNCTION g_markup_parse_context_end_parse ##### -->
-<para>
-
-</para>
-
-@context: 
-@error: 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_get_context ##### -->
-<para>
-
-</para>
-
-@source: 
-@Returns: 
-
-<!-- ##### FUNCTION g_timeout_source_new ##### -->
-<para>
-
-</para>
-
-@interval: 
-@Returns: 
-
-<!-- ##### STRUCT GMarkupParser ##### -->
-<para>
-Any of the fields in #GMarkupParser can be %NULL, in which case they
-will be ignored. Except for the @error function, any of these
-callbacks can set an error; in particular the
-%G_MARKUP_ERROR_UNKNOWN_ELEMENT, %G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
-and %G_MARKUP_ERROR_INVALID_CONTENT errors are intended to be set 
-from these callbacks. If you set an error from a callback,
-g_markup_parse_context_parse() will report that error back to its caller.
-</para>
-
-@start_element: Callback to invoke when the opening tag of an element
-is seen.
-@end_element: Callback to invoke when the closing tag of an element is seen
-@text: Callback to invoke when some text is seen (text is always
-inside an element)
-@passthrough: Callback to invoke for comments and processing
-instructions; if you're re-writing the parsed document, write the
-passthrough text back out in the same position
-@error: Callback to invoke when an error occurs
-
-<!-- ##### USER_FUNCTION GEqualFunc ##### -->
-<para>
-Specifies the type of a function used to test two values for
-equality. The function should return TRUE if both values are equal and
-FALSE otherwise.
-</para>
-
-@a: a value.
-@b: a value to compare with.
-@Returns: TRUE if @a = @b; FALSE otherwise.
-
-<!-- ##### FUNCTION g_main_loop_destroy ##### -->
-<para>
-
-</para>
-
-@loop: 
-
-<!-- ##### FUNCTION g_file_open_tmp ##### -->
-<para>
-
-</para>
-
-@tmpl: 
-@name_used: 
-@error: 
-@Returns: 
-
-<!-- ##### STRUCT GMainContext ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION g_main_context_check ##### -->
-<para>
-
-</para>
-
-@context: 
-@max_priority: 
-@fds: 
-@n_fds: 
-@Returns: 
-
 <!-- ##### FUNCTION g_convert_error_quark ##### -->
 <para>
 
 </para>
 
-@Returns: 
-
-<!-- ##### FUNCTION g_source_destroy ##### -->
-<para>
-
-</para>
-
-@source: 
-
-<!-- ##### FUNCTION g_markup_escape_text ##### -->
-<para>
-
-</para>
-
-@text: 
-@length: 
 @Returns: 
 
 <!-- ##### MACRO open ##### -->

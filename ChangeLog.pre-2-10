@@ -1,3 +1,10 @@
+Fri Dec 29 14:53:18 2000  Tim Janik  <timj@gtk.org>
+
+	* configure.in: we can't grow _cv_ variables by using a backticked
+	expr that refers back to the variable (glib_cv_sizeof_system_thread for
+	G_THREAD_USE_PID_SURROGATE), that'd keep the variable growing every time
+	it's evaluated. quantum states, anyone?)
+
 Thu Dec 28 10:21:46 2000  Tim Janik  <timj@gtk.org>
 
 	* gmem.[hc]: got rid of outdated dmalloc support. provide g_try_malloc()

@@ -69,15 +69,15 @@ Hash values are used to determine where keys are stored within the
 #GHashTable data structure.
 The g_direct_hash(), g_int_hash() and g_str_hash() functions are provided for
 some common types of keys. If hash_func is NULL, g_direct_hash() is used.
-@key_compare_func: 
-@Returns: a new #GHashTable.
-<!-- # Unused Parameters # -->
 @key_equal_func: a function to check two keys for equality.  This is
 used when looking up keys in the #GHashTable.  The g_direct_equal(),
 g_int_equal() and g_str_equal() functions are provided for the most
 common types of keys. If @key_equal_func is NULL, keys are compared
 directly in a similar fashion to g_direct_equal(), but without the
 overhead of a function call.
+@Returns: a new #GHashTable.
+<!-- # Unused Parameters # -->
+@key_compare_func: 
 
 
 <!-- ##### USER_FUNCTION GHashFunc ##### -->
@@ -102,6 +102,18 @@ lookup.
 
 @key: a key.
 @Returns: the hash value corresponding to the key.
+
+
+<!-- ##### USER_FUNCTION GEqualFunc ##### -->
+<para>
+Specifies the type of a function used to test two values for
+equality. The function should return TRUE if both values are equal and
+FALSE otherwise.
+</para>
+
+@a: a value.
+@b: a value to compare with.
+@Returns: TRUE if @a = @b; FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_hash_table_insert ##### -->
@@ -196,6 +208,7 @@ allocated values are freed yourself.
 
 @hash_table: a #GHashTable.
 @key: the key to remove.
+@Returns: 
 
 
 <!-- ##### FUNCTION g_hash_table_foreach_remove ##### -->

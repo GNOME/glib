@@ -349,7 +349,6 @@ Standard Parameter Types
 </para>
 
 @parent_instance: 
-@object_type: 
 
 <!-- ##### FUNCTION g_param_spec_char ##### -->
 <para>

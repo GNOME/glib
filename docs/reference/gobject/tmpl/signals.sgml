@@ -418,16 +418,6 @@ otherwise.
 @detail: 
 
 
-<!-- ##### FUNCTION g_signal_type_closure_new ##### -->
-<para>
-
-</para>
-
-@itype: 
-@struct_offset: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_signal_add_emission_hook_full ##### -->
 <para>
 

@@ -47,6 +47,7 @@ g_completion_complete().
 @func: 
 @prefix: 
 @cache: 
+@strncmp_func: 
 
 <!-- ##### FUNCTION g_completion_new ##### -->
 <para>

@@ -82,6 +82,7 @@ GType
 @G_TYPE_PARAM: 
 @G_TYPE_BOXED: 
 @G_TYPE_POINTER: 
+@G_TYPE_CCALLBACK: 
 @G_TYPE_OBJECT: 
 @G_TYPE_GTK_SIGNAL: 
 @G_TYPE_BSE_PROCEDURE: 
@@ -102,6 +103,10 @@ GType
 @G_TYPE_PARAM_FLOAT: 
 @G_TYPE_PARAM_DOUBLE: 
 @G_TYPE_PARAM_STRING: 
+@G_TYPE_PARAM_PARAM: 
+@G_TYPE_PARAM_POINTER: 
+@G_TYPE_PARAM_CCALLBACK: 
+@G_TYPE_PARAM_BOXED: 
 @G_TYPE_PARAM_OBJECT: 
 
 <!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
@@ -334,16 +339,6 @@ GType
 
 @type: 
 @is_a_type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_type_conforms_to ##### -->
-<para>
-
-</para>
-
-@type: 
-@iface_type: 
 @Returns: 
 
 
@@ -606,16 +601,6 @@ GType
 @Returns: 
 
 
-<!-- ##### FUNCTION g_type_instance_conforms_to ##### -->
-<para>
-
-</para>
-
-@instance: 
-@iface_type: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_type_check_flags ##### -->
 <para>
 
@@ -710,16 +695,6 @@ GType
 </para>
 
 @value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_type_value_conforms_to ##### -->
-<para>
-
-</para>
-
-@value: 
-@type: 
 @Returns: 
 
 

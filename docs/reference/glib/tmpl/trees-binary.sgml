@@ -61,6 +61,16 @@ second.
 @Returns: a new #GTree.
 
 
+<!-- ##### FUNCTION g_tree_new_with_data ##### -->
+<para>
+
+</para>
+
+@key_compare_func: 
+@user_data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_tree_insert ##### -->
 <para>
 Inserts a key/value pair into a #GTree.
