@@ -155,7 +155,7 @@ adder_thread (gpointer data)
 
   g_free (channels);
   
-  g_main_loop_destroy (addr_data.loop);
+  g_main_loop_unref (addr_data.loop);
 
   g_print ("Timeout run %d times\n", addr_data.count);
 
@@ -393,7 +393,7 @@ main (int   argc,
   g_timeout_add (RECURSER_TIMEOUT, recurser_start, NULL);
 
   g_main_loop_run (main_loop);
-  g_main_loop_destroy (main_loop);
+  g_main_loop_unref (main_loop);
 
 #endif
   return 0;

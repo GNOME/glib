@@ -33,7 +33,8 @@ test_programs = \
 	thread-test	\
 	threadpool-test \
 	tree-test	\
-	type-test
+	type-test	\
+	unicode-encoding
 
 test_scripts = run-markup-tests.sh
 
@@ -71,6 +72,7 @@ thread_test_LDADD = $(thread_LDADD)
 threadpool_test_LDADD = $(thread_LDADD)
 tree_test_LDADD = $(progs_LDADD)
 type_test_LDADD = $(progs_LDADD)
+unicode_encoding_LDADD = $(progs_LDADD)
 
 lib_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 

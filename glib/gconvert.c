@@ -170,7 +170,11 @@ g_convert (const gchar *str,
 
   p = str;
   inbytes_remaining = len;
-  outbuf_size = len + 1; /* + 1 for nul in case len == 1 */
+
+  /* Due to a GLIBC bug, round outbuf_size up to a multiple of 4 */
+  /* + 1 for nul in case len == 1 */
+  outbuf_size = ((len + 3) & ~3) + 1;
+  
   outbytes_remaining = outbuf_size - 1; /* -1 for nul */
   outp = dest = g_malloc (outbuf_size);
 
@@ -188,11 +192,20 @@ g_convert (const gchar *str,
 	case E2BIG:
 	  {
 	    size_t used = outp - dest;
-	    outbuf_size *= 2;
-	    dest = g_realloc (dest, outbuf_size);
 
-	    outp = dest + used;
-	    outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
+	    /* glibc's iconv can return E2BIG even if there is space
+	     * remaining if an internal buffer is exhausted. The
+	     * folllowing is a heuristic to catch this. The 16 is
+	     * pretty arbitrary.
+	     */
+	    if (used + 16 > outbuf_size)
+	      {
+		outbuf_size = (outbuf_size - 1) * 2 + 1;
+		dest = g_realloc (dest, outbuf_size);
+		
+		outp = dest + used;
+		outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
+	      }
 
 	    goto again;
 	  }
@@ -353,7 +366,9 @@ g_convert_with_fallback (const gchar *str,
    * for the original string while we are converting the fallback
    */
   p = utf8;
-  outbuf_size = len + 1; /* + 1 for nul in case len == 1 */
+  /* Due to a GLIBC bug, round outbuf_size up to a multiple of 4 */
+  /* + 1 for nul in case len == 1 */
+  outbuf_size = ((len + 3) & ~3) + 1;
   outbytes_remaining = outbuf_size - 1; /* -1 for nul */
   outp = dest = g_malloc (outbuf_size);
 
@@ -373,11 +388,20 @@ g_convert_with_fallback (const gchar *str,
 	    case E2BIG:
 	      {
 		size_t used = outp - dest;
-		outbuf_size *= 2;
-		dest = g_realloc (dest, outbuf_size);
-		
-		outp = dest + used;
-		outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
+
+		/* glibc's iconv can return E2BIG even if there is space
+		 * remaining if an internal buffer is exhausted. The
+		 * folllowing is a heuristic to catch this. The 16 is
+		 * pretty arbitrary.
+		 */
+		if (used + 16 > outbuf_size)
+		  {
+		    outbuf_size = (outbuf_size - 1) * 2 + 1;
+		    dest = g_realloc (dest, outbuf_size);
+		    
+		    outp = dest + used;
+		    outbytes_remaining = outbuf_size - used - 1; /* -1 for nul */
+		  }
 		
 		break;
 	      }
@@ -458,18 +482,44 @@ g_convert_with_fallback (const gchar *str,
 /*
  * g_locale_to_utf8
  *
+ * 
+ */
+
+/**
+ * g_locale_to_utf8:
+ * @opsysstring:   a string in the encoding of the current locale
+ * @len:           the length of the string, or -1 if the string is
+ *                 NULL-terminated.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ * 
  * Converts a string which is in the encoding used for strings by
  * the C runtime (usually the same as that used by the operating
  * system) in the current locale into a UTF-8 string.
- */
-
+ * 
+ * Return value: The converted string, or %NULL on an error.
+ **/
 gchar *
-g_locale_to_utf8 (const gchar *opsysstring, GError **error)
+g_locale_to_utf8 (const gchar  *opsysstring,
+		  gint          len,
+		  gint         *bytes_read,
+		  gint         *bytes_written,
+		  GError      **error)
 {
 #ifdef G_OS_WIN32
 
-  gint i, clen, wclen, first;
-  const gint len = strlen (opsysstring);
+  gint i, clen, total_len, wclen, first;
+  const gint len = len < 0 ? strlen (opsysstring) : len;
   wchar_t *wcs, wc;
   gchar *result, *bp;
   const wchar_t *wcp;
@@ -478,26 +528,26 @@ g_locale_to_utf8 (const gchar *opsysstring, GError **error)
   wclen = MultiByteToWideChar (CP_ACP, 0, opsysstring, len, wcs, len);
 
   wcp = wcs;
-  clen = 0;
+  total_len = 0;
   for (i = 0; i < wclen; i++)
     {
       wc = *wcp++;
 
       if (wc < 0x80)
-	clen += 1;
+	total_len += 1;
       else if (wc < 0x800)
-	clen += 2;
+	total_len += 2;
       else if (wc < 0x10000)
-	clen += 3;
+	total_len += 3;
       else if (wc < 0x200000)
-	clen += 4;
+	total_len += 4;
       else if (wc < 0x4000000)
-	clen += 5;
+	total_len += 5;
       else
-	clen += 6;
+	total_len += 6;
     }
 
-  result = g_malloc (clen + 1);
+  result = g_malloc (total_len + 1);
   
   wcp = wcs;
   bp = result;
@@ -553,6 +603,11 @@ g_locale_to_utf8 (const gchar *opsysstring, GError **error)
 
   g_free (wcs);
 
+  if (bytes_read)
+    *bytes_read = len;
+  if (bytes_written)
+    *bytes_written = total_len;
+  
   return result;
 
 #else
@@ -562,26 +617,48 @@ g_locale_to_utf8 (const gchar *opsysstring, GError **error)
   if (g_get_charset (&charset))
     return g_strdup (opsysstring);
 
-  str = g_convert (opsysstring, strlen (opsysstring), 
-		   "UTF-8", charset, NULL, NULL, error);
+  str = g_convert (opsysstring, len, 
+		   "UTF-8", charset, bytes_read, bytes_written, error);
   
   return str;
 #endif
 }
 
-/*
- * g_locale_from_utf8
- *
- * The reverse of g_locale_to_utf8.
- */
-
+/**
+ * g_locale_from_utf8:
+ * @utf8string:    a UTF-8 encoded string 
+ * @len:           the length of the string, or -1 if the string is
+ *                 NULL-terminated.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ * 
+ * Converts a string from UTF-8 to the encoding used for strings by
+ * the C runtime (usually the same as that used by the operating
+ * system) in the current locale.
+ * 
+ * Return value: The converted string, or %NULL on an error.
+ **/
 gchar *
-g_locale_from_utf8 (const gchar *utf8string, GError **error)
+g_locale_from_utf8 (const gchar *utf8string,
+		    gint         len,
+		    gint        *bytes_read,
+		    gint        *bytes_written,
+		    GError     **error)
 {
 #ifdef G_OS_WIN32
 
   gint i, mask, clen, mblen;
-  const gint len = strlen (utf8string);
+  const gint len = len < 0 ? strlen (utf8string) : len;
   wchar_t *wcs, *wcp;
   gchar *result;
   guchar *cp, *end, c;
@@ -671,6 +748,11 @@ g_locale_from_utf8 (const gchar *utf8string, GError **error)
   result[mblen] = 0;
   g_free (wcs);
 
+  if (bytes_read)
+    *bytes_read = len;
+  if (bytes_written)
+    *bytes_written = mblen;
+  
   return result;
 
 #else
@@ -681,39 +763,123 @@ g_locale_from_utf8 (const gchar *utf8string, GError **error)
     return g_strdup (utf8string);
 
   str = g_convert (utf8string, strlen (utf8string), 
-		   charset, "UTF-8", NULL, NULL, error);
+		   charset, "UTF-8", bytes_read, bytes_written, error);
 
   return str;
   
 #endif
 }
 
-/* Filenames are in UTF-8 unless specificially requested otherwise */
-
+/**
+ * g_filename_to_utf8:
+ * @opsysstring:   a string in the encoding for filenames
+ * @len:           the length of the string, or -1 if the string is
+ *                 NULL-terminated.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ * 
+ * Converts a string which is in the encoding used for filenames
+ * into a UTF-8 string.
+ * 
+ * Return value: The converted string, or %NULL on an error.
+ **/
 gchar*
-g_filename_to_utf8 (const gchar *string, GError **error)
-
+g_filename_to_utf8 (const gchar *opsysstring, 
+		    gint         len,
+		    gint        *bytes_read,
+		    gint        *bytes_written,
+		    GError     **error)
 {
 #ifdef G_OS_WIN32
-  return g_locale_to_utf8 (string, error);
+  return g_locale_to_utf8 (opsysstring, len,
+			   bytes_read, bytes_written,
+			   error);
 #else
   if (getenv ("G_BROKEN_FILENAMES"))
-    return g_locale_to_utf8 (string, error);
+    return g_locale_to_utf8 (opsysstring, len,
+			     bytes_read, bytes_written,
+			     error);
 
-  return g_strdup (string);
+  if (bytes_read || bytes_written)
+    {
+      gint len = strlen (opsysstring);
+
+      if (bytes_read)
+	*bytes_read = len;
+      if (bytes_written)
+	*bytes_written = len;
+    }
+  
+  if (len < 0)
+    return g_strdup (opsysstring);
+  else
+    return g_strndup (opsysstring, len);
 #endif
 }
 
+/**
+ * g_filename_from_utf8:
+ * @utf8string:    a UTF-8 encoded string 
+ * @len:           the length of the string, or -1 if the string is
+ *                 NULL-terminated.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error: location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
+ * 
+ * Converts a string from UTF-8 to the encoding used for filenames.
+ * 
+ * Return value: The converted string, or %NULL on an error.
+ **/
 gchar*
-g_filename_from_utf8 (const gchar *string, GError **error)
+g_filename_from_utf8 (const gchar *utf8string,
+		      gint         len,
+		      gint        *bytes_read,
+		      gint        *bytes_written,
+		      GError     **error)
 {
 #ifdef G_OS_WIN32
-  return g_locale_from_utf8 (string, error);
+  return g_locale_from_utf8 (utf8string, len,
+			     bytes_read, bytes_written,
+			     error);
 #else
   if (getenv ("G_BROKEN_FILENAMES"))
-    return g_locale_from_utf8 (string, error);
+    return g_locale_from_utf8 (utf8string, len,
+			       bytes_read, bytes_written,
+			       error);
 
-  return g_strdup (string);
+  if (bytes_read || bytes_written)
+    {
+      gint len = strlen (utf8string);
+
+      if (bytes_read)
+	*bytes_read = len;
+      if (bytes_written)
+	*bytes_written = len;
+    }
+
+  if (len < 0)
+    return g_strdup (utf8string);
+  else
+    return g_strndup (utf8string, len);
 #endif
 }
 

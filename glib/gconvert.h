@@ -76,14 +76,30 @@ gchar* g_convert_with_fallback (const gchar  *str,
 
 /* Convert between libc's idea of strings and UTF-8.
  */
-gchar*   g_locale_to_utf8 (const gchar *opsysstring, GError **error);
-gchar*   g_locale_from_utf8 (const gchar *utf8string, GError **error);
+gchar* g_locale_to_utf8   (const gchar  *opsysstring,
+			   gint          len,
+			   gint         *bytes_read,
+			   gint         *bytes_written,
+			   GError      **error);
+gchar* g_locale_from_utf8 (const gchar  *utf8string,
+			   gint          len,
+			   gint         *bytes_read,
+			   gint         *bytes_written,
+			   GError      **error);
 
 /* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
  */
-gchar*   g_filename_to_utf8 (const gchar *opsysstring, GError **error);
-gchar*   g_filename_from_utf8 (const gchar *utf8string, GError **error);
+gchar* g_filename_to_utf8   (const gchar  *opsysstring,
+			     gint          len,
+			     gint         *bytes_read,
+			     gint         *bytes_written,
+			     GError      **error);
+gchar* g_filename_from_utf8 (const gchar  *utf8string,
+			     gint          len,
+			     gint         *bytes_read,
+			     gint         *bytes_written,
+			     GError      **error);
 
 G_END_DECLS
 

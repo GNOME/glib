@@ -1,3 +1,40 @@
+Fri Jan  5 11:25:42 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (PACKAGE): move $enable_debug down below
+	checks for GCC to avoid setting CFLAGS prematurely,
+	change checks to avoid adding -g twice.
+
+	* gutf8.c (g_ucs4_to_utf8): Support len < 0 to mean
+	0 termination.
+
+	* gutf8.c (g_utf8_to_ucs4): Terminate result with 0.
+
+	* tests/mainloop-test.c (main): Fix uses of 
+	g_main_loop_destroy().
+
+	* tests/unicode-encoding.c tests/Makefile.am tests/utf8.txt:
+	Tests for unicode-conversion code.
+
+	* gconvert.c (g_convert, g_convert_with_fallback): work around
+	a couple of GNU libc bugs.
+
+	* gconvert.[ch] (g_{locale,filename}_{to,from}_utf8): Standardize
+	arguments to match g_convert(). Document.
+
+	* gunicode.[ch]: 
+	  - Implement conversion functions to and from UTF-16
+	  - Standardize unicode conversion functions on prototype like
+	    g_convert.
+	  - Add a lot of error checking to unicode conversion functions.
+
+	* gunicode.[ch] (g_utf8_to_ucs4_fast): Add fast, non-checking
+	variant of g_utf8_to_ucs4.
+
+	* gutf8.c (g_utf8_validate): 
+	 - add g_return_if_fail (str != NULL).
+	 - add checks for overlong strings, non-valid Unicode characters (>= 110000)
+	   and single surrogates.
+
 2001-01-05  Tor Lillqvist  <tml@iki.fi>
 
 	* testglib.c (main): Add test for g_path_skip_root().

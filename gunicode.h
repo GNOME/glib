@@ -206,18 +206,39 @@ gchar *g_utf8_strchr  (const gchar *p,
 gchar *g_utf8_strrchr (const gchar *p,
 		       gunichar     c);
 
-gunichar2 *g_utf8_to_utf16 (const gchar     *str,
-			    gint             len);
-gunichar * g_utf8_to_ucs4  (const gchar     *str,
-			    gint             len);
-gunichar * g_utf16_to_ucs4 (const gunichar2 *str,
-			    gint             len);
-gchar *    g_utf16_to_utf8 (const gunichar2 *str,
-			    gint             len);
-gunichar * g_ucs4_to_utf16 (const gunichar  *str,
-			    gint             len);
-gchar *    g_ucs4_to_utf8  (const gunichar  *str,
-			    gint             len);
+gunichar2 *g_utf8_to_utf16     (const gchar      *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
+gunichar * g_utf8_to_ucs4      (const gchar      *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
+gunichar * g_utf8_to_ucs4_fast (const gchar      *str,
+				gint              len,
+				gint             *items_written);
+gunichar * g_utf16_to_ucs4     (const gunichar2  *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
+gchar *    g_utf16_to_utf8     (const gunichar2  *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
+gunichar2 *g_ucs4_to_utf16     (const gunichar   *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
+gchar *    g_ucs4_to_utf8      (const gunichar   *str,
+				gint              len,
+				gint             *items_read,
+				gint             *items_written,
+				GError          **error);
 
 /* Convert a single character into UTF-8. outbuf must have at
  * least 6 bytes of space. Returns the number of bytes in the
