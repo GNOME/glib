@@ -42,8 +42,8 @@
  * compare the keys with strcmp() when 
  * sorting instead of sorting the original strings.
  * 
- * Return value: < 0 if @str1 compares before @str2, 
- *   0 if they compare equal, > 0 if @str1 compares after @str2.
+ * Return value: &lt; 0 if @str1 compares before @str2, 
+ *   0 if they compare equal, &gt; 0 if @str1 compares after @str2.
  **/
 gint
 g_utf8_collate (const gchar *str1,
