@@ -11,7 +11,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -29,30 +29,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/* we can't use g_log in the g_thread functions, because g_log depends
-   on these functions to work properly, we even should not use
-   g_strerror (might be a FIXME) */
+#define solaris_print_error( name, num )                        \
+  g_error( "file %s: line %d (%s): error %s during %s",         \
+           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,          \
+           g_strerror((num)), #name )
 
-#define solaris_error_args( name, num )                                  \
-  "Gthread: Fatal error in file %s: line %d (%s): error %s during %s\n", \
-  __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,                            \
-  g_strerror((num)), #name
-
-#define solaris_check_for_error( what ) G_STMT_START{                    \
-    int error = (what);                                                  \
-    if( error ) {                                                        \
-      fprintf(stderr, solaris_error_args( what, error ) );               \
-      exit(1);                                                           \
-    }                                                                    \
+#define solaris_check_for_error( what ) G_STMT_START{           \
+  int error = (what);                                           \
+  if( error ) { solaris_print_error( what, error ); }           \
   }G_STMT_END
 
 static GMutex *
 g_mutex_new_solaris_impl (void)
 {
-  /* we can not use g_new and friends, as they might use mutexes by
-     themself */
-  GMutex *result = malloc (sizeof (mutex_t));
-  solaris_check_for_error (result?NULL:ENOMEM);
+  GMutex *result = (GMutex *) g_new (mutex_t, 1);
   solaris_check_for_error (mutex_init ((mutex_t *) result, USYNC_PROCESS, 0));
   return result;
 }
@@ -63,6 +53,9 @@ g_mutex_free_solaris_impl (GMutex * mutex)
   solaris_check_for_error (mutex_destroy ((mutex_t *) mutex));
   free (mutex);
 }
+
+/* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use
+   functions from gmem.c and gmessages.c; */
 
 /* mutex_lock, mutex_unlock can be taken directly, as
    signature and semantic are right, but without error check then!!!!,
@@ -82,7 +75,7 @@ g_mutex_trylock_solaris_impl (GMutex * mutex)
 static GCond *
 g_cond_new_solaris_impl ()
 {
-  GCond *result = (GCond *) g_new0 (cond_t, 1);
+  GCond *result = (GCond *) g_new (cond_t, 1);
   solaris_check_for_error (cond_init ((cond_t *) result, USYNC_THREAD, 0));
   return result;
 }
@@ -96,7 +89,8 @@ g_cond_new_solaris_impl ()
 #define G_NANOSEC 1000000000
 
 static gboolean
-g_cond_timed_wait_solaris_impl (GCond * cond, GMutex * entered_mutex,
+g_cond_timed_wait_solaris_impl (GCond * cond, 
+				GMutex * entered_mutex,
 				GTimeVal * abs_time)
 {
   int result;
@@ -105,7 +99,7 @@ g_cond_timed_wait_solaris_impl (GCond * cond, GMutex * entered_mutex,
 
   g_return_val_if_fail (cond != NULL, FALSE);
   g_return_val_if_fail (entered_mutex != NULL, FALSE);
-  
+
   if (!abs_time)
     {
       g_cond_wait (cond, entered_mutex);
@@ -133,39 +127,38 @@ g_cond_free_solaris_impl (GCond * cond)
 static GPrivate *
 g_private_new_solaris_impl (GDestroyNotify destructor)
 {
-  /* we can not use g_new and friends, as they might use private data
-     by themself */
-  GPrivate *result = malloc (sizeof (thread_key_t));
-
-  solaris_check_for_error (malloc ? NULL : ENOMEM);
-
+  GPrivate *result = (GPrivate *) g_new (thread_key_t,1);
   solaris_check_for_error (thr_keycreate ((thread_key_t *) result,
 					  destructor));
   return result;
 }
 
-void
+/* NOTE: the functions g_private_get and g_private_set may not use
+   functions from gmem.c and gmessages.c */
+
+static void
 g_private_set_solaris_impl (GPrivate * private, gpointer value)
 {
-  solaris_check_for_error (private ? NULL : EINVAL);
+  if (!private)
+    return;
 
-  solaris_check_for_error (thr_setspecific (*(thread_key_t *) private, value));
+  thr_setspecific (*(thread_key_t *) private, value);
 }
 
-gpointer
+static gpointer
 g_private_get_solaris_impl (GPrivate * private)
 {
   gpointer result;
 
-  solaris_check_for_error (private ? NULL : EINVAL);
+  if (!private)
+    return NULL;
+  
+  thr_getspecific (*(thread_key_t *) private, &result);
 
-  solaris_check_for_error (thr_getspecific (*(thread_key_t *) private,
-					    &result));
   return result;
 }
 
-static GThreadFunctions
-  g_thread_functions_for_glib_use_default =
+static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_solaris_impl,
   (void (*)(GMutex *)) mutex_lock,

@@ -75,7 +75,11 @@ g_mutex_init (void)
      the data, that it set before calling g_thread_init */
   gpointer private_old = g_thread_specific_private;
   g_thread_specific_private = g_private_new (g_static_private_free_data);
-  g_private_set (g_thread_specific_private, private_old);
+
+  /* we can not use g_private_set here, as g_thread_supported is not
+     yet set TRUE, whereas the private_set function is already set. */
+  g_thread_functions_for_glib_use.private_set (g_thread_specific_private, 
+					       private_old);
 
   g_mutex_protect_static_mutex_allocation = g_mutex_new();
   g_thread_specific_mutex = g_mutex_new();

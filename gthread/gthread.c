@@ -36,10 +36,14 @@ static gboolean thread_system_already_initialized = FALSE;
 #include G_THREAD_SOURCE
 
 void g_mutex_init (void);
+void g_mem_init (void);
+void g_messages_init (void);
 
 void
 g_thread_init(GThreadFunctions* init)
 {
+  gboolean supported;
+
   if (thread_system_already_initialized)
     g_error ("the glib thread system may only be initialized once.");
     
@@ -52,7 +56,11 @@ g_thread_init(GThreadFunctions* init)
 
   g_thread_functions_for_glib_use = *init;
 
-  g_thread_supported = 
+  /* It is important, that g_thread_supported is not set before the
+     thread initialization functions of the different modules are
+     called */
+
+  supported = 
     init->mutex_new &&  
     init->mutex_lock && 
     init->mutex_trylock && 
@@ -71,7 +79,7 @@ g_thread_init(GThreadFunctions* init)
   /* if somebody is calling g_thread_init (), it means that he wants to
      have thread support, so check this */
 
-  if (!g_thread_supported)
+  if (!supported)
     {
       if (g_thread_use_default_impl)
 	g_error ("Threads are not supported on this platform.");
@@ -83,4 +91,11 @@ g_thread_init(GThreadFunctions* init)
      glib modules. BTW: order does matter, g_mutex_init MUST be first */
 
   g_mutex_init ();
+  g_mem_init ();
+  g_messages_init ();
+
+  /* now we can set g_thread_supported and thus enable all the thread
+     functions */
+
+  g_thread_supported = TRUE;
 }

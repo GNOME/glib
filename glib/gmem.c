@@ -53,13 +53,11 @@
 
 #if defined(ENABLE_MEM_PROFILE) && defined(ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS)
 #define ENTER_MEM_CHUNK_ROUTINE() \
-  g_static_private_set (allocating_for_mem_chunk, \
-			g_static_private_get (allocating_for_mem_chunk) + 1, \
-			NULL)
+  g_static_set (allocating_for_mem_chunk, \
+		g_static_get (allocating_for_mem_chunk) + 1)
 #define ENTER_MEM_CHUNK_ROUTINE() \
-  g_static_private_set (allocating_for_mem_chunk, \
-			g_static_private_get (allocating_for_mem_chunk) - 1, \
-			NULL) 
+  g_static_set (allocating_for_mem_chunk, \
+		g_static_get (allocating_for_mem_chunk) - 1) 
 #else
 #define ENTER_MEM_CHUNK_ROUTINE()
 #define LEAVE_MEM_CHUNK_ROUTINE()
@@ -127,17 +125,19 @@ static gint   g_mem_chunk_area_search  (GMemArea *a,
 					gchar    *addr);
 
 
-static G_LOCK_DEFINE(mem_chunks);
+/* here we can't use StaticMutexes, as they depend upon a working
+ * g_malloc, the same holds true for StaticPrivate */
+static GMutex* mem_chunks_lock = NULL;
 static GRealMemChunk *mem_chunks = NULL;
 
 #ifdef ENABLE_MEM_PROFILE
-static G_LOCK_DEFINE(mem_profile);
+static GMutex* mem_profile_lock;
 static gulong allocations[MEM_PROFILE_TABLE_SIZE] = { 0 };
 static gulong allocated_mem = 0;
 static gulong freed_mem = 0;
-static GStaticPrivate allocating_for_mem_chunk = G_STATIC_PRIVATE_INIT;
+static GPrivate* allocating_for_mem_chunk = NULL;
 #define IS_IN_MEM_CHUNK_ROUTINE() \
-  GPOINTER_TO_UINT (g_static_private_get (allocating_for_mem_chunk))
+  GPOINTER_TO_UINT (g_static_get (allocating_for_mem_chunk))
 #endif /* ENABLE_MEM_PROFILE */
 
 
@@ -188,7 +188,7 @@ g_malloc (gulong size)
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-  g_lock(mem_profile);
+  g_mutex_lock (mem_profile_lock);
 #  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!IS_IN_MEM_CHUNK_ROUTINE()) {
 #  endif
@@ -200,7 +200,7 @@ g_malloc (gulong size)
 #  ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
 #  endif
-  g_unlock(mem_profile);
+  g_mutex_unlock (mem_profile_lock);
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -253,7 +253,7 @@ g_malloc0 (gulong size)
   *t = size;
   
 #  ifdef ENABLE_MEM_PROFILE
-  g_lock(mem_profile);
+  g_mutex_lock (mem_profile_lock);
 #    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!IS_IN_MEM_CHUNK_ROUTINE()) {
 #    endif
@@ -265,7 +265,7 @@ g_malloc0 (gulong size)
 #    ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
 #    endif
-  g_unlock(mem_profile);
+  g_mutex_unlock (mem_profile_lock);
 #  endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -304,9 +304,9 @@ g_realloc (gpointer mem,
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
       t = (gulong*) ((guchar*) mem - SIZEOF_LONG);
 #ifdef ENABLE_MEM_PROFILE
-      g_lock (mem_profile);
+      g_mutex_lock (mem_profile);
       freed_mem += *t;
-      g_unlock (mem_profile);
+      g_mutex_unlock (mem_profile);
 #endif /* ENABLE_MEM_PROFILE */
       mem = t;
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
@@ -341,7 +341,7 @@ g_realloc (gpointer mem,
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-  g_lock(mem_profile);
+  g_mutex_lock (mem_profile_lock);
 #ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   if(!IS_IN_MEM_CHUNK_ROUTINE()) {
 #endif
@@ -353,7 +353,7 @@ g_realloc (gpointer mem,
 #ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
   }
 #endif
-  g_unlock(mem_profile);
+  g_mutex_unlock (mem_profile_lock);
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -375,9 +375,9 @@ g_free (gpointer mem)
       t = (gulong*) ((guchar*) mem - SIZEOF_LONG);
       size = *t;
 #ifdef ENABLE_MEM_PROFILE     
-      g_lock (mem_profile);
+      g_mutex_lock (mem_profile);
       freed_mem += size;
-      g_unlock (mem_profile);
+      g_mutex_unlock (mem_profile);
 #endif /* ENABLE_MEM_PROFILE */
       mem = t;
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
@@ -408,12 +408,12 @@ g_mem_profile (void)
   gulong local_allocated_mem;
   gulong local_freed_mem;  
 
-  g_lock (mem_profile);
+  g_mutex_lock (mem_profile);
   for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
     local_allocations[i] = allocations[i];
   local_allocated_mem = allocated_mem;
   local_freed_mem = freed_mem;
-  g_unlock (mem_profile);
+  g_mutex_unlock (mem_profile);
 
   for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
     if (local_allocations[i] > 0)
@@ -494,13 +494,13 @@ g_mem_chunk_new (gchar  *name,
     mem_chunk->area_size += mem_chunk->atom_size - (mem_chunk->area_size % mem_chunk->atom_size);
   */
   
-  g_lock (mem_chunks);
+  g_mutex_lock (mem_chunks_lock);
   mem_chunk->next = mem_chunks;
   mem_chunk->prev = NULL;
   if (mem_chunks)
     mem_chunks->prev = mem_chunk;
   mem_chunks = mem_chunk;
-  g_unlock (mem_chunks);
+  g_mutex_unlock (mem_chunks_lock);
 
   LEAVE_MEM_CHUNK_ROUTINE();
 
@@ -533,10 +533,10 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
   if (rmem_chunk->prev)
     rmem_chunk->prev->next = rmem_chunk->next;
   
-  g_lock (mem_chunks);
+  g_mutex_lock (mem_chunks_lock);
   if (rmem_chunk == mem_chunks)
     mem_chunks = mem_chunks->next;
-  g_unlock (mem_chunks);
+  g_mutex_unlock (mem_chunks_lock);
   
   if (rmem_chunk->type == G_ALLOC_AND_FREE)
     g_tree_destroy (rmem_chunk->mem_tree);
@@ -864,20 +864,20 @@ g_mem_chunk_info (void)
   gint count;
   
   count = 0;
-  g_lock (mem_chunks);
+  g_mutex_lock (mem_chunks_lock);
   mem_chunk = mem_chunks;
   while (mem_chunk)
     {
       count += 1;
       mem_chunk = mem_chunk->next;
     }
-  g_unlock (mem_chunks);
+  g_mutex_unlock (mem_chunks_lock);
   
   g_log (g_log_domain_glib, G_LOG_LEVEL_INFO, "%d mem chunks\n", count);
   
-  g_lock (mem_chunks);
+  g_mutex_lock (mem_chunks_lock);
   mem_chunk = mem_chunks;
-  g_unlock (mem_chunks);
+  g_mutex_unlock (mem_chunks_lock);
 
   while (mem_chunk)
     {
@@ -891,9 +891,9 @@ g_blow_chunks (void)
 {
   GRealMemChunk *mem_chunk;
   
-  g_lock (mem_chunks);
+  g_mutex_lock (mem_chunks_lock);
   mem_chunk = mem_chunks;
-  g_unlock (mem_chunks);
+  g_mutex_unlock (mem_chunks_lock);
   while (mem_chunk)
     {
       g_mem_chunk_clean ((GMemChunk*) mem_chunk);
@@ -984,4 +984,14 @@ g_allocator_free (GAllocator *allocator)
     g_mem_chunk_destroy (allocator->mem_chunk);
 
   g_free (allocator);
+}
+
+void
+g_mem_init (void)
+{
+  mem_chunks_lock = g_mutex_new();
+#ifdef ENABLE_MEM_PROFILE
+  mem_profile_lock = g_mutex_new();
+  allocating_for_mem_chunk = g_private_new(NULL);
+#endif
 }

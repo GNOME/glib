@@ -1,3 +1,20 @@
+1998-12-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread/gthread-nspr.c, configure.in: Added new default thread
+	implementation on top of the mozilla nspr library.
+
+	* gmem.c, gmessaged.c, gthread/gthread.c, gthread/gthread-*.c:
+	Changed GStaticMutex and GStaticPrivate in gmem.c and gmessages.c
+	into GMutex and GPrivate resp. to make error reporting and use of
+	gmem possible in most (not all, though) gthread functions. Also
+	initialized the modules via new init functions.
+
+	* configure.in: Fixed syntax bug in definition of type
+	GStaticMutex.
+
+	* gthread/testgthread.c: Updated to work with nspr, but see note
+	there for remaining problems.
+
 1998-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmutex.c, glib.h: Now abort, if a mutex/cond/private is
