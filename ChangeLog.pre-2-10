@@ -1,3 +1,17 @@
+Mon May 20 15:35:59 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* glib/gfileutils.c (get_contents_regfile): Fix double
+ 	close of file descriptor on error. (#82139, Wayne Schuller)
+ 
+ 	* glib/gspawn.c (close_and_invalidate): Don't close
+ 	fd's that have already been closed. (Fix from Michael
+ 	Meeks, #81959)
+ 
+ 	* glib/giochannel.c (g_io_channel_close): If not flushing,
+ 	dump the contents of the write buffers, so we won't try
+ 	to write them to an invalid fd later. (Patch from Ron Steinke,
+ 	fixing #78290, Andreas Persenius.)
+ 
 2002-05-18  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/markups/fail-36.gmarkup: 

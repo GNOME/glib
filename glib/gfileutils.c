@@ -416,8 +416,6 @@ get_contents_regfile (const gchar *filename,
         {
           if (errno != EINTR) 
             {
-              close (fd);
-
               g_free (buf);
                   
               g_set_error (error,

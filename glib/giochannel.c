@@ -346,26 +346,34 @@ g_io_channel_shutdown (GIOChannel *channel,
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail (err == NULL || *err == NULL, G_IO_STATUS_ERROR);
 
-  if (flush && channel->write_buf && channel->write_buf->len > 0)
+  if (channel->write_buf && channel->write_buf->len > 0)
     {
-      GIOFlags flags;
-      
-      /* Set the channel to blocking, to avoid a busy loop
-       */
-      flags = g_io_channel_get_flags (channel);
-      /* Ignore any errors here, they're irrelevant */
-      g_io_channel_set_flags (channel, flags & ~G_IO_FLAG_NONBLOCK, NULL);
-
-      result = g_io_channel_flush (channel, &tmperr);
-
-      if (channel->partial_write_buf[0] != '\0')
+      if (flush)
         {
-          g_warning ("Partial character at end of write buffer not flushed.\n");
-          channel->partial_write_buf[0] = '\0';
+          GIOFlags flags;
+      
+          /* Set the channel to blocking, to avoid a busy loop
+           */
+          flags = g_io_channel_get_flags (channel);
+          /* Ignore any errors here, they're irrelevant */
+          g_io_channel_set_flags (channel, flags & ~G_IO_FLAG_NONBLOCK, NULL);
+
+          result = g_io_channel_flush (channel, &tmperr);
         }
+      else
+        result = G_IO_STATUS_NORMAL;
+
+      g_string_truncate(channel->write_buf, 0);
     }
   else
     result = G_IO_STATUS_NORMAL;
+
+  if (channel->partial_write_buf[0] != '\0')
+    {
+      if (flush)
+        g_warning ("Partial character at end of write buffer not flushed.\n");
+      channel->partial_write_buf[0] = '\0';
+    }
 
   status = channel->funcs->io_close (channel, err);
 
