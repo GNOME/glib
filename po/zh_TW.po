@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
-"POT-Creation-Date: 2003-10-24 17:18-0400\n"
+"POT-Creation-Date: 2003-11-12 15:18-0500\n"
 "PO-Revision-Date: 2003-05-27 20:23+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -45,37 +45,37 @@ msgstr "輸入資料結束時出現未完成的字元次序"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "無法將後備字串‘%s’的字元集轉換成‘%s’"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1492
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI‘%s’不是使用 file 格式的絕對 URI"
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本機檔案的 URI‘%s’不應含有‘#’"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI‘%s’無效"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI‘%s’中的主機名稱無效"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI‘%s’含有不正確的「跳出字元」(escaped characters)"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路徑名稱‘%s’不是絕對路徑"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1628
 msgid "Invalid hostname"
 msgstr "主機名稱無效"
 

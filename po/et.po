@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.14\n"
-"POT-Creation-Date: 2003-10-24 17:18-0400\n"
+"POT-Creation-Date: 2003-11-12 15:18-0500\n"
 "PO-Revision-Date: 2002-12-10 10:05+0200\n"
 "Last-Translator: Allan Sims <allsi@eau.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -46,37 +46,37 @@ msgstr "Puudulik märkide jada sisendi lõpus"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ei saa tagasi teisendada '%s'-st koodistikku '%s'"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1492
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Kohaliku faili URI '%s' ei või sisaldada '#'"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' on vigane"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' hostinimi on vigane"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sisaldab vigaseid väljund märke"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Rajanimi '%s' ei ole absoluutne rada"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1628
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 

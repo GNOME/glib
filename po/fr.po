@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
-"POT-Creation-Date: 2003-10-24 17:18-0400\n"
+"POT-Creation-Date: 2003-11-12 15:18-0500\n"
 "PO-Revision-Date: 2003-05-08 14:17+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -46,37 +46,37 @@ msgstr "Séquence partielle de caractères à la fin de l'entrée"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne peut convertir le fallback « %s » vers le jeu de code « %s »"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1492
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "L'URI « %s » n'est pas une URI absolue utilisant le schema de fichier"
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "L'URI de fichier local « %s » peut ne pas inclure un  « # »"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "L'URI « %s » est non valide"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Le nom d'hôte de l'URI « %s » est non valide"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "L'URI « %s » contient des caractères d'échappements non valides"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Le chemin « %s » n'est pas un chemin absolu"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1628
 msgid "Invalid hostname"
 msgstr "Nom d'hôte non valide"
 

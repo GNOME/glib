@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.2.0\n"
-"POT-Creation-Date: 2003-10-24 17:18-0400\n"
+"POT-Creation-Date: 2003-11-12 15:18-0500\n"
 "PO-Revision-Date: 2003-08-16 01:45+0200\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -49,37 +49,37 @@ msgstr "Непотпун низ знакова на крају улаза"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Не може претворити резерву „%s“ у запис „%s“"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1492
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI „%s“ није апсолутан URI који користи запис датотека"
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI локалне датотеке „%s“ не сме садржати „#“"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI „%s“ је неисправан"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Име домаћина за URI „%s“ је неисправно"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI „%s“ садржи неисправно назначене знаке"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путања „%s“ није апсолутна путања"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1628
 msgid "Invalid hostname"
 msgstr "Неисправно име домаћина"
 

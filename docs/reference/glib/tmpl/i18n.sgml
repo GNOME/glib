@@ -27,7 +27,6 @@ the GETTEXT_PACKAGE macro suitably for your library:
 The gettext manual.
 </para>
 
-
 <!-- ##### MACRO _ ##### -->
 <para>
 Marks a string for translation, gets replaced with the translated string
@@ -36,6 +35,7 @@ at runtime.
 
 @String: the string to be translated
 @Since: 2.4
+
 
 <!-- ##### MACRO Q_ ##### -->
 <para>

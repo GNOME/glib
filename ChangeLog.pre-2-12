@@ -1,3 +1,9 @@
+Wed Nov 12 15:06:27 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Version 2.3.1, interface age 0.
+
+	* NEWS: Update for 2.3.1.
+
 2003-11-07  Mark McLoughlin  <mark@skynet.ie>
 
 	* glib/gconvert.c: (get_filename_charset): re-work to

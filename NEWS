@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.3.0 to GLib-2.3.1
+=================================================
+
+* Add glib/gi18n.h and glib/gi18n-lib.h for common
+  gettext suport, including a Q() macro for translation
+  with context [Matthias Clasen]
+* Add a more flexible G_FILENAME_ENCODING variable
+  as a replacement for G_BROKEN_FILENAMES [Matthias]
+* Fix the return value g_main_context_iterate() for
+  newly ready sources [Padraig O'Briain]
+* Documentation improvements [Matthias]
+* Misc bug fixes [Matthias, Mark McLoughlin, Morten Welinder]
+* Updated translations (es,ja,no)
+
 Overview of Changes from GLib 2.2.x to GLib-2.3.0
 =================================================
 

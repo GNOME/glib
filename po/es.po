@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-02 14:46+0100\n"
+"POT-Creation-Date: 2003-11-12 15:18-0500\n"
 "PO-Revision-Date: 2003-11-02 20:30+0100\n"
 "Last-Translator: German Poo Caaman~o <gpoo@ubiobio.cl>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -48,39 +48,39 @@ msgstr "La secuencia parcial de caracteres en el final de la entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el retraso '%s'·al conjunto de códigos·'%s'"
 
-#: glib/gconvert.c:1411
+#: glib/gconvert.c:1492
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "La URI·'%s'·no es una URI·absoluta utilizando el esquema de archivo"
 
-#: glib/gconvert.c:1421
+#: glib/gconvert.c:1502
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local·en la URI '%s'·no debe incluir un·'#'"
 
-#: glib/gconvert.c:1438
+#: glib/gconvert.c:1519
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "La URI·'%s'·no es válida"
 
-#: glib/gconvert.c:1450
+#: glib/gconvert.c:1531
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr ""
 "El nombre del host en la·URI·'%s'·contiene caracteres de escape que no son "
 "válidos"
 
-#: glib/gconvert.c:1466
+#: glib/gconvert.c:1547
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "La·URI·'%s'·contiene caracteres de escape que no son válidos"
 
-#: glib/gconvert.c:1537
+#: glib/gconvert.c:1618
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta '%s' no es una ruta absoluta"
 
-#: glib/gconvert.c:1547
+#: glib/gconvert.c:1628
 msgid "Invalid hostname"
 msgstr "El nombrel del host no es válido"
 
@@ -148,7 +148,8 @@ msgstr "Enlaces simbólicos no soportados"
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres `%s'·a·`%s'·no está soportada"
+msgstr ""
+"La conversión desde el conjunto de caracteres `%s'·a·`%s'·no está soportada"
 
 #: glib/giochannel.c:1147
 #, c-format
