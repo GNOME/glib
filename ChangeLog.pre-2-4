@@ -3,7 +3,8 @@
 	* configure.in: added new AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
 	to hold various defines to get the right thread implementation on
 	different platforms. Also look in -ldce for pthread_create. Should
-	make it work on HP-UX 10.x.
+	make it work on HP-UX 10.x. Information from "D. Emilio Grimaldo
+	Tunon" <emilio_tunon@nl.compuware.com>.
 
 1999-03-17  Jeff Garzik  <jgarzik@pobox.com>
 
