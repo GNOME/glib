@@ -1,3 +1,8 @@
+Sat Feb 17 07:26:33 2001  Tim Janik  <timj@gtk.org>
+
+	* configure.in (G_MODULE_HAVE_DLERROR): add check for broken RTLD_GLOBAL
+	(on OSF1 V5.0).
+
 2001-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* acconfig.h, configure.in: Reverted the changes necessary to

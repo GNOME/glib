@@ -1,3 +1,7 @@
+Sat Feb 17 07:27:15 2001  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c: work around platforms that have broken RTLD_GLOBAL.
+
 2001-01-27  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule.c: (Win32) Need <io.h> for open() and close().
