@@ -1389,7 +1389,7 @@ if test x"$have_threads" != xno; then
 
     AC_MSG_CHECKING(thread related cflags)
     AC_MSG_RESULT($G_THREAD_CFLAGS)
-    CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
+    CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
 fi
 
 dnl determination of G_THREAD_LIBS
@@ -1398,6 +1398,8 @@ dnl ******************************
 mutex_has_default=no
 case $have_threads in
         posix|dce)
+	  glib_save_CPPFLAGS="$CPPFLAGS"
+	  CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
           if test x"$G_THREAD_LIBS" = x; then
             case $host in
               *-aix*)
@@ -1406,8 +1408,6 @@ case $have_threads in
 		AC_MSG_WARN($AIX_COMPILE_INFO)
                 ;;
               *)
-	        glib_save_CPPFLAGS="$CPPFLAGS"
-	        CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
                 G_THREAD_LIBS=error
 	        glib_save_LIBS="$LIBS"
 	        for thread_lib in "" pthread pthread32 pthreads thread dce; do

@@ -1,3 +1,10 @@
+2002-11-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Make CPPFLAGS, not CFLAGS, include
+	G_THREAD_CFLAGS. CFLAGS is used while linking too and thus GLib
+	programs would link to the threads library on some platforms. Also
+	fixed a bug manifesting through this change.
+
 2002-11-26  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmacros.h: Fix the non-gcc-3.x definitions of G_LIKELY 
