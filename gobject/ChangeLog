@@ -1,3 +1,8 @@
+2001-02-04  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am (progs_LDADD): Change order of libs to libgobject
+	first, then libglib. Needed for cygwin, says jbdoll@kepri.re.kr.
+
 Wed Jan 31 06:19:49 2001  Tim Janik  <timj@gtk.org>
 
 	* gparam.h: gtk-doc sucks for not dealing with #define inside enums.

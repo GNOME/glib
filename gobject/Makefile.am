@@ -146,7 +146,7 @@ bin_PROGRAMS = gobject-query glib-genmarshal
 gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
 # link programs against libgobject
-progs_LDADD = ../libglib-1.3.la libgobject-1.3.la
+progs_LDADD = libgobject-1.3.la ../libglib-1.3.la
 glib_genmarshal_LDADD = ../libglib-1.3.la # can't have libgobject here
 gobject_query_LDADD = $(progs_LDADD)
 

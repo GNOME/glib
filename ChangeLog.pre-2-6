@@ -1,3 +1,8 @@
+2001-02-04  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/Makefile.am (thread_LDADD): Change order of libs,
+	put progs_LDADD last. Needed for cygwin, says jbdoll@kepri.re.kr.
+
 2001-02-02  Tor Lillqvist  <tml@iki.fi>
 
 	* giochannel.h

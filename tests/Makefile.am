@@ -46,8 +46,8 @@ TESTS = $(test_programs) $(test_scripts)
 TESTS_ENVIRONMENT = srcdir=$(srcdir)
 
 progs_LDADD = $(EFENCE) $(top_builddir)/libglib-1.3.la $(EFENCE)
-thread_LDADD = $(progs_LDADD) $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@
-module_LDADD = $(progs_LDADD) $(top_builddir)/gmodule/libgmodule-1.3.la @G_MODULE_LIBS@
+thread_LDADD = $(top_builddir)/gthread/libgthread-1.3.la @G_THREAD_LIBS@ $(progs_LDADD)
+module_LDADD = $(top_builddir)/gmodule/libgmodule-1.3.la @G_MODULE_LIBS@ $(progs_LDADD)
 
 array_test_LDADD = $(progs_LDADD)
 date_test_LDADD = $(progs_LDADD)
