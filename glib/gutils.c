@@ -1230,18 +1230,11 @@ g_nullify_pointer (gpointer *nullify_location)
 gchar *
 g_get_codeset (void)
 {
-#ifdef HAVE_CODESET  
-  char *result = nl_langinfo (CODESET);
-  return g_strdup (result);
-#else
-#ifdef G_PLATFORM_WIN32
-  return g_strdup_printf ("CP%d", GetACP ());
-#else
-  /* FIXME: Do something more intelligent based on setlocale (LC_CTYPE, NULL)
-   */
-  return g_strdup ("ISO-8859-1");
-#endif
-#endif
+  gchar *charset;
+
+  g_get_charset (&charset);
+
+  return charset;
 }
 
 #ifdef ENABLE_NLS
