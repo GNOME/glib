@@ -33,6 +33,9 @@ a different #GCompletionStrncmpFunc in g_completion_set_compare().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GCompletion ##### -->
 <para>
 The data structure used for automatic completion.

@@ -17,6 +17,9 @@ get exactly right, so #GTimer provides a portable/convenient interface.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GTimer ##### -->
 <para>
 Opaque datatype that records a start time. 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-11 13:52+0100\n"
+"POT-Creation-Date: 2005-02-28 00:44-0500\n"
 "PO-Revision-Date: 2005-02-11 13:33+0100\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -106,7 +106,7 @@ msgstr "Greška pri čitanju datoteke „%s“: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Ne mogu da pročitam iz datoteke „%s“: %s"
 
-#: glib/gfileutils.c:644 glib/gfileutils.c:733
+#: glib/gfileutils.c:644 glib/gfileutils.c:731
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: %s"
@@ -121,27 +121,27 @@ msgstr "Ne mogu da saznam osobine datoteke „%s“: neuspešan fstat(): %s"
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan fdopen(): %s"
 
-#: glib/gfileutils.c:1032
+#: glib/gfileutils.c:1030
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Neispravan šablon „%s“, ne sme sadržati „%s“"
 
-#: glib/gfileutils.c:1046
+#: glib/gfileutils.c:1044
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablon „%s“ se ne završava sa XXXXXX"
 
-#: glib/gfileutils.c:1071
+#: glib/gfileutils.c:1069
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ne mogu da napravim datoteku „%s“: %s"
 
-#: glib/gfileutils.c:1449
+#: glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ne mogu da pročitam simboličku vezu „%s“: %s"
 
-#: glib/gfileutils.c:1470
+#: glib/gfileutils.c:1468
 msgid "Symbolic links not supported"
 msgstr "Simboličke veze nisu podržane"
 
@@ -269,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
-"početi"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može "
+"njime početi"
 
 #: glib/gmarkup.c:1157
 #, c-format
@@ -321,8 +321,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
-"je „>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni "
+"znak je „>“"
 
 #: glib/gmarkup.c:1573
 #, c-format

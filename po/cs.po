@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-04 00:11-0500\n"
+"POT-Creation-Date: 2005-02-28 00:44-0500\n"
 "PO-Revision-Date: 2004-12-01 19:32+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -103,7 +103,7 @@ msgstr "Chyba čtení souboru '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Chyba při čtení ze souboru '%s': %s"
 
-#: glib/gfileutils.c:644 glib/gfileutils.c:733
+#: glib/gfileutils.c:644 glib/gfileutils.c:731
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nemohu otevřít soubor '%s': %s"
@@ -118,27 +118,27 @@ msgstr "Nemohu získat atributy souboru '%s': fstat() selhalo: %s"
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nemohu otevřít soubor '%s': fdopen() selhalo: %s"
 
-#: glib/gfileutils.c:1032
+#: glib/gfileutils.c:1030
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablona '%s' je neplatná, neměla by obsahovat '%s'"
 
-#: glib/gfileutils.c:1046
+#: glib/gfileutils.c:1044
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablona '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:1071
+#: glib/gfileutils.c:1069
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nemohu vytvořit soubor '%s': %s"
 
-#: glib/gfileutils.c:1449
+#: glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nemohu přečíst symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1470
+#: glib/gfileutils.c:1468
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 
@@ -506,41 +506,41 @@ msgstr "Neplatná posloupnost na vstupu převodu"
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "Usage:"
 msgstr "Použití:"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "[OPTION...]"
 msgstr "[PŘEPÍNAČ...]"
 
-#: glib/goption.c:494
+#: glib/goption.c:518
 msgid "Help Options:"
 msgstr "Přepínače nápovědy:"
 
-#: glib/goption.c:494
+#: glib/goption.c:519
 msgid "Show help options"
 msgstr "Zobrazit přepínače nápovědy"
 
-#: glib/goption.c:498
+#: glib/goption.c:524
 msgid "Show all help options"
 msgstr "Zobrazit všechny přepínače nápovědy"
 
-#: glib/goption.c:547
+#: glib/goption.c:574
 msgid "Application Options:"
 msgstr "Přepínače aplikace:"
 
-#: glib/goption.c:586
+#: glib/goption.c:614
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Nemohu zpracovat celočíselnou hodnotu '%s' pro --%s"
 
-#: glib/goption.c:596
+#: glib/goption.c:624
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 
-#: glib/goption.c:1323
+#: glib/goption.c:1354
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznámý přepínač %s"
@@ -549,15 +549,15 @@ msgstr "Neznámý přepínač %s"
 msgid "Valid key file could not be found in data dirs"
 msgstr "V datových adresářích nelze najít platný soubor klíče"
 
-#: glib/gkeyfile.c:371
+#: glib/gkeyfile.c:373
 msgid "Not a regular file"
 msgstr "Není obyčejný soubor"
 
-#: glib/gkeyfile.c:379
+#: glib/gkeyfile.c:381
 msgid "File is empty"
 msgstr "Soubor je prázdný"
 
-#: glib/gkeyfile.c:689
+#: glib/gkeyfile.c:691
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -565,40 +565,40 @@ msgstr ""
 "Soubor klíče obsahuje '%s', což není dvojice klíč-hodnota, skupina ani "
 "komentář"
 
-#: glib/gkeyfile.c:757
+#: glib/gkeyfile.c:759
 msgid "Key file does not start with a group"
 msgstr "Soubor klíče nezačíná skupinou"
 
-#: glib/gkeyfile.c:800
+#: glib/gkeyfile.c:802
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Soubor klíče obsahuje nepodporované kódování '%s'"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
-#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
-#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
+#: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Soubor klíče nemá skupinu '%s'"
 
-#: glib/gkeyfile.c:1167
+#: glib/gkeyfile.c:1169
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Soubor klíče nemá klíč '%s'"
 
-#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
+#: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Soubor klíče obsahuje klíč '%s' s hodnotou '%s', která není v UTF-8"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
+#: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Soubor klíče obsahuje klíč '%s', který má hodnotu, kterou nelze "
 "interpretovat."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1988
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -607,26 +607,26 @@ msgstr ""
 "Soubor klíče obsahuje klíč '%s' ve skupině '%s', který má hodnotu, kterou "
 "nelze interpretovat."
 
-#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Soubor klíče nemá klíč '%s' ve skupině '%s'"
 
-#: glib/gkeyfile.c:3035
+#: glib/gkeyfile.c:3022
+msgid "Key file contains escape character at end of line"
+msgstr "Soubor klíče obsahuje znak escape na konci řádku"
+
+#: glib/gkeyfile.c:3044
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Soubor klíče obsahuje neplatnou escape sekvenci '%s'"
 
-#: glib/gkeyfile.c:3059
-msgid "Key file contains escape character at end of line"
-msgstr "Soubor klíče obsahuje znak escape na konci řádku"
-
-#: glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:3182
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Hodnotu '%s' nelze interpretovat jako číslo."
 
-#: glib/gkeyfile.c:3203
+#: glib/gkeyfile.c:3210
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Hodnotu '%s' nelze interpretovat jako booleovskou hodnotu."

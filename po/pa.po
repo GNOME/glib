@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-4.pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-04 00:11-0500\n"
+"POT-Creation-Date: 2005-02-28 00:44-0500\n"
 "PO-Revision-Date: 2004-07-22 12:01+0530\n"
 "Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
 "Language-Team: Punjabi <pa@li.org>\n"
@@ -105,7 +105,7 @@ msgstr "ਗਲਤੀ '%s' ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ%s': %s"
 
-#: glib/gfileutils.c:644 glib/gfileutils.c:733
+#: glib/gfileutils.c:644 glib/gfileutils.c:731
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s':ਫਾਇਲ ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ %s"
@@ -120,27 +120,27 @@ msgstr "ਫਾਇਲ '%s' ਦੀਆਂ ਵਿਸ਼ੇਸਤਾਵਾਂ: fstat() f
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ਫਾਇਲ '%s': ਖੋਲ੍ਹਣ ਵਿੱਚ ਅਸਫਲਤਾ fdopen() ਅਸਫਲ: %s"
 
-#: glib/gfileutils.c:1032
+#: glib/gfileutils.c:1030
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ਨਮੂਨਾ %s ਸਹੀ ਨਹੀ ਹੈ, ਇਸ ਕੋਲ %s ਨਹੀ ਹੈ"
 
-#: glib/gfileutils.c:1046
+#: glib/gfileutils.c:1044
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "ਨਮੂਨਾ '%s' XXXXXX ਨਾਲ ਖਤਮ ਨਹੀ ਹੋ ਰਿਹਾ ਹੈ"
 
-#: glib/gfileutils.c:1071
+#: glib/gfileutils.c:1069
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ਫਾਇਲ %s' ਬਣਾਉਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1449
+#: glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ  %s' ਖੋਲਣ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: glib/gfileutils.c:1470
+#: glib/gfileutils.c:1468
 msgid "Symbolic links not supported"
 msgstr "ਚਿੰਨ੍ਹ ਸਬੰਧ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਨਹੀ ਹਨ"
 
@@ -498,41 +498,41 @@ msgstr "ਬਦਲਾਉ ਲਈ ਨਿਵੇਸ਼ ਵਿੱਚ ਤਰਤੀਬ ਜ�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 ਲਈ ਅੱਖਰ ਨਿਸ਼ਚਿਤ ਸੀਮਾ ਤੋ ਬਾਹਰ ਹਨ  "
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "Usage:"
 msgstr ""
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:494
+#: glib/goption.c:518
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:494
+#: glib/goption.c:519
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:498
+#: glib/goption.c:524
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:547
+#: glib/goption.c:574
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:586
+#: glib/goption.c:614
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:596
+#: glib/goption.c:624
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1323
+#: glib/goption.c:1354
 #, c-format
 msgid "Unknown option %s"
 msgstr ""
@@ -541,78 +541,78 @@ msgstr ""
 msgid "Valid key file could not be found in data dirs"
 msgstr ""
 
-#: glib/gkeyfile.c:371
+#: glib/gkeyfile.c:373
 msgid "Not a regular file"
 msgstr ""
 
-#: glib/gkeyfile.c:379
+#: glib/gkeyfile.c:381
 msgid "File is empty"
 msgstr ""
 
-#: glib/gkeyfile.c:689
+#: glib/gkeyfile.c:691
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 
-#: glib/gkeyfile.c:757
+#: glib/gkeyfile.c:759
 msgid "Key file does not start with a group"
 msgstr ""
 
-#: glib/gkeyfile.c:800
+#: glib/gkeyfile.c:802
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
-#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
-#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
+#: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1167
+#: glib/gkeyfile.c:1169
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
+#: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
+#: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1988
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
 
-#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 
-#: glib/gkeyfile.c:3035
+#: glib/gkeyfile.c:3022
+msgid "Key file contains escape character at end of line"
+msgstr ""
+
+#: glib/gkeyfile.c:3044
 #, fuzzy, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅੱਖਰ ਹਨ"
 
-#: glib/gkeyfile.c:3059
-msgid "Key file contains escape character at end of line"
-msgstr ""
-
-#: glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:3182
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr ""
 
-#: glib/gkeyfile.c:3203
+#: glib/gkeyfile.c:3210
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr ""

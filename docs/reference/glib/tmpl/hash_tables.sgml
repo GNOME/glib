@@ -51,6 +51,9 @@ To destroy a #GHashTable use g_hash_table_destroy().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GHashTable ##### -->
 <para>
 The <structname>GHashTable</structname> struct is an opaque data structure to represent a

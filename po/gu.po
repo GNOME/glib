@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-6.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-18 11:22+0100\n"
+"POT-Creation-Date: 2005-02-28 00:44-0500\n"
 "PO-Revision-Date: 2005-02-19 15:43+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <gu@li.org>\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "<magnet@magnet-i.com>\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 
 #: glib/gconvert.c:403
@@ -105,7 +106,7 @@ msgstr "'%s' ફાઈલ વાંચતી વખતની ભૂલ: %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' ફાઈલમાંથી વાંચવામા નિષ્ફળતા:  %s"
 
-#: glib/gfileutils.c:644 glib/gfileutils.c:733
+#: glib/gfileutils.c:644 glib/gfileutils.c:731
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' ફાઈલ ખોલવામાં નિષ્ફળતા : %s"
@@ -120,27 +121,27 @@ msgstr "'%s' ફાઈલની લાક્ષણિકતા મેળવત�
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' ફાઈલ ખોલવામાં નિષ્ફળતા: fdopen() નિષ્ફળ: %s"
 
-#: glib/gfileutils.c:1032
+#: glib/gfileutils.c:1030
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr " '%s' ટેમ્પલેટ અયોગ્ય છે, તે '%s' ધરાવતું નથી"
 
-#: glib/gfileutils.c:1046
+#: glib/gfileutils.c:1044
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "'%s' ટેમ્પલેટ નો  XXXXXX સાથે અંત આવતો નથી"
 
-#: glib/gfileutils.c:1071
+#: glib/gfileutils.c:1069
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' ફાઈલ બનાવવામાં નિષ્ફળતા : %s"
 
-#: glib/gfileutils.c:1449
+#: glib/gfileutils.c:1447
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' સાંકેતિક કડી વાંચવામાં નિષ્ફળતા: %s"
 
-#: glib/gfileutils.c:1470
+#: glib/gfileutils.c:1468
 msgid "Symbolic links not supported"
 msgstr "સાંકેતિક કડી આધાર આપતી નથી"
 
@@ -160,7 +161,8 @@ msgstr "g_10_channe_lread_line_string માં આડી હરોળ માં
 
 #: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
-msgstr "વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
+msgstr ""
+"વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
 
 #: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
@@ -181,7 +183,8 @@ msgid "Error on line %d: %s"
 msgstr "%d લીટી પર ભૂલ: %s"
 
 #: glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "'&;' વસ્તુ ખાલી દેખાય છે: યોગ્ય વસ્તુઓ છે:&amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:438
@@ -217,7 +220,9 @@ msgstr ""
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "'%-.*s' નું પદચ્છેદ કરવામાં નિષ્ફળ, કે જે અક્ષર સંદર્ભની અંદર અંક હોવો જોઈએ (ઉદાહરણ તરીકે &#234;) - કદાચ અંક ખૂબ મોટો હોય"
+msgstr ""
+"'%-.*s' નું પદચ્છેદ કરવામાં નિષ્ફળ, કે જે અક્ષર સંદર્ભની અંદર અંક હોવો જોઈએ (ઉદાહરણ તરીકે "
+"&#234;) - કદાચ અંક ખૂબ મોટો હોય"
 
 #: glib/gmarkup.c:598
 #, c-format
@@ -269,7 +274,8 @@ msgstr "અસંગત અક્ષર '%s', વસ્તુ '%s' ની શર
 
 #: glib/gmarkup.c:1246
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
 #: glib/gmarkup.c:1288
@@ -426,7 +432,8 @@ msgstr "મદદગાર કાર્યક્રમ ચલાવવામા�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
+msgstr ""
+"બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -539,7 +546,8 @@ msgstr "ફાઈલ ખાલી છે"
 
 #: glib/gkeyfile.c:691
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "કી ફાઈલ '%s' વાક્ય સમાવે છે કે જે કી-કિંમત જોડી, જૂથ અથવા ટિપ્પળી નથી"
 
 #: glib/gkeyfile.c:759
@@ -603,4 +611,3 @@ msgstr "કિંમત '%s' સંખ્યા તરીકે સમજી શ
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "કિંમત '%s' બુલિયન તરીકે સમજી શકાતી નથી."
-

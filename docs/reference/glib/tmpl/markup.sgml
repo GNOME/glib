@@ -85,6 +85,9 @@ Sections marked as CDATA
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM GMarkupError ##### -->
 <para>
 Error codes returned by markup parsing.

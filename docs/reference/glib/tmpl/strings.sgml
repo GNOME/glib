@@ -16,6 +16,9 @@ can be used for binary data with embedded nul bytes.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GString ##### -->
 <para>
 The #GString struct contains the public fields of a #GString.

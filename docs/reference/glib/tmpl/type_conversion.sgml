@@ -55,6 +55,9 @@ integer; values outside the range of a 32-bit integer will be mangled.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO GINT_TO_POINTER ##### -->
 <para>
 Stuffs an integer into a pointer type.

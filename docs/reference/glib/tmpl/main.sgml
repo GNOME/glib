@@ -101,6 +101,9 @@ manages all available sources of events.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GMainLoop ##### -->
 <para>
 The <structname>GMainLoop</structname> struct is an opaque data type 

@@ -16,6 +16,9 @@ in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
 #GValue, #GParamSpecValueArray, g_param_spec_value_array()
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GValueArray ##### -->
 <para>
 A #GValueArray contains an array of #GValue elements.

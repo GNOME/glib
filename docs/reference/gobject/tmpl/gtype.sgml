@@ -38,6 +38,9 @@ since most fundamental types are predefined rather than user-defined.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### TYPEDEF GType ##### -->
 <para>
 A numerical value which represents the unique identifier of a registered

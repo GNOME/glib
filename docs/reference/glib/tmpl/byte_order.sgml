@@ -44,6 +44,9 @@ as the standard byte order (which is in fact the big-endian byte order).
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_BYTE_ORDER ##### -->
 <para>
 The host byte order.

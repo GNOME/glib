@@ -14,6 +14,9 @@ process launching with <function>fork()</function>/<function>exec()</function>.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM GSpawnError ##### -->
 <para>
 Error codes returned by spawning processes.

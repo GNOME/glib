@@ -26,6 +26,9 @@ can be used as a type initializer for g_value_init() are defined by
 a separate interface.  See the Standard Values API for details.
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO G_VALUE_HOLDS ##### -->
 <para>
 Returns #TRUE if @value holds (or contains) a value of @type.

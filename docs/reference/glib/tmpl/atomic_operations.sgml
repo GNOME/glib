@@ -60,6 +60,9 @@ g_atomic_pointer_compare_and_exchange() respectively.
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION g_atomic_int_get ##### -->
 <para>
 Reads the value of the integer pointed to by @atomic. Also acts as

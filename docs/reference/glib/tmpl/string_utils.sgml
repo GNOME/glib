@@ -37,6 +37,9 @@ wide characters (see g_unichar_iswide()) into account.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION g_strdup ##### -->
 <para>
 Duplicates a string.

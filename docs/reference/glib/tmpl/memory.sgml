@@ -20,6 +20,9 @@ This also means that there is no need to check if the call succeeded.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO g_new ##### -->
 <para>
 Allocates @n_structs elements of type @struct_type.

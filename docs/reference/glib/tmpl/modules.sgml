@@ -88,6 +88,9 @@ just_say_hello (const char *filename, GError **error)
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GModule ##### -->
 <para>
 The #GModule struct is an opaque data structure to represent a

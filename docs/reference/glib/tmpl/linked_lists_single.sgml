@@ -64,6 +64,9 @@ To free the entire list, use g_slist_free().
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT GSList ##### -->
 <para>
 The #GSList struct is used for each element in the singly-linked list.

@@ -27,6 +27,9 @@ the GETTEXT_PACKAGE macro suitably for your library:
 The gettext manual.
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO _ ##### -->
 <para>
 Marks a string for translation, gets replaced with the translated string
@@ -90,6 +93,14 @@ be directly used, e.g. in string array initializers.
 
 @msgid: 
 @msgval: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_get_language_names ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
