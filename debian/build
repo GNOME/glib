@@ -57,6 +57,6 @@ open(NEWVERSION, '>debian/version') or die "Couldn't open debian/version for wri
 print NEWVERSION "$new_version\n";
 close NEWVERSION;
 
-system('dpkg-buildpackage -rfakeroot -us -uc');
+system('dpkg-buildpackage -b -rfakeroot -us -uc');
 unlink 'debian/version' or die "Couldn't unlink debian/version: $!\n";
 
