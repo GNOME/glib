@@ -1079,7 +1079,7 @@ g_object_connect (gpointer     _object,
   va_start (var_args, signal_spec);
   while (signal_spec)
     {
-      gpointer callback = va_arg (var_args, gpointer);
+      GCallback callback = va_arg (var_args, GCallback);
       gpointer data = va_arg (var_args, gpointer);
       gulong sid;
 
@@ -1141,7 +1141,7 @@ g_object_disconnect (gpointer     _object,
   va_start (var_args, signal_spec);
   while (signal_spec)
     {
-      gpointer callback = va_arg (var_args, gpointer);
+      GCallback callback = va_arg (var_args, GCallback);
       gpointer data = va_arg (var_args, gpointer);
       guint sid = 0, detail = 0, mask = 0;
 

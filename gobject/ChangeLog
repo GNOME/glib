@@ -1,3 +1,8 @@
+Wed Feb 20 22:55:15 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.c: Fix implicit conversions between void * and 
+	function pointer (Miroslaw Dobrzanski-Neumann, #71963)
+
 Sun Feb 16 22:08:48 2002  Tim Janik  <timj@gtk.org>
 
 	* gobject.[hc]:
