@@ -1,3 +1,7 @@
+2004-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gfileutils.c (g_file_test): Typo fix.
+
 2004-12-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_path_skip_root): Require UNC paths to start

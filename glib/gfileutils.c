@@ -86,7 +86,7 @@
  * %TRUE for %G_FILE_TEST_IS_SYMLINK and %FALSE for all other flags.
  *
  * You should never use g_file_test() to test whether it is safe
- * to perform an operaton, because there is always the possibility
+ * to perform an operation, because there is always the possibility
  * of the condition changing before you actually perform the operation.
  * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
  * to know whether it is is safe to write to a file without being
@@ -104,7 +104,7 @@
  * %G_FILE_TEST_IS_EXECUTABLE are implemented using the access()
  * system call. This usually doesn't matter, but if your program
  * is setuid or setgid it means that these tests will give you
- * the answer for the real user ID and group ID , rather than the
+ * the answer for the real user ID and group ID, rather than the
  * effective user ID and group ID.
  *
  * Return value: whether a test was %TRUE
