@@ -1,3 +1,11 @@
+Tue Jan 12 21:59:14 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* ltconfig
+	* ltmain.sh: upgrade to libtool 1.2d (with fixes for irix6 and osf)
+
+	* testglib.c: removed unused cruft
+
 Tue Jan 12 09:57:06 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* gdate.c: #warning isn't portable, check for gcc

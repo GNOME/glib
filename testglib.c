@@ -42,11 +42,6 @@ else \
 #define GLIB_TEST_STRING "el dorado "
 #define GLIB_TEST_STRING_5 "el do"
 
-typedef struct {
-	guint age;
-	gchar name[40];
-} GlibTestInfo;
-
 static gboolean
 node_build_string (GNode    *node,
 		   gpointer  data)
@@ -299,7 +294,6 @@ main (int   argc,
   GRelation *relation;
   GTuples *tuples;
   gint data [1024];
-  GlibTestInfo *gti;
   struct {
     gchar *filename;
     gchar *dirname;
