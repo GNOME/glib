@@ -43,10 +43,11 @@
 #include <signal.h>
 #endif
 
-#include "galias.h"
 #include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"
+
+#include "galias.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -2727,3 +2728,6 @@ g_strv_length (gchar **str_array)
 
   return i;
 }
+
+#define __G_STRFUNCS_C__
+#include "galiasdef.c"

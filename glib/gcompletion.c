@@ -32,9 +32,8 @@
 
 #include <string.h>
 
-#include "galias.h"
 #include "glib.h"
-
+#include "galias.h"
 
 static void completion_check_cache (GCompletion* cmp,
 				    gchar**	 new_prefix);
@@ -346,3 +345,6 @@ main (int   argc,
   return 0;
 }
 #endif
+
+#define __G_COMPLETION_C__
+#include "galiasdef.c"

@@ -26,8 +26,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 typedef struct _GRealThreadPool GRealThreadPool;
@@ -681,3 +681,6 @@ void g_thread_pool_stop_unused_threads (void)
   g_thread_pool_set_max_unused_threads (0);
   g_thread_pool_set_max_unused_threads (oldval);
 }
+
+#define __G_THREADPOOL_C__
+#include "galiasdef.c"

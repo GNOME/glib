@@ -32,8 +32,8 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 typedef struct _GRealTuples        GRealTuples;
@@ -452,3 +452,6 @@ g_relation_print (GRelation *relation)
     }
   
 }
+
+#define __G_REL_C__
+#include "galiasdef.c"

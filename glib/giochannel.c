@@ -42,12 +42,13 @@
 
 #undef G_DISABLE_DEPRECATED
 
-#include "galias.h"
 #include "glib.h"
 
 #include "giochannel.h"
 
 #include "glibintl.h"
+
+#include "galias.h"
 
 #define G_IO_NICE_BUF_SIZE	1024
 
@@ -2301,3 +2302,6 @@ g_io_channel_error_quark (void)
 
   return q;
 }
+
+#define __G_IOCHANNEL_C__
+#include "galiasdef.c"

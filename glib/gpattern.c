@@ -21,7 +21,6 @@
 
 #include <string.h>
 
-#include "galias.h"
 #include "gpattern.h"
 
 #include "gmacros.h"
@@ -29,6 +28,7 @@
 #include "gmem.h"
 #include "gunicode.h"
 #include "gutils.h" 
+#include "galias.h"
 
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
 typedef enum
@@ -320,3 +320,6 @@ g_pattern_match_simple (const gchar *pattern,
 
   return ergo;
 }
+
+#define __G_PATTERN_C__
+#include "galiasdef.c"

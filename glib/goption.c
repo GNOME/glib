@@ -21,11 +21,11 @@
 
 #include "config.h"
 
-#include "galias.h"
-
 #include "goption.h"
 #include "glib.h"
 #include "gi18n.h"
+
+#include "galias.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1657,3 +1657,5 @@ g_option_group_set_translation_domain (GOptionGroup *group,
 				     g_free);
 } 
 
+#define __G_OPTION_C__
+#include "galiasdef.c"

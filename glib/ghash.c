@@ -30,8 +30,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 #define HASH_TABLE_MIN_SIZE 11
@@ -759,3 +759,6 @@ g_hash_nodes_destroy (GHashNode *hash_node,
     }
 #endif
 }
+
+#define __G_HASH_C__
+#include "galiasdef.c"

@@ -213,3 +213,6 @@ g_cache_node_destroy (GCacheNode *node)
   g_mem_chunk_free (node_mem_chunk, node);
   G_UNLOCK (node_mem_chunk);
 }
+
+#define IN_FILE_gcache 1
+#include "galiasdef.c"

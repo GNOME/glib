@@ -26,9 +26,9 @@
 #include <wchar.h>
 #endif
 
-#include "galias.h"
 #include "glib.h"
 #include "gunicodeprivate.h"
+#include "galias.h"
 
 /**
  * g_utf8_collate:
@@ -261,3 +261,6 @@ g_utf8_collate_key (const gchar *str,
 
   return result;
 }
+
+#define __G_UNICOLLATE_C__
+#include "galiasdef.c"

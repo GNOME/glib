@@ -32,8 +32,15 @@
 
 #include <string.h>
 #include <stdlib.h>
+
+#include "garray.h"
+
+#include "gmem.h"
+#include "gthread.h"
+#include "gmessages.h"
+#include "gqsort.h"
+
 #include "galias.h"
-#include "glib.h"
 
 
 #define MIN_ARRAY_SIZE  16
@@ -750,3 +757,6 @@ g_byte_array_sort_with_data (GByteArray       *array,
 {
   g_array_sort_with_data ((GArray *) array, compare_func, user_data);
 }
+
+#define __G_ARRAY_C__
+#include "galiasdef.c"

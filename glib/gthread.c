@@ -40,9 +40,9 @@
 
 #include <string.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 #if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
 # define g_system_thread_equal_simple(thread1, thread2)			\
@@ -837,3 +837,6 @@ g_static_rw_lock_free (GStaticRWLock* lock)
     }
   g_static_mutex_free (&lock->mutex);
 }
+
+#define __G_THREAD_C__
+#include "galiasdef.c"

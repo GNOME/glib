@@ -33,8 +33,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 #ifndef DISABLE_MEM_POOLS
 /* node allocation
@@ -1048,3 +1048,6 @@ g_node_children_foreach (GNode		 *node,
 	}
     }
 }
+
+#define __G_NODE_C__
+#include "galiasdef.c"

@@ -44,9 +44,9 @@
 
 #include <config.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
+#include "galias.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1018,3 +1018,6 @@ g_spawn_close_pid (GPid pid)
 {
     CloseHandle (pid);
 }
+
+#define __G_SPAWN_C__
+#include "galiasdef.c"

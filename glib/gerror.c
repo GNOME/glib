@@ -26,8 +26,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 static GError* 
@@ -256,3 +256,6 @@ g_clear_error (GError **err)
       *err = NULL;
     }
 }
+
+#define __G_ERROR_C__
+#include "galiasdef.c"

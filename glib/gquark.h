@@ -40,6 +40,8 @@ GQuark                g_quark_from_static_string (const gchar *string);
 GQuark                g_quark_from_string        (const gchar *string);
 G_CONST_RETURN gchar* g_quark_to_string          (GQuark       quark) G_GNUC_CONST;
 
+extern __typeof (g_quark_try_string) IA_g_array_try_string __attribute((visibility("hidden")));
+
 G_END_DECLS
 
 #endif /* __G_QUARK_H__ */

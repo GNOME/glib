@@ -33,8 +33,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 /* --- defines --- */
@@ -645,3 +645,6 @@ g_hook_compare_ids (GHook *new_hook,
   
   return 0;
 }
+
+#define __G_HOOK_C__
+#include "galiasdef.c"

@@ -24,8 +24,8 @@
 
 #include <string.h>
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 #ifdef _
 #warning "FIXME remove gettext hack"
@@ -671,3 +671,6 @@ g_shell_parse_argv (const gchar *command_line,
   
   return FALSE;
 }
+
+#define __G_SHELL_C__
+#include "galiasdef.c"

@@ -14,10 +14,13 @@ INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 glib.def: glib.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
+	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
 
 galias.h: glib.symbols
 	  $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
+
+galiasdef.c: glib.symbols
+	  $(PERL) $(srcdir)/makegalias.pl -def < $(srcdir)/glib.symbols > galiasdef.c
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -25,7 +28,7 @@ TESTS = abicheck.sh
 endif
 endif
 
-BUILT_SOURCES = galias.h
+BUILT_SOURCES = galias.h galiasdef.c
 
 EXTRA_DIST = 			\
 	makefile.msc.in		\
@@ -39,7 +42,8 @@ EXTRA_DIST = 			\
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
 	glib.rc			\
-	galias.h
+	galias.h		\
+	galiasdef.c
 
 lib_LTLIBRARIES = libglib-2.0.la
 
