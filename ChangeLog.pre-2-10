@@ -1,3 +1,12 @@
+2002-12-11  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gtimer.c (g_timer_elapsed): Fix off-by-one error. (#100853)
+
+	* glib/gfileutils.c (g_file_test): Bypass extra test for root on
+	Win32.
+
+	* glib/glib.def: Add g_{get,set}_application_name.
+
 Wed Dec 11 17:53:34 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* === Release 2.1.4 ===

@@ -156,14 +156,16 @@ g_file_test (const gchar *filename,
 	  if ((test & G_FILE_TEST_IS_DIR) && S_ISDIR (s.st_mode))
 	    return TRUE;
 
+#ifndef G_OS_WIN32
 	  /* The extra test for root when access (file, X_OK) succeeds.
+	   * Probably only makes sense on Unix.
 	   */
 	  if ((test & G_FILE_TEST_IS_EXECUTABLE) &&
 	      ((s.st_mode & S_IXOTH) ||
 	       (s.st_mode & S_IXUSR) ||
 	       (s.st_mode & S_IXGRP)))
 	    return TRUE;
-	      
+#endif
 	}
     }
 

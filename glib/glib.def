@@ -165,6 +165,7 @@ EXPORTS
 	g_find_program_in_path
 	g_fprintf
 	g_free
+	g_get_application_name
 	g_get_charset
 	g_get_codeset
 	g_get_current_dir
@@ -480,6 +481,7 @@ EXPORTS
 	g_scanner_sync_file_offset
 	g_scanner_unexp_token
 	g_scanner_warn
+	g_set_application_name
 	g_set_error
 	g_set_prgname
 	g_set_print_handler
