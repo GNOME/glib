@@ -384,12 +384,16 @@ g_thread_init (GThreadFunctions* init)
   g_messages_init ();
   g_convert_init ();
   g_rand_init ();
-  g_main_thread_init ();
 
   /* now we can set g_threads_got_initialized and thus enable
    * all the thread functions
    */
   g_threads_got_initialized = TRUE;
+
+  /* This has to come after g_threads_got_initialized is set
+   * since it uses a private variable created by g_mem_init()
+   */
+  g_main_thread_init ();
 }
 
 #else /* !G_THREADS_ENABLED */

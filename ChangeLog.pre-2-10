@@ -1,3 +1,9 @@
+Fri Dec 20 09:37:27 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gthread/gthread-impl.c (g_thread_init): Call g_main_thread_init()
+	after setting g_threads_got_initialized. (#101624, 
+	Alceste Scalas, Sebastian Wilhelmi)
+
 Wed Dec 18 16:19:08 2002  Manish Singh  <yosh@gimp.org>
 
 	* glib/gtypes.h: new endian asm for ia64 and x86_64, general
