@@ -1,3 +1,14 @@
+2004-11-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* m4macros/glib-2.0.m4 (AM_PATH_GLIB_2_0): Support gmodule-no-export.
+
+	* Makefile.am (EXTRA_DIST): 
+	* configure.in (AC_CONFIG_FILES): Add gmodule-no-export-2.0.pc.in 
+
+	* gmodule-no-export-2.0.pc.in: Add a variants of gmodule-2.0.pc.in
+	which doesn't add -Wl,--export-dynamic, since Pango or GTK+ don't
+	need it.  (#125627, Owen Taylor)
+
 2004-11-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c: Define S_ISREG() on windows, since it

@@ -19,6 +19,9 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
          gmodule) 
              pkg_config_args="$pkg_config_args gmodule-2.0"
          ;;
+         gmodule-no-export) 
+             pkg_config_args="$pkg_config_args gmodule-no-export-2.0"
+         ;;
          gobject) 
              pkg_config_args="$pkg_config_args gobject-2.0"
          ;;
