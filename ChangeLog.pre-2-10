@@ -1,4 +1,11 @@
+Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_new): make sure that
+	scanner->config->cset_skip_characters is "" instead of NULL, so we
+	don't segfault further on.
+
 2000-04-10 Elliot Lee <sopwith@redhat.com>
+
 	* gstrfuncs.c: A stringified double can be longer than 32 chars -
 	fix space calculation routine to 'double' the max amount of space
 	a double & long double can take.
