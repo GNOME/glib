@@ -1,3 +1,7 @@
+Sun Jul 18 01:40:28 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Updates for 2.5.0
+
 Mon Jul 12 00:02:40 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gi18n-lib.h: Remove the ENABLE_NLS check here as well.

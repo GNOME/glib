@@ -1,3 +1,25 @@
+Overview of Changes from GLib 2.4.1 to GLib 2.5.0
+=================================================
+
+* New functions g_debug [Sven Herzberg]
+* Use higher precision for mathematical constants [Morten 
+ Welinder]
+* Don't convert to/from UTF-8 in g_filename_{to,from}_uri 
+ [Federico Mena Quintero]
+* Win32
+ - Handle empty digit string in printf() functions 
+   correctly [Tor Lillqvist]
+ - Support ll as format modifier for long long [Tor]
+ - Be more careful about HOME [Tor, Ivan Wong]
+ - Bug fixes [John Ehresman]
+* Miscellaneous bug and portability fixes [Danilo Segan, 
+ Owen Taylor, Nikolai Weibull, Benoît Carpentier, Morten 
+ Welinder, Manish Singh, Sven Neumann, Julio M. Merino Vidal,
+ Kaz Sasayama, Murray Cumming, Federico, Mariano Suarez-Alvarez]
+* Documentation updates [Matthias Clasen, Chrispin Flowerday,
+ Tommi Komulainen, Federico Mena Quintero, Ed Griffiths]
+* New and updated translations (ja,ne,no,wa)
+ 
 Overview of Changes from GLib 2.4.0 to GLib 2.4.1
 =================================================
 
