@@ -179,4 +179,7 @@ implementations, e.g. POSIX threads, DCE threads or Solaris threads.
     &glib-Caches;
     &glib-Memory-Allocators;
   </chapter>
+
+  <index/>
+
 </book>
