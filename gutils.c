@@ -462,11 +462,16 @@ g_get_any_init (void)
 	    errno = 0;
 	    
 #    ifdef HAVE_GETPWUID_R_POSIX
-            error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
             error = error < 0 ? errno : error;
 #    else /* !HAVE_GETPWUID_R_POSIX */
+#      ifdef _AIX
+	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+	    pw = error == 0 ? &pwd : NULL;
+#      else /* !_AIX */
             pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
             error = pw ? 0 : errno;
+#      endif /* !_AIX */            
 #    endif /* !HAVE_GETPWUID_R_POSIX */
 	    
 	    if (!pw)

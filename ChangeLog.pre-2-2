@@ -1,3 +1,10 @@
+1999-03-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+        * gutils.c (g_get_any_init): Fixed yet another bloody
+        implementation of getpwuid_r on AIX. Thanks to Olaf Dietsche
+        <olaf.dietsche+list.gtk@netcologne.de>. I would like a configure
+        test better than that, but have no idea, how to do that easily.
+
 Sun Feb 21 22:11:51 CST 1999  Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.0
