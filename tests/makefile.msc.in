@@ -23,6 +23,7 @@ TESTS = \
 	date-test.exe	\
 	dirname-test.exe\
 	gio-test.exe	\
+	iochannel-test.exe \
 	hash-test.exe	\
 	list-test.exe	\
 	mainloop-test.exe \

@@ -8,7 +8,7 @@ TOP = ..\..
 ################################################################
 
 INCLUDES = -I . -I ..
-DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib -DG_ENABLE_DEBUG
+DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=\"GLib\" -DG_ENABLE_DEBUG
 DEPCFLAGS = $(INTL_CFLAGS) $(LIBICONV_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\

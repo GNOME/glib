@@ -1,3 +1,10 @@
+2001-11-18  Hans Breuer  <hans@breuer.org>
+
+	* glib/glib.def : 
+	* glib/makefile.msc.in : remove g_log_domain_glib usage/export
+
+	* tests/makefile.msc.in : add iochannel-test
+
 Sat Nov 17 17:21:57 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am glib/*.c glib/gmessages.h: Get
