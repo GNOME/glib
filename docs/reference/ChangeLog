@@ -1,5 +1,11 @@
 2002-10-14  Matthias Clasen  <maclas@gmx.de>
 
+	* gobject/Makefile.am (dist-hook): 
+	* glib/Makefile.am (dist-hook): Dist the xml/*.xml, not
+	sgml/*.sgml.  (#95678, Owen Taylor)
+
+2002-10-14  Matthias Clasen  <maclas@gmx.de>
+
 	* gobject/Makefile.am (SCANOBJ_FILES): 
 	* glib/Makefile.am (SCANOBJ_FILES): Add $(DOC_MODULE).interfaces.
 
