@@ -1,9 +1,17 @@
+Sat Jan 10 00:11:12 2004  Manish Singh  <yosh@gimp.org>
+
+        * glib/gutils.h (g_bit_nth_lsf,g_bit_nth_msf): 64-bit cleanliness
+        fixes.
+
+        * docs/reference/glib/tmpl/misc_utils.sgml: update to reflect the
+        above take gulongs now. My docs suck, someone should revisit it.
+
 Tue Jan  6 15:38:30 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutils.h: Check defined (__OPTIMIZE__) not
 	__OPTIMIZE__. (Zack Rusin)
 
-﻿Wed Nov 26 16:45:16 2003  Roozbeh Pournader  <roozbeh@sharif.edu>
+Wed Nov 26 16:45:16 2003  Roozbeh Pournader  <roozbeh@sharif.edu>
 
 	* glib/gstrfuncs.c: Fixed a bad pointer comparison in
 	g_ascii_strtod that came up in fa_IR locale (#126640, Behdad
@@ -11,7 +19,7 @@ Tue Jan  6 15:38:30 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/strtod-test.c: Fixed the tests to catch the above.
 
-﻿Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
+Sat Nov 22 14:16:51.15 2003  Andrew Lanoix  <alanoix@umich.edu>
 
 	* glib/giowin32.c: Bind inter-thread comminication 
 		sockets to INADDR_LOOPBACK instead of INADDR_ANY.
