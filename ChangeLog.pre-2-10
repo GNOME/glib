@@ -1,3 +1,8 @@
+1998-08-18: Elliot Lee <sopwith@redhat.com>
+
+	. In gmem.c, add the ability to exclude memory chunks from the
+ 	  memory profiling information.
+
 Tue Aug 18 18:23:09 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h

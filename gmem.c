@@ -21,7 +21,16 @@
 #include "glib.h"
 
 /* #define ENABLE_MEM_PROFILE */
+/* #define ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS */
 /* #define ENABLE_MEM_CHECK */
+
+#if defined(ENABLE_MEM_PROFILE) && defined(ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS)
+#define ENTER_MEM_CHUNK_ROUTINE() allocating_for_mem_chunk++
+#define LEAVE_MEM_CHUNK_ROUTINE() allocating_for_mem_chunk--
+#else
+#define ENTER_MEM_CHUNK_ROUTINE()
+#define LEAVE_MEM_CHUNK_ROUTINE()
+#endif
 
 
 #define MAX_MEM_AREA  65536L
@@ -91,6 +100,7 @@ static GRealMemChunk *mem_chunks = NULL;
 static gulong allocations[4096] = { 0 };
 static gulong allocated_mem = 0;
 static gulong freed_mem = 0;
+static gint allocating_for_mem_chunk = 0;
 #endif /* ENABLE_MEM_PROFILE */
 
 
@@ -141,11 +151,17 @@ g_malloc (gulong size)
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-  if (size <= 4095)
-    allocations[size-1] += 1;
-  else
-    allocations[4095] += 1;
-  allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  if(!allocating_for_mem_chunk) {
+#endif
+    if (size <= 4095)
+      allocations[size-1] += 1;
+    else
+      allocations[4095] += 1;
+    allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  }
+#endif
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -198,11 +214,17 @@ g_malloc0 (gulong size)
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-  if (size <= 4095)
-    allocations[size-1] += 1;
-  else
-    allocations[4095] += 1;
-  allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  if(!allocating_for_mem_chunk) {
+#endif
+    if (size <= 4095)
+      allocations[size-1] += 1;
+    else
+      allocations[4095] += 1;
+    allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  }
+#endif
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE */
   
@@ -276,11 +298,17 @@ g_realloc (gpointer mem,
   *t = size;
   
 #ifdef ENABLE_MEM_PROFILE
-  if (size <= 4095)
-    allocations[size-1] += 1;
-  else
-    allocations[4095] += 1;
-  allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  if(!allocating_for_mem_chunk) {
+#endif
+    if (size <= 4095)
+      allocations[size-1] += 1;
+    else
+      allocations[4095] += 1;
+    allocated_mem += size;
+#ifdef ENABLE_MEM_PROFILE_EXCLUDES_MEM_CHUNKS
+  }
+#endif
 #endif /* ENABLE_MEM_PROFILE */
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
   
@@ -365,7 +393,9 @@ g_mem_chunk_new (gchar  *name,
 {
   GRealMemChunk *mem_chunk;
   gulong rarea_size;
-  
+
+  ENTER_MEM_CHUNK_ROUTINE();
+
   mem_chunk = g_new (struct _GRealMemChunk, 1);
   mem_chunk->name = name;
   mem_chunk->type = type;
@@ -411,7 +441,9 @@ g_mem_chunk_new (gchar  *name,
   if (mem_chunks)
     mem_chunks->prev = mem_chunk;
   mem_chunks = mem_chunk;
-  
+
+  LEAVE_MEM_CHUNK_ROUTINE();
+
   return ((GMemChunk*) mem_chunk);
 }
 
@@ -423,7 +455,9 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
   GMemArea *temp_area;
   
   g_assert (mem_chunk != NULL);
-  
+
+  ENTER_MEM_CHUNK_ROUTINE();
+
   rmem_chunk = (GRealMemChunk*) mem_chunk;
   
   mem_areas = rmem_chunk->mem_areas;
@@ -446,6 +480,8 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
     g_tree_destroy (rmem_chunk->mem_tree);
   
   g_free (rmem_chunk);
+
+  LEAVE_MEM_CHUNK_ROUTINE();
 }
 
 gpointer
@@ -454,7 +490,9 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
   GRealMemChunk *rmem_chunk;
   GMemArea *temp_area;
   gpointer mem;
-  
+
+  ENTER_MEM_CHUNK_ROUTINE();
+
   g_assert (mem_chunk != NULL);
   
   rmem_chunk = (GRealMemChunk*) mem_chunk;
@@ -571,8 +609,11 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
   rmem_chunk->mem_area->index += rmem_chunk->atom_size;
   rmem_chunk->mem_area->free -= rmem_chunk->atom_size;
   rmem_chunk->mem_area->allocated += 1;
-  
- outa_here:
+
+outa_here:
+
+  LEAVE_MEM_CHUNK_ROUTINE();
+
   return mem;
 }
 
@@ -586,7 +627,9 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
   
   g_assert (mem_chunk != NULL);
   g_assert (mem != NULL);
-  
+
+  ENTER_MEM_CHUNK_ROUTINE();
+
   rmem_chunk = (GRealMemChunk*) mem_chunk;
   
   /* Don't do anything if this is an ALLOC_ONLY chunk
@@ -611,6 +654,8 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
 	  rmem_chunk->num_marked_areas += 1;
 	}
     }
+
+  LEAVE_MEM_CHUNK_ROUTINE();
 }
 
 /* This doesn't free the free_area if there is one */
