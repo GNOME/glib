@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2004-02-03 02:11+0730\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -46,37 +46,37 @@ msgstr "Sebahagian turutan aksara berada di penghujung input"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Tak dapat tukar unduran '%s' ke set kod '%s'"
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' adalah bukan URI mutlak menggunakan skema fail"
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI Fail local '%s' mungkin tidak disertakan dengan '#'"
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' adalah tidak sah"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Namahos URI '%s' tidak sah"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' mengandungi aksara escaped yang tidak sah"
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama laluan '%s' adalah bukan laluan mutlak"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "Namahos tidak sah"
 
@@ -407,41 +407,41 @@ msgstr "Teks berakhir sebelum quot sepadan dijumpai untuk %c (Teks ialah '%s')"
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teks telah kosong (atau mengandungi hanya ruangputih)"
 
-#: glib/gspawn-win32.c:296
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "Gagal membaca data daripada proses anak"
 
-#: glib/gspawn-win32.c:425
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Gagal mencipta paip untuk berkomunikasi dengan proses anak (%s)"
+
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Gagal membaca daripada paip anak (%s)"
+
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Gagal menukar direktori '%s' (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Gagal melaksanakan proses anak (%s)"
+
+#: glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "Gagal melaksanakan program pembantu"
+
+#: glib/gspawn-win32.c:789
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Ralat tidak diduga bila g_io_channel_win32_poll()membaca data daripada "
 "proses anak"
-
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "Gagal membaca daripada paip anak (%s)"
-
-#: glib/gspawn-win32.c:931
-msgid "Failed to execute helper program"
-msgstr "Gagal melaksanakan program pembantu"
-
-#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "Gagal melaksanakan proses anak (%s)"
-
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Gagal menukar direktori '%s' (%s)"
-
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Gagal mencipta paip untuk berkomunikasi dengan proses anak (%s)"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -510,33 +510,33 @@ msgstr ""
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:493
+#: glib/goption.c:495
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:541
+#: glib/goption.c:544
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:580
+#: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:590
+#: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1310
+#: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

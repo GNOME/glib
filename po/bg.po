@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-12 20:20+0200\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2004-12-12 20:19+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -49,37 +49,37 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Не може да се превърне заместващ символ \"%s\" към символ от набора \"%s\""
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI \"%s\" не е абсолютен URI при използване на схемата \"файл\""
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI \"%s\" към локален файл не може да включва \"#\""
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI \"%s\" е неправилен"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хоста в URI \"%s\" е невалидно"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI \"%s\" съдържа грешни екраниращи последователности"
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят \"%s\" не е абсолютен"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
 

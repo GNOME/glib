@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -46,37 +46,37 @@ msgstr "האַלבע כאַראַקטער־סעקװענץ צום סוף פֿון
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ניט געקענט פֿאַרװאַנדלען גרונטבאַטרעף %s צו קאָדירונג %s"
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "דער URI %s איז ניט אַבסאָלוט לױט דער טעקע־סכעמע"
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "דער לאָקאַלער טעקע־URI %s טאָר ניט כּולל זײַן אַ '#'"
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "דער URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "דער מאַשין־נאָמען פֿונעם URI %s איז אומלעקסיק"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "אומלעקסיקער מאַשין־נאָמען"
 
@@ -414,41 +414,41 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "טעקסט איז געװען פּוסט (אָדער איז כּולל בלױס לײדיק אָרט)"
 
-#: glib/gspawn-win32.c:296
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "ניט געקענט לײענען דאַטן פֿון קינדפּראָצעס"
 
-#: glib/gspawn-win32.c:425
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "דורכפֿאַל אין שאַפֿן רער צוליב קאָמוניקירן מיט קינדפּראָצעס (%s)"
+
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "דורכפֿאַל אין לײענע פֿון אַ ינדרער (%s)"
+
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס (%s)"
+
+#: glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "דורכפֿאַל אין באַאַרבעטן הילף־פּראָגראַם"
+
+#: glib/gspawn-win32.c:789
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "אומדערװאַרטער דורכפֿאַל אין g_io_channel_win32_poll() בשעת לײענען דאַטן פֿון אַ "
 "קינדפּראָצעס"
-
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "דורכפֿאַל אין לײענע פֿון אַ ינדרער (%s)"
-
-#: glib/gspawn-win32.c:931
-msgid "Failed to execute helper program"
-msgstr "דורכפֿאַל אין באַאַרבעטן הילף־פּראָגראַם"
-
-#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "דורכפֿאַל אין באַאַרבעטן קינדפּראָצעס (%s)"
-
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "דורכפֿאַל אין זיך קערן צו פּאַפּקע '%s' (%s)"
-
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "דורכפֿאַל אין שאַפֿן רער צוליב קאָמוניקירן מיט קינדפּראָצעס (%s)"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -516,33 +516,33 @@ msgstr ""
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:493
+#: glib/goption.c:495
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:541
+#: glib/goption.c:544
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:580
+#: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:590
+#: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1310
+#: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

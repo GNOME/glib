@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2003-12-19 01:22+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -48,37 +48,37 @@ msgstr "سلسلة حرفيات جزئي عند نهاية المدخل"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "لم يمكن تحويل fallback '%s' الى مجموعة المحارف '%s'"
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "الـURI '%s' ليس URI كامل باستخدام مخطط الملفات"
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ملف الـ URI المحلي '%s' قد لا يحتوي على '#'"
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "اسم مستضيف الـURI '%s' غير سليم"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "الـURI '%s' يحتوي على حروف هربت بطريقة غير سليمة "
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "اسم المسار '%s' ليس مسارا كاملا"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "اسم المستضيف غير سليم"
 
@@ -398,39 +398,39 @@ msgstr "انتهى النص قبل ايجاد المُقتَبَس لـ%c (ال�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "النص كان فارغا (أو كان يحتوي على فراغ أبيض)"
 
-#: glib/gspawn-win32.c:296
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "فشلت قراءة البيانات من العملية الإبنة"
 
-#: glib/gspawn-win32.c:425
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr "خطأ غير متوقع في g_io_channel_win32_poll() أثناء القراءة من عملية ابنة"
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "فشل عمل أنبوب للاتصال بالعملية الإبنة (%s)"
 
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "فشلت القراءة من الأنبوب الإبن (%s)"
 
-#: glib/gspawn-win32.c:931
-msgid "Failed to execute helper program"
-msgstr "فشل تنفيذ التطبيق المعين"
-
-#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "فشل تنفيذ العملية الإبنة (%s)"
-
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "فشل التغيير الى الدليل '%s' (%s)"
 
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
 #, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "فشل عمل أنبوب للاتصال بالعملية الإبنة (%s)"
+msgid "Failed to execute child process (%s)"
+msgstr "فشل تنفيذ العملية الإبنة (%s)"
+
+#: glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "فشل تنفيذ التطبيق المعين"
+
+#: glib/gspawn-win32.c:789
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "خطأ غير متوقع في g_io_channel_win32_poll() أثناء القراءة من عملية ابنة"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -498,33 +498,33 @@ msgstr ""
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:493
+#: glib/goption.c:495
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:541
+#: glib/goption.c:544
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:580
+#: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:590
+#: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1310
+#: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2004-10-27 12:30+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -46,37 +46,37 @@ msgstr "Ufullstendig tegnsekvens ved slutten på inndata"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" «%s» til tegnsett «%s»"
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI «%s» er ikke en absolutt URI som bruker skjema for filer"
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokal fil-URI «%s» kan ikke inneholde en «#»"
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI «%s» er ugyldig"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vertsnavnet for URI «%s» er ugyldig"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Vertsnavnet for URI «%s» inneholder ugyldige escape-tegn"
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Stinavnet «%s» er ikke en absolutt sti"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
@@ -410,41 +410,41 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksten var tom (eller inneholdt kun blanke tegn)"
 
-#: glib/gspawn-win32.c:296
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "Feil under lesing av data fra underprosess"
 
-#: glib/gspawn-win32.c:425
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
+
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Feil under lesing fra \"child pipe\" (%s)"
+
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Feil ved skifte til katalog «%s» (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Feil under kjøring av underprosess (%s)"
+
+#: glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "Feil under kjøring av hjelpeprogram"
+
+#: glib/gspawn-win32.c:789
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Uventet feil i g_io_channel_win32_poll() under lesing av data fra en "
 "underprosess"
-
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "Feil under lesing fra \"child pipe\" (%s)"
-
-#: glib/gspawn-win32.c:931
-msgid "Failed to execute helper program"
-msgstr "Feil under kjøring av hjelpeprogram"
-
-#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "Feil under kjøring av underprosess (%s)"
-
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Feil ved skifte til katalog «%s» (%s)"
-
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -512,33 +512,33 @@ msgstr "Bruk:"
 msgid "[OPTION...]"
 msgstr "[FLAGG...]"
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Help Options:"
 msgstr "Flagg for hjelp:"
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Show help options"
 msgstr "Vis flagg for hjelp"
 
-#: glib/goption.c:493
+#: glib/goption.c:495
 msgid "Show all help options"
 msgstr "Vis alle flagg for hjelp"
 
-#: glib/goption.c:541
+#: glib/goption.c:544
 msgid "Application Options:"
 msgstr "Flagg for applikasjonen"
 
-#: glib/goption.c:580
+#: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Kan ikke lese heltallsverdi «%s» for --%s"
 
-#: glib/goption.c:590
+#: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltallsverdi «%s» for %s er utenfor gyldig område"
 
-#: glib/goption.c:1310
+#: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"

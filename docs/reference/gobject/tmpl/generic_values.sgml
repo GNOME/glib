@@ -148,7 +148,7 @@ An unset value is the same as an uninitialized (zero-filled)
 #GValue structure.
 </para>
 
-@value:	An initialized #GValue structure.
+@value: 	An initialized #GValue structure.
 
 
 <!-- ##### FUNCTION g_value_fits_pointer ##### -->

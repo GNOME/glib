@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2004-10-15 22:27+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -51,37 +51,37 @@ msgstr "Nepotpun niz znakova na kraju ulaza"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
 
-#: glib/gconvert.c:1597
+#: glib/gconvert.c:1600
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresa „%s“ nije apsolutna adresa pomoću „file“ šeme"
 
-#: glib/gconvert.c:1607
+#: glib/gconvert.c:1610
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Adresa lokalne datoteke „%s“ ne sme sadržati „#“"
 
-#: glib/gconvert.c:1624
+#: glib/gconvert.c:1627
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresa „%s“ je neispravna"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1639
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 
-#: glib/gconvert.c:1652
+#: glib/gconvert.c:1655
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
-#: glib/gconvert.c:1722
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja „%s“ nije apsolutna putanja"
 
-#: glib/gconvert.c:1732
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "Neispravno ime domaćina"
 
@@ -417,42 +417,42 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Sadržaj prazan (ili sadrži samo beline)"
 
-#: glib/gspawn-win32.c:296
+#: glib/gspawn-win32.c:264
 msgid "Failed to read data from child process"
 msgstr "Neuspelo čitanje podataka iz podređenog procesa"
 
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "Neuspelo stvaranje cevke za vezu sa podređenim procesom (%s)"
+
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Neuspelo čitanje iz podređene cevke (%s)"
+
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
+
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Neuspelo izvršavanje podređenog procesa (%s)"
+
+#: glib/gspawn-win32.c:590
+msgid "Failed to execute helper program"
+msgstr "Neuspelo izvršavanje pomoćnog programa"
+
 # Ovaj prevod nije psihološke prirode :)
-#: glib/gspawn-win32.c:425
+#: glib/gspawn-win32.c:789
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 "Neočekivana greška dok su u g_io_channel_win32_poll() čitani podaci od "
 "podređenog procesa"
-
-#: glib/gspawn-win32.c:851 glib/gspawn.c:1014
-#, c-format
-msgid "Failed to read from child pipe (%s)"
-msgstr "Neuspelo čitanje iz podređene cevke (%s)"
-
-#: glib/gspawn-win32.c:931
-msgid "Failed to execute helper program"
-msgstr "Neuspelo izvršavanje pomoćnog programa"
-
-#: glib/gspawn-win32.c:952 glib/gspawn-win32.c:996
-#, c-format
-msgid "Failed to execute child process (%s)"
-msgstr "Neuspelo izvršavanje podređenog procesa (%s)"
-
-#: glib/gspawn-win32.c:987 glib/gspawn.c:1219
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Neuspelo pristupanje direktorijumu „%s“ (%s)"
-
-#: glib/gspawn-win32.c:1041 glib/gspawn.c:1350
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Neuspelo stvaranje cevke za vezu sa podređenim procesom (%s)"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -523,33 +523,33 @@ msgstr "Upotreba:"
 msgid "[OPTION...]"
 msgstr "[OPCIJA...]"
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Help Options:"
 msgstr "Pomoćne opcije:"
 
-#: glib/goption.c:489
+#: glib/goption.c:491
 msgid "Show help options"
 msgstr "Prikaži opcije za pomoć"
 
-#: glib/goption.c:493
+#: glib/goption.c:495
 msgid "Show all help options"
 msgstr "Prikaži sve opcije za pomoć"
 
-#: glib/goption.c:541
+#: glib/goption.c:544
 msgid "Application Options:"
 msgstr "Opcije programa:"
 
-#: glib/goption.c:580
+#: glib/goption.c:583
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Ne mogu da rašlanim celobrojnun vrednost „%s“ za --%s"
 
-#: glib/goption.c:590
+#: glib/goption.c:593
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Celobrojna vrednost „%s“ za %s je izvan opsega"
 
-#: glib/goption.c:1310
+#: glib/goption.c:1313
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nepoznata opcija %s"

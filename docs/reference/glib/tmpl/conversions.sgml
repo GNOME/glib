@@ -334,6 +334,15 @@ error domains.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_filename_display_basename ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_uri_list_extract_uris ##### -->
 <para>
 

@@ -316,6 +316,15 @@ An opaque structure representing an opened directory.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_rmdir ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_fopen ##### -->
 <para>
 

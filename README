@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is GLib version 2.5.7. GLib is the low-level core
+This is GLib version 2.6.0. GLib is the low-level core
 library that forms the basis for projects such as GTK+ and GNOME. It
 provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
@@ -24,19 +24,61 @@ Installation
 
 See the file 'INSTALL'
 
-Notes about GLib-2.4.0
+Notes about GLib 2.6.0
 ======================
 
-* GObject now enforces CONSTRUCT_ONLY properties; due to an oversight
-  in previous versions, it was possible to set CONSTRUCT_ONLY properties
-  after construct time.
+* GLib 2.6 introduces the concept of 'GLib filename encoding', which is the
+  on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions
+  returning or accepting pathnames have been changed to expect
+  filenames in this encoding, and the common POSIX functions dealing
+  with pathnames have been wrapped. These wrappers are declared in the
+  header <glib/gstdio.h> which must be included explicitly; it is not
+  included through <glib.h>.
+
+  On current (NT-based) Windows versions, where the on-disk file names
+  are Unicode, these wrappers use the wide-character API in the C
+  library. Thus applications can handle file names containing any
+  Unicode characters through GLib's own API and its POSIX wrappers,
+  not just file names restricted to characters in the system codepage.
+
+  To keep binary compatibility with applications compiled against
+  older versions of GLib, the Windows DLL still provides entry points
+  with the old semantics using the old names, and applications
+  compiled against GLib 2.6 will actually use new names for the
+  functions. This is transparent to the programmer.
+
+  When compiling against GLib 2.6, applications intended to be
+  portable to Windows must take the UTF-8 file name encoding into
+  consideration, and use the gstdio wrappers to access files whose
+  names have been constructed from strings returned from GLib.
+
+* Likewise, g_get_user_name() and g_get_real_name() have been changed 
+  to return UTF-8 on Windows, while keeping the old semantics for 
+  applications compiled against older versions of GLib.
+
+* The GLib uses an '_' prefix to indicate private symbols that
+  must not be used by applications. On some platforms, symbols beginning 
+  with prefixes such as _g will be exported from the library, on others not. 
+  In no case can applications use these private symbols. In addition to that, 
+  GLib+ 2.6 makes several symbols private which were not in any installed 
+  header files and were never intended to be exported.
+
+* To reduce code size and improve efficiency, GLib, when compiled 
+  with the GNU toolchain, has separate internal and external entry 
+  points for exported functions. The internal names, which begin with 
+  IA__, may be seen when debugging a GLib program.
+
+* On Windows, GLib no longer opens a console window when printing
+  warning messages if stdout or stderr are invalid, as they are in
+  "Windows subsystem" (GUI) applications. Simply redirect stdout or
+  stderr if you need to see them.
 
 * The child watch functionality tends to reveal a bug in many
-  thread implementations (in particular the older LinuxThreads implementation
-  on Linux) where it's not possible to call waitpid() for a child
-  created in a different thread. For this reason, for maximum portability,
-  you should structure your code to fork all child processes that you want
-  to wait for from the main thread.
+  thread implementations (in particular the older LinuxThreads 
+  implementation on Linux) where it's not possible to call waitpid() 
+  for a child created in a different thread. For this reason, for 
+  maximum portability, you should structure your code to fork all 
+  child processes that you want to wait for from the main thread.
 
 * A problem was recently discovered with g_signal_connect_object(); 
   it doesn't actually disconnect the signal handler once the object being 
@@ -62,8 +104,8 @@ In the bug report please include:
 
 * How to reproduce the bug. 
 
-  If you can reproduce it with the testgtk program that is built 
-  in the gtk/ subdirectory, that will be most convenient.  Otherwise, 
+  If you can reproduce it with one of the test programs that are built 
+  in the tests/ subdirectory, that will be most convenient.  Otherwise, 
   please include a short test program that exhibits the behavior. 
   As a last resort, you can also provide a pointer to a larger piece 
   of software that can be downloaded.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLIB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-13 20:14+0000\n"
+"POT-Creation-Date: 2004-12-16 00:40-0500\n"
 "PO-Revision-Date: 2004-12-13 20:16+0100\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: \n"
@@ -25,28 +25,19 @@ msgstr "Conversion from character set '%s' to '%s' is not supported"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Could not open converter from '%s' to '%s'"
 
-#: glib/gconvert.c:605
-#: glib/gconvert.c:892
-#: glib/giochannel.c:1318
-#: glib/giochannel.c:1360
-#: glib/giochannel.c:2202
-#: glib/gutf8.c:911
+#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
+#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
-#: glib/gconvert.c:610
-#: glib/gconvert.c:825
-#: glib/giochannel.c:1325
+#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
 #: glib/giochannel.c:2214
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
 
-#: glib/gconvert.c:628
-#: glib/gutf8.c:907
-#: glib/gutf8.c:1112
-#: glib/gutf8.c:1253
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
@@ -90,14 +81,12 @@ msgstr "The pathname '%s' is not an absolute path"
 msgid "Invalid hostname"
 msgstr "Invalid hostname"
 
-#: glib/gdir.c:120
-#: glib/gdir.c:140
+#: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Error opening directory '%s': %s"
 
-#: glib/gfileutils.c:502
-#: glib/gfileutils.c:570
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Could not allocate %lu bytes to read file \"%s\""
@@ -112,8 +101,7 @@ msgstr "Error reading file '%s': %s"
 msgid "Failed to read from file '%s': %s"
 msgstr "Failed to read from file '%s': %s"
 
-#: glib/gfileutils.c:641
-#: glib/gfileutils.c:724
+#: glib/gfileutils.c:641 glib/gfileutils.c:724
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Failed to open file '%s': %s"
@@ -166,14 +154,11 @@ msgstr "Could not open converter from `%s' to `%s': %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Can't do a raw read in g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1542
-#: glib/giochannel.c:1799
-#: glib/giochannel.c:1885
+#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
 msgstr "Left over unconverted data in read buffer"
 
-#: glib/giochannel.c:1622
-#: glib/giochannel.c:1699
+#: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
 msgstr "Channel terminates in a partial character"
 
@@ -192,13 +177,21 @@ msgid "Error on line %d: %s"
 msgstr "Error on line %d: %s"
 
 #: glib/gmarkup.c:428
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:438
 #, c-format
-msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
-msgstr "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
 
 #: glib/gmarkup.c:478
 #, c-format
@@ -211,13 +204,21 @@ msgid "Entity name '%s' is not known"
 msgstr "Entity name '%s' is not known"
 
 #: glib/gmarkup.c:531
-msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
 
 #: glib/gmarkup.c:584
 #, c-format
-msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgid ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
 
 #: glib/gmarkup.c:609
 #, c-format
@@ -229,8 +230,14 @@ msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Empty character reference; should include a digit such as &#454;"
 
 #: glib/gmarkup.c:634
-msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
-msgstr "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
 
 #: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
@@ -240,9 +247,7 @@ msgstr "Unfinished entity reference"
 msgid "Unfinished character reference"
 msgstr "Unfinished character reference"
 
-#: glib/gmarkup.c:969
-#: glib/gmarkup.c:997
-#: glib/gmarkup.c:1028
+#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
 msgid "Invalid UTF-8 encoded text"
 msgstr "Invalid UTF-8 encoded text"
 
@@ -252,38 +257,66 @@ msgstr "Document must begin with an element (e.g. <book>)"
 
 #: glib/gmarkup.c:1104
 #, c-format
-msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
-msgstr "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
 
 #: glib/gmarkup.c:1168
 #, c-format
-msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
-msgstr "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
 
 #: glib/gmarkup.c:1257
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 
 #: glib/gmarkup.c:1299
 #, c-format
-msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
-msgstr "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
 
 #: glib/gmarkup.c:1388
 #, c-format
-msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
-msgstr "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
 
 #: glib/gmarkup.c:1533
 #, c-format
-msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
-msgstr "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
 
 #: glib/gmarkup.c:1573
 #, c-format
-msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
-msgstr "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
 
 #: glib/gmarkup.c:1584
 #, c-format
@@ -303,16 +336,23 @@ msgstr "Document was empty or contained only whitespace"
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Document ended unexpectedly just after an open angle bracket '<'"
 
-#: glib/gmarkup.c:1762
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
-msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
-msgstr "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
 
 #: glib/gmarkup.c:1770
 #, c-format
-msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
-msgstr "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
 
 #: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an element name"
@@ -327,8 +367,12 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Document ended unexpectedly inside an element-opening tag."
 
 #: glib/gmarkup.c:1792
-msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
-msgstr "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
 
 #: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -369,26 +413,22 @@ msgstr "Text was empty (or contained only whitespace)"
 msgid "Failed to read data from child process"
 msgstr "Failed to read data from child process"
 
-#: glib/gspawn-win32.c:281
-#: glib/gspawn.c:1350
+#: glib/gspawn-win32.c:281 glib/gspawn.c:1350
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Failed to create pipe for communicating with child process (%s)"
 
-#: glib/gspawn-win32.c:321
-#: glib/gspawn.c:1014
+#: glib/gspawn-win32.c:321 glib/gspawn.c:1014
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Failed to read from child pipe (%s)"
 
-#: glib/gspawn-win32.c:349
-#: glib/gspawn.c:1219
+#: glib/gspawn-win32.c:349 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Failed to change to directory '%s' (%s)"
 
-#: glib/gspawn-win32.c:357
-#: glib/gspawn-win32.c:442
+#: glib/gspawn-win32.c:357 glib/gspawn-win32.c:442
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Failed to execute child process (%s)"
@@ -398,8 +438,12 @@ msgid "Failed to execute helper program"
 msgstr "Failed to execute helper program"
 
 #: glib/gspawn-win32.c:789
-msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
-msgstr "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -450,17 +494,12 @@ msgstr "Failed to read enough data from child pid pipe (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: glib/gutf8.c:1080
-#: glib/gutf8.c:1089
-#: glib/gutf8.c:1221
-#: glib/gutf8.c:1230
-#: glib/gutf8.c:1371
-#: glib/gutf8.c:1467
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1382
-#: glib/gutf8.c:1478
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
@@ -517,8 +556,10 @@ msgstr "File is empty"
 
 #: glib/gkeyfile.c:685
 #, c-format
-msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
@@ -529,15 +570,9 @@ msgstr "Key file does not start with a group"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Key file contains unsupported encoding '%s'"
 
-#: glib/gkeyfile.c:1000
-#: glib/gkeyfile.c:1146
-#: glib/gkeyfile.c:2151
-#: glib/gkeyfile.c:2216
-#: glib/gkeyfile.c:2334
-#: glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2587
-#: glib/gkeyfile.c:2760
-#: glib/gkeyfile.c:2815
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Key file does not have group '%s'"
@@ -547,27 +582,26 @@ msgstr "Key file does not have group '%s'"
 msgid "Key file does not have key '%s'"
 msgstr "Key file does not have key '%s'"
 
-#: glib/gkeyfile.c:1259
-#: glib/gkeyfile.c:1368
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Key file contains key '%s' with value '%s' which is not UTF-8"
 
-#: glib/gkeyfile.c:1277
-#: glib/gkeyfile.c:1386
-#: glib/gkeyfile.c:1759
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Key file contains key '%s' which has value that cannot be interpreted."
 
 #: glib/gkeyfile.c:1976
 #, c-format
-msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
-msgstr "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
 
-#: glib/gkeyfile.c:2166
-#: glib/gkeyfile.c:2349
-#: glib/gkeyfile.c:2827
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Key file does not have key '%s' in group '%s'"
@@ -590,4 +624,3 @@ msgstr "Value '%s' cannot be interpreted as a number."
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Value '%s' cannot be interpreted as a boolean."
-

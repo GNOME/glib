@@ -1,7 +1,11 @@
+2004-12-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.6.0 ===
+	
 2004-12-13  David Lodge <dave@cirt.net>
-                                                                                
-        * en_GB.po: Updated British translation.
-                                                                                
+
+	* en_GB.po: Updated British translation.
+
 2004-12-12  Alexander Shopov  <ash@contact.bg>
 
 	* bg.po: Updated Bulgarian translation
