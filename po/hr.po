@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "POT-Creation-Date: 2003-11-06 18:08+0100\n"
-"PO-Revision-Date: 2003-11-07 18:41+CET\n"
+"PO-Revision-Date: 2003-11-10 16:50+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 #: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Konverzij iz znakovnog skupa '%s' u '%s' nije podržana"
+msgstr "Pretvaranje iz znakovnog skupa '%s' u '%s' nije podržana"
 
 #: glib/gconvert.c:406
 #, c-format
@@ -43,7 +43,7 @@ msgstr "Djelomična znakovna sekvenca pri kraju izlaza"
 #: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Ne mogu konvertitati '%s' u znakovni skup '%s'"
+msgstr "Ne mogu prevesti '%s' u znakovni skup '%s'"
 
 #: glib/gconvert.c:1411
 #, c-format
@@ -154,7 +154,7 @@ msgstr "Ne mogu napraviti raw čitanje u g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
-msgstr "Postoji ostatak nekonvertiranih podataka u međuspremniku za čitanje"
+msgstr "Postoji ostatak mepretvorenih podataka u međuspremniku za čitanje"
 
 #: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
@@ -219,7 +219,7 @@ msgstr ""
 #: glib/gmarkup.c:583
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Znakovna referenca '%s' se ne enkodira kao dopušteni znak"
+msgstr "Znakovna referenca '%s' se ne šifrira kao dozvoljeni znak"
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -245,7 +245,7 @@ msgstr "Nezavršena znakovna referenca"
 
 #: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
-msgstr "Neispravno enkodirani UTF-8 tekst"
+msgstr "Neispravno šifrirani UTF-8 tekst"
 
 #: glib/gmarkup.c:983
 msgid "Document must begin with an element (e.g. <book>)"
@@ -309,7 +309,7 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' moke znak koji može slijediti nakon imena završnog elementa '%s'; "
+"'%s' nije ispravan znak koji može slijediti nakon imena završnog elementa '%s'; "
 "dozvoljeni znak je '>'"
 
 #: glib/gmarkup.c:1485
@@ -375,11 +375,11 @@ msgstr "Dokument je završio neočekivano unutar vrijednosti atributa"
 #: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Dokument je završio neočekivano unutar taga koji završava elementimena element '%s'"
+msgstr "Dokument je završio neočekivano unutar taga koji završava za element '%s'"
 
 #: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokument je završio neočekivano unutar komentara ili procesiranja instrukcije"
+msgstr "Dokument je završio neočekivano unutar komentara ili izvršavanja instrukcije"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -397,7 +397,7 @@ msgstr "Tekst je završio nakon '\\' znaka (Tekst je bio '%s')"
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Tekst je zavrpio prije nego što je nađen završni navodnik %c. (Tekst je bio '%s')"
+msgstr "Tekst je završio prije nego što je nađen završni navodnik %c. (Tekst je bio '%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -405,7 +405,7 @@ msgstr "Tekst je bio prazan (ili je sadržavao samo prazne znakove)"
 
 #: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
-msgstr "Nisam uspio čitati podatke od procesa dijeteta"
+msgstr "Nisam uspio čitati podatke od procesa djeteta"
 
 #: glib/gspawn-win32.c:426
 msgid ""
@@ -413,12 +413,12 @@ msgid ""
 "process"
 msgstr ""
 "Neočekivana greška u g_io_channel_win32_poll() čitajući podatke procesa"
-"dijeteta"
+"djeteta"
 
 #: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Nisam uspio čitati iz cjevovoda dijeteta (%s)"
+msgstr "Nisam uspio čitati iz cjevovoda djeteta (%s)"
 
 #: glib/gspawn-win32.c:922
 msgid "Failed to execute helper program"
@@ -442,12 +442,12 @@ msgstr "Ne mogu stvoriti cjevovod za komuniciranje sa procesom djetetom(%s)"
 #: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Neuspjeh u čitanju podataka od procesa dijeteta(%s)"
+msgstr "Neuspjeh u čitanju podataka od procesa djeteta(%s)"
 
 #: glib/gspawn.c:298
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Neočekivana greška u select() čitanju podataka procesa dijeteta (%s)"
+msgstr "Neočekivana greška u select() čitanju podataka procesa djeteta (%s)"
 
 #: glib/gspawn.c:381
 #, c-format
@@ -462,12 +462,12 @@ msgstr "Fork nije uspio (%s)"
 #: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Neuspjeh u izvršavanju procesa dijeteta \"%s\" (%s)"
+msgstr "Neuspjeh u izvršavanju procesa djeteta \"%s\" (%s)"
 
 #: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Nisam uspio preusmjeriti izlaz ili ulaz procesa dijeteta (%s)"
+msgstr "Nisam uspio preusmjeriti izlaz ili ulaz procesa djeteta (%s)"
 
 #: glib/gspawn.c:1232
 #, c-format
@@ -477,12 +477,12 @@ msgstr "Nisam uspio forkati proces dijete (%s)"
 #: glib/gspawn.c:1240
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Nepoznata greška u izvršavanju procesa dijeteta \"%s\""
+msgstr "Nepoznata greška u izvršavanju procesa djeteta \"%s\""
 
 #: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Neuspjeh u čitanju dovoljno podataka iz cjevovoda procesa dijeteta (%s)"
+msgstr "Neuspjeh u čitanju dovoljno podataka iz cjevovoda procesa djeteta (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
@@ -491,7 +491,7 @@ msgstr "Znak je izvan raspona za UTF-8"
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
-msgstr "Neispravna sekvenca u konverziji ulaza"
+msgstr "Neispravna sekvenca u pretvaranju ulaza"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
