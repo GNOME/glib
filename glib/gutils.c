@@ -997,6 +997,70 @@ g_set_prgname (const gchar *prgname)
   G_UNLOCK (g_prgname);
 }
 
+G_LOCK_DEFINE (g_application_name);
+static gchar *g_application_name = NULL;
+
+/**
+ * g_get_application_name:
+ * 
+ * Gets a human-readable name for the application, as set by
+ * g_set_application_name(). This name should be localized if
+ * possible, and is intended for display to the user.  Contrast with
+ * g_get_prgname(), which gets a non-localized name. If
+ * g_set_application_name() has not been called, returns the result of
+ * g_get_prgname() (which may be %NULL if g_set_prgname() has also not
+ * been called).
+ * 
+ * Return value: human-readable application name. may return %NULL
+ **/
+G_CONST_RETURN gchar*
+g_get_application_name (void)
+{
+  gchar* retval;
+
+  G_LOCK (g_application_name);
+  retval = g_application_name;
+  G_UNLOCK (g_application_name);
+
+  if (retval == NULL)
+    return g_get_prgname ();
+  
+  return retval;
+}
+
+/**
+ * g_set_application_name:
+ * @application_name: localized name of the application
+ *
+ * Sets a human-readable name for the application. This name should be
+ * localized if possible, and is intended for display to the user.
+ * Contrast with g_set_prgname(), which sets a non-localized name.
+ * g_set_prgname() will be called automatically by gtk_init(),
+ * but g_set_application_name() will not.
+ *
+ * Note that for thread safety reasons, this function can only
+ * be called once.
+ *
+ * The application name will be used in contexts such as error messages,
+ * or when displaying an application's name in the task list.
+ * 
+ **/
+void
+g_set_application_name (const gchar *application_name)
+{
+  gboolean already_set = FALSE;
+	
+  G_LOCK (g_application_name);
+  if (g_application_name)
+    already_set = TRUE;
+  else
+    g_application_name = g_strdup (application_name);
+  G_UNLOCK (g_application_name);
+
+  if (already_set)
+    g_warning ("g_set_application() name called multiple times");
+}
+
 guint
 g_direct_hash (gconstpointer v)
 {

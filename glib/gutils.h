@@ -113,12 +113,14 @@ G_BEGIN_DECLS
 
 /* Retrive static string info
  */
-G_CONST_RETURN gchar* g_get_user_name      (void);
-G_CONST_RETURN gchar* g_get_real_name      (void);
-G_CONST_RETURN gchar* g_get_home_dir       (void);
-G_CONST_RETURN gchar* g_get_tmp_dir        (void);
-gchar*                g_get_prgname        (void);
-void                  g_set_prgname        (const gchar *prgname);
+G_CONST_RETURN gchar* g_get_user_name        (void);
+G_CONST_RETURN gchar* g_get_real_name        (void);
+G_CONST_RETURN gchar* g_get_home_dir         (void);
+G_CONST_RETURN gchar* g_get_tmp_dir          (void);
+gchar*                g_get_prgname          (void);
+void                  g_set_prgname          (const gchar *prgname);
+G_CONST_RETURN gchar* g_get_application_name (void);
+void                  g_set_application_name (const gchar *application_name);
 
 
 typedef struct _GDebugKey	GDebugKey;

@@ -16,7 +16,8 @@ These are portable utility functions.
 
 <!-- ##### FUNCTION g_get_prgname ##### -->
 <para>
-Gets the name of the program.
+Gets the name of the program. This name should NOT be localized,
+contrast with g_get_application_name().
 (If you are using GDK or GTK+ the program name is set in gdk_init(), which
 is called by gtk_init(). The program name is found by taking the last
 component of <literal>argv[0]</literal>.)
@@ -27,7 +28,9 @@ component of <literal>argv[0]</literal>.)
 
 <!-- ##### FUNCTION g_set_prgname ##### -->
 <para>
-Sets the name of the program.
+Sets the name of the program. This name should NOT be localized, 
+contrast with g_set_application_name(). Note that for thread-safety
+reasons this function can only be called once.
 </para>
 
 @prgname: the name of the program.
