@@ -3,12 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-REQUIRES="glib"
-VERSION="@VERSION@"
-CFLAGS="$CFLAGS"
-LIBS_PATH="-L${libdir} @G_MODULE_LDFLAGS@ $LIBS_PATH"
-LIBS_LINK_SELF="-lgmodule-1.2 $LIBS_LINK_SELF"
-LIBS_LINK_SYSTEM="@G_MODULE_LIBS@ $LIBS_LINK_SYSTEM"
-
-#Name: GModule
-#Description: Dynamic module loader for GLib
+Name: GModule
+Description: Dynamic module loader for GLib
+Requires: glib
+Version: @VERSION@
+Libs: -L${libdir} @G_MODULE_LDFLAGS@ -lgmodule-1.2 @G_MODULE_LIBS@
+Cflags:

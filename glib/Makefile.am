@@ -90,7 +90,7 @@ testgdateparser_LDADD = libglib.la
 m4datadir = $(datadir)/aclocal
 m4data_DATA = glib.m4
 
-pkgconfigdir = $(libexecdir)/pkgconfig
+pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glib.pc gmodule.pc gthread.pc
 
 glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win32.in
