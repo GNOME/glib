@@ -11,7 +11,7 @@ main (int   argc,
       char *argv[])
 {
   gint i;
-  gint32 atomic = -5;
+  gint atomic = -5;
   gpointer atomic_pointer = NULL;
   gpointer biggest_pointer = atomic_pointer - 1;
 
@@ -43,6 +43,12 @@ main (int   argc,
   g_assert (!g_atomic_int_compare_and_exchange (&atomic, 42, 12));
   g_assert (atomic == 20);
   
+  g_assert (g_atomic_int_compare_and_exchange (&atomic, 20, G_MAXINT));
+  g_assert (atomic == G_MAXINT);
+
+  g_assert (g_atomic_int_compare_and_exchange (&atomic, G_MAXINT, G_MININT));
+  g_assert (atomic == G_MININT);
+
   g_assert (g_atomic_pointer_compare_and_exchange (&atomic_pointer, 
 						   NULL, biggest_pointer));
   g_assert (atomic_pointer == biggest_pointer);
