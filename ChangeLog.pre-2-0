@@ -1,8 +1,10 @@
 Thursday July 29, 1999 Elliot Lee <sopwith@redhat.com>
+
 	* Makefile.am, tests/Makefile.am: Distribution the .in versions
 	  of the various Windoze makefiles.
 
 Thursday July 29, 1999 Elliot Lee <sopwith@redhat.com>
+
 	* Makefile.am: Include various *.in files in EXTRA_DIST
 
 Fri Jul 16 22:18:36 PDT 1999 Manish Singh <yosh@gimp.org>
