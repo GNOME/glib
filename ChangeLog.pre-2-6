@@ -1,3 +1,9 @@
+Tue Apr 20 08:42:22 1999  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c (g_scanner_unexp_token): behave conservative with
+	G_TOKEN_IDENTIFIER_NULL and always assume scanner->value.v_string
+	to be "null" in that case.
+
 1999-04-20  Havoc Pennington  <hp@pobox.com>
 
 	* gutils.c (g_vsnprintf):  When using the vsnprintf()
