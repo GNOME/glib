@@ -234,9 +234,9 @@ read_thread (void *parameter)
 
   SetEvent (channel->space_avail_event);
   
+  LOCK (channel->mutex);
   while (channel->running)
     {
-      LOCK (channel->mutex);
       if (channel->debug)
 	g_print ("read_thread %#x: rdp=%d, wrp=%d\n",
 		 channel->thread_id, channel->rdp, channel->wrp);
@@ -294,7 +294,6 @@ read_thread (void *parameter)
 	g_print ("read_thread %#x: rdp=%d, wrp=%d, setting data_avail\n",
 		 channel->thread_id, channel->rdp, channel->wrp);
       SetEvent (channel->data_avail_event);
-      UNLOCK (channel->mutex);
     }
   
   channel->running = FALSE;
@@ -1604,14 +1603,22 @@ g_io_channel_win32_new_socket (int socket)
 GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
+  gboolean is_fd, is_socket;
   struct stat st;
   int optval, optlen;
 
-  if (fstat (fd, &st) == 0)
-    return g_io_channel_win32_new_fd_internal (fd, &st);
-  
+  is_fd = (fstat (fd, &st) == 0);
+
   optlen = sizeof (optval);
-  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, (char *) &optval, &optlen) != SOCKET_ERROR)
+  is_socket = (getsockopt (fd, SOL_SOCKET, SO_TYPE, (char *) &optval, &optlen) != SOCKET_ERROR);
+
+  if (is_fd && is_socket)
+    g_warning (G_STRLOC ": %d is both a file descriptor and a socket, file descriptor interpretation assumed.", fd);
+
+  if (is_fd)
+    return g_io_channel_win32_new_fd_internal (fd, &st);
+
+  if (is_socket)
     return g_io_channel_win32_new_socket(fd);
 
   g_warning (G_STRLOC ": %d is neither a file descriptor or a socket", fd);
