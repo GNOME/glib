@@ -871,7 +871,7 @@ g_get_any_init (void)
 	gchar *home = g_getenv ("HOME");
       
 	/* Only believe HOME if it is an absolute path and exists */
-	if (g_path_is_absolute (home) && g_file_test (home, G_FILE_TEST_IS_DIR))
+	if (home && g_path_is_absolute (home) && g_file_test (home, G_FILE_TEST_IS_DIR))
 	  g_home_dir = g_strdup (home);
       }
       
