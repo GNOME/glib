@@ -71,12 +71,13 @@ g_win32_ftruncate (gint  fd,
 /**
  * g_win32_getlocale:
  *
- * The setlocale in the Microsoft C library uses locale names of the
- * form "English_United States.1252" etc. We want the UNIXish standard
- * form "en_US", "zh_TW" etc. This function gets the current thread
- * locale from Windows - without any encoding info - and returns it as
- * a string of the above form for use in forming file names etc. The
- * returned string should be deallocated with g_free().
+ * The setlocale() function in the Microsoft C library uses locale
+ * names of the form "English_United States.1252" etc. We want the
+ * UNIXish standard form "en_US", "zh_TW" etc. This function gets the
+ * current thread locale from Windows - without any encoding info -
+ * and returns it as a string of the above form for use in forming
+ * file names etc. The returned string should be deallocated with
+ * g_free().
  *
  * Returns: newly-allocated locale name.
  **/
@@ -1301,6 +1302,24 @@ _g_win32_thread_init (void)
   g_win32_windows_version_init ();
 }
 
+/**
+ * g_win32_get_windows_version:
+ *
+ * Returns version information for the Windows operating system the
+ * code is running on. See MSDN documentation for the GetVersion()
+ * function. To summarize, the most significant bit is one on Win9x,
+ * and zero on NT-based systems. The least significant byte is 4 on
+ * Windows NT 4, 5 on Windows XP. Software that needs really detailled
+ * version and feature information should use Win32 API like
+ * GetVersionEx() and VerifyVersionInfo().
+ *
+ * If there is an environment variable G_WIN32_PRETEND_WIN9X defined
+ * (with any value), this function always returns a version code for
+ * Windows 9x. This is mainly an internal debugging aid for GTK and
+ * GLib developers, to be able to check the code paths for Win9x.
+ *
+ * Returns: The version information.
+ **/
 guint
 g_win32_get_windows_version (void)
 {

@@ -1,5 +1,7 @@
 2004-10-31  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gwin32.c: Document g_win32_get_windows_version().
+
 	* glib/gstdio.[ch]: Add g_lstat().
 
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
