@@ -97,7 +97,7 @@ debug_objects_atexit (void)
 	}
     }
 }
-#endif	DEBUG_OBJECTS
+#endif /* DEBUG_OBJECTS */
 
 void
 g_object_type_init (void)	/* sync with gtype.c */
@@ -140,7 +140,7 @@ g_object_type_init (void)	/* sync with gtype.c */
   
 #ifdef	DEBUG_OBJECTS
   g_atexit (debug_objects_atexit);
-#endif	DEBUG_OBJECTS
+#endif /* DEBUG_OBJECTS */
 }
 
 static void
@@ -256,7 +256,7 @@ g_object_do_init (GObject *object)
       debug_objects_count++;
       g_hash_table_insert (debug_objects_ht, object, object);
     }
-#endif	DEBUG_OBJECTS
+#endif /* DEBUG_OBJECTS */
 }
 
 static void
@@ -298,7 +298,7 @@ g_object_do_finalize (GObject *object)
       g_hash_table_remove (debug_objects_ht, object);
       debug_objects_count--;
     }
-#endif	DEBUG_OBJECTS
+#endif /* DEBUG_OBJECTS */
 }
 
 gpointer

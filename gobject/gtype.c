@@ -1098,10 +1098,10 @@ type_class_init (TypeNode   *node,
    */
   for (bnode = node; bnode; bnode = LOOKUP_TYPE_NODE (NODE_PARENT_TYPE (bnode)))
     if (bnode->data->class.class_init_base)
-      init_slist = g_slist_prepend (init_slist, bnode->data->class.class_init_base);
+      init_slist = g_slist_prepend (init_slist, (gpointer) bnode->data->class.class_init_base);
   for (slist = init_slist; slist; slist = slist->next)
     {
-      GBaseInitFunc class_init_base = slist->data;
+      GBaseInitFunc class_init_base = (GBaseInitFunc) slist->data;
       
       class_init_base (class);
     }
