@@ -1,5 +1,7 @@
 2004-11-01  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/goption.c: Documentation updates.
+
 	Handle conflicts between options in different groups. (#156808)
 	
 	* glib/goption.c (g_option_context_parse): When a long option does not

@@ -116,8 +116,9 @@ g_option_error_quark (void)
 
 /**
  * g_option_context_new:
- * @parameter_string: the parameter string to be used in 
- *    <option>--help</option> output.
+ * @parameter_string: a string which is displayed in
+ *    the first line of <option>--help</option> output, after 
+ *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>
  *
  * Creates a new option context. 
  *

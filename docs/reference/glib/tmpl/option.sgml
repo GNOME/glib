@@ -53,7 +53,7 @@ and write a text similar to the one shown in the following example to stdout.
 
 <informalexample><screen>
 Usage:
-  testtreemodel [OPTION...]
+  testtreemodel [OPTION...] - test tree model performance
 
 Help Options:
   --help                   Show help options
@@ -109,7 +109,7 @@ main (int argc, char *argv[])
 {
   GError *error = NULL;
 
-  context = g_option_context_new ("[OPTION...]");
+  context = g_option_context_new ("- test tree model performance");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   g_option_context_parse (context, &amp;argc, &amp;argv, &amp;error);
@@ -291,7 +291,10 @@ g_option_context_add_main_entries() or g_option_group_add_entries().
 
 @long_name: The long name of an option can be used to specify it
   in a commandline as --<replaceable>long_name</replaceable>. Every
-  option must have a long name.
+  option must have a long name. To resolve conflicts if multiple
+  option groups contain the same long name, it is also possible to
+  specify the option as 
+  --<replaceable>groupname</replaceable>-<replaceable>long_name</replaceable>.
 @short_name: If an option has a short name, it can be specified
   -<replaceable>short_name</replaceable> in a commandline.
 @flags: Flags from #GOptionEntryFlags.
