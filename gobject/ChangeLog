@@ -1,3 +1,9 @@
+2004-10-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* gtype.h (GTypeInterfaceCheckFunc): Rename first parameter to 
+	check_data, since apparently the system headers on AIX leak a
+	macro named func_data.  (#155178, Andrea Campi)
+
 Wed Oct  6 02:12:44 2004    <timj@birnet.org>
 
 	* gtype.c (g_type_instance_get_private): applied patch from Jean-Yves 

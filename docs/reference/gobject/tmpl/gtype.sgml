@@ -1442,7 +1442,7 @@ A callback called after an interface vtable is initialized.
 See g_type_add_interface_check().
 </para>
 
-@func_data: data passed to g_type_add_interface_check().
+@check_data: data passed to g_type_add_interface_check().
 @g_iface: the interface that has been initialized
 @Since: 2.4
 
