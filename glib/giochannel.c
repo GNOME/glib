@@ -2058,15 +2058,16 @@ reconvert:
               if (!g_utf8_validate (from_buf, try_len, &badchar))
                 {
                   gunichar try_char;
+                  gsize incomplete_len = from_buf + try_len - badchar;
 
-                  left_len = from_buf + try_len - badchar;
+                  left_len = from_buf + from_buf_len - badchar;
 
-                  try_char = g_utf8_get_char_validated (badchar, left_len);
+                  try_char = g_utf8_get_char_validated (badchar, incomplete_len);
 
                   switch (try_char)
                     {
                       case -2:
-                        g_assert (left_len < 6);
+                        g_assert (incomplete_len < 6);
                         if (try_len == from_buf_len)
                           {
                             errnum = EINVAL;
@@ -2075,7 +2076,7 @@ reconvert:
                         else
                           {
                             errnum = 0;
-                            err = (size_t) -1;
+                            err = (size_t) 0;
                           }
                         break;
                       case -1:
@@ -2094,12 +2095,12 @@ reconvert:
                 {
                   err = (size_t) 0;
                   errnum = 0;
-                  left_len = 0;
+                  left_len = from_buf_len - try_len;
                 }
 
               g_string_append_len (channel->write_buf, from_buf,
-                                   try_len - left_len);
-              from_buf += try_len - left_len;
+                                   from_buf_len - left_len);
+              from_buf += from_buf_len - left_len;
             }
           else
             {
