@@ -739,7 +739,7 @@ The standard delimiters, used in g_strdelimit().
 Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\' and
 '&quot;' in the string @source by inserting a '\' before
 them. Additionally all characters in the range 0x01-0x1F (everything
-below SPACE) and in the range 0x80-0xFF (all non-ASCII chars) are
+below SPACE) and in the range 0x7F-0xFF (all non-ASCII chars) are
 replaced with a '\' followed by their octal representation. Characters
 supplied in @exceptions are not escaped.
 </para>
