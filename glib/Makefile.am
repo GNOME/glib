@@ -50,6 +50,7 @@ libglib_1_3_la_SOURCES = 	\
 	gunibreak.c		\
 	gunichartables.h	\
 	gunicollate.c		\
+	gunicomp.h		\
 	gunidecomp.h		\
 	gunidecomp.c		\
 	gutils.c

@@ -1,3 +1,12 @@
+Wed Jul 11 11:13:50 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/Makefile.am (libglib_1_3_la_SOURCES): Add gunicomp.h
+	(Reported by Sven Neumann).
+
+	* glib/guniprop.c (g_utf8_str/updown) glib/gunicollate.c
+	(g_utf8_collate_key): Fix shadowing problems reported by
+	many (D. Adler, S. Neumann, M. Murmane, L. Peter)
+
 Fri Jul  6 00:02:41 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gmessages.c (printf_string_upper_bound): fix negative exponent

@@ -165,7 +165,7 @@ g_utf8_collate_key (const gchar *str,
 		    gssize       len)
 {
   gchar *result;
-  size_t len;
+  size_t xfrm_len;
   
 #ifdef __STDC_ISO_10646__
 
@@ -176,16 +176,16 @@ g_utf8_collate_key (const gchar *str,
 
   setlocale (LC_COLLATE, "");
 
-  len = wcsxfrm (NULL, (wchar_t *)str_norm, 0);
-  result_wc = g_new (wchar_t, len + 1);
-  wcsxfrm (result_wc, (wchar_t *)str_norm, len + 1);
+  xfrm_len = wcsxfrm (NULL, (wchar_t *)str_norm, 0);
+  result_wc = g_new (wchar_t, xfrm_len + 1);
+  wcsxfrm (result_wc, (wchar_t *)str_norm, xfrm_len + 1);
 
-  for (i=0; i < len; i++)
+  for (i=0; i < xfrm_len; i++)
     result_len += utf8_encode (NULL, result_wc[i]);
 
   result = g_malloc (result_len + 1);
   result_len = 0;
-  for (i=0; i < len; i++)
+  for (i=0; i < xfrm_len; i++)
     result_len += utf8_encode (result + result_len, result_wc[i]);
 
   result[result_len] = '\0';
@@ -201,9 +201,9 @@ g_utf8_collate_key (const gchar *str,
 
   if (g_get_charset (&charset))
     {
-      len = strxfrm (NULL, str_norm, 0);
-      result = g_malloc (len + 1);
-      strxfrm (result, str_norm, len + 1);
+      xfrm_len = strxfrm (NULL, str_norm, 0);
+      result = g_malloc (xfrm_len + 1);
+      strxfrm (result, str_norm, xfrm_len + 1);
     }
   else
     {
@@ -211,22 +211,21 @@ g_utf8_collate_key (const gchar *str,
 
       if (str_locale)
 	{
-	  len = strxfrm (NULL, str_locale, 0);
-	  result = g_malloc (len + 2);
+	  xfrm_len = strxfrm (NULL, str_locale, 0);
+	  result = g_malloc (xfrm_len + 2);
 	  result[0] = 'A';
-	  strxfrm (result + 1, str_locale, len + 1);
+	  strxfrm (result + 1, str_locale, xfrm_len + 1);
 	  
 	  g_free (str_locale);
 	}
       else
 	{
-	  len = strlen (str_norm);
-	  result = g_malloc (len + 2);
+	  xfrm_len = strlen (str_norm);
+	  result = g_malloc (xfrm_len + 2);
 	  result[0] = 'B';
-	  memcpy (result + 1, str_norm, len);
-	  result[len+1] = '\0';
+	  memcpy (result + 1, str_norm, xfrm_len);
+	  result[xfrm_len+1] = '\0';
 	}
-
     }
 
   g_free (str_norm);
