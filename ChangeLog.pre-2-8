@@ -1,5 +1,12 @@
 2005-02-05  Tor Lillqvist  <tml@novell.com>
 
+	* configure.in (G_LIBS_EXTRA)
+	* glib/giowin32.c: I think we can include <winsock2.h> and link
+	with -lws2_32. Only Windows 95 originally didn't have Winsock 2,
+	and it's available as an update for it. Not that we use any actual
+	Winsock 2 -only features, but still, simpler to link directly with
+	ws2_32.dll instead of going through wsock32.dll.
+
 	* glib/gfileutils.c (g_file_get_contents): In the Win32 ABI
 	stability version, call g_file_get_contents_utf8(), not
 	itself. (#166386)

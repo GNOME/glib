@@ -39,7 +39,7 @@
 
 #include <stdlib.h>
 #include <windows.h>
-#include <winsock.h>          /* Not everybody has winsock2 */
+#include <winsock2.h>
 #include <fcntl.h>
 #include <io.h>
 #include <process.h>
