@@ -1,3 +1,15 @@
+2004-03-21  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (g_path_get_dirname): Fix Win32 behaviour in some
+	cases where a drive letter is present. For 'a:' or 'a:foo', return
+	'a:.'. This is mostly just for consistency with the behaviour
+	without a drive letter. But very important is to for 'a:\foo' or
+	'a:\', return 'a:\', and not 'a:'. (Ditto for forward slashes
+	instead of backslashes.) (#137316)
+
+	* tests/dirname-test.c (main): More complete testing on Win32. If
+	a test fails, include expected and actual result in error message.
+
 Fri Mar 19 15:21:09 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c: Fix the accidental revert of the

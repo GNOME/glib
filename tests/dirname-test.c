@@ -60,7 +60,6 @@ main (int   argc,
     gchar *filename;
     gchar *dirname;
   } dirname_checks[] = {
-#ifndef G_OS_WIN32
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },
@@ -72,17 +71,35 @@ main (int   argc,
     { "a/b", "a" },
     { "a/b/", "a/b" },
     { "c///", "c" },
-#else
+    { "/a/b", "/a" },
+    { "/a/b/", "/a/b" },
+#ifdef G_OS_WIN32
     { "\\", "\\" },
     { ".\\\\\\\\", "." },
+    { ".\\/\\/", "." },
     { ".", "." },
     { "..", "." },
     { "..\\", ".." },
     { "..\\\\\\\\", ".." },
+    { "..\\//\\", ".." },
     { "", "." },
     { "a\\b", "a" },
     { "a\\b\\", "a\\b" },
+    { "\\a\\b", "\\a" },
+    { "\\a\\b\\", "\\a\\b" },
     { "c\\\\\\", "c" },
+    { "c/\\\\", "c" },
+    { "a:", "a:." },
+    { "a:foo", "a:." },
+    { "a:foo\\bar", "a:foo" },
+    { "a:/foo", "a:/" },
+    { "a:/foo/bar", "a:/foo" },
+    { "a:/", "a:/" },
+    { "a://", "a:/" },
+    { "a:\\foo", "a:\\" },
+    { "a:\\", "a:\\" },
+    { "a:\\\\", "a:\\" },
+    { "a:\\/", "a:\\" },
 #endif
   };
   guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
@@ -92,7 +109,10 @@ main (int   argc,
       gchar *dirname;
 
       dirname = g_path_get_dirname (dirname_checks[i].filename);
-      g_assert (strcmp (dirname, dirname_checks[i].dirname) == 0);
+      if (strcmp (dirname, dirname_checks[i].dirname) != 0)
+	g_error ("%s returned %s, should return %s",
+		 dirname_checks[i].filename, dirname,
+		 dirname_checks[i].dirname);
       g_free (dirname);
     }
 
