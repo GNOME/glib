@@ -1,3 +1,12 @@
+2002-07-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread/gthread-solaris.c: Use thr_min_stack() instead of
+	sysconf (_SC_THREAD_STACK_MIN). if stack_size is 0 on entry to
+	g_thread_create_solaris_impl, also pass 0 to thr_create. Otherwise
+	the stack might be to small for any nontrivial thread. Discovered
+	on intel-solaris by Rajkumar Sivasamy
+	<rajkumar.siva@wipro.com>. Merged from HEAD.
+
 2002-07-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Improve checks for dce/posix threads to also do
