@@ -1,3 +1,12 @@
+Wed Sep 22 01:53:18 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h (NULL): define NULL as (0L) if __cplusplus is defined, to
+	avoid "ANSI C++ forbids implicit conversion from `void *' in argument
+	passing" errors upon NULL usage in C++ programs (gcc-2.95 is on crack
+	for erroring out on this, instead of just issueing a warning).
+
+	* glib.h (g_trash_stack_pop): use uncasted NULL again.
+	
 Fri Sep 17 10:24:45 1999  Tim Janik  <timj@gtk.org>
 
 	* gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied patch

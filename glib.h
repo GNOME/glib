@@ -103,8 +103,12 @@ extern "C" {
  *  been defined. It is assumed that if they are already
  *  defined then the current definition is correct.
  */
-#ifndef	NULL
-#define	NULL	((void*) 0)
+#ifndef NULL
+#  ifdef __cplusplus
+#    define NULL        (0L)
+#  else /* !__cplusplus */
+#    define NULL        ((void*) 0)
+#  endif /* !__cplusplus */
 #endif
 
 #ifndef	FALSE
@@ -1690,7 +1694,7 @@ g_trash_stack_pop (GTrashStack **stack_p)
       /* NULLify private pointer here, most platforms store NULL as
        * subsequent 0 bytes
        */
-      data->next = (GTrashStack*) NULL;
+      data->next = NULL;
     }
 
   return data;
