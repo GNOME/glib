@@ -1,21 +1,22 @@
+# translation of glib.glib-2-6.gu.po to Gujarati
 # translation of gu.po to Gujarati
-# Copyright (C) 2004 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 # MagNet <magnet@magnet-i.com>, 2004.
-# Ankit Patel <ankit@redhat.com>, 2004.
+# Ankit Patel <ankit@redhat.com>, 2004, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: gu\n"
+"Project-Id-Version: glib.glib-2-6.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-04 00:11-0500\n"
-"PO-Revision-Date: 2004-08-05 10:49+0530\n"
+"POT-Creation-Date: 2005-02-18 11:22+0100\n"
+"PO-Revision-Date: 2005-02-19 15:43+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
-"Language-Team: Gujarati\n"
+"Language-Team: Gujarati <gu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "<magnet@magnet-i.com>\n"
-"X-Generator: KBabel 1.3.1\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 
 #: glib/gconvert.c:403
@@ -159,8 +160,7 @@ msgstr "g_10_channe_lread_line_string માં આડી હરોળ માં
 
 #: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
-"વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
+msgstr "વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
 
 #: glib/giochannel.c:1622 glib/giochannel.c:1699
 msgid "Channel terminates in a partial character"
@@ -181,8 +181,7 @@ msgid "Error on line %d: %s"
 msgstr "%d લીટી પર ભૂલ: %s"
 
 #: glib/gmarkup.c:428
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "'&;' વસ્તુ ખાલી દેખાય છે: યોગ્ય વસ્તુઓ છે:&amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:438
@@ -214,18 +213,16 @@ msgstr ""
 "શકો છો- એમપરસંડ &amp; તરીકે લો"
 
 #: glib/gmarkup.c:573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"'%s' નો પદછેદ કરવામા નિષ્ફળ, કે જે અક્ષરની અંદર આંકડો હોલો જોઇએ સંદર્ભ(ઉદાહરણ  તરીકે "
-"&#૨૩૪;) - અથવા કદાય સંખ્યા ખુબ મોટી છે."
+msgstr "'%-.*s' નું પદચ્છેદ કરવામાં નિષ્ફળ, કે જે અક્ષર સંદર્ભની અંદર અંક હોવો જોઈએ (ઉદાહરણ તરીકે &#234;) - કદાચ અંક ખૂબ મોટો હોય"
 
 #: glib/gmarkup.c:598
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "%s અક્ષર સંદર્ભ પ્રમાણિત અક્ષરનું કોડ બનાવી શકતુ નથી"
+msgstr "અક્ષર સંદર્ભ '%-.*s' પરવાનગી અપાયેલ અક્ષરનો સંગ્રહ કરતો નથી"
 
 #: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -272,8 +269,7 @@ msgstr "અસંગત અક્ષર '%s', વસ્તુ '%s' ની શર
 
 #: glib/gmarkup.c:1246
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
 #: glib/gmarkup.c:1288
@@ -430,8 +426,7 @@ msgstr "મદદગાર કાર્યક્રમ ચલાવવામા�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
+msgstr "બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
 
 #: glib/gspawn.c:179
 #, c-format
@@ -491,121 +486,121 @@ msgstr "પરીવર્તિત ઈનપુટની અંદર અયો
 msgid "Character out of range for UTF-16"
 msgstr "UTF-૧૬ ની સીમાની બહાર નો અક્ષર"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "Usage:"
-msgstr ""
+msgstr "વપરાશ:"
 
-#: glib/goption.c:405
+#: glib/goption.c:435
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[વિકલ્પ...]"
 
-#: glib/goption.c:494
+#: glib/goption.c:518
 msgid "Help Options:"
-msgstr ""
+msgstr "મદદ વિકલ્પો:"
 
-#: glib/goption.c:494
+#: glib/goption.c:519
 msgid "Show help options"
-msgstr ""
+msgstr "મદદ વિકલ્પો બતાવો"
 
-#: glib/goption.c:498
+#: glib/goption.c:524
 msgid "Show all help options"
-msgstr ""
+msgstr "બધા મદદ વિકલ્પો બતાવો"
 
-#: glib/goption.c:547
+#: glib/goption.c:574
 msgid "Application Options:"
-msgstr ""
+msgstr "કાર્યક્રમ વિકલ્પો:"
 
-#: glib/goption.c:586
+#: glib/goption.c:614
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "પૂર્ણાંક કિંમત '%s' નું પદચ્છેદ કરી શકતા નથી --%s માટે"
 
-#: glib/goption.c:596
+#: glib/goption.c:624
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "પૂર્ણાંક કિંમત '%s' એ %s માટે મર્યાદાની બહાર છે"
 
-#: glib/goption.c:1323
+#: glib/goption.c:1354
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "અજ્ઞાત વિકલ્પ %s"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "માન્ય કી ફાઈલ માહિતી ડિરેક્ટરીઓમાં શોધી શકાઈ નહિં"
 
-#: glib/gkeyfile.c:371
+#: glib/gkeyfile.c:373
 msgid "Not a regular file"
-msgstr ""
+msgstr "નિયમિત ફાઈલ નથી"
 
-#: glib/gkeyfile.c:379
+#: glib/gkeyfile.c:381
 msgid "File is empty"
-msgstr ""
+msgstr "ફાઈલ ખાલી છે"
 
-#: glib/gkeyfile.c:689
+#: glib/gkeyfile.c:691
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "કી ફાઈલ '%s' વાક્ય સમાવે છે કે જે કી-કિંમત જોડી, જૂથ અથવા ટિપ્પળી નથી"
 
-#: glib/gkeyfile.c:757
+#: glib/gkeyfile.c:759
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "કી ફાઈલ જૂથ સાથે શરૂ થતી નથી"
 
-#: glib/gkeyfile.c:800
+#: glib/gkeyfile.c:802
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "કી ફાઈલ બિનઆધારભૂત સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
-#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
-#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
+#: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
+#: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
+#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "કી ફાઈલને જૂથ '%s' નથી"
 
-#: glib/gkeyfile.c:1167
+#: glib/gkeyfile.c:1169
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "કી ફાઈલને કી '%s' નથી"
 
-#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
+#: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "કી ફાઈલ '%s' કી '%s' કિંમત સાથે સમાવે છે કે જે UTF-8 નથી"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
+#: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
+msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે સમજી શકાતી નથી."
 
-#: glib/gkeyfile.c:1986
+#: glib/gkeyfile.c:1988
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr ""
+msgstr "કી ફાઈલ '%s' કી જૂથ '%s' માં સમાવે છે કે જેની પાસે કિંમત છે જે સમજી શકાતી નથી."
 
-#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
+#: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "કી ફાઈલને કી '%s' જૂથ '%s' માં નથી"
 
-#: glib/gkeyfile.c:3035
-#, fuzzy, c-format
-msgid "Key file contains invalid escape sequence '%s'"
-msgstr "'%s' URI અયોગ્ય બહાર નીકળવાના અક્ષરો ધરાવે છે "
-
-#: glib/gkeyfile.c:3059
+#: glib/gkeyfile.c:3022
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "કી ફાઈલ લીટીના અંતે એસ્કેપ અક્ષર હાર ધરાવે છે"
 
-#: glib/gkeyfile.c:3175
+#: glib/gkeyfile.c:3044
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "કી ફાઈલ અયોગ્ય એસ્કેપ ક્રમ '%s' સમાવે છે"
+
+#: glib/gkeyfile.c:3182
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "કિંમત '%s' સંખ્યા તરીકે સમજી શકાતી નથી."
 
-#: glib/gkeyfile.c:3203
+#: glib/gkeyfile.c:3210
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "કિંમત '%s' બુલિયન તરીકે સમજી શકાતી નથી."
+
