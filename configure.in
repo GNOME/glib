@@ -1976,6 +1976,7 @@ docs/reference/Makefile
 docs/reference/glib/Makefile
 docs/reference/gobject/Makefile
 tests/Makefile
+m4macros/Makefile
 ],[case "$CONFIG_FILES" in
 *glib-config-2.0*)chmod +x glib-config-2.0;;
 esac

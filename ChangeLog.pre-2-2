@@ -1,3 +1,15 @@
+2001-05-15  Havoc Pennington  <hp@redhat.com>
+
+	* configure.in (AC_OUTPUT): m4macros/Makefile
+
+	* m4macros/Makefile.am, m4macros/glib-2.0.m4,
+	m4macros/glib-gettext.m4:
+	m4 files moved here on server, Makefile.am added
+	 
+	This is so you can aclocal -I m4macros while avoiding acinclude.m4
+
+	* Makefile.am: add m4macros subdir, remove references to glib-2.0.m4
+
 2001-05-14  Havoc Pennington  <hp@redhat.com>
 
 	* gutf8.c (g_utf8_get_char): fix docs; they said we validated 

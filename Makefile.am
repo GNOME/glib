@@ -2,14 +2,13 @@
 
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = . gobject gmodule gthread docs tests build
+SUBDIRS = . m4macros gobject gmodule gthread docs tests build
 
 INCLUDES = -DG_LOG_DOMAIN=g_log_domain_glib @GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED -DGLIB_COMPILATION
 
 EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
-	glib-2.0.m4		\
 	glib.spec.in		\
 	NEWS.pre-1-3		\
 	acglib.m4		\
@@ -188,8 +187,6 @@ testgdateparser_LDADD = libglib-1.3.la
 if ENABLE_TIMELOOP
 timeloop_LDADD = libglib-1.3.la
 endif
-m4datadir = $(datadir)/aclocal
-m4data_DATA = glib-2.0.m4
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gthread-2.0.pc
