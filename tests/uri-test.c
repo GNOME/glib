@@ -352,9 +352,9 @@ run_roundtrip_tests (void)
 
       if (safe_strcmp (to_uri_tests[i].filename, res))
 	{
-	  g_message ("roundtrip test %d failed, filename modified: "
-		     " expected \"%s\", but got \"%s\"\n",
-		     i, to_uri_tests[i].filename, res);
+	  g_print ("roundtrip test %d failed, filename modified: "
+		   " expected \"%s\", but got \"%s\"\n",
+		   i, to_uri_tests[i].filename, res);
 	  any_failed = TRUE;
 	}
 
@@ -370,6 +370,58 @@ run_roundtrip_tests (void)
       g_print (".");
     }
   g_print ("\n");
+}
+
+static void
+run_uri_list_tests (void)
+{
+  /* straight from the RFC */
+  gchar *list =
+    "# urn:isbn:0-201-08372-8\r\n"
+    "http://www.huh.org/books/foo.html\r\n"
+    "http://www.huh.org/books/foo.pdf   \r\n"
+    "   ftp://ftp.foo.org/books/foo.txt\r\n";
+  gchar *expected_uris[] = {
+    "http://www.huh.org/books/foo.html",
+    "http://www.huh.org/books/foo.pdf",
+    "ftp://ftp.foo.org/books/foo.txt"
+  };
+
+  gchar **uris;
+  gint j;
+
+  uris = g_uri_list_extract_uris (list);
+  
+  if (g_strv_length (uris) != 3)
+    {
+      g_print ("uri list test failed: "
+	       " expected %d uris, but got %d\n",
+	       3, g_strv_length (uris));
+      any_failed = TRUE;
+    }
+  
+  for (j = 0; j < 3; j++)
+    {
+      if (safe_strcmp (uris[j], expected_uris[j])) 
+	{
+	  g_print ("uri list test failed: "
+		   " expected \"%s\", but got \"%s\"\n",
+		   expected_uris[j], uris[j]);
+	  any_failed = TRUE;
+	}
+    }
+
+  g_strfreev (uris);
+
+  uris = g_uri_list_extract_uris ("# just hot air\r\n# more hot air");
+  if (g_strv_length (uris) != 0)
+    {
+      g_print ("uri list test 2 failed: "
+	       " expected %d uris, but got %d (first is \"%s\")\n",
+	       0, g_strv_length (uris), uris[0]);
+      any_failed = TRUE;
+    }
+  
 }
 
 int
@@ -390,6 +442,7 @@ main (int   argc,
   run_to_uri_tests ();
   run_from_uri_tests ();
   run_roundtrip_tests ();
+  run_uri_list_tests ();
 
   return any_failed ? 1 : 0;
 }

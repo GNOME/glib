@@ -1644,3 +1644,76 @@ g_filename_to_uri   (const gchar *filename,
 
   return escaped_uri;
 }
+
+/**
+ * g_uri_list_extract_uris:
+ * @uri_list: an URI list 
+ *
+ * Splits an URI list conforming to the text/uri-list
+ * mime type defined in RFC 2483 into individual URIs,
+ * discarding any comments. The URIs are not validated.
+ *
+ * Returns: a newly allocated %NULL-terminated list of
+ *   strings holding the individual URIs. The array should
+ *   be freed with g_strfreev().
+ *
+ * Since: 2.6
+ */
+gchar **
+g_uri_list_extract_uris (const gchar *uri_list)
+{
+  GSList *uris, *u;
+  const gchar *p, *q;
+  gchar **result;
+  gint n_uris = 0;
+
+  uris = NULL;
+
+  p = uri_list;
+
+  /* We don't actually try to validate the URI according to RFC
+   * 2396, or even check for allowed characters - we just ignore
+   * comments and trim whitespace off the ends.  We also
+   * allow LF delimination as well as the specified CRLF.
+   *
+   * We do allow comments like specified in RFC 2483.
+   */
+  while (p)
+    {
+      if (*p != '#')
+	{
+	  while (g_ascii_isspace (*p))
+	    p++;
+
+	  q = p;
+	  while (*q && (*q != '\n') && (*q != '\r'))
+	    q++;
+
+	  if (q > p)
+	    {
+	      q--;
+	      while (q > p && g_ascii_isspace (*q))
+		q--;
+
+	      if (q > p)
+		{
+		  uris = g_slist_prepend (uris, g_strndup (p, q - p + 1));
+		  n_uris++;
+		}
+	    }
+	}
+      p = strchr (p, '\n');
+      if (p)
+	p++;
+    }
+
+  result = g_new (gchar *, n_uris + 1);
+
+  result[n_uris--] = 0;
+  for (u = uris; u; u = u->next)
+    result[n_uris--] = u->data;
+
+  g_slist_free (uris);
+
+  return result;
+}

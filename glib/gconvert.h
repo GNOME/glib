@@ -117,6 +117,7 @@ gchar *g_filename_to_uri   (const gchar *filename,
 			    const gchar *hostname,
 			    GError     **error);
 
+gchar **g_uri_list_extract_uris (const gchar *uri_list);
 
 G_END_DECLS
 

@@ -1,3 +1,12 @@
+2004-10-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/uri-test.c (run_uri_list_tests): Add some
+	uri list tests.c.
+
+	* glib/gconvert.h:
+	* glib/gconvert.c (g_uri_list_extract_uris): New function to
+	split a text/uri-list data into individual uris and strip comments.
+
 2004-10-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/goption.c (get_change): Don't return the wrong 
