@@ -1,3 +1,16 @@
+2003-01-01  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gmessages.c (ensure_stderr_valid): New function, parallel
+	to ensure_stdout_valid(). #defined as empty on Unix.
+	(mklevel_prefix): Do use either stderr or stdout on Windows,
+	too. Otherwise g_warning() messages (that are just warnings, by
+	definition) will get mixed with proper stdout output. Noticed in
+	GIMP's gimpconfig-dump.
+	(strdup_convert, mklevel_prefix, g_printerr): Call
+	ensure_stderr_valid() before trying to use stderr.
+	(g_logv): [Win32] Convert message to current codepage before
+	display with MessageBox().
+
 2002-12-28  Tõivo Leedjärv  <toivo@linux.ee>
 
 	* configure.in: Added et to ALL_LINGUAS.
