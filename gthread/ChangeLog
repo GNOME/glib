@@ -1,3 +1,8 @@
+2001-09-19  Tor Lillqvist  <tml@iki.fi>
+
+	* gthread.rc.in: Correct InternalName and OriginalFilename to
+	match what we actually produce.
+
 2001-07-20  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : reflect glib move
