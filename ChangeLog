@@ -1,3 +1,7 @@
+2001-07-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Added "nn" to ALL_LINGUAS.
+	
 2001-07-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gmain.c: Add some assertions. Simplify and fix
