@@ -1,3 +1,9 @@
+2002-03-05  Sven Neumann  <sven@gimp.org>
+
+	* gvaluetransform.c (g_value_transforms_init): don't try to 
+	register undeclared value transform functions if G_GINT64_FORMAT
+	or G_GUINT64_FORMAT are undefined (#73586).
+
 2002-03-03  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.msc.in
