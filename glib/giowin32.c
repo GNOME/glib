@@ -1605,14 +1605,17 @@ GIOChannel *
 g_io_channel_unix_new (gint fd)
 {
   struct stat st;
+  int optval, optlen;
 
   if (fstat (fd, &st) == 0)
     return g_io_channel_win32_new_fd_internal (fd, &st);
   
-  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SOCKET_ERROR)
-    return g_io_channel_win32_new_socket (fd);
+  optlen = sizeof (optval);
+  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, (char *) &optval, &optlen) != SOCKET_ERROR)
+    return g_io_channel_win32_new_socket(fd);
 
   g_warning (G_STRLOC ": %d is neither a file descriptor or a socket", fd);
+
   return NULL;
 }
 

@@ -1,3 +1,11 @@
+2003-06-25  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/giowin32.c (g_io_channel_unix_new): Pass real &optval and
+	&optlen to getsockopt() instead of NULL. Don't remember why I
+	thought that NULL could be used (as we don't actually use the
+	returned value for anything), the Platform SDK documentation
+	doesn't imply so.
+
 2003-06-19  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gutils.c (g_path_get_basename): Move the documentation
