@@ -101,7 +101,7 @@
 #define	G_STRINGIFY_ARG(contents)	#contents
 
 /* Provide a string identifying the current code position */
-#if defined(__GNUC__) && (__GNUC__ < 3)
+#if defined(__GNUC__) && (__GNUC__ < 3) && !defined(__cplusplus)
 #  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
 #else
 #  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
