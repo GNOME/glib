@@ -23,3 +23,5 @@ stamp-gc-h
 testgdate
 testgdateparser
 glibconfig-sysdefs.h
+glib.spec
+stamp-h.in

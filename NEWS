@@ -1,3 +1,24 @@
+What's new in GLib 1.2.0 (since GLib 1.0.x):
+
+* GLib is distributed seperatedly from Gtk+
+* Win32 Portability
+* Threading support
+* GModule mechanism (implemented in an extra library) which wraps dynamic
+  object code loading facilities in a portable manner
+* GIOChannel structure to encapsulate the IPC mechanism
+* GQuarks and datasets
+* GRelations for n-way mapping of certain data
+* An n-way tree implementation
+* GDate functionality for calendar date manipulations
+* GAllocator type and assocated functions
+* Added generic callback maintenance functions (ghook)
+* Generic functions for TAB completions
+* Endian defines (G_*_ENDIAN)
+* g_log() mechanism for logging of messages at different log levels
+* Generic main-loop mechanism
+* New glib-config helper script
+* Many more API extensions
+
 Overview of Changes in GLib 1.1.16:
 
 * Allocate smaller pools of memory for glists, gslists, gnodes

@@ -21,7 +21,7 @@ CC = cl -G5 -GF -Ox -W3 -MD -nologo
 LDFLAGS = /link
 INSTALL = copy
 
-GLIB_VER = 1.1
+GLIB_VER = 1.2
 
 CFLAGS = -I. -DHAVE_CONFIG_H
 

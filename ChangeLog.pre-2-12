@@ -1,3 +1,9 @@
+Sun Feb 21 22:11:51 CST 1999  Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.2.0
+
+	* AUTHORS: updated
+
 Wed Feb 24 00:08:42 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* *.[ch]: inserted additional note to look for ChangeLog and
