@@ -253,10 +253,10 @@ attribute_list_to_arrays (GSList  *attributes,
       g_assert (i >= 0);
 
       if (namesp)
-        names[i] = g_strdup (attr->name);
+        names[i] = attr->name;
 
       if (valuesp)
-        values[i] = g_strdup (attr->value);
+        values[i] = attr->value;
 
       tmp_list = g_slist_next (tmp_list);
       --i;
@@ -1250,9 +1250,6 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   /* Call user callback for element start */
                   start_name = current_element (context);
 
-                  /* this gratuituously copies the attr names/values
-                   * I guess
-                   */
                   attribute_list_to_arrays (context->attributes,
                                             &attr_names,
                                             &attr_values,
@@ -1267,9 +1264,12 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                                                         context->user_data,
                                                         &tmp_error);
 
-                  g_strfreev (attr_names);
-                  g_strfreev (attr_values);
-                  
+		  /* Free only the string arrays, as we didn't g_strdup() the attribute
+		   * list's strings
+		   */
+                  g_free (attr_names);
+                  g_free (attr_values);
+
                   /* Go ahead and free this. */
                   g_slist_foreach (context->attributes, (GFunc)attribute_free,
                                    NULL);

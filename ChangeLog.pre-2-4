@@ -1,3 +1,10 @@
+2001-05-18  Michael Natterer  <mitch@convergence.de>
+
+	* gmarkup.c: don't g_strdup()/g_free() all parsed attributes and
+	their values twice but simply copy the string pointers from the
+	GMarkupAttribute struct to the string arrays before passing them
+	to start_element().
+
 2001-05-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c, gthread.h: Renamed g_thread_create to
