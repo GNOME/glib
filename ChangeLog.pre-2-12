@@ -1,3 +1,16 @@
+Sat Oct 12 21:30:41 2002  Tim Janik  <timj@gtk.org>
+
+	* configure.in (GLIB_VERSION): up version number to 2.0.7, binary 7,
+	interface 0.
+
+	* glib/gstrfuncs.c (g_ascii_strtod): fix comment.
+	(g_ascii_strtoull): new function, acting like strtoull(3) in the C
+	locale.
+
+	* glib/gscanner.[hc]: fix 32bit issues with integer parsing and
+	support storing 64bit values in GTokenValue by
+	using g_ascii_strtoull().
+
 Thu Oct 10 23:27:02 2002  Tim Janik  <timj@gtk.org>
 
 	* glib/gscanner.c (g_scanner_msg_handler): if input_name is NULL,

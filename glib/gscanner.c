@@ -71,7 +71,6 @@ struct	_GScannerKey
 };
 
 
-
 /* --- variables --- */
 static GScannerConfig g_scanner_config_template =
 {
@@ -115,6 +114,7 @@ static GScannerConfig g_scanner_config_template =
   TRUE			/* char_2_token */,
   FALSE			/* symbol_2_token */,
   FALSE			/* scope_0_fallback */,
+  FALSE			/* store_int64 */,
 };
 
 
@@ -211,14 +211,15 @@ g_scanner_new (const GScannerConfig *config_templ)
   scanner->config->char_2_token		 = config_templ->char_2_token;
   scanner->config->symbol_2_token	 = config_templ->symbol_2_token;
   scanner->config->scope_0_fallback	 = config_templ->scope_0_fallback;
+  scanner->config->store_int64		 = config_templ->store_int64;
   
   scanner->token = G_TOKEN_NONE;
-  scanner->value.v_int = 0;
+  scanner->value.v_int64 = 0;
   scanner->line = 1;
   scanner->position = 0;
   
   scanner->next_token = G_TOKEN_NONE;
-  scanner->next_value.v_int = 0;
+  scanner->next_value.v_int64 = 0;
   scanner->next_line = 1;
   scanner->next_position = 0;
   
@@ -608,7 +609,7 @@ g_scanner_cur_value (GScanner *scanner)
 {
   GTokenValue v;
   
-  v.v_int = 0;
+  v.v_int64 = 0;
   
   g_return_val_if_fail (scanner != NULL, v);
 
@@ -654,7 +655,7 @@ g_scanner_input_file (GScanner *scanner,
     g_scanner_sync_file_offset (scanner);
 
   scanner->token = G_TOKEN_NONE;
-  scanner->value.v_int = 0;
+  scanner->value.v_int64 = 0;
   scanner->line = 1;
   scanner->position = 0;
   scanner->next_token = G_TOKEN_NONE;
@@ -682,7 +683,7 @@ g_scanner_input_text (GScanner	  *scanner,
     g_scanner_sync_file_offset (scanner);
 
   scanner->token = G_TOKEN_NONE;
-  scanner->value.v_int = 0;
+  scanner->value.v_int64 = 0;
   scanner->line = 1;
   scanner->position = 0;
   scanner->next_token = G_TOKEN_NONE;
@@ -956,7 +957,10 @@ g_scanner_unexp_token (GScanner		*scanner,
     case G_TOKEN_OCTAL:
     case G_TOKEN_INT:
     case G_TOKEN_HEX:
-      g_snprintf (token_string, token_string_len, "number `%ld'", scanner->value.v_int);
+      if (scanner->config->store_int64)
+	g_snprintf (token_string, token_string_len, "number `%llu'", scanner->value.v_int64);
+      else
+	g_snprintf (token_string, token_string_len, "number `%lu'", scanner->value.v_int);
       break;
       
     case G_TOKEN_FLOAT:
@@ -1189,7 +1193,10 @@ g_scanner_get_token_i (GScanner	*scanner,
       scanner->config->int_2_float)
     {
       *token_p = G_TOKEN_FLOAT;
-      value_p->v_float = value_p->v_int;
+      if (scanner->config->store_int64)
+	value_p->v_float = value_p->v_int64;
+      else
+	value_p->v_float = value_p->v_int;
     }
   
   errno = 0;
@@ -1213,7 +1220,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   guchar	   ch;
   
   config = scanner->config;
-  (*value_p).v_int = 0;
+  (*value_p).v_int64 = 0;
   
   if ((scanner->text >= scanner->text_end && scanner->input_fd < 0) ||
       scanner->token == G_TOKEN_EOF)
@@ -1234,7 +1241,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
       
       ch = g_scanner_get_char (scanner, line_p, position_p);
       
-      value.v_int = 0;
+      value.v_int64 = 0;
       token = G_TOKEN_NONE;
       
       /* this is *evil*, but needed ;(
@@ -1557,30 +1564,31 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  while (in_number);
 	  
 	  endptr = NULL;
-	  switch (token)
+	  if (token == G_TOKEN_FLOAT)
+	    value.v_float = g_strtod (gstring->str, &endptr);
+	  else
 	    {
-	    case G_TOKEN_BINARY:
-	      value.v_binary = strtol (gstring->str, &endptr, 2);
-	      break;
-	      
-	    case G_TOKEN_OCTAL:
-	      value.v_octal = strtol (gstring->str, &endptr, 8);
-	      break;
-	      
-	    case G_TOKEN_INT:
-	      value.v_int = strtol (gstring->str, &endptr, 10);
-	      break;
-	      
-	    case G_TOKEN_FLOAT:
-	      value.v_float = g_strtod (gstring->str, &endptr);
-	      break;
-	      
-	    case G_TOKEN_HEX:
-	      value.v_hex = strtol (gstring->str, &endptr, 16);
-	      break;
-	      
-	    default:
-	      break;
+	      guint64 ui64 = 0;
+	      switch (token)
+		{
+		case G_TOKEN_BINARY:
+		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 2);
+		  break;
+		case G_TOKEN_OCTAL:
+		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 8);
+		  break;
+		case G_TOKEN_INT:
+		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 10);
+		  break;
+		case G_TOKEN_HEX:
+		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 16);
+		  break;
+		default: ;
+		}
+	      if (scanner->config->store_int64)
+		value.v_int64 = ui64;
+	      else
+		value.v_int = ui64;
 	    }
 	  if (endptr && *endptr)
 	    {
