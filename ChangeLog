@@ -1,3 +1,14 @@
+1999-03-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Revamped the thread configure stuff. Now dce
+	threads (old posix draft) are recogniced. This is necessary,
+	because dce threads are in fact working quite differently from
+	posix threads. Also changed the conditions for checking for MT
+	safe functions a bit, because G_THREADS_IMPL_NONE still have to
+	compile thread safe. NOTE: Please do not commit my change to
+	glib-1-2/{acconfig.h,configure.in,config.h.win32} from 1999-03-03,
+	as the current change will take care of that too.
+
 Tue Mar  9 14:37:32 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* Makefile.am, glib.h, gstack.c, gqueue.c,

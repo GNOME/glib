@@ -43,10 +43,18 @@
            __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,          \
            g_strerror((num)), #name )
 
-#define posix_check_for_error( what ) G_STMT_START{             \
-  int error = (what);                                           \
-  if( error ) { posix_print_error( what, error ); }             \
-  }G_STMT_END
+#if defined(G_THREADS_IMPL_POSIX)
+# define posix_check_for_error( what ) G_STMT_START{             \
+    int error = (what);                                           \
+    if( error ) { posix_print_error( what, error ); }             \
+    }G_STMT_END
+#elif defined(G_THREADS_IMPL_DCE)
+# define posix_check_for_error( what ) G_STMT_START{             \
+    if( (what) == -1 ) { posix_print_error( what, errno ); }       \
+    }G_STMT_END
+#else /* neither G_THREADS_IMPL_POSIX nor G_THREADS_IMPL_DCE are defined */
+# error This should not happen. Contact the GLb team.
+#endif
 
 static GMutex *
 g_mutex_new_posix_impl (void)
@@ -76,8 +84,14 @@ g_mutex_trylock_posix_impl (GMutex * mutex)
   int result;
 
   result = pthread_mutex_trylock ((pthread_mutex_t *) mutex);
-  if (result != EBUSY)
+
+#ifdef G_THREADS_IMPL_POSIX
+  if (result == EBUSY)
     return FALSE;
+#else /* G_THREADS_IMPL_DCE */
+  if (result == 0)
+    return FALSE;
+#endif
 
   posix_check_for_error (result);
   return TRUE;
@@ -123,7 +137,13 @@ g_cond_timed_wait_posix_impl (GCond * cond,
   result = pthread_cond_timedwait ((pthread_cond_t *) cond,
 				   (pthread_mutex_t *) entered_mutex,
 				   &end_time);
+
+#ifdef G_THREADS_IMPL_POSIX
   timed_out = (result == ETIMEDOUT);
+#else /* G_THREADS_IMPL_DCE */
+  timed_out = (result == -1) && (errno = EAGAIN);
+#endif
+
   if (!timed_out)
     posix_check_for_error (result);
   return !timed_out;
@@ -162,15 +182,16 @@ g_private_get_posix_impl (GPrivate * private_key)
 {
   if (!private_key)
     return NULL;
-#ifdef HAVE_PTHREAD_GETSPECIFIC_POSIX
+#ifdef G_THREADS_IMPL_POSIX
   return pthread_getspecific (*(pthread_key_t *) private_key);
-#else /* HAVE_PTHREAD_GETSPECIFIC_POSIX */
+#else /* G_THREADS_IMPL_DCE */
   {
     void* data;
-    pthread_getspecific (*(pthread_key_t *) private_key, &data);
+    posix_check_for_error (pthread_getspecific (*(pthread_key_t *) 
+						private_key, &data);
     return data;
   }
-#endif /* HAVE_PTHREAD_GETSPECIFIC_POSIX */
+#endif 
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =

@@ -1,3 +1,10 @@
+1999-03-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Now handle both dce and posix threads. They are
+	sufficently equal. Please do not commit my change to
+	glib-1-2/gthread/gthread-posix.c from 1999-03-03, as the current
+	change will take care of that too.
+
 1999-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* testgthread.c (test_mutexes): Use new signature of

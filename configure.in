@@ -561,7 +561,7 @@ dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use],
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris/nspr] specify a thread implementation to use],
 	if test "x$with_threads" = x; then
 		want_threads=yes
 	else
@@ -579,7 +579,7 @@ dnl error and warning message
 dnl *************************
 
 THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
-                computer. glib will not be thread safe on your computer."
+                computer. GLib will not have a default thread implementation."
 
 FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
                 platform (normaly it's "_REENTRANT"). I'll not use any flag on
@@ -612,9 +612,17 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 		;;
 	esac
 fi
-if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
+if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
+				|| test "x$want_threads" = xdce; then
         if test "x$have_threads" = xnone; then
-                AC_CHECK_HEADER(pthread.h, have_threads=posix)
+                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_create[^a-zA-Z_]],
+			pthread.h,
+			have_threads=dce)
+        fi
+        if test "x$have_threads" = xnone; then
+                AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_init[^a-zA-Z_]],
+			pthread.h,
+			have_threads=posix)
         fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
@@ -641,37 +649,37 @@ G_THREAD_CFLAGS=
 
 mutex_has_default=no
 case $have_threads in
-        posix)
+        posix|dce)
 		G_THREAD_LIBS=error
-		AC_CHECK_LIB(pthread, pthread_attr_init,
-			     G_THREAD_LIBS="-lpthread")
-		if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(pthreads, pthread_attr_init,
-			     	G_THREAD_LIBS="-lpthreads")
-		fi
-		if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(c_r, pthread_attr_init,
-			     	G_THREAD_LIBS="-lc_r")
-		fi
-		if test "x$G_THREAD_LIBS" = xerror; then
-			AC_CHECK_FUNC(pthread_attr_init, G_THREAD_LIBS="")
-		fi
+		glib_save_LIBS="$LIBS"
+		for thread_lib in "" pthread pthreads c_r thread; do
+			# This is not AC_CHECK_LIB to also work with function
+			# name mangling in header files.
+			LIBS="$glib_save_LIBS -l$thread_lib"
+			IN=
+			test x"$thread_lib" = x || IN=" in -l$thread_lib"
+			AC_MSG_CHECKING(for pthread_create$IN)
+			AC_TRY_LINK([#include <pthread.h>],
+				[pthread_create(NULL,NULL,NULL,NULL)],
+				[AC_MSG_RESULT(yes)
+				G_THREAD_LIBS="-l$thread_lib"
+				break],
+				[AC_MSG_RESULT(no)])
+		done
+		LIBS="$glib_save_LIBS"
 		dnl ********** DG/UX ************
-        	if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(thread, __d10_pthread_attr_init,
-				G_THREAD_LIBS="-lthread"
-				G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
-        	fi
-		dnl ********* HPUX 11 ***********
-        	if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(pthread, __pthread_attr_init_system,
-				G_THREAD_LIBS="-lpthread")
-        	fi
+               	AC_CHECK_LIB(thread, __d10_pthread_create,
+			G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
                 mutex_has_default=yes
                 mutex_default_type='pthread_mutex_t'
                 mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
                 mutex_header_file='pthread.h'
-		g_threads_impl="POSIX"
+		if test "x$have_threads" = "xposix"; then
+			g_threads_impl="POSIX"
+		else
+			g_threads_impl="DCE"
+			have_threads="posix"
+		fi
                 ;;
         solaris)
 		G_THREAD_LIBS=error
@@ -700,14 +708,15 @@ if test "x$G_THREAD_LIBS" = xerror; then
         AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
 fi
 
-AC_MSG_CHECKING(necessary linker options)
+AC_MSG_CHECKING(thread related libraries)
 AC_MSG_RESULT($G_THREAD_LIBS)
 
 dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
-if test x"$have_threads" != xnone; then
-G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
+if test x"$enable_threads" = xyes; then
+
+    G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
 
     case $host in
 	*-aix*)
@@ -733,17 +742,17 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
     AC_MSG_WARN($FLAG_DOES_NOT_WORK))
     CPPFLAGS=$old_CPPFLAGS
 
-    AC_MSG_CHECKING(necessary compiler options)
+    AC_MSG_CHECKING(thread related cflags)
 
     AC_MSG_RESULT($G_THREAD_CFLAGS)
 else
     G_THREAD_CFLAGS=
 fi
 
-dnl check for mt safe function variants
-dnl ***********************************
+dnl check for mt safe function variants and some posix functions
+dnl ************************************************************
 
-if test x"$have_threads" != xnone; then
+if test x"$enable_threads" = xyes; then
 	glib_save_LIBS="$LIBS"
 	glib_save_CFLAGS="$CFLAGS"
 	# we are not doing the following for now, as this might require glib 
@@ -783,20 +792,10 @@ if test x"$have_threads" != xnone; then
 				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
 		fi
 	fi
-	if test x"$have_threads" = xposix; then
-		AC_MSG_CHECKING(whether pthread_getspecific is posix like)
-		# PCThreads has pthread_getspecific(pthread_key_t, void **);
-		AC_TRY_COMPILE([#include <pthread.h>],
-			[pthread_getspecific(0,NULL);],
-			[AC_MSG_RESULT(no)],
-			[AC_MSG_RESULT(yes)
-			AC_DEFINE(HAVE_PTHREAD_GETSPECIFIC_POSIX)])
-	fi
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"
-fi
 
-if test "x$enable_threads" = "xyes"; then
+	# now spit out all the warnings.
 	if test "$ac_cv_func_getpwuid_r" != "yes"; then
 		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
 	fi
