@@ -350,7 +350,7 @@ g_unichar_iswide (gunichar c)
  * 
  * Return value: the result of converting @c to uppercase.
  *               If @c is not an lowercase or titlecase character,
- *               @c is returned unchanged.
+ *               or has no upper case equivalent @c is returned unchanged.
  **/
 gunichar
 g_unichar_toupper (gunichar c)
@@ -365,7 +365,7 @@ g_unichar_toupper (gunichar c)
 	  return p[0] * 256 + p[1];
 	}
       else
-	return val;
+	return val ? val : c;
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
@@ -387,7 +387,7 @@ g_unichar_toupper (gunichar c)
  * 
  * Return value: the result of converting @c to lower case.
  *               If @c is not an upperlower or titlecase character,
- *               @c is returned unchanged.
+ *               or has no lowercase equivalent @c is returned unchanged.
  **/
 gunichar
 g_unichar_tolower (gunichar c)
@@ -402,7 +402,7 @@ g_unichar_tolower (gunichar c)
 	  return p[0] * 256 + p[1];
 	}
       else
-	return val;
+	return val ? val : c;
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {

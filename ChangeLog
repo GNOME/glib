@@ -1,3 +1,9 @@
+Mon Feb 25 21:58:01 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/guniprop.c (g_unichar_toupper/lower): Account
+	for some characters having now uppercase/lowercase
+	equivalents in code, docs. (#65416)
+
 Mon Feb 25 16:31:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gshell.c (tokenize_command_line): Fix quoting
