@@ -1,3 +1,8 @@
+Mon May 28 06:51:24 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.c (signal_emit_unlocked_R): fixed bad faux-pass, forgot
+	to release signal lock when restarting emissions.
+
 Sun May 27 04:52:28 2001  Tim Janik  <timj@gtk.org>
 
 	* gsignal.[hc] (g_signal_stop_emission_by_name): added variant
