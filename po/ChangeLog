@@ -1,3 +1,7 @@
+2001-07-03  Christian Meyer  <chrisime@gnome.org>
+
+	* de.po: Added German translation.
+
 2001-03-02  Christophe Merlet  <redfox@eikonex.org>
 
 	* fr.po: Added French translation.
@@ -9,9 +13,9 @@
 2001-02-08  Fatih Demir	<kabalak@kabalak.net>
 
 	* tr.po: Added the Turkish translation by
-		Kemal Yilmaz.
+                 Kemal Yilmaz.
 
 2001-01-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* no.po: Added Norwegian translation.
-	
+
