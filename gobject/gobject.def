@@ -27,7 +27,7 @@ EXPORTS
 	g_object_set_valist
 	g_object_steal_qdata
 	g_object_unref
-	g_param_spec_bool
+	g_param_spec_boolean
 	g_param_spec_char
 	g_param_spec_double
 	g_param_spec_enum
@@ -47,6 +47,10 @@ EXPORTS
 	g_param_spec_uint
 	g_param_spec_ulong
 	g_param_spec_unref
+	g_param_value_defaults
+	g_param_value_set_default
+	g_param_value_validate
+	g_param_values_cmp
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
 	g_type_check_class_cast
@@ -79,10 +83,9 @@ EXPORTS
 	g_type_set_qdata
 	g_value_convert
 	g_value_copy
-	g_value_defaults
 	g_value_dup_object
 	g_value_dup_string
-	g_value_get_bool
+	g_value_get_boolean
 	g_value_get_char
 	g_value_get_double
 	g_value_get_enum
@@ -96,11 +99,9 @@ EXPORTS
 	g_value_get_uint
 	g_value_get_ulong
 	g_value_init
-	g_value_init_default
 	g_value_reset
-	g_value_set_bool
+	g_value_set_boolean
 	g_value_set_char
-	g_value_set_default
 	g_value_set_double
 	g_value_set_enum
 	g_value_set_flags
@@ -112,7 +113,6 @@ EXPORTS
 	g_value_set_uchar
 	g_value_set_uint
 	g_value_set_ulong
+	g_value_types_init
 	g_value_unset
-	g_value_validate
-	g_values_cmp
 	g_values_exchange

@@ -83,6 +83,9 @@ glib_OBJECTS = \
 	gthreadpool.obj	\
 	gtimer.obj	\
 	gtree.obj	\
+	gunidecomp.obj	\
+	guniprop.obj	\
+	gutf8.obj	\
 	gutils.obj	\
 	gwin32.obj
 

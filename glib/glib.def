@@ -93,6 +93,7 @@ EXPORTS
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free
+	g_get_charset
 	g_get_codeset
 	g_get_current_dir
 	g_get_current_time
@@ -356,6 +357,7 @@ EXPORTS
 	g_source_remove
 	g_source_remove_by_source_data
 	g_source_remove_by_user_data
+	g_spaced_primes_closest
 	g_static_mutex_get_mutex_impl
 	g_static_private_get
 	g_static_private_set
@@ -394,6 +396,7 @@ EXPORTS
 	g_string_chunk_insert_const
 	g_string_chunk_new
 	g_string_down
+	g_string_equal
 	g_string_erase
 	g_string_free
 	g_string_insert
@@ -447,7 +450,40 @@ EXPORTS
 	g_tree_traverse
 	g_tuples_destroy
 	g_tuples_index
+	g_unichar_digit_value
+	g_unichar_isalnum
+	g_unichar_isalpha
+	g_unichar_iscntrl
+	g_unichar_isdefined
+	g_unichar_isdigit
+	g_unichar_isgraph
+	g_unichar_islower
+	g_unichar_isprint
+	g_unichar_ispunct
+	g_unichar_isspace
+	g_unichar_istitle
+	g_unichar_isupper
+	g_unichar_iswide
+	g_unichar_isxdigit
+	g_unichar_to_utf8
+	g_unichar_tolower
+	g_unichar_totitle
+	g_unichar_toupper
+	g_unichar_type
+	g_unichar_xdigit_value
+	g_unicode_canonical_decomposition
+	g_unicode_canonical_ordering
 	g_usleep
+	g_utf8_find_next_char
+	g_utf8_find_prev_char
+	g_utf8_get_char
+	g_utf8_offset_to_pointer
+	g_utf8_pointer_to_offset
+	g_utf8_prev_char
+	g_utf8_strchr
+	g_utf8_strlen
+	g_utf8_strncpy
+	g_utf8_to_ucs4
 	g_vsnprintf
 	g_win32_closedir
 	g_win32_error_message
@@ -461,4 +497,3 @@ EXPORTS
 	glib_major_version
 	glib_micro_version
 	glib_minor_version
-        g_spaced_primes_closest

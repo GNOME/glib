@@ -27,6 +27,7 @@ makefile.mingw: makefile.mingw.in
 
 gobject_OBJECTS = \
 	gvalue.o \
+	gvaluetypes.o \
 	gparam.o \
 	gparamspecs.o \
 	genums.o \

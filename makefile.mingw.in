@@ -67,6 +67,9 @@ glib_OBJECTS = \
 	gstring.o \
 	gstrfuncs.o \
 	gscanner.o \
+	gunidecomp.o \
+	guniprop.o \
+	gutf8.o \
 	gutils.o \
 	gwin32.o
 
