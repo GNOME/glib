@@ -1,3 +1,7 @@
+Thu May 25 02:29:35 2000  Tim Janik  <timj@gtk.org>
+
+	* configure.in: glib version 1.2.8, interface age 8, binary age 8.
+
 Fri May 19 11:37:54 2000  Tim Janik  <timj@gtk.org>
 
 	* gutils.c (g_snprintf): 
