@@ -1,3 +1,9 @@
+Thu Jul 25 19:41:03 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_get_flags): Fix 
+	incorrect return value in g_return_val_if_fail 
+	(#85545, David L. Cooper II)
+
 Thu Jul 25 19:12:43 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_channel_set_encoding): Clarify
