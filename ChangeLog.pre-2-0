@@ -1,3 +1,7 @@
+2001-03-07  Christian Meyer  <chrisime@gnome.org>
+
+	* configure.in: Added de (German) to ALL_LINGUAS.
+
 2001-03-02  Christophe Merlet  <redfox@eikonex.org>
 
 	* configure.in: Added fr (French) to ALL_LINGUAS.
