@@ -1,3 +1,7 @@
+Tue Jun 22 21:50:47 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gsignal.c: Fix a couple of typos.
+
 Fri Jun 18 22:53:13 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gsourceclosure.h (__G_SOURCECLOSURE_H__): Actually 

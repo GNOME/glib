@@ -40,7 +40,7 @@
 #define	MAX_STACK_VALUES	(16)
 #define HANDLER_PRE_ALLOC       (48)
 
-#define REPORT_BUG      "please report occourance circumstances to gtk-devel-list@gnome.org"
+#define REPORT_BUG      "please report occurrence circumstances to gtk-devel-list@gnome.org"
 #ifdef	G_ENABLE_DEBUG
 #define IF_DEBUG(debug_type, cond)	if ((_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) || cond)
 static volatile gpointer g_trace_instance_signals = NULL;
@@ -293,7 +293,7 @@ signal_id_lookup (GQuark quark,
 
   key.quark = quark;
 
-  /* try looking up signals for this type and its anchestors */
+  /* try looking up signals for this type and its ancestors */
   do
     {
       SignalKey *signal_key;
@@ -2216,7 +2216,7 @@ g_signal_emit_valist (gpointer instance,
 	  g_free (error);
 	  
 	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occoured
+	   * in a sane state if an error condition occured
 	   */
 	}
     }
