@@ -1,3 +1,7 @@
+2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
+
+        * configure.in: Added portuguese to ALL_LINGUAS
+
 Sat Dec 22 12:08:56 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: 1.3.12, binary, interface age 0.
