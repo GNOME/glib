@@ -428,15 +428,16 @@ g_io_add_watch (GIOChannel    *channel,
  *
  * This function returns a #GIOCondition depending on the status of the
  * internal buffers in the #GIOChannel. Only the flags %G_IO_IN and
- * %G_IO_OUT may be set.
+ * %G_IO_OUT will be set.
  *
  * Return value: A #GIOCondition
  **/
 GIOCondition
 g_io_channel_get_buffer_condition (GIOChannel *channel)
 {
-  return (((channel->read_buf->len > 0) || (channel->encoded_read_buf->len > 0))
-    ? G_IO_IN : 0) & ((channel->write_buf->len > 0) ? G_IO_OUT : 0);
+  return
+    ((channel->read_buf && channel->read_buf->len > 0) ? G_IO_IN : 0) |
+    ((channel->write_buf && channel->write_buf->len <= channel->buf_size) ? G_IO_OUT : 0);
 }
 
 /**

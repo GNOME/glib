@@ -1,3 +1,11 @@
+Mon Jul  2 16:03:21 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_get_buffer_condition): Fix.
+
+	* glib/giunix.c: Fix prepare/check/dispatch for watches.
+
+	* tests/unicode-normalize.c: #include <string.h>
+
 Sat Jun 30 23:14:32 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/glist.[hc]: added g_list_insert_before().

@@ -118,27 +118,23 @@ g_io_unix_prepare (GSource  *source,
 		   gint     *timeout)
 {
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
 
   *timeout = -1;
 
-  /* Only return TRUE if we're sure to match all conditions, otherwise
-   * we need to check.
+  /* Only return TRUE here if _all_ bits in watch->condition will be set
    */
-
-  watch->condition = g_io_channel_get_buffer_condition (watch->channel);
-
-  return (watch->pollfd.revents & (G_IO_IN | G_IO_OUT)) == watch->condition;
-
+  return ((watch->condition & buffer_condition) == watch->condition);
 }
 
 static gboolean 
 g_io_unix_check (GSource  *source)
 {
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
+  GIOCondition poll_condition = watch->pollfd.revents;
 
-  watch->condition &= g_io_channel_get_buffer_condition (watch->channel);
-
-  return (watch->pollfd.revents & watch->condition);
+  return ((poll_condition | buffer_condition) & watch->condition);
 }
 
 static gboolean
@@ -149,6 +145,7 @@ g_io_unix_dispatch (GSource     *source,
 {
   GIOFunc func = (GIOFunc)callback;
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
 
   if (!func)
     {
@@ -158,7 +155,7 @@ g_io_unix_dispatch (GSource     *source,
     }
   
   return (*func) (watch->channel,
-		  watch->pollfd.revents & watch->condition,
+		  (watch->pollfd.revents | buffer_condition) & watch->condition,
 		  user_data);
 }
 
