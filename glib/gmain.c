@@ -219,6 +219,7 @@ static gboolean g_idle_dispatch    (GSource     *source,
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
+static GSList *main_contexts_without_pipe = NULL;
 
 #if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
 __declspec(dllexport)
@@ -568,6 +569,9 @@ g_main_context_unref_and_unlock (GMainContext *context)
       CloseHandle (context->wake_up_semaphore);
 #endif
     }
+  else
+    main_contexts_without_pipe = g_slist_remove (main_contexts_without_pipe, 
+						 context);
 #endif
   
   g_free (context);
@@ -589,6 +593,45 @@ g_main_context_unref (GMainContext *context)
   LOCK_CONTEXT (context);
   g_main_context_unref_and_unlock (context);
 }
+
+#ifdef G_THREADS_ENABLED
+static void 
+g_main_context_init_pipe (GMainContext *context)
+{
+# ifndef G_OS_WIN32
+  if (pipe (context->wake_up_pipe) < 0)
+    g_error ("Cannot create pipe main loop wake-up: %s\n",
+	     g_strerror (errno));
+  
+  context->wake_up_rec.fd = context->wake_up_pipe[0];
+  context->wake_up_rec.events = G_IO_IN;
+# else
+  context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL);
+  if (context->wake_up_semaphore == NULL)
+    g_error ("Cannot create wake-up semaphore: %s",
+	     g_win32_error_message (GetLastError ()));
+  context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
+  context->wake_up_rec.events = G_IO_IN;
+#  ifdef G_MAIN_POLL_DEBUG
+  g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
+#  endif
+# endif
+  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+}
+
+void
+g_main_thread_init ()
+{
+  GSList *curr = main_contexts_without_pipe;
+  while (curr)
+    {
+      g_main_context_init_pipe ((GMainContext *)curr->data);
+      curr = curr->next;
+    }
+  g_slist_free (main_contexts_without_pipe);
+  main_contexts_without_pipe = NULL;  
+}
+#endif /* G_THREADS_ENABLED */
 
 /**
  * g_main_context_new:
@@ -630,28 +673,10 @@ g_main_context_new ()
 
 #ifdef G_THREADS_ENABLED
       if (g_thread_supported ())
-	{
-#ifndef G_OS_WIN32
-	  if (pipe (context->wake_up_pipe) < 0)
-	    g_error ("Cannot create pipe main loop wake-up: %s\n",
-		     g_strerror (errno));
-	  
-	  context->wake_up_rec.fd = context->wake_up_pipe[0];
-	  context->wake_up_rec.events = G_IO_IN;
-	  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-#else
-	  context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL);
-	  if (context->wake_up_semaphore == NULL)
-	    g_error ("Cannot create wake-up semaphore: %s",
-		     g_win32_error_message (GetLastError ()));
-	  context->wake_up_rec.fd = (gint) context->wake_up_semaphore;
-	  context->wake_up_rec.events = G_IO_IN;
-#ifdef G_MAIN_POLL_DEBUG
-	  g_print ("wake-up semaphore: %#x\n", (guint) context->wake_up_semaphore);
-#endif
-	  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-#endif
-	}
+    g_main_context_init_pipe (context);
+  else
+    main_contexts_without_pipe = g_slist_prepend (main_contexts_without_pipe, 
+						  context);
 #endif
 
   return context;
