@@ -881,7 +881,7 @@ strdup_len (const gchar *string,
 {
   gsize real_len;
 
-  if (!g_utf8_validate (string, -1, NULL))
+  if (!g_utf8_validate (string, len, NULL))
     {
       if (bytes_read)
 	*bytes_read = 0;
