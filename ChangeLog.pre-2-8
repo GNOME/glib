@@ -1,3 +1,7 @@
+2004-08-16  Christian Rose  <menthos@menthos.com>
+
+	* configure.in: Added "bs" to ALL_LINGUAS.
+
 2004-08-11  Ray Strode  <rstrode@redhat.com>
 
 	* docs/reference/glib/glib-sections.txt: 
