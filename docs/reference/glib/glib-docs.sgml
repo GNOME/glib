@@ -53,6 +53,7 @@
 <!ENTITY glib-Fileutils SYSTEM "xml/fileutils.xml">
 <!ENTITY glib-Shell SYSTEM "xml/shell.xml">
 <!ENTITY glib-Markup SYSTEM "xml/markup.xml">
+<!ENTITY glib-i18n SYSTEM "xml/i18n.xml">
 
 <!ENTITY glib-Compiling SYSTEM "compiling.sgml">
 <!ENTITY glib-Building SYSTEM "building.sgml">
@@ -126,6 +127,7 @@ synchronize their operation.
     &glib-String-Utility-Functions;
     &glib-Character-Set-Conversion;
     &glib-Unicode-Manipulation;
+    &glib-i18n;
     &glib-Date-and-Time-Functions;
     &glib-Random-Numbers;   
     &glib-Hook-Functions;

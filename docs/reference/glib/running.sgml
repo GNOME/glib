@@ -24,11 +24,23 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 </para>
 
 <formalpara>
+  <title><envar>G_FILENAME_ENCODING</envar></title>
+
+  <para>
+    This environment variable can be set to a comma-separated list of character
+    set names. GLib assumes that filenames are encoded in the first character 
+    set from that list rather than in UTF-8. The special token "@locale" can be
+    used to specify the character set for the current locale.
+  </para>
+</formalpara>
+
+<formalpara>
   <title><envar>G_BROKEN_FILENAMES</envar></title>
 
   <para>
     If this environment variable is set, GLib assumes that filenames are in 
-    the locale encoding rather than in UTF-8.
+    the locale encoding rather than in UTF-8. G_FILENAME_ENCODING takes
+    priority over G_BROKEN_FILENAMES. 
   </para>
 </formalpara>
 

@@ -1960,3 +1960,14 @@ g_ucs4_to_utf16
 g_ucs4_to_utf8
 g_unichar_to_utf8
 </SECTION>
+
+<SECTION>
+<TITLE>I18N</TITLE>
+<FILE>i18n</FILE>
+<INCLUDE>glib.h,glib/gi18n.h</INCLUDE>
+_
+Q_
+N_
+g_strip_context
+
+</SECTION>
