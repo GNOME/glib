@@ -185,6 +185,8 @@ void	 g_signal_handler_unblock	      (gpointer		  instance,
 					       gulong		  handler_id);
 void	 g_signal_handler_disconnect	      (gpointer		  instance,
 					       gulong		  handler_id);
+gboolean g_signal_handler_is_connected	      (gpointer		  instance,
+					       gulong		  handler_id);
 gulong	 g_signal_handler_find		      (gpointer		  instance,
 					       GSignalMatchType	  mask,
 					       guint		  signal_id,

@@ -1416,6 +1416,24 @@ g_signal_handler_disconnect (gpointer instance,
   G_UNLOCK (g_signal_mutex);
 }
 
+gboolean
+g_signal_handler_is_connected (gpointer instance,
+			       gulong   handler_id)
+{
+  Handler *handler;
+  gboolean connected;
+
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
+  g_return_val_if_fail (handler_id > 0, FALSE);
+
+  G_LOCK (g_signal_mutex);
+  handler = handler_lookup (instance, handler_id, NULL);
+  connected = handler != NULL;
+  G_UNLOCK (g_signal_mutex);
+
+  return connected;
+}
+
 void
 g_signal_handlers_destroy (gpointer instance)
 {

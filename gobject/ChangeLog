@@ -1,3 +1,9 @@
+Mon May 14 01:49:01 2001  Tim Janik  <timj@gtk.org>
+
+	* gsignal.[hc] (g_signal_handler_is_connected): new function
+	to check whether a handler is still connected to an instance
+	(by handler id).
+
 Thu May 10 14:00:48 2001  Tim Janik  <timj@gtk.org>
 
 	* gparamspecs.[hc]: removed g_param_spec_stringc() in lack of
