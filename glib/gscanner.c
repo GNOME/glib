@@ -289,8 +289,9 @@ g_scanner_msg_handler (GScanner		*scanner,
 {
   g_return_if_fail (scanner != NULL);
   
-  if (scanner->input_name)
-    fprintf (stderr, "%s:%d: ", scanner->input_name, scanner->line);
+  fprintf (stderr, "%s:%d: ",
+	   scanner->input_name ? scanner->input_name : "<memory>",
+	   scanner->line);
   if (is_error)
     fprintf (stderr, "error: ");
   fprintf (stderr, "%s\n", message);

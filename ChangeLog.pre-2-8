@@ -1,3 +1,9 @@
+Thu Oct 10 23:27:02 2002  Tim Janik  <timj@gtk.org>
+
+        * glib/gscanner.c (g_scanner_msg_handler): if input_name is NULL,
+        print out "<memory>" instead of completely skipping input specification
+        and thusly loosing error line information.
+
 Sun Sep 29 12:15:44 2002  Manish Singh  <yosh@gimp.org>
 
 	* tests/mainloop-test.c: use gsize instead of int where appropriate
