@@ -7,7 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-19 05:51+0100\n"
 "PO-Revision-Date: 2003-05-16 14:21+0200\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -26,7 +27,7 @@ msgstr "Ni chynhelir trawsnewidiad o set nodau '%s' i '%s'"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Methu agor trawsnewidydd rhwng '%s' a '%s': %s"
 
-#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1306
+#: glib/gconvert.c:603 glib/gconvert.c:891 glib/giochannel.c:1306
 #: glib/giochannel.c:1348 glib/giochannel.c:2190 glib/gutf8.c:909
 #: glib/gutf8.c:1354
 msgid "Invalid byte sequence in conversion input"
@@ -48,37 +49,37 @@ msgstr "Dilyniant nod rhannol ar ddiwedd y mewnbwn"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Methu trawsnewid '%s' wrth gefn i'r set godau '%s'"
 
-#: glib/gconvert.c:1631
+#: glib/gconvert.c:1422
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "Nid yw'r LAU '%s' yn LAU osodedig yn y cynllun ffeil"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1432
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Ni chaniateir i'r LAU ffeil lleol '%s' gynnwys '#'"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1449
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Mae'r LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1670
+#: glib/gconvert.c:1461
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Mae'r enw gwesteiwr yn y LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1686
+#: glib/gconvert.c:1477
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Mae'r LAU '%s' yn cynnwys nodau wedi eu dianc mewn modd annilys"
 
-#: glib/gconvert.c:1757
+#: glib/gconvert.c:1548
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nid yw'r llwybr '%s' yn llwybr osodedig"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1558
 msgid "Invalid hostname"
 msgstr "Enw gwesteiwr annilys"
 
@@ -87,47 +88,47 @@ msgstr "Enw gwesteiwr annilys"
 msgid "Error opening directory '%s': %s"
 msgstr "Gwall y cyfeiriadur '%s': %s"
 
-#: glib/gfileutils.c:384 glib/gfileutils.c:449
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Methu canfod %lu beit er mwyn darllen y ffeil \"%s\""
 
-#: glib/gfileutils.c:395
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Gwall wrth ddarllen ffeil '%s': %s "
 
-#: glib/gfileutils.c:471
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Methu darllen ffeil '%s': %s"
 
-#: glib/gfileutils.c:518 glib/gfileutils.c:586
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Methu agor ffeil '%s': %s"
 
-#: glib/gfileutils.c:532
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Methu darllen agweddau ffeil '%s': methiant fstat(): %s"
 
-#: glib/gfileutils.c:558
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Methu agor ffeil '%s': methiant yn fdopen(): %s"
 
-#: glib/gfileutils.c:765
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mae'r patrymlun '%s' yn annilys: ni ddylai gynnwys '%s'"
 
-#: glib/gfileutils.c:777
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Nid yw'r patrymlun '%s' yn gorffen efo XXXXXX"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Methu creu ffeil '%s': %s"
@@ -157,14 +158,6 @@ msgstr "Mae'r sianel yn gorffen a nod rhannol"
 #: glib/giochannel.c:1673
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Methu gwneud darlleniad crau yn g_io_channel_read_to_end"
-
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "Maint neges anghywir"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "Gwall soced"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -278,6 +271,7 @@ msgid ""
 msgstr ""
 "Nod od '%s', disgwylwyd '=' ar ôl yr enw priodoledd '%s' o'r elfen '%s'"
 
+# c-format
 # c-format
 #: glib/gmarkup.c:1191
 #, c-format
@@ -414,11 +408,11 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Roedd y testun yn wag, neu'n cynnwys gofodnodau'n unig"
 
-#: glib/gspawn-win32.c:286
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Methu darllen data o broses plentyn"
 
-#: glib/gspawn-win32.c:414
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -426,29 +420,29 @@ msgstr ""
 "Gwall annisgwyl yn g_io_channel_win32_poll() tra darllen data o broses "
 "plentyn"
 
-#: glib/gspawn-win32.c:784 glib/gspawn.c:1002
+#: glib/gspawn-win32.c:834 glib/gspawn.c:1002
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Methu darllen o bibell plentyn (%s)"
 
-#: glib/gspawn-win32.c:871
+#: glib/gspawn-win32.c:923
 msgid "Failed to execute helper program"
 msgstr "Methu gweithredu proses gymorth"
 
-#: glib/gspawn-win32.c:904 glib/gspawn.c:1207
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Methu newid i'r cyfeiriadur '%s' (%s)"
-
-#: glib/gspawn-win32.c:913
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Methu gweithredu proses blentyn (%s)"
 
-#: glib/gspawn-win32.c:956 glib/gspawn.c:1338
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1207
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Methu newid i'r cyfeiriadur '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1338
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Methu creu pibell er mwyn cyfathrebu â phroses plenty (%s)"
+msgstr "Methu creu pibell er mwyn cyfathrebu â phroses plentyn (%s)"
 
 #: glib/gspawn.c:167
 #, c-format
@@ -507,3 +501,13 @@ msgstr "Dilyniant annilys ym mewnbwn trawsnewidiad"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "Nod y tu fâs i ystod dilys UTF-16"
+
+#, fuzzy
+#~ msgid "Failed to read the symbolic link '%s': %s"
+#~ msgstr "Methu creu ffeil '%s': %s"
+
+#~ msgid "Incorrect message size"
+#~ msgstr "Maint neges anghywir"
+
+#~ msgid "Socket error"
+#~ msgstr "Gwall soced"
