@@ -1,3 +1,15 @@
+Mon Jan  4 14:38:11 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h: adjusted the g_strdup_a, g_strndup_a and g_strconcat3_a macros
+	so their arguments get only evaluated once. changed g_strconcat3_a to
+	have the same semantics as g_strconcat, i.e. if a certain argument is
+ 	NULL, the rest of the parameter list is skipped.
+
+	* tests/alloca-test.c: removed #if/#endif G_HAVE_ALLOCA, we need to be
+ 	able to compile on all systems. added test for g_strconcat() semantics.
+
+	* we need a alloca() replacement for !G_HAVE_ALLOCA rsn!
+
 Mon Jan  4 02:58:13 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
         * Released GLib 1.1.12 

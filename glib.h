@@ -309,7 +309,7 @@ extern "C" {
 #  define g_new0_a(type, count)	  \
       ((type *) memset (alloca ((unsigned) sizeof (type) * (count)), 0, \
       			((unsigned) sizeof (type) * (count))))
-#endif
+#endif /* G_HAVE_ALLOCA */
 
 #define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \
   g_mem_chunk_new (#type " mem chunks (" #pre_alloc ")", \
@@ -1469,47 +1469,64 @@ gpointer g_memdup		(gconstpointer mem,
  * All macros take a special first argument: the target gchar* string
  */
 #if G_HAVE_ALLOCA
-
 #  define g_strdup_a(newstr,str) G_STMT_START { \
-	  if ((str) == NULL) (newstr) = NULL;	\
-	  else {				\
-	    const char *__old = (str);		\
-	    char *__new;			\
+	  gchar *__new;				\
+	  const gchar *__old = (str);		\
+	  if (__old)				\
+	  {					\
 	    size_t __len = strlen (__old) + 1;	\
 	    __new = alloca (__len);		\
 	    memcpy (__new, __old, __len);	\
-	    (newstr) = __new;			\
    	  }					\
+          else					\
+            __new = NULL;			\
+          (newstr) = __new;			\
    } G_STMT_END
-
 #  define g_strndup_a(newstr,str,n) G_STMT_START { \
-	  if ((str) == NULL) (newstr) = NULL;	\
-	  else {				\
-	    const char *__old = (str);		\
-	    char *__new;			\
+	  gchar *__new;				\
+	  const gchar *__old = (str);		\
+	  if (__old)				\
+	  {					\
+            guint __n = (n);			\
 	    size_t __len = strlen (__old);	\
-	    if (__len > (n)) __len = (n);	\
+	    if (__len > (__n))			\
+              __len = (__n);			\
 	    __new = alloca (__len + 1);		\
 	    memcpy (__new, __old, __len);	\
 	    __new[__len] = 0;			\
-	    (newstr) = __new;			\
    	  }					\
+          else                                  \
+            __new = NULL;                       \
+	  (newstr) = __new;			\
    } G_STMT_END
-
 #  define g_strconcat3_a(newstr,str1,str2,str3) G_STMT_START { \
-	  size_t __len1 = ((str1) == (gchar*)NULL) ? 0 : strlen((str1)); \
-	  size_t __len2 = ((str2) == (gchar*)NULL) ? 0 : strlen((str2)); \
-	  size_t __len3 = ((str3) == (gchar*)NULL) ? 0 : strlen((str3)); \
-	  char *__sptr, *__new = \
-	  	alloca (__len1 + __len2 + __len3 + 1); \
-	  __sptr = __new; \
-	  if (__len1){memcpy (__sptr, (str1), __len1); __sptr += __len1;} \
-	  if (__len2){memcpy (__sptr, (str2), __len2); __sptr += __len2;} \
-	  if (__len3){memcpy (__sptr, (str3), __len3); __sptr += __len3;} \
-	  *__sptr = '\0'; \
-	  (newstr) = __new; \
+          const gchar *__str1 = (str1);				\
+          const gchar *__str2 = (str2);				\
+          const gchar *__str3 = (str3);				\
+	  gchar *__new;						\
+          if (__str1) {						\
+	    size_t __len1 = strlen (__str1);			\
+	    if (__str2) {					\
+	      size_t __len2 = strlen (__str2);			\
+	      if (__str3) {					\
+		size_t __len3 = strlen (__str3);		\
+		__new = alloca (__len1 + __len2 + __len3 + 1);	\
+		__new[__len1 + __len2 + __len3] = 0;		\
+		memcpy (__new + __len1 + __len2, __str3, __len3); \
+	      } else {						\
+		__new = alloca (__len1 + __len2 + 1);		\
+		__new[__len1 + __len2] = 0;			\
+	      }							\
+	      memcpy (__new + __len1, __str2, __len2);		\
+	    } else {						\
+	      __new = alloca (__len1 + 1);			\
+	      __new[__len1] = 0;				\
+	    }							\
+	    memcpy (__new, __str1, __len1);			\
+	  } else						\
+	    __new = NULL;					\
+	  (newstr) = __new;					\
    } G_STMT_END
-
 #endif /* G_HAVE_ALLOCA */
 
 

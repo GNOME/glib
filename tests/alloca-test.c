@@ -34,18 +34,17 @@ int
 main (int   argc,
       char *argv[])
 {
-#ifdef G_HAVE_ALLOCA
   gchar *string;
   GlibTestInfo *gti;
   gint i, j;
-
+  
   string = g_alloca(80);
   g_assert(string != NULL);
   for (i = 0; i < 80; i++)
     string[i] = 'x';
   string[79] = 0;
   g_assert(strlen(string) == 79);
-
+  
   gti = g_new_a(GlibTestInfo, 2);
   string = g_alloca(2);
   strcpy(string, "x");
@@ -57,34 +56,33 @@ main (int   argc,
     gti[i].age = 42;
   }
   g_assert(strcmp(string, "x") == 0);
-
+  
   string = g_new0_a(char, 40);
   for (i = 0; i < 39; i++)
     string[i] = 'x';
   g_assert(strlen(string) == 39);
-
+  
   g_strdup_a(string, GLIB_TEST_STRING);
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
   g_strdup_a(string, NULL);
   g_assert(string == NULL);
-
+  
   g_strndup_a(string, GLIB_TEST_STRING, 5);
   g_assert(string != NULL);
   g_assert(strlen(string) == 5);
   g_assert(strcmp(string, GLIB_TEST_STRING_5) == 0);
   g_strndup_a(string, NULL, 20);
   g_assert(string == NULL);
-
+  
   g_strconcat3_a(string, GLIB_TEST_STRING, GLIB_TEST_STRING, GLIB_TEST_STRING);
   g_assert(string != NULL);
   g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
-  			  GLIB_TEST_STRING) == 0);
-
-#else
-  exit(77); /* tell automake test was skipped */
-#endif
-
+		  GLIB_TEST_STRING) == 0);
+  g_strconcat3_a (string, "1", NULL, "2");
+  g_assert (strcmp (string, "1") == 0);
+  
+  
   return 0;
 }
 
