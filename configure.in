@@ -1582,6 +1582,19 @@ int error = EILSEQ;
 ], have_eilseq=yes, have_eilseq=no);
 AC_MSG_RESULT($have_eilseq)
 
+dnl ******************************************************************
+dnl *** Look for glib-genmarshal in PATH if we are cross-compiling ***
+dnl ******************************************************************
+
+AM_CONDITIONAL(CROSS_COMPILING, test $build != $host)
+
+if test $CROSS_COMPILING; then
+  AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
+  if test x$GLIB_GENMARSHAL = xno; then
+    AC_MSG_ERROR(Could not find a glib-genmarshal in your PATH)
+  fi
+fi
+
 dnl **************************
 dnl *** Checks for gtk-doc ***
 dnl **************************

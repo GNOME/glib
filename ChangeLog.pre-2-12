@@ -1,3 +1,9 @@
+2002-05-07  Michael Natterer  <mitch@gimp.org>
+
+	* configure.in: added a new conditional CROSS_COMPILING which
+	indicates ($build != $host). If it is set, look for
+	glib-genmarshal in PATH. Error out if it was not found.
+
 Tue May  7 11:24:22 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Fixes for #79347, Ron Arts.
