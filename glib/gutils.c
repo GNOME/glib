@@ -75,6 +75,19 @@
 #ifdef G_OS_WIN32
 #  include <direct.h>
 #  include <shlobj.h>
+   /* older SDK (e.g. msvc 5.0) does not have these*/
+#  ifndef CSIDL_INTERNET_CACHE
+#    define CSIDL_INTERNET_CACHE 32
+#  endif
+#  ifndef CSIDL_COMMON_APPDATA
+#    define CSIDL_COMMON_APPDATA 35
+#  endif
+#  ifndef CSIDL_COMMON_DOCUMENTS
+#    define CSIDL_COMMON_DOCUMENTS 46
+#  endif
+#  ifndef CSIDL_PROFILE
+#    define CSIDL_PROFILE 40
+#  endif
 #endif
 
 #ifdef HAVE_CODESET
@@ -937,10 +950,7 @@ get_special_folder (int csidl)
 	}
       CoTaskMemFree (pidl);
     }
-  if (retval == NULL)
-    return "C:\\";
-  else
-    return retval;
+  return retval;
 }
 
 #endif
@@ -1008,7 +1018,7 @@ g_get_any_init (void)
 
       if (!g_home_dir)
 	g_home_dir = get_special_folder (CSIDL_PROFILE);
-
+      
       if (!g_home_dir)
 	{
 	  /* At least at some time, HOMEDRIVE and HOMEPATH were used
@@ -1368,6 +1378,7 @@ g_get_user_data_dir (void)
       data_dir = get_special_folder (CSIDL_PERSONAL);
 #else
       data_dir = (gchar *) g_getenv ("XDG_DATA_HOME");
+#endif
 
       if (data_dir && data_dir[0])
         data_dir = g_strdup (data_dir);
@@ -1379,7 +1390,7 @@ g_get_user_data_dir (void)
 	  data_dir = g_build_filename (g_home_dir, ".local", 
 				       "share", NULL);
 	}
-#endif
+
       g_user_data_dir = data_dir;
     }
   else
@@ -1417,7 +1428,8 @@ g_get_user_config_dir (void)
       config_dir = get_special_folder (CSIDL_APPDATA);
 #else
       config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
-      
+#endif
+
       if (config_dir && config_dir[0])
 	config_dir = g_strdup (config_dir);
       else
@@ -1427,7 +1439,6 @@ g_get_user_config_dir (void)
 	  
 	  config_dir = g_build_filename (g_home_dir, ".config", NULL);
 	}
-#endif      
       g_user_config_dir = config_dir;
     }
   else
@@ -1465,7 +1476,7 @@ g_get_user_cache_dir (void)
       cache_dir = get_special_folder (CSIDL_INTERNET_CACHE); /* XXX correct? */
 #else
       cache_dir = (gchar *) g_getenv ("XDG_CACHE_HOME");
-
+#endif
       if (cache_dir && cache_dir[0])
           cache_dir = g_strdup (cache_dir);
       else
@@ -1475,7 +1486,6 @@ g_get_user_cache_dir (void)
 
           cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
 	}
-#endif
       g_user_cache_dir = cache_dir;
     }
   else

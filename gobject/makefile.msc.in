@@ -21,8 +21,7 @@ all :				\
 	gobject-query.exe \
 	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
 	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib \
-	testgobject.exe	\
-	testoverride.exe
+	testgobject.exe
 
 gobject_OBJECTS =		\
 	gboxed.obj		\
@@ -41,6 +40,16 @@ gobject_OBJECTS =		\
 	gvaluetypes.obj	\
 	gvaluetransform.obj
 
+gobjectalias.h: gobject.symbols
+	perl makegobjectalias.pl < gobject.symbols > gobjectalias.h
+
+gobject.def: gobject.symbols
+	echo EXPORTS > gobject.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 gobject.symbols >> gobject.def
+
+gobject.res : gobject.rc
+	rc -DBUILDNUMBER=0 -r -fo gobject.res gobject.rc
+
 gmarshal.h : gmarshal.list glib-genmarshal.exe
 	echo #ifndef __G_MARSHAL_H__ > xgen-gmh
 	echo #define __G_MARSHAL_H__ >> xgen-gmh
@@ -51,8 +60,8 @@ gmarshal.h : gmarshal.list glib-genmarshal.exe
 gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
 	glib-genmarshal --nostdinc --prefix=g_cclosure_marshal gmarshal.list --body > gmarshal.c
 
-libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def
-	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) \
+libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def gobject.res
+	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) gobject.res \
 	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def
 
 gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS) 
@@ -61,7 +70,7 @@ gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS)
 # link glib's static version to avoid installing 
 glib-genmarshal.exe : glib-genmarshal.c gmarshal.strings
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
-	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+	..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib user32.lib advapi32.lib ole32.lib shell32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
 
 gobject-query.exe : gobject-query.c libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION gobject-query.c \

@@ -1,3 +1,13 @@
+2004-10-29  Hans Breuer  <hans@breuer.org>
+
+	* glibconfig.h */makefile.msc.in : updated [and finally fixed my
+	script to produce ready to go de-in(ed) files, w/o autotools]
+
+	* */*.rc.in : updated copyrights to 2004
+
+	* glib/gutils.c : some CSIDL_* defines lacking from older SDK;
+	use the same fallback mecahnism as on *NIX where ever applicable
+
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/option-test.c: Add tests for the handling of

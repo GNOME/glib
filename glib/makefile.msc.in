@@ -40,6 +40,7 @@ glib_OBJECTS =			\
 	gfileutils.obj		\
 	ghash.obj		\
 	ghook.obj		\
+	gkeyfile.obj		\
 	giochannel.obj		\
 	giowin32.obj		\
 	glist.obj		\
@@ -60,6 +61,7 @@ glib_OBJECTS =			\
 	gshell.obj		\
 	gslist.obj		\
 	gspawn-win32.obj	\
+	gstdio.obj	\
 	gstrfuncs.obj		\
 	gstring.obj		\
 	gthread.obj		\
@@ -81,8 +83,18 @@ glib_OBJECTS =			\
 ..\config.h: ..\config.h.win32
 	copy ..\config.h.win32 ..\config.h
 
+galias.h: glib.symbols
+	perl makegalias.pl < glib.symbols > galias.h
+
 localcharset.c : libcharset/localcharset.c
 	copy libcharset\localcharset.c localcharset.c
+
+glib.def: glib.symbols
+	echo EXPORTS > glib.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS glib.symbols >> glib.def
+
+glib.res : glib.rc
+	rc -DBUILDNUMBER=0 -r -fo glib.res glib.rc
 
 ################ glib
 
@@ -91,9 +103,9 @@ localcharset.c : libcharset/localcharset.c
 glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(glib_OBJECTS) gnulib\gnulib.lib
 	lib /out:glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib $(glib_OBJECTS) gnulib\gnulib.lib
 
-libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def
-	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) $(LIBICONV_LIBS) $(INTL_LIBS) \
-	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
+libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(glib_OBJECTS) gnulib\gnulib.lib glib.def glib.res
+	$(CC) $(CFLAGS) -LD -Fe$@ $(glib_OBJECTS) glib.res $(LIBICONV_LIBS) $(INTL_LIBS) \
+	gnulib\gnulib.lib $(DIRENT_LIBS) user32.lib advapi32.lib shell32.lib wsock32.lib ole32.lib $(LDFLAGS) /implib:glib-2.0.lib /def:glib.def
 
 gspawn-win32-helper.exe : gspawn-win32-helper.c libglib-2.0-@LT_CURRENT_MINUS_AGE@.dll
 	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32-helper.c glib-2.0.lib $(LDFLAGS) /subsystem:windows user32.lib

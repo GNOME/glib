@@ -8,7 +8,9 @@
 #define __G_LIBCONFIG_H__
 
 #include <glib/gmacros.h>
-
+#ifndef __GNUC__
+#define G_GNUC_INTERNAL /* wont have that */
+#endif
 #include <limits.h>
 #include <float.h>
 
