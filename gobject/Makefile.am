@@ -220,7 +220,6 @@ testgobject_LDADD = $(progs_LDADD)
 #
 EXTRA_DIST += 			\
 	makefile.msc.in 	\
-	gobject.def		\
 	gobject.rc.in		\
 	glib-genmarshal.1	\
 	glib-mkenums.in		\
