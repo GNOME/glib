@@ -454,8 +454,7 @@ Summary of rules for use of #GError:
 
 </para>
 
-@err: 
-<!--
+@err: <!--
 Local variables:
 mode: sgml
 sgml-parent-document: ("../glib-docs.sgml" "book" "refsect2" "")

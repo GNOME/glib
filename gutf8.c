@@ -488,6 +488,41 @@ g_utf8_to_ucs4 (const char *str, int len)
 }
 
 /**
+ * g_ucs4_to_utf8:
+ * @str: a UCS-4 encoded string
+ * @len: the length of @
+ * 
+ * Convert a string from a 32-bit fixed width representation as UCS-4.
+ * to UTF-8.
+ * 
+ * Return value: a pointer to a newly allocated UTF-8 string.
+ *               This value must be freed with g_free()
+ **/
+gchar *
+g_ucs4_to_utf8 (const gunichar *str, int len)
+{
+  gint result_length;
+  gchar *result, *p;
+  gint i;
+
+  result_length = 0;
+  for (i = 0; i < len ; i++)
+    result_length += g_unichar_to_utf8 (str[i], NULL);
+
+  result_length++;
+
+  result = g_malloc (result_length + 1);
+  p = result;
+
+  for (i = 0; i < len ; i++)
+    p += g_unichar_to_utf8 (str[i], p);
+  
+  *p = '\0';
+
+  return result;
+}
+
+/**
  * g_utf8_validate:
  * @str: a pointer to character data
  * @max_len: max bytes to validate, or -1 to go until nul
