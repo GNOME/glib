@@ -1,3 +1,7 @@
+Tue Sep  4 22:24:48 2001  Matthias Clasen  <matthiasc@poet.de>
+
+	* gobject.c (g_object_base_class_finalize): typo fix.
+
 Tue Sep  4 01:49:18 2001  Tim Janik  <timj@gtk.org>
 
 	* gsourceclosure.c: make closure_callback_funcs static,
