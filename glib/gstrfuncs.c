@@ -43,6 +43,15 @@ g_strdup (const gchar *str)
   return new_str;
 }
 
+guint8*
+g_memdup (const guint8 *mem,
+	  guint         len)
+{
+  guint8* mem2 = g_malloc (len);
+  memcpy (mem2, mem, len);
+  return mem2;
+}
+
 gchar*
 g_strndup (const gchar *str,
 	   guint        n)

@@ -1205,6 +1205,9 @@ void	g_strreverse		(gchar	     *string);
 guint	g_printf_string_upper_bound (const gchar* format,
 				     va_list      args);
 
+guint8*	g_memdup		(const guint8 *mem,
+				 guint         len);
+
 
 /* Retrive static string info
  */
