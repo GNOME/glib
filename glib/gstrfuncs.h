@@ -219,6 +219,7 @@ gpointer              g_memdup	       (gconstpointer mem,
  * optional separator, the returned string is newly allocated.
  * g_strfreev() frees the array itself and all of its strings.
  * g_strdupv() copies a NULL-terminated array of strings
+ * g_strv_length() returns the length of a NULL-terminated array of strings
  */
 gchar**	              g_strsplit       (const gchar  *string,
 					const gchar  *delimiter,
@@ -230,6 +231,7 @@ gchar*                g_strjoinv       (const gchar  *separator,
 					gchar       **str_array);
 void                  g_strfreev       (gchar       **str_array);
 gchar**               g_strdupv        (gchar       **str_array);
+guint                 g_strv_length    (gchar       **str_array);
 
 gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);

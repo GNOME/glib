@@ -1085,6 +1085,7 @@ g_strfreev
 g_strconcat
 g_strjoin
 g_strjoinv
+g_strv_length
 
 <SUBSECTION>
 g_strerror

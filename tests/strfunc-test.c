@@ -551,5 +551,7 @@ main (int   argc,
     TEST (NULL, 9 == g_snprintf (buf, 5, "%s", "abcdefghi"));
   }
 
+  TEST (NULL, g_strv_length (g_strsplit ("1,2,3,4", ",", -1)) == 4);
+
   return any_failed;
 }

@@ -1,3 +1,12 @@
+Thu Sep  9 00:10:40 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.h: 
+	* glib/gstrfuncs.c (g_strv_length): Add a function to 
+	calculate the length of a NULL-terminated string 
+	array.  (#150455, Tim-Philipp Müller)
+
+	* tests/strfunc-test.c (main): Add a test for g_strv_length().
+
 2004-09-08  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (guess_category_value): On Win32, as last resort
