@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
+"POT-Creation-Date: 2004-03-01 17:05-0500\n"
 "PO-Revision-Date: 2003-12-19 01:22+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -408,26 +408,26 @@ msgid ""
 "process"
 msgstr "خطأ غير متوقع في g_io_channel_win32_poll() أثناء القراءة من عملية ابنة"
 
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "فشلت القراءة من الأنبوب الإبن (%s)"
 
-#: glib/gspawn-win32.c:922
+#: glib/gspawn-win32.c:924
 msgid "Failed to execute helper program"
 msgstr "فشل تنفيذ التطبيق المعين"
 
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "فشل تنفيذ العملية الإبنة (%s)"
 
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "فشل التغيير الى الدليل '%s' (%s)"
 
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "فشل عمل أنبوب للاتصال بالعملية الإبنة (%s)"
@@ -447,32 +447,32 @@ msgstr "خطأ غير متوقع في select() أثناء قراءة البيا�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "خطأ غير متوقع في waitpid() (%s)"
 
-#: glib/gspawn.c:1063
+#: glib/gspawn.c:1066
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "فشل تفريق (%s)"
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1216
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "فشل تنفيذ العملية الإبنة \"%s\" (%s)"
 
-#: glib/gspawn.c:1223
+#: glib/gspawn.c:1226
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "فشل اعادة توجيه المخرج أو المدخل للعملية الإبنة (%s)"
 
-#: glib/gspawn.c:1232
+#: glib/gspawn.c:1235
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "فشل تفريق العملية الإبنة (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "خطأ غير معروف أثناء تنفيذ العملية الإبنة \"%s\""
 
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "فشلت قراءة بيانات كافية من أنبوب child pid (%s)"

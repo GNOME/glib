@@ -178,6 +178,7 @@ The maximum value which can be held in a #gssize.
 
 @Since: 2.4
 
+
 <!-- ##### MACRO G_MINFLOAT ##### -->
 <para>
 The minimum positive value which can be held in a #gfloat.

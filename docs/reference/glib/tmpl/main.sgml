@@ -508,6 +508,14 @@ or -1 if an error occurred.
 @fd: 
 
 
+<!-- ##### FUNCTION g_main_depth ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO g_main_set_poll_func ##### -->
 <para>
 Sets the function to use for the handle polling of file descriptors

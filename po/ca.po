@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
+"POT-Creation-Date: 2004-03-01 17:05-0500\n"
 "PO-Revision-Date: 2003-11-13 15:04+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -439,26 +439,26 @@ msgstr ""
 "S'ha produït un error inesperat a g_io_chanel_win32_poll() en llegir dades "
 "d'un procés fill"
 
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "No s'ha pogut llegir des del conducte fill (%s)"
 
-#: glib/gspawn-win32.c:922
+#: glib/gspawn-win32.c:924
 msgid "Failed to execute helper program"
 msgstr "No s'ha pogut executar el programa auxiliar"
 
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "No s'ha pogut e executar el procés fill (%s)"
 
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "No s'ha pogut canviar al directori «%s» (%s)"
 
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "No s'ha pogut crear el conducte per comunicar amb el procés fill (%s)"
@@ -480,32 +480,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "S'ha produït un error inesperat en waitpid() (%s)"
 
-#: glib/gspawn.c:1063
+#: glib/gspawn.c:1066
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "No s'ha pogut bifurcar-se (%s)"
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1216
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "No s'ha pogut executar el procés fill «%s» (%s)"
 
-#: glib/gspawn.c:1223
+#: glib/gspawn.c:1226
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "No s'ha pogut redirigir la sortida o l'entrada del procés fill (%s)"
 
-#: glib/gspawn.c:1232
+#: glib/gspawn.c:1235
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "No s'ha pogut bifurcar el procés fill (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "S'ha produït un error desconegut en executar el procés fill \"%s\""
 
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""

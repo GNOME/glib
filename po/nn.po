@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
+"POT-Creation-Date: 2004-03-01 17:05-0500\n"
 "PO-Revision-Date: 2003-12-28 12:44+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -425,26 +425,26 @@ msgid ""
 msgstr ""
 "Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
 
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Klarte ikkje å lesa frå røyr frå barn (%s)"
 
-#: glib/gspawn-win32.c:922
+#: glib/gspawn-win32.c:924
 msgid "Failed to execute helper program"
 msgstr "Klarte ikkje å køyra hjelpeprogram"
 
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Klarte ikkje å utføra barneprosess (%s)"
 
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Klarte ikkje å skifta til katalogen «%s» (%s)"
 
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Klarte ikkje å oppretta røyr for å kommunisera med barneprosess (%s)"
@@ -464,32 +464,32 @@ msgstr "Uventa feil i select() ved lesing av data frå barneprosess (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Uventa feil i waitpid() (%s)"
 
-#: glib/gspawn.c:1063
+#: glib/gspawn.c:1066
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Kunne ikkje starta barneprosess (%s)"
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1216
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Klarte ikkje å utføra barnprosess «%s» (%s)"
 
-#: glib/gspawn.c:1223
+#: glib/gspawn.c:1226
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Klarte ikkje å redirigera utdata eller inndata frå barneprosess (%s)"
 
-#: glib/gspawn.c:1232
+#: glib/gspawn.c:1235
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Kunne ikkje starta barneprosess (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ukjend feil ved køyring av barneprosess «%s»"
 
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Klarte ikkje å lesa nok data frå pid-røyr frå barn (%s)"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
+"POT-Creation-Date: 2004-03-01 17:05-0500\n"
 "PO-Revision-Date: 2003-05-27 20:23+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -396,26 +396,26 @@ msgid ""
 "process"
 msgstr "當 g_io_channel_win32_poll() 從副進程讀取資料時發生無法預計的錯誤"
 
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "無法從管道讀取資料 (%s)"
 
-#: glib/gspawn-win32.c:922
+#: glib/gspawn-win32.c:924
 msgid "Failed to execute helper program"
 msgstr "無法執行助理程式"
 
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "無法執行副進程 (%s)"
 
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "無法進入目錄‘%s’(%s)"
 
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "無法建立管道來和副進程溝通 (%s)"
@@ -435,32 +435,32 @@ msgstr "當 select() 從副進程讀取資料時發生無法預計的錯誤 (%s)
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 發生無法預計的錯誤 (%s)"
 
-#: glib/gspawn.c:1063
+#: glib/gspawn.c:1066
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "無法衍生進程 (%s)"
 
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1216
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "無法執行副進程“%s”(%s)"
 
-#: glib/gspawn.c:1223
+#: glib/gspawn.c:1226
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "無法將副進程的輸出或輸入重新導向 (%s)"
 
-#: glib/gspawn.c:1232
+#: glib/gspawn.c:1235
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "無法衍生副進程 (%s)"
 
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "執行副進程“%s”時發生不明的錯誤"
 
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "無法從 child pid pipe 讀取足夠的資料 (%s)"

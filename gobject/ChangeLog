@@ -1,3 +1,7 @@
+Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.5 ===
+
 2004-03-01  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Add g_slist_remove_all back for ABI

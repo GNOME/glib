@@ -6,9 +6,12 @@ Overview of Changes from GLib 2.3.3 to GLib 2.3.4
 * Add atomic operations and use it for the async queue and
   gonce implementation. [Sebastian Wilhelmi]
 * Documentation improvements [Sebastian, Matthias, Sven Herzberg]
+* Add g_main_depth() for finding the recursion depth of the main
+  loop [Owen Taylor, Tim Janik, Stefan Westerfeld]
+* Add g_spawn_close_pid(), needed on win32 [J. Ali]
 * Win32 fixes. [Hans Breuer, J. Ali Harlow]
-* Misc bugfixes [Sebastian, Matthias, Balazs Scheidler]
-* Updated translations (cy,ga,et)
+* Misc bugfixes [Sebastian, Matthias, Balazs Scheidler, Owen]
+* Updated translations (cy,et,ga,sq)
 
 Overview of Changes from GLib 2.3.2 to GLib 2.3.3
 =================================================

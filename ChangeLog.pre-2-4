@@ -1,3 +1,11 @@
+Mon Mar  1 16:49:51 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.5 ===
+
+	* configure.in: Version 2.3.5, interface ago 0.
+
+	* NEWS: Some further updates.
+
 Mon Mar  1 15:49:09 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (check_for_child_exited): Don't

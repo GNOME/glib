@@ -162,3 +162,11 @@ taken in this function will only affect the child, not the parent.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_spawn_close_pid ##### -->
+<para>
+
+</para>
+
+@pid: 
+
+

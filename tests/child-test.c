@@ -125,6 +125,7 @@ test_thread (gpointer data)
 
   g_main_loop_run (new_main_loop);
 
+  return NULL;
 }
 
 int

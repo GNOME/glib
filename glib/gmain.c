@@ -1848,6 +1848,7 @@ get_depth_pointer (void)
  *     there is more work to do.
  *   </para>
  *  </listitem>
+ * </orderedlist>
  **/
 int
 g_main_depth (void)

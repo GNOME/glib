@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
+"POT-Creation-Date: 2004-03-01 17:05-0500\n"
 "PO-Revision-Date: 2002-11-20 17:52+0200\n"
 "Last-Translator: Ales Nyakhaychyk <i18n@infonet.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -501,30 +501,30 @@ msgstr ""
 "даньняў з працэса-нашчадка"
 
 # glib/gspawn-win32.c:843 glib/gspawn.c:914
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:844 glib/gspawn.c:1001
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Збой пад час чытаньня даньняў з каналу нашчадка (%s)"
 
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:922
+#: glib/gspawn-win32.c:924
 msgid "Failed to execute helper program"
 msgstr "Памылка пад час выкананьня праграмы дапамогі"
 
 # glib/gspawn-win32.c:940
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:945 glib/gspawn-win32.c:989
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка (%s)"
 
 # glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:980 glib/gspawn.c:1206
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Збой пад час зьмены каталёгу \"%s\" (%s)"
 
 # glib/gspawn-win32.c:981 glib/gspawn.c:1228
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1034 glib/gspawn.c:1337
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Збой пад час стварэньня каналу для абмену з працэсам-нашчадкам (%s)"
@@ -550,37 +550,37 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Непрадбачаная памылка ў waitpid() (%s)"
 
 # glib/gspawn.c:979
-#: glib/gspawn.c:1063
+#: glib/gspawn.c:1066
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Збой пад час разгалінаньня (%s)"
 
 # glib/gspawn.c:1129
-#: glib/gspawn.c:1213
+#: glib/gspawn.c:1216
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Збой пад час выкананьня працэса-нашчадка \"%s\" (%s)"
 
 # glib/gspawn.c:1139
-#: glib/gspawn.c:1223
+#: glib/gspawn.c:1226
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Збой пад час перанакіраваньня вываду ці ўводу працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1148
-#: glib/gspawn.c:1232
+#: glib/gspawn.c:1235
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Збой пад час разгалінаньня працэса-нашчадка (%s)"
 
 # glib/gspawn.c:1156
-#: glib/gspawn.c:1240
+#: glib/gspawn.c:1243
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Невядомая памылка пад час выкананьня працэса-нашчадка \"%s\""
 
 # glib/gspawn.c:1178
-#: glib/gspawn.c:1262
+#: glib/gspawn.c:1265
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""

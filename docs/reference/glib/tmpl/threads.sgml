@@ -1613,6 +1613,8 @@ Any one-time initialization function must have its own unique <structname>GOnce<
 struct.
 </para>
 
+@status: 
+@retval: 
 @Since: 2.4
 
 <!-- ##### ENUM GOnceStatus ##### -->
