@@ -1,3 +1,11 @@
+2005-03-09  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gutils.c (g_get_user_data_dir, g_get_user_config_dir,
+	g_get_user_cache_dir, g_get_system_data_dirs,
+	g_get_system_config_dirs): [Win32] Don't leak return value from
+	get_special_folder(). (#169348, Daniel Atallah) Guard against
+	g_home_dir being NULL, use g_tmp_dir/g_user_name in that case.
+
 Tue Mar  8 15:46:54 2005  Søren Sandmann  <sandmann@redhat.com>
 
 	* glib/gfileutils.c (g_file_replace): New API. A function to
