@@ -1,5 +1,15 @@
 2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib.h, configure.in, gutils.h: always define G_GNUC_EXTENSION,
+	even when not needed by GLib. That's actually also the way, the
+	GLib reference manual describes that macro. Therefore I had to
+	remove the lonesome #include <glibconfig.h> in gutils.c, which
+	doesn't seem to be needed there however. This change should make
+	Ben Gertzfield <che@debian.org> happy.
+
+	* gutils.c: Furthermore two warnings in gutils.c were voided,
+	which crept in due to my last change.
+
 	* gutils.c (g_get_current_dir): Allocate only up to 128KB for a
 	pathname. While this is an arbitrary value just like 2048, it
 	seems to be enough (after all, even 4GB is an arbitrary value).

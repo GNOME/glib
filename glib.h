@@ -1,4 +1,3 @@
-
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
@@ -27,6 +26,19 @@
 
 #ifndef __G_LIB_H__
 #define __G_LIB_H__
+
+/* Here we provide G_GNUC_EXTENSION as an alias for __extension__,
+ * where this is valid. This allows for warningless compilation of
+ * "long long" types even in the presence of '-ansi -pedantic'. This
+ * of course should be with the other GCC-isms below, but then
+ * glibconfig.h wouldn't load cleanly and it is better to have that
+ * here, than in glibconfig.h.  
+ */
+#if	__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
+#  define G_GNUC_EXTENSION __extension__
+#else
+#  define G_GNUC_EXTENSION
+#endif
 
 /* system specific config file glibconfig.h provides definitions for
  * the extrema of many of the standard types. These are:
@@ -265,7 +277,6 @@ extern "C" {
 #define G_GNUC_CONST
 #define	G_GNUC_UNUSED
 #endif	/* !__GNUC__ */
-
 
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.

@@ -32,8 +32,6 @@
 #include <config.h>
 #endif
 
-#include "glibconfig.h"
-
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -334,8 +332,8 @@ g_dirname (const gchar	   *file_name)
 gchar*
 g_get_current_dir (void)
 {
-  gchar *buffer;
-  gchar *dir;
+  gchar *buffer = NULL;
+  gchar *dir = NULL;
   static gulong max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
   
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")

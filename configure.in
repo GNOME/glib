@@ -1138,7 +1138,7 @@ _______EOF
 
 	if test -n "$gint64"; then
 	  cat >>$outfile <<_______EOF
-${glib_warning_guard}#define G_HAVE_GINT64 1
+#define G_HAVE_GINT64 1
 
 ${glib_extension}typedef signed $gint64 gint64;
 ${glib_extension}typedef unsigned $gint64 guint64;
@@ -1348,7 +1348,6 @@ $ac_cv_sizeof_int)
   gint64_format='"i"'
   guint64_format='"u"'
   glib_extension=
-  glib_warning_guard=
   gint64_constant='(val)'
   ;;
 $ac_cv_sizeof_long)
@@ -1356,7 +1355,6 @@ $ac_cv_sizeof_long)
   gint64_format='"li"'
   guint64_format='"lu"'
   glib_extension=
-  glib_warning_guard=
   gint64_constant='(val##L)'
   ;;
 $ac_cv_sizeof_long_long)
@@ -1364,14 +1362,6 @@ $ac_cv_sizeof_long_long)
   gint64_format='"'$glib_cv_long_long_format'i"'
   guint64_format='"'$glib_cv_long_long_format'u"'
   glib_extension='G_GNUC_EXTENSION '
-  glib_warning_guard="
-#if defined (__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8))
-#  define G_GNUC_EXTENSION __extension__
-#else
-#  define G_GNUC_EXTENSION
-#endif
-
-"
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
   ;;
 esac
