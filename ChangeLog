@@ -1,5 +1,10 @@
 2005-03-09  Tor Lillqvist  <tml@novell.com>
 
+	* glib/Makefile.am
+	* gmodule/Makefile.am: Merge from HEAD: Use grep | head -n 1
+	instead of grep -m 1 which doesn't work with slightly older
+	versions of GNU grep in install-libtool-import-lib rule.
+
 	* glib/gutils.c (g_get_user_data_dir, g_get_user_config_dir,
 	g_get_user_cache_dir, g_get_system_data_dirs,
 	g_get_system_config_dirs): [Win32] Don't leak return value from
