@@ -1,3 +1,11 @@
+2005-01-22  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gdate.c (g_date_set_time): Don't g_assert that localtime()
+	returns non-NULL. It does return NULL at least on Win32 if you
+	pass it a negative time_t, which although wrong, shouldn't cause
+	an application to abort. Instead return 2000-01-01 as a default
+	date. Print a warning unless G_DISABLE_CHECKS. (#164622)
+
 2005-01-20  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_value_as_integer): Don't
