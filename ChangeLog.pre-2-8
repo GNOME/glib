@@ -1,3 +1,10 @@
+2001-01-02  Dan Winship  <danw@helixcode.com>
+
+	* garray.h (g_array_append_val, g_array_prepend_val,
+	g_array_insert_val): Use parentheses around an argument to make
+	these cause an error if you pass a non-lvalue for the value,
+	rather than silently doing the wrong thing.
+
 2000-12-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Add GLIB_SIZEOF_VOID_P and GLIB_SIZEOF_LONG.
