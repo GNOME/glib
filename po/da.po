@@ -11,14 +11,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
-"POT-Creation-Date: 2004-07-18 18:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-07-31 23:40-0400\n"
 "PO-Revision-Date: 2003-11-20 21:30+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -171,23 +171,23 @@ msgstr "Kanal afslutter med et ufuldendt tegn"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_to_end"
 
-#: glib/gmarkup.c:223
+#: glib/gmarkup.c:225
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Fejl på linje %d tegn %d: %s"
 
-#: glib/gmarkup.c:307
+#: glib/gmarkup.c:309
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fejl på linje %d: %s"
 
-#: glib/gmarkup.c:412
+#: glib/gmarkup.c:414
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Tom entitet '&;' fundet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:424
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -198,17 +198,17 @@ msgstr ""
 "en entitet; hvis dette og-tegn ikke er beregnet på at være en entitet, så "
 "undgå dette ved at bruge &amp; i stedet"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:460
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Tegnet '%s' er ikke gyldigt inde i et entitetsnavn"
 
-#: glib/gmarkup.c:502
+#: glib/gmarkup.c:504
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Entitetsnavnet '%s' er ikke kendt"
 
-#: glib/gmarkup.c:512
+#: glib/gmarkup.c:514
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -217,7 +217,7 @@ msgstr ""
 "tegn uden at det var beregnet på at starte en entitet - dette undgås ved at "
 "bruge &amp; i stedet"
 
-#: glib/gmarkup.c:558
+#: glib/gmarkup.c:560
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -226,16 +226,16 @@ msgstr ""
 "Fejl ved fortolkning af '%s' som skulle have været et ciffer i en "
 "tegnreference (&#234; for eksempel) - måske er cifret for stort"
 
-#: glib/gmarkup.c:583
+#: glib/gmarkup.c:585
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "Tegnreferencen '%s' koder ikke et tilladt tegn"
 
-#: glib/gmarkup.c:600
+#: glib/gmarkup.c:602
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Tom tegnreference; skulle indeholde et tal såsom &#454;"
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:612
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -245,23 +245,23 @@ msgstr ""
 "og-tegn uden at det var beregnet på at starte en entitet - undgå dette ved "
 "at bruge &amp; i stedet"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
 msgstr "Ufærdig entitetsreference"
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:644
 msgid "Unfinished character reference"
 msgstr "Ufærdig tegnreference"
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ugyldig UTF-8-kodet tekst"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:990
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentet skal begynde med et element (f.eks <book>)"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1029
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -270,7 +270,7 @@ msgstr ""
 "'%s' er ikke et gyldigt tegn efter et '<'-tegn; det kan ikke være "
 "begyndelsen på et elementnavn"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1092
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -279,7 +279,7 @@ msgstr ""
 "Mærkeligt tegn '%s', forventede et '>'-tegn for at afslutte "
 "begyndelsesmærket til elementet '%s'"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1180
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -287,7 +287,7 @@ msgstr ""
 "Mærkeligt tegn '%s', forventede et '=' efter egenskabsnavn '%s' for "
 "elementet '%s'"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1221
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -298,7 +298,7 @@ msgstr ""
 "begyndelsesmærket til elementet '%s' eller alternativt en egenskab; måske "
 "brugte du et ugyldigt tegn i egenskabsnavnet"
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -307,7 +307,7 @@ msgstr ""
 "Mærkeligt tegn '%s', forventede et åbningsanførselstegn efter lighedstegnet "
 "når værdien for egenskaben '%s' for elementet '%s' angives"
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1450
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -316,7 +316,7 @@ msgstr ""
 "'%s' er ikke et gyldigt tegn efter tegnene '</'; '%s' er måske ikke "
 "begyndelsen på et elementnavn"
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1489
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -325,25 +325,25 @@ msgstr ""
 "'%s' er ikke et gyldigt tegn efter det lukkende elementnavn '%s'; tilladt "
 "tegn er '>'"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1500
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' blev lukket, ingen åbne elementer nu"
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1509
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' blev lukket, men aktivt åbent element er '%s'"
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1656
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller indeholdt kun blanke tegn"
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentet sluttede uventet lige efter en åben vinkelparantes '<'"
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -351,7 +351,7 @@ msgid ""
 msgstr ""
 "Dokumentet sluttede uventet med åbne elementer - '%s' var sidste åbne element"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -360,19 +360,19 @@ msgstr ""
 "Dokumentet sluttede uventet, forventede at se en vinkelparantes for at "
 "afslutte det sidste mærke <%s/>"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentet sluttede uventet inden i et elementnavn"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentet sluttede uventet inden i et egenskabsnavn"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumentet sluttede uventet inden i et element-åbnende mærke"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1708
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -380,16 +380,16 @@ msgstr ""
 "Dokumentet sluttede uventet efter lighedstegnet efter et egenskabsnavn; "
 "ingen egenskabsværdi"
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentet sluttede uventet inden i en egenskabsværdi"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumentet sluttede uventet inden i lukningsmærket for elementet '%s'"
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet sluttede uventet inden i en kommentar eller behandlingsinstruktion"
@@ -403,19 +403,19 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Uafbalanceret anførselstegn i kommandolinje eller anden skal-anført tekst"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst sluttede lige efter et '\\' tegn (teksten var '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Tekst sluttede før tilsvarende anførselstegn blev fundet for %c (teksten var "
 "'%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst var tom (eller indeholdt kun blanke tegn)"
 

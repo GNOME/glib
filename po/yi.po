@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2004-07-18 18:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-07-31 23:40-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -165,23 +165,23 @@ msgstr "קאַנאַל ענדיקט זיך מיט אַ האַלבן שריפֿט
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ניט געקענט מאַכן אַ רױ־לײען אין g_io_channel_read_to_end"
 
-#: glib/gmarkup.c:223
+#: glib/gmarkup.c:225
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "דורכפֿאַל אױף שורה %d פּאָזיציע %d: %s"
 
-#: glib/gmarkup.c:307
+#: glib/gmarkup.c:309
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "דורכפֿאַל אױף שורה %d: %s"
 
-#: glib/gmarkup.c:412
+#: glib/gmarkup.c:414
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "לײדיקער אײנס '&;' געזען; לעקסיקע אײנסן זײַנען: &amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:424
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -191,17 +191,17 @@ msgstr ""
 "שריפֿטצײכן %s איז ניט לעקסיק צום אָנהײב פֿון אַן אײנסנאָמען; דער & שריפֿטצײכן הײבט "
 "אַן אײנס אָן; אױב מיט דעם דאָזיקן & מײנט מען ניט קײן אײנס, נאָרמאַליר אים װי &amp;"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:460
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "שריפֿטצײכן %s איז אומלעקסיק אין מיטן פֿון אַן אײנסנאָמען"
 
-#: glib/gmarkup.c:502
+#: glib/gmarkup.c:504
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "אײנסנאָמען %s איז ניט באַקאַנט"
 
-#: glib/gmarkup.c:512
+#: glib/gmarkup.c:514
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -209,7 +209,7 @@ msgstr ""
 "אײנס האָט זיך ניט געענדיקט מיט קײן \";\". מסתּמא האָט מען געשריבן אַן & "
 "שריפֿטצײכן אָן דער כּװנה אָנצוהײבן אַן אײנס.  נאָרמאַליר & װי &amp;"
 
-#: glib/gmarkup.c:558
+#: glib/gmarkup.c:560
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -218,16 +218,16 @@ msgstr ""
 "דורכפֿאַל אין אַנאַליזירן '%s', װאָס זאָל האָבן אַ ציפֿער אין דער שריפֿטצײכן־רעפֿערענץ "
 "(למשל &#234;); אפֿשר איז דער ציפֿער צו גרױס"
 
-#: glib/gmarkup.c:583
+#: glib/gmarkup.c:585
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "שריפֿטצײכן־רעפֿערענץ '%s' קאָדירט ניט קײן דערלאָזטן שריפֿטצײכן"
 
-#: glib/gmarkup.c:600
+#: glib/gmarkup.c:602
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "נוליקע שריפֿטצײכן־רעפֿערענץ; מוז כּולל זײַן אַ ציפֿער, װי &#454;"
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:612
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -236,23 +236,23 @@ msgstr ""
 "שריפֿטצײכן־רעפֿערענץ האָט זיך ניט געענדיקט מיט קײן \";\". מסתּמא האָט מען געשריבן "
 "אַן & שריפֿטצײכן אָן דער כּװנה אָנצוהײבן אַן אײנס.  נאָרמאַליר & װי &amp;"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
 msgstr "ניט־געענדיקט אײנס־רעפֿערענץ"
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:644
 msgid "Unfinished character reference"
 msgstr "ניט־געענדיקט שריפֿטצײכן־רעפֿערענץ"
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "אומלעקסיק UTF־8 קאָדירטער טעקסט"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:990
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "דאָקומענט מוז אָנהײבן מיט אַן עלעמענט (װי למשל <book>)"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1029
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -261,7 +261,7 @@ msgstr ""
 "'%s' איך ניט קײן לעקסיקער שריפֿטצײכן נאָך אַ '‪<‬' שריפֿטצײכן;עס טאָר ניט אָנהײבן "
 "קײן אײנסנאָמען"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1092
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -270,7 +270,7 @@ msgstr ""
 "מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '‪>‬' שריפֿטצײכן צו ענדיקן דעם אָנהײב־הענטל "
 "פֿונעם עלעמענט '%s'"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1180
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -278,7 +278,7 @@ msgstr ""
 "מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '=' שריפֿטצײכן נאָך אַטריבוט־נאָמען %s פֿונעם "
 "עלעמענט '%s'"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1221
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -289,7 +289,7 @@ msgstr ""
 "אָנהײב־הענטל פֿונעם עלעמענט '%s'; אפֿשר האָט מען געלײגט אַן אומלעקסיקן שריפֿטצײכן "
 "אין אַן אַטריבוט־נאָמען"
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -298,7 +298,7 @@ msgstr ""
 "מאָדנע שריפֿטצײכן '%s'; דערװאַרט אַ '\"' נאָך דעם '=' צו באַשטעטיקן דעם באַטרעף פֿון "
 "אַטריבוט '%s' פֿונעם עלעמענט '%s'"
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1450
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -307,7 +307,7 @@ msgstr ""
 "'%s' איז ניט קײן לעקסיקער שריפֿטצײכן נאָך די שריפֿטצײכנס '‪</‬'; '%s' טאָר ניט "
 "אָנהײבן קײן עלעמענט־נאָמען"
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1489
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -316,25 +316,25 @@ msgstr ""
 "'%s' איז ניט קײן לעקסיקער שריפֿטצײכן נאָך דעם שלאָס־עלעמענט נאָמען '%s'; מען מוז "
 "שטעלן '‪>‬'"
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1500
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "עלעמענט '%s' איז פֿאַרמאַכט; קײן עלעמענט איז דערװײַל אָפֿן"
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1509
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "עלעמענט '%s' איז פֿאַרמאַכט; דער איצטיקער אָפֿענער עלעמענט איז '%s'"
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1656
 msgid "Document was empty or contained only whitespace"
 msgstr "דאָקומענט איז פּוסט אָדער איז כּולל בלױז לײדיק אָרט"
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך אַן עפֿן־צײכן '‪<‬'"
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -343,7 +343,7 @@ msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט מיט אָפֿענע עלעמענטן; '%s' איז געװען דער "
 "לעצט־געעפֿנטער עלעמענט"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -352,19 +352,19 @@ msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט; דערװאַרט אַ שלאָס־צײכן '‪>‬' צו ענדיקן דעם "
 "הענטל ‪<%s/>‬"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־נאָמען"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־נאָמען"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן עלעמענט־עפֿן הענטל"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1708
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -372,18 +372,18 @@ msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט נאָך דעם '=' שריפֿטצײכן נאָך אַן "
 "אַטריבוט־נאָמען אָן קײן אַטריבוט־באַטרעף"
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַן אַטריבוט־באַטרעף"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון דעם שלאָס־הענטל פֿון עלעמענט "
 "'%s'"
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "דאָקומענט ענדיקט זיך אומגעריכטערהײט אין דרינען פֿון אַ קאָמענטאַר אָדער אַ "
@@ -397,20 +397,20 @@ msgstr "ציטירטער טעקסט הײבט ניט אָן מיט קײן גענ�
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "גענדזן־פֿיסל אָן אַ זיװג אין באַפֿעל־שורה אָדער אַנדער ציטירטן טעקסט"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
 "טעקסט האָט זיך געענדיקט באַלד נאָך אַ '\\' שריפֿטצײכן.  (דער טעקסט איז געװען '%s')"
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "טעקסט האָט זיך געענדיקט אײדער אַ זיװג צו דעם גענדזן־פֿיסל ‪%c‬.  (דער טעקסט איז "
 "געװען '%s')"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "טעקסט איז געװען פּוסט (אָדער איז כּולל בלױס לײדיק אָרט)"
 

@@ -1,3 +1,7 @@
+2004-08-01 Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.5.1 ===
+
 2004-07-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* gtype.c (g_type_instance_get_private): Catch cases of 

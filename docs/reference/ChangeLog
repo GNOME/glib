@@ -1,3 +1,7 @@
+2004-08-01 Matthias Clasen  <mclasen@redhat.com>
+                                                                                
+        * === Released 2.5.1 ===
+                                                                                
 2004-07-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/misc_utils.sgml: Clarify docs for 

@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8 \n"
-"POT-Creation-Date: 2004-07-18 18:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-07-31 23:40-0400\n"
 "PO-Revision-Date: 2004-06-06 12:45 + 0545\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: <pawan@nplinux.org>\n"
 
 #: glib/gconvert.c:402
 #, c-format
@@ -165,23 +165,23 @@ msgstr "अर्ध-स्वनमा मार्ग टुङ्गिन्
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "जी_यो_मार्ग_पढ्ने_अन्त्य_मा सालाखाला रुपमा पढ्न असफल"
 
-#: glib/gmarkup.c:223
+#: glib/gmarkup.c:225
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "लाइन %d स्वन %d: %s मा गल्ती"
 
-#: glib/gmarkup.c:307
+#: glib/gmarkup.c:309
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "लाइन %d: %s मा गल्ती"
 
-#: glib/gmarkup.c:412
+#: glib/gmarkup.c:414
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "सम्पूर्ण '&;'खाली देखिन्छ; सम्पूर्ण बैध  प्रविष्टिहरु : &amp; &quot; &lt; &gt; &apos; हुन्"
 
-#: glib/gmarkup.c:422
+#: glib/gmarkup.c:424
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -191,17 +191,17 @@ msgstr ""
 "समस्त नामको शुरुमा स्वन '%s' बैध हुँदैन ; & स्वनले स‌पूर्णता शुरु गर्छ ; अविभाज्य संपूर्णता "
 "भेटिएन भने ,छाडिदेऊ"
 
-#: glib/gmarkup.c:458
+#: glib/gmarkup.c:460
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "समस्त नाममा स्वन '%s' बैध हुँदैन"
 
-#: glib/gmarkup.c:502
+#: glib/gmarkup.c:504
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "समस्त नाम '%s' a'बुझिएन"
 
-#: glib/gmarkup.c:512
+#: glib/gmarkup.c:514
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -209,7 +209,7 @@ msgstr ""
 "समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु "
 "गर्नुभयो - &amp अविभाज्य भेटिँदैन"
 
-#: glib/gmarkup.c:558
+#: glib/gmarkup.c:560
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
@@ -218,16 +218,16 @@ msgstr ""
 " स्वन सन्दर्भमा हुनुपर्ने अंकले'%s'क्रममिलान गर्न सकेन,(उदाहरणका लागि &#234;)-संभवत अंक "
 "ज्यादै ठूलो छ"
 
-#: glib/gmarkup.c:583
+#: glib/gmarkup.c:585
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "स्वन संदर्भ '%s'ले स्वीकृत स्वनको संकेतन गर्दैन "
 
-#: glib/gmarkup.c:600
+#: glib/gmarkup.c:602
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "खाली स्वन संदर्भमा &#454 यस्तो  अंक समाहित हुनुपर्छ"
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:612
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -236,43 +236,43 @@ msgstr ""
 "समस्त प्रविष्टि अर्धविराममा सकिएन;समस्त प्रविष्टिका सट्टा तपाईंले अविभाज्य स्वनबाट शुरु "
 "गर्नुभयो - &amp अविभाज्य भेटिँदैन"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:638
 msgid "Unfinished entity reference"
 msgstr "अधुरो समस्त संदर्भ"
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:644
 msgid "Unfinished character reference"
 msgstr "अधुरो स्वन संदर्भ"
 
-#: glib/gmarkup.c:893 glib/gmarkup.c:921 glib/gmarkup.c:952
+#: glib/gmarkup.c:895 glib/gmarkup.c:923 glib/gmarkup.c:954
 msgid "Invalid UTF-8 encoded text"
 msgstr "संकेतित पाठमा युटिएफ-८ अबैध छ"
 
-#: glib/gmarkup.c:988
+#: glib/gmarkup.c:990
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "लिखत कुनै बस्तुबाटै शुरु हुनरपर्छ (जस्तै <पुस्तक>)"
 
-#: glib/gmarkup.c:1027
+#: glib/gmarkup.c:1029
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "स्वन '<'पछि आउने स्वन '%s'बैधानिक स्वन होइन;यस्तोमा बस्तुको नामबाट शुरु हुँदैन"
 
-#: glib/gmarkup.c:1090
+#: glib/gmarkup.c:1092
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "'%s' कुनै बस्तुको शुरु ट्यागको अन्त्यमा बिजोर स्वन '%s',का सट्टा स्वन '>'खोज्छ"
 
-#: glib/gmarkup.c:1177
+#: glib/gmarkup.c:1180
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "'%s' कुनै बस्तु '%s'को प्रारुपको नामपछि बिजोर स्वन'%s'ले '='को आशा राख्दछ"
 
-#: glib/gmarkup.c:1218
+#: glib/gmarkup.c:1221
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -282,7 +282,7 @@ msgstr ""
 "कुनै बस्तु '%s'वा ऐच्छिक प्रारुपको को शुरु ट्यागको अन्त्यमा बिजोर स्वन'%s'ले '>' वा "
 "'/'खोज्छ; सं‌भवत तपाईंले गलत चाहिँ प्रयोग गर्नुभयो"
 
-#: glib/gmarkup.c:1301
+#: glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -291,80 +291,80 @@ msgstr ""
 "कुनै बस्तु '%s'को प्रारुप '%s'लाई मूल्य दिने क्रममा  बराबरको संकेत पछि बिजोर स्वन'%s'ले "
 "खुला उद्धरण चिन्ह खोज्छ;"
 
-#: glib/gmarkup.c:1441
+#: glib/gmarkup.c:1450
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'</'स्वन पछि '%s'स्वन बैध  होइन; '%s'ले कुनै बस्तुको नाम शुरु गर्दैन"
 
-#: glib/gmarkup.c:1479
+#: glib/gmarkup.c:1489
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "नजिकको बस्तुको नाम '%s'पछि  '%s'स्वन बैध  होइन;आबस्यक स्वन '>'हो "
 
-#: glib/gmarkup.c:1490
+#: glib/gmarkup.c:1500
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "तत्काल कुनै बस्तु खुला छैन, बस्तु '%s'बन्द भयो"
 
-#: glib/gmarkup.c:1499
+#: glib/gmarkup.c:1509
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "बस्तु '%s'बन्द भयो,तर भर्खरै खुलेको बस्तु '%s'हो"
 
-#: glib/gmarkup.c:1646
+#: glib/gmarkup.c:1656
 msgid "Document was empty or contained only whitespace"
 msgstr "लिखत खाली छ अथवा सेतो खाली ठाउँमात्र छ "
 
-#: glib/gmarkup.c:1660
+#: glib/gmarkup.c:1670
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "खुला कोष्ठ-कोण '<'को लगत्तै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1668 glib/gmarkup.c:1712
+#: glib/gmarkup.c:1678 glib/gmarkup.c:1722
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr " अन्तिममा खलेको -'%s'लिखतसँगै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1676
+#: glib/gmarkup.c:1686
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "बन्द कोष्ठ-कोणमा समाप्त हुने ट्याग <%s/>हेर्ने क्रममा  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1682
+#: glib/gmarkup.c:1692
 msgid "Document ended unexpectedly inside an element name"
 msgstr "कुनै बस्तुको नामभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1687
+#: glib/gmarkup.c:1697
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "कुनै प्रारुपको नामभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1692
+#: glib/gmarkup.c:1702
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "कुनै बस्तु खोल्ने ट्यागभित्रै  आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1698
+#: glib/gmarkup.c:1708
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "प्रारुपको मूल्य छैन; प्रारुप-नामको  बराबरको संकेतसँगै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1705
+#: glib/gmarkup.c:1715
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "प्रारुपको मूल्यसँगै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1730
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "कुनै बस्तु '%s'को बन्द ट्यागभित्रै आशातीत रुपमा लिखत बन्द भयो"
 
-#: glib/gmarkup.c:1726
+#: glib/gmarkup.c:1736
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "आलोचना वा संचालन निर्देशजभित्रै आशातीत रुपमा लिखत बन्द भयो"
 
@@ -376,17 +376,17 @@ msgstr "उद्धरण चिन्हसँग उद्धृत पाठ
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "निर्देशन हरफ वा अन्य कोष्ठ-उद्धृत पाठसँग उद्धरण चिन्हले मेल खाँदैन"
 
-#: glib/gshell.c:530
+#: glib/gshell.c:540
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "स्वन '\\'को लगत्तै पाठ सकियो. (पाठ '%s'थियो) "
 
-#: glib/gshell.c:537
+#: glib/gshell.c:547
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr " %c का लागि मेल खाने उद्धरण पाउनु अगावै पाठ सकियो.(पाठ '%s'थियो)"
 
-#: glib/gshell.c:549
+#: glib/gshell.c:559
 msgid "Text was empty (or contained only whitespace)"
 msgstr "पाठ खाली थियो (वा सेतो खालीठाउँमात्र थियो )"
 
