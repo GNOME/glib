@@ -383,8 +383,8 @@ type_node_fundamental_new_W (GType                 ftype,
   g_assert ((ftype & TYPE_ID_MASK) == 0);
   g_assert (ftype <= G_TYPE_FUNDAMENTAL_MAX);
   
-  if (ftype == static_fundamental_next)
-    static_fundamental_next += 1 << G_TYPE_FUNDAMENTAL_SHIFT;
+  if (ftype >> G_TYPE_FUNDAMENTAL_SHIFT == static_fundamental_next)
+    static_fundamental_next++;
   
   type_flags &= TYPE_FUNDAMENTAL_FLAG_MASK;
   
@@ -2581,7 +2581,7 @@ g_type_fundamental_next (void)
   G_READ_LOCK (&type_rw_lock);
   type = static_fundamental_next;
   G_READ_UNLOCK (&type_rw_lock);
-  
+  type = G_TYPE_MAKE_FUNDAMENTAL (type);
   return type <= G_TYPE_FUNDAMENTAL_MAX ? type : 0;
 }
 
