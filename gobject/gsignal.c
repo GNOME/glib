@@ -1231,7 +1231,7 @@ g_signal_query (guint         signal_id,
  *
  * A signal name consists of segments consisting of ASCII letters and
  * digits, separated by either the '-' or '_' character. The first
- * character of a signal names must be a letter. Names which violate these
+ * character of a signal name must be a letter. Names which violate these
  * rules lead to undefined behaviour of the GSignal system. 
  *
  * When registering a signal and looking up a signal, either separator can

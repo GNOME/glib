@@ -60,15 +60,14 @@ A #GParamSpec derived structure that contains the meta data for boolean properti
 
 <!-- ##### FUNCTION g_param_spec_boolean ##### -->
 <para>
-Create a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name:         
+@nick:         
+@blurb:        
+@default_value:
+@flags:        
+@Returns:      
 
 
 <!-- ##### FUNCTION g_value_set_boolean ##### -->
@@ -132,17 +131,16 @@ A #GParamSpec derived structure that contains the meta data for character proper
 
 <!-- ##### FUNCTION g_param_spec_char ##### -->
 <para>
-Create a new #GParamSpecChar instance specifying a %G_TYPE_CHAR property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb:
+@minimum:
+@maximum:
+@default_value: 
+@flags: 
+@Returns:
 
 
 <!-- ##### FUNCTION g_value_set_char ##### -->
@@ -206,17 +204,16 @@ A #GParamSpec derived structure that contains the meta data for unsigned charact
 
 <!-- ##### FUNCTION g_param_spec_uchar ##### -->
 <para>
-Create a new #GParamSpecUChar instance specifying a %G_TYPE_UCHAR property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:         minimum value for the property specified
-@maximum:         maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name:
+@nick:
+@blurb:
+@minimum:
+@maximum:
+@default_value:
+@flags:
+@Returns:
 
 
 <!-- ##### FUNCTION g_value_set_uchar ##### -->
@@ -280,17 +277,16 @@ A #GParamSpec derived structure that contains the meta data for integer properti
 
 <!-- ##### FUNCTION g_param_spec_int ##### -->
 <para>
-Create a new #GParamSpecInt instance specifying a %G_TYPE_INT property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name:
+@nick:
+@blurb:
+@minimum:
+@maximum: 
+@default_value:
+@flags:
+@Returns:       
 
 
 <!-- ##### FUNCTION g_value_set_int ##### -->
@@ -354,17 +350,16 @@ A #GParamSpec derived structure that contains the meta data for unsigned integer
 
 <!-- ##### FUNCTION g_param_spec_uint ##### -->
 <para>
-Create a new #GParamSpecUInt instance specifying a %G_TYPE_UINT property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:         minimum value for the property specified
-@maximum:         maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name:         
+@nick:         
+@blurb:        
+@minimum:
+@maximum:
+@default_value:
+@flags:
+@Returns:      
 
 
 <!-- ##### FUNCTION g_value_set_uint ##### -->
@@ -428,17 +423,16 @@ A #GParamSpec derived structure that contains the meta data for long integer pro
 
 <!-- ##### FUNCTION g_param_spec_long ##### -->
 <para>
-Create a new #GParamSpecLong instance specifying a %G_TYPE_LONG property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:      
 
 
 <!-- ##### FUNCTION g_value_set_long ##### -->
@@ -505,14 +499,14 @@ A #GParamSpec derived structure that contains the meta data for unsigned long in
 Create a new #GParamSpecULong instance specifying a %G_TYPE_ULONG property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:         minimum value for the property specified
-@maximum:         maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:      
 
 
 <!-- ##### FUNCTION g_value_set_ulong ##### -->
@@ -576,17 +570,16 @@ A #GParamSpec derived structure that contains the meta data for 64bit integer pr
 
 <!-- ##### FUNCTION g_param_spec_int64 ##### -->
 <para>
-Create a new #GParamSpecInt64 instance specifying a %G_TYPE_INT64 property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:       
 
 
 <!-- ##### FUNCTION g_value_set_int64 ##### -->
@@ -650,17 +643,16 @@ A #GParamSpec derived structure that contains the meta data for unsigned 64bit i
 
 <!-- ##### FUNCTION g_param_spec_uint64 ##### -->
 <para>
-Create a new #GParamSpecUInt64 instance specifying a %G_TYPE_UINT64 property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:         minimum value for the property specified
-@maximum:         maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:       
 
 
 <!-- ##### FUNCTION g_value_set_uint64 ##### -->
@@ -725,17 +717,16 @@ A #GParamSpec derived structure that contains the meta data for float properties
 
 <!-- ##### FUNCTION g_param_spec_float ##### -->
 <para>
-Create a new #GParamSpecFloat instance specifying a %G_TYPE_FLOAT property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:      
 
 
 <!-- ##### FUNCTION g_value_set_float ##### -->
@@ -800,17 +791,16 @@ A #GParamSpec derived structure that contains the meta data for double propertie
 
 <!-- ##### FUNCTION g_param_spec_double ##### -->
 <para>
-Create a new #GParamSpecDouble instance specifying a %G_TYPE_DOUBLE property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@minimum:       minimum value for the property specified
-@maximum:       maximum value for the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@minimum: 
+@maximum: 
+@default_value: 
+@flags: 
+@Returns:  
 
 
 <!-- ##### FUNCTION g_value_set_double ##### -->
@@ -1210,15 +1200,14 @@ A #GParamSpec derived structure that contains the meta data for boxed properties
 
 <!-- ##### FUNCTION g_param_spec_boxed ##### -->
 <para>
-Create a new #GParamSpecBoxed instance specifying a %G_TYPE_BOXED derived property.
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@boxed_type:    %G_TYPE_BOXED derived type of this property
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@boxed_type: 
+@flags: 
+@Returns:       
 
 
 <!-- ##### FUNCTION g_value_set_boxed ##### -->
@@ -1458,17 +1447,14 @@ A #GParamSpec derived structure that contains the meta data for unichar (unsigne
 
 <!-- ##### FUNCTION g_param_spec_unichar ##### -->
 <para>
-Create a new #GParamSpecUnichar instance specifying a %G_TYPE_UINT property.
-#GValue structures for this property
-can be accessed with g_value_set_uint() and g_value_get_uint().
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@default_value: default value for the property specified
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@default_value: 
+@flags: 
+@Returns:       
 
 
 <!-- ##### MACRO G_IS_PARAM_SPEC_VALUE_ARRAY ##### -->
@@ -1505,16 +1491,13 @@ A #GParamSpec derived structure that contains the meta data for #GValueArray pro
 
 <!-- ##### FUNCTION g_param_spec_value_array ##### -->
 <para>
-Create a new #GParamSpecValueArray instance specifying a %G_TYPE_VALUE_ARRAY property.
-%G_TYPE_VALUE_ARRAY is a %G_TYPE_BOXED type, as such, #GValue structures for this property
-can be accessed with g_value_set_boxed() and g_value_get_boxed().
 </para>
 
-@name:          canonical name of the property specified
-@nick:          nick name for the property specified
-@blurb:         description of the property specified
-@element_spec:  a #GParamSpec describing the elements contained in arrays of this property, may be %NULL
-@flags:         flags for the property specified
-@Returns:       a newly created parameter specification
+@name: 
+@nick: 
+@blurb: 
+@element_spec: 
+@flags: 
+@Returns:       
 
 

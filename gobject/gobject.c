@@ -258,6 +258,14 @@ g_object_do_class_init (GObjectClass *class)
 		  1, G_TYPE_PARAM);
 }
 
+/**
+ * g_object_class_install_property:
+ * @class: a #GObjectClass
+ * @property_id: the id for the new property
+ * @pspec: the #GParamSpec for the new property
+ * 
+ * Installs a new property. This is usually done in the class initializer.
+ **/
 void
 g_object_class_install_property (GObjectClass *class,
 				 guint	       property_id,

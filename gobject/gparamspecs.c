@@ -1344,8 +1344,24 @@ g_param_spec_types_init (void)	/* sync with gtype.c */
   g_assert (spec_types == spec_types_bound);
 }
 
-
 /* --- GParamSpec initialization --- */
+
+/**
+ * g_param_spec_char:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecChar instance specifying a %G_TYPE_CHAR property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_char (const gchar *name,
 		   const gchar *nick,
@@ -1372,6 +1388,22 @@ g_param_spec_char (const gchar *name,
   return G_PARAM_SPEC (cspec);
 }
 
+/**
+ * g_param_spec_uchar:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecUChar instance specifying a %G_TYPE_UCHAR property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:   a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_uchar (const gchar *name,
 		    const gchar *nick,
@@ -1398,6 +1430,21 @@ g_param_spec_uchar (const gchar *name,
   return G_PARAM_SPEC (uspec);
 }
 
+/**
+ * g_param_spec_boolean:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN 
+ * property.
+ * 
+ * See g_param_spec_internal() for details on property names.
+ *
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_boolean (const gchar *name,
 		      const gchar *nick,
@@ -1420,6 +1467,22 @@ g_param_spec_boolean (const gchar *name,
   return G_PARAM_SPEC (bspec);
 }
 
+/**
+ * g_param_spec_int:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecInt instance specifying a %G_TYPE_INT property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_int (const gchar *name,
 		  const gchar *nick,
@@ -1446,6 +1509,22 @@ g_param_spec_int (const gchar *name,
   return G_PARAM_SPEC (ispec);
 }
 
+/**
+ * g_param_spec_uint:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecUInt instance specifying a %G_TYPE_UINT property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:  a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_uint (const gchar *name,
 		   const gchar *nick,
@@ -1472,6 +1551,22 @@ g_param_spec_uint (const gchar *name,
   return G_PARAM_SPEC (uspec);
 }
 
+/**
+ * g_param_spec_long:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecLong instance specifying a %G_TYPE_LONG property.
+ * 
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:  a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_long (const gchar *name,
 		   const gchar *nick,
@@ -1498,6 +1593,22 @@ g_param_spec_long (const gchar *name,
   return G_PARAM_SPEC (lspec);
 }
 
+/**
+ * g_param_spec_ulong:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecULong instance specifying a %G_TYPE_ULONG property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:  a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_ulong (const gchar *name,
 		    const gchar *nick,
@@ -1524,6 +1635,22 @@ g_param_spec_ulong (const gchar *name,
   return G_PARAM_SPEC (uspec);
 }
 
+/**
+ * g_param_spec_int64:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecInt64 instance specifying a %G_TYPE_INT64 property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_int64 (const gchar *name,
 		    const gchar *nick,
@@ -1550,6 +1677,23 @@ g_param_spec_int64 (const gchar *name,
   return G_PARAM_SPEC (lspec);
 }
 
+/**
+ * g_param_spec_uint64:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecUInt64 instance specifying a %G_TYPE_UINT64 
+ * property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_uint64 (const gchar *name,
 		     const gchar *nick,
@@ -1576,6 +1720,22 @@ g_param_spec_uint64 (const gchar *name,
   return G_PARAM_SPEC (uspec);
 }
 
+/**
+ * g_param_spec_unichar:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecUnichar instance specifying a %G_TYPE_UINT 
+ * property. #GValue structures for this property can be accessed with 
+ * g_value_set_uint() and g_value_get_uint().
+ *
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_unichar (const gchar *name,
 		      const gchar *nick,
@@ -1656,6 +1816,22 @@ g_param_spec_flags (const gchar *name,
   return G_PARAM_SPEC (fspec);
 }
 
+/**
+ * g_param_spec_float:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecFloat instance specifying a %G_TYPE_FLOAT property.
+ * 
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:  a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_float (const gchar *name,
 		    const gchar *nick,
@@ -1682,6 +1858,23 @@ g_param_spec_float (const gchar *name,
   return G_PARAM_SPEC (fspec);
 }
 
+/**
+ * g_param_spec_double:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @minimum:       minimum value for the property specified
+ * @maximum:       maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecDouble instance specifying a %G_TYPE_DOUBLE 
+ * property.
+ * 
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value:     a newly created parameter specification 
+ **/
 GParamSpec*
 g_param_spec_double (const gchar *name,
 		     const gchar *nick,
@@ -1747,6 +1940,21 @@ g_param_spec_param (const gchar *name,
   return G_PARAM_SPEC (pspec);
 }
 
+/**
+ * g_param_spec_boxed:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @boxed_type:    %G_TYPE_BOXED derived type of this property
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecBoxed instance specifying a %G_TYPE_BOXED 
+ * derived property.
+ * 
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_boxed (const gchar *name,
 		    const gchar *nick,
@@ -1785,6 +1993,24 @@ g_param_spec_pointer (const gchar *name,
   return G_PARAM_SPEC (pspec);
 }
 
+/**
+ * g_param_spec_value_array:
+ * @name:          canonical name of the property specified
+ * @nick:          nick name for the property specified
+ * @blurb:         description of the property specified
+ * @element_spec:  a #GParamSpec describing the elements contained in 
+ *                 arrays of this property, may be %NULL
+ * @flags:         flags for the property specified
+ * 
+ * Creates a new #GParamSpecValueArray instance specifying a 
+ * %G_TYPE_VALUE_ARRAY property. %G_TYPE_VALUE_ARRAY is a %G_TYPE_BOXED 
+ * type, as such, #GValue structures for this property can be accessed 
+ * with g_value_set_boxed() and g_value_get_boxed().
+ * 
+ * See g_param_spec_internal() for details on property names.
+ * 
+ * Return value: a newly created parameter specification
+ **/
 GParamSpec*
 g_param_spec_value_array (const gchar *name,
 			  const gchar *nick,

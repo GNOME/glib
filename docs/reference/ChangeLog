@@ -1,5 +1,9 @@
 2002-12-15  Matthias Clasen  <maclas@gmx.de>
 
+	* gobject/tmpl/param_value_types.sgml: Move some docs inline.
+
+2002-12-15  Matthias Clasen  <maclas@gmx.de>
+
 	* glib/Makefile.am (IGNORE_HFILES): Add gprintfint.h and trio.
 
 2002-12-13  Matthias Clasen  <maclas@gmx.de>
