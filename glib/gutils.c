@@ -139,7 +139,13 @@ g_snprintf (gchar	*str,
   va_start (args, fmt);
   retval = vsnprintf (str, n, fmt, args);
   va_end (args);
-  
+
+  if (retval < 0)
+    {
+      str[n-1] = '\0';
+      retval = strlen (str);
+    }
+
   return retval;
 #else	/* !HAVE_VSNPRINTF */
   gchar *printed;

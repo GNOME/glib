@@ -1,3 +1,9 @@
+1999-04-18  Havoc Pennington  <hp@pobox.com>
+
+	* gutils.c (g_snprintf): When using the vsnprintf()
+	implementation, '\0'-terminate the resulting string
+	and return its length rather than -1.
+
 Fri Apr 16 06:52:07 1999  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c (g_scanner_unexp_token): feature G_TOKEN_EOF as a valid
