@@ -1,3 +1,12 @@
+1999-01-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Test for localtime_r only after including the
+	right MT enabling CFLAGS (i.e. -D_REENTRANT on most systems).
+
+	* gdate.c (g_date_set_time): Emit warning, if no localtime_r
+	function is available on thread enabled systems. Define ptm only,
+	if really needed, and assert on it.
+
 Sat Jan  9 15:08:44 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* testglib.c:

@@ -790,15 +790,22 @@ g_date_set_time (GDate *d,
 		 GTime  time)
 {
   time_t t = time;
-  struct tm tm, *ptm;
+  struct tm tm;
   
   g_return_if_fail (d != NULL);
   
-#if HAVE_LOCALTIME_R
+#ifdef HAVE_LOCALTIME_R
   localtime_r (&t, &tm);
 #else
-  ptm = localtime (&t);
-  memcpy((void *) &tm, (void *) ptm, sizeof(struct tm));
+#  ifdef G_THREADS_ENABLED
+#  warning "the `g_date_set_time' function will not be MT-safe"
+#  warning "because there is no `localtime_r' on your system."
+#  endif
+  {
+    struct tm *ptm = localtime (&t);
+    g_assert (ptm);
+    memcpy ((void *) &tm, (void *) ptm, sizeof(struct tm));
+  }
 #endif
   
   d->julian = FALSE;

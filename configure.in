@@ -254,7 +254,7 @@ AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
 AC_CHECK_HEADER(alloca.h, glib_have_alloca_h=yes, glib_have_alloca_h=no)
 
 # Check for some functions
-AC_CHECK_FUNCS(localtime_r rand_r lstat strerror strsignal memmove vsnprintf vasprintf strcasecmp strncasecmp poll)
+AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf vasprintf strcasecmp strncasecmp poll)
 
 # Check for sys_errlist
 AC_MSG_CHECKING(for sys_errlist)
@@ -716,6 +716,8 @@ AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 
 CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
+
+AC_CHECK_FUNCS(localtime_r rand_r)
 
 dnl **********************************************
 dnl *** GDefaultMutex setup and initialization ***
