@@ -62,6 +62,7 @@ typedef struct
   const gchar *ctype;		/* C type name [gchar*] */
   const gchar *setter;		/* value setter function [g_value_set_string] */
   const gchar *release;		/* value release function [g_free] */
+  const gchar *release_check;   /* checks if release function is safe to call */
 } OutArgument;
 typedef struct
 {
@@ -177,27 +178,27 @@ static gboolean
 complete_out_arg (OutArgument *oarg)
 {
   static const OutArgument args[] = {
-    /* keyword		sig_name	ctype		setter			release */
-    { "VOID",		"VOID",		"void",		NULL,			NULL,			},
-    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			},
-    { "CHAR",		"CHAR",		"gchar",	"g_value_set_char",	NULL,			},
-    { "UCHAR",		"UCHAR",	"guchar",	"g_value_set_uchar",	NULL,			},
-    { "INT",		"INT",		"gint",		"g_value_set_int",	NULL,			},
-    { "UINT",		"UINT",		"guint",	"g_value_set_uint",	NULL,			},
-    { "LONG",		"LONG",		"glong",	"g_value_set_long",	NULL,			},
-    { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",	NULL,			},
-    { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",	NULL,			},
-    { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",	NULL,			},
-    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",	NULL,			},
-    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_set_double",	NULL,			},
-    { "STRING",		"STRING",	"gchar*",	"g_value_set_string_take_ownership", NULL,	},
-    { "PARAM",		"PARAM",	"GParamSpec*",	"g_value_set_param",	"g_param_spec_unref",	},
-    { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership", NULL,	},
-    { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",	NULL,			},
-    { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object",	"g_object_unref",	},
+    /* keyword		sig_name	ctype		setter			release                 release_check */
+    { "VOID",		"VOID",		"void",		NULL,			NULL,			NULL          },
+    { "BOOLEAN",	"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			NULL          },
+    { "CHAR",		"CHAR",		"gchar",	"g_value_set_char",	NULL,			NULL          },
+    { "UCHAR",		"UCHAR",	"guchar",	"g_value_set_uchar",	NULL,			NULL          },
+    { "INT",		"INT",		"gint",		"g_value_set_int",	NULL,			NULL          },
+    { "UINT",		"UINT",		"guint",	"g_value_set_uint",	NULL,			NULL          },
+    { "LONG",		"LONG",		"glong",	"g_value_set_long",	NULL,			NULL          },
+    { "ULONG",		"ULONG",	"gulong",	"g_value_set_ulong",	NULL,			NULL          },
+    { "ENUM",		"ENUM",		"gint",		"g_value_set_enum",	NULL,			NULL          },
+    { "FLAGS",		"FLAGS",	"guint",	"g_value_set_flags",	NULL,			NULL          },
+    { "FLOAT",		"FLOAT",	"gfloat",	"g_value_set_float",	NULL,			NULL          },
+    { "DOUBLE",		"DOUBLE",	"gdouble",	"g_value_set_double",	NULL,			NULL          },
+    { "STRING",		"STRING",	"gchar*",	"g_value_set_string_take_ownership", NULL,	NULL          },
+    { "PARAM",		"PARAM",	"GParamSpec*",	"g_value_set_param",	"g_param_spec_unref",	NULL          },
+    { "BOXED",		"BOXED",	"gpointer",	"g_value_set_boxed_take_ownership", NULL,	NULL          },
+    { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",	NULL,			NULL          },
+    { "OBJECT",		"OBJECT",	"GObject*",	"g_value_set_object",	"g_object_unref",	"NULL !="     },
     /* deprecated: */
-    { "NONE",		"VOID",		"void",		NULL,			NULL,			},
-    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			},
+    { "NONE",		"VOID",		"void",		NULL,			NULL,			NULL          },
+    { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",	NULL,			NULL          }
   };
   const guint n_args = sizeof (args) / sizeof (args[0]);
   guint i;
@@ -211,6 +212,7 @@ complete_out_arg (OutArgument *oarg)
 	oarg->ctype = args[i].ctype;
 	oarg->setter = args[i].setter;
 	oarg->release = args[i].release;
+	oarg->release_check = args[i].release_check;
 
 	return TRUE;
       }
@@ -398,7 +400,18 @@ generate_marshal (const gchar *signame,
 	  fprintf (fout, "\n");
 	  fprintf (fout, "  %s (return_value, v_return);\n", sig->rarg->setter);
 	  if (sig->rarg->release)
-	    fprintf (fout, "  %s (v_return);\n", sig->rarg->release);
+	    {
+	      if (sig->rarg->release_check)
+		{
+		  fprintf (fout, "  if (%s (v_return))\n", sig->rarg->release_check);
+		  fprintf (fout, "    %s (v_return);\n", sig->rarg->release);
+			   
+		}
+	      else
+		{
+		  fprintf (fout, "  %s (v_return);\n", sig->rarg->release);
+		}
+	    }
 	}
 
       /* cfile marshal footer */

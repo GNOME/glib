@@ -1,3 +1,10 @@
+2001-07-26  Michael Natterer  <mitch@convergence.de>
+
+	* gobject/glib-genmarshal.c: added a "release_check" to the
+	OutArgument structure, which, if present, gets integrated in the
+	marshaller code and protects us from stuff like
+	g_object_unref(NULL) on marshaller return values.
+
 2001-07-23  Padraig O'Briain  <Padraig.Obriain@sun.com>
 
 	* gobject/gobjectnotifyqueue.c: fix unconditional check of
