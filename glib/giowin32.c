@@ -511,6 +511,7 @@ g_io_win32_prepare (GSource *source,
 static gboolean
 g_io_win32_check (GSource *source)
 {
+	MSG msg;
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
@@ -521,7 +522,13 @@ g_io_win32_check (GSource *source)
 	     watch->pollfd.events, watch->pollfd.revents, channel->revents);
 
   if (channel->type != G_IO_WIN32_WINDOWS_MESSAGES)
-    watch->pollfd.revents = (watch->pollfd.events & channel->revents);
+	{
+     watch->pollfd.revents = (watch->pollfd.events & channel->revents);
+	}
+	else
+	{
+    return (PeekMessage (&msg, channel->hwnd, 0, 0, PM_NOREMOVE));
+	}
 
   if (channel->type == G_IO_WIN32_SOCKET)
     {
