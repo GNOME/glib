@@ -654,7 +654,7 @@ Initializes @mutex. Alternatively you can initialize it with
 
 <!-- ##### FUNCTION g_static_mutex_lock ##### -->
 <para>
-works like g_mutex_lock(), but for a #GStaticMutex.
+Works like g_mutex_lock(), but for a #GStaticMutex.
 </para>
 
 @mutex: a #GStaticMutex
@@ -663,7 +663,7 @@ works like g_mutex_lock(), but for a #GStaticMutex.
 <!-- ##### FUNCTION g_static_mutex_trylock ##### -->
 
 <para>
-works like g_mutex_trylock(), but for a #GStaticMutex.
+Works like g_mutex_trylock(), but for a #GStaticMutex.
 </para>
 
 @mutex: a #GStaticMutex
@@ -673,7 +673,7 @@ works like g_mutex_trylock(), but for a #GStaticMutex.
 <!-- ##### FUNCTION g_static_mutex_unlock ##### -->
 
 <para>
-works like g_mutex_unlock(), but for a #GStaticMutex.
+Works like g_mutex_unlock(), but for a #GStaticMutex.
 </para>
 
 @mutex: a #GStaticMutex
@@ -765,7 +765,7 @@ This declares a lock, that is defined with #G_LOCK_DEFINE in another module.
 <!-- ##### MACRO G_LOCK ##### -->
 
 <para>
-works like g_mutex_lock(), but for a lock defined with #G_LOCK_DEFINE.
+Works like g_mutex_lock(), but for a lock defined with #G_LOCK_DEFINE.
 </para>
 
 @name: the name of the lock
@@ -774,7 +774,7 @@ works like g_mutex_lock(), but for a lock defined with #G_LOCK_DEFINE.
 <!-- ##### MACRO G_TRYLOCK ##### -->
 
 <para>
-works like g_mutex_trylock(), but for a lock defined with #G_LOCK_DEFINE.
+Works like g_mutex_trylock(), but for a lock defined with #G_LOCK_DEFINE.
 </para>
 
 @name: the name of the lock
@@ -784,7 +784,7 @@ works like g_mutex_trylock(), but for a lock defined with #G_LOCK_DEFINE.
 <!-- ##### MACRO G_UNLOCK ##### -->
 
 <para>
-works like g_mutex_unlock(), but for a lock defined with #G_LOCK_DEFINE.
+Works like g_mutex_unlock(), but for a lock defined with #G_LOCK_DEFINE.
 </para>
 
 @name: the name of the lock
@@ -919,8 +919,95 @@ freed, you should also free the #GStaticRecMutex.
 
 <!-- ##### STRUCT GStaticRWLock ##### -->
 <para>
+The #GStaticRWLock struct represents a read-write lock. A read-write
+lock can be used for protecting data, that some portions of code only
+read from, while others also write. In such situations it is
+desirable, that several readers can read at once, whereas of course
+only one writer may write at a time. Take a look at the followin
+example:
+
+<example>
+<title>An array with access functions</title>
+<programlisting>
+  GStaticRWLock rwlock = G_STATIC_RW_LOCK_INIT;
+
+  GPtrArray *array;
+
+  gpointer my_array_get (guint index)
+  {
+    gpointer retval = NULL;
+
+    if (!array)
+      return NULL;
+
+    g_static_rw_lock_reader_lock (&amp;rwlock);
+
+    if (index < array->len)
+      retval = g_ptr_array_index (array, index);
+
+    g_static_rw_lock_reader_unlock (&amp;rwlock);
+
+    return retval;
+  }
+
+  void my_array_set (guint index, gpointer data)
+  {
+    g_static_rw_lock_writer_lock (&amp;rwlock);
+
+    if (!array)
+      array = g_ptr_array_new ();
+
+    if (index >= array->len)
+      g_ptr_array_set_size (array, index+1);
+
+    g_ptr_array_index (array, index) = data; 
+
+    g_static_rw_lock_writer_unlock (&amp;rwlock);
+  }
+</programlisting>
+</example>
+</para>
+
+<para>
+This example shows an array, which can be accessed by many readers
+(the my_array_get function) simultaniously, whereas the writers (the
+my_array_set function) only will be allowed once a time and only if no
+readers currently access the array. This is because of the potentially
+dangerous resizing of the array. Using that functions is fully
+multithread safe now. 
+</para>
 
 </para>
+Most of the time the writers should have precedence of readers. That
+means for this implementation, that as soon as a writer wants to lock
+the data, no other reader is allowed to lock the data, whereas of
+course the readers, that already have locked the data are allowed to
+finish their operation. As soon as the last reader unlocks the data,
+the writer will lock it.
+</para>
+
+<para>
+Even though #GStaticRWLoc is not opaque, it should only be used with
+the following functions.
+</para>
+
+<para>
+All of the g_static_rw_lock_* functions can also be used, if
+g_thread_init() has not been called.
+</para>
+
+<note>
+<para>
+A read-write lock has a higher overhead as a mutex. For example both
+g_static_rw_lock_reader_lock() and g_static_rw_lock_reader_unlock()
+has to lock and unlock a #GStaticMutex, so it takes at least twice the
+time to lock and unlock a #GStaticRWLock than to lock and unlock a
+#GStaticMutex. So only data structures, that are accessed by multiple
+readers, which keep the lock for a considerable time justify a
+#GStaticRWLock. The above example most probably would fare better with
+a #GStaticMutex.
+</para>
+</note>
 
 @mutex: 
 @read_cond: 
@@ -931,75 +1018,128 @@ freed, you should also free the #GStaticRecMutex.
 
 <!-- ##### MACRO G_STATIC_RW_LOCK_INIT ##### -->
 <para>
+A #GStaticRWLock must be initialized with this macro, before it can
+be used. This macro can used be to initialize a variable, but it
+cannot be assigned to a variable. In that case you have to use
+g_static_rw_lock_init().
+</para>
 
+<para>
+<informalexample>
+<programlisting>
+GStaticRWLock my_lock = G_STATIC_RW_LOCK_INIT;
+</programlisting>
+</informalexample>
 </para>
 
 
 
 <!-- ##### FUNCTION g_static_rw_lock_init ##### -->
 <para>
-
+A #GStaticRWLock must be initialized with this function, before it can
+be used. Alternatively you can initialize it with
+#G_STATIC_RW_LOCK_INIT.
 </para>
 
-@lock: 
+@lock: a #GStaticRWLock to be initialized
 
 
 <!-- ##### FUNCTION g_static_rw_lock_reader_lock ##### -->
 <para>
-
+Locks @lock for reading. There may be unlimited concurrent locks for
+reading of a #GStaticRWLock at the same time.  If @lock is already
+locked for writing by another thread or if another thread is already
+waiting to lock @lock for writing, this function will block until
+@lock is unlocked by the other writing thread and no other writing
+threads want to lock @lock. This lock has to be unlocked by
+g_static_rw_lock_reader_unlock().
 </para>
 
-@lock: 
+<para>
+#GStaticRWLock in general is not recursive, but as there may be
+unlimited concurrent locks for reading, it effectively is for
+recursive for reading, but for reading only. Locking for writing after
+locking for reading will deadlock, the same holds true for the
+opposite order.
+</para>
+
+@lock: a #GStaticRWLock to lock for reading
 
 
 <!-- ##### FUNCTION g_static_rw_lock_reader_trylock ##### -->
 <para>
-
+Tries to lock @lock for reading. If @lock is already locked for
+writing by another thread or if another thread is already waiting to
+lock @lock for writing, it immediately returns #FALSE. Otherwise it
+locks @lock for reading and returns TRUE. This lock has to be unlocked
+by g_static_rw_lock_reader_unlock().
 </para>
 
-@lock: 
-@Returns: 
+@lock: a #GStaticRWLock to lock for reading
+@Returns: TRUE, if @lock could be locked for reading
 
 
 <!-- ##### FUNCTION g_static_rw_lock_reader_unlock ##### -->
 <para>
-
+Unlocks @lock. If a thread waits to lock @lock for writing and all
+locks for reading have been unlocked, the waiting thread is woken up
+and can lock @lock for writing.
 </para>
 
-@lock: 
+@lock: a #GStaticRWLock to unlock after reading
 
 
 <!-- ##### FUNCTION g_static_rw_lock_writer_lock ##### -->
 <para>
-
+Locks @lock for writing. If @lock is already locked for writing or
+reading by other threads, this function will block until @lock is
+completly unlocked and then lock @lock for writing. While this
+functions waits to lock @lock, no other thread can lock @lock for
+reading. When @lock is locked for writing, no other thread can lock
+@lock (neither for reading nor writing). This lock has to be unlocked
+by g_static_rw_lock_writer_unlock().
 </para>
 
-@lock: 
+@lock: a #GStaticRWLock to lock for writing
 
 
 <!-- ##### FUNCTION g_static_rw_lock_writer_trylock ##### -->
 <para>
-
+Tries to lock @lock for writing. If @lock is already locked (for
+either reading or writing) by another thread, it immediately returns
+#FALSE. Otherwise it locks @lock for writing and returns TRUE. This
+lock has to be unlocked by g_static_rw_lock_writer_unlock().
 </para>
 
-@lock: 
-@Returns: 
+@lock: a #GStaticRWLock to lock for writing
+@Returns: TRUE, if @lock could be locked for writing
 
 
 <!-- ##### FUNCTION g_static_rw_lock_writer_unlock ##### -->
 <para>
-
+Unlocks @lock. If a thread waits to lock @lock for writing and all
+locks for reading have been unlocked, the waiting thread is woken up
+and can lock @lock for writing. If no thread waits to lock @lock for
+writing and threads wait to lock @lock for reading, the waiting
+threads are woken up and can lock @lock for reading.
 </para>
 
-@lock: 
+@lock: a #GStaticRWLock to unlock after writing
 
 
 <!-- ##### FUNCTION g_static_rw_lock_free ##### -->
 <para>
-
+Releases all resources allocated to @lock. 
 </para>
 
-@lock: 
+<para>
+You don't have to call this functions for a #GStaticRWLock with an
+unbounded lifetime, i.e. objects declared 'static', but if you have a
+#GStaticRWLock as a member of a structure and the structure is freed,
+you should also free the #GStaticRWLock.
+</para>
+
+@lock: a #GStaticRWLock to be freed
 
 
 <!-- ##### STRUCT GCond ##### -->
