@@ -350,6 +350,11 @@ gboolean	 g_type_check_value_holds	(GValue		    *value,
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 
+/* --- debugging functions --- */
+G_CONST_RETURN gchar* g_type_name_from_instance	(GTypeInstance	*instance);
+G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
+
+
 /* --- implementation bits --- */
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \

@@ -2737,6 +2737,24 @@ g_type_value_table_peek (GType type)
   return vtable;
 }
 
+G_CONST_RETURN gchar*
+g_type_name_from_instance (GTypeInstance *instance)
+{
+  if (!instance)
+    return "<NULL-instance>";
+  else
+    return g_type_name_from_class (instance->g_class);
+}
+
+G_CONST_RETURN gchar*
+g_type_name_from_class (GTypeClass *g_class)
+{
+  if (!g_class)
+    return "<NULL-class>";
+  else
+    return g_type_name (g_class->g_type);
+}
+
 
 /* --- foreign prototypes --- */
 extern void	g_value_types_init	(void); /* sync with gvaluetypes.c */

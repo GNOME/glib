@@ -1,3 +1,8 @@
+Wed Jun 20 03:59:42 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: added debugging variants g_type_name_from_class(),
+	g_type_name_from_instance().
+
 Mon Jun 11 17:07:06 2001  Tim Janik  <timj@gtk.org>
 
 	* gboxed.[hc]: remove left-over usages of an anonymous GBoxed typedef.
