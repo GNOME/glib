@@ -1,3 +1,8 @@
+Thu Aug 5 20:53:00 2004 Ray Strode <rstrode@redhat.com>
+	
+	* glib/gutils.h (g_get_codeset): strdup result so caller
+	doesn't free internally managed memory.
+
 Sat Jul 31 20:33:07 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/shell-test.c: Include a test involving consecutive

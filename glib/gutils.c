@@ -1236,11 +1236,11 @@ g_nullify_pointer (gpointer *nullify_location)
 gchar *
 g_get_codeset (void)
 {
-  gchar *charset;
+  const gchar *charset;
 
   g_get_charset (&charset);
 
-  return charset;
+  return strdup (charset);
 }
 
 #ifdef ENABLE_NLS
