@@ -89,7 +89,7 @@ msgstr "Cərgə açma xətası: '%s': %s"
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "\"%s\" faylını oxumaq üçün %lu bayt ayrıla bilmir"
+msgstr "\"%2$s\" faylını oxumaq üçün %1$lu bayt ayrıla bilmir"
 
 #: glib/gfileutils.c:348
 #, c-format

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: $PACKAGE $VERSION, no-define\n"
+"Project-Id-Version: glib VERSION\n"
 "POT-Creation-Date: 2002-03-28 18:32-0500\n"
 "PO-Revision-Date: 2002-03-02 04:43+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
@@ -88,7 +88,7 @@ msgstr "디렉토리 '%s' 여는 중 오류 : %s"
 #: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "파일 \"%1$s\"를 읽은 %2$lu 바이트를 할당 할수 없습니다"
+msgstr "파일 \"%2$s\"를 읽은 %1$lu 바이트를 할당 할수 없습니다"
 
 #: glib/gfileutils.c:348
 #, c-format

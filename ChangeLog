@@ -1,3 +1,7 @@
+2002-04-29  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
+
 2002-04-19  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn.c (g_spawn_command_line_sync): Add Windows-specific

@@ -1,3 +1,8 @@
+2002-04-29  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* vi.po: Added Vietnamese file
+	* az.po,cs.po,ko.po,lv.po,nn.po: fixed syntax errors
+
 2002-04-28  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation.

@@ -260,7 +260,7 @@ msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '
 msgstr "Přebytečný znak '%s', po jménu atributu '%s' elementu '%s' bylo očekáváno '=' "
 
 #: glib/gmarkup.c:1161
-#, c-format
+#, fuzzy, c-format
 msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
 msgstr "Přebytečný znak '%s', pro ukončení elementu bylo očekáváno '>' nebo '/' nebo případně atribut; pravděpodobně byl použit neplatný znak v názvu atributu"
 
