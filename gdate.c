@@ -1212,16 +1212,13 @@ g_date_compare (GDate     *lhs,
 
 void        
 g_date_to_struct_tm (GDate      *d, 
-                     gpointer    struct_tm_p)
+                     struct tm   *tm)
 {
   GDateWeekday day;
-  struct tm *tm;
      
   g_return_if_fail (d != NULL);
   g_return_if_fail (g_date_valid (d));
-  g_return_if_fail (struct_tm_p != NULL);
-
-  tm = struct_tm_p;
+  g_return_if_fail (tm != NULL);
   
   if (!d->mdy) 
     {

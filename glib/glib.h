@@ -2218,9 +2218,11 @@ guint8       g_date_sunday_weeks_in_year  (GDateYear    year);
 gint         g_date_compare               (GDate       *lhs,
                                            GDate       *rhs);
 
+/* make struct tm known without having to include time.h */
+struct tm;
 
 void         g_date_to_struct_tm          (GDate       *d,
-                                           gpointer     struct_tm_p);
+                                           struct tm   *tm);
 
 /* Just like strftime() except you can only use date-related formats.
  *   Using a time format is undefined.
