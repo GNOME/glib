@@ -45,6 +45,7 @@ lib/gthread-2.0.def
 lib/glib-2.0
 lib/pkgconfig/glib-2.0.pc
 lib/pkgconfig/gmodule-2.0.pc
+lib/pkgconfig/gmodule-no-export-2.0.pc
 lib/pkgconfig/gobject-2.0.pc
 lib/pkgconfig/gthread-2.0.pc
 share/aclocal/glib-2.0.m4
