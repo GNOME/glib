@@ -1,14 +1,14 @@
 # glib translation to Catalan.
-# Copyright © 2001, 2002, 2003 Free Software Foundation, Inc.
+# Copyright © 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 # Softcatalà <info@softcatala.org>, 2001.
-# Jordi Mallach <jordi@sindominio.net>, 2002, 2003.
+# Jordi Mallach <jordi@sindominio.net>, 2002, 2003, 2004, 2005
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.3.0\n"
+"Project-Id-Version: glib 2.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-07 11:51-0500\n"
-"PO-Revision-Date: 2004-04-27 13:49+0200\n"
+"POT-Creation-Date: 2005-01-14 10:52+0100\n"
+"PO-Revision-Date: 2005-01-14 10:51+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: glib/gconvert.c:403
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "No es permet la conversió del joc de caràcters de '%s' a '%s'"
+msgstr "No es permet la conversió del joc de caràcters de «%s» a «%s»"
 
 #: glib/gconvert.c:407
 #, c-format
@@ -45,37 +45,37 @@ msgstr "Seqüència de caràcters parcial al final de l'entrada"
 #: glib/gconvert.c:801
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "No es pot convertir el 'fallback' '%s' al joc de codis '%s'"
+msgstr "No es pot convertir el \"fallback\" «%s» al joc de codis «%s»"
 
 #: glib/gconvert.c:1601
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "L'URI '%s' no és un URI absolut que utilitzi l'esquema de fitxers"
+msgstr "L'URI «%s» no és un URI absolut que utilitzi l'esquema «file»"
 
 #: glib/gconvert.c:1611
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Pot ser que l'URI del fitxer local '%s' no inclogui cap '#'"
+msgstr "Pot ser que l'URI del fitxer local «%s» no inclogui cap «#»"
 
 #: glib/gconvert.c:1628
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "L'URI '%s' no és vàlid"
+msgstr "L'URI «%s» no és vàlid"
 
 #: glib/gconvert.c:1640
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "El nom de l'ordinador central de l'URI '%s' no és vàlid"
+msgstr "El nom de l'ordinador central de l'URI «%s» no és vàlid"
 
 #: glib/gconvert.c:1656
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "L'URI '%s' conté caràcters d'escapada invàlids"
+msgstr "L'URI «%s» conté caràcters d'escapada invàlids"
 
 #: glib/gconvert.c:1750
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "El nom de camí '%s' no és un camí absolut"
+msgstr "El nom de camí «%s» no és un camí absolut"
 
 #: glib/gconvert.c:1760
 msgid "Invalid hostname"
@@ -84,60 +84,60 @@ msgstr "Nom de l'ordinador central invàlid"
 #: glib/gdir.c:120 glib/gdir.c:140
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "S'ha produït un error en obrir el directori '%s': %s"
+msgstr "S'ha produït un error en obrir el directori «%s»: %s"
 
-#: glib/gfileutils.c:490 glib/gfileutils.c:558
+#: glib/gfileutils.c:498 glib/gfileutils.c:566
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "No s'ha pogut assignar %lu bytes per a llegir el fitxer \"%s\""
+msgstr "No s'ha pogut assignar %lu bytes per a llegir el fitxer «%s»"
 
-#: glib/gfileutils.c:503
+#: glib/gfileutils.c:511
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "S'ha produït un error en llegir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:580
+#: glib/gfileutils.c:588
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "No s'ha pogut llegir des del fitxer «%s»: %s"
 
-#: glib/gfileutils.c:629 glib/gfileutils.c:712
+#: glib/gfileutils.c:637 glib/gfileutils.c:720
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:644
+#: glib/gfileutils.c:652
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "No s'ha pogut obtenir els atributs del fitxer «%s»: fstat() ha fallat: %s"
 
-#: glib/gfileutils.c:676
+#: glib/gfileutils.c:684
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: fdopen() ha fallat: %s"
 
-#: glib/gfileutils.c:1003
+#: glib/gfileutils.c:1011
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "La plantilla '%s' no és vàlida, no pot contenir cap '%s'"
+msgstr "La plantilla «%s» no és vàlida, no pot contenir cap «%s»"
 
-#: glib/gfileutils.c:1017
+#: glib/gfileutils.c:1025
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "La plantilla '%s' no acaba en XXXXXX"
+msgstr "La plantilla «%s» no acaba en XXXXXX"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1048
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "No s'ha pogut crear el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1424
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
 
-#: glib/gfileutils.c:1437
+#: glib/gfileutils.c:1445
 msgid "Symbolic links not supported"
 msgstr "No se suporten els enllaços simbòlics"
 
@@ -149,7 +149,7 @@ msgstr "No se suporta la conversió des del joc de caràcters «%s» fins al «%
 #: glib/giochannel.c:1150
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "No s'ha pogut obrir el convertidor des de '%s' fins a '%s': %s"
+msgstr "No s'ha pogut obrir el convertidor des de «%s» fins a «%s»: %s"
 
 #: glib/giochannel.c:1495
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -191,19 +191,19 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"El caràcter '%s' no és vàlid a l'inici d'un nom d'entitat; les entitats "
+"El caràcter «%s» no és vàlid a l'inici d'un nom d'entitat; les entitats "
 "comencen amb el caràcter &. Si amb aquest signe no es vol indicar una "
 "entitat,substituïu-lo per &amp;"
 
 #: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "El caràcter '%s' no és vàlid dins un nom d'entitat"
+msgstr "El caràcter «%s» no és vàlid dins un nom d'entitat"
 
 #: glib/gmarkup.c:521
 #, c-format
 msgid "Entity name '%s' is not known"
-msgstr "No es coneix el nom de l'entitat '%s'"
+msgstr "No es coneix el nom de l'entitat «%s»"
 
 #: glib/gmarkup.c:531
 msgid ""
@@ -211,22 +211,22 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "L'entitat no acabava amb un punt i coma; segurament heu utilitzat un "
-"caràcter '&' sense intenció d'iniciar una entitat. Substituïu el caràcter "
-"'&' per &amp;"
+"caràcter «&» sense intenció d'iniciar una entitat. Substituïu el caràcter "
+"«&» per &amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"És impossible analitzar '%s' , hi hauria d'haver hagut un dígit dins un "
-"caràcterde referència (per exemple &#234) - potser el dígit és massa llarg"
+"No s'ha pogut analitzar «%-.*s», hi hauria d'haver hagut un dígit dins un "
+"caràcter de referència (per exemple &#234;) - potser el dígit és massa llarg"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "El caràcter de referència '%s' no codifica un caràcter permès"
+msgstr "El caràcter de referència «%-.*s» no codifica un caràcter permès"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
@@ -240,8 +240,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "La referència del caràcter no acabava amb un punt i coma; segurament heu "
-"utilitzat un caràcter '&' sense intenció d'iniciar una entitat. Substituïu "
-"el caràcter '&' per  &amp;"
+"utilitzat un caràcter «&» sense intenció d'iniciar una entitat. Substituïu "
+"el caràcter «&» per  &amp;"
 
 #: glib/gmarkup.c:720
 msgid "Unfinished entity reference"
@@ -265,7 +265,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' no és un caràcter vàlid després d'un caràcter '<'; no pot començar un "
+"«%s» no és un caràcter vàlid després d'un caràcter «<»; no pot començar un "
 "nom d'element"
 
 #: glib/gmarkup.c:1168
@@ -274,16 +274,16 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"S'ha trobat un caràcter estrany '%s', s'esperava un '>' per acabar "
-"l'etiqueta d'inici de l'element '%s'"
+"S'ha trobat un caràcter estrany «%s», s'esperava un «>» per acabar "
+"l'etiqueta d'inici de l'element «%s»"
 
 #: glib/gmarkup.c:1257
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"S'ha trobat un caràcter estrany '%s', s'esperava un '=' després del nom "
-"d'atribut '%s' de l'element '%s'"
+"S'ha trobat un caràcter estrany «%s», s'esperava un «=» després del nom "
+"d'atribut «%s» de l'element «%s»"
 
 #: glib/gmarkup.c:1299
 #, c-format
@@ -292,8 +292,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"S'ha trobat un caràcter estrany ('%s'), s'esperava un caràcter '>' o '/' per "
-"finalitzar l'etiqueta d'inici de l'element '%s', o opcionalment un atribut; "
+"S'ha trobat un caràcter estrany («%s»), s'esperava un caràcter «>» o «/» per "
+"finalitzar l'etiqueta d'inici de l'element «%s», o opcionalment un atribut; "
 "potser heu usat un caràcter no vàlid en un nom d'atribut"
 
 #: glib/gmarkup.c:1388
@@ -302,9 +302,9 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"S'ha trobat un caràcter estrany ('%s'), s'esperaven unes cometes d'obertura "
-"després del signe 'igual que' en donar valor a l'atribut '%s' de l'element '%"
-"s'"
+"S'ha trobat un caràcter estrany («%s»), s'esperaven unes cometes d'obertura "
+"després del signe «igual que» en donar valor a l'atribut «%s» de l'element «%"
+"s»"
 
 #: glib/gmarkup.c:1533
 #, c-format
@@ -312,8 +312,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' no és un caràcter vàlid quan segueix els caracters '</'; un nom "
-"d'element no pot començar per '%s'"
+"«%s» no és un caràcter vàlid quan segueix els caracters «</»; un nom "
+"d'element no pot començar per «%s»"
 
 #: glib/gmarkup.c:1573
 #, c-format
@@ -321,18 +321,18 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s' no és un caràcter vàlid quan segueix el nom d'element proper '%s'; el "
-"caràcter permès és '>'"
+"«%s» no és un caràcter vàlid quan segueix el nom d'element proper «%s»; el "
+"caràcter permès és «>»"
 
 #: glib/gmarkup.c:1584
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "L'element '%s' era tancat. Actualment no hi ha cap element obert"
+msgstr "L'element «%s» era tancat. Actualment no hi ha cap element obert"
 
 #: glib/gmarkup.c:1593
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "L'element '%s' era tancat, però l'element obert actualment és '%s'"
+msgstr "L'element «%s» era tancat, però l'element obert actualment és «%s»"
 
 #: glib/gmarkup.c:1740
 msgid "Document was empty or contained only whitespace"
@@ -342,7 +342,7 @@ msgstr "El document era buit o només contenia espais en blanc"
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "El document ha acabat de manera inesperada immediatament després d'un "
-"parèntesi d'angle obert '<'"
+"parèntesi d'angle obert «<»"
 
 #: glib/gmarkup.c:1762 glib/gmarkup.c:1806
 #, c-format
@@ -350,8 +350,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"El document ha acabat de manera inesperada amb elements encara oberts. '%"
-"s'era l'últim element obert"
+"El document ha acabat de manera inesperada amb elements encara oberts. «%s» "
+"era l'últim element obert"
 
 #: glib/gmarkup.c:1770
 #, c-format
@@ -381,8 +381,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"El document ha acabat de manera inesperada després d'un signe 'igual' que "
-"sewgueix un nom d'atribut; no hi ha cap valor d'atribut"
+"El document ha acabat de manera inesperada després d'un signe «igual» que "
+"segueix un nom d'atribut; no hi ha cap valor d'atribut"
 
 #: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -393,7 +393,7 @@ msgstr "El document ha acabat de manera inesperada enmig d'un valor d'atribut"
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El document ha acabat de manera inesperada dins l'etiqueta de tancament de "
-"l'element '%s'"
+"l'element «%s»"
 
 #: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -414,14 +414,14 @@ msgstr ""
 #: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "El text acabava just després d'un caràcter '\\'. (El text era '%s')"
+msgstr "El text acabava just després d'un caràcter «\\». (El text era «%s»)"
 
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "El text ha acabat abans de trobar les cometes corresponents per %c. (El text "
-"era '%s')"
+"era «%s»)"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -527,91 +527,95 @@ msgstr "El caràcter és fora de rang per a UTF-16"
 
 #: glib/goption.c:405
 msgid "Usage:"
-msgstr ""
+msgstr "Forma d'ús:"
 
 #: glib/goption.c:405
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPCIÓ...]"
 
 #: glib/goption.c:494
 msgid "Help Options:"
-msgstr ""
+msgstr "Opcions d'ajuda:"
 
 #: glib/goption.c:494
 msgid "Show help options"
-msgstr ""
+msgstr "Mostra les opcions d'ajuda"
 
 #: glib/goption.c:498
 msgid "Show all help options"
-msgstr ""
+msgstr "Mostra totes les opcions d'ajuda"
 
 #: glib/goption.c:547
 msgid "Application Options:"
-msgstr ""
+msgstr "Opcions de l'aplicació:"
 
 #: glib/goption.c:586
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "No es pot analitzar el valor enter «%s» per a --%s"
 
 #: glib/goption.c:596
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "El valor enter «%s» per a %s és fora de l'abast"
 
 #: glib/goption.c:1323
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "L'opció %s és desconeguda"
 
 #: glib/gkeyfile.c:338
 msgid "Valid key file could not be found in data dirs"
-msgstr ""
+msgstr "No s'ha pogut trobar un fitxer de claus als directoris de dades"
 
 #: glib/gkeyfile.c:371
 msgid "Not a regular file"
-msgstr ""
+msgstr "No és un fitxer regular"
 
 #: glib/gkeyfile.c:379
 msgid "File is empty"
-msgstr ""
+msgstr "El fitxer és buit"
 
 #: glib/gkeyfile.c:685
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
+"El fitxer de claus conté la línia «%s» que no és una parella clau-valor, "
+"grup o comentari"
 
 #: glib/gkeyfile.c:753
 msgid "Key file does not start with a group"
-msgstr ""
+msgstr "El fitxer de claus no comença amb un grup"
 
 #: glib/gkeyfile.c:796
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr ""
+msgstr "El fitxer de claus conté la codificació no implementada «%s»"
 
 #: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
 #: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
 #: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr ""
+msgstr "El fitxer de claus no té el grup «%s»"
 
 #: glib/gkeyfile.c:1158
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr ""
+msgstr "El fitxer de claus no té la clau «%s»"
 
 #: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
+msgstr "El fitxer de claus conté la clau «%s» amb valor «%s» que no és UTF-8"
 
 #: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
+"El fitxer de claus conté la clau «%s» que té un valor que no es pot "
+"interpretar."
 
 #: glib/gkeyfile.c:1976
 #, c-format
@@ -619,30 +623,32 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
+"El fitxer de claus conté la clau «%s» al grup «%s», que té un valor que no "
+"es pot interpretar."
 
 #: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr ""
+msgstr "El fitxer de claus no conté una clau «%s» al grup «%s»"
 
 #: glib/gkeyfile.c:3023
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "L'URI '%s' conté caràcters d'escapada invàlids"
+msgstr "El fitxer de claus conté el caràcter d'escapada invàlid «%s»"
 
 #: glib/gkeyfile.c:3047
 msgid "Key file contains escape character at end of line"
-msgstr ""
+msgstr "El fitxer de claus conté un caràcter d'escapada al final de línia"
 
 #: glib/gkeyfile.c:3163
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
-msgstr ""
+msgstr "El valor «%s» no es pot interpretar com a un nombre."
 
 #: glib/gkeyfile.c:3191
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr ""
+msgstr "El valor «%s» no es pot interpretar com un booleà."
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Mida incorrecta del missatge"
