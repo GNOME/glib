@@ -1,3 +1,9 @@
+2004-07-02  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c: Rename __asm to __asm__ and __volatile to
+	__volatile__ to make the file consistent. Spotted by Benoit
+	Carpentier <gtkool_2kx@yahoo.fr>.
+
 2004-07-01  John Ehresman  <jpe@wingide.com>
 
 	* glib/giowin32.c (g_io_channel_win32_init, g_io_win32_free)

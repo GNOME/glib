@@ -56,9 +56,9 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 {
   gint result;
  
-  __asm __volatile ("lock; cmpxchgl %2, %1"
-		    : "=a" (result), "=m" (*atomic)
-		    : "r" (newval), "m" (*atomic), "0" (oldval)); 
+  __asm__ __volatile__ ("lock; cmpxchgl %2, %1"
+			: "=a" (result), "=m" (*atomic)
+			: "r" (newval), "m" (*atomic), "0" (oldval)); 
 
   return result == oldval;
 }
@@ -74,9 +74,9 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 {
   gpointer result;
  
-  __asm __volatile ("lock; cmpxchgl %2, %1"
-		    : "=a" (result), "=m" (*atomic)
-		    : "r" (newval), "m" (*atomic), "0" (oldval)); 
+  __asm__ __volatile__ ("lock; cmpxchgl %2, %1"
+			: "=a" (result), "=m" (*atomic)
+			: "r" (newval), "m" (*atomic), "0" (oldval)); 
 
   return result == oldval;
 }
@@ -87,10 +87,10 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 #  define ATOMIC_INT_CMP_XCHG(atomic, oldval, newval)			\
   ({ 									\
      gint __result;							\
-     __asm __volatile ("cas [%4], %2, %0"				\
-                       : "=r" (__result), "=m" (*(atomic))		\
-                       : "r" (oldval), "m" (*(atomic)), "r" (atomic),	\
-                         "0" (newval));					\
+     __asm__ __volatile__ ("cas [%4], %2, %0"				\
+                           : "=r" (__result), "=m" (*(atomic))		\
+                           : "r" (oldval), "m" (*(atomic)), "r" (atomic),\
+                           "0" (newval));				\
      __result == oldval;						\
   })
 
@@ -101,10 +101,10 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 				       gpointer  newval)
 {
   gpointer result;
-  __asm __volatile ("cas [%4], %2, %0"
-                    : "=r" (result), "=m" (*atomic)
-                    : "r" (oldval), "m" (*atomic), "r" (atomic),
-                      "0" (newval));
+  __asm__ __volatile__ ("cas [%4], %2, %0"
+			: "=r" (result), "=m" (*atomic)
+			: "r" (oldval), "m" (*atomic), "r" (atomic),
+			"0" (newval));
   return result == oldval;
 }
 #  elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
@@ -115,18 +115,18 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 {
   gpointer result;
   gpointer *a = atomic;
-  __asm __volatile ("casx [%4], %2, %0"
-                    : "=r" (result), "=m" (*a)
-                    : "r" (oldval), "m" (*a), "r" (a),
-                      "0" (newval));
+  __asm__ __volatile__ ("casx [%4], %2, %0"
+			: "=r" (result), "=m" (*a)
+			: "r" (oldval), "m" (*a), "r" (a),
+			"0" (newval));
   return result != 0;
 }
 #  else /* What's that */
 #    error "Your system has an unsupported pointer size"
 #  endif /* GLIB_SIZEOF_VOID_P */
 #  define G_ATOMIC_MEMORY_BARRIER					\
-  __asm __volatile ("membar #LoadLoad | #LoadStore"			\
-                    " | #StoreLoad | #StoreStore" : : : "memory")
+  __asm__ __volatile__ ("membar #LoadLoad | #LoadStore"			\
+                        " | #StoreLoad | #StoreStore" : : : "memory")
 
 # elif defined (G_ATOMIC_ALPHA)
 /* Adapted from CVS version 1.3 of glibc's sysdeps/alpha/bits/atomic.h
@@ -208,7 +208,7 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 #  else /* What's that */
 #   error "Your system has an unsupported pointer size"
 #  endif /* GLIB_SIZEOF_VOID_P */
-#  define G_ATOMIC_MEMORY_BARRIER  __asm ("mb" : : : "memory")
+#  define G_ATOMIC_MEMORY_BARRIER  __asm__ ("mb" : : : "memory")
 # elif defined (G_ATOMIC_X86_64)
 /* Adapted from CVS version 1.9 of glibc's sysdeps/x86_64/bits/atomic.h 
  */
@@ -240,9 +240,9 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 {
   gint result;
  
-  __asm __volatile ("lock; cmpxchgl %2, %1"
-		    : "=a" (result), "=m" (*atomic)
-		    : "r" (newval), "m" (*atomic), "0" (oldval)); 
+  __asm__ __volatile__ ("lock; cmpxchgl %2, %1"
+			: "=a" (result), "=m" (*atomic)
+			: "r" (newval), "m" (*atomic), "0" (oldval)); 
 
   return result == oldval;
 }
@@ -254,9 +254,9 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 {
   gpointer result;
  
-  __asm __volatile ("lock; cmpxchgq %q2, %1"
-		    : "=a" (result), "=m" (*atomic)
-		    : "r" (newval), "m" (*atomic), "0" (oldval)); 
+  __asm__ __volatile__ ("lock; cmpxchgq %q2, %1"
+			: "=a" (result), "=m" (*atomic)
+			: "r" (newval), "m" (*atomic), "0" (oldval)); 
 
   return result == oldval;
 }
@@ -274,13 +274,13 @@ g_atomic_int_exchange_and_add (gint *atomic,
 			       gint val)
 {
   gint result, temp;
-  __asm __volatile ("1:       lwarx   %0,0,%3\n"
-		    "         add     %1,%0,%4\n"
-		    "         stwcx.  %1,0,%3\n"
-		    "         bne-    1b"
-		    : "=&b" (result), "=&r" (temp), "=m" (*atomic)
-		    : "b" (atomic), "r" (val), "2" (*atomic)
-		    : "cr0", "memory");
+  __asm__ __volatile__ ("1:       lwarx   %0,0,%3\n"
+			"         add     %1,%0,%4\n"
+			"         stwcx.  %1,0,%3\n"
+			"         bne-    1b"
+			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
+			: "b" (atomic), "r" (val), "2" (*atomic)
+			: "cr0", "memory");
   return result;
 }
  
@@ -290,13 +290,13 @@ g_atomic_int_add (gint *atomic,
 		  gint val)
 {
   gint result, temp;  
-  __asm __volatile ("1:       lwarx   %0,0,%3\n"
-		    "         add     %1,%0,%4\n"
-		    "         stwcx.  %1,0,%3\n"
-		    "         bne-    1b"
-		    : "=&b" (result), "=&r" (temp), "=m" (*atomic)
-		    : "b" (atomic), "r" (val), "2" (*atomic)
-		    : "cr0", "memory");
+  __asm__ __volatile__ ("1:       lwarx   %0,0,%3\n"
+			"         add     %1,%0,%4\n"
+			"         stwcx.  %1,0,%3\n"
+			"         bne-    1b"
+			: "=&b" (result), "=&r" (temp), "=m" (*atomic)
+			: "b" (atomic), "r" (val), "2" (*atomic)
+			: "cr0", "memory");
 }
 #   else /* !__OPTIMIZE__ */
 gint
@@ -329,16 +329,16 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 				   gint newval)
 {
   gint result;
-  __asm __volatile ("sync\n"
-                    "1: lwarx   %0,0,%1\n"
-                    "   subf.   %0,%2,%0\n"
-                    "   bne     2f\n"
-                    "   stwcx.  %3,0,%1\n"
-                    "   bne-    1b\n"
-                    "2: isync"
-                    : "=&r" (result)
-                    : "b" (atomic), "r" (oldval), "r" (newval)
-                    : "cr0", "memory"); 
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
   return result == 0;
 }
 
@@ -348,16 +348,16 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 				       gpointer  newval)
 {
   gpointer result;
-  __asm __volatile ("sync\n"
-                    "1: lwarx   %0,0,%1\n"
-                    "   subf.   %0,%2,%0\n"
-                    "   bne     2f\n"
-                    "   stwcx.  %3,0,%1\n"
-                    "   bne-    1b\n"
-                    "2: isync"
-                    : "=&r" (result)
-                    : "b" (atomic), "r" (oldval), "r" (newval)
-                    : "cr0", "memory"); 
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
   return result == 0;
 }
 #   elif GLIB_SIZEOF_VOID_P == 8 /* 64-bit system */
@@ -367,17 +367,17 @@ g_atomic_int_compare_and_exchange (gint *atomic,
 				   gint newval)
 {
   gpointer result;
-  __asm __volatile ("sync\n"
-                    "1: lwarx   %0,0,%1\n"
-                    "   extsw   %0,%0\n"
-                    "   subf.   %0,%2,%0\n"
-                    "   bne     2f\n"
-                    "   stwcx.  %3,0,%1\n"
-                    "   bne-    1b\n"
-                    "2: isync"
-                    : "=&r" (result)
-                    : "b" (atomic), "r" (oldval), "r" (newval)
-                    : "cr0", "memory"); 
+  __asm__ __volatile__ ("sync\n"
+			"1: lwarx   %0,0,%1\n"
+			"   extsw   %0,%0\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stwcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
   return result == 0;
 }
 
@@ -387,23 +387,23 @@ g_atomic_pointer_compare_and_exchange (gpointer *atomic,
 				       gpointer  newval)
 {
   gpointer result;
-  __asm __volatile ("sync\n"
-		    "1: ldarx   %0,0,%1\n"
-                    "   subf.   %0,%2,%0\n"
-                    "   bne     2f\n"
-                    "   stdcx.  %3,0,%1\n"
-                    "   bne-    1b\n"
-                    "2: isync"
-                    : "=&r" (result)
-                    : "b" (atomic), "r" (oldval), "r" (newval)
-                    : "cr0", "memory"); 
+  __asm__ __volatile__ ("sync\n"
+			"1: ldarx   %0,0,%1\n"
+			"   subf.   %0,%2,%0\n"
+			"   bne     2f\n"
+			"   stdcx.  %3,0,%1\n"
+			"   bne-    1b\n"
+			"2: isync"
+			: "=&r" (result)
+			: "b" (atomic), "r" (oldval), "r" (newval)
+			: "cr0", "memory"); 
   return result == 0;
 }
 #  else /* What's that */
 #   error "Your system has an unsupported pointer size"
 #  endif /* GLIB_SIZEOF_VOID_P */
 
-#  define G_ATOMIC_MEMORY_BARRIER __asm ("sync" : : : "memory")
+#  define G_ATOMIC_MEMORY_BARRIER __asm__ ("sync" : : : "memory")
 
 # elif defined (G_ATOMIC_IA64)
 /* Adapted from CVS version 1.8 of glibc's sysdeps/ia64/bits/atomic.h
