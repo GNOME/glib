@@ -1,3 +1,12 @@
+Tue Mar 19 18:57:12 2002  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (check_add_interface_L): applied patch from Matthias Clasen
+	<maclas@gmx.de> to check for prerequisite of interfaces, fixes #74427.
+	fixed mutex recursion in his patch (we can't call g_type_is_a() while
+	holding a read lock).
+
+	* gparam.c (canonalize_key): cleanup.
+
 2002-03-13  Alexander Larsson  <alla@lysator.liu.se>
 
 	* gparam.c (canonalize_key):

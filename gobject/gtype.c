@@ -137,6 +137,8 @@ static inline void			type_set_qdata_W		(TypeNode		*node,
 									 gpointer		 data);
 static IFaceHolder*			type_iface_peek_holder_L	(TypeNode		*iface,
 									 GType			 instance_type);
+static gboolean				type_node_is_a_L		(TypeNode		*node,
+									 TypeNode		*iface_node);
 
 
 /* --- structures --- */
@@ -776,6 +778,9 @@ check_add_interface_L (GType instance_type,
   TypeNode *iface = lookup_type_node_I (iface_type);
   IFaceEntry *entry;
   TypeNode *tnode;
+  GType *prerequisites;
+  guint i;
+
   
   if (!node || !node->is_instantiatable)
     {
@@ -821,6 +826,19 @@ check_add_interface_L (GType instance_type,
 		 NODE_NAME (node),
 		 NODE_NAME (tnode));
       return FALSE;
+    }
+  prerequisites = IFACE_NODE_PREREQUISITES (iface);
+  for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
+    {
+      tnode = lookup_type_node_I (prerequisites[i]);
+      if (!type_node_is_a_L (node, tnode))
+	{
+	  g_warning ("cannot add interface type `%s' to type `%s' which does not conform to prerequisite `%s'",
+		     NODE_NAME (iface),
+		     NODE_NAME (node),
+		     NODE_NAME (tnode));
+	  return FALSE;
+	}
     }
   return TRUE;
 }
@@ -2180,11 +2198,12 @@ g_type_next_base (GType type,
 }
 
 static inline gboolean
-type_node_is_a_U (TypeNode *node,
-		  TypeNode *iface_node,
-		  /*        support_inheritance */
-		  gboolean  support_interfaces,
-		  gboolean  support_prerequisites)
+type_node_check_conformities_UorL (TypeNode *node,
+				   TypeNode *iface_node,
+				   /*        support_inheritance */
+				   gboolean  support_interfaces,
+				   gboolean  support_prerequisites,
+				   gboolean  have_lock)
 {
   gboolean match;
   
@@ -2198,14 +2217,32 @@ type_node_is_a_U (TypeNode *node,
   match = FALSE;
   if (support_interfaces || support_prerequisites)
     {
-      G_READ_LOCK (&type_rw_lock);
+      if (!have_lock)
+	G_READ_LOCK (&type_rw_lock);
       if (support_interfaces && type_lookup_iface_entry_L (node, iface_node))
 	match = TRUE;
       else if (support_prerequisites && type_lookup_prerequisite_L (node, NODE_TYPE (iface_node)))
 	match = TRUE;
-      G_READ_UNLOCK (&type_rw_lock);
+      if (!have_lock)
+	G_READ_UNLOCK (&type_rw_lock);
     }
   return match;
+}
+
+static gboolean
+type_node_is_a_L (TypeNode *node,
+		  TypeNode *iface_node)
+{
+  return type_node_check_conformities_UorL (node, iface_node, TRUE, TRUE, TRUE);
+}
+
+static inline gboolean
+type_node_conforms_to_U (TypeNode *node,
+			 TypeNode *iface_node,
+			 gboolean  support_interfaces,
+			 gboolean  support_prerequisites)
+{
+  return type_node_check_conformities_UorL (node, iface_node, support_interfaces, support_prerequisites, FALSE);
 }
 
 gboolean
@@ -2217,7 +2254,7 @@ g_type_is_a (GType type,
   
   node = lookup_type_node_I (type);
   iface_node = lookup_type_node_I (iface_type);
-  is_a = node && iface_node && type_node_is_a_U (node, iface_node, TRUE, TRUE);
+  is_a = node && iface_node && type_node_conforms_to_U (node, iface_node, TRUE, TRUE);
   
   return is_a;
 }
@@ -2567,7 +2604,7 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
   
   node = lookup_type_node_I (type_instance->g_class->g_type);
   iface = lookup_type_node_I (iface_type);
-  check = node && node->is_instantiatable && iface && type_node_is_a_U (node, iface, TRUE, FALSE);
+  check = node && node->is_instantiatable && iface && type_node_conforms_to_U (node, iface, TRUE, FALSE);
   
   return check;
 }
@@ -2584,7 +2621,7 @@ g_type_check_class_is_a (GTypeClass *type_class,
   
   node = lookup_type_node_I (type_class->g_type);
   iface = lookup_type_node_I (is_a_type);
-  check = node && node->is_classed && iface && type_node_is_a_U (node, iface, FALSE, FALSE);
+  check = node && node->is_classed && iface && type_node_conforms_to_U (node, iface, FALSE, FALSE);
   
   return check;
 }
@@ -2603,7 +2640,7 @@ g_type_check_instance_cast (GTypeInstance *type_instance,
 	  node = lookup_type_node_I (type_instance->g_class->g_type);
 	  is_instantiatable = node && node->is_instantiatable;
 	  iface = lookup_type_node_I (iface_type);
-	  check = is_instantiatable && iface && type_node_is_a_U (node, iface, TRUE, FALSE);
+	  check = is_instantiatable && iface && type_node_conforms_to_U (node, iface, TRUE, FALSE);
 	  if (check)
 	    return type_instance;
 	  
@@ -2639,7 +2676,7 @@ g_type_check_class_cast (GTypeClass *type_class,
       node = lookup_type_node_I (type_class->g_type);
       is_classed = node && node->is_classed;
       iface = lookup_type_node_I (is_a_type);
-      check = is_classed && iface && type_node_is_a_U (node, iface, FALSE, FALSE);
+      check = is_classed && iface && type_node_conforms_to_U (node, iface, FALSE, FALSE);
       if (check)
 	return type_class;
       

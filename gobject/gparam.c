@@ -258,12 +258,14 @@ g_param_spec_get_blurb (GParamSpec *pspec)
 }
 
 static void
-canonalize_key(gchar *key)
+canonalize_key (gchar *key)
 {
-  gchar *p, c;
-
-  for (p = key; (c = *p) != 0; p++)
+  gchar *p;
+  
+  for (p = key; *p != 0; p++)
     {
+      gchar c = *p;
+      
       if (c != '-' &&
 	  (c < '0' || c > '9') &&
 	  (c < 'A' || c > 'Z') &&
@@ -280,18 +282,18 @@ g_param_spec_internal (GType        param_type,
 		       GParamFlags  flags)
 {
   GParamSpec *pspec;
-
+  
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
   g_return_val_if_fail ((name[0] >= 'A' && name[0] <= 'Z') || (name[0] >= 'a' && name[0] <= 'z'), NULL);
-
+  
   pspec = (gpointer) g_type_create_instance (param_type);
   pspec->name = g_strdup (name);
   canonalize_key (pspec->name);
   pspec->_nick = g_strdup (nick);
   pspec->_blurb = g_strdup (blurb);
   pspec->flags = (flags & G_PARAM_USER_MASK) | (flags & G_PARAM_MASK);
-
+  
   return pspec;
 }
 
