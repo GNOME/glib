@@ -21,6 +21,7 @@
 #include "gmacros.h"
 #include "gmessages.h"
 #include "gmem.h"
+#include "gutils.h" /* inline hassle */
 #include <string.h>
 
 

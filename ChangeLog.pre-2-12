@@ -1,3 +1,10 @@
+2001-04-14  Hans Breuer  <hans@breuer.org>
+
+	* glib.def : 
+	* makefile.msc.in : updated
+
+	* gpattern.c : include "gutils.h" to resolve the inline hassle
+
 2001-04-11  Alexander Larsson  <alexl@redhat.com>
 
 	* glib-2.0.m4: Pass pkg-config options

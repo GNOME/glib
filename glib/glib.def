@@ -629,3 +629,4 @@ EXPORTS
 	glib_mem_profiler_table
 	glib_micro_version
 	glib_minor_version
+
