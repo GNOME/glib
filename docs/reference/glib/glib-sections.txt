@@ -840,6 +840,7 @@ g_message
 g_warning
 g_critical
 g_error
+g_debug
 
 <SUBSECTION>
 g_log_set_handler

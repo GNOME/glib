@@ -1,3 +1,8 @@
+Mon Jul  5 18:49:56 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/messages.sgml: 
+	* glib/glib-sections.txt: Add g_debug.
+
 2004-06-15  Federico Mena Quintero  <federico@ximian.com>
 
 	* glib/tmpl/conversions.sgml: New section on file name encodings.

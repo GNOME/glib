@@ -121,6 +121,13 @@ A convenience function/macro to log a warning message.
 @...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
 
 
+<!-- ##### MACRO g_debug ##### -->
+<para>
+A convenience function/macro to log a debug message.
+</para>
+
+@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
+
 <!-- ##### MACRO g_critical ##### -->
 <para>
 Logs a "critical warning" (#G_LOG_LEVEL_CRITICAL). It's more or less

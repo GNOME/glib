@@ -1,3 +1,8 @@
+Mon Jul  5 18:50:27 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.h (g_debug): Complete the g_log() 
+	family.  (#135730, Sven Herzberg)
+
 Mon Jul  5 18:42:30 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gnulib/Makefile.am (INCLUDES): Add top_srcdir to 
