@@ -85,8 +85,6 @@ g_rand_new (void)
       if (dev_urandom)
 	{
 	  if (fread (&seed, sizeof (seed), 1, dev_urandom) != 1)
-	    seed = 0;
-	  else
 	    dev_urandom_exists = FALSE;
 	  fclose (dev_urandom);
 	}	
