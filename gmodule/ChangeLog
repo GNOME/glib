@@ -1,6 +1,6 @@
 Sat May  1 10:24:02 PDT 1999 Manish Singh <yosh@gimp.org>
 
-	* Makefile.am: use -avoid-version
+	* Makefile.am: use -avoid-version and -module for test plugins
 
 Fri Apr 23 09:03:48 1999  Tim Janik  <timj@gtk.org>
 
