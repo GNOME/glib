@@ -1864,6 +1864,63 @@ if test $mutex_has_default = yes ; then
 	LIBS="$glib_save_LIBS"
 fi
 
+dnl *****************************
+dnl *** GAtomic tests for gcc ***
+dnl *****************************
+
+AC_MSG_CHECKING([whether to use inline assembler routines for atomic integers])
+
+if test x"$GCC" = xyes; then
+  case $host_cpu in
+    i386)
+      AC_MSG_RESULT([no])
+      ;;
+    i?86)
+      AC_MSG_RESULT([i486])
+      glib_atomic_inlined_implementation=I486
+      ;;
+    sparc*)
+      SPARCV9_WARNING="Try to rerun configure with CFLAGS='-mcpu=v9',
+		when you are using a sparc with v9 instruction set (most
+		sparcs nowadays). This will make the code for atomic
+		operations much faster.	The resulting code will not run
+		on very old sparcs though."
+
+      AC_LINK_IFELSE([[
+        main () 
+        {
+	  int tmp1, tmp2, tmp3;
+          __asm__ __volatile__("casx [%2], %0, %1" 
+	                       : "=&r" (tmp1), "=&r" (tmp2) : "r" (&tmp3));
+        }]],
+	AC_MSG_RESULT([sparcv9])
+        glib_atomic_inlined_implementation=SPARCV9,
+	AC_MSG_RESULT([no])
+        AC_MSG_WARN([[$SPARCV9_WARNING]]))
+      ;;
+    alpha)
+      AC_MSG_RESULT([alpha])
+      glib_atomic_inlined_implementation=ALPHA
+      ;;
+    x86_64)
+      AC_MSG_RESULT([x86_64])
+      glib_atomic_inlined_implementation=X86_64
+      ;;
+    powerpc*)
+      AC_MSG_RESULT([powerpc])
+      glib_atomic_inlined_implementation=POWERPC
+      ;;	
+    ia64)
+      AC_MSG_RESULT([ia64])
+      glib_atomic_inlined_implementation=IA64
+      ;;	
+    *)
+      AC_MSG_RESULT([none])
+      glib_atomic_inlined_implementation=NONE
+      ;;
+  esac
+fi
+
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************
@@ -2237,6 +2294,10 @@ union _GSystemThread
   long   dummy_long;
 };
 _______EOF
+	if test x"$g_atomic_inlined_implementation" != x; then
+	  echo >>$outfile
+	  echo "#define G_ATOMIC_INLINED_IMPLEMENTATION_$g_atomic_inlined_implementation" >>$outfile
+	fi
 
 	echo >>$outfile
 	g_bit_sizes="16 32 64"
@@ -2539,6 +2600,8 @@ g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
+
+g_atomic_inlined_implementation="$glib_atomic_inlined_implementation"
 
 g_module_suffix="$glib_gmodule_suffix"
 

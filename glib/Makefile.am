@@ -44,6 +44,7 @@ endif
 libglib_2_0_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
+	gatomic.c		\
 	gbacktrace.c		\
 	gbsearcharray.h		\
 	gcache.c		\
@@ -112,6 +113,7 @@ glibsubinclude_HEADERS =   \
 	galloca.h	\
 	garray.h	\
 	gasyncqueue.h	\
+	gatomic.h	\
 	gbacktrace.h	\
 	gcache.h	\
 	gcompletion.h	\

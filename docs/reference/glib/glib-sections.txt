@@ -653,6 +653,25 @@ g_async_queue_length_unlocked
 </SECTION>
 
 <SECTION>
+<TITLE>Atomic Operations</TITLE>
+<FILE>atomic_operations</FILE>
+g_atomic_int_get
+g_atomic_int_add
+g_atomic_int_exchange_and_add
+g_atomic_int_compare_and_exchange
+g_atomic_pointer_get
+g_atomic_pointer_compare_and_exchange
+g_atomic_int_inc
+g_atomic_int_dec_and_test
+</SECTION>
+
+<SUBSECTION Private>
+g_atomic_int_add_fallback
+g_atomic_int_exchange_and_add_fallback
+g_atomic_int_compare_and_exchange_fallback
+g_atomic_pointer_compare_and_exchange_fallback
+
+<SECTION>
 <TITLE>IO Channels</TITLE>
 <FILE>iochannels</FILE>
 GIOChannel

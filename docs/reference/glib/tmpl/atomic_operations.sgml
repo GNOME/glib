@@ -1,0 +1,156 @@
+<!-- ##### SECTION Title ##### -->
+Atomic Operations
+
+<!-- ##### SECTION Short_Description ##### -->
+basic atomic integer and pointer operations
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+The following functions can be used to atomically access integers and
+pointers. They are implemented as inline assembler function on most
+platforms and use slower fall-backs otherwise. Using them can sometimes
+save you from using a performance-expensive #GMutex to protect the
+integer or pointer.  
+</para>
+
+<para>
+The most important usage is reference counting. Using
+g_atomic_int_inc() and g_atomic_int_dec_and_test() makes reference
+counting a very fast operation.
+</para>
+
+<note>
+<para>
+You must not directly read integers or pointers concurrently accessed
+by other threads with with the following functions directly. Always use
+g_atomic_int_get() and g_atomic_pointer_get() respectively. They are
+acting as a memory barrier.
+</para> 
+</note>
+
+<note>
+<para>
+If you are using those functions for anything apart from simple
+reference counting, you should really be aware of the implications of
+doing that. There are literally thousands of ways to shoot yourself in
+the foot. So if in doubt, use a #GMutex. If you don't know, what
+memory barriers are, do not use anything but g_atomic_int_inc() and
+g_atomic_int_dec_and_test().
+</para> 
+</note>
+
+<note>
+<para>
+It is not safe to set an integer or pointer just by assigning to it,
+when it is concurrently accessed by other threads with the following
+functions. Use g_atomic_int_compare_and_exchange() or
+g_atomic_pointer_compare_and_exchange() respectively.
+</para> 
+</note>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+<variablelist>
+ 
+<varlistentry>
+<term>#GMutex</term>
+<listitem><para>GLib mutual exclusions.</para></listitem>
+</varlistentry>
+ 
+</variablelist>
+</para>
+
+<!-- ##### FUNCTION g_atomic_int_get ##### -->
+<para>
+Reads the value of the integer pointed to by @atomic. Also acts as
+a memory barrier.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@Returns: the value of *@atomic.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_add ##### -->
+<para>
+Atomically adds @val to the integer pointed to by @atomic.
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@val: the value to add to *@atomic.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_exchange_and_add ##### -->
+<para>
+Atomically adds @val to the integer pointed to by @atomic. It returns
+the value of *@atomic just before the addition took place.
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@val: the value to add to *@atomic.
+@Returns: the value of *@atomic before the addition.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_compare_and_exchange ##### -->
+<para>
+Compares @oldval with the integer pointed to by @atomic and
+if they are equal, atomically exchanges *@atomic with @newval.
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@oldval: the assumed old value of *@atomic.
+@newval: the new value of *@atomic.
+@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_pointer_get ##### -->
+<para>
+Reads the value of the pointer pointed to by @atomic. Also acts as
+a memory barrier.
+</para>
+
+@atomic: a pointer to a #gpointer.
+@Returns: the value to add to *@atomic.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_pointer_compare_and_exchange ##### -->
+<para>
+Compares @oldval with the pointer pointed to by @atomic and
+if they are equal, atomically exchanges *@atomic with @newval. 
+Also acts as a memory barrier.
+</para>
+
+@atomic: a pointer to a #gpointer.
+@oldval: the assumed old value of *@atomic.
+@newval: the new value of *@atomic.
+@Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_inc ##### -->
+<para>
+Atomically increments the integer pointed to by @atomic by 1.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@Since: 2.4
+
+
+<!-- ##### FUNCTION g_atomic_int_dec_and_test ##### -->
+<para>
+Atomically decrements the integer pointed to by @atomic by 1.
+</para>
+
+@atomic: a pointer to a 32-bit integer.
+@Returns: %TRUE, if the integer pointed to by @atomic is 0 after
+decrementing it.
+@Since: 2.4
+
+

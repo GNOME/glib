@@ -1,3 +1,9 @@
+2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/glib-overrides.txt, glib/glib-sections.txt,
+	glib/glib-docs.sgml, glib/tmpl/atomic_operations.sgml: Add docs
+	for atomic operations.
+
 Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.3 ===

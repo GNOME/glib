@@ -64,6 +64,7 @@ timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
 
 test_programs =					\
+	atomic-test				\
 	array-test				\
 	$(CXX_TEST)				\
 	child-test				\
@@ -115,6 +116,7 @@ progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
 thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
 module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
+atomic_test_LDADD = $(progs_ldadd)
 array_test_LDADD = $(progs_ldadd)
 child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)

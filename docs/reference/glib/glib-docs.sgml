@@ -8,6 +8,7 @@
 <!ENTITY glib-Byte-Order-Macros SYSTEM "xml/byte_order.xml">
 <!ENTITY glib-Numerical-Definitions SYSTEM "xml/numerical.xml">
 <!ENTITY glib-Miscellaneous-Macros SYSTEM "xml/macros_misc.xml">
+<!ENTITY glib-Atomic-Operations SYSTEM "xml/atomic_operations.xml">
 <!ENTITY glib-Memory-Allocation SYSTEM "xml/memory.xml">
 <!ENTITY glib-Error-Reporting SYSTEM "xml/error_reporting.xml">
 <!ENTITY glib-Warnings-and-Assertions SYSTEM "xml/warnings.xml">
@@ -106,6 +107,7 @@ synchronize their operation.
     &glib-Byte-Order-Macros;
     &glib-Numerical-Definitions;
     &glib-Miscellaneous-Macros;
+    &glib-Atomic-Operations;
   </chapter>
 
   <chapter id="glib-core">

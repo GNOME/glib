@@ -30,6 +30,7 @@
 #include <glib/galloca.h>
 #include <glib/garray.h>
 #include <glib/gasyncqueue.h>
+#include <glib/gatomic.h>
 #include <glib/gbacktrace.h>
 #include <glib/gcache.h>
 #include <glib/gcompletion.h>

@@ -1,3 +1,17 @@
+2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gatomic.c, glib/gatomic.h: New files to implement atomic
+	operations for different platforms. Fixes bug #63621.
+
+	* glib/glib.h: Include gatomic.h.
+
+	* configure.in: Add test for assembler routines for atomic operations.
+
+	* glib/Makefile.am: Add gatomic.c, gatomic.h.
+
+	* tests/Makefile.am, tests/atomic-test.c: Unit test for atomic
+	operations.
+
 2003-02-26  Hans Breuer  <hans@breuer.org>
 
 	* glib/glib.def : added g_hash_table_find and a
