@@ -1,3 +1,8 @@
+2001-09-29  Alexander Larsson  <alla@lysator.liu.se>
+
+	* configure.in:
+	Add build/win32/dirent/Makefile to the list of makefiles
+
 2001-09-30  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gwin32.c
