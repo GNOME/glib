@@ -1,5 +1,8 @@
 2003-03-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/libcharset/config.charset: Add cp1251 support for Solaris.
+	(#104738, Hidetoshi Tajima)
+
 	* glib/gconvert.c (UnsafeCharacterSet): Get rid of
 	UNSAFE_DOS_PATH.
 	(acceptable): Align with RFC2396.  (#59653)
