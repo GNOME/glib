@@ -116,10 +116,10 @@ gpointer    g_object_new                      (GType           object_type,
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,
 					       GParameter     *parameters);
-gpointer    g_object_new_valist               (GType           object_type,
+GObject*    g_object_new_valist               (GType           object_type,
 					       const gchar    *first_property_name,
 					       va_list         var_args);
-gpointer    g_object_set                      (gpointer	       object,
+void	    g_object_set                      (gpointer	       object,
 					       const gchar    *first_property_name,
 					       ...);
 void        g_object_get                      (gpointer        object,
@@ -128,7 +128,7 @@ void        g_object_get                      (gpointer        object,
 gpointer    g_object_connect                  (gpointer	       object,
 					       const gchar    *signal_spec,
 					       ...);
-gpointer    g_object_disconnect               (gpointer	       object,
+void	    g_object_disconnect               (gpointer	       object,
 					       const gchar    *signal_spec,
 					       ...);
 void        g_object_set_valist               (GObject        *object,
@@ -184,9 +184,9 @@ gpointer    g_object_steal_data               (GObject        *object,
 void        g_object_watch_closure            (GObject        *object,
 					       GClosure       *closure);
 GClosure*   g_cclosure_new_object             (GCallback       callback_func,
-					       gpointer        object);
+					       GObject	      *object);
 GClosure*   g_cclosure_new_object_swap        (GCallback       callback_func,
-					       gpointer        object);
+					       GObject	      *object);
 GClosure*   g_closure_new_object              (guint           sizeof_closure,
 					       GObject        *object);
 void        g_value_set_object                (GValue         *value,

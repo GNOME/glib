@@ -720,7 +720,7 @@ g_object_newv (GType       object_type,
   return object;
 }
 
-gpointer
+GObject*
 g_object_new_valist (GType	  object_type,
 		     const gchar *first_property_name,
 		     va_list	  var_args)
@@ -949,7 +949,7 @@ g_object_get_valist (GObject	 *object,
   g_object_unref (object);
 }
 
-gpointer
+void
 g_object_set (gpointer     _object,
 	      const gchar *first_property_name,
 	      ...)
@@ -957,13 +957,11 @@ g_object_set (gpointer     _object,
   GObject *object = _object;
   va_list var_args;
   
-  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_if_fail (G_IS_OBJECT (object));
   
   va_start (var_args, first_property_name);
   g_object_set_valist (object, first_property_name, var_args);
   va_end (var_args);
-
-  return object;
 }
 
 void
@@ -1132,7 +1130,7 @@ g_object_connect (gpointer     _object,
   return object;
 }
 
-gpointer
+void
 g_object_disconnect (gpointer     _object,
 		     const gchar *signal_spec,
 		     ...)
@@ -1140,8 +1138,8 @@ g_object_disconnect (gpointer     _object,
   GObject *object = _object;
   va_list var_args;
 
-  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  g_return_val_if_fail (object->ref_count > 0, object);
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (object->ref_count > 0);
 
   va_start (var_args, signal_spec);
   while (signal_spec)
@@ -1176,8 +1174,6 @@ g_object_disconnect (gpointer     _object,
       signal_spec = va_arg (var_args, gchar*);
     }
   va_end (var_args);
-
-  return object;
 }
 
 typedef struct {
@@ -1670,9 +1666,8 @@ g_closure_new_object (guint    sizeof_closure,
 
 GClosure*
 g_cclosure_new_object (GCallback callback_func,
-		       gpointer  _object)
+		       GObject  *object)
 {
-  GObject *object = _object;
   GClosure *closure;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
@@ -1687,9 +1682,8 @@ g_cclosure_new_object (GCallback callback_func,
 
 GClosure*
 g_cclosure_new_object_swap (GCallback callback_func,
-			    gpointer  _object)
+			    GObject  *object)
 {
-  GObject *object = _object;
   GClosure *closure;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);

@@ -296,6 +296,7 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @signal_spec: 
 @Varargs: 
+<!-- # Unused Parameters # -->
 @Returns: 
 
 
@@ -307,6 +308,7 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @first_property_name: 
 @Varargs: 
+<!-- # Unused Parameters # -->
 @Returns: 
 
 
