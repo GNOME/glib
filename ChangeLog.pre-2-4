@@ -1,3 +1,7 @@
+2002-01-28  Havoc Pennington  <hp@redhat.com>
+
+	* glib/gmacros.h: get rid of warning here
+
 Mon Jan 28 17:56:10 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmacros.h: Only use __FUNCTION__, __PRETTY_FUNCTION__ for

@@ -82,7 +82,7 @@
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  */
-#ifdef  __GNUC__ && (__GNUC__ < 3)
+#if defined (__GNUC__) && (__GNUC__ < 3)
 #define G_GNUC_FUNCTION         __FUNCTION__
 #define G_GNUC_PRETTY_FUNCTION  __PRETTY_FUNCTION__
 #else   /* !__GNUC__ */
