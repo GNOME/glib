@@ -85,7 +85,7 @@ boxed_proxy_value_init (GValue *value)
 static void
 boxed_proxy_value_free (GValue *value)
 {
-  if (value->data[0].v_pointer)
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
     {
       BoxedNode key, *node;
 
@@ -204,10 +204,11 @@ g_boxed_type_register_static (const gchar   *name,
 }
 
 GBoxed*
-g_boxed_copy (GType    boxed_type,
-	      gpointer src_boxed)
+g_boxed_copy (GType         boxed_type,
+	      gconstpointer src_boxed)
 {
   GTypeValueTable *value_table;
+  gpointer dest_boxed;
 
   g_return_val_if_fail (G_TYPE_IS_BOXED (boxed_type), NULL);
   g_return_val_if_fail (G_TYPE_IS_ABSTRACT (boxed_type) == FALSE, NULL);
@@ -224,7 +225,7 @@ g_boxed_copy (GType    boxed_type,
 
       key.type = boxed_type;
       node = g_bsearch_array_lookup (&boxed_bsa, &key);
-      src_boxed = node->copy (src_boxed);
+      dest_boxed = node->copy ((gpointer) src_boxed);
     }
   else
     {
@@ -236,7 +237,7 @@ g_boxed_copy (GType    boxed_type,
       memset (&dest_value.data, 0, sizeof (dest_value.data));
       dest_value.g_type = boxed_type;
       src_value.g_type = boxed_type;
-      src_value.data[0].v_pointer = src_boxed;
+      src_value.data[0].v_pointer = (gpointer) src_boxed;
       value_table->value_copy (&src_value, &dest_value);
       if (dest_value.data[1].v_ulong ||
 	  dest_value.data[2].v_ulong ||
@@ -244,10 +245,10 @@ g_boxed_copy (GType    boxed_type,
 	g_warning ("the copy_value() implementation of type `%s' seems to make use of reserved GValue fields",
 		   g_type_name (boxed_type));
 
-      src_boxed = dest_value.data[0].v_pointer;
+      dest_boxed = dest_value.data[0].v_pointer;
     }
 
-  return src_boxed;
+  return dest_boxed;
 }
 
 void
@@ -286,19 +287,33 @@ g_boxed_free (GType    boxed_type,
 }
 
 void
-g_value_set_boxed (GValue  *value,
-		   gpointer boxed)
+g_value_set_boxed (GValue       *value,
+		   gconstpointer boxed)
 {
   g_return_if_fail (G_IS_VALUE_BOXED (value));
   g_return_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)));
 
-  if (value->data[0].v_pointer)
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
     g_boxed_free (G_VALUE_TYPE (value), value->data[0].v_pointer);
   value->data[0].v_pointer = boxed ? g_boxed_copy (G_VALUE_TYPE (value), boxed) : NULL;
+  value->data[1].v_uint = 0;
+}
+
+void
+g_value_set_static_boxed (GValue       *value,
+			  gconstpointer boxed)
+{
+  g_return_if_fail (G_IS_VALUE_BOXED (value));
+  g_return_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)));
+
+  if (value->data[0].v_pointer && !(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+    g_boxed_free (G_VALUE_TYPE (value), value->data[0].v_pointer);
+  value->data[0].v_pointer = (gpointer) boxed;
+  value->data[1].v_uint = boxed ? G_VALUE_STATIC_TAG : 0;
 }
 
 gpointer
-g_value_get_boxed (GValue *value)
+g_value_get_boxed (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_BOXED (value), NULL);
   g_return_val_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)), NULL);

@@ -39,14 +39,16 @@ typedef void     (*GBoxedFreeFunc)	(gpointer	 boxed);
 
 
 /* --- prototypes --- */
-GBoxed*		g_boxed_copy		(GType		 boxed_type,
-					 gpointer	 src_boxed);
-void		g_boxed_free		(GType		 boxed_type,
-					 gpointer	 boxed);
-void            g_value_set_boxed       (GValue         *value,
-					 gpointer        boxed);
-gpointer	g_value_get_boxed       (GValue         *value);
-gpointer	g_value_dup_boxed       (GValue         *value);
+GBoxed*		g_boxed_copy			(GType		 boxed_type,
+						 gconstpointer	 src_boxed);
+void		g_boxed_free			(GType		 boxed_type,
+						 gpointer	 boxed);
+void            g_value_set_boxed       	(GValue         *value,
+						 gconstpointer   boxed);
+void            g_value_set_static_boxed	(GValue         *value,
+						 gconstpointer   boxed);
+gpointer	g_value_get_boxed       	(const GValue   *value);
+gpointer	g_value_dup_boxed       	(GValue         *value);
 
 
 /* --- convenience --- */

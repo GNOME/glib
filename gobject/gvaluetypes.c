@@ -221,7 +221,8 @@ value_string_init (GValue *value)
 static void
 value_string_free_value (GValue *value)
 {
-  g_free (value->data[0].v_pointer);
+  if (!(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+    g_free (value->data[0].v_pointer);
 }
 
 static void
@@ -640,8 +641,23 @@ g_value_set_string (GValue	*value,
 {
   g_return_if_fail (G_IS_VALUE_STRING (value));
   
-  g_free (value->data[0].v_pointer);
+  if (value->data[1].v_uint & G_VALUE_STATIC_TAG)
+    value->data[1].v_uint = 0;
+  else
+    g_free (value->data[0].v_pointer);
   value->data[0].v_pointer = g_strdup (v_string);
+}
+
+void
+g_value_set_static_string (GValue      *value,
+			   const gchar *v_string)
+{
+  g_return_if_fail (G_IS_VALUE_STRING (value));
+  
+  if (!(value->data[1].v_uint & G_VALUE_STATIC_TAG))
+    g_free (value->data[0].v_pointer);
+  value->data[1].v_uint = G_VALUE_STATIC_TAG;
+  value->data[0].v_pointer = (gchar*) v_string;
 }
 
 gchar*

@@ -1,3 +1,9 @@
+Thu Oct 26 00:30:27 2000  Tim Janik  <timj@gtk.org>
+
+	* gvaluetypes.[hc]: added g_value_set_static_string().
+
+	* gboxed.[hc]: const corrections. added g_value_set_static_boxed().
+
 Wed Oct 25 20:27:02 2000  Tim Janik  <timj@gtk.org>
 
 	* gtype.c (g_type_free_instance): for the moment, freeing object

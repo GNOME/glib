@@ -79,6 +79,7 @@ gboolean g_value_types_exchangable	(GType         value_type1,
 void     g_value_register_exchange_func	(GType         value_type1,
 					 GType         value_type2,
 					 GValueExchange func);
+#define G_VALUE_STATIC_TAG		(1 << 27)
 
 #ifdef __cplusplus
 }
