@@ -1,3 +1,11 @@
+Wed Nov 11 18:11:24 EST 1998 Gregory McLean <gregm@comstar.net>
+
+	* docs/*.sgml : Batch of new documentation that should be easier
+	to maintain and extend. Plus generate whatever sort of doc file
+	you would like. I didn't change the Makefile stuff as I'm not sure
+	what default doc type people want. Oh and this is all DocBook format.
+	Enjoy!
+
 Tue Nov 10 17:12:45 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in: use __extension__ for long long on gcc >= 2.8 and

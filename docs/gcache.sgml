@@ -1,0 +1,196 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" []>
+<chapter id="gcache-functions">
+  <docinfo>
+    <title>Cache handling functions</title>
+  </docinfo>
+  <title>Cache handling functions</title>
+  <sect1 id="cache-introduction">
+    <title>Introduction</title>
+    <para> </para>
+  </sect1>
+  <sect1 id="cache-functions">
+    <title>Cache functions</title>
+    <para> </para>
+    <sect2 id="g-cache-new">
+      <title>g_cache_new</title>
+      <funcsynopsis>
+	<funcdef>GCache *<function>g_cache_new</function></funcdef>
+	<paramdef>GCacheNewFunc <parameter>value_new_func</parameter></paramdef>
+	<paramdef>GCacheDestroyFunc <parameter>value_destroy_func</parameter></paramdef>
+	<paramdef>GCacheDupFunc <parameter>key_dup_func</parameter></paramdef>
+	<paramdef>GCacheDestroyFunc <parameter>key_destroy_func</parameter></paramdef>
+	<paramdef>GHashFunc <parameter>hash_key_func</parameter></paramdef>
+	<paramdef>GHashFunc <parameter>hash_value_func</parameter></paramdef>
+	<paramdef>GCompareFunc <parameter>key_compare_func</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+
+        </programlisting>
+      </sect3>
+    </sect2>
+    <sect2 id="g-cache-destroy">
+      <title>g_cache_destroy</title>
+      <funcsynopsis>
+	<funcdef>void <function>g_cache_destroy</function></funcdef>
+	<paramdef>GCache *<parameter>cache</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+        
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>GCache <parameter>cache</parameter></para>
+	    <para> </para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="g-cache-insert">
+      <title>g_cache_insert</title>
+      <funcsynopsis>
+	<funcdef>gpointer <function>g_cache_insert</function></funcdef>
+	<paramdef>GCache *<parameter>cache</parameter></paramdef>
+	<paramdef>gpointer <parameter>key</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>GCache *<parameter>cache</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>gpointer <parameter>key</parameter></para>
+	    <para> </para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="g-cache-remove">
+      <title>g_cache_remove</title>
+      <funcsynopsis>
+	<funcdef>void <function>g_cache_remove</function></funcdef>
+	<paramdef>GCache *<parameter>cache</parameter></paramdef>
+	<paramdef>gpointer <parameter>value</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>GCache *<parameter>cache</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>gpointer <parameter>value</parameter></para>
+	    <para> </para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="g-cache-key-foreach">
+      <title>g_cache_key_foreach</title>
+      <funcsynopsis>
+	<funcdef>void <function>g_cache_key_foreach</function></funcdef>
+	<paramdef>GCache *<parameter>cache</parameter></paramdef>
+	<paramdef>GHFunc <parameter>func</parameter></paramdef>
+	<paramdef>gpointer <parameter>user_data</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>GCache *<parameter>cache</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>GHFunc <parameter>func</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>gpointer <parameter>user_data</parameter></para>
+	    <para> </para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="g-cache-value-foreach">
+      <title>g_cache_value_foreach</title>
+      <funcsynopsis>
+	<funcdef>void <function>g_cache_value_foreach</function></funcdef>
+	<paramdef>GCache *<parameter>cache</parameter></paramdef>
+	<paramdef>GHFunc <parameter>func</parameter></paramdef>
+	<paramdef>gpointer <parameter>user_data</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+	<para> </para>
+      </sect3>
+      <sect3><title>Usage</title>
+	<programlisting role="C">
+
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>GCache *<parameter>cache</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>GHFunc <parameter>func</parameter></para>
+	    <para> </para>
+	  </listitem>
+	  <listitem>
+	    <para>gpointer <parameter>user_data</parameter></para>
+	    <para> </para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+  </sect1>
+</chapter>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:("glib.sgml" "book" "sect1" "")
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

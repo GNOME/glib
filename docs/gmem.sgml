@@ -1,0 +1,181 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" []>
+<chapter id="memory-functions">
+  <docinfo>
+    <title>Memory handling functions</title>
+  </docinfo>
+  <title>Memory Handling functions</title>
+  <sect1 id="memory-introduction">
+    <title>Introduction</title>
+    <para> </para>
+    </sect1>
+  <sect1 id="standard-handlers">
+    <title>Standard memory handlers</title>
+    <para>This section describes the normal flat memory handling functions
+    provided by GLIB.</para>
+      <sect2 id="g-malloc">
+	<title>g_malloc</title>
+	<funcsynopsis>
+	  <funcdef>gpointer <function>g_malloc</function</funcdef>
+	  <paramdef>gulong <parameter>size</parameter></paramdef>
+	</funcsynopsis>
+	<sect3><title>Description</title>
+	  <para>Allocate a piece of memory and return the pointer to the
+	    newly allocated memory. This function does not clear the memory.
+	  </para>
+	</sect3>
+	<sect3><title>Usage</title>
+	  <programlisting role="C">
+	    
+	  </programlisting>
+	</sect3>
+	<sect3><title>Parameters</title>
+	  <itemizedlist>
+	    <listitem>
+	      <para>gulong <parameter>size</parameter></para>
+	      <para>The size of the requested piece of memory</para>
+	    </listitem>
+	  </itemizedlist>
+	</sect3>
+      </sect2>
+      <sect2 id="g-malloc0">
+	<title>g_malloc0</title>
+	<funcsynopsis>
+	  <funcdef>gpointer <function>g_malloc0</function></funcdef>
+	  <paramdef>gulong <parameter>size</parameter></paramdef>
+	</funcsynopsis>
+	<sect3><title>Description</title>
+	  <para>Allocate a piece of memory and, clear it, returning a 
+	    pointer to the freshly allocated piece. <type>NULL</type> is
+	    returned on failure.</para>
+	</sect3>
+	<sect3><title>Usage</title>
+	  <programlisting role="C">
+	    
+	  </programlisting>
+	</sect3>
+	<sect3><title>Parameters</title>
+	  <itemizedlist>
+	    <listitem>
+	      <para>gulong <parameter>size</parameter></para>
+	      <para>The size of the requested piece of memory.</para>
+	    </listitem>
+	  </itemizedlist>
+	</sect3>
+      </sect2>
+      <sect2 id="g-realloc">
+	<title>g_realloc</title>
+	<funcsynopsis>
+	  <funcdef>gpointer <function>g_realloc</function></funcdef>
+	  <paramdef>gpointer <parameter>mem</parameter></paramdef>
+	  <paramdef>gulong <parameter>size</parameter></paramdef>
+	</funcsynopsis>
+	<sect3><title>Description</title>
+	  <para>Change the size of a previously allocated piece of memory.
+	  </para>
+	</sect3>
+	<sect3><title>Usage</title>
+	  <programlisting role="C">
+
+	  </programlisting>
+	</sect3>
+	<sect3><title>Parameters</title>
+	  <itemizedlist>
+	    <listitem>
+	      <para>gpointer <parameter>mem</parameter></para>
+	      <para>A pointer to the allocated memory</para>
+	    </listitem>
+	    <listitem>
+	      <para>gulong <parameter>size</parameter></para>
+	      <para>The amount to change the allocation by.</para>
+	    </listitem>
+	  </itemizedlist>
+	</sect3>
+      </sect2>
+  </sect1>
+  <sect1 id="array-handlers">
+    <title>Array memory handlers</title>
+    <para>This section will describe the array memory handling functions
+    provided by GLIB</para>
+  </sect1>
+  <sect1 id="chunk-handlers">
+    <title>Chunk memory handlers</title>
+      <para>Memory chunks are used to allocate pieces of memory which are always
+	the same size. Lists are a good example of such a data type. The memory
+	chunk allocates and frees blocks of memory as needed. Just be sure to
+	call <function>g_mem_chunk_free</function> and not 
+	<function>g_free</function> on data allocated in a mem chunk. Calling
+	<function>g_free</function> will most likely cause a segmentation fault
+	somewhere that will be dificult to track down.
+      </para>
+    <para>The GLIB library allocates and tracks memory chunks with the opaque
+      data type <type>GMemChunk</type>.</para>
+    <para>Currently there are two types of memory chunks you can allocate and
+     manage with the functions documented in here.</para>
+    <itemizedlist>
+	<listitem>
+	  <para><type>G_ALLOC_ONLY</type></para>
+	  <para>The memory chunks of this type only allocate memory. The free
+	   operations are interpreted as a <emphasis>no-op</emphasis> Also
+           memory chunks of thus type save four bytes per atom. They are
+	   also useful for lists which use the MemChunk to allocate memory
+           but are also part of the MemChunk implementation.</para>
+	</listitem>
+	<listitem>
+	  <para><type>G_ALLOC_AND_FREE</type></para>
+	  <para>Memory chunks of this type can allocate and free memory.</para>
+	</listitem>
+      </itemizedlist>
+      <para>This section of the reference manual will detail out the functions
+	provided by GLIB for memory chunk handling.</para>
+      <sect2 id="g-blow-chunks">
+	<title>g_blow_chunks</title>
+	<funcsynopsis>
+	  <funcdef>void <function>g_blow_chunks</function></funcdef>
+	  <paramdef>void <parameter>(null)</parameter></paramdef>
+	</funcsynopsis>
+	<sect3><title>Description</title>
+	  <para>The <function>g_blow_chunks</function> simply compresses all
+	    the chunks of memory. This operation consists of freeing every
+	    memory area that should be freed, but which we haven't gotten 
+	    around to doing yet. And, no, <function>g_blow_chunks</function>
+	    doesn't following the naming scheme, but it is a much better name
+	    then <emphasis>g_mem_chunk_clean_all</emphasis> or something 
+	    similar.</para>
+	</sect3>
+	<sect3><title>Usage</title>
+	  <programlisting role="C">
+	    
+	  </programlisting>
+	</sect3>
+	<sect3><title>Parameters</title>
+	  <itemizedlist>
+	    <listitem>
+	      <para>void <parameter>(null)</parameter></para>
+	      <para>This function takes and returns no values or aruments.
+		</para>
+	      </listitem>
+	  </itemizedlist>
+	</sect3>
+      </sect2>
+  </sect1>
+</chapter>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:("glib.sgml" "book" "sect1" "")
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
+
+
+
+
+
