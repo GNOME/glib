@@ -1,3 +1,16 @@
+Tue Sep  2 19:37:21 2003  Tim Janik  <timj@gtk.org>
+
+	* gtype.[hc]: added support for a "default vtable" per interface,
+	that interface vtables are initialized from.
+	the default vtable is initialized and finalized through class_init,
+	class_finalize and class_data from the interfaces GTypeInfo struct.
+	(type_data_last_unref_Wm): unload child plugin before unreffing
+	parent type.
+
+	testifaceinit.c: minor fixups. fixed up base_init() assertions, since
+	with a default vtable, base_init() may be called multiple times.
+	added default initializer to iface1.
+
 Tue Sep  2 14:53:41 2003  Tim Janik  <timj@gtk.org>
 
 	* gobject-query.c (main): fix iterating over fundamental types.

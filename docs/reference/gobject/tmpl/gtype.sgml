@@ -473,6 +473,7 @@ class_init function with g_type_class_add_private().
 @g_type: the type identifying which private data to retrieve.
 @c_type: The C type for the private structure.
 
+
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
 <para>
 
@@ -745,6 +746,7 @@ my_object_get_some_field (MyObject *my_object)
 
 @g_class: class structure for an instantiatable type
 @private_size: size of private structure.
+
 
 <!-- ##### FUNCTION g_type_interface_peek ##### -->
 <para>
@@ -1469,3 +1471,6 @@ mode: sgml
 sgml-parent-document: ("../gobject-docs.sgml" "book" "refsect2" "")
 End:
 -->
+
+
+

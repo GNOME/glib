@@ -241,6 +241,10 @@ struct _IFaceData
   guint16            vtable_size;
   GBaseInitFunc      vtable_init_base;
   GBaseFinalizeFunc  vtable_finalize_base;
+  GClassInitFunc     dflt_init;
+  GClassFinalizeFunc dflt_finalize;
+  gconstpointer      dflt_data;
+  gpointer           dflt_vtable;
 };
 struct _ClassData
 {
@@ -736,9 +740,9 @@ check_type_info_I (TypeNode        *pnode,
       return FALSE;
     }
   /* check class & interface members */
-  if (!(finfo->type_flags & G_TYPE_FLAG_CLASSED) &&
+  if (!((finfo->type_flags & G_TYPE_FLAG_CLASSED) || is_interface) &&
       (info->class_init || info->class_finalize || info->class_data ||
-       (!is_interface && (info->class_size || info->base_init || info->base_finalize))))
+       info->class_size || info->base_init || info->base_finalize))
     {
       if (pnode)
 	g_warning ("cannot create class for `%s', derived from non-classed parent type `%s'",
@@ -985,6 +989,10 @@ type_data_make_W (TypeNode              *node,
       data->iface.vtable_size = info->class_size;
       data->iface.vtable_init_base = info->base_init;
       data->iface.vtable_finalize_base = info->base_finalize;
+      data->iface.dflt_init = info->class_init;
+      data->iface.dflt_finalize = info->class_finalize;
+      data->iface.dflt_data = info->class_data;
+      data->iface.dflt_vtable = NULL;
     }
   else
     {
@@ -1581,6 +1589,31 @@ g_type_free_instance (GTypeInstance *instance)
   g_type_class_unref (class);
 }
 
+static void
+type_iface_ensure_dflt_vtable_Wm (TypeNode *iface)
+{
+  g_assert (iface->data);
+
+  if (!iface->data->iface.dflt_vtable)
+    {
+      GTypeInterface *vtable = g_malloc0 (iface->data->iface.vtable_size);
+      iface->data->iface.dflt_vtable = vtable;
+      vtable->g_type = NODE_TYPE (iface);
+      vtable->g_instance_type = 0;
+      if (iface->data->iface.vtable_init_base ||
+          iface->data->iface.dflt_init)
+        {
+          G_WRITE_UNLOCK (&type_rw_lock);
+          if (iface->data->iface.vtable_init_base)
+            iface->data->iface.vtable_init_base (vtable);
+          if (iface->data->iface.dflt_init)
+            iface->data->iface.dflt_init (vtable, (gpointer) iface->data->iface.dflt_data);
+          G_WRITE_LOCK (&type_rw_lock);
+        }
+    }
+}
+
+
 /* This is called to allocate and do the first part of initializing
  * the interface vtable; type_iface_vtable_iface_init_Wm() does the remainder.
  *
@@ -1593,7 +1626,7 @@ static gboolean
 type_iface_vtable_base_init_Wm (TypeNode *iface,
 				TypeNode *node)
 {
-  IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+  IFaceEntry *entry;
   IFaceHolder *iholder;
   GTypeInterface *vtable = NULL;
   TypeNode *pnode;
@@ -1602,7 +1635,11 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
   iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), TRUE);
   if (!iholder)
     return FALSE;	/* we don't modify write lock upon FALSE */
-  
+
+  type_iface_ensure_dflt_vtable_Wm (iface);
+
+  entry = type_lookup_iface_entry_L (node, iface);
+
   g_assert (iface->data && entry && entry->vtable == NULL && iholder && iholder->info);
   
   pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
@@ -1614,7 +1651,7 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
 	vtable = g_memdup (pentry->vtable, iface->data->iface.vtable_size);
     }
   if (!vtable)
-    vtable = g_malloc0 (iface->data->iface.vtable_size);
+    vtable = g_memdup (iface->data->iface.dflt_vtable, iface->data->iface.vtable_size);
   entry->vtable = vtable;
   vtable->g_type = NODE_TYPE (iface);
   vtable->g_instance_type = NODE_TYPE (node);
@@ -1622,8 +1659,7 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
   if (iface->data->iface.vtable_init_base)
     {
       G_WRITE_UNLOCK (&type_rw_lock);
-      if (iface->data->iface.vtable_init_base)
-	iface->data->iface.vtable_init_base (vtable);
+      iface->data->iface.vtable_init_base (vtable);
       G_WRITE_LOCK (&type_rw_lock);
     }
   return TRUE;	/* initialized the vtable */
@@ -1930,7 +1966,6 @@ type_data_finalize_class_U (TypeNode  *node,
     if (bnode->data->class.class_finalize_base)
       bnode->data->class.class_finalize_base (class);
   
-  class->g_type = 0;
   g_free (cdata->class);
 }
 
@@ -1999,22 +2034,37 @@ type_data_last_unref_Wm (GType    type,
 	  type_data_finalize_class_U (node, &tdata->class);
 	  G_WRITE_LOCK (&type_rw_lock);
 	}
+      else if (NODE_IS_IFACE (node) && tdata->iface.dflt_vtable)
+        {
+          node->mutatable_check_cache = FALSE;
+          node->data = NULL;
+          if (tdata->iface.dflt_finalize || tdata->iface.vtable_finalize_base)
+            {
+              G_WRITE_UNLOCK (&type_rw_lock);
+              if (tdata->iface.dflt_finalize)
+                tdata->iface.dflt_finalize (tdata->iface.dflt_vtable, (gpointer) tdata->iface.dflt_data);
+              if (tdata->iface.vtable_finalize_base)
+                tdata->iface.vtable_finalize_base (tdata->iface.dflt_vtable);
+              G_WRITE_LOCK (&type_rw_lock);
+            }
+          g_free (tdata->iface.dflt_vtable);
+        }
       else
-	{
-	  node->mutatable_check_cache = FALSE;
-	  node->data = NULL;
-	}
-      
-      /* freeing tdata->common.value_table and its contents is taking care of
+        {
+          node->mutatable_check_cache = FALSE;
+          node->data = NULL;
+        }
+
+      /* freeing tdata->common.value_table and its contents is taken care of
        * by allocating it in one chunk with tdata
        */
       g_free (tdata);
       
-      if (ptype)
-	type_data_unref_Wm (lookup_type_node_I (ptype), FALSE);
       G_WRITE_UNLOCK (&type_rw_lock);
       g_type_plugin_unuse (node->plugin);
       G_WRITE_LOCK (&type_rw_lock);
+      if (ptype)
+	type_data_unref_Wm (lookup_type_node_I (ptype), FALSE);
     }
 }
 

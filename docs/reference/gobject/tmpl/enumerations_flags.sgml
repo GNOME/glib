@@ -154,7 +154,7 @@ Looks up a #GEnumValue by name.
 @enum_class: a #GEnumClass
 @name: the name to look up
 @Returns: the #GEnumValue with name @name, or %NULL if the enumeration doesn'
-t have a member with that name 
+t have a member with that name
 
 
 <!-- ##### FUNCTION g_enum_get_value_by_nick ##### -->
@@ -165,7 +165,7 @@ Looks up a #GEnumValue by nickname.
 @enum_class: a #GEnumClass
 @nick: the nickname to look up
 @Returns: the #GEnumValue with nickname @nick, or %NULL if the enumeration doesn'
-t have a member with that nickname 
+t have a member with that nickname
 
 
 <!-- ##### FUNCTION g_flags_get_first_value ##### -->
@@ -174,7 +174,7 @@ Returns the first #GFlagsValue which is set in @value.
 </para>
 
 @flags_class: a #GFlagsClass
-@value: the value 
+@value: the value
 @Returns: the first #GFlagsValue which is set in @value, or %NULL if none is set
 
 
@@ -186,7 +186,7 @@ Looks up a #GFlagsValue by name.
 @flags_class: a #GFlagsClass
 @name: the name to look up
 @Returns: the #GFlagsValue with name @name, or %NULL if there is no flag with
-that name 
+that name
 
 
 <!-- ##### FUNCTION g_flags_get_value_by_nick ##### -->
@@ -197,7 +197,7 @@ Looks up a #GFlagsValue by nickname.
 @flags_class: a #GFlagsClass
 @nick: the nickname to look up
 @Returns: the #GFlagsValue with nickname @nick, or %NULL if there is no flag
-with that nickname 
+with that nickname
 
 
 <!-- ##### FUNCTION g_enum_register_static ##### -->

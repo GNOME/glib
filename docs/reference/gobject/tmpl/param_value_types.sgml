@@ -914,7 +914,7 @@ See g_param_spec_internal() for details on property names.
 @name:          canonical name of the property specified
 @nick:          nick name for the property specified
 @blurb:         description of the property specified
-@enum_type:     a #GType derived from %G_TYPE_ENUM 
+@enum_type:     a #GType derived from %G_TYPE_ENUM
 @default_value: default value for the property specified
 @flags:         flags for the property specified
 @Returns:  a newly created parameter specification
@@ -979,7 +979,6 @@ properties.
 @flags_class: the #GFlagsClass for the flags
 @default_value:   default value for the property specified
 
-
 <!-- ##### FUNCTION g_param_spec_flags ##### -->
 <para>
 Creates a new #GParamSpecEnum instance specifying a %G_TYPE_FLAGS
@@ -992,7 +991,7 @@ See g_param_spec_internal() for details on property names.
 @name:          canonical name of the property specified
 @nick:          nick name for the property specified
 @blurb:         description of the property specified
-@flags_type:     a #GType derived from %G_TYPE_FLAGS 
+@flags_type:     a #GType derived from %G_TYPE_FLAGS
 @default_value: default value for the property specified
 @flags:         flags for the property specified
 @Returns:  a newly created parameter specification
@@ -1110,8 +1109,8 @@ This is an internal function introduced mainly for C marshallers.
 
 @value:   a valid #GValue of type %G_TYPE_STRING
 @v_string: duplicated unowned string to be set
-
-@value:  a valid #GValue 
+<!-- # Unused Parameters # -->
+@value:  a valid #GValue
 @v_string: string to be set
 
 
@@ -1172,7 +1171,6 @@ properties.
 
 @parent_instance: private #GParamSpec portion
 
-
 <!-- ##### FUNCTION g_param_spec_param ##### -->
 <para>
 Creates a new #GParamSpecParam instance specifying a %G_TYPE_PARAM
@@ -1186,9 +1184,10 @@ See g_param_spec_internal() for details on property names.
 @nick:          nick name for the property specified
 @blurb:         description of the property specified
 @param_type:    a #GType derived from %G_TYPE_PARAM
-@default_value: default value for the property specified
 @flags:         flags for the property specified
 @Returns:  a newly created parameter specification
+<!-- # Unused Parameters # -->
+@default_value: default value for the property specified
 
 
 <!-- ##### FUNCTION g_value_set_param ##### -->
@@ -1255,6 +1254,7 @@ Return whether the given #GValue can hold values derived from type %G_TYPE_BOXED
 <para>
 The #GType of #GParamSpecBoxed.
 </para>
+
 
 
 <!-- ##### STRUCT GParamSpecBoxed ##### -->
@@ -1368,7 +1368,6 @@ A #GParamSpec derived structure that contains the meta data for pointer properti
 
 @parent_instance: private #GParamSpec portion
 
-
 <!-- ##### FUNCTION g_param_spec_pointer ##### -->
 <para>
 Creates a new #GParamSpecPoiner instance specifying a pointer property.
@@ -1439,7 +1438,6 @@ A #GParamSpec derived structure that contains the meta data for object propertie
 </para>
 
 @parent_instance: private #GParamSpec portion
-
 
 <!-- ##### FUNCTION g_param_spec_object ##### -->
 <para>

@@ -28,7 +28,7 @@
  * The test defines 5 interfaces:
  * 
  * - TestIface1 is added before the class is initialized
- * - TestIface2 is added in base_object_baes_init()
+ * - TestIface2 is added in base_object_base_init()
  * - TestIface3 is added in test_iface1_base_init()
  * - TestIface4 is added in test_object_class_init()
  * - TestIface5 is added in test_object_test_iface1_init()
@@ -66,7 +66,7 @@ prefix ## _get_type (void)					\
   return object_type;						\
 }
 
-#define DEFINE_IFACE(name, prefix, base_init)			\
+#define DEFINE_IFACE(name, prefix, base_init, dflt_init)	\
 GType								\
 prefix ## _get_type (void)					\
 {								\
@@ -79,6 +79,7 @@ prefix ## _get_type (void)					\
 	sizeof (name ## Class),					\
 	(GBaseInitFunc)	base_init,				\
 	(GBaseFinalizeFunc) NULL,				\
+	(GClassInitFunc) dflt_init,				\
       };							\
 								\
       iface_type = g_type_register_static (G_TYPE_INTERFACE,	\
@@ -98,6 +99,7 @@ struct _TestIfaceClass
   GTypeInterface base_iface;
   guint val;
   guint base_val;
+  guint default_val;
 };
 
 #define TEST_TYPE_IFACE1           (test_iface1_get_type ())
@@ -105,9 +107,10 @@ struct _TestIfaceClass
 typedef struct _TestIface1      TestIface1;
 typedef struct _TestIfaceClass  TestIface1Class;
 
-static void test_iface1_base_init (TestIface1Class *iface);
+static void test_iface1_base_init    (TestIface1Class *iface);
+static void test_iface1_default_init (TestIface1Class *iface, gpointer class_data);
 
-static DEFINE_IFACE(TestIface1, test_iface1, test_iface1_base_init)
+static DEFINE_IFACE(TestIface1, test_iface1, test_iface1_base_init, test_iface1_default_init)
 
 #define TEST_TYPE_IFACE2           (test_iface2_get_type ())
 #define TEST_IFACE2_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE2, TestIface2Class))
@@ -116,7 +119,7 @@ typedef struct _TestIfaceClass  TestIface2Class;
 
 static void test_iface2_base_init (TestIface2Class *iface);
 
-static DEFINE_IFACE(TestIface2, test_iface2, test_iface2_base_init)
+static DEFINE_IFACE(TestIface2, test_iface2, test_iface2_base_init, NULL)
 
 #define TEST_TYPE_IFACE3           (test_iface3_get_type ())
 #define TEST_IFACE3_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE3, TestIface3Class))
@@ -125,7 +128,7 @@ typedef struct _TestIfaceClass  TestIface3Class;
 
 static void  test_iface3_base_init (TestIface3Class *iface);
 
-static DEFINE_IFACE(TestIface3, test_iface3, test_iface3_base_init)
+static DEFINE_IFACE(TestIface3, test_iface3, test_iface3_base_init, NULL)
 
 #define TEST_TYPE_IFACE4           (test_iface4_get_type ())
 #define TEST_IFACE4_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE4, TestIface4Class))
@@ -134,7 +137,7 @@ typedef struct _TestIfaceClass  TestIface4Class;
 
 static void  test_iface4_base_init (TestIface4Class *iface);
 
-static DEFINE_IFACE(TestIface4, test_iface4, test_iface4_base_init)
+static DEFINE_IFACE(TestIface4, test_iface4, test_iface4_base_init, NULL)
 
 #define TEST_TYPE_IFACE5           (test_iface5_get_type ())
 #define TEST_IFACE5_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE5, TestIface5Class))
@@ -143,7 +146,7 @@ typedef struct _TestIfaceClass  TestIface5Class;
 
 static void  test_iface5_base_init (TestIface5Class *iface);
 
-static DEFINE_IFACE(TestIface5, test_iface5, test_iface5_base_init)
+static DEFINE_IFACE(TestIface5, test_iface5, test_iface5_base_init, NULL)
 
 #define TEST_TYPE_IFACE6           (test_iface6_get_type ())
 #define TEST_IFACE6_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE6, TestIface6Class))
@@ -152,7 +155,7 @@ typedef struct _TestIfaceClass  TestIface6Class;
 
 static void  test_iface6_base_init (TestIface6Class *iface);
 
-static DEFINE_IFACE(TestIface6, test_iface6, test_iface6_base_init)
+static DEFINE_IFACE(TestIface6, test_iface6, test_iface6_base_init, NULL)
 
 /*
  * BaseObject, a parent class for TestObject
@@ -187,9 +190,20 @@ struct _TestObjectClass
 };
 
 #define TEST_CALLED_ONCE() G_STMT_START { \
-  static gboolean called = FALSE;         \
-  g_assert (!called);                     \
-  called = TRUE;                          \
+  static gboolean called = 0;           \
+  g_assert (!called);                   \
+  called = TRUE;                        \
+} G_STMT_END
+
+#define CHECK_IFACE_TWICE(iface) G_STMT_START {                                 \
+  static guint n_calls = 0;                                                     \
+  n_calls++;                                                                    \
+  g_assert (n_calls <= 2);                                                      \
+  g_assert (G_TYPE_IS_INTERFACE (((GTypeInterface*) iface)->g_type));           \
+  if (n_calls == 1)                                                             \
+    g_assert (((GTypeInterface*) iface)->g_instance_type == 0);                 \
+  else                                                                          \
+    g_assert (G_TYPE_IS_OBJECT (((GTypeInterface*) iface)->g_instance_type));   \
 } G_STMT_END
 
 #define ADD_IFACE(n)  G_STMT_START {				\
@@ -219,12 +233,15 @@ static void
 test_object_test_iface1_init (TestIface1Class *iface)
 {
   TEST_CALLED_ONCE();
-  
+
+  g_assert (iface->default_val == 0x111111);
+
   iface->val = 0x10001;
 
   ADD_IFACE(5);
 
   iface1 = TRUE;
+  g_print ("interface1 object initializer\n");
 }
 
 static void
@@ -278,21 +295,48 @@ test_object_test_iface6_init (TestIface6Class *iface)
 }
 
 static void
-test_iface1_base_init (TestIface1Class *iface)
+test_iface1_default_init (TestIface1Class *iface,
+                          gpointer         class_data)
 {
   TEST_CALLED_ONCE();
+  g_assert (iface->base_iface.g_type == TEST_TYPE_IFACE1);
+  g_assert (iface->base_iface.g_instance_type == 0);
+  g_assert (iface->base_val == 0x110011);
+  g_assert (iface->val == 0);
+  g_assert (iface->default_val == 0);
+  iface->default_val = 0x111111;
+  g_print ("interface1 default initializer\n");
+}
 
-  iface->base_val = 0x110011;
-  
-  ADD_IFACE(3);
+static void
+test_iface1_base_init (TestIface1Class *iface)
+{
+  static guint n_calls = 0;
+  n_calls++;
+  g_assert (n_calls <= 2);
+
+  if (n_calls == 1)
+    {
+      iface->base_val = 0x110011;
+      g_assert (iface->default_val == 0);
+    }
+  else
+    {
+      g_assert (iface->base_val == 0x110011);
+      g_assert (iface->default_val == 0x111111);
+    }
+
+  if (n_calls == 1)
+    ADD_IFACE(3);
   
   base1 = TRUE;
+  g_print ("interface1 base initializer\n");
 }
 
 static void
 test_iface2_base_init (TestIface2Class *iface)
 {
-  TEST_CALLED_ONCE();
+  CHECK_IFACE_TWICE (iface);
 
   iface->base_val = 0x220022;
   
@@ -302,7 +346,7 @@ test_iface2_base_init (TestIface2Class *iface)
 static void
 test_iface3_base_init (TestIface3Class *iface)
 {
-  TEST_CALLED_ONCE();
+  CHECK_IFACE_TWICE (iface);
 
   iface->base_val = 0x330033;
   
@@ -312,7 +356,7 @@ test_iface3_base_init (TestIface3Class *iface)
 static void
 test_iface4_base_init (TestIface4Class *iface)
 {
-  TEST_CALLED_ONCE();
+  CHECK_IFACE_TWICE (iface);
 
   iface->base_val = 0x440044;
 
@@ -322,7 +366,7 @@ test_iface4_base_init (TestIface4Class *iface)
 static void
 test_iface5_base_init (TestIface5Class *iface)
 {
-  TEST_CALLED_ONCE();
+  CHECK_IFACE_TWICE (iface);
 
   iface->base_val = 0x550055;
 
@@ -332,7 +376,7 @@ test_iface5_base_init (TestIface5Class *iface)
 static void
 test_iface6_base_init (TestIface6Class *iface)
 {
-  TEST_CALLED_ONCE();
+  CHECK_IFACE_TWICE (iface);
 
   iface->base_val = 0x660066;
   
@@ -423,6 +467,8 @@ main (int   argc,
   g_assert (iface && iface->val == 0x50005 && iface->base_val == 0x550055);
   iface = TEST_IFACE6_GET_CLASS (object);
   g_assert (iface && iface->val == 0x60006 && iface->base_val == 0x660066);
+
+  g_print ("testifaceinit: all done.\n");
 
   return 0;
 }

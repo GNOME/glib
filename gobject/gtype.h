@@ -234,7 +234,7 @@ struct _GTypeInfo
   GBaseInitFunc          base_init;
   GBaseFinalizeFunc      base_finalize;
   
-  /* classed types, instantiated types */
+  /* interface types, classed types, instantiated types */
   GClassInitFunc         class_init;
   GClassFinalizeFunc     class_finalize;
   gconstpointer          class_data;
