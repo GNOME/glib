@@ -1,5 +1,9 @@
 1998-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gthread/testgthread.c (new_thread): Now also working for posix
+	threads; (wait_thread): Now a better implementation, that does not
+	use 100% CPU.
+
 	* Made the thread related code follow GNU coding standard.
 
 	* Made a comment (HOLDS:) above each function, that expects the

@@ -50,8 +50,8 @@ new_thread(GHookFunc func, gpointer data)
 {
   pthread_t thread;
   pthread_attr_t pthread_attr;
-  pthread_attr_init( pthread_attr );
-  pthread_attr_setdetachstate( pthread_attr,  PTHREAD_CREATE_JOINABLE );
+  pthread_attr_init( &pthread_attr );
+  pthread_attr_setdetachstate( &pthread_attr,  PTHREAD_CREATE_JOINABLE );
   pthread_create( &thread, &pthread_attr, (void* (*)(void*))func, data );
   return thread;
 }
@@ -62,11 +62,34 @@ new_thread(GHookFunc func, gpointer data)
 #define join_thread(thread) ((void)0)
 #endif 
 
+#define G_MICROSEC 1000000
+
 void
 wait_thread(double seconds) 
 {
-  GTimer *timer = g_timer_new(); 
-  while( g_timer_elapsed (timer, NULL) < seconds );
+  GMutex* mutex;
+  GCond* cond;
+  GTimeVal current_time;
+
+  g_get_current_time (&current_time);
+  mutex = g_mutex_new();
+  cond = g_cond_new();
+
+  current_time.tv_sec += (guint)seconds;
+  seconds -= (guint)seconds;
+  current_time.tv_usec += (guint)(seconds * G_MICROSEC);
+  while( current_time.tv_usec >= G_MICROSEC )
+    {
+      current_time.tv_usec -= G_MICROSEC;
+      current_time.tv_sec++;
+    }
+
+  g_mutex_lock( mutex );
+  g_cond_timed_wait( cond, mutex, &current_time );
+  g_mutex_unlock( mutex );
+
+  g_mutex_free( mutex );
+  g_cond_free( cond );
 }
 
 gpointer 
@@ -93,6 +116,7 @@ void
 test_private_func(void* data)
 {
   guint i = 0;
+  wait_thread(1);
   while( i < TEST_PRIVATE_ROUNDS )
     {
       guint random_value = rand() % 10000;
