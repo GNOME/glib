@@ -64,7 +64,7 @@ static inline GLogDomain*
 g_log_find_domain (const gchar	  *log_domain)
 {
   register GLogDomain *domain;
-  
+
   domain = g_log_domains;
   while (domain)
     {
@@ -79,7 +79,7 @@ static inline GLogDomain*
 g_log_domain_new (const gchar *log_domain)
 {
   register GLogDomain *domain;
-  
+
   domain = g_new (GLogDomain, 1);
   domain->log_domain = g_strdup (log_domain);
   domain->fatal_mask = G_LOG_FATAL_MASK;
@@ -266,7 +266,7 @@ g_logv (const gchar    *log_domain,
 	  GLogFunc log_func;
 	  gpointer data = NULL;
 	  
-	  domain = g_log_find_domain (log_domain);
+	  domain = g_log_find_domain (log_domain ? log_domain : "");
 	  
 	  if (g_log_depth++)
 	    test_level |= G_LOG_FLAG_RECURSION;

@@ -1,3 +1,15 @@
+Mon Aug 17 01:46:14 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.m4: feature an extra MODULES parameter, so glib-config can
+	be invoked with the "gmodule" argument.
+
+	* glib.h: changed the log level to G_LOG_LEVEL_CRITICAL for all
+ 	g_return*_if_fail statements, and made them issue a message
+	like "assertion `%s' failed".
+
+	* gmessages.c (g_logv): ugh, don't pass log_domain as NULL to
+ 	g_log_find_domain.
+
 Sun Aug 16 20:28:27 1998  Tim Janik  <timj@gtk.org>
 
         * version bump to 1.1.3, binary age 0, interface age 0.

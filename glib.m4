@@ -1,8 +1,9 @@
 # Configure paths for GLIB
 # Owen Taylor     97-11-3
 
-dnl AM_PATH_GLIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS
+dnl AM_PATH_GLIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
+dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" is specified
+dnl in MODULES, feature the glib-config gmodule option.
 dnl
 AC_DEFUN(AM_PATH_GLIB,
 [dnl 
@@ -27,6 +28,10 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
         GLIB_CONFIG=$glib_config_prefix/bin/glib-config
      fi
   fi
+
+  case "$4" in
+  *gmodule*) glib_config_args="$glib_config_args gmodule";;
+  esac
 
   AC_PATH_PROG(GLIB_CONFIG, glib-config, no)
   min_glib_version=ifelse([$1], ,0.99.7,$1)

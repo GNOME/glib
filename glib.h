@@ -327,8 +327,8 @@
      if (!(expr))							\
        {								\
 	 g_log (G_LOG_DOMAIN,						\
-		G_LOG_LEVEL_WARNING,					\
-		"file %s: line %d (%s): assertion failed: (%s)",	\
+		G_LOG_LEVEL_CRITICAL,					\
+		"file %s: line %d (%s): assertion `%s' failed.",	\
 		__FILE__,						\
 		__LINE__,						\
 		__PRETTY_FUNCTION__,					\
@@ -340,8 +340,8 @@
      if (!(expr))							\
        {								\
 	 g_log (G_LOG_DOMAIN,						\
-		G_LOG_LEVEL_WARNING,					\
-		"file %s: line %d (%s): assertion failed: (%s)",	\
+		G_LOG_LEVEL_CRITICAL,					\
+		"file %s: line %d (%s): assertion `%s' failed.",	\
 		__FILE__,						\
 		__LINE__,						\
 		__PRETTY_FUNCTION__,					\
@@ -355,8 +355,8 @@
      if (!(expr))						\
        {							\
 	 g_log (G_LOG_DOMAIN,					\
-		G_LOG_LEVEL_WARNING,				\
-		"file %s: line %d: assertion failed: (%s)",	\
+		G_LOG_LEVEL_CRITICAL,				\
+		"file %s: line %d: assertion `%s' failed.",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
@@ -367,8 +367,8 @@
      if (!(expr))						\
        {							\
 	 g_log (G_LOG_DOMAIN,					\
-		G_LOG_LEVEL_WARNING,				\
-		"file %s: line %d: assertion failed: (%s)",	\
+		G_LOG_LEVEL_CRITICAL,				\
+		"file %s: line %d: assertion `%s' failed.",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
