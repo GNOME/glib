@@ -1,3 +1,7 @@
+Wed Jan 31 13:46:58 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* acinclude.m4 glib-gettext.m4: Fix problem with --disable-nls.
+
 2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread.c, gthread.h: Added g_static_mutex_free to allow using
@@ -59,7 +63,7 @@
 	* tests/makefile.mingw.in: Remove superfluous compilation command
 	line.
 
-2001-01-23    <alexl@redhat.com>
+2001-01-23  Alex Larsson  <alexl@redhat.com>
 
 	* gmain.c (g_source_callback_unref): Free the callback
 	(g_source_set_callback): Initialize the callback refcount

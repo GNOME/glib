@@ -182,10 +182,10 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
       POSUB=po
     else
       DATADIRNAME=share
-      nls_cv_header_intl=intl/libintl.h
-      nls_cv_header_libgt=intl/libgettext.h
+#      nls_cv_header_intl=intl/libintl.h
+#      nls_cv_header_libgt=intl/libgettext.h
     fi
-    AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
+#    AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
     AC_OUTPUT_COMMANDS(
      [case "$CONFIG_FILES" in *po/Makefile.in*)
         sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile
