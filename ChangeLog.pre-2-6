@@ -1,3 +1,9 @@
+2001-10-17  HideToshi Tajima  <hidetoshi.tajima@sun.com>
+
+	* glib/gconvert.c (g_iconv_open):
+	Fix a typo: to_codeset => from_codeset.
+	(#58195, #55152)
+
 Fri Oct 12 18:24:02 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gpattern.[hc]: make struct _GPatternSpec and GMatchType

@@ -111,7 +111,7 @@ g_iconv_open (const gchar  *to_codeset,
   if (!try_conversion (to_codeset, from_codeset, &cd))
     {
       const char **to_aliases = _g_charset_get_aliases (to_codeset);
-      const char **from_aliases = _g_charset_get_aliases (to_codeset);
+      const char **from_aliases = _g_charset_get_aliases (from_codeset);
 
       if (from_aliases)
 	{
