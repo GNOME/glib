@@ -31,32 +31,6 @@
 #include <string.h>
 #include "glib.h"
 
-int array[10000];
-gboolean failed = FALSE;
-
-#define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
-if (failed) \
-  { if (!m) \
-      g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
-    else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
-  } \
-else \
-  g_print ("."); fflush (stdout); \
-} G_STMT_END
-
-#define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
-
-#define GLIB_TEST_STRING "el dorado "
-#define GLIB_TEST_STRING_5 "el do"
-
-typedef struct {
-	guint age;
-	gchar name[40];
-} GlibTestInfo;
-
-
 static void 
 sum_up (gpointer data, 
 	gpointer user_data)
@@ -102,7 +76,9 @@ main (int   argc,
 
   for (i = 0; i < 10000; i++)
     if (g_ptr_array_index (gparray, i) != GINT_TO_POINTER (i))
-      g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
+      g_print ("array fails: %p ( %p )\n",
+	       g_ptr_array_index (gparray, i),
+	       GINT_TO_POINTER (i));
   
   g_ptr_array_foreach (gparray, sum_up, &sum);
   g_assert (sum == 49995000);
