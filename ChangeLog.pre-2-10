@@ -1,3 +1,7 @@
+2005-02-07  Tor Lillqvist  <tml@novell.com>
+
+	* glib-zip.in: Add gmodule-no-export-2.0.pc.
+
 Sun Feb  6 21:59:09 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/abicheck.sh: feed the contents of config.h and glibconfig.h
@@ -21,7 +25,7 @@ Sun Feb  6 12:09:55 2005  Manish Singh  <yosh@gimp.org>
 
 	* glib/gfileutils.c (g_file_get_contents): In the Win32 ABI
 	stability version, call g_file_get_contents_utf8(), not
-	itself. (#166386)
+	itself. (#166386, Bill Skaggs)
 
 2005-02-04  Matthias Clasen  <mclasen@redhat.com>
 
