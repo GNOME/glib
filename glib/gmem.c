@@ -931,7 +931,11 @@ static gint
 g_mem_chunk_area_compare (GMemArea *a,
 			  GMemArea *b)
 {
-  return (a->mem - b->mem);
+  if (a->mem > b->mem)
+	return 1;
+  else if (a->mem < b->mem)
+	return -1;
+  return 0;
 }
 
 static gint
