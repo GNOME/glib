@@ -99,7 +99,7 @@ void    g_array_sort_with_data    (GArray           *array,
  * cleared spot and shortens the array. remove_fast will again distort
  * order.  
  */
-#define    g_ptr_array_index(array,index) (array->pdata)[index]
+#define    g_ptr_array_index(array,index) ((array)->pdata)[index]
 GPtrArray* g_ptr_array_new                (void);
 GPtrArray* g_ptr_array_sized_new          (guint             reserved_size);
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
