@@ -1,3 +1,7 @@
+Wed May 12 00:23:55 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* gmodule/Makefile.am: Another small fix.
+
 1999-05-08  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am tests/Makefile.am: Correct rules for making the
