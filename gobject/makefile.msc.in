@@ -19,9 +19,10 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_grun
 #		-DG_DISABLE_CAST_CHECKS
 
 all :				\
-	glib-genmarshal.exe \
-	gmarshal.h \
-	gmarshal.c \
+	glib-genmarshal.exe     \
+	gobject-query.exe     \
+	gmarshal.h              \
+	gmarshal.c              \
 	gobject-$(GLIB_VER).dll	\
 	gobject-$(GLIB_VER)s.lib
 
@@ -64,6 +65,15 @@ gobject-$(GLIB_VER)s.lib : $(gobject_OBJECTS)
 	lib /out:gobject-$(GLIB_VER)s.lib $(gobject_OBJECTS)
 
 # link glib's static version to avoid installing 
-glib-genmarshal.exe : glib-genmarshal.c ..\glib\glib-$(GLIB_VER)s.lib
+glib-genmarshal.exe : glib-genmarshal.c ..\glib\glib-$(GLIB_VER)s.lib gmarshal.strings
 	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION glib-genmarshal.c \
-	..\glib\glib-$(GLIB_VER)s.lib user32.lib advapi32.lib $(INTL_LIBS)
+	..\glib\glib-$(GLIB_VER)s.lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+
+gobject-query.exe : gobject-query.c ..\glib\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).dll
+	$(CC) -Fe$@ $(CFLAGS) -UGOBJECT_COMPILATION gobject-query.c \
+	..\glib\glib-$(GLIB_VER).lib gobject-$(GLIB_VER).lib user32.lib advapi32.lib $(INTL_LIBS) $(LIBICONV_LIBS)
+
+gmarshal.strings : gmarshal.list
+	perl marshal-genstrings.pl > gmarshal.strings
+
+		

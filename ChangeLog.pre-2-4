@@ -1,3 +1,21 @@
+2001-08-04  Alexander Larsson   <alexl@redhat.com>
+        
+	* win32-fixup.pl: 
+	Hacky script to fix up your .msc.in files on windows. 
+	Dunno if this is a good solution yet.
+	
+	* build/win32/module.defs:
+	Back down libiconv version to 1.3, since that is what tor distributes.
+	
+	* glib/glib.def:
+	Update
+
+	* gobject/makefile.msc.in:
+	build gobject-query.exe and gmarshal.strings, add libiconv dependency to linklines.
+
+	* gobject/marshal-genstrings.pl:
+	New file. perl script to generate gmarshal.strings.
+	
 2001-08-03  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: Fixed g_io_channel_seek_position()

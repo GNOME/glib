@@ -419,7 +419,6 @@ EXPORTS
 	g_scanner_scope_lookup_symbol
 	g_scanner_scope_remove_symbol
 	g_scanner_set_scope
-	g_scanner_stat_mode
 	g_scanner_sync_file_offset
 	g_scanner_unexp_token
 	g_scanner_warn
