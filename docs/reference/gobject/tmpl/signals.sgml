@@ -722,6 +722,15 @@ and @detail quark.
 			@signal_id_p and @detail_p contain valid return values.
 
 
+<!-- ##### FUNCTION g_signal_get_invocation_hint ##### -->
+<para>
+
+</para>
+
+@instance: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
 <para>
 

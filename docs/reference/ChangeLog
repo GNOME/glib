@@ -1,3 +1,9 @@
+Tue Jan 29 12:00:59 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/gobject-sections.txt: Updated.
+
+	* glib/running.sgml glib/changes-2.0.sgml: SGML fixes.
+
 2002-01-28  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/iochannel.sgml: Changed #IOChannelError to

@@ -24,7 +24,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
 </para>
 
 <formalpara>
-  <title><envar>G_BROKEN_FILENAMES<envar></title>
+  <title><envar>G_BROKEN_FILENAMES</envar></title>
 
   <para>
     If this environment variable is set, GLib assumes that filenames are in 

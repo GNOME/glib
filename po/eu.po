@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2001-12-23 17:50-0500\n"
+"POT-Creation-Date: 2002-01-29 11:06-0500\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jbv@euskalnet.net>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -23,59 +23,59 @@ msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
-#: glib/gutf8.c:1321
+#: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Baliogabeko byte segida itzulketa sarreran"
 
-#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea itzultzerakoan: %s"
 
 #: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1317
+#: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Zatia besterik ez dan karaktere segida sarreraren bukaeran"
 
-#: glib/gconvert.c:547
+#: glib/gconvert.c:552
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin itzuli fallback '%s'tik '%s' kodera"
 
-#: glib/gconvert.c:1261
+#: glib/gconvert.c:1300
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI `%s' ez da URI osoa, fitxategien eskema jarraitzen duena"
 
-#: glib/gconvert.c:1271
+#: glib/gconvert.c:1310
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Bertoko fitxategi URI `%s' ezin du `#'-rik izan"
 
-#: glib/gconvert.c:1288
+#: glib/gconvert.c:1327
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI `%s' baliogabe da"
 
-#: glib/gconvert.c:1297
+#: glib/gconvert.c:1336
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "Ostalari izena URI `%s'-rena baliorikgabeko karakterez "
 
-#: glib/gconvert.c:1313
+#: glib/gconvert.c:1352
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI `%s'-k baliogabeko karakterez "
 
-#: glib/gconvert.c:1356
+#: glib/gconvert.c:1423
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Bideizena '%s' ez da bide osoarena"
 
-#: glib/gconvert.c:1370
+#: glib/gconvert.c:1437
 msgid "Invalid byte sequence in hostname"
 msgstr "Baliogabeko byte segida ostalari izenean"
 
@@ -238,22 +238,22 @@ msgstr ""
 "Hizki erreferentziak ez du bukaerako erthaberik; litekeena da erabili duzula "
 "ampersand hizkia izaerakorik sortu nahi ezean - escape ampersand &amp legez;"
 
-#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ezinezko UTF-8 kodetutako textua"
 
-#: glib/gmarkup.c:922
+#: glib/gmarkup.c:923
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentua zernahi gaiez hasi behar du (ad. <liburu>"
 
-#: glib/gmarkup.c:960
+#: glib/gmarkup.c:961
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' ezin du '<'-ren aurretik; ezin du hasi elementuaren izenik"
 
-#: glib/gmarkup.c:1023
+#: glib/gmarkup.c:1024
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -261,7 +261,7 @@ msgid ""
 msgstr ""
 "Banakako hizki '%s'-k, behar du '>'  hasierako zatia sortzeko'%s' elementuari"
 
-#: glib/gmarkup.c:1110
+#: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -269,7 +269,7 @@ msgstr ""
 "Banakako hizki '%s'-k, behar du '='atributu izen '%s'-ren ostean, '%s' "
 "elementuarena"
 
-#: glib/gmarkup.c:1151
+#: glib/gmarkup.c:1152
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -280,7 +280,7 @@ msgstr ""
 "elementuan, edo bestera atributua; litekkena da ezinezko hizkia erabili "
 "duzula atributu izenean"
 
-#: glib/gmarkup.c:1224
+#: glib/gmarkup.c:1229
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -289,7 +289,7 @@ msgstr ""
 "Banakako hizki '%s'-k, behar du parentesi hasiera berdin ikurraren ostean  '%"
 "s' atributaren balioa ematerakoan, '%s' elementuari"
 
-#: glib/gmarkup.c:1351
+#: glib/gmarkup.c:1356
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -297,17 +297,17 @@ msgid ""
 msgstr ""
 "'%s' ezin du '</'-ren atzetik joan; '%s'-k ezin du hasi elementu izenik"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1393
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' elementua itxirik, ez dago elementu irekirik"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1402
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' elementua itxirik, irekirik dagoena '%s' da"
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1413
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -316,15 +316,15 @@ msgstr ""
 "'%s' hizkiak ezin du itxitako '%s' elementuaren izenean joan; baimendutako "
 "hizkia '>' da"
 
-#: glib/gmarkup.c:1541
+#: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentua hutsik dago"
 
-#: glib/gmarkup.c:1555
+#: glib/gmarkup.c:1560
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentua ezustean bukatzen da '<' batez"
 
-#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -333,7 +333,7 @@ msgstr ""
 "Dokumentua ezustean bukatzen da elementuak oraindik irekita mantenduz - '%s' "
 "izan da irekitako  azken elementua"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1576
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -342,20 +342,20 @@ msgstr ""
 "Dokumentua ezustean bukatzen da, beharko luke izan parentesi itxierarik  <%s/"
 "> ikurraren amaieran"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentua ezustean bukatzen da elementuaren izenaren baitan"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentua ezustean bukatzen da atributu izenaren baitan"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1592
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Dokumentua ezustean bukatzen da elementuaren hasierako ikurraren baitan"
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1598
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -363,17 +363,17 @@ msgstr ""
 "Dokumentua ezustean bukatzen da atributaaren izenaren osteko berdin "
 "ikurbatez; ez du atributuaren baliorik"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentua ezustean bukatzen da atributuaren balioaren baitan"
 
-#: glib/gmarkup.c:1614
+#: glib/gmarkup.c:1619
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentua ezustean bukatzen da, '%s' elementurako bukareako ikurraren baitan"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumentua ezustean bukatzen da aipamen edo eginkuzun baten baitan"
 
@@ -485,11 +485,11 @@ msgid "Character out of range for UTF-8"
 msgstr "Hizkia ildotik at UTF-8-n"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1331 glib/gutf8.c:1427
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr "Ezinezko segida itzulpen sarreran"
 
-#: glib/gutf8.c:1342 glib/gutf8.c:1438
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "Hizkia ildotik at UTF-16-en"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-12-19 07:29-0500\n"
+"POT-Creation-Date: 2002-01-29 11:06-0500\n"
 "PO-Revision-Date: 2001-12-19 21:39+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -23,59 +23,59 @@ msgstr "Non está soportada a conversión do conxunto de caracteres '%s' a '%s'"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Non se puido abrir o conversor de '%s' a '%s': %s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
-#: glib/gutf8.c:1321
+#: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secuencia de bytes non válida na entrada da conversión"
 
-#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversión: %s"
 
 #: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1317
+#: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Secuencia parcial de caracter ao final da entrada"
 
-#: glib/gconvert.c:547
+#: glib/gconvert.c:552
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Non se pode converter o por defecto (fallback) '%s' ao código '%s'"
 
-#: glib/gconvert.c:1261
+#: glib/gconvert.c:1300
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "O URI '%s' non é un URI absoluto usando o esquema de ficheiro"
 
-#: glib/gconvert.c:1271
+#: glib/gconvert.c:1310
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de ficheiro local '%s' non pode incluir un '#'"
 
-#: glib/gconvert.c:1288
+#: glib/gconvert.c:1327
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI '%s' non é válido"
 
-#: glib/gconvert.c:1297
+#: glib/gconvert.c:1336
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "O nome do servidor no URI '%s' contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1313
+#: glib/gconvert.c:1352
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "A URI '%s' contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1356
+#: glib/gconvert.c:1423
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de ruta '%s' non é unha ruta absoluta"
 
-#: glib/gconvert.c:1370
+#: glib/gconvert.c:1437
 msgid "Invalid byte sequence in hostname"
 msgstr "Secuencia de bytes non válida no nome do servidor"
 
@@ -114,17 +114,17 @@ msgstr "Fallo ao obter os atributos do ficheiro '%s': fstat() fallou: %s"
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Fallo ao abrir o ficheiro '%s': fdopen() fallou: %s"
 
-#: glib/gfileutils.c:698
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "O modelo '%s' non é válido, non debería conter '%s'"
 
-#: glib/gfileutils.c:710
+#: glib/gfileutils.c:707
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "O modelo '%s' non remata con XXXXXX"
 
-#: glib/gfileutils.c:731
+#: glib/gfileutils.c:728
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Fallo ao crear o ficheiro '%s': %s"
@@ -156,15 +156,15 @@ msgstr "A canle remata nun caracter parcial"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Non se pode facer unha lectura crúa (raw) en g_io_channel_read_to_end"
 
-#: glib/giowin32.c:701 glib/giowin32.c:730
+#: glib/giowin32.c:700 glib/giowin32.c:729
 msgid "Incorrect message size"
 msgstr "Tamaño de mensaxe incorrecto"
 
-#: glib/giowin32.c:1024 glib/giowin32.c:1077
+#: glib/giowin32.c:1023 glib/giowin32.c:1076
 msgid "Socket error"
 msgstr "Erro de socket"
 
-#: glib/giowin32.c:1277
+#: glib/giowin32.c:1276
 msgid "Channel set flags unsupported"
 msgstr "Non está soportado o establecemento de sinaladores na canle"
 
@@ -243,15 +243,15 @@ msgstr ""
 "que usase un caracter & sen intención de comezar unha entidade - pon o & "
 "como &amp;"
 
-#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
 msgstr "Texto codificado en UTF-8 non válido"
 
-#: glib/gmarkup.c:922
+#: glib/gmarkup.c:923
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "O documento debe comezar cun elemento (pex. <book>)"
 
-#: glib/gmarkup.c:960
+#: glib/gmarkup.c:961
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -260,7 +260,7 @@ msgstr ""
 "'%s' non é un caracter válido seguindo ao caracter  '<'; non pode estar ao "
 "comezo dun nome de elemento"
 
-#: glib/gmarkup.c:1023
+#: glib/gmarkup.c:1024
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -269,7 +269,7 @@ msgstr ""
 "Caracter sobrante '%s', agardábase un caracter '>' para pechar a etiqueta de "
 "comezo do elemento '%s'"
 
-#: glib/gmarkup.c:1110
+#: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -277,7 +277,7 @@ msgstr ""
 "Caracter sobrante '%s', agardábase un '=' despois do nome do atributo '%s' "
 "do elemento '%s'"
 
-#: glib/gmarkup.c:1151
+#: glib/gmarkup.c:1152
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -288,7 +288,7 @@ msgstr ""
 "comezo do elemento '%s', ou opcionalmente un atributo; quizais usou un "
 "caracter non válido no nome dun atributo"
 
-#: glib/gmarkup.c:1224
+#: glib/gmarkup.c:1229
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -297,7 +297,7 @@ msgstr ""
 "Caracter sobrante '%s', agardábase un caracter '\"' despois do signo igual "
 "para dar un valor ao atributo '%s' do elemento '%s'"
 
-#: glib/gmarkup.c:1351
+#: glib/gmarkup.c:1356
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -306,18 +306,18 @@ msgstr ""
 "'%s' non é un caracter válido seguindo aos caracteres '</'; '%s' non pode "
 "comezar o nome dun elemento"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1393
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Pechouse o elemento '%s', actualmente non hai ningún elemento aberto"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1402
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Pechouse o elemento '%s', sen embargo o elemento aberto actualmente é '%s'"
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1413
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -326,15 +326,15 @@ msgstr ""
 "'%s' non é un caracter válido para pechar o elemento de nome '%s'; o "
 "caracter permitido é '>'"
 
-#: glib/gmarkup.c:1541
+#: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
 msgstr "O documento estaba baleiro ou contiña namais espacios en branco"
 
-#: glib/gmarkup.c:1555
+#: glib/gmarkup.c:1560
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "O documento rematou inesperadamente despois dun símbolo '<'"
 
-#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -343,7 +343,7 @@ msgstr ""
 "O documento rematou inesperadamente con elementos ainda abertos - '%s' era o "
 "último elemento aberto"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1576
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -352,21 +352,21 @@ msgstr ""
 "O documento rematou inesperadamente, agardábase ver un símbolo '>' pechando "
 "a etiqueta <%s/>"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
 msgstr "O documento rematou inesperadamente dentro dun nome de elemento"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "O documento rematou inesperadamente dentro dun nome de atributo"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1592
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "O documento rematou inesperadamente dentro dunha etiqueta de comezo de "
 "elemento"
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1598
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -374,19 +374,19 @@ msgstr ""
 "O documento rematou inesperadamente despois do signo igual seguindo a un "
 "nome de atributo; non hai valor para o atributo"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "O documento rematou inesperadamente estando dentro dun valor de atributo"
 
-#: glib/gmarkup.c:1614
+#: glib/gmarkup.c:1619
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "O documento rematou inesperadamente dentro da etiqueta que pechaba o "
 "elemento '%s'"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "O documento rematou inesperadamente dentro dun comentario ou instrucción de "
@@ -500,10 +500,10 @@ msgid "Character out of range for UTF-8"
 msgstr "Caracter fóra de rango para UTF-8"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1331 glib/gutf8.c:1427
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr "Secuencia non válida na entrada da conversión"
 
-#: glib/gutf8.c:1342 glib/gutf8.c:1438
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "Caracter fóra de rango para UTF-16"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-12-23 17:50-0500\n"
+"POT-Creation-Date: 2002-01-29 11:06-0500\n"
 "PO-Revision-Date: 2001-07-29 07:42+0200\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -23,59 +23,59 @@ msgstr "Umwadnlung von Zeichensatz `%s' in `%s' wird nicht unterstützt"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Konverter von `%s' in `%s' konnte nicht geöffnet werden: `%s'"
 
-#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
-#: glib/gutf8.c:1321
+#: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
-#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler während der Umwandlung: %s"
 
 #: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1317
+#: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
-#: glib/gconvert.c:547
+#: glib/gconvert.c:552
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel `%s' kann nicht in Codierung `%s' umgewandelt werden"
 
-#: glib/gconvert.c:1261
+#: glib/gconvert.c:1300
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1271
+#: glib/gconvert.c:1310
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 
-#: glib/gconvert.c:1288
+#: glib/gconvert.c:1327
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1297
+#: glib/gconvert.c:1336
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1313
+#: glib/gconvert.c:1352
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1356
+#: glib/gconvert.c:1423
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
-#: glib/gconvert.c:1370
+#: glib/gconvert.c:1437
 #, fuzzy
 msgid "Invalid byte sequence in hostname"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
@@ -245,15 +245,15 @@ msgstr ""
 "Et-Zeichen benutzt, ohne eine Entity beginnen zu wollen - umschreiben Sie "
 "das Et als &amp;"
 
-#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
 msgstr "Ungültiger UTF-8-kodierter Text"
 
-#: glib/gmarkup.c:922
+#: glib/gmarkup.c:923
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: glib/gmarkup.c:960
+#: glib/gmarkup.c:961
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -262,7 +262,7 @@ msgstr ""
 "'%s' ist kein gültiges Zeichen nach einem '<'-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: glib/gmarkup.c:1023
+#: glib/gmarkup.c:1024
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -271,14 +271,14 @@ msgstr ""
 "Seltsames Zeichen '%s', '>' erwartet um Start-Tag des Elements '%s' "
 "abzuschließen"
 
-#: glib/gmarkup.c:1110
+#: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Seltsames Zeichen '%s', '=' erwartet nach Attributname '%s' des Elements '%s'"
 
-#: glib/gmarkup.c:1151
+#: glib/gmarkup.c:1152
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -289,7 +289,7 @@ msgstr ""
 "`/' erwartet, um das Start-Tag des Elements `%s' abzuschließen; vielleicht "
 "haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: glib/gmarkup.c:1224
+#: glib/gmarkup.c:1229
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -299,7 +299,7 @@ msgstr ""
 "Elemente '%s' wurde ein Anführungszeichen nach dem Gleichheitszeichen "
 "erwartet"
 
-#: glib/gmarkup.c:1351
+#: glib/gmarkup.c:1356
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -308,18 +308,18 @@ msgstr ""
 "'%s' ist kein gültiges Zeichen, wenn es auf die Zeichen '</' folgt; '%s' "
 "darf keinen Elementnamen beginnen"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1393
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element `%s' wurde geschlossen, kein Element ist derzeit offen"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1402
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Element '%s' wurde geschlossen, aber das derzeit offene Element ist '%s'"
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1413
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -328,15 +328,15 @@ msgstr ""
 "'%s' ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen '%"
 "s' folgt; das erlaubte Zeichen ist '>'"
 
-#: glib/gmarkup.c:1541
+#: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: glib/gmarkup.c:1555
+#: glib/gmarkup.c:1560
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer '<'"
 
-#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -345,7 +345,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - '%s' war das letzte "
 "offene Element"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1576
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -354,19 +354,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer '>', die das Tag <%"
 "s/> schließt, erwartet"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1592
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endet unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1598
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -374,18 +374,18 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1614
+#: glib/gmarkup.c:1619
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "'%s'"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "
@@ -502,10 +502,10 @@ msgid "Character out of range for UTF-8"
 msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1331 glib/gutf8.c:1427
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gutf8.c:1342 glib/gutf8.c:1438
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"

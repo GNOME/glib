@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-12-23 17:50-0500\n"
+"POT-Creation-Date: 2002-01-29 11:06-0500\n"
 "PO-Revision-Date: 2001-02-05 20:28+0200\n"
 "Last-Translator: Kemal Yýlmaz <kyilmaz@uekae.tubitak.gov.tr>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -23,59 +23,59 @@ msgstr "`%s' karakter kümesinden `%s' karakter kümesine dönüþüm desteklenmiyor"
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' den `%s' e dönüþtürücü açýlamýyor: %s"
 
-#: glib/gconvert.c:356 glib/gconvert.c:639 glib/giochannel.c:1282
+#: glib/gconvert.c:356 glib/gconvert.c:646 glib/giochannel.c:1282
 #: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
-#: glib/gutf8.c:1321
+#: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "dönüþüm girdisinde geçersiz bayt dizisi"
 
-#: glib/gconvert.c:361 glib/gconvert.c:572 glib/giochannel.c:1289
+#: glib/gconvert.c:361 glib/gconvert.c:577 glib/giochannel.c:1289
 #: glib/giochannel.c:2175
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "dönüþüm sýrasýnda hata oluþtu: %s"
 
 #: glib/gconvert.c:379 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1317
+#: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Girdinin sonunda parçalý karakter dizisi"
 
-#: glib/gconvert.c:547
+#: glib/gconvert.c:552
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' karakter set '%s' e dönüþtürülemiyor"
 
-#: glib/gconvert.c:1261
+#: glib/gconvert.c:1300
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1271
+#: glib/gconvert.c:1310
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 
-#: glib/gconvert.c:1288
+#: glib/gconvert.c:1327
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1297
+#: glib/gconvert.c:1336
 #, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1313
+#: glib/gconvert.c:1352
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1356
+#: glib/gconvert.c:1423
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
-#: glib/gconvert.c:1370
+#: glib/gconvert.c:1437
 #, fuzzy
 msgid "Invalid byte sequence in hostname"
 msgstr "dönüþüm girdisinde geçersiz bayt dizisi"
@@ -244,15 +244,15 @@ msgstr ""
 "karakteri elemana baþlamak için kullanmadýnýz - ampersand yerine &amp "
 "kullanabilirsiniz"
 
-#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
 msgstr "Geçersiz UTF-8 kodlanmýþ metin"
 
-#: glib/gmarkup.c:922
+#: glib/gmarkup.c:923
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Doküman bir eleman ile baþlamalý (örnek. <kitap>)"
 
-#: glib/gmarkup.c:960
+#: glib/gmarkup.c:961
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -261,7 +261,7 @@ msgstr ""
 "'<' karakterinden sonra gelen '%s' geçerli bir karakter deðil; bir element "
 "adý olmayabilir"
 
-#: glib/gmarkup.c:1023
+#: glib/gmarkup.c:1024
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -270,14 +270,14 @@ msgstr ""
 "Tek karakter '%s', Elemanýn baþlangýç etiketinin sonuna '>' karakteri "
 "bekleniyor '%s'"
 
-#: glib/gmarkup.c:1110
+#: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Tek karakter '%s', özellik adý '%s' olan eleman '%s' den sonra '=' bekleniyor"
 
-#: glib/gmarkup.c:1151
+#: glib/gmarkup.c:1152
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -288,7 +288,7 @@ msgstr ""
 "bekleniyor, veya bir özellik; özellik isminde geçersiz bir karakter "
 "kullanmýþ olabilirsiniz"
 
-#: glib/gmarkup.c:1224
+#: glib/gmarkup.c:1229
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -297,7 +297,7 @@ msgstr ""
 "Tek karakter '%s',element '%s'in özelligi '%s''e deðer verilirken eþittir "
 "iþaretinden sonra açýk alýntý iþareti bekleniyor"
 
-#: glib/gmarkup.c:1351
+#: glib/gmarkup.c:1356
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -306,17 +306,17 @@ msgstr ""
 "'</' karakterlerini takip eden '%s' geçerli bir karakter deðildir; '%s' bir "
 "eleman ismiyle baþlamýyor olabilir"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1393
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Eleman '%s' kapatýlmýþ, hiç bir eleman açýk deðil"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1402
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Eleman '%s' kapatýlmýþ, fakat su an açýk eleman '%s'"
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1413
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -325,15 +325,15 @@ msgstr ""
 "Kapalý eleman '%s' den sonra gelen '%s' geçerli bir karakter deðildir; izin "
 "verilen karakter ise '>'"
 
-#: glib/gmarkup.c:1541
+#: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
 msgstr "Doküman boþ veya sadece boþluk karakteri içermektedir"
 
-#: glib/gmarkup.c:1555
+#: glib/gmarkup.c:1560
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Doküman açýk üçgen parantez '<'den sonra beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -342,7 +342,7 @@ msgstr ""
 "Doküman elemanlarý hala açýk olarak beklenmedik bir þekilde bitti - son "
 "eleman '%s' açýktý"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1576
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -351,19 +351,19 @@ msgstr ""
 "Doküman beklenmedik bir þekilde bitti, etiket <%s/> ile biten kapalý üçgen "
 "parantez bekleniyor"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Doküman bir elemanýn içinde beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Doküman bir özellik ismi içinde beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1592
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Doküman bir eleman-açma etiketi içinde beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1598
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -371,16 +371,16 @@ msgstr ""
 "Doküman özellik adýný takip eden eþittir isaretinden sonra beklenmedik bir "
 "þekilde bitti: özellik degeri yok"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Doküman bir özellik deðeri içinde iken beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1614
+#: glib/gmarkup.c:1619
 #, fuzzy, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Doküman kapalý etiket '%s' içinde beklenmedik bir þekilde bitti"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Doküman bir yorum veya iþlem talimatý içindeyken beklenmedik bir þekilde "
@@ -489,10 +489,10 @@ msgid "Character out of range for UTF-8"
 msgstr "UTF-8 için karakter sýnýrlarýnýn dýþýnda"
 
 #: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1331 glib/gutf8.c:1427
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr "dönüþüm girdisi içinde geçersiz dizi"
 
-#: glib/gutf8.c:1342 glib/gutf8.c:1438
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 için karakter sýnýrlarýnýn dýþýnda"

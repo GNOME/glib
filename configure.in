@@ -33,7 +33,7 @@ GLIB_AC_DIVERT_BEFORE_HELP([
 #
 GLIB_MAJOR_VERSION=1
 GLIB_MINOR_VERSION=3
-GLIB_MICRO_VERSION=12
+GLIB_MICRO_VERSION=13
 GLIB_INTERFACE_AGE=0
 GLIB_BINARY_AGE=0
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
@@ -2180,15 +2180,4 @@ docs/reference/glib/Makefile
 docs/reference/gobject/Makefile
 tests/Makefile
 m4macros/Makefile
-],[echo ""
-echo " *** IMPORTANT *** "
-echo ""
-echo "This is a development version of GLib.  You should be using a stable"
-echo "version, which is available at ftp://ftp.gtk.org/pub/gtk/v1.2/.  The"
-echo "version you just configured is meant for developers of GLib only:"
-echo ""
-echo "  * You should not base stable software on this version of GLib."
-echo "  * GNOME developers should use a stable version of GLib."
-echo ""
-echo " *** You should be using GLib 1.2 instead. ***"
 ])

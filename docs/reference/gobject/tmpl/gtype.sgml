@@ -70,6 +70,14 @@ for types that are assigned at compile-time.
 
 
 
+<!-- ##### MACRO G_TYPE_MAKE_FUNDAMENTAL ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
 <!-- ##### MACRO G_TYPE_IS_ABSTRACT ##### -->
 <para>
 Returns #TRUE if @type is an abstract type.  An abstract type can not be
@@ -1162,5 +1170,187 @@ that implements or has internal knowledge of the implementation of
 @type:    A #GType value.
 @Returns: Location of the #GTypeValueTable associated with @type or
           #NULL if there is no #GTypeValueTable associated with @type.
+
+
+<!-- ##### MACRO G_TYPE_INVALID ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_NONE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_INTERFACE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_CHAR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_UCHAR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_BOOLEAN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_INT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_UINT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_LONG ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_ULONG ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_INT64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_UINT64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_ENUM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_FLAGS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_FLOAT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_DOUBLE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_STRING ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_POINTER ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_BOXED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_PARAM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_OBJECT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_RESERVED_GLIB_FIRST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_RESERVED_GLIB_LAST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_RESERVED_BSE_FIRST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_RESERVED_BSE_LAST ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_TYPE_RESERVED_USER_FIRST ##### -->
+<para>
+
+</para>
+
 
 

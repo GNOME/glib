@@ -135,7 +135,7 @@ Deprecated functions that got removed:
 <function>g_log_set_handler()</function> instead.
 </para>
 </listitem>
-<itemizedlist>
+</itemizedlist>
 
 </refsect1>
 

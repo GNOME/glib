@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-26 20:04+0100\n"
+"POT-Creation-Date: 2002-01-29 11:06-0500\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -14,10 +14,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:202
+#, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvorba iz nabora znakov '%s' v '%s' ni podprta"
 
 #: glib/gconvert.c:206
+#, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nisem mogel odpreti pretvornika iz '%s' v '%s': %s"
 
@@ -44,22 +46,27 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne morem pretvoriti '%s' v nabor znakov '%s'"
 
 #: glib/gconvert.c:1300
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI '%s' pri uporabi sheme datotek ni absoluten"
 
 #: glib/gconvert.c:1310
+#, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Krajevna datoteka URI '%s' ne sme vsebovati '#'"
 
 #: glib/gconvert.c:1327
+#, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' je neveljaven"
 
 #: glib/gconvert.c:1336
+#, c-format
 msgid "The hostname of the URI '%s' contains invalidly escaped characters"
 msgstr "Ime gostitelja URI '%s' vsebuje neveljavne ube¾ne znake"
 
 #: glib/gconvert.c:1352
+#, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' vsebuje neveljavne ube¾ne znake"
 
@@ -73,6 +80,7 @@ msgid "Invalid byte sequence in hostname"
 msgstr "Neveljavno zaporedje bajtov v imenu gostitelja"
 
 #: glib/gdir.c:75
+#, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Napaka ob odpiranju imenika '%s': %s"
 
@@ -231,15 +239,15 @@ msgstr ""
 "Referenca znaka se ni konèala s podpièjem; verjetno ste uporabili znak '&' "
 "brez namen, da bi zaèeli entiteto - znak '&' napi¹ite kot '&amp;'"
 
-#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
 msgid "Invalid UTF-8 encoded text"
 msgstr "Napaèno kodirano besedilo UTF-8"
 
-#: glib/gmarkup.c:922
+#: glib/gmarkup.c:923
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument se mora zaèeti z elementom (na primer <book>)"
 
-#: glib/gmarkup.c:960
+#: glib/gmarkup.c:961
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -248,14 +256,14 @@ msgstr ""
 "'%s' ni veljaven znak, kadar sledi znaku '<'; morda se ne zaène z imenom "
 "elementa"
 
-#: glib/gmarkup.c:1023
+#: glib/gmarkup.c:1024
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "Èuden znak '%s', prièakovan znak '>', da zakljuèi oznako elementa '%s'"
 
-#: glib/gmarkup.c:1110
+#: glib/gmarkup.c:1111
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -263,7 +271,7 @@ msgstr ""
 "Èuden znak '%s'. Po imenu atributa '%s' (elementa '%s') je prièakovan znak "
 "'='"
 
-#: glib/gmarkup.c:1151
+#: glib/gmarkup.c:1152
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -274,7 +282,7 @@ msgstr ""
 "elementa '%s' ali atribut; morda ste uporabili neveljaven znak v imenu "
 "atributa'"
 
-#: glib/gmarkup.c:1224
+#: glib/gmarkup.c:1229
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -283,7 +291,7 @@ msgstr ""
 "Èuden znak '%s'. Za enaèajem je prièakovan narekovaj znotraj katerega je "
 "podana vrednost za atribut '%s' elementa '%s'"
 
-#: glib/gmarkup.c:1351
+#: glib/gmarkup.c:1356
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -291,17 +299,17 @@ msgid ""
 msgstr ""
 "'%s' ni veljaven znak za znakoma '</'; ime elementa se ne sme zaèeti z '%s'"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1393
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' je bil zaprt, trenutno ni odprtega elementa"
 
-#: glib/gmarkup.c:1397
+#: glib/gmarkup.c:1402
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' je bil zaprt, a trenutno odprt element je '%s'"
 
-#: glib/gmarkup.c:1408
+#: glib/gmarkup.c:1413
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -310,15 +318,15 @@ msgstr ""
 "Znak '%s' ni veljaven kadar sledi zaprtju imena elementa '%s'; dovoljen znak "
 "je '>'"
 
-#: glib/gmarkup.c:1541
+#: glib/gmarkup.c:1546
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je bil prazen ali pa je vseboval le presledke"
 
-#: glib/gmarkup.c:1555
+#: glib/gmarkup.c:1560
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument neprièakovano konèan takoj za odprtjem z '<'"
 
-#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -327,7 +335,7 @@ msgstr ""
 "Dokument neprièakovano konèan s ¹e odprtimi elementi - '%s' je bil zadnji "
 "odprt element"
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1576
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -336,19 +344,19 @@ msgstr ""
 "Dokument neprièakovano konèan, prièakovan je bil zakljuèni zaklepaj oznake <%"
 "s/>"
 
-#: glib/gmarkup.c:1577
+#: glib/gmarkup.c:1582
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument neprièakovano konèan sredi imena elementa"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1587
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument neprièakovano konèan sredi imena atributa"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1592
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument neprièakovano konèan sredi oznake za odprtje elementa."
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1598
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -356,16 +364,16 @@ msgstr ""
 "Dokumen neprièakovano konèan po eneèaju, ki je sledil imenu atributa; ni "
 "vrednosti atributa"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1604
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument neprièakovano konèan sredi vrednosti atributa"
 
-#: glib/gmarkup.c:1614
+#: glib/gmarkup.c:1619
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument neprièakovano konèan sredi oznake zaprtja elementa '%s'"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1625
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument neprièakovano konèan sredi komentarja ali ukaza"
 
@@ -447,6 +455,7 @@ msgid "Failed to fork (%s)"
 msgstr "Nisem se uspel razvejiti (%s)"
 
 #: glib/gspawn.c:1127
+#, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nisem uspel izvesti procesa otroka \"%s\" (%s)"
 
@@ -461,6 +470,7 @@ msgid "Failed to fork child process (%s)"
 msgstr "Nisem uspel razvejiti procesa otroka (%s)"
 
 #: glib/gspawn.c:1154
+#, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Neznana napaka med izvajanjem procesa otroka \"%s\""
 
