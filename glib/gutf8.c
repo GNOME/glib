@@ -1511,19 +1511,171 @@ g_ucs4_to_utf16 (const gunichar  *str,
   return result;
 }
 
+#define CONTINUATION_CHAR                           \
+ G_STMT_START {                                     \
+  if ((*(guchar *)p & 0xc0) != 0x80) /* 10xxxxxx */ \
+    goto error;                                     \
+  val <<= 6;                                        \
+  val |= (*(guchar *)p) & 0x3f;                     \
+ } G_STMT_END
+
+static const gchar *
+fast_validate (const char *str)
+
+{
+  gunichar val = 0;
+  gunichar min = 0;
+  const gchar *p;
+
+  for (p = str; *p; p++)
+    {
+      if (*(guchar *)p < 128)
+	/* done */;
+      else 
+	{
+	  const gchar *last;
+	  
+	  last = p;
+	  if ((*(guchar *)p & 0xe0) == 0xc0) /* 110xxxxx */
+	    {
+	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
+		goto error;
+	      p++;
+	      if (G_UNLIKELY ((*(guchar *)p & 0xc0) != 0x80)) /* 10xxxxxx */
+		goto error;
+	    }
+	  else
+	    {
+	      if ((*(guchar *)p & 0xf0) == 0xe0) /* 1110xxxx */
+		{
+		  min = (1 << 11);
+		  val = *(guchar *)p & 0x0f;
+		  goto TWO_REMAINING;
+		}
+	      else if ((*(guchar *)p & 0xf8) == 0xf0) /* 11110xxx */
+		{
+		  min = (1 << 16);
+		  val = *(guchar *)p & 0x07;
+		}
+	      else
+		goto error;
+	      
+	      p++;
+	      CONTINUATION_CHAR;
+	    TWO_REMAINING:
+	      p++;
+	      CONTINUATION_CHAR;
+	      p++;
+	      CONTINUATION_CHAR;
+	      
+	      if (G_UNLIKELY (val < min))
+		goto error;
+
+	      if (G_UNLIKELY (!UNICODE_VALID(val)))
+		goto error;
+	    } 
+	  
+	  continue;
+	  
+	error:
+	  return last;
+	}
+    }
+
+  return p;
+}
+
+static const gchar *
+fast_validate_len (const char *str,
+		   gssize      max_len)
+
+{
+  gunichar val = 0;
+  gunichar min = 0;
+  const gchar *p;
+
+  for (p = str; (max_len < 0 || (p - str) < max_len) && *p; p++)
+    {
+      if (*(guchar *)p < 128)
+	/* done */;
+      else 
+	{
+	  const gchar *last;
+	  
+	  last = p;
+	  if ((*(guchar *)p & 0xe0) == 0xc0) /* 110xxxxx */
+	    {
+	      if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 2))
+		goto error;
+	      
+	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
+		goto error;
+	      p++;
+	      if (G_UNLIKELY ((*(guchar *)p & 0xc0) != 0x80)) /* 10xxxxxx */
+		goto error;
+	    }
+	  else
+	    {
+	      if ((*(guchar *)p & 0xf0) == 0xe0) /* 1110xxxx */
+		{
+		  if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 3))
+		    goto error;
+		  
+		  min = (1 << 11);
+		  val = *(guchar *)p & 0x0f;
+		  goto TWO_REMAINING;
+		}
+ 	      else if ((*(guchar *)p & 0xf8) == 0xf0) /* 11110xxx */
+		{
+		  if (G_UNLIKELY (max_len >= 0 && max_len - (p - str) < 4))
+		    goto error;
+		  
+		  min = (1 << 16);
+		  val = *(guchar *)p & 0x07;
+		}
+	      else
+		goto error;
+	      
+	      p++;
+	      CONTINUATION_CHAR;
+	    TWO_REMAINING:
+	      p++;
+	      CONTINUATION_CHAR;
+	      p++;
+	      CONTINUATION_CHAR;
+	      
+	      if (G_UNLIKELY (val < min))
+		goto error;
+	      if (G_UNLIKELY (!UNICODE_VALID(val)))
+		goto error;
+	    } 
+	  
+	  continue;
+	  
+	error:
+	  return last;
+	}
+    }
+
+  return p;
+}
+
 /**
  * g_utf8_validate:
  * @str: a pointer to character data
- * @max_len: max bytes to validate, or -1 to go until nul
+ * @max_len: max bytes to validate, or -1 to go until NUL
  * @end: return location for end of valid data
  * 
  * Validates UTF-8 encoded text. @str is the text to validate;
  * if @str is nul-terminated, then @max_len can be -1, otherwise
  * @max_len should be the number of bytes to validate.
  * If @end is non-%NULL, then the end of the valid range
- * will be stored there (i.e. the address of the first invalid byte
- * if some bytes were invalid, or the end of the text being validated
- * otherwise).
+ * will be stored there (i.e. the start of the first invalid 
+ * character if some bytes were invalid, or the end of the text 
+ * being validated otherwise).
+ *
+ * Note that g_utf8_validate() returns %FALSE if @max_len is 
+ * positive and NUL is met before @max_len bytes have been read.
  *
  * Returns %TRUE if all of @str was valid. Many GLib and GTK+
  * routines <emphasis>require</emphasis> valid UTF-8 as input;
@@ -1533,65 +1685,28 @@ g_ucs4_to_utf16 (const gunichar  *str,
  * Return value: %TRUE if the text was valid UTF-8
  **/
 gboolean
-g_utf8_validate (const gchar  *str,
-                 gssize        max_len,    
-                 const gchar **end)
-{
+g_utf8_validate (const char   *str,
+		 gssize        max_len,    
+		 const gchar **end)
 
+{
   const gchar *p;
 
-  g_return_val_if_fail (str != NULL, FALSE);
-  
-  if (end)
-    *end = str;
-  
-  p = str;
-  
-  while ((max_len < 0 || (p - str) < max_len) && *p)
-    {
-      int i, mask = 0, len;
-      gunichar result;
-      unsigned char c = (unsigned char) *p;
-      
-      UTF8_COMPUTE (c, mask, len);
-
-      if (len == -1)
-        break;
-
-      /* check that the expected number of bytes exists in str */
-      if (max_len >= 0 &&
-          ((max_len - (p - str)) < len))
-        break;
-        
-      UTF8_GET (result, p, i, mask, len);
-
-      if (UTF8_LENGTH (result) != len) /* Check for overlong UTF-8 */
-	break;
-
-      if (result == (gunichar)-1)
-        break;
-
-      if (!UNICODE_VALID (result))
-	break;
-      
-      p += len;
-    }
+  if (max_len < 0)
+    p = fast_validate (str);
+  else
+    p = fast_validate_len (str, max_len);
 
   if (end)
     *end = p;
 
-  /* See that we covered the entire length if a length was
-   * passed in, or that we ended on a nul if not
-   */
-  if (max_len >= 0 &&
-      p != (str + max_len))
-    return FALSE;
-  else if (max_len < 0 &&
-           *p != '\0')
+  if ((max_len >= 0 && p != str + max_len) ||
+      (max_len < 0 && *p != '\0'))
     return FALSE;
   else
     return TRUE;
 }
+
 
 /**
  * g_unichar_validate:

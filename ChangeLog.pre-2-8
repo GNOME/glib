@@ -1,5 +1,9 @@
 2004-11-24  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutf8.c: Replace g_utf8_validate() with an
+	optimized version, and clarify the docs a bit.  (#159131,
+	Owen Taylor)
+
 	* tests/Makefile.am (test_programs): Add utf8-validate.
 
 	* tests/utf8-validate.c: Unit tests for g_utf8_validate().
