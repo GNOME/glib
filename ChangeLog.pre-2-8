@@ -1,6 +1,8 @@
 2004-11-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmarkup.c: Remove leftover noinline attributes.
+	(is_name_start_char, is_name_char): Avoid possible reads
+	beyond the end of g_ascii_table.
 
 	* glib/Makefile.am: Use the perl found by configure.  (#149826,
 	Morten Welinder)

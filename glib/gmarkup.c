@@ -246,28 +246,28 @@ set_error (GMarkupParseContext *context,
   ((c) == '=' || (c) == '/' || (c) == '>' || (c) == ' ')
 
 static gboolean
-is_name_start_char (gunichar c)
+is_name_start_char (const gchar *p)
 {
-  if (g_ascii_isalpha (c) ||
-      (!IS_COMMON_NAME_END_CHAR (c) &&
-       (g_unichar_isalpha (c) ||
-        c == '_' ||
-        c == ':')))
+  if (g_ascii_isalpha (*p) ||
+      (!IS_COMMON_NAME_END_CHAR (*p) &&
+       (*p == '_' || 
+	*p == ':' ||
+	g_unichar_isalpha (g_utf8_get_char (p)))))
     return TRUE;
   else
     return FALSE;
 }
 
 static gboolean
-is_name_char (gunichar c)
+is_name_char (const gchar *p)
 {
-  if (g_ascii_isalnum (c) ||
-      (!IS_COMMON_NAME_END_CHAR (c) &&
-       (g_unichar_isalnum (c) ||
-        c == '.' ||
-        c == '-' ||
-        c == '_' ||
-        c == ':')))
+  if (g_ascii_isalnum (*p) ||
+      (!IS_COMMON_NAME_END_CHAR (*p) &&
+       (*p == '.' || 
+	*p == '-' ||
+	*p == '_' ||
+	*p == ':' ||
+	g_unichar_isalpha (g_utf8_get_char (p)))))
     return TRUE;
   else
     return FALSE;
@@ -418,7 +418,7 @@ unescape_text_state_after_ampersand (UnescapeContext *ucontext,
       ucontext->entity_start = p;
       ucontext->state = USTATE_AFTER_CHARREF_HASH;
     }
-  else if (!is_name_start_char (g_utf8_get_char (p)))
+  else if (!is_name_start_char (p))
     {
       if (*p == ';')
         {
@@ -468,7 +468,7 @@ unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
     {
       if (*p == ';')
         break;
-      else if (!is_name_char (*p))
+      else if (!is_name_char (p))
         {
           gchar ubuf[7];
 
@@ -785,7 +785,7 @@ advance_to_name_end (GMarkupParseContext *context)
 {
   do
     {
-      if (!is_name_char (g_utf8_get_char (context->iter)))
+      if (!is_name_char (context->iter))
         return;
     }
   while (advance_char (context));
@@ -1090,7 +1090,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 
               context->state = STATE_AFTER_CLOSE_TAG_SLASH;
             }
-          else if (is_name_start_char (g_utf8_get_char (context->iter)))
+          else if (is_name_start_char (context->iter))
             {
               context->state = STATE_INSIDE_OPEN_TAG_NAME;
 
@@ -1283,7 +1283,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                   advance_char (context);
                   context->state = STATE_AFTER_CLOSE_ANGLE;
                 }
-              else if (is_name_start_char (g_utf8_get_char (context->iter)))
+              else if (is_name_start_char (context->iter))
                 {
                   context->state = STATE_INSIDE_ATTRIBUTE_NAME;
                   /* start of attribute name */
@@ -1514,7 +1514,7 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
 
         case STATE_AFTER_CLOSE_TAG_SLASH:
           /* Possible next state: INSIDE_CLOSE_TAG_NAME */
-          if (is_name_start_char (g_utf8_get_char (context->iter)))
+          if (is_name_start_char (context->iter))
             {
               context->state = STATE_INSIDE_CLOSE_TAG_NAME;
 
