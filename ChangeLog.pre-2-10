@@ -1,3 +1,9 @@
+Sun Aug  9 15:56:11 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: added GModule checks. generate files in gmodule/.
+	* glib-config.in: support library specifications `glib' and `gmodule'.
+	* Makefile.am: feature the gmodule/ subdir.
+
 Wed Aug  5 10:04:29 PDT 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.2

@@ -1,3 +1,14 @@
+Sun Aug  9 15:57:38 1998  Tim Janik  <timj@gtk.org>
+
+	* testgmodule.c: test program for GModule.
+	* libgplugin_a.c: 
+	* libgplugin_b.c: test plugins for testgmodule.c.
+
+	* gmodule.h: 
+	* gmodule.c: GModule library implementation, which is basically
+	a wrapper about system specifc dynamic loading functions.
+	
+
 Sun Aug  9 10:31:05 1998  Tim Janik  <timj@gtk.org>
 
 	* ChangeLog start for gmodule.
