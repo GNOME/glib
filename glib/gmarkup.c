@@ -124,6 +124,21 @@ struct _GMarkupParseContext
   guint parsing : 1;
 };
 
+/**
+ * g_markup_parse_context_new:
+ * @parser: a #GMarkupParser
+ * @flags: one or more #GMarkupParseFlags
+ * @user_data: user data to pass to #GMarkupParser functions
+ * @user_data_dnotify: user data destroy notifier called when the parse context is freed
+ * 
+ * Creates a new parse context. A parse context is used to parse
+ * marked-up documents. You can feed any number of documents into
+ * a context, as long as no errors occur; once an error occurs,
+ * the parse context can't continue to parse text (you have to free it
+ * and create a new parse context).
+ * 
+ * Return value: a new #GMarkupParseContext
+ **/
 GMarkupParseContext *
 g_markup_parse_context_new (const GMarkupParser *parser,
                             GMarkupParseFlags    flags,
@@ -164,6 +179,14 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   return context;
 }
 
+/**
+ * g_markup_parse_context_free:
+ * @context: a #GMarkupParseContext
+ * 
+ * Frees a #GMarkupParseContext. Can't be called from inside
+ * one of the #GMarkupParser functions.
+ * 
+ **/
 void
 g_markup_parse_context_free (GMarkupParseContext *context)
 {
@@ -573,14 +596,15 @@ unescape_text (GMarkupParseContext *context,
                     gchar *digit = g_strndup (start, p - start);
                     gulong l;
                     gchar *end = NULL;
-
+                    gchar *digit_end = digit + (p - start);
+                    
                     errno = 0;
                     if (is_hex)
                       l = strtoul (digit, &end, 16);
                     else
                       l = strtoul (digit, &end, 10);
 
-                    if (errno != 0)
+                    if (end != digit_end || errno != 0)
                       {
                         set_unescape_error (context, error,
                                             start, text_end,
@@ -783,6 +807,24 @@ find_current_text_end (GMarkupParseContext *context)
     }
 }
 
+/**
+ * g_markup_parse_context_parse:
+ * @context: a #GMarkupParseContext
+ * @text: chunk of text to parse
+ * @text_len: length of @text in bytes
+ * @error: return location for a #GError
+ * 
+ * Feed some data to the #GMarkupParseContext. The data need not
+ * be valid UTF-8; an error will be signaled if it's invalid.
+ * The data need not be an entire document; you can feed a document
+ * into the parser incrementally, via multiple calls to this function.
+ * Typically, as you receive data from a network connection or file,
+ * you feed each received chunk of data into this function, aborting
+ * the process if an error occurs. Once an error is reported, no further
+ * data may be fed to the #GMarkupParseContext; all errors are fatal.
+ * 
+ * Return value: %FALSE if an error occurred, %TRUE on success
+ **/
 gboolean
 g_markup_parse_context_parse (GMarkupParseContext *context,
                               const gchar         *text,
@@ -790,18 +832,18 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
                               GError             **error)
 {
   const gchar *first_invalid;
-
+  
   g_return_val_if_fail (context != NULL, FALSE);
   g_return_val_if_fail (text != NULL, FALSE);
   g_return_val_if_fail (context->state != STATE_ERROR, FALSE);
   g_return_val_if_fail (!context->parsing, FALSE);
-
+  
   if (text_len < 0)
     text_len = strlen (text);
 
   if (text_len == 0)
     return TRUE;
-
+  
   context->parsing = TRUE;
   
   if (context->leftover_char_portion)
@@ -1537,6 +1579,18 @@ g_markup_parse_context_parse (GMarkupParseContext *context,
   return context->state != STATE_ERROR;
 }
 
+/**
+ * g_markup_parse_context_end_parse:
+ * @context: a #GMarkupParseContext
+ * @error: return location for a #GError
+ * 
+ * Signals to the #GMarkupParseContext that all data has been
+ * fed into the parse context with g_markup_parse_context_parse().
+ * This function reports an error if the document isn't complete,
+ * for example if elements are still open.
+ * 
+ * Return value: %TRUE on success, %FALSE if an error was set
+ **/
 gboolean
 g_markup_parse_context_end_parse (GMarkupParseContext *context,
                                   GError             **error)
@@ -1642,6 +1696,18 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
   return context->state != STATE_ERROR;
 }
 
+/**
+ * g_markup_parse_context_get_position:
+ * @context: a #GMarkupParseContext
+ * @line_number: return location for a line number, or %NULL
+ * @char_number: return location for a char-on-line number, or %NULL
+ *
+ * Returns the current line number and the number of the character on
+ * that line. Intended for use in error messages; there are no strict
+ * semantics for what constitutes the "current" line number other than
+ * "the best number we could come up with for error messages."
+ * 
+ **/
 void
 g_markup_parse_context_get_position (GMarkupParseContext *context,
                                      gint                *line_number,
@@ -1703,6 +1769,18 @@ append_escaped_text (GString     *str,
     }
 }
 
+/**
+ * g_markup_escape_text:
+ * @text: some valid UTF-8 text
+ * @length: length of @text in bytes
+ * 
+ * Escapes text so that the markup parser will parse it verbatim.
+ * Less than, greater than, ampersand, etc. are replaced with the
+ * corresponding entities. This function would typically be used
+ * when writing out a file to be parsed with the markup parser.
+ * 
+ * Return value: escaped text
+ **/
 gchar*
 g_markup_escape_text (const gchar *text,
                       gint         length)

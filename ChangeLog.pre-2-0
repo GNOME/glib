@@ -1,5 +1,8 @@
 2000-11-05  Havoc Pennington  <hp@pobox.com>
 
+	* gmarkup.c: inline docs
+	(unescape_text): properly check strtoul for failure.
+	
 	* gerror.c (g_propagate_error): Free the src error if the dest
 	location is NULL - I'm pretty sure that's what this function was 
 	supposed to do.
