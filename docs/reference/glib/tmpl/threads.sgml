@@ -248,9 +248,9 @@ being dependent on priorities.
 
 <!-- ##### STRUCT GThread ##### -->
 <para>
-The #Gthread struct represents a running thread. It has three public
-members, but the underlying struct is bigger, so you must not copy
-this struct. You also must not write that information.
+The #GThread struct represents a running thread. It has three public
+read-only members, but the underlying struct is bigger, so you must
+not copy this struct.
 </para>
 
 <note>
@@ -1493,16 +1493,6 @@ This function also works, if g_thread_init() has not yet been called.
 @Returns: the corresponding pointer
 
 
-<!-- ##### FUNCTION g_static_private_get_for_thread ##### -->
-<para>
-
-</para>
-
-@private_key: 
-@thread: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_static_private_set ##### -->
 <para>
 Sets the pointer keyed to @private_key for the current thread and the
@@ -1528,17 +1518,6 @@ g_private_new().
 @data: the new pointer
 @notify: a function to be called with the pointer, whenever the
 current thread ends or sets this pointer again
-
-
-<!-- ##### FUNCTION g_static_private_set_for_thread ##### -->
-<para>
-
-</para>
-
-@private_key: 
-@thread: 
-@data: 
-@notify: 
 
 
 <!-- ##### FUNCTION g_static_private_free ##### -->

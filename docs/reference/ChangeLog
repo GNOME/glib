@@ -3,6 +3,8 @@
 	* glib/glib-sections.txt: Removed
 	g_static_private_(get|set)_for_thread.
 
+	* glib/tmpl/threads.sgml: Updated.
+
 Mon Mar 26 14:20:36 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/Makefile.am (SCAN_OPTIONS): Add --deprecated-guards
