@@ -1,3 +1,7 @@
+2001-05-24  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc.in : pthread isn't required anymore
+
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-win32.c (g_cond_wait_internal): Also return TRUE for

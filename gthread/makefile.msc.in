@@ -5,7 +5,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 TOP = ..\..
 
-!INCLUDE ..\build\win32\make.msc
+!INCLUDE $(TOP)\build\win32\make.msc
 
 # Possibly override GLib version in build\win32\module.defs
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
@@ -16,8 +16,8 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 INCLUDES = -I .. -I .
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\" -DG_ENABLE_DEBUG
-DEPCFLAGS = $(PTHREAD_CFLAGS)
-
+# DEPCFLAGS = $(PTHREAD_CFLAGS)
+# DEPCLIBS = $(PTHREAD_LIBS) 
 all : \
 	gthread-$(GLIB_VER).dll
 
@@ -28,5 +28,8 @@ makefile.msc: makefile.msc.in
 	$(SED) -e s,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@, \
 	       -e s,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@, <makefile.msc.in >$@
 
+gthread-impl.obj : gthread-impl.c gthread-win32.c
+	$(CC) -c $(CFLAGS) gthread-impl.c
+	
 gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) gthread.def
-	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) ..\glib-$(GLIB_VER).lib $(PTHREAD_LIBS) $(LDFLAGS) /def:gthread.def
+	$(CC) $(CFLAGS) -LD -Fegthread-$(GLIB_VER).dll $(gthread_OBJECTS) ..\glib-$(GLIB_VER).lib $(DEPCLIBS) $(LDFLAGS) /def:gthread.def
