@@ -1,3 +1,8 @@
+Thu Oct 16 01:02:04 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gparamspec.sgml: Additions, document 
+	GParamSpecPool.
+
 Wed Oct 15 00:56:30 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gclosure.sgml: Improvements from Owen's feedback. 
