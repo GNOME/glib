@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
 "POT-Creation-Date: 2002-12-06 15:50+0200\n"
-"PO-Revision-Date: 2002-12-06 06:12--500\n"
+"PO-Revision-Date: 2002-12-06 06:21--500\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -351,17 +351,17 @@ msgstr ""
 
 #: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
+msgstr "Невідповідні лапки у командному рядку чи іншому тексті оболонки"
 
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
+msgstr "Текст закінчився перед символом \"\\\". (Текст був таким: \"%s\")"
 
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
+msgstr "Текст закінчився перед відповідними лапками для %c. (Текст був таким: \"%s\")"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -382,9 +382,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Збій зчитування з спадкоємного каналу (%s)"
 
 #: glib/gspawn-win32.c:783
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "Збій виконання спадкоємного процесу (%s)"
+msgstr "Стався збій під час виконання допоміжної програми"
 
 #: glib/gspawn-win32.c:816
 #: glib/gspawn.c:1166
