@@ -1,3 +1,16 @@
+Mon Dec 21 21:48:29 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h: 
+	* gmain.c: there was a reference count race for hooks during invocation
+	loops. since all (known) hook loop implementations, do currently start
+	out with g_hook_first_valid() and iterate with g_hook_next_valid(),
+	g_hook_first_valid() will now return a referenced hook, and
+	g_hook_next_valid() will "eat" that, and eventually transfer it to
+	the next hook. <sigh> unfortunately this requires g_hook_next_valid()
+ 	to take the hook_list as additional argument.
+
+	* gmain.c (g_main_iterate): adjusted callers of g_hook_next_valid().
+
 Mon Dec 21 03:48:04 1998  Tim Janik  <timj@gtk.org>
 
 	* gmain.c (g_main_iterate): default initialize source_timeout with -1

@@ -474,7 +474,7 @@ g_main_iterate (gboolean block,
 	break;
       if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
-	  hook = g_hook_next_valid (hook, TRUE);
+	  hook = g_hook_next_valid (&source_list, hook, TRUE);
 	  continue;
 	}
 
@@ -510,7 +510,7 @@ g_main_iterate (gboolean block,
 	    timeout = MIN (timeout, source_timeout);
 	}
 
-      tmp = g_hook_next_valid (hook, TRUE);
+      tmp = g_hook_next_valid (&source_list, hook, TRUE);
       
       g_hook_unref (&source_list, hook);
       hook = tmp;
@@ -534,7 +534,7 @@ g_main_iterate (gboolean block,
 	break;
       if (G_HOOK_IN_CALL (hook) && !(hook->flags & G_SOURCE_CAN_RECURSE))
 	{
-	  hook = g_hook_next_valid (hook, TRUE);
+	  hook = g_hook_next_valid (&source_list, hook, TRUE);
 	  continue;
 	}
 
@@ -561,7 +561,7 @@ g_main_iterate (gboolean block,
 	    }
 	}
       
-      tmp = g_hook_next_valid (hook, TRUE);
+      tmp = g_hook_next_valid (&source_list, hook, TRUE);
       
       g_hook_unref (&source_list, hook);
       hook = tmp;

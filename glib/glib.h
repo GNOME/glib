@@ -1183,9 +1183,14 @@ GHook*	 g_hook_find_func_data		(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 gpointer		 func,
 					 gpointer		 data);
+/* return the first valid hook, and increment its reference count */
 GHook*	 g_hook_first_valid		(GHookList		*hook_list,
 					 gboolean		 may_be_in_call);
-GHook*	 g_hook_next_valid		(GHook			*hook,
+/* return the next valid hook with incremented reference count, and
+ * decrement the reference count of the original hook
+ */
+GHook*	 g_hook_next_valid		(GHookList		*hook_list,
+					 GHook			*hook,
 					 gboolean		 may_be_in_call);
 
 /* GHookCompareFunc implementation to insert hooks sorted by their id */
