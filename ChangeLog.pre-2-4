@@ -1,3 +1,7 @@
+2004-03-30  Adam Weinberger  <adamw@gnome.org>
+
+	* configure.in: Added en_CA to ALL_LINGUAS.
+
 2004-03-21  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_path_get_dirname): Fix Win32 behaviour in some
