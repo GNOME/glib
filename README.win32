@@ -50,7 +50,7 @@ Some of the usage of these macros was a bit mixed up, and had to be
 straightened out when adding the gcc support. In particular, I used to
 check for _MSC_VER in some places where I really wanted to check for
 the Microsoft C library, and those checks has now been changed to
-NATIVE_WIN32. NATIVE_WIN32 should maybe be renamed to USE_MSVCRT.
+NATIVE_WIN32. NATIVE_WIN32 ought to be renamed to USE_MSVCRT.
 
 Pthreads library
 ================
@@ -81,7 +81,7 @@ crtdll. Especially, as the pthread library also uses msvcrt, using
 crtdll would probably not be a good idea at all. Using msvcrt can be
 achieved by applying the following diff to the specs file, which
 typically is installed as
-C:/cygnus/cygwin-b20/H-i586-cygwin32/lib/gcc-lib/i586-cygwin32/egcs-2.91.66/specs.
+C:\cygnus\cygwin-b20\H-i586-cygwin32\lib\gcc-lib\i586-cygwin32\egcs-2.91.66\specs.
 
 Sorry for the illegibility of this diff, but the specs file is like
 that... This patch replaces -lcrtdll with -lmsvcrt, replaces crt1 with
@@ -101,18 +101,16 @@ defines __MSVCRT__.
 +-Di386 -D_WIN32 %{mno-cygwin:-D__MSVCRT__ } -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386) 
 
 You should also fix the definition of _dev_t in the header
-mingw32/sys/types.h to correspond to what it actually is used by
+mingw32/sys/types.h to correspond to what type actually is used by
 msvcrt.dll. It should be unsigned int, not short. Otherwise stat()
 calls will fail.
 
 You also will have to get the mingw32 source snapshot from
 http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz (this
-is the source to the "mingw32" part of what's included with Mumit
-Khan's egcs-1.1.2. Unpack it and fix the prototype and call to
+is the source to the "mingw32" part of Mumit Khan's egcs-1.1.2
+distribution.) Unpack it and fix the prototype and call to
 __getmainargs() in init.c to include one more parameter, an int *,
-which should be passed the address of a zero int. Remake dllcrt2.o
-(which is the file which gets linked into dlls when using msvcrt, as
-per the specs file above). Code snippets below:
+which should be passed the address of a zero int. Code snippets below:
 
 ...
 #ifdef __MSVCRT__
@@ -125,4 +123,8 @@ extern void __getmainargs(int *, char***, char***, int, int *);
 #else
 ...
 
-Next, build using `make -f makefile.cygwin`.
+Remake dllcrt2.o (which is the file which gets linked into dlls when
+using msvcrt, as per the specs file above), and move it into place
+(typically C:\cygnus\cygwin-b20\H-i586-cygwin32\i586-cygwin32\lib\dllcrt2.o).
+
+Next, go back to the GLib directory and build using `make -f makefile.cygwin`.
