@@ -14,7 +14,7 @@ INCLUDES = \
 	-DG_DISABLE_CONST_RETURNS
 
 gobject.def: gobject.symbols
-	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//' | sort) > gobject.def
+	(echo -e EXPORTS; cpp -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 $(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
 gobjectalias.h: gobject.symbols
 	$(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h

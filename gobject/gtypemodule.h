@@ -66,7 +66,7 @@ struct _GTypeModuleClass
   void (*reserved4) (void);
 };
 
-GType    g_type_module_get_type       (void);
+GType    g_type_module_get_type       (void) G_GNUC_CONST;
 gboolean g_type_module_use            (GTypeModule          *module);
 void     g_type_module_unuse          (GTypeModule          *module);
 void     g_type_module_set_name       (GTypeModule          *module,
