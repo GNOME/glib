@@ -537,21 +537,17 @@ g_logv (const gchar   *log_domain,
 	  
 	  if (test_level & G_LOG_FLAG_FATAL)
 	    {
-#if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)
+#ifdef G_OS_WIN32
+	      MessageBox (NULL, fatal_msg_buf, NULL, MB_OK);
+#endif
+#if defined (G_ENABLE_DEBUG) && (defined (SIGTRAP) || defined (G_OS_WIN32))
 	      if (!(test_level & G_LOG_FLAG_RECURSION))
 		G_BREAKPOINT ();
 	      else
 		abort ();
-#else /* !G_ENABLE_DEBUG || !SIGTRAP */
-#ifdef G_OS_WIN32
-	      MessageBox (NULL, fatal_msg_buf, NULL, MB_OK);
-#endif
-# if defined (_MSC_VER) && defined (_DEBUG)
-	      /* let's see the call stack ... */
-	      __asm int 3
-# endif
+#else /* !G_ENABLE_DEBUG || !(SIGTRAP || G_OS_WIN32) */
 	      abort ();
-#endif /* !G_ENABLE_DEBUG || !SIGTRAP */
+#endif /* !G_ENABLE_DEBUG || !(SIGTRAP || G_OS_WIN32) */
 	    }
 	  
 	  depth--;

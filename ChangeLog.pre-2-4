@@ -1,3 +1,9 @@
+2002-02-14  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gmessages.c (g_logv): Use the #if branch with
+	G_BREAKPOINT() also on Win32. Remove the separate __asm int 3 for
+	MSVC, G_BREAKPOINT() does exactly that.
+
 2002-02-14  James Henstridge  <james@daa.com.au>
 
 	* m4macros/glib-gettext.m4: add third argument to the AC_DEFINE
