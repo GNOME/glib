@@ -1,5 +1,7 @@
 2003-08-08  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/glib.def: Add g_once_impl.
+
 	* glib/gutils.c (g_setenv): Fix syntax error in the !HAVE_SETENV
 	case.
 

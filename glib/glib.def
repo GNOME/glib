@@ -173,7 +173,6 @@ EXPORTS
 	g_get_codeset
 	g_get_current_dir
 	g_get_current_time
-	g_getenv
 	g_get_home_dir
 	g_get_prgname
 	g_get_real_name
@@ -393,6 +392,7 @@ EXPORTS
 	g_nullify_pointer
 	g_on_error_query
 	g_on_error_stack_trace
+	g_once_impl
 	g_parse_debug_string
 	g_path_get_basename
 	g_path_get_dirname
