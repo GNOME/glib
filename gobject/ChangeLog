@@ -1,3 +1,7 @@
+Tue Nov 13 20:02:47 2001  Tim Janik  <timj@gtk.org>
+
+	* gparam.h: fix standard type macros.
+
 Wed Nov  7 00:56:00 2001  Tim Janik  <timj@gtk.org>
 
 	* gclosure.h: provide G_CLOSURE_N_NOTIFIERS() for people that need
