@@ -638,7 +638,7 @@ g_scanner_eof (GScanner	*scanner)
 {
   g_return_val_if_fail (scanner != NULL, TRUE);
   
-  return scanner->token == G_TOKEN_EOF;
+  return scanner->token == G_TOKEN_EOF || scanner->token == G_TOKEN_ERROR;
 }
 
 void

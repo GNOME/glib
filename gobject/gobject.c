@@ -98,9 +98,6 @@ static inline void	   object_set_property		(GObject        *object,
 							 GObjectNotifyQueue *nqueue);
 
 
-/* --- structures --- */
-
-
 /* --- variables --- */
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;

@@ -41,8 +41,8 @@
 #define REPORT_BUG      "please report occourance circumstances to gtk-devel-list@gnome.org"
 #ifdef	G_ENABLE_DEBUG
 #define IF_DEBUG(debug_type, cond)	if ((_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) || cond)
-static volatile gpointer *g_trace_instance_signals = NULL;
-static volatile gpointer *g_trap_instance_signals = NULL;
+static volatile gpointer g_trace_instance_signals = NULL;
+static volatile gpointer g_trap_instance_signals = NULL;
 #endif	/* G_ENABLE_DEBUG */
 
 
