@@ -1508,7 +1508,7 @@ GLogLevelFlags	g_log_set_always_fatal	(GLogLevelFlags	 fatal_mask);
 #define	g_warning(...)	g_log (G_LOG_DOMAIN,         \
 			       G_LOG_LEVEL_WARNING,  \
 			       __VA_ARGS__)
-#elif defined (__GNUC__)
+#elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 4)
 #define	g_error(format...)	g_log (G_LOG_DOMAIN,         \
 				       G_LOG_LEVEL_ERROR,    \
 				       format)

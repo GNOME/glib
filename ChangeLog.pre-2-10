@@ -1,3 +1,11 @@
+2000-09-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* acconfig.h, configure.in, gutils.c: Test for the existence of
+	getcwd, and use it only when found.
+
+	* glib.h: Only use the gcc-variable-macro-argument-extension for
+	gcc >= 2.4. Both patches from Jonas Oberg <jonas@gnu.org>.
+						   
 Mon Sep 18 10:58:21 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gutf8.c: Implement g_ucs4_to_utf8 which was in

@@ -430,11 +430,11 @@ g_get_current_dir (void)
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.
    */
-#if	defined (sun) && !defined (__SVR4)
+#if	(defined (sun) && !defined (__SVR4)) || !defined(HAVE_GETCWD)
   buffer = g_new (gchar, max_len + 1);
   *buffer = 0;
   dir = getwd (buffer);
-#else	/* !sun */
+#else	/* !sun || !HAVE_GETCWD */
   while (max_len < G_MAXULONG / 2)
     {
       buffer = g_new (gchar, max_len + 1);
@@ -447,7 +447,7 @@ g_get_current_dir (void)
       g_free (buffer);
       max_len *= 2;
     }
-#endif	/* !sun */
+#endif	/* !sun || !HAVE_GETCWD */
   
   if (!dir || !*buffer)
     {
