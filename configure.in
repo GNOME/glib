@@ -134,7 +134,6 @@ AC_SUBST(GOBJECT_DEF)
 AC_SUBST(GTHREAD_DEF)
 AC_SUBST(TESTGMODULE_EXP)
 
-ms_librarian=no
 if test "$glib_native_win32" = "yes"; then
   AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
 fi
