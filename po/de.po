@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2001-07-29 07:43+0200\n"
+"POT-Creation-Date: 2001-09-03 19:08-0400\n"
 "PO-Revision-Date: 2001-07-29 07:42+0200\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -23,24 +23,59 @@ msgstr "Umwadnlung von Zeichensatz `%s' in `%s' wird nicht unterstützt"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Konverter von `%s' in `%s' konnte nicht geöffnet werden: `%s'"
 
-#: glib/gconvert.c:251 glib/gutf8.c:821 glib/gutf8.c:1267
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
-#: glib/gconvert.c:256 glib/gconvert.c:469
+#: glib/gconvert.c:302 glib/gconvert.c:513
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler während der Umwandlung: %s"
 
-#: glib/gconvert.c:276 glib/gutf8.c:817 glib/gutf8.c:1017 glib/gutf8.c:1158
-#: glib/gutf8.c:1263
+#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
+#: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
-#: glib/gconvert.c:444
+#: glib/gconvert.c:488
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel `%s' kann nicht in Codierung `%s' umgewandelt werden"
+
+#: glib/gconvert.c:1202
+#, c-format
+msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgstr ""
+
+#: glib/gconvert.c:1212
+#, c-format
+msgid "The local file URI `%s' may not include a `#'"
+msgstr ""
+
+#: glib/gconvert.c:1229
+#, c-format
+msgid "The URI `%s' is invalid"
+msgstr ""
+
+#: glib/gconvert.c:1238
+#, c-format
+msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1254
+#, c-format
+msgid "The URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr ""
+
+#: glib/gconvert.c:1311
+#, fuzzy
+msgid "Invalid byte sequence in hostname"
+msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
 #: glib/gfileutils.c:308
 #, c-format
@@ -315,27 +350,27 @@ msgstr ""
 "Unbalanciertes Anführungszeichen in Befehlszeile oder anderem Text in "
 "Shellquotes"
 
-#: glib/gshell.c:519
+#: glib/gshell.c:526
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr "Text endete nach einem ''-Zeichen. (Der Text war '%s'"
 
-#: glib/gshell.c:526
+#: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Text endete, bevor ein passendes Anführungszeichen für %c gefunden wurde. "
 "(Der Text war '%s')"
 
-#: glib/gshell.c:538
+#: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text war leer (oder enthielt nur Leerraum)"
 
-#: glib/gspawn-win32.c:215
+#: glib/gspawn-win32.c:212
 msgid "Failed to read data from child process"
 msgstr "Daten konnten nicht vom Kindprozess gelesen werden"
 
-#: glib/gspawn-win32.c:364
+#: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -343,22 +378,22 @@ msgstr ""
 "Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen aus dem "
 "Kindprozess"
 
-#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lesen aus Pipe zum Kind (%s) fehlgeschlagen"
 
-#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "In Verzeichnis `%s' (%s) konnte nicht gewechselt werden"
 
-#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kindprozess konnte nicht ausgeführt werden (%s)"
 
-#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -405,15 +440,15 @@ msgstr "Unbekannter Fehler beim Verlassen des Kindprozesses"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Es konnten nicht genug Daten von Kind-PID-Pipe (%s) gelesen werden"
 
-#: glib/gutf8.c:896
+#: glib/gutf8.c:898
 msgid "Character out of range for UTF-8"
 msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
-#: glib/gutf8.c:985 glib/gutf8.c:994 glib/gutf8.c:1126 glib/gutf8.c:1135
-#: glib/gutf8.c:1277 glib/gutf8.c:1373
+#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
+#: glib/gutf8.c:1279 glib/gutf8.c:1375
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gutf8.c:1288 glib/gutf8.c:1384
+#: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"

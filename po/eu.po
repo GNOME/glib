@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3\n"
-"POT-Creation-Date: 2001-07-06 14:23+0200\n"
+"POT-Creation-Date: 2001-09-03 19:08-0400\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jepibi-san@ej-gv.es>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -23,61 +23,96 @@ msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"
 
-#: glib/gconvert.c:251 glib/gutf8.c:787 glib/gutf8.c:1233
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
 msgstr "Baliogabeko byte segida itzulketa sarreran"
 
-#: glib/gconvert.c:256 glib/gconvert.c:469
+#: glib/gconvert.c:302 glib/gconvert.c:513
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea itzultzerakoan: %s"
 
-#: glib/gconvert.c:276 glib/gutf8.c:783 glib/gutf8.c:983 glib/gutf8.c:1124
-#: glib/gutf8.c:1229
+#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
+#: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
 msgstr "Zatia besterik ez dan karaktere segida sarreraren bukaeran"
 
-#: glib/gconvert.c:444
+#: glib/gconvert.c:488
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin itzuli fallback '%s'tik '%s' kodera"
+
+#: glib/gconvert.c:1202
+#, c-format
+msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgstr ""
+
+#: glib/gconvert.c:1212
+#, c-format
+msgid "The local file URI `%s' may not include a `#'"
+msgstr ""
+
+#: glib/gconvert.c:1229
+#, c-format
+msgid "The URI `%s' is invalid"
+msgstr ""
+
+#: glib/gconvert.c:1238
+#, c-format
+msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1254
+#, c-format
+msgid "The URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr ""
+
+#: glib/gconvert.c:1311
+#, fuzzy
+msgid "Invalid byte sequence in hostname"
+msgstr "Baliogabeko byte segida itzulketa sarreran"
 
 #: glib/gfileutils.c:308
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Errore fitxategia irakurtzerakoan'%s': %s"
 
-#: glib/gfileutils.c:365
+#: glib/gfileutils.c:366
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Ezin irakurri fitxategi '%s'-tik: %s"
 
-#: glib/gfileutils.c:404 glib/gfileutils.c:472
+#: glib/gfileutils.c:405 glib/gfileutils.c:473
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Ezin ireki fitxategi '%s'-a: %s"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:419
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Ezin lortu atributuak fitxategitik '%s': fstat() failed: %s"
 
-#: glib/gfileutils.c:444
+#: glib/gfileutils.c:445
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Ezin ireki fitzategia '%s': fdopen() failed: %s"
 
-#: glib/gfileutils.c:653
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr "Eredu '%s'-a ezlegezkoa, ezin du '%s'-rik izan"
 
-#: glib/gfileutils.c:665
+#: glib/gfileutils.c:666
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Eredu '%s'-ak ez du amaierako XXXXXX"
 
-#: glib/gfileutils.c:686
+#: glib/gfileutils.c:687
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ezin eratu fitxategia '%s': %s"
@@ -302,26 +337,26 @@ msgstr ""
 "Nabarmen ikur galdua komando lerroan edo maskorreko nabarmentze texturen "
 "batetan"
 
-#: glib/gshell.c:519
+#: glib/gshell.c:526
 #, fuzzy, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr "Textua bukatzen da  '%s' batez. (Textua: '%s')"
 
-#: glib/gshell.c:526
+#: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Textua bukatua %c-rako nabarmentze ikurra aurkitu aurretik. (Textua: '%s')"
 
-#: glib/gshell.c:538
+#: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textua hutzik (edo zuriz)"
 
-#: glib/gspawn-win32.c:215
+#: glib/gspawn-win32.c:212
 msgid "Failed to read data from child process"
 msgstr "Ezin irakurri daturik child prozeduran"
 
-#: glib/gspawn-win32.c:364
+#: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -329,22 +364,22 @@ msgstr ""
 "Ezusteko errora g_io_channel_win32_poll()-n child prozedurako datuak "
 "irakurtzekoan"
 
-#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin irakurri child hodian (%s)"
 
-#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Ezin aldatu  '%s' direktoriora (%s)"
 
-#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Ezin abiarazi chil prozedura (%s)"
 
-#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin eratu hodirik child prozedurarekin bat egiteko (%s)"
@@ -389,15 +424,15 @@ msgstr "Errore eezaguna child prozeduran"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin irakurri datu nahikorik child-en pid hodian (%s)"
 
-#: glib/gutf8.c:862
+#: glib/gutf8.c:898
 msgid "Character out of range for UTF-8"
 msgstr "Hizkia ildotik at UTF-8-n"
 
-#: glib/gutf8.c:951 glib/gutf8.c:960 glib/gutf8.c:1092 glib/gutf8.c:1101
-#: glib/gutf8.c:1243 glib/gutf8.c:1339
+#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
+#: glib/gutf8.c:1279 glib/gutf8.c:1375
 msgid "Invalid sequence in conversion input"
 msgstr "Ezinezko segida itzulpen sarreran"
 
-#: glib/gutf8.c:1254 glib/gutf8.c:1350
+#: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Hizkia ildotik at UTF-16-en"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
-"POT-Creation-Date: 2001-09-02 08:44+0200\n"
+"POT-Creation-Date: 2001-09-03 19:08-0400\n"
 "PO-Revision-Date: 2001-09-02 09:00+0200\n"
 "Last-Translator: José Antonio Salgueiro <joseantsa@eresmas.net>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -23,7 +23,7 @@ msgstr "Conversión desde el conjunto de caracteres `%s'·a·`%s'·no soportada"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "No se pudo abrir el conversor de `%s'·a·`%s':·%s"
 
-#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:821 glib/gutf8.c:1267
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secuencia de byte no válida en la entrada de conversión"
 
@@ -32,8 +32,8 @@ msgstr "Secuencia de byte no válida en la entrada de conversión"
 msgid "Error during conversion: %s"
 msgstr "Error·durante la·conversión:·%s"
 
-#: glib/gconvert.c:320 glib/gutf8.c:817 glib/gutf8.c:1017 glib/gutf8.c:1158
-#: glib/gutf8.c:1263
+#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
+#: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
 msgstr "Secuencia parcial de caracteres en el final de la entrada"
 
@@ -436,15 +436,15 @@ msgstr "Error desconocido al ejecutar el proceso hijo"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falló al leer los suficientes datos desde el pipe hijo (%s)"
 
-#: glib/gutf8.c:896
+#: glib/gutf8.c:898
 msgid "Character out of range for UTF-8"
 msgstr "Carácter fuera de márgenes para UTF 8"
 
-#: glib/gutf8.c:985 glib/gutf8.c:994 glib/gutf8.c:1126 glib/gutf8.c:1135
-#: glib/gutf8.c:1277 glib/gutf8.c:1373
+#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
+#: glib/gutf8.c:1279 glib/gutf8.c:1375
 msgid "Invalid sequence in conversion input"
 msgstr "Secuencia no válida en la entrada de conversión"
 
-#: glib/gutf8.c:1288 glib/gutf8.c:1384
+#: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Carácter fuera de márgenes para UTF 16"

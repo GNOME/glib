@@ -19,7 +19,7 @@ EXTRA_DIST = 			\
 	makefile.mingw		\
 	glibconfig.h.win32.in	\
 	config.h.win32.in	\
-	build-dll		\
+        po/po2tbl.sed.in        \
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
@@ -33,7 +33,6 @@ EXTRA_DIST = 			\
 BUILT_EXTRA_DIST = 		\
 	glibconfig.h.win32	\
 	config.h.win32		\
-	glib.rc			\
 	glib.spec
 
 configexecincludedir = $(libdir)/glib-2.0/include
@@ -65,9 +64,6 @@ glibconfig.h.win32: $(top_builddir)/config.status $(top_srcdir)/glibconfig.h.win
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release sanity snapshot

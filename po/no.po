@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
-"POT-Creation-Date: 2001-06-27 20:42+0200\n"
+"POT-Creation-Date: 2001-09-03 19:08-0400\n"
 "PO-Revision-Date: 2001-06-27 21:09+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -23,61 +23,96 @@ msgstr "Konvertering fra tegnsett `%s' til `%s' er ikke støttet"
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunne ikke åpne konverterer fra `%s' til `%s': %s"
 
-#: glib/gconvert.c:251 glib/gutf8.c:787 glib/gutf8.c:1233
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
-#: glib/gconvert.c:256 glib/gconvert.c:469
+#: glib/gconvert.c:302 glib/gconvert.c:513
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: glib/gconvert.c:276 glib/gutf8.c:783 glib/gutf8.c:983 glib/gutf8.c:1124
-#: glib/gutf8.c:1229
+#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
+#: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
 msgstr "Delvis tegnsekvens ved slutten på inndata"
 
-#: glib/gconvert.c:444
+#: glib/gconvert.c:488
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" '%s' til tegnsett '%s'"
+
+#: glib/gconvert.c:1202
+#, c-format
+msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgstr ""
+
+#: glib/gconvert.c:1212
+#, c-format
+msgid "The local file URI `%s' may not include a `#'"
+msgstr ""
+
+#: glib/gconvert.c:1229
+#, c-format
+msgid "The URI `%s' is invalid"
+msgstr ""
+
+#: glib/gconvert.c:1238
+#, c-format
+msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1254
+#, c-format
+msgid "The URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr ""
+
+#: glib/gconvert.c:1311
+#, fuzzy
+msgid "Invalid byte sequence in hostname"
+msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
 #: glib/gfileutils.c:308
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil '%s': %s"
 
-#: glib/gfileutils.c:365
+#: glib/gfileutils.c:366
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil '%s': %s"
 
-#: glib/gfileutils.c:404 glib/gfileutils.c:472
+#: glib/gfileutils.c:405 glib/gfileutils.c:473
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil '%s': %s"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:419
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil '%s': fstat() feilet: %s"
 
-#: glib/gfileutils.c:444
+#: glib/gfileutils.c:445
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil '%s': fdopen() feilet: %s"
 
-#: glib/gfileutils.c:653
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr "Mal '%s' er ugyldig, skulle inneholdt en '%s'"
 
-#: glib/gfileutils.c:665
+#: glib/gfileutils.c:666
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mal '%s' slutter ikke med XXXXXX"
 
-#: glib/gfileutils.c:686
+#: glib/gfileutils.c:687
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil '%s': %s"
@@ -205,14 +240,18 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr "Rart tegn '%s', ventet et åpent sitattegn etter likhetstegnet når verdi for attributt '%s' for element '%s' oppgis"
+msgstr ""
+"Rart tegn '%s', ventet et åpent sitattegn etter likhetstegnet når verdi for "
+"attributt '%s' for element '%s' oppgis"
 
 #: glib/gmarkup.c:1351
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "'%s' er ikke et gyldig tegn etter tegnene '</'; '%s' er kanskje ikke begynnelsen på et elementnavn"
+msgstr ""
+"'%s' er ikke et gyldig tegn etter tegnene '</'; '%s' er kanskje ikke "
+"begynnelsen på et elementnavn"
 
 #: glib/gmarkup.c:1388
 #, c-format
@@ -289,7 +328,8 @@ msgstr "Dokumentet sluttet uventet inni tagg for lukking av element '%s'"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
+msgstr ""
+"Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
 
 #: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -299,46 +339,49 @@ msgstr "Sitert tekst begynner ikke med sitattegn"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Ubalansert sitattegn i kommandolinje eller annen skall-sitert tekst"
 
-#: glib/gshell.c:519
+#: glib/gshell.c:526
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr "Tekst sluttet rett etter et '' tegn. (Teksten var '%s')"
 
-#: glib/gshell.c:526
+#: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Teksten sluttet før likt sitattegn ble funnet for %c. (Teksten var '%s')"
+msgstr ""
+"Teksten sluttet før likt sitattegn ble funnet for %c. (Teksten var '%s')"
 
-#: glib/gshell.c:538
+#: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksten var tom (eller inneholdt kun blanke tegn)"
 
-#: glib/gspawn-win32.c:215
+#: glib/gspawn-win32.c:212
 msgid "Failed to read data from child process"
 msgstr "Feil under lesing av data fra underprosess"
 
-#: glib/gspawn-win32.c:364
+#: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "Uventet feil i g_io_channel_win32_poll() under lesing av data fra en underprosess"
+msgstr ""
+"Uventet feil i g_io_channel_win32_poll() under lesing av data fra en "
+"underprosess"
 
-#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Feil under lesing fra \"child pipe\" (%s)"
 
-#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Feil ved skifte til katalog '%s' (%s)"
 
-#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Feil under kjøring av underprosess (%s)"
 
-#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
@@ -382,15 +425,15 @@ msgstr "Ukjent feil under kjøring av underprosess"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Klarte ikke å lese nok data fra underprosessens pid-rør (%s)"
 
-#: glib/gutf8.c:862
+#: glib/gutf8.c:898
 msgid "Character out of range for UTF-8"
 msgstr "Tegn utenfor gyldig område for UTF-8"
 
-#: glib/gutf8.c:951 glib/gutf8.c:960 glib/gutf8.c:1092 glib/gutf8.c:1101
-#: glib/gutf8.c:1243 glib/gutf8.c:1339
+#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
+#: glib/gutf8.c:1279 glib/gutf8.c:1375
 msgid "Invalid sequence in conversion input"
 msgstr "Ugyldig sekvens i inndata for konvertering"
 
-#: glib/gutf8.c:1254 glib/gutf8.c:1350
+#: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
 msgstr "Tegn utenfor gyldig område for UTF-16"

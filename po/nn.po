@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KDEADMIN/kcron\n"
-"POT-Creation-Date: 2001-07-17 11:04+0200\n"
+"POT-Creation-Date: 2001-09-03 19:08-0400\n"
 "PO-Revision-Date: 2001-06-25 18:55+02:00\n"
 "Last-Translator: Gaute Hvoslef Kvalnes <ai98ghk@stud.hib.no>\n"
 "Language-Team: Norwegian (Nynorsk)\n"
@@ -24,24 +24,59 @@ msgstr ""
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Kunne ikkje konvertera fila frå PDF- til PS-format."
 
-#: glib/gconvert.c:251 glib/gutf8.c:787 glib/gutf8.c:1233
+#: glib/gconvert.c:297 glib/gconvert.c:580 glib/gutf8.c:823 glib/gutf8.c:1269
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 
-#: glib/gconvert.c:256 glib/gconvert.c:469
+#: glib/gconvert.c:302 glib/gconvert.c:513
 #, fuzzy, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil ved lesing av gruppe: "
 
-#: glib/gconvert.c:276 glib/gutf8.c:783 glib/gutf8.c:983 glib/gutf8.c:1124
-#: glib/gutf8.c:1229
+#: glib/gconvert.c:320 glib/gutf8.c:819 glib/gutf8.c:1019 glib/gutf8.c:1160
+#: glib/gutf8.c:1265
 msgid "Partial character sequence at end of input"
 msgstr ""
 
-#: glib/gconvert.c:444
+#: glib/gconvert.c:488
 #, fuzzy, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "kan ikkje skifte tilbake til filkatalog \"%s\""
+
+#: glib/gconvert.c:1202
+#, c-format
+msgid "The URI `%s' is not an absolute URI using the file scheme"
+msgstr ""
+
+#: glib/gconvert.c:1212
+#, c-format
+msgid "The local file URI `%s' may not include a `#'"
+msgstr ""
+
+#: glib/gconvert.c:1229
+#, c-format
+msgid "The URI `%s' is invalid"
+msgstr ""
+
+#: glib/gconvert.c:1238
+#, c-format
+msgid "The hostname of the URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1254
+#, c-format
+msgid "The URI `%s' is contains invalidly escaped characters"
+msgstr ""
+
+#: glib/gconvert.c:1297
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr ""
+
+#: glib/gconvert.c:1311
+#, fuzzy
+msgid "Invalid byte sequence in hostname"
+msgstr "Ugyldig celle i ResultX"
 
 #: glib/gfileutils.c:308
 #, fuzzy, c-format
@@ -50,7 +85,7 @@ msgstr ""
 "Feil ved lesing a fil:\n"
 "%1"
 
-#: glib/gfileutils.c:365
+#: glib/gfileutils.c:366
 #, fuzzy, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr ""
@@ -58,34 +93,34 @@ msgstr ""
 "%1:\n"
 "%2"
 
-#: glib/gfileutils.c:404 glib/gfileutils.c:472
+#: glib/gfileutils.c:405 glib/gfileutils.c:473
 #, fuzzy, c-format
 msgid "Failed to open file '%s': %s"
 msgstr ""
 "Kunne ikkje opna fil:\n"
 "%s"
 
-#: glib/gfileutils.c:418
+#: glib/gfileutils.c:419
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:444
+#: glib/gfileutils.c:445
 #, fuzzy, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Kunne ikkje laga mappa '%1', den finst alt."
 
-#: glib/gfileutils.c:653
+#: glib/gfileutils.c:654
 #, c-format
 msgid "Template '%s' illegal, should not contain a '%s'"
 msgstr ""
 
-#: glib/gfileutils.c:665
+#: glib/gfileutils.c:666
 #, fuzzy, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Malfila %1 finst ikkje!"
 
-#: glib/gfileutils.c:686
+#: glib/gfileutils.c:687
 #, fuzzy, c-format
 msgid "Failed to create file '%s': %s"
 msgstr ""
@@ -284,48 +319,48 @@ msgstr ""
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 
-#: glib/gshell.c:519
+#: glib/gshell.c:526
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:526
+#: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:538
+#: glib/gshell.c:545
 #, fuzzy
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Klassenamnet kan ikkje innehalda 'kvite teikn'"
 
-#: glib/gspawn-win32.c:215
+#: glib/gspawn-win32.c:212
 #, fuzzy
 msgid "Failed to read data from child process"
 msgstr "Kunne ikkje starta barneprosess '%1'."
 
-#: glib/gspawn-win32.c:364
+#: glib/gspawn-win32.c:361
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, fuzzy, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Kunne ikkje lesa katalog."
 
-#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#: glib/gspawn-win32.c:926 glib/gspawn.c:1112
 #, fuzzy, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "kan ikkje skifte til filkatalog \"%s\""
 
-#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#: glib/gspawn-win32.c:935 glib/gspawn.c:1122
 #, fuzzy, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Kunne ikkje køyra e-postprogram"
 
-#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#: glib/gspawn-win32.c:976 glib/gspawn.c:1219
 #, fuzzy, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Kan ikkje laga sokkel for kommunikasjon med Piloten"
@@ -370,19 +405,18 @@ msgstr "Vel ingen barneprosessar"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: glib/gutf8.c:862
+#: glib/gutf8.c:898
 #, fuzzy
 msgid "Character out of range for UTF-8"
 msgstr "Ignorer teikn:"
 
-#: glib/gutf8.c:951 glib/gutf8.c:960 glib/gutf8.c:1092 glib/gutf8.c:1101
-#: glib/gutf8.c:1243 glib/gutf8.c:1339
+#: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
+#: glib/gutf8.c:1279 glib/gutf8.c:1375
 #, fuzzy
 msgid "Invalid sequence in conversion input"
 msgstr "Ugyldig celle i ResultX"
 
-#: glib/gutf8.c:1254 glib/gutf8.c:1350
+#: glib/gutf8.c:1290 glib/gutf8.c:1386
 #, fuzzy
 msgid "Character out of range for UTF-16"
 msgstr "Ignorer teikn:"
-
