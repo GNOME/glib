@@ -822,6 +822,24 @@ g_option_context_parse (GOptionContext   *context,
   gint i, j, k;
   GList *list;
 
+  /* Set program name */
+  if (argc && argv)
+    {
+      gchar *prgname;
+      
+      prgname = strrchr ((*argv)[0], G_DIR_SEPARATOR);
+      if (prgname)
+	prgname++;
+      else
+	prgname = (*argv)[0];
+
+      g_set_prgname (prgname);
+    }
+  else
+    {
+      g_set_prgname ("<unknown>");
+    }
+  
   /* Call pre-parse hooks */
   list = context->groups;
   while (list)
@@ -847,16 +865,6 @@ g_option_context_parse (GOptionContext   *context,
 
   if (argc && argv)
     {
-      gchar *prgname;
-      
-      prgname = strrchr ((*argv)[0], G_DIR_SEPARATOR);
-      if (prgname)
-	prgname++;
-      else
-	prgname = (*argv)[0];
-
-      g_set_prgname (prgname);
-
       for (i = 1; i < *argc; i++)
 	{
 	  gchar *arg;
@@ -1061,10 +1069,6 @@ g_option_context_parse (GOptionContext   *context,
 	      *argc -= k;
 	    }
 	}      
-    }
-  else
-    {
-      g_set_prgname ("<unknown>");
     }
 
   return TRUE;

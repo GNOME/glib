@@ -1,5 +1,10 @@
 2004-09-01  Anders Carlsson  <andersca@gnome.org>
 
+	* glib/goption.c: (g_option_context_parse):
+	Set program name before calling the pre-parse hooks.
+	
+2004-09-01  Anders Carlsson  <andersca@gnome.org>
+
 	* glib/goption.c: (g_option_context_free), (print_help),
 	(g_option_context_parse):
 	Handle option contexts without a main group.
