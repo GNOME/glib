@@ -1,3 +1,7 @@
+Tue Mar 23 13:43:39 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* giounix.c: add user_data param to check and prepare functions
+
 Mon Mar 22 03:54:43 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h:
