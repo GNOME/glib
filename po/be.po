@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-31 23:40-0400\n"
+"POT-Creation-Date: 2004-08-25 00:52-0400\n"
 "PO-Revision-Date: 2004-03-08 15:46+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -603,6 +603,45 @@ msgstr "Нядапушчальная пасьлядоўнасьць для пе�
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"
+
+#: glib/goption.c:261
+msgid "Usage:"
+msgstr ""
+
+#: glib/goption.c:261
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Show help options"
+msgstr ""
+
+#: glib/goption.c:310
+msgid "Show all help options"
+msgstr ""
+
+#: glib/goption.c:358
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:397
+#, c-format
+msgid "Cannot parse integer value '%s' for --%s"
+msgstr ""
+
+#: glib/goption.c:407
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:1005
+#, c-format
+msgid "Unknown option %s"
+msgstr ""
 
 # glib/giowin32.c:704 glib/giowin32.c:733
 #~ msgid "Incorrect message size"

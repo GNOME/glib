@@ -250,6 +250,7 @@ See the GNU C documentation for details.
 </para>
 
 
+
 <!-- ##### MACRO G_GNUC_INTERNAL ##### -->
 <para>
 Expands to the GNU C <literal>visibility(hidden)</literal> attribute if the 
@@ -260,6 +261,8 @@ as internal in this way. See the GNU C documentation for details.
 </para>
 
 Since: 2.6
+
+
 
 <!-- ##### MACRO G_LIKELY ##### -->
 <para>

@@ -99,6 +99,30 @@ returned.
 @Returns: the user's real name.
 
 
+<!-- ##### FUNCTION g_get_user_cache_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_get_user_data_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION g_get_user_config_dir ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_get_home_dir ##### -->
 <para>
 Gets the current user's home directory.

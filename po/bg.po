@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-31 23:40-0400\n"
+"POT-Creation-Date: 2004-08-25 00:52-0400\n"
 "PO-Revision-Date: 2003-01-14 12:38+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -510,6 +510,45 @@ msgstr "Неправилна последователност на входа з
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Символ извън обхвата на UTF-16"
+
+#: glib/goption.c:261
+msgid "Usage:"
+msgstr ""
+
+#: glib/goption.c:261
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Show help options"
+msgstr ""
+
+#: glib/goption.c:310
+msgid "Show all help options"
+msgstr ""
+
+#: glib/goption.c:358
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:397
+#, c-format
+msgid "Cannot parse integer value '%s' for --%s"
+msgstr ""
+
+#: glib/goption.c:407
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:1005
+#, c-format
+msgid "Unknown option %s"
+msgstr ""
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Неправилен размер на съобщение"

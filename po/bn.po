@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-31 23:40-0400\n"
+"POT-Creation-Date: 2004-08-25 00:52-0400\n"
 "PO-Revision-Date: 2002-12-15 09:35-0800\n"
 "Last-Translator: Taneem Ahmed <taneem@eyetap.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -478,6 +478,45 @@ msgstr "পরিবর্তন করার জন্য দেয়া তথ�
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "অক্ষর ইউটিএফ-১৬ আয়তার বাইরে"
+
+#: glib/goption.c:261
+msgid "Usage:"
+msgstr ""
+
+#: glib/goption.c:261
+msgid "[OPTION...]"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Help Options:"
+msgstr ""
+
+#: glib/goption.c:306
+msgid "Show help options"
+msgstr ""
+
+#: glib/goption.c:310
+msgid "Show all help options"
+msgstr ""
+
+#: glib/goption.c:358
+msgid "Application Options:"
+msgstr ""
+
+#: glib/goption.c:397
+#, c-format
+msgid "Cannot parse integer value '%s' for --%s"
+msgstr ""
+
+#: glib/goption.c:407
+#, c-format
+msgid "Integer value '%s' for %s out of range"
+msgstr ""
+
+#: glib/goption.c:1005
+#, c-format
+msgid "Unknown option %s"
+msgstr ""
 
 #~ msgid "Incorrect message size"
 #~ msgstr "বেঠিক সাইজের তথ্য"
