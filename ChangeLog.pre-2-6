@@ -1,3 +1,9 @@
+2001-11-14  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gpattern.c: add UTF-8 support.
+
+	* tests/patterntest.c: add UTF-8 and equality tests.
+
 Wed Nov 14 07:34:24 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/galloca.h (g_newa): provide g_newa(ctype, count) on top of

@@ -19,26 +19,16 @@ Note that in contrast to <function>glob()</function>, the '/' character
 be escaped to include them literally in a pattern. 
 </para>
 <para>
-The pattern matcher is restricted to ASCII and will not work correctly with
-multibyte UTF-8 characters in the pattern or in the string to match.
-</para>
-<para>
 When multiple strings must be matched against the same pattern, it
 is better to compile the pattern to a #GPatternSpec using 
 g_pattern_spec_new() and use g_pattern_match_string() instead of 
 g_pattern_match_simple().  This avoids the overhead of repeated 
 pattern compilation.
-</para>
-
-<!-- ##### SECTION See_Also ##### -->
-<para>
-g_strreverse()
-</para>
 
 <!-- ##### STRUCT GPatternSpec ##### -->
 <para>
 A <structname>GPatternSpec</structname> is the 'compiled' form of a pattern.
-This structure is opaque and its fields and cannot be accessed.
+This structure is opaque and its fields cannot be accessed directly.
 </para>
 
 
@@ -47,7 +37,7 @@ This structure is opaque and its fields and cannot be accessed.
 Compiles a pattern to a #GPatternSpec.
 </para>
 
-@pattern: a zero terminated string.
+@pattern: a zero-terminated UTF-8 encoded string.
 @Returns: a newly-allocated #GPatternSpec.
 
 
@@ -77,16 +67,24 @@ string given is mandatory. The reversed string can be omitted by passing %NULL,
 this is more efficient if the reversed version of the string to be matched is
 not at hand, as g_pattern_match() will only construct it if the compiled pattern
 requires reverse matches.
-Note that, if the user code will (possibly) match a string against a multitude of
-patterns containing wildcards, chances are high that some patterns will require
-a reversed string. In this case, it's more efficient to provide the reversed
-string to avoid multiple constructions thereof in the various calls to
+</para>
+<para>
+Note that, if the user code will (possibly) match a string against a multitude 
+of patterns containing wildcards, chances are high that some patterns will 
+require a reversed string. In this case, it's more efficient to provide the 
+reversed string to avoid multiple constructions thereof in the various calls to
 g_pattern_match().
+</para>
+<para>
+Note also that the reverse of a UTF-8 encoded string can in general 
+<emphasis>not</emphasis> be obtained by <function>g_strreverse()</function>.
+This works only if the string doesn't contain any multibyte characters.
+Glib doesn't currently offer a function to reverse UTF-8 encoded strings.
 </para>
 
 @pspec: a #GPatternSpec.
 @string_length: the length of @string.
-@string: the string to match.
+@string: the UTF-8 encoded string to match.
 @string_reversed: the reverse of @string or %NULL.
 @Returns: %TRUE if @string matches @pspec.
 
@@ -99,7 +97,7 @@ g_pattern_match() instead while supplying the reversed string.
 </para>
 
 @pspec: a #GPatternSpec.
-@string: the string to match.
+@string: the UTF-8 encoded string to match.
 @Returns: %TRUE if @string matches @pspec.
 
 
@@ -111,8 +109,8 @@ the pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 repetively.
 </para>
 
-@pattern: the pattern.
-@string: the string to match.
+@pattern: the UTF-8 encoded pattern.
+@string: the UTF-8 encoded string to match.
 @Returns: %TRUE if @string matches @pspec.
 
 

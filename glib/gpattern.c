@@ -21,7 +21,8 @@
 #include "gmacros.h"
 #include "gmessages.h"
 #include "gmem.h"
-#include "gutils.h" /* inline hassle */
+#include "gunicode.h"
+#include "gutils.h" 
 #include <string.h>
 
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
@@ -34,44 +35,51 @@ typedef enum
   G_MATCH_EXACT,     /* "AAAAA" */
   G_MATCH_LAST
 } GMatchType;
+
 struct _GPatternSpec
 {
   GMatchType match_type;
   guint      pattern_length;
+  guint      min_length;
   gchar     *pattern;
 };
 
 
 /* --- functions --- */
-static inline void
-instring_reverse (guint  length,
-		  gchar *str)
+/**
+ * g_utf8_reverse:
+ * string: a UTF-8 string.
+ *
+ * Reverses a UTF-8 string. The @string must be valid UTF-8 encoded text. 
+ * (Use g_utf8_validate() on all text before trying to use UTF-8 
+ * utility functions with it.)
+ *
+ * Note that unlike g_strreverse(), this function returns
+ * newly-allocated memory, which should be freed with g_free() when
+ * no longer needed. 
+ *
+ * Returns: a newly-allocated string which is the reverse of @string.
+ */
+static gchar *
+g_utf8_reverse (guint len, const gchar *string)
 {
-  gchar *f, *l, *b;
+  gchar *result;
+  const gchar *p;
+  gchar *m, *r, skip;
 
-  f = str;
-  l = str + length - 1;
-  b = str + length / 2;
-  while (f < b)
+  result = g_new (gchar, len + 1);
+  r = result + len;
+  p = string;
+  while (*p) 
     {
-      gchar tmp = *l;
-
-      *l-- = *f;
-      *f++ = tmp;
+      skip = g_utf8_skip[*(guchar*)p];
+      r -= skip;
+      for (m = r; skip; skip--)
+        *m++ = *p++;
     }
-}
+  result[len] = 0;
 
-static inline gchar*
-strdup_reverse (guint        length,
-		const gchar *str)
-{
-  gchar *t, *dest = g_new (gchar, length + 1);
-
-  t = dest + length;
-  *t-- = 0;
-  while (t >= dest)
-    *t-- = *str++;
-  return dest;
+  return result;
 }
 
 static inline gboolean
@@ -93,7 +101,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 	case '?':
 	  if (!*string)
 	    return FALSE;
-	  string++;
+	  string = g_utf8_next_char (string);
 	  break;
 
 	case '*':
@@ -105,7 +113,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 		{
 		  if (!*string)
 		    return FALSE;
-		  string++;
+		  string = g_utf8_next_char (string);
 		}
 	    }
 	  while (ch == '*' || ch == '?');
@@ -117,7 +125,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 		{
 		  if (!*string)
 		    return FALSE;
-		  string++;
+		  string = g_utf8_next_char (string);
 		}
 	      string++;
 	      if (g_pattern_ph_match (pattern, string))
@@ -150,10 +158,11 @@ g_pattern_match (GPatternSpec *pspec,
   g_return_val_if_fail (pspec != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
 
+  if (pspec->min_length > string_length)
+    return FALSE;
+
   switch (pspec->match_type)
     {
-      gboolean result;
-      gchar *tmp;
     case G_MATCH_ALL:
       return g_pattern_ph_match (pspec->pattern, string);
     case G_MATCH_ALL_TAIL:
@@ -161,47 +170,23 @@ g_pattern_match (GPatternSpec *pspec,
 	return g_pattern_ph_match (pspec->pattern, string_reversed);
       else
 	{
-	  tmp = strdup_reverse (string_length, string);
+          gboolean result;
+          gchar *tmp;
+	  tmp = g_utf8_reverse (string_length, string);
 	  result = g_pattern_ph_match (pspec->pattern, tmp);
 	  g_free (tmp);
 	  return result;
 	}
     case G_MATCH_HEAD:
-      if (pspec->pattern_length > string_length)
-	return FALSE;
-      else if (pspec->pattern_length == string_length)
+      if (pspec->pattern_length == string_length)
 	return strcmp (pspec->pattern, string) == 0;
       else if (pspec->pattern_length)
 	return strncmp (pspec->pattern, string, pspec->pattern_length) == 0;
       else
 	return TRUE;
     case G_MATCH_TAIL:
-      if (pspec->pattern_length > string_length)
-	return FALSE;
-      else if (pspec->pattern_length == string_length)
-	{
-	  if (string_reversed)
-	    return strcmp (pspec->pattern, string_reversed) == 0;
-	  else
-	    {
-	      tmp = strdup_reverse (string_length, string);
-	      result = strcmp (pspec->pattern, tmp) == 0;
-	      g_free (tmp);
-	      return result;
-	    }
-	}
-      else if (pspec->pattern_length)
-	{
-	  if (string_reversed)
-	    return strncmp (pspec->pattern, string_reversed, pspec->pattern_length) == 0;
-	  else
-	    {
-	      tmp = strdup_reverse (string_length, string);
-	      result = strncmp (pspec->pattern, tmp, pspec->pattern_length) == 0;
-	      g_free (tmp);
-	      return result;
-	    }
-	}
+      if (pspec->pattern_length)
+        return strcmp (pspec->pattern, string + (string_length - pspec->pattern_length)) == 0;
       else
 	return TRUE;
     case G_MATCH_EXACT:
@@ -222,6 +207,7 @@ g_pattern_spec_new (const gchar *pattern)
   gboolean seen_joker = FALSE, seen_wildcard = FALSE, more_wildcards = FALSE;
   gint hw_pos = -1, tw_pos = -1, hj_pos = -1, tj_pos = -1;
   gboolean follows_wildcard = FALSE;
+  guint pending_jokers = 0;
   const gchar *s;
   gchar *d;
   guint i;
@@ -231,6 +217,7 @@ g_pattern_spec_new (const gchar *pattern)
   /* canonicalize pattern and collect necessary stats */
   pspec = g_new (GPatternSpec, 1);
   pspec->pattern_length = strlen (pattern);
+  pspec->min_length = 0;
   pspec->pattern = g_new (gchar, pspec->pattern_length + 1);
   d = pspec->pattern;
   for (i = 0, s = pattern; *s != 0; s++)
@@ -249,17 +236,29 @@ g_pattern_spec_new (const gchar *pattern)
 	  tw_pos = i;
 	  break;
 	case '?':
-	  if (hj_pos < 0)
-	    hj_pos = i;
-	  tj_pos = i;
-	  /* fall through */
+	  pending_jokers++;
+	  pspec->min_length++;
+	  continue;
 	default:
+	  for (; pending_jokers; pending_jokers--, i++) {
+	    *d++ = '?';
+  	    if (hj_pos < 0)
+	     hj_pos = i;
+	    tj_pos = i;
+	  }
 	  follows_wildcard = FALSE;
+	  pspec->min_length++;
 	  break;
 	}
       *d++ = *s;
       i++;
     }
+  for (; pending_jokers; pending_jokers--) {
+    *d++ = '?';
+    if (hj_pos < 0)
+      hj_pos = i;
+    tj_pos = i;
+  }
   *d++ = 0;
   seen_joker = hj_pos >= 0;
   seen_wildcard = hw_pos >= 0;
@@ -271,8 +270,8 @@ g_pattern_spec_new (const gchar *pattern)
       if (pspec->pattern[0] == '*')
 	{
 	  pspec->match_type = G_MATCH_TAIL;
-	  instring_reverse (pspec->pattern_length, pspec->pattern);
-	  pspec->pattern[--pspec->pattern_length] = 0;
+          memmove (pspec->pattern, pspec->pattern + 1, --pspec->pattern_length);
+	  pspec->pattern[pspec->pattern_length] = 0;
 	  return pspec;
 	}
       if (pspec->pattern[pspec->pattern_length - 1] == '*')
@@ -295,8 +294,11 @@ g_pattern_spec_new (const gchar *pattern)
     pspec->match_type = tw_pos > hw_pos ? G_MATCH_ALL_TAIL : G_MATCH_ALL;
   else /* seen_joker */
     pspec->match_type = tj_pos > hj_pos ? G_MATCH_ALL_TAIL : G_MATCH_ALL;
-  if (pspec->match_type == G_MATCH_ALL_TAIL)
-    instring_reverse (pspec->pattern_length, pspec->pattern);
+  if (pspec->match_type == G_MATCH_ALL_TAIL) {
+    gchar *tmp = pspec->pattern;
+    pspec->pattern = g_utf8_reverse (pspec->pattern_length, pspec->pattern);
+    g_free (tmp);
+  }
   return pspec;
 }
 
