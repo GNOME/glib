@@ -17,6 +17,23 @@ license terms described in the file COPYING
 included in this directory.
 
 
+Other notes:
 
+- Do not run 'make templates' unless you have
+  the latest cvs version of the glib-1-2
+  version of GLib and the latest CVS version
+  of gtk-doc.
 
+  (This is very important. Otherwise, the template
+  files may be come corrupted.)
+
+  Make sure that glib-config --prefix points
+  to the correct version of GLib.
+
+- As always, ChangeLog entries should be made for
+  each commit. These can be really brief
+  "documented GHashTable"; but if you are editing
+  something someone else wrote, please be specific.
+  (Or better, send the changes to them for their
+  approval, first)
 
