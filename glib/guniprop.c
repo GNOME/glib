@@ -27,6 +27,7 @@
 
 #include "glib.h"
 #include "gunichartables.h"
+#include "gunicodeprivate.h"
 
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
@@ -737,6 +738,28 @@ g_utf8_strup (const gchar *str,
   return result;
 }
 
+/* traverses the string checking for characters with combining class == 230
+ * until a base character is found */
+static gboolean
+has_more_above (gchar *str)
+{
+  gchar *p = str;
+  gint combining_class;
+
+  while (*p)
+    {
+      combining_class = _g_unichar_combining_class (g_utf8_get_char (p));
+      if (combining_class == 230)
+        return TRUE;
+      else if (combining_class == 0)
+        break;
+
+      p = g_utf8_next_char (p);
+    }
+
+  return FALSE;
+}
+
 static gsize
 real_tolower (const gchar *str,
 	      gssize       max_len,
@@ -758,9 +781,46 @@ real_tolower (const gchar *str,
 
       if (locale_type == LOCALE_TURKIC && c == 'I')
 	{
-	  /* I => LATIN SMALL LETTER DOTLESS I */
-	  len += g_unichar_to_utf8 (0x131, out_buffer ? out_buffer + len : NULL); 
-	}
+          if (g_utf8_get_char (p) == 0x0307)
+            {
+              /* I + COMBINING DOT ABOVE => i (U+0069) */
+              len += g_unichar_to_utf8 (0x0069, out_buffer ? out_buffer + len : NULL); 
+              p = g_utf8_next_char (p);
+            }
+          else
+            {
+              /* I => LATIN SMALL LETTER DOTLESS I */
+              len += g_unichar_to_utf8 (0x131, out_buffer ? out_buffer + len : NULL); 
+            }
+        }
+      /* Introduce an explicit dot above when lowercasing capital I's and J's
+       * whenever there are more accents above. [SpecialCasing.txt] */
+      else if (locale_type == LOCALE_LITHUANIAN && 
+               (c == 0x00cc || c == 0x00cd || c == 0x0128))
+        {
+          len += g_unichar_to_utf8 (0x0069, out_buffer ? out_buffer + len : NULL); 
+          len += g_unichar_to_utf8 (0x0307, out_buffer ? out_buffer + len : NULL); 
+
+          switch (c)
+            {
+            case 0x00cc: 
+              len += g_unichar_to_utf8 (0x0300, out_buffer ? out_buffer + len : NULL); 
+              break;
+            case 0x00cd: 
+              len += g_unichar_to_utf8 (0x0301, out_buffer ? out_buffer + len : NULL); 
+              break;
+            case 0x0128: 
+              len += g_unichar_to_utf8 (0x0303, out_buffer ? out_buffer + len : NULL); 
+              break;
+            }
+        }
+      else if (locale_type == LOCALE_LITHUANIAN && 
+               (c == 'I' || c == 'J' || c == 0x012e) && 
+               has_more_above (p))
+        {
+          len += g_unichar_to_utf8 (g_unichar_tolower (c), out_buffer ? out_buffer + len : NULL); 
+          len += g_unichar_to_utf8 (0x0307, out_buffer ? out_buffer + len : NULL); 
+        }
       else if (c == 0x03A3)	/* GREEK CAPITAL LETTER SIGMA */
 	{
 	  if ((max_len < 0 || p < str + max_len) && *p)

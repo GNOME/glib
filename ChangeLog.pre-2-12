@@ -1,3 +1,16 @@
+2003-09-10  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gunicodeprivate.h:
+	* glib/gunicollate.c:
+	* glib/gunidecomp.c:
+	* glib/guniprop.c:
+	* tests/casemap.txt:
+	* tests/gen-casemap-txt.pl: Unicode 4.0 special casing. (#114681)
+
+	* glib/gunicodeprivate.h: Use a private header instead of extern
+	function declarations (_g_utf8_normalize_wc,
+	_g_unichar_combining_class).
+
 Mon Sep  8 00:31:10 2003  Stefan Westerfeld  <stefan@space.twc.de>
 
         * glib/gbsearcharray.h: inserted casts for C++.

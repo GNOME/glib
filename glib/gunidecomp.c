@@ -26,6 +26,7 @@
 #include "glib.h"
 #include "gunidecomp.h"
 #include "gunicomp.h"
+#include "gunicodeprivate.h"
 
 
 #define CC_PART1(Page, Char) \
@@ -44,6 +45,12 @@
    : (((Char) >= 0xe0000 && (Char) <= G_UNICODE_LAST_CHAR) \
       ? CC_PART2 (((Char) - 0xe0000) >> 8, (Char) & 0xff) \
       : 0))
+
+gint
+_g_unichar_combining_class (gunichar uc)
+{
+  return COMBINING_CLASS (uc);
+}
 
 /**
  * g_unicode_canonical_ordering:

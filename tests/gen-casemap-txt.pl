@@ -148,6 +148,10 @@ print <<EOT;
 #
 tr_TR\ti\ti\t\x{0130}\t\x{0130}\t# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
 tr_TR\tI\t\x{0131}\tI\tI\t# I => LATIN SMALL LETTER DOTLESS I
+tr_TR\tI\x{0307}\ti\tI\x{0307}\tI\x{0307}\t# I => LATIN SMALL LETTER DOTLESS I
+tr_TR.UTF-8\ti\ti\t\x{0130}\t\x{0130}\t# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
+tr_TR.UTF-8\tI\t\x{0131}\tI\tI\t# I => LATIN SMALL LETTER DOTLESS I
+tr_TR.UTF-8\tI\x{0307}\ti\tI\x{0307}\tI\x{0307}\t# I => LATIN SMALL LETTER DOTLESS I
 # Test reordering of YPOGEGRAMMENI across other accents
 \t\x{03b1}\x{0345}\x{0314}\t\x{03b1}\x{0345}\x{314}\t\x{0391}\x{0345}\x{0314}\t\x{0391}\x{0314}\x{0399}\t
 \t\x{03b1}\x{0314}\x{0345}\t\x{03b1}\x{314}\x{0345}\t\x{0391}\x{0314}\x{0345}\t\x{0391}\x{0314}\x{0399}\t
@@ -159,6 +163,26 @@ tr_TR\tI\t\x{0131}\tI\tI\t# I => LATIN SMALL LETTER DOTLESS I
 # about the titlecase part here
 lt_LT\ti\x{117}\ti\x{117}\tIe\tIE\t
 lt_LT\tie\x{307}\tie\x{307}\tIe\tIE\t
+lt_LT\t\x{00cc}\ti\x{0307}\x{0300}\t\x{00cc}\t\x{00cc}\t # LATIN CAPITAL LETTER I WITH GRAVE
+lt_LT\t\x{00CD}\ti\x{0307}\x{0301}\t\x{00CD}\t\x{00CD}\t # LATIN CAPITAL LETTER I WITH ACUTE
+lt_LT\t\x{0128}\ti\x{0307}\x{0303}\t\x{0128}\t\x{0128}\t # LATIN CAPITAL LETTER I WITH TILDE
+lt_LT\tI\x{0301}\ti\x{0307}\x{0301}\tI\x{0301}\tI\x{0301}\t # LATIN CAPITAL LETTER I (with acute accent)
+lt_LT\tI\x{0300}\ti\x{0307}\x{0300}\tI\x{0300}\tI\x{0300}\t # LATIN CAPITAL LETTER I (with grave accent)
+lt_LT\tI\x{0303}\ti\x{0307}\x{0303}\tI\x{0303}\tI\x{0303}\t # LATIN CAPITAL LETTER I (with tilde above)
+lt_LT\tI\x{0328}\x{0301}\ti\x{0307}\x{0328}\x{0301}\tI\x{0328}\x{0301}\tI\x{0328}\x{0301}\t # LATIN CAPITAL LETTER I (with ogonek and acute accent)
+lt_LT\tJ\x{0301}\tj\x{0307}\x{0301}\tJ\x{0301}\tJ\x{0301}\t # LATIN CAPITAL LETTER J (with acute accent)
+lt_LT\t\x{012e}\x{0301}\t\x{012f}\x{0307}\x{0301}\t\x{012e}\x{0301}\t\x{012e}\x{0301}\t # LATIN CAPITAL LETTER I WITH OGONEK (with acute accent)
+lt_LT.UTF-8\ti\x{117}\ti\x{117}\tIe\tIE\t
+lt_LT.UTF-8\tie\x{307}\tie\x{307}\tIe\tIE\t
+lt_LT.UTF-8\t\x{00cc}\ti\x{0307}\x{0300}\t\x{00cc}\t\x{00cc}\t # LATIN CAPITAL LETTER I WITH GRAVE
+lt_LT.UTF-8\t\x{00CD}\ti\x{0307}\x{0301}\t\x{00CD}\t\x{00CD}\t # LATIN CAPITAL LETTER I WITH ACUTE
+lt_LT.UTF-8\t\x{0128}\ti\x{0307}\x{0303}\t\x{0128}\t\x{0128}\t # LATIN CAPITAL LETTER I WITH TILDE
+lt_LT.UTF-8\tI\x{0301}\ti\x{0307}\x{0301}\tI\x{0301}\tI\x{0301}\t # LATIN CAPITAL LETTER I (with acute accent)
+lt_LT.UTF-8\tI\x{0300}\ti\x{0307}\x{0300}\tI\x{0300}\tI\x{0300}\t # LATIN CAPITAL LETTER I (with grave accent)
+lt_LT.UTF-8\tI\x{0303}\ti\x{0307}\x{0303}\tI\x{0303}\tI\x{0303}\t # LATIN CAPITAL LETTER I (with tilde above)
+lt_LT.UTF-8\tI\x{0328}\x{0301}\ti\x{0307}\x{0328}\x{0301}\tI\x{0328}\x{0301}\tI\x{0328}\x{0301}\t # LATIN CAPITAL LETTER I (with ogonek and acute accent)
+lt_LT.UTF-8\tJ\x{0301}\tj\x{0307}\x{0301}\tJ\x{0301}\tJ\x{0301}\t # LATIN CAPITAL LETTER J (with acute accent)
+lt_LT.UTF-8\t\x{012e}\x{0301}\t\x{012f}\x{0307}\x{0301}\t\x{012e}\x{0301}\t\x{012e}\x{0301}\t # LATIN CAPITAL LETTER I WITH OGONEK (with acute accent)
 # Special case not at initial position
 \ta\x{fb04}\ta\x{fb04}\tAffl\tAFFL\t# FB04
 #

@@ -27,10 +27,7 @@
 #endif
 
 #include "glib.h"
-
-extern gunichar *_g_utf8_normalize_wc (const gchar    *str,
-				       gssize          max_len,
-				       GNormalizeMode  mode);
+#include "gunicodeprivate.h"
 
 /**
  * g_utf8_collate:
