@@ -1,3 +1,8 @@
+Sun Sep 19 23:56:15 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/goption.c (g_option_context_parse): Call error_func
+	on error, not post_parse_func again.  (#153107, Robert Ögren)
+
 Sun Sep 19 23:52:35 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.c (mklevel_prefix): 

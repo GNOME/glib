@@ -1083,8 +1083,8 @@ g_option_context_parse (GOptionContext   *context,
       GOptionGroup *group = list->data;
       
       if (group->error_func)
-	(* group->post_parse_func) (context, group,
-				    group->user_data, error);
+	(* group->error_func) (context, group,
+			       group->user_data, error);
       
       list = list->next;
     }
