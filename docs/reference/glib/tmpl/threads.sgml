@@ -1092,6 +1092,7 @@ a #GStaticMutex.
 @write_cond: 
 @read_counter: 
 @write: 
+@want_to_read: 
 @want_to_write: 
 
 <!-- ##### MACRO G_STATIC_RW_LOCK_INIT ##### -->

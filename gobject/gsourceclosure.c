@@ -150,7 +150,7 @@ closure_callback_get (gpointer     cb_data,
   *data = cb_data;
 }
 
-GSourceCallbackFuncs closure_callback_funcs = {
+static GSourceCallbackFuncs closure_callback_funcs = {
   (void (*) (gpointer)) g_closure_ref,
   (void (*) (gpointer)) g_closure_unref,
   closure_callback_get
@@ -171,6 +171,9 @@ void
 g_source_set_closure (GSource  *source,
 		      GClosure *closure)
 {
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (closure != NULL);
+
   if (!source->source_funcs->closure_callback &&
       source->source_funcs != &g_io_watch_funcs &&
       source->source_funcs != &g_timeout_funcs &&

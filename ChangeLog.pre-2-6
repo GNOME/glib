@@ -1,3 +1,7 @@
+Tue Sep  4 01:50:24 2001  Tim Janik  <timj@gtk.org>
+
+	* NEWS: updates for 1.3.7 release.
+
 Mon Aug 27 14:56:12 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.h: Add closure_marshal/closure_callback

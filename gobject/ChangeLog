@@ -1,3 +1,8 @@
+Tue Sep  4 01:49:18 2001  Tim Janik  <timj@gtk.org>
+
+	* gsourceclosure.c: make closure_callback_funcs static,
+	added some g_return_if_fail() statements.
+
 Mon Aug 27 14:55:27 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gsourceclosure.[ch] (g_source_set_closure): Implement.

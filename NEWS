@@ -1,3 +1,21 @@
+Overview of Changes in GLib 1.3.7:
+
+* Integrate GClosure support into the main loop
+* More GSignal convenience functions (macros)
+* Introduced weak references for GObject
+* Minor hash table optimizations
+* Main loop and threading improvements
+* Added g_ascii_* functions to be used for locale insensitive UTF8
+  compliant code instead of old string functions 
+* Overall fixes for UTF8 compliance
+* GString improvements
+* Reworked the GIOChannel code
+* Removed glib-config-2.0 in favour of pkgconfig
+* Make code 64bit clean
+* More G_CONST_RETURN fixes
+* Many improvements to the win32 code
+* Miscellaneous bug and API fixes
+
 Overview of Changes in GLib 1.3.6:
 
 * Threads have a "return value" from g_thread_join

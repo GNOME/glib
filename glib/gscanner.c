@@ -31,8 +31,6 @@
  * MT safe
  */
 
-#define		__gscanner_c__
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
