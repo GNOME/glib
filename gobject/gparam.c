@@ -257,6 +257,21 @@ g_param_spec_get_blurb (GParamSpec *pspec)
   return pspec->_blurb;
 }
 
+static void
+canonalize_key(gchar *key)
+{
+  gchar *p, c;
+
+  for (p = key; (c = *p) != 0; p++)
+    {
+      if (c != '-' &&
+	  (c < '0' || c > '9') &&
+	  (c < 'A' || c > 'Z') &&
+	  (c < 'a' || c > 'z'))
+	*p = '-';
+    }
+}
+
 gpointer
 g_param_spec_internal (GType        param_type,
 		       const gchar *name,
@@ -272,7 +287,7 @@ g_param_spec_internal (GType        param_type,
 
   pspec = (gpointer) g_type_create_instance (param_type);
   pspec->name = g_strdup (name);
-  g_strcanon (pspec->name, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-", '-');
+  canonalize_key (pspec->name);
   pspec->_nick = g_strdup (nick);
   pspec->_blurb = g_strdup (blurb);
   pspec->flags = (flags & G_PARAM_USER_MASK) | (flags & G_PARAM_MASK);
@@ -650,7 +665,7 @@ param_spec_ht_lookup (GHashTable  *hash_table,
       key.name = g_strdup (param_name);
       key.owner_type = owner_type;
       
-      g_strcanon (key.name, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-", '-');
+      canonalize_key (key.name);
       if (walk_ancestors)
 	do
 	  {
