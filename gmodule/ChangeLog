@@ -1,3 +1,7 @@
+Sat May  1 10:24:02 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* Makefile.am: use -avoid-version
+
 Fri Apr 23 09:03:48 1999  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (g_module_symbol): removed inline variable assignment.
