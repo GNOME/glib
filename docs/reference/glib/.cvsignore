@@ -8,4 +8,4 @@ sgml
 *.stamp
 glib.args
 glib.hierarchy
-glib.signal
+glib.signals

@@ -7,5 +7,5 @@ html
 sgml
 *.stamp
 gobject.args
+gobject.signals
 gobject.hierarchy
-gobject.signal
