@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,13 +161,9 @@ msgstr "145 का"
 msgid "Incorrect message size"
 msgstr "संदेश का आकार गलत है"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "साकेत त्रुटि"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "चैनल के फ्लैग का समायोजन संभव नहीं"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -479,3 +475,6 @@ msgstr ""
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr ""
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "चैनल के फ्लैग का समायोजन संभव नहीं"

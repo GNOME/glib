@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-06-07 03:25+0200\n"
 "Last-Translator: Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -163,13 +163,9 @@ msgstr ""
 msgid "Incorrect message size"
 msgstr "Ongeldige berichtlengte"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Socketfout"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Kanaalsetvlaggen worden niet ondersteund"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -518,3 +514,6 @@ msgstr "Ongeldige reeks in conversie-invoer"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Karakter buiten bereik van UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Kanaalsetvlaggen worden niet ondersteund"

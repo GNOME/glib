@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.5.2\n"
-"POT-Creation-Date: 2002-12-19 15:55+0100\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-19 15:57+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"

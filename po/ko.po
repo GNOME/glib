@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.4\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-12 11:42+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -160,13 +160,9 @@ msgstr "g_io_channel_read_to_endi로 raw 읽기를 할수 없습니다"
 msgid "Incorrect message size"
 msgstr "잘못된 메세지 크기"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "소켓 오류"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "채널 프래그 지정을 지원하지 않습니다"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -514,3 +510,6 @@ msgstr "변환 입력에서 잘못된 순서"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 범위 밖의 문자"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "채널 프래그 지정을 지원하지 않습니다"

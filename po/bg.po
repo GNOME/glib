@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-19 14:10+0200\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-19 00:55+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"

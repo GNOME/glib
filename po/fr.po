@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.4\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-15 16:53+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -162,13 +162,9 @@ msgstr "Ne peut faire une lecture brut dans g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Taille de message incorect"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Erreur de socket"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "La canal défini des drapeaux non supportés"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -529,3 +525,6 @@ msgstr "Séquence invalide dans la conversion de l'entrée"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Caractère hors des limites UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "La canal défini des drapeaux non supportés"

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-02-28 16:49+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -167,13 +167,9 @@ msgstr "Nie można wykonać surowego odczytu w g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Niepoprawny rozmiar danych"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Błąd przy operacji na gnieździe"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Ustawianie znaczników kanału nie jest obsługiwane"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -534,3 +530,6 @@ msgstr "Niepoprawna sekwencja na wejściu konwersji"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Ustawianie znaczników kanału nie jest obsługiwane"

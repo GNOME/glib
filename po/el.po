@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.0\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-03 20:09+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -176,13 +176,9 @@ msgstr "Δεν είναι δυνατή η raw ανάγνωση σε  g_io_channe
 msgid "Incorrect message size"
 msgstr "Εσφαλμένο μέγεθος μηνύματος"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Σφάλμα υποδοχέα (socket)"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Channel set flags δεν υποστηρίζεται"
 
 # gconf/gconfd.c:1676
 #: glib/gmarkup.c:222
@@ -545,3 +541,6 @@ msgstr "Μή έγκυρη σειρά στην είσοδο μεταροπής"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι έξω από την εμβέλεια για UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Channel set flags δεν υποστηρίζεται"

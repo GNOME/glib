@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-11-20 17:52+0200\n"
 "Last-Translator: Ales Nyakhaychyk <i18n@infonet.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -200,14 +200,9 @@ msgid "Incorrect message size"
 msgstr "Памылковы памер паведамленьня"
 
 # glib/giowin32.c:1037 glib/giowin32.c:1090
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Памылка сокету"
-
-# glib/giowin32.c:1290
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Набор сьцягоў каналу ня падтрымліваецца"
 
 # glib/gmarkup.c:219
 #: glib/gmarkup.c:222
@@ -606,3 +601,7 @@ msgstr "Нядапушчальная пасьлядоўнасьць для пе�
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Сымбаль па-за дыяпазонам UTF-16"
+
+# glib/giowin32.c:1290
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Набор сьцягоў каналу ня падтрымліваецца"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-03 17:03+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -160,13 +160,9 @@ msgstr "Nepodařilo se přímé čtení v g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Chybná velikost zprávy"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Chyba socketu"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Nepodporované nastavení příznaku kanálu"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -505,3 +501,6 @@ msgstr "Neplatná posloupnost na vstupu převodu"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Nepodporované nastavení příznaku kanálu"

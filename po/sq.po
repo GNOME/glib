@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-12 16:29+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian < gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -163,13 +163,9 @@ msgstr ""
 msgid "Incorrect message size"
 msgstr "Dimension mesazhi jokorrekt"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Gabim socket"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Impostimi i flags në kanal nuk suportohet"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -521,3 +517,6 @@ msgstr "Sekuencë e pavlefshme në hyrje për konvertimin"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Karakteri nuk ekziston në UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Impostimi i flags në kanal nuk suportohet"

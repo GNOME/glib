@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.1.5 to GLib-2.2.0
+=================================================
+
+* Fix a problem with g_thread_init() on 64-bit problems
+  [Alceste Scalas, Sebastian Wilhelmi]
+* Add assembly implementations of byteswap macros
+  for ia64 and x86_64. [Manish Singh]
+* IOChannel fixes for Win32 [Tor Lillqvist, Thorsten Maerz]
+* Updated translations (bg,ca,es,da,fi,lv,ru,sk)
+
 Overview of Changes from GLib 2.1.4 to GLib-2.1.5
 =================================================
 
@@ -8,7 +18,7 @@ Overview of Changes from GLib 2.1.4 to GLib-2.1.5
   if necessary [Manish Singh]
 * Further Trio build fixes [Matthias Clasen, Owen]
 * Hack around gcc, libtool issues with -pthread [Owen]
-* Docs improvements [Matthiass]
+* Docs improvements [Matthias]
 * Bug and portability fixes 
 * Updated and new translations (bg,de,fi,fr,sq,fr)
 
@@ -143,8 +153,8 @@ Overview of Changes in GLib 2.0.1
 * Fixes for g_log() and threading.
   [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann, Tim Janik]
 * Make g_print(), g_printerr(), g_warning(), etc, convert from
-  UTF-8 to the encoding of the locale [Sebastain Wilhelmi, Tim]
-* Fixes for GIOChannel on windows. [Tor Lillquist]
+  UTF-8 to the encoding of the locale [Sebastian Wilhelmi, Tim]
+* Fixes for GIOChannel on windows. [Tor Lillqvist]
 * Fix gsize/gint mismatches in giochannel.c [Miroslaw Dobrzanski-Neumann]
 * Fix file descriptor leak in g_file_get_contents() [Matthias]
 * Workaround iconv() problems on older Solaris [Lauri Alanko]
@@ -184,7 +194,7 @@ Overview of Changes in GLib 1.3.15:
 * Add G_DEBUG environment variable, G_DEBUG=fatal_warnings [Matthias Clasen]
 * Fixes for AIX compilation [Miroslaw Dobrzanski-Neumann]
 * Add padding to various structures [Owen Taylor, Tim]
-* Win32 fixes [Tor Lillquist]
+* Win32 fixes [Tor Lillqvist]
 
 Other contributors: James Henstridge, Ryan Lovett, Morten Welinder,
   Daniel Elstner

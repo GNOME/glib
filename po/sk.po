@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
-"POT-Creation-Date: 2002-12-18 13:39+0100\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-18 13:40+0100\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -176,8 +176,10 @@ msgid "Error on line %d: %s"
 msgstr "Chyba na riadku %d: %s"
 
 #: glib/gmarkup.c:385
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Nájdená prázdna entita '&;', platné entity sú: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:395
 #, c-format
@@ -223,7 +225,8 @@ msgstr "Odkaz na znak '%s' nie je kódom povoleného znaku"
 
 #: glib/gmarkup.c:573
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
+msgstr ""
+"Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
 
 #: glib/gmarkup.c:583
 msgid ""
@@ -268,7 +271,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1144
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Prebytočný znak '%s'. Bol očakávaný znak '=' za menom atribútu '%s' elementu "
 "'%s'"
@@ -298,14 +302,16 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
+msgstr ""
+"'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
 
 #: glib/gmarkup.c:1446
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
+msgstr ""
+"'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
 
 #: glib/gmarkup.c:1457
 #, c-format
@@ -339,7 +345,8 @@ msgstr ""
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
+msgstr ""
+"Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
 
 #: glib/gmarkup.c:1649
 msgid "Document ended unexpectedly inside an element name"
@@ -357,7 +364,8 @@ msgstr "Dokument neočakávane skončil v začiatočnej značke elementu."
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
-msgstr "Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
+msgstr ""
+"Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
 
 #: glib/gmarkup.c:1672
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -370,7 +378,8 @@ msgstr "Dokument neočakávane skončil v koncovej značke pre element '%s'"
 
 #: glib/gmarkup.c:1693
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
+msgstr ""
+"Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
 
 #: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -388,7 +397,8 @@ msgstr "Text skončil hneď po znaku '\\'.  (Text bol '%s')"
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
+msgstr ""
+"Text skončil pred nájdením zodpovedajúcej úvodzovky pre %c. (Text bol '%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -487,4 +497,3 @@ msgstr "Neplatná sekvencia na vstupe prevodu"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
-

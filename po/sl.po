@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2001-02-16 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -159,13 +159,9 @@ msgstr "Ne morem narediti surovega branja v g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Neveljavna velikost sporočila"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Napaka vtiča"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Nastavitev zastavic kanala ni podprta"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -503,3 +499,6 @@ msgstr "Neveljavna sekvenca na vhodu pretvorbe"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Znak izven intervala za UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Nastavitev zastavic kanala ni podprta"

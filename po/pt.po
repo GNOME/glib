@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-05-16 01:38+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -159,13 +159,9 @@ msgstr "Incapaz de fazer uma leitura em bruto de g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Tamanho de mensagem incorrecto"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Erro de socket"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Canal definiu flags não suportadas"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -516,3 +512,6 @@ msgstr "Sequência inválida na conversão da entrada"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Caracter fora do limite para UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Canal definiu flags não suportadas"

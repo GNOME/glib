@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3\n"
-"POT-Creation-Date: 2002-12-17 20:58-0300\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-03-06 01:31-0300\n"
 "Last-Translator: German Poo Caaman~o <gpoo@ubiobio.cl>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -111,7 +111,9 @@ msgstr "Ha ocurrido un error al abrir el archivo '%s':·%s"
 #: glib/gfileutils.c:532
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Ha ocurrido un error al obtener los atributos del archivo %s':·fstat()·falló:·%s"
+msgstr ""
+"Ha ocurrido un error al obtener los atributos del archivo %s':·fstat()·falló:"
+"·%s"
 
 #: glib/gfileutils.c:558
 #, c-format
@@ -136,7 +138,8 @@ msgstr "Ha ocurrido un error al crear el archivo '%s':·%s"
 #: glib/giochannel.c:1123
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "La conversión desde el conjunto de caracteres `%s'·a·`%s'·no es soportada"
+msgstr ""
+"La conversión desde el conjunto de caracteres `%s'·a·`%s'·no es soportada"
 
 #: glib/giochannel.c:1127
 #, c-format
@@ -178,7 +181,8 @@ msgid "Error on line %d: %s"
 msgstr "Error·en la línea·%d:·%s"
 
 #: glib/gmarkup.c:385
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son:·&amp;·&quot;·&lt;·&gt;"
 "·&apos;"
@@ -210,8 +214,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "La entidad no termina con un punto y coma; probablemente utilizó el caracter "
-"\"&\" sin la intención de indicar una entidad - nombre el signo \"&\" "
-"como &amp;"
+"\"&\" sin la intención de indicar una entidad - nombre el signo \"&\" como "
+"&amp;"
 
 #: glib/gmarkup.c:531
 #, c-format
@@ -219,8 +223,9 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Ha ocurrido un error al analizar '%s',·el cual debería tener un dígito dentro de "
-"un carácter de referencia·( por ejemplo &#234;·)·-·tal vez el dígito es demasiado grande"
+"Ha ocurrido un error al analizar '%s',·el cual debería tener un dígito "
+"dentro de un carácter de referencia·( por ejemplo &#234;·)·-·tal vez el "
+"dígito es demasiado grande"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -279,7 +284,8 @@ msgstr ""
 
 #: glib/gmarkup.c:1144
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Caracter impropio '%s',·se esperaba el caracter '='·después del nombre de "
 "atributo·'%s'·del elemento·'%s'"
@@ -412,7 +418,8 @@ msgstr ""
 #: glib/gshell.c:530
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "El texto termina justo después de un carácter '\\'. (El texto era '%s')"
+msgstr ""
+"El texto termina justo después de un carácter '\\'. (El texto era '%s')"
 
 #: glib/gshell.c:537
 #, c-format
@@ -460,8 +467,8 @@ msgstr "Ha ocurrido un error al ejecutar el proceso hijo (%s)"
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"Ha ocurrido un error enla creación de un pipe para la comunicación con "
-"el proceso hijo (%s)"
+"Ha ocurrido un error enla creación de un pipe para la comunicación con el "
+"proceso hijo (%s)"
 
 #: glib/gspawn.c:167
 #, c-format
@@ -471,7 +478,9 @@ msgstr "Ha ocurrido un error en la lectura de datos desde el proceso hijo (%s)"
 #: glib/gspawn.c:299
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Ha ocurrido un error inesperado en select()·leyendo datos desde el proceso hijo (%s)"
+msgstr ""
+"Ha ocurrido un error inesperado en select()·leyendo datos desde el proceso "
+"hijo (%s)"
 
 #: glib/gspawn.c:382
 #, c-format
@@ -491,7 +500,9 @@ msgstr "Ha ocurrido un error al ejecutar el proceso hijo \"%s\" (%s)"
 #: glib/gspawn.c:1186
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Ha ocurrido un error al redirigir la salida o la entrada del proceso hijo (%s)"
+msgstr ""
+"Ha ocurrido un error al redirigir la salida o la entrada del proceso hijo (%"
+"s)"
 
 #: glib/gspawn.c:1195
 #, c-format
@@ -506,7 +517,9 @@ msgstr "Ha ocurrido un error desconocido al ejecutar el proceso hijo \"%s\""
 #: glib/gspawn.c:1225
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Ha ocurrido un error al intentar leer suficientes datos desde el pipe hijo (%s)"
+msgstr ""
+"Ha ocurrido un error al intentar leer suficientes datos desde el pipe hijo (%"
+"s)"
 
 #: glib/gutf8.c:982
 msgid "Character out of range for UTF-8"
@@ -520,4 +533,3 @@ msgstr "La secuencia en la conversión de entrada no es válida"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "El caracter se encuentra fuera de los márgenes de UTF 16"
-

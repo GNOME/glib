@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-03-17 16:34+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -159,13 +159,9 @@ msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 msgid "Incorrect message size"
 msgstr "不正确的消息大小"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "套接字错误"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "不支持通道设置标志"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -479,3 +475,6 @@ msgstr "转换输入中出现无效序列"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "不支持通道设置标志"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jbv@euskalnet.net>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -160,12 +160,8 @@ msgstr ""
 msgid "Incorrect message size"
 msgstr ""
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
-msgstr ""
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
 msgstr ""
 
 #: glib/gmarkup.c:222

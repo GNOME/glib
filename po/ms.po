@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-11-04 23:48+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -159,13 +159,9 @@ msgstr "Tak dapat membuat bacaan rawak pada g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Saiz mesej tidak betul"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Ralat soket"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Flag set saluran disokong"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -503,3 +499,6 @@ msgstr "Turutan tidak sah semasa penukaran input"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Aksara di luar julat UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Flag set saluran disokong"

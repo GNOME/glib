@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-11-26 20:54+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -164,13 +164,9 @@ msgstr "Kan inte göra en rå läsning i g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Felaktig meddelandestorlek"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Uttagsfel"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Kanalinställningsflaggor stöds inte"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -519,6 +515,9 @@ msgstr "Ogiltig sekvens i konverteringsindata"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Tecknet är utanför intervallet för UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Kanalinställningsflaggor stöds inte"
 
 #~ msgid ""
 #~ "The hostname of the URI `%s' is contains invalidly escaped characters"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-05-06 16:33GMT\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -161,13 +161,9 @@ msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Kích thước thông điệp sai"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Lỗi Socket"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "Kênh đặt các flag không được hỗ trợ"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -513,3 +509,6 @@ msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự nằm ngoài vùng UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Kênh đặt các flag không được hỗ trợ"

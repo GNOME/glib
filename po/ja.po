@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.3\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-12-05 01:51+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -159,13 +159,9 @@ msgstr "g_io_channel_read_to_end では raw モードで読めません"
 msgid "Incorrect message size"
 msgstr "メッセージの大きさが変です"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Socket のエラー"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "フラグの設定がサポートされていません"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -508,3 +504,6 @@ msgstr "変換への入力でおかしなシーケンス"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 の範囲外の文字"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "フラグの設定がサポートされていません"

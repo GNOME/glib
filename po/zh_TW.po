@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
+"POT-Creation-Date: 2002-12-20 10:12-0500\n"
 "PO-Revision-Date: 2002-03-31 05:02+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -159,13 +159,9 @@ msgstr "g_io_channel_read_to_end 中無法讀取原始資料"
 msgid "Incorrect message size"
 msgstr "訊息長度不正確"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Socket 發生錯誤"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "不支援設定管道旗標的操作"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -480,3 +476,6 @@ msgstr "轉換輸入時遇到不正確的次序"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "不支援設定管道旗標的操作"
