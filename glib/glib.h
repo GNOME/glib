@@ -44,6 +44,7 @@
 #include <glist.h>
 #include <gmacros.h>
 #include <gmain.h>
+#include <gmarkup.h>
 #include <gmem.h>
 #include <gmessages.h>
 #include <gnode.h>

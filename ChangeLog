@@ -1,3 +1,16 @@
+2000-10-24  Havoc Pennington  <hp@pobox.com>
+
+        * gmarkup.h, gmarkup.c: New module to parse a simple
+	markup language
+	
+	* Makefile.am: add gmarkup.h, gmarkup.c
+
+	* tests/Makefile.am: add markup-test
+
+	* gstring.h (g_string_new_len): new function to create a string
+	with a length
+	(g_string_new): avoid a gratuitous realloc
+
 2000-10-26  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.{mingw,msc}.in: Cosmetics.

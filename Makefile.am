@@ -61,6 +61,7 @@ libglib_1_3_la_SOURCES = 	\
 	giounix.c       	\
 	glist.c			\
 	gmain.c         	\
+	gmarkup.c		\
 	gmem.c			\
 	gmessages.c		\
 	gnode.c			\
@@ -109,6 +110,7 @@ glibinclude_HEADERS =   \
 	glist.h		\
 	gmacros.h	\
 	gmain.h		\
+	gmarkup.h	\
 	gmem.h		\
 	gmessages.h	\
 	gnode.h		\

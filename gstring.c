@@ -243,12 +243,31 @@ g_string_new (const gchar *init)
 {
   GString *string;
 
-  string = g_string_sized_new (2);
+  string = g_string_sized_new (init ? strlen (init) + 2 : 2);
 
   if (init)
     g_string_append (string, init);
 
   return string;
+}
+
+GString*
+g_string_new_len (const gchar *init,
+                  gint         len)
+{
+  GString *string;
+
+  if (len < 0)
+    return g_string_new (init);
+  else
+    {
+      string = g_string_sized_new (len);
+      
+      if (init)
+        g_string_append_len (string, init, len);
+      
+      return string;
+    }
 }
 
 gchar*

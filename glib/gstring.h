@@ -53,6 +53,8 @@ gchar*	      g_string_chunk_insert_const  (GStringChunk *chunk,
 /* Strings
  */
 GString*     g_string_new	        (const gchar	 *init);
+GString*     g_string_new_len           (const gchar     *init,
+                                         gint             len);
 GString*     g_string_sized_new         (guint		  dfl_size);
 gchar*	     g_string_free	        (GString	 *string,
 					 gboolean	  free_segment);
