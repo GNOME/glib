@@ -10,5 +10,5 @@ glib_mkenums=glib-mkenums
 Name: GLib
 Description: C Utility Library
 Version: @VERSION@
-Libs: -L${libdir} -lglib-1.3 @ICONV_LIBS@ @INTLLIBS@
+Libs: -L${libdir} -lglib-1.3 @INTLLIBS@ @ICONV_LIBS@
 Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include 
