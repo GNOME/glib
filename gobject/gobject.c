@@ -1440,7 +1440,7 @@ g_value_object_lcopy_value (const GValue *value,
 
 void
 g_value_set_object (GValue   *value,
-		    gpointer *v_object)
+		    gpointer  v_object)
 {
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
   

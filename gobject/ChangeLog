@@ -1,3 +1,8 @@
+Thu May 24 08:52:02 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.[ch] (g_value_set_object): gpointer, not
+	gpointer *.
+
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am (bin_SCRIPTS): made 'make distcheck' happy.
