@@ -202,7 +202,9 @@ g_cond_timed_wait_posix_impl (GCond * cond,
 
   end_time.tv_sec = abs_time->tv_sec;
   end_time.tv_nsec = abs_time->tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC);
-  g_assert (end_time.tv_nsec < G_NSEC_PER_SEC);
+
+  g_return_val_if_fail (end_time.tv_nsec < G_NSEC_PER_SEC, TRUE);
+
   result = pthread_cond_timedwait ((pthread_cond_t *) cond,
 				   (pthread_mutex_t *) entered_mutex,
 				   &end_time);

@@ -1,3 +1,8 @@
+Fri May  4 04:14:45 2001  Tim Janik  <timj@gtk.org>
+
+	* gthread-posix.c (g_cond_timed_wait_posix_impl): don't g_assert()
+	the user specified time, but g_return_val_if_fail() here.
+
 2001-04-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c: Added special case for priorities on
