@@ -35,7 +35,7 @@ struct _GAsyncQueue
   GCond *cond;
   GQueue *queue;
   guint waiting_threads;
-  guint ref_count;
+  gint32 ref_count;
 };
 
 /**
@@ -61,7 +61,8 @@ g_async_queue_new ()
  * g_async_queue_ref:
  * @queue: a #GAsyncQueue.
  *
- * Increases the reference count of the asynchronous @queue by 1.
+ * Increases the reference count of the asynchronous @queue by 1. You
+ * do not need to hold the lock to call this function.
  **/
 void 
 g_async_queue_ref (GAsyncQueue *queue)
@@ -69,17 +70,14 @@ g_async_queue_ref (GAsyncQueue *queue)
   g_return_if_fail (queue);
   g_return_if_fail (queue->ref_count > 0);
   
-  g_mutex_lock (queue->mutex);
-  queue->ref_count++;
-  g_mutex_unlock (queue->mutex);
+  g_atomic_int_inc (&queue->ref_count);
 }
 
 /**
  * g_async_queue_ref_unlocked:
  * @queue: a #GAsyncQueue.
  * 
- * Increases the reference count of the asynchronous @queue by 1. This
- * function must be called while holding the @queue's lock.
+ * Increases the reference count of the asynchronous @queue by 1.
  **/
 void 
 g_async_queue_ref_unlocked (GAsyncQueue *queue)
@@ -87,7 +85,7 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
   g_return_if_fail (queue);
   g_return_if_fail (queue->ref_count > 0);
   
-  queue->ref_count++;
+  g_atomic_int_inc (&queue->ref_count);
 }
 
 /**
@@ -97,33 +95,16 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
  * Decreases the reference count of the asynchronous @queue by 1 and
  * releases the lock. This function must be called while holding the
  * @queue's lock. If the reference count went to 0, the @queue will be
- * destroyed and the memory allocated will be freed. So you are not
- * allowed to use the @queue afterwards, as it might have disappeared.
- * The obvious asymmetry (it is not named
- * g_async_queue_unref_unlocked(<!-- -->)) is because the queue can't be
- * unlocked after unreffing it, as it might already have disappeared.
+ * destroyed and the memory allocated will be freed.
  **/
 void 
 g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 {
-  gboolean stop;
-
   g_return_if_fail (queue);
   g_return_if_fail (queue->ref_count > 0);
 
-  queue->ref_count--;
-  stop = (queue->ref_count == 0);
   g_mutex_unlock (queue->mutex);
-  
-  if (stop)
-    {
-      g_return_if_fail (queue->waiting_threads == 0);
-      g_mutex_free (queue->mutex);
-      if (queue->cond)
-	g_cond_free (queue->cond);
-      g_queue_free (queue->queue);
-      g_free (queue);
-    }
+  g_async_queue_unref (queue);
 }
 
 /**
@@ -133,16 +114,24 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
  * Decreases the reference count of the asynchronous @queue by 1. If
  * the reference count went to 0, the @queue will be destroyed and the
  * memory allocated will be freed. So you are not allowed to use the
- * @queue afterwards, as it might have disappeared.
+ * @queue afterwards, as it might have disappeared. You do not need to
+ * hold the lock to call this function.
  **/
 void 
 g_async_queue_unref (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
   g_return_if_fail (queue->ref_count > 0);
-
-  g_mutex_lock (queue->mutex);
-  g_async_queue_unref_and_unlock (queue);
+  
+  if (g_atomic_int_dec_and_test (&queue->ref_count))
+    {
+      g_return_if_fail (queue->waiting_threads == 0);
+      g_mutex_free (queue->mutex);
+      if (queue->cond)
+	g_cond_free (queue->cond);
+      g_queue_free (queue->queue);
+      g_free (queue);
+    }
 }
 
 /**

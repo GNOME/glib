@@ -46,17 +46,14 @@ GAsyncQueue*  g_async_queue_new                (void);
 void          g_async_queue_lock               (GAsyncQueue *queue);
 void          g_async_queue_unlock             (GAsyncQueue *queue);
 
-/* Ref and unref the GAsyncQueue. g_async_queue_unref_unlocked makes
- * no sense, as after the unreffing the Queue might be gone and can't
- * be unlocked. So you have a function to call, if you don't hold the
- * lock (g_async_queue_unref) and one to call, when you already hold
- * the lock (g_async_queue_unref_and_unlock). After that however, you
- * don't hold the lock anymore and the Queue might in fact be
- * destroyed, if you unrefed to zero. */
+/* Ref and unref the GAsyncQueue. */
 void          g_async_queue_ref                (GAsyncQueue *queue);
-void          g_async_queue_ref_unlocked       (GAsyncQueue *queue);
 void          g_async_queue_unref              (GAsyncQueue *queue);
+#ifndef G_DISABLE_DEPRECATED
+/* You don't have to hold the lock for calling *_ref and *_unref anymore. */
+void          g_async_queue_ref_unlocked       (GAsyncQueue *queue);
 void          g_async_queue_unref_and_unlock   (GAsyncQueue *queue);
+#endif /* !G_DISABLE_DEPRECATED */
 
 /* Push data into the async queue. Must not be NULL. */
 void          g_async_queue_push               (GAsyncQueue *queue,

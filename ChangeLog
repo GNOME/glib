@@ -1,3 +1,11 @@
+2004-02-27  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/gasyncqueue.c, glib/gasyncqueue.h: Use
+	g_atomic_int_(inc|dec_and_test) for reference
+	counting. g_async_queue_unref_and_unlock and
+	g_async_queue_ref_locked is deprecated, but still there to
+	preserve ABI.
+
 Fri Feb 27 02:00:34 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* acglib.m4: quote AC_DEFUN macro names so automake
