@@ -1,3 +1,8 @@
+2000-07-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* libgplugin_a.c, testgmodule.c: Use g_path_get_basename instead
+	of the deprecated g_basename.
+
 2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.h: include glib.h before doing extern "C". Makes some C++

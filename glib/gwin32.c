@@ -131,6 +131,7 @@ struct dirent*
 g_win32_readdir (DIR *dir)
 {
   static struct dirent result;
+  gchar *basename;
 
   g_return_val_if_fail (dir != NULL, NULL);
 
@@ -153,7 +154,12 @@ g_win32_readdir (DIR *dir)
 	    }
 	}
     }
-  strcpy (result.d_name, g_basename (((LPWIN32_FIND_DATA) dir->find_file_data)->cFileName));
+  
+  basename = g_path_get_basename (((LPWIN32_FIND_DATA) dir->find_file_data)->cFileName);
+
+  strcpy (result.d_name, basename);
+
+  g_free (basename);
       
   return &result;
 }

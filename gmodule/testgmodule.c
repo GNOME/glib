@@ -46,6 +46,7 @@ main (int   arg,
 {
   GModule *module_self, *module_a, *module_b;
   gchar *string;
+  gchar *basename;
   gchar *plugin_a, *plugin_b;
   SimpleFunc f_a, f_b, f_self;
   GModuleFunc gmod_f;
@@ -76,7 +77,9 @@ main (int   arg,
     }
   g_print ("check that not yet bound symbols in shared libraries of main module are retrievable:\n");
   string = "g_module_close";
-  g_print ("retrive symbol `%s' from \"%s\":\n", string, g_basename (g_module_name (module_self)));
+  basename = g_path_get_basename (g_module_name (module_self));
+  g_print ("retrive symbol `%s' from \"%s\":\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     {
       g_print ("error: %s\n", g_module_error ());
@@ -101,14 +104,18 @@ main (int   arg,
   /* get plugin specific symbols and call them
    */
   string = "gplugin_a_func";
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_a)));
+  basename = g_path_get_basename (g_module_name (module_a));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
   string = "gplugin_b_func";
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_b)));
+  basename = g_path_get_basename (g_module_name (module_b));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
       g_print ("error: %s\n", g_module_error ());
@@ -122,19 +129,25 @@ main (int   arg,
   /* get and call globally clashing functions
    */
   string = "g_clash_func";
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_self)));
+  basename = g_path_get_basename (g_module_name (module_self));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     {
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_a)));
+  basename = g_path_get_basename (g_module_name (module_a));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_b)));
+  basename = g_path_get_basename (g_module_name (module_b));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
       g_print ("error: %s\n", g_module_error ());
@@ -150,17 +163,23 @@ main (int   arg,
   /* get and call clashing plugin functions
    */
   string = "gplugin_clash_func";
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_self)));
+  basename = g_path_get_basename (g_module_name (module_self));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_self, string, (gpointer) &f_self))
     f_self = NULL;
   g_print ("retrived function `%s' from self: %p\n", string, f_self);
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_a)));
+  basename = g_path_get_basename (g_module_name (module_a));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_b)));
+  basename = g_path_get_basename (g_module_name (module_b));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_b, string, (gpointer) &f_b))
     {
       g_print ("error: %s\n", g_module_error ());
@@ -176,7 +195,9 @@ main (int   arg,
   /* call gmodule function form A
    */
   string = "gplugin_a_module_func";
-  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_a)));
+  basename = g_path_get_basename (g_module_name (module_a));
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, basename);
+  g_free (basename);
   if (!g_module_symbol (module_a, string, (gpointer) &gmod_f))
     {
       g_print ("error: %s\n", g_module_error ());

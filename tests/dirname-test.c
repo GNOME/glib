@@ -90,7 +90,7 @@ main (int   argc,
     {
       gchar *dirname;
 
-      dirname = g_dirname (dirname_checks[i].filename);
+      dirname = g_path_get_dirname (dirname_checks[i].filename);
       g_assert (strcmp (dirname, dirname_checks[i].dirname) == 0);
       g_free (dirname);
     }

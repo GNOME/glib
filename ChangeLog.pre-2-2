@@ -1,5 +1,17 @@
 2000-07-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gutils.c, glib.h: Mark the functions g_basename and g_dirname
+	deprecated. They will issue an warning once, when compiled with
+	G_ENABLE_DEBUG, but continue to work as before. Instead the
+	functions g_path_get_basename and g_path_get_dirname should be
+	used, which BOTH return newly allocated memory, that has to freed
+	by g_free. The new g_path_get_basename now strips trailing slashes
+	from the path. This fixes #5097. For discussion see
+	http://mail.gnome.org/pipermail/gtk-devel-list/2000-April/003139.html
+
+	* gwin32.c, testglib.c, tests/dirname-test.c: Use the new
+	functions instead of the old ones.
+
 	* ghash.c, gscanner.c, glib.h: Mark the functions
 	g_hash_table_freeze, g_hash_table_thaw and thus
 	g_scanner_freeze_symbol_table and g_scanner_thaw_symbol_table

@@ -1701,15 +1701,22 @@ gint	g_vsnprintf		(gchar	     *string,
 				 gulong	      n,
 				 gchar const *format,
 				 va_list      args);
-gchar*	g_basename		(const gchar *file_name);
 /* Check if a file name is an absolute path */
 gboolean g_path_is_absolute	(const gchar *file_name);
 /* In case of absolute paths, skip the root part */
 gchar*  g_path_skip_root	(gchar       *file_name);
 
-/* strings are newly allocated with g_malloc() */
+/* These two functions are deprecated and will be removed in the next
+ * major release of GLib. Use g_path_get_dirname/g_path_get_basename
+ * instead. Whatch out! The string returned by g_path_get_basename
+ * must be g_freed, while the string returned by g_basename must not.*/
+gchar*	g_basename		(const gchar *file_name);
 gchar*	g_dirname		(const gchar *file_name);
+
+/* The returned strings are newly allocated with g_malloc() */
 gchar*	g_get_current_dir	(void);
+gchar*	g_path_get_basename	(const gchar *file_name);
+gchar*	g_path_get_dirname	(const gchar *file_name);
 
 /* Get the codeset for the current locale */
 /* gchar * g_get_codeset    (void); */

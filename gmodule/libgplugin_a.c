@@ -56,11 +56,12 @@ gplugin_a_module_func (GModule *module)
 {
   void (*f) (void) = NULL;
   gchar *string;
+  gchar *basename = g_path_get_basename (g_module_name (module));
 
   string = "gplugin_say_boo_func";
   g_print ("GPluginA: retrive symbol `%s' from \"%s\"\n",
-	   string,
-	   g_basename (g_module_name (module)));
+	   string, basename);
+  g_free (basename);
   if (!g_module_symbol (module, string, (gpointer) &f))
     {
       g_print ("error: %s\n", g_module_error ());

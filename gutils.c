@@ -278,6 +278,17 @@ gchar*
 g_basename (const gchar	   *file_name)
 {
   register gchar *base;
+#ifdef G_ENABLE_DEBUG
+  static gboolean first_call = TRUE;
+
+  if (first_call)
+    {
+      g_warning("g_basename is deprecated. Use g_path_get_basename instead.");
+      g_warning("Watch out! You have to g_free the string returned by "
+		"g_path_get_basename.");
+      first_call = FALSE;
+    }
+#endif /* G_ENABLE_DEBUG */
   
   g_return_val_if_fail (file_name != NULL, NULL);
   
@@ -291,6 +302,52 @@ g_basename (const gchar	   *file_name)
 #endif /* G_OS_WIN32 */
   
   return (gchar*) file_name;
+}
+
+gchar*
+g_path_get_basename (const gchar   *file_name)
+{
+  register gint base;
+  register gint last_nonslash;
+  guint len;
+  gchar *retval;
+ 
+  g_return_val_if_fail (file_name != NULL, NULL);
+  
+  if (file_name[0] == '\0')
+    /* empty string */
+    return g_strdup (".");
+
+  last_nonslash = strlen (file_name) - 1;
+
+  while (last_nonslash >= 0 && file_name [last_nonslash] == G_DIR_SEPARATOR)
+    last_nonslash--;
+
+  if (last_nonslash == -1)
+    /* string only containing slashes */
+    return g_strdup (G_DIR_SEPARATOR_S);
+
+#ifdef G_OS_WIN32
+  if (last_nonslash == 1 && isalpha (file_name[0]) && file_name[1] == ':')
+    /* string only containing slashes and a drive */
+    return g_strdup (G_DIR_SEPARATOR_S);
+#endif /* G_OS_WIN32 */
+
+  base = last_nonslash;
+
+  while (base >=0 && file_name [base] != G_DIR_SEPARATOR)
+    base--;
+
+#ifdef G_OS_WIN32
+  if (base == -1 && isalpha (file_name[0]) && file_name[1] == ':')
+    base = 1;
+#endif /* G_OS_WIN32 */
+
+  len = last_nonslash - base;
+  retval = g_malloc (len + 1);
+  memcpy (retval, file_name + base + 1, len);
+  retval [len] = '\0';
+  return retval;
 }
 
 gboolean
@@ -326,7 +383,7 @@ g_path_skip_root (gchar *file_name)
 }
 
 gchar*
-g_dirname (const gchar	   *file_name)
+g_path_get_dirname (const gchar	   *file_name)
 {
   register gchar *base;
   register guint len;
@@ -345,6 +402,22 @@ g_dirname (const gchar	   *file_name)
   base[len] = 0;
   
   return base;
+}
+
+gchar*
+g_dirname (const gchar	   *file_name)
+{
+#ifdef G_ENABLE_DEBUG
+  static gboolean first_call = TRUE;
+
+  if (first_call)
+    {
+      g_warning("g_dirname is deprecated. Use g_path_get_dirname instead.");
+      first_call = FALSE;
+    }
+#endif /* G_ENABLE_DEBUG */
+
+  return g_path_get_dirname (file_name);
 }
 
 gchar*

@@ -378,12 +378,12 @@ main (int   argc,
 #endif	/* G_HAVE_GINT64 */
   g_print ("\n");
 
-  g_print ("checking g_dirname()...");
+  g_print ("checking g_path_get_dirname()...");
   for (i = 0; i < n_dirname_checks; i++)
     {
       gchar *dirname;
 
-      dirname = g_dirname (dirname_checks[i].filename);
+      dirname = g_path_get_dirname (dirname_checks[i].filename);
       if (strcmp (dirname, dirname_checks[i].dirname) != 0)
 	{
 	  g_print ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
