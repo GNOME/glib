@@ -1,14 +1,14 @@
-# ----------------------------------------------------
+# Tamil translation of GLib.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # DINESH NADARAJAH <n_dinesh@yahoo.com>, 2001.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-09-18 18:22+0200\n"
+"POT-Creation-Date: 2001-09-23 10:34-0400\n"
 "PO-Revision-Date: 2001-06-29 23:21-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
-"Language-Team: Tamil\n"
+"Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,32 +45,32 @@ msgstr "À¢ıÉ¨¼ôÒ '%s', '%s' ÌÈ¢ì ¸½Á¢üÌ Á¡üÈ ÓÊÂÅ¢ø¨Ä"
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "The URI `%s' is not an absolute URI using the file scheme"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "`%s' ¯ûÇ¨Á URI §¸¡ôÀ¢ø `#' ­øÄ¡Áø ­Õì¸Ä¡õ"
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "URI `%s' ¦ºøÖÀÊÂ¡¸¡¾Ğ"
 
 #: glib/gconvert.c:1238
 #, c-format
 msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "URI `%s' ­ı Å¢Õó§¾¡õÒô-¦ÀÂÃ¢ø ¦ºøÖÀÊÂ¡¸¡¾ 'escaped' ÅÃ¢ÔÕ¸û"
 
 #: glib/gconvert.c:1254
 #, c-format
 msgid "The URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "URI `%s' ­ø ¦ºøÖÀÊÂ¡¸¡¾ 'escaped' ÅÃ¢ÔÕ¸û"
 
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "'%s' À¡¨¾ô-¦ÀÂ÷ µ÷ ÓüÚÚô À¡¨¾ «øÄ"
 
 #: glib/gconvert.c:1311
 #, fuzzy
@@ -158,7 +158,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"À¢Ã¾¢¿¢¾¢ ';'¯¼ı ÓÊÅ¨¼ÂÅ¢ø¨Ä; ¿£í¸û À¢Ã¾¢¿¢¾¢ ´ı¨È ¦¾¡¼í¸ §Â¡º¢ì¸¡Áø '&' "
+"À¢Ã¾¢¿¢¾¢ ';' ¯¼ı ÓÊÅ¨¼ÂÅ¢ø¨Ä; ¿£í¸û À¢Ã¾¢¿¢¾¢ ´ı¨È ¦¾¡¼í¸ §Â¡º¢ì¸¡Áø '&' "
 "ÀÂıÀÎò¾¢ ­Õì¸Ä¡õ - '&'¨º &amp ¬¸ Å¢ÎÅ¢;"
 
 #: glib/gmarkup.c:525
@@ -167,6 +167,8 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
 
 #: glib/gmarkup.c:550
 #, c-format
@@ -183,6 +185,9 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
 
 #: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
 msgid "Invalid UTF-8 encoded text"
@@ -224,9 +229,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Tek karakter '%s', '%s' elamanin başlangıç etiketinin sonuna '>' veya '/' "
-"bekleniyor, veya bir özellik; özellik isminde geçersiz bir karakter "
-"kullanmış olabilirsiniz"
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
 
 #: glib/gmarkup.c:1224
 #, c-format
@@ -234,8 +239,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Tek karakter '%s',element '%s'in özelligi '%s''e değer verilirken eşittir "
-"işaretinden sonra açık alıntı işareti bekleniyor"
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
 
 #: glib/gmarkup.c:1351
 #, c-format
@@ -243,8 +248,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'</' karakterlerini takip eden '%s' geçerli bir karakter değildir; '%s' bir "
-"eleman ismiyle başlamıyor olabilir"
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
 
 #: glib/gmarkup.c:1388
 #, c-format
@@ -262,8 +267,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"Kapalı eleman '%s' den sonra gelen '%s' geçerli bir karakter değildir; izin "
-"verilen karakter ise '>'"
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
 
 #: glib/gmarkup.c:1541
 msgid "Document was empty or contained only whitespace"
@@ -306,8 +311,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Doküman özellik adını takip eden eşittir isaretinden sonra beklenmedik bir "
-"şekilde bitti: özellik degeri yok"
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
 
 #: glib/gmarkup.c:1599
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -320,7 +325,7 @@ msgstr "'%s' ±ıÛõ ãÎ-«¨¼Â¡Ç ´ğÎ ¯û§Ç ¬Å½õ ¾¢Ë¦ÃÉ ÓÊÅ¨¼ó¾Ğ"
 
 #: glib/gmarkup.c:1620
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
+msgstr "¬Å½õ ¾¢Ë¦ÃÉ ÌÈ¢ôÒ¨ÃÔø «øÄĞ ¦ºÂÄ¡ì¸õ ¬¨½Ôø ÓÊÅ¨¼ó¾Ğ"
 
 #: glib/gshell.c:69
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -353,6 +358,8 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
 
 #: glib/gspawn-win32.c:837 glib/gspawn.c:907
 #, c-format
@@ -397,31 +404,31 @@ msgstr "(%s) ¦¾¡¼í¸ ÓÊÂÅ¢ø¨Ä"
 #: glib/gspawn.c:1131
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
+msgstr "§ºö (%s) ¦ºÂÄ¸ò¾¢ı ¦ÅÇ¢Â£¼¨Ä «øÄĞ ¯ûÇ¼¨Ä ¾¢¨º-Á¡üÚõ§À¡Ğ À¢¨Æ"
 
 #: glib/gspawn.c:1140
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr ""
+msgstr "§ºö (%s) ¦ºÂÄ¸ò¨¾ ¦¾¡¼í¸ ÓÊÂÅ¢ø¨Ä"
 
 #: glib/gspawn.c:1148
 msgid "Unknown error executing child process"
-msgstr ""
+msgstr "§ºö ¦ºÂÄ¸ò¨¾ ­ÂìÌõ§À¡Ğ ¦¾Ã¢Â¡¾ À¢¨Æ"
 
 #: glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
+msgstr "Failed to read enough data from child pid pipe (%s)"
 
 #: glib/gutf8.c:898
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "UTF-8 ìÌ ÅÃ¢ÔÕ Å£îÍ ±ø¨ÄìÌ ¦ÅÇ¢§Â"
 
 #: glib/gutf8.c:987 glib/gutf8.c:996 glib/gutf8.c:1128 glib/gutf8.c:1137
 #: glib/gutf8.c:1279 glib/gutf8.c:1375
 msgid "Invalid sequence in conversion input"
-msgstr ""
+msgstr "Invalid sequence in conversion input"
 
 #: glib/gutf8.c:1290 glib/gutf8.c:1386
 msgid "Character out of range for UTF-16"
-msgstr ""
+msgstr "UTF-16 ìÌ ÅÃ¢ÔÕ Å£îÍ ±ø¨ÄìÌ ¦ÅÇ¢§Â"
