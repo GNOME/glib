@@ -1,3 +1,14 @@
+Fri Jan 28 11:37:41 2000  Owen Taylor  <otaylor@redhat.com>
+
+        Bug #4156 - Changes vaguely modelled after Scott Gifford's patch
+	
+	* gtimer.c (g_timer_elapsed): Never report negative times - 
+	clip times to 0.
+
+	* gmain.c (g_timeout_prepare): Guard against unexpected
+	clock shifts by never setting a timeout of more than
+	data->interval msecs.
+
 Wed Jan 26 05:29:11 2000  Tim Janik  <timj@gtk.org>
 
         * glib.h:

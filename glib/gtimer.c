@@ -184,9 +184,17 @@ g_timer_elapsed (GTimer *timer,
   elapsed.tv_sec = rtimer->end.tv_sec - rtimer->start.tv_sec;
 
   total = elapsed.tv_sec + ((gdouble) elapsed.tv_usec / 1e6);
-
-  if (microseconds)
-    *microseconds = elapsed.tv_usec;
+  if (total < 0)
+    {
+      total = 0;
+      
+      if (microseconds)
+	*microseconds = 0;
+    }
+  else
+    if (microseconds)
+      *microseconds = elapsed.tv_usec;
+  
 #endif /* !NATIVE_WIN32 */
 
   return total;
