@@ -164,7 +164,7 @@ AC_CACHE_VAL(glib_cv_has__inline,[
 ])
 AC_MSG_RESULT($glib_cv_has__inline)
 case x$glib_cv_has__inline in
-yes) AC_DEFINE(G_HAVE___INLINE)
+xyes) AC_DEFINE(G_HAVE___INLINE)
 esac
 AC_MSG_CHECKING(for __inline__)
 AC_CACHE_VAL(glib_cv_has__inline__,[
@@ -179,7 +179,7 @@ AC_CACHE_VAL(glib_cv_has__inline__,[
 ])
 AC_MSG_RESULT($glib_cv_has__inline__)
 case x$glib_cv_has__inline__ in
-yes) AC_DEFINE(G_HAVE___INLINE__)
+xyes) AC_DEFINE(G_HAVE___INLINE__)
 esac
 AC_MSG_CHECKING(for inline)
 AC_CACHE_VAL(glib_cv_hasinline,[
@@ -194,7 +194,7 @@ AC_CACHE_VAL(glib_cv_hasinline,[
 ])
 AC_MSG_RESULT($glib_cv_hasinline)
 case x$glib_cv_hasinline in
-yes) AC_DEFINE(G_HAVE_INLINE)
+xyes) AC_DEFINE(G_HAVE_INLINE)
 esac
 
 
