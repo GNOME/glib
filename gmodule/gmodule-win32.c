@@ -1,7 +1,7 @@
 /* GMODULE - GLIB wrapper code for dynamic module loading
  * Copyright (C) 1998, 2000 Tim Janik
  *
- * WIN32 GMODULE implementation
+ * Win32 GMODULE implementation
  * Copyright (C) 1998 Tor Lillqvist
  *
  * This library is free software; you can redistribute it and/or
@@ -34,6 +34,15 @@
 #include <stdio.h>
 #include <windows.h>
 
+static void
+set_error (void)
+{
+  gchar *error = g_win32_error_message (GetLastError ());
+
+  g_module_set_error (error);
+  g_free (error);
+}
+
 /* --- functions --- */
 static gpointer
 _g_module_open (const gchar *file_name,
@@ -43,13 +52,8 @@ _g_module_open (const gchar *file_name,
   
   handle = LoadLibrary (file_name);
   if (!handle)
-    {
-      gchar error[100];
+    set_error ();
 
-      sprintf (error, "Error code %d", GetLastError ());
-      g_module_set_error (error);
-    }
-  
   return handle;
 }
 
@@ -60,12 +64,7 @@ _g_module_self (void)
   
   handle = GetModuleHandle (NULL);
   if (!handle)
-    {
-      gchar error[100];
-
-      sprintf (error, "Error code %d", GetLastError ());
-      g_module_set_error (error);
-    }
+    set_error ();
   
   return handle;
 }
@@ -75,12 +74,7 @@ _g_module_close (gpointer handle,
 		 gboolean is_unref)
 {
   if (!FreeLibrary (handle))
-    {
-      gchar error[100];
-
-      sprintf (error, "Error code %d", GetLastError ());
-      g_module_set_error (error);
-    }
+    set_error ();
 }
 
 static gpointer
@@ -91,13 +85,8 @@ _g_module_symbol (gpointer     handle,
   
   p = GetProcAddress (handle, symbol_name);
   if (!p)
-    {
-      gchar error[100];
+    set_error ();
 
-      sprintf (error, "Error code %d", GetLastError ());
-      g_module_set_error (error);
-    }
-  
   return p;
 }
 
