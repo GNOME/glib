@@ -1,3 +1,7 @@
+Fri Aug 13 01:25:06 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* NEWS: Updates.
+
 2004-08-11  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Added nb to ALL_LINGUAS

@@ -1,3 +1,10 @@
+Overview of Changes from GLib 2.4.5 to GLib 2.4.6
+=================================================
+
+* Bug fixes [Matthias Clasen, Ray Strode]
+* New and updated translations (mn,nb)
+(127306)
+
 Overview of Changes from GLib 2.4.4 to GLib 2.4.5
 =================================================
 
