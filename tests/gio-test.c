@@ -399,7 +399,7 @@ main (int    argc,
 	  for (j = 0; j < buflen; j++)
 	    buf[j] = ' ' + ((buflen + j) % 95);
 	  g_print ("gio-test: child writing %d+%d bytes to %d\n",
-		   sizeof(i) + sizeof(buflen), buflen, writefd);
+		   (int)(sizeof(i) + sizeof(buflen)), buflen, writefd);
 	  write (writefd, &i, sizeof (i));
 	  write (writefd, &buflen, sizeof (buflen));
 	  write (writefd, buf, buflen);

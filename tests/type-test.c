@@ -52,9 +52,11 @@ main (int   argc,
 #ifdef G_HAVE_GINT64
   guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
 	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
+#ifdef G_GINT64_FORMAT
   gint64 gi64t1;
   gint64 gi64t2;
-#endif
+#endif /* G_GINT64_FORMAT */
+#endif /* G_HAVE_GINT64 */
 
   /* type sizes */
   g_assert (sizeof (gint8) == 1);

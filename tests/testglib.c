@@ -394,10 +394,9 @@ main (int   argc,
   const char hello[] = "Hello, World";
   const int hellolen = sizeof (hello) - 1;
   int fd;
-  char template[10];
+  char template[32];
   GError *error;
   char *name_used;
-  gchar *p;
 #ifdef G_OS_WIN32
   gchar *glib_dll = g_strdup_printf ("glib-%d.%d.dll",
 				     GLIB_MAJOR_VERSION,
@@ -1213,6 +1212,7 @@ main (int   argc,
   close (fd);
   remove (template);
 
+  error = NULL;
   strcpy (template, "zap" G_DIR_SEPARATOR_S "barXXXXXX");
   fd = g_file_open_tmp (template, &name_used, &error);
   if (fd != -1)

@@ -1,3 +1,18 @@
+2001-04-20  Dan Winship  <danw@ximian.com>
+
+	* configure.in: Add a check for the Darwin dynamic linker. Use
+	AC_TRY_LINK when checking for "nonposix getpwuid_r" so it notices
+	"no getpwuid_r" correctly.
+
+	* testglib.c (main): Make template[] bigger to prevent an overrun.
+	Remove an unused variable. Initialize error to NULL.
+
+	* tests/gio-test.c (main): Add a cast to prevent a warning when
+	size_t is a long.
+
+	* tests/type-test.c (main): Add an #ifdef to prevent a warning
+	when G_HAVE_GINT64 is defined and G_GINT64_FORMAT isn't.
+
 2001-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* ghash.c, ghash.h: Remove definition of g_hash_table_freeze and

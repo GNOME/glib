@@ -659,13 +659,20 @@ if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
       G_MODULE_IMPL=G_MODULE_IMPL_BEOS],
       [])
 fi   
-# *** dlopen() and dlsym() in libdl
+dnl *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_LIB(dl, dlopen,
 		     [AC_CHECK_LIB(dl, dlsym,
 			           [G_MODULE_LIBS=-ldl
 		                   G_MODULE_IMPL=G_MODULE_IMPL_DL],[])],
 		     [])
+fi
+dnl *** NSLinkModule (dyld) in system libraries (Darwin)
+if test -z "$G_MODULE_IMPL"; then
+ 	AC_CHECK_FUNC(NSLinkModule,
+		      [G_MODULE_IMPL=G_MODULE_IMPL_DYLD
+		       G_MODULE_NEED_USCORE=1],
+		      [])
 fi
 dnl *** shl_load() in libdld (HP-UX)
 if test -z "$G_MODULE_IMPL"; then
@@ -1013,7 +1020,7 @@ if test x"$have_threads" != xnone; then
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
 
     # First we test, whether localtime_r is declared in time.h
-    # directly. Then we test wether a macro localtime_r exists, in
+    # directly. Then we test whether a macro localtime_r exists, in
     # which case localtime_r in the test program is replaced and thus
     # if we still find localtime_r in the output, it is not defined as 
     # a macro.
@@ -1189,7 +1196,7 @@ if test x"$have_threads" != xnone; then
 		else
 	 		AC_CACHE_CHECK([for nonposix getpwuid_r],
 				ac_cv_func_nonposix_getpwuid_r,
-				[AC_TRY_COMPILE([#include <pwd.h>],
+				[AC_TRY_LINK([#include <pwd.h>],
                                 	[char buffer[10000];
                                 	struct passwd pwd;
                                 	getpwuid_r (0, &pwd, buffer, 
