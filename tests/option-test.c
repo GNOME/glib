@@ -78,7 +78,7 @@ error_test1_post_parse (GOptionContext *context,
   g_assert (error_test1_int == 20);
 
   /* Set an error in the post hook */
-  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, NULL);
+  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, "");
 
   return FALSE;
 }
@@ -138,7 +138,7 @@ error_test2_post_parse (GOptionContext *context,
   g_assert (strcmp (error_test2_string, "bar") == 0);
 
   /* Set an error in the post hook */
-  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, NULL);
+  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, "");
 
   return FALSE;
 }
@@ -197,7 +197,7 @@ error_test3_post_parse (GOptionContext *context,
   g_assert (error_test3_boolean);
 
   /* Set an error in the post hook */
-  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, NULL);
+  g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, "");
 
   return FALSE;
 }

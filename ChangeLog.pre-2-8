@@ -1,3 +1,10 @@
+Mon Sep 20 00:17:37 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/option-test.c (error_test3_post_parse): 
+	* tests/option-test.c (error_test2_post_parse): 
+	* tests/option-test.c (error_test1_post_parse): Don't call 
+	g_set_error () with a NULL format.  (#153103, Robert Ögren) 
+
 Mon Sep 20 00:13:48 2004  Matthias Clasen  <maclas@gmx.de>
 
 	Make GOption remove long options completely. (#153113, Robert Ögren)
