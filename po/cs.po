@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
-"PO-Revision-Date: 2004-10-03 01:57+0200\n"
+"POT-Creation-Date: 2004-11-18 11:45+0100\n"
+"PO-Revision-Date: 2004-11-18 14:24+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -544,6 +544,86 @@ msgstr "Celočíselná hodnota '%s' pro %s mimo rozsah"
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznámý přepínač %s"
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr "V datových adresářích nelze najít platný soubor klíče"
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr "Není obyčejný soubor"
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr "Soubor je prázdný"
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Soubor klíče obsahuje '%s', což není dvojice klíč-hodnota, skupina ani komentář"
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr "Soubor klíče nezačíná skupinou"
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Soubor klíče obsahuje nepodporované kódování '%s'"
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Soubor klíče nemá skupinu '%s'"
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Soubor klíče nemá klíč '%s'"
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "Soubor klíče obsahuje klíč '%s' s hodnotou '%s', která není v UTF-8"
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "Soubor klíče obsahuje klíč '%s', který má hodnotu, kterou nelze interpretovat."
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr "Soubor klíče obsahuje klíč '%s' ve skupině '%s', který má hodnotu, kterou nelze interpretovat."
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Soubor klíče nemá klíč '%s' ve skupině '%s'"
+
+#: glib/gkeyfile.c:3023
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "Soubor klíče obsahuje neplatnou escape sekvenci '%s'"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr "Soubor klíče obsahuje znak escape na konci řádku"
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Hodnotu '%s' nelze interpretovat jako číslo."
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Hodnotu '%s' nelze interpretovat jako booleovskou hodnotu."
 
 #~ msgid "Socket error"
 #~ msgstr "Chyba socketu"
