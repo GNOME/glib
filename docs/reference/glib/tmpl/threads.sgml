@@ -142,10 +142,9 @@ This struct should only be used, if you know, what you are doing.
 <!-- ##### FUNCTION g_thread_init ##### -->
 
 <para>
-Before you use a thread related function in GLib, you should
-initialize the thread system. This is done by calling
-g_thread_init(). Most of the time you will only have to call
-<literal>g_thread_init(NULL)</literal>. 
+If you use GLib from more than one thread, you must initialize
+the thread system by calling g_thread_init(). Most of the time you 
+will only have to call <literal>g_thread_init (NULL)</literal>. 
 </para>
 
 <note>
