@@ -1,5 +1,7 @@
 2001-01-05  Tor Lillqvist  <tml@iki.fi>
 
+	* testglib.c (main): Add test for g_path_skip_root().
+
 	* gfileutils.c (g_file_open_tmp): (Win32:) Look also for (illegal)
 	forward slashes in the template.
 

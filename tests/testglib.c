@@ -333,28 +333,48 @@ main (int   argc,
     { "/", "/" },
     { "////", "/" },
     { ".////", "." },
-    { ".", "." },
-    { "..", "." },
     { "../", ".." },
     { "..////", ".." },
-    { "", "." },
     { "a/b", "a" },
     { "a/b/", "a/b" },
     { "c///", "c" },
 #else
     { "\\", "\\" },
     { ".\\\\\\\\", "." },
-    { ".", "." },
-    { "..", "." },
     { "..\\", ".." },
     { "..\\\\\\\\", ".." },
-    { "", "." },
     { "a\\b", "a" },
     { "a\\b\\", "a\\b" },
     { "c\\\\\\", "c" },
 #endif
+    { ".", "." },
+    { "..", "." },
+    { "", "." },
   };
-  guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
+  guint n_dirname_checks = G_N_ELEMENTS (dirname_checks);
+
+  struct {
+    gchar *filename;
+    gchar *without_root;
+  } skip_root_checks[] = {
+#ifndef G_OS_WIN32
+    { "/", "" },
+    { "//", "" },
+    { "/foo", "foo" },
+    { "//foo", "foo" },
+    { "a/b", NULL },
+#else
+    { "\\", "" },
+    { "\\foo", "foo" },
+    { "\\\\server\\foo", "" },
+    { "\\\\server\\foo\\bar", "bar" },
+    { "a\\b", NULL },
+#endif
+    { ".", NULL },
+    { "", NULL },
+  };
+  guint n_skip_root_checks = G_N_ELEMENTS (skip_root_checks);
+
   guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
   guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
 #ifdef G_HAVE_GINT64
@@ -367,6 +387,7 @@ main (int   argc,
   char template[10];
   GError *error;
   char *name_used;
+  gchar *p;
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
 	   glib_major_version,
@@ -414,6 +435,28 @@ main (int   argc,
       g_free (dirname);
     }
   if (n_dirname_checks)
+    g_print ("ok\n");
+
+  g_print ("checking g_path_skip_root()...");
+  for (i = 0; i < n_skip_root_checks; i++)
+    {
+      gchar *skipped;
+
+      skipped = g_path_skip_root (skip_root_checks[i].filename);
+      if ((skipped && !skip_root_checks[i].without_root) ||
+	  (!skipped && skip_root_checks[i].without_root) ||
+	  ((skipped && skip_root_checks[i].without_root) &&
+	   strcmp (skipped, skip_root_checks[i].without_root)))
+	{
+	  g_print ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+		   skip_root_checks[i].filename,
+		   (skip_root_checks[i].without_root ?
+		    skip_root_checks[i].without_root : "<NULL>"),
+		   (skipped ? skipped : "<NULL>"));
+	  n_skip_root_checks = 0;
+	}
+    }
+  if (n_skip_root_checks)
     g_print ("ok\n");
 
   g_print ("checking doubly linked lists...");

@@ -472,12 +472,28 @@ g_path_skip_root (gchar *file_name)
   g_return_val_if_fail (file_name != NULL, NULL);
   
 #ifdef G_OS_WIN32
-  /* Skip \\server\share\ */
+  /* Skip \\server\share */
   if (file_name[0] == G_DIR_SEPARATOR &&
       file_name[1] == G_DIR_SEPARATOR &&
-      file_name[2] && 
-      strchr (file_name + 2, G_DIR_SEPARATOR) > file_name + 2)
-    return strchr (file_name + 2, G_DIR_SEPARATOR) + 1;
+      file_name[2])
+    {
+      gchar *p, *q;
+
+      if ((p = strchr (file_name + 2, G_DIR_SEPARATOR)) > file_name + 2 &&
+	  p[1])
+	{
+	  file_name = p + 1;
+
+	  while (file_name[0] && file_name[0] != G_DIR_SEPARATOR)
+	    file_name++;
+
+	  /* Possibly skip a backslash after the share name */
+	  if (file_name[0] == G_DIR_SEPARATOR)
+	    file_name++;
+
+	  return file_name;
+	}
+    }
 #endif
   
   /* Skip initial slashes */
