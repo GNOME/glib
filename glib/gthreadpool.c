@@ -134,10 +134,9 @@ g_thread_pool_thread_proxy (gpointer data)
 	  watcher = TRUE;
 	}
 
-      
       if (goto_global_pool)
 	{
-	  pool->num_threads--; 
+	  pool->num_threads--;
 
 	  if (!pool->running && !pool->waiting)
 	    {
@@ -146,9 +145,11 @@ g_thread_pool_thread_proxy (gpointer data)
 		  g_async_queue_unlock (pool->queue);
 		  g_thread_pool_free_internal (pool);
 		}		
-	      else if (len == - pool->num_threads)
+	      else 
 		{
-		  g_thread_pool_wakeup_and_stop_all (pool);
+		  if (len == - pool->num_threads)
+		    g_thread_pool_wakeup_and_stop_all (pool);
+
 		  g_async_queue_unlock (pool->queue);
 		}
 	    }

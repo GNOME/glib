@@ -1,3 +1,8 @@
+2002-04-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gthreadpool.c (g_thread_pool_thread_proxy): Unlock the pool
+	for all threads leaving it. (#78348)
+
 2002-04-11  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/patterntest.c: Remove manual UTF-8 -> Latin1 conversion for
