@@ -67,12 +67,14 @@
 #include "glib.h"
 
 #ifdef	MAXPATHLEN
-#define	G_PATH_LENGTH	(MAXPATHLEN + 1)
+#define	G_PATH_LENGTH	MAXPATHLEN
 #elif	defined (PATH_MAX)
-#define	G_PATH_LENGTH	(PATH_MAX + 1)
-#else	/* !MAXPATHLEN */
-#define G_PATH_LENGTH   (2048 + 1)
-#endif	/* !MAXPATHLEN && !PATH_MAX */
+#define	G_PATH_LENGTH	PATH_MAX
+#elif   defined (_PC_PATH_MAX)
+#define	G_PATH_LENGTH	sysconf(_PC_PATH_MAX)
+#else	
+#define G_PATH_LENGTH   2048
+#endif
 
 const guint glib_major_version = GLIB_MAJOR_VERSION;
 const guint glib_minor_version = GLIB_MINOR_VERSION;
@@ -334,17 +336,28 @@ g_get_current_dir (void)
 {
   gchar *buffer;
   gchar *dir;
-
-  buffer = g_new (gchar, G_PATH_LENGTH);
-  *buffer = 0;
+  static gulong max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
   
   /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
    * and, if that wasn't bad enough, hangs in doing so.
    */
 #if	defined (sun) && !defined (__SVR4)
+  buffer = g_new (gchar, max_len + 1);
+  *buffer = 0;
   dir = getwd (buffer);
 #else	/* !sun */
-  dir = getcwd (buffer, G_PATH_LENGTH - 1);
+  while (1)
+    {
+      buffer = g_new (gchar, max_len + 1);
+      *buffer = 0;
+      dir = getcwd (buffer, max_len);
+
+      if (dir || errno != ERANGE)
+	break;
+
+      g_free (buffer);
+      max_len *= 2;
+    }
 #endif	/* !sun */
   
   if (!dir || !*buffer)

@@ -1,3 +1,11 @@
+2000-03-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gutils.c (g_get_current_dir): Make g_get_current_dir work on
+	systems with unlimited pathname length like the HURD (It worked
+	there before, but only for pathes shorter than 2048). Closes
+	Bug#4525 as reported by Marcus Brinkmann
+	<Marcus.Brinkmann@ruhr-uni-bochum.de>.
+
 2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* giounix.c (g_io_unix_write, g_io_unix_read): Interpret EINTR as
