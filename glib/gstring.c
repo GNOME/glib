@@ -495,14 +495,14 @@ g_string_prepend_c (GString *string,
 }
 
 /**
- * g_string_append_unichar:
- * @string: a #GString
- * @wc: a Unicode character
+ * g_string_prepend_unichar:
+ * @string: a #GString.
+ * @wc: a Unicode character.
  * 
  * Converts a Unicode character into UTF-8, and prepends it
  * to the string.
  * 
- * Return value: @string
+ * Return value: @string.
  **/
 GString*
 g_string_prepend_unichar (GString  *string,
