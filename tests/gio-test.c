@@ -222,6 +222,7 @@ main (int    argc,
       int i;
 #ifdef G_OS_WIN32
       GTimeVal start, end;
+      GPollFD pollfd;
       int pollresult;
 #endif
 
@@ -268,7 +269,8 @@ main (int    argc,
 
 #ifdef G_OS_WIN32
 	  g_get_current_time (&start);
-	  pollresult = g_io_channel_win32_wait_for_condition (my_read_channel, G_IO_IN, 100);
+	  g_io_channel_win32_make_pollfd (my_read_channel, G_IO_IN, &pollfd);
+	  pollresult = g_io_channel_win32_poll (&pollfd, 1, 100);
 	  g_get_current_time (&end);
 	  if (end.tv_usec < start.tv_usec)
 	    end.tv_sec--, end.tv_usec += 1000000;

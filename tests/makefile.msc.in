@@ -19,6 +19,7 @@ TESTS = \
 	array-test.exe	\
 	date-test.exe	\
 	dirname-test.exe\
+	gio-test.exe	\
 	hash-test.exe	\
 	list-test.exe	\
 	node-test.exe	\
@@ -26,6 +27,7 @@ TESTS = \
 	rand-test.exe	\
 	relation-test.exe\
 	slist-test.exe	\
+# strfunc-test doesn't compile with MSVC
 #	strfunc-test.exe\
 	string-test.exe	\
 	thread-test.exe	\

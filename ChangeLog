@@ -16,6 +16,9 @@
 	
 	* glib.def: Add new entry point.
 
+	* tests/gio-test.c (main): Fix the Win32-only code to use current
+	API, g_io_channel_win32_make_pollfd() and g_io_channel_win32_poll().
+
 	Fixes from Hans Breuer:
 	
 	* glib.h (struct DIR): Keep the last readdir result cached inside
