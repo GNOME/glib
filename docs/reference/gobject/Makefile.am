@@ -7,7 +7,7 @@ DOC_MODULE=gobject
 DOC_MAIN_SGML_FILE=gobject-docs.sgml
 
 # The directory containing the source code (if it contains documentation).
-DOC_SOURCE_DIR=$(top_srcdir)/gobject
+DOC_SOURCE_DIR=../../../gobject
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
