@@ -258,7 +258,7 @@ g_shell_unquote (const gchar *quoted_string,
 
   start = unquoted;
   end = unquoted;
-  retval = g_string_new ("");
+  retval = g_string_new (NULL);
 
   /* The loop allows cases such as
    * "foo"blah blah'bar'woo foo"baz"la la la\'\''foo'
@@ -390,7 +390,7 @@ static inline void
 ensure_token (GString **token)
 {
   if (*token == NULL)
-    *token = g_string_new ("");
+    *token = g_string_new (NULL);
 }
 
 static void

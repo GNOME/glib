@@ -263,12 +263,12 @@ g_spawn_sync (const gchar          *working_directory,
 
   if (outpipe >= 0)
     {
-      outstr = g_string_new ("");
+      outstr = g_string_new (NULL);
     }
       
   if (errpipe >= 0)
     {
-      errstr = g_string_new ("");
+      errstr = g_string_new (NULL);
     }
 
   /* Read data until we get EOF on both pipes. */
