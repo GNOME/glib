@@ -1,3 +1,18 @@
+2001-10-24  Alex Larsson  <alexl@redhat.com>
+
+	* docs/reference/glib/glib-sections.txt:
+	Add g_strtod & co.
+
+	* docs/reference/glib/tmpl/string_utils.sgml:
+	Add docs for G_ASCII_DTOSTR_BUF_SIZE.
+
+	* glib/gstrfuncs.[ch]:
+	Added g_ascii_strtod, g_ascii_dtostr and g_ascii_formatd.
+
+	* tests/Makefile.am:
+	* tests/strtod-test.c:
+	Add tests for g_ascii_strtod & co.
+
 2001-10-23  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32.in: Typo: GLIB_MICRO_VERSION and

@@ -93,13 +93,11 @@ gint                  g_ascii_xdigit_value (gchar    c) G_GNUC_CONST;
  */
 #define	 G_STR_DELIMITERS	"_-|> <."
 gchar*	              g_strdelimit     (gchar	     *string,
-					const gchar *delimiters,
+					const gchar  *delimiters,
 					gchar	      new_delimiter);
-gchar*	              g_strcanon       (gchar       *string,
-					const gchar *valid_chars,
-					gchar        substitutor);
-gdouble	              g_strtod	       (const gchar *nptr,
-					gchar	    **endptr);
+gchar*	              g_strcanon       (gchar        *string,
+					const gchar  *valid_chars,
+					gchar         substitutor);
 G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;
 G_CONST_RETURN gchar* g_strsignal      (gint	      signum) G_GNUC_CONST;
 gchar*	              g_strreverse     (gchar	     *string);
@@ -117,6 +115,24 @@ gchar *               g_strrstr        (const gchar  *haystack,
 gchar *               g_strrstr_len    (const gchar  *haystack,
 					gssize        haystack_len,
 					const gchar  *needle);
+
+/* String to/from double conversion functions */
+
+gdouble	              g_strtod         (const gchar  *nptr,
+					gchar	    **endptr);
+gdouble	              g_ascii_strtod   (const gchar  *nptr,
+					gchar	    **endptr);
+/* 29 bytes should enough for all possible values that
+ * g_ascii_dtostr can produce.
+ * Then add 10 for good measure */
+#define G_ASCII_DTOSTR_BUF_SIZE (29 + 10)
+gchar *               g_ascii_dtostr   (gchar        *buffer,
+					gint          buf_len,
+					gdouble       d);
+gchar *               g_ascii_formatd  (gchar        *buffer,
+					gint          buf_len,
+					const gchar  *format,
+					gdouble       d);
 
 /* removes leading spaces */
 gchar*                g_strchug        (gchar        *string);

@@ -922,6 +922,12 @@ g_strncasecmp
 
 <SUBSECTION>
 g_strreverse
+
+<SUBSECTION>
+G_ASCII_DTOSTR_BUF_SIZE
+g_ascii_strtod
+g_ascii_dtostr
+g_ascii_formatd
 g_strtod
 
 <SUBSECTION>

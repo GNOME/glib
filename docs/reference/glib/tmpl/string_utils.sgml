@@ -562,19 +562,68 @@ For example, g_strreverse ("abcdef") will result in "fedcba".
 @Returns: the same pointer passed in as @string.
 
 
-<!-- ##### FUNCTION g_strtod ##### -->
+<!-- ##### MACRO G_ASCII_DTOSTR_BUF_SIZE ##### -->
 <para>
-Converts a string to a gdouble value.
-It calls the standard <function>strtod()</function> function
-to handle the conversion, but if the string is not completely converted
-it attempts the conversion again in the "C" locale, and returns the best
-match.
+A good size for a buffer to be passed into <function>g_ascii_dtostr</function>.
+It is guaranteed to be enough for all output of that function on systems with
+ 64bit IEEE compatible doubles.
+</para>
+<para>
+The typical usage would be something like:
+</para>
+<para>
+<literal>
+  char buf[G_ASCII_DTOSTR_BUF_SIZE];
+
+  fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
+</literal>
 </para>
 
-@nptr: the string to convert to a numeric value.
-@endptr: if non-NULL, it returns the character after the last character used
-in the conversion.
-@Returns: the gdouble value.
+
+
+<!-- ##### FUNCTION g_ascii_strtod ##### -->
+<para>
+
+</para>
+
+@nptr: 
+@endptr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_ascii_dtostr ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@buf_len: 
+@d: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@format: 
+
+
+<!-- ##### FUNCTION g_ascii_formatd ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@buf_len: 
+@format: 
+@d: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_strtod ##### -->
+<para>
+
+</para>
+
+@nptr: 
+@endptr: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_strchug ##### -->
