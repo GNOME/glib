@@ -221,7 +221,7 @@ read_thread (void *parameter)
   g_io_channel_ref ((GIOChannel *)channel);
 
   if (channel->debug)
-    g_print ("read_thread %#x: start fd:%d, data_avail:%#x, space_avail:%#x\n",
+    g_print ("read_thread %#x: start fd:%d, data_avail:%#x space_avail:%#x\n",
 	     channel->thread_id,
 	     channel->fd,
 	     (guint) channel->data_avail_event,
@@ -419,7 +419,7 @@ select_thread (void *parameter)
   g_io_channel_ref ((GIOChannel *)channel);
 
   if (channel->debug)
-    g_print ("select_thread %#x: start fd:%d,\n\tdata_avail:%#x, data_avail_noticed:%#x\n",
+    g_print ("select_thread %#x: start fd:%d data_avail:%#x data_avail_noticed:%#x\n",
 	     channel->thread_id,
 	     channel->fd,
 	     (guint) channel->data_avail_event,
@@ -482,8 +482,7 @@ select_thread (void *parameter)
 	channel->revents |= G_IO_ERR;
 
       if (channel->debug)
-	g_print ("select_thread %#x: resetting data_avail_noticed,\n"
-		 "\tsetting data_avail\n",
+	g_print ("select_thread %#x: resetting data_avail_noticed, setting data_avail\n",
 		 channel->thread_id);
       ResetEvent (channel->data_avail_noticed_event);
       SetEvent (channel->data_avail_event);
@@ -537,15 +536,27 @@ g_io_win32_prepare (GSource *source,
 		    gint    *timeout)
 {
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
+  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
   GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
   *timeout = -1;
   
+  if (channel->debug)
+    g_print ("g_io_win32_prepare: for thread %#x buffer_condition:%#x\n"
+	     "  watch->pollfd.events:%#x watch->pollfd.revents:%#x channel->revents:%#x\n",
+	     channel->thread_id, buffer_condition,
+	     watch->pollfd.events, watch->pollfd.revents, channel->revents);
+
   if (channel->type == G_IO_WIN32_FILE_DESC)
     {
       LOCK (channel->mutex);
       if (channel->running && channel->wrp == channel->rdp)
-	channel->revents = 0;
+	{
+	  if (channel->debug)
+	    g_print ("g_io_win32_prepare: for thread %#x, setting channel->revents = 0\n",
+		     channel->thread_id);
+	  channel->revents = 0;
+	}
       UNLOCK (channel->mutex);
     }
   else if (channel->type == G_IO_WIN32_SOCKET)
@@ -553,7 +564,7 @@ g_io_win32_prepare (GSource *source,
       channel->revents = 0;
 
       if (channel->debug)
-	g_print ("g_io_win32_prepare: thread %#x, setting data_avail_noticed\n",
+	g_print ("g_io_win32_prepare: for thread %#x, setting data_avail_noticed\n",
 		 channel->thread_id);
       SetEvent (channel->data_avail_noticed_event);
       if (channel->debug)
@@ -561,11 +572,7 @@ g_io_win32_prepare (GSource *source,
 		 channel->thread_id);
     }
 
-  return FALSE;
-  /* XXX: why should we want to do this ? */
-  watch->condition = g_io_channel_get_buffer_condition (watch->channel);
-
-  return (watch->pollfd.revents & (G_IO_IN | G_IO_OUT)) == watch->condition;
+  return ((watch->condition & buffer_condition) == watch->condition);
 }
 
 static gboolean
@@ -577,9 +584,9 @@ g_io_win32_check (GSource *source)
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
 
   if (channel->debug)
-    g_print ("g_io_win32_check: for thread %#x:\n"
-	     "\twatch->pollfd.events:%#x, watch->pollfd.revents:%#x, channel->revents:%#x\n",
-	     channel->thread_id,
+    g_print ("g_io_win32_check: for thread %#x buffer_condition:%#x\n"
+	     "  watch->pollfd.events:%#x watch->pollfd.revents:%#x channel->revents:%#x\n",
+	     channel->thread_id, buffer_condition,
 	     watch->pollfd.events, watch->pollfd.revents, channel->revents);
 
   if (channel->type != G_IO_WIN32_WINDOWS_MESSAGES)
@@ -602,7 +609,7 @@ g_io_win32_check (GSource *source)
 		 channel->thread_id);
     }
 
-  return (watch->pollfd.revents & watch->condition);
+  return ((watch->pollfd.revents | buffer_condition) & watch->condition);
 }
 
 static gboolean
