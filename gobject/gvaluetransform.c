@@ -52,7 +52,7 @@ value_transform_##func_name (const GValue *src_value,                       \
 {                                                                           \
   ctype c_value = src_value->data[0].from_member;                           \
   dest_value->data[0].to_member = c_value;                                  \
-}
+} extern void glib_dummy_decl (void)
 DEFINE_CAST (int_s8,            v_int,    gint8,   v_int);
 DEFINE_CAST (int_u8,            v_int,    guint8,  v_uint);
 DEFINE_CAST (int_uint,          v_int,    guint,   v_uint);
@@ -143,7 +143,7 @@ value_transform_##func_name (const GValue *src_value,                       \
                              GValue       *dest_value)                      \
 {                                                                           \
   dest_value->data[0].v_int = src_value->data[0].from_member != 0;  \
-}
+} extern void glib_dummy_decl (void)
 DEFINE_BOOL_CHECK (int_bool,    v_int);
 DEFINE_BOOL_CHECK (uint_bool,   v_uint);
 DEFINE_BOOL_CHECK (long_bool,   v_long);
@@ -161,7 +161,7 @@ value_transform_##func_name (const GValue *src_value,                       \
 {                                                                           \
   dest_value->data[0].v_pointer = g_strdup_printf ((format),                \
 						   src_value->data[0].from_member);             \
-}
+} extern void glib_dummy_decl (void)
 DEFINE_SPRINTF (int_string,     v_int,    "%d");
 DEFINE_SPRINTF (uint_string,    v_uint,   "%u");
 DEFINE_SPRINTF (long_string,    v_long,   "%ld");
@@ -252,7 +252,8 @@ g_value_transforms_init (void)          /* sync with gtype.c */
   /* some transformations are a bit questionable,
    * we currently skip those
    */
-#define SKIP____register_transform_func(type1,type2,transform_func)     /* skip questionable transforms */
+#define SKIP____register_transform_func(type1,type2,transform_func)     /* skip questionable transforms */ \
+  (void)0
   
   /* numeric types (plus to string) */
   g_value_register_transform_func (G_TYPE_CHAR,         G_TYPE_CHAR,            value_transform_int_int);
