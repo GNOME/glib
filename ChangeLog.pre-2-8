@@ -1,5 +1,8 @@
 2005-03-20  Tor Lillqvist  <tml@novell.com>
 
+	* glib/gtimer.c: On Win32, use GetSystemTimeAsFileTime() instead
+	of GetTickCount(). (#159507)
+
 	* glib/gmessages.c (g_log_default_handler)
 	* glib/gutils.c (g_get_prgname): Move the Win32 code that asks the
 	program name from the system to g_get_prgname(). Do output the pid

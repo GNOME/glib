@@ -52,8 +52,8 @@
 struct _GTimer
 {
 #ifdef G_OS_WIN32
-  DWORD start;
-  DWORD end;
+  guint64 start;
+  guint64 end;
 #else /* !G_OS_WIN32 */
   struct timeval start;
   struct timeval end;
@@ -64,7 +64,7 @@ struct _GTimer
 
 #ifdef G_OS_WIN32
 #  define GETTIME(v) \
-     v = GetTickCount ()
+     GetSystemTimeAsFileTime ((FILETIME *)&v)
 #else /* !G_OS_WIN32 */
 #  define GETTIME(v) \
      gettimeofday (&v, NULL)
@@ -123,7 +123,7 @@ void
 g_timer_continue (GTimer *timer)
 {
 #ifdef G_OS_WIN32
-  DWORD elapsed;
+  guint64 elapsed;
 #else
   struct timeval elapsed;
 #endif /* G_OS_WIN32 */
@@ -176,7 +176,9 @@ g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)
 {
   gdouble total;
-#ifndef G_OS_WIN32
+#ifdef G_OS_WIN32
+  gint64 elapsed;
+#else
   struct timeval elapsed;
 #endif /* G_OS_WIN32 */
 
@@ -184,23 +186,14 @@ g_timer_elapsed (GTimer *timer,
 
 #ifdef G_OS_WIN32
   if (timer->active)
-    timer->end = GetTickCount ();
+    GETTIME (timer->end);
 
-  /* Check for wraparound, which happens every 49.7 days. */
-  if (timer->end < timer->start)
-    total = (UINT_MAX - (timer->start - timer->end - 1)) / 1000.0;
-  else
-    total = (timer->end - timer->start) / 1000.0;
+  elapsed = timer->end - timer->start;
+
+  total = elapsed / 1e7;
 
   if (microseconds)
-    {
-      if (timer->end < timer->start)
-	*microseconds =
-	  ((UINT_MAX - (timer->start - timer->end - 1)) % 1000) * 1000;
-      else
-	*microseconds =
-	  ((timer->end - timer->start) % 1000) * 1000;
-    }
+    *microseconds = (elapsed / 10) % 1000000;
 #else /* !G_OS_WIN32 */
   if (timer->active)
     gettimeofday (&timer->end, NULL);
