@@ -662,7 +662,7 @@ g_queue_pop_nth_link (GQueue *queue,
   
   g_return_val_if_fail (queue != NULL, NULL);
 
-  if (n > queue->length)
+  if (n >= queue->length)
     return NULL;
   
   link = g_queue_peek_nth_link (queue, n);

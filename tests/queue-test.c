@@ -927,14 +927,28 @@ int main(int argc, gchar *args[])
   g_queue_foreach (q2, remove_item, q2);
   check_integrity (q2);
   check_integrity (q);
+
+  /* some checks for off by one errors */  
+  g_queue_push_tail (q, GINT_TO_POINTER (1234));
+  check_integrity (q);
+  node = g_queue_peek_tail_link (q);
+  g_assert (node != NULL && node->data == GINT_TO_POINTER (1234));
+  node = g_queue_peek_nth_link (q, g_queue_get_length (q));
+  g_assert (node == NULL);
+  node = g_queue_peek_nth_link (q, g_queue_get_length (q) - 1);
+  g_assert (node->data == GINT_TO_POINTER (1234));
+  node = g_queue_pop_nth_link (q, g_queue_get_length (q));
+  g_assert (node == NULL);
+  node = g_queue_pop_nth_link (q, g_queue_get_length (q) - 1);
+  g_assert (node != NULL && node->data == GINT_TO_POINTER (1234));
   
   g_queue_free (q);
 
   if (argc > 1)
     random_test (strtol (args[1], NULL, 0));
   else
-    random_test (time (0));
-  
+    random_test (time (0));  
+
   return 0;
 }
 
