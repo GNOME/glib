@@ -31,7 +31,9 @@
 #include <string.h>
 #include <locale.h>
 #include <ctype.h>		/* For tolower() */
+#if !defined (HAVE_STRSIGNAL) && NO_SYS_SIGLIST
 #include <signal.h>
+#endif
 #include "glib.h"
 /* do not include <unistd.h> in this place since it
  * inteferes with g_strsignal() on some OSes

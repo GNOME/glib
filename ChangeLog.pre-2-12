@@ -1,3 +1,8 @@
+Thu Jan 21 05:35:20 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* gstrfuncs.c: Include signal.h only when the signal names will be
+	needed.
+
 Wed Jan 20 22:09:59 EST 1999 Mandrake <mandrake@mandrake.net>
 
 	* configure.in / Makefile.am : made some adjustments for automake 1.4
