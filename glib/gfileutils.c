@@ -483,7 +483,10 @@ get_contents_stdio (const gchar *display_filename,
   
   while (!feof (f))
     {
+      int save_errno;
+
       bytes = fread (buf, 1, 2048, f);
+      save_errno = errno;
 
       while ((total_bytes + bytes + 1) > total_allocated)
         {
@@ -507,10 +510,10 @@ get_contents_stdio (const gchar *display_filename,
         {
           g_set_error (error,
                        G_FILE_ERROR,
-                       g_file_error_from_errno (errno),
+                       g_file_error_from_errno (save_errno),
                        _("Error reading file '%s': %s"),
                        display_filename,
-		       g_strerror (errno));
+		       g_strerror (save_errno));
 
           goto error;
         }
@@ -581,13 +584,15 @@ get_contents_regfile (const gchar *display_filename,
         {
           if (errno != EINTR) 
             {
+	      int save_errno = errno;
+
               g_free (buf);
               g_set_error (error,
                            G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
+                           g_file_error_from_errno (save_errno),
                            _("Failed to read from file '%s': %s"),
                            display_filename, 
-			   g_strerror (errno));
+			   g_strerror (save_errno));
 
 	      goto error;
             }
@@ -631,12 +636,14 @@ get_contents_posix (const gchar *filename,
 
   if (fd < 0)
     {
+      int save_errno = errno;
+
       g_set_error (error,
                    G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
+                   g_file_error_from_errno (save_errno),
                    _("Failed to open file '%s': %s"),
                    display_filename, 
-		   g_strerror (errno));
+		   g_strerror (save_errno));
       g_free (display_filename);
 
       return FALSE;
@@ -645,13 +652,15 @@ get_contents_posix (const gchar *filename,
   /* I don't think this will ever fail, aside from ENOMEM, but. */
   if (fstat (fd, &stat_buf) < 0)
     {
+      int save_errno = errno;
+
       close (fd);
       g_set_error (error,
                    G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
+                   g_file_error_from_errno (save_errno),
                    _("Failed to get attributes of file '%s': fstat() failed: %s"),
                    display_filename, 
-		   g_strerror (errno));
+		   g_strerror (save_errno));
       g_free (display_filename);
 
       return FALSE;
@@ -678,12 +687,14 @@ get_contents_posix (const gchar *filename,
       
       if (f == NULL)
         {
+	  int save_errno = errno;
+
           g_set_error (error,
                        G_FILE_ERROR,
-                       g_file_error_from_errno (errno),
+                       g_file_error_from_errno (save_errno),
                        _("Failed to open file '%s': fdopen() failed: %s"),
                        display_filename, 
-		       g_strerror (errno));
+		       g_strerror (save_errno));
           g_free (display_filename);
 
           return FALSE;
@@ -708,18 +719,20 @@ get_contents_win32 (const gchar *filename,
   gboolean retval;
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   gchar *display_filename = g_filename_display_name (filename);
+  int save_errno;
   
   f = _wfopen (wfilename, L"rb");
+  save_errno = errno;
   g_free (wfilename);
 
   if (f == NULL)
     {
       g_set_error (error,
                    G_FILE_ERROR,
-                   g_file_error_from_errno (errno),
+                   g_file_error_from_errno (save_errno),
                    _("Failed to open file '%s': %s"),
                    display_filename,
-		   g_strerror (errno));
+		   g_strerror (save_errno));
       g_free (display_filename);
 
       return FALSE;
@@ -842,7 +855,10 @@ g_mkstemp (gchar *tmpl)
 
   len = strlen (tmpl);
   if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
-    return -1;
+    {
+      errno = EINVAL;
+      return -1;
+    }
 
   /* This is where the Xs start.  */
   XXXXXX = &tmpl[len - 6];
@@ -881,6 +897,7 @@ g_mkstemp (gchar *tmpl)
     }
 
   /* We got out of the loop because we ran out of combinations to try.  */
+  errno = EEXIST;
   return -1;
 #endif
 }
@@ -906,7 +923,10 @@ g_mkstemp (gchar *tmpl)
 
   len = strlen (tmpl);
   if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
-    return -1;
+    {
+      errno = EINVAL;
+      return -1;
+    }
 
   /* This is where the Xs start.  */
   XXXXXX = &tmpl[len - 6];
@@ -947,6 +967,7 @@ g_mkstemp (gchar *tmpl)
     }
 
   /* We got out of the loop because we ran out of combinations to try.  */
+  errno = EEXIST;
   return -1;
 }
 
@@ -1041,12 +1062,14 @@ g_file_open_tmp (const gchar *tmpl,
 
   if (retval == -1)
     {
+      int save_errno = errno;
       gchar *display_fulltemplate = g_filename_display_name (fulltemplate);
+
       g_set_error (error,
 		   G_FILE_ERROR,
-		   g_file_error_from_errno (errno),
+		   g_file_error_from_errno (save_errno),
 		   _("Failed to create file '%s': %s"),
-		   display_fulltemplate, g_strerror (errno));
+		   display_fulltemplate, g_strerror (save_errno));
       g_free (display_fulltemplate);
       g_free (fulltemplate);
       return -1;
@@ -1416,14 +1439,16 @@ g_file_read_link (const gchar *filename,
     {
       read_size = readlink (filename, buffer, size);
       if (read_size < 0) {
+	int save_errno = errno;
 	gchar *display_filename = g_filename_display_name (filename);
+
 	g_free (buffer);
 	g_set_error (error,
 		     G_FILE_ERROR,
-		     g_file_error_from_errno (errno),
+		     g_file_error_from_errno (save_errno),
 		     _("Failed to read the symbolic link '%s': %s"),
 		     display_filename, 
-		     g_strerror (errno));
+		     g_strerror (save_errno));
 	g_free (display_filename);
 	
 	return NULL;

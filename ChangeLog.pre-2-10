@@ -5,6 +5,10 @@
 	wide-char or codepage strings on to C library functions, but bail
 	out early. (#166084)
 
+	* glib/gfileutils.c: Don't use potentially incorrect errno in
+	several places. (#165951)
+	(g_mkstemp): Set errno appropriately.
+
 2005-02-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.c: Move doc comments inline.
