@@ -40,10 +40,6 @@ G_BEGIN_DECLS
 #define MAXPATHLEN 1024
 #endif
 
-#ifdef _MSC_VER
-typedef int pid_t;
-#endif
-
 #ifdef G_OS_WIN32
 
 /*
