@@ -248,7 +248,6 @@ g_mem_set_vtable (GMemVTable *vtable)
 {
   if (!vtable_set)
     {
-      vtable_set = TRUE;
       if (vtable->malloc && vtable->realloc && vtable->free)
 	{
 	  glib_mem_vtable.malloc = vtable->malloc;
@@ -257,6 +256,7 @@ g_mem_set_vtable (GMemVTable *vtable)
 	  glib_mem_vtable.calloc = vtable->calloc ? vtable->calloc : fallback_calloc;
 	  glib_mem_vtable.try_malloc = vtable->try_malloc ? vtable->try_malloc : glib_mem_vtable.malloc;
 	  glib_mem_vtable.try_realloc = vtable->try_realloc ? vtable->try_realloc : glib_mem_vtable.realloc;
+	  vtable_set = TRUE;
 	}
       else
 	g_warning (G_STRLOC ": memory allocation vtable lacks one of malloc(), realloc() or free()");
