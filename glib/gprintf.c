@@ -34,6 +34,8 @@
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_printf (gchar const *fmt,
@@ -59,6 +61,8 @@ g_printf (gchar const *fmt,
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_fprintf (FILE *file, 
@@ -85,6 +89,8 @@ g_fprintf (FILE *file,
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_sprintf (gchar	*str,
@@ -155,6 +161,8 @@ g_snprintf (gchar	*str,
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_vprintf (gchar const *fmt,
@@ -175,6 +183,8 @@ g_vprintf (gchar const *fmt,
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_vfprintf (FILE *file,
@@ -196,6 +206,8 @@ g_vfprintf (FILE *file,
  * positional parameters, as specified in the Single Unix Specification.
  *
  * Returns: the number of characters printed.
+ *
+ * Since: 2.2
  **/
 gint
 g_vsprintf (gchar	 *str,

@@ -1711,6 +1711,8 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
  * @returns: the name of the currently open element, or %NULL
  *
  * Retrieves the name of the currently open element.
+ *
+ * Since: 2.2
  **/
 G_CONST_RETURN gchar *
 g_markup_parse_context_get_element (GMarkupParseContext *context)

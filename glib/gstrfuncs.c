@@ -2433,6 +2433,8 @@ g_strrstr_len (const gchar *haystack,
  * Looks whether the string @str ends with @suffix.
  *
  * Return value: %TRUE if @str end with @suffix, %FALSE otherwise.
+ *
+ * Since: 2.2
  **/
 gboolean
 g_str_has_suffix (const gchar  *str,
@@ -2461,6 +2463,8 @@ g_str_has_suffix (const gchar  *str,
  * Looks whether the string @str begins with @prefix.
  *
  * Return value: %TRUE if @str begins with @prefix, %FALSE otherwise.
+ *
+ * Since: 2.2
  **/
 gboolean
 g_str_has_prefix (const gchar  *str,

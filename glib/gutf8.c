@@ -1583,6 +1583,8 @@ g_unichar_validate (gunichar ch)
  * no longer needed. 
  *
  * Returns: a newly-allocated string which is the reverse of @str.
+ *
+ * Since: 2.2
  */
 gchar *
 g_utf8_strreverse (const gchar *str, 

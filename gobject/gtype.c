@@ -1230,6 +1230,8 @@ g_type_interface_add_prerequisite (GType interface_type,
  * 
  * Return value: a newly-allocated zero-terminated array of #GType containing 
  * the prerequisites of @interface_type
+ *
+ * Since: 2.2
  **/
 GType* /* free result */
 g_type_interface_prerequisites (GType  interface_type,

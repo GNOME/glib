@@ -2,7 +2,7 @@
 Value arrays
 
 <!-- ##### SECTION Short_Description ##### -->
-A #GValueArray is a container structure to maintain an array of #GValue elements.
+A container structure to maintain an array of generic values
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

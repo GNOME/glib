@@ -1,5 +1,17 @@
 2002-11-28  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gutf8.c (g_utf8_strreverse): 
+	* glib/gstrfuncs.c (g_str_has_suffix): 
+	(g_str_has_prefix): 
+	* glib/gprintf.c (g_printf): 
+	(g_fprintf): 
+	(g_sprintf): 
+	(g_vprintf): 
+	(g_vfprintf): 
+	(g_vsprintf): 
+	* glib/gmarkup.c (g_markup_parse_context_get_element): 
+	Mark as 2.2 API additions.
+
 	* configure.in: Fix the gtk-doc version check.
 
 2002-11-27  Matthias Clasen  <maclas@gmx.de>

@@ -24,7 +24,7 @@ To free a #GByteArray, use g_byte_array_free().
 </para>
 
 <example>
-<title>Using a <structname>GByteArray</structname>.</title>
+<title>Using a <structname>GByteArray</structname></title>
 <programlisting>
   GByteArray *gbarray;
   gint i;

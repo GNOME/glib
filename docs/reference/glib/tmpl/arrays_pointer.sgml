@@ -38,7 +38,7 @@ To set the size of a pointer array, use g_ptr_array_set_size().
 To free a pointer array, use g_ptr_array_free().
 </para>
 <example>
-<title>Using a <structname>GPtrArray</structname>.</title>
+<title>Using a <structname>GPtrArray</structname></title>
 <programlisting>
   GPtrArray *gparray;
   gchar *string1 = "one", *string2 = "two", *string3 = "three";
