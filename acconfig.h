@@ -84,6 +84,8 @@
 #undef WIN32
 #undef NATIVE_WIN32
 
+#undef G_THREAD_SOURCE
+
 /* #undef PACKAGE */
 /* #undef VERSION */
 

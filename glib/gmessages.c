@@ -17,6 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * MT safe
+ */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -31,7 +35,7 @@
 #endif
 
 #ifdef NATIVE_WIN32
-/* Just use stdio. If we're out of memroy, we're hosed anyway. */
+/* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
 
 static inline int
@@ -67,6 +71,9 @@ struct _GLogHandler
 
 
 /* --- variables --- */
+
+static GMutex* g_messages_lock = NULL;
+
 const gchar	     *g_log_domain_glib = "GLib";
 static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
@@ -76,20 +83,27 @@ static GErrorFunc     glib_error_func = NULL;
 static GWarningFunc   glib_warning_func = NULL;
 static GPrintFunc     glib_message_func = NULL;
 
+static GPrivate* g_log_depth = NULL;
+
 
 /* --- functions --- */
 static inline GLogDomain*
 g_log_find_domain (const gchar	  *log_domain)
 {
   register GLogDomain *domain;
-
+  
+  g_mutex_lock (g_messages_lock);
   domain = g_log_domains;
   while (domain)
     {
       if (strcmp (domain->log_domain, log_domain) == 0)
-	return domain;
+	{
+	  g_mutex_unlock (g_messages_lock);
+	  return domain;
+	}
       domain = domain->next;
     }
+  g_mutex_unlock (g_messages_lock);
   return NULL;
 }
 
@@ -102,8 +116,11 @@ g_log_domain_new (const gchar *log_domain)
   domain->log_domain = g_strdup (log_domain);
   domain->fatal_mask = G_LOG_FATAL_MASK;
   domain->handlers = NULL;
+  
+  g_mutex_lock (g_messages_lock);
   domain->next = g_log_domains;
   g_log_domains = domain;
+  g_mutex_unlock (g_messages_lock);
   
   return domain;
 }
@@ -116,7 +133,9 @@ g_log_domain_check_free (GLogDomain *domain)
     {
       register GLogDomain *last, *work;
       
-      last = NULL;
+      last = NULL;  
+
+      g_mutex_lock (g_messages_lock);
       work = g_log_domains;
       while (work)
 	{
@@ -131,7 +150,8 @@ g_log_domain_check_free (GLogDomain *domain)
 	      break;
 	    }
 	  work = work->next;
-	}
+	}  
+      g_mutex_unlock (g_messages_lock);
     }
 }
 
@@ -170,8 +190,10 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
   /* remove bogus flag */
   fatal_mask &= ~G_LOG_FLAG_FATAL;
 
+  g_mutex_lock (g_messages_lock);
   old_mask = g_log_always_fatal;
   g_log_always_fatal = fatal_mask;
+  g_mutex_unlock (g_messages_lock);
 
   return old_mask;
 }
@@ -223,7 +245,9 @@ g_log_set_handler (const gchar	  *log_domain,
     domain = g_log_domain_new (log_domain);
   
   handler = g_new (GLogHandler, 1);
+  g_mutex_lock (g_messages_lock);
   handler->id = ++handler_id;
+  g_mutex_unlock (g_messages_lock);
   handler->log_level = log_levels;
   handler->log_func = log_func;
   handler->data = user_data;
@@ -311,19 +335,25 @@ g_logv (const gchar    *log_domain,
       test_level = 1 << i;
       if (log_level & test_level)
 	{
-	  static guint g_log_depth = 0;
+	  guint depth = GPOINTER_TO_UINT (g_private_get (g_log_depth));
 	  GLogDomain *domain;
 	  GLogFunc log_func;
 	  gpointer data = NULL;
 	  
 	  domain = g_log_find_domain (log_domain ? log_domain : "");
 	  
-	  if (g_log_depth++)
+	  if (depth)
 	    test_level |= G_LOG_FLAG_RECURSION;
 	  
-	  if ((((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) | g_log_always_fatal) &
-	       test_level) != 0)
-	    test_level |= G_LOG_FLAG_FATAL;
+	  depth++;
+	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
+
+	  g_mutex_lock (g_messages_lock);
+	  if ((((domain ? domain->fatal_mask : G_LOG_FATAL_MASK) | 
+		g_log_always_fatal) & test_level) != 0)
+	    test_level |= G_LOG_FLAG_FATAL;  
+	  g_mutex_unlock (g_messages_lock);
+
 	  log_func = g_log_domain_get_handler (domain, test_level, &data);
 	  log_func (log_domain, test_level, buffer, data);
 	  
@@ -332,7 +362,8 @@ g_logv (const gchar    *log_domain,
 	  if (test_level & G_LOG_FLAG_FATAL)
 	    abort ();
 	  
-	  g_log_depth--;
+	  depth--;
+	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
 	}
     }
 }
@@ -362,8 +393,11 @@ g_log_default_handler (const gchar    *log_domain,
   gint fd;
 #endif
   gboolean in_recursion;
-  gboolean is_fatal;
-  
+  gboolean is_fatal;  
+  GErrorFunc     local_glib_error_func;
+  GWarningFunc   local_glib_warning_func;
+  GPrintFunc     local_glib_message_func;
+
   in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   log_level &= G_LOG_LEVEL_MASK;
@@ -380,13 +414,19 @@ g_log_default_handler (const gchar    *log_domain,
   fd = (log_level >= G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
   
+  g_mutex_lock (g_messages_lock);
+  local_glib_error_func = glib_error_func;
+  local_glib_warning_func = glib_warning_func;
+  local_glib_message_func = glib_message_func;
+  g_mutex_unlock (g_messages_lock);
+
   switch (log_level)
     {
     case G_LOG_LEVEL_ERROR:
-      if (!log_domain && glib_error_func)
+      if (!log_domain && local_glib_error_func)
 	{
 	  /* compatibility code */
-	  glib_error_func (message);
+	  local_glib_error_func (message);  
 	  return;
 	}
       /* use write(2) for output, in case we are out of memeory */
@@ -428,10 +468,10 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_WARNING:
-      if (!log_domain && glib_warning_func)
+      if (!log_domain && local_glib_warning_func)
 	{
 	  /* compatibility code */
-	  glib_warning_func (message);
+	  local_glib_warning_func (message);
 	  return;
 	}
       if (log_domain)
@@ -453,10 +493,10 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "\n", 1);
       break;
     case G_LOG_LEVEL_MESSAGE:
-      if (!log_domain && glib_message_func)
+      if (!log_domain && local_glib_message_func)
 	{
 	  /* compatibility code */
-	  glib_message_func (message);
+	  local_glib_message_func (message);
 	  return;
 	}
       if (log_domain)
@@ -553,8 +593,10 @@ g_set_print_handler (GPrintFunc func)
 {
   GPrintFunc old_print_func;
   
+  g_mutex_lock (g_messages_lock);
   old_print_func = glib_print_func;
   glib_print_func = func;
+  g_mutex_unlock (g_messages_lock);
   
   return old_print_func;
 }
@@ -565,6 +607,7 @@ g_print (const gchar *format,
 {
   va_list args;
   gchar *string;
+  GPrintFunc local_glib_print_func;
   
   g_return_if_fail (format != NULL);
   
@@ -572,8 +615,12 @@ g_print (const gchar *format,
   string = g_strdup_vprintf (format, args);
   va_end (args);
   
-  if (glib_print_func)
-    glib_print_func (string);
+  g_mutex_lock (g_messages_lock);
+  local_glib_print_func = glib_print_func;
+  g_mutex_unlock (g_messages_lock);
+
+  if (local_glib_print_func)
+    local_glib_print_func (string);
   else
     {
       fputs (string, stdout);
@@ -587,8 +634,10 @@ g_set_printerr_handler (GPrintFunc func)
 {
   GPrintFunc old_printerr_func;
   
+  g_mutex_lock (g_messages_lock);
   old_printerr_func = glib_printerr_func;
   glib_printerr_func = func;
+  g_mutex_unlock (g_messages_lock);
   
   return old_printerr_func;
 }
@@ -599,6 +648,7 @@ g_printerr (const gchar *format,
 {
   va_list args;
   gchar *string;
+  GPrintFunc local_glib_printerr_func;
   
   g_return_if_fail (format != NULL);
   
@@ -606,8 +656,12 @@ g_printerr (const gchar *format,
   string = g_strdup_vprintf (format, args);
   va_end (args);
   
-  if (glib_printerr_func)
-    glib_printerr_func (string);
+  g_mutex_lock (g_messages_lock);
+  local_glib_printerr_func = glib_printerr_func;
+  g_mutex_unlock (g_messages_lock);
+
+  if (local_glib_printerr_func)
+    local_glib_printerr_func (string);
   else
     {
       fputs (string, stderr);
@@ -622,9 +676,11 @@ g_set_error_handler (GErrorFunc func)
 {
   GErrorFunc old_error_func;
   
+  g_mutex_lock (g_messages_lock);
   old_error_func = glib_error_func;
   glib_error_func = func;
-  
+  g_mutex_unlock (g_messages_lock);
+ 
   return old_error_func;
 }
 
@@ -634,8 +690,10 @@ g_set_warning_handler (GWarningFunc func)
 {
   GWarningFunc old_warning_func;
   
+  g_mutex_lock (g_messages_lock);
   old_warning_func = glib_warning_func;
   glib_warning_func = func;
+  g_mutex_unlock (g_messages_lock);
   
   return old_warning_func;
 }
@@ -646,8 +704,17 @@ g_set_message_handler (GPrintFunc func)
 {
   GPrintFunc old_message_func;
   
+  g_mutex_lock (g_messages_lock);
   old_message_func = glib_message_func;
   glib_message_func = func;
+  g_mutex_unlock (g_messages_lock);
   
   return old_message_func;
+}
+
+void
+g_messages_init (void)
+{
+  g_messages_lock = g_mutex_new();
+  g_log_depth = g_private_new(NULL);
 }

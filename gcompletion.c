@@ -17,6 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * MT safe
+ */
+
 #include "glib.h"
 #include <string.h>
 

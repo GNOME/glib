@@ -17,6 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * MT safe
+ */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -208,7 +212,8 @@ g_strtod (const gchar *nptr,
 gchar*
 g_strerror (gint errnum)
 {
-  static char msg[64];
+  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT; 
+  char *msg;
   
 #ifdef HAVE_STRERROR
   return strerror (errnum);
@@ -634,7 +639,14 @@ g_strerror (gint errnum)
   if ((errnum > 0) && (errnum <= sys_nerr))
     return sys_errlist [errnum];
 #endif /* NO_SYS_ERRLIST */
-  
+
+  msg = g_static_private_get (&msg_private);
+  if( !msg )
+    {
+      msg = g_new( gchar, 64 );
+      g_static_private_set (&msg_private, msg, g_free);
+    }
+
   sprintf (msg, "unknown error (%d)", errnum);
   return msg;
 }
@@ -642,7 +654,8 @@ g_strerror (gint errnum)
 gchar*
 g_strsignal (gint signum)
 {
-  static char msg[64];
+  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT; 
+  char *msg;
   
 #ifdef HAVE_STRSIGNAL
   extern char *strsignal (int sig);
@@ -748,6 +761,13 @@ g_strsignal (gint signum)
   extern char *sys_siglist[];
   return sys_siglist [signum];
 #endif /* NO_SYS_SIGLIST */
+
+  msg = g_static_private_get (&msg_private);
+  if( !msg )
+    {
+      msg = g_new( gchar, 64 );
+      g_static_private_set (&msg_private, msg, g_free);
+    }
   
   sprintf (msg, "unknown signal (%d)", signum);
   return msg;

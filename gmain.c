@@ -20,9 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * MT safe
+ */
+
 #include "glib.h"
 #include <sys/time.h>
 #include <unistd.h>
+#include <errno.h>
 #include "config.h"
 
 /* Types */
@@ -65,9 +70,12 @@ struct _GPollRec {
 
 /* Forward declarations */
 
-static void     g_main_poll            (gint      timeout,
-					gboolean  use_priority, 
-					gint      priority);
+static void     g_main_poll              (gint      timeout,
+					  gboolean  use_priority, 
+					  gint      priority);
+static void     g_main_poll_add_unlocked (gint      priority,
+					  GPollFD  *fd);
+
 static gboolean g_timeout_prepare      (gpointer  source_data, 
 					GTimeVal *current_time,
 					gint     *timeout);
@@ -90,6 +98,11 @@ static gboolean g_idle_dispatch        (gpointer  source_data,
 static GSList *pending_dispatches = NULL;
 static GHookList source_list = { 0 };
 
+/* The following lock is used for both the list of sources
+ * and the list of poll records
+ */
+static G_LOCK_DEFINE (main_loop);
+
 static GSourceFuncs timeout_funcs = {
   g_timeout_prepare,
   g_timeout_check,
@@ -103,6 +116,17 @@ static GSourceFuncs idle_funcs = {
   g_idle_dispatch,
   (GDestroyNotify)g_free
 };
+
+static GPollRec *poll_records = NULL;
+static GPollRec *poll_free_list = NULL;
+static GMemChunk *poll_chunk;
+static guint n_poll_records = 0;
+
+/* this pipe is used to wake up the main loop when a source is added.
+ */
+static gint wake_up_pipe[2] = { -1, -1 };
+static GPollFD wake_up_rec;
+static gboolean poll_waiting = FALSE;
 
 #ifdef HAVE_POLL
 static GPollFunc poll_func = (GPollFunc)poll;
@@ -205,7 +229,10 @@ g_source_add (gint           priority,
 	      gpointer       user_data,
 	      GDestroyNotify notify)
 {
+  guint return_val;
   GSource *source;
+
+  g_lock (main_loop);
 
   if (!source_list.is_setup)
     g_hook_list_init (&source_list, sizeof(GSource));
@@ -224,31 +251,55 @@ g_source_add (gint           priority,
   if (can_recurse)
     source->hook.flags |= G_SOURCE_CAN_RECURSE;
 
-  return source->hook.hook_id;
+  return_val = source->hook.hook_id;
+
+  /* Now wake up the main loop if it is waiting in the poll() */
+
+  if (poll_waiting)
+    {
+      poll_waiting = FALSE;
+      write (wake_up_pipe[1], "A", 1);
+    }
+
+  g_unlock (main_loop);
+
+  return return_val;
 }
 
 void 
 g_source_remove (guint tag)
 {
-  GHook *hook = g_hook_get (&source_list, tag);
+  GHook *hook;
+
+  g_lock (main_loop);
+
+  hook = g_hook_get (&source_list, tag);
   if (hook)
     {
       GSource *source = (GSource *)hook;
       ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
+
+  g_unlock (main_loop);
 }
 
 void 
 g_source_remove_by_user_data (gpointer user_data)
 {
-  GHook *hook = g_hook_find_data (&source_list, TRUE, user_data);
+  GHook *hook;
+  
+  g_lock (main_loop);
+  
+  hook = g_hook_find_data (&source_list, TRUE, user_data);
   if (hook)
     {
       GSource *source = (GSource *)hook;
       ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
+
+  g_unlock (main_loop);
 }
 
 static gboolean
@@ -262,7 +313,11 @@ g_source_find_source_data (GHook	*hook,
 void 
 g_source_remove_by_source_data (gpointer source_data)
 {
-  GHook *hook = g_hook_find (&source_list, TRUE, 
+  GHook *hook;
+
+  g_lock (main_loop);
+
+  hook = g_hook_find (&source_list, TRUE, 
 			     g_source_find_source_data, source_data);
   if (hook)
     {
@@ -270,6 +325,8 @@ g_source_remove_by_source_data (gpointer source_data)
       ((GSourceFuncs *)source->hook.func)->destroy (source->source_data);
       g_hook_destroy_link (&source_list, hook);
     }
+
+  g_unlock (main_loop);
 }
 
 void g_get_current_time (GTimeVal *result)
@@ -279,6 +336,7 @@ void g_get_current_time (GTimeVal *result)
 
 /* Running the main loop */
 
+/* HOLDS: main_loop_lock */
 static void
 g_main_dispatch (GTimeVal *current_time)
 {
@@ -294,10 +352,20 @@ g_main_dispatch (GTimeVal *current_time)
 
       if (G_HOOK_IS_VALID (source))
 	{
+	  gboolean (*dispatch) (gpointer, GTimeVal *, gpointer);
+	  gpointer hook_data = source->hook.data;
+	  gpointer source_data = source->source_data;
+
+	  dispatch = ((GSourceFuncs *)source->hook.func)->dispatch;
+	  
 	  source->hook.flags |= G_HOOK_FLAG_IN_CALL;
-	  need_destroy = !((GSourceFuncs *)source->hook.func)->dispatch (source->source_data, 
-						   current_time,
-						   source->hook.data);
+
+	  g_unlock (main_loop);
+	  need_destroy = ! dispatch(source_data,
+				    current_time,
+				    hook_data);
+	  g_lock (main_loop);
+
 	  source->hook.flags &= ~G_HOOK_FLAG_IN_CALL;
 	  
 	  if (need_destroy)
@@ -320,10 +388,13 @@ g_main_iterate (gboolean block, gboolean dispatch)
   gint nready = 0;
   gint current_priority = 0;
   gint timeout;
+  gboolean retval = FALSE;
 
   g_return_val_if_fail (!block || dispatch, FALSE);
 
   g_get_current_time (&current_time);
+
+  g_lock (main_loop);
   
   /* If recursing, finish up current dispatch, before starting over */
   if (pending_dispatches)
@@ -331,6 +402,7 @@ g_main_iterate (gboolean block, gboolean dispatch)
       if (dispatch)
 	g_main_dispatch (&current_time);
       
+      g_unlock (main_loop);
       return TRUE;
     }
 
@@ -362,6 +434,7 @@ g_main_iterate (gboolean block, gboolean dispatch)
 	  if (!dispatch)
 	    {
 	      g_hook_unref (&source_list, hook);
+	      g_unlock (main_loop);
 	      return TRUE;
 	    }
 	  else
@@ -426,6 +499,7 @@ g_main_iterate (gboolean block, gboolean dispatch)
 	  else
 	    {
 	      g_hook_unref (&source_list, hook);
+	      g_unlock (main_loop);
 	      return TRUE;
 	    }
 	}
@@ -442,10 +516,12 @@ g_main_iterate (gboolean block, gboolean dispatch)
     {
       pending_dispatches = g_slist_reverse (pending_dispatches);
       g_main_dispatch (&current_time);
-      return TRUE;
+      retval = TRUE;
     }
-  else
-    return FALSE;
+
+  g_unlock (main_loop);
+
+  return retval;
 }
 
 /* See if any events are pending
@@ -494,11 +570,7 @@ g_main_destroy (GMainLoop *loop)
   g_free (loop);
 }
 
-static GPollRec *poll_records = NULL;
-static GPollRec *poll_free_list = NULL;
-static GMemChunk *poll_chunk;
-static guint n_poll_records = 0;
-
+/* HOLDS: main_loop_lock */
 static void
 g_main_poll (gint timeout, gboolean use_priority, gint priority)
 {
@@ -508,6 +580,17 @@ g_main_poll (gint timeout, gboolean use_priority, gint priority)
   gint i;
   gint npoll;
 
+  if (wake_up_pipe[0] < 0)
+    {
+      if (pipe (wake_up_pipe) < 0)
+	g_error ("Cannot create pipe main loop wake-up: %s\n",
+		 g_strerror(errno));
+
+      wake_up_rec.fd = wake_up_pipe[0];
+      wake_up_rec.events = G_IO_IN;
+      g_main_poll_add_unlocked (0, &wake_up_rec);
+    }
+  
   pollrec = poll_records;
   i = 0;
   while (pollrec && (!use_priority || priority >= pollrec->priority))
@@ -520,8 +603,20 @@ g_main_poll (gint timeout, gboolean use_priority, gint priority)
       i++;
     }
 
+  poll_waiting = TRUE;
+  
+  g_unlock (main_loop);
   npoll = i;
   (*poll_func) (fd_array, npoll, timeout);
+  g_lock (main_loop);
+
+  if (!poll_waiting)
+    {
+      gchar c;
+      read (wake_up_pipe[0], &c, 1);
+    }
+  else
+    poll_waiting = FALSE;
 
   pollrec = poll_records;
   i = 0;
@@ -539,12 +634,28 @@ void
 g_main_poll_add (gint     priority,
 		 GPollFD *fd)
 {
+  g_lock (main_loop);
+  g_main_poll_add_unlocked (priority, fd);
+  g_unlock (main_loop);
+}
+
+static void 
+g_main_poll_add_unlocked (gint     priority,
+			  GPollFD *fd)
+{
   GPollRec *lastrec, *pollrec, *newrec;
 
   if (!poll_chunk)
     poll_chunk = g_mem_chunk_create (GPollRec, 32, G_ALLOC_ONLY);
 
-  newrec = g_chunk_new (GPollRec, poll_chunk);
+  if (poll_free_list)
+    {
+      newrec = poll_free_list;
+      poll_free_list = newrec->next;
+    }
+  else
+    newrec = g_chunk_new (GPollRec, poll_chunk);
+
   newrec->fd = fd;
   newrec->priority = priority;
 
@@ -564,6 +675,8 @@ g_main_poll_add (gint     priority,
   newrec->next = pollrec;
 
   n_poll_records++;
+
+  g_unlock (main_loop);
 }
 
 void 
@@ -571,6 +684,8 @@ g_main_poll_remove (GPollFD *fd)
 {
   GPollRec *pollrec, *lastrec;
 
+  g_lock (main_loop);
+  
   lastrec = NULL;
   pollrec = poll_records;
 
@@ -585,12 +700,15 @@ g_main_poll_remove (GPollFD *fd)
 
 	  pollrec->next = poll_free_list;
 	  poll_free_list = pollrec;
+
+	  n_poll_records--;
+	  break;
 	}
       lastrec = pollrec;
       pollrec = pollrec->next;
     }
 
-  n_poll_records--;
+  g_unlock (main_loop);
 }
 
 void 

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # build . first, then SUBDIRS
-SUBDIRS = gmodule docs
+SUBDIRS = gmodule gthread docs 
 all-recursive-am: all-am
 # alpha `automake' supports this better
 #SUBDIRS = . gmodule docs
@@ -50,7 +50,8 @@ libglib_la_SOURCES = \
 		gstring.c	\
 		gstrfuncs.c	\
 		gscanner.c	\
-		gutils.c
+		gutils.c	\
+		gmutex.c
 
 include_HEADERS = \
 		glib.h

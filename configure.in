@@ -508,6 +508,155 @@ AC_SUBST(G_MODULE_HAVE_DLERROR)
 AC_SUBST(G_MODULE_NEED_USCORE)
 AC_SUBST(GLIB_DEBUG_FLAGS)
 
+
+dnl ***********************
+dnl *** g_thread checks ***
+dnl ***********************
+
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use.],,)
+
+dnl error and warning message
+dnl *************************
+
+THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
+                computer. glib will not be thread safe on your computer."
+
+THREAD_UNKNOWN_COMPILER="Your compiler is not known, so I cannot
+                determine the necessary compiler options to compile programs 
+                which are using threads. Please provide such information."
+
+FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
+                platform (normaly it's "_REENTRANT"). I'll not use any flag on
+                compilation now, but then your programs might not work. 
+                Please provide information on how it is done on your system."
+
+LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
+		"
+
+LIBS_NOT_FOUND_2=". Please choose another thread implementation or 
+		provide informationon your thread implementation."
+
+dnl determination of thread implementation
+dnl ***************************************
+
+if test x"$with_threads" = x; then
+        case $host in
+                *-*-solaris*)
+                        AC_CHECK_LIB(thread,cond_init,with_threads=solaris)
+                        ;;
+        esac
+        if test x"$with_threads" = x; then
+                AC_CHECK_LIB(pthread,pthread_cond_init,with_threads=posix)
+     	        AC_CHECK_LIB(pthreads,pthread_attr_init,with_threads=posix)
+		AC_CHECK_LIB(nspr21,PRP_NewNakedCondVar,with_threads=nspr)
+	fi
+fi
+
+AC_MSG_CHECKING(for thread implementation)
+
+if test x"$with_threads" = x; then
+        with_threads=none
+        AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
+fi
+
+AC_MSG_RESULT($with_threads)
+
+dnl determination of G_THREAD_LIBS
+dnl ******************************
+
+G_THREAD_LIBS=
+
+case $with_threads in
+        posix)
+		G_THREAD_LIBS=error
+		AC_CHECK_LIB(pthreads,pthread_cond_init,
+			     G_THREAD_LIBS="-lpthreads") 
+                AC_CHECK_LIB(pthread,pthread_cond_init,
+			     G_THREAD_LIBS="-lpthread")     	       	
+                ;;
+        solaris)
+		G_THREAD_LIBS=error
+                AC_CHECK_LIB(thread,cond_init,G_THREAD_LIBS="-lthread")
+		# solaris has a broken initializer for mutexes, if we find it,
+		# we will replace it.
+		AC_MSG_CHECKING(for broken solaris mutex initialization)
+		AC_EGREP_CPP([ *begin *{ *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *, *0 *} *end *],
+		             [#include <thread.h>
+			     begin DEFAULTMUTEX end],
+			     [solaris_mutex_init_broken=yes],
+			     [solaris_mutex_init_broken=no])
+		AC_MSG_RESULT($solaris_mutex_init_broken)
+                ;;
+	nspr)
+		AC_CHECK_LIB(nspr21,PRP_NewNakedCondVar,
+			     G_THREAD_LIBS="-lnspr21")
+		;;
+        none)
+                ;;
+        *)
+		G_THREAD_LIBS=error
+                ;;
+esac
+
+if test "x$G_THREAD_LIBS" = xerror; then
+        AC_MSG_ERROR($LIBS_NOT_FOUND_1$with_threads$LIBS_NOT_FOUND_2)
+fi
+
+AC_MSG_CHECKING(necessary linker options)
+AC_MSG_RESULT($G_THREAD_LIBS)
+
+dnl determination of G_THREAD_CFLAGS
+dnl ********************************
+
+if test x"$with_threads" != xnone; then
+	G_THREAD_CFLAGS="-D_REENTRANT" # good default
+
+	case $host in
+ 	       -aix*)
+			# FIXME: can somebody confirm this -D_THREAD_SAFE ???
+			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
+			if test x"$GCC" = xyes; then 
+                	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
+			fi
+			;;
+	esac
+
+	# if we are not finding the ctime_r function, then we probably are 
+	# not using the proper multithread flag
+	old_CPPFLAGS=$CPPFLAGS
+	CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
+	AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, , 
+        	G_THREAD_CFLAGS=
+        	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
+	CPPFLAGS=$old_CPPFLAGS
+                
+	if test x"$GCC" = xyes; then 	
+		# older gcc's do not know the -fstack-check option and will
+		# stop compiling, so just check this here 
+		old_CPPFLAGS="$CPPFLAGS"
+		CPPFLAGS="$CPPFLAGS -fstack-check"
+		AC_TRY_COMPILE(,,
+			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -fstack-check")
+		CPPFLAGS=$old_CPPFLAGS
+	else
+        	AC_MSG_WARN($THREAD_UNKNOWN_COMPILER)
+	fi
+
+	AC_MSG_CHECKING(necessary compiler options)
+
+	AC_MSG_RESULT($G_THREAD_CFLAGS)
+else
+        G_THREAD_CFLAGS=
+fi
+
+AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$with_threads.c")
+AC_SUBST(G_THREAD_CFLAGS)
+AC_SUBST(G_THREAD_LIBS)
+
+dnl ******************************
+dnl *** output the whole stuff ***
+dnl ******************************
+
 AC_OUTPUT_COMMANDS([
 
 ## Generate `glibconfig.h' in two cases
@@ -549,6 +698,9 @@ outfile_EOF
   fi 
   if test x$glib_values_h = xyes; then
     echo '#include <values.h>' >> $outfile
+  fi
+  if test x$g_mutex_header_file != x; then
+    echo '#include <'"$g_mutex_header_file"'>' >> $outfile
   fi
   if test x$glib_sys_poll_h = xyes; then
     echo '#include <sys/types.h>' >> $outfile
@@ -627,6 +779,34 @@ $glib_inline
 
 #define G_BYTE_ORDER $g_byte_order
 outfile_EOF
+
+cat >>$outfile <<outfile_EOF                                               
+
+/* definitions for the default mutex implementation */
+outfile_EOF
+
+  if test x$g_mutex_has_default = xyes; then
+cat >>$outfile <<outfile_EOF                                               
+
+typedef struct _GStaticMutex GStaticMutex;
+struct _GStaticMutex 
+{
+  $g_mutex_default_type default_mutex;
+  struct _GMutex* runtime_mutex;
+};
+#define G_STATIC_MUTEX_INIT { $g_mutex_default_init, NULL }
+#define g_static_mutex_get_mutex(mutex) \
+  ( g_thread_use_default_impl ? (GMutex*)&mutex.default_mutex : \
+    g_static_mutex_get_mutex_impl(&mutex.runtime_mutex) )
+outfile_EOF
+  else
+cat >>$outfile <<outfile_EOF                                               
+
+typedef struct _GMutex* GStaticMutex;
+#define G_STATIC_MUTEX_INIT NULL
+#define g_static_mutex_get_mutex(mutex) g_static_mutex_get_mutex_impl(&mutex)
+outfile_EOF
+  fi
 
   g_bit_sizes="16 32"
   if test -n "$gint64"; then
@@ -841,6 +1021,31 @@ if test x$glib_working_wctype = xno; then
   glib_wc="\$glib_wc
 #define G_HAVE_BROKEN_WCTYPE 1"
 fi
+
+case $with_threads in
+	posix)
+		g_mutex_has_default=yes
+		g_mutex_default_type='pthread_mutex_t'
+		g_mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
+		g_mutex_header_file='pthread.h'
+		;;
+	solaris)
+		g_mutex_has_default=yes
+		g_mutex_default_type='mutex_t'
+		if test x$solaris_mutex_init_broken = xyes; then
+		  g_mutex_default_init="{ { { 0, 0, 0, 0 }, USYNC_THREAD }, { { { 0, 0, 0, 0, 0, 0, 0, 0 } } }, 0}"
+		else
+		  g_mutex_default_init="DEFAULTMUTEX"
+		fi
+		g_mutex_header_file='thread.h'
+		;;
+	nspr)
+		g_mutex_has_default=no
+		;;
+	*)		
+		g_mutex_has_default=no
+		;;
+esac
 ])
 
 AC_OUTPUT([
@@ -848,6 +1053,7 @@ Makefile
 glib-config
 gmodule/gmoduleconf.h
 gmodule/Makefile
+gthread/Makefile
 docs/Makefile
 ],[case "$CONFIG_FILES" in
 *glib-config*)chmod +x glib-config;;

@@ -16,6 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/* 
+ * MT safe
+ */
+
 #include "glib.h"
 
 #include <time.h>
@@ -383,6 +388,8 @@ g_date_clear (GDate       *d, guint ndates)
   memset (d, 0x0, ndates*sizeof (GDate)); 
 }
 
+static G_LOCK_DEFINE(g_date_global);
+
 /* These are for the parser, output to the user should use *
  * g_date_strftime () - this creates more never-freed memory to annoy
  * all those memory debugger users. :-) 
@@ -429,6 +436,7 @@ typedef struct _GDateParseTokens GDateParseTokens;
 
 #define NUM_LEN 10
 
+/* HOLDS: g_date_global_lock */
 static void
 g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 {
@@ -488,7 +496,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
               if (found != NULL)
                 {
                   pt->month = i;
-                  return;
+		  return;
                 }
             }
 	  
@@ -502,12 +510,13 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
                   return;
                 }
             }
-	  
+
           ++i;
-        }
+        }      
     }
 }
 
+/* HOLDS: g_date_global_lock */
 static void
 g_date_prepare_to_parse (const gchar *str, GDateParseTokens *pt)
 {
@@ -641,6 +650,8 @@ g_date_set_parse (GDate       *d,
   /* set invalid */
   g_date_clear (d, 1);
   
+  g_lock (g_date_global);
+
   g_date_prepare_to_parse (str, &pt);
   
 #ifdef G_ENABLE_DEBUG
@@ -649,7 +660,11 @@ g_date_set_parse (GDate       *d,
 #endif
   
   
-  if (pt.num_ints == 4) return; /* presumably a typo; bail out. */
+  if (pt.num_ints == 4) 
+    {
+      g_unlock (g_date_global);
+      return; /* presumably a typo; bail out. */
+    }
   
   if (pt.num_ints > 1)
     {
@@ -765,6 +780,7 @@ g_date_set_parse (GDate       *d,
   else 
     g_message ("Rejected DMY %u %u %u", day, m, y);
 #endif
+  g_unlock (g_date_global);
 }
 
 void         

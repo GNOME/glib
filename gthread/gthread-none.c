@@ -1,6 +1,9 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
+ * gthread.c: fallback thread system implementation
+ * Copyright 1998 Sebastian Wilhelmi; University of Karlsruhe
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -8,7 +11,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -21,56 +24,5 @@
  * MT safe
  */
 
-#include "glib.h"
-
-static const guint g_primes[] =
-{
-  11,
-  19,
-  37,
-  73,
-  109,
-  163,
-  251,
-  367,
-  557,
-  823,
-  1237,
-  1861,
-  2777,
-  4177,
-  6247,
-  9371,
-  14057,
-  21089,
-  31627,
-  47431,
-  71143,
-  106721,
-  160073,
-  240101,
-  360163,
-  540217,
-  810343,
-  1215497,
-  1823231,
-  2734867,
-  4102283,
-  6153409,
-  9230113,
-  13845163,
-};
-
-static const guint g_nprimes = sizeof (g_primes) / sizeof (g_primes[0]);
-
-guint
-g_spaced_primes_closest (guint num)
-{
-  gint i;
-
-  for (i = 0; i < g_nprimes; i++)
-    if (g_primes[i] > num)
-      return g_primes[i];
-
-  return g_primes[g_nprimes - 1];
-}
+static GThreadFunctions
+g_mutex_functions_for_glib_use_default; /* is NULLified */

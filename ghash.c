@@ -16,6 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/* 
+ * MT safe
+ */
+
 #include "glib.h"
 
 
@@ -51,6 +56,8 @@ static GHashNode*	g_hash_node_new		 (gpointer	 key,
 static void		g_hash_node_destroy	 (GHashNode	*hash_node);
 static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
+
+static G_LOCK_DEFINE(g_hash_global);
 
 static GMemChunk *node_mem_chunk = NULL;
 static GHashNode *node_free_list = NULL;
@@ -338,6 +345,7 @@ g_hash_node_new (gpointer key,
 {
   GHashNode *hash_node;
   
+  g_lock (g_hash_global);
   if (node_free_list)
     {
       hash_node = node_free_list;
@@ -352,6 +360,7 @@ g_hash_node_new (gpointer key,
       
       hash_node = g_chunk_new (GHashNode, node_mem_chunk);
     }
+  g_unlock (g_hash_global);
   
   hash_node->key = key;
   hash_node->value = value;
@@ -363,8 +372,10 @@ g_hash_node_new (gpointer key,
 static void
 g_hash_node_destroy (GHashNode *hash_node)
 {
+  g_lock (g_hash_global);
   hash_node->next = node_free_list;
   node_free_list = hash_node;
+  g_unlock (g_hash_global);
 }
 
 static void
@@ -380,6 +391,8 @@ g_hash_nodes_destroy (GHashNode *hash_node)
   while (node->next)
     node = node->next;
   
+  g_lock (g_hash_global);
   node->next = node_free_list;
   node_free_list = hash_node;
+  g_unlock (g_hash_global);
 }

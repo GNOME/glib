@@ -1,3 +1,87 @@
+1998-12-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread/gthread-nspr.c, configure.in: Added new default thread
+	implementation on top of the mozilla nspr library.
+
+	* gmem.c, gmessaged.c, gthread/gthread.c, gthread/gthread-*.c:
+	Changed GStaticMutex and GStaticPrivate in gmem.c and gmessages.c
+	into GMutex and GPrivate resp. to make error reporting and use of
+	gmem possible in most (not all, though) gthread functions. Also
+	initialized the modules via new init functions.
+
+	* configure.in: Fixed syntax bug in definition of type
+	GStaticMutex.
+
+	* gthread/testgthread.c: Updated to work with nspr, but see note
+	there for remaining problems.
+
+1998-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmutex.c, glib.h: Now abort, if a mutex/cond/private is
+	allocated before the thread system is set up.
+
+	* gthread/gthread.c (g_thread_init): Removed g_thread_try_init(),
+	as it is not necessary. Changed the error message. Corrected logic
+	for g_thread_use_default_impl.
+
+	* gmutex.c (g_mutex_init): Keep the thread private data array
+	after calling g_thread_init().
+
+1998-12-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread/testgthread.c (new_thread): Now also working for posix
+	threads; (wait_thread): Now a better implementation, that does not
+	use 100% CPU.
+
+	* Made the thread related code follow GNU coding standard.
+
+	* Made a comment (HOLDS:) above each function, that expects the
+	given locks to be held.
+
+	* Changed try_lock to trylock throughout.
+
+	* glib.c: Eventually removed the #if 0'ed code for old GStaticMutex.
+
+	* glib.c: Corrected g_trylock macro for G_DEBUG_LOCKS.
+
+	* gmain.c (g_main_poll_add_unlocked): first take a new poll record
+	form the poll_free_list.
+		
+	* gmem.c, gstrfuncs.c, gutils.c: Made it MT safe.
+
+	* gthraed/*.c: Added copyright headers.
+
+	* gthread/gthread-solaris.c: do not use g_log for errors, as g_log
+	uses these module and endless recursions might happen, just use a
+	plain fprintf(stderr,...).
+
+	* gthread/gthread.c (g_thread_try_init): Call g_mutex_init().
+
+	* gthread/testgthread.c: updated test program.
+	
+Tue Dec  8 18:49:56 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Start at adding thread-safety. (mostly work
+	of Sebastian Wilhelmi <wilhelmi@ira.uka.de>)
+
+	- configure.in now looks for a system thread implementation.
+	Currently support is included for POSIX threads
+	and Solaris threads. The default support is built
+	into a separate library -lgthread.
+
+	- The thread implementation can be modified by passing
+	a vector of functions g_thread_init().
+
+	- The default or supplied functions are used to
+	implement a small set of thread functions for
+	mutexes, condition variables, and thread-private
+	data.
+
+	- GLib now uses these functions to provide thread
+	safety. (In the sense that all global static
+	data is locked... individual structures must still
+	be locked by the caller.)
+
 Sat Dec 12 19:08:59 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in: always define G_HAVE_INLINE if __cplusplus is

@@ -18,6 +18,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  */
+
+/* 
+ * MT safe ; FIXME: might still freeze, watch out, not thoroughly
+ * looked at yet.  
+ */
+
 #include        <string.h>
 #include	"glib.h"
 
@@ -61,18 +67,24 @@ static inline GQuark	g_quark_new			(gchar  	*string);
 
 
 /* --- variables --- */
+static G_LOCK_DEFINE(g_dataset_global);
 static GHashTable   *g_dataset_location_ht = NULL;
-static GDataset     *g_dataset_cached = NULL;
+static GDataset     *g_dataset_cached = NULL; /* should this be
+						 threadspecific? */
 static GMemChunk    *g_dataset_mem_chunk = NULL;
 static GMemChunk    *g_data_mem_chunk = NULL;
 static GData	    *g_data_cache = NULL;
 static guint	     g_data_cache_length = 0;
+
+static G_LOCK_DEFINE(g_quark_global);
 static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
 static GQuark        g_quark_seq_id = 0;
 
 
 /* --- functions --- */
+
+/* HOLDS: g_dataset_global_lock */
 static inline void
 g_datalist_clear_i (GData **datalist)
 {
@@ -109,13 +121,16 @@ g_datalist_clear (GData **datalist)
 {
   g_return_if_fail (datalist != NULL);
   
+  g_lock (g_dataset_global);
   if (!g_dataset_location_ht)
     g_data_initialize ();
 
   while (*datalist)
     g_datalist_clear_i (datalist);
+  g_unlock (g_dataset_global);
 }
 
+/* HOLDS: g_dataset_global_lock */
 static inline GDataset*
 g_dataset_lookup (gconstpointer	dataset_location)
 {
@@ -131,6 +146,7 @@ g_dataset_lookup (gconstpointer	dataset_location)
   return dataset;
 }
 
+/* HOLDS: g_dataset_global_lock */
 static void
 g_dataset_destroy_internal (GDataset *dataset)
 {
@@ -158,6 +174,7 @@ g_dataset_destroy (gconstpointer  dataset_location)
 {
   g_return_if_fail (dataset_location != NULL);
   
+  g_lock (g_dataset_global);
   if (g_dataset_location_ht)
     {
       register GDataset *dataset;
@@ -166,8 +183,10 @@ g_dataset_destroy (gconstpointer  dataset_location)
       if (dataset)
 	g_dataset_destroy_internal (dataset);
     }
+  g_unlock (g_dataset_global);
 }
 
+/* HOLDS: g_dataset_global_lock */
 static inline void
 g_data_set_internal (GData	  **datalist,
 		     GQuark         key_id,
@@ -293,9 +312,10 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 	return;
     }
   
+  g_lock (g_dataset_global);
   if (!g_dataset_location_ht)
     g_data_initialize ();
-  
+ 
   dataset = g_dataset_lookup (dataset_location);
   if (!dataset)
     {
@@ -308,6 +328,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
     }
   
   g_data_set_internal (&dataset->datalist, key_id, data, destroy_func, dataset);
+  g_unlock (g_dataset_global);
 }
 
 void
@@ -327,10 +348,12 @@ g_datalist_id_set_data_full (GData	  **datalist,
 	return;
     }
 
+  g_lock (g_dataset_global);
   if (!g_dataset_location_ht)
     g_data_initialize ();
   
   g_data_set_internal (datalist, key_id, data, destroy_func, NULL);
+  g_unlock (g_dataset_global);
 }
 
 void
@@ -339,6 +362,7 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
 {
   g_return_if_fail (dataset_location != NULL);
   
+  g_lock (g_dataset_global);
   if (key_id && g_dataset_location_ht)
     {
       GDataset *dataset;
@@ -346,7 +370,8 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
       dataset = g_dataset_lookup (dataset_location);
       if (dataset)
 	g_data_set_internal (&dataset->datalist, key_id, NULL, (GDestroyNotify) 42, dataset);
-    }
+    } 
+  g_unlock (g_dataset_global);
 }
 
 void
@@ -355,8 +380,10 @@ g_datalist_id_remove_no_notify (GData	**datalist,
 {
   g_return_if_fail (datalist != NULL);
 
+  g_lock (g_dataset_global);
   if (key_id && g_dataset_location_ht)
     g_data_set_internal (datalist, key_id, NULL, (GDestroyNotify) 42, NULL);
+  g_unlock (g_dataset_global);
 }
 
 gpointer
@@ -365,6 +392,7 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
 {
   g_return_val_if_fail (dataset_location != NULL, NULL);
   
+  g_lock (g_dataset_global);
   if (key_id && g_dataset_location_ht)
     {
       register GDataset *dataset;
@@ -376,10 +404,14 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
 	  
 	  for (list = dataset->datalist; list; list = list->next)
 	    if (list->id == key_id)
-	      return list->data;
+	      {
+		g_unlock (g_dataset_global);
+		return list->data;
+	      }
 	}
     }
-  
+  g_unlock (g_dataset_global);
+ 
   return NULL;
 }
 
@@ -411,16 +443,22 @@ g_dataset_foreach (gconstpointer    dataset_location,
   g_return_if_fail (dataset_location != NULL);
   g_return_if_fail (func != NULL);
 
+  g_lock (g_dataset_global);
   if (g_dataset_location_ht)
     {
       dataset = g_dataset_lookup (dataset_location);
+      g_unlock (g_dataset_global);
       if (dataset)
 	{
 	  register GData *list;
 	  
 	  for (list = dataset->datalist; list; list = list->next)
-	    func (list->id, list->data, user_data);
+	      func (list->id, list->data, user_data);
 	}
+    }
+  else
+    {
+      g_unlock (g_dataset_global);
     }
 }
 
@@ -446,6 +484,7 @@ g_datalist_init (GData **datalist)
   *datalist = NULL;
 }
 
+/* HOLDS: g_dataset_global_lock */
 static void
 g_data_initialize (void)
 {
@@ -468,12 +507,15 @@ g_data_initialize (void)
 GQuark
 g_quark_try_string (const gchar *string)
 {
+  GQuark quark = 0;
   g_return_val_if_fail (string != NULL, 0);
   
+  g_lock (g_quark_global);
   if (g_quark_ht)
-    return (gulong) g_hash_table_lookup (g_quark_ht, string);
-  else
-    return 0;
+    quark = GPOINTER_TO_UINT (g_hash_table_lookup (g_quark_ht, string));
+  g_unlock (g_quark_global);
+  
+  return quark;
 }
 
 GQuark
@@ -483,6 +525,7 @@ g_quark_from_string (const gchar *string)
   
   g_return_val_if_fail (string != NULL, 0);
   
+  g_lock (g_quark_global);
   if (g_quark_ht)
     quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
   else
@@ -493,6 +536,7 @@ g_quark_from_string (const gchar *string)
   
   if (!quark)
     quark = g_quark_new (g_strdup (string));
+  g_unlock (g_quark_global);
   
   return quark;
 }
@@ -504,6 +548,7 @@ g_quark_from_static_string (const gchar *string)
   
   g_return_val_if_fail (string != NULL, 0);
   
+  g_lock (g_quark_global);
   if (g_quark_ht)
     quark = (gulong) g_hash_table_lookup (g_quark_ht, string);
   else
@@ -514,19 +559,24 @@ g_quark_from_static_string (const gchar *string)
 
   if (!quark)
     quark = g_quark_new ((gchar*) string);
-  
+  g_unlock (g_quark_global);
+ 
   return quark;
 }
 
 gchar*
 g_quark_to_string (GQuark quark)
 {
+  gchar* result = NULL;
+  g_lock (g_quark_global);
   if (quark > 0 && quark <= g_quark_seq_id)
-    return g_quarks[quark - 1];
-  else
-    return NULL;
+    result = g_quarks[quark - 1];
+  g_unlock (g_quark_global);
+
+  return result;
 }
 
+/* HOLDS: g_quark_global_lock */
 static inline GQuark
 g_quark_new (gchar *string)
 {
