@@ -89,7 +89,7 @@ main (int   argc,
   g_string_chunk_free (string_chunk);
 
   string1 = g_string_new ("hi pete!");
-  string2 = g_string_new ("");
+  string2 = g_string_new (NULL);
 
   g_assert (string1 != NULL);
   g_assert (string2 != NULL);
@@ -180,6 +180,33 @@ main (int   argc,
   string1 = g_string_new ("first");
   g_string_insert_len (string1, 5, "last", -1);
   g_assert (strcmp (string1->str, "firstlast") == 0);
+  g_string_free (string1, TRUE);
+
+  /* insert_len with string overlap */
+  string1 = g_string_new ("textbeforetextafter");
+  g_string_insert_len (string1, 10, string1->str + 8, 5);
+  g_assert (strcmp (string1->str, "textbeforeretextextafter") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("boring text");
+  g_string_insert_len (string1, 7, string1->str + 2, 4);
+  g_assert (strcmp (string1->str, "boring ringtext") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("boring text");
+  g_string_insert_len (string1, 6, string1->str + 7, 4);
+  g_assert (strcmp (string1->str, "boringtext text") == 0);
+  g_string_free (string1, TRUE);
+
+  /* assign_len with string overlap */
+  string1 = g_string_new ("textbeforetextafter");
+  g_string_assign (string1, string1->str + 10);
+  g_assert (strcmp (string1->str, "textafter") == 0);
+  g_string_free (string1, TRUE);
+
+  string1 = g_string_new ("boring text");
+  g_string_assign (string1, string1->str);
+  g_assert (strcmp (string1->str, "boring text") == 0);
   g_string_free (string1, TRUE);
 
   /* g_string_equal */

@@ -373,9 +373,15 @@ g_string_assign (GString     *string,
 {
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (rval != NULL, string);
-  
-  g_string_truncate (string, 0);
-  g_string_append (string, rval);
+
+  /* Make sure assigning to itself doesn't corrupt the string.  */
+  if (string->str != rval)
+    {
+      /* Assigning from substring should be ok since g_string_truncate
+	 does not realloc.  */
+      g_string_truncate (string, 0);
+      g_string_append (string, rval);
+    }
 
   return string;
 }
@@ -436,17 +442,50 @@ g_string_insert_len (GString     *string,
     pos = string->len;
   else
     g_return_val_if_fail (pos <= string->len, string);
-  
-  g_string_maybe_expand (string, len);
 
-  /* If we aren't appending at the end, move a hunk
-   * of the old string to the end, opening up space
-   */
-  if (pos < string->len)
-    g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
-  
-  /* insert the new string */
-  g_memmove (string->str + pos, val, len);
+  /* Check whether val represents a substring of string.  This test
+     probably violates chapter and verse of the C standards, since
+     ">=" and "<=" are only valid when val really is a substring.
+     In practice, it will work on modern archs.  */
+  if (val >= string->str && val <= string->str + string->len)
+    {
+      gsize offset = val - string->str;
+      gsize precount = 0;
+
+      g_string_maybe_expand (string, len);
+      val = string->str + offset;
+      /* At this point, val is valid again.  */
+
+      /* Open up space where we are going to insert.  */
+      if (pos < string->len)
+	g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+
+      /* Move the source part before the gap, if any.  */
+      if (offset < pos)
+	{
+	  precount = MIN (len, pos - offset);
+	  memcpy (string->str + pos, val, precount);
+	}
+
+      /* Move the source part after the gap, if any.  */
+      if (len > precount)
+	memcpy (string->str + pos + precount,
+		val + /* Already moved: */ precount + /* Space opened up: */ len,
+		len - precount);
+    }
+  else
+    {
+      g_string_maybe_expand (string, len);
+
+      /* If we aren't appending at the end, move a hunk
+       * of the old string to the end, opening up space
+       */
+      if (pos < string->len)
+	g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+
+      /* insert the new string */
+      memcpy (string->str + pos, val, len);
+    }
 
   string->len += len;
 

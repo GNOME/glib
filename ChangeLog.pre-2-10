@@ -1,3 +1,10 @@
+2003-11-05  Morten Welinder  <terra@gnome.org>
+
+	* glib/gstring.c (g_string_insert_len): Handle the case where the
+	to-be-inserted string is a substring of the target string.
+	(g_string_assign): Handle "s = s;".
+	(#114260, self.)
+
 Sun Nov  2 01:47:31 2003  Matthias Clasen  <maclas@gmx.de>
 
 	Fix 64bit printing for MSVC builds (#119292, Hans Breuer):
