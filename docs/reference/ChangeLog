@@ -1,6 +1,10 @@
+2001-09-26  Matthias Clasen <matthiasc@poet.de>
+
+	* glib/glib-sections.txt: Add g_mem_is_system_malloc.
+
 2001-09-25  Matthias Clasen <matthiasc@poet.de>
 
-	* glib/glib-section.txt: Add a missing SECTION 
+	* glib/glib-sections.txt: Add a missing SECTION 
 	endtag. (#61126)
 
 2001-09-17  Darin Adler  <darin@bentspoon.com>
