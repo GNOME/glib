@@ -1,3 +1,8 @@
+2002-11-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fixed typo: PTHREAD_PRIO_MIN ->
+	PTHREAD_PRIO_MAX. (Laurent Vivier, #99293)
+
 Fri Nov 22 09:39:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmacros.h: Remove broken G_HIDDEN_SYMBOL

@@ -1594,7 +1594,7 @@ if test x"$have_threads" != xno; then
 			AC_EGREP_CPP(PTHREAD_PRIO_MIN,[#include <pthread.h>
 				PTHREAD_PRIO_MIN],,[
 				posix_priority_min=PTHREAD_PRIO_MIN
-				posix_priority_max=PTHREAD_PRIO_MIN])
+				posix_priority_max=PTHREAD_PRIO_MAX])
 		fi
 		if test x"$posix_priority_min" = x; then
 			AC_EGREP_CPP(PRI_OTHER_MIN,[#include <pthread.h>
