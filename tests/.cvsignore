@@ -15,7 +15,9 @@ node-test
 queue-test
 rand-test
 relation-test
+shell-test
 slist-test
+spawn-test
 stamp-gc-h
 stamp-h
 strfunc-test
