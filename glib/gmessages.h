@@ -186,8 +186,8 @@ GPrintFunc   g_set_message_handler (GPrintFunc func);
 
 #ifdef G_DISABLE_ASSERT
 
-#define g_assert(expr)
-#define g_assert_not_reached()
+#define g_assert(expr)		G_STMT_START{ }G_STMT_END
+#define g_assert_not_reached()	G_STMT_START{ }G_STMT_END
 
 #else /* !G_DISABLE_ASSERT */
 
@@ -236,10 +236,10 @@ GPrintFunc   g_set_message_handler (GPrintFunc func);
 
 #ifdef G_DISABLE_CHECKS
 
-#define g_return_if_fail(expr)
-#define g_return_val_if_fail(expr,val)
-#define g_return_if_reached() return
-#define g_return_val_if_reached(val) return (val)
+#define g_return_if_fail(expr)			G_STMT_START{ }G_STMT_END
+#define g_return_val_if_fail(expr,val)		G_STMT_START{ }G_STMT_END
+#define g_return_if_reached()			G_STMT_START{ return; }G_STMT_END
+#define g_return_val_if_reached(val)		G_STMT_START{ return (val); }G_STMT_END
 
 #else /* !G_DISABLE_CHECKS */
 

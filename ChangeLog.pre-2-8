@@ -1,3 +1,9 @@
+Sun Aug 12 21:05:13 2001  Tim Janik  <timj@gtk.org>
+
+	* glib/gmessages.h: fix g_return_if_fail, g_assert and friends to
+	have a body for G_DISABLE_CHECKS and G_DISABLE_ASSERT.
+	fixes #58873.
+
 2001-08-12  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: safer handling of errno, fixed
