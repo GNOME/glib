@@ -1,5 +1,9 @@
 1999-03-16  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* tests/type-test.c: Added a test for the
+	G_(U)?INT(16|32|64)_FORMAT and G_(MIN|MAX|MAXU)(SHORT|INT|LONG)
+	macros.
+
 	* configure.in: Removed G_(U)?INT8_FORMAT again, as it can't be
 	used for scanf.
 
