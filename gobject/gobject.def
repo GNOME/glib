@@ -2,7 +2,12 @@ EXPORTS
 	g_boxed_copy
 	g_boxed_free
 	g_boxed_type_register_static
+	g_bsearch_array_destroy
+	g_bsearch_array_get_index
+	g_bsearch_array_get_nth
+	g_bsearch_array_new
 	g_bsearch_array_insert
+	g_bsearch_array_lookup
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
 	g_cclosure_marshal_STRING__OBJECT_POINTER
@@ -74,12 +79,18 @@ EXPORTS
 	g_param_spec_float
 	g_param_spec_get_qdata
 	g_param_spec_int
+	g_param_spec_internal
 	g_param_spec_long
 	g_param_spec_object
 	g_param_spec_pointer
+	g_param_spec_pool_insert
+	g_param_spec_pool_lookup
+	g_param_spec_pool_remove
+	g_param_spec_pool_new
 	g_param_spec_ref
 	g_param_spec_set_qdata
 	g_param_spec_set_qdata_full
+	g_param_spec_sink
 	g_param_spec_steal_qdata
 	g_param_spec_string
 	g_param_spec_stringc
@@ -121,6 +132,7 @@ EXPORTS
 	g_signal_remove_emission_hook
 	g_signal_stop_emission
 	g_signal_type_cclosure_new
+	g_strdup_value_contents
 	g_type_add_class_cache_func
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
@@ -128,7 +140,9 @@ EXPORTS
 	g_type_check_flags
 	g_type_check_instance
 	g_type_check_instance_cast
+	g_type_check_is_value_type
 	g_type_check_value
+	g_type_check_value_holds
 	g_type_children
 	g_type_class_is_a
 	g_type_class_peek
@@ -194,6 +208,7 @@ EXPORTS
 	g_value_get_ulong
 	g_value_init
 	g_value_peek_pointer
+	g_value_register_transform_func
 	g_value_reset
 	g_value_set_boolean
 	g_value_set_boxed
@@ -213,6 +228,9 @@ EXPORTS
 	g_value_set_uchar
 	g_value_set_uint
 	g_value_set_ulong
+	g_value_transform
+	g_value_type_compatible
+	g_value_type_transformable
 	g_value_types_init
 	g_value_unset
 ;	g_values_exchange

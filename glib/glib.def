@@ -225,6 +225,7 @@ EXPORTS
 	g_list_position
 	g_list_prepend
 	g_list_remove
+	g_list_remove_all
 	g_list_remove_link
 	g_list_reverse
 	g_list_sort
@@ -427,6 +428,7 @@ EXPORTS
 	g_slist_position
 	g_slist_prepend
 	g_slist_remove
+	g_slist_remove_all
 	g_slist_remove_link
 	g_slist_reverse
 	g_slist_sort
@@ -590,6 +592,7 @@ EXPORTS
 	g_unichar_totitle
 	g_unichar_toupper
 	g_unichar_type
+	g_unichar_validate
 	g_unichar_xdigit_value
 	g_unicode_canonical_decomposition
 	g_unicode_canonical_ordering
