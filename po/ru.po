@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2002-01-29 14:07-0500\n"
+"POT-Creation-Date: 2002-02-15 11:52-0500\n"
 "PO-Revision-Date: 2001-12-15 21:17+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -45,86 +45,87 @@ msgstr "Частичная последовательность символов в конце ввода"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 
-#: glib/gconvert.c:1535
+#: glib/gconvert.c:1592
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1545
+#: glib/gconvert.c:1602
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr ""
 
-#: glib/gconvert.c:1562
+#: glib/gconvert.c:1619
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1571
+#: glib/gconvert.c:1631
 #, c-format
-msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+msgid "The hostname of the URI '%s' is invalid"
 msgstr ""
 
-#: glib/gconvert.c:1587
+#: glib/gconvert.c:1647
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
-#: glib/gconvert.c:1672
-msgid "Invalid byte sequence in hostname"
+#: glib/gconvert.c:1728
+#, fuzzy
+msgid "Invalid hostname"
 msgstr "Неправильная последовательность байтов в названии компьютера"
 
-#: glib/gdir.c:75
+#: glib/gdir.c:79
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Ошибка при открытии каталога \"%s\": %s"
 
-#: glib/gfileutils.c:320 glib/gfileutils.c:385
+#: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr ""
 
-#: glib/gfileutils.c:331
+#: glib/gfileutils.c:348
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Ошибка при чтении файла \"%s\": %s"
 
-#: glib/gfileutils.c:409
+#: glib/gfileutils.c:426
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Сбой при чтении из файла \"%s\": %s"
 
-#: glib/gfileutils.c:448 glib/gfileutils.c:516
+#: glib/gfileutils.c:465 glib/gfileutils.c:533
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Сбой при открытии файла \"%s\": %s"
 
-#: glib/gfileutils.c:462
+#: glib/gfileutils.c:479
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Не удалось получить аттрибуты файла \"%s\": сбой fstat(): %s"
 
-#: glib/gfileutils.c:488
+#: glib/gfileutils.c:505
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Не удалось открыть файл \"%s\": сбой fdopen(): %s"
 
-#: glib/gfileutils.c:695
+#: glib/gfileutils.c:712
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон \"%s\" испорчен, не должен содержать \"%s\""
 
-#: glib/gfileutils.c:707
+#: glib/gfileutils.c:724
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Шаблон \"%s\" заканчивается не на XXXXXX"
 
-#: glib/gfileutils.c:728
+#: glib/gfileutils.c:745
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Сбой при создания файла \"%s\": %s"
@@ -157,34 +158,34 @@ msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в g_io_channel_read_to_end"
 
-#: glib/giowin32.c:700 glib/giowin32.c:729
+#: glib/giowin32.c:702 glib/giowin32.c:731
 msgid "Incorrect message size"
 msgstr "Неправильный размер сообщения"
 
-#: glib/giowin32.c:1023 glib/giowin32.c:1076
+#: glib/giowin32.c:1035 glib/giowin32.c:1088
 msgid "Socket error"
 msgstr "Ошибка сокета"
 
-#: glib/giowin32.c:1276
+#: glib/giowin32.c:1288
 msgid "Channel set flags unsupported"
 msgstr "Набор флагов канала не поддерживается"
 
-#: glib/gmarkup.c:216
+#: glib/gmarkup.c:217
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Ошибка в строке %d символе %d: %s"
 
-#: glib/gmarkup.c:300
+#: glib/gmarkup.c:301
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Ошибка в строке %d: %s"
 
-#: glib/gmarkup.c:379
+#: glib/gmarkup.c:380
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:390
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -192,74 +193,74 @@ msgid ""
 "it as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:426
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Символ \"%s\" недопустим внутри названия сущности"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:470
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Не известно название сущности \"%s\""
 
-#: glib/gmarkup.c:479
+#: glib/gmarkup.c:480
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:525
+#: glib/gmarkup.c:526
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 
-#: glib/gmarkup.c:550
+#: glib/gmarkup.c:551
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr ""
 
-#: glib/gmarkup.c:567
+#: glib/gmarkup.c:568
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 
-#: glib/gmarkup.c:577
+#: glib/gmarkup.c:578
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
+#: glib/gmarkup.c:835 glib/gmarkup.c:863 glib/gmarkup.c:894
 msgid "Invalid UTF-8 encoded text"
 msgstr "Неправильный UTF-8 кодированный текст"
 
-#: glib/gmarkup.c:923
+#: glib/gmarkup.c:930
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ должен начинаться с элемента (например <book>)"
 
-#: glib/gmarkup.c:961
+#: glib/gmarkup.c:968
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
 
-#: glib/gmarkup.c:1024
+#: glib/gmarkup.c:1031
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1111
+#: glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1152
+#: glib/gmarkup.c:1159
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -267,87 +268,87 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1229
+#: glib/gmarkup.c:1242
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1356
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1393
-#, c-format
-msgid "Element '%s' was closed, no element is currently open"
-msgstr ""
-
-#: glib/gmarkup.c:1402
-#, c-format
-msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-
-#: glib/gmarkup.c:1413
+#: glib/gmarkup.c:1420
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
 
-#: glib/gmarkup.c:1546
+#: glib/gmarkup.c:1431
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+
+#: glib/gmarkup.c:1440
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1572
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ был пуст или содержал только пробелы"
 
-#: glib/gmarkup.c:1560
+#: glib/gmarkup.c:1586
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 
-#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
+#: glib/gmarkup.c:1594 glib/gmarkup.c:1638
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
 
-#: glib/gmarkup.c:1576
+#: glib/gmarkup.c:1602
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1608
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1613
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1592
+#: glib/gmarkup.c:1618
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 
-#: glib/gmarkup.c:1598
+#: glib/gmarkup.c:1624
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1604
+#: glib/gmarkup.c:1631
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1619
+#: glib/gmarkup.c:1646
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1625
+#: glib/gmarkup.c:1652
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 

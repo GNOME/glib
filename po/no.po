@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.3\n"
-"POT-Creation-Date: 2002-02-10 10:43+0100\n"
+"POT-Creation-Date: 2002-02-15 11:52-0500\n"
 "PO-Revision-Date: 2002-02-10 10:53+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -84,47 +84,47 @@ msgstr "Ugyldig vertsnavn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: glib/gfileutils.c:333 glib/gfileutils.c:398
+#: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Kunne ikke allokere %lu bytes til lest fil «%s»"
 
-#: glib/gfileutils.c:344
+#: glib/gfileutils.c:348
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: glib/gfileutils.c:422
+#: glib/gfileutils.c:426
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: glib/gfileutils.c:461 glib/gfileutils.c:529
+#: glib/gfileutils.c:465 glib/gfileutils.c:533
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: glib/gfileutils.c:475
+#: glib/gfileutils.c:479
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: glib/gfileutils.c:501
+#: glib/gfileutils.c:505
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: glib/gfileutils.c:708
+#: glib/gfileutils.c:712
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: glib/gfileutils.c:720
+#: glib/gfileutils.c:724
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Mal «%s» slutter ikke med XXXXXX"
 
-#: glib/gfileutils.c:741
+#: glib/gfileutils.c:745
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
@@ -155,15 +155,15 @@ msgstr "Kanalen terminerer i et oppdelt tegn"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke utføre rå avlesing i g_io_channel_read_to_end"
 
-#: glib/giowin32.c:700 glib/giowin32.c:729
+#: glib/giowin32.c:702 glib/giowin32.c:731
 msgid "Incorrect message size"
 msgstr "Ukorrekt meldingsstørrelse"
 
-#: glib/giowin32.c:1023 glib/giowin32.c:1076
+#: glib/giowin32.c:1035 glib/giowin32.c:1088
 msgid "Socket error"
 msgstr "Feil i socket"
 
-#: glib/giowin32.c:1276
+#: glib/giowin32.c:1288
 msgid "Channel set flags unsupported"
 msgstr "Ikke-støttede flagg satt i kanal"
 
@@ -180,7 +180,8 @@ msgstr "Feil på linje %d: %s"
 #: glib/gmarkup.c:380
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr "Tom entitet «&;» funnet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Tom entitet «&;» funnet; gyldige entiteter er: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:390
 #, c-format
@@ -188,7 +189,10 @@ msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
-msgstr "Tegn «%s» er ikke gyldig ved starten på navnet til en entitet; &-tegnet starter en entitet; hvis dette og-tegnet ikke er ment å være en entitet, unngå dette ved å bruke &amp; i stedet"
+msgstr ""
+"Tegn «%s» er ikke gyldig ved starten på navnet til en entitet; &-tegnet "
+"starter en entitet; hvis dette og-tegnet ikke er ment å være en entitet, "
+"unngå dette ved å bruke &amp; i stedet"
 
 #: glib/gmarkup.c:426
 #, c-format
@@ -214,7 +218,9 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "Feil under lesing av «%s», som skulle vært et tall inne i en tegnreferanse (&#234; for eksempel) - kanskje tallet er for stort"
+msgstr ""
+"Feil under lesing av «%s», som skulle vært et tall inne i en tegnreferanse "
+"(&#234; for eksempel) - kanskje tallet er for stort"
 
 #: glib/gmarkup.c:551
 #, c-format
@@ -248,20 +254,25 @@ msgstr "Dokumentet må starte med et element (f.eks <book>)"
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "«%s» er ikke et gyldig tegn etter en «<» tegn; det kan ikke være begynnelsen på et elementnavn"
+msgstr ""
+"«%s» er ikke et gyldig tegn etter en «<» tegn; det kan ikke være begynnelsen "
+"på et elementnavn"
 
 #: glib/gmarkup.c:1031
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr "Rart tegn «%s», forventet et «>» tegn for å avslutte start-taggen til elementet «%s»"
+msgstr ""
+"Rart tegn «%s», forventet et «>» tegn for å avslutte start-taggen til "
+"elementet «%s»"
 
 #: glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "Rart tegn «%s», forventet et «=» etter attributtnavn «%s» for element «%s»"
+msgstr ""
+"Rart tegn «%s», forventet et «=» etter attributtnavn «%s» for element «%s»"
 
 #: glib/gmarkup.c:1159
 #, c-format
@@ -269,28 +280,37 @@ msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
-msgstr "Rart tegn «%s», forventet «>» eller «/» tegn for å avslutte start-taggen til element «%s», eller alternativt en attributt; kanskje du brukte et ugyldig tegn i attributtnavnet"
+msgstr ""
+"Rart tegn «%s», forventet «>» eller «/» tegn for å avslutte start-taggen til "
+"element «%s», eller alternativt en attributt; kanskje du brukte et ugyldig "
+"tegn i attributtnavnet"
 
 #: glib/gmarkup.c:1242
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
-msgstr "Rart tegn «%s», ventet et åpent sitattegn etter likhetstegnet når verdi for attributt «%s» for element «%s» oppgis"
+msgstr ""
+"Rart tegn «%s», ventet et åpent sitattegn etter likhetstegnet når verdi for "
+"attributt «%s» for element «%s» oppgis"
 
 #: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "«%s» er ikke et gyldig tegn etter tegnene «</»; «%s» er kanskje ikke begynnelsen på et elementnavn"
+msgstr ""
+"«%s» er ikke et gyldig tegn etter tegnene «</»; «%s» er kanskje ikke "
+"begynnelsen på et elementnavn"
 
 #: glib/gmarkup.c:1420
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "«%s» er ikke et gyldig tegn etter element for lukking med navn «%s»; tillatt tegn er «>»"
+msgstr ""
+"«%s» er ikke et gyldig tegn etter element for lukking med navn «%s»; tillatt "
+"tegn er «>»"
 
 #: glib/gmarkup.c:1431
 #, c-format
@@ -315,14 +335,17 @@ msgstr "Dokumentet sluttet uventet rett etter en åpen vinkelparantes «<»"
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "Dokumentet sluttet uventet med åpne elementer - «%s» var siste åpne element"
+msgstr ""
+"Dokumentet sluttet uventet med åpne elementer - «%s» var siste åpne element"
 
 #: glib/gmarkup.c:1602
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
-msgstr "Dokumentet sluttet uventet, forventet å se en vinkelparantes for å slutte av den siste taggen <%s/>"
+msgstr ""
+"Dokumentet sluttet uventet, forventet å se en vinkelparantes for å slutte av "
+"den siste taggen <%s/>"
 
 #: glib/gmarkup.c:1608
 msgid "Document ended unexpectedly inside an element name"
@@ -374,7 +397,8 @@ msgstr "Tekst sluttet rett etter et «» tegn. (Teksten var «%s»)"
 #: glib/gshell.c:533
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Teksten sluttet før likt sitattegn ble funnet for %c. (Teksten var «%s»)"
+msgstr ""
+"Teksten sluttet før likt sitattegn ble funnet for %c. (Teksten var «%s»)"
 
 #: glib/gshell.c:545
 msgid "Text was empty (or contained only whitespace)"

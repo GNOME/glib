@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.13\n"
-"POT-Creation-Date: 2002-02-06 08:09-0500\n"
+"POT-Creation-Date: 2002-02-15 11:52-0500\n"
 "PO-Revision-Date: 2002-02-07 08:25+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -45,86 +45,87 @@ msgstr "輸入完結時出現未完成的字元次序"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "無法將後備字串 '%s' 轉換到字元集 '%s'"
 
-#: glib/gconvert.c:1535
+#: glib/gconvert.c:1592
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI '%s' 不是使用 file 格式的絕對 URI"
 
-#: glib/gconvert.c:1545
+#: glib/gconvert.c:1602
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本機檔案 URI '%s' 不應含有 '#'"
 
-#: glib/gconvert.c:1562
+#: glib/gconvert.c:1619
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "不正確的 URI '%s'"
 
-#: glib/gconvert.c:1571
-#, c-format
-msgid "The hostname of the URI '%s' contains invalidly escaped characters"
+#: glib/gconvert.c:1631
+#, fuzzy, c-format
+msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' 中的主機名稱含有不正確的跳出字元"
 
-#: glib/gconvert.c:1587
+#: glib/gconvert.c:1647
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' 含有不正確的跳出字元"
 
-#: glib/gconvert.c:1658
+#: glib/gconvert.c:1718
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路徑名稱 '%s' 不是絕對路徑"
 
-#: glib/gconvert.c:1672
-msgid "Invalid byte sequence in hostname"
+#: glib/gconvert.c:1728
+#, fuzzy
+msgid "Invalid hostname"
 msgstr "主機名稱含有不正確的位元組次序"
 
-#: glib/gdir.c:75
+#: glib/gdir.c:79
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "開啟目錄 '%s' 時發生錯誤：%s"
 
-#: glib/gfileutils.c:320 glib/gfileutils.c:385
+#: glib/gfileutils.c:337 glib/gfileutils.c:402
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "無法分配 %lu 位元來讀入檔案“%s”"
 
-#: glib/gfileutils.c:331
+#: glib/gfileutils.c:348
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "讀入檔案 '%s' 時發生錯誤：%s"
 
-#: glib/gfileutils.c:409
+#: glib/gfileutils.c:426
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "讀入檔案失敗 '%s'：%s"
 
-#: glib/gfileutils.c:448 glib/gfileutils.c:516
+#: glib/gfileutils.c:465 glib/gfileutils.c:533
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "開啟檔案失敗 '%s'：%s"
 
-#: glib/gfileutils.c:462
+#: glib/gfileutils.c:479
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "無法取得檔案 '%s' 的屬性：fstat() 失敗：%s"
 
-#: glib/gfileutils.c:488
+#: glib/gfileutils.c:505
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "開啟檔案 '%s' 失敗：fdopen() 失敗：%s"
 
-#: glib/gfileutils.c:695
+#: glib/gfileutils.c:712
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "樣式 '%s' 不正確，不應含有 '%s'"
 
-#: glib/gfileutils.c:707
+#: glib/gfileutils.c:724
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "樣式 '%s' 結尾不是 XXXXXX"
 
-#: glib/gfileutils.c:728
+#: glib/gfileutils.c:745
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "無法建立檔案 '%s'：%s"
@@ -155,34 +156,34 @@ msgstr "輸入管道在字元未完成前就終止"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 中無法讀入原始資料"
 
-#: glib/giowin32.c:700 glib/giowin32.c:729
+#: glib/giowin32.c:702 glib/giowin32.c:731
 msgid "Incorrect message size"
 msgstr "訊息長度不正確"
 
-#: glib/giowin32.c:1023 glib/giowin32.c:1076
+#: glib/giowin32.c:1035 glib/giowin32.c:1088
 msgid "Socket error"
 msgstr "Socket 發生錯誤"
 
-#: glib/giowin32.c:1276
+#: glib/giowin32.c:1288
 msgid "Channel set flags unsupported"
 msgstr "不支援設定管道旗標的操作"
 
-#: glib/gmarkup.c:216
+#: glib/gmarkup.c:217
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "在第 %d 行第 %d 個字元發生錯誤：%s"
 
-#: glib/gmarkup.c:300
+#: glib/gmarkup.c:301
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "在第 %d 行發生錯誤：%s"
 
-#: glib/gmarkup.c:379
+#: glib/gmarkup.c:380
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "出現空白的實體 '&;'；可用的實體為：&amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:389
+#: glib/gmarkup.c:390
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -192,17 +193,17 @@ msgstr ""
 "實體名稱不應以 '%s' 開始，應該使用 & 字元；如果這個 & 字元不是作為實體使用，"
 "請將 & 轉換為 &amp;"
 
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:426
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "實體名稱中不應含有字元 '%s'"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:470
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "不詳的實體名稱 '%s'"
 
-#: glib/gmarkup.c:479
+#: glib/gmarkup.c:480
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -210,23 +211,23 @@ msgstr ""
 "實體的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換為 "
 "&amp;"
 
-#: glib/gmarkup.c:525
+#: glib/gmarkup.c:526
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr "解析 '%s' 失敗，字元參引內應該含有數字（例如 &#234;）─ 可能是數字過大"
 
-#: glib/gmarkup.c:550
+#: glib/gmarkup.c:551
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr "字元參引 '%s' 含有不正當的字元"
 
-#: glib/gmarkup.c:567
+#: glib/gmarkup.c:568
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "空白的字元參引；應該包括數字，像 &#454;"
 
-#: glib/gmarkup.c:577
+#: glib/gmarkup.c:578
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -235,35 +236,35 @@ msgstr ""
 "字元參引的結尾不是分號；很可能你想使用 & 字元但未將它變為實體 ─ 請將 & 轉換"
 "為 &amp;"
 
-#: glib/gmarkup.c:828 glib/gmarkup.c:856 glib/gmarkup.c:887
+#: glib/gmarkup.c:835 glib/gmarkup.c:863 glib/gmarkup.c:894
 msgid "Invalid UTF-8 encoded text"
 msgstr "不正確的 UTF-8 編碼文字"
 
-#: glib/gmarkup.c:923
+#: glib/gmarkup.c:930
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "文件開始必須為一元素（例如 <book>）"
 
-#: glib/gmarkup.c:961
+#: glib/gmarkup.c:968
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'<' 字元後的 '%s' 不是正確的字元；這樣不可能是元素名稱的開始部份"
 
-#: glib/gmarkup.c:1024
+#: glib/gmarkup.c:1031
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "不尋常的字元 '%s'，元素 '%s' 的開始標籤應該以 '>' 字元終結"
 
-#: glib/gmarkup.c:1111
+#: glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "不尋常的字元 '%1$s'，元素 '%3$s' 的屬性名稱 '%2$s' 後應該是 '=' 字元"
 
-#: glib/gmarkup.c:1152
+#: glib/gmarkup.c:1159
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -273,7 +274,7 @@ msgstr ""
 "不尋常的字元 '%s'，元素 '%s' 的開始標籤應該以 '>' 或 '/' 字元終結，也可以是屬"
 "性；或許你在屬性名稱中使用了不正確的字元"
 
-#: glib/gmarkup.c:1229
+#: glib/gmarkup.c:1242
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -282,14 +283,14 @@ msgstr ""
 "不尋常的字元 '%1$s'，當指定元素 '%3$s' 的屬性 '%2$s' 的值時，等號後應該出現開"
 "引號"
 
-#: glib/gmarkup.c:1356
+#: glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'</' 字元後的 '%s' 不是正確的字元；'%s' 不可能是元素名稱的開始部份"
 
-#: glib/gmarkup.c:1394
+#: glib/gmarkup.c:1420
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -297,66 +298,66 @@ msgid ""
 msgstr ""
 "名稱為 '%2$s' 的關閉元素後面，尾隨的 '%1$s' 字元是不正確的；允許的字元為 '>'"
 
-#: glib/gmarkup.c:1405
+#: glib/gmarkup.c:1431
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "元素 '%s' 已關閉，沒有開啟中的元素"
 
-#: glib/gmarkup.c:1414
+#: glib/gmarkup.c:1440
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "元素 '%s' 已關閉，但開啟中的元素是 '%s'"
 
-#: glib/gmarkup.c:1546
+#: glib/gmarkup.c:1572
 msgid "Document was empty or contained only whitespace"
 msgstr "文件完全空白或只含有空白字元"
 
-#: glib/gmarkup.c:1560
+#: glib/gmarkup.c:1586
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "文件在尖角括號 '<' 後突然終止"
 
-#: glib/gmarkup.c:1568 glib/gmarkup.c:1611
+#: glib/gmarkup.c:1594 glib/gmarkup.c:1638
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "文件在仍然有開啟中的元素時突然終止 - '%s' 是最後一個開啟的元素"
 
-#: glib/gmarkup.c:1576
+#: glib/gmarkup.c:1602
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "文件突然終止，預期應該出現用來關閉標籤 <%s/> 的尖角括號"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1608
 msgid "Document ended unexpectedly inside an element name"
 msgstr "文件在元素的名稱內突然終止"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1613
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "文件在屬性名稱內突然終止"
 
-#: glib/gmarkup.c:1592
+#: glib/gmarkup.c:1618
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "文件在元素的開啟標籤內突然終止"
 
-#: glib/gmarkup.c:1598
+#: glib/gmarkup.c:1624
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "文件在屬性名稱的等號後突然終止；沒有屬性值"
 
-#: glib/gmarkup.c:1604
+#: glib/gmarkup.c:1631
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "文件在屬性值內突然終止"
 
-#: glib/gmarkup.c:1619
+#: glib/gmarkup.c:1646
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "文件在元素 '%s' 的關閉標籤內突然終止"
 
-#: glib/gmarkup.c:1625
+#: glib/gmarkup.c:1652
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "文件在註解或處理指示內突然終止"
 
