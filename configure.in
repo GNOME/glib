@@ -1088,7 +1088,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
         if test "x$have_threads" = xno; then
                 AC_TRY_COMPILE([#include <pthread.h>],
 			[pthread_attr_t attr; pthread_attr_create(&attr);],
-			have_threads=posix)
+			have_threads=dce)
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
@@ -1196,8 +1196,13 @@ case $have_threads in
 			G_THREAD_LIBS="-pthread"
            	fi	
 		;;
+	     *-*-openbsd* | *-*-freebsd*) 
+	        # FreeBSD and OpenBSD want us to use the -pthread flag 
+                # instead of linking to -lc_r and libtool enforces that.
+		G_THREAD_LIBS="-pthread"
+		;;
              *)
-		for thread_lib in "" pthread pthread32 pthreads c_r thread dce; do
+		for thread_lib in "" pthread pthread32 pthreads thread dce; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
 				IN=""
@@ -1229,37 +1234,36 @@ case $have_threads in
 				break],
 				[AC_MSG_RESULT(no)])
 		done
-		if test "x$G_THREAD_LIBS" = xerror; then
-        	  AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
-		fi
-		for thread_lib in "" rt rte; do
-			if test x"$thread_lib" = x; then
-				add_thread_lib=""
-				IN=""
-			else
-				add_thread_lib="-l$thread_lib"
-				IN=" in -l$thread_lib"
-			fi
-			LIBS="$glib_save_LIBS $add_thread_lib"
+                ;;
+	   esac 	
+	   if test "x$G_THREAD_LIBS" = xerror; then
+             AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
+	   fi
+	   for thread_lib in "" rt rte; do
+	     if test x"$thread_lib" = x; then
+	       add_thread_lib=""
+	       IN=""
+	     else
+	       add_thread_lib="-l$thread_lib"
+	       IN=" in -l$thread_lib"
+	     fi
+	     LIBS="$glib_save_LIBS $add_thread_lib"
 			
-			AC_MSG_CHECKING(for sched_get_priority_min$IN)
-			AC_TRY_RUN([#include <sched.h>
-				#include <errno.h>
-				int main() {
-    				errno = 0;
-                                return sched_get_priority_min(SCHED_OTHER)==-1
-					&& errno != 0;
-				}],
-				[AC_MSG_RESULT(yes)
-				G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
-				posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-		     		posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
-				break],
-				[AC_MSG_RESULT(no)])
-		done
-		LIBS="$glib_save_LIBS"
-		;;
-           esac 
+	     AC_MSG_CHECKING(for sched_get_priority_min$IN)
+	     AC_TRY_RUN([#include <sched.h>
+		         #include <errno.h>
+			 int main() {
+    			 errno = 0;
+                         return sched_get_priority_min(SCHED_OTHER)==-1
+				&& errno != 0;}],
+			[AC_MSG_RESULT(yes)
+			 G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
+			 posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
+		     	 posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
+			 break],
+			[AC_MSG_RESULT(no)])
+	   done
+	   LIBS="$glib_save_LIBS"
            mutex_has_default=yes
            mutex_default_type='pthread_mutex_t'
            mutex_default_init='PTHREAD_MUTEX_INITIALIZER'

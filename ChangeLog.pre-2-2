@@ -1,3 +1,10 @@
+2002-03-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fixed recognition of dce. Do not use -lc_r on
+	OpenBSD and FreeBSD. Instead use -pthread. Move scheduling
+	parameter check to after the case..esac block for finding the
+	right thread libs.
+
 Tue Mar  5 19:41:02 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* GTK+-2.0.0 rc1
