@@ -16,8 +16,10 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include "glib.h"
 
+#include <string.h>
+
+#include "glib.h"
 
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
 typedef enum

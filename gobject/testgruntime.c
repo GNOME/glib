@@ -16,10 +16,12 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include <string.h>
+
 #undef	G_LOG_DOMAIN
 #define	G_LOG_DOMAIN "TestObject"
 #include	<glib-object.h>
-
 
 /* --- TestIface --- */
 #define TEST_TYPE_IFACE           (test_iface_get_type ())

@@ -1,3 +1,15 @@
+2001-10-29  Daniel Egger  <degger@fhm.edu>
+
+	* glib/gbacktrace.h: Fix non-Intel/-Alpha version of the 
+	G_BREAKPOINT macro to include <signal.h> and use SIGTRAP.
+
+	* glib/gmessages.c: Conditionalise definition of args2
+	depending on the definition of HAVE_VSNPRINTF to avoid 
+	compiler warning.
+
+	* gobject/testgruntime.c
+	* tests/patterntest.c: Include <string.h> to avoid warnings.
+
 Mon Oct 29 11:29:37 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* m4macros/glib-2.0.m4: Don't try to use PKG_CONFIG
