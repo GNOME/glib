@@ -1,3 +1,9 @@
+Wed Jun  7 09:21:05 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (INCLUDES): Add top_builddir so glibconfig.h
+	is found properly when build srcdir != builddir. (Patch from
+	Eric Lemings)
+
 2000-05-13  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in

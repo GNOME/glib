@@ -5,7 +5,7 @@
 
 SUBDIRS =
 
-INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
+INCLUDES = -I$(top_srcdir) -I$(top_builddir) @GLIB_DEBUG_FLAGS@
 
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject.la
