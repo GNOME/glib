@@ -1,3 +1,7 @@
+1999-02-17  Elliot Lee  <sopwith@redhat.com>
+
+	* glib.spec: Do --enable-debug=no for the .rpm's.
+
 Wed Feb 17 17:04:06 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32: Must define HAVE_PTHREAD_GETSPECIFIC_POSIX.
