@@ -153,8 +153,24 @@ glib_check_version (guint required_major,
 }
 
 #if !defined (HAVE_MEMMOVE) && !defined (HAVE_WORKING_BCOPY)
+/**
+ * g_memmove: 
+ * @dest: the destination address to copy the bytes to.
+ * @src: the source address to copy the bytes from.
+ * @len: the number of bytes to copy.
+ *
+ * Copies a block of memory @len bytes long, from @src to @dest.
+ * The source and destination areas may overlap.
+ *
+ * In order to use this function, you must include 
+ * <filename>string.h</filename> yourself, because this macro will 
+ * typically simply resolve to memmove() and GLib does not include 
+ * <filename>string.h</filename> for you.
+ */
 void 
-g_memmove (gpointer dest, gconstpointer src, gulong len)
+g_memmove (gpointer      dest, 
+	   gconstpointer src, 
+	   gulong        len)
 {
   gchar* destptr = dest;
   const gchar* srcptr = src;
@@ -178,6 +194,12 @@ g_memmove (gpointer dest, gconstpointer src, gulong len)
 }
 #endif /* !HAVE_MEMMOVE && !HAVE_WORKING_BCOPY */
 
+/**
+ * g_atexit:
+ * @func: the function to call on normal program termination.
+ * 
+ * Specifies a function to be called at normal program termination.
+ */
 void
 g_atexit (GVoidFunc func)
 {
@@ -218,7 +240,8 @@ g_atexit (GVoidFunc func)
  */
 
 static gchar*
-my_strchrnul (const gchar *str, gchar c)
+my_strchrnul (const gchar *str, 
+	      gchar        c)
 {
   gchar *p = (gchar*)str;
   while (*p && (*p != c))
@@ -482,6 +505,21 @@ g_find_program_in_path (const gchar *program)
   return NULL;
 }
 
+/**
+ * g_parse_debug_string:
+ * @string: a list of debug options separated by ':' or "all" 
+ *     to set all flags.
+ * @keys: pointer to an array of #GDebugKey which associate 
+ *     strings with bit flags.
+ * @nkeys: the number of #GDebugKey<!-- -->s in the array.
+ *
+ * Parses a string containing debugging options separated 
+ * by ':' into a %guint containing bit flags. This is used 
+ * within GDK and GTK+ to parse the debug options passed on the
+ * command line or through environment variables.
+ *
+ * Returns: the combined set of bit flags.
+ */
 guint	     
 g_parse_debug_string  (const gchar     *string, 
 		       const GDebugKey *keys, 
@@ -624,6 +662,16 @@ g_path_get_basename (const gchar   *file_name)
   return retval;
 }
 
+/**
+ * g_path_is_absolute:
+ * @file_name: a file name.
+ *
+ * Returns %TRUE if the given @file_name is an absolute file name,
+ * i.e. it contains a full path from the root directory such as "/usr/local"
+ * on UNIX or "C:\windows" on Windows systems.
+ *
+ * Returns: %TRUE if @file_name is an absolute path. 
+ */
 gboolean
 g_path_is_absolute (const gchar *file_name)
 {
@@ -634,13 +682,24 @@ g_path_is_absolute (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   /* Recognize drive letter on native Windows */
-  if (g_ascii_isalpha (file_name[0]) && file_name[1] == ':' && G_IS_DIR_SEPARATOR (file_name[2]))
+  if (g_ascii_isalpha (file_name[0]) && 
+      file_name[1] == ':' && G_IS_DIR_SEPARATOR (file_name[2]))
     return TRUE;
 #endif /* G_OS_WIN32 */
 
   return FALSE;
 }
 
+/**
+ * g_path_skip_root:
+ * @file_name: a file name.
+ *
+ * Returns a pointer into @file_name after the root component, i.e. after
+ * the "/" in UNIX or "C:\" under Windows. If @file_name is not an absolute
+ * path it returns %NULL.
+ *
+ * Returns: a pointer into @file_name after the root component.
+ */
 G_CONST_RETURN gchar*
 g_path_skip_root (const gchar *file_name)
 {
@@ -698,6 +757,16 @@ g_path_skip_root (const gchar *file_name)
   return NULL;
 }
 
+/**
+ * g_path_get_dirname:
+ * @file_name: the name of the file.
+ *
+ * Gets the directory components of a file name.  If the file name has no
+ * directory components "." is returned.  The returned string should be
+ * freed when no longer needed.
+ * 
+ * Returns: the directory components of the file.
+ */
 gchar*
 g_path_get_dirname (const gchar	   *file_name)
 {
@@ -788,6 +857,15 @@ g_path_get_dirname (const gchar	   *file_name)
   return base;
 }
 
+/**
+ * g_get_current_dir:
+ *
+ * Gets the current directory.
+ * The returned string should be freed when no longer needed. The encoding 
+ * of the returned string is system defined. On Windows, it is always UTF-8.
+ * 
+ * Returns: the current directory.
+ */
 gchar*
 g_get_current_dir (void)
 {
@@ -879,7 +957,7 @@ g_get_current_dir (void)
  * @variable: the environment variable to get, in the GLib file name encoding.
  * 
  * Returns the value of an environment variable. The name and value
- * are in the GLib file name encoding. On Unix, this means the actual
+ * are in the GLib file name encoding. On UNIX, this means the actual
  * bytes which might or might not be in some consistent character set
  * and encoding. On Windows, it is in UTF-8. On Windows, in case the
  * environment variable's value contains references to other
@@ -1033,7 +1111,7 @@ g_getenv (const gchar *variable)
  * @overwrite: whether to change the variable if it already exists.
  *
  * Sets an environment variable. Both the variable's name and value
- * should be in the GLib file name encoding. On Unix, this means that
+ * should be in the GLib file name encoding. On UNIX, this means that
  * they can be any sequence of bytes. On Windows, they should be in
  * UTF-8.
  *
@@ -1539,6 +1617,16 @@ g_get_any_init (void)
     }
 }
 
+/**
+ * g_get_user_name:
+ *
+ * Gets the user name of the current user. The encoding of the returned
+ * string is system-defined. On UNIX, it might be the preferred file name
+ * encoding, or something else, and there is no guarantee that it is even
+ * consistent on a machine. On Windows, it is always UTF-8.
+ *
+ * Returns: the user name of the current user.
+ */
 G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
@@ -1550,6 +1638,17 @@ g_get_user_name (void)
   return g_user_name;
 }
 
+/**
+ * g_get_real_name:
+ *
+ * Gets the real name of the user. This usually comes from the user's entry 
+ * in the <filename>passwd</filename> file. The encoding of the returned 
+ * string is system-defined. (On Windows, it is, however, always UTF-8.) 
+ * If the real user name cannot be determined, the string "Unknown" is 
+ * returned.
+ *
+ * Returns: the user's real name.
+ */
 G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
@@ -1561,6 +1660,17 @@ g_get_real_name (void)
   return g_real_name;
 }
 
+/**
+ * g_get_home_dir:
+ *
+ * Gets the current user's home directory. 
+ *
+ * Note that in contrast to traditional UNIX tools, this function 
+ * prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 
+ * environment variable.
+ *
+ * Returns: the current user's home directory.
+ */
 G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
@@ -1572,13 +1682,18 @@ g_get_home_dir (void)
   return g_home_dir;
 }
 
-/* Return a directory to be used to store temporary files. This is the
- * value of the TMPDIR, TMP or TEMP environment variables (they are
- * checked in that order). If none of those exist, use P_tmpdir from
- * stdio.h.  If that isn't defined, return "/tmp" on POSIXly systems,
- * and C:\ on Windows.
+/**
+ * g_get_tmp_dir:
+ *
+ * Gets the directory to use for temporary files. This is found from 
+ * inspecting the environment variables <envar>TMPDIR</envar>, 
+ * <envar>TMP</envar>, and <envar>TEMP</envar> in that order. If none 
+ * of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. 
+ * The encoding of the returned string is system-defined. On Windows, 
+ * it is always UTF-8. The return value is never %NULL.
+ *
+ * Returns: the directory to use for temporary files.
  */
-
 G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
@@ -1593,6 +1708,18 @@ g_get_tmp_dir (void)
 G_LOCK_DEFINE_STATIC (g_prgname);
 static gchar *g_prgname = NULL;
 
+/**
+ * g_get_prgname:
+ *
+ * Gets the name of the program. This name should <emphasis>not</emphasis> 
+ * be localized, contrast with g_get_application_name().
+ * (If you are using GDK or GTK+ the program name is set in gdk_init(), 
+ * which is called by gtk_init(). The program name is found by taking 
+ * the last component of <literal>argv[0]</literal>.)
+ *
+ * Returns: the name of the program. The returned string belongs 
+ * to GLib and must not be modified or freed.
+ */
 gchar*
 g_get_prgname (void)
 {
@@ -1605,6 +1732,14 @@ g_get_prgname (void)
   return retval;
 }
 
+/**
+ * g_set_prgname:
+ * @prgname: the name of the program.
+ *
+ * Sets the name of the program. This name should <emphasis>not</emphasis> 
+ * be localized, contrast with g_set_application_name(). Note that for 
+ * thread-safety reasons this function can only be called once.
+ */
 void
 g_set_prgname (const gchar *prgname)
 {
@@ -1686,7 +1821,7 @@ g_set_application_name (const gchar *application_name)
  * Returns a base directory in which to access application data such
  * as icons that is customized for a particular user.  
  *
- * On Unix platforms this is determined using the mechanisms described in
+ * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
@@ -1736,7 +1871,7 @@ g_get_user_data_dir (void)
  * Returns a base directory in which to store user-specific application 
  * configuration information such as user preferences and settings. 
  *
- * On Unix platforms this is determined using the mechanisms described in
+ * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
@@ -1784,7 +1919,7 @@ g_get_user_config_dir (void)
  * Returns a base directory in which to store non-essential, cached
  * data specific to particular user.
  *
- * On Unix platforms this is determined using the mechanisms described in
+ * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
@@ -1831,7 +1966,7 @@ g_get_user_cache_dir (void)
  * Returns an ordered list of base directories in which to access 
  * system-wide application data.
  *
- * On Unix platforms this is determined using the mechanisms described in
+ * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
@@ -1877,7 +2012,7 @@ g_get_system_data_dirs (void)
  * Returns an ordered list of base directories in which to access 
  * system-wide configuration information.
  *
- * On Unix platforms this is determined using the mechanisms described in
+ * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
  * 
@@ -2239,12 +2374,33 @@ g_get_language_names (void)
   return (G_CONST_RETURN gchar * G_CONST_RETURN *) cache->language_names;
 }
 
+/**
+ * g_direct_hash:
+ * @v: a #gpointer key
+ *
+ * Converts a gpointer to a hash value.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter, 
+ * when using pointers as keys in a #GHashTable.
+ *
+ * Returns: a hash value corresponding to the key.
+ */
 guint
 g_direct_hash (gconstpointer v)
 {
   return GPOINTER_TO_UINT (v);
 }
 
+/**
+ * g_direct_equal:
+ * @v1: a key.
+ * @v2: a key to compare with @v1.
+ *
+ * Compares two #gpointer arguments and returns %TRUE if they are equal.
+ * It can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using pointers as keys in a #GHashTable.
+ * 
+ * Returns: %TRUE if the two keys match.
+ */
 gboolean
 g_direct_equal (gconstpointer v1,
 		gconstpointer v2)
@@ -2252,6 +2408,18 @@ g_direct_equal (gconstpointer v1,
   return v1 == v2;
 }
 
+/**
+ * g_int_equal:
+ * @v1: a pointer to a #gint key.
+ * @v2: a pointer to a #gint key to compare with @v1.
+ *
+ * Compares the two #gint values being pointed to and returns 
+ * %TRUE if they are equal.
+ * It can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using pointers to integers as keys in a #GHashTable.
+ * 
+ * Returns: %TRUE if the two keys match.
+ */
 gboolean
 g_int_equal (gconstpointer v1,
 	     gconstpointer v2)
@@ -2259,6 +2427,16 @@ g_int_equal (gconstpointer v1,
   return *((const gint*) v1) == *((const gint*) v2);
 }
 
+/**
+ * g_int_hash:
+ * @v: a pointer to a #gint key
+ *
+ * Converts a pointer to a #gint to a hash value.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter, 
+ * when using pointers to integers values as keys in a #GHashTable.
+ *
+ * Returns: a hash value corresponding to the key.
+ */
 guint
 g_int_hash (gconstpointer v)
 {

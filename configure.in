@@ -2590,7 +2590,7 @@ esac
 case xyes in
 x$ac_cv_func_memmove)
   glib_memmove='
-#define g_memmove(d,s,n) G_STMT_START { memmove ((d), (s), (n)); } G_STMT_END'
+#define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END'
   ;;
 x$glib_cv_working_bcopy)
   glib_memmove="

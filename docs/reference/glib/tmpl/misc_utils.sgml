@@ -32,25 +32,18 @@ These are portable utility functions.
 
 <!-- ##### FUNCTION g_get_prgname ##### -->
 <para>
-Gets the name of the program. This name should <emphasis>not</emphasis> be localized,
-contrast with g_get_application_name().
-(If you are using GDK or GTK+ the program name is set in gdk_init(), which
-is called by gtk_init(). The program name is found by taking the last
-component of <literal>argv[0]</literal>.)
+
 </para>
 
-@Returns: the name of the program. 
-  The returned string belongs to GLib and must not be modified or freed.
+@Returns: 
 
 
 <!-- ##### FUNCTION g_set_prgname ##### -->
 <para>
-Sets the name of the program. This name should <emphasis>not</emphasis> be localized, 
-contrast with g_set_application_name(). Note that for thread-safety
-reasons this function can only be called once.
+
 </para>
 
-@prgname: the name of the program.
+@prgname: 
 
 
 <!-- ##### FUNCTION g_getenv ##### -->
@@ -83,24 +76,18 @@ reasons this function can only be called once.
 
 <!-- ##### FUNCTION g_get_user_name ##### -->
 <para>
-Gets the user name of the current user. The encoding of the returned
-string is system defined. On Unix, it might be the preferred file name
-encoding, or something else, and there is no guarantee that it is even
-consistent on a machine. On Windows, it is always UTF-8.
+
 </para>
 
-@Returns: the user name of the current user.
+@Returns:
 
 
 <!-- ##### FUNCTION g_get_real_name ##### -->
 <para>
-Gets the real name of the user. This usually comes from the user's entry in the
-<filename>passwd</filename> file. The encoding of the returned string is system
-defined. (On Windows, it is, however, always UTF-8.) If the real user name
-cannot be determined, the string "Unknown" is returned.
+
 </para>
 
-@Returns: the user's real name.
+@Returns:
 
 
 <!-- ##### FUNCTION g_get_user_cache_dir ##### -->
@@ -145,38 +132,26 @@ cannot be determined, the string "Unknown" is returned.
 
 <!-- ##### FUNCTION g_get_home_dir ##### -->
 <para>
-Gets the current user's home directory. 
-</para>
-<para>
-Note that in contrast to traditional Unix tools, this function 
-prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 
-environment variable.
+
 </para>
 
-@Returns: the current user's home directory.
+@Returns: 
 
 
 <!-- ##### FUNCTION g_get_tmp_dir ##### -->
 <para>
-Gets the directory to use for temporary files.
-This is found from inspecting the environment variables <envar>TMPDIR</envar>, 
-<envar>TMP</envar>, and <envar>TEMP</envar>
-in that order. If none of those are defined "/tmp" is returned on UNIX and 
-"C:\" on Windows. The encoding of the returned string is system defined. On 
-Windows, it is always UTF-8. The return value is never NULL.
+
 </para>
 
-@Returns: the directory to use for temporary files.
+@Returns: 
 
 
 <!-- ##### FUNCTION g_get_current_dir ##### -->
 <para>
-Gets the current directory.
-The returned string should be freed when no longer needed. The encoding of the
-returned string is system defined. On Windows, it is always UTF-8.
+
 </para>
 
-@Returns: the current directory.
+@Returns:
 
 
 <!-- ##### FUNCTION g_basename ##### -->
@@ -203,24 +178,20 @@ The returned string should be freed when no longer needed.
 
 <!-- ##### FUNCTION g_path_is_absolute ##### -->
 <para>
-Returns %TRUE if the given @file_name is an absolute file name,
-i.e. it contains a full path from the root directory such as '/usr/local'
-on UNIX or 'C:\windows' on Windows systems.
+
 </para>
 
-@file_name: a file name.
-@Returns: %TRUE if @file_name is an absolute path.
+@file_name:
+@Returns:
 
 
 <!-- ##### FUNCTION g_path_skip_root ##### -->
 <para>
-Returns a pointer into @file_name after the root component, i.e. after
-the '/' in UNIX or 'C:\' under Windows. If @file_name is not an absolute
-path it returns %NULL.
+
 </para>
 
-@file_name: a file name.
-@Returns: a pointer into @file_name after the root component.
+@file_name: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_path_get_basename ##### -->
@@ -234,13 +205,11 @@ path it returns %NULL.
 
 <!-- ##### FUNCTION g_path_get_dirname ##### -->
 <para>
-Gets the directory components of a file name.  If the file name has no
-directory components "." is returned.  The returned string should be
-freed when no longer needed.
+
 </para>
 
-@file_name: the name of the file.
-@Returns: the directory components of the file.
+@file_name: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_build_filename ##### -->
@@ -327,25 +296,21 @@ larger than @num.
 
 <!-- ##### FUNCTION g_atexit ##### -->
 <para>
-Specifies a function to be called at normal program termination.
+
 </para>
 
-@func: the function to call on normal program termination.
+@func: 
 
 
 <!-- ##### FUNCTION g_parse_debug_string ##### -->
 <para>
-Parses a string containing debugging options separated by ':' into a guint
-containing bit flags.
-This is used within GDK and GTK+ to parse the debug options passed on the
-command line or through environment variables.
+
 </para>
 
-@string: a list of debug options separated by ':' or "all" to set all flags.
-@keys: pointer to an array of #GDebugKey which associate strings with
-bit flags.
-@nkeys: the number of #GDebugKey in the array.
-@Returns: the combined set of bit flags.
+@string: 
+@keys: 
+@nkeys:
+@Returns:
 
 
 <!-- ##### STRUCT GDebugKey ##### -->

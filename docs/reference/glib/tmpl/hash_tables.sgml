@@ -286,49 +286,40 @@ This function is deprecated and will be removed in the next major
 
 <!-- ##### FUNCTION g_direct_equal ##### -->
 <para>
-Compares two #gpointer arguments and returns %TRUE if they are equal.
-It can be passed to g_hash_table_new() as the @key_equal_func
-parameter, when using pointers as keys in a #GHashTable.
+
 </para>
 
-@v: a key.
-@v2: a key to compare with @v.
-@Returns: %TRUE if the two keys match.
+@v1:
+@v2:
+@Returns:
 
 
 <!-- ##### FUNCTION g_direct_hash ##### -->
 <para>
-Converts a gpointer to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using pointers as keys in a #GHashTable.
+
 </para>
 
-@v: a gpointer key.
-@Returns: a hash value corresponding to the key.
+@v: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_int_equal ##### -->
 <para>
-Compares the two #gint values being pointed to and returns %TRUE if they are
-equal.
-It can be passed to g_hash_table_new() as the @key_equal_func
-parameter, when using pointers to integers as keys in a #GHashTable.
+
 </para>
 
-@v: a pointer to a #gint key.
-@v2: a pointer to a #gint key to compare with @v.
-@Returns: %TRUE if the two keys match.
+@v:
+@v2:
+@Returns:
 
 
 <!-- ##### FUNCTION g_int_hash ##### -->
 <para>
-Converts a pointer to a #gint to a hash value.
-It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using pointers to integers values as keys in a #GHashTable.
+
 </para>
 
-@v: a pointer to a #gint key.
-@Returns: a hash value corresponding to the key.
+@v:
+@Returns: 
 
 
 <!-- ##### FUNCTION g_str_equal ##### -->
