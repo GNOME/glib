@@ -152,8 +152,10 @@ g_thread_init_glib (void)
   _g_mem_thread_init ();
   _g_messages_thread_init ();
   _g_atomic_thread_init ();
+#ifdef G_OS_WIN32
   _g_win32_thread_init ();
- 
+#endif
+
   g_threads_got_initialized = TRUE;
 
   g_thread_specific_private = g_private_new (g_thread_cleanup);
