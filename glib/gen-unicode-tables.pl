@@ -766,9 +766,10 @@ sub escape
 {
     my ($string) = @_;
 
-    $string =~ s/(\C)/sprintf "\\x%02x",ord($1)/eg;
+    my $escaped = unpack("H*", $string);
+    $escaped =~ s/(.{2})/\\x$1/g;
 
-    return $string;
+    return $escaped;
 }
 
 # Returns the offset of $decomp in the offset string. Updates the
@@ -1204,6 +1205,8 @@ sub output_composition_table
 	$last = $code if $code > $last;
     }
 
+    printf OUT "#define COMPOSE_TABLE_LAST %d\n\n", $last / 256;
+
     # Output lookup table
 
     my @row;						  
@@ -1215,15 +1218,14 @@ sub output_composition_table
     }
     printf OUT "\n};\n\n";
 
-    print OUT "static const gint16 compose_table[256] = {\n";
+    print OUT "static const gint16 compose_table[COMPOSE_TABLE_LAST + 1] = {\n";
     for (my $count = 0; $count <= $last; $count += 256)
     {
 	print OUT ",\n" if $count > 0;
 	print OUT "  ", $row[$count / 256];
+        $bytes_out += 2;
     }
     print OUT "\n};\n\n";
-
-    $bytes_out += 256 * 2;
 
     # Output first singletons
 

@@ -3,6 +3,8 @@
 #define COMPOSE_SECOND_START 357
 #define COMPOSE_SECOND_SINGLE_START 388
 
+#define COMPOSE_TABLE_LAST 48
+
 static const guint16 compose_data[][256] = {
   { /* page 0, index 0 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -222,7 +224,7 @@ static const guint16 compose_data[][256] = {
   }
 };
 
-static const gint16 compose_table[256] = {
+static const gint16 compose_table[COMPOSE_TABLE_LAST + 1] = {
   0 /* page 0 */,
   1 /* page 1 */,
   2 /* page 2 */,

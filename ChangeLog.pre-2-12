@@ -1,3 +1,13 @@
+2004-01-30  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gunicomp.h:
+	* glib/gunidecomp.c:
+	* glib/gen-unicode-tables.pl: Size compose_table correctly. (#123421,
+        Simon Josefsson)
+
+	* glib/gen-unicode-tables.pl: Get rid of some new warnings from perl
+	5.8.1.
+
 Tue Jan 27 18:45:47 2004  Manish Singh  <yosh@gimp.org>
 
 	* m4macros/glib-2.0.m4
