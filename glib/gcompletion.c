@@ -162,7 +162,7 @@ completion_check_cache (GCompletion* cmp,
 
 GList* 
 g_completion_complete (GCompletion* cmp,
-		       gchar*	    prefix,
+		       const gchar* prefix,
 		       gchar**	    new_prefix)
 {
   gsize plen, len;
