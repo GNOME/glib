@@ -1,4 +1,10 @@
+Wed Feb 24 00:08:42 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* *.[ch]: inserted additional note to look for ChangeLog and
+	  AUTHORS file for a log of modifications.
+
 Sun Feb 21 14:01:00 1999  Dr Mike <drmike@redhat.com>
+
 	* Made specfile generated, tweaked slightly
 	
 Thu Feb 18 08:24:12 1999  Tim Janik  <timj@gtk.org>
