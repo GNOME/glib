@@ -20,9 +20,10 @@ DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=g_log_domain_grun
 
 all :				\
 	glib-genmarshal.exe     \
-	gobject-query.exe     \
 	gmarshal.h              \
 	gmarshal.c              \
+	gmarshal.strings \
+	gobject-query.exe \
 	libgobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll	\
 	gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib
 
@@ -34,6 +35,7 @@ gobject_OBJECTS =		\
 	gparam.obj		\
 	gparamspecs.obj		\
 	gsignal.obj		\
+	gsourceclosure.obj	\
 	gtype.obj		\
 	gtypemodule.obj		\
 	gtypeplugin.obj		\
