@@ -46,7 +46,7 @@ if test -z "$*"; then
 fi
 
 case $CC in
-*lcc | *lcc\ *) am_opt=--include-deps;;
+xlc | *lcc | *lcc\ *) am_opt=--include-deps;;
 esac
 
 aclocal $ACLOCAL_FLAGS
