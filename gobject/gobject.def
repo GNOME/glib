@@ -205,4 +205,3 @@ EXPORTS
 	g_value_types_init
 	g_value_unset
 	g_values_exchange
-	glib_debug_objects
