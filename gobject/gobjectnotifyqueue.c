@@ -19,6 +19,7 @@
 #ifndef __G_NOTIFY_H__
 #define __G_NOTIFY_H__
 
+#include        <string.h> /* memset */
 #include        <gobject/gobject.h>
 
 G_BEGIN_DECLS

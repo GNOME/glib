@@ -14,6 +14,7 @@ EXPORTS
 	g_cclosure_marshal_VOID__BOOLEAN
 	g_cclosure_marshal_VOID__INT
 	g_cclosure_marshal_VOID__POINTER
+	g_cclosure_marshal_VOID__PARAM
 	g_cclosure_marshal_VOID__UINT
 	g_cclosure_marshal_VOID__UINT_POINTER
 	g_cclosure_marshal_VOID__OBJECT
@@ -48,6 +49,7 @@ EXPORTS
 	g_flags_register_static
 	g_object_class_find_property
 	g_object_class_install_property
+	g_object_class_list_properties
 	g_object_freeze_notify
 	g_object_connect
 	g_object_get
@@ -71,6 +73,7 @@ EXPORTS
 	g_object_thaw_notify
 	g_object_unref
 	g_object_watch_closure
+	g_param_spec_pool_belongings
 	g_param_spec_boolean
 	g_param_spec_boxed
 	g_param_spec_char
@@ -85,6 +88,7 @@ EXPORTS
 	g_param_spec_object
 	g_param_spec_pointer
 	g_param_spec_pool_insert
+	g_param_spec_pool_list
 	g_param_spec_pool_lookup
 	g_param_spec_pool_remove
 	g_param_spec_pool_new
