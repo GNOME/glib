@@ -1,3 +1,10 @@
+2002-02-13  Havoc Pennington  <hp@redhat.com>
+
+	* glib/gmain.c (g_main_context_check): never dispatch sources of
+	mixed priority, because while iterating over the dispatch array a
+	new source with more priority may be added, while a source with
+	less priority remains in the dispatch array
+
 2002-02-11  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gmessages.h: Use "if (expr) { } else" as I meant to in the

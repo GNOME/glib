@@ -2128,6 +2128,11 @@ g_main_context_check (GMainContext *context,
 	  g_ptr_array_add (context->pending_dispatches, source);
 
 	  n_ready++;
+
+          /* never dispatch sources with less priority than the first
+           * one we choose to dispatch
+           */
+          max_priority = source->priority;
 	}
 
     next:
