@@ -53,8 +53,8 @@ g_queue_new (void)
     {
       if (!queue_memchunk)
 	queue_memchunk = g_mem_chunk_new ("GLib GQueue chunk",
-					  sizeof (GNode),
-					  sizeof (GNode) * 128,
+					  sizeof (GQueue),
+					  sizeof (GQueue) * 128,
 					  G_ALLOC_ONLY);
       queue = g_chunk_new (GQueue, queue_memchunk);
     }

@@ -1,5 +1,8 @@
 2005-02-20  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gqueue.c (g_queue_new): Use a memchunk for
+	sizeof(GQueue)-sized chunks.  (#167984, Fabrício Barros Cabral)
+
 	* glib/gtimer.c (g_usleep): Fix usage of 
 	nanosleep().  (#163039, Bastien Nocera)
 
