@@ -1,3 +1,21 @@
+2002-05-18  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/markups/fail-36.gmarkup: 
+	* tests/markups/fail-35.gmarkup: 
+	* tests/markups/valid-8.gmarkup: 
+	* tests/markups/valid-7.gmarkup: 
+	* tests/markups/valid-6.gmarkup: 
+	* tests/markups/valid-5.gmarkup: New testcases.
+
+	* tests/markup-test.c (passthrough_handler): 
+	(text_handler): Don't ignore the text_len parameter.
+
+	* glib/gmarkup.c (find_current_text_end): Don't hang on embedded
+	nuls.  (#81977)
+	(g_markup_parse_context_parse): Fix passthrough handling to
+	correctly skip processing instructions, comments, doctype
+	declarations and CDATA marked sections.  (#81977)
+
 Sat May 18 00:21:51 2002  Tim Janik  <timj@gtk.org>
 
 	[merged from stable]
