@@ -932,9 +932,9 @@ g_mem_chunk_area_compare (GMemArea *a,
 			  GMemArea *b)
 {
   if (a->mem > b->mem)
-	return 1;
+    return 1;
   else if (a->mem < b->mem)
-	return -1;
+    return -1;
   return 0;
 }
 
