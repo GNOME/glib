@@ -239,7 +239,7 @@ g_io_channel_write (GIOChannel  *channel,
  **/
 GIOError 
 g_io_channel_seek  (GIOChannel   *channel,
-		    glong         offset, 
+		    gint64        offset, 
 		    GSeekType     type)
 {
   GError *err = NULL;
@@ -799,7 +799,7 @@ g_io_channel_get_close_on_unref	(GIOChannel *channel)
  **/
 GIOStatus
 g_io_channel_seek_position	(GIOChannel* channel,
-				 glong       offset,
+				 gint64      offset,
 				 GSeekType   type,
 				 GError    **error)
 {

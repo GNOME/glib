@@ -5,8 +5,8 @@ builtin(include, acglib.m4)dnl
 builtin(include, glib/libcharset/codeset.m4)dnl
 builtin(include, glib/libcharset/glibc21.m4)dnl
 
-# require autoconf 2.13
-AC_PREREQ(2.13)
+# require autoconf 2.52
+AC_PREREQ(2.52)
 
 # Process this file with autoconf to produce a configure script.
 AC_INIT(glib/glib.h)
@@ -195,6 +195,8 @@ AC_LANG_RESTORE
 
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
+
+AC_SYS_LARGEFILE
 
 #
 # Find pkg-config

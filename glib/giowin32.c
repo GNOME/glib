@@ -32,6 +32,8 @@
 /* Define this to get (very) verbose logging of all channels */
 /* #define G_IO_WIN32_DEBUG */
 
+#include "config.h"
+
 #include "glib.h"
 
 #include <stdlib.h>
@@ -898,12 +900,13 @@ g_io_win32_fd_write (GIOChannel  *channel,
 
 static GIOStatus
 g_io_win32_fd_seek (GIOChannel *channel,
-		    glong       offset,
+		    gint64      offset,
 		    GSeekType   type,
 		    GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   int whence;
+  off_t tmp_offset;
   off_t result;
   
   switch (type)
@@ -921,8 +924,17 @@ g_io_win32_fd_seek (GIOChannel *channel,
       whence = -1; /* Keep the compiler quiet */
       g_assert_not_reached();
     }
+
+  tmp_offset = offset;
+  if (tmp_offset != offset)
+    {
+      g_set_error (err, G_IO_CHANNEL_ERROR,
+		   g_io_channel_error_from_errno (EINVAL),
+		   strerror (EINVAL));
+      return G_IO_STATUS_ERROR;
+    }
   
-  result = lseek (win32_channel->fd, offset, whence);
+  result = lseek (win32_channel->fd, tmp_offset, whence);
   
   if (result < 0)
     {

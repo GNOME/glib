@@ -1,3 +1,14 @@
+Fri Feb 15 10:41:51 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* NEWS: Updated.
+
+	* configure.in: Require autoconf-2.52, run AC_SYS_LARGEFILE.
+	(#71410, Sven Neumann)
+
+	* glib/giounix.c glib/giowin32.c glib/giochannel.[ch]:
+	Change offset type for g_io_channel_seek[_position] to
+	gint64.
+
 2002-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* tests/thread-test.c: Do not assume, that after

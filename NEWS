@@ -1,3 +1,18 @@
+Overview of Changes in GLib 1.3.14:
+===================================
+
+* Register value transformations for gint64, guint64 [Andy Wingo]
+* Build with large-file support [Sven Neumann, Owen Taylor]
+* Fix handling of hostnames in URI's [Darin Adler]
+* Main loop bug fixes [Havoc Pennington, Owen]
+* Doc fixes and improvements [Manish Singh, Tim Janik]
+* Support ' as attribute delimiters in GMarkup [Matthias Clasen]
+* Win32 fixes [Hans Breuer, Tor Lillqvist]
+* Threading bug and build fixes [Sebastian Wilhelmi, Miroslaw Dobrzanski-Neumann]
+* Miscellaneous bug fixes
+
+Other contributors: Matthias Clasen, Mitch Natterer, James Henstridge
+
 Overview of Changes in GLib 1.3.13:
 ===================================
 

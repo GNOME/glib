@@ -145,7 +145,7 @@ struct _GIOFuncs
 				  gsize        *bytes_written,
 				  GError      **err);
   GIOStatus (*io_seek)           (GIOChannel   *channel, 
-				  glong         offset, 
+				  gint64        offset, 
 				  GSeekType     type,
 				  GError      **err);
   GIOStatus  (*io_close)         (GIOChannel   *channel,
@@ -173,7 +173,7 @@ GIOError  g_io_channel_write    (GIOChannel    *channel,
 			         gsize          count,
 			         gsize         *bytes_written);
 GIOError  g_io_channel_seek     (GIOChannel    *channel,
-			         glong          offset, 
+			         gint64         offset, 
 			         GSeekType      type);
 void      g_io_channel_close    (GIOChannel    *channel);
 #endif /* G_DISABLE_DEPRECATED */
@@ -254,7 +254,7 @@ GIOStatus   g_io_channel_write_unichar    (GIOChannel   *channel,
 					   gunichar      thechar,
 					   GError      **error);
 GIOStatus   g_io_channel_seek_position    (GIOChannel   *channel,
-					   glong         offset,
+					   gint64        offset,
 					   GSeekType     type,
 					   GError      **error);
 GIOChannel* g_io_channel_new_file         (const gchar  *filename,

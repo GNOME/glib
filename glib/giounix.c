@@ -31,6 +31,8 @@
  * MT safe
  */
 
+#include "config.h"
+
 #include "glib.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -73,7 +75,7 @@ static GIOStatus	g_io_unix_write		(GIOChannel   *channel,
 						 gsize        *bytes_written,
 						 GError      **err);
 static GIOStatus	g_io_unix_seek		(GIOChannel   *channel,
-						 glong         offset,
+						 gint64        offset,
 						 GSeekType     type,
 						 GError      **err);
 static GIOStatus	g_io_unix_close		(GIOChannel   *channel,
@@ -251,12 +253,13 @@ g_io_unix_write (GIOChannel  *channel,
 
 static GIOStatus
 g_io_unix_seek (GIOChannel *channel,
-		glong       offset, 
+		gint64      offset, 
 		GSeekType   type,
                 GError    **err)
 {
   GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   int whence;
+  off_t tmp_offset;
   off_t result;
 
   switch (type)
@@ -275,7 +278,16 @@ g_io_unix_seek (GIOChannel *channel,
       g_assert_not_reached ();
     }
 
-  result = lseek (unix_channel->fd, offset, whence);
+  tmp_offset = offset;
+  if (tmp_offset != offset)
+    {
+      g_set_error (err, G_IO_CHANNEL_ERROR,
+		   g_io_channel_error_from_errno (EINVAL),
+		   strerror (EINVAL));
+      return G_IO_STATUS_ERROR;
+    }
+  
+  result = lseek (unix_channel->fd, tmp_offset, whence);
 
   if (result < 0)
     {
