@@ -1,4 +1,5 @@
 Overview of Changes in GLib 1.1.8:
+
 * Added threading support
   - The ability to specify a set of functions to be used for
     locking at runtime.

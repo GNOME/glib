@@ -1,3 +1,14 @@
+Tue Dec 15 23:16:05 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+
+	* Released GLib 1.1.8
+
+	* INSTALL:
+	  NEWS:
+	  README 
+	  configure.in:
+	  glib.spec:
+	  docs/glib-config.1: Incremented version
+
 Wed Dec 16 22:29:48 1998  Joel Becker  <jlbec@ocala.cs.miami.edu>
 
 	* configure.in: fixed the AIX thread checking.
