@@ -31,17 +31,10 @@
 
 #ifdef G_PLATFORM_WIN32
 
-/* Windows emulation stubs for common Unix functions
- */
-
 G_BEGIN_DECLS
 
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 1024
-#endif
-
-#ifdef _MSC_VER
-typedef int pid_t;
 #endif
 
 #ifdef G_OS_WIN32
