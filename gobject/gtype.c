@@ -1377,7 +1377,9 @@ g_type_free_instance (GTypeInstance *instance)
     }
   
   instance->g_class = NULL;
-  memset (instance, 0xaa, node->data->instance.instance_size);	/* FIXME: debugging hack */
+#ifdef G_ENABLE_DEBUG  
+  memset (instance, 0xaa, node->data->instance.instance_size);	/* debugging hack */
+#endif  
   if (node->data->instance.n_preallocs)
     {
       G_WRITE_LOCK (&type_rw_lock);
