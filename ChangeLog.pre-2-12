@@ -1,3 +1,17 @@
+Fri Sep 17 10:24:45 1999  Tim Janik  <timj@gtk.org>
+
+        * gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied patch
+        from Soeren Sandmann <sandmann@daimi.au.dk>, to force mem chunk's area
+        sizes to be a multitiple of atom_size, and to eliminate the MAX_MEM_AREA
+        restriction of 65536 bytes. we also catch cases where users pass an area
+        size < atom size with a return_if_fail statement now (which is ok,
+        because previously this lead to memory corruption anyways).
+
+Thu Sep 16 01:31:43 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: version increment to GLib-1.2.5, interface age 5,
+	binary age 5.
+
 Thu Aug 26 15:09:36 1999  Tim Janik  <timj@gtk.org>
 
         * Makefile.am:
