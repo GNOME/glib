@@ -1,3 +1,8 @@
+Wed Mar 20 11:17:32 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gfileutils.c (get_contents_regfile): Close the
+	file descriptor. (#75507, Matthias Clasen)
+
 Wed Mar 20 11:00:59 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Use $PKG_CONFIG, not pkg-config.

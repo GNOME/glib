@@ -402,7 +402,7 @@ get_contents_regfile (const gchar *filename,
                    _("Could not allocate %lu bytes to read file \"%s\""),
                    (gulong) alloc_size, filename);
 
-      return FALSE;
+      goto error;
     }
   
   bytes_read = 0;
@@ -426,7 +426,7 @@ get_contents_regfile (const gchar *filename,
                            _("Failed to read from file '%s': %s"),
                            filename, g_strerror (errno));
 
-              return FALSE;
+	      goto error;
             }
         }
       else if (rc == 0)
@@ -442,7 +442,15 @@ get_contents_regfile (const gchar *filename,
   
   *contents = buf;
 
+  close (fd);
+
   return TRUE;
+
+ error:
+
+  close (fd);
+  
+  return FALSE;
 }
 
 static gboolean
