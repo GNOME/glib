@@ -706,7 +706,7 @@ main (int   argc,
 
   gbarray = g_byte_array_new ();
   for (i = 0; i < 10000; i++)
-    g_byte_array_append (gbarray, "abcd", 4);
+    g_byte_array_append (gbarray, (guint8*) "abcd", 4);
 
   for (i = 0; i < 10000; i++)
     {

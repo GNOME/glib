@@ -630,7 +630,7 @@ g_scanner_cur_token (GScanner *scanner)
 GValue
 g_scanner_cur_value (GScanner *scanner)
 {
-  register GValue v;
+  GValue v;
   
   v.v_int = 0;
   g_return_val_if_fail (scanner != NULL, v);
@@ -1138,8 +1138,8 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   register gboolean		in_string_dq;
   static   guchar		ch;
   register GTokenType		token;
-  register GValue		value;
   register GString		*gstring;
+  GValue			value;
   
   config = scanner->config;
   (*value_p).v_int = 0;

@@ -64,6 +64,9 @@
 
 #undef G_VA_COPY
 #undef G_VA_COPY_AS_ARRAY
+#undef G_HAVE___INLINE
+#undef G_HAVE___INLINE__
+#undef G_HAVE_INLINE
 
 #undef GLIB_MAJOR_VERSION
 #undef GLIB_MINOR_VERSION
@@ -73,6 +76,8 @@
 
 /* #undef PACKAGE */
 /* #undef VERSION */
+
+
 
 
 /* Leave that blank line there!!  Autoheader needs it.

@@ -25,10 +25,10 @@
 #include <sys/types.h>
 #include <sys/param.h>
 
-/* When using gcc, we want to have a non-inlined version of the
- * `extern inline'd functions in glib.h.  We do this here.  */
-#define GLIB_INLINE
-
+/* implement Glib's inline functions
+ */
+#define	G_INLINE_FUNC extern
+#define	G_CAN_INLINE 1
 #include "glib.h"
 
 const guint glib_major_version = GLIB_MAJOR_VERSION;

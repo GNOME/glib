@@ -9,9 +9,6 @@
 /* Define if you have the vprintf function.  */
 #undef HAVE_VPRINTF
 
-/* Define as __inline if that's what the C compiler calls it.  */
-#undef inline
-
 /* Define if you have the ANSI C header files.  */
 #undef STDC_HEADERS
 
@@ -39,6 +36,9 @@
 
 #undef G_VA_COPY
 #undef G_VA_COPY_AS_ARRAY
+#undef G_HAVE___INLINE
+#undef G_HAVE___INLINE__
+#undef G_HAVE_INLINE
 
 #undef GLIB_MAJOR_VERSION
 #undef GLIB_MINOR_VERSION

@@ -549,6 +549,22 @@ else
     link_static_flag='-Bstatic'
     ;;
 
+  linux*aout)
+    can_build_shared=no
+    ;;
+
+  linux*)
+    case "$CC" in
+    *lcc | *lcc\ *)
+      wl=-Wl
+      link_static_flag='-static'
+      pic_flag=
+      ;;
+    *)
+      can_build_shared=no
+    esac
+    ;;
+
   *)
     can_build_shared=no
     ;;

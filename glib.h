@@ -23,7 +23,7 @@
  */
 #include <glibconfig.h>
 
-/* support standard arg inline functions for assertment macros
+/* include varargs functions for assertment macros
  */
 #include <stdarg.h>
 
@@ -95,6 +95,17 @@
 #endif /* HAVE_VALUES_H */
 
 
+/* the #pragma } statment is used to fix up emacs' c-mode which gets
+ * confused by extern "C" {. the ansi standard says that compilers
+ * have to ignore #pragma directives that they don't know about,
+ * so we should be save in using this.
+ */
+#ifdef __cplusplus
+extern "C" {
+#pragma }
+#endif /* __cplusplus */
+
+
 /* Provide definitions for some commonly used macros.
  *  Some of them are only provided if they haven't already
  *  been defined. It is assumed that if they are already
@@ -155,6 +166,57 @@
 #endif	/* G_CODE_GENERATION */
 
 
+/* inlining hassle. for compilers that don't allow the `inline' keyword,
+ * mostly because of strict ANSI C compliance or dumbness, we try to fall
+ * back to either `__inline__' or `__inline'.
+ * we define G_CAN_INLINE, if the compiler seems to be actually
+ * *capable* to do function inlining, in which case inline function bodys
+ * do make sense. we also define G_INLINE_FUNC to properly export the
+ * function prototypes if no inlinig can be performed.
+ * we special case most of the stuff, so inline functions can have a normal
+ * implementation by defining G_INLINE_FUNC to extern and G_CAN_INLINE to 1.
+ */
+#ifndef G_INLINE_FUNC
+#  define G_CAN_INLINE 1
+#endif
+#ifdef G_HAVE_INLINE
+#  if defined (__GNUC__) && defined (__STRICT_ANSI__)
+#    undef inline
+#    define inline __inline__
+#  endif
+#else /* !G_HAVE_INLINE */
+#  undef inline
+#  if defined (G_HAVE___INLINE__)
+#    define inline __inline__
+#  else /* !inline && !__inline__ */
+#    if defined (G_HAVE___INLINE)
+#      define inline __inline
+#    else /* !inline && !__inline__ && !__inline */
+#      define inline /* don't inline, then */
+#      ifndef G_INLINE_FUNC
+#        undef G_CAN_INLINE
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef G_INLINE_FUNC
+#  ifdef __GNUC__
+#    ifdef __OPTIMIZE__
+#      define G_INLINE_FUNC extern inline
+#    else
+#      undef G_CAN_INLINE
+#      define G_INLINE_FUNC extern
+#    endif
+#  else /* !__GNUC__ */
+#    ifdef G_CAN_INLINE
+#      define G_INLINE_FUNC static inline
+#    else
+#      define G_INLINE_FUNC extern
+#    endif
+#  endif /* !__GNUC__ */
+#endif /* !G_INLINE_FUNC */
+
+
 /* Provide simple macro statement wrappers (adapted from Perl):
  *  G_STMT_START { statements; } G_STMT_END;
  *  can be used as a single statement, as in
@@ -179,31 +241,6 @@
 #  endif
 #endif
 
-
-/* ANSI does not permit the keyword `inline'.
- */
-#if defined (__STRICT_ANSI__)
-#  undef inline
-#  ifdef __GNUC__
-#    define inline	__inline__
-#  else /* !__GNUC__ */
-#    define inline	/* don't inline */
-#  endif /* !__GNUC__ */
-#endif /* __STRICT_ANSI__ */
-
-/* When using gcc we want to use `extern inline' to avoid random
- * warnings with -Wall.  */
-#ifdef __GNUC__
-/* We want to also have a non-inlined version of the function
- * available.  We implement this by redefining GLIB_INLINE in a glib
- * implementation file.  */
-#  ifndef GLIB_INLINE
-#    define GLIB_INLINE extern inline
-#  endif
-#else
-#  undef GLIB_INLINE
-#  define GLIB_INLINE inline
-#endif
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -242,8 +279,8 @@
 /* Hacker macro to place breakpoints for x86 machines.
  * Actual use is strongly deprecated of course ;)
  */
-#if	defined (__i386__)
-#define	G_BREAKPOINT()		G_STMT_START{ __asm__ ("int $03"); }G_STMT_END
+#if	defined (__i386__) && defined (__GNUC__)
+#define	G_BREAKPOINT()		G_STMT_START{ __asm__ volatile ("int $03"); }G_STMT_END
 #else	/* !__i386__ */
 #define	G_BREAKPOINT()
 #endif	/* __i386__ */
@@ -421,17 +458,6 @@
 #endif /* !__GNUC__ */
 
 #endif /* !G_DISABLE_CHECKS */
-
-
-#ifdef __cplusplus
-/* the #pragma } statment is used to fix up emacs' c-mode which gets
- * confused by extern "C" {. the ansi standard says that compilers
- * have to ignore #pragma directives that they don't know about,
- * so we should be save in using this.
- */
-extern "C" {
-#pragma }
-#endif /* __cplusplus */
 
 
 /* Provide type definitions for commonly used types.
@@ -1212,19 +1238,12 @@ gchar*	g_get_current_dir	(void);
 #endif
 
 
-
 /* Bit tests
  */
-
-/* Prototypes are required for inline functions to pacify gcc when
- * some warnings are enabled.  */
-gint g_bit_nth_lsf (guint32 mask, gint nth_bit);
-gint g_bit_nth_msf (guint32 mask, gint nth_bit);
-guint g_bit_storage (guint number);
-
-GLIB_INLINE gint
+G_INLINE_FUNC gint
 g_bit_nth_lsf (guint32 mask,
 	       gint    nth_bit)
+#ifdef G_CAN_INLINE
 {
   do
     {
@@ -1235,9 +1254,13 @@ g_bit_nth_lsf (guint32 mask,
   while (nth_bit < 32);
   return -1;
 }
-GLIB_INLINE gint
+#else
+;
+#endif
+G_INLINE_FUNC gint
 g_bit_nth_msf (guint32 mask,
 	       gint    nth_bit)
+#ifdef G_CAN_INLINE
 {
   if (nth_bit < 0)
     nth_bit = 33;
@@ -1250,8 +1273,12 @@ g_bit_nth_msf (guint32 mask,
   while (nth_bit > 0);
   return -1;
 }
-GLIB_INLINE guint
+#else
+;
+#endif
+G_INLINE_FUNC guint
 g_bit_storage (guint number)
+#ifdef G_CAN_INLINE
 {
   register guint n_bits = 0;
 
@@ -1262,6 +1289,9 @@ g_bit_storage (guint number)
     } while (number);
   return n_bits;
 }
+#else
+;
+#endif
 
 
 /* String Chunks

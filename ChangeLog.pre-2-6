@@ -1,3 +1,29 @@
+Mon Sep  7 07:53:21 1998  Tim Janik  <timj@gtk.org>
+
+	* configure.in: check for all three inline keywords individually.
+
+	* glib.h: inlining hassle. for compilers that don't allow the `inline'
+ 	keyword, mostly because of strict ANSI C compliance or dumbness, we try
+ 	to fall back to either `__inline__' or `__inline'. 
+	we define G_CAN_INLINE, if the compiler seems to be actually *capable*
+ 	to do function inlining, in which case inline function bodys do make
+ 	sense. we also define G_INLINE_FUNC to properly export the function
+ 	prototypes if no inlinig can be performed. we special case most of the
+ 	stuff, so inline functions can have a normal implementation by defining
+ 	G_INLINE_FUNC to extern and G_CAN_INLINE to 1.
+
+	* ltconfig: (compiler PIC flag test): special case linux for non
+	aout systems to honour lcc's position independant code (cases
+	"linux*aout)" and "linux*)" got added). (this needs to go into
+	libtool which does an advanced test, checking for __LCC__).
+
+	* autogen.sh: take $CC=lcc into account by invoking automake with
+	--include-deps so lcc isn't scared by gcc's auto-dependancy
+	generation code. care about $ACLOCAL_FLAGS. optionally feature
+	autoheader.
+
+	* minor fixups in other places to cure some of lcc's warnings.
+
 Sun Sep  6 19:08:53 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in: added -std1 check for ANSI compliance (from gtk)

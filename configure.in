@@ -143,11 +143,61 @@ AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 
-# long doubles were not used, and a portability problem 
-# AC_C_LONG_DOUBLE
+dnl long doubles were not used, and a portability problem 
+dnl AC_C_LONG_DOUBLE
 AC_C_CONST
-AC_C_INLINE
 
+dnl AC_C_INLINE is useless to us since it bails out too early, we need to
+dnl truely know which ones of `inline', `__inline' and `__inline__' are
+dnl actually supported.
+AC_MSG_CHECKING(for __inline)
+AC_CACHE_VAL(glib_cv_has__inline,[
+        AC_TRY_RUN([
+	__inline int foo () { return 0; }
+	int main () { return foo (); }
+       	],
+	glib_cv_has__inline=yes
+        ,
+	glib_cv_has__inline=no
+        ,)
+])
+AC_MSG_RESULT($glib_cv_has__inline)
+case x$glib_cv_has__inline in
+yes) AC_DEFINE(G_HAVE___INLINE)
+esac
+AC_MSG_CHECKING(for __inline__)
+AC_CACHE_VAL(glib_cv_has__inline__,[
+        AC_TRY_RUN([
+	__inline__ int foo () { return 0; }
+	int main () { return foo (); }
+       	],
+	glib_cv_has__inline__=yes
+        ,
+	glib_cv_has__inline__=no
+        ,)
+])
+AC_MSG_RESULT($glib_cv_has__inline__)
+case x$glib_cv_has__inline__ in
+yes) AC_DEFINE(G_HAVE___INLINE__)
+esac
+AC_MSG_CHECKING(for inline)
+AC_CACHE_VAL(glib_cv_hasinline,[
+        AC_TRY_RUN([
+	inline int foo () { return 0; }
+	int main () { return foo (); }
+       	],
+	glib_cv_hasinline=yes
+        ,
+	glib_cv_hasinline=no
+        ,)
+])
+AC_MSG_RESULT($glib_cv_hasinline)
+case x$glib_cv_hasinline in
+yes) AC_DEFINE(G_HAVE_INLINE)
+esac
+
+
+dnl header file checks
 AC_CHECK_HEADERS(float.h, AC_DEFINE(HAVE_FLOAT_H))
 AC_CHECK_HEADERS(limits.h, AC_DEFINE(HAVE_LIMITS_H))
 AC_CHECK_HEADERS(values.h, AC_DEFINE(HAVE_VALUES_H))
@@ -244,7 +294,8 @@ AC_MSG_RESULT($gtk_ok)
 dnl **********************
 dnl *** va_copy checks ***
 dnl **********************
-dnl we currently check for all three cases, so we get all results in config.log
+dnl we currently check for all three va_copy possibilities, so we get
+dnl all results in config.log for bug reports.
 AC_MSG_CHECKING(for an implementation of va_copy())
 AC_CACHE_VAL(glib_cv_va_copy,[
 	AC_TRY_RUN([

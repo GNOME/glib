@@ -178,7 +178,7 @@ static GMemChunk *ptr_array_mem_chunk = NULL;
 
 
 GPtrArray*
-g_ptr_array_new ()
+g_ptr_array_new (void)
 {
   GRealPtrArray *array;
 
