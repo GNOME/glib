@@ -1,3 +1,9 @@
+2000-11-16  Havoc Pennington  <hp@redhat.com>
+
+	* guniprop.c (g_unichar_isspace): Use a switch here, maybe helps 
+	the compiler optimize things. Also, ' ' is a SPACE_SEPARATOR,
+	so don't special case it.
+
 2000-11-17  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Add g_trash_stack entry points.
