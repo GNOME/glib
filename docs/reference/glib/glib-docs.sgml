@@ -155,4 +155,7 @@ OS/2 and BeOS. GLib is released under the GNU Library General Public License
     &glib-Caches;
     &glib-Memory-Allocators;
   </chapter>
+ 
+  <index/>
+
 </book>
