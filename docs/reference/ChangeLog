@@ -1,3 +1,8 @@
+2003-08-05  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Add note about in-place editing to g_strdelimit() doc.
+	(#118875, Thomas Vander Stichele)
+
 2003-07-30  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/misc_utils.sgml: Move g_getenv() docs inline.

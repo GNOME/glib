@@ -745,7 +745,9 @@ Removes leading and trailing whitespace from a string.
 <para>
 Converts any delimiter characters in @string to @new_delimiter.
 Any characters in @string which are found in @delimiters are changed
-to the @new_delimiter character.
+to the @new_delimiter character. Modifies @string in place, and returns 
+@string itself, not a copy. The return value is to allow nesting such as
+<literal>g_ascii_strup (g_strdelimit (str, "abc", '?'))</literal>.
 </para>
 
 @string: the string to convert.
