@@ -1,3 +1,10 @@
+Sun Oct 19 00:33:28 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/generic_values.sgml: 
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/signals.sgml: Additions.
+
 Sat Oct 18 01:30:47 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gboxed.sgml: 

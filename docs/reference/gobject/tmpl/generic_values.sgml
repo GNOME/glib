@@ -213,21 +213,25 @@ as rcfile value or object property serialization).
 
 <!-- ##### USER_FUNCTION GValueTransform ##### -->
 <para>
-
+The type of value transformation functions which can be registered with
+g_value_register_transform_func().
 </para>
 
-@src_value: 
-@dest_value: 
+@src_value:  Source value.
+@dest_value: Target value.
 
 
 <!-- ##### FUNCTION g_value_register_transform_func ##### -->
 <para>
-
+Registers a value transformation function for use in g_value_transform().
+A previously registered transformation function for @src_type and @dest_type
+will be replaced.
 </para>
 
-@src_type: 
-@dest_type: 
-@transform_func: 
+@src_type:  Source type.
+@dest_type: Target type.
+@transform_func: a function which transforms values of type @src_type
+  into value of type @dest_type
 
 
 <!-- ##### FUNCTION g_strdup_value_contents ##### -->

@@ -862,12 +862,15 @@ Returns the invocation hint of the innermost signal emission of instance.
 
 <!-- ##### FUNCTION g_signal_type_cclosure_new ##### -->
 <para>
-
+Creates a new closure which invokes the function found at the offset
+@struct_offset in the class structure of the interface or classed type
+identified by @itype.
 </para>
 
-@itype: 
-@struct_offset: 
-@Returns: 
+@itype: the #GType identifier of an interface or classed type
+@struct_offset: the offset of the member function of @itype's class 
+  structure which is to be invoked by the new closure
+@Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_signal_accumulator_true_handled ##### -->

@@ -20,7 +20,17 @@ All the fields in the <structname>GObject</structname> structure are private
 to the #GObject implementation and should never be accessed directly.
 </para>
 
-@g_type_instance: 
+
+<!-- ##### SIGNAL GObject::notify ##### -->
+<para>
+The notify signal is emitted on an object when one of its properties 
+has been changed. Note that getting this signal doesn't guarantee that the
+value of the property has actually changed, it may also be emitted when
+the setter for the property is called to reinstate the previous value.
+</para>
+
+@gobject: the object which received the signal.
+@pspec: the #GParamSpec of the property which changed
 
 <!-- ##### STRUCT GObjectClass ##### -->
 <para>
@@ -31,32 +41,34 @@ to the #GObject implementation and should never be accessed directly.
 
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
 <para>
-
+The type of the @get_property function of #GObjectClass. 
 </para>
 
-@object: 
-@property_id: 
-@value: 
-@pspec: 
+@object: a #GObject
+@property_id: the numeric id under which the property was registered with
+   g_object_class_install_property().
+@value: a #GValue to return the property value in
+@pspec: the #GParamSpec describing the property
 
 
 <!-- ##### USER_FUNCTION GObjectSetPropertyFunc ##### -->
 <para>
-
+The type of the @set_property function of #GObjectClass. 
 </para>
 
-@object: 
-@property_id: 
-@value: 
-@pspec: 
+@object: a #GObject
+@property_id: the numeric id under which the property was registered with
+   g_object_class_install_property().
+@value: the new value for the property
+@pspec: the #GParamSpec describing the property
 
 
 <!-- ##### USER_FUNCTION GObjectFinalizeFunc ##### -->
 <para>
-
+The type of the @finalize function of #GObjectClass.
 </para>
 
-@object: 
+@object: the #GObject being finalized
 
 
 <!-- ##### MACRO G_TYPE_IS_OBJECT ##### -->
@@ -241,11 +253,14 @@ When its reference count drops to 0, the object is finalized (i.e. its memory is
 
 <!-- ##### USER_FUNCTION GWeakNotify ##### -->
 <para>
-
+A #GWeakNotify function can be added to an object as a callback that gets
+triggered when the object is finalized. Since the object is already being
+finalized when the #GWeakNotify is called, there's not much you could do 
+with the object, apart from e.g. using its adress as hash-index or the like. 
 </para>
 
-@data: 
-@where_the_object_was: 
+@data: data that was provided when the weak reference was established
+@where_the_object_was: the object being finalized
 
 
 <!-- ##### FUNCTION g_object_weak_ref ##### -->
@@ -687,8 +702,8 @@ See g_object_get().
 This function essentially limits the life time of the @closure
 to the life time of the object. That is, when the object is finalized,
 the @closure is invalidated by calling g_closure_invalidate() on it,
-in order to prevent invocations of the closure with a finalized (non
-existing) object. Also, g_object_ref() and g_object_unref() are added
+in order to prevent invocations of the closure with a finalized 
+(nonexisting) object. Also, g_object_ref() and g_object_unref() are added
 as marshal guards to the @closure, to ensure that an extra reference
 count is held on @object during invocation of the @closure.
 Usually, this function will be called on closures that use this @object

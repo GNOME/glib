@@ -546,9 +546,8 @@ class_init function with g_type_class_add_private().
 
 <!-- ##### MACRO G_TYPE_FLAG_RESERVED_ID_BIT ##### -->
 <para>
-
+A bit in the type number that's supposed to be left untouched.
 </para>
-
 
 
 <!-- ##### FUNCTION g_type_init ##### -->
@@ -802,15 +801,17 @@ have been installed.
  g_type_default_interface_unref() when you are done using
  the interface.
 
+
 <!-- ##### FUNCTION g_type_default_interface_peek ##### -->
 <para>
 If the interface type @g_type is currently in use, returns
 its default interface vtable.    
 </para>
 
-@g_type: an interface type 
+@g_type: an interface type
 @Returns: the default vtable for the interface; or %NULL
  if the type is not currently in use.
+
 
 <!-- ##### FUNCTION g_type_default_interface_unref ##### -->
 <para>
@@ -824,6 +825,7 @@ vtable (the <structfield>class_finalize</structfield> member of
 
 @g_iface: the default vtable structure for a interface, as
   returned by g_type_default_interface_ref()
+
 
 <!-- ##### FUNCTION g_type_children ##### -->
 <para>
@@ -1093,12 +1095,22 @@ allocated by the corresponding GInterfaceInitFunc() function.
 
 <!-- ##### USER_FUNCTION GTypeClassCacheFunc ##### -->
 <para>
-
+A callback function which is called when the reference count of a class 
+drops to zero. It may use g_type_class_ref() to prevent the class from
+being freed. You should not call g_type_class_unref() from a 
+#GTypeClassCacheFunc function to prevent infinite recursion, use 
+g_type_class_unref_uncached() instead.
+</para>
+<para>
+The functions have to check the class id passed in to figure 
+whether they actually want to cache the class of this type, since all
+classes are routed through the same #GTypeClassCacheFunc chain.
 </para>
 
-@cache_data: 
-@g_class: 
-@Returns: 
+@cache_data: data that was given to the g_type_add_class_cache_func() call
+@g_class: The #GTypeClass structure which is unreferenced
+@Returns: %TRUE to stop further #GTypeClassCacheFunc<!-- -->s from being 
+called, %FALSE to continue.
 
 
 <!-- ##### ENUM GTypeFlags ##### -->
@@ -1286,9 +1298,7 @@ Frees an instance of a type, returning it to the instance pool for the type,
 if there is one.
 </para>
 <para>
-Like g_type_create_i	* gobject/tmpl/gtype.sgml: 
-	* gobject/tmpl/enumerations_flags.sgml: Add docs.
-nstance(), this function is reserved for implementors of 
+Like g_type_create_instance(), this function is reserved for implementors of 
 fundamental types.
 </para>
 
@@ -1297,28 +1307,38 @@ fundamental types.
 
 <!-- ##### FUNCTION g_type_add_class_cache_func ##### -->
 <para>
-
+Adds a #GTypeClassCacheFunc to be called before the reference count of a class 
+goes from one to zero. This can be used to prevent premature class destruction.
+All installed #GTypeClassCacheFunc functions will be chained until one of them 
+returns %TRUE. The functions have to check the class id passed in to figure 
+whether they actually want to cache the class of this type, since all classes
+are routed through the same #GTypeClassCacheFunc chain.
 </para>
 
-@cache_data: 
-@cache_func: 
+@cache_data: data to be passed to @cache_func
+@cache_func: a #GTypeClassCacheFunc
 
 
 <!-- ##### FUNCTION g_type_remove_class_cache_func ##### -->
 <para>
-
+Removes a previously installed #GTypeClassCacheFunc. The cache maintained 
+by @cache_func has to be empty when calling g_type_remove_class_cache_func() 
+to avoid leaks.
 </para>
 
-@cache_data: 
-@cache_func: 
+@cache_data: data that was given when adding @cache_func
+@cache_func: a #GTypeClassCacheFunc 
 
 
 <!-- ##### FUNCTION g_type_class_unref_uncached ##### -->
 <para>
-
+A variant of g_type_class_unref() for use in #GTypeClassCacheFunc
+implementations. It unreferences a class without consulting the chain
+of #GTypeClassCacheFunc<!-- -->s, avoiding the recursion which would occur
+otherwise.
 </para>
 
-@g_class: 
+@g_class: The #GTypeClass structure to unreference.
 
 
 <!-- ##### FUNCTION g_type_add_interface_check ##### -->
@@ -1521,38 +1541,40 @@ The fundamental type for #GObject.
 </para>
 
 
-
 <!-- ##### MACRO G_TYPE_RESERVED_GLIB_FIRST ##### -->
 <para>
-
+First fundamental type number to create a new fundamental type id with
+G_TYPE_MAKE_FUNDAMENTAL() reserved for GLib.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_RESERVED_GLIB_LAST ##### -->
 <para>
-
+Last fundamental type number reserved for GLib.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_RESERVED_BSE_FIRST ##### -->
 <para>
-
+First fundamental type number to create a new fundamental type id with
+G_TYPE_MAKE_FUNDAMENTAL() reserved for BSE.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_RESERVED_BSE_LAST ##### -->
 <para>
-
+Last fundamental type number reserved for BSE.
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_RESERVED_USER_FIRST ##### -->
 <para>
-
+First available fundamental type number to create new fundamental 
+type id with G_TYPE_MAKE_FUNDAMENTAL().
 </para>
 
 <!--
