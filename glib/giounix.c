@@ -59,7 +59,6 @@ struct _GIOUnixWatch
   GPollFD       pollfd;
   GIOChannel   *channel;
   GIOCondition  condition;
-  GIOFunc       callback;
 };
 
 
