@@ -245,8 +245,9 @@ should be used in place of <literal>const</literal> for functions that
 return a value that should not be modified. The purpose of this macro is 
 to allow us to turn on <literal>const</literal> for returned constant 
 strings by default, while allowing programmers who find that annoying to 
-turn it off. This macro should only be used for return values, it doesn't 
-make sense for function arguments.
+turn it off. This macro should only be used for return values and for
+<emphasis>out</emphasis> parameters, it doesn't make sense for 
+<emphasis>in</emphasis> parameters. 
 </para>
 
 

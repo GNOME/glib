@@ -1,5 +1,10 @@
 2001-10-01  Matthias Clasen  <matthiasc@poet.de>
 
+	* glib/tmpl/macros.sgml (G_CONST_RETURN): document
+	allowed uses for 'out' parameters.
+
+2001-10-01  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/tmpl/caches.sgml, glib/tmpl/datalist.sgml,
 	glib/tmpl/hash_tables.sgml, glib/tmpl/messages.sgml,
 	glib/tmpl/misc_utils.sgml: consistently refer to GTK+.
