@@ -1,3 +1,12 @@
+2004-04-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* gparamspecs.c (param_float_init): Correct the initial 
+	minimal value to be -G_MAXFLOAT. The initial values were 
+	inconsistant before, with the initial default being smaller 
+	than the inital minimum.	
+	(param_double_init): Correct the initial minimal value 
+	to be -G_MAXDOUBLE.
+
 Tue Mar  9 09:16:11 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.4.0 ===

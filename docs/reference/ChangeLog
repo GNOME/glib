@@ -1,3 +1,8 @@
+2004-04-15  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/tmpl/types.sgml: Correct the description of the
+	gfloat and gdouble ranges.
+
 Tue Mar 16 12:06:09 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.4.0 ===

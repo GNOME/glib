@@ -194,14 +194,14 @@ This macro is used to insert 64-bit integer literals into the source code.
 <!-- ##### TYPEDEF gfloat ##### -->
 <para>
 Corresponds to the standard C <type>float</type> type.
-Values of this type can range from #G_MINFLOAT to #G_MAXFLOAT.
+Values of this type can range from -#G_MAXFLOAT to #G_MAXFLOAT.
 </para>
 
 
 <!-- ##### TYPEDEF gdouble ##### -->
 <para>
 Corresponds to the standard C <type>double</type> type.
-Values of this type can range from #G_MINDOUBLE to #G_MAXDOUBLE.
+Values of this type can range from -#G_MAXDOUBLE to #G_MAXDOUBLE.
 </para>
 
 

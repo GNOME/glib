@@ -497,7 +497,7 @@ param_float_init (GParamSpec *pspec)
 {
   GParamSpecFloat *fspec = G_PARAM_SPEC_FLOAT (pspec);
   
-  fspec->minimum = G_MINFLOAT;
+  fspec->minimum = -G_MAXFLOAT;
   fspec->maximum = G_MAXFLOAT;
   fspec->default_value = 0;
   fspec->epsilon = G_FLOAT_EPSILON;
@@ -540,7 +540,7 @@ param_double_init (GParamSpec *pspec)
 {
   GParamSpecDouble *dspec = G_PARAM_SPEC_DOUBLE (pspec);
   
-  dspec->minimum = G_MINDOUBLE;
+  dspec->minimum = -G_MAXDOUBLE;
   dspec->maximum = G_MAXDOUBLE;
   dspec->default_value = 0;
   dspec->epsilon = G_DOUBLE_EPSILON;
