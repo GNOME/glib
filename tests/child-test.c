@@ -86,7 +86,10 @@ test_thread (gpointer data)
 int
 main (int argc, char *argv[])
 {
-  g_thread_init (NULL);
+  /* Only run the test, if threads are enabled and a default thread
+     implementation is available */
+#if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
+   g_thread_init (NULL);
   main_loop = g_main_loop_new (NULL, FALSE);
 
   system ("/bin/true");
@@ -97,5 +100,6 @@ main (int argc, char *argv[])
   
   g_main_loop_run (main_loop);
 
-  return 0;
+#endif
+   return 0;
 }

@@ -1,5 +1,7 @@
 2004-02-26  Sebastian Wilhelmi  <seppi@seppi.de>
 
+	* tests/child-test.c (main): Only run, if threads are enabled.
+
 	* glib/gatomic.h: empty G_ATOMIC_MEMORY_BARRIER() definition for
 	!G_THREADS_ENABLED
 
