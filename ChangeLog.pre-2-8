@@ -1,3 +1,9 @@
+2001-08-03  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: beautified configure help output.
+	
+	* glib/gtree.c: changed help for g_tree_insert(); it was misleading.
+
 Fri Aug  3 10:20:10 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/guniprop.c (g_unichar_xdigit_value): Fix computation

@@ -281,10 +281,10 @@ g_tree_destroy (GTree *tree)
  * @value: the value corresponding to the key.
  * 
  * Inserts a key/value pair into a #GTree. If the given key already exists 
- * in the #GTree it is set to the new value. If you supplied a 
- * value_destroy_func when creating the #GTree, the old value is freed using 
- * that function. If you supplied a key_destroy_func when creating the 
- * #GTree, the passed key is freed using that function.
+ * in the #GTree its corresponding value is set to the new value. If you 
+ * supplied a value_destroy_func when creating the #GTree, the old value is 
+ * freed using that function. If you supplied a key_destroy_func when 
+ * creating the #GTree, the passed key is freed using that function.
  *
  * The tree is automatically 'balanced' as new key/value pairs are added,
  * so that the distance from the root to every leaf is as small as possible.
