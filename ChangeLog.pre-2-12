@@ -1,3 +1,13 @@
+2004-11-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix a problem with the PLT reduction changes which caused the
+	internal aliases to use all attributes.
+	
+	* glib/glib.symbols: Add attribute annotations.
+	* glib/makegalias.pl: Keep attribute annotations, but strip PRIVATE.
+	* glib/Makefile.am (glib.def): Strip attribute annotations, but keep 
+	PRIVATE.
+
 2004-11-21  Hans Breuer  <hans@breuer.org>
 
 	* **/makefile.msc : updated

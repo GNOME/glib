@@ -12,7 +12,7 @@ g_array_set_size
 g_array_sized_new
 g_array_sort
 g_array_sort_with_data
-g_ascii_digit_value
+g_ascii_digit_value G_GNUC_CONST
 g_ascii_dtostr
 g_ascii_formatd
 g_ascii_strcasecmp
@@ -21,10 +21,10 @@ g_ascii_strncasecmp
 g_ascii_strtod
 g_ascii_strtoull
 g_ascii_strup
-g_ascii_tolower
-g_ascii_toupper
-g_ascii_xdigit_value
-g_assert_warning
+g_ascii_tolower G_GNUC_CONST
+g_ascii_toupper G_GNUC_CONST
+g_ascii_xdigit_value G_GNUC_CONST
+g_assert_warning G_GNUC_NORETURN
 g_async_queue_length
 g_async_queue_length_unlocked
 g_async_queue_lock
@@ -113,15 +113,15 @@ g_date_get_days_in_month
 g_date_get_iso8601_week_of_year
 g_date_get_julian
 g_date_get_monday_week_of_year
-g_date_get_monday_weeks_in_year
+g_date_get_monday_weeks_in_year G_GNUC_CONST
 g_date_get_month
 g_date_get_sunday_week_of_year
-g_date_get_sunday_weeks_in_year
+g_date_get_sunday_weeks_in_year G_GNUC_CONST
 g_date_get_weekday
 g_date_get_year
 g_date_is_first_of_month
 g_date_is_last_of_month
-g_date_is_leap_year
+g_date_is_leap_year G_GNUC_CONST
 g_date_new
 g_date_new_dmy
 g_date_new_julian
@@ -139,15 +139,15 @@ g_date_subtract_months
 g_date_subtract_years
 g_date_to_struct_tm
 g_date_valid
-g_date_valid_day
+g_date_valid_day G_GNUC_CONST
 g_date_valid_dmy
-g_date_valid_julian
-g_date_valid_month
-g_date_valid_weekday
-g_date_valid_year
+g_date_valid_julian G_GNUC_CONST
+g_date_valid_month G_GNUC_CONST
+g_date_valid_weekday G_GNUC_CONST
+g_date_valid_year G_GNUC_CONST
 g_dir_close
-g_direct_equal
-g_direct_hash
+g_direct_equal G_GNUC_CONST
+g_direct_hash G_GNUC_CONST
 g_dir_open PRIVATE
 #ifdef G_OS_WIN32
 g_dir_open_utf8
@@ -160,7 +160,7 @@ g_dir_rewind
 g_error_copy
 g_error_free
 g_error_matches
-g_error_new
+g_error_new G_GNUC_PRINTF(3,4)
 g_error_new_literal
 g_file_error_from_errno
 g_file_error_quark
@@ -190,7 +190,7 @@ g_file_test_utf8
 #endif
 g_find_program_in_path
 g_fopen
-g_fprintf
+g_fprintf G_GNUC_PRINTF(2,3)
 g_free
 g_freopen
 g_get_application_name
@@ -385,7 +385,7 @@ g_list_sort
 g_list_sort_with_data
 g_locale_from_utf8
 g_locale_to_utf8
-g_log
+g_log G_GNUC_PRINTF(3,4)
 g_log_default_handler
 g_log_remove_handler
 g_log_set_always_fatal
@@ -433,7 +433,7 @@ g_markup_parse_context_get_element
 g_markup_parse_context_get_position
 g_markup_parse_context_new
 g_markup_parse_context_parse
-g_markup_printf_escaped
+g_markup_printf_escaped G_GNUC_PRINTF(1,2)
 g_markup_vprintf_escaped
 g_mem_chunk_alloc
 g_mem_chunk_alloc0
@@ -488,7 +488,7 @@ g_on_error_stack_trace
 g_open
 g_option_context_add_group
 g_option_context_add_main_entries
-g_option_error_quark
+g_option_error_quark G_GNUC_CONST
 g_option_context_free
 g_option_context_get_help_enabled
 g_option_context_get_ignore_unknown_options
@@ -516,9 +516,9 @@ g_pattern_match_string
 g_pattern_spec_equal
 g_pattern_spec_free
 g_pattern_spec_new
-g_print
-g_printerr
-g_printf
+g_print G_GNUC_PRINTF(1,2)
+g_printerr G_GNUC_PRINTF(1,2)
+g_printf G_GNUC_PRINTF(1,2)
 g_printf_string_upper_bound
 g_propagate_error
 g_ptr_array_add
@@ -537,7 +537,7 @@ g_ptr_array_sort_with_data
 g_qsort_with_data
 g_quark_from_static_string
 g_quark_from_string
-g_quark_to_string
+g_quark_to_string G_GNUC_CONST
 g_quark_try_string
 g_queue_copy
 g_queue_delete_link
@@ -611,7 +611,7 @@ g_scanner_cur_token
 g_scanner_cur_value
 g_scanner_destroy
 g_scanner_eof
-g_scanner_error
+g_scanner_error G_GNUC_PRINTF(2,3)
 g_scanner_get_next_token
 g_scanner_input_file
 g_scanner_input_text
@@ -625,10 +625,10 @@ g_scanner_scope_remove_symbol
 g_scanner_set_scope
 g_scanner_sync_file_offset
 g_scanner_unexp_token
-g_scanner_warn
+g_scanner_warn G_GNUC_PRINTF(2,3)
 g_set_application_name
 g_setenv
-g_set_error
+g_set_error G_GNUC_PRINTF(4,5)
 g_set_prgname
 g_set_printerr_handler
 g_set_print_handler
@@ -664,7 +664,7 @@ g_slist_remove_link
 g_slist_reverse
 g_slist_sort
 g_slist_sort_with_data
-g_snprintf
+g_snprintf G_GNUC_PRINTF(3,4)
 g_source_add_poll
 g_source_attach
 g_source_destroy
@@ -684,7 +684,7 @@ g_source_set_callback_indirect
 g_source_set_can_recurse
 g_source_set_priority
 g_source_unref
-g_spaced_primes_closest
+g_spaced_primes_closest G_GNUC_CONST
 g_spawn_async
 g_spawn_async_with_pipes
 g_spawn_close_pid
@@ -692,7 +692,7 @@ g_spawn_command_line_async
 g_spawn_command_line_sync
 g_spawn_error_quark
 g_spawn_sync
-g_sprintf
+g_sprintf G_GNUC_PRINTF(2,3)
 g_stat
 g_static_mutex_free
 g_static_mutex_get_mutex_impl
@@ -726,11 +726,11 @@ g_strconcat
 g_strdelimit
 g_strdown
 g_strdup
-g_strdup_printf
+g_strdup_printf G_GNUC_PRINTF(1,2)
 g_strdupv
 g_strdup_vprintf
 g_str_equal
-g_strerror
+g_strerror G_GNUC_CONST
 g_strescape
 g_strfreev
 g_str_hash
@@ -738,7 +738,7 @@ g_str_has_prefix
 g_str_has_suffix
 g_string_append
 g_string_append_len
-g_string_append_printf
+g_string_append_printf G_GNUC_PRINTF(2,3)
 g_string_append_unichar
 g_string_ascii_down
 g_string_ascii_up
@@ -763,7 +763,7 @@ g_string_prepend
 g_string_prepend_c
 g_string_prepend_len
 g_string_prepend_unichar
-g_string_printf
+g_string_printf G_GNUC_PRINTF(2,3)
 g_string_set_size
 g_string_sized_new
 g_string_truncate
@@ -779,7 +779,7 @@ g_strnfill
 g_strreverse
 g_strrstr
 g_strrstr_len
-g_strsignal
+g_strsignal G_GNUC_CONST
 g_strsplit
 g_strsplit_set
 g_strstr_len
@@ -835,30 +835,30 @@ g_tuples_destroy
 g_tuples_index
 g_ucs4_to_utf16
 g_ucs4_to_utf8
-g_unichar_break_type
-g_unichar_digit_value
+g_unichar_break_type G_GNUC_CONST
+g_unichar_digit_value G_GNUC_CONST
 g_unichar_get_mirror_char
-g_unichar_isalnum
-g_unichar_isalpha
-g_unichar_iscntrl
-g_unichar_isdefined
-g_unichar_isdigit
-g_unichar_isgraph
-g_unichar_islower
-g_unichar_isprint
-g_unichar_ispunct
-g_unichar_isspace
-g_unichar_istitle
-g_unichar_isupper
-g_unichar_iswide
-g_unichar_isxdigit
-g_unichar_tolower
-g_unichar_totitle
-g_unichar_toupper
+g_unichar_isalnum G_GNUC_CONST
+g_unichar_isalpha G_GNUC_CONST
+g_unichar_iscntrl G_GNUC_CONST
+g_unichar_isdefined G_GNUC_CONST
+g_unichar_isdigit G_GNUC_CONST
+g_unichar_isgraph G_GNUC_CONST
+g_unichar_islower G_GNUC_CONST
+g_unichar_isprint G_GNUC_CONST
+g_unichar_ispunct G_GNUC_CONST
+g_unichar_isspace G_GNUC_CONST
+g_unichar_istitle G_GNUC_CONST
+g_unichar_isupper G_GNUC_CONST
+g_unichar_iswide G_GNUC_CONST
+g_unichar_isxdigit G_GNUC_CONST
+g_unichar_tolower G_GNUC_CONST
+g_unichar_totitle G_GNUC_CONST
+g_unichar_toupper G_GNUC_CONST
 g_unichar_to_utf8
-g_unichar_type
+g_unichar_type G_GNUC_CONST
 g_unichar_validate
-g_unichar_xdigit_value
+g_unichar_xdigit_value G_GNUC_CONST
 g_unicode_canonical_decomposition
 g_unicode_canonical_ordering
 g_unlink

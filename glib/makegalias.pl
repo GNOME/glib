@@ -76,15 +76,24 @@ while (<>) {
       
       next;
   }
- 
+
+  chop;
   my $str = $_;
-  # Drop any Win32 specific .def file syntax
-  $str = (split (/ /, $str))[0];
+  my @words;
+  my $attributes = "";
+
+  @words = split(/ /, $str);
+  $str = shift(@words);
   chomp($str);
   my $alias = "IA__".$str;
   
+  # Drop any Win32 specific .def file syntax,  but keep attributes
+  foreach $word (@words) {
+      $attributes = "$attributes $word" unless $word eq "PRIVATE";
+  }
+      
   print <<EOF
-extern __typeof ($str) $alias __attribute((visibility("hidden")));
+extern __typeof ($str) $alias __attribute((visibility("hidden")))$attributes;
 extern __typeof ($str) $str __attribute((alias("$alias"), visibility("default")));
 \#define $str $alias
 

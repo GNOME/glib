@@ -1,3 +1,16 @@
+2004-11-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Fix a problem with the PLT reduction changes which caused the
+	internal aliases to lose all attributes.
+	
+	* gobject.symbols: Add attribute annotations.
+	* makegobjectalias.pl: Keep attribute annotations, but strip PRIVATE.
+	* Makefile.am (gobject.def): Strip attribute annotations, but keep 
+	PRIVATE.
+
+	* gtypemodule.h (g_type_module_get_type): Mark as const,
+	like all other get_type() functions.
+
 2004-11-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* === Released 2.5.6 ===

@@ -28,7 +28,7 @@ g_cclosure_new_swap
 g_closure_add_finalize_notifier
 g_closure_add_invalidate_notifier
 g_closure_add_marshal_guards
-g_closure_get_type
+g_closure_get_type G_GNUC_CONST
 g_closure_invalidate
 g_closure_invoke
 g_closure_new_object
@@ -50,7 +50,7 @@ g_flags_get_first_value
 g_flags_get_value_by_name
 g_flags_get_value_by_nick
 g_flags_register_static
-g_gstring_get_type
+g_gstring_get_type G_GNUC_CONST
 g_io_channel_get_type
 g_io_condition_get_type
 g_object_add_weak_pointer
@@ -173,7 +173,7 @@ g_signal_stop_emission_by_name
 g_signal_type_cclosure_new
 g_source_set_closure
 g_strdup_value_contents
-g_strv_get_type
+g_strv_get_type G_GNUC_CONST
 g_type_add_class_cache_func
 g_type_add_interface_check
 g_type_add_interface_dynamic
@@ -216,7 +216,7 @@ g_type_interface_prerequisites
 g_type_interfaces
 g_type_is_a
 g_type_module_add_interface
-g_type_module_get_type
+g_type_module_get_type G_GNUC_CONST
 g_type_module_register_enum
 g_type_module_register_flags
 g_type_module_register_type
@@ -230,7 +230,7 @@ g_type_next_base
 g_type_parent
 g_type_plugin_complete_interface_info
 g_type_plugin_complete_type_info
-g_type_plugin_get_type
+g_type_plugin_get_type G_GNUC_GET_TYPE
 g_type_plugin_unuse
 g_type_plugin_use
 g_type_qname
@@ -247,7 +247,7 @@ g_value_array_append
 g_value_array_copy
 g_value_array_free
 g_value_array_get_nth
-g_value_array_get_type
+g_value_array_get_type G_GNUC_CONST
 g_value_array_insert
 g_value_array_new
 g_value_array_prepend
@@ -274,7 +274,7 @@ g_value_get_object
 g_value_get_param
 g_value_get_pointer
 g_value_get_string
-g_value_get_type
+g_value_get_type G_GNUC_CONST
 g_value_get_uchar
 g_value_get_uint
 g_value_get_uint64
