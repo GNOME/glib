@@ -48,6 +48,9 @@
  * different image_id's. While this means that we don't have to worry about 
  * reference counts, it could lead to problems in the future....
  * richard.
+ *
+ * load_add_on() apparently does not support lazy or local binding.  Need
+ * to confirm that the actual behavior is non-lazy/local.  --ds
  */
 
 #include <Errors.h>
@@ -56,7 +59,8 @@
 /* --- functions --- */
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   image_id handle;
   

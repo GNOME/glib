@@ -90,11 +90,13 @@ fetch_dlerror (gboolean replace_null)
 
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   gpointer handle;
   
-  handle = dlopen (file_name, RTLD_GLOBAL | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
+  handle = dlopen (file_name,
+	(bind_local ? 0 : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
     g_module_set_error (fetch_dlerror (TRUE));
   

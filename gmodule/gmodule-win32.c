@@ -52,7 +52,8 @@ set_error (void)
 /* --- functions --- */
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   HINSTANCE handle;
 #ifdef G_WITH_CYGWIN

@@ -26,7 +26,8 @@ static gpointer self_module = GINT_TO_POINTER (1);
 
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   NSObjectFileImage image;
   NSObjectFileImageReturnCode ret;
@@ -66,7 +67,9 @@ _g_module_open (const gchar *file_name,
       return NULL;
     }
 
-  options = NSLINKMODULE_OPTION_RETURN_ON_ERROR | NSLINKMODULE_OPTION_PRIVATE;
+  options = NSLINKMODULE_OPTION_RETURN_ON_ERROR;
+  if (bind_local)
+    options |= NSLINKMODULE_OPTION_PRIVATE;
   if (!bind_lazy)
     options |= NSLINKMODULE_OPTION_BINDNOW;
   module = NSLinkModule (image, file_name, options);

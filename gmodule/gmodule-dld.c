@@ -67,9 +67,21 @@
 
 
 /* --- functions --- */
+
+/*
+ * shl_load() does not appear to support making symbols invisible to
+ * the global namespace.  However, the default is to put the library
+ * last in the search order, which is approximately what we want,
+ * since it will cause symbols that conflict with existing symbols to
+ * be invisible.  It is unclear if BIND_FIRST should be used when
+ * bind_local==0, since it may cause the loaded symbols to be used
+ * preferentially to the application's symbols, which is Almost
+ * Always Wrong.  --ds
+ */
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   shl_t shl_handle;
   

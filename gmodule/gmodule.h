@@ -44,7 +44,8 @@ G_BEGIN_DECLS
 typedef enum
 {
   G_MODULE_BIND_LAZY	= 1 << 0,
-  G_MODULE_BIND_MASK	= 0x01
+  G_MODULE_BIND_LOCAL	= 1 << 1,
+  G_MODULE_BIND_MASK	= 0x03
 } GModuleFlags;
 
 typedef	struct _GModule			 GModule;
