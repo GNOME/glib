@@ -768,11 +768,11 @@ Gets a property of an object.
 </para>
 <para>
 In general, a copy is made of the property contents and the caller is
-responsible for freeing the memory in the appropriate manner for the type, 
-for instance by calling g_free() or g_object_unref(). 
+responsible for freeing the memory by calling g_value_unset().
 </para>
 <para>
-See g_object_get().
+Note that g_object_get_property() is really intended for language
+bindings, g_object_get() is much more convenient for C programming.
 </para>
 
 @object: a #GObject
