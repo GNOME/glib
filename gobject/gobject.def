@@ -173,7 +173,7 @@ EXPORTS
 	g_signal_stop_emission
 	g_signal_stop_emission_by_name
 	g_signal_type_cclosure_new
-	g_slist_remove_all
+	g_slist_remove_all PRIVATE
 	g_source_set_closure
 	g_strdup_value_contents
 	g_strv_get_type
@@ -244,7 +244,7 @@ EXPORTS
 	g_type_set_qdata
 	g_type_test_flags
 	g_type_value_table_peek
-	g_unichar_validate
+	g_unichar_validate PRIVATE
 	g_value_array_append
 	g_value_array_copy
 	g_value_array_free

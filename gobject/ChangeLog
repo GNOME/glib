@@ -1,3 +1,8 @@
+2004-03-10  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.def: Mark the two entries that shouldn't be in the
+	import library (see below) as PRIVATE.
+
 Tue Mar  9 09:16:11 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.6 ===
