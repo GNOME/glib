@@ -1241,20 +1241,30 @@ g_type_interface_prerequisites (GType  interface_type,
   iface = lookup_type_node_I (interface_type);
   if (iface)
     {
-      GType *prerequisites;
-      guint i;
+      GType *types;
+      TypeNode *inode = NULL;
+      guint i, n = 0;
       
       G_READ_LOCK (&type_rw_lock);
-      prerequisites = g_new (GType, IFACE_NODE_N_PREREQUISITES (iface) + 1);
+      types = g_new0 (GType, IFACE_NODE_N_PREREQUISITES (iface) + 1);
       for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
-	prerequisites[i] = IFACE_NODE_PREREQUISITES (iface)[i];
-      prerequisites[i] = 0;
+	{
+	  GType prerequisite = IFACE_NODE_PREREQUISITES (iface)[i];
+	  TypeNode *node = lookup_type_node_I (prerequisite);
+	  if (node->is_instantiatable &&
+	      (!inode || type_node_is_a_L (node, inode)))
+	    inode = node;
+	  else
+	    types[n++] = NODE_TYPE (node);
+	}
+      if (inode)
+	types[n++] = NODE_TYPE (inode);
       
       if (n_prerequisites)
-	*n_prerequisites = IFACE_NODE_N_PREREQUISITES (iface);
+	*n_prerequisites = n;
       G_READ_UNLOCK (&type_rw_lock);
       
-      return prerequisites;
+      return types;
     }
   else
     {
