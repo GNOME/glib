@@ -199,19 +199,12 @@ g_win32_getlocale (void)
 #endif
 	}
       break;
-    case LANG_CROATIAN:		/* LANG_CROATIAN == LANG_SERBIAN
-				 * What used to be called Serbo-Croatian
-				 * should really now be two separate
-				 * languages because of political reasons.
-				 * (Says tml, who knows nothing about Serbian
-				 * or Croatian.)
-				 * (I can feel those flames coming already.)
-				 */
+    case LANG_CROATIAN:		/* LANG_CROATIAN == LANG_SERBIAN */
       switch (sub)
 	{
 	/* FIXME: How to distinguish Croatian and Latin Serbian locales?  */
-	case SUBLANG_SERBIAN_LATIN: l = "sr"; break;
-	case SUBLANG_SERBIAN_CYRILLIC: l = "sr"; sl = "@cyrillic"; break;
+	case SUBLANG_SERBIAN_LATIN: l = "sr"; sl = "@Latn"; break;
+	case SUBLANG_SERBIAN_CYRILLIC: l = "sr"; break;
 	default: l = "hr"; sl = "HR";
 	}
       break;
