@@ -1,3 +1,9 @@
+Wed Oct  6 02:12:44 2004    <timj@birnet.org>
+
+	* gtype.c (g_type_instance_get_private): applied patch from Jean-Yves 
+	Lefort <jylefort@brutele.be> to not access the instance_real_class_bsa
+	pointer without holding the instance_real_class lock.
+
 2004-10-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* gsignal.c (g_signal_add_emission_hook): Improve the warning 

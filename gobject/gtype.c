@@ -1515,7 +1515,7 @@ instance_real_class_get (gpointer instance)
   InstanceRealClass key, *node;
   key.instance = instance;
   G_LOCK (instance_real_class);
-  node = g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key);
+  node = instance_real_class_bsa ? g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key) : NULL;
   G_UNLOCK (instance_real_class);
   return node ? node->class : NULL;
 }
@@ -3535,13 +3535,8 @@ g_type_instance_get_private (GTypeInstance *instance,
   /* while instances are initialized, their class pointers change,
    * so figure the instances real class first
    */
-  if (instance_real_class_bsa)
-    {
-      class = instance_real_class_get (instance);
-      if (!class)
-	class = instance->g_class;
-    }
-  else
+  class = instance_real_class_get (instance);
+  if (!class)
     class = instance->g_class;
 
   instance_node = lookup_type_node_I (class->g_type);
