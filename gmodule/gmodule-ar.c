@@ -97,7 +97,8 @@ exit:
 
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy)
+		gboolean     bind_lazy,
+		gboolean     bind_local)
 {
   gpointer handle;
   gchar* member;
@@ -114,7 +115,7 @@ _g_module_open (const gchar *file_name,
   else
     full_name = g_strdup(file_name);
   
-  handle = dlopen (full_name, RTLD_GLOBAL | RTLD_MEMBER | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
+  handle = dlopen (full_name, (bind_local ? RTLD_LOCAL : RTLD_GLOBAL) | RTLD_MEMBER | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
 
   g_free(full_name);
 
