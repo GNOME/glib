@@ -202,7 +202,8 @@ g_utf8_prev_char (const gchar *p)
  * @p: pointer to the start of a UTF-8 encoded string.
  * @max: the maximum number of bytes to examine. If @max
  *       is less than 0, then the string is assumed to be
- *       nul-terminated.
+ *       nul-terminated. If @max is 0, @p will not be examined and 
+ *       may be %NULL.
  * 
  * Returns the length of the string in characters.
  *
@@ -214,6 +215,7 @@ g_utf8_strlen (const gchar *p,
 {
   glong len = 0;
   const gchar *start = p;
+  g_return_val_if_fail (p != NULL || max == 0, 0);
 
   if (max < 0)
     {

@@ -1,3 +1,8 @@
+2003-04-07  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutf8.c (g_utf8_strlen): Warn if p == NULL && max != 0.
+	(#110087) 
+
 2003-04-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_string_chunk_insert_len.
