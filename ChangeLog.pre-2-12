@@ -1,3 +1,8 @@
+Tue May  8 15:33:31 2001  Tim Janik  <timj@gtk.org>
+
+	* gcompletion.h: removed #include <unistd.h> sneaked in by
+	sopwith in november.
+
 2001-05-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmain.c, gthread.c, gthread.h: Moved func and arg members from
