@@ -1,3 +1,7 @@
+2002-11-23  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gdir.h: Add Copyright notice.
+
 2002-11-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Fixed typo: PTHREAD_PRIO_MIN ->
