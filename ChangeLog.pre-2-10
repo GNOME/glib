@@ -1,3 +1,9 @@
+2001-01-20  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c (g_get_codeset): (Win32) Even if g_get_codeset() is
+	currently commented out from gutils.h, fix it to return the same
+	CP%d value as g_get_charset().
+
 2001-01-19  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* gconvert.c: Fix typo.

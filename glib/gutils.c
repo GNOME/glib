@@ -69,7 +69,6 @@
 #  include <windows.h>
 #  include <ctype.h>
 #  include <direct.h>
-#  include <io.h>
 #endif /* G_OS_WIN32 */
 
 #ifdef HAVE_CODESET
@@ -994,10 +993,7 @@ g_get_codeset (void)
    */
   return g_strdup ("ISO-8859-1");
 #else
-  /* On Win32 we always use UTF-8. At least in GDK. SO should we
-   * therefore return that?
-   */
-  return g_strdup ("UTF-8");
+  return g_strdup_printf ("CP%d", GetACP ());
 #endif
 #endif
 }
