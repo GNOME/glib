@@ -1,3 +1,7 @@
+2003-12-13  Hans Breuer  <hans@breuer.org>
+
+	gobject.def : update externals
+
 Sat Nov 29 14:57:20 2003  Tim Janik  <timj@gtk.org>
 
 	* gobject.c: fix g_object_set() within _init() implementations

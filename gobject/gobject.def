@@ -58,6 +58,7 @@ EXPORTS
 	g_object_class_find_property
 	g_object_class_install_property
 	g_object_class_list_properties
+	g_object_class_override_property
 	g_object_connect
 	g_object_disconnect
 	g_object_freeze_notify
@@ -66,6 +67,9 @@ EXPORTS
 	g_object_get_property
 	g_object_get_qdata
 	g_object_get_valist
+	g_object_interface_find_property
+	g_object_interface_install_property
+	g_object_interface_list_properties
 	g_object_new
 	g_object_new_valist
 	g_object_newv
@@ -98,11 +102,13 @@ EXPORTS
 	g_param_spec_get_name
 	g_param_spec_get_nick
 	g_param_spec_get_qdata
+	g_param_spec_get_redirect_target
 	g_param_spec_int
 	g_param_spec_int64
 	g_param_spec_internal
 	g_param_spec_long
 	g_param_spec_object
+	g_param_spec_override
 	g_param_spec_param
 	g_param_spec_pointer
 	g_param_spec_pool_insert
@@ -166,10 +172,10 @@ EXPORTS
 	g_signal_stop_emission
 	g_signal_stop_emission_by_name
 	g_signal_type_cclosure_new
-	g_slist_remove_all
 	g_source_set_closure
 	g_strdup_value_contents
 	g_type_add_class_cache_func
+	g_type_add_interface_check
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
 	g_type_check_class_cast
@@ -184,10 +190,14 @@ EXPORTS
 	g_type_class_add_private
 	g_type_class_peek
 	g_type_class_peek_parent
+	g_type_class_peek_static
 	g_type_class_ref
 	g_type_class_unref
 	g_type_class_unref_uncached
 	g_type_create_instance
+	g_type_default_interface_peek
+	g_type_default_interface_ref
+	g_type_default_interface_unref
 	g_type_depth
 	g_type_free_instance
 	g_type_from_name
@@ -227,10 +237,10 @@ EXPORTS
 	g_type_register_fundamental
 	g_type_register_static
 	g_type_remove_class_cache_func
+	g_type_remove_interface_check
 	g_type_set_qdata
 	g_type_test_flags
 	g_type_value_table_peek
-	g_unichar_validate
 	g_value_array_append
 	g_value_array_copy
 	g_value_array_free
@@ -296,6 +306,10 @@ EXPORTS
 	g_value_set_uint
 	g_value_set_uint64
 	g_value_set_ulong
+	g_value_take_boxed
+	g_value_take_object
+	g_value_take_param
+	g_value_take_string
 	g_value_transform
 	g_value_type_compatible
 	g_value_type_transformable
