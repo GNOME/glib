@@ -4,6 +4,8 @@
 
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
+	* abicheck.sh: Strip Win32 specific defs file syntax.
+
 	* Makefile.am (gobjectalias.h): Fix srcdir != builddir 
 	builds.  (#156447, Thomas Fitzsimmons)
 

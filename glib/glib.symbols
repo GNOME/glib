@@ -168,6 +168,7 @@ g_file_get_contents PRIVATE
 #ifdef G_OS_WIN32
 g_file_get_contents_utf8
 #endif
+g_filename_display_name
 g_filename_from_uri
 g_filename_from_utf8 PRIVATE
 #ifdef G_OS_WIN32
@@ -199,6 +200,7 @@ g_get_current_dir PRIVATE
 g_get_current_dir_utf8
 #endif
 g_get_current_time
+g_get_filename_charsets
 g_getenv
 g_get_home_dir PRIVATE
 #ifdef G_OS_WIN32

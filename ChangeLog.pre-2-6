@@ -1,5 +1,10 @@
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/glib.symbols: Add new functions.
+
+	* glib/gconvert.c: Fix doc comment for 
+	g_get_filename_charsets().
+
 	* glib/gconvert.c (g_filename_display_name): New function to
 	convert a filename to a UTF-8 string for display purposes.
 	(g_get_filename_charsets): New function to return the 

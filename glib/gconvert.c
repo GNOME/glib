@@ -1010,7 +1010,7 @@ filename_charset_cache_free (gpointer data)
   g_free (cache);
 }
 
-/*
+/**
  * g_get_filename_charsets:
  * @charsets: return location for the %NULL-terminated list of encoding names
  *
@@ -1155,7 +1155,7 @@ void
 _g_convert_thread_init (void)
 {
   const gchar **dummy;
-  (void) get_filename_charsets (&dummy);
+  (void) g_get_filename_charsets (&dummy);
 }
 
 /**
