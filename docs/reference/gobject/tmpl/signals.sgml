@@ -494,7 +494,7 @@ calling the handler.
  by temporarily adding a reference count to @gobject.
 </para>
 <para>
- Note that there this a bug in GObject that makes this function
+ Note that there is a bug in GObject that makes this function
  much less useful than it might seem otherwise. Once @gobject is
  disposed, the callback will no longer be called, but, the signal
  handler is <emphasis>not</emphasis> currently disconnected. If the

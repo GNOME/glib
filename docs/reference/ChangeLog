@@ -1,3 +1,8 @@
+2004-12-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/signals.sgml: Fix a typo.  (#161713,
+	Vincent Untz)
+
 2004-12-17  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/misc_utils.sgml: Clarify g_get_prgname docs.  
