@@ -1,3 +1,11 @@
+2001-10-05  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/hooks.sgml, glib/tmpl/spawn.sgml,
+	glib/tmpl/macros_misc.sgml: Update. 
+
+	* glib/tmpl/linked_lists_double.sgml, glib/tmpl/trees-binary.sgml,
+	glib/glib-sections.txt: Document GCompareDataFunc.
+
 2001-10-02  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/iochannel.sgml, glib/tmpl/macros_misc.sgml,

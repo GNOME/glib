@@ -292,6 +292,20 @@ value if the first element comes after the second.
 @Returns: the start of the sorted #GList.
 
 
+<!-- ##### USER_FUNCTION GCompareFunc ##### -->
+<para>
+Specifies the type of a comparison function used to compare two
+values.  The function should return a negative integer if the first
+value comes before the second, 0 if they are equal, or a positive
+integer if the first value comes after the second.
+</para>
+
+@a: a value.
+@b: a value to compare with.
+@Returns: negative value if @a < @b; zero if @a = @b; positive value
+if @a > @b.
+
+
 <!-- ##### FUNCTION g_list_sort_with_data ##### -->
 <para>
 Like g_list_sort(), but the comparison function accepts a user data argument.
@@ -303,7 +317,7 @@ Like g_list_sort(), but the comparison function accepts a user data argument.
 @Returns: the new head of @list.
 
 
-<!-- ##### USER_FUNCTION GCompareFunc ##### -->
+<!-- ##### USER_FUNCTION GCompareDataFunc ##### -->
 <para>
 Specifies the type of a comparison function used to compare two
 values.  The function should return a negative integer if the first
@@ -313,6 +327,7 @@ integer if the first value comes after the second.
 
 @a: a value.
 @b: a value to compare with.
+@user_data: user data to pass to comparison function.
 @Returns: negative value if @a < @b; zero if @a = @b; positive value
 if @a > @b.
 

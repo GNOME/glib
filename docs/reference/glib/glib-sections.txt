@@ -1048,19 +1048,19 @@ g_date_sunday_weeks_in_year
 <TITLE>Hook Functions</TITLE>
 <FILE>hooks</FILE>
 GHookList
+GHookFinalizeFunc
 GHook
 GHookFunc
 GHookCheckFunc
-GHookMarshaller
-GHookCheckMarshaller
-GHookFinalizeFunc
 
 <SUBSECTION>
 g_hook_list_init
 g_hook_list_invoke
 g_hook_list_invoke_check
 g_hook_list_marshal
+GHookMarshaller
 g_hook_list_marshal_check
+GHookCheckMarshaller
 g_hook_list_clear
 
 <SUBSECTION>
@@ -1075,9 +1075,9 @@ g_hook_compare_ids
 <SUBSECTION>
 g_hook_get
 g_hook_find
+GHookFindFunc
 g_hook_find_data
 g_hook_find_func
-GHookFindFunc
 g_hook_find_func_data
 
 <SUBSECTION>
@@ -1341,8 +1341,9 @@ g_list_length
 g_list_copy
 g_list_reverse
 g_list_sort
-g_list_sort_with_data
 GCompareFunc
+g_list_sort_with_data
+GCompareDataFunc
 g_list_concat
 g_list_foreach
 GFunc
@@ -1591,7 +1592,6 @@ GTree
 g_tree_new
 g_tree_new_with_data
 g_tree_new_full
-GCompareDataFunc
 g_tree_insert
 g_tree_replace
 g_tree_nnodes

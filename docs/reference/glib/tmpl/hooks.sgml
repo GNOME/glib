@@ -50,13 +50,10 @@ and the list of hook functions can be invoked.
 </row>
 
 <row>
-<entry>#GHookFreeFunc hook_free;</entry>
-<entry>the function to call to free a #GHook element.</entry>
-</row>
-
-<row>
-<entry>#GHookFreeFunc hook_destroy;</entry>
-<entry>the function to call to destory a #GHook element.</entry>
+<entry>#GHookFinalizeFunc finalize_hook;</entry>
+<entry>the function to call to finalize a #GHook element. 
+The default behaviour is to call the hooks <function>destroy</function> 
+function.</entry>
 </row>
 
 </tbody></tgroup></informaltable>
@@ -70,6 +67,17 @@ and the list of hook functions can be invoked.
 @hook_memchunk: 
 @finalize_hook: 
 
+
+<!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
+<para>
+Defines the type of function to be called when a hook in a 
+list of hooks gets finalized.
+</para>
+
+@hook_list: a #GHookList.
+@hook: the hook in @hook_list that gets finalized.
+
+
 <!-- ##### STRUCT GHook ##### -->
 <para>
 
@@ -79,42 +87,45 @@ and the list of hook functions can be invoked.
 
 <row>
 <entry>#gpointer data;</entry>
-<entry>.</entry>
+<entry>data which is passed to func when this hook is invoked.</entry>
 </row>
 
 <row>
 <entry>#GHook *next;</entry>
-<entry>.</entry>
+<entry>pointer to the next hook in the list.</entry>
 </row>
 
 <row>
 <entry>#GHook *prev;</entry>
-<entry>.</entry>
+<entry>pointer to the previous hook in the list.</entry>
 </row>
 
 <row>
 <entry>#guint ref_count;</entry>
-<entry>.</entry>
+<entry>the reference count of this hook.</entry>
 </row>
 
 <row>
 <entry>#guint hook_id;</entry>
-<entry>.</entry>
+<entry>the id of this hook, which is unique within its list.</entry>
 </row>
 
 <row>
 <entry>#guint flags;</entry>
-<entry>.</entry>
+<entry>flags which are set for this hook. See #GHookFlagMask for
+predefined flags.</entry>
 </row>
 
 <row>
-<entry>#gpointer data;</entry>
-<entry>.</entry>
+<entry>#gpointer func;</entry>
+<entry>the function to call when this hook is invoked. The possible 
+signatures for this function are #GHookFunc and #GHookCheckFunc.</entry>
 </row>
 
 <row>
 <entry>#GDestroyNotify destroy;</entry>
-<entry>.</entry>
+<entry>the default <function>finalize_hook</function> function of a 
+#GHookList calls this member of the hook that is being finalized.</entry>
 </row>
 
 </tbody></tgroup></informaltable>
@@ -131,51 +142,21 @@ and the list of hook functions can be invoked.
 
 <!-- ##### USER_FUNCTION GHookFunc ##### -->
 <para>
-
+Defines the type of a hook function that can be invoked
+by g_hook_list_invoke().
 </para>
 
-@data: 
+@data: the data field of the #GHook is passed to the hook function here.
 
 
 <!-- ##### USER_FUNCTION GHookCheckFunc ##### -->
 <para>
-
+Defines the type of a hook function that can be invoked
+by g_hook_list_invoke_check().
 </para>
 
-@data: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION GHookMarshaller ##### -->
-<para>
-
-</para>
-
-@hook: 
-@marshal_data: 
-<!-- # Unused Parameters # -->
-@data: 
-
-
-<!-- ##### USER_FUNCTION GHookCheckMarshaller ##### -->
-<para>
-
-</para>
-
-@hook: 
-@marshal_data: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@data: 
-
-
-<!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
-<para>
-
-</para>
-
-@hook_list: 
-@hook: 
+@data: the data field of the #GHook is passed to the hook function here.
+@Returns: %FALSE if the #GHook should be destroyed. 
 
 
 <!-- ##### FUNCTION g_hook_list_init ##### -->
@@ -186,7 +167,7 @@ This must be called before the #GHookList is used.
 
 @hook_list: a #GHookList.
 @hook_size: the size of each element in the #GHookList, typically
-sizeof (GHook).
+<literal>sizeof (GHook)</literal>.
 
 
 <!-- ##### FUNCTION g_hook_list_invoke ##### -->
@@ -195,45 +176,63 @@ Calls all of the #GHook functions in a #GHookList.
 </para>
 
 @hook_list: a #GHookList.
-@may_recurse: TRUE if functions which are already running (e.g. in another
-thread) can be called. If set to FALSE, these are skipped.
+@may_recurse: %TRUE if functions which are already running (e.g. in another
+thread) can be called. If set to %FALSE, these are skipped.
 
 
 <!-- ##### FUNCTION g_hook_list_invoke_check ##### -->
 <para>
 Calls all of the #GHook functions in a #GHookList.
-Any function which returns TRUE is removed from the #GHookList.
+Any function which returns %TRUE is removed from the #GHookList.
 </para>
 
 @hook_list: a #GHookList.
-@may_recurse: TRUE if functions which are already running (e.g. in another
-thread) can be called. If set to FALSE, these are skipped.
+@may_recurse: %TRUE if functions which are already running (e.g. in another
+thread) can be called. If set to %FALSE, these are skipped.
 
 
 <!-- ##### FUNCTION g_hook_list_marshal ##### -->
 <para>
-
+Calls a function on each valid #GHook. 
 </para>
 
 @hook_list: a #GHookList.
-@may_recurse: 
-@marshaller: 
-@marshal_data: 
-<!-- # Unused Parameters # -->
-@data: 
+@may_recurse: %TRUE if hooks which are currently running (e.g. in another
+thread) are considered valid. If set to %FALSE, these are skipped.
+@marshaller: the function to call for each #GHook.
+@marshal_data: data to pass to @marshaller.
+
+
+<!-- ##### USER_FUNCTION GHookMarshaller ##### -->
+<para>
+Defines the type of function used by g_hook_list_marshal().
+</para>
+
+@hook: a #GHook.
+@marshal_data: user data.
 
 
 <!-- ##### FUNCTION g_hook_list_marshal_check ##### -->
 <para>
-
+Calls a function on each valid #GHook and destroys it if the 
+function returns %FALSE.
 </para>
 
 @hook_list: a #GHookList.
-@may_recurse: 
-@marshaller: 
-@marshal_data: 
-<!-- # Unused Parameters # -->
-@data: 
+@may_recurse: %TRUE if hooks which are currently running (e.g. in another
+thread) are considered valid. If set to %FALSE, these are skipped.
+@marshaller: the function to call for each #GHook.
+@marshal_data: data to pass to @marshaller.
+
+
+<!-- ##### USER_FUNCTION GHookCheckMarshaller ##### -->
+<para>
+Defines the type of function used by g_hook_list_marshal_check().
+</para>
+
+@hook: a #GHook.
+@marshal_data: user data.
+@Returns: %FALSE if @hook should be destroyed.
 
 
 <!-- ##### FUNCTION g_hook_list_clear ##### -->
@@ -315,12 +314,12 @@ if the second id is greater than the first.
 
 <!-- ##### FUNCTION g_hook_get ##### -->
 <para>
-Returns the #GHook with the given id, or NULL if it is not found.
+Returns the #GHook with the given id, or %NULL if it is not found.
 </para>
 
 @hook_list: a #GHookList.
 @hook_id: a hook id.
-@Returns: the #GHook with the given id, or NULL if it is not found.
+@Returns: the #GHook with the given id, or %NULL if it is not found.
 
 
 <!-- ##### FUNCTION g_hook_find ##### -->
@@ -329,12 +328,22 @@ Finds a #GHook in a #GHookList using the given function to test for a match.
 </para>
 
 @hook_list: a #GHookList.
-@need_valids: TRUE if #GHook elements which have been destroyed should be
+@need_valids: %TRUE if #GHook elements which have been destroyed should be
 skipped.
-@func: the function to call for each #GHook, which should return TRUE when
+@func: the function to call for each #GHook, which should return %TRUE when
 the #GHook has been found.
-@data: the data passed to @func.
-@Returns: the found #GHook or NULL if no matching #GHook is found.
+@data: the data to pass to @func.
+@Returns: the found #GHook or %NULL if no matching #GHook is found.
+
+
+<!-- ##### USER_FUNCTION GHookFindFunc ##### -->
+<para>
+Defines the type of the function passed to g_hook_find().
+</para>
+
+@hook: a #GHook.
+@data: user data passed to g_hook_find_func().
+@Returns: %TRUE if the required #GHook has been found.
 
 
 <!-- ##### FUNCTION g_hook_find_data ##### -->
@@ -343,10 +352,10 @@ Finds a #GHook in a #GHookList with the given data.
 </para>
 
 @hook_list: a #GHookList.
-@need_valids: TRUE if #GHook elements which have been destroyed should be
+@need_valids: %TRUE if #GHook elements which have been destroyed should be
 skipped.
 @data: the data to find.
-@Returns: the #GHook with the given @data or NULL if no matching
+@Returns: the #GHook with the given @data or %NULL if no matching
 #GHook is found.
 
 
@@ -356,21 +365,11 @@ Finds a #GHook in a #GHookList with the given function.
 </para>
 
 @hook_list: a #GHookList.
-@need_valids: TRUE if #GHook elements which have been destroyed should be
+@need_valids: %TRUE if #GHook elements which have been destroyed should be
 skipped.
 @func: the function to find.
-@Returns: the #GHook with the given @func or NULL if no matching
+@Returns: the #GHook with the given @func or %NULL if no matching
 #GHook is found.
-
-
-<!-- ##### USER_FUNCTION GHookFindFunc ##### -->
-<para>
-Defines the type of the function passed to g_hooK_find_func().
-</para>
-
-@hook: a #GHook.
-@data: user data passed to g_hook_find_func().
-@Returns: TRUE if the required #GHook has been found.
 
 
 <!-- ##### FUNCTION g_hook_find_func_data ##### -->
@@ -379,11 +378,11 @@ Finds a #GHook in a #GHookList with the given function and data.
 </para>
 
 @hook_list: a #GHookList.
-@need_valids: TRUE if #GHook elements which have been destroyed should be
+@need_valids: %TRUE if #GHook elements which have been destroyed should be
 skipped.
 @func: the function to find.
 @data: the data to find.
-@Returns: the #GHook with the given @func and @data or NULL if no matching
+@Returns: the #GHook with the given @func and @data or %NULL if no matching
 #GHook is found.
 
 
@@ -396,9 +395,9 @@ g_hook_next_valid() if you are stepping through the #GHookList.)
 </para>
 
 @hook_list: a #GHookList.
-@may_be_in_call: TRUE if hooks which are currently running (e.g. in another
-thread) are considered valid. If set to FALSE, these are skipped.
-@Returns: the first valid #GHook, or NULL if none are valid.
+@may_be_in_call: %TRUE if hooks which are currently running (e.g. in another
+thread) are considered valid. If set to %FALSE, these are skipped.
+@Returns: the first valid #GHook, or %NULL if none are valid.
 
 
 <!-- ##### FUNCTION g_hook_next_valid ##### -->
@@ -406,32 +405,32 @@ thread) are considered valid. If set to FALSE, these are skipped.
 Returns the next #GHook in a #GHookList which has not been destroyed.
 The reference count for the #GHook is incremented, so you must call
 g_hook_unref() to restore it when no longer needed. (Or continue to call
-g_hook_next_valid() until NULL is returned.)
+g_hook_next_valid() until %NULL is returned.)
 
 </para>
 
 @hook_list: a #GHookList.
 @hook: the current #GHook.
-@may_be_in_call: TRUE if hooks which are currently running (e.g. in another
-thread) are considered valid. If set to FALSE, these are skipped.
-@Returns: the next valid #GHook, or NULL if none are valid.
+@may_be_in_call: %TRUE if hooks which are currently running (e.g. in another
+thread) are considered valid. If set to %FALSE, these are skipped.
+@Returns: the next valid #GHook, or %NULL if none are valid.
 
 
 <!-- ##### ENUM GHookFlagMask ##### -->
 <para>
-
+Flags used internally in the #GHook implementation.
 </para>
 
-@G_HOOK_FLAG_ACTIVE: 
-@G_HOOK_FLAG_IN_CALL: 
+@G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed. 
+@G_HOOK_FLAG_IN_CALL: set if the hook is currently being run. 
 @G_HOOK_FLAG_MASK: 
 
 <!-- ##### MACRO G_HOOK_FLAGS ##### -->
 <para>
-
+Returns the flags of a hook.
 </para>
 
-@hook: 
+@hook: a #GHook.
 
 
 <!-- ##### MACRO G_HOOK_FLAG_USER_SHIFT ##### -->
@@ -443,49 +442,49 @@ thread) are considered valid. If set to FALSE, these are skipped.
 
 <!-- ##### MACRO G_HOOK ##### -->
 <para>
-
+Casts a pointer to a <literal>GHook*</literal>.
 </para>
 
-@hook: 
+@hook: a pointer.
 
 
 <!-- ##### MACRO G_HOOK_IS_VALID ##### -->
 <para>
-Returns TRUE if the #GHook is valid, i.e. it is in a #GHookList, it is active
+Returns %TRUE if the #GHook is valid, i.e. it is in a #GHookList, it is active
 and it has not been destroyed.
 </para>
 
 @hook: a #GHook.
-@Returns: TRUE if the #GHook is valid.
+@Returns: %TRUE if the #GHook is valid.
 
 
 <!-- ##### MACRO G_HOOK_ACTIVE ##### -->
 <para>
-Returns TRUE if the #GHook is active, which is normally TRUE until the #GHook
+Returns %TRUE if the #GHook is active, which is normally %TRUE until the #GHook
 is destroyed.
 </para>
 
 @hook: a #GHook.
-@Returns: TRUE if the #GHook is active.
+@Returns: %TRUE if the #GHook is active.
 
 
 <!-- ##### MACRO G_HOOK_IN_CALL ##### -->
 <para>
-Returns TRUE if the #GHook function is currently executing.
+Returns %TRUE if the #GHook function is currently executing.
 </para>
 
 @hook: a #GHook.
-@Returns: TRUE if the #GHook function is currently executing.
+@Returns: %TRUE if the #GHook function is currently executing.
 
 
 <!-- ##### MACRO G_HOOK_IS_UNLINKED ##### -->
 <para>
-Returns TRUE if the #GHook is not in a #GHookList.
+Returns %TRUE if the #GHook is not in a #GHookList.
 
 </para>
 
 @hook: a #GHook.
-@Returns: TRUE if the #GHook is not in a #GHookList.
+@Returns: %TRUE if the #GHook is not in a #GHookList.
 
 
 <!-- ##### FUNCTION g_hook_ref ##### -->
@@ -505,7 +504,7 @@ and g_hook_free() is called to free it.
 </para>
 
 @hook_list: a #GHookList.
-@hook: 
+@hook: the #GHook to unref.
 
 
 <!-- ##### FUNCTION g_hook_free ##### -->
@@ -525,13 +524,13 @@ Destroys a #GHook, given its ID.
 
 @hook_list: a #GHookList.
 @hook_id: a hook ID.
-@Returns: TRUE if the #GHook was found in the #GHookList and destroyed.
+@Returns: %TRUE if the #GHook was found in the #GHookList and destroyed.
 
 
 <!-- ##### FUNCTION g_hook_destroy_link ##### -->
 <para>
-Removes one #GHook from a #GHookList, calling the @hook_destroy function in
-the #GHookList, and the @destroy function of the #GHook, if they exist.
+Removes one #GHook from a #GHookList, marking it inactive and calling
+g_hook_unref() on it. 
 </para>
 
 @hook_list: a #GHookList.

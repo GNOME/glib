@@ -79,17 +79,6 @@ It should be accessed only by using the following functions.
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION GCompareDataFunc ##### -->
-<para>
-
-</para>
-
-@a: 
-@b: 
-@user_data: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_tree_insert ##### -->
 <para>
 

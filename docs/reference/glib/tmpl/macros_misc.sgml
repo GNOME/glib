@@ -135,7 +135,12 @@ A const function doesn't examine any values except its parameters,
 and has no effects except its return value.
 See the GNU C documentation for details. 
 </para>
-
+<note><para>
+A function that has pointer arguments and examines the data pointed to 
+must <emphasis>not</emphasis> be declared const. Likewise, a function that 
+calls a non-const function usually must not be const. It doesn't make sense 
+for a const function to return void.
+</para></note>
 
 
 <!-- ##### MACRO G_GNUC_PRINTF ##### -->

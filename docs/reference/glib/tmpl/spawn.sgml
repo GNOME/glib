@@ -64,10 +64,14 @@ error domains.
 
 <!-- ##### USER_FUNCTION GSpawnChildSetupFunc ##### -->
 <para>
-
+Specifies the type of the setup function passed to g_spawn_async(),
+g_spawn_sync() and g_spawn_async_with_pipes(). It is called in the 
+child after GLib has performed all the setup it plans to perform 
+but before calling <function>exec()</function>. Obviously, actions 
+taken in this function will only affect the child, not the parent.
 </para>
 
-@user_data: 
+@user_data: user data to pass to the function.
 
 
 <!-- ##### FUNCTION g_spawn_async_with_pipes ##### -->
