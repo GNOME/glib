@@ -56,8 +56,8 @@ typedef int pid_t;
  * access: <io.h>
  * unlink: <stdio.h> or <io.h>
  * open, read, write, lseek, close: <io.h>
- * rmdir: <direct.h>
- * pipe: <direct.h>
+ * rmdir: <io.h>
+ * pipe: <io.h>
  */
 
 /* pipe is not in OLDNAMES.LIB or -lmoldname-msvc. */

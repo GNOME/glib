@@ -1297,9 +1297,9 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
   if (st->st_mode & _S_IFIFO)
     {
       channel->is_readable =
-	(PeekNamedPipe ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL, NULL) == 0);
+	(PeekNamedPipe ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL, NULL) != 0);
       channel->is_writeable =
-	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
       channel->is_seekable  = FALSE;
     }
   else if (st->st_mode & _S_IFCHR)
@@ -1311,19 +1311,20 @@ g_io_win32_fd_get_flags_internal (GIOChannel  *channel,
       channel->is_readable  = !!(st->st_mode & _S_IREAD);
 
       channel->is_writeable =
-	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
 
-      /* XXX What about devices that actually *are* seekable? But those would probably
-       * not be handled using the C runtime anyway, but using Windows-specific code.
+      /* XXX What about devices that actually *are* seekable? But
+       * those would probably not be handled using the C runtime
+       * anyway, but using Windows-specific code.
        */
       channel->is_seekable = FALSE;
     }
   else
     {
       channel->is_readable =
-	(ReadFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+	(ReadFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
       channel->is_writeable =
-	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) == 0);
+	(WriteFile ((HANDLE) _get_osfhandle (win32_channel->fd), &c, 0, &count, NULL) != 0);
       channel->is_seekable = TRUE;
     }
 
