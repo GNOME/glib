@@ -1,5 +1,12 @@
 2003-06-06  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gstring.c (g_string_append_printf_internal): Use
+	g_vasprintf() and g_string_append_len(), thus enabling embedded
+	nuls in the result of g_string_printf().  (#92492, Owen Taylor)
+
+	* tests/string-test.c: Add a test for embedded nuls in the
+	result of g_string_printf().
+
 	* glib/gprintf.[ch]: Synchronize argument names with headers and docs.
 	(g_vasprintf): An implementation of vasprintf(), code was lifted
 	from g_strdup_vprintf().  (#112365)

@@ -40,6 +40,7 @@
 #include <ctype.h>
 
 #include "glib.h"
+#include "gprintf.h"
 
 
 struct _GStringChunk
@@ -780,9 +781,10 @@ g_string_append_printf_internal (GString     *string,
 				 va_list      args)
 {
   gchar *buffer;
-
-  buffer = g_strdup_vprintf (fmt, args);
-  g_string_append (string, buffer);
+  gint length;
+  
+  length = g_vasprintf (&buffer, fmt, args);
+  g_string_append_len (string, buffer, length);
   g_free (buffer);
 }
 

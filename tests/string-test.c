@@ -208,6 +208,10 @@ main (int   argc,
   g_assert ( memcmp(string1->str, "fiddle\0xyzzy", 13) == 0);
   g_string_insert(string1, 1, "QED");
   g_assert ( memcmp(string1->str, "fQEDiddle\0xyzzy", 16) == 0);
+  g_string_printf (string1, "fiddle%cxyzzy", '\0');
+  g_assert (string1->len == 12);
+  g_assert (memcmp (string1->str, "fiddle\0xyzzy", 13) == 0);
+
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
   
