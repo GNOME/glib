@@ -1,3 +1,8 @@
+2004-10-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/objects.sgml: Improve the docs for
+	g_object_get_property().  (#153424, Stefan Kost)
+
 2004-10-03  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Improve docs for 
