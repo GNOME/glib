@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-06-13 16:23-0400\n"
+"POT-Creation-Date: 2002-07-26 17:56-0400\n"
 "PO-Revision-Date: 2002-05-27 14:39-0300\n"
 "Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -14,69 +14,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
-#: glib/gconvert.c:398
+#: glib/gconvert.c:400
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "التحويل من صفحة المحارف '%s' الى '%s' غير مدعوم"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:404
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "لم يمكن فتح المحول من '%s' الى '%s': %s"
 
-#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1290
-#: glib/giochannel.c:1332 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
+#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "تتابع بايتات غير موجود في مدخلات التحويل"
 
-#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1297
+#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
 #: glib/giochannel.c:2183
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "خطأ أثناء التحويل: %s"
 
-#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "تتابع حرفيات جزئي عند نهاية الإدخال"
 
-#: glib/gconvert.c:796
+#: glib/gconvert.c:798
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "لم يمكن تحويل fallback '%s' الى صفحة المحارف '%s'"
 
-#: glib/gconvert.c:1630
+#: glib/gconvert.c:1632
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "الـURI '%s' ليس URI كامل باستخدام مخطط الملفات"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1642
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI الملف المحلي '%s' قد لا يحتوي '#'"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1659
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "الـURI '%s' غير موجود"
 
-#: glib/gconvert.c:1669
+#: glib/gconvert.c:1671
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "اسم مستضيف الـURI '%s' غير صالح"
 
-#: glib/gconvert.c:1685
+#: glib/gconvert.c:1687
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "الـURI '%s' يحتوي على حروف هاربة غير صحيحة"
 
-#: glib/gconvert.c:1756
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "اسم المسار '%s' ليس مسارا كاملا"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1768
 msgid "Invalid hostname"
 msgstr "اسم المستضيف غير صالح"
 
@@ -130,12 +130,12 @@ msgstr "القالب '%s' لا ينتهي بـXXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "فشل عمل الملف '%s': %s"
 
-#: glib/giochannel.c:1118
+#: glib/giochannel.c:1119
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "التحويل من صفحة المحارف `%s' الى `%s' غير مدعوم"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "لم يمكن فتح المحول من `%s' الى `%s': %s"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0.1\n"
-"POT-Creation-Date: 2002-06-13 16:23-0400\n"
+"POT-Creation-Date: 2002-07-26 17:56-0400\n"
 "PO-Revision-Date: 2002-05-14 18:00+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -13,69 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:398
+#: glib/gconvert.c:400
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "不支援將字元集‘%s’轉換成‘%s’"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:404
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "無法開啟將‘%s’轉換至‘%s’的程序：%s"
 
-#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1290
-#: glib/giochannel.c:1332 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
+#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "轉換輸入資料時遇到無效的位元組次序"
 
-#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1297
+#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
 #: glib/giochannel.c:2183
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "輸入資料結束時出現未完成的字元次序"
 
-#: glib/gconvert.c:796
+#: glib/gconvert.c:798
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "無法將後備字串‘%s’的字元集轉換成‘%s’"
 
-#: glib/gconvert.c:1630
+#: glib/gconvert.c:1632
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI‘%s’不是使用 file 格式的絕對 URI"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1642
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "本機檔案 URI‘%s’不應含有‘#’"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1659
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI‘%s’是無效的"
 
-#: glib/gconvert.c:1669
+#: glib/gconvert.c:1671
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI‘%s’中的主機名稱是無效的"
 
-#: glib/gconvert.c:1685
+#: glib/gconvert.c:1687
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI‘%s’含有無效的跳出字元"
 
-#: glib/gconvert.c:1756
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路徑名稱‘%s’不是絕對路徑"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1768
 msgid "Invalid hostname"
 msgstr "無效的主機名稱"
 
@@ -129,12 +129,12 @@ msgstr "樣式‘%s’結尾不是 XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "無法建立檔案‘%s’：%s"
 
-#: glib/giochannel.c:1118
+#: glib/giochannel.c:1119
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "不支援將字元集‘%s’轉換成‘%s’"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "無法開啟將‘%s’轉換至‘%s’的程序：%s"

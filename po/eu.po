@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.9\n"
-"POT-Creation-Date: 2002-06-13 16:23-0400\n"
+"POT-Creation-Date: 2002-07-26 17:56-0400\n"
 "PO-Revision-Date: 2001-07-06 14:23+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <jbv@euskalnet.net>\n"
 "Language-Team: euskare <linux-eu@chanae.alphanet.ch>\n"
@@ -13,69 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:398
+#: glib/gconvert.c:400
 #, fuzzy, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:404
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"
 
-#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1290
-#: glib/giochannel.c:1332 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
+#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "Baliogabeko byte segida itzulketa sarreran"
 
-#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1297
+#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
 #: glib/giochannel.c:2183
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea itzultzerakoan: %s"
 
-#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "Zatia besterik ez dan karaktere segida sarreraren bukaeran"
 
-#: glib/gconvert.c:796
+#: glib/gconvert.c:798
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin itzuli fallback '%s'tik '%s' kodera"
 
-#: glib/gconvert.c:1630
+#: glib/gconvert.c:1632
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "URI `%s' ez da URI osoa, fitxategien eskema jarraitzen duena"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1642
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Bertoko fitxategi URI `%s' ezin du `#'-rik izan"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1659
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI `%s' baliogabe da"
 
-#: glib/gconvert.c:1669
+#: glib/gconvert.c:1671
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ostalari izena URI `%s'-rena baliorikgabeko karakterez "
 
-#: glib/gconvert.c:1685
+#: glib/gconvert.c:1687
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI `%s'-k baliogabeko karakterez "
 
-#: glib/gconvert.c:1756
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Bideizena '%s' ez da bide osoarena"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1768
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "Baliogabeko byte segida ostalari izenean"
@@ -130,12 +130,12 @@ msgstr "Eredu '%s'-ak ez du amaierako XXXXXX"
 msgid "Failed to create file '%s': %s"
 msgstr "Ezin eratu fitxategia '%s': %s"
 
-#: glib/giochannel.c:1118
+#: glib/giochannel.c:1119
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Aldaketa karaktere talde `%s'-tik `%s'-ra ez dago gaitua"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Ezin ireki `%s'-tik `%s'-rako itzultzailea: %s"

@@ -53,8 +53,8 @@ GTypePlugin
 </para>
 
 @plugin: 
-@interface_type: 
 @instance_type: 
+@interface_type: 
 @info: 
 
 
@@ -91,8 +91,8 @@ GTypePlugin
 </para>
 
 @plugin: 
-@interface_type: 
 @instance_type: 
+@interface_type: 
 @info: 
 
 

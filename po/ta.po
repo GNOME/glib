@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.5\n"
-"POT-Creation-Date: 2002-06-13 16:23-0400\n"
+"POT-Creation-Date: 2002-07-26 17:56-0400\n"
 "PO-Revision-Date: 2001-09-28 18:43-0500\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -13,69 +13,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glib/gconvert.c:398
+#: glib/gconvert.c:400
 #, fuzzy, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "`%s', `%s' Â¢ý ÅÃ¢ÔÕ Å¨¸ìÌ Á¡üÚÅ¾üÌ ¬¾ÃÅÇ¢ôÒ ¸¢¨¼Â¡Ð"
 
-#: glib/gconvert.c:402
+#: glib/gconvert.c:404
 #, fuzzy, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' '¨º `%s' 'ìÌ Á¡üÚõ ¿¢¨Ä Á¡üÈ¢¨Â ¾¢Èì¸ ÓÊÂÅ¢ø¨Ä: %s"
 
-#: glib/gconvert.c:600 glib/gconvert.c:890 glib/giochannel.c:1290
-#: glib/giochannel.c:1332 glib/giochannel.c:2171 glib/gutf8.c:875
+#: glib/gconvert.c:602 glib/gconvert.c:892 glib/giochannel.c:1291
+#: glib/giochannel.c:1333 glib/giochannel.c:2171 glib/gutf8.c:875
 #: glib/gutf8.c:1320
 msgid "Invalid byte sequence in conversion input"
 msgstr "¿¢¨Ä Á¡üÈ¢Â¢ý ¯ûÇ£Êø ºÃ¢ÂüÈ ¨Àð ÅÃ¢¨ºÓ¨È"
 
-#: glib/gconvert.c:605 glib/gconvert.c:821 glib/giochannel.c:1297
+#: glib/gconvert.c:607 glib/gconvert.c:823 glib/giochannel.c:1298
 #: glib/giochannel.c:2183
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Á¡üÚõ §À¡Ð À¢¨Æ: %s"
 
-#: glib/gconvert.c:623 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gconvert.c:625 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
 #: glib/gutf8.c:1316
 msgid "Partial character sequence at end of input"
 msgstr "¯ûÇ£Êý ÓÊÅ¢ø Ì¨ÈÅ¡É ÅÃ¢ÔÕ ÅÃ¢¨ºÓ¨È"
 
-#: glib/gconvert.c:796
+#: glib/gconvert.c:798
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "À¢ýÉ¨¼ôÒ '%s', '%s' ÌÈ¢ì ¸½Á¢üÌ Á¡üÈ ÓÊÂÅ¢ø¨Ä"
 
-#: glib/gconvert.c:1630
+#: glib/gconvert.c:1632
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "The URI `%s' is not an absolute URI using the file scheme"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1642
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "`%s' ¯ûÇ¨Á URI §¸¡ôÀ¢ø `#' ­øÄ¡Áø ­Õì¸Ä¡õ"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1659
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI `%s' ¦ºøÖÀÊÂ¡¸¡¾Ð"
 
-#: glib/gconvert.c:1669
+#: glib/gconvert.c:1671
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI `%s' ­ý Å¢Õó§¾¡õÒô-¦ÀÂÃ¢ø ¦ºøÖÀÊÂ¡¸¡¾ 'escaped' ÅÃ¢ÔÕ¸û"
 
-#: glib/gconvert.c:1685
+#: glib/gconvert.c:1687
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI `%s' ­ø ¦ºøÖÀÊÂ¡¸¡¾ 'escaped' ÅÃ¢ÔÕ¸û"
 
-#: glib/gconvert.c:1756
+#: glib/gconvert.c:1758
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' À¡¨¾ô-¦ÀÂ÷ µ÷ ÓüÚÚô À¡¨¾ «øÄ"
 
-#: glib/gconvert.c:1766
+#: glib/gconvert.c:1768
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "¿¢¨Ä Á¡üÈ¢Â¢ý ¯ûÇ£Êø ºÃ¢ÂüÈ ¨Àð ÅÃ¢¨ºÓ¨È"
@@ -130,12 +130,12 @@ msgstr "'%s' ÀÊÁ «îº¢ý ÓÊ× XXXXXX «øÄ"
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' §¸¡ô¨À À¨¼ì¸ ÓÊÂÅ¢ø¨Ä: %s"
 
-#: glib/giochannel.c:1118
+#: glib/giochannel.c:1119
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "`%s', `%s' Â¢ý ÅÃ¢ÔÕ Å¨¸ìÌ Á¡üÚÅ¾üÌ ¬¾ÃÅÇ¢ôÒ ¸¢¨¼Â¡Ð"
 
-#: glib/giochannel.c:1122
+#: glib/giochannel.c:1123
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "`%s' '¨º `%s' 'ìÌ Á¡üÚõ ¿¢¨Ä Á¡üÈ¢¨Â ¾¢Èì¸ ÓÊÂÅ¢ø¨Ä: %s"

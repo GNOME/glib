@@ -1,3 +1,11 @@
+Fri Jul 26 18:01:44 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 2.0.6
+
+	* configure.in: 2.0.6, binary, interface age 6
+	
+	* NEWS: Updated.
+
 Thu Jul 25 14:23:15 2002  Owen Taylor  <otaylor@redhat.com>
 
  	* glib/gfileutils.c: Clarify the behavior of g_build_path()

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $PACKAGE $VERSION, no-define\n"
-"POT-Creation-Date: 2002-07-27 03:06+0900\n"
+"POT-Creation-Date: 2002-07-26 17:56-0400\n"
 "PO-Revision-Date: 2002-07-27 03:06+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
