@@ -20,6 +20,7 @@ makefile.msc
 so_locations
 stamp-gc-h
 stamp-h
+stamp-h1
 stamp-h.in
 annotations
 logs
@@ -39,3 +40,4 @@ glib-gettextize
 glib-zip
 .saved
 sgml
+autom4te.cache
