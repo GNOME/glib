@@ -1878,7 +1878,6 @@ fi
 # 
 #  a) GCC < 3.3 for Linux doesn't include -lpthread when
 #     building shared libraries with linux.
-#  b) libtool doesn't recognize -pthread as a library dependency. 	 
 #
 case $host in
   *-*-linux*)
