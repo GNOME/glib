@@ -1,3 +1,9 @@
+1999-11-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+        * configure.in: Make the test for getpwuid_r work on newer AIX
+        versions, too. Still works on Solaris and Linux. Patch from Craig
+        Rodrigues <rodrigc@mediaone.net>.
+
 1999-11-08  Tor Lillqvist  <tml@iki.fi>
 
 	* gwin32.c (g_win32_getlocale): Look at env vars LC_ALL, LC_CTYPE

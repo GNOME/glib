@@ -861,15 +861,15 @@ if test x"$enable_threads" = xyes; then
 		fi
 		if test "$ac_cv_func_getpwuid_r" = "yes"; then
 			AC_MSG_CHECKING(whether getpwuid_r is posix like)
-			# getpwuid_r(0, NULL, NULL, 0) is the signature on
-			# solaris, if that is not found, the prog below won't 
-			# compile, then the posix signature is assumed as 
-			# the default.
-			AC_TRY_COMPILE([#include <pwd.h>],
-				[getpwuid_r(0, NULL, NULL, 0);],
-				[AC_MSG_RESULT(no)],
-				[AC_MSG_RESULT(yes)
-				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
+			# The signature for the POSIX version is:
+			# int getpwuid_r(uid_t, struct passwd *, char *, size_t, struct passwd **)
+			AC_TRY_COMPILE([#include <pwd.h>
+                                        #include <sys/types.h>
+                                        #include <stdlib.h>],
+				[getpwuid_r((uid_t)0, NULL, NULL, (size_t)0, NULL);],
+				[AC_DEFINE(HAVE_GETPWUID_R_POSIX)
+				AC_MSG_RESULT(yes)],
+				[AC_MSG_RESULT(no)])
 		fi
 	fi
 	LIBS="$LIBS $G_THREAD_LIBS"
