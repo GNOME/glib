@@ -439,7 +439,7 @@ g_io_channel_new_file (const gchar *filename,
     MODE_R = 1 << 0,
     MODE_W = 1 << 1,
     MODE_A = 1 << 2,
-    MODE_PLUS = 1 << 3,
+    MODE_PLUS = 1 << 3
   } mode_num;
   struct stat buffer;
 

@@ -316,7 +316,14 @@ main (int   argc,
       char *argv[])
 {
 #ifdef G_OS_UNIX
+#  ifdef HAVE_UNSETENV  
   unsetenv ("G_BROKEN_FILENAMES");
+#  else
+  /* putenv with no = isn't standard, but works to unset the variable
+   * on some systems
+   */
+  putenv ("G_BROKEN_FILENAMES");
+#  endif  
 #endif
 
   run_to_uri_tests ();

@@ -1,3 +1,15 @@
+Wed Feb 20 22:35:42 2002  Owen Taylor  <otaylor@redhat.com>
+
+	Fixes from Miroslaw Dobrzanski-Neumann (#71963)
+
+	* glib/giounix.c (g_io_channel_new_file): Fix trailing comma
+	in enum.
+
+	* configure.in: Check for unsetenv.
+
+	* test/uri-test.c: Fall back to trying putenv(VARNAME) if
+	unsetenv isn't present.
+
 2002-02-20  Daniel Elstner  <daniel.elstner@gmx.net>
 
 	* glib/gstring.[ch] (g_string_erase): Use gssize instead of
