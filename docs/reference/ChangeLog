@@ -1,3 +1,10 @@
+Sun Mar 14 11:00:41 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/tmpl/signals.sgml: Document the fact that
+	g_signal_connect_object() does *not* remove the signal
+	when the object is disconnected currently and describe
+	a workaround to prevent memory leaks.
+
 Tue Mar  9 09:16:11 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.6 ===
