@@ -1370,7 +1370,7 @@ g_date_strftime (gchar       *s,
       gchar *convbuf;
       GError *error = NULL;
       
-      locale_format = g_convert (format, -1 , "UTF-8", charset,
+      locale_format = g_convert (format, -1 , charset, "UTF-8",
 				 NULL, NULL, &error);
       if (error)
 	{

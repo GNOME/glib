@@ -1,3 +1,7 @@
+2001-11-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib/gdate.c: Fixed wrong order in conversion.
+
 Wed Nov 28 18:34:22 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.[ch]: Rename (private) GSource.id and 
