@@ -992,25 +992,67 @@ g_locale_from_utf8 (const gchar *utf8string,
 
 #ifndef G_PLATFORM_WIN32
 
+/*
+ * get_filename_charset:
+ * @charset: return location for the name of the filename encoding 
+ *
+ * Determines the character set used for filenames by consulting the 
+ * environment variables G_FILENAME_ENCODING and G_BROKEN_FILENAMES. 
+ *
+ * G_FILENAME_ENCODING may be set to a comma-separated list of character 
+ * set names. The special token "@locale" is taken to mean the character set 
+ * for the current locale. The first character set from the list is taken 
+ * as the filename encoding. 
+ * If G_FILENAME_ENCODING is not set, but G_BROKEN_FILENAMES is, the
+ * character set of the current locale is taken as the filename encoding.
+ *
+ * The returned @charset belongs to GLib and must not be freed.
+ * 
+ * Return value: %TRUE if the charset used for filename is UTF-8.
+ */
 static gboolean
-have_broken_filenames (void)
+get_filename_charset (const gchar **charset)
 {
   static gboolean initialized = FALSE;
-  static gboolean broken;
+  static const gchar *filename_charset;
+  static gboolean is_utf8;
   
-  if (initialized)
-    return broken;
+  if (!initialized)
+    {
+      gchar *p, *q;
 
-  broken = (getenv ("G_BROKEN_FILENAMES") != NULL);
-  
-  initialized = TRUE;
-  
-  return broken;
+      initialized = TRUE;
+      
+      p = getenv ("G_FILENAME_ENCODING");
+      if (p != NULL) 
+	{
+	  q = strchr (p, ',');
+	  if (!q) 
+	    q = p + strlen (p);
+
+	  if (strncmp ("@locale", p, q - p) == 0)
+	    is_utf8 = g_get_charset (&filename_charset);
+	  else
+	    {
+	      filename_charset = g_strndup (p, q - p);
+	      is_utf8 = (strcmp (filename_charset, "UTF-8") == 0);
+	    }
+	}
+      else if (getenv ("G_BROKEN_FILENAMES") != NULL)
+	is_utf8 = g_get_charset (&filename_charset);
+      else 
+	{
+	  filename_charset = "UTF-8";
+	  is_utf8 = TRUE;
+	}
+    }
+
+  *charset = filename_charset;
+
+  return is_utf8;
 }
 #else /* G_PLATFORM_WIN32 */
-
-#define have_broken_filenames() TRUE
-
+#define get_filename_charset (charset) TRUE
 #endif /* G_PLATFORM_WIN32 */
 
 /* This is called from g_thread_init(). It's used to
@@ -1019,7 +1061,8 @@ have_broken_filenames (void)
 void 
 _g_convert_thread_init (void)
 {
-  (void)have_broken_filenames ();
+  const gchar *dummy;
+  (void) get_filename_charset (&dummy);
 }
 
 /**
@@ -1052,12 +1095,13 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		    gsize       *bytes_written,
 		    GError     **error)
 {
-  if (have_broken_filenames ())
-    return g_locale_to_utf8 (opsysstring, len,
-			     bytes_read, bytes_written,
-			     error);
-  else
+  const gchar *charset;
+
+  if (get_filename_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
+  else
+    return g_convert (opsysstring, len, 
+		      "UTF-8", charset, bytes_read, bytes_written, error);
 }
 
 /**
@@ -1089,12 +1133,13 @@ g_filename_from_utf8 (const gchar *utf8string,
 		      gsize       *bytes_written,
 		      GError     **error)
 {
-  if (have_broken_filenames ())
-    return g_locale_from_utf8 (utf8string, len,
-			       bytes_read, bytes_written,
-			       error);
-  else
+  const gchar *charset;
+
+  if (get_filename_charset (&charset))
     return strdup_len (utf8string, len, bytes_read, bytes_written, error);
+  else
+    return g_convert (utf8string, len,
+		      charset, "UTF-8", bytes_read, bytes_written, error);
 }
 
 /* Test of haystack has the needle prefix, comparing case

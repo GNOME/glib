@@ -1,3 +1,13 @@
+Thu Nov  6 00:04:46 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gconvert.c (get_filename_charset): Replacement for
+	have_broken_filenames() which consults the environment variable
+	G_FILENAME_ENCODINGS in addition to G_BROKEN_FILENAMES.
+	* glib/gconvert.c (g_filename_from_utf8): 
+	* glib/gconvert.c (g_filename_to_utf8): 
+	* glib/gconvert.c (_g_convert_thread_init): Use
+	get_filename_charset() instead of have_broken_filenames().
+
 Wed Nov  5 22:05:19 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gi18n-lib.h: 
