@@ -359,17 +359,19 @@ nesting such as g_strup (g_strcanon (str)).
 <!-- ##### FUNCTION g_strsplit ##### -->
 <para>
 Splits a string into a maximum of @max_tokens pieces, using the given
-@delimiter. If @max_tokens is reached, the final string in the returned
-string array contains the remainder of @string.
+@delimiter. If @max_tokens is reached, the last piece contains the
+remainder of @string. If @string is an empty string, then the resulting
+string array has no elements.
 </para>
 
 @string: a string to split.
 @delimiter: a string which specifies the places at which to split the string.
 The delimiter is not included in any of the resulting strings, unless
 max_tokens is reached.
-@max_tokens: the maximum number of strings to split @string into. If this is
+@max_tokens: the maximum number of pieces to split @string into. If this is
 less than 1, the string is split completely.
-@Returns: a newly-allocated array of strings. Use g_strfreev() to free it.
+@Returns: a newly-allocated NULL-terminated array of strings. Use g_strfreev()
+to free it.
 
 
 <!-- ##### FUNCTION g_strfreev ##### -->

@@ -971,10 +971,12 @@ g_strlcat (gchar       *dest,
  * 
  * Return value: a newly allocated string, with all the upper case
  *               characters in @string converted to lower case, with
- *               semantics that exactly match g_ascii_tolower.
+ *               semantics that exactly match g_ascii_tolower. (Note
+ *               that this is unlike the old g_strdown, which modified
+ *               the string in place.)
  **/
 gchar*
-g_ascii_strdown (gchar *string)
+g_ascii_strdown (const gchar *string)
 {
   gchar *result, *s;
   
@@ -995,10 +997,12 @@ g_ascii_strdown (gchar *string)
  * 
  * Return value: a newly allocated string, with all the lower case
  *               characters in @string converted to upper case, with
- *               semantics that exactly match g_ascii_toupper.
+ *               semantics that exactly match g_ascii_toupper. (Note
+ *               that this is unlike the old g_strup, which modified
+ *               the string in place.)
  **/
 gchar*
-g_ascii_strup (gchar *string)
+g_ascii_strup (const gchar *string)
 {
   gchar *result, *s;
 
@@ -1573,6 +1577,7 @@ g_strsplit (const gchar *string,
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (delimiter != NULL, NULL);
+  g_return_val_if_fail (delimiter[0] != '\0', NULL);
 
   if (max_tokens < 1)
     max_tokens = G_MAXINT;

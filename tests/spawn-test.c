@@ -24,6 +24,7 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
 #include <glib.h>

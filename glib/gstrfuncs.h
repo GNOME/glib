@@ -82,8 +82,8 @@ gint                  g_ascii_strcasecmp  (const gchar *s1,
 gint                  g_ascii_strncasecmp (const gchar *s1,
 					   const gchar *s2,
 					   guint        n);
-gchar*                g_ascii_strdown     (gchar       *string);
-gchar*                g_ascii_strup       (gchar       *string);
+gchar*                g_ascii_strdown     (const gchar *string);
+gchar*                g_ascii_strup       (const gchar *string);
 
 #ifndef G_DISABLE_DEPRECATED
 
