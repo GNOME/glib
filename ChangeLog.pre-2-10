@@ -1,3 +1,7 @@
+2002-12-11  Pauli Virtanen <pauli.virtanen@hut.fi>
+
+	* configure.in: Added "fi" to ALL_LINGUAS.
+
 Wed Dec 11 17:00:20 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* acglib.m4 (ac_compile): Add GLIB_ASSERT_SET() as
