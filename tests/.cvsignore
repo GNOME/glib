@@ -19,6 +19,8 @@ array-test
 cxx-test
 date-test
 dirname-test
+env-test
+file-test
 hash-test
 iochannel-test
 iochannel-test-outfile
@@ -27,6 +29,7 @@ mainloop-test
 markup-test
 module-test
 node-test
+printf-test
 queue-test
 qsort-test
 rand-test
