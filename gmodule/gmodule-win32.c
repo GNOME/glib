@@ -227,13 +227,13 @@ _g_module_build_path (const gchar *directory,
   k = strlen (module_name);
     
   if (directory && *directory)
-    if (k > 4 && g_strcasecmp (module_name + k - 4, ".dll") == 0)
+    if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, NULL);
     else if (strncmp (module_name, "lib", 3) == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
     else
       return g_strconcat (directory, G_DIR_SEPARATOR_S, "lib", module_name, ".dll", NULL);
-  else if (k > 4 && g_strcasecmp (module_name + k - 4, ".dll") == 0)
+  else if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
     return g_strdup (module_name);
   else if (strncmp (module_name, "lib", 3) == 0)
     return g_strconcat (module_name, ".dll", NULL);
