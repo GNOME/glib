@@ -342,7 +342,7 @@ if test "$gt_cv_have_gettext" != "yes" ; then
 ])
 fi
 
-LIBS="$LIBS $INTLLIBS"
+LIBS="$INTLLIBS $LIBS"
 
 GETTEXT_PACKAGE=glib20
 AC_SUBST(GETTEXT_PACKAGE)
@@ -998,7 +998,7 @@ dnl *** additional checks for G_MODULE_IMPL_DL
 if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
 	LIBS_orig="$LIBS"
 	LDFLAGS_orig="$LDFLAGS"
-	LIBS="$LIBS $G_MODULE_LIBS"
+	LIBS="$G_MODULE_LIBS $LIBS"
 	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
 dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
 	AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
@@ -1448,14 +1448,14 @@ case $have_threads in
 				defattr=pthread_attr_default
 			fi
 			
-			LIBS="$glib_save_LIBS $add_thread_lib"
+			LIBS="$add_thread_lib $glib_save_LIBS"
 			
 			AC_MSG_CHECKING(for pthread_create/pthread_join$IN)
 			AC_TRY_RUN(glib_thread_test,
                                    glib_result=yes,
                                    glib_result=no,
                                    [AC_LINK_IFELSE(glib_thread_test,
-                                                   glib_result=yes
+                                                   glib_result=yes,
                                                    glib_result=no)])
                         AC_MSG_RESULT($glib_result)
 			
@@ -1481,14 +1481,14 @@ case $have_threads in
 	      add_thread_lib="-l$thread_lib"
 	      IN=" in -l$thread_lib"
 	    fi
-	    LIBS="$glib_save_LIBS $add_thread_lib"
+	    LIBS="$add_thread_lib $glib_save_LIBS"
 	    
             AC_MSG_CHECKING(for sched_get_priority_min$IN)
 	    AC_TRY_RUN(glib_sched_priority_test,
                        glib_result=yes,
                        glib_result=no,
                        [AC_LINK_IFELSE(glib_sched_priority_test,
-                                       glib_result=yes
+                                       glib_result=yes,
                                        glib_result=no)])
 	    AC_MSG_RESULT($glib_result)
 
@@ -1596,7 +1596,7 @@ int main () {
 			fi
 		fi
 	fi
-	LIBS="$LIBS $G_THREAD_LIBS"
+	LIBS="$G_THREAD_LIBS $LIBS"
 	if test x"$have_threads" = xposix; then
 		glib_save_CPPFLAGS="$CPPFLAGS"
 		CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
@@ -1726,7 +1726,7 @@ dnl mutex_default_type, mutex_default_init and mutex_header_file
 if test $mutex_has_default = yes ; then
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	glib_save_LIBS="$LIBS"
-	LIBS="$LIBS $G_THREAD_LIBS"
+	LIBS="$G_THREAD_LIBS $LIBS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
 	GLIB_SIZEOF([#include <$mutex_header_file>],
                     $mutex_default_type,

@@ -1,3 +1,15 @@
+Thu Dec 12 23:08:29 2002  Owen Taylor  <otaylor@redhat.com>
+
+	Fixes from Johannes Stezenbach
+
+	* configure.in: When adding extra libraries to $LIBS for
+	tests, always put them at the front, since that's how
+	they'll be used in the actual Makefiles.
+
+	* configure.in: Add a couple of missing ','s in AC_LINK_IFELSE()
+
+	* m4macros/glib-gettext.m4: Remove a stray setting of $LIBS.
+
 Thu Dec 12 20:46:26 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Allow not setting glib_cv_long_long_format
