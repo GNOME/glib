@@ -1,3 +1,7 @@
+2002-12-05  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
+
+	* ja.po: Updated Japanese translation.
+
 Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.in.in: Use datadir, not $(prefix)/share. (#89339)
