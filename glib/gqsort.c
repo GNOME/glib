@@ -120,9 +120,12 @@ g_qsort_with_data (gconstpointer    pbase,
   char *pivot_buffer = (char *) g_alloca (size);
   const size_t max_thresh = MAX_THRESH * size;
 
-  g_return_if_fail (total_elems > 0);
-  g_return_if_fail (pbase != NULL);
+  g_return_if_fail (total_elems >= 0);
+  g_return_if_fail (pbase != NULL || total_elems == 0);
   g_return_if_fail (compare_func != NULL);
+
+  if (total_elems == 0)
+    return;
 
   if (total_elems > MAX_THRESH)
     {
