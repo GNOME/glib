@@ -1,3 +1,10 @@
+2002-12-18  Michael Natterer  <mitch@gimp.org>
+
+	* gobject/gtype.c (type_data_finalize_class_ifaces_Wm): applied
+	patch I got from Tim Janik for testing which fixes bug #101521.
+	(restart iterating the interface enties each time we finalized one
+	because they might have been modified).
+
 2002-12-17  Matthias Clasen  <maclas@gmx.de>
 
 	* gparam.c (g_param_spec_internal): Remove markup from doc

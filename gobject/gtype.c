@@ -1624,34 +1624,33 @@ type_class_init_Wm (TypeNode   *node,
 static void
 type_data_finalize_class_ifaces_Wm (TypeNode *node)
 {
-  IFaceEntry *entry;
   guint i;
-  
+
   g_assert (node->is_instantiatable && node->data && node->data->class.class && node->data->common.ref_count == 0);
-  
+
   g_message ("finalizing interfaces for %sClass `%s'",
 	     type_descriptive_name_I (NODE_FUNDAMENTAL_TYPE (node)),
 	     type_descriptive_name_I (NODE_TYPE (node)));
-  
-  for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
-    if (CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable &&
-	CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable->g_instance_type == NODE_TYPE (node))
-      entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
-  while (entry)
+
+ reiterate:
+  for (i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
     {
-      if (!type_iface_vtable_finalize_Wm (lookup_type_node_I (entry->iface_type), node, entry->vtable))
+      IFaceEntry *entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
+      if (entry->vtable)
 	{
-	  /* type_iface_vtable_finalize_Wm() doesn't modify write lock upon FALSE,
-	   * iface vtable came from parent
-	   */
-	  entry->vtable = NULL;
+          if (type_iface_vtable_finalize_Wm (lookup_type_node_I (entry->iface_type), node, entry->vtable))
+            {
+              /* refetch entries, IFACES_ENTRIES might be modified */
+              goto reiterate;
+            }
+          else
+            {
+              /* type_iface_vtable_finalize_Wm() doesn't modify write lock upon FALSE,
+               * iface vtable came from parent
+               */
+              entry->vtable = NULL;
+            }
 	}
-      
-      /* refetch entry, IFACES_ENTRIES might be modified */
-      for (entry = NULL, i = 0; i < CLASSED_NODE_N_IFACES (node); i++)
-	if (CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable &&
-	    CLASSED_NODE_IFACES_ENTRIES (node)[i].vtable->g_instance_type == NODE_TYPE (node))
-	  entry = CLASSED_NODE_IFACES_ENTRIES (node) + i;
     }
 }
 
