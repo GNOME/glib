@@ -571,7 +571,7 @@ output_special_case (gchar *out_buffer,
 
   if (which == 1)
     {
-      while (p[0] && p[1])
+      while (p[0] || p[1])
 	p += 2;
       p += 2;
     }
