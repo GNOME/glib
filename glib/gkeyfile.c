@@ -365,7 +365,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
   gchar read_buf[4096];
 
   fstat (fd, &stat_buf);
-  if (!S_ISREG (stat_buf.st_mode))
+  if ((stat_buf.st_mode & S_IFMT) == S_IFREG)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,

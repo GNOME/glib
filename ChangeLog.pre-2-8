@@ -1,3 +1,8 @@
+2004-10-28  Ray Strode  <rstrode@redhat.com>
+
+	* glib/gkeyfile.c: Don't use S_ISREG macro (#156728,
+	Kazuki IWAMOTO)
+
 2004-10-28  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gstdio.c: Include galias.h before glib.h (#156697,
