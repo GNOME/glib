@@ -1,3 +1,10 @@
+Mon Nov 19 14:35:56 2001  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* *.h: Improve the detection of invalid includes by moving
+ 	the test outside the duplicate include guards.
+ 
+	* gsourceclosure.c (g_source_set_closure): Doc fix.
+
 Thu Nov 22 03:30:57 2001  Tim Janik  <timj@gtk.org>
 
 	* gvalue.h (G_TYPE_IS_VALUE): use g_type_check_is_value_type()

@@ -157,7 +157,7 @@ static GSourceCallbackFuncs closure_callback_funcs = {
 /**
  * g_source_set_closure:
  * @source: the source
- * @func: a #GClosure
+ * @closure: a #GClosure
  *
  * Set the callback for a source as a #GClosure.
  *
