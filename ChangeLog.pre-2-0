@@ -1,3 +1,9 @@
+Wed Jan 20 16:16:01 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* gutils.c (g_get_any_init):
+	Revert previous patch, move error value set line down to proper
+	place.  Caught by Elliot Lee <sopwith@redhat.com>.
+
 Wed Jan 20 20:48:58 GMT 1999  Adam D. Moss  <adam@gimp.org>
 
 	* gutils.c (g_get_any_init): All gtk apps were broken
