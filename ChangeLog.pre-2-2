@@ -1,3 +1,12 @@
+2000-11-11  Tor Lillqvist  <tml@iki.fi>
+
+	* gfileutils.c (g_file_open_tmp): New function, suggested by Havoc
+	earlier this month.
+	(g_mkstemp): Use only one case for letters in temp file name, as
+	this will be used on systems with case-insensitive file systems.
+
+	* testglib.c (main): Test g_mkstemp() and g_file_open_tmp().
+
 2000-11-09  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthreadpool.c: Don't take other threads with other priorities

@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include "glib.h"
 
 int array[10000];
@@ -349,6 +350,12 @@ main (int   argc,
   guint64 gu64t1 = G_GINT64_CONSTANT(0x1d636b02300a7aa7U),
 	  gu64t2 = G_GINT64_CONSTANT(0xa77a0a30026b631dU);
 #endif
+  const char hello[] = "Hello, World";
+  const int hellolen = sizeof (hello) - 1;
+  int fd;
+  char template[10];
+  GError *error;
+  char *name_used;
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
 	   glib_major_version,
@@ -1085,6 +1092,71 @@ main (int   argc,
   g_print ("current locale: %s\n", g_win32_getlocale ());
 #endif
 
+  g_print ("checking file functions...\n");
+
+  strcpy (template, "foobar");
+  fd = g_mkstemp (template);
+  if (fd != -1)
+    g_print ("g_mkstemp works even if template doesn't end in XXXXXX\n");
+  close (fd);
+  strcpy (template, "fooXXXXXX");
+  fd = g_mkstemp (template);
+  if (fd == -1)
+    g_print ("g_mkstemp didn't work for template %s\n", template);
+  i = write (fd, hello, hellolen);
+  if (i == -1)
+    g_print ("write() failed: %s\n", g_strerror (errno));
+  else if (i != hellolen)
+    g_print ("write() should have written %d bytes, wrote %d\n", hellolen, i);
+
+  lseek (fd, 0, 0);
+  i = read (fd, chars, sizeof (chars));
+  if (i == -1)
+    g_print ("read() failed: %s\n", g_strerror (errno));
+  else if (i != hellolen)
+    g_print ("read() should have read %d bytes, got %d\n", hellolen, i);
+
+  chars[i] = 0;
+  if (strcmp (chars, hello) != 0)
+    g_print ("wrote '%s', but got '%s'\n", hello, chars);
+
+  close (fd);
+  remove (template);
+
+  strcpy (template, "zap" G_DIR_SEPARATOR_S "barXXXXXX");
+  fd = g_file_open_tmp (template, &name_used, &error);
+  if (fd != -1)
+    g_print ("g_file_open_tmp works even if template contains '%s'\n",
+	     G_DIR_SEPARATOR_S);
+  else
+    g_print ("g_file_open_tmp correctly returns error: %s\n",
+	     error->message);
+  close (fd);
+  g_clear_error (&error);
+
+  strcpy (template, "zapXXXXXX");
+  fd = g_file_open_tmp (template, &name_used, &error);
+  if (fd == -1)
+    g_print ("g_file_open_tmp didn't work for template '%s': %s\n",
+	     template, error->message);
+  else
+    g_print ("g_file_open_tmp for template '%s' used name '%s'\n",
+	     template, name_used);
+  close (fd);
+  g_clear_error (&error);
+  remove (name_used);
+
+  fd = g_file_open_tmp (NULL, &name_used, &error);
+  if (fd == -1)
+    g_print ("g_file_open_tmp didn't work for a NULL template: %s\n",
+	     error->message);
+  else
+    g_print ("g_file_open_tmp for NULL template used name '%s'\n",
+	     name_used);
+  close (fd);
+  g_clear_error (&error);
+  remove (name_used);
+  
   return 0;
 }
 

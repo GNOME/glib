@@ -103,6 +103,7 @@ EXPORTS
 	g_file_error_quark
 	g_file_get_contents
 	g_file_test
+	g_file_open_tmp
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free

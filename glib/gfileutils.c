@@ -518,7 +518,7 @@ g_file_get_contents (const gchar *filename,
  * end in "XXXXXX". The X string will be modified to form the name
  * of a file that didn't exist.
  *
- * Return value: A file handle (as from open()) to the file file
+ * Return value: A file handle (as from open()) to the file
  * opened for reading and writing. The file is opened in binary mode
  * on platforms where there is a difference. The file handle should be
  * closed with close(). In case of errors, -1 is returned.
@@ -534,7 +534,8 @@ g_mkstemp (char *tmpl)
   char *XXXXXX;
   int count, fd;
   static const char letters[] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  static const int NLETTERS = sizeof (letters) - 1;
   glong value;
   GTimeVal tv;
 
@@ -554,17 +555,17 @@ g_mkstemp (char *tmpl)
       glong v = value;
 
       /* Fill in the random bits.  */
-      XXXXXX[0] = letters[v % 62];
-      v /= 62;
-      XXXXXX[1] = letters[v % 62];
-      v /= 62;
-      XXXXXX[2] = letters[v % 62];
-      v /= 62;
-      XXXXXX[3] = letters[v % 62];
-      v /= 62;
-      XXXXXX[4] = letters[v % 62];
-      v /= 62;
-      XXXXXX[5] = letters[v % 62];
+      XXXXXX[0] = letters[v % NLETTERS];
+      v /= NLETTERS;
+      XXXXXX[1] = letters[v % NLETTERS];
+      v /= NLETTERS;
+      XXXXXX[2] = letters[v % NLETTERS];
+      v /= NLETTERS;
+      XXXXXX[3] = letters[v % NLETTERS];
+      v /= NLETTERS;
+      XXXXXX[4] = letters[v % NLETTERS];
+      v /= NLETTERS;
+      XXXXXX[5] = letters[v % NLETTERS];
 
       fd = open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0600);
 
@@ -580,4 +581,95 @@ g_mkstemp (char *tmpl)
   /* We got out of the loop because we ran out of combinations to try.  */
   return -1;
 #endif
+}
+
+/**
+ * g_file_open_tmp:
+ * @template: Template for file name, as in g_mkstemp, basename only
+ * @name_used: location to store actual name used
+ * @error: return location for a #GError
+ *
+ * Opens a file for writing in the preferred directory for temporary
+ * files (as returned by g_get_tmp_dir()). 
+ *
+ * @template should be a string ending with six 'X' characters, as the
+ * parameter to g_mkstemp() (or mktemp()). However, unlike these
+ * functions, the template should only be a basename, no directory
+ * components are allowed. If template is NULL, a default template is
+ * used.
+ *
+ * The actual name used is returned in @name_used if non-NULL. This
+ * string should be freed with g_free when not needed any longer.
+ *
+ * If some error occurs, @error is set, and -1 is returned. Otherwise,
+ * the file descriptor to a file opened for reading and writing with
+ * g_mkstemp() is returned.
+ **/
+int
+g_file_open_tmp (const char *template,
+		 char      **name_used,
+		 GError    **error)
+{
+  int retval;
+  char mytemplate[10];
+  char *tmpdir;
+  char *sep;
+  char *fulltemplate;
+
+  if (template == NULL)
+    {
+      strcpy (mytemplate, ".XXXXXX");
+      template = mytemplate;
+    }
+
+  if (strchr (template, G_DIR_SEPARATOR))
+    {
+      g_set_error (error,
+		   G_FILE_ERROR,
+		   G_FILE_ERROR_FAILED,
+		   _("Template '%s' illegal, should not contain a '%s'"),
+		   template, G_DIR_SEPARATOR_S);
+
+      return -1;
+    }
+  
+  if (strlen (template) < 6 ||
+      strcmp (template + strlen (template) - 6, "XXXXXX") != 0)
+    {
+      g_set_error (error,
+		   G_FILE_ERROR,
+		   G_FILE_ERROR_FAILED,
+		   _("Template '%s' doesn end with XXXXXX"),
+		   template);
+      return -1;
+    }
+
+  tmpdir = g_get_tmp_dir ();
+
+  if (tmpdir [strlen (tmpdir) - 1] == G_DIR_SEPARATOR)
+    sep = "";
+  else
+    sep = G_DIR_SEPARATOR_S;
+
+  fulltemplate = g_strconcat (tmpdir, sep, template, NULL);
+
+  retval = g_mkstemp (fulltemplate);
+
+  if (retval == -1)
+    {
+      g_set_error (error,
+		   G_FILE_ERROR,
+		   g_file_error_from_errno (errno),
+		   _("Failed to create file '%s': %s"),
+		   fulltemplate, strerror (errno));
+      g_free (fulltemplate);
+      return -1;
+    }
+
+  if (name_used)
+    *name_used = fulltemplate;
+  else
+    g_free (fulltemplate);
+
+  return retval;
 }
