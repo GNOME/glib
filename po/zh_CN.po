@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-02 16:01-0500\n"
-"PO-Revision-Date: 2004-11-22 08:32+0800\n"
+"POT-Creation-Date: 2004-12-04 04:21+0100\n"
+"PO-Revision-Date: 2004-12-04 16:12+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -210,16 +210,16 @@ msgstr ""
 "&amp;"
 
 #: glib/gmarkup.c:584
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "无法解析“%s”。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
+msgstr "分析“%-.*s”失败。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
 
 #: glib/gmarkup.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "字符引用“%s”不是编码一个被允许的字符"
+msgstr "字符引用“%-.*s”不是编码一个被允许的字符"
 
 #: glib/gmarkup.c:624
 msgid "Empty character reference; should include a digit such as &#454;"
