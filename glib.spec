@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      1.1.3
+%define ver      1.1.4
 %define rel      SNAP
 %define prefix   /usr
 
@@ -69,6 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc AUTHORS COPYING ChangeLog NEWS README
 %{prefix}/lib/libglib-1.1.so.*
+%{prefix}/lib/libgmodule-1.1.so.*
 
 %files devel
 %defattr(-, root, root)
