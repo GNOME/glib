@@ -24,7 +24,7 @@ $1
 AC_DIVERT_POP()])])])
 
 dnl GLIB_IF_VAR_EQ (ENV_VAR, VALUE [, EQUALS_ACTION] [, ELSE_ACTION])
-AC_DEFUN(GLIB_IF_VAR_EQ,[
+AC_DEFUN([GLIB_IF_VAR_EQ],[
         case "$[$1]" in
         "[$2]"[)]
                 [$3]
@@ -35,7 +35,7 @@ AC_DEFUN(GLIB_IF_VAR_EQ,[
         esac
 ])
 dnl GLIB_STR_CONTAINS (SRC_STRING, SUB_STRING [, CONTAINS_ACTION] [, ELSE_ACTION])
-AC_DEFUN(GLIB_STR_CONTAINS,[
+AC_DEFUN([GLIB_STR_CONTAINS],[
         case "[$1]" in
         *"[$2]"*[)]
                 [$3]
@@ -46,7 +46,7 @@ AC_DEFUN(GLIB_STR_CONTAINS,[
         esac
 ])
 dnl GLIB_ADD_TO_VAR (ENV_VARIABLE, CHECK_STRING, ADD_STRING)
-AC_DEFUN(GLIB_ADD_TO_VAR,[
+AC_DEFUN([GLIB_ADD_TO_VAR],[
         GLIB_STR_CONTAINS($[$1], [$2], [$1]="$[$1]", [$1]="$[$1] [$3]")
 ])
 
@@ -71,7 +71,7 @@ AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), $AS_TR_SH([glib_cv_sizeof_$3]),
 ])# GLIB_SIZEOF
 
 dnl GLIB_BYTE_CONTENTS (INCLUDES, TYPE, ALIAS, N_BYTES, INITIALIZER)
-AC_DEFUN(GLIB_BYTE_CONTENTS,
+AC_DEFUN([GLIB_BYTE_CONTENTS],
 [pushdef([glib_ByteContents], GLIB_TR_SH([glib_cv_byte_contents_$3]))dnl
 AC_CACHE_CHECK([byte contents of $5], glib_ByteContents,
 [AC_TRY_RUN([#include <stdio.h>

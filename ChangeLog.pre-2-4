@@ -1,4 +1,9 @@
-Fri Feb 27 01:44:41 2004  Matthias Clasen  <maclas@gmx.de>
+Fri Feb 27 02:00:34 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* acglib.m4: quote AC_DEFUN macro names so automake
+	1.8 won't whine at us.  (#134882)
+
+Fri Feb 27 01:44:41 2004  Matthias Clasen <maclas@gmx.de>
 
 	* glib/gdate.c: Translate from locale era to AD in 
 	g_date_set_parse().  (#133400, Theppitak Karoonboonyanan)
