@@ -1,7 +1,7 @@
 Sat Feb 21 13:45:08 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* glib/gqueue.[ch]: Extend GQueue API to match the GList
-	API. (#118439).
+	API. (#78414).
 
 	* tests/queue-test.c: Update test suite to cover the new API.
 
