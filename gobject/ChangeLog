@@ -1,3 +1,8 @@
+2001-01-03  Alexander Larsson  <alexl@redhat.com>
+
+	* gobject.c:
+	Move glib_debug_objects out of the G_ENABLE_DEBUG #ifdef.
+
 Thu Dec 28 11:36:44 2000  Tim Janik  <timj@gtk.org>
 
 	* gbsearcharray.c (upper_power2): disable G_BSEARCH_ALIGN_POWER2

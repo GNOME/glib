@@ -133,13 +133,14 @@ static gulong	         gobject_signals[LAST_SIGNAL] = { 0, };
 
 
 /* --- functions --- */
-#ifdef	G_ENABLE_DEBUG
 /* We need an actual method for handling debug keys in GLib.
  * For now, we'll simply use, as a method
  * 'extern gboolean glib_debug_objects'
  */
-static volatile GObject *glib_trap_object_ref = NULL;
 gboolean glib_debug_objects = FALSE;
+
+#ifdef	G_ENABLE_DEBUG
+static volatile GObject *glib_trap_object_ref = NULL;
 static guint		  debug_objects_count = 0;
 static GHashTable	 *debug_objects_ht = NULL;
 static void
