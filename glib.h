@@ -1685,8 +1685,10 @@ gchar*  g_path_skip_root	(gchar       *file_name);
 /* strings are newly allocated with g_malloc() */
 gchar*	g_dirname		(const gchar *file_name);
 gchar*	g_get_current_dir	(void);
-gchar*  g_getenv		(const gchar *variable);
 
+/* return the environment string for the variable. The returned memory
+ * must not be freed. */
+gchar*  g_getenv		(const gchar *variable);
 
 /* we use a GLib function as a replacement for ATEXIT, so
  * the programmer is not required to check the return value
