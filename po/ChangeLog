@@ -1,3 +1,7 @@
+2002-12-11  Pauli Virtanen <pauli.virtanen@hut.fi>
+
+	* fi.po: Added Finnish translation from Lauri Nurmi.
+
 Wed Dec 11 14:06:50 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* po/Makefile.in.in: Fix problem from recent commit where
