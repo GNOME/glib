@@ -1,3 +1,9 @@
+Wed Feb  4 17:58:51 2004  Manish Singh  <yosh@gimp.org>
+
+	* glib/gcompletion.h: Add prototype for g_completion_complete_utf8().
+
+	* tests/completion-test.c: #include <string.h>
+
 2004-02-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_completion_complete_utf8.
