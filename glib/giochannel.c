@@ -122,6 +122,7 @@ g_io_add_watch_full (GIOChannel    *channel,
 		     GDestroyNotify notify)
 {
   GSource *source;
+  guint id;
   
   g_return_val_if_fail (channel != NULL, 0);
 
@@ -131,7 +132,10 @@ g_io_add_watch_full (GIOChannel    *channel,
     g_source_set_priority (source, priority);
   g_source_set_callback (source, (GSourceFunc)func, user_data, notify);
 
-  return g_source_attach (source, NULL);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
 }
 
 guint 

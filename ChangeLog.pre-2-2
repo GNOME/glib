@@ -1,3 +1,22 @@
+Sun Dec 10 10:47:11 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_source_destroy_internal): Remove pollfds
+	from the context here, not when actually freeing the
+	source.
+
+	* gmain.c (g_source_unref_internal): Free source list
+	and source, call source->source_funcs->destroy().
+
+	* giochannel.c: Unreference io_channel properly.
+
+Thu Dec  7 15:22:30 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/mainloop-test.c (recurser_start): Add a bunch
+	of unrefs.
+
+	* gmain.c (g_source_attach): Reference the source
+	when adding (pointed out by Elliot)
+
 2000-12-08  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* acglib.m4 (GLIB_AC_DIVERT_BEFORE_HELP): 

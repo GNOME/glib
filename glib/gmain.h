@@ -71,7 +71,7 @@ struct _GSourceFuncs
   gboolean (*dispatch) (GSource    *source,
 			GSourceFunc callback,
 			gpointer    user_data);
-  void     (*destroy)  (GSource    *source);
+  void     (*destroy)  (GSource    *source); /* Can be NULL */
 };
 
 /* Any definitions using GPollFD or GPollFunc are primarily

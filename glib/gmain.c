@@ -782,6 +782,7 @@ g_source_destroy_internal (GSource      *source,
   
   if (!SOURCE_DESTROYED (source))
     {
+      GSList *tmp_list;
       gpointer old_cb_data;
       GSourceCallbackFuncs *old_cb_funcs;
       
@@ -798,6 +799,13 @@ g_source_destroy_internal (GSource      *source,
 	  UNLOCK_CONTEXT (context);
 	  old_cb_funcs->unref (old_cb_data);
 	  LOCK_CONTEXT (context);
+	}
+      
+      tmp_list = source->poll_fds;
+      while (tmp_list)
+	{
+	  g_main_context_remove_poll_unlocked (context, tmp_list->data);
+	  tmp_list = tmp_list->next;
 	}
       
       g_source_unref_internal (source, context, TRUE);
@@ -894,7 +902,8 @@ g_source_add_poll (GSource *source,
   
   g_return_if_fail (source != NULL);
   g_return_if_fail (fd != NULL);
-
+  g_return_val_if_fail (!SOURCE_DESTROYED (source), 0);
+  
   context = source->context;
 
   if (context)
@@ -1179,17 +1188,15 @@ g_source_unref_internal (GSource      *source,
 	  g_warning (G_STRLOC ": ref_count == 0, but source is still attached to a context!");
 	  source->ref_count++;
 	}
-      else
-	{
-	  g_source_list_remove (source, context);
-	  
-	  tmp_list = source->poll_fds;
-	  while (tmp_list)
-	    {
-	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	      tmp_list = tmp_list->next;
-	    }
-	}
+      else if (context)
+	g_source_list_remove (source, context);
+
+      if (source->source_funcs->destroy)
+	source->source_funcs->destroy (source);
+      
+      g_slist_free (source->poll_fds);
+      source->poll_fds = NULL;
+      g_free (source);
     }
   
   if (!have_lock && context)
