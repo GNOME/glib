@@ -336,7 +336,9 @@ extern "C" {
  */
 #if defined (__i386__) && defined (__GNUC__)
 #define	G_BREAKPOINT()		G_STMT_START{ __asm__ __volatile__ ("int $03"); }G_STMT_END
-#else	/* !__i386__ */
+#elif defined (__alpha__) && defined (__GNUC__)
+#define	G_BREAKPOINT()		G_STMT_START{ __asm__ __volatile__ ("bpt"); }G_STMT_END
+#else	/* !__i386__ && !__alpha__ */
 #define	G_BREAKPOINT()
 #endif	/* __i386__ */
 
