@@ -185,6 +185,8 @@ g_type_module_unuse
 g_type_module_set_name
 g_type_module_register_type
 g_type_module_add_interface
+g_type_module_register_enum
+g_type_module_register_flags
 <SUBSECTION Standard>
 G_TYPE_MODULE
 G_IS_TYPE_MODULE

@@ -1,3 +1,9 @@
+Tue Jul  6 00:54:38 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: 
+	* gobject/tmpl/gtypemodule.sgml: Add g_type_module_register_enum()
+	and g_type_module_register_flags().
+
 Mon Jul  5 18:49:56 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/messages.sgml: 

@@ -1,7 +1,15 @@
+Tue Jul  6 00:46:43 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gtypemodule.h: 
+	* gtypemodule.c (g_type_module_register_flags): 
+	* gtypemodule.c (g_type_module_register_enum): New 
+	functions to register enum and flags types from a 
+	GTypeModule.  (#145396, Sven Neumann)
+
 Wed Jun 23 12:55:34 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.h (G_DEFINE_TYPE_EXTENDED): Add an initializer for
-	the g_define_type_info.value_table.  (#144678,Mariano 
+	the g_define_type_info.value_table.  (#144678, Mariano 
 	Suárez-Alvarez) 
 
 Tue Jun 22 21:50:47 2004  Matthias Clasen  <maclas@gmx.de>

@@ -387,3 +387,39 @@ g_type_module_add_interface (GTypeModule          *module,
   module_interface_info->loaded = TRUE;
   module_interface_info->info = *interface_info;
 }
+
+void
+g_type_module_register_enum (GTypeModule      *module,
+                             const gchar      *name,
+                             const GEnumValue *const_static_values)
+{
+  GTypeInfo enum_type_info = { 0, };
+
+  g_return_val_if_fail (G_IS_TYPE_MODULE (module), 0);
+  g_return_val_if_fail (name != NULL, 0);
+  g_return_val_if_fail (const_static_values != NULL, 0);
+
+  g_enum_complete_type_info (G_TYPE_ENUM,
+                             &enum_type_info, const_static_values);
+
+  return g_type_module_register_type (G_TYPE_MODULE (module),
+                                      G_TYPE_ENUM, name, &enum_type_info, 0);
+}
+
+void
+g_type_module_register_flags (GTypeModule      *module,
+                             const gchar       *name,
+                             const GFlagsValue *const_static_values)
+{
+  GTypeInfo flags_type_info = { 0, };
+
+  g_return_val_if_fail (G_IS_TYPE_MODULE (module), 0);
+  g_return_val_if_fail (name != NULL, 0);
+  g_return_val_if_fail (const_static_values != NULL, 0);
+
+  g_flags_complete_type_info (G_TYPE_FLAGS,
+                             &flags_type_info, const_static_values);
+
+  return g_type_module_register_type (G_TYPE_MODULE (module),
+                                      G_TYPE_FLAGS, name, &flags_type_info, 0);
+}
