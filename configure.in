@@ -62,14 +62,16 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 # Specify a configuration file
 AM_CONFIG_HEADER(config.h)
 
-AC_DEFINE_UNQUOTED(GLIB_MAJOR_VERSION, $GLIB_MAJOR_VERSION)
-AC_DEFINE_UNQUOTED(GLIB_MINOR_VERSION, $GLIB_MINOR_VERSION)
-AC_DEFINE_UNQUOTED(GLIB_MICRO_VERSION, $GLIB_MICRO_VERSION)
-AC_DEFINE_UNQUOTED(GLIB_INTERFACE_AGE, $GLIB_INTERFACE_AGE)
-AC_DEFINE_UNQUOTED(GLIB_BINARY_AGE, $GLIB_BINARY_AGE)
-
-dnl Initialize libtool
-AM_PROG_LIBTOOL
+AC_DEFINE_UNQUOTED(GLIB_MAJOR_VERSION, $GLIB_MAJOR_VERSION,
+		   [Define to the GLIB major version])
+AC_DEFINE_UNQUOTED(GLIB_MINOR_VERSION, $GLIB_MINOR_VERSION,
+		   [Define to the GLIB minor version])
+AC_DEFINE_UNQUOTED(GLIB_MICRO_VERSION, $GLIB_MICRO_VERSION,
+		   [Define to the GLIB micro version])
+AC_DEFINE_UNQUOTED(GLIB_INTERFACE_AGE, $GLIB_INTERFACE_AGE,
+		   [Define to the GLIB interface age])
+AC_DEFINE_UNQUOTED(GLIB_BINARY_AGE, $GLIB_BINARY_AGE,
+		   [Define to the GLIB binary age])
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
@@ -115,7 +117,7 @@ fi
 
 AC_MSG_CHECKING(whether to enable memory checking)
 if test "x$enable_mem_check" = "xyes"; then
-  AC_DEFINE(ENABLE_MEM_CHECK, 1)
+  AC_DEFINE(ENABLE_MEM_CHECK, 1, [Whether to enable memory checking])
   AC_SUBST(ENABLE_MEM_CHECK)
   AC_MSG_RESULT(yes)
 else
@@ -124,7 +126,7 @@ fi
 
 AC_MSG_CHECKING(whether to enable memory profiling)
 if test "x$enable_mem_profile" = "xyes"; then
-  AC_DEFINE(ENABLE_MEM_PROFILE, 1)
+  AC_DEFINE(ENABLE_MEM_PROFILE, 1, [Whether to enable memory profiling])
   AC_SUBST(ENABLE_MEM_PROFILE)
   AC_MSG_RESULT(yes)
 else
@@ -133,7 +135,7 @@ fi
 
 AC_MSG_CHECKING(whether to enable garbage collector friendliness)
 if test "x$enable_gc_friendly" = "xyes"; then
-  AC_DEFINE(ENABLE_GC_FRIENDLY, 1)
+  AC_DEFINE(ENABLE_GC_FRIENDLY, 1, [Whether to enable GC friendliness])
   AC_SUBST(ENABLE_GC_FRIENDLY)
   AC_MSG_RESULT(yes)
 else
@@ -149,10 +151,12 @@ else
   fi
 fi
 
-AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}")
+AC_DEFINE_UNQUOTED(G_COMPILED_WITH_DEBUGGING, "${enable_debug}",
+	[Whether glib was compiled with debugging enabled])
 
 if test "x$enable_msg_prefix" = "xyes"; then
-  AC_DEFINE_UNQUOTED(G_ENABLE_MSG_PREFIX, 1)
+  AC_DEFINE_UNQUOTED(G_ENABLE_MSG_PREFIX, 1, 
+		     [Enable prefixing of error messages with program names])
 fi
 
 # Checks for programs.
@@ -160,26 +164,27 @@ AC_PROG_CC
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
-changequote(,)dnl
+dnl Initialize libtool
+AM_PROG_LIBTOOL
+
 if test "x$GCC" = "xyes"; then
   case " $CFLAGS " in
-  *[\ \	]-Wall[\ \	]*) ;;
+  *[[\ \	]]-Wall[[\ \	]]*) ;;
   *) CFLAGS="$CFLAGS -Wall" ;;
   esac
 
   if test "x$enable_ansi" = "xyes"; then
     case " $CFLAGS " in
-    *[\ \	]-ansi[\ \	]*) ;;
+    *[[\ \	]]-ansi[[\ \	]]*) ;;
     *) CFLAGS="$CFLAGS -ansi" ;;
     esac
 
     case " $CFLAGS " in
-    *[\ \	]-pedantic[\ \	]*) ;;
+    *[[\ \	]]-pedantic[[\ \	]]*) ;;
     *) CFLAGS="$CFLAGS -pedantic" ;;
     esac
   fi
 fi
-changequote([,])dnl
 
 dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
 AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
@@ -262,8 +267,7 @@ AC_C_CONST
 dnl AC_C_INLINE is useless to us since it bails out too early, we need to
 dnl truely know which ones of `inline', `__inline' and `__inline__' are
 dnl actually supported.
-AC_MSG_CHECKING(for __inline)
-AC_CACHE_VAL(glib_cv_has__inline,[
+AC_CACHE_CHECK([for __inline],glib_cv_has__inline,[
         AC_TRY_RUN([
 	__inline int foo () { return 0; }
 	int main () { return foo (); }
@@ -273,12 +277,10 @@ AC_CACHE_VAL(glib_cv_has__inline,[
 	glib_cv_has__inline=no
         ,)
 ])
-AC_MSG_RESULT($glib_cv_has__inline)
 case x$glib_cv_has__inline in
-xyes) AC_DEFINE(G_HAVE___INLINE)
+xyes) AC_DEFINE(G_HAVE___INLINE,1,[Have __inline keyword])
 esac
-AC_MSG_CHECKING(for __inline__)
-AC_CACHE_VAL(glib_cv_has__inline__,[
+AC_CACHE_CHECK([for __inline__],glib_cv_has__inline__,[
         AC_TRY_RUN([
 	__inline__ int foo () { return 0; }
 	int main () { return foo (); }
@@ -288,12 +290,10 @@ AC_CACHE_VAL(glib_cv_has__inline__,[
 	glib_cv_has__inline__=no
         ,)
 ])
-AC_MSG_RESULT($glib_cv_has__inline__)
 case x$glib_cv_has__inline__ in
-xyes) AC_DEFINE(G_HAVE___INLINE__)
+xyes) AC_DEFINE(G_HAVE___INLINE__,1,[Have __inline__ keyword])
 esac
-AC_MSG_CHECKING(for inline)
-AC_CACHE_VAL(glib_cv_hasinline,[
+AC_CACHE_CHECK([for inline], glib_cv_hasinline,[
         AC_TRY_RUN([
 	inline int foo () { return 0; }
 	int main () { return foo (); }
@@ -303,9 +303,8 @@ AC_CACHE_VAL(glib_cv_hasinline,[
 	glib_cv_hasinline=no
         ,)
 ])
-AC_MSG_RESULT($glib_cv_hasinline)
 case x$glib_cv_hasinline in
-xyes) AC_DEFINE(G_HAVE_INLINE)
+xyes) AC_DEFINE(G_HAVE_INLINE,1,[Have inline keyword])
 esac
 
 # check for bytesex stuff
@@ -375,7 +374,7 @@ if test "$ac_cv_func_memmove" != "yes"; then
         return(0);
       }],glib_cv_working_bcopy=yes,glib_cv_working_bcopy=no)])
   if test "$glib_cv_working_bcopy" == "yes"; then
-    AC_DEFINE(HAVE_WORKING_BCOPY)
+    AC_DEFINE(HAVE_WORKING_BCOPY,1,[Have a working bcopy])
   fi
 fi
 
@@ -388,7 +387,7 @@ sys_errlist[sys_nerr-1][0] = 0;
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_ERRLIST)
+    AC_DEFINE(NO_SYS_ERRLIST,1,[global 'sys_errlist' not found])
 fi
 
 # Check for sys_siglist
@@ -399,7 +398,7 @@ exit (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_SIGLIST)
+    AC_DEFINE(NO_SYS_SIGLIST,1,[global 'sys_siglist' not found])
 fi
 
 # Check for sys_siglist decl (see Tue Jan 19 00:44:24 1999 in changelog)
@@ -409,7 +408,7 @@ strlen (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
-    AC_DEFINE(NO_SYS_SIGLIST_DECL)
+    AC_DEFINE(NO_SYS_SIGLIST_DECL,1,[global 'sys_siglist' not declared])
 fi
 
 # Check if <sys/select.h> needs to be included for fd_set
@@ -421,38 +420,36 @@ if test $gtk_ok = yes; then
 else
     AC_HEADER_EGREP(fd_set, sys/select.h, gtk_ok=yes)
     if test $gtk_ok = yes; then
-        AC_DEFINE(HAVE_SYS_SELECT_H)
+	# *** FIXME: give it a different name
+        AC_DEFINE(HAVE_SYS_SELECT_H,1,[found fd_set in sys/select.h])
         AC_MSG_RESULT([yes, found in sys/select.h])
     else
-	AC_DEFINE(NO_FD_SET)
+	AC_DEFINE(NO_FD_SET,1,[didn't find fd_set])
 	AC_MSG_RESULT(no)
     fi
 fi
 
 dnl *** check for sane realloc() ***
-AC_MSG_CHECKING(whether realloc (NULL,) will work)
-AC_CACHE_VAL(glib_cv_sane_realloc,[
+AC_CACHE_CHECK([whether realloc (NULL,) will work],glib_cv_sane_realloc,[
         AC_TRY_RUN([
         #include <stdlib.h>
         int main() {
           return realloc (0, sizeof (int)) == 0;
         }],
-        glib_cv_sane_realloc=yes
-        ,
-        glib_cv_sane_realloc=no
-        ,)
+        [glib_cv_sane_realloc=yes],
+        [glib_cv_sane_realloc=no],
+	[])
 ])
 if test x$glib_cv_sane_realloc = xyes; then
-  AC_DEFINE(REALLOC_0_WORKS)
+  AC_DEFINE(REALLOC_0_WORKS,1,[whether realloc (NULL,) works])
 fi
-AC_MSG_RESULT($glib_cv_sane_realloc)
 
 dnl Check for nl_langinfo and CODESET
 
 AC_MSG_CHECKING([for nl_langinfo (CODESET)])
 AC_TRY_COMPILE([#include <langinfo.h>],
 	[char *codeset = nl_langinfo (CODESET);],
-   AC_DEFINE(HAVE_CODESET)
+   AC_DEFINE(HAVE_CODESET,1,[Have nl_langinfo (CODESET)])
    have_codeset=yes,
    have_codeset=no)
 AC_MSG_RESULT($have_codeset)
@@ -471,7 +468,7 @@ char *p = malloc(10);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = yes; then
-    AC_DEFINE(HAVE_STRLCPY)
+    AC_DEFINE(HAVE_STRLCPY,1,[Have functions strlcpy and strlcat])
 fi
   
 
@@ -480,8 +477,7 @@ dnl *** va_copy checks ***
 dnl **********************
 dnl we currently check for all three va_copy possibilities, so we get
 dnl all results in config.log for bug reports.
-AC_MSG_CHECKING(for an implementation of va_copy())
-AC_CACHE_VAL(glib_cv_va_copy,[
+AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 	AC_TRY_RUN([
 	#include <stdarg.h>
 	void f (int i, ...) {
@@ -496,14 +492,11 @@ AC_CACHE_VAL(glib_cv_va_copy,[
 	  f (0, 42);
 	  return 0;
 	}],
-	glib_cv_va_copy=yes
-	,
-	glib_cv_va_copy=no
-	,)
+	[glib_cv_va_copy=yes],
+	[glib_cv_va_copy=no],
+	[])
 ])
-AC_MSG_RESULT($glib_cv_va_copy)
-AC_MSG_CHECKING(for an implementation of __va_copy())
-AC_CACHE_VAL(glib_cv___va_copy,[
+AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
 	AC_TRY_RUN([
 	#include <stdarg.h>
 	void f (int i, ...) {
@@ -518,14 +511,23 @@ AC_CACHE_VAL(glib_cv___va_copy,[
 	  f (0, 42);
 	  return 0;
 	}],
-	glib_cv___va_copy=yes
-	,
-	glib_cv___va_copy=no
-	,)
+	[glib_cv___va_copy=yes],
+	[glib_cv___va_copy=no],
+	[])
 ])
-AC_MSG_RESULT($glib_cv___va_copy)
-AC_MSG_CHECKING(whether va_lists can be copied by value)
-AC_CACHE_VAL(glib_cv_va_val_copy,[
+
+if test "x$glib_cv_va_copy" = "xyes"; then
+  g_va_copy_func=va_copy
+else if test "x$glib_cv___va_copy" = "xyes"; then
+  g_va_copy_func=__va_copy
+fi
+fi
+
+if test -n "$g_va_copy_func"; then
+  AC_DEFINE_UNQUOTED(G_VA_COPY,$g_va_copy_func,[A 'va_copy' style function])
+fi
+
+AC_CACHE_CHECK([whether va_lists can be copied by value],glib_cv_va_val_copy,[
 	AC_TRY_RUN([
 	#include <stdarg.h>
 	void f (int i, ...) {
@@ -540,22 +542,14 @@ AC_CACHE_VAL(glib_cv_va_val_copy,[
 	  f (0, 42);
 	  return 0;
 	}],
-	glib_cv_va_val_copy=yes
-	,
-	glib_cv_va_val_copy=no
-	,)
+	[glib_cv_va_val_copy=yes],
+	[glib_cv_va_val_copy=no],
+	[])
 ])
-if test "x$glib_cv_va_copy" = "xyes"; then
-  AC_DEFINE(G_VA_COPY, va_copy)
-else if test "x$glib_cv___va_copy" = "xyes"; then
-  AC_DEFINE(G_VA_COPY, __va_copy)
-fi
-fi
-if test "x$glib_cv_va_val_copy" = "xno"; then
-  AC_DEFINE(G_VA_COPY_AS_ARRAY)
-fi
-AC_MSG_RESULT($glib_cv_va_val_copy)
 
+if test "x$glib_cv_va_val_copy" = "xno"; then
+  AC_DEFINE(G_VA_COPY_AS_ARRAY,1, ['va_lists' cannot be copies as values])
+fi
 
 dnl ***********************
 dnl *** g_module checks ***
@@ -577,11 +571,11 @@ fi
 dnl *** load_image (BeOS)
 if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
   AC_CHECK_LIB(root, load_image,
-      G_MODULE_LIBS="-lbe -lroot -lglib"
+      [G_MODULE_LIBS="-lbe -lroot -lglib"
       G_MODULE_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
       G_MODULE_PLUGIN_LIBS="-L\$(top_builddir_full)/gmodule/.libs -lgmodule"
-      G_MODULE_IMPL=G_MODULE_IMPL_BEOS 
-,)
+      G_MODULE_IMPL=G_MODULE_IMPL_BEOS],
+      [])
 fi   
 # *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
@@ -600,9 +594,8 @@ if test -z "$G_MODULE_IMPL"; then
                 [ G_MODULE_LDFLAGS="-Wl,-E" ],[
                 LDFLAGS="$SAVED_LDFLAGS -bexpall"
                 AC_TRY_LINK(,[ return 0; ],
-                        G_MODULE_LDFLAGS="-bexpall",
-                        G_MODULE_LDFLAGS="none"
-                )
+                        [G_MODULE_LDFLAGS="-bexpall"],
+                        [G_MODULE_LDFLAGS="none"])
         ])
         LDFLAGS=$SAVED_LDFLAGS
         AC_MSG_RESULT($G_MODULE_LDFLAGS)
@@ -610,9 +603,9 @@ if test -z "$G_MODULE_IMPL"; then
                 G_MODULE_LDFLAGS=
         fi
 	AC_CHECK_LIB(dld, shl_load,
-		G_MODULE_LIBS=-ldld
-		G_MODULE_IMPL=G_MODULE_IMPL_DLD
-	,)
+		[G_MODULE_LIBS=-ldld
+		G_MODULE_IMPL=G_MODULE_IMPL_DLD],
+		[])
 fi
 dnl *** additional checks for G_MODULE_IMPL_DL
 if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
@@ -626,8 +619,8 @@ if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
 	LIBS="$LIBS $G_MODULE_LIBS"
 	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
 dnl *** check whether we need preceeding underscores
-	AC_MSG_CHECKING(for preceeding underscore in symbols)
-	AC_CACHE_VAL(glib_cv_uscore,[
+	AC_CACHE_CHECK([for preceeding underscore in symbols],
+		glib_cv_uscore,[
 		AC_TRY_RUN([
 		#include <dlfcn.h>
                 int glib_underscore_test (void) { return 42; }
@@ -639,12 +632,11 @@ dnl *** check whether we need preceeding underscores
 		    f2 = dlsym (handle, "_glib_underscore_test");
 		  } return (!f2 || f1);
 		}],
-			glib_cv_uscore=yes,
-			glib_cv_uscore=no,
-		)
+			[glib_cv_uscore=yes],
+			[glib_cv_uscore=no],
+			[])
 		rm -f plugin.c plugin.o plugin.lo
 	])
-	AC_MSG_RESULT($glib_cv_uscore)
 	if test "x$glib_cv_uscore" = "xyes"; then
   		G_MODULE_NEED_USCORE=1
 	else
@@ -654,8 +646,8 @@ dnl *** check whether we need preceeding underscores
 	LDFLAGS="$LDFLAGS_orig"
 dnl *** check for having dlerror()
 	AC_CHECK_FUNC(dlerror,
-		G_MODULE_HAVE_DLERROR=1,
-		G_MODULE_HAVE_DLERROR=0)
+		[G_MODULE_HAVE_DLERROR=1],
+		[G_MODULE_HAVE_DLERROR=0])
 	LIBS="$LIBS_orig"
 fi
 dnl *** done, have e got an implementation?
@@ -954,8 +946,7 @@ if test x"$have_threads" != xnone; then
 	# LIBS="$LIBS $G_THREAD_LIBS"
 	AC_CHECK_FUNCS(localtime_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
-		AC_MSG_CHECKING([for getpwuid_r])
-	 	AC_CACHE_VAL(ac_cv_func_getpwuid_r,
+	 	AC_CACHE_CHECK([for getpwuid_r],ac_cv_func_getpwuid_r,
 			[AC_TRY_RUN([#include <errno.h>
 				int main () { char buffer[10000], *pointer; 
 				char getpwuid_r (long, void*, void*,
@@ -968,10 +959,7 @@ if test x"$have_threads" != xnone; then
 				[ac_cv_func_getpwuid_r=yes],
 				[ac_cv_func_getpwuid_r=no])])
 		if test "$ac_cv_func_getpwuid_r" = yes; then
-			AC_MSG_RESULT(yes)
-			AC_DEFINE(HAVE_GETPWUID_R)
-		else
-			AC_MSG_RESULT(no)
+			AC_DEFINE(HAVE_GETPWUID_R,1,[Have function getpwuid_r])
 		fi
 		if test "$ac_cv_func_getpwuid_r" = "yes"; then
 			AC_MSG_CHECKING(whether getpwuid_r is posix like)
@@ -981,7 +969,8 @@ if test x"$have_threads" != xnone; then
 				#include <sys/types.h>
 				#include <stdlib.h>],
 				[getpwuid_r((uid_t)0, NULL, NULL, (size_t)0, NULL);],
-				[AC_DEFINE(HAVE_GETPWUID_R_POSIX)
+				[AC_DEFINE(HAVE_GETPWUID_R_POSIX,1,
+				 [Function getpwuid_r has the POSIX signature])
 				AC_MSG_RESULT(yes)],
 				[AC_MSG_RESULT(no)])
 		fi
@@ -999,7 +988,8 @@ if test x"$have_threads" != xnone; then
 		AC_TRY_LINK([#include <pthread.h>],
 			[pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
 			[AC_MSG_RESULT(yes)
-			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
+			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE,1,
+				  [Have function pthread_attr_setstacksize])],
 			[AC_MSG_RESULT(no)])
 		AC_MSG_CHECKING(for minimal/maximal thread priority)
 		if test x"$posix_priority_min" = xnone; then
@@ -1021,8 +1011,8 @@ if test x"$have_threads" != xnone; then
 			posix_priority_max=-1
 		else
 			AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
-			AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min)
-			AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max)
+			AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min,[Minimum POSIX RT priority])
+			AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max,[Maximum POSIX RT priority])
 		fi
 		posix_yield_func=none
 		AC_MSG_CHECKING(for posix yield function)
@@ -1041,7 +1031,7 @@ if test x"$have_threads" != xnone; then
 			AC_MSG_RESULT($posix_yield_func)
 			posix_yield_func="$posix_yield_func()"
 		fi
-		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func)
+		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func,[The POSIX RT yield function])
 		CPPFLAGS="$glib_save_CPPFLAGS"
 	else # solaris threads
 		GLIB_SIZEOF([#include <thread.h>],
@@ -1064,7 +1054,8 @@ else
 	GLIB_SIZEOF(, void*, system_thread)
 fi	
 
-AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
+AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
+		   [Source file containing theread implementation])
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 AC_SUBST(G_THREAD_LIBS_EXTRA)
@@ -1651,4 +1642,3 @@ echo "do development with GLib 1.2 any longer."
 echo ""
 echo " *** You should be using GLib 1.2 instead. ***"
 ])
-

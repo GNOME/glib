@@ -4,10 +4,12 @@ INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 EFENCE=
 
 EXTRA_DIST = \
-	makefile.msc	\
 	makefile.msc.in	\
-	makefile.mingw	\
 	makefile.mingw.in
+
+BUILT_EXTRA_DIST = \
+	makefile.msc	\
+	makefile.mingw
 
 TESTS = \
 	array-test	\
@@ -60,4 +62,10 @@ makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 
 makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done
 

@@ -1,3 +1,8 @@
+2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (BUILT_EXTRA_DIST): New variable.
+	(dist-hook): Handle $(BUILT_EXTRA_DIST).
+
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gmodule.h: Moved declaration of g_log_domain_gmodule up before
@@ -72,32 +77,32 @@
 
 Wed Mar  1 05:34:47 2000  Tim Janik  <timj@gtk.org>
 
-        * gmodule-beos.c (_g_module_symbol): do not return NULL symbols.
+	* gmodule-beos.c (_g_module_symbol): do not return NULL symbols.
 
-        * gmodule-os2.c: removed NetBSD specific defines.
-        (_g_module_self): set an error message for unsupported behaviour.
+	* gmodule-os2.c: removed NetBSD specific defines.
+	(_g_module_self): set an error message for unsupported behaviour.
 
-        * gmodule-beos.c: many coding style fixups.
-        (_g_module_open):
-        (_g_module_self):
-        (_g_module_close):
-        (_g_module_symbol): bunch of memory leaks plugged.
+	* gmodule-beos.c: many coding style fixups.
+	(_g_module_open):
+	(_g_module_self):
+	(_g_module_close):
+	(_g_module_symbol): bunch of memory leaks plugged.
 
-        * gmodule-dl.c: make sure the error message returned from dlerror()
-        is always != NULL, by using a wrapper function fetch_dlerror(). based
-        on a patch to fix _g_module_symbol() for NetBSD from Scott Presnell
-        <srp@zgi.com>.
+	* gmodule-dl.c: make sure the error message returned from dlerror()
+	is always != NULL, by using a wrapper function fetch_dlerror(). based
+	on a patch to fix _g_module_symbol() for NetBSD from Scott Presnell
+	<srp@zgi.com>.
 
-        * gmodule-dld.c: minor indentation.
+	* gmodule-dld.c: minor indentation.
 
-        * gmodule-win32.c: minor cleanups.
+	* gmodule-win32.c: minor cleanups.
 
 	* merges from glib-1-2.
 
 Sat Feb 19 19:43:29 2000  Tim Janik  <timj@gtk.org>
 
-        * testgmodule.c (main): added test to check that not yet bound symbols
-        in shared libraries of the main module are retrievable, from David Gero.
+	* testgmodule.c (main): added test to check that not yet bound symbols
+	in shared libraries of the main module are retrievable, from David Gero.
 
 2000-01-13  Martin Baulig  <martin@home-of-linux.org>
 
@@ -114,9 +119,9 @@ Sat Jul 24 20:47:18 1999  Tim Janik  <timj@gtk.org>
 	* merged changes from GLib-1-2 branch.
 
 1999-05-06  Tor Lillqvist  <tml@iki.fi>
-	
+
 	* gmodule.c: Remove LibMain.
-	
+
 Sat May  1 10:58:57 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* Makefile.am: use -avoid-version and -module for test plugins
@@ -147,8 +152,8 @@ Wed Feb 10 07:56:33 1999  Tim Janik  <timj@gtk.org>
 
 Thu Jan 21 12:40:11 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
-        * gmodule-dl.c (_g_module_build_path):
-        Add braces to eliminate an ambiguous else warning.
+	* gmodule-dl.c (_g_module_build_path):
+	Add braces to eliminate an ambiguous else warning.
 
 1999-01-16  Tor Lillqvist  <tml@iki.fi>
 
@@ -176,10 +181,10 @@ Fri Nov 20 14:43:44 1998  Tim Janik  <timj@gtk.org>
 
 Wed Nov 11 23:23:22 EST 1998 Jeff Garzik <jgarzik@pobox.com>
 
-        * Makefile.am : INCLUDES is the right way to add to CFLAGS, not 
-        DEFS.  Also there are bugs with '+=' in makefiles.
-        Got rid of DEFS line by moving G_LOG_DOMAIN setting into INCLUDES.
-        Removed redundant -I from INCLUDES.
+	* Makefile.am : INCLUDES is the right way to add to CFLAGS, not 
+	DEFS.  Also there are bugs with '+=' in makefiles.
+	Got rid of DEFS line by moving G_LOG_DOMAIN setting into INCLUDES.
+	Removed redundant -I from INCLUDES.
 
 Tue Oct 27 04:00:11 1998  Tim Janik  <timj@gtk.org>
 
@@ -199,7 +204,7 @@ Tue Oct 27 04:00:11 1998  Tim Janik  <timj@gtk.org>
 	* gmodule-dld.c (_g_module_build_path): 
 	* gmodule-win32.c (_g_module_build_path): 
 	feature empty "" directories.
-	
+
 	* we need some more magic in the _g_module_build_path variants
 	so we don't append/prepend lib and .so, .sl or .dll for those names
 	that already contain it.
@@ -208,20 +213,20 @@ Tue Oct 27 04:00:11 1998  Tim Janik  <timj@gtk.org>
 	windows support.
 
 1998-10-20: Tor Lillqvist <tml@iki.fi>
-        
-	* gmodule/gmodule-win32.c:
-        New file.
 
-        * gmodule/gmodule.c gmodule/gmodule.h:
-        Added the funcion g_module_build_path that builds the path to
-        a module file, decorating the name according to the system's
-        conventions.  Added the Windows implementation.
+	* gmodule/gmodule-win32.c:
+	New file.
+
+	* gmodule/gmodule.c gmodule/gmodule.h:
+	Added the funcion g_module_build_path that builds the path to
+	a module file, decorating the name according to the system's
+	conventions.  Added the Windows implementation.
 
 	* gmodule/libgplugin_a.c gmodule/libgplugin_b.c:
-        Added LibMain for LCC-Win32.
+	Added LibMain for LCC-Win32.
 
-        * gmodule/testgmodule.c:
-        Handle Windows dll names.
+	* gmodule/testgmodule.c:
+	Handle Windows dll names.
 
 1998-10-25  Raja R Harinath  <harinath@cs.umn.edu>
 
@@ -309,7 +314,6 @@ Sun Aug  9 15:57:38 1998  Tim Janik  <timj@gtk.org>
 	* gmodule.h: 
 	* gmodule.c: GModule library implementation, which is basically
 	a wrapper about system specifc dynamic loading facilities.
-	
 
 Sun Aug  9 10:31:05 1998  Tim Janik  <timj@gtk.org>
 

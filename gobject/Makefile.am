@@ -9,21 +9,20 @@ INCLUDES = -I$(top_srcdir) -I$(top_builddir) -I. @GLIB_DEBUG_FLAGS@
 lib_LTLIBRARIES = libgobject-1.3.la
 
 # provide g_logv() domain
-DEFS += -DG_LOG_DOMAIN=g_log_domain_gobject
+AM_CFLAGS = -DG_LOG_DOMAIN=g_log_domain_gobject
 
 # libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
-libgobject_1_3_la_LDFLAGS = @STRIP_BEGIN@ \
+libgobject_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic \
-@STRIP_END@
+	-export-dynamic
 libgobject_1_3_la_LIBADD = # $(libglib)
 
 #
 # setup source file variables
 #
 # GObject header files for public installation (non-generated)
-gobject_public_h_sources = @STRIP_BEGIN@ \
+gobject_public_h_sources = \
 	gvalue.h \
 	gvaluetypes.h \
 	gparam.h \
@@ -31,28 +30,25 @@ gobject_public_h_sources = @STRIP_BEGIN@ \
 	genums.h \
 	gobject.h \
 	gtype.h \
-	gvaluecollector.h \
-@STRIP_END@
+	gvaluecollector.h 
+
 # private GObject header files
-gobject_private_h_sources = @STRIP_BEGIN@ \
-@STRIP_END@
+gobject_private_h_sources = 
 
 # GObject C sources to build the library from
-gobject_c_sources = @STRIP_BEGIN@ \
+gobject_c_sources = \
 	gvalue.c \
 	gvaluetypes.c \
 	gparam.c \
 	gparamspecs.c \
 	genums.c \
 	gobject.c \
-	gtype.c \
-@STRIP_END@
+	gtype.c
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
-gobject_extra_sources = @STRIP_BEGIN@ \
-@STRIP_END@
+gobject_extra_sources = 
 
 #
 # setup GObject sources and their dependancies
@@ -81,13 +77,15 @@ gobject_query_LDADD = $(progs_LDADD)
 # auxillary files
 #
 EXTRA_DIST += 			\
-	makefile.mingw		\
 	makefile.mingw.in 	\
-	makefile.msc		\
 	makefile.msc.in 	\
 	gobject.def		\
-	gobject.rc		\
 	gobject.rc.in
+
+BUILT_EXTRA_DIST = \
+	makefile.mingw		\
+	makefile.msc		\
+	gobject.rc
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status
@@ -97,3 +95,10 @@ makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gobject/makefile.min
 
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gobject/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done
+

@@ -1,9 +1,16 @@
+2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (BUILT_EXTRA_DIST): New variable.
+	(dist-hook): Handle $(BUILT_EXTRA_DIST).
+	(*): Remove traces of @STRIP_{BEGIN,END}@.
+	
 2000-09-29  Martin Baulig  <baulig@suse.de>
 	
 	Several minor ANSI C fixes.
 
 	Added missing casts:
-	* gtype.c (type_class_init): `(gpointer) bnode->data->class.class_init_base'
+	* gtype.c (type_class_init): 
+	`(gpointer) bnode->data->class.class_init_base'
 	in call to g_slist_prepend() and
 	'GBaseInitFunc class_init_base = (GBaseInitFunc) slist->data'.
 

@@ -79,6 +79,7 @@ TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = 				\
 	$(DOC_MAIN_SGML_FILE)		\
+	$(DOC_MODULE)-decl.txt		\
 	$(DOC_MODULE)-sections.txt	\
 	$(DOC_MODULE)-overrides.txt
 
@@ -113,7 +114,7 @@ html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	@echo '-- Fixing Crossreferences' 
-	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIOJNS)
+	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 
 clean-local:
 	rm -f *~ *.bak *.signals *-unused.txt
@@ -142,17 +143,18 @@ if ENABLE_GTK_DOC
 dist-check-gtkdoc:
 else
 dist-check-gtkdoc:
-	@echo "*** gtk-doc must be installed and enabled in order to make dist
+	@echo "*** gtk-doc must be installed and enabled in order to make dist"
 	@false
 endif
 
 dist-hook: dist-check-gtkdoc
-	mkdir $(distdir)/html
-	mkdir $(distdir)/sgml
 	mkdir $(distdir)/tmpl
-	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
+	mkdir $(distdir)/sgml
+	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
 	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
+	-cp $(srcdir)/html/index.sgml $(distdir)/html
+	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
 
 .PHONY : html sgml templates scan

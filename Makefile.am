@@ -19,23 +19,27 @@ EXTRA_DIST = 			\
 	README.win32		\
 	TODO.xml		\
 	glib.def		\
-	makefile.msc		\
 	makefile.msc.in		\
-	makefile.mingw		\
 	makefile.mingw.in	\
 	giowin32.c		\
-	glibconfig.h.win32	\
 	glibconfig.h.win32.in	\
 	gwin32.c		\
-	config.h.win32		\
 	config.h.win32.in	\
 	build-dll		\
-	glib.rc			\
 	glib.rc.in		\
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
 	gthread-2.0.pc.in
+
+# These may be in the builddir too
+BUILT_EXTRA_DIST = \
+	makefile.msc		\
+	makefile.mingw		\
+	glibconfig.h.win32	\
+	config.h.win32		\
+	glib.rc			\
+	glib.spec
 
 lib_LTLIBRARIES = libglib-1.3.la
 
@@ -78,8 +82,10 @@ libglib_1_3_la_SOURCES = 	\
 	gunichartables.h	\
 	gunidecomp.h		\
 	gunidecomp.c		\
-	gutils.c		\
-	@ALLOCA@
+	gutils.c
+
+## If we decide to link in 'alloca.c', this is how to do it
+#libglib_1_3_la_LIBADD = @ALLOCA@
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
@@ -194,5 +200,8 @@ snapshot:
 snapcheck:
 	$(MAKE) distcheck distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
 
-dist-hook:
-	cp glib.spec $(distdir)
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done

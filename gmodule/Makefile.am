@@ -4,9 +4,7 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule \
 	-DG_LOG_DOMAIN=g_log_domain_gmodule @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST =	\
-		makefile.mingw	\
 		makefile.mingw.in \
-		makefile.msc	\
 		makefile.msc.in \
 		gmoduleconf.h.in \
 		gmodule.def	\
@@ -16,8 +14,12 @@ EXTRA_DIST =	\
 		gmodule-win32.c	\
 		gmodule-beos.c	\
 		gmoduleconf.h.win32 \
-		gmodule.rc	\
 		gmodule.rc.in
+
+BUILT_EXTRA_DIST = \
+		makefile.mingw	\
+		makefile.msc	\
+		gmodule.rc
 
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
@@ -82,3 +84,10 @@ install-libLTLIBRARIES: libgmodule-1.3.la
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)`date +"%y%m%d"`
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	@files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done
+

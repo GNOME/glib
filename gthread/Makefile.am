@@ -4,16 +4,18 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
 	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@
 
 EXTRA_DIST =				\
-		makefile.mingw		\
 		makefile.mingw.in	\
-		makefile.msc		\
 		makefile.msc.in		\
 		gthread-posix.c		\
 		gthread-solaris.c	\
 		gthread-none.c		\
 		gthread.def		\
-		gthread.rc		\
 		gthread.rc.in
+
+BUILT_EXTRA_DIST = \
+		makefile.mingw		\
+		makefile.msc		\
+		gthread.rc
 
 libglib = $(top_builddir)/libglib.la # -lglib
 
@@ -36,3 +38,10 @@ makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.min
 
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)'; \
+	for f in $$files; do \
+	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
+	  cp $$d/$$f $(distdir) || exit 1; done
+

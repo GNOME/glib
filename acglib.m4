@@ -70,7 +70,7 @@ main()
 ],
   [glib_Sizeof=0],
   ifelse([$4], [], [], [glib_Sizeof=$4]))])
-AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), [$[]glib_Sizeof])
+AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_sizeof_$3), [$[]glib_Sizeof], [Size of $3])
 popdef([glib_Sizeof])dnl
 ])
 
@@ -96,7 +96,8 @@ main()
 ], 
    [glib_ByteContents=no],
    [glib_ByteContents=no])])
-AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_byte_contents_$3), [$[]glib_ByteContents])
+AC_DEFINE_UNQUOTED(GLIB_TR_CPP(glib_byte_contents_$3), [$[]glib_ByteContents],
+	[Byte contents of $3])
 popdef([glib_ByteContents])dnl
 ])
 

@@ -1,3 +1,27 @@
+2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
+
+	Remove need for acconfig.h, and misc. cleanups.
+	* acglib.m4 (GLIB_SIZEOF): Add 'autoheader' comment to
+	AC_DEFINE_UNQUOTED.
+	(GLIB_BYTE_CONTENTS): Likewise.
+
+	* configure.in: Add 'autoheader' comments to all AC_DEFINE(...)
+	and AC_DEFINE_UNQUOTED(...) lines.
+	Replace AC_MSG_CHECKING/AC_CACHE_VAL with AC_CACHE_CHECK.
+	(AM_PROG_LIBTOOL): Move after AC_PROG_CC.
+	
+	* acconfig.h: Empty out.
+
+	* Makefile.am (BUILT_EXTRA_DIST): New variable.  List 'dist'able
+	files that are created in the builddir.
+	(dist-hook): Handle those files.
+	(libglib_1_3_la_SOURCES): Remove @ALLOCA@.  @ALLOCA@ should only
+	be used in an _LDADD or _LIBADD, since it expands (if necessary)
+	to 'alloca.o'.
+
+	* tests/Makefile.am (BUILT_EXTRA_DIST): New variable.
+	(dist-hook): Handle $(BUILT_EXTRA_DIST).
+	
 2000-10-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* grand.c: Added inline documentation. 
@@ -26,11 +50,11 @@
 	* gmacros.h: Added G_BEGIN_DECLS and G_END_DECLS to mean: 'in case
 	of C++: extern "C" { ... }' analogous to glibc __BEGIN_DECLS and
 	__END_DECLS.
-	
+
 	* configure.in, gerror.h, gfileutils.h, gshell.h, gspawn.h,
 	gunicode.h, : Changed guard-macro names to something more
 	consistent.
-	
+
 	* configure.in, *.h: Use G_BEGIN_DECLS and G_END_DECLS.
 
 	* configure.in: Defined GLIB_HAVE_ALLOCA_H instead of including
@@ -59,7 +83,7 @@
 2000-10-09  Havoc Pennington  <hp@redhat.com>
 
 	* Makefile.am, tests/Makefile.am: Add new files.
-	
+
 	* tests/spawn-test.c, tests/shell-test.c: new tests for
 	the shell/spawn stuff
 
@@ -84,7 +108,7 @@
 
 	* makefile.msc.in: Revamp to be like makefile.mingw.in, make
 	the MSVC build actually work again.
-	
+
 	* gmodule/makefile.msc.in
 	* gobject/makefile.msc.in
 	* gthread/makefile.msc.in: New files, like their mingw counterparts.
@@ -92,17 +116,17 @@
 	* gmodule/Makefile.am
 	* gobject/Makefile.am
 	* gthread/Makefile.am: Make and distribute them.
-	
+
 	* */makefile.mingw.in: Allow override of GLib version number from
 	the build/win32/module.defs file.
-	
+
 	* glib.def: Add new entry point.
 
 	* tests/gio-test.c (main): Fix the Win32-only code to use current
 	API, g_io_channel_win32_make_pollfd() and g_io_channel_win32_poll().
 
 	Fixes from Hans Breuer:
-	
+
 	* glib.h (struct DIR): Keep the last readdir result cached inside
 	the DIR struct, to enable several DIRs being open simultaneously.
 
@@ -161,9 +185,9 @@
 	(GConvertError): generic error is conventionally called
 	_FAILED rather than _OTHER, at least at the moment, 
 	according to GError docs in docs/reference.
-	
+
 	* gconvert.c: s/_OTHER/_FAILED/
-	
+
 2000-09-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Adjusted the test for an unimplemented
@@ -219,7 +243,7 @@ Mon Sep 25 2000 Elliot Lee <sopwith@redhat.com>
 
 	* glib.h: Only use the gcc-variable-macro-argument-extension for
 	gcc >= 2.4. Both patches from Jonas Oberg <jonas@gnu.org>.
-						   
+
 Mon Sep 18 10:58:21 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gutf8.c: Implement g_ucs4_to_utf8 which was in
@@ -229,7 +253,7 @@ Sun Sep 17 2000 Elliot Lee <sopwith@redhat.com>
 
 	* glib.h configure.in: Define g_alloca() as an
 	alloca-that-works-anywhere.
-	
+
 	* gconvert.c: Fix warnings which could have caused problems on
 	64-bit platforms.
 
@@ -243,7 +267,7 @@ Sun Sep 10 12:37:40 2000  Owen Taylor  <otaylor@redhat.com>
 
 	Also add g_convert_with_fallback() to take care of conversions 
 	where we accept some loss going to the target encoding.
-	
+
 2000-09-10  Havoc Pennington  <hp@redhat.com>
 
 	* gutf8.c (g_utf8_validate): Add this function.
@@ -301,7 +325,7 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 	* gstring.c (g_string_free): Use g_return_val_if_fail instead of
 	g_return_if_fail, as the function now is supposed to return
 	something.
-	
+
 	* gerror.c, gerror.h (g_propagte_error): Added function
 	g_propagte_error to hand over local errors to the calling
 	function.
@@ -315,7 +339,7 @@ Tue Sep  5 20:16:27 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* tests/thread-test.c, tests/threadpool-test.c: Adapted
 	accordingly.
-	
+
 2000-08-31  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h
@@ -422,19 +446,19 @@ Mon Aug 21 14:39:36 2000  Owen Taylor  <otaylor@redhat.com>
 
 Sun Aug  6 20:06:02 2000  Tim Janik  <timj@gtk.org>
 
-        * gmessages.c (g_log_domain_check_free): keep *last updated while
-        running through the domain list, so we don't screw up the removal,
-        patch provided by Gady Kozma <gadykozma@hotmail.com>.
+	* gmessages.c (g_log_domain_check_free): keep *last updated while
+	running through the domain list, so we don't screw up the removal,
+	patch provided by Gady Kozma <gadykozma@hotmail.com>.
 
 Sun Aug  6 20:03:41 2000  Tim Janik  <timj@gtk.org>
 
-        * gmessages.c (g_log_remove_handler): keep *last updated while running
-        through the handler list, so we don't screw up the removal.
+	* gmessages.c (g_log_remove_handler): keep *last updated while running
+	through the handler list, so we don't screw up the removal.
 
 Sun Jul 30 16:54:13 2000  Owen Taylor  <otaylor@redhat.com>
 
-        * gunicode.h: Fix stray character
-	
+	* gunicode.h: Fix stray character
+
 	* gutf8.c (g_unichar_to_utf8): Allow outbuf to be NULL, in
 	which case we just compute the length.
 
@@ -444,9 +468,9 @@ Sun Jul 30 16:54:13 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-07-31  Havoc Pennington  <hp@redhat.com>
 
-        * glib-2.0.pc.in, gobject-2.0.pc.in, gmodule-2.0.pc.in,
+	* glib-2.0.pc.in, gobject-2.0.pc.in, gmodule-2.0.pc.in,
 	gobject-2.0.pc.in: pkg-config data files	 
-	
+
 	* Makefile.am: Install/dist the .pc files
 
 	* configure.in: Output the .pc files
@@ -480,7 +504,7 @@ Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 	the polling routine eventually notices. Meanwhile, the data being
 	read is stored in a circular buffer, from where the IO channel's
 	read() method picks it up.
- 
+
 	If the buffer fills up the reading thread has to wait for space
 	becoming available. For this another Win32 Event is used. The IO
 	Channel's read() method signals this when it has read some data
@@ -503,9 +527,9 @@ Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 	* glib.h: Update documentation for IO Channels on Win32. Remove
 	the declarations for the as of now obsolete old functions related
 	to IO Channels for pipes with "wakeup" messages.
-	
+
 	* glib.def: Some new functions.
-	
+
 	* tests/gio-test.c: New file, to test GIOChannel and main loop.
 
 	* tests/Makefile.am
@@ -516,7 +540,7 @@ Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 	* giowin32.c: Compile in the debugging code all the time, but only
 	output debug messages if told so. Add (unadvertised) function to
 	turn on/off debug messages for a channel.
-	
+
 	(buffer_read): Don't loop. It is expected behaviour to return a
 	short read occasionally, for instance when reading from
 	pipes. It's the calling code that should loop if it *knows* how
@@ -526,7 +550,7 @@ Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
 	(recv_message): Loop calling g_io_channel_read() (in a new
 	function read_all()) until we have all the bytes we want (that we
 	know the writer has written/will write).
-	
+
 Thu Jul 27 05:15:11 2000  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c (g_strlcpy, g_strlcat): completed tor's fix
@@ -554,18 +578,18 @@ Wed Jul 26 05:47:48 2000  Tim Janik  <timj@gtk.org>
 	* glib.h: added g_strlcat() and g_strlcpy() wrappers, supplied by
 	David Wheeler <dwheeler@ida.org>:
 
-        * glib.h, gstrfuncs.c: added g_strlcpy and g_strlcat to support
-          safe manipulation of fixed-length string buffers.
-          These functions were originally developed by Todd Miller to simplify
-          development of security-related programs, and
-          are available on many (but not all) Unix-like systems,
-          including OpenBSD, FreeBSD, and Solaris.  See
-          ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/strlcpy.3
-          and http://www.openbsd.org/security.html.
-          If there's a strlcpy/strlcat on the system, it's called, otherwise
-          an implementation is provided.
+	* glib.h, gstrfuncs.c: added g_strlcpy and g_strlcat to support
+	  safe manipulation of fixed-length string buffers.
+	  These functions were originally developed by Todd Miller to simplify
+	  development of security-related programs, and
+	  are available on many (but not all) Unix-like systems,
+	  including OpenBSD, FreeBSD, and Solaris.  See
+	  ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/strlcpy.3
+	  and http://www.openbsd.org/security.html.
+	  If there's a strlcpy/strlcat on the system, it's called, otherwise
+	  an implementation is provided.
 
-        * testglib.c: Added tests for g_strlcpy, g_strlcat.
+	* testglib.c: Added tests for g_strlcpy, g_strlcat.
 
 Wed Jul 26 05:03:24 2000  Tim Janik  <timj@gtk.org>
 
@@ -612,7 +636,7 @@ Wed Jul 26 00:46:03 2000  Tim Janik  <timj@gtk.org>
 	deprecated. They will issue an warning once, when compiled with
 	G_ENABLE_DEBUG. This fixes Bug #3883. For discussion see
 	http://mail.gnome.org/pipermail/gtk-devel-list/2000-April/003139.html
-	
+
 2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, glib.h: glibconfig.h and glib.h now include files
@@ -662,7 +686,7 @@ Fri Jul 14 12:22:49 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am gobject/Makefile.am gmodule/Makefile.am:
 	Move include files into /usr/include/glib-2.0.
-	
+
 Thu Jul  6 18:54:49 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* docs/Makefile.am (EXTRA_DIST): Remove info files
@@ -734,10 +758,10 @@ Mon Jul  3 17:18:19 2000  Owen Taylor  <otaylor@redhat.com>
 
 Thu Jun 29 15:57:28 2000  Owen Taylor  <otaylor@redhat.com>
 
-        * NEWS: updated
+	* NEWS: updated
 
 	* Makefile.am: added snapcheck target to go along with snapshot
-	
+
 	* gstring.c glib.h (g_string_hash): Add g_string_hash to 
 	go along with g_string_equal.
 
@@ -806,26 +830,26 @@ Mon May 29 14:10:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 Fri May 19 11:39:29 2000  Tim Janik  <timj@gtk.org>
 
-        * gutils.c (g_snprintf):
-        (g_vsnprintf): added argument assertments.
+	* gutils.c (g_snprintf):
+	(g_vsnprintf): added argument assertments.
 
-        * gstring.c (g_string_assign): added argument assertments.
-        (g_string_truncate): make len a guint.
+	* gstring.c (g_string_assign): added argument assertments.
+	(g_string_truncate): make len a guint.
 
 Fri May 19 09:00:44 2000  Tim Janik  <timj@gtk.org>
 
-        * gmem.c (g_free): fixed SIZEOF_LONG==4 assumption with
-        ENABLE_MEM_CHECK, from Art Haas <ahaas@neosoft.com>.
+	* gmem.c (g_free): fixed SIZEOF_LONG==4 assumption with
+	ENABLE_MEM_CHECK, from Art Haas <ahaas@neosoft.com>.
 
-        * gslist.c (g_slist_reverse): shut up compiler.
+	* gslist.c (g_slist_reverse): shut up compiler.
 
-        * gscanner.c (g_scanner_get_token_ll): removed inline assignment.
+	* gscanner.c (g_scanner_get_token_ll): removed inline assignment.
 
-        * garray.c: remove index>=0 checks for unsigned indices.
+	* garray.c: remove index>=0 checks for unsigned indices.
 
-        * gmain.c (g_idle_prepare): timeout assignment fix.
+	* gmain.c (g_idle_prepare): timeout assignment fix.
 
-        * gtree.c (g_tree_node_rotate_right): shut up compiler.
+	* gtree.c (g_tree_node_rotate_right): shut up compiler.
 
 2000-05-13  Tor Lillqvist  <tml@iki.fi>
 
@@ -852,8 +876,8 @@ Fri May 19 09:00:44 2000  Tim Janik  <timj@gtk.org>
 
 Thu May  4 02:04:46 2000  Tim Janik  <timj@gtk.org>
 
-        * configure.in (STRIP_DUMMY): some Make 3.79 $(strip ) versions are
-        broken and require an empty arg, give it to them.
+	* configure.in (STRIP_DUMMY): some Make 3.79 $(strip ) versions are
+	broken and require an empty arg, give it to them.
 
 Fri Apr 28 23:54:35 2000  Tim Janik  <timj@gtk.org>
 
@@ -916,7 +940,7 @@ Wed May 10 19:52:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gasyncqueue.c: New File implementing an asynchronous queue to be
 	used for asynchronous inter-thread communication.
-	
+
 	* gthreadpool.c: New File implementing a thread pool to be used
 	for distributing work among several threads. 
 
@@ -928,7 +952,7 @@ Wed May 10 19:52:44 2000  Owen Taylor  <otaylor@redhat.com>
 	the thread pool.
 
 	* tests/Makefile.am: Changed accordingly.
-	
+
 2000-04-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Look for both pthread_create and pthread_join in
@@ -970,9 +994,9 @@ Wed May 10 19:52:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
 
-        * gscanner.c (g_scanner_new): make sure that
-        scanner->config->cset_skip_characters is "" instead of NULL, so we
-        don't segfault further on.
+	* gscanner.c (g_scanner_new): make sure that
+	scanner->config->cset_skip_characters is "" instead of NULL, so we
+	don't segfault further on.
 
 2000-04-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
@@ -995,7 +1019,7 @@ Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
 	memory released by the user, but cached by GLib. This lets a
 	garbage collector have a more correct view of the actually used
 	memory.
-	
+
 	* garray.c, glib.h: Added g_(array|ptr_array|byte_array)_sized_new
 	functions, that reserve a certain amount of memeory for the array
 	at creation time to avoid reallocation. Fixes bug #6707 from
@@ -1084,7 +1108,7 @@ Wed Mar 22 16:49:57 2000  Owen Taylor  <otaylor@redhat.com>
 	handling of priorities for older solaris versions and posix
 	threads. Thanks to Wan-Teh Chang <wtc@netscape.com> for suggesting
 	some of those changes.
-	
+
 	* config.guess, config.sub, ltconfig, ltmain.sh:
 	Upgrade to libtool 1.3.4.
 
@@ -1133,7 +1157,7 @@ Wed Mar 22 16:49:57 2000  Owen Taylor  <otaylor@redhat.com>
 	* configure.in: Don't use priorities for threads, when the
 	minimal/maximal priorities couldn't be determined at configure
 	time.
-	
+
 	* configure.in, gthread.c: Always define GSystemThread in
 	glibconfig.h to represent a system thread.
 
@@ -1149,14 +1173,14 @@ Wed Mar 22 16:49:57 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gthread.c (g_thread_self): Do not test the system_thread to be
 	non-zero to speed things up.
-	
+
 	* gthread.c (g_mutex_init): Therefore set the system_thread of the
 	main thread here.
 
 	* tests/thread-test.c: Rerun all tests once again, but this time
 	we fool the system into thinking, that the available thread system
 	is not native, but userprovided.
-	
+
 2000-03-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gqueue.c (g_queue_push_tail_link, g_queue_push_head_link): We
@@ -1207,14 +1231,14 @@ Wed Mar  1 10:39:39 2000  Tim Janik  <timj@gtk.org>
 
 Fri Jan 28 11:37:41 2000  Owen Taylor  <otaylor@redhat.com>
 
-        Bug #4156 - Changes vaguely modelled after Scott Gifford's patch
+	Bug #4156 - Changes vaguely modelled after Scott Gifford's patch
 
-        * gtimer.c (g_timer_elapsed): Never report negative times -
-        clip times to 0.
+	* gtimer.c (g_timer_elapsed): Never report negative times -
+	clip times to 0.
 
-        * gmain.c (g_timeout_prepare): Guard against unexpected
-        clock shifts by never setting a timeout of more than
-        data->interval msecs.
+	* gmain.c (g_timeout_prepare): Guard against unexpected
+	clock shifts by never setting a timeout of more than
+	data->interval msecs.
 
 2000-02-27  Tor Lillqvist  <tml@iki.fi>
 
@@ -1235,7 +1259,7 @@ Fri Jan 28 11:37:41 2000  Owen Taylor  <otaylor@redhat.com>
 
 Thu Feb 17 12:53:44 2000  Tim Janik  <timj@gtk.org>
 
-        * gstring.c: changed g_str_hash() to a 31 bit version based on
+	* gstring.c: changed g_str_hash() to a 31 bit version based on
 	a submission by Karl Nelson and hand optimized ad absurdum by
 	various people ;)
 
@@ -1262,7 +1286,7 @@ Thu Feb 17 12:53:44 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: Declare g_string_insert_len, g_string_append_len,
 	g_string_prepend_len
-	
+
 Sun Feb 13 08:16:47 2000  Tim Janik  <timj@gtk.org>
 
 	* configure.in: wtf??? someone destroyed the configure.in, reverting to
@@ -1275,7 +1299,7 @@ Sun Feb 13 08:16:47 2000  Tim Janik  <timj@gtk.org>
 	* Makefile.am
 	* gmodule/Makefile.am
 	* gthread/Makefile.am: Change accordingly.
-	
+
 	* makefile.cygwin: Corresponding changes, some cleanup.
 
 2000-02-05  Tor Lillqvist  <tml@iki.fi>
@@ -1376,9 +1400,9 @@ Sun Jan  9 13:28:36 2000  Tim Janik  <timj@gtk.org>
 
 1999-11-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-        * configure.in: Make the test for getpwuid_r work on newer AIX
-        versions, too. Still works on Solaris and Linux. Patch from Craig
-        Rodrigues <rodrigc@mediaone.net>.
+	* configure.in: Make the test for getpwuid_r work on newer AIX
+	versions, too. Still works on Solaris and Linux. Patch from Craig
+	Rodrigues <rodrigc@mediaone.net>.
 
 1999-11-08  Tor Lillqvist  <tml@iki.fi>
 
@@ -1424,13 +1448,13 @@ Sun Oct 31 18:55:01 1999  ape@spacetec.no  (Asbjorn Pettersen)
 
 Sun Oct 17 18:11:40 1999  Tim Janik  <timj@gtk.org>
 
-        * gdataset.c (g_data_set_internal): remove g_dataset_global_lock around
-        destroy() notification here as well.
+	* gdataset.c (g_data_set_internal): remove g_dataset_global_lock around
+	destroy() notification here as well.
 
 1999-10-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-        * gdataset.c (g_datalist_clear_i): Avoid Freezing, when g_datalist
-        is called recursivly. Reported by Ola Andersson <rand@ling.umu.se>.
+	* gdataset.c (g_datalist_clear_i): Avoid Freezing, when g_datalist
+	is called recursivly. Reported by Ola Andersson <rand@ling.umu.se>.
 
 Tue Oct 12 14:17:12 1999  Tim Janik  <timj@gtk.org>
 
@@ -1478,8 +1502,8 @@ Tue Oct 12 03:34:40 1999  Tim Janik  <timj@gtk.org>
 	we handle G_LITTLE_ENDIAN and G_BIG_ENDIAN as of currently. ieee floats
 	and doubles are supported (used for storage) by at least intel, ppc and
 	sparc, reference:
-        http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
-	
+	http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html
+
 Mon Oct 11 18:01:49 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in: added additional checks to figure sizes of size_t,
@@ -1537,7 +1561,7 @@ Wed Sep 22 01:53:18 1999  Tim Janik  <timj@gtk.org>
 	for erroring out on this, instead of just issueing a warning).
 
 	* glib.h (g_trash_stack_pop): use uncasted NULL again.
-	
+
 Fri Sep 17 10:24:45 1999  Tim Janik  <timj@gtk.org>
 
 	* gmem.c (g_mem_chunk_compute_size) (g_mem_chunk_new): applied patch
@@ -1659,7 +1683,7 @@ Sat Jul 24 20:11:35 1999  Tim Janik  <timj@gtk.org>
 	deprecated g_strescape(), we need the SunOS variants here.
 
 	* gdate.c: added DEBUG_MSG() macro to wrap old messages.
-	
+
 	* *.*: CVS merges.
 
 	* upgrade to libtool 1.3.3.
@@ -1676,7 +1700,7 @@ Sat Jul 24 20:11:35 1999  Tim Janik  <timj@gtk.org>
 
 	* makefile.cygwin.in
 	* tests/makefile.cygwin.in: Remove .gcc from DLL name.
-	
+
 1999-07-13  Tor Lillqvist  <tml@iki.fi>
 
 	* README.win32: Correct URL for mingw runtime sources.
@@ -1716,7 +1740,7 @@ Sat Jul 24 20:11:35 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: Updated the commentary about g_memmove to be right and
 	more GLib-like.
-	
+
 	* configure.in: Removed test for rand_r, as it isn't used anymore.
 
 1999-06-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
@@ -1752,7 +1776,7 @@ Sat Jul 24 20:11:35 1999  Tim Janik  <timj@gtk.org>
 
 	* gtimer.c: Implement g_usleep on native Win32 using Sleep (which
 	only has millisecond granularity, though).
-	
+
 	* makefile.cygwin.in
 	* makefile.msc.in: Update pthreads snapshot version. File
 	name changes. Remove testgthread.
@@ -1869,7 +1893,7 @@ Mon May 10 22:03:52 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 	win32-related files that are made from corresponding .in files.
 	Is there a cleaner way than explicitly writing rules that invoke
 	config.status?
-	
+
 Sat May  1 10:18:01 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
@@ -1887,7 +1911,7 @@ Sat May  1 10:18:01 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: Also substitute @GLIB_INTERFACE_AGE@ and
 	@GLIB_BINARY_AGE@ (needed in config.h.win32).
-	
+
 	* glibconfig.h.win32.in: Use static mutex structure and initial
 	value corresponding to the 1999-04-07 snapshot of pthreads-win32.
 
@@ -1954,7 +1978,7 @@ Sun Apr 11 15:07:34 1999  Tim Janik  <timj@gtk.org>
 
 	* configure.in: bumped versin number to GLib 1.2.2, interface 2,
 	binary 2.
-	
+
 	* NEWS: updates.
 
 Sun Apr 11 14:37:06 1999  Tim Janik  <timj@gtk.org>
@@ -1984,7 +2008,7 @@ Thu Apr  8 19:53:19 1999  Owen Taylor  <otaylor@redhat.com>
 	systems. Please do not merge this into 1.3 branch. It's taken care
 	of differently there. Info from J. Rhett Aultman
 	<cuplan@alley.gator.net>
-	
+
 Wed Mar 24 21:23:47 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.1
@@ -2003,7 +2027,7 @@ Wed Mar 24 21:23:47 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 	  docs/glib-config.1: Removed, now generated.
 
 	* configure.in: Added to output now-generated files.
-	
+
 Tue Mar 23 13:43:39 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* giounix.c: add user_data param to check and prepare functions
@@ -2037,10 +2061,10 @@ Fri Mar 19 16:29:50 PST 1999 Manish Singh <yosh@gimp.org>
 	s/g_static_/g_private_/g
 
 Wed Mar 17 03:17:42 1999  Tim Janik  <timj@gtk.org>
-	
+
 	* configure.in bumped versin number to GLib 1.2.1, interface 1,
 	binary 1.
-	
+
 	* NEWS: updates.
 
 	* glib.h: added GLIB_CHECK_VERSION() macro similar to
@@ -2095,10 +2119,10 @@ Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
 
 1999-03-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-        * gutils.c (g_get_any_init): Fixed yet another bloody
-        implementation of getpwuid_r on AIX. Thanks to Olaf Dietsche
-        <olaf.dietsche+list.gtk@netcologne.de>. I would like a configure
-        test better than that, but have no idea, how to do that easily.
+	* gutils.c (g_get_any_init): Fixed yet another bloody
+	implementation of getpwuid_r on AIX. Thanks to Olaf Dietsche
+	<olaf.dietsche+list.gtk@netcologne.de>. I would like a configure
+	test better than that, but have no idea, how to do that easily.
 
 Sun Feb 21 22:11:51 CST 1999  Shawn T. Amundson <amundson@gtk.org>
 
@@ -2114,7 +2138,7 @@ Wed Feb 24 00:08:42 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 Sun Feb 21 14:01:00 1999  Dr Mike <drmike@redhat.com>
 
 	* Made specfile generated, tweaked slightly
-	
+
 Sat May  8 06:00:17 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* configure.in
@@ -2134,7 +2158,7 @@ Sat May  8 01:52:29 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 	  gmodule/Makefile.am
 	  gmodule/gmodule.c
 	  gmodule/gmoduleconf.h.in
-          gmodule/gmodule-beos.c
+	  gmodule/gmodule-beos.c
 	  gthread/Makefile.am: Port to BeOS by myself and Richard Offer.
 
 1999-05-06  Tor Lillqvist  <tml@iki.fi>
@@ -2147,14 +2171,14 @@ Sat May  8 01:52:29 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* configure.in: Also substitute @GLIB_MAJOR_VERSION@,
  	@GLIB_MINOR_VERSION@, and @GLIB_INTERFACE_AGE@.
-	
+
 	* Makefile.am tests/Makefile.am: Also distribute makefile.cygwin.
-	
+
 	* gerror.c (g_on_error_query): On Win32, put up a MessageBox and
  	then exit.
 
 	* glib.def: Add a couple of functions.
-	
+
 Sat May  1 10:26:20 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
@@ -2314,7 +2338,7 @@ Fri Mar 19 16:29:50 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acconfig.h: Removed unnecessary macros.
 
-        * glibconfig.h.win32, config.h.win32: Moved G_THREADS_IMPL_POSIX
+	* glibconfig.h.win32, config.h.win32: Moved G_THREADS_IMPL_POSIX
 	from config.h.win32 to glibconfig.h.win32. Taken from glib 1.2
 	branch.
 
@@ -2329,39 +2353,39 @@ Wed Mar 17 03:14:56 1999  Tim Janik  <timj@gtk.org>
 
 Wed Mar 17 01:46:28 1999  Tim Janik  <timj@gtk.org>
 
-        * merges from glib-1-2:
-        
+	* merges from glib-1-2:
+
 Sun Mar 14 17:50:35 1999  Tim Janik  <timj@gtk.org>
 
-        * gmem.c (g_mem_chunk_*): changed a bunch of g_assert() statements
-        to g_return_if_fail().
-        (g_mem_profile):
-        (g_mem_chunk_print):
-        (g_mem_chunk_info): removed some extraneous "\n"s at the end of the log
-        messages.
+	* gmem.c (g_mem_chunk_*): changed a bunch of g_assert() statements
+	to g_return_if_fail().
+	(g_mem_profile):
+	(g_mem_chunk_print):
+	(g_mem_chunk_info): removed some extraneous "\n"s at the end of the log
+	messages.
 
-        * gtimer.c (g_timer_*): changed a bunch of g_assert() statements
-        to g_return_if_fail().
-        * grel.c (g_*): changed a bunch of g_assert() statements to
-        g_return_if_fail() and added some extra ones to check relation != NULL.
+	* gtimer.c (g_timer_*): changed a bunch of g_assert() statements
+	to g_return_if_fail().
+	* grel.c (g_*): changed a bunch of g_assert() statements to
+	g_return_if_fail() and added some extra ones to check relation != NULL.
 
 Tue Mar  9 23:25:50 1999  Tim Janik  <timj@gtk.org>
 
-        * configure.in: check for working realloc (NULL,).
-        * gmem.c (g_realloc): use malloc() for initial allocation on systems
-        where realloc(NULL,) will not work (this is the case on SunOS, reported
-        by Tom Geiger).
+	* configure.in: check for working realloc (NULL,).
+	* gmem.c (g_realloc): use malloc() for initial allocation on systems
+	where realloc(NULL,) will not work (this is the case on SunOS, reported
+	by Tom Geiger).
 
 Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
 
-        * ghook.c (g_hook_unref): when !hook_list->is_setup, wrap the
-        flag around the call to g_hook_free() to avoid spurious
-        warnings (happens during destruction phase).
+	* ghook.c (g_hook_unref): when !hook_list->is_setup, wrap the
+	flag around the call to g_hook_free() to avoid spurious
+	warnings (happens during destruction phase).
 
 1999-03-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-        * gmem.c: Fixed a stupid cut'n'paste error of mine. Thanks to
-        Friedrich Dominicus <Friedrich.Dominicus@inka.de>
+	* gmem.c: Fixed a stupid cut'n'paste error of mine. Thanks to
+	Friedrich Dominicus <Friedrich.Dominicus@inka.de>
 
 1999-03-16  Timur Bakeyev  <mc@bat.ru>
 
@@ -2394,7 +2418,7 @@ Mon Mar  8 07:42:08 1999  Tim Janik  <timj@gtk.org>
 	lf for double). Defining G_INT_FORMAT makes sense however, as we
 	might want to define gint to something different than int someday
 	in the future. Idea from Sascha Brawer <sb@adasys.ch>.
-	
+
 1999-03-14  Jeff Garzik  <jgarzik@pobox.com>
 
 	* gdate.c:
