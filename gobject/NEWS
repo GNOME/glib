@@ -1,0 +1,34 @@
+Overview of Changes in GLib 1.3.3:
+
+* Added many convenience functions.
+* GClosure and GParamSpec use float/sink ref-counting scheme now.
+* Reworked property change notification.
+* Binary searchable array cleanups, so it's widely usable now.
+* Added static content keeping for some GValue types.
+* Support for statically scoped signal parameters.
+* Extinguished property trailer args in set/get interface.
+* Added support for abstract types.
+* G_CONST_RETURN specification all over the place.
+* Split parameter exchange functionality into value transforms
+  and parameter conversions.
+* Added signal emission hooks and signal accumulators.
+* Added interface prerequisites to support is_a (interface, object)
+  relations.
+* Implemented GValueArray.
+* New types, boxed: G_TYPE_VALUE, G_TYPE_CLOSURE, G_TYPE_GSTRING
+  GParamSpecs: G_TYPE_PARAM_PARAM, G_TYPE_PARAM_POINTER, G_TYPE_PARAM_CLOSURE,
+  G_TYPE_VALUE_ARRAY, G_TYPE_PARAM_UNICHAR, G_TYPE_PARAM_VALUE_ARRAY.
+* Varrags value collection improvements.
+* Implemented debugging traps.
+* Made things thread-safe.
+* Many documentation improvements.
+* Many cleanups, optimizations and bug fixes.
+
+Overview of Changes in GLib 1.3.2:
+
+* Added boxed and pointer types.  [Tim/Jonathan]
+* Added callback abstraction (GClosure)  [Tim]
+* Added signal system (GSignal)  [Tim]
+* Make GTypePlugin an interface  [Tim]
+* Added GTypeModule - a simple GTypePlugin instantiation  [Owen]
+* Bug fixes.

@@ -11,6 +11,7 @@ EXTRA_DIST = 			\
 	ChangeLog.pre-1-2	\
 	glib-2.0.m4		\
 	glib.spec.in		\
+	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
 	README.win32		\

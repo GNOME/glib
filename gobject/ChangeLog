@@ -1,3 +1,7 @@
+Tue Apr  3 20:23:24 2001  Tim Janik  <timj@gtk.org>
+
+	* NEWS: updates.
+
 Tue Apr  3 14:06:00 2001  Tim Janik  <timj@gtk.org>
 
 	* gparam.[hc]: added g_param_spec_pool_list() to list pspecs per
