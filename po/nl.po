@@ -1,14 +1,14 @@
 # GLIB -- Dutch Translation
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>, 2001.
-# Tino Meinen <a.t.meinen@chello.nl>, 2002, 2003.
+# Tino Meinen <a.t.meinen@chello.nl>, 2002, 2003, 2004
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
-"PO-Revision-Date: 2003-10-19 17:51+0200\n"
+"POT-Creation-Date: 2004-04-26 14:45+0200\n"
+"PO-Revision-Date: 2004-04-26 22:40+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,10 +20,11 @@ msgstr ""
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 
+# kon converteerder van %s naar %s niet openen
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Openen van converteerder van '%s' naar '%s' mislukt: %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Openen van converteerder van '%s' naar '%s' mislukt"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -79,7 +80,7 @@ msgstr "Het pad '%s' is geen absoluut pad"
 
 #: glib/gconvert.c:1633
 msgid "Invalid hostname"
-msgstr "Ongeldige machinenaam"
+msgstr "Ongeldige hostnaam"
 
 #: glib/gdir.c:80
 #, c-format
@@ -129,7 +130,7 @@ msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 #: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Creëren van bestand '%s' mislukt: %s"
+msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
 #: glib/gfileutils.c:1153
 #, c-format
@@ -452,7 +453,7 @@ msgstr "Veranderen naar map '%s' is mislukt (%s)"
 #: glib/gspawn-win32.c:1040 glib/gspawn.c:1348
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Creëren van pijp voor het communiceren met dochterproces mislukt (%s)"
+msgstr "Aanmaken van pijp voor het communiceren met dochterproces mislukt (%s)"
 
 #: glib/gspawn.c:178
 #, c-format
@@ -479,12 +480,13 @@ msgstr "fork mislukt (%s)"
 #: glib/gspawn.c:1227
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Uitvoeren van dochterproces \\\"%s\\\" mislukt (%s)"
+msgstr "Uitvoeren van dochterproces \"%s\" mislukt (%s)"
 
+# was eerst: herleiden
 #: glib/gspawn.c:1237
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Herleiden van invoer of uitvoer van een dochterproces is mislukt (%s)"
+msgstr "Doorsluizen van invoer of uitvoer van een dochterproces is mislukt (%s)"
 
 #: glib/gspawn.c:1246
 #, c-format
@@ -499,7 +501,7 @@ msgstr "Onbekende fout bij het uitvoeren van dochterproces \"%s\""
 #: glib/gspawn.c:1276
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Lezen van voldoende data van dochter-pid-pijp mislukt (%s)"
+msgstr "Lezen van voldoende data van pijp dochter-pid mislukt (%s)"
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
