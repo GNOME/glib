@@ -478,8 +478,8 @@ g_get_any_init (void)
 		 */
 		if (error == 0 || error == ENOENT)
 		  {
-		    g_warning ("getpwuid_r(): failed due to: No such user %d.",
-			       getuid ());
+		    g_warning ("getpwuid_r(): failed due to: " 
+			       "No such user: %lu.", (unsigned long)getuid ());
 		    break;
 		  }
 		if (bufsize > 32 * 1024)

@@ -1,3 +1,19 @@
+1999-06-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c, gthread-solaris.c: Added the native
+	implementations for the GLib's extended thread support.
+
+	* gthread-nspr.c: Removed for good. NSPR is nothing we would want
+	to build upon.
+
+	* gthread.c: Renamed to gthread-impl.c to avoid confusion with
+	../gthread.c (Formerly known as the file called gmutex.c)
+
+	* testgthread.c: Removed. The new and much extended tests are in
+	../tests/thread-test.c.
+
+	* Makefile.am: Changed to reflect the changes above.
+
 1999-03-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c: Use the right default arguments for the

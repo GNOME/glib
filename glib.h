@@ -1500,6 +1500,9 @@ void g_blow_chunks (void);
 
 /* Timer
  */
+
+#define G_MICROSEC 1000000
+
 GTimer* g_timer_new	(void);
 void	g_timer_destroy (GTimer	 *timer);
 void	g_timer_start	(GTimer	 *timer);
@@ -1507,7 +1510,7 @@ void	g_timer_stop	(GTimer	 *timer);
 void	g_timer_reset	(GTimer	 *timer);
 gdouble g_timer_elapsed (GTimer	 *timer,
 			 gulong	 *microseconds);
-
+void    g_usleep        (gulong microseconds);
 
 /* String utility functions that modify a string argument or
  * return a constant string that must not be freed.
@@ -2367,7 +2370,6 @@ gsize        g_date_strftime              (gchar       *s,
                                            const gchar *format,
                                            GDate       *date);
 
-
 /* GRelation
  *
  * Indexed Relations.  Imagine a really simple table in a
@@ -2819,31 +2821,63 @@ gint		gwin_closedir  	(DIR		*dir);
 
 /* GLib Thread support
  */
+
+typedef void		(*GThreadFunc)		(gpointer	value);
+
+typedef enum
+{
+    G_THREAD_PRIORITY_LOW,
+    G_THREAD_PRIORITY_NORMAL,
+    G_THREAD_PRIORITY_HIGH,
+    G_THREAD_PRIORITY_URGENT, 
+} GThreadPriority;
+
+typedef struct _GThread         GThread;
+struct  _GThread
+{
+  GThreadPriority priority;
+  gboolean bound;
+  gboolean joinable;
+};
+
 typedef struct _GMutex		GMutex;
 typedef struct _GCond		GCond;
 typedef struct _GPrivate	GPrivate;
 typedef struct _GStaticPrivate	GStaticPrivate;
+
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
 {
-  GMutex*  (*mutex_new)       (void);
-  void     (*mutex_lock)      (GMutex		*mutex);
-  gboolean (*mutex_trylock)   (GMutex		*mutex);
-  void     (*mutex_unlock)    (GMutex		*mutex);
-  void     (*mutex_free)      (GMutex		*mutex);
-  GCond*   (*cond_new)        (void);
-  void     (*cond_signal)     (GCond		*cond);
-  void     (*cond_broadcast)  (GCond		*cond);
-  void     (*cond_wait)       (GCond		*cond,
-			       GMutex		*mutex);
-  gboolean (*cond_timed_wait) (GCond		*cond,
-			       GMutex		*mutex, 
-			       GTimeVal 	*end_time);
-  void      (*cond_free)      (GCond		*cond);
-  GPrivate* (*private_new)    (GDestroyNotify	 destructor);
-  gpointer  (*private_get)    (GPrivate		*private_key);
-  void      (*private_set)    (GPrivate		*private_key,
-			       gpointer		 data);
+  GMutex*  (*mutex_new)           (void);
+  void     (*mutex_lock)          (GMutex		*mutex);
+  gboolean (*mutex_trylock)       (GMutex		*mutex);
+  void     (*mutex_unlock)        (GMutex		*mutex);
+  void     (*mutex_free)          (GMutex		*mutex);
+  GCond*   (*cond_new)            (void);
+  void     (*cond_signal)         (GCond		*cond);
+  void     (*cond_broadcast)      (GCond		*cond);
+  void     (*cond_wait)           (GCond		*cond,
+			           GMutex		*mutex);
+  gboolean (*cond_timed_wait)     (GCond		*cond,
+			           GMutex		*mutex, 
+			           GTimeVal 		*end_time);
+  void      (*cond_free)          (GCond		*cond);
+  GPrivate* (*private_new)        (GDestroyNotify	 destructor);
+  gpointer  (*private_get)        (GPrivate		*private_key);
+  void      (*private_set)        (GPrivate		*private_key,
+			           gpointer		 data);
+  gpointer  (*thread_create)      (GThreadFunc 		 thread_func,
+			           gpointer 		 arg,
+			           gulong 		 stack_size,
+			           gboolean 		 joinable,
+			           gboolean 		 bound,
+			           GThreadPriority 	 priority);
+  void      (*thread_yield)       (void);
+  void      (*thread_join)        (gpointer		 thread);
+  void      (*thread_exit)        (void);
+  void      (*thread_set_priority)(gpointer		 thread, 
+				   GThreadPriority 	 priority);
+  gpointer  (*thread_self)        (void);
 };
 
 GUTILS_C_VAR GThreadFunctions	g_thread_functions_for_glib_use;
@@ -2891,6 +2925,20 @@ GMutex*	g_static_mutex_get_mutex_impl	(GMutex	**mutex);
                                                        (void) (private_key = \
                                                         (GPrivate*) (value)), \
                                                        (private_key, value))
+#define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
+#define g_thread_exit()               G_THREAD_CF (thread_exit, (void)0, ())
+
+GThread* g_thread_create (GThreadFunc 		 thread_func,
+			  gpointer 		 arg,
+			  gulong 		 stack_size,
+			  gboolean 		 joinable,
+			  gboolean 		 bound,
+			  GThreadPriority 	 priority);
+GThread* g_thread_self ();
+void g_thread_join (GThread* thread);
+void g_thread_set_priority (GThread* thread, 
+			    GThreadPriority priority);
+
 /* GStaticMutexes can be statically initialized with the value
  * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
  * much easier, than having to explicitly allocate the mutex before
@@ -2902,6 +2950,7 @@ GMutex*	g_static_mutex_get_mutex_impl	(GMutex	**mutex);
     g_mutex_trylock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_unlock(mutex) \
     g_mutex_unlock (g_static_mutex_get_mutex (mutex)) 
+
 struct _GStaticPrivate
 {
   guint index;
@@ -2911,6 +2960,51 @@ gpointer g_static_private_get (GStaticPrivate	*private_key);
 void     g_static_private_set (GStaticPrivate	*private_key, 
 			       gpointer        	 data,
 			       GDestroyNotify    notify);
+gpointer g_static_private_get_for_thread (GStaticPrivate *private_key,
+					  GThread        *thread);
+void g_static_private_set_for_thread (GStaticPrivate *private_key, 
+				      GThread        *thread,
+				      gpointer        data,
+				      GDestroyNotify  notify);
+#ifndef G_STATIC_REC_MUTEX_INIT
+/* if GStaticRecMutex is not just a differently initialized GStaticMutex, 
+ * the following is done:
+ * This can't be done in glibconfig.h, as GStaticPrivate and gboolean
+ * are not yet known there 
+ */
+typedef struct _GStaticRecMutex GStaticRecMutex;
+struct _GStaticRecMutex
+{
+  GStaticMutex mutex;
+  GStaticPrivate counter; 
+};
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, G_STATIC_PRIVATE_INIT }
+void     g_static_rec_mutex_lock    (GStaticRecMutex* mutex);
+gboolean g_static_rec_mutex_trylock (GStaticRecMutex* mutex);
+void     g_static_rec_mutex_unlock  (GStaticRecMutex* mutex);
+#define  g_static_rec_mutex_get_mutex(mutex) ((mutex)->mutex)
+#endif /* G_STATIC_REC_MUTEX_INIT */
+
+typedef struct _GStaticRWLock GStaticRWLock;
+struct _GStaticRWLock
+{
+  GStaticMutex mutex; 
+  GCond *read_cond;
+  GCond *write_cond;
+  guint read_counter;
+  gboolean write;
+  guint want_to_write;
+};
+
+#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, FALSE }
+
+void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock);
+gboolean  g_static_rw_lock_reader_trylock (GStaticRWLock* lock);
+void      g_static_rw_lock_reader_unlock  (GStaticRWLock* lock);
+void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock);
+gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
+void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
+void      g_static_rw_lock_free (GStaticRWLock* lock);
 
 /* these are some convenience macros that expand to nothing if GLib
  * was configured with --disable-threads. for using StaticMutexes,

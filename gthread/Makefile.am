@@ -6,7 +6,6 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
 EXTRA_DIST =				\
 		gthread-posix.c		\
 		gthread-solaris.c	\
-		gthread-nspr.c		\
 		gthread-none.c		\
 		gthread.def
 
@@ -16,12 +15,9 @@ top_builddir_full=`cd \$(top_builddir); pwd`
 
 lib_LTLIBRARIES = libgthread.la
 
-libgthread_la_SOURCES = gthread.c
+libgthread_la_SOURCES = gthread-impl.c
 libgthread_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-release $(LT_RELEASE)
 
 libgthread_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
-
-noinst_PROGRAMS = testgthread
-testgthread_LDADD = ../libglib.la libgthread.la

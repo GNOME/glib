@@ -58,7 +58,7 @@ define(<<AC_TYPE_NAME>>, translit(glib_byte_contents_$3, [a-z *], [A-Z_P]))dnl
 dnl The cache variable name.
 define(<<AC_CV_NAME>>, translit(glib_cv_byte_contents_$3, [ *], [_p]))dnl
 changequote([, ])dnl
-AC_MSG_CHECKING(byte contents of $2)
+AC_MSG_CHECKING(byte contents of $5)
 AC_CACHE_VAL(AC_CV_NAME,
 [AC_TRY_RUN([#include <stdio.h>
 $1
@@ -73,7 +73,7 @@ main()
     fprintf(f, "%s%d", i?",":"", *(p++));
   fprintf(f, "\n");
   exit(0);
-}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=0, AC_CV_NAME=0)])dnl
+}], AC_CV_NAME=`cat conftestval`, AC_CV_NAME=no, AC_CV_NAME=no)])dnl
 AC_MSG_RESULT($AC_CV_NAME)
 AC_DEFINE_UNQUOTED(AC_TYPE_NAME, $AC_CV_NAME)
 undefine([AC_TYPE_NAME])dnl

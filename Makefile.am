@@ -40,7 +40,6 @@ libglib_la_SOURCES = \
 	gmain.c         \
 	gmem.c		\
 	gmessages.c	\
-	gmutex.c	\
 	gnode.c		\
 	gprimes.c	\
 	gqueue.c	\
@@ -51,6 +50,7 @@ libglib_la_SOURCES = \
 	gstack.c	\
 	gstrfuncs.c	\
 	gstring.c	\
+	gthread.c       \
 	gtimer.c	\
 	gtree.c		\
 	gutils.c

@@ -576,7 +576,7 @@ dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris/nspr] specify a thread implementation to use],
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris] specify a thread implementation to use],
 	if test "x$with_threads" = x; then
 		want_threads=yes
 	else
@@ -646,11 +646,6 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
-if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
-        if test "x$have_threads" = xnone; then
-		AC_CHECK_LIB(nspr21, PRP_NewNakedCondVar, have_threads=nspr)
-	fi
-fi
 
 AC_MSG_CHECKING(for thread implementation)
 
@@ -717,11 +712,6 @@ case $have_threads in
                 mutex_header_file='thread.h'
 		g_threads_impl="SOLARIS"
                 ;;
-	nspr)
-		AC_CHECK_LIB(nspr21, PRP_NewNakedCondVar,
-			     G_THREAD_LIBS="-lnspr21")
-		g_threads_impl="NSPR"
-		;;
         none)
 		g_threads_impl="NONE"
                 ;;
@@ -830,6 +820,77 @@ if test x"$enable_threads" = xyes; then
 				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
 		fi
 	fi
+	LIBS="$LIBS $G_THREAD_LIBS"
+	if test x"$have_threads" = xposix; then
+		GLIB_SIZEOF([#include <pthread.h>],
+			pthread_t,
+			pthread_t)
+		# This is not AC_CHECK_FUNC to also work with function
+		# name mangling in header files.
+		AC_MSG_CHECKING(for pthread_attr_setstacksize)
+		AC_TRY_COMPILE([#include <pthread.h>],
+			[pthread_attr_setstacksize(NULL,0)],
+			[AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
+			[AC_MSG_RESULT(no)])
+		# If sched_get_priority_min(SCHED_OTHER) returns something 
+		# negative, we ignore it. This happens on Solaris.
+		AC_MSG_CHECKING(for minimal/maximal thread priority)
+		AC_TRY_RUN([#include <pthread.h>
+		     int main () 
+		     { return sched_get_priority_min(SCHED_OTHER) < 0;}],
+		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
+		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"],
+		     [posix_priority_min=none])
+		if test x"$posix_priority_min" = xnone; then
+			AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
+				PX_PRIO_MIN],,[
+				posix_priority_min=PX_PRIO_MIN
+				posix_priority_max=PX_PRIO_MAX])
+		fi
+		if test x"$posix_priority_min" = xnone; then
+			AC_EGREP_CPP(PRI_OTHER_MIN,[#include <pthread.h>
+				PRI_OTHER_MIN],,[
+				posix_priority_min=PRI_OTHER_MIN	
+				posix_priority_max=PRI_OTHER_MAX])
+		fi
+		if test x"$posix_priority_min" = xnone; then
+			case $host in
+        	        	*-*-solaris*)
+                		posix_priority_min=1
+				posix_priority_max=127
+				;;
+			esac
+		fi
+		if test x"$posix_priority_min" = xnone; then
+			AC_MSG_RESULT(none found)
+			AC_MSG_WARN($POSIX_NO_PRIORITIES)
+	                posix_priority_min=1
+			posix_priority_max=1
+		else
+			AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
+		fi
+		AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min)
+		AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max)
+		posix_yield_func=none
+		AC_MSG_CHECKING(for posix yield function)
+		for yield_func in pthread_yield_np pthread_yield sched_yield \
+							thr_yield; do
+			AC_TRY_LINK([#include <pthread.h>],
+				[$yield_func()],
+				[posix_yield_func="$yield_func"
+				break])
+		done		
+		if test x"$posix_yield_func" = xnone; then
+			AC_MSG_RESULT(none found)
+			AC_MSG_WARN($POSIX_NO_YIELD)
+	                posix_yield_func="g_thread_sleep(1000)"
+		else
+			AC_MSG_RESULT($posix_yield_func)
+			posix_yield_func="$posix_yield_func()"
+		fi
+		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func)
+	fi
 	LIBS="$glib_save_LIBS"
 	CFLAGS="$glib_save_CFLAGS"
 
@@ -865,6 +926,14 @@ GLIB_IF_VAR_EQ(mutex_has_default, yes,
 			   gmutex,
 			   $glib_cv_sizeof_gmutex,
 			   $mutex_default_init)
+	if test x"$have_threads" = xposix; then 
+		GLIB_BYTE_CONTENTS([#define __USE_GNU
+#include <$mutex_header_file>],
+				   $mutex_default_type,
+				   grecmutex,
+				   $glib_cv_sizeof_gmutex,
+				   PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP)
+	fi
 	,
 )
 
@@ -1052,6 +1121,32 @@ $g_enable_threads_def G_THREADS_ENABLED
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
 #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
+_______EOF
+	fi
+	if test x$g_recmutex_contents != xno -a \
+	        x$g_recmutex_contents != x; then
+		# the definition of GStaticRecMutex is not done via 
+		# typedef GStaticMutex GStaticRecMutex to avoid silent
+		# compilation, when a GStaticRecMutex is used where a
+		# GStaticMutex should have been used and vice versa,
+		# because that micht fail on other platforms.
+		cat >>$outfile <<_______EOF
+typedef struct _GStaticRecMutex GStaticRecMutex;
+struct _GStaticRecMutex
+{
+  struct _GMutex *runtime_mutex;
+  union {
+    char   pad[$g_mutex_sizeof];
+    double dummy_double;
+    void  *dummy_pointer;
+    long   dummy_long;
+  } aligned_pad_u;
+};
+#define G_STATIC_REC_MUTEX_INIT { NULL, { { $g_recmutex_contents} } }
+#define  g_static_rec_mutex_lock(mutex) g_static_mutex_lock (mutex)
+#define  g_static_rec_mutex_trylock(mutex) g_static_mutex_trylock (mutex)
+#define  g_static_rec_mutex_unlock(mutex) g_static_mutex_unlock (mutex)
+#define  g_static_rec_mutex_get_mutex(mutex) (mutex)
 _______EOF
 	fi
 
@@ -1296,6 +1391,7 @@ g_threads_impl_def=$g_threads_impl
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
+g_recmutex_contents="$glib_cv_byte_contents_grecmutex"
 
 if test "x$glib_native_beos" = "xyes"; then
     glib_native_beos_def="\$glib_native_beos_def

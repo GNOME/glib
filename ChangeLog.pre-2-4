@@ -1,3 +1,26 @@
+1999-06-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in, acglib.m4, acconfig.h, glib.h, gthread.c:
+	Completed the thread support in GLib. Thread creation,
+	prioritizing threads, yielding, joining threads as well as
+	reader/writer locks and recursive mutexes are now in place. Please
+	test heavily on your platform. It is so far tested on
+	Linux/i386/pthreads, Solaris/Sparc/pthreads and
+	Solaris/Sparc/solaristhreads.
+
+	* gtimer.c, glib.h: Implement g_usleep (gulong microseconds) for
+	thread safe sleeping. (sleep() is not MT-safe at all!)
+
+	* gutils.c: Avoid compiler warning.
+
+	* tests/Makefile.am, tests/thread-test.c: New program to test some
+	aspects of the thread implementation.
+
+	* gthread.c, Makefile.am: Renamed from gmutex.c to reflect the
+	change of content.
+
+	* configure.in: Purged all appearances of nspr. 
+
 Wed Jun  2 11:42:46 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4

@@ -20,7 +20,8 @@ TESTS = \
 	string-test	\
 	strfunc-test	\
 	tree-test	\
-	type-test
+	type-test	\
+	thread-test
 
 noinst_PROGRAMS = $(TESTS)
 
@@ -39,6 +40,8 @@ string_test_LDADD = $(top_builddir)/libglib.la
 strfunc_test_LDADD = $(top_builddir)/libglib.la
 tree_test_LDADD = $(top_builddir)/libglib.la
 type_test_LDADD = $(top_builddir)/libglib.la
+thread_test_LDADD = $(top_builddir)/libglib.la \
+		$(top_builddir)/gthread/libgthread.la @G_THREAD_LIBS@
 
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status

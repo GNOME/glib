@@ -176,7 +176,7 @@ g_timer_elapsed (GTimer *timer,
 
   if (rtimer->start.tv_usec > rtimer->end.tv_usec)
     {
-      rtimer->end.tv_usec += 1000000;
+      rtimer->end.tv_usec += G_MICROSEC;
       rtimer->end.tv_sec--;
     }
 
@@ -191,3 +191,13 @@ g_timer_elapsed (GTimer *timer,
 
   return total;
 }
+
+void
+g_usleep (gulong microseconds)
+{
+  struct timeval tv;
+  tv.tv_sec = microseconds / G_MICROSEC;
+  tv.tv_usec = microseconds % G_MICROSEC;
+  select(0, NULL, NULL, NULL, &tv);
+}
+

@@ -46,6 +46,14 @@
   if( error ) { solaris_print_error( what, error ); }           \
   }G_STMT_END
 
+#define HAVE_G_THREAD_IMPL_INIT
+static void 
+g_thread_impl_init()
+{
+  g_thread_min_priority = 0;
+  g_thread_max_priority = 127;
+}
+
 static GMutex *
 g_mutex_new_solaris_impl (void)
 {
@@ -165,6 +173,54 @@ g_private_get_solaris_impl (GPrivate * private_key)
   return result;
 }
 
+void
+g_thread_set_priority_solaris_impl (gpointer thread, GThreadPriority priority)
+{
+  solaris_check_for_error (thr_setprio (GPOINTER_TO_INT (thread),  
+					g_thread_map_priority (priority)));
+}
+
+gpointer 
+g_thread_create_solaris_impl (GThreadFunc thread_func, 
+			      gpointer arg, 
+			      gulong stack_size,
+			      gboolean joinable,
+			      gboolean bound,
+			      GThreadPriority priority)
+{     
+  thread_t thread;
+  long flags = (bound ? THR_BOUND : 0) | (joinable ? 0: THR_DETACHED);
+  
+  g_return_val_if_fail (thread_func, NULL);
+  
+  solaris_check_for_error (thr_create (NULL, stack_size,  
+				       (void* (*)(void*))thread_func,
+				       arg, flags, &thread));
+  
+  g_thread_set_priority_solaris_impl (GINT_TO_POINTER (thread), priority);
+
+  return GINT_TO_POINTER (thread);
+}
+
+void 
+g_thread_yield_solaris_impl (void)
+{
+  thr_yield ();
+}
+
+void
+g_thread_join_solaris_impl (gpointer thread)
+{     
+  gpointer ignore;
+  solaris_check_for_error (thr_join (GPOINTER_TO_INT (thread), NULL, &ignore));
+}
+
+void 
+g_thread_exit_solaris_impl (void) 
+{
+  thr_exit (NULL);
+}
+
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_solaris_impl,
@@ -180,5 +236,11 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_cond_free_solaris_impl,
   g_private_new_solaris_impl,
   g_private_get_solaris_impl,
-  g_private_set_solaris_impl
+  g_private_set_solaris_impl,
+  g_thread_create_solaris_impl,
+  g_thread_yield_solaris_impl,
+  g_thread_join_solaris_impl,
+  g_thread_exit_solaris_impl,
+  g_thread_set_priority_solaris_impl,
+  (gpointer (*)())thr_self
 };
