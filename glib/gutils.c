@@ -959,7 +959,7 @@ g_get_any_init (void)
 	  {
  	    g_user_name = g_strdup (pw->pw_name);
 
-	    if (pw->pw_gecos) 
+	    if (pw->pw_gecos && *pw->pw_gecos != '\0') 
 	      {
 		gchar **gecos_fields;
 		gchar **name_parts;

@@ -1,3 +1,8 @@
+Fri Jan 23 22:49:52 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutils.c (g_get_any_init): Sigh, protect against
+	pw->pw_gecos being "" as well.  (#132317, Kaj-Michael Lang)
+	
 2004-01-23  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add new functions.
