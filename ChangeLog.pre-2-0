@@ -1,3 +1,14 @@
+2001-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Removed bashism in test for the pkg-config
+	version.
+
+	* configure.in: Rewrote test for multithread flag. Now uses
+	localtime_r, which hopefully has a consistent prototype across
+	different platforms. Also it uses a clever double EGREP trick
+	instead of compiling, which could give false positives. Thanks to
+	Dan Winship <danw@ximian.com> for the hint.
+
 Wed Apr 18 17:35:38 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gutils.c (_glib_gettext): Add missing static pointed

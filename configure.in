@@ -154,7 +154,9 @@ if test x$PKG_CONFIG = xno ; then
   AC_MSG_ERROR([*** pkg-config not found. See http://pkgconfig.sourceforge.net])
 fi
 
-if ! pkg-config --atleast-pkgconfig-version 0.5 ; then
+if pkg-config --atleast-pkgconfig-version 0.5 ; then
+  :
+else
   AC_MSG_ERROR([*** pkg-config too old; version 0.5 or better required.])
 fi
 
@@ -1004,17 +1006,22 @@ if test x"$have_threads" != xnone; then
 		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_POSIX4A_DRAFT10_SOURCE"
     esac
 
-    # if we are not finding the ctime_r function, then we probably are
+    # if we are not finding the localtime_r function, then we probably are
     # not using the proper multithread flag
 
     glib_save_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
 
-    AC_TRY_COMPILE([#include <time.h>],
-	[time_t t; char b[30]; ctime_r (&t, b);], ,
-    	    [AC_TRY_COMPILE([#include <time.h>],
-		[time_t t; char b[30]; ctime_r (&t, b, 30);], ,
-			AC_MSG_WARN($FLAG_DOES_NOT_WORK))])
+    # First we test, whether localtime_r is declared in time.h
+    # directly. Then we test wether a macro localtime_r exists, in
+    # which case localtime_r in the test program is replaced and thus
+    # if we still find localtime_r in the output, it is not defined as 
+    # a macro.
+
+    AC_EGREP_CPP([[^a-zA-Z1-9_]localtime_r[^a-zA-Z1-9_]], [#include <time.h>], ,
+      [AC_EGREP_CPP([[^a-zA-Z1-9_]localtime_r[^a-zA-Z1-9_]], [#include <time.h> 
+							   localtime_r(a,b)],
+      		   AC_MSG_WARN($FLAG_DOES_NOT_WORK))])
 
     CPPFLAGS="$glib_save_CPPFLAGS"
 
