@@ -702,6 +702,7 @@ typedef struct _GTuples		GTuples;
 typedef union  _GTokenValue	GTokenValue;
 typedef struct _GIOChannel	GIOChannel;
 
+/* Tree traverse flags */
 typedef enum
 {
   G_TRAVERSE_LEAFS	= 1 << 0,
@@ -710,6 +711,7 @@ typedef enum
   G_TRAVERSE_MASK	= 0x03
 } GTraverseFlags;
 
+/* Tree traverse orders */
 typedef enum
 {
   G_IN_ORDER,

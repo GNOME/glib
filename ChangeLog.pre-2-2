@@ -1,3 +1,7 @@
+Thu Apr 29 02:16:36 1999  Tim Janik  <timj@gtk.org>
+
+	* gstrfuncs.c: minor code cleanups.
+
 Tue Apr 27 13:11:29 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_main_poll): Mask out ERR HUP and NVAL from

@@ -927,7 +927,7 @@ g_printf_string_upper_bound (const gchar* format,
 }
 
 void
-g_strdown (gchar  *string)
+g_strdown (gchar *string)
 {
   register gchar *s;
 
@@ -943,7 +943,7 @@ g_strdown (gchar  *string)
 }
 
 void
-g_strup (gchar	*string)
+g_strup (gchar *string)
 {
   register gchar *s;
 
@@ -959,7 +959,7 @@ g_strup (gchar	*string)
 }
 
 void
-g_strreverse (gchar	  *string)
+g_strreverse (gchar *string)
 {
   g_return_if_fail (string != NULL);
 
@@ -1208,7 +1208,7 @@ g_strjoinv (const gchar  *separator,
 
   g_return_val_if_fail (str_array != NULL, NULL);
 
-  if(separator == NULL)
+  if (separator == NULL)
     separator = "";
 
   if (*str_array)
@@ -1245,42 +1245,47 @@ g_strjoin (const gchar  *separator,
   guint len;
   guint separator_len;
 
-  if(separator == NULL)
+  if (separator == NULL)
     separator = "";
 
   separator_len = strlen (separator);
 
-  va_start(args, separator);
+  va_start (args, separator);
 
-  s = va_arg(args, gchar *);
+  s = va_arg (args, gchar*);
 
-  if(s) {
-    len = strlen(s) + 1;
-
-    while((s = va_arg(args, gchar*)))
-      {
-	len += separator_len + strlen(s);
-      }
-    va_end(args);
-
-    string = g_new (gchar, len);
-
-    va_start(args, separator);
-
-    *string = 0;
-    s = va_arg(args, gchar*);
-    strcat (string, s);
-
-    while((s = va_arg(args, gchar*)))
-      {
-	strcat(string, separator);
-	strcat(string, s);
-      }
-
-  } else
-    string = g_strdup("");
-
-  va_end(args);
+  if (s)
+    {
+      len = strlen (s);
+      
+      s = va_arg (args, gchar*);
+      while (s)
+	{
+	  len += separator_len + strlen (s);
+	  s = va_arg (args, gchar*);
+	}
+      va_end (args);
+      
+      string = g_new (gchar, len + 1);
+      *string = 0;
+      
+      va_start (args, separator);
+      
+      s = va_arg (args, gchar*);
+      strcat (string, s);
+      
+      s = va_arg (args, gchar*);
+      while (s)
+	{
+	  strcat (string, separator);
+	  strcat (string, s);
+	  s = va_arg (args, gchar*);
+	}
+    }
+  else
+    string = g_strdup ("");
+  
+  va_end (args);
 
   return string;
 }
