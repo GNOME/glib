@@ -12,12 +12,17 @@ include ../build/win32/make.mingw
 INCLUDES = -I .. -I ../glib -I ../gmodule
 DEFINES = -DHAVE_CONFIG_H
 
-# mainloop-test removed for now until it is fixed
-
-TESTS = \
+NONAUTOMATIC_TESTS = \
 	testglib.exe	\
 	testgdate.exe	\
 	testgdateparser.exe \
+	patterntest.exe \
+	unicode-normalize.exe \
+	unicode-collate.exe
+
+# mainloop-test removed for now until it is fixed
+
+TESTS = \
 	array-test.exe	\
 	date-test.exe	\
 	dirname-test.exe\
@@ -35,17 +40,19 @@ TESTS = \
 	spawn-test.exe	\
 	strfunc-test.exe\
 	string-test.exe	\
+	strtod-test.exe \
 	thread-test.exe	\
 	threadpool-test.exe\
 	tree-test.exe	\
 	type-test.exe	\
-	unicode-encoding.exe \
+	unicode-caseconv.exe \
+	unicode-encoding.exe
 
 DLLS = \
 	libmoduletestplugin_a.dll \
 	libmoduletestplugin_b.dll
 
-all:	$(TESTS) $(DLLS)
+all:	$(TESTS) $(NONAUTOMATIC_TESTS) $(DLLS)
 
 .SUFFIXES: .c .i .exe
 
@@ -66,5 +73,5 @@ libmoduletestplugin_b.dll : libmoduletestplugin_b.o
 	$(BUILD_DLL) libmoduletestplugin_b - libmoduletestplugin_b.o -L ../glib -lglib-1.3 -L ../gmodule -lgmodule-1.3
 
 check:	all
-	@for P in $(TESTS) ; do echo $$P; ./$$P; done
+	@for P in $(TESTS) ; do echo $$P; PATH=../glib:../gmodule:../gobject:../gthread:$$PATH ./$$P; done
 	@echo All tests successful.

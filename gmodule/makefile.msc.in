@@ -3,7 +3,7 @@
 
 TOP = ..\..
 
-!INCLUDE $(TOP)\build\win32\make.msc
+!INCLUDE ..\build\win32\make.msc
 
 ################################################################
 

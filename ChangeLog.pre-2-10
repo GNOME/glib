@@ -2,8 +2,14 @@
 
 	* README.win32: Updates.
 
+	* glib/glib.def: Update.
+
 	* tests/makefile.mingw.in
-	* tests/makefile.msc.in: Remove mainloop-test here, too.
+	* tests/makefile.msc.in: Remove mainloop-test here, too.  Add ../*
+	to PATH before running tests to find DLLs. Separate the
+	interactive tests, don't run them in the check target.
+
+	* */makefile.msc.in: Include make.msc from GLib's build directory.
 
 Wed Oct 24 11:10:54 2001  Owen Taylor  <otaylor@redhat.com>
 

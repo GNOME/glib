@@ -5,14 +5,12 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 TOP = ..\..
 
-!INCLUDE $(TOP)\build\win32\make.msc
+!INCLUDE ..\build\win32\make.msc
 
 ################################################################
 
 INCLUDES = -I .. -I . -I ..\glib
 DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\"
-# DEPCFLAGS = $(PTHREAD_CFLAGS)
-# DEPCLIBS = $(PTHREAD_LIBS) 
 all : \
 	libgthread-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
 

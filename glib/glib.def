@@ -13,9 +13,11 @@ EXPORTS
 	g_array_sort
 	g_array_sort_with_data
 	g_ascii_digit_value
+	g_ascii_dtostr
 	g_ascii_strcasecmp
 	g_ascii_strncasecmp
 	g_ascii_strdown
+	g_ascii_strtod
 	g_ascii_strup
 	g_ascii_table
 	g_ascii_tolower
