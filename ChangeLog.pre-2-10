@@ -1,3 +1,17 @@
+Mon Mar 11 15:36:33 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Copy REALLOC_0_WORKS check from
+	HEAD, since autoconf-2.5x complains about the 
+	old version.
+
+	* acinclude.m4: Remove libtool macros.
+
+	* acglib.m4 configure.in: Fix AC_DIVERT compatibility
+	problems with autoconf-2.5x.
+
+	* ghash.c: Backport optimization (remove floating 
+	point arithmetic) from HEAD. (#59124)
+
 Mon Mar 11 15:19:01 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Backport from HEAD of fix by Raja R Harinath:

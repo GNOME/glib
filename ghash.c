@@ -63,6 +63,14 @@ static GHashNode*	g_hash_node_new		 (gpointer	 key,
 static void		g_hash_node_destroy	 (GHashNode	*hash_node);
 static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
+#define G_HASH_TABLE_RESIZE(hash_table)				\
+   G_STMT_START {						\
+     if ((hash_table->size >= 3 * hash_table->nnodes &&	        \
+	  hash_table->size > HASH_TABLE_MIN_SIZE) ||		\
+	 (3 * hash_table->size <= hash_table->nnodes &&	        \
+	  hash_table->size < HASH_TABLE_MAX_SIZE))		\
+	   g_hash_table_resize (hash_table);			\
+   } G_STMT_END
 
 G_LOCK_DEFINE_STATIC (g_hash_global);
 
@@ -168,7 +176,7 @@ g_hash_table_insert (GHashTable *hash_table,
       *node = g_hash_node_new (key, value);
       hash_table->nnodes++;
       if (!hash_table->frozen)
-	g_hash_table_resize (hash_table);
+	G_HASH_TABLE_RESIZE (hash_table);
     }
 }
 
@@ -190,7 +198,7 @@ g_hash_table_remove (GHashTable	     *hash_table,
       hash_table->nnodes--;
   
       if (!hash_table->frozen)
-        g_hash_table_resize (hash_table);
+        G_HASH_TABLE_RESIZE (hash_table);
     }
 }
 
@@ -233,7 +241,7 @@ g_hash_table_thaw (GHashTable *hash_table)
   
   if (hash_table->frozen)
     if (!(--hash_table->frozen))
-      g_hash_table_resize (hash_table);
+      G_HASH_TABLE_RESIZE (hash_table);
 }
 
 guint
@@ -279,7 +287,7 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
     }
   
   if (!hash_table->frozen)
-    g_hash_table_resize (hash_table);
+    G_HASH_TABLE_RESIZE (hash_table);
   
   return deleted;
 }
@@ -315,17 +323,10 @@ g_hash_table_resize (GHashTable *hash_table)
   GHashNode **new_nodes;
   GHashNode *node;
   GHashNode *next;
-  gfloat nodes_per_list;
   guint hash_val;
   gint new_size;
   gint i;
-  
-  nodes_per_list = (gfloat) hash_table->nnodes / (gfloat) hash_table->size;
-  
-  if ((nodes_per_list > 0.3 || hash_table->size <= HASH_TABLE_MIN_SIZE) &&
-      (nodes_per_list < 3.0 || hash_table->size >= HASH_TABLE_MAX_SIZE))
-    return;
-  
+
   new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
 		   HASH_TABLE_MIN_SIZE,
 		   HASH_TABLE_MAX_SIZE);
