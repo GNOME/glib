@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
-"PO-Revision-Date: 2004-10-19 16:49+0200\n"
+"POT-Creation-Date: 2004-11-20 11:44+0100\n"
+"PO-Revision-Date: 2004-11-20 16:21+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -165,8 +165,7 @@ msgstr "Kanali përfundon me një simbol të pjesëshëm"
 
 #: glib/giochannel.c:1685
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
+msgstr "I pamundur leximi i të dhënave të papërpunuara tek g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:226
 #, c-format
@@ -179,8 +178,7 @@ msgid "Error on line %d: %s"
 msgstr "Gabim tek rreshti %d: %s"
 
 #: glib/gmarkup.c:415
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "U gjet një entitet bosh '&;'; entitetet e vlefshme janë: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -277,8 +275,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1181
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "U gjet simboli '%s', përkundrazi pritej një '=' mbas emrit të atributit '%s' "
 "të elementit '%s'"
@@ -330,8 +327,7 @@ msgstr "Elementi '%s' është mbyllur, asnjë element aktualisht është i hapur
 #: glib/gmarkup.c:1510
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
+msgstr "Elementi '%s' është mbyllur, por elementi aktualisht i hapur është '%s'"
 
 #: glib/gmarkup.c:1657
 msgid "Document was empty or contained only whitespace"
@@ -339,8 +335,7 @@ msgstr "Dokumenti ishte bosh apo përmbante vetëm hapësira të bardha"
 
 #: glib/gmarkup.c:1671
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
-"Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
+msgstr "Dokumenti u mbyll papritur, menjëherë pas hapjes së kllapës këndore '<'"
 
 #: glib/gmarkup.c:1679 glib/gmarkup.c:1723
 #, c-format
@@ -385,8 +380,7 @@ msgstr "Dokumenti u mbyll papritur në brendësi të vlerës së një atributi"
 #: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
+msgstr "Dokumenti u mbyll papritur në brendësi të tag-ut mbyllës të elementit '%s'"
 
 #: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -486,8 +480,7 @@ msgstr "I pamundur zbatimi i proçesit bir \"%s\" (%s)"
 #: glib/gspawn.c:1238
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr ""
-"I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
+msgstr "I pamundur ridrejtimi i të dhënave në hyrje apo dalje të proçesit bir (%s)"
 
 #: glib/gspawn.c:1247
 #, c-format
@@ -502,8 +495,7 @@ msgstr "Gabim i panjohur gjatë ekzekutimit të proçesit bir \"%s\""
 #: glib/gspawn.c:1277
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr ""
-"I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
+msgstr "I pamundur leximi i një sasie të dhënash të mjaftueshme nga pid pipe bir (%s)"
 
 #: glib/gutf8.c:986
 msgid "Character out of range for UTF-8"
@@ -556,3 +548,83 @@ msgstr "Vlera integruese '%s' për %s është jashtë kufirit"
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opcion i panjohur %s"
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr "Nuk u gjet asnjë file i vlefshëm kyçi tek directory e të dhënave"
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr "Nuk është një file i rregullt"
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr "File është bosh"
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Kyçi përmban rreshtin '%s' që nuk është një vlerë çift, grup apo koment kyçi"
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr "File i kyçit nuk fillon me një grup"
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "File i kyçit përmban kodifikimin e pasuportuar '%s'"
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "File i kyçit nuk ka grupin '%s'"
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "File i kyçit nuk përmban kyçin '%s'"
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "File i kyçit përmban kyçin '%s' me vlerë '%s' që nuk është në UTF-8"
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "File i kyçit përmban kyçin '%s' që ka një vlerë të painterpretueshme."
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr "File i kyçit përmban kyçin '%s' në grupin '%s' që ka një vlerë të painterpretueshme."
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "File i kyçit nuk ka kyçin '%s' në grupin '%s'"
+
+#: glib/gkeyfile.c:3023
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "File i kyçit përmban sekuencën e pavlefshme escape '%s'"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr "File i kyçit përmban simbolin escape në fund të rreshtit"
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Vlera '%s' nuk mund të interpretohet si një numër."
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Vlera '%s' nuk mund të interpretohet si një boolean."
+
