@@ -1,3 +1,7 @@
+2003-03-19  Anders Carlsson  <andersca@codefactory.se>
+
+	* configure.in: Bump version to 2.3.0
+
 2003-03-14  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gthread.c: Do not define function g_thread_init_glib, if
