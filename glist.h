@@ -71,6 +71,8 @@ GList*   g_list_reverse        (GList            *list);
 GList*   g_list_copy           (GList            *list);
 GList*   g_list_nth            (GList            *list,
 				guint             n);
+GList*   g_list_nth_prev       (GList            *list,
+				guint             n);
 GList*   g_list_find           (GList            *list,
 				gconstpointer     data);
 GList*   g_list_find_custom    (GList            *list,

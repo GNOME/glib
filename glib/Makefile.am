@@ -60,6 +60,7 @@ libglib_1_3_la_SOURCES = 	\
 	gmem.c			\
 	gmessages.c		\
 	gnode.c			\
+	gpattern.c		\
 	gprimes.c		\
 	gqsort.c		\
 	gqueue.c		\
@@ -115,6 +116,7 @@ glibinclude_HEADERS =   \
 	gmem.h		\
 	gmessages.h	\
 	gnode.h		\
+	gpattern.h	\
 	gprimes.h	\
 	gqsort.h	\
 	gquark.h	\

@@ -711,6 +711,37 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
   return NULL;
 }
 
+static void
+pool_list (gpointer key,
+	   gpointer value,
+	   gpointer user_data)
+{
+  GParamSpec *pspec = value;
+  gpointer *data = user_data;
+  GType owner_type = GPOINTER_TO_UINT (data[1]);
+
+  if (owner_type == pspec->owner_type)
+    data[0] = g_list_prepend (data[0], pspec);
+}
+
+GList*
+g_param_spec_pool_list (GParamSpecPool *pool,
+			GType           owner_type)
+{
+  gpointer data[2];
+
+  g_return_val_if_fail (pool != NULL, NULL);
+  g_return_val_if_fail (owner_type > 0, NULL);
+  
+  G_SLOCK (&pool->smutex);
+  data[0] = NULL;
+  data[1] = GUINT_TO_POINTER (owner_type);
+  g_hash_table_foreach (pool->hash_table, pool_list, &data);
+  G_SUNLOCK (&pool->smutex);
+
+  return data[0];
+}
+
 
 /* --- auxillary functions --- */
 typedef struct

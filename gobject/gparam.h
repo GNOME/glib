@@ -165,6 +165,9 @@ GParamSpec*	g_param_spec_pool_lookup	(GParamSpecPool	*pool,
 						 const gchar	*param_name,
 						 GType		 owner_type,
 						 gboolean	 walk_ancestors);
+GList*		g_param_spec_pool_list		(GParamSpecPool	*pool,
+						 GType		 owner_type);
+
 
 
 /* contracts:

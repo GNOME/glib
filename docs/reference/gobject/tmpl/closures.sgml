@@ -38,10 +38,11 @@ Closures
 @f: 
 
 
-<!-- ##### TYPEDEF GCallback ##### -->
+<!-- ##### USER_FUNCTION GCallback ##### -->
 <para>
 
 </para>
+
 
 
 <!-- ##### STRUCT GClosure ##### -->

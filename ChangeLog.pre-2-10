@@ -1,3 +1,12 @@
+Tue Apr  3 13:46:22 2001  Tim Janik  <timj@gtk.org>
+
+	* glist.[hc]: added g_list_nth_prev() which walks ->prev instead
+	of ->next.
+
+	* gpattern.[hc]: added shell-style pattern matching code from beast,
+	derived from the gtk_pattern_*() code, but with a couple of bug fixes
+	and a number of optimizations.
+
 2001-04-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthreadpool.c: Added documentation.

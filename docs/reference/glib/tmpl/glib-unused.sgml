@@ -149,6 +149,25 @@ priority are stored in the order in which they were added.
 type of source.
 @Returns: TRUE if an event source was found and removed.
 
+<!-- ##### FUNCTION g_static_private_get_for_thread ##### -->
+<para>
+
+</para>
+
+@private_key: 
+@thread: 
+@Returns: 
+
+<!-- ##### FUNCTION g_static_private_set_for_thread ##### -->
+<para>
+
+</para>
+
+@private_key: 
+@thread: 
+@data: 
+@notify: 
+
 <!-- ##### MACRO g_string ##### -->
 <para>
 Turns the argument into a string literal by using the '#' stringizing operator.

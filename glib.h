@@ -48,6 +48,7 @@
 #include <gmem.h>
 #include <gmessages.h>
 #include <gnode.h>
+#include <gpattern.h>
 #include <gprimes.h>
 #include <gqsort.h>
 #include <gquark.h>

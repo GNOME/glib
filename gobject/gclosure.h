@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 /* -- typedefs --- */
 typedef struct _GClosure		 GClosure;
 typedef struct _GClosureNotifyData	 GClosureNotifyData;
-typedef	gpointer			 GCallback;
+typedef void  (*GCallback)              (void);
 typedef void  (*GClosureNotify)		(gpointer	 data,
 					 GClosure	*closure);
 typedef void  (*GClosureMarshal)	(GClosure	*closure,

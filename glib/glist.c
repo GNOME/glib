@@ -483,6 +483,16 @@ g_list_nth (GList *list,
   return list;
 }
 
+GList*
+g_list_nth_prev (GList *list,
+		 guint  n)
+{
+  while ((n-- > 0) && list)
+    list = list->prev;
+  
+  return list;
+}
+
 gpointer
 g_list_nth_data (GList     *list,
 		 guint      n)
