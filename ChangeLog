@@ -1,3 +1,10 @@
+Tue Nov 26 09:51:43 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c (g_strchomp): Avoid non-ANSI pointer
+	comparison. (#54344, Morten Welinder)
+
+	* tests/strfunc-test.c (main): Add tests for strchomp().
+
 2002-11-30  Ole Laursen  <olau@hardworking.dk>
 
 	* configure.in: Added "da" to ALL_LINGUAS.
