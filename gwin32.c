@@ -598,7 +598,7 @@ g_win32_getlocale (void)
 				 */
       switch (sub)
 	{
-	case SUBLANG_SERBIAN_LATIN: l = "hr"; break;
+	case SUBLANG_SERBIAN_LATIN: l = "sp"; break;
 	case SUBLANG_SERBIAN_CYRILLIC: l = "sr"; break;
 	default: l = "hr";	/* ??? */
 	}

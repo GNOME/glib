@@ -18,10 +18,14 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include "glib.h"
 
 #include <sys/stat.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -29,6 +33,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifndef S_ISLNK
+# define S_ISLNK(x) 0
+#endif
 
 #define _(x) x
 
@@ -279,6 +286,8 @@ get_contents_stdio (const gchar *filename,
   return TRUE;  
 }
 
+#ifndef G_OS_WIN32
+
 static gboolean
 get_contents_regfile (const gchar *filename,
                       struct stat *stat_buf,
@@ -401,7 +410,8 @@ get_contents_posix (const gchar *filename,
     }
 }
 
-#ifdef G_OS_WIN32
+#else  /* G_OS_WIN32 */
+
 static gboolean
 get_contents_win32 (const gchar *filename,
                     gchar      **contents,
@@ -426,6 +436,7 @@ get_contents_win32 (const gchar *filename,
   
   return get_contents_stdio (filename, f, contents, length, error);
 }
+
 #endif
 
 /**
@@ -467,4 +478,3 @@ g_file_get_contents (const gchar *filename,
   return get_contents_posix (filename, contents, length, error);
 #endif
 }
-

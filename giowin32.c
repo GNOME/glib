@@ -201,6 +201,10 @@ reader_thread (void *parameter)
       nbytes = MIN ((channel->rdp + BUFFER_SIZE - channel->wrp - 1) % BUFFER_SIZE,
 		    BUFFER_SIZE - channel->wrp);
 
+      if (channel->debug)
+	g_print ("thread %#x: calling reader for %d bytes\n",
+		 channel->thread_id, nbytes);
+
       UNLOCK (channel->mutex);
 
       nbytes = (*channel->reader) (channel->fd, buffer, nbytes);
@@ -876,9 +880,7 @@ g_io_channel_win32_poll (GPollFD *fds,
 			 gint     n_fds,
 			 gint     timeout)
 {
-  int i;
   int result;
-  gboolean debug = FALSE;
 
   g_return_val_if_fail (n_fds >= 0, 0);
 
@@ -905,19 +907,6 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
       create_reader_thread (win32_channel, fd_reader);
     else if (win32_channel->type == G_IO_STREAM_SOCKET)
       create_reader_thread (win32_channel, sock_reader);
-}
-
-gint
-g_io_channel_win32_wait_for_condition (GIOChannel  *channel,
-				       GIOCondition condition,
-				       gint         timeout)
-{
-  GPollFD pollfd;
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-
-  g_io_channel_win32_make_pollfd (channel, condition, &pollfd);
-  
-  return g_io_channel_win32_poll (&pollfd, 1, timeout);
 }
 
 /* This variable and the functions below are present just to be 

@@ -30,6 +30,7 @@ all : \
 	config.h	\
 	glibconfig.h	\
 	$(DLLS_TO_BUILD) \
+	gspawn-win32-helper.exe \
 	testglib.exe	\
 	testgdate.exe	\
 	testgdateparser.exe
@@ -46,6 +47,7 @@ glib_OBJECTS = \
 	gdataset.obj	\
 	gdate.obj	\
 	gerror.obj	\
+	gfileutils.obj	\
 	gconvert.obj	\
 	ghash.obj	\
 	ghook.obj	\
@@ -61,9 +63,11 @@ glib_OBJECTS = \
 	grand.obj	\
 	grel.obj	\
 	gscanner.obj	\
+	gshell.obj	\
 	gslist.obj	\
 	gstrfuncs.obj	\
 	gstring.obj	\
+	gspawn-win32.obj \
 	gthread.obj	\
 	gthreadpool.obj	\
 	gtimer.obj	\
@@ -88,6 +92,9 @@ makefile.msc: makefile.msc.in
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	$(CC) $(CFLAGS) -LD -Feglib-$(GLIB_VER).dll $(glib_OBJECTS) $(LIBICONV_LIBS) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:glib.def
+
+gspawn-win32-helper.exe : gspawn-win32.c glib-$(GLIB_VER).dll
+	$(CC) $(CFLAGS) -Fe$@ -DG_LOG_DOMAIN=\"gspawn-win32-helper\" gspawn-win32.c glib-$(GLIB_VER).lib $(LDFLAGS) /subsystem:windows
 
 ################ subdirectories
 

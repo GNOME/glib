@@ -1,3 +1,42 @@
+2000-10-16  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c (reader_thread): Some more debugging output.
+	(g_io_channel_win32_poll): Remove unused vars.
+
+	* gfileutils.c: Changes for Win32, with no unistd.h and no
+	S_ISLNK().
+
+	* gspawn-win32.c: Implementation of the g_spwan_* functions for
+	Win32. Due to the general non-Unixness of Win32, much of the
+	functionality that is relatively clean to implement on Unix, is
+	hard to do on Win32. We must use a separate helper program to
+	change directory, close extra file descriptors, redirect the std
+	ones, as needed, and only then start the child process. No child
+	process pid can be returned, unfortunately. Or if we used
+	CreateProcess directly, it probably could. (Now we use the spawnv*
+	functions from msvcrt.)
+
+	* glib.def: Add new entry points.
+
+	* glib.def
+	* giowin32.c: Remove g_io_channel_win32_wait_for_condition(),
+	g_io_channel_win32_poll() subsumes it.
+
+	* gbacktrace.h: G_BREAKPOINT for MSVC (on the ix86).
+
+	* gwin32.c (g_win32_getlocale): Use "sp" for
+	LANG_CROATIAN+SUBLANG_SERBIAN_LATIN.
+
+	* makefile.{mingw,msc}.in (glib_OBJECTS): Add new files.
+	Add gspawn-win32-helper.exe rule.
+
+	* tests/makefile.{mingw,msc}.in (TESTS): Add shell-test and
+	spawn-test.
+
+	* tests/spawn-test.c: (run_tests): On Win32, don't try to run
+	/bin/sh, but ipconfig (no special significance in choosing that,
+	just a program that outputs something to stdout).
+
 2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Remove need for acconfig.h, and misc. cleanups.

@@ -33,6 +33,7 @@ all : \
 	config.h \
 	glibconfig.h \
 	$(DLLS_TO_BUILD) \
+	gspawn-win32-helper.exe \
 	testglib.exe \
 	testgdate.exe \
 	testgdateparser.exe
@@ -50,6 +51,7 @@ glib_OBJECTS = \
 	gdataset.o \
 	gdate.o \
 	gerror.o \
+	gfileutils.o \
 	ghook.o \
 	ghash.o \
 	giochannel.o \
@@ -62,7 +64,9 @@ glib_OBJECTS = \
 	gprimes.o \
 	gqueue.o \
 	grand.o \
+	gshell.o \
 	gslist.o \
+	gspawn-win32.o \
 	gthread.o \
 	gthreadpool.o \
 	gtimer.o \
@@ -91,6 +95,9 @@ makefile.mingw: makefile.mingw.in
 
 glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
 	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) $(LIBICONV_LIBS) -luser32 -lwsock32
+
+gspawn-win32-helper.exe : gspawn-win32.c
+	$(CC) $(CFLAGS) -mwindows -DGSPAWN_HELPER  -DG_LOG_DOMAIN=\"gspawn-win32-helper\" -o $@ $< -L . -lglib-$(GLIB_VER)
 
 ################ subdirectories
 

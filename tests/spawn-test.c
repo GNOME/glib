@@ -60,6 +60,7 @@ run_tests (void)
   printf ("Errors after this are not supposed to happen:\n");
   
   err = NULL;
+#ifdef G_OS_UNIX
   if (!g_spawn_command_line_sync ("/bin/sh -c 'echo hello'",
                                   &output, NULL, NULL,
                                   &err))
@@ -82,6 +83,33 @@ run_tests (void)
 
       g_free (output);
     }
+#else
+#ifdef G_OS_WIN32
+  if (!g_spawn_command_line_sync ("ipconfig /all",
+                                  &output, NULL, NULL,
+                                  &err))
+    {
+      fprintf (stderr, "Error: %s\n", err->message);
+      g_error_free (err);
+      exit (1);
+    }
+  else
+    {
+      g_assert (output != NULL);
+      
+      if (strstr (output, "IP Configuration") == 0)
+        {
+          printf ("output was '%s', should have contained 'IP Configuration'\n",
+                  output);
+
+          exit (1);
+        }
+
+      g_free (output);
+    }
+
+#endif
+#endif
 }
 
 int

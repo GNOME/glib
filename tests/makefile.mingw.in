@@ -25,7 +25,9 @@ TESTS = \
 	queue-test.exe	\
 	rand-test.exe	\
 	relation-test.exe\
+	shell-test.exe	\
 	slist-test.exe	\
+	spawn-test.exe	\
 	strfunc-test.exe\
 	string-test.exe	\
 	thread-test.exe	\

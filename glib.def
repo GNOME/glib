@@ -99,6 +99,7 @@ EXPORTS
 	g_error_matches
 	g_error_new
 	g_error_new_literal
+	g_file_test
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free
@@ -162,17 +163,16 @@ EXPORTS
 	g_io_channel_unix_new
 	g_io_channel_unref
 	g_io_channel_win32_get_fd
-	g_io_channel_win32_new_messages
+	g_io_channel_win32_make_pollfd
 	g_io_channel_win32_new_fd
+	g_io_channel_win32_new_messages
 	g_io_channel_win32_new_pipe
 	g_io_channel_win32_new_pipe_with_wakeups
 	g_io_channel_win32_new_stream_socket
-	g_io_channel_win32_make_pollfd
 	g_io_channel_win32_pipe_readable
 	g_io_channel_win32_pipe_request_wakeups
 	g_io_channel_win32_poll
 	g_io_channel_win32_set_debug
-	g_io_channel_win32_wait_for_condition
 	g_io_channel_write
 	g_list_alloc
 	g_list_append
@@ -268,8 +268,8 @@ EXPORTS
 	g_pipe_readable_msg
 	g_print
 	g_printerr
-	g_propagate_error
 	g_printf_string_upper_bound
+	g_propagate_error
 	g_ptr_array_add
 	g_ptr_array_free
 	g_ptr_array_new
@@ -350,6 +350,9 @@ EXPORTS
 	g_set_print_handler
 	g_set_printerr_handler
 	g_set_warning_handler
+	g_shell_parse_argv
+	g_shell_quote
+	g_shell_unquote
 	g_slist_alloc
 	g_slist_append
 	g_slist_concat
@@ -379,6 +382,12 @@ EXPORTS
 	g_source_remove_by_source_data
 	g_source_remove_by_user_data
 	g_spaced_primes_closest
+	g_spawn_async
+	g_spawn_async_with_pipes
+	g_spawn_command_line_async
+	g_spawn_command_line_sync
+	g_spawn_error_quark
+	g_spawn_sync
 	g_static_mutex_get_mutex_impl
 	g_static_private_get
 	g_static_private_set
