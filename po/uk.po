@@ -1,15 +1,15 @@
 # Ukrainian translation of GLIB library.
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Yuri Syrota <rasta@renome.rovno.ua>, 2001.
+# Copyright (C) 2001-2004 Free Software Foundation, Inc.
+# Yuri Syrota <rasta@cvs.gnome.org>, 2001, 2004.
 # Maxim Dziumanenko <mvd@mylinux.com.ua>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-16 13:10-0500\n"
+"POT-Creation-Date: 2004-04-30 08:02+0300\n"
 "PO-Revision-Date: 2003-01-27 11:56--500\n"
-"Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
+"Last-Translator: Yuriy Syrota <rasta@cvs.gnome.org>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,8 +22,8 @@ msgstr "Перетворення з набору символів \"%s\" у \"%s
 
 #: glib/gconvert.c:406
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Не вдалось відкрити перетворювач з \"%s\" у \"%s\": %s"
+msgid "Could not open converter from '%s' to '%s'"
+msgstr "Не вдалось відкрити перетворювач з \"%s\" у \"%s\""
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
