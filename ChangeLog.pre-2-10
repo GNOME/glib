@@ -7,8 +7,9 @@
 	the symbol exists. Hint from Robert Pouliot
 	<robert.pouliot@bell.ca>.
 
-	* configure.in: Also look for thread functions in libthreads. Hint
-	also from Robert Pouliot <robert.pouliot@bell.ca>.
+	* configure.in: Also look for thread functions in
+	libthread. Makes it work on UnixWare 7.1.0. Hint also from Robert
+	Pouliot <robert.pouliot@bell.ca>.
 
 2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 

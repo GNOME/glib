@@ -671,8 +671,8 @@ case $have_threads in
 			     	G_THREAD_LIBS="-lpthreads")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(threads, pthread_attr_init,
-			     	G_THREAD_LIBS="-lthreads")
+                	AC_CHECK_LIB(thread, pthread_attr_init,
+			     	G_THREAD_LIBS="-lthread")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
                 	AC_CHECK_LIB(c_r, pthread_attr_init,
