@@ -28,7 +28,9 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #ifdef	GLIB_HAVE_SYS_POLL_H
-#include <sys/poll.h>
+#  include <sys/poll.h>
+#  undef events	 /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
+#  undef revents /* AIX 4.1.5 & 4.3.2 define this for SVR3,4 compatibility */
 #endif	/* GLIB_HAVE_SYS_POLL_H */
 #include <unistd.h>
 #include <errno.h>

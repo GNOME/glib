@@ -165,7 +165,7 @@ g_scanner_char_2_num (guchar	c,
 GScanner*
 g_scanner_new (GScannerConfig	*config_templ)
 {
-  register GScanner	*scanner;
+  GScanner *scanner;
   
   if (!config_templ)
     config_templ = &g_scanner_config_template;
@@ -340,8 +340,8 @@ static gint
 g_scanner_key_equal (gconstpointer v1,
 		     gconstpointer v2)
 {
-  register const GScannerKey *key1 = v1;
-  register const GScannerKey *key2 = v2;
+  const GScannerKey *key1 = v1;
+  const GScannerKey *key2 = v2;
   
   return (key1->scope_id == key2->scope_id) && (strcmp (key1->symbol, key2->symbol) == 0);
 }
@@ -349,14 +349,14 @@ g_scanner_key_equal (gconstpointer v1,
 static guint
 g_scanner_key_hash (gconstpointer v)
 {
-  register const GScannerKey *key = v;
-  register gchar *c;
-  register guint h;
+  const GScannerKey *key = v;
+  gchar *c;
+  guint h;
   
   h = key->scope_id;
   for (c = key->symbol; *c; c++)
     {
-      register guint g;
+      guint g;
       
       h = (h << 4) + *c;
       g = h & 0xf0000000;
@@ -375,15 +375,15 @@ g_scanner_lookup_internal (GScanner	*scanner,
 			   guint	 scope_id,
 			   const gchar	*symbol)
 {
-  register GScannerKey	*key_p;
+  GScannerKey	*key_p;
   GScannerKey key;
   
   key.scope_id = scope_id;
   
   if (!scanner->config->case_sensitive)
     {
-      register gchar *d;
-      register const gchar *c;
+      gchar *d;
+      const gchar *c;
       
       key.symbol = g_new (gchar, strlen (symbol) + 1);
       for (d = key.symbol, c = symbol; *c; c++, d++)
@@ -407,7 +407,7 @@ g_scanner_scope_add_symbol (GScanner	*scanner,
 			    const gchar	*symbol,
 			    gpointer	 value)
 {
-  register GScannerKey	*key;
+  GScannerKey	*key;
   
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (symbol != NULL);
@@ -422,7 +422,7 @@ g_scanner_scope_add_symbol (GScanner	*scanner,
       key->value = value;
       if (!scanner->config->case_sensitive)
 	{
-	  register gchar *c;
+	  gchar *c;
 	  
 	  c = key->symbol;
 	  while (*c != 0)
@@ -442,7 +442,7 @@ g_scanner_scope_remove_symbol (GScanner	   *scanner,
 			       guint	    scope_id,
 			       const gchar *symbol)
 {
-  register GScannerKey	*key;
+  GScannerKey	*key;
   
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (symbol != NULL);
@@ -461,8 +461,8 @@ gpointer
 g_scanner_lookup_symbol (GScanner	*scanner,
 			 const gchar	*symbol)
 {
-  register GScannerKey	*key;
-  register guint scope_id;
+  GScannerKey	*key;
+  guint scope_id;
   
   g_return_val_if_fail (scanner != NULL, NULL);
   
@@ -485,7 +485,7 @@ g_scanner_scope_lookup_symbol (GScanner	      *scanner,
 			       guint	       scope_id,
 			       const gchar    *symbol)
 {
-  register GScannerKey	*key;
+  GScannerKey	*key;
   
   g_return_val_if_fail (scanner != NULL, NULL);
   
@@ -504,7 +504,7 @@ guint
 g_scanner_set_scope (GScanner	    *scanner,
 		     guint	     scope_id)
 {
-  register guint old_scope_id;
+  guint old_scope_id;
   
   g_return_val_if_fail (scanner != NULL, 0);
   
@@ -519,11 +519,11 @@ g_scanner_foreach_internal (gpointer  _key,
 			    gpointer  _value,
 			    gpointer  _user_data)
 {
-  register GScannerKey *key;
-  register gpointer *d;
-  register GHFunc func;
-  register gpointer user_data;
-  register guint *scope_id;
+  GScannerKey *key;
+  gpointer *d;
+  GHFunc func;
+  gpointer user_data;
+  guint *scope_id;
   
   d = _user_data;
   func = (GHFunc) d[0];
@@ -724,8 +724,8 @@ g_scanner_peek_next_char (GScanner *scanner)
     }
   else if (scanner->input_fd >= 0)
     {
-      register gint count;
-      register gchar *buffer;
+      gint count;
+      gchar *buffer;
 
       buffer = scanner->buffer;
       do
@@ -784,14 +784,14 @@ g_scanner_get_char (GScanner	*scanner,
 		    guint	*line_p,
 		    guint	*position_p)
 {
-  register guchar fchar;
+  guchar fchar;
 
   if (scanner->text < scanner->text_end)
     fchar = *(scanner->text++);
   else if (scanner->input_fd >= 0)
     {
-      register gint count;
-      register gchar *buffer;
+      gint count;
+      gchar *buffer;
 
       buffer = scanner->buffer;
       do
@@ -843,12 +843,12 @@ g_scanner_unexp_token (GScanner		*scanner,
 		       const gchar	*message,
 		       gint		 is_error)
 {
-  register gchar	*token_string;
-  register guint	token_string_len;
-  register gchar	*expected_string;
-  register guint	expected_string_len;
-  register gchar	*message_prefix;
-  register gboolean	print_unexp;
+  gchar	*token_string;
+  guint	token_string_len;
+  gchar	*expected_string;
+  guint	expected_string_len;
+  gchar	*message_prefix;
+  gboolean print_unexp;
   void (*msg_handler)	(GScanner*, const gchar*, ...);
   
   g_return_if_fail (scanner != NULL);
@@ -1197,15 +1197,15 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 			 guint		*line_p,
 			 guint		*position_p)
 {
-  register GScannerConfig *config;
-  register GTokenType	   token;
-  register gboolean	   in_comment_multi;
-  register gboolean	   in_comment_single;
-  register gboolean	   in_string_sq;
-  register gboolean	   in_string_dq;
-  register GString	  *gstring;
-  GTokenValue		   value;
-  guchar		   ch;
+  GScannerConfig *config;
+  GTokenType	   token;
+  gboolean	   in_comment_multi;
+  gboolean	   in_comment_single;
+  gboolean	   in_string_sq;
+  gboolean	   in_string_dq;
+  GString	  *gstring;
+  GTokenValue	   value;
+  guchar	   ch;
   
   config = scanner->config;
   (*value_p).v_int = 0;
@@ -1225,7 +1225,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   
   do /* while (ch != 0) */
     {
-      register gboolean		dotted_float = FALSE;
+      gboolean dotted_float = FALSE;
       
       ch = g_scanner_get_char (scanner, line_p, position_p);
       
@@ -1309,8 +1309,8 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 		      ch = g_scanner_get_char (scanner, line_p, position_p);
 		      switch (ch)
 			{
-			  register guint	i;
-			  register guint	fchar;
+			  guint	i;
+			  guint	fchar;
 			  
 			case 0:
 			  break;
@@ -1450,7 +1450,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	case '9':
 	number_parsing:
 	{
-          register gboolean in_number = TRUE;
+          gboolean in_number = TRUE;
 	  gchar *endptr;
 	  
 	  if (token == G_TOKEN_NONE)
@@ -1461,7 +1461,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  
 	  do /* while (in_number) */
 	    {
-	      register gboolean is_E;
+	      gboolean is_E;
 	      
 	      is_E = token == G_TOKEN_FLOAT && (ch == 'e' || ch == 'E');
 	      
@@ -1689,8 +1689,8 @@ g_scanner_get_token_ll	(GScanner	*scanner,
     {
       if (config->scan_symbols)
 	{
-	  register GScannerKey	*key;
-	  register guint scope_id;
+	  GScannerKey *key;
+	  guint scope_id;
 	  
 	  scope_id = scanner->scope_id;
 	  key = g_scanner_lookup_internal (scanner, scope_id, value.v_identifier);

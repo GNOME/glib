@@ -1,3 +1,12 @@
+Mon Jan  4 20:58:50 1999  Tim Janik  <timj@gtk.org>
+
+	* gscanner.c: eliminated extraneous "register" qualifiers in variable
+	declarations.
+
+	* gmain.c: #undef events and revents which may have been defined in
+ 	sys/poll.h for SVR3,4 compatibility on some AIX systems. fix been
+	provided by Philippe Defert <Philippe.Defert@cern.ch>.
+
 Mon Jan  4 14:38:11 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: adjusted the g_strdup_a, g_strndup_a and g_strconcat3_a macros
