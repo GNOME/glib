@@ -1,3 +1,9 @@
+Thu Aug  7 15:01:09 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: Set $LIBS to include
+	-lintl when checking for dcgettext and 
+	_nl_msg_cat_cntr. (Tim Mooney, #119171)
+
 Thu Aug  7 14:15:44 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c (g_idle_source_new): Make the default priority
