@@ -1,16 +1,17 @@
 # Serbian translation of glib
-# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003.
-# 
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004.
+#
 # This file is distributed under the same license as the glib package.
-# 
+#
 # Maintainer: Danilo Šegan <dsegan@gmx.net>
+# Reviewed on 2004-02-01 by: Danilo Šegan
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.2.0\n"
+"Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2003-08-16 01:45+0200\n"
+"POT-Creation-Date: 2004-02-12 00:39+0100\n"
+"PO-Revision-Date: 2004-02-01 21:21+0100\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +26,7 @@ msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
 #: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Ne može pokrenuti pretvaranje iz „%s““ u „%s“: %s"
+msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“: %s"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -50,30 +51,31 @@ msgstr "Nepotpun niz znakova na kraju ulaza"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
 
+# bug: "file" should be in quotes, if it's about "file:///"
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI „%s“ nije apsolutan URI koji koristi zapis datoteka"
+msgstr "Adresa „%s“ nije apsolutna adresa pomoću „file“ šeme"
 
 #: glib/gconvert.c:1507
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "URI lokalne datoteke „%s“ ne sme sadržati „#“"
+msgstr "Adresa lokalne datoteke „%s“ ne sme sadržati „#“"
 
 #: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URI „%s“ je neispravan"
+msgstr "Adresa „%s“ je neispravna"
 
 #: glib/gconvert.c:1536
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Ime domaćina za URI „%s“ je neispravno"
+msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 
 #: glib/gconvert.c:1552
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI „%s“ sadrži neispravno naznačene znake"
+msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
 #: glib/gconvert.c:1623
 #, c-format
@@ -89,10 +91,11 @@ msgstr "Neispravno ime domaćina"
 msgid "Error opening directory '%s': %s"
 msgstr "Greška pri otvaranju direktorijuma „%s“: %s"
 
+# bug: plural-forms
 #: glib/gfileutils.c:393 glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Ne može obezbediti %lu bajtova za čitanje datoteke „%s“"
+msgstr "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
 
 #: glib/gfileutils.c:404
 #, c-format
@@ -102,42 +105,42 @@ msgstr "Greška pri čitanju datoteke „%s“: %s"
 #: glib/gfileutils.c:480
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Ne može da pročita datoteku „%s“: %s"
+msgstr "Ne mogu da pročitam iz datoteke „%s“: %s"
 
 #: glib/gfileutils.c:527 glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Ne može da otvori datoteku „%s“: %s"
+msgstr "Ne mogu da otvorim datoteku „%s“: %s"
 
 #: glib/gfileutils.c:541
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Ne može da sazna osobine datoteke „%s“: fstat() nije uspeo: %s"
+msgstr "Ne mogu da saznam osobine datoteke „%s“: neuspešan fstat(): %s"
 
 #: glib/gfileutils.c:567
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Ne može da otvori datoteku „%s“: fdopen() nije uspeo: %s"
+msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan fdopen(): %s"
 
 #: glib/gfileutils.c:779
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Obrazac '%s' neispravan, ne sme sadržati „%s“"
+msgstr "Neispravan šablon „%s“, ne sme sadržati „%s“"
 
 #: glib/gfileutils.c:791
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Obrazac '%s' se ne završava sa XXXXXX"
+msgstr "Šablon „%s“ se ne završava sa XXXXXX"
 
 #: glib/gfileutils.c:812
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Ne može da obrazuje datoteku „%s“: %s"
+msgstr "Ne mogu da napravim datoteku „%s“: %s"
 
 #: glib/gfileutils.c:1153
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Ne može da pročita simboličku vezu „%s“: %s"
+msgstr "Ne mogu da pročitam simboličku vezu „%s“: %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
@@ -146,16 +149,16 @@ msgstr "Simboličke veze nisu podržane"
 #: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
-msgstr "Pretvaranje iz skupa „%s“ u skup „%s“ nije podržano"
+msgstr "Nije podržano pretvaranje iz skupa znakova „%s“ u skup „%s“"
 
 #: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Ne može da pokrene pretvaranje iz „%s“ u „%s“: %s"
+msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“: %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Ne može da čita sirovo u g_io_channel_read_line_string"
+msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -167,12 +170,12 @@ msgstr "Kanal se završava delimičnim znakom"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Ne može da čita sirovo u g_io_channel_read_to_end"
+msgstr "Ne mogu da čitam bez obrade u g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Greška u redu %d, znak %d: %s"
+msgstr "Greška u %d. redu, %d. znak: %s"
 
 #: glib/gmarkup.c:307
 #, c-format
@@ -193,13 +196,13 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"Entitet ne može početi znakom „%s“ ; znak & započinje entitet; ako ovaj znak "
-"ne označava entitet, istaknite ga kao &amp;"
+"Ime entiteta ne može početi znakom „%s“ ; znak & započinje entitet; ako ovaj "
+"znak ne označava entitet, istaknite ga pomoću &amp;"
 
 #: glib/gmarkup.c:458
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Znak „%s“ nije dozvoljen van imena entiteta"
+msgstr "Znak „%s“ nije dozvoljen u imenu entiteta"
 
 #: glib/gmarkup.c:502
 #, c-format
@@ -211,7 +214,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entitet se ne završava tačka-zarezom; najverovatnije ste koristili ampersand "
+"Entitet se ne završava tačka-zapetom; najverovatnije ste koristili ampersand "
 "bez namere da započnete entitet — naznačite ampersand kao &amp;"
 
 #: glib/gmarkup.c:558
@@ -220,17 +223,17 @@ msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nije uspeo da obradi „%s“, što je morala biti cifra unutar oznake znaka (na "
-"primer &#234;) — moguće je da je cifra prevelika"
+"Nisam uspeo da raščlanim „%s“, što je trebalo da predstavlja biti cifru "
+"unutar poziva znaka (na primer &#234;) — možda je cifra prevelika"
 
 #: glib/gmarkup.c:583
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr "Oznaka „%s“ nije za dozvoljeni znak"
+msgstr "Poziv znaka „%s“ ne stoji za dozvoljeni znak"
 
 #: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Prazna oznaka; morala bi sadržati cifru kao na primer &#747;"
+msgstr "Prazan poziv znaka; morao bi sadržati cifru kao na primer &#747;"
 
 #: glib/gmarkup.c:610
 msgid ""
@@ -238,8 +241,8 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Oznaka se ne završava tačka-zarezom; najverovatnije ste koristili ampersand "
-"bez namere da započnete entitet — naznačite ampersand kao &amp;"
+"Poziv znaka se ne završava tačka-zapetom; najverovatnije ste koristili "
+"ampersand bez namere da započnete entitet — naznačite ampersand kao &amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
@@ -248,7 +251,7 @@ msgstr "Nedovršena oznaka entiteta"
 # poziv umesto oznaka?
 #: glib/gmarkup.c:642
 msgid "Unfinished character reference"
-msgstr "Nedovršena oznaka"
+msgstr "Nedovršen poziv znaka"
 
 # oznaka znaka??? neeeee
 #: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
@@ -266,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"„%s“ ne predstavlja ispravan znak nakon „<“ znaka; ne može njime početi ime "
-"elementa"
+"„%s“ ne predstavlja ispravan znak nakon znaka „<“; ime elementa ne može njime "
+"početi"
 
 #: glib/gmarkup.c:1085
 #, c-format
@@ -318,8 +321,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"„%s“ nije ispravan znak nakon zatvaranja elementa „%s“; dozvoljeni znak je "
-"„>“"
+"„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
+"je „>“"
 
 #: glib/gmarkup.c:1485
 #, c-format
@@ -335,7 +338,6 @@ msgstr "Element „%s“ je zatvoren, a trenutno otvoren element je „%s“"
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prazan ili sadrži samo beline"
 
-# beline se kod nas koristi kod papirnih izdanja, a ovaj izraz eng. koriste svuda
 #: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
@@ -503,7 +505,7 @@ msgstr ""
 
 #: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
-msgstr "Znak van granica UTF-8"
+msgstr "Znak van opsega za UTF-8"
 
 #: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
 #: glib/gutf8.c:1365 glib/gutf8.c:1461
@@ -512,7 +514,7 @@ msgstr "Neispravan niz u unosu za pretvaranje"
 
 #: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
-msgstr "Znak van granica UTF-16"
+msgstr "Znak van opsega za UTF-16"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Neispravna veličina poruke"
