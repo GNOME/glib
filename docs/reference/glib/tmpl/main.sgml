@@ -730,9 +730,10 @@ called, so the source should be checked again here.
 Called to dispatch the event source, after it has returned %TRUE in
 either its @prepare or its @check function. The @dispatch function is
 passed in a callback function and data. The callback function may be
-%NULL if the source was never connected using g_source_attach(). The
-@dispatch function should call the callback function with data and
-whatever additional parameters are needed for this type of event source.
+%NULL if the source was never connected to a callback using
+g_source_set_callback(). The @dispatch function should call the
+callback function with @user_data and whatever additional parameters are
+needed for this type of event source.
 </entry>
 </row>
 

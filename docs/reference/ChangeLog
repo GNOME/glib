@@ -1,3 +1,8 @@
+Mon Mar  8 08:32:36 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/tmpl/main.sgml: Reference g_source_set_callback(),
+	not g_source_attach(). (Takeshi AIHANA )
+
 2004-02-29  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/glib-overrides.txt, glib/glib-sections.txt,
