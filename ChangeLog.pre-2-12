@@ -1,3 +1,8 @@
+2002-07-03  Anders Carlsson  <andersca@gnu.org>
+
+	* configure.in: Add a forgotten trailing ` in the 
+	GLIB_BINARY_AGE expression. Also fixup LT_CURRENT.
+
 2002-07-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Set binary age to 0 to make it compile.
