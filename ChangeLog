@@ -1,3 +1,7 @@
+Tue Aug  4 19:54:06 PDT 1998 Shawn T. Amundson <amundson@gkt.org>
+
+	* Released GLib 1.1.1
+
 Tue Aug  4 15:17:54 1998  Tim Janik  <timj@gtk.org>
 
 	* configure.in: version bump to 1.1.1, binary age 1, interface age 0.

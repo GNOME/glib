@@ -16,5 +16,9 @@ Paolo Molaro <lupus@debian.org>
 Manish Singh <yosh@gimp.org>
 Owen Taylor <otaylor@gtk.org>
 
+
+Also, thanks to Shawn T. Amundson <amundson@gtk.org>
+for doing releases of GLIB.
+
 There are also many others who have contributed patches and fixes;
 we thank them, for helping us in advancing GLIB.
