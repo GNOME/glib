@@ -1,3 +1,8 @@
+2001-05-21  Andrew Lanoix <alanoix@umich.edu>
+
+	*giowin32.c: G_IO_WIN32_WINDOWS_MESSAGES channels
+	not handled correctly in g_io_win32_check()
+
 Sun May 20 10:47:47 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Fix some problems in writing out varargs
