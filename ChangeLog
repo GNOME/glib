@@ -1,3 +1,7 @@
+2005-02-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
 2005-02-01  Matthias Clasen  <mclasen@redhat.com>
 
 	* tests/keyfile-test.c (test_key_remove): Add test case for
