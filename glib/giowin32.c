@@ -4,6 +4,7 @@
  * giowin32.c: IO Channels for Win32.
  * Copyright 1998 Owen Taylor and Tor Lillqvist
  * Copyright 1999-2000 Tor Lillqvist and Craig Setera
+ * Copyright 2001 Andrew Lanoix
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -437,6 +438,14 @@ select_thread (void *parameter)
       ResetEvent (channel->data_avail_noticed_event);
       SetEvent (channel->data_avail_event);
 
+      LOCK (channel->mutex);
+      if (channel->needs_close)
+	{
+	  UNLOCK (channel->mutex);
+	  break;
+	}
+      UNLOCK (channel->mutex);
+
       if (channel->debug)
 	g_print ("select_thread %#x: waiting for data_avail_noticed\n",
 		 channel->thread_id);
@@ -449,7 +458,7 @@ select_thread (void *parameter)
   
   channel->running = FALSE;
   LOCK (channel->mutex);
-  if (channel->needs_close)
+  if (channel->fd != -1)
     {
       if (channel->debug)
 	g_print ("select_thread %#x: channel fd %d needs closing\n",
@@ -576,6 +585,7 @@ g_io_win32_destroy (GSource *source)
 
   channel->watches = g_slist_remove (channel->watches, watch);
 
+  SetEvent (channel->data_avail_noticed_event);
   g_io_channel_unref (watch->channel);
 }
 
@@ -971,12 +981,27 @@ g_io_win32_sock_close (GIOChannel *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
-  if (win32_channel->debug)
-    g_print ("thread %#x: closing socket %d\n",
+  LOCK(win32_channel->mutex);
+  if (win32_channel->running)
+  {
+    if (win32_channel->debug)
+	g_print ("thread %#x: running, marking for later close\n",
+		 win32_channel->thread_id);
+    win32_channel->running = FALSE;
+    win32_channel->needs_close = TRUE;
+    SetEvent(win32_channel->data_avail_noticed_event);
+  }
+  if (win32_channel->fd != -1)
+  {
+    if (win32_channel->debug)
+       g_print ("thread %#x: closing socket %d\n",
 	     win32_channel->thread_id,
 	     win32_channel->fd);
-  closesocket (win32_channel->fd);
-  win32_channel->fd = -1;
+  
+    closesocket (win32_channel->fd);
+    win32_channel->fd = -1;
+  }
+  UNLOCK(win32_channel->mutex);
 }
 
 static GSource *
