@@ -1,9 +1,9 @@
 Sun Jan  3 01:38:14 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* tests/Makefile.am:
-	add array-test.c
+	add array-test.c, tree-test.c
 
-	* tests/array-test.c:
+	* tests/array-test.c, tests/tree-test.c:
 	New module, tests array family
 
 	* tests/hash-test.c, tests/list-test.c, tests/slist-test.c,

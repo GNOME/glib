@@ -9,7 +9,8 @@ TESTS = \
 	node-test	\
 	relation-test	\
 	slist-test	\
-	string-test
+	string-test	\
+	tree-test
 
 noinst_PROGRAMS = $(TESTS)
 
@@ -21,4 +22,5 @@ node_test_LDADD = ../libglib.la
 relation_test_LDADD = ../libglib.la
 slist_test_LDADD = ../libglib.la
 string_test_LDADD = ../libglib.la
+tree_test_LDADD = ../libglib.la
 
