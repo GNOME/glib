@@ -1,5 +1,9 @@
 Thu Dec 12 20:46:26 2002  Owen Taylor  <otaylor@redhat.com>
 
+	* configure.in: Allow not setting glib_cv_long_long_format
+	when cross-compiling since we assume other things that
+	will cause us to pull in Trio anyways.
+
 	* configure.in: long_long_format is always ll for trio.
 	
 	* configure.in: Error out if --disable-trio is specified
