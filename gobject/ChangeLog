@@ -1,3 +1,7 @@
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+ 	* === Released 2.4.4 ===
+
 Wed Jun 23 12:57:38 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gtype.h (G_DEFINE_TYPE_EXTENDED): Add an initializer for

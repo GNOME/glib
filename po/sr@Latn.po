@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-04-29 01:01+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <serbiagnome-lista@nongnu.org>\n"
@@ -77,16 +77,16 @@ msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja „%s“ nije apsolutna putanja"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Neispravno ime domaćina"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Greška pri otvaranju direktorijuma „%s“: %s"

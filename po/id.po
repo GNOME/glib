@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2003-03-30 22:38+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <sukarelawan@gnome.linux.or.id>\n"
@@ -72,16 +72,16 @@ msgstr "Nama host pada URI '%s' tidak benar"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' berisi karakter escape yang salah"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama path '%s' bukan path absolut"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Nama host salah"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Error saat membuka direktori '%s': %s"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-05-07 15:18-0300\n"
 "Last-Translator: Gustavo Noronha Silva <kov@debian.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -71,16 +71,16 @@ msgstr "O nome de servidor do URI '%s' é inválido"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "O URI '%s' contém caracteres mascarados inválidos"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho '%s' não é um caminho absoluto"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Erro ao abrir o diretório '%s': %s"

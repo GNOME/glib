@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-03-14 19:59+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Română <gnomero-list@lists.sourceforge.net>\n"
@@ -72,16 +72,16 @@ msgstr "Gazda URI-ului „%s” este invalidă"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI-ul „%s” conţine caractere „escaped” invalide"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Calea „%s” nu este o cale absolută"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Nume gazdă invalid"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Eroare la deschiderea directorului „%s”: %s"

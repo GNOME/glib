@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-05-01 11:16+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -73,16 +73,16 @@ msgstr "URI 中のホスト名 '%s' がおかしいです"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI %s' に無効なエスケープ文字が含まれています"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "パス名 '%s' が絶対パスではありません"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ディレクトリ '%s' を開く時にエラー: %s"

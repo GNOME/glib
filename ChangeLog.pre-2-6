@@ -1,5 +1,13 @@
 2004-07-09  Matthias Clasen  <mclasen@redhat.com>
 
+	* === Released 2.4.4 ===
+
+	* configure.in: Sync version with GTK+ again.
+
+	* NEWS: Updates
+
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gdir.c (g_dir_open): Convert filename to UTF-8 
 	before using it in the error message.  (#146054, Federico
 	Mena Quintero)

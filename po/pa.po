@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: punlinux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-02-16 14:05+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanlinux@netscape.net>\n"
 "Language-Team: KBST Punjab <kbstpunjab@netscape.net>\n"
@@ -73,16 +73,16 @@ msgstr "ਯੂਆਰ ਆਈ %s ਦੇ ਮੇਜਬਾਨ ਦਾ ਨਾਉ ਜਾ
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "ਯੂਆਰਆਈ %s ਕੋਲ ਗਲਤ ਅਖਰ ਹਨ"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ਰਾਹ %s ਇਕ ਠੀਕ (absolute) ਰਾਹ ਨਹੀ ਹੈ"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਮੇਜਬਾਨ ਨਾਉ"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "ਗਲਤੀ %s ਡਾਇਕਰੈਕਟਰੀ ਖੋਲਣ ਲਈ %s"

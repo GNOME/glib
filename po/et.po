@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2002-12-10 10:05+0200\n"
 "Last-Translator: Allan Sims <allsi@eau.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -72,16 +72,16 @@ msgstr "URI '%s' hostinimi on vigane"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sisaldab vigaseid väljund märke"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Rajanimi '%s' ei ole absoluutne rada"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Viga kataloogi '%s' avamisel: %s"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2002-12-19 01:04+0200\n"
 "Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -71,16 +71,16 @@ msgstr "Hostdatora nosaukuma URI '%s' ir nepareizs"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' satur nepareizi izvairīgas rakstzīmes"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Ceļvārds '%s' nav absolutais ceļš"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Nepareizs hostdatora nosaukums"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Kļūda atverot direktoriju '%s': %s"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2002-12-20 10:12-0500\n"
 "Last-Translator: Unknown :-(\n"
 "Language-Team: Hindi <hi@li.org>\n"
@@ -73,16 +73,16 @@ msgstr "uri %s का होस्टनाम अवैध है"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "uri %s में अवैध इस्केप कैरेक्टर सम्मिलित है"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "पाथनाम %s एक absolute पाथ नहीं है"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "अवैध होस्ट नाम"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "डायरेक्टरी %s को खोलने में त्रुटि %s"

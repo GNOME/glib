@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-03-08 21:28+0000\n"
 "Last-Translator: Alastair McKinstry <mckinstry@debian.org>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -72,16 +72,16 @@ msgstr "Is meamhbháilí an h-óstainm do URI '%s'"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr ""
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Óstainm neamhbhailí"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Teip ag oscailt féilire '%s': %s"

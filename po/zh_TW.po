@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2003-05-27 20:23+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -71,16 +71,16 @@ msgstr "URI‘%s’中的主機名稱無效"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI‘%s’含有不正確的「跳出字元」(escaped characters)"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "路徑名稱‘%s’不是絕對路徑"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "主機名稱無效"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "開啟目錄‘%s’時發生錯誤：%s"

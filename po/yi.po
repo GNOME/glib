@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -71,16 +71,16 @@ msgstr "דער מאַשין־נאָמען פֿונעם URI %s איז אומלע�
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "דער URI %s איז כּולל אומלעקסיקע פּליטה־כאַראַקטערס"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "די פּאַפּקע־רשימה %s איז ניט אַבסאָלוט"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "אומלעקסיקער מאַשין־נאָמען"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "דורכפֿאַל אין עפֿענען פּאַפּקע %s: %s"

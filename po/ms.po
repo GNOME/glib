@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-02-03 02:11+0730\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.org>\n"
@@ -71,16 +71,16 @@ msgstr "Namahos URI '%s' tidak sah"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' mengandungi aksara escaped yang tidak sah"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nama laluan '%s' adalah bukan laluan mutlak"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Namahos tidak sah"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Ralat membuka direktori %s': %s"

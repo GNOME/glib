@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-04-29 08:57+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -77,16 +77,16 @@ msgstr "Имя узла недопустимо в идентификаторе U
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Идентификатор URI \"%s\" содержит недопустимо экранированный символ"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путь \"%s\" не является абсолютным"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Имя узла недопустимо"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Произошла ошибка при открытии каталога \"%s\": %s"

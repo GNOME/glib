@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2001-12-19 21:39+0100\n"
 "Last-Translator: Manuel A. Fernández Montecelo <manuel@sindominio.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -71,17 +71,17 @@ msgstr "O nome do servidor no URI '%s' contén caracteres de escape non válidos
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "A URI '%s' contén caracteres de escape non válidos"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de ruta '%s' non é unha ruta absoluta"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "Secuencia de bytes non válida no nome do servidor"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Erro abrindo o directorio '%s': %s"

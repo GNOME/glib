@@ -1,3 +1,14 @@
+Overview of Changes from GLib 2.4.2 to GLib 2.4.4
+=================================================
+
+* Win32 bug fixes (John Ehresman)
+* Other bug fixes (Manish Singh, Matthias Clasen, Federico
+  Mena Quintero, Philippe Blain, Sven Neumann, Julio M. Merino
+  Vidal, Kaz Sasayama, Morten Welinder, Mariano Suarez-Alvarez)
+* Documentation updates (Crispin Flowerday, Ed Griffiths, 
+  Federico)
+* New and updated translations (az,ne,sq)
+
 Overview of Changes from GLib 2.4.1 to GLib 2.4.2
 =================================================
 

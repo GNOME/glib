@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-04 09:50-0400\n"
+"POT-Creation-Date: 2004-07-09 09:33-0400\n"
 "PO-Revision-Date: 2004-06-25 05:12+0700\n"
 "Last-Translator: T.M.Thanh <tmthanhmd@fptnet.com ; tmthanh@yahoo.com>\n"
 "Language-Team: Gnome-Vi Team <gnomevi-list@lists.sourceforge.net>\n"
@@ -73,16 +73,16 @@ msgstr "Tên chủ của URI '%s' không hợp lệ"
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' chứa không hợp lệ các ký tự thoát"
 
-#: glib/gconvert.c:1623
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Tên đường dẫn '%s' không phải một đường dẫn tuyệt đối"
 
-#: glib/gconvert.c:1633
+#: glib/gconvert.c:1632
 msgid "Invalid hostname"
 msgstr "Tên chủ không hợp lệ"
 
-#: glib/gdir.c:80
+#: glib/gdir.c:83
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Lỗi khi mở thư mục '%s': %s"
@@ -511,11 +511,11 @@ msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 msgid "Character out of range for UTF-16"
 msgstr "Ký tự nằm ngoài vùng UTF-16"
 
-msgid "Incorrect message size"
-msgstr "Kích thước thông điệp sai"
+#~ msgid "Incorrect message size"
+#~ msgstr "Kích thước thông điệp sai"
 
-msgid "Socket error"
-msgstr "Lỗi Socket"
+#~ msgid "Socket error"
+#~ msgstr "Lỗi Socket"
 
-msgid "Channel set flags unsupported"
-msgstr "Kênh đặt các flag không được hỗ trợ"
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "Kênh đặt các flag không được hỗ trợ"
