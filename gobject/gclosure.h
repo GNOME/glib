@@ -112,6 +112,7 @@ GClosure*	g_signal_type_cclosure_new	(GType          itype,
 
 /* --- prototypes --- */
 GClosure*	g_closure_ref			(GClosure	*closure);
+void		g_closure_sink			(GClosure	*closure);
 void		g_closure_unref			(GClosure	*closure);
 /* intimidating */
 GClosure*	g_closure_new_simple		(guint		 sizeof_closure,

@@ -171,6 +171,7 @@ struct _GTypeInterface
 /* debug flags for g_type_init() */
 typedef enum	/*< skip >*/
 {
+  G_TYPE_DEBUG_NONE	= 0,
   G_TYPE_DEBUG_OBJECTS	= 1 << 0,
   G_TYPE_DEBUG_SIGNALS	= 1 << 1,
   G_TYPE_DEBUG_MASK	= 0x03

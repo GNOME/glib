@@ -1,3 +1,19 @@
+Fri Feb 16 07:10:44 2001  Tim Janik  <timj@gtk.org>
+
+	* gclosure.c:
+	(g_closure_ref):
+	(g_closure_sink): make closure sinking explicit.
+
+	* gsignal.c:
+	(g_signal_connect_data): 
+	(g_signal_connect_closure): 
+	(g_signal_connect_closure_by_id): 
+	(g_signal_newv): perform explicit closure sinking.
+
+Thu Feb  8 00:31:45 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.h: added G_TYPE_DEBUG_NONE for/from Eric Lemings ;)
+
 2001-02-04  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Remove glib_debug_objects.

@@ -1047,6 +1047,8 @@ g_signal_newv (const gchar       *signal_name,
   node->param_types = g_memdup (param_types, sizeof (GType) * n_params);
   node->return_type = return_type;
   node->class_closure = class_closure ? g_closure_ref (class_closure) : NULL;
+  if (class_closure)
+    g_closure_sink (class_closure);
   node->accumulator = accumulator;
   node->c_marshaller = c_marshaller;
   node->emission_hooks = NULL;
@@ -1128,6 +1130,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	  handler_id = handler->id;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
+	  g_closure_sink (closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (closure))
 	    g_closure_set_marshal (closure, node->c_marshaller);
@@ -1172,6 +1175,7 @@ g_signal_connect_closure (gpointer     instance,
 	  handler_id = handler->id;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
+	  g_closure_sink (closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
 	    g_closure_set_marshal (handler->closure, node->c_marshaller);
@@ -1219,6 +1223,7 @@ g_signal_connect_data (gpointer       instance,
 	  handler_id = handler->id;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref ((swapped ? g_cclosure_new_swap : g_cclosure_new) (c_handler, data, destroy_data));
+	  g_closure_sink (handler->closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
 	    g_closure_set_marshal (handler->closure, node->c_marshaller);

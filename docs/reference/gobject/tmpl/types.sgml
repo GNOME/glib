@@ -22,6 +22,15 @@ Dynamic types are created with g_type_register_dynamic() which takes a
 #GTypePlugin structure instead. The remaining type information (the
 #GTypeInfo structure) is retrived during runtime through #GTypePlugin
 and the g_type_plugin_*() API.
+These registration functions are usually called only once from a 
+function whose only purpose is to return the type identifier for a 
+specific class.  Once the type (or class or interface) is registered,
+it may be instantiated, inherited, or implemented depending on exactly
+what sort of type it is.
+There is also a third registration function for registering fundamental
+types called g_type_register_fundamental() which requires both a #GTypeInfo
+structure and a GTypeFundamentalInfo structure but it is seldom used
+since most fundamental types are predefined rather than user-defined.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -43,7 +52,7 @@ Returns #TRUE if @type is a fundamental data type such as #G_TYPE_INT or
 the derived types, thus they are the roots of distinct inheritance heirachies.
 </para>
 
-@type: a #GType value
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL_MAX ##### -->
@@ -103,7 +112,7 @@ types).
 
 <!-- ##### MACRO G_TYPE_IS_FUNDAMENTAL ##### -->
 <para>
-
+Returns #TRUE if @type is a fundamental type.
 </para>
 
 @type: A #GType value.
@@ -119,7 +128,7 @@ types).
 
 <!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
 <para>
-
+Returns #TRUE if @type is a classed type.
 </para>
 
 @type: A #GType value.
@@ -136,7 +145,8 @@ process of creating an instance (object) of this type.
 
 <!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
 <para>
-
+Returns #TRUE if @type is a derivable type.  A derivable type can
+be used as the base class of a flat (single-level) class hierarchy.
 </para>
 
 @type: A #GType value.
@@ -144,7 +154,8 @@ process of creating an instance (object) of this type.
 
 <!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
 <para>
-
+Returns #TRUE if @type is a deep derivable type.  A deep derivable type
+can be used as the base class of a deep (multi-level) class hierarchy.
 </para>
 
 @type: A #GType value.
@@ -155,7 +166,8 @@ process of creating an instance (object) of this type.
 Returns #TRUE if @type is an interface type.
 Interface types are types that provide pure APIs, the implementation
 of which is provided by another type (which is then said to conform
-to the interface).
+to the interface).  GLib interfaces are somewhat analogous to Java
+interfaces and C++ classes containing only pure virtual functions.
 </para>
 
 @type: A #GType value.
@@ -163,63 +175,63 @@ to the interface).
 
 <!-- ##### ENUM GTypeFundamentals ##### -->
 <para>
-
+The predefined identifiers of the reserved fundamental types.
 </para>
 
-@G_TYPE_INVALID: 
-@G_TYPE_NONE: 
-@G_TYPE_INTERFACE: 
-@G_TYPE_CHAR: 
-@G_TYPE_UCHAR: 
-@G_TYPE_BOOLEAN: 
-@G_TYPE_INT: 
-@G_TYPE_UINT: 
-@G_TYPE_LONG: 
-@G_TYPE_ULONG: 
-@G_TYPE_ENUM: 
-@G_TYPE_FLAGS: 
-@G_TYPE_FLOAT: 
-@G_TYPE_DOUBLE: 
-@G_TYPE_STRING: 
-@G_TYPE_PARAM: 
-@G_TYPE_BOXED: 
-@G_TYPE_POINTER: 
-@G_TYPE_CCALLBACK: 
-@G_TYPE_OBJECT: 
-@G_TYPE_GTK_SIGNAL: 
-@G_TYPE_BSE_PROCEDURE: 
-@G_TYPE_BSE_TIME: 
-@G_TYPE_BSE_NOTE: 
-@G_TYPE_BSE_DOTS: 
-@G_TYPE_GLE_GOBJECT: 
-@G_TYPE_LAST_RESERVED_FUNDAMENTAL: 
-@G_TYPE_PARAM_CHAR: 
-@G_TYPE_PARAM_UCHAR: 
-@G_TYPE_PARAM_BOOLEAN: 
-@G_TYPE_PARAM_INT: 
-@G_TYPE_PARAM_UINT: 
-@G_TYPE_PARAM_LONG: 
-@G_TYPE_PARAM_ULONG: 
-@G_TYPE_PARAM_ENUM: 
-@G_TYPE_PARAM_FLAGS: 
-@G_TYPE_PARAM_FLOAT: 
-@G_TYPE_PARAM_DOUBLE: 
-@G_TYPE_PARAM_STRING: 
-@G_TYPE_PARAM_PARAM: 
-@G_TYPE_PARAM_POINTER: 
-@G_TYPE_PARAM_CCALLBACK: 
-@G_TYPE_PARAM_BOXED: 
-@G_TYPE_PARAM_OBJECT: 
+@G_TYPE_INVALID: 	Usually a return value indicating an error.
+@G_TYPE_NONE: 		A synonym for the "void" type in C.
+@G_TYPE_INTERFACE: 	Root type of all interface types.
+@G_TYPE_CHAR: 		Identifier for the built-in type "gchar".
+@G_TYPE_UCHAR: 		Identifier for the built-in type "guchar".
+@G_TYPE_BOOLEAN: 	Identifier for the built-in type "gboolean".
+@G_TYPE_INT: 		Identifier for the built-in type "gint".
+@G_TYPE_UINT: 		Identifier for the built-in type "guint".
+@G_TYPE_LONG: 		Identifier for the built-in type "glong".
+@G_TYPE_ULONG: 		Identifier for the built-in type "gulong".
+@G_TYPE_ENUM: 		Identifier for the "#GEnum" type.
+@G_TYPE_FLAGS: 		Identifier for the "#GFlags" type.
+@G_TYPE_FLOAT: 		Identifier for the built-in type "gfloat".
+@G_TYPE_DOUBLE: 		Identifier for the built-in type "gdouble".
+@G_TYPE_STRING: 		Identifier for a pointer to a null-terminated string "gchar*".
+@G_TYPE_PARAM: 		Identifier for the "#GParam" type.
+@G_TYPE_BOXED: 		Identifier for the "#GBoxed" type.
+@G_TYPE_POINTER: 	Identifier for anonymous pointers "void*".
+@G_TYPE_CCALLBACK: 	Identifier for a pointer to a C function.
+@G_TYPE_OBJECT: 		Identifier for the "#GObject" type.
+@G_TYPE_GTK_SIGNAL: 	Reserved for use by the Gtk+ software package.
+@G_TYPE_BSE_PROCEDURE: 	Reserved for use by the BSE software package.
+@G_TYPE_BSE_TIME: 	Reserved for use by the BSE software package.
+@G_TYPE_BSE_NOTE: 	Reserved for use by the BSE software package.
+@G_TYPE_BSE_DOTS: 	Reserved for use by the BSE software package.
+@G_TYPE_GLE_GOBJECT: 	Reserved for use by the GLE software package.
+@G_TYPE_LAST_RESERVED_FUNDAMENTAL: New third-party fundamental types have to use IDs higher than this.
+@G_TYPE_PARAM_CHAR: 	Identifier for the "#GParamSpecChar" type.
+@G_TYPE_PARAM_UCHAR: 	Identifier for the "#GParamSpecUChar" type.
+@G_TYPE_PARAM_BOOLEAN: 	Identifier for the "#GParamSpecBoolean" type.
+@G_TYPE_PARAM_INT: 	Identifier for the "#GParamSpecInt" type.
+@G_TYPE_PARAM_UINT: 	Identifier for the "#GParamSpecUInt" type.
+@G_TYPE_PARAM_LONG: 	Identifier for the "#GParamSpecLong" type.
+@G_TYPE_PARAM_ULONG: 	Identifier for the "#GParamSpecULong" type.
+@G_TYPE_PARAM_ENUM: 	Identifier for the "#GParamSpecEnum" type.
+@G_TYPE_PARAM_FLAGS: 	Identifier for the "#GParamSpecFlags" type.
+@G_TYPE_PARAM_FLOAT: 	Identifier for the "#GParamSpecFloat" type.
+@G_TYPE_PARAM_DOUBLE: 	Identifier for the "#GParamSpecDouble" type.
+@G_TYPE_PARAM_STRING: 	Identifier for the "#GParamSpecString" type.
+@G_TYPE_PARAM_PARAM: 	Identifier for the "#GParamSpecParam" type.
+@G_TYPE_PARAM_POINTER: 	Identifier for the "#GParamSpecPointer" type.
+@G_TYPE_PARAM_CCALLBACK: Identifier for the "#GParamSpecCCallback" type.
+@G_TYPE_PARAM_BOXED: 	Identifier for the "#GParamSpecBoxed" type.
+@G_TYPE_PARAM_OBJECT: 	Identifier for the "#GParamSpecObject" type.
 
 <!-- ##### STRUCT GTypeInterface ##### -->
 <para>
-
+An opaque structure used as the base of all interface types.
 </para>
 
 
 <!-- ##### STRUCT GTypeInstance ##### -->
 <para>
-
+An opaque structure used as the base of all type instances.
 </para>
 
 
@@ -237,31 +249,34 @@ across invocation of g_type_register_static().
 
 @class_size: 	 Size of the class structure (required for interface, classed and instantiatable types).
 @base_init: 	 Location of the base initialization function (optional).
-@base_finalize: 	 Location of the base finalization function (optional).
+@base_finalize:  Location of the base finalization function (optional).
 @class_init: 	 Location of the class initialization function (optional, for classed and instantiatable types only).
 @class_finalize: Location of the class finalization function (optional).
 @class_data: 	 User-supplied data passed to the class init/finalize functions.
-@instance_size: 	 Size of the instance (object) structure (required for instantiatable types only).
+@instance_size:  Size of the instance (object) structure (required for instantiatable types only).
 @n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
-@instance_init: 	 The location of the instance initialization function (optional, for instantiatable types only).
+@instance_init:  Location of the instance initialization function (optional, for instantiatable types only).
 @value_table: 	 Function table for generic handling of GValues of this type (usualy only usefull for
 		 fundamental types).
 
 <!-- ##### STRUCT GTypeFundamentalInfo ##### -->
 <para>
-
+A structure that provides information to the type system which is
+used specifically for managing fundamental types.  
 </para>
 
 @type_flags: 
 
 <!-- ##### STRUCT GInterfaceInfo ##### -->
 <para>
-
+A structure that provides information to the type system which is
+used specifically for managing interface types.
 </para>
 
-@interface_init: 
-@interface_finalize: 
-@interface_data: 
+@interface_init: 	Location of the function that initializes the interface.
+@interface_finalize: 	Location of the function that finalizes the interface.
+@interface_data: 	Location of user data passed to the @interface_init and
+	 		@interface_finalize functions (optional).
 
 <!-- ##### STRUCT GTypeValueTable ##### -->
 <para>
@@ -279,36 +294,37 @@ across invocation of g_type_register_static().
 
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
 <para>
-
+Returns the type identifier from a given @instance structure.
 </para>
 
-@instance: 
+@instance: Location of a valid #GTypeInstance structure.
 
 
 <!-- ##### MACRO G_TYPE_FROM_CLASS ##### -->
 <para>
-
+Returns the type identifier from a given @class structure.
 </para>
 
-@g_class: 
+@g_class: Location of a valid #GTypeClass structure.
 
 
 <!-- ##### MACRO G_TYPE_FROM_INTERFACE ##### -->
 <para>
-
+Returns the type identifier from a given @interface structure.
 </para>
 
-@g_iface: 
+@g_iface: Location of a valid #GTypeInterface structure.
 
 
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_CLASS ##### -->
 <para>
-
+Returns the class structure of a given @instance, casted
+to a specified anchestor type @g_type of the instance.
 </para>
 
-@instance: 
-@g_type: 
-@c_type: 
+@instance: 	Location of the #GTypeInstance structure.
+@g_type: 	The anchestor type of the class to be returned.
+@c_type: 	The corresponding C type of @g_Type.
 
 
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_INTERFACE ##### -->
@@ -398,7 +414,7 @@ the type system and assorted other code portions (such as the various fundamenta
 type implementations or the signal system).
 </para>
 
-@debug_flags: 
+@debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
 
 
 <!-- ##### FUNCTION g_type_name ##### -->
@@ -476,37 +492,56 @@ Check whether @type is a descendant of @is_a_type.
 
 <!-- ##### FUNCTION g_type_class_ref ##### -->
 <para>
-
+Increments the reference count of the class structure belonging to
+@type. This function will demand-create the class if it doesn't
+exist already.
 </para>
 
-@type: 
-@Returns: 
+@type: 	  Type ID of a classed type.
+@Returns: The #GTypeClass structure for the given type ID.
 
 
 <!-- ##### FUNCTION g_type_class_peek ##### -->
 <para>
-
+This function is essentially the same as g_type_class_ref(), except that
+the classes reference count isn't incremented. Therefore, this function
+may return NULL if the class of the type passed in does not currently
+exist (hasn't been referenced before).
 </para>
 
-@type: 
-@Returns: 
+@type: 		Type ID of a classed type.
+@Returns: 	The #GTypeClass structure for the given type ID or NULL
+		if the class does not currently exist.
 
 
 <!-- ##### FUNCTION g_type_class_unref ##### -->
 <para>
-
+Decrements the reference count of the class structure being passed in.
+Once the last reference count of a class has been released, classes
+may be finalized by the type system, so further dereferencing of a
+class pointer after g_type_class_unref() are invalid.
 </para>
 
-@g_class: 
+@g_class: 	The #GTypeClass structure to unreference.
 
 
 <!-- ##### FUNCTION g_type_class_peek_parent ##### -->
 <para>
+This is a convenience function, often needed in class intializers.
+It essentially takes the immediate parent type of the class passed in,
+and returns the class structure thereof. Since derived classes hold
+a reference count on their parent classes as long as they are instantiated,
+the returned class will always exist. This function is essentially
+equivalent to:
+
+<msgtext><programlisting>
+g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
+</programlisting></msgtext>
 
 </para>
 
-@g_class: 
-@Returns: 
+@g_class: The #GTypeClass structure to retrive the parent class for.
+@Returns: The parent class of @g_class.
 
 
 <!-- ##### FUNCTION g_type_interface_peek ##### -->
@@ -564,63 +599,187 @@ g_free()ed after use.
 
 <!-- ##### USER_FUNCTION GBaseInitFunc ##### -->
 <para>
-
+A callback function used by the type system to do base initialization
+of the class structures of derived types. It is called as part of the
+initialization process of all derived classes and should reallocate
+or reset all dynamic class members copied over from the parent class.
+Therefore class members, e.g. strings, that are not sufficiently
+handled by a plain memory copy of the parent class into the derived class
+have to be altered. See GClassInitFunc() for a discussion of the class
+intialization process.
 </para>
 
-@g_class: 
+@g_class: The #GTypeClass structure to initialize.
 
 
 <!-- ##### USER_FUNCTION GBaseFinalizeFunc ##### -->
 <para>
-
+A callback function used by the type system to finalize those portions
+of a derived types class structure that were setup from the corresponding
+GBaseInitFunc() function. Class finalization basically works the inverse
+way in which class intialization is performed.
+See GClassInitFunc() for a discussion of the class intialization process.
 </para>
 
-@g_class: 
+@g_class: The #GTypeClass structure to finalize.
 
 
 <!-- ##### USER_FUNCTION GClassInitFunc ##### -->
 <para>
+A callback function used by the type system to initialize the class
+of a specific type. This function should initialize all static class
+members.
+The initialization process of a class involves:
+<variablelist>
+  <varlistentry><term></term><listitem><para>
+	1 - Copying common members from the parent class over to the
+	derived class structure.
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	2 -  Zero initialization of the remaining members not copied
+	over from the parent class.
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	3 - Invocation of the GBaseInitFunc initializers of all parent
+	types and the class' type.
+  </para></listitem></varlistentry>
+  <varlistentry><term></term><listitem><para>
+	4 - Invocation of the class' GClassInitFunc initializer.
+  </para></listitem></varlistentry>
+</variablelist>
+Since derived classes are partially initialized through a memory copy
+of the parent class, the general rule is that GBaseInitFunc() and
+GBaseFinalizeFunc() should take care of necessary reinitialization
+and release of those class members that were introduced by the type
+that specified these GBaseInitFunc()/GBaseFinalizeFunc().
+GClassInitFunc() should only care about intializing static
+class members, while dynamic class members (such as allocated strings
+or reference counted resources) are better handled by a GBaseInitFunc()
+for this type, so proper initialization of the dynamic class members
+are performed for class intialization of derived types as well.
+An example may help to corrsepond the intend of the different class
+initializers:
 
+<msgtext><programlisting>
+typedef struct {
+  GObjectClass parent_class;
+  gint         static_integer;
+  gchar       *dynamic_string;
+} TypeAClass;
+static void
+type_a_base_class_init (TypeAClass *class)
+{
+  class->dynamic_string = g_strdup ("some string");
+}
+static void
+type_a_base_class_finalize (TypeAClass *class)
+{
+  g_free (class->dynamic_string);
+}
+static void
+type_a_class_init (TypeAClass *class)
+{
+  class->static_integer = 42;
+}
+
+typedef struct {
+  TypeAClass   parent_class;
+  gfloat       static_float;
+  GString     *dynamic_gstring;
+} TypeBClass;
+static void
+type_b_base_class_init (TypeBClass *class)
+{
+  class->dynamic_gstring = g_string_new ("some other string);
+}
+static void
+type_b_base_class_finalize (TypeBClass *class)
+{
+  g_string_free (class->dynamic_gstring);
+}
+static void
+type_b_class_init (TypeBClass *class)
+{
+  class->static_float = 3.14159265358979323846;
+}
+</programlisting></msgtext>
+Initialization of TypeBClass will first cause initialization of
+TypeAClass (derived classes reference their parent classes, see
+g_type_class_ref() on this).
+Initialization of TypeAClass roughly involves zero-intializing its fields,
+then calling its GBaseInitFunc() type_a_base_class_init() that allocates
+its dynamic members (dynamic_string) and finally calling its GClassInitFunc()
+type_a_class_init() to initialize its static members (static_integer).
+The first step in the initialization process of TypeBClass is then
+a plain memory copy of the contents of TypeAClass into TypeBClass and 
+zero intialization of the remaining fields in TypeBClass.
+The dynamic members of TypeAClass within TypeBClass now need
+reinitialization which is performed by calling type_a_base_class_init()
+with an argument of TypeBClass.
+After that, the GBaseInitFunc() of TypeBClass, type_b_base_class_init()
+is called to allocate the dynamic members of TypeBClass (dynamic_gstring),
+and finally the GClassInitFunc() of TypeBClass, type_b_class_init(),
+is called to complete the initialization process with the static members
+(static_float).
+Corresponding finalization counter parts to the GBaseInitFunc() functions
+have to be provided to release allocated resources at class finalization
+time.
 </para>
 
-@g_class: 
-@class_data: 
+@g_class: 	The #GTypeClass structure to initialize.
+@class_data: 	The @class_data member supplied via the #GTypeInfo structure.
 
 
 <!-- ##### USER_FUNCTION GClassFinalizeFunc ##### -->
 <para>
-
+A callback function used by the type system to finalize a class.
+This function is rarely needed, as dynamically allocated class resources
+should be handled by GBaseInitFunc() and GBaseFinalizeFunc().
+Also, specification of a GClassFinalizeFunc in the #GTypeInfo
+structure of a static type is invalid, because classes of static types
+will never be finalized (they are artificially kept alive when their
+reference count drops to zero).
 </para>
 
-@g_class: 
-@class_data: 
+@g_class: 	The #GTypeClass structure to finalize.
+@class_data: 	The @class_data member supplied via the #GTypeInfo structure.
 
 
 <!-- ##### USER_FUNCTION GInstanceInitFunc ##### -->
 <para>
-
+A callback function used by the type system to initialize a new
+instance of a type. This function initializes all instance members and
+allocates any resources require by it.
+Initialization of a derived instance involves calling all its parent
+types instance initializers, therefore the class member of the instance
+is altered during its initialization to always point to the class that
+belongs to the type the current initializer was introduced for.
 </para>
 
-@instance: 
-@g_class: 
+@instance: 	The instance to initialize.
+@g_class: 	The class of the type the instance is created for.
 
 
 <!-- ##### USER_FUNCTION GInterfaceInitFunc ##### -->
 <para>
-
+A callback function used by the type system to initialize a new
+interface.  This function should initialize all internal data and
+allocate any resources required by the interface.
 </para>
 
-@g_iface: 
-@iface_data: 
+@g_iface: 	The interface structure to initialize.
+@iface_data: 	The @class_data supplied via the #GTypeInfo structure.
 
 
 <!-- ##### USER_FUNCTION GInterfaceFinalizeFunc ##### -->
 <para>
-
+A callback function used by the type system to finalize an interface.
+This function should destroy any internal data and release any resources
+allocated by the corresponding GInterfaceInitFunc() function.
 </para>
 
-@g_iface: 
-@iface_data: 
+@g_iface: 	The interface structure to finalize.
+@iface_data: 	The @class_data supplied via the #GTypeInfo structure.
 
 
 <!-- ##### USER_FUNCTION GTypeClassCacheFunc ##### -->
@@ -635,71 +794,90 @@ g_free()ed after use.
 
 <!-- ##### ENUM GTypeFlags ##### -->
 <para>
-
+Bit masks used to check or determine characteristics of a type.
 </para>
 
-@G_TYPE_FLAG_ABSTRACT: 
+@G_TYPE_FLAG_ABSTRACT: 	Indicates an abstract type. No instances can be
+			created for an abstract type.
 
 <!-- ##### ENUM GTypeFundamentalFlags ##### -->
 <para>
-
+Bit masks used to check or determine specific characteristics of a
+fundamental type.
 </para>
 
-@G_TYPE_FLAG_CLASSED: 
-@G_TYPE_FLAG_INSTANTIATABLE: 
-@G_TYPE_FLAG_DERIVABLE: 
-@G_TYPE_FLAG_DEEP_DERIVABLE: 
+@G_TYPE_FLAG_CLASSED: 		Indicates a classed type.
+@G_TYPE_FLAG_INSTANTIATABLE: 	Indicates an instantiable type (implies classed).
+@G_TYPE_FLAG_DERIVABLE: 		Indicates a flat derivable type.
+@G_TYPE_FLAG_DEEP_DERIVABLE: 	Indicates a deep derivable type (implies derivable).
 
 <!-- ##### FUNCTION g_type_register_static ##### -->
 <para>
-
+Registers @type_name as the name of a new static type derived from
+@parent_type.  The type system uses the information contained in the
+#GTypeInfo structure pointed to by @info to manage the type and its
+instances (if not abstract).  The value of @flags determines the nature
+(e.g. abstract or not) of the type.
 </para>
 
-@parent_type: 
-@type_name: 
-@info: 
-@flags: 
-@Returns: 
+@parent_type: 	Type which this type will be derived from.
+@type_name: 	Null-terminated string used as the name of the new type.
+@info: 		The #GTypeInfo structure for this type.
+@flags: 		Bitwise combination of #GTypeFlags values.
+@Returns: 	The new type identifier.
 
 
 <!-- ##### FUNCTION g_type_register_dynamic ##### -->
 <para>
-
+Registers @type_name as the name of a new dynamic type derived from
+@parent_type.  The type system uses the information contained in the
+#GTypePlugin structure pointed to by @plugin to manage the type and its
+instances (if not abstract).  The value of @flags determines the nature
+(e.g. abstract or not) of the type.
 </para>
 
-@parent_type: 
-@type_name: 
-@plugin: 
-@flags: 
-@Returns: 
+@parent_type: 	Type which this type will be derived from.
+@type_name: 	Null-terminated string used as the name of the new type.
+@plugin: 	The #GTypePlugin structure to retrive the #GTypeInfo from.
+@flags: 		Bitwise combination of #GTypeFlags values.
+@Returns: 	The new type identifier.
+<!-- # Unused Parameters # -->
+@Returns: #G_TYPE_INVALID if registration failed or the new type identifier.
 
 
 <!-- ##### FUNCTION g_type_register_fundamental ##### -->
 <para>
-
+Registers @type_id as the predefined identifier and @type_name as the
+name of a fundamental type.  The type system uses the information
+contained in the #GTypeInfo structure pointed to by @info and the 
+#GTypeFundamentalInfo structure pointed to by @finfo to manage the
+type and its instances.  The value of @flags determines additional
+characteristics of the funamental type.
 </para>
 
-@type_id: 
-@type_name: 
-@info: 
-@finfo: 
-@flags: 
-@Returns: 
+@type_id: 	A predefined #GTypeFundamentals value.
+@type_name: 	Null-terminated string used as the name of the new type.
+@info: 		The #GTypeInfo structure for this type.
+@finfo: 		The #GTypeFundamentalInfo structure for this type.
+@flags: 		Bitwise combination of #GTypeFlags values.
+@Returns: 	The predefined type identifier.
 
 
 <!-- ##### FUNCTION g_type_add_interface_static ##### -->
 <para>
-
+Adds the static @interface_type to @instantiable_type.  The information
+contained in the #GTypeInterfaceInfo structure pointed to by @info
+is used to manage the relationship.
 </para>
 
-@instance_type: 
-@interface_type: 
-@info: 
+@instance_type: 	 #GType value of an instantiable type.
+@interface_type: #GType value of an interface type.
+@info: 		 The #GInterfaceInfo structure for this
+		 (@instance_type, @interface_type) combination.
 
 
 <!-- ##### FUNCTION g_type_add_interface_dynamic ##### -->
 <para>
-
 </para>
 
 @instance_type: 
@@ -709,16 +887,17 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_get_plugin ##### -->
 <para>
-
+Returns the the #GTypePlugin structure for @type or
+#NULL if @type does not have a #GTypePlugin structure.
 </para>
 
-@type: 
-@Returns: 
+@type: 		The #GType to retrive the plugin for.
+@Returns: 	The corresponding plugin if @type is a dynamic type,
+		NULL otherwise.
 
 
 <!-- ##### FUNCTION g_type_interface_get_plugin ##### -->
 <para>
-
 </para>
 
 @instance_type: 
@@ -728,34 +907,44 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_fundamental_last ##### -->
 <para>
-
+Returns the last fundamental type which is registered plus one,
+i.e. the next fundamental type ID that may be registered.
 </para>
 
-@Returns: 
+@Returns: The nextmost not registered fundamental type ID.
 
 
 <!-- ##### FUNCTION g_type_check_flags ##### -->
 <para>
-
+Determines whether a given set of #GTypeFlags and #GTypeFundamentalFlags
+are set for @type.
 </para>
 
-@type: 
-@flags: 
-@Returns: 
+@type: 	  The type to check for flags.
+@flags:   Bitwise combination of #GTypeFlags and #GTypeFundamentalFlags.
+@Returns: #TRUE if all @flags are set for @type, #FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_type_create_instance ##### -->
 <para>
-
+Creates and initializes an instance of @type if @type is valid and can
+be instantiated. The type system only performs basic allocation and
+structure setups for instances, actuall instance creation should happen
+through functions supplied by the types fundamental type implementation.
+So use of g_type_create_instance() is reserved for implementators of
+fundamental types only. E.g. instances of the #GObject heirachy
+should be created via g_object_new() and <emphasis>never</emphasis>
+directly through g_type_create_instance() which doesn't handle
+things like singleton objects or object construction.
 </para>
 
-@type: 
-@Returns: 
+@type: 	  An instantiabtable type to create an instance for.
+@Returns: An allocated and initialized instance, subject to further
+	  treatment by the fundamental type implementation.
 
 
 <!-- ##### FUNCTION g_type_free_instance ##### -->
 <para>
-
 </para>
 
 @instance: 
@@ -789,16 +978,16 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_check_instance ##### -->
 <para>
-
+Private helper function to aid implementation of the G_TYPE_CHECK_INSTANCE()
+macro.
 </para>
 
-@instance: 
-@Returns: 
+@instance: A valid #GTypeInstance structure.
+@Returns:  #TRUE if @instance is valid, #FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_type_check_instance_cast ##### -->
 <para>
-
 </para>
 
 @instance: 
@@ -808,17 +997,19 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_instance_is_a ##### -->
 <para>
-
+Determines if @instance adhears to the interface exported
+by @iface_type. @iface_type is eitehr a type that @instance
+is derived from, or an interface type that is suppoted by
+the anchestry of @instance.
 </para>
 
-@instance: 
-@iface_type: 
-@Returns: 
+@instance: 	A valid #GTypeInstance structure.
+@iface_type: 	A #GType value.
+@Returns: 	#TRUE if @instance conforms to @iface_type, #FALSE otherwise.
 
 
 <!-- ##### FUNCTION g_type_check_class_cast ##### -->
 <para>
-
 </para>
 
 @g_class: 
@@ -828,7 +1019,6 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_class_is_a ##### -->
 <para>
-
 </para>
 
 @g_class: 
@@ -838,7 +1028,6 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_check_value ##### -->
 <para>
-
 </para>
 
 @value: 
@@ -847,20 +1036,24 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_value_is_a ##### -->
 <para>
-
+Determines if @value is a #GValue whose type conforms to @type.
 </para>
 
-@value: 
-@type: 
-@Returns: 
+@value: 	  A valid #GValue structure.
+@type:    A #GType value.
+@Returns: #TRUE if @value is a #GValue of @type or #FALSE if not.
 
 
 <!-- ##### FUNCTION g_type_value_table_peek ##### -->
 <para>
-
+Returns the location of the #GTypeValueTable associated with @type.
+<emphasis>Note, this function should only be used from source code
+that implements or has internal knowledge of the implementation of
+@type.</emphasis>
 </para>
 
-@type: 
-@Returns: 
+@type:    A #GType value.
+@Returns: Location of the #GTypeValueTable associated with @type or
+          #NULL if there is no #GTypeValueTable associated with @type.
 
 

@@ -311,14 +311,7 @@ g_closure_ref (GClosure *closure)
   g_return_val_if_fail (closure->ref_count > 0, NULL);
   g_return_val_if_fail (closure->ref_count < CLOSURE_MAX_REF_COUNT, NULL);
 
-  /* floating is basically a kludge to avoid creating closures
-   * with a ref_count of 0. so the first one doing _ref() will
-   * own the closure's initial ref_count
-   */
-  if (closure->floating)
-    closure->floating = FALSE;
-  else
-    closure->ref_count += 1;
+  closure->ref_count += 1;
 
   return closure;
 }
@@ -353,6 +346,27 @@ g_closure_unref (GClosure *closure)
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
       g_free (closure);
+    }
+}
+
+void
+g_closure_sink (GClosure *closure)
+{
+  g_return_if_fail (closure != NULL);
+  g_return_if_fail (closure->ref_count > 0);
+
+  /* floating is basically a kludge to avoid creating closures
+   * with a ref_count of 0. so the intial ref_count a closure has
+   * is unowned. with invoking g_closure_sink() code may
+   * indicate that it takes over that intiial ref_count.
+   */
+  if (closure->floating)
+    {
+      closure->floating = FALSE;
+      if (closure->ref_count > 1)
+	closure->ref_count -= 1;
+      else
+	g_closure_unref (closure);
     }
 }
 

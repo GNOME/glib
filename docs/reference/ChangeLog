@@ -1,3 +1,8 @@
+Fri Feb 16 06:52:20 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/types.sgml: incorporated huge docu patch from Eric
+	Lemings <eric.b.lemings@lmco.com> with a bunch of editing on my part.
+
 Mon Feb 12 12:42:45 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* {glib,gobject}/Makefile.am: The ultimate gtk-doc makefile.
