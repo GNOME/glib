@@ -27,13 +27,21 @@ See the file 'INSTALL'
 Notes about GLib 2.6.0
 ======================
 
-* GLib 2.6 introduces the concept of a 'filename encoding', which is the
-  on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions returning
-  or accepting pathnames have been changed to expect filenames in this
-  encoding, and the common POSIX functions dealing with pathnames have been
-  wrapped. To keep binary compatibility with applications compiled against
-  older versions of GLib, the Windows dll still provides entry points with 
-  the old semantics.
+* GLib 2.6 introduces the concept of 'GLib filename encoding', which is the
+  on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions
+  returning or accepting pathnames have been changed to expect
+  filenames in this encoding, and the common POSIX functions dealing
+  with pathnames have been wrapped. On Windows these wrappers use the
+  wide-character API to do the actual file handling, so applications
+  can handle file names containing any Unicode characters, not just
+  those in the system codepage. (Wide character API is not available
+  on Win9x.)
+
+  To keep binary compatibility with applications compiled against
+  older versions of GLib, the Windows DLL still provides entry points
+  with the old semantics using the old names, and applications
+  compiled agains GLib 2.6 will actually use new names for the
+  functions. This is transparent to the programmer.
 
 * Likewise, g_get_user_name() and g_get_real_name() have been changed to return
   UTF-8 on Windows, while keeping the old semantics for applications compiled
@@ -51,8 +59,10 @@ Notes about GLib 2.6.0
   GLib functions are prefixed with IA__. The g_return_if_fail() macros
   strip this prefix away, but it will show up e.g. in a debugger.
 
-* On Windows, GLib no longer opens a console window if stdout or stderr
-  are invalid. Simply redirect stdout or stderr if you need to see it.
+* On Windows, GLib no longer opens a console window when printing
+  warning messages if stdout or stderr are invalid, as they are in
+  "Windows subsystem" (GUI) applications. Simply redirect stdout or
+  stderr if you need to see them.
 
 * The child watch functionality tends to reveal a bug in many
   thread implementations (in particular the older LinuxThreads implementation
