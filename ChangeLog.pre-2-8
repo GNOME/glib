@@ -1,3 +1,20 @@
+Tue Sep 18 18:23:02 2001  Owen Taylor  <otaylor@redhat.com>
+
+	Fixes for compilation on Solaris (#59026, Frank Belew)
+
+	* glib/gqsort.c (g_qsort_with_data): Use g_alloca().
+
+	* glib/giochannel.c (g_io_channel_read_to_end): Fix use
+	of ternary on left-hand-side.
+
+	* configure.in: Handle the ac_cv_working_alloca_h variable
+	set by autoconf-2.5x.
+
+Tue Sep 11 18:50:44 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4 acinclude.m4: Remove commented
+	out sections for clarity.
+
 Tue Sep 18 18:19:33 2001  Tim Janik  <timj@gtk.org>
 
 	* tests/testglib.c: add simple test for g_path_get_basename().

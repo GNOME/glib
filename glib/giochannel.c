@@ -1670,8 +1670,10 @@ g_io_channel_read_to_end (GIOChannel	*channel,
       else
         g_string_free (USE_BUF (channel), TRUE);
 
-      /* This only works because USE_BUF () is a macro */
-      USE_BUF (channel) = NULL;
+      if (channel->encoding)
+	channel->encoded_read_buf = NULL;
+      else
+	channel->read_buf = NULL;
     }
 
   return G_IO_STATUS_NORMAL;

@@ -117,7 +117,7 @@ g_qsort_with_data (gconstpointer    pbase,
   /* Allocating SIZE bytes for a pivot buffer facilitates a better
    * algorithm below since we can do comparisons directly on the pivot.
    */
-  char *pivot_buffer = (char *) alloca (size);
+  char *pivot_buffer = (char *) g_alloca (size);
   const size_t max_thresh = MAX_THRESH * size;
 
   g_return_if_fail (total_elems > 0);

@@ -1837,7 +1837,11 @@ esac
 # on variable expansion in case labels.  Look at the generated config.status
 # for a hint.
 
-glib_header_alloca_h="$ac_cv_header_alloca_h"
+if test "x${ac_cv_working_alloca_h+set}" = xset ; then
+  glib_header_alloca_h="$ac_cv_working_alloca_h"
+else
+  glib_header_alloca_h="$ac_cv_header_alloca_h"
+fi
 
 case xyes in
 x$ac_cv_header_float_h)
