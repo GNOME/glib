@@ -160,10 +160,8 @@ gunichar *g_unicode_canonical_decomposition (gunichar  ch,
 					     gsize    *result_len);
 
 /* Array of skip-bytes-per-initial character.
- * We prefix variable declarations so they can
- * properly get exported in Windows DLLs.
  */
-GLIB_VAR char g_utf8_skip[256];
+GLIB_VAR const gchar * const g_utf8_skip;
 
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(guchar *)(p)])
 

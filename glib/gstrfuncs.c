@@ -56,7 +56,7 @@
 #if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
 __declspec(dllexport)
 #endif
-const guint16 g_ascii_table[256] = {
+static const guint16 ascii_table_data[256] = {
   0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
   0x004, 0x104, 0x104, 0x004, 0x104, 0x104, 0x004, 0x004,
   0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004, 0x004,
@@ -75,6 +75,8 @@ const guint16 g_ascii_table[256] = {
   0x073, 0x073, 0x073, 0x0d0, 0x0d0, 0x0d0, 0x0d0, 0x004
   /* the upper 128 are all zeroes */
 };
+
+const guint16 * const g_ascii_table = ascii_table_data;
 
 gchar*
 g_strdup (const gchar *str)
@@ -1521,7 +1523,7 @@ g_strchug (gchar *string)
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  for (start = (guchar*) string; *start && isspace (*start); start++)
+  for (start = (guchar*) string; *start && g_ascii_isspace (*start); start++)
     ;
 
   g_memmove (string, start, strlen ((gchar *) start) + 1);
@@ -1539,7 +1541,7 @@ g_strchomp (gchar *string)
   if (!*string)
     return string;
 
-  for (s = string + strlen (string) - 1; s >= string && isspace ((guchar)*s); 
+  for (s = string + strlen (string) - 1; s >= string && g_ascii_isspace ((guchar)*s); 
        s--)
     *s = '\0';
 

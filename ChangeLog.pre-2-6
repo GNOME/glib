@@ -1,3 +1,12 @@
+Sun Sep  2 13:05:53 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c (g_strchomp): Replace some uses
+	of isspace() with g_ascii_isspace().
+
+	* glib/gutf8.c glib/gunicode.h glib/gstrfuncs.[ch]: Add
+	extra indirections to g_utf8_skip and g_ascii_table to
+	avoid great whopping copy relocs.
+
 Sun Sep  2 11:10:42 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gen-unicode-tables.pl glib/gunicomp.h
