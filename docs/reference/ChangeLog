@@ -1,3 +1,7 @@
+Fri Dec 26 02:04:49 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add g_ptr_array_foreach().
+
 Sun Dec 21 01:01:34 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/misc_utils.sgml: Document the encoding of 

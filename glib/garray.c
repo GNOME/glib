@@ -639,6 +639,29 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
 		     user_data);
 }
 
+/**
+ * g_ptr_array_foreach:
+ * @array: a #GPtrArray
+ * @func: the function to call for each array element
+ * @user_data: user data to pass to the function
+ * 
+ * Calls a function for each element of a #GPtrArray.
+ *
+ * Since: 2.4
+ **/
+void
+g_ptr_array_foreach (GPtrArray *array,
+                     GFunc      func,
+                     gpointer   user_data)
+{
+  guint i;
+
+  g_return_if_fail (array);
+
+  for (i = 0; i < array->len; i++)
+    (*func) (array->pdata[i], user_data);
+}
+
 /* Byte arrays 
  */
 

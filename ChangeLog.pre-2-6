@@ -1,3 +1,10 @@
+Fri Dec 26 02:03:58 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/garray.[hc] (g_ptr_array_foreach): New function to
+	call a function for each element of a GPtrArray.  (#114790)
+
+	* tests/array-test.c (main): Add a test for g_ptr_array_foreach().
+
 Sun Dec 21 22:57:58 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* m4macros/glib-gettext.m4: Quote macro names to support 

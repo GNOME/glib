@@ -126,6 +126,9 @@ void       g_ptr_array_sort               (GPtrArray        *array,
 void       g_ptr_array_sort_with_data     (GPtrArray        *array,
 					   GCompareDataFunc  compare_func,
 					   gpointer          user_data);
+void       g_ptr_array_foreach            (GPtrArray        *array,
+					   GFunc             func,
+					   gpointer          user_data);
 
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,

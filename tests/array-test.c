@@ -57,6 +57,15 @@ typedef struct {
 } GlibTestInfo;
 
 
+static void 
+sum_up (gpointer data, 
+	gpointer user_data)
+{
+  gint *sum = (gint *)user_data;
+
+  *sum += GPOINTER_TO_INT (data);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -65,6 +74,7 @@ main (int   argc,
   GArray *garray;
   GPtrArray *gparray;
   GByteArray *gbarray;
+  gint sum = 0;
 
   /* array tests */
   garray = g_array_new (FALSE, FALSE, sizeof (gint));
@@ -93,6 +103,9 @@ main (int   argc,
   for (i = 0; i < 10000; i++)
     if (g_ptr_array_index (gparray, i) != GINT_TO_POINTER (i))
       g_print ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
+  
+  g_ptr_array_foreach (gparray, sum_up, &sum);
+  g_assert (sum == 49995000);
 
   g_ptr_array_free (gparray, TRUE);
 
