@@ -27,6 +27,7 @@
 #include <string.h> /* strcmp */
 
 #ifdef HAVE_DIRENT_H
+#include <sys/types.h>
 #include <dirent.h>
 #endif
 

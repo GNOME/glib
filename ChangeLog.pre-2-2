@@ -1,3 +1,8 @@
+2002-05-20  jacob berkman  <jacob@ximian.com>
+
+	* glib/gdir.c: include sys/types.h before dirent.h to build on
+	darwin (fixes #72859)
+
 Mon May 20 15:35:59 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* glib/gfileutils.c (get_contents_regfile): Fix double
