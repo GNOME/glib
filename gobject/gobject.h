@@ -24,6 +24,7 @@
 #include        <gobject/gparam.h>
 #include        <gobject/gclosure.h>
 #include        <gobject/gsignal.h>
+#include        <signal.h>
 
 G_BEGIN_DECLS
 

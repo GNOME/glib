@@ -1,3 +1,8 @@
+Mon Nov  5 18:59:08 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject.h: 
+	* gsignal.h: we need signal.h for G_BREAKPOINT().
+
 Sun Nov  4 14:01:23 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gvaluetypes.[ch]: Add a function g_pointer_type_register_static()
