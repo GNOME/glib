@@ -2419,7 +2419,7 @@ struct _GSourceFuncs
 			GTimeVal *current_time,
 			gpointer  user_data);
   gboolean (*dispatch) (gpointer  source_data, 
-			GTimeVal *current_time,
+			GTimeVal *dispatch_time,
 			gpointer  user_data);
   GDestroyNotify destroy;
 };
@@ -2447,7 +2447,7 @@ gboolean g_source_remove_by_source_data      (gpointer       source_data);
 gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
 					      gpointer       user_data);
 
-void g_get_current_time		    (GTimeVal	   *result);
+void g_get_current_time		        (GTimeVal	*result);
 
 /* Running the main loop */
 GMainLoop*	g_main_new		(gboolean	 is_running);

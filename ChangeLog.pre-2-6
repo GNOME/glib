@@ -1,3 +1,10 @@
+Wed Jan 26 05:29:11 2000  Tim Janik  <timj@gtk.org>
+
+        * glib.h:
+        * gmain.c: s/current_time/dispatch_time/ for the dispatch() handlers.
+        refetch the current time after invocation of poll() to cover up for
+        the time spent in that function call.
+
 Sun Jan  9 13:28:36 2000  Tim Janik  <timj@gtk.org>
 
         * gstrfuncs.c (g_strtod): correctly fetch the current locale,

@@ -123,7 +123,7 @@ static gboolean g_timeout_check        (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
 static gboolean g_timeout_dispatch     (gpointer  source_data,
-					GTimeVal *current_time,
+					GTimeVal *dispatch_time,
 					gpointer  user_data);
 static gboolean g_idle_prepare         (gpointer  source_data, 
 					GTimeVal *current_time,
@@ -133,7 +133,7 @@ static gboolean g_idle_check           (gpointer  source_data,
 					GTimeVal *current_time,
 					gpointer  user_data);
 static gboolean g_idle_dispatch        (gpointer  source_data,
-					GTimeVal *current_time,
+					GTimeVal *dispatch_time,
 					gpointer  user_data);
 
 /* Data */
@@ -626,7 +626,7 @@ g_get_current_time (GTimeVal *result)
 
 /* HOLDS: main_loop_lock */
 static void
-g_main_dispatch (GTimeVal *current_time)
+g_main_dispatch (GTimeVal *dispatch_time)
 {
   while (pending_dispatches != NULL)
     {
@@ -654,7 +654,7 @@ g_main_dispatch (GTimeVal *current_time)
 
 	  G_UNLOCK (main_loop);
 	  need_destroy = ! dispatch (source_data,
-				     current_time,
+				     dispatch_time,
 				     hook_data);
 	  G_LOCK (main_loop);
 
@@ -704,7 +704,7 @@ g_main_iterate (gboolean block,
 		gboolean dispatch)
 {
   GHook *hook;
-  GTimeVal current_time  ={ 0, 0 };
+  GTimeVal current_time  = { 0, 0 };
   gint n_ready = 0;
   gint current_priority = 0;
   gint timeout;
@@ -807,6 +807,9 @@ g_main_iterate (gboolean block,
 
   g_main_poll (timeout, n_ready > 0, current_priority);
 
+  if (timeout != 0)
+    g_get_current_time (&current_time);
+  
   /* Check to see what sources need to be dispatched */
 
   n_ready = 0;
@@ -1261,7 +1264,7 @@ g_timeout_check (gpointer  source_data,
 
 static gboolean
 g_timeout_dispatch (gpointer source_data, 
-		    GTimeVal *current_time,
+		    GTimeVal *dispatch_time,
 		    gpointer user_data)
 {
   GTimeoutData *data = source_data;
@@ -1271,8 +1274,8 @@ g_timeout_dispatch (gpointer source_data,
       guint seconds = data->interval / 1000;
       guint msecs = data->interval - seconds * 1000;
 
-      data->expiration.tv_sec = current_time->tv_sec + seconds;
-      data->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
+      data->expiration.tv_sec = dispatch_time->tv_sec + seconds;
+      data->expiration.tv_usec = dispatch_time->tv_usec + msecs * 1000;
       if (data->expiration.tv_usec >= 1000000)
 	{
 	  data->expiration.tv_usec -= 1000000;
@@ -1344,7 +1347,7 @@ g_idle_check    (gpointer  source_data,
 
 static gboolean
 g_idle_dispatch (gpointer source_data, 
-		 GTimeVal *current_time,
+		 GTimeVal *dispatch_time,
 		 gpointer user_data)
 {
   GSourceFunc func = source_data;
