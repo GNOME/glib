@@ -1235,7 +1235,7 @@ g_filename_from_uri (const char *uri,
       if (unescaped_hostname == NULL)
 	{
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
-		       _("The hostname of the URI `%s' is contains invalidly escaped characters"),
+		       _("The hostname of the URI `%s' contains invalidly escaped characters"),
 		       uri);
 	  return NULL;
 	}
@@ -1251,7 +1251,7 @@ g_filename_from_uri (const char *uri,
   if (filename == NULL)
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_INVALID_URI,
-		   _("The URI `%s' is contains invalidly escaped characters"),
+		   _("The URI `%s' contains invalidly escaped characters"),
 		   uri);
       return NULL;
     }

@@ -1,3 +1,9 @@
+
+Fri Sep 14 20:34:27 2001  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gconvert.c (g_filename_from_uri): Replace `is contains'
+	by `contains' in two error messages. (#60395)
+
 2001-09-10  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.h glib/giochannel.c: Added a length argument
