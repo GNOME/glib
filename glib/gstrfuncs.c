@@ -386,7 +386,7 @@ g_ascii_strtod (const gchar *nptr,
 
 	  end = p;
 	}
-      else if (g_ascii_isdigit (*p))
+      else if (g_ascii_isdigit (*p) || *p == '.')
 	{
 	  while (g_ascii_isdigit (*p))
 	    p++;

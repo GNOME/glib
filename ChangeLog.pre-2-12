@@ -1,3 +1,10 @@
+2004-11-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/strtod-test.c (main): Add a testcase for the previous fix.
+
+	* glib/gstrfuncs.c (g_ascii_strtod): Make it work again for floats
+	starting with a decimal point, like .75  (#156421, Hans Breuer)
+
 Thu Nov 25 14:02:43 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/abicheck.sh: filter out G_GNUC stuff when doing the compare.
