@@ -1,3 +1,16 @@
+Wed Feb 13 06:29:51 2002  Tim Janik  <timj@gtk.org>
+
+	* gvaluetransform.c: cosmetic cleanups, fixed [u]int64->string
+	conversions.
+
+	* ChangeLog: added entry from owen which went into the wrong
+	file.
+
+Fri Feb  8 23:52:27 2002  Owen Taylor  <otaylor@redhat.com>
+
+        * gobject/gvaluetransform.c: Register transformations for
+        gint64, guint64. (#70780, patch from Andy Wingo)
+
 2002-02-10  Hans Breuer  <hans@breuer.org>
 
 	* gvaluetransform.c : msvc 5.0 can't cast from uint64 to
