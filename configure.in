@@ -758,13 +758,16 @@ case $have_threads in
 			
 			LIBS="$glib_save_LIBS $add_thread_lib"
 			
-			AC_MSG_CHECKING(for pthread_create$IN)
+			AC_MSG_CHECKING(for pthread_create/pthread_join$IN)
 			AC_TRY_RUN([#include <pthread.h> 
-				void* func(void* data) {}
+				int check_me = 0;
+				void* func(void* data) {check_me = 42;}
                                 main()
 				{ pthread_t t; 
-				  exit(pthread_create (&t, $defattr, func, 
-						NULL));
+				  void *ret;
+				  pthread_create (&t, $defattr, func, NULL);
+				  pthread_join (t, &ret);
+				  exit (check_me != 42);
 				}],
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"

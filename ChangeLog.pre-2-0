@@ -1,5 +1,10 @@
 2000-04-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: Look for both pthread_create and pthread_join in
+	the thread library. Some systems define one of them, but not both
+	in libc. Arghh. Now we really start a thread and join it later and
+	check, whether the thread to actually ran.
+
 	* glib.h, gcache.c, gtree.c: Changed the 'value' parameter of
 	g_cache_remove from gpointer to gconstpointer. Dito for the 'key'
 	parameter of g_tree_lookup and g_tree_remove and the 'data'
