@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"POT-Creation-Date: 2003-10-23 12:39-0400\n"
+"POT-Creation-Date: 2003-10-24 17:18-0400\n"
 "PO-Revision-Date: 2002-09-22 01:32+0200\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@pluto.linux.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"

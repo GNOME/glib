@@ -21,6 +21,7 @@ Overview of Changes from GLib 2.2.x to GLib-2.3.0
 * Miscellaneous API additions: g_value_take_string(),
   g_value_take_param(), g_value_take_object(), 
   g_value_take_boxed(). [Matthias]
+* Win32 build fixes [Tor Lillquist]
 
 Overview of Changes from GLib 2.1.5 to GLib-2.2.0
 =================================================

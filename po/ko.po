@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.1.4\n"
-"POT-Creation-Date: 2003-10-23 12:39-0400\n"
+"POT-Creation-Date: 2003-10-24 17:18-0400\n"
 "PO-Revision-Date: 2002-12-12 11:42+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"

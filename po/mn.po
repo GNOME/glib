@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.mn\n"
-"POT-Creation-Date: 2003-10-23 12:39-0400\n"
+"POT-Creation-Date: 2003-10-24 17:18-0400\n"
 "PO-Revision-Date: 2003-01-20 11:28+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: Mongolian <mn@li.org>\n"

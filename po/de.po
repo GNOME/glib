@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.2.x\n"
-"POT-Creation-Date: 2003-10-23 12:39-0400\n"
+"POT-Creation-Date: 2003-10-24 17:18-0400\n"
 "PO-Revision-Date: 2003-01-20 23:07+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
