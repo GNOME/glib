@@ -1,3 +1,9 @@
+Wed Jun 10 19:29:51 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* Makefile.am glib.m4 configure.in:
+	
+	Moved out from GTK+; added AM_PATH_GLIB macro.
+
 Wed Jun 10 12:56:07 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* glib.h: renamed g_const_pointer => gconstpointer
