@@ -1,3 +1,9 @@
+Sun Jun  8 11:57:16 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* NEWS: Updated.
+
+	* configure.in: Update version to 2.2.2, interface age 2.
+
 Fri Jun  6 10:24:23 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* m4macros/glib-gettext.m4: Test for Solaris native gettext 
@@ -123,11 +129,6 @@ Tue May 27 19:56:35 2003  Owen Taylor  <otaylor@redhat.com>
 	* glib/gstrfuncs.c (g_strdup): Use memcpy instead of
 	strcpy. (#106988, Christian Biere)
 
-2003-05-27  Matthias Clasen  <maclas@gmx.de>
-
-	* glib/gstrfuncs.c (g_strdup): Use memcpy instead of
-	strcpy. (#106988, Christian Biere)
-
 2003-05-23  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gutf8.c: Fix typo in UNICODE_VALID (related to #107427).
@@ -205,7 +206,7 @@ Mon Apr  7 13:40:28 2003  Owen Taylor  <otaylor@redhat.com>
 	g_string_new ("") by g_string_new (NULL).  (#106973, Morten Welinder)
 
 	* glib/gutf8.c (UNICODE_VALID): Update to Unicode 3.1 and optimize
-	a bit.  (#107427, Noah Lewitt)
+	a bit.  (#107427, Noah Levitt)
 
 	* glib/libcharset/config.charset: Add cp1251 support for Solaris.
 	(#104738, Hidetoshi Tajima)

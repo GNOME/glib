@@ -32,8 +32,8 @@ cflags_set=${CFLAGS+set}
 #
 m4_define([glib_major_version], [2])
 m4_define([glib_minor_version], [2])
-m4_define([glib_micro_version], [1])
-m4_define([glib_interface_age], [1])
+m4_define([glib_micro_version], [2])
+m4_define([glib_interface_age], [2])
 
 # if the minor version number is odd, then we want debugging.  Otherwise
 # we only want minimal debugging support.
