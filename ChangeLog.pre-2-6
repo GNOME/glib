@@ -42,6 +42,22 @@
 	* tests/Makefile.am
 	* tests/makefile.mingw.in: Add it.
 
+	(Later the same night:)
+
+	* giowin32.c: Compile in the debugging code all the time, but only
+	output debug messages if told so. Add (unadvertised) function to
+	turn on/off debug messages for a channel.
+	
+	(buffer_read): Don't loop. It is expected behaviour to return a
+	short read occasionally, for instance when reading from
+	pipes. It's the calling code that should loop if it *knows* how
+	much the writer has written.
+
+	* tests/gio-test.c: Correct the program's name in the output.
+	(recv_message): Loop calling g_io_channel_read() (in a new
+	function read_all()) until we have all the bytes we want (that we
+	know the writer has written/will write).
+	
 Thu Jul 27 05:15:11 2000  Tim Janik  <timj@gtk.org>
 
 	* gstrfuncs.c (g_strlcpy, g_strlcat): completed tor's fix

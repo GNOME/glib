@@ -54,6 +54,46 @@ static struct {
   int seq;
 } *seqtab;
 
+static GIOError
+read_all (int         fd,
+	  GIOChannel *channel,
+	  char       *buffer,
+	  guint       nbytes,
+	  guint      *bytes_read)
+{
+  guint left = nbytes;
+  guint nb;
+  GIOError error;
+  char *bufp = buffer;
+
+  /* g_io_channel_read() doesn't necessarily return all the
+   * data we want at once.
+   */
+  *bytes_read = 0;
+  while (left)
+    {
+      error = g_io_channel_read (channel, bufp, left, &nb);
+      
+      if (error != G_IO_ERROR_NONE)
+	{
+	  g_print ("gio-test: ...from %d: G_IO_ERROR_%s\n", fd,
+		   (error == G_IO_ERROR_AGAIN ? "AGAIN" :
+		    (error == G_IO_ERROR_INVAL ? "INVAL" :
+		     (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
+	  if (error == G_IO_ERROR_AGAIN)
+	    continue;
+	  break;
+	}
+      if (nb == 0)
+	return error;
+      left -= nb;
+      bufp += nb;
+      *bytes_read += nb;
+    }
+  return error;
+}
+
+
 static gboolean
 recv_message (GIOChannel  *channel,
 	      GIOCondition cond,
@@ -61,7 +101,7 @@ recv_message (GIOChannel  *channel,
 {
   gint fd = g_io_channel_unix_get_fd (channel);
 
-  g_print ("testgio: ...from %d:%s%s%s%s\n", fd,
+  g_print ("gio-test: ...from %d:%s%s%s%s\n", fd,
 	   (cond & G_IO_ERR) ? " ERR" : "",
 	   (cond & G_IO_HUP) ? " HUP" : "",
 	   (cond & G_IO_IN)  ? " IN"  : "",
@@ -83,12 +123,12 @@ recv_message (GIOChannel  *channel,
       int i, j, seq;
       GIOError error;
       
-      error = g_io_channel_read (channel, (gchar *) &seq, sizeof (seq), &nb);
+      error = read_all (fd, channel, (gchar *) &seq, sizeof (seq), &nb);
       if (error == G_IO_ERROR_NONE)
 	{
 	  if (nb == 0)
 	    {
-	      g_print ("testgio: ...from %d: EOF\n", fd);
+	      g_print ("gio-test: ...from %d: EOF\n", fd);
 	      return FALSE;
 	    }
 	  
@@ -99,7 +139,7 @@ recv_message (GIOChannel  *channel,
 	      {
 		if (seq != seqtab[i].seq)
 		  {
-		    g_print ("testgio: ...from &d: invalid sequence number %d, expected %d\n",
+		    g_print ("gio-test: ...from &d: invalid sequence number %d, expected %d\n",
 			     seq, seqtab[i].seq);
 		    g_assert_not_reached ();
 		  }
@@ -107,22 +147,15 @@ recv_message (GIOChannel  *channel,
 		break;
 	      }
 
-	  error = g_io_channel_read (channel, (gchar *) &nbytes, sizeof (nbytes), &nb);
+	  error = read_all (fd, channel, (gchar *) &nbytes, sizeof (nbytes), &nb);
 	}
 
       if (error != G_IO_ERROR_NONE)
-	{
-	  g_print ("testgio: ...from %d: G_IO_ERROR_%s\n", fd,
-		   (error == G_IO_ERROR_AGAIN ? "AGAIN" :
-		    (error == G_IO_ERROR_INVAL ? "INVAL" :
-		     (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
-
-	  return FALSE;
-	}
+	return FALSE;
       
       if (nb == 0)
 	{
-	  g_print ("testgio: ...from %d: EOF\n", fd);
+	  g_print ("gio-test: ...from %d: EOF\n", fd);
 	  return FALSE;
 	}
       
@@ -130,42 +163,34 @@ recv_message (GIOChannel  *channel,
 
       if (nbytes >= BUFSIZE)
 	{
-	  g_print ("testgio: ...from %d: nbytes = %d (%#x)!\n", fd, nbytes, nbytes);
+	  g_print ("gio-test: ...from %d: nbytes = %d (%#x)!\n", fd, nbytes, nbytes);
 	  g_assert_not_reached ();
 	}
       g_assert (nbytes >= 0 && nbytes < BUFSIZE);
       
-      g_print ("testgio: ...from %d: %d bytes\n", fd, nbytes);
+      g_print ("gio-test: ...from %d: %d bytes\n", fd, nbytes);
       
       if (nbytes > 0)
 	{
-	  error = g_io_channel_read (channel, buf, nbytes, &nb);
-	  
+	  error = read_all (fd, channel, buf, nbytes, &nb);
+
 	  if (error != G_IO_ERROR_NONE)
+	    return FALSE;
+
+	  if (nb == 0)
 	    {
-	      g_print ("testgio: ...from %d: G_IO_ERROR_%s\n", fd,
-		       (error == G_IO_ERROR_AGAIN ? "AGAIN" :
-			(error == G_IO_ERROR_INVAL ? "INVAL" :
-			 (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
-	      
+	      g_print ("gio-test: ...from %d: EOF\n", fd);
 	      return FALSE;
 	    }
-
-	  if (nb != nbytes)
-	    {
-	      g_print ("testgio: ...from %d: nb=%d != nbytes=%d\n",
-		       fd, nb, nbytes);
-	      g_assert_not_reached ();
-	    }
-	  
+      
 	  for (j = 0; j < nbytes; j++)
 	    if (buf[j] != ' ' + ((nbytes + j) % 95))
 	      {
-		g_print ("testgio: ...from %d: buf[%d] == '%c', should be '%c'\n",
+		g_print ("gio-test: ...from %d: buf[%d] == '%c', should be '%c'\n",
 			 fd, j, buf[j], 'a' + ((nbytes + j) % 32));
 		g_assert_not_reached ();
 	      }
-	  g_print ("testgio: ...from %d: OK\n", fd);
+	  g_print ("gio-test: ...from %d: OK\n", fd);
 	}
     }
   return TRUE;
@@ -235,7 +260,7 @@ main (int    argc,
 	  g_get_current_time (&end);
 	  if (end.tv_usec < start.tv_usec)
 	    end.tv_sec--, end.tv_usec += 1000000;
-	  g_print ("testgio: had to wait %ld.%03ld s, result:%d\n",
+	  g_print ("gio-test: had to wait %ld.%03ld s, result:%d\n",
 		   end.tv_sec - start.tv_sec,
 		   (end.tv_usec - start.tv_usec) / 1000,
 		   pollresult);
@@ -269,12 +294,12 @@ main (int    argc,
 	  buflen = rand() % BUFSIZE;
 	  for (j = 0; j < buflen; j++)
 	    buf[j] = ' ' + ((buflen + j) % 95);
-	  g_print ("testgio: child writing %d bytes to %d\n", buflen, writefd);
+	  g_print ("gio-test: child writing %d bytes to %d\n", buflen, writefd);
 	  write (writefd, &i, sizeof (i));
 	  write (writefd, &buflen, sizeof (buflen));
 	  write (writefd, buf, buflen);
 	}
-      g_print ("testgio: child exiting, closing %d\n", writefd);
+      g_print ("gio-test: child exiting, closing %d\n", writefd);
       close (writefd);
     }
   else

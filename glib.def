@@ -166,6 +166,7 @@ EXPORTS
 	g_io_channel_win32_new_stream_socket
 	g_io_channel_win32_pipe_readable
 	g_io_channel_win32_pipe_request_wakeups
+	g_io_channel_win32_set_debug
 	g_io_channel_win32_wait_for_condition
 	g_io_channel_write
 	g_list_alloc
