@@ -59,7 +59,7 @@ void         g_completion_remove_items (GCompletion*    cmp,
                                         GList*          items);
 void         g_completion_clear_items  (GCompletion*    cmp);
 GList*       g_completion_complete     (GCompletion*    cmp,
-                                        gchar*          prefix,
+                                        const gchar*    prefix,
                                         gchar**         new_prefix);
 void         g_completion_set_compare (GCompletion *cmp,
 				       GCompletionStrncmpFunc strncmp_func);

@@ -1,3 +1,8 @@
+Mon Oct 14 15:36:11 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gcompletion.[ch] (g_completion_complete): Make
+	prefix argument const. (#91662, Gustavo Carneiro) 
+
 Mon Oct 14 15:32:14 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* tests/mainloop-test.c (adder_response): Fix a minor memory
