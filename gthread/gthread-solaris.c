@@ -137,23 +137,23 @@ g_private_new_solaris_impl (GDestroyNotify destructor)
    functions from gmem.c and gmessages.c */
 
 static void
-g_private_set_solaris_impl (GPrivate * private, gpointer value)
+g_private_set_solaris_impl (GPrivate * private_key, gpointer value)
 {
-  if (!private)
+  if (!private_key)
     return;
 
-  thr_setspecific (*(thread_key_t *) private, value);
+  thr_setspecific (*(thread_key_t *) private_key, value);
 }
 
 static gpointer
-g_private_get_solaris_impl (GPrivate * private)
+g_private_get_solaris_impl (GPrivate * private_key)
 {
   gpointer result;
 
-  if (!private)
+  if (!private_key)
     return NULL;
   
-  thr_getspecific (*(thread_key_t *) private, &result);
+  thr_getspecific (*(thread_key_t *) private_key, &result);
 
   return result;
 }

@@ -2,8 +2,11 @@
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread -DG_LOG_DOMAIN=g_log_domain_gthread
 
-EXTRA_DIST =	\
-		gthread-posix.c
+EXTRA_DIST =				\
+		gthread-posix.c		\
+		gthread-solaris.c	\
+		gthread-nspr.c		\
+		gthread-none.c
 
 libglib = $(top_builddir)/libglib.la # -lglib
 

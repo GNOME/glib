@@ -1,5 +1,10 @@
 1998-12-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* Makefile.am (EXTRA_DIST): updated.
+
+	* testgthread.c, gthread-*.c: Changed private to private_key to
+	avoid problems when compiling with under C++.
+
 	* gthread-none.c: 
 	s/g_mutex_functions_for_glib_use/g_thread_functions_for_glib_use/
 

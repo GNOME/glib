@@ -140,21 +140,21 @@ g_private_new_posix_impl (GDestroyNotify destructor)
    functions from gmem.c and gmessages.c */
 
 static void
-g_private_set_posix_impl (GPrivate * private, gpointer value)
+g_private_set_posix_impl (GPrivate * private_key, gpointer value)
 {
-  if (!private)
+  if (!private_key)
     return;
 
-  pthread_setspecific (*(pthread_key_t *) private, value);
+  pthread_setspecific (*(pthread_key_t *) private_key, value);
 }
 
 static gpointer
-g_private_get_posix_impl (GPrivate * private)
+g_private_get_posix_impl (GPrivate * private_key)
 {
-  if (!private)
+  if (!private_key)
     return NULL;
 
-  return pthread_getspecific (*(pthread_key_t *) private);
+  return pthread_getspecific (*(pthread_key_t *) private_key);
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =

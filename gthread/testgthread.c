@@ -143,7 +143,7 @@ private_destructor (gpointer data)
   g_free (real);
 }
 
-GStaticPrivate private;
+GStaticPrivate private_key;
 
 void
 test_private_func (void *data)
@@ -153,15 +153,15 @@ test_private_func (void *data)
   while (i < TEST_PRIVATE_ROUNDS)
     {
       guint random_value = rand () % 10000;
-      guint *data = g_static_private_get (&private);
+      guint *data = g_static_private_get (&private_key);
       if (!data)
 	{
 	  data = private_constructor ();
-	  g_static_private_set (&private, data, private_destructor);
+	  g_static_private_set (&private_key, data, private_destructor);
 	}
       *data = random_value;
       wait_thread (.2);
-      g_assert (*(guint *) g_static_private_get (&private) == random_value);
+      g_assert (*(guint *) g_static_private_get (&private_key) == random_value);
       i++;
     }
 }

@@ -122,7 +122,7 @@ struct _GPrivateNSPRData
 typedef struct _GPrivateNSPR GPrivateNSPR;
 struct _GPrivateNSPR
   {
-    PRUintn private;
+    PRUintn private_key;
     GDestroyNotify destructor;
   };
 
@@ -131,28 +131,28 @@ g_private_nspr_data_constructor (GDestroyNotify destructor, gpointer data)
 {
   /* we can not use g_new and friends, as they might use private data by
      themself */
-  GPrivateNSPRData *private = malloc (sizeof (GPrivateNSPRData));
-  g_assert (private);
-  private->data = data;
-  private->destructor = destructor;
+  GPrivateNSPRData *private_key = malloc (sizeof (GPrivateNSPRData));
+  g_assert (private_key);
+  private_key->data = data;
+  private_key->destructor = destructor;
 
-  return private;
+  return private_key;
 }
 
 static void
 g_private_nspr_data_destructor (gpointer data)
 {
-  GPrivateNSPRData *private = data;
-  if (private->destructor && private->data)
-    (*private->destructor) (private->data);
-  free (private);
+  GPrivateNSPRData *private_key = data;
+  if (private_key->destructor && private_key->data)
+    (*private_key->destructor) (private_key->data);
+  free (private_key);
 }
 
 static GPrivate *
 g_private_new_nspr_impl (GDestroyNotify destructor)
 {
   GPrivateNSPR *result = g_new (GPrivateNSPR, 1);
-  PRStatus status = PR_NewThreadPrivateIndex (&result->private,
+  PRStatus status = PR_NewThreadPrivateIndex (&result->private_key,
 					    g_private_nspr_data_destructor);
   g_assert (status == PR_SUCCESS);
 
@@ -164,17 +164,17 @@ g_private_new_nspr_impl (GDestroyNotify destructor)
    functions from gmem.c and gmessages.c */
 
 static GPrivateNSPRData *
-g_private_nspr_data_get (GPrivateNSPR * private)
+g_private_nspr_data_get (GPrivateNSPR * private_key)
 {
   GPrivateNSPRData *data;
 
-  STDERR_ASSERT (private);
+  STDERR_ASSERT (private_key);
 
-  data = PR_GetThreadPrivate (private->private);
+  data = PR_GetThreadPrivate (private_key->private_key);
   if (!data)
     {
-      data = g_private_nspr_data_constructor (private->destructor, NULL);
-      STDERR_ASSERT (PR_SetThreadPrivate (private->private, data)
+      data = g_private_nspr_data_constructor (private_key->destructor, NULL);
+      STDERR_ASSERT (PR_SetThreadPrivate (private_key->private_key, data)
 		     == PR_SUCCESS);
     }
 
@@ -182,21 +182,21 @@ g_private_nspr_data_get (GPrivateNSPR * private)
 }
 
 static void
-g_private_set_nspr_impl (GPrivate * private, gpointer value)
+g_private_set_nspr_impl (GPrivate * private_key, gpointer value)
 {
-  if (!private)
+  if (!private_key)
     return;
 
-  g_private_nspr_data_get ((GPrivateNSPR *) private)->data = value;
+  g_private_nspr_data_get ((GPrivateNSPR *) private_key)->data = value;
 }
 
 static gpointer
-g_private_get_nspr_impl (GPrivate * private)
+g_private_get_nspr_impl (GPrivate * private_key)
 {
-  if (!private)
+  if (!private_key)
     return NULL;
 
-  return g_private_nspr_data_get ((GPrivateNSPR *) private)->data;
+  return g_private_nspr_data_get ((GPrivateNSPR *) private_key)->data;
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =
