@@ -1,3 +1,33 @@
+2004-10-27  Ray Strode  <rstrode@redhat.com>
+
+	* glib/gkeyfile.c:
+	 (g_key_file_load_from_fd), 
+	 (g_key_file_load_from_file): 
+	 Move file is regular check to load_from_file to use
+	 fstat() instead of race prone g_file_test().  Don't
+	 clear/init until needed. Change error messages to be
+	 more consistent.
+	 (g_key_file_load_from_data),
+	 (g_key_file_load_from_data_dirs),
+	 (g_key_file_parse_data),
+	 (g_key_file_get_value),
+	 (g_key_file_get_string),
+	 (g_key_file_set_string),
+	 (g_key_file_get_string_list),
+	 (g_key_file_set_string_list),
+	 (g_key_file_set_locale_string),
+	 (g_key_file_get_locale_string),
+	 (g_key_file_set_locale_string_list),
+	 (g_key_file_get_boolean),
+	 (g_key_file_set_boolean),
+	 (g_key_file_get_boolean_list),
+	 (g_key_file_set_boolean_list),
+	 (g_key_file_get_integer),
+	 (g_key_file_get_integer_list),
+	 (g_key_file_set_integer_list),
+	 (g_key_file_remove_key):
+	 Add more g_return_*if_fail checks for public functions.
+
 2004-10-27  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version.

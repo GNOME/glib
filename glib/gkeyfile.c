@@ -363,14 +363,15 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
   struct stat stat_buf;
   gchar read_buf[4096];
 
-  if (key_file->approximate_size > 0)
-    {
-      g_key_file_clear (key_file);
-      g_key_file_init (key_file);
-    }
-  key_file->flags = flags;
-
   fstat (fd, &stat_buf);
+  if (!S_ISREG (stat_buf.st_mode))
+    {
+      g_set_error (error, G_KEY_FILE_ERROR,
+                   G_KEY_FILE_ERROR_PARSE,
+                   _("Not a regular file"));
+      return FALSE;
+    }
+
   if (stat_buf.st_size == 0)
     {
       g_set_error (error, G_KEY_FILE_ERROR,
@@ -378,6 +379,13 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
                    _("File is empty"));
       return FALSE;
     }
+
+  if (key_file->approximate_size > 0)
+    {
+      g_key_file_clear (key_file);
+      g_key_file_init (key_file);
+    }
+  key_file->flags = flags;
 
   bytes_read = 0;
   do
@@ -394,8 +402,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 
           g_set_error (error, G_FILE_ERROR,
                        g_file_error_from_errno (errno),
-                       _("Failed to read from file: %s"),
-                       g_strerror (errno));
+                       "%s", g_strerror (errno));
           return FALSE;
         }
 
@@ -448,23 +455,13 @@ g_key_file_load_from_file (GKeyFile       *key_file,
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (file != NULL, FALSE);
 
-  if (!g_file_test (file, G_FILE_TEST_IS_REGULAR))
-    {
-      g_set_error (error, G_FILE_ERROR,
-                   G_FILE_ERROR_ISDIR,
-                   _("Failed to open file '%s': Not a regular file"),
-                   file);
-      return FALSE;
-    }
-
   fd = open (file, O_RDONLY);
 
   if (fd < 0)
     {
       g_set_error (error, G_FILE_ERROR,
                    g_file_error_from_errno (errno),
-                   _("Failed to open file '%s': %s"),
-                   file, g_strerror (errno));
+                   "%s", g_strerror (errno));
       return FALSE;
     }
 
@@ -503,6 +500,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 {
   GError *key_file_error = NULL;
 
+  g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
   g_return_val_if_fail (length != 0, FALSE);
 
@@ -566,6 +564,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
   gint fd;
   gboolean found_file;
   
+  g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (!g_path_is_absolute (file), FALSE);
 
   user_data_dir = g_get_user_data_dir ();
@@ -843,6 +842,7 @@ g_key_file_parse_data (GKeyFile     *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (data != NULL);
 
   parse_error = NULL;
 
@@ -1132,6 +1132,7 @@ g_key_file_get_value (GKeyFile     *key_file,
 
   g_return_val_if_fail (key_file != NULL, NULL);
   g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
   
   group = g_key_file_lookup_group (key_file, group_name);
 
@@ -1221,6 +1222,7 @@ g_key_file_get_string (GKeyFile     *key_file,
   GError *key_file_error;
 
   g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
   key_file_error = NULL;
@@ -1289,8 +1291,10 @@ g_key_file_set_string (GKeyFile    *key_file,
   gchar *value;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
-  
+  g_return_if_fail (string != NULL);
+
   value = g_key_file_parse_string_as_value (key_file, string, FALSE);
   g_key_file_set_value (key_file, group_name, key, value);
   g_free (value);
@@ -1326,6 +1330,10 @@ g_key_file_get_string_list (GKeyFile     *key_file,
   gchar *value, *string_value, **values;
   gint i, len;
   GSList *p, *pieces = NULL;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   value = g_key_file_get_value (key_file, group_name, key, &key_file_error);
 
@@ -1404,7 +1412,9 @@ g_key_file_set_string_list (GKeyFile            *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
+  g_return_if_fail (list != NULL);
 
   value_list = g_string_sized_new (length * 128);
   for (i = 0; list[i] != NULL && i < length; i++)
@@ -1446,7 +1456,10 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
   gchar *full_key, *value;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
+  g_return_if_fail (locale != NULL);
+  g_return_if_fail (string != NULL);
 
   value = g_key_file_parse_string_as_value (key_file, string, FALSE);
   full_key = g_strdup_printf ("%s[%s]", key, locale);
@@ -1493,6 +1506,10 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
   gchar **languages;
   gboolean free_languages = FALSE;
   gint i;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   candidate_key = NULL;
   translated_value = NULL;
@@ -1613,6 +1630,10 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
   GError *key_file_error;
   gchar **values, *value;
 
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
   key_file_error = NULL;
 
   value = g_key_file_get_locale_string (key_file, group_name, 
@@ -1666,7 +1687,10 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
+  g_return_if_fail (locale != NULL);
+  g_return_if_fail (length != 0);
 
   value_list = g_string_sized_new (length * 128);
   for (i = 0; list[i] != NULL && i < length; i++)
@@ -1714,6 +1738,10 @@ g_key_file_get_boolean (GKeyFile     *key_file,
   GError *key_file_error = NULL;
   gchar *value;
   gboolean bool_value;
+
+  g_return_val_if_fail (key_file != NULL, FALSE);
+  g_return_val_if_fail (group_name != NULL, FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
 
   value = g_key_file_get_value (key_file, group_name, key, &key_file_error);
 
@@ -1768,6 +1796,7 @@ g_key_file_set_boolean (GKeyFile    *key_file,
   gchar *result;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
 
   result = g_key_file_parse_boolean_as_value (key_file, value);
@@ -1804,6 +1833,10 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
   gchar **values;
   gboolean *bool_values;
   gsize i, num_bools;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   key_file_error = NULL;
 
@@ -1865,7 +1898,9 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
+  g_return_if_fail (list != NULL);
 
   value_list = g_string_sized_new (length * 8);
   for (i = 0; i < length; i++)
@@ -1911,6 +1946,10 @@ g_key_file_get_integer (GKeyFile     *key_file,
   GError *key_file_error;
   gchar *value;
   gint int_value;
+
+  g_return_val_if_fail (key_file != NULL, -1);
+  g_return_val_if_fail (group_name != NULL, -1);
+  g_return_val_if_fail (key != NULL, -1);
 
   key_file_error = NULL;
 
@@ -1967,6 +2006,7 @@ g_key_file_set_integer (GKeyFile    *key_file,
   gchar *result;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
 
   result = g_key_file_parse_integer_as_value (key_file, value);
@@ -2004,6 +2044,10 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
   gchar **values;
   gint *int_values;
   gsize i, num_ints;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   values = g_key_file_get_string_list (key_file, group_name, key,
 				       &num_ints, &key_file_error);
@@ -2063,7 +2107,9 @@ g_key_file_set_integer_list (GKeyFile     *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
   g_return_if_fail (key != NULL);
+  g_return_if_fail (list != NULL);
 
   values = g_string_sized_new (length * 16);
   for (i = 0; i < length; i++)
@@ -2275,7 +2321,7 @@ g_key_file_get_key_comment (GKeyFile             *key_file,
   GList *key_node, *tmp;
   GString *string;
   gchar *comment;
-  
+
   group = g_key_file_lookup_group (key_file, group_name);
   if (!group)
     {
@@ -2746,6 +2792,10 @@ g_key_file_remove_key (GKeyFile     *key_file,
 {
   GKeyFileGroup *group;
   GKeyFileKeyValuePair *pair;
+
+  g_return_if_fail (key_file != NULL);
+  g_return_if_fail (group_name != NULL);
+  g_return_if_fail (key != NULL);
 
   pair = NULL;
 
