@@ -1,3 +1,9 @@
+2002-06-11  Anders Carlsson  <andersca@gnu.org>
+
+	* gtypemodule.c: (g_type_module_complete_interface_info):
+	* gtypeplugin.h:
+	Fix argument order. Fixes #82806.
+	
 Mon May 20 15:57:47 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gsignal.c: When printing errors, handle NULL

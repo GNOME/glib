@@ -45,8 +45,8 @@ typedef void  (*GTypePluginCompleteTypeInfo)	  (GTypePlugin     *plugin,
 						   GTypeInfo       *info,
 						   GTypeValueTable *value_table);
 typedef void  (*GTypePluginCompleteInterfaceInfo) (GTypePlugin     *plugin,
-						   GType            interface_type,
 						   GType            instance_type,
+						   GType            interface_type,
 						   GInterfaceInfo  *info);
 struct _GTypePluginClass
 {
@@ -68,8 +68,8 @@ void	g_type_plugin_complete_type_info	(GTypePlugin     *plugin,
 						 GTypeInfo       *info,
 						 GTypeValueTable *value_table);
 void	g_type_plugin_complete_interface_info	(GTypePlugin     *plugin,
-						 GType            interface_type,
 						 GType            instance_type,
+						 GType            interface_type,
 						 GInterfaceInfo  *info);
 
 G_END_DECLS

@@ -298,7 +298,7 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
 				       GInterfaceInfo *info)
 {
   GTypeModule *module = G_TYPE_MODULE (plugin);
-  ModuleInterfaceInfo *module_interface_info = g_type_module_find_interface_info (module, interface_type, instance_type);
+  ModuleInterfaceInfo *module_interface_info = g_type_module_find_interface_info (module, instance_type, interface_type);
 
   *info = module_interface_info->info;
 }
