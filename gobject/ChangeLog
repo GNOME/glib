@@ -1,3 +1,8 @@
+Thu May 31 17:56:47 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject-query.c: Fix mispelling in help output.
+	(#53952, Skip Montanaro)
+
 2001-05-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am (EXTRA_DIST): Really distribute glib-mkenums, now

@@ -105,9 +105,9 @@ help (gchar *arg)
   fprintf (stderr, "       -r       specifiy root type\n");
   fprintf (stderr, "       -n       don't descend type tree\n");
   fprintf (stderr, "       -h       guess what ;)\n");
-  fprintf (stderr, "       -b       specifiy indent string\n");
-  fprintf (stderr, "       -i       specifiy incremental indent string\n");
-  fprintf (stderr, "       -s       specifiy line spacing\n");
+  fprintf (stderr, "       -b       specify indent string\n");
+  fprintf (stderr, "       -i       specify incremental indent string\n");
+  fprintf (stderr, "       -s       specify line spacing\n");
   fprintf (stderr, "qualifiers:\n");
   fprintf (stderr, "       froots   iterate over fundamental roots\n");
   fprintf (stderr, "       tree     print BSE type tree\n");
