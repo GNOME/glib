@@ -1,3 +1,7 @@
+Wed Oct  6 12:44:23 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: blah. use G_WITH_CYGWIN instead of G_HAVE_CYGWIN
+
 1999-10-05  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h: (Win32) Drop the mapping of POSIX function names to the
