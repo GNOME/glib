@@ -1,3 +1,9 @@
+Thu Dec 12 13:52:58 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* m4macros/glib-gettext.m4: AC_PREREQ(2.53) here; convinces
+	Debian's wrappers to use the right autoconf for atk, etc.
+	(Reported by Jody Goldberg)
+
 2002-12-11  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gtimer.c (g_timer_elapsed): Fix off-by-one error. (#100853)

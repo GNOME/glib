@@ -12,6 +12,12 @@
 # but which still want to provide support for the GNU gettext functionality.
 #
 
+#
+# We need this here as well, since someone might use autoconf-2.5x
+# to configure GLib then an older version to configure a package
+# using AM_GLIB_GNU_GETTEXT
+AC_PREREQ(2.53)
+
 dnl
 dnl We go to great lengths to make sure that aclocal won't 
 dnl try to pull in the installed version of these macros
