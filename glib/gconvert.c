@@ -30,6 +30,7 @@
 
 #include "glib.h"
 #include "gprintfint.h"
+#include "gthreadinit.h"
 
 #ifdef G_PLATFORM_WIN32
 #define STRICT
@@ -1222,7 +1223,7 @@ have_broken_filenames (void)
  * initialize some static data in a threadsafe way.
  */
 void 
-g_convert_init (void)
+_g_convert_thread_init (void)
 {
 #ifndef G_PLATFORM_WIN32
   (void)have_broken_filenames ();

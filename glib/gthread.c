@@ -48,7 +48,7 @@
 #include <string.h>
 
 #include "glib.h"
-
+#include "gthreadinit.h"
 
 #if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
 # define g_system_thread_equal_simple(thread1, thread2)			\
@@ -158,22 +158,22 @@ G_LOCK_DEFINE_STATIC (g_thread);
 /* This must be called only once, before any threads are created.
  * It will only be called from g_thread_init() in -lgthread.
  */
-void
-g_mutex_init (void)
+void 
+g_thread_init_glib (void)
 {
-  GRealThread* main_thread;
- 
   /* We let the main thread (the one that calls g_thread_init) inherit
-   * the data, that it set before calling g_thread_init
+   * the static_private data set before calling g_thread_init
    */
-  main_thread = (GRealThread*) g_thread_self ();
-
-  g_thread_specific_private = g_private_new (g_thread_cleanup);
-  G_THREAD_UF (private_set, (g_thread_specific_private, main_thread));
-  G_THREAD_UF (thread_self, (&main_thread->system_thread));
+  GRealThread* main_thread = (GRealThread*) g_thread_self ();
 
   g_mutex_protect_static_mutex_allocation = g_mutex_new ();
 
+  _g_convert_thread_init ();
+  _g_rand_thread_init ();
+  _g_main_thread_init ();
+  _g_mem_thread_init ();
+  _g_messages_thread_init ();
+  
 #ifdef G_THREAD_USE_PID_SURROGATE
   priority_map[G_THREAD_PRIORITY_NORMAL] = 
     getpriority (PRIO_PROCESS, (getpid ()));
@@ -184,6 +184,16 @@ g_mutex_init (void)
   priority_map[G_THREAD_PRIORITY_URGENT] = 
     MAX (-20, priority_map[G_THREAD_PRIORITY_NORMAL] - 15);
 #endif /* G_THREAD_USE_PID_SURROGATE */
+
+  g_threads_got_initialized = TRUE;
+
+  g_thread_specific_private = g_private_new (g_thread_cleanup);
+  g_private_set (g_thread_specific_private, main_thread);
+  G_THREAD_UF (thread_self, (&main_thread->system_thread));
+
+  _g_mem_thread_private_init ();
+  _g_messages_thread_private_init ();
+
 }
 
 void 

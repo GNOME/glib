@@ -77,6 +77,7 @@ libglib_2_0_la_SOURCES = 	\
 	gstrfuncs.c		\
 	gstring.c		\
 	gthread.c       	\
+	gthreadinit.h		\
 	gthreadpool.c   	\
 	gtimer.c		\
 	gtree.c			\

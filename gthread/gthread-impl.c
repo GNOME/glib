@@ -36,6 +36,7 @@
 #endif
 
 #include <glib.h>
+#include <gthreadinit.h>
 
 #ifdef G_THREADS_ENABLED
 
@@ -336,9 +337,6 @@ g_thread_init (GThreadFunctions* init)
 
   g_thread_functions_for_glib_use = *init;
 
-  /* It is important, that g_threads_got_initialized is not set before the
-   * thread initialization functions of the different modules are called
-   */
   supported = (init->mutex_new &&  
 	       init->mutex_lock && 
 	       init->mutex_trylock && 
@@ -376,24 +374,7 @@ g_thread_init (GThreadFunctions* init)
   g_thread_priority_map [G_THREAD_PRIORITY_HIGH] = PRIORITY_HIGH_VALUE;
   g_thread_priority_map [G_THREAD_PRIORITY_URGENT] = PRIORITY_URGENT_VALUE;
 
-  /* now call the thread initialization functions of the different
-   * glib modules. order does matter, g_mutex_init MUST come first.
-   */
-  g_mutex_init ();
-  g_mem_init ();
-  g_messages_init ();
-  g_convert_init ();
-  g_rand_init ();
-
-  /* now we can set g_threads_got_initialized and thus enable
-   * all the thread functions
-   */
-  g_threads_got_initialized = TRUE;
-
-  /* This has to come after g_threads_got_initialized is set
-   * since it uses a private variable created by g_mem_init()
-   */
-  g_main_thread_init ();
+  g_thread_init_glib ();
 }
 
 #else /* !G_THREADS_ENABLED */

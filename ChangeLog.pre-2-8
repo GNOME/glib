@@ -1,3 +1,32 @@
+2003-02-14  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	Fixes for #101264 and #99372:
+
+	* glib/gconvert.h, glib/gmain.c, glib/gmem.c, glib/gmessages.c,
+	glib/grand.c: Include gthreadinit.h and rename the thread
+	initialization functions a bit and let them start with _, so that
+	later we can stop exporting them.
+	
+	* glib/gmem.c, glib/gmessages.c: Move the g_private_new() calls to
+	new functions. They have to be called after setting
+	g_threads_got_initialized to TRUE (see #101264).
+
+	* glib/gthread.c: Include gthreadinit.h. Renamed g_mutex_init() to
+	g_thread_init_glib(). Call the thread initialization functions
+	(which are not allowed to call g_private_new), then set
+	g_threads_got_initialized to TRUE, then call the other thread
+	initialization functions (which must not call anything but
+	g_private_new()).
+	
+	* glib/gthreadinit.h: New private header to cleanly declare all
+	thread initialization functions.
+
+	* gthread/gthread-impl.c: Include gthreadinit.h. In
+	g_thread_init() just call g_thread_init_glib(), which in turn calls the
+	other functions (see #99372).
+ 	
+	* glib/Makefile.am: Added gthreadinit.h.
+
 2003-02-12  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* configure.in: Make GLib recognize Tru64Unix thread system. (#103020)

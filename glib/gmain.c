@@ -37,6 +37,7 @@
 /* #define G_MAIN_POLL_DEBUG */
 
 #include "glib.h"
+#include "gthreadinit.h"
 #include <sys/types.h>
 #include <time.h>
 #ifdef HAVE_SYS_TIME_H
@@ -623,7 +624,7 @@ g_main_context_init_pipe (GMainContext *context)
 }
 
 void
-g_main_thread_init ()
+_g_main_thread_init ()
 {
   GSList *curr = main_contexts_without_pipe;
   while (curr)

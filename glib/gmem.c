@@ -35,7 +35,7 @@
 #include <signal.h>
 
 #include "glib.h"
-
+#include "gthreadinit.h"
 
 /* notes on macros:
  * having DISABLE_MEM_POOLS defined, disables mem_chunks alltogether, their
@@ -1253,13 +1253,22 @@ g_allocator_free (GAllocator *allocator)
 }
 
 void
-g_mem_init (void)
+_g_mem_thread_init (void)
 {
 #ifndef DISABLE_MEM_POOLS
   mem_chunks_lock = g_mutex_new ();
 #endif
 #ifndef G_DISABLE_CHECKS
-  mem_chunk_recursion = g_private_new (NULL);
   g_profile_mutex = g_mutex_new ();
 #endif
 }
+
+void
+_g_mem_thread_private_init (void)
+{
+#ifndef G_DISABLE_CHECKS
+  g_assert (mem_chunk_recursion == NULL);
+  mem_chunk_recursion = g_private_new (NULL);
+#endif
+}
+

@@ -43,7 +43,7 @@
 #include <string.h>
 
 #include "glib.h"
-
+#include "gthreadinit.h"
 
 G_LOCK_DEFINE_STATIC (global_random);
 static GRand* global_random = NULL;
@@ -93,7 +93,7 @@ get_random_version (void)
  * initialize some static data in a threadsafe way.
  */
 void 
-g_rand_init (void)
+_g_rand_thread_init (void)
 {
   (void)get_random_version ();
 }
