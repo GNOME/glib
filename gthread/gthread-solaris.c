@@ -195,18 +195,28 @@ g_thread_create_solaris_impl (GThreadFunc thread_func,
 			      gboolean joinable,
 			      gboolean bound,
 			      GThreadPriority priority,
-			      gpointer thread)
+			      gpointer thread,
+			      GError **error)
 {     
   long flags = (bound ? THR_BOUND : 0) | (joinable ? 0: THR_DETACHED);
+  gint ret;
   
   g_return_if_fail (thread_func);
   
   stack_size = MAX (g_thread_min_stack_size, stack_size);
   
-  solaris_check_for_error (thr_create (NULL, stack_size,  
-				       (void* (*)(void*))thread_func,
-				       arg, flags, thread));
+  ret = thr_create (NULL, stack_size, (void* (*)(void*))thread_func,
+		    arg, flags, thread);
+
+  if (ret == EAGAIN)
+    {
+      g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
+		   "Error creating thread: %s", g_strerror (ret));
+      return;
+    }
   
+  solaris_check_for_error (ret);
+
   g_thread_set_priority_solaris_impl (thread, priority);
 }
 

@@ -287,12 +287,14 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 
   posix_check_for_error (pthread_attr_destroy (&attr));
 
-  if (ret)
+  if (ret == EAGAIN)
     {
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
 		   "Error creating thread: %s", g_strerror (ret));
       return;
     }
+
+  posix_check_for_error (ret);
 
 #ifdef G_THREADS_IMPL_DCE
   if (!joinable)

@@ -3,6 +3,9 @@
 	* gthread-posix.c (g_thread_create_posix_impl): Use GError to
 	report errors.
 
+	* gthread-solaris.c (g_thread_create_solaris_impl): Use GError to
+	report errors as well.
+	
 2000-05-13  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: New file, with gthread stuff moved from
