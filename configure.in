@@ -4,7 +4,7 @@ dnl ***********************************
 builtin(include, acglib.m4)dnl
 
 # require autoconf 2.13
-AC_REQUIRE(2.13)
+AC_PREREQ(2.13)
 
 # Process this file with autoconf to produce a configure script.
 AC_INIT(glist.c)

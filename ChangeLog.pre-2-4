@@ -1,3 +1,8 @@
+Thu Jan 21 09:36:05 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in:
+	Use AC_PREREQ not AC_REQUIRE for autoconf version test.
+
 1999-01-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c (g_get_any_init): Changed error handling again, as the
