@@ -1453,11 +1453,11 @@ g_param_spec_string (const gchar *name,
 }
 
 GParamSpec*
-g_param_spec_string_c (const gchar *name,
-		       const gchar *nick,
-		       const gchar *blurb,
-		       const gchar *default_value,
-		       GParamFlags  flags)
+g_param_spec_stringc (const gchar *name,
+		      const gchar *nick,
+		      const gchar *blurb,
+		      const gchar *default_value,
+		      GParamFlags  flags)
 {
   GParamSpecString *sspec = g_param_spec_internal (G_TYPE_PARAM_STRING,
 						   name,

@@ -37,10 +37,12 @@ typedef struct _GSignalInvocationHint	 GSignalInvocationHint;
 typedef GClosureMarshal			 GSignalCMarshaller;
 typedef gboolean (*GSignalEmissionHook) (GSignalInvocationHint *ihint,
 					 guint			n_param_values,
-					 const GValue	       *param_values);
+					 const GValue	       *param_values,
+					 gpointer		data);
 typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
 					 GValue		       *return_accu,
-					 const GValue	       *return_value);
+					 const GValue	       *handler_return,
+					 gpointer               data);
 
 
 /* --- run & match types --- */
@@ -92,7 +94,8 @@ guint                 g_signal_newv         (const gchar        *signal_name,
 					     GType               itype,
 					     GSignalFlags        signal_flags,
 					     GClosure           *class_closure,
-					     GSignalAccumulator  accumulator,
+					     GSignalAccumulator	 accumulator,
+					     gpointer		 accu_data,
 					     GSignalCMarshaller  c_marshaller,
 					     GType               return_type,
 					     guint               n_params,
@@ -101,7 +104,8 @@ guint                 g_signal_new_valist   (const gchar        *signal_name,
 					     GType               itype,
 					     GSignalFlags        signal_flags,
 					     GClosure           *class_closure,
-					     GSignalAccumulator  accumulator,
+					     GSignalAccumulator	 accumulator,
+					     gpointer		 accu_data,
 					     GSignalCMarshaller  c_marshaller,
 					     GType               return_type,
 					     guint               n_params,
@@ -110,7 +114,8 @@ guint                 g_signal_newc         (const gchar        *signal_name,
 					     GType               itype,
 					     GSignalFlags        signal_flags,
 					     guint               class_offset,
-					     GSignalAccumulator  accumulator,
+					     GSignalAccumulator	 accumulator,
+					     gpointer		 accu_data,
 					     GSignalCMarshaller  c_marshaller,
 					     GType               return_type,
 					     guint               n_params,
@@ -137,16 +142,24 @@ void                  g_signal_query        (guint               signal_id,
 					     GSignalQuery       *query);
 guint*                g_signal_list_ids     (GType               itype,
 					     guint              *n_ids);
+gboolean	      g_signal_parse_name   (const gchar	*detailed_signal,
+					     GType		 itype,
+					     guint		*signal_id_p,
+					     GQuark		*detail_p,
+					     gboolean		 force_detail_quark);
 
 
 /* --- signal emissions --- */
-void	g_signal_stop_emission		      (gpointer		  instance,
-					       guint		  signal_id,
-					       GQuark		  detail);
-guint	g_signal_add_emission_hook_full	      (guint		  signal_id,
-					       GClosure		 *closure);
-void	g_signal_remove_emission_hook	      (guint		  signal_id,
-					       guint		  hook_id);
+void	g_signal_stop_emission		    (gpointer		  instance,
+					     guint		  signal_id,
+					     GQuark		  detail);
+guint	g_signal_add_emission_hook	    (guint		  signal_id,
+					     GQuark		  quark,
+					     GSignalEmissionHook  hook_func,
+					     gpointer	       	  hook_data,
+					     GDestroyNotify	  data_destroy);
+void	g_signal_remove_emission_hook	    (guint		  signal_id,
+					     guint		  hook_id);
 
 
 /* --- signal handlers --- */
@@ -154,8 +167,6 @@ gboolean g_signal_has_handler_pending	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
 					       gboolean		  may_be_blocked);
-#define g_signal_connect(instance, detailed_signal, c_handler, data) \
-	g_signal_connect_data (instance, detailed_signal, c_handler, data, NULL, FALSE, FALSE)
 guint	 g_signal_connect_closure_by_id	      (gpointer		  instance,
 					       guint		  signal_id,
 					       GQuark		  detail,
@@ -206,12 +217,11 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 					       GClosure		 *closure,
 					       gpointer		  func,
 					       gpointer		  data);
-gboolean g_signal_parse_name		      (const gchar	 *detailed_signal,
-					       GType		  itype,
-					       guint		 *signal_id_p,
-					       GQuark		 *detail_p,
-					       gboolean		  force_detail_quark);
 
+
+/* --- convenience --- */
+#define g_signal_connectc(instance, detailed_signal, c_handler, data, swapped) \
+    g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (swapped), FALSE)
 
 /*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);

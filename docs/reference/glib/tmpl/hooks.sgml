@@ -68,8 +68,7 @@ and the list of hook functions can be invoked.
 @is_setup: 
 @hooks: 
 @hook_memchunk: 
-@hook_free: 
-@hook_destroy: 
+@finalize_hook: 
 
 <!-- ##### STRUCT GHook ##### -->
 <para>
@@ -153,6 +152,8 @@ and the list of hook functions can be invoked.
 </para>
 
 @hook: 
+@marshal_data: 
+<!-- # Unused Parameters # -->
 @data: 
 
 
@@ -162,24 +163,10 @@ and the list of hook functions can be invoked.
 </para>
 
 @hook: 
-@data: 
+@marshal_data: 
 @Returns: 
-
-
-<!-- ##### USER_FUNCTION GHookFreeFunc ##### -->
-<para>
-
-</para>
-
-@hook_list: 
-@hook: 
-
-
-<!-- ##### MACRO G_HOOK_DEFERRED_DESTROY ##### -->
-<para>
-
-</para>
-
+<!-- # Unused Parameters # -->
+@data: 
 
 
 <!-- ##### FUNCTION g_hook_list_init ##### -->
@@ -222,6 +209,8 @@ thread) can be called. If set to FALSE, these are skipped.
 @hook_list: a #GHookList.
 @may_recurse: 
 @marshaller: 
+@marshal_data: 
+<!-- # Unused Parameters # -->
 @data: 
 
 
@@ -233,6 +222,8 @@ thread) can be called. If set to FALSE, these are skipped.
 @hook_list: a #GHookList.
 @may_recurse: 
 @marshaller: 
+@marshal_data: 
+<!-- # Unused Parameters # -->
 @data: 
 
 

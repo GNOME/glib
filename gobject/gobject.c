@@ -271,8 +271,8 @@ g_object_do_class_init (GObjectClass *class)
                    G_TYPE_FROM_CLASS (class),
                    G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
                    G_STRUCT_OFFSET (GObjectClass, properties_changed),
-                   NULL, /* accumulator */
-                   g_cclosure_marshal_VOID__UINT_POINTER,
+                   NULL, NULL,
+		   g_cclosure_marshal_VOID__UINT_POINTER,
                    G_TYPE_NONE,
                    2, G_TYPE_UINT, G_TYPE_POINTER);
   gobject_signals[NOTIFY] =
@@ -280,7 +280,7 @@ g_object_do_class_init (GObjectClass *class)
                    G_TYPE_FROM_CLASS (class),
                    G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
                    G_STRUCT_OFFSET (GObjectClass, notify),
-                   NULL, /* accumulator */
+		   NULL, NULL,
                    g_cclosure_marshal_VOID__PARAM,
                    G_TYPE_NONE,
                    1, G_TYPE_PARAM);

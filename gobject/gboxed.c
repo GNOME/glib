@@ -65,6 +65,30 @@ value_meminit (GValue *value,
 }
 
 static gpointer
+value_copy (gpointer boxed)
+{
+  const GValue *src_value = boxed;
+  GValue *dest_value = g_new0 (GValue, 1);
+
+  if (G_VALUE_TYPE (src_value))
+    {
+      g_value_init (dest_value, G_VALUE_TYPE (src_value));
+      g_value_copy (src_value, dest_value);
+    }
+  return dest_value;
+}
+
+static void
+value_free (gpointer boxed)
+{
+  GValue *value = boxed;
+
+  if (G_VALUE_TYPE (value))
+    g_value_unset (value);
+  g_free (value);
+}
+
+static gpointer
 value_array_init (void)
 {
   return g_value_array_new (0);
@@ -102,6 +126,15 @@ g_boxed_type_init (void)  /* sync with gtype.c */
 				       (GBoxedFreeFunc) g_closure_unref,
 				       TRUE);
   g_assert (type == G_TYPE_CLOSURE);
+
+  /* boxed: G_TYPE_VALUE
+   */
+  type = g_boxed_type_register_static ("GValue",
+				       (GBoxedInitFunc) NULL,
+				       value_copy,
+				       value_free,
+				       FALSE);
+  g_assert (type == G_TYPE_VALUE);
 
   /* boxed: G_TYPE_VALUE_ARRAY
    */

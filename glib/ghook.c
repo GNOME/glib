@@ -39,12 +39,26 @@
 
 
 /* --- functions --- */
+static void
+default_finalize_hook (GHookList *hook_list,
+		       GHook     *hook)
+{
+  GDestroyNotify destroy = hook->destroy;
+
+  if (destroy)
+    {
+      hook->destroy = NULL;
+      destroy (hook->data);
+    }
+}
+
 void
 g_hook_list_init (GHookList *hook_list,
 		  guint	     hook_size)
 {
   g_return_if_fail (hook_list != NULL);
   g_return_if_fail (hook_size >= sizeof (GHook));
+  g_return_if_fail (hook_size < 65536);
   
   hook_list->seq_id = 1;
   hook_list->hook_size = hook_size;
@@ -54,8 +68,7 @@ g_hook_list_init (GHookList *hook_list,
 					      hook_size,
 					      hook_size * G_HOOKS_PREALLOC,
 					      G_ALLOC_AND_FREE);
-  hook_list->hook_free = NULL;
-  hook_list->hook_destroy = NULL;
+  hook_list->finalize_hook = default_finalize_hook;
 }
 
 void
@@ -87,6 +100,8 @@ g_hook_list_clear (GHookList *hook_list)
 	    hook = tmp;
 	  }
 	while (hook);
+      if (hook_list->hook_memchunk)
+	g_warning (G_STRLOC ": failed to clear hooklist, unconsolidated references on hooks left");
     }
 }
 
@@ -119,10 +134,9 @@ g_hook_free (GHookList *hook_list,
   g_return_if_fail (hook_list->is_setup);
   g_return_if_fail (hook != NULL);
   g_return_if_fail (G_HOOK_IS_UNLINKED (hook));
+  g_return_if_fail (!G_HOOK_IN_CALL (hook));
 
-  if (hook_list->hook_free)
-    hook_list->hook_free (hook_list, hook);
-  
+  hook_list->finalize_hook (hook_list, hook);
   g_chunk_free (hook, hook_list->hook_memchunk);
 }
 
@@ -132,23 +146,11 @@ g_hook_destroy_link (GHookList *hook_list,
 {
   g_return_if_fail (hook_list != NULL);
   g_return_if_fail (hook != NULL);
-  
+
+  hook->flags &= ~G_HOOK_FLAG_ACTIVE;
   if (hook->hook_id)
     {
       hook->hook_id = 0;
-      hook->flags &= ~G_HOOK_FLAG_ACTIVE;
-      if (hook_list->hook_destroy)
-	{
-	  if (hook_list->hook_destroy != G_HOOK_DEFERRED_DESTROY)
-	    hook_list->hook_destroy (hook_list, hook);
-	}
-      else if (hook->destroy)
-	{
-	  hook->destroy (hook->data);
-	  hook->data = NULL;
-	  hook->func = NULL;
-	  hook->destroy = NULL;
-	}
       g_hook_unref (hook_list, hook); /* counterpart to g_hook_insert_before */
     }
 }
@@ -186,7 +188,7 @@ g_hook_unref (GHookList *hook_list,
     {
       g_return_if_fail (hook->hook_id == 0);
       g_return_if_fail (!G_HOOK_IN_CALL (hook));
-      
+
       if (hook->prev)
 	hook->prev->next = hook->next;
       else
@@ -244,7 +246,7 @@ g_hook_insert_before (GHookList *hook_list,
   g_return_if_fail (hook_list->is_setup);
   g_return_if_fail (hook != NULL);
   g_return_if_fail (G_HOOK_IS_UNLINKED (hook));
-  g_return_if_fail (hook->func != NULL);
+  g_return_if_fail (hook->ref_count == 0);
   
   hook->hook_id = hook_list->seq_id++;
   hook->ref_count = 1; /* counterpart to g_hook_destroy_link */

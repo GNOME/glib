@@ -17,6 +17,20 @@
 @s2: 
 @Returns: 
 
+<!-- ##### USER_FUNCTION GHookFreeFunc ##### -->
+<para>
+
+</para>
+
+@hook_list: 
+@hook: 
+
+<!-- ##### MACRO G_HOOK_DEFERRED_DESTROY ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO access ##### -->
 <para>
 

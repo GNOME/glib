@@ -96,10 +96,13 @@ value returned by the last callback.
 @ihint: 	Signal invokation hint, see #GSignalInvocationHint.
 @return_accu: 	Accumulator to collect callback return values in, this
 		is the return value of the current signal emission.
-@return_value: 	The return value of the most recent callback function.
+@handler_return: 
+@data: 
 @Returns: 	The accumulator function returns whether the signal emission
 		should be aborted. Returning %FALSE means to abort the
 		current emission and %TRUE is returned for continuation.
+<!-- # Unused Parameters # -->
+@return_value: 	The return value of the most recent callback function.
 
 
 <!-- ##### TYPEDEF GSignalCMarshaller ##### -->
@@ -120,6 +123,7 @@ signal system.
 @ihint: 
 @n_param_values: 
 @param_values: 
+@data: 
 @Returns: 
 <!-- # Unused Parameters # -->
 @signal_id: 
@@ -213,6 +217,7 @@ filled in by the g_signal_query() function.
 @signal_flags: 
 @class_offset: 
 @accumulator: 
+@accu_data: 
 @c_marshaller: 
 @return_type: 
 @n_params: 
@@ -230,6 +235,7 @@ filled in by the g_signal_query() function.
 @signal_flags: 
 @class_closure: 
 @accumulator: 
+@accu_data: 
 @c_marshaller: 
 @return_type: 
 @n_params: 
@@ -247,6 +253,7 @@ filled in by the g_signal_query() function.
 @signal_flags: 
 @class_closure: 
 @accumulator: 
+@accu_data: 
 @c_marshaller: 
 @return_type: 
 @n_params: 
@@ -561,16 +568,6 @@ otherwise.
 @instance: 
 @signal_id: 
 @detail: 
-
-
-<!-- ##### FUNCTION g_signal_add_emission_hook_full ##### -->
-<para>
-
-</para>
-
-@signal_id: 
-@closure: 
-@Returns: 
 
 
 <!-- ##### FUNCTION g_signal_remove_emission_hook ##### -->

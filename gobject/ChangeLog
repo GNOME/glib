@@ -1,3 +1,22 @@
+Thu Mar  8 16:35:48 2001  Tim Janik  <timj@gtk.org>
+
+	* gparamspecs.[hc]: s/g_param_spec_string_c/g_param_spec_stringc/.
+
+	* gsignal.[hc]: fixed accumulator invocation, implemented emission
+	hooks. and no, neither of these callbacks are called via a closure,
+	language bindings can wrap the accumulator and emission hook
+	interface, they already get parameters marshalled into a GValue array.
+	(g_signal_connect): removed this function as its C specific, doesn't
+	cover the swapped argument, is too close to its broken original
+	gtk_signal_connect() and creates demand for _swapped, _after and
+	_swapped_after variants <brrr>.
+	(g_signal_connectc): convenience macro to connect a C handler
+	func with data, like the old g_signal_connect() plus swapped
+	argument.
+
+	* gtype.h:
+	* gboxed.c: added G_TYPE_VALUE boxed type.
+
 Wed Mar  7 19:02:51 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.c (type_node_add_iface_entry_W): catch when adding an interface

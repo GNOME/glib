@@ -27,6 +27,8 @@
 #include        "gsignal.h"
 #include        "gbsearcharray.h"
 #include        "gvaluecollector.h"
+#include	"gvaluetypes.h"
+#include	"gboxed.h"
 #include	<string.h> 
 
 
@@ -147,6 +149,11 @@ static	      gboolean		signal_emit_R		(SignalNode	 *node,
 
 
 /* --- structures --- */
+typedef struct
+{
+  GSignalAccumulator func;
+  gpointer           data;
+} SignalAccumulator;
 struct _SignalNode
 {
   /* permanent portion */
@@ -161,7 +168,7 @@ struct _SignalNode
   GType		    *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GType		     return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GClosure          *class_closure;
-  GSignalAccumulator accumulator;
+  SignalAccumulator *accumulator;
   GSignalCMarshaller c_marshaller;
   GHookList         *emission_hooks;
 };
@@ -723,6 +730,85 @@ g_signal_stop_emission (gpointer instance,
   G_UNLOCK (g_signal_mutex);
 }
 
+static void
+signal_finalize_hook (GHookList *hook_list,
+		      GHook     *hook)
+{
+  GDestroyNotify destroy = hook->destroy;
+
+  if (destroy)
+    {
+      hook->destroy = NULL;
+      G_UNLOCK (g_signal_mutex);
+      destroy (hook->data);
+      G_LOCK (g_signal_mutex);
+    }
+}
+
+guint
+g_signal_add_emission_hook (guint               signal_id,
+			    GQuark              detail,
+			    GSignalEmissionHook hook_func,
+			    gpointer            hook_data,
+			    GDestroyNotify      data_destroy)
+{
+  static guint seq_hook_id = 1;
+  SignalNode *node;
+  GHook *hook;
+
+  g_return_val_if_fail (signal_id > 0, 0);
+  g_return_val_if_fail (hook_func != NULL, 0);
+
+  G_LOCK (g_signal_mutex);
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (!node || node->destroyed || (node->flags & G_SIGNAL_NO_HOOKS))
+    {
+      g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+      G_UNLOCK (g_signal_mutex);
+      return 0;
+    }
+  if (detail && !(node->flags & G_SIGNAL_DETAILED))
+    {
+      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      G_UNLOCK (g_signal_mutex);
+      return 0;
+    }
+  if (!node->emission_hooks)
+    {
+      node->emission_hooks = g_new (GHookList, 1);
+      g_hook_list_init (node->emission_hooks, sizeof (GHook));
+      node->emission_hooks->finalize_hook = signal_finalize_hook;
+    }
+  hook = g_hook_alloc (node->emission_hooks);
+  hook->data = hook_data;
+  hook->func = hook_func;
+  hook->destroy = data_destroy;
+  node->emission_hooks->seq_id = seq_hook_id;
+  g_hook_append (node->emission_hooks, hook);
+  seq_hook_id = node->emission_hooks->seq_id;
+  G_UNLOCK (g_signal_mutex);
+
+  return hook->hook_id;
+}
+
+void
+g_signal_remove_emission_hook (guint signal_id,
+			       guint hook_id)
+{
+  SignalNode *node;
+
+  g_return_if_fail (signal_id > 0);
+  g_return_if_fail (hook_id > 0);
+
+  G_LOCK (g_signal_mutex);
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (!node || node->destroyed)
+    g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+  else if (!node->emission_hooks || !g_hook_destroy (node->emission_hooks, hook_id))
+    g_warning ("%s: signal \"%s\" had no hook (%u) to remove", G_STRLOC, node->name, hook_id);
+  G_UNLOCK (g_signal_mutex);
+}
+
 static inline guint
 signal_parse_name (const gchar *name,
 		   GType        itype,
@@ -896,6 +982,7 @@ g_signal_new_valist (const gchar       *signal_name,
                      GSignalFlags       signal_flags,
                      GClosure          *class_closure,
                      GSignalAccumulator accumulator,
+		     gpointer		accu_data,
                      GSignalCMarshaller c_marshaller,
                      GType              return_type,
                      guint              n_params,
@@ -916,7 +1003,7 @@ g_signal_new_valist (const gchar       *signal_name,
     param_types = NULL;
 
   signal_id = g_signal_newv (signal_name, itype, signal_flags,
-			     class_closure, accumulator, c_marshaller,
+			     class_closure, accumulator, accu_data, c_marshaller,
 			     return_type, n_params, param_types);
   g_free (param_types);
 
@@ -928,7 +1015,8 @@ g_signal_newc (const gchar	 *signal_name,
                GType		  itype,
                GSignalFlags	  signal_flags,
                guint              class_offset,
-               GSignalAccumulator accumulator,
+	       GSignalAccumulator accumulator,
+	       gpointer		  accu_data,
                GSignalCMarshaller c_marshaller,
                GType		  return_type,
                guint		  n_params,
@@ -943,7 +1031,7 @@ g_signal_newc (const gchar	 *signal_name,
 
   signal_id = g_signal_new_valist (signal_name, itype, signal_flags,
                                    g_signal_type_cclosure_new (itype, class_offset),
-                                   accumulator, c_marshaller,
+				   accumulator, accu_data, c_marshaller,
                                    return_type, n_params, args);
 
   va_end (args);
@@ -957,6 +1045,7 @@ g_signal_newv (const gchar       *signal_name,
                GSignalFlags       signal_flags,
                GClosure          *class_closure,
                GSignalAccumulator accumulator,
+	       gpointer		  accu_data,
                GSignalCMarshaller c_marshaller,
                GType		  return_type,
                guint              n_params,
@@ -970,9 +1059,11 @@ g_signal_newv (const gchar       *signal_name,
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   if (n_params)
     g_return_val_if_fail (param_types != NULL, 0);
-  if (return_type != G_TYPE_NONE)
+  if (return_type == (G_TYPE_NONE & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     g_return_val_if_fail (accumulator == NULL, 0);
-  
+  if (!accumulator)
+    g_return_val_if_fail (accu_data == NULL, 0);
+
   name = g_strdup (signal_name);
   g_strdelimit (name, G_STR_DELIMITERS ":^", '_');  // FIXME do character checks like for types
   
@@ -1048,12 +1139,18 @@ g_signal_newv (const gchar       *signal_name,
   node->class_closure = class_closure ? g_closure_ref (class_closure) : NULL;
   if (class_closure)
     g_closure_sink (class_closure);
-  node->accumulator = accumulator;
+  if (accumulator)
+    {
+      node->accumulator = g_new (SignalAccumulator, 1);
+      node->accumulator->func = accumulator;
+      node->accumulator->data = accu_data;
+    }
+  else
+    node->accumulator = NULL;
   node->c_marshaller = c_marshaller;
   node->emission_hooks = NULL;
   if (node->c_marshaller && class_closure && G_CLOSURE_NEEDS_MARSHAL (class_closure))
     g_closure_set_marshal (class_closure, node->c_marshaller);
-  
   G_UNLOCK (g_signal_mutex);
   return signal_id;
 }
@@ -1092,6 +1189,7 @@ signal_destroy_R (SignalNode *signal_node)
   G_UNLOCK (g_signal_mutex);
   g_free (node.param_types);
   g_closure_unref (node.class_closure);
+  g_free (node.accumulator);
   if (node.emission_hooks)
     {
       g_hook_list_clear (node.emission_hooks);
@@ -1740,21 +1838,37 @@ g_signal_emit_by_name (gpointer     instance,
     g_warning ("%s: signal name `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
 }
 
+static inline gboolean
+accumulate (GSignalInvocationHint *ihint,
+	    GValue                *return_accu,
+	    GValue	          *handler_return,
+	    SignalAccumulator     *accumulator)
+{
+  gboolean continue_emission;
+
+  if (!accumulator)
+    return TRUE;
+
+  continue_emission = accumulator->func (ihint, return_accu, handler_return, accumulator->data);
+  g_value_reset (handler_return);
+
+  return continue_emission;
+}
+
 static gboolean
 signal_emit_R (SignalNode   *node,
 	       GQuark	     detail,
 	       gpointer      instance,
-	       GValue	    *return_value,
+	       GValue	    *emission_return,
 	       const GValue *instance_and_params)
 {
   EmissionState emission_state = 0;
-  GSignalAccumulator accumulator;
+  SignalAccumulator *accumulator;
   GSignalInvocationHint ihint;
   GClosure *class_closure;
   HandlerList *hlist;
   Handler *handler_list = NULL;
-  GValue accu = { 0, };
-  gboolean accu_used = FALSE;
+  GValue *return_accu, accu = { 0, };
   guint signal_id = node->signal_id;
   gboolean return_value_altered = FALSE;
   
@@ -1784,7 +1898,12 @@ signal_emit_R (SignalNode   *node,
   ihint.detail = detail;
   accumulator = node->accumulator;
   if (accumulator)
-    g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+    {
+      g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      return_accu = &accu;
+    }
+  else
+    return_accu = emission_return;
   emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions,
 		 signal_id, detail, instance, &emission_state);
   class_closure = node->class_closure;
@@ -1805,26 +1924,14 @@ signal_emit_R (SignalNode   *node,
       emission_state = EMISSION_RUN;
       
       G_UNLOCK (g_signal_mutex);
-      if (accumulator)
-	{
-	  if (accu_used)
-	    g_value_reset (&accu);
-	  g_closure_invoke (class_closure,
-			    &accu,
-			    node->n_params + 1,
-			    instance_and_params,
-			    &ihint);
-	  if (!accumulator (&ihint, return_value, &accu) &&
-	      emission_state == EMISSION_RUN)
-	    emission_state = EMISSION_STOP;
-	  accu_used = TRUE;
-	}
-      else
-	g_closure_invoke (class_closure,
-			  return_value,
-			  node->n_params + 1,
-			  instance_and_params,
-			  &ihint);
+      g_closure_invoke (class_closure,
+			return_accu,
+			node->n_params + 1,
+			instance_and_params,
+			&ihint);
+      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
+	  emission_state == EMISSION_RUN)
+	emission_state = EMISSION_STOP;
       G_LOCK (g_signal_mutex);
       return_value_altered = TRUE;
       
@@ -1836,11 +1943,31 @@ signal_emit_R (SignalNode   *node,
   
   if (node->emission_hooks)
     {
-      emission_state = EMISSION_HOOK;
+      gboolean need_destroy, was_in_call, may_recurse = TRUE;
+      GHook *hook;
       
-      G_UNLOCK (g_signal_mutex);
-      g_print ("emission_hooks()\n");
-      G_LOCK (g_signal_mutex);
+      emission_state = EMISSION_HOOK;
+      hook = g_hook_first_valid (node->emission_hooks, may_recurse);
+      while (hook)
+	{
+	  GQuark hook_detail = GPOINTER_TO_UINT (hook->func);
+	  
+	  if (!hook_detail || hook_detail == detail)
+	    {
+	      GSignalEmissionHook hook_func = hook->func;
+	      
+	      was_in_call = G_HOOK_IN_CALL (hook);
+	      hook->flags |= G_HOOK_FLAG_IN_CALL;
+              G_UNLOCK (g_signal_mutex);
+	      need_destroy = !hook_func (&ihint, node->n_params + 1, instance_and_params, hook->data);
+	      G_LOCK (g_signal_mutex);
+	      if (!was_in_call)
+		hook->flags &= ~G_HOOK_FLAG_IN_CALL;
+	      if (need_destroy)
+		g_hook_destroy_link (node->emission_hooks, hook);
+	    }
+	  hook = g_hook_next_valid (node->emission_hooks, hook, may_recurse);
+	}
       
       if (emission_state == EMISSION_RESTART)
 	goto EMIT_RESTART;
@@ -1865,26 +1992,14 @@ signal_emit_R (SignalNode   *node,
 	  else if (!handler->block_count && (!handler->detail || handler->detail == detail))
 	    {
 	      G_UNLOCK (g_signal_mutex);
-	      if (accumulator)
-		{
-		  if (accu_used)
-		    g_value_reset (&accu);
-		  g_closure_invoke (handler->closure,
-				    &accu,
-				    node->n_params + 1,
-				    instance_and_params,
-				    &ihint);
-		  if (!accumulator (&ihint, return_value, &accu) &&
-		      emission_state == EMISSION_RUN)
-		    emission_state = EMISSION_STOP;
-		  accu_used = TRUE;
-		}
-	      else
-		g_closure_invoke (handler->closure,
-				  return_value,
-				  node->n_params + 1,
-				  instance_and_params,
-				  &ihint);
+	      g_closure_invoke (handler->closure,
+				return_accu,
+				node->n_params + 1,
+				instance_and_params,
+				&ihint);
+	      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
+		  emission_state == EMISSION_RUN)
+		emission_state = EMISSION_STOP;
 	      G_LOCK (g_signal_mutex);
 	      return_value_altered = TRUE;
 	      
@@ -1914,26 +2029,14 @@ signal_emit_R (SignalNode   *node,
       emission_state = EMISSION_RUN;
       
       G_UNLOCK (g_signal_mutex);
-      if (accumulator)
-	{
-	  if (accu_used)
-	    g_value_reset (&accu);
-	  g_closure_invoke (class_closure,
-			    &accu,
-			    node->n_params + 1,
-			    instance_and_params,
-			    &ihint);
-          if (!accumulator (&ihint, return_value, &accu) &&
-	      emission_state == EMISSION_RUN)
-	    emission_state = EMISSION_STOP;
-	  accu_used = TRUE;
-	}
-      else
-	g_closure_invoke (class_closure,
-			  return_value,
-			  node->n_params + 1,
-			  instance_and_params,
-			  &ihint);
+      g_closure_invoke (class_closure,
+			return_accu,
+			node->n_params + 1,
+			instance_and_params,
+			&ihint);
+      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
+	  emission_state == EMISSION_RUN)
+	emission_state = EMISSION_STOP;
       G_LOCK (g_signal_mutex);
       return_value_altered = TRUE;
       
@@ -1956,26 +2059,14 @@ signal_emit_R (SignalNode   *node,
 	  if (handler->after && !handler->block_count && (!handler->detail || handler->detail == detail))
 	    {
 	      G_UNLOCK (g_signal_mutex);
-              if (accumulator)
-		{
-		  if (accu_used)
-		    g_value_reset (&accu);
-		  g_closure_invoke (handler->closure,
-				    &accu,
-				    node->n_params + 1,
-				    instance_and_params,
-				    &ihint);
-		  if (!accumulator (&ihint, return_value, &accu) &&
-		      emission_state == EMISSION_RUN)
-		    emission_state = EMISSION_STOP;
-		  accu_used = TRUE;
-		}
-	      else
-		g_closure_invoke (handler->closure,
-				  return_value,
-				  node->n_params + 1,
-				  instance_and_params,
-				  &ihint);
+	      g_closure_invoke (handler->closure,
+				return_accu,
+				node->n_params + 1,
+				instance_and_params,
+				&ihint);
+	      if (!accumulate (&ihint, emission_return, &accu, accumulator) &&
+		  emission_state == EMISSION_RUN)
+		emission_state = EMISSION_STOP;
 	      G_LOCK (g_signal_mutex);
 	      return_value_altered = TRUE;
 	      
@@ -2008,15 +2099,10 @@ signal_emit_R (SignalNode   *node,
       emission_state = EMISSION_STOP;
       
       G_UNLOCK (g_signal_mutex);
-      if (node->return_type != G_TYPE_NONE)
+      if (node->return_type != G_TYPE_NONE && !accumulator)
 	{
-	  if (!accumulator)
-	    {
-	      g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-	      need_unset = TRUE;
-	    }
-	  else if (accu_used)
-	    g_value_reset (&accu);
+	  g_value_init (&accu, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+	  need_unset = TRUE;
 	}
       g_closure_invoke (class_closure,
 			node->return_type != G_TYPE_NONE ? &accu : NULL,
@@ -2037,14 +2123,12 @@ signal_emit_R (SignalNode   *node,
   emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission_state);
   if (accumulator)
     g_value_unset (&accu);
-
+  
   return return_value_altered;
 }
 
 
 /* --- compile standard marshallers --- */
-#include	"gvaluetypes.h"
 #include	"gobject.h"
 #include	"genums.h"
-#include	"gboxed.h"
 #include        "gmarshal.c"

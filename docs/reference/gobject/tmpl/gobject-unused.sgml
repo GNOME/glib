@@ -1,3 +1,24 @@
+<!-- ##### FUNCTION g_param_spec_string_c ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@default_value: 
+@flags: 
+@Returns: 
+
+<!-- ##### FUNCTION g_signal_add_emission_hook_full ##### -->
+<para>
+
+</para>
+
+@signal_id: 
+@closure: 
+@Returns: 
+
 <!-- ##### FUNCTION g_type_value_is_a ##### -->
 <para>
 Determines if @value is a #GValue whose type conforms to @type.

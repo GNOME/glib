@@ -1,3 +1,12 @@
+Thu Mar  8 16:23:34 2001  Tim Janik  <timj@gtk.org>
+
+	* ghook.[hc]: destruction cleanup. there's one
+	->finalize_hook member in the hooklist now that gets
+	called when a hook should be destroyed, that's it.
+	that function is guarranteed to be called only when
+	all ref_counts to the hook vanished, thus also when
+	the hook is not in call.
+
 2001-03-08  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in (FLAG_DOES_NOT_WORK): Fix typo and thus bug #51862.

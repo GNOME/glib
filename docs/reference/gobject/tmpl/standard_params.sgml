@@ -593,19 +593,6 @@ Standard Parameter Types
 @Returns: 
 
 
-<!-- ##### FUNCTION g_param_spec_string_c ##### -->
-<para>
-
-</para>
-
-@name: 
-@nick: 
-@blurb: 
-@default_value: 
-@flags: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_param_spec_boxed ##### -->
 <para>
 
