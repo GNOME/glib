@@ -1,3 +1,16 @@
+Mon May 13 11:42:23 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+        * glib/libcharset/*: Update from libcharset CVS.
+ 	Includes additional encodings for Solaris (#80396,
+	Qingjiang Yuan)
+ 
+ 	* configure.in: Add getc_unlocked to CHECK_FUNCS().
+ 
+ 	* glib/gmessages.c (strdup_convert): If
+ 	g_convert_with_fallback() fails, print the error
+ 	message to stderr the first time, then return
+ 	the original string. (#78197)
+ 
 2002-05-10  Naba Kumar  <kh_naba@users.sourceforge.net>
 
 	* configure.in: Added "hi" to ALL_LINGUAS.
