@@ -26,9 +26,9 @@ m4_include(m4macros/glib-gettext.m4)dnl
 # set glib_binary_age _and_ glib_interface_age to 0.
 #
 m4_define([glib_major_version], [2])
-m4_define([glib_minor_version], [4])
-m4_define([glib_micro_version], [1])
-m4_define([glib_interface_age], [1])
+m4_define([glib_minor_version], [5])
+m4_define([glib_micro_version], [0])
+m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
 m4_define([glib_version],
