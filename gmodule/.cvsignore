@@ -10,3 +10,4 @@ libgplugin_b.la
 gmoduleconf.h
 stamp-h
 testgmodule
+libgmodule.la
