@@ -1611,7 +1611,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
     case STATE_AFTER_CLOSE_TAG_SLASH:
     case STATE_INSIDE_CLOSE_TAG_NAME:
       set_error (context, error, G_MARKUP_ERROR_PARSE,
-                 _("Document ended unexpectedly inside the close tag for"
+                 _("Document ended unexpectedly inside the close tag for "
                    "element '%s'"), current_element);
       break;
 
