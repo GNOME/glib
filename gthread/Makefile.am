@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread -DG_LOG_DOMAIN=\"GThread\"
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
+	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@
 
 EXTRA_DIST =				\
 		gthread-posix.c		\

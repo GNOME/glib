@@ -580,6 +580,11 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 				|| test "x$want_threads" = xdce; then
+	# -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
+	# -U_OSF_SOURCE if for Digital UNIX 4.0d
+	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
+	glib_save_CPPFLAGS="$CPPFLAGS"
+	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
         if test "x$have_threads" = xnone; then
                 AC_EGREP_HEADER([[^a-zA-Z_]pthread_attr_init[^a-zA-Z_]],
 			pthread.h,
@@ -590,6 +595,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 			pthread.h,
 			have_threads=dce)
         fi
+	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
         if test "x$have_threads" = xnone; then
@@ -618,7 +624,7 @@ case $have_threads in
         posix|dce)
 		G_THREAD_LIBS=error
 		glib_save_LIBS="$LIBS"
-		for thread_lib in "" pthread pthreads c_r thread; do
+		for thread_lib in "" pthread pthreads c_r thread dce; do
 			# This is not AC_CHECK_LIB to also work with function
 			# name mangling in header files.
 			if test x"$thread_lib" = x; then
@@ -640,9 +646,6 @@ case $have_threads in
 				[AC_MSG_RESULT(no)])
 		done
 		LIBS="$glib_save_LIBS"
-		dnl ********** DG/UX ************
-               	AC_CHECK_LIB(thread, __d10_pthread_create,
-			G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
                 mutex_has_default=yes
                 mutex_default_type='pthread_mutex_t'
                 mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
@@ -653,6 +656,7 @@ case $have_threads in
 			g_threads_impl="DCE"
 			have_threads="posix"
 		fi
+		AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
                 ;;
         solaris)
 		G_THREAD_LIBS=error

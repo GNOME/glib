@@ -1,3 +1,10 @@
+1999-03-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: added new AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
+	to hold various defines to get the right thread implementation on
+	different platforms. Also look in -ldce for pthread_create. Should
+	make it work on HP-UX 10.x.
+
 1999-03-17  Jeff Garzik  <jgarzik@pobox.com>
 
 	* gstack.c, gqueue.c:
