@@ -221,6 +221,15 @@ test_g_static_rw_lock ()
 }
 
 /* run all the tests */
+void
+run_all_tests()
+{
+  test_g_mutex ();
+  test_g_static_rec_mutex ();
+  test_g_static_private ();
+  test_g_static_rw_lock ();  
+}
+
 int 
 main (int   argc,
       char *argv[])
@@ -229,10 +238,15 @@ main (int   argc,
      implementation is available */
 #if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
   g_thread_init (NULL);
-  test_g_mutex ();
-  test_g_static_rec_mutex ();
-  test_g_static_private ();
-  test_g_static_rw_lock ();
+  run_all_tests ();
+
+  /* Now we rerun all tests, but this time we fool the system into
+   * thinking, that the available thread system is not native, but
+   * userprovided. */
+
+  g_thread_use_default_impl = FALSE;
+  run_all_tests ();
+  
 #endif
   return 0;
 }

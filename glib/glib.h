@@ -1,3 +1,4 @@
+
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
@@ -3062,24 +3063,22 @@ void g_static_private_set_for_thread (GStaticPrivate *private_key,
 				      GThread        *thread,
 				      gpointer        data,
 				      GDestroyNotify  notify);
-#ifndef G_STATIC_REC_MUTEX_INIT
-/* if GStaticRecMutex is not just a differently initialized GStaticMutex, 
- * the following is done:
- * This can't be done in glibconfig.h, as GStaticPrivate and gboolean
- * are not yet known there 
- */
+
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
 {
   GStaticMutex mutex;
-  GStaticPrivate counter; 
+  unsigned int depth;
+  GSystemThread owner;
 };
-#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, G_STATIC_PRIVATE_INIT }
-void     g_static_rec_mutex_lock    (GStaticRecMutex* mutex);
-gboolean g_static_rec_mutex_trylock (GStaticRecMutex* mutex);
-void     g_static_rec_mutex_unlock  (GStaticRecMutex* mutex);
-#define  g_static_rec_mutex_get_mutex(mutex) ((mutex)->mutex)
-#endif /* G_STATIC_REC_MUTEX_INIT */
+
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
+void     g_static_rec_mutex_lock        (GStaticRecMutex *mutex);
+gboolean g_static_rec_mutex_trylock     (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_unlock      (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
+					 guint            depth);
+guint    g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex);
 
 typedef struct _GStaticRWLock GStaticRWLock;
 struct _GStaticRWLock

@@ -39,62 +39,29 @@
 #include <unistd.h>
 #endif
 
-typedef union _SystemThread SystemThread;
-
-/* This represents a system thread as used by the implementation. An
- * alien implementaion, as loaded by g_thread_init can only count on
- * "sizeof (gpointer)" bytes to store their info. We however need more
- * for some of our native implementations. */
-union _SystemThread
-{
-  guchar   data[GLIB_SIZEOF_SYSTEM_THREAD];
-  gdouble  double_dummy; /* These are used for the right alignment */
-  gpointer pointer_dummy;
-#ifdef G_HAVE_GINT64
-  guint64  long_dummy;
-#else
-  guint32  long_dummy;  
-#endif
-};
+#if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
+# define g_system_thread_equal(thread1, thread2) 			\
+   (thread1.dummy_pointer == thread2.dummy_pointer)
+# define g_system_thread_assign(dest, src)				\
+   (dest.dummy_pointer = src.dummy_pointer)
+#else /* GLIB_SIZEOF_SYSTEM_THREAD != SIZEOF_VOID_P */
+# define g_system_thread_equal(thread1, thread2)			\
+   (memcmp (&thread1, &thread2, GLIB_SIZEOF_SYSTEM_THREAD) == 0)
+# define g_system_thread_assign(dest, src)				\
+   (memcpy (&dest, &src, GLIB_SIZEOF_SYSTEM_THREAD))
+#endif /* GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P */
 
 typedef struct _GRealThread GRealThread;
-
 struct  _GRealThread
 {
   GThread thread;
   GThreadFunc func;
   gpointer arg;
   gpointer private_data;
-  SystemThread system_thread;
+  GSystemThread system_thread;
 };
 
-#if (GLIB_SIZEOF_SYSTEM_THREAD <= 8 && defined(G_HAVE_GINT64))               \
-  || (GLIB_SIZEOF_SYSTEM_THREAD <= 4)
-/* We can use fast setting and checks */
-#  define set_system_thread_to_zero(t) (t->system_thread.long_dummy=0)
-#  define system_thread_is_not_zero(t) (t->system_thread.long_dummy)
-#else
-/* We have to do it the hard way and hope the compiler will optimize a bit */
-static inline void
-set_system_thread_to_zero(GRealThread* thread)
-{ 
-  int i; 
-  for (i = 0; i < GLIB_SIZEOF_SYSTEM_THREAD; i++)
-    thread->system_thread.data[i] = 0;
-}
-
-static inline gboolean
-system_thread_is_not_zero(GRealThread* thread)
-{
-  int i; 
-  for (i = 0; i < GLIB_SIZEOF_SYSTEM_THREAD; i++)
-    if (thread->system_thread.data[i]) return FALSE;
-  return TRUE;
-}
-#endif
-
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
-
 struct _GStaticPrivateNode
 {
   gpointer       data;
@@ -106,6 +73,7 @@ static void g_thread_fail (void);
 
 /* Global variables */
 
+static GSystemThread zero_thread; /* This is initialized to all zero */
 gboolean g_thread_use_default_impl = TRUE;
 gboolean g_threads_got_initialized = FALSE;
 
@@ -149,24 +117,19 @@ static GPrivate *g_thread_specific_private = NULL;
 void
 g_mutex_init (void)
 {
-  gpointer private_old;
+  GRealThread* main_thread;
  
   /* We let the main thread (the one that calls g_thread_init) inherit
    * the data, that it set before calling g_thread_init
    */
-  private_old = g_thread_specific_private;
+  main_thread = (GRealThread*) g_thread_self ();
 
   g_thread_specific_private = g_private_new (g_thread_cleanup);
-
-  /* we can not use g_private_set here, as g_threads_got_initialized is not
-   * yet set TRUE, whereas the private_set function is already set.
-   */
-  g_thread_functions_for_glib_use.private_set (g_thread_specific_private, 
-					       private_old);
+  G_THREAD_UF (private_set, (g_thread_specific_private, main_thread));
+  G_THREAD_UF (thread_self, (&main_thread->system_thread));
 
   g_mutex_protect_static_mutex_allocation = g_mutex_new();
   g_thread_specific_mutex = g_mutex_new();
-  
 }
 
 GMutex *
@@ -187,47 +150,87 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
   return *mutex;
 }
 
-#ifndef g_static_rec_mutex_lock
-/* That means, that g_static_rec_mutex_lock is not defined to be 
- * g_static_mutex_lock, we have to provide an implementation ourselves.
- */
 void
 g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 {
-  guint counter = GPOINTER_TO_UINT (g_static_private_get (&mutex->counter));
-  if (counter == 0)
+  GSystemThread self;
+
+  g_return_if_fail (mutex);
+
+  G_THREAD_UF (thread_self, (&self));
+
+  if (g_system_thread_equal (self, mutex->owner))
     {
-      g_static_mutex_lock (&mutex->mutex);
+      mutex->depth++;
+      return;
     }
-  counter++;
-  g_static_private_set (&mutex->counter, GUINT_TO_POINTER (counter), NULL);
+  g_static_mutex_lock (&mutex->mutex);
+  g_system_thread_assign (mutex->owner, self);
+  mutex->depth = 1;
 }
 
 gboolean
 g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
 {
-  guint counter = GPOINTER_TO_UINT (g_static_private_get (&mutex->counter));
-  if (counter == 0)
+  GSystemThread self;
+
+  g_return_val_if_fail (mutex, FALSE);
+
+  G_THREAD_UF (thread_self, (&self));
+
+  if (g_system_thread_equal (self, mutex->owner))
     {
-      if (!g_static_mutex_trylock (&mutex->mutex)) return FALSE;
+      mutex->depth++;
+      return TRUE;
     }
-  counter++;
-  g_static_private_set (&mutex->counter, GUINT_TO_POINTER (counter), NULL);
+
+  if (!g_static_mutex_trylock (&mutex->mutex))
+    return FALSE;
+
+  g_system_thread_assign (mutex->owner, self);
+  mutex->depth = 1;
   return TRUE;
 }
 
 void
 g_static_rec_mutex_unlock (GStaticRecMutex* mutex)
 {
-  guint counter = GPOINTER_TO_UINT (g_static_private_get (&mutex->counter));
-  if (counter == 1)
+  g_return_if_fail (mutex);
+
+  if (mutex->depth > 1)
     {
-      g_static_mutex_unlock (&mutex->mutex);
+      mutex->depth--;
+      return;
     }
-  counter--;
-  g_static_private_set (&mutex->counter, GUINT_TO_POINTER (counter), NULL);
+  g_system_thread_assign (mutex->owner, zero_thread);
+  g_static_mutex_unlock (&mutex->mutex);  
 }
-#endif /* g_static_rec_mutex_lock */
+
+void
+g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
+				guint            depth)
+{
+  g_return_if_fail (mutex);
+
+  g_static_mutex_lock (&mutex->mutex);
+  G_THREAD_UF (thread_self, (&mutex->owner));
+  mutex->depth = depth;
+}
+
+guint    
+g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
+{
+  gint depth = mutex->depth;
+
+  g_return_val_if_fail (mutex, 0);
+
+  g_system_thread_assign (mutex->owner, zero_thread);
+  mutex->depth = 0;
+  g_static_mutex_unlock (&mutex->mutex);
+
+  return depth;
+}
+
 
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
@@ -341,7 +344,7 @@ g_thread_cleanup (gpointer data)
       if (!thread->thread.joinable)
 	{
 	  /* Just to make sure, this isn't used any more */
-	  set_system_thread_to_zero(thread);
+	  g_system_thread_assign (thread->system_thread, zero_thread);
 	  g_free (thread);
 	}
     }
@@ -380,7 +383,7 @@ g_thread_create (GThreadFunc 		 thread_func,
 		 gboolean 		 bound,
 		 GThreadPriority 	 priority)
 {
-  GRealThread* result = g_new0 (GRealThread,1);
+  GRealThread* result = g_new (GRealThread, 1);
 
   g_return_val_if_fail (thread_func, NULL);
   
@@ -389,6 +392,7 @@ g_thread_create (GThreadFunc 		 thread_func,
   result->thread.priority = priority;
   result->func = thread_func;
   result->arg = arg;
+  result->private_data = NULL; 
   G_LOCK (g_thread_create);
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result, stack_size, 
 			       joinable, bound, priority,
@@ -405,13 +409,13 @@ g_thread_join (GThread* thread)
 
   g_return_if_fail (thread);
   g_return_if_fail (thread->joinable);
-  g_return_if_fail (system_thread_is_not_zero (real));
+  g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
 
   G_THREAD_UF (thread_join, (&real->system_thread));
 
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
-  set_system_thread_to_zero (real);
+  g_system_thread_assign (real->system_thread, zero_thread);
 
   /* the thread structure for non-joinable threads is freed upon
      thread end. We free the memory here. This will leave loose end,
@@ -427,7 +431,7 @@ g_thread_set_priority (GThread* thread,
   GRealThread* real = (GRealThread*) thread;
 
   g_return_if_fail (thread);
-  g_return_if_fail (system_thread_is_not_zero (real));
+  g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
 
   thread->priority = priority;
   G_THREAD_CF (thread_set_priority, (void)0, (&real->system_thread, priority));
@@ -442,24 +446,22 @@ g_thread_self()
     {  
       /* If no thread data is available, provide and set one.  This
          can happen for the main thread and for threads, that are not
-         created by glib. */
-      thread = g_new (GRealThread,1);
+         created by GLib. */
+      thread = g_new (GRealThread, 1);
       thread->thread.joinable = FALSE; /* This is a save guess */
       thread->thread.bound = TRUE; /* This isn't important at all */
       thread->thread.priority = G_THREAD_PRIORITY_NORMAL; /* This is
 							     just a guess */
       thread->func = NULL;
       thread->arg = NULL;
-      set_system_thread_to_zero (thread);
       thread->private_data = NULL;
+
+      if (g_thread_supported ())
+	G_THREAD_UF (thread_self, (&thread->system_thread));
+
       g_private_set (g_thread_specific_private, thread);
     }
-     
-  if (g_thread_supported () && !system_thread_is_not_zero(thread))
-    {
-      g_thread_functions_for_glib_use.thread_self(&thread->system_thread);
-    }
-
+  
   return (GThread*)thread;
 }
 

@@ -39,14 +39,14 @@
 #include <unistd.h>
 #endif
 
-#define solaris_print_error( name, num )                        \
-  g_error( "file %s: line %d (%s): error %s during %s",         \
-           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,          \
+#define solaris_print_error( name, num )				\
+  g_error( "file %s: line %d (%s): error %s during %s",			\
+           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,			\
            g_strerror((num)), #name )
 
-#define solaris_check_for_error( what ) G_STMT_START{           \
-  int error = (what);                                           \
-  if( error ) { solaris_print_error( what, error ); }           \
+#define solaris_check_for_error( what ) G_STMT_START{			\
+  int error = (what);							\
+  if( error ) { solaris_print_error( what, error ); }			\
   }G_STMT_END
 
 gulong g_thread_min_stack_size = 0;

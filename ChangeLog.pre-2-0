@@ -1,3 +1,39 @@
+2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Added the missing POSIX_NO_YIELD and
+	POSIX_NO_PRIORITIES warning messages.
+
+	* configure.in: Use AC_TRY_RUN instead of AC_TRY_LINK, to test for
+	real thread support. On solaris pthread_create can be linked to
+	even in -lc, but it doesn't work then.
+
+	* configure.in: Don't use priorities for threads, when the
+	minimal/maximal priorities couldn't be determined at configure
+	time.
+	
+	* configure.in, gthread.c: Always define GSystemThread in
+	glibconfig.h to represent a system thread.
+
+	* configure.in: Do not use native recursive threads, when
+	possibe. We use some features, that they do not expose (namely the
+	depth counter).
+
+	* glib.h, gthread.c: Redefined GStaticRecMutex. The functions are
+	now implemented in a different way, which should be way
+	faster. Alsothere are now functions g_static_rec_mutex_unlock_full
+	and g_static_rec_mutex_lock_full to leave/enter a recursive mutex
+	completly.
+
+	* gthread.c (g_thread_self): Do not test the system_thread to be
+	non-zero to speed things up.
+	
+	* gthread.c (g_mutex_init): Therefore set the system_thread of the
+	main thread here.
+
+	* tests/thread-test.c: Rerun all tests once again, but this time
+	we fool the system into thinking, that the available thread system
+	is not native, but userprovided.
+	
 2000-03-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gqueue.c (g_queue_push_tail_link, g_queue_push_head_link): We

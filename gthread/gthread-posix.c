@@ -41,21 +41,21 @@
 #include <unistd.h>
 #endif
 
-#define posix_print_error( name, num )                          \
-  g_error( "file %s: line %d (%s): error %s during %s",         \
-           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,          \
+#define posix_print_error( name, num )					\
+  g_error( "file %s: line %d (%s): error %s during %s",			\
+           __FILE__, __LINE__, G_GNUC_PRETTY_FUNCTION,			\
            g_strerror((num)), #name )
 
 #if defined(G_THREADS_IMPL_POSIX)
-# define posix_check_for_error( what ) G_STMT_START{             \
-    int error = (what);                                           \
-    if( error ) { posix_print_error( what, error ); }             \
+# define posix_check_for_error( what ) G_STMT_START{			\
+    int error = (what);							\
+    if( error ) { posix_print_error( what, error ); }			\
     }G_STMT_END
 # define mutexattr_default NULL
 # define condattr_default NULL
 #elif defined(G_THREADS_IMPL_DCE)
-# define posix_check_for_error( what ) G_STMT_START{             \
-    if( (what) == -1 ) { posix_print_error( what, errno ); }       \
+# define posix_check_for_error( what ) G_STMT_START{			\
+    if( (what) == -1 ) { posix_print_error( what, errno ); 		\
     }G_STMT_END
 # define pthread_key_create(a, b) pthread_keycreate (a, b)
 # define pthread_attr_init(a) pthread_attr_create (a)
@@ -67,14 +67,20 @@
 # error This should not happen. Contact the GLib team.
 #endif
 
+#if defined(POSIX_MIN_PRIORITY) && defined(POSIX_MAX_PRIORITY)
+#  define HAVE_PRIORITIES 1
+#endif
+
 gulong g_thread_min_stack_size = 0;
 
 #define HAVE_G_THREAD_IMPL_INIT
 static void 
 g_thread_impl_init()
 {
+#ifdef HAVE_PRIORITIES
   g_thread_min_priority = POSIX_MIN_PRIORITY;
   g_thread_max_priority = POSIX_MAX_PRIORITY;
+#endif /* HAVE_PRIORITIES */
 #ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
 #endif /* _SC_THREAD_STACK_MIN */
@@ -244,8 +250,9 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 
 #ifdef PTHREAD_SCOPE_SYSTEM
   if (bound)
-     posix_check_for_error (pthread_attr_setscope (&attr, 
-						   PTHREAD_SCOPE_SYSTEM));
+    /* No error check here, because some systems can't do it and we
+     * simply don't want threads to fail because of that. */
+    pthread_attr_setscope (&attr, PTHREAD_SCOPE_SYSTEM);
 #endif /* PTHREAD_SCOPE_SYSTEM */
 
 #ifdef G_THREADS_IMPL_POSIX
@@ -253,17 +260,19 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 #endif /* G_THREADS_IMPL_POSIX */
   
-#ifdef G_THREADS_IMPL_POSIX
+#ifdef HAVE_PRIORITIES
+# ifdef G_THREADS_IMPL_POSIX
   {
     struct sched_param sched;
     posix_check_for_error (pthread_attr_getschedparam (&attr, &sched));
     sched.sched_priority = g_thread_map_priority (priority);
     posix_check_for_error (pthread_attr_setschedparam (&attr, &sched));
   }
-#else /* G_THREADS_IMPL_DCE */
+# else /* G_THREADS_IMPL_DCE */
   posix_check_for_error 
     (pthread_attr_setprio (&attr, g_thread_map_priority (priority)));
-#endif /* G_THREADS_IMPL_DCE */
+# endif /* G_THREADS_IMPL_DCE */
+#endif /* HAVE_PRIORITIES */
 
   posix_check_for_error (pthread_create (thread, &attr, 
                                          (void* (*)(void*))thread_func,
@@ -300,7 +309,8 @@ g_thread_exit_posix_impl (void)
 static void
 g_thread_set_priority_posix_impl (gpointer thread, GThreadPriority priority)
 {
-#ifdef G_THREADS_IMPL_POSIX
+#ifdef HAVE_PRIORITIES
+# ifdef G_THREADS_IMPL_POSIX
   struct sched_param sched;
   int policy;
   posix_check_for_error (pthread_getschedparam (*(pthread_t*)thread, 
@@ -308,10 +318,11 @@ g_thread_set_priority_posix_impl (gpointer thread, GThreadPriority priority)
   sched.sched_priority = g_thread_map_priority (priority);
   posix_check_for_error (pthread_setschedparam (*(pthread_t*)thread, 
 						policy, &sched));
-#else /* G_THREADS_IMPL_DCE */
+# else /* G_THREADS_IMPL_DCE */
   posix_check_for_error (pthread_setprio (*(pthread_t*)thread, 
 					  g_thread_map_priority (priority)));
-#endif
+# endif
+#endif /* HAVE_PRIORITIES */
 }
 
 static void

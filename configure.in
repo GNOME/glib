@@ -648,7 +648,7 @@ dnl *************************
 THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
                 computer. GLib will not have a default thread implementation."
 
-FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
+FLAG_DOES_NOT_WORK="I can't find the MACRO to enable thread safety on your
                 platform (normaly it's "_REENTRANT"). I'll not use any flag on
                 compilation now, but then your programs might not work.
                 Please provide information on how it is done on your system."
@@ -668,6 +668,17 @@ FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 		because there is no 'localtime_r' on your system."
 
+POSIX_NO_YIELD="I can not find a yield functions for your platform. A rather
+		crude surrogate will be used. If you happen to know a 
+		yield function for your system, please inform the GLib 
+		developers."
+
+POSIX_NO_PRIORITIES="I can not find the minimal and maximal priorities for 
+		threads on your system. Thus threads can only have the default 
+		priority. If you happen to know these main/max
+		priorities, please inform the GLib developers."
+
+
 dnl determination of thread implementation
 dnl ***************************************
 
@@ -682,7 +693,7 @@ fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 				|| test "x$want_threads" = xdce; then
 	# -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
-	# -U_OSF_SOURCE if for Digital UNIX 4.0d
+	# -U_OSF_SOURCE is for Digital UNIX 4.0d
 	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
@@ -731,12 +742,22 @@ case $have_threads in
 				add_thread_lib="-l$thread_lib"
 				IN=" in -l$thread_lib"
 			fi
+			if test x"$have_threads" = xposix; then
+				defattr=NULL
+			else
+				defattr=pthread_attr_default
+			fi
 			
 			LIBS="$glib_save_LIBS $add_thread_lib"
 			
 			AC_MSG_CHECKING(for pthread_join$IN)
-			AC_TRY_LINK([#include <pthread.h>],
-				[pthread_t t; pthread_join(t,NULL)],
+			AC_TRY_RUN([#include <pthread.h> 
+				void* func(void* data) {}
+                                main()
+				{ pthread_t t; 
+				  exit(pthread_create (&t, $defattr, func, 
+						NULL));
+				}],
 				[AC_MSG_RESULT(yes)
 				G_THREAD_LIBS="$add_thread_lib"
 				break],
@@ -874,6 +895,8 @@ if test x"$enable_threads" = xyes; then
 	fi
 	LIBS="$LIBS $G_THREAD_LIBS"
 	if test x"$have_threads" = xposix; then
+		glib_save_CPPFLAGS="$CPPFLAGS"
+		CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
 		GLIB_SIZEOF([#include <pthread.h>],
 			pthread_t,
 			system_thread)
@@ -917,13 +940,13 @@ if test x"$enable_threads" = xyes; then
 		if test x"$posix_priority_min" = xnone; then
 			AC_MSG_RESULT(none found)
 			AC_MSG_WARN($POSIX_NO_PRIORITIES)
-	                posix_priority_min=1
-			posix_priority_max=1
+	                posix_priority_min=-1
+			posix_priority_max=-1
 		else
 			AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
+			AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min)
+			AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max)
 		fi
-		AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min)
-		AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max)
 		posix_yield_func=none
 		AC_MSG_CHECKING(for posix yield function)
 		for yield_func in pthread_yield_np pthread_yield sched_yield \
@@ -942,10 +965,11 @@ if test x"$enable_threads" = xyes; then
 			posix_yield_func="$posix_yield_func()"
 		fi
 		AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func)
-	else
-		# for now, the only other implementation is solaris 
-		# -> there 4 bytes are enough
-          	AC_DEFINE_UNQUOTED(GLIB_SIZEOF_SYSTEM_THREAD, 4)
+		CPPFLAGS="$glib_save_CPPFLAGS"
+	else # solaris threads
+		GLIB_SIZEOF([#include <thread.h>],
+			thread_t,
+			system_thread)
 	fi
 
 	LIBS="$glib_save_LIBS"
@@ -958,7 +982,11 @@ if test x"$enable_threads" = xyes; then
 	if test "$ac_cv_func_localtime_r" != "yes"; then
 		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
 	fi
-fi
+else 
+	# If no thread implementation exists, we will provide enough
+	# space for a pointer
+	GLIB_SIZEOF(, void*, system_thread)
+fi	
 
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
 AC_SUBST(G_THREAD_CFLAGS)
@@ -974,6 +1002,10 @@ dnl
 dnl if mutex_has_default = yes, we also got
 dnl mutex_default_type, mutex_default_init and mutex_header_file
 GLIB_IF_VAR_EQ(mutex_has_default, yes,
+	glib_save_CPPFLAGS="$CPPFLAGS"
+	glib_save_LIBS="$LIBS"
+	LIBS="$LIBS $G_THREAD_LIBS"
+	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
 	GLIB_SIZEOF([#include <$mutex_header_file>],
                     $mutex_default_type,
                     gmutex,
@@ -986,14 +1018,8 @@ GLIB_IF_VAR_EQ(mutex_has_default, yes,
 	if test x"$glib_cv_byte_contents_gmutex" = xno; then
 		mutex_has_default=no
 	fi
-	if test x"$have_threads" = xposix; then 
-		GLIB_BYTE_CONTENTS([#define __USE_GNU
-#include <$mutex_header_file>],
-				   $mutex_default_type,
-				   grecmutex,
-				   $glib_cv_sizeof_gmutex,
-				   PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP)
-	fi
+	CPPFLAGS="$glib_save_CPPFLAGS"
+	LIBS="$glib_save_LIBS"
 	,
 )
 
@@ -1184,32 +1210,21 @@ typedef struct _GMutex* GStaticMutex;
 #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
 _______EOF
 	fi
-	if test x$g_recmutex_contents != xno -a \
-	        x$g_recmutex_contents != x; then
-		# the definition of GStaticRecMutex is not done via 
-		# typedef GStaticMutex GStaticRecMutex to avoid silent
-		# compilation, when a GStaticRecMutex is used where a
-		# GStaticMutex should have been used and vice versa,
-		# because that might fail on other platforms.
-		cat >>$outfile <<_______EOF
-typedef struct _GStaticRecMutex GStaticRecMutex;
-struct _GStaticRecMutex
+
+	cat >>$outfile <<_______EOF
+/* This represents a system thread as used by the implementation. An
+ * alien implementaion, as loaded by g_thread_init can only count on
+ * "sizeof (gpointer)" bytes to store their info. We however need more
+ * for some of our native implementations. */
+typedef union _GSystemThread GSystemThread;
+union _GSystemThread
 {
-  struct _GMutex *runtime_mutex;
-  union {
-    char   pad[$g_mutex_sizeof];
-    double dummy_double;
-    void  *dummy_pointer;
-    long   dummy_long;
-  } aligned_pad_u;
+  char   data[$g_system_thread_sizeof];
+  double dummy_double;
+  void  *dummy_pointer;
+  long   dummy_long;
 };
-#define G_STATIC_REC_MUTEX_INIT { NULL, { { $g_recmutex_contents} } }
-#define  g_static_rec_mutex_lock(mutex) g_static_mutex_lock (mutex)
-#define  g_static_rec_mutex_trylock(mutex) g_static_mutex_trylock (mutex)
-#define  g_static_rec_mutex_unlock(mutex) g_static_mutex_unlock (mutex)
-#define  g_static_rec_mutex_get_mutex(mutex) (mutex)
 _______EOF
-	fi
 
 	echo >>$outfile
 	g_bit_sizes="16 32"
@@ -1456,8 +1471,8 @@ g_threads_impl_def=$g_threads_impl
 
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
+g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
-g_recmutex_contents="$glib_cv_byte_contents_grecmutex"
 
 case $host in
   *-*-beos*)

@@ -1,3 +1,13 @@
+2000-03-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-posix.c: Don't use priorities for threads, when the
+	minimal/maximal priorities couldn't be determined at configure
+	time.
+
+	* gthread-posix.c: Don't check for errors, when setting the scope
+	of a tread to system, as some posix implementations can't do that
+	and we don't want the thing to fail because of that.
+
 2000-02-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-posix.c, gthread-solaris.c: check for sysconf
