@@ -1,3 +1,27 @@
+2000-11-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Check for the sched.h header and include it on
+	gthread/gthread-posix.c if available.
+
+	* configure.in: Add -D_POSIX4_DRAFT_SOURCE to
+	GTHREAD_COMPILE_IMPL_DEFINES. Also add -D_POSIX4A_DRAFT10_SOURCE
+	to G_THREAD_CFLAGS. Really deploy GTHREAD_COMPILE_IMPL_DEFINES,
+	when searching for thread libs. Look for sched_* functions in
+	-lrte as well. All of that is necessary on DG/UX.
+
+	* configure.in: Use AC_TRY_COMPILE instead of AC_EGREP_HEADERS in
+	various places to make it work more reliable, to make it accept
+	macros instead of functions etc.
+
+	* configure.in: Replace some NULL's for checks with 0 to make it
+	work without stdio.h everywhere.
+
+	* configure.in, gutils.c: changed the test for getpwuid_r to first
+	test for a posix version and then for a non-posix version. No code
+	change in gutils.c. Again this change deals better with getpwuid_r
+	being a macro and not a function. Most of the above with kind help
+	from Tethys <tet@isengard.europe.dg.com>. This fixes Bug #13403.
+	
 2000-11-14  Tor Lillqvist  <tml@iki.fi>
 
 	* gwin32.h: Make #endif comment match #ifdef.

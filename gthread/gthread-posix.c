@@ -40,6 +40,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef HAVE_SCHED_H
+#include <sched.h>
+#endif
 
 #define posix_check_err(err, name) G_STMT_START{			\
   int error = (err); 							\

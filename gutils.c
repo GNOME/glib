@@ -715,7 +715,7 @@ g_get_any_init (void)
 	struct passwd *pw = NULL;
 	gpointer buffer = NULL;
 	
-#  ifdef HAVE_GETPWUID_R
+#  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
         struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX  
 	/* This reurns the maximum length */
@@ -731,10 +731,10 @@ g_get_any_init (void)
             buffer = g_malloc (bufsize);
 	    errno = 0;
 	    
-#    ifdef HAVE_GETPWUID_R_POSIX
+#    ifdef HAVE_POSIX_GETPWUID_R
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
             error = error < 0 ? errno : error;
-#    else /* !HAVE_GETPWUID_R_POSIX */
+#    else /* HAVE_NONPOSIX_GETPWUID_R */
 #      ifdef _AIX
 	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
 	    pw = error == 0 ? &pwd : NULL;
@@ -742,7 +742,7 @@ g_get_any_init (void)
             pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
             error = pw ? 0 : errno;
 #      endif /* !_AIX */            
-#    endif /* !HAVE_GETPWUID_R_POSIX */
+#    endif /* HAVE_NONPOSIX_GETPWUID_R */
 	    
 	    if (!pw)
 	      {
@@ -768,7 +768,7 @@ g_get_any_init (void)
 	      }
 	  }
 	while (!pw);
-#  endif /* !HAVE_GETPWUID_R */
+#  endif /* HAVE_POSIX_GETPWUID_R || HAVE_NONPOSIX_GETPWUID_R */
 	
 	if (!pw)
 	  {

@@ -312,7 +312,7 @@ AC_C_BIGENDIAN
 
 # check for header files
 AC_CHECK_HEADERS([float.h limits.h pwd.h sys/param.h sys/poll.h sys/select.h])
-AC_CHECK_HEADERS([sys/time.h sys/times.h unistd.h values.h stdint.h])
+AC_CHECK_HEADERS([sys/time.h sys/times.h unistd.h values.h stdint.h sched.h])
 
 AC_MSG_CHECKING(whether make is GNU Make)
 STRIP_BEGIN=
@@ -732,20 +732,20 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 				|| test "x$want_threads" = xdce; then
-	# -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
+	# -D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
 	# -U_OSF_SOURCE is for Digital UNIX 4.0d
-	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
+	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
         if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([(^|[^a-zA-Z_])pthread_attr_init[^a-zA-Z_]],
-			pthread.h,
+                AC_TRY_COMPILE([#include <pthread.h>],
+			[pthread_attr_t attr; pthread_attr_init(&attr);],
 			have_threads=posix)
         fi
         if test "x$have_threads" = xnone; then
-                AC_EGREP_HEADER([(^|[^a-zA-Z_])pthread_attr_create[^a-zA-Z_]],
-			pthread.h,
-			have_threads=dce)
+                AC_TRY_COMPILE([#include <pthread.h>],
+			[pthread_attr_t attr; pthread_attr_create(&attr);],
+			have_threads=posix)
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
@@ -791,6 +791,8 @@ if test x"$have_threads" != xnone; then
 			G_THREAD_CFLAGS="$G_THREAD_CFLAGS -pthread"
            	fi	
 		;;
+	*-dg-dgux*)  # DG/UX
+		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_POSIX4A_DRAFT10_SOURCE"
     esac
 
     # if we are not finding the ctime_r function, then we probably are
@@ -799,9 +801,11 @@ if test x"$have_threads" != xnone; then
     glib_save_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
 
-    # Note: Digital UNIX 4.0d #defines ctime_r to _Pctime_r for gcc.
-    AC_EGREP_HEADER([[^a-zA-Z_](_P)?ctime_r[^a-zA-Z_]], time.h, ,
-    	AC_MSG_WARN($FLAG_DOES_NOT_WORK))
+    AC_TRY_COMPILE([#include <time.h>],
+	[time_t t; char b[30]; ctime_r (&t, b);], ,
+    	    [AC_TRY_COMPILE([#include <time.h>],
+		[time_t t; char b[30]; ctime_r (&t, b, 30);], ,
+			AC_MSG_WARN($FLAG_DOES_NOT_WORK))])
 
     CPPFLAGS="$glib_save_CPPFLAGS"
 
@@ -816,7 +820,9 @@ dnl ******************************
 mutex_has_default=no
 case $have_threads in
         posix|dce)
-	   G_THREAD_LIBS=error
+	   glib_save_CPPFLAGS="$CPPFLAGS"
+	   CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
+           G_THREAD_LIBS=error
 	   glib_save_LIBS="$LIBS"
     	   case $host in
 	     *-sysv5uw7*) # UnixWare 7 
@@ -836,7 +842,7 @@ case $have_threads in
 				IN=" in -l$thread_lib"
 			fi
 			if test x"$have_threads" = xposix; then
-				defattr=NULL
+				defattr=0
 			else
 				defattr=pthread_attr_default
 			fi
@@ -850,7 +856,7 @@ case $have_threads in
                                 main()
 				{ pthread_t t; 
 				  void *ret;
-				  pthread_create (&t, $defattr, func, NULL);
+				  pthread_create (&t, $defattr, func, 0);
 				  pthread_join (t, &ret);
 				  exit (check_me != 42);
 				}],
@@ -862,7 +868,7 @@ case $have_threads in
 		if test "x$G_THREAD_LIBS" = xerror; then
         	  AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
 		fi
-		for thread_lib in "" rt; do
+		for thread_lib in "" rt rte; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
 				IN=""
@@ -901,6 +907,7 @@ case $have_threads in
 	     have_threads="posix"
 	   fi
 	   AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
+           CPPFLAGS="$glib_save_CPPFLAGS"
            ;;
         solaris)
 	   G_THREAD_LIBS=error
@@ -946,33 +953,37 @@ if test x"$have_threads" != xnone; then
 	# LIBS="$LIBS $G_THREAD_LIBS"
 	AC_CHECK_FUNCS(localtime_r)
 	if test "$ac_cv_header_pwd_h" = "yes"; then
-	 	AC_CACHE_CHECK([for getpwuid_r],ac_cv_func_getpwuid_r,
+	 	AC_CACHE_CHECK([for posix getpwuid_r],
+			ac_cv_func_posix_getpwuid_r,
 			[AC_TRY_RUN([#include <errno.h>
-				int main () { char buffer[10000], *pointer; 
-				char getpwuid_r (long, void*, void*,
-					int, void*);
-				int error;
-				errno = 0;
-				error = getpwuid_r (0, &buffer, &buffer, 
-					sizeof (buffer), &pointer);
-				return errno == ENOSYS || error == ENOSYS;}],
-				[ac_cv_func_getpwuid_r=yes],
-				[ac_cv_func_getpwuid_r=no])])
-		if test "$ac_cv_func_getpwuid_r" = yes; then
-			AC_DEFINE(HAVE_GETPWUID_R,1,[Have function getpwuid_r])
-		fi
-		if test "$ac_cv_func_getpwuid_r" = "yes"; then
-			AC_MSG_CHECKING(whether getpwuid_r is posix like)
-			# The signature for the POSIX version is:
-			# int getpwuid_r(uid_t, struct passwd *, char *, size_t, struct passwd **)
-			AC_TRY_COMPILE([#include <pwd.h>
-				#include <sys/types.h>
-				#include <stdlib.h>],
-				[getpwuid_r((uid_t)0, NULL, NULL, (size_t)0, NULL);],
-				[AC_DEFINE(HAVE_GETPWUID_R_POSIX,1,
-				 [Function getpwuid_r has the POSIX signature])
-				AC_MSG_RESULT(yes)],
-				[AC_MSG_RESULT(no)])
+                                #include <pwd.h>
+                                int main () { char buffer[10000];
+                                struct passwd pwd, *pwptr = &pwd;
+                                int error;
+                                errno = 0;
+                                error = getpwuid_r (0, &pwd, buffer, 
+                                        sizeof (buffer), &pwptr);
+                                return (error < 0 && errno == ENOSYS) 
+					|| error == ENOSYS; }],
+				[ac_cv_func_posix_getpwuid_r=yes],
+				[ac_cv_func_posix_getpwuid_r=no])])
+		if test "$ac_cv_func_posix_getpwuid_r" = yes; then
+			AC_DEFINE(HAVE_POSIX_GETPWUID_R,1,
+				[Have POSIX function getpwuid_r])
+		else
+	 		AC_CACHE_CHECK([for nonposix getpwuid_r],
+				ac_cv_func_nonposix_getpwuid_r,
+				[AC_TRY_COMPILE([#include <pwd.h>],
+                                	[char buffer[10000];
+                                	struct passwd pwd;
+                                	getpwuid_r (0, &pwd, buffer, 
+                                        		sizeof (buffer));],
+					[ac_cv_func_nonposix_getpwuid_r=yes],
+					[ac_cv_func_nonposix_getpwuid_r=no])])
+			if test "$ac_cv_func_nonposix_getpwuid_r" = yes; then
+				AC_DEFINE(HAVE_NONPOSIX_GETPWUID_R,1,
+					[Have non-POSIX function getpwuid_r])
+			fi
 		fi
 	fi
 	LIBS="$LIBS $G_THREAD_LIBS"
@@ -1042,7 +1053,8 @@ if test x"$have_threads" != xnone; then
 	LIBS="$glib_save_LIBS"
 
 	# now spit out all the warnings.
-	if test "$ac_cv_func_getpwuid_r" != "yes"; then
+	if test "$ac_cv_func_posix_getpwuid_r" != "yes" && 
+	   test "$ac_cv_func_nonposix_getpwuid_r" != "yes"; then
 		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
 	fi
 	if test "$ac_cv_func_localtime_r" != "yes"; then
