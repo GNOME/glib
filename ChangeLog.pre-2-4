@@ -1,3 +1,7 @@
+Mon Aug 10 17:56:11 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h: it's GTime now, and it's back!
+
 Mon Aug 10 02:17:19 1998  Tim Janik  <timj@gtk.org>
 
 	* Makefile.am: minor hack to cause SUBDIRS (gmodule) to be build

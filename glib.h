@@ -450,10 +450,7 @@ typedef unsigned long long guint64;
 typedef gint32	gssize;
 typedef guint32 gsize;
 typedef guint32 GQuark;
-
-#if 0
 typedef gint32	GTime;
-#endif
 
 typedef struct _GList		GList;
 typedef struct _GSList		GSList;
