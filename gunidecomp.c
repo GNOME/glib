@@ -35,7 +35,7 @@
    : (combining_class_table[Page][Char]))
 
 #define COMBINING_CLASS(Char) \
-     (((Char) > (UNICODE_LAST_CHAR)) ? 0 : CC((Char) >> 8, (Char) & 0xff))
+     (((Char) > (G_UNICODE_LAST_CHAR)) ? 0 : CC((Char) >> 8, (Char) & 0xff))
 
 /* Compute the canonical ordering of a string in-place.  */
 void

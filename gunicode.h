@@ -30,8 +30,11 @@ G_BEGIN_DECLS
 typedef guint32 gunichar;
 typedef guint16 gunichar2;
 
-/* These are the possible character classifications.  */
-typedef enum {
+/* These are the possible character classifications.
+ * See http://www.unicode.org/Public/UNIDATA/UnicodeData.html
+ */
+typedef enum
+{
   G_UNICODE_CONTROL,
   G_UNICODE_FORMAT,
   G_UNICODE_UNASSIGNED,
@@ -63,6 +66,42 @@ typedef enum {
   G_UNICODE_PARAGRAPH_SEPARATOR,
   G_UNICODE_SPACE_SEPARATOR
 } GUnicodeType;
+
+/* These are the possible line break classifications.
+ * See http://www.unicode.org/unicode/reports/tr14/
+ */
+typedef enum
+{
+  G_UNICODE_BREAK_MANDATORY,
+  G_UNICODE_BREAK_CARRIAGE_RETURN,
+  G_UNICODE_BREAK_LINE_FEED,
+  G_UNICODE_BREAK_COMBINING_MARK,
+  G_UNICODE_BREAK_SURROGATE,
+  G_UNICODE_BREAK_ZERO_WIDTH_SPACE,
+  G_UNICODE_BREAK_INSEPARABLE,
+  G_UNICODE_BREAK_NON_BREAKING_GLUE,
+  G_UNICODE_BREAK_CONTINGENT,
+  G_UNICODE_BREAK_SPACE,
+  G_UNICODE_BREAK_AFTER,
+  G_UNICODE_BREAK_BEFORE,
+  G_UNICODE_BREAK_BEFORE_AND_AFTER,
+  G_UNICODE_BREAK_HYPHEN,
+  G_UNICODE_BREAK_NON_STARTER,
+  G_UNICODE_BREAK_OPEN_PUNCTUATION,
+  G_UNICODE_BREAK_CLOSE_PUNCTUATION,
+  G_UNICODE_BREAK_QUOTATION,
+  G_UNICODE_BREAK_EXCLAMATION,
+  G_UNICODE_BREAK_IDEOGRAPHIC,
+  G_UNICODE_BREAK_NUMERIC,
+  G_UNICODE_BREAK_INFIX_SEPARATOR,
+  G_UNICODE_BREAK_SYMBOL,
+  G_UNICODE_BREAK_ALPHABETIC,
+  G_UNICODE_BREAK_PREFIX,
+  G_UNICODE_BREAK_POSTFIX,
+  G_UNICODE_BREAK_COMPLEX_CONTEXT,
+  G_UNICODE_BREAK_AMBIGUOUS,
+  G_UNICODE_BREAK_UNKNOWN
+} GUnicodeBreakType;
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
  * not null, sets *CHARSET to the name of the current locale's
@@ -102,6 +141,8 @@ gint g_unichar_xdigit_value (gunichar c) G_GNUC_CONST;
 /* Return the Unicode character type of a given character.  */
 GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 
+/* Return the line break property for a given character */
+GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 
 
 /* Compute canonical ordering of a string in-place.  This rearranges

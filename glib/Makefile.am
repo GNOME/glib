@@ -32,7 +32,8 @@ EXTRA_DIST = 			\
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
 	gmodule-2.0.pc.in	\
-	gthread-2.0.pc.in
+	gthread-2.0.pc.in	\
+	gen-unicode-tables.pl
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = \
@@ -83,6 +84,8 @@ libglib_1_3_la_SOURCES = 	\
 	gtree.c			\
 	guniprop.c		\
 	gutf8.c			\
+	gunibreak.h		\
+	gunibreak.c		\
 	gunichartables.h	\
 	gunidecomp.h		\
 	gunidecomp.c		\
