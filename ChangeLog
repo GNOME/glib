@@ -1,3 +1,10 @@
+2001-05-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Don't bail out, if no C++ compiler is
+	found. Define G_HAVE_ISO_VARARGS only if appropriate.
+
+	* gmessages.h: Thus we can revert the previous patch.
+
 2001-05-29  James Henstridge  <james@daa.com.au>
 
 	* gmessages.h: "#ifdef G_HAVE_ISO_VARARGS" will always succeed

@@ -136,7 +136,14 @@ fi
 
 dnl Checks for programs.
 AC_PROG_CC
-AC_PROG_CXX
+
+dnl Check for a working C++ compiler, but do not bail out, if none is found.
+AC_CHECK_PROGS(CXX, $CCC c++ g++ gcc CC cxx cc++ cl, gcc)
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_TRY_COMPILE(,[class a { int b; } c;], ,CXX=)
+AM_CONDITIONAL(HAVE_CXX, test "$CXX" != "")
+AC_LANG_RESTORE
 
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
@@ -387,7 +394,7 @@ call_a(2,3);
 AC_MSG_RESULT($g_have_iso_c_varargs)
 
 AC_MSG_CHECKING(for ISO C99 varargs macros in C++)
-if test $CXX = gcc ; then
+if test "$CXX" = ""; then
 dnl No C++ compiler
   g_have_iso_cxx_varargs=no
 else
@@ -1674,7 +1681,9 @@ _______EOF
 	fi
 	cat >>$outfile <<_______EOF
 
-#define G_HAVE_ISO_VARARGS (defined(__cplusplus) ? defined(G_HAVE_ISO_CXX_VARARGS) : defined(G_HAVE_ISO_C_VARARGS))
+#if (defined(__cplusplus) ? defined(G_HAVE_ISO_CXX_VARARGS) : defined(G_HAVE_ISO_C_VARARGS))
+# define G_HAVE_ISO_VARARGS 1
+#endif
 _______EOF
 
 	if test x$g_have_gnuc_varargs = xyes ; then

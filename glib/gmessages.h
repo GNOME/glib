@@ -97,7 +97,7 @@ GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */
-#if G_HAVE_ISO_VARARGS
+#ifdef G_HAVE_ISO_VARARGS
 #define g_error(...)    g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_ERROR,    \
                                __VA_ARGS__)
