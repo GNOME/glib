@@ -1,3 +1,18 @@
+2000-08-17  Darin Adler  <darin@eazel.com>
+
+	* glib.h:
+	* garray.c: (g_array_free), (g_ptr_array_free),
+	(g_byte_array_free): Return the data left behind.
+	* gstring.c: (g_string_free): Return the data left behind.
+
+	Changed the free calls that leave data behind so they
+	return a pointer to the left-behind data, NULL if told not
+	to leave anything behind. This makes these calls easier
+	to use correctly, without any incompatible API change for
+	callers that don't know about the return value. Of course,
+	it would be even clearer if the free calls weren't dual-purpose
+	in the first place.
+
 2000-08-12  Tor Lillqvist  <tml@iki.fi>
 
 	* giowin32.c: Some indentation and spacing fixes. Add some more

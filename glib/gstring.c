@@ -251,18 +251,27 @@ g_string_new (const gchar *init)
   return string;
 }
 
-void
+gchar*
 g_string_free (GString *string,
 	       gboolean free_segment)
 {
+  gchar *segment;
+
   g_return_if_fail (string != NULL);
 
   if (free_segment)
-    g_free (string->str);
+    {
+      g_free (string->str);
+      segment = NULL;
+    }
+  else
+    segment = string->str;
 
   G_LOCK (string_mem_chunk);
   g_mem_chunk_free (string_mem_chunk, string);
   G_UNLOCK (string_mem_chunk);
+
+  return segment;
 }
 
 gboolean

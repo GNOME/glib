@@ -102,16 +102,27 @@ GArray* g_array_sized_new (gboolean zero_terminated,
   return (GArray*) array;
 }
 
-void
+gchar*
 g_array_free (GArray  *array,
 	      gboolean free_segment)
 {
+  gchar* segment;
+
+  g_return_val_if_fail (array, NULL);
+
   if (free_segment)
-    g_free (array->data);
+    {
+      g_free (array->data);
+      segment = NULL;
+    }
+  else
+    segment = array->data;
 
   G_LOCK (array_mem_chunk);
   g_mem_chunk_free (array_mem_chunk, array);
   G_UNLOCK (array_mem_chunk);
+
+  return segment;
 }
 
 GArray*
@@ -335,18 +346,27 @@ g_ptr_array_sized_new (guint reserved_size)
   return (GPtrArray*) array;  
 }
 
-void
+gpointer*
 g_ptr_array_free (GPtrArray   *array,
 		  gboolean  free_segment)
 {
-  g_return_if_fail (array);
+  gpointer* segment;
+
+  g_return_val_if_fail (array, NULL);
 
   if (free_segment)
-    g_free (array->pdata);
+    {
+      g_free (array->pdata);
+      segment = NULL;
+    }
+  else
+    segment = array->pdata;
 
   G_LOCK (ptr_array_mem_chunk);
   g_mem_chunk_free (ptr_array_mem_chunk, array);
   G_UNLOCK (ptr_array_mem_chunk);
+
+  return segment;
 }
 
 static void
@@ -520,10 +540,10 @@ GByteArray* g_byte_array_sized_new (guint reserved_size)
   return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, reserved_size);
 }
 
-void	    g_byte_array_free     (GByteArray *array,
+guint8*	    g_byte_array_free     (GByteArray *array,
 			           gboolean    free_segment)
 {
-  g_array_free ((GArray*) array, free_segment);
+  return (guint8*) g_array_free ((GArray*) array, free_segment);
 }
 
 GByteArray* g_byte_array_append   (GByteArray *array,
