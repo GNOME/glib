@@ -1,3 +1,8 @@
+Sun Dec 21 01:01:34 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/misc_utils.sgml: Document the encoding of 
+	g_get_real_name().
+
 Fri Dec 19 21:40:00 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/signals.sgml: Rewording.

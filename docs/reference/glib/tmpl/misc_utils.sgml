@@ -91,7 +91,8 @@ Gets the user name of the current user.
 <!-- ##### FUNCTION g_get_real_name ##### -->
 <para>
 Gets the real name of the user. This usually comes from the user's entry in the
-<filename>passwd</filename> file.
+<filename>passwd</filename> file. The encoding of the returned string is system
+defined.
 </para>
 
 @Returns: the user's real name.
