@@ -1,3 +1,15 @@
+Tue Apr  3 12:38:16 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-config-2.0.in: Exit with an error message that you
+	should use pkg-config instead.
+
+	* configure.in (PACKAGE): Require pkg-config.
+
+	* tests/Makefile.am (EXTRA_DIST): Add utf8.txt.
+
+	* configure.in (GLIB_MICRO_VERSION): Up MICRO to 3,
+	leave interface/binary at 0.
+
 Tue Apr  3 13:46:22 2001  Tim Janik  <timj@gtk.org>
 
 	* glist.[hc]: added g_list_nth_prev() which walks ->prev instead

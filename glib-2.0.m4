@@ -1,5 +1,5 @@
 # Configure paths for GLIB
-# Owen Taylor     97-11-3
+# Owen Taylor     1997-2001
 
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
 dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" or 
@@ -9,55 +9,50 @@ AC_DEFUN(AM_PATH_GLIB_2_0,
 [dnl 
 dnl Get the cflags and libraries from the glib-config-2.0 script
 dnl
-AC_ARG_WITH(glib-prefix,[  --with-glib-prefix=PFX   Prefix where GLIB is installed (optional)],
-            glib_config_prefix="$withval", glib_config_prefix="")
-AC_ARG_WITH(glib-exec-prefix,[  --with-glib-exec-prefix=PFX Exec prefix where GLIB is installed (optional)],
-            glib_config_exec_prefix="$withval", glib_config_exec_prefix="")
 AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and run a test GLIB program],
 		    , enable_glibtest=yes)
 
-  if test x$glib_config_exec_prefix != x ; then
-     glib_config_args="$glib_config_args --exec-prefix=$glib_config_exec_prefix"
-     if test x${GLIB_CONFIG_2_0+set} != xset ; then
-        GLIB_CONFIG_2_0=$glib_config_exec_prefix/bin/glib-config-2.0
-     fi
-  fi
-  if test x$glib_config_prefix != x ; then
-     glib_config_args="$glib_config_args --prefix=$glib_config_prefix"
-     if test x${GLIB_CONFIG_2_0+set} != xset ; then
-        GLIB_CONFIG_2_0=$glib_config_prefix/bin/glib-config-2.0
-     fi
-  fi
-
+  pkg_config_args=glib-2.0
   for module in . $4
   do
       case "$module" in
          gmodule) 
-             glib_config_args="$glib_config_args gmodule"
+             pkg_config_args="$pkg_config_args gmodule-2.0"
          ;;
          gobject) 
-             glib_config_args="$glib_config_args gobject"
+             pkg_config_args="$pkg_config_args gobject-2.0"
          ;;
          gthread) 
-             glib_config_args="$glib_config_args gthread"
+             pkg_config_args="$pkg_config_args gthread-2.0"
          ;;
       esac
   done
 
-  AC_PATH_PROG(GLIB_CONFIG_2_0, glib-config-2.0, no)
-  min_glib_version=ifelse([$1], ,1.3.1,$1)
+  min_glib_version=ifelse([$1], ,1.3.3,$1)
   AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
+
   no_glib=""
-  if test "$GLIB_CONFIG_2_0" = "no" ; then
-    no_glib=yes
-  else
-    GLIB_CFLAGS=`$GLIB_CONFIG_2_0 $glib_config_args --cflags`
-    GLIB_LIBS=`$GLIB_CONFIG_2_0 $glib_config_args --libs`
-    glib_config_major_version=`$GLIB_CONFIG_2_0 $glib_config_args --version | \
+
+  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+
+  if test x$PKG_CONFIG != xno ; then
+    if pkg-config --atleast-pkgconfig-version 0.5 ; then
+      :
+    else
+      echo *** pkg-config too old; version 0.5 or better required.
+      no_glib=yes
+      PKG_CONFIG=no
+    fi
+  fi
+
+  if test x"$no_glib" = x ; then
+    GLIB_CFLAGS=`$PKG_CONFIG $pkg_config_args --cflags`
+    GLIB_LIBS=`$PKG_CONFIG $pkg_config_args --libs`
+    glib_config_major_version=`$PKG_CONFIG glib-2.0 --modversion | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    glib_config_minor_version=`$GLIB_CONFIG_2_0 $glib_config_args --version | \
+    glib_config_minor_version=`$PKG_CONFIG glib-2.0 --modversion | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    glib_config_micro_version=`$GLIB_CONFIG_2_0 $glib_config_args --version | \
+    glib_config_micro_version=`$PKG_CONFIG glib-2.0 --modversion | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
     if test "x$enable_glibtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
@@ -93,17 +88,16 @@ main ()
       (glib_minor_version != $glib_config_minor_version) ||
       (glib_micro_version != $glib_config_micro_version))
     {
-      printf("\n*** 'glib-config-2.0 --version' returned %d.%d.%d, but GLIB (%d.%d.%d)\n", 
+      printf("\n*** 'pkg-config --modversion glib-2.0' returned %d.%d.%d, but GLIB (%d.%d.%d)\n", 
              $glib_config_major_version, $glib_config_minor_version, $glib_config_micro_version,
              glib_major_version, glib_minor_version, glib_micro_version);
-      printf ("*** was found! If glib-config-2.0 was correct, then it is best\n");
-      printf ("*** to remove the old version of GLIB. You may also be able to fix the error\n");
+      printf ("*** was found! If pkg-config was correct, then it is best\n");
+      printf ("*** to remove the old version of GLib. You may also be able to fix the error\n");
       printf("*** by modifying your LD_LIBRARY_PATH enviroment variable, or by editing\n");
       printf("*** /etc/ld.so.conf. Make sure you have run ldconfig if that is\n");
       printf("*** required on your system.\n");
-      printf("*** If glib-config-2.0 was wrong, set the environment variable GLIB_CONFIG_2_0\n");
-      printf("*** to point to the correct copy of glib-config-2.0, and remove the file config.cache\n");
-      printf("*** before re-running configure\n");
+      printf("*** If pkg-config was wrong, set the environment variable PKG_CONFIG_PATH\n");
+      printf("*** to point to the correct configuration files\n");
     } 
   else if ((glib_major_version != GLIB_MAJOR_VERSION) ||
 	   (glib_minor_version != GLIB_MINOR_VERSION) ||
@@ -131,10 +125,10 @@ main ()
         printf("*** GLIB is always available from ftp://ftp.gtk.org.\n");
         printf("***\n");
         printf("*** If you have already installed a sufficiently new version, this error\n");
-        printf("*** probably means that the wrong copy of the glib-config-2.0 shell script is\n");
+        printf("*** probably means that the wrong copy of the pkg-config shell script is\n");
         printf("*** being found. The easiest way to fix this is to remove the old version\n");
-        printf("*** of GLIB, but you can also set the GLIB_CONFIG_2_0 environment to point to the\n");
-        printf("*** correct copy of glib-config-2.0. (In this case, you will have to\n");
+        printf("*** of GLIB, but you can also set the PKG_CONFIG environment to point to the\n");
+        printf("*** correct copy of pkg-config. (In this case, you will have to\n");
         printf("*** modify your LD_LIBRARY_PATH enviroment variable, or edit /etc/ld.so.conf\n");
         printf("*** so that the correct libraries are found at run-time))\n");
       }
@@ -151,11 +145,9 @@ main ()
      ifelse([$2], , :, [$2])     
   else
      AC_MSG_RESULT(no)
-     if test "$GLIB_CONFIG_2_0" = "no" ; then
-       echo "*** The glib-config-2.0 script installed by GLIB could not be found"
-       echo "*** If GLIB was installed in PREFIX, make sure PREFIX/bin is in"
-       echo "*** your path, or set the GLIB_CONFIG_2_0 environment variable to the"
-       echo "*** full path to glib-config-2.0."
+     if test "$PKG_CONFIG" = "no" ; then
+       echo "*** A new enough version of pkg-config was not found."
+       echo "*** See http://pkgconfig.sourceforge.net"
      else
        if test -f conf.glibtest ; then
         :
@@ -184,7 +176,7 @@ main ()
         [ echo "*** The test program failed to compile or link. See the file config.log for the"
           echo "*** exact error that occured. This usually means GLIB was incorrectly installed"
           echo "*** or that you have moved GLIB since it was installed. In the latter case, you"
-          echo "*** may want to edit the glib-config-2.0 script: $GLIB_CONFIG_2_0" ])
+          echo "*** may want to edit the pkg-config script: $PKG_CONFIG" ])
           CFLAGS="$ac_save_CFLAGS"
           LIBS="$ac_save_LIBS"
        fi

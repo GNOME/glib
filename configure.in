@@ -31,7 +31,7 @@ GLIB_AC_DIVERT_BEFORE_HELP([
 #
 GLIB_MAJOR_VERSION=1
 GLIB_MINOR_VERSION=3
-GLIB_MICRO_VERSION=2
+GLIB_MICRO_VERSION=3
 GLIB_INTERFACE_AGE=0
 GLIB_BINARY_AGE=0
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
@@ -145,6 +145,18 @@ AC_PROG_CC
 
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
+
+#
+# Find pkg-config
+#
+AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+if test x$PKG_CONFIG = xno ; then
+  AC_MSG_ERROR([*** pkg-config not found. See http://pkgconfig.sourceforge.net])
+fi
+
+if ! pkg-config --atleast-pkgconfig-version 0.5 ; then
+  AC_MSG_ERROR([*** pkg-config too old; version 0.5 or better required.])
+fi
 
 if test "x$enable_debug" = "xyes"; then
   if test x$cflags_set != xset ; then

@@ -16,7 +16,8 @@ endif
 EXTRA_DIST = \
 	$(test_scripts)		\
 	makefile.msc.in		\
-	makefile.mingw.in
+	makefile.mingw.in	\
+	utf8.txt
 
 BUILT_EXTRA_DIST = \
 	makefile.mingw	\
