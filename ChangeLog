@@ -1,3 +1,9 @@
+Sat Jul 15 09:11:46 2000  Tim Janik  <timj@gtk.org>
+
+	* gstrfuncs.c (g_strncasecmp): fixed an off by 0 error (yeah,
+	the function went off when the while (n--) loop failed due to
+	n==0 ;), reported by Jean-Louis HAMEL <jlhamel@club-internet.fr>.
+
 2000-07-15  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (SUBDIRS): Include the "build" module in GLib, too,

@@ -908,8 +908,9 @@ g_strncasecmp (const gchar *s1,
   g_return_val_if_fail (s1 != NULL, 0);
   g_return_val_if_fail (s2 != NULL, 0);
 
-  while (n-- && *s1 && *s2)
+  while (n && *s1 && *s2)
     {
+      n -= 1;
       /* According to A. Cox, some platforms have islower's that
        * don't work right on non-uppercase
        */
@@ -921,7 +922,7 @@ g_strncasecmp (const gchar *s1,
     }
 
   if (n)
-    return (((gint)(guchar) *s1) - ((gint)(guchar) *s2));
+    return (((gint) (guchar) *s1) - ((gint) (guchar) *s2));
   else
     return 0;
 #endif
