@@ -41,7 +41,7 @@ if (failed) \
   { if (!m) \
       g_print ("(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
     else \
-      g_print ("(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
+      g_print ("(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), m ? (gchar*)m : ""); \
     fflush (stdout); \
     any_failed = TRUE; \
   } \
@@ -343,25 +343,50 @@ main (int   argc,
   TEST (NULL, str_check (g_build_path (":", ":", NULL), ":"));
   TEST (NULL, str_check (g_build_path (":", ":x", NULL), ":x"));
   TEST (NULL, str_check (g_build_path (":", "x:", NULL), "x:"));
+  TEST (NULL, str_check (g_build_path (":", "", "x", NULL), "x"));
+  TEST (NULL, str_check (g_build_path (":", "", ":x", NULL), ":x"));
+  TEST (NULL, str_check (g_build_path (":", ":", "x", NULL), ":x"));
+  TEST (NULL, str_check (g_build_path (":", "::", "x", NULL), "::x"));
+  TEST (NULL, str_check (g_build_path (":", "x", "", NULL), "x"));
+  TEST (NULL, str_check (g_build_path (":", "x:", "", NULL), "x:"));
+  TEST (NULL, str_check (g_build_path (":", "x", ":", NULL), "x:"));
+  TEST (NULL, str_check (g_build_path (":", "x", "::", NULL), "x::"));
   TEST (NULL, str_check (g_build_path (":", "x", "y",  NULL), "x:y"));
   TEST (NULL, str_check (g_build_path (":", ":x", "y", NULL), ":x:y"));
   TEST (NULL, str_check (g_build_path (":", "x", "y:", NULL), "x:y:"));
   TEST (NULL, str_check (g_build_path (":", ":x:", ":y:", NULL), ":x:y:"));
   TEST (NULL, str_check (g_build_path (":", ":x::", "::y:", NULL), ":x:y:"));
+  TEST (NULL, str_check (g_build_path (":", "x", "","y",  NULL), "x:y"));
+  TEST (NULL, str_check (g_build_path (":", "x", ":", "y",  NULL), "x:y"));
+  TEST (NULL, str_check (g_build_path (":", "x", "::", "y",  NULL), "x:y"));
   TEST (NULL, str_check (g_build_path (":", "x", "y", "z", NULL), "x:y:z"));
   TEST (NULL, str_check (g_build_path (":", ":x:", ":y:", ":z:", NULL), ":x:y:z:"));
   TEST (NULL, str_check (g_build_path (":", "::x::", "::y::", "::z::", NULL), "::x:y:z::"));
 
   TEST (NULL, str_check (g_build_path ("::", NULL), ""));
   TEST (NULL, str_check (g_build_path ("::", "::", NULL), "::"));
+  TEST (NULL, str_check (g_build_path ("::", ":::", NULL), ":::"));
   TEST (NULL, str_check (g_build_path ("::", "::x", NULL), "::x"));
   TEST (NULL, str_check (g_build_path ("::", "x::", NULL), "x::"));
+  TEST (NULL, str_check (g_build_path ("::", "", "x", NULL), "x"));
+  TEST (NULL, str_check (g_build_path ("::", "", "::x", NULL), "::x"));
+  TEST (NULL, str_check (g_build_path ("::", "::", "x", NULL), "::x"));
+  TEST (NULL, str_check (g_build_path ("::", "::::", "x", NULL), "::::x"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "", NULL), "x"));
+  TEST (NULL, str_check (g_build_path ("::", "x::", "", NULL), "x::"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "::", NULL), "x::"));
+  /* This following is weird, but keeps the definition simple */
+  TEST (NULL, str_check (g_build_path ("::", "x", ":::", NULL), "x:::::"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "::::", NULL), "x::::"));
   TEST (NULL, str_check (g_build_path ("::", "x", "y",  NULL), "x::y"));
   TEST (NULL, str_check (g_build_path ("::", "::x", "y", NULL), "::x::y"));
   TEST (NULL, str_check (g_build_path ("::", "x", "y::", NULL), "x::y::"));
   TEST (NULL, str_check (g_build_path ("::", "::x::", "::y::", NULL), "::x::y::"));
   TEST (NULL, str_check (g_build_path ("::", "::x:::", ":::y::", NULL), "::x::::y::"));
   TEST (NULL, str_check (g_build_path ("::", "::x::::", "::::y::", NULL), "::x::y::"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "", "y",  NULL), "x::y"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "::", "y",  NULL), "x::y"));
+  TEST (NULL, str_check (g_build_path ("::", "x", "::::", "y",  NULL), "x::y"));
   TEST (NULL, str_check (g_build_path ("::", "x", "y", "z", NULL), "x::y::z"));
   TEST (NULL, str_check (g_build_path ("::", "::x::", "::y::", "::z::", NULL), "::x::y::z::"));
   TEST (NULL, str_check (g_build_path ("::", ":::x:::", ":::y:::", ":::z:::", NULL), ":::x::::y::::z:::"));
@@ -373,11 +398,22 @@ main (int   argc,
   TEST (NULL, str_check (g_build_filename (S, NULL), S));
   TEST (NULL, str_check (g_build_filename (S"x", NULL), S"x"));
   TEST (NULL, str_check (g_build_filename ("x"S, NULL), "x"S));
+  TEST (NULL, str_check (g_build_filename ("", "x", NULL), "x"));
+  TEST (NULL, str_check (g_build_filename ("", S"x", NULL), S"x"));
+  TEST (NULL, str_check (g_build_filename (S, "x", NULL), S"x"));
+  TEST (NULL, str_check (g_build_filename (S S, "x", NULL), S S"x"));
+  TEST (NULL, str_check (g_build_filename ("x", "", NULL), "x"));
+  TEST (NULL, str_check (g_build_filename ("x"S, "", NULL), "x"S));
+  TEST (NULL, str_check (g_build_filename ("x", S, NULL), "x"S));
+  TEST (NULL, str_check (g_build_filename ("x", S S, NULL), "x"S S));
   TEST (NULL, str_check (g_build_filename ("x", "y",  NULL), "x"S"y"));
   TEST (NULL, str_check (g_build_filename (S"x", "y", NULL), S"x"S"y"));
   TEST (NULL, str_check (g_build_filename ("x", "y"S, NULL), "x"S"y"S));
   TEST (NULL, str_check (g_build_filename (S"x"S, S"y"S, NULL), S"x"S"y"S));
   TEST (NULL, str_check (g_build_filename (S"x"S S, S S"y"S, NULL), S"x"S"y"S));
+  TEST (NULL, str_check (g_build_filename ("x", "", "y",  NULL), "x"S"y"));
+  TEST (NULL, str_check (g_build_filename ("x", S, "y",  NULL), "x"S"y"));
+  TEST (NULL, str_check (g_build_filename ("x", S S, "y",  NULL), "x"S"y"));
   TEST (NULL, str_check (g_build_filename ("x", "y", "z", NULL), "x"S"y"S"z"));
   TEST (NULL, str_check (g_build_filename (S"x"S, S"y"S, S"z"S, NULL), S"x"S"y"S"z"S));
   TEST (NULL, str_check (g_build_filename (S S"x"S S, S S"y"S S, S S"z"S S, NULL), S S"x"S"y"S"z"S S));
