@@ -35,6 +35,9 @@ libglib_la_SOURCES = \
 		ghash.c		\
 		ghook.c		\
 		glist.c		\
+		gmain.c         \
+		giochannel.c    \
+		giounix.c       \
 		gmem.c		\
 		gmessages.c	\
 		gnode.c		\

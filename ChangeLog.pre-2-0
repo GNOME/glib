@@ -1,3 +1,14 @@
+Sat Nov 28 12:53:47 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am configure.in acconfig.h giochannel.c
+	  glib.h glist.c gmain.c gutils.c:
+
+        - Revised GIOChannel to provide a generic virtual-function
+	based interface.
+	- Added unix fd-based GIOChannel's
+	- Added generic main-loop abstraction
+	- Added timeouts and idle functions using main-loop abstraction.
+
 Sat Nov 28 01:23:25 1998  Tim Janik  <timj@gtk.org>
 
 	* ghash.c: implemented incremental freezing facility.

@@ -537,6 +537,8 @@ g_int_hash (gconstpointer v)
   return *(const gint*) v;
 }
 
+#if 0 /* Old IO Channels */
+
 GIOChannel*
 g_iochannel_new (gint fd)
 {
@@ -596,6 +598,7 @@ g_iochannel_wakeup_peer (GIOChannel *channel)
 #endif /* NATIVE_WIN32 */
 }
 
+#endif /* Old IO Channels */
 
 #ifdef NATIVE_WIN32
 #ifdef _MSC_VER

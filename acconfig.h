@@ -43,8 +43,10 @@
 #undef HAVE_FLOAT_H
 #undef HAVE_LIMITS_H
 #undef HAVE_LONG_DOUBLE
+#undef HAVE_POLL
 #undef HAVE_PWD_H
 #undef HAVE_SYS_PARAM_H
+#undef HAVE_SYS_POLL_H
 #undef HAVE_SYS_SELECT_H
 #undef HAVE_SYS_TIME_H
 #undef HAVE_SYS_TIMES_H
