@@ -1,3 +1,8 @@
+1999-11-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h (G_TRYLOCK): This of course should return TRUE in a
+	program with a thread-disabled GLib.
+
 1999-11-18  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: g_strjoin was missing.

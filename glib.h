@@ -3124,7 +3124,7 @@ extern void glib_dummy_decl (void);
 #  define G_LOCK_EXTERN(name)		extern void glib_dummy_decl (void)
 #  define G_LOCK(name)
 #  define G_UNLOCK(name)
-#  define G_TRYLOCK(name)		(FALSE)
+#  define G_TRYLOCK(name)		(TRUE)
 #endif	/* !G_THREADS_ENABLED */
 
 #ifdef __cplusplus
