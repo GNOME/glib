@@ -1,3 +1,14 @@
+Sun Aug  6 20:06:02 2000  Tim Janik  <timj@gtk.org>
+
+        * gmessages.c (g_log_domain_check_free): keep *last updated while
+        running through the domain list, so we don't screw up the removal,
+        patch provided by Gady Kozma <gadykozma@hotmail.com>.
+
+Sun Aug  6 20:03:41 2000  Tim Janik  <timj@gtk.org>
+
+        * gmessages.c (g_log_remove_handler): keep *last updated while running
+        through the handler list, so we don't screw up the removal.
+
 Sun Jul 30 16:54:13 2000  Owen Taylor  <otaylor@redhat.com>
 
         * gunicode.h: Fix stray character

@@ -190,7 +190,8 @@ g_log_domain_check_free (GLogDomain *domain)
 	      g_free (domain);
 	      break;
 	    }
-	  work = work->next;
+	  last = work;
+	  work = last->next;
 	}  
       g_mutex_unlock (g_messages_lock);
     }
@@ -328,7 +329,8 @@ g_log_remove_handler (const gchar *log_domain,
 	      g_log_domain_check_free (domain);
 	      return;
 	    }
-	  work = work->next;
+	  last = work;
+	  work = last->next;
 	}
     }
   g_warning ("g_log_remove_handler(): could not find handler with id `%d' for domain \"%s\"",
