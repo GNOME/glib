@@ -1,3 +1,13 @@
+2004-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gwin32.c (g_win32_get_windows_version): Make this
+	function thread-safe in the GLib style.
+	* glib/gthreadinit.h: 
+	* glib/gwin32.c (_g_win32_thread_init): New function to
+	initialize the version.
+	* glib/gthread.c (g_thread_init_glib): Call 
+	_g_win32_thread_init() from here.
+
 2004-10-26  Ray Strode  <rstrode@redhat.com>
 
 	* glib/gkeyfile.c: Add Matthias to "Written by" lines

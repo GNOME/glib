@@ -152,6 +152,7 @@ g_thread_init_glib (void)
   _g_mem_thread_init ();
   _g_messages_thread_init ();
   _g_atomic_thread_init ();
+  _g_win32_thread_init ();
  
   g_threads_got_initialized = TRUE;
 
