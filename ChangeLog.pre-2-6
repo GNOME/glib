@@ -1,3 +1,8 @@
+2004-11-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_any_init): Work around an bug
+	in Mac OS < 10.3.  (#156446, Dave MacLachlan)
+
 2004-10-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gnulib/g-gnulib.h: Undef libc functions before defining
