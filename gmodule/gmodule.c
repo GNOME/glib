@@ -263,6 +263,7 @@ parse_libtool_archive (const gchar* libtool_name)
       gchar *dir = g_path_get_dirname (libtool_name);
       g_free (lt_libdir);
       lt_libdir = g_strconcat (dir, G_DIR_SEPARATOR_S ".libs", NULL);
+      g_free (dir);
     }
 
   name = g_strconcat (lt_libdir, G_DIR_SEPARATOR_S, lt_dlname, NULL);
