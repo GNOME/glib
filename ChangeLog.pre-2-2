@@ -7,7 +7,7 @@ Fri Jul 10 06:33:43 1998  Tim Janik  <timj@gtk.org>
 
 	* gutils.c: removed all g_str* functions.
 	* gstrfuncs.c: moved the bunch g_str* functions from gutils.c in this
-	place. this file shall never include <stdlib.h> to avoid clashes for
+	place. this file shall never include <unistd.h> to avoid clashes for
 	some of the g_str* functions on some OSes.
 
 Fri Jul 10 00:29:03 EEST 1998 Lauri Alanko <nether@gimp.org>

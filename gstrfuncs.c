@@ -23,7 +23,7 @@
 #include <locale.h>
 #include <ctype.h>		/* For tolower() */
 #include "glib.h"
-/* do not include <unistd.h> in this place since which,
+/* do not include <unistd.h> in this place since it
  * inteferes with g_strsignal() on some OSes
  */
 
