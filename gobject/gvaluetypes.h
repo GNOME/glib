@@ -87,6 +87,9 @@ void		      g_value_set_pointer	(GValue	      *value,
 gpointer	      g_value_get_pointer	(const GValue *value);
 
 
+/* Convenience for registering new pointer types */
+GType                 g_pointer_type_register_static (const gchar *name);
+
 /* debugging aid, describe value contents as string */
 gchar*                g_strdup_value_contents   (const GValue *value);
 

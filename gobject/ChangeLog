@@ -1,3 +1,8 @@
+Sun Nov  4 14:01:23 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gvaluetypes.[ch]: Add a function g_pointer_type_register_static()
+	to register a type derived from G_TYPE_POINTER.
+
 2001-11-03  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : gobject-query needs gmarshal.[hc,stings]
