@@ -1,5 +1,14 @@
 1998-12-02  Havoc Pennington  <hp@pobox.com>
 
+	* testgdate.c, testgdateparser.c: Two new files. This is kind of 
+	ugly code, but I want to go ahead and make the tests available. 
+	It isn't contaminating any other code. :-) Since one of these 
+	is interactive and the other takes a while to run, I've kept 
+	them separate from testglib for now.
+	* Makefile.am: Build gdate test programs.
+	
+1998-12-02  Havoc Pennington  <hp@pobox.com>
+
 	* gdate.c (g_date_valid): Rely on GDate::dmy and GDate::Julian
 	flags, rather than re-checking the validity of the actual
 	values. This should be the correct behavior, the old way was
