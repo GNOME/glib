@@ -593,10 +593,13 @@ g_mkstemp (char *tmpl)
  * files (as returned by g_get_tmp_dir()). 
  *
  * @template should be a string ending with six 'X' characters, as the
- * parameter to g_mkstemp() (or mktemp()). However, unlike these
+ * parameter to g_mkstemp() (or mkstemp()). However, unlike these
  * functions, the template should only be a basename, no directory
  * components are allowed. If template is NULL, a default template is
  * used.
+ *
+ * Note that in contrast to g_mkstemp() (and mkstemp()) @template is not
+ * modified, and might thus be a read-only literal string.
  *
  * The actual name used is returned in @name_used if non-NULL. This
  * string should be freed with g_free when not needed any longer.
@@ -611,16 +614,12 @@ g_file_open_tmp (const char *template,
 		 GError    **error)
 {
   int retval;
-  char mytemplate[10];
   char *tmpdir;
   char *sep;
   char *fulltemplate;
 
   if (template == NULL)
-    {
-      strcpy (mytemplate, ".XXXXXX");
-      template = mytemplate;
-    }
+    template = ".XXXXXX";
 
   if (strchr (template, G_DIR_SEPARATOR))
     {
