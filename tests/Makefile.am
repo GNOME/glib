@@ -4,8 +4,8 @@ INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 EXTRA_DIST = \
 	makefile.msc	\
 	makefile.msc.in	\
-	makefile.cygwin	\
-	makefile.cygwin.in
+	makefile.mingw	\
+	makefile.mingw.in
 
 TESTS = \
 	array-test	\
@@ -49,6 +49,6 @@ type_test_LDADD = $(top_builddir)/libglib.la
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-makefile.cygwin: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.cygwin.in
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/tests/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=tests/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 

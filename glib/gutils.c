@@ -617,7 +617,7 @@ g_get_any_init (void)
 	guint len = 17;
 	gchar buffer[17];
 	
-	if (GetUserName (buffer, &len))
+	if (GetUserName ((LPTSTR) buffer, (LPDWORD) &len))
 	  {
 	    g_user_name = g_strdup (buffer);
 	    g_real_name = g_strdup (buffer);
@@ -776,8 +776,15 @@ g_get_codeset (void)
   char *result = nl_langinfo (CODESET);
   return g_strdup (result);
 #else
+#ifndef G_OS_WIN32
   /* FIXME: Do something more intelligent based on setlocale (LC_CTYPE, NULL)
    */
   return g_strdup ("ISO-8859-1");
+#else
+  /* On Win32 we always use UTF-8. At least in GDK. SO should we
+   * therefore return that?
+   */
+  return g_strdup ("UTF-8");
+#endif
 #endif
 }

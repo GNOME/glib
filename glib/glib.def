@@ -93,6 +93,7 @@ EXPORTS
 	g_filename_from_utf8
 	g_filename_to_utf8
 	g_free
+	g_get_codeset
 	g_get_current_dir
 	g_get_current_time
 	g_get_home_dir

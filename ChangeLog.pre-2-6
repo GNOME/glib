@@ -1,3 +1,12 @@
+2000-05-30  Tor Lillqvist  <tml@iki.fi>
+
+	* gutils.c (g_locale_get_codeset): Implement on Win32.
+
+	* glib.def: Add g_get_codeset.
+
+	* tests/Makefile.am (EXTRA_DIST): makefile.cygwin* has been
+	renamed to makefile.mingw*.
+
 Tue May 30 16:01:32 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h gutils.c: Move the g_locale_get_codeset() up in the 
