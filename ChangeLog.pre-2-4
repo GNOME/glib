@@ -1,3 +1,9 @@
+2003-11-15  Tor Lillqvist  <tml@iki.fi>
+
+	* tests/makefile.msc.in: Fix for MSVC build: Skip strtod-test, use
+	correct glib libraries, with 2.0 in the names. (#126906, John
+	Ehresman)
+
 Sat Nov 15 00:46:14 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* configure.in: Don't blindly set glib_cv_long_long_format to
