@@ -34,7 +34,7 @@
 #   ASCII, ANSI_X3.4-1968     glibc solaris freebsd
 #   ISO-8859-1                glibc aix hpux irix osf solaris freebsd   yes
 #   ISO-8859-2                glibc aix hpux irix osf solaris freebsd   yes
-#   ISO-8859-3                glibc                                     yes
+#   ISO-8859-3                glibc solaris                             yes
 #   ISO-8859-4                osf solaris freebsd                       yes
 #   ISO-8859-5                glibc aix hpux irix osf solaris freebsd   yes
 #   ISO-8859-6                glibc aix hpux solaris                    yes
@@ -217,6 +217,7 @@ case "$os" in
 	echo "646 ASCII"
 	echo "ISO8859-1 ISO-8859-1"
 	echo "ISO8859-2 ISO-8859-2"
+	echo "ISO8859-3 ISO-8859-3"
 	echo "ISO8859-4 ISO-8859-4"
 	echo "ISO8859-5 ISO-8859-5"
 	echo "ISO8859-6 ISO-8859-6"

@@ -1,3 +1,8 @@
+Mon Dec 10 14:08:39 2001  HideToshi Tajima  <hidetoshi.tajima@sun.com>
+
+	* glib/libcharset/config.charset (os):
+	add ISO8859-3 for Solaris. (#66174)
+	
 2001-12-10  Sven Neumann  <sven@gimp.org>
 
 	* gobject/gvalue.c (g_value_register_transform_func): perform an exact
