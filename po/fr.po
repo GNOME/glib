@@ -1,12 +1,15 @@
 # French translation of glib.
 # Copyright (C) 2001-2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glib package.
+#
 # maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.3.0\n"
-"POT-Creation-Date: 2003-11-12 15:18-0500\n"
-"PO-Revision-Date: 2003-05-08 14:17+0200\n"
+"Project-Id-Version: glib 2.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-22 11:40+0100\n"
+"PO-Revision-Date: 2003-11-22 11:38+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -132,13 +135,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "La création du fichier « %s » a échoué : %s"
 
 #: glib/gfileutils.c:1150
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "La création du fichier « %s » a échoué : %s"
+msgstr "La lecture du lien symbolique « %s » a échoué : %s"
 
 #: glib/gfileutils.c:1169
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Liens symboliques non supportés"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -153,7 +156,8 @@ msgstr "Ne peut ouvrir le convertisseur de « %s » vers « %s » : %s"
 
 #: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr "Ne peut faire une lecture brut dans g_io_channel_read_line_string"
+msgstr ""
+"Impossible de faire une lecture brut dans g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
@@ -165,7 +169,7 @@ msgstr "La canal se termine avec un caractère partiel"
 
 #: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "Ne peut faire une lecture brut dans g_io_channel_read_to_end"
+msgstr "Impossible de faire une lecture brut dans g_io_channel_read_to_end"
 
 #: glib/gmarkup.c:223
 #, c-format
