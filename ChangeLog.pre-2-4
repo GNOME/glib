@@ -1,3 +1,7 @@
+2003-01-29  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in: Added fa, he, it, lv, mk to ALL_LINGUAS
+
 Tue Jan 28 17:00:03 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.1 ===
