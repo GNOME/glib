@@ -1297,7 +1297,7 @@ g_option_context_parse (GOptionContext   *context,
 			  if (!nulled_out[j])
 			    {
 			      if (!new_arg)
-				new_arg = g_malloc (strlen (arg));
+				new_arg = g_malloc (strlen (arg) + 1);
 			      new_arg[arg_index++] = arg[j];
 			    }
 			}
