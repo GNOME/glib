@@ -219,22 +219,22 @@ open_converter (const gchar *to_codeset,
  * @from_codeset:  character set of @str.
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
- *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 Even if the conversion was successful, this may be 
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Convert a string from one character set to another.
  *
  * Return value: If the conversion was successful, a newly allocated
- *               NUL-terminated string, which must be freed with
- *               g_free. Otherwise %NULL and @error will be set.
+ *               nul-terminated string, which must be freed with
+ *               g_free(). Otherwise %NULL and @error will be set.
  **/
 gchar*
 g_convert (const gchar *str,
@@ -282,21 +282,21 @@ g_convert (const gchar *str,
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Convert a string from one character set to another.
  *
  * Return value: If the conversion was successful, a newly allocated
- *               NUL-terminated string, which must be freed with
- *               g_free. Otherwise %NULL and @error will be set.
+ *               nul-terminated string, which must be freed with
+ *               g_free(). Otherwise %NULL and @error will be set.
  **/
 gchar*
 g_convert_with_iconv (const gchar *str,
@@ -408,10 +408,10 @@ g_convert_with_iconv (const gchar *str,
  * @bytes_read:   location to store the number of bytes in the
  *                input string that were successfully converted, or %NULL.
  *                Even if the conversion was succesful, this may be 
- *                less than len if there were partial characters
+ *                less than @len if there were partial characters
  *                at the end of the input.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                including the terminating NULL).
  * @error:        location to store the error occuring, or %NULL to ignore
  *                errors. Any of the errors in #GConvertError may occur.
  *
@@ -424,8 +424,8 @@ g_convert_with_iconv (const gchar *str,
  * will simply return that approximate conversion.
  *
  * Return value: If the conversion was successful, a newly allocated
- *               NUL-terminated string, which must be freed with
- *               g_free. Otherwise %NULL and @error will be set.
+ *               nul-terminated string, which must be freed with
+ *               g_free(). Otherwise %NULL and @error will be set.
  **/
 gchar*
 g_convert_with_fallback (const gchar *str,
@@ -662,18 +662,18 @@ strdup_len (const gchar *string,
  * g_locale_to_utf8:
  * @opsysstring:   a string in the encoding of the current locale
  * @len:           the length of the string, or -1 if the string is
- *                 NULL-terminated.
+ *                 nul-terminated.
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
+ * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string which is in the encoding used for strings by
@@ -802,18 +802,18 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * g_locale_from_utf8:
  * @utf8string:    a UTF-8 encoded string 
  * @len:           the length of the string, or -1 if the string is
- *                 NULL-terminated.
+ *                 nul-terminated.
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
+ * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string from UTF-8 to the encoding used for strings by
@@ -948,18 +948,18 @@ g_locale_from_utf8 (const gchar *utf8string,
  * g_filename_to_utf8:
  * @opsysstring:   a string in the encoding for filenames
  * @len:           the length of the string, or -1 if the string is
- *                 NULL-terminated.
+ *                 nul-terminated.
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
+ * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string which is in the encoding used for filenames
@@ -991,20 +991,20 @@ g_filename_to_utf8 (const gchar *opsysstring,
 
 /**
  * g_filename_from_utf8:
- * @utf8string:    a UTF-8 encoded string 
+ * @utf8string:    a UTF-8 encoded string.
  * @len:           the length of the string, or -1 if the string is
- *                 NULL-terminated.
+ *                 nul-terminated.
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was succesful, this may be 
- *                 less than len if there were partial characters
+ *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
- *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte fofset after the last valid
+ *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the stored in the output buffer (not including the
- *                 terminating nul.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @bytes_written: the number of bytes stored in the output buffer (not 
+ *                 including the terminating NULL).
+ * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string from UTF-8 to the encoding used for filenames.
@@ -1227,7 +1227,7 @@ g_unescape_uri_string (const gchar *escaped,
 
 /**
  * g_filename_from_uri:
- * @uri: a uri describing a filename (escaped, encoded in UTF-8)
+ * @uri: a uri describing a filename (escaped, encoded in UTF-8).
  * @hostname: Location to store hostname for the URI, or %NULL.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.

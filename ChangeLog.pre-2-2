@@ -1,3 +1,9 @@
+2001-10-01  Sven Neumann  <sven@gimp.org>
+
+	* glib/gconvert.c
+	* glib/gspawn-win32.c
+	* glib/gspawn.c: some minor documentation fixes.
+
 2001-09-29  Alexander Larsson  <alla@lysator.liu.se>
 
 	* configure.in:

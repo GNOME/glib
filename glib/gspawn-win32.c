@@ -468,13 +468,13 @@ g_spawn_sync (const gchar          *working_directory,
  * Executes a child program asynchronously (your program will not
  * block waiting for the child to exit). The child program is
  * specified by the only argument that must be provided, @argv. @argv
- * should be a NULL-terminated array of strings, to be passed as the
+ * should be a %NULL-terminated array of strings, to be passed as the
  * argument vector for the child. The first string in @argv is of
  * course the name of the program to execute. By default, the name of
  * the program must be a full path; the PATH shell variable will only
  * be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  *
- * @envp is a NULL-terminated array of strings, where each string
+ * @envp is a %NULL-terminated array of strings, where each string
  * has the form <literal>KEY=VALUE</literal>. This will become
  * the child's environment. If @envp is NULL, the child inherits its
  * parent's environment.
