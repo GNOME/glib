@@ -1,3 +1,9 @@
+2005-02-05  Tor Lillqvist  <tml@novell.com>
+
+	* glib/gfileutils.c (g_file_get_contents): In the Win32 ABI
+	stability version, call g_file_get_contents_utf8(), not
+	itself. (#166386)
+
 2005-02-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Remove the --enable-ansi option  (#160469)

@@ -804,7 +804,7 @@ g_file_get_contents (const gchar *filename,
   if (utf8_filename == NULL)
     return FALSE;
 
-  retval = g_file_get_contents (utf8_filename, contents, length, error);
+  retval = g_file_get_contents_utf8 (utf8_filename, contents, length, error);
 
   g_free (utf8_filename);
 
