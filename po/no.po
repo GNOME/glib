@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-30 09:07-0400\n"
-"PO-Revision-Date: 2003-10-31 10:20+0100\n"
+"POT-Creation-Date: 2004-05-04 15:37+0200\n"
+"PO-Revision-Date: 2004-05-04 15:37+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -20,9 +20,9 @@ msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering fra tegnsett «%s» til «%s» er ikke støttet"
 
 #: glib/gconvert.c:406
-#, fuzzy, c-format
+#, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Kunne ikke åpne konverterer fra «%s» til «%s»: %s"
+msgstr "Kunne ikke åpne program for å konvertere fra «%s» til «%s»"
 
 #: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
 #: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
@@ -39,7 +39,7 @@ msgstr "Feil under konvertering: %s"
 #: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
-msgstr "Delvis tegnsekvens ved slutten på inndata"
+msgstr "Ufullstendig tegnsekvens ved slutten på inndata"
 
 #: glib/gconvert.c:800
 #, c-format
@@ -49,7 +49,7 @@ msgstr "Kan ikke konvertere \"fallback\" «%s» til tegnsett «%s»"
 #: glib/gconvert.c:1497
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URIen «%s» er ikke en absolutt URI som bruker filskjema"
+msgstr "URI «%s» er ikke en absolutt URI som bruker filskjema"
 
 #: glib/gconvert.c:1507
 #, c-format
@@ -59,7 +59,7 @@ msgstr "Lokal fil-URI «%s» kan ikke inneholde en «#»"
 #: glib/gconvert.c:1524
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "URIen «%s» er ugyldig"
+msgstr "URI «%s» er ugyldig"
 
 #: glib/gconvert.c:1536
 #, c-format
