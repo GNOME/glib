@@ -1,3 +1,10 @@
+Sat May 18 00:21:51 2002  Tim Janik  <timj@gtk.org>
+
+	[merged from stable]
+
+        * glib/gscanner.c (g_scanner_unexp_token): fix missing cases for
+        expected_token.
+
 2002-05-17  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32.in: Match new additions in a configure-produced
