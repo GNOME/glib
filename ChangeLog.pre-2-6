@@ -16,6 +16,8 @@
 	CreateProcess directly, it probably could. (Now we use the spawnv*
 	functions from msvcrt.)
 
+	* Makefile.am (EXTRA_DIST): Add gspawn-win32.c
+
 	* glib.def: Add new entry points.
 
 	* glib.def
