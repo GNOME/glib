@@ -1,3 +1,8 @@
+2000-02-21  Damon Chaplin  <damon@helixcode.com>
+
+	* tmpl/main.sgml: updated the g_source_remove_by_XXX() descriptions
+	to note that only the first source found is removed.
+
 2000-01-25  Damon Chaplin  <damon@karuna.freeserve.co.uk>
 
 	* tmpl/misc_utils.sgml: g_bit_nth_lsf/msf docs from 

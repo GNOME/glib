@@ -362,10 +362,10 @@ or -1 if an error occurred.
 
 <!-- ##### FUNCTION g_source_add ##### -->
 <para>
-Adds a source to the main loop.
+Adds an event source to the main loop.
 </para>
 
-@priority: the priority of the function. See #G_PRIORITY_DEFAULT,
+@priority: the priority of the event source. See #G_PRIORITY_DEFAULT,
 #G_PRIORITY_DEFAULT_IDLE, #G_PRIORITY_HIGH, #G_PRIORITY_HIGH_IDLE, and
 #G_PRIORITY_LOW.
 @can_recurse: if it is safe to call the source functions recursively.
@@ -463,35 +463,48 @@ g_timeout_add() and g_timeout_add_full().
 </para>
 
 @tag: the id of the event source to remove.
-@Returns: TRUE if the source was found.
+@Returns: TRUE if the source was found and removed.
 
 
 <!-- ##### FUNCTION g_source_remove_by_funcs_user_data ##### -->
 <para>
-Removes the event source with the given #GSourceFuncs and user data.
+Removes the first event source found with the given #GSourceFuncs and user
+data.
+</para>
+<para>
+Event sources are sorted with the highest priority first. Sources with equal
+priority are stored in the order in which they were added.
 </para>
 
 @funcs: the #GSourceFuncs of the source to remove.
 @user_data: the user data of the source to remove.
-@Returns: TRUE if the source was found.
+@Returns: TRUE if an event source was found and removed.
 
 
 <!-- ##### FUNCTION g_source_remove_by_source_data ##### -->
 <para>
-Removes the event source with the given source data.
+Removes the first event source found with the given source data.
+</para>
+<para>
+Event sources are sorted with the highest priority first. Sources with equal
+priority are stored in the order in which they were added.
 </para>
 
 @source_data: the source data, which contains information specific to the
 type of source.
-@Returns: TRUE if the source was found.
+@Returns: TRUE if an event source was found and removed.
 
 
 <!-- ##### FUNCTION g_source_remove_by_user_data ##### -->
 <para>
-Removes the event source with the given user data.
+Removes the first event source found with the given user data.
+</para>
+<para>
+Event sources are sorted with the highest priority first. Sources with equal
+priority are stored in the order in which they were added.
 </para>
 
 @user_data: the user data of the source to remove.
-@Returns: TRUE if the source was found.
+@Returns: TRUE if an event source was found and removed.
 
 
