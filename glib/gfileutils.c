@@ -291,15 +291,37 @@ get_contents_stdio (const gchar *filename,
 {
   gchar buf[2048];
   size_t bytes;
-  GString *str;
-
-  g_assert (f != NULL);
+  char *str;
+  size_t total_bytes;
+  size_t total_allocated;
   
-  str = g_string_new ("");
+  g_assert (f != NULL);
+
+#define STARTING_ALLOC 64
+  
+  total_bytes = 0;
+  total_allocated = STARTING_ALLOC;
+  str = g_malloc (STARTING_ALLOC);
   
   while (!feof (f))
     {
       bytes = fread (buf, 1, 2048, f);
+
+      while ((total_bytes + bytes + 1) > total_allocated)
+        {
+          total_allocated *= 2;
+          str = g_try_realloc (str, total_allocated);
+
+          if (str == NULL)
+            {
+              g_set_error (error,
+                           G_FILE_ERROR,
+                           G_FILE_ERROR_NOMEM,
+                           _("Could not allocate %lu bytes to read file \"%s\""),
+                           (gulong) total_allocated, filename);
+              goto error;
+            }
+        }
       
       if (ferror (f))
         {
@@ -309,23 +331,30 @@ get_contents_stdio (const gchar *filename,
                        _("Error reading file '%s': %s"),
                        filename, strerror (errno));
 
-          g_string_free (str, TRUE);
-	  fclose (f);
-          
-          return FALSE;
+          goto error;
         }
 
-      g_string_append_len (str, buf, bytes);
+      memcpy (str + total_bytes, buf, bytes);
+      total_bytes += bytes;
     }
 
   fclose (f);
 
-  if (length)
-    *length = str->len;
+  str[total_bytes] = '\0';
   
-  *contents = g_string_free (str, FALSE);
+  if (length)
+    *length = total_bytes;
+  
+  *contents = str;
+  
+  return TRUE;
 
-  return TRUE;  
+ error:
+
+  g_free (str);
+  fclose (f);
+  
+  return FALSE;  
 }
 
 #ifndef G_OS_WIN32
@@ -341,11 +370,24 @@ get_contents_regfile (const gchar *filename,
   gchar *buf;
   size_t bytes_read;
   size_t size;
-      
+  size_t alloc_size;
+  
   size = stat_buf->st_size;
 
-  buf = g_new (gchar, size + 1);
-      
+  alloc_size = size + 1;
+  buf = g_try_malloc (alloc_size);
+
+  if (buf == NULL)
+    {
+      g_set_error (error,
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_NOMEM,
+                   _("Could not allocate %lu bytes to read file \"%s\""),
+                   (gulong) alloc_size, filename);
+
+      return FALSE;
+    }
+  
   bytes_read = 0;
   while (bytes_read < size)
     {
