@@ -1325,6 +1325,45 @@ g_strfreev (gchar **str_array)
     }
 }
 
+/**
+ * g_strdupv:
+ * @str_array: %NULL-terminated array of strings
+ * 
+ * Copies %NULL-terminated array of strings. The copy is a deep copy;
+ * the new array should be freed by first freeing each string, then
+ * the array itself. g_strfreev() does this for you. If called
+ * on a %NULL value, g_strdupv() simply returns %NULL.
+ * 
+ * Return value: a new %NULL-terminated array of strings
+ **/
+gchar**
+g_strdupv (gchar **str_array)
+{
+  if (str_array)
+    {
+      gint i;
+      gchar **retval;
+
+      i = 0;
+      while (str_array[i])
+        ++i;
+          
+      retval = g_new (gchar*, i + 1);
+
+      i = 0;
+      while (str_array[i])
+        {
+          retval[i] = g_strdup (str_array[i]);
+          ++i;
+        }
+      retval[i] = NULL;
+
+      return retval;
+    }
+  else
+    return NULL;
+}
+
 gchar*
 g_strjoinv (const gchar  *separator,
 	    gchar       **str_array)

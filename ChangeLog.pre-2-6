@@ -1,3 +1,10 @@
+2000-12-06  Havoc Pennington  <hp@pobox.com>
+
+	* tests/strfunc-test.c (main): add g_strdupv test
+
+	* gstrfuncs.c (g_strdupv): Add a function to copy 
+	an array of strings
+
 Tue Dec  5 12:23:04 2000  Owen Taylor  <otaylor@redhat.com>
 
         * gmain.[hc]: Major change in API for creating sources

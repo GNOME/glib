@@ -60,7 +60,9 @@ main (int   argc,
       char *argv[])
 {
   gchar *string;
-
+  gchar *vec[] = { "Foo", "Bar", NULL };
+  gchar **copy;
+  
   g_assert (g_strcasecmp ("FroboZZ", "frobozz") == 0);
   g_assert (g_strcasecmp ("frobozz", "frobozz") == 0);
   g_assert (g_strcasecmp ("frobozz", "FROBOZZ") == 0);
@@ -98,7 +100,7 @@ main (int   argc,
   g_assert (string != NULL);
   g_assert (strcmp(string, "00021 test ") == 0);
   g_free (string);
-
+  
   g_assert (strcmp
 	    (g_strcompress("abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313\\12345z"),
 	     "abc\\\"\b\f\n\r\t\003\177\234\313\12345z") == 0);
@@ -109,6 +111,14 @@ main (int   argc,
 			       "\b\f\001\002\003\004"),
 		   "abc\\\\\\\"\b\f\\n\\r\\t\003\\177\\234\\313") == 0);
 
+  copy = g_strdupv (vec);
+  g_assert (strcmp (copy[0], "Foo") == 0);
+  g_assert (strcmp (copy[1], "Bar") == 0);
+  g_assert (copy[2] == NULL);
+  g_strfreev (copy);
+  
   return 0;
 }
+
+
 

@@ -109,6 +109,7 @@ gpointer g_memdup		(gconstpointer mem,
  * g_strjoinv() concatenates all of str_array's strings, sliding in an
  * optional separator, the returned string is newly allocated.
  * g_strfreev() frees the array itself and all of its strings.
+ * g_strdupv() copies a NULL-terminated array of strings
  */
 gchar**	 g_strsplit		(const gchar  *string,
 				 const gchar  *delimiter,
@@ -116,6 +117,7 @@ gchar**	 g_strsplit		(const gchar  *string,
 gchar*   g_strjoinv		(const gchar  *separator,
 				 gchar       **str_array);
 void     g_strfreev		(gchar       **str_array);
+gchar**  g_strdupv              (gchar       **str_array);
 
 G_END_DECLS
 
