@@ -63,6 +63,7 @@ g_dir_open (const gchar  *path,
             GError      **error)
 {
   GDir *dir;
+  gchar *utf8_path;
 
   g_return_val_if_fail (path != NULL, NULL);
 
@@ -74,13 +75,17 @@ g_dir_open (const gchar  *path,
     return dir;
 
   /* error case */
+  utf8_path = g_filename_to_utf8 (path, -1,
+				  NULL, NULL, NULL);
   g_set_error (error,
                G_FILE_ERROR,
                g_file_error_from_errno (errno),
                _("Error opening directory '%s': %s"),
-	       path, g_strerror (errno));
+	       utf8_path, g_strerror (errno));
 
+  g_free (utf8_path);
   g_free (dir);
+
   return NULL;
 }
 

@@ -1,3 +1,9 @@
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gdir.c (g_dir_open): Convert filename to UTF-8 
+	before using it in the error message.  (#146054, Federico
+	Mena Quintero)
+
 Mon Jul  5 18:42:30 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gnulib/Makefile.am (INCLUDES): Add top_srcdir to 
