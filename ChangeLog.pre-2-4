@@ -1,5 +1,7 @@
 2000-11-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gasyncqueue.c: Added documentation for asyncronous queues.
+
 	* gspawn.c: Include sys/select.h (some platforms need it for
 	select). 
 

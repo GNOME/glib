@@ -1,7 +1,7 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GAsyncQueue: asyncronous queue implementation, based on Gqueue.
+ * GAsyncQueue: asynchronous queue implementation, based on Gqueue.
  * Copyright (C) 2000 Sebastian Wilhelmi; University of Karlsruhe
  *
  * This library is free software; you can redistribute it and/or
@@ -35,6 +35,13 @@ struct _GAsyncQueue
   guint ref_count;
 };
 
+/**
+ * g_async_queue_new:
+ * 
+ * Creates a new asynchronous queue with the initial reference count of 1.
+ * 
+ * Return value: the new #GAsyncQueue.
+ **/
 GAsyncQueue*
 g_async_queue_new ()
 {
@@ -47,6 +54,12 @@ g_async_queue_new ()
   return retval;
 }
 
+/**
+ * g_async_queue_ref:
+ * @queue: a #GAsyncQueue.
+ *
+ * Increases the reference count of the asynchronous @queue by 1.
+ **/
 void 
 g_async_queue_ref (GAsyncQueue *queue)
 {
@@ -58,6 +71,13 @@ g_async_queue_ref (GAsyncQueue *queue)
   g_mutex_unlock (queue->mutex);
 }
 
+/**
+ * g_async_queue_ref_unlocked:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Increases the reference count of the asynchronous @queue by 1. This
+ * function must be called while holding the @queue's lock.
+ **/
 void 
 g_async_queue_ref_unlocked (GAsyncQueue *queue)
 {
@@ -67,6 +87,19 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
   queue->ref_count++;
 }
 
+/**
+ * g_async_queue_unref_and_unlock:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Decreases the reference count of the asynchronous @queue by 1 and
+ * releases the lock. This function must be called while holding the
+ * @queue's lock. If the reference count went to 0, the @queue will be
+ * destroyed and the memory allocated will be freed. So you are not
+ * allowed to use the @queue afterwards, as it might have disappeared.
+ * The obvious asymmetry (it is not named
+ * g_async_queue_unref_unlocked) is because the queue can't be
+ * unlocked after dereffing it, as it might already have disappeared.
+ **/
 void 
 g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 {
@@ -89,6 +122,15 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
     }
 }
 
+/**
+ * g_async_queue_unref:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Decreases the reference count of the asynchronous @queue by 1. If
+ * the reference count went to 0, the @queue will be destroyed and the
+ * memory allocated will be freed. So you are not allowed to use the
+ * @queue afterwards, as it might have disappeared.
+ **/
 void 
 g_async_queue_unref (GAsyncQueue *queue)
 {
@@ -99,6 +141,14 @@ g_async_queue_unref (GAsyncQueue *queue)
   g_async_queue_unref_and_unlock (queue);
 }
 
+/**
+ * g_async_queue_lock:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Acquire the @queue's lock. After that you can only call the
+ * g_async_queue_*_unlocked function variants on that
+ * @queue. Otherwise it will deadlock.
+ **/
 void
 g_async_queue_lock (GAsyncQueue *queue)
 {
@@ -108,6 +158,12 @@ g_async_queue_lock (GAsyncQueue *queue)
   g_mutex_lock (queue->mutex);
 }
 
+/**
+ * g_async_queue_unlock:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Release the queue's lock.
+ **/
 void 
 g_async_queue_unlock (GAsyncQueue *queue)
 {
@@ -117,6 +173,13 @@ g_async_queue_unlock (GAsyncQueue *queue)
   g_mutex_unlock (queue->mutex);
 }
 
+/**
+ * g_async_queue_push:
+ * @queue: a #GAsyncQueue.
+ * @data: @data to push into the @queue.
+ *
+ * Push the @data into the @queue. @data must not be #NULL.
+ **/
 void
 g_async_queue_push (GAsyncQueue* queue, gpointer data)
 {
@@ -129,6 +192,14 @@ g_async_queue_push (GAsyncQueue* queue, gpointer data)
   g_mutex_unlock (queue->mutex);
 }
 
+/**
+ * g_async_queue_push_unlocked:
+ * @queue: a #GAsyncQueue.
+ * @data: @data to push into the @queue.
+ * 
+ * Push the @data into the @queue. @data must not be #NULL. This
+ * function must be called while holding the @queue's lock.
+ **/
 void
 g_async_queue_push_unlocked (GAsyncQueue* queue, gpointer data)
 {
@@ -176,6 +247,15 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue* queue, gboolean try,
   return retval;
 }
 
+/**
+ * g_async_queue_pop:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Pop data from the @queue. This function blocks until data become
+ * available.
+ *
+ * Return value: data from the queue.
+ **/
 gpointer
 g_async_queue_pop (GAsyncQueue* queue)
 {
@@ -191,6 +271,16 @@ g_async_queue_pop (GAsyncQueue* queue)
   return retval;
 }
 
+/**
+ * g_async_queue_pop_unlocked:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Pop data from the @queue. This function blocks until data become
+ * available. This function must be called while holding the @queue's
+ * lock.
+ *
+ * Return value: data from the queue.
+ **/
 gpointer
 g_async_queue_pop_unlocked (GAsyncQueue* queue)
 {
@@ -200,6 +290,16 @@ g_async_queue_pop_unlocked (GAsyncQueue* queue)
   return g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
 }
 
+/**
+ * g_async_queue_try_pop:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Try to pop data from the @queue. If no data is available, #NULL is
+ * returned.
+ *
+ * Return value: data from the queue or #NULL, when no data is
+ * available immediately.
+ **/
 gpointer
 g_async_queue_try_pop (GAsyncQueue* queue)
 {
@@ -215,6 +315,17 @@ g_async_queue_try_pop (GAsyncQueue* queue)
   return retval;
 }
 
+/**
+ * g_async_queue_try_pop_unlocked:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Try to pop data from the @queue. If no data is available, #NULL is
+ * returned. This function must be called while holding the @queue's
+ * lock.
+ *
+ * Return value: data from the queue or #NULL, when no data is
+ * available immediately.
+ **/
 gpointer
 g_async_queue_try_pop_unlocked (GAsyncQueue* queue)
 {
@@ -224,6 +335,17 @@ g_async_queue_try_pop_unlocked (GAsyncQueue* queue)
   return g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
 }
 
+/**
+ * g_async_queue_timed_pop:
+ * @queue: a #GAsyncQueue.
+ * @end_time: a #GTimeVal, determining the final time.
+ *
+ * Pop data from the @queue. If no data is received before @end_time,
+ * #NULL is returned.
+ *
+ * Return value: data from the queue or #NULL, when no data is
+ * received before @end_time.
+ **/
 gpointer
 g_async_queue_timed_pop (GAsyncQueue* queue, GTimeVal *end_time)
 {
@@ -239,6 +361,18 @@ g_async_queue_timed_pop (GAsyncQueue* queue, GTimeVal *end_time)
   return retval;  
 }
 
+/**
+ * g_async_queue_timed_pop_unlocked:
+ * @queue: a #GAsyncQueue.
+ * @end_time: a #GTimeVal, determining the final time.
+ *
+ * Pop data from the @queue. If no data is received before @end_time,
+ * #NULL is returned. This function must be called while holding the
+ * @queue's lock.
+ *
+ * Return value: data from the queue or #NULL, when no data is
+ * received before @end_time.
+ **/
 gpointer
 g_async_queue_timed_pop_unlocked (GAsyncQueue* queue, GTimeVal *end_time)
 {
@@ -248,17 +382,22 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue* queue, GTimeVal *end_time)
   return g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
 }
 
+/**
+ * g_async_queue_length:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Returns the length of the queue, negative values mean waiting
+ * threads, positive values mean available entries in the
+ * @queue. Actually this function returns the number of data items in
+ * the queue minus the number of waiting threads. Thus a return value
+ * of 0 could mean 'n' entries in the queue and 'n' thread waiting.
+ * That can happen due to locking of the queue or due to
+ * scheduling.  
+ *
+ * Return value: the length of the @queue.
+ **/
 gint
-g_async_queue_length_unlocked (GAsyncQueue* queue)
-{
-  g_return_val_if_fail (queue, 0);
-  g_return_val_if_fail (queue->ref_count > 0, 0);
-
-  return queue->queue->length - queue->waiting_threads;
-}
-
-gint
-g_async_queue_length(GAsyncQueue* queue)
+g_async_queue_length (GAsyncQueue* queue)
 {
   glong retval;
 
@@ -270,5 +409,29 @@ g_async_queue_length(GAsyncQueue* queue)
   g_mutex_unlock (queue->mutex);
 
   return retval;
+}
+
+/**
+ * g_async_queue_length_unlocked:
+ * @queue: a #GAsyncQueue.
+ * 
+ * Returns the length of the queue, negative values mean waiting
+ * threads, positive values mean available entries in the
+ * @queue. Actually this function returns the number of data items in
+ * the queue minus the number of waiting threads. Thus a return value
+ * of 0 could mean 'n' entries in the queue and 'n' thread waiting.
+ * That can happen due to locking of the queue or due to
+ * scheduling. This function must be called while holding the @queue's
+ * lock.
+ *
+ * Return value: the length of the @queue.
+ **/
+gint
+g_async_queue_length_unlocked (GAsyncQueue* queue)
+{
+  g_return_val_if_fail (queue, 0);
+  g_return_val_if_fail (queue->ref_count > 0, 0);
+
+  return queue->queue->length - queue->waiting_threads;
 }
 
