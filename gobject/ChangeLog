@@ -1,3 +1,9 @@
+Sat Jun 30 13:17:12 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* testgruntime.c (test_object_class_init)
+	  gobject.c (g_object_do_class_init): 
+	  g_signal_newc() => g_signal_new().
+
 Thu Jun 28 22:49:40 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.[ch] gobject-query.c testgruntime.c: Remove

@@ -118,13 +118,13 @@ test_object_class_init (TestObjectClass *class)
 
   class->test_signal = test_object_test_signal;
 
-  g_signal_newc ("test-signal",
-		 G_OBJECT_CLASS_TYPE (class),
-		 G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP,
-		 G_STRUCT_OFFSET (TestObjectClass, test_signal),
-		 test_signal_accumulator, NULL,
-		 g_cclosure_marshal_STRING__OBJECT_POINTER,
-		 G_TYPE_STRING, 2, TEST_TYPE_IFACE, G_TYPE_POINTER);
+  g_signal_new ("test-signal",
+		G_OBJECT_CLASS_TYPE (class),
+		G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP,
+		G_STRUCT_OFFSET (TestObjectClass, test_signal),
+		test_signal_accumulator, NULL,
+		g_cclosure_marshal_STRING__OBJECT_POINTER,
+		G_TYPE_STRING, 2, TEST_TYPE_IFACE, G_TYPE_POINTER);
 }
 
 GType

@@ -249,14 +249,14 @@ g_object_do_class_init (GObjectClass *class)
   class->notify = NULL;
 
   gobject_signals[NOTIFY] =
-    g_signal_newc ("notify",
-                   G_TYPE_FROM_CLASS (class),
-                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
-                   G_STRUCT_OFFSET (GObjectClass, notify),
-		   NULL, NULL,
-                   g_cclosure_marshal_VOID__PARAM,
-                   G_TYPE_NONE,
-                   1, G_TYPE_PARAM);
+    g_signal_new ("notify",
+		  G_TYPE_FROM_CLASS (class),
+		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+		  G_STRUCT_OFFSET (GObjectClass, notify),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__PARAM,
+		  G_TYPE_NONE,
+		  1, G_TYPE_PARAM);
 }
 
 void
