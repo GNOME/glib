@@ -1,3 +1,7 @@
+2004-03-22  Gareth Owen  <gowen72@yahoo.com>
+
+	* configure.in: Added en_GB to ALL_LINGUAS
+
 2004-03-10  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c
