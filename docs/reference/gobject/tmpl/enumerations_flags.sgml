@@ -27,18 +27,18 @@ Enumeration and flags types
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE ##### -->
 <para>
-
+Returns the type identifier from a given #GEnumClass structure.
 </para>
 
-@class: 
+@class: a #GEnumClass
 
 
 <!-- ##### MACRO G_ENUM_CLASS_TYPE_NAME ##### -->
 <para>
-
+Returns the static type name from a given #GEnumClass structure.
 </para>
 
-@class: 
+@class: a #GEnumClass
 
 
 <!-- ##### MACRO G_TYPE_IS_ENUM ##### -->
@@ -93,18 +93,18 @@ or derived.
 
 <!-- ##### MACRO G_FLAGS_CLASS_TYPE ##### -->
 <para>
-
+Returns the type identifier from a given #GFlagsClass structure.
 </para>
 
-@class: 
+@class: a #GFlagsClass
 
 
 <!-- ##### MACRO G_FLAGS_CLASS_TYPE_NAME ##### -->
 <para>
-
+Returns the static type name from a given #GFlagsClass structure.
 </para>
 
-@class: 
+@class: a #GFlagsClass
 
 
 <!-- ##### STRUCT GEnumValue ##### -->

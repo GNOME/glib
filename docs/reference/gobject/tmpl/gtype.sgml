@@ -103,7 +103,8 @@ Returns %TRUE if @type is a fundamental type.
 
 <!-- ##### MACRO G_TYPE_IS_VALUE_TYPE ##### -->
 <para>
-
+Returns %TRUE if @type is a value type which can be used for
+g_value_init(). 
 </para>
 
 @type: A #GType value.
@@ -448,17 +449,17 @@ to a specified anchestor type @g_type of the instance.
 
 @instance: 	Location of the #GTypeInstance structure.
 @g_type: 	The anchestor type of the class to be returned.
-@c_type: 	The corresponding C type of @g_Type.
+@c_type: 	The corresponding C type of @g_type.
 
 
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_INTERFACE ##### -->
 <para>
-
+Returns the interface structure for interface @g_type of a given @instance.
 </para>
 
-@instance: 
-@g_type: 
-@c_type: 
+@instance: Location of the #GTypeInstance structure.
+@g_type: The interface type to be returned.
+@c_type: The corresponding C type of @g_type.
 
 
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
@@ -565,7 +566,7 @@ Similar to g_type_init(), but additionally sets debug flags.
 
 <!-- ##### FUNCTION g_type_name ##### -->
 <para>
-Return the unique name that is assigned to a type ID (this is the preferred method
+Returns the unique name that is assigned to a type ID (this is the preferred method
 to find out whether a specific type has been registered for the passed in ID yet).
 </para>
 
@@ -987,7 +988,9 @@ Bit masks used to check or determine characteristics of a type.
 
 @G_TYPE_FLAG_ABSTRACT: 	Indicates an abstract type. No instances can be
 			created for an abstract type.
-@G_TYPE_FLAG_VALUE_ABSTRACT: 
+@G_TYPE_FLAG_VALUE_ABSTRACT: Indicates an abstract value type, i.e. a type
+                        that introduces a value table, but can't be used for
+                        g_value_init().
 
 <!-- ##### ENUM GTypeFundamentalFlags ##### -->
 <para>
@@ -1151,7 +1154,9 @@ Frees an instance of a type, returning it to the instance pool for the type,
 if there is one.
 </para>
 <para>
-Like g_type_create_instance(), this function is reserved for implementors of 
+Like g_type_create_i	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: Add docs.
+nstance(), this function is reserved for implementors of 
 fundamental types.
 </para>
 

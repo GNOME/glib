@@ -66,10 +66,12 @@ of the #GTypeValueTable functions required for a type to create a #GValue of.
 
 <!-- ##### MACRO G_TYPE_IS_VALUE_ABSTRACT ##### -->
 <para>
-
+Returns %TRUE if @type is an abstract value type.  An abstract value type 
+introduces a value table, but can't be used for g_value_init() and is normally
+used as an abstract base type for derived value types.
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_IS_VALUE ##### -->
