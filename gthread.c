@@ -35,6 +35,13 @@
 #include "config.h"
 #include "glib.h"
 
+#ifdef G_THREAD_USE_PID_SURROGATE
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <errno.h>
+#endif /* G_THREAD_USE_PID_SURROGATE */
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -68,7 +75,23 @@ struct  _GRealThread
   gpointer arg;
   gpointer private_data;
   GSystemThread system_thread;
+#ifdef G_THREAD_USE_PID_SURROGATE
+  pid_t pid;
+#endif /* G_THREAD_USE_PID_SURROGATE */
 };
+
+#ifdef G_THREAD_USE_PID_SURROGATE
+static gint priority_map[] = { 15, 0, -15, -20 };
+static gboolean prio_warned = FALSE;
+# define SET_PRIO(pid, prio) G_STMT_START{				\
+  gint error = setpriority (PRIO_PROCESS, (pid), priority_map[prio]);	\
+  if (error == -1 && errno == EACCES && !prio_warned)			\
+    {									\
+      prio_warned = TRUE;						\
+      g_warning ("Priorities can only be increased by root.");		\
+    }									\
+  }G_STMT_END
+#endif /* G_THREAD_USE_PID_SURROGATE */
 
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 struct _GStaticPrivateNode
@@ -485,6 +508,10 @@ g_thread_create_proxy (gpointer data)
 
   g_assert (data);
 
+#ifdef G_THREAD_USE_PID_SURROGATE
+  thread->pid = getpid ();
+#endif /* G_THREAD_USE_PID_SURROGATE */
+
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (g_thread_specific_private, data);
 
@@ -492,6 +519,9 @@ g_thread_create_proxy (gpointer data)
      before thread->func is called. See g_thread_create. */
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
+ 
+  if (g_thread_use_default_impl)
+    SET_PRIO (thread->pid, thread->thread.priority);
 
   thread->func (thread->arg);
 }
@@ -573,7 +603,14 @@ g_thread_set_priority (GThread* thread,
   g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
   thread->priority = priority;
-  G_THREAD_CF (thread_set_priority, (void)0, (&real->system_thread, priority));
+
+#ifdef G_THREAD_USE_PID_SURROGATE
+  if (g_thread_use_default_impl)
+    SET_PRIO (real->pid, priority);
+  else
+#endif /* G_THREAD_USE_PID_SURROGATE */
+    G_THREAD_CF (thread_set_priority, (void)0, 
+		 (&real->system_thread, priority));
 }
 
 GThread*
@@ -598,6 +635,10 @@ g_thread_self (void)
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));
 
+#ifdef G_THREAD_USE_PID_SURROGATE
+      thread->pid = getpid ();
+#endif /* G_THREAD_USE_PID_SURROGATE */
+      
       g_private_set (g_thread_specific_private, thread); 
       
       G_LOCK (g_thread);

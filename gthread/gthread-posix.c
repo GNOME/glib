@@ -45,15 +45,6 @@
 #include <sched.h>
 #endif
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-# include <sys/resource.h>
-# define PID_IN_THREAD(thread) (*(pid_t*)(((gchar*)thread)+sizeof(pthread_t)))
-# define SET_PRIO(pid, prio) 						\
-  posix_check_cmd_prio ((setpriority (PRIO_PROCESS, (pid),		\
-		               g_thread_priority_map [prio]) == -1) ? 	\
-			          (errno == EACCES ? EPERM : errno ): 0)
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
 #define posix_check_err(err, name) G_STMT_START{			\
   int error = (err); 							\
   if (error)	 		 		 			\
@@ -104,12 +95,7 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
 # error This should not happen. Contact the GLib team.
 #endif
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-# define PRIORITY_LOW_VALUE 15
-# define PRIORITY_NORMAL_VALUE 0
-# define PRIORITY_HIGH_VALUE -15
-# define PRIORITY_URGENT_VALUE -20
-#elif defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
+#if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
 # define HAVE_PRIORITIES 1
 # define PRIORITY_LOW_VALUE POSIX_MIN_PRIORITY
 # define PRIORITY_URGENT_VALUE POSIX_MAX_PRIORITY
@@ -265,27 +251,6 @@ g_private_get_posix_impl (GPrivate * private_key)
 #endif
 }
 
-#ifdef G_THREAD_USE_PID_SURROGATE
-struct proxy_data
-{
-  GThreadFunc thread_func;
-  gpointer arg;
-  gpointer thread;
-  GThreadPriority priority;
-};
-
-static void
-g_thread_create_posix_impl_proxy (struct proxy_data *data)
-{
-  GThreadFunc thread_func = data->thread_func;
-  GThreadFunc arg = data->arg;
-  PID_IN_THREAD (data->thread) = getpid();
-  SET_PRIO (PID_IN_THREAD (data->thread), data->priority);
-  g_free (data);
-  thread_func (arg);
-}
-#endif /* G_THREAD_USE_PID_SURROGATE */
-
 static void
 g_thread_create_posix_impl (GThreadFunc thread_func, 
 			    gpointer arg, 
@@ -325,35 +290,21 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 #endif /* G_THREADS_IMPL_POSIX */
   
-#ifdef G_THREAD_USE_PID_SURROGATE
-  {
-    struct proxy_data *data = g_new (struct proxy_data, 1); 
-    data->thread_func = thread_func;
-    data->arg = arg;
-    data->thread = thread;
-    data->priority = priority;
-    PID_IN_THREAD (thread) = 0;
-    ret = posix_error (pthread_create (thread, &attr, (void* (*)(void*))
-				       g_thread_create_posix_impl_proxy, 
-				       data));
-  }
-#else /* G_THREAD_USE_PID_SURROGATE */
-# ifdef HAVE_PRIORITIES
-#  ifdef G_THREADS_IMPL_POSIX
+#ifdef HAVE_PRIORITIES
+# ifdef G_THREADS_IMPL_POSIX
   {
     struct sched_param sched;
     posix_check_cmd (pthread_attr_getschedparam (&attr, &sched));
     sched.sched_priority = g_thread_priority_map [priority];
     posix_check_cmd_prio (pthread_attr_setschedparam (&attr, &sched));
   }
-#  else /* G_THREADS_IMPL_DCE */
+# else /* G_THREADS_IMPL_DCE */
   posix_check_cmd_prio 
     (pthread_attr_setprio (&attr, g_thread_priority_map [priority]));
-#  endif /* G_THREADS_IMPL_DCE */
-# endif /* HAVE_PRIORITIES */
+# endif /* G_THREADS_IMPL_DCE */
+#endif /* HAVE_PRIORITIES */
   ret = posix_error (pthread_create (thread, &attr, 
 				     (void* (*)(void*))thread_func, arg));
-#endif /* !G_THREAD_USE_PID_SURROGATE */
 
   posix_check_cmd (pthread_attr_destroy (&attr));
 
@@ -411,21 +362,13 @@ g_thread_set_priority_posix_impl (gpointer thread, GThreadPriority priority)
   posix_check_cmd_prio (pthread_setprio (*(pthread_t*)thread, 
 					 g_thread_priority_map [priority]));
 # endif
-#elif defined (G_THREAD_USE_PID_SURROGATE)
-  /* If the addressed thread hasn't yet been able to provide it's pid,
-   * we ignore the request. Should be more than rare */
-  if (PID_IN_THREAD (thread) != 0)
-    SET_PRIO (PID_IN_THREAD (thread), priority);
-#endif /* G_THREAD_USE_PID_SURROGATE */
+#endif /* HAVE_PRIORITIES */
 }
 
 static void
 g_thread_self_posix_impl (gpointer thread)
 {
   *(pthread_t*)thread = pthread_self();
-#ifdef G_THREAD_USE_PID_SURROGATE
-  PID_IN_THREAD (thread) = getpid();
-#endif /* G_THREAD_USE_PID_SURROGATE */
 }
 
 static GThreadFunctions g_thread_functions_for_glib_use_default =

@@ -1064,7 +1064,7 @@ if test x"$have_threads" != xnone; then
 		glib_save_CPPFLAGS="$CPPFLAGS"
 		CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
 		dnl we might grow sizeof(pthread_t) later on, so use a dummy name here
-		GLIB_SIZEOF([#include <pthread.h>], pthread_t, core_system_thread)
+		GLIB_SIZEOF([#include <pthread.h>], pthread_t, system_thread)
 		# This is not AC_CHECK_FUNC to also work with function
 		# name mangling in header files.
 		AC_MSG_CHECKING(for pthread_attr_setstacksize)
@@ -1118,7 +1118,6 @@ if test x"$have_threads" != xnone; then
 		CPPFLAGS="$glib_save_CPPFLAGS"
 
 		AC_MSG_CHECKING(whether to use the PID niceness surrogate for thread priorities)
-	        glib_system_thread_size_growth=0
 		AC_TRY_RUN([#include <pthread.h> 
 			#include <sys/types.h>
 			#include <unistd.h>
@@ -1135,12 +1134,8 @@ if test x"$have_threads" != xnone; then
 			}],
 			[AC_MSG_RESULT(yes),
 			  AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, [whether to use the PID niceness surrogate for thread priorities])
-                          glib_system_thread_size_growth=$ac_cv_sizeof_long
                         ],
 			[AC_MSG_RESULT(no)])
-                dnl make sure both glib_cv_sizeof_system_thread and GLIB_SIZEOF_SYSTEM_THREAD are setup
-                glib_cv_sizeof_system_thread=`expr $glib_cv_sizeof_core_system_thread + $glib_system_thread_size_growth`
-                AC_DEFINE_UNQUOTED(GLIB_SIZEOF_SYSTEM_THREAD, $glib_cv_sizeof_system_thread)
 	else # solaris threads
 		GLIB_SIZEOF([#include <thread.h>], thread_t, system_thread)
 	fi

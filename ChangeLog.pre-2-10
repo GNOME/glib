@@ -1,3 +1,15 @@
+2001-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* acconfig.h, configure.in: Reverted the changes necessary to
+	enlarge the system thread for G_THREAD_USE_PID_SURROGATE.
+
+	* gthread.c: Now implement G_THREAD_USE_PID_SURROGATE in gthread.c
+	instead of gthread/gthread-posix.c. While the latter has the
+	advantage, that it is conceptually cleaner, it makes
+	g_thread_self_posix_impl _very_ slow and that hurts
+	GStaticRecMutex and other things. So the new version is less
+	clean, but faster.
+
 2001-02-09  Havoc Pennington  <hp@redhat.com>
 
 	* gconvert.c (g_convert): don't overwrite errors
