@@ -10,6 +10,8 @@ Overview of Changes in GLib 1.1.6:
 * Incremental freezing in ghash
 * New function g_hook_list_marshal_check to eventually destroy hooks after
   they got marshalled
+* Revised GIOChannel to provide generic virtual-function based interface
+* Added generic main-loop abstraction
 * Removed GListAllocator type and its g_*_allocator_*() function variants
 * Bug fixes
 
