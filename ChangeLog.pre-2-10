@@ -1,3 +1,8 @@
+2004-12-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.c (g_get_system_config_dirs): Don't forget to 
+	initialize g_system_config_dirs.  (#160213, Frederic Crozat)
+
 Wed Dec  1 17:04:37 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gstring.h (g_string_append_c_inline): actually enable (and

@@ -1668,6 +1668,8 @@ g_get_system_config_dirs (void)
           conf_dirs = "/etc/xdg";
 #endif
       conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+
+      g_system_config_dirs = conf_dir_vector;
     }
   else
     conf_dir_vector = g_system_config_dirs;
