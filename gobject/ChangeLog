@@ -1,3 +1,8 @@
+Wed Apr 18 09:46:56 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject.c gsignal.c: Change C++ comments for FIXME's to
+	C comments. (Patch from Andres Salomon)
+
 2001-04-14  Hans Breuer  <hans@breuer.org>
 
 	* gobject.def : updated

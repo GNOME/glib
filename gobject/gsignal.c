@@ -1066,7 +1066,7 @@ g_signal_newv (const gchar       *signal_name,
     g_return_val_if_fail (accu_data == NULL, 0);
 
   name = g_strdup (signal_name);
-  g_strdelimit (name, G_STR_DELIMITERS ":^", '_');  // FIXME do character checks like for types
+  g_strdelimit (name, G_STR_DELIMITERS ":^", '_');  /* FIXME do character checks like for types */
   
   G_LOCK (g_signal_mutex);
   
