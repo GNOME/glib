@@ -1,3 +1,11 @@
+Sat Jan  9 15:08:44 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* testglib.c:
+	Make all aux functions static.
+
+	* tests/Makefile.am, tests/dirname-test.c, tests/type-test.c:
+	New tests dirname-test and type-test, from testglib.
+
 Sat Jan  9 13:53:00 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* configure.in:

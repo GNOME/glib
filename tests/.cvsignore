@@ -31,3 +31,5 @@ slist-test
 string-test
 array-test
 tree-test
+dirname-test
+type-test

@@ -185,7 +185,7 @@ g_node_test (void)
     g_print ("ok\n");
 }
 
-gboolean
+static gboolean
 my_hash_callback_remove (gpointer key,
 			 gpointer value,
 			 gpointer user_data)
@@ -198,7 +198,7 @@ my_hash_callback_remove (gpointer key,
   return FALSE;
 }
 
-void
+static void
 my_hash_callback_remove_test (gpointer key,
 			      gpointer value,
 			      gpointer user_data)
@@ -209,7 +209,7 @@ my_hash_callback_remove_test (gpointer key,
     g_print ("bad!\n");
 }
 
-void
+static void
 my_hash_callback (gpointer key,
 		  gpointer value,
 		  gpointer user_data)
@@ -218,20 +218,20 @@ my_hash_callback (gpointer key,
   *d = 1;
 }
 
-guint
+static guint
 my_hash (gconstpointer key)
 {
   return (guint) *((const gint*) key);
 }
 
-gint
+static gint
 my_hash_compare (gconstpointer a,
 		 gconstpointer b)
 {
   return *((const gint*) a) == *((const gint*) b);
 }
 
-gint
+static gint
 my_list_compare_one (gconstpointer a, gconstpointer b)
 {
   gint one = *((const gint*)a);
@@ -239,7 +239,7 @@ my_list_compare_one (gconstpointer a, gconstpointer b)
   return one-two;
 }
 
-gint
+static gint
 my_list_compare_two (gconstpointer a, gconstpointer b)
 {
   gint one = *((const gint*)a);
@@ -247,14 +247,14 @@ my_list_compare_two (gconstpointer a, gconstpointer b)
   return two-one;
 }
 
-/* void
+/* static void
 my_list_print (gpointer a, gpointer b)
 {
   gint three = *((gint*)a);
   g_print("%d", three);
 }; */
 
-gint
+static gint
 my_compare (gconstpointer a,
 	    gconstpointer b)
 {
@@ -264,7 +264,7 @@ my_compare (gconstpointer a,
   return *cha - *chb;
 }
 
-gint
+static gint
 my_traverse (gpointer key,
 	     gpointer value,
 	     gpointer data)
