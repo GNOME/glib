@@ -1,3 +1,7 @@
+2002-12-02  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject.c (g_signal_connect_object): Add docs.
+
 2002-11-30  Matthias Clasen  <maclas@gmx.de>
 
 	* gsignal.c: More docs.

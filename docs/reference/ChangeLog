@@ -1,3 +1,7 @@
+2002-12-02  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/signals.sgml: Add docs.
+
 2002-12-01  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-sections.txt: Mark g_signal_handlers_destroy as

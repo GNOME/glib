@@ -1563,6 +1563,19 @@ g_value_dup_object (const GValue *value)
   return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
 }
 
+/**
+ * g_signal_connect_object:
+ * @instance: the instance to connect to.
+ * @detailed_signal: a string of the form "signal-name::detail".
+ * @c_handler: the #GCallback to connect.
+ * @gobject: the object to pass as data to @c_handler.
+ * @connect_flags: a combination of #GConnnectFlags.
+ * 
+ * This is similar to g_signal_connect_data(), but uses a closure which
+ * ensures that the object stays alive during the call to @c_handler.
+ * 
+ * Return value: the handler id.
+ **/
 gulong
 g_signal_connect_object (gpointer      instance,
 			 const gchar  *detailed_signal,
