@@ -1,3 +1,7 @@
+2003-07-20  Hans Breuer  <hans@breuer.org>
+
+	* gobject.def : updated externals
+
 Tue Jul  8 22:29:31 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* gtype.c (type_class_init_Wm): Only access node->data->instance
