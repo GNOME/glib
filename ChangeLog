@@ -1,3 +1,8 @@
+Sun Oct  3 12:07:44 PDT 1999 Manish Singh <yosh@gimp.org>
+
+	* Makefile.am: list acglib.m4 in CONFIGURE_DEPENDENCIES so we hook
+	in to automake's default configure rule instead of making our own
+
 Thu Sep 23 19:47:10 CDT 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.2.5
