@@ -1,3 +1,8 @@
+2002-05-07  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmarkup.c (unescape_text): Report unfinished entity
+	references as errors rather than running into an assert.  (#80441)
+
 2002-05-07  Michael Natterer  <mitch@gimp.org>
 
 	* configure.in: added a new conditional CROSS_COMPILING which

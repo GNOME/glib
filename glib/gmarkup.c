@@ -592,9 +592,27 @@ unescape_text (GMarkupParseContext *context,
         }
     }
 
-  /* If no errors, we should have returned to USTATE_INSIDE_TEXT */
-  g_assert (context->state == STATE_ERROR ||
-            state == USTATE_INSIDE_TEXT);
+  if (context->state != STATE_ERROR) 
+    {
+      switch (state) 
+	{
+	case USTATE_INSIDE_TEXT:
+	  break;
+	case USTATE_AFTER_AMPERSAND:
+	case USTATE_INSIDE_ENTITY_NAME:
+	  set_unescape_error (context, error,
+			      NULL, NULL,
+			      G_MARKUP_ERROR_PARSE,
+			      _("Unfinished entity reference"));
+	  break;
+	case USTATE_AFTER_CHARREF_HASH:
+	  set_unescape_error (context, error,
+			      NULL, NULL,
+			      G_MARKUP_ERROR_PARSE,
+			      _("Unfinished character reference"));
+	  break;
+	}
+    }
 
   if (context->state == STATE_ERROR)
     {
