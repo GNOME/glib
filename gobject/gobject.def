@@ -200,6 +200,7 @@ EXPORTS
 	g_type_interface_get_plugin
 	g_type_interface_peek
 	g_type_interface_peek_parent
+	g_type_interface_prerequisites
 	g_type_interfaces
 	g_type_is_a
 	g_type_module_add_interface
