@@ -8,6 +8,26 @@ Simple install procedure
   [ Become root if necessary ]
   % make install                            # install GLIB
 
+Requirements
+============
+
+In order to implement conversions between character sets,
+GLib requires an implementation of the standard iconv() routine.
+Most modern systems will have a suitable implementation, however
+many older systems lack an iconv() implementation. On such systems, 
+you must install the libiconv library. This can be found at:
+
+ http://clisp.cons.org/~haible/packages-libiconv.html
+
+If your system has an iconv implementation but you want to use
+libiconv instead, you can pass the --with-libiconv option to
+configure. This forces libiconv to be used. 
+
+Note that if you have libiconv installed in your default include
+search path (for instance, in /usr/local/), but don't enable
+it, you will get an error while compiling GTK+ because the
+iconv.h that libiconv installs hides the system iconv.
+
 The Nitty-Gritty
 ================
 

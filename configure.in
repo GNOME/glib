@@ -1099,6 +1099,50 @@ GLIB_SYSDEFS(
 	glibconfig-sysdefs.h,
 	=)
 
+dnl ***********************
+dnl *** Tests for iconv ***
+dnl ***********************
+
+AC_ARG_WITH(libiconv, [ --with-libiconv     Use the libiconv library ],,with_libiconv=maybe)
+
+found_iconv=no
+
+if test "x$with_libiconv" != "xyes" ; then
+   # 
+   # Check in the C library 
+   #
+   AC_CHECK_FUNC(iconv_open, with_libiconv=no; found_iconv=yes)
+fi
+
+if test "x$with_libiconv" != "xno" ; then
+   #
+   # Check for libiconv
+   #
+   AC_CHECK_LIB(iconv, libiconv_open, with_libiconv=yes; found_iconv=yes)
+fi
+
+if test "x$found_iconv" = "xno" ; then
+   AC_MSG_ERROR([*** No iconv() implementation found in C library or libiconv])
+fi
+
+if test "x$with_libiconv" = "xyes" ; then
+  ICONV_LIBS="-liconv"
+  AC_DEFINE(USE_LIBICONV)
+fi
+AC_SUBST(ICONV_LIBS)
+
+dnl If the system doesn't define EILSEQ, we should define EILSEQ ourselves
+dnl since we need it for g_iconv()
+
+AC_MSG_CHECKING([for EILSEQ])
+AC_TRY_COMPILE([
+#include <errno.h>
+],
+[
+int error = EILSEQ;
+], have_eilseq=yes, have_eilseq=no);
+AC_MSG_RESULT($have_eilseq)
+
 dnl **************************
 dnl *** Checks for gtk-doc ***
 dnl **************************
@@ -1297,6 +1341,20 @@ $glib_vacopy
 $glib_inline
 #endif	/* !__cplusplus */
 _______EOF
+
+	echo >>$outfile
+	if test x$g_have_eilseq = xno; then
+		cat >>$outfile <<_______EOF
+#ifndef EILSEQ
+/* On some systems, like SunOS and NetBSD, EILSEQ is not defined.
+ * The correspondence between this and the corresponding definition
+ * in libiconv is essential.
+ */
+#  define EILSEQ ENOENT
+#endif
+_______EOF
+
+	fi
 
 	echo >>$outfile
 	if test x$g_mutex_has_default = xyes; then
@@ -1575,6 +1633,8 @@ x$ac_cv_c_bigendian)
   g_bs_alien=BE
   ;;
 esac
+
+g_have_eilseq=$have_eilseq
 
 case x$have_threads in
 xnone)	g_enable_threads_def="#undef";;

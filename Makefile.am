@@ -153,6 +153,8 @@ stamp-gc-h: config.status
 	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=glibconfig.h ./config.status
 	echo timestamp > stamp-gc-h
 
+libglib_1_3_la_LIBADD = @ICONV_LIBS@
+
 libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic

@@ -27,6 +27,7 @@
 #ifndef __G_CONVERT_H__
 #define __G_CONVERT_H__
 
+#include <stddef.h>      /* For size_t */
 #include <gerror.h>
 
 G_BEGIN_DECLS
@@ -41,6 +42,20 @@ typedef enum
 
 #define G_CONVERT_ERROR g_convert_error_quark()
 GQuark g_convert_error_quark();
+
+/* Thin wrappers around iconv
+ */
+typedef struct _GIConv *GIConv;
+
+GIConv g_iconv_open   (const gchar  *to_codeset,
+		       const gchar  *from_codeset);
+size_t g_iconv        (GIConv        converter,
+		       gchar       **inbuf,
+		       size_t       *inbytes_left,
+		       gchar       **outbuf,
+		       size_t       *outbytes_left);
+gint   g_iconv_close  (GIConv        converter);
+
 
 gchar* g_convert               (const gchar  *str,
 				gint          len,

@@ -30,6 +30,7 @@
 #endif
 
 #include "glib.h"
+#include "config.h"
 
 #define _(s) (s)
 
@@ -39,27 +40,64 @@ g_convert_error_quark()
   static GQuark quark;
   if (!quark)
     quark = g_quark_from_static_string ("g_convert_error");
+
   return quark;
 }
 
-static iconv_t
-open_converter (const gchar *to_codeset,
-		const gchar *from_codeset,
-		GError     **error)
+#if defined(USE_LIBICONV) && !defined (_LIBICONV_H)
+#error libiconv in use but included iconv.h not from libiconv
+#endif
+#if !defined(USE_LIBICONV) && defined (_LIBICONV_H)
+#error libiconv not in use but included iconv.h is from libiconv
+#endif
+
+GIConv
+g_iconv_open (const gchar  *to_codeset,
+	      const gchar  *from_codeset)
 {
   iconv_t cd = iconv_open (to_codeset, from_codeset);
+  
+  return (GIConv)cd;
+}
+
+size_t 
+g_iconv (GIConv   converter,
+	 gchar  **inbuf,
+	 size_t  *inbytes_left,
+	 gchar  **outbuf,
+	 size_t  *outbytes_left)
+{
+  iconv_t cd = (iconv_t)converter;
+
+  return iconv (cd, inbuf, inbytes_left, outbuf, outbytes_left);
+}
+
+gint
+g_iconv_close (GIConv converter)
+{
+  iconv_t cd = (iconv_t)converter;
+
+  return iconv_close (cd);
+}
+
+GIConv
+open_converter (const gchar *to_codeset,
+                const gchar *from_codeset,
+		GError     **error)
+{
+  GIConv cd = g_iconv_open (to_codeset, from_codeset);
 
   if (cd == (iconv_t) -1)
     {
       /* Something went wrong.  */
       if (errno == EINVAL)
-	g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-		     _("Conversion from character set `%s' to `%s' is not supported"),
-		     from_codeset, to_codeset);
+        g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
+                     _("Conversion from character set `%s' to `%s' is not suppo\rted"),
+                     from_codeset, to_codeset);
       else
         g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		     _("Could not open converter from `%s' to `%s': %s"),
-		     from_codeset, to_codeset, strerror (errno));
+                     _("Could not open converter from `%s' to `%s': %s"),
+                     from_codeset, to_codeset, strerror (errno));
     }
 
   return cd;
@@ -106,7 +144,7 @@ g_convert (const gchar *str,
   size_t inbytes_remaining;
   size_t outbytes_remaining;
   size_t err;
-  iconv_t cd;
+  GIConv cd;
   size_t outbuf_size;
   gboolean have_error = FALSE;
   
@@ -116,7 +154,7 @@ g_convert (const gchar *str,
      
   cd = open_converter (to_codeset, from_codeset, error);
 
-  if (cd == (iconv_t) -1)
+  if (cd == (GIConv) -1)
     {
       if (bytes_read)
         *bytes_read = 0;
@@ -138,7 +176,7 @@ g_convert (const gchar *str,
 
  again:
   
-  err = iconv (cd, &p, &inbytes_remaining, &outp, &outbytes_remaining);
+  err = g_iconv (cd, (char **)&p, &inbytes_remaining, &outp, &outbytes_remaining);
 
   if (err == (size_t) -1)
     {
@@ -174,7 +212,7 @@ g_convert (const gchar *str,
 
   *outp = '\0';
   
-  iconv_close (cd);
+  g_iconv_close (cd);
 
   if (bytes_read)
     *bytes_read = p - str;
@@ -256,7 +294,7 @@ g_convert_with_fallback (const gchar *str,
   size_t save_inbytes = 0;
   size_t outbytes_remaining;
   size_t err;
-  iconv_t cd;
+  GIConv cd;
   size_t outbuf_size;
   gboolean have_error = FALSE;
   gboolean done = FALSE;
@@ -290,7 +328,7 @@ g_convert_with_fallback (const gchar *str,
    * to_codeset, and the string as UTF-8.
    */
   cd = open_converter (to_codeset, "UTF-8", error);
-  if (cd == (iconv_t) -1)
+  if (cd == (GIConv) -1)
     {
       if (bytes_read)
         *bytes_read = 0;
@@ -322,7 +360,7 @@ g_convert_with_fallback (const gchar *str,
   while (!done && !have_error)
     {
       size_t inbytes_tmp = inbytes_remaining;
-      err = iconv (cd, &p, &inbytes_tmp, &outp, &outbytes_remaining);
+      err = g_iconv (cd, (char **)&p, &inbytes_tmp, &outp, &outbytes_remaining);
       inbytes_remaining = inbytes_tmp;
 
       if (err == (size_t) -1)
@@ -399,7 +437,7 @@ g_convert_with_fallback (const gchar *str,
    */
   *outp = '\0';
   
-  iconv_close (cd);
+  g_iconv_close (cd);
 
   if (bytes_written)
     *bytes_written = outp - str;	/* Doesn't include '\0' */
@@ -677,4 +715,5 @@ g_filename_from_utf8 (const gchar *string, GError **error)
   return g_strdup (string);
 #endif
 }
+
 

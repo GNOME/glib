@@ -100,6 +100,7 @@ if test "$echo_libs" = "yes"; then
 	libsa=""
 	if test "$lib_glib" = "yes"; then
 		libsp="$libsp -lglib-1.3"
+		libsa="$libsa @ICONV_LIBS@"
 	fi
 	if test "$lib_gobject" = "yes"; then
 		libsp="-lgobject-1.3 $libsp"
