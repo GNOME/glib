@@ -1,3 +1,9 @@
+Thu Dec  5 15:43:46 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Fix multiple problems with the programs
+	in the argument of AC_TRY_RUN() having preprocessor
+	defines not in the first column.
+
 Thu Dec  5 15:24:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Start of fixes for cross-compilation. Based on

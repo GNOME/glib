@@ -802,8 +802,7 @@ fi
 
 dnl *** check for sane realloc() ***
 AC_CACHE_CHECK([whether realloc (NULL,) will work],glib_cv_sane_realloc,[
-        AC_TRY_RUN([
-        #include <stdlib.h>
+        AC_TRY_RUN([#include <stdlib.h>
         int main() {
           return realloc (0, sizeof (int)) == 0;
         }],
@@ -853,8 +852,7 @@ dnl **********************
 dnl we currently check for all three va_copy possibilities, so we get
 dnl all results in config.log for bug reports.
 AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
+	AC_TRY_RUN([#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -872,8 +870,7 @@ AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 	[])
 ])
 AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
+	AC_TRY_RUN([#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -903,8 +900,7 @@ if test -n "$g_va_copy_func"; then
 fi
 
 AC_CACHE_CHECK([whether va_lists can be copied by value],glib_cv_va_val_copy,[
-	AC_TRY_RUN([
-	#include <stdarg.h>
+	AC_TRY_RUN([#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -996,22 +992,22 @@ dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
 	AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
 		glib_cv_rtldglobal_broken,[
 		AC_TRY_RUN([
-		#include <dlfcn.h>
-                #ifndef RTLD_GLOBAL
-                #define RTLD_GLOBAL 0
-                #endif
-                #ifndef RTLD_LAZY
-                #define RTLD_LAZY 0
-                #endif
-		int pthread_create;
-		int main () {
-		void *handle, *global, *local;
-		global = &pthread_create;
-		handle = dlopen ("libpthread.so", RTLD_GLOBAL | RTLD_LAZY);
-		if (!handle) return 0;
-		local = dlsym (handle, "pthread_create");
-		return global == local;
-		}],
+#include <dlfcn.h>
+#ifndef RTLD_GLOBAL
+#  define RTLD_GLOBAL 0
+#endif
+#ifndef RTLD_LAZY
+#  define RTLD_LAZY 0
+#endif
+int pthread_create;
+int main () {
+    void *handle, *global, *local;
+    global = &pthread_create;
+    handle = dlopen ("libpthread.so", RTLD_GLOBAL | RTLD_LAZY);
+    if (!handle) return 0;
+    local = dlsym (handle, "pthread_create");
+    return global == local;
+}                       ],
 			[glib_cv_rtldglobal_broken=no],
 			[glib_cv_rtldglobal_broken=yes],
 			[])
@@ -1025,8 +1021,7 @@ dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
 dnl *** check whether we need preceeding underscores
 	AC_CACHE_CHECK([for preceeding underscore in symbols],
 		glib_cv_uscore,[
-		AC_TRY_RUN([
-		#include <dlfcn.h>
+		AC_TRY_RUN([#include <dlfcn.h>
                 int glib_underscore_test (void) { return 42; }
 		int main() {
 		  void *f1 = (void*)0, *f2 = (void*)0, *handle;
@@ -1453,12 +1448,14 @@ case $have_threads in
 	    LIBS="$glib_save_LIBS $add_thread_lib"
 	
             AC_MSG_CHECKING(for sched_get_priority_min$IN)
-	    AC_TRY_RUN([#include <sched.h>
-		        #include <errno.h>
-		        int main() {
-    			  errno = 0;
-                          return sched_get_priority_min(SCHED_OTHER)==-1
-			 	&& errno != 0;}],
+	    AC_TRY_RUN([
+#include <sched.h>
+#include <errno.h>
+int main() {
+    errno = 0;
+    return sched_get_priority_min(SCHED_OTHER)==-1
+ 	   && errno != 0;
+}                       ],
 	 		[AC_MSG_RESULT(yes)
 		 	 G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
 			 posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
@@ -1527,16 +1524,19 @@ if test x"$have_threads" != xno; then
 	if test "$ac_cv_header_pwd_h" = "yes"; then
 	 	AC_CACHE_CHECK([for posix getpwuid_r],
 			ac_cv_func_posix_getpwuid_r,
-			[AC_TRY_RUN([#include <errno.h>
-                                #include <pwd.h>
-                                int main () { char buffer[10000];
-                                struct passwd pwd, *pwptr = &pwd;
-                                int error;
-                                errno = 0;
-                                error = getpwuid_r (0, &pwd, buffer, 
-                                        sizeof (buffer), &pwptr);
-                                return (error < 0 && errno == ENOSYS) 
-					|| error == ENOSYS; }],
+			[AC_TRY_RUN([
+#include <errno.h>
+#include <pwd.h>
+int main () { 
+    char buffer[10000];
+    struct passwd pwd, *pwptr = &pwd;
+    int error;
+    errno = 0;
+    error = getpwuid_r (0, &pwd, buffer, 
+                        sizeof (buffer), &pwptr);
+   return (error < 0 && errno == ENOSYS) 
+	   || error == ENOSYS; 
+}                               ],
 				[ac_cv_func_posix_getpwuid_r=yes],
 				[ac_cv_func_posix_getpwuid_r=no])])
 		if test "$ac_cv_func_posix_getpwuid_r" = yes; then
@@ -1624,20 +1624,21 @@ if test x"$have_threads" != xno; then
 		CPPFLAGS="$glib_save_CPPFLAGS"
 
 		AC_MSG_CHECKING(whether to use the PID niceness surrogate for thread priorities)
-		AC_TRY_RUN([#include <pthread.h> 
-			#include <sys/types.h>
-			#include <unistd.h>
-			pid_t other_pid = 0;
+		AC_TRY_RUN([
+#include <pthread.h> 
+#include <sys/types.h>
+#include <unistd.h>
+pid_t other_pid = 0;
 
-			void* func(void* data) {other_pid = getpid();}
-                	main()
-			{ pthread_t t; 
-			  void *ret;
-			  pthread_create (&t, $defattr, func, NULL);
-			  pthread_join (t, &ret);
-			  exit (getpid()==other_pid || 
-				$posix_priority_min != $posix_priority_max);
-			}],
+void* func(void* data) {other_pid = getpid();}
+main()
+{ pthread_t t; 
+  void *ret;
+  pthread_create (&t, $defattr, func, NULL);
+  pthread_join (t, &ret);
+  exit (getpid()==other_pid || 
+	$posix_priority_min != $posix_priority_max);
+}                       ],
 			[AC_MSG_RESULT(yes)
 			  AC_DEFINE(G_THREAD_USE_PID_SURROGATE, 1, [whether to use the PID niceness surrogate for thread priorities])
                         ],
