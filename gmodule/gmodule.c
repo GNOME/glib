@@ -1,5 +1,5 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+/* GMODULE - GLIB wrapper code for dynamic module loading
+ * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
