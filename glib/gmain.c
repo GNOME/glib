@@ -220,6 +220,9 @@ static gboolean g_idle_dispatch    (GSource     *source,
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
 
+#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
+__declspec(dllexport)
+#endif
 GSourceFuncs g_timeout_funcs =
 {
   g_timeout_prepare,
@@ -228,6 +231,9 @@ GSourceFuncs g_timeout_funcs =
   NULL
 };
 
+#if defined(G_PLATFORM_WIN32) && defined(__GNUC__)
+__declspec(dllexport)
+#endif
 GSourceFuncs g_idle_funcs =
 {
   g_idle_prepare,

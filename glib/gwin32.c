@@ -901,13 +901,10 @@ get_package_directory_from_module (gchar *module_name)
   if ((p = strrchr (fn, G_DIR_SEPARATOR)) != NULL)
     *p = '\0';
 
-  if (module_name)
-    {
-      p = strrchr (fn, G_DIR_SEPARATOR);
-      if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
-		g_ascii_strcasecmp (p + 1, "lib") == 0))
-	*p = '\0';
-    }
+  p = strrchr (fn, G_DIR_SEPARATOR);
+  if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
+	    g_ascii_strcasecmp (p + 1, "lib") == 0))
+    *p = '\0';
 
   g_hash_table_insert (module_dirs, module_name ? module_name : "", fn);
 
@@ -969,11 +966,16 @@ g_win32_get_package_installation_directory (gchar *package,
       key = g_strconcat ("Software\\", package, NULL);
       
       nbytes = 0;
-      if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
-			KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
-	  && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-			      &type, NULL, &nbytes) == ERROR_SUCCESS
-	  && type == REG_SZ)
+      if ((RegOpenKeyEx (HKEY_CURRENT_USER, key, 0,
+			 KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+	   && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+			       &type, NULL, &nbytes) == ERROR_SUCCESS)
+	  ||
+	  ((RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
+			 KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+	   && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+			       &type, NULL, &nbytes) == ERROR_SUCCESS)
+	   && type == REG_SZ))
 	{
 	  result = g_malloc (nbytes + 1);
 	  RegQueryValueEx (reg_key, "InstallationDirectory", 0,

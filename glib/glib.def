@@ -194,6 +194,7 @@ EXPORTS
 	g_iconv_open
 	g_idle_add
 	g_idle_add_full
+	g_idle_funcs
 	g_idle_remove_by_data
 	g_idle_source_new
 	g_int_equal
@@ -243,6 +244,7 @@ EXPORTS
 	g_io_channel_write_chars
 	g_io_channel_write_unichar
 	g_io_create_watch
+	g_io_watch_funcs
 	g_list_alloc
 	g_list_append
 	g_list_concat
@@ -593,6 +595,7 @@ EXPORTS
 	g_threads_got_initialized
 	g_timeout_add
 	g_timeout_add_full
+	g_timeout_funcs
 	g_timeout_source_new
 	g_timer_destroy
 	g_timer_elapsed

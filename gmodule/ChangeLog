@@ -1,3 +1,9 @@
+2001-09-18  Tor Lillqvist  <tml@iki.fi>
+
+	* Makefile.am: On Win32, pass a dummy -rpath flag to libtool when
+	building libgplugin_[ab].la, otherwise libtool doesn't create a
+	DLL, but a static archive.
+
 2001-07-20  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc.in : reflect glib move

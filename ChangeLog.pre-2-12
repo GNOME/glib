@@ -1,3 +1,17 @@
+2001-09-18  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gmain.c
+	* glib/giowin32.c: Mark the _funcs tables for export.
+
+	* glib/glib.def: Add here, too.
+
+	* glib/gwin32.c (get_package_directory_from_module): No reason to
+	check for the module being in a bin or lib directory only when
+	module_name is non-NULL.
+
+	* glib/gwin32.c (g_win32_get_package_installation_directory):
+	Check first in HKEY_CURRENT_USER, then in HKEY_LOCAL_MACHINE.
+
 2001-09-17  Darin Adler  <darin@bentspoon.com>
 
 	* tests/strfunc-test.c: (main): Change so that it works

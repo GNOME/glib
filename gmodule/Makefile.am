@@ -40,6 +40,7 @@ no_undefined = -no-undefined
 endif
 if OS_WIN32
 export_symbols = -export-symbols gmodule.def
+plugin_rpath = -rpath `pwd`
 endif
 
 libgmodule_1_3_la_SOURCES = gmodule.c
@@ -53,11 +54,11 @@ libgmodule_1_3_la_LIBADD = @G_MODULE_WIN32_RESOURCE@ @G_MODULE_LIBS_EXTRA@ @G_MO
 libgmodule_1_3_la_DEPENDENCIES = @G_MODULE_WIN32_RESOURCE@
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
-libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) $(plugin_rpath)
 libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
-libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined) $(plugin_rpath)
 libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 noinst_PROGRAMS = testgmodule
