@@ -1,3 +1,8 @@
+2003-02-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gunidecomp.c (g_unicode_canonical_decomposition): Use
+	g_malloc instead of directly using malloc.
+
 2003-02-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add a couple of missing entries, thanks to Cedric

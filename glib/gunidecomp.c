@@ -157,7 +157,7 @@ g_unicode_canonical_decomposition (gunichar ch,
       /* We've counted twice as many bytes as there are
 	 characters.  */
       *result_len = len / 2;
-      r = malloc (len / 2 * sizeof (gunichar));
+      r = g_malloc (len / 2 * sizeof (gunichar));
       
       for (i = 0; i < len; i += 2)
 	{
@@ -167,7 +167,7 @@ g_unicode_canonical_decomposition (gunichar ch,
   else
     {
       /* Not in our table.  */
-      r = malloc (sizeof (gunichar));
+      r = g_malloc (sizeof (gunichar));
       *r = ch;
       *result_len = 1;
     }
