@@ -346,6 +346,7 @@ specifiers for values of type #gint32. See also #G_GINT16_MODIFIER.
 
 @Since: 2.4
 
+
 <!-- ##### MACRO G_GINT32_FORMAT ##### -->
 <para>
 This is the platform dependent conversion specifier for scanning and
@@ -377,6 +378,7 @@ is not defined.
 </note>
 
 @Since: 2.4
+
 
 <!-- ##### MACRO G_GINT64_FORMAT ##### -->
 <para>

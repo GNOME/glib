@@ -153,6 +153,26 @@ passthrough text back out in the same position
 @Returns: 
 
 
+<!-- ##### FUNCTION g_markup_printf_escaped ##### -->
+<para>
+
+</para>
+
+@format: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_markup_vprintf_escaped ##### -->
+<para>
+
+</para>
+
+@format: 
+@args: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_markup_parse_context_end_parse ##### -->
 <para>
 

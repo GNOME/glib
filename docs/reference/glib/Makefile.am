@@ -32,7 +32,7 @@ IGNORE_HFILES=			\
 	glibconfig-sysdefs.h	\
 	gdebug.h		\
 	gprintfint.h		\
-	trio
+	gnulib
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=--sgml-mode --output-format=xml --ignore-files=trio

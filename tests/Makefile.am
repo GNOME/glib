@@ -73,6 +73,7 @@ test_programs =					\
 	iochannel-test				\
 	list-test				\
 	mainloop-test				\
+	markup-escape-test			\
 	module-test				\
 	node-test				\
 	patterntest				\
@@ -121,6 +122,7 @@ iochannel_test_LDADD = $(progs_ldadd)
 list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
 markup_test_LDADD = $(progs_ldadd)
+markup_escape_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 node_test_LDADD = $(progs_ldadd)

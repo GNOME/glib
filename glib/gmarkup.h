@@ -21,6 +21,8 @@
 #ifndef __G_MARKUP_H__
 #define __G_MARKUP_H__
 
+#include <stdarg.h>
+
 #include <glib/gerror.h>
 
 G_BEGIN_DECLS
@@ -117,6 +119,11 @@ void                 g_markup_parse_context_get_position (GMarkupParseContext *c
 /* useful when saving */
 gchar* g_markup_escape_text (const gchar *text,
                              gssize       length);  
+
+gchar *g_markup_printf_escaped (const char *format,
+				...) G_GNUC_PRINTF (1, 2);
+gchar *g_markup_vprintf_escaped (const char *format,
+				 va_list     args);
 
 G_END_DECLS
 

@@ -1,6 +1,6 @@
 /* gmarkup.c - Simple XML-like parser
  *
- *  Copyright 2000 Red Hat, Inc.
+ *  Copyright 2000, 2003 Red Hat, Inc.
  *
  * GLib is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1825,4 +1826,306 @@ g_markup_escape_text (const gchar *text,
   append_escaped_text (str, text, length);
 
   return g_string_free (str, FALSE);
+}
+
+/**
+ * find_conversion:
+ * @format: a printf-style format string
+ * @after: location to store a pointer to the character after
+ *   the returned conversion. On a %NULL return, returns the
+ *   pointer to the trailing NUL in the string
+ * 
+ * Find the next conversion in a printf-style format string.
+ * Partially based on code from printf-parser.c,
+ * Copyright (C) 1999-2000, 2002-2003 Free Software Foundation, Inc.
+ * 
+ * Return value: pointer to the next conversion in @format,
+ *  or %NULL, if none.
+ **/
+static const char *
+find_conversion (const char  *format,
+		 const char **after)
+{
+  const char *start = format;
+  const char *cp;
+  
+  while (*start != '\0' && *start != '%')
+    start++;
+
+  if (*start == '\0')
+    {
+      *after = start;
+      return NULL;
+    }
+
+  cp = start + 1;
+
+  if (*cp == '\0')
+    {
+      *after = cp;
+      return NULL;
+    }
+  
+  /* Test for positional argument.  */
+  if (*cp >= '0' && *cp <= '9')
+    {
+      const char *np;
+      
+      for (np = cp; *np >= '0' && *np <= '9'; np++)
+	;
+      if (*np == '$')
+	cp = np + 1;
+    }
+
+  /* Skip the flags.  */
+  for (;;)
+    {
+      if (*cp == '\'' ||
+	  *cp == '-' ||
+	  *cp == '+' ||
+	  *cp == ' ' ||
+	  *cp == '#' ||
+	  *cp == '0')
+	cp++;
+      else
+	break;
+    }
+
+  /* Skip the field width.  */
+  if (*cp == '*')
+    {
+      cp++;
+
+      /* Test for positional argument.  */
+      if (*cp >= '0' && *cp <= '9')
+	{
+	  const char *np;
+
+	  for (np = cp; *np >= '0' && *np <= '9'; np++)
+	    ;
+	  if (*np == '$')
+	    cp = np + 1;
+	}
+    }
+  else
+    {
+      for (; *cp >= '0' && *cp <= '9'; cp++)
+	;
+    }
+
+  /* Skip the precision.  */
+  if (*cp == '.')
+    {
+      cp++;
+      if (*cp == '*')
+	{
+	  /* Test for positional argument.  */
+	  if (*cp >= '0' && *cp <= '9')
+	    {
+	      const char *np;
+
+	      for (np = cp; *np >= '0' && *np <= '9'; np++)
+		;
+	      if (*np == '$')
+		cp = np + 1;
+	    }
+	}
+      else
+	{
+	  for (; *cp >= '0' && *cp <= '9'; cp++)
+	    ;
+	}
+    }
+
+  /* Skip argument type/size specifiers.  */
+  while (*cp == 'h' ||
+	 *cp == 'L' ||
+	 *cp == 'l' ||
+	 *cp == 'j' ||
+	 *cp == 'z' ||
+	 *cp == 'Z' ||
+	 *cp == 't')
+    cp++;
+	  
+  /* Skip the conversion character.  */
+  cp++;
+
+  *after = cp;
+  return start;
+}
+
+/**
+ * g_markup_vprintf_escaped:
+ * @format: printf() style format string
+ * @args: variable argument list, similar to vprintf()
+ * 
+ * Formats the data in @args according to @format, escaping
+ * all string and character arguments in the fashion
+ * of g_markup_escape_text(). See g_markup_printf_escaped().
+ * 
+ * Return value: newly allocated result from formatting
+ *  operation. Free with g_free().
+ **/
+char *
+g_markup_vprintf_escaped (const char *format,
+			  va_list     args)
+{
+  GString *format1;
+  GString *format2;
+  GString *result = NULL;
+  gchar *output1 = NULL;
+  gchar *output2 = NULL;
+  const char *p, *op1, *op2;
+  va_list args2;
+
+  /* The technique here, is that we make two format strings that
+   * have the identical conversions in the identical order to the
+   * original strings, but differ in the text in-between. We
+   * then use the normal g_strdup_vprintf() to format the arguments
+   * with the two new format strings. By comparing the results,
+   * we can figure out what segments of the output come from
+   * the the original format string, and what from the arguments,
+   * and thus know what portions of the string to escape.
+   *
+   * For instance, for:
+   *
+   *  g_markup_printf_escaped ("%s ate %d apples", "Susan & Fred", 5);
+   *
+   * We form the two format strings "%sX%dX" and %sY%sY". The results
+   * of formatting with those two strings are
+   *
+   * "%sX%dX" => "Susan & FredX5X"
+   * "%sY%dY" => "Susan & FredY5Y"
+   *
+   * To find the span of the first argument, we find the first position
+   * where the two arguments differ, which tells us that the first
+   * argument formatted to "Susan & Fred". We then escape that
+   * to "Susan &amp; Fred" and join up with the intermediate portions
+   * of the format string and the second argument to get
+   * "Susan &amp; Fred ate 5 apples".
+   */
+
+  /* Create the two modified format strings
+   */
+  format1 = g_string_new (NULL);
+  format2 = g_string_new (NULL);
+  p = format;
+  while (TRUE)
+    {
+      const char *after;
+      const char *conv = find_conversion (p, &after);
+      if (!conv)
+	break;
+
+      g_string_append_len (format1, conv, after - conv);
+      g_string_append_c (format1, 'X');
+      g_string_append_len (format2, conv, after - conv);
+      g_string_append_c (format2, 'Y');
+
+      p = after;
+    }
+
+  /* Use them to format the arguments
+   */
+  G_VA_COPY (args2, args);
+  
+  output1 = g_strdup_vprintf (format1->str, args);
+  va_end (args);
+  if (!output1)
+    goto cleanup;
+  
+  output2 = g_strdup_vprintf (format2->str, args2);
+  va_end (args2);
+  if (!output2)
+    goto cleanup;
+
+  result = g_string_new (NULL);
+
+  /* Iterate through the original format string again,
+   * copying the non-conversion portions and the escaped
+   * converted arguments to the output string.
+   */
+  op1 = output1;
+  op2 = output2;
+  p = format;
+  while (TRUE)
+    {
+      const char *after;
+      const char *output_start;
+      const char *conv = find_conversion (p, &after);
+      char *escaped;
+      
+      if (!conv)	/* The end, after points to the trailing \0 */
+	{
+	  g_string_append_len (result, p, after - p);
+	  break;
+	}
+
+      g_string_append_len (result, p, conv - p);
+      output_start = op1;
+      while (*op1 == *op2)
+	{
+	  op1++;
+	  op2++;
+	}
+      
+      escaped = g_markup_escape_text (output_start, op1 - output_start);
+      g_string_append (result, escaped);
+      g_free (escaped);
+      
+      p = after;
+      op1++;
+      op2++;
+    }
+
+ cleanup:
+  g_string_free (format1, TRUE);
+  g_string_free (format2, TRUE);
+  g_free (output1);
+  g_free (output2);
+
+  if (result)
+    return g_string_free (result, FALSE);
+  else
+    return NULL;
+}
+
+/**
+ * g_markup_printf_escaped:
+ * @format: printf() style format string
+ * @Varargs: the arguments to insert in the format string
+ * 
+ * Formats arguments according to @format, escaping
+ * all string and character arguments in the fashion
+ * of g_markup_escape_text(). This is useful when you
+ * want to insert literal strings into XML-style markup
+ * output, without having to worry that the strings
+ * might themselves contain markup.
+ *
+ * <informalexample><programlisting>
+ * const char *store = "Fortnum & Mason";
+ * const char *item = "Tea";
+ * char *output;
+ * &nbsp;
+ * output = g_markup_printf_escaped ("&lt;purchase&gt;"
+ *                                   "&lt;store&gt;&percnt;s&lt;/store&gt;"
+ *                                   "&lt;item&gt;&percnt;s&lt;/item&gt;"
+ *                                   "&lt;/purchase&gt;",
+ *                                   store, item);
+ * </programlisting></informalexample>
+ * 
+ * Return value: newly allocated result from formatting
+ *  operation. Free with g_free().
+ **/
+char *
+g_markup_printf_escaped (const char *format, ...)
+{
+  char *result;
+  va_list args;
+  
+  va_start (args, format);
+  result = g_markup_vprintf_escaped (format, args);
+  va_end (args);
+
+  return result;
 }

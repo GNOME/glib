@@ -169,6 +169,16 @@ A test to perform an a file using g_file_test().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_file_read_link ##### -->
+<para>
+
+</para>
+
+@filename: 
+@error: 
+@Returns: 
+
+
 <!-- ##### STRUCT GDir ##### -->
 <para>
 An opaque structure representing an opened directory.

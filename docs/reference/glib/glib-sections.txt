@@ -843,6 +843,8 @@ GMarkupParseFlags
 GMarkupParseContext
 GMarkupParser
 g_markup_escape_text
+g_markup_printf_escaped
+g_markup_vprintf_escaped
 g_markup_parse_context_end_parse
 g_markup_parse_context_free
 g_markup_parse_context_get_position
