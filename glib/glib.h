@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -447,9 +447,9 @@ typedef unsigned long long guint64;
 /* This should never happen */
 #endif
 
-typedef gint32  gssize;
+typedef gint32	gssize;
 typedef guint32 gsize;
-typedef gint32  gtime;
+typedef gint32	gtime;
 typedef guint32 GQuark;
 
 typedef struct _GList		GList;
@@ -526,13 +526,13 @@ struct _GArray
 struct _GByteArray
 {
   guint8 *data;
-  guint   len;
+  guint	  len;
 };
 
 struct _GPtrArray
 {
   gpointer *pdata;
-  guint     len;
+  guint	    len;
 };
 
 struct _GTuples
@@ -543,7 +543,7 @@ struct _GTuples
 struct _GDebugKey
 {
   gchar *key;
-  guint  value;
+  guint	 value;
 };
 
 struct _GCache { gint dummy; };
@@ -1155,6 +1155,7 @@ struct	_GScannerConfig
   guint		identifier_2_string : 1;
   guint		char_2_token : 1;		/* return G_TOKEN_CHAR? */
   guint		symbol_2_token : 1;
+  guint		scope_0_fallback : 1;		/* try scope 0 on lookups? */
 };
 
 struct	_GScanner
@@ -1193,6 +1194,7 @@ struct	_GScanner
   guint			text_len;
   gint			input_fd;
   gint			peeked_char;
+  guint			scope_id;
 
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
@@ -1212,15 +1214,23 @@ GValue		g_scanner_cur_value		(GScanner	*scanner);
 guint		g_scanner_cur_line		(GScanner	*scanner);
 guint		g_scanner_cur_position		(GScanner	*scanner);
 gboolean	g_scanner_eof			(GScanner	*scanner);
-void		g_scanner_add_symbol		(GScanner	*scanner,
+guint		g_scanner_set_scope		(GScanner	*scanner,
+						 guint		 scope_id);
+void		g_scanner_scope_add_symbol	(GScanner	*scanner,
+						 guint		 scope_id,
 						 const gchar	*symbol,
 						 gpointer	value);
-gpointer	g_scanner_lookup_symbol		(GScanner	*scanner,
+void		g_scanner_scope_remove_symbol	(GScanner	*scanner,
+						 guint		 scope_id,
 						 const gchar	*symbol);
-void		g_scanner_foreach_symbol	(GScanner	*scanner,
+gpointer	g_scanner_scope_lookup_symbol	(GScanner	*scanner,
+						 guint		 scope_id,
+						 const gchar	*symbol);
+void		g_scanner_scope_foreach_symbol	(GScanner	*scanner,
+						 guint		 scope_id,
 						 GHFunc		 func,
 						 gpointer	 func_data);
-void		g_scanner_remove_symbol		(GScanner	*scanner,
+gpointer	g_scanner_lookup_symbol		(GScanner	*scanner,
 						 const gchar	*symbol);
 void		g_scanner_freeze_symbol_table	(GScanner	*scanner);
 void		g_scanner_thaw_symbol_table	(GScanner	*scanner);
@@ -1238,6 +1248,17 @@ void		g_scanner_warn			(GScanner	*scanner,
 						 const gchar	*format,
 						 ...) G_GNUC_PRINTF (2,3);
 gint		g_scanner_stat_mode		(const gchar	*filename);
+/* keep downward source compatibility */
+#define		g_scanner_add_symbol( scanner, symbol, value )	G_STMT_START { \
+  g_scanner_scope_add_symbol ((scanner), 0, (symbol), (value)); \
+} G_STMT_END
+#define		g_scanner_remove_symbol( scanner, symbol )	G_STMT_START { \
+  g_scanner_scope_remove_symbol ((scanner), 0, (symbol)); \
+} G_STMT_END
+#define		g_scanner_foreach_symbol( scanner, func, data )	G_STMT_START { \
+  g_scanner_scope_foreach_symbol ((scanner), 0, (func), (data)); \
+} G_STMT_END
+
 
 
 /* Completion */
