@@ -153,7 +153,7 @@ struct _GTimeoutSource
 {
   GSource     source;
   GTimeVal    expiration;
-  gint        interval;
+  guint       interval;
 };
 
 struct _GPollRec
@@ -2937,11 +2937,11 @@ g_timeout_prepare  (GSource  *source,
 	   * this at least avoids hanging for long periods of time.
 	   */
 	  g_timeout_set_expiration (timeout_source, &current_time);
-	  msec = timeout_source->interval;
+	  msec = MIN (G_MAXINT, timeout_source->interval);
 	}
       else
 	{
-	  msec += sec * 1000;
+	  msec = MIN (G_MAXINT, (guint)msec + 1000 * (guint)sec);
 	}
     }
 
