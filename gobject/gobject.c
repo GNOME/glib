@@ -64,6 +64,13 @@ static GHashTable	*param_spec_hash_table = NULL;
 
 /* --- functions --- */
 #ifdef	DEBUG_OBJECTS
+
+/* We need an actual method for handling debug keys in GLib.
+ * For now, we'll simply use, as a method
+ * 'extern gboolean glib_debug_objects'
+ */
+gboolean glib_debug_objects = FALSE;
+
 static guint		  debug_objects_count = 0;
 static GHashTable	 *debug_objects_ht = NULL;
 static void
@@ -81,10 +88,13 @@ debug_objects_foreach (gpointer key,
 static void
 debug_objects_atexit (void)
 {
-  if (debug_objects_ht)
+  if (glib_debug_objects)
     {
-      g_message ("stale GObjects: %u", debug_objects_count);
-      g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
+      if (debug_objects_ht)
+	{
+	  g_message ("stale GObjects: %u", debug_objects_count);
+	  g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
+	}
     }
 }
 #endif	DEBUG_OBJECTS
@@ -239,10 +249,13 @@ g_object_do_init (GObject *object)
   object->qdata = NULL;
   
 #ifdef	DEBUG_OBJECTS
-  if (!debug_objects_ht)
-    debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
-  debug_objects_count++;
-  g_hash_table_insert (debug_objects_ht, object, object);
+  if (glib_debug_objects)
+    {
+      if (!debug_objects_ht)
+	debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
+      debug_objects_count++;
+      g_hash_table_insert (debug_objects_ht, object, object);
+    }
 #endif	DEBUG_OBJECTS
 }
 
@@ -275,10 +288,13 @@ g_object_do_finalize (GObject *object)
   g_datalist_clear (&object->qdata);
   
 #ifdef	DEBUG_OBJECTS
-  g_assert (g_hash_table_lookup (debug_objects_ht, object) == object);
-  
-  g_hash_table_remove (debug_objects_ht, object);
-  debug_objects_count--;
+  if (glib_debug_objects)
+    {
+      g_assert (g_hash_table_lookup (debug_objects_ht, object) == object);
+      
+      g_hash_table_remove (debug_objects_ht, object);
+      debug_objects_count--;
+    }
 #endif	DEBUG_OBJECTS
   
   g_type_free_instance ((GTypeInstance*) object);

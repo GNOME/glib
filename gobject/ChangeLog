@@ -1,3 +1,10 @@
+Thu Jul  6 15:30:27 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (EXTRA_DIST): dist fixes.
+
+	* gobject.c: Add a global variable glib_debug_objects
+	(not in header file) to control object tracing.
+
 2000-07-01  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def: Update added and renamed entry points.

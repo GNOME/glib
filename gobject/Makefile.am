@@ -63,10 +63,12 @@ gobject_extra_sources = @STRIP_BEGIN@ \
 gobject_h_sources = $(gobject_private_h_sources) $(gobject_public_h_sources) # $(gobject_built_public_sources)
 libgobjectinclude_HEADERS = $(gobject_public_h_sources) # $(gobject_built_public_sources)
 libgobject_la_SOURCES = $(gobject_c_sources)
-MAINTAINERCLEANFILES += # $(gobject_built_public_sources) $(gobject_built_sources)
+MAINTAINERCLEANFILES += 
+# $(gobject_built_public_sources) $(gobject_built_sources)
 EXTRA_HEADERS +=
 EXTRA_DIST += $(gobject_private_h_sources)
-EXTRA_DIST += $(gobject_extra_sources) # $(gobject_built_sources) $(gobject_built_public_sources)
+EXTRA_DIST += $(gobject_extra_sources) 
+# $(gobject_built_sources) $(gobject_built_public_sources)
 
 #
 # programs to compile and install
@@ -81,11 +83,11 @@ gobject_query_LDADD = $(progs_LDADD)
 #
 # auxillary files
 #
-EXTRA_DIST += \
-	TODO		\
-	makefile.mingw	\
-	makefile.mingw.in \
-	gobject.rc	\
+EXTRA_DIST += 			\
+	makefile.mingw		\
+	makefile.mingw.in 	\
+	gobject.def		\
+	gobject.rc		\
 	gobject.rc.in
 
 gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
