@@ -1,5 +1,15 @@
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gconvert.c (g_filename_display_name): New function 
+	to convert a filename to a UTF-8 string for display 
+	purposes.  (requested by Alex Larsson)
+	
+	* glib/gconvert.c (g_get_filename_charsets): New function 
+	to return the encodings which are tried when converting a 
+	filename to UTF-8. (#151465, François Gagné)
+
+2004-11-02  Matthias Clasen  <mclasen@redhat.com>
+
 	* configure.in: Bump version
 
 	* === Released 2.5.5 ===
