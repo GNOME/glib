@@ -76,6 +76,7 @@ glib_OBJECTS =			\
 	gthreadpool.o		\
 	gtimer.o		\
 	gtree.o			\
+	gunibreak.o		\
 	gunidecomp.o		\
 	guniprop.o		\
 	gutf8.o			\

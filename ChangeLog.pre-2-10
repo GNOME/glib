@@ -1,3 +1,11 @@
+2000-12-01  Tor Lillqvist  <tml@iki.fi>
+
+	* {.,*}/makefile.msc.in: Include make.msc from GLib's build subdir.
+
+	* makefile.{mingw,msc}.in (glib_OBJECTS): Add gunibreak.
+
+	* glib.def: Update correspondingly.
+
 2000-11-21  Havoc Pennington  <hp@pobox.com>
 
 	* gmacros.h: Provide G_CONST_RETURN which is 'const' by default,

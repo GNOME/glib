@@ -508,6 +508,7 @@ EXPORTS
 	g_tuples_destroy
 	g_tuples_index
 	g_ucs4_to_utf8
+	g_unichar_break_type
 	g_unichar_digit_value
 	g_unichar_isalnum
 	g_unichar_isalpha

@@ -5,7 +5,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 TOP = ..\..
 
-!INCLUDE $(TOP)\build\win32\make.msc
+!INCLUDE ..\build\win32\make.msc
 
 # Possibly override GLib version in build\win32\module.defs
 GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
