@@ -27,6 +27,7 @@ EXTRA_DIST = \
 lib_LTLIBRARIES = libglib.la
 
 libglib_la_SOURCES = \
+	galloca.c	\
 	garray.c	\
 	gcache.c	\
 	gcompletion.c	\

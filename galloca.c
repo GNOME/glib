@@ -34,9 +34,6 @@
 
 
 
-#ifndef G_NATIVE_ALLOCA
-
-
 
 /* If your stack is a linked list of frames, you have to
    provide an "address metric" ADDRESS_FUNCTION macro.  */
@@ -150,7 +147,7 @@ _g_alloca (guint size)
 	{
 	  header *np = hp->h.next;
 
-	  g_free ((gpointer) hp);	/* Collect garbage.  */
+	  free ((gpointer) hp);	/* Collect garbage.  */
 
 	  hp = np;		/* -> next header.  */
 	}
@@ -168,7 +165,7 @@ _g_alloca (guint size)
 
   {
     /* GLib: use mem chunks here? */
-    gpointer new = g_malloc (sizeof (header) + size);
+    gpointer new = malloc (sizeof (header) + size);
     /* Address of header.  */
 
     if (new == 0)
@@ -453,4 +450,3 @@ i00afunc (long address)
 #endif /* not CRAY2 */
 #endif /* CRAY */
 
-#endif /* !G_NATIVE_ALLOCA */
