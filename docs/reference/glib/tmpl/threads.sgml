@@ -1612,7 +1612,9 @@ A <structname>GOnce</structname> struct controls a one-time initialization funct
 Any one-time initialization function must have its own unique <structname>GOnce</structname> 
 struct.
 </para>
- 
+
+@status: 
+@retval: 
 @Since: 2.4
 
 <!-- ##### ENUM GOnceStatus ##### -->
@@ -1660,7 +1662,7 @@ get_debug_flags ()
 {
   static GOnce my_once = G_ONCE_INIT;
   
-  g_once (&my_once, parse_debug_flags, NULL);
+  g_once (&amp;my_once, parse_debug_flags, NULL);
 
   return my_once.retval;
 }
