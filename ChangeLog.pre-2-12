@@ -1,3 +1,7 @@
+Sun Aug 16 Elliot Lee
+	glib.h - #error out if we don't recognize the SIZEOF_VOID_P
+		 #warning if no gint64
+
 Mon Aug 10 17:56:11 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: it's GTime now, and it's back!

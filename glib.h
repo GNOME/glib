@@ -422,6 +422,7 @@ typedef unsigned long long guint64;
 #else
 /* No gint64 */
 #undef HAVE_GINT64
+#warning "No gint64 available"
 #endif
 
 
@@ -445,6 +446,7 @@ typedef unsigned long long guint64;
 
 #else
 /* This should never happen */
+#error "Unhandled SIZEOF_VOID_P"
 #endif
 
 typedef gint32	gssize;
