@@ -290,6 +290,12 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
     (gboolean (*)(GCond *, GMutex *, GTimeVal *)) 
     g_cond_timed_wait_errorcheck_impl;
     
+#ifdef HAVE_G_THREAD_IMPL_INIT
+  /* This isn't called in g_thread_init, as it doesn't think to get
+   * the default implementation, so we have to call it on our own. */
+  g_thread_impl_init();
+#endif
+
   g_thread_init (&errorcheck_functions);
 }
 

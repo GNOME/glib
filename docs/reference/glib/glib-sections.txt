@@ -465,6 +465,7 @@ g_static_mutex_lock
 g_static_mutex_trylock
 g_static_mutex_unlock
 g_static_mutex_get_mutex
+g_static_mutex_free
 
 <SUBSECTION>
 G_LOCK_DEFINE

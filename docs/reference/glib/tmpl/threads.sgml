@@ -30,15 +30,6 @@ that every thread has a private instance of (#GPrivate,
 #GStaticPrivate).
 </para>
 
-<para>
-Currently there is only as much thread support included in GLib as is
-necessary to make GLib itself multithread safe. Version 1.4 of GLib
-will contain full thread support. For now the most portable way to
-create threads is to require the macro #G_THREADS_IMPL_POSIX to be
-defined and use POSIX threads then. This will work on almost all
-platforms (except most notably Solaris and DCE threads.).
-</para>
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
@@ -51,7 +42,7 @@ This macro is defined, if GLib was compiled with thread support. This
 does not necessarily mean, that there is a thread implementation
 available, but the infrastructure is in place and once you provide a
 thread implementation to g_thread_init(), GLib will be multithread
-safe. It isn't and can't be, if #G_THREADS_ENABLED is not defined.
+safe. It isn't and cannot be, if #G_THREADS_ENABLED is not defined.
 </para>
 
 
@@ -343,7 +334,7 @@ access. A first naive implementation would be:
 
 <para>
 This looks like it would work, but there is a race condition while
-constructing the mutex and this code can't work reliable. So please do
+constructing the mutex and this code cannot work reliable. So please do
 not use such constructs in your own programs. One working solution is:
 </para>
 
@@ -478,6 +469,17 @@ safer version of our give_me_next_number() example:
 </para>
 
 <para>
+Sometimes you would like to dynamically create a mutex. If you don't
+want to require prior calling to g_thread_init(), because your code
+should also be usable in non-threaded programs, you are not able to
+use g_mutex_new() and thus #GMutex, as that requires a prior call to
+g_thread_init(). In theses cases you can also use a #GStaticMutex, but
+you should remember to free the #GStaticMutex with
+g_static_mutex_free() when not needed anymore to free up any
+allocated recourses.
+</para>
+
+<para>
 <example>
 <title>Using GStaticMutex to simplify thread-safe programming</title>
 <programlisting>
@@ -570,6 +572,18 @@ corresponding #GMutex for every #GStaticMutex.
 
 @mutex: a #GStaticMutex.
 @Returns: the corresponding #GMutex.
+
+
+<!-- ##### FUNCTION g_static_mutex_free ##### -->
+<para>
+Releases all resources allocated to a #GStaticMutex. You don't have to
+call this functions for a #GStaticMutex with an unbounded lifetime,
+i.e. objects declared 'static', but if you have a #GStaticMutex as a
+member of a structure and the structure is freed, you should also free
+the #GStaticMutex.
+</para>
+
+@mutex: a #GStaticMutex.
 
 
 <!-- ##### MACRO G_LOCK_DEFINE ##### -->

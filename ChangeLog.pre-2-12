@@ -1,5 +1,12 @@
 2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gthread.c, gthread.h: Added g_static_mutex_free to allow using
+	GStaticMutexes with limited lifetime without leaking.
+	
+	* configure.in: GStaticMutex doesn't have to provide extra space
+	for debugging information for G_ERRORCHECK_MUTEXES, as then the
+	non-default implementation (runtime_mutex) is used anyway.
+
 	* gthread.h (g_cond_wait): Added debug information for
 	g_mutex_free calls, if G_ERRORCHECK_MUTEXES is defined.
 

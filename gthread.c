@@ -160,6 +160,23 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
 }
 
 void
+g_static_mutex_free (GStaticMutex* mutex)
+{
+  GMutex **runtime_mutex;
+  
+  g_return_if_fail (mutex);
+
+  /* The runtime_mutex is the first (or only) member of GStaticMutex,
+   * see both versions (of glibconfig.h) in configure.in */
+  runtime_mutex = ((GMutex**)mutex);
+  
+  if (*runtime_mutex)
+    g_mutex_free (*runtime_mutex);
+
+  *runtime_mutex = NULL;
+}
+
+void
 g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 {
   GSystemThread self;

@@ -1,5 +1,8 @@
 2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* gthread-impl.c (g_thread_init_with_errorcheck_mutexes): Call
+	g_thread_impl_init(), as g_thread_init won't call it.
+
 	* gthread-impl.c (g_mutex_free_errorcheck_impl): Fixed it for
 	real. Sorry for this mess. It looked like a real obvious fix, so I
 	didn't check. Bad boy. Added some casts to quiet the compiler.

@@ -227,6 +227,7 @@ void g_thread_set_priority (GThread         *thread,
     g_mutex_trylock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_unlock(mutex) \
     g_mutex_unlock (g_static_mutex_get_mutex (mutex))
+void g_static_mutex_free (GStaticMutex *mutex);
 
 struct _GStaticPrivate
 {
