@@ -43,6 +43,7 @@ HTML_IMAGES =  				\
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files =				\
+	cross.sgml			\
 	running.sgml			\
 	building.sgml			\
 	changes.sgml			\
@@ -54,15 +55,6 @@ content_files =				\
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=
 
-man_MANS = glib-gettextize.1 
-
-if ENABLE_MAN
-
-%.1 : %.xml 
-	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
-
-endif
-
 # include common portion ...
 include $(top_srcdir)/gtk-doc.make
 
@@ -72,3 +64,23 @@ EXTRA_DIST +=				\
 	mainloop-states.png		\
 	mainloop-states.eps		\
 	version.xml.in
+
+########################################################################
+
+man_MANS = glib-gettextize.1 
+
+if ENABLE_MAN
+
+%.1 : %.xml 
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
+
+BUILT_EXTRA_DIST = $(man_MANS)
+
+dist-hook-local: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)';				\
+	for f in $$files; do					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
+	  cp $$d/$$f $(distdir) || exit 1; done
+

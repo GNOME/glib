@@ -1,3 +1,16 @@
+Thu Oct 23 14:27:54 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/Makefile.am: Add a dist-hook so that the
+	man pages get distributed.
+
+	* glib/Makefile.am: Add a dist-hook so that the
+	man pages get distributed.
+
+	* glib/Makefile.am (content_files): Add cross.sgml.
+
+	* gobject/Makefile.am (INCLUDES): Add $(top_srcdir)/glib,
+	and (for gobject.cI) $(srcdir)
+
 Tue Oct 21 23:29:54 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtypemodule.sgml: 

@@ -18,7 +18,9 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \
+	-I$(srcdir) 			\
 	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/glib 		\
 	-I$(top_builddir) 		\
 	-I$(top_builddir)/glib 		\
 	$(GLIB_DEBUG_FLAGS)
@@ -41,6 +43,15 @@ content_files = version.xml 		\
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
 
+include $(top_srcdir)/gtk-doc.make
+
+# Other files to distribute
+EXTRA_DIST += 		\
+	gobject.cI	\
+	version.xml.in
+
+########################################################################
+
 man_MANS = glib-mkenums.1 glib-genmarshal.1 gobject-query.1
 
 if ENABLE_MAN
@@ -50,12 +61,10 @@ if ENABLE_MAN
 
 endif
 
-include $(top_srcdir)/gtk-doc.make
+BUILT_EXTRA_DIST = $(man_MANS)
 
-# Other files to distribute
-EXTRA_DIST += version.xml.in
-
-
-
-
-
+dist-hook-local: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)';				\
+	for f in $$files; do					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
+	  cp $$d/$$f $(distdir) || exit 1; done

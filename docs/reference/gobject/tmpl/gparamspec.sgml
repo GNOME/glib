@@ -346,6 +346,7 @@ for an example of the use of this capability.
   be redirected, or %NULL if none.
 @Since: 2.4
 
+
 <!-- ##### FUNCTION g_param_spec_internal ##### -->
 <para>
 Creates a new #GParamSpec instance.

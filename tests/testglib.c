@@ -327,6 +327,7 @@ main (int   argc,
   GPtrArray *gparray;
   GByteArray *gbarray;
   GString *string1, *string2;
+  const gchar *charset;
   GTree *tree;
   char chars[62];
   GRelation *relation;
@@ -1175,10 +1176,10 @@ main (int   argc,
 
   g_print ("ok\n");
 
-  if (g_get_charset (&string))
-    g_print ("current charset is UTF-8: %s\n", string);
+  if (g_get_charset (&charset))
+    g_print ("current charset is UTF-8: %s\n", charset);
   else
-    g_print ("current charset is not UTF-8: %s\n", string);
+    g_print ("current charset is not UTF-8: %s\n", charset);
 
 #ifdef G_PLATFORM_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());

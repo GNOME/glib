@@ -1,8 +1,8 @@
 Simple install procedure
 ========================
 
-  % gzip -cd glib-2.2.0.tar.gz | tar xvf -  # unpack the sources
-  % cd glib-2.2.0                           # change to the toplevel directory
+  % gzip -cd glib-2.3.0.tar.gz | tar xvf -  # unpack the sources
+  % cd glib-2.3.0                           # change to the toplevel directory
   % ./configure                             # run the `configure' script
   % make                                    # build GLIB
 
@@ -65,11 +65,11 @@ The Nitty-Gritty
 
 Complete information about installing GLib can be found 
 in the file:
-
+  
  docs/reference/glib/html/glib-building.html
-
+  
 Or online at:
-
+  
  http://developer.gnome.org/doc/API/2.0/glib/glib-building.html
 
 
@@ -91,7 +91,7 @@ and should be deleted.
 
 .pc files for the various libraries are installed in 
 $exec_prefix/lib/pkgconfig to provide information when compiling
-other packages that depend on GTK+. If you set PKG_CONFIG_PATH
+other packages that depend on GLib. If you set PKG_CONFIG_PATH
 so that it points to this directory, then you can get the 
 correct include flags and library flags for compiling a GLib
 application with:
@@ -105,14 +105,7 @@ Cross-compiling GLib
 
 Information about cross-compilation of GLib can be found 
 in the file:
-
+  
  docs/reference/glib/html/glib-cross-compiling.html
-
+  
 Or online at:
-
- http://developer.gnome.org/doc/API/2.0/glib/glib-cross-compiling.html
-
-
-
-
-

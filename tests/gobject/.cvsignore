@@ -2,7 +2,10 @@ Makefile
 Makefile.in
 accumulator
 defaultiface
+ifacecheck
+ifaceinherit
 ifaceinit
+ifaceproperties
 override
 testmarshal.c
 testmarshal.h

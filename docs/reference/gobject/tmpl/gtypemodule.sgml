@@ -58,7 +58,6 @@ The members of the <structname>GTypeModule</structname> structure should not
 be accessed directly, except for the @name field.
 </para>
 
-@name: the name of the #GTypeModule.
 
 <!-- ##### STRUCT GTypeModuleClass ##### -->
 <para>
@@ -70,6 +69,10 @@ the @load and @unload functions in #GTypeModuleClass must be implemented.
 @load: loads the module and registers one or more types using
   g_type_module_register_type().
 @unload: unloads the module
+@reserved1: 
+@reserved2: 
+@reserved3: 
+@reserved4: 
 
 <!-- ##### FUNCTION g_type_module_use ##### -->
 <para>

@@ -1648,6 +1648,7 @@ Returns whether the given #GParamSpec is of type %G_TYPE_PARAM_OBJECT.
 @pspec: a #GParamSpec
 @Since: 2.4
 
+
 <!-- ##### MACRO G_PARAM_SPEC_OVERRIDE ##### -->
 <para>
 Casts a #GParamSpec into a #GParamSpecObject.

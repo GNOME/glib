@@ -1,3 +1,23 @@
+Thu Oct 23 12:38:24 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.3.0 ===
+	
+	* tests/gobject/Makefile.am (dist-hook): Remove 
+	and extra backslash.
+
+	* tests/gobject/Makefile.am (EXTRA_DIST): Add 
+	testmarshal.list.
+
+	* glib/Makefile.am (libglib_2_0_la_SOURCES): Add
+	missing gunicode-private.h.
+
+	* tests/testglib.c (main): Fix a warning.
+
+	* tests/gobject/ifaceinherit.c: Remove check that
+	wasn't supposed to work (adding an interface already
+	added to the derived class to the base class), 
+	fix a bug.
+
 Wed Oct 22 23:41:03 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* NEWS: Update for 2.3.0.

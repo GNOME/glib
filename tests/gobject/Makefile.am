@@ -39,6 +39,7 @@ testmarshal.c: @REBUILD@ testmarshal.list $(glib_genmarshal)
 	&& rm -f xgen-gmc xgen-gmc~
 
 BUILT_SOURCES = testmarshal.h testmarshal.c
+CLEANFILES = stamp-testmarshal.h
 
 ########################################################################
 
@@ -61,17 +62,20 @@ TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 
 ########################################################################
 
+EXTRA_DIST = 		  \
+	testmarshal.list
+
 BUILT_EXTRA_DIST =				\
 	testmarshal.h				\
 	testmarshal.c
 
-dist-hook: $(BUILT_EXTRA_DIST)					\
+dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)';				\
 	for f in $$files; do					\
 	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
 	  cp $$d/$$f $(distdir) || exit 1; done
 
-distclean-local:				\
+distclean-local:
 	if test $(srcdir) = .; then :; else	\
 	    rm -f $(BUILT_EXTRA_DIST);		\
 	fi

@@ -89,6 +89,7 @@ libglib_2_0_la_SOURCES = 	\
 	gunicomp.h		\
 	gunidecomp.h		\
 	gunidecomp.c		\
+	gunicodeprivate.h	\
 	gutils.c		\
 	gdebug.h		\
 	gprintf.c		\

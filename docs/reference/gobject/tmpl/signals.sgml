@@ -891,3 +891,4 @@ and no further handling is needed.
 @Returns: standard #GSignalAccumulator result
 @Since: 2.4
 
+

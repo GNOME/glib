@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.14\n"
-"POT-Creation-Date: 2002-02-22 03:12+0200\n"
+"POT-Creation-Date: 2003-10-23 12:39-0400\n"
 "PO-Revision-Date: 2002-12-10 10:05+0200\n"
 "Last-Translator: Allan Sims <allsi@eau.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -14,175 +14,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
-#: glib/gconvert.c:390
+#: glib/gconvert.c:402
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Teisendamist koodistikust '%s' koodistikku '%s' ei toetata"
 
-#: glib/gconvert.c:394
+#: glib/gconvert.c:406
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ei saa avada konverterit '%s'-st '%s'-ks: %s"
 
-#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282
-#: glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875
-#: glib/gutf8.c:1320
+#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
+#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
+#: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
 msgstr "Vigane baitide jada teisendussisendis"
 
-#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289
-#: glib/giochannel.c:2175
+#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
+#: glib/giochannel.c:2211
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Viga teisendamises: %s"
 
-#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
-#: glib/gutf8.c:1316
+#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
+#: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
 msgstr "Puudulik märkide jada sisendi lõpus"
 
-#: glib/gconvert.c:788
+#: glib/gconvert.c:800
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ei saa tagasi teisendada '%s'-st koodistikku '%s'"
 
-#: glib/gconvert.c:1593
+#: glib/gconvert.c:1411
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr ""
 
-#: glib/gconvert.c:1603
+#: glib/gconvert.c:1421
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Kohaliku faili URI '%s' ei või sisaldada '#'"
 
-#: glib/gconvert.c:1620
+#: glib/gconvert.c:1438
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' on vigane"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1450
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' hostinimi on vigane"
 
-#: glib/gconvert.c:1648
+#: glib/gconvert.c:1466
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' sisaldab vigaseid väljund märke"
 
-#: glib/gconvert.c:1719
+#: glib/gconvert.c:1537
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Rajanimi '%s' ei ole absoluutne rada"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1547
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
-#: glib/gdir.c:79
+#: glib/gdir.c:80
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Viga kataloogi '%s' avamisel: %s"
 
-#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr ""
 
-#: glib/gfileutils.c:348
+#: glib/gfileutils.c:401
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Viga failist '%s' lugemisel: %s"
 
-#: glib/gfileutils.c:426
+#: glib/gfileutils.c:477
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Failist '%s' lugemine ebaõnnestus: %s"
 
-#: glib/gfileutils.c:465 glib/gfileutils.c:533
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Faili '%s' avamine ebaõnnestus: %s"
 
-#: glib/gfileutils.c:479
+#: glib/gfileutils.c:538
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Faili '%s' atribuutide saamine ebaõnnestus: fstat() ebaõnnestus: %s"
 
-#: glib/gfileutils.c:505
+#: glib/gfileutils.c:564
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Faili '%s' avamine ebaõnnestus: fdopen() ebaõnnestus: %s"
 
-#: glib/gfileutils.c:712
+#: glib/gfileutils.c:776
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Näidis '%s' vigane, ei tohiks sisaldada '%s'"
 
-#: glib/gfileutils.c:724
+#: glib/gfileutils.c:788
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Näidis '%s' ei lõppe XXXXXX-ga"
 
-#: glib/gfileutils.c:745
+#: glib/gfileutils.c:809
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Faili '%s' loomine ebaõnnestus: %s"
 
-#: glib/giochannel.c:1110
+#: glib/gfileutils.c:1150
+#, fuzzy, c-format
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Faili '%s' loomine ebaõnnestus: %s"
+
+#: glib/gfileutils.c:1169
+msgid "Symbolic links not supported"
+msgstr ""
+
+#: glib/giochannel.c:1143
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Koodistikust `%s' koodistikuks `%s muutmisel puudub toetus"
 
-#: glib/giochannel.c:1114
+#: glib/giochannel.c:1147
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Ei saa avada konverterit `%s' - `%s': %s"
 
-#: glib/giochannel.c:1460
+#: glib/giochannel.c:1492
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 
-#: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
+#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
 msgstr ""
 
-#: glib/giochannel.c:1587 glib/giochannel.c:1661
+#: glib/giochannel.c:1619 glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
 msgstr ""
 
-#: glib/giochannel.c:1647
+#: glib/giochannel.c:1682
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 
-#: glib/giowin32.c:704 glib/giowin32.c:733
-msgid "Incorrect message size"
-msgstr "Teate ebaõige suurus"
-
-#: glib/giowin32.c:1037 glib/giowin32.c:1090
-msgid "Socket error"
-msgstr "Soketi viga"
-
-#: glib/giowin32.c:1290
-msgid "Channel set flags unsupported"
-msgstr ""
-
-#: glib/gmarkup.c:219
+#: glib/gmarkup.c:223
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Viga real %d täht %d: %s"
 
-#: glib/gmarkup.c:303
+#: glib/gmarkup.c:307
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Viga real %d: %s"
 
-#: glib/gmarkup.c:382
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+#: glib/gmarkup.c:412
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 
-#: glib/gmarkup.c:392
+#: glib/gmarkup.c:422
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -190,73 +188,82 @@ msgid ""
 "it as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:428
+#: glib/gmarkup.c:458
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Sisestatud nimes ei ole lubatud täht '%s'"
 
-#: glib/gmarkup.c:472
+#: glib/gmarkup.c:502
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr ""
 
-#: glib/gmarkup.c:482
+#: glib/gmarkup.c:512
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:528
+#: glib/gmarkup.c:558
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 
-#: glib/gmarkup.c:553
+#: glib/gmarkup.c:583
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
 msgstr ""
 
-#: glib/gmarkup.c:570
+#: glib/gmarkup.c:600
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 
-#: glib/gmarkup.c:580
+#: glib/gmarkup.c:610
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
 
-#: glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
+#: glib/gmarkup.c:636
+msgid "Unfinished entity reference"
+msgstr ""
+
+#: glib/gmarkup.c:642
+msgid "Unfinished character reference"
+msgstr ""
+
+#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
 msgstr "Vigane UTF-8 koodimata tekst"
 
-#: glib/gmarkup.c:932
+#: glib/gmarkup.c:983
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument peab algama elemendiga (nt: <book>)"
 
-#: glib/gmarkup.c:970
+#: glib/gmarkup.c:1022
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
 
-#: glib/gmarkup.c:1033
+#: glib/gmarkup.c:1085
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1120
+#: glib/gmarkup.c:1172
 #, c-format
-msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1161
+#: glib/gmarkup.c:1213
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -264,201 +271,211 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 
-#: glib/gmarkup.c:1244
+#: glib/gmarkup.c:1296
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 
-#: glib/gmarkup.c:1384
+#: glib/gmarkup.c:1436
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
 
-#: glib/gmarkup.c:1422
+#: glib/gmarkup.c:1474
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
 
-#: glib/gmarkup.c:1433
+#: glib/gmarkup.c:1485
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' on suletud, avatud elemente ei ole"
 
-#: glib/gmarkup.c:1442
+#: glib/gmarkup.c:1494
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' on suletud, kuid praegu avatud element on '%s'"
 
-#: glib/gmarkup.c:1574
+#: glib/gmarkup.c:1641
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument on tühi või sisaldab ainult tühikuid"
 
-#: glib/gmarkup.c:1588
+#: glib/gmarkup.c:1655
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument lõppeb ootamatult lõpetamata nurksuluga"
 
-#: glib/gmarkup.c:1596 glib/gmarkup.c:1640
+#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokument lõppeb ootamatult avatud elemendiga - '%s' oli viimane"
-"lahtine element"
+"Dokument lõppeb ootamatult avatud elemendiga - '%s' oli viimanelahtine "
+"element"
 
-#: glib/gmarkup.c:1604
+#: glib/gmarkup.c:1671
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokument lõppeb ootamatult, loodetakse näha nurksulgude lõpetamist"
-"taagiga <%s/>"
+"Dokument lõppeb ootamatult, loodetakse näha nurksulgude lõpetamisttaagiga <%"
+"s/>"
 
-#: glib/gmarkup.c:1610
+#: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument lõppeb ootamatult elemendi nime sees"
 
-#: glib/gmarkup.c:1615
+#: glib/gmarkup.c:1682
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument lõppeb ootamatult atribuudi nime sees"
 
-#: glib/gmarkup.c:1620
+#: glib/gmarkup.c:1687
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument lõppeb ootamatult elemendi avamise taagi sees"
 
-#: glib/gmarkup.c:1626
+#: glib/gmarkup.c:1693
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1633
+#: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 
-#: glib/gmarkup.c:1648
+#: glib/gmarkup.c:1715
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument lõppes ootamatult suletud taagi elementi '%s' sees"
 
-#: glib/gmarkup.c:1654
+#: glib/gmarkup.c:1721
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument lõppes ootamatult kommentaaride või töötlemis juhiste sees"
 
-#: glib/gshell.c:71
+#: glib/gshell.c:72
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr ""
 
-#: glib/gshell.c:161
+#: glib/gshell.c:162
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 
-#: glib/gshell.c:528
-#, c-format
-msgid "Text ended just after a '' character. (The text was '%s')"
+#: glib/gshell.c:530
+#, fuzzy, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Tekst lõppes pärast '' tähte. (Tekst on '%s')"
 
-#: glib/gshell.c:535
+#: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 
-#: glib/gshell.c:547
+#: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekst puudus (või on ainult tühikud)"
 
-#: glib/gspawn-win32.c:214
+#: glib/gspawn-win32.c:297
 msgid "Failed to read data from child process"
 msgstr "Andmete lugemine alamprotsessilt ebaõnnestus"
 
-#: glib/gspawn-win32.c:365
+#: glib/gspawn-win32.c:426
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
 
-#: glib/gspawn-win32.c:843 glib/gspawn.c:914
+#: glib/gspawn-win32.c:842 glib/gspawn.c:998
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr ""
 
-#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
-#, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "Kataloogi '%s' muutmine ebaõnnestus (%s)"
+#: glib/gspawn-win32.c:922
+#, fuzzy
+msgid "Failed to execute helper program"
+msgstr "Alamprotsessi (%s) käivitamine ebaõnnestus"
 
-#: glib/gspawn-win32.c:940
+#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Alamprotsessi (%s) käivitamine ebaõnnestus"
 
-#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
+#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Kataloogi '%s' muutmine ebaõnnestus (%s)"
+
+#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:161
+#: glib/gspawn.c:167
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Andmete lugemine alamprotsessilt (%s) ebaõnnestus"
 
-#: glib/gspawn.c:293
+#: glib/gspawn.c:298
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:376
+#: glib/gspawn.c:381
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr ""
 
-#: glib/gspawn.c:979
+#: glib/gspawn.c:1063
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1129
+#: glib/gspawn.c:1213
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Alamprotsessi \"%s\" käivitamine ebaõnnestus (%s)"
 
-#: glib/gspawn.c:1139
+#: glib/gspawn.c:1223
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Alamprotsessi (%s) ümbersuunamine ebaõnnestus"
 
-#: glib/gspawn.c:1148
+#: glib/gspawn.c:1232
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Alamprotsessi (%s) jagamine ebaõnnestus"
 
-#: glib/gspawn.c:1156
+#: glib/gspawn.c:1240
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Tundmatu viga alamprotsessi \"%s\" käivitamisel"
 
-#: glib/gspawn.c:1178
+#: glib/gspawn.c:1262
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
-#: glib/gutf8.c:950
+#: glib/gutf8.c:985
 msgid "Character out of range for UTF-8"
 msgstr "Märk on väljaspool UTF-8 ulatust"
 
-#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
-#: glib/gutf8.c:1330 glib/gutf8.c:1426
+#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
+#: glib/gutf8.c:1365 glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
 msgstr ""
 
-#: glib/gutf8.c:1341 glib/gutf8.c:1437
+#: glib/gutf8.c:1376 glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "Märk on väljaspool UTF-16 ulatust"
 
+#~ msgid "Incorrect message size"
+#~ msgstr "Teate ebaõige suurus"
+
+#~ msgid "Socket error"
+#~ msgstr "Soketi viga"

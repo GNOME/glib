@@ -31,14 +31,6 @@ Parameter Specifications
 
 @Returns: 
 
-<!-- ##### STRUCT GObjectConstructParam ##### -->
-<para>
-
-</para>
-
-@pspec: 
-@value: 
-
 <!-- ##### STRUCT GParamSpecClosure ##### -->
 <para>
 

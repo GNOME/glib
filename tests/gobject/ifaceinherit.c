@@ -46,10 +46,6 @@
  *     before DerivedObject's class_init; the results of
  *     g_type_interface_peek() are not allowed to change from one
  *     non-NULL vtable to another non-NULL vtable)
- *
- * I6) We add an interface to DerivedObject, then add the
- *     same interface to BaseObject. This is rather pathological,
- *     but should work.
  */
    
 /*
@@ -96,7 +92,6 @@ typedef struct _TestIfaceClass TestIface2Class;
 typedef struct _TestIfaceClass TestIface3Class;
 typedef struct _TestIfaceClass TestIface4Class;
 typedef struct _TestIfaceClass TestIface5Class;
-typedef struct _TestIfaceClass TestIface6Class;
 
 struct _TestIfaceClass
 {
@@ -109,14 +104,12 @@ struct _TestIfaceClass
 #define TEST_TYPE_IFACE3 (test_iface3_get_type ())
 #define TEST_TYPE_IFACE4 (test_iface4_get_type ())
 #define TEST_TYPE_IFACE5 (test_iface5_get_type ())
-#define TEST_TYPE_IFACE6 (test_iface6_get_type ())
 
 static DEFINE_IFACE (TestIface1, test_iface1,  NULL, NULL)
 static DEFINE_IFACE (TestIface2, test_iface2,  NULL, NULL)
 static DEFINE_IFACE (TestIface3, test_iface3,  NULL, NULL)
 static DEFINE_IFACE (TestIface4, test_iface4,  NULL, NULL)
 static DEFINE_IFACE (TestIface5, test_iface5,  NULL, NULL)
-static DEFINE_IFACE (TestIface6, test_iface6,  NULL, NULL)
 
 static void
 add_interface (GType              object_type,
@@ -156,7 +149,7 @@ interface_is_base (GType object_type,
 static void
 init_derived_interface (TestIfaceClass *iface)
 {
-  iface->val = 21;
+  iface->val = 42;
 }
 
 static void
@@ -213,13 +206,11 @@ main (int   argc,
 
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE2);
   add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE5);
-  add_derived_interface (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE6);
 
   /* Class init DerivedObject */
   g_type_class_ref (DERIVED_TYPE_OBJECT);
   
   add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE4);
-  add_base_interface (BASE_TYPE_OBJECT, TEST_TYPE_IFACE6);
 
   /* Check that all the non-overridden interfaces were properly inherited
    */
@@ -231,7 +222,6 @@ main (int   argc,
   /* Check that all the overridden interfaces were properly overridden
    */
   g_assert (interface_is_derived (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE5));
-  g_assert (interface_is_derived (DERIVED_TYPE_OBJECT, TEST_TYPE_IFACE6));
 
   return 0;
 }
