@@ -3,10 +3,9 @@ INCLUDES = -I$(top_srcdir) @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST = \
 	makefile.msc	\
-	makefile.cygwin
-
-EXTRA_DIST = \
-	makefile.msc
+	makefile.msc.in	\
+	makefile.cygwin	\
+	makefile.cygwin.in
 
 TESTS = \
 	array-test	\

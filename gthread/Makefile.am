@@ -8,7 +8,8 @@ EXTRA_DIST =				\
 		gthread-solaris.c	\
 		gthread-none.c		\
 		gthread.def		\
-		gthread.rc
+		gthread.rc		\
+		gthread.rc.in
 
 libglib = $(top_builddir)/libglib.la # -lglib
 
@@ -25,5 +26,5 @@ libgthread_la_LDFLAGS = \
 libgthread_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
 
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 

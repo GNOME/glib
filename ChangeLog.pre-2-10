@@ -1,3 +1,10 @@
+2000-03-24  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* Makefile.am, gthread/Makefile.am, gmodule/Makefile.am,
+	tests/Makefile.am: Added various win32 related *.in files to
+	EXTRA_DIST to let 'make distcheck' procude all the corresponding
+	files, which it silently fails to do currently.
+
 2000-03-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: After finding the right thread library (containing

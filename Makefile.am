@@ -18,13 +18,18 @@ EXTRA_DIST = \
 	README.win32		\
 	glib.def		\
 	makefile.msc		\
+	makefile.msc.in		\
 	makefile.cygwin		\
+	makefile.cygwin.in	\
 	giowin32.c		\
 	glibconfig.h.win32	\
+	glibconfig.h.win32.in	\
 	gwin32.c		\
 	config.h.win32		\
+	config.h.win32.in	\
 	build-dll		\
-	glib.rc
+	glib.rc			\
+	glib.rc.in
 
 lib_LTLIBRARIES = libglib.la
 
