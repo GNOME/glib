@@ -414,7 +414,7 @@ typedef unsigned long	guint32;
 #if (SIZEOF_LONG == 8)
 #define HAVE_GINT64 1
 typedef signed long gint64;
-typedef unsigned long gint64;
+typedef unsigned long guint64;
 #elif (SIZEOF_LONG_LONG == 8)
 #define HAVE_GINT64 1
 typedef signed long long gint64;
