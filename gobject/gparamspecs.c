@@ -23,11 +23,11 @@
 
 #include	"../config.h"
 
-#include	"gobjectalias.h"
 #include	"gparamspecs.h"
 
 #include	"gvaluecollector.h"
 #include	"gvaluearray.h"
+#include	"gobjectalias.h"
 #include	<string.h>
 
 #define	G_FLOAT_EPSILON		(1e-30)
@@ -1928,3 +1928,6 @@ g_param_spec_override (const gchar *name,
 
   return pspec;
 }
+
+#define __G_PARAMSPECS_C__
+#include "gobjectaliasdef.c"

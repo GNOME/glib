@@ -17,13 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "gobjectalias.h"
 #include "gsourceclosure.h"
 #include "gboxed.h"
 #include "genums.h"
 #include "gmarshal.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
+#include "gobjectalias.h"
 
 GType
 g_io_channel_get_type (void)
@@ -190,3 +190,6 @@ g_source_set_closure (GSource  *source,
 	g_closure_set_marshal (closure, marshal);
     }
 }
+
+#define __G_SOURCECLOSURE_C__
+#include "gobjectaliasdef.c"

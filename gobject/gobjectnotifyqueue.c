@@ -166,4 +166,4 @@ g_object_notify_queue_from_object (GObject              *object,
 
 G_END_DECLS
 
-#endif /* __G_OBJECT_H__ */
+#endif /* __G_NOTIFY_H__ */

@@ -1,3 +1,19 @@
+2005-03-14  Matthias Clasen  <mclasen@redhat.com>
+
+	Make PLT-reduction work with gcc4, and don't include
+	everything in gobjectalias.h:
+	
+	* gobject.symbols: Group symbols by header and source 
+	file.
+	* makegobjectalias.pl: Protect definitions by the same 
+	preprocessor symbols used to guard the headers. Move
+	the alias declarations to a separate file which is 
+	produced when calling makegalias.pl -def
+	* Makefile.am (gobjectaliasdef.c): Add a rule to 
+	build this file.
+	* *.c: Include gobjectalias.h after the other i
+	GLib headers, include gobjectaliasdef.c at the bottom.
+
 2005-03-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject.symbols: Add the new attributes here, too.

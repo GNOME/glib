@@ -16,10 +16,10 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include 	"gobjectalias.h"
 #include	"gclosure.h"
 
 #include	"gvalue.h"
+#include 	"gobjectalias.h"
 #include	<string.h>
 
 
@@ -558,3 +558,6 @@ g_signal_type_cclosure_new (GType    itype,
   
   return closure;
 }
+
+#define __G_CLOSURE_C__
+#include "gobjectaliasdef.c"

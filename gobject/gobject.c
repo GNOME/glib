@@ -16,8 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include	"gobjectalias.h"
 #include	"gobject.h"
+#include	"gobjectalias.h"
 
 /*
  * MT safe
@@ -2014,3 +2014,6 @@ g_cclosure_new_object_swap (GCallback callback_func,
 
   return closure;
 }
+
+#define __G_OBJECT_C__
+#include "gobjectaliasdef.c"
