@@ -200,8 +200,15 @@ across invocation of g_type_register_static().
 @class_size: 	 Size of the class structure (required for interface, classed and instantiatable types).
 @base_init: 	 Location of the base initialization function (optional).
 @base_finalize:  Location of the base finalization function (optional).
-@class_init: 	 Location of the class initialization function (optional, for classed and instantiatable types only).
-@class_finalize: Location of the class finalization function (optional).
+@class_init: 	 Location of the class initialization function for
+  classed and types. Location of the default vtable inititalization
+  function for interface types. (optional) This function is used both
+  to fill in virtual functions in the class or default vtable, and
+  to do type-specific setup such as registering signals and object
+  properties.
+@class_finalize: Location of the class finalization function for
+  classed and types. Location fo the default vtable finalization
+  function for interface types. (optional)
 @class_data: 	 User-supplied data passed to the class init/finalize functions.
 @instance_size:  Size of the instance (object) structure (required for instantiatable types only).
 @n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
@@ -773,6 +780,50 @@ then possibly overriding some methods.
    of the instance type to which @g_iface belongs, or %NULL if the parent type
    doesn't conform to the interface.
 
+
+<!-- ##### FUNCTION g_type_default_interface_ref ##### -->
+<para>
+Increments the reference count for the interface type @g_type,
+and returns the default interface vtable for the type.
+</para>
+<para>  
+If the type is not currently in use, then the default vtable
+for the type will be created and initalized by calling
+the base interface init and default vtable init functions for
+the type (the @<structfield>base_init</structfield>
+and <structfield>class_init</structfield> members of #GTypeInfo).
+Calling g_type_default_interface_ref() is useful when you
+want to make sure that signals and properties for an interface
+have been installed.
+</para>
+
+@g_type: an interface type
+@Returns: the default vtable for the interface; call 
+ g_type_default_interface_unref() when you are done using
+ the interface.
+
+<!-- ##### FUNCTION g_type_default_interface_peek ##### -->
+<para>
+If the interface type @g_type is currently in use, returns
+its default interface vtable.    
+</para>
+
+@g_type: an interface type 
+@Returns: the default vtable for the interface; or %NULL
+ if the type is not currently in use.
+
+<!-- ##### FUNCTION g_type_default_interface_unref ##### -->
+<para>
+Decrements the reference count for the type corresponding to the
+interface default vtable @g_iface. If the type is dynamic, then
+when no one is using the interface and all references have
+been released, the finalize function for the interface's default
+vtable (the <structfield>class_finalize</structfield> member of
+#GTypeInfo) will be called.
+</para>
+
+@g_iface: the default vtable structure for a interface, as
+  returned by g_type_default_interface_ref()
 
 <!-- ##### FUNCTION g_type_children ##### -->
 <para>

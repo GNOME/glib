@@ -56,6 +56,9 @@ g_type_class_peek_parent
 g_type_class_add_private
 g_type_interface_peek
 g_type_interface_peek_parent
+g_type_default_interface_ref
+g_type_default_interface_peek
+g_type_default_interface_unref
 g_type_children
 g_type_interfaces
 g_type_interface_prerequisites

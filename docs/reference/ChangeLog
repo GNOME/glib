@@ -1,3 +1,8 @@
+Mon Sep 29 10:55:23 2003  Owen Taylor  <otaylor@redhat.com>
+
+	*  gobject/gobject-sections.txt gobject/tmpl/gtype.sgml:
+	Docs for g_type_default_interface_ref(), etc.
+
 Fri Sep 12 16:29:29 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/tmpl/signals.sgml: Add docs for
