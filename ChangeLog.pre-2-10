@@ -1,3 +1,8 @@
+2005-02-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (find_file_in_data_dirs): Don't leak path
+	here.  (#166801, Kjartan Maraas)
+
 2005-02-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gkeyfile.c (g_key_file_parse_value_as_string): Don't
