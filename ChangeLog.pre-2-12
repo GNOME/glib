@@ -1,5 +1,8 @@
 2005-01-03  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gutils.c (g_find_program_in_path): Don't return
+	directories.  (#160738, Tommi Komulainen)
+
 	* glib/gfileutils.c (g_file_get_contents): Clarify the 
 	documentation.  (#162251, Mariano Suárez-Alvarez)
 

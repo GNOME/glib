@@ -284,23 +284,23 @@ g_find_program_in_path (const gchar *program)
  * 
  * Locates the first executable named @program in the user's path, in the
  * same way that execvp() would locate it. Returns an allocated string
- * with the absolute path name, or NULL if the program is not found in
+ * with the absolute path name, or %NULL if the program is not found in
  * the path. If @program is already an absolute path, returns a copy of
- * @program if @program exists and is executable, and NULL otherwise.
- * 
+ * @program if @program exists and is executable, and %NULL otherwise.
+ *  
  * On Windows, if @program does not have a file type suffix, tries
  * with the suffixes .exe, .cmd, .bat and .com, and the suffixes in
- * the PATHEXT environment variable.
+ * the <envar>PATHEXT</envar> environment variable.
  *
  * It looks for the file in the same way as CreateProcess()
  * would. This means first in the directory where the executing
  * program was loaded from, then in the current directory, then in the
  * Windows 32-bit system directory, then in the Windows directory, and
- * finally in the directories in the PATH environment variable. If the
- * program is found, the return value contains the full name including
- * the type suffix.
+ * finally in the directories in the <envar>PATH</envar> environment 
+ * variable. If the program is found, the return value contains the 
+ * full name including the type suffix.
  *
- * Return value: absolute path, or NULL
+ * Return value: absolute path, or %NULL
  **/
 #ifdef G_OS_WIN32
 static gchar *
@@ -332,7 +332,8 @@ g_find_program_in_path (const gchar *program)
 #endif
       )
     {
-      if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE))
+      if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE) &&
+	  !g_file_test (program, G_FILE_TEST_IS_DIR))
         return g_strdup (program);
       else
         return NULL;
@@ -459,7 +460,8 @@ g_find_program_in_path (const gchar *program)
       else
         startp = memcpy (name - (p - path), path, p - path);
 
-      if (g_file_test (startp, G_FILE_TEST_IS_EXECUTABLE))
+      if (g_file_test (startp, G_FILE_TEST_IS_EXECUTABLE) &&
+	  !g_file_test (startp, G_FILE_TEST_IS_DIR))
         {
           gchar *ret;
           ret = g_strdup (startp);
