@@ -1,3 +1,12 @@
+Sun May 13 10:31:17 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/Makefile.am gobject/Makefile.am gmodule/Makefile.am:
+	Add inter-library dependencies.
+
+	* acinclude.m4: Remove libtool macros.
+
+	* autogen.sh: Require libtool-1.4, automake-1.4p1.
+
 2001-05-15  Havoc Pennington  <hp@redhat.com>
 
 	* configure.in (AC_OUTPUT): m4macros/Makefile

@@ -32,11 +32,10 @@ libglib = $(top_builddir)/libglib-1.3.la
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 
-lib_LTLIBRARIES = libgmodule-1.3.la libgplugin_a.la libgplugin_b.la
+lib_LTLIBRARIES = libgmodule-1.3.la
+noinst_LTLIBRARIES = libgplugin_a.la libgplugin_b.la
 
 if PLATFORM_WIN32
-libadd_libglib = $(libglib)
-libadd_libgmodule = libgmodule-1.3.la
 no_undefined = -no-undefined
 endif
 if OS_WIN32
@@ -49,15 +48,15 @@ libgmodule_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libadd_libglib)
+libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
+libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
 libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ $(libadd_libgmodule) $(libadd_libglib)
+libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
@@ -77,16 +76,6 @@ makefile.msc: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.msc.i
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
 	  echo $$p; \
-	done
-
-install-libLTLIBRARIES: libgmodule-1.3.la
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	@list='libgmodule-1.3.la'; for p in $$list; do \
-	 if test -f $$p; then \
-	  echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(DESTDIR)$(libdir)/$$p; \
-	 else :; fi; \
 	done
 
 release:
