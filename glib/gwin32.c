@@ -1297,3 +1297,20 @@ g_win32_get_package_installation_subdirectory (gchar *package,
 
   return dirname;
 }
+
+guint
+g_win32_get_windows_version (void)
+{
+  static gboolean beenhere = FALSE;
+  static guint version;
+
+  if (!beenhere)
+    {
+      if (getenv ("G_WIN32_PRETEND_WIN9X"))
+	version = 0x80000004;
+      else
+	version = GetVersion ();
+      beenhere = TRUE;
+    }
+  return version;
+}

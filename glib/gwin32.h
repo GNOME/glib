@@ -93,6 +93,11 @@ gchar*          g_win32_get_package_installation_subdirectory (gchar *package,
 							       gchar *dll_name,
 							       gchar *subdir);
 
+guint		g_win32_get_windows_version (void);
+
+#define G_WIN32_IS_NT_BASED() (g_win32_get_windows_version () < 0x80000000)
+#define G_WIN32_HAVE_WIDECHAR_API() (G_WIN32_IS_NT_BASED ())
+
 G_END_DECLS
 
 #endif	 /* G_PLATFORM_WIN32 */

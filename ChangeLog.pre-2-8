@@ -1,3 +1,14 @@
+2004-08-25  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c (g_win32_get_windows_version): New
+	function. Returns the Windows version code like GetVersion(),
+	except that one can pretend to be running on Win9x by setting the
+	G_WIN32_PRETEND_WIN9X environment variable. This is mainly for
+	debugging purposed.
+
+	* glib/gwin32.h: Declare it. Define macros G_WIN32_WINDOWS_IS_NT_BASED 
+	and G_WIN32_HAVE_WIDECHAR_API to test Windows features at run-time.
+
 2004-08-25  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Post-release version bump.
