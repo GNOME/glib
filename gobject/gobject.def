@@ -89,17 +89,21 @@ EXPORTS
 	g_signal_newv
 	g_signal_query
 	g_signal_stop_emission
+	g_type_add_class_cache_func
 	g_type_add_interface_dynamic
 	g_type_add_interface_static
 	g_type_check_class_cast
 	g_type_check_flags
+	g_type_check_instance
 	g_type_check_instance_cast
+	g_type_check_value
 	g_type_children
 	g_type_class_is_a
 	g_type_class_peek
 	g_type_class_peek_parent
 	g_type_class_ref
 	g_type_class_unref
+	g_type_class_unref_uncached
 	g_type_create_instance
 	g_type_free_instance
 	g_type_from_name
@@ -110,6 +114,7 @@ EXPORTS
 	g_type_init
 	g_type_interface_peek
 	g_type_interfaces
+	g_type_instance_is_a
 	g_type_is_a
 	g_type_module_add_interface
 	g_type_module_get_type
@@ -129,7 +134,10 @@ EXPORTS
 	g_type_register_dynamic
 	g_type_register_fundamental
 	g_type_register_static
+	g_type_remove_class_cache_func
 	g_type_set_qdata
+	g_type_value_is_a
+	g_type_value_table_peek
 	g_value_convert
 	g_value_copy
 	g_value_dup_boxed
