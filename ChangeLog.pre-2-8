@@ -1,3 +1,10 @@
+2005-03-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gmarkup.c: Add G_GNUC_PRINTF attribute
+	to set_error.
+	(g_markup_parse_context_end_parse): Fix an
+	error message, noticed by Tim Janik.
+
 2005-02-24  Tor Lillqvist  <tml@novell.com>
 
 	* glib/Makefile.am (BUILT_EXTRA_DIST): Don't distribute

@@ -206,6 +206,12 @@ mark_error (GMarkupParseContext *context,
     (*context->parser->error) (context, error, context->user_data);
 }
 
+static void set_error (GMarkupParseContext *context,
+           	       GError             **error,
+           	       GMarkupError         code,
+           	       const gchar         *format,
+           	       ...) G_GNUC_PRINTF (4, 5);
+
 static void
 set_error (GMarkupParseContext *context,
            GError             **error,
@@ -1801,7 +1807,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext *context,
     case STATE_INSIDE_CLOSE_TAG_NAME:
       set_error (context, error, G_MARKUP_ERROR_PARSE,
                  _("Document ended unexpectedly inside the close tag for "
-                   "element '%s'"), current_element);
+                   "element '%s'"), current_element (context));
       break;
 
     case STATE_INSIDE_PASSTHROUGH:
