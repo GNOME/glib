@@ -291,7 +291,7 @@ fi
 AC_MSG_CHECKING(for sys_siglist)
 AC_TRY_LINK(, [
 extern char *sys_siglist[];
-strlen (sys_siglist[0]);
+exit (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
@@ -669,6 +669,10 @@ case $have_threads in
 		if test "x$G_THREAD_LIBS" = xerror; then
                 	AC_CHECK_LIB(pthreads, pthread_attr_init,
 			     	G_THREAD_LIBS="-lpthreads")
+		fi
+		if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(threads, pthread_attr_init,
+			     	G_THREAD_LIBS="-lthreads")
 		fi
 		if test "x$G_THREAD_LIBS" = xerror; then
                 	AC_CHECK_LIB(c_r, pthread_attr_init,

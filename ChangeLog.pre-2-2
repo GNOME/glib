@@ -1,3 +1,15 @@
+2000-05-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Use strlen instead of exit in the test for
+	sys_siglist, as using strlen (function without side effects) makes
+	the compiler remove that for optimized compilation and the linker
+	wont see the symbol, thus a successfull link doesn't mean, that
+	the symbol exists. Hint from Robert Pouliot
+	<robert.pouliot@bell.ca>.
+
+	* configure.in: Also look for thread functions in libthreads. Hint
+	also from Robert Pouliot <robert.pouliot@bell.ca>.
+
 2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* garray.c (g_ptr_array_maybe_expand): Really initialize the whole
