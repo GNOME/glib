@@ -1,3 +1,11 @@
+Tue Jan 19 00:44:24 1999  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
+
+	* gstrfuncs.c (g_strsignal): The "extern char* sys_siglist"
+	declaration breaks systems with different declarations, like
+	mine (FreeBSD).  So, I added a configuration variable to decide
+	whether the declaration is neccesary.  Change also appears on
+	line 275 of configure.in.
+
 Sun Jan 17 17:13:54 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.13
@@ -156,7 +164,7 @@ Tue Jan 12 09:57:06 PST 1999 Manish Singh <yosh@gimp.org>
         * gdate.c: Include config.h to get HAVE_LOCALTIME_R macro.
 
         * configure.in: Moved function check back to the place, they've
-        been before.	
+        been before.
 
 1999-01-11  Jeff Garzik  <jgarzik@pobox.com>
 
@@ -267,7 +275,7 @@ Mon Jan  4 14:38:11 1999  Tim Janik  <timj@gtk.org>
 
 Mon Jan  4 02:58:13 CST 1999 Shawn T. Amundson <amundson@gtk.org>
 
-        * Released GLib 1.1.12 
+        * Released GLib 1.1.12
 
         * INSTALL:
           NEWS:
@@ -333,9 +341,9 @@ Fri Jan  1 20:43:19 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 Sat Jan  2 02:20:59 1999  Tim Janik  <timj@gtk.org>
 
 	* ghook.c:
-	(g_hook_list_invoke): 
-	(g_hook_list_invoke_check): 
-	(g_hook_list_marshal_check): 
+	(g_hook_list_invoke):
+	(g_hook_list_invoke_check):
+	(g_hook_list_marshal_check):
 	(g_hook_list_marshal): avoid unneccessary extra hook referencing (the
 	explicit hook referencing became unneccessarry with my changes from
 	Mon Dec 21 21:48:29 1998).
@@ -358,7 +366,7 @@ Fri Jan  1 17:09:19 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 Wed Dec 30 18:24:57 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
-        * Released GLib 1.1.11 
+        * Released GLib 1.1.11
 
         * INSTALL:
           NEWS:
@@ -368,7 +376,7 @@ Wed Dec 30 18:24:57 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 1998-12-30  Raja R Harinath  <harinath@cs.umn.edu>
 
-	* glib.h (G[U]INT64_FROM_{LE,BE}): 
+	* glib.h (G[U]INT64_FROM_{LE,BE}):
 	Define to G[U]INT64_TO_{LE,BE}, not G[U]INT32_TO_{LE,BE}.
 
 Fri Dec 25 19:56:33 PST 1998 Manish Singh <yosh@gimp.org>
@@ -398,7 +406,7 @@ Tue Dec 22 10:32:11 1998  Tim Janik  <timj@gtk.org>
 
 Mon Dec 21 21:48:29 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gmain.c: there was a reference count race for hooks during invocation
 	loops. since all (known) hook loop implementations, do currently start
 	out with g_hook_first_valid() and iterate with g_hook_next_valid(),
@@ -458,7 +466,7 @@ Fri Dec 18 12:51:39 1998  Owen Taylor  <otaylor@redhat.com>
 
 Fri Dec 18 00:03:17 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gmain.c:
 	(g_main_is_running): new function to check whether a main loop has been
 	quitted.
@@ -486,11 +494,11 @@ Thu Dec 17 23:43:47 1998  Tim Janik  <timj@gtk.org>
 	* garray.c (g_ptr_array_remove_index): Fixed size in g_memmove,
 	reported by Alexander Larsson <alla@lysator.liu.se>.
 
-	* gmem.c: Fixed bug, that made compile fail for -DENABLE_MEM_PROFILE. 
+	* gmem.c: Fixed bug, that made compile fail for -DENABLE_MEM_PROFILE.
 
 Wed Dec 16 23:04:26 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
-	* Released GLib 1.1.9 
+	* Released GLib 1.1.9
 
 	* INSTALL:
 	  NEWS:
@@ -586,7 +594,7 @@ Tue Dec 15 23:16:05 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* INSTALL:
 	  NEWS:
-	  README 
+	  README
 	  configure.in:
 	  glib.spec:
 	  docs/glib-config.1: Incremented version
@@ -610,7 +618,7 @@ Tue Dec 15 17:17:46 1998  Owen Taylor  <otaylor@redhat.com>
 1998-12-15  Havoc Pennington  <hp@pobox.com>
 
 	* gdate.c (g_date_prepare_to_parse): Solaris has a broken strftime
-	that produced garbage output for the test date I was using to 
+	that produced garbage output for the test date I was using to
 	set up the parser. So use a different date that Solaris seems
 	to like.
 
@@ -692,7 +700,7 @@ Tue Dec 15 10:40:09 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_main_poll_add_unlocked): first take a new poll record
 	form the poll_free_list.
-		
+
 	* gmem.c, gstrfuncs.c, gutils.c: Made it MT safe.
 
 	* gthraed/*.c: Added copyright headers.
@@ -704,7 +712,7 @@ Tue Dec 15 10:40:09 1998  Owen Taylor  <otaylor@redhat.com>
 	* gthread/gthread.c (g_thread_try_init): Call g_mutex_init().
 
 	* gthread/testgthread.c: updated test program.
-	
+
 Tue Dec  8 18:49:56 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Start at adding thread-safety. (mostly work
@@ -762,7 +770,7 @@ Mon Dec  7 23:10:41 PST 1998 Manish Singh <yosh@gimp.org>
 
 1998-12-02  Havoc Pennington  <hp@pobox.com>
 
-	* gdate.c (g_date_set_month): If Julian is valid, we have to 
+	* gdate.c (g_date_set_month): If Julian is valid, we have to
 	update the dmy representation before setting the components
 	of it.
 	(g_date_set_day): Same.
@@ -770,13 +778,13 @@ Mon Dec  7 23:10:41 PST 1998 Manish Singh <yosh@gimp.org>
 
 1998-12-02  Havoc Pennington  <hp@pobox.com>
 
-	* testgdate.c, testgdateparser.c: Two new files. This is kind of 
-	ugly code, but I want to go ahead and make the tests available. 
-	It isn't contaminating any other code. :-) Since one of these 
-	is interactive and the other takes a while to run, I've kept 
+	* testgdate.c, testgdateparser.c: Two new files. This is kind of
+	ugly code, but I want to go ahead and make the tests available.
+	It isn't contaminating any other code. :-) Since one of these
+	is interactive and the other takes a while to run, I've kept
 	them separate from testglib for now.
 	* Makefile.am: Build gdate test programs.
-	
+
 1998-12-02  Havoc Pennington  <hp@pobox.com>
 
 	* gdate.c (g_date_valid): Rely on GDate::dmy and GDate::Julian
@@ -799,7 +807,7 @@ Sat Nov 28 12:53:47 1998  Owen Taylor  <otaylor@redhat.com>
 
 1998-12-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-	* glib.h: 
+	* glib.h:
 	* gdate.c: changed `gpointer struct_tm_p' parameter of
 	g_date_to_struct_tm back to `struct tm *tm' and forward declared
 	`struct tm' in glib.h; yes, this is nice, we still need not
@@ -812,7 +820,7 @@ Tue Dec  1 23:01:44 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 	  README:
 	  glib.spec:
 	  docs/glib-config.1: Incremented versions to 1.1.6.
-	
+
 Wed Dec  2 02:10:59 1998  Tim Janik  <timj@gtk.org>
 
 	* gdate.c: s/time_t/GTime/ and s/g_print/g_message/
@@ -822,13 +830,13 @@ Wed Dec  2 02:10:59 1998  Tim Janik  <timj@gtk.org>
  	g_date_set_time() to time_t, changed struct tm parameter of
 	g_date_to_struct_tm to `gpointer struct_tm_p'. yes, this is not
 	nice, but including time.h actually breaks a bunch of code.
-	
+
 	* incremented GLib version to 1.1.6.
 
 1998-11-30  Havoc Pennington  <hp@pobox.com>
 
 	* gdate.c: New file, implements calendrical calculations.
-	
+
 	* glib.h: Added declarations for GDate module.
 
 Mon Nov 30 07:12:10 1998  Tim Janik  <timj@gtk.org>
@@ -853,7 +861,7 @@ Sat Nov 28 01:23:25 1998  Tim Janik  <timj@gtk.org>
 
 Thu Nov 26 01:36:20 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* ghash.c: reverted the g_hash_table_set_key_freefunc() addition,
 	since it's to specialized and needs to be resolved in a generic
 	fashion.
@@ -889,7 +897,7 @@ Tue Nov 24 14:05:47 EST 1998	Michael K. Johnson <johnsonm@redhat.com>
 	* glib.h: added GFreeFunc and g_hash_table_set_key_freefunc()
 	prototype.
 	* ghash.c: added g_hash_table_set_key_freefunc() implementation.
-	Modified the prototypes of the functions g_hash_node_destroy() and 
+	Modified the prototypes of the functions g_hash_node_destroy() and
 	g_hash_nodes_destroy(), and changed the functions that call them
 	to match the new definitions.
 	This changes no external interfaces, and should create no binary
@@ -1007,7 +1015,7 @@ Wed Nov  4 15:06:44 PST 1998 Manish Singh <yosh@gimp.org>
 
 1998-11-03  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-	* glib.h: 
+	* glib.h:
 	* garray.c:
 	(g_array_remove_index): new function for removing an entry from an
 	array while preserving the order
@@ -1040,7 +1048,7 @@ Sat Oct 31 20:14:22 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* gmessages.c
 	* gscanner.c: #include <config.h> in here too, for HAVE_UNISTD_H
- 
+
 1998-11-01 Tor Lillqvist <tml@iki.fi>
 
 	* glib.def: Added the new functions.
@@ -1059,7 +1067,7 @@ Sat Oct 31 20:14:22 PST 1998 Manish Singh <yosh@gimp.org>
 1998-10-31  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Land glib-rrh-19981025-0.patch.
-	* Makefile.am (glibconfig.h): New rule.  
+	* Makefile.am (glibconfig.h): New rule.
 	(stamp-gc-h): New rule.  Generate `glibconfig.h'.
 	* configure.in (AM_CONFIG_HEADER): It is now `config.h'.
 	(HAVE_BROKEN_WCTYPE): On Solaris, look for iswalnum in -lw before
@@ -1072,7 +1080,7 @@ Sat Oct 31 20:14:22 PST 1998 Manish Singh <yosh@gimp.org>
 	* gmem.c: Likewise.
 	* gstrfuncs.c: Likewise.
 	* gutils.c: Likewise.
-	
+
 Sat Oct 31 05:08:26 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed old G_ENUM(), G_FLAGS(), G_NV() and G_SV() macros.
@@ -1099,7 +1107,7 @@ Tue Oct 27 07:25:53 1998  Tim Janik  <timj@gtk.org>
  	filedescriptor, which hooks onto the current scanning position.
 	(this became neccessary with the implementation of buffered
 	reads).
-	(g_scanner_input_file): 
+	(g_scanner_input_file):
 	(g_scanner_input_text): automatically blow the read ahead buffer.
 	(g_scanner_get_char): blow the read ahead buffer when the end of
 	input is reached, i.e. a '\000' char is read.
@@ -1156,7 +1164,7 @@ Tue Oct 27 03:00:50 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h (struct dirent): use lower case structure members.
 
-	* glib.h: 
+	* glib.h:
 	* makefile.lcc:
 	* makefile.msc:
 	s/COMPILING_GLIB/GLIB_COMPILATION/
@@ -1220,7 +1228,7 @@ Tue Oct 27 03:00:50 1998  Tim Janik  <timj@gtk.org>
 	Conditionalized inclusion of unistd.h. Added changes for
 	Microsoft C. Added CR to the skipped character set. Added small
 	workaround for MSC compiler bug in g_scanner_cur_value.
-	
+
 	* gstrfuncs.c:
 	Added the function g_strescape, which escapes the backslash
 	character. Needed especially when printing Windows filenames.
@@ -1240,19 +1248,19 @@ Tue Oct 27 03:00:50 1998  Tim Janik  <timj@gtk.org>
 	* makefile.lcc makefile.msc:
 	New files. Compiler-specific makefiles for LCC-Win32 and
 	Microsoft C. Only Microsoft C is actually supported currently.
-	
+
 	* testglib.c:
 	Added pathname check cases for Windows. Added workaround for
 	bug in the Microsoft runtime library. Improved some tests a bit.
-	
+
 Sun Oct 25 01:24:01 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.4
 
 	* docs/Makefile.am:
 	* docs/.cvsignore
-	* docs/glib-config.1: 
-	* docs/glib.texi: Moved docs from gtk and created glib-config.1 
+	* docs/glib-config.1:
+	* docs/glib.texi: Moved docs from gtk and created glib-config.1
 	from gtk-config.1 in gtk
 
 	* configure.in:
@@ -1262,17 +1270,17 @@ Sun Oct 25 01:24:01 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 	distribution.  Added in a 'sanity' rule.
 
 	* NEWS:
-	* README: 
+	* README:
 	* INSTALL: Updated for the release
 
 Sun Oct 25 07:30:10 1998  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c:
-	(g_scanner_peek_next_char): 
+	(g_scanner_peek_next_char):
  	(g_scanner_get_char): no more characters are available if read() returns
  	anything less than 1, not only on 0 return.
 
-	* glib.h: 
+	* glib.h:
 	* gstrfuncs.c: final API cleanup of string arrays to suit sopwith's
 	argument order requirements.
  	(g_strsplit): renamed from g_str_array_split().
@@ -1300,7 +1308,7 @@ Wed Oct 21 19:22:58 1998  Tim Janik  <timj@gtk.org>
 
 Wed Oct 21 17:03:05 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	* gstrfuncs.c: API cleanups of the new g_str* functions for consistency
  	with the existing naming scheme for g_str* functions. grouped the g_str*
 	functions that will return a newly allocated string seperatedly. all of
@@ -1452,7 +1460,7 @@ Sun Sep 20 02:09:44 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 
 	* glib.h: New function g_hash_table_foreach_remove is similar to
  	g_hash_table_foreach, but the callback's return value indicates
- 	whether to remove the element (if TRUE) or not (if FALSE).  
+ 	whether to remove the element (if TRUE) or not (if FALSE).
 	Returns the number of elements deleted.
 
 Fri Sep 18 11:31:50 PDT 1998 Manish Singh <yosh@gimp.org>
@@ -1528,7 +1536,7 @@ Mon Sep  7 07:53:21 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: inlining hassle. for compilers that don't allow the `inline'
  	keyword, mostly because of strict ANSI C compliance or dumbness, we try
- 	to fall back to either `__inline__' or `__inline'. 
+ 	to fall back to either `__inline__' or `__inline'.
 	we define G_CAN_INLINE, if the compiler seems to be actually *capable*
  	to do function inlining, in which case inline function bodys do make
  	sense. we also define G_INLINE_FUNC to properly export the function
@@ -1566,7 +1574,7 @@ Sat Sep  5 18:03:36 1998  Tom Tromey  <tromey@cygnus.com>
 
 Sat Sep  5 04:40:02 1998  Tim Janik  <timj@gtk.org>
 
-	* glib.h: 
+	* glib.h:
 	(g_chunk_new0): use g_mem_chunk_alloc0() to allocate the memchunk,
 	so the correct size of the memchunk is allocated with 0's and not
 	a memory portion of the size of the desired type.

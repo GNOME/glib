@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -41,7 +41,7 @@ gchar*
 g_strdup (const gchar *str)
 {
   gchar *new_str;
-  
+
   if (str)
     {
       new_str = g_new (char, strlen (str) + 1);
@@ -49,7 +49,7 @@ g_strdup (const gchar *str)
     }
   else
     new_str = NULL;
-  
+
   return new_str;
 }
 
@@ -142,9 +142,9 @@ g_strconcat (const gchar *string1, ...)
   va_list args;
   gchar	  *s;
   gchar	  *concat;
-  
+
   g_return_val_if_fail (string1 != NULL, NULL);
-  
+
   l = 1 + strlen (string1);
   va_start (args, string1);
   s = va_arg (args, gchar*);
@@ -154,10 +154,10 @@ g_strconcat (const gchar *string1, ...)
       s = va_arg (args, gchar*);
     }
   va_end (args);
-  
+
   concat = g_new (gchar, l);
   concat[0] = 0;
-  
+
   strcat (concat, string1);
   va_start (args, string1);
   s = va_arg (args, gchar*);
@@ -167,7 +167,7 @@ g_strconcat (const gchar *string1, ...)
       s = va_arg (args, gchar*);
     }
   va_end (args);
-  
+
   return concat;
 }
 
@@ -179,23 +179,23 @@ g_strtod (const gchar *nptr,
   gchar *fail_pos_2;
   gdouble val_1;
   gdouble val_2 = 0;
-  
+
   g_return_val_if_fail (nptr != NULL, 0);
-  
+
   fail_pos_1 = NULL;
   fail_pos_2 = NULL;
-  
+
   val_1 = strtod (nptr, &fail_pos_1);
-  
+
   if (fail_pos_1 && fail_pos_1[0] != 0)
     {
       gchar *old_locale;
-      
+
       old_locale = setlocale (LC_NUMERIC, "C");
       val_2 = strtod (nptr, &fail_pos_2);
       setlocale (LC_NUMERIC, old_locale);
     }
-  
+
   if (!fail_pos_1 || fail_pos_1[0] == 0 || fail_pos_1 >= fail_pos_2)
     {
       if (endptr)
@@ -213,9 +213,9 @@ g_strtod (const gchar *nptr,
 gchar*
 g_strerror (gint errnum)
 {
-  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT; 
+  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
   char *msg;
-  
+
 #ifdef HAVE_STRERROR
   return strerror (errnum);
 #elif NO_SYS_ERRLIST
@@ -636,7 +636,7 @@ g_strerror (gint errnum)
 #else /* NO_SYS_ERRLIST */
   extern int sys_nerr;
   extern char *sys_errlist[];
-  
+
   if ((errnum > 0) && (errnum <= sys_nerr))
     return sys_errlist [errnum];
 #endif /* NO_SYS_ERRLIST */
@@ -655,9 +655,9 @@ g_strerror (gint errnum)
 gchar*
 g_strsignal (gint signum)
 {
-  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT; 
+  static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
   char *msg;
-  
+
 #ifdef HAVE_STRSIGNAL
   extern char *strsignal (int sig);
   return strsignal (signum);
@@ -759,8 +759,13 @@ g_strsignal (gint signum)
 #endif
     }
 #else /* NO_SYS_SIGLIST */
+
+#ifndef NO_SYS_SIGLIST_DECL
+  /*(see Tue Jan 19 00:44:24 1999 in changelog)*/
   extern char *sys_siglist[];
-  return sys_siglist [signum];
+#endif
+
+  return (char*) /* this function should return const --josh */ sys_siglist [signum];
 #endif /* NO_SYS_SIGLIST */
 
   msg = g_static_private_get (&msg_private);
@@ -769,7 +774,7 @@ g_strsignal (gint signum)
       msg = g_new( gchar, 64 );
       g_static_private_set (&msg_private, msg, g_free);
     }
-  
+
   sprintf (msg, "unknown signal (%d)", signum);
   return msg;
 }
@@ -779,25 +784,25 @@ g_printf_string_upper_bound (const gchar* format,
 			     va_list      args)
 {
   guint len = 1;
-  
+
   while (*format)
     {
       gboolean long_int = FALSE;
       gboolean extra_long = FALSE;
       gchar c;
-      
+
       c = *format++;
-      
+
       if (c == '%')
 	{
 	  gboolean done = FALSE;
-	  
+
 	  while (*format && !done)
 	    {
 	      switch (*format++)
 		{
 		  gchar *string_arg;
-		  
+
 		case '*':
 		  len += va_arg (args, int);
 		  break;
@@ -907,7 +912,7 @@ g_printf_string_upper_bound (const gchar* format,
       else
 	len += 1;
     }
-  
+
   return len;
 }
 
@@ -915,11 +920,11 @@ void
 g_strdown (gchar  *string)
 {
   register gchar *s;
-  
+
   g_return_if_fail (string != NULL);
-  
+
   s = string;
-  
+
   while (*s)
     {
       *s = tolower (*s);
@@ -931,11 +936,11 @@ void
 g_strup (gchar	*string)
 {
   register gchar *s;
-  
+
   g_return_if_fail (string != NULL);
-  
+
   s = string;
-  
+
   while (*s)
     {
       *s = toupper (*s);
@@ -947,18 +952,18 @@ void
 g_strreverse (gchar	  *string)
 {
   g_return_if_fail (string != NULL);
-  
+
   if (*string)
     {
       register gchar *h, *t;
-      
+
       h = string;
       t = string + strlen (string) - 1;
-      
+
       while (h < t)
 	{
 	  register gchar c;
-	  
+
 	  c = *h;
 	  *h = *t;
 	  h++;
@@ -976,7 +981,7 @@ g_strcasecmp (const gchar *s1,
   return strcasecmp (s1, s2);
 #else
   gint c1, c2;
-  
+
   g_return_val_if_fail (s1 != NULL, 0);
   g_return_val_if_fail (s2 != NULL, 0);
 
@@ -991,7 +996,7 @@ g_strcasecmp (const gchar *s1,
 	return (c1 - c2);
       s1++; s2++;
     }
-  
+
   return (((gint)(guchar) *s1) - ((gint)(guchar) *s2));
 #endif
 }
@@ -1005,7 +1010,7 @@ g_strncasecmp (const gchar *s1,
   return strncasecmp (s1, s2, n);
 #else
   gint c1, c2;
-  
+
   g_return_val_if_fail (s1 != NULL, 0);
   g_return_val_if_fail (s2 != NULL, 0);
 
@@ -1034,12 +1039,12 @@ g_strdelimit (gchar	  *string,
 	      gchar	   new_delim)
 {
   register gchar *c;
-  
+
   g_return_val_if_fail (string != NULL, NULL);
-  
+
   if (!delimiters)
     delimiters = G_STR_DELIMITERS;
-  
+
   for (c = string; *c; c++)
     {
       if (strchr (delimiters, *c))
@@ -1132,12 +1137,12 @@ g_strsplit (const gchar *string,
   if (s)
     {
       guint delimiter_len = strlen (delimiter);
-      
+
       do
 	{
 	  guint len;
 	  gchar *new_string;
-	  
+
 	  len = s - string;
 	  new_string = g_new (gchar, len + 1);
 	  strncpy (new_string, string, len);
@@ -1154,7 +1159,7 @@ g_strsplit (const gchar *string,
       n++;
       string_list = g_slist_prepend (string_list, g_strdup (string));
     }
-  
+
   str_array = g_new (gchar*, n);
 
   i = n - 1;
@@ -1187,7 +1192,7 @@ g_strjoinv (const gchar  *separator,
 	    gchar       **str_array)
 {
   gchar *string;
-  
+
   g_return_val_if_fail (str_array != NULL, NULL);
 
   if(separator == NULL)
@@ -1202,7 +1207,7 @@ g_strjoinv (const gchar  *separator,
       len = 1 + strlen (str_array[0]);
       for(i = 1; str_array[i] != NULL; i++)
 	len += separator_len + strlen(str_array[i]);
-      
+
       string = g_new (gchar, len);
       *string = 0;
       strcat (string, *str_array);

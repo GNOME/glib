@@ -178,7 +178,7 @@ AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 
-dnl long doubles were not used, and a portability problem 
+dnl long doubles were not used, and a portability problem
 dnl AC_C_LONG_DOUBLE
 AC_C_CONST
 
@@ -265,11 +265,21 @@ fi
 AC_MSG_CHECKING(for sys_siglist)
 AC_TRY_LINK(, [
 extern char *sys_siglist[];
-sys_siglist[1][0] = 0;
+strlen (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
 if test $glib_ok = no; then
     AC_DEFINE(NO_SYS_SIGLIST)
+fi
+
+# Check for sys_siglist decl (see Tue Jan 19 00:44:24 1999 in changelog)
+AC_MSG_CHECKING(for sys_siglist declaration)
+AC_TRY_COMPILE([#include <signal.h>], [
+strlen (sys_siglist[0]);
+], glib_ok=yes, glib_ok=no)
+AC_MSG_RESULT($glib_ok)
+if test $glib_ok = yes; then
+    AC_DEFINE(NO_SYS_SIGLIST_DECL)
 fi
 
 # Check if <sys/select.h> needs to be included for fd_set
@@ -292,7 +302,7 @@ fi
 # These are used only in GDK (gdki18n.h)
 # This stuff is here only so that we can define these
 # things in glibconfig.h. If gtk+ started using an installed
-# gdkconfig.h file, then the definitions would belong there. 
+# gdkconfig.h file, then the definitions would belong there.
 
 # Check for wchar.h
 
@@ -490,19 +500,19 @@ dnl *** check whether we need preceeding underscores
 		    f1 = dlsym (handle, "glib_underscore_test");
 		    f2 = dlsym (handle, "_glib_underscore_test");
 		  } return (!f2 || f1);
-		}],	
-			glib_cv_uscore=yes,	
+		}],
+			glib_cv_uscore=yes,
 			glib_cv_uscore=no,
 		)
 		rm -f plugin.c plugin.o plugin.lo
 	])
-	AC_MSG_RESULT($glib_cv_uscore)	
+	AC_MSG_RESULT($glib_cv_uscore)
 	if test "x$glib_cv_uscore" = "xyes"; then
   		G_MODULE_NEED_USCORE=1
 	else
   		G_MODULE_NEED_USCORE=0
-	fi	
-	
+	fi
+
 	LDFLAGS="$LDFLAGS_orig"
 dnl *** check for having dlerror()
 	AC_CHECK_FUNC(dlerror,
@@ -548,13 +558,13 @@ THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
 
 FLAG_DOES_NOT_WORK="I can't find the MACRO, that enables thread safety on your
                 platform (normaly it's "_REENTRANT"). I'll not use any flag on
-                compilation now, but then your programs might not work. 
+                compilation now, but then your programs might not work.
                 Please provide information on how it is done on your system."
 
 LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 		"
 
-LIBS_NOT_FOUND_2=". Please choose another thread implementation or 
+LIBS_NOT_FOUND_2=". Please choose another thread implementation or
 		provide informationon your thread implementation."
 
 dnl determination of thread implementation
@@ -583,7 +593,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
 	fi
 	dnl ********** DG/UX ************
         if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(thread, __d10_pthread_attr_init, 
+                AC_CHECK_LIB(thread, __d10_pthread_attr_init,
 			have_threads=posix)
         fi
 fi
@@ -614,7 +624,7 @@ case $have_threads in
         posix)
 		G_THREAD_LIBS=error
 		AC_CHECK_LIB(pthread, pthread_attr_init,
-			     G_THREAD_LIBS="-lpthread") 
+			     G_THREAD_LIBS="-lpthread")
 		if test "x$G_THREAD_LIBS" = xerror; then
                 	AC_CHECK_LIB(pthreads, pthread_attr_init,
 			     	G_THREAD_LIBS="-lpthreads")
@@ -628,7 +638,7 @@ case $have_threads in
 		fi
 		dnl ********** DG/UX ************
         	if test "x$G_THREAD_LIBS" = xerror; then
-                	AC_CHECK_LIB(thread, __d10_pthread_attr_init, 
+                	AC_CHECK_LIB(thread, __d10_pthread_attr_init,
 				G_THREAD_LIBS="-lthread"
 				G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
         	fi
@@ -678,7 +688,7 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
     case $host in
 	*-aix*)
 		G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_THREAD_SAFE"
-		if test x"$GCC" = xyes; then 
+		if test x"$GCC" = xyes; then
             	        G_THREAD_CFLAGS="$G_THREAD_CFLAGS -mthreads"
 		fi
 		;;
@@ -690,11 +700,11 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
 		;;
     esac
 
-    # if we are not finding the ctime_r function, then we probably are 
+    # if we are not finding the ctime_r function, then we probably are
     # not using the proper multithread flag
     old_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
-    AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, , 
+    AC_EGREP_HEADER([[^a-zA-Z_]ctime_r[^a-zA-Z_]], time.h, ,
     G_THREAD_CFLAGS=
     AC_MSG_WARN($FLAG_DOES_NOT_WORK))
     CPPFLAGS=$old_CPPFLAGS
@@ -757,7 +767,7 @@ AC_OUTPUT_COMMANDS([
 ##
 ## Case 1 is difficult.  We know that `automake' sets one of
 ## CONFIG_FILES or CONFIG_HEADERS to empty.  This heuristic works
-## only when AM_CONFIG_HEADER is set, however.  
+## only when AM_CONFIG_HEADER is set, however.
 
 if test -n "${CONFIG_FILES}" && test -n "${CONFIG_HEADERS}"; then
   # Both CONFIG_FILES and CONFIG_HEADERS are non-empty ==> Case 1
@@ -784,10 +794,10 @@ _______EOF
 
 	if test x$glib_limits_h = xyes; then
 	  echo '#include <limits.h>' >> $outfile
-	fi 
+	fi
 	if test x$glib_float_h = xyes; then
 	  echo '#include <float.h>' >> $outfile
-	fi 
+	fi
 	if test x$glib_values_h = xyes; then
 	  echo '#include <values.h>' >> $outfile
 	fi
@@ -834,7 +844,7 @@ _______EOF
 typedef signed $gint32 gint32;
 typedef unsigned $gint32 guint32;
 _______EOF
-	fi 
+	fi
 
 
 	if test -n "$gint64"; then
@@ -846,9 +856,9 @@ ${glib_extension}typedef unsigned $gint64 guint64;
 
 #define G_GINT64_CONSTANT(val)	$gint64_constant
 _______EOF
-	fi 
+	fi
 
-	
+
 	if test -z "$glib_unknown_void_p"; then
 	  cat >>$outfile <<_______EOF
 
@@ -908,7 +918,7 @@ typedef struct _GMutex* GStaticMutex;
 #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (&(mutex)))
 _______EOF
 	fi
-	
+
 	echo >>$outfile
 	g_bit_sizes="16 32"
 	if test -n "$gint64"; then
@@ -939,8 +949,8 @@ _______EOF
 	if test -r glibconfig-sysdefs.h; then
 	  cat glibconfig-sysdefs.h >>$outfile
 	fi
-	
-	
+
+
 	cat >>$outfile <<_______EOF
 
 $glib_wc
