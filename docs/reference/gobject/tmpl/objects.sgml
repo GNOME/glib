@@ -133,18 +133,21 @@ should not be freed.
 
 <!-- ##### MACRO G_OBJECT_CLASS_TYPE ##### -->
 <para>
-
+Return the type id of a class structure.
 </para>
 
-@class: 
+@class: a valid #GObjectClass
+@Returns: Type id of @class.
 
 
 <!-- ##### MACRO G_OBJECT_CLASS_NAME ##### -->
 <para>
-
+Return the name of a class structure's type.
 </para>
 
-@class: 
+@class: a valid #GObjectClass
+@Returns: Type name of @class. The string is owned by the type system and 
+should not be freed.
 
 
 <!-- ##### FUNCTION g_object_class_install_property ##### -->
@@ -152,13 +155,9 @@ should not be freed.
 Installs a new property. This is usually done in the class initializer.
 </para>
 
-@oclass: 
+@oclass: a #GObjectClass
 @property_id: the id for the new property
 @pspec: the #GParamSpec for the new property
-<!-- # Unused Parameters # -->
-@class: a #GObjectClass
-@property_id: 
-@pspec: 
 
 
 <!-- ##### FUNCTION g_object_class_find_property ##### -->
@@ -215,19 +214,20 @@ Installs a new property. This is usually done in the class initializer.
 
 <!-- ##### FUNCTION g_object_ref ##### -->
 <para>
-
+Increases the reference count of @object.
 </para>
 
-@object: 
-@Returns: 
+@object: a #GObject
+@Returns: @object
 
 
 <!-- ##### FUNCTION g_object_unref ##### -->
 <para>
-
+Decreases the reference count if @object.
+When its reference count drops to 0, the object is finalized (i.e. its memory is freed).
 </para>
 
-@object: 
+@object: a #GObject
 
 
 <!-- ##### USER_FUNCTION GWeakNotify ##### -->
@@ -241,22 +241,26 @@ Installs a new property. This is usually done in the class initializer.
 
 <!-- ##### FUNCTION g_object_weak_ref ##### -->
 <para>
-
+Adds a weak reference callback to an object. Weak references are used for
+notification when an object is finalized. They are called "weak references" 
+because they allow you to safely hold a pointer to an object without calling 
+g_object_ref() (g_object_ref() adds a strong reference, that is, forces the 
+object to stay alive).
 </para>
 
-@object: 
-@notify: 
-@data: 
+@object: #GObject to reference weakly
+@notify: callback to invoke before the object is freed
+@data: extra data to pass to notify
 
 
 <!-- ##### FUNCTION g_object_weak_unref ##### -->
 <para>
-
+Removes a weak reference callback to an object.
 </para>
 
-@object: 
-@notify: 
-@data: 
+@object: #GObject to remove a weak reference from
+@notify: callback to search for
+@data: data to search for
 
 
 <!-- ##### FUNCTION g_object_add_weak_pointer ##### -->
@@ -301,30 +305,28 @@ to match the one used with g_object_add_weak_pointer().
 @object: 
 @signal_spec: 
 @Varargs: 
-<!-- # Unused Parameters # -->
-@Returns: 
 
 
 <!-- ##### FUNCTION g_object_set ##### -->
 <para>
-
+Sets properties on an object.
 </para>
 
-@object: 
-@first_property_name: 
-@Varargs: 
-<!-- # Unused Parameters # -->
-@Returns: 
+@object: a #GObject
+@first_property_name: name of the first property to set
+@Varargs: value for the first property, followed optionally by more
+          name/value pairs, followed by %NULL
 
 
 <!-- ##### FUNCTION g_object_get ##### -->
 <para>
-
+Gets properties of an object. 
 </para>
 
-@object: 
-@first_property_name: 
-@Varargs: 
+@object: a #GObject
+@first_property_name: name of the first property to get
+@Varargs: return location for the first property, followed optionally by more
+          name/return location pairs, followed by %NULL
 
 
 <!-- ##### FUNCTION g_object_notify ##### -->
@@ -356,43 +358,51 @@ This causes all queued "notify" signals on @object to be emitted.
 
 <!-- ##### FUNCTION g_object_get_data ##### -->
 <para>
-
+Gets a named field from the objects table of associations (see g_object_set_data()).
 </para>
 
-@object: 
-@key: 
-@Returns: 
+@object: #GObject containing the associations
+@key: name of the key for that association
+@Returns: the data if found, or %NULL if no such data exists.
 
 
 <!-- ##### FUNCTION g_object_set_data ##### -->
 <para>
-
+Each object carries around a table of associations from
+strings to pointers.  This function lets you set an association.
+</para>
+<para>
+If the object already had an association with that name,
+the old association will be destroyed.
 </para>
 
-@object: 
-@key: 
-@data: 
+@object: #GObject containing the associations.
+@key: name of the key
+@data: data to associate with that key
 
 
 <!-- ##### FUNCTION g_object_set_data_full ##### -->
 <para>
-
+Like g_object_set_data() except it adds notification
+for when the association is destroyed, either by setting it 
+to a different value or when the object is destroyed.
 </para>
 
-@object: 
-@key: 
-@data: 
-@destroy: 
+@object: #GObject containing the associations
+@key: name of the key
+@data: data to associate with that key
+@destroy: function to call when the association is destroyed
 
 
 <!-- ##### FUNCTION g_object_steal_data ##### -->
 <para>
-
+Remove a specified datum from the object's data associations,
+without invoking the association's destroy handler.
 </para>
 
-@object: 
-@key: 
-@Returns: 
+@object: #GObject containing the associations
+@key: name of the key
+@Returns: the data if found, or %NULL if no such data exists.
 
 
 <!-- ##### FUNCTION g_object_get_qdata ##### -->
@@ -483,22 +493,22 @@ have been freed upon g_object_set_qdata_full().
 
 <!-- ##### FUNCTION g_object_set_property ##### -->
 <para>
-
+Sets a property on an object.
 </para>
 
-@object: 
-@property_name: 
-@value: 
+@object: a #GObject
+@property_name: the name of the property to set
+@value: the value
 
 
 <!-- ##### FUNCTION g_object_get_property ##### -->
 <para>
-
+Gets a property of an object.
 </para>
 
-@object: 
-@property_name: 
-@value: 
+@object: a #GObject
+@property_name: the name of the property to get
+@value: return location for the property value
 
 
 <!-- ##### FUNCTION g_object_new_valist ##### -->
