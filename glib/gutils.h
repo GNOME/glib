@@ -94,6 +94,7 @@ G_BEGIN_DECLS
 #endif
 #ifdef G_IMPLEMENT_INLINES
 #  define G_INLINE_FUNC
+#  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
 #  define G_INLINE_FUNC extern inline
 #elif defined (G_CAN_INLINE) 
