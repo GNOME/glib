@@ -1971,7 +1971,7 @@ void	  g_datalist_id_set_data_full	 (GData		 **datalist,
 					  GQuark	   key_id,
 					  gpointer	   data,
 					  GDestroyNotify   destroy_func);
-void	  g_datalist_id_remove_no_notify (GData		 **datalist,
+gpointer  g_datalist_id_remove_no_notify (GData		 **datalist,
 					  GQuark	   key_id);
 void	  g_datalist_foreach		 (GData		 **datalist,
 					  GDataForeachFunc func,
@@ -2001,7 +2001,7 @@ void	  g_dataset_id_set_data_full	(gconstpointer	  dataset_location,
 					 GQuark		  key_id,
 					 gpointer	  data,
 					 GDestroyNotify	  destroy_func);
-void	  g_dataset_id_remove_no_notify	(gconstpointer	  dataset_location,
+gpointer  g_dataset_id_remove_no_notify	(gconstpointer	  dataset_location,
 					 GQuark		  key_id);
 void	  g_dataset_foreach		(gconstpointer	  dataset_location,
 					 GDataForeachFunc func,
