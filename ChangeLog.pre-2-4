@@ -1,3 +1,8 @@
+Fri Jun  6 10:24:23 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
+
+	* m4macros/glib-gettext.m4: Test for Solaris native gettext 
+	in libc, seeing if it supports GNU catalog format (#85217).
+	
 Thu Jun  5 23:40:31 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gmain.c: When dispatching a source that is
