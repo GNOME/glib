@@ -12,13 +12,11 @@ config.h.win32
 config.log
 config.status
 configure
-glib-config
 glib.spec
 glibconfig-sysdefs.h
 glibconfig.h
 glibconfig.h.win32
-libglib-1.1.la
-libglib.la
+libglib-1.3.la
 libtool
 makefile.cygwin
 makefile.msc
@@ -34,3 +32,8 @@ logs
 glib.rc
 gmodule.rc
 gthread.rc
+glib-2.0.pc
+gmodule-2.0.pc
+gthread-2.0.pc
+gobject-2.0.pc
+glib-config-2.0
