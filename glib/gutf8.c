@@ -1567,3 +1567,45 @@ g_unichar_validate (gunichar ch)
 {
   return UNICODE_VALID (ch);
 }
+
+/**
+ * g_utf8_strreverse:
+ * @str: a UTF-8 encoded string
+ * @len: the maximum length of @str to use. If @len < 0, then
+ *       the string is nul-terminated.
+ *
+ * Reverses a UTF-8 string. @str must be valid UTF-8 encoded text. 
+ * (Use g_utf8_validate() on all text before trying to use UTF-8 
+ * utility functions with it.)
+ *
+ * Note that unlike g_strreverse(), this function returns
+ * newly-allocated memory, which should be freed with g_free() when
+ * no longer needed. 
+ *
+ * Returns: a newly-allocated string which is the reverse of @str.
+ */
+gchar *
+g_utf8_strreverse (const gchar *str, 
+		   gssize len)
+{
+  gchar *result;
+  const gchar *p;
+  gchar *m, *r, skip;
+
+  if (len < 0)
+    len = strlen (str);
+
+  result = g_new (gchar, len + 1);
+  r = result + len;
+  p = str;
+  while (*p) 
+    {
+      skip = g_utf8_skip[*(guchar*)p];
+      r -= skip;
+      for (m = r; skip; skip--)
+        *m++ = *p++;
+    }
+  result[len] = 0;
+
+  return result;
+}

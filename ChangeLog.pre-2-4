@@ -1,3 +1,11 @@
+2002-07-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gunicode.h: 
+	* glib/gutf8.c (g_utf8_strreverse): New function to revert
+	a utf8 string.
+	* glib/gpattern.c (g_utf8_reverse): Gone, replaced by 
+	g_utf8_strreverse.  (#87725)
+
 Thu Jul 25 20:57:20 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_channel_read_line): Fix 

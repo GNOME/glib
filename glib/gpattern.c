@@ -46,41 +46,6 @@ struct _GPatternSpec
 
 
 /* --- functions --- */
-/**
- * g_utf8_reverse:
- * @string: a UTF-8 string.
- *
- * Reverses a UTF-8 string. The @string must be valid UTF-8 encoded text. 
- * (Use g_utf8_validate() on all text before trying to use UTF-8 
- * utility functions with it.)
- *
- * Note that unlike g_strreverse(), this function returns
- * newly-allocated memory, which should be freed with g_free() when
- * no longer needed. 
- *
- * Returns: a newly-allocated string which is the reverse of @string.
- */
-static gchar *
-g_utf8_reverse (guint len, const gchar *string)
-{
-  gchar *result;
-  const gchar *p;
-  gchar *m, *r, skip;
-
-  result = g_new (gchar, len + 1);
-  r = result + len;
-  p = string;
-  while (*p) 
-    {
-      skip = g_utf8_skip[*(guchar*)p];
-      r -= skip;
-      for (m = r; skip; skip--)
-        *m++ = *p++;
-    }
-  result[len] = 0;
-
-  return result;
-}
 
 static inline gboolean
 g_pattern_ph_match (const gchar *match_pattern,
@@ -172,7 +137,7 @@ g_pattern_match (GPatternSpec *pspec,
 	{
           gboolean result;
           gchar *tmp;
-	  tmp = g_utf8_reverse (string_length, string);
+	  tmp = g_utf8_strreverse (string, string_length);
 	  result = g_pattern_ph_match (pspec->pattern, tmp);
 	  g_free (tmp);
 	  return result;
@@ -296,7 +261,7 @@ g_pattern_spec_new (const gchar *pattern)
     pspec->match_type = tj_pos > hj_pos ? G_MATCH_ALL_TAIL : G_MATCH_ALL;
   if (pspec->match_type == G_MATCH_ALL_TAIL) {
     gchar *tmp = pspec->pattern;
-    pspec->pattern = g_utf8_reverse (pspec->pattern_length, pspec->pattern);
+    pspec->pattern = g_utf8_strreverse (pspec->pattern, pspec->pattern_length);
     g_free (tmp);
   }
   return pspec;

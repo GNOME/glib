@@ -195,6 +195,8 @@ gchar* g_utf8_strchr  (const gchar *p,
 gchar* g_utf8_strrchr (const gchar *p,
 		       gssize       len,
 		       gunichar     c);
+gchar* g_utf8_strreverse (const gchar *str,
+			  gssize len);
 
 gunichar2 *g_utf8_to_utf16     (const gchar      *str,
 				glong             len,            
