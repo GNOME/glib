@@ -377,7 +377,7 @@ g_unichar_toupper (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
 	{
-	  const guchar *p = special_case_table + val - 0x1000000;
+	  const gchar *p = special_case_table + val - 0x1000000;
 	  return g_utf8_get_char (p);
 	}
       else
@@ -414,7 +414,7 @@ g_unichar_tolower (gunichar c)
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
 	{
-	  const guchar *p = special_case_table + val - 0x1000000;
+	  const gchar *p = special_case_table + val - 0x1000000;
 	  return g_utf8_get_char (p);
 	}
       else
@@ -578,7 +578,7 @@ output_special_case (gchar *out_buffer,
 		     int    type,
 		     int    which)
 {
-  const guchar *p = special_case_table + offset;
+  const gchar *p = special_case_table + offset;
   gint len;
 
   if (type != G_UNICODE_TITLECASE_LETTER)

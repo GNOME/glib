@@ -186,7 +186,7 @@ g_io_channel_read (GIOChannel *channel,
     {
       if (bytes_read)
         *bytes_read = 0;
-      return G_IO_STATUS_NORMAL;
+      return G_IO_ERROR_NONE;
     }
 
   g_return_val_if_fail (buf != NULL, G_IO_ERROR_UNKNOWN);

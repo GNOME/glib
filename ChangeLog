@@ -1,3 +1,15 @@
+Sat Mar 13 23:10:35 2004  Owen Taylor  <otaylor@redhat.com>
+
+	Some warning fixes for the Sun compiler (Reported by 
+	David L. Cooper II, #136401)
+
+	* glib/giochannel.c (g_io_channel_read): Return
+	G_IO_ERROR_NONE, not G_IO_STATUS_NORMAL, since hte
+	function returns a GIOError.
+
+	* glib/guniprop.c: Fix some guchar/gchar confusion
+	with special_case_table.
+
 Fri Mar 12 15:30:58 2004  Manish Singh  <yosh@gimp.org>
 
 	* glib/gbacktrace.h: ia32's G_BREAKPOINT() implementation works on
