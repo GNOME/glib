@@ -1,3 +1,26 @@
+2000-05-13  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in
+	* tests/makefile.mingw.in
+	* build-dll: Rename makefile.cygwin(.in) to
+	makefile.mingw(.in), which better describes what it is. Move the
+	build of gmodule, gthread and gobject DLLs to makefiles in those
+	directories. Move resource file handling and build number bump to
+	build-dll, where it sits much cleaner.
+
+	* README.win32
+	* Makefile.am (EXTRA_DIST): Update accordingly.
+
+	* glib.h: Add G_PI, G_PI_2, G_PI_4, G_E, G_LN2, G_LN10 and
+	G_SQRT2. M_PI etc aren't necessarily in <math.h> in strict ISO C
+	implementations.
+
+	* glib.def: Add g_strcanon.
+
+	* gtree.c (g_tree_node_rotate_left): Remove unused variables.
+
+	* gwin32.c (g_win32_opendir): Remove unneeded statement.
+
 Thu May  4 02:04:46 2000  Tim Janik  <timj@gtk.org>
 
         * configure.in (STRIP_DUMMY): some Make 3.79 $(strip ) versions are

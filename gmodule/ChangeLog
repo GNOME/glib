@@ -1,3 +1,10 @@
+2000-05-13  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in: New file, with gmodule stuff
+	moved from ../makefile.mingw.in.
+
+	* Makefile.am: Add to EXTRA_DIST, and add rule to make makefile.mingw.
+
 2000-05-02  Tor Lillqvist  <tml@iki.fi>
 
 	* gmodule-win32.c: No need to include <psapi.h>

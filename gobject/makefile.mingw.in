@@ -1,0 +1,37 @@
+## Makefile for building the gobject DLL with gcc for mingw. The build
+## uses tools running on cygwin, however.
+
+## Use: make -f makefile.mingw
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ../..
+
+include $(TOP)/build/win32/make.mingw
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .. -I .
+DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=g_log_domain_gobject
+
+BUILD_DLL = ../build-dll
+
+all : \
+	gobject-$(GLIB_VER).dll
+
+makefile.mingw: makefile.mingw.in
+	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
+	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+
+gobject_OBJECTS = \
+	gvalue.o \
+	gparam.o \
+	gparamspecs.o \
+	genums.o \
+	gobject.o \
+	gtype.o
+
+gobject-$(GLIB_VER).dll : $(gobject_OBJECTS) gobject.def
+	$(BUILD_DLL) gobject $(GLIB_VER) gobject.def $(gobject_OBJECTS) -L .. -lglib-$(GLIB_VER)

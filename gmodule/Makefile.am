@@ -4,6 +4,8 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gmodule \
 	-DG_LOG_DOMAIN=g_log_domain_gmodule @GLIB_DEBUG_FLAGS@
 
 EXTRA_DIST =	\
+		makefile.mingw	\
+		makefile.mingw.in \
 		gmoduleconf.h.in \
 		gmodule.def	\
 		gmodule-dl.c	\
@@ -51,6 +53,9 @@ testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
 testgmodule_LDADD = libgmodule.la $(libglib) @G_MODULE_LIBS@
 
 gmodule.rc: $(top_builddir)/config.status $(top_srcdir)/gmodule/gmodule.rc.in
+	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gmodule/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=gmodule/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 .PHONY: files release

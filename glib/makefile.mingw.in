@@ -1,0 +1,120 @@
+## Makefile for building the GLib DLL with gcc for mingw. The build
+## uses tools running on cygwin, however.
+
+## Use: make -f makefile.mingw
+
+# Change this to wherever you want to install the DLLs. This directory
+# should be in your PATH.
+BIN = /bin
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ..
+
+include $(TOP)/build/win32/make.mingw
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .
+DEFINES = -DHAVE_CONFIG_H -DGLIB_COMPILATION -DG_LOG_DOMAIN=g_log_domain_glib
+
+DLLS_TO_BUILD = \
+ 	glib-$(GLIB_VER).dll \
+	gmodule/gmodule-$(GLIB_VER).dll \
+	gthread/gthread-$(GLIB_VER).dll \
+	gobject/gobject-$(GLIB_VER).dll \
+
+
+all : \
+	config.h \
+	glibconfig.h \
+	$(DLLS_TO_BUILD) \
+	testglib.exe \
+	testgdate.exe \
+	testgdateparser.exe
+
+install : all
+	$(INSTALL) $(DLLS_TO_BUILD) $(BIN)
+
+glib_OBJECTS = \
+	garray.o \
+	gasyncqueue.o \
+	gcache.o \
+	gcompletion.o \
+	gdataset.o \
+	gdate.o \
+	gerror.o \
+	ghook.o \
+	ghash.o \
+	giochannel.o \
+	giowin32.o \
+	glist.o \
+	gmain.o \
+	gmem.o \
+	gmessages.o \
+	gnode.o \
+	gprimes.o \
+	gqueue.o \
+	grand.o \
+	gslist.o \
+	gthread.o \
+	gthreadpool.o \
+	gtimer.o \
+	gtree.o \
+	grel.o \
+	gstring.o \
+	gstrfuncs.o \
+	gscanner.o \
+	gutils.o \
+	gwin32.o
+
+glibconfig.h: glibconfig.h.win32
+	cp $< $@
+
+config.h: config.h.win32
+	cp $< $@
+
+makefile.mingw: makefile.mingw.in
+	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
+	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+
+################ glib
+
+glib-$(GLIB_VER).dll : $(glib_OBJECTS) glib.def
+	./build-dll glib $(GLIB_VER) glib.def $(glib_OBJECTS) -luser32 -lwsock32
+
+################ subdirectories
+
+gmodule/gmodule-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+	cd gmodule && $(MAKE) -f makefile.mingw all
+
+gthread/gthread-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+	cd gthread && $(MAKE) -f makefile.mingw all
+
+gobject/gobject-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+	cd gobject && $(MAKE) -f makefile.mingw all
+
+################ test progs
+
+testglib.exe : glib-$(GLIB_VER).dll testglib.o
+	$(CC) $(CFLAGS) -o testglib testglib.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
+
+testgdate.exe : glib-$(GLIB_VER).dll testgdate.o
+	$(CC) $(CFLAGS) -o testgdate.exe testgdate.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
+
+testgdate.o : testgdate.c
+	$(CC) -c $(CFLAGS) testgdate.c
+
+testgdateparser.exe : glib-$(GLIB_VER).dll testgdateparser.o
+	$(CC) $(CFLAGS) -o testgdateparser.exe testgdateparser.o -L . -lglib-$(GLIB_VER) $(LDFLAGS)
+
+testgdateparser.o : testgdateparser.c
+	$(CC) -c $(CFLAGS) testgdateparser.c
+
+
+################ other stuff
+
+clean::
+	-rm config.h glibconfig.h gmodule/gmoduleconf.h

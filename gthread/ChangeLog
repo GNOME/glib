@@ -1,3 +1,10 @@
+2000-05-13  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in: New file, with gthread stuff moved from
+	../makefile.mingw.in.
+
+	* Makefile.am: Add to EXTRA_DIST, add rule to build makefile.mingw.
+
 2000-04-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-solaris.c (g_mutex_new_solaris_impl): Changed the scope

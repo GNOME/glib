@@ -4,6 +4,8 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/gthread \
 	-DG_LOG_DOMAIN=\"GThread\" @GTHREAD_COMPILE_IMPL_DEFINES@
 
 EXTRA_DIST =				\
+		makefile.mingw		\
+		makefile.mingw.in	\
 		gthread-posix.c		\
 		gthread-solaris.c	\
 		gthread-none.c		\
@@ -28,3 +30,5 @@ libgthread_la_LIBADD = @G_THREAD_LIBS_EXTRA@ @G_THREAD_LIBS@
 gthread.rc: $(top_builddir)/config.status $(top_srcdir)/gthread/gthread.rc.in
 	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gthread/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=gthread/$@ CONFIG_HEADERS= $(SHELL) ./config.status

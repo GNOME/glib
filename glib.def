@@ -370,6 +370,7 @@ EXPORTS
 	g_static_rw_lock_writer_unlock
 	g_str_equal
 	g_str_hash
+	g_strcanon
 	g_strcasecmp
 	g_strchomp
 	g_strchug

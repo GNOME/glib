@@ -19,8 +19,8 @@ EXTRA_DIST = \
 	glib.def		\
 	makefile.msc		\
 	makefile.msc.in		\
-	makefile.cygwin		\
-	makefile.cygwin.in	\
+	makefile.mingw		\
+	makefile.mingw.in	\
 	giowin32.c		\
 	glibconfig.h.win32	\
 	glibconfig.h.win32.in	\
@@ -107,7 +107,7 @@ config.h.win32: $(top_builddir)/config.status $(top_srcdir)/config.h.win32.in
 makefile.msc: $(top_builddir)/config.status $(top_srcdir)/makefile.msc.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-makefile.cygwin: $(top_builddir)/config.status $(top_srcdir)/makefile.cygwin.in
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/makefile.mingw.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 glib.rc: $(top_builddir)/config.status $(top_srcdir)/glib.rc.in

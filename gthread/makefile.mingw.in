@@ -1,0 +1,39 @@
+## Makefile for building the gthread DLL with gcc for mingw. The build
+## uses tools running on cygwin, however.
+
+## Use: make -f makefile.mingw
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ../..
+
+# This is the location of pthreads for Win32, 
+# see http://sourceware.cygnus.com/pthreads-win32/
+# We want the 1999-05-30 snapshot.
+PTHREADS = $(TOP)/pthreads-snap-1999-05-30
+PTHREAD_LIBS = -L $(PTHREADS) -lpthread32
+PTHREAD_INC = -I $(PTHREADS)
+
+include $(TOP)/build/win32/make.mingw
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .. -I . $(PTHREAD_INC)
+DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=\"GThread\"
+
+BUILD_DLL = ../build-dll
+
+all : \
+	gthread-$(GLIB_VER).dll
+
+makefile.mingw: makefile.mingw.in
+	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
+	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+
+gthread_OBJECTS = \
+	gthread-impl.o
+
+gthread-$(GLIB_VER).dll : $(gthread_OBJECTS) gthread.def
+	$(BUILD_DLL) gthread $(GLIB_VER) gthread.def $(gthread_OBJECTS) -L .. -lglib-$(GLIB_VER) $(PTHREAD_LIBS)

@@ -4,9 +4,9 @@ General
 For more information about the port or GLib, GTk+ and the GIMP to
 native Windows, and pre-built binary packages, see
 http://www.iki.fi/tml/gimp/win32/ . "Native" means that we use the
-Win32 API only, and not any POSIX emulation layer except that provided
-by the Microsoft runtime C library. Additionally, a pthreads emulation
-library is used.
+Win32 API only, and not any POSIX operating system emulation layer
+except that provided by the Microsoft runtime C library. Additionally,
+a pthreads emulation library is used.
 
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
@@ -18,7 +18,7 @@ and .dll files) that do *not* require the cygwin runtime library. This
 is called "mingw".
 
 To test the GLib functions, go to the tests subdirectory and enter
-`nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
+`nmake -f makefile.msc check` or `make -f makefile.mingw check`.
 
 If you would want to use the cygwin tools to generate executables that
 *do* use the cygwin runtime, the normal Unix configuration method
@@ -69,7 +69,7 @@ Before building you must get the pthreads library for Win32 from
 http://sourceware.cygnus.com/pthreads-win32/. The pthreads-win32
 snapshot from 1999-05-30 is the one that should be used. Edit the
 location of the pthreads library and include files in makefile.msc or
-makefile.cygwin. The pthreads distribution includes the precompiled dll
+makefile.mingw. The pthreads distribution includes the precompiled dll
 and import libraries both for MSVC and gcc.
 
 The pthreads for Win32 package that the thread support uses supposedly
@@ -80,8 +80,8 @@ Where are the makefiles?
 ========================
 
 If you are building from a CVS snapshot, you will not have any
-makefile.msc or makefile.cygwin file. You should copy the
-corresponding makefile.msc.in or makefile.cygwin.in file to that name,
+makefile.msc or makefile.mingw file. You should copy the
+corresponding makefile.msc.in or makefile.mingw.in file to that name,
 and edit the line that sets GLIB_VER to the correct version number.
 
 This is done automatically when an official distribution package is
@@ -355,7 +355,7 @@ diff -ru2 ./w32api/include/wingdi.h ../../src/mingw-runtime-19991107/w32api/incl
 5) Whew. That hopefully should be it.
 
 Next, go back to the GLib directory and build using `make -f
-makefile.cygwin`.  Building the dlls uses the script build-dll which
+makefile.mingw`. Building the dlls uses the script build-dll which
 is somewhat of a hack. But I couldn't get things working in a cleaner
 way.
 

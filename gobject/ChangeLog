@@ -1,3 +1,15 @@
+2000-05-13  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in
+	* gobject.def
+	* gobject.rc.in: New files, for Win32 (mingw) build.
+
+	* Makefile.am: Add to EXTRA_DIST. Add rules to produce the
+	corresponding non-*.in files.
+
+	* gtype.h: (Win32:) Mark _g_type_fundamental_last for
+	export/import from DLL.
+
 Fri May  5 01:15:48 2000  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: add reserved fundamental ids for gtk types (for transition

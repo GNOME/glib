@@ -74,6 +74,17 @@
  */
 #include <glibconfig.h>
 
+/* Define some mathematical constants that aren't available
+ * symbolically in some strict ISO C implementations.
+ */
+#define G_E     2.7182818284590452354E0
+#define G_LN2   6.9314718055994530942E-1
+#define G_LN10  2.3025850929940456840E0
+#define G_PI    3.14159265358979323846E0
+#define G_PI_2  1.57079632679489661923E0
+#define G_PI_4  0.78539816339744830962E0
+#define G_SQRT2 1.4142135623730950488E0
+
 /* include varargs functions for assertment macros
  */
 #include <stdarg.h>

@@ -80,4 +80,15 @@ gobject_query_LDADD = $(progs_LDADD)
 # auxillary files
 #
 EXTRA_DIST += \
-	TODO
+	TODO		\
+	makefile.mingw	\
+	makefile.mingw.in \
+	gobject.rc	\
+	gobject.rc.in
+
+gobject.rc: $(top_builddir)/config.status $(top_srcdir)/gobject/gobject.rc.in
+	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+makefile.mingw: $(top_builddir)/config.status $(top_srcdir)/gobject/makefile.mingw.in
+	cd $(top_builddir) && CONFIG_FILES=gobject/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+

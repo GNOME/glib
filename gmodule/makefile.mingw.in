@@ -1,0 +1,58 @@
+## Makefile for building the gmodule DLL with gcc for mingw. The build
+## uses tools running on cygwin, however.
+
+## Use: make -f makefile.mingw
+
+GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
+
+TOP = ../..
+
+include $(TOP)/build/win32/make.mingw
+
+################################################################
+
+# Nothing much configurable below
+
+INCLUDES = -I .. -I .
+DEFINES = -DHAVE_CONFIG_H -DG_LOG_DOMAIN=g_log_domain_gmodule
+
+BUILD_DLL = ../build-dll
+
+all : \
+	gmoduleconf.h \
+	gmodule-$(GLIB_VER).dll \
+	testgmodule.exe
+
+makefile.mingw: makefile.mingw.in
+	sed -e 's,@GLIB[_]MAJOR_VERSION@,@GLIB_MAJOR_VERSION@,' \
+	    -e 's,@GLIB[_]MINOR_VERSION@,@GLIB_MINOR_VERSION@,' <$< >$@
+
+gmodule_OBJECTS = \
+	gmodule.o
+
+gmoduleconf.h: gmoduleconf.h.win32
+	cp $< $@
+
+
+gmodule-win32res.o : gmodule.rc gmodule-build.tmp
+
+gmodule-$(GLIB_VER).dll : $(gmodule_OBJECTS) gmodule.def
+	$(BUILD_DLL) gmodule $(GLIB_VER) gmodule.def $(gmodule_OBJECTS) gmodule-win32res.o -L .. -lglib-$(GLIB_VER)
+
+################ test prog
+
+testgmodule.exe : gmodule-$(GLIB_VER).dll testgmodule.o libgplugin_a.dll libgplugin_b.dll
+# Wow, do we really have to do it like this to get some symbols
+# exported from a .exe? Apparently yes. Does the __declspec(dllexport) 
+# actually do anything in gcc?
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
+	$(CC) $(CFLAGS) -Wl,--base-file,testgmodule.base,testgmodule.exp -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+	$(DLLTOOL) --base-file testgmodule.base --output-exp testgmodule.exp testgmodule.o
+	$(CC) $(CFLAGS) -Wl,testgmodule.exp -o testgmodule.exe testgmodule.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER) $(LDFLAGS)
+
+libgplugin_a.dll : libgplugin_a.o
+	$(BUILD_DLL) libgplugin_a - - libgplugin_a.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)
+
+libgplugin_b.dll : libgplugin_b.o
+	$(BUILD_DLL) libgplugin_b - - libgplugin_b.o -L .. -lglib-$(GLIB_VER) -L . -lgmodule-$(GLIB_VER)

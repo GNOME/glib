@@ -101,7 +101,6 @@ g_win32_opendir (const char *dirname)
   if (k && result->dir_name[k - 1] == '\\')
     {
       result->dir_name[k - 1] = '\0';
-      k--;
     }
   mask = g_strdup_printf ("%s\\*", result->dir_name);
 

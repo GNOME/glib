@@ -657,12 +657,10 @@ g_tree_node_height (GTreeNode *node)
 static GTreeNode*
 g_tree_node_rotate_left (GTreeNode *node)
 {
-  GTreeNode *left;
   GTreeNode *right;
   gint a_bal;
   gint b_bal;
 
-  left = node->left;
   right = node->right;
 
   node->right = right->left;
