@@ -1,5 +1,9 @@
 2003-07-28  Matthias Clasen  <maclas@gmx.de>
 
+	* tests/env-test.c: New test for g_{get,set,unset}env().
+
+	* tests/Makefile.am (test_programs): Add env-test.
+
 	* glib/gutils.h: 
 	* glib/gutils.c: New functions g_setenv() and g_unsetenv().  (#100763)
 

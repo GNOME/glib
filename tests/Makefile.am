@@ -67,6 +67,7 @@ test_programs =					\
 	date-test				\
 	dirname-test				\
 	file-test				\
+	env-test				\
 	gio-test				\
 	hash-test				\
 	iochannel-test				\
@@ -113,6 +114,7 @@ array_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
 dirname_test_LDADD = $(progs_ldadd)
 file_test_LDADD = $(progs_ldadd)
+env_test_LDADD = $(progs_ldadd)
 gio_test_LDADD = $(progs_ldadd)
 hash_test_LDADD = $(progs_ldadd)
 iochannel_test_LDADD = $(progs_ldadd)
