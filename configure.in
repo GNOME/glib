@@ -281,7 +281,7 @@ AC_TRY_COMPILE([#include <signal.h>], [
 strlen (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = yes; then
+if test $glib_ok = no; then
     AC_DEFINE(NO_SYS_SIGLIST_DECL)
 fi
 

@@ -31,7 +31,7 @@
 #include <string.h>
 #include <locale.h>
 #include <ctype.h>		/* For tolower() */
-#if !defined (HAVE_STRSIGNAL) && NO_SYS_SIGLIST
+#if !defined (HAVE_STRSIGNAL) || !defined(NO_SYS_SIGLIST_DECL)
 #include <signal.h>
 #endif
 #include "glib.h"
@@ -762,9 +762,8 @@ g_strsignal (gint signum)
     }
 #else /* NO_SYS_SIGLIST */
 
-#ifndef NO_SYS_SIGLIST_DECL
-  /*(see Tue Jan 19 00:44:24 1999 in changelog)*/
-  extern char *sys_siglist[];
+#ifdef NO_SYS_SIGLIST_DECL
+  extern char *sys_siglist[];	/*(see Tue Jan 19 00:44:24 1999 in changelog)*/
 #endif
 
   return (char*) /* this function should return const --josh */ sys_siglist [signum];

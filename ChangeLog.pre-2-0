@@ -1,3 +1,10 @@
+Mon Jan 25 15:34:43 1999  Timur Bakeyev <mc@bat.ru>
+
+	* configure.in, gstrfuncs.c: Inverted logic of NO_SYS_SYGLIST_DECL -
+	now it's normal (see 1999-01-19 Josh MacDonald). Also, remove from
+	#include <signal.h> wrapper NO_SYS_SYGLIST - *sys_syglist[] declara-
+	tion hides there.
+
 1999-01-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Do not use the thread libs, when searching for
@@ -184,7 +191,7 @@ Tue Jan 19 20:52:43 1999  Tor Lillqvist  <tml@iki.fi>
 	after the determination of the G_THREAD_LIBS and use them for
 	finding those functions, necessary on systems with a different C
 	library libc_r for threaded progs, like FreeBSD 2.2.x. Info from
-	Timur I. Bakeyev <timur@comtat.ru>.
+	Timur Bakeyev <mc@bat.ru>.
 
 Tue Jan 19 00:44:24 1999  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 
