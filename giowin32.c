@@ -122,6 +122,8 @@ g_io_channel_win32_init (GIOWin32Channel *channel)
   channel->buffer = NULL;
   channel->running = FALSE;
   channel->thread_id = 0;
+  channel->data_avail_event = NULL;
+  channel->space_avail_event = NULL;
 }
 
 static void
@@ -133,9 +135,6 @@ create_events (GIOWin32Channel *channel)
   sec_attrs.lpSecurityDescriptor = NULL;
   sec_attrs.bInheritHandle = FALSE;
 
-  channel->data_avail_event = NULL;
-  channel->space_avail_event = NULL;
-  
   /* The data available event is manual reset, the space available event
    * is automatic reset.
    */
@@ -379,6 +378,43 @@ static GSourceFuncs win32_watch_funcs = {
   g_io_win32_destroy
 };
 
+static guint
+g_io_win32_add_watch (GIOChannel    *channel,
+		      gint           priority,
+		      GIOCondition   condition,
+		      GIOFunc        func,
+		      gpointer       user_data,
+		      GDestroyNotify notify,
+		      int (*reader) (int, guchar *, int))
+{
+  GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  
+  watch->channel = channel;
+  g_io_channel_ref (channel);
+  
+  watch->callback = func;
+  watch->condition = condition;
+  
+  if (win32_channel->data_avail_event == NULL)
+    create_events (win32_channel);
+
+  watch->pollfd.fd = (gint) win32_channel->data_avail_event;
+  watch->pollfd.events = condition;
+  
+  if (win32_channel->debug)
+    g_print ("g_io_win32_add_watch: fd:%d handle:%#x\n",
+	     win32_channel->fd, watch->pollfd.fd);
+  
+  if (win32_channel->thread_id == 0)
+    create_reader_thread (win32_channel, reader);
+
+  g_main_add_poll (&watch->pollfd, priority);
+  
+  return g_source_add (priority, TRUE, &win32_watch_funcs, watch,
+		       user_data, notify);
+}
+
 static GIOError
 g_io_win32_msg_read (GIOChannel *channel,
 		     gchar      *buf,
@@ -427,7 +463,6 @@ g_io_win32_no_seek (GIOChannel *channel,
 {
   return G_IO_ERROR_UNKNOWN;
 }
-
 
 static void
 g_io_win32_msg_close (GIOChannel *channel)
@@ -478,13 +513,17 @@ g_io_win32_msg_add_watch (GIOChannel    *channel,
 
 static GIOError
 g_io_win32_fd_read (GIOChannel *channel,
-		    gchar     *buf,
-		    guint      count,
-		    guint     *bytes_read)
+		    gchar      *buf,
+		    guint       count,
+		    guint      *bytes_read)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
   GIOError error;
+  
+  if (win32_channel->debug)
+    g_print ("g_io_win32_fd_read: fd:%d count:%d\n",
+	     win32_channel->fd, count);
   
   if (win32_channel->thread_id)
     {
@@ -519,10 +558,10 @@ g_io_win32_fd_read (GIOChannel *channel,
 }
 
 static GIOError
-g_io_win32_fd_write(GIOChannel *channel,
-		    gchar     *buf,
-		    guint      count,
-		    guint     *bytes_written)
+g_io_win32_fd_write (GIOChannel *channel,
+		     gchar      *buf,
+		     guint       count,
+		     guint      *bytes_written)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
@@ -554,8 +593,8 @@ g_io_win32_fd_write(GIOChannel *channel,
 
 static GIOError
 g_io_win32_fd_seek (GIOChannel *channel,
-		    gint      offset,
-		    GSeekType type)
+		    gint        offset,
+		    GSeekType   type)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   int whence;
@@ -618,30 +657,8 @@ g_io_win32_fd_add_watch (GIOChannel    *channel,
 			 gpointer       user_data,
 			 GDestroyNotify notify)
 {
-  GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  
-  watch->channel = channel;
-  g_io_channel_ref (channel);
-  
-  watch->callback = func;
-  watch->condition = condition;
-  
-  create_events (win32_channel);
-
-  watch->pollfd.fd = (gint) win32_channel->data_avail_event;
-  watch->pollfd.events = condition;
-  
-  if (win32_channel->debug)
-    g_print ("g_io_win32_fd_add_watch: fd:%d handle:%#x\n",
-	     win32_channel->fd, watch->pollfd.fd);
-  
-  create_reader_thread (win32_channel, fd_reader);
-
-  g_main_add_poll (&watch->pollfd, priority);
-  
-  return g_source_add (priority, TRUE, &win32_watch_funcs,
-		       watch, user_data, notify);
+  return g_io_win32_add_watch (channel, priority, condition,
+			       func, user_data, notify, fd_reader);
 }
 
 static GIOError
@@ -684,10 +701,10 @@ g_io_win32_sock_read (GIOChannel *channel,
 }
 
 static GIOError
-g_io_win32_sock_write(GIOChannel *channel,
-		      gchar      *buf,
-		      guint       count,
-		      guint      *bytes_written)
+g_io_win32_sock_write (GIOChannel *channel,
+		       gchar      *buf,
+		       guint       count,
+		       guint      *bytes_written)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   gint result;
@@ -739,27 +756,8 @@ g_io_win32_sock_add_watch (GIOChannel    *channel,
 			   gpointer       user_data,
 			   GDestroyNotify notify)
 {
-  GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-
-  watch->channel = channel;
-  g_io_channel_ref (channel);
-
-  watch->callback = func;
-  watch->condition = condition;
-
-  create_events (win32_channel);
-
-  watch->pollfd.fd = (gint) win32_channel->data_avail_event;
-  watch->pollfd.events = condition;
-
-  /* Sockets are always readable, aren't they? */
-  create_reader_thread (win32_channel, sock_reader);
-
-  g_main_add_poll (&watch->pollfd, priority);
-
-  return g_source_add (priority, TRUE, &win32_watch_funcs, watch,
-		       user_data, notify);
+  return g_io_win32_add_watch (channel, priority, condition,
+			       func, user_data, notify, sock_reader);
 }
 
 static GIOFuncs win32_channel_msg_funcs = {
@@ -915,23 +913,23 @@ g_io_channel_win32_new_pipe (int fd)
 
 GIOChannel *
 g_io_channel_win32_new_pipe_with_wakeups (int   fd,
-                           guint peer,
-                           int   peer_fd)
+					  guint peer,
+					  int   peer_fd)
 {
   return g_io_channel_win32_new_fd (fd);
 }
 
 void
 g_io_channel_win32_pipe_request_wakeups (GIOChannel *channel,
-                          guint       peer,
-                          int         peer_fd)
+					 guint       peer,
+					 int         peer_fd)
 {
   /* Nothing needed now */
 }
 
 void
 g_io_channel_win32_pipe_readable (gint  fd,
-                      guint offset)
+				  guint offset)
 {
   /* Nothing needed now */
 }

@@ -1,3 +1,12 @@
+2000-08-12  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c: Some indentation and spacing fixes. Add some more
+	logging.
+	(g_io_win32_add_watch): New function, with common code from
+	g_io_win32_fd_add_watch and g_io_win32_sock_add_watch. Don't start
+	more than one reader thread for a GIOChannel. We should obviously
+	have just one reader thread reading a file descriptor or socket.
+
 2000-08-10  Havoc Pennington  <hp@redhat.com>
 
 	* gthread-2.0.pc.in (Cflags): don't duplicate glib Cflags
