@@ -30,16 +30,16 @@ extern const char      *g_log_domain_gmodule;
 
 
 /* exporting and importing functions,
- * we need autoconf support here for supporting windows.
+ * we need autoconf support here to feature Windows dll stubs.
  */
-#define	G_MODULE_EXPORT
 #define	G_MODULE_IMPORT		extern
+#define	G_MODULE_EXPORT
 
 
 typedef enum
 {
   G_MODULE_BIND_LAZY	= 1 << 0,
-    G_MODULE_BIND_MASK	= 0x01
+  G_MODULE_BIND_MASK	= 0x01
 } GModuleFlags;
 
 typedef	struct _GModule			 GModule;
