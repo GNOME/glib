@@ -28,17 +28,30 @@
 #include "glib.h"
 #include "gunichartables.h"
 
+#define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
+                          ? attr_table_part1[Page] \
+                          : attr_table_part2[(Page) - 0xe00])
 
 #define ATTTABLE(Page, Char) \
-  ((attr_table[Page] == G_UNICODE_MAX_TABLE_INDEX) ? 0 : (attr_data[attr_table[Page]][Char]))
+  ((ATTR_TABLE(Page) == G_UNICODE_MAX_TABLE_INDEX) ? 0 : (attr_data[ATTR_TABLE(Page)][Char]))
 
-#define TTYPE(Page, Char) \
-  ((type_table[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
-   ? (type_table[Page] - G_UNICODE_MAX_TABLE_INDEX) \
-   : (type_data[type_table[Page]][Char]))
+#define TTYPE_PART1(Page, Char) \
+  ((type_table_part1[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (type_table_part1[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (type_data[type_table_part1[Page]][Char]))
 
+#define TTYPE_PART2(Page, Char) \
+  ((type_table_part2[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
+   ? (type_table_part2[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+   : (type_data[type_table_part2[Page]][Char]))
 
-#define TYPE(Char) (((Char) > (G_UNICODE_LAST_CHAR)) ? G_UNICODE_UNASSIGNED : TTYPE ((Char) >> 8, (Char) & 0xff))
+#define TYPE(Char) \
+  (((Char) <= G_UNICODE_LAST_CHAR_PART1) \
+   ? TTYPE_PART1 ((Char) >> 8, (Char) & 0xff) \
+   : (((Char) >= 0xe0000 && (Char) <= G_UNICODE_LAST_CHAR) \
+      ? TTYPE_PART2 (((Char) - 0xe0000) >> 8, (Char) & 0xff) \
+      : G_UNICODE_UNASSIGNED))
+
 
 #define ISDIGIT(Type) ((Type) == G_UNICODE_DECIMAL_NUMBER	\
 		       || (Type) == G_UNICODE_LETTER_NUMBER	\
@@ -361,10 +374,10 @@ g_unichar_toupper (gunichar c)
   if (t == G_UNICODE_LOWERCASE_LETTER)
     {
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
-      if (val >= 0xd800 && val < 0xdc00)
+      if (val >= 0x1000000)
 	{
-	  const guchar *p = special_case_table[val - 0xd800];
-	  return p[0] * 256 + p[1];
+	  const guchar *p = special_case_table + val - 0x1000000;
+	  return g_utf8_get_char (p);
 	}
       else
 	return val ? val : c;
@@ -398,10 +411,10 @@ g_unichar_tolower (gunichar c)
   if (t == G_UNICODE_UPPERCASE_LETTER)
     {
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
-      if (val >= 0xd800 && val < 0xdc00)
+      if (val >= 0x1000000)
 	{
-	  const guchar *p = special_case_table[val - 0xd800];
-	  return p[0] * 256 + p[1];
+	  const guchar *p = special_case_table + val - 0x1000000;
+	  return g_utf8_get_char (p);
 	}
       else
 	return val ? val : c;
@@ -561,31 +574,22 @@ output_marks (const char **p_inout,
 static gsize
 output_special_case (gchar *out_buffer,
 		     gsize  len,
-		     int    index,
+		     int    offset,
 		     int    type,
 		     int    which)
 {
-  const guchar *p = special_case_table[index];
+  const guchar *p = special_case_table + offset;
+  gint len;
 
   if (type != G_UNICODE_TITLECASE_LETTER)
-    p += 2; /* +2 to skip over "best single match" */
+    p = g_utf8_next_char (p);
 
   if (which == 1)
-    {
-      while (p[0] || p[1])
-	p += 2;
-      p += 2;
-    }
+    p += strlen (p) + 1;
 
-  while (TRUE)
-    {
-      gunichar ch = p[0] * 256 + p[1];
-      if (!ch)
-	break;
-
-      len += g_unichar_to_utf8 (ch, out_buffer ? out_buffer + len : NULL);
-      p += 2;
-    }
+  len = strlen (p);
+  if (out_buffer)
+    memcpy (out_buffer, p, len);
 
   return len;
 }
@@ -662,9 +666,9 @@ real_toupper (const gchar *str,
 	{
 	  val = ATTTABLE (c >> 8, c & 0xff);
 
-	  if (val >= 0xd800 && val < 0xdc00)
+	  if (val >= 0x1000000)
 	    {
-	      len += output_special_case (out_buffer, len, val - 0xd800, t,
+	      len += output_special_case (out_buffer, len, val - 0x1000000, t,
 					  t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
 	    }
 	  else
@@ -785,9 +789,9 @@ real_tolower (const gchar *str,
 	{
 	  val = ATTTABLE (c >> 8, c & 0xff);
 
-	  if (val >= 0xd800 && val < 0xdc00)
+	  if (val >= 0x1000000)
 	    {
-	      len += output_special_case (out_buffer, len, val - 0xd800, t, 0);
+	      len += output_special_case (out_buffer, len, val - 0x1000000, t, 0);
 	    }
 	  else
 	    {
@@ -891,7 +895,7 @@ g_utf8_casefold (const gchar *str,
       int end = G_N_ELEMENTS (casefold_table);
 
       if (ch >= casefold_table[start].ch &&
-	  ch <= casefold_table[end - 1].ch)
+          ch <= casefold_table[end - 1].ch)
 	{
 	  while (TRUE)
 	    {

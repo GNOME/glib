@@ -24,6 +24,8 @@
 # I consider the output of this program to be unrestricted.  Use it as
 # you will.
 
+require 5.006;
+
 # Names of fields in the CaseFolding table
 $FOLDING_CODE = 0;
 $FOLDING_STATUS = 1;
@@ -49,6 +51,7 @@ AaBbCc@@\taabbcc@@
 #
 EOT
 
+binmode STDOUT, ":utf8";
 open (INPUT, "< $ARGV[1]") || exit 1;
 
 while (<INPUT>)
@@ -65,15 +68,14 @@ while (<INPUT>)
     my $raw_code = $fields[$FOLDING_CODE];
     my $code = hex ($raw_code);
 
-    next if $code > 0xffff;	# FIXME!
-    
     if ($#fields != 3)
     {
 	printf STDERR ("Entry for $raw_code has wrong number of fields (%d)\n", $#fields);
 	next;
     }
 
-    next if ($fields[$FOLDING_STATUS] eq 'S');
+    # skip simple and Turkic mappings
+    next if ($fields[$FOLDING_STATUS] =~ /^[ST]$/);
 
     @values = map { hex ($_) } split /\s+/, $fields[$FOLDING_MAPPING];
     printf ("%s\t%s\n", pack ("U", $code), pack ("U*", @values));

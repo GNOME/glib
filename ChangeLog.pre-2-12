@@ -1,3 +1,19 @@
+2003-07-30  Noah Levitt  <nlevitt@columbia.edu>
+
+	* glib/gen-unicode-tables.pl:
+	* glib/gunibreak.c:
+	* glib/gunibreak.h:
+	* glib/gunichartables.h:
+	* glib/gunicode.h:
+	* glib/gunicomp.h:
+	* glib/gunidecomp.c:
+	* glib/gunidecomp.h:
+	* glib/guniprop.c:
+	* tests/casefold.txt:
+	* tests/casemap.txt:
+	* tests/gen-casefold-txt.pl:
+	* tests/gen-casemap-txt.pl: Update Unicode data to 4.0. (#107974)
+
 2003-07-31  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c: When possible, manage without the helper

@@ -3,7 +3,7 @@
 #define COMPOSE_SECOND_START 357
 #define COMPOSE_SECOND_SINGLE_START 388
 
-static const gushort compose_data[][256] = {
+static const guint16 compose_data[][256] = {
   { /* page 0, index 0 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -222,7 +222,7 @@ static const gushort compose_data[][256] = {
   }
 };
 
-static const short compose_table[256] = {
+static const gint16 compose_table[256] = {
   0 /* page 0 */,
   1 /* page 1 */,
   2 /* page 2 */,
@@ -274,7 +274,7 @@ static const short compose_table[256] = {
   15 /* page 48 */
 };
 
-static const gushort compose_first_single[][2] = {
+static const guint16 compose_first_single[][2] = {
  { 0x0338, 0x226e },
  { 0x0338, 0x2260 },
  { 0x0338, 0x226f },
@@ -486,7 +486,7 @@ static const gushort compose_first_single[][2] = {
  { 0x3099, 0x30fa },
  { 0x3099, 0x30fe }
 };
-static const gushort compose_second_single[][2] = {
+static const guint16 compose_second_single[][2] = {
  { 0x0627, 0x0622 },
  { 0x0627, 0x0623 },
  { 0x0627, 0x0625 },
@@ -506,7 +506,7 @@ static const gushort compose_second_single[][2] = {
  { 0x0dd9, 0x0ddc },
  { 0x0dd9, 0x0dde }
 };
-static const gushort compose_array[146][31] = {
+static const guint16 compose_array[146][31] = {
  { 0x00c0, 0x00c1, 0x00c2, 0x00c3, 0x0100, 0x0102, 0x0226, 0x00c4, 0x1ea2, 0x00c5,      0, 0x01cd, 0x0200, 0x0202,      0,      0,      0, 0x1ea0,      0, 0x1e00,      0,      0, 0x0104,      0,      0,      0,      0,      0,      0,      0,      0 },
  {      0,      0,      0,      0,      0,      0, 0x1e02,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0, 0x1e04,      0,      0,      0,      0,      0,      0,      0,      0, 0x1e06,      0,      0,      0,      0 },
  {      0, 0x0106, 0x0108,      0,      0,      0, 0x010a,      0,      0,      0,      0, 0x010c,      0,      0,      0,      0,      0,      0,      0,      0,      0, 0x00c7,      0,      0,      0,      0,      0,      0,      0,      0,      0 },

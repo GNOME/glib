@@ -23,6 +23,7 @@
 # I consider the output of this program to be unrestricted.  Use it as
 # you will.
 
+require 5.006;
 use utf8;
 
 if (@ARGV != 3) {
@@ -60,6 +61,7 @@ my @upper;
 my @title;
 my @lower;
 
+binmode STDOUT, ":utf8";
 open (INPUT, "< $ARGV[1]") || exit 1;
 
 $last_code = -1;
@@ -73,8 +75,6 @@ while (<INPUT>)
     }
 
     $code = hex ($fields[$CODE]);
-
-    last if ($code > 0xFFFF); # ignore characters out of the basic plane
 
     if ($code > $last_code + 1)
     {
@@ -196,7 +196,7 @@ sub process_one
 
 sub print_tests
 {
-    for ($i = 0; $i < 0xffff; $i++) {
+    for ($i = 0; $i < 0x10ffff; $i++) {
 	if ($i == 0x3A3) {
 	    # Greek sigma needs special tests
 	    next;
