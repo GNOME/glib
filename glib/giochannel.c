@@ -821,7 +821,7 @@ g_io_channel_flush (GIOChannel	*channel,
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL), G_IO_STATUS_ERROR);
 
-  if (channel->write_buf && channel->write_buf->len > 0)
+  if (channel->write_buf == NULL || channel->write_buf->len == 0)
     return G_IO_STATUS_NORMAL;
 
   do

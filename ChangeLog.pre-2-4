@@ -1,3 +1,11 @@
+2001-07-29  Ron Steinke  <rsteinke@w-link.net>
+
+	* glib/giochannel.c: Matthias Classen's patch to give
+	g_io_channel_flush() the correct sense when testing
+	whether the buffer is empty
+	* glib/giounix.c: Matthias Classen's patch to set
+	the mode of a file created with g_io_channel_new_file()
+
 Sun Jul 29 16:08:17 2001  Tim Janik  <timj@gtk.org>
 
 	* glib/gscanner.[hc]: removed deprecated g_scanner_stat_mode().

@@ -410,6 +410,7 @@ g_io_channel_new_file (const gchar *filename,
                        GError     **error)
 {
   int fid, flags;
+  mode_t create_mode;
   GIOChannel *channel;
   enum { /* Cheesy hack */
     MODE_R = 1 << 0,
@@ -479,7 +480,8 @@ g_io_channel_new_file (const gchar *filename,
         flags = 0;
     }
 
-  fid = open (filename, flags);
+  create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+  fid = open (filename, flags, create_mode);
   if (fid < 0)
     {
       g_set_error (error, G_FILE_ERROR,
