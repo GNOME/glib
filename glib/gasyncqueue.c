@@ -68,7 +68,7 @@ void
 g_async_queue_ref (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   
   g_atomic_int_inc (&queue->ref_count);
 }
@@ -83,7 +83,7 @@ void
 g_async_queue_ref_unlocked (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   
   g_atomic_int_inc (&queue->ref_count);
 }
@@ -101,7 +101,7 @@ void
 g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
 
   g_mutex_unlock (queue->mutex);
   g_async_queue_unref (queue);
@@ -121,7 +121,7 @@ void
 g_async_queue_unref (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   
   if (g_atomic_int_dec_and_test (&queue->ref_count))
     {
@@ -146,7 +146,7 @@ void
 g_async_queue_lock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
 
   g_mutex_lock (queue->mutex);
 }
@@ -161,7 +161,7 @@ void
 g_async_queue_unlock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
 
   g_mutex_unlock (queue->mutex);
 }
@@ -177,7 +177,7 @@ void
 g_async_queue_push (GAsyncQueue* queue, gpointer data)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   g_return_if_fail (data);
 
   g_mutex_lock (queue->mutex);
@@ -197,7 +197,7 @@ void
 g_async_queue_push_unlocked (GAsyncQueue* queue, gpointer data)
 {
   g_return_if_fail (queue);
-  g_return_if_fail (queue->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   g_return_if_fail (data);
 
   g_queue_push_head (queue->queue, data);
@@ -260,7 +260,7 @@ g_async_queue_pop (GAsyncQueue* queue)
   gpointer retval;
 
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   g_mutex_lock (queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
@@ -283,7 +283,7 @@ gpointer
 g_async_queue_pop_unlocked (GAsyncQueue* queue)
 {
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   return g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
 }
@@ -304,7 +304,7 @@ g_async_queue_try_pop (GAsyncQueue* queue)
   gpointer retval;
 
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   g_mutex_lock (queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
@@ -328,7 +328,7 @@ gpointer
 g_async_queue_try_pop_unlocked (GAsyncQueue* queue)
 {
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   return g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
 }
@@ -353,7 +353,7 @@ g_async_queue_timed_pop (GAsyncQueue* queue, GTimeVal *end_time)
   gpointer retval;
 
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   g_mutex_lock (queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
@@ -381,7 +381,7 @@ gpointer
 g_async_queue_timed_pop_unlocked (GAsyncQueue* queue, GTimeVal *end_time)
 {
   g_return_val_if_fail (queue, NULL);
-  g_return_val_if_fail (queue->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, NULL);
 
   return g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
 }
@@ -406,7 +406,7 @@ g_async_queue_length (GAsyncQueue* queue)
   gint retval;
 
   g_return_val_if_fail (queue, 0);
-  g_return_val_if_fail (queue->ref_count > 0, 0);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, 0);
 
   g_mutex_lock (queue->mutex);
   retval = queue->queue->length - queue->waiting_threads;
@@ -434,7 +434,7 @@ gint
 g_async_queue_length_unlocked (GAsyncQueue* queue)
 {
   g_return_val_if_fail (queue, 0);
-  g_return_val_if_fail (queue->ref_count > 0, 0);
+  g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, 0);
 
   return queue->queue->length - queue->waiting_threads;
 }

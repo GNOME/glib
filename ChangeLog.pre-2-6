@@ -6,6 +6,9 @@
 	g_async_queue_ref_locked is deprecated, but still there to
 	preserve ABI.
 
+	* glib/gasyncqueue.c, glib/gasyncqueue.h: Reading access to
+	ref_count only with g_atomic_int_get().
+
 Fri Feb 27 02:00:34 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* acglib.m4: quote AC_DEFUN macro names so automake
