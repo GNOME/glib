@@ -242,7 +242,6 @@ and if the log level is fatal it calls <function>abort()</function>.
 <para>
 stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
 %G_LOG_LEVEL_WARNING. stdout is used for the rest.
-(On the Windows platform, stdout is always used.)
 </para>
 
 @log_domain: the log domain of the message.
