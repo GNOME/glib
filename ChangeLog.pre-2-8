@@ -1,3 +1,11 @@
+Sun May 16 23:23:29 2004  Matthias Clasen  <maclas@gmx.de>
+
+        Merged from 2.4:
+	
+	* glib/gcompletion.c (g_completion_add_items):
+	(g_completion_remove_items): Remove unnecessary 
+	checks.  (#142559, Morten Welinder)
+
 2004-05-15  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gutils.c (g_get_any_init): [Win32] Only believe HOME if it

@@ -60,7 +60,6 @@ g_completion_add_items (GCompletion* cmp,
   GList* it;
   
   g_return_if_fail (cmp != NULL);
-  g_return_if_fail (items != NULL);
   
   /* optimize adding to cache? */
   if (cmp->cache)
@@ -90,7 +89,6 @@ g_completion_remove_items (GCompletion* cmp,
   GList* it;
   
   g_return_if_fail (cmp != NULL);
-  g_return_if_fail (items != NULL);
   
   it = items;
   while (cmp->items && it)
