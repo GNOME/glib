@@ -1,3 +1,8 @@
+2001-10-03  jacob berkman  <jacob@ximian.com>
+
+	* libgplugin_a.c: (gplugin_a_module_func): 
+	* gmodule.h: s/retrive/retrieve/
+
 2001-09-25  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: Fix missing end @ in @LT_CURRENT@.

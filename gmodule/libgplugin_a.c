@@ -59,7 +59,7 @@ gplugin_a_module_func (GModule *module)
   gchar *basename = g_path_get_basename (g_module_name (module));
 
   string = "gplugin_say_boo_func";
-  g_print ("GPluginA: retrive symbol `%s' from \"%s\"\n",
+  g_print ("GPluginA: retrieve symbol `%s' from \"%s\"\n",
 	   string, basename);
   g_free (basename);
   if (!g_module_symbol (module, string, (gpointer) &f))

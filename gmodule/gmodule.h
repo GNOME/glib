@@ -67,12 +67,12 @@ void                  g_module_make_resident (GModule      *module);
 /* query the last module error as a string */
 G_CONST_RETURN gchar* g_module_error         (void);
 
-/* retrive a symbol pointer from `module', returns TRUE on success */
+/* retrieve a symbol pointer from `module', returns TRUE on success */
 gboolean              g_module_symbol        (GModule      *module,
 					      const gchar  *symbol_name,
 					      gpointer     *symbol);
 
-/* retrive the file name from an existing module */
+/* retrieve the file name from an existing module */
 G_CONST_RETURN gchar* g_module_name          (GModule      *module);
 
 /* Build the actual file name containing a module. `directory' is the
