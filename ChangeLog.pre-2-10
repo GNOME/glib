@@ -1,5 +1,9 @@
 2004-07-09  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Bump version.
+
+2004-07-09  Matthias Clasen  <mclasen@redhat.com>
+
 	* === Released 2.4.4 ===
 
 	* configure.in: Sync version with GTK+ again.
