@@ -27,8 +27,8 @@
 #ifndef __G_IOCHANNEL_H__
 #define __G_IOCHANNEL_H__
 
+#include <glib/gconvert.h>
 #include <glib/gmain.h>
-#include <glib/gtypes.h>
 #include <glib/gstring.h>
 
 G_BEGIN_DECLS

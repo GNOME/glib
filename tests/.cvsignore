@@ -18,6 +18,7 @@ date-test
 dirname-test
 hash-test
 iochannel-test
+iochannel-test-outfile
 list-test
 mainloop-test
 markup-test

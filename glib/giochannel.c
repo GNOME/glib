@@ -31,10 +31,12 @@
  * MT safe
  */
 
+#include "config.h"
+#include "giochannel.h"
+
 #include <string.h>
 #include <errno.h>
 
-#include "config.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

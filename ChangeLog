@@ -1,3 +1,10 @@
+2001-08-03  Darin Adler  <darin@bentspoon.com>
+
+	* tests/strfunc-test.c: (strv_check), (main):
+	Improve strfunc test to test the split function in a way that
+	demonstrates its idiosyncrasies.
+	* tests/.cvsignore:
+
 2001-08-03  Sven Neumann  <sven@gimp.org>
 
 	* configure.in: beautified configure help output.
