@@ -5,6 +5,11 @@ EXPORTS
 	g_bsearch_array_insert
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
+	g_cclosure_marshal_VOID__INT
+	g_cclosure_marshal_VOID__POINTER
+	g_cclosure_marshal_VOID__UINT
+	g_cclosure_marshal_VOID__UINT_POINTER
+	g_cclosure_marshal_VOID__VOID
 	g_cclosure_new
 	g_cclosure_new_object
 	g_cclosure_new_object_swap
@@ -81,8 +86,13 @@ EXPORTS
 	g_param_value_set_default
 	g_param_value_validate
 	g_param_values_cmp
+	g_signal_add_emission_hook_full
+	g_signal_connect_closure
 	g_signal_connect_closure_by_id
+	g_signal_connect_data
 	g_signal_connect_object
+	g_signal_emit
+	g_signal_emit_by_name
 	g_signal_emit_valist
 	g_signal_emitv
 	g_signal_handler_block
@@ -93,12 +103,16 @@ EXPORTS
 	g_signal_handlers_destroy
 	g_signal_handlers_disconnect_matched
 	g_signal_handlers_unblock_matched
+	g_signal_has_handler_pending
+	g_signal_list_ids
 	g_signal_lookup
 	g_signal_name
 	g_signal_newc
 	g_signal_newv
 	g_signal_new_valist
+	g_signal_parse_name
 	g_signal_query
+	g_signal_remove_emission_hook
 	g_signal_stop_emission
 	g_signal_type_cclosure_new
 	g_type_add_class_cache_func
