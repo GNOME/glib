@@ -20,7 +20,9 @@ galias.h: glib.symbols
 	  $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
 
 if OS_LINUX
+if HAVE_GNUC_VISIBILITY
 TESTS = abicheck.sh
+endif
 endif
 
 BUILT_SOURCES = galias.h
