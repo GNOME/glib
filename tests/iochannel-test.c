@@ -18,9 +18,11 @@ gint main (gint argc, gchar * argv[])
     GString *buffer;
     char *filename;
     char *srcdir = getenv ("srcdir");
-    gint rlength = 0, wlength = 0, length_out, line_term_len;
+    gint rlength = 0;
+    glong wlength = 0;
+    gsize length_out;
     gboolean block;
-    const gchar encoding[] = "EUC-JP", line_term[] = "\n";
+    const gchar encoding[] = "EUC-JP";
     GIOStatus status;
     GIOFlags flags;
 
@@ -69,7 +71,6 @@ gint main (gint argc, gchar * argv[])
     else
         g_print (" BLOCKING FALSE \n\n");
 
-    line_term_len = strlen (line_term);
     buffer = g_string_sized_new (BUFFER_SIZE);
 
     while (TRUE)
@@ -123,7 +124,7 @@ gint main (gint argc, gchar * argv[])
         gerr = NULL;
       }
 
-    g_print ("read %d bytes, wrote %d bytes\n", rlength, wlength);
+    g_print ("read %d bytes, wrote %ld bytes\n", rlength, wlength);
 
     g_io_channel_unref(gio_r);
     g_io_channel_unref(gio_w);
