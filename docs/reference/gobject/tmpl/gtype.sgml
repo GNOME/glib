@@ -426,7 +426,10 @@ to serve as a container for values of a type.
 
 <!-- ##### MACRO G_TYPE_FROM_INSTANCE ##### -->
 <para>
-Returns the type identifier from a given @instance structure.
+Returns the type identifier from a given @instance structure. 
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
 @instance: Location of a valid #GTypeInstance structure.
@@ -435,6 +438,9 @@ Returns the type identifier from a given @instance structure.
 <!-- ##### MACRO G_TYPE_FROM_CLASS ##### -->
 <para>
 Returns the type identifier from a given @class structure.
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
 @g_class: Location of a valid #GTypeClass structure.
@@ -443,6 +449,9 @@ Returns the type identifier from a given @class structure.
 <!-- ##### MACRO G_TYPE_FROM_INTERFACE ##### -->
 <para>
 Returns the type identifier from a given @interface structure.
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
 @g_iface: Location of a valid #GTypeInterface structure.
@@ -452,6 +461,9 @@ Returns the type identifier from a given @interface structure.
 <para>
 Returns the class structure of a given @instance, casted
 to a specified anchestor type @g_type of the instance.
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
 @instance: 	Location of the #GTypeInstance structure.
@@ -462,6 +474,9 @@ to a specified anchestor type @g_type of the instance.
 <!-- ##### MACRO G_TYPE_INSTANCE_GET_INTERFACE ##### -->
 <para>
 Returns the interface structure for interface @g_type of a given @instance.
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
 @instance: Location of the #GTypeInstance structure.
@@ -475,6 +490,9 @@ Gets the private structure for a particular type.
 The private structure must have been registered in the
 class_init function with g_type_class_add_private().
 </para>
+<para>
+This macro should only be used in type implementations.
+</para>
 
 @instance: the instance of a type deriving from @private_type.
 @g_type: the type identifying which private data to retrieve.
@@ -483,71 +501,102 @@ class_init function with g_type_class_add_private().
 
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE ##### -->
 <para>
-
+Returns %TRUE if @instance is a valid #GTypeInstance structure,
+otherwise emits a warning and returns %FALSE.
+<para>
+</para>
+This macro should only be used in type implementations.
 </para>
 
-@instance: 
+@instance: Location of a #GTypeInstance structure.
 
 
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE_CAST ##### -->
 <para>
-
+Checks that @instance is an instance of the type identified by @g_type
+and emits a warning if this is not the case. Returns @instance casted 
+to a pointer to @c_type.
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@instance: 
-@g_type: 
-@c_type: 
+@instance: Location of a #GTypeInstance structure.
+@g_type: The type to be returned.
+@c_type: The corresponding C type of @g_type.
 
 
 <!-- ##### MACRO G_TYPE_CHECK_INSTANCE_TYPE ##### -->
 <para>
-
+Returns %TRUE if @instance is an instance of the type identified by @g_type.
+Otherwise emits a warning and returns %FALSE.
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@instance: 
-@g_type: 
+@instance: Location of a #GTypeInstance structure.
+@g_type: The type to be checked
 
 
 <!-- ##### MACRO G_TYPE_CHECK_CLASS_CAST ##### -->
 <para>
-
+Checks that @g_class is a class structure of the type identified by @g_type
+and emits a warning if this is not the case. Returns @g_class casted 
+to a pointer to @c_type.
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@g_class: 
-@g_type: 
-@c_type: 
+@g_class: Location of a #GTypeClass structure.
+@g_type: The type to be returned.
+@c_type: The corresponding C type of class structure of @g_type.
 
 
 <!-- ##### MACRO G_TYPE_CHECK_CLASS_TYPE ##### -->
 <para>
-
+Returns %TRUE if @g_class is a class structure of the type identified by 
+@g_type. Otherwise emits a warning and returns %FALSE.
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@g_class: 
-@g_type: 
+@g_class: Location of a #GTypeClass structure.
+@g_type: The type to be checked.
 
 
 <!-- ##### MACRO G_TYPE_CHECK_VALUE ##### -->
 <para>
-
+Returns %TRUE if @value has been initialized to hold values
+of a value type.
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@value: 
+@value: a #GValue
 
 
 <!-- ##### MACRO G_TYPE_CHECK_VALUE_TYPE ##### -->
 <para>
-
+Returns %TRUE if @value has been initialized to hold values
+of type @g_type. 
+</para>
+<para>
+This macro should only be used in type implementations.
 </para>
 
-@value: 
-@g_type: 
+@value: a #GValue
+@g_type: The type to be checked.
 
 
 <!-- ##### MACRO G_TYPE_FLAG_RESERVED_ID_BIT ##### -->
 <para>
 A bit in the type number that's supposed to be left untouched.
 </para>
+
 
 
 <!-- ##### FUNCTION g_type_init ##### -->
@@ -1327,7 +1376,7 @@ to avoid leaks.
 </para>
 
 @cache_data: data that was given when adding @cache_func
-@cache_func: a #GTypeClassCacheFunc 
+@cache_func: a #GTypeClassCacheFunc
 
 
 <!-- ##### FUNCTION g_type_class_unref_uncached ##### -->
@@ -1539,6 +1588,7 @@ The fundamental type from which all #GParamSpec types are derived.
 <para>
 The fundamental type for #GObject.
 </para>
+
 
 
 <!-- ##### MACRO G_TYPE_RESERVED_GLIB_FIRST ##### -->

@@ -18,6 +18,7 @@ in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
 
 <!-- ##### STRUCT GValueArray ##### -->
 <para>
+A #GValueArray contains an array of #GValue elements.
 </para>
 
 @n_values:     number of values contained in the array

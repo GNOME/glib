@@ -1062,7 +1062,7 @@ properties.
 
 <!-- ##### TYPEDEF gchararray ##### -->
 <para>
-
+A C representable type name for #G_TYPE_STRING.
 </para>
 
 

@@ -1,3 +1,13 @@
+Mon Oct 20 01:12:46 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/param_value_types.sgml: 
+	* gobject/tmpl/value_arrays.sgml: Additions.
+
+	* gobject/tmpl/gboxed.sgml: 
+	* gobject/gobject-sections.txt: Remove prematurely added
+	GStrv documentation.
+
 Sun Oct 19 22:18:28 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/Makefile.am (INCLUDES): Add $(top_builddir)/glib
