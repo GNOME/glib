@@ -68,9 +68,10 @@ match_type_name (GMatchType match_type)
     }
 }
 
-/* this leakes memory, but we don't care */
-
-#define utf8(str) g_convert (str, -1, "Latin1", "UTF-8", NULL, NULL, NULL)
+/* This leakes memory, but we don't care. The utf8 macro used to convert utf8 
+   back to Latin1 for feeding it to g_print. As of 2.0.1, g_print expects utf8,
+   so this is no longer necessary */
+#define utf8(str) str
 #define latin1(str) g_convert (str, -1, "UTF-8", "Latin1", NULL, NULL, NULL)
 
 static gboolean
