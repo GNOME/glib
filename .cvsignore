@@ -21,3 +21,4 @@ config.h
 stamp-gc-h
 testgdate
 testgdateparser
+glibconfig-sysdefs.h
