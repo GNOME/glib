@@ -13,7 +13,8 @@ What's new in GLib 1.3.1:
 * New thread-safe random number generator Mersenne Twister.
 * g_strcompress() added, g_strescape() had a slight API change, and
   more tightly defined semantics.
-
+* the g_string(x) macro has been removed, #x may be used instead.
+                                
 Overview of Changes in GLib 1.2.1:
 
 * g_realloc() fix for SunOS (please report further problems).

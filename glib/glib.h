@@ -131,6 +131,9 @@ extern "C" {
 #undef	CLAMP
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
+#define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
+#define	G_STRINGIFY_ARG(contents)	#contents
+
 
 /* Define G_VA_COPY() to do the right thing for copying va_list variables.
  * glibconfig.h may have already defined G_VA_COPY as va_copy or __va_copy.
@@ -324,9 +327,6 @@ extern "C" {
 #define g_chunk_free(mem, mem_chunk)	G_STMT_START { \
   g_mem_chunk_free ((mem_chunk), (mem)); \
 } G_STMT_END
-
-
-#define g_string(x) #x
 
 
 /* Provide macros for error handling. The "assert" macros will

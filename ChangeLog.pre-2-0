@@ -1,3 +1,11 @@
+Tue Oct 12 14:17:12 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h: removed useless g_string(x) macro that cluttered the namespace
+	and was just a poor wrapper around the cpp '#' symbol, use #x if you
+	need to work around this.
+	added new macro G_STRINGIFY(arg) that will convert arg to a string,
+	no matter whether it contains macros or not.
+
 1999-10-12  Tor Lillqvist  <tml@iki.fi>
 
 	* config.h.win32.in: Define the new GLIB_SIZEOF_* constants here,
