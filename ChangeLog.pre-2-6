@@ -1,6 +1,11 @@
-Fri Dec 20 09:52:15 2002  Owen Taylor  <otaylor@redhat.com>
+Fri Dec 20 10:45:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.2.0 ===
+
+	* INSTALL.in: --enable-included-printf, not --enable-trio.
+	(Matthias Clasen)
+
+Fri Dec 20 09:52:15 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* INSTALL.in: Document --enable-trio, --disable-mempools,
 	--enable-debug. Include docs on cross compilation.

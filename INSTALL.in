@@ -122,7 +122,7 @@ A few of the more important ones:
                              g_thread_init() by the programmer. 
                            [ Determined by configure by default ]
 
-*  --enable-trio=[yes/no/auto] Specify whether to build using
+*  --enable-included-printf=[yes/no/auto] Specify whether to build using
                            the included copy of the Trio library
                            for string formatting functions like printf().
                            The default is 'auto', which means that
