@@ -1,3 +1,7 @@
+Mon Jan 15 21:39:06 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-2.0.pc.in (Libs) glib-config-2.0.in: Add @INTLLIBS@.
+
 Mon Jan 15 21:12:49 2001  Owen Taylor  <otaylor@redhat.com>
 
         * configure.in acconfig.h glibintl.h gutils.c
