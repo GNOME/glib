@@ -1,3 +1,27 @@
+Overview of Changes from GLib 2.2.x to GLib-2.3.0
+=================================================
+
+* Replace Trio printf by gnulib vasnprintf [Matthias Clasen]
+* Update Unicode data to Unicode 4.0 [Noah Levitt]
+* Support XML-safe formatted output with 
+  g_markup_[v]printf_escaped [Owen Taylor]
+* Add g_file_read_link to read symbolic links [Matthias]
+* Add g_unichar_get_mirror_char to obtain the 
+  mirrored variant of a character [Noah]
+* Support for one-time initialization functions. 
+  [Sebastian Wilhelmi]
+* Miscellaneous API additions: g_vasprintf
+  g_string_chunk_insert_len, g_setenv, g_unsetenv [Matthias]
+* Docs improvements [Matthias]
+* Add support instance-private data on classed types
+  [Mark McLoughlin, Tim Janik, Owen]
+* Optimize signal emissions [Soeren Sandmann, Tim]
+* Support a "default vtable" per interface [Tim]
+* Add support for properties on interfaces [Owen, Tim]
+* Miscellaneous API additions: g_value_take_string(),
+  g_value_take_param(), g_value_take_object(), 
+  g_value_take_boxed(). [Matthias]
+
 Overview of Changes from GLib 2.1.5 to GLib-2.2.0
 =================================================
 
