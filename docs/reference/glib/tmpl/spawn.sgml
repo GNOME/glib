@@ -51,16 +51,28 @@ error domains.
 
 <!-- ##### ENUM GSpawnFlags ##### -->
 <para>
-
+Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
 </para>
 
-@G_SPAWN_LEAVE_DESCRIPTORS_OPEN: 
-@G_SPAWN_DO_NOT_REAP_CHILD: 
-@G_SPAWN_SEARCH_PATH: 
-@G_SPAWN_STDOUT_TO_DEV_NULL: 
-@G_SPAWN_STDERR_TO_DEV_NULL: 
-@G_SPAWN_CHILD_INHERITS_STDIN: 
-@G_SPAWN_FILE_AND_ARGV_ZERO: 
+@G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will be 
+ inherited by the child; otherwise all descriptors except stdin/stdout/stderr 
+ will be closed before calling <function>exec()</function> in the child. 
+@G_SPAWN_DO_NOT_REAP_CHILD: the child will not be automatically reaped; you 
+  must call <function>waitpid()</function> or handle <literal>SIGCHLD</literal> 
+  yourself, or the child will become a zombie.
+@G_SPAWN_SEARCH_PATH: <literal>argv[0]</literal> need not be an absolute path, 
+  it will be looked for in the user's <envvar>PATH</envvar>.
+@G_SPAWN_STDOUT_TO_DEV_NULL: the child's standad output will be discarded, 
+  instead of going to the same location as the parent's standard output.
+@G_SPAWN_STDERR_TO_DEV_NULL: the child's standard error will be discarded.
+@G_SPAWN_CHILD_INHERITS_STDIN: the child will inherit the parent's standard 
+  input (by default, the child's standard input is attached to 
+  <filename>/dev/null</filename>).
+@G_SPAWN_FILE_AND_ARGV_ZERO: the first element of <literal>argv</literal> is 
+  the file to execute, while the remaining elements are the actual argument 
+  vector to pass to the file. Normally g_spawn_async_with_pipes() uses 
+  <literal>argv[0]</literal> as the file to execute, and passes all of 
+  <literal>argv</literal> to the child.
 
 <!-- ##### USER_FUNCTION GSpawnChildSetupFunc ##### -->
 <para>

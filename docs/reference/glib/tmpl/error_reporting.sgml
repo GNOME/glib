@@ -372,7 +372,8 @@ Summary of rules for use of #GError:
 
 <!-- ##### STRUCT GError ##### -->
 <para>
-
+The <structname>GError</structname> structure contains 
+information about an error that has occurred.
 </para>
 
 @domain: error domain, e.g. #G_FILE_ERROR.

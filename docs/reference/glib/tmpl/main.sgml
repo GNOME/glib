@@ -16,7 +16,7 @@ manages all available sources of events.
     To allow multiple independent sets of sources to be handled in
     different threads, each source is associated with a #GMainContext.
     A #GMainContext can only be running in a single thread, but
-    sources can be added and removed from it from other threads.
+    sources can be added to it and removed from it from other threads.
   </para>
   <para>
     Each event source is assigned a priority.  The default priority,
@@ -104,8 +104,8 @@ manages all available sources of events.
 
 <!-- ##### STRUCT GMainLoop ##### -->
 <para>
-The #GMainLoop struct is an opaque data type representing the main event loop
-of a GLib or GTK+ application.
+The <structname>GMainLoop</structname> struct is an opaque data type 
+representing the main event loop of a GLib or GTK+ application.
 </para>
 
 
@@ -264,7 +264,8 @@ It is not used within GLib or GTK+.
 
 <!-- ##### STRUCT GMainContext ##### -->
 <para>
-
+The <structname>GMainContext</structname> struct is an opaque data type 
+representing a set of sources to be handled in a main loop. 
 </para>
 
 
@@ -618,7 +619,8 @@ you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and for writing you would use
 
 <!-- ##### STRUCT GSource ##### -->
 <para>
-
+The <structname>GSource</structname> struct is an opaque data type representing
+an event source.
 </para>
 
 
@@ -707,12 +709,13 @@ call to see if the required condition has been met, and returns %TRUE if so.
 
 <!-- ##### STRUCT GSourceCallbackFuncs ##### -->
 <para>
-
+The <structname>GSourceCallbackFuncs</structname> struct contains
+functions for managing callback objects. 
 </para>
 
-@ref: 
-@unref: 
-@get: 
+@ref: Called when a reference is added to the callback object.
+@unref: Called when a reference to the callback object is dropped.
+@get: Called to extract the callback function and data from the callback object.
 
 <!-- ##### USER_FUNCTION GSourceDummyMarshal ##### -->
 <para>
