@@ -1,3 +1,8 @@
+Thu Sep 27 14:26:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gstrfuncs.c (g_ascii_strup/down): Use gssize to
+	match the header. (Reported by Elliot Lee.)
+
 Wed Sep 26 22:34:12 2001  Owen Taylor  <otaylor@redhat.com>
 
 	Fixes for #58195, based on some ideas from Hidetosh Tajima.

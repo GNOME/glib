@@ -1009,7 +1009,7 @@ g_strlcat (gchar       *dest,
  **/
 gchar*
 g_ascii_strdown (const gchar *str,
-		 gint         len)
+		 gssize       len)
 {
   gchar *result, *s;
   
@@ -1040,7 +1040,7 @@ g_ascii_strdown (const gchar *str,
  **/
 gchar*
 g_ascii_strup (const gchar *str,
-	       gint         len)
+	       gssize       len)
 {
   gchar *result, *s;
 
