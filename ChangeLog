@@ -1,3 +1,7 @@
+2003-02-12  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in: Make GLib recognize Tru64Unix thread system. (#103020)
+
 2003-02-11  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am (EXTRA_DIST): Include ChangeLog.pre-2-2.
