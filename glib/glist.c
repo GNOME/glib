@@ -106,7 +106,7 @@ void
 g_list_free (GList *list)
 {
   GList *last;
-  
+
   if (list)
     {
       last = g_list_last (list);
@@ -478,4 +478,67 @@ g_list_insert_sorted (GList        *list,
     return new_list;
   else
     return list;
+}
+
+static GList *
+g_list_sort_merge (GList       *l1, 
+		   GList       *l2,
+		   GCompareFunc compare_func)
+{
+  GList list, *l, *lprev;
+
+  l = &list; 
+  lprev = NULL;
+
+  while (l1 && l2)
+    {
+      if (compare_func (l1->data, l2->data) < 0)
+        {
+	  l->next = l1;
+	  l = l->next;
+	  l->prev = lprev; 
+	  lprev = l;
+	  l1 = l1->next;
+        } 
+      else 
+	{
+	  l->next = l2;
+	  l = l->next;
+	  l->prev = lprev; 
+	  lprev = l;
+	  l2 = l2->next;
+        }
+    }
+  l->next = l1 ? l1 : l2;
+  l->next->prev = l;
+
+  return list.next;
+}
+
+GList* 
+g_list_sort (GList       *list,
+	     GCompareFunc compare_func)
+{
+  GList *l1, *l2;
+  
+  if (!list) 
+    return NULL;
+  if (!list->next) 
+    return list;
+  
+  l1 = list; 
+  l2 = list->next;
+
+  while ((l2 = l2->next) != NULL)
+    {
+      if ((l2 = l2->next) == NULL) 
+	break;
+      l1 = l1->next;
+    }
+  l2 = l1->next; 
+  l1->next = NULL; 
+
+  return g_list_sort_merge (g_list_sort (list, compare_func),
+			    g_list_sort (l2,   compare_func),
+			    compare_func);
 }

@@ -454,3 +454,58 @@ g_slist_insert_sorted (GSList       *list,
       return new_list;
     }
 }
+
+static GSList* 
+g_slist_sort_merge  (GSList      *l1, 
+		     GSList      *l2,
+		     GCompareFunc compare_func)
+{
+  GSList list, *l;
+
+  l=&list;
+
+  while (l1 && l2)
+    {
+      if (compare_func(l1->data,l2->data) < 0)
+        {
+	  l=l->next=l1;
+	  l1=l1->next;
+        } 
+      else 
+	{
+	  l=l->next=l2;
+	  l2=l2->next;
+        }
+    }
+  l->next= l1 ? l1 : l2;
+  
+  return list.next;
+}
+
+GSList* 
+g_slist_sort (GSList       *list,
+	      GCompareFunc compare_func)
+{
+  GSList *l1, *l2;
+
+  if (!list) 
+    return NULL;
+  if (!list->next) 
+    return list;
+
+  l1 = list; 
+  l2 = list->next;
+
+  while ((l2 = l2->next) != NULL)
+    {
+      if ((l2 = l2->next) == NULL) 
+	break;
+      l1=l1->next;
+    }
+  l2 = l1->next; 
+  l1->next = NULL;
+
+  return g_slist_sort_merge (g_slist_sort (list, compare_func),
+			     g_slist_sort (l2,   compare_func),
+			     compare_func);
+}

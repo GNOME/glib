@@ -902,6 +902,8 @@ guint  g_list_length		(GList		*list);
 void   g_list_foreach		(GList		*list,
 				 GFunc		 func,
 				 gpointer	 user_data);
+GList* g_list_sort              (GList          *list,
+		                 GCompareFunc    compare_func);
 gpointer g_list_nth_data	(GList		*list,
 				 guint		 n);
 #define g_list_previous(list)	((list) ? (((GList *)(list))->prev) : NULL)
@@ -946,6 +948,8 @@ guint	g_slist_length		(GSList		*list);
 void	g_slist_foreach		(GSList		*list,
 				 GFunc		 func,
 				 gpointer	 user_data);
+GSList*  g_slist_sort           (GSList          *list,
+		                 GCompareFunc    compare_func);
 gpointer g_slist_nth_data	(GSList		*list,
 				 guint		 n);
 #define g_slist_next(slist)	((slist) ? (((GSList *)(slist))->next) : NULL)

@@ -426,6 +426,26 @@ main (int   argc,
     }
 
   g_list_free (list);
+  list = NULL;
+
+  for (i = 0; i < 10; i++)
+    list = g_list_prepend (list, &morenums[i]);
+
+  list = g_list_sort (list, my_list_compare_two);
+
+  /*
+  g_print("\n");
+  g_list_foreach (list, my_list_print, NULL);
+  */
+
+  for (i = 0; i < 10; i++)
+    {
+      t = g_list_nth (list, i);
+      if (*((gint*) t->data) != (9 - i))
+         g_error ("Merge sort failed");
+    }
+
+  g_list_free (list);
 
   g_print ("ok\n");
 
@@ -467,6 +487,26 @@ main (int   argc,
 
   for (i = 0; i < 10; i++)
     slist = g_slist_insert_sorted (slist, &morenums[i], my_list_compare_two);
+
+  /*
+  g_print("\n");
+  g_slist_foreach (slist, my_list_print, NULL);
+  */
+
+  for (i = 0; i < 10; i++)
+    {
+      st = g_slist_nth (slist, i);
+      if (*((gint*) st->data) != (9 - i))
+         g_error("Sorted insert failed");
+    }
+
+  g_slist_free(slist);
+  slist = NULL;
+
+  for (i = 0; i < 10; i++)
+    slist = g_slist_prepend (slist, &morenums[i]);
+
+  slist = g_slist_sort (slist, my_list_compare_two);
 
   /*
   g_print("\n");

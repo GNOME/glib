@@ -1,3 +1,12 @@
+Fri Nov 13 15:17:34 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* glist.c gslist.c glib.h: Added g_list_sort() and
+	g_slist_sort() to merge sort GLists and GSLists.
+	Submitted by Sven Over <sven.over@ob.kamp.net>
+	over a year ago!
+
+	* testglib.c: Test the new sort functions.
+
 Wed Nov 11 23:23:22 EST 1998 Jeff Garzik <jgarzik@pobox.com>
 
 	* Makefile.am : INCLUDES is the right way to add to CFLAGS, not
@@ -482,7 +491,7 @@ Mon Sep 21 02:22:12 1998  Tim Janik  <timj@gtk.org>
 
 Sun Sep 20 18:21:46 1998  Owen Taylor  <otaylor@redhat.com>
 
-	* ltconfig.sh: Patch to libtool-1.2b to make --disable-static
+	* ltmain.sh: Patch to libtool-1.2b to make --disable-static
 	work.
 
 Sun Sep 20 02:09:44 1998  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
