@@ -53,8 +53,14 @@ g_utf8_collate (const gchar *str1,
   
 #ifdef __STDC_ISO_10646__
 
-  gunichar *str1_norm = _g_utf8_normalize_wc (str1, -1, G_NORMALIZE_ALL_COMPOSE);
-  gunichar *str2_norm = _g_utf8_normalize_wc (str2, -1, G_NORMALIZE_ALL_COMPOSE);
+  gunichar *str1_norm;
+  gunichar *str2_norm;
+
+  g_return_val_if_fail (str1 != NULL, 0);
+  g_return_val_if_fail (str2 != NULL, 0);
+
+  str1_norm = _g_utf8_normalize_wc (str1, -1, G_NORMALIZE_ALL_COMPOSE);
+  str2_norm = _g_utf8_normalize_wc (str2, -1, G_NORMALIZE_ALL_COMPOSE);
 
   result = wcscoll ((wchar_t *)str1_norm, (wchar_t *)str2_norm);
 
@@ -64,8 +70,14 @@ g_utf8_collate (const gchar *str1,
 #else /* !__STDC_ISO_10646__ */
 
   const gchar *charset;
-  gchar *str1_norm = g_utf8_normalize (str1, -1, G_NORMALIZE_ALL_COMPOSE);
-  gchar *str2_norm = g_utf8_normalize (str2, -1, G_NORMALIZE_ALL_COMPOSE);
+  gchar *str1_norm;
+  gchar *str2_norm;
+
+  g_return_val_if_fail (str1 != NULL, 0);
+  g_return_val_if_fail (str2 != NULL, 0);
+
+  str1_norm = g_utf8_normalize (str1, -1, G_NORMALIZE_ALL_COMPOSE);
+  str2_norm = g_utf8_normalize (str2, -1, G_NORMALIZE_ALL_COMPOSE);
 
   if (g_get_charset (&charset))
     {
@@ -169,10 +181,14 @@ g_utf8_collate_key (const gchar *str,
   
 #ifdef __STDC_ISO_10646__
 
-  gunichar *str_norm = _g_utf8_normalize_wc (str, len, G_NORMALIZE_ALL_COMPOSE);
+  gunichar *str_norm;
   wchar_t *result_wc;
   size_t i;
   size_t result_len = 0;
+
+  g_return_val_if_fail (str1 != NULL, NULL);
+
+  str_norm = _g_utf8_normalize_wc (str, len, G_NORMALIZE_ALL_COMPOSE);
 
   setlocale (LC_COLLATE, "");
 
@@ -197,7 +213,11 @@ g_utf8_collate_key (const gchar *str,
 #else /* !__STDC_ISO_10646__ */
 
   const gchar *charset;
-  gchar *str_norm = g_utf8_normalize (str, len, G_NORMALIZE_ALL_COMPOSE);
+  gchar *str_norm;
+
+  g_return_val_if_fail (str1 != NULL, NULL);
+
+  str_norm = g_utf8_normalize (str, len, G_NORMALIZE_ALL_COMPOSE);
 
   if (g_get_charset (&charset))
     {
