@@ -113,6 +113,18 @@ the node is inserted as the last child of @parent.
 @Returns: the inserted #GNode.
 
 
+<!-- ##### FUNCTION g_node_insert_after ##### -->
+<para>
+Inserts a #GNode beneath the parent after the given sibling.
+</para>
+
+@parent: the #GNode to place @node under.
+@sibling: the sibling #GNode to place @node after. If sibling is NULL,
+the node is inserted as the first child of @parent.
+@node: the #GNode to insert.
+@Returns: the inserted #GNode.
+
+
 <!-- ##### MACRO g_node_append ##### -->
 <para>
 Inserts a #GNode as the last child of the given parent.

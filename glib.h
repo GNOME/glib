@@ -1267,6 +1267,9 @@ GNode*	 g_node_insert		(GNode		  *parent,
 GNode*	 g_node_insert_before	(GNode		  *parent,
 				 GNode		  *sibling,
 				 GNode		  *node);
+GNode*	 g_node_insert_after	(GNode		  *parent,
+				 GNode		  *sibling,
+				 GNode		  *node);
 GNode*	 g_node_prepend		(GNode		  *parent,
 				 GNode		  *node);
 guint	 g_node_n_nodes		(GNode		  *root,

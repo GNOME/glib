@@ -1,3 +1,8 @@
+2000-09-29  Jonathan Blandford  <jrb@redhat.com>
+
+	* gnode.c (g_node_insert_after): Added function to keep symetry
+	with g_node_insert_before. 
+
 2000-09-30  Martin Baulig  <baulig@suse.de>
 
 	* configure.in (HAVE_THREADS): New automake conditional.

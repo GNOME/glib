@@ -281,6 +281,42 @@ g_node_insert_before (GNode *parent,
 }
 
 GNode*
+g_node_insert_after (GNode *parent,
+		     GNode *sibling,
+		     GNode *node)
+{
+  g_return_val_if_fail (parent != NULL, node);
+  g_return_val_if_fail (node != NULL, node);
+  g_return_val_if_fail (G_NODE_IS_ROOT (node), node);
+  if (sibling)
+    g_return_val_if_fail (sibling->parent == parent, node);
+
+  node->parent = parent;
+
+  if (sibling)
+    {
+      if (sibling->next)
+	{
+	  sibling->next->prev = node;
+	}
+      node->next = sibling->next;
+      node->prev = sibling;
+      sibling->next = node;
+    }
+  else
+    {
+      if (parent->children)
+	{
+	  node->next = parent->children;
+	  parent->children->prev = node;
+	}
+      parent->children = node;
+    }
+
+  return node;
+}
+
+GNode*
 g_node_prepend (GNode *parent,
 		GNode *node)
 {

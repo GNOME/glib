@@ -1319,6 +1319,7 @@ g_node_copy
 <SUBSECTION>
 g_node_insert
 g_node_insert_before
+g_node_insert_after
 g_node_append
 g_node_prepend
 

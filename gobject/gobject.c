@@ -338,9 +338,9 @@ static void
 g_object_do_dispatch_param_changed (GObject    *object,
 				    GParamSpec *pspec)
 {
-  g_message ("NOTIFICATION: parameter `%s' changed on object `%s'",
+/*  g_message ("NOTIFICATION: parameter `%s' changed on object `%s'",
 	     pspec->name,
-	     G_OBJECT_TYPE_NAME (object));
+	     G_OBJECT_TYPE_NAME (object));*/
 }
 
 static gboolean
