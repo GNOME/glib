@@ -1,3 +1,15 @@
+Tue Dec 15 10:40:09 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* gnode.c glist.c gslist.c: Make sure all
+	calls to g_node_validate_allocator are within
+	current_allocator lock, so we have consistency
+	on that point. (Should not really matter,
+	but this way we match the comments)
+
+	* glist.c (g_list_free_1): Removed some lines
+	that should never have been committed. (For
+	debugging)
+
 1998-12-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread/gthread-nspr.c, configure.in: Added new default thread

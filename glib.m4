@@ -2,8 +2,8 @@
 # Owen Taylor     97-11-3
 
 dnl AM_PATH_GLIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" is specified
-dnl in MODULES, feature the glib-config gmodule option.
+dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if "gmodule" or 
+dnl gthread is specified in MODULES, pass to glib-config
 dnl
 AC_DEFUN(AM_PATH_GLIB,
 [dnl 
@@ -29,9 +29,16 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest       Do not try to compile and ru
      fi
   fi
 
-  case "$4" in
-  *gmodule*) glib_config_args="$glib_config_args gmodule";;
-  esac
+  for module in $4 ; do
+      case "$module" in
+         gmodule) 
+             glib_config_args="$glib_config_args gmodule"
+         ;;
+         gthread) 
+             glib_config_args="$glib_config_args gthread"
+         ;;
+      esac
+  done
 
   AC_PATH_PROG(GLIB_CONFIG, glib-config, no)
   min_glib_version=ifelse([$1], ,0.99.7,$1)

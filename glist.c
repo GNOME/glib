@@ -70,8 +70,8 @@ g_list_validate_allocator (GAllocator *allocator)
 void
 g_list_push_allocator(GAllocator *allocator)
 {
-  g_list_validate_allocator ( allocator );
   g_lock (current_allocator);
+  g_list_validate_allocator ( allocator );
   allocator->last = current_allocator;
   current_allocator = allocator;
   g_unlock (current_allocator);
@@ -136,7 +136,6 @@ g_list_alloc (void)
 void
 g_list_free (GList *list)
 {
-#if 0
   if (list)
     {
       list->data = list->next;  
@@ -145,13 +144,11 @@ g_list_free (GList *list)
       current_allocator->free_lists = list;
       g_unlock (current_allocator);
     }
-#endif
 }
 
 void
 g_list_free_1 (GList *list)
 {
-#if 0  
   if (list)
     {
       list->data = NULL;  
@@ -160,7 +157,6 @@ g_list_free_1 (GList *list)
       current_allocator->free_lists = list;
       g_unlock (current_allocator);
     }
-#endif  
 }
 
 GList*

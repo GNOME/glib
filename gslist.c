@@ -70,8 +70,8 @@ g_slist_validate_allocator (GAllocator *allocator)
 void
 g_slist_push_allocator (GAllocator *allocator)
 {
-  g_slist_validate_allocator (allocator);
   g_lock (current_allocator);
+  g_slist_validate_allocator (allocator);
   allocator->last = current_allocator;
   current_allocator = allocator;
   g_unlock (current_allocator);
