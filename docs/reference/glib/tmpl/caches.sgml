@@ -10,10 +10,10 @@ A #GCache allows sharing of complex data structures, in order to save
 system resources.
 </para>
 <para>
-GTK+ uses a #GCache for both GtkStyles and GdkGCs. These consume a lot of
-resources, so a #GCache is used to see if a GtkStyle or GdkGC with the
+GTK+ uses a #GCache for #GtkStyles; GDK uses one for #GdkGCs. These consume a lot of
+resources, so a #GCache is used to see if a #GtkStyle or #GdkGC with the
 required properties already exists. If it does, then the existing
-GtkStyle or GdkGC is used instead of creating a new one.
+object is used instead of creating a new one.
 </para>
 <para>
 #GCache uses keys and values.
@@ -29,7 +29,7 @@ A #GCache value is the actual resource.
 <!-- ##### STRUCT GCache ##### -->
 <para>
 The #GCache struct is an opaque data structure containing information about
-a #GCache. It should only be accesssed via the following functions.
+a #GCache. It should only be accessed via the following functions.
 </para>
 
 

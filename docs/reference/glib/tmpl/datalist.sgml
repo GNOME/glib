@@ -15,7 +15,7 @@ The #GQuark methods are quicker, since the strings have to be converted to
 </para>
 <para>
 Data lists are used in GTK+ for associating arbitrary data with
-GtkObjects, using gtk_object_set_data() and related functions.
+#GtkObjects, using gtk_object_set_data() and related functions.
 </para>
 
 <para>

@@ -19,53 +19,18 @@ and the list of hook functions can be invoked.
 
 <!-- ##### STRUCT GHookList ##### -->
 <para>
-
-<informaltable pgwide=1 frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
-<tbody>
-
-<row>
-<entry>#guint seq_id;</entry>
-<entry>the next free #GHook id.</entry>
-</row>
-
-<row>
-<entry>#guint hook_size;</entry>
-<entry>the size of the #GHookList elements, in bytes.</entry>
-</row>
-
-<row>
-<entry>#guint is_setup : 1;</entry>
-<entry>1 if the #GHookList has been initialized.</entry>
-</row>
-
-<row>
-<entry>#GHook *hooks;</entry>
-<entry>the first #GHook element in the list.</entry>
-</row>
-
-<row>
-<entry>#GMemChunk *hook_memchunk;</entry>
-<entry>the #GMemChunk used for allocating the #GHook elements.</entry>
-</row>
-
-<row>
-<entry>#GHookFinalizeFunc finalize_hook;</entry>
-<entry>the function to call to finalize a #GHook element. 
-The default behaviour is to call the hooks <function>destroy</function> 
-function.</entry>
-</row>
-
-</tbody></tgroup></informaltable>
-
+The <structname>GHookList</structname> struct represents a 
+list of hook functions.
 </para>
 
-@seq_id: 
-@hook_size: 
-@is_setup: 
-@hooks: 
-@hook_memchunk: 
-@finalize_hook: 
+@seq_id: the next free #GHook id.
+@hook_size: the size of the #GHookList elements, in bytes.
+@is_setup: 1 if the #GHookList has been initialized.
+@hooks: the first #GHook element in the list.
+@hook_memchunk: the #GMemChunk used for allocating the #GHook elements.
+@finalize_hook: the function to call to finalize a #GHook element. The
+default behaviour is to call the hooks <function>destroy</function> function.
+
 
 <!-- ##### USER_FUNCTION GHookFinalizeFunc ##### -->
 <para>
@@ -79,65 +44,22 @@ list of hooks gets finalized.
 
 <!-- ##### STRUCT GHook ##### -->
 <para>
-
-<informaltable pgwide=1 frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
-<tbody>
-
-<row>
-<entry>#gpointer data;</entry>
-<entry>data which is passed to func when this hook is invoked.</entry>
-</row>
-
-<row>
-<entry>#GHook *next;</entry>
-<entry>pointer to the next hook in the list.</entry>
-</row>
-
-<row>
-<entry>#GHook *prev;</entry>
-<entry>pointer to the previous hook in the list.</entry>
-</row>
-
-<row>
-<entry>#guint ref_count;</entry>
-<entry>the reference count of this hook.</entry>
-</row>
-
-<row>
-<entry>#guint hook_id;</entry>
-<entry>the id of this hook, which is unique within its list.</entry>
-</row>
-
-<row>
-<entry>#guint flags;</entry>
-<entry>flags which are set for this hook. See #GHookFlagMask for
-predefined flags.</entry>
-</row>
-
-<row>
-<entry>#gpointer func;</entry>
-<entry>the function to call when this hook is invoked. The possible 
-signatures for this function are #GHookFunc and #GHookCheckFunc.</entry>
-</row>
-
-<row>
-<entry>#GDestroyNotify destroy;</entry>
-<entry>the default <function>finalize_hook</function> function of a 
-#GHookList calls this member of the hook that is being finalized.</entry>
-</row>
-
-</tbody></tgroup></informaltable>
+The <structname>GHook</structname> struct represents a single hook 
+function in a #GHookList.
 </para>
 
-@data: 
-@next: 
-@prev: 
-@ref_count: 
-@hook_id: 
-@flags: 
-@func: 
-@destroy: 
+@data: data which is passed to func when this hook is invoked.
+@next: pointer to the next hook in the list.
+@prev: pointer to the previous hook in the list.
+@ref_count: the reference count of this hook.
+@hook_id: the id of this hook, which is unique within its list.
+@flags: flags which are set for this hook. See #GHookFlagMask for
+predefined flags.
+@func: the function to call when this hook is invoked. The possible 
+signatures for this function are #GHookFunc and #GHookCheckFunc.
+@destroy: the default <function>finalize_hook</function> function of a 
+#GHookList calls this member of the hook that is being finalized.
+
 
 <!-- ##### USER_FUNCTION GHookFunc ##### -->
 <para>

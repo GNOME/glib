@@ -42,7 +42,8 @@ only one statement is expected by the compiler.
 <!-- ##### MACRO G_BEGIN_DECLS ##### -->
 <para>
 Used (along with #G_END_DECLS) to bracket header files. If the
-compiler in use is a C++ compiler, adds 'extern "C"' around the header.
+compiler in use is a C++ compiler, adds <literal>extern "C"</literal> 
+around the header.
 </para>
 
 
@@ -92,16 +93,17 @@ Accepts a macro or a string and converts it into a string.
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->
 <para>
-Expands to <literal>__extension__</literal> when GNU C is used as the compiler.
-This simply tells GNU C not to warn about the following non-standard code
-when compiling with the <literal>-pedantic</literal> option.
+Expands to <literal>__extension__</literal> when <command>gcc</command> is 
+used as the compiler.
+This simply tells <command>gcc</command> not to warn about the following non-standard code
+when compiling with the <option>-pedantic</option> option.
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_CONST ##### -->
 <para>
-Expands to the GNU C const function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>const</literal> function attribute if the compiler is <command>gcc</command>.
 Declaring a function as const enables better optimization of the function.
 A const function doesn't examine any values except its parameters,
 and has no effects except its return value.
@@ -118,7 +120,7 @@ for a const function to return void.
 
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
-Expands to the GNU C noreturn function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>noreturn</literal> function attribute if the compiler is <command>gcc</command>.
 It is used for declaring functions which never return.
 It enables optimization of the function, and avoids possible compiler
 warnings. See the GNU C documentation for details. 
@@ -128,7 +130,7 @@ warnings. See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_UNUSED ##### -->
 <para>
-Expands to the GNU C unused function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>unused</literal> function attribute if the compiler is <command>gcc</command>.
 It is used for declaring functions which may never be used.
 It avoids possible compiler warnings. See the GNU C documentation for details. 
 </para>
@@ -137,7 +139,7 @@ It avoids possible compiler warnings. See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_PURE ##### -->
 <para>
-Expands to the GNU C pure function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>pure</literal> function attribute if the compiler is <command>gcc</command>.
 Declaring a function as pure enables better optimization of the function.
 A pure function has no effects except its return value and the return 
 value depends only on the parameters and/or global variables.
@@ -148,7 +150,7 @@ See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_PRINTF ##### -->
 <para>
-Expands to the GNU C format function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>format</literal> function attribute if the compiler is <command>gcc</command>.
 This is used for declaring functions which take a variable number of
 arguments, with the same syntax as <function>printf()</function>.
 It allows the compiler to type-check the arguments passed to the function.
@@ -168,7 +170,7 @@ gint g_snprintf (gchar  *string,
 
 <!-- ##### MACRO G_GNUC_SCANF ##### -->
 <para>
-Expands to the GNU C format function attribute if the compiler is GNU C.
+Expands to the GNU C <literal>format</literal> function attribute if the compiler is <command>gcc</command>.
 This is used for declaring functions which take a variable number of
 arguments, with the same syntax as <function>scanf()</function>.
 It allows the compiler to type-check the arguments passed to the function.
@@ -182,8 +184,8 @@ See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_FORMAT ##### -->
 <para>
-Expands to the GNU C format_arg function attribute if the compiler is GNU C.
-The format_arg function attribute specifies that a function takes a format
+Expands to the GNU C <literal>format_arg</literal> function attribute if the compiler is <command>gcc</command>.
+This function attribute specifies that a function takes a format
 string for a <function>printf()</function>, <function>scanf()</function>, 
 <function>strftime()</function> or <function>strfmon()</function> style
 function and modifies it, so that the result can be passed to a 
@@ -203,7 +205,7 @@ gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
 Expands to the GNU C <literal>__FUNCTION__</literal> variable if the 
-compiler is GNU C, or "" if it isn't. The GNU C 
+compiler is <command>gcc</command>, or "" if it isn't. The GNU C 
 <literal>__FUNCTION__</literal> variable contains the name of the 
 current function. See the GNU C documentation for details. 
 </para>
@@ -213,7 +215,7 @@ current function. See the GNU C documentation for details.
 <!-- ##### MACRO G_GNUC_PRETTY_FUNCTION ##### -->
 <para>
 Expands to the GNU C <literal>__PRETTY_FUNCTION__</literal> variable 
-if the compiler is GNU C, or "" if it isn't.
+if the compiler is <command>gcc</command>, or "" if it isn't.
 The GNU C <literal>__PRETTY_FUNCTION__</literal> variable contains the 
 name of the current function. For a C program this is the same as the 
 <literal>__FUNCTION__</literal> variable but for C++ it also includes 
@@ -225,8 +227,9 @@ GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
 <para>
-Expands to the GNU C no_instrument_function function attribute if 
-the compiler is GNU C. Functions with this attribute will not be 
+Expands to the GNU C <literal>no_instrument_function</literal> function 
+attribute if the compiler is <command>gcc</command>. Functions with this 
+attribute will not be 
 instrumented for profiling, when the compiler is called with the
 <option>-finstrument-functions</option> option.
 See the GNU C documentation for details. 

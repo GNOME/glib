@@ -95,7 +95,7 @@ To help debug memory chunks, use g_mem_chunk_info() and g_mem_chunk_print().
   GRealArray *array;
 
   /* Create a GMemChunk to hold GRealArray structures, using the
-     g_mem_chunk_create() convenience macro. We want 1024 atoms in each
+     g_mem_chunk_create(<!>) convenience macro. We want 1024 atoms in each
      memory block, and we want to be able to free individual atoms. */
   array_mem_chunk = g_mem_chunk_create (GRealArray, 1024, G_ALLOC_AND_FREE);
 

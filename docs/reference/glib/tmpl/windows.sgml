@@ -2,7 +2,7 @@
 Windows Compatibility Functions
 
 <!-- ##### SECTION Short_Description ##### -->
-Unix emulation on Windows
+Unix emulation on Windows.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -16,7 +16,7 @@ Unix emulation on Windows
 
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
-Provided for UNIX emulation on Windows; equivalent to UNIX 
+Provided for Unix emulation on Windows; equivalent to Unix 
 macro %MAXPATHLEN, which is the maximum length of a filename
 (including full path).
 </para>
@@ -25,14 +25,14 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 <!-- ##### TYPEDEF pid_t ##### -->
 <para>
-Provided for UNIX emulation on Windows; process ID type.
+Provided for Unix emulation on Windows; process ID type.
 </para>
 
 
 <!-- ##### MACRO pipe ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for <function>pipe()</function>
-in any UNIX manual.
+Provided for Unix emulation on Windows; see documentation for <function>pipe()</function>
+in any Unix manual.
 </para>
 
 @phandles: 
@@ -40,8 +40,8 @@ in any UNIX manual.
 
 <!-- ##### MACRO ftruncate ##### -->
 <para>
-Provided for UNIX emulation on Windows; see documentation for <function>ftruncate()</function>
-in any UNIX manual.
+Provided for Unix emulation on Windows; see documentation for <function>ftruncate()</function>
+in any Unix manual.
 </para>
 
 @fd: 

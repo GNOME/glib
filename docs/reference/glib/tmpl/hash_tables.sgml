@@ -53,7 +53,7 @@ To destroy a #GHashTable use g_hash_table_destroy().
 
 <!-- ##### STRUCT GHashTable ##### -->
 <para>
-The #GHashTable struct is an opaque data structure to represent a
+The <structname>GHashTable</structname> struct is an opaque data structure to represent a
 <link linkend="glib-Hash-Tables">Hash Table</link>.
 It should only be accessed via the following functions.
 </para>
@@ -289,7 +289,7 @@ parameter, when using pointers as keys in a #GHashTable.
 <para>
 Converts a gpointer to a hash value.
 It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using gpointer values as keys in a #GHashTable.
+using pointers as keys in a #GHashTable.
 </para>
 
 @v: a gpointer key.
@@ -313,7 +313,7 @@ parameter, when using pointers to integers as keys in a #GHashTable.
 <para>
 Converts a pointer to a #gint to a hash value.
 It can be passed to g_hash_table_new() as the @hash_func parameter, when
-using pointers to #gint values as keys in a #GHashTable.
+using pointers to integers values as keys in a #GHashTable.
 </para>
 
 @v: a pointer to a #gint key.

@@ -53,8 +53,8 @@ BeOS-specific code in "#ifdef G_OS_BEOS".
 
 <!-- ##### MACRO G_OS_UNIX ##### -->
 <para>
-This macro is defined only on UNIX. So you can bracket
-UNIX-specific code in "#ifdef G_OS_UNIX".
+This macro is defined only on Unix. So you can bracket
+Unix-specific code in "#ifdef G_OS_UNIX".
 </para>
 
 

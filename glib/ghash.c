@@ -241,7 +241,7 @@ g_hash_table_lookup (GHashTable	  *hash_table,
  * is useful if you need to free the memory allocated for the original key, 
  * for example before calling g_hash_table_remove().
  * 
- * Return value: #TRUE if the key was found in the #GHashTable.
+ * Return value: %TRUE if the key was found in the #GHashTable.
  **/
 gboolean
 g_hash_table_lookup_extended (GHashTable    *hash_table,
@@ -371,7 +371,7 @@ g_hash_table_replace (GHashTable *hash_table,
  * you have to make sure that any dynamically allocated values are freed 
  * yourself.
  * 
- * Return value: #TRUE if the key was found and removed from the #GHashTable.
+ * Return value: %TRUE if the key was found and removed from the #GHashTable.
  **/
 gboolean
 g_hash_table_remove (GHashTable	   *hash_table,
@@ -407,7 +407,7 @@ g_hash_table_remove (GHashTable	   *hash_table,
  * Removes a key and its associated value from a #GHashTable without
  * calling the key and value destroy functions.
  *
- * Return value: #TRUE if the key was found and removed from the #GHashTable.
+ * Return value: %TRUE if the key was found and removed from the #GHashTable.
  **/
 gboolean
 g_hash_table_steal (GHashTable    *hash_table,

@@ -1,3 +1,8 @@
+2001-12-12  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gconvert.c, glib/grand.c, glib/ghash.c,
+	glib/gthreadpool.c, glib/gtree.c: Documentation fixes.
+
 Mon Dec 10 14:08:39 2001  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* glib/libcharset/config.charset (os):

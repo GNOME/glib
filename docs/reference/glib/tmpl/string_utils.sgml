@@ -122,11 +122,10 @@ an even better idea.
 
 <!-- ##### FUNCTION g_strlcat ##### -->
 <para>
-Portability wrapper that calls strlcat() on systems which have it, and emulates
-strlcat() otherwise. Appends nul-terminated @src string to @dest, guaranteeing
+Portability wrapper that calls <function>strlcat()</function> on systems which have it, and emulates it otherwise. Appends nul-terminated @src string to @dest, guaranteeing
 nul-termination for @dest. The total size of @dest won't exceed
-@dest_size. Caveat: this is supposedly a more secure alternative to strcat() or
-strncat(), but for real security g_strconcat() is harder to mess up.
+@dest_size. Caveat: this is supposedly a more secure alternative to <function>strcat()</function> or
+<function>strncat()</function>, but for real security g_strconcat() is harder to mess up.
 </para>
 
 @dest: destination buffer, already containing one nul-terminated string
@@ -230,12 +229,12 @@ documentation.
 Determines whether a character is alphanumeric.
 </para>
 <para>
-Unlike the standard C library isalnum function, this only
+Unlike the standard C library <function>isalnum()</function> function, this only
 recognizes standard ASCII letters and ignores the locale, returning
 %FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -247,12 +246,12 @@ non-ASCII character in.
 Determines whether a character is alphabetic (i.e. a letter).
 </para>
 <para>
-Unlike the standard C library isalpha function, this only
+Unlike the standard C library <function>isalpha()</function> function, this only
 recognizes standard ASCII letters and ignores the locale, returning
 %FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+library function, this takes a <type>char</type>, not an <type>int</type, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -264,12 +263,12 @@ non-ASCII character in.
 Determines whether a character is a control character.
 </para>
 <para>
-Unlike the standard C library iscntrl function, this only
+Unlike the standard C library <function>iscntrl()</function> function, this only
 recognizes standard ASCII control characters and ignores the locale,
-returning%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -281,9 +280,9 @@ non-ASCII character in.
 Determines whether a character is digit (0-9).
 </para>
 <para>
-Unlike the standard C library isdigit function,
-this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
+Unlike the standard C library <function>isdigit()</function> function,
+this takes a <type>char</type>, not an <type>int</type>, so don't call it
+on %EOF but no need to cast to #guchar before passing a possibly
 non-ASCII character in.
 </para>
 
@@ -296,12 +295,12 @@ non-ASCII character in.
 Determines whether a character is a printing character and not a space.
 </para>
 <para>
-Unlike the standard C library isgraph function, this only
-recognizes standard ASCII characters and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+Unlike the standard C library <function>isgraph()</function> function, 
+this only recognizes standard ASCII characters and ignores the locale, 
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -313,12 +312,12 @@ non-ASCII character in.
 Determines whether a character is an ASCII lower case letter.
 </para>
 <para>
-Unlike the standard C library islower function, this only
-recognizes standard ASCII letters and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to worry about casting to guchar before passing
-a possibly non-ASCII character in.
+Unlike the standard C library <function>islower()</function> function, 
+this only recognizes standard ASCII letters and ignores the locale,
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to worry about casting to #guchar 
+before passing a possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -330,12 +329,12 @@ a possibly non-ASCII character in.
 Determines whether a character is a printing character.
 </para>
 <para>
-Unlike the standard C library isprint function, this only
-recognizes standard ASCII characters and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+Unlike the standard C library <function>isprint()</function> function, 
+this only recognizes standard ASCII characters and ignores the locale, 
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -347,12 +346,12 @@ non-ASCII character in.
 Determines whether a character is a punctuation character.
 </para>
 <para>
-Unlike the standard C library ispunct function, this only
-recognizes standard ASCII letters and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+Unlike the standard C library <function>ispunct()</function> function, 
+this only recognizes standard ASCII letters and ignores the locale, 
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -364,12 +363,12 @@ non-ASCII character in.
 Determines whether a character is a white-space character.
 </para>
 <para>
-Unlike the standard C library isspace function, this only
-recognizes standard ASCII white-space and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to cast to guchar before passing a possibly
-non-ASCII character in.
+Unlike the standard C library <function>isspace()</function> function, 
+this only recognizes standard ASCII white-space and ignores the locale, 
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to cast to #guchar before passing a 
+possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -381,12 +380,12 @@ non-ASCII character in.
 Determines whether a character is an ASCII upper case letter.
 </para>
 <para>
-Unlike the standard C library isupper function, this only
-recognizes standard ASCII letters and ignores the locale, returning
-%FALSE for all non-ASCII characters. Also unlike the standard
-library function, this takes a char, not an int, so don't call it
-on EOF but no need to worry about casting to guchar before passing
-a possibly non-ASCII character in.
+Unlike the standard C library <function>isupper()</function> function, 
+this only recognizes standard ASCII letters and ignores the locale, 
+returning %FALSE for all non-ASCII characters. Also unlike the standard
+library function, this takes a <type>char</type>, not an <type>int</type>, 
+so don't call it on %EOF but no need to worry about casting to #guchar 
+before passing a possibly non-ASCII character in.
 </para>
 
 @c: any character
@@ -398,9 +397,9 @@ a possibly non-ASCII character in.
 Determines whether a character is a hexadecimal-digit character.
 </para>
 <para>
-Unlike the standard C library isxdigit function,
-this takes a char, not an int, so
-don't call it on EOF but no need to cast to guchar before passing a
+Unlike the standard C library <function>isxdigit()</function> function,
+this takes a <type>char</type>, not an <type>int</type>, so
+don't call it on %EOF but no need to cast to #guchar before passing a
 possibly non-ASCII character in.
 </para>
 
@@ -554,7 +553,8 @@ of the strings.
 </para>
 <para>
 The problem with g_strncasecmp() is that it does the comparison by
-calling toupper()/tolower() on each byte. toupper()/tolower() are
+calling <function>toupper()</function>/<function>tolower()</function> 
+on each byte. <function>toupper()</function>/<function>tolower()</function> are
 locale-specific and operate on single bytes. However, it is impossible
 to handle things correctly from an i18n standpoint by operating on
 bytes, since characters may be multibyte. Thus g_strncasecmp() is
@@ -580,7 +580,7 @@ value if @s1 > @s2.
 <!-- ##### FUNCTION g_strreverse ##### -->
 <para>
 Reverses all of the characters in a string.
-For example, g_strreverse ("abcdef") will result in "fedcba".
+For example, <literal>g_strreverse ("abcdef")</literal> will result in "fedcba".
 </para>
 
 @string: the string to reverse.
@@ -589,19 +589,17 @@ For example, g_strreverse ("abcdef") will result in "fedcba".
 
 <!-- ##### MACRO G_ASCII_DTOSTR_BUF_SIZE ##### -->
 <para>
-A good size for a buffer to be passed into <function>g_ascii_dtostr</function>.
+A good size for a buffer to be passed into g_ascii_dtostr().
 It is guaranteed to be enough for all output of that function on systems with
- 64bit IEEE compatible doubles.
+ 64bit IEEE-compatible doubles.
 </para>
 <para>
 The typical usage would be something like:
-</para>
-<para>
-<literal>
+<informalexample><programlisting>
   char buf[G_ASCII_DTOSTR_BUF_SIZE];
 
   fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
-</literal>
+</programlisting></informalexample>
 </para>
 
 
@@ -694,7 +692,7 @@ standard delimiters defined in #G_STR_DELIMITERS.
 
 <!-- ##### MACRO G_STR_DELIMITERS ##### -->
 <para>
-The standard delimiters, used in #g_strdelimit.
+The standard delimiters, used in g_strdelimit().
 </para>
 
 

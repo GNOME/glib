@@ -158,7 +158,7 @@ really know what you are doing.
 <note>
 <para>
 g_thread_init() must not be called directly or indirectly as a
-call-back from GLib. Also no mutexes may be currently locked, while
+callback from GLib. Also no mutexes may be currently locked, while
 calling g_thread_init().
 </para>
 </note>
@@ -172,7 +172,7 @@ system is initialized, you can do that too:
 <para>
 <informalexample>
 <programlisting>
-if (!g_thread_supported ()) g_thread_init (NULL);
+if (!g_thread_supported (<!>)) g_thread_init (NULL);
 </programlisting>
 </informalexample>
 </para>
@@ -362,7 +362,7 @@ This functions returns the #GThread corresponding to the calling thread.
 <!-- ##### FUNCTION g_thread_join ##### -->
 <para>
 Waits until @thread finishes, i.e. the function @func, as given
-to g_thread_create, returns or g_thread_exit() is called by
+to g_thread_create(), returns or g_thread_exit() is called by
 @thread. All resources of @thread including the #GThread struct are
 released. @thread must have been created with @joinable=%TRUE in
 g_thread_create(). The value returned by @func or given to
@@ -375,7 +375,7 @@ g_thread_exit() by @thread is returned by this function.
 
 <!-- ##### FUNCTION g_thread_set_priority ##### -->
 <para>
-Change the priority of @thread to @priority.
+Changes the priority of @thread to @priority.
 </para>
 
 <note>
@@ -394,7 +394,7 @@ being dependent on priorities.
 
 <!-- ##### FUNCTION g_thread_yield ##### -->
 <para>
-Give way to other threads waiting to be scheduled. 
+Gives way to other threads waiting to be scheduled. 
 </para>
 
 <para>
@@ -407,7 +407,7 @@ to do that. So in general you shouldn't use that function.
 
 <!-- ##### FUNCTION g_thread_exit ##### -->
 <para>
-Exit the current thread. If another thread is waiting for that thread
+Exits the current thread. If another thread is waiting for that thread
 using g_thread_join() and the current thread is joinable, the waiting
 thread will be woken up and getting @retval as the return value of
 g_thread_join(). If the current thread is not joinable, @retval is
@@ -440,9 +440,8 @@ in the function @func, as given to g_thread_create().
 
 <note>
 <para>
-Never call g_thread_exit from within a thread of a #GThreadPool, as
-that will mess up the bookkeeping and lead to funny and unwanted
-results.
+Never call g_thread_exit() from within a thread of a #GThreadPool, as
+that will mess up the bookkeeping and lead to funny and unwanted results.
 </para>
 </note>
 
@@ -459,7 +458,7 @@ access. Take for example the following function:
 <example>
 <title>A function which will not work in a threaded environment</title>
 <programlisting>
-  int give_me_next_number ()
+  int give_me_next_number (<!>)
   {
     static int current_number = 0;
 
@@ -482,7 +481,7 @@ access. A first naive implementation would be:
 <example>
 <title>The wrong way to write a thread-safe function</title>
 <programlisting>
-  int give_me_next_number ()
+  int give_me_next_number (<!>)
   {
     static int current_number = 0;
     int ret_val;
@@ -513,13 +512,13 @@ not use such constructs in your own programs. One working solution is:
 
   /* this function must be called before any call to give_me_next_number ()
      it must be called exactly once. */
-  void init_give_me_next_number () 
+  void init_give_me_next_number (<!>) 
   {
     g_assert (give_me_next_number_mutex == NULL);
     give_me_next_number_mutex = g_mutex_new ();
   }
 
-  int give_me_next_number ()
+  int give_me_next_number (<!>)
   {
     static int current_number = 0;
     int ret_val;
@@ -650,14 +649,14 @@ Destroys @mutex.
 A #GStaticMutex works like a #GMutex, but it has one significant
 advantage. It doesn't need to be created at run-time like a #GMutex,
 but can be defined at compile-time. Here is a shorter, easier and
-safer version of our give_me_next_number() example:
+safer version of our <function>give_me_next_number()</function> example:
 </para>
 
 <para>
 <example>
-<title>Using GStaticMutex to simplify thread-safe programming</title>
+<title>Using <structname>GStaticMutex</structname> to simplify thread-safe programming</title>
 <programlisting>
-  int give_me_next_number ()
+  int give_me_next_number (<!>)
   {
     static int current_number = 0;
     int ret_val;
@@ -802,11 +801,11 @@ variable you intent to protect with the lock. Look at our
 
 <para>
 <example>
-<title>Using the G_LOCK_* convenience macros</title>
+<title>Using the %G_LOCK_* convenience macros</title>
 <programlisting>
 G_LOCK_DEFINE (current_number);
 
-int give_me_next_number ()
+int give_me_next_number (<!>)
   {
     static int current_number = 0;
     int ret_val;

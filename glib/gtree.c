@@ -278,7 +278,7 @@ g_tree_destroy (GTree *tree)
  * Inserts a key/value pair into a #GTree. If the given key already exists 
  * in the #GTree its corresponding value is set to the new value. If you 
  * supplied a value_destroy_func when creating the #GTree, the old value is 
- * freed using that function. If you supplied a key_destroy_func when 
+ * freed using that function. If you supplied a @key_destroy_func when 
  * creating the #GTree, the passed key is freed using that function.
  *
  * The tree is automatically 'balanced' as new key/value pairs are added,
@@ -308,9 +308,9 @@ g_tree_insert (GTree    *tree,
  * 
  * Inserts a new key and value into a #GTree similar to g_tree_insert(). 
  * The difference is that if the key already exists in the #GTree, it gets 
- * replaced by the new key. If you supplied a value_destroy_func when 
+ * replaced by the new key. If you supplied a @value_destroy_func when 
  * creating the #GTree, the old value is freed using that function. If you 
- * supplied a key_destroy_func when creating the #GTree, the old key is 
+ * supplied a @key_destroy_func when creating the #GTree, the old key is 
  * freed using that function. 
  *
  * The tree is automatically 'balanced' as new key/value pairs are added,
@@ -340,7 +340,7 @@ g_tree_replace (GTree    *tree,
  * Removes a key/value pair from a #GTree.
  *
  * If the #GTree was created using g_tree_new_full(), the key and value 
- * are freed using the supplied destroy_functions, otherwise you have to 
+ * are freed using the supplied @destroy_functions, otherwise you have to 
  * make sure that any dynamically allocated values are freed yourself.
  **/
 void
@@ -402,11 +402,11 @@ g_tree_lookup (GTree         *tree,
  * @value: returns the value associated with the key.
  * 
  * Looks up a key in the #GTree, returning the original key and the
- * associated value and a gboolean which is TRUE if the key was found. This 
+ * associated value and a #gboolean which is %TRUE if the key was found. This 
  * is useful if you need to free the memory allocated for the original key, 
  * for example before calling g_tree_remove().
  * 
- * Return value: #TRUE if the key was found in the #GTree.
+ * Return value: %TRUE if the key was found in the #GTree.
  **/
 gboolean
 g_tree_lookup_extended (GTree         *tree,
@@ -527,7 +527,7 @@ g_tree_traverse (GTree         *tree,
  * To search for a specific value, you can use g_tree_foreach() or 
  * g_tree_traverse().
  *
- * Return value: the value corresponding to the found key, or NULL if the key 
+ * Return value: the value corresponding to the found key, or %NULL if the key 
  * is not found.
  **/
 gpointer

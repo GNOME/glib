@@ -38,12 +38,12 @@ To set the size of a pointer array, use g_ptr_array_set_size().
 To free a pointer array, use g_ptr_array_free().
 </para>
 <example>
-<title>Using a GPtrArray.</title>
+<title>Using a <structname>GPtrArray</structname>.</title>
 <programlisting>
   GPtrArray *gparray;
   gchar *string1 = "one", *string2 = "two", *string3 = "three";
 
-  gparray = g_ptr_array_new ();
+  gparray = g_ptr_array_new (<!>);
   g_ptr_array_add (gparray, (gpointer) string1);
   g_ptr_array_add (gparray, (gpointer) string2);
   g_ptr_array_add (gparray, (gpointer) string3);
@@ -63,14 +63,10 @@ To free a pointer array, use g_ptr_array_free().
 <!-- ##### STRUCT GPtrArray ##### -->
 <para>
 Contains the public fields of a pointer array.
-The <structfield>pdata</structfield> field points to the array of pointers,
-which may as when the array grows.
-The <structfield>len</structfield> field is the number of pointers in the
-array.
 </para>
 
-@pdata: 
-@len: 
+@pdata: points to the array of pointers, which may be moved when the array grows.
+@len: number of pointers in the array.
 
 <!-- ##### FUNCTION g_ptr_array_new ##### -->
 <para>

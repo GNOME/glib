@@ -31,7 +31,7 @@ To set the size of an array, use g_array_set_size().
 To free an array, use g_array_free().
 </para>
 <example>
-<title>Using a GArray to store gint values.</title>
+<title>Using a <structname>GArray</structname> to store gint values.</title>
 <programlisting>
   GArray *garray;
   gint i;
@@ -240,7 +240,7 @@ Returns the element of a #GArray at the given index.
 The return value is cast to the given type.
 
 <example>
-<title>Getting a pointer to an element in a GArray.</title>
+<title>Getting a pointer to an element in a <structname>GArray</structname>.</title>
 <programlisting>
   EDayViewEvent *event;
 

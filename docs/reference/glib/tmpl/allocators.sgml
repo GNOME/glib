@@ -36,7 +36,7 @@ elements. Each must use separate allocators.
 
 <!-- ##### STRUCT GAllocator ##### -->
 <para>
-The #GAllocator struct contains private data. and should only be accessed
+The <structname>GAllocator</structname> struct contains private data. and should only be accessed
 using the following functions.
 </para>
 

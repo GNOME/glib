@@ -37,7 +37,7 @@ documentation.
 Sets the print handler.
 Any messages passed to g_print() will be output via the new handler.
 The default handler simply outputs the message to stdout.
-By providing your own handler you can redirect the output, to a GTK
+By providing your own handler you can redirect the output, to a GTK+
 widget or a log file for example.
 </para>
 
@@ -74,7 +74,7 @@ documentation.
 Sets the handler for printing error messages.
 Any messages passed to g_printerr() will be output via the new handler.
 The default handler simply outputs the message to stderr.
-By providing your own handler you can redirect the output, to a GTK
+By providing your own handler you can redirect the output, to a GTK+
 widget or a log file for example.
 </para>
 
@@ -172,7 +172,7 @@ The prompt is then shown again.
 If [P]roceed is selected, the function returns.
 </para>
 <para>
-This function may cause different actions on non-unix platforms.
+This function may cause different actions on non-Unix platforms.
 </para>
 
 @prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.
@@ -186,7 +186,7 @@ Invokes <command>gdb</command>, which attaches to the current process and shows 
 Called by g_on_error_query() when the [S]tack trace option is selected.
 </para>
 <para>
-This function may cause different actions on non-unix platforms.
+This function may cause different actions on non-Unix platforms.
 </para>
 
 @prg_name: the program name, needed by <command>gdb</command> for the [S]tack trace option.

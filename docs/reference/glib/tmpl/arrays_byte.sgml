@@ -6,7 +6,7 @@ arrays of bytes, which grow automatically as elements are added.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-GByteArray is based on #GArray, to provide arrays of bytes which grow
+#GByteArray is based on #GArray, to provide arrays of bytes which grow
 automatically as elements are added.
 </para>
 <para>
@@ -17,19 +17,19 @@ To add elements to a #GByteArray, use g_byte_array_append(), and
 g_byte_array_prepend().
 </para>
 <para>
-To set the size of a GByteArray, use g_byte_array_set_size().
+To set the size of a #GByteArray, use g_byte_array_set_size().
 </para>
 <para>
-To free a GByteArray, use g_byte_array_free().
+To free a #GByteArray, use g_byte_array_free().
 </para>
 
 <example>
-<title>Using a GByteArray.</title>
+<title>Using a <structname>GByteArray</structname>.</title>
 <programlisting>
   GByteArray *gbarray;
   gint i;
 
-  gbarray = g_byte_array_new ();
+  gbarray = g_byte_array_new (<!>);
   for (i = 0; i < 10000; i++)
     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
 
@@ -51,7 +51,7 @@ To free a GByteArray, use g_byte_array_free().
 
 <!-- ##### STRUCT GByteArray ##### -->
 <para>
-The #GByteArray struct allows access to the public fields of a #GByteArray.
+The <structname>GByteArray</structname> struct allows access to the public fields of a <structname>GByteArray</structname>.
 </para>
 
 @data: a pointer to the element data. The data may be moved as elements are
@@ -159,7 +159,7 @@ Sets the size of the #GByteArray, expanding it if necessary.
 <!-- ##### FUNCTION g_byte_array_free ##### -->
 <para>
 Frees the memory allocated by the #GByteArray.
-If free_segment is %TRUE it frees the actual byte data.
+If @free_segment is %TRUE it frees the actual byte data.
 </para>
 
 @array: a #GByteArray.

@@ -2,8 +2,7 @@
 Error Reporting
 
 <!-- ##### SECTION Short_Description ##### -->
-
-System for reporting errors
+a system for reporting errors.
 
 <!-- ##### SECTION Long_Description ##### -->
 
@@ -11,15 +10,15 @@ System for reporting errors
 GLib provides a standard method of reporting errors from a called function to
 the calling code. (This is the same problem solved by exceptions in other
 languages.) It's important to understand that this method is both a
-<emphasis>data type </emphasis> (the #GError object) and a <emphasis>set of
-rules</emphasis>. If you use #GError incorrectly, then your code will not
+<emphasis>data type</emphasis> (the #GError object) and a <emphasis>set of
+rules.</emphasis> If you use #GError incorrectly, then your code will not
 properly interoperate with other code that uses #GError, and users of your API
 will probably get confused.
 </para>
 
 <para>
 First and foremost: <emphasis>#GError should only be used to report
-recoverable runtime errors, never to report programming errors</emphasis>. If
+recoverable runtime errors, never to report programming errors.</emphasis> If
 the programmer has screwed up, then you should use g_warning(),
 g_return_if_fail(), g_assert(), g_error(), or some similar facility.
 (Incidentally, remember that the g_error() function should
@@ -39,12 +38,12 @@ This is why most functions in GLib and GTK+ do not use the #GError facility.
 <para>
 Functions that can fail take a return location for a #GError as their last argument. 
 For example:
-<programlisting>
+<informalexample><programlisting>
 gchar* g_file_get_contents (const gchar *filename, GError **error);
-</programlisting>
+</programlisting></informalexample>
 If you pass a non-%NULL value for the <literal>error</literal> argument, it should 
 point to a location where an error can be placed. For example:
-<programlisting>
+<informalexample><programlisting>
 gchar *contents;
 GError *err = NULL;
 contents = g_file_get_contents ("foo.txt", &amp;err);
@@ -61,7 +60,7 @@ else
     /* Use file contents */
     g_assert (contents != NULL);
   }
-</programlisting>
+</programlisting></informalexample>
 Note that <literal>err != NULL</literal> in this example is a
 <emphasis>reliable</emphasis> indicator of whether
 g_file_get_contents() failed. Also, g_file_get_contents() uses the
@@ -73,13 +72,13 @@ all functions use this convention).
 Because g_file_get_contents() returns %NULL on failure, if you are only
 interested in whether it failed and don't need to display an error message, you
 can pass %NULL for the <literal>error</literal> argument:
-<programlisting>
+<informalexample><programlisting>
 contents = g_file_get_contents ("foo.txt", NULL); /* ignore errors */
 if (contents != NULL)
   /* no error occurred */ ;
 else
   /* error */ ;
-</programlisting>
+</programlisting></informalexample>
 </para>
 
 <para>
@@ -103,7 +102,7 @@ When implementing a function that can report errors, the basic tool is
 g_set_error(). Typically, if a fatal error occurs you want to g_set_error(),
 then return immediately. g_set_error() does nothing if the error location passed
 to it is %NULL. Here's an example:
-<programlisting>
+<informalexample><programlisting>
 gint
 foo_open_file (GError **error)
 {
@@ -123,7 +122,7 @@ foo_open_file (GError **error)
   else
     return fd;
 }
-</programlisting>
+</programlisting></informalexample>
 </para>
 
 <para>
@@ -131,7 +130,7 @@ Things are somewhat more complicated if you yourself call another function that
 can report a #GError. If the sub-function indicates fatal errors in some way
 other than reporting a #GError, such as by returning %TRUE on success, you can
 simply do the following:
-<programlisting>
+<informalexample><programlisting>
 gboolean
 my_function_that_can_fail (GError **err)
 {
@@ -147,14 +146,14 @@ my_function_that_can_fail (GError **err)
   /* otherwise continue, no error occurred */
   g_assert (err == NULL || *err == NULL);
 }
-</programlisting>
+</programlisting></informalexample>
 </para>
 
 <para>
 If the sub-function does not indicate errors other than by reporting a #GError, 
 you need to create a temporary #GError since the passed-in one may be %NULL.
 g_propagate_error() is intended for use in this case.
-<programlisting>
+<informalexample><programlisting>
 gboolean
 my_function_that_can_fail (GError **err)
 {
@@ -168,7 +167,7 @@ my_function_that_can_fail (GError **err)
   if (tmp_error != NULL)
     {
        /* store tmp_error in err, if err != NULL,
-        * otherwise call g_error_free() on tmp_error 
+        * otherwise call g_error_free(<!>) on tmp_error 
         */
        g_propagate_error (err, tmp_error);
        return FALSE;
@@ -176,12 +175,12 @@ my_function_that_can_fail (GError **err)
 
   /* otherwise continue, no error occurred */
 }
-</programlisting>
+</programlisting></informalexample>
 </para>
 
 <para>
 Error pileups are always a bug. For example, this code is incorrect:
-<programlisting>
+<informalexample><programlisting>
 gboolean
 my_function_that_can_fail (GError **err)
 {
@@ -199,7 +198,7 @@ my_function_that_can_fail (GError **err)
        return FALSE;
     }
 }
-</programlisting>
+</programlisting></informalexample>
 <literal>tmp_error</literal> should be checked immediately after
 <function>sub_function_that_can_fail()</function>, and either cleared or propagated upward.  The rule
 is: <emphasis>after each error, you must either handle the error, or return it to the
@@ -207,7 +206,7 @@ calling function</emphasis>.  Note that passing %NULL for the error location is 
 equivalent of handling an error by always doing nothing about it. So the
 following code is fine, assuming errors in <function>sub_function_that_can_fail()</function> are not
 fatal to <function>my_function_that_can_fail()</function>:
-<programlisting>
+<informalexample><programlisting>
 gboolean
 my_function_that_can_fail (GError **err)
 {
@@ -226,7 +225,7 @@ my_function_that_can_fail (GError **err)
        return FALSE;
     }
 }
-</programlisting>
+</programlisting></informalexample>
 </para>
 
 <para>

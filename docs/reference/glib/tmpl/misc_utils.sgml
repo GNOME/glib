@@ -53,7 +53,7 @@ Gets the user name of the current user.
 
 <!-- ##### FUNCTION g_get_real_name ##### -->
 <para>
-Gets the real name of the user. This comes from the user's entry in the
+Gets the real name of the user. This usually comes from the user's entry in the
 <filename>passwd</filename> file.
 </para>
 
@@ -73,7 +73,8 @@ Gets the current user's home directory.
 Gets the directory to use for temporary files.
 This is found from inspecting the environment variables <envar>TMPDIR</envar>, 
 <envar>TMP</envar>, and <envar>TEMP</envar>
-in that order. If none of those are defined "/tmp" is returned.
+in that order. If none of those are defined "/tmp" is returned on Unix and 
+"C:\" on Windows.
 </para>
 
 @Returns: the directory to use for temporary files.
@@ -123,7 +124,7 @@ The returned string should be freed when no longer needed.
 <para>
 Returns %TRUE if the given @file_name is an absolute file name,
 i.e. it contains a full path from the root directory such as '/usr/local'
-or 'C:/windows' on windows systems.
+on Unix or 'C:\windows' on Windows systems.
 </para>
 
 @file_name: a file name.
@@ -133,7 +134,7 @@ or 'C:/windows' on windows systems.
 <!-- ##### FUNCTION g_path_skip_root ##### -->
 <para>
 Returns a pointer into @file_name after the root component, i.e. after
-the '/' in Unix or 'C:/' under Windows. If @file_name is not an absolute
+the '/' in Unix or 'C:\' under Windows. If @file_name is not an absolute
 path it returns %NULL.
 </para>
 
@@ -245,7 +246,7 @@ The built-in array of primes ranges from 11 to 13845163 such that
 each prime is approximately 1.5-2 times the previous prime.
 </para>
 
-@num: a guint.
+@num: a #guint.
 @Returns: the smallest prime number from a built-in array of primes which is
 larger than @num.
 

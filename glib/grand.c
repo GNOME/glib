@@ -84,8 +84,8 @@ g_rand_new_with_seed (guint32 seed)
  * g_rand_new:
  * 
  * Creates a new random number generator initialized with a seed taken
- * either from /dev/urandom (if existing) or from the current time (as
- * a fallback).
+ * either from <filename>/dev/urandom</filename> (if existing) or from 
+ * the current time (as a fallback).
  * 
  * Return value: the new #GRand.
  **/
@@ -165,7 +165,7 @@ g_rand_set_seed (GRand* rand, guint32 seed)
  * g_rand_int:
  * @rand: a #GRand.
  *
- * Return the next random #guint32 from @rand equaly distributed over
+ * Returns the next random #guint32 from @rand equally distributed over
  * the range [0..2^32-1].
  *
  * Return value: A random number.
@@ -214,7 +214,7 @@ g_rand_int (GRand* rand)
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Return the next random #gint32 from @rand equaly distributed over
+ * Returns the next random #gint32 from @rand equally distributed over
  * the range [@begin..@end-1].
  *
  * Return value: A random number.
@@ -264,7 +264,7 @@ g_rand_int_range (GRand* rand, gint32 begin, gint32 end)
  * g_rand_double:
  * @rand: a #GRand.
  *
- * Return the next random #gdouble from @rand equaly distributed over
+ * Returns the next random #gdouble from @rand equally distributed over
  * the range [0..1).
  *
  * Return value: A random number.
@@ -291,7 +291,7 @@ g_rand_double (GRand* rand)
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Return the next random #gdouble from @rand equaly distributed over
+ * Returns the next random #gdouble from @rand equally distributed over
  * the range [@begin..@end).
  *
  * Return value: A random number.
@@ -305,7 +305,7 @@ g_rand_double_range (GRand* rand, gdouble begin, gdouble end)
 /**
  * g_random_int:
  *
- * Return a random #guint32 equaly distributed over the range
+ * Return a random #guint32 equally distributed over the range
  * [0..2^32-1].
  *
  * Return value: A random number.
@@ -328,7 +328,7 @@ g_random_int (void)
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Return a random #gint32 equaly distributed over the range
+ * Returns a random #gint32 equally distributed over the range
  * [@begin..@end-1].
  *
  * Return value: A random number.
@@ -349,7 +349,7 @@ g_random_int_range (gint32 begin, gint32 end)
 /**
  * g_random_double:
  *
- * Return a random #gdouble equaly distributed over the range [0..1).
+ * Returns a random #gdouble equally distributed over the range [0..1).
  *
  * Return value: A random number.
  **/
@@ -371,7 +371,7 @@ g_random_double (void)
  * @begin: lower closed bound of the interval.
  * @end: upper open bound of the interval.
  *
- * Return a random #gdouble equaly distributed over the range [@begin..@end).
+ * Returns a random #gdouble equally distributed over the range [@begin..@end).
  *
  * Return value: A random number.
  **/
@@ -393,7 +393,7 @@ g_random_double_range (gdouble begin, gdouble end)
  * @seed: a value to reinitialize the global random number generator.
  * 
  * Sets the seed for the global random number generator, which is used
- * by te g_random_* functions, to @seed.
+ * by the <function>g_random_*</function> functions, to @seed.
  **/
 void
 g_random_set_seed (guint32 seed)

@@ -35,20 +35,13 @@ a different #GCompletionStrncmpFunc in g_completion_set_compare().
 <!-- ##### STRUCT GCompletion ##### -->
 <para>
 The data structure used for automatic completion.
-<structfield>items</structfield> is the list of target items (strings
-or data structures).
-<structfield>func</structfield> is the function called to get the string
-associated with a target item. It is %NULL if the target items are strings.
-<structfield>prefix</structfield> is the last prefix passed to
-g_completion_complete().
-<structfield>cache</structfield> is the list of items which begin with
-<structfield>prefix</structfield>.
 </para>
 
-@items: 
-@func: 
-@prefix: 
-@cache: 
+@items: list of target items (strings or data structures).
+@func: function which is called to get the string associated with a target 
+  item. It is %NULL if the target items are strings.
+@prefix: the last prefix passed to g_completion_complete().
+@cache: the list of items which begin with @prefix.
 @strncmp_func: 
 
 <!-- ##### FUNCTION g_completion_new ##### -->

@@ -20,7 +20,7 @@ time information; it represents a <emphasis>day</emphasis>.
 <para>
 The #GDate implementation has several nice features; it is only a
 64-bit struct, so storing large numbers of dates is very efficient. It
-can keep both a Julian and Day-Month-Year representation of the date,
+can keep both a Julian and day-month-year representation of the date,
 since some calculations are much easier with one representation or the
 other. A Julian representation is simply a count of days since some
 fixed day in the past; for #GDate the fixed day is January 1, 1 AD.
@@ -47,7 +47,7 @@ fail. Dates can be invalidated by calling g_date_clear() again.
 
 <para>
 <emphasis>It is very important to use the API to access the #GDate
-struct.</emphasis> Often only the DMY or only the Julian
+struct.</emphasis> Often only the day-month-year or only the Julian
 representation is valid. Sometimes neither is valid. Use the API.
 </para>
 
@@ -75,7 +75,7 @@ code readability.
 <para>
 Represents a precise time, with seconds and microseconds. Same as the
 <structname>struct timeval</structname> returned by the
-<function>gettimeofday()</function> UNIX call.
+<function>gettimeofday()</function> Unix call.
 </para>
 
 @tv_sec: seconds.
@@ -231,7 +231,7 @@ represent an existing day). Free the return value with g_date_free().
 <!-- ##### FUNCTION g_date_new_dmy ##### -->
 <para>
 Like g_date_new(), but also sets the value of the date. Assuming the
-day/month/year triplet you pass in represents an existing day, the
+day-month-year triplet you pass in represents an existing day, the
 returned date will be valid.
 </para>
 
@@ -685,7 +685,7 @@ though there is a 16-bit limit to what #GDate will understand.
 
 <!-- ##### FUNCTION g_date_valid_dmy ##### -->
 <para>
-Returns %TRUE if the day/month/year triplet forms a valid, existing day
+Returns %TRUE if the day-month-year triplet forms a valid, existing day
 in the range of days #GDate understands (Year 1 or later, no more than
 a few thousand years in the future).
 </para>

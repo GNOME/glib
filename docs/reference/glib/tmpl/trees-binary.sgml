@@ -2,13 +2,13 @@
 Balanced Binary Trees
 
 <!-- ##### SECTION Short_Description ##### -->
-a sorted collection of key/value pairs optimised for searching
+a sorted collection of key/value pairs optimized for searching
 and traversing in order.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 The #GTree structure and its associated functions provide a sorted collection
-of key/value pairs optimised for searching and traversing in order.
+of key/value pairs optimized for searching and traversing in order.
 </para>
 <para>
 To create a new #GTree use g_tree_new().
@@ -42,7 +42,7 @@ To destroy a #GTree, use g_tree_destroy().
 
 <!-- ##### STRUCT GTree ##### -->
 <para>
-The #GTree struct is an opaque data structure representing a
+The <structname>GTree</structname> struct is an opaque data structure representing a
 <link linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>.
 It should be accessed only by using the following functions.
 </para>

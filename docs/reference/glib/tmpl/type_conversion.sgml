@@ -3,7 +3,7 @@ Type Conversion Macros
 
 <!-- ##### SECTION Short_Description ##### -->
 
-Portably storing integers in pointer variables.
+portably storing integers in pointer variables.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -11,10 +11,10 @@ Many times GLib, GTK+, and other libraries allow you to pass "user
 data" to a callback, in the form of a void pointer. From time to time
 you want to pass an integer instead of a pointer. You could allocate
 an integer, with something like:
-<programlisting>
+<informalexample><programlisting>
  int *ip = g_new (int, 1);
  *ip = 42;
-</programlisting>
+</programlisting></informalexample>
 But this is inconvenient, and it's annoying to have to free the 
 memory at some later time.
 </para>
@@ -22,20 +22,20 @@ memory at some later time.
 Pointers are always at least 32 bits in size (on all platforms GLib
 intends to support). Thus you can store at least 32-bit integer values
 in a pointer value. Naively, you might try this, but it's incorrect:
-<programlisting>
+<informalexample><programlisting>
  gpointer p;
  int i;
  p = (void*) 42;
  i = (int) p;
-</programlisting>
+</programlisting></informalexample>
 Again, that example was <emphasis>not</emphasis> correct, don't copy it. 
 The problem is that on some systems you need to do this:
-<programlisting>
+<informalexample><programlisting>
  gpointer p;
  int i;
  p = (void*) (long) 42;
  i = (int) (long) p;
-</programlisting>
+</programlisting></informalexample>
 So GPOINTER_TO_INT(), GINT_TO_POINTER(), etc. do the right thing
 on the current platform.
 </para>

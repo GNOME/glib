@@ -230,7 +230,7 @@ It is not used within GLib or GTK+.
 Use this for default priority event sources.
 In GLib this priority is used when adding timeout functions with
 g_timeout_add().
-In GDK this priority is used for events from the X Windows server.
+In GDK this priority is used for events from the X server.
 </para>
 
 
@@ -593,7 +593,7 @@ g_main_context_set_poll_func() for full details.
 
 <row>
 <entry>#gint fd;</entry>
-<entry>the file descriptor to poll (or a HANDLE on Win32 platforms).</entry>
+<entry>the file descriptor to poll (or a <type>HANDLE</type> on Win32 platforms).</entry>
 </row>
 
 <row>
@@ -640,9 +640,9 @@ event sources in a generic manner.
 <entry>
 Called before all the file descriptors are polled.
 If the source can determine that it is ready here (without waiting for the
-results of the poll() call) it should return %TRUE.
+results of the <function>poll()</function> call) it should return %TRUE.
 It can also return a @timeout value which should be the maximum timeout
-(in milliseconds) which should be passed to the poll() call.
+(in milliseconds) which should be passed to the <function>poll()</function> call.
 The actual timeout used will be -1 if all sources returned -1, or it will
 be the minimum of all the @timeout values returned which were >= 0.
 </entry>

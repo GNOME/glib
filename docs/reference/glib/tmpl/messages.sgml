@@ -32,8 +32,7 @@ But be careful not to define it in any public header files.
 For example, GTK+ uses this in its Makefile.am:
 </para>
 <informalexample><programlisting>
-INCLUDES = \
-	-DG_LOG_DOMAIN=\"Gtk\"
+INCLUDES = -DG_LOG_DOMAIN=\"Gtk\"
 </programlisting></informalexample>
 
 
@@ -112,7 +111,7 @@ documentation.
 A convenience function/macro to log a normal message.
 </para>
 
-@...: 
+@...: the parameters to insert into the format string.
 <!-- # Unused Parameters # -->
 @format: the message format. See the <function>printf()</function>
 documentation.
@@ -124,7 +123,7 @@ documentation.
 A convenience function/macro to log a warning message.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with printf())
+@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
 
 
 <!-- ##### MACRO g_critical ##### -->
@@ -136,7 +135,7 @@ warnings exit the program, then use g_critical() for fatal errors, for
 example.
 </para>
 
-@...: format string, followed by parameters to insert into the format string (as with printf())
+@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
 
 
 <!-- ##### MACRO g_error ##### -->
@@ -149,7 +148,7 @@ expect. Using this function indicates a bug in your program, i.e. an
 assertion failure.
 </para>
 
-@...: 
+@...: the parameters to insert into the format string.
 <!-- # Unused Parameters # -->
 @format: the message format. See the <function>printf()</function>
 documentation.
@@ -160,11 +159,11 @@ documentation.
 <para>
 Sets the log handler for a domain and a set of log levels.
 To handle fatal and recursive messages the @log_levels parameter
-must be combined with the G_LOG_FLAG_FATAL and G_LOG_FLAG_RECURSIVE bit flags.
+must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSIVE bit flags.
 </para>
 <para>
-Note that since the G_LOG_LEVEL_ERROR log level is always fatal, if you want
-to set a handler for this log level you must combine it with G_LOG_FLAG_FATAL.
+Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if you want
+to set a handler for this log level you must combine it with #G_LOG_FLAG_FATAL.
 </para>
 <para>
 
@@ -250,6 +249,6 @@ stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL, and
 @log_domain: the log domain of the message.
 @log_level: the level of the message.
 @message: the message.
-@unused_data: data passed from g_log which is unused.
+@unused_data: data passed from g_log() which is unused.
 
 

@@ -2,7 +2,7 @@
 Thread Pools
 
 <!-- ##### SECTION Short_Description ##### -->
-Pools of threads to execute work concurrently
+pools of threads to execute work concurrently.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

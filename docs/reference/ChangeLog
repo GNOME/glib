@@ -1,3 +1,26 @@
+2001-12-12  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/tmpl/allocators.sgml, glib/tmpl/arrays.sgml, 
+	glib/tmpl/arrays_byte.sgml, glib/tmpl/arrays_pointer.sgml,
+	glib/tmpl/caches.sgml, glib/tmpl/completion.sgml, 
+	glib/tmpl/conversions.sgml,
+	glib/tmpl/datalist.sgml, glib/tmpl/date.sgml, 
+	glib/tmpl/error_reporting.sgml, glib/tmpl/fileutils.sgml,
+	glib/tmpl/hash_tables.sgml,
+	glib/tmpl/hooks.sgml, glib/tmpl/macros.sgml,
+	glib/tmpl/macros_misc.sgml, glib/tmpl/main.sgml, glib/tmpl/markup.sgml,
+	glib/tmpl/memory.sgml, glib/tmpl/memory_chunks.sgml, 
+	glib/tmpl/messages.sgml, glib/tmpl/misc_utils.sgml,
+	glib/tmpl/modules.sgml, glib/tmpl/numerical.sgml, 
+	glib/tmpl/patterns.sgml, glib/tmpl/queue.sgml, 
+	glib/tmpl/shell.sgml, glib/tmpl/spawn.sgml,
+	glib/tmpl/string_utils.sgml, glib/tmpl/thread_pools.sgml,
+	glib/tmpl/threads.sgml, glib/tmpl/timers.sgml, 
+	glib/tmpl/trees-binary.sgml, glib/tmpl/trees-nary.sgml,
+	glib/tmpl/type_conversion.sgml, glib/tmpl/unicode.sgml,
+	glib/tmpl/warnings.sgml, glib/tmpl/windows.sgml:	
+	Improve markup of examples, general consistency improvements.
+
 2001-12-06  Havoc Pennington  <hp@redhat.com>
 
 	* glib/tmpl/messages.sgml: improve g_log_set_handler docs

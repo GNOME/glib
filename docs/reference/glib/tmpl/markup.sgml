@@ -2,13 +2,12 @@
 Simple XML Subset Parser
 
 <!-- ##### SECTION Short_Description ##### -->
-
-Parses a subset of XML
+parses a subset of XML.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 The "GMarkup" parser is intended to parse a simple markup format
-that's a subset of XML format. This is a small, efficient, easy-to-use
+that's a subset of XML. This is a small, efficient, easy-to-use
 parser. It should not be used if you expect to interoperate with other 
 applications generating full-scale XML. However, it's very useful for
 application data files, config files, etc. where you know your

@@ -251,15 +251,15 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  *
  * The parameter @exclusive determines, whether the thread pool owns
  * all threads exclusive or whether the threads are shared
- * globally. If @exclusive is @TRUE, @max_threads threads are started
+ * globally. If @exclusive is %TRUE, @max_threads threads are started
  * immediately and they will run exclusively for this thread pool until
- * it is destroyed by g_thread_pool_free(). If @exclusive is @FALSE,
+ * it is destroyed by g_thread_pool_free(). If @exclusive is %FALSE,
  * threads are created, when needed and shared between all
  * non-exclusive thread pools. This implies that @max_threads may not
  * be -1 for exclusive thread pools.
  *
- * @error can be NULL to ignore errors, or non-NULL to report
- * errors. An error can only occur, when @exclusive is set to @TRUE and
+ * @error can be %NULL to ignore errors, or non-%NULL to report
+ * errors. An error can only occur when @exclusive is set to %TRUE and
  * not all @max_threads threads could be created.
  *
  * Return value: the new #GThreadPool
@@ -334,8 +334,8 @@ g_thread_pool_new (GFunc            func,
  * in the queue until a thread in this pool finishes its previous task
  * and processes @data. 
  *
- * @error can be NULL to ignore errors, or non-NULL to report
- * errors. An error can only occur, when a new thread couldn't be
+ * @error can be %NULL to ignore errors, or non-%NULL to report
+ * errors. An error can only occur when a new thread couldn't be
  * created. In that case @data is simply appended to the queue of work
  * to do.  
  **/
@@ -379,12 +379,12 @@ g_thread_pool_push (GThreadPool     *pool,
  * 
  * A thread is never terminated while calling @func, as supplied by
  * g_thread_pool_new (). Instead the maximal number of threads only
- * has effect for the allocation of new threads in g_thread_pool_push
- * (). A new thread is allocated, whenever the number of currently
+ * has effect for the allocation of new threads in g_thread_pool_push(). 
+ * A new thread is allocated, whenever the number of currently
  * running threads in @pool is smaller than the maximal number.
  *
- * @error can be NULL to ignore errors, or non-NULL to report
- * errors. An error can only occur, when a new thread couldn't be
+ * @error can be %NULL to ignore errors, or non-%NULL to report
+ * errors. An error can only occur when a new thread couldn't be
  * created. 
  **/
 void
@@ -505,13 +505,13 @@ g_thread_pool_unprocessed (GThreadPool     *pool)
  *
  * Frees all resources allocated for @pool.
  *
- * If @immediate is #TRUE, no new task is processed for
+ * If @immediate is %TRUE, no new task is processed for
  * @pool. Otherwise @pool is not freed before the last task is
  * processed. Note however, that no thread of this pool is
  * interrupted, while processing a task. Instead at least all still
  * running threads can finish their tasks before the @pool is freed.
  *
- * If @wait is #TRUE, the functions does not return before all tasks
+ * If @wait is %TRUE, the functions does not return before all tasks
  * to be processed (dependent on @immediate, whether all or only the
  * currently running) are ready. Otherwise the function returns immediately.
  *

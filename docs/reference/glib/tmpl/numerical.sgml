@@ -2,8 +2,7 @@
 Numerical Definitions
 
 <!-- ##### SECTION Short_Description ##### -->
-
-Mathematical constants, and floating point decomposition.
+mathematical constants, and floating point decomposition.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -17,7 +16,7 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	sign, mantissa and exponent of IEEE floats and doubles. These
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
-	storage) by at least intel, ppc and sparc, for reference: <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
+	storage) by at least Intel, PPC and Sparc, for reference: <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -45,7 +44,7 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	sign, mantissa and exponent of IEEE floats and doubles. These
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
-	storage) by at least intel, ppc and sparc, for reference: 
+	storage) by at least Intel, PPC and Sparc, for reference: 
 <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
@@ -56,7 +55,7 @@ The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
 	sign, mantissa and exponent of IEEE floats and doubles. These
 	unions are defined as appropriate for a given platform. 
  IEEE floats and doubles are supported (used for
-	storage) by at least intel, ppc and sparc, for reference: 
+	storage) by at least Intel, PPC and Sparc, for reference: 
 <ulink url="http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html">http://twister.ou.edu/workshop.docs/common-tools/numerical_comp_guide/ncg_math.doc.html</ulink>
 </para>
 
