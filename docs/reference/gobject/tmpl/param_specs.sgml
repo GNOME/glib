@@ -21,8 +21,6 @@ Parameter Specifications
 
 @g_type_instance: 
 @name: 
-@nick: 
-@blurb: 
 @flags: 
 @value_type: 
 @owner_type: 

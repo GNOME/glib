@@ -1,3 +1,10 @@
+Tue Sep 18 23:09:02 2001  Tim Janik  <timj@gtk.org>
+
+	* gparam.[hc]: rename *nick and *blurb fields to catch
+	direct accesses in third party code.
+	provide g_param_get_nick(), g_param_get_blurb() and
+	g_param_get_name() accessors.
+
 Mon Sep 10 20:31:37 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject.[hc]: removed extraneous GObject* returns from a

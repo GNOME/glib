@@ -137,8 +137,8 @@ g_param_spec_init (GParamSpec      *pspec,
 		   GParamSpecClass *class)
 {
   pspec->name = NULL;
-  pspec->nick = NULL;
-  pspec->blurb = NULL;
+  pspec->_nick = NULL;
+  pspec->_blurb = NULL;
   pspec->flags = 0;
   pspec->value_type = class->value_type;
   pspec->owner_type = 0;
@@ -154,8 +154,8 @@ g_param_spec_finalize (GParamSpec *pspec)
   g_datalist_clear (&pspec->qdata);
   
   g_free (pspec->name);
-  g_free (pspec->nick);
-  g_free (pspec->blurb);
+  g_free (pspec->_nick);
+  g_free (pspec->_blurb);
 
   g_type_free_instance ((GTypeInstance*) pspec);
 }
@@ -234,6 +234,30 @@ g_param_spec_sink (GParamSpec *pspec)
     }
 }
 
+G_CONST_RETURN gchar*
+g_param_get_name (GParamSpec *pspec)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
+
+  return pspec->name;
+}
+
+G_CONST_RETURN gchar*
+g_param_get_nick (GParamSpec *pspec)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
+
+  return pspec->_nick ? pspec->_nick : pspec->name;
+}
+
+G_CONST_RETURN gchar*
+g_param_get_blurb (GParamSpec *pspec)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
+
+  return pspec->_blurb;
+}
+
 gpointer
 g_param_spec_internal (GType        param_type,
 		       const gchar *name,
@@ -250,8 +274,8 @@ g_param_spec_internal (GType        param_type,
   pspec = (gpointer) g_type_create_instance (param_type);
   pspec->name = g_strdup (name);
   g_strcanon (pspec->name, G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-", '-');
-  pspec->nick = g_strdup (nick ? nick : pspec->name);
-  pspec->blurb = g_strdup (blurb);
+  pspec->_nick = g_strdup (nick);
+  pspec->_blurb = g_strdup (blurb);
   pspec->flags = (flags & G_PARAM_USER_MASK) | (flags & G_PARAM_MASK);
 
   return pspec;

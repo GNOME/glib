@@ -1,4 +1,16 @@
+Overview of Changes in GLib 1.3.8:
+==================================
+
+* Documentation updates [Owen]
+* Made GType interfaces overridable in derived types
+* Many win32 fixes [Tor Lillqvist]
+* Miscellaneous cleanups and fixes
+
+Other contributors:
+  Darin Adler, Matthias Clasen, Ron Steinke, Hans Breuer, Alex Larsson
+
 Overview of Changes in GLib 1.3.7:
+==================================
 
 * Integrate GClosure support into the main loop [Owen Taylor]
 * More GSignal convenience functions (macros) [Sven Neumann, Tim Janik]
@@ -16,7 +28,14 @@ Overview of Changes in GLib 1.3.7:
 * Many improvements to the win32 code [Tor Lillqvist, Hans Breuer]
 * Miscellaneous bug and API fixes
 
+Other contributors:
+  Michael Natterer, Christopher James Lahey, Padraig O'Briain,
+  Matthias Clasen, Josh Pritikin, Steve Baker, Cesar Rincon, Garry R. Osgood,
+  Michael Meeks, Laszlo Peter,  Martin Baulig, Kjartan Maraas, Andrew Lanoix,
+  Peter Williams
+
 Overview of Changes in GLib 1.3.6:
+==================================
 
 * Threads have a "return value" from g_thread_join
 * Removed ability to adjust thread stack size
@@ -31,6 +50,7 @@ Overview of Changes in GLib 1.3.6:
 * Misc bug fixes
 
 Overview of Changes in GLib 1.3.5:
+==================================
 
 * Added an installed glib-mkenums Perl program for parsing enumeration
   declarations from header files.
@@ -38,6 +58,7 @@ Overview of Changes in GLib 1.3.5:
 * Bug and Portability fixes
 
 Overview of Changes in GLib 1.3.4:
+==================================
 
 * Efficiency improvements for GThreadPool
 * A few bug fixes
@@ -45,6 +66,7 @@ Overview of Changes in GLib 1.3.4:
 * Documentation improvements
 
 Overview of Changes in GLib 1.3.3:
+==================================
 
 * More user_data support in various functions.
 * Main loop API revamps to support per-thread main loops.
@@ -67,6 +89,7 @@ Overview of Changes in GLib 1.3.3:
 * Optimizations, cleanups, bug fixes.
 
 Overview of Changes in GLib 1.3.2:
+==================================
 
 GLib:
 
@@ -105,6 +128,7 @@ GObject:
 * Bug fixes.
 
 What's new in GLib 1.3.1:
+=========================
 
 * New GObject library added including object system based on
   the GTK+ object system. 

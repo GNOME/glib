@@ -63,13 +63,13 @@ struct _GParamSpec
   GTypeInstance  g_type_instance;
 
   gchar         *name;
-  gchar         *nick;
-  gchar         *blurb;
   GParamFlags    flags;
   GType		 value_type;
   GType		 owner_type;	/* class using this property */
 
   /*< private >*/
+  gchar         *_nick;
+  gchar         *_blurb;
   GData		*qdata;
   guint          ref_count;
   guint		 param_id;	/* sort-criteria */
@@ -126,6 +126,9 @@ gboolean	g_param_value_convert		(GParamSpec    *dest_value_spec,
 gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value1,
 						 const GValue  *value2);
+G_CONST_RETURN gchar*	g_param_get_name	(GParamSpec    *pspec);
+G_CONST_RETURN gchar*	g_param_get_nick	(GParamSpec    *pspec);
+G_CONST_RETURN gchar*	g_param_get_blurb	(GParamSpec    *pspec);
 void            g_value_set_param               (GValue	       *value,
 						 GParamSpec    *param);
 GParamSpec*     g_value_get_param               (const GValue  *value);

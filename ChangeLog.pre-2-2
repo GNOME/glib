@@ -1,3 +1,10 @@
+Tue Sep 18 22:57:33 2001  Tim Janik  <timj@gtk.org>
+
+	* configure.in (GLIB_MICRO_VERSION): up version number to 1.3.8,
+	interface age 0, binary age 0.
+
+	* NEWS: updates.
+
 Tue Sep 18 18:23:02 2001  Owen Taylor  <otaylor@redhat.com>
 
 	Fixes for compilation on Solaris (#59026, Frank Belew)
