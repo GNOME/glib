@@ -1,5 +1,7 @@
 2000-11-02  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib/tmpl/glib-unused.sgml: Remove superfluous GSearchFunc.
+
 	* glib/tmpl/async_queues.sgml, glib/glib-sections.txt: Added
 	documentation for asynchronous queues.
 

@@ -40,17 +40,6 @@
 </para>
 
 
-<!-- ##### USER_FUNCTION GSearchFunc ##### -->
-<para>
-Specifies the type of function passed to g_tree_search().
-</para>
-
-@key: a key from a #GTree.
-@data: the data to compare with the key.
-@Returns: 0 if the desired key has been found, a negative number if the
-desired key comes before @key in the sort order of the #GTree, or a positive
-value if the desired key comes after @key.
-
 <!-- ##### MACRO write ##### -->
 <para>
 
