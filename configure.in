@@ -750,7 +750,7 @@ case $have_threads in
 			
 			LIBS="$glib_save_LIBS $add_thread_lib"
 			
-			AC_MSG_CHECKING(for pthread_join$IN)
+			AC_MSG_CHECKING(for pthread_create$IN)
 			AC_TRY_RUN([#include <pthread.h> 
 				void* func(void* data) {}
                                 main()
@@ -806,7 +806,6 @@ case $host in
   *)
     ;;
 esac
-
 
 AC_MSG_CHECKING(thread related libraries)
 AC_MSG_RESULT($G_THREAD_LIBS)
@@ -909,14 +908,25 @@ if test x"$enable_threads" = xyes; then
 			AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE)],
 			[AC_MSG_RESULT(no)])
 		# If sched_get_priority_min(SCHED_OTHER) returns something 
-		# negative, we ignore it. This happens on Solaris.
+		# negative, we ignore it.
 		AC_MSG_CHECKING(for minimal/maximal thread priority)
 		AC_TRY_RUN([#include <pthread.h>
 		     int main () 
-		     { return sched_get_priority_min(SCHED_OTHER) < 0;}],
+		     { return sched_get_priority_min(SCHED_OTHER) == -1;}],
 		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
 		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"],
 		     [posix_priority_min=none])
+		# On some platforms we need to link to -lrt to use the 
+		# sched_* functions
+		LIBS="$LIBS -lrt"
+		AC_TRY_RUN([#include <pthread.h>
+		     int main () 
+		     { return sched_get_priority_min(SCHED_OTHER) == -1;}],
+		     [posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
+		     posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
+		     G_THREAD_LIBS="$G_THREAD_LIBS -lrt"],
+		     [posix_priority_min=none])
+		LIBS="$glib_save_LIBS $G_THREAD_LIBS"
 		if test x"$posix_priority_min" = xnone; then
 			AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
 				PX_PRIO_MIN],,[
@@ -930,14 +940,6 @@ if test x"$enable_threads" = xyes; then
 				posix_priority_max=PRI_OTHER_MAX])
 		fi
 		if test x"$posix_priority_min" = xnone; then
-			case $host in
-        	        	*-*-solaris*)
-                		posix_priority_min=1
-				posix_priority_max=127
-				;;
-			esac
-		fi
-		if test x"$posix_priority_min" = xnone; then
 			AC_MSG_RESULT(none found)
 			AC_MSG_WARN($POSIX_NO_PRIORITIES)
 	                posix_priority_min=-1
@@ -949,7 +951,7 @@ if test x"$enable_threads" = xyes; then
 		fi
 		posix_yield_func=none
 		AC_MSG_CHECKING(for posix yield function)
-		for yield_func in pthread_yield_np pthread_yield sched_yield \
+		for yield_func in sched_yield pthread_yield_np pthread_yield \
 							thr_yield; do
 			AC_TRY_LINK([#include <pthread.h>],
 				[$yield_func()],
@@ -959,7 +961,7 @@ if test x"$enable_threads" = xyes; then
 		if test x"$posix_yield_func" = xnone; then
 			AC_MSG_RESULT(none found)
 			AC_MSG_WARN($POSIX_NO_YIELD)
-	                posix_yield_func="g_thread_sleep(1000)"
+	                posix_yield_func="g_usleep(1000)"
 		else
 			AC_MSG_RESULT($posix_yield_func)
 			posix_yield_func="$posix_yield_func()"

@@ -1,3 +1,19 @@
+2000-03-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Test for sched_yield as the native yield function
+	first. Corrected typo g_thread_sleep -> g_usleep. Corrected
+	message for the pthread_create test. Negative Priorities are
+	allowed (and used on Solaris), so consider
+	sched_get_priority_min failed only if it returns -1, not <0. Check
+	for sched_get_priority_min also in -lrt, if not found in -lpthread
+	alone and add -lrt to G_THREAD_LIBS then. Remove special case
+	handling of priorities for older solaris versions and posix
+	threads. Thanks to Wan-Teh Chang <wtc@netscape.com> for suggesting
+	some of those changes.
+	
+	* config.guess, config.sub, ltconfig, ltmain.sh:
+	Upgrade to libtool 1.3.4.
+
 2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h, configure.in, gutils.h: always define G_GNUC_EXTENSION,
