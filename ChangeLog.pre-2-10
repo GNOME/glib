@@ -1,3 +1,15 @@
+2004-11-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Handle conflicts between options in different groups. (#156808)
+	
+	* glib/goption.c (g_option_context_parse): When a long option does not
+	match exactly, try to parse it as --group-option.
+	(g_option_context_add_group): Warn if a group name conflict occurs.
+
+	* glib/goption.c (print_help): Print out the effective options, ie 
+	don't print shadowed short options, and for long options print
+	--group-option instead of --option if appropriate.
+
 2004-10-31  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gwin32.c: Add bits of markup to g_win32_get_windows_version()

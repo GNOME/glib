@@ -271,13 +271,25 @@ void
 g_option_context_add_group (GOptionContext *context,
 			    GOptionGroup   *group)
 {
+  GList *list;
+
   g_return_if_fail (context != NULL);
   g_return_if_fail (group != NULL);
   g_return_if_fail (group->name != NULL);
   g_return_if_fail (group->description != NULL);
   g_return_if_fail (group->help_description != NULL);
 
-  context->groups = g_list_prepend (context->groups, group);
+  for (list = context->groups; list; list = list->next)
+    {
+      GOptionGroup *g = (GOptionGroup *)list->data;
+
+      if ((group->name == NULL && g->name == NULL) ||
+	  (group->name && g->name && strcmp (group->name, g->name) == 0))
+	g_warning ("A group named \"%s\" is already part of this GOptionContext", 
+		   group->name);
+    }
+
+  context->groups = g_list_append (context->groups, group);
 }
 
 /**
@@ -358,7 +370,7 @@ print_entry (GOptionGroup       *group,
 
   if (entry->flags & G_OPTION_FLAG_HIDDEN)
     return;
-	  
+
   str = g_string_new (NULL);
   
   if (entry->short_name)
@@ -382,10 +394,51 @@ print_help (GOptionContext *context,
   GList *list;
   gint max_length, len;
   gint i;
+  GHashTable *shadow_map;
+  gboolean seen[256];
   
   g_print ("%s\n  %s %s %s\n\n", 
 	   _("Usage:"), g_get_prgname(), _("[OPTION...]"),
 	   context->parameter_string ? context->parameter_string : "");
+
+  memset (seen, 0, sizeof (gboolean) * 256);
+  shadow_map = g_hash_table_new (g_str_hash, g_str_equal);
+
+  if (context->main_group)
+    {
+      for (i = 0; i < context->main_group->n_entries; i++)
+	{
+	  g_hash_table_insert (shadow_map, 
+			       (gpointer)context->main_group->entries[i].long_name, 
+			       context->main_group->entries + i);
+	  
+	  if (seen[(guchar)context->main_group->entries[i].short_name])
+	    context->main_group->entries[i].short_name = 0;
+	  else
+	    seen[(guchar)context->main_group->entries[i].short_name] = TRUE;
+	}
+    }
+
+  list = context->groups;
+  while (list != NULL)
+    {
+      GOptionGroup *group = list->data;
+      for (i = 0; i < group->n_entries; i++)
+	{
+	  if (g_hash_table_lookup (shadow_map, group->entries[i].long_name))
+	    group->entries[i].long_name = g_strdup_printf ("%s-%s", group->name, group->entries[i].long_name);
+	  else  
+	    g_hash_table_insert (shadow_map, (gpointer)group->entries[i].long_name, group->entries + i);
+
+	  if (seen[(guchar)group->entries[i].short_name])
+	    group->entries[i].short_name = 0;
+	  else
+	    seen[(guchar)group->entries[i].short_name] = TRUE;
+	}
+      list = list->next;
+    }
+
+  g_hash_table_destroy (shadow_map);
 
   list = context->groups;
 
@@ -504,7 +557,6 @@ print_help (GOptionContext *context,
 
       g_print ("\n");
     }
-
   
   exit (0);
 }
@@ -1061,7 +1113,7 @@ g_option_context_parse (GOptionContext   *context,
 
       for (i = 1; i < *argc; i++)
 	{
-	  gchar *arg;
+	  gchar *arg, *dash;
 	  gboolean parsed = FALSE;
 
 	  if ((*argv)[i][0] == '-' && !stop_parsing)
@@ -1128,12 +1180,41 @@ g_option_context_parse (GOptionContext   *context,
 		      
 		      list = list->next;
 		    }
+		  
+		  if (parsed)
+		    continue;
 
+		  /* Now look for --<group>-<option> */
+		  dash = strchr (arg, '-');
+		  if (dash)
+		    {
+		      /* Try the groups */
+		      list = context->groups;
+		      while (list)
+			{
+			  GOptionGroup *group = list->data;
+			  
+			  if (strncmp (group->name, arg, dash - arg) == 0)
+			    {
+			      if (!parse_long_option (context, group, &i, dash + 1,
+						      argc, argv, error, &parsed))
+				goto fail;
+			      
+			      if (parsed)
+				break;
+			    }
+			  
+			  list = list->next;
+			}
+		    }
+		  
 		  if (context->ignore_unknown)
 		    continue;
 		}
 	      else
 		{
+		  /* short option */
+
 		  gint new_i, j;
 		  gboolean *nulled_out = NULL;
 		  
@@ -1345,6 +1426,7 @@ g_option_group_new (const gchar    *name,
   
   return group;
 }
+
 
 /**
  * g_option_group_free:
