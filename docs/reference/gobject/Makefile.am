@@ -72,9 +72,10 @@ EXTRA_DIST = 				\
 DOC_STAMPS=scan-build.stamp tmpl-build.stamp sgml-build.stamp html-build.stamp \
 	   $(srcdir)/tmpl.stamp $(srcdir)/sgml.stamp $(srcdir)/html.stamp
 
-SCANOBJ_FILES = 		\
-	$(DOC_MODULE).args 	\
-	$(DOC_MODULE).hierarchy \
+SCANOBJ_FILES = 		 \
+	$(DOC_MODULE).args 	 \
+	$(DOC_MODULE).hierarchy  \
+	$(DOC_MODULE).interfaces \
 	$(DOC_MODULE).signals
 
 if ENABLE_GTK_DOC

@@ -1,3 +1,8 @@
+2002-10-14  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am (SCANOBJ_FILES): 
+	* glib/Makefile.am (SCANOBJ_FILES): Add $(DOC_MODULE).interfaces.
+
 2002-09-16  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/messages.sgml: Replace G_LOG_FLAG_RECURSIVE by 
