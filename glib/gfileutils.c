@@ -38,21 +38,7 @@
 #include <stdlib.h>
 
 #ifdef G_OS_WIN32
-#include <io.h>
-#ifndef F_OK
-#define	F_OK 0
-#define	W_OK 2
-#define	R_OK 4
-#endif /* !F_OK */
-
-#ifndef S_ISREG
-#define S_ISREG(mode) ((mode)&_S_IFREG)
-#endif
-
-#ifndef S_ISDIR
-#define S_ISDIR(mode) ((mode)&_S_IFDIR)
-#endif
-
+#include <windows.h>
 #endif /* G_OS_WIN32 */
 
 #ifndef S_ISLNK
@@ -68,7 +54,7 @@
 
 /**
  * g_file_test:
- * @filename: a filename to test
+ * @filename: a filename to test in the GLib file name encoding
  * @test: bitfield of #GFileTest flags
  * 
  * Returns %TRUE if any of the tests in the bitfield @test are
@@ -107,6 +93,12 @@
  * the answer for the real user ID and group ID, rather than the
  * effective user ID and group ID.
  *
+ * On Windows, there are no symlinks, so testing for
+ * %G_FILE_TEST_IS_SYMLINK will always return %FALSE. Testing for
+ * %G_FILE_TEST_IS_EXECUTABLE will just check that the file exists and
+ * its name indicates that it is executable, checking for well-known
+ * extensions and those listed in the %PATHEXT environment variable.
+ *
  * Return value: whether a test was %TRUE
  **/
 gboolean
@@ -114,6 +106,8 @@ g_file_test (const gchar *filename,
              GFileTest    test)
 {
 #ifdef G_OS_WIN32
+  int attributes;
+
   if (G_WIN32_HAVE_WIDECHAR_API ())
     {
       wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -121,91 +115,127 @@ g_file_test (const gchar *filename,
       if (wfilename == NULL)
 	return FALSE;
 
-      if ((test & G_FILE_TEST_EXISTS) && (_waccess (wfilename, F_OK) == 0))
-	{
-	  g_free (wfilename);
-	  return TRUE;
-	}
-      
-      if (test & (G_FILE_TEST_IS_REGULAR |
-		  G_FILE_TEST_IS_DIR |
-		  G_FILE_TEST_IS_EXECUTABLE))
-	{
-	  struct _stat s;
-	  
-	  if (_wstat (wfilename, &s) == 0)
-	    {
-	      if ((test & G_FILE_TEST_IS_REGULAR) && S_ISREG (s.st_mode))
-		{
-		  g_free (wfilename);
-		  return TRUE;
-		}
-	      
-	      if ((test & G_FILE_TEST_IS_DIR) && S_ISDIR (s.st_mode))
-		{
-		  g_free (wfilename);
-		  return TRUE;
-		}
-	      
-	      if ((test & G_FILE_TEST_IS_EXECUTABLE) &&
-		  (s.st_mode & _S_IEXEC))
-		{
-		  g_free (wfilename);
-		  return TRUE;
-		}
-	    }
-	}
+      attributes = GetFileAttributesW (wfilename);
 
       g_free (wfilename);
-      
-      return FALSE;
     }
   else
     {
-      gchar *cp_filename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
+      gchar *cpfilename = g_locale_from_utf8 (filename, -1, NULL, NULL, NULL);
 
-      if (cp_filename == NULL)
+      if (cpfilename == NULL)
 	return FALSE;
       
-      if ((test & G_FILE_TEST_EXISTS) && (access (cp_filename, F_OK) == 0))
-	{
-	  g_free (cp_filename);
-	  return TRUE;
-	}
+      attributes = GetFileAttributesA (cpfilename);
       
-      if (test & (G_FILE_TEST_IS_REGULAR |
-		  G_FILE_TEST_IS_DIR |
-		  G_FILE_TEST_IS_EXECUTABLE))
+      g_free (cpfilename);
+    }
+
+  if (attributes == INVALID_FILE_ATTRIBUTES)
+    return FALSE;
+
+  if (test & G_FILE_TEST_EXISTS)
+    return TRUE;
+      
+  if (test & G_FILE_TEST_IS_REGULAR)
+    return (attributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_DEVICE)) == 0;
+
+  if (test & G_FILE_TEST_IS_DIR)
+    return (attributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+  if (test & G_FILE_TEST_IS_EXECUTABLE)
+    {
+      const gchar *lastdot = strrchr (filename, '.');
+      gchar *pathext = NULL, *tem, *p;
+      int extlen;
+
+      if (lastdot == NULL)
+	return FALSE;
+
+      if (stricmp (lastdot, ".exe") == 0 ||
+	  stricmp (lastdot, ".cmd") == 0 ||
+	  stricmp (lastdot, ".bat") == 0 ||
+	  stricmp (lastdot, ".com") == 0)
+	return TRUE;
+
+      /* Check if it is one of the types listed in %PATHEXT% */
+
+      /* Perhaps unfortunately, g_getenv() doesn't return UTF-8, but
+       * system codepage. And _wgetenv() isn't useful either, as the C
+       * runtime just keeps system codepage versions of the
+       * environment variables in applications that aren't built
+       * specially. So use GetEnvironmentVariableW().
+       */
+      if (G_WIN32_HAVE_WIDECHAR_API ())
 	{
-	  struct stat s;
-	  
-	  if (stat (cp_filename, &s) == 0)
-	    {
-	      if ((test & G_FILE_TEST_IS_REGULAR) && S_ISREG (s.st_mode))
-		{
-		  g_free (cp_filename);
-		  return TRUE;
-		}
-	      
-	      if ((test & G_FILE_TEST_IS_DIR) && S_ISDIR (s.st_mode))
-		{
-		  g_free (cp_filename);
-		  return TRUE;
-		}
-	      
-	      if ((test & G_FILE_TEST_IS_EXECUTABLE) &&
-		  (s.st_mode & _S_IEXEC))
-		{
-		  g_free (cp_filename);
-		  return TRUE;
-		}
-	    }
+	  wchar_t dummy[2], *wvar;
+	  int len;
+
+	  len = GetEnvironmentVariableW (L"PATHEXT", dummy, 2);
+
+	  if (len == 0)
+	    return FALSE;
+
+	  wvar = g_new (wchar_t, len);
+
+	  if (GetEnvironmentVariableW (L"PATHEXT", wvar, len) == len - 1)
+	    pathext = g_utf16_to_utf8 (wvar, -1, NULL, NULL, NULL);
+
+	  g_free (wvar);
+	}
+      else
+	{
+	  gchar dummy[2], *cpvar;
+	  int len;
+
+	  len = GetEnvironmentVariableA ("PATHEXT", dummy, 2);
+
+	  if (len == 0)
+	    return FALSE;
+
+	  cpvar = g_new (gchar, len);
+
+	  if (GetEnvironmentVariableA ("PATHEXT", cpvar, len) == len - 1)
+	    pathext = g_locale_to_utf8 (cpvar, -1, NULL, NULL, NULL);
+
+	  g_free (cpvar);
 	}
 
-      g_free (cp_filename);
-      
+      if (pathext == NULL)
+	return FALSE;
+
+      tem = pathext;
+      pathext = g_utf8_casefold (pathext, -1);
+      g_free (tem);
+
+      lastdot = g_utf8_casefold (lastdot, -1);
+      extlen = strlen (lastdot);
+
+      p = pathext;
+      while (TRUE)
+	{
+	  gchar *q = strchr (p, ';');
+	  if (q == NULL)
+	    q = p + strlen (p);
+	  if (extlen == q - p &&
+	      memcmp (lastdot, p, extlen) == 0)
+	    {
+	      g_free (pathext);
+	      g_free ((gchar *) lastdot);
+	      return TRUE;
+	    }
+	  if (*q)
+	    p = q + 1;
+	  else
+	    break;
+	}
+
+      g_free (pathext);
+      g_free ((gchar *) lastdot);
       return FALSE;
     }
+
+  return FALSE;
 #else
   if ((test & G_FILE_TEST_EXISTS) && (access (filename, F_OK) == 0))
     return TRUE;

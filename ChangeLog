@@ -1,8 +1,17 @@
+2004-12-31  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gfileutils.c (g_file_test): Rewrite the Win32 version to
+	use GetFileAttributes() instead of stat(). stat() is unreliable
+	for corner cases like '\\server\share' or '.\'. Part of fixing
+	#161797. When testing for executability, in addition to the fixed
+	set of executable file name extensions also check the PATHEXT
+	environment variable.
+
 2004-12-30  Tor Lillqvist  <tml@iki.fi>
 
-	* glib/gutils.c (g_get_current_dir): Use GetCurrentDirectory()
-	directly for simpler buffer length management. I don't trust
-	getcwd() getting it right all the time.
+	* glib/gutils.c (g_get_current_dir): In the Win32 version, use
+	GetCurrentDirectory() directly for simpler buffer length
+	management. I don't trust getcwd() getting it right all the time.
 
 2004-12-30  Matthias Clasen  <mclasen@redhat.com>
 
