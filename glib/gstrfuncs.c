@@ -335,6 +335,7 @@ g_ascii_strtod (const gchar *nptr,
   int decimal_point_len;
   const char *p, *decimal_point_pos;
   const char *end = NULL; /* Silence gcc */
+  int strtod_errno;
 
   g_return_val_if_fail (nptr != NULL, 0);
 
@@ -347,6 +348,8 @@ g_ascii_strtod (const gchar *nptr,
   g_assert (decimal_point_len != 0);
   
   decimal_point_pos = NULL;
+  end = NULL;
+
   if (decimal_point[0] != '.' || 
       decimal_point[1] != 0)
     {
@@ -369,48 +372,43 @@ g_ascii_strtod (const gchar *nptr,
 	    p++;
 	  
 	  if (*p == '.')
-	    {
-	      decimal_point_pos = p++;
+	    decimal_point_pos = p++;
 	      
-	      while (g_ascii_isxdigit (*p))
-		p++;
-	      
-	      if (*p == 'p' || *p == 'P')
-		p++;
-	      if (*p == '+' || *p == '-')
-		p++;
-	      while (g_ascii_isdigit (*p))
-		p++;
-	    }
+	  while (g_ascii_isxdigit (*p))
+	    p++;
+	  
+	  if (*p == 'p' || *p == 'P')
+	    p++;
+	  if (*p == '+' || *p == '-')
+	    p++;
+	  while (g_ascii_isdigit (*p))
+	    p++;
+
+	  end = p;
 	}
-      else
+      else if (g_ascii_isdigit (*p))
 	{
 	  while (g_ascii_isdigit (*p))
 	    p++;
 	  
 	  if (*p == '.')
-	    {
-	      decimal_point_pos = p++;
-	      
-	      while (g_ascii_isdigit (*p))
-		p++;
-	      
-	      if (*p == 'e' || *p == 'E')
-		p++;
-	      if (*p == '+' || *p == '-')
-		p++;
-	      while (g_ascii_isdigit (*p))
-		p++;
-	    }
+	    decimal_point_pos = p++;
+	  
+	  while (g_ascii_isdigit (*p))
+	    p++;
+	  
+	  if (*p == 'e' || *p == 'E')
+	    p++;
+	  if (*p == '+' || *p == '-')
+	    p++;
+	  while (g_ascii_isdigit (*p))
+	    p++;
+
+	  end = p;
 	}
       /* For the other cases, we need not convert the decimal point */
-      end = p;
     }
 
-  /* Set errno to zero, so that we can distinguish zero results
-     and underflows */
-  errno = 0;
-  
   if (decimal_point_pos)
     {
       char *copy, *c;
@@ -427,7 +425,9 @@ g_ascii_strtod (const gchar *nptr,
       c += end - (decimal_point_pos + 1);
       *c = 0;
 
+      errno = 0;
       val = strtod (copy, &fail_pos);
+      strtod_errno = errno;
 
       if (fail_pos)
 	{
@@ -440,8 +440,7 @@ g_ascii_strtod (const gchar *nptr,
       g_free (copy);
 	  
     }
-  else if (decimal_point[0] != '.' ||
-	   decimal_point[1] != 0)
+  else if (end)
     {
       char *copy;
       
@@ -449,8 +448,10 @@ g_ascii_strtod (const gchar *nptr,
       memcpy (copy, nptr, end - nptr);
       *(copy + (end - (char *)nptr)) = 0;
       
+      errno = 0;
       val = strtod (copy, &fail_pos);
-      
+      strtod_errno = errno;
+
       if (fail_pos)
 	{
 	  fail_pos = (char *)nptr + (fail_pos - copy);
@@ -460,12 +461,16 @@ g_ascii_strtod (const gchar *nptr,
     }
   else
     {
+      errno = 0;
       val = strtod (nptr, &fail_pos);
+      strtod_errno = errno;
     }
 
   if (endptr)
     *endptr = fail_pos;
-  
+
+  errno = strtod_errno;
+
   return val;
 }
 
