@@ -366,7 +366,7 @@ printing values of type #guint32. See also #G_GINT16_FORMAT.
 <!-- ##### MACRO G_GINT64_MODIFIER ##### -->
 <para>
 The platform dependent length modifier for constructing printf() conversion
-specifiers for values of type #gint32. See also #G_GINT16_MODIFIER.
+specifiers for values of type #gint64. See also #G_GINT16_MODIFIER.
 </para>
 
 <note>

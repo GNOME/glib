@@ -1,3 +1,7 @@
+Fri Feb 13 23:16:25 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/macros_misc.sgml: Fix a typo. 
+
 Sat Feb  7 01:02:06 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/numerical.sgml: Fix some external links.
