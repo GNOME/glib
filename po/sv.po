@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "POT-Creation-Date: 2001-04-05 22:21+0200\n"
-"PO-Revision-Date: 2001-04-05 22:26+0200\n"
+"PO-Revision-Date: 2001-04-05 23:17+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,10 +38,11 @@ msgstr "Fel under konvertering: %s"
 msgid "Partial character sequence at end of input"
 msgstr "Ofullständig teckensekvens vid slutet av indata"
 
+# fallback syftar på en sträng
 #: gconvert.c:421
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Kan inte konvertera reserven \"%s\" till kodningen \"%s\""
+msgstr "Kan inte konvertera reservsträngen \"%s\" till kodningen \"%s\""
 
 #: gfileutils.c:293
 #, c-format
@@ -311,10 +312,11 @@ msgstr "Citerad text börjar inte med citationstecken"
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Ensamt citationstecken på kommandoraden eller annan skalciterad text"
 
+# tecknet är ett \
 #: gshell.c:519
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
-msgstr "Texten slutade efter ett ''-tecken (texten var \"%s\")."
+msgstr "Texten slutade efter ett \"\\\"-tecken (texten var \"%s\")."
 
 #: gshell.c:526
 #, c-format

@@ -1,5 +1,10 @@
 2001-04-05  Christian Rose  <menthos@menthos.com>
 
+	* sv.po: And other fixes. Thanks to Göran Uddeborg
+	<goeran@uddeborg.pp.se>.
+
+2001-04-05  Christian Rose  <menthos@menthos.com>
+
 	* sv.po: Fixed another message in the Swedish translation. Thanks to
 	Jörgen Tegnér <teg@post.utfors.se>.
 
