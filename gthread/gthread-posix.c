@@ -212,7 +212,7 @@ g_cond_timed_wait_posix_impl (GCond * cond,
 #ifdef G_THREADS_IMPL_POSIX
   timed_out = (result == ETIMEDOUT);
 #else /* G_THREADS_IMPL_DCE */
-  timed_out = (result == -1) && (errno = EAGAIN);
+  timed_out = (result == -1) && (errno == EAGAIN);
 #endif
 
   if (!timed_out)
