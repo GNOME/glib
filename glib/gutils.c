@@ -128,6 +128,28 @@ g_basename (const gchar	   *file_name)
 }
 
 gchar*
+g_dirname (const gchar	   *file_name)
+{
+  register gchar *base;
+  register guint len;
+  
+  g_return_val_if_fail (file_name != NULL, NULL);
+  
+  base = strrchr (file_name, '/');
+  if (!base)
+    return g_strdup (".");
+  while (base > file_name && *base == '/')
+    base--;
+  len = (guint) 1 + base - file_name;
+
+  base = g_new (gchar, len + 1);
+  g_memmove (base, file_name, len);
+  base[len] = 0;
+
+  return base;
+}
+
+gchar*
 g_getcwd (void)
 {
   static gchar g_getcwd_buf[MAXPATHLEN + 1] = { 0 };

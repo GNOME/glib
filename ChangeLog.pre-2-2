@@ -1,3 +1,9 @@
+Tue Jul 14 09:05:18 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gutils.c: new fuction g_dirname() which returns a newlly
+	allocated string.
+
 Fri Jul 10 06:33:43 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

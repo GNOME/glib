@@ -112,10 +112,47 @@ main (int   argc,
   GRelation *relation;
   GTuples *tuples;
   gint data [1024];
+  struct {
+    gchar *filename;
+    gchar *dirname;
+  } dirname_checks[] = {
+    { "/", "/" },
+    { "////", "/" },
+    { ".////", "." },
+    { ".", "." },
+    { "..", "." },
+    { "../", ".." },
+    { "..////", ".." },
+    { "", "." },
+    { "a/b", "a" },
+    { "a/b/", "a/b" },
+    { "c///", "c" },
+  };
+  guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
 
+  
   g_print ("checking size of gint8...%ld (should be 1)\n", (glong)sizeof (gint8));
   g_print ("checking size of gint16...%ld (should be 2)\n", (glong)sizeof (gint16));
   g_print ("checking size of gint32...%ld (should be 4)\n", (glong)sizeof (gint32));
+
+  g_print ("checking g_dirname()...");
+  for (i = 0; i < n_dirname_checks; i++)
+    {
+      gchar *dirname;
+
+      dirname = g_dirname (dirname_checks[i].filename);
+      if (strcmp (dirname, dirname_checks[i].dirname) != 0)
+	{
+	  g_print ("failed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+		   dirname_checks[i].filename,
+		   dirname_checks[i].dirname,
+		   dirname);
+	  n_dirname_checks = 0;
+	}
+      g_free (dirname);
+    }
+  if (n_dirname_checks)
+    g_print ("ok\n");
 
   g_print ("checking doubly linked lists...");
 
