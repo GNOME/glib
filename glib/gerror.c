@@ -43,6 +43,18 @@ g_error_new_valist(GQuark         domain,
   return error;
 }
 
+/**
+ * g_error_new:
+ * @domain: error domain 
+ * @code: error code
+ * @format: printf()-style format for error message
+ * @Varargs: parameters for message format
+ * 
+ * Creates a new #GError with the given @domain and @code,
+ * and a message formatted with @format.
+ * 
+ * Return value: a new #GError
+ **/
 GError*
 g_error_new (GQuark       domain,
              gint         code,
@@ -62,6 +74,19 @@ g_error_new (GQuark       domain,
   return error;
 }
 
+/**
+ * g_error_new_literal:
+ * @domain: error domain
+ * @code: error code
+ * @message: error message
+ * 
+ * Creates a new #GError; unlike g_error_new(), @message is not
+ * a printf()-style format string. Use this function if @message
+ * contains text you don't have control over, that could include
+ * printf() escape sequences.
+ * 
+ * Return value: a new #GError
+ **/
 GError*
 g_error_new_literal (GQuark         domain,
                      gint           code,
@@ -81,6 +106,13 @@ g_error_new_literal (GQuark         domain,
   return err;
 }
 
+/**
+ * g_error_free:
+ * @error: a #GError
+ *
+ * Frees a #GError and associated resources.
+ * 
+ **/
 void
 g_error_free (GError *error)
 {
@@ -91,6 +123,14 @@ g_error_free (GError *error)
   g_free (error);
 }
 
+/**
+ * g_error_copy:
+ * @error: a #GError
+ * 
+ * Makes a copy of @error.
+ * 
+ * Return value: a new #GError
+ **/
 GError*
 g_error_copy (const GError *error)
 {
@@ -107,6 +147,17 @@ g_error_copy (const GError *error)
   return copy;
 }
 
+/**
+ * g_error_matches:
+ * @error: a #GError
+ * @domain: an error domain
+ * @code: an error code
+ * 
+ * Returns TRUE if @error matches @domain and @code, FALSE
+ * otherwise.
+ * 
+ * Return value: whether @error has @domain and @code
+ **/
 gboolean
 g_error_matches (const GError *error,
                  GQuark        domain,
@@ -120,6 +171,17 @@ g_error_matches (const GError *error,
 #define ERROR_OVERWRITTEN_WARNING "GError set over the top of a previous GError or uninitialized memory.\n" \
                "This indicates a bug in someone's code. You must ensure an error is NULL before it's set."
 
+/**
+ * g_set_error:
+ * @err: a return location for a #GError, or NULL
+ * @domain: error domain
+ * @code: error code 
+ * @format: printf()-style format
+ * @Varargs: args for @format 
+ * 
+ * Does nothing if @err is NULL; if @err is non-NULL, then *@err must
+ * be NULL. A new #GError is created and assigned to *@err.
+ **/
 void
 g_set_error (GError      **err,
              GQuark        domain,
@@ -140,6 +202,14 @@ g_set_error (GError      **err,
   va_end (args);
 }
 
+/**
+ * g_propagate_error:
+ * @dest: error return location
+ * @src: error to move into the return location
+ * 
+ * Does nothing if @dest is NULL; otherwise,
+ * moves @src into *@dest. *@dest must be NULL.
+ **/
 void    
 g_propagate_error (GError       **dest,
 		   GError        *src)
@@ -155,6 +225,13 @@ g_propagate_error (GError       **dest,
   *dest = src;
 }
 
+/**
+ * g_clear_error:
+ * @err: a #GError return location
+ * 
+ * If @err is NULL, does nothing. If @err is non-NULL,
+ * calls g_error_free() on *@err and sets *@err to NULL.
+ **/
 void
 g_clear_error (GError **err)
 {

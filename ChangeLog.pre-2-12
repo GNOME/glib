@@ -1,3 +1,9 @@
+2000-09-06  Havoc Pennington  <hp@redhat.com>
+
+	* gerror.c: docs
+
+	* docs/reference/glib/tmpl/error_reporting.sgml: docs
+
 Wed Sep  6 10:28:34 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* guniprop.c gunicode.h gutf8.c: Some inline docs fixes.
