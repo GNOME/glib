@@ -28,6 +28,7 @@
 #include	"gvaluetypes.h"
 #include	"gobjectnotifyqueue.c"
 #include	<string.h>
+#include	<signal.h>
 
 
 #define	PREALLOC_CPARAMS	(8)

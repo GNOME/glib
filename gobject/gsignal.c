@@ -30,6 +30,7 @@
 #include	"gvaluetypes.h"
 #include	"gboxed.h"
 #include	<string.h> 
+#include	<signal.h>
 
 
 /* pre allocation configurations

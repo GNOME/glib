@@ -1,6 +1,7 @@
 Thu Mar 21 01:28:14 2002  Tim Janik  <timj@gtk.org>
 
-	* gsignal.h: fix extraneous include.
+	* gsignal.[hc]:
+	* gobject.[hc]: fix extraneous include.
 
 Tue Mar 19 18:57:12 2002  Tim Janik  <timj@gtk.org>
 
