@@ -1,3 +1,8 @@
+2001-10-02  Sven Neumann  <sven@gimp.org>
+
+	* glib/gstring.h (g_string_sprintfa): let the compatibility definition
+	point to the new name g_string_append_printf().
+
 2001-10-01  Alex Larsson  <alexl@redhat.com>
 
 	* glib/gconvert.[ch]:

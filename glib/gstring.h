@@ -124,7 +124,7 @@ GString*     g_string_up                (GString	 *string);
 
 /* These aliases are included for compatibility. */
 #define	g_string_sprintf	g_string_printf
-#define	g_string_sprintfa	g_string_printfa
+#define	g_string_sprintfa	g_string_append_printf
 
 #endif /* G_DISABLE_DEPRECATED */
 
