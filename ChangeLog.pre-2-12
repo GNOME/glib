@@ -1,3 +1,9 @@
+Sun Jul  4 01:52:18 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* configure.in: Use a small test library instead of
+	libpthread.so for testing RTLD_GLOBAL brokenness.  (#139567,
+	Julio M. Merino Vidal)
+	
 2004-07-02  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/gatomic.c: Rename __asm to __asm__ and __volatile to
