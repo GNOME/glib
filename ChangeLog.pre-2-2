@@ -1,3 +1,16 @@
+Tue Feb 16 14:08:59 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* NEWS
+	  README
+	  INSTALL
+	  config.h.win32
+	  configure.in
+	  glib.spec
+	  glibconfig.h.win32
+	  docs/glib-config.1: version=1.1.16 
+
+	* Released GLib 1.1.16
+
 1999-02-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h, glibconfig.h.win32, configure.in: Changed signature of

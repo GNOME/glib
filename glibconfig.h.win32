@@ -78,7 +78,7 @@ typedef unsigned __int64 guint64;
 
 #define GLIB_MAJOR_VERSION 1
 #define GLIB_MINOR_VERSION 1
-#define GLIB_MICRO_VERSION 15
+#define GLIB_MICRO_VERSION 16
 
 #ifdef	__cplusplus
 #define	G_HAVE_INLINE	1
