@@ -394,22 +394,31 @@ get_contents_stdio (const gchar *filename,
 
           if (str == NULL)
             {
+	      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+							 NULL, NULL, NULL);
               g_set_error (error,
                            G_FILE_ERROR,
                            G_FILE_ERROR_NOMEM,
                            _("Could not allocate %lu bytes to read file \"%s\""),
-                           (gulong) total_allocated, filename);
+                           (gulong) total_allocated, 
+			   utf8_filename ? utf8_filename : "???");
+	      g_free (utf8_filename);
+
               goto error;
             }
         }
       
       if (ferror (f))
         {
+	  gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						     NULL, NULL, NULL);
           g_set_error (error,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Error reading file '%s': %s"),
-                       filename, g_strerror (errno));
+                       utf8_filename ? utf8_filename : "???", 
+		       g_strerror (errno));
+	  g_free (utf8_filename);
 
           goto error;
         }
@@ -459,11 +468,15 @@ get_contents_regfile (const gchar *filename,
 
   if (buf == NULL)
     {
+      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						 NULL, NULL, NULL);
       g_set_error (error,
                    G_FILE_ERROR,
                    G_FILE_ERROR_NOMEM,
                    _("Could not allocate %lu bytes to read file \"%s\""),
-                   (gulong) alloc_size, filename);
+                   (gulong) alloc_size, 
+		   utf8_filename ? utf8_filename : "???");
+      g_free (utf8_filename);
 
       goto error;
     }
@@ -480,12 +493,15 @@ get_contents_regfile (const gchar *filename,
           if (errno != EINTR) 
             {
               g_free (buf);
-                  
+	      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+							 NULL, NULL, NULL);
               g_set_error (error,
                            G_FILE_ERROR,
                            g_file_error_from_errno (errno),
                            _("Failed to read from file '%s': %s"),
-                           filename, g_strerror (errno));
+                           utf8_filename ? utf8_filename : "???", 
+			   g_strerror (errno));
+	      g_free (utf8_filename);
 
 	      goto error;
             }
@@ -528,11 +544,15 @@ get_contents_posix (const gchar *filename,
 
   if (fd < 0)
     {
+      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						 NULL, NULL, NULL);
       g_set_error (error,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   filename, g_strerror (errno));
+                   utf8_filename ? utf8_filename : "???", 
+		   g_strerror (errno));
+      g_free (utf8_filename);
 
       return FALSE;
     }
@@ -542,11 +562,15 @@ get_contents_posix (const gchar *filename,
     {
       close (fd);
       
+      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						 NULL, NULL, NULL);
       g_set_error (error,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to get attributes of file '%s': fstat() failed: %s"),
-                   filename, g_strerror (errno));
+                   utf8_filename ? utf8_filename : "???", 
+		   g_strerror (errno));
+      g_free (utf8_filename);
 
       return FALSE;
     }
@@ -568,12 +592,17 @@ get_contents_posix (const gchar *filename,
       
       if (f == NULL)
         {
+	  gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						     NULL, NULL, NULL);
+
           g_set_error (error,
                        G_FILE_ERROR,
                        g_file_error_from_errno (errno),
                        _("Failed to open file '%s': fdopen() failed: %s"),
-                       filename, g_strerror (errno));
-          
+                       utf8_filename ? utf8_filename : "???", 
+		       g_strerror (errno));
+          g_free (utf8_filename);
+
           return FALSE;
         }
   
@@ -596,12 +625,17 @@ get_contents_win32 (const gchar *filename,
 
   if (f == NULL)
     {
+      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						 NULL, NULL, NULL);
+      
       g_set_error (error,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
                    _("Failed to open file '%s': %s"),
-                   filename, g_strerror (errno));
-      
+                   utf8_filename ? utf8_filename : "???", 
+		   g_strerror (errno));
+      g_free (utf8_filename);
+
       return FALSE;
     }
   
@@ -1154,11 +1188,16 @@ g_file_read_link (const gchar *filename,
       read_size = readlink (filename, buffer, size);
       if (read_size < 0) {
 	g_free (buffer);
+      
+	gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
+						   NULL, NULL, NULL);
 	g_set_error (error,
 		     G_FILE_ERROR,
 		     g_file_error_from_errno (errno),
 		     _("Failed to read the symbolic link '%s': %s"),
-		     filename, g_strerror (errno));
+		     utf8_filename ? utf8_filename : "???", 
+		     g_strerror (errno));
+	g_free (utf8_filename);
 	
 	return NULL;
       }
