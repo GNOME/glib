@@ -1,3 +1,8 @@
+2001-01-29  Havoc Pennington  <hp@redhat.com>
+
+	* gthread-impl.c (g_mutex_free_errorcheck_impl): hack this so it
+	compiles, needs fixing for real.
+
 2001-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread-impl.c (g_mutex_free_errorcheck_impl): Add new check to

@@ -181,10 +181,12 @@ g_mutex_unlock_errorcheck_impl (GMutex *mutex,
 static void
 g_mutex_free_errorcheck_impl (GMutex *mutex)
 {
+  ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
+  
   if (info && info->owner != NULL)
     g_error ("Trying to free a locked mutex at '%s', "
 	     "which was previously locked at '%s'", 
-	     location, info->location);
+	     "FIXME", info->location);
 
   g_free (G_MUTEX_DEBUG_INFO (mutex));
   g_thread_functions_for_glib_use_default.mutex_free (mutex);  
