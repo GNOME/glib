@@ -1,3 +1,7 @@
+2004-02-24  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* glib/grand.c: Add Since: 2.4, where due
+
 Tue Feb 24 14:09:21 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* === Released 2.3.3 ===

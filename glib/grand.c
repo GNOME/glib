@@ -137,6 +137,8 @@ g_rand_new_with_seed (guint32 seed)
  * Creates a new random number generator initialized with @seed.
  * 
  * Return value: the new #GRand.
+ *
+ * Since: 2.4
  **/
 GRand*
 g_rand_new_with_seed_array (const guint32 *seed, guint seed_length)
@@ -241,6 +243,8 @@ g_rand_free (GRand* rand)
  * replaying later.
  *
  * Return value: the new #GRand.
+ *
+ * Since: 2.4
  **/
 GRand *
 g_rand_copy (GRand* rand)
@@ -309,6 +313,8 @@ g_rand_set_seed (GRand* rand, guint32 seed)
  * first 624 values are taken.  This function is useful
  * if you have many low entropy seeds, or if you require more then
  * 32bits of actual entropy for your application.
+ *
+ * Since: 2.4
  **/
 void
 g_rand_set_seed_array (GRand* rand, const guint32 *seed, guint seed_length)
