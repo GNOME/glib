@@ -1,3 +1,13 @@
+2001-11-22  Matthias Clasen  <matthiasc@poet.de>
+
+	Fixes for #61284:
+
+	* glib/tmpl/windows.sgml: Document G_WIN32_DLLMAIN_FOR_DLL_NAME.
+
+	* glib/tmpl/fileutils.sgml: Document GDir.
+
+	* glib/tmpl/limits.sgml: Document G_MININT64, G_MAXINT64, G_MAXUINT64.	
+
 Thu Nov 22 12:56:57 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/gobject-sections.txt: Update.

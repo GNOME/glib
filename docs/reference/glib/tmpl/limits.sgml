@@ -80,21 +80,21 @@ The maximum value which can be held in a #gulong.
 
 <!-- ##### MACRO G_MININT64 ##### -->
 <para>
-
+The minimum value which can be held in a #gint64.
 </para>
 
 
 
 <!-- ##### MACRO G_MAXINT64 ##### -->
 <para>
-
+The maximum value which can be held in a #gint64.
 </para>
 
 
 
 <!-- ##### MACRO G_MAXUINT64 ##### -->
 <para>
-
+The maximum value which can be held in a #guint64.
 </para>
 
 

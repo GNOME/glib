@@ -171,7 +171,7 @@ A test to perform an a file using g_file_test().
 
 <!-- ##### STRUCT GDir ##### -->
 <para>
-
+An opaque structure representing an opened directory.
 </para>
 
 
