@@ -1,3 +1,8 @@
+Fri Dec 13 17:10:21 2002  Manish Singh  <yosh@gimp.org>
+
+	* glib/gscanner.c (g_scanner_unexp_token): Fix typo. Missing '%'
+	in my last commit.
+
 Thu Dec 12 23:08:29 2002  Owen Taylor  <otaylor@redhat.com>
 
 	Fixes from Johannes Stezenbach

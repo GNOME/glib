@@ -958,7 +958,7 @@ g_scanner_unexp_token (GScanner		*scanner,
     case G_TOKEN_INT:
     case G_TOKEN_HEX:
       if (scanner->config->store_int64)
-	_g_snprintf (token_string, token_string_len, "number `" G_GUINT64_FORMAT "'", scanner->value.v_int64);
+	_g_snprintf (token_string, token_string_len, "number `%" G_GUINT64_FORMAT "'", scanner->value.v_int64);
       else
 	_g_snprintf (token_string, token_string_len, "number `%lu'", scanner->value.v_int);
       break;
