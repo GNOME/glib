@@ -1,4 +1,4 @@
-Tue May 20 14:14:55 PDT 2003  Manish Singh  <yosh@gimp.org>
+Tue May 20 14:14:55 2003  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: wrap 64-bit MIN/MAX limit constants in
 	G_GINT64_CONSTANT. Fixes bug #108699.
