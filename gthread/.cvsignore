@@ -1,4 +1,5 @@
 Makefile.in
+makefile.mingw
 Makefile
 .deps
 *.lo

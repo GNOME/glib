@@ -1,8 +1,10 @@
 *.lo
 Makefile
 Makefile.in
+makefile.mingw
 .deps
 _libs
 .libs
 libgobject-1.3.la
 gobject-query
+gobject.rc

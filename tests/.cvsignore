@@ -3,6 +3,8 @@
 .libs
 Makefile
 Makefile.in
+makefile.msc
+makefile.mingw
 _libs
 array-test
 date-test
