@@ -47,6 +47,8 @@ lib/pkgconfig/gthread-2.0.pc
 share/aclocal/glib-2.0.m4
 share/aclocal/glib-gettext.m4
 share/glib-2.0
+share/gtk-doc/html/glib
+share/gtk-doc/html/gobject
 man/man1/glib-mkenums.1
 man/man1/glib-genmarshal.1
 EOF

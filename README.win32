@@ -22,7 +22,7 @@ it yourself. Prepackaged runtime and developer packages are available
 from the webiste above. On Unix, it is quite normal that system admins
 build and install libraries like GLib themselves. But on Windows
 setting up a correct build environment can be quite a task, especially
-if you are used to on Unix just type ./configure; make, and expect
+if you are used to just type "./configure; make" on Unix, and expect
 things to work as smoothly on Windows.
 
 The following preprocessor macros can be used for conditional
@@ -124,18 +124,28 @@ Autoconfiscated build
 It is also possible to use the auto*, ./configure and libtool
 mechanism when building with gcc. You should be running Cygwin, or
 maybe cross-compiling from real Unix, for the configure script to
-work, obviously. (It should also be possible to use MSYS.) Tor invokes
-configure using:
+work, obviously. It is also possible to use MSYS.
+
+When building from an official source distribution, to be able to
+build DLLs without problems, it might well be necessary to have a
+relatively new version of libtool installed. If so, replace the
+libtool parts included with GLib sources with newer versions by
+running libtoolize --force. After that you want to run aclocal-1.4 and
+autoconf before running configure.
+
+Tor invokes configure using:
 
 CC='gcc -mcpu=pentium3' CPPFLAGS='-I/target/include' 
   CFLAGS=-O3 LDFLAGS='-L/target/lib' ./configure --with-libiconv 
   --disable-static --prefix=/target --host=i386-pc-mingw32 
-  --enable-maintainer-mode
 
-(on a single line)
+(on a single line). The /target/include mentioned contains the header
+files for libintl and libiconv, and the (import) libraries are in
+/target/lib. This happens to be in the same tree where he configures
+GLib to be installed, but doesn't have to be.
 
-But please note that the ./configure mechanism should not blindly be
-used to build a GLib to be distributed to other developers because it
+Please note that the ./configure mechanism should not blindly be used
+to build a GLib to be distributed to other developers because it
 produces a compiler-dependent glibconfig.h (and config.h, but that
 shouldn't matter, as it isn't seen by GLib-using applications). For
 instance, the typedef for gint64 is long long with gcc, but __int64
@@ -143,16 +153,12 @@ with MSVC.
 
 Except for this and a few other minor issues, there really shouldn't
 be any reason to distribute separate GLib headers and DLLs for gcc and
-MSVC users, as both compilers generate code that uses the same C
-runtime library. Thus one either has to manually edit glibconfig.h
-afterwards, or use the supplied glibconfig.h.win32. This has been
-produced by running configure twice, once using gcc and once using
-MSVC, and merging the resulting files with diff -D.
-
-There might be other hickups when using auto* and configure to build
-with gcc. Lately Tor has used auto*/configure/libtool exclusively when
-building GLib, GTK+, GIMP etc on Win32, and it seems to work well
-(with some patches applied to the current CVS libtool...).
+MSVC users, as the compilers generate code that uses the same C
+runtime library, and is mutually binary compatible. Thus one either
+has to manually edit glibconfig.h afterwards, or use the supplied
+glibconfig.h.win32. This has been produced by running configure twice,
+once using gcc and once using MSVC, and merging the resulting files
+with diff -D.
 
 The hand-written makefile.{mingw,msc} files, and the stuff in the
 "build" subdirectory, produce DLLs and import libraries that match
@@ -181,9 +187,9 @@ and automake.) Tor hasn't tested this in a while, either.
 Building with MSVC
 ==================
 
-All the MSVC makefiles are for the command line build with nmake.
-If you want to use the VC-UI you can simply create wrapper .dsp
-makefiles (read the VC docs how to do so).
+All the MSVC makefiles are for the command line build with nmake.  If
+you want to use the VC-UI you can simply create wrapper .dsp makefiles
+(read the VC docs how to do so).
 
 Some modules may require Perl to auto-generate files. The goal (at
 least Hans's) is to not require any more tools.
