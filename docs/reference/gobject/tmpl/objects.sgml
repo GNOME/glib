@@ -389,45 +389,90 @@ to match the one used with g_object_add_weak_pointer().
 @Returns: 
 
 
-<!-- ##### FUNCTION g_object_get_qdata ##### -->
-<para>
-
-</para>
-
-@object: 
-@quark: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_object_set_qdata ##### -->
 <para>
-
+This sets an opaque, named pointer on an object.
+The name is specified through a #GQuark (retrived e.g. via
+g_quark_from_static_string()), and the pointer
+can be gotten back from the @object with g_object_get_qdata()
+until the @object is finalized.
+Setting a previously set user data pointer, overrides (frees)
+the old pointer set, using #NULL as pointer essentially
+removes the data stored.
 </para>
 
-@object: 
-@quark: 
-@data: 
+@object: The GObject to set store a user data pointer
+@quark:  A #GQuark, naming the user data pointer
+@data:   An opaque user data pointer
+
+
+<!-- ##### FUNCTION g_object_get_qdata ##### -->
+<para>
+This function gets back user data pointers stored via
+g_object_set_qdata().
+</para>
+
+@object:  The GObject to get a stored user data pointer from
+@quark:   A #GQuark, naming the user data pointer
+@Returns: The user data pointer set, or %NULL
 
 
 <!-- ##### FUNCTION g_object_set_qdata_full ##### -->
 <para>
-
+This function works like g_object_set_qdata(), but in addition,
+a void (*destroy) (gpointer) function may be specified which is
+called with @data as argument when the @object is finalized, or
+the data is being overwritten by a call to g_object_set_qdata()
+with the same @quark.
 </para>
 
-@object: 
-@quark: 
-@data: 
-@destroy: 
+@object:  The GObject to set store a user data pointer
+@quark:   A #GQuark, naming the user data pointer
+@data:    An opaque user data pointer
+@destroy: Function to invoke with @data as argument, when @data needs to be freed
 
 
 <!-- ##### FUNCTION g_object_steal_qdata ##### -->
 <para>
-
+This function gets back user data pointers stored via
+g_object_set_qdata() and removes the @data from object
+without invoking it's destroy() function (if any was
+set).
+Usually, calling this function is only required to update
+user data pointers with a destroy notifier, for example:
+<msgtext><programlisting>
+void
+object_add_to_user_list (GObject     *object,
+                         const gchar *new_string)
+{
+  /* the quark, naming the object data */
+  GQuark quark_string_list = g_quark_from_static_string ("my-string-list");
+  /* retrive the old string list */
+  GList *list = g_object_steal_qdata (object, quark_string_list);
+  
+  /* prepend new string */
+  list = g_list_prepend (list, g_strdup (new_string));
+  /* this changed 'list', so we need to set it again */
+  g_object_set_qdata_full (object, quark_string_list, list, free_string_list);
+}
+static void
+free_string_list (gpointer data)
+{
+  GList *node, *list = data;
+  
+  for (node = list; node; node = node->next)
+    g_free (node->data);
+  g_list_free (list);
+}
+</programlisting></msgtext>
+Using g_object_get_qdata() in teh above example, instead of g_object_steal_qdata()
+would have left the destroy function set, and thus the partial string list would
+have been freed upon g_object_set_qdata_full().
 </para>
 
-@object: 
-@quark: 
-@Returns: 
+@object:  The GObject to get a stored user data pointer from
+@quark:   A #GQuark, naming the user data pointer
+@Returns: The user data pointer set, or %NULL
 
 
 <!-- ##### FUNCTION g_object_set_property ##### -->
@@ -483,12 +528,19 @@ to match the one used with g_object_add_weak_pointer().
 
 <!-- ##### FUNCTION g_object_watch_closure ##### -->
 <para>
-
+This function essentially limits the life time of the @closure
+to the life time of the object. That is, when the object is finalized,
+the @closure is invalidated by calling g_closure_invalidate() on it,
+in order to prevent invocations of the closure with a finalized (non
+existing) object. Also, g_object_ref() and g_object_unref() are added
+as marshal guards to the @closure, to ensure that an extra reference
+count is held on @object during invocation of the @closure.
+Usually, this function will be called on closures that use this @object
+as closure data.
 </para>
 
-@object: 
-@closure: 
-
+@object:  GObject restricting lifetime of @closure
+@closure: GClosure to watch 
 
 <!-- ##### FUNCTION g_object_run_dispose ##### -->
 <para>

@@ -1,3 +1,8 @@
+Mon Feb  4 17:55:39 2002  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/objects.sgml: document g_obejct_watch_closure() and
+	qdata functions.
+
 Tue Jan 29 12:00:59 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/gobject-sections.txt: Updated.
