@@ -1,3 +1,8 @@
+Thu Sep 16 18:42:46 2004  Manish Singh  <yosh@gimp.org>
+
+	* abicheck.sh: don't hardcode lengths for cut, instead split on
+	the third field.
+
 2004-09-16  Matthias Clasen  <mclasen@redhat.com>
 
 	Implement the same PLT reduction technique used in GTK+:

@@ -17,6 +17,7 @@ _libs
 .libs
 libgobject-1.3.la
 gobject-query
+gobjectalias.h
 gobject.rc
 glib-genmarshal
 glib-mkenums
