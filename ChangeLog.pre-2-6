@@ -1,3 +1,8 @@
+2001-12-03  Manish Singh  <yosh@gimp.org>
+
+	* tests/module-test.c: g_module_symbol takes a gpointer *, not just
+	a gpointer
+
 2001-11-29  Havoc Pennington  <hp@redhat.com>
 
 	* glib/gtree.c (g_tree_foreach):

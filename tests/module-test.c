@@ -95,7 +95,7 @@ main (int   arg,
   if (!module_self)
     g_error ("error: %s", g_module_error ());
 
-  if (!g_module_symbol (module_self, "g_module_close", (gpointer) &f_self))
+  if (!g_module_symbol (module_self, "g_module_close", (gpointer *) &f_self))
     g_error ("error: %s", g_module_error ());
 
   module_a = g_module_open (plugin_a, G_MODULE_BIND_LAZY);
@@ -109,21 +109,21 @@ main (int   arg,
   /* get plugin state vars */
 
   if (!g_module_symbol (module_a, "gplugin_a_state", 
-			(gpointer) &gplugin_a_state))
+			(gpointer *) &gplugin_a_state))
     g_error ("error: %s", g_module_error ());
   
   if (!g_module_symbol (module_b, "gplugin_b_state", 
-			(gpointer) &gplugin_b_state))
+			(gpointer *) &gplugin_b_state))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, "check-init");
   
   /* get plugin specific symbols and call them
    */
-  if (!g_module_symbol (module_a, "gplugin_a_func", (gpointer) &f_a))
+  if (!g_module_symbol (module_a, "gplugin_a_func", (gpointer *) &f_a))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
  
-  if (!g_module_symbol (module_b, "gplugin_b_func", (gpointer) &f_b))
+  if (!g_module_symbol (module_b, "gplugin_b_func", (gpointer *) &f_b))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
  
@@ -136,15 +136,15 @@ main (int   arg,
   /* get and call globally clashing functions
    */
  
-  if (!g_module_symbol (module_self, "g_clash_func", (gpointer) &f_self))
+  if (!g_module_symbol (module_self, "g_clash_func", (gpointer *) &f_self))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_a, "g_clash_func", (gpointer) &f_a))
+  if (!g_module_symbol (module_a, "g_clash_func", (gpointer *) &f_a))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
  
-  if (!g_module_symbol (module_b, "g_clash_func", (gpointer) &f_b))
+  if (!g_module_symbol (module_b, "g_clash_func", (gpointer *) &f_b))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
  
@@ -159,11 +159,11 @@ main (int   arg,
 
   /* get and call clashing plugin functions  */
 
-  if (!g_module_symbol (module_a, "gplugin_clash_func", (gpointer) &f_a))
+  if (!g_module_symbol (module_a, "gplugin_clash_func", (gpointer *) &f_a))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_b, "gplugin_clash_func", (gpointer) &f_b))
+  if (!g_module_symbol (module_b, "gplugin_clash_func", (gpointer *) &f_b))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
 
@@ -177,7 +177,7 @@ main (int   arg,
 
   /* call gmodule function from A  */
 
-  if (!g_module_symbol (module_a, "gplugin_a_module_func", (gpointer) &gmod_f))
+  if (!g_module_symbol (module_a, "gplugin_a_module_func", (gpointer *) &gmod_f))
     g_error ("error: %s", g_module_error ());
   test_states (NULL, NULL, NULL);
 
