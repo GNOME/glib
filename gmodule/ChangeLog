@@ -1,3 +1,7 @@
+2001-07-20  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc.in : reflect glib move
+
 2001-05-21  Mark Murnane  <Mark.Murnane@ireland.sun.com>
 
 	* gmodule.c (g_str_check_suffix):  Modified type of string_len
