@@ -1,3 +1,11 @@
+2004-12-05  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/Makefile.am (install-libtool-import-lib): Remove the DLL
+	binary compatibilty entries from the import library. They aren't
+	used by newly compiled code, so no need to have them in the import
+	library. (The "PRIVATE" keyword in the .def file is supposed to do
+	this, but not implemented in the GNU linker yet.)
+
 2004-12-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gqueue.c (g_queue_link_index): Return -1 if queue is 

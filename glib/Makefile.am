@@ -196,6 +196,14 @@ if OS_WIN32
 export_symbols = -export-symbols $(srcdir)/glib.def
 
 install-libtool-import-lib:
+# 	Don't put the binary compatibility entries in the import lib!
+#	(Unfortunately the GNU linker doesn't yet understand the PRIVATE
+#	directive in .def files.)
+#
+	for entry in `grep PRIVATE glib.def | sed -e 's/PRIVATE//'`; do \
+	  file=`nm -A .libs/libglib-2.0.dll.a | tr -d '\r' | grep -m 1 -E $$entry'$$' | cut -d: -f2`; \
+	  ar d .libs/libglib-2.0.dll.a $$file; \
+	done
 	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
 	$(INSTALL) $(srcdir)/glib.def $(DESTDIR)$(libdir)/glib-2.0.def
 
