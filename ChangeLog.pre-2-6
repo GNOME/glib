@@ -1,3 +1,13 @@
+Sat Dec 19 06:25:55 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.m4: fixed a minor bug that would let configures bail out
+	if the MODULES argument contained newlines.
+
+	* acglib.m4: new file to be included by configure.in. it holds
+	special GLIB_ autoconfiguration macros, eventually some of the
+	easier ones should be moved into glib.m4, e.g. GLIB_IF_VAR_EQ,
+	GLIB_STR_CONTAINS or GLIB_ADD_TO_VAR.
+
 Sat Dec 19 04:27:17 1998  Tim Janik  <timj@gtk.org>
 
 	* fixed up sys/poll.h and sys/types.h inclusions.
