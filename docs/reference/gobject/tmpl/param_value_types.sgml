@@ -13,6 +13,11 @@ Parameter specifications for most value types can be created as
 #GParamSpec derived instances, to implement e.g. #GObject properties which
 operate on #GValue containers.
 </para>
+<para>
+Parameter names need to start with a letter (a-z or A-Z). Subsequent
+characters can be letters, numbers or a '-'.
+All other characters are replaced by a '-' during construction.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>

@@ -32,7 +32,13 @@ types called g_type_register_fundamental() which requires both a #GTypeInfo
 structure and a #GTypeFundamentalInfo structure but it is seldom used
 since most fundamental types are predefined rather than user-defined.
 </para>
-
+<para>
+A final word about type names.
+Such an identifier needs to be at least three characters long. There is no
+upper length limit. The first character needs to be a letter (a-z or A-Z)
+or an underscore '_'. Subsequent characters can be letters, numbers or
+any of '-_+'.
+</para>
 <!-- ##### SECTION See_Also ##### -->
 <para>
 

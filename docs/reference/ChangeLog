@@ -1,3 +1,10 @@
+2005-03-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* gobject/tmpl/gtype.sgml:
+	* gobject/tmpl/param_value_types.sgml:
+	* gobject/tmpl/gparamspec.sgml: Apply patches by
+	Stefan Kost to document naming restrictions. (#167614)
+
 2005-02-10  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/tmpl/option.sgml: Fix a typo.  (#166985)
