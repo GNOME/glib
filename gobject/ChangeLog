@@ -1,3 +1,10 @@
+2000-07-27  Tor Lillqvist  <tml@iki.fi>
+
+	* gobject.c: No, don't mark glib_debug_objects for export here,
+	it's handled specially in gtktypeutils.c.
+
+	* gobject.def: Export g_type_fundamental_last (the function).
+
 2000-07-26  Tor Lillqvist  <tml@iki.fi>
 
 	* gobject.def

@@ -1,5 +1,4 @@
 EXPORTS
-	_g_type_fundamental_last
 	g_enum_complete_type_info
 	g_enum_get_value
 	g_enum_get_value_by_name
@@ -66,6 +65,7 @@ EXPORTS
 	g_type_create_instance
 	g_type_free_instance
 	g_type_from_name
+	g_type_fundamental_last
 	g_type_fundamental_branch_last
 	g_type_get_plugin
 	g_type_get_qdata

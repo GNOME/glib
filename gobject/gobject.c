@@ -69,7 +69,7 @@ static GHashTable	*param_spec_hash_table = NULL;
  * For now, we'll simply use, as a method
  * 'extern gboolean glib_debug_objects'
  */
-GOBJECT_VAR gboolean glib_debug_objects = FALSE;
+gboolean glib_debug_objects = FALSE;
 
 static guint		  debug_objects_count = 0;
 static GHashTable	 *debug_objects_ht = NULL;
