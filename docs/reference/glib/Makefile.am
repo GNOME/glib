@@ -48,7 +48,7 @@ HTML_IMAGES =  				\
 content_files =				\
 	running.sgml			\
 	building.sgml			\
-	changes-2.0.sgml		\
+	changes.sgml			\
 	compiling.sgml			\
 	resources.sgml			\
 	version.xml

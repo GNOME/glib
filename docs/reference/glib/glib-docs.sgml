@@ -58,7 +58,7 @@
 <!ENTITY glib-Building SYSTEM "building.sgml">
 <!ENTITY glib-Running SYSTEM "running.sgml">
 <!ENTITY glib-Resources SYSTEM "resources.sgml">
-<!ENTITY glib-Changes-2-0 SYSTEM "changes-2.0.sgml">
+<!ENTITY glib-Changes SYSTEM "changes.sgml">
 
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -107,7 +107,7 @@ implementations, e.g. POSIX threads, DCE threads or Solaris threads.
     &glib-Building;
     &glib-Compiling;
     &glib-Running;
-    &glib-Changes-2-0;
+    &glib-Changes;
     &glib-Resources;
  
   </chapter> 

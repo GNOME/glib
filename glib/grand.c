@@ -58,6 +58,41 @@ static GRand* global_random = NULL;
 #define TEMPERING_SHIFT_T(y)  (y << 15)
 #define TEMPERING_SHIFT_L(y)  (y >> 18)
 
+static guint
+get_random_version (void)
+{
+  static gboolean initialized = FALSE;
+  static guint random_version;
+  
+  if (!initialized)
+    {
+      const gchar *version_string = g_getenv ("G_RANDOM_VERSION");
+      if (!version_string || version_string[0] == '\000' || 
+	  strcmp (version_string, "2.2") == 0)
+	random_version = 22;
+      else if (strcmp (version_string, "2.0") == 0)
+	random_version = 20;
+      else
+	{
+	  g_warning ("Unknown G_RANDOM_VERSION \"%s\". Using version 2.2.",
+		     version_string);
+	  random_version = 22;
+	}
+      initialized = TRUE;
+    }
+  
+  return random_version;
+}
+
+/* This is called from g_thread_init(). It's used to
+ * initialize some static data in a threadsafe way.
+ */
+void 
+g_rand_init (void)
+{
+  (void)get_random_version ();
+}
+
 struct _GRand
 {
   guint32 mt[N]; /* the array for the state vector  */
@@ -148,17 +183,35 @@ g_rand_set_seed (GRand* rand, guint32 seed)
 {
   g_return_if_fail (rand != NULL);
 
-  /* setting initial seeds to mt[N] using         */
-  /* the generator Line 25 of Table 1 in          */
-  /* [KNUTH 1981, The Art of Computer Programming */
-  /*    Vol. 2 (2nd Ed.), pp102]                  */
-  
-  if (seed == 0) /* This would make the PRNG procude only zeros */
-    seed = 0x6b842128; /* Just set it to another number */
-
-  rand->mt[0]= seed & 0xffffffff;
-  for (rand->mti=1; rand->mti<N; rand->mti++)
-    rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]) & 0xffffffff;
+  switch (get_random_version ())
+    {
+    case 20:
+      /* setting initial seeds to mt[N] using         */
+      /* the generator Line 25 of Table 1 in          */
+      /* [KNUTH 1981, The Art of Computer Programming */
+      /*    Vol. 2 (2nd Ed.), pp102]                  */
+      
+      if (seed == 0) /* This would make the PRNG procude only zeros */
+	seed = 0x6b842128; /* Just set it to another number */
+      
+      rand->mt[0]= seed;
+      for (rand->mti=1; rand->mti<N; rand->mti++)
+	rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]);
+      
+      break;
+    case 22:
+      /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+      /* In the previous version (see above), MSBs of the    */
+      /* seed affect only MSBs of the array mt[].            */
+      
+      rand->mt[0]= seed;
+      for (rand->mti=1; rand->mti<N; rand->mti++)
+	rand->mt[rand->mti] = 1812433253UL * 
+	  (rand->mt[rand->mti-1] ^ (rand->mt[rand->mti-1] >> 30)) + rand->mti; 
+      break;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 /**

@@ -1,9 +1,24 @@
 2002-11-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* glib/grand.c, gthread/gthread-impl.c, tests/rand-test.c: 
+	Changed the seeding algorithm. Old behaviour can be achived by
+	setting envvar G_RANDOM_VERSION to "2.0". (#99262)
+
+	* docs/reference/glib/glib-docs.sgml,
+	docs/reference/glib/Makefile.am: Renamed
+	docs/reference/glib/changes-2.0.sgml to
+	docs/reference/glib/changes.sgml and added section for changes
+	from 2.0 to 2.2 (Also corrected 1.0 to 1.2).
+
+	* README.in, docs/reference/glib/running.sgml,
+	docs/reference/glib/tmpl/random_numbers.sgml,
+	docs/reference/glib/changes.sgml: Added notes about the new
+	seeding algorithm.
+
 	* configure.in: Make CPPFLAGS, not CFLAGS, include
 	G_THREAD_CFLAGS. CFLAGS is used while linking too and thus GLib
 	programs would link to the threads library on some platforms. Also
-	fixed a bug manifesting through this change.
+	fixed a bug manifesting through this change. (#77981)
 
 2002-11-26  Matthias Clasen  <maclas@gmx.de>
 

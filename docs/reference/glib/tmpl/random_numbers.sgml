@@ -2,12 +2,12 @@
 Random Numbers
 
 <!-- ##### SECTION Short_Description ##### -->
-pseudo random number generator.
+pseudo-random number generator.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 The following functions allow you to use a portable, fast and good
-pseudo random number generator (PRNG). It uses the Mersenne Twister
+pseudo-random number generator (PRNG). It uses the Mersenne Twister
 PRNG, which was originally developed by Makoto Matsumoto and Takuji
 Nishimura. Further information can be found at <ulink
 url="http://www.math.keio.ac.jp/~matumoto/emt.html"
@@ -30,6 +30,18 @@ The <function>g_rand*_range</function> functions will return high quality
 equally distributed random numbers, whereas for example the
 <literal>(g_random_int()%%max)</literal> approach often doesn't
 yield equally distributed numbers.
+</para>
+
+<para>
+GLib changed the seeding algorithm for the pseudo-random number
+generator Mersenne Twister, as used by <structname>GRand</structname>
+and <structname>GRandom</structname>. This was necessary, because some
+seeds would yield very bad pseudo-random streams. The original seeding
+algorithm, as found in GLib 2.0.x, can be used instead of the new one
+by setting the environment variable <envar>G_RANDOM_VERSION</envar> to
+the value of '2.0'. Use the GLib-2.0 algorithm only if you have
+sequences of numbers generated with Glib-2.0 that you need to
+reproduce exactly.  
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

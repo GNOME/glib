@@ -66,6 +66,7 @@ void g_mutex_init (void);
 void g_mem_init (void);
 void g_messages_init (void);
 void g_convert_init (void);
+void g_rand_init (void);
 void g_main_thread_init (void);
 
 #define G_MUTEX_DEBUG_INFO(mutex) (*((gpointer*)(((char*)mutex)+G_MUTEX_SIZE)))
@@ -382,6 +383,7 @@ g_thread_init (GThreadFunctions* init)
   g_mem_init ();
   g_messages_init ();
   g_convert_init ();
+  g_rand_init ();
   g_main_thread_init ();
 
   /* now we can set g_threads_got_initialized and thus enable
