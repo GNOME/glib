@@ -373,7 +373,7 @@ if test "$ac_cv_func_memmove" != "yes"; then
         }
         return(0);
       }],glib_cv_working_bcopy=yes,glib_cv_working_bcopy=no)])
-  if test "$glib_cv_working_bcopy" == "yes"; then
+  if test "$glib_cv_working_bcopy" = "yes"; then
     AC_DEFINE(HAVE_WORKING_BCOPY,1,[Have a working bcopy])
   fi
 fi
