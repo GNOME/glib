@@ -716,12 +716,15 @@ g_setenv (const gchar *variable,
 	  gboolean     overwrite)
 {
   gint result;
+#ifndef HAVE_SETENV
+  gchar *string;
+#endif
+
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
+
 #ifdef HAVE_SETENV
   result = setenv (variable, value, overwrite);
 #else
-  gchar *string;
-  
   if (!overwrite && g_getenv (variable) != NULL)
     return TRUE;
   
