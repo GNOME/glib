@@ -620,8 +620,6 @@ g_io_win32_fd_add_watch (GIOChannel    *channel,
 {
   GIOWin32Watch *watch = g_new (GIOWin32Watch, 1);
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
-  DWORD nbytes;
-  char dummy[1];
   
   watch->channel = channel;
   g_io_channel_ref (channel);
