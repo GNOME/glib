@@ -51,6 +51,7 @@
 #include "gslist.h"
 #include "gmem.h"
 #include "gmessages.h"
+#include "gstdio.h"
 #include "gstring.h"
 #include "gstrfuncs.h"
 #include "gutils.h"
@@ -300,7 +301,7 @@ find_file_in_data_dirs (const gchar   *file,
           path = g_build_filename (data_dir, sub_dir,
                                    candidate_file, NULL);
 
-          fd = open (path, O_RDONLY);
+          fd = g_open (path, O_RDONLY, 0);
 
           if (output_file != NULL)
             *output_file = g_strdup (path);
@@ -432,7 +433,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_file:
  * @key_file: an empty #GKeyFile struct
- * @file: the path of a filename to load
+ * @file: the path of a filename to load, in the GLib file name encoding
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
  *
@@ -455,7 +456,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (file != NULL, FALSE);
 
-  fd = open (file, O_RDONLY);
+  fd = g_open (file, O_RDONLY, 0);
 
   if (fd < 0)
     {

@@ -1,3 +1,7 @@
+2004-10-28  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gkeyfile.c: Include gstdio.h and use g_open().
+
 2004-10-27  Ray Strode  <rstrode@redhat.com>
 
 	* glib/gkeyfile.c:
