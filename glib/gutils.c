@@ -957,18 +957,21 @@ g_get_any_init (void)
 	  }
 	if (pw)
 	  {
-	    gchar **gecos_fields;
-	    gchar **name_parts;
-
  	    g_user_name = g_strdup (pw->pw_name);
 
-	    /* split the gecos field and substitute '&' */
-	    gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
-	    name_parts = g_strsplit (gecos_fields[0], "&", 0);
-	    pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
-	    g_real_name = g_strjoinv (pw->pw_name, name_parts);
-	    g_strfreev (gecos_fields);
-	    g_strfreev (name_parts);
+	    if (pw->pw_gecos) 
+	      {
+		gchar **gecos_fields;
+		gchar **name_parts;
+
+		/* split the gecos field and substitute '&' */
+		gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
+		name_parts = g_strsplit (gecos_fields[0], "&", 0);
+		pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
+		g_real_name = g_strjoinv (pw->pw_name, name_parts);
+		g_strfreev (gecos_fields);
+		g_strfreev (name_parts);
+	      }
 
 	    if (!g_home_dir)
 	      g_home_dir = g_strdup (pw->pw_dir);
