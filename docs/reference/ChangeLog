@@ -1,3 +1,9 @@
+Thu Sep  7 12:35:35 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * Some further makefile improvement.
+	 
+	* Restore all the docs that mysteriously vanished earlier.
+
 Wed Sep  6 10:59:45 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject/Makefile.am glib/Makefile.am: Improve 

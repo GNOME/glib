@@ -1,40 +1,82 @@
-<!-- ##### MACRO G_GLONG_FORMAT ##### -->
+<!-- ##### MACRO lseek ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_GSHORT_FORMAT ##### -->
+<!-- ##### USER_FUNCTION GSearchFunc ##### -->
+<para>
+Specifies the type of function passed to g_tree_search().
+</para>
+
+@key: a key from a #GTree.
+@data: the data to compare with the key.
+@Returns: 0 if the desired key has been found, a negative number if the
+desired key comes before @key in the sort order of the #GTree, or a positive
+value if the desired key comes after @key.
+
+<!-- ##### MACRO write ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_GUSHORT_FORMAT ##### -->
+<!-- ##### MACRO pclose ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_GINT_FORMAT ##### -->
+<!-- ##### MACRO g_string ##### -->
+<para>
+Turns the argument into a string literal by using the '#' stringizing operator.
+</para>
+
+@x: text to convert to a literal string.
+
+<!-- ##### MACRO popen ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_GUINT_FORMAT ##### -->
+<!-- ##### MACRO access ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_GULONG_FORMAT ##### -->
+<!-- ##### MACRO open ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### MACRO G_MICROSEC ##### -->
+<!-- ##### MACRO getpid ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO fdopen ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO close ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO getcwd ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO read ##### -->
 <para>
 
 </para>

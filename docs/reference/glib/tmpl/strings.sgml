@@ -2,11 +2,16 @@
 Strings
 
 <!-- ##### SECTION Short_Description ##### -->
-
+text buffers which grow automatically as text is added.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+A #GString is similar to a standard C string, except that it grows
+automatically as text is appended or inserted.
+</para>
+<para>
+The space allocated for the string is always a power of two, so as the
+string grows it will occupy 2, 4, 8, 16, 32, 64, 128 etc. characters.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,7 +21,16 @@ Strings
 
 <!-- ##### STRUCT GString ##### -->
 <para>
-
+The #GString struct contains the public fields of a #GString.
+The <structfield>str</structfield> field points to the character data.
+It may move as text is added.
+The <structfield>len</structfield> field contains the length of the string,
+not including the terminating null character.
+</para>
+<para>
+The str field is zero-terminated and so can be used as an ordinary C
+string. But it may be moved when text is appended or inserted into the
+string.
 </para>
 
 @str: 
@@ -24,70 +38,83 @@ Strings
 
 <!-- ##### FUNCTION g_string_new ##### -->
 <para>
-
+Creates a new #GString, initialized with the given string.
 </para>
 
-@init: 
-@Returns: 
+@init: the initial text to copy into the string.
+@Returns: the new #GString.
 
 
 <!-- ##### FUNCTION g_string_sized_new ##### -->
 <para>
-
+Creates a new GString, with enough space for @dfl_size characters.
+This is useful if you are going to add a lot of text to the string and
+don't want it to be reallocated too often.
 </para>
 
-@dfl_size: 
-@Returns: 
+@dfl_size: the default size of the space allocated to hold the string.
+@Returns: the new #GString.
 
 
 <!-- ##### FUNCTION g_string_assign ##### -->
 <para>
-
+Copies the characters from one #GString into another, destroying any previous
+contents. It is rather like the standard strcpy() function, except that
+you do not have to worry about having enough space to copy the string.
 </para>
 
 @string: 
-@rval: 
-@Returns: 
+@rval: the source #GString.
+@Returns: the destination #GString.
+<!-- # Unused Parameters # -->
+@lval: the destination #GString. Its current contents are destroyed.
 
 
 <!-- ##### FUNCTION g_string_sprintf ##### -->
 <para>
-
+Writes a formatted string into a #GString.
+This is similar to the standard <function>sprintf()</function> function,
+except that the GString buffer automatically expands to contain the results.
+The previous contents of the GString are destroyed.
 </para>
 
-@string: 
-@format: 
-@Varargs: 
+@string: a #GString.
+@format: the string format. See the <function>sprintf()</function>
+documentation.
+@Varargs: the parameters to insert into the format string.
 
 
 <!-- ##### FUNCTION g_string_sprintfa ##### -->
 <para>
-
+Appends a formatted string onto the end of a #GString.
+This function is is similar to g_string_sprintf() except that
+the text is appended to the GString.
 </para>
 
-@string: 
-@format: 
-@Varargs: 
+@string: a #GString.
+@format: the string format. See the <function>sprintf()</function>
+documentation.
+@Varargs: the parameters to insert into the format string.
 
 
 <!-- ##### FUNCTION g_string_append ##### -->
 <para>
-
+Adds a string onto the end of a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@val: 
-@Returns: 
+@string: a #GString.
+@val: the string to append onto the end of the #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_append_c ##### -->
 <para>
-
+Adds a character onto the end of a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@c: 
-@Returns: 
+@string: a #GString.
+@c: the character to append onto the end of the #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_append_len ##### -->
@@ -103,22 +130,22 @@ Strings
 
 <!-- ##### FUNCTION g_string_prepend ##### -->
 <para>
-
+Adds a string on to the start of a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@val: 
-@Returns: 
+@string: a #GString.
+@val: the string to prepend on the start of the #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_prepend_c ##### -->
 <para>
-
+Adds a character onto the start of a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@c: 
-@Returns: 
+@string: a #GString.
+@c: the character to prepend on the start of the #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_prepend_len ##### -->
@@ -134,24 +161,24 @@ Strings
 
 <!-- ##### FUNCTION g_string_insert ##### -->
 <para>
-
+Inserts a copy of a string into a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@pos: 
-@val: 
-@Returns: 
+@string: a #GString.
+@pos: the position to insert the copy of the string.
+@val: the string to insert.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_insert_c ##### -->
 <para>
-
+Inserts a character into a #GString, expanding it if necessary.
 </para>
 
-@string: 
-@pos: 
-@c: 
-@Returns: 
+@string: a #GString.
+@pos: the position to insert the character.
+@c: the character to insert.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_insert_len ##### -->
@@ -168,51 +195,53 @@ Strings
 
 <!-- ##### FUNCTION g_string_erase ##### -->
 <para>
-
+Removes @len characters from a #GString, starting at position @pos.
+The rest of the #GString is shifted down to fill the gap.
 </para>
 
-@string: 
-@pos: 
-@len: 
-@Returns: 
+@string: a #GString.
+@pos: the position of the characters to remove.
+@len: the number of characters to remove.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_truncate ##### -->
 <para>
-
+Cuts off the end of the GString, leaving the first @len characters.
 </para>
 
-@string: 
-@len: 
-@Returns: 
+@string: a #GString.
+@len: the new size of the #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_free ##### -->
 <para>
-
+Frees the memory allocated for the #GString.
+If free_segment is TRUE it also frees the character data.
 </para>
 
-@string: 
-@free_segment: 
+@string: a #GString.
+@free_segment: if TRUE the actual character data is freed as well.
 @Returns: 
 
 
 <!-- ##### FUNCTION g_string_up ##### -->
 <para>
-
+Converts a #GString to upper case.
 </para>
 
-@string: 
-@Returns: 
+@string: a #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_down ##### -->
 <para>
-
+Converts a #GString to lower case.
 </para>
 
-@string: 
-@Returns: 
+@string: a #GString.
+@Returns: the #GString.
 
 
 <!-- ##### FUNCTION g_string_hash ##### -->

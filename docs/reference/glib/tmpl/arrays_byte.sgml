@@ -2,12 +2,47 @@
 Byte Arrays
 
 <!-- ##### SECTION Short_Description ##### -->
-
+arrays of bytes, which grow automatically as elements are added.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+GByteArray is based on #GArray, to provide arrays of bytes which grow
+automatically as elements are added.
 </para>
+<para>
+To create a new #GByteArray use g_byte_array_new().
+</para>
+<para>
+To add elements to a #GByteArray, use g_byte_array_append(), and
+g_byte_array_prepend().
+</para>
+<para>
+To set the size of a GByteArray, use g_byte_array_set_size().
+</para>
+<para>
+To free a GByteArray, use g_byte_array_free().
+</para>
+
+<example>
+<title>Using a GByteArray.</title>
+<programlisting>
+  GByteArray *gbarray;
+  gint i;
+
+  gbarray = g_byte_array_new ();
+  for (i = 0; i < 10000; i++)
+    g_byte_array_append (gbarray, (guint8*) "abcd", 4);
+
+  for (i = 0; i < 10000; i++)
+    {
+      g_assert (gbarray->data[4*i] == 'a');
+      g_assert (gbarray->data[4*i+1] == 'b');
+      g_assert (gbarray->data[4*i+2] == 'c');
+      g_assert (gbarray->data[4*i+3] == 'd');
+    }
+
+  g_byte_array_free (gbarray, TRUE);
+</programlisting></example>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -16,18 +51,19 @@ Byte Arrays
 
 <!-- ##### STRUCT GByteArray ##### -->
 <para>
-
+The #GByteArray struct allows access to the public fields of a #GByteArray.
 </para>
 
-@data: 
-@len: 
+@data: a pointer to the element data. The data may be moved as elements are
+added to the #GByteArray.
+@len: the number of elements in the #GByteArray.
 
 <!-- ##### FUNCTION g_byte_array_new ##### -->
 <para>
-
+Creates a new #GByteArray.
 </para>
 
-@Returns: 
+@Returns: the new #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_sized_new ##### -->
@@ -41,63 +77,70 @@ Byte Arrays
 
 <!-- ##### FUNCTION g_byte_array_append ##### -->
 <para>
-
+Adds the given bytes to the end of the #GByteArray.
+The array will grow in size automatically if necessary.
 </para>
 
-@array: 
-@data: 
-@len: 
-@Returns: 
+@array: a #GByteArray.
+@data: the byte data to be added.
+@len: the number of bytes to add.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_prepend ##### -->
 <para>
-
+Adds the given data to the start of the #GByteArray.
+The array will grow in size automatically if necessary.
 </para>
 
-@array: 
-@data: 
-@len: 
-@Returns: 
+@array: a #GByteArray.
+@data: the byte data to be added.
+@len: the number of bytes to add.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_remove_index ##### -->
 <para>
-
+Removes the byte at the given index from a #GByteArray.
+The following bytes are moved down one place.
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GByteArray.
+@index: the index of the byte to remove.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_remove_index_fast ##### -->
 <para>
-
+Removes the byte at the given index from a #GByteArray.
+The last element in the array is used to fill in the space, so this function
+does not preserve the order of the #GByteArray. But it is faster than
+g_byte_array_remove_index().
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GByteArray.
+@index: the index of the byte to remove.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_set_size ##### -->
 <para>
-
+Sets the size of the #GByteArray, expanding it if necessary.
 </para>
 
-@array: 
-@length: 
-@Returns: 
+@array: a #GByteArray.
+@length: the new size of the #GByteArray.
+@Returns: the #GByteArray.
 
 
 <!-- ##### FUNCTION g_byte_array_free ##### -->
 <para>
-
+Frees the memory allocated by the #GByteArray.
+If free_segment is TRUE it frees the actual byte data.
 </para>
 
-@array: 
-@free_segment: 
+@array: a #GByteArray.
+@free_segment: if TRUE the actual byte data is freed as well.
 @Returns: 
 
 

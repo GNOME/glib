@@ -2,12 +2,53 @@
 Arrays
 
 <!-- ##### SECTION Short_Description ##### -->
-
+arrays of arbitrary elements which grow automatically as elements are added.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Arrays are similar to standard C arrays, except that they grow automatically
+as elements are added.
 </para>
+<para>
+Array elements can be of any size (though all elements of one array are the
+same size), and the array can be automatically cleared to '0's and
+zero-terminated.
+</para>
+<para>
+To create a new array use g_array_new().
+</para>
+<para>
+To add elements to an array, use g_array_append_val(), g_array_append_vals(),
+g_array_prepend_val(), and g_array_prepend_vals().
+</para>
+<para>
+To access an element of an array, use g_array_index().
+</para>
+<para>
+To set the size of an array, use g_array_set_size().
+</para>
+<para>
+To free an array, use g_array_free().
+</para>
+<example>
+<title>Using a GArray to store gint values.</title>
+<programlisting>
+  GArray *garray;
+  gint i;
+
+  /* We create a new array to store gint values.
+     We don't want it zero-terminated or cleared to 0's. */
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  for (i = 0; i < 10000; i++)
+    g_array_append_val (garray, i);
+
+  for (i = 0; i < 10000; i++)
+    if (g_array_index (garray, gint, i) != i)
+      g_print ("ERROR: got %d instead of %d\n",
+               g_array_index (garray, gint, i), i);
+
+  g_array_free (garray, TRUE);
+</programlisting></example>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -16,21 +57,24 @@ Arrays
 
 <!-- ##### STRUCT GArray ##### -->
 <para>
-
+Contains the public fields of an <link linkend="glib-arrays">Array</link>.
 </para>
 
-@data: 
-@len: 
+@data: a pointer to the element data. The data may be moved as elements are
+added to the #GArray.
+@len: the number of elements in the #GArray.
 
 <!-- ##### FUNCTION g_array_new ##### -->
 <para>
-
+Creates a new #GArray.
 </para>
 
-@zero_terminated: 
-@clear: 
-@element_size: 
-@Returns: 
+@zero_terminated: TRUE if the array should have an extra element at the end
+which is set to '0'.
+@clear: TRUE if #GArray elements should be automatically cleared to '0'
+when they are allocated.
+@element_size: the size of each element in bytes.
+@Returns: the new #GArray.
 
 
 <!-- ##### FUNCTION g_array_sized_new ##### -->
@@ -47,113 +91,166 @@ Arrays
 
 <!-- ##### MACRO g_array_append_val ##### -->
 <para>
-
+Adds the value on to the end of the array.
+The array will grow in size automatically if necessary.
 </para>
+<note>
+<para>
+g_array_append_val() is a macro which uses a reference to the value
+parameter @v. This means that you cannot use it with literal values
+such as "27". You must use variables.
+</para>
+</note>
 
-@a: 
-@v: 
+@a: a #GArray.
+@v: the value to append to the #GArray.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_append_vals ##### -->
 <para>
-
+Adds @len elements onto the end of the array.
 </para>
 
-@array: 
-@data: 
-@len: 
-@Returns: 
+@array: a #GArray.
+@data: a pointer to the elements to append to the end of the array.
+@len: the number of elements to append.
+@Returns: the #GArray.
 
 
 <!-- ##### MACRO g_array_prepend_val ##### -->
 <para>
-
+Adds the value on to the start of the array.
+The array will grow in size automatically if necessary.
 </para>
+<para>
+This operation is slower than g_array_append_val() since the existing elements
+in the array have to be moved to make space for the new element.
+</para>
+<note>
+<para>
+g_array_prepend_val() is a macro which uses a reference to the value
+parameter @v. This means that you cannot use it with literal values
+such as "27". You must use variables.
+</para>
+</note>
 
-@a: 
-@v: 
+@a: a #GArray.
+@v: the value to prepend to the #GArray.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_prepend_vals ##### -->
 <para>
-
+Adds @len elements onto the start of the array.
+</para>
+<para>
+This operation is slower than g_array_append_vals() since the existing elements
+in the array have to be moved to make space for the new elements.
 </para>
 
-@array: 
-@data: 
-@len: 
-@Returns: 
+@array: a #GArray.
+@data: a pointer to the elements to prepend to the start of the array.
+@len: the number of elements to prepend.
+@Returns: the #GArray.
 
 
 <!-- ##### MACRO g_array_insert_val ##### -->
 <para>
-
+Inserts an element into an array at the given index.
 </para>
+<note>
+<para>
+g_array_insert_val() is a macro which uses a reference to the value
+parameter @v. This means that you cannot use it with literal values
+such as "27". You must use variables.
+</para>
+</note>
 
-@a: 
-@i: 
-@v: 
+@a: a #GArray.
+@i: the index to place the element at.
+@v: the value to insert into the array.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_insert_vals ##### -->
 <para>
-
+Inserts @len elements into a #GArray at the given index.
 </para>
 
-@array: 
-@index: 
-@data: 
-@len: 
-@Returns: 
+@array: a #GArray.
+@index: the index to place the elements at.
+@data: a pointer to the elements to insert.
+@len: the number of elements to insert.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_remove_index ##### -->
 <para>
-
+Removes the element at the given index from a #GArray.
+The following elements are moved down one place.
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a #GArray.
+@index: the index of the element to remove.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_remove_index_fast ##### -->
 <para>
-
+Removes the element at the given index from a #GArray.
+The last element in the array is used to fill in the space, so this function
+does not preserve the order of the #GArray. But it is faster than
+g_array_remove_index().
 </para>
 
-@array: 
-@index: 
-@Returns: 
+@array: a @GArray.
+@index: the index of the element to remove.
+@Returns: the #GArray.
 
 
 <!-- ##### MACRO g_array_index ##### -->
 <para>
+Returns the element of a #GArray at the given index.
+The return value is cast to the given type.
 
+<example>
+<title>Getting a pointer to an element in a GArray.</title>
+<programlisting>
+  EDayViewEvent *event;
+
+  /* This gets a pointer to the 3rd element in the array of EDayViewEvent
+     structs. */
+  event = &amp;g_array_index (events, EDayViewEvent, 3);
+</programlisting>
+</example>
 </para>
 
-@a: 
-@t: 
-@i: 
+@a: a #GArray.
+@t: the type of the elements.
+@i: the index of the element to return.
+@Returns: the element of the #GArray at the index given by @i.
 
 
 <!-- ##### FUNCTION g_array_set_size ##### -->
 <para>
-
+Sets the size of the array, expanding it if necessary.
+If the array was created with clear set to TRUE, the new elements are set to 0.
 </para>
 
-@array: 
-@length: 
-@Returns: 
+@array: a #GArray.
+@length: the new size of the #GArray.
+@Returns: the #GArray.
 
 
 <!-- ##### FUNCTION g_array_free ##### -->
 <para>
-
+Frees the memory allocated for the #GArray.
+If free_segment is TRUE it frees the actual element data as well.
 </para>
 
-@array: 
-@free_segment: 
+@array: a #GArray.
+@free_segment: if TRUE the actual element data is freed as well.
 @Returns: 
 
 

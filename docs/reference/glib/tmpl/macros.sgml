@@ -2,11 +2,11 @@
 Standard Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-
+commonly-used macros.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+These macros provide a few commonly-used features.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,21 +16,21 @@ Standard Macros
 
 <!-- ##### MACRO GLIB_MAJOR_VERSION ##### -->
 <para>
-
+The major version number of the GLib library.
 </para>
 
 
 
 <!-- ##### MACRO GLIB_MINOR_VERSION ##### -->
 <para>
-
+The minor version number of the GLib library.
 </para>
 
 
 
 <!-- ##### MACRO GLIB_MICRO_VERSION ##### -->
 <para>
-
+The micro version number of the GLib library.
 </para>
 
 
@@ -58,124 +58,171 @@ Standard Macros
 
 <!-- ##### MACRO GLIB_CHECK_VERSION ##### -->
 <para>
+Checks the version of the GLib library.
+It returns TRUE if the GLib library is the same or newer than the given
+version.
 
+<example>
+<title>Checking the version of the GLib library.</title>
+<programlisting>
+  if (!GLIB_CHECK_VERSION (1, 2, 0))
+    g_error ("GLib version 1.2.0 or above is needed");
+</programlisting>
+</example>
 </para>
 
-@major: 
-@minor: 
-@micro: 
+@major: the major version number.
+@minor: the minor version number.
+@micro: the micro version number.
 
 
 <!-- ##### MACRO G_DIR_SEPARATOR ##### -->
 <para>
-
+The directory separator character.
+This is '/' on Unix machines and '\' under Windows.
 </para>
 
 
 
 <!-- ##### MACRO G_DIR_SEPARATOR_S ##### -->
 <para>
-
+The directory separator as a string.
+This is "/" on Unix machines and "\" under Windows.
 </para>
 
 
 
 <!-- ##### MACRO G_SEARCHPATH_SEPARATOR ##### -->
 <para>
-
+The search path separator character.
+This is ':' on Unix machines and ';' under Windows.
 </para>
 
 
 
 <!-- ##### MACRO G_SEARCHPATH_SEPARATOR_S ##### -->
 <para>
-
+The search path separator as a string.
+This is ":" on Unix machines and ";" under Windows.
 </para>
 
 
 
 <!-- ##### MACRO TRUE ##### -->
 <para>
-
+Defines the TRUE value for the #gboolean type.
 </para>
 
 
 
 <!-- ##### MACRO FALSE ##### -->
 <para>
-
+Defines the FALSE value for the #gboolean type.
 </para>
 
 
 
 <!-- ##### MACRO NULL ##### -->
 <para>
-
+Defines the standard NULL pointer.
 </para>
 
 
 
 <!-- ##### MACRO MIN ##### -->
 <para>
-
+Calculates the minimum of @a and @b.
 </para>
 
-@a: 
-@b: 
+@a: a numeric value.
+@b: a numeric value.
+@Returns: the minimum of @a and @b.
 
 
 <!-- ##### MACRO MAX ##### -->
 <para>
-
+Calculates the maximum of @a and @b.
 </para>
 
-@a: 
-@b: 
+@a: a numeric value.
+@b: a numeric value.
+@Returns: the maximum of @a and @b.
 
 
 <!-- ##### MACRO ABS ##### -->
 <para>
-
+Calculates the absolute value of @a.
+The absolute value is simply the number with any negative sign taken away.
+</para>
+<para>
+For example,
+<itemizedlist>
+<listitem><para>
+ABS(-10) is 10.
+</para></listitem>
+<listitem><para>
+ABS(10) is also 10.
+</para></listitem>
+</itemizedlist>
 </para>
 
-@a: 
+@a: a numeric value.
+@Returns: the absolute value of @a.
 
 
 <!-- ##### MACRO CLAMP ##### -->
 <para>
-
+Ensures that @x is between the limits set by @low and @high.
+</para>
+<para>
+For example,
+<itemizedlist>
+<listitem><para>
+CLAMP(5, 10, 15) is 10.
+</para></listitem>
+<listitem><para>
+CLAMP(15, 5, 10) is 10.
+</para></listitem>
+<listitem><para>
+CLAMP(20, 15, 25) is 20.
+</para></listitem>
+</itemizedlist>
 </para>
 
-@x: 
-@low: 
-@high: 
+@x: the value to clamp.
+@low: the minimum value allowed.
+@high: the maximum value allowed.
+@Returns: the value of @x clamped to the range between @low and @high.
 
 
 <!-- ##### MACRO G_STRUCT_MEMBER ##### -->
 <para>
-
+Returns a member of a structure at a given offset, using the given type.
 </para>
 
-@member_type: 
-@struct_p: 
-@struct_offset: 
+@member_type: the type of the struct field.
+@struct_p: a pointer to a struct.
+@struct_offset: the offset of the field from the start of the struct, in bytes.
+@Returns: the struct member.
 
 
 <!-- ##### MACRO G_STRUCT_MEMBER_P ##### -->
 <para>
-
+Returns an untyped pointer to a given offset of a struct.
 </para>
 
-@struct_p: 
-@struct_offset: 
+@struct_p: a pointer to a struct.
+@struct_offset: the offset from the start of the struct, in bytes.
+@Returns: an untyped pointer to @struct_p plus @struct_offset bytes.
 
 
 <!-- ##### MACRO G_STRUCT_OFFSET ##### -->
 <para>
-
+Returns the offset, in bytes, of a member of a struct.
 </para>
 
-@struct_type: 
-@member: 
+@struct_type: a structure type, e.g. <structname>GtkWidget</structname>.
+@member: a field in the structure, e.g. <structfield>window</structfield>.
+@Returns: the offset of @member from the start of @struct_type.
 
 

@@ -9,6 +9,9 @@ DOC_MAIN_SGML_FILE=gobject-docs.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=$(top_srcdir)/gobject
 
+# Extra options to supply to gtkdoc-fixref
+FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
+
 # Headers to ignore
 IGNORE_HFILES=
 
@@ -52,7 +55,7 @@ endif
 
 scan:
 	-(cd $(srcdir) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" )
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)")
 
 templates: 
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
@@ -65,7 +68,7 @@ html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	@echo '-- Fixing Crossreferences' 
-	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR)
+	gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 
 clean-local:
 	rm -f *~ *.bak *.signals *-unused.txt

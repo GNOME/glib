@@ -2,21 +2,68 @@
 IO Channels
 
 <!-- ##### SECTION Short_Description ##### -->
-
+portable support for using files, pipes and sockets.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The #GIOChannel data type aims to provide a portable method for using file
+descriptors, pipes, and sockets, and integrating them into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
+Currently full support is available on Unix platforms, though support for
+Windows is only partially complete.
+</para>
+<para>
+To create a new #GIOChannel on Unix systems use g_io_channel_unix_new().
+This works for plain file descriptors, pipes and sockets.
+</para>
+<para>
+Once a #GIOChannel has been created, it can be used in a generic manner
+with the functions g_io_channel_read(), g_io_channel_write(),
+g_io_channel_seek(), and g_io_channel_close().
+</para>
+<para>
+To add a #GIOChannel to the 
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+use g_io_add_watch() or g_io_add_watch_full(). Here you specify which events
+you are interested in on the #GIOChannel, and provide a function to be
+called whenever these events occur.
+</para>
+<para>
+#GIOChannel instances are created with an initial reference count of 1.
+g_io_channel_ref() and g_io_channel_unref() can be used to increment or
+decrement the reference count respectively. When the reference count falls
+to 0, the #GIOChannel is freed. (Though it isn't closed automatically.)
+Using g_io_add_watch() or g_io_add_watch_full() increments a channel's
+reference count.
+</para>
+<para>
+GTK+ contains the convenience function gtk_input_add_full()
+which creates a #GIOChannel from a file descriptor and adds it to the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
+The event source can later be removed with gtk_input_remove().
+Similar functions can also be found in GDK.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
+<variablelist>
 
+<varlistentry>
+<term>gtk_input_add_full(), gtk_input_remove(), gdk_input_add(),
+gdk_input_add_full(), gdk_input_remove()</term>
+<listitem><para>
+Convenience functions for creating #GIOChannel instances and adding them to the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>.
+</para></listitem>
+</varlistentry>
+
+</variablelist>
 </para>
 
 <!-- ##### STRUCT GIOChannel ##### -->
 <para>
-
+A data structure representing an IO Channel. The fields should be considered
+private and should only be accessed with the following functions.
 </para>
 
 @channel_flags: 
@@ -25,40 +72,47 @@ IO Channels
 
 <!-- ##### FUNCTION g_io_channel_unix_new ##### -->
 <para>
-
+Creates a new #GIOChannel given a file descriptor.
+On Unix systems this works for plain files, pipes, and sockets.
+</para>
+<para>
+The returned #GIOChannel has a reference count of 1.
 </para>
 
-@fd: 
-@Returns: 
+@fd: a file descriptor.
+@Returns: a new #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_unix_get_fd ##### -->
 <para>
-
+Returns the file descriptor of the Unix #GIOChannel.
 </para>
 
-@channel: 
-@Returns: 
+@channel: a #GIOChannel, created with g_io_channel_unix_new().
+@Returns: the file descriptor of the #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_init ##### -->
 <para>
-
+Initializes a #GIOChannel struct. This is called by each of the above functions
+when creating a #GIOChannel, and so is not often needed by the application
+programmer (unless you are creating a new type of #GIOChannel).
 </para>
 
-@channel: 
+@channel: a #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_read ##### -->
 <para>
-
+Reads data from a #GIOChannel.
 </para>
 
-@channel: 
-@buf: 
-@count: 
-@bytes_read: 
-@Returns: 
+@channel: a #GIOChannel.
+@buf: a buffer to read the data into (which should be at least count bytes
+long).
+@count: the number of bytes to read from the #GIOChannel.
+@bytes_read: returns the number of bytes actually read.
+@Returns: %G_IO_ERROR_NONE if the operation was successful.
 
 
 <!-- ##### ENUM GIOError ##### -->
@@ -73,29 +127,56 @@ IO Channels
 
 <!-- ##### FUNCTION g_io_channel_write ##### -->
 <para>
-
+Writes data to a #GIOChannel.
 </para>
 
-@channel: 
-@buf: 
-@count: 
-@bytes_written: 
-@Returns: 
+@channel: a #GIOChannel.
+@buf: the buffer containing the data to write.
+@count: the number of bytes to write.
+@bytes_written: the number of bytes actually written.
+@Returns: %G_IO_ERROR_NONE if the operation was successful.
 
 
 <!-- ##### FUNCTION g_io_channel_seek ##### -->
 <para>
-
+Sets the current position in the #GIOChannel, similar to the standard system
+call <function>fseek()</function>.
 </para>
 
-@channel: 
-@offset: 
-@type: 
-@Returns: 
+@channel: a #GIOChannel.
+@offset: an offset, in bytes, which is added to the position specified by
+@type.
+@type: the position in the file, which can be %G_SEEK_CUR (the current
+position), %G_SEEK_SET (the start of the file), or %G_SEEK_END (the end of the
+file).
+@Returns: %G_IO_ERROR_NONE if the operation was successful.
 
 
 <!-- ##### ENUM GSeekType ##### -->
 <para>
+An enumeration specifying the base position for a g_io_channel_seek()
+operation.
+
+<informaltable pgwide=1 frame="none" role="enum">
+<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
+<tbody>
+
+<row>
+<entry>G_SEEK_CUR</entry>
+<entry>the current position in the file.</entry>
+</row>
+
+<row>
+<entry>G_SEEK_SET</entry>
+<entry>the start of the file.</entry>
+</row>
+
+<row>
+<entry>G_SEEK_END</entry>
+<entry>the end of the file.</entry>
+</row>
+
+</tbody></tgroup></informaltable>
 
 </para>
 
@@ -105,56 +186,100 @@ IO Channels
 
 <!-- ##### FUNCTION g_io_channel_close ##### -->
 <para>
-
+Closes a #GIOChannel.
+The #GIOChannel will be freed when its reference count drops to 0.
 </para>
 
-@channel: 
+@channel: a #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_ref ##### -->
 <para>
-
+Increments the reference count of a #GIOChannel.
 </para>
 
-@channel: 
+@channel: a #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_channel_unref ##### -->
 <para>
-
+Decrements the reference count of a #GIOChannel.
 </para>
 
-@channel: 
+@channel: a #GIOChannel.
 
 
 <!-- ##### FUNCTION g_io_add_watch ##### -->
 <para>
-
+Adds the #GIOChannel into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+with the default priority.
 </para>
 
-@channel: 
-@condition: 
-@func: 
-@user_data: 
-@Returns: 
+@channel: a #GIOChannel.
+@condition: the condition to watch for.
+@func: the function to call when the condition is satisfied.
+@user_data: user data to pass to @func.
+@Returns: the event source id.
 
 
 <!-- ##### FUNCTION g_io_add_watch_full ##### -->
 <para>
-
+Adds the #GIOChannel into the
+<link linkend="glib-The-Main-Event-Loop">main event loop</link>
+with the given priority.
 </para>
 
-@channel: 
-@priority: 
-@condition: 
-@func: 
-@user_data: 
-@notify: 
-@Returns: 
+@channel: a #GIOChannel.
+@priority: the priority of the #GIOChannel source.
+@condition: the condition to watch for.
+@func: the function to call when the condition is satisfied.
+@user_data: user data to pass to @func.
+@notify: the function to call when the source is removed.
+@Returns: the event source id.
 
 
 <!-- ##### ENUM GIOCondition ##### -->
 <para>
+A bitwise combination representing a condition to watch for on an event
+source.
+
+<informaltable pgwide=1 frame="none" role="enum">
+<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
+<tbody>
+
+<row>
+<entry>G_IO_IN</entry>
+<entry>There is data to read.</entry>
+</row>
+
+<row>
+<entry>G_IO_OUT</entry>
+<entry>Data can be written (without blocking).</entry>
+</row>
+
+<row>
+<entry>G_IO_PRI</entry>
+<entry>There is urgent data to read.</entry>
+</row>
+
+<row>
+<entry>G_IO_ERR</entry>
+<entry>Error condition.</entry>
+</row>
+
+<row>
+<entry>G_IO_HUP</entry>
+<entry>Hung up (the connection has been broken, usually for pipes and
+sockets).</entry>
+</row>
+
+<row>
+<entry>G_IO_NVAL</entry>
+<entry>Invalid request. The file descriptor is not open.</entry>
+</row>
+
+</tbody></tgroup></informaltable>
 
 </para>
 
@@ -167,18 +292,22 @@ IO Channels
 
 <!-- ##### USER_FUNCTION GIOFunc ##### -->
 <para>
-
+Specifies the type of function passed to g_io_add_watch() or
+g_io_add_watch_full(), which is called when the requested condition on a
+#GIOChannel is satisfied.
 </para>
 
-@source: 
-@condition: 
-@data: 
-@Returns: 
+@source: the #GIOChannel event source.
+@condition: the condition which has been satisfied.
+@data: user data set in g_io_add_watch() or g_io_add_watch_full().
+@Returns: the function should return FALSE if the event source should be
+removed.
 
 
 <!-- ##### STRUCT GIOFuncs ##### -->
 <para>
-
+A table of functions used to handle different types of #GIOChannel in a
+generic way.
 </para>
 
 @io_read: 

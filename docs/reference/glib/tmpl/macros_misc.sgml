@@ -2,11 +2,12 @@
 Miscellaneous Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-
+specialised macros which are not used often.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+These macros provide more specialized features which are not needed so often
+by application programmers.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,21 +17,24 @@ Miscellaneous Macros
 
 <!-- ##### MACRO G_INLINE_FUNC ##### -->
 <para>
-
+Used to declare inline functions. If inline functions are not supported on
+the particular platform, the macro evaluates to the empty string.
 </para>
 
 
 
 <!-- ##### MACRO G_STMT_START ##### -->
 <para>
-
+Used within multi-statement macros so that they can be used in places where
+only one statement is expected by the compiler.
 </para>
 
 
 
 <!-- ##### MACRO G_STMT_END ##### -->
 <para>
-
+Used within multi-statement macros so that they can be used in places where
+only one statement is expected by the compiler.
 </para>
 
 
@@ -45,11 +49,11 @@ Miscellaneous Macros
 
 <!-- ##### MACRO G_VA_COPY ##### -->
 <para>
-
+Portable way to copy <type>va_list</type> variables.
 </para>
 
-@ap1: 
-@ap2: 
+@ap1: the <type>va_list</type> variable to place a copy of @ap2 in.
+@ap2: a <type>va_list</type>.
 
 
 <!-- ##### MACRO G_STRINGIFY ##### -->
@@ -62,68 +66,100 @@ Miscellaneous Macros
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->
 <para>
-
+Expands to "__extension__" when GNU C is used as the compiler.
+This simply tells GNU C not to warn about the following non-standard code
+when compiling with the -pedantic option.
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_CONST ##### -->
 <para>
-
+Expands to the GNU C const function attribute if the compiler is GNU C.
+This enables optimization of the function.
+See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
-
+Expands to the GNU C noreturn function attribute if the compiler is GNU C.
+It is used for declaring functions which never return.
+It enables optimization of the function, and avoids possible compiler
+warnings. See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_UNUSED ##### -->
 <para>
-
+Expands to the GNU C unused function attribute if the compiler is GNU C.
+It is used for declaring functions which may never be used.
+It avoids possible compiler warnings. See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_PRINTF ##### -->
 <para>
-
+Expands to the GNU C format function attribute if the compiler is GNU C.
+This is used for declaring functions which take a variable number of
+arguments, with the same syntax as <function>printf()</function>.
+It allows the compiler to type-check the arguments passed to the function.
+See the GNU C documentation for details. 
 </para>
 
-@format_idx: 
-@arg_idx: 
+@format_idx: the index of the argument corresponding to the format string.
+(The arguments are numbered from 1).
+@arg_idx: the index of the first of the format arguments.
 
 
 <!-- ##### MACRO G_GNUC_SCANF ##### -->
 <para>
-
+Expands to the GNU C format function attribute if the compiler is GNU C.
+This is used for declaring functions which take a variable number of
+arguments, with the same syntax as <function>scanf()</function>.
+It allows the compiler to type-check the arguments passed to the function.
+See the GNU C documentation for details. 
 </para>
 
-@format_idx: 
-@arg_idx: 
+@format_idx: the index of the argument corresponding to the format string.
+(The arguments are numbered from 1).
+@arg_idx: the index of the first of the format arguments.
 
 
 <!-- ##### MACRO G_GNUC_FORMAT ##### -->
 <para>
+Expands to the GNU C format_arg function attribute if the compiler is GNU C.
+This is used for declaring functions which take a variable number of
+parameters, like <function>printf()</function> and
+<function>scanf()</function>. See the GNU C documentation for details. 
 
+FIXME: I can't find this in my GNU C documentation. Take out?
 </para>
 
-@arg_idx: 
+@arg_idx: the index of the argument.
 
 
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
-
+Expands to the GNU C __FUNCTION__ variable if the compiler is GNU C,
+or "" if it isn't.
+The GNU C __FUNCTION__ variable contains the name of the current function.
+See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_PRETTY_FUNCTION ##### -->
 <para>
-
+Expands to the GNU C __PRETTY_FUNCTION__ variable if the compiler is GNU C,
+or "" if it isn't.
+The GNU C __PRETTY_FUNCTION__ variable contains the name of the current
+function. For a C program this is the same as the __FUNCTION__ variable
+but for C++ it also includes extra information such as the class
+and function prototype. See the GNU C documentation for details. 
 </para>
 
 
