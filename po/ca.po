@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.0.3\n"
-"POT-Creation-Date: 2002-12-16 17:42-0500\n"
-"PO-Revision-Date: 2002-06-04 01:23+0200\n"
+"Project-Id-Version: glib 2.1.5.2\n"
+"POT-Creation-Date: 2002-12-19 15:55+0100\n"
+"PO-Revision-Date: 2002-12-19 15:57+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
-"Language-Team: Catalan <gnome@softcatala.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -161,13 +161,9 @@ msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 msgid "Incorrect message size"
 msgstr "Mida incorrecta del missatge"
 
-#: glib/giowin32.c:1045 glib/giowin32.c:1098
+#: glib/giowin32.c:1034 glib/giowin32.c:1087
 msgid "Socket error"
 msgstr "Error de sòcol"
-
-#: glib/giowin32.c:1298
-msgid "Channel set flags unsupported"
-msgstr "No es permet l'ús dels indicadors de definició del canal"
 
 #: glib/gmarkup.c:222
 #, c-format
@@ -447,9 +443,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "És impossible llegir des del conducte fill (%s)"
 
 #: glib/gspawn-win32.c:784
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "És impossible executar el procés fill (%s)"
+msgstr "És impossible executar el programa auxiliar"
 
 #: glib/gspawn-win32.c:817 glib/gspawn.c:1166
 #, c-format
@@ -527,3 +522,6 @@ msgstr "Seqüència invàlida a l'entrada de la conversió"
 #: glib/gutf8.c:1373 glib/gutf8.c:1469
 msgid "Character out of range for UTF-16"
 msgstr "Caràcter fora d'abast per a UTF-16"
+
+#~ msgid "Channel set flags unsupported"
+#~ msgstr "No es permet l'ús dels indicadors de definició del canal"
