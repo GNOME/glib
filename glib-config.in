@@ -94,15 +94,18 @@ if test "$echo_cflags" = "yes"; then
 	echo -I@libdir@/glib/include $includes $cflags
 fi
 if test "$echo_libs" = "yes"; then
-	libs=""
+	libsp=""
+	libsa=""
 	if test "$lib_glib" = "yes"; then
-		libs="$libs -lglib"
-	fi
-	if test "$lib_gmodule" = "yes"; then
-		libs="@G_MODULE_LDFLAGS@ -lgmodule $libs @G_MODULE_LIBS@"
+		libsp="$libsp -lglib"
 	fi
 	if test "$lib_gthread" = "yes"; then
-		libs="-lgthread $libs @G_THREAD_LIBS@"
+		libsp="-lgthread $libsp"
+		libsa="$libsa @G_THREAD_LIBS@"
 	fi
-	echo -L@libdir@ $libs
+	if test "$lib_gmodule" = "yes"; then
+		libsp="@G_MODULE_LDFLAGS@ -lgmodule $libsp"
+		libsa="$libsa @G_MODULE_LIBS@"
+	fi
+	echo -L@libdir@ $libsp $libsa
 fi

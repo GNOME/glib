@@ -1,3 +1,8 @@
+Wed Dec 16 02:02:48 1998  Tim Janik  <timj@gtk.org>
+
+	* glib-config.in (lib_glib): fixed library and flag ordering for
+	--libs
+
 Tue Dec 15 17:17:46 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h giounix.c giochannel.c: Use an "inheritance"
