@@ -254,7 +254,8 @@ my_enum_complete_type_info (GTypePlugin     *plugin,
 {
   static const GEnumValue values[] = {
     { MY_ENUM_FOO, "MY_ENUM_FOO", "foo" },
-    { MY_ENUM_BAR, "MY_ENUM_BAR", "bar" }
+    { MY_ENUM_BAR, "MY_ENUM_BAR", "bar" },
+    { 0, NULL, NULL }
   };  
    
   g_enum_complete_type_info (type, info, values);  
