@@ -283,7 +283,7 @@ main (int   argc,
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
 
-  gchar *mem[10000], *tmp_string, *tmp_string_2;
+  gchar *mem[10000], *tmp_string = NULL, *tmp_string_2;
   gint i, j;
   GArray *garray;
   GPtrArray *gparray;

@@ -1,3 +1,36 @@
+Sat Jan 23 22:45:59 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* ghash.c (g_hash_table_lookup_node, g_hash_table_lookup,
+		   g_hash_table_insert, g_hash_table_remove,
+		   g_hash_table_lookup_extended):
+	  - Fixed bug that overwrote nodes in hash buckets instead of
+	    adding them to the hash bucket node list.
+	    Hash tables now work as advertised.
+
+	(g_hash_table_resize):
+	  - Use g_new0 instead of manual init.
+	  - Space out code a bit for readability.
+
+	(g_hash_nodes_destroy):
+	  - Replaced "if (!hash_node) return;" with
+	    "if (hash_node) {do stuff}".
+	    Testing takes up less code space than explicit call to
+	    'return' before end of function.  (look at gcc -S)
+
+	Updated module header copyright to 1999.
+	New module macro G_HASH_BUCKET for (table,key)->bucket lookups.
+
+	* tests/hash-test.c:
+	- Add two new tests, one with strings as the keys and values, and
+	  one with ints as the keys and values.  Tests indirect (strings)
+	  and direct (ints) hashing.
+	- Cleanup unused junk left over from testglib.c.
+	- Converted a g_print call to g_assert_not_reached.
+	- Updated copyright to 1999.
+
+	* testglib.c, tests/string-test.c:
+	- Init 'tmp_string' var to NULL, silencing uninit-var warning.
+
 1999-01-23  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gutils.c (g_get_any_init) [HAVE_GETPWUID_R]:
