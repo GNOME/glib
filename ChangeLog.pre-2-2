@@ -1,3 +1,7 @@
+2002-02-20  Simos Xenitellis  <simos@hellug.gr>
+
+	* configure.in: Added el to ALL_LINGUAS (Greek language).
+
 2002-02-19  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/gspawn-win32.c: Include <config.h> first here, too. Use

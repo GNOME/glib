@@ -1,0 +1,476 @@
+# Greek translation of glib.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Simos Xenitellis <simos@hellug.gr>, 2002.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 1.0\n"
+"POT-Creation-Date: 2002-02-20 13:27+0000\n"
+"PO-Revision-Date: 2002-02-20 14:33+0000\n"
+"Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
+"Language-Team: Greek <nls@tux.hellug.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:390
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr ""
+
+#: glib/gconvert.c:394
+#, fuzzy, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Δεν ήταν δυνατή η μετονομασία του φακέλου %s στο %s: %s"
+
+#: glib/gconvert.c:592 glib/gconvert.c:882 glib/giochannel.c:1282 glib/giochannel.c:1324 glib/giochannel.c:2163 glib/gutf8.c:875 glib/gutf8.c:1320
+msgid "Invalid byte sequence in conversion input"
+msgstr ""
+
+# gconf/gconftool.c:1181
+#: glib/gconvert.c:597 glib/gconvert.c:813 glib/giochannel.c:1289 glib/giochannel.c:2175
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Σφάλμα κατά τη μετατροπή: %s"
+
+#: glib/gconvert.c:615 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212 glib/gutf8.c:1316
+msgid "Partial character sequence at end of input"
+msgstr ""
+
+#: glib/gconvert.c:788
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr ""
+
+#: glib/gconvert.c:1593
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr ""
+
+#: glib/gconvert.c:1603
+#, fuzzy, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "Το αρχείο εικόνας '%s' δε βρέθηκε.\n"
+
+#: glib/gconvert.c:1620
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "Το URI '%s' δεν είναι έγκυρο"
+
+#: glib/gconvert.c:1632
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr ""
+
+#: glib/gconvert.c:1648
+#, fuzzy, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "Αυτό το μήνυμα δεν περιέχει έγκυρους παραλήπτες:"
+
+#: glib/gconvert.c:1719
+#, fuzzy, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Η αποθήκη του root %s δεν είναι απόλυτη θέση"
+
+#: glib/gconvert.c:1729
+msgid "Invalid hostname"
+msgstr "Ακατάλληλο όνομα συστήματος"
+
+#
+#: glib/gdir.c:79
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
+
+#
+#: glib/gfileutils.c:337 glib/gfileutils.c:402
+#, fuzzy, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Αδύνατη η δημιουργία προσωρινού αρχείου %s"
+
+#
+#: glib/gfileutils.c:348
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Σφάλμα ανάγνωσης αρχείου '%s': %s"
+
+# gconf/gconf-internals.c:2416
+#: glib/gfileutils.c:426
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Αποτυχία ανάγνωσης από το αρχείο '%s': %s"
+
+# gconf/gconf-internals.c:2416
+#: glib/gfileutils.c:465 glib/gfileutils.c:533
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Αποτυχία ανοίγματος αρχείου `%s': %s"
+
+# gconf/gconfd.c:1701
+#: glib/gfileutils.c:479
+#, fuzzy, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Αποτυχία λήψης όλων των εγγραφών στο `%s': %s"
+
+# gconf/gconf-internals.c:2416
+#: glib/gfileutils.c:505
+#, fuzzy, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Αδύνατο το κλείσιμο του αρχείου `%s': %s"
+
+#: glib/gfileutils.c:712
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr ""
+
+#: glib/gfileutils.c:724
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr ""
+
+# gconf/gconf-internals.c:2416
+#: glib/gfileutils.c:745
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
+
+#: glib/giochannel.c:1110
+#, fuzzy, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Η μέθοδος που απαιτείται για την φόρτωση του '%s' δεν υποστηρίζεται"
+
+#: glib/giochannel.c:1114
+#, fuzzy, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Δεν ήταν δυνατή η μετονομασία του φακέλου %s στο %s: %s"
+
+#: glib/giochannel.c:1460
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr ""
+
+#: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
+msgid "Leftover unconverted data in read buffer"
+msgstr ""
+
+#: glib/giochannel.c:1587 glib/giochannel.c:1661
+msgid "Channel terminates in a partial character"
+msgstr ""
+
+#: glib/giochannel.c:1647
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr ""
+
+#
+#: glib/giowin32.c:704 glib/giowin32.c:733
+msgid "Incorrect message size"
+msgstr "Εσφαλμένο μέγεθος μηνύματος"
+
+#: glib/giowin32.c:1037 glib/giowin32.c:1090
+msgid "Socket error"
+msgstr "Σφάλμα υποδοχέα (socket)"
+
+#: glib/giowin32.c:1290
+msgid "Channel set flags unsupported"
+msgstr ""
+
+# gconf/gconfd.c:1676
+#: glib/gmarkup.c:219
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Σφάλμα στη γραμμή %d χαρακτήρας %d: %s"
+
+#
+#: glib/gmarkup.c:303
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Σφάλμα στη γραμμή %d: %s"
+
+#: glib/gmarkup.c:382
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+
+#: glib/gmarkup.c:392
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape it "
+"as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:428
+#, fuzzy, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Το όνομα \"%s\" δεν είναι έγκυρο. Παρακαλώ χρησιμοποιήστε άλλο όνομα."
+
+#: glib/gmarkup.c:472
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr ""
+
+#: glib/gmarkup.c:482
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:528
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+
+#: glib/gmarkup.c:553
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr ""
+
+#: glib/gmarkup.c:570
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+
+#: glib/gmarkup.c:580
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:837 glib/gmarkup.c:865 glib/gmarkup.c:896
+msgid "Invalid UTF-8 encoded text"
+msgstr ""
+
+#: glib/gmarkup.c:932
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr ""
+
+#: glib/gmarkup.c:970
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+
+#: glib/gmarkup.c:1033
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1120
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1161
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+
+#: glib/gmarkup.c:1244
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1384
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+
+#: glib/gmarkup.c:1422
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+
+#: glib/gmarkup.c:1433
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+
+#: glib/gmarkup.c:1442
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1574
+msgid "Document was empty or contained only whitespace"
+msgstr ""
+
+#: glib/gmarkup.c:1588
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr ""
+
+#: glib/gmarkup.c:1596 glib/gmarkup.c:1640
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+
+#: glib/gmarkup.c:1604
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending the "
+"tag <%s/>"
+msgstr ""
+
+#: glib/gmarkup.c:1610
+msgid "Document ended unexpectedly inside an element name"
+msgstr ""
+
+#: glib/gmarkup.c:1615
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr ""
+
+#: glib/gmarkup.c:1620
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr ""
+
+#: glib/gmarkup.c:1626
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+
+#: glib/gmarkup.c:1633
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr ""
+
+#: glib/gmarkup.c:1648
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1654
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+
+# gconf/gconf-internals.c:1577
+#: glib/gshell.c:71
+#, fuzzy
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Το παρατιθέμενο αλφαριθμητικό δεν αρχίζει με εισαγωγικό σημείο"
+
+#: glib/gshell.c:161
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+
+#: glib/gshell.c:528
+#, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr ""
+
+#: glib/gshell.c:535
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+
+#: glib/gshell.c:547
+msgid "Text was empty (or contained only whitespace)"
+msgstr ""
+
+#: glib/gspawn-win32.c:214
+#, fuzzy
+msgid "Failed to read data from child process"
+msgstr "Αδύνατη η διχάλωση θυγατρικής διεργασίάς"
+
+#: glib/gspawn-win32.c:365
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+
+# gconf/gconftool.c:881
+#: glib/gspawn-win32.c:843 glib/gspawn.c:914
+#, fuzzy, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Αποτυχία λήψης IOR για το πελάτη: %s"
+
+#: glib/gspawn-win32.c:931 glib/gspawn.c:1119
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Αποτυχία αλλαγής καταλόγου '%s' (%s)"
+
+#: glib/gspawn-win32.c:940
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας (%s)"
+
+#: glib/gspawn-win32.c:981 glib/gspawn.c:1228
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr ""
+
+# gconf/gconf-internals.c:2416
+#: glib/gspawn.c:161
+#, fuzzy, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Αδύνατη η δημιουργία του αρχείου `%s': %s"
+
+#: glib/gspawn.c:293
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+
+#: glib/gspawn.c:376
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Μη αναμενόμενο σφάλμα στη waitpid() (%s)"
+
+# gconf/gconf-internals.c:2416
+#: glib/gspawn.c:979
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Αποτυχία δικράνωσης (%s)"
+
+# gconf/gconf-internals.c:2416
+#: glib/gspawn.c:1129
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας \"%s\" (%s)"
+
+#: glib/gspawn.c:1139
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr ""
+
+#: glib/gspawn.c:1148
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Αποτυχία δικράνωσης θυγατρικής διεργασίάς (%s)"
+
+#: glib/gspawn.c:1156
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Άγνωστο σφάλμα κατά την εκτέλεση της θυγατρικής διεργασίας \"%s\""
+
+#: glib/gspawn.c:1178
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+
+#: glib/gutf8.c:950
+#, fuzzy
+msgid "Character out of range for UTF-8"
+msgstr "Αριθμός χαρακτήρων (χωρίς κενά)"
+
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189 glib/gutf8.c:1330 glib/gutf8.c:1426
+msgid "Invalid sequence in conversion input"
+msgstr ""
+
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
+msgid "Character out of range for UTF-16"
+msgstr ""
+

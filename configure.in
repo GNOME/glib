@@ -268,7 +268,7 @@ dnl
 dnl gettext support
 dnl
 
-ALL_LINGUAS="az ca de es eu fr gl ja ko nl nn no pl pt ro ru sk sl sv ta tr uk zh_CN zh_TW"
+ALL_LINGUAS="az ca de el es eu fr gl ja ko nl nn no pl pt ro ru sk sl sv ta tr uk zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 if test "$gt_cv_func_dgettext_libc" = "yes" || test "$gt_cv_func_dgettext_libintl" = "yes"; then
