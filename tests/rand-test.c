@@ -40,15 +40,31 @@ int main()
     {
       gint32 i;
       gdouble d;
+      gboolean b;
 
       i = g_rand_int_range (rand, 8,16);
       g_assert (i >= 8 && i < 16);
       
+      i = g_random_int_range (8,16);
+      g_assert (i >= 8 && i < 16);
+
       d = g_rand_double (rand);
+      g_assert (d >= 0 && d < 1);
+
+      d = g_random_double ();
       g_assert (d >= 0 && d < 1);
 
       d = g_rand_double_range (rand, -8, 32);
       g_assert (d >= -8 && d < 32);
+ 
+      d = g_random_double_range (-8, 32);
+      g_assert (d >= -8 && d < 32);
+ 
+      b = g_random_boolean ();
+      g_assert (b == TRUE || b  == FALSE);
+ 
+      b = g_rand_boolean (rand);
+      g_assert (b == TRUE || b  == FALSE);     
     }
 
   g_rand_free (rand);

@@ -1,5 +1,11 @@
 2001-05-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* grand.h (g_random_boolean, g_rand_boolean): Fix to stupid bug in
+	g_random_boolean, also both functions now return 1 or 0 instead of
+	1<<15 or 0.
+
+	* tests/rand-test.c: Extended testcases.
+
 	* configure.in: Remove G_HAVE_ISO_CXX_VARARGS and
 	G_HAVE_ISO_C_VARARGS and define G_HAVE_ISO_VARARGS directly
 	guarded by #if(n)def __cplusplus.
