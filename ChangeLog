@@ -1,3 +1,9 @@
+2004-02-25  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in, glib/gthread.c: For the PID thread priorities
+	surrogate use gettid instead of getpid. This also works with nptl
+	(on linux-2.6), as well as with linuxthreads (on linux-2.4).
+
 2004-02-24  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/grand.c: Add Since: 2.4, where due
