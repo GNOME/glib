@@ -1,3 +1,11 @@
+2002-04-19  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn.c (g_spawn_command_line_sync): Add Windows-specific
+	note to the gtk-doc comment.
+
+	* glib/gspawn-win32.c: Remove the copy-pasted gtk-doc comment
+	blocks. It's enough to have them in gspawn.c.
+
 2002-04-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthread/gthread-impl.c (g_thread_init): Fixed typo. (#78985)
