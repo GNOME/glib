@@ -1,3 +1,10 @@
+1998-12-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* garray.c (g_ptr_array_remove_index): Fixed size in g_memmove,
+	reported by Alexander Larsson <alla@lysator.liu.se>.
+
+	* gmem.c: Fixed bug, that made compile fail for -DENABLE_MEM_PROFILE. 
+
 Wed Dec 16 23:04:26 CST 1998 Shawn T. Amundson <amundson@gtk.org>
 
 	* Released GLib 1.1.9 

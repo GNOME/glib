@@ -304,9 +304,9 @@ g_realloc (gpointer mem,
 #if defined(ENABLE_MEM_PROFILE) || defined(ENABLE_MEM_CHECK)
       t = (gulong*) ((guchar*) mem - SIZEOF_LONG);
 #ifdef ENABLE_MEM_PROFILE
-      g_mutex_lock (mem_profile);
+      g_mutex_lock (mem_profile_lock);
       freed_mem += *t;
-      g_mutex_unlock (mem_profile);
+      g_mutex_unlock (mem_profile_lock);
 #endif /* ENABLE_MEM_PROFILE */
       mem = t;
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
@@ -375,9 +375,9 @@ g_free (gpointer mem)
       t = (gulong*) ((guchar*) mem - SIZEOF_LONG);
       size = *t;
 #ifdef ENABLE_MEM_PROFILE     
-      g_mutex_lock (mem_profile);
+      g_mutex_lock (mem_profile_lock);
       freed_mem += size;
-      g_mutex_unlock (mem_profile);
+      g_mutex_unlock (mem_profile_lock);
 #endif /* ENABLE_MEM_PROFILE */
       mem = t;
 #endif /* ENABLE_MEM_PROFILE || ENABLE_MEM_CHECK */
@@ -408,12 +408,12 @@ g_mem_profile (void)
   gulong local_allocated_mem;
   gulong local_freed_mem;  
 
-  g_mutex_lock (mem_profile);
+  g_mutex_lock (mem_profile_lock);
   for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
     local_allocations[i] = allocations[i];
   local_allocated_mem = allocated_mem;
   local_freed_mem = freed_mem;
-  g_mutex_unlock (mem_profile);
+  g_mutex_unlock (mem_profile_lock);
 
   for (i = 0; i < (MEM_PROFILE_TABLE_SIZE - 1); i++)
     if (local_allocations[i] > 0)

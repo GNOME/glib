@@ -338,7 +338,7 @@ g_ptr_array_remove_index (GPtrArray* farray,
   
   if (index != array->len - 1)
     g_memmove (array->pdata + index, array->pdata + index + 1, 
-	       array->len - index - 1);
+	       sizeof (gpointer) * (array->len - index - 1));
   
   array->pdata[array->len - 1] = NULL;
 
