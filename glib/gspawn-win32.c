@@ -787,7 +787,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
   switch (buf[0])
     {
     case CHILD_NO_ERROR:
-      if (dont_wait)
+      if (child_pid && dont_wait)
 	{
 	  /* helper is our HANDLE for gspawn-win32-helper. It has
 	   * told us the HANDLE of its child. Duplicate that into
@@ -798,7 +798,7 @@ do_spawn_with_pipes (gboolean              dont_wait,
 				0, TRUE, DUPLICATE_SAME_ACCESS))
 	    *child_pid = 0;
 	}
-      else
+      else if (child_pid)
 	*child_pid = 0;
       break;
       
