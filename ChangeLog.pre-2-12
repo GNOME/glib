@@ -1,3 +1,16 @@
+Fri Sep 12 16:26:21 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* tests/gobject/ configure.in: New directory, framework 
+	for automated GObject tests.
+
+	* tests/gobject/override.c: Move testoverride.c
+	here, automate.
+
+	* tests/gobject/ifaceinit.c: Move testifaceinit.c here.
+
+	* tests/gobject/accumulator.c: Test signal accumulators,
+	including g_signal_accumulator_true_handled.
+
 2003-09-12  Noah Levitt  <nlevitt@columbia.edu>
 
 	* glib/gen-unicode-tables.pl: Take a directory where to look for the

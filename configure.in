@@ -2549,6 +2549,7 @@ docs/reference/glib/version.xml
 docs/reference/gobject/Makefile
 docs/reference/gobject/version.xml
 tests/Makefile
+tests/gobject/Makefile
 m4macros/Makefile
 ])
 

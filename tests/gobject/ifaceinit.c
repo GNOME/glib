@@ -21,6 +21,8 @@
 #define	G_LOG_DOMAIN "TestIfaceInit"
 #include	<glib-object.h>
 
+#include "testcommon.h"
+
 /* What this test tests is the ability to add interfaces dynamically; in
  * particular adding interfaces to a class while that class is being
  * initialized.
@@ -34,60 +36,6 @@
  * - TestIface5 is added in test_object_test_iface1_init()
  * - TestIface6 is added after the class is initialized
  */
-
-#define DEFINE_TYPE(name, prefix,				\
-		    class_init, base_init, instance_init,	\
-		    parent_type)				\
-GType								\
-prefix ## _get_type (void)					\
-{								\
-  static GType object_type = 0;					\
-								\
-  if (!object_type)						\
-    {								\
-      static const GTypeInfo object_info =			\
-	{							\
-	  sizeof (name ## Class),				\
-	  (GBaseInitFunc) base_init,				\
-	  (GBaseFinalizeFunc) NULL,				\
-	  (GClassInitFunc) class_init,				\
-	  (GClassFinalizeFunc) NULL,				\
-	  NULL,           /* class_data */			\
-	  sizeof (name),					\
-	  0,             /* n_prelocs */			\
-	  (GInstanceInitFunc) instance_init			\
-	};							\
-								\
-      object_type = g_type_register_static (parent_type,	\
-					    # name,		\
-					    &object_info, 0);	\
-    }								\
-								\
-  return object_type;						\
-}
-
-#define DEFINE_IFACE(name, prefix, base_init, dflt_init)	\
-GType								\
-prefix ## _get_type (void)					\
-{								\
-  static GType iface_type = 0;					\
-								\
-  if (!iface_type)						\
-    {								\
-      static const GTypeInfo iface_info =			\
-      {								\
-	sizeof (name ## Class),					\
-	(GBaseInitFunc)	base_init,				\
-	(GBaseFinalizeFunc) NULL,				\
-	(GClassInitFunc) dflt_init,				\
-      };							\
-								\
-      iface_type = g_type_register_static (G_TYPE_INTERFACE,	\
-					    # name,		\
-					    &iface_info, 0);	\
-    }								\
-  return iface_type;						\
-}
 
 /* All 6 interfaces actually share the same class structure, though
  * we use separate typedefs
@@ -241,7 +189,6 @@ test_object_test_iface1_init (TestIface1Class *iface)
   ADD_IFACE(5);
 
   iface1 = TRUE;
-  g_print ("interface1 object initializer\n");
 }
 
 static void
@@ -305,7 +252,6 @@ test_iface1_default_init (TestIface1Class *iface,
   g_assert (iface->val == 0);
   g_assert (iface->default_val == 0);
   iface->default_val = 0x111111;
-  g_print ("interface1 default initializer\n");
 }
 
 static void
@@ -330,7 +276,6 @@ test_iface1_base_init (TestIface1Class *iface)
     ADD_IFACE(3);
   
   base1 = TRUE;
-  g_print ("interface1 base initializer\n");
 }
 
 static void
@@ -415,10 +360,10 @@ test_object_class_init (TestObjectClass *class)
 
 static DEFINE_TYPE(BaseObject, base_object,
 		   NULL, base_object_base_init, NULL,
-		   G_TYPE_OBJECT);
+		   G_TYPE_OBJECT)
 static DEFINE_TYPE(TestObject, test_object,
 		   test_object_class_init, NULL, NULL,
-		   BASE_TYPE_OBJECT);
+		   BASE_TYPE_OBJECT)
 
 int
 main (int   argc,
@@ -467,8 +412,6 @@ main (int   argc,
   g_assert (iface && iface->val == 0x50005 && iface->base_val == 0x550055);
   iface = TEST_IFACE6_GET_CLASS (object);
   g_assert (iface && iface->val == 0x60006 && iface->base_val == 0x660066);
-
-  g_print ("testifaceinit: all done.\n");
 
   return 0;
 }

@@ -1,0 +1,8 @@
+Makefile
+Makefile.in
+accumulator
+ifaceinit
+override
+testmarshal.c
+testmarshal.h
+stamp-testmarshal.h
