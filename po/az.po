@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 1.3.2\n"
-"POT-Creation-Date: 2001-09-18 18:22+0200\n"
-"PO-Revision-Date: 2001-06-07 22:01GMT +0200\n"
+"Project-Id-Version: glib 1.3.8\n"
+"POT-Creation-Date: 2001-09-19 21:31-0400\n"
+"PO-Revision-Date: 2001-09-29 22:01GMT +0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azerbaijani Turkish <linuxaz@azerimal.net>\n"
 "MIME-Version: 1.0\n"
@@ -46,37 +46,36 @@ msgstr "fallback '%s' hərf dəstəsi '%s' ə dönüşdürülə bilmir"
 #: glib/gconvert.c:1202
 #, c-format
 msgid "The URI `%s' is not an absolute URI using the file scheme"
-msgstr ""
+msgstr "`%s' URI-si fayl sxemini işlədən mütləq URI deyildir"
 
 #: glib/gconvert.c:1212
 #, c-format
 msgid "The local file URI `%s' may not include a `#'"
-msgstr ""
+msgstr "Yerli fayl uRI-si `%s' `#' daxil edə bilməz"
 
 #: glib/gconvert.c:1229
 #, c-format
 msgid "The URI `%s' is invalid"
-msgstr ""
+msgstr "`%s' URI-si səhvdir"
 
 #: glib/gconvert.c:1238
 #, c-format
 msgid "The hostname of the URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "`%s' URI-sinin qovşaq adı səhv qaçırılmış xarakterlər daxil edir"
 
 #: glib/gconvert.c:1254
 #, c-format
 msgid "The URI `%s' contains invalidly escaped characters"
-msgstr ""
+msgstr "`%s'in URİ-si səhv qaçırılmış xarakterlər daxil edir"
 
 #: glib/gconvert.c:1297
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr ""
+msgstr "`%s'in cığır adı mütləq cığır deyildir"
 
 #: glib/gconvert.c:1311
-#, fuzzy
 msgid "Invalid byte sequence in hostname"
-msgstr "dönüşdürmə girişində hökmsüz bayt qatarı"
+msgstr "Qovşaq adında hökmsüz bayt qatarı"
 
 #: glib/gfileutils.c:309
 #, c-format
@@ -104,9 +103,9 @@ msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Fayl açma iflası '%s': fdopen() iflası: %s"
 
 #: glib/gfileutils.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Şablon '%s' hökmsüzdür, '%s' daxil etməməlidir"
+msgstr "Nümunə '%s' hökmsüzdür, '%s' daxil etməməlidir"
 
 #: glib/gfileutils.c:667
 #, c-format
@@ -326,7 +325,7 @@ msgstr ""
 "Sənəd bir xüsusiyyət qiyməti içində ikən gözlənilməz bir şəkildə qurtardı"
 
 #: glib/gmarkup.c:1614
-#, fuzzy, c-format
+#, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Sənəd qapalı etiket '%s' içində gözlənilməz bir şəkildə qurtardı"
 
