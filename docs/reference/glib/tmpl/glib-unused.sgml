@@ -91,11 +91,29 @@ depending on the system type.
 </para>
 
 
+<!-- ##### MACRO G_IO_CHANNEL_DOS_LINE_TERM ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO G_IO_CHANNEL_ENCODE_RAW ##### -->
 <para>
 Encoding for nonbuffered IO. With this encoding, data must be
 read using g_io_channel_read_chars(); the other functions will
 not work.
+</para>
+
+
+<!-- ##### MACRO G_IO_CHANNEL_MACINTOSH_LINE_TERM ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO G_IO_CHANNEL_UNIX_LINE_TERM ##### -->
+<para>
+
 </para>
 
 

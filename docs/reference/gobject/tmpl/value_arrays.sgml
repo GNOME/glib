@@ -2,47 +2,61 @@
 Value arrays
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A #GValueArray is a container structure to maintain an array of #GValue elements.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The prime purpose of a #GValueArray is for it to be used as an object property
+that holds an array of values. A #GValueArray wraps an array of #GValue elements
+in order for it to be used as a boxed type through %G_TYPE_VALUE_ARRAY.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GValue, #GParamSpecValueArray
 </para>
 
 <!-- ##### STRUCT GValueArray ##### -->
 <para>
-
 </para>
 
-@n_values: 
-@values: 
+@n_values:     number of values contained in the array
+@values:       array of values
+
+<!-- ##### FUNCTION g_value_array_get_nth ##### -->
+<para>
+Return a pointer to the value at @index containd in @value_array.
+</para>
+
+@value_array: #GValueArray to get a value from
+@index:       index of the value of interest
+@Returns:     pointer to a value at @index in @value_array
+
 
 <!-- ##### FUNCTION g_value_array_new ##### -->
 <para>
-
+Allocate and initialize a new #GValueArray, optionally preserve space
+for @n_prealloced elements. New arrays always contain 0 elements,
+regardless of the value of @n_prealloced.
 </para>
 
-@n_prealloced: 
-@Returns: 
+@n_prealloced: number of values to preallocate space for
+@Returns:      a newly allocated #GValueArray with 0 values
 
 
 <!-- ##### FUNCTION g_value_array_copy ##### -->
 <para>
-
+Construct an exact copy of a #GValueArray by duplicating all its
+contents.
 </para>
 
-@value_array: 
-@Returns: 
+@value_array: #GValueArray to copy
+@Returns:     Newly allocated copy of #GValueArray
 
 
 <!-- ##### FUNCTION g_value_array_free ##### -->
 <para>
-
+Free a #GValueArray including its contents.
 </para>
 
 @value_array: 
@@ -50,63 +64,73 @@ Value arrays
 
 <!-- ##### FUNCTION g_value_array_append ##### -->
 <para>
-
+Insert a copy of @value as last element of @value_array.
 </para>
 
-@value_array: 
-@value: 
-@Returns: 
+@value_array: #GValueArray to add an element to
+@value:       #GValue to copy into #GValueArray
+@Returns:     the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_prepend ##### -->
 <para>
-
+Insert a copy of @value as first element of @value_array.
 </para>
 
-@value_array: 
-@value: 
-@Returns: 
+@value_array: #GValueArray to add an element to
+@value:       #GValue to copy into #GValueArray
+@Returns:     the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_insert ##### -->
 <para>
-
+Insert a copy of @value at specified position into @value_array.
 </para>
 
-@value_array: 
-@index: 
-@value: 
-@Returns: 
+@value_array: #GValueArray to add an element to
+@index:       insertion position, must be <= value_array->n_values
+@value:       #GValue to copy into #GValueArray
+@Returns:     the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_remove ##### -->
 <para>
-
+Remove the value at position @index from @value_array.
 </para>
 
-@value_array: 
-@index: 
-@Returns: 
+@value_array: #GValueArray to remove an element from
+@index:       position of value to remove, must be < value_array->n_values
+@Returns:     the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_sort ##### -->
 <para>
-
+Sort @value_array using @compare_func to compare the elements accoring to
+the semantics of #GCompareFunc.
 </para>
 
-@value_array: 
-@compare_func: 
-@Returns: 
+<para>
+The current implementation uses Quick-Sort as sorting algorithm.
+</para>
+
+@value_array:  #GValueArray to sort
+@compare_func: function to compare elements
+@Returns:      the #GValueArray passed in as @value_array
 
 
 <!-- ##### FUNCTION g_value_array_sort_with_data ##### -->
 <para>
-
+Sort @value_array using @compare_func to compare the elements accoring
+to the semantics of #GCompareDataFunc.
 </para>
 
-@value_array: 
-@compare_func: 
-@user_data: 
-@Returns: 
+<para>
+The current implementation uses Quick-Sort as sorting algorithm.
+</para>
+
+@value_array:   #GValueArray to sort
+@compare_func:  function to compare elements
+@user_data:     extra data argument provided for @compare_func
+@Returns:       the #GValueArray passed in as @value_array
 
 

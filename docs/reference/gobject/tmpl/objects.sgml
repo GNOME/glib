@@ -177,6 +177,16 @@ The Base Object Type
 @Returns: 
 
 
+<!-- ##### FUNCTION g_object_class_list_properties ##### -->
+<para>
+
+</para>
+
+@oclass: 
+@n_properties: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_object_new ##### -->
 <para>
 
@@ -188,6 +198,17 @@ The Base Object Type
 @Returns: 
 <!-- # Unused Parameters # -->
 @first_param_name: 
+
+
+<!-- ##### FUNCTION g_object_newv ##### -->
+<para>
+
+</para>
+
+@object_type: 
+@n_parameters: 
+@parameters: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_object_ref ##### -->
@@ -468,6 +489,14 @@ to match the one used with g_object_add_weak_pointer().
 
 @object: 
 @closure: 
+
+
+<!-- ##### FUNCTION g_object_run_dispose ##### -->
+<para>
+
+</para>
+
+@object: 
 
 
 <!-- ##### FUNCTION g_value_set_object ##### -->

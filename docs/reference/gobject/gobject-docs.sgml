@@ -12,6 +12,7 @@
 <!entity gobject-Varargs-Value-Collection SYSTEM "sgml/value_collection.sgml">
 <!entity gobject-Signals SYSTEM "sgml/signals.sgml">
 <!entity gobject-Closures SYSTEM "sgml/closures.sgml">
+<!entity gobject-Value-Arrays SYSTEM "sgml/value_arrays.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -78,6 +79,7 @@
       &gobject-Standard-Parameter-Types;
       &gobject-Signals;
       &gobject-Closures;
+      &gobject-Value-Arrays;
       
   </reference>
   

@@ -207,6 +207,24 @@ filled in by the g_signal_query() function.
 
 
 
+<!-- ##### FUNCTION g_signal_new ##### -->
+<para>
+
+</para>
+
+@signal_name: 
+@itype: 
+@signal_flags: 
+@class_offset: 
+@accumulator: 
+@accu_data: 
+@c_marshaller: 
+@return_type: 
+@n_params: 
+@Varargs: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_signal_newv ##### -->
 <para>
 
@@ -347,6 +365,39 @@ g_signal_query().
 <!-- # Unused Parameters # -->
 @swapped: 
 @after: 
+
+
+<!-- ##### MACRO g_signal_connect ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@data: 
+
+
+<!-- ##### MACRO g_signal_connect_after ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@data: 
+
+
+<!-- ##### MACRO g_signal_connect_swapped ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+@c_handler: 
+@data: 
 
 
 <!-- ##### FUNCTION g_signal_connect_object ##### -->
@@ -534,6 +585,46 @@ otherwise.
 @Returns: 	The amount of handlers that got disconnected.
 
 
+<!-- ##### FUNCTION g_signal_handler_is_connected ##### -->
+<para>
+
+</para>
+
+@instance: 
+@handler_id: 
+@Returns: 
+
+
+<!-- ##### MACRO g_signal_handlers_block_by_func ##### -->
+<para>
+
+</para>
+
+@instance: 
+@func: 
+@data: 
+
+
+<!-- ##### MACRO g_signal_handlers_unblock_by_func ##### -->
+<para>
+
+</para>
+
+@instance: 
+@func: 
+@data: 
+
+
+<!-- ##### MACRO g_signal_handlers_disconnect_by_func ##### -->
+<para>
+
+</para>
+
+@instance: 
+@func: 
+@data: 
+
+
 <!-- ##### FUNCTION g_signal_has_handler_pending ##### -->
 <para>
 
@@ -554,6 +645,28 @@ otherwise.
 @instance: 
 @signal_id: 
 @detail: 
+
+
+<!-- ##### FUNCTION g_signal_stop_emission_by_name ##### -->
+<para>
+
+</para>
+
+@instance: 
+@detailed_signal: 
+
+
+<!-- ##### FUNCTION g_signal_add_emission_hook ##### -->
+<para>
+
+</para>
+
+@signal_id: 
+@quark: 
+@hook_func: 
+@hook_data: 
+@data_destroy: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_signal_remove_emission_hook ##### -->

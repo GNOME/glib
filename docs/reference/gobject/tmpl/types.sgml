@@ -405,6 +405,14 @@ type implementations or the signal system).
 @debug_flags: Bitwise combination of #GTypeDebugFlags values for debugging purposes.
 
 
+<!-- ##### FUNCTION g_type_init_with_debug_flags ##### -->
+<para>
+
+</para>
+
+@debug_flags: 
+
+
 <!-- ##### FUNCTION g_type_name ##### -->
 <para>
 Return the unique name that is assigned to a type ID (this is the preferred method
@@ -442,6 +450,15 @@ If the passed in type has no parent, i.e. is a fundamental type, 0 is returned.
 
 @type:    The derived type.
 @Returns: The parent type.
+
+
+<!-- ##### FUNCTION g_type_depth ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_type_next_base ##### -->
@@ -583,6 +600,15 @@ g_free()ed after use.
 @type: 
 @quark: 
 @Returns: 
+
+
+<!-- ##### FUNCTION g_type_query ##### -->
+<para>
+
+</para>
+
+@type: 
+@query: 
 
 
 <!-- ##### USER_FUNCTION GBaseInitFunc ##### -->
@@ -872,6 +898,15 @@ is used to manage the relationship.
 @instance_type: 
 @interface_type: 
 @plugin: 
+
+
+<!-- ##### FUNCTION g_type_interface_add_prerequisite ##### -->
+<para>
+
+</para>
+
+@interface_type: 
+@prerequisite_type: 
 
 
 <!-- ##### FUNCTION g_type_get_plugin ##### -->

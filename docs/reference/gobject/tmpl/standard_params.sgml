@@ -206,7 +206,7 @@ Standard Parameter Types
 @pspec: 
 
 
-<!-- ##### MACRO G_IS_PARAM_SPEC_POINTER ##### -->
+<!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
 <para>
 
 </para>
@@ -214,7 +214,7 @@ Standard Parameter Types
 @pspec: 
 
 
-<!-- ##### MACRO G_PARAM_SPEC_POINTER ##### -->
+<!-- ##### MACRO G_PARAM_SPEC_PARAM ##### -->
 <para>
 
 </para>
@@ -238,7 +238,7 @@ Standard Parameter Types
 @pspec: 
 
 
-<!-- ##### MACRO G_IS_PARAM_SPEC_PARAM ##### -->
+<!-- ##### MACRO G_IS_PARAM_SPEC_POINTER ##### -->
 <para>
 
 </para>
@@ -246,7 +246,39 @@ Standard Parameter Types
 @pspec: 
 
 
-<!-- ##### MACRO G_PARAM_SPEC_PARAM ##### -->
+<!-- ##### MACRO G_PARAM_SPEC_POINTER ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_VALUE_ARRAY ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_VALUE_ARRAY ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC_CLOSURE ##### -->
+<para>
+
+</para>
+
+@pspec: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC_CLOSURE ##### -->
 <para>
 
 </para>
@@ -338,6 +370,14 @@ Standard Parameter Types
 @maximum: 
 @default_value: 
 
+<!-- ##### STRUCT GParamSpecUnichar ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+@default_value: 
+
 <!-- ##### STRUCT GParamSpecEnum ##### -->
 <para>
 
@@ -391,13 +431,6 @@ Standard Parameter Types
 @null_fold_if_empty: 
 @ensure_non_null: 
 
-<!-- ##### STRUCT GParamSpecBoxed ##### -->
-<para>
-
-</para>
-
-@parent_instance: 
-
 <!-- ##### STRUCT GParamSpecParam ##### -->
 <para>
 
@@ -405,7 +438,30 @@ Standard Parameter Types
 
 @parent_instance: 
 
+<!-- ##### STRUCT GParamSpecBoxed ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
 <!-- ##### STRUCT GParamSpecPointer ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+
+<!-- ##### STRUCT GParamSpecValueArray ##### -->
+<para>
+
+</para>
+
+@parent_instance: 
+@element_spec: 
+@fixed_n_elements: 
+
+<!-- ##### STRUCT GParamSpecClosure ##### -->
 <para>
 
 </para>
@@ -522,6 +578,19 @@ Standard Parameter Types
 @Returns: 
 
 
+<!-- ##### FUNCTION g_param_spec_unichar ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@default_value: 
+@flags: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_param_spec_enum ##### -->
 <para>
 
@@ -593,19 +662,6 @@ Standard Parameter Types
 @Returns: 
 
 
-<!-- ##### FUNCTION g_param_spec_boxed ##### -->
-<para>
-
-</para>
-
-@name: 
-@nick: 
-@blurb: 
-@boxed_type: 
-@flags: 
-@Returns: 
-
-
 <!-- ##### FUNCTION g_param_spec_param ##### -->
 <para>
 
@@ -619,7 +675,45 @@ Standard Parameter Types
 @Returns: 
 
 
+<!-- ##### FUNCTION g_param_spec_boxed ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@boxed_type: 
+@flags: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_param_spec_pointer ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_value_array ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@element_spec: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_closure ##### -->
 <para>
 
 </para>
