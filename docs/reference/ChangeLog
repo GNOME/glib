@@ -1,3 +1,7 @@
+Tue Nov 13 19:49:16 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/gparamspec.sgml: param spec updates.
+
 2001-11-12  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/tmpl/markup.sgml: Remove excess listitem from long 

@@ -7,7 +7,7 @@
 <!entity gobject-Boxed-Types SYSTEM "sgml/gboxed.sgml">
 <!entity gobject-Generic-values SYSTEM "sgml/generic_values.sgml">
 <!entity gobject-Standard-value-types SYSTEM "sgml/value_types.sgml">
-<!entity gobject-Parameter-Specifications SYSTEM "sgml/param_specs.sgml">
+<!entity gobject-GParamSpec SYSTEM "sgml/gparamspec.sgml">
 <!entity gobject-Standard-Parameter-Types SYSTEM "sgml/standard_params.sgml">
 <!entity gobject-Varargs-Value-Collection SYSTEM "sgml/value_collection.sgml">
 <!entity gobject-Signals SYSTEM "sgml/signals.sgml">
@@ -75,7 +75,7 @@
       &gobject-Generic-values;
       &gobject-Standard-value-types;
       &gobject-Varargs-Value-Collection;
-      &gobject-Parameter-Specifications;
+      &gobject-GParamSpec;
       &gobject-Standard-Parameter-Types;
       &gobject-Signals;
       &gobject-Closures;

@@ -1,0 +1,337 @@
+<!-- ##### SECTION Title ##### -->
+
+
+<!-- ##### SECTION Short_Description ##### -->
+Parameter Specifications
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+#GParamSpec is an object structure that encapsulates the meta data
+required to specify parameters, such as e.g. #GObject properties.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+g_object_class_install_property(), g_object_set(), g_object_get(),
+g_object_set_property(), g_object_get_property()
+</para>
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE ##### -->
+<para>
+Retrive the #GType of this @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_TYPE_IS_PARAM ##### -->
+<para>
+
+</para>
+
+@type: 
+
+
+<!-- ##### MACRO G_PARAM_SPEC ##### -->
+<para>
+Cast a derived #GParamSpec object (e.g. of type #GParamSpecInt) into
+a #GParamSpec object.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_IS_PARAM_SPEC ##### -->
+<para>
+
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_GET_CLASS ##### -->
+<para>
+
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_TYPE_NAME ##### -->
+<para>
+Retrive the #GType name of this @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### MACRO G_PARAM_SPEC_VALUE_TYPE ##### -->
+<para>
+Retrive the #GType to intiialize a #GValue for this parameter.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### STRUCT GParamSpec ##### -->
+<para>
+
+</para>
+
+@g_type_instance: private #GTypeInstance portion
+@name:            name of this parameter
+@flags:           #GParamFlags flags for this parameter
+@value_type:      the #GValue type for this parameter
+@owner_type:      #GType type that uses (introduces) this paremeter
+
+<!-- ##### STRUCT GParamSpecClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GParamFlags ##### -->
+<para>
+Through the #GParamFlags flag values, certain aspects of parameters
+can be configured.
+</para>
+
+@G_PARAM_READABLE:       the parameter is readable
+@G_PARAM_WRITABLE:       the parameter is writable
+@G_PARAM_CONSTRUCT:      the parameter will be set upon object construction
+@G_PARAM_CONSTRUCT_ONLY: the parameter will only be set upon object construction
+@G_PARAM_LAX_VALIDATION: upon parameter conversion (see g_param_value_convert())
+                         strict validation is not required
+@G_PARAM_PRIVATE: 
+
+<!-- ##### MACRO G_PARAM_READWRITE ##### -->
+<para>
+#GParamFlags value alias for %G_PARAM_READABLE | %G_PARAM_WRITABLE.
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_MASK ##### -->
+<para>
+Mask containing the bits of #GParamSpec.flags which are reserved for GLib.
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_USER_SHIFT ##### -->
+<para>
+Minimum shift count to be used for user defined flags, to be stored in
+#GParamSpec.flags.
+</para>
+
+
+
+<!-- ##### FUNCTION g_param_spec_ref ##### -->
+<para>
+Increment the reference count of @pspec.
+</para>
+
+@pspec:   a valid #GParamSpec
+@Returns: the #GParamSpec that was passed into this function
+
+
+<!-- ##### FUNCTION g_param_spec_unref ##### -->
+<para>
+Decrement the reference count of a @pspec.
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### FUNCTION g_param_spec_sink ##### -->
+<para>
+The initial reference count of a newly created #GParamSpec is 1,
+eventhough no one has explicitely called g_param_spec_ref() on it yet.
+So the einital reference count is flagged as "floating", untill someone
+calls: g_param_spec_ref (@pspec); g_param_spec_sink (@pspec);
+in sequence on it, taking over the initial reference count (thus
+ending up with a @pspec that has a reference count of 1 still, but is
+not flagged "floating" anymore).
+</para>
+
+@pspec: a valid #GParamSpec
+
+
+<!-- ##### FUNCTION g_param_value_set_default ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+
+
+<!-- ##### FUNCTION g_param_value_defaults ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_value_validate ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_value_convert ##### -->
+<para>
+
+</para>
+
+@dest_value_spec: 
+@src_value: 
+@dest_value: 
+@strict_validation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_values_cmp ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@value1: 
+@value2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_get_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@data: 
+
+
+<!-- ##### FUNCTION g_param_spec_set_qdata_full ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION g_param_spec_steal_qdata ##### -->
+<para>
+
+</para>
+
+@pspec: 
+@quark: 
+@Returns: 
+
+
+<!-- ##### STRUCT GParamSpecTypeInfo ##### -->
+<para>
+
+</para>
+
+@instance_size: 
+@n_preallocs: 
+@instance_init: 
+@value_type: 
+@finalize: 
+@value_set_default: 
+@value_validate: 
+@values_cmp: 
+
+<!-- ##### FUNCTION g_param_type_register_static ##### -->
+<para>
+
+</para>
+
+@name: 
+@pspec_info: 
+@Returns: 
+
+
+<!-- ##### STRUCT GParamSpecPool ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION g_param_spec_pool_new ##### -->
+<para>
+
+</para>
+
+@type_prefixing: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_insert ##### -->
+<para>
+
+</para>
+
+@pool: 
+@pspec: 
+@owner_type: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_remove ##### -->
+<para>
+
+</para>
+
+@pool: 
+@pspec: 
+
+
+<!-- ##### FUNCTION g_param_spec_pool_lookup ##### -->
+<para>
+
+</para>
+
+@pool: 
+@param_name: 
+@owner_type: 
+@walk_ancestors: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@trailer_p: 
+
+
+<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<para>
+
+</para>
+
+@param_type: 
+@name: 
+@nick: 
+@blurb: 
+@flags: 
+@Returns: 
+
+
