@@ -9,7 +9,7 @@ Type Loading Modules
 #GTypeModule provides a simple implementation of the #GTypePlugin
 interface. The model of #GTypeModule is a dynamically loaded module
 which implements some number of types and interface
-implementations. When the module is loaded, it registerse its types
+implementations. When the module is loaded, it registers its types
 and interfaces using g_type_module_register_type() and
 g_type_module_add_interface().  As long as any instances of these
 types and interface implementations are in use, the module is kept
@@ -21,7 +21,7 @@ will be reloaded.
 Keeping track of whether the module should be loaded or not is done by
 using a use count - it starts at zero, and whenever it is greater than
 zero, the module is loaded. The use count is maintained internally by
-the type system, but also can be explicitely controlled by
+the type system, but also can be explicitly controlled by
 g_type_module_use() and g_type_module_unuse(). Typically, when loading
 a module for the first type, g_type_module_use() will be used to load
 it so that it can initialize its types. At some later point, when the

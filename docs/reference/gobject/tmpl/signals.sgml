@@ -10,12 +10,12 @@ as general purpose notification mechanism.
 The basic concept of the signal system is that of the <emphasis>emission</emphasis>
 of a signal.
 Signals are introduced per-type and are identified through strings.
-Signals introduced for a parent type are availale in derived types as well,
+Signals introduced for a parent type are available in derived types as well,
 so basically they are a per-type facility that is inherited.
 A signal emission mainly involves invocation of a certain set of callbacks in
 precisely defined manner. There are two main categories of such callbacks,
 per-object
-	<footnote><para> Although signals can deal with any kind of instantiatable type,
+	<footnote><para>Although signals can deal with any kind of instantiatable type,
 	i'm referring to those types as "object types" in the following, simply
 	because that is the context most users will encounter signals in.
 	</para></footnote>
@@ -89,11 +89,11 @@ The signal accumulator is a special callback function that can be used
 to collect return values of the various callbacks that are called
 during a signal emission. The signal accumulator is specified at signal
 creation time, if it is left NULL, no accumulation of callback return
-values is perfomed. The return value of signal emissions is then the
+values is performed. The return value of signal emissions is then the
 value returned by the last callback.
 </para>
 
-@ihint: 	Signal invokation hint, see #GSignalInvocationHint.
+@ihint: 	Signal invocation hint, see #GSignalInvocationHint.
 @return_accu: 	Accumulator to collect callback return values in, this
 		is the return value of the current signal emission.
 @handler_return: 
@@ -110,7 +110,7 @@ value returned by the last callback.
 This is the signature of marshaller functions, required to marshall
 arrays of parameter values to signal emissions into C language callback
 invocations. It is merely an alias to #GClosureMarshal since the #GClosure
-mechanism takes over responsibility of actuall function invocation for the
+mechanism takes over responsibility of actual function invocation for the
 signal system.
 </para>
 
@@ -133,8 +133,8 @@ signal system.
 
 <!-- ##### ENUM GSignalFlags ##### -->
 <para>
-The signal flags are used to specify a signal's behaviour, the overrall
-signal description outlines how especially the RUN flags controll the
+The signal flags are used to specify a signal's behaviour, the overall
+signal description outlines how especially the RUN flags control the
 stages of a signal emission.
 </para>
 
@@ -145,12 +145,12 @@ stages of a signal emission.
                        emission for this very object will not be emitted recursively,
                        but instead cause the first emission to be restarted.
 @G_SIGNAL_DETAILED:    This signal supports "::detail" appendixes to the signal name
-                       upon hanlder connections and emissions.
+                       upon handler connections and emissions.
 @G_SIGNAL_ACTION:      Action signals are signals that may freely be emitted on alive
                        objects from user code via g_signal_emit() and friends, without
                        the need of being embedded into extra code that performs pre or
                        post emission adjustments on the object. They can also be thought
-                       of as by third-party code generically callable obejct methods.
+                       of as by third-party code generically callable object methods.
 @G_SIGNAL_NO_HOOKS:    No emissions hooks are supported for this signal.
 
 <!-- ##### ENUM GSignalMatchType ##### -->
@@ -171,8 +171,8 @@ A structure holding in-depth information for a specific signal. It is
 filled in by the g_signal_query() function.
 </para>
 
-@signal_id: 	The signal id of the signal being querried, or 0 if the
-		signal to be querried was unknown.
+@signal_id: 	The signal id of the signal being queried, or 0 if the
+		signal to be queried was unknown.
 @signal_name: 	The signal name.
 @itype: 	The interface/instance type that this signal can be emitted for.
 @signal_flags: 	The signal flags as passed in to g_signal_new().
@@ -248,7 +248,7 @@ filled in by the g_signal_query() function.
 Query the signal system for in-depth information about a
 specific signal. This function will fill in a user-provided
 structure to hold signal-specific information. If an invalid
-dignal id is passed in, the @signal_id member of the #GSignalQuery
+signal id is passed in, the @signal_id member of the #GSignalQuery
 is 0. All members filled into the #GSignalQuery structure should
 be considered constant and have to be left untouched.
 </para>
@@ -280,7 +280,7 @@ be considered constant and have to be left untouched.
 <!-- ##### FUNCTION g_signal_list_ids ##### -->
 <para>
 List the signals by id, that a certain instance or interface type
-created. Further information about the signals can be aquired through
+created. Further information about the signals can be acquired through
 g_signal_query().
 </para>
 
@@ -452,7 +452,7 @@ to be a valid signal handler id, connected to a signal of
 Find the first signal handler that matches certain selection criteria.
 The criteria mask is passed as an OR-ed combination of #GSignalMatchType
 flags, and the criteria values are passed as arguments.
-The match @mask has to be non-0 for successfull matches.
+The match @mask has to be non-0 for successful matches.
 If no handler was found, 0 is returned.
 </para>
 
@@ -464,7 +464,7 @@ If no handler was found, 0 is returned.
 @closure: 	The closure the handler will invoke.
 @func: 		The C closure callback of the handler (useless for non-C closures).
 @data: 		The closure data of the handler's closure.
-@Returns: 	A valid non-0 signal handler id for a successfull match.
+@Returns: 	A valid non-0 signal handler id for a successful match.
 
 
 <!-- ##### FUNCTION g_signal_handlers_block_matched ##### -->
@@ -473,7 +473,7 @@ This function blocks all handlers on an instance that match a certain
 selection criteria. The criteria mask is passed as an OR-ed combination of
 #GSignalMatchType flags, and the criteria values are passed as arguments.
 Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC
-or %G_SIGNAL_MATCH_DATA match flags is required for successfull matches.
+or %G_SIGNAL_MATCH_DATA match flags is required for successful matches.
 If no handlers were found, 0 is returned, the number of blocked handlers
 otherwise.
 </para>
@@ -495,7 +495,7 @@ This function unblocks all handlers on an instance that match a certain
 selection criteria. The criteria mask is passed as an OR-ed combination of
 #GSignalMatchType flags, and the criteria values are passed as arguments.
 Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC
-or %G_SIGNAL_MATCH_DATA match flags is required for successfull matches.
+or %G_SIGNAL_MATCH_DATA match flags is required for successful matches.
 If no handlers were found, 0 is returned, the number of unblocked handlers
 otherwise. The match criteria should not apply to any handlers that are
 not currently blocked.
@@ -518,7 +518,7 @@ This function disconnects all handlers on an instance that match a certain
 selection criteria. The criteria mask is passed as an OR-ed combination of
 #GSignalMatchType flags, and the criteria values are passed as arguments.
 Passing at least one of the %G_SIGNAL_MATCH_CLOSURE, %G_SIGNAL_MATCH_FUNC
-or %G_SIGNAL_MATCH_DATA match flags is required for successfull matches.
+or %G_SIGNAL_MATCH_DATA match flags is required for successful matches.
 If no handlers were found, 0 is returned, the number of disconnected handlers
 otherwise.
 </para>

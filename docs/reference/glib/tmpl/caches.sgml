@@ -11,7 +11,7 @@ system resources.
 </para>
 <para>
 GTK uses a #GCache for both GtkStyles and GdkGCs. These consume a lot of
-resouces, so a #GCache is used to see if a GtkStyle or GdkGC with the
+resources, so a #GCache is used to see if a GtkStyle or GdkGC with the
 required properties already exists. If it does, then the existing
 GtkStyle or GdkGC is used instead of creating a new one.
 </para>

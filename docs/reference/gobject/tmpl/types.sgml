@@ -49,7 +49,7 @@ type.
 <para>
 Returns #TRUE if @type is a fundamental data type such as #G_TYPE_INT or
 #G_TYPE_POINTER. Fundamental types are types that serve as fundaments for
-the derived types, thus they are the roots of distinct inheritance heirachies.
+the derived types, thus they are the roots of distinct inheritance hierarchies.
 </para>
 
 @type: A #GType value.
@@ -102,7 +102,7 @@ derived classes.
 
 <!-- ##### MACRO G_TYPE_IS_DERIVED ##### -->
 <para>
-Returns #TRUE if @type is derived (or in object-oriented terminolgy:
+Returns #TRUE if @type is derived (or in object-oriented terminology:
 inherited) from another type (this holds true for all non-fundamental
 types).
 </para>
@@ -258,7 +258,7 @@ across invocation of g_type_register_static().
 @n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
 @instance_init:  Location of the instance initialization function (optional, for instantiatable types only).
 @value_table: 	 A #GTypeValueTable function table for generic handling of GValues of this type (usualy only
-		 usefull for fundamental types).
+		 useful for fundamental types).
 
 <!-- ##### STRUCT GTypeFundamentalInfo ##### -->
 <para>
@@ -528,7 +528,7 @@ g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
 
 </para>
 
-@g_class: The #GTypeClass structure to retrive the parent class for.
+@g_class: The #GTypeClass structure to retrieve the parent class for.
 @Returns: The parent class of @g_class.
 
 
@@ -645,7 +645,7 @@ class members, while dynamic class members (such as allocated strings
 or reference counted resources) are better handled by a GBaseInitFunc()
 for this type, so proper initialization of the dynamic class members
 are performed for class intialization of derived types as well.
-An example may help to corrsepond the intend of the different class
+An example may help to correspond the intend of the different class
 initializers:
 
 <msgtext><programlisting>
@@ -694,13 +694,13 @@ type_b_class_init (TypeBClass *class)
 Initialization of TypeBClass will first cause initialization of
 TypeAClass (derived classes reference their parent classes, see
 g_type_class_ref() on this).
-Initialization of TypeAClass roughly involves zero-intializing its fields,
+Initialization of TypeAClass roughly involves zero-initializing its fields,
 then calling its GBaseInitFunc() type_a_base_class_init() that allocates
 its dynamic members (dynamic_string) and finally calling its GClassInitFunc()
 type_a_class_init() to initialize its static members (static_integer).
 The first step in the initialization process of TypeBClass is then
 a plain memory copy of the contents of TypeAClass into TypeBClass and 
-zero intialization of the remaining fields in TypeBClass.
+zero-initialization of the remaining fields in TypeBClass.
 The dynamic members of TypeAClass within TypeBClass now need
 reinitialization which is performed by calling type_a_base_class_init()
 with an argument of TypeBClass.
@@ -737,7 +737,7 @@ reference count drops to zero).
 <para>
 A callback function used by the type system to initialize a new
 instance of a type. This function initializes all instance members and
-allocates any resources require by it.
+allocates any resources required by it.
 Initialization of a derived instance involves calling all its parent
 types instance initializers, therefore the class member of the instance
 is altered during its initialization to always point to the class that
@@ -841,7 +841,7 @@ name of a fundamental type.  The type system uses the information
 contained in the #GTypeInfo structure pointed to by @info and the 
 #GTypeFundamentalInfo structure pointed to by @finfo to manage the
 type and its instances.  The value of @flags determines additional
-characteristics of the funamental type.
+characteristics of the fundamental type.
 </para>
 
 @type_id: 	A predefined #GTypeFundamentals value.
@@ -918,10 +918,10 @@ are set for @type.
 <para>
 Creates and initializes an instance of @type if @type is valid and can
 be instantiated. The type system only performs basic allocation and
-structure setups for instances, actuall instance creation should happen
+structure setups for instances, actual instance creation should happen
 through functions supplied by the types fundamental type implementation.
 So use of g_type_create_instance() is reserved for implementators of
-fundamental types only. E.g. instances of the #GObject heirachy
+fundamental types only. E.g. instances of the #GObject hierarchy
 should be created via g_object_new() and <emphasis>never</emphasis>
 directly through g_type_create_instance() which doesn't handle
 things like singleton objects or object construction.
@@ -986,9 +986,9 @@ macro.
 
 <!-- ##### FUNCTION g_type_instance_is_a ##### -->
 <para>
-Determines if @instance adhears to the interface exported
-by @iface_type. @iface_type is eitehr a type that @instance
-is derived from, or an interface type that is suppoted by
+Determines if @instance adheres to the interface exported
+by @iface_type. @iface_type is either a type that @instance
+is derived from, or an interface type that is supported by
 the anchestry of @instance.
 </para>
 

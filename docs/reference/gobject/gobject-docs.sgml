@@ -45,12 +45,12 @@
 	      doubles, enums and structured types, to name a few.
 	  </para></listitem></varlistentry>
 	  <varlistentry><term></term><listitem><para>
-	    * A sample fundamental type implementation to base object hirachies
+	    * A sample fundamental type implementation to base object hierarchies
 	      upon - the GObject fundamental type.
 	  </para></listitem></varlistentry>
 	  <varlistentry><term></term><listitem><para>
-	    * A signal system that allowes very flexible user customization of
-	      virtual/overridable object methods and can serve as a powerfull
+	    * A signal system that allows very flexible user customization of
+	      virtual/overridable object methods and can serve as a powerful
 	      notification mechanism.
 	  </para></listitem></varlistentry>
 	  <varlistentry><term></term><listitem><para>

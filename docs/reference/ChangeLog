@@ -1,3 +1,10 @@
+2001-06-03  Matthias Clasen  <matthiasc@poet.de>
+ 
+ 	* glib/tmpl/caches.sgml, glib/tmpl/main.sgml, 
+ 	gobject/gobject-docs.sgml, gobject/tmpl/generic_values.sgml,
+ 	gobject/tmpl/gtypemodule.sgml, gobject/tmpl/signals.sgml,
+ 	gobject/tmpl/types.sgml: fix some typos.
+ 
 Thu Jun 28 17:43:29 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/memory.sgml glib/tmpl/macros_misc.sgml: Add

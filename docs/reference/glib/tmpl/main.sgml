@@ -59,7 +59,7 @@ manages all available sources of events.
       type is used for handling GDK events. A new source type is
       created by <firstterm>deriving</firstterm> from the #GSource
       structure. The derived type of source is represented by a
-      structure that has the #GSource structure as a first elemeent,
+      structure that has the #GSource structure as a first element,
       and other elements specific to the new source type. To create
       an instance of the new source type, call g_source_new() passing
       in the size of the derived structure and a table of functions.

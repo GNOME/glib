@@ -11,7 +11,7 @@ of a type identifier and a specific value of that type.
 The type identifier within a #GValue structure always determines the
 type of the associated value.
 To create a undefined #GValue structure, simply create a zero-filled
-#GValue structure. To intialize the #GValue, use the g_value_init()
+#GValue structure. To initialize the #GValue, use the g_value_init()
 function. A #GValue cannot be used until it is initialized.
 The basic type operations (such as freeing and copying) are determined
 by the #GTypeValueTable associated with the type ID stored in the #GValue.
@@ -229,7 +229,7 @@ to serve as a container for values of a type.
 			does not allow NULL pointers, it needs to either spew an error,
 			or do an implicit conversion by storing an empty string.
 			The @value passed in to this function has a zero-filled data
-			array, so just like for @value_init it is guarranteed to not
+			array, so just like for @value_init it is guaranteed to not
 			contain any old contents that might need freeing.
 			@n_collect_values is exactly the string length of @collect_format,
 			and @collect_values is an array of unions #GTypeCValue with
@@ -283,7 +283,7 @@ to serve as a container for values of a type.
 			regardless of @collect_flags. For invalid objects, the example
 			returns a newly allocated string without altering @value.
 			Upon success, collect_value() needs to return NULL, if however
-			a malicious condition occoured, collect_value() may spew an
+			a malicious condition occurred, collect_value() may spew an
 			error by returning a newly allocated non-NULL string, giving
 			a suitable description of the error condition.
 			The calling code makes no assumptions about the @value
@@ -295,7 +295,7 @@ to serve as a container for values of a type.
 			any non-NULL return is considered a fatal condition so further
 			program behaviour is undefined.
 @lcopy_format: 		Format description of the arguments to collect for @lcopy_value,
-			analogous to @collect_format. Usually, @lcopy_format string consist
+			analogous to @collect_format. Usually, @lcopy_format string consists
 			only of 'p's to provide lcopy_value() with pointers to storage locations.
 @lcopy_value: 		This function is responsible for storing the @value contents into
 			arguments passed through a variable argument list which got
