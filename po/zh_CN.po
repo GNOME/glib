@@ -5,8 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2003-06-08 12:16-0400\n"
-"PO-Revision-Date: 2002-03-17 16:34+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-07-22 12:05+0200\n"
+"PO-Revision-Date: 2003-07-23 01:26+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -155,14 +156,6 @@ msgstr "通道终止于未尽字符"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end 函数无法进行原始读取"
 
-#: glib/giowin32.c:712 glib/giowin32.c:741
-msgid "Incorrect message size"
-msgstr "不正确的消息大小"
-
-#: glib/giowin32.c:1034 glib/giowin32.c:1087
-msgid "Socket error"
-msgstr "套接字错误"
-
 #: glib/gmarkup.c:222
 #, c-format
 msgid "Error on line %d char %d: %s"
@@ -185,8 +178,8 @@ msgid ""
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
-"字符“%s”出现在实体名的开头无效。实体都以 & 字符 开头，如果这个 & 不是一个实体"
-"的开头，把它变为 &amp;"
+"字符“%s”出现在实体名的开头无效。实体都以 & 字符 开头，如果这个 & 不是一个实"
+"体的开头，把它变为 &amp;"
 
 #: glib/gmarkup.c:431
 #, c-format
@@ -203,7 +196,7 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体－将这个 & 变为 "
+"实体没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变为 "
 "&amp;"
 
 #: glib/gmarkup.c:531
@@ -211,7 +204,7 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr "无法解析“%s”。它应该是字符引用中的数字(如&#234;)－可能该数字太大了"
+msgstr "无法解析“%s”。它应该是字符引用中的数字(如&#234;) - 可能该数字太大了"
 
 #: glib/gmarkup.c:556
 #, c-format
@@ -228,16 +221,16 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体－将这个 & 变为 "
-"&amp;"
+"字符引用没有以分号结束。很可能您使用了 & 字符而又不是一个实体 - 将这个 & 变"
+"为 &amp;"
 
 #: glib/gmarkup.c:609
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "未完成的实体引用"
 
 #: glib/gmarkup.c:615
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "未完成的字符引用"
 
 #: glib/gmarkup.c:866 glib/gmarkup.c:894 glib/gmarkup.c:925
 msgid "Invalid UTF-8 encoded text"
@@ -274,8 +267,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能"
-"您在属性名中使用了无效字符"
+"字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属"
+"性；可能您在属性名中使用了无效字符"
 
 #: glib/gmarkup.c:1274
 #, c-format
@@ -321,7 +314,7 @@ msgstr "文档在一个打开的尖括号“<”后意外结束"
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
-msgstr "文档在还存在未结束元素时意外结束－最后的未结束元素是“%s”"
+msgstr "文档在还存在未结束元素时意外结束 - 最后的未结束元素是“%s”"
 
 #: glib/gmarkup.c:1649
 #, c-format
@@ -399,9 +392,8 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "无法从子管道中读取 (%s)"
 
 #: glib/gspawn-win32.c:871
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "无法执行子进程 (%s)"
+msgstr "无法执行帮手程序"
 
 #: glib/gspawn-win32.c:904 glib/gspawn.c:1207
 #, c-format
@@ -475,6 +467,3 @@ msgstr "转换输入中出现无效序列"
 #: glib/gutf8.c:1375 glib/gutf8.c:1471
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
-
-#~ msgid "Channel set flags unsupported"
-#~ msgstr "不支持通道设置标志"
