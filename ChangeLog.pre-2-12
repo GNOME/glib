@@ -1,3 +1,10 @@
+Thu Jan  7 15:14:08 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_source_free_func): Call the source-specific
+	free function when the hook is freed not when it
+	is destroyed; this fixes a bug where a timeout destroyed
+	from itself would access already freed data.
+
 1999-01-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gutils.c (g_get_any_init): Here we must replace getpwuid by

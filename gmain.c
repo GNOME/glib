@@ -82,6 +82,10 @@ struct _GPollRec
 
 /* Forward declarations */
 
+static gint     g_source_compare          (GHook      *a,
+					   GHook      *b);
+static void     g_source_free_func        (GHookList  *hook_list,
+					   GHook      *hook);
 static void     g_main_poll               (gint      timeout,
 					   gboolean  use_priority, 
 					   gint      priority);
@@ -233,6 +237,15 @@ g_source_compare (GHook *a,
   return (source_a->priority < source_b->priority) ? -1 : 1;
 }
 
+static void
+g_source_free_func (GHookList      *hook_list,
+		    GHook          *hook)
+{
+  GSource *source = (GSource *)hook;
+
+  ((GSourceFuncs *) hook->func)->destroy (source->source_data);
+}
+
 guint 
 g_source_add (gint           priority,
 	      gboolean       can_recurse,
@@ -248,6 +261,8 @@ g_source_add (gint           priority,
 
   if (!source_list.is_setup)
     g_hook_list_init (&source_list, sizeof(GSource));
+
+  source_list.hook_free = g_source_free_func;
 
   source = (GSource *)g_hook_alloc (&source_list);
   source->priority = priority;
@@ -287,12 +302,7 @@ g_source_remove (guint tag)
 
   hook = g_hook_get (&source_list, tag);
   if (hook)
-    {
-      GSource *source = (GSource *)hook;
-
-      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
-      g_hook_destroy_link (&source_list, hook);
-    }
+    g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
 }
@@ -306,12 +316,7 @@ g_source_remove_by_user_data (gpointer user_data)
   
   hook = g_hook_find_data (&source_list, TRUE, user_data);
   if (hook)
-    {
-      GSource *source = (GSource *)hook;
-
-      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
-      g_hook_destroy_link (&source_list, hook);
-    }
+    g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
 }
@@ -335,12 +340,7 @@ g_source_remove_by_source_data (gpointer source_data)
   hook = g_hook_find (&source_list, TRUE, 
 		      g_source_find_source_data, source_data);
   if (hook)
-    {
-      GSource *source = (GSource *)hook;
-
-      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
-      g_hook_destroy_link (&source_list, hook);
-    }
+    g_hook_destroy_link (&source_list, hook);
 
   G_UNLOCK (main_loop);
 }
@@ -398,10 +398,7 @@ g_main_dispatch (GTimeVal *current_time)
 	    source->hook.flags &= ~G_HOOK_FLAG_IN_CALL;
 	  
 	  if (need_destroy && G_HOOK_IS_VALID (source))
-	    {
-	      ((GSourceFuncs *) source->hook.func)->destroy (source->source_data);
-	      g_hook_destroy_link (&source_list, (GHook *) source);
-	    }
+	    g_hook_destroy_link (&source_list, (GHook *) source);
 	}
 
       g_hook_unref (&source_list, (GHook*) source);
