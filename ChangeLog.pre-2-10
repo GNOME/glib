@@ -1,3 +1,9 @@
+2002-02-11  Darin Adler  <darin@bentspoon.com>
+
+	* glib/gmessages.h: Use "if (expr) { } else" as I meant to in the
+	first place. The other form can trigger warnings in some compilers
+	that suspect a ";" after "if (expr)" is an error.
+
 2002-02-11  Manish Singh  <yosh@gimp.org>
 
 	* glib/gmessages.h: need statement terminators for the if clauses for
