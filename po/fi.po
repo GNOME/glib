@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-01 17:05-0500\n"
-"PO-Revision-Date: 2002-12-12 00:20+0200\n"
+"POT-Creation-Date: 2004-03-03 02:41+0200\n"
+"PO-Revision-Date: 2004-03-03 02:44+0200\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
 "sourceforge.net>\n"
@@ -134,13 +134,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Tiedoston \"%s\" luominen epäonnistui: %s"
+msgstr "Symbolisen linkin \"%s\" lukeminen epäonnistui: %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "Symbolisia linkkejä ei tueta"
 
 #: glib/giochannel.c:1143
 #, c-format
