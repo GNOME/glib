@@ -29,6 +29,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 #include "glib.h"
 
 
@@ -263,6 +264,39 @@ g_array_remove_index_fast (GArray* farray,
 
   return farray;
 }
+
+void
+g_array_sort (GArray       *farray,
+	      GCompareFunc  compare_func)
+{
+  GRealArray *array = (GRealArray*) farray;
+
+  g_return_if_fail (array != NULL);
+  g_return_if_fail (array->data != NULL);
+
+  qsort (array->data,
+	 array->len,
+	 array->elt_size,
+	 compare_func);
+}
+
+void
+g_array_sort_with_data (GArray           *farray,
+			GCompareFuncData  compare_func,
+			gpointer          user_data)
+{
+  GRealArray *array = (GRealArray*) farray;
+
+  g_return_if_fail (array != NULL);
+  g_return_if_fail (array->data != NULL);
+
+  g_qsort_with_data (array->data,
+		     array->len,
+		     array->elt_size,
+		     compare_func,
+		     user_data);
+}
+
 
 static gint
 g_nearest_pow (gint num)
@@ -527,6 +561,34 @@ g_ptr_array_add (GPtrArray* farray,
   array->pdata[array->len++] = data;
 }
 
+void
+g_ptr_array_sort (GPtrArray    *array,
+		  GCompareFunc  compare_func)
+{
+  g_return_if_fail (array != NULL);
+  g_return_if_fail (array->pdata != NULL);
+
+  qsort (array->pdata,
+	 array->len,
+	 sizeof (gpointer),
+	 compare_func);
+}
+
+void
+g_ptr_array_sort_with_data (GPtrArray        *array,
+			    GCompareFuncData  compare_func,
+			    gpointer          user_data)
+{
+  g_return_if_fail (array != NULL);
+  g_return_if_fail (array->pdata != NULL);
+
+  g_qsort_with_data (array->pdata,
+		     array->len,
+		     sizeof (gpointer),
+		     compare_func,
+		     user_data);
+}
+
 /* Byte arrays 
  */
 
@@ -581,9 +643,24 @@ GByteArray* g_byte_array_remove_index (GByteArray *array,
 }
 
 GByteArray* g_byte_array_remove_index_fast (GByteArray *array,
-						   guint index)
+					    guint index)
 {
   g_array_remove_index_fast((GArray*) array, index);
 
   return array;
+}
+
+void
+g_byte_array_sort (GByteArray   *array,
+		   GCompareFunc  compare_func)
+{
+  g_array_sort ((GArray *) array, compare_func);
+}
+
+void
+g_byte_array_sort_with_data (GByteArray       *array,
+			     GCompareFuncData  compare_func,
+			     gpointer          user_data)
+{
+  g_array_sort_with_data ((GArray *) array, compare_func, user_data);
 }

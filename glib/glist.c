@@ -596,18 +596,26 @@ g_list_insert_sorted (GList        *list,
 }
 
 static GList *
-g_list_sort_merge (GList       *l1, 
-		   GList       *l2,
-		   GCompareFunc compare_func)
+g_list_sort_merge (GList     *l1, 
+		   GList     *l2,
+		   GFunc     compare_func,
+		   gboolean  use_data,
+		   gpointer  user_data)
 {
   GList list, *l, *lprev;
+  gint cmp;
 
   l = &list; 
   lprev = NULL;
 
   while (l1 && l2)
     {
-      if (compare_func (l1->data, l2->data) < 0)
+      if (use_data)
+	cmp = ((GCompareFuncData) compare_func) (l1->data, l2->data, user_data);
+      else
+	cmp = ((GCompareFunc) compare_func) (l1->data, l2->data);
+
+      if (cmp <= 0)
         {
 	  l->next = l1;
 	  l = l->next;
@@ -631,8 +639,10 @@ g_list_sort_merge (GList       *l1,
 }
 
 GList* 
-g_list_sort (GList       *list,
-	     GCompareFunc compare_func)
+g_list_sort_real (GList    *list,
+		  GFunc     compare_func,
+		  gboolean  use_data,
+		  gpointer  user_data)
 {
   GList *l1, *l2;
   
@@ -653,9 +663,27 @@ g_list_sort (GList       *list,
   l2 = l1->next; 
   l1->next = NULL; 
 
-  return g_list_sort_merge (g_list_sort (list, compare_func),
-			    g_list_sort (l2,   compare_func),
-			    compare_func);
+  return g_list_sort_merge (g_list_sort_real (list, compare_func, use_data, user_data),
+			    g_list_sort_real (l2, compare_func, use_data, user_data),
+			    compare_func,
+			    use_data,
+			    user_data);
+}
+
+GList *
+g_list_sort (GList        *list,
+	     GCompareFunc  compare_func)
+{
+  return g_list_sort_real (list, (GFunc) compare_func, FALSE, NULL);
+			    
+}
+
+GList *
+g_list_sort_with_data (GList            *list,
+		       GCompareFuncData  compare_func,
+		       gpointer          user_data)
+{
+  return g_list_sort_real (list, (GFunc) compare_func, TRUE, user_data);
 }
 
 GList* 
@@ -691,7 +719,8 @@ g_list_sort2 (GList       *list,
 	{
 	  dst->data = g_list_sort_merge (src->data,
 					 src->next->data,
-					 compare_func);
+					 (GFunc) compare_func,
+					 FALSE, NULL);
 	  dstprev = dst;
 	  dst = dst->next;
 	  src = src->next->next;

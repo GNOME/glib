@@ -49,6 +49,7 @@
 #include <gmessages.h>
 #include <gnode.h>
 #include <gprimes.h>
+#include <gqsort.h>
 #include <gquark.h>
 #include <gqueue.h>
 #include <grand.h>

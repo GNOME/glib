@@ -1,3 +1,21 @@
+Mon Nov 20 18:55:17 2000  Jonathan Blandford  <jrb@redhat.com>
+
+	* gtree.[hc]: Patch from David Benson <daveb@idealab.com> to add
+	user_data support to gtree functions.
+
+Mon Nov 13 18:35:52 2000  Jonathan Blandford  <jrb@redhat.com>
+
+	* gtypes.h (GCompareFuncData): new func type to let you use user
+	data when comparing nodes.
+
+	* gslist.c (g_list_sort_with_data): new function to sort with
+	user_data. 
+
+	* glist.c (g_list_sort_with_data): new function to sort with
+	user_data. 
+
+	* garray.[ch]: Added convenience functions to sort arrays.
+
 2000-11-16  Havoc Pennington  <hp@redhat.com>
 
 	* guniprop.c (g_unichar_isspace): Use a switch here, maybe helps 

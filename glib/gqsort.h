@@ -1,4 +1,4 @@
-/* GLIB - Library of useful routines for C programming
+ /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -24,51 +24,21 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#ifndef __G_LIB_H__
-#define __G_LIB_H__
 
-#include <galloca.h>
-#include <garray.h>
-#include <gasyncqueue.h>
-#include <gbacktrace.h>
-#include <gcache.h>
-#include <gcompletion.h>
-#include <gconvert.h>
-#include <gdataset.h>
-#include <gdate.h>
-#include <gerror.h>
-#include <gfileutils.h>
-#include <ghash.h>
-#include <ghook.h>
-#include <giochannel.h>
-#include <glist.h>
-#include <gmacros.h>
-#include <gmain.h>
-#include <gmarkup.h>
-#include <gmem.h>
-#include <gmessages.h>
-#include <gnode.h>
-#include <gprimes.h>
-#include <gqsort.h>
-#include <gquark.h>
-#include <gqueue.h>
-#include <grand.h>
-#include <grel.h>
-#include <gscanner.h>
-#include <gshell.h>
-#include <gslist.h>
-#include <gspawn.h>
-#include <gstrfuncs.h>
-#include <gstring.h>
-#include <gthread.h>
-#include <gthreadpool.h>
-#include <gtimer.h>
-#include <gtree.h>
+#ifndef __G_QSORT_H__
+#define __G_QSORT_H__
+
 #include <gtypes.h>
-#include <gunicode.h>
-#include <gutils.h>
-#ifdef G_OS_WIN32
-#include <gwin32.h>
-#endif
 
-#endif /* __G_LIB_H__ */
+G_BEGIN_DECLS
+
+void g_qsort_with_data (gconstpointer    pbase,
+			gint             total_elems,
+			size_t           size,
+			GCompareFuncData compare_func,
+			gpointer         user_data);
+
+G_END_DECLS
+
+#endif /* __G_QSORT_H__ */
+

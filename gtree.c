@@ -37,7 +37,8 @@ typedef struct _GTreeNode  GTreeNode;
 struct _GRealTree
 {
   GTreeNode *root;
-  GCompareFunc key_compare;
+  GCompareFuncData key_compare;
+  gpointer key_compare_data;
 };
 
 struct _GTreeNode
@@ -54,12 +55,14 @@ static GTreeNode* g_tree_node_new                   (gpointer        key,
 						     gpointer        value);
 static void       g_tree_node_destroy               (GTreeNode      *node);
 static GTreeNode* g_tree_node_insert                (GTreeNode      *node,
-						     GCompareFunc    compare,
+						     GCompareFuncData compare,
+						     gpointer        comp_data,
 						     gpointer        key,
 						     gpointer        value,
 						     gint           *inserted);
 static GTreeNode* g_tree_node_remove                (GTreeNode      *node,
-						     GCompareFunc    compare,
+						     GCompareFuncData compare,
+						     gpointer        comp_data,
 						     gconstpointer   key);
 static GTreeNode* g_tree_node_balance               (GTreeNode      *node);
 static GTreeNode* g_tree_node_remove_leftmost       (GTreeNode      *node,
@@ -69,7 +72,8 @@ static GTreeNode* g_tree_node_restore_left_balance  (GTreeNode      *node,
 static GTreeNode* g_tree_node_restore_right_balance (GTreeNode      *node,
 						     gint            old_balance);
 static gpointer   g_tree_node_lookup                (GTreeNode      *node,
-						     GCompareFunc    compare,
+						     GCompareFuncData compare,
+						     gpointer        comp_data,
 						     gconstpointer   key);
 static gint       g_tree_node_count                 (GTreeNode      *node);
 static gint       g_tree_node_pre_order             (GTreeNode      *node,
@@ -149,9 +153,8 @@ g_tree_node_destroy (GTreeNode *node)
    }
 }
 
-
-GTree*
-g_tree_new (GCompareFunc key_compare_func)
+GTree*	 g_tree_new_udata(GCompareFuncData key_compare_func,
+                          gpointer        key_compare_data)
 {
   GRealTree *rtree;
 
@@ -160,9 +163,17 @@ g_tree_new (GCompareFunc key_compare_func)
   rtree = g_new (GRealTree, 1);
   rtree->root = NULL;
   rtree->key_compare = key_compare_func;
+  rtree->key_compare_data = key_compare_data;
 
   return (GTree*) rtree;
 }
+
+GTree*
+g_tree_new (GCompareFunc key_compare_func)
+{
+  return g_tree_new_udata ((GCompareFuncData) key_compare_func, NULL);
+}
+
 
 void
 g_tree_destroy (GTree *tree)
@@ -191,6 +202,7 @@ g_tree_insert (GTree    *tree,
 
   inserted = FALSE;
   rtree->root = g_tree_node_insert (rtree->root, rtree->key_compare,
+				    rtree->key_compare_data,
 				    key, value, &inserted);
 }
 
@@ -204,7 +216,8 @@ g_tree_remove (GTree         *tree,
 
   rtree = (GRealTree*) tree;
 
-  rtree->root = g_tree_node_remove (rtree->root, rtree->key_compare, key);
+  rtree->root = g_tree_node_remove (rtree->root, rtree->key_compare,
+                                    rtree->key_compare_data, key);
 }
 
 gpointer
@@ -217,7 +230,8 @@ g_tree_lookup (GTree         *tree,
 
   rtree = (GRealTree*) tree;
 
-  return g_tree_node_lookup (rtree->root, rtree->key_compare, key);
+  return g_tree_node_lookup (rtree->root, rtree->key_compare, 
+                             rtree->key_compare_data, key);
 }
 
 void
@@ -303,11 +317,12 @@ g_tree_nnodes (GTree *tree)
 }
 
 static GTreeNode*
-g_tree_node_insert (GTreeNode    *node,
-		    GCompareFunc  compare,
-		    gpointer      key,
-		    gpointer      value,
-		    gint         *inserted)
+g_tree_node_insert (GTreeNode      *node,
+		    GCompareFuncData compare,
+		    gpointer        compare_data,
+		    gpointer        key,
+		    gpointer        value,
+		    gint           *inserted)
 {
   gint old_balance;
   gint cmp;
@@ -318,7 +333,7 @@ g_tree_node_insert (GTreeNode    *node,
       return g_tree_node_new (key, value);
     }
 
-  cmp = (* compare) (key, node->key);
+  cmp = (* compare) (key, node->key, compare_data);
   if (cmp == 0)
     {
       *inserted = FALSE;
@@ -331,7 +346,8 @@ g_tree_node_insert (GTreeNode    *node,
       if (node->left)
 	{
 	  old_balance = node->left->balance;
-	  node->left = g_tree_node_insert (node->left, compare, key, value, inserted);
+	  node->left = g_tree_node_insert (node->left, compare, compare_data,
+	                                   key, value, inserted);
 
 	  if ((old_balance != node->left->balance) && node->left->balance)
 	    node->balance -= 1;
@@ -348,7 +364,8 @@ g_tree_node_insert (GTreeNode    *node,
       if (node->right)
 	{
 	  old_balance = node->right->balance;
-	  node->right = g_tree_node_insert (node->right, compare, key, value, inserted);
+	  node->right = g_tree_node_insert (node->right, compare, compare_data,
+	                                    key, value, inserted);
 
 	  if ((old_balance != node->right->balance) && node->right->balance)
 	    node->balance += 1;
@@ -371,9 +388,10 @@ g_tree_node_insert (GTreeNode    *node,
 }
 
 static GTreeNode*
-g_tree_node_remove (GTreeNode     *node,
-		    GCompareFunc   compare,
-		    gconstpointer  key)
+g_tree_node_remove (GTreeNode      *node,
+		    GCompareFuncData compare,
+		    gpointer        compare_data,
+		    gconstpointer   key)
 {
   GTreeNode *new_root;
   gint old_balance;
@@ -382,7 +400,7 @@ g_tree_node_remove (GTreeNode     *node,
   if (!node)
     return NULL;
 
-  cmp = (* compare) (key, node->key);
+  cmp = (* compare) (key, node->key, compare_data);
   if (cmp == 0)
     {
       GTreeNode *garbage;
@@ -419,7 +437,7 @@ g_tree_node_remove (GTreeNode     *node,
       if (node->left)
 	{
 	  old_balance = node->left->balance;
-	  node->left = g_tree_node_remove (node->left, compare, key);
+	  node->left = g_tree_node_remove (node->left, compare, compare_data, key);
 	  node = g_tree_node_restore_left_balance (node, old_balance);
 	}
     }
@@ -428,7 +446,7 @@ g_tree_node_remove (GTreeNode     *node,
       if (node->right)
 	{
 	  old_balance = node->right->balance;
-	  node->right = g_tree_node_remove (node->right, compare, key);
+	  node->right = g_tree_node_remove (node->right, compare, compare_data, key);
 	  node = g_tree_node_restore_right_balance (node, old_balance);
 	}
     }
@@ -503,28 +521,29 @@ g_tree_node_restore_right_balance (GTreeNode *node,
 }
 
 static gpointer
-g_tree_node_lookup (GTreeNode     *node,
-		    GCompareFunc   compare,
-		    gconstpointer  key)
+g_tree_node_lookup (GTreeNode      *node,
+		    GCompareFuncData compare,
+		    gpointer        compare_data,
+		    gconstpointer   key)
 {
   gint cmp;
 
   if (!node)
     return NULL;
 
-  cmp = (* compare) (key, node->key);
+  cmp = (* compare) (key, node->key, compare_data);
   if (cmp == 0)
     return node->value;
 
   if (cmp < 0)
     {
       if (node->left)
-	return g_tree_node_lookup (node->left, compare, key);
+	return g_tree_node_lookup (node->left, compare, compare_data, key);
     }
   else if (cmp > 0)
     {
       if (node->right)
-	return g_tree_node_lookup (node->right, compare, key);
+	return g_tree_node_lookup (node->right, compare, compare_data, key);
     }
 
   return NULL;
