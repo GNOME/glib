@@ -1,3 +1,12 @@
+Sat Dec 14 21:10:57 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gthread.h: Mark the contents of the strucures
+	in this file /*< private >*/
+
+	* glib/gthread.[ch]: Rename the 'write' field of the
+	structure to 'have_writer' to avoid any possible
+	conflict with system headers. (#90549, Morten Welinder)
+
 Sat Dec 14 20:11:41 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/{localcharset.[ch] libcharset-glib.patch}

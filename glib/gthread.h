@@ -56,6 +56,7 @@ typedef enum
 typedef struct _GThread         GThread;
 struct  _GThread
 {
+  /*< private >*/
   GThreadFunc func;
   gpointer data;
   gboolean joinable;
@@ -229,6 +230,7 @@ void g_static_mutex_free (GStaticMutex *mutex);
 
 struct _GStaticPrivate
 {
+  /*< private >*/
   guint index;
 };
 #define G_STATIC_PRIVATE_INIT { 0 }
@@ -242,6 +244,7 @@ void     g_static_private_free           (GStaticPrivate   *private_key);
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
 {
+  /*< private >*/
   GStaticMutex mutex;
   guint depth;
   GSystemThread owner;
@@ -260,11 +263,12 @@ void     g_static_rec_mutex_free        (GStaticRecMutex *mutex);
 typedef struct _GStaticRWLock GStaticRWLock;
 struct _GStaticRWLock
 {
+  /*< private >*/
   GStaticMutex mutex;
   GCond *read_cond;
   GCond *write_cond;
   guint read_counter;
-  gboolean write;
+  gboolean have_writer;
   guint want_to_read;
   guint want_to_write;
 };

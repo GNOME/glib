@@ -726,7 +726,7 @@ g_static_rw_lock_reader_lock (GStaticRWLock* lock)
 
   g_static_mutex_lock (&lock->mutex);
   lock->want_to_read++;
-  while (lock->write || lock->want_to_write) 
+  while (lock->have_writer || lock->want_to_write) 
     g_static_rw_lock_wait (&lock->read_cond, &lock->mutex);
   lock->want_to_read--;
   lock->read_counter++;
@@ -744,7 +744,7 @@ g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
     return TRUE;
 
   g_static_mutex_lock (&lock->mutex);
-  if (!lock->write && !lock->want_to_write)
+  if (!lock->have_writer && !lock->want_to_write)
     {
       lock->read_counter++;
       ret_val = TRUE;
@@ -778,10 +778,10 @@ g_static_rw_lock_writer_lock (GStaticRWLock* lock)
 
   g_static_mutex_lock (&lock->mutex);
   lock->want_to_write++;
-  while (lock->write || lock->read_counter)
+  while (lock->have_writer || lock->read_counter)
     g_static_rw_lock_wait (&lock->write_cond, &lock->mutex);
   lock->want_to_write--;
-  lock->write = TRUE;
+  lock->have_writer = TRUE;
   g_static_mutex_unlock (&lock->mutex);
 }
 
@@ -796,9 +796,9 @@ g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
     return TRUE;
 
   g_static_mutex_lock (&lock->mutex);
-  if (!lock->write && !lock->read_counter)
+  if (!lock->have_writer && !lock->read_counter)
     {
-      lock->write = TRUE;
+      lock->have_writer = TRUE;
       ret_val = TRUE;
     }
   g_static_mutex_unlock (&lock->mutex);
@@ -814,7 +814,7 @@ g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
     return;
 
   g_static_mutex_lock (&lock->mutex);
-  lock->write = FALSE; 
+  lock->have_writer = FALSE; 
   g_static_rw_lock_signal (lock);
   g_static_mutex_unlock (&lock->mutex);
 }
