@@ -1522,6 +1522,17 @@ g_random_double_range
 </SECTION>
 
 <SECTION>
+<TITLE>Character Set Conversion</TITLE>
+<FILE>conversions</FILE>
+g_convert
+g_convert_with_fallback
+G_CONVERT_ERROR
+GConvertError
+<SUBSECTION Private>
+g_convert_error_quark
+</SECTION>
+
+<SECTION>
 <TITLE>Unicode Manipulation</TITLE>
 <FILE>unicode</FILE>
 gunichar
@@ -1567,6 +1578,7 @@ g_utf8_strlen
 g_utf8_strncpy
 g_utf8_strchr
 g_utf8_strrchr
+g_utf8_validate
 
 <SUBSECTION>
 g_utf8_to_utf16

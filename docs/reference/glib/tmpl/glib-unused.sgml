@@ -15,6 +15,24 @@ Specifies the type of function passed to g_tree_search().
 desired key comes before @key in the sort order of the #GTree, or a positive
 value if the desired key comes after @key.
 
+<!-- ##### FUNCTION g_node_insert_after ##### -->
+<para>
+Inserts a #GNode beneath the parent after the given sibling.
+</para>
+
+@parent: the #GNode to place @node under.
+@sibling: the sibling #GNode to place @node after. If sibling is NULL,
+the node is inserted as the first child of @parent.
+@node: the #GNode to insert.
+@Returns: the inserted #GNode.
+
+<!-- ##### FUNCTION g_convert_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 <!-- ##### MACRO write ##### -->
 <para>
 

@@ -12,6 +12,7 @@
 <!entity glib-Message-Logging SYSTEM "sgml/messages.sgml">
 <!entity glib-Timers SYSTEM "sgml/timers.sgml">
 <!entity glib-String-Utility-Functions SYSTEM "sgml/string_utils.sgml">
+<!entity glib-Character-Set-Conversion SYSTEM "sgml/conversions.sgml">
 <!entity glib-Unicode-Manipulation SYSTEM "sgml/unicode.sgml">
 <!entity glib-Random-Numbers SYSTEM "sgml/random_numbers.sgml">
 <!entity glib-Miscellaneous-Utility-Functions SYSTEM "sgml/misc_utils.sgml">
@@ -79,6 +80,7 @@
   <chapter id="glib-utilities">
     <title>GLib Utilities</title>
     &glib-String-Utility-Functions;
+    &glib-Character-Set-Conversion;
     &glib-Unicode-Manipulation;
     &glib-Date-and-Time-Functions;
     &glib-Random-Numbers;   

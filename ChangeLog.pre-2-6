@@ -1,3 +1,12 @@
+Mon Sep 11 10:03:24 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* glib.h convert.c (g_convert_with_fallback): Change
+	ERROR_OTHER to ERROR_FAILED, add some dummy marking with _().
+
+	* docs/reference/glib/glib-sections.txt
+	docs/reference/glib/glib-docs.sgml Update for g_convert,
+	g_unicode_validate.
+
 2000-10-16  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Remove alloca stuff from here. galloca.h

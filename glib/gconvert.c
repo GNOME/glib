@@ -26,6 +26,8 @@
 
 #include "glib.h"
 
+#define _(s) (s)
+
 GQuark 
 g_convert_error_quark()
 {
@@ -47,11 +49,11 @@ open_converter (const gchar *to_codeset,
       /* Something went wrong.  */
       if (errno == EINVAL)
 	g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-		     "Conversion from character set `%s' to `%s' is not supported",
+		     _("Conversion from character set `%s' to `%s' is not supported"),
 		     from_codeset, to_codeset);
       else
         g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		     "Could not open converter from `%s' to `%s': %s",
+		     _("Could not open converter from `%s' to `%s': %s"),
 		     from_codeset, to_codeset, strerror (errno));
     }
 
@@ -61,20 +63,22 @@ open_converter (const gchar *to_codeset,
 
 /**
  * g_convert:
- * @str:          the string to convert
- * @len:          the length of the string
- * @to_codeset:   name of character set into which to convert @str
- * @from_codeset: character set of @str.
- * @bytes_read:   location to store the number of bytes in the
- *                input string that were successfully converted, or %NULL.
- *                Even if the conversion was succesful, this may be 
- *                less than len if there were partial characters
- *                at the end of the input. If the error
- *                G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                stored will the byte fofset after the last valid
- *                input sequence.
- * @error:        location to store the error occuring, or %NULL to ignore
- *                errors. Any of the errors in #GConvertError may occur.
+ * @str:           the string to convert
+ * @len:           the length of the string
+ * @to_codeset:    name of character set into which to convert @str
+ * @from_codeset:  character set of @str.
+ * @bytes_read:    location to store the number of bytes in the
+ *                 input string that were successfully converted, or %NULL.
+ *                 Even if the conversion was succesful, this may be 
+ *                 less than len if there were partial characters
+ *                 at the end of the input. If the error
+ *                 G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
+ *                 stored will the byte fofset after the last valid
+ *                 input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
+ * @error:         location to store the error occuring, or %NULL to ignore
+ *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Convert a string from one character set to another.
  *
@@ -151,12 +155,12 @@ g_convert (const gchar *str,
 	  }
 	case EILSEQ:
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-		       "Invalid byte sequence in conversion input");
+		       _("Invalid byte sequence in conversion input"));
 	  have_error = TRUE;
 	  break;
 	default:
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-		       "Error during conversion: %s",
+		       _("Error during conversion: %s"),
 		       strerror (errno));
 	  have_error = TRUE;
 	  break;
@@ -201,6 +205,8 @@ g_convert (const gchar *str,
  *                G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                stored will the byte fofset after the last valid
  *                input sequence.
+ * @bytes_written: the stored in the output buffer (not including the
+ *                 terminating nul.
  * @error:        location to store the error occuring, or %NULL to ignore
  *                errors. Any of the errors in #GConvertError may occur.
  *
@@ -329,7 +335,7 @@ g_convert_with_fallback (const gchar *str,
 		  /* Error converting fallback string - fatal
 		   */
 		  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			       "Cannot convert fallback '%s' to codeset '%s'",
+			       _("Cannot convert fallback '%s' to codeset '%s'"),
 			       insert_str, to_codeset);
 		  have_error = TRUE;
 		  break;
@@ -354,7 +360,7 @@ g_convert_with_fallback (const gchar *str,
 	      break;
 	    default:
 	      g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-			   "Error during conversion: %s",
+			   _("Error during conversion: %s"),
 			   strerror (errno));
 	      have_error = TRUE;
 	      break;

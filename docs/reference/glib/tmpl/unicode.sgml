@@ -383,6 +383,19 @@ Unicode Manipulation
 @ch: 
 
 
+<!-- ##### FUNCTION g_utf8_validate ##### -->
+<para>
+
+</para>
+
+@str: 
+@max_len: 
+@end: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@len: 
+
+
 <!-- ##### FUNCTION g_utf8_to_utf16 ##### -->
 <para>
 
