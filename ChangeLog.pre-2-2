@@ -1,3 +1,9 @@
+Thu May 16 12:24:00 2002  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* acinclude.m4 m4macros/glib-gettext.m4: Incorporate 
+ 	AM_LC_MESSAGES, AM_PATH_PROG_WITH_TEST as AM_GLIB_* to avoid 
+ 	dependencies on gettext m4 files. (#81885, Hidetoshi Tajima.)
+	
 2002-05-14  Alex Larsson <alexl@redhat.com>
 	
 	* glib/gstrfuncs.c: 
