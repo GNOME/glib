@@ -134,7 +134,7 @@ static int
 test_file (const gchar *filename)
 {
   gchar *contents;
-  gint   length;
+  gsize  length;
   GError *error;
   GMarkupParseContext *context;
   

@@ -64,7 +64,7 @@ read_all (int         fd,
 	  guint      *bytes_read)
 {
   guint left = nbytes;
-  guint nb;
+  gsize nb;
   GIOError error = G_IO_ERROR_NONE;
   char *bufp = buffer;
 
