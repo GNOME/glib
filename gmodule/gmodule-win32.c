@@ -38,6 +38,10 @@
 #include <tlhelp32.h>
 #else
 
+#ifdef G_WITH_CYGWIN
+#include <sys/cygwin.h>
+#endif
+
 /* The w32api headers supplied with the mingw gcc don't have
  * tlhelp32.h. We really only need the MODULEENTRY32 struct and the
  * TH32CS_SNAPMODULE value, so provide them here.
@@ -77,6 +81,12 @@ _g_module_open (const gchar *file_name,
 		gboolean     bind_lazy)
 {
   HINSTANCE handle;
+#ifdef G_WITH_CYGWIN
+  gchar tmp[MAX_PATH];
+
+  cygwin_conv_to_win32_path(file_name, tmp);
+  file_name = tmp;
+#endif
   
   handle = LoadLibrary (file_name);
   if (!handle)

@@ -29,19 +29,17 @@
 
 #include <glib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 /* exporting and importing functions, this is special cased
  * to feature Windows dll stubs.
  */
 #define	G_MODULE_IMPORT		extern
-#if defined (G_OS_WIN32)
+#ifdef G_PLATFORM_WIN32
 #  define	G_MODULE_EXPORT		__declspec(dllexport)
-#else /* !G_OS_WIN32 */
+#else /* !G_PLATFORM_WIN32 */
 #  define	G_MODULE_EXPORT
-#endif /* !G_OS_WIN32 */
+#endif /* !G_PLATFORM_WIN32 */
 
 typedef enum
 {
@@ -92,9 +90,6 @@ gchar*                g_module_build_path    (const gchar  *directory,
 					      const gchar  *module_name);
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
+G_END_DECLS
 
 #endif /* __GMODULE_H__ */

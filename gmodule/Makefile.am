@@ -28,29 +28,36 @@ glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS = \
 		gmodule.h
 
-libglib = $(top_builddir)/libglib-1.3.la # -lglib
+libglib = $(top_builddir)/libglib-1.3.la
 
 top_builddir_full=`cd \$(top_builddir); pwd`
 
 lib_LTLIBRARIES = libgmodule-1.3.la libgplugin_a.la libgplugin_b.la
 
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
+if OS_WIN32
+export_symbols = -export-symbols gmodule.def
+endif
+
 libgmodule_1_3_la_SOURCES = gmodule.c
 libgmodule_1_3_la_LDFLAGS = \
 	@G_MODULE_LDFLAGS@ \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic
+	-export-dynamic $(no_undefined) $(export_symbols)
 
-libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ # $(libglib)
+libgmodule_1_3_la_LIBADD = @G_MODULE_LIBS_EXTRA@ @G_MODULE_LIBS@ $(libglib)
 # we should really depend on $(libglib) for libgmodule.la, but libtool has a
-# problem with this ;(
+# problem with this ;( Ummm? Does it?
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
-libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ # $(libglib)
+libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
-libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ # $(libglib)
+libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module $(no_undefined)
+libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_LIBS_EXTRA@ @G_MODULE_PLUGIN_LIBS@ libgmodule-1.3.la $(libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@
