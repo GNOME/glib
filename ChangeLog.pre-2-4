@@ -1,3 +1,8 @@
+2002-11-06  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_str_has_suffix): 
+	(g_str_has_prefix): Minor doc markup fix.
+
 Mon Nov  4 10:45:48 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Add -DG_DISABLE_CAST_CHECKS for 
