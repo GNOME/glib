@@ -513,7 +513,16 @@ dnl ***********************
 dnl *** g_thread checks ***
 dnl ***********************
 
-AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use.],,)
+AC_ARG_WITH(threads, [  --with-threads=[none/posix/solaris/nspr] specify a thread implementation to use.],
+	if test "x$with_threads" = x; then
+		want_threads=yes
+	else
+		want_threads=$with_threads
+	fi,
+	want_threads=yes)
+if test "x$want_threads" = "xnone"; then
+	want_threads=no
+fi
 
 dnl error and warning message
 dnl *************************
@@ -539,27 +548,38 @@ LIBS_NOT_FOUND_2=". Please choose another thread implementation or
 dnl determination of thread implementation
 dnl ***************************************
 
-if test "x$with_threads" != xno; then
-        case $host in
-                *-*-solaris*)
-                        AC_CHECK_LIB(thread,cond_init,with_threads=solaris)
-                        ;;
-        esac
-        if test "x$with_threads" != xsolaris; then
-                AC_CHECK_LIB(pthread,pthread_cond_init,with_threads=posix)
-     	        AC_CHECK_LIB(pthreads,pthread_attr_init,with_threads=posix)
-		AC_CHECK_LIB(nspr21,PRP_NewNakedCondVar,with_threads=nspr)
+have_threads=none
+if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
+       	case $host in
+               	*-*-solaris*)
+              	AC_CHECK_LIB(thread, cond_init, have_threads=solaris)
+		;;
+	esac
+fi
+if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
+        if test "x$have_threads" = xnone; then
+                AC_CHECK_LIB(pthread, pthread_cond_init, have_threads=posix)
+	fi
+        if test "x$have_threads" = xnone; then
+     	        AC_CHECK_LIB(pthreads, pthread_cond_init, have_threads=posix)
+	fi
+        if test "x$have_threads" = xnone; then
+		AC_CHECK_FUNC(pthread_cond_init, have_threads=posix)
+	fi
+fi
+if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
+        if test "x$have_threads" = xnone; then
+		AC_CHECK_LIB(nspr21, PRP_NewNakedCondVar, have_threads=nspr)
 	fi
 fi
 
 AC_MSG_CHECKING(for thread implementation)
 
-if test x"$with_threads" = x; then
-        with_threads=none
+if test "x$have_threads" = xnone; then
 	AC_MSG_RESULT(none available)
         AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
 else
-	AC_MSG_RESULT($with_threads)
+	AC_MSG_RESULT($have_threads)
 fi
 
 
@@ -568,17 +588,22 @@ dnl ******************************
 
 G_THREAD_LIBS=
 
-case $with_threads in
+case $have_threads in
         posix)
 		G_THREAD_LIBS=error
-		AC_CHECK_LIB(pthreads,pthread_cond_init,
-			     G_THREAD_LIBS="-lpthreads") 
-                AC_CHECK_LIB(pthread,pthread_cond_init,
-			     G_THREAD_LIBS="-lpthread")     	       	
+		AC_CHECK_LIB(pthread, pthread_cond_init,
+			     G_THREAD_LIBS="-lpthread") 
+		if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(pthreads, pthread_cond_init,
+			     	G_THREAD_LIBS="-lpthreads")
+		fi
+		if test "x$G_THREAD_LIBS" = xerror; then
+			AC_CHECK_FUNC(pthread_cond_init, G_THREAD_LIBS="")
+		fi
                 ;;
         solaris)
 		G_THREAD_LIBS=error
-                AC_CHECK_LIB(thread,cond_init,G_THREAD_LIBS="-lthread")
+                AC_CHECK_LIB(thread, cond_init, G_THREAD_LIBS="-lthread")
 		# solaris has a broken initializer for mutexes, if we find it,
 		# we will replace it.
 		AC_MSG_CHECKING(for broken solaris mutex initialization)
@@ -590,7 +615,7 @@ case $with_threads in
 		AC_MSG_RESULT($solaris_mutex_init_broken)
                 ;;
 	nspr)
-		AC_CHECK_LIB(nspr21,PRP_NewNakedCondVar,
+		AC_CHECK_LIB(nspr21, PRP_NewNakedCondVar,
 			     G_THREAD_LIBS="-lnspr21")
 		;;
         none)
@@ -601,7 +626,7 @@ case $with_threads in
 esac
 
 if test "x$G_THREAD_LIBS" = xerror; then
-        AC_MSG_ERROR($LIBS_NOT_FOUND_1$with_threads$LIBS_NOT_FOUND_2)
+        AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
 fi
 
 AC_MSG_CHECKING(necessary linker options)
@@ -610,7 +635,7 @@ AC_MSG_RESULT($G_THREAD_LIBS)
 dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
-if test x"$with_threads" != xnone; then
+if test x"$have_threads" != xnone; then
 	G_THREAD_CFLAGS="-D_REENTRANT" # good default
 
 	case $host in
@@ -651,7 +676,7 @@ else
         G_THREAD_CFLAGS=
 fi
 
-AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$with_threads.c")
+AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 
@@ -1024,7 +1049,7 @@ if test x$glib_working_wctype = xno; then
 #define G_HAVE_BROKEN_WCTYPE 1"
 fi
 
-case $with_threads in
+case $have_threads in
 	posix)
 		g_mutex_has_default=yes
 		g_mutex_default_type='pthread_mutex_t'

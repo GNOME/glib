@@ -1,6 +1,7 @@
 1998-12-15  Jeff Garzik  <jgarzik@Pobox.com>
 
-	* configure.in: correctly support --without-threads and friends
+	* configure.in:
+	bugfixes, correctly support --without-threads and friends
 
 	* gthread/testgthread.c: corrected 64-bitness problem
 
