@@ -3014,6 +3014,13 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
               *q = '\\';
               break;
 
+	    case '\0':
+	      g_set_error (error, G_KEY_FILE_ERROR,
+			   G_KEY_FILE_ERROR_INVALID_VALUE,
+			   _("Key file contains escape character "
+			     "at end of line"));
+	      break;
+
             default:
 	      if (pieces && *p == key_file->list_separator)
 		*q = key_file->list_separator;
@@ -3049,14 +3056,12 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 	    }
 	}
 
+      if (*p == '\0')
+	break;
+
       q++;
       p++;
     }
-
-  if (p > value && p[-1] == '\\' && q[-1] != '\\' && *error == NULL)
-    g_set_error (error, G_KEY_FILE_ERROR,
-		 G_KEY_FILE_ERROR_INVALID_VALUE,
-		 _("Key file contains escape character at end of line"));
 
   *q = '\0';
   if (pieces)

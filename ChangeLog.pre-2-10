@@ -1,3 +1,16 @@
+2005-02-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gkeyfile.c (g_key_file_parse_value_as_string): Don't
+	write out of bounds.
+
+	* glib/goption.c (g_option_context_parse): Fix a 
+	one-too-short memory allocation.  (#166609, Nicolas Laurent)
+
+	* tests/Makefile.am (TESTS_ENVIRONMENT): Add tests with
+	MALLOC_CHECK_.
+
+	* tests/option-test.c: Add a test for unkown short options.
+
 2005-02-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/glib.symbols: 

@@ -111,7 +111,8 @@ check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 
 TESTS = $(test_programs) $(test_scripts)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
-	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset \
+	MALLOC_CHECK_=2
 
 progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
 thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
