@@ -1,3 +1,14 @@
+Mon Feb 26 23:06:54 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* README: Fix information about reporting bugs to 
+	report to bugzilla.gnome.org.
+
+	* HACKING: Minor tweaks.
+
+Tue Feb 13 15:29:06 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* NEWS: Update.
+
 Sat Feb 17 07:33:44 2001  Tim Janik  <timj@gtk.org>
 
 	* configure.in (G_MODULE_BROKEN_RTLD_GLOBAL): check for systems
@@ -13,7 +24,7 @@ Sat Feb 17 07:33:44 2001  Tim Janik  <timj@gtk.org>
 Sat Dec  2 09:24:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* gmain.c (g_main_add_poll_unlocked): Initial fd->revents
-	to zero.
+	to zero. (#8482, Benjamin Kahn)
 
 2000-11-29  Martin Baulig  <baulig@suse.de>
 
