@@ -29,7 +29,6 @@ glib_OBJECTS =			\
 	garray.obj		\
 	gasyncqueue.obj		\
 	gbacktrace.obj		\
-	gbsearcharray.obj	\
 	gcache.obj		\
 	gcompletion.obj		\
 	gconvert.obj		\

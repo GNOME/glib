@@ -59,9 +59,9 @@ typedef unsigned __int64 guint64;
 #else /* _MSC_VER */
 #define G_GINT64_CONSTANT(val)	(val##i64)
 #endif /* _MSC_VER */
-#define G_GINT64_MODIFIER "ll"
-#define G_GINT64_FORMAT "lli"
-#define G_GUINT64_FORMAT "llu"
+#define G_GINT64_MODIFIER "I64"
+#define G_GINT64_FORMAT "I64i"
+#define G_GUINT64_FORMAT "I64u"
 
 #define GLIB_SIZEOF_VOID_P 4
 #define GLIB_SIZEOF_LONG   4

@@ -1088,7 +1088,12 @@ get_filename_charset (const gchar **filename_charset)
 }
 
 #else /* G_PLATFORM_WIN32 */
-#define get_filename_charset (charset) TRUE
+static gboolean
+get_filename_charset (const gchar **filename_charset) 
+{
+  g_get_charset (filename_charset);
+  return FALSE;
+}
 #endif /* G_PLATFORM_WIN32 */
 
 /* This is called from g_thread_init(). It's used to
