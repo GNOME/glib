@@ -1,5 +1,12 @@
 2003-03-30  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gstring.c (g_string_new): Optimize the common cases 
+	(init == NULL or init == "") a bit.
+	* glib/gmarkup.c, glib/gmessages.c, glib/gscanner.c,
+	glib/gshell.c, glib/gspawn-win32-helper.c, glib/gspawn-win32.c,
+	glib/gspawn.c, gobject/gvaluetransform.c: replace uses of 
+	g_string_new ("") by g_string_new (NULL).  (#106973, Morten Welinder)
+
 	* glib/gutf8.c (UNICODE_VALID): Update to Unicode 3.1 and optimize
 	a bit.  (#107427, Noah Lewitt)
 

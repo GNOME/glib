@@ -235,10 +235,17 @@ g_string_new (const gchar *init)
 {
   GString *string;
 
-  string = g_string_sized_new (init ? strlen (init) + 2 : 2);
+  if (init == NULL || *init == '\0')
+    string = g_string_sized_new (2);
+  else 
+    {
+      gint len;
 
-  if (init)
-    g_string_append (string, init);
+      len = strlen (init);
+      string = g_string_sized_new (len + 2);
+
+      g_string_append_len (string, init, len);
+    }
 
   return string;
 }

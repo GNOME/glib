@@ -767,7 +767,7 @@ g_log_default_handler (const gchar   *log_domain,
 
   fd = mklevel_prefix (level_prefix, log_level);
 
-  gstring = g_string_new ("");
+  gstring = g_string_new (NULL);
   if (log_level & ALERT_LEVELS)
     g_string_append (gstring, "\n");
   if (!log_domain)

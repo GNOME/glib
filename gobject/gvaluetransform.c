@@ -210,7 +210,7 @@ value_transform_flags_string (const GValue *src_value,
   
   if (flags_value)
     {
-      GString *gstring = g_string_new ("");
+      GString *gstring = g_string_new (NULL);
       guint v_flags = src_value->data[0].v_uint;
       
       do

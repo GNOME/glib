@@ -361,7 +361,7 @@ g_spawn_sync (const gchar          *working_directory,
 
   if (outpipe >= 0)
     {
-      outstr = g_string_new ("");
+      outstr = g_string_new (NULL);
       outchannel = g_io_channel_win32_new_fd (outpipe);
       g_io_channel_set_encoding (outchannel, NULL, NULL);
       g_io_channel_win32_make_pollfd (outchannel,
@@ -371,7 +371,7 @@ g_spawn_sync (const gchar          *working_directory,
       
   if (errpipe >= 0)
     {
-      errstr = g_string_new ("");
+      errstr = g_string_new (NULL);
       errchannel = g_io_channel_win32_new_fd (errpipe);
       g_io_channel_set_encoding (errchannel, NULL, NULL);
       g_io_channel_win32_make_pollfd (errchannel,

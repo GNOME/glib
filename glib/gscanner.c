@@ -1267,7 +1267,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	  g_scanner_get_char (scanner, line_p, position_p);
 	  token = G_TOKEN_COMMENT_MULTI;
 	  in_comment_multi = TRUE;
-	  gstring = g_string_new ("");
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '*' && g_scanner_peek_next_char (scanner) == '/')
@@ -1287,7 +1287,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    goto default_case;
 	  token = G_TOKEN_STRING;
 	  in_string_sq = TRUE;
-	  gstring = g_string_new ("");
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '\'')
@@ -1306,7 +1306,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    goto default_case;
 	  token = G_TOKEN_STRING;
 	  in_string_dq = TRUE;
-	  gstring = g_string_new ("");
+	  gstring = g_string_new (NULL);
 	  while ((ch = g_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
 	      if (ch == '"')
@@ -1612,7 +1612,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 	    {
 	      token = G_TOKEN_COMMENT_SINGLE;
 	      in_comment_single = TRUE;
-	      gstring = g_string_new ("");
+	      gstring = g_string_new (NULL);
 	      ch = g_scanner_get_char (scanner, line_p, position_p);
 	      while (ch != 0)
 		{
@@ -1637,7 +1637,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
 			  g_scanner_peek_next_char (scanner)))
 		{
 		  token = G_TOKEN_IDENTIFIER;
-		  gstring = g_string_new ("");
+		  gstring = g_string_new (NULL);
 		  gstring = g_string_append_c (gstring, ch);
 		  do
 		    {

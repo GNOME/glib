@@ -37,7 +37,7 @@ write_err_and_exit (gint fd,
   
   if (debug)
     {
-      debugstring = g_string_new ("");
+      debugstring = g_string_new (NULL);
       g_string_append (debugstring,
 		       g_strdup_printf ("writing error code %d and errno %d",
 					msg, en));
@@ -82,7 +82,7 @@ WinMain (struct HINSTANCE__ *hInstance,
 
   if (debug)
     {
-      debugstring = g_string_new ("");
+      debugstring = g_string_new (NULL);
 
       g_string_append (debugstring,
 		       g_strdup_printf ("g-spawn-win32-helper: "
@@ -212,7 +212,7 @@ WinMain (struct HINSTANCE__ *hInstance,
 
   if (debug)
     {
-      debugstring = g_string_new ("");
+      debugstring = g_string_new (NULL);
       g_string_append (debugstring,
 		       g_strdup_printf ("calling %s %s mode=%s argv: ",
 					(__argv[ARG_USE_PATH][0] == 'y' ?
@@ -237,7 +237,7 @@ WinMain (struct HINSTANCE__ *hInstance,
 
   if (debug)
     {
-      debugstring = g_string_new ("");
+      debugstring = g_string_new (NULL);
       g_string_append (debugstring,
 		       g_strdup_printf ("%s returned %#x",
 					(__argv[ARG_USE_PATH][0] == 'y' ?
