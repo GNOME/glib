@@ -38,6 +38,7 @@ gobject_OBJECTS =		\
 	gparamspecs.o		\
 	gsignal.o		\
 	gtype.o			\
+	gtypemodule.o		\
 	gtypeplugin.o		\
 	gvalue.o		\
 	gvaluetypes.o

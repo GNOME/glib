@@ -110,9 +110,20 @@ EXPORTS
 	g_type_interface_peek
 	g_type_interfaces
 	g_type_is_a
+	g_type_module_add_interface
+	g_type_module_get_type
+	g_type_module_register_type
+	g_type_module_set_name
+	g_type_module_unuse
+	g_type_module_use
 	g_type_name
 	g_type_next_base
 	g_type_parent
+	g_type_plugin_complete_interface_info
+	g_type_plugin_complete_type_info
+	g_type_plugin_get_type
+	g_type_plugin_unuse
+	g_type_plugin_use
 	g_type_qname
 	g_type_register_dynamic
 	g_type_register_fundamental

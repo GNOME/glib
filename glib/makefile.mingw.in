@@ -24,10 +24,9 @@ DEPCFLAGS = $(LIBICONV_CFLAGS)
 
 DLLS_TO_BUILD =				\
  	glib-$(GLIB_VER).dll		\
-	gmodule/gmodule-$(GLIB_VER).dll	\
-	gthread/gthread-$(GLIB_VER).dll	\
-	gobject/gobject-$(GLIB_VER).dll
-
+	sub-gmodule			\
+	sub-gthread			\
+	sub-gobject
 
 all :				\
 	config.h		\
@@ -102,13 +101,13 @@ gspawn-win32-helper.exe : gspawn-win32.c
 
 ################ subdirectories
 
-gmodule/gmodule-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+sub-gmodule :
 	cd gmodule && $(MAKE) -f makefile.mingw all
 
-gthread/gthread-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+sub-gthread :
 	cd gthread && $(MAKE) -f makefile.mingw all
 
-gobject/gobject-$(GLIB_VER).dll : glib-$(GLIB_VER).dll
+sub-gobject :
 	cd gobject && $(MAKE) -f makefile.mingw all
 
 ################ test progs

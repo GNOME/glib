@@ -538,6 +538,7 @@ g_mkstemp (char *tmpl)
   static const int NLETTERS = sizeof (letters) - 1;
   glong value;
   GTimeVal tv;
+  static int counter = 0;
 
   len = strlen (tmpl);
   if (len < 6 || strcmp (&tmpl[len - 6], "XXXXXX"))
@@ -548,7 +549,7 @@ g_mkstemp (char *tmpl)
 
   /* Get some more or less random data.  */
   g_get_current_time (&tv);
-  value = tv.tv_usec ^ tv.tv_sec;
+  value = (tv.tv_usec ^ tv.tv_sec) + counter++;
 
   for (count = 0; count < 100; value += 7777, ++count)
     {

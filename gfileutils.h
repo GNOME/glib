@@ -81,7 +81,12 @@ gboolean g_file_get_contents (const gchar  *filename,
 
 
 /* Wrapper / workalike for mkstemp() */
-int     g_mkstemp (char *tmpl);
+int     g_mkstemp            (char         *tmpl);
+
+/* Wrapper for g_mkstemp */
+int     g_file_open_tmp      (const char   *template,
+			      char        **name_used,
+			      GError      **error);
 
 G_END_DECLS
 

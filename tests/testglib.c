@@ -24,12 +24,23 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#include "config.h"
+
 #undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+
 #include "glib.h"
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef G_OS_WIN32
+#include <io.h>			/* For read(), write() etc */
+#endif
 
 int array[10000];
 gboolean failed = FALSE;
