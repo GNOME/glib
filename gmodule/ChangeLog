@@ -1,3 +1,18 @@
+2000-03-04  Tor Lillqvist  <tml@iki.fi>
+
+	* gmodule-win32.c: Call g_win32_error_message() to get the error
+	message strings.
+
+	* libgplugin_a.c
+	* libgplugin_b.c
+	* gmodule.c: Remove LibMain functions that were needed by LCC,
+	which is not a supported compiler.
+
+	* testgmodule.c (main): Test for G_MODULE_IMPL ==
+	G_MODULE_IMPL_WIN32, not G_OS_WIN32.
+
+	* gmoduleconf.h.win32: Remove LCC stuff from here, too. 
+
 Wed Mar  1 05:34:47 2000  Tim Janik  <timj@gtk.org>
 
         * gmodule-beos.c (_g_module_symbol): do not return NULL symbols.

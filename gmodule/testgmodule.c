@@ -53,16 +53,16 @@ main (int   arg,
   string = g_get_current_dir ();
   g_print ("testgmodule (%s):\n", string);
 
-#ifdef G_OS_WIN32
+#if (G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
   plugin_a = g_strconcat (string, "\\libgplugin_a.dll", NULL);
   plugin_b = g_strconcat (string, "\\libgplugin_b.dll", NULL);
 #elif (G_MODULE_IMPL == G_MODULE_IMPL_DLD)
   plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.sl", NULL);
   plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.sl", NULL);
-#else /* G_MODULE_IMPL != G_MODULE_IMPL_DLD && !G_OS_WIN32 */
+#else /* neither DLD nor WIN32 */
   plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.so", NULL);
   plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.so", NULL);
-#endif /* G_OS_WIN32 */
+#endif
   g_free (string);
 
   /* module handles

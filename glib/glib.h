@@ -2905,6 +2905,12 @@ gint		g_win32_closedir  	(DIR		*dir);
  */
 gchar *		g_win32_getlocale  (void);
 
+/* Translate a Win32 error code (as returned by GetLastError()) into
+ * the corresponding message. The returned string should be deallocated
+ * with g_free().
+ */
+gchar *         g_win32_error_message (gint error);
+
 #endif	 /* G_OS_WIN32 */
 
 
