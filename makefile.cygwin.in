@@ -28,8 +28,10 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 CFLAGS = $(OPTIMIZE) -I. -DHAVE_CONFIG_H
 
-# Kludge to get the path to the win32 headers
-WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's!/winver.h!!')
+# Kludge to get the path to the win32 headers. Should work for both
+# gcc running on cygwin, and bare mingw gcc, even if the make is
+# running on cygwin (whew).
+WIN32APIHEADERS = $(shell echo "\#include <winver.h>" | $(CC) -M -E - | tail -1 | sed -e 's![\\/]winver.h!!' | tr -d '\015')
 
 all : \
 	config.h	\

@@ -11,11 +11,11 @@ library is used.
 To build GLib on Win32, you can use either the Microsoft compiler and
 tools, or gcc. Both the compiler from MSVC 5.0 and from MSVC 6.0 have
 been used successfully. With gcc I mean gcc-2.95 or gcc-2.95.2 as
-distributed by Mumit Khan, running under cygwin-b20.1. To successfully
-use gcc, follow the instructions below. We want to use gcc
--mno-cygwin, i.e. produce executables (.exe and .dll files) that do
-*not* require the cygwin runtime library. This is sometimes called
-"mingw32".
+distributed by Mumit Khan, either as a mingw version (preferred), or
+running under cygwin. To successfully use gcc, follow the instructions
+below. We want to use gcc -mno-cygwin, i.e. produce executables (.exe
+and .dll files) that do *not* require the cygwin runtime library. This
+is called "mingw".
 
 To test the GLib functions, go to the tests subdirectory and enter
 `nmake -f makefile.msc check` or `make -f makefile.cygwin check`.
@@ -99,9 +99,23 @@ Building with gcc
 I use the latest and greatest gcc, gcc-2.95.2. 2.95 will also work.
 Earlier version might, but you are on your own.
 
-Read these instruction carefully and understand them. If you don't
-understand or can't follow the instructions, you probably shouldn't
-want to build GLib (or GTk+ or GIMP) yourself anyway. 
+You can either use gcc running on cygwin, or the "pure" mingw
+gcc. Using the latter is much easier. Just fetch the latest version of
+gcc for mingw and the msvcrt runtime, currently from
+ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/mingw32/snapshots/gcc-2.95.2-1/
+. Download the three zip archives: the gcc-<version>-msvcrt,
+mingw-msvcrt-<timestamp> and binutils-<timestamp>-msvcrt, and unpack
+them in a suitable directory. Set up your PATH so that the gcc from
+the bin directory that got created above is the one that gets
+used. You can skip steps 1--5 below. Even if you run the mingw gcc,
+you still want to have cygwin to run make in.
+
+If you want to run a cygwin-based gcc, it gets much more
+complicated. We still want gcc to produce code that does not use
+cygwin, but the msvcrt runtime. Read the below instruction carefully
+and understand them. If you don't understand or can't follow the
+instructions, you probably shouldn't want to build GLib (or GTk+ or
+GIMP) yourself anyway.
 
 0) Get and install Cygwin B20.1.
 

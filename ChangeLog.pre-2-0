@@ -1,3 +1,12 @@
+2000-03-26  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Tell about using the mingw-based gcc, which is
+	much easier than modifying the cygwin gcc to product mingw code
+	for the msvcrt runtime.
+
+	* makefile.cygwin.in (WIN32APIHEADERS): Kludge to make it work
+	with a "pure" mingw gcc, too.
+
 2000-03-24  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* garray.c: Made GArray behave correctly. Now zero_terminated
