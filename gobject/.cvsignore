@@ -26,4 +26,5 @@ gmarshal.strings
 oldest-source-stamp
 stamp-gmarshal.h
 testgruntime
+testoverride
 .saved
