@@ -103,7 +103,10 @@ g_dir_read_name (GDir *dir)
              0 == strcmp (entry->d_name, "..")))
     entry = readdir (dir->dir);
 
-  return entry->d_name;
+  if (entry)
+    return entry->d_name;
+  else
+    return NULL;
 }
 
 /**

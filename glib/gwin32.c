@@ -95,120 +95,6 @@ g_win32_ftruncate (gint  fd,
 
 #endif
 
-/* MSVC 5.0 headers don't have latest language and sublanguage codes */
-#ifndef LANG_ARMENIAN
-#define LANG_ARMENIAN 0x2b
-#endif
-#ifndef LANG_ASSAMESE
-#define LANG_ASSAMESE 0x4d
-#endif
-#ifndef LANG_AZERI
-#define LANG_AZERI 0x2c
-#endif
-#ifndef LANG_BENGALI
-#define LANG_BENGALI 0x45
-#endif
-#ifndef LANG_GEORGIAN
-#define LANG_GEORGIAN 0x37
-#endif
-#ifndef LANG_GUJARATI
-#define LANG_GUJARATI 0x47
-#endif
-#ifndef LANG_HINDI
-#define LANG_HINDI 0x39
-#endif
-#ifndef LANG_KANNADA
-#define LANG_KANNADA 0x4b
-#endif
-#ifndef LANG_KASHMIRI
-#define LANG_KASHMIRI 0x60
-#endif
-#ifndef LANG_KAZAK
-#define LANG_KAZAK 0x3f
-#endif
-#ifndef LANG_KONKANI
-#define LANG_KONKANI 0x57
-#endif
-#ifndef LANG_MACEDONIAN
-#define LANG_MACEDONIAN 0x2f
-#endif
-#ifndef LANG_MALAY
-#define LANG_MALAY 0x3e
-#endif
-#ifndef LANG_MALAYALAM
-#define LANG_MALAYALAM 0x4c
-#endif
-#ifndef LANG_MANIPURI
-#define LANG_MANIPURI 0x58
-#endif
-#ifndef LANG_MARATHI
-#define LANG_MARATHI 0x4e
-#endif
-#ifndef LANG_NEPALI
-#define LANG_NEPALI 0x61
-#endif
-#ifndef LANG_ORIYA
-#define LANG_ORIYA 0x48
-#endif
-#ifndef LANG_PUNJABI
-#define LANG_PUNJABI 0x46
-#endif
-#ifndef LANG_SANSKRIT
-#define LANG_SANSKRIT 0x4f
-#endif
-#ifndef LANG_SINDHI
-#define LANG_SINDHI 0x59
-#endif
-#ifndef LANG_SWAHILI
-#define LANG_SWAHILI 0x41
-#endif
-#ifndef LANG_TAMIL
-#define LANG_TAMIL 0x49
-#endif
-#ifndef LANG_TATAR
-#define LANG_TATAR 0x44
-#endif
-#ifndef LANG_TELUGU
-#define LANG_TELUGU 0x4a
-#endif
-#ifndef LANG_URDU
-#define LANG_URDU 0x20
-#endif
-#ifndef LANG_UZBEK
-#define LANG_UZBEK 0x43
-#endif
-
-#ifndef SUBLANG_CHINESE_MACAU
-#define SUBLANG_CHINESE_MACAU 0x05
-#endif
-#ifndef SUBLANG_ENGLISH_ZIMBABWE
-#define SUBLANG_ENGLISH_ZIMBABWE 0x0c
-#endif
-#ifndef SUBLANG_ENGLISH_PHILIPPINES
-#define SUBLANG_ENGLISH_PHILIPPINES 0x0d
-#endif
-#ifndef SUBLANG_FRENCH_MONACO
-#define SUBLANG_FRENCH_MONACO 0x06
-#endif
-#ifndef SUBLANG_KASHMIRI_INDIA
-#define SUBLANG_KASHMIRI_INDIA 0x02
-#endif
-#ifndef SUBLANG_MALAY_BRUNEI_DARUSSALAM
-#define SUBLANG_MALAY_BRUNEI_DARUSSALAM 0x02
-#endif
-#ifndef SUBLANG_NEPALI_INDIA
-#define SUBLANG_NEPALI_INDIA 0x02
-#endif
-#ifndef SUBLANG_URDU_PAKISTAN
-#define SUBLANG_URDU_PAKISTAN 0x01
-#endif
-#ifndef SUBLANG_URDU_INDIA
-#define SUBLANG_URDU_INDIA 0x02
-#endif
-#ifndef SUBLANG_UZBEK_CYRILLIC
-#define SUBLANG_UZBEK_CYRILLIC 0x02
-#endif
-
 /**
  * g_win32_getlocale:
  *
@@ -274,8 +160,13 @@ g_win32_getlocale (void)
 	case SUBLANG_ARABIC_QATAR: sl = "QA"; break;
 	}
       break;
+#ifdef LANG_ARMENIAN
     case LANG_ARMENIAN: l = "hy"; sl = "AM"; break;
+#endif
+#ifdef LANG_ASSAMESE
     case LANG_ASSAMESE: l = "as"; sl = "IN"; break;
+#endif
+#ifdef LANG_AZERI
     case LANG_AZERI:
       l = "az";
 #if defined (SUBLANG_AZERI_LATIN) && defined (SUBLANG_AZERI_CYRILLIC)
@@ -287,11 +178,14 @@ g_win32_getlocale (void)
 	}
 #endif
       break;
+#endif
     case LANG_BASQUE:
       l = "eu"; /* sl could be "ES" or "FR".  */
       break;
     case LANG_BELARUSIAN: l = "be"; sl = "BY"; break;
+#ifdef LANG_BENGALI
     case LANG_BENGALI: l = "bn"; sl = "IN"; break;
+#endif
     case LANG_BULGARIAN: l = "bg"; sl = "BG"; break;
     case LANG_CATALAN: l = "ca"; sl = "ES"; break;
     case LANG_CHINESE:
@@ -302,7 +196,9 @@ g_win32_getlocale (void)
 	case SUBLANG_CHINESE_SIMPLIFIED: sl = "CN"; break;
 	case SUBLANG_CHINESE_HONGKONG: sl = "HK"; break;
 	case SUBLANG_CHINESE_SINGAPORE: sl = "SG"; break;
+#ifdef SUBLANG_CHINESE_MACAU
 	case SUBLANG_CHINESE_MACAU: sl = "MO"; break;
+#endif
 	}
       break;
     case LANG_CROATIAN:		/* LANG_CROATIAN == LANG_SERBIAN
@@ -346,8 +242,12 @@ g_win32_getlocale (void)
 	case SUBLANG_ENGLISH_CARIBBEAN: sl = "GD"; break; /* Grenada? */
 	case SUBLANG_ENGLISH_BELIZE: sl = "BZ"; break;
 	case SUBLANG_ENGLISH_TRINIDAD: sl = "TT"; break;
+#ifdef SUBLANG_ENGLISH_ZIMBABWE
 	case SUBLANG_ENGLISH_ZIMBABWE: sl = "ZW"; break;
+#endif
+#ifdef SUBLANG_ENGLISH_PHILIPPINES
 	case SUBLANG_ENGLISH_PHILIPPINES: sl = "PH"; break;
+#endif
 	}
       break;
     case LANG_ESTONIAN: l = "et"; sl = "EE"; break;
@@ -363,10 +263,14 @@ g_win32_getlocale (void)
 	case SUBLANG_FRENCH_CANADIAN: sl = "CA"; break;
 	case SUBLANG_FRENCH_SWISS: sl = "CH"; break;
 	case SUBLANG_FRENCH_LUXEMBOURG: sl = "LU"; break;
+#ifdef SUBLANG_FRENCH_MONACO
 	case SUBLANG_FRENCH_MONACO: sl = "MC"; break;
+#endif
 	}
       break;
+#ifdef LANG_GEORGIAN
     case LANG_GEORGIAN: l = "ka"; sl = "GE"; break;
+#endif
     case LANG_GERMAN:
       l = "de";
       switch (sub)
@@ -379,9 +283,13 @@ g_win32_getlocale (void)
 	}
       break;
     case LANG_GREEK: l = "el"; sl = "GR"; break;
+#ifdef LANG_GUJARATI
     case LANG_GUJARATI: l = "gu"; sl = "IN"; break;
+#endif
     case LANG_HEBREW: l = "he"; sl = "IL"; break;
+#ifdef LANG_HINDI
     case LANG_HINDI: l = "hi"; sl = "IN"; break;
+#endif
     case LANG_HUNGARIAN: l = "hu"; sl = "HU"; break;
     case LANG_ICELANDIC: l = "is"; sl = "IS"; break;
     case LANG_INDONESIAN: l = "id"; sl = "ID"; break;
@@ -394,24 +302,37 @@ g_win32_getlocale (void)
 	}
       break;
     case LANG_JAPANESE: l = "ja"; sl = "JP"; break;
+#ifdef LANG_KANNADA
     case LANG_KANNADA: l = "kn"; sl = "IN"; break;
+#endif
+#ifdef LANG_KASHMIRI
     case LANG_KASHMIRI:
       l = "ks";
       switch (sub)
 	{
 	case SUBLANG_DEFAULT: sl = "PK"; break;
+#ifdef SUBLANG_KASHMIRI_INDIA
 	case SUBLANG_KASHMIRI_INDIA: sl = "IN"; break;
+#endif
 	}
       break;
+#endif
+#ifdef LANG_KAZAK
     case LANG_KAZAK: l = "kk"; sl = "KZ"; break;
+#endif
+#ifdef LANG_KONKANI
     case LANG_KONKANI:
       /* FIXME: Adjust this when such locales appear on Unix.  */
       l = "kok"; sl = "IN";
       break;
+#endif
     case LANG_KOREAN: l = "ko"; sl = "KR"; break;
     case LANG_LATVIAN: l = "lv"; sl = "LV"; break;
     case LANG_LITHUANIAN: l = "lt"; sl = "LT"; break;
+#ifdef LANG_MACEDONIAN
     case LANG_MACEDONIAN: l = "mk"; sl = "MK"; break;
+#endif
+#ifdef LANG_MALAY
     case LANG_MALAY:
       l = "ms";
       switch (sub)
@@ -419,23 +340,36 @@ g_win32_getlocale (void)
 #ifdef SUBLANG_MALAY_MALAYSIA
 	case SUBLANG_MALAY_MALAYSIA: sl = "MY"; break;
 #endif
+#ifdef SUBLANG_MALAY_BRUNEI_DARUSSALAM
 	case SUBLANG_MALAY_BRUNEI_DARUSSALAM: sl = "BN"; break;
+#endif
 	}
       break;
+#endif
+#ifdef LANG_MALAYALAM
     case LANG_MALAYALAM: l = "ml"; sl = "IN"; break;
+#endif
+#ifdef LANG_MANIPURI
     case LANG_MANIPURI:
       /* FIXME: Adjust this when such locales appear on Unix.  */
       l = "mni"; sl = "IN";
       break;
+#endif
+#ifdef LANG_MARATHI
     case LANG_MARATHI: l = "mr"; sl = "IN"; break;
+#endif
+#ifdef LANG_NEPALI
     case LANG_NEPALI:
       l = "ne";
       switch (sub)
 	{
 	case SUBLANG_DEFAULT: sl = "NP"; break;
+#ifdef SUBLANG_NEPALI_INDIA
 	case SUBLANG_NEPALI_INDIA: sl = "IN"; break;
+#endif
 	}
       break;
+#endif
     case LANG_NORWEGIAN:
       l = "no";
       switch (sub)
@@ -444,7 +378,9 @@ g_win32_getlocale (void)
 	case SUBLANG_NORWEGIAN_NYNORSK: l = "nn"; sl = "NO"; break;
 	}
       break;
+#ifdef LANG_ORIYA
     case LANG_ORIYA: l = "or"; sl = "IN"; break;
+#endif
     case LANG_POLISH: l = "pl"; sl = "PL"; break;
     case LANG_PORTUGUESE:
       l = "pt";
@@ -454,13 +390,19 @@ g_win32_getlocale (void)
 	case SUBLANG_PORTUGUESE_BRAZILIAN: sl = "BR"; break;
 	}
       break;
+#ifdef LANG_PUNJABI
     case LANG_PUNJABI: l = "pa"; sl = "IN"; break;
+#endif
     case LANG_ROMANIAN: l = "ro"; sl = "RO"; break;
     case LANG_RUSSIAN:
       l = "ru"; /* sl could be "RU" or "UA".  */
       break;
+#ifdef LANG_SANSKRIT
     case LANG_SANSKRIT: l = "sa"; sl = "IN"; break;
+#endif
+#ifdef LANG_SINDHI
     case LANG_SINDHI: l = "sd"; break;
+#endif
     case LANG_SLOVAK: l = "sk"; sl = "SK"; break;
     case LANG_SLOVENIAN: l = "sl"; sl = "SI"; break;
 #ifdef LANG_SORBIAN
@@ -496,7 +438,9 @@ g_win32_getlocale (void)
 	case SUBLANG_SPANISH_PUERTO_RICO: sl = "PR"; break;
 	}
       break;
+#ifdef LANG_SWAHILI
     case LANG_SWAHILI: l = "sw"; break;
+#endif
     case LANG_SWEDISH:
       l = "sv";
       switch (sub)
@@ -505,22 +449,35 @@ g_win32_getlocale (void)
 	case SUBLANG_SWEDISH_FINLAND: sl = "FI"; break;
 	}
       break;
+#ifdef LANG_TAMIL
     case LANG_TAMIL:
       l = "ta"; /* sl could be "IN" or "LK".  */
       break;
+#endif
+#ifdef LANG_TATAR
     case LANG_TATAR: l = "tt"; break;
+#endif
+#ifdef LANG_TELUGU
     case LANG_TELUGU: l = "te"; sl = "IN"; break;
+#endif
     case LANG_THAI: l = "th"; sl = "TH"; break;
     case LANG_TURKISH: l = "tr"; sl = "TR"; break;
     case LANG_UKRAINIAN: l = "uk"; sl = "UA"; break;
+#ifdef LANG_URDU
     case LANG_URDU:
       l = "ur";
       switch (sub)
 	{
+#ifdef SUBLANG_URDU_PAKISTAN
 	case SUBLANG_URDU_PAKISTAN: sl = "PK"; break;
+#endif
+#ifdef SUBLANG_URDU_INDIA
 	case SUBLANG_URDU_INDIA: sl = "IN"; break;
+#endif
 	}
       break;
+#endif
+#ifdef LANG_UZBEK
     case LANG_UZBEK:
       l = "uz";
       switch (sub)
@@ -529,9 +486,12 @@ g_win32_getlocale (void)
 #ifdef SUBLANG_UZBEK_LATIN
 	case SUBLANG_UZBEK_LATIN: sl = "UZ@latin"; break;
 #endif
+#ifdef SUBLANG_UZBEK_CYRILLIC
 	case SUBLANG_UZBEK_CYRILLIC: sl = "UZ@cyrillic"; break;
+#endif
 	}
       break;
+#endif
     case LANG_VIETNAMESE: l = "vi"; sl = "VN"; break;
     default: l = "xx"; break;
     }

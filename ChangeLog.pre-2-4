@@ -1,3 +1,16 @@
+2001-11-08  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gwin32.c: Don't define LANG_AZERI etc in case those aren't
+	defined in the headers (MSVC 5.0).
+	(g_win32_getlocale): Instead, surround uses of those with
+	#ifdef. Those MSVC 5.0 users that want to build a GLib that
+	recognizes those languages should download the Platform SDK and
+	use the headers from it.
+
+2001-11-07  Peter Williams  <peterw@ximian.com>
+
+	* glib/gdir.c (g_dir_read_name): Return NULL when done reading.
+
 2001-11-06  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/Makefile.am (gspawn_win32_helper_LDFLAGS): Use -mwindows.
