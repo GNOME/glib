@@ -2,6 +2,11 @@
 
 	* configure.in: Set binary age to 0 to make it compile.
 
+	* configure.in: Improve checks for dce/posix threads to also do
+	the right thing, if the thread functions are not declared in the
+	pthread.h. Idea from Miroslaw Dobrzanski-Neumann
+	<mne@mosaic-ag.com> in #77981.
+
 2002-07-01  Anders Carlsson  <andersca@gnu.org>
 
 	* configure.in: Up version to 2.1.0.
