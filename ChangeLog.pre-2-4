@@ -1,3 +1,10 @@
+Tue Apr 17 10:43:36 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gstrfuncs.c: Define _GNU_SOURCE for stpcpy
+
+	* tests/mainloop-test.c (main): Wait for all threads
+	to start before beginning tests.
+
 2001-04-17  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* gthreadpool.c (g_thread_pool_thread_proxy): Until now every

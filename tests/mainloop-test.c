@@ -17,8 +17,10 @@
 #define CRAWLER_TIMEOUT_RANGE 40
 #define RECURSER_TIMEOUT 50
 
-G_LOCK_DEFINE_STATIC (context_array_lock);
 GPtrArray *context_array;
+GMutex *context_array_mutex;
+GCond *context_array_cond;
+
 GMainLoop *main_loop;
 
 G_LOCK_DEFINE_STATIC (crawler_array_lock);
@@ -133,9 +135,14 @@ adder_thread (gpointer data)
 
   context = g_main_context_get (g_thread_self());
 
-  G_LOCK (context_array_lock);
+  g_mutex_lock (context_array_mutex);
+  
   g_ptr_array_add (context_array, context);
-  G_UNLOCK (context_array_lock);
+
+  if (context_array->len == NTHREADS)
+    g_cond_broadcast (context_array_cond);
+  
+  g_mutex_unlock (context_array_mutex);
 
   addr_data.dest = channels[1];
   addr_data.loop = g_main_loop_new (context, FALSE);
@@ -165,11 +172,11 @@ adder_thread (gpointer data)
 
   g_print ("Timeout run %d times\n", addr_data.count);
 
-  G_LOCK (context_array_lock);
+  g_mutex_lock (context_array_mutex);
   g_ptr_array_remove (context_array, context);
   if (context_array->len == 0)
     g_main_loop_quit (main_loop);
-  G_UNLOCK (context_array_lock);
+  g_mutex_unlock (context_array_mutex);
 
   cleanup_crawlers (context);
 }
@@ -318,10 +325,10 @@ create_crawler (void)
   GSource *source = g_timeout_source_new (g_random_int_range (0, CRAWLER_TIMEOUT_RANGE));
   g_source_set_callback (source, (GSourceFunc)crawler_callback, source, NULL);
 
-  G_LOCK (context_array_lock);
+  g_mutex_lock (context_array_mutex);
   g_source_attach (source, context_array->pdata[g_random_int_range (0, context_array->len)]);
   g_source_unref (source);
-  G_UNLOCK (context_array_lock);
+  g_mutex_unlock (context_array_mutex);
 
   G_LOCK (crawler_array_lock);
   g_ptr_array_add (crawler_array, source);
@@ -363,13 +370,13 @@ recurser_start (gpointer data)
   GMainContext *context;
   GSource *source;
   
-  G_LOCK (context_array_lock);
+  g_mutex_lock (context_array_mutex);
   context = context_array->pdata[g_random_int_range (0, context_array->len)];
   source = g_idle_source_new ();
   g_source_set_callback (source, recurser_idle, context, NULL);
   g_source_attach (source, context);
   g_source_unref (source);
-  G_UNLOCK (context_array_lock);
+  g_mutex_unlock (context_array_mutex);
 
   return TRUE;
 }
@@ -386,6 +393,9 @@ main (int   argc,
   g_thread_init (NULL);
 
   context_array = g_ptr_array_new ();
+  context_array_mutex = g_mutex_new ();
+  context_array_cond = g_cond_new (); 
+
   crawler_array = g_ptr_array_new ();
 
   main_loop = g_main_loop_new (NULL, FALSE);
@@ -393,6 +403,15 @@ main (int   argc,
   for (i = 0; i < NTHREADS; i++)
     create_adder_thread ();
 
+  /* Wait for all threads to start
+   */
+  g_mutex_lock (context_array_mutex);
+  
+  if (context_array->len < NTHREADS)
+    g_cond_wait (context_array_cond, context_array_mutex);
+  
+  g_mutex_unlock (context_array_mutex);
+  
   for (i = 0; i < NCRAWLERS; i++)
     create_crawler ();
 
