@@ -92,10 +92,10 @@ gboolean g_int_equal (gconstpointer  v,
                       gconstpointer  v2);
 guint    g_int_hash  (gconstpointer  v);
 
-/* This "hash" function will just return the key's adress as an
- * unsigned integer. Useful for hashing on plain adresses or
+/* This "hash" function will just return the key's address as an
+ * unsigned integer. Useful for hashing on plain addresses or
  * simple integer values.
- * passing NULL into g_hash_table_new() as GHashFunc has the
+ * Passing NULL into g_hash_table_new() as GHashFunc has the
  * same effect as passing g_direct_hash().
  */
 guint    g_direct_hash  (gconstpointer  v) G_GNUC_CONST;

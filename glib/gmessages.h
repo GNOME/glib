@@ -39,7 +39,7 @@
 
 G_BEGIN_DECLS
 
-/* calculate a string size, guarranteed to fit format + args.
+/* calculate a string size, guaranteed to fit format + args.
  */
 gsize	g_printf_string_upper_bound (const gchar* format,
 				     va_list	  args);

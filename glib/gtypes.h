@@ -330,7 +330,7 @@ typedef union  _GDoubleIEEE754	GDoubleIEEE754;
 typedef union  _GFloatIEEE754	GFloatIEEE754;
 #define G_IEEE754_FLOAT_BIAS	(127)
 #define G_IEEE754_DOUBLE_BIAS	(1023)
-/* multiply with base2 exponent to get base10 exponent (nomal numbers) */
+/* multiply with base2 exponent to get base10 exponent (normal numbers) */
 #define G_LOG_2_BASE_10		(0.30102999566398119521)
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
 union _GFloatIEEE754

@@ -53,9 +53,9 @@ struct _GPtrArray
   guint	    len;
 };
 
-/* Resizable arrays, remove fills any cleared spot and shortens the
+/* Resizable arrays. remove fills any cleared spot and shortens the
  * array, while preserving the order. remove_fast will distort the
- * order by moving the last element to the position of the removed 
+ * order by moving the last element to the position of the removed.
  */
 
 #define g_array_append_val(a,v)	  g_array_append_vals (a, &(v), 1)
@@ -95,9 +95,8 @@ void    g_array_sort_with_data    (GArray           *array,
 				   gpointer          user_data);
 
 /* Resizable pointer array.  This interface is much less complicated
- * than the above.  Add appends appends a pointer.  Remove fills any
- * cleared spot and shortens the array. remove_fast will again distort
- * order.  
+ * than the above.  Add appends a pointer.  Remove fills any cleared 
+ * spot and shortens the array. remove_fast will again distort order.  
  */
 #define    g_ptr_array_index(array,index_) ((array)->pdata)[index_]
 GPtrArray* g_ptr_array_new                (void);

@@ -122,11 +122,11 @@ void	g_mem_profile	(void);
  *  want to know what's going on inside do you?)
  */
 
-/* ALLOC_ONLY MemChunk's can only allocate memory. The free operation
- *  is interpreted as a no op. ALLOC_ONLY MemChunk's save 4 bytes per
+/* ALLOC_ONLY MemChunks can only allocate memory. The free operation
+ *  is interpreted as a no op. ALLOC_ONLY MemChunks save 4 bytes per
  *  atom. (They are also useful for lists which use MemChunk to allocate
  *  memory but are also part of the MemChunk implementation).
- * ALLOC_AND_FREE MemChunk's can allocate and free memory.
+ * ALLOC_AND_FREE MemChunks can allocate and free memory.
  */
 
 #define G_ALLOC_ONLY	  1
