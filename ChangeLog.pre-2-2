@@ -1,3 +1,13 @@
+Thu May 16 12:24:00 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* acinclude.m4 m4macros/glib-gettext.m4: Incorporate 
+	AM_LC_MESSAGES, AM_PATH_PROG_WITH_TEST as AM_GLIB_* to avoid 
+	dependencies on gettext m4 files.
+
+	* autogen.sh: Remove check for GNU gettext, since it
+	was causing problems for Solaris CVS builds.
+	(#81885, Hidetoshi Tajima.)
+
 Mon May 13 23:20:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* autogen.sh (have_gettext): Add a check for GNU gettext.

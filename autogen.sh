@@ -56,18 +56,6 @@ if $have_automake ; then : ; else
 	DIE=1
 fi
 
-have_gettext=false
-if xgettext --version 2>/dev/null | grep 'GNU' > /dev/null ; then 
-        have_gettext=true
-fi
-
-if $have_gettext ; then : ; else
-       echo
-       echo "GNU gettext must be installed to build GLib from CVS"
-       echo "GNU gettext is available from http://www.gnu.org/software/gettext/"
-       DIE=1
-fi
-
 if test "$DIE" -eq 1; then
 	exit 1
 fi
