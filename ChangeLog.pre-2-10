@@ -1,3 +1,10 @@
+Thu Jul 25 20:57:20 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_read_line): Fix 
+	docs for @str_return to conform to the main docs
+	and the implementation as to whether the terminator
+	is included. (#87964, Jacob Berkman)
+
 Thu Jul 25 19:52:41 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/guniprop.c (real_tolower): Handle the 

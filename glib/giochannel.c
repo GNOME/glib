@@ -1357,7 +1357,7 @@ reencode:
 /**
  * g_io_channel_read_line:
  * @channel: a #GIOChannel
- * @str_return: The line read from the #GIOChannel, not including the
+ * @str_return: The line read from the #GIOChannel, including the
  *              line terminator. This data should be freed with g_free()
  *              when no longer needed. This is a nul-terminated string. 
  *              If a @length of zero is returned, this will be %NULL instead.
