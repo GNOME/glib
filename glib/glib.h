@@ -675,6 +675,11 @@ GUTILS_C_VAR const guint glib_micro_version;
 GUTILS_C_VAR const guint glib_interface_age;
 GUTILS_C_VAR const guint glib_binary_age;
 
+#define GLIB_CHECK_VERSION(major,minor,micro)    \
+    (GLIB_MAJOR_VERSION > (major) || \
+     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION > (minor)) || \
+     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION == (minor) && \
+      GLIB_MICRO_VERSION >= (micro)))
 
 /* Forward declarations of glib types.
  */
