@@ -766,10 +766,8 @@ g_queue_unlink (GQueue *queue,
  * @link_: a #GList link that <emphasis>must</emphasis> be part of @queue
  *
  * Removes @link_ from @queue and frees it.
- * 
- * If @link_ is not part of @queue, the result of calling this function
- * is undefined. Unlike most other functions in GLib this will not produce
- * any warnings or assertion failures.
+ *
+ * @link_ must be part of @queue.
  * 
  * Since: 2.4
  **/
@@ -925,10 +923,8 @@ g_queue_remove_all (GQueue        *queue,
  * @data: the data to insert
  * 
  * Inserts @data into @queue before @sibling.
- * 
- * If @sibling is not part of @queue, the result of calling this function
- * is undefined. Unlike most other functions in GLib this will not produce
- * any warnings or assertion failures.
+ *
+ * @sibling must be part of @queue.
  * 
  * Since: 2.4
  **/
@@ -951,10 +947,8 @@ g_queue_insert_before (GQueue   *queue,
  * @data: the data to insert
  *
  * Inserts @data into @queue after @sibling
- * 
- * If @sibling is not part of @queue, the result of calling this function
- * is undefined. Unlike most other functions in GLib this will not produce
- * any warnings or assertion failures.
+ *
+ * @sibling must be part of @queue
  * 
  * Since: 2.4
  **/
