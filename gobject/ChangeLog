@@ -1,3 +1,9 @@
+Fri Jul 26 15:46:36 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gvaluetransform.c: Fix problems with excess ';'
+	by addition of strategic 'extern void glib_dummy_decl (void)'
+	(#83272, David L. Cooper II)
+
 Thu Jul 25 20:34:39 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* gtype.c (g_type_interface_add_prerequisite): When
