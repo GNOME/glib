@@ -319,6 +319,7 @@ EXPORTS
 	g_slist_reverse
 	g_slist_sort
 	g_snprintf
+        g_spaced_primes_closest
 	g_source_add
 	g_source_remove
 	g_source_remove_by_source_data
