@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"POT-Creation-Date: 2001-12-03 02:19+0100\n"
-"PO-Revision-Date: 2001-12-03 02:19+0100\n"
+"POT-Creation-Date: 2001-12-08 17:55+0100\n"
+"PO-Revision-Date: 2001-12-08 17:55+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,6 +81,11 @@ msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 #: glib/gconvert.c:1370
 msgid "Invalid byte sequence in hostname"
 msgstr "Ogiltig bytesekvens i värdnamn"
+
+#: glib/gdir.c:75
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Fel vid öppning av katalogen \"%s\": %s"
 
 #: glib/gfileutils.c:309
 #, c-format
