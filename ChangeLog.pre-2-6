@@ -1,3 +1,8 @@
+2004-11-30  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gspawn-win32-helper.c (WinMain): Also check errno to detect
+	true errors from spawn*(). (#157258, reported by Bruce Hochstetler)
+
 2004-11-29  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gmacros.h (G_GNUC_MALLOC): Define empty for gcc 2.95.

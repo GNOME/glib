@@ -74,6 +74,7 @@ WinMain (struct HINSTANCE__ *hInstance,
   int fd;
   int mode;
   int handle;
+  int saved_errno;
   int no_error = CHILD_NO_ERROR;
   int zero = 0;
   gint file_and_argv_zero = 0;
@@ -240,6 +241,8 @@ WinMain (struct HINSTANCE__ *hInstance,
   else
     handle = spawnv (mode, __argv[ARG_PROGRAM], new_argv + ARG_PROGRAM + file_and_argv_zero);
 
+  saved_errno = errno;
+
   if (debug)
     {
       debugstring = g_string_new (NULL);
@@ -251,7 +254,7 @@ WinMain (struct HINSTANCE__ *hInstance,
       MessageBox (NULL, debugstring->str, "gspawn-win32-helper", 0);
     }
 
-  if (handle < 0)
+  if (handle == -1 && saved_errno != 0)
     write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
 
   write (child_err_report_fd, &no_error, sizeof (no_error));
