@@ -1,8 +1,7 @@
-Tue Aug 20 12:59:21 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
+Tue Aug 20 16:01:03 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
-	* glib/gconvert.c (strdup_len): should copy utf8string
-	at most 'len' bytes if the given utf8string is not null
-	terminated. (#91222)
+	* glib/gconvert.c (strdup_len): validate 'len' argument properly
+	for the case that input string is not null-terminated. (#91222)
 
 2002-08-18  Havoc Pennington  <hp@pobox.com>
 
