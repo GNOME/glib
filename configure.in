@@ -1304,13 +1304,13 @@ dnl
 m4_define([glib_thread_test],[
 #include <pthread.h> 
 int check_me = 0;
-void* func(void* data) {return check_me = 42;}
-main()
+void* func(void* data) {check_me = 42; return &check_me;}
+int main()
  { pthread_t t; 
    void *ret;
-   pthread_create (&t, 0, func, 0);
+   pthread_create (&t, $1, func, 0);
    pthread_join (t, &ret);
-   exit (check_me != 42 || ret != 42);
+   exit (check_me != 42 || ret != &check_me);
 }])
 
 dnl
@@ -1335,10 +1335,10 @@ if test x"$have_threads" != xno; then
     for flag in pthread pthreads; do
       glib_save_CFLAGS="$CFLAGS"
       CFLAGS="$CFLAGS -$flag"
-      AC_TRY_RUN(glib_thread_test,
+      AC_TRY_RUN(glib_thread_test(0),
                  glib_flag_works=yes,
                  glib_flag_works=no,
-                 [AC_LINK_IFELSE(glib_thread_test,
+                 [AC_LINK_IFELSE(glib_thread_test(0),
                                  glib_flag_works=yes,
                                  glib_flag_works=no)])
       CFLAGS="$glib_save_CFLAGS"
@@ -1462,10 +1462,10 @@ case $have_threads in
 			LIBS="$add_thread_lib $glib_save_LIBS"
 			
 			AC_MSG_CHECKING(for pthread_create/pthread_join$IN)
-			AC_TRY_RUN(glib_thread_test,
+			AC_TRY_RUN(glib_thread_test($defattr),
                                    glib_result=yes,
                                    glib_result=no,
-                                   [AC_LINK_IFELSE(glib_thread_test,
+                                   [AC_LINK_IFELSE(glib_thread_test($defattr),
                                                    glib_result=yes,
                                                    glib_result=no)])
                         AC_MSG_RESULT($glib_result)
