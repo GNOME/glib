@@ -1,5 +1,11 @@
 2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
 
+	* glib/gunibreak.c: Fix cut-and-pasto: g_unichar_break_type should
+	return G_UNICODE_BREAK_UNKNOWN if the character is greater than
+	G_UNICODE_LAST_CHAR.
+
+2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
+
 	* glib/glist.c: Remove unused function g_list_sort2 (bug #113203).
 
 2003-05-19  Noah Levitt  <nlevitt@columbia.edu>
