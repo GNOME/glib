@@ -1,3 +1,12 @@
+2003-02-18  Sebastian Wilhelmi  <seppi@seppi.de>
+
+	* configure.in: Make glib_thread_test not unnecessarily convert
+	between int and void*. (#106278). Let main return int.
+
+	* configure.in: Add an argument to specify the default thread
+	attribute to glib_thread_test. Disappeared somewhere between 2.0
+	and 2.2.
+
 2003-02-14  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	Fixes for #101264 and #99372:
