@@ -144,7 +144,7 @@ main ()
      fi
   fi
   if test "x$no_glib" = x ; then
-     AC_MSG_RESULT(yes)
+     AC_MSG_RESULT(yes (version $glib_config_major_version.$glib_config_minor_version.$glib_config_micro_version))
      ifelse([$2], , :, [$2])     
   else
      AC_MSG_RESULT(no)
