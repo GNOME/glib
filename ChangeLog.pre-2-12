@@ -1,3 +1,8 @@
+2002-12-15  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Slight update to match what is currently
+	produced by configure.
+
 Sat Dec 14 21:24:04 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutils.c (g_get_any_init): HP-UX 10 xshares the
