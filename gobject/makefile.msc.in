@@ -12,7 +12,7 @@ GLIB_VER = @GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@
 
 # Nothing much configurable below
 
-INCLUDES = -I .. -I . -I ..\glib
+INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"GLib-GObject\" \
 		-DG_ENABLE_DEBUG
 #		-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS

@@ -1,3 +1,7 @@
+2002-01-05  Hans Breuer  <hans@breuer.org>
+
+	* makefile.msc.in : use -FImsvc_recommended_pragmas.h
+
 Fri Jan  4 04:36:46 2002  Tim Janik  <timj@gtk.org>
 
 	* gtype.h (G_TYPE_FLAG_RESERVED_ID_BIT): turn this into a GType,
