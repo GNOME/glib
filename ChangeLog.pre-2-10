@@ -1,3 +1,8 @@
+Sun Jul 30 10:44:16 2000  Tim Janik  <timj@gtk.org>
+
+	* gmain.c (g_get_current_time): fix tor's recent changes which
+	got rid of a required variable in the non-windows path.
+
 2000-07-30  Tor Lillqvist  <tml@iki.fi>
 
 	Finally, a new and improved IO Channel and condition watch

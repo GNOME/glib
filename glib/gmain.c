@@ -619,6 +619,8 @@ void
 g_get_current_time (GTimeVal *result)
 {
 #ifndef G_OS_WIN32
+  struct timeval r;
+
   g_return_if_fail (result != NULL);
 
   /*this is required on alpha, there the timeval structs are int's
