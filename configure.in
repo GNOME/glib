@@ -421,7 +421,22 @@ if test -z "$G_MODULE_IMPL"; then
 fi
 dnl *** shl_load() in libdld (HP-UX)
 if test -z "$G_MODULE_IMPL"; then
-	G_MODULE_LDFLAGS='-Wl,-E'
+        AC_MSG_CHECKING(how to export all symbols)
+        SAVED_LDFLAGS=$LDFLAGS
+        LDFLAGS="$LDFLAGS -Wl,-E"
+        AC_TRY_LINK(,[ return 0; ],
+                [ G_MODULE_LDFLAGS="-Wl,-E" ],[
+                LDFLAGS="$SAVED_LDFLAGS -bexpall"
+                AC_TRY_LINK(,[ return 0; ],
+                        G_MODULE_LDFLAGS="-bexpall",
+                        G_MODULE_LDFLAGS="none"
+                )
+        ])
+        LDFLAGS=$SAVED_LDFLAGS
+        AC_MSG_RESULT($G_MODULE_LDFLAGS)
+        if test "x$G_MODULE_LDFLAGS" = "xnone"; then
+                G_MODULE_LDFLAGS=
+        fi
 	AC_CHECK_LIB(dld, shl_load,
 		G_MODULE_LIBS=-ldld
 		G_MODULE_IMPL=G_MODULE_IMPL_DLD
@@ -429,9 +444,11 @@ if test -z "$G_MODULE_IMPL"; then
 fi
 dnl *** additional checks for G_MODULE_IMPL_DL
 if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
-	if test -d /usr/include/linux; then
-		G_MODULE_LDFLAGS='-rdynamic'
-	fi
+	case "$host_os" in
+	  linux*)
+	    G_MODULE_LDFLAGS='-rdynamic'
+	    ;;
+	esac
 	LIBS_orig="$LIBS"
 	LDFLAGS_orig="$LDFLAGS"
 	LIBS="$LIBS $G_MODULE_LIBS"

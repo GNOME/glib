@@ -1,3 +1,17 @@
+Mon Oct 26 22:12:03 PST 1998 Manish Singh <yosh@gimp.org>
+
+	* glib.h: reimplemented the endian stuff, using inline asm
+	for x86. #define g_htonl and friends.
+
+	* testglib.c: new tests for the endian stuff
+
+	* configure.in: care for AIX in gmodule linker flags test (from
+	Joel Becker <jlbec@raleigh.ibm.com>). Check $host_os for linux
+	instead of existance of /usr/include/linux
+
+	* gutils.c: buh-bye evil warning. Thou hast been #ifdef'd out
+	of thine existance!
+
 Tue Oct 27 03:00:50 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed dummy structure definitions for struct _GCache,

@@ -552,7 +552,9 @@ g_iochannel_close_and_free (GIOChannel *channel)
 void
 g_iochannel_wakeup_peer (GIOChannel *channel)
 {
+#ifdef NATIVE_WIN32
   static guint message = 0;
+#endif
 
   g_return_if_fail (channel != NULL);
 

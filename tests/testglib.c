@@ -321,6 +321,11 @@ main (int   argc,
 #endif
   };
   guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
+  guint16 gu16t1 = 0x44afU, gu16t2 = 0xaf44U;
+  guint32 gu32t1 = 0x02a7f109U, gu32t2 = 0x09f1a702U;
+#ifdef HAVE_GINT64
+  guint64 gu64t1 = 0x1d636b02300a7aa7U, gu64t2 = 0xa77a0a30026b631dU;
+#endif
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
 	   glib_major_version,
@@ -810,6 +815,19 @@ main (int   argc,
   g_message ("the next warning is a test:");
   string = NULL;
   g_print (string);
+
+  g_print ("endian macro tests...");
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  g_print ("big endian...");
+#else
+  g_print ("little endian...");
+#endif
+  g_assert (GUINT16_SWAP_LE_BE (gu16t1) == gu16t2);  
+  g_assert (GUINT32_SWAP_LE_BE (gu32t1) == gu32t2);  
+#ifdef HAVE_GINT64
+  g_assert (GUINT64_SWAP_LE_BE (gu64t1) == gu64t2);  
+#endif
+  g_print ("ok\n");
 
   return 0;
 }

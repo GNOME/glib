@@ -334,8 +334,8 @@ extern "C" {
 /* Hacker macro to place breakpoints for x86 machines.
  * Actual use is strongly deprecated of course ;)
  */
-#if	defined (__i386__) && defined (__GNUC__)
-#define	G_BREAKPOINT()		G_STMT_START{ __asm__ volatile ("int $03"); }G_STMT_END
+#if defined (__i386__) && defined (__GNUC__)
+#define	G_BREAKPOINT()		G_STMT_START{ __asm__ __volatile__ ("int $03"); }G_STMT_END
 #else	/* !__i386__ */
 #define	G_BREAKPOINT()
 #endif	/* __i386__ */
@@ -502,54 +502,6 @@ extern "C" {
 #endif /* !G_DISABLE_CHECKS */
 
 
-/* Portable endian checks and conversions
- */
-
-#define G_LITTLE_ENDIAN 1234
-#define G_BIG_ENDIAN    4321
-#define G_PDP_ENDIAN    3412	/	/* unused, need specific PDP check */	
-
-#ifdef WORDS_BIGENDIAN
-#define G_BYTE_ORDER G_BIG_ENDIAN
-#else
-#define G_BYTE_ORDER G_LITTLE_ENDIAN
-#endif
-
-#define GULONG_SWAP_LE_BE(long_val)     (((gulong) \
-    (((gulong) (long_val)) & 0x000000ffU) << 24) | \
-    (((gulong) (long_val)) & 0x0000ff00U) <<  8) | \
-    (((gulong) (long_val)) & 0x00ff0000U) >>  8) | \
-    (((gulong) (long_val)) & 0xff000000U) >> 24)))
-#define GULONG_SWAP_LE_PDP(long_val)    (((gulong) \
-    (((gulong) (long_val)) & 0x0000ffffU) << 16) | \
-    (((gulong) (long_val)) & 0xffff0000U) >> 16)))
-#define GULONG_SWAP_BE_PDP(long_val)    (((gulong) \
-    (((gulong) (long_val)) & 0x000000ffU) << 8) | \
-    (((gulong) (long_val)) & 0x0000ff00U) >> 8) | \
-    (((gulong) (long_val)) & 0x00ff0000U) << 8) | \
-    (((gulong) (long_val)) & 0xff000000U) >> 8)))
-
-#if     G_BYTE_ORDER == G_LITTLE_ENDIAN
-#  define GLONG_TO_LE(long_val)         ((glong) (long_val))
-#  define GULONG_TO_LE(long_val)        ((gulong) (long_val))
-#  define GLONG_TO_BE(long_val)         ((glong) GULONG_SWAP_LE_BE (long_val))
-#  define GULONG_TO_BE(long_val)        (GULONG_SWAP_LE_BE (long_val))
-#  define GLONG_FROM_LE(long_val)       ((glong) (long_val))
-#  define GULONG_FROM_LE(long_val)      ((gulong) (long_val))
-#  define GLONG_FROM_BE(long_val)       ((glong) GULONG_SWAP_LE_BE (long_val))
-#  define GULONG_FROM_BE(long_val)      (GULONG_SWAP_LE_BE (long_val))
-#elif   G_BYTE_ORDER == G_BIG_ENDIAN
-#  define GLONG_TO_LE(long_val)         ((glong) GULONG_SWAP_LE_BE (long_val))
-#  define GULONG_TO_LE(long_val)        (GULONG_SWAP_LE_BE (long_val))
-#  define GLONG_TO_BE(long_val)         ((glong) (long_val))
-#  define GULONG_TO_BE(long_val)        ((gulong) (long_val))
-#  define GLONG_FROM_LE(long_val)       ((glong) GULONG_SWAP_LE_BE (long_val))
-#  define GULONG_FROM_LE(long_val)      (GULONG_SWAP_LE_BE (long_val))
-#  define GLONG_FROM_BE(long_val)       ((glong) (long_val))
-#  define GULONG_FROM_BE(long_val)      ((gulong) (long_val))
-#endif
-
-
 /* Provide type definitions for commonly used types.
  *  These are useful because a "gint8" can be adjusted
  *  to be 1 byte (8 bits) on all platforms. Similarly and
@@ -643,6 +595,222 @@ typedef gint32	gssize;
 typedef guint32 gsize;
 typedef guint32 GQuark;
 typedef gint32	GTime;
+
+
+/* Portable endian checks and conversions
+ */
+
+#define G_LITTLE_ENDIAN 1234
+#define G_BIG_ENDIAN    4321
+#define G_PDP_ENDIAN    3412		/* unused, need specific PDP check */	
+
+#ifdef WORDS_BIGENDIAN
+#define G_BYTE_ORDER G_BIG_ENDIAN
+#else
+#define G_BYTE_ORDER G_LITTLE_ENDIAN
+#endif
+
+/* Basic bit swapping functions
+ */
+#define GUINT16_SWAP_LE_BE_CONSTANT(val)	((guint16) ( \
+    (((guint16) (val) & (guint16) 0x00ffU) << 8) | \
+    (((guint16) (val) & (guint16) 0xff00U) >> 8)))
+#define GUINT32_SWAP_LE_BE_CONSTANT(val)	((guint32) ( \
+    (((guint32) (val) & (guint32) 0x000000ffU) << 24) | \
+    (((guint32) (val) & (guint32) 0x0000ff00U) <<  8) | \
+    (((guint32) (val) & (guint32) 0x00ff0000U) >>  8) | \
+    (((guint32) (val) & (guint32) 0xff000000U) >> 24)))
+
+/* Intel specific stuff for speed
+ */
+#if defined (__i386__) && (defined __GNUC__)
+
+#  define GUINT16_SWAP_LE_BE_X86(val) \
+     (__extension__						\
+      ({ register guint16 __v;					\
+	 if (__builtin_constant_p (val))			\
+	   __v = GUINT16_SWAP_LE_BE_CONSTANT (val);		\
+	 else							\
+	   __asm__ __volatile__ ("rorw $8, %w0"			\
+				 : "=r" (__v)			\
+				 : "0" ((guint16) (val))	\
+				 : "cc");			\
+	__v; }))
+
+#  define GUINT16_SWAP_LE_BE(val) \
+     ((guint16) GUINT16_SWAP_LE_BE_X86 ((guint16) (val)))
+
+#  if !defined(__i486__) && !defined(__i586__) \
+      && !defined(__pentium__) && !defined(__pentiumpro__) && !defined(__i686__)
+#     define GUINT32_SWAP_LE_BE_X86(val) \
+        (__extension__						\
+         ({ register guint32 __v;				\
+	    if (__builtin_constant_p (val))			\
+	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
+	  else							\
+	    __asm__ __volatile__ ("rorw $8, %w0\n\t"		\
+				  "rorl $16, %0\n\t"		\
+				  "rorw $8, %w0"		\
+				  : "=r" (__v)			\
+				  : "0" ((guint32) (val))	\
+				  : "cc");			\
+	__v; }))
+
+#  else /* 486 and higher has bswap */
+#     define GUINT32_SWAP_LE_BE_X86(val) \
+        (__extension__						\
+         ({ register guint32 __v;				\
+	    if (__builtin_constant_p (val))			\
+	      __v = GUINT32_SWAP_LE_BE_CONSTANT (val);		\
+	  else							\
+	    __asm__ __volatile__ ("bswap %0"			\
+				  : "=r" (__v)			\
+				  : "0" ((guint32) (val)));	\
+	__v; }))
+#  endif /* processor specific 32-bit stuff */
+
+#  define GUINT32_SWAP_LE_BE(val) \
+     ((guint32) GUINT32_SWAP_LE_BE_X86 ((guint32) (val)))
+
+#else /* !__i386__ */
+#  define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_CONSTANT (val))
+#  define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
+#endif /* __i386__ */
+
+#ifdef HAVE_GINT64
+#define GUINT64_SWAP_LE_BE(val)         ((guint64) ( \
+    (((guint64) (val) & (guint64) 0x00000000000000ffU) << 56) | \
+    (((guint64) (val) & (guint64) 0x000000000000ff00U) << 40) | \
+    (((guint64) (val) & (guint64) 0x0000000000ff0000U) << 24) | \
+    (((guint64) (val) & (guint64) 0x00000000ff000000U) <<  8) | \
+    (((guint64) (val) & (guint64) 0x000000ff00000000U) >>  8) | \
+    (((guint64) (val) & (guint64) 0x0000ff0000000000U) >> 24) | \
+    (((guint64) (val) & (guint64) 0x00ff000000000000U) >> 40) | \
+    (((guint64) (val) & (guint64) 0xff00000000000000U) >> 56)))
+#endif
+
+#define GUINT16_SWAP_LE_PDP(val)	((guint16) (val))
+#define GUINT16_SWAP_BE_PDP(val)	(GUINT16_SWAP_LE_BE (val))
+#define GUINT32_SWAP_LE_PDP(val)	((guint32) ( \
+    (((guint32) (val) & (guint32) 0x0000ffffU) << 16) | \
+    (((guint32) (val) & (guint32) 0xffff0000U) >> 16)))
+#define GUINT32_SWAP_BE_PDP(val)	((guint32) ( \
+    (((guint32) (val) & (guint32) 0x00ff00ffU) << 8) | \
+    (((guint32) (val) & (guint32) 0xff00ff00U) >> 8)))
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#  define GINT16_TO_LE(val)		((gint16) (val))
+#  define GUINT16_TO_LE(val)		((guint16) (val))
+#  define GINT16_TO_BE(val)		((gint16) GUINT16_SWAP_LE_BE (val))
+#  define GUINT16_TO_BE(val)		(GUINT16_SWAP_LE_BE (val))
+#  define GINT16_FROM_LE(val)		((gint16) (val))
+#  define GUINT16_FROM_LE(val)		((guint16) (val))
+#  define GINT16_FROM_BE(val)		((gint16) GUINT16_SWAP_LE_BE (val))
+#  define GUINT16_FROM_BE(val)		(GUINT16_SWAP_LE_BE (val))
+#  define GINT32_TO_LE(val)		((gint32) (val))
+#  define GUINT32_TO_LE(val)		((guint32) (val))
+#  define GINT32_TO_BE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
+#  define GUINT32_TO_BE(val)		(GUINT32_SWAP_LE_BE (val))
+#  define GINT32_FROM_LE(val)		((gint32) (val))
+#  define GUINT32_FROM_LE(val)		((guint32) (val))
+#  define GINT32_FROM_BE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
+#  define GUINT32_FROM_BE(val)		(GUINT32_SWAP_LE_BE (val))
+#  ifdef HAVE_GINT64
+#  define GINT64_TO_LE(val)		((gint64) (val))
+#  define GUINT64_TO_LE(val)		((guint64) (val))
+#  define GINT64_TO_BE(val)		((gint64) GUINT64_SWAP_LE_BE (val))
+#  define GUINT64_TO_BE(val)		(GUINT64_SWAP_LE_BE (val))
+#  define GINT64_FROM_LE(val)		((gint64) (val))
+#  define GUINT64_FROM_LE(val)		((guint64) (val))
+#  define GINT64_FROM_BE(val)		((gint64) GUINT64_SWAP_LE_BE (val))
+#  define GUINT64_FROM_BE(val)		(GUINT64_SWAP_LE_BE (val))
+#  endif
+#elif G_BYTE_ORDER == G_BIG_ENDIAN
+#  define GINT16_TO_BE(val)		((gint16) (val))
+#  define GUINT16_TO_BE(val)		((guint16) (val))
+#  define GINT16_TO_LE(val)		((gint16) GUINT16_SWAP_LE_BE (val))
+#  define GUINT16_TO_LE(val)		(GUINT16_SWAP_LE_BE (val))
+#  define GINT16_FROM_BE(val)		((gint16) (val))
+#  define GUINT16_FROM_BE(val)		((guint16) (val))
+#  define GINT16_FROM_LE(val)		((gint16) GUINT16_SWAP_LE_BE (val))
+#  define GUINT16_FROM_LE(val)		(GUINT16_SWAP_LE_BE (val))
+#  define GINT32_TO_BE(val)		((gint32) (val))
+#  define GUINT32_TO_BE(val)		((guint32) (val))
+#  define GINT32_TO_LE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
+#  define GUINT32_TO_LE(val)		(GUINT32_SWAP_LE_BE (val))
+#  define GINT32_FROM_BE(val)		((gint32) (val))
+#  define GUINT32_FROM_BE(val)		((guint32) (val))
+#  define GINT32_FROM_LE(val)		((gint32) GUINT32_SWAP_LE_BE (val))
+#  define GUINT32_FROM_LE(val)		(GUINT32_SWAP_LE_BE (val))
+#  ifdef HAVE_GINT64
+#  define GINT64_TO_BE(val)		((gint64) (val))
+#  define GUINT64_TO_BE(val)		((guint64) (val))
+#  define GINT64_TO_LE(val)		((gint64) GUINT64_SWAP_LE_BE (val))
+#  define GUINT64_TO_LE(val)		(GUINT64_SWAP_LE_BE (val))
+#  define GINT64_FROM_BE(val)		((gint64) (val))
+#  define GUINT64_FROM_BE(val)		((guint64) (val))
+#  define GINT64_FROM_LE(val)		((gint64) GUINT64_SWAP_LE_BE (val))
+#  define GUINT64_FROM_LE(val)		(GUINT64_SWAP_LE_BE (val))
+#  endif
+#else
+/* PDP stuff not implemented */
+#endif
+
+#if (SIZEOF_LONG == 8)
+#  define GLONG_TO_LE(val)		((glong) GINT64_TO_LE (val))
+#  define GULONG_TO_LE(val)		((gulong) GUINT64_TO_LE (val))
+#  define GLONG_TO_BE(val)		((glong) GINT64_TO_BE (val))
+#  define GULONG_TO_BE(val)		((gulong) GUINT64_TO_BE (val))
+#  define GLONG_FROM_LE(val)		((glong) GINT64_FROM_LE (val))
+#  define GULONG_FROM_LE(val)		((gulong) GUINT64_FROM_LE (val))
+#  define GLONG_FROM_BE(val)		((glong) GINT64_FROM_BE (val))
+#  define GULONG_FROM_BE(val)		((gulong) GUINT64_FROM_BE (val))
+#elif (SIZEOF_LONG == 4)
+#  define GLONG_TO_LE(val)		((glong) GINT32_TO_LE (val))
+#  define GULONG_TO_LE(val)		((gulong) GUINT32_TO_LE (val))
+#  define GLONG_TO_BE(val)		((glong) GINT32_TO_BE (val))
+#  define GULONG_TO_BE(val)		((gulong) GUINT32_TO_BE (val))
+#  define GLONG_FROM_LE(val)		((glong) GINT32_FROM_LE (val))
+#  define GULONG_FROM_LE(val)		((gulong) GUINT32_FROM_LE (val))
+#  define GLONG_FROM_BE(val)		((glong) GINT32_FROM_BE (val))
+#  define GULONG_FROM_BE(val)		((gulong) GUINT32_FROM_BE (val))
+#endif
+
+#if (SIZEOF_INT == 8)
+#  define GINT_TO_LE(val)		((gint) GINT64_TO_LE (val))
+#  define GUINT_TO_LE(val)		((guint) GUINT64_TO_LE (val))
+#  define GINT_TO_BE(val)		((gint) GINT64_TO_BE (val))
+#  define GUINT_TO_BE(val)		((guint) GUINT64_TO_BE (val))
+#  define GINT_FROM_LE(val)		((gint) GINT64_FROM_LE (val))
+#  define GUINT_FROM_LE(val)		((guint) GUINT64_FROM_LE (val))
+#  define GINT_FROM_BE(val)		((gint) GINT64_FROM_BE (val))
+#  define GUINT_FROM_BE(val)		((guint) GUINT64_FROM_BE (val))
+#elif (SIZEOF_INT == 4)
+#  define GINT_TO_LE(val)		((gint) GINT32_TO_LE (val))
+#  define GUINT_TO_LE(val)		((guint) GUINT32_TO_LE (val))
+#  define GINT_TO_BE(val)		((gint) GINT32_TO_BE (val))
+#  define GUINT_TO_BE(val)		((guint) GUINT32_TO_BE (val))
+#  define GINT_FROM_LE(val)		((gint) GINT32_FROM_LE (val))
+#  define GUINT_FROM_LE(val)		((guint) GUINT32_FROM_LE (val))
+#  define GINT_FROM_BE(val)		((gint) GINT32_FROM_BE (val))
+#  define GUINT_FROM_BE(val)		((guint) GUINT32_FROM_BE (val))
+#elif (SIZEOF_INT == 2)
+#  define GINT_TO_LE(val)		((gint) GINT16_TO_LE (val))
+#  define GUINT_TO_LE(val)		((guint) GUINT16_TO_LE (val))
+#  define GINT_TO_BE(val)		((gint) GINT16_TO_BE (val))
+#  define GUINT_TO_BE(val)		((guint) GUINT16_TO_BE (val))
+#  define GINT_FROM_LE(val)		((gint) GINT16_FROM_LE (val))
+#  define GUINT_FROM_LE(val)		((guint) GUINT16_FROM_LE (val))
+#  define GINT_FROM_BE(val)		((gint) GINT16_FROM_BE (val))
+#  define GUINT_FROM_BE(val)		((guint) GUINT16_FROM_BE (val))
+#endif
+
+/* Portable versions of host-network order stuff
+ */
+#define g_ntohl(val) (GUINT32_FROM_BE (val))
+#define g_ntohs(val) (GUINT16_FROM_BE (val))
+#define g_htonl(val) (GUINT32_TO_BE (val))
+#define g_htons(val) (GUINT16_TO_BE (val))
 
 
 /* Glib version.
