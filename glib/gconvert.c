@@ -464,7 +464,14 @@ close_converter (GIConv converter)
 /**
  * g_convert:
  * @str:           the string to convert
- * @len:           the length of the string
+ * @len:           the length of the string, or -1 if the string is 
+ *                 nul-terminated<footnote id="nul-unsafe">
+                     <para>
+                       Note that some encodings may allow nul bytes to 
+                       occur inside strings. In that case, using -1 for 
+                       the @len parameter is unsafe.
+                     </para>
+                   </footnote>. 
  * @to_codeset:    name of character set into which to convert @str
  * @from_codeset:  character set of @str.
  * @bytes_read:    location to store the number of bytes in the
@@ -527,7 +534,8 @@ g_convert (const gchar *str,
 /**
  * g_convert_with_iconv:
  * @str:           the string to convert
- * @len:           the length of the string
+ * @len:           the length of the string, or -1 if the string is 
+ *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
  * @converter:     conversion descriptor from g_iconv_open()
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
@@ -647,14 +655,15 @@ g_convert_with_iconv (const gchar *str,
 /**
  * g_convert_with_fallback:
  * @str:          the string to convert
- * @len:          the length of the string
+ * @len:          the length of the string, or -1 if the string is 
+ *                nul-terminated<footnoteref linkend="nul-unsafe"/>. 
  * @to_codeset:   name of character set into which to convert @str
  * @from_codeset: character set of @str.
  * @fallback:     UTF-8 string to use in place of character not
- *                present in the target encoding. (This must be
- *                in the target encoding), if %NULL, characters
- *                not in the target encoding will be represented
- *                as Unicode escapes \uxxxx or \Uxxxxyyyy.
+ *                present in the target encoding. (The string must be
+ *                representable in the target encoding). 
+                  If %NULL, characters not in the target encoding will 
+                  be represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
  * @bytes_read:   location to store the number of bytes in the
  *                input string that were successfully converted, or %NULL.
  *                Even if the conversion was successful, this may be 
@@ -917,7 +926,7 @@ strdup_len (const gchar *string,
  * @opsysstring:   a string in the encoding of the current locale. On Windows
  *                 this means the system codepage.
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated.
+ *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
@@ -957,7 +966,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * g_locale_from_utf8:
  * @utf8string:    a UTF-8 encoded string 
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated.
+ *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
@@ -1167,7 +1176,7 @@ _g_convert_thread_init (void)
  * g_filename_to_utf8:
  * @opsysstring:   a string in the encoding for filenames
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated.
+ *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
