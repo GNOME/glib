@@ -1,3 +1,8 @@
+2005-03-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* gvaluearray.h: Small cleanup (use G_BEGIN/END_DECLS).
+	(#168474, Fabricio Barros Cabral)
+
 2005-02-24  Tor Lillqvist  <tml@novell.com>
 
 	* Makefile.am (EXTRA_DIST): Don't distribute

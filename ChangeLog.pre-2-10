@@ -1,5 +1,10 @@
 2005-03-07  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gdebug.h: Small cleanup (use G_BEGIN/END_DECLS).
+	(#168474, Fabricio Barros Cabral)
+
+2005-03-07  Matthias Clasen  <mclasen@redhat.com>
+
 	* glib/gutils.c (g_find_program_in_path): Mark the last
 	paragraph of the docs as Windows-specific.  (#169433)
 
