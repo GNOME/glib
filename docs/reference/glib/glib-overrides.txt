@@ -98,11 +98,6 @@ GStaticMutex* mutex
 <RETURNS>void</RETURNS>
 </FUNCTION>
 
-<FUNCTION>
-<NAME>g_thread_exit</NAME>
-<RETURNS>void</RETURNS>
-</FUNCTION>
-
 # G_LOCK_* macros
 
 <MACRO>

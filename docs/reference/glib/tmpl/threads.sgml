@@ -224,6 +224,8 @@ g_thread_create().
 </para>
 
 @value: data supplied to the thread
+@Returns: the return value of the thread, which will be returned by
+g_thread_join()
 
 
 <!-- ##### ENUM GThreadPriority ##### -->
@@ -263,6 +265,8 @@ g_thread_join() is called for that thread.
 @joinable: is this thread joinable?
 @bound: is this thread bound to a system thread?
 @priority: the priority of the thread
+@func: the function executing in that thread
+@arg: the argument to the function
 
 <!-- ##### FUNCTION g_thread_create ##### -->
 <para>
@@ -325,10 +329,12 @@ Waits until @thread finishes, i.e. the function @thread_func, as given
 to g_thread_create, returns or g_thread_exit() is called by
 @thread. All resources of @thread including the #GThread struct are
 released. @thread must have been created with @joinable=#TRUE in
-g_thread_create().
+g_thread_create(). The value returned by @thread_func or given to
+g_thread_exit() by @thread is returned by this function.
 </para>
 
 @thread: a #GThread to be waited for
+@Returns: the return value of the thread
 
 
 <!-- ##### FUNCTION g_thread_set_priority ##### -->
@@ -366,7 +372,34 @@ to do that. So in general you shouldn't use that function.
 <!-- ##### FUNCTION g_thread_exit ##### -->
 <para>
 Exit the current thread. If another thread is waiting for that thread
-using g_thread_join(), that thread will be woken up. 
+using g_thread_join() and the current thread is joinable, the waiting
+thread will be woken up and getting @retval as the return value of
+g_thread_join(). If the current thread is not joinable, @retval is
+ignored. Calling
+</para>
+
+<para>
+<informalexample>
+<programlisting>
+g_thread_join (retval);
+</programlisting>
+</informalexample>
+</para>
+
+<para>
+is equivalent to calling 
+</para>
+
+<para>
+<informalexample>
+<programlisting>
+return retval;
+</programlisting>
+</informalexample>
+</para>
+
+<para>
+in the function @thread_func, as given to g_thread_create().
 </para>
 
 <note>
@@ -377,6 +410,7 @@ results.
 </para>
 </note>
 
+@retval: the return value of this thread
 
 
 <!-- ##### STRUCT GMutex ##### -->

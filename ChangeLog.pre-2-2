@@ -9,7 +9,7 @@
 	returned by g_thread_join and is either the return of the topmost
 	thread function or the value given to g_thread_exit.
 	
-	* gthreadpool.c, tests/mainloop-test.c, test/thread-test.c:
+	* gthreadpool.c, tests/mainloop-test.c, tests/thread-test.c:
 	Adapted to the above change.
 
 2001-01-06  Hans Breuer  <hans@breuer.org>
