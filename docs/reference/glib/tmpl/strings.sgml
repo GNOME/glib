@@ -313,20 +313,18 @@ If @free_segment is %TRUE it also frees the character data.
 
 <!-- ##### FUNCTION g_string_up ##### -->
 <para>
-Converts a #GString to upper case.
 </para>
 
-@string: a #GString.
-@Returns: the #GString.
+@string: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_down ##### -->
 <para>
-Converts a #GString to lower case.
 </para>
 
-@string: a #GString.
-@Returns: the #GString.
+@string: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_string_hash ##### -->

@@ -93,19 +93,10 @@ The returned string should be freed when no longer needed.
 
 
 <!-- ##### FUNCTION g_basename ##### -->
-<para>
-This function is deprecated and will be removed in the next major
-release of GLib. Use g_path_get_basename() instead. 
-</para>
 
-<para>
-Gets the name of the file without any leading
-directory components.  It returns a pointer into the given file name
-string.
-</para>
 
-@file_name: the name of the file.
-@Returns: the name of the file without any leading directory components.
+@file_name: 
+@Returns: 
 
 
 <!-- ##### MACRO g_dirname ##### -->

@@ -160,10 +160,11 @@ g_io_error_get_from_g_error (GIOStatus status,
  * @count: the number of bytes to read from the #GIOChannel.
  * @bytes_read: returns the number of bytes actually read. 
  * 
- * Reads data from a #GIOChannel. This function is deprecated. New code should
- * use g_io_channel_read_chars() instead.
+ * Reads data from a #GIOChannel. 
  * 
  * Return value: %G_IO_ERROR_NONE if the operation was successful. 
+ *
+ * Deprecated: Use g_io_channel_read_chars() instead.
  **/
 GIOError 
 g_io_channel_read (GIOChannel *channel, 
@@ -195,10 +196,11 @@ g_io_channel_read (GIOChannel *channel,
  * @count: the number of bytes to write.
  * @bytes_written:  the number of bytes actually written.
  * 
- * Writes data to a #GIOChannel. This function is deprecated. New code should
- * use g_io_channel_write_chars() instead.
+ * Writes data to a #GIOChannel. 
  * 
  * Return value:  %G_IO_ERROR_NONE if the operation was successful.
+ *
+ * Deprecated: Use g_io_channel_write_chars() instead.
  **/
 GIOError 
 g_io_channel_write (GIOChannel  *channel, 
@@ -232,10 +234,11 @@ g_io_channel_write (GIOChannel  *channel,
  *        file).
  * 
  * Sets the current position in the #GIOChannel, similar to the standard library
- * function <function>fseek()</function>. This function is deprecated. New 
- * code should use g_io_channel_seek_position() instead.
+ * function <function>fseek()</function>. 
  * 
  * Return value: %G_IO_ERROR_NONE if the operation was successful.
+ *
+ * Deprecated: Use g_io_channel_seek_position() instead.
  **/
 GIOError 
 g_io_channel_seek  (GIOChannel   *channel,
@@ -296,9 +299,9 @@ g_io_channel_seek  (GIOChannel   *channel,
  * 
  * Close an IO channel. Any pending data to be written will be
  * flushed, ignoring errors. The channel will not be freed until the
- * last reference is dropped using g_io_channel_unref(). This
- * function is deprecated: you should use g_io_channel_shutdown()
- * instead.
+ * last reference is dropped using g_io_channel_unref(). 
+ *
+ * Deprecated: Use g_io_channel_shutdown() instead.
  **/
 void
 g_io_channel_close (GIOChannel *channel)

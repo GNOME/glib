@@ -383,6 +383,17 @@ g_parse_debug_string  (const gchar     *string,
   return result;
 }
 
+/**
+ * g_basename:
+ * @file_name: the name of the file.
+ * 
+ * Gets the name of the file without any leading directory components.  
+ * It returns a pointer into the given file name string.
+ * 
+ * Return value: the name of the file without any leading directory components.
+ *
+ * Deprecated: Use g_path_get_basename() instead. 
+ **/
 G_CONST_RETURN gchar*
 g_basename (const gchar	   *file_name)
 {

@@ -1529,6 +1529,18 @@ g_ascii_strup (const gchar *str,
   return result;
 }
 
+/**
+ * g_strdown:
+ * @string: the string to convert.
+ * 
+ * Converts a string to lower case.  
+ * 
+ * Return value: the string 
+ *
+ * Deprecated: This function is totally broken for the reasons discussed in 
+ * the g_strncasecmp() docs - use g_ascii_strdown() or g_utf8_strdown() 
+ * instead.
+ **/
 gchar*
 g_strdown (gchar *string)
 {
@@ -1548,6 +1560,17 @@ g_strdown (gchar *string)
   return (gchar *) string;
 }
 
+/**
+ * g_strup:
+ * @string: the string to convert.
+ * 
+ * Converts a string to upper case. 
+ * 
+ * Return value: the string
+ *
+ * Deprecated: This function is totally broken for the reasons discussed in 
+ * the g_strncasecmp() docs - use g_ascii_strup() or g_utf8_strup() instead.
+ **/
 gchar*
 g_strup (gchar *string)
 {
@@ -1764,6 +1787,20 @@ g_ascii_strncasecmp (const gchar *s1,
     return 0;
 }
 
+/**
+ * g_strcasecmp:
+ * @s1: a string.
+ * @s2: a string to compare with @s1.
+ * 
+ * A case-insensitive string comparison, corresponding to the standard
+ * strcasecmp() function on platforms which support it.
+ *
+ * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2, 
+ *   or a positive value if @s1 &gt; @s2.
+ *
+ * Deprecated: See g_strncasecmp() for a discussion of why this function is 
+ *   deprecated and how to replace it.
+ **/
 gint
 g_strcasecmp (const gchar *s1,
 	      const gchar *s2)
@@ -1795,6 +1832,33 @@ g_strcasecmp (const gchar *s1,
 #endif
 }
 
+/**
+ * g_strncasecmp:
+ * @s1: a string.
+ * @s2: a string to compare with @s1.
+ * @n: the maximum number of characters to compare.
+ * 
+ * A case-insensitive string comparison, corresponding to the standard
+ * strncasecmp() function on platforms which support it.
+ * It is similar to g_strcasecmp() except it only compares the first @n 
+ * characters of the strings.
+ * 
+ * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2, 
+ *   or a positive value if @s1 &gt; @s2.
+ *
+ * Deprecated: The problem with g_strncasecmp() is that it does the 
+ * comparison by calling toupper()/tolower(). These functions are
+ * locale-specific and operate on single bytes. However, it is impossible
+ * to handle things correctly from an I18N standpoint by operating on
+ * bytes, since characters may be multibyte. Thus g_strncasecmp() is
+ * broken if your string is guaranteed to be ASCII, since it's
+ * locale-sensitive, and it's broken if your string is localized, since
+ * it doesn't work on many encodings at all, including UTF-8, EUC-JP,
+ * etc.
+ * There are therefore two replacement functions: g_ascii_strncasecmp(),
+ * which only works on ASCII and is not locale-sensitive, and
+ * g_utf8_casefold(), which is good for case-insensitive sorting of UTF-8.
+ **/
 gint
 g_strncasecmp (const gchar *s1,
 	       const gchar *s2,

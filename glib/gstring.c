@@ -669,6 +669,18 @@ g_string_ascii_up (GString *string)
   return string;
 }
 
+/**
+ * g_string_down:
+ * @string: a #GString
+ *  
+ * Converts a #GString to lowercase.
+ *
+ * Returns: the #GString.
+ *
+ * Deprecated: This function uses the locale-specific tolower() function, 
+ * which is almost never the right thing. Use g_string_ascii_down() or 
+ * g_utf8_strdown() instead.
+ */
 GString*
 g_string_down (GString *string)
 {
@@ -690,6 +702,18 @@ g_string_down (GString *string)
   return string;
 }
 
+/**
+ * g_string_up:
+ * @string: a #GString 
+ * 
+ * Converts a #GString to uppercase.
+ * 
+ * Return value: the #GString
+ *
+ * Deprecated: This function uses the locale-specific toupper() function, 
+ * which is almost never the right thing. Use g_string_ascii_up() or 
+ * g_utf8_strup() instead.
+ **/
 GString*
 g_string_up (GString *string)
 {

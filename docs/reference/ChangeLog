@@ -1,3 +1,9 @@
+2002-11-28  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/strings.sgml: 
+	* glib/tmpl/string_utils.sgml: 
+	* glib/tmpl/misc_utils.sgml: Move some docs inline.
+
 2002-11-23  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gclosure.sgml: 

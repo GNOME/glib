@@ -1,5 +1,13 @@
 2002-11-28  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/gutils.c:
+	* glib/gtree.c: 
+	* glib/gstring.c: 
+	* glib/gstrfuncs.c: 
+	* glib/giochannel.c: Move some docs inline, and add deprecation
+	information. To see the list of affected functions, grep for
+	"Deprecated:". 
+
 	* configure.in: Fix the definitions around printf: either we use
 	system printf in which case HAVE_VASPRINTF, HAVE_C99_VSNPRINTF and
 	HAVE_UNIX98_PRINTF have already been determined by earlier tests,
