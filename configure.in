@@ -140,8 +140,9 @@ if test "x$enable_msg_prefix" = "xyes"; then
 		     [Enable prefixing of error messages with program names])
 fi
 
-# Checks for programs.
+dnl Checks for programs.
 AC_PROG_CC
+
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
@@ -174,6 +175,25 @@ if test "x$enable_rebuilds" = "xyes" && \
   REBUILD=
 fi
 AC_SUBST(REBUILD)
+
+
+dnl
+dnl gettext support
+dnl
+
+ALL_LINGUAS=""
+AM_GLIB_GNU_GETTEXT
+LIBS="$LIBS $INTLLIBS"
+
+GETTEXT_PACKAGE=glib20
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+
+# AM_GLIB_GNU_GETTEXT above substs $DATADIRNAME
+# this is the directory where the *.{mo,gmo} files are installed
+GLIB_LOCALE_DIR="${prefix}/${DATADIRNAME}/locale"
+AC_DEFINE_UNQUOTED(GLIB_LOCALE_DIR,"$GLIB_LOCALE_DIR")
+
 
 dnl Initialize libtool
 AM_PROG_LIBTOOL
@@ -1778,6 +1798,7 @@ gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile
 gthread/Makefile
+po/Makefile.in
 docs/Makefile
 docs/glib-config.1
 docs/reference/Makefile

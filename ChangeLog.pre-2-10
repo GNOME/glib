@@ -1,3 +1,17 @@
+Mon Jan 15 21:12:49 2001  Owen Taylor  <otaylor@redhat.com>
+
+        * configure.in acconfig.h glibintl.h gutils.c
+	po/{Makefile.in.in,POTFILES.in,po2tbl.in}: Add gettext
+	support.
+
+	* glib-gettext.m4 acinclude.m4: Clean up the GTK+ gettext macros
+	some more and put them in this file, though they also need
+	to be included in acinclude.m4 due to the brokeness of
+	aclocal.
+
+	* gspawn.c gspawn-win32.c gutf8.c gconvert.c gfileutils.c
+	gshell.c: Remove dummy _() #defines, include glibintl.m4.
+
 2001-01-09  Tor Lillqvist  <tml@iki.fi>
 
 	* giowin32.c: Rework the changes needed to pass mainloop-test. Now

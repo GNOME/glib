@@ -25,8 +25,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-/* FIXME */
-#define _(x) x
+#include "glibintl.h"
 
 GQuark
 g_markup_error_quark ()

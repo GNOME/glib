@@ -1001,3 +1001,20 @@ g_get_codeset (void)
 #endif
 #endif
 }
+
+#ifdef ENABLE_NLS
+
+#include <libintl.h>
+
+int _glib_gettext_initialized = 0;
+
+char *_glib_gettext_init (const char *str)
+{
+  bindtextdomain(GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+  
+  return dgettext (GETTEXT_PACKAGE, str);
+}
+
+#endif /* ENABLE_NLS */
+
+

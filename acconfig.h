@@ -43,6 +43,11 @@
    The entries are in sort -df order: alphabetical, case insensitive,
    ignoring punctuation (such as underscores).  */
 
-#undef USE_LIBICONV
-#undef SANE_MALLOC_PROTOS
+#undef ENABLE_NLS
+#undef GETTEXT_PACKAGE
 #undef GLIB_SIZEOF_SYSTEM_THREAD
+#undef GLIB_LOCALE_DIR
+#undef HAVE_GETTEXT
+#undef HAVE_LC_MESSAGES
+#undef SANE_MALLOC_PROTOS
+#undef USE_LIBICONV

@@ -1,0 +1,7 @@
+gconvert.c
+gfileutils.c
+gmarkup.c
+gshell.c
+gspawn-win32.c
+gspawn.c
+gutf8.c

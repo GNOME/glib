@@ -27,7 +27,7 @@
 #warning "FIXME remove gettext hack"
 #endif
 
-#define _(x) x
+#include "glibintl.h"
 
 GQuark
 g_shell_error_quark (void)

@@ -62,7 +62,7 @@
 #define O_BINARY 0
 #endif
 
-#define _(x) x
+#include "glibintl.h"
 
 /**
  * g_file_test:

@@ -33,7 +33,7 @@
 #include <windows.h>
 #endif
 
-#define _(s) (s)
+#include "glibintl.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \

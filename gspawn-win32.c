@@ -53,11 +53,7 @@
 #include <process.h>
 #include <direct.h>
 
-#ifdef _
-#warning "FIXME remove gettext hack"
-#endif
-
-#define _(x) x
+#include "glibintl.h"
 
 #ifdef G_SPAWN_WIN32_DEBUG
   static int debug = 1;

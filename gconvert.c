@@ -32,7 +32,7 @@
 #include <windows.h>
 #endif
 
-#define _(s) (s)
+#include "glibintl.h"
 
 GQuark 
 g_convert_error_quark()

@@ -34,11 +34,7 @@
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
-#ifdef _
-#warning "FIXME remove gettext hack"
-#endif
-
-#define _(x) x
+#include "glibintl.h"
 
 static gint g_execute (const gchar  *file,
                        gchar **argv,
