@@ -1,3 +1,12 @@
+2005-01-11  Owen Taylor <otaylor@redhat.com>
+
+	* configure.in: Add gmodule-export-2.0.pc to AC_CONFIG_FILES.
+
+	* glib/Makefile.am gobject/Makefile.am gthread/Makefile.am:
+	Use grep | head -n 1 instead of grep -m 1 which doesn't work
+	with slightly older versions of GNU grep in 
+	install-libtool-import-lib rule.
+
 2005-01-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gdir.c (g_dir_open): Typo fix.

@@ -54,7 +54,7 @@ install-libtool-import-lib:
 #	directive in .def files.)
 #
 	for entry in `grep PRIVATE gobject.def | sed -e 's/PRIVATE//'`; do \
-	  file=`$(NM) -A .libs/libgobject-2.0.dll.a | grep -m 1 $$entry | cut -d: -f2`; \
+	  file=`$(NM) -A .libs/libgobject-2.0.dll.a | grep $$entry | head -n 1 | cut -d: -f2`; \
 	  ar d .libs/libgobject-2.0.dll.a $$file; \
 	done
 	$(RANLIB) .libs/libgobject-2.0.dll.a
