@@ -1,3 +1,11 @@
+Thu Jan 22 00:41:34 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gutils.c (g_get_any_init): Don't treat the Win32
+	user name like a gecos field, and when extracting a real
+	name from a gecos field, replace '&' by the capitalized
+	user name (a traditional passwd feature).  
+	(#118973, reported by Soeren Boll Overgaard)
+
 Tue Jan 20 22:31:22 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* NEWS: Start of 2.3.2 section.
