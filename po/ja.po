@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 13:43-0400\n"
+"POT-Creation-Date: 2004-11-02 17:54-0500\n"
 "PO-Revision-Date: 2004-10-03 00:36+0900\n"
 "Last-Translator: Ryoichi INAGAKI <ryo1@bc.wakwak.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -49,37 +49,37 @@ msgstr "入力の最後に不完全な文字シーケンスがあります"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "フォールバック '%s' を文字セット '%s' に変換できません"
 
-#: glib/gconvert.c:1573
+#: glib/gconvert.c:1597
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' は \"file\" スキームの絶対 URI ではありません"
 
-#: glib/gconvert.c:1583
+#: glib/gconvert.c:1607
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "ローカルファイル URI '%s' は '#' は含みません"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1624
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' は正しくありません"
 
-#: glib/gconvert.c:1612
+#: glib/gconvert.c:1636
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI 中のホスト名 '%s' がおかしいです"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1652
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI %s' に無効なエスケープ文字が含まれています"
 
-#: glib/gconvert.c:1698
+#: glib/gconvert.c:1722
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "パス名 '%s' が絶対パスではありません"
 
-#: glib/gconvert.c:1708
+#: glib/gconvert.c:1732
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
@@ -510,41 +510,41 @@ msgstr "変換する入力で無効なシーケンスがあります"
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 の範囲外の文字です"
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "Usage:"
 msgstr "使用法:"
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "[OPTION...]"
 msgstr "[オプション...]"
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Help Options:"
 msgstr "ヘルプ・オプション:"
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Show help options"
 msgstr "ヘルプ・オプションを表示する"
 
-#: glib/goption.c:312
+#: glib/goption.c:493
 msgid "Show all help options"
 msgstr "すべてのヘルプ・オプションを表示する"
 
-#: glib/goption.c:360
+#: glib/goption.c:541
 msgid "Application Options:"
 msgstr "アプリケーション・オプション:"
 
-#: glib/goption.c:400
+#: glib/goption.c:580
 #, fuzzy, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "--%$2s オプションの整数値 '%$1s' を解析できません"
 
-#: glib/goption.c:410
+#: glib/goption.c:590
 #, fuzzy, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%$2s の整数値 '%$1s' は範囲外の値です"
 
-#: glib/goption.c:1024
+#: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
 msgstr "不明なオプション %s です"

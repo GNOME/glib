@@ -316,6 +316,24 @@ error domains.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_get_filename_charsets ##### -->
+<para>
+
+</para>
+
+@charsets: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_filename_display_name ##### -->
+<para>
+
+</para>
+
+@filename: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_uri_list_extract_uris ##### -->
 <para>
 

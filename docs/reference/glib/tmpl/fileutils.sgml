@@ -288,6 +288,16 @@ An opaque structure representing an opened directory.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_lstat ##### -->
+<para>
+
+</para>
+
+@filename: 
+@buf: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_unlink ##### -->
 <para>
 

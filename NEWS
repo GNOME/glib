@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.5.4 to GLib 2.5.5
+=================================================
+* GKeyFile
+  - Cleanups, add more error checking [Ray Strode]
+  - Fall back to the untranslated string when getting 
+    locale strings [Mark McLoughlin]
+* GOption
+  - Document GOption [Matthias Clasen]
+  - Better support for rest arguments [Owen Taylor, Matthias]
+  - Handle conflicts between groups [Matthias]
+* Add g_lstat() to the stdio wrappers [Tor Lillqvist]
+* Add g_filename_display_name() to convert filenames
+  in displayable UTF-8 strings  [Alex Larsson, Matthias]
+* Win32 bug fixes [Kazuki IWAMOTO, Hans Breuer, Tor]
+* Bug fixes [Christophe Fergeau, Morten Welinder, 
+  Owen, Kjartan Maraas, Mark]
+* Documentation improvements [Matthias, Tor]
+
 Overview of Changes from GLib 2.5.3 to GLib 2.5.4
 =================================================
 Add GKeyFile, a parser/editor for the .ini like files used in various

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 13:43-0400\n"
+"POT-Creation-Date: 2004-11-02 17:54-0500\n"
 "PO-Revision-Date: 2004-01-07 01:09+0100\n"
 "Last-Translator: Sanlig Badral <Badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
@@ -52,38 +52,38 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "»%s« ухарч »%s« кодчилол руу хөрвөхгүй байна"
 
 # CHECK
-#: glib/gconvert.c:1573
+#: glib/gconvert.c:1597
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI »%s« нь файлын схемд хэрэглэгддэг үнэмлэхүй хаяг биш"
 
-#: glib/gconvert.c:1583
+#: glib/gconvert.c:1607
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Дотоод URI »%s« нь »#« -г агуулж болохгүй"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1624
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "»%s« URI хүчингүй"
 
-#: glib/gconvert.c:1612
+#: glib/gconvert.c:1636
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI »%s« -н хостын нэр хүчингүй"
 
 # CHECK
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1652
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "»%s« URI хүчингүй Escape-тэмдэгт агуулж байна"
 
-#: glib/gconvert.c:1698
+#: glib/gconvert.c:1722
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "»%s« замын нэр үнэмлэхүй зам биш"
 
-#: glib/gconvert.c:1708
+#: glib/gconvert.c:1732
 msgid "Invalid hostname"
 msgstr "Хүчингүй хостын нэр"
 
@@ -521,41 +521,41 @@ msgstr "Хөрвүүлэлтийн оролтод хүчингүй дараал�
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 хязгаараас гаднах тэмдэгт"
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "Usage:"
 msgstr ""
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "[OPTION...]"
 msgstr ""
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Help Options:"
 msgstr ""
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Show help options"
 msgstr ""
 
-#: glib/goption.c:312
+#: glib/goption.c:493
 msgid "Show all help options"
 msgstr ""
 
-#: glib/goption.c:360
+#: glib/goption.c:541
 msgid "Application Options:"
 msgstr ""
 
-#: glib/goption.c:400
+#: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr ""
 
-#: glib/goption.c:410
+#: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr ""
 
-#: glib/goption.c:1024
+#: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
 msgstr ""

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 13:43-0400\n"
+"POT-Creation-Date: 2004-11-02 17:54-0500\n"
 "PO-Revision-Date: 2004-08-31 23:35+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -52,37 +52,37 @@ msgstr "La secuencia parcial de caracteres en el final de la entrada"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s»·al conjunto de códigos·«%s»"
 
-#: glib/gconvert.c:1573
+#: glib/gconvert.c:1597
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "La URI·«%s»·no es una URI·absoluta utilizando el esquema «file»"
 
-#: glib/gconvert.c:1583
+#: glib/gconvert.c:1607
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local·en la URI «%s»·no debe incluir un·«#»"
 
-#: glib/gconvert.c:1600
+#: glib/gconvert.c:1624
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "La URI·«%s»·es inválida"
 
-#: glib/gconvert.c:1612
+#: glib/gconvert.c:1636
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nombre del host de la·URI·«%s»·es inválido"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1652
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "La·URI·«%s»·contiene caracteres de escape inválidos"
 
-#: glib/gconvert.c:1698
+#: glib/gconvert.c:1722
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
-#: glib/gconvert.c:1708
+#: glib/gconvert.c:1732
 msgid "Invalid hostname"
 msgstr "Nombre del host inválido"
 
@@ -540,41 +540,41 @@ msgstr "La secuencia en la conversión de entrada no es válida"
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se encuentra fuera del rango para UTF-16"
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "Usage:"
 msgstr "Uso:"
 
-#: glib/goption.c:263
+#: glib/goption.c:402
 msgid "[OPTION...]"
 msgstr "[OPCIÓN...]"
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Help Options:"
 msgstr "Opciones de ayuda:"
 
-#: glib/goption.c:308
+#: glib/goption.c:489
 msgid "Show help options"
 msgstr "Mostrar opciones de ayuda"
 
-#: glib/goption.c:312
+#: glib/goption.c:493
 msgid "Show all help options"
 msgstr "Mostrar todas las opciones de ayuda"
 
-#: glib/goption.c:360
+#: glib/goption.c:541
 msgid "Application Options:"
 msgstr "Opciones de la aplicación:"
 
-#: glib/goption.c:400
+#: glib/goption.c:580
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "No se puede parsear el valor entero «%s» para --%s"
 
-#: glib/goption.c:410
+#: glib/goption.c:590
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: glib/goption.c:1024
+#: glib/goption.c:1310
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"

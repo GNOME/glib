@@ -393,6 +393,7 @@ g_log_set_default_handler
 g_log_set_fatal_mask
 g_log_set_handler
 g_logv
+g_lstat
 g_main_context_acquire
 g_main_context_add_poll
 g_main_context_check

@@ -112,6 +112,7 @@ On non-Windows platforms, it is not defined.
 
 @Since: 2.6
 
+
 <!-- ##### MACRO G_WIN32_IS_NT_BASED ##### -->
 <para>
 On Windows, this macro defines an expression which evaluates to %TRUE 
