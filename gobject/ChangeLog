@@ -1,3 +1,19 @@
+Wed Mar  7 19:02:51 2001  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (type_node_add_iface_entry_W): catch when adding an interface
+	to an ancestor of a child that already conforms to this interface.
+	currently we spew a warning here, should we be silent?
+	(g_type_interface_add_prerequisite): new function to add a prerequisite
+	type to an interface, that must succeed an instance is_a prerequisite
+	type check before the interface can be added to an instance. the
+	prerequisite types are also suuported in is_a checks of the interface.
+	(g_type_instance_is_a):
+	(g_type_check_instance_cast):
+	(g_type_check_instance): cleanups and optimizations.
+	(g_type_class_is_a):
+	(g_type_check_class_cast): same, also prevented these from accepting
+	interface types, as class structures don't nest interfaces.
+
 2001-03-07  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am: Avoid rebuilding everything everytime.

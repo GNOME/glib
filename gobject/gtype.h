@@ -283,25 +283,27 @@ struct _GTypeValueTable
 				  GTypeCValue  *collect_values,
 				  guint		collect_flags);
 };
-GType g_type_register_static       (GType                       parent_type,
-                                    const gchar                *type_name,
-                                    const GTypeInfo            *info,
-				    GTypeFlags			flags);
-GType g_type_register_dynamic      (GType                       parent_type,
-                                    const gchar                *type_name,
-                                    GTypePlugin                *plugin,
-				    GTypeFlags			flags);
-GType g_type_register_fundamental  (GType                       type_id,
-                                    const gchar                *type_name,
-                                    const GTypeInfo            *info,
-                                    const GTypeFundamentalInfo *finfo,
-				    GTypeFlags			flags);
-void  g_type_add_interface_static  (GType                       instance_type,
-                                    GType                       interface_type,
-                                    const GInterfaceInfo       *info);
-void  g_type_add_interface_dynamic (GType                       instance_type,
-                                    GType                       interface_type,
-                                    GTypePlugin                *plugin);
+GType g_type_register_static		(GType			     parent_type,
+					 const gchar		    *type_name,
+					 const GTypeInfo	    *info,
+					 GTypeFlags		     flags);
+GType g_type_register_dynamic		(GType			     parent_type,
+					 const gchar		    *type_name,
+					 GTypePlugin		    *plugin,
+					 GTypeFlags		     flags);
+GType g_type_register_fundamental	(GType			     type_id,
+					 const gchar		    *type_name,
+					 const GTypeInfo	    *info,
+					 const GTypeFundamentalInfo *finfo,
+					 GTypeFlags		     flags);
+void  g_type_add_interface_static	(GType			     instance_type,
+					 GType			     interface_type,
+					 const GInterfaceInfo	    *info);
+void  g_type_add_interface_dynamic	(GType			     instance_type,
+					 GType			     interface_type,
+					 GTypePlugin		    *plugin);
+void  g_type_interface_add_prerequisite (GType			     interface_type,
+					 GType			     prerequisite_type);
 
 
 /* --- protected (for fundamental type implementations) --- */
