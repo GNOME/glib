@@ -410,7 +410,7 @@ while (<>) {
 	    $prod =~ s/\\f/\f/g; $prod =~ s/\\r/\r/g;
 	    for (@entries) {
 		my ($name,$nick) = @{$_};
-		my $tmp_prod = $vprod;
+		my $tmp_prod = $prod;
 
 		$tmp_prod =~ s/\@VALUENAME\@/$name/g;
 		$tmp_prod =~ s/\@valuenick\@/$nick/g;

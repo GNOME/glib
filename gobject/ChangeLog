@@ -1,3 +1,8 @@
+2004-04-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib-mkenums.in: Actually convert escape chars in 
+	--vprod.   (#139058, Christophe Saout)
+
 2004-04-15  Matthias Clasen  <mclasen@redhat.com>
 
 	* gparamspecs.c (param_float_init): Correct the initial 
