@@ -1,3 +1,7 @@
+2003-09-28  Gediminas Paulauskas  <menesis@delfi.lt>
+
+    * configure.in: Added lt to ALL_LINGUAS.
+
 2003-09-25  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Remove g_bsearch_array_* entries that don't exist

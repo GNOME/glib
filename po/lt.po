@@ -1,0 +1,517 @@
+# Lithuanian translation of glib messages
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-28 21:13+0300\n"
+"PO-Revision-Date: 2003-09-22 20:54+0200\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:402
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "Keitimas iš koduotės '%s' į koduotę '%s' nepalaikomas"
+
+#: glib/gconvert.c:406
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "Nepavyko atidaryti keitiklio iš '%s' į '%s': %s"
+
+#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
+#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
+#: glib/gutf8.c:1355
+msgid "Invalid byte sequence in conversion input"
+msgstr "Klaidinga baitų seka keitimo įvedime"
+
+#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
+#: glib/giochannel.c:2211
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "Klaida keitimo metu: %s"
+
+#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
+#: glib/gutf8.c:1351
+msgid "Partial character sequence at end of input"
+msgstr "Nepilna simbolio seka įvedimo pabaigoje"
+
+#: glib/gconvert.c:800
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "Negalima keisti atgalinio varianto '%s' į koduotę '%s'"
+
+#: glib/gconvert.c:1411
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "Adresas '%s' neatitinka absoliutaus adreso bylų schemos"
+
+#: glib/gconvert.c:1421
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "Vietinės bylos adresas '%s' negali turėti simbolio '#'"
+
+#: glib/gconvert.c:1438
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "Adresas '%s' yra klaidingas"
+
+#: glib/gconvert.c:1450
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "Kompiuterio vardas '%s' adrese yra klaidingas"
+
+#: glib/gconvert.c:1466
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "Adrese '%s' yra klaidingai perkoduoti symboliai"
+
+#: glib/gconvert.c:1537
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "Kelias '%s' nėra absoliutus"
+
+#: glib/gconvert.c:1547
+msgid "Invalid hostname"
+msgstr "Klaidingas kompiuterio vardas"
+
+#: glib/gdir.c:80
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "Klaida atidarant katalogą '%s': %s"
+
+#: glib/gfileutils.c:390 glib/gfileutils.c:455
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "Nepavyko paskirti %lu baitų reikalingų perskaityti bylą \"%s\""
+
+#: glib/gfileutils.c:401
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "Klaida skaitant bylą '%s': %s"
+
+#: glib/gfileutils.c:477
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "Nepavyko perskaityti bylos '%s': %s"
+
+#: glib/gfileutils.c:524 glib/gfileutils.c:592
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "Nepavyko atidaryti bylos '%s': %s"
+
+#: glib/gfileutils.c:538
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "Nepavyko gauti bylos '%s' požymių: fstat() klaida: %s"
+
+#: glib/gfileutils.c:564
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "Nepavyko atidaryti bylos '%s': fdopen() klaida: %s"
+
+#: glib/gfileutils.c:776
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "Šablonas '%s' klaidingas, jame negali būti '%s'"
+
+#: glib/gfileutils.c:788
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "Šablono '%s' gale nėra XXXXXX"
+
+#: glib/gfileutils.c:809
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "Nepavyko sukurti bylos '%s': %s"
+
+#: glib/gfileutils.c:1150
+msgid "Failed to read the symbolic link '%s': %s"
+msgstr "Nepavyko perskaityti simbolinės nuorodos '%s': %s"
+
+#: glib/gfileutils.c:1169
+msgid "Symbolic links not supported"
+msgstr "Simbolinės nuorodos nepalaikomos"
+
+#: glib/giochannel.c:1143
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "Keitimas iš koduotės `%s' į koduotę `%s' nepalaikomas"
+
+#: glib/giochannel.c:1147
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "Nepavyko atidaryti keitiklio iš `%s' į `%s': %s"
+
+#: glib/giochannel.c:1492
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "Negalima vykdyti tiesioginio skaitymo iš g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
+msgid "Leftover unconverted data in read buffer"
+msgstr "Nepakeistų duomenų likučiai skaitymo buferyje"
+
+#: glib/giochannel.c:1619 glib/giochannel.c:1696
+msgid "Channel terminates in a partial character"
+msgstr "Kanalas pasibaigia nepilnu simboliu"
+
+#: glib/giochannel.c:1682
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "Negalima vykdyti tiesioginio skaitymo iš g_io_channel_read_to_end"
+
+#: glib/gmarkup.c:223
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "Eilutės %d simbolio %d klaida: %s"
+
+#: glib/gmarkup.c:307
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "Klaida eilutėje %d: %s"
+
+#: glib/gmarkup.c:386
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+"Aptiktas tuščias elementas '&;'; galimi elementai yra: &amp; &quot; &lt; "
+"&gt; &apos;"
+
+#: glib/gmarkup.c:396
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"Simbolis '%s' nepriimtinas elemento vardo pradžioje; & simbolis pradeda "
+"elemento įvedimą; jei šis ampersendas nėra elemento pradžia, apeikite jį su "
+"&amp;"
+
+#: glib/gmarkup.c:432
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "Simbolis '%s' nepriimtinas elemento varde"
+
+#: glib/gmarkup.c:476
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "Nežinomas elemento vardas '%s'"
+
+#: glib/gmarkup.c:486
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"Elementas nepasibaigė kabliataškiu; greičiausiai Jūs panaudojote ampersendo "
+"simbolį nepradėdami elemento įvedimo - apeikite ampersendą įvesdami &amp;"
+
+#: glib/gmarkup.c:532
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"Nepavyko apdoroti '%s', kuris galėjo turėti skaičius simbolio aprašyme (pvz. "
+"&#234;) - gal skaičius per didelis"
+
+#: glib/gmarkup.c:557
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "Simbolio aprašymas '%s' neatitinka leistinus simbolius"
+
+#: glib/gmarkup.c:574
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "Tuščias simbolio apračymas; ten turėtų būti skaičiai, pvz. &#454;"
+
+#: glib/gmarkup.c:584
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"Simbolio aprašymas nepasibaigė kabliataškiu; greičiausiai Jūs panaudojote "
+"ampersendo simbolį nepradėdami elemento įvedimo - apeikite ampersendą "
+"įvesdami &amp;"
+
+#: glib/gmarkup.c:610
+msgid "Unfinished entity reference"
+msgstr "Nebaigtas elemento aprašymas"
+
+#: glib/gmarkup.c:616
+msgid "Unfinished character reference"
+msgstr "Nebaigtas simbolio aprašymas"
+
+#: glib/gmarkup.c:861 glib/gmarkup.c:889 glib/gmarkup.c:920
+msgid "Invalid UTF-8 encoded text"
+msgstr "Klaidingai koduotas UTF-8 tekstas"
+
+#: glib/gmarkup.c:956
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "Dokumentas turėtų prasidėti elementu (pvz. <book>)"
+
+#: glib/gmarkup.c:995
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+"'%s' negali būti rašomas po '<' simbolio; jis nepradeda jokio elemento vardo"
+
+#: glib/gmarkup.c:1058
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"Neįprastas simbolis '%s', tikėtasi sulaukti '>' simbolio, užbaigiančio "
+"pradinį elementą '%s'"
+
+#: glib/gmarkup.c:1145
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+"Neįprastas simbolis '%1$s', tikėtasi sulaukti '=' po elemento %3$s požymio "
+"vardo '%2$s'"
+
+#: glib/gmarkup.c:1186
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"Neįprastas simbolis '%s', tikėtasi sulaukti '>' arba '/' simbolių, "
+"užbaigiančių elementą '%s', arba papildomo požymio; gal Jūs panaudojote "
+"netinkama simbolį požymio varde"
+
+#: glib/gmarkup.c:1269
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"Neįprastas simbolis '%1$s', po lygybės tikėtasi sulaukti atidarančio "
+"citavimo simbolio pradedant '%3$s' elemento '%2$s' požymio reikšmę"
+
+#: glib/gmarkup.c:1409
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+"'%s' negali būti rašomas po simbolių '</'; '%s' negali būti kokio nors "
+"elemento vardu"
+
+#: glib/gmarkup.c:1447
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' negali būti rašomas po uždarančio elemento vardo '%s'; leistinas "
+"simbolis yra '>'"
+
+#: glib/gmarkup.c:1458
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+"Elemento '%s' uždarymo simbolis sutiktas anksčiau už elemento atidarymo "
+"simbolį"
+
+#: glib/gmarkup.c:1467
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+"Sutiktas elemento '%s' uždarymo simbolis, tačiau šiuo metu atidarytas kitas "
+"elementas '%s'"
+
+#: glib/gmarkup.c:1614
+msgid "Document was empty or contained only whitespace"
+msgstr "Dokumentas tuščias arba susideda tik iš tarpų"
+
+#: glib/gmarkup.c:1628
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokumentas netikėtai pasibaigė tuoj po atidarančių skliaustų '<'"
+
+#: glib/gmarkup.c:1636 glib/gmarkup.c:1680
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"Dokumentas netikėtai pasibaigė neuždarius dalies elementų - '%s' yra "
+"paskutinis atviras elementas"
+
+#: glib/gmarkup.c:1644
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"Dokumentas netikėtai pasibaigė, nesulaukta uždarančių skliaustų simbolio <%s/"
+">"
+
+#: glib/gmarkup.c:1650
+msgid "Document ended unexpectedly inside an element name"
+msgstr "Dokumentas netikėtai pasibaidė elemento varde"
+
+#: glib/gmarkup.c:1655
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "Dokumentas netikėtai pasibaigė požymio varde"
+
+#: glib/gmarkup.c:1660
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "Dokumentas netikėtai pasibaigė elemento atidarymo ženklu"
+
+#: glib/gmarkup.c:1666
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"Dokumentas netikėtai pasibaigė lygybės simboliu einančio po požymio vardo; "
+"nerasta požymio reikšmė"
+
+#: glib/gmarkup.c:1673
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "Dokumentas netikėtai pasibaigė požymio verte"
+
+#: glib/gmarkup.c:1688
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Dokumentas netikėtai pasibaigė elemento '%s' uždarančiame simbolyje"
+
+#: glib/gmarkup.c:1694
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr ""
+"Dokumentas netikėtai pasibaigė komentaruose arba apdorojimo instrukcijose"
+
+#: glib/gshell.c:72
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "Cituojamas tekstas neprasideda citavimo ženklu"
+
+#: glib/gshell.c:162
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+"Nesutampantis citavimo simbolis komandinėje eilutėje arba kitame terpės "
+"cituotame tekste"
+
+#: glib/gshell.c:530
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "Tekstas pasibaigė tuoj po '\\' simbolio. (Tekste buvo įrašyta '%s')"
+
+#: glib/gshell.c:537
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+"Tekstas pasibaigė nesulaukus %c atitinkančio citatos ženklo. (Tekste buvo "
+"įvesta '%s')"
+
+#: glib/gshell.c:549
+msgid "Text was empty (or contained only whitespace)"
+msgstr "Tekstas buvo tuščias arba turėjo vien tik tarpo simbolius)"
+
+#: glib/gspawn-win32.c:297
+msgid "Failed to read data from child process"
+msgstr "Nepavyko gauti duomenų iš antrinio proceso"
+
+#: glib/gspawn-win32.c:426
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr ""
+"Netikėta klaida tarp g_io_channel_win32_poll() funkcijos duomenų skaitymo iš "
+"antrinio proceso metu"
+
+#: glib/gspawn-win32.c:834 glib/gspawn.c:998
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "Nepavyko perskaityti duomenų iš antrinio daviklio (%s)"
+
+#: glib/gspawn-win32.c:923
+msgid "Failed to execute helper program"
+msgstr "Nepavyko paleisti pagalbinės programos"
+
+#: glib/gspawn-win32.c:944 glib/gspawn-win32.c:988
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "Nepavyko paleisti antrinio proceso (%s)"
+
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1203
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "Nepavyko pereiti į katalogą '%s' (%s)"
+
+#: glib/gspawn-win32.c:1033 glib/gspawn.c:1334
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr ""
+"Nepavyko sukurti daviklio skirto keistis duomenis su antriniu procesu (%s)"
+
+#: glib/gspawn.c:167
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "Nepavyko gauti duomenis iš antrinio proceso (%s)"
+
+#: glib/gspawn.c:298
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr ""
+"Netikėta klaida tarp select() funkcijos duomenų gavimo iš antrinio proceso (%"
+"s) metu"
+
+#: glib/gspawn.c:381
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Netikėta klaida iš waitpid() (%s)"
+
+#: glib/gspawn.c:1063
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "Nepavyko atskirti (%s)"
+
+#: glib/gspawn.c:1213
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "Nepavyko paleisti antrinio proceso \"%s\" (%s)"
+
+#: glib/gspawn.c:1223
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "Nepavyko perimti antrinio proceso (%s) išvedimo arba įvedimo"
+
+#: glib/gspawn.c:1232
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "Nepavyko atskirti antrinio proceso (%s)"
+
+#: glib/gspawn.c:1240
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "Nežinoma klaida vykdant antrinį procesą \"%s\""
+
+#: glib/gspawn.c:1262
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+"Nepavyko perskaityti reikiamo duomenų kiekio iš antrinio proceso daviklio (%"
+"s)"
+
+#: glib/gutf8.c:985
+msgid "Character out of range for UTF-8"
+msgstr "Simbolis neatitinka UTF-8 simbolių diapazono"
+
+#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
+#: glib/gutf8.c:1365 glib/gutf8.c:1461
+msgid "Invalid sequence in conversion input"
+msgstr "Klaidinga seka keitimo įvedime"
+
+#: glib/gutf8.c:1376 glib/gutf8.c:1472
+msgid "Character out of range for UTF-16"
+msgstr "Simbolis neatitinka UTF-16 simbolių diapazono"
