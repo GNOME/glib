@@ -5,7 +5,6 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gthread \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
 
 EXTRA_DIST =				\
-		makefile.mingw.in	\
 		makefile.msc.in		\
 		gthread-posix.c		\
 		gthread-solaris.c	\
@@ -15,7 +14,6 @@ EXTRA_DIST =				\
 		gthread.rc.in
 
 BUILT_EXTRA_DIST = \
-		makefile.mingw		\
 		makefile.msc		\
 		gthread.rc
 

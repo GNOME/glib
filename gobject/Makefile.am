@@ -192,7 +192,6 @@ testgobject_LDADD = $(progs_LDADD)
 # auxillary files
 #
 EXTRA_DIST += 			\
-	makefile.mingw.in 	\
 	makefile.msc.in 	\
 	gobject.def		\
 	gobject.rc.in		\
@@ -201,7 +200,6 @@ EXTRA_DIST += 			\
 	glib-mkenums.1
 
 BUILT_EXTRA_DIST = \
-	makefile.mingw		\
 	makefile.msc		\
 	gobject.rc		\
 	gmarshal.h		\

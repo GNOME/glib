@@ -4,7 +4,6 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_srcdir)/gmodule \
 	-DG_LOG_DOMAIN=\"GModule\" @GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED
 
 EXTRA_DIST =	\
-		makefile.mingw.in \
 		makefile.msc.in \
 		gmoduleconf.h.in \
 		gmodule.def	\
@@ -18,7 +17,6 @@ EXTRA_DIST =	\
 		gmodule.rc.in
 
 BUILT_EXTRA_DIST = \
-		makefile.mingw	\
 		makefile.msc	\
 		gmodule.rc
 

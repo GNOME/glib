@@ -28,7 +28,6 @@ endif
 EXTRA_DIST =					\
 	$(test_scripts)				\
 	makefile.msc.in				\
-	makefile.mingw.in			\
 	casefold.txt				\
 	casemap.txt				\
 	gen-casefold-txt.pl			\
@@ -37,7 +36,6 @@ EXTRA_DIST =					\
 	utf8.txt
 
 BUILT_EXTRA_DIST =				\
-	makefile.mingw				\
 	makefile.msc
 
 if HAVE_CXX

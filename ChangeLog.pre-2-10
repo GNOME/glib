@@ -1,3 +1,15 @@
+2004-03-06  Tor Lillqvist  <tml@iki.fi>
+
+	* README.win32: Update.
+
+	* configure.in
+	* Makefile.am
+	* */Makefile.am: Drop the hand-written makefile.mingw(.in)
+	files. They haven't been maintained in a long time. As several
+	people have managed to build GLib for Win32 using the
+	autoconfiscation mechanism, there is no real reason to even try to
+	maintain the hand-written mingw makefiles.
+
 2004-03-05  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/gatomic.c: Fix infinite recursion for

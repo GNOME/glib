@@ -21,7 +21,6 @@ EXTRA_DIST = 			\
 	INSTALL.in		\
 	README.win32		\
 	makefile.msc		\
-	makefile.mingw		\
 	glibconfig.h.win32.in	\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\

@@ -14,7 +14,6 @@ INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 EXTRA_DIST = 			\
-	makefile.mingw.in	\
 	makefile.msc.in		\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
@@ -23,7 +22,6 @@ EXTRA_DIST = 			\
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
-	makefile.mingw		\
 	glib.rc
 
 lib_LTLIBRARIES = libglib-2.0.la

@@ -2618,19 +2618,14 @@ if false; then
     README
     config.h.win32
     glibconfig.h.win32
-    glib/makefile.mingw
     glib/makefile.msc
     glib/glib.rc
-    gmodule/makefile.mingw
     gmodule/makefile.msc
     gmodule/gmodule.rc
-    gobject/makefile.mingw
     gobject/makefile.msc
     gobject/gobject.rc
-    gthread/makefile.mingw
     gthread/makefile.msc
     gthread/gthread.rc
-    tests/makefile.mingw
     tests/makefile.msc
   ])
 fi
