@@ -717,12 +717,12 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
       g_free (temp_area);
     }
   
+  g_mutex_lock (mem_chunks_lock);
   if (mem_chunk->next)
     mem_chunk->next->prev = mem_chunk->prev;
   if (mem_chunk->prev)
     mem_chunk->prev->next = mem_chunk->next;
   
-  g_mutex_lock (mem_chunks_lock);
   if (mem_chunk == mem_chunks)
     mem_chunks = mem_chunks->next;
   g_mutex_unlock (mem_chunks_lock);

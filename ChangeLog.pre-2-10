@@ -1,3 +1,8 @@
+Sun Dec 21 22:42:42 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmem.c (g_mem_chunk_destroy): Fix the locking of the
+	mem_chunks list.  (#127096, Balazs Scheidler)
+
 2003-12-14  Hans Breuer  <hans@breuer.org>
 
 	* glib/gfileutils.c : make g_file_test(,G_FILE_TEST_IS_EXECUTABLE)
