@@ -83,11 +83,33 @@ Used to create the first node in a tree.
 <!-- ##### FUNCTION g_node_copy ##### -->
 <para>
 Recursively copies a #GNode (but does not deep-copy the data inside the nodes,
-since there's no way for GLib to know how to do that).
+see g_node_copy_deep() if you need that).
 </para>
 
 @node: a #GNode.
 @Returns: a new #GNode containing the same data pointers.
+
+
+<!-- ##### USER_FUNCTION GCopyFunc ##### -->
+<para>
+A function of this signature is used to copy the node data when doing a deep-copy
+of a tree. 
+</para>
+
+@src: A pointer to the data which should be copied.
+@data: Additional data.
+@Returns: A pointer to the copy.
+@Since: 2.4
+
+<!-- ##### FUNCTION g_node_copy_deep ##### -->
+<para>
+
+</para>
+
+@node: 
+@copy_func: 
+@data: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_node_insert ##### -->

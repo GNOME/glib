@@ -229,6 +229,45 @@ g_node_unlink (GNode *node)
   node->prev = NULL;
 }
 
+/**
+ * g_node_copy_deep:
+ * @node: a #GNode
+ * @copy_func: the function which is called to copy the data inside each node,
+ *   or %NULL to use the original data.
+ * @data: data to pass to @copy_func
+ * 
+ * Recursively copies a #GNode and its data.
+ * 
+ * Return value: a new #GNode containing copies of the data in @node.
+ *
+ * Since: 2.4
+ **/
+GNode*
+g_node_copy_deep (GNode     *node, 
+		  GCopyFunc  copy_func,
+		  gpointer   data)
+{
+  GNode *new_node = NULL;
+
+  if (copy_func == NULL)
+	return g_node_copy (node);
+
+  if (node)
+    {
+      GNode *child, *new_child;
+      
+      new_node = g_node_new (copy_func (node->data, data));
+      
+      for (child = g_node_last_child (node); child; child = child->prev) 
+	{
+	  new_child = g_node_copy_deep (child, copy_func, data);
+	  g_node_prepend (new_node, new_child);
+	}
+    }
+  
+  return new_node;
+}
+
 GNode*
 g_node_copy (GNode *node)
 {

@@ -55,6 +55,8 @@ typedef gboolean	(*GNodeTraverseFunc)	(GNode	       *node,
 						 gpointer	data);
 typedef void		(*GNodeForeachFunc)	(GNode	       *node,
 						 gpointer	data);
+typedef gpointer	(*GCopyFunc)            (gconstpointer  src,
+                                                 gpointer       data);
 
 /* N-way tree implementation
  */
@@ -77,6 +79,9 @@ void     g_node_pop_allocator   (void);
 GNode*	 g_node_new		(gpointer	   data);
 void	 g_node_destroy		(GNode		  *root);
 void	 g_node_unlink		(GNode		  *node);
+GNode*   g_node_copy_deep       (GNode            *node,
+				 GCopyFunc         copy_func,
+				 gpointer          data);
 GNode*   g_node_copy            (GNode            *node);
 GNode*	 g_node_insert		(GNode		  *parent,
 				 gint		   position,

@@ -1,3 +1,11 @@
+Sun Feb 22 00:59:11 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/trees-nary.sgml: Document GCopyFunc.
+
+Sun Feb 22 00:54:17 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add GCopyFunc and g_node_copy_deep.
+
 2004-02-18  Sebastian Wilhelmi  <seppi@seppi.de>
 
 	* glib/glib-sections.txt: Add the new g_rand_* functions

@@ -1,3 +1,8 @@
+Sun Feb 22 00:47:04 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gnode.c (g_node_copy_deep): New function to deep-copy a 
+	GNode and its children.  (#93464, James M. Cape)
+
 Sat Feb 21 15:42:39 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* glib/gqueue.c: Some documentation fixes.

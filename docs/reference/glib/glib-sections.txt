@@ -1699,6 +1699,8 @@ g_tree_destroy
 GNode
 g_node_new
 g_node_copy
+GCopyFunc
+g_node_copy_deep
 
 <SUBSECTION>
 g_node_insert
