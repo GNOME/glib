@@ -1,3 +1,8 @@
+Wed Sep 19 13:03:38 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/giochannel.c (g_io_channel_read/write_chars): Handle NUL
+	bytes_written, bytes_read. (Suggested by Joshua N Pritikin, #59550)
+
 Wed Sep 19 12:49:11 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gutils.c (g_get_any_init): Handle failure of

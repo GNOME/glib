@@ -907,9 +907,9 @@ g_io_channel_flush (GIOChannel	*channel,
       g_assert (this_time > 0);
 
       status = channel->funcs->io_write (channel,
-                                      channel->write_buf->str + bytes_written,
-                                      channel->write_buf->len - bytes_written,
-                                      &this_time, error);
+					 channel->write_buf->str + bytes_written,
+					 channel->write_buf->len - bytes_written,
+					 &this_time, error);
       bytes_written += this_time;
     }
   while ((bytes_written < channel->write_buf->len)
@@ -1722,9 +1722,16 @@ g_io_channel_read_chars (GIOChannel	*channel,
 
   if (!channel->use_buffer)
     {
+      gint tmp_bytes;
+      
       g_assert (!channel->read_buf || channel->read_buf->len == 0);
 
-      return channel->funcs->io_read (channel, buf, count, bytes_read, error);
+      status = channel->funcs->io_read (channel, buf, count, &tmp_bytes, error);
+      
+      if (bytes_read)
+	*bytes_read = tmp_bytes;
+
+      return status;
     }
 
   status = G_IO_STATUS_NORMAL;
@@ -1907,9 +1914,17 @@ g_io_channel_write_chars (GIOChannel	*channel,
 
   if (!channel->use_buffer)
     {
+      gint tmp_bytes;
+      
       g_assert (!channel->write_buf || channel->write_buf->len == 0);
       g_assert (channel->partial_write_buf[0] == '\0');
-      return channel->funcs->io_write (channel, buf, count, bytes_written, error);
+      
+      status = channel->funcs->io_write (channel, buf, count, &tmp_bytes, error);
+
+      if (bytes_written)
+	*bytes_written = tmp_bytes;
+
+      return status;
     }
 
   /* General case */
