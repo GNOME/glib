@@ -1,7 +1,7 @@
 2002-07-01  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/garray.h: Add parenthesis to protect macro
-	argument. Spotted by Sam Couter" <sam@topic.com.au>. (#86826)
+	argument. Spotted by Sam Couter <sam@topic.com.au>. (#86826)
 
 2002-06-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
