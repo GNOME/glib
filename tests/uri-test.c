@@ -127,10 +127,10 @@ from_uri_tests[] = {
   { "file://otherhost/etc", "/etc", "otherhost"},
   { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
   { "file://%C3%B6%C3%A4%C3%A5/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file:////etc/%C3%B6%C3%C3%C3%A5", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://localhost/\xE5\xE4\xF6", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file:////etc/%C3%B6%C3%C3%C3%A5", "//etc/\xc3\xb6\xc3\xc3\xc3\xa5", NULL},
+  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", "localhost"},
   { "file://\xE5\xE4\xF6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://localhost/%E5%E4%F6", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", "localhost"},
   { "file://%E5%E4%F6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://some", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -310,6 +310,68 @@ run_from_uri_tests (void)
   g_print ("\n");
 }
 
+static gint
+safe_strcmp (const gchar *a, const gchar *b)
+{
+  return strcmp (a ? a : "", b ? b : "");
+}
+
+static void
+run_roundtrip_tests (void)
+{
+  int i;
+  gchar *uri, *hostname, *res;
+  GError *error;
+  
+  for (i = 0; i < G_N_ELEMENTS (to_uri_tests); i++)
+    {
+      if (to_uri_tests[i].expected_error != 0)
+	continue;
+
+      error = NULL;
+      uri = g_filename_to_uri (to_uri_tests[i].filename,
+			       to_uri_tests[i].hostname,
+			       &error);
+      
+      if (error != NULL)
+	{
+	  g_print ("g_filename_to_uri failed unexpectedly: %s\n", 
+		   error->message);
+	  any_failed = TRUE;
+	  continue;
+	}
+      
+      error = NULL;
+      res = g_filename_from_uri (uri, &hostname, &error);
+      if (error != NULL)
+	{
+	  g_print ("g_filename_from_uri failed unexpectedly: %s\n", 
+		   error->message);
+	  any_failed = TRUE;
+	  continue;
+	}
+
+      if (safe_strcmp (to_uri_tests[i].filename, res))
+	{
+	  g_message ("roundtrip test %d failed, filename modified: "
+		     " expected \"%s\", but got \"%s\"\n",
+		     i, to_uri_tests[i].filename, res);
+	  any_failed = TRUE;
+	}
+
+      if (safe_strcmp (to_uri_tests[i].hostname, hostname))
+	{
+	  g_print ("roundtrip test %d failed, hostname modified: "
+		     " expected \"%s\", but got \"%s\"\n",
+		   i, to_uri_tests[i].hostname, hostname);
+	  any_failed = TRUE;
+	}
+
+      /* Give some output */
+      g_print (".");
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -327,6 +389,7 @@ main (int   argc,
 
   run_to_uri_tests ();
   run_from_uri_tests ();
+  run_roundtrip_tests ();
 
   return any_failed ? 1 : 0;
 }

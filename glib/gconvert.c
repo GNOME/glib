@@ -1401,7 +1401,7 @@ g_unescape_uri_string (const char *escaped,
   g_assert (out - result <= len);
   *out = '\0';
 
-  if (in != in_end || !g_utf8_validate (result, -1, NULL))
+  if (in != in_end)
     {
       g_free (result);
       return NULL;
