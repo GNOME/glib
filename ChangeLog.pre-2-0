@@ -1,3 +1,7 @@
+2001-10-05  Matthias Clasen  <matthiasc@poet.de>
+
+	* glib/gwin32.c: Documentation update.
+
 2001-10-04  Havoc Pennington  <hp@redhat.com>
 
 	* glib/libcharset/Makefile.am (EXTRA_DIST): add config.charset

@@ -666,7 +666,7 @@ get_package_directory_from_module (gchar *module_name)
  * itself. If that DLL isn't loaded, the function proceeds as if
  * @dll_name was %NULL.
  *
- * If both @package and @dll_name are NULL, the directory from where
+ * If both @package and @dll_name are %NULL, the directory from where
  * the main executable of the process was loaded is uses instead in
  * the same way as above.
  *
@@ -746,14 +746,17 @@ g_win32_get_package_installation_directory (gchar *package,
 
 /**
  * g_win32_get_package_installation_subdirectory:
- * @package: An identifier for a software package, or %NULL
- * @dll_name: The name of a DLL that a package provides, or %NULL
+ * @package: An identifier for a software package, or %NULL.
+ * @dll_name: The name of a DLL that a package provides, or %NULL.
  * @subdir: A subdirectory of the package installation directory.
  *
- * Returns: a newly-allocated string containg the path of the
+ * Returns a newly-allocated string containing the path of the
  * subdirectory @subdir in the return value from calling
  * g_win32_get_package_installation_directory() with the @package and
- * @dll_name parameters. The return value should be freed with
+ * @dll_name parameters. 
+ *
+ * Returns: a string containing the complete path to @subdir inside the 
+ * installation directory of @package. The return value should be freed with
  * g_free() when no longer needed.
  **/
 
