@@ -2,6 +2,7 @@ dnl ***********************************
 dnl *** include special GLib macros ***
 dnl ***********************************
 builtin(include, acglib.m4)dnl
+builtin(include, aclibcharset.m4)dnl
 
 # require autoconf 2.13
 AC_PREREQ(2.13)
@@ -500,6 +501,12 @@ AC_C_BIGENDIAN
 # check for header files
 AC_CHECK_HEADERS([float.h limits.h pwd.h sys/param.h sys/poll.h sys/select.h])
 AC_CHECK_HEADERS([sys/time.h sys/times.h unistd.h values.h stdint.h sched.h])
+
+# Checks for libcharset
+jm_LANGINFO_CODESET
+jm_GLIBC21
+AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
+AC_CHECK_FUNCS(setlocale)
 
 AC_MSG_CHECKING(whether make is GNU Make)
 STRIP_BEGIN=
@@ -2145,6 +2152,7 @@ Makefile
 build/Makefile
 build/win32/Makefile
 glib/Makefile
+glib/libcharset/Makefile
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile

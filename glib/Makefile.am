@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS=libcharset
+
 INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=g_log_domain_glib \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
@@ -141,8 +143,8 @@ if OS_WIN32
 export_symbols = -export-symbols glib.def
 endif
 
-libglib_1_3_la_LIBADD = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_1_3_la_DEPENDENCIES = @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
+libglib_1_3_la_LIBADD = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_1_3_la_DEPENDENCIES = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
 
 libglib_1_3_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \

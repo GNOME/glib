@@ -1,0 +1,45 @@
+# Patch against libcharset version 1.1
+--- /home/otaylor/ftp/libiconv-1.7.0.1/libcharset/lib/localcharset.c	Wed Aug  8 08:52:28 2001
++++ localcharset.c	Wed Sep 26 22:47:38 2001
+@@ -83,8 +83,8 @@
+ static const char * volatile charset_aliases;
+ 
+ /* Return a pointer to the contents of the charset.alias file.  */
+-static const char *
+-get_charset_aliases ()
++const char *
++_g_locale_get_charset_aliases ()
+ {
+   const char *cp;
+ 
+@@ -205,7 +205,7 @@
+ STATIC
+ #endif
+ const char *
+-locale_charset ()
++_g_locale_charset ()
+ {
+   const char *codeset;
+   const char *aliases;
+@@ -262,7 +262,7 @@
+     codeset = "";
+ 
+   /* Resolve alias. */
+-  for (aliases = get_charset_aliases ();
++  for (aliases = _g_locale_get_charset_aliases ();
+        *aliases != '\0';
+        aliases += strlen (aliases) + 1, aliases += strlen (aliases) + 1)
+     if (strcmp (codeset, aliases) == 0
+--- /home/otaylor/ftp/libiconv-1.7.0.1/libcharset/include/libcharset.h.in	Tue Mar 27 08:34:42 2001
++++ libcharset.h	Wed Sep 26 21:55:40 2001
+@@ -30,8 +30,8 @@
+    The result must not be freed; it is statically allocated.
+    If the canonical name cannot be determined, the result is a non-canonical
+    name.  */
+-extern const char * locale_charset (void);
+-
++extern const char * _g_locale_charset (void);
++extern const char * _g_locale_get_charset_aliases (void);
+ 
+ #ifdef __cplusplus
+ }

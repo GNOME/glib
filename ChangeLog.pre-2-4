@@ -1,3 +1,20 @@
+Wed Sep 26 22:34:12 2001  Owen Taylor  <otaylor@redhat.com>
+
+	Fixes for #58195, based on some ideas from Hidetosh Tajima.
+
+	* aclibcharset.m4 glib/libcharset: Add Bruno Haible's
+	portable-current charset detection code from libiconv.
+
+	* glib/gutf8.c (g_utf8_get_charset_internal): Rewrite
+	to use _g_locale_charset().
+
+	* glib/gutf8.c (_g_charset_get_aliases): Private functions
+	to get aliases from libcharset for a particular canonical
+	name.
+
+	* glib/gconvert.c: If loading a charset fails, try 
+	aliases to look for fallbacks.
+	
 2001-09-26  Matthias Clasen  <matthiasc@poet.de>
 
 	* gmem.c (g_mem_is_system_malloc): Return !vtable_set.

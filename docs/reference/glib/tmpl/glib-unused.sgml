@@ -1,29 +1,3 @@
-<!-- ##### SECTION ./tmpl/messages.sgml:Long_Description ##### -->
-<para>
-These functions provide support for logging error messages or messages
-used for debugging.
-</para>
-
-<para>
-There are several built-in levels of messages, defined in #GLogLevelFlags.
-These can be extended with user-defined levels.
-</para>
-
-
-<!-- ##### SECTION ./tmpl/messages.sgml:See_Also ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### SECTION ./tmpl/messages.sgml:Short_Description ##### -->
-versatile support for logging messages with different levels of importance.
-
-
-<!-- ##### SECTION ./tmpl/messages.sgml:Title ##### -->
-Message Logging
-
-
 <!-- ##### ENUM GChannelError ##### -->
 <para>
 

@@ -53,6 +53,41 @@ g_convert_error_quark()
 #error libiconv not in use but included iconv.h is from libiconv
 #endif
 
+static gboolean
+try_conversion (const char *to_codeset,
+		const char *from_codeset,
+		iconv_t    *cd)
+{
+  *cd = iconv_open (to_codeset, from_codeset);
+
+  if (*cd == (iconv_t)-1 && errno == EINVAL)
+    return FALSE;
+  else
+    return TRUE;
+}
+
+static gboolean
+try_to_aliases (const char **to_aliases,
+		const char  *from_codeset,
+		iconv_t     *cd)
+{
+  if (to_aliases)
+    {
+      const char **p = to_aliases;
+      while (*p)
+	{
+	  if (try_conversion (*p, from_codeset, cd))
+	    return TRUE;
+
+	  p++;
+	}
+    }
+
+  return FALSE;
+}
+
+extern const char **_g_charset_get_aliases (const char *canonical_name);
+
 /**
  * g_iconv_open:
  * @to_codeset: destination codeset
@@ -71,8 +106,32 @@ GIConv
 g_iconv_open (const gchar  *to_codeset,
 	      const gchar  *from_codeset)
 {
-  iconv_t cd = iconv_open (to_codeset, from_codeset);
+  iconv_t cd;
   
+  if (!try_conversion (to_codeset, from_codeset, &cd))
+    {
+      const char **to_aliases = _g_charset_get_aliases (to_codeset);
+      const char **from_aliases = _g_charset_get_aliases (to_codeset);
+
+      if (from_aliases)
+	{
+	  const char **p = from_aliases;
+	  while (*p)
+	    {
+	      if (try_conversion (to_codeset, *p, &cd))
+		return (GIConv)cd;
+
+	      if (try_to_aliases (to_aliases, *p, &cd))
+		return (GIConv)cd;
+
+	      p++;
+	    }
+	}
+
+      if (try_to_aliases (to_aliases, from_codeset, &cd))
+	return (GIConv)cd;
+    }
+
   return (GIConv)cd;
 }
 

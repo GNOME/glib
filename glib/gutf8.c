@@ -36,6 +36,8 @@
 #undef STRICT
 #endif
 
+#include "libcharset/libcharset.h"
+
 #include "glibintl.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
@@ -348,60 +350,105 @@ g_utf8_strncpy (gchar       *dest,
   return dest;
 }
 
-static gboolean
-g_utf8_get_charset_internal (char **a)
+G_LOCK_DEFINE_STATIC (aliases);
+
+static GHashTable *
+get_alias_hash (void)
 {
-  char *charset = getenv("CHARSET");
+  static GHashTable *alias_hash = NULL;
+  const char *aliases;
 
-  if (charset && a && ! *a)
-    *a = charset;
+  G_LOCK (aliases);
 
-  if (charset && strstr (charset, "UTF-8"))
-      return TRUE;
-
-#ifdef HAVE_CODESET
-  charset = nl_langinfo(CODESET);
-  if (charset)
+  if (!alias_hash)
     {
-      if (a && ! *a)
-	*a = charset;
-      if (strcmp (charset, "UTF-8") == 0)
-	return TRUE;
-    }
-#endif
-  
-#if 0 /* #ifdef _NL_CTYPE_CODESET_NAME */
-  charset = nl_langinfo (_NL_CTYPE_CODESET_NAME);
-  if (charset)
-    {
-      if (a && ! *a)
-	*a = charset;
-      if (strcmp (charset, "UTF-8") == 0)
-	return TRUE;
-    }
-#endif
-
-#ifdef G_PLATFORM_WIN32
-  if (a && ! *a)
-    {
-      static char codepage[10];
+      alias_hash = g_hash_table_new (g_str_hash, g_str_equal);
       
-      sprintf (codepage, "CP%d", GetACP ());
-      *a = codepage;
-      /* What about codepage 1200? Is that UTF-8? */
-      return FALSE;
+      aliases = _g_locale_get_charset_aliases ();
+      while (*aliases != '\0')
+	{
+	  const char *canonical;
+	  const char *alias;
+	  const char **alias_array;
+	  int count = 0;
+	  
+	  alias = aliases;
+	  aliases += strlen (aliases) + 1;
+	  canonical = aliases;
+	  aliases += strlen (aliases) + 1;
+	  
+	  alias_array = g_hash_table_lookup (alias_hash, canonical);
+	  if (alias_array)
+	    {
+	      while (alias_array[count])
+		count++;
+	    }
+	  
+	  alias_array = g_renew (const char *, alias_array, count + 2);
+	  alias_array[count] = alias;
+	  alias_array[count + 1] = NULL;
+	  
+	  g_hash_table_insert (alias_hash, (char *)canonical, alias_array);
+	}
     }
-#else
-  if (a && ! *a) 
-    *a = "US-ASCII";
-#endif
+
+  G_UNLOCK (aliases);
+
+  return alias_hash;
+}
+
+/* As an abuse of the alias table, the following routines gets
+ * the charsets that are aliases for the canonical name.
+ */
+const char **
+_g_charset_get_aliases (const char *canonical_name)
+{
+  GHashTable *alias_hash = get_alias_hash ();
+
+  return g_hash_table_lookup (alias_hash, canonical_name);
+}
+
+static gboolean
+g_utf8_get_charset_internal (const char **a)
+{
+  const char *charset = getenv("CHARSET");
+
+  if (charset && *charset)
+    {
+      *a = charset;
+
+      if (charset && strstr (charset, "UTF-8"))
+	return TRUE;
+      else
+	return FALSE;
+    }
+
+  /* The libcharset code tries to be thread-safe without
+   * a lock, but has a memory leak and a missing memory
+   * barrier, so we lock for it
+   */
+  G_LOCK (aliases);
+  charset = _g_locale_charset ();
+  G_UNLOCK (aliases);
+  
+  if (charset && *charset)
+    {
+      *a = charset;
+      
+      if (charset && strstr (charset, "UTF-8"))
+	return TRUE;
+      else
+	return FALSE;
+    }
 
   /* Assume this for compatibility at present.  */
+  *a = "US-ASCII";
+  
   return FALSE;
 }
 
 static int utf8_locale_cache = -1;
-static char *utf8_charset_cache = NULL;
+static const char *utf8_charset_cache = NULL;
 
 /**
  * g_get_charset:
