@@ -334,7 +334,7 @@ dnl
 dnl Now we are done with gettext checks, figure out ICONV_LIBS
 dnl
 
-if test x$with_iconv != xno ; then
+if test x$with_libiconv != xno ; then
   case " $INTLLIBS " in
   *[[\ \	]]-liconv[[\ \	]]*) ;;
   *) ICONV_LIBS="-liconv" ;;
