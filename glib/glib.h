@@ -2369,6 +2369,49 @@ gpointer   g_tuples_index     (GTuples	   *tuples,
 			       gint	    field);
 
 
+/* GRand - a good and fast random number generator: Mersenne Twister 
+ * see http://www.math.keio.ac.jp/~matumoto/emt.html for more info.
+ * The range functions return a value in the intervall [min,max).
+ * int          -> [0..2^32-1]
+ * int_range    -> [min..max-1]
+ * double       -> [0..1)
+ * double_range -> [min..max)
+ */
+
+typedef struct _GRand GRand;
+GRand*  g_rand_new_with_seed   (guint32     seed);
+GRand*  g_rand_new             ();
+void    g_rand_free            (GRand      *rand);
+
+void    g_rand_set_seed        (GRand      *rand, 
+				guint32     seed);
+guint32 g_rand_int             (GRand      *rand);
+gint32  g_rand_int_range       (GRand      *rand, 
+				gint32      min, 
+				gint32      max);
+gdouble g_rand_double          (GRand      *rand);
+gdouble g_rand_double_range    (GRand      *rand, 
+				gdouble     min, 
+				gdouble     max);
+/* This might go in, if -lm is no problem for you guys
+gdouble g_rand_normal          (GRand      *rand, 
+				gdouble     mean, 
+				gdouble     standard_deviation);
+*/
+
+void    g_random_set_seed      (guint32     seed);
+guint32 g_random_int           ();
+gint32  g_random_int_range     (gint32      min, 
+				gint32      max);
+gdouble g_random_double        ();
+gdouble g_random_double_range  (gdouble     min, 
+				gdouble     max);
+/* dito
+gdouble g_random_normal        (gdouble     mean, 
+				gdouble     standard_deviation);
+*/
+ 
+
 /* Prime numbers.
  */
 

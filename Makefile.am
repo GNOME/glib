@@ -44,6 +44,7 @@ libglib_la_SOURCES = \
 	gprimes.c	\
 	gqueue.c	\
 	grel.c		\
+	grand.c		\
 	gscanner.c	\
 	gslist.c	\
 	gstack.c	\

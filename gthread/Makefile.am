@@ -22,4 +22,4 @@ libgthread_la_LDFLAGS = \
 libgthread_la_LIBADD = @G_THREAD_LIBS@
 
 noinst_PROGRAMS = testgthread
-testgthread_LDADD = ../libglib.la libgthread.la 
+testgthread_LDADD = ../libglib.la libgthread.la

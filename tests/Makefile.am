@@ -9,6 +9,7 @@ TESTS = \
 	list-test	\
 	node-test	\
 	queue-test	\
+	rand-test	\
 	relation-test	\
 	slist-test	\
 	stack-test	\
@@ -26,6 +27,7 @@ hash_test_LDADD = $(top_builddir)/libglib.la
 list_test_LDADD = $(top_builddir)/libglib.la
 node_test_LDADD = $(top_builddir)/libglib.la
 queue_test_LDADD = $(top_builddir)/libglib.la
+rand_test_LDADD = $(top_builddir)/libglib.la
 relation_test_LDADD = $(top_builddir)/libglib.la
 slist_test_LDADD = $(top_builddir)/libglib.la
 stack_test_LDADD = $(top_builddir)/libglib.la

@@ -23,3 +23,8 @@ Sebastian Wilhelmi <wilhelmi@ira.uka.de>
 
 There are also many others who have contributed patches and fixes;
 we thank them, for helping us in advancing GLIB.
+
+The random number generator "Mersenne Twister", which is used by GLib,
+is developed and originally coded by:
+Makoto Matsumoto   <matumoto@math.keio.ac.jp>
+Takuji Nishimura   <nisimura@math.keio.ac.jp>
