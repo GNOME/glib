@@ -485,9 +485,9 @@ get_contents_regfile (const gchar *filename,
         {
           if (errno != EINTR) 
             {
-              g_free (buf);
 	      gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
 							 NULL, NULL, NULL);
+              g_free (buf);
               g_set_error (error,
                            G_FILE_ERROR,
                            g_file_error_from_errno (errno),
@@ -553,10 +553,9 @@ get_contents_posix (const gchar *filename,
   /* I don't think this will ever fail, aside from ENOMEM, but. */
   if (fstat (fd, &stat_buf) < 0)
     {
-      close (fd);
-      
       gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
 						 NULL, NULL, NULL);
+      close (fd);
       g_set_error (error,
                    G_FILE_ERROR,
                    g_file_error_from_errno (errno),
@@ -1180,10 +1179,9 @@ g_file_read_link (const gchar *filename,
     {
       read_size = readlink (filename, buffer, size);
       if (read_size < 0) {
-	g_free (buffer);
-      
 	gchar *utf8_filename = g_filename_to_utf8 (filename, -1,
 						   NULL, NULL, NULL);
+	g_free (buffer);
 	g_set_error (error,
 		     G_FILE_ERROR,
 		     g_file_error_from_errno (errno),
