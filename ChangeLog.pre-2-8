@@ -1,3 +1,9 @@
+Fri Nov 22 09:39:09 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h: Remove broken G_HIDDEN_SYMBOL
+	definition which wasn't supposed to be committed
+	at all.
+
 Thu Nov 21 16:19:21 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/ghash.c: Patch from Morten Welinder to 

@@ -86,13 +86,6 @@
 #define G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
 
-#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
-#define G_HIDDEN_SYMBOL
-  __attribute__((__visibility__("hidden")))
-#else
-#define G_HIDDEN_SYMBOL
-#endif /* __GNUC__ */
-
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  */
