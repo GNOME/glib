@@ -79,13 +79,16 @@ when they are allocated.
 
 <!-- ##### FUNCTION g_array_sized_new ##### -->
 <para>
-Creates a new #GArray with the given size.
+Creates a new #GArray with @reserved_size elements
+preallocated. This avoids frequent reallocation, if you are going to
+add many elements to the array. Note however that the size of the
+array is still 0.
 </para>
 
 @zero_terminated: %TRUE if the array should have an extra element at the end with all bits cleared
 @clear: %TRUE if all bits in the array should be cleared to 0 on allocation
 @element_size: size of each element in the array
-@reserved_size: initial array size (number of elements)
+@reserved_size: number of elements preallocated
 @Returns: the new #GArray
 
 

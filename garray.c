@@ -254,9 +254,9 @@ g_array_remove_index_fast (GArray* farray,
   g_return_val_if_fail (index < array->len, NULL);
 
   if (index != array->len - 1)
-    g_memmove (g_array_elt_pos (array, index), 
-	       g_array_elt_pos (array, array->len - 1),
-	       g_array_elt_len (array, 1));
+    memcpy (g_array_elt_pos (array, index), 
+	    g_array_elt_pos (array, array->len - 1),
+	    g_array_elt_len (array, 1));
   
   array->len -= 1;
 

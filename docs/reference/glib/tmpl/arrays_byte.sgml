@@ -68,11 +68,13 @@ Creates a new #GByteArray.
 
 <!-- ##### FUNCTION g_byte_array_sized_new ##### -->
 <para>
-Creates a new byte array, with the given size.
+Creates a new #GByteArray with @reserved_size bytes preallocated. This
+avoids frequent reallocation, if you are going to add many bytes to
+the array. Note however that the size of the array is still 0.
 </para>
 
-@reserved_size: initial number of bytes in the array
-@Returns: a new #GByteArray
+@reserved_size: number of bytes preallocated
+@Returns: the new #GByteArray
 
 
 <!-- ##### FUNCTION g_byte_array_append ##### -->

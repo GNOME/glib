@@ -1,3 +1,8 @@
+2001-05-23  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* garray.c (g_array_remove_index_fast): Tiny speed improvement
+	suggested by noon@users.sourceforge.net.
+
 2001-05-22  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* config.h.win32.in: Removed POSIX_*. Defined G_THREAD_SOURCE to

@@ -82,10 +82,13 @@ Creates a new #GPtrArray.
 
 <!-- ##### FUNCTION g_ptr_array_sized_new ##### -->
 <para>
-Creates a new #GPtrArray with @reserved_size elements.
+Creates a new #GPtrArray with @reserved_size pointers
+preallocated. This avoids frequent reallocation, if you are going to
+add many pointers to the array. Note however that the size of the
+array is still 0.
 </para>
 
-@reserved_size: Initial number of elements.
+@reserved_size: number of pointers preallocated.
 @Returns: the new #GPtrArray.
 
 
