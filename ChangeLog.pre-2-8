@@ -1,3 +1,18 @@
+Sat May  8 01:52:29 CDT 1999 Shawn T. Amundson
+
+	* configure.in
+	  gerror.c
+	  gmain.c
+	  gstrfuncs.c
+	  gutils.c
+	  ltconfig
+	  ltmain.sh
+	  gmodule/Makefile.am
+	  gmodule/gmodule.c
+	  gmodule/gmoduleconf.h.in
+          gmodule/gmodule-beos.c
+	  gthread/Makefile.am: Port to BeOS by myself and Richard Offer.
+
 1999-05-06  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.msc.in makefile.cygwin.in glibconfig.h.win32.in

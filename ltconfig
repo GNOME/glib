@@ -1694,6 +1694,7 @@ beos*)
   library_names_spec='${libname}.so'
   dynamic_linker="$host_os ld.so"
   shlibpath_var=LIBRARY_PATH
+  deplibs_check_method=pass_all
   lt_cv_dlopen="load_add_on"
   lt_cv_dlopen_libs=
   lt_cv_dlopen_self=yes

@@ -54,6 +54,7 @@
 #undef HAVE_LONG_DOUBLE
 #undef HAVE_POLL
 #undef HAVE_PWD_H
+#undef HAVE_PW_GECOS
 #undef HAVE_SYS_PARAM_H
 #undef HAVE_SYS_POLL_H
 #undef HAVE_SYS_SELECT_H
@@ -93,6 +94,8 @@
 #undef NATIVE_WIN32
 
 #undef G_THREAD_SOURCE
+
+#undef GLIB_NATIVE_BEOS
 
 /* #undef PACKAGE */
 /* #undef VERSION */

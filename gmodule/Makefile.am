@@ -10,6 +10,7 @@ EXTRA_DIST =	\
 		gmodule-dld.c	\
 		gmodule-os2.c	\
 		gmodule-win32.c	\
+		gmodule-beos.c	\
 		gmoduleconf.h.win32
 
 BUILT_SOURCES = gmoduleconf.h
@@ -19,6 +20,8 @@ include_HEADERS = \
 		gmodule.h
 
 libglib = $(top_builddir)/libglib.la # -lglib
+
+top_builddir_full=`cd \$(top_builddir); pwd`
 
 lib_LTLIBRARIES = libgmodule.la libgplugin_a.la libgplugin_b.la
 
@@ -34,11 +37,11 @@ libgmodule_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
 
 libgplugin_a_la_SOURCES = libgplugin_a.c
 libgplugin_a_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
+libgplugin_a_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_PLUGIN_LIBS@ # $(libglib)
 
 libgplugin_b_la_SOURCES = libgplugin_b.c
 libgplugin_b_la_LDFLAGS = @G_MODULE_LDFLAGS@ -avoid-version -module
-libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ # $(libglib)
+libgplugin_b_la_LIBADD = @G_MODULE_LIBS@ @G_MODULE_PLUGIN_LIBS@ # $(libglib)
 
 noinst_PROGRAMS = testgmodule
 testgmodule_LDFLAGS += @G_MODULE_LDFLAGS@

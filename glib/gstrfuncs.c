@@ -669,7 +669,12 @@ g_strsignal (gint signum)
   char *msg;
 
 #ifdef HAVE_STRSIGNAL
+#ifdef GLIB_NATIVE_BEOS
+extern const char * strsignal(int);
+#else /* !GLIB_NATIVE_BEOS */
+  /* this is declared differently (const) in string.h on BeOS */
   extern char *strsignal (int sig);
+#endif
   return strsignal (signum);
 #elif NO_SYS_SIGLIST
   switch (signum)

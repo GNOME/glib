@@ -12,6 +12,8 @@ EXTRA_DIST =				\
 
 libglib = $(top_builddir)/libglib.la # -lglib
 
+top_builddir_full=`cd \$(top_builddir); pwd`
+
 lib_LTLIBRARIES = libgthread.la
 
 libgthread_la_SOURCES = gthread.c

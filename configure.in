@@ -78,6 +78,19 @@ AM_MAINTAINER_MODE
 
 AC_CANONICAL_HOST
 
+AC_MSG_CHECKING(for the BeOS)
+case $host in
+  *-*-beos*)
+    AC_DEFINE(GLIB_NATIVE_BEOS, 1)
+    glib_native_beos="yes"
+    AC_MSG_RESULT([$glib_native_beos])
+    ;;
+  default)
+    glib_native_beos="no"
+    AC_MSG_RESULT($glib_native_beos)
+    ;;
+esac
+
 dnl figure debugging default, prior to $ac_help setup
 dnl
 AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
@@ -446,6 +459,7 @@ dnl ***********************
 dnl *** g_module checks ***
 dnl ***********************
 G_MODULE_LIBS=
+G_MODULE_PLUGIN_LIBS=
 G_MODULE_LDFLAGS=
 dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
@@ -458,6 +472,14 @@ if test -z "$G_MODULE_IMPL"; then
 		,)
 	,)
 fi
+dnl *** load_image (BeOS)
+if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
+  AC_CHECK_LIB(root, load_image,
+      G_MODULE_LIBS="-lbe -lroot -L\$(top_builddir_full)/.libs -lglib"
+      G_MODULE_PLUGIN_LIBS="-L\$(top_builddir_full)/gmodule/.libs -lgmodule"
+      G_MODULE_IMPL=G_MODULE_IMPL_BEOS 
+,)
+fi   
 dnl *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_LIB(dl, dlopen,
@@ -540,6 +562,7 @@ if test -z "$G_MODULE_IMPL"; then
 fi
 AC_SUBST(G_MODULE_IMPL)
 AC_SUBST(G_MODULE_LIBS)
+AC_SUBST(G_MODULE_PLUGIN_LIBS)
 AC_SUBST(G_MODULE_LDFLAGS)
 AC_SUBST(G_MODULE_HAVE_DLERROR)
 AC_SUBST(G_MODULE_NEED_USCORE)
@@ -707,6 +730,15 @@ esac
 if test "x$G_THREAD_LIBS" = xerror; then
         AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
 fi
+
+case $host in
+  *-*-beos*)
+    G_THREAD_LIBS="-lbe -lroot -L\$(top_builddir_full)/.libs -lglib "
+    ;;
+  *)
+    ;;
+esac
+
 
 AC_MSG_CHECKING(thread related libraries)
 AC_MSG_RESULT($G_THREAD_LIBS)
@@ -1258,6 +1290,11 @@ g_threads_impl_def=$g_threads_impl
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
+
+if test "x$glib_native_beos" = "xyes"; then
+    glib_native_beos_def="\$glib_native_beos_def
+#define GLIB_NATIVE_BEOS 1"
+fi           
 ])
 
 AC_OUTPUT([

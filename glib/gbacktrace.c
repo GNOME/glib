@@ -150,7 +150,7 @@ g_on_error_query (const gchar *prg_name)
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
-#ifndef NATIVE_WIN32
+#if !defined(NATIVE_WIN32) && ! defined(GLIB_NATIVE_BEOS)
   pid_t pid;
   gchar buf[16];
   gchar *args[4] = { "gdb", NULL, NULL, NULL };
@@ -194,7 +194,7 @@ stack_trace_sigchld (int signum)
 static void
 stack_trace (char **args)
 {
-#ifndef NATIVE_WIN32
+#if !defined(NATIVE_WIN32) && !defined(GLIB_NATIVE_BEOS)
   pid_t pid;
   int in_fd[2];
   int out_fd[2];

@@ -788,6 +788,9 @@ compiler."
 #  }
 # /* impgen.c ends here */
       ;;
+    *-*-beos*)
+      allow_undefined=no
+      ;;
     *)
       allow_undefined=yes
       ;;

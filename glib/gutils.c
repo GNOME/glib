@@ -504,7 +504,11 @@ g_get_any_init (void)
 	if (pw)
 	  {
 	    g_user_name = g_strdup (pw->pw_name);
+#ifdef HAVE_PW_GECOS
 	    g_real_name = g_strdup (pw->pw_gecos);
+#else
+	    g_real_name = g_strdup (g_user_name);
+#endif
 	    if (!g_home_dir)
 	      g_home_dir = g_strdup (pw->pw_dir);
 	  }

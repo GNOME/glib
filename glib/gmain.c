@@ -54,6 +54,10 @@
 #include <windows.h>
 #endif /* NATIVE_WIN32 */
 
+#ifdef GLIB_NATIVE_BEOS
+#include <net/socket.h>
+#endif /* GLIB_NATIVE_BEOS */
+
 /* Types */
 
 typedef struct _GTimeoutData GTimeoutData;
@@ -317,6 +321,10 @@ g_poll (GPollFD *fds, guint nfds, gint timeout)
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+
+#ifdef GLIB_NATIVE_BEOS
+#undef NO_FD_SET
+#endif /* GLIB_NATIVE_BEOS */
 
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
