@@ -86,12 +86,12 @@ to_uri_tests[] = {
   /* On Unix, '\\' is a normal character in the file name */
   { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F"},
 #endif
-  { "/;@+$,", NULL, "file:///%3B%40%2B%24%2C"},
+  { "/;@+$,", NULL, "file:///%3B@+$,"},
   /* This and some of the following are of course as such illegal file names on Windows,
    * and would not occur in real life.
    */
   { "/:", NULL, "file:///:"},
-  { "/?&=", NULL, "file:///?&="}, /* these are not escaped and other reserved characters are -- is that really what we want? */
+  { "/?&=", NULL, "file:///%3F&="}, 
   { "/", "0123456789-", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/"},
   { "/", "abcdefghijklmnopqrstuvwxyz", "file://abcdefghijklmnopqrstuvwxyz/"},

@@ -1343,8 +1343,7 @@ has_case_prefix (const gchar *haystack, const gchar *needle)
 typedef enum {
   UNSAFE_ALL        = 0x1,  /* Escape all unsafe characters   */
   UNSAFE_ALLOW_PLUS = 0x2,  /* Allows '+'  */
-  UNSAFE_PATH       = 0x4,  /* Allows '/' and '?' and '&' and '='  */
-  UNSAFE_DOS_PATH   = 0x8,  /* Allows '/' and '?' and '&' and '=' and ':' */
+  UNSAFE_PATH       = 0x8,  /* Allows '/', '&', '=', ':', '@', '+', '$' and ',' */
   UNSAFE_HOST       = 0x10, /* Allows '/' and ':' and '@' */
   UNSAFE_SLASHES    = 0x20  /* Allows all characters except for '/' and '%' */
 } UnsafeCharacterSet;
@@ -1352,11 +1351,11 @@ typedef enum {
 static const guchar acceptable[96] = {
   /* A table of the ASCII chars from space (32) to DEL (127) */
   /*      !    "    #    $    %    &    '    (    )    *    +    ,    -    .    / */ 
-  0x00,0x3F,0x20,0x20,0x20,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x22,0x20,0x3F,0x3F,0x1C,
+  0x00,0x3F,0x20,0x20,0x28,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x2A,0x28,0x3F,0x3F,0x1C,
   /* 0    1    2    3    4    5    6    7    8    9    :    ;    <    =    >    ? */
-  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x2C,
+  0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x20,
   /* @    A    B    C    D    E    F    G    H    I    J    K    L    M    N    O */
-  0x30,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
+  0x38,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
   /* P    Q    R    S    T    U    V    W    X    Y    Z    [    \    ]    ^    _ */
   0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x20,0x20,0x20,0x20,0x3F,
   /* `    a    b    c    d    e    f    g    h    i    j    k    l    m    n    o */
@@ -1385,7 +1384,6 @@ g_escape_uri_string (const gchar *string,
   g_return_val_if_fail (mask == UNSAFE_ALL
 			|| mask == UNSAFE_ALLOW_PLUS
 			|| mask == UNSAFE_PATH
-			|| mask == UNSAFE_DOS_PATH
 			|| mask == UNSAFE_HOST
 			|| mask == UNSAFE_SLASHES, NULL);
   
@@ -1451,7 +1449,7 @@ g_escape_file_uri (const gchar *hostname,
       escaped_hostname = g_escape_uri_string (hostname, UNSAFE_HOST);
     }
 
-  escaped_path = g_escape_uri_string (pathname, UNSAFE_DOS_PATH);
+  escaped_path = g_escape_uri_string (pathname, UNSAFE_PATH);
 
   res = g_strconcat ("file://",
 		     (escaped_hostname) ? escaped_hostname : "",
