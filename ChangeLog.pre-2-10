@@ -1,3 +1,16 @@
+2004-09-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gutils.h: 
+	* glib/gutils.c (g_get_language_names): Add a function to
+	return a list of applicable locale names.  (#95587, 
+	Hidetoshi Tajima)
+	(guess_category_value, compute_locale_variants):
+	(explode_locale, unalias_lang, read_aliases): Helper 
+	functions for g_get_language_names()
+
+	* tests/testglib.c (main): Show the results of 
+	g_get_language_names()
+
 Sun Sep  5 01:46:11 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/glib.def: 

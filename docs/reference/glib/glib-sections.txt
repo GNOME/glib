@@ -2096,5 +2096,6 @@ _
 Q_
 N_
 g_strip_context
-
+<SUBSECTION>
+g_get_language_names
 </SECTION>

@@ -451,6 +451,8 @@ main (int   argc,
   sv = (gchar **) g_get_system_config_dirs ();
   g_print ("system_config: %s\n", s ? g_strjoinv (G_SEARCHPATH_SEPARATOR_S, sv) : "NULL!");
   g_print ("tmp-dir: %s\n", g_get_tmp_dir ());
+  sv = (gchar **) g_get_language_names ();
+  g_print ("languages: %s\n", s ? g_strjoinv (":", sv) : "NULL!");
 
   /* type sizes */
   g_print ("checking size of gint8: %"    G_GSIZE_FORMAT, sizeof (gint8));

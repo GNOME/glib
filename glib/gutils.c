@@ -38,6 +38,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <locale.h>
 #include <string.h>
 #include <errno.h>
 #ifdef HAVE_PWD_H
@@ -1518,6 +1519,296 @@ g_get_system_config_dirs (void)
   G_UNLOCK (g_utils_global);
 
   return (G_CONST_RETURN gchar * G_CONST_RETURN *) conf_dir_vector;
+}
+
+static GHashTable *alias_table = NULL;
+
+/* read an alias file for the locales */
+static void
+read_aliases (gchar *file)
+{
+  FILE *fp;
+  char buf[256];
+  
+  if (!alias_table)
+    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
+  fp = fopen (file,"r");
+  if (!fp)
+    return;
+  while (fgets (buf, 256, fp))
+    {
+      char *p, *q;
+
+      g_strstrip (buf);
+
+      /* Line is a comment */
+      if ((buf[0] == '#') || (buf[0] == '\0'))
+	continue;
+
+      /* Reads first column */
+      for (p = buf, q = NULL; *p; p++) {
+	if ((*p == '\t') || (*p == ' ') || (*p == ':')) {
+	  *p = '\0';
+	  q = p+1;
+	  while ((*q == '\t') || (*q == ' ')) {
+	    q++;
+	  }
+	  break;
+	}
+      }
+      /* The line only had one column */
+      if (!q || *q == '\0')
+	continue;
+      
+      /* Read second column */
+      for (p = q; *p; p++) {
+	if ((*p == '\t') || (*p == ' ')) {
+	  *p = '\0';
+	  break;
+	}
+      }
+
+      /* Add to alias table if necessary */
+      if (!g_hash_table_lookup (alias_table, buf)) {
+	g_hash_table_insert (alias_table, g_strdup (buf), g_strdup (q));
+      }
+    }
+  fclose (fp);
+}
+
+static char *
+unalias_lang (char *lang)
+{
+  char *p;
+  int i;
+
+  if (!alias_table)
+    read_aliases ("/usr/share/locale/locale.alias");
+
+  i = 0;
+  while ((p = g_hash_table_lookup (alias_table, lang)) && (strcmp (p, lang) != 0))
+    {
+      lang = p;
+      if (i++ == 30)
+        {
+          static gboolean said_before = FALSE;
+	  if (!said_before)
+            g_warning ("Too many alias levels for a locale, "
+		       "may indicate a loop");
+	  said_before = TRUE;
+	  return lang;
+	}
+    }
+  return lang;
+}
+
+/* Mask for components of locale spec. The ordering here is from
+ * least significant to most significant
+ */
+enum
+{
+  COMPONENT_CODESET =   1 << 0,
+  COMPONENT_TERRITORY = 1 << 1,
+  COMPONENT_MODIFIER =  1 << 2
+};
+
+/* Break an X/Open style locale specification into components
+ */
+static guint
+explode_locale (const gchar *locale,
+		gchar      **language, 
+		gchar      **territory, 
+		gchar      **codeset, 
+		gchar      **modifier)
+{
+  const gchar *uscore_pos;
+  const gchar *at_pos;
+  const gchar *dot_pos;
+
+  guint mask = 0;
+
+  uscore_pos = strchr (locale, '_');
+  dot_pos = strchr (uscore_pos ? uscore_pos : locale, '.');
+  at_pos = strchr (dot_pos ? dot_pos : (uscore_pos ? uscore_pos : locale), '@');
+
+  if (at_pos)
+    {
+      mask |= COMPONENT_MODIFIER;
+      *modifier = g_strdup (at_pos);
+    }
+  else
+    at_pos = locale + strlen (locale);
+
+  if (dot_pos)
+    {
+      mask |= COMPONENT_CODESET;
+      *codeset = g_strndup (dot_pos, at_pos - dot_pos);
+    }
+  else
+    dot_pos = at_pos;
+
+  if (uscore_pos)
+    {
+      mask |= COMPONENT_TERRITORY;
+      *territory = g_strndup (uscore_pos, dot_pos - uscore_pos);
+    }
+  else
+    uscore_pos = dot_pos;
+
+  *language = g_strndup (locale, uscore_pos - locale);
+
+  return mask;
+}
+
+/*
+ * Compute all interesting variants for a given locale name -
+ * by stripping off different components of the value.
+ *
+ * For simplicity, we assume that the locale is in
+ * X/Open format: language[_territory][.codeset][@modifier]
+ *
+ * TODO: Extend this to handle the CEN format (see the GNUlibc docs)
+ *       as well. We could just copy the code from glibc wholesale
+ *       but it is big, ugly, and complicated, so I'm reluctant
+ *       to do so when this should handle 99% of the time...
+ */
+static GSList *
+compute_locale_variants (const gchar *locale)
+{
+  GSList *retval = NULL;
+
+  gchar *language;
+  gchar *territory;
+  gchar *codeset;
+  gchar *modifier;
+
+  guint mask;
+  guint i;
+
+  g_return_val_if_fail (locale != NULL, NULL);
+
+  mask = explode_locale (locale, &language, &territory, &codeset, &modifier);
+
+  /* Iterate through all possible combinations, from least attractive
+   * to most attractive.
+   */
+  for (i = 0; i <= mask; i++)
+    if ((i & ~mask) == 0)
+      {
+	gchar *val = g_strconcat (language,
+				  (i & COMPONENT_TERRITORY) ? territory : "",
+				  (i & COMPONENT_CODESET) ? codeset : "",
+				  (i & COMPONENT_MODIFIER) ? modifier : "",
+				  NULL);
+	retval = g_slist_prepend (retval, val);
+      }
+
+  g_free (language);
+  if (mask & COMPONENT_CODESET)
+    g_free (codeset);
+  if (mask & COMPONENT_TERRITORY)
+    g_free (territory);
+  if (mask & COMPONENT_MODIFIER)
+    g_free (modifier);
+
+  return retval;
+}
+
+/* The following is (partly) taken from the gettext package.
+   Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.  */
+
+static const gchar *
+guess_category_value (const gchar *category_name)
+{
+  const gchar *retval;
+
+  /* The highest priority value is the `LANGUAGE' environment
+     variable.  This is a GNU extension.  */
+  retval = g_getenv ("LANGUAGE");
+  if ((retval != NULL) && (retval[0] != '\0'))
+    return retval;
+
+  /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
+     methods of looking to `LC_ALL', `LC_xxx', and `LANG'.  On some
+     systems this can be done by the `setlocale' function itself.  */
+
+  /* Setting of LC_ALL overwrites all other.  */
+  retval = g_getenv ("LC_ALL");  
+  if ((retval != NULL) && (retval[0] != '\0'))
+    return retval;
+
+  /* Next comes the name of the desired category.  */
+  retval = g_getenv (category_name);
+  if ((retval != NULL) && (retval[0] != '\0'))
+    return retval;
+
+  /* Last possibility is the LANG environment variable.  */
+  retval = g_getenv ("LANG");
+  if ((retval != NULL) && (retval[0] != '\0'))
+    return retval;
+
+  return NULL;
+}
+
+static gchar **languages = NULL;
+
+/**
+ * g_get_language_names:
+ * 
+ * Computes a list of applicable locale names, which can be used to 
+ * e.g. construct locale-dependent filenames or search paths. The returned 
+ * list is sorted from most desirable to least desirable and always contains 
+ * the default locale "C".
+ *
+ * For example, if LANGUAGE=de:en_US, then the returned list is
+ * "de", "en_US", "en", "C".
+ *
+ * This function consults the environment variables <envar>LANGUAGE</envar>, 
+ * <envar>LC_ALL</envar>, <envar>LC_MESSAGES</envar> and <envar>LANG</envar> 
+ * to find the list of locales specified by the user.
+ * 
+ * Return value: a %NULL-terminated array of strings owned by GLib 
+ *    that must not be modified or freed.
+ *
+ * Since: 2.6
+ **/
+G_CONST_RETURN gchar * G_CONST_RETURN * 
+g_get_language_names ()
+{
+  G_LOCK (g_utils_global);
+
+  if (!languages)
+    {
+      const gchar *value;
+      gchar **alist, **a;
+      GSList *list, *l;
+      gint i;
+
+      value = guess_category_value ("LC_MESSAGES");
+      if (!value)
+	value = "C";
+
+      alist = g_strsplit (value, ":", 0);
+      list = NULL;
+      for (a = alist; *a; a++)
+	{
+	  gchar *b = unalias_lang (*a);
+	  list = g_slist_concat (list, compute_locale_variants (b));
+	}
+      g_strfreev (alist);
+      list = g_slist_append (list, "C");
+
+      languages = g_new (gchar *, g_slist_length (list) + 1);
+      for (l = list, i = 0; l; l = l->next, i++)
+	languages[i] = l->data;
+      languages[i] = NULL;
+
+      g_slist_free (list);
+    }
+
+  G_UNLOCK (g_utils_global);
+
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) languages;
 }
 
 guint
