@@ -2684,6 +2684,12 @@ GUTILS_C_VAR GThreadFunctions	g_thread_functions_for_glib_use;
 GUTILS_C_VAR gboolean		g_thread_use_default_impl;
 GUTILS_C_VAR gboolean		g_threads_got_initialized;
 
+/* initializes the mutex/cond/private implementation for glib, might
+ * only be called once, and must not be called directly or indirectly
+ * from another glib-function, e.g. as a callback.
+ */
+void   g_thread_init   (GThreadFunctions       *vtable);
+
 /* internal function for fallback static mutex implementation */
 GMutex*	g_static_mutex_get_mutex_impl	(GMutex	**mutex);
 

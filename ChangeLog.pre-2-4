@@ -1,3 +1,8 @@
+Thu Feb 17 12:24:55 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h: reverted my last commit, g_thread_init() *does*
+	have an implementation.
+
 Thu Feb 17 04:25:02 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: remove extraneous prototype for g_thread_init().
