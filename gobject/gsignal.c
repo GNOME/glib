@@ -209,7 +209,10 @@ struct _HandlerList
 {
   guint    signal_id;
   Handler *handlers;
+  Handler *tail_before;  /* normal signal handlers are appended here  */
+  Handler *tail_after;   /* CONNECT_AFTER handlers are appended here  */
 };
+
 struct _Handler
 {
   gulong        sequential_number;
@@ -355,7 +358,9 @@ handler_list_ensure (guint    signal_id,
   HandlerList key;
   
   key.signal_id = signal_id;
-  key.handlers = NULL;
+  key.handlers    = NULL;
+  key.tail_before = NULL;
+  key.tail_after  = NULL;
   if (!hlbsa)
     {
       hlbsa = g_bsearch_array_create (&g_signal_hlbsa_bconfig);
@@ -577,16 +582,45 @@ handler_unref_R (guint    signal_id,
   handler->ref_count -= 1;
   if (!handler->ref_count)
     {
+      HandlerList *hlist = NULL;
+
       if (handler->next)
         handler->next->prev = handler->prev;
-      if (handler->prev)	/* watch out for g_signal_handlers_destroy()! */
+      if (handler->prev)    /* watch out for g_signal_handlers_destroy()! */
         handler->prev->next = handler->next;
       else
         {
-          HandlerList *hlist = handler_list_lookup (signal_id, instance);
-          
+          hlist = handler_list_lookup (signal_id, instance);
           hlist->handlers = handler->next;
         }
+
+      if (instance)
+        {
+          /*  check if we are removing the handler pointed to by tail_before  */
+          if (!handler->after && (!handler->next || handler->next->after))
+            {
+              if (!hlist)
+                hlist = handler_list_lookup (signal_id, instance);
+              if (hlist)
+                {
+                  g_assert (hlist->tail_before == handler); /* paranoid */
+                  hlist->tail_before = handler->prev;
+                }
+            }
+
+          /*  check if we are removing the handler pointed to by tail_after  */
+          if (!handler->next)
+            {
+              if (!hlist)
+                hlist = handler_list_lookup (signal_id, instance);
+              if (hlist)
+                {
+                  g_assert (hlist->tail_after == handler); /* paranoid */
+                  hlist->tail_after = handler->prev;
+                }
+            }
+        }
+
       SIGNAL_UNLOCK ();
       g_closure_unref (handler->closure);
       SIGNAL_LOCK ();
@@ -605,29 +639,38 @@ handler_insert (guint    signal_id,
   
   hlist = handler_list_ensure (signal_id, instance);
   if (!hlist->handlers)
-    hlist->handlers = handler;
-  else if (hlist->handlers->after && !handler->after)
     {
-      handler->next = hlist->handlers;
-      hlist->handlers->prev = handler;
       hlist->handlers = handler;
+      if (!handler->after)
+        hlist->tail_before = handler;
+    }
+  else if (handler->after)
+    {
+      handler->prev = hlist->tail_after;
+      hlist->tail_after->next = handler;
     }
   else
     {
-      Handler *tmp = hlist->handlers;
-      
-      if (handler->after)
-        while (tmp->next)
-          tmp = tmp->next;
-      else
-        while (tmp->next && !tmp->next->after)
-          tmp = tmp->next;
-      if (tmp->next)
-        tmp->next->prev = handler;
-      handler->next = tmp->next;
-      handler->prev = tmp;
-      tmp->next = handler;
+      if (hlist->tail_before)
+        {
+          handler->next = hlist->tail_before->next;
+          if (handler->next)
+            handler->next->prev = handler;
+          handler->prev = hlist->tail_before;
+          hlist->tail_before->next = handler;
+        }
+      else /* insert !after handler into a list of only after handlers */
+        {
+          handler->next = hlist->handlers;
+          if (handler->next)
+            handler->next->prev = handler;
+          hlist->handlers = handler;
+        }
+      hlist->tail_before = handler;
     }
+
+  if (!handler->next)
+    hlist->tail_after = handler;
 }
 
 static inline void
