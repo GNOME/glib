@@ -210,10 +210,12 @@ gulong	    g_signal_connect_object           (gpointer	       instance,
 void        g_object_run_dispose	      (GObject	      *object);
 
 
-/* --- marshaller specific --- */
+void        g_value_take_object               (GValue         *value,
+					       gpointer        v_object);
+#ifndef G_DISABLE_DEPRECATED
 void        g_value_set_object_take_ownership (GValue         *value,
 					       gpointer        v_object);
-
+#endif
 
 /* --- implementation macros --- */
 #define G_OBJECT_WARN_INVALID_PSPEC(object, pname, property_id, pspec) \

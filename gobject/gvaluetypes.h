@@ -97,9 +97,12 @@ GType                 g_pointer_type_register_static (const gchar *name);
 gchar*                g_strdup_value_contents   (const GValue *value);
 
 
-/* --- marshaller specific --- */
+void g_value_take_string		        (GValue		   *value,
+						 gchar		   *v_string);
+#ifndef G_DISABLE_DEPRECATED
 void g_value_set_string_take_ownership		(GValue		   *value,
 						 gchar		   *v_string);
+#endif
 
 
 /* humpf, need a C representable type name for G_TYPE_STRING */

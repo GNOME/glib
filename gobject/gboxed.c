@@ -504,6 +504,13 @@ void
 g_value_set_boxed_take_ownership (GValue       *value,
 				  gconstpointer boxed)
 {
+  g_value_take_boxed (value, boxed);
+}
+
+void
+g_value_take_boxed (GValue       *value,
+		    gconstpointer boxed)
+{
   g_return_if_fail (G_VALUE_HOLDS_BOXED (value));
   g_return_if_fail (G_TYPE_IS_VALUE (G_VALUE_TYPE (value)));
 

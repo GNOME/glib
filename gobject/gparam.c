@@ -983,6 +983,13 @@ void
 g_value_set_param_take_ownership (GValue     *value,
 				  GParamSpec *param)
 {
+  g_value_take_param (value, param);
+}
+
+void
+g_value_take_param (GValue     *value,
+		    GParamSpec *param)
+{
   g_return_if_fail (G_VALUE_HOLDS_PARAM (value));
   if (param)
     g_return_if_fail (G_IS_PARAM_SPEC (param));

@@ -1,3 +1,10 @@
+2003-09-12  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Add new g_value_take_x() functions.
+
+	* gobject/tmpl/param_value_types.sgml: Document new g_value_take_x()
+	functions.  (#100948)
+
 2003-08-05  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/string_utils.sgml: Add note about in-place editing to g_strdelimit() doc.

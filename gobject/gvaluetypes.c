@@ -763,6 +763,13 @@ void
 g_value_set_string_take_ownership (GValue *value,
 				   gchar  *v_string)
 {
+  g_value_take_string (value, v_string);
+}
+
+void
+g_value_take_string (GValue *value,
+		     gchar  *v_string)
+{
   g_return_if_fail (G_VALUE_HOLDS_STRING (value));
   
   if (value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)

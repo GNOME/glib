@@ -1533,6 +1533,13 @@ void
 g_value_set_object_take_ownership (GValue  *value,
 				   gpointer v_object)
 {
+  g_value_take_object (value, v_object);
+}
+
+void
+g_value_take_object (GValue  *value,
+		     gpointer v_object)
+{
   g_return_if_fail (G_VALUE_HOLDS_OBJECT (value));
 
   if (value->data[0].v_pointer)

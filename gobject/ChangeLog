@@ -1,3 +1,20 @@
+2003-09-12  Matthias Clasen  <maclas@gmx.de>
+
+	Make the g_value_set_x_take_ownership() functions "official"
+	part of the API (#100948):
+	
+	* gvaluetypes.[hc]: Add g_value_take_string() (synonym to the
+	now deprecated g_value_set_string_take_ownership()).  
+
+	* gparam.[hc]: Add g_value_take_param() (synonym to the
+	now deprecated g_value_set_param_take_ownership()).  
+
+	* gobject.[hc]: Add g_value_take_object() (synonym to the
+	now deprecated g_value_set_object_take_ownership()).  
+
+	* gboxed.[hc]: Add g_value_take_boxed() (synonym to the
+	now deprecated g_value_set_boxed_take_ownership()).  
+
 Tue Sep  2 19:37:21 2003  Tim Janik  <timj@gtk.org>
 
 	* gtype.[hc]: added support for a "default vtable" per interface,
@@ -72,6 +89,11 @@ Tue Aug 19 01:31:28 2003  Tim Janik  <timj@gtk.org>
 
 	* gsignal.c: added optimizations to skip NOP signal emissions.
 
+2003-08-08  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject.c (object_set_property): Improve the wording of the warning for invalid 
+	values.  (#117246, Mariano Suarez-Alvarez)
+	
 Wed Aug  6 09:57:14 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* testgobject.c (test_signal_accumulator): Add check

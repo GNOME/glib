@@ -144,10 +144,12 @@ GParamSpec*     g_value_get_param               (const GValue  *value);
 GParamSpec*     g_value_dup_param               (const GValue  *value);
 
 
-/* --- marshaller specific --- */
+void           g_value_take_param               (GValue        *value,
+					         GParamSpec    *param);
+#ifndef G_DISABLE_DEPRECATED
 void           g_value_set_param_take_ownership (GValue        *value,
 					         GParamSpec    *param);
-
+#endif
 
 /* --- convenience functions --- */
 typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
