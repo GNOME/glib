@@ -40,7 +40,6 @@
 #include <io.h>
 #ifndef F_OK
 #define	F_OK 0
-#define	X_OK 1
 #define	W_OK 2
 #define	R_OK 4
 #endif /* !F_OK */
@@ -121,11 +120,10 @@ g_file_test (const gchar *filename,
   if ((test & G_FILE_TEST_EXISTS) && (access (filename, F_OK) == 0))
     return TRUE;
   
+#ifndef G_OS_WIN32
   if ((test & G_FILE_TEST_IS_EXECUTABLE) && (access (filename, X_OK) == 0))
     {
-#ifndef G_OS_WIN32
       if (getuid () != 0)
-#endif	
 	return TRUE;
 
       /* For root, on some POSIX systems, access (filename, X_OK)
@@ -135,6 +133,7 @@ g_file_test (const gchar *filename,
     }
   else
     test &= ~G_FILE_TEST_IS_EXECUTABLE;
+#endif	
 
   if (test & G_FILE_TEST_IS_SYMLINK)
     {
@@ -170,6 +169,10 @@ g_file_test (const gchar *filename,
 	      ((s.st_mode & S_IXOTH) ||
 	       (s.st_mode & S_IXUSR) ||
 	       (s.st_mode & S_IXGRP)))
+	    return TRUE;
+#else
+	  if ((test & G_FILE_TEST_IS_EXECUTABLE) &&
+	      (s.st_mode & _S_IEXEC))
 	    return TRUE;
 #endif
 	}

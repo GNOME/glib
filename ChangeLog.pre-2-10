@@ -1,3 +1,8 @@
+2003-12-14  Hans Breuer  <hans@breuer.org>
+
+	* glib/gfileutils.c : make g_file_test(,G_FILE_TEST_IS_EXECUTABLE)
+	return something useful on win32, too. 
+
 2003-12-13  Hans Breuer  <hans@breuer.org>
 
 	* glib/gconvert.c : get_filename_charset() needs to
