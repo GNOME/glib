@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 1.3.15\n"
-"POT-Creation-Date: 2002-03-08 10:58-0500\n"
+"POT-Creation-Date: 2002-03-16 17:18+0100\n"
 "PO-Revision-Date: 2002-02-28 01:13+0100\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -46,38 +46,38 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Notnagel '%s' kann nicht in Codierung '%s' umgewandelt werden"
 
 # CHECK
-#: glib/gconvert.c:1593
+#: glib/gconvert.c:1622
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
 msgstr "Der URI '%s' ist kein absoluter URI, der das Dateischema verwendet"
 
-#: glib/gconvert.c:1603
+#: glib/gconvert.c:1632
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Der lokale URI '%s' darf '#' nicht enthalten"
 
-#: glib/gconvert.c:1620
+#: glib/gconvert.c:1649
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Der URI '%s' ist ungültig"
 
-#: glib/gconvert.c:1632
+#: glib/gconvert.c:1661
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Der Hostname der URI '%s' ist ungültig"
 
 # CHECK
-#: glib/gconvert.c:1648
+#: glib/gconvert.c:1677
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Der URI '%s' enthält ungültige Escape-Zeichen"
 
-#: glib/gconvert.c:1719
+#: glib/gconvert.c:1748
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Der Pfadname '%s' ist kein absoluter Pfad"
 
-#: glib/gconvert.c:1729
+#: glib/gconvert.c:1758
 msgid "Invalid hostname"
 msgstr "Ungültiger Hostname"
 
@@ -145,7 +145,7 @@ msgstr "Konverter von '%s' in '%s' konnte nicht geöffnet werden: %s"
 
 #: glib/giochannel.c:1460
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
+msgstr "Raw-read in g_io_channel_read_line_string nicht möglich"
 
 #: glib/giochannel.c:1507 glib/giochannel.c:1761 glib/giochannel.c:1847
 msgid "Leftover unconverted data in read buffer"
@@ -157,18 +157,18 @@ msgstr "Kanal endet mit einem Teilzeichen"
 
 #: glib/giochannel.c:1647
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
+msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
-#: glib/giowin32.c:704 glib/giowin32.c:733
+#: glib/giowin32.c:712 glib/giowin32.c:741
 msgid "Incorrect message size"
 msgstr "Falsche Nachrichtengröße"
 
-#: glib/giowin32.c:1037 glib/giowin32.c:1090
+#: glib/giowin32.c:1045 glib/giowin32.c:1098
 msgid "Socket error"
 msgstr "Socket-Fehler"
 
 # CHECK
-#: glib/giowin32.c:1290
+#: glib/giowin32.c:1298
 msgid "Channel set flags unsupported"
 msgstr "Kanal 'set-flags' werden nicht unterstützt"
 
