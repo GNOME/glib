@@ -1337,10 +1337,22 @@ g_io_channel_win32_new_fd (gint fd)
   win32_channel->fd = fd;
 
 
-  channel->is_readable  = !!(st.st_mode & _S_IREAD);
-  channel->is_writeable = !!(st.st_mode & _S_IWRITE);
-  /* XXX: pipes aren't seeakable, are they ? */
-  channel->is_seekable = !(st.st_mode & _S_IFIFO);
+  /* fstat doesn't deliver senseful values, but
+   * fcntl isn't available, so guess ...
+   */
+  if (st.st_mode & _S_IFIFO)
+    {
+      channel->is_readable  = TRUE;
+      channel->is_writeable = TRUE;
+      channel->is_seekable  = FALSE;
+    }
+  else
+    {
+      channel->is_readable  = !!(st.st_mode & _S_IREAD);
+      channel->is_writeable = !!(st.st_mode & _S_IWRITE);
+      /* XXX: pipes aren't seeakable, are they ? */
+      channel->is_seekable = !(st.st_mode & _S_IFIFO);
+    }
 
   return channel;
 }

@@ -1,9 +1,15 @@
+2001-09-22  Hans Breuer  <hans@breuer.org>
+
+	* glib/giowin32.c : simply setting is_readable and is_writeable
+	to TRUE does make Gimp plug-ins work again. Still no API known
+	to request this info on Win32 (see #57690)
+
 2001-09-21  Hans Breuer  <hans@breuer.org>
 
 	* makefile.msc : added rule for glibconfig.h
 
 	* glib/giowin32.c (g_io_channel_new_file) : always open
-	in binary mode
+	in binary mode (fix for #57695)
 
 	* glib/glib.def : updated externals
 
