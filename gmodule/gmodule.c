@@ -137,6 +137,12 @@ _g_module_symbol (gpointer	 handle,
 {
   return NULL;
 }
+static gchar*
+_g_module_build_path (const gchar *directory,
+		      const gchar *module_name)
+{
+  return NULL;
+}
 #endif	/* no implementation */
 
 #if defined (NATIVE_WIN32) && defined (__LCC__)

@@ -1,3 +1,9 @@
+Fri Nov 20 14:43:44 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c (_g_module_build_path): added empty default imlementation
+	so gmodule.so compiles on systems that are not yet supported, fix from
+	Erik Bagfors <bagfors@hpc2n.umu.se>.
+
 1998-11-13  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* Makefile.am (INCLUDES): The previous commit message is wrong

@@ -298,7 +298,7 @@ extern "C" {
 # define G_NATIVE_ATEXIT
 #endif /* ATEXIT */
 
-/* Hacker macro to place breakpoints for x86 machines.
+/* Hacker macro to place breakpoints for elected machines.
  * Actual use is strongly deprecated of course ;)
  */
 #if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
