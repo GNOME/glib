@@ -728,7 +728,12 @@ g_io_win32_finalize (GSource *source)
 
   SetEvent (channel->data_avail_noticed_event);
   if (channel->type == G_IO_WIN32_SOCKET)
+  {
+    /* Tell select_thread() to exit */
+    channel->needs_close = 1;
+    /* Wake up select_thread() from its blocking select() */
     send (channel->reset_send, send_buffer, sizeof (send_buffer), 0);
+  }
 
   g_io_channel_unref (watch->channel);
   UNLOCK (channel->mutex);
