@@ -1,3 +1,9 @@
+Wed Apr  7 20:12:58 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
+
+	* gmodule-os2.c: OS/2 specific file for gmodule.
+	* gmodule.c (_g_module_open): Add gmodule-os2.c if G_MODULE_IMPL_OS2.
+	* gmoduleconf.h.in: Add G_MODULE_IMPL_OS2.
+
 Wed Feb 10 12:06:30 1999  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (CHECK_ERROR): be more descriptive on unsupported systems.

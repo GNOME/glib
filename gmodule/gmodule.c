@@ -134,6 +134,8 @@ g_module_set_error (const gchar *error)
 #include "gmodule-dld.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
 #include "gmodule-win32.c"
+#elif	(G_MODULE_IMPL == G_MODULE_IMPL_OS2)
+#include "gmodule-os2.c"
 #else
 #undef	CHECK_ERROR
 #define	CHECK_ERROR(rv)	{ g_module_set_error ("dynamic modules are " \
