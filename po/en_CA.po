@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
-"PO-Revision-Date: 2004-09-24 16:20-0400\n"
+"POT-Creation-Date: 2004-11-18 18:06-0500\n"
+"PO-Revision-Date: 2004-11-18 16:20-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -542,3 +542,86 @@ msgstr "Integer value '%s' for %s out of range"
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unknown option %s"
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr "Valid key file could not be found in data dirs"
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr "Not a regular file"
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr "File is empty"
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr "Key file does not start with a group"
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "Key file contains unsupported encoding '%s'"
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "Key file does not have group '%s'"
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "Key file does not have key '%s'"
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "Key file contains key '%s' with value '%s' which is not UTF-8"
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "Key file contains key '%s' which has value that cannot be interpreted."
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "Key file does not have key '%s' in group '%s'"
+
+#: glib/gkeyfile.c:3023
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "Key file contains invalid escape sequence '%s'"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr "Key file contains escape character at end of line"
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "Value '%s' cannot be interpreted as a number."
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "Value '%s' cannot be interpreted as a boolean."
