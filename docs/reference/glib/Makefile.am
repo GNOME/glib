@@ -13,7 +13,7 @@ DOC_SOURCE_DIR=../../..
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS=--sgml-mode --output-format=xml
+MKDB_OPTIONS=--sgml-mode --output-format=xml --ignore-files=trio
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=

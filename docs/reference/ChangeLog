@@ -1,3 +1,8 @@
+2002-12-13  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/Makefile.am (MKDB_OPTIONS): Add --ignore-files=trio to
+	avoid gtk-doc warnings about doxygen comments.
+
 Tue Dec 10 11:55:28 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/tmpl/timers.sgml: Improve docs for return value
