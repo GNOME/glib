@@ -30,6 +30,10 @@
 #include <signal.h>
 #include <string.h>
 
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif /* HAVE_SYS_SELECT_H */
+
 #ifdef _
 #warning "FIXME remove gettext hack"
 #endif
