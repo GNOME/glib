@@ -728,9 +728,9 @@ g_byte_array_remove_range (GByteArray *array,
                            guint index_,
                            guint length)
 {
-  g_return_val_if_fail (array, FALSE);
-  g_return_val_if_fail (index_ < array->len, FALSE);
-  g_return_val_if_fail (index_ + length <= array->len, FALSE);
+  g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ + length <= array->len, NULL);
 
   return (GByteArray *)g_array_remove_range ((GArray*) array, index_, length);
 }
