@@ -144,6 +144,7 @@ static	      void		handler_insert		(guint		  signal_id,
 							 Handler	 *handler);
 static	      Handler*		handler_lookup		(gpointer	  instance,
 							 gulong		  handler_id,
+							 GClosure        *closure,
 							 guint		 *signal_id_p);
 static inline HandlerMatch*	handler_match_prepend	(HandlerMatch	 *list,
 							 Handler	 *handler,
@@ -181,6 +182,12 @@ static	      gboolean		signal_emit_unlocked_R	(SignalNode	 *node,
 							 gpointer	  instance,
 							 GValue		 *return_value,
 							 const GValue	 *instance_and_params);
+static       void               add_invalid_closure_notify    (Handler         *handler,
+							       gpointer         instance);
+static       void               remove_invalid_closure_notify (Handler         *handler,
+							       gpointer         instance);
+static       void               invalid_closure_notify  (gpointer         data,
+							 GClosure        *closure);
 static const gchar *            type_debug_name         (GType            type);
 static void                     node_check_deprecated   (const SignalNode *node);
 static void                     node_update_single_va_closure (SignalNode *node);
@@ -259,6 +266,7 @@ struct _Handler
   guint         block_count : 16;
 #define HANDLER_MAX_BLOCK_COUNT (1 << 16)
   guint         after : 1;
+  guint         has_invalid_closure_notify : 1;
   GClosure     *closure;
 };
 struct _HandlerMatch
@@ -420,9 +428,10 @@ handler_list_lookup (guint    signal_id,
 }
 
 static Handler*
-handler_lookup (gpointer instance,
-		gulong   handler_id,
-		guint   *signal_id_p)
+handler_lookup (gpointer  instance,
+		gulong    handler_id,
+		GClosure *closure,
+		guint    *signal_id_p)
 {
   GBSearchArray *hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
   
@@ -436,7 +445,8 @@ handler_lookup (gpointer instance,
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
-            if (handler->sequential_number == handler_id)
+            if (handler->sequential_number == handler_id ||
+		(closure && handler->closure == closure))
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
@@ -642,6 +652,7 @@ handler_unref_R (guint    signal_id,
         }
 
       SIGNAL_UNLOCK ();
+      remove_invalid_closure_notify (handler, instance);
       g_closure_unref (handler->closure);
       SIGNAL_LOCK ();
       g_slice_free (Handler, handler);
@@ -2286,6 +2297,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
 	  g_closure_sink (closure);
+	  add_invalid_closure_notify (handler, instance);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (closure))
 	    {
@@ -2348,6 +2360,7 @@ g_signal_connect_closure (gpointer     instance,
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
 	  g_closure_sink (closure);
+	  add_invalid_closure_notify (handler, instance);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
 	    {
@@ -2486,7 +2499,7 @@ g_signal_handler_block (gpointer instance,
   g_return_if_fail (handler_id > 0);
   
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, NULL);
+  handler = handler_lookup (instance, handler_id, NULL, NULL);
   if (handler)
     {
 #ifndef G_DISABLE_CHECKS
@@ -2529,7 +2542,7 @@ g_signal_handler_unblock (gpointer instance,
   g_return_if_fail (handler_id > 0);
   
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, NULL);
+  handler = handler_lookup (instance, handler_id, NULL, NULL);
   if (handler)
     {
       if (handler->block_count)
@@ -2565,7 +2578,7 @@ g_signal_handler_disconnect (gpointer instance,
   g_return_if_fail (handler_id > 0);
   
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, &signal_id);
+  handler = handler_lookup (instance, handler_id, NULL, &signal_id);
   if (handler)
     {
       handler->sequential_number = 0;
@@ -2596,7 +2609,7 @@ g_signal_handler_is_connected (gpointer instance,
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
 
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, NULL);
+  handler = handler_lookup (instance, handler_id, NULL, NULL);
   connected = handler != NULL;
   SIGNAL_UNLOCK ();
 
@@ -2635,6 +2648,7 @@ g_signal_handlers_destroy (gpointer instance)
               tmp->prev = tmp;
               if (tmp->sequential_number)
 		{
+		  remove_invalid_closure_notify (tmp, instance);
 		  tmp->sequential_number = 0;
 		  handler_unref_R (0, NULL, tmp);
 		}
@@ -3430,6 +3444,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 
   SIGNAL_LOCK ();
   signal_id = node->signal_id;
+
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
       Emission *node = emission_find (g_restart_emissions, signal_id, detail, instance);
@@ -3689,6 +3704,41 @@ signal_emit_unlocked_R (SignalNode   *node,
   TRACE(GOBJECT_SIGNAL_EMIT_END(node->signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
 
   return return_value_altered;
+}
+
+static void
+add_invalid_closure_notify (Handler  *handler,
+			    gpointer  instance)
+{
+  g_closure_add_invalidate_notifier (handler->closure, instance, invalid_closure_notify);
+  handler->has_invalid_closure_notify = 1;
+}
+
+static void
+remove_invalid_closure_notify (Handler  *handler,
+			       gpointer  instance)
+{
+  if (handler->has_invalid_closure_notify)
+    {
+      g_closure_remove_invalidate_notifier (handler->closure, instance, invalid_closure_notify);
+      handler->has_invalid_closure_notify = 0;
+    }
+}
+
+static void
+invalid_closure_notify (gpointer  instance,
+		        GClosure *closure)
+{
+  Handler *handler;
+  guint signal_id;
+
+  SIGNAL_LOCK ();
+
+  handler = handler_lookup (instance, 0, closure, &signal_id);
+  /* GClosure removes our notifier when we're done */
+  handler_unref_R (signal_id, instance, handler);
+
+  SIGNAL_UNLOCK ();
 }
 
 static const gchar*
