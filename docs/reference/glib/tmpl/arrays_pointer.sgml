@@ -60,9 +60,6 @@ To free a pointer array, use g_ptr_array_free().
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GPtrArray ##### -->
 <para>
 Contains the public fields of a pointer array.
@@ -227,7 +224,6 @@ Frees all of the memory allocated for the pointer array.
 
 @array: a #GPtrArray.
 @free_seg: if %TRUE the array of pointers (@pdata) is freed.
-
 @Returns: %NULL if @free_seg is %TRUE, otherwise the array of 
 pointers (@pdata) is returned.
 

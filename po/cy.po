@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-28 00:44-0500\n"
+"POT-Creation-Date: 2005-04-06 10:49-0400\n"
 "PO-Revision-Date: 2005-01-05 23:45+0100\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -16,175 +16,175 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: glib/gconvert.c:403
+#: glib/gconvert.c:404
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Ni chynhelir trawsnewidiad o set nodau '%s' i '%s'"
 
-#: glib/gconvert.c:407
+#: glib/gconvert.c:408
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Methwyd agor trawsnewidydd rhwng '%s' a '%s'"
 
-#: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1318
-#: glib/giochannel.c:1360 glib/giochannel.c:2202 glib/gutf8.c:911
+#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
+#: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dilyniant beit annilys ym mewnbwn trawsnewid"
 
-#: glib/gconvert.c:610 glib/gconvert.c:825 glib/giochannel.c:1325
-#: glib/giochannel.c:2214
+#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
+#: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Gwall wrth drawsnewid: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Dilyniant nod rhannol ar ddiwedd y mewnbwn"
 
-#: glib/gconvert.c:801
+#: glib/gconvert.c:811
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Methu trawsnewid '%s' wrth gefn i'r set godau '%s'"
 
-#: glib/gconvert.c:1601
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Nid yw'r LAU '%s' yn LAU absoliwt yn y cynllun \"file\""
 
-#: glib/gconvert.c:1611
+#: glib/gconvert.c:1621
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Ni chaniateir i'r LAU ffeil lleol '%s' gynnwys '#'"
 
-#: glib/gconvert.c:1628
+#: glib/gconvert.c:1638
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Mae'r LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1650
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Mae'r enw gwesteiwr yn y LAU '%s' yn annilys"
 
-#: glib/gconvert.c:1656
+#: glib/gconvert.c:1666
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Mae'r LAU '%s' yn cynnwys nodau wedi eu dianc mewn modd annilys"
 
-#: glib/gconvert.c:1750
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Nid yw'r llwybr '%s' yn llwybr gosodedig"
 
-#: glib/gconvert.c:1760
+#: glib/gconvert.c:1770
 msgid "Invalid hostname"
 msgstr "Enw gwesteiwr annilys"
 
-#: glib/gdir.c:120 glib/gdir.c:140
+#: glib/gdir.c:121 glib/gdir.c:141
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Gwall y cyfeiriadur '%s': %s"
 
-#: glib/gfileutils.c:501 glib/gfileutils.c:569
+#: glib/gfileutils.c:502 glib/gfileutils.c:570
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Methwyd canfod %lu beit er mwyn darllen y ffeil \"%s\""
 
-#: glib/gfileutils.c:514
+#: glib/gfileutils.c:515
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Gwall wrth ddarllen ffeil '%s': %s "
 
-#: glib/gfileutils.c:593
+#: glib/gfileutils.c:594
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Methwyd darllen o'r ffeil '%s': %s"
 
-#: glib/gfileutils.c:644 glib/gfileutils.c:731
+#: glib/gfileutils.c:645 glib/gfileutils.c:732
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Methwyd agor y ffeil '%s': %s"
 
-#: glib/gfileutils.c:661
+#: glib/gfileutils.c:662
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Methwyd darllen agweddau ffeil '%s': methiant fstat(): %s"
 
-#: glib/gfileutils.c:695
+#: glib/gfileutils.c:696
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Methwyd agor y ffeil '%s': methiant yn fdopen(): %s"
 
-#: glib/gfileutils.c:1030
+#: glib/gfileutils.c:1031
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mae'r patrymlun '%s' yn annilys: ni ddylai gynnwys '%s'"
 
-#: glib/gfileutils.c:1044
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Nid yw'r patrymlun '%s' yn gorffen gyda XXXXXX"
 
-#: glib/gfileutils.c:1069
+#: glib/gfileutils.c:1070
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Methwyd creu'r ffeil '%s': %s"
 
-#: glib/gfileutils.c:1447
+#: glib/gfileutils.c:1448
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Methwyd darllen y cyswllt symbolaidd '%s': %s"
 
-#: glib/gfileutils.c:1468
+#: glib/gfileutils.c:1469
 msgid "Symbolic links not supported"
 msgstr "Ni chynhelir cysylltion symbolaidd"
 
-#: glib/giochannel.c:1146
+#: glib/giochannel.c:1147
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Ni chynhelir trawsnewid o'r set nodau `%s' i `%s'"
 
-#: glib/giochannel.c:1150
+#: glib/giochannel.c:1151
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
 msgstr "Methwyd agor trawsnewidydd o `%s' i `%s': %s"
 
-#: glib/giochannel.c:1495
+#: glib/giochannel.c:1496
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Methu gwneud darlleniad crau yn g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1542 glib/giochannel.c:1799 glib/giochannel.c:1885
+#: glib/giochannel.c:1543 glib/giochannel.c:1800 glib/giochannel.c:1886
 msgid "Leftover unconverted data in read buffer"
 msgstr "Data dros ben heb ei drawsnewid yn y byffer ddarllen"
 
-#: glib/giochannel.c:1622 glib/giochannel.c:1699
+#: glib/giochannel.c:1623 glib/giochannel.c:1700
 msgid "Channel terminates in a partial character"
 msgstr "Mae'r sianel yn gorffen a nod rhannol"
 
-#: glib/giochannel.c:1685
+#: glib/giochannel.c:1686
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Methu gwneud darlleniad crai yn g_io_channel_read_to_end"
 
-#: glib/gmarkup.c:226
+#: glib/gmarkup.c:232
 #, c-format
 msgid "Error on line %d char %d: %s"
 msgstr "Gwall ar linell %d golofn %d: %s"
 
-#: glib/gmarkup.c:324
+#: glib/gmarkup.c:330
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Gwall ar linell %d: %s"
 
-#: glib/gmarkup.c:428
+#: glib/gmarkup.c:434
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Gwelwyd endid gwag '&;'; mae &amp; &quot; &lt; &gt; a &apos; yn endidau dilys"
 
 # c-format
-#: glib/gmarkup.c:438
+#: glib/gmarkup.c:444
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
@@ -194,17 +194,17 @@ msgstr ""
 "Mae'r nod '%s' yn annilys ar ddechrau endid; mae'r nod & yn dechrau endid; "
 "os nad yw'r & yma i fod yn endid, defnyddiwch &amp; yn ei le"
 
-#: glib/gmarkup.c:472
+#: glib/gmarkup.c:478
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Nid yw'r nod '%s' yn ddilys o fewn enw endid"
 
-#: glib/gmarkup.c:509
+#: glib/gmarkup.c:515
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Mae'r enw endid '%s' yn anhysbys"
 
-#: glib/gmarkup.c:520
+#: glib/gmarkup.c:526
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -212,7 +212,7 @@ msgstr ""
 "Ni orffenwyd yr endid gyda hanner-colon - mwy na thebyg y defnyddiwyd "
 "ampersand heb fwriadu dechrau endid - dylid defnyddio &amp; yn lle"
 
-#: glib/gmarkup.c:573
+#: glib/gmarkup.c:579
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -221,16 +221,16 @@ msgstr ""
 "Methwyd adnabod '%-.*s', a ddylai fod yn ddigid o fewn cyfeiriant nod "
 "(&#234; er enghraifft) - hwyrach fod y digid yn rhy fawr"
 
-#: glib/gmarkup.c:598
+#: glib/gmarkup.c:604
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Nid yw'r cyfeiriant nod '%-.*s' yn amgodio nod a ganiateir"
 
-#: glib/gmarkup.c:613
+#: glib/gmarkup.c:619
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "Cyfeiriant nod gwag; dylai gynnwys digid megis &#454;"
 
-#: glib/gmarkup.c:623
+#: glib/gmarkup.c:629
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -239,23 +239,23 @@ msgstr ""
 "Ni orffennwyd cyfeiriant nod gyda hanner-colon - mwy na thebyg y defnyddiwyd "
 "ampersand heb fwriadu dechrau endid - dylid defnyddio &amp; yn lle"
 
-#: glib/gmarkup.c:709
+#: glib/gmarkup.c:715
 msgid "Unfinished entity reference"
 msgstr "Cyfeiriant endid heb ei orffen"
 
-#: glib/gmarkup.c:715
+#: glib/gmarkup.c:721
 msgid "Unfinished character reference"
 msgstr "Cyfeiriant nod heb ei orffen"
 
-#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
+#: glib/gmarkup.c:964 glib/gmarkup.c:992 glib/gmarkup.c:1023
 msgid "Invalid UTF-8 encoded text"
 msgstr "Testun annilys wedi ei amgodio fel UTF-8"
 
-#: glib/gmarkup.c:1053
+#: glib/gmarkup.c:1059
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Rhaid i'r ddogfen ddechrau gydag elfen (e.e. <llyfr>)"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1099
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -263,14 +263,14 @@ msgid ""
 msgstr ""
 "Nid yw '%s' yn nod dilys yn dilyn '<'; nid yw'n gallu dechrau enw elfen"
 
-#: glib/gmarkup.c:1157
+#: glib/gmarkup.c:1163
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr "Nod od '%s', disgwyliwyd '>' er mwyn gorffen tag dechrau'r elfen '%s'"
 
-#: glib/gmarkup.c:1246
+#: glib/gmarkup.c:1252
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -278,7 +278,7 @@ msgstr ""
 "Nod od '%s', disgwyliwyd '=' ar ôl yr enw priodoledd '%s' o'r elfen '%s'"
 
 # c-format
-#: glib/gmarkup.c:1288
+#: glib/gmarkup.c:1294
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -289,7 +289,7 @@ msgstr ""
 "s', neu briodoledd ddewisol; efallai defnyddiwyd nod annilys mewn enw "
 "priodoledd"
 
-#: glib/gmarkup.c:1377
+#: glib/gmarkup.c:1383
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -298,7 +298,7 @@ msgstr ""
 "Nod od '%s', disgwyliwyd dyfnynod agored ar ôl y '=' wrth roi gwerth i'r "
 "priodoloedd '%s' o'r elfen '%s'"
 
-#: glib/gmarkup.c:1522
+#: glib/gmarkup.c:1528
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -307,7 +307,7 @@ msgstr ""
 "Nid yw '%s' yn nod ddilys yn dilyn y nodau '</'; nid yw '%s' yn gallu "
 "dechrau enw elfen."
 
-#: glib/gmarkup.c:1562
+#: glib/gmarkup.c:1568
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -316,26 +316,26 @@ msgstr ""
 "Nid yw '%s' yn nod ddilys yn dilyn y nodau '</'; nid yw '%s' yn gallu "
 "dechrau enw elfen."
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1579
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Cafodd yr elfen '%s' ei gau, nid oes elfen ar agor ar hyn o bryd"
 
-#: glib/gmarkup.c:1582
+#: glib/gmarkup.c:1588
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Cafodd yr elfen '%s' ei gau, ond yr elfen sydd ar agor ar hyn o bryd yw '%s'"
 
-#: glib/gmarkup.c:1729
+#: glib/gmarkup.c:1735
 msgid "Document was empty or contained only whitespace"
 msgstr "Roedd y ddogfen yn wag neu'n cynnwys gofod yn unig"
 
-#: glib/gmarkup.c:1743
+#: glib/gmarkup.c:1749
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Gorffennodd y ddogfen yn annisgwyl ar ôl '<'"
 
-#: glib/gmarkup.c:1751 glib/gmarkup.c:1795
+#: glib/gmarkup.c:1757 glib/gmarkup.c:1801
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -344,7 +344,7 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl tra roedd elfennau ar agor - '%s' oedd yr "
 "elfen ddiwethaf a agorwyd"
 
-#: glib/gmarkup.c:1759
+#: glib/gmarkup.c:1765
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -353,19 +353,19 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl, disgwyliwyd ongl-fraced caëedig i "
 "ddiweddu'r tag <%s/>"
 
-#: glib/gmarkup.c:1765
+#: glib/gmarkup.c:1771
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i enw elfen"
 
-#: glib/gmarkup.c:1770
+#: glib/gmarkup.c:1776
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i enw priodoledd"
 
-#: glib/gmarkup.c:1775
+#: glib/gmarkup.c:1781
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i dag agor elfen"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1787
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -373,16 +373,16 @@ msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl ar ôl yr hafalnod yn dilyn enw "
 "priodoledd; dim gwerth priodoledd"
 
-#: glib/gmarkup.c:1788
+#: glib/gmarkup.c:1794
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i werth priodoledd"
 
-#: glib/gmarkup.c:1803
+#: glib/gmarkup.c:1809
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Gorffennodd y ddogfen yn annisgwyl y tu fewn i dag cau'r elfen '%s'"
 
-#: glib/gmarkup.c:1809
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Gorffennodd y ddogfen yn annisgwyl y tu fewn i sylw neu gyfarwyddiad brosesu"
@@ -437,11 +437,11 @@ msgstr "Methwyd newid i'r cyfeiriadur '%s' (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Methwyd gweithredu proses plentyn (%s)"
 
-#: glib/gspawn-win32.c:590
+#: glib/gspawn-win32.c:599
 msgid "Failed to execute helper program"
 msgstr "Methwyd gweithredu proses cymorth"
 
-#: glib/gspawn-win32.c:789
+#: glib/gspawn-win32.c:797
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -507,58 +507,58 @@ msgstr "Dilyniant annilys ym mewnbwn trawsnewidiad"
 msgid "Character out of range for UTF-16"
 msgstr "Nod y tu allan i ystod ddilys UTF-16"
 
-#: glib/goption.c:435
+#: glib/goption.c:442
 msgid "Usage:"
 msgstr "Defnydd:"
 
-#: glib/goption.c:435
+#: glib/goption.c:442
 msgid "[OPTION...]"
 msgstr "[OPSIWN...]"
 
-#: glib/goption.c:518
+#: glib/goption.c:525
 msgid "Help Options:"
 msgstr "Cymorth Opsiynau:"
 
-#: glib/goption.c:519
+#: glib/goption.c:526
 msgid "Show help options"
 msgstr "Dangos opsiynau cymorth"
 
-#: glib/goption.c:524
+#: glib/goption.c:531
 msgid "Show all help options"
 msgstr "Dangos bob opsiwn cymorth"
 
-#: glib/goption.c:574
+#: glib/goption.c:581
 msgid "Application Options:"
 msgstr "Opsiynau Rhaglen:"
 
-#: glib/goption.c:614
+#: glib/goption.c:621
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
 msgstr "Methu darllen y gwerth cyfanrif '%s' ar gyfer --%s"
 
-#: glib/goption.c:624
+#: glib/goption.c:631
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Mae'r gwerth cyfanrif '%s' ar gyfer %s y tu allan i'r cwmpas"
 
-#: glib/goption.c:1354
+#: glib/goption.c:1361
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opsiwn anhysbys %s"
 
-#: glib/gkeyfile.c:338
+#: glib/gkeyfile.c:339
 msgid "Valid key file could not be found in data dirs"
 msgstr "Ni ddarganfyddwyd ffeil allwedd ddilys yn y cyfeiriaduron data"
 
-#: glib/gkeyfile.c:373
+#: glib/gkeyfile.c:374
 msgid "Not a regular file"
 msgstr "Ddim yn ffeil cyffredin"
 
-#: glib/gkeyfile.c:381
+#: glib/gkeyfile.c:382
 msgid "File is empty"
 msgstr "Ffeil yn wag"
 
-#: glib/gkeyfile.c:691
+#: glib/gkeyfile.c:692
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -566,40 +566,40 @@ msgstr ""
 "Ffeil allwedd yn cynnwys y llinell '%s' sydd ddim yn bâr allwedd-gwerth, "
 "na'ngrŵp, na'n sylw"
 
-#: glib/gkeyfile.c:759
+#: glib/gkeyfile.c:760
 msgid "Key file does not start with a group"
 msgstr "Nid yw'r ffeil allwedd yn dechrau gyda grŵp"
 
-#: glib/gkeyfile.c:802
+#: glib/gkeyfile.c:803
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ffeil allwedd yn cynnwys yr amgodiad '%s', na gynhelir"
 
-#: glib/gkeyfile.c:1011 glib/gkeyfile.c:1157 glib/gkeyfile.c:2163
-#: glib/gkeyfile.c:2228 glib/gkeyfile.c:2346 glib/gkeyfile.c:2414
-#: glib/gkeyfile.c:2599 glib/gkeyfile.c:2773 glib/gkeyfile.c:2830
+#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
+#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nid oes gan y ffeil allwedd y grŵp '%s'"
 
-#: glib/gkeyfile.c:1169
+#: glib/gkeyfile.c:1170
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Ffeil allwedd heb fod yn cynnwys yr allwedd '%s'"
 
-#: glib/gkeyfile.c:1270 glib/gkeyfile.c:1379
+#: glib/gkeyfile.c:1271 glib/gkeyfile.c:1380
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Ffeil allwedd yn cynnwys yr allwedd '%s' gyda'r gwerth '%s' nad yw'n UTF-8"
 
-#: glib/gkeyfile.c:1288 glib/gkeyfile.c:1397 glib/gkeyfile.c:1771
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ffeil allwedd yn cynnwys yr allwedd '%s' sydd â gwerth na ellir ei ddirnad."
 
-#: glib/gkeyfile.c:1988
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -608,26 +608,26 @@ msgstr ""
 "Ffeil allwedd yn cynnwys yr allwedd '%s' yng ngrŵp '%s' sydd â gwerth na "
 "ellir ei ddirnad."
 
-#: glib/gkeyfile.c:2178 glib/gkeyfile.c:2361 glib/gkeyfile.c:2841
+#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ffeil allwedd heb fod ganddi'r allwedd '%s' yn y grŵp '%s'"
 
-#: glib/gkeyfile.c:3022
+#: glib/gkeyfile.c:3017
 msgid "Key file contains escape character at end of line"
 msgstr "Ffeil allwedd yn cynnwys nod dianc ar ddiwedd llinell"
 
-#: glib/gkeyfile.c:3044
+#: glib/gkeyfile.c:3039
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ffeil allwedd yn cynnwys '%s', sy'n ddilyniant dianc annilys"
 
-#: glib/gkeyfile.c:3182
+#: glib/gkeyfile.c:3177
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Ni ellir darllen y gwerth '%s' fel rhif."
 
-#: glib/gkeyfile.c:3210
+#: glib/gkeyfile.c:3205
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ni ellir darllen '%s' fel gwerth Boole."

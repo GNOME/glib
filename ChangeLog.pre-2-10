@@ -1,3 +1,11 @@
+2005-04-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.6.4 ===
+
+	* gobject/Makefile.am (BUILT_EXTRA_DIST): add gobjectaliasdef.c
+
+	* NEWS: Updates
+
 2005-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gconvert.c: Clarify docs in some places. (#172404, 

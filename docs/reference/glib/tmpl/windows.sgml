@@ -14,9 +14,6 @@ UNIX emulation on Windows.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### MACRO MAXPATHLEN ##### -->
 <para>
 Provided for UNIX emulation on Windows; equivalent to UNIX 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.glib-2-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-17 13:38+0100\n"
+"POT-Creation-Date: 2005-04-06 10:49-0400\n"
 "PO-Revision-Date: 2005-03-18 19:15+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
@@ -31,61 +31,61 @@ msgstr ""
 "A(z) \"%s\" karakterkészletről \"%s\" karakterkészletre átalakító nem "
 "nyitható meg"
 
-#: glib/gconvert.c:606 glib/gconvert.c:893 glib/giochannel.c:1319
+#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 
-#: glib/gconvert.c:611 glib/gconvert.c:826 glib/giochannel.c:1326
+#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Hiba az átalakítás során: %s"
 
-#: glib/gconvert.c:629 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Részleges karaktersorozat a bemenet végén"
 
-#: glib/gconvert.c:802
+#: glib/gconvert.c:811
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nem alakítható át a tartalék \"%s\" a(z) \"%s\" kódkészletre"
 
-#: glib/gconvert.c:1602
+#: glib/gconvert.c:1611
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "A(z) \"%s\" URI nem abszolút, a \"file\" sémát használó URI"
 
-#: glib/gconvert.c:1612
+#: glib/gconvert.c:1621
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "A(z) \"%s\" helyi fájl URI nem tartalmazhat \"#\" karaktert"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1638
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "A(z) \"%s\" URI érvénytelen"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1650
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "A(z) \"%s\" gépneve érvénytelen"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1666
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr ""
 "A(z) \"%s\" URI érvénytelen escape-szekvencia formában megadott karaktereket "
 "tartalmaz"
 
-#: glib/gconvert.c:1751
+#: glib/gconvert.c:1760
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "A(z) \"%s\" elérési út neve nem abszolút útvonal"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1770
 msgid "Invalid hostname"
 msgstr "Érvénytelen gépnév"
 
@@ -461,11 +461,11 @@ msgstr "Nem sikerült átváltani a(z) \"%s\" könyvtárra (%s)"
 msgid "Failed to execute child process (%s)"
 msgstr "Nem sikerült végrehajtani a gyermekfolyamatot (%s)"
 
-#: glib/gspawn-win32.c:590
+#: glib/gspawn-win32.c:599
 msgid "Failed to execute helper program"
 msgstr "Nem sikerült végrehajtani a súgóprogramot"
 
-#: glib/gspawn-win32.c:789
+#: glib/gspawn-win32.c:797
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -601,9 +601,9 @@ msgstr "A kulcsfájl nem csoporttal kezdődik"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "A kulcsfájl a nem támogatott \"%s\" kódolást tartalmazza"
 
-#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2164
-#: glib/gkeyfile.c:2229 glib/gkeyfile.c:2347 glib/gkeyfile.c:2415
-#: glib/gkeyfile.c:2600 glib/gkeyfile.c:2774 glib/gkeyfile.c:2831
+#: glib/gkeyfile.c:1012 glib/gkeyfile.c:1158 glib/gkeyfile.c:2159
+#: glib/gkeyfile.c:2224 glib/gkeyfile.c:2342 glib/gkeyfile.c:2410
+#: glib/gkeyfile.c:2594 glib/gkeyfile.c:2768 glib/gkeyfile.c:2825
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "A kulcsfájlból hiányzik a(z) \"%s\" csoport"
@@ -620,14 +620,14 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot \"%s\" értékkel, amelyik azonban "
 "nem UTF-8"
 
-#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1772
+#: glib/gkeyfile.c:1289 glib/gkeyfile.c:1398 glib/gkeyfile.c:1770
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot, amelynek az értéke nem "
 "értelmezhető."
 
-#: glib/gkeyfile.c:1989
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -636,28 +636,28 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban, amelynek "
 "értéke nem értelmezhető."
 
-#: glib/gkeyfile.c:2179 glib/gkeyfile.c:2362 glib/gkeyfile.c:2842
+#: glib/gkeyfile.c:2174 glib/gkeyfile.c:2357 glib/gkeyfile.c:2836
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr ""
 "A kulcsfájl nem tartalmazza a(z) \"%s\" kulcsot a(z) \"%s\" csoportban."
 
-#: glib/gkeyfile.c:3023
+#: glib/gkeyfile.c:3017
 msgid "Key file contains escape character at end of line"
 msgstr ""
 "A kulcsfájl escape-szekvenciával megadott karaktert tartalmaz a sor végén"
 
-#: glib/gkeyfile.c:3045
+#: glib/gkeyfile.c:3039
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "A kulcsfájl érvénytelen escape-szekvenciát tartalmaz (\"%s\")"
 
-#: glib/gkeyfile.c:3183
+#: glib/gkeyfile.c:3177
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "A(z) \"%s\" érték nem értelmezhető számként."
 
-#: glib/gkeyfile.c:3211
+#: glib/gkeyfile.c:3205
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "A(z) \"%s\" érték nem értelmezhető logikai értékként."

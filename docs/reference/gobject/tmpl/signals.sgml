@@ -70,9 +70,6 @@ wildcard and matches any detail argument passed in to emission.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GSignalInvocationHint ##### -->
 <para>
 The #GSignalInvocationHint structure is used to pass on additional information

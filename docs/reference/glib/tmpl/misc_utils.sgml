@@ -14,9 +14,6 @@ These are portable utility functions.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION g_get_application_name ##### -->
 <para>
 
@@ -123,22 +120,6 @@ cannot be determined, the string "Unknown" is returned.
 
 
 <!-- ##### FUNCTION g_get_user_config_dir ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
 <para>
 
 </para>

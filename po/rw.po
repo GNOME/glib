@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gnome 2.11\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-31 19:19-0700\n"
+"POT-Creation-Date: 2005-04-06 10:49-0400\n"
 "PO-Revision-Date: 2005-03-28 18:52-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -33,61 +33,61 @@ msgstr "Bivuye Inyuguti Gushyiraho Kuri ni OYA"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "OYA Gufungura Bivuye Kuri"
 
-#: glib/gconvert.c:606 glib/gconvert.c:893 glib/giochannel.c:1319
+#: glib/gconvert.c:614 glib/gconvert.c:902 glib/giochannel.c:1319
 #: glib/giochannel.c:1361 glib/giochannel.c:2203 glib/gutf8.c:911
 #: glib/gutf8.c:1361
 #, fuzzy
 msgid "Invalid byte sequence in conversion input"
 msgstr "Bayite in Ihindurangero Iyinjiza"
 
-#: glib/gconvert.c:611 glib/gconvert.c:826 glib/giochannel.c:1326
+#: glib/gconvert.c:619 glib/gconvert.c:835 glib/giochannel.c:1326
 #: glib/giochannel.c:2215
 #, fuzzy, c-format
 msgid "Error during conversion: %s"
 msgstr "Ihindurangero"
 
-#: glib/gconvert.c:629 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gconvert.c:637 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
 #: glib/gutf8.c:1357
 #, fuzzy
 msgid "Partial character sequence at end of input"
 msgstr "Inyuguti ku Impera Bya Iyinjiza"
 
-#: glib/gconvert.c:802
+#: glib/gconvert.c:811
 #, fuzzy, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "GUHINDURA Kuri"
 
-#: glib/gconvert.c:1602
+#: glib/gconvert.c:1611
 #, fuzzy, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "ni OYA ikoresha IDOSIYE Igishusho"
 
-#: glib/gconvert.c:1612
+#: glib/gconvert.c:1621
 #, fuzzy, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "IDOSIYE Gicurasi OYA Gushyiramo a"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1638
 #, fuzzy, c-format
 msgid "The URI '%s' is invalid"
 msgstr "ni Sibyo"
 
-#: glib/gconvert.c:1641
+#: glib/gconvert.c:1650
 #, fuzzy, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Izina ry'inturo: Bya ni Sibyo"
 
-#: glib/gconvert.c:1657
+#: glib/gconvert.c:1666
 #, fuzzy, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Kirimo Inyuguti"
 
-#: glib/gconvert.c:1751
+#: glib/gconvert.c:1760
 #, fuzzy, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ni OYA Inzira"
 
-#: glib/gconvert.c:1761
+#: glib/gconvert.c:1770
 #, fuzzy
 msgid "Invalid hostname"
 msgstr "Izina ry'inturo:"

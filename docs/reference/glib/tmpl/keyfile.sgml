@@ -97,9 +97,6 @@ Key and Group names are case-sensitive, for example a group called
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GKeyFile ##### -->
 <para>
 The <structname>GKeyFile</structname> struct contains only private fields

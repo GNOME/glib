@@ -30,9 +30,6 @@ pattern compilation.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GPatternSpec ##### -->
 <para>
 A <structname>GPatternSpec</structname> is the 'compiled' form of a pattern.

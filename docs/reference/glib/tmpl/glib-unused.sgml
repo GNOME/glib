@@ -247,6 +247,10 @@ i.e. just the <filename>foo</filename> in <filename>/usr/bin/foo</filename>.
 </para>
 
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+
 <!-- ##### MACRO access ##### -->
 <para>
 
@@ -627,6 +631,27 @@ in any UNIX manual.
 @entry: 
 @length: 
 @error: 
+@Returns: 
+
+<!-- ##### FUNCTION g_get_language_names ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 <!-- ##### FUNCTION g_io_channel_error_quark ##### -->

@@ -235,7 +235,8 @@ BUILT_EXTRA_DIST = \
 	gmarshal.h		\
 	gmarshal.c		\
 	stamp-gmarshal.h	\
-	gobjectalias.h
+	gobjectalias.h		\
+	gobjectaliasdef.c
 
 
 if OS_WIN32

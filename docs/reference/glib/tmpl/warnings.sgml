@@ -14,9 +14,6 @@ These functions provide support for outputting messages.
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### FUNCTION g_print ##### -->
 <para>
 Outputs a formatted message via the print handler.

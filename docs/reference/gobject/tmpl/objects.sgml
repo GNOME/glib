@@ -14,9 +14,6 @@ The base object type
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### STRUCT GObject ##### -->
 <para>
 All the fields in the <structname>GObject</structname> structure are private 

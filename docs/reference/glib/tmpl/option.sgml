@@ -124,9 +124,6 @@ main (int argc, char *argv[])
 
 </para>
 
-<!-- ##### SECTION Stability_Level ##### -->
-
-
 <!-- ##### ENUM GOptionError ##### -->
 <para>
 Error codes returned by option parsing.
