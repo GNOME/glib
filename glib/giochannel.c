@@ -547,9 +547,6 @@ g_io_channel_error_from_errno (gint en)
 #ifdef EAGAIN
   g_return_val_if_fail (en != EAGAIN, G_IO_CHANNEL_ERROR_FAILED);
 #endif
-#ifdef EINTR
-  g_return_val_if_fail (en != EINTR, G_IO_CHANNEL_ERROR_FAILED);
-#endif
 
   switch (en)
     {
@@ -568,6 +565,18 @@ g_io_channel_error_from_errno (gint en)
 #ifdef EFBIG
     case EFBIG:
       return G_IO_CHANNEL_ERROR_FBIG;
+#endif
+
+#ifdef EINTR
+    /* In general, we should catch EINTR before we get here,
+     * but close() is allowed to return EINTR by POSIX, so
+     * we need to catch it here; EINTR from close() is
+     * unrecoverable, because it's undefined whether
+     * the fd was actually closed or not, so we just return
+     * a generic error code.
+     */
+    case EINTR:
+      return G_IO_CHANNEL_ERROR_FAILED;
 #endif
 
 #ifdef EINVAL

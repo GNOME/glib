@@ -1,3 +1,9 @@
+Fri May 30 16:48:26 2003  Owen Taylor  <otaylor@redhat.com>
+ 
+ 	* glib/giochannel.c (g_io_channel_error_from_errno):
+ 	Silently return G_IO_CHANNEL_ERROR_FAILED for EINTR,
+ 	since close() can return EINTR. (#11842, Balazs Scheidler)
+ 
 Fri May 30 15:51:43 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_error_get_from_g_error): 
