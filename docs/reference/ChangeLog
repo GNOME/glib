@@ -1,3 +1,7 @@
+2003-07-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/messages.sgml: Remove the note about the message length restriction.
+
 2003-07-24  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/messages.sgml: Mention the restriction on message length.  (#118043, Martyn Russell)

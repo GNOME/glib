@@ -1,3 +1,8 @@
+2003-07-26  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gmessages.c (g_logv): Remove the 1024 char limit in the common (non-recursive)
+	case.
+
 2003-07-25  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gwin32.c: 

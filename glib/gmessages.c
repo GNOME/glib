@@ -422,7 +422,6 @@ g_logv (const gchar   *log_domain,
 	const gchar   *format,
 	va_list	       args1)
 {
-  gchar buffer[1025];
   gboolean was_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   gint i;
@@ -430,11 +429,6 @@ g_logv (const gchar   *log_domain,
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
     return;
-  
-  /* we use a stack buffer of fixed size, because we might get called
-   * recursively.
-   */
-  _g_vsnprintf (buffer, 1024, format, args1);
   
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
@@ -491,7 +485,25 @@ g_logv (const gchar   *log_domain,
 		}
 	    }
 
-	  log_func (log_domain, test_level, buffer, data);
+	  if (test_level & G_LOG_FLAG_RECURSION)
+	    {
+	      /* we use a stack buffer of fixed size, since we're likely
+	       * in an out-of-memory situation
+	       */
+	      gchar buffer[1025];
+	      gint size;
+	      size = _g_vsnprintf (buffer, 1024, format, args1);
+
+	      log_func (log_domain, test_level, buffer, data);
+	    }
+	  else
+	    {
+	      gchar *msg = g_strdup_vprintf (format, args1);
+
+	      log_func (log_domain, test_level, msg, data);
+
+	      g_free (msg);
+	    }
 
 	  if (test_level & G_LOG_FLAG_FATAL)
 	    {
