@@ -410,6 +410,24 @@ add_test1 (void)
   g_option_context_free (context);
 }
 
+void
+empty_test1 (void)
+{
+  GOptionContext *context;
+  GOptionEntry entries [] =
+    { { NULL } };
+
+  context = g_option_context_new (NULL);
+
+  g_option_context_add_main_entries (context, entries, NULL);
+  
+  g_option_context_parse (context, NULL, NULL, NULL);
+
+  g_assert (strcmp (g_get_prgname (), "<unknown>") == 0);
+  
+  g_option_context_free (context);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -433,6 +451,9 @@ main (int argc, char **argv)
   ignore_test2 ();
 
   add_test1 ();
+
+  /* Test parsing empty args */
+  empty_test1 ();
   
   return 0;
 }

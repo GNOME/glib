@@ -1056,8 +1056,11 @@ g_option_context_parse (GOptionContext   *context,
 		(*argv)[j-k] = (*argv)[j];
 	      *argc -= k;
 	    }
-	}
-      
+	}      
+    }
+  else
+    {
+      g_set_prgname ("<unknown>");
     }
 
   return TRUE;

@@ -1,3 +1,11 @@
+2004-08-30  Anders Carlsson  <andersca@gnome.org>
+
+	* glib/goption.c: (g_option_context_parse):
+	Set prgname to <unknown> if argc and argv are NULL.
+	
+	* tests/option-test.c: (empty_test1), (main):
+	Add test case for that.
+	
 Sun Aug 29 23:58:38 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/ghash.c (g_hash_table_lookup): Point to 
