@@ -193,7 +193,7 @@ endif
 
 if OS_WIN32
 # This requires a very new libtool
-export_symbols = -export-symbols $(srcdir)/glib.def
+export_symbols = -export-symbols glib.def
 
 install-libtool-import-lib:
 # 	Don't put the binary compatibility entries in the import lib!
@@ -205,7 +205,7 @@ install-libtool-import-lib:
 	  ar d .libs/libglib-2.0.dll.a $$file; \
 	done
 	$(INSTALL) .libs/libglib-2.0.dll.a $(DESTDIR)$(libdir)
-	$(INSTALL) $(srcdir)/glib.def $(DESTDIR)$(libdir)/glib-2.0.def
+	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
 
 uninstall-libtool-import-lib:
 	-rm $(DESTDIR)$(libdir)/libglib-2.0.dll.a $(DESTDIR)$(libdir)/glib-2.0.def

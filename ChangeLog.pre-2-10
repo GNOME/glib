@@ -1,3 +1,9 @@
+2005-01-06  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/Makefile.am
+	* gobject/Makefile.am: glib.def and gobject.def are generated, not
+	in $(srcdir). (#163143, J. Ali Harlow)
+
 2005-01-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: Simplify the inlining magic to make it

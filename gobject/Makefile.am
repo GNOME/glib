@@ -46,7 +46,7 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-export_symbols = -export-symbols $(srcdir)/gobject.def
+export_symbols = -export-symbols gobject.def
 
 install-libtool-import-lib:
 # 	Don't put the bug compatibility entries in the import lib!
@@ -58,7 +58,7 @@ install-libtool-import-lib:
 	  ar d .libs/libgobject-2.0.dll.a $$file; \
 	done
 	$(INSTALL) .libs/libgobject-2.0.dll.a $(DESTDIR)$(libdir)
-	$(INSTALL) $(srcdir)/gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
+	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
 
 uninstall-libtool-import-lib:
 	-rm $(DESTDIR)$(libdir)/libgobject-2.0.dll.a $(DESTDIR)$(libdir)/gobject-2.0.def
