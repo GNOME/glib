@@ -1,5 +1,7 @@
 2002-12-13  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/trio/Makefile.am (libtrio_la_LIBADD): Add -lm for pow().
+
 	* tests/string-test.c: Add a test for positional parameters in
 	g_snprintf().
 

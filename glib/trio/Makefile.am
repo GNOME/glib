@@ -2,6 +2,8 @@
 
 noinst_LTLIBRARIES = libtrio.la
 
+libtrio_la_LIBADD = -lm
+
 libtrio_la_SOURCES = 	\
 	trio.c		\
 	trionan.c	\
@@ -15,3 +17,11 @@ libtrio_la_SOURCES = 	\
 INCLUDES = -DTRIO_EXTENSION=0
 
 EXTRA_DIST = README
+
+
+
+
+
+
+
+
