@@ -1,13 +1,14 @@
 # glib simplified chinese translation
 # Copyright (C) YERA Free Software Foundation, Inc.
 # He Qiangqiang <carton@263.net>, 2001.
+# Funda Wang <fundawang@linux.net.cn>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-12 11:58-0500\n"
-"PO-Revision-Date: 2004-11-09 23:03+0800\n"
+"POT-Creation-Date: 2004-11-21 19:39+0100\n"
+"PO-Revision-Date: 2004-11-22 08:32+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -515,3 +516,84 @@ msgstr "%2$s所用的整数值“%1$s”超出范围"
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
+
+#: glib/gkeyfile.c:338
+msgid "Valid key file could not be found in data dirs"
+msgstr "无法在数据目录中找到有效的键文件"
+
+#: glib/gkeyfile.c:371
+msgid "Not a regular file"
+msgstr "不是普通文件"
+
+#: glib/gkeyfile.c:379
+msgid "File is empty"
+msgstr "文件为空"
+
+#: glib/gkeyfile.c:685
+#, c-format
+msgid ""
+"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "键文件中的行“%s”不是键-值对、组或注释"
+
+#: glib/gkeyfile.c:753
+msgid "Key file does not start with a group"
+msgstr "键文件不以组开始"
+
+#: glib/gkeyfile.c:796
+#, c-format
+msgid "Key file contains unsupported encoding '%s'"
+msgstr "键文件包含不支持的编码“%s”"
+
+#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
+#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
+#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#, c-format
+msgid "Key file does not have group '%s'"
+msgstr "键文件没有组“%s”"
+
+#: glib/gkeyfile.c:1158
+#, c-format
+msgid "Key file does not have key '%s'"
+msgstr "键文件没有键“%s”"
+
+#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#, c-format
+msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgstr "键文件包含“%s”，其值“%s”不是 UTF-8"
+
+#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#, c-format
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
+msgstr "键文件包含键“%s”，其值无法解释。"
+
+#: glib/gkeyfile.c:1976
+#, c-format
+msgid ""
+"Key file contains key '%s' in group '%s' which has value that cannot be "
+"interpreted."
+msgstr ""
+"键文件在“%2$s”中包含“%1$s”，其值无法解释。"
+
+#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#, c-format
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "键文件的组“%2$s”中不包含键“%1$s”"
+
+#: glib/gkeyfile.c:3023
+#, c-format
+msgid "Key file contains invalid escape sequence '%s'"
+msgstr "键文件中包含无效的转义序列“%s”"
+
+#: glib/gkeyfile.c:3047
+msgid "Key file contains escape character at end of line"
+msgstr "键文件在行尾含有转义字符"
+
+#: glib/gkeyfile.c:3163
+#, c-format
+msgid "Value '%s' cannot be interpreted as a number."
+msgstr "无法将值“%s”解释为数值。"
+
+#: glib/gkeyfile.c:3191
+#, c-format
+msgid "Value '%s' cannot be interpreted as a boolean."
+msgstr "无法将值“%s”解释为布尔值。"
