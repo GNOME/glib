@@ -1,3 +1,7 @@
+2003-07-24  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/messages.sgml: Mention the restriction on message length.  (#118043, Martyn Russell)
+
 2003-07-18  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/arrays_pointer.sgml: Add a note about double indirection in 

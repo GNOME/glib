@@ -6,8 +6,11 @@ versatile support for logging messages with different levels of importance.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide support for logging error messages or messages
-used for debugging.
+These functions provide support for logging error messages or messages used for debugging. 
+</para>
+
+<para>
+Note that the formatted messages must not exceed 1024 bytes. Longer messages will be truncated. 
 </para>
 
 <para>
@@ -88,7 +91,7 @@ function is called to terminate the program.
 @log_domain: the log domain, usually #G_LOG_DOMAIN.
 @log_level: the log level, either from #GLogLevelFlags or a user-defined level.
 @format: the message format. See the <function>printf()</function>
-documentation.
+documentation. 
 @Varargs: the parameters to insert into the format string.
 
 
@@ -111,11 +114,7 @@ documentation.
 A convenience function/macro to log a normal message.
 </para>
 
-@...: the parameters to insert into the format string.
-<!-- # Unused Parameters # -->
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
+@...: format string, followed by parameters to insert into the format string (as with <function>printf()</function>)
 
 
 <!-- ##### MACRO g_warning ##### -->
@@ -149,10 +148,6 @@ assertion failure.
 </para>
 
 @...: the parameters to insert into the format string.
-<!-- # Unused Parameters # -->
-@format: the message format. See the <function>printf()</function>
-documentation.
-@args...: the parameters to insert into the format string.
 
 
 <!-- ##### FUNCTION g_log_set_handler ##### -->
