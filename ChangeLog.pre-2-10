@@ -1,3 +1,8 @@
+Sun Aug  5 08:25:30 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmacros.h: Include stddef.h so that we use
+	the system's definition of NULL. (#54730)
+
 2001-08-04  Alexander Larsson   <alexl@redhat.com>
         
 	* win32-fixup.pl: 
