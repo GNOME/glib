@@ -1473,6 +1473,7 @@ gmodule/gmoduleconf.h
 gmodule/Makefile
 gthread/Makefile
 docs/Makefile
+docs/glib-config.1
 tests/Makefile
 ],[case "$CONFIG_FILES" in
 *glib-config*)chmod +x glib-config;;
