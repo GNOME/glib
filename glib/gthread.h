@@ -147,7 +147,7 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
 #define G_THREAD_UF(op, arglist)					\
     (*g_thread_functions_for_glib_use . op) arglist
-#define G_THREAD_CF(op, fail, arg) 					\
+#define G_THREAD_CF(op, fail, arg)					\
     (g_thread_supported () ? G_THREAD_UF (op, arg) : (fail))
 #define G_THREAD_ECF(op, fail, mutex, type)				\
     (g_thread_supported () ? ((type(*)(GMutex*, gulong, gchar*))	\
@@ -155,37 +155,40 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
      (mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (fail))
 
 #ifndef G_ERRORCHECK_MUTEXES
-# define g_mutex_lock(mutex)     					\
+# define g_mutex_lock(mutex)						\
     G_THREAD_CF (mutex_lock,     (void)0, (mutex))
-# define g_mutex_trylock(mutex)  					\
+# define g_mutex_trylock(mutex)						\
     G_THREAD_CF (mutex_trylock,  TRUE,    (mutex))
-# define g_mutex_unlock(mutex)  					\
+# define g_mutex_unlock(mutex)						\
     G_THREAD_CF (mutex_unlock,   (void)0, (mutex))
-# define g_cond_wait(cond, mutex) 					\
+# define g_mutex_free(mutex)						\
+    G_THREAD_CF (mutex_free,     (void)0, (mutex))
+# define g_cond_wait(cond, mutex)					\
     G_THREAD_CF (cond_wait,      (void)0, (cond, mutex))
-# define g_cond_timed_wait(cond, mutex, abs_time) 			\
+# define g_cond_timed_wait(cond, mutex, abs_time)			\
     G_THREAD_CF (cond_timed_wait, TRUE,   (cond, mutex, abs_time))
 #else /* G_ERRORCHECK_MUTEXES */
-# define g_mutex_lock(mutex)   						\
-    G_THREAD_ECF (mutex_lock,    (void)0, mutex, void)
-# define g_mutex_trylock(mutex) 					\
-    G_THREAD_ECF (mutex_trylock, TRUE,    mutex, gboolean)
-# define g_mutex_unlock(mutex)  					\
-    G_THREAD_ECF (mutex_unlock,  (void)0, mutex, void)
+# define g_mutex_lock(mutex)						\
+    G_THREAD_ECF (mutex_lock,    (void)0, (mutex), void)
+# define g_mutex_trylock(mutex)						\
+    G_THREAD_ECF (mutex_trylock, TRUE,    (mutex), gboolean)
+# define g_mutex_unlock(mutex)						\
+    G_THREAD_ECF (mutex_unlock,  (void)0, (mutex), void)
+# define g_mutex_free(mutex)						\
+    G_THREAD_ECF (mutex_free,    (void)0, (mutex), void)
 # define g_cond_wait(cond, mutex)					\
     (g_thread_supported () ? ((void(*)(GCond*, GMutex*, gulong, gchar*))\
       g_thread_functions_for_glib_use.cond_wait)			\
         (cond, mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (void) 0)
-# define g_cond_timed_wait(cond, mutex, abs_time) 			\
-    (g_thread_supported () ? 						\
+# define g_cond_timed_wait(cond, mutex, abs_time)			\
+    (g_thread_supported () ?						\
       ((gboolean(*)(GCond*, GMutex*, GTimeVal*, gulong, gchar*))	\
-        g_thread_functions_for_glib_use.cond_timed_wait) 		\
+        g_thread_functions_for_glib_use.cond_timed_wait)		\
           (cond, mutex, abs_time, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : TRUE)
 #endif /* G_ERRORCHECK_MUTEXES */
 
 #define g_thread_supported()    (g_threads_got_initialized)
 #define g_mutex_new()            G_THREAD_UF (mutex_new,      ())
-#define g_mutex_free(mutex)      G_THREAD_CF (mutex_free,     (void)0, (mutex))
 #define g_cond_new()             G_THREAD_UF (cond_new,       ())
 #define g_cond_signal(cond)      G_THREAD_CF (cond_signal,    (void)0, (cond))
 #define g_cond_broadcast(cond)   G_THREAD_CF (cond_broadcast, (void)0, (cond))

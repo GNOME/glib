@@ -1,3 +1,9 @@
+2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread-impl.c (g_mutex_free_errorcheck_impl): Fixed it for
+	real. Sorry for this mess. It looked like a real obvious fix, so I
+	didn't check. Bad boy. Added some casts to quiet the compiler.
+
 2001-01-29  Havoc Pennington  <hp@redhat.com>
 
 	* gthread-impl.c (g_mutex_free_errorcheck_impl): hack this so it

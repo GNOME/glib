@@ -1,3 +1,8 @@
+2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gthread.h (g_cond_wait): Added debug information for
+	g_mutex_free calls, if G_ERRORCHECK_MUTEXES is defined.
+
 2001-01-29  Tor Lillqvist  <tml@iki.fi>
 
 	* glibconfig.h.win32.in: Use the same GMutex structure as the

@@ -179,14 +179,19 @@ g_mutex_unlock_errorcheck_impl (GMutex *mutex,
 }
 
 static void
-g_mutex_free_errorcheck_impl (GMutex *mutex)
+g_mutex_free_errorcheck_impl (GMutex *mutex, 
+			      gulong magic, 
+			      gchar *location)
 {
   ErrorCheckInfo *info = G_MUTEX_DEBUG_INFO (mutex);
   
+  if (magic != G_MUTEX_DEBUG_MAGIC)
+    location = "unknown";
+
   if (info && info->owner != NULL)
     g_error ("Trying to free a locked mutex at '%s', "
 	     "which was previously locked at '%s'", 
-	     "FIXME", info->location);
+	     location, info->location);
 
   g_free (G_MUTEX_DEBUG_INFO (mutex));
   g_thread_functions_for_glib_use_default.mutex_free (mutex);  
@@ -259,7 +264,7 @@ g_cond_timed_wait_errorcheck_impl (GCond *cond,
 }
 
 
-/* unshadow function declaration. See glib.h */
+/* unshadow function declaration. See gthread.h */
 #undef g_thread_init
 
 void 
@@ -277,9 +282,13 @@ g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
     (gboolean (*)(GMutex *)) g_mutex_trylock_errorcheck_impl;
   errorcheck_functions.mutex_unlock = 
     (void (*)(GMutex *)) g_mutex_unlock_errorcheck_impl;
-  errorcheck_functions.mutex_free = g_mutex_free_errorcheck_impl;
-  errorcheck_functions.cond_wait = g_cond_wait_errorcheck_impl;
-  errorcheck_functions.cond_timed_wait = g_cond_timed_wait_errorcheck_impl;
+  errorcheck_functions.mutex_free = 
+    (void (*)(GMutex *)) g_mutex_free_errorcheck_impl;
+  errorcheck_functions.cond_wait = 
+    (void (*)(GCond *, GMutex *)) g_cond_wait_errorcheck_impl;
+  errorcheck_functions.cond_timed_wait = 
+    (gboolean (*)(GCond *, GMutex *, GTimeVal *)) 
+    g_cond_timed_wait_errorcheck_impl;
     
   g_thread_init (&errorcheck_functions);
 }
