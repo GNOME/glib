@@ -1,3 +1,7 @@
+Tue May 29 18:17:11 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* autogen.sh (have_libtool): Fix GNU sedism
+
 2001-05-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* tests/Makefile.am, tests/qsort-test.c: Add test case for the
