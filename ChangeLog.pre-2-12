@@ -1,3 +1,8 @@
+2004-08-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gatomic.c: Include gthreadinit.h here to see the declaration
+	for _g_atomic_thread_init().
+
 Sun Aug  1 13:19:18 2004  Manish Singh  <yosh@gimp.org>
 
 	* tests/uri-test.c: move newline printing from run_from_uri_tests()

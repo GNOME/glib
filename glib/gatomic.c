@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "glib.h"
+#include "gthreadinit.h"
 
 #if defined (__GNUC__)
 # if defined (G_ATOMIC_I486)
