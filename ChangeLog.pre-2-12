@@ -4,6 +4,7 @@ Sat May  8 23:02:26 2004  Matthias Clasen  <maclas@gmx.de>
 	
 	* glib/gutils.h: Remove vestigial g_get_codeset().
 	* glib/gutils.c (g_get_codeset): Call g_get_charset().
+	(#137703, Owen Taylor)
 
 2004-05-06  Matthias Clasen  <mclasen@redhat.com>
 
