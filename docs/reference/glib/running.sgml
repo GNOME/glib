@@ -23,7 +23,7 @@ GLib inspects a few of environment variables in addition to standard
 variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>. 
 </para>
 
-<formalpara>
+<formalpara id="G_FILENAME_ENCODING">
   <title><envar>G_FILENAME_ENCODING</envar></title>
 
   <para>
@@ -34,7 +34,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara>
 
-<formalpara>
+<formalpara id="G_BROKEN_FILENAMES">
   <title><envar>G_BROKEN_FILENAMES</envar></title>
 
   <para>
