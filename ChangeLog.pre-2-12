@@ -1,5 +1,8 @@
 2005-02-23  Matthias Clasen  <mclasen@redhat.com>
 
+	* configure.in: Don't forget to set G_THREAD_LIBS_FOR_GTHREAD 
+	on non-linux platforms.  (#168177, Michael Banck)
+
 	* tests/keyfile-test.c (test_locale_string): Set LANGUAGE 
 	instead of LC_ALL to shield against LANGUAGE being set in 
 	the environment.  (#168311, Suren A. Chilingaryan)
