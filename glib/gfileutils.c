@@ -717,13 +717,11 @@ get_contents_win32 (const gchar *filename,
 {
   FILE *f;
   gboolean retval;
-  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   gchar *display_filename = g_filename_display_name (filename);
   int save_errno;
   
-  f = _wfopen (wfilename, L"rb");
+  f = g_fopen (filename, "rb");
   save_errno = errno;
-  g_free (wfilename);
 
   if (f == NULL)
     {
