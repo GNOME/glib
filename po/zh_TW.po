@@ -1,0 +1,369 @@
+# Traditional chinese translation for glib20.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Abel Cheung <maddog@linux.org.hk>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib 1.3.7\n"
+"POT-Creation-Date: 2001-08-21 12:56+0800\n"
+"PO-Revision-Date: 2001-08-03 07:31+0800\n"
+"Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
+"Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8 \n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glib/gconvert.c:143
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "不支援將字元集 `%s' 轉換到 `%s'"
+
+#: glib/gconvert.c:147
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "無法開啟由 `%s' 至 `%s' 的轉換器：%s"
+
+#: glib/gconvert.c:251 glib/gutf8.c:821 glib/gutf8.c:1267
+msgid "Invalid byte sequence in conversion input"
+msgstr "轉換輸入時遇到不正確的位元組次序"
+
+#: glib/gconvert.c:256 glib/gconvert.c:469
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "轉換時發生錯誤：%s"
+
+#: glib/gconvert.c:276 glib/gutf8.c:817 glib/gutf8.c:1017 glib/gutf8.c:1158
+#: glib/gutf8.c:1263
+msgid "Partial character sequence at end of input"
+msgstr "輸入完結時有未完的字元次序"
+
+#: glib/gconvert.c:444
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr ""
+
+#: glib/gfileutils.c:308
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "當讀入檔案 '%s' 時發生錯誤：%s"
+
+#: glib/gfileutils.c:366
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "無法讀入檔案 '%s'：%s"
+
+#: glib/gfileutils.c:405 glib/gfileutils.c:473
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "無法開啟檔案 '%s'：%s"
+
+#: glib/gfileutils.c:419
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "無法取得檔案 '%s' 的屬性：fstat() 失敗：%s"
+
+#: glib/gfileutils.c:445
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "無法開啟檔案 '%s'：fdopen() 失敗：%s"
+
+#: glib/gfileutils.c:654
+#, c-format
+msgid "Template '%s' illegal, should not contain a '%s'"
+msgstr ""
+
+#: glib/gfileutils.c:666
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr ""
+
+#: glib/gfileutils.c:687
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "無法建立檔案 '%s'：%s"
+
+#: glib/gmarkup.c:216
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "在第 %d 行第 %d 個字元發生錯誤：%s"
+
+#: glib/gmarkup.c:300
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "在第 %d 行發生錯誤：%s"
+
+#: glib/gmarkup.c:379
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr ""
+
+#: glib/gmarkup.c:389
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:425
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr ""
+
+#: glib/gmarkup.c:469
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr ""
+
+#: glib/gmarkup.c:479
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:525
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+
+#: glib/gmarkup.c:550
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr ""
+
+#: glib/gmarkup.c:567
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr ""
+
+#: glib/gmarkup.c:577
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+
+#: glib/gmarkup.c:827 glib/gmarkup.c:855 glib/gmarkup.c:886
+msgid "Invalid UTF-8 encoded text"
+msgstr "不正確的 UTF-8 編碼文字"
+
+#: glib/gmarkup.c:922
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "文件開始必須為一元素（例如 <book>）"
+
+#: glib/gmarkup.c:960
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr ""
+
+#: glib/gmarkup.c:1023
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr "不尋常的字元 '%s'，應為令元素 '%s' 的開始標籤終結的 '>' 字元"
+
+#: glib/gmarkup.c:1110
+#, c-format
+msgid ""
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1151
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+
+#: glib/gmarkup.c:1224
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1351
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr ""
+
+#: glib/gmarkup.c:1388
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr ""
+
+#: glib/gmarkup.c:1397
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr ""
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+
+#: glib/gmarkup.c:1541
+msgid "Document was empty or contained only whitespace"
+msgstr "文件完全空白或只含有空白字元"
+
+#: glib/gmarkup.c:1555
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr ""
+
+#: glib/gmarkup.c:1563 glib/gmarkup.c:1606
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+
+#: glib/gmarkup.c:1571
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+
+#: glib/gmarkup.c:1577
+msgid "Document ended unexpectedly inside an element name"
+msgstr "文件在元素的名稱未完結時突然終止"
+
+#: glib/gmarkup.c:1582
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "文件在屬性名稱未完結時突然終止"
+
+#: glib/gmarkup.c:1587
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "文件在元素的開啟標籤內突然終止"
+
+#: glib/gmarkup.c:1593
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+
+#: glib/gmarkup.c:1599
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "文件在屬性值未完結時突然終止"
+
+#: glib/gmarkup.c:1614
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "文件在元素 '%s' 的關閉標籤內突然終止"
+
+#: glib/gmarkup.c:1620
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "文件在註釋或處理指示未完結時突然終止"
+
+#: glib/gshell.c:69
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr ""
+
+#: glib/gshell.c:159
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr ""
+
+#: glib/gshell.c:526
+#, c-format
+msgid "Text ended just after a '' character. (The text was '%s')"
+msgstr ""
+
+#: glib/gshell.c:533
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr ""
+
+#: glib/gshell.c:545
+msgid "Text was empty (or contained only whitespace)"
+msgstr "文字是空白的（或只含有空白字元）"
+
+#: glib/gspawn-win32.c:215
+msgid "Failed to read data from child process"
+msgstr "無法由副程序讀入資料"
+
+#: glib/gspawn-win32.c:364
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "當 g_io_channel_win32_poll() 由副程序讀入資料時發生未預期的錯誤"
+
+#: glib/gspawn-win32.c:840 glib/gspawn.c:907
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "無法由副管道讀入資料（%s）"
+
+#: glib/gspawn-win32.c:929 glib/gspawn.c:1112
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "無法進入目錄 '%s'（%s）"
+
+#: glib/gspawn-win32.c:938 glib/gspawn.c:1122
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "無法執行副程序（%s）"
+
+#: glib/gspawn-win32.c:979 glib/gspawn.c:1219
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "無法建立管道來和副程序溝通（%s）"
+
+#: glib/gspawn.c:159
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "無法由副程序讀入資料（%s）"
+
+#: glib/gspawn.c:290
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "當 select() 由副程序讀入資料時發生未預期的錯誤（%s）"
+
+#: glib/gspawn.c:373
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "waitpid() 時發生未預期的錯誤（%s）"
+
+#: glib/gspawn.c:972
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "無法衍生（%s）"
+
+#: glib/gspawn.c:1131
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "無法重新導向副程序的輸出或輸入（%s）"
+
+#: glib/gspawn.c:1140
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "無法衍生副程序（%s）"
+
+#: glib/gspawn.c:1148
+msgid "Unknown error executing child process"
+msgstr "執行副程序時發生不明的錯誤"
+
+#: glib/gspawn.c:1169
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr ""
+
+#: glib/gutf8.c:896
+msgid "Character out of range for UTF-8"
+msgstr "字元不在 UTF-8 範圍之內"
+
+#: glib/gutf8.c:985 glib/gutf8.c:994 glib/gutf8.c:1126 glib/gutf8.c:1135
+#: glib/gutf8.c:1277 glib/gutf8.c:1373
+msgid "Invalid sequence in conversion input"
+msgstr "轉換輸入時遇到不正確的次序"
+
+#: glib/gutf8.c:1288 glib/gutf8.c:1384
+msgid "Character out of range for UTF-16"
+msgstr "字元不在 UTF-16 範圍之內"
