@@ -1,3 +1,14 @@
+Wed Jul 26 05:03:24 2000  Tim Janik  <timj@gtk.org>
+
+	* acglib.m4 (GLIB_SIZEOF): include <stdlib.h> and <stddef.h> if
+	STDC_HEADERS is defined.
+
+	* glib.h:
+	* glibconfig.h: define gsize and gssize in terms of GLIB_SIZEOF_SIZE_T
+
+	* glib.h (g_return_if_reached): applied darin's fix for copy'n
+	paste error in the macro implementation.
+
 Wed Jul 26 00:46:03 2000  Tim Janik  <timj@gtk.org>
 
 	* glib.h: applied patch from Darin Adler <darin@eazel.com> which

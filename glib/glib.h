@@ -55,6 +55,7 @@
  *  gint16, guint16
  *  gint32, guint32
  *  gint64, guint64
+ *  gssize, gsize
  *
  * It defines the G_BYTE_ORDER symbol to one of G_*_ENDIAN (see later in
  * this file). 
@@ -462,7 +463,7 @@ extern "C" {
 #define g_return_if_reached()		G_STMT_START{			\
      g_log (G_LOG_DOMAIN,						\
 	    G_LOG_LEVEL_CRITICAL,					\
-	    "file %s: line %d (%s): assertion `%s' failed",		\
+	    "file %s: line %d (%s): should not be reached",		\
 	    __FILE__,							\
 	    __LINE__,							\
 	    __PRETTY_FUNCTION__);					\
@@ -506,7 +507,7 @@ extern "C" {
 #define g_return_if_reached()		G_STMT_START{		\
      g_log (G_LOG_DOMAIN,					\
 	    G_LOG_LEVEL_CRITICAL,				\
-	    "file %s: line %d: assertion `%s' failed",		\
+	    "file %s: line %d: should not be reached",		\
 	    __FILE__,						\
 	    __LINE__);						\
      return;				}G_STMT_END
@@ -568,8 +569,6 @@ typedef void* gpointer;
 typedef const void *gconstpointer;
 
 
-typedef gint32	gssize;
-typedef guint32 gsize;
 typedef guint32 GQuark;
 typedef gint32	GTime;
 

@@ -337,7 +337,6 @@ AC_SUBST(STRIP_END)
 size_includes=["
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 "]
@@ -1191,9 +1190,23 @@ ${glib_extension}typedef unsigned $gint64 guint64;
 #define G_GINT64_FORMAT $gint64_format
 #define G_GUINT64_FORMAT $guint64_format
 #define G_GINT64_CONSTANT(val)	$gint64_constant
+
 _______EOF
 	fi
 
+	case x$glib_size_t in
+        x2) echo "typedef gint16  gssize;" >> $outfile
+            echo "typedef guint16 gsize;"  >> $outfile
+            ;;
+        x4) echo "typedef gint32  gssize;" >> $outfile
+            echo "typedef guint32 gsize;"  >> $outfile
+            ;;
+        x8) echo "typedef gint64  gssize;" >> $outfile
+            echo "typedef guint64 gsize;"  >> $outfile
+            ;;
+ 	*)  echo "#error size of size_t is unknown" >> $outfile
+            ;;
+        esac
 
 	if test -z "$glib_unknown_void_p"; then
 	  cat >>$outfile <<_______EOF
@@ -1410,6 +1423,7 @@ $ac_cv_sizeof_long_long)
   gint64_constant='(G_GNUC_EXTENSION (val##LL))'
   ;;
 esac
+glib_size_t=$glib_cv_sizeof_size_t
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`
 glongbits=`expr $ac_cv_sizeof_long \* 8`
