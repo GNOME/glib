@@ -1021,9 +1021,6 @@ AC_ARG_WITH(threads, [  --with-threads=[none/posix/dce/solaris/win32] specify a 
 if test "x$enable_threads" = "xno"; then
         want_threads=no
 fi
-if test "x$want_threads" = "xnone"; then
-	want_threads=no
-fi
 
 dnl error and warning message
 dnl *************************
@@ -1065,7 +1062,10 @@ POSIX_NO_PRIORITIES="I can not find the minimal and maximal priorities for
 dnl determination of thread implementation
 dnl ***************************************
 
-have_threads=none
+# have_threads=no   means no thread support
+# have_threads=none means no default thread implementation
+
+have_threads=no
 if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
        	case $host in
                	*-*-solaris*)
@@ -1080,12 +1080,12 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
 	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
 	glib_save_CPPFLAGS="$CPPFLAGS"
 	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
-        if test "x$have_threads" = xnone; then
+        if test "x$have_threads" = xno; then
                 AC_TRY_COMPILE([#include <pthread.h>],
 			[pthread_attr_t attr; pthread_attr_init(&attr);],
 			have_threads=posix)
         fi
-        if test "x$have_threads" = xnone; then
+        if test "x$have_threads" = xno; then
                 AC_TRY_COMPILE([#include <pthread.h>],
 			[pthread_attr_t attr; pthread_attr_create(&attr);],
 			have_threads=posix)
@@ -1099,10 +1099,13 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xwin32; then
 		;;
 	esac
 fi
+if test "x$want_threads" = xnone; then
+	have_threads=none
+fi
 
 AC_MSG_CHECKING(for thread implementation)
 
-if test "x$have_threads" = xnone && test "x$want_threads" != xno; then
+if test "x$have_threads" = xno && test "x$want_threads" != xno; then
 	AC_MSG_RESULT(none available)
         AC_MSG_WARN($THREAD_NO_IMPLEMENTATION)
 else
@@ -1117,7 +1120,7 @@ G_THREAD_LIBS=
 G_THREAD_LIBS_EXTRA=
 G_THREAD_CFLAGS=
 
-if test x"$have_threads" != xnone; then
+if test x"$have_threads" != xno; then
 
     G_THREAD_CFLAGS="-D_REENTRANT" # good default guess
 
@@ -1305,7 +1308,7 @@ AC_MSG_RESULT($G_THREAD_LIBS)
 dnl check for mt safe function variants and some posix functions
 dnl ************************************************************
 
-if test x"$have_threads" != xnone; then
+if test x"$have_threads" != xno; then
 	glib_save_LIBS="$LIBS"
 	# we are not doing the following for now, as this might require glib 
 	# to always be linked with the thread libs on some platforms. 
@@ -1425,7 +1428,7 @@ if test x"$have_threads" != xnone; then
 	elif test x"$have_threads" = xwin32; then
 		# It's a pointer to a private struct
 		GLIB_SIZEOF(,struct _GThreadData *, system_thread)
-	else # solaris threads
+	elif test x"$have_threads" = xsolaris; then 
 		GLIB_SIZEOF([#include <thread.h>], thread_t, system_thread)
 	fi
 
@@ -1439,10 +1442,6 @@ if test x"$have_threads" != xnone; then
 	if test "$ac_cv_func_localtime_r" != "yes"; then
 		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
 	fi
-else 
-	# If no thread implementation exists, we will provide enough
-	# space for a pointer
-	GLIB_SIZEOF(, void*, system_thread)
 fi	
 
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
@@ -2102,7 +2101,7 @@ esac
 g_have_eilseq=$have_eilseq
 
 case x$have_threads in
-xnone)	g_enable_threads_def="#undef";;
+xno)	g_enable_threads_def="#undef";;
 *)	g_enable_threads_def="#define";;
 esac
 
@@ -2110,7 +2109,11 @@ g_threads_impl_def=$g_threads_impl
 
 g_mutex_has_default="$mutex_has_default"
 g_mutex_sizeof="$glib_cv_sizeof_gmutex"
-g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
+if test x"$glib_cv_sizeof_system_thread" != x; then
+  g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
+else
+  g_system_thread_sizeof="$ac_cv_sizeof_void_p"
+fi
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 g_module_suffix="$glib_gmodule_suffix"

@@ -1,5 +1,14 @@
 2001-10-31  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
+	* configure.in: Make --with-threads=none mean, that we want thread
+	support, but no default thread implementation. This also was the
+	original intention, but disapeared around 1998... So it doesn't
+	seem to be the most requested feature, but we went far to make it
+	possible in the code, so I resurrected this feature.
+
+	* INSTALL.in: Describe the --enable-gc-friendly, --disable-threads
+	and --with-threads options of configure.
+
 	* glib/gmain.c (g_main_context_acquire, g_main_context_release,
 	g_main_context_wait): Use the right conditional (G_THREADS_ENABLED
 	instead of G_THREAD_ENABLED). Also remove wrong
