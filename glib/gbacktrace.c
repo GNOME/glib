@@ -38,6 +38,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "glib.h"
+#include "gprintfint.h"
+
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
@@ -98,19 +100,19 @@ g_on_error_query (const gchar *prg_name)
  retry:
   
   if (prg_name)
-    fprintf (stdout,
-	     "%s (pid:%u): %s%s%s: ",
-	     prg_name,
-	     (guint) getpid (),
-	     query1,
-	     query2,
-	     query3);
+    _g_fprintf (stdout,
+		"%s (pid:%u): %s%s%s: ",
+		prg_name,
+		(guint) getpid (),
+		query1,
+		query2,
+		query3);
   else
-    fprintf (stdout,
-	     "(process:%u): %s%s: ",
-	     (guint) getpid (),
-	     query1,
-	     query3);
+    _g_fprintf (stdout,
+		"(process:%u): %s%s: ",
+		(guint) getpid (),
+		query1,
+		query3);
   fflush (stdout);
   
   if (isatty(0) && isatty(1))
@@ -163,7 +165,7 @@ g_on_error_stack_trace (const gchar *prg_name)
   if (!prg_name)
     return;
 
-  sprintf (buf, "%u", (guint) getpid ());
+  _g_sprintf (buf, "%u", (guint) getpid ());
 
   args[1] = (gchar*) prg_name;
   args[2] = buf;
@@ -276,7 +278,7 @@ stack_trace (char **args)
                   if ((c == '\n') || (c == '\r'))
                     {
                       buffer[index] = 0;
-                      fprintf (stdout, "%s", buffer);
+                      _g_fprintf (stdout, "%s", buffer);
                       state = 0;
                       index = 0;
                     }

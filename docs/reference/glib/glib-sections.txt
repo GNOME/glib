@@ -896,6 +896,12 @@ g_strlcat
 <SUBSECTION>
 g_strdup_printf
 g_strdup_vprintf
+g_printf
+g_vprintf
+g_fprintf
+g_vfprintf
+g_sprintf
+g_vsprintf
 g_snprintf
 g_vsnprintf
 g_printf_string_upper_bound

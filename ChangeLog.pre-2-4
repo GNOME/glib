@@ -1,3 +1,41 @@
+2002-11-21  Matthias Clasen  <maclas@gmx.de>
+
+	Include a printf implementation supporting C99 snprintf and SUS
+	positional parameters:  (#79488)
+	
+	* glib/gstrfuncs.c:
+	* glib/gspawn-win32.c:
+	* glib/gscanner.c:
+	* glib/gconvert.c: 
+	* glib/gbacktrace.c: Use _g_printf wrappers. 
+
+	* glib/gutils.c (g_vsnprintf): Simplify, since we can assume C99
+	snprintf semantics now.
+
+	* glib/gmessages.c (printf_string_upper_bound): No longer needed,
+	since we can assume C99 snprintf semantics now.
+	(g_logv): Simplify.
+	
+	* acinclude.m4 (AC_FUNC_PRINTF_UNIX98): New macro to check wether
+	printf supports SUS positional parameters.
+
+	* configure.in: New option --enable-included-printf to force
+	compilation of trio; otherwise trio is compiled if the system
+	printf misses either C99 snprintf semantics of SUS positional 
+	parameters.
+
+	* glib/Makefile.am (SUBDIRS): Conditionally compile trio.
+	(libglib_2_0_la_SOURCES): Add gprintf.c and gprintfint.h.
+	(glibsubinclude_HEADERS): Add gprintf.h.
+
+	* glib/gprintfint.h: New private wrapping either system printf
+	or trio printf variants in _g_printf wrappers for use inside glib.
+
+	* glib/gprintf.h: New public header declaring g_printf variants.
+	* glib/gprintf.c: Corresponding implementations.
+
+	* glib/trio/*: New directory, containing the trio-1.9 sources. 
+
 2002-11-20  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gmessages.h (g_return_if_fail): 

@@ -712,6 +712,32 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 AC_CHECK_FUNCS(lstat strerror strsignal memmove mkstemp vsnprintf stpcpy strcasecmp strncasecmp poll getcwd nanosleep vasprintf unsetenv getc_unlocked)
 
 AC_FUNC_VSNPRINTF_C99
+AC_FUNC_PRINTF_UNIX98
+
+#
+# Check whether to use trio printf
+#
+
+AC_ARG_ENABLE(included-printf, [  --enable-included-printf    use included printf [default=auto]], enable_trio="$enableval")
+
+if test "$enable_trio" != "no" ; then
+  if test "$ac_cv_func_vsnprintf_c99" != "yes" ; then
+    enable_trio = yes
+  fi
+  if test "$ac_cv_func_printf_unix98" != "yes" ; then
+    enable_trio = yes
+  fi
+fi
+
+AM_CONDITIONAL(HAVE_GOOD_PRINTF, test "$enable_trio" != "yes")
+if test "$enable_trio" != "yes" ; then 
+  AC_DEFINE(HAVE_GOOD_PRINTF,1,[define to use system printf])
+  AC_DEFINE(HAVE_VASPRINTF,1)
+  AC_DEFINE(HAVE_C99_VSNPRINTF,1)
+  AC_DEFINE(HAVE_UNIX98_PRINTF,1)
+else
+  AC_DEFINE(HAVE_GOOD_PRINTF,0)
+fi
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.
 # The check is borrowed from the PERL Configure script.
@@ -2355,6 +2381,7 @@ build/win32/Makefile
 build/win32/dirent/Makefile
 glib/Makefile
 glib/libcharset/Makefile
+glib/trio/Makefile
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile

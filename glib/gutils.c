@@ -53,6 +53,7 @@
 #define	G_IMPLEMENT_INLINES 1
 #define	__G_UTILS_C__
 #include "glib.h"
+#include "gprintfint.h"
 
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
@@ -338,54 +339,6 @@ g_find_program_in_path (const gchar *program)
 #endif
 
   return NULL;
-}
-
-gint
-g_snprintf (gchar	*str,
-	    gulong	 n,
-	    gchar const *fmt,
-	    ...)
-{
-  va_list args;
-  gint retval;
-
-  va_start (args, fmt);
-  retval = g_vsnprintf (str, n, fmt, args);
-  va_end (args);
-  
-  return retval;
-}
-
-gint
-g_vsnprintf (gchar	 *str,
-	     gulong	  n,
-	     gchar const *fmt,
-	     va_list      args)
-{
-#ifdef	HAVE_VSNPRINTF_C99
-  g_return_val_if_fail (n == 0 || str != NULL, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
-
-  return vsnprintf (str, n, fmt, args);
-#else	/* !HAVE_VSNPRINTF_C99 */
-  gchar *printed;
-  gint retval;
-
-  g_return_val_if_fail (n == 0 || str != NULL, 0);
-  g_return_val_if_fail (fmt != NULL, 0);
-
-  printed = g_strdup_vprintf (fmt, args);
-  retval = strlen (printed);
-  if (n > 0)
-    {
-      strncpy (str, printed, n - 1);
-      str[n-1] = '\0';
-    }
-
-  g_free (printed);
-  
-  return retval;
-#endif /* !HAVE_VSNPRINTF_C99 */
 }
 
 guint	     

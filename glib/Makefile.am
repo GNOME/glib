@@ -1,6 +1,13 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS=libcharset
+if HAVE_GOOD_PRINTF
+else
+TRIO_SUBDIR = trio
+endif 
+
+SUBDIRS = libcharset $(TRIO_SUBDIR)
+
+DIST_SUBDIRS = libcharset trio
 
 INCLUDES = -I$(top_srcdir) -DG_LOG_DOMAIN=\"GLib\" \
 	@GLIB_DEBUG_FLAGS@ -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
@@ -82,7 +89,9 @@ libglib_2_0_la_SOURCES = 	\
 	gunidecomp.h		\
 	gunidecomp.c		\
 	gutils.c		\
-	gdebug.h
+	gdebug.h		\
+	gprintf.c		\
+	gprintfint.h
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
@@ -140,7 +149,8 @@ glibsubinclude_HEADERS =   \
 	gtypes.h	\
 	gunicode.h	\
 	gutils.h	\
-	gwin32.h
+	gwin32.h	\
+	gprintf.h
 
 install-data-local: install-ms-lib install-libtool-import-lib
 	@if test -f $(glibincludedir)/glist.h ; then					\

@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #include "glib.h"
+#include "gprintfint.h"
 
 #ifdef G_PLATFORM_WIN32
 #define STRICT
@@ -338,7 +339,7 @@ open_converter (const gchar *to_codeset,
   
   /* create our key */
   key = g_alloca (strlen (from_codeset) + strlen (to_codeset) + 2);
-  sprintf (key, "%s:%s", from_codeset, to_codeset);
+  _g_sprintf (key, "%s:%s", from_codeset, to_codeset);
   
   G_LOCK (iconv_cache_lock);
   

@@ -45,6 +45,7 @@
 #include <signal.h>
 #endif
 #include "glib.h"
+#include "gprintfint.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -183,7 +184,7 @@ g_strdup_vprintf (const gchar *format,
 {
   gchar *buffer;
 #ifdef HAVE_VASPRINTF
-  if (vasprintf (&buffer, format, args1) < 0)
+  if (_g_vasprintf (&buffer, format, args1) < 0)
     buffer = NULL;
   else if (!g_mem_is_system_malloc ()) 
     {
@@ -198,7 +199,7 @@ g_strdup_vprintf (const gchar *format,
 
   buffer = g_new (gchar, g_printf_string_upper_bound (format, args1));
 
-  vsprintf (buffer, format, args2);
+  _g_vsprintf (buffer, format, args2);
   va_end (args2);
 #endif
   return buffer;
@@ -544,7 +545,7 @@ g_ascii_formatd (gchar       *buffer,
     return NULL;
 
       
-  g_snprintf (buffer, buf_len, format, d);
+  _g_snprintf (buffer, buf_len, format, d);
 
   locale_data = localeconv ();
   decimal_point = locale_data->decimal_point;
@@ -1187,7 +1188,7 @@ g_strerror (gint errnum)
       g_static_private_set (&msg_private, msg, g_free);
     }
 
-  sprintf (msg, "unknown error (%d)", errnum);
+  _g_sprintf (msg, "unknown error (%d)", errnum);
 
   return msg;
 }
@@ -1336,7 +1337,7 @@ extern const char *strsignal(int);
       g_static_private_set (&msg_private, msg, g_free);
     }
 
-  sprintf (msg, "unknown signal (%d)", signum);
+  _g_sprintf (msg, "unknown signal (%d)", signum);
   
   return msg;
 }

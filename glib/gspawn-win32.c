@@ -40,6 +40,7 @@
 #include <config.h>
 
 #include "glib.h"
+#include "gprintfint.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -555,12 +556,12 @@ do_spawn (gboolean              dont_wait,
   new_argv = g_new (gchar *, argc + 1 + ARG_COUNT);
 
   new_argv[0] = "gspawn-win32-helper";
-  sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_fd);
+  _g_sprintf (args[ARG_CHILD_ERR_REPORT], "%d", child_err_report_fd);
   new_argv[ARG_CHILD_ERR_REPORT] = args[ARG_CHILD_ERR_REPORT];
 
   if (stdin_fd >= 0)
     {
-      sprintf (args[ARG_STDIN], "%d", stdin_fd);
+      _g_sprintf (args[ARG_STDIN], "%d", stdin_fd);
       new_argv[ARG_STDIN] = args[ARG_STDIN];
     }
   else if (child_inherits_stdin)
@@ -576,7 +577,7 @@ do_spawn (gboolean              dont_wait,
 
   if (stdout_fd >= 0)
     {
-      sprintf (args[ARG_STDOUT], "%d", stdout_fd);
+      _g_sprintf (args[ARG_STDOUT], "%d", stdout_fd);
       new_argv[ARG_STDOUT] = args[ARG_STDOUT];
     }
   else if (stdout_to_null)
@@ -590,7 +591,7 @@ do_spawn (gboolean              dont_wait,
 
   if (stderr_fd >= 0)
     {
-      sprintf (args[ARG_STDERR], "%d", stderr_fd);
+      _g_sprintf (args[ARG_STDERR], "%d", stderr_fd);
       new_argv[ARG_STDERR] = args[ARG_STDERR];
     }
   else if (stderr_to_null)

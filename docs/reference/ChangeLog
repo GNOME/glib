@@ -1,3 +1,11 @@
+2002-11-21  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/tmpl/string_utils.sgml: Add note on including gprintf.h,
+	move some docs inline.
+
+	* glib/glib-sections.txt: Add g_printf, g_vprintf, g_fprintf,
+	g_vfprintf, g_sprintf, g_vsprintf.
+
 2002-11-20  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/macros_misc.sgml: Document G_LIKELY, G_UNLIKELY.
