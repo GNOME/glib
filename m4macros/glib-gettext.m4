@@ -89,7 +89,7 @@ AC_DEFUN(AM_GLIB_WITH_NLS,
 
       AC_CHECK_HEADER(libintl.h,
         [AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
-	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgWettext ("","")],
+	  [AC_TRY_LINK([#include <libintl.h>], [return (int) dgettext ("","")],
 	    gt_cv_func_dgettext_libc=yes, gt_cv_func_dgettext_libc=no)])
 
           gt_cv_func_dgettext_libintl="no"
