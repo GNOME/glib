@@ -1,3 +1,7 @@
+2001-10-04  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Avoid 'test -a'.
+
 2001-10-05  Matthias Clasen  <matthiasc@poet.de>
 
 	* glib/gwin32.c: Documentation update.
@@ -2056,12 +2060,12 @@ Mon Mar 26 13:34:50 2001  Owen Taylor  <otaylor@redhat.com>
 
 	[ Patch from DindinX  <David.Odin@bigfoot.com>, added docs ]
  
- 	* gstrfuncs.c, gstrfuncs.h: Add g_stpcpy () for platform that don't
- 	have stpcpy ().
- 	* gstrfuncs.c (g_strjoin, g_strjoinv and g_strconcat): use
- 	g_stpcpy () so these functions run much faster.
- 	* config.h.win32.in, glib.def: add reference to g_stpcpy ()
- 	* configure.in: Add a test for the stpcpy () function.
+	* gstrfuncs.c, gstrfuncs.h: Add g_stpcpy () for platform that
+	don't have stpcpy ().
+	* gstrfuncs.c (g_strjoin, g_strjoinv, g_strconcat): 
+	use g_stpcpy () so these functions run much faster.
+	* config.h.win32.in, glib.def: add reference to g_stpcpy ()
+	* configure.in: Add a test for the stpcpy () function.
  
 2001-03-20  Havoc Pennington  <hp@redhat.com>
 

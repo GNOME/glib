@@ -768,7 +768,7 @@ if test -z "$G_MODULE_IMPL"; then
 		      [])
 fi
 dnl *** load_image (BeOS)
-if test -z "$G_MODULE_IMPL" -a "x$glib_native_beos" = "xyes"; then
+if test -z "$G_MODULE_IMPL" && test "x$glib_native_beos" = "xyes"; then
   AC_CHECK_LIB(root, load_image,
       [G_MODULE_LIBS="-lbe -lroot -lglib"
       G_MODULE_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
