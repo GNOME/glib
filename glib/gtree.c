@@ -35,10 +35,9 @@
 #include "glib.h"
 
 
-typedef struct _GRealTree  GRealTree;
 typedef struct _GTreeNode  GTreeNode;
 
-struct _GRealTree
+struct _GTree
 {
   GTreeNode *root;
   GCompareDataFunc key_compare;
@@ -235,18 +234,18 @@ g_tree_new_full (GCompareDataFunc key_compare_func,
                  GDestroyNotify   key_destroy_func,
  		 GDestroyNotify   value_destroy_func)
 {
-  GRealTree *rtree;
+  GTree *tree;
   
   g_return_val_if_fail (key_compare_func != NULL, NULL);
   
-  rtree = g_new (GRealTree, 1);
-  rtree->root               = NULL;
-  rtree->key_compare        = key_compare_func;
-  rtree->key_destroy_func   = key_destroy_func;
-  rtree->value_destroy_func = value_destroy_func;
-  rtree->key_compare_data   = key_compare_data;
+  tree = g_new (GTree, 1);
+  tree->root               = NULL;
+  tree->key_compare        = key_compare_func;
+  tree->key_destroy_func   = key_destroy_func;
+  tree->value_destroy_func = value_destroy_func;
+  tree->key_compare_data   = key_compare_data;
   
-  return (GTree*) rtree;
+  return tree;
 }
 
 /**
@@ -261,17 +260,13 @@ g_tree_new_full (GCompareDataFunc key_compare_func,
 void
 g_tree_destroy (GTree *tree)
 {
-  GRealTree *rtree;
-
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
+  g_tree_node_destroy (tree->root,
+                       tree->key_destroy_func,
+ 		       tree->value_destroy_func);
 
-  g_tree_node_destroy (rtree->root,
-                       rtree->key_destroy_func,
- 		       rtree->value_destroy_func);
-
-  g_free (rtree);
+  g_free (tree);
 }
 
 /**
@@ -294,18 +289,15 @@ g_tree_insert (GTree    *tree,
 	       gpointer  key,
 	       gpointer  value)
 {
-  GRealTree *rtree;
   gboolean   inserted;
 
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
-
   inserted = FALSE;
-  rtree->root = g_tree_node_insert (tree,
-                                    rtree->root,
-				    key, value, 
-				    FALSE, &inserted);
+  tree->root = g_tree_node_insert (tree,
+                                   tree->root,
+				   key, value, 
+				   FALSE, &inserted);
 }
 
 /**
@@ -329,18 +321,15 @@ g_tree_replace (GTree    *tree,
 		gpointer  key,
 		gpointer  value)
 {
-  GRealTree *rtree;
   gboolean   inserted;
 
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
-
   inserted = FALSE;
-  rtree->root = g_tree_node_insert (tree,
-                                    rtree->root,
-				    key, value, 
-				    TRUE, &inserted);
+  tree->root = g_tree_node_insert (tree,
+                                   tree->root,
+				   key, value, 
+				   TRUE, &inserted);
 }
 
 /**
@@ -358,13 +347,9 @@ void
 g_tree_remove (GTree         *tree,
 	       gconstpointer  key)
 {
-  GRealTree *rtree;
-
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
-
-  rtree->root = g_tree_node_remove (tree, rtree->root, key, TRUE);
+  tree->root = g_tree_node_remove (tree, tree->root, key, TRUE);
 }
 
 /**
@@ -379,13 +364,9 @@ void
 g_tree_steal (GTree         *tree,
               gconstpointer  key)
 {
-  GRealTree *rtree;
-
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
-
-  rtree->root = g_tree_node_remove (tree, rtree->root, key, FALSE);
+  tree->root = g_tree_node_remove (tree, tree->root, key, FALSE);
 }
 
 /**
@@ -403,15 +384,12 @@ gpointer
 g_tree_lookup (GTree         *tree,
 	       gconstpointer  key)
 {
-  GRealTree *rtree;
   GTreeNode *node;
 
   g_return_val_if_fail (tree != NULL, NULL);
 
-  rtree = (GRealTree*) tree;
-
-  node = g_tree_node_lookup (rtree->root, 
-                             rtree->key_compare, rtree->key_compare_data, key);
+  node = g_tree_node_lookup (tree->root, 
+                             tree->key_compare, tree->key_compare_data, key);
 
   return node ? node->value : NULL;
 }
@@ -436,15 +414,12 @@ g_tree_lookup_extended (GTree         *tree,
                         gpointer      *orig_key,
                         gpointer      *value)
 {
-  GRealTree *rtree;
   GTreeNode *node;
   
   g_return_val_if_fail (tree != NULL, FALSE);
   
-  rtree = (GRealTree*) tree;
-  
-  node = g_tree_node_lookup (rtree->root, 
-                             rtree->key_compare, rtree->key_compare_data, lookup_key);
+  node = g_tree_node_lookup (tree->root, 
+                             tree->key_compare, tree->key_compare_data, lookup_key);
 
   if (node)
     {
@@ -474,16 +449,12 @@ g_tree_foreach (GTree         *tree,
                 GTraverseFunc  func,
                 gpointer       user_data)
 {
-  GRealTree *rtree;
-
   g_return_if_fail (tree != NULL);
   
-  rtree = (GRealTree*) tree;
-
-  if (!rtree->root)
+  if (!tree->root)
     return;
 
-  g_tree_node_in_order (rtree->root, func, user_data);
+  g_tree_node_in_order (tree->root, func, user_data);
 }
 
 /**
@@ -504,27 +475,23 @@ g_tree_traverse (GTree         *tree,
 		 GTraverseType  traverse_type,
 		 gpointer       user_data)
 {
-  GRealTree *rtree;
-
   g_return_if_fail (tree != NULL);
 
-  rtree = (GRealTree*) tree;
-
-  if (!rtree->root)
+  if (!tree->root)
     return;
 
   switch (traverse_type)
     {
     case G_PRE_ORDER:
-      g_tree_node_pre_order (rtree->root, traverse_func, user_data);
+      g_tree_node_pre_order (tree->root, traverse_func, user_data);
       break;
 
     case G_IN_ORDER:
-      g_tree_node_in_order (rtree->root, traverse_func, user_data);
+      g_tree_node_in_order (tree->root, traverse_func, user_data);
       break;
 
     case G_POST_ORDER:
-      g_tree_node_post_order (rtree->root, traverse_func, user_data);
+      g_tree_node_post_order (tree->root, traverse_func, user_data);
       break;
     
     case G_LEVEL_ORDER:
@@ -560,14 +527,10 @@ g_tree_search (GTree         *tree,
 	       GCompareFunc   search_func,
 	       gconstpointer  user_data)
 {
-  GRealTree *rtree;
-
   g_return_val_if_fail (tree != NULL, NULL);
 
-  rtree = (GRealTree*) tree;
-
-  if (rtree->root)
-    return g_tree_node_search (rtree->root, search_func, user_data);
+  if (tree->root)
+    return g_tree_node_search (tree->root, search_func, user_data);
   else
     return NULL;
 }
@@ -587,14 +550,10 @@ g_tree_search (GTree         *tree,
 gint
 g_tree_height (GTree *tree)
 {
-  GRealTree *rtree;
-
   g_return_val_if_fail (tree != NULL, 0);
 
-  rtree = (GRealTree*) tree;
-
-  if (rtree->root)
-    return g_tree_node_height (rtree->root);
+  if (tree->root)
+    return g_tree_node_height (tree->root);
   else
     return 0;
 }
@@ -610,14 +569,10 @@ g_tree_height (GTree *tree)
 gint
 g_tree_nnodes (GTree *tree)
 {
-  GRealTree *rtree;
-
   g_return_val_if_fail (tree != NULL, 0);
 
-  rtree = (GRealTree*) tree;
-
-  if (rtree->root)
-    return g_tree_node_count (rtree->root);
+  if (tree->root)
+    return g_tree_node_count (tree->root);
   else
     return 0;
 }
@@ -630,11 +585,8 @@ g_tree_node_insert (GTree     *tree,
                     gboolean   replace,
 		    gboolean  *inserted)
 {
-  GRealTree *rtree;
   gint  old_balance;
   gint  cmp;
-
-  rtree = (GRealTree*) tree;
 
   if (!node)
     {
@@ -642,28 +594,28 @@ g_tree_node_insert (GTree     *tree,
       return g_tree_node_new (key, value);
     }
 
-  cmp = rtree->key_compare (key, node->key, rtree->key_compare_data);
+  cmp = tree->key_compare (key, node->key, tree->key_compare_data);
   if (cmp == 0)
     {
       *inserted = FALSE;
 
-      if (rtree->value_destroy_func)
-	rtree->value_destroy_func (node->value);
+      if (tree->value_destroy_func)
+	tree->value_destroy_func (node->value);
 
       node->value = value;
       
       if (replace)
 	{
-	  if (rtree->key_destroy_func)
-	    rtree->key_destroy_func (node->key);
+	  if (tree->key_destroy_func)
+	    tree->key_destroy_func (node->key);
 
 	  node->key = key;
 	}
       else
 	{
 	  /* free the passed key */
-	  if (rtree->key_destroy_func)
-	    rtree->key_destroy_func (key);
+	  if (tree->key_destroy_func)
+	    tree->key_destroy_func (key);
 	}
 
       return node;
@@ -725,7 +677,6 @@ g_tree_node_remove (GTree         *tree,
 		    gconstpointer  key,
                     gboolean       notify)
 {
-  GRealTree *rtree;
   GTreeNode *new_root;
   gint old_balance;
   gint cmp;
@@ -733,9 +684,7 @@ g_tree_node_remove (GTree         *tree,
   if (!node)
     return NULL;
 
-  rtree = (GRealTree *) tree;
-
-  cmp = rtree->key_compare (key, node->key, rtree->key_compare_data);
+  cmp = tree->key_compare (key, node->key, tree->key_compare_data);
   if (cmp == 0)
     {
       GTreeNode *garbage;
@@ -758,10 +707,10 @@ g_tree_node_remove (GTree         *tree,
 
       if (notify)
         {
-          if (rtree->key_destroy_func)
-            rtree->key_destroy_func (garbage->key);
-          if (rtree->value_destroy_func)
-            rtree->value_destroy_func (garbage->value);
+          if (tree->key_destroy_func)
+            tree->key_destroy_func (garbage->key);
+          if (tree->value_destroy_func)
+            tree->value_destroy_func (garbage->value);
         }
 
 #ifdef ENABLE_GC_FRIENDLY

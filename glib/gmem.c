@@ -573,7 +573,6 @@ GMemVTable *glib_mem_profiler_table = &profiler_table;
 /* --- MemChunks --- */
 typedef struct _GFreeAtom      GFreeAtom;
 typedef struct _GMemArea       GMemArea;
-typedef struct _GRealMemChunk  GRealMemChunk;
 
 struct _GFreeAtom
 {
@@ -597,7 +596,7 @@ struct _GMemArea
 			      */
 };
 
-struct _GRealMemChunk
+struct _GMemChunk
 {
   const gchar *name;         /* name of this MemChunk...used for debugging output */
   gint type;                 /* the type of MemChunk: ALLOC_ONLY or ALLOC_AND_FREE */
@@ -610,8 +609,8 @@ struct _GRealMemChunk
   GMemArea *free_mem_area;   /* the free area...which is about to be destroyed */
   GFreeAtom *free_atoms;     /* the free atoms list */
   GTree *mem_tree;           /* tree of mem areas sorted by memory address */
-  GRealMemChunk *next;       /* pointer to the next chunk */
-  GRealMemChunk *prev;       /* pointer to the previous chunk */
+  GMemChunk *next;           /* pointer to the next chunk */
+  GMemChunk *prev;           /* pointer to the previous chunk */
 };
 
 
@@ -627,7 +626,7 @@ static gint   g_mem_chunk_area_search  (GMemArea *a,
  * g_malloc, the same holds true for StaticPrivate
  */
 static GMutex        *mem_chunks_lock = NULL;
-static GRealMemChunk *mem_chunks = NULL;
+static GMemChunk     *mem_chunks = NULL;
 
 GMemChunk*
 g_mem_chunk_new (const gchar  *name,
@@ -635,7 +634,7 @@ g_mem_chunk_new (const gchar  *name,
 		 gulong        area_size,
 		 gint          type)
 {
-  GRealMemChunk *mem_chunk;
+  GMemChunk *mem_chunk;
   gulong rarea_size;
 
   g_return_val_if_fail (atom_size > 0, NULL);
@@ -646,7 +645,7 @@ g_mem_chunk_new (const gchar  *name,
   area_size = (area_size + atom_size - 1) / atom_size;
   area_size *= atom_size;
 
-  mem_chunk = g_new (struct _GRealMemChunk, 1);
+  mem_chunk = g_new (GMemChunk, 1);
   mem_chunk->name = name;
   mem_chunk->type = type;
   mem_chunk->num_mem_areas = 0;
@@ -678,13 +677,12 @@ g_mem_chunk_new (const gchar  *name,
 
   LEAVE_MEM_CHUNK_ROUTINE ();
 
-  return ((GMemChunk*) mem_chunk);
+  return mem_chunk;
 }
 
 void
 g_mem_chunk_destroy (GMemChunk *mem_chunk)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *mem_areas;
   GMemArea *temp_area;
   
@@ -692,9 +690,7 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
 
   ENTER_MEM_CHUNK_ROUTINE ();
 
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  
-  mem_areas = rmem_chunk->mem_areas;
+  mem_areas = mem_chunk->mem_areas;
   while (mem_areas)
     {
       temp_area = mem_areas;
@@ -702,20 +698,20 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
       g_free (temp_area);
     }
   
-  if (rmem_chunk->next)
-    rmem_chunk->next->prev = rmem_chunk->prev;
-  if (rmem_chunk->prev)
-    rmem_chunk->prev->next = rmem_chunk->next;
+  if (mem_chunk->next)
+    mem_chunk->next->prev = mem_chunk->prev;
+  if (mem_chunk->prev)
+    mem_chunk->prev->next = mem_chunk->next;
   
   g_mutex_lock (mem_chunks_lock);
-  if (rmem_chunk == mem_chunks)
+  if (mem_chunk == mem_chunks)
     mem_chunks = mem_chunks->next;
   g_mutex_unlock (mem_chunks_lock);
   
-  if (rmem_chunk->type == G_ALLOC_AND_FREE)
-    g_tree_destroy (rmem_chunk->mem_tree);  
+  if (mem_chunk->type == G_ALLOC_AND_FREE)
+    g_tree_destroy (mem_chunk->mem_tree);  
 
-  g_free (rmem_chunk);
+  g_free (mem_chunk);
 
   LEAVE_MEM_CHUNK_ROUTINE ();
 }
@@ -723,7 +719,6 @@ g_mem_chunk_destroy (GMemChunk *mem_chunk)
 gpointer
 g_mem_chunk_alloc (GMemChunk *mem_chunk)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *temp_area;
   gpointer mem;
 
@@ -731,20 +726,18 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
 
   g_return_val_if_fail (mem_chunk != NULL, NULL);
   
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  
-  while (rmem_chunk->free_atoms)
+  while (mem_chunk->free_atoms)
     {
       /* Get the first piece of memory on the "free_atoms" list.
        * We can go ahead and destroy the list node we used to keep
        *  track of it with and to update the "free_atoms" list to
        *  point to its next element.
        */
-      mem = rmem_chunk->free_atoms;
-      rmem_chunk->free_atoms = rmem_chunk->free_atoms->next;
+      mem = mem_chunk->free_atoms;
+      mem_chunk->free_atoms = mem_chunk->free_atoms->next;
       
       /* Determine which area this piece of memory is allocated from */
-      temp_area = g_tree_search (rmem_chunk->mem_tree,
+      temp_area = g_tree_search (mem_chunk->mem_tree,
 				 (GCompareFunc) g_mem_chunk_area_search,
 				 mem);
       
@@ -763,32 +756,32 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
       if (temp_area->mark)
         {
           /* Update the "free" memory available in that area */
-          temp_area->free += rmem_chunk->atom_size;
+          temp_area->free += mem_chunk->atom_size;
 	  
-          if (temp_area->free == rmem_chunk->area_size)
+          if (temp_area->free == mem_chunk->area_size)
             {
-              if (temp_area == rmem_chunk->mem_area)
-                rmem_chunk->mem_area = NULL;
+              if (temp_area == mem_chunk->mem_area)
+                mem_chunk->mem_area = NULL;
 	      
-              if (rmem_chunk->free_mem_area)
+              if (mem_chunk->free_mem_area)
                 {
-                  rmem_chunk->num_mem_areas -= 1;
+                  mem_chunk->num_mem_areas -= 1;
 		  
                   if (temp_area->next)
                     temp_area->next->prev = temp_area->prev;
                   if (temp_area->prev)
                     temp_area->prev->next = temp_area->next;
-                  if (temp_area == rmem_chunk->mem_areas)
-                    rmem_chunk->mem_areas = rmem_chunk->mem_areas->next;
+                  if (temp_area == mem_chunk->mem_areas)
+                    mem_chunk->mem_areas = mem_chunk->mem_areas->next;
 		  
-		  if (rmem_chunk->type == G_ALLOC_AND_FREE)
-		    g_tree_remove (rmem_chunk->mem_tree, temp_area);
+		  if (mem_chunk->type == G_ALLOC_AND_FREE)
+		    g_tree_remove (mem_chunk->mem_tree, temp_area);
                   g_free (temp_area);
                 }
               else
-                rmem_chunk->free_mem_area = temp_area;
+                mem_chunk->free_mem_area = temp_area;
 	      
-	      rmem_chunk->num_marked_areas -= 1;
+	      mem_chunk->num_marked_areas -= 1;
 	    }
 	}
       else
@@ -807,50 +800,50 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
    *  then allocate a new mem area. We'll first check and see if we can use
    *  the "free_mem_area". Otherwise we'll just malloc the mem area.
    */
-  if ((!rmem_chunk->mem_area) ||
-      ((rmem_chunk->mem_area->index + rmem_chunk->atom_size) > rmem_chunk->area_size))
+  if ((!mem_chunk->mem_area) ||
+      ((mem_chunk->mem_area->index + mem_chunk->atom_size) > mem_chunk->area_size))
     {
-      if (rmem_chunk->free_mem_area)
+      if (mem_chunk->free_mem_area)
         {
-          rmem_chunk->mem_area = rmem_chunk->free_mem_area;
-	  rmem_chunk->free_mem_area = NULL;
+          mem_chunk->mem_area = mem_chunk->free_mem_area;
+	  mem_chunk->free_mem_area = NULL;
         }
       else
         {
 #ifdef ENABLE_GC_FRIENDLY
-	  rmem_chunk->mem_area = (GMemArea*) g_malloc0 (sizeof (GMemArea) -
-							MEM_AREA_SIZE +
-							rmem_chunk->area_size); 
-#else /* !ENABLE_GC_FRIENDLY */
-	  rmem_chunk->mem_area = (GMemArea*) g_malloc (sizeof (GMemArea) -
+	  mem_chunk->mem_area = (GMemArea*) g_malloc0 (sizeof (GMemArea) -
 						       MEM_AREA_SIZE +
-						       rmem_chunk->area_size);
+						       mem_chunk->area_size); 
+#else /* !ENABLE_GC_FRIENDLY */
+	  mem_chunk->mem_area = (GMemArea*) g_malloc (sizeof (GMemArea) -
+						      MEM_AREA_SIZE +
+						      mem_chunk->area_size);
 #endif /* ENABLE_GC_FRIENDLY */
 	  
-	  rmem_chunk->num_mem_areas += 1;
-	  rmem_chunk->mem_area->next = rmem_chunk->mem_areas;
-	  rmem_chunk->mem_area->prev = NULL;
+	  mem_chunk->num_mem_areas += 1;
+	  mem_chunk->mem_area->next = mem_chunk->mem_areas;
+	  mem_chunk->mem_area->prev = NULL;
 	  
-	  if (rmem_chunk->mem_areas)
-	    rmem_chunk->mem_areas->prev = rmem_chunk->mem_area;
-	  rmem_chunk->mem_areas = rmem_chunk->mem_area;
+	  if (mem_chunk->mem_areas)
+	    mem_chunk->mem_areas->prev = mem_chunk->mem_area;
+	  mem_chunk->mem_areas = mem_chunk->mem_area;
 	  
-	  if (rmem_chunk->type == G_ALLOC_AND_FREE)
-	    g_tree_insert (rmem_chunk->mem_tree, rmem_chunk->mem_area, rmem_chunk->mem_area);
+	  if (mem_chunk->type == G_ALLOC_AND_FREE)
+	    g_tree_insert (mem_chunk->mem_tree, mem_chunk->mem_area, mem_chunk->mem_area);
         }
       
-      rmem_chunk->mem_area->index = 0;
-      rmem_chunk->mem_area->free = rmem_chunk->area_size;
-      rmem_chunk->mem_area->allocated = 0;
-      rmem_chunk->mem_area->mark = 0;
+      mem_chunk->mem_area->index = 0;
+      mem_chunk->mem_area->free = mem_chunk->area_size;
+      mem_chunk->mem_area->allocated = 0;
+      mem_chunk->mem_area->mark = 0;
     }
   
   /* Get the memory and modify the state variables appropriately.
    */
-  mem = (gpointer) &rmem_chunk->mem_area->mem[rmem_chunk->mem_area->index];
-  rmem_chunk->mem_area->index += rmem_chunk->atom_size;
-  rmem_chunk->mem_area->free -= rmem_chunk->atom_size;
-  rmem_chunk->mem_area->allocated += 1;
+  mem = (gpointer) &mem_chunk->mem_area->mem[mem_chunk->mem_area->index];
+  mem_chunk->mem_area->index += mem_chunk->atom_size;
+  mem_chunk->mem_area->free -= mem_chunk->atom_size;
+  mem_chunk->mem_area->allocated += 1;
 
 outa_here:
 
@@ -867,9 +860,7 @@ g_mem_chunk_alloc0 (GMemChunk *mem_chunk)
   mem = g_mem_chunk_alloc (mem_chunk);
   if (mem)
     {
-      GRealMemChunk *rmem_chunk = (GRealMemChunk*) mem_chunk;
-
-      memset (mem, 0, rmem_chunk->atom_size);
+      memset (mem, 0, mem_chunk->atom_size);
     }
 
   return mem;
@@ -879,7 +870,6 @@ void
 g_mem_chunk_free (GMemChunk *mem_chunk,
 		  gpointer   mem)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *temp_area;
   GFreeAtom *free_atom;
   
@@ -888,23 +878,21 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
 
   ENTER_MEM_CHUNK_ROUTINE ();
 
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  
 #ifdef ENABLE_GC_FRIENDLY
-  memset (mem, 0, rmem_chunk->atom_size);
+  memset (mem, 0, mem_chunk->atom_size);
 #endif /* ENABLE_GC_FRIENDLY */
 
   /* Don't do anything if this is an ALLOC_ONLY chunk
    */
-  if (rmem_chunk->type == G_ALLOC_AND_FREE)
+  if (mem_chunk->type == G_ALLOC_AND_FREE)
     {
       /* Place the memory on the "free_atoms" list
        */
       free_atom = (GFreeAtom*) mem;
-      free_atom->next = rmem_chunk->free_atoms;
-      rmem_chunk->free_atoms = free_atom;
+      free_atom->next = mem_chunk->free_atoms;
+      mem_chunk->free_atoms = free_atom;
       
-      temp_area = g_tree_search (rmem_chunk->mem_tree,
+      temp_area = g_tree_search (mem_chunk->mem_tree,
 				 (GCompareFunc) g_mem_chunk_area_search,
 				 mem);
       
@@ -913,7 +901,7 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
       if (temp_area->allocated == 0)
 	{
 	  temp_area->mark = 1;
-	  rmem_chunk->num_marked_areas += 1;
+	  mem_chunk->num_marked_areas += 1;
 	}
     }
 
@@ -924,7 +912,6 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
 void
 g_mem_chunk_clean (GMemChunk *mem_chunk)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *mem_area;
   GFreeAtom *prev_free_atom;
   GFreeAtom *temp_free_atom;
@@ -934,18 +921,16 @@ g_mem_chunk_clean (GMemChunk *mem_chunk)
   
   ENTER_MEM_CHUNK_ROUTINE ();
 
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  
-  if (rmem_chunk->type == G_ALLOC_AND_FREE)
+  if (mem_chunk->type == G_ALLOC_AND_FREE)
     {
       prev_free_atom = NULL;
-      temp_free_atom = rmem_chunk->free_atoms;
+      temp_free_atom = mem_chunk->free_atoms;
       
       while (temp_free_atom)
 	{
 	  mem = (gpointer) temp_free_atom;
 	  
-	  mem_area = g_tree_search (rmem_chunk->mem_tree,
+	  mem_area = g_tree_search (mem_chunk->mem_tree,
 				    (GCompareFunc) g_mem_chunk_area_search,
 				    mem);
 	  
@@ -957,26 +942,26 @@ g_mem_chunk_clean (GMemChunk *mem_chunk)
 	      if (prev_free_atom)
 		prev_free_atom->next = temp_free_atom->next;
 	      else
-		rmem_chunk->free_atoms = temp_free_atom->next;
+		mem_chunk->free_atoms = temp_free_atom->next;
 	      temp_free_atom = temp_free_atom->next;
 	      
-	      mem_area->free += rmem_chunk->atom_size;
-	      if (mem_area->free == rmem_chunk->area_size)
+	      mem_area->free += mem_chunk->atom_size;
+	      if (mem_area->free == mem_chunk->area_size)
 		{
-		  rmem_chunk->num_mem_areas -= 1;
-		  rmem_chunk->num_marked_areas -= 1;
+		  mem_chunk->num_mem_areas -= 1;
+		  mem_chunk->num_marked_areas -= 1;
 		  
 		  if (mem_area->next)
 		    mem_area->next->prev = mem_area->prev;
 		  if (mem_area->prev)
 		    mem_area->prev->next = mem_area->next;
-		  if (mem_area == rmem_chunk->mem_areas)
-		    rmem_chunk->mem_areas = rmem_chunk->mem_areas->next;
-		  if (mem_area == rmem_chunk->mem_area)
-		    rmem_chunk->mem_area = NULL;
+		  if (mem_area == mem_chunk->mem_areas)
+		    mem_chunk->mem_areas = mem_chunk->mem_areas->next;
+		  if (mem_area == mem_chunk->mem_area)
+		    mem_chunk->mem_area = NULL;
 		  
-		  if (rmem_chunk->type == G_ALLOC_AND_FREE)
-		    g_tree_remove (rmem_chunk->mem_tree, mem_area);
+		  if (mem_chunk->type == G_ALLOC_AND_FREE)
+		    g_tree_remove (mem_chunk->mem_tree, mem_area);
 		  g_free (mem_area);
 		}
 	    }
@@ -993,7 +978,6 @@ g_mem_chunk_clean (GMemChunk *mem_chunk)
 void
 g_mem_chunk_reset (GMemChunk *mem_chunk)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *mem_areas;
   GMemArea *temp_area;
   
@@ -1001,12 +985,10 @@ g_mem_chunk_reset (GMemChunk *mem_chunk)
   
   ENTER_MEM_CHUNK_ROUTINE ();
 
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  
-  mem_areas = rmem_chunk->mem_areas;
-  rmem_chunk->num_mem_areas = 0;
-  rmem_chunk->mem_areas = NULL;
-  rmem_chunk->mem_area = NULL;
+  mem_areas = mem_chunk->mem_areas;
+  mem_chunk->num_mem_areas = 0;
+  mem_chunk->mem_areas = NULL;
+  mem_chunk->mem_area = NULL;
   
   while (mem_areas)
     {
@@ -1015,11 +997,11 @@ g_mem_chunk_reset (GMemChunk *mem_chunk)
       g_free (temp_area);
     }
   
-  rmem_chunk->free_atoms = NULL;
+  mem_chunk->free_atoms = NULL;
   
-  if (rmem_chunk->mem_tree)
-    g_tree_destroy (rmem_chunk->mem_tree);
-  rmem_chunk->mem_tree = g_tree_new ((GCompareFunc) g_mem_chunk_area_compare);
+  if (mem_chunk->mem_tree)
+    g_tree_destroy (mem_chunk->mem_tree);
+  mem_chunk->mem_tree = g_tree_new ((GCompareFunc) g_mem_chunk_area_compare);
 
   LEAVE_MEM_CHUNK_ROUTINE ();
 }
@@ -1027,31 +1009,29 @@ g_mem_chunk_reset (GMemChunk *mem_chunk)
 void
 g_mem_chunk_print (GMemChunk *mem_chunk)
 {
-  GRealMemChunk *rmem_chunk;
   GMemArea *mem_areas;
   gulong mem;
   
   g_return_if_fail (mem_chunk != NULL);
   
-  rmem_chunk = (GRealMemChunk*) mem_chunk;
-  mem_areas = rmem_chunk->mem_areas;
+  mem_areas = mem_chunk->mem_areas;
   mem = 0;
   
   while (mem_areas)
     {
-      mem += rmem_chunk->area_size - mem_areas->free;
+      mem += mem_chunk->area_size - mem_areas->free;
       mem_areas = mem_areas->next;
     }
 
   g_log (g_log_domain_glib, G_LOG_LEVEL_INFO,
 	 "%s: %ld bytes using %d mem areas",
-	 rmem_chunk->name, mem, rmem_chunk->num_mem_areas);
+	 mem_chunk->name, mem, mem_chunk->num_mem_areas);
 }
 
 void
 g_mem_chunk_info (void)
 {
-  GRealMemChunk *mem_chunk;
+  GMemChunk *mem_chunk;
   gint count;
   
   count = 0;
@@ -1080,7 +1060,7 @@ g_mem_chunk_info (void)
 void
 g_blow_chunks (void)
 {
-  GRealMemChunk *mem_chunk;
+  GMemChunk *mem_chunk;
   
   g_mutex_lock (mem_chunks_lock);
   mem_chunk = mem_chunks;

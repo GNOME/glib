@@ -32,7 +32,6 @@
 
 
 typedef struct _GCacheNode  GCacheNode;
-typedef struct _GRealCache  GRealCache;
 
 struct _GCacheNode
 {
@@ -41,7 +40,7 @@ struct _GCacheNode
   gint ref_count;
 };
 
-struct _GRealCache
+struct _GCache
 {
   /* Called to create a value from a key */
   GCacheNewFunc value_new_func;
@@ -79,7 +78,7 @@ g_cache_new (GCacheNewFunc      value_new_func,
 	     GHashFunc          hash_value_func,
 	     GEqualFunc         key_equal_func)
 {
-  GRealCache *cache;
+  GCache *cache;
 
   g_return_val_if_fail (value_new_func != NULL, NULL);
   g_return_val_if_fail (value_destroy_func != NULL, NULL);
@@ -89,7 +88,7 @@ g_cache_new (GCacheNewFunc      value_new_func,
   g_return_val_if_fail (hash_value_func != NULL, NULL);
   g_return_val_if_fail (key_equal_func != NULL, NULL);
 
-  cache = g_new (GRealCache, 1);
+  cache = g_new (GCache, 1);
   cache->value_new_func = value_new_func;
   cache->value_destroy_func = value_destroy_func;
   cache->key_dup_func = key_dup_func;
@@ -97,47 +96,41 @@ g_cache_new (GCacheNewFunc      value_new_func,
   cache->key_table = g_hash_table_new (hash_key_func, key_equal_func);
   cache->value_table = g_hash_table_new (hash_value_func, NULL);
 
-  return (GCache*) cache;
+  return cache;
 }
 
 void
 g_cache_destroy (GCache *cache)
 {
-  GRealCache *rcache;
-
   g_return_if_fail (cache != NULL);
 
-  rcache = (GRealCache*) cache;
-  g_hash_table_destroy (rcache->key_table);
-  g_hash_table_destroy (rcache->value_table);
-  g_free (rcache);
+  g_hash_table_destroy (cache->key_table);
+  g_hash_table_destroy (cache->value_table);
+  g_free (cache);
 }
 
 gpointer
 g_cache_insert (GCache   *cache,
 		gpointer  key)
 {
-  GRealCache *rcache;
   GCacheNode *node;
   gpointer value;
 
   g_return_val_if_fail (cache != NULL, NULL);
 
-  rcache = (GRealCache*) cache;
-
-  node = g_hash_table_lookup (rcache->key_table, key);
+  node = g_hash_table_lookup (cache->key_table, key);
   if (node)
     {
       node->ref_count += 1;
       return node->value;
     }
 
-  key = (* rcache->key_dup_func) (key);
-  value = (* rcache->value_new_func) (key);
+  key = (* cache->key_dup_func) (key);
+  value = (* cache->value_new_func) (key);
   node = g_cache_node_new (value);
 
-  g_hash_table_insert (rcache->key_table, key, node);
-  g_hash_table_insert (rcache->value_table, value, key);
+  g_hash_table_insert (cache->key_table, key, node);
+  g_hash_table_insert (cache->value_table, value, key);
 
   return node->value;
 }
@@ -146,27 +139,24 @@ void
 g_cache_remove (GCache        *cache,
 		gconstpointer  value)
 {
-  GRealCache *rcache;
   GCacheNode *node;
   gpointer key;
 
   g_return_if_fail (cache != NULL);
 
-  rcache = (GRealCache*) cache;
-
-  key = g_hash_table_lookup (rcache->value_table, value);
-  node = g_hash_table_lookup (rcache->key_table, key);
+  key = g_hash_table_lookup (cache->value_table, value);
+  node = g_hash_table_lookup (cache->key_table, key);
 
   g_return_if_fail (node != NULL);
 
   node->ref_count -= 1;
   if (node->ref_count == 0)
     {
-      g_hash_table_remove (rcache->value_table, value);
-      g_hash_table_remove (rcache->key_table, key);
+      g_hash_table_remove (cache->value_table, value);
+      g_hash_table_remove (cache->key_table, key);
 
-      (* rcache->key_destroy_func) (key);
-      (* rcache->value_destroy_func) (node->value);
+      (* cache->key_destroy_func) (key);
+      (* cache->value_destroy_func) (node->value);
       g_cache_node_destroy (node);
     }
 }
@@ -176,14 +166,10 @@ g_cache_key_foreach (GCache   *cache,
 		     GHFunc    func,
 		     gpointer  user_data)
 {
-  GRealCache *rcache;
-
   g_return_if_fail (cache != NULL);
   g_return_if_fail (func != NULL);
 
-  rcache = (GRealCache*) cache;
-
-  g_hash_table_foreach (rcache->value_table, func, user_data);
+  g_hash_table_foreach (cache->value_table, func, user_data);
 }
 
 void
@@ -191,14 +177,10 @@ g_cache_value_foreach (GCache   *cache,
 		       GHFunc    func,
 		       gpointer  user_data)
 {
-  GRealCache *rcache;
-
   g_return_if_fail (cache != NULL);
   g_return_if_fail (func != NULL);
 
-  rcache = (GRealCache*) cache;
-
-  g_hash_table_foreach (rcache->key_table, func, user_data);
+  g_hash_table_foreach (cache->key_table, func, user_data);
 }
 
 

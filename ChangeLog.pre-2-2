@@ -1,3 +1,10 @@
+Wed Sep 19 14:05:27 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/{gcache.c,gmem.c,grel.c,gstring.c,gtimer.c,gtree}:
+	Patch from Darin Adler to remove GReal* structures in
+	favor of simple opaque typedefs in cases where there
+	were no non-private members. (#59693)
+
 Wed Sep 19 13:03:38 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/giochannel.c (g_io_channel_read/write_chars): Handle NUL

@@ -42,23 +42,13 @@
 #include <ctype.h>
 #include "glib.h"
 
-typedef struct _GRealStringChunk GRealStringChunk;
-typedef struct _GRealString      GRealString;
-
-struct _GRealStringChunk
+struct _GStringChunk
 {
   GHashTable *const_table;
   GSList     *storage_list;
   gsize       storage_next;    
   gsize       this_size;       
   gsize       default_size;    
-};
-
-struct _GRealString
-{
-  gchar *str;
-  gsize len;    
-  gsize allocated_len;  
 };
 
 G_LOCK_DEFINE_STATIC (string_mem_chunk);
@@ -117,7 +107,7 @@ nearest_power (gsize base, gsize num)
 GStringChunk*
 g_string_chunk_new (gsize default_size)    
 {
-  GRealStringChunk *new_chunk = g_new (GRealStringChunk, 1);
+  GStringChunk *new_chunk = g_new (GStringChunk, 1);
   gsize size = 1;    
 
   size = nearest_power (1, default_size);
@@ -128,13 +118,12 @@ g_string_chunk_new (gsize default_size)
   new_chunk->default_size      = size;
   new_chunk->this_size         = size;
 
-  return (GStringChunk*) new_chunk;
+  return new_chunk;
 }
 
 void
-g_string_chunk_free (GStringChunk *fchunk)
+g_string_chunk_free (GStringChunk *chunk)
 {
-  GRealStringChunk *chunk = (GRealStringChunk*) fchunk;
   GSList *tmp_list;
 
   g_return_if_fail (chunk != NULL);
@@ -154,10 +143,9 @@ g_string_chunk_free (GStringChunk *fchunk)
 }
 
 gchar*
-g_string_chunk_insert (GStringChunk *fchunk,
+g_string_chunk_insert (GStringChunk *chunk,
 		       const gchar  *string)
 {
-  GRealStringChunk *chunk = (GRealStringChunk*) fchunk;
   gsize len = strlen (string);
   char* pos;
 
@@ -184,10 +172,9 @@ g_string_chunk_insert (GStringChunk *fchunk,
 }
 
 gchar*
-g_string_chunk_insert_const (GStringChunk *fchunk,
+g_string_chunk_insert_const (GStringChunk *chunk,
 			     const gchar  *string)
 {
-  GRealStringChunk *chunk = (GRealStringChunk*) fchunk;
   char* lookup;
 
   g_return_val_if_fail (chunk != NULL, NULL);
@@ -199,7 +186,7 @@ g_string_chunk_insert_const (GStringChunk *fchunk,
 
   if (!lookup)
     {
-      lookup = g_string_chunk_insert (fchunk, string);
+      lookup = g_string_chunk_insert (chunk, string);
       g_hash_table_insert (chunk->const_table, lookup, lookup);
     }
 
@@ -209,8 +196,8 @@ g_string_chunk_insert_const (GStringChunk *fchunk,
 /* Strings.
  */
 static void
-g_string_maybe_expand (GRealString* string,
-		       gsize        len) 
+g_string_maybe_expand (GString* string,
+		       gsize    len) 
 {
   if (string->len + len >= string->allocated_len)
     {
@@ -222,15 +209,15 @@ g_string_maybe_expand (GRealString* string,
 GString*
 g_string_sized_new (gsize dfl_size)    
 {
-  GRealString *string;
+  GString *string;
 
   G_LOCK (string_mem_chunk);
   if (!string_mem_chunk)
     string_mem_chunk = g_mem_chunk_new ("string mem chunk",
-					sizeof (GRealString),
+					sizeof (GString),
 					1024, G_ALLOC_AND_FREE);
 
-  string = g_chunk_new (GRealString, string_mem_chunk);
+  string = g_chunk_new (GString, string_mem_chunk);
   G_UNLOCK (string_mem_chunk);
 
   string->allocated_len = 0;
@@ -240,7 +227,7 @@ g_string_sized_new (gsize dfl_size)
   g_string_maybe_expand (string, MAX (dfl_size, 2));
   string->str[0] = 0;
 
-  return (GString*) string;
+  return string;
 }
 
 GString*
@@ -303,8 +290,8 @@ g_string_equal (const GString *v,
                 const GString *v2)
 {
   gchar *p, *q;
-  GRealString *string1 = (GRealString *) v;
-  GRealString *string2 = (GRealString *) v2;
+  GString *string1 = (GString *) v;
+  GString *string2 = (GString *) v2;
   gsize i = string1->len;    
 
   if (i != string2->len)
@@ -354,18 +341,15 @@ g_string_assign (GString     *string,
 }
 
 GString*
-g_string_truncate (GString *fstring,
+g_string_truncate (GString *string,
 		   gsize    len)    
 {
-  GRealString *string = (GRealString *) fstring;
-
   g_return_val_if_fail (string != NULL, NULL);
 
   string->len = MIN (len, string->len);
-
   string->str[string->len] = 0;
 
-  return fstring;
+  return string;
 }
 
 /**
@@ -379,35 +363,31 @@ g_string_truncate (GString *fstring,
  * of the newly added area are undefined. (However, as
  * always, string->str[string->len] will be a nul byte.) 
  * 
- * Return value: @fstring
+ * Return value: @string
  **/
 GString*
 g_string_set_size (GString *string,
 		   gsize    len)    
 {
-  GRealString *rstring = (GRealString *) string;
-
   g_return_val_if_fail (string != NULL, NULL);
 
-  if (len >= rstring->allocated_len)
-    g_string_maybe_expand (rstring, len - string->len);
+  if (len >= string->allocated_len)
+    g_string_maybe_expand (string, len - string->len);
   
-  rstring->len = len;
-  rstring->str[len] = 0;
+  string->len = len;
+  string->str[len] = 0;
 
   return string;
 }
 
 GString*
-g_string_insert_len (GString     *fstring,
+g_string_insert_len (GString     *string,
 		     gssize       pos,    
 		     const gchar *val,
 		     gssize       len)    
 {
-  GRealString *string = (GRealString *) fstring;
-
   g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (val != NULL, string);
 
   if (len < 0)
     len = strlen (val);
@@ -415,7 +395,7 @@ g_string_insert_len (GString     *fstring,
   if (pos < 0)
     pos = string->len;
   else
-    g_return_val_if_fail (pos <= string->len, fstring);
+    g_return_val_if_fail (pos <= string->len, string);
   
   g_string_maybe_expand (string, len);
 
@@ -432,17 +412,17 @@ g_string_insert_len (GString     *fstring,
 
   string->str[string->len] = 0;
 
-  return fstring;
+  return string;
 }
 
 GString*
-g_string_append (GString     *fstring,
+g_string_append (GString     *string,
 		 const gchar *val)
 {  
-  g_return_val_if_fail (fstring != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (val != NULL, string);
 
-  return g_string_insert_len (fstring, -1, val, -1);
+  return g_string_insert_len (string, -1, val, -1);
 }
 
 GString*
@@ -457,12 +437,12 @@ g_string_append_len (GString	 *string,
 }
 
 GString*
-g_string_append_c (GString *fstring,
+g_string_append_c (GString *string,
 		   gchar    c)
 {
-  g_return_val_if_fail (fstring != NULL, NULL);
+  g_return_val_if_fail (string != NULL, NULL);
 
-  return g_string_insert_c (fstring, -1, c);
+  return g_string_insert_c (string, -1, c);
 }
 
 /**
@@ -485,13 +465,13 @@ g_string_append_unichar (GString  *string,
 }
 
 GString*
-g_string_prepend (GString     *fstring,
+g_string_prepend (GString     *string,
 		  const gchar *val)
 {
-  g_return_val_if_fail (fstring != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (val != NULL, string);
   
-  return g_string_insert_len (fstring, 0, val, -1);
+  return g_string_insert_len (string, 0, val, -1);
 }
 
 GString*
@@ -506,12 +486,12 @@ g_string_prepend_len (GString	  *string,
 }
 
 GString*
-g_string_prepend_c (GString *fstring,
+g_string_prepend_c (GString *string,
 		    gchar    c)
 {  
-  g_return_val_if_fail (fstring != NULL, NULL);
+  g_return_val_if_fail (string != NULL, NULL);
   
-  return g_string_insert_c (fstring, 0, c);
+  return g_string_insert_c (string, 0, c);
 }
 
 /**
@@ -534,25 +514,23 @@ g_string_prepend_unichar (GString  *string,
 }
 
 GString*
-g_string_insert (GString     *fstring,
+g_string_insert (GString     *string,
 		 gssize       pos,    
 		 const gchar *val)
 {
-  g_return_val_if_fail (fstring != NULL, NULL);
-  g_return_val_if_fail (val != NULL, fstring);
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (val != NULL, string);
   if (pos >= 0)
-    g_return_val_if_fail (pos <= fstring->len, fstring);
+    g_return_val_if_fail (pos <= string->len, string);
   
-  return g_string_insert_len (fstring, pos, val, -1);
+  return g_string_insert_len (string, pos, val, -1);
 }
 
 GString*
-g_string_insert_c (GString *fstring,
+g_string_insert_c (GString *string,
 		   gssize   pos,    
 		   gchar    c)
 {
-  GRealString *string = (GRealString *) fstring;
-
   g_return_val_if_fail (string != NULL, NULL);
 
   g_string_maybe_expand (string, 1);
@@ -560,7 +538,7 @@ g_string_insert_c (GString *fstring,
   if (pos < 0)
     pos = string->len;
   else
-    g_return_val_if_fail (pos <= string->len, fstring);
+    g_return_val_if_fail (pos <= string->len, string);
   
   /* If not just an append, move the old stuff */
   if (pos < string->len)
@@ -572,7 +550,7 @@ g_string_insert_c (GString *fstring,
 
   string->str[string->len] = 0;
 
-  return fstring;
+  return string;
 }
 
 /**
@@ -606,21 +584,19 @@ g_string_insert_unichar (GString *string,
 }
 
 GString*
-g_string_erase (GString *fstring,
+g_string_erase (GString *string,
 		gsize    pos,    
 		gsize    len)    
 {
-  GRealString *string = (GRealString*)fstring;
-
   g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (pos >= 0, fstring);
-  g_return_val_if_fail (pos <= string->len, fstring);
+  g_return_val_if_fail (pos >= 0, string);
+  g_return_val_if_fail (pos <= string->len, string);
 
   if (len < 0)
     len = string->len - pos;
   else
     {
-      g_return_val_if_fail (pos + len <= string->len, fstring);
+      g_return_val_if_fail (pos + len <= string->len, string);
 
       if (pos + len < string->len)
 	g_memmove (string->str + pos, string->str + pos + len, string->len - (pos + len));
@@ -630,7 +606,7 @@ g_string_erase (GString *fstring,
   
   string->str[string->len] = 0;
 
-  return fstring;
+  return string;
 }
 
 /**
@@ -694,9 +670,8 @@ g_string_ascii_up (GString *string)
 }
 
 GString*
-g_string_down (GString *fstring)
+g_string_down (GString *string)
 {
-  GRealString *string = (GRealString *) fstring;
   guchar *s;
   glong n = string->len;    
 
@@ -712,13 +687,12 @@ g_string_down (GString *fstring)
       n--;
     }
 
-  return fstring;
+  return string;
 }
 
 GString*
-g_string_up (GString *fstring)
+g_string_up (GString *string)
 {
-  GRealString *string = (GRealString *) fstring;
   guchar *s;
   glong n = string->len;
 
@@ -734,7 +708,7 @@ g_string_up (GString *fstring)
       n--;
     }
 
-  return fstring;
+  return string;
 }
 
 static void

@@ -46,9 +46,7 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
-typedef struct _GRealTimer GRealTimer;
-
-struct _GRealTimer
+struct _GTimer
 {
 #ifdef G_OS_WIN32
   DWORD start;
@@ -72,14 +70,14 @@ struct _GRealTimer
 GTimer*
 g_timer_new (void)
 {
-  GRealTimer *timer;
+  GTimer *timer;
 
-  timer = g_new (GRealTimer, 1);
+  timer = g_new (GTimer, 1);
   timer->active = TRUE;
 
   GETTIME (timer->start);
 
-  return ((GTimer*) timer);
+  return timer;
 }
 
 void
@@ -93,46 +91,35 @@ g_timer_destroy (GTimer *timer)
 void
 g_timer_start (GTimer *timer)
 {
-  GRealTimer *rtimer;
-
   g_return_if_fail (timer != NULL);
 
-  rtimer = (GRealTimer*) timer;
-  rtimer->active = TRUE;
+  timer->active = TRUE;
 
-  GETTIME (rtimer->start);
+  GETTIME (timer->start);
 }
 
 void
 g_timer_stop (GTimer *timer)
 {
-  GRealTimer *rtimer;
-
   g_return_if_fail (timer != NULL);
 
-  rtimer = (GRealTimer*) timer;
-  rtimer->active = FALSE;
+  timer->active = FALSE;
 
-  GETTIME(rtimer->end);
+  GETTIME(timer->end);
 }
 
 void
 g_timer_reset (GTimer *timer)
 {
-  GRealTimer *rtimer;
-
   g_return_if_fail (timer != NULL);
 
-  rtimer = (GRealTimer*) timer;
-
-  GETTIME (rtimer->start);
+  GETTIME (timer->start);
 }
 
 gdouble
 g_timer_elapsed (GTimer *timer,
 		 gulong *microseconds)
 {
-  GRealTimer *rtimer;
   gdouble total;
 #ifndef G_OS_WIN32
   struct timeval elapsed;
@@ -140,39 +127,37 @@ g_timer_elapsed (GTimer *timer,
 
   g_return_val_if_fail (timer != NULL, 0);
 
-  rtimer = (GRealTimer*) timer;
-
 #ifdef G_OS_WIN32
-  if (rtimer->active)
-    rtimer->end = GetTickCount ();
+  if (timer->active)
+    timer->end = GetTickCount ();
 
   /* Check for wraparound, which happens every 49.7 days. */
-  if (rtimer->end < rtimer->start)
-    total = (UINT_MAX - (rtimer->start - rtimer->end)) / 1000.0;
+  if (timer->end < timer->start)
+    total = (UINT_MAX - (timer->start - timer->end)) / 1000.0;
   else
-    total = (rtimer->end - rtimer->start) / 1000.0;
+    total = (timer->end - timer->start) / 1000.0;
 
   if (microseconds)
     {
-      if (rtimer->end < rtimer->start)
+      if (timer->end < timer->start)
 	*microseconds =
-	  ((UINT_MAX - (rtimer->start - rtimer->end)) % 1000) * 1000;
+	  ((UINT_MAX - (timer->start - timer->end)) % 1000) * 1000;
       else
 	*microseconds =
-	  ((rtimer->end - rtimer->start) % 1000) * 1000;
+	  ((timer->end - timer->start) % 1000) * 1000;
     }
 #else /* !G_OS_WIN32 */
-  if (rtimer->active)
-    gettimeofday (&rtimer->end, NULL);
+  if (timer->active)
+    gettimeofday (&timer->end, NULL);
 
-  if (rtimer->start.tv_usec > rtimer->end.tv_usec)
+  if (timer->start.tv_usec > timer->end.tv_usec)
     {
-      rtimer->end.tv_usec += G_USEC_PER_SEC;
-      rtimer->end.tv_sec--;
+      timer->end.tv_usec += G_USEC_PER_SEC;
+      timer->end.tv_sec--;
     }
 
-  elapsed.tv_usec = rtimer->end.tv_usec - rtimer->start.tv_usec;
-  elapsed.tv_sec = rtimer->end.tv_sec - rtimer->start.tv_sec;
+  elapsed.tv_usec = timer->end.tv_usec - timer->start.tv_usec;
+  elapsed.tv_sec = timer->end.tv_sec - timer->start.tv_sec;
 
   total = elapsed.tv_sec + ((gdouble) elapsed.tv_usec / 1e6);
   if (total < 0)
