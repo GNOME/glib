@@ -1,3 +1,8 @@
+2002-12-13  Matthias Clasen  <maclas@gmx.de>
+
+	* glib-genmarshal.c, gobject-query.c: Use g_printf() instead of 
+	system printf.  (#99319)
+
 Thu Dec 12 15:00:10 2002  Manish Singh  <yosh@gimp.org>
 
 	* gvaluetransform.c: use G_G[U]INT64_FORMAT unconditionally,

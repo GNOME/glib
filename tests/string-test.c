@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "glib.h"
+#include "glib/gprintf.h"
 
 int array[10000];
 gboolean failed = FALSE;
@@ -226,6 +227,10 @@ main (int   argc,
   g_assert (g_str_has_suffix("", "xyzzy") == FALSE);
   g_assert (g_str_has_suffix("", "") == TRUE);
 
+  tmp_string = (gchar *) g_malloc (10);
+  g_snprintf (tmp_string, 10, "%2$s %1$s", "a", "b");
+  g_assert (strcmp (tmp_string, "b a") == 0);
   return 0;
 }
+
 

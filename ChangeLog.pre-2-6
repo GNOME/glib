@@ -1,3 +1,8 @@
+2002-12-13  Matthias Clasen  <maclas@gmx.de>
+
+	* tests/string-test.c: Add a test for positional parameters in
+	g_snprintf().
+
 Thu Dec 12 14:58:55 2002  Manish Singh  <yosh@gimp.org>
 
 	* configure.in: pull in trio if host printf doesn't have a known

@@ -22,7 +22,7 @@
 #define G_LOG_DOMAIN "GLib-Genmarshal"
 #include	<glib.h>
 
-#include	<stdio.h>
+#include	<glib/gprintf.h>
 #include	<stdlib.h>
 #include	<fcntl.h>
 #include	<string.h>
@@ -352,57 +352,57 @@ generate_marshal (const gchar *signame,
 
   if (gen_cheader && have_std_marshaller)
     {
-      fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, signame, std_marshaller_prefix, signame);
+      g_fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, signame, std_marshaller_prefix, signame);
     }
   if (gen_cheader && !have_std_marshaller)
     {
-      ind = fprintf (fout, "extern void ");
-      ind += fprintf (fout, "%s_%s (", marshaller_prefix, signame);
-      fprintf (fout,   "GClosure     *closure,\n");
-      fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
-      fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
-      fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
-      fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
-      fprintf (fout, "%sgpointer      marshal_data);\n", indent (ind));
+      ind = g_fprintf (fout, "extern void ");
+      ind += g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
+      g_fprintf (fout,   "GClosure     *closure,\n");
+      g_fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
+      g_fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
+      g_fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      marshal_data);\n", indent (ind));
     }
   if (gen_cbody && !have_std_marshaller)
     {
       /* cfile marhsal header */
-      fprintf (fout, "void\n");
-      ind = fprintf (fout, "%s_%s (", marshaller_prefix, signame);
-      fprintf (fout,   "GClosure     *closure,\n");
-      fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
-      fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
-      fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
-      fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
-      fprintf (fout, "%sgpointer      marshal_data)\n", indent (ind));
-      fprintf (fout, "{\n");
+      g_fprintf (fout, "void\n");
+      ind = g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
+      g_fprintf (fout,   "GClosure     *closure,\n");
+      g_fprintf (fout, "%sGValue       *return_value,\n", indent (ind));
+      g_fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
+      g_fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      invocation_hint,\n", indent (ind));
+      g_fprintf (fout, "%sgpointer      marshal_data)\n", indent (ind));
+      g_fprintf (fout, "{\n");
 
       /* cfile GMarshalFunc typedef */
-      ind = fprintf (fout, "  typedef %s (*GMarshalFunc_%s) (", sig->rarg->ctype, signame);
-      fprintf (fout, "%s data1,\n", pad ("gpointer"));
+      ind = g_fprintf (fout, "  typedef %s (*GMarshalFunc_%s) (", sig->rarg->ctype, signame);
+      g_fprintf (fout, "%s data1,\n", pad ("gpointer"));
       for (a = 1, node = sig->args; node; node = node->next)
 	{
 	  InArgument *iarg = node->data;
 
 	  if (iarg->getter)
-	    fprintf (fout, "%s%s arg_%d,\n", indent (ind), pad (iarg->ctype), a++);
+	    g_fprintf (fout, "%s%s arg_%d,\n", indent (ind), pad (iarg->ctype), a++);
 	}
-      fprintf (fout, "%s%s data2);\n", indent (ind), pad ("gpointer"));
+      g_fprintf (fout, "%s%s data2);\n", indent (ind), pad ("gpointer"));
 
       /* cfile marshal variables */
-      fprintf (fout, "  register GMarshalFunc_%s callback;\n", signame);
-      fprintf (fout, "  register GCClosure *cc = (GCClosure*) closure;\n");
-      fprintf (fout, "  register gpointer data1, data2;\n");
+      g_fprintf (fout, "  register GMarshalFunc_%s callback;\n", signame);
+      g_fprintf (fout, "  register GCClosure *cc = (GCClosure*) closure;\n");
+      g_fprintf (fout, "  register gpointer data1, data2;\n");
       if (sig->rarg->setter)
-	fprintf (fout, "  %s v_return;\n", sig->rarg->ctype);
+	g_fprintf (fout, "  %s v_return;\n", sig->rarg->ctype);
 
       if (sig->args || sig->rarg->setter)
 	{
-	  fprintf (fout, "\n");
+	  g_fprintf (fout, "\n");
 
 	  if (sig->rarg->setter)
-	    fprintf (fout, "  g_return_if_fail (return_value != NULL);\n");
+	    g_fprintf (fout, "  g_return_if_fail (return_value != NULL);\n");
 	  if (sig->args)
 	    {
 	      for (a = 0, node = sig->args; node; node = node->next)
@@ -412,43 +412,43 @@ generate_marshal (const gchar *signame,
 		  if (iarg->getter)
 		    a++;
 		}
-	      fprintf (fout, "  g_return_if_fail (n_param_values == %u);\n", 1 + a);
+	      g_fprintf (fout, "  g_return_if_fail (n_param_values == %u);\n", 1 + a);
 	    }
 	}
 
       /* cfile marshal data1, data2 and callback setup */
-      fprintf (fout, "\n");
-      fprintf (fout, "  if (G_CCLOSURE_SWAP_DATA (closure))\n    {\n");
-      fprintf (fout, "      data1 = closure->data;\n");
-      fprintf (fout, "      data2 = g_value_peek_pointer (param_values + 0);\n");
-      fprintf (fout, "    }\n  else\n    {\n");
-      fprintf (fout, "      data1 = g_value_peek_pointer (param_values + 0);\n");
-      fprintf (fout, "      data2 = closure->data;\n");
-      fprintf (fout, "    }\n");
-      fprintf (fout, "  callback = (GMarshalFunc_%s) (marshal_data ? marshal_data : cc->callback);\n", signame);
+      g_fprintf (fout, "\n");
+      g_fprintf (fout, "  if (G_CCLOSURE_SWAP_DATA (closure))\n    {\n");
+      g_fprintf (fout, "      data1 = closure->data;\n");
+      g_fprintf (fout, "      data2 = g_value_peek_pointer (param_values + 0);\n");
+      g_fprintf (fout, "    }\n  else\n    {\n");
+      g_fprintf (fout, "      data1 = g_value_peek_pointer (param_values + 0);\n");
+      g_fprintf (fout, "      data2 = closure->data;\n");
+      g_fprintf (fout, "    }\n");
+      g_fprintf (fout, "  callback = (GMarshalFunc_%s) (marshal_data ? marshal_data : cc->callback);\n", signame);
 
       /* cfile marshal callback action */
-      fprintf (fout, "\n");
-      ind = fprintf (fout, " %s callback (", sig->rarg->setter ? " v_return =" : "");
-      fprintf (fout, "data1,\n");
+      g_fprintf (fout, "\n");
+      ind = g_fprintf (fout, " %s callback (", sig->rarg->setter ? " v_return =" : "");
+      g_fprintf (fout, "data1,\n");
       for (a = 1, node = sig->args; node; node = node->next)
 	{
 	  InArgument *iarg = node->data;
 
 	  if (iarg->getter)
-	    fprintf (fout, "%s%s (param_values + %d),\n", indent (ind), iarg->getter, a++);
+	    g_fprintf (fout, "%s%s (param_values + %d),\n", indent (ind), iarg->getter, a++);
 	}
-      fprintf (fout, "%sdata2);\n", indent (ind));
+      g_fprintf (fout, "%sdata2);\n", indent (ind));
 
       /* cfile marshal return value storage */
       if (sig->rarg->setter)
 	{
-	  fprintf (fout, "\n");
-	  fprintf (fout, "  %s (return_value, v_return);\n", sig->rarg->setter);
+	  g_fprintf (fout, "\n");
+	  g_fprintf (fout, "  %s (return_value, v_return);\n", sig->rarg->setter);
 	}
 
       /* cfile marshal footer */
-      fprintf (fout, "}\n");
+      g_fprintf (fout, "}\n");
     }
 }
 
@@ -492,16 +492,16 @@ process_signature (Signature *sig)
     }
 
   /* introductionary comment */
-  fprintf (fout, "\n/* %s", sig->rarg->keyword);
+  g_fprintf (fout, "\n/* %s", sig->rarg->keyword);
   for (node = sig->args; node; node = node->next)
     {
       InArgument *iarg = node->data;
 
-      fprintf (fout, "%c%s", node->prev ? ',' : ':', iarg->keyword);
+      g_fprintf (fout, "%c%s", node->prev ? ',' : ':', iarg->keyword);
     }
   if (!skip_ploc)
-    fprintf (fout, " (%s)", sig->ploc);
-  fprintf (fout, " */\n");
+    g_fprintf (fout, " (%s)", sig->ploc);
+  g_fprintf (fout, " */\n");
 
   /* ensure technical marshaller exists (<marshaller_prefix>_<sname>) */
   generate_marshal (sname, sig);
@@ -510,7 +510,7 @@ process_signature (Signature *sig)
   tmp = g_strconcat (marshaller_prefix, "_", pname, NULL);
   if (gen_cheader && !g_hash_table_lookup (marshallers, tmp))
     {
-      fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, pname, marshaller_prefix, sname);
+      g_fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, pname, marshaller_prefix, sname);
 
       g_hash_table_insert (marshallers, tmp, tmp);
     }
@@ -630,19 +630,19 @@ main (int   argc,
       }
 
   /* put out initial heading */
-  fprintf (fout, "\n");
+  g_fprintf (fout, "\n");
 
   if (gen_cheader && std_includes)
     {
-      fprintf (fout, "#ifndef __%s_MARSHAL_H__\n", marshaller_prefix);
-      fprintf (fout, "#define __%s_MARSHAL_H__\n\n", marshaller_prefix);
+      g_fprintf (fout, "#ifndef __%s_MARSHAL_H__\n", marshaller_prefix);
+      g_fprintf (fout, "#define __%s_MARSHAL_H__\n\n", marshaller_prefix);
     }
 
   if ((gen_cheader || gen_cbody) && std_includes)
-    fprintf (fout, "#include\t<glib-object.h>\n\n");
+    g_fprintf (fout, "#include\t<glib-object.h>\n\n");
 
   if (gen_cheader)
-    fprintf (fout, "G_BEGIN_DECLS\n");
+    g_fprintf (fout, "G_BEGIN_DECLS\n");
 
   /* generate necessary preprocessor directives */
   if (gen_cbody)
@@ -730,12 +730,12 @@ main (int   argc,
   /* put out trailer */
   if (gen_cheader)
     {
-      fprintf (fout, "\nG_END_DECLS\n");
+      g_fprintf (fout, "\nG_END_DECLS\n");
 
       if (std_includes)
-	fprintf (fout, "\n#endif /* __%s_MARSHAL_H__ */\n", marshaller_prefix);
+	g_fprintf (fout, "\n#endif /* __%s_MARSHAL_H__ */\n", marshaller_prefix);
     }
-  fprintf (fout, "\n");
+  g_fprintf (fout, "\n");
 
   /* clean up */
   g_slist_free (files);
@@ -846,25 +846,25 @@ print_blurb (FILE    *bout,
 {
   if (!print_help)
     {
-      fprintf (bout, "%s version ", PRG_NAME);
-      fprintf (bout, "%u.%u.%u", GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
-      fprintf (bout, "\n");
-      fprintf (bout, "%s comes with ABSOLUTELY NO WARRANTY.\n", PRG_NAME);
-      fprintf (bout, "You may redistribute copies of %s under the terms of\n", PRG_NAME);
-      fprintf (bout, "the GNU General Public License which can be found in the\n");
-      fprintf (bout, "%s source package. Sources, examples and contact\n", PKG_NAME);
-      fprintf (bout, "information are available at %s\n", PKG_HTTP_HOME);
+      g_fprintf (bout, "%s version ", PRG_NAME);
+      g_fprintf (bout, "%u.%u.%u", GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+      g_fprintf (bout, "\n");
+      g_fprintf (bout, "%s comes with ABSOLUTELY NO WARRANTY.\n", PRG_NAME);
+      g_fprintf (bout, "You may redistribute copies of %s under the terms of\n", PRG_NAME);
+      g_fprintf (bout, "the GNU General Public License which can be found in the\n");
+      g_fprintf (bout, "%s source package. Sources, examples and contact\n", PKG_NAME);
+      g_fprintf (bout, "information are available at %s\n", PKG_HTTP_HOME);
     }
   else
     {
-      fprintf (bout, "Usage: %s [options] [files...]\n", PRG_NAME);
-      fprintf (bout, "  --header                   generate C headers\n");
-      fprintf (bout, "  --body                     generate C code\n");
-      fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
-      fprintf (bout, "  --skip-source              skip source location comments\n");
-      fprintf (bout, "  --stdinc, --nostdinc       include/use standard marshallers\n");
-      fprintf (bout, "  -h, --help                 show this help message\n");
-      fprintf (bout, "  -v, --version              print version informations\n");
-      fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");
+      g_fprintf (bout, "Usage: %s [options] [files...]\n", PRG_NAME);
+      g_fprintf (bout, "  --header                   generate C headers\n");
+      g_fprintf (bout, "  --body                     generate C code\n");
+      g_fprintf (bout, "  --prefix=string            specify marshaller prefix\n");
+      g_fprintf (bout, "  --skip-source              skip source location comments\n");
+      g_fprintf (bout, "  --stdinc, --nostdinc       include/use standard marshallers\n");
+      g_fprintf (bout, "  -h, --help                 show this help message\n");
+      g_fprintf (bout, "  -v, --version              print version informations\n");
+      g_fprintf (bout, "  --g-fatal-warnings         make warnings fatal (abort)\n");
     }
 }

@@ -20,7 +20,7 @@
 
 #include        <glib-object.h>
 
-#include	<stdio.h>
+#include	<glib/gprintf.h>
 #include	<stdlib.h>
 #include	<string.h>
 #ifdef HAVE_UNISTD_H
@@ -66,9 +66,9 @@ show_nodes (GType        type,
   
   if (type != root)
     for (i = 0; i < spacing; i++)
-      fprintf (f_out, "%s%s\n", indent, O_VLINE);
+      g_fprintf (f_out, "%s%s\n", indent, O_VLINE);
   
-  fprintf (f_out, "%s%s%s%s",
+  g_fprintf (f_out, "%s%s%s%s",
 	   indent,
 	   sibling ? O_BRANCH : (type != root ? O_LLEAF : O_SPACE),
 	   O_ESPACE,
@@ -101,16 +101,16 @@ show_nodes (GType        type,
 static gint
 help (gchar *arg)
 {
-  fprintf (stderr, "usage: query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
-  fprintf (stderr, "       -r       specifiy root type\n");
-  fprintf (stderr, "       -n       don't descend type tree\n");
-  fprintf (stderr, "       -h       guess what ;)\n");
-  fprintf (stderr, "       -b       specify indent string\n");
-  fprintf (stderr, "       -i       specify incremental indent string\n");
-  fprintf (stderr, "       -s       specify line spacing\n");
-  fprintf (stderr, "qualifiers:\n");
-  fprintf (stderr, "       froots   iterate over fundamental roots\n");
-  fprintf (stderr, "       tree     print type tree\n");
+  g_fprintf (stderr, "usage: query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
+  g_fprintf (stderr, "       -r       specifiy root type\n");
+  g_fprintf (stderr, "       -n       don't descend type tree\n");
+  g_fprintf (stderr, "       -h       guess what ;)\n");
+  g_fprintf (stderr, "       -b       specify indent string\n");
+  g_fprintf (stderr, "       -i       specify incremental indent string\n");
+  g_fprintf (stderr, "       -s       specify line spacing\n");
+  g_fprintf (stderr, "qualifiers:\n");
+  g_fprintf (stderr, "       froots   iterate over fundamental roots\n");
+  g_fprintf (stderr, "       tree     print type tree\n");
   
   return arg != NULL;
 }
