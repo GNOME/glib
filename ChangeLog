@@ -1,3 +1,9 @@
+2004-07-01  John Ehresman  <jpe@wingide.com>
+
+	* glib/giowin32.c (g_io_channel_win32_init, g_io_win32_free)
+	Initialize reset_send & reset_recv fields and don't close
+	sockets unless they were created.  (#145153)
+
 Fri Jun 11 22:56:46 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gscanner.c (g_scanner_get_token_ll): Ignore a 
