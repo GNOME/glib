@@ -87,7 +87,6 @@ static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING
 #  include <windows.h>
 #  undef STRICT
 #  include <process.h>          /* For _getpid() */
-static gboolean alloc_console_called = FALSE;
 static gboolean win32_keep_fatal_message = FALSE;
 
 /* This default message will usually be overwritten. */
@@ -122,6 +121,7 @@ dowrite (GFileDescriptor fd,
 static void
 ensure_stdout_valid (void)
 {
+  static gboolean alloc_console_called = FALSE;
   HANDLE handle;
 
   if (win32_keep_fatal_message)
@@ -143,6 +143,7 @@ ensure_stdout_valid (void)
 static void
 ensure_stderr_valid (void)
 {
+  static gboolean alloc_console_called = FALSE;
   HANDLE handle;
 
   if (win32_keep_fatal_message)
