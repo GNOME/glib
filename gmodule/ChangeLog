@@ -1,3 +1,9 @@
+Thu Aug 20 07:08:16 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.c: provide no operation implementation for the underlying
+	_g_module_* functions, so we at least compile on systems that have
+ 	neither of G_MODULE_IMPL_DL or G_MODULE_IMPL_DLD.
+
 Mon Aug 17 03:41:52 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.h:

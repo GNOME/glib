@@ -110,6 +110,28 @@ g_module_set_error (const gchar *error)
 #else
 #undef	CHECK_ERROR
 #define	CHECK_ERROR(rv)	{ g_module_set_error ("unsupported"); return rv; }
+static gpointer
+_g_module_open (const gchar	*file_name,
+		gboolean	 bind_lazy)
+{
+  return NULL;
+}
+static void
+_g_module_close	(gpointer	 handle,
+		 gboolean	 is_unref)
+{
+}
+static gpointer
+_g_module_self (void)
+{
+  return NULL;
+}
+static gpointer
+_g_module_symbol (gpointer	 handle,
+		  const gchar	*symbol_name)
+{
+  return NULL;
+}
 #endif	/* no implementation */
 
 
