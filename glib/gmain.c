@@ -1824,13 +1824,10 @@ get_depth_pointer (void)
  * problems with reentrancy. For instance, while waiting for data
  * to be received from the network in response to a menu item,
  * the menu item might be selected again. It might seem that
- * one could write:
- *
- *   if (g_main_depth () > 1)
- *     return; 
- *
- * This should be avoided since the user then sees selecting the
- * menu item do nothing. Furthermore, you'll find yourself adding
+ * one could make the menu item's callback return immediately
+ * and do nothing if g_main_depth() returns a value greater than 1.
+ * However, this should be avoided since the user then sees selecting
+ * the menu item do nothing. Furthermore, you'll find yourself adding
  * these checks all over your code, since there are doubtless many,
  * many things that the user could do. Instead, you can use the
  * following techniques:
