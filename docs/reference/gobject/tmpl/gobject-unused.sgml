@@ -1,33 +1,36 @@
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
+<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
 <para>
 
 </para>
 
 @plugin: 
 
-<!-- ##### ENUM GSignalType ##### -->
+<!-- ##### FUNCTION g_signals_destroy ##### -->
 <para>
 
 </para>
 
-@G_SIGNAL_RUN_FIRST: 
-@G_SIGNAL_RUN_LAST: 
-@G_SIGNAL_RUN_CLEANUP: 
-@G_SIGNAL_NO_RECURSE: 
-@G_SIGNAL_ACTION: 
-@G_SIGNAL_NO_HOOKS: 
+@itype: 
 
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Long_Description ##### -->
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### STRUCT GTypePluginVTable ##### -->
 <para>
 
 </para>
 
+@plugin_ref: 
+@plugin_unref: 
+@complete_type_info: 
+@complete_interface_info: 
 
 <!-- ##### FUNCTION g_signal_connect_closure ##### -->
 <para>
@@ -41,11 +44,35 @@
 @after: 
 @Returns: 
 
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Title ##### -->
-gtypemodule.sgml
+<!-- ##### ENUM GSignalType ##### -->
+<para>
+
+</para>
+
+@G_SIGNAL_RUN_FIRST: 
+@G_SIGNAL_RUN_LAST: 
+@G_SIGNAL_RUN_CLEANUP: 
+@G_SIGNAL_NO_RECURSE: 
+@G_SIGNAL_ACTION: 
+@G_SIGNAL_NO_HOOKS: 
+
+<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
+<para>
+
+</para>
+
+@plugin: 
+@g_type: 
+@info: 
+@value_table: 
+
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:See_Also ##### -->
+<para>
+
+</para>
 
 
-<!-- ##### USER_FUNCTION GTypePluginUnRef ##### -->
+<!-- ##### USER_FUNCTION GTypePluginRef ##### -->
 <para>
 
 </para>
@@ -68,32 +95,9 @@ gtypemodule.sgml
 @flags: 
 @Returns: 
 
-<!-- ##### USER_FUNCTION GTypePluginFillTypeInfo ##### -->
-<para>
+<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Title ##### -->
+gtypemodule.sgml
 
-</para>
-
-@plugin: 
-@g_type: 
-@info: 
-@value_table: 
-
-<!-- ##### FUNCTION g_signals_destroy ##### -->
-<para>
-
-</para>
-
-@itype: 
-
-<!-- ##### STRUCT GTypePluginVTable ##### -->
-<para>
-
-</para>
-
-@plugin_ref: 
-@plugin_unref: 
-@complete_type_info: 
-@complete_interface_info: 
 
 <!-- ##### USER_FUNCTION GTypePluginFillInterfaceInfo ##### -->
 <para>
@@ -104,8 +108,4 @@ gtypemodule.sgml
 @interface_type: 
 @instance_type: 
 @info: 
-
-<!-- ##### SECTION ./tmpl/gtypemodule.sgml.sgml:Short_Description ##### -->
-
-
 

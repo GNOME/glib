@@ -1,3 +1,12 @@
+Tue Dec  5 15:41:23 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * glib/Makefile.am glib/mainloop-states*: add images
+
+	* glib/glib-sections.txt: Updated
+
+	* glib/tmpl/main.sgml: More documentation, move function
+	docs to .c file.
+
 Mon Nov 13 00:18:55 2000  Owen Taylor  <otaylor@redhat.com>
 
         * glib/glib-sections.sgml: Move conversion functions

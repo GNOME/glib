@@ -74,6 +74,12 @@ tmpl_sources =				\
 	tmpl/warnings.sgml		\
 	tmpl/windows.sgml
 
+extra_files =				\
+	mainloop-states.fig		\
+	mainloop-states.png		\
+	mainloop-states.eps		\
+	mainloop-states.gif
+
 
 ####################################
 # Everything below here is generic #
@@ -82,6 +88,7 @@ tmpl_sources =				\
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 EXTRA_DIST = 				\
+	$(extra_files)			\
 	$(DOC_MAIN_SGML_FILE)		\
 	$(DOC_MODULE)-decl.txt		\
 	$(DOC_MODULE)-sections.txt	\
@@ -117,6 +124,7 @@ sgml:
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	cp $(srcdir)/*.gif $(srcdir)/html
 	@echo '-- Fixing Crossreferences' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 
@@ -159,6 +167,6 @@ dist-hook: dist-check-gtkdoc
 	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
 	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 	-cp $(srcdir)/html/index.sgml $(distdir)/html
-	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
+	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(srcdir)/html/*.gif $(distdir)/html
 
 .PHONY : html sgml templates scan

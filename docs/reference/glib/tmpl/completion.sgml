@@ -47,6 +47,7 @@ g_completion_complete().
 @func: 
 @prefix: 
 @cache: 
+@strncmp_func: 
 
 <!-- ##### FUNCTION g_completion_new ##### -->
 <para>
@@ -68,6 +69,16 @@ This is used when you use data structures as #GCompletion items.
 
 @Param1: the completion item.
 @Returns: the string corresponding to the item.
+
+
+<!-- ##### USER_FUNCTION GCompletionStrcmpFunc ##### -->
+<para>
+
+</para>
+
+@s1: 
+@s2: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_completion_add_items ##### -->
