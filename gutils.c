@@ -443,7 +443,7 @@ g_get_any_init (void)
 
 #  ifdef HAVE_GETPWUID_R
         struct passwd pwd;
-        guint bufsize = 1; /* sizeof (struct passwd); */
+        guint bufsize = 64;
         gint error;
 
         do
