@@ -1,9 +1,9 @@
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Aktualn± wersjê tego pliku mo¿esz odnale¼æ w repozytorium cvs.gnome.pl
-# (:pserver:anonymous@cvs.gnome.pl:/home/cvs, puste has³o)
-# Je¶li masz jakiekolwiek uwagi odnosz±ce siê do t³umaczenia lub chcesz
-# pomóc w jego rozwijaniu i pielêgnowaniu, napisz do nas na adres:
+# AktualnÄ… wersjÄ™ tego pliku moÅ¼esz odnaleÅºÄ‡ w repozytorium cvs.gnome.pl
+# (:pserver:anonymous@cvs.gnome.pl:/home/cvs, puste hasÅ‚o)
+# JeÅ›li masz jakiekolwiek uwagi odnoszÄ…ce siÄ™ do tÅ‚umaczenia lub chcesz
+# pomÃ³c w jego rozwijaniu i pielÄ™gnowaniu, napisz do nas na adres:
 # translators@gnome.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 msgid ""
@@ -14,31 +14,31 @@ msgstr ""
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
-"Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obs³ugiwana"
+"Konwersja z zestawu znakÃ³w \"%s\" na zestaw \"%s\" nie jest obsÅ‚ugiwana"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Nie mo¿na otworzyæ konwertera z \"%s\" na \"%s\": %s"
+msgstr "Nie moÅ¼na otworzyÄ‡ konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/gconvert.c:1 glib/gconvert.c:1 glib/giochannel.c:1
 #: glib/giochannel.c:1 glib/giochannel.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1
 msgid "Invalid byte sequence in conversion input"
-msgstr "Niepoprawna sekwencja bajtów na wej¶ciu konwersji"
+msgstr "Niepoprawna sekwencja bajtÃ³w na wejÅ›ciu konwersji"
 
 #: glib/gconvert.c:1 glib/gconvert.c:1 glib/giochannel.c:1
 #: glib/giochannel.c:1
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "B³±d podczas konwersji: %s"
+msgstr "BÅ‚Ä…d podczas konwersji: %s"
 
 #: glib/gconvert.c:1 glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1
@@ -53,12 +53,12 @@ msgstr ""
 #: glib/gconvert.c:1
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the file scheme"
-msgstr "URI \"%s\" nie jest bezwzglêdnym URI, u¿ywaj±cym schematu plikowego"
+msgstr "URI \"%s\" nie jest bezwzglÄ™dnym URI, uÅ¼ywajÄ…cym schematu plikowego"
 
 #: glib/gconvert.c:1
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "URI lokalnego pliku \"%s\" nie mo¿e zawieraæ znaku \"#\""
+msgstr "URI lokalnego pliku \"%s\" nie moÅ¼e zawieraÄ‡ znaku \"#\""
 
 #: glib/gconvert.c:1
 #, c-format
@@ -78,73 +78,73 @@ msgstr ""
 #: glib/gconvert.c:1
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "¦cie¿ka \"%s\" nie jest ¶cie¿k± bezwzglêdn±"
+msgstr "ÅšcieÅ¼ka \"%s\" nie jest Å›cieÅ¼kÄ… bezwzglÄ™dnÄ…"
 
 #: glib/gconvert.c:1
 msgid "Invalid byte sequence in hostname"
-msgstr "Niepoprawna sekwencja bajtów w nazwie komputera"
+msgstr "Niepoprawna sekwencja bajtÃ³w w nazwie komputera"
 
 #: glib/gdir.c:1
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Wyst±pi³ b³±d przy otwieraniu katalogu \"%s\": %s"
+msgstr "WystÄ…piÅ‚ bÅ‚Ä…d przy otwieraniu katalogu \"%s\": %s"
 
 #: glib/gfileutils.c:1 glib/gfileutils.c:1
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Nie mo¿na zaalokowaæ %lu bajtów do odczytu pliku \"%s\""
+msgstr "Nie moÅ¼na zaalokowaÄ‡ %lu bajtÃ³w do odczytu pliku \"%s\""
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Wyst±pi³ b³±d przy odczycie pliku \"%s\": %s"
+msgstr "WystÄ…piÅ‚ bÅ‚Ä…d przy odczycie pliku \"%s\": %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Nie mo¿na odczytaæ z pliku \"%s\": %s"
+msgstr "Nie moÅ¼na odczytaÄ‡ z pliku \"%s\": %s"
 
 #: glib/gfileutils.c:1 glib/gfileutils.c:1
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Nie mo¿na otworzyæ pliku \"%s\": %s"
+msgstr "Nie moÅ¼na otworzyÄ‡ pliku \"%s\": %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Nie mo¿na uzyskaæ atrybutów pliku \"%s\": funkcja fstat() zwróci³a b³±d: %s"
+"Nie moÅ¼na uzyskaÄ‡ atrybutÃ³w pliku \"%s\": funkcja fstat() zwrÃ³ciÅ‚a bÅ‚Ä…d: %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Nie mo¿na otworzyæ pliku \"%s\": funcja fdopen() zwróci³a b³±d: %s"
+msgstr "Nie moÅ¼na otworzyÄ‡ pliku \"%s\": funcja fdopen() zwrÃ³ciÅ‚a bÅ‚Ä…d: %s"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Szablon \"%s\" jest niepoprawny, nie powinien on zawieraæ \"%s\""
+msgstr "Szablon \"%s\" jest niepoprawny, nie powinien on zawieraÄ‡ \"%s\""
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
-msgstr "Szablon \"%s\" nie jest zakoñczony znakami XXXXXX"
+msgstr "Szablon \"%s\" nie jest zakoÅ„czony znakami XXXXXX"
 
 #: glib/gfileutils.c:1
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Nie mo¿na stworzyæ pliku \"%s\": %s"
+msgstr "Nie moÅ¼na stworzyÄ‡ pliku \"%s\": %s"
 
 #: glib/giochannel.c:1
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr ""
-"Konwersja z zestawu znaków \"%s\" na zestaw \"%s\" nie jest obs³ugiwana"
+"Konwersja z zestawu znakÃ³w \"%s\" na zestaw \"%s\" nie jest obsÅ‚ugiwana"
 
 #: glib/giochannel.c:1
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Nie mo¿na otworzyæ konwertera z \"%s\" na \"%s\": %s"
+msgstr "Nie moÅ¼na otworzyÄ‡ konwertera z \"%s\" na \"%s\": %s"
 
 #: glib/giochannel.c:1
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -168,7 +168,7 @@ msgstr "Niepoprawny rozmiar danych"
 
 #: glib/giowin32.c:1 glib/giowin32.c:1
 msgid "Socket error"
-msgstr "B³±d przy operacji na gnie¼dzie"
+msgstr "BÅ‚Ä…d przy operacji na gnieÅºdzie"
 
 #: glib/giowin32.c:1
 msgid "Channel set flags unsupported"
@@ -177,18 +177,18 @@ msgstr ""
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "B³±d w wierszu %d przy znaku %d: %s"
+msgstr "BÅ‚Ä…d w wierszu %d przy znaku %d: %s"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "B³±d w wierszu %d: %s"
+msgstr "BÅ‚Ä…d w wierszu %d: %s"
 
 #: glib/gmarkup.c:1
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Napotkano pust± jednostkê \"&;\"; poprawnymi jednostkami s±: &amp; &quot; "
+"Napotkano pustÄ… jednostkÄ™ \"&;\"; poprawnymi jednostkami sÄ…: &amp; &quot; "
 "&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:1
@@ -202,7 +202,7 @@ msgstr ""
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
-msgstr "Znak \"%s\" nie jest dopuszczalny wewn±trz nazwy jednostki"
+msgstr "Znak \"%s\" nie jest dopuszczalny wewnÄ…trz nazwy jednostki"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -214,8 +214,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Jednostka nie jest zakoñczona ¶rednikiem; najprawdopodobniej zosta³ u¿yty "
-"znak &, który nie mia³ oznaczaæ jednostki - nale¿y go zapisaæ jako &amp;"
+"Jednostka nie jest zakoÅ„czona Å›rednikiem; najprawdopodobniej zostaÅ‚ uÅ¼yty "
+"znak &, ktÃ³ry nie miaÅ‚ oznaczaÄ‡ jednostki - naleÅ¼y go zapisaÄ‡ jako &amp;"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -242,11 +242,11 @@ msgstr ""
 
 #: glib/gmarkup.c:1 glib/gmarkup.c:1 glib/gmarkup.c:1
 msgid "Invalid UTF-8 encoded text"
-msgstr "Tekst nie jest poprawnym ³añcuchem UTF-8"
+msgstr "Tekst nie jest poprawnym Å‚aÅ„cuchem UTF-8"
 
 #: glib/gmarkup.c:1
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "Dokument musi rozpoczynaæ siê jakim¶ elementem (np. <book>)"
+msgstr "Dokument musi rozpoczynaÄ‡ siÄ™ jakimÅ› elementem (np. <book>)"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -254,7 +254,7 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"Znak \"%s\" nie powinien wystêpowaæ po znaku \"<\"; nie mo¿e on rozpoczynaæ "
+"Znak \"%s\" nie powinien wystÄ™powaÄ‡ po znaku \"<\"; nie moÅ¼e on rozpoczynaÄ‡ "
 "nazwy elementu"
 
 #: glib/gmarkup.c:1
@@ -263,7 +263,7 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
 msgstr ""
-"Niespodziewany znak \"%s\"; oczekiwano znaku \">\", koñcz±cego pocz±tkowy "
+"Niespodziewany znak \"%s\"; oczekiwano znaku \">\", koÅ„czÄ…cego poczÄ…tkowy "
 "znacznik elementu \"%s\""
 
 #: glib/gmarkup.c:1
@@ -281,9 +281,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Niespodziewany znak \"%s\"; oczekiwano znaku \">\" lub \"/\", koñcz±cego "
-"znacznik pocz±tkowy elementu \"%s\" lub opcjonalnie atrybutu; byæ mo¿e w "
-"nazwie atrybutu zosta³ u¿yty niepoprawny znak"
+"Niespodziewany znak \"%s\"; oczekiwano znaku \">\" lub \"/\", koÅ„czÄ…cego "
+"znacznik poczÄ…tkowy elementu \"%s\" lub opcjonalnie atrybutu; byÄ‡ moÅ¼e w "
+"nazwie atrybutu zostaÅ‚ uÅ¼yty niepoprawny znak"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -291,8 +291,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Niespodziewany znak \"%s\"; oczekiwano otwieraj±cego znaku cudzys³owu po "
-"znaku równo¶ci przy podawaniu warto¶ci atrybutu \"%s\" elementu \"%s\""
+"Niespodziewany znak \"%s\"; oczekiwano otwierajÄ…cego znaku cudzysÅ‚owu po "
+"znaku rÃ³wnoÅ›ci przy podawaniu wartoÅ›ci atrybutu \"%s\" elementu \"%s\""
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -300,20 +300,20 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"Znak \"%s\" nie jest znakiem, który mo¿e pojawiæ siê po sekwencji \"</\"; "
-"\"%s\" nie mo¿e rozpoczynaæ nazwy elementu"
+"Znak \"%s\" nie jest znakiem, ktÃ³ry moÅ¼e pojawiÄ‡ siÄ™ po sekwencji \"</\"; "
+"\"%s\" nie moÅ¼e rozpoczynaÄ‡ nazwy elementu"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr ""
-"Element \"%s\" zosta³ zamkniêty, lecz brak aktualnie otwartego elementu"
+"Element \"%s\" zostaÅ‚ zamkniÄ™ty, lecz brak aktualnie otwartego elementu"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Element \"%s\" zosta³ zamkniêty, lecz aktualnie otwartym elementem jest "
+"Element \"%s\" zostaÅ‚ zamkniÄ™ty, lecz aktualnie otwartym elementem jest "
 "\"%s\""
 
 #: glib/gmarkup.c:1
@@ -322,7 +322,7 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"Znak \"%s\" nie jest znakiem, który mo¿e wyst±piæ po domykaj±cej nazwie "
+"Znak \"%s\" nie jest znakiem, ktÃ³ry moÅ¼e wystÄ…piÄ‡ po domykajÄ…cej nazwie "
 "elementu \"%s\"; dopuszczalnym znakiem jest \">\""
 
 #: glib/gmarkup.c:1
@@ -331,7 +331,7 @@ msgstr "Dokument jest pusty lub zawiera tylko separatory"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Zaraz po znaku \"%s\" nast±pi³ nieoczekiwany koniec dokumentu"
+msgstr "Zaraz po znaku \"%s\" nastÄ…piÅ‚ nieoczekiwany koniec dokumentu"
 
 #: glib/gmarkup.c:1 glib/gmarkup.c:1
 #, c-format
@@ -339,8 +339,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Nast±pi³ nieoczekiwany koniec dokumentu, gdy pewne elementy s± wci±¿ otwarte "
-"- \"%s\" by³ ostatnim otwartym elementem"
+"NastÄ…piÅ‚ nieoczekiwany koniec dokumentu, gdy pewne elementy sÄ… wciÄ…Å¼ otwarte "
+"- \"%s\" byÅ‚ ostatnim otwartym elementem"
 
 #: glib/gmarkup.c:1
 #, c-format
@@ -351,16 +351,16 @@ msgstr ""
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz nazwy elementu"
+msgstr "NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz nazwy elementu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz nazwy atrybutu"
+msgstr "NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz nazwy atrybutu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
-"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz znacznika otwieraj±cego "
+"NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz znacznika otwierajÄ…cego "
 "element."
 
 #: glib/gmarkup.c:1
@@ -368,24 +368,24 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Nast±pi³ nieoczekiwany koniec dokumentu po znaku równo¶ci wystêpuj±cym po "
-"nazwie atrybutu; brak warto¶ci atrybutu"
+"NastÄ…piÅ‚ nieoczekiwany koniec dokumentu po znaku rÃ³wnoÅ›ci wystÄ™pujÄ…cym po "
+"nazwie atrybutu; brak wartoÅ›ci atrybutu"
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz warto¶ci atrybutu"
+msgstr "NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz wartoÅ›ci atrybutu"
 
 #: glib/gmarkup.c:1
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
-"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz znacznika domykaj±cego "
+"NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz znacznika domykajÄ…cego "
 "elementu \"%s\""
 
 #: glib/gmarkup.c:1
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
-"Nast±pi³ nieoczekiwany koniec dokumentu wewn±trz komentarza lub instrukcji "
+"NastÄ…piÅ‚ nieoczekiwany koniec dokumentu wewnÄ…trz komentarza lub instrukcji "
 "przetwarzania"
 
 #: glib/gshell.c:1
@@ -400,7 +400,7 @@ msgstr ""
 #, c-format
 msgid "Text ended just after a '' character. (The text was '%s')"
 msgstr ""
-"Tekst zakoñczy³ siê bezpo¶rednio po znaku \" (warto¶ci± tekstu by³o \"%s\")."
+"Tekst zakoÅ„czyÅ‚ siÄ™ bezpoÅ›rednio po znaku \" (wartoÅ›ciÄ… tekstu byÅ‚o \"%s\")."
 
 #: glib/gshell.c:1
 #, c-format
@@ -413,7 +413,7 @@ msgstr "Tekst jest pusty (lub zawiera tylko separatory)"
 
 #: glib/gspawn-win32.c:1
 msgid "Failed to read data from child process"
-msgstr "Nie mo¿na odczytaæ danych z procesu potomnego"
+msgstr "Nie moÅ¼na odczytaÄ‡ danych z procesu potomnego"
 
 #: glib/gspawn-win32.c:1
 msgid ""
@@ -429,59 +429,59 @@ msgstr ""
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Nie mo¿na zmieniæ katalogu na \"%s\" (%s)"
+msgstr "Nie moÅ¼na zmieniÄ‡ katalogu na \"%s\" (%s)"
 
 #: glib/gspawn-win32.c:1
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Nie mo¿na wykonaæ procesu potomnego (%s)"
+msgstr "Nie moÅ¼na wykonaÄ‡ procesu potomnego (%s)"
 
 #: glib/gspawn-win32.c:1 glib/gspawn.c:1
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Nie mo¿na stworzyæ potoku do komunikacji z procesem potomnym (%s)"
+msgstr "Nie moÅ¼na stworzyÄ‡ potoku do komunikacji z procesem potomnym (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Nie mo¿na odczytaæ danych z procesu potomnego (%s)"
+msgstr "Nie moÅ¼na odczytaÄ‡ danych z procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Nieoczekiwany b³±d w funkcji select() przy odczytywaniu danych z procesu "
+"Nieoczekiwany bÅ‚Ä…d w funkcji select() przy odczytywaniu danych z procesu "
 "potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "Nieoczekiwany b³±d w funkcji waitpit() (%s)"
+msgstr "Nieoczekiwany bÅ‚Ä…d w funkcji waitpit() (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Nie mo¿na stworzyæ procesu (%s)"
+msgstr "Nie moÅ¼na stworzyÄ‡ procesu (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Nie mo¿na wykonaæ procesu potomnego \"%s\" (%s)"
+msgstr "Nie moÅ¼na wykonaÄ‡ procesu potomnego \"%s\" (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Nie mo¿na przekierowaæ wej¶cia lub wyj¶cia procesu potomnego (%s)"
+msgstr "Nie moÅ¼na przekierowaÄ‡ wejÅ›cia lub wyjÅ›cia procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Nie mo¿na stworzyæ procesu potomnego (%s)"
+msgstr "Nie moÅ¼na stworzyÄ‡ procesu potomnego (%s)"
 
 #: glib/gspawn.c:1
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Przy wykonywaniu procesu potomnego \"%s\" wyst±pi³ nieznany b³±d"
+msgstr "Przy wykonywaniu procesu potomnego \"%s\" wystÄ…piÅ‚ nieznany bÅ‚Ä…d"
 
 #: glib/gspawn.c:1
 #, c-format
@@ -495,7 +495,7 @@ msgstr "Znak jest poza zakresem dopuszczalnym dla UTF-8"
 #: glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1 glib/gutf8.c:1
 #: glib/gutf8.c:1 glib/gutf8.c:1
 msgid "Invalid sequence in conversion input"
-msgstr "Niepoprawna sekwencja na wej¶ciu konwersji"
+msgstr "Niepoprawna sekwencja na wejÅ›ciu konwersji"
 
 #: glib/gutf8.c:1 glib/gutf8.c:1
 msgid "Character out of range for UTF-16"
