@@ -1,3 +1,10 @@
+2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* garray.c (g_ptr_array_maybe_expand): Really initialize the whole
+	GPtrArray to 0 after resizing. Pionted out by David Menestrina
+	<dmenest@Princeton.EDU>. Fixes Bug #9270. This needn't be applied
+	to glib-1.3.
+
 Wed Apr 19 08:32:32 2000  Tim Janik  <timj@gtk.org>
 
 	* gscanner.c (g_scanner_new): make sure that
@@ -17,8 +24,8 @@ Fri Mar 24 03:34:02 2000  Tim Janik  <timj@gtk.org>
 
 2000-03-22 Elliot Lee <sopwith@redhat.com>
 
-	* gmem.c (g_mem_chunk_area_compare): Fix 64-bitness bug in comparing two pointers more
-	than 4G apart.
+	* gmem.c (g_mem_chunk_area_compare): Fix 64-bitness bug in
+	comparing two pointers more than 4G apart.
 
 2000-03-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 

@@ -312,7 +312,8 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
       else
 	array->pdata = g_new0 (gpointer, array->alloc);
 
-      memset (array->pdata + old_alloc, 0, array->alloc - old_alloc);
+      memset (array->pdata + old_alloc, 0, 
+	      sizeof (gpointer) * (array->alloc - old_alloc));
     }
 }
 
