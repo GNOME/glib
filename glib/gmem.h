@@ -75,7 +75,7 @@ struct _GMemVTable
   gpointer (*realloc)     (gpointer mem,
 			   gsize    n_bytes);
   void     (*free)        (gpointer mem);
-  /* optional */
+  /* optional; set to NULL if not used ! */
   gpointer (*calloc)      (gsize    n_blocks,
 			   gsize    n_block_bytes);
   gpointer (*try_malloc)  (gsize    n_bytes);
