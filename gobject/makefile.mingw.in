@@ -29,6 +29,7 @@ gobject_OBJECTS =		\
 	gparam.o		\
 	gparamspecs.o		\
 	gsignal.o		\
+	gsourceclosure.o	\
 	gtype.o			\
 	gtypemodule.o		\
 	gtypeplugin.o		\

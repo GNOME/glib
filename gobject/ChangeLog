@@ -1,3 +1,7 @@
+2001-12-06  Tor Lillqvist  <tml@iki.fi>
+
+	* makefile.mingw.in (gobject_OBJECTS): Add gsourceclosure.o.
+
 Mon Nov 26 09:55:12 2001  Tim Janik  <timj@gtk.org>
 
 	* gtype.h: typedef GType to gulong instead of gsize, if possible.
