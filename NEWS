@@ -8,6 +8,8 @@ What's new in GLib 1.3.1:
 * Improvements to the OS/2 port, OS/2 module support.
 * Double ended queue implementation.
 * GLib macros for printf() formatting, e.g. G_GULONG_FORMAT = "lu"
+* New configure option --enable-msg-prefix to prefix messages, warnings
+  et ceteri with the program name and the process id.
 * New thread-safe random number generator Mersenne Twister.
 * g_strcompress() added, g_strescape() had a slight API change, and
   more tightly defined semantics.

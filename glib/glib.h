@@ -1687,7 +1687,10 @@ g_trash_stack_pop (GTrashStack **stack_p)
   if (data)
     {
       *stack_p = data->next;
-      memset (data, 0, sizeof (GTrashStack));
+      /* NULLify private pointer here, most platforms store NULL as
+       * subsequent 0 bytes
+       */
+      data->next = NULL;
     }
 
   return data;

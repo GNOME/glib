@@ -1,3 +1,16 @@
+Sun Aug 15 02:47:14 1999  Tim Janik  <timj@gtk.org>
+
+	* glib.h (g_trash_stack_pop): eliminate memset() call, since string.h
+	has not neccessarily been included prior to glib.h.
+
+Mon Aug  2 21:03:10 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: added --enable-msg-prefix option.
+
+	* gmessages.c (g_log_default_handler): feature "prg_name (pid:%u): "
+	if --enable-msg-prefix was selected (use "(process:%u): " if
+	g_get_prgname () returns NULL, along the lines of g_on_error_query).
+
 1999-08-03  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.h

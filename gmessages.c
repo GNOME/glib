@@ -42,8 +42,9 @@
 #endif
 
 #ifdef NATIVE_WIN32
-#define STRICT
-#include <windows.h>
+#  define STRICT
+#  include <windows.h>
+#  include <process.h>          /* For _getpid() */
 
 /* Just use stdio. If we're out of memory, we're hosed anyway. */
 #undef write
@@ -420,9 +421,10 @@ g_log_default_handler (const gchar    *log_domain,
 #endif
   gboolean in_recursion;
   gboolean is_fatal;  
-  GErrorFunc     local_glib_error_func;
-  GWarningFunc   local_glib_warning_func;
-  GPrintFunc     local_glib_message_func;
+  GErrorFunc local_glib_error_func;
+  GWarningFunc local_glib_warning_func;
+  GPrintFunc local_glib_message_func;
+  gchar prg_pid[64], *prg_name = g_get_prgname ();
 
   in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
@@ -430,6 +432,13 @@ g_log_default_handler (const gchar    *log_domain,
   
   if (!message)
     message = "g_log_default_handler(): (NULL) message";
+  if (!prg_name)
+    {
+      prg_name = "(process";
+      sprintf (prg_pid, ":%u): ", getpid ());
+    }
+  else
+    sprintf (prg_pid, " (pid:%u): ", getpid ());
   
 #ifdef NATIVE_WIN32
   /* Use just stdout as stderr is hard to get redirected from the
@@ -457,19 +466,23 @@ g_log_default_handler (const gchar    *log_domain,
 	}
       /* use write(2) for output, in case we are out of memeory */
       ensure_stdout_valid ();
+      write (fd, "\n", 1);
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
-	  write (fd, "\n", 1);
 	  write (fd, log_domain, strlen (log_domain));
 	  write (fd, "-", 1);
 	}
       else
-	write (fd, "\n** ", 4);
+	write (fd, "** ", 3);
       if (in_recursion)
 	write (fd, "ERROR (recursed) **: ", 21);
       else
 	write (fd, "ERROR **: ", 10);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -477,19 +490,23 @@ g_log_default_handler (const gchar    *log_domain,
       break;
     case G_LOG_LEVEL_CRITICAL:
       ensure_stdout_valid ();
+      write (fd, "\n", 1);
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
-	  write (fd, "\n", 1);
 	  write (fd, log_domain, strlen (log_domain));
 	  write (fd, "-", 1);
 	}
       else
-	write (fd, "\n** ", 4);
+	write (fd, "** ", 3);
       if (in_recursion)
 	write (fd, "CRITICAL (recursed) **: ", 24);
       else
 	write (fd, "CRITICAL **: ", 13);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -503,19 +520,23 @@ g_log_default_handler (const gchar    *log_domain,
 	  return;
 	}
       ensure_stdout_valid ();
+      write (fd, "\n", 1);
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
-	  write (fd, "\n", 1);
 	  write (fd, log_domain, strlen (log_domain));
 	  write (fd, "-", 1);
 	}
       else
-	write (fd, "\n** ", 4);
+	write (fd, "** ", 3);
       if (in_recursion)
 	write (fd, "WARNING (recursed) **: ", 23);
       else
 	write (fd, "WARNING **: ", 12);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -529,6 +550,10 @@ g_log_default_handler (const gchar    *log_domain,
 	  return;
 	}
       ensure_stdout_valid ();
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -538,7 +563,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "Message (recursed): ", 20);
       else
 	write (fd, "Message: ", 9);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -546,6 +571,10 @@ g_log_default_handler (const gchar    *log_domain,
       break;
     case G_LOG_LEVEL_INFO:
       ensure_stdout_valid ();
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -555,7 +584,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "INFO (recursed): ", 17);
       else
 	write (fd, "INFO: ", 6);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -563,6 +592,10 @@ g_log_default_handler (const gchar    *log_domain,
       break;
     case G_LOG_LEVEL_DEBUG:
       ensure_stdout_valid ();
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -572,7 +605,7 @@ g_log_default_handler (const gchar    *log_domain,
 	write (fd, "DEBUG (recursed): ", 18);
       else
 	write (fd, "DEBUG: ", 7);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
@@ -583,6 +616,10 @@ g_log_default_handler (const gchar    *log_domain,
        * try to make the best out of it.
        */
       ensure_stdout_valid ();
+#ifdef G_ENABLE_MSG_PREFIX
+      write (fd, prg_name, strlen (prg_name));
+      write (fd, prg_pid, strlen (prg_pid));
+#endif /* G_ENABLE_MSG_PREFIX */
       if (log_domain)
 	{
 	  write (fd, log_domain, strlen (log_domain));
@@ -612,7 +649,7 @@ g_log_default_handler (const gchar    *log_domain,
 	}
       else
 	write (fd, "): ", 3);
-      write (fd, message, strlen(message));
+      write (fd, message, strlen (message));
       if (is_fatal)
 	write (fd, "\naborting...\n", 13);
       else
