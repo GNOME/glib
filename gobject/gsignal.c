@@ -657,15 +657,28 @@ emission_find (Emission *emission_list,
 }
 
 static inline Emission*
-emission_find_innermost (Emission *emission_list,
-			 gpointer  instance)
+emission_find_innermost (gpointer instance)
 {
-  Emission *emission;
+  Emission *emission, *s = NULL, *c = NULL;
   
-  for (emission = emission_list; emission; emission = emission->next)
+  for (emission = g_restart_emissions; emission; emission = emission->next)
     if (emission->instance == instance)
-      return emission;
-  return NULL;
+      {
+	s = emission;
+	break;
+      }
+  for (emission = g_recursive_emissions; emission; emission = emission->next)
+    if (emission->instance == instance)
+      {
+	c = emission;
+	break;
+      }
+  if (!s)
+    return c;
+  else if (!c)
+    return s;
+  else
+    return G_HAVE_GROWING_STACK ? MAX (c, s) : MIN (c, s);
 }
 
 static gint
@@ -1008,7 +1021,7 @@ g_signal_list_ids (GType  itype,
   g_return_val_if_fail (n_ids != NULL, NULL);
   
   SIGNAL_LOCK ();
-  keys = G_BSEARCH_ARRAY_NODES (&g_signal_key_bsa);
+  keys = G_BSEARCH_ARRAY_NODES (g_signal_key_bsa);
   n_nodes = g_signal_key_bsa->n_nodes;
   result = g_array_new (FALSE, FALSE, sizeof (guint));
   
@@ -1389,10 +1402,10 @@ g_signal_override_class_closure (guint     signal_id,
 				 GClosure *class_closure)
 {
   SignalNode *node;
-
+  
   g_return_if_fail (signal_id > 0);
   g_return_if_fail (class_closure != NULL);
-
+  
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!g_type_is_a (instance_type, node->itype))
@@ -1400,7 +1413,7 @@ g_signal_override_class_closure (guint     signal_id,
   else
     {
       ClassClosure *cc = signal_find_class_closure (node, instance_type);
-
+      
       if (cc && cc->instance_type == instance_type)
 	g_warning ("%s: type `%s' is already overridden for signal id `%u'", G_STRLOC, g_type_name (instance_type), signal_id);
       else
@@ -1411,42 +1424,35 @@ g_signal_override_class_closure (guint     signal_id,
 
 void
 g_signal_chain_from_overridden (const GValue *instance_and_params,
-				guint         signal_id,
 				GValue       *return_value)
 {
   GType chain_type = 0, restore_type = 0;
   Emission *emission = NULL;
   GClosure *closure = NULL;
+  guint n_params = 0;
   gpointer instance;
-  SignalNode *node;
   
   g_return_if_fail (instance_and_params != NULL);
   instance = g_value_peek_pointer (instance_and_params);
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
-  g_return_if_fail (signal_id > 0);
   
   SIGNAL_LOCK ();
-  node = LOOKUP_SIGNAL_NODE (signal_id);
-  if (node && g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
+  emission = emission_find_innermost (instance);
+  if (emission)
     {
-      Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
-
-      emission = emission_find_innermost (emission_list, instance);
-
-      /* what we don't catch here is the scenario:
-       * 1) signal1 being in class_closure, emitting signal2
-       * 2) signal2 being in class closure, trying to chain signal1
-       * 3) signal1&G_SIGNAL_NO_RECURSE != signal2&G_SIGNAL_NO_RECURSE.
-       *
-       * also, it'd be a good idea to perform the same checks on parameters
-       * as g_signal_emitv() here.
+      SignalNode *node = LOOKUP_SIGNAL_NODE (emission->ihint.signal_id);
+      
+      g_assert (node != NULL);	/* paranoid */
+      
+      /* we should probably do the same parameter checks as g_signal_emit() here.
        */
-      if (emission && emission->ihint.signal_id == signal_id && emission->chain_type != G_TYPE_NONE)
+      if (emission->chain_type != G_TYPE_NONE)
 	{
 	  ClassClosure *cc = signal_find_class_closure (node, emission->chain_type);
-
+	  
 	  g_assert (cc != NULL);	/* closure currently in call stack */
 
+	  n_params = node->n_params;
 	  restore_type = cc->instance_type;
 	  cc = signal_find_class_closure (node, g_type_parent (cc->instance_type));
 	  if (cc && cc->instance_type != restore_type)
@@ -1456,23 +1462,37 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
 	    }
 	}
       else
-	g_warning ("%s: signal id `%u' is not innermost class closure emission for instance `%p'", G_STRLOC, signal_id, instance);
+	g_warning ("%s: signal id `%u' cannot be chained from current emission stage for instance `%p'", G_STRLOC, node->signal_id, instance);
     }
   else
-    g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+    g_warning ("%s: no signal is currently being emitted for instance `%p'", G_STRLOC, instance);
   if (closure)
     {
       emission->chain_type = chain_type;
       SIGNAL_UNLOCK ();
       g_closure_invoke (closure,
 			return_value,
-			node->n_params + 1,
+			n_params + 1,
 			instance_and_params,
 			&emission->ihint);
       SIGNAL_LOCK ();
       emission->chain_type = restore_type;
     }
   SIGNAL_UNLOCK ();
+}
+
+GSignalInvocationHint*
+g_signal_get_invocation_hint (gpointer instance)
+{
+  Emission *emission = NULL;
+  
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), NULL);
+
+  SIGNAL_LOCK ();
+  emission = emission_find_innermost (instance);
+  SIGNAL_UNLOCK ();
+  
+  return emission ? &emission->ihint : NULL;
 }
 
 gulong

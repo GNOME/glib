@@ -152,6 +152,7 @@ gboolean	      g_signal_parse_name   (const gchar	*detailed_signal,
 					     guint		*signal_id_p,
 					     GQuark		*detail_p,
 					     gboolean		 force_detail_quark);
+GSignalInvocationHint* g_signal_get_invocation_hint (gpointer    instance);
 
 
 /* --- signal emissions --- */
@@ -232,7 +233,6 @@ void	g_signal_override_class_closure	      (guint		  signal_id,
 					       GType		  instance_type,
 					       GClosure		 *class_closure);
 void	g_signal_chain_from_overridden	      (const GValue      *instance_and_params,
-					       guint              signal_id,
 					       GValue            *return_value);
 
 

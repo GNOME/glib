@@ -100,7 +100,8 @@ test_a_foo (TestI *self)
     g_value_init (&args[0], TEST_TYPE_A);
     g_value_set_object (&args[0], self);
 
-    g_signal_chain_from_overridden (args, foo_signal_id, NULL);
+    g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+    g_signal_chain_from_overridden (args, NULL);
 
     g_value_unset (&args[0]);
 }
@@ -193,7 +194,8 @@ test_b_foo (TestA *self)
     g_value_init (&args[0], TEST_TYPE_A);
     g_value_set_object (&args[0], self);
 
-    g_signal_chain_from_overridden (args, foo_signal_id, NULL);
+    g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+    g_signal_chain_from_overridden (args, NULL);
 
     g_value_unset (&args[0]);
 }
@@ -208,7 +210,8 @@ test_b_bar (TestI *self)
     g_value_init (&args[0], TEST_TYPE_A);
     g_value_set_object (&args[0], self);
 
-    g_signal_chain_from_overridden (args, bar_signal_id, NULL);
+    g_assert (g_signal_get_invocation_hint (self)->signal_id == bar_signal_id);
+    g_signal_chain_from_overridden (args, NULL);
 
     g_value_unset (&args[0]);
 }
@@ -279,7 +282,8 @@ test_c_foo (TestA *self)
     g_value_init (&args[0], TEST_TYPE_A);
     g_value_set_object (&args[0], self);
 
-    g_signal_chain_from_overridden (args, foo_signal_id, NULL);
+    g_assert (g_signal_get_invocation_hint (self)->signal_id == foo_signal_id);
+    g_signal_chain_from_overridden (args, NULL);
 
     g_value_unset (&args[0]);
 }
@@ -294,7 +298,8 @@ test_c_bar (TestI *self)
     g_value_init (&args[0], TEST_TYPE_A);
     g_value_set_object (&args[0], self);
 
-    g_signal_chain_from_overridden (args, bar_signal_id, NULL);
+    g_assert (g_signal_get_invocation_hint (self)->signal_id == bar_signal_id);
+    g_signal_chain_from_overridden (args, NULL);
 
     g_value_unset (&args[0]);
 }

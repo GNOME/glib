@@ -1,3 +1,18 @@
+Tue Dec 18 21:39:57 2001  Tim Janik  <timj@gtk.org>
+
+	* testoverride.c: added some assertions to test
+	g_signal_get_invocation_hint().
+
+	* gsignal.[hc]: remove signal_id argument from
+	g_signal_chain_from_overridden(), the parameters are assumed to match
+	the innermost signal currently in emission for this instance.
+	added g_signal_get_invocation_hint() to figure the invocation hint
+	of the innermost signal emission of an instance.
+
+	* gsignal.c (g_signal_list_ids): fix G_BSEARCH_ARRAY_NODES() to
+	access a bsearch array and not a pointer to it (discovered by
+	Sven Neumann).
+
 2001-12-17  Anders Carlsson  <andersca@gnu.org>
 
 	* gtype.h (G_TYPE_FLAG_RESERVED_ID_BIT): Set the reserved bit
