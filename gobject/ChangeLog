@@ -1,3 +1,7 @@
+Thu Mar 21 01:28:14 2002  Tim Janik  <timj@gtk.org>
+
+	* gsignal.h: fix extraneous include.
+
 Tue Mar 19 18:57:12 2002  Tim Janik  <timj@gtk.org>
 
 	* gtype.c (check_add_interface_L): applied patch from Matthias Clasen
