@@ -164,6 +164,57 @@ completion_check_cache (GCompletion* cmp,
   strncpy (*new_prefix + len, postfix, plen);
 }
 
+/**
+ * g_completion_complete_utf8:
+ * @cmp: the #GCompletion
+ * @prefix: the prefix string, typically used by the user, which is compared
+ *    with each of the items
+ * @new_prefix: if non-%NULL, returns the longest prefix which is common to all
+ *    items that matched @prefix, or %NULL if no items matched @prefix.
+ *    This string should be freed when no longer needed.
+ *
+ * Attempts to complete the string @prefix using the #GCompletion target items.
+ * In contrast to g_completion_complete(), this function returns the largest common
+ * prefix that is a valid UTF-8 string, omitting a possible common partial 
+ * character.
+ *
+ * You should use this function instead of g_completion_complete() if your 
+ * items are UTF-8 strings.
+ *
+ * Return value: the list of items whose strings begin with @prefix. This should
+ * not be changed.
+ *
+ * Since: 2.4
+ **/
+GList*
+g_completion_complete_utf8 (GCompletion  *cmp,
+			    const gchar  *prefix,
+			    gchar       **new_prefix)
+{
+  GList *list;
+  gchar *p, *q;
+
+  list = g_completion_complete (cmp, prefix, new_prefix);
+
+  if (*new_prefix)
+    {
+      p = *new_prefix + strlen (*new_prefix);
+      q = g_utf8_find_prev_char (*new_prefix, p);
+      
+      switch (g_utf8_get_char_validated (q, p - q))
+	{
+	case (gunichar)-2:
+	case (gunichar)-1:
+	  *q = 0;
+	  break;
+	default: ;
+	}
+
+    }
+
+  return list;
+}
+
 GList* 
 g_completion_complete (GCompletion* cmp,
 		       const gchar* prefix,

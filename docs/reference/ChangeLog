@@ -1,3 +1,7 @@
+Thu Feb  5 00:54:43 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/glib-sections.txt: Add g_completion_complete_utf8.
+
 Fri Jan 30 23:25:58 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/iochannels.sgml: 

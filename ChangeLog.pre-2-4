@@ -1,3 +1,14 @@
+Thu Feb  5 00:56:28 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gcompletion.c (g_completion_complete_utf8): New function which
+	works like g_completion_complete(), but strips a trailing incomplete
+	UTF-8 character from the prefix.  (#133313, Theppitak Karoonboonyanan)
+
+	* tests/completion-test.c (main): Some GCompletion tests.
+
+	* tests/Makefile.am: Add completion-test.
+
+
 2004-02-01  Tor Lillqvist  <tml@iki.fi>
 
 	* glib/glib.def: Add g_strsplit_set.
