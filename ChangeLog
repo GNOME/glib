@@ -1,3 +1,10 @@
+Wed Jan 26 05:24:38 2000  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	* gmain.c: s/current_time/dispatch_time/ for the dispatch() handlers.
+	refetch the current time after invocation of poll() to cover up for
+	the time spent in that function call.
+
 Fri Jan 21 10:18:24 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h (G_N_ELEMENTS): Added G_N_ELEMENTS macro to determine
