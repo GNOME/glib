@@ -177,6 +177,7 @@ EXPORTS
 	g_get_current_dir
 	g_get_current_time
 	g_get_home_dir
+	g_get_language_names
 	g_get_prgname
 	g_get_real_name
 	g_get_system_config_dirs

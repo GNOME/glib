@@ -1,3 +1,12 @@
+2004-09-08  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/gutils.c (guess_category_value): On Win32, as last resort
+	call g_win32_getlocale() to get the current thread locale. There
+	usually aren't any POSIXish LANG or LC_* environment variables
+	present on Windows machines.
+
+	* glib/glib.def: Add g_get_language_names.
+
 2004-09-07  Matthias Clasen  <mclasen@redhat.com>
 
 	* glib/gutils.h: 

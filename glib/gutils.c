@@ -1747,6 +1747,18 @@ guess_category_value (const gchar *category_name)
   if ((retval != NULL) && (retval[0] != '\0'))
     return retval;
 
+#ifdef G_PLATFORM_WIN32
+  /* g_win32_getlocale() first checks for LC_ALL, LC_MESSAGES and
+   * LANG, which we already did above. Oh well. The main point of
+   * calling g_win32_getlocale() is to get the thread's locale as used
+   * by Windows and the Microsoft C runtime (in the "English_United
+   * States" format) translated into the Unixish format.
+   */
+  retval = g_win32_getlocale ();
+  if ((retval != NULL) && (retval[0] != '\0'))
+    return retval;
+#endif  
+
   return NULL;
 }
 
