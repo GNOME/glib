@@ -66,27 +66,28 @@ read-only members, but the underlying struct is bigger, so you must not copy
 this struct.
 </para>
 
-@thread_func: the function to execute in the threads of this pool
-@stack_size: the stack size for the threads of this pool
+@func: the function to execute in the threads of this pool
+@user_data: the user data for the threads of this pool
 @bound: are the threads of this pool bound?
 @priority: the priority of the threads of this pool
 @exclusive: are all threads exclusive to this pool
-@user_data: the user data for the threads of this pool
 
 <!-- ##### FUNCTION g_thread_pool_new ##### -->
 <para>
 
 </para>
 
-@thread_func: 
+@func: 
+@user_data: 
 @max_threads: 
 @stack_size: 
 @bound: 
 @priority: 
 @exclusive: 
-@user_data: 
 @error: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@thread_func: 
 
 
 <!-- ##### FUNCTION g_thread_pool_push ##### -->
