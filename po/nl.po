@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib (HEAD)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 16:02-0400\n"
-"PO-Revision-Date: 2004-04-26 22:40+0200\n"
+"POT-Creation-Date: 2004-10-03 11:15+0200\n"
+"PO-Revision-Date: 2004-10-03 17:23+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,17 @@ msgstr ""
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 
+# conversieprogramma/omzet-programma/omzetter
 # kon converteerder van %s naar %s niet openen
+# Openen van converteerder van '%s' naar '%s' mislukt
 #: glib/gconvert.c:407
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Openen van converteerder van '%s' naar '%s' mislukt"
+msgstr "Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen"
 
 #: glib/gconvert.c:605 glib/gconvert.c:892 glib/giochannel.c:1316
 #: glib/giochannel.c:1358 glib/giochannel.c:2200 glib/gutf8.c:911
-#: glib/gutf8.c:1356
+#: glib/gutf8.c:1361
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ongeldige bytereeks in conversie-invoer"
 
@@ -38,8 +40,8 @@ msgstr "Ongeldige bytereeks in conversie-invoer"
 msgid "Error during conversion: %s"
 msgstr "Fout tijdens conversie: %s"
 
-#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1107 glib/gutf8.c:1248
-#: glib/gutf8.c:1352
+#: glib/gconvert.c:628 glib/gutf8.c:907 glib/gutf8.c:1112 glib/gutf8.c:1253
+#: glib/gutf8.c:1357
 msgid "Partial character sequence at end of input"
 msgstr "Onvolledige tekenreeks aan het eind van de invoer"
 
@@ -49,9 +51,9 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan vanaf codeverzameling '%s' niet terugvallen op '%s'"
 
 #: glib/gconvert.c:1498
-#, fuzzy, c-format
+#, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "De URI '%s' is geen absolute URI binnen het bestandsschema"
+msgstr "De URI '%s' is geen absolute URI die gebruik maakt van het \"bestand\" schema"
 
 #: glib/gconvert.c:1508
 #, c-format
@@ -66,7 +68,7 @@ msgstr "De URI '%s' is ongeldig"
 #: glib/gconvert.c:1537
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "De machinenaam van de URI '%s' is ongeldig"
+msgstr "De hostnaam van de URI '%s' is ongeldig"
 
 #: glib/gconvert.c:1553
 #, c-format
@@ -87,69 +89,72 @@ msgstr "Ongeldige hostnaam"
 msgid "Error opening directory '%s': %s"
 msgstr "Fout bij het openen van map '%s': %s"
 
-#: glib/gfileutils.c:400 glib/gfileutils.c:465
+# Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
+#: glib/gfileutils.c:402 glib/gfileutils.c:476
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Allocatie van %lu bytes om bestand \"%s\" te lezen is mislukt"
+msgstr "Kon geen %lu byte geheugenruimte reserveren om bestand \"%s\" te lezen"
 
-#: glib/gfileutils.c:411
+#: glib/gfileutils.c:418
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Fout bij lezen van bestand '%s': %s"
 
-#: glib/gfileutils.c:487
+#: glib/gfileutils.c:501
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Lezen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:534 glib/gfileutils.c:602
+#: glib/gfileutils.c:552 glib/gfileutils.c:634
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Openen van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:548
+#: glib/gfileutils.c:570
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Opvragen gegevens van bestand '%s' mislukt: fstat() mislukte: %s"
 
-#: glib/gfileutils.c:574
+#: glib/gfileutils.c:601
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Openen van bestand '%s' mislukt: fdopen() mislukte: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:820
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Sjabloon '%s' is ongeldig, het zou geen '%s' moeten bevatten"
 
-#: glib/gfileutils.c:798
+#: glib/gfileutils.c:832
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Sjabloon '%s' eindigt niet op XXXXXX"
 
-#: glib/gfileutils.c:819
+#: glib/gfileutils.c:853
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Aanmaken van bestand '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1160
+#: glib/gfileutils.c:1197
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Lezen van symbolische link '%s' mislukt: %s"
 
-#: glib/gfileutils.c:1179
+#: glib/gfileutils.c:1218
 msgid "Symbolic links not supported"
 msgstr "Symbolische links niet ondersteund"
 
+# omzetten/conversie
 #: glib/giochannel.c:1144
 #, c-format
 msgid "Conversion from character set `%s' to `%s' is not supported"
 msgstr "Conversie van tekenset '%s' naar '%s' wordt niet ondersteund"
 
+# Openen van converteerder van '%s' naar '%s' mislukt: %s
 #: glib/giochannel.c:1148
 #, c-format
 msgid "Could not open converter from `%s' to `%s': %s"
-msgstr "Openen van converteerder van '%s' naar '%s' mislukt: %s"
+msgstr "Kon conversieprogramma voor omzetten van '%s' naar '%s' niet openen: %s"
 
 #: glib/giochannel.c:1493
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -173,19 +178,17 @@ msgstr ""
 #: glib/gmarkup.c:226
 #, c-format
 msgid "Error on line %d char %d: %s"
-msgstr "Fout op regel %d teken %d: %s"
+msgstr "Fout in regel %d teken %d: %s"
 
 #: glib/gmarkup.c:310
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "Fout op regel %d: %s"
+msgstr "Fout in regel %d: %s"
 
 #: glib/gmarkup.c:415
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Lege entiteit '&;' geconstateerd: geldige entiteiten zijn: &amp; &quot; &lt; "
-"&gt; &apos;"
+msgstr "Lege entiteit '&;' gevonden;  geldige entiteiten zijn: &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:425
 #, c-format
@@ -221,9 +224,7 @@ msgstr ""
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Verwerken van '%s' mislukt, hetgeen een getal in een tekenreferentie zou "
-"moeten zijn (bijvoorbeel &#234;) - misschien is het te groot"
+msgstr "Verwerken van '%s' mislukt, hetgeen een getal in een tekenreferentie zou moeten zijn (bijvoorbeel &#234;) - misschien is het getal te groot"
 
 #: glib/gmarkup.c:586
 #, c-format
@@ -365,11 +366,11 @@ msgstr "Het document eindigde onverwacht in een elementnaam"
 
 #: glib/gmarkup.c:1698
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Het document eindige onverwacht in een attribuutnaam"
+msgstr "Het document eindigde onverwacht in een attribuutnaam"
 
 #: glib/gmarkup.c:1703
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Het document eindige onverwacht in een element-openings-tag"
+msgstr "Het document eindigde onverwacht in een element-openings-tag"
 
 #: glib/gmarkup.c:1709
 msgid ""
@@ -386,8 +387,7 @@ msgstr "Het document eindigde onverwacht in een attribuutwaarde"
 #: glib/gmarkup.c:1731
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr ""
-"Het document eindige onverwacht in een een afsluitings-tag voor element '%s'"
+msgstr "Het document eindigde onverwacht in een een afsluitings-tag voor element '%s'"
 
 #: glib/gmarkup.c:1737
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -406,14 +406,12 @@ msgstr ""
 #: glib/gshell.c:541
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Tekst eindige na een '\\'-teken (de tekst was '%s')."
+msgstr "Tekst eindigde na een '\\'-teken (de tekst was '%s')."
 
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %"
-"c (de tekst was '%s')"
+msgstr "De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %c (de tekst was '%s')"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -472,6 +470,7 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Onverwachte fout in waitpid() (%s)"
 
+# fork is een functienaam, mag niet met hoofdletter beginnen
 #: glib/gspawn.c:1078
 #, c-format
 msgid "Failed to fork (%s)"
@@ -508,50 +507,52 @@ msgstr "Lezen van voldoende data van pijp dochter-pid mislukt (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "Teken valt buiten van bereik van UTF-8"
 
-#: glib/gutf8.c:1075 glib/gutf8.c:1084 glib/gutf8.c:1216 glib/gutf8.c:1225
-#: glib/gutf8.c:1366 glib/gutf8.c:1462
+#: glib/gutf8.c:1080 glib/gutf8.c:1089 glib/gutf8.c:1221 glib/gutf8.c:1230
+#: glib/gutf8.c:1371 glib/gutf8.c:1467
 msgid "Invalid sequence in conversion input"
 msgstr "Ongeldige reeks in conversie-invoer"
 
-#: glib/gutf8.c:1377 glib/gutf8.c:1473
+#: glib/gutf8.c:1382 glib/gutf8.c:1478
 msgid "Character out of range for UTF-16"
 msgstr "Teken valt buiten bereik van UTF-16"
 
 #: glib/goption.c:263
 msgid "Usage:"
-msgstr ""
+msgstr "Gebruik:"
 
 #: glib/goption.c:263
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[OPTIE...]"
 
+# hulp-opties zijn opties voor de hulp
+# hulp opties zijn die opties van hulp
 #: glib/goption.c:308
 msgid "Help Options:"
-msgstr ""
+msgstr "Hulp opties:"
 
 #: glib/goption.c:308
 msgid "Show help options"
-msgstr ""
+msgstr "Hulp opties tonen"
 
 #: glib/goption.c:312
 msgid "Show all help options"
-msgstr ""
+msgstr "Alle hulp opties tonen"
 
 #: glib/goption.c:360
 msgid "Application Options:"
-msgstr ""
+msgstr "Toepassing opties:"
 
 #: glib/goption.c:400
 #, c-format
 msgid "Cannot parse integer value '%s' for --%s"
-msgstr ""
+msgstr "Kan de gehele getalswaarde '%s' voor --%s niet verwerken"
 
 #: glib/goption.c:410
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr ""
+msgstr "Gehele getalswaarde '%s' voor %s valt buiten bereik"
 
-#: glib/goption.c:1028
+#: glib/goption.c:1024
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Onbekende optie %s"
