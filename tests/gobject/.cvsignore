@@ -1,6 +1,7 @@
 Makefile
 Makefile.in
 accumulator
+defaultiface
 ifaceinit
 override
 testmarshal.c
