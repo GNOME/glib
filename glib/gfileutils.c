@@ -473,6 +473,7 @@ get_contents_stdio (const gchar *display_filename,
   gchar *str = NULL;
   size_t total_bytes = 0;
   size_t total_allocated = 0;
+  gchar *tmp;
 
   g_assert (f != NULL);
 
@@ -490,9 +491,9 @@ get_contents_stdio (const gchar *display_filename,
           else
             total_allocated = MIN (bytes + 1, sizeof (buf));
 
-          str = g_try_realloc (str, total_allocated);
+          tmp = g_try_realloc (str, total_allocated);
 
-          if (str == NULL)
+          if (tmp == NULL)
             {
               g_set_error (error,
                            G_FILE_ERROR,
@@ -503,6 +504,8 @@ get_contents_stdio (const gchar *display_filename,
 
               goto error;
             }
+
+	  str = tmp;
         }
 
       if (ferror (f))
@@ -523,7 +526,7 @@ get_contents_stdio (const gchar *display_filename,
 
   fclose (f);
 
-  if (total_bytes == 0)
+  if (total_allocated == 0)
     str = g_new (gchar, 1);
 
   str[total_bytes] = '\0';
