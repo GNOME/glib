@@ -1268,7 +1268,7 @@ g_ascii_strcasecmp (const gchar *s1,
 gint
 g_ascii_strncasecmp (const gchar *s1,
 		     const gchar *s2,
-		     guint n)
+		     gsize n)
 {
   gint c1, c2;
 

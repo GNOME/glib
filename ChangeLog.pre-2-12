@@ -1,3 +1,11 @@
+Sat Sep 29 02:33:14 2001  George Lebl <jirka@5z.com>
+
+	* tests/testglib.c (main): cast the string size to gulong and use %lu
+	  for printing to avoid 64bit issues
+
+	* glib/gstrfuncs.[ch] (g_ascii_strncasecmp): Change the 'n' argument 
+	  to gsize instead guint.
+
 Fri Sep 28 19:41:32 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/libcharset/* configure.in: Fix macros from libcharset

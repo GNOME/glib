@@ -823,7 +823,7 @@ main (int   argc,
 		    10, 666, 15, 15, 666.666666666, 666.666666666);
 #endif
 
-  g_print ("string2 length = %d...\n", string2->len);
+  g_print ("string2 length = %lu...\n", (gulong)string2->len);
   string2->str[70] = '\0';
   g_print ("first 70 chars:\n%s\n", string2->str);
   string2->str[141] = '\0';

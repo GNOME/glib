@@ -129,7 +129,7 @@ gint                  g_ascii_strcasecmp  (const gchar *s1,
 					   const gchar *s2);
 gint                  g_ascii_strncasecmp (const gchar *s1,
 					   const gchar *s2,
-					   guint        n);
+					   gsize        n);
 gchar*                g_ascii_strdown     (const gchar *str,
 					   gssize       len);
 gchar*                g_ascii_strup       (const gchar *str,
