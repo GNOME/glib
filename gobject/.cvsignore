@@ -1,0 +1,8 @@
+*.lo
+Makefile
+Makefile.in
+.deps
+_libs
+.libs
+libgobject.la
+gobject-query
