@@ -165,8 +165,8 @@ g_list_free (GList *list)
           last_node->prev = NULL;
           last_node = last_node->next;
         }
-      last_node->data = NULL
-      last_node->prev = NULL
+      last_node->data = NULL;
+      last_node->prev = NULL;
 #else /* !ENABLE_GC_FRIENDLY */
       list->data = list->next;  
 #endif /* ENABLE_GC_FRIENDLY */

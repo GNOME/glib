@@ -164,7 +164,7 @@ g_slist_free (GSList *list)
 	  last_node->data = NULL;
 	  last_node = last_node->next;
 	}
-      last_node->data = NULL
+      last_node->data = NULL;
 #else /* !ENABLE_GC_FRIENDLY */
       list->data = list->next;  
 #endif /* ENABLE_GC_FRIENDLY */

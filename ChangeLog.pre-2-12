@@ -1,3 +1,13 @@
+2000-12-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gslist.c, glist.c: Ok, I'm a moron. When I originally
+	implemented ENABLE_GC_FRIENDLY, I forgot to include config.h into
+	the affected files. Now that Alex did that for those two,
+	inevitable typos surfaced, which are now fixed.
+	
+	* garray.c, ghash.c, gqueue.c, gtree.c: Include config.h as well,
+	as ENABLE_GC_FRIENDLY should be known.
+
 2000-12-19  Alexander Larsson  <alexl@redhat.com>
 
 	* configure.in:
