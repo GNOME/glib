@@ -3,6 +3,7 @@
 if HAVE_GOOD_PRINTF
 else
 TRIO_SUBDIR = trio
+trio_libtrio_la = trio/libtrio.la
 endif 
 
 SUBDIRS = libcharset $(TRIO_SUBDIR)
@@ -178,8 +179,8 @@ install-libtool-import-lib:
 uninstall-libtool-import-lib:
 endif
 
-libglib_2_0_la_LIBADD = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(trio_libtrio_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @ICONV_LIBS@ @G_LIBS_EXTRA@ 
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(trio_libtrio_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @G_LIB_WIN32_RESOURCE@ @GLIB_DEF@
 
 libglib_2_0_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \

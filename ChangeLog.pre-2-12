@@ -1,3 +1,20 @@
+2002-11-21  Tor Lillqvist  <tml@iki.fi>
+
+	* config.h.win32.in: Update to match what is currently produced by
+	autotools.
+
+	* configure.in: Remove superfluous spaces on two shell variable
+	assignment lines. Don't define HAVE_GOOD_PRINTF as 0 if we don't
+	have a good printf, it is tested with #ifdef.
+
+	* glib/glib.def: Add new functions.
+
+	* glib/Makefile.am: If !HAVE_GOOD_PRINTF, add libtio.la to LIBADD
+	and DEPENDENCIES.
+
+	* glib/glib.rc.in: Hardcode 2.0 in the names, as that is what the
+	Makefile.am does.
+
 2002-11-21  Matthias Clasen  <maclas@gmx.de>
 
 	Include a printf implementation supporting C99 snprintf and SUS

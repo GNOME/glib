@@ -722,10 +722,10 @@ AC_ARG_ENABLE(included-printf, [  --enable-included-printf    use included print
 
 if test "$enable_trio" != "no" ; then
   if test "$ac_cv_func_vsnprintf_c99" != "yes" ; then
-    enable_trio = yes
+    enable_trio=yes
   fi
   if test "$ac_cv_func_printf_unix98" != "yes" ; then
-    enable_trio = yes
+    enable_trio=yes
   fi
 fi
 
@@ -735,8 +735,6 @@ if test "$enable_trio" != "yes" ; then
   AC_DEFINE(HAVE_VASPRINTF,1)
   AC_DEFINE(HAVE_C99_VSNPRINTF,1)
   AC_DEFINE(HAVE_UNIX98_PRINTF,1)
-else
-  AC_DEFINE(HAVE_GOOD_PRINTF,0)
 fi
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.

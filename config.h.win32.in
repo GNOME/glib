@@ -63,7 +63,7 @@
    */
 /* #undef CRAY_STACKSEG_END */
 
-/* Define if using `alloca.c'. */
+/* Define to 1 if using `alloca.c'. */
 /* #undef C_ALLOCA */
 
 /* Whether to disable memory pools */
@@ -71,6 +71,9 @@
 
 /* Whether to enable GC friendliness */
 /* #undef ENABLE_GC_FRIENDLY */
+
+/* always defined to indicate that i18n is enabled */
+#define ENABLE_NLS 1
 
 /* Define to the GLIB binary age */
 #define GLIB_BINARY_AGE @GLIB_BINARY_AGE@
@@ -141,19 +144,20 @@
 /* 'va_lists' cannot be copies as values */
 /* #undef G_VA_COPY_AS_ARRAY */
 
-/* Define if you have `alloca', as a function or macro. */
+/* Define to 1 if you have `alloca', as a function or macro. */
 #define HAVE_ALLOCA 1
 
-/* Define if you have <alloca.h> and it should be used (not on Ultrix). */
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
 /* #undef HAVE_ALLOCA_H */
 
-/* Define if you have the <argz.h> header file. */
+/* Define to 1 if you have the <argz.h> header file. */
 /* #undef HAVE_ARGZ_H */
 
-/* Define if you have the `atexit' function. */
+/* Define to 1 if you have the `atexit' function. */
 #define HAVE_ATEXIT 1
 
-/* Define if you have the `bind_textdomain_codeset' function. */
+/* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
 /* Define if you have a version of the vsnprintf function with semantics as
@@ -163,92 +167,98 @@
 /* Have nl_langinfo (CODESET) */
 /* #undef HAVE_CODESET */
 
-/* Define if you have the `dcgettext' function. */
+/* Define to 1 if you have the `dcgettext' function. */
 #define HAVE_DCGETTEXT 1
 
-/* Define if you have the <dirent.h> header file. */
+/* Define to 1 if you have the <dirent.h> header file. */
 #define HAVE_DIRENT_H 1
 
-/* Define if you have the <dlfcn.h> header file. */
+/* Define to 1 if you have the <dlfcn.h> header file. */
 /* #undef HAVE_DLFCN_H */
 
-/* Define if you don't have `vprintf' but do have `_doprnt.' */
+/* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
 /* #undef HAVE_DOPRNT */
 
-/* Define if you have the <float.h> header file. */
+/* Define to 1 if you have the <float.h> header file. */
 #define HAVE_FLOAT_H 1
 
-/* Define if you have the `getcwd' function. */
+/* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
 
-/* Define if you have the `getc_unlocked' function. */
+/* Define to 1 if you have the `getc_unlocked' function. */
 /* #undef HAVE_GETC_UNLOCKED */
 
-/* Define if you have the `getpagesize' function. */
+/* Define to 1 if you have the `getpagesize' function. */
 #ifndef _MSC_VER
 #define HAVE_GETPAGESIZE 1
 #else /* _MSC_VER */
 /* #undef HAVE_GETPAGESIZE */
 #endif /* _MSC_VER */
 
-/* Define if you have the <inttypes.h> header file. */
+/* Define if the GNU gettext() function is already present or preinstalled. */
+#define HAVE_GETTEXT 1
+
+/* define to use system printf */
+/* #undef HAVE_GOOD_PRINTF */
+
+/* Define to 1 if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
 
-/* Define if you have the <langinfo.h> header file. */
+/* Define to 1 if you have the <langinfo.h> header file. */
 /* #undef HAVE_LANGINFO_H */
 
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 /* #undef HAVE_LC_MESSAGES */
 
-/* Define if you have the <limits.h> header file. */
+/* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
 
-/* Define if you have the <locale.h> header file. */
+/* Define to 1 if you have the <locale.h> header file. */
 #define HAVE_LOCALE_H 1
 
-/* Define if you have the `localtime_r' function. */
+/* Define to 1 if you have the `localtime_r' function. */
 /* #undef HAVE_LOCALTIME_R */
 
-/* Define if you have the `lstat' function. */
+/* Define to 1 if you have the `lstat' function. */
 /* #undef HAVE_LSTAT */
 
-/* Define if you have the <malloc.h> header file. */
+/* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
 
-/* Define if you have the `memmove' function. */
+/* Define to 1 if you have the `memmove' function. */
 #define HAVE_MEMMOVE 1
 
-/* Define if you have the <memory.h> header file. */
+/* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
-/* Define if you have the `mkstemp' function. */
+/* Define to 1 if you have the `mkstemp' function. */
 /* #undef HAVE_MKSTEMP */
 
-/* Define if you have a working `mmap' system call. */
+/* Define to 1 if you have a working `mmap' system call. */
 /* #undef HAVE_MMAP */
 
-/* Define if you have the `munmap' function. */
+/* Define to 1 if you have the `munmap' function. */
 /* #undef HAVE_MUNMAP */
 
-/* Define if you have the `nanosleep' function. */
+/* Define to 1 if you have the `nanosleep' function. */
 /* #undef HAVE_NANOSLEEP */
 
-/* Define if you have the `nl_langinfo' function. */
+/* Define to 1 if you have the `nl_langinfo' function. */
 /* #undef HAVE_NL_LANGINFO */
 
-/* Define if you have the <nl_types.h> header file. */
+/* Define to 1 if you have the <nl_types.h> header file. */
 /* #undef HAVE_NL_TYPES_H */
 
 /* Have non-POSIX function getpwuid_r */
 /* #undef HAVE_NONPOSIX_GETPWUID_R */
 
-/* Define if you have the `on_exit' function. */
+/* Define to 1 if you have the `on_exit' function. */
 /* #undef HAVE_ON_EXIT */
 
-/* Define if you have the `poll' function. */
+/* Define to 1 if you have the `poll' function. */
 /* #undef HAVE_POLL */
 
 /* Have POSIX function getpwuid_r */
@@ -257,133 +267,137 @@
 /* Have function pthread_attr_setstacksize */
 /* #undef HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
-/* Define if you have the `putenv' function. */
+/* Define to 1 if you have the `putenv' function. */
 #define HAVE_PUTENV 1
 
-/* Define if you have the <pwd.h> header file. */
+/* Define to 1 if you have the <pwd.h> header file. */
 /* #undef HAVE_PWD_H */
 
-/* Define if you have the <sched.h> header file. */
+/* Define to 1 if you have the <sched.h> header file. */
 /* #undef HAVE_SCHED_H */
 
-/* Define if you have the `setenv' function. */
+/* Define to 1 if you have the `setenv' function. */
 /* #undef HAVE_SETENV */
 
-/* Define if you have the `setlocale' function. */
+/* Define to 1 if you have the `setlocale' function. */
 #define HAVE_SETLOCALE 1
 
-/* Define if you have the <stddef.h> header file. */
+/* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
 
-/* Define if you have the <stdint.h> header file. */
+/* Define to 1 if you have the <stdint.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_STDINT_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_STDINT_H */
 #endif /* _MSC_VER */
 
-/* Define if you have the <stdlib.h> header file. */
+/* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
 
-/* Define if you have the `stpcpy' function. */
+/* Define to 1 if you have the `stpcpy' function. */
 /* #undef HAVE_STPCPY */
 
-/* Define if you have the `strcasecmp' function. */
+/* Define to 1 if you have the `strcasecmp' function. */
 #ifndef _MSC_VER
 #define HAVE_STRCASECMP 1
 #else /* _MSC_VER */
 /* #undef HAVE_STRCASECMP */
 #endif /* _MSC_VER */
 
-/* Define if you have the `strchr' function. */
+/* Define to 1 if you have the `strchr' function. */
 #define HAVE_STRCHR 1
 
-/* Define if you have the `strdup' function. */
+/* Define to 1 if you have the `strdup' function. */
 #define HAVE_STRDUP 1
 
-/* Define if you have the `strerror' function. */
+/* Define to 1 if you have the `strerror' function. */
 #define HAVE_STRERROR 1
 
-/* Define if you have the <strings.h> header file. */
+/* Define to 1 if you have the <strings.h> header file. */
 /* #undef HAVE_STRINGS_H */
 
-/* Define if you have the <string.h> header file. */
+/* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
 /* Have functions strlcpy and strlcat */
 /* #undef HAVE_STRLCPY */
 
-/* Define if you have the `strncasecmp' function. */
+/* Define to 1 if you have the `strncasecmp' function. */
 #ifndef _MSC_VER
 #define HAVE_STRNCASECMP 1
 #else /* _MSC_VER */
 /* #undef HAVE_STRNCASECMP */
 #endif /* _MSC_VER */
 
-/* Define if you have the `strsignal' function. */
+/* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
 
-/* Define if you have the <sys/param.h> header file. */
+/* Define to 1 if you have the <sys/param.h> header file. */
 /* #undef HAVE_SYS_PARAM_H */
 
-/* Define if you have the <sys/poll.h> header file. */
+/* Define to 1 if you have the <sys/poll.h> header file. */
 /* #undef HAVE_SYS_POLL_H */
 
 /* found fd_set in sys/select.h */
 /* #undef HAVE_SYS_SELECT_H */
 
-/* Define if you have the <sys/stat.h> header file. */
+/* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1
 
-/* Define if you have the <sys/times.h> header file. */
+/* Define to 1 if you have the <sys/times.h> header file. */
 /* #undef HAVE_SYS_TIMES_H */
 
-/* Define if you have the <sys/time.h> header file. */
+/* Define to 1 if you have the <sys/time.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_SYS_TIME_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_SYS_TIME_H */
 #endif /* _MSC_VER */
 
-/* Define if you have the <sys/types.h> header file. */
+/* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
 
-/* Define if you have the <unistd.h> header file. */
+/* Define to 1 if you have the <unistd.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_UNISTD_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_UNISTD_H */
 #endif /* _MSC_VER */
 
-/* Define if you have the `unsetenv' function. */
+/* Define if your printf function family supports positional parameters as
+   specified by Unix98. */
+/* #undef HAVE_UNIX98_PRINTF */
+
+/* Define to 1 if you have the `unsetenv' function. */
 /* #undef HAVE_UNSETENV */
 
-/* Define if you have the <values.h> header file. */
+/* Define to 1 if you have the <values.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_VALUES_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_VALUES_H */
 #endif /* _MSC_VER */
 
-/* Define if you have the `vasprintf' function. */
+/* Define to 1 if you have the `vasprintf' function. */
 /* #undef HAVE_VASPRINTF */
 
-/* Define if you have the `vprintf' function. */
+/* Define to 1 if you have the `vprintf' function. */
 #define HAVE_VPRINTF 1
 
-/* Define if you have the `vsnprintf' function. */
+/* Define to 1 if you have the `vsnprintf' function. */
 /* #undef HAVE_VSNPRINTF */
 
 /* Have a working bcopy */
 /* #undef HAVE_WORKING_BCOPY */
 
-/* Define if you have the `__argz_count' function. */
+/* Define to 1 if you have the `__argz_count' function. */
 /* #undef HAVE___ARGZ_COUNT */
 
-/* Define if you have the `__argz_next' function. */
+/* Define to 1 if you have the `__argz_next' function. */
 /* #undef HAVE___ARGZ_NEXT */
 
-/* Define if you have the `__argz_stringify' function. */
+/* Define to 1 if you have the `__argz_stringify' function. */
 /* #undef HAVE___ARGZ_STRINGIFY */
 
 /* didn't find fd_set */
@@ -397,6 +411,24 @@
 
 /* global 'sys_siglist' not declared */
 #define NO_SYS_SIGLIST_DECL 1
+
+/* Name of package */
+/* #undef PACKAGE */
+
+/* Define to the address where bug reports for this package should be sent. */
+#define PACKAGE_BUGREPORT ""
+
+/* Define to the full name of this package. */
+#define PACKAGE_NAME ""
+
+/* Define to the full name and version of this package. */
+#define PACKAGE_STRING ""
+
+/* Define to the one symbol short name of this package. */
+#define PACKAGE_TARNAME ""
+
+/* Define to the version of this package. */
+#define PACKAGE_VERSION ""
 
 /* Maximum POSIX RT priority */
 /* #undef POSIX_MAX_PRIORITY */
@@ -443,11 +475,14 @@
         STACK_DIRECTION = 0 => direction of growth unknown */
 /* #undef STACK_DIRECTION */
 
-/* Define if you have the ANSI C header files. */
+/* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
-/* Define if your processor stores words with the most significant byte first
-   (like Motorola and SPARC, unlike Intel and VAX). */
+/* Version number of package */
+/* #undef VERSION */
+
+/* Define to 1 if your processor stores words with the most significant byte
+   first (like Motorola and SPARC, unlike Intel and VAX). */
 /* #undef WORDS_BIGENDIAN */
 
 /* Number of bits in a file offset, on hosts where this is settable. */

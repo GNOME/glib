@@ -51,9 +51,9 @@ EXPORTS
 	g_bsearch_array_get_index
 	g_bsearch_array_get_nth
 	g_bsearch_array_insert
-	g_bsearch_array_new
 	g_bsearch_array_insert
 	g_bsearch_array_lookup
+	g_bsearch_array_new
 	g_bsearch_array_remove
 	g_bsearch_array_remove_node
 	g_build_filename
@@ -163,6 +163,7 @@ EXPORTS
 	g_filename_to_uri
 	g_filename_to_utf8
 	g_find_program_in_path
+	g_fprintf
 	g_free
 	g_get_charset
 	g_get_codeset
@@ -403,6 +404,7 @@ EXPORTS
 	g_pattern_spec_new
 	g_print
 	g_printerr
+	g_printf
 	g_printf_string_upper_bound
 	g_propagate_error
 	g_ptr_array_add
@@ -515,6 +517,7 @@ EXPORTS
 	g_slist_sort
 	g_slist_sort_with_data
 	g_snprintf
+	g_snprintf
 	g_source_add_poll
 	g_source_attach
 	g_source_destroy
@@ -541,6 +544,7 @@ EXPORTS
 	g_spawn_command_line_sync
 	g_spawn_error_quark
 	g_spawn_sync
+	g_sprintf
 	g_static_mutex_free
 	g_static_mutex_get_mutex_impl
 	g_static_mutex_init
@@ -633,9 +637,9 @@ EXPORTS
 	g_thread_create_full
 	g_thread_error_quark
 	g_thread_exit
+	g_thread_exit
 	g_thread_functions_for_glib_use
 	g_thread_join
-	g_thread_exit
 	g_thread_pool_free
 	g_thread_pool_get_max_threads
 	g_thread_pool_get_max_unused_threads
@@ -735,7 +739,11 @@ EXPORTS
 	g_utf8_to_ucs4_fast
 	g_utf8_to_utf16
 	g_utf8_validate
+	g_vfprintf
+	g_vprintf
 	g_vsnprintf
+	g_vsnprintf
+	g_vsprintf
 	g_win32_error_message
 	g_win32_ftruncate
 	g_win32_get_package_installation_directory
