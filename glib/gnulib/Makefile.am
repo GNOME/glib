@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+INCLUDES = -I$(top_srcdir)
+
 noinst_LTLIBRARIES = libgnulib.la
 
 libgnulib_la_SOURCES = 	\
