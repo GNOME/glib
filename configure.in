@@ -253,6 +253,14 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
+# Need full path to Perl for glib-mkenums
+#
+if test "x$PERL" != x ; then
+  AC_PATH_PROG(PERL_PATH, $PERL)
+else
+  PERL_PATH="/usr/bin/env perl"
+fi
+AC_SUBST(PERL_PATH)
 
 dnl
 dnl gettext support
@@ -2146,6 +2154,7 @@ glib/libcharset/Makefile
 gmodule/gmoduleconf.h
 gmodule/Makefile
 gobject/Makefile
+gobject/glib-mkenums
 gthread/Makefile
 po/Makefile.in
 docs/Makefile

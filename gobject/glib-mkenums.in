@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!@PERL_PATH@ -w
 
 # glib-mkenums.pl 
 # Information about the current enumeration

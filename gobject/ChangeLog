@@ -1,3 +1,11 @@
+Mon Oct 29 11:05:15 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* glib-mkenums.in: Generate glib-mkenums from glib-mkenums.in, 
+	substituting in path to perl.  (#63093, Dan Winship)
+
+	* Makefile.am (bin_SCRIPTS): Remove hack to copy glib-mkenums
+	from srcdir.
+
 2001-10-26  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.mingw.in: When running glib-genmarshal, set PATH to
