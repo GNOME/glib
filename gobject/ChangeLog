@@ -1,3 +1,8 @@
+Wed Nov  7 00:56:00 2001  Tim Janik  <timj@gtk.org>
+
+	* gclosure.h: provide G_CLOSURE_N_NOTIFIERS() for people that need
+	to walk the notifier list (puhh, black magic, stay-away-warning ;).
+
 Mon Nov  5 18:59:08 2001  Tim Janik  <timj@gtk.org>
 
 	* gobject.h: 

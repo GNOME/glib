@@ -32,6 +32,7 @@
 #define	CLOSURE_MAX_N_INOTIFIERS	((1 << 8) - 1)
 #define	CLOSURE_N_MFUNCS(cl)		((cl)->meta_marshal + \
                                          ((cl)->n_guards << 1L))
+/* same as G_CLOSURE_N_NOTIFIERS() (keep in sync) */
 #define	CLOSURE_N_NOTIFIERS(cl)		(CLOSURE_N_MFUNCS (cl) + \
                                          (cl)->n_fnotifiers + \
                                          (cl)->n_inotifiers)
@@ -77,7 +78,7 @@ closure_invoke_notifiers (GClosure *closure,
 {
   /* notifier layout:
    *     meta_marshal  n_guards    n_guards     n_fnotif.  n_inotifiers
-   * ->[[meta_marshal][pre_guards][post_guards][fnotifers][inotifiers]]
+   * ->[[meta_marshal][pre_guards][post_guards][fnotifiers][inotifiers]]
    *
    * CLOSURE_N_MFUNCS(cl)    = meta_marshal + n_guards + n_guards;
    * CLOSURE_N_NOTIFIERS(cl) = CLOSURE_N_MFUNCS(cl) + n_fnotifiers + n_inotifiers
