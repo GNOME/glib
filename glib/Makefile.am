@@ -45,7 +45,6 @@ libglib_2_0_la_SOURCES = 	\
 	garray.c		\
 	gasyncqueue.c		\
 	gbacktrace.c		\
-	gbsearcharray.c		\
 	gbsearcharray.h		\
 	gcache.c		\
 	gcompletion.c		\

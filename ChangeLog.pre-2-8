@@ -1,3 +1,27 @@
+Tue Aug 19 03:55:29 2003  Tim Janik  <timj@gtk.org>
+
+	* glib/gbsearcharray.h: license change, no restrictions are made
+	in the new license at all, the implmentation is simply provided
+	"as is" to allow copy-pasting the code into any third-party app.
+	naturally, the implementation is self-contained within the header
+	file to allow this.
+	default to non-shrinking behaviour, allow users to request shrinking
+	via G_BSEARCH_ARRAY_AUTO_SHRINK.
+	creation, deletion functions are now named g_bsearch_array_create()
+	and g_bsearch_array_free(). 
+	fixed const in prototypes, removed cruft.
+	(g_bsearch_array_insert): take only three arguments, do nothing if the
+	node to insert is already there.
+	(g_bsearch_array_replace): insert or replace if the node is already
+	there.
+	(g_bsearch_array_remove): remove nodes by index, the index of a node
+	can be found via g_bsearch_array_get_index().
+	removed other g_bsearch_array_remove*() variants.
+	(g_bsearch_array_lookup): minor optimizations.
+	(g_bsearch_array_lookup_sibling): return nodes on mismatches.
+
+	* glib/gbsearcharray.c: removed.
+
 2003-08-16  Tor Lillqvist  <tml@iki.fi>
 
 	Fix #117925 (Dov Grobgeld):
