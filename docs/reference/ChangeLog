@@ -1,3 +1,7 @@
+Wed Oct 15 00:56:30 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gclosure.sgml: Improvements from Owen's feedback. 
+
 Tue Oct 14 02:35:45 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject-sections.txt: Move the g_cclosure_marshal_*

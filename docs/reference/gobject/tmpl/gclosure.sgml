@@ -21,6 +21,40 @@ convert between #GValue<!-- -->s and suitable representations in the runtime
 of the language in order to use functions written in that languages as 
 callbacks.
 </para>
+<para>
+Within GObject, closures play an important role in the implementation of 
+signals. When a signal is registered, the @c_marshaller argument to 
+g_signal_new() specifies the default C marshaller for any closure which is 
+connected to this signal. GObject provides a number of C marshallers  
+for this purpose, see the g_cclosure_marshal_*() functions. Additional
+C marshallers can be generated with the <link linkend="glib-genmarshal"
+>glib-genmarshal</link> utility.
+Closures can be explicitly connected to signals with 
+g_signal_connect_closure(), but it usually more convenient to let GObject 
+create a closure automatically by using one of the g_signal_connect_*() 
+functions which take a callback function/user data pair.
+</para>
+<para>
+Using closures has a number of important advantages over a simple
+callback function/data pointer combination:
+<itemizedlist>
+<listitem><para>
+Closures allow the callee to get the types of the callback parameters, 
+which means that language bindings don't have to write individual glue 
+for each callback type.
+</para></listitem>
+<listitem><para>
+The reference counting of #GClosure makes it easy to handle reentrancy 
+right; if a callback is removed while it is being invoked, the closure 
+and it's parameters won't be freed until the invocation finishes. 
+</para></listitem>
+<listitem><para>
+g_closure_invalidate() and invalidation notifiers allow callbacks to be
+automatically removed when the objects they point to go away.
+</para></listitem>
+</itemizedlist>
+</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -130,34 +164,34 @@ on closures.
 
 <!-- ##### FUNCTION g_cclosure_new ##### -->
 <para>
-Creates a new closure which invokes @callback_func with @user_data as last 
-parameter. 
+Creates a new closure which invokes @callback_func with @user_data as 
+the last parameter. 
 </para>
 
 @callback_func: the function to invoke
 @user_data: user data to pass to @callback_func
-@destroy_data: destroy notify to be called when @user_data is destroyed
+@destroy_data: destroy notify to be called when @user_data is no longer used
 @Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_cclosure_new_swap ##### -->
 <para>
-Creates a new closure which invokes @callback_func with @user_data as first 
-parameter. 
+Creates a new closure which invokes @callback_func with @user_data as 
+the first parameter. 
 </para>
 
 @callback_func: the function to invoke
 @user_data: user data to pass to @callback_func
-@destroy_data: destroy notify to be called when @user_data is destroyed
+@destroy_data: destroy notify to be called when @user_data is no longer used
 @Returns: a new #GCClosure
 
 
 <!-- ##### FUNCTION g_cclosure_new_object ##### -->
 <para>
-A variant of g_cclosure_new() which uses @object as @user_data
-and calls g_object_watch_closure() on @object and the 
-created closure. This function is mainly useful when implementing new types 
-of closures.
+A variant of g_cclosure_new() which uses @object as @user_data and calls 
+g_object_watch_closure() on @object and the created closure. This function 
+is useful when you have a callback closely associated with a #GObject,
+and want the callback to no longer run after the object is is freed.
 </para>
 
 @callback_func: the function to invoke
@@ -167,10 +201,10 @@ of closures.
 
 <!-- ##### FUNCTION g_cclosure_new_object_swap ##### -->
 <para>
-A variant of g_cclosure_new_swap() which uses @object as @user_data
-and calls g_object_watch_closure() on @object and the 
-created closure. This function is mainly useful when implementing new types 
-of closures.
+A variant of g_cclosure_new_swap() which uses @object as @user_data and calls 
+g_object_watch_closure() on @object and the created closure. This function 
+is useful when you have a callback closely associated with a #GObject,
+and want the callback to no longer run after the object is is freed.
 </para>
 
 @callback_func: the function to invoke
@@ -206,10 +240,26 @@ alive while the caller holds a pointer to it.
 <!-- ##### FUNCTION g_closure_sink ##### -->
 <para>
 Takes over the initial ownership of a closure.
-When closures are newly created, they get an initial reference count
-of 1, eventhough no caller has yet invoked g_closure_ref() on the @closure.
-Code entities that store closures for notification purposes are supposed
-to call this function, for example like this:
+Each closure is initially created in a<firstterm>floating</firstterm> state, 
+which means that the initial reference count is not owned by any caller. 
+g_closure_sink() checks to see if the object is still floating, and if so, 
+unsets the floating state and decreases the reference count. If the closure 
+is not floating, g_closure_sink() does nothing. The reason for the existance 
+of the floating state is to prevent cumbersome code sequences like: 
+<programlisting>
+closure = g_cclosure_new (cb_func, cb_data); 
+g_source_set_closure (source, closure); 
+g_closure_unref (closure); /* XXX GObject doesn't really need this */
+</programlisting>
+Because g_source_set_closure() (and similar functions) take ownership of the 
+initial reference count, if it is unowned, we instead can write: 
+<programlisting>
+g_source_set_closure (source, g_cclosure_new (cb_func, cb_data));
+</programlisting>
+</para>
+<para>
+Generally, this function is used together with g_closure_ref(). Ane example 
+of storing a closure for later notification looks like:
 <informalexample><programlisting>
 static GClosure *notify_closure = NULL;
 void
@@ -225,6 +275,8 @@ foo_notify_set_closure (GClosure *closure)
     }
 }
 </programlisting></informalexample>
+</para>
+<para>
 Because g_closure_sink() may decrement the reference count of a closure
 (if it hasn't been called on @closure yet) just like g_closure_unref(),
 g_closure_ref() should be called prior to this function.
@@ -236,10 +288,9 @@ g_closure_ref() should be called prior to this function.
 
 <!-- ##### FUNCTION g_closure_unref ##### -->
 <para>
-Decrements the reference count of a closure after it was
-previously incremented by the same caller. The closure
-will most likely be destroyed and freed after this function
-returns.
+Decrements the reference count of a closure after it was previously 
+incremented by the same caller. If no other callers are using the closure,
+then the closure will be destroyed and freed.
 </para>
 
 @closure: #GClosure to decrement the reference count on
@@ -247,7 +298,7 @@ returns.
 
 <!-- ##### FUNCTION g_closure_invoke ##### -->
 <para>
-Invokes the closure.
+Invokes the closure, i.e. executes the callback represented by the @closure.
 </para>
 
 @closure: a #GClosure
@@ -263,11 +314,16 @@ Invokes the closure.
 <para>
 Sets a flag on the closure to indicate that it's calling environment has 
 become invalid, and thus causes any future invocations of g_closure_invoke() 
-on this @closure to be ignored.
-Also, invalidation notifiers installed on the closure will be called
-at this point, and since invalidation notifiers may unreference
-the closure, @closure should be considered an invalidated pointer
-after this function, unless g_closure_ref() was called beforehand.
+on this @closure to be ignored. Also, invalidation notifiers installed on 
+the closure will be called at this point. Note that unless you are holding 
+a reference to the closure yourself, the invalidation notifiers may unref 
+the closure and cause it to be destroyed, so if you need to access the 
+closure after calling g_closure_invalidate(), make sure that you've 
+previously called g_closure_ref().
+</para>
+<para>
+Note that g_closure_invalidate() will also be called when the reference count
+of a closure drops to zero (unless it has already been invalidated before).
 </para>
 
 @closure: GClosure to invalidate
@@ -276,8 +332,11 @@ after this function, unless g_closure_ref() was called beforehand.
 <!-- ##### FUNCTION g_closure_add_finalize_notifier ##### -->
 <para>
 Registers a finalization notifier which will be called when the reference
-count of @closure goes down to 0. Finalization notifiers are invoked after
-invalidation notifiers, in an unspecified order.
+count of @closure goes down to 0. Multiple finalization notifiers on a 
+single closure are invoked in unspecified order. If a single call to 
+g_closure_unref() results in the closure being both invalidated and 
+finalized, then the invalidate notifiers will be run before the finalize 
+notifiers.
 </para>
 
 @closure: a #GClosure
@@ -299,8 +358,8 @@ invoked before finalization notifiers, in an unspecified order.
 
 <!-- ##### FUNCTION g_closure_remove_finalize_notifier ##### -->
 <para>
-Removes a finalization notifier. Notifiers may only be removed before or 
-during their invocation.
+Removes a finalization notifier. Notifiers are automatically removed after
+they are run.
 </para>
 
 @closure: a #GClosure
@@ -311,8 +370,8 @@ during their invocation.
 
 <!-- ##### FUNCTION g_closure_remove_invalidate_notifier ##### -->
 <para>
-Removes a invalidation notifier. Notifiers may only be removed before or 
-during their invocation.
+Removes a invalidation notifier. Notifiers are automatically removed after
+they are run.
 </para>
 
 @closure: a #GClosure
@@ -371,10 +430,11 @@ MyClosure *my_closure_new (gpointer data)
 
 <!-- ##### FUNCTION g_closure_set_marshal ##### -->
 <para>
-Sets the marshaller of @closure. A marshaller set with g_closure_set_marshal() 
-should interpret its @marshal_data argument as a callback function to be 
-invoked instead of @closure->callback, provided it is not %NULL. GObject provides a number of predefined marshallers  for use with #GCClosure<!-- -->s, 
-see the g_cclosure_marshal_*() functions.
+Sets the marshaller of @closure. The @marshal_data provides a way for a 
+meta marshaller to provide additional information to the marshaller. 
+(See g_closure_set_meta_marshal().) For GObject's C predefined marshallers
+(the g_cclosure_marshal_*() functions), what it provides is a callback 
+function to use instead of @closure->callback.
 </para>
 
 @closure: a #GClosure
@@ -384,8 +444,9 @@ see the g_cclosure_marshal_*() functions.
 <!-- ##### FUNCTION g_closure_add_marshal_guards ##### -->
 <para>
 Adds a pair of notifiers which get invoked before and after the closure 
-callback, respectively. See g_object_watch_closure() for a use of marshal 
-guards.
+callback, respectively. This is typically used to protect the extra arguments
+for the duration of the callback. See g_object_watch_closure() for an
+example of marshal guards.
 </para>
 
 @closure: a #GClosure
@@ -397,17 +458,20 @@ guards.
 
 <!-- ##### FUNCTION g_closure_set_meta_marshal ##### -->
 <para>
-Sets the meta marshaller of @closure. A meta marshaller 
-should use its @marshal_data argument together with @closure->data 
-to determine the callback function to use, and pass it as @marshal_data
-to @closure->marshal.
+Sets the meta marshaller of @closure. 
+A meta marshaller wraps @closure->marshal and modifies the way it is called 
+in some fashion. The most common use of this facility is for C callbacks. 
+The same marshallers (generated by 
+<link linkend="glib-genmarshal">glib-genmarshal</link>) are used everywhere,
+but the way that we get the callback function differs. In most cases we want 
+to use @closure->callback, but in other cases we want to use use some 
+different technique to retrieve the callbakc function.
 </para>
 <para>
-As an example for the use of a meta marshaller, consider a closure whose
-@data member contains a pointer to a class structure. The meta marshaller 
-could then be given an offset into this struct in @marshal_data, and use
-it to determine the class member function to use as callback. This is
-how class closures for signals are actually implemented in GObject.
+For example, class closures for signals (see g_signal_type_cclosure_new()) 
+retrieve the callback function from a fixed offset in the class structure. 
+The meta marshaller retrieves the right callback and passes it to the 
+marshaller as the @marshal_data argument.
 </para>
 
 @closure: a #GClosure
