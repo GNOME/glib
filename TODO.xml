@@ -48,6 +48,18 @@
       <contact>gtk-devel-list@redhat.com</contact>
     </entry>
 
+    <entry size="small" status="90%" target="1.4">
+      <title>Signal source for main loop</title>
+      <description>
+	<p>
+          Tim has a signal source for the main loop in bse, 
+          have to remember to get this in glib.
+	</p>
+
+      </description>
+      <contact>timj@gtk.org</contact>
+    </entry>
+
 
   </section>
 </todo>
