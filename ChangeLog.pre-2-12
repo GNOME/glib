@@ -1,3 +1,25 @@
+2001-12-06  Matthias Clasen  <matthiasc@poet.de>
+
+	The following patch corrects some function attributes. (#61780)
+
+	* glib/ghash.h (g_int_equal, g_int_hash): These are not const.
+
+	* glib/glibintl.h (_glib_gettext): Add G_GNUC_FORMAT(1).
+
+	* glib/gmacros.h: Use reserved symbols in function attribute macros.
+
+2001-12-06  Matthias Clasen  <matthiasc@poet.de>
+
+	The following patch avoids manual printf()-format parsing 
+	if a C99-conforming vsnprintf() is available. (#55106)
+
+	* acinclude.m4 (AC_FUNC_VSNPRINTF_C99): New macro to test for a
+	C99 conforming vsnprintf.
+
+	* configure.in: Use AC_FUNC_VSNPRINTF_C99. 
+
+	* glib/gmessages.c (g_printf_string_upper_bound): Use C99 vsnprintf().
+	
 2001-12-05  Sven Neumann  <sven@gimp.org>
 
 	* glib/gtree.c (g_tree_foreach): mention the fact that the tree is

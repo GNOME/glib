@@ -56,19 +56,19 @@
 
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
 #define G_GNUC_PRINTF( format_idx, arg_idx )    \
-  __attribute__((format (printf, format_idx, arg_idx)))
+  __attribute__((__format__ (__printf__, format_idx, arg_idx)))
 #define G_GNUC_SCANF( format_idx, arg_idx )     \
-  __attribute__((format (scanf, format_idx, arg_idx)))
+  __attribute__((__format__ (__scanf__, format_idx, arg_idx)))
 #define G_GNUC_FORMAT( arg_idx )                \
-  __attribute__((format_arg (arg_idx)))
+  __attribute__((__format_arg__ (arg_idx)))
 #define G_GNUC_NORETURN                         \
-  __attribute__((noreturn))
+  __attribute__((__noreturn__))
 #define G_GNUC_CONST                            \
-  __attribute__((const))
+  __attribute__((__const__))
 #define G_GNUC_UNUSED                           \
-  __attribute__((unused))
+  __attribute__((__unused__))
 #define G_GNUC_NO_INSTRUMENT			\
-  __attribute__((no_instrument_function))
+  __attribute__((__no_instrument_function__))
 #else   /* !__GNUC__ */
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )

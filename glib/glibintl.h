@@ -5,7 +5,7 @@
 
 #ifdef ENABLE_NLS
 
-gchar *_glib_gettext (const gchar *str);
+gchar *_glib_gettext (const gchar *str) G_GNUC_FORMAT (1);
 
 #include <libintl.h>
 #define _(String) _glib_gettext(String)

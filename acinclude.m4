@@ -235,3 +235,47 @@ strdup __argz_count __argz_stringify __argz_next])
 	< $srcdir/po/POTFILES.in > po/POTFILES
   ])
 
+dnl @synopsis AC_FUNC_VSNPRINTF_C99
+dnl
+dnl Check whether there is a vsnprintf() function with C99 semantics installed.
+dnl
+AC_DEFUN([AC_FUNC_VSNPRINTF_C99],
+[AC_CACHE_CHECK(for C99 vsnprintf,
+  ac_cv_func_vsnprintf_c99,
+[AC_TRY_RUN(
+[#include <stdio.h>
+#include <stdarg.h>
+
+int
+doit(char * s, ...)
+{
+  char buffer[32];
+  va_list args;
+  int r;
+
+  va_start(args, s);
+  r = vsnprintf(buffer, 5, s, args);
+  va_end(args);
+
+  if (r != 7)
+    exit(1);
+
+  exit(0);
+}
+
+int
+main(void)
+{
+  doit("1234567");
+  exit(1);
+}], ac_cv_func_vsnprintf_c99=yes, ac_cv_func_vsnprintf_c99=no, ac_cv_func_vsnprintf_c99=no)])
+dnl Note that the default is to be pessimistic in the case of cross compilation.
+dnl If you know that the target has a C99 vsnprintf(), you can get around this
+dnl by setting ac_func_vsnprintf_c99 to yes, as described in the Autoconf manual.
+if test $ac_cv_func_vsnprintf_c99 = yes; then
+  AC_DEFINE(HAVE_C99_VSNPRINTF, 1,
+            [Define if you have a version of the vsnprintf function
+             with semantics as specified by the ISO C99 standard.])
+fi
+])# AC_FUNC_VSNPRINTF_C99
+

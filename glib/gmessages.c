@@ -477,7 +477,7 @@ g_logv (const gchar   *log_domain,
 
 #ifndef  HAVE_VSNPRINTF
   va_list args2;
-#endif	/* !HAVE_VSNPRINTF */
+#endif	/* HAVE_VSNPRINTF */
   
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
@@ -1172,7 +1172,12 @@ gsize
 g_printf_string_upper_bound (const gchar *format,
 			     va_list      args)
 {
+#if HAVE_C99_VSNPRINTF
+  gchar c;
+  return vsnprintf (&c, 1, format, args);
+#else
   return printf_string_upper_bound (format, TRUE, args);
+#endif
 }
 
 void
