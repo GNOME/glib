@@ -46,52 +46,42 @@
  * G_MAXINT
  * G_MINLONG
  * G_MAXLONG
+ *
+ * We include limits.h before float.h to work around a egcs 1.1
+ * oddity on Solaris 2.5.1
  */
-
-#ifdef HAVE_FLOAT_H
-
-#include <float.h>
-
-#define G_MINFLOAT   FLT_MIN
-#define G_MAXFLOAT   FLT_MAX
-#define G_MINDOUBLE  DBL_MIN
-#define G_MAXDOUBLE  DBL_MAX
-
+#ifdef HAVE_LIMITS_H
+#  include <limits.h>
+#  define G_MINSHORT  SHRT_MIN
+#  define G_MAXSHORT  SHRT_MAX
+#  define G_MININT    INT_MIN
+#  define G_MAXINT    INT_MAX
+#  define G_MINLONG   LONG_MIN
+#  define G_MAXLONG   LONG_MAX
 #elif HAVE_VALUES_H
-
-#include <values.h>
-
-#define G_MINFLOAT  MINFLOAT
-#define G_MAXFLOAT  MAXFLOAT
-#define G_MINDOUBLE MINDOUBLE
-#define G_MAXDOUBLE MAXDOUBLE
-
+#  ifdef HAVE_FLOAT_H
+#    include <values.h>
+#  endif /* HAVE_FLOAT_H */
+#  define G_MINSHORT  MINSHORT
+#  define G_MAXSHORT  MAXSHORT
+#  define G_MININT    MININT
+#  define G_MAXINT    MAXINT
+#  define G_MINLONG   MINLONG
+#  define G_MAXLONG   MAXLONG
 #endif /* HAVE_VALUES_H */
 
-#ifdef HAVE_LIMITS_H
-
-#include <limits.h>
-
-#define G_MINSHORT  SHRT_MIN
-#define G_MAXSHORT  SHRT_MAX
-#define G_MININT    INT_MIN
-#define G_MAXINT    INT_MAX
-#define G_MINLONG   LONG_MIN
-#define G_MAXLONG   LONG_MAX
-
-#elif HAVE_VALUES_H
-
 #ifdef HAVE_FLOAT_H
-#include <values.h>
-#endif /* HAVE_FLOAT_H */
-
-#define G_MINSHORT  MINSHORT
-#define G_MAXSHORT  MAXSHORT
-#define G_MININT    MININT
-#define G_MAXINT    MAXINT
-#define G_MINLONG   MINLONG
-#define G_MAXLONG   MAXLONG
-
+#  include <float.h>
+#  define G_MINFLOAT   FLT_MIN
+#  define G_MAXFLOAT   FLT_MAX
+#  define G_MINDOUBLE  DBL_MIN
+#  define G_MAXDOUBLE  DBL_MAX
+#elif HAVE_VALUES_H
+#  include <values.h>
+#  define G_MINFLOAT  MINFLOAT
+#  define G_MAXFLOAT  MAXFLOAT
+#  define G_MINDOUBLE MINDOUBLE
+#  define G_MAXDOUBLE MAXDOUBLE
 #endif /* HAVE_VALUES_H */
 
 
@@ -596,7 +586,7 @@ typedef struct _GStringChunk	GStringChunk;
 typedef struct _GTimer		GTimer;
 typedef struct _GTree		GTree;
 typedef struct _GTuples		GTuples;
-typedef union  _GValue		GValue;
+typedef union  _GTokenValue	GTokenValue;
 
 
 typedef enum
@@ -1579,7 +1569,7 @@ typedef enum
   G_TOKEN_LAST
 } GTokenType;
 
-union	_GValue
+union	_GTokenValue
 {
   gpointer	v_symbol;
   gchar		*v_identifier;
@@ -1652,13 +1642,13 @@ struct	_GScanner
 
   /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
-  GValue		value;
+  GTokenValue		value;
   guint			line;
   guint			position;
 
   /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
-  GValue		next_value;
+  GTokenValue		next_value;
   guint			next_line;
   guint			next_position;
 
@@ -1684,7 +1674,7 @@ void		g_scanner_input_text		(GScanner	*scanner,
 GTokenType	g_scanner_get_next_token	(GScanner	*scanner);
 GTokenType	g_scanner_peek_next_token	(GScanner	*scanner);
 GTokenType	g_scanner_cur_token		(GScanner	*scanner);
-GValue		g_scanner_cur_value		(GScanner	*scanner);
+GTokenValue	g_scanner_cur_value		(GScanner	*scanner);
 guint		g_scanner_cur_line		(GScanner	*scanner);
 guint		g_scanner_cur_position		(GScanner	*scanner);
 gboolean	g_scanner_eof			(GScanner	*scanner);

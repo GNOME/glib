@@ -44,7 +44,7 @@ typedef enum
 
 typedef	struct _GModule			 GModule;
 typedef const gchar* (*GModuleCheckInit) (GModule	*module);
-typedef void	     (*GModuleDeInit)	 (GModule	*module);
+typedef void	     (*GModuleUnload)	 (GModule	*module);
 
 /* return TRUE if dynamic module loading is supported */
 gboolean	g_module_supported	   (void);

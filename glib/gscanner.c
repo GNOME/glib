@@ -114,16 +114,16 @@ static gint	g_scanner_key_equal	  (gconstpointer v1,
 static guint	g_scanner_key_hash	  (gconstpointer v);
 static void	g_scanner_get_token_ll	  (GScanner	*scanner,
 					   GTokenType	*token_p,
-					   GValue	*value_p,
+					   GTokenValue	*value_p,
 					   guint	*line_p,
 					   guint	*position_p);
 static void	g_scanner_get_token_i	  (GScanner	*scanner,
 					   GTokenType	*token_p,
-					   GValue	*value_p,
+					   GTokenValue	*value_p,
 					   guint	*line_p,
 					   guint	*position_p);
 static void	g_scanner_free_value	  (GTokenType	*token_p,
-					   GValue	*value_p);
+					   GTokenValue	*value_p);
 
 static guchar	g_scanner_peek_next_char  (GScanner	*scanner);
 static guchar	g_scanner_get_char	  (GScanner	*scanner,
@@ -627,10 +627,10 @@ g_scanner_cur_token (GScanner *scanner)
   return scanner->token;
 }
 
-GValue
+GTokenValue
 g_scanner_cur_value (GScanner *scanner)
 {
-  GValue v;
+  GTokenValue v;
   
   v.v_int = 0;
   g_return_val_if_fail (scanner != NULL, v);
@@ -1051,7 +1051,7 @@ g_scanner_stat_mode (const gchar *filename)
 
 static void
 g_scanner_free_value (GTokenType     *token_p,
-		      GValue	     *value_p)
+		      GTokenValue     *value_p)
 {
   switch (*token_p)
     {
@@ -1073,7 +1073,7 @@ g_scanner_free_value (GTokenType     *token_p,
 static void
 g_scanner_get_token_i (GScanner	*scanner,
 		       GTokenType	*token_p,
-		       GValue		*value_p,
+		       GTokenValue	*value_p,
 		       guint		*line_p,
 		       guint		*position_p)
 {
@@ -1127,7 +1127,7 @@ g_scanner_get_token_i (GScanner	*scanner,
 static void
 g_scanner_get_token_ll	(GScanner	*scanner,
 			 GTokenType	*token_p,
-			 GValue		*value_p,
+			 GTokenValue	*value_p,
 			 guint		*line_p,
 			 guint		*position_p)
 {
@@ -1139,7 +1139,7 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   static   guchar		ch;
   register GTokenType		token;
   register GString		*gstring;
-  GValue			value;
+  GTokenValue			value;
   
   config = scanner->config;
   (*value_p).v_int = 0;

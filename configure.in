@@ -4,6 +4,10 @@ AC_INIT(glist.c)
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
+# The following version number definitions apply to GLib and GModule
+# as a whole, so if changes occoured in either of them, they are both
+# treated with the same interface and binary age.
+#
 # Making releases:
 #   GLIB_MICRO_VERSION += 1;
 #   GLIB_INTERFACE_AGE += 1;

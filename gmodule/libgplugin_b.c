@@ -27,9 +27,9 @@ g_module_check_init (GModule *module)
 }
 
 G_MODULE_EXPORT void
-g_module_de_init (GModule *module)
+g_module_unload (GModule *module)
 {
-  g_print ("GPluginB: de-init\n");
+  g_print ("GPluginB: unloaded\n");
 }
 
 G_MODULE_EXPORT void

@@ -1,3 +1,21 @@
+Mon Sep 21 02:22:12 1998  Tim Janik  <timj@gtk.org>
+
+	* NEWS file update for upcoming release of GLib + GModule
+	version 1.1.3, binary age 0, interface age 0. (GModule uses
+	the same version numbers as GLib.)
+
+	* glib.h: swap the inclusion of of float.h and limits.h to work
+	around a egcs 1.1 oddity on Solaris 2.5.1 (fix provided by
+	Per Abrahamsen  <abraham@dina.kvl.dk>).
+
+	* glib.h:
+	* gscanner.c: renamed the GValue union to GTokenValue, this should
+	not affect source compatibility in most cases.
+
+	* ghash.c: added some g_return_if_fail() statements. make
+ 	g_hash_table_lookup_node() an inline function so we save an extra
+	function invokation on lookups.
+
 Sun Sep 20 18:21:46 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* ltconfig.sh: Patch to libtool-1.2b to make --disable-static

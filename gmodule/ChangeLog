@@ -1,3 +1,16 @@
+Mon Sep 21 01:54:48 1998  Tim Janik  <timj@gtk.org>
+
+	* gmodule.h: 
+	* gmodule.c: renamed old _de_init functionality to _unload.
+	modules are now expected to export:
+	G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+	and
+	G_MODULE_EXPORT void g_module_unload (GModule *module);
+	returning a string other than NULL from g_module_check_init() will
+ 	prevent the module from being loaded. a call to g_module_make_resident()
+	from g_module_unload() will prevent the module from being unloaded and
+	still make it resident.
+
 Thu Sep 17 06:34:22 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.h: 

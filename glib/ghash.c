@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -43,13 +43,13 @@ struct _GHashTable
 };
 
 
-static void		g_hash_table_resize	(GHashTable	*hash_table);
-static GHashNode**	g_hash_table_lookup_node(GHashTable	*hash_table,
-						 gconstpointer	 key);
-static GHashNode*	g_hash_node_new		(gpointer	 key,
-						 gpointer	 value);
-static void		g_hash_node_destroy	(GHashNode	*hash_node);
-static void		g_hash_nodes_destroy	(GHashNode	*hash_node);
+static void		g_hash_table_resize	 (GHashTable	*hash_table);
+static GHashNode**	g_hash_table_lookup_node (GHashTable	*hash_table,
+						  gconstpointer	 key);
+static GHashNode*	g_hash_node_new		 (gpointer	 key,
+						  gpointer	 value);
+static void		g_hash_node_destroy	 (GHashNode	*hash_node);
+static void		g_hash_nodes_destroy	 (GHashNode	*hash_node);
 
 
 static GMemChunk *node_mem_chunk = NULL;
@@ -61,8 +61,8 @@ g_hash_table_new (GHashFunc    hash_func,
 		  GCompareFunc key_compare_func)
 {
   GHashTable *hash_table;
-  gint i;
-
+  guint i;
+  
   hash_table = g_new (GHashTable, 1);
   hash_table->size = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes = 0;
@@ -70,38 +70,75 @@ g_hash_table_new (GHashFunc    hash_func,
   hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
   hash_table->key_compare_func = key_compare_func;
   hash_table->nodes = g_new (GHashNode*, hash_table->size);
-
+  
   for (i = 0; i < hash_table->size; i++)
     hash_table->nodes[i] = NULL;
-
+  
   return hash_table;
 }
 
 void
 g_hash_table_destroy (GHashTable *hash_table)
 {
-  gint i;
-
-  g_return_if_fail (hash_table);
-
+  guint i;
+  
+  g_return_if_fail (hash_table != NULL);
+  
   for (i = 0; i < hash_table->size; i++)
     g_hash_nodes_destroy (hash_table->nodes[i]);
-
+  
   g_free (hash_table->nodes);
   g_free (hash_table);
 }
 
-void
-g_hash_table_insert (GHashTable *hash_table,
-		     gpointer    key,
-		     gpointer    value)
+static inline GHashNode**
+g_hash_table_lookup_node (GHashTable	*hash_table,
+			  gconstpointer	 key)
 {
   GHashNode **node;
+  
+  node = &hash_table->nodes
+    [(* hash_table->hash_func) (key) % hash_table->size];
+  
+  /* Hash table lookup needs to be fast.
+   *  We therefore remove the extra conditional of testing
+   *  whether to call the key_compare_func or not from
+   *  the inner loop.
+   */
+  if (hash_table->key_compare_func)
+    while (*node && !(*hash_table->key_compare_func) ((*node)->key, key))
+      node = &(*node)->next;
+  else
+    while (*node && (*node)->key != key)
+      node = &(*node)->next;
+  
+  return node;
+}
 
-  g_return_if_fail (hash_table);
+gpointer
+g_hash_table_lookup (GHashTable	  *hash_table,
+		     gconstpointer key)
+{
+  GHashNode *node;
+  
+  g_return_val_if_fail (hash_table != NULL, NULL);
+  
+  node = *g_hash_table_lookup_node (hash_table, key);
+  
+  return node ? node->value : NULL;
+}
 
+void
+g_hash_table_insert (GHashTable *hash_table,
+		     gpointer	 key,
+		     gpointer	 value)
+{
+  GHashNode **node;
+  
+  g_return_if_fail (hash_table != NULL);
+  
   node = g_hash_table_lookup_node (hash_table, key);
-
+  
   if (*node)
     {
       /* do not reset node->key in this place, keeping
@@ -122,13 +159,13 @@ g_hash_table_insert (GHashTable *hash_table,
 }
 
 void
-g_hash_table_remove (GHashTable      *hash_table,
+g_hash_table_remove (GHashTable	     *hash_table,
 		     gconstpointer    key)
 {
   GHashNode **node, *dest;
-
-  g_return_if_fail (hash_table);
-
+  
+  g_return_if_fail (hash_table != NULL);
+  
   while (*(node = g_hash_table_lookup_node (hash_table, key)))
     {
       dest = *node;
@@ -136,20 +173,9 @@ g_hash_table_remove (GHashTable      *hash_table,
       g_hash_node_destroy (dest);
       hash_table->nnodes--;
     }
+  
   if (!hash_table->frozen)
     g_hash_table_resize (hash_table);
-}
-
-gpointer
-g_hash_table_lookup (GHashTable   *hash_table,
-		     gconstpointer key)
-{
-  GHashNode *node;
-
-  g_return_val_if_fail (hash_table, NULL);
-
-  node = *g_hash_table_lookup_node (hash_table, key);
-  return node ? node->value : NULL;
 }
 
 gboolean
@@ -159,11 +185,11 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
 			      gpointer		*value)
 {
   GHashNode *node;
-
-  g_return_val_if_fail (hash_table, FALSE);
-
+  
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+  
   node = *g_hash_table_lookup_node (hash_table, lookup_key);
-
+  
   if (node)
     {
       if (orig_key)
@@ -179,45 +205,47 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
 void
 g_hash_table_freeze (GHashTable *hash_table)
 {
-  g_return_if_fail (hash_table);
-
+  g_return_if_fail (hash_table != NULL);
+  
   hash_table->frozen = TRUE;
 }
 
 void
 g_hash_table_thaw (GHashTable *hash_table)
 {
-  g_return_if_fail (hash_table);
-
+  g_return_if_fail (hash_table != NULL);
+  
   hash_table->frozen = FALSE;
-
+  
   g_hash_table_resize (hash_table);
 }
 
 gint
-g_hash_table_foreach_remove	(GHashTable	*hash_table,
-				 GHRFunc	 func,
-				 gpointer	 user_data)
+g_hash_table_foreach_remove (GHashTable	*hash_table,
+			     GHRFunc	 func,
+			     gpointer	 user_data)
 {
-  gint deleted = 0, i;
   GHashNode *node, *prev;
-
-  g_return_val_if_fail (hash_table && func, -1);
-
+  guint i;
+  gint deleted = 0;
+  
+  g_return_val_if_fail (hash_table != NULL, 0);
+  g_return_val_if_fail (func != NULL, 0);
+  
   for (i = 0; i < hash_table->size; i++)
     {
     restart:
-
+      
       prev = NULL;
-
+      
       for (node = hash_table->nodes[i]; node; prev = node, node = node->next)
 	{
 	  if ((* func) (node->key, node->value, user_data))
 	    {
 	      deleted += 1;
-
+	      
 	      hash_table->nnodes -= 1;
-
+	      
 	      if (prev)
 		{
 		  prev->next = node->next;
@@ -233,33 +261,35 @@ g_hash_table_foreach_remove	(GHashTable	*hash_table,
 	    }
 	}
     }
-
-  if (! hash_table->frozen)
+  
+  if (!hash_table->frozen)
     g_hash_table_resize (hash_table);
-
+  
   return deleted;
 }
 
 void
 g_hash_table_foreach (GHashTable *hash_table,
-		      GHFunc      func,
-		      gpointer    user_data)
+		      GHFunc	  func,
+		      gpointer	  user_data)
 {
   GHashNode *node;
   gint i;
-
-  g_return_if_fail (hash_table);
-
+  
+  g_return_if_fail (hash_table != NULL);
+  g_return_if_fail (func != NULL);
+  
   for (i = 0; i < hash_table->size; i++)
     for (node = hash_table->nodes[i]; node; node = node->next)
       (* func) (node->key, node->value, user_data);
 }
 
 /* Returns the number of elements contained in the hash table. */
-gint g_hash_table_size (GHashTable *hash_table)
+gint
+g_hash_table_size (GHashTable *hash_table)
 {
-  g_return_val_if_fail (hash_table, 0);
-
+  g_return_val_if_fail (hash_table != NULL, 0);
+  
   return hash_table->nnodes;
 }
 
@@ -273,23 +303,21 @@ g_hash_table_resize (GHashTable *hash_table)
   guint hash_val;
   gint new_size;
   gint i;
-
-  g_return_if_fail (hash_table);
-
+  
   nodes_per_list = (gfloat) hash_table->nnodes / (gfloat) hash_table->size;
-
+  
   if ((nodes_per_list > 0.3 || hash_table->size <= HASH_TABLE_MIN_SIZE) &&
       (nodes_per_list < 3.0 || hash_table->size >= HASH_TABLE_MAX_SIZE))
     return;
-
+  
   new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
 		   HASH_TABLE_MIN_SIZE,
 		   HASH_TABLE_MAX_SIZE);
   new_nodes = g_new (GHashNode*, new_size);
-
+  
   for (i = 0; i < new_size; i++)
     new_nodes[i] = NULL;
-
+  
   for (i = 0; i < hash_table->size; i++)
     for (node = hash_table->nodes[i]; node; node = next)
       {
@@ -298,36 +326,10 @@ g_hash_table_resize (GHashTable *hash_table)
 	node->next = new_nodes[hash_val];
 	new_nodes[hash_val] = node;
       }
-
+  
   g_free (hash_table->nodes);
   hash_table->nodes = new_nodes;
   hash_table->size = new_size;
-}
-
-static GHashNode **
-g_hash_table_lookup_node (GHashTable	*hash_table,
-			  gconstpointer	 key)
-{
-  GHashNode **node;
-
-  g_return_val_if_fail (hash_table, NULL);
-
-  node = &hash_table->nodes
-    [(* hash_table->hash_func) (key) % hash_table->size];
-
-  /* Hash table lookup needs to be fast.
-   *  We therefore remove the extra conditional of testing
-   *  whether to call the key_compare_func or not from
-   *  the inner loop.
-   */
-  if (hash_table->key_compare_func)
-    while (*node && !(*hash_table->key_compare_func) ((*node)->key, key))
-      node = &(*node)->next;
-  else
-    while (*node && (*node)->key != key)
-      node = &(*node)->next;
-
-  return node;
 }
 
 static GHashNode*
@@ -335,7 +337,7 @@ g_hash_node_new (gpointer key,
 		 gpointer value)
 {
   GHashNode *hash_node;
-
+  
   if (node_free_list)
     {
       hash_node = node_free_list;
@@ -347,22 +349,20 @@ g_hash_node_new (gpointer key,
 	node_mem_chunk = g_mem_chunk_new ("hash node mem chunk",
 					  sizeof (GHashNode),
 					  1024, G_ALLOC_ONLY);
-
+      
       hash_node = g_chunk_new (GHashNode, node_mem_chunk);
     }
-
+  
   hash_node->key = key;
   hash_node->value = value;
   hash_node->next = NULL;
-
+  
   return hash_node;
 }
 
 static void
 g_hash_node_destroy (GHashNode *hash_node)
 {
-  g_return_if_fail (hash_node);
-
   hash_node->next = node_free_list;
   node_free_list = hash_node;
 }
@@ -371,15 +371,15 @@ static void
 g_hash_nodes_destroy (GHashNode *hash_node)
 {
   GHashNode *node;
-
+  
   if (!hash_node)
     return;
-
+  
   node = hash_node;
-
+  
   while (node->next)
     node = node->next;
-
+  
   node->next = node_free_list;
   node_free_list = hash_node;
 }
