@@ -2219,7 +2219,7 @@ g_strsplit (const gchar *string,
  * special case is that being able to represent a empty vector is typically
  * more useful than consistent handling of empty elements. If you do need
  * to represent empty elements, you'll need to check for the empty string
- * before calling g_strsplit().
+ * before calling g_strsplit_set().
  *
  * Note that this function works on bytes not characters, so it can't be used 
  * to delimit UTF-8 strings for anything but ASCII characters.

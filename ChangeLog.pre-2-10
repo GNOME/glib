@@ -1,3 +1,8 @@
+Tue Jul 27 02:01:31 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/gstrfuncs.c (g_strsplit_set): s/g_strsplit/g_strsplit_set/
+	as well.
+
 Sat Jul 24 17:50:07 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* glib/gstrfuncs.c (g_strsplit_set):
