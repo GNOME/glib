@@ -1,5 +1,10 @@
 2005-01-01  Tor Lillqvist  <tml@iki.fi>
 
+	* glib/gutils.c: Make the g_getenv() ABI backward compatibility
+	wrapper more robust.
+
+2005-01-01  Tor Lillqvist  <tml@iki.fi>
+
 	* glib/glib.symbols
 	* glib/gutils.h
 	* glib/gutils.c: Make also g_getenv(), g_setenv(), g_unsetenv()
