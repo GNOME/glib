@@ -24,12 +24,35 @@ Installation
 
 See the file 'INSTALL'
 
-Notes about GLib-2.4.0
+Notes about GLib 2.6.0
 ======================
 
-* GObject now enforces CONSTRUCT_ONLY properties; due to an oversight
-  in previous versions, it was possible to set CONSTRUCT_ONLY properties
-  after construct time.
+* GLib 2.6 introduces the concept of a 'filename encoding', which is the
+  on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions returning
+  or accepting pathnames have been changed to expect filenames in this
+  encoding, and the common POSIX functions dealing with pathnames have been
+  wrapped. To keep binary compatibility with applications compiled against
+  older versions of GLib, the Windows dll still provides entry points with 
+  the old semantics.
+
+* Likewise, g_get_user_name() and g_get_real_name() have been changed to return
+  UTF-8 on Windows, while keeping the old semantics for applications compiled
+  against older versions of GLib.
+
+* The GLib uses an '_' prefix to indicate private symbols that
+  must not be used by applications. On some platforms, symbols beginning 
+  with prefixes such as _g will be exported from the library, on others not. 
+  In no case can applications use these private symbols. In addition to that, 
+  GLib+ 2.6 makes several symbols private which were not in any installed 
+  header files and were never intended to be exported.
+
+* GLib uses a technique involving macros for reducing the amount of PLT
+  redirections which has the side effect that the names of internally used
+  GLib functions are prefixed with IA__. The g_return_if_fail() macros
+  strip this prefix away, but it will show up e.g. in a debugger.
+
+* On Windows, GLib no longer opens a console window if stdout or stderr
+  are invalid. Simply redirect stdout or stderr if you need to see it.
 
 * The child watch functionality tends to reveal a bug in many
   thread implementations (in particular the older LinuxThreads implementation

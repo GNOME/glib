@@ -1,5 +1,9 @@
 2004-12-14  Matthias Clasen  <mclasen@redhat.com>
 
+	* README.in: Updates
+
+	* NEWS: Updates.
+
 	* configure.in: Set version to 2.6.0
 
 2004-12-13  Tor Lillqvist  <tml@iki.fi>
