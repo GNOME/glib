@@ -1,3 +1,8 @@
+2004-12-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/gqueue.c (g_queue_link_index): Return -1 if queue is 
+	NULL.  (#159530, Philippe Blain)
+
 2004-12-02  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in: Bump version.

@@ -730,7 +730,7 @@ gint
 g_queue_link_index (GQueue *queue,
 		    GList  *link_)
 {
-  g_return_val_if_fail (queue != NULL, 0);
+  g_return_val_if_fail (queue != NULL, -1);
 
   return g_list_position (queue->head, link_);
 }
