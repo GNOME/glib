@@ -231,7 +231,7 @@ g_convert_with_fallback (const gchar *str,
   gchar *outp;
   const gchar *insert_str = NULL;
   const gchar *p;
-  size_t inbytes_remaining;
+  int inbytes_remaining;
   const gchar *save_p = NULL;
   size_t save_inbytes = 0;
   size_t outbytes_remaining;
@@ -301,7 +301,9 @@ g_convert_with_fallback (const gchar *str,
 
   while (!done && !have_error)
     {
-      err = iconv (cd, &p, &inbytes_remaining, &outp, &outbytes_remaining);
+      size_t inbytes_tmp = inbytes_remaining;
+      err = iconv (cd, &p, &inbytes_tmp, &outp, &outbytes_remaining);
+      inbytes_remaining = inbytes_tmp;
 
       if (err == (size_t) -1)
 	{

@@ -1,3 +1,7 @@
+Sun Sep 17 2000 Elliot Lee <sopwith@redhat.com>
+	* glib.h configure.in: Define g_alloca() as an alloca-that-works-anywhere.
+	* gconvert.c: Fix warnings which could have caused problems on 64-bit platforms.
+
 Sun Sep 10 12:37:40 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h gconvert.c (g_convert): Havoc Pennington's implementation 

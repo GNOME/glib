@@ -325,6 +325,34 @@ extern "C" {
 #  define G_BREAKPOINT()	G_STMT_START{ raise (5 /* SIGTRAP */); }G_STMT_END
 #endif	/* __i386__ */
 
+/* g_alloca handling */
+#ifdef GLIB_HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
+
+#include <string.h>
+#ifdef __GNUC__
+/* glibc already does this for us */
+#ifndef alloca
+# define alloca(size) __builtin_alloca (size)
+#endif
+#else
+# ifdef _MSC_VER
+#  include <malloc.h>
+#  define alloca _alloca
+# else
+#   ifdef _AIX
+ #pragma alloca
+#   else
+#    ifndef alloca /* predefined by HP cc +Olibcalls */
+char *alloca ();
+#    endif
+#   endif
+# endif
+#endif
+
+#define g_alloca(size) alloca (size)
+/* End g_alloca handling */
 
 /* Provide macros for easily allocating memory. The macros
  *  will cast the allocated memory to the specified type

@@ -72,7 +72,7 @@ AC_DEFINE_UNQUOTED(GLIB_INTERFACE_AGE, $GLIB_INTERFACE_AGE)
 AC_DEFINE_UNQUOTED(GLIB_BINARY_AGE, $GLIB_BINARY_AGE)
 
 dnl Initialize libtool
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
@@ -220,6 +220,8 @@ AC_HEADER_STDC
 
 # Checks for library functions.
 AC_FUNC_VPRINTF
+
+AC_FUNC_ALLOCA
 
 AC_CHECK_FUNCS(atexit on_exit)
 
@@ -1178,6 +1180,9 @@ _______EOF
 	if test x$g_mutex_header_file != x; then
 	  echo '#include <'"$g_mutex_header_file"'>' >> $outfile
 	fi
+	if test "$glib_header_alloca_h" = "yes"; then
+	  echo  '#include <alloca.h>' >> $outfile
+	fi
 	if test x$glib_sys_poll_h = xyes; then
 	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
 	fi
@@ -1390,6 +1395,8 @@ esac
 # Note also that this is inside an AC_OUTPUT_COMMAND.  We do not depend
 # on variable expansion in case labels.  Look at the generated config.status
 # for a hint.
+
+glib_header_alloca_h="$ac_cv_header_alloca_h"
 
 case xyes in
 x$ac_cv_header_float_h)
