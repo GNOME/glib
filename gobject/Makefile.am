@@ -155,12 +155,12 @@ libgobject_1_3_la_SOURCES = $(gruntime_target_sources)
 #
 # programs to compile and install
 #
-bin_PROGRAMS = gobject-query glib-genmarshal glib-mkenums
+bin_PROGRAMS = gobject-query glib-genmarshal
+bin_SCRIPTS = glib-mkenums
 noinst_PROGRAMS =  testgruntime
 # source files
 gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
-glib_mkenums_SOURCES = glib-mkenums
 testgruntime_SOURCES = testgruntime.c
 # link programs against libgobject
 progs_LDADD = libgobject-1.3.la $(libglib)

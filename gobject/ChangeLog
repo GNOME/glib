@@ -1,3 +1,9 @@
+2001-05-05  James Henstridge  <james@daa.com.au>
+
+	* Makefile.am: glib-mkenums is not a compiled program, so shouldn't
+	be in the bin_PROGRAMS primary.  Put it in bin_SCRIPTS instead, and
+	removed the glib_mkenums_SOURCES var.
+
 Thu May  3 06:10:23 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gobject.c (g_object_set_[q]data_full): Make types of ternary
