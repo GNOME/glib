@@ -14,7 +14,8 @@ EXTRA_DIST =	\
 BUILT_SOURCES = gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
 
-include_HEADERS = \
+glibincludedir=$(includedir)/glib-1.2
+glibinclude_HEADERS =    	\
 		gmodule.h
 
 libglib = $(top_builddir)/libglib.la # -lglib

@@ -1,3 +1,9 @@
+Fri Sep  8 21:46:13 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* gmodule/Makefile.am Makefile.am glib-config.in:
+	Move headers to @includedir@/glib-1.2/ to allow
+	safe coexistance with a glib-2.0 build environment.
+
 Mon Aug 21 14:39:36 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h: Use C99 varargs macros where possible 

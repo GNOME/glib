@@ -57,7 +57,8 @@ libglib_la_SOURCES = \
 	gtree.c		\
 	gutils.c
 
-include_HEADERS = \
+glibincludedir=$(includedir)/glib-1.2
+glibinclude_HEADERS =   \
 	glib.h
 
 configinclude_DATA = \

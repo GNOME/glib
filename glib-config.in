@@ -56,9 +56,6 @@ while test $# -gt 0; do
       exit 0
       ;;
     --cflags)
-      if test "@includedir@" != /usr/include ; then
-        includes="-I@includedir@"
-      fi
       echo_cflags=yes
       ;;
     --libs)
@@ -91,7 +88,7 @@ if test "$echo_cflags" = "yes"; then
 	if test "$lib_gthread" = "yes"; then
 		cflags="$cflags @G_THREAD_CFLAGS@"
 	fi
-	echo -I@libdir@/glib/include $includes $cflags
+	echo -I@includedir@/glib-1.2 -I@libdir@/glib/include $includes $cflags
 fi
 if test "$echo_libs" = "yes"; then
 	libsp=""
