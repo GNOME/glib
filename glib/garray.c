@@ -126,6 +126,54 @@ g_array_set_size (GArray *farray,
   return farray;
 }
 
+GArray*
+g_array_remove_index (GArray* farray,
+		      guint index)
+{
+  GRealArray* array = (GRealArray*) farray;
+
+  g_return_val_if_fail (array, NULL);
+
+  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+
+  if (index != array->len - 1)
+      g_memmove (array->data + array->elt_size * index, 
+		 array->data + array->elt_size * (index + 1), 
+		 array->elt_size * (array->len - index - 1));
+  
+  if (array->zero_terminated)
+    memset (array->data + array->elt_size * (array->len - 1), 0, 
+	    array->elt_size);
+
+  array->len -= 1;
+
+  return farray;
+}
+
+GArray*
+g_array_remove_index_fast (GArray* farray,
+			   guint index)
+{
+  GRealArray* array = (GRealArray*) farray;
+
+  g_return_val_if_fail (array, NULL);
+
+  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+
+  if (index != array->len - 1)
+    g_memmove (array->data + array->elt_size * index, 
+	       array->data + array->elt_size * (array->len - 1), 
+	       array->elt_size);
+  
+  if (array->zero_terminated)
+    memset (array->data + array->elt_size * (array->len - 1), 0, 
+	    array->elt_size);
+
+  array->len -= 1;
+
+  return farray;
+}
+
 static gint
 g_nearest_pow (gint num)
 {
@@ -245,7 +293,7 @@ g_ptr_array_set_size  (GPtrArray   *farray,
 
 gpointer
 g_ptr_array_remove_index (GPtrArray* farray,
-			  gint index)
+			  guint index)
 {
   GRealPtrArray* array = (GRealPtrArray*) farray;
   gpointer result;
@@ -255,8 +303,33 @@ g_ptr_array_remove_index (GPtrArray* farray,
   g_return_val_if_fail (index >= 0 && index < array->len, NULL);
 
   result = array->pdata[index];
+  
+  if (index != array->len - 1)
+    g_memmove (array->pdata + index, array->pdata + index + 1, 
+	       array->len - index - 1);
+  
+  array->pdata[array->len - 1] = NULL;
 
-  array->pdata[index] = array->pdata[array->len - 1];
+  array->len -= 1;
+
+  return result;
+}
+
+gpointer
+g_ptr_array_remove_index_fast (GPtrArray* farray,
+			       guint index)
+{
+  GRealPtrArray* array = (GRealPtrArray*) farray;
+  gpointer result;
+
+  g_return_val_if_fail (array, NULL);
+
+  g_return_val_if_fail (index >= 0 && index < array->len, NULL);
+
+  result = array->pdata[index];
+  
+  if (index != array->len - 1)
+    array->pdata[index] = array->pdata[array->len - 1];
 
   array->pdata[array->len - 1] = NULL;
 
@@ -279,6 +352,27 @@ g_ptr_array_remove (GPtrArray* farray,
       if (array->pdata[i] == data)
 	{
 	  g_ptr_array_remove_index (farray, i);
+	  return TRUE;
+	}
+    }
+
+  return FALSE;
+}
+
+gboolean
+g_ptr_array_remove_fast (GPtrArray* farray,
+			 gpointer data)
+{
+  GRealPtrArray* array = (GRealPtrArray*) farray;
+  int i;
+
+  g_return_val_if_fail (array, FALSE);
+
+  for (i = 0; i < array->len; i += 1)
+    {
+      if (array->pdata[i] == data)
+	{
+	  g_ptr_array_remove_index_fast (farray, i);
 	  return TRUE;
 	}
     }
@@ -335,6 +429,22 @@ GByteArray* g_byte_array_set_size (GByteArray *array,
 				   guint       length)
 {
   g_array_set_size ((GArray*) array, length);
+
+  return array;
+}
+
+GByteArray* g_byte_array_remove_index (GByteArray *array,
+				       guint index)
+{
+  g_array_remove_index((GArray*) array, index);
+
+  return array;
+}
+
+GByteArray* g_byte_array_remove_index_fast (GByteArray *array,
+						   guint index)
+{
+  g_array_remove_index_fast((GArray*) array, index);
 
   return array;
 }
