@@ -26,6 +26,7 @@
 
 #undef	G_LOG_DOMAIN
 #include	<gmodule.h>
+#include	"gmoduleconf.h"
 
 
 G_MODULE_EXPORT void
@@ -37,7 +38,7 @@ g_clash_func (void)
 typedef	void (*SimpleFunc) (void);
 typedef	void (*GModuleFunc) (GModule *);
 
-SimpleFunc gplugin_clash_func;
+static SimpleFunc plugin_clash_func = NULL;
 
 int
 main (int   arg,
@@ -55,10 +56,13 @@ main (int   arg,
 #ifdef NATIVE_WIN32
   plugin_a = g_strconcat (string, "\\libgplugin_a.dll", NULL);
   plugin_b = g_strconcat (string, "\\libgplugin_b.dll", NULL);
-#else /* !NATIVE_WIN32 */
+#elif (G_MODULE_IMPL == G_MODULE_IMPL_DLD)
+  plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.sl", NULL);
+  plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.sl", NULL);
+#else /* G_MODULE_IMPL != G_MODULE_IMPL_DLD && !NATIVE_WIN32 */
   plugin_a = g_strconcat (string, "/.libs/", "libgplugin_a.so", NULL);
   plugin_b = g_strconcat (string, "/.libs/", "libgplugin_b.so", NULL);
-#endif /* NATIVE_WIN32 */
+#endif /* G_MODULE_IMPL != G_MODULE_IMPL_DLD && !NATIVE_WIN32 */
   g_free (string);
 
   /* module handles
@@ -70,6 +74,15 @@ main (int   arg,
       g_print ("error: %s\n", g_module_error ());
       return 1;
     }
+  g_print ("check that not yet bound symbols in shared libraries of main module are retrievable:\n");
+  string = "g_module_close";
+  g_print ("retrive symbol `%s' from \"%s\":\n", string, g_basename (g_module_name (module_self)));
+  if (!g_module_symbol (module_self, string, (gpointer) &f_self))
+    {
+      g_print ("error: %s\n", g_module_error ());
+      return 1;
+    }
+  g_print ("retrived symbol `%s' as %p\n", string, f_self);
   g_print ("load plugin from \"%s\"\n", plugin_a);
   module_a = g_module_open (plugin_a, G_MODULE_BIND_LAZY);
   if (!module_a)
@@ -137,6 +150,10 @@ main (int   arg,
   /* get and call clashing plugin functions
    */
   string = "gplugin_clash_func";
+  g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_self)));
+  if (!g_module_symbol (module_self, string, (gpointer) &f_self))
+    f_self = NULL;
+  g_print ("retrived function `%s' from self: %p\n", string, f_self);
   g_print ("retrive symbol `%s' from \"%s\"\n", string, g_basename (g_module_name (module_a)));
   if (!g_module_symbol (module_a, string, (gpointer) &f_a))
     {
@@ -150,11 +167,11 @@ main (int   arg,
       return 1;
     }
   g_print ("call plugin function(%p) A: ", f_a);
-  gplugin_clash_func = f_a;
-  gplugin_clash_func ();
+  plugin_clash_func = f_a;
+  plugin_clash_func ();
   g_print ("call plugin function(%p) B: ", f_b);
-  gplugin_clash_func = f_b;
-  gplugin_clash_func ();
+  plugin_clash_func = f_b;
+  plugin_clash_func ();
 
   /* call gmodule function form A
    */

@@ -115,6 +115,15 @@ _g_module_symbol (gpointer	  handle,
   
   /* should we restrict lookups to TYPE_PROCEDURE?
    */
+  if (handle == PROG_HANDLE)
+    {
+      /* PROG_HANDLE will only lookup symbols in the program itself, not honouring
+       * libraries. passing NULL as a handle will also try to lookup the symbol
+       * in currently loaded libraries. fix pointed out and supplied by:
+       * David Gero <dgero@nortelnetworks.com>
+       */
+      handle = NULL;
+    }
   if (shl_findsym ((shl_t*) &handle, symbol_name, TYPE_UNDEFINED, &p) != 0 ||
       handle == NULL || p == NULL)
     {
