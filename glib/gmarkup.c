@@ -404,7 +404,6 @@ unescape_text_state_inside_text (UnescapeContext *ucontext,
   return p;
 }
 
-__attribute__ ((noinline))
 static const gchar*
 unescape_text_state_after_ampersand (UnescapeContext *ucontext,
                                      const gchar     *p,
@@ -454,7 +453,6 @@ unescape_text_state_after_ampersand (UnescapeContext *ucontext,
   return p;
 }
 
-__attribute__ ((noinline))
 static const gchar*
 unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
                                         const gchar     *p,
@@ -541,7 +539,6 @@ unescape_text_state_inside_entity_name (UnescapeContext *ucontext,
   return p;
 }
 
-__attribute__ ((noinline))
 static const gchar*
 unescape_text_state_after_charref_hash (UnescapeContext *ucontext,
                                         const gchar     *p,

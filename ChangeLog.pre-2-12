@@ -1,5 +1,7 @@
 2004-11-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gmarkup.c: Remove leftover noinline attributes.
+
 	* glib/Makefile.am: Use the perl found by configure.  (#149826,
 	Morten Welinder)
 
