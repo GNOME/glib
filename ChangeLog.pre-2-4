@@ -1,3 +1,12 @@
+Thu Dec  5 16:05:55 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Use AC_LINK_IFELSE(), not AC_TRY_RUN()
+	for va_copy(), __va_copy() checks.
+
+	* configure.in: When there is a reasonable default,
+	provide that in the 3rd argument of AC_TRY_RUN(),
+	instead of just leaving the 3rd argument empty.
+
 2002-12-05  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/gstrfuncs.c (g_strncasecmp): Break long deprecation

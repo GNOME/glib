@@ -808,7 +808,7 @@ AC_CACHE_CHECK([whether realloc (NULL,) will work],glib_cv_sane_realloc,[
         }],
         [glib_cv_sane_realloc=yes],
         [glib_cv_sane_realloc=no],
-	[])
+	[glib_cv_sane_realloc=yes])
 ])
 if test x$glib_cv_sane_realloc = xyes; then
   AC_DEFINE(REALLOC_0_WORKS,1,[whether realloc (NULL,) works])
@@ -852,7 +852,7 @@ dnl **********************
 dnl we currently check for all three va_copy possibilities, so we get
 dnl all results in config.log for bug reports.
 AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
-	AC_TRY_RUN([#include <stdarg.h>
+	AC_LINK_IFELSE([#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -866,11 +866,10 @@ AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 	  return 0;
 	}],
 	[glib_cv_va_copy=yes],
-	[glib_cv_va_copy=no],
-	[])
+	[glib_cv_va_copy=no])
 ])
 AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
-	AC_TRY_RUN([#include <stdarg.h>
+	AC_LINK_IFELSE([#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -884,8 +883,7 @@ AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
 	  return 0;
 	}],
 	[glib_cv___va_copy=yes],
-	[glib_cv___va_copy=no],
-	[])
+	[glib_cv___va_copy=no])
 ])
 
 if test "x$glib_cv_va_copy" = "xyes"; then
@@ -915,7 +913,7 @@ AC_CACHE_CHECK([whether va_lists can be copied by value],glib_cv_va_val_copy,[
 	}],
 	[glib_cv_va_val_copy=yes],
 	[glib_cv_va_val_copy=no],
-	[])
+	[glib_cv_va_val_copy=yes])
 ])
 
 if test "x$glib_cv_va_val_copy" = "xno"; then
@@ -1010,7 +1008,7 @@ int main () {
 }                       ],
 			[glib_cv_rtldglobal_broken=no],
 			[glib_cv_rtldglobal_broken=yes],
-			[])
+			[glib_cv_rtldglobal_broken=no])
 		rm -f plugin.c plugin.o plugin.lo
 	])
 	if test "x$glib_cv_rtldglobal_broken" = "xyes"; then
