@@ -117,8 +117,8 @@ at application run time.
 <!-- ##### MACRO GLIB_CHECK_VERSION ##### -->
 <para>
 Checks the version of the GLib library.
-It returns %TRUE if the GLib library is the same or newer than the given
-version.
+Returns %TRUE if the version of the GLib header files is the same 
+as or newer than the passed-in version.
 
 <example>
 <title>Checking the version of the GLib library</title>
