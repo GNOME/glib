@@ -1,3 +1,8 @@
+2005-03-30  Sven Neumann  <sven@gimp.org>
+
+	* glib/gfileutils.c (get_contents_stdio): handle the unlikely case
+	that no bytes are read from the file and allocate an empty string.
+
 2005-03-30  Tor Lillqvist  <tml@novell.com>
 
 	* glib/giowin32.c (g_io_win32_fd_get_flags_internal): Always claim

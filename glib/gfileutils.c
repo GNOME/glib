@@ -523,6 +523,9 @@ get_contents_stdio (const gchar *display_filename,
 
   fclose (f);
 
+  if (total_bytes == 0)
+    str = g_new (gchar, 1);
+
   str[total_bytes] = '\0';
 
   if (length)
