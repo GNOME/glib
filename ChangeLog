@@ -1,3 +1,22 @@
+2001-08-25  Alexander Larsson  <alla@lysator.liu.se>
+
+	* glib/gstrfuncs.[ch]:
+	* docs/reference/glib/glib-overrides.txt:
+	* docs/reference/glib/glib-sections.txt:
+	* docs/reference/glib/tmpl/string_utils.sgml:
+	Implement and document g_ascii_isxxx.
+
+	* tests/strfunc-test.c:
+	Add tests for g_ascii_isxxx
+	
+	* glib/guniprop.c (g_unichar_ispunct):
+	include symbols, not just punctuation.
+	(g_unichar_isspace): Vertical tab is not
+	considered whitespace.
+	
+	* tests/shell-test.c:
+	Output errors on stderr
+
 2001-08-24  Alexander Larsson  <alla@lysator.liu.se>
 
 	* glib/gconvert.[ch] (g_convert_with_iconv):
