@@ -26,8 +26,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 #include "glibintl.h"
 
@@ -2259,3 +2259,6 @@ g_markup_printf_escaped (const char *format, ...)
 
   return result;
 }
+
+#define __G_MARKUP_C__
+#include "galiasdef.c"

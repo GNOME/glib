@@ -1,3 +1,20 @@
+005-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Make PLT-reduction work with gcc4, and don't include
+	everything in galias.h:
+	
+	* glib/glib.symbols: Group symbols by header and source file.
+	* glib/makegalias.pl: Protect definitions by the same 
+	preprocessor symbols used to guard the headers. Move
+	the alias declarations to a separate file which is 
+	produced when calling makegalias.pl -def
+	* glib/Makefile.am (galiasdef.c): Add a rule to generate this
+	file.
+	* glib/*.c: Include galias.h after the other GLib headers,
+	include galiasdef.c at the bottom.
+
+	* glib/glib.symbols: Add g_listenv and g_file_replace.
+
 Fri Mar 11 23:51:12 2005  Soeren Sandmann  <sandmann@redhat.com>
 
 	* glib/gfileutils.c (write_to_temp_file): Don't try and generate

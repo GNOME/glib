@@ -51,10 +51,10 @@
  */
 #define	G_IMPLEMENT_INLINES 1
 #define	__G_UTILS_C__
-#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
@@ -2740,3 +2740,6 @@ g_get_tmp_dir (void)
 }
 
 #endif
+
+#define __G_UTILS_C__
+#include "galiasdef.c"

@@ -27,8 +27,8 @@
 #endif
 #include <string.h>
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 #ifdef G_PLATFORM_WIN32
 #include <stdio.h>
@@ -1767,3 +1767,6 @@ g_utf8_strreverse (const gchar *str,
 
   return result;
 }
+
+#define __G_UTF8_C__
+#include "galiasdef.c"

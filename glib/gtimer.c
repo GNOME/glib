@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include "galias.h"
 #include "glibconfig.h"
 
 #ifdef HAVE_UNISTD_H
@@ -47,6 +46,7 @@
 #endif /* G_OS_WIN32 */
 
 #include "glib.h"
+#include "galias.h"
 
 
 struct _GTimer
@@ -314,3 +314,6 @@ g_time_val_add (GTimeVal *time_, glong microseconds)
        }      
     }
 }
+
+#define __G_TIMER_C__
+#include "galiasdef.c"

@@ -25,10 +25,10 @@
 #include <string.h>
 #include <locale.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gunichartables.h"
 #include "gunicodeprivate.h"
+#include "galias.h"
 
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
@@ -1055,3 +1055,6 @@ g_unichar_get_mirror_char (gunichar ch,
   return found;
 
 }
+
+#define __G_UNIPROP_C__
+#include "galiasdef.c"

@@ -34,8 +34,9 @@
 #include "config.h"
 
 #include <string.h>
-#include "galias.h"
+
 #include "glib.h"
+#include "galias.h"
 
 
 /* --- defines --- */
@@ -544,7 +545,7 @@ g_data_initialize (void)
 }
 
 GQuark
-g_quark_try_string (const gchar *string)
+IA__g_quark_try_string (const gchar *string)
 {
   GQuark quark = 0;
   g_return_val_if_fail (string != NULL, 0);
@@ -631,3 +632,6 @@ g_quark_new (gchar *string)
   
   return quark;
 }
+
+#define __G_DATASET_C__
+#include "galiasdef.c"

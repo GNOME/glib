@@ -26,8 +26,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 struct _GAsyncQueue
@@ -444,3 +444,5 @@ g_async_queue_length_unlocked (GAsyncQueue* queue)
   return queue->queue->length - queue->waiting_threads;
 }
 
+#define __G_ASYNCQUEUE_C__
+#include "galiasdef.c"

@@ -31,7 +31,6 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glibconfig.h"
 
 #include <stdlib.h>
@@ -53,6 +52,7 @@
 #endif /* _MSC_VER */
 
 #include "glib.h"
+#include "galias.h"
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
@@ -1466,3 +1466,6 @@ g_win32_get_windows_version (void)
   
   return windows_version;
 }
+
+#define __G_WIN32_C__
+#include "galiasdef.c"

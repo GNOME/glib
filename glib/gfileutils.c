@@ -20,7 +20,6 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
 
 #include <sys/stat.h>
@@ -52,6 +51,8 @@
 
 #include "gstdio.h"
 #include "glibintl.h"
+
+#include "galias.h"
 
 /**
  * g_file_test:
@@ -1721,3 +1722,6 @@ g_file_read_link (const gchar *filename,
   return NULL;
 #endif
 }
+
+#define __G_FILEUTILS_C__
+#include "galiasdef.c"

@@ -30,8 +30,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 #ifndef DISABLE_MEM_POOLS
@@ -764,3 +764,6 @@ g_slist_sort_with_data (GSList           *list,
 {
   return g_slist_sort_real (list, (GFunc) compare_func, TRUE, user_data);
 }
+
+#define __G_SLIST_C__
+#include "galiasdef.c"

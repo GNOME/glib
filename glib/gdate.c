@@ -35,13 +35,14 @@
 /* #define DEBUG_MSG(args)	g_message args ; */
 #endif
 
-#include "galias.h"
 #include "glib.h"
 
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
+
+#include "galias.h"
 
 GDate*
 g_date_new (void)
@@ -1466,4 +1467,7 @@ g_date_strftime (gchar       *s,
 
   return retval;
 }
+
+#define __G_DATE_C__
+#include "galiasdef.c"
 

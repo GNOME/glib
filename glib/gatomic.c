@@ -646,3 +646,6 @@ _g_atomic_thread_init (void)
   g_atomic_mutex = g_mutex_new ();
 #endif /* DEFINE_WITH_MUTEXES */
 }
+
+#define IN_FILE_gatomic 1
+#include "galiasdef.c"

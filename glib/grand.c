@@ -47,9 +47,9 @@
 #include <unistd.h>
 #endif
 
-#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 #ifdef G_OS_WIN32
 #include <process.h>		/* For getpid() */
@@ -635,3 +635,6 @@ g_random_set_seed (guint32 seed)
   G_UNLOCK (global_random);
 }
 
+
+#define __G_RAND_C__
+#include "galiasdef.c"

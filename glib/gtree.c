@@ -30,8 +30,8 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
+#include "galias.h"
 
 
 typedef struct _GTreeNode  GTreeNode;
@@ -1067,3 +1067,6 @@ g_tree_node_check (GTreeNode *node)
 	g_tree_node_check (node->right);
     }
 }
+
+#define __G_TREE_C__
+#include "galiasdef.c"

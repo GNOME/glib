@@ -32,11 +32,12 @@
 #include <dirent.h>
 #endif
 
-#include "galias.h"
 #include "glib.h"
 #include "gdir.h"
 
 #include "glibintl.h"
+
+#include "galias.h"
 
 struct _GDir
 {
@@ -343,3 +344,6 @@ g_dir_close (GDir *dir)
   closedir (dir->u.dirp);
   g_free (dir);
 }
+
+#define __G_DIR_C__
+#include "galiasdef.c"

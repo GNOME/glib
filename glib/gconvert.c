@@ -28,7 +28,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 #include "gthreadinit.h"
@@ -47,6 +46,8 @@
 #if !defined(USE_LIBICONV_GNU) && defined (_LIBICONV_H)
 #error GNU libiconv not in use but included iconv.h is from libiconv
 #endif
+
+#include "galias.h"
 
 GQuark 
 g_convert_error_quark (void)
@@ -2003,3 +2004,5 @@ g_filename_display_name (const gchar *filename)
   return display_name;
 }
 
+#define __G_CONVERT_C__
+#include "galiasdef.c"

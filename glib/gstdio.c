@@ -21,7 +21,6 @@
 #include "config.h"
 
 #define G_STDIO_NO_WRAP_ON_UNIX
-#include "galias.h"
 
 #include "glib.h"
 
@@ -41,6 +40,8 @@
 #endif
 
 #include "gstdio.h"
+
+#include "galias.h"
 
 #if !defined (G_OS_UNIX) && !defined (G_OS_WIN32)
 #error Please port this to your operating system
@@ -730,3 +731,6 @@ g_freopen (const gchar *filename,
   return freopen (filename, mode, stream);
 #endif
 }
+
+#define __G_STDIO_C__
+#include "galiasdef.c"

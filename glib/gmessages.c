@@ -41,11 +41,11 @@
 #include <locale.h>
 #include <errno.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gdebug.h"
 #include "gprintfint.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -1122,3 +1122,6 @@ _g_debug_init (void)
       g_log_set_always_fatal (fatal_mask);
     }
 }
+
+#define __G_MESSAGES_C__
+#include "galiasdef.c"

@@ -27,10 +27,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"
+
+#include "galias.h"
 
 /**
  * g_printf:
@@ -337,6 +338,5 @@ g_vasprintf (gchar      **string,
   return len;
 }
 
-
-
-
+#define __G_PRINTF_C__
+#include "galiasdef.c"

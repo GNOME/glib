@@ -34,7 +34,6 @@
 
 #include "config.h"
 
-#include "galias.h"
 #include "glib.h"
 
 #include <stdlib.h>
@@ -48,6 +47,8 @@
 
 #include "gstdio.h"
 #include "glibintl.h"
+
+#include "galias.h"
 
 typedef struct _GIOWin32Channel GIOWin32Channel;
 typedef struct _GIOWin32Watch GIOWin32Watch;
@@ -1713,3 +1714,6 @@ g_io_channel_win32_new_stream_socket (int socket)
 {
   return g_io_channel_win32_new_socket (socket);
 }
+
+#define __G_IO_WIN32_C__
+#include "galiasdef.c"

@@ -36,7 +36,6 @@
 /* uncomment the next line to get poll() debugging info */
 /* #define G_MAIN_POLL_DEBUG */
 
-#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
 #include <signal.h>
@@ -76,6 +75,9 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #endif
+
+#include "galias.h"
+
 /* Types */
 
 typedef struct _GTimeoutSource GTimeoutSource;
@@ -3916,3 +3918,5 @@ g_idle_remove_by_data (gpointer data)
   return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
 }
 
+#define __G_MAIN_C__
+#include "galiasdef.c"

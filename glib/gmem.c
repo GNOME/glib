@@ -34,9 +34,9 @@
 #include <string.h>
 #include <signal.h>
 
-#include "galias.h"
 #include "glib.h"
 #include "gthreadinit.h"
+#include "galias.h"
 
 /* notes on macros:
  * having DISABLE_MEM_POOLS defined, disables mem_chunks alltogether, their
@@ -1272,3 +1272,5 @@ _g_mem_thread_private_init (void)
 #endif
 }
 
+#define __G_MEM_C__
+#include "galiasdef.c"

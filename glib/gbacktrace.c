@@ -35,7 +35,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "galias.h"
 #include "glib.h"
 #include "gprintfint.h"
 
@@ -76,6 +75,7 @@
 #  endif
 #endif
 
+#include "galias.h"
 
 #ifndef G_OS_WIN32
 static void stack_trace (char **args);
@@ -302,3 +302,6 @@ stack_trace (char **args)
 }
 
 #endif /* !G_OS_WIN32 */
+
+#define __G_BACKTRACE_C__
+#include "galiasdef.c"
