@@ -1,3 +1,7 @@
+2004-01-16  Tor Lillqvist  <tml@iki.fi>
+
+	* glib/trio/Makefile.am: Distribute makefile.msc.
+
 Sun Jan 11 16:05:35 2004  Manish Singh  <yosh@gimp.org>
 
         * glib/giounix.c: #define _POSIX_SOURCE for SSIZE_MAX. Fixes #128853.

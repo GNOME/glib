@@ -17,8 +17,9 @@ libtrio_la_SOURCES = 	\
 
 INCLUDES = -DTRIO_EXTENSION=0
 
-EXTRA_DIST = README
-
+EXTRA_DIST = \
+	README		\
+	makefile.msc
 
 
 
