@@ -1,3 +1,9 @@
+2004-03-16  Tor Lillqvist  <tml@iki.fi>
+
+	* configure.in: Define HAVE_INT64_AND_I64 also in the mingw (gcc
+	on Win32) case, where the 64-bit type is called long long, but the
+	system printf/scanf format modifier for 64-bit integers is still I64.
+
 2004-03-16  Gareth Owen  <gowen72@yahoo.com>
 
 	* configure.in: Added en_GB to ALL_LINGUAS
