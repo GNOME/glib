@@ -1,3 +1,10 @@
+Thu Mar 28 20:31:51 2002  Tim Janik  <timj@gtk.org>
+
+	* glib/gmessages.c:
+	(g_print): 
+	(g_printerr): convert prtinf() strings to local charset
+	when writing them to stdout or stderr.
+
 Wed Mar 27 18:42:22 2002  Tim Janik  <timj@gtk.org>
 
 	* gmessages.[hc]:

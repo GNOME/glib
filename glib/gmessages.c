@@ -527,6 +527,16 @@ g_log (const gchar   *log_domain,
   va_end (args);
 }
 
+static gchar*
+strdup_convert (const gchar *string,
+		const gchar *charset)
+{
+  if (!g_utf8_validate (string, -1, NULL))
+    return g_strconcat ("[Invalid UTF-8] ", string, NULL);
+  else
+    return g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, NULL);
+}
+
 /* For a radix of 8 we need at most 3 output bytes for 1 input
  * byte. Additionally we might need up to 2 output bytes for the
  * readix prefix and 1 byte for the trailing NULL.
@@ -760,18 +770,9 @@ g_log_default_handler (const gchar   *log_domain,
 	g_string_append (gstring, message);	/* charset is UTF-8 already */
       else
 	{
-	  if (!g_utf8_validate (message, -1, NULL))
-	    {
-	      g_string_append (gstring, "[Invalid UTF-8] ");
-	      g_string_append (gstring, message);
-	    }
-	  else
-	    {
-	      string = g_convert_with_fallback (message, -1, charset, "UTF-8",
-						".", NULL, NULL, NULL);
-	      g_string_append (gstring, string);
-	      g_free (string);
-	    }
+	  string = strdup_convert (message, charset);
+	  g_string_append (gstring, string);
+	  g_free (string);
 	}
     }
   if (is_fatal)
@@ -820,8 +821,18 @@ g_print (const gchar *format,
     local_glib_print_func (string);
   else
     {
+      const gchar *charset;
+
       ensure_stdout_valid ();
-      fputs (string, stdout);
+      if (g_get_charset (&charset))
+	fputs (string, stdout); /* charset is UTF-8 already */
+      else
+	{
+	  gchar *lstring = strdup_convert (string, charset);
+
+	  fputs (lstring, stdout);
+	  g_free (lstring);
+	}
       fflush (stdout);
     }
   g_free (string);
@@ -862,7 +873,17 @@ g_printerr (const gchar *format,
     local_glib_printerr_func (string);
   else
     {
-      fputs (string, stderr);
+      const gchar *charset;
+
+      if (g_get_charset (&charset))
+	fputs (string, stderr); /* charset is UTF-8 already */
+      else
+	{
+	  gchar *lstring = strdup_convert (string, charset);
+
+	  fputs (lstring, stderr);
+	  g_free (lstring);
+	}
       fflush (stderr);
     }
   g_free (string);
