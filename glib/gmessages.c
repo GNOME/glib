@@ -71,9 +71,11 @@ struct _GLogHandler
 
 
 /* --- prototypes --- */
+#ifndef HAVE_C99_VSNPRINTF
 static gsize printf_string_upper_bound (const gchar *format,
 					gboolean     may_warn,
 					va_list      args);
+#endif /* !HAVE_C99_VSNPRINTF */
 
 
 /* --- variables --- */
@@ -860,6 +862,8 @@ g_printerr (const gchar *format,
 #  define MB_LEN_MAX 8
 #endif
 
+#ifndef HAVE_C99_VSNPRINTF
+
 typedef struct
 {
   guint min_width;
@@ -1167,6 +1171,9 @@ printf_string_upper_bound (const gchar *format,
 
   return len;
 }
+
+#endif /* !HAVE_C99_VSNPRINTF */
+
 
 gsize
 g_printf_string_upper_bound (const gchar *format,
