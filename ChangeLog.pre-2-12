@@ -9,6 +9,11 @@ Mon Nov  8 10:45:50 2004  Manish Singh  <yosh@gimp.org>
 
 2004-11-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/gnode.h (enum GTraverseFlags): Add G_TRAVERSE_LEAVES
+	and G_TRAVERSE_NON_LEAVES as alternative names for 
+	G_TRAVERSE_LEAFS and G_TRAVERSE_NON_LEAFS, which are
+	grammatically brutal.  (#138853, Morten Welinder)
+	
 	* glib/gasyncqueue.[hc]:
 	* glib/ghook.[hc]: 
 	* glib/gmain.[hc]:

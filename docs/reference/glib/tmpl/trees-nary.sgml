@@ -232,7 +232,7 @@ The traversal can be halted at any point by returning %TRUE from @func.
 @order: the order in which nodes are visited - %G_IN_ORDER, %G_PRE_ORDER,
 %G_POST_ORDER, or %G_LEVEL_ORDER.
 @flags: which types of children are to be visited, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
+%G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES.
 @max_depth: the maximum depth of the traversal. Nodes below this
 depth will not be visited. If max_depth is -1 all nodes in the tree are
 visited. If depth is 1, only the root is visited. If depth is 2, the root
@@ -247,10 +247,14 @@ Specifies which nodes are visited during several of the tree functions,
 including g_node_traverse() and g_node_find().
 </para>
 
-@G_TRAVERSE_LEAFS: only leaf nodes should be visited.
-@G_TRAVERSE_NON_LEAFS: only non-leaf nodes should be visited.
+@G_TRAVERSE_LEAVES: only leaf nodes should be visited. This name has been
+  introduced in 2.6, for older version use %G_TRAVERSE_LEAFS.
+@G_TRAVERSE_NON_LEAVES: only non-leaf nodes should be visited. This name 
+  has been introduced in 2.6, for older version use %G_TRAVERSE_NON_LEAFS.
 @G_TRAVERSE_ALL: all nodes should be visited.
 @G_TRAVERSE_MASK: 
+@G_TRAVERSE_LEAFS: identical to %G_TRAVERSE_LEAVES
+@G_TRAVERSE_NON_LEAFS: identical to %G_TRAVERSE_NON_LEAVES
 
 <!-- ##### USER_FUNCTION GNodeTraverseFunc ##### -->
 <para>
@@ -273,7 +277,7 @@ Note that it doesn't descend beneath the child nodes.
 
 @node: a #GNode.
 @flags: which types of children are to be visited, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
+%G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES.
 @func: the function to call for each visited node.
 @data: user data to pass to the function.
 
@@ -307,7 +311,7 @@ Finds a #GNode in a tree.
 @order: the order in which nodes are visited - %G_IN_ORDER, %G_PRE_ORDER,
 %G_POST_ORDER, or %G_LEVEL_ORDER.
 @flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
+%G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES.
 @data: the data to find.
 @Returns: the found #GNode, or %NULL if the data is not found.
 
@@ -319,7 +323,7 @@ Finds the first child of a #GNode with the given data.
 
 @node: a #GNode.
 @flags: which types of children are to be searched, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
+%G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES.
 @data: the data to find.
 @Returns: the found child #GNode, or %NULL if the data is not found.
 
@@ -454,7 +458,7 @@ Gets the number of nodes in a tree.
 
 @root: a #GNode.
 @flags: which types of children are to be counted, one of %G_TRAVERSE_ALL,
-%G_TRAVERSE_LEAFS and %G_TRAVERSE_NON_LEAFS.
+%G_TRAVERSE_LEAVES and %G_TRAVERSE_NON_LEAVES.
 @Returns: the number of nodes in the tree.
 
 

@@ -1,5 +1,8 @@
 2004-11-08  Matthias Clasen  <mclasen@redhat.com>
 
+	* glib/tmpl/trees-nary.sgml: Document G_TRAVERSE_LEAVES and
+	G_TRAVERSE_NON_LEAVES
+
 	* glib/tmpl/hooks.sgml: 
 	* glib/tmpl/iochannels.sgml: Updates
 
