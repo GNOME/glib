@@ -1,5 +1,12 @@
 2003-04-01  Matthias Clasen  <maclas@gmx.de>
 
+	* glib/tmpl/error_reporting.sgml: 
+	* glib/tmpl/random_numbers.sgml: 
+	* glib/tmpl/arrays_pointer.sgml: 
+	* glib/tmpl/arrays.sgml: Fix formatting of examples.
+
+2003-04-01  Matthias Clasen  <maclas@gmx.de>
+
 	* glib/glib-sections.txt: Add g_string_chunk_insert_len.
 
 2003-03-28  Matthias Clasen  <maclas@gmx.de>

@@ -49,7 +49,7 @@ To free a pointer array, use g_ptr_array_free().
   g_ptr_array_add (gparray, (gpointer) string3);
 
   if (g_ptr_array_index (gparray, 0) != (gpointer) string1)
-    g_print ("ERROR: got %p instead of %p\n",
+    g_print ("ERROR: got &percnt;p instead of &percnt;p\n",
              g_ptr_array_index (gparray, 0), string1);
 
   g_ptr_array_free (gparray, TRUE);
