@@ -42,8 +42,8 @@ gchar*   g_shell_quote      (const gchar   *unquoted_string);
 gchar*   g_shell_unquote    (const gchar   *quoted_string,
                              GError       **error);
 gboolean g_shell_parse_argv (const gchar   *command_line,
-                             gint          *argc,
-                             gchar       ***argv,
+                             gint          *argcp,
+                             gchar       ***argvp,
                              GError       **error);
 
 G_END_DECLS

@@ -34,6 +34,7 @@ tmpl_sources =				\
 	tmpl/datasets.sgml		\
 	tmpl/date.sgml			\
 	tmpl/error_reporting.sgml	\
+	tmpl/fileutils.sgml		\
 	tmpl/glib-unused.sgml		\
 	tmpl/hash_tables.sgml		\
 	tmpl/hooks.sgml			\
@@ -44,6 +45,7 @@ tmpl_sources =				\
 	tmpl/macros.sgml		\
 	tmpl/macros_misc.sgml		\
 	tmpl/main.sgml			\
+	tmpl/markup.sgml		\
 	tmpl/memory.sgml		\
 	tmpl/memory_chunks.sgml		\
 	tmpl/messages.sgml		\
@@ -55,6 +57,8 @@ tmpl_sources =				\
 	tmpl/random_numbers.sgml	\
 	tmpl/relations.sgml		\
 	tmpl/scanner.sgml		\
+	tmpl/shell.sgml			\
+	tmpl/spawn.sgml			\
 	tmpl/string_chunks.sgml		\
 	tmpl/string_utils.sgml		\
 	tmpl/strings.sgml		\

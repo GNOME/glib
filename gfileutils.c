@@ -502,10 +502,17 @@ g_file_get_contents (const gchar *filename,
 #endif
 }
 
+/*
+ * mkstemp() implementation is from the GNU C library.
+ * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
+ */
 /**
  * g_mkstemp:
+ * @tmpl: template filename
  *
- * Open a temporary file
+ * Open a temporary file. See "man mkstemp" on most UNIX-like systems.
+ * This is a portability wrapper, which simply calls mkstemp() on systems
+ * that have it, and implements it in GLib otherwise.
  *
  * The parameter is a string that should match the rules for mktemp, i.e.
  * end in "XXXXXX". The X string will be modified to form the name
@@ -516,8 +523,6 @@ g_file_get_contents (const gchar *filename,
  * on platforms where there is a difference. The file handle should be
  * closed with close(). In case of errors, -1 is returned.
  *
- * From the GNU C library.
- * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
  */
 int
 g_mkstemp (char *tmpl)

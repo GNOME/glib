@@ -39,7 +39,7 @@ typedef enum
   G_MARKUP_ERROR_UNKNOWN_ELEMENT,
   G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE,
   G_MARKUP_ERROR_INVALID_CONTENT
-} GMarkupErrorType;
+} GMarkupError;
 
 #define G_MARKUP_ERROR g_markup_error_quark ()
 

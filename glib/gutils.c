@@ -159,29 +159,29 @@ my_strchrnul (const gchar *str, gchar c)
 
 /**
  * g_find_program_in_path:
- * @file: a program name
+ * @program: a program name
  * 
- * Locates the first executable named @file in the user's path, in the
+ * Locates the first executable named @program in the user's path, in the
  * same way that execvp() would locate it. Returns an allocated string
  * with the absolute path name, or NULL if the program is not found in
- * the path. If @file is already an absolute path, returns a copy of
- * @file if @file exists and is executable, and NULL otherwise.
+ * the path. If @program is already an absolute path, returns a copy of
+ * @program if @program exists and is executable, and NULL otherwise.
  * 
  * Return value: absolute path, or NULL
  **/
 gchar*
-g_find_program_in_path (const gchar *file)
+g_find_program_in_path (const gchar *program)
 {
   gchar *path, *p, *name, *freeme;
   size_t len;
   size_t pathlen;
 
-  g_return_val_if_fail (file != NULL, NULL);
+  g_return_val_if_fail (program != NULL, NULL);
 
-  if (*file == '/')
+  if (*program == '/')
     {
-      if (g_file_test (file, G_FILE_TEST_IS_EXECUTABLE))
-        return g_strdup (file);
+      if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE))
+        return g_strdup (program);
       else
         return NULL;
     }
@@ -190,7 +190,7 @@ g_find_program_in_path (const gchar *file)
   if (path == NULL)
     {
       /* There is no `PATH' in the environment.  The default
-       * search path in libc is the current directory followed by
+       * search path in GNU libc is the current directory followed by
        * the path `confstr' returns for `_CS_PATH'.
        */
       
@@ -202,12 +202,12 @@ g_find_program_in_path (const gchar *file)
       path = "/bin:/usr/bin:.";
     }
   
-  len = strlen (file) + 1;
+  len = strlen (program) + 1;
   pathlen = strlen (path);
   freeme = name = g_malloc (pathlen + len + 1);
   
   /* Copy the file name at the top, including '\0'  */
-  memcpy (name + pathlen + 1, file, len);
+  memcpy (name + pathlen + 1, program, len);
   name = name + pathlen;
   /* And add the slash before the filename  */
   *name = '/';

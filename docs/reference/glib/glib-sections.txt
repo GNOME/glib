@@ -679,6 +679,69 @@ g_timer_destroy
 </SECTION>
 
 <SECTION>
+<TITLE>Spawning Processes (fork/exec)</TITLE>
+<FILE>spawn</FILE>
+GSpawnError
+G_SPAWN_ERROR
+GSpawnFlags
+GSpawnChildSetupFunc
+g_spawn_async_with_pipes
+g_spawn_async
+g_spawn_sync
+g_spawn_command_line_async
+g_spawn_command_line_sync
+<SUBSECTION Private>
+g_spawn_error_quark
+</SECTION>
+
+<SECTION>
+<TITLE>Simple XML Subset Parser</TITLE>
+<FILE>markup</FILE>
+GMarkupError
+G_MARKUP_ERROR
+GMarkupParseFlags
+GMarkupParseContext
+GMarkupParser
+g_markup_escape_text
+g_markup_parse_context_end_parse
+g_markup_parse_context_free
+g_markup_parse_context_get_position
+g_markup_parse_context_new
+g_markup_parse_context_parse
+<SUBSECTION Private>
+g_markup_error_quark
+</SECTION>
+
+
+<SECTION>
+<TITLE>Shell-related Utilities</TITLE>
+<FILE>shell</FILE>
+GShellError
+G_SHELL_ERROR
+g_shell_parse_argv
+g_shell_quote
+g_shell_unquote
+<SUBSECTION Private>
+g_shell_error_quark
+</SECTION>
+
+
+<SECTION>
+<TITLE>File Utilities</TITLE>
+<FILE>fileutils</FILE>
+GFileError
+G_FILE_ERROR
+GFileTest
+g_file_error_from_errno
+g_file_get_contents
+g_file_test
+g_mkstemp
+<SUBSECTION Private>
+g_file_error_quark
+</SECTION>
+
+
+<SECTION>
 <TITLE>String Utility Functions</TITLE>
 <FILE>string_utils</FILE>
 g_strdup
@@ -889,6 +952,9 @@ g_path_get_basename
 g_path_get_dirname
 g_filename_to_utf8
 g_filename_from_utf8
+
+<SUBSECTION>
+g_find_program_in_path
 
 <SUBSECTION>
 g_bit_nth_lsf
@@ -1223,6 +1289,7 @@ g_str_hash
 <FILE>strings</FILE>
 GString
 g_string_new
+g_string_new_len
 g_string_sized_new
 g_string_assign
 g_string_sprintf

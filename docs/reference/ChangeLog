@@ -1,3 +1,12 @@
+2000-11-05  Havoc Pennington  <hp@pobox.com>
+
+        * glib/tmpl/spawn.sgml, glib/tmpl/markup.sgml,
+	glib/tmpl/fileutils.sgml: Added
+	
+	* glib/Makefile.am: Add new files
+
+	* glib/glib-sections.txt: Add stuff from -unused
+
 Fri Nov  3 07:33:15 2000  Tim Janik  <timj@gtk.org>
 
 	* gobject/gobject-docs.sgml: added &gobject-closures; section.

@@ -51,11 +51,11 @@ called by g_cache_remove() when the object is no longer needed (i.e. its
 reference count drops to 0).
 @hash_key_func: a function to create a hash value from a key.
 @hash_value_func: a function to create a hash value from a value.
-@key_compare_func: 
-@Returns: a new #GCache.
-<!-- # Unused Parameters # -->
 @key_equal_func: a function to compare two keys. It should return TRUE if
 the two keys are equivalent.
+@Returns: a new #GCache.
+<!-- # Unused Parameters # -->
+@key_compare_func: 
 
 
 <!-- ##### FUNCTION g_cache_insert ##### -->

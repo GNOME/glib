@@ -263,7 +263,7 @@ mark_error (GMarkupParseContext *context,
 static void
 set_error (GMarkupParseContext *context,
            GError             **error,
-           GMarkupErrorType     code,
+           GMarkupError         code,
            const gchar         *format,
            ...)
 {
@@ -336,7 +336,7 @@ set_unescape_error (GMarkupParseContext *context,
                     GError             **error,
                     const gchar         *remaining_text,
                     const gchar         *remaining_text_end,
-                    GMarkupErrorType     code,
+                    GMarkupError         code,
                     const gchar         *format,
                     ...)
 {

@@ -188,6 +188,15 @@ freed when no longer needed.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_find_program_in_path ##### -->
+<para>
+
+</para>
+
+@program: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_bit_nth_lsf ##### -->
 <para>
 Find the position of the first bit set in @mask, searching from (but not
