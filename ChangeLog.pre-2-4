@@ -1,3 +1,23 @@
+Wed Oct  7 05:31:24 1998  Tim Janik  <timj@gtk.org>
+
+	* glib.h:
+	removed the #pragma } statement after extern "C" {. use
+ 	(c-set-offset 'inextern-lang 0) to fixup emacs cc-mode indentation.
+
+	* glib.h:
+	* ghook.c: API and code cleanups. changed the G_HOOK_ACTIVE and
+ 	G_HOOK_IN_CALL enum vals to G_HOOK_FLAG_ACTIVE and G_HOOK_FLAG_IN_CALL.
+	changed the G_HOOK_IS_ACTIVE() and G_HOOK_IS_IN_CALL() macros to
+	G_HOOK_ACTIVE() and G_HOOK_IN_CALL().
+	fixed the g_hook_find* functions, so they iterate over non-active
+	hooks as well.
+	(g_hook_first_valid):
+	(g_hook_next_valid): added an extra argument gboolean may_be_in_call,
+	which indicates whether G_HOOK_IN_CALL() hooks are considered valid
+	or not. these two functions are meant as iterators for the hook list
+	invocation, so they need to a) provide functionality to implement
+	may_recurse bahaviour and b) only walk active hooks.
+
 Tue Oct  6 14:29:47 1998  Tim Janik  <timj@gtk.org>
 
 	* gmem.c (g_malloc0): fixed memory offsett when ENABLE_MEM_CHECK is

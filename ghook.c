@@ -64,7 +64,7 @@ g_hook_list_clear (GHookList *hook_list)
       else
 	do
 	  {
-	    register GHook *tmp;
+	    GHook *tmp;
 	    
 	    g_hook_ref (hook_list, hook);
 	    g_hook_destroy_link (hook_list, hook);
@@ -88,7 +88,7 @@ g_hook_alloc (GHookList *hook_list)
   hook->data = NULL;
   hook->next = NULL;
   hook->prev = NULL;
-  hook->flags = G_HOOK_ACTIVE;
+  hook->flags = G_HOOK_FLAG_ACTIVE;
   hook->ref_count = 0;
   hook->hook_id = 0;
   hook->func = NULL;
@@ -119,10 +119,10 @@ g_hook_destroy_link (GHookList *hook_list,
   if (hook->hook_id)
     {
       hook->hook_id = 0;
-      hook->flags &= ~G_HOOK_ACTIVE;
+      hook->flags &= ~G_HOOK_FLAG_ACTIVE;
       if (hook->destroy)
 	{
-	  register GDestroyNotify destroy;
+	  GDestroyNotify destroy;
 	  
 	  destroy = hook->destroy;
 	  hook->destroy = NULL;
@@ -163,7 +163,7 @@ g_hook_unref (GHookList *hook_list,
   if (!hook->ref_count)
     {
       g_return_if_fail (hook->hook_id == 0);
-      g_return_if_fail (!G_HOOK_IS_IN_CALL (hook));
+      g_return_if_fail (!G_HOOK_IN_CALL (hook));
       
       if (hook->prev)
 	hook->prev->next = hook->next;
@@ -261,33 +261,23 @@ g_hook_list_invoke (GHookList *hook_list,
   g_return_if_fail (hook_list != NULL);
   g_return_if_fail (hook_list->is_setup);
 
-  if (may_recurse)
-    hook = g_hook_first_valid (hook_list);
-  else
-    do
-      hook = g_hook_first_valid (hook_list);
-    while (hook && G_HOOK_IS_IN_CALL (hook));
+  hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      register GHook *tmp;
-      register GHookFunc func;
+      GHook *tmp;
+      GHookFunc func;
       gboolean was_in_call;
       
       g_hook_ref (hook_list, hook);
       func = hook->func;
       
-      was_in_call = G_HOOK_IS_IN_CALL (hook);
-      hook->flags |= G_HOOK_IN_CALL;
+      was_in_call = G_HOOK_IN_CALL (hook);
+      hook->flags |= G_HOOK_FLAG_IN_CALL;
       func (hook->data);
       if (!was_in_call)
-	hook->flags &= ~G_HOOK_IN_CALL;
+	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
       
-      if (may_recurse)
-	tmp = g_hook_next_valid (hook);
-      else
-	do
-	  tmp = g_hook_next_valid (hook);
-	while (tmp && G_HOOK_IS_IN_CALL (tmp));
+      tmp = g_hook_next_valid (hook, may_recurse);
       
       g_hook_unref (hook_list, hook);
       hook = tmp;
@@ -303,36 +293,26 @@ g_hook_list_invoke_check (GHookList *hook_list,
   g_return_if_fail (hook_list != NULL);
   g_return_if_fail (hook_list->is_setup);
   
-  if (may_recurse)
-    hook = g_hook_first_valid (hook_list);
-  else
-    do
-      hook = g_hook_first_valid (hook_list);
-    while (hook && G_HOOK_IS_IN_CALL (hook));
+  hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      register GHook *tmp;
-      register GHookCheckFunc func;
+      GHook *tmp;
+      GHookCheckFunc func;
       gboolean was_in_call;
-      register gboolean need_destroy;
+      gboolean need_destroy;
       
       g_hook_ref (hook_list, hook);
       func = hook->func;
       
-      was_in_call = G_HOOK_IS_IN_CALL (hook);
-      hook->flags |= G_HOOK_IN_CALL;
+      was_in_call = G_HOOK_IN_CALL (hook);
+      hook->flags |= G_HOOK_FLAG_IN_CALL;
       need_destroy = !func (hook->data);
       if (!was_in_call)
-	hook->flags &= ~G_HOOK_IN_CALL;
+	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
       if (need_destroy)
 	g_hook_destroy_link (hook_list, hook);
       
-      if (may_recurse)
-	tmp = g_hook_next_valid (hook);
-      else
-	do
-	  tmp = g_hook_next_valid (hook);
-	while (tmp && G_HOOK_IS_IN_CALL (tmp));
+      tmp = g_hook_next_valid (hook, may_recurse);
       
       g_hook_unref (hook_list, hook);
       hook = tmp;
@@ -351,31 +331,21 @@ g_hook_list_marshal (GHookList		     *hook_list,
   g_return_if_fail (hook_list->is_setup);
   g_return_if_fail (marshaller != NULL);
   
-  if (may_recurse)
-    hook = g_hook_first_valid (hook_list);
-  else
-    do
-      hook = g_hook_first_valid (hook_list);
-    while (hook && G_HOOK_IS_IN_CALL (hook));
+  hook = g_hook_first_valid (hook_list, may_recurse);
   while (hook)
     {
-      register GHook *tmp;
+      GHook *tmp;
       gboolean was_in_call;
       
       g_hook_ref (hook_list, hook);
       
-      was_in_call = G_HOOK_IS_IN_CALL (hook);
-      hook->flags |= G_HOOK_IN_CALL;
+      was_in_call = G_HOOK_IN_CALL (hook);
+      hook->flags |= G_HOOK_FLAG_IN_CALL;
       marshaller (hook, data);
       if (!was_in_call)
-	hook->flags &= ~G_HOOK_IN_CALL;
+	hook->flags &= ~G_HOOK_FLAG_IN_CALL;
       
-      if (may_recurse)
-	tmp = g_hook_next_valid (hook);
-      else
-	do
-	  tmp = g_hook_next_valid (hook);
-	while (tmp && G_HOOK_IS_IN_CALL (tmp));
+      tmp = g_hook_next_valid (hook, may_recurse);
       
       g_hook_unref (hook_list, hook);
       hook = tmp;
@@ -383,7 +353,8 @@ g_hook_list_marshal (GHookList		     *hook_list,
 }
 
 GHook*
-g_hook_first_valid (GHookList *hook_list)
+g_hook_first_valid (GHookList *hook_list,
+		    gboolean   may_be_in_call)
 {
   g_return_val_if_fail (hook_list != NULL, NULL);
   
@@ -394,10 +365,10 @@ g_hook_first_valid (GHookList *hook_list)
       hook = hook_list->hooks;
       if (hook)
 	{
-	  if (G_HOOK_IS_VALID (hook))
+	  if (G_HOOK_IS_VALID (hook) && (may_be_in_call || !G_HOOK_IN_CALL (hook)))
 	    return hook;
 	  else
-	    return g_hook_next_valid (hook);
+	    return g_hook_next_valid (hook, may_be_in_call);
 	}
     }
   
@@ -405,7 +376,8 @@ g_hook_first_valid (GHookList *hook_list)
 }
 
 GHook*
-g_hook_next_valid (GHook *hook)
+g_hook_next_valid (GHook   *hook,
+		   gboolean may_be_in_call)
 {
   if (!hook)
     return NULL;
@@ -413,7 +385,7 @@ g_hook_next_valid (GHook *hook)
   hook = hook->next;
   while (hook)
     {
-      if (G_HOOK_IS_VALID (hook))
+      if (G_HOOK_IS_VALID (hook) && (may_be_in_call || !G_HOOK_IN_CALL (hook)))
 	return hook;
       hook = hook->next;
     }
@@ -452,20 +424,28 @@ g_hook_find (GHookList	  *hook_list,
   g_return_val_if_fail (hook_list != NULL, NULL);
   g_return_val_if_fail (func != NULL, NULL);
   
-  hook = g_hook_first_valid (hook_list);
+  hook = hook_list->hooks;
   while (hook)
     {
-      register GHook *tmp;
+      GHook *tmp;
+
+      /* test only non-destroyed hooks */
+      if (!hook->hook_id)
+	{
+	  hook = hook->next;
+	  continue;
+	}
       
       g_hook_ref (hook_list, hook);
       
-      if (func (hook, data) && hook->hook_id && (!need_valids || G_HOOK_IS_ACTIVE (hook)))
+      if (func (hook, data) && hook->hook_id && (!need_valids || G_HOOK_ACTIVE (hook)))
 	{
 	  g_hook_unref (hook_list, hook);
 	  
 	  return hook;
 	}
-      tmp = g_hook_next_valid (hook);
+
+      tmp = hook->next;
       g_hook_unref (hook_list, hook);
       hook = tmp;
     }
@@ -478,17 +458,20 @@ g_hook_find_data (GHookList *hook_list,
 		  gboolean   need_valids,
 		  gpointer   data)
 {
-  register GHook *hook;
+  GHook *hook;
   
   g_return_val_if_fail (hook_list != NULL, NULL);
   
-  hook = g_hook_first_valid (hook_list);
+  hook = hook_list->hooks;
   while (hook)
     {
-      if (hook->data == data && hook->hook_id && (!need_valids || G_HOOK_IS_ACTIVE (hook)))
+      /* test only non-destroyed hooks */
+      if (hook->data == data &&
+	  hook->hook_id &&
+	  (!need_valids || G_HOOK_ACTIVE (hook)))
 	return hook;
-      
-      hook = g_hook_next_valid (hook);
+
+      hook = hook->next;
     }
   
   return NULL;
@@ -499,18 +482,21 @@ g_hook_find_func (GHookList *hook_list,
 		  gboolean   need_valids,
 		  gpointer   func)
 {
-  register GHook *hook;
+  GHook *hook;
   
   g_return_val_if_fail (hook_list != NULL, NULL);
   g_return_val_if_fail (func != NULL, NULL);
   
-  hook = g_hook_first_valid (hook_list);
+  hook = hook_list->hooks;
   while (hook)
     {
-      if (hook->func == func && hook->hook_id && (!need_valids || G_HOOK_IS_ACTIVE (hook)))
+      /* test only non-destroyed hooks */
+      if (hook->func == func &&
+	  hook->hook_id &&
+	  (!need_valids || G_HOOK_ACTIVE (hook)))
 	return hook;
-      
-      hook = g_hook_next_valid (hook);
+
+      hook = hook->next;
     }
   
   return NULL;
@@ -522,18 +508,22 @@ g_hook_find_func_data (GHookList *hook_list,
 		       gpointer	  func,
 		       gpointer	  data)
 {
-  register GHook *hook;
+  GHook *hook;
   
   g_return_val_if_fail (hook_list != NULL, NULL);
   g_return_val_if_fail (func != NULL, NULL);
   
-  hook = g_hook_first_valid (hook_list);
+  hook = hook_list->hooks;
   while (hook)
     {
-      if (hook->data == data && hook->func == func && hook->hook_id && (!need_valids || G_HOOK_IS_ACTIVE (hook)))
+      /* test only non-destroyed hooks */
+      if (hook->data == data &&
+	  hook->func == func &&
+	  hook->hook_id &&
+	  (!need_valids || G_HOOK_ACTIVE (hook)))
 	return hook;
-      
-      hook = g_hook_next_valid (hook);
+
+      hook = hook->next;
     }
   
   return NULL;
@@ -552,12 +542,15 @@ g_hook_insert_sorted (GHookList	      *hook_list,
   g_return_if_fail (G_HOOK_IS_UNLINKED (hook));
   g_return_if_fail (hook->func != NULL);
   g_return_if_fail (func != NULL);
-  
-  sibling = g_hook_first_valid (hook_list);
+
+  /* first non-destroyed hook */
+  sibling = hook_list->hooks;
+  while (sibling && !sibling->hook_id)
+    sibling = sibling->next;
   
   while (sibling)
     {
-      register GHook *tmp;
+      GHook *tmp;
       
       g_hook_ref (hook_list, sibling);
       if (func (hook, sibling) <= 0 && sibling->hook_id)
@@ -565,7 +558,12 @@ g_hook_insert_sorted (GHookList	      *hook_list,
 	  g_hook_unref (hook_list, sibling);
 	  break;
 	}
-      tmp = g_hook_next_valid (sibling);
+
+      /* next non-destroyed hook */
+      tmp = sibling->next;
+      while (tmp && !tmp->hook_id)
+	tmp = tmp->next;
+
       g_hook_unref (hook_list, sibling);
       sibling = tmp;
     }

@@ -85,14 +85,8 @@
 #endif /* HAVE_VALUES_H */
 
 
-/* the #pragma } statment is used to fix up emacs' c-mode which gets
- * confused by extern "C" {. the ansi standard says that compilers
- * have to ignore #pragma directives that they don't know about,
- * so we should be save in using this.
- */
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -1010,8 +1004,8 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 #define G_HOOK_FLAG_USER_SHIFT	(4)
 typedef enum
 {
-  G_HOOK_ACTIVE		= 1 << 0,
-  G_HOOK_IN_CALL	= 1 << 1,
+  G_HOOK_FLAG_ACTIVE	= 1 << 0,
+  G_HOOK_FLAG_IN_CALL	= 1 << 1,
   G_HOOK_FLAG_MASK	= 0x0f
 } GHookFlagMask;
 
@@ -1036,12 +1030,12 @@ struct _GHook
   GDestroyNotify destroy;
 };
 
-#define	G_HOOK_IS_ACTIVE(hook)		((((GHook*) hook)->flags & \
-					  G_HOOK_ACTIVE) != 0)
-#define	G_HOOK_IS_IN_CALL(hook)		((((GHook*) hook)->flags & \
-					  G_HOOK_IN_CALL) != 0)
+#define	G_HOOK_ACTIVE(hook)		((((GHook*) hook)->flags & \
+					  G_HOOK_FLAG_ACTIVE) != 0)
+#define	G_HOOK_IN_CALL(hook)		((((GHook*) hook)->flags & \
+					  G_HOOK_FLAG_IN_CALL) != 0)
 #define G_HOOK_IS_VALID(hook)		(((GHook*) hook)->hook_id != 0 && \
-					 G_HOOK_IS_ACTIVE (hook))
+					 G_HOOK_ACTIVE (hook))
 #define G_HOOK_IS_UNLINKED(hook)	(((GHook*) hook)->next == NULL && \
 					 ((GHook*) hook)->prev == NULL && \
 					 ((GHook*) hook)->hook_id == 0 && \
@@ -1085,8 +1079,12 @@ GHook*	 g_hook_find_func_data		(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 gpointer		 func,
 					 gpointer		 data);
-GHook*	 g_hook_first_valid		(GHookList		*hook_list);
-GHook*	 g_hook_next_valid		(GHook			*hook);
+GHook*	 g_hook_first_valid		(GHookList		*hook_list,
+					 gboolean		 may_be_in_call);
+GHook*	 g_hook_next_valid		(GHook			*hook,
+					 gboolean		 may_be_in_call);
+
+/* GHookCompareFunc implementation to insert hooks sorted by their id */
 gint	 g_hook_compare_ids		(GHook			*new_hook,
 					 GHook			*sibling);
 
