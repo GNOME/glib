@@ -171,9 +171,6 @@ gchar*                g_path_get_dirname   (const gchar *file_name);
 /* Set the pointer at the specified location to NULL */
 void                  g_nullify_pointer    (gpointer    *nullify_location);
 
-/* Get the codeset for the current locale */
-/* gchar * g_get_codeset    (void); */
-
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
 G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
