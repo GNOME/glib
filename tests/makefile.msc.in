@@ -64,4 +64,4 @@ libmoduletestplugin_b.dll : libmoduletestplugin_b.obj
 	$(CC) $(CFLAGS) -LD libmoduletestplugin_b.obj ..\gmodule\gmodule-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib ..\glib\glib-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.lib $(LDFLAGS)
 
 check:	all
-	for %p in ($(TESTS)) do %p
+	for %p in ($(TESTS)) do set PATH=..\glib;..\gmodule;..\gobject;..\gthread;%PATH% && %p
