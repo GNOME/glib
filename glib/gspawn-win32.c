@@ -644,13 +644,16 @@ do_spawn (gboolean              dont_wait,
 	  GSpawnChildSetupFunc  child_setup,
 	  gpointer              user_data)
 {
+  gchar **protected_argv;
   gchar **new_argv;
   gchar args[ARG_COUNT][10];
   gint i;
   int rc;
-  int argc = 0;
+  int argc;
 
   SETUP_DEBUG();
+
+  argc = protect_argv (argv, &protected_argv);
 
   if (stdin_fd == -1 && stdout_fd == -1 && stderr_fd == -1 &&
       (working_directory == NULL || !*working_directory) &&
@@ -665,10 +668,14 @@ do_spawn (gboolean              dont_wait,
 	g_print ("doing without gspawn-win32-helper\n");
 
       if (search_path)
-	rc = spawnvp (mode, argv[0], argv);
+	rc = spawnvp (mode, argv[0], protected_argv);
       else
-	rc = spawnv (mode, argv[0], argv);
+	rc = spawnv (mode, argv[0], protected_argv);
 
+      for (i = 0; i < argc; i++)
+	g_free (protected_argv[i]);
+      g_free (protected_argv);
+      
       if (rc == -1)
 	{
 	  return DO_SPAWN_ERROR_NO_HELPER;
@@ -679,9 +686,6 @@ do_spawn (gboolean              dont_wait,
 	  return DO_SPAWN_OK_NO_HELPER;
 	}
     }
-
-  while (argv[argc])
-    ++argc;
 
   new_argv = g_new (gchar *, argc + 1 + ARG_COUNT);
 
@@ -755,7 +759,7 @@ do_spawn (gboolean              dont_wait,
     new_argv[ARG_WAIT] = "w";
 
   for (i = 0; i <= argc; i++)
-    new_argv[ARG_PROGRAM + i] = argv[i];
+    new_argv[ARG_PROGRAM + i] = protected_argv[i];
 
   /* Call user function just before we execute the helper program,
    * which executes the program. Dunno what's the usefulness of this.
@@ -793,6 +797,10 @@ do_spawn (gboolean              dont_wait,
     close (stdout_fd);
   if (stderr_fd >= 0)
     close (stderr_fd);
+
+  for (i = 0; i < argc; i++)
+    g_free (protected_argv[i]);
+  g_free (protected_argv);
 
   g_free (new_argv[ARG_WORKING_DIRECTORY]);
   g_free (new_argv);
@@ -875,9 +883,6 @@ do_spawn_with_pipes (gboolean              dont_wait,
   gint helper = -1;
   gint buf[2];
   gint n_ints = 0;
-  gint i;
-  gint argc;
-  gchar **new_argv;
   
   if (!make_pipe (child_err_report_pipe, error))
     return FALSE;
@@ -891,15 +896,13 @@ do_spawn_with_pipes (gboolean              dont_wait,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
-  argc = protect_argv (argv, &new_argv);
-
   helper = do_spawn (dont_wait,
 		     child_err_report_pipe[1],
 		     stdin_pipe[0],
 		     stdout_pipe[1],
 		     stderr_pipe[1],
 		     working_directory,
-		     new_argv,
+		     argv,
 		     envp,
 		     close_descriptors,
 		     search_path,
@@ -910,10 +913,6 @@ do_spawn_with_pipes (gboolean              dont_wait,
 		     child_setup,
 		     user_data);
       
-  for (i = 0; i < argc; i++)
-    g_free (new_argv[i]);
-  g_free (new_argv);
-
   /* Check if gspawn-win32-helper couldn't be run */
   if (helper == DO_SPAWN_ERROR_HELPER)
     {
