@@ -586,6 +586,7 @@ EXPORTS
 	g_win32_error_message
 	g_win32_ftruncate
 	g_win32_get_package_installation_directory
+	g_win32_get_package_installation_subdirectory
 	g_win32_getlocale
 	g_win32_opendir
 	g_win32_readdir

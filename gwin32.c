@@ -526,6 +526,17 @@ g_win32_closedir (DIR *dir)
 #define SUBLANG_UZBEK_CYRILLIC 0x02
 #endif
 
+/**
+ * g_win32_getlocale:
+ *
+ * The setlocale in the Microsoft C library uses locale names of the
+ * form "English_United States.1252" etc. We want the Unixish standard
+ * form "en", "zh_TW" etc. This function gets the current thread
+ * locale from Windows and returns it as a string of the above form
+ * for use in forming file names etc. The returned string should be
+ * deallocated with g_free().
+ */
+
 gchar *
 g_win32_getlocale (void)
 {
@@ -798,6 +809,16 @@ g_win32_getlocale (void)
   return g_strdup (bfr);
 }
 
+/**
+ * g_win32_error_message:
+ * @error: error code
+ *
+ * Translate a Win32 error code (as returned by GetLastError()) into
+ * the corresponding message. The message is either language neutral,
+ * or in the thread's language, or the user's language, the system's
+ * langauge, or US English (see docs for FormatMessage). The returned
+ * string should be deallocated with g_free().
+ */
 gchar *
 g_win32_error_message (gint error)
 {
@@ -823,54 +844,162 @@ g_win32_error_message (gint error)
   return retval;
 }
 
-gchar *
-g_win32_get_package_installation_directory (gchar *package)
+static gchar *
+get_package_directory_from_module (gchar *module_name)
 {
-  static GHashTable *installation_dirs = NULL;
+  static GHashTable *module_dirs = NULL;
+  HMODULE hmodule = NULL;
+  gchar fn[MAX_PATH];
+  gchar *p;
   gchar *result;
+
+  if (module_dirs == NULL)
+    module_dirs = g_hash_table_new (g_str_hash, g_str_equal);
+  
+  result = g_hash_table_lookup (module_dirs, module_name ? module_name : "");
+      
+  if (result)
+    return g_strdup (result);
+
+  if (module_name)
+    {
+      hmodule = GetModuleHandle (module_name);
+      if (!hmodule)
+	return NULL;
+    }
+
+  if (!GetModuleFileName (hmodule, fn, sizeof (fn)))
+    return NULL;
+
+  if ((p = strrchr (fn, '\\')) != NULL)
+    *p = '\0';
+
+  if (module_name)
+    {
+      p = strrchr (fn, '\\');
+      if (p && (g_strcasecmp (p + 1, "bin") == 0 ||
+		g_strcasecmp (p + 1, "lib") == 0))
+	*p = '\0';
+    }
+
+  g_hash_table_insert (module_dirs, module_name ? module_name : "", fn);
+
+  return g_strdup (fn);
+}
+
+/**
+ * g_win32_get_package_installation_directory:
+ * @package: An identifier for a software package, or NULL
+ * @dll_name: The name of a DLL that a package provides, or NULL
+ *
+ * Try to determine the installation directory for a software package.
+ * Typically used by GNU software packages.
+ *
+ * @package should be a short identifier for the package. Typically it
+ * is the same identifier as used for GETTEXT_PACKAGE in software
+ * configured accoring to GNU standards. The function first looks in
+ * the Windows Registry for the value #InstallationDirectory in the
+ * key #HKLM\Software\@package, and if that value exists and is a
+ * string, returns that.
+ *
+ * If @package is NULL, or the above value isn't found in the
+ * Registry, but @dll_name is non-NULL, it should name a DLL loaded
+ * into the current process. Typically that would be the name of the
+ * DLL calling this function, looking for its installation
+ * directory. The function then asks Windows what directory that DLL
+ * was loaded from. If that directory's last component is "bin" or
+ * "lib", the parent directory is returned, otherwise the directory
+ * itself. If that DLL isn't loaded, the function proceeds as if
+ * @dll_name was NULL.
+ *
+ * If both @package and @dll_name are NULL, the directory from where
+ * the main executable of the process was loaded is uses instead in
+ * the same way as above.
+ *
+ * The return value should be freed with g_free() when not needed any longer.  */
+
+gchar *
+g_win32_get_package_installation_directory (gchar *package,
+					    gchar *dll_name)
+{
+  static GHashTable *package_dirs = NULL;
+  gchar *result = NULL;
   gchar *key;
   char win_dir[MAX_PATH];
-  gchar *sep;
   HKEY reg_key = NULL;
   DWORD type;
   DWORD nbytes;
 
-  if (installation_dirs == NULL)
-    installation_dirs = g_hash_table_new (g_str_hash, g_str_equal);
-
-  result = g_hash_table_lookup (installation_dirs, package);
-
-  if (result && result[0])
-    return result;
-
-  key = g_strconcat ("Software\\", package, NULL);
-
-  nbytes = 0;
-  if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
-		    KEY_QUERY_VALUE, &reg_key) != ERROR_SUCCESS
-      || RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-			  &type, NULL, &nbytes) != ERROR_SUCCESS
-      || type != REG_SZ)
+  if (package != NULL)
     {
-      /* Uh oh. Use a default %WinDir%\package value */
-      if (GetWindowsDirectory (win_dir, sizeof (win_dir)) == 0)
-	strcpy (win_dir, (GetVersion () >= 0x80000000 ? "C:\\windows" : "C:\\winnt"));
-      sep = (win_dir[strlen (win_dir) - 1] == '\\' ? "" : "\\");
-      result = g_strconcat (win_dir, sep, package, NULL);
+      if (package_dirs == NULL)
+	package_dirs = g_hash_table_new (g_str_hash, g_str_equal);
+      
+      result = g_hash_table_lookup (package_dirs, package);
+      
+      if (result && result[0])
+	return g_strdup (result);
+      
+      key = g_strconcat ("Software\\", package, NULL);
+      
+      nbytes = 0;
+      if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, key, 0,
+			KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS
+	  && RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+			      &type, NULL, &nbytes) == ERROR_SUCCESS
+	  && type == REG_SZ)
+	{
+	  result = g_malloc (nbytes + 1);
+	  RegQueryValueEx (reg_key, "InstallationDirectory", 0,
+			   &type, result, &nbytes);
+	  result[nbytes] = '\0';
+	}
+
+      if (reg_key != NULL)
+	RegCloseKey (reg_key);
+      
+      g_free (key);
+      
     }
-  else
+  if (result)
     {
-      result = g_malloc (nbytes + 1);
-      RegQueryValueEx (reg_key, "InstallationDirectory", 0,
-		       &type, result, &nbytes);
-      result[nbytes] = '\0';
+      g_hash_table_insert (package_dirs, package, result);
+      return g_strdup (result);
     }
-  g_hash_table_insert (installation_dirs, package, result);
 
-  if (reg_key != NULL)
-    RegCloseKey (reg_key);
+  if (dll_name != NULL)
+    result = get_package_directory_from_module (dll_name);
 
-  g_free (key);
+  if (result == NULL)
+    result = get_package_directory_from_module (NULL);
 
   return result;
+}
+
+/**
+ * g_win32_get_package_installation_subdirectory:
+ * @package: An identifier for a software package, or NULL
+ * @dll_name: The name of a DLL that a package provides, or NULL
+ * @subdir: A subdirectory of the package installation directory.
+ *
+ * Returns a string containg the path of the subdirectory @subdir in
+ * the return value from calling
+ * g_win32_get_package_installation_directory() with the @package and
+ * @dll_name parameters. The return value should be freed with
+ * g_free() when no longer needed.
+ */
+
+gchar *
+g_win32_get_package_installation_subdirectory (gchar *package,
+					       gchar *dll_name,
+					       gchar *subdir)
+{
+  gchar *prefix;
+  gchar *sep;
+
+  prefix = g_win32_get_package_installation_directory (package, dll_name);
+
+  sep = (prefix[strlen (prefix) - 1] == '\\' ? "" : "\\");
+
+  return g_strconcat (prefix, sep, subdir, NULL);
 }

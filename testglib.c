@@ -388,6 +388,11 @@ main (int   argc,
   GError *error;
   char *name_used;
   gchar *p;
+#ifdef G_OS_WIN32
+  gchar *glib_dll = g_strdup_printf ("glib-%d.%d.dll",
+				     GLIB_MAJOR_VERSION,
+				     GLIB_MINOR_VERSION);
+#endif
 
   g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
 	   glib_major_version,
@@ -1145,10 +1150,17 @@ main (int   argc,
 #ifdef G_OS_WIN32
   g_print ("current locale: %s\n", g_win32_getlocale ());
 
-  g_print ("GLib installation directory (used for message catalogs): %s\n",
-	   g_win32_get_package_installation_directory (GETTEXT_PACKAGE));
+  g_print ("GLib installation directory, from Registry entry for %s if available: %s\n",
+	   GETTEXT_PACKAGE,
+	   g_win32_get_package_installation_directory (GETTEXT_PACKAGE, NULL));
+  g_print ("Ditto, or from GLib DLL name: %s\n",
+	   g_win32_get_package_installation_directory (GETTEXT_PACKAGE, glib_dll));
+  g_print ("Ditto, only from GLib DLL name: %s\n",
+	   g_win32_get_package_installation_directory (NULL, glib_dll));
+  g_print ("locale subdirectory of GLib installation directory: %s\n",
+	   g_win32_get_package_installation_subdirectory (NULL, glib_dll, "locale"));
   g_print ("GTK+ 2.0 installation directory, if available: %s\n",
-	   g_win32_get_package_installation_directory ("gtk20"));
+	   g_win32_get_package_installation_directory ("gtk20", NULL));
 #endif
 
   g_print ("checking file functions...\n");

@@ -1009,11 +1009,12 @@ g_get_codeset (void)
 
 #ifdef G_OS_WIN32
 
-#define GLIB_LOCALE_DIR 				\
-  g_strconcat (g_win32_get_package_installation_directory (GETTEXT_PACKAGE), \
-	       G_DIR_SEPARATOR_S,			\
-	       "locale",				\
-	       NULL)
+#define GLIB_LOCALE_DIR					       	\
+  g_win32_get_package_installation_subdirectory			\
+  (GETTEXT_PACKAGE, g_strdup_printf ("glib-%d.%d.dll",		\
+				     GLIB_MAJOR_VERSION,	\
+				     GLIB_MINOR_VERSION),	\
+   "locale")
 
 #endif /* G_OS_WIN32 */
 
