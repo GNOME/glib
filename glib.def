@@ -180,6 +180,7 @@ EXPORTS
 	g_io_channel_win32_make_pollfd
 	g_io_channel_win32_new_fd
 	g_io_channel_win32_new_messages
+	g_io_channel_win32_new_socket
 	g_io_channel_win32_new_stream_socket
 	g_io_channel_win32_poll
 	g_io_channel_win32_set_debug

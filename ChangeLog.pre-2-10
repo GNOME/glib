@@ -1,3 +1,33 @@
+2001-01-25  Tor Lillqvist  <tml@iki.fi>
+
+	* giowin32.c: Socket support rewritten. It was utterly broken, and
+	untested in fact. We still do use a thread for each socket being
+	watched, but instead of blocking in recv() (which of course was
+	plain stupid for sockets being liste()ed on), we block in
+	select(). The read method for sockets calls recv(). It is now
+	possible for the application to call accept(), recv() or send() in
+	the callback, just like on Unix. Tested with code kindly provided
+	by Andrew Lanoix.
+
+	Rename g_io_channel_win32_new_stream_socket() to
+	g_io_channel_win32_new_socket() as it isn't restricted to stream
+	sockets.
+	
+	* gmain.c (g_poll): Related changes in the Win32 version of
+	g_poll(). When polling for messages, always do a PeekMessage()
+	first. We used to miss messages if several were posted between
+	calls to g_poll().
+
+	* giochannel.h: Improve Win32-related comments.
+
+	* gutf8.c: (Win32) Include <stdio.h> for sprintf.
+
+	* tests/gio-test.c: (Win32) Add tests for polling for Windows
+	messages.
+
+	* tests/makefile.mingw.in: Remove superfluous compilation command
+	line.
+
 2001-01-23    <alexl@redhat.com>
 
 	* gmain.c (g_source_callback_unref): Free the callback

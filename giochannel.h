@@ -120,14 +120,20 @@ guint    g_io_add_watch         (GIOChannel    *channel,
 /* On Unix, IO channels created with this function for any file
  * descriptor or socket.
  *
- * On Win32, use this only for files opened with the MSVCRT (the
- * Microsoft run-time C library) _open() or _pipe, including file
- * descriptors 0, 1 and 2 (corresponding to stdin, stdout and stderr).
+ * On Win32, this can be used either for files opened with the MSVCRT
+ * (the Microsoft run-time C library) _open() or _pipe, including file
+ * descriptors 0, 1 and 2 (corresponding to stdin, stdout and stderr),
+ * or for Winsock SOCKETs. If the parameter is a legal file
+ * descriptor, it is assumed to be such, otherwise it should be a
+ * SOCKET. This relies on SOCKETs and file descriptors not
+ * overlapping. If you want to be certain, call either
+ * g_io_channel_win32_new_fd() or g_io_channel_win32_new_socket()
+ * instead as appropriate.
  *
  * The term file descriptor as used in the context of Win32 refers to
  * the emulated Unix-like file descriptors MSVCRT provides. The native
  * corresponding concept is file HANDLE. There isn't as of yet a way to
- * get GIOChannels for file HANDLEs.
+ * get GIOChannels for Win32 file HANDLEs.
  */
 GIOChannel* g_io_channel_unix_new    (int         fd);
 gint        g_io_channel_unix_get_fd (GIOChannel *channel);
@@ -139,7 +145,8 @@ gint        g_io_channel_unix_get_fd (GIOChannel *channel);
 /* Use this to get a GPollFD from a GIOChannel, so that you can call
  * g_io_channel_win32_poll(). After calling this you should only use
  * g_io_channel_read() to read from the GIOChannel, i.e. never read()
- * or recv() from the underlying file descriptor or SOCKET.
+ * from the underlying file descriptor. For SOCKETs, it is possible to call
+ * recv().
  */
 void        g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 					    GIOCondition  condition,
@@ -147,7 +154,6 @@ void        g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 
 /* This can be used to wait a until at least one of the channels is readable.
  * On Unix you would do a select() on the file descriptors of the channels.
- * This should probably be available for all platforms?
  */
 gint        g_io_channel_win32_poll   (GPollFD    *fds,
 				       gint        n_fds,
@@ -160,25 +166,29 @@ void        g_main_poll_win32_msg_add (gint        priority,
 				       GPollFD    *fd,
 				       guint       hwnd);
 
-/* An IO channel for Windows messages for window handle hwnd. */
+/* Create an IO channel for Windows messages for window handle hwnd. */
 GIOChannel *g_io_channel_win32_new_messages (guint hwnd);
 
-/* An IO channel for C runtime (emulated Unix-like) file
- * descriptors. Identical to g_io_channel_unix_new above.
- * After calling g_io_add_watch() on a IO channel returned
- * by this function, you shouldn't call read() on the file
- * descriptor.
+/* Create an IO channel for C runtime (emulated Unix-like) file
+ * descriptors. After calling g_io_add_watch() on a IO channel
+ * returned by this function, you shouldn't call read() on the file
+ * descriptor. This is because adding polling for a file descriptor is
+ * implemented on Win32 by starting a thread that sits blocked in a
+ * read() from the file descriptor most of the time. All reads from
+ * the file descriptor should be done by this internal GLib
+ * thread. Your code should call only g_io_channel_read().
  */
 GIOChannel* g_io_channel_win32_new_fd (int         fd);
 
 /* Get the C runtime file descriptor of a channel. */
 gint        g_io_channel_win32_get_fd (GIOChannel *channel);
 
-/* An IO channel for a SOCK_STREAM winsock socket. The parameter
- * should be a SOCKET. After calling g_io_add_watch() on a IO channel
- * returned by this function, you shouldn't call recv() on the SOCKET.
+/* Create an IO channel for a winsock socket. The parameter should be
+ * a SOCKET. Contrary to IO channels for file descriptors (on *Win32),
+ * you can use normal recv() or recvfrom() on sockets even if GLib
+ * is polling them.
  */
-GIOChannel *g_io_channel_win32_new_stream_socket (int socket);
+GIOChannel *g_io_channel_win32_new_socket (int socket);
 
 #endif
 

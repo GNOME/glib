@@ -34,6 +34,8 @@
   #include <io.h>
   #include <fcntl.h>
   #include <process.h>
+  #define STRICT
+  #include <windows.h>
 #else
   #ifdef HAVE_UNISTD_H
     #include <unistd.h>
@@ -208,6 +210,52 @@ recv_message (GIOChannel  *channel,
   return retval;
 }
 
+#ifdef G_OS_WIN32
+
+static gboolean
+recv_windows_message (GIOChannel  *channel,
+		      GIOCondition cond,
+		      gpointer    data)
+{
+  GIOError error;
+  MSG msg;
+  guint nb;
+  
+  while (1)
+    {
+      error = g_io_channel_read (channel, &msg, sizeof (MSG), &nb);
+      
+      if (error != G_IO_ERROR_NONE)
+	{
+	  g_print ("gio-test: ...reading Windows message: G_IO_ERROR_%s\n",
+		   (error == G_IO_ERROR_AGAIN ? "AGAIN" :
+		    (error == G_IO_ERROR_INVAL ? "INVAL" :
+		     (error == G_IO_ERROR_UNKNOWN ? "UNKNOWN" : "???"))));
+	  if (error == G_IO_ERROR_AGAIN)
+	    continue;
+	}
+      break;
+    }
+
+  g_print ("gio-test: ...Windows message for %#x: %d,%d,%d\n",
+	   msg.hwnd, msg.message, msg.wParam, msg.lParam);
+
+  return TRUE;
+}
+
+LRESULT CALLBACK 
+window_procedure (HWND hwnd,
+		  UINT message,
+		  WPARAM wparam,
+		  LPARAM lparam)
+{
+  g_print ("gio-test: window_procedure for %#x: %d,%d,%d\n",
+	   hwnd, message, wparam, lparam);
+  return DefWindowProc (hwnd, message, wparam, lparam);
+}
+
+#endif
+
 int
 main (int    argc,
       char **argv)
@@ -224,10 +272,46 @@ main (int    argc,
       GTimeVal start, end;
       GPollFD pollfd;
       int pollresult;
+      ATOM klass;
+      static WNDCLASS wcl;
+      HWND hwnd;
+      GIOChannel *windows_messages_channel;
 #endif
 
       nkiddies = (argc == 1 ? 1 : atoi(argv[1]));
       seqtab = g_malloc (nkiddies * 2 * sizeof (int));
+
+#ifdef G_OS_WIN32
+      wcl.style = 0;
+      wcl.lpfnWndProc = window_procedure;
+      wcl.cbClsExtra = 0;
+      wcl.cbWndExtra = 0;
+      wcl.hInstance = GetModuleHandle (NULL);
+      wcl.hIcon = NULL;
+      wcl.hCursor = NULL;
+      wcl.hbrBackground = NULL;
+      wcl.lpszMenuName = NULL;
+      wcl.lpszClassName = "gio-test";
+
+      klass = RegisterClass (&wcl);
+
+      if (!klass)
+	{
+	  g_print ("gio-test: RegisterClass failed\n");
+	  exit (1);
+	}
+
+      hwnd = CreateWindow (klass, "gio-test", 0, 0, 0, 10, 10,
+			   NULL, NULL, wcl.hInstance, NULL);
+      if (!hwnd)
+	{
+	  g_print ("gio-test: CreateWindow failed\n");
+	  exit (1);
+	}
+
+      windows_messages_channel = g_io_channel_win32_new_messages (hwnd);
+      g_io_add_watch (windows_messages_channel, G_IO_IN, recv_windows_message, 0);
+#endif
 
       for (i = 0; i < nkiddies; i++)
 	{
@@ -236,7 +320,6 @@ main (int    argc,
 	  if (pipe (pipe_to_sub) == -1 ||
 	      pipe (pipe_from_sub) == -1)
 	    perror ("pipe"), exit (1);
-	  
 	  
 	  seqtab[i].fd = pipe_from_sub[0];
 	  seqtab[i].seq = 0;
@@ -250,18 +333,18 @@ main (int    argc,
 			    recv_message,
 			    id);
 	  
-	  cmdline = g_strdup_printf ("%s %d %d &", argv[0],
-				     pipe_to_sub[0], pipe_from_sub[1]);
-	  
 	  nrunning++;
 	  
 #ifdef G_OS_WIN32
-	  {
-	    gchar *readfd = g_strdup_printf ("%d", pipe_to_sub[0]);
-	    gchar *writefd = g_strdup_printf ("%d", pipe_from_sub[1]);
-	    _spawnl (_P_NOWAIT, argv[0], argv[0], readfd, writefd, NULL);
-	  }
+	  cmdline = g_strdup_printf ("%d:%d:%d",
+				     pipe_to_sub[0],
+				     pipe_from_sub[1],
+				     hwnd);
+	  _spawnl (_P_NOWAIT, argv[0], argv[0], "--child", cmdline, NULL);
 #else
+	  cmdline = g_strdup_printf ("%s --child %d:%d &", argv[0],
+				     pipe_to_sub[0], pipe_from_sub[1]);
+	  
 	  system (cmdline);
 #endif
 	  close (pipe_to_sub[0]);
@@ -290,15 +373,22 @@ main (int    argc,
       /* Child */
       
       int readfd, writefd;
+#ifdef G_OS_WIN32
+      HWND hwnd;
+#endif
       int i, j;
       char buf[BUFSIZE];
       int buflen;
       GTimeVal tv;
+      int n;
   
       g_get_current_time (&tv);
       
-      readfd = atoi (argv[1]);
-      writefd = atoi (argv[2]);
+      sscanf (argv[2], "%d:%d%n", &readfd, &writefd, &n);
+
+#ifdef G_OS_WIN32
+      sscanf (argv[2] + n, ":%d", &hwnd);
+#endif
       
       srand (tv.tv_sec ^ (tv.tv_usec / 1000) ^ readfd ^ (writefd << 4));
   
@@ -308,10 +398,23 @@ main (int    argc,
 	  buflen = rand() % BUFSIZE;
 	  for (j = 0; j < buflen; j++)
 	    buf[j] = ' ' + ((buflen + j) % 95);
-	  g_print ("gio-test: child writing %d bytes to %d\n", buflen, writefd);
+	  g_print ("gio-test: child writing %d+%d bytes to %d\n",
+		   sizeof(i) + sizeof(buflen), buflen, writefd);
 	  write (writefd, &i, sizeof (i));
 	  write (writefd, &buflen, sizeof (buflen));
 	  write (writefd, buf, buflen);
+
+#ifdef G_OS_WIN32
+	  if (rand() % 100 < 5)
+	    {
+	      int msg = WM_USER + (rand() % 100);
+	      WPARAM wparam = rand ();
+	      LPARAM lparam = rand ();
+	      g_print ("gio-test: child posting message %d,%d,%d to %#x\n",
+		       msg, wparam, lparam, hwnd);
+	      PostMessage (hwnd, msg, wparam, lparam);
+	    }
+#endif
 	}
       g_print ("gio-test: child exiting, closing %d\n", writefd);
       close (writefd);

@@ -272,77 +272,78 @@ g_poll (GPollFD *fds,
 
   if (poll_msgs)
     {
-      /* Waiting for messages, and maybe events */
-      if (nhandles == 0)
+      /* Waiting for messages, and maybe events
+       * -> First PeekMessage
+       */
+#ifdef G_MAIN_POLL_DEBUG
+      g_print ("PeekMessage\n");
+#endif
+      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+	ready = WAIT_OBJECT_0 + nhandles;
+      else
 	{
-	  if (timeout == INFINITE)
+	  if (nhandles == 0)
 	    {
-	      /* Waiting just for messages, infinite timeout
-	       * -> Use PeekMessage, then WaitMessage
-	       */
-#ifdef G_MAIN_POLL_DEBUG
-	      g_print ("PeekMessage, then WaitMessage\n");
-#endif
-	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
-		ready = WAIT_OBJECT_0;
-	      else if (!WaitMessage ())
-		g_warning ("g_poll: WaitMessage failed");
-	      ready = WAIT_OBJECT_0;
-	    }
-	  else if (timeout == 0)
-	    {
-	      /* Waiting just for messages, zero timeout
-	       * -> Use PeekMessage
-	       */
-#ifdef G_MAIN_POLL_DEBUG
-	      g_print ("PeekMessage\n");
-#endif
-	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
-		ready = WAIT_OBJECT_0;
-	      else
-		ready = WAIT_TIMEOUT;
-	    }
-	  else
-	    {
-	      /* Waiting just for messages, some timeout
-	       * -> First try PeekMessage, then set a timer, wait for message,
-	       * kill timer, use PeekMessage
-	       */
-#ifdef G_MAIN_POLL_DEBUG
-	      g_print ("PeekMessage\n");
-#endif
-	      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
-		ready = WAIT_OBJECT_0;
-	      else if ((timer = SetTimer (NULL, 0, timeout, NULL)) == 0)
-		g_warning ("g_poll: SetTimer failed");
-	      else
+	      /* Waiting just for messages */
+	      if (timeout == INFINITE)
 		{
+		  /* Infinite timeout
+		   * -> WaitMessage
+		   */
 #ifdef G_MAIN_POLL_DEBUG
 		  g_print ("WaitMessage\n");
 #endif
-		  WaitMessage ();
-		  KillTimer (NULL, timer);
-		  if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE)
-		      && msg.message != WM_TIMER)
-		    ready = WAIT_OBJECT_0;
+		  if (!WaitMessage ())
+		    g_warning ("g_poll: WaitMessage failed");
+		  ready = WAIT_OBJECT_0 + nhandles;
+		}
+	      else if (timeout == 0)
+		{
+		  /* Waiting just for messages, zero timeout.
+		   * If we got here, there was no message
+		   */
+		  ready = WAIT_TIMEOUT;
+		}
+	      else
+		{
+		  /* Waiting just for messages, some timeout
+		   * -> Set a timer, wait for message,
+		   * kill timer, use PeekMessage
+		   */
+		  if ((timer = SetTimer (NULL, 0, timeout, NULL)) == 0)
+		    g_warning ("g_poll: SetTimer failed");
 		  else
-		    ready = WAIT_TIMEOUT;
+		    {
+#ifdef G_MAIN_POLL_DEBUG
+		      g_print ("WaitMessage\n");
+#endif
+		      WaitMessage ();
+		      KillTimer (NULL, timer);
+#ifdef G_MAIN_POLL_DEBUG
+		      g_print ("PeekMessage\n");
+#endif
+		      if (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE)
+			  && msg.message != WM_TIMER)
+			ready = WAIT_OBJECT_0;
+		      else
+			ready = WAIT_TIMEOUT;
+		    }
 		}
 	    }
-	}
-      else
-	{
-	  /* Wait for either message or event
-	   * -> Use MsgWaitForMultipleObjects
-	   */
+	  else
+	    {
+	      /* Wait for either message or event
+	       * -> Use MsgWaitForMultipleObjects
+	       */
 #ifdef G_MAIN_POLL_DEBUG
-	  g_print ("MsgWaitForMultipleObjects(%d, %d)\n", nhandles, timeout);
+	      g_print ("MsgWaitForMultipleObjects(%d, %d)\n", nhandles, timeout);
 #endif
-	  ready = MsgWaitForMultipleObjects (nhandles, handles, FALSE,
-					     timeout, QS_ALLINPUT);
+	      ready = MsgWaitForMultipleObjects (nhandles, handles, FALSE,
+						 timeout, QS_ALLINPUT);
 
-	  if (ready == WAIT_FAILED)
-	    g_warning ("g_poll: MsgWaitForMultipleObjects failed");
+	      if (ready == WAIT_FAILED)
+		g_warning ("g_poll: MsgWaitForMultipleObjects failed");
+	    }
 	}
     }
   else if (nhandles == 0)
@@ -363,6 +364,13 @@ g_poll (GPollFD *fds,
 	g_warning ("g_poll: WaitForMultipleObjects failed");
     }
 
+#ifdef G_MAIN_POLL_DEBUG
+  g_print ("wait returns %d%s\n",
+	   ready,
+	   (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
+	    (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
+	     (poll_msgs && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
+#endif
   for (f = fds; f < &fds[nfds]; ++f)
     f->revents = 0;
 
@@ -380,6 +388,7 @@ g_poll (GPollFD *fds,
 		f->revents |= G_IO_IN;
 	  }
     }
+#if TEST_WITHOUT_THIS
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
     for (f = fds; f < &fds[nfds]; ++f)
       {
@@ -395,11 +404,9 @@ g_poll (GPollFD *fds,
 #endif
 	  }
       }
+#endif
     
-  if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
-    return ready - WAIT_OBJECT_0 + 1;
-  else
-    return 0;
+  return 1;
 }
 
 #else  /* !G_OS_WIN32 */

@@ -48,13 +48,13 @@ typedef struct _GIOWin32Watch GIOWin32Watch;
 #define BUFFER_SIZE 4096
 
 typedef enum {
-  G_IO_WINDOWS_MESSAGES,	/* Windows messages */
-  G_IO_FILE_DESC,		/* Unix-like file descriptors from
+  G_IO_WIN32_WINDOWS_MESSAGES,	/* Windows messages */
+  G_IO_WIN32_FILE_DESC,		/* Unix-like file descriptors from
 				 * _open() or _pipe(). Read with read().
 				 * Have to create separate thread to read.
 				 */
-  G_IO_STREAM_SOCKET		/* Stream sockets. Similar as fds, but
-				 * read with recv().
+  G_IO_WIN32_SOCKET		/* Sockets. A separate thread is blocked
+				 * in select() most of the time.
 				 */
 } GIOWin32ChannelType;
 
@@ -68,10 +68,26 @@ struct _GIOWin32Channel {
   
   gboolean debug;
 
-  /* This is used by G_IO_WINDOWS_MESSAGES channels */
+  CRITICAL_SECTION mutex;
+
+  /* This is used by G_IO_WIN32_WINDOWS_MESSAGES channels */
   HWND hwnd;			/* handle of window, or NULL */
   
-  /* Following fields used by fd and socket channels for input */
+  /* Following fields are used by both fd and socket channels. */
+  gboolean running;		/* Is reader thread running. FALSE if
+				 * EOF has been reached.
+				 */
+  gboolean needs_close;		/* If the channel has been closed while
+				 * the reader thread was still running.
+				 */
+  guint thread_id;		/* If non-NULL has a reader thread, or has
+				 * had.*/
+  HANDLE thread_handle;
+  HANDLE data_avail_event;
+
+  gushort revents;
+
+  /* Following fields used by fd channels for input */
   
   /* Data is kept in a circular buffer. To be able to distinguish between
    * empty and full buffer, we cannot fill it completely, but have to
@@ -85,21 +101,11 @@ struct _GIOWin32Channel {
    */
   guchar *buffer;		/* (Circular) buffer */
   gint wrp, rdp;		/* Buffer indices for writing and reading */
-  gboolean running;		/* Is reader thread running. FALSE if
-				 * EOF has been reached.
-				 */
-  gboolean needs_close;		/* If the channel has been closed while
-				 * the reader thread was still running.
-				 */
-  guint thread_id;		/* If non-NULL has a reader thread, or has
-				 * had.*/
-  HANDLE thread_handle;
-  HANDLE data_avail_event;
   HANDLE space_avail_event;
-  CRITICAL_SECTION mutex;
-  
-  /* Function that actually reads from fd */
-  int (*reader) (int fd, guchar *buf, int len);
+
+  /* Following fields used by socket channels */
+  GSList *watches;
+  HANDLE data_avail_noticed_event;
 };
 
 #define LOCK(mutex) EnterCriticalSection (&mutex)
@@ -129,7 +135,10 @@ g_io_channel_win32_init (GIOWin32Channel *channel)
   channel->needs_close = FALSE;
   channel->thread_id = 0;
   channel->data_avail_event = NULL;
+  channel->revents = 0;
   channel->space_avail_event = NULL;
+  channel->data_avail_noticed_event = NULL;
+  channel->watches = NULL;
   InitializeCriticalSection (&channel->mutex);
 }
 
@@ -146,7 +155,8 @@ create_events (GIOWin32Channel *channel)
    * is automatic reset.
    */
   if (!(channel->data_avail_event = CreateEvent (&sec_attrs, TRUE, FALSE, NULL))
-      || !(channel->space_avail_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL)))
+      || !(channel->space_avail_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL))
+      || !(channel->data_avail_noticed_event = CreateEvent (&sec_attrs, FALSE, FALSE, NULL)))
     {
       gchar *msg = g_win32_error_message (GetLastError ());
       g_error ("Error creating event: %s", msg);
@@ -154,18 +164,18 @@ create_events (GIOWin32Channel *channel)
 }
 
 static unsigned __stdcall
-reader_thread (void *parameter)
+read_thread (void *parameter)
 {
   GIOWin32Channel *channel = parameter;
+  GSList *tmp;
   guchar *buffer;
   guint nbytes;
 
-  g_io_channel_ref ((GIOChannel *) channel);
+  g_io_channel_ref ((GIOChannel *)channel);
 
   if (channel->debug)
-    g_print ("thread %#x: starting. pid:%#x, fd:%d, data_avail:%#x, space_avail:%#x\n",
+    g_print ("read_thread %#x: start fd:%d, data_avail:%#x, space_avail:%#x\n",
 	     channel->thread_id,
-	     (guint) GetCurrentProcessId (),
 	     channel->fd,
 	     (guint) channel->data_avail_event,
 	     (guint) channel->space_avail_event);
@@ -180,22 +190,23 @@ reader_thread (void *parameter)
     {
       LOCK (channel->mutex);
       if (channel->debug)
-	g_print ("thread %#x: rdp=%d, wrp=%d\n",
+	g_print ("read_thread %#x: rdp=%d, wrp=%d\n",
 		 channel->thread_id, channel->rdp, channel->wrp);
       if ((channel->wrp + 1) % BUFFER_SIZE == channel->rdp)
 	{
 	  /* Buffer is full */
 	  if (channel->debug)
-	    g_print ("thread %#x: resetting space_available\n",
+	    g_print ("read_thread %#x: resetting space_avail\n",
 		     channel->thread_id);
 	  ResetEvent (channel->space_avail_event);
 	  if (channel->debug)
-	    g_print ("thread %#x: waiting for space\n", channel->thread_id);
+	    g_print ("read_thread %#x: waiting for space\n",
+		     channel->thread_id);
 	  UNLOCK (channel->mutex);
 	  WaitForSingleObject (channel->space_avail_event, INFINITE);
 	  LOCK (channel->mutex);
 	  if (channel->debug)
-	    g_print ("thread %#x: rdp=%d, wrp=%d\n",
+	    g_print ("read_thread %#x: rdp=%d, wrp=%d\n",
 		     channel->thread_id, channel->rdp, channel->wrp);
 	}
       
@@ -208,17 +219,23 @@ reader_thread (void *parameter)
 		    BUFFER_SIZE - channel->wrp);
 
       if (channel->debug)
-	g_print ("thread %#x: calling reader for %d bytes\n",
+	g_print ("read_thread %#x: calling read() for %d bytes\n",
 		 channel->thread_id, nbytes);
 
       UNLOCK (channel->mutex);
 
-      nbytes = (*channel->reader) (channel->fd, buffer, nbytes);
+      nbytes = read (channel->fd, buffer, nbytes);
       
       LOCK (channel->mutex);
 
+      channel->revents = G_IO_IN;
+      if (nbytes == 0)
+	channel->revents |= G_IO_HUP;
+      else if (nbytes < 0)
+	channel->revents |= G_IO_ERR;
+
       if (channel->debug)
-	g_print ("thread %#x: got %d bytes, rdp=%d, wrp=%d\n",
+	g_print ("read_thread %#x: read() returned %d, rdp=%d, wrp=%d\n",
 		 channel->thread_id, nbytes, channel->rdp, channel->wrp);
 
       if (nbytes <= 0)
@@ -226,33 +243,29 @@ reader_thread (void *parameter)
 
       channel->wrp = (channel->wrp + nbytes) % BUFFER_SIZE;
       if (channel->debug)
-	g_print ("thread %#x: rdp=%d, wrp=%d, setting data available\n",
+	g_print ("read_thread %#x: rdp=%d, wrp=%d, setting data_avail\n",
 		 channel->thread_id, channel->rdp, channel->wrp);
       SetEvent (channel->data_avail_event);
       UNLOCK (channel->mutex);
     }
   
   channel->running = FALSE;
-  if (channel->debug)
-    g_print ("thread %#x: got EOF, rdp=%d, wrp=%d, setting data available\n",
-	     channel->thread_id, channel->rdp, channel->wrp);
-
   if (channel->needs_close)
     {
       if (channel->debug)
-	g_print ("thread %#x: channel fd %d needs closing\n",
+	g_print ("read_thread %#x: channel fd %d needs closing\n",
 		 channel->thread_id, channel->fd);
-      if (channel->type == G_IO_FILE_DESC)
-	close (channel->fd);
-      else if (channel->type == G_IO_STREAM_SOCKET)
-	closesocket (channel->fd);
+      close (channel->fd);
       channel->fd = -1;
     }
 
+  if (channel->debug)
+    g_print ("read_thread %#x: EOF, rdp=%d, wrp=%d, setting data_avail\n",
+	     channel->thread_id, channel->rdp, channel->wrp);
   SetEvent (channel->data_avail_event);
   UNLOCK (channel->mutex);
   
-  g_io_channel_unref((GIOChannel *) channel);
+  g_io_channel_unref((GIOChannel *)channel);
   
   /* No need to call _endthreadex(), the actual thread starter routine
    * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
@@ -265,13 +278,12 @@ reader_thread (void *parameter)
 }
 
 static void
-create_reader_thread (GIOWin32Channel *channel,
-		      gpointer         reader)
+create_thread (GIOWin32Channel     *channel,
+	       GIOCondition         condition,
+	       unsigned (__stdcall *thread) (void *parameter))
 {
-  channel->reader = reader;
-
   if ((channel->thread_handle =
-       (HANDLE) _beginthreadex (NULL, 0, reader_thread, channel, 0,
+       (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
 				&channel->thread_id)) == 0)
     g_warning ("Error creating reader thread: %s", strerror (errno));
   WaitForSingleObject (channel->space_avail_event, INFINITE);
@@ -291,7 +303,7 @@ buffer_read (GIOWin32Channel *channel,
     g_print ("reading from thread %#x %d bytes, rdp=%d, wrp=%d\n",
 	     channel->thread_id, count, channel->rdp, channel->wrp);
   
-  if (channel->rdp == channel->wrp)
+  if (channel->wrp == channel->rdp)
     {
       UNLOCK (channel->mutex);
       if (channel->debug)
@@ -300,7 +312,7 @@ buffer_read (GIOWin32Channel *channel,
       if (channel->debug)
 	g_print ("done waiting for data from thread %#x\n", channel->thread_id);
       LOCK (channel->mutex);
-      if (channel->rdp == channel->wrp && !channel->running)
+      if (channel->wrp == channel->rdp && !channel->running)
 	{
 	  UNLOCK (channel->mutex);
 	  return 0;
@@ -322,15 +334,15 @@ buffer_read (GIOWin32Channel *channel,
   LOCK (channel->mutex);
   channel->rdp = (channel->rdp + nbytes) % BUFFER_SIZE;
   if (channel->debug)
-    g_print ("setting space available for thread %#x\n", channel->thread_id);
+    g_print ("setting space_avail for thread %#x\n", channel->thread_id);
   SetEvent (channel->space_avail_event);
   if (channel->debug)
     g_print ("for thread %#x: rdp=%d, wrp=%d\n",
 	     channel->thread_id, channel->rdp, channel->wrp);
-  if (channel->running && channel->rdp == channel->wrp)
+  if (channel->running && channel->wrp == channel->rdp)
     {
       if (channel->debug)
-	g_print ("resetting data_available of thread %#x\n",
+	g_print ("resetting data_avail of thread %#x\n",
 		 channel->thread_id);
       ResetEvent (channel->data_avail_event);
     };
@@ -343,12 +355,154 @@ buffer_read (GIOWin32Channel *channel,
   return count - left;
 }
 
+static unsigned __stdcall
+select_thread (void *parameter)
+{
+  GIOWin32Channel *channel = parameter;
+  fd_set read_fds, write_fds, except_fds;
+  GSList *tmp;
+  int n;
+
+  g_io_channel_ref ((GIOChannel *)channel);
+
+  if (channel->debug)
+    g_print ("select_thread %#x: start fd:%d,\n\tdata_avail:%#x, data_avail_noticed:%#x\n",
+	     channel->thread_id,
+	     channel->fd,
+	     (guint) channel->data_avail_event,
+	     (guint) channel->data_avail_noticed_event);
+  
+  channel->rdp = channel->wrp = 0;
+  channel->running = TRUE;
+
+  SetEvent (channel->space_avail_event);
+  
+  while (channel->running)
+    {
+      FD_ZERO (&read_fds);
+      FD_ZERO (&write_fds);
+      FD_ZERO (&except_fds);
+
+      tmp = channel->watches;
+      while (tmp)
+	{
+	  GIOWin32Watch *watch = (GIOWin32Watch *)tmp->data;
+
+	  if (watch->condition & (G_IO_IN | G_IO_HUP))
+	    FD_SET (channel->fd, &read_fds);
+	  if (watch->condition & G_IO_OUT)
+	    FD_SET (channel->fd, &write_fds);
+	  if (watch->condition & G_IO_ERR)
+	    FD_SET (channel->fd, &except_fds);
+	  
+	  tmp = tmp->next;
+	}
+      if (channel->debug)
+	g_print ("select_thread %#x: calling select() for%s%s%s\n",
+		 channel->thread_id,
+		 (FD_ISSET (channel->fd, &read_fds) ? " IN" : ""),
+		 (FD_ISSET (channel->fd, &write_fds) ? " OUT" : ""),
+		 (FD_ISSET (channel->fd, &except_fds) ? " ERR" : ""));
+
+      n = select (1, &read_fds, &write_fds, &except_fds, NULL);
+      
+      if (n == SOCKET_ERROR)
+	{
+	  if (channel->debug)
+	    g_print ("select_thread %#x: select returned SOCKET_ERROR\n",
+		     channel->thread_id);
+	  break;
+	}
+
+      if (channel->debug)
+	g_print ("select_thread %#x: got%s%s%s\n",
+		 channel->thread_id,
+		 (FD_ISSET (channel->fd, &read_fds) ? " IN" : ""),
+		 (FD_ISSET (channel->fd, &write_fds) ? " OUT" : ""),
+		 (FD_ISSET (channel->fd, &except_fds) ? " ERR" : ""));
+
+      if (FD_ISSET (channel->fd, &read_fds))
+	channel->revents |= G_IO_IN;
+      if (FD_ISSET (channel->fd, &write_fds))
+	channel->revents |= G_IO_OUT;
+      if (FD_ISSET (channel->fd, &except_fds))
+	channel->revents |= G_IO_ERR;
+
+      if (channel->debug)
+	g_print ("select_thread %#x: resetting data_avail_noticed,\n"
+		 "\tsetting data_avail\n",
+		 channel->thread_id);
+      ResetEvent (channel->data_avail_noticed_event);
+      SetEvent (channel->data_avail_event);
+
+      if (channel->debug)
+	g_print ("select_thread %#x: waiting for data_avail_noticed\n",
+		 channel->thread_id);
+
+      WaitForSingleObject (channel->data_avail_noticed_event, INFINITE);
+      if (channel->debug)
+	g_print ("select_thread %#x: got data_avail_noticed\n",
+		 channel->thread_id);
+    }
+  
+  channel->running = FALSE;
+  LOCK (channel->mutex);
+  if (channel->needs_close)
+    {
+      if (channel->debug)
+	g_print ("select_thread %#x: channel fd %d needs closing\n",
+		 channel->thread_id, channel->fd);
+      closesocket (channel->fd);
+      channel->fd = -1;
+    }
+
+  if (channel->debug)
+    g_print ("select_thread %#x: got error, setting data_avail\n",
+	     channel->thread_id);
+  SetEvent (channel->data_avail_event);
+  UNLOCK (channel->mutex);
+  
+  g_io_channel_unref((GIOChannel *)channel);
+  
+  /* No need to call _endthreadex(), the actual thread starter routine
+   * in MSVCRT (see crt/src/threadex.c:_threadstartex) calls
+   * _endthreadex() for us.
+   */
+
+  CloseHandle (channel->thread_handle);
+
+  return 0;
+}
+
 static gboolean
 g_io_win32_prepare (GSource *source,
 		    gint    *timeout)
 {
+  GIOWin32Watch *watch = (GIOWin32Watch *)source;
+  GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
+  
   *timeout = -1;
   
+  if (channel->type == G_IO_WIN32_FILE_DESC)
+    {
+      LOCK (channel->mutex);
+      if (channel->running && channel->wrp == channel->rdp)
+	channel->revents = 0;
+      UNLOCK (channel->mutex);
+    }
+  else if (channel->type == G_IO_WIN32_SOCKET)
+    {
+      channel->revents = 0;
+
+      if (channel->debug)
+	g_print ("g_io_win32_prepare: thread %#x, setting data_avail_noticed\n",
+		 channel->thread_id);
+      SetEvent (channel->data_avail_noticed_event);
+      if (channel->debug)
+	g_print ("g_io_win32_prepare: thread %#x, there.\n",
+		 channel->thread_id);
+    }
+
   return FALSE;
 }
 
@@ -356,18 +510,26 @@ static gboolean
 g_io_win32_check (GSource *source)
 {
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
-  GIOWin32Channel *channel = (GIOWin32Channel *) watch->channel;
+  GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
-  /* If the thread has died, we have encountered EOF. If the buffer
-   * also is emtpty set the HUP bit.
-   */
-  if (!channel->running && channel->rdp == channel->wrp)
+  if (channel->debug)
+    g_print ("g_io_win32_check: for thread %#x:\n"
+	     "\twatch->pollfd.events:%#x, watch->pollfd.revents:%#x, channel->revents:%#x\n",
+	     channel->thread_id,
+	     watch->pollfd.events, watch->pollfd.revents, channel->revents);
+
+  if (channel->type != G_IO_WIN32_WINDOWS_MESSAGES)
+    watch->pollfd.revents = (watch->pollfd.events & channel->revents);
+
+  if (channel->type == G_IO_WIN32_SOCKET)
     {
       if (channel->debug)
-	g_print ("g_io_win32_check: setting G_IO_HUP thread %#x rdp=%d wrp=%d\n",
-		 channel->thread_id, channel->rdp, channel->wrp);
-      watch->pollfd.revents |= G_IO_HUP;
-      return TRUE;
+	g_print ("g_io_win32_check: thread %#x, resetting data_avail\n",
+		 channel->thread_id);
+      ResetEvent (channel->data_avail_event);
+      if (channel->debug)
+	g_print ("g_io_win32_check: thread %#x, there.\n",
+		 channel->thread_id);
     }
   
   return (watch->pollfd.revents & watch->condition);
@@ -397,7 +559,14 @@ static void
 g_io_win32_destroy (GSource *source)
 {
   GIOWin32Watch *watch = (GIOWin32Watch *)source;
+  GIOWin32Channel *channel = (GIOWin32Channel *)watch->channel;
   
+  if (channel->debug)
+    g_print ("g_io_win32_destroy: channel with thread %#x\n",
+	     channel->thread_id);
+
+  channel->watches = g_slist_remove (channel->watches, watch);
+
   g_io_channel_unref (watch->channel);
 }
 
@@ -411,9 +580,9 @@ static GSourceFuncs win32_watch_funcs = {
 static GSource *
 g_io_win32_create_watch (GIOChannel    *channel,
 			 GIOCondition   condition,
-			 int (*reader) (int, guchar *, int))
+			 unsigned (__stdcall *thread) (void *parameter))
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   GIOWin32Watch *watch;
   GSource *source;
 
@@ -432,11 +601,13 @@ g_io_win32_create_watch (GIOChannel    *channel,
   watch->pollfd.events = condition;
   
   if (win32_channel->debug)
-    g_print ("g_io_win32_create_watch: fd:%d handle:%#x\n",
-	     win32_channel->fd, watch->pollfd.fd);
+    g_print ("g_io_win32_create_watch: fd:%d condition:%#x handle:%#x\n",
+	     win32_channel->fd, condition, watch->pollfd.fd);
   
+  win32_channel->watches = g_slist_append (win32_channel->watches, watch);
+
   if (win32_channel->thread_id == 0)
-    create_reader_thread (win32_channel, reader);
+    create_thread (win32_channel, condition, thread);
 
   g_source_add_poll (source, &watch->pollfd);
   
@@ -449,12 +620,15 @@ g_io_win32_msg_read (GIOChannel *channel,
 		     guint       count,
 		     guint      *bytes_read)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   MSG msg;               /* In case of alignment problems */
   
   if (count < sizeof (MSG))
     return G_IO_ERROR_INVAL;
   
+  if (win32_channel->debug)
+    g_print ("g_io_win32_msg_read: for %#x\n",
+	     win32_channel->hwnd);
   if (!PeekMessage (&msg, win32_channel->hwnd, 0, 0, PM_REMOVE))
     return G_IO_ERROR_AGAIN;
   
@@ -469,7 +643,7 @@ g_io_win32_msg_write (GIOChannel *channel,
 		      guint       count,
 		      guint      *bytes_written)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   MSG msg;
   
   if (count != sizeof (MSG))
@@ -501,21 +675,23 @@ g_io_win32_msg_close (GIOChannel *channel)
 static void
 g_io_win32_free (GIOChannel *channel)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   
   if (win32_channel->debug)
     g_print ("thread %#x: freeing channel, fd: %d\n",
 	     win32_channel->thread_id,
 	     win32_channel->fd);
 
-  if (win32_channel->buffer)
-    {
-      CloseHandle (win32_channel->data_avail_event);
-      CloseHandle (win32_channel->space_avail_event);
-      DeleteCriticalSection (&win32_channel->mutex);
-    }
+  if (win32_channel->data_avail_event)
+    CloseHandle (win32_channel->data_avail_event);
+  if (win32_channel->space_avail_event)
+    CloseHandle (win32_channel->space_avail_event);
+  if (win32_channel->data_avail_noticed_event)
+    CloseHandle (win32_channel->data_avail_noticed_event);
+  DeleteCriticalSection (&win32_channel->mutex);
 
   g_free (win32_channel->buffer);
+  g_slist_free (win32_channel->watches);
   g_free (win32_channel);
 }
 
@@ -548,7 +724,7 @@ g_io_win32_fd_read (GIOChannel *channel,
 		    guint       count,
 		    guint      *bytes_read)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   GIOError error;
   
@@ -594,7 +770,7 @@ g_io_win32_fd_write (GIOChannel *channel,
 		     guint       count,
 		     guint      *bytes_written)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   
   result = write (win32_channel->fd, buf, count);
@@ -627,7 +803,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
 		    gint        offset,
 		    GSeekType   type)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   int whence;
   off_t result;
   
@@ -666,7 +842,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
 static void
 g_io_win32_fd_close (GIOChannel *channel)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   
   if (win32_channel->debug)
     g_print ("thread %#x: closing fd %d\n",
@@ -695,19 +871,11 @@ g_io_win32_fd_close (GIOChannel *channel)
   UNLOCK (win32_channel->mutex);
 }
 
-static int
-fd_reader (int     fd,
-	   guchar *buf,
-	   int     len)
-{
-  return read (fd, buf, len);
-}
-
 static GSource *
 g_io_win32_fd_create_watch (GIOChannel    *channel,
 			    GIOCondition   condition)
 {
-  return g_io_win32_create_watch (channel, condition, fd_reader);
+  return g_io_win32_create_watch (channel, condition, read_thread);
 }
 
 static GIOError
@@ -716,31 +884,32 @@ g_io_win32_sock_read (GIOChannel *channel,
 		      guint       count,
 		      guint      *bytes_read)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   GIOError error;
-  
-  if (win32_channel->thread_id)
-    {
-      result = buffer_read (win32_channel, buf, count, &error);
-      if (result < 0)
-	{
-	  *bytes_read = 0;
-	  return error;
-	}
-      else
-	{
-	  *bytes_read = result;
-	  return G_IO_ERROR_NONE;
-	}
-    }
 
+  if (win32_channel->debug)
+    g_print ("g_io_win32_sock_read: sockfd:%d count:%d\n",
+	     win32_channel->fd, count);
+  
   result = recv (win32_channel->fd, buf, count, 0);
 
-  if (result < 0)
+  if (win32_channel->debug)
+    g_print ("g_io_win32_sock_read: recv:%d\n", result);
+  
+  if (result == SOCKET_ERROR)
     {
       *bytes_read = 0;
-      return G_IO_ERROR_UNKNOWN;
+      switch (WSAGetLastError ())
+	{
+	case WSAEINVAL:
+	  return G_IO_ERROR_INVAL;
+	case WSAEWOULDBLOCK:
+	case WSAEINTR:
+	  return G_IO_ERROR_AGAIN;
+	default:
+	  return G_IO_ERROR_UNKNOWN;
+	}
     }
   else
     {
@@ -755,10 +924,17 @@ g_io_win32_sock_write (GIOChannel *channel,
 		       guint       count,
 		       guint      *bytes_written)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
   
+  if (win32_channel->debug)
+    g_print ("g_io_win32_sock_write: sockfd:%d count:%d\n",
+	     win32_channel->fd, count);
+  
   result = send (win32_channel->fd, buf, count, 0);
+  
+  if (win32_channel->debug)
+    g_print ("g_io_win32_sock_write: send:%d\n", result);
   
   if (result == SOCKET_ERROR)
     {
@@ -784,7 +960,7 @@ g_io_win32_sock_write (GIOChannel *channel,
 static void
 g_io_win32_sock_close (GIOChannel *channel)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   if (win32_channel->debug)
     g_print ("thread %#x: closing socket %d\n",
@@ -794,19 +970,11 @@ g_io_win32_sock_close (GIOChannel *channel)
   win32_channel->fd = -1;
 }
 
-static int
-sock_reader (int     fd,
-	     guchar *buf,
-	     int     len)
-{
-  return recv (fd, buf, len, 0);
-}
-
 static GSource *
 g_io_win32_sock_create_watch (GIOChannel    *channel,
 			      GIOCondition   condition)
 {
-  return g_io_win32_create_watch (channel, condition, sock_reader);
+  return g_io_win32_create_watch (channel, condition, select_thread);
 }
 
 static GIOFuncs win32_channel_msg_funcs = {
@@ -840,14 +1008,14 @@ GIOChannel *
 g_io_channel_win32_new_messages (guint hwnd)
 {
   GIOWin32Channel *win32_channel = g_new (GIOWin32Channel, 1);
-  GIOChannel *channel = (GIOChannel *) win32_channel;
+  GIOChannel *channel = (GIOChannel *)win32_channel;
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
     g_print ("g_io_channel_win32_new_messages: hwnd = %ud\n", hwnd);
   channel->funcs = &win32_channel_msg_funcs;
-  win32_channel->type = G_IO_WINDOWS_MESSAGES;
+  win32_channel->type = G_IO_WIN32_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
 
   return channel;
@@ -867,14 +1035,14 @@ g_io_channel_win32_new_fd (gint fd)
     }
 
   win32_channel = g_new (GIOWin32Channel, 1);
-  channel = (GIOChannel *) win32_channel;
+  channel = (GIOChannel *)win32_channel;
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
     g_print ("g_io_channel_win32_new_fd: fd = %d\n", fd);
   channel->funcs = &win32_channel_fd_funcs;
-  win32_channel->type = G_IO_FILE_DESC;
+  win32_channel->type = G_IO_WIN32_FILE_DESC;
   win32_channel->fd = fd;
 
   return channel;
@@ -883,23 +1051,23 @@ g_io_channel_win32_new_fd (gint fd)
 gint
 g_io_channel_win32_get_fd (GIOChannel *channel)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   return win32_channel->fd;
 }
 
 GIOChannel *
-g_io_channel_win32_new_stream_socket (int socket)
+g_io_channel_win32_new_socket (int socket)
 {
   GIOWin32Channel *win32_channel = g_new (GIOWin32Channel, 1);
-  GIOChannel *channel = (GIOChannel *) win32_channel;
+  GIOChannel *channel = (GIOChannel *)win32_channel;
 
   g_io_channel_init (channel);
   g_io_channel_win32_init (win32_channel);
   if (win32_channel->debug)
-    g_print ("g_io_channel_win32_new_stream_socket: socket = %d\n", socket);
+    g_print ("g_io_channel_win32_new_socket: sockfd:%d\n", socket);
   channel->funcs = &win32_channel_sock_funcs;
-  win32_channel->type = G_IO_STREAM_SOCKET;
+  win32_channel->type = G_IO_WIN32_SOCKET;
   win32_channel->fd = socket;
 
   return channel;
@@ -914,9 +1082,9 @@ g_io_channel_unix_new (gint fd)
     return g_io_channel_win32_new_fd (fd);
   
   if (getsockopt (fd, SOL_SOCKET, SO_TYPE, NULL, NULL) != SO_ERROR)
-    return g_io_channel_win32_new_stream_socket(fd);
+    return g_io_channel_win32_new_socket(fd);
 
-  g_warning ("%d isn't a file descriptor or a socket", fd);
+  g_warning ("%d is neither a file descriptor or a socket", fd);
   return NULL;
 }
 
@@ -930,7 +1098,7 @@ void
 g_io_channel_win32_set_debug (GIOChannel *channel,
 			      gboolean    flag)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   win32_channel->debug = flag;
 }
@@ -954,7 +1122,7 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 				GIOCondition  condition,
 				GPollFD      *fd)
 {
-  GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
   if (win32_channel->data_avail_event == NULL)
     create_events (win32_channel);
@@ -963,8 +1131,15 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
   fd->events = condition;
 
   if (win32_channel->thread_id == 0)
-    if (win32_channel->type == G_IO_FILE_DESC)
-      create_reader_thread (win32_channel, fd_reader);
-    else if (win32_channel->type == G_IO_STREAM_SOCKET)
-      create_reader_thread (win32_channel, sock_reader);
+    if ((condition & G_IO_IN) && win32_channel->type == G_IO_WIN32_FILE_DESC)
+      create_thread (win32_channel, condition, read_thread);
+    else if (win32_channel->type == G_IO_WIN32_SOCKET)
+      create_thread (win32_channel, condition, select_thread);
+}
+
+/* Binary compatibility */
+GIOChannel *
+g_io_channel_win32_new_stream_socket (int socket)
+{
+  return g_io_channel_win32_new_socket (socket);
 }

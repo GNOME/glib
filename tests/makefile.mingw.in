@@ -48,7 +48,6 @@ makefile.mingw: makefile.mingw.in
 .SUFFIXES: .c .exe
 
 .c.exe:
-	$(CC) $(CFLAGS) -c $<
 	$(CC) $(CFLAGS) -o $@ $< -L .. -lglib-$(GLIB_VER) -L ../gthread -lgthread-$(GLIB_VER)
 
 check:	all
