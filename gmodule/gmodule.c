@@ -338,7 +338,7 @@ g_module_open (const gchar    *file_name,
   if (!name)
     {
       name = g_strconcat (file_name, "." G_MODULE_SUFFIX, NULL);
-      if (!g_file_test (file_name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+      if (!g_file_test (name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
 	{
 	  g_free (name);
 	  name = NULL;

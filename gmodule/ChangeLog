@@ -1,3 +1,9 @@
+Sun Feb 17 18:15:22 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gmodule.c (g_module_open): Fix typo when checking
+	if file + module_suffix exists. (Miroslaw Dobrzanski-Neumann,
+	#71801)
+
 2001-11-24  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Remove rule for testgmodule.exp, too.
