@@ -3,7 +3,8 @@
 #
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir) -I$(top_builddir) -I. @GLIB_DEBUG_FLAGS@
+SUBDIRS =
+INCLUDES = -I$(top_srcdir) -I$(top_builddir) @GLIB_DEBUG_FLAGS@
 
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject-1.3.la
@@ -22,28 +23,38 @@ libgobject_1_3_la_LIBADD = # $(libglib)
 # setup source file variables
 #
 # GObject header files for public installation (non-generated)
-gobject_public_h_sources = \
-	gvalue.h \
-	gvaluetypes.h \
-	gparam.h \
-	gparamspecs.h \
+gobject_public_h_sources = @STRIP_BEGIN@ \
+	gboxed.h \
+	gbsearcharray.h \
+	gclosure.h \
 	genums.h \
 	gobject.h \
+	gparam.h \
+	gparamspecs.h \
+	gsignal.h \
 	gtype.h \
-	gvaluecollector.h 
+	gvalue.h \
+	gvaluecollector.h \
+	gvaluetypes.h \
+@STRIP_END@
 
 # private GObject header files
 gobject_private_h_sources = 
 
 # GObject C sources to build the library from
-gobject_c_sources = \
-	gvalue.c \
-	gvaluetypes.c \
-	gparam.c \
-	gparamspecs.c \
+gobject_c_sources = @STRIP_BEGIN@ \
+	gboxed.c \
+	gbsearcharray.c \
+	gclosure.c \
 	genums.c \
 	gobject.c \
-	gtype.c
+	gparam.c \
+	gparamspecs.c \
+	gsignal.c \
+	gtype.c \
+	gvalue.c \
+	gvaluetypes.c \
+@STRIP_END@
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
@@ -66,12 +77,19 @@ EXTRA_DIST += $(gobject_extra_sources)
 #
 # programs to compile and install
 #
-bin_PROGRAMS = gobject-query
+bin_PROGRAMS = gobject-query glib-genmarshal
 # source files
 gobject_query_SOURCES = gobject-query.c
+glib_genmarshal_SOURCES = glib-genmarshal.c
 # link programs against libgobject
 progs_LDADD = ../libglib-1.3.la libgobject-1.3.la
 gobject_query_LDADD = $(progs_LDADD)
+glib_genmarshal_LDADD = $(progs_LDADD)
+
+#
+# manual pages to install
+#
+man_MANS = glib-genmarshal.1
 
 #
 # auxillary files

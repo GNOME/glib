@@ -39,6 +39,20 @@ only one statement is expected by the compiler.
 
 
 
+<!-- ##### MACRO G_BEGIN_DECLS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_END_DECLS ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO G_N_ELEMENTS ##### -->
 <para>
 
@@ -52,6 +66,7 @@ only one statement is expected by the compiler.
 Portable way to copy <type>va_list</type> variables.
 </para>
 
+<!-- # Unused Parameters # -->
 @ap1: the <type>va_list</type> variable to place a copy of @ap2 in.
 @ap2: a <type>va_list</type>.
 
@@ -97,6 +112,13 @@ warnings. See the GNU C documentation for details.
 Expands to the GNU C unused function attribute if the compiler is GNU C.
 It is used for declaring functions which may never be used.
 It avoids possible compiler warnings. See the GNU C documentation for details. 
+</para>
+
+
+
+<!-- ##### MACRO G_GNUC_PURE ##### -->
+<para>
+
 </para>
 
 

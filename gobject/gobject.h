@@ -16,12 +16,13 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#ifndef __G_GOBJECT_H__
-#define __G_GOBJECT_H__
+#ifndef __G_OBJECT_H__
+#define __G_OBJECT_H__
 
 #include	<gobject/gtype.h>
 #include	<gobject/gvalue.h>
 #include	<gobject/gparam.h>
+#include	<gobject/gclosure.h>
 
 
 #ifdef __cplusplus
@@ -31,38 +32,35 @@ extern "C" {
 
 /* --- type macros --- */
 #define G_TYPE_IS_OBJECT(type)	   (G_TYPE_FUNDAMENTAL (type) == G_TYPE_OBJECT)
-#define G_OBJECT(object)	   (G_IS_OBJECT (object) ? ((GObject*) (object)) : \
-				    G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_OBJECT, GObject))
-#define G_OBJECT_CLASS(class)	   (G_IS_OBJECT_CLASS (class) ? ((GObjectClass*) (class)) : \
-				    G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_OBJECT, GObjectClass))
-#define G_IS_OBJECT(object)	   (((GObject*) (object)) != NULL && \
-				    G_IS_OBJECT_CLASS (((GTypeInstance*) (object))->g_class))
-#define G_IS_OBJECT_CLASS(class)   (((GTypeClass*) (class)) != NULL && \
-				    G_TYPE_IS_OBJECT (((GTypeClass*) (class))->g_type))
+#define G_OBJECT(object)	   (G_TYPE_CHECK_INSTANCE_CAST ((object), G_TYPE_OBJECT, GObject))
+#define G_OBJECT_CLASS(class)	   (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_OBJECT, GObjectClass))
+#define G_IS_OBJECT(object)	   (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_OBJECT))
+#define G_IS_OBJECT_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_OBJECT))
 #define G_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_OBJECT, GObjectClass))
 #define G_OBJECT_TYPE(object)	   (G_TYPE_FROM_INSTANCE (object))
 #define G_OBJECT_TYPE_NAME(object) (g_type_name (G_OBJECT_TYPE (object)))
 #define G_OBJECT_CLASS_TYPE(class) (G_TYPE_FROM_CLASS (class))
 #define G_OBJECT_CLASS_NAME(class) (g_type_name (G_OBJECT_CLASS_TYPE (class)))
-#define G_IS_VALUE_OBJECT(value)   (G_TYPE_CHECK_CLASS_TYPE ((value), G_TYPE_OBJECT))
+#define G_IS_VALUE_OBJECT(value)   (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_OBJECT))
 
 #define	G_NOTIFY_PRIORITY	   (G_PRIORITY_HIGH_IDLE + 20)
 
 
 /* --- typedefs & structures --- */
-typedef struct _GObject	     GObject;
-typedef struct _GObjectClass GObjectClass;
-typedef void (*GObjectGetParamFunc)	(GObject     *object,
-					 guint	      param_id,
-					 GValue	     *value,
-					 GParamSpec  *pspec,
-					 const gchar *trailer);
-typedef void (*GObjectSetParamFunc)	(GObject     *object,
-					 guint	      param_id,
-					 GValue	     *value,
-					 GParamSpec  *pspec,
-					 const gchar *trailer);
-typedef void (*GObjectFinalizeFunc)	(GObject     *object);
+typedef struct _GObject	              GObject;
+typedef struct _GObjectClass          GObjectClass;
+typedef struct _GObjectConstructParam GObjectConstructParam;
+typedef void (*GObjectGetParamFunc)	(GObject      *object,
+					 guint	       param_id,
+					 GValue	      *value,
+					 GParamSpec   *pspec,
+					 const gchar  *trailer);
+typedef void (*GObjectSetParamFunc)	(GObject      *object,
+					 guint	       param_id,
+					 const GValue *value,
+					 GParamSpec   *pspec,
+					 const gchar  *trailer);
+typedef void (*GObjectFinalizeFunc)	(GObject      *object);
 struct	_GObject
 {
   GTypeInstance g_type_instance;
@@ -77,7 +75,10 @@ struct	_GObjectClass
 
   guint	       n_param_specs;
   GParamSpec **param_specs;
-  
+
+  GObject*   (*constructor)	(GType		        type, // FIXME!!!
+				 guint		        n_construct_params,
+				 GObjectConstructParam *construct_params);
   void	     (*get_param)		(GObject	*object,
 					 guint		 param_id,
 					 GValue		*value,
@@ -85,7 +86,7 @@ struct	_GObjectClass
 					 const gchar	*trailer);
   void	     (*set_param)		(GObject	*object,
 					 guint		 param_id,
-					 GValue		*value,
+					 const GValue	*value,
 					 GParamSpec	*pspec,
 					 const gchar	*trailer);
   void	     (*queue_param_changed)	(GObject	*object,
@@ -94,6 +95,12 @@ struct	_GObjectClass
 					 GParamSpec	*pspec);
   void	     (*shutdown)		(GObject	*object);
   void	     (*finalize)		(GObject	*object);
+};
+struct _GObjectConstructParam
+{
+  GParamSpec *pspec;
+  GValue     *value;
+  gchar      *trailer;
 };
 
 
@@ -142,10 +149,18 @@ void	    g_object_set_qdata_full	   (GObject	   *object,
 					    GDestroyNotify  destroy);
 gpointer    g_object_steal_qdata	   (GObject	   *object,
 					    GQuark	    quark);
+void	    g_object_watch_closure	   (GObject	   *object,
+					    GClosure	   *closure);
+GClosure*   g_cclosure_new_object	   (gpointer        object,
+					    GCallback	    callback_func);
+GClosure*   g_cclosure_new_object_swap	   (gpointer        object,
+					    GCallback	    callback_func);
+GClosure*   g_closure_new_object	   (guint           sizeof_closure,
+					    GObject	   *object);
 void        g_value_set_object		   (GValue         *value,
 					    GObject        *v_object);
-GObject*    g_value_get_object		   (GValue         *value);
-GObject*    g_value_dup_object		   (GValue         *value);
+GObject*    g_value_get_object		   (const GValue   *value);
+GObject*    g_value_dup_object		   (const GValue   *value);
 
 
 /* --- implementation macros --- */
@@ -168,4 +183,4 @@ G_STMT_START { \
 }
 #endif /* __cplusplus */
 
-#endif /* __G_GOBJECT_H__ */
+#endif /* __G_OBJECT_H__ */

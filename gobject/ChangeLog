@@ -1,3 +1,86 @@
+Wed Oct 25 20:27:02 2000  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (g_type_free_instance): for the moment, freeing object
+	structures will fill their memory portion with 0xAA. there's a
+	FIXME there, remove this line at a later point.
+
+Tue Oct 24 23:10:26 2000  Tim Janik  <timj@gtk.org>
+
+	* glib-genmarshal.1:
+	* glib-genmarshal.c: added publically installed marshaller generator.
+
+	* gtype.h: added G_TYPE_INSTANCE_GET_INTERFACE() to retrive a certain
+	interface VTable from instances.
+
+Mon Oct 23 08:28:15 2000  Tim Janik  <timj@gtk.org>
+
+	* gobject.[hc]: new functions for closure maintenance:
+	(g_object_watch_closure): maintain validity of the object and
+	the closure for objects that are used as data part of a closure.
+	(g_cclosure_new_object): convenience function to create C closures
+	that have an object as data argument.
+	(g_closure_new_object): convenience function to create closures
+	that have an object as data argument.
+
+	* gclosure.[hc]: implementation of GClosure mechanism.
+	a closure is basically an encapsulation of a callback function
+	and its environment. ideally, most places supporting callback
+	functions will simply take a GClosure* pointer and thus unify
+	callback environments wrg destroy notification etc.
+	GClosure provides destroy notifiers for arbitrary data pointers,
+	reference counting, invalidation notification (it can be invalidated
+	which is merely a deactivate state) and a marshallinbg abstraction.
+	GCClosure is also provided in these files, they present a specialized
+	GClosure implementation for C language callbacks.
+
+	* genum.c: macro cleanups.
+	
+	* gboxed.[hc]: new files, for boxed type abstraction.
+	(g_boxed_copy): copy a boxed structure
+	(g_boxed_free): free a boxed structure
+	(g_value_set_boxed):
+	(g_value_get_boxed): standard GValue functions for boxed types
+	(g_boxed_type_register_static): convenience function for easy
+	introduction of new G_TYPE_BOXED derivatives.
+
+	* gparam.[hc]: introduced g_param_type_register_static(), a short hand
+	for creation of new GParamSpec derived types.
+
+	* gtype.[hc]: many fixes, introduced ability to flag individual
+	type nodes as ABSTRACT upon registration, added value_peek_pointer()
+	to the value table to peek at GValue contents as a pointer for types
+	that support this. fixed up GValue checks.
+
+	* gvalue.[hc]: added g_value_fits_pointer() and g_value_get_as_pointer()
+	to peek at the value contents as pointer.
+
+	* *.[hc]: adaptions to type macro fixes and changes in the type
+	registration API.
+
+	* many const corrections over the place.
+
+Sat Oct 21 02:49:56 2000  Tim Janik  <timj@gtk.org>
+
+	* gtype.c (g_type_conforms_to): this function basically behaves like
+	and is_a check, except that it _additionally_ features interfaces
+	for instantiatable types. enforce this in the second branch as well
+	(`type' conforms_to `type') even if `type' is not an interface type.
+
+Fri Oct 20 15:31:04 2000  Tim Janik  <timj@gtk.org>
+
+	* gvaluetypes.[hc]: added G_TYPE_POINTER implementation from jrb.
+
+	* gtype.[hc]:
+	* gobject.c:
+	* gvaluetypes.c: added GTypeValueTable.value_peek_pointer and
+	suitable implementations of this for G_TYPE_STRING, G_TYPE_OBJECT
+	and G_TYPE_POINTER.
+
+Mon Aug 21 04:13:37 2000  Tim Janik  <timj@gtk.org>
+
+	* gbsearcharray.[hc]: long standing needed generic implementation
+	of a binary searchable, sorted and dynamically sized array.
+
 2000-10-15  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (BUILT_EXTRA_DIST): New variable.
@@ -254,10 +337,6 @@ Sun Apr  2 04:54:36 2000  Tim Janik  <timj@gtk.org>
 
         * glib-genums.[hc]: enum/flags type implementation, based on
 	bseenum.[hc].
-
-	* glib-extra.[hc]: GLib additions, including 1.3 compatibility
-	routines and various other functions, from string manipulation
-	over list manipulation up to a unix signal GSource.
 
 	* glib-gtype.[hc]: GLib Type System implementation, heavily
 	based on BSE's dynamic type system.

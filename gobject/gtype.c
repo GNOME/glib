@@ -32,20 +32,26 @@
  * TODO:
  * - g_type_from_name() should do an ordered array lookup after fetching the
  *   the quark, instead of a second hashtable lookup.
+ * - speedup checks for virtual types, steal a bit somewhere
  *
  * FIXME:
  * - force interface initialization for already existing classes
+ * - make things threadsafe
  */
 
-#define G_TYPE_FLAG_MASK	(G_TYPE_FLAG_CLASSED | \
-				 G_TYPE_FLAG_INSTANTIATABLE | \
-				 G_TYPE_FLAG_DERIVABLE | \
-				 G_TYPE_FLAG_DEEP_DERIVABLE)
+#define TYPE_FUNDAMENTAL_FLAG_MASK (G_TYPE_FLAG_CLASSED | \
+				    G_TYPE_FLAG_INSTANTIATABLE | \
+				    G_TYPE_FLAG_DERIVABLE | \
+				    G_TYPE_FLAG_DEEP_DERIVABLE)
+#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT)
+
 #define	g_type_plugin_ref(p)				((p)->vtable->plugin_ref (p))
 #define g_type_plugin_unref(p)				((p)->vtable->plugin_unref (p))
 #define	g_type_plugin_complete_type_info(p,t,i,v)	((p)->vtable->complete_type_info ((p), (t), (i), (v)))
 #define	g_type_plugin_complete_interface_info(p,f,t,i)	((p)->vtable->complete_interface_info ((p), (f), (t), (i)))
 
+
+/* --- typedefs --- */
 typedef struct _TypeNode        TypeNode;
 typedef struct _CommonData      CommonData;
 typedef struct _IFaceData       IFaceData;
@@ -58,6 +64,8 @@ typedef struct _IFaceHolder	IFaceHolder;
 
 /* --- prototypes --- */
 static inline GTypeFundamentalInfo*	type_node_fundamental_info	(TypeNode		*node);
+static	      void			type_add_flags			(TypeNode		*node,
+									 GTypeFlags		 flags);
 static	      void			type_data_make			(TypeNode        	*node,
 									 const GTypeInfo	*info,
 									 const GTypeValueTable	*value_table);
@@ -69,6 +77,10 @@ static	      void			type_data_last_unref		(GType			 type,
 
 
 /* --- structures --- */
+struct _GValue	/* kludge, keep in sync with gvalue.h */
+{
+  GType g_type;
+};
 struct _TypeNode
 {
   GTypePlugin *plugin;
@@ -159,11 +171,12 @@ typedef struct {
 /* --- variables --- */
 static guint           n_class_cache_funcs = 0;
 static ClassCacheFunc *class_cache_funcs = NULL;
+static GType           last_fundamental_id = 0;
+static GQuark          quark_type_flags = 0;
 
 
 /* --- externs --- */
 const char  *g_log_domain_gobject = "GLib-Object";
-static GType last_fundamental_id = 0;
 
 
 /* --- type nodes --- */
@@ -187,11 +200,11 @@ LOOKUP_TYPE_NODE (register GType utype)
 #define NODE_NAME(node)         (g_quark_to_string (node->qname))
 
 static TypeNode*
-type_node_any_new (TypeNode    *pnode,
-		   GType        ftype,
-		   const gchar *name,
-		   GTypePlugin *plugin,
-		   GTypeFlags   type_flags)
+type_node_any_new (TypeNode              *pnode,
+		   GType                  ftype,
+		   const gchar           *name,
+		   GTypePlugin           *plugin,
+		   GTypeFundamentalFlags  type_flags)
 {
   guint branch_last, n_supers = pnode ? pnode->n_supers + 1 : 0;
   GType type;
@@ -204,11 +217,11 @@ type_node_any_new (TypeNode    *pnode,
     g_type_nodes[ftype] = g_renew (TypeNode*, g_type_nodes[ftype], 1 << g_bit_storage (g_branch_seqnos[ftype] - 1));
 
   if (!pnode)
-    node_size += sizeof (GTypeFundamentalInfo);	 /* fundamental type info */
-  node_size += SIZEOF_BASE_TYPE_NODE ();	 /* TypeNode structure */
+    node_size += sizeof (GTypeFundamentalInfo);	      /* fundamental type info */
+  node_size += SIZEOF_BASE_TYPE_NODE ();	      /* TypeNode structure */
   node_size += (sizeof (GType) * (1 + n_supers + 1)); /* self + ancestors + 0 for ->supers[] */
   node = g_malloc0 (node_size);
-  if (!pnode)					 /* fundamental type */
+  if (!pnode)					      /* offset fundamental types */
     node = G_STRUCT_MEMBER_P (node, sizeof (GTypeFundamentalInfo));
   g_type_nodes[ftype][branch_last] = node;
 
@@ -280,9 +293,9 @@ type_node_fundamental_info (TypeNode *node)
 }
 
 static TypeNode*
-type_node_fundamental_new (GType        ftype,
-			   const gchar *name,
-			   GTypeFlags   type_flags)
+type_node_fundamental_new (GType                 ftype,
+			   const gchar          *name,
+			   GTypeFundamentalFlags type_flags)
 {
   GTypeFundamentalInfo *finfo;
   TypeNode *node;
@@ -290,7 +303,7 @@ type_node_fundamental_new (GType        ftype,
   
   g_assert (ftype == G_TYPE_FUNDAMENTAL (ftype));
   
-  type_flags &= G_TYPE_FLAG_MASK;
+  type_flags &= TYPE_FUNDAMENTAL_FLAG_MASK;
 
   last_fundamental_id = MAX (last_fundamental_id, ftype + 1);
   if (last_fundamental_id > flast)
@@ -495,6 +508,7 @@ check_value_table (const gchar           *type_name,
   else if (value_table->value_init == NULL)
     {
       if (value_table->value_free || value_table->value_copy ||
+	  value_table->value_peek_pointer ||
 	  value_table->collect_type || value_table->collect_value ||
 	  value_table->lcopy_type || value_table->lcopy_value)
 	g_warning ("cannot handle uninitializable values of type `%s'",
@@ -696,6 +710,25 @@ check_interface_info (TypeNode             *iface,
 
 /* --- type info (type node data) --- */
 static void
+type_add_flags (TypeNode  *node,
+		GTypeFlags flags)
+{
+  guint dflags;
+
+  g_return_if_fail ((flags & ~TYPE_FLAG_MASK) == 0);
+  g_return_if_fail (node != NULL);
+
+  if (!quark_type_flags)
+    quark_type_flags = g_quark_from_static_string ("GTypeFlags");
+  if ((flags & G_TYPE_FLAG_ABSTRACT) && node->is_classed &&
+      node->data && node->data->class.class)
+    g_warning ("tagging type `%s' as abstract after class initialization", NODE_NAME (node));
+  dflags = GPOINTER_TO_UINT (g_type_get_qdata (NODE_TYPE (node), quark_type_flags));
+  dflags |= flags;
+  g_type_set_qdata (NODE_TYPE (node), quark_type_flags, GUINT_TO_POINTER (dflags));
+}
+
+static void
 type_data_make (TypeNode              *node,
 		const GTypeInfo       *info,
 		const GTypeValueTable *value_table)
@@ -856,10 +889,10 @@ type_node_add_iface_entry (TypeNode *node,
 }
 
 static void
-type_add_interface (TypeNode       *node,
-		    TypeNode       *iface,
-		    GInterfaceInfo *info,
-		    GTypePlugin    *plugin)
+type_add_interface (TypeNode             *node,
+		    TypeNode             *iface,
+		    const GInterfaceInfo *info,
+		    GTypePlugin          *plugin)
 {
   IFaceHolder *iholder = g_new0 (IFaceHolder, 1);
   
@@ -943,6 +976,12 @@ g_type_create_instance (GType type)
 		 type_descriptive_name (type));
       return NULL;
     }
+  if (G_TYPE_IS_ABSTRACT (type))
+    {
+      g_warning ("cannot create instance of abstract (non-instantiatable) type `%s'",
+		 type_descriptive_name (type));
+      return NULL;
+    }
   
   class = g_type_class_ref (type);
   
@@ -992,8 +1031,15 @@ g_type_free_instance (GTypeInstance *instance)
 		 type_descriptive_name (class->g_type));
       return;
     }
+  if (G_TYPE_IS_ABSTRACT (NODE_TYPE (node)))
+    {
+      g_warning ("cannot free instance of abstract (non-instantiatable) type `%s'",
+		 NODE_NAME (node));
+      return;
+    }
 
   instance->g_class = NULL;
+  memset (instance, 0xaa, node->data->instance.instance_size);	// FIXME
   if (node->data->instance.n_preallocs)
     g_chunk_free (instance, node->data->instance.mem_chunk);
   else
@@ -1282,7 +1328,8 @@ GType
 g_type_register_fundamental (GType                       type_id,
 			     const gchar                *type_name,
 			     const GTypeInfo            *info,
-			     const GTypeFundamentalInfo *finfo)
+			     const GTypeFundamentalInfo *finfo,
+			     GTypeFlags			 flags)
 {
   GTypeFundamentalInfo *node_finfo;
   TypeNode *node;
@@ -1318,6 +1365,7 @@ g_type_register_fundamental (GType                       type_id,
 
   node = type_node_fundamental_new (type_id, type_name, finfo->type_flags);
   node_finfo = type_node_fundamental_info (node);
+  type_add_flags (node, flags);
 
   if (!check_type_info (NULL, G_TYPE_FUNDAMENTAL (NODE_TYPE (node)), type_name, info))
     return NODE_TYPE (node);
@@ -1330,7 +1378,8 @@ g_type_register_fundamental (GType                       type_id,
 GType
 g_type_register_static (GType            parent_type,
 			const gchar     *type_name,
-			const GTypeInfo *info)
+			const GTypeInfo *info,
+			GTypeFlags	 flags)
 {
   TypeNode *pnode, *node;
   GType type;
@@ -1351,12 +1400,13 @@ g_type_register_static (GType            parent_type,
     return 0;
   if (info->class_finalize)
     {
-      g_warning ("class destructor specified for static type `%s'",
+      g_warning ("class finalizer specified for static type `%s'",
 		 type_name);
       return 0;
     }
 
   node = type_node_new (pnode, type_name, NULL);
+  type_add_flags (node, flags);
   type = NODE_TYPE (node);
   type_data_make (node, info,
 		  check_value_table (type_name, info->value_table) ? info->value_table : NULL);
@@ -1367,7 +1417,8 @@ g_type_register_static (GType            parent_type,
 GType
 g_type_register_dynamic (GType        parent_type,
 			 const gchar *type_name,
-			 GTypePlugin *plugin)
+			 GTypePlugin *plugin,
+			 GTypeFlags   flags)
 {
   TypeNode *pnode, *node;
   GType type;
@@ -1385,15 +1436,16 @@ g_type_register_dynamic (GType        parent_type,
   pnode = LOOKUP_TYPE_NODE (parent_type);
 
   node = type_node_new (pnode, type_name, plugin);
+  type_add_flags (node, flags);
   type = NODE_TYPE (node);
 
   return type;
 }
 
 void
-g_type_add_interface_static (GType           instance_type,
-			     GType           interface_type,
-			     GInterfaceInfo *info)
+g_type_add_interface_static (GType                 instance_type,
+			     GType                 interface_type,
+			     const GInterfaceInfo *info)
 {
   TypeNode *node;
   TypeNode *iface;
@@ -1674,11 +1726,7 @@ g_type_conforms_to (GType type,
 	}
     }
   else
-    {
-      TypeNode *node = LOOKUP_TYPE_NODE (type);
-
-      return node && (node->is_iface || node->is_instantiatable);
-    }
+    return LOOKUP_TYPE_NODE (type) != NULL;
 
   return FALSE;
 }
@@ -1839,20 +1887,34 @@ g_type_set_qdata (GType    type,
 
 /* --- implementation details --- */
 gboolean
-g_type_check_flags (GType      type,
-		    GTypeFlags flags)
+g_type_check_flags (GType type,
+		    guint flags)
 {
   TypeNode *node = LOOKUP_TYPE_NODE (type);
-  
-  flags &= G_TYPE_FLAG_MASK;
+  gboolean result = FALSE;
+
   if (node)
     {
-      GTypeFundamentalInfo *finfo = type_node_fundamental_info (node);
+      guint fflags = flags & TYPE_FUNDAMENTAL_FLAG_MASK;
+      guint tflags = flags & TYPE_FLAG_MASK;
+
+      if (fflags)
+	{
+	  GTypeFundamentalInfo *finfo = type_node_fundamental_info (node);
+	  
+	  fflags = (finfo->type_flags & fflags) == fflags;
+	}
+      else
+	fflags = TRUE;
       
-      return (finfo->type_flags & flags) != 0;
+      if (tflags)
+	tflags = (tflags & GPOINTER_TO_UINT (g_type_get_qdata (type, quark_type_flags))) == tflags;
+      else
+	tflags = TRUE;
+      
+      result = tflags && fflags;
     }
-  
-  return FALSE;
+  return result;
 }
 
 GTypePlugin*
@@ -1874,6 +1936,7 @@ g_type_instance_conforms_to (GTypeInstance *type_instance,
 			     GType          iface_type)
 {
   return (type_instance && type_instance->g_class &&
+	  G_TYPE_IS_INSTANTIATABLE (type_instance->g_class->g_type) &&
 	  g_type_conforms_to (type_instance->g_class->g_type, iface_type));
 }
 
@@ -1881,7 +1944,35 @@ gboolean
 g_type_class_is_a (GTypeClass *type_class,
 		   GType       is_a_type)
 {
-  return (type_class && g_type_is_a (type_class->g_type, is_a_type));
+  return (type_class && G_TYPE_IS_CLASSED (type_class->g_type) &&
+	  g_type_is_a (type_class->g_type, is_a_type));
+}
+
+gboolean
+g_type_value_conforms_to (GValue *value,
+			  GType   type)
+{
+  TypeNode *node;
+  
+  if (!value)
+    return FALSE;
+  node = LOOKUP_TYPE_NODE (value->g_type);
+#if 0
+  if (!G_TYPE_IS_FUNDAMENTAL (value->g_type) && !node || !node->data)
+    node = LOOKUP_TYPE_NODE (G_TYPE_FUNDAMENTAL (value->g_type));
+#endif
+  if (!node || !node->data || node->data->common.ref_count < 1 ||
+      !node->data->common.value_table->value_init ||
+      !g_type_conforms_to (value->g_type, type))
+    return FALSE;
+  
+  return TRUE;
+}
+
+gboolean
+g_type_check_value (GValue *value)
+{
+  return value && g_type_value_conforms_to (value, value->g_type);
 }
 
 GTypeInstance*
@@ -1900,9 +1991,9 @@ g_type_check_instance_cast (GTypeInstance *type_instance,
 		 type_descriptive_name (iface_type));
       return type_instance;
     }
-  if (!G_TYPE_IS_CLASSED (type_instance->g_class->g_type))
+  if (!G_TYPE_IS_INSTANTIATABLE (type_instance->g_class->g_type))
     {
-      g_warning ("invalid unclassed type `%s' in cast to `%s'",
+      g_warning ("invalid uninstantiatable type `%s' in cast to `%s'",
 		 type_descriptive_name (type_instance->g_class->g_type),
 		 type_descriptive_name (iface_type));
       return type_instance;
@@ -1946,13 +2037,47 @@ g_type_check_class_cast (GTypeClass *type_class,
   return type_class;
 }
 
+gboolean
+g_type_check_instance (GTypeInstance *type_instance)
+{
+  /* this function is just here to make the signal system
+   * conveniently elaborated on instance checks
+   */
+  if (!type_instance)
+    {
+      g_warning ("instance is invalid (NULL) pointer");
+      return FALSE;
+    }
+  if (!type_instance->g_class)
+    {
+      g_warning ("instance with invalid (NULL) class pointer");
+      return FALSE;
+    }
+  if (!G_TYPE_IS_CLASSED (type_instance->g_class->g_type))
+    {
+      g_warning ("instance of invalid unclassed type `%s'",
+		 type_descriptive_name (type_instance->g_class->g_type));
+      return FALSE;
+    }
+  if (!G_TYPE_IS_INSTANTIATABLE (type_instance->g_class->g_type))
+    {
+      g_warning ("instance of invalid non-instantiatable type `%s'",
+		 type_descriptive_name (type_instance->g_class->g_type));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 
 /* --- foreign prototypes --- */
 extern void	g_value_types_init	(void); /* sync with gvaluetypes.c */
 extern void	g_enum_types_init	(void);	/* sync with genums.c */
 extern void     g_param_type_init       (void);	/* sync with gparam.c */
+extern void     g_boxed_type_init       (void);	/* sync with gboxed.c */
 extern void     g_object_type_init      (void);	/* sync with gobject.c */
 extern void	g_param_spec_types_init	(void);	/* sync with gparamspecs.c */
+extern void	g_signal_init		(void);	/* sync with gsignal.c */
 
 
 /* --- initialization --- */
@@ -2004,6 +2129,10 @@ g_type_init (void)
    */
   g_param_type_init ();
 
+  /* G_TYPE_PARAM
+   */
+  g_boxed_type_init ();
+
   /* G_TYPE_OBJECT
    */
   g_object_type_init ();
@@ -2011,4 +2140,8 @@ g_type_init (void)
   /* G_TYPE_PARAM_* pspec types
    */
   g_param_spec_types_init ();
+
+  /* Signal system
+   */
+  g_signal_init ();
 }

@@ -31,8 +31,9 @@ extern "C" {
 
 /* --- type macros --- */
 #define	G_TYPE_IS_VALUE(type)		(g_type_value_table_peek (type) != NULL)
-#define	G_IS_VALUE(value)		(G_TYPE_IS_VALUE (G_VALUE_TYPE (value))) /* FIXME */
-#define	G_VALUE_TYPE(value)		(G_TYPE_FROM_CLASS (value))
+#define	G_IS_VALUE(value)		(G_TYPE_CHECK_VALUE (value))
+#define	G_VALUE_HOLDS(value, g_type)	(G_TYPE_CHECK_VALUE_TYPE ((value), (g_type)))
+#define	G_VALUE_TYPE(value)		(((GValue*) (value))->g_type)
 #define	G_VALUE_TYPE_NAME(value)	(g_type_name (G_VALUE_TYPE (value)))
 
 
@@ -66,6 +67,8 @@ gboolean	g_value_convert		(const GValue *src_value,
 					 GValue       *dest_value);
 void            g_value_reset   	(GValue       *value);
 void            g_value_unset   	(GValue       *value);
+gboolean	g_value_fits_pointer	(const GValue *value);
+gpointer	g_value_get_as_pointer	(const GValue *value);
 
 
 /* --- implementation details --- */

@@ -98,6 +98,14 @@ If @mem is NULL it simply returns.
 @mem: the memory to free.
 
 
+<!-- ##### MACRO g_alloca ##### -->
+<para>
+
+</para>
+
+@size: 
+
+
 <!-- ##### MACRO g_memmove ##### -->
 <para>
 Copies a block of memory @n bytes long, from @s to @d.

@@ -471,7 +471,7 @@ g_log_default_handler (const gchar    *log_domain,
    */
   fd = stdout;
 #else
-  fd = (log_level >= G_LOG_LEVEL_MESSAGE) ? 1 : 2;
+  fd = (log_level > G_LOG_LEVEL_MESSAGE) ? 1 : 2;
 #endif
   
   g_mutex_lock (g_messages_lock);

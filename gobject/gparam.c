@@ -63,7 +63,7 @@ g_param_type_init (void)	/* sync with gtype.c */
   };
   GType type;
 
-  type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &param_spec_info, &finfo);
+  type = g_type_register_fundamental (G_TYPE_PARAM, "GParam", &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
 }
 
@@ -379,4 +379,92 @@ g_param_spec_hash_table_lookup (GHashTable   *hash_table,
   g_free (key.name);
   
   return pspec;
+}
+
+
+/* --- auxillary functions --- */
+typedef struct
+{
+  /* class portion */
+  GType           value_type;
+  void          (*finalize)             (GParamSpec   *pspec);
+  void          (*value_set_default)    (GParamSpec   *pspec,
+					 GValue       *value);
+  gboolean      (*value_validate)       (GParamSpec   *pspec,
+					 GValue       *value);
+  gint          (*values_cmp)           (GParamSpec   *pspec,
+					 const GValue *value1,
+					 const GValue *value2);
+} ParamSpecClassInfo;
+
+static void
+param_spec_generic_class_init (gpointer g_class,
+			       gpointer class_data)
+{
+  GParamSpecClass *class = g_class;
+  ParamSpecClassInfo *info = class_data;
+
+  class->value_type = info->value_type;
+  if (info->finalize)
+    class->finalize = info->finalize;			/* optional */
+  class->value_set_default = info->value_set_default;
+  if (info->value_validate)
+    class->value_validate = info->value_validate;	/* optional */
+  class->values_cmp = info->values_cmp;
+  g_free (class_data);
+}
+
+static void
+default_value_set_default (GParamSpec *pspec,
+			   GValue     *value)
+{
+  /* value is already zero initialized */
+}
+
+static gint
+default_values_cmp (GParamSpec   *pspec,
+		    const GValue *value1,
+		    const GValue *value2)
+{
+  return memcmp (&value1->data, &value2->data, sizeof (value1->data));
+}
+
+GType
+g_param_type_register_static (const gchar              *name,
+			      const GParamSpecTypeInfo *pspec_info)
+{
+  GTypeInfo info = {
+    sizeof (GParamSpecClass),      /* class_size */
+    NULL,                          /* base_init */
+    NULL,                          /* base_destroy */
+    param_spec_generic_class_init, /* class_init */
+    NULL,                          /* class_destroy */
+    NULL,                          /* class_data */
+    0,                             /* instance_size */
+    16,                            /* n_preallocs */
+    NULL,                          /* instance_init */
+  };
+  ParamSpecClassInfo *cinfo;
+
+  g_return_val_if_fail (name != NULL, 0);
+  g_return_val_if_fail (pspec_info != NULL, 0);
+  g_return_val_if_fail (g_type_from_name (name) == 0, 0);
+  g_return_val_if_fail (pspec_info->instance_size >= sizeof (GParamSpec), 0);
+  g_return_val_if_fail (g_type_name (pspec_info->value_type) != NULL, 0);
+  /* default: g_return_val_if_fail (pspec_info->value_set_default != NULL, 0); */
+  /* optional: g_return_val_if_fail (pspec_info->value_validate != NULL, 0); */
+  /* default: g_return_val_if_fail (pspec_info->values_cmp != NULL, 0); */
+
+  info.instance_size = pspec_info->instance_size;
+  info.n_preallocs = pspec_info->n_preallocs;
+  info.instance_init = (GInstanceInitFunc) pspec_info->instance_init;
+  cinfo = g_new (ParamSpecClassInfo, 1);
+  cinfo->value_type = pspec_info->value_type;
+  cinfo->finalize = pspec_info->finalize;
+  cinfo->value_set_default = pspec_info->value_set_default ? pspec_info->value_set_default : default_value_set_default;
+  cinfo->value_validate = pspec_info->value_validate;
+  cinfo->values_cmp = pspec_info->values_cmp ? pspec_info->values_cmp : default_values_cmp;
+  info.class_data = cinfo;
+
+  return g_type_register_static (G_TYPE_PARAM, name, &info, 0);
 }

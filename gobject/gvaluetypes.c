@@ -260,6 +260,54 @@ value_string_lcopy_value (const GValue *value,
   return NULL;
 }
 
+static void
+value_pointer_init (GValue *value)
+{
+  value->data[0].v_pointer = 0;
+}
+
+static void
+value_pointer_copy (const GValue *src_value,
+		    GValue       *dest_value)
+{
+  dest_value->data[0].v_pointer = src_value->data[0].v_pointer;
+}
+
+static gpointer
+value_pointer_peek_pointer (const GValue *value)
+{
+  return value->data[0].v_pointer;
+}
+
+static gchar*
+value_pointer_collect_value (GValue      *value,
+			     guint        nth_value,
+			     GType       *collect_type,
+			     GTypeCValue *collect_value)
+{
+  value->data[0].v_pointer = collect_value->v_pointer;
+
+  *collect_type = 0;
+  return NULL;
+}
+
+static gchar*
+value_pointer_lcopy_value (const GValue *value,
+			   guint         nth_value,
+			   GType        *collect_type,
+			   GTypeCValue  *collect_value)
+{
+  gpointer *pointer_p = collect_value->v_pointer;
+
+  if (!pointer_p)
+    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+
+  *pointer_p = value->data[0].v_pointer;
+
+  *collect_type = 0;
+  return NULL;
+}
+
 
 /* --- type initialization --- */
 void
@@ -287,15 +335,16 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_long0_init,		/* value_init */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
+      NULL,			/* value_peek_pointer */
       G_VALUE_COLLECT_INT,	/* collect_type */
       value_int_collect_value,	/* collect_value */
       G_VALUE_COLLECT_POINTER,	/* lcopy_type */
       value_char_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_CHAR, "gchar", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_CHAR, "gchar", &info, &finfo, 0);
     g_assert (type == G_TYPE_CHAR);
-    type = g_type_register_fundamental (G_TYPE_UCHAR, "guchar", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_UCHAR, "guchar", &info, &finfo, 0);
     g_assert (type == G_TYPE_UCHAR);
   }
 
@@ -306,13 +355,14 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_long0_init,		 /* value_init */
       NULL,			 /* value_free */
       value_long0_copy,		 /* value_copy */
+      NULL,                      /* value_peek_pointer */
       G_VALUE_COLLECT_INT,	 /* collect_type */
       value_int_collect_value,	 /* collect_value */
       G_VALUE_COLLECT_POINTER,	 /* lcopy_type */
       value_boolean_lcopy_value, /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_BOOLEAN, "gboolean", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_BOOLEAN, "gboolean", &info, &finfo, 0);
     g_assert (type == G_TYPE_BOOLEAN);
   }
   
@@ -323,15 +373,16 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_long0_init,		/* value_init */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
+      NULL,                     /* value_peek_pointer */
       G_VALUE_COLLECT_INT,	/* collect_type */
       value_int_collect_value,	/* collect_value */
       G_VALUE_COLLECT_POINTER,	/* lcopy_type */
       value_int_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_INT, "gint", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_INT, "gint", &info, &finfo, 0);
     g_assert (type == G_TYPE_INT);
-    type = g_type_register_fundamental (G_TYPE_UINT, "guint", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_UINT, "guint", &info, &finfo, 0);
     g_assert (type == G_TYPE_UINT);
   }
 
@@ -342,15 +393,16 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_long0_init,		/* value_init */
       NULL,			/* value_free */
       value_long0_copy,		/* value_copy */
+      NULL,                     /* value_peek_pointer */
       G_VALUE_COLLECT_LONG,	/* collect_type */
       value_long_collect_value,	/* collect_value */
       G_VALUE_COLLECT_POINTER,	/* lcopy_type */
       value_long_lcopy_value,	/* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_LONG, "glong", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_LONG, "glong", &info, &finfo, 0);
     g_assert (type == G_TYPE_LONG);
-    type = g_type_register_fundamental (G_TYPE_ULONG, "gulong", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_ULONG, "gulong", &info, &finfo, 0);
     g_assert (type == G_TYPE_ULONG);
   }
   
@@ -361,13 +413,14 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_float_init,		 /* value_init */
       NULL,			 /* value_free */
       value_float_copy,		 /* value_copy */
+      NULL,                      /* value_peek_pointer */
       G_VALUE_COLLECT_DOUBLE,	 /* collect_type */
       value_float_collect_value, /* collect_value */
       G_VALUE_COLLECT_POINTER,	 /* lcopy_type */
       value_float_lcopy_value,	 /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_FLOAT, "gfloat", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_FLOAT, "gfloat", &info, &finfo, 0);
     g_assert (type == G_TYPE_FLOAT);
   }
   
@@ -378,13 +431,14 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_double_init,	  /* value_init */
       NULL,			  /* value_free */
       value_double_copy,	  /* value_copy */
+      NULL,                       /* value_peek_pointer */
       G_VALUE_COLLECT_DOUBLE,	  /* collect_type */
       value_double_collect_value, /* collect_value */
       G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
       value_double_lcopy_value,	  /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_DOUBLE, "gdouble", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_DOUBLE, "gdouble", &info, &finfo, 0);
     g_assert (type == G_TYPE_DOUBLE);
   }
 
@@ -395,14 +449,33 @@ g_value_types_init (void)  /* sync with gtype.c */
       value_string_init,	  /* value_init */
       value_string_free_value,	  /* value_free */
       value_string_copy_value,	  /* value_copy */
+      value_pointer_peek_pointer, /* value_peek_pointer */
       G_VALUE_COLLECT_POINTER,	  /* collect_type */
       value_string_collect_value, /* collect_value */
       G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
       value_string_lcopy_value,	  /* lcopy_value */
     };
     info.value_table = &value_table;
-    type = g_type_register_fundamental (G_TYPE_STRING, "gstring", &info, &finfo);
+    type = g_type_register_fundamental (G_TYPE_STRING, "gstring", &info, &finfo, 0);
     g_assert (type == G_TYPE_STRING);
+  }
+
+  /* G_TYPE_POINTER
+   */
+  {
+    static const GTypeValueTable value_table = {
+      value_pointer_init,          /* value_init */
+      NULL,                        /* value_free */
+      value_pointer_copy,          /* value_copy */
+      value_pointer_peek_pointer,  /* value_peek_pointer */
+      G_VALUE_COLLECT_POINTER,     /* collect_type */
+      value_pointer_collect_value, /* collect_value */
+      G_VALUE_COLLECT_POINTER,     /* lcopy_type */
+      value_pointer_lcopy_value,   /* lcopy_value */
+    };
+    info.value_table = &value_table;
+    type = g_type_register_fundamental (G_TYPE_POINTER, "gpointer", &info, &finfo, 0);
+    g_assert (type == G_TYPE_POINTER);
   }
 }
 
@@ -418,7 +491,7 @@ g_value_set_char (GValue *value,
 }
 
 gint8
-g_value_get_char (GValue *value)
+g_value_get_char (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_CHAR (value), 0);
   
@@ -435,7 +508,7 @@ g_value_set_uchar (GValue *value,
 }
 
 guint8
-g_value_get_uchar (GValue *value)
+g_value_get_uchar (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_UCHAR (value), 0);
   
@@ -452,7 +525,7 @@ g_value_set_boolean (GValue  *value,
 }
 
 gboolean
-g_value_get_boolean (GValue *value)
+g_value_get_boolean (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_BOOLEAN (value), 0);
   
@@ -469,7 +542,7 @@ g_value_set_int (GValue *value,
 }
 
 gint
-g_value_get_int (GValue *value)
+g_value_get_int (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_INT (value), 0);
   
@@ -486,7 +559,7 @@ g_value_set_uint (GValue *value,
 }
 
 guint
-g_value_get_uint (GValue *value)
+g_value_get_uint (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_UINT (value), 0);
   
@@ -503,7 +576,7 @@ g_value_set_long (GValue *value,
 }
 
 glong
-g_value_get_long (GValue *value)
+g_value_get_long (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_LONG (value), 0);
   
@@ -520,7 +593,7 @@ g_value_set_ulong (GValue *value,
 }
 
 gulong
-g_value_get_ulong (GValue *value)
+g_value_get_ulong (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_ULONG (value), 0);
   
@@ -537,7 +610,7 @@ g_value_set_float (GValue *value,
 }
 
 gfloat
-g_value_get_float (GValue *value)
+g_value_get_float (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_FLOAT (value), 0);
   
@@ -554,7 +627,7 @@ g_value_set_double (GValue *value,
 }
 
 gdouble
-g_value_get_double (GValue *value)
+g_value_get_double (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_DOUBLE (value), 0);
   
@@ -572,7 +645,7 @@ g_value_set_string (GValue	*value,
 }
 
 gchar*
-g_value_get_string (GValue *value)
+g_value_get_string (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_STRING (value), NULL);
   
@@ -580,9 +653,26 @@ g_value_get_string (GValue *value)
 }
 
 gchar*
-g_value_dup_string (GValue *value)
+g_value_dup_string (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_STRING (value), NULL);
   
   return g_strdup (value->data[0].v_pointer);
+}
+
+void
+g_value_set_pointer (GValue  *value,
+		     gpointer v_pointer)
+{
+  g_return_if_fail (G_IS_VALUE_POINTER (value));
+
+  value->data[0].v_pointer = v_pointer;
+}
+
+gpointer
+g_value_get_pointer (GValue *value)
+{
+  g_return_val_if_fail (G_IS_VALUE_POINTER (value), NULL);
+
+  return value->data[0].v_pointer;
 }

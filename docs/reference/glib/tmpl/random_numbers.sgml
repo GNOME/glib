@@ -40,22 +40,107 @@ produce highly random lower bits too, but it is common not to rely on
 that, so choosing @a to be from 4 to 31 might be wise.
 </para>
 
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT GRand ##### -->
 <para>
 The #GRand struct is an opaque data structure. It should only be
 accessed through the g_rand_* functions.
 </para>
 
+
 <!-- ##### FUNCTION g_rand_new_with_seed ##### -->
+
+
+@seed: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_new ##### -->
+
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_free ##### -->
+
+
+@rand: 
+
+
 <!-- ##### FUNCTION g_rand_set_seed ##### -->
+
+
+@rand: 
+@seed: 
+
+
 <!-- ##### FUNCTION g_rand_int ##### -->
+
+
+@rand: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_int_range ##### -->
+
+
+@rand: 
+@min: 
+@max: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_double ##### -->
+
+
+@rand: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_rand_double_range ##### -->
+
+
+@rand: 
+@min: 
+@max: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_random_set_seed ##### -->
+
+
+@seed: 
+
+
 <!-- ##### FUNCTION g_random_int ##### -->
+
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_random_int_range ##### -->
+
+
+@min: 
+@max: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_random_double ##### -->
+
+
+@Returns: 
+
+
 <!-- ##### FUNCTION g_random_double_range ##### -->
+
+
+@min: 
+@max: 
+@Returns: 
+
+

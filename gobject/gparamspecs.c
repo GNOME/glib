@@ -20,7 +20,7 @@
 
 #include	"gvaluecollector.h"
 #include	<string.h>
-#include	"config.h"	/* for SIZEOF_LONG */
+#include	"../config.h"	/* for SIZEOF_LONG */
 
 #define	G_FLOAT_EPSILON		(1e-30)
 #define	G_DOUBLE_EPSILON	(1e-90)
@@ -710,272 +710,229 @@ value_exch_double_float (GValue *value1,
 
 
 /* --- type initialization --- */
-typedef struct {
-  GType           value_type;
-  void		(*finalize)		(GParamSpec   *pspec);
-  void          (*value_set_default)    (GParamSpec   *pspec,
-					 GValue       *value);
-  gboolean      (*value_validate)       (GParamSpec   *pspec,
-					 GValue       *value);
-  gint          (*values_cmp)           (GParamSpec   *pspec,
-					 const GValue *value1,
-					 const GValue *value2);
-} ParamSpecClassInfo;
-
-static void
-param_spec_class_init (gpointer g_class,
-		       gpointer class_data)
-{
-  GParamSpecClass *class = g_class;
-  ParamSpecClassInfo *info = class_data;
-
-  g_assert (info->value_type && !G_TYPE_IS_PARAM (info->value_type));
-
-  class->value_type = info->value_type;
-  if (info->finalize)
-    class->finalize = info->finalize;
-  if (info->value_set_default)
-    class->value_set_default = info->value_set_default;
-  if (info->value_validate)
-    class->value_validate = info->value_validate;
-  if (info->values_cmp)
-    class->values_cmp = info->values_cmp;
-}
-
 void
 g_param_spec_types_init (void)	/* sync with gtype.c */
 {
-  GTypeInfo info = {
-    sizeof (GParamSpecClass),	/* class_size */
-    NULL,			/* base_init */
-    NULL,			/* base_destroy */
-    param_spec_class_init,	/* class_init */
-    NULL,			/* class_destroy */
-    NULL,			/* class_data */
-    0,				/* instance_size */
-    16,				/* n_preallocs */
-    NULL,			/* instance_init */
-  };
   GType type;
   
   /* G_TYPE_PARAM_CHAR
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecChar),	/* instance_size */
+      16,			/* n_preallocs */
+      param_spec_char_init,	/* instance_init */
       G_TYPE_CHAR,		/* value_type */
       NULL,			/* finalize */
       param_char_set_default,	/* value_set_default */
       param_char_validate,	/* value_validate */
       param_int_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecChar);
-    info.instance_init = (GInstanceInitFunc) param_spec_char_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamChar", &info);
+    type = g_param_type_register_static ("GParamChar", &pspec_info);
     g_assert (type == G_TYPE_PARAM_CHAR);
   }
   
   /* G_TYPE_PARAM_UCHAR
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecUChar), /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_uchar_init,    /* instance_init */
       G_TYPE_UCHAR,		/* value_type */
       NULL,			/* finalize */
       param_uchar_set_default,	/* value_set_default */
       param_uchar_validate,	/* value_validate */
       param_uint_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecUChar);
-    info.instance_init = (GInstanceInitFunc) param_spec_uchar_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamUChar", &info);
+    type = g_param_type_register_static ("GParamUChar", &pspec_info);
     g_assert (type == G_TYPE_PARAM_UCHAR);
   }
   
   /* G_TYPE_PARAM_BOOLEAN
    */
   {
-    static const ParamSpecClassInfo class_info = {
-      G_TYPE_BOOLEAN,            /* value_type */
-      NULL,                      /* finalize */
-      param_boolean_set_default, /* value_set_default */
-      param_boolean_validate,    /* value_validate */
-      param_int_values_cmp,      /* values_cmp */
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecBoolean), /* instance_size */
+      16,                         /* n_preallocs */
+      NULL,			  /* instance_init */
+      G_TYPE_BOOLEAN,             /* value_type */
+      NULL,                       /* finalize */
+      param_boolean_set_default,  /* value_set_default */
+      param_boolean_validate,     /* value_validate */
+      param_int_values_cmp,       /* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecBoolean);
-    info.instance_init = (GInstanceInitFunc) NULL;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamBoolean", &info);
+    type = g_param_type_register_static ("GParamBoolean", &pspec_info);
     g_assert (type == G_TYPE_PARAM_BOOLEAN);
   }
   
   /* G_TYPE_PARAM_INT
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecInt),   /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_int_init,      /* instance_init */
       G_TYPE_INT,		/* value_type */
       NULL,			/* finalize */
       param_int_set_default,	/* value_set_default */
       param_int_validate,	/* value_validate */
       param_int_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecInt);
-    info.instance_init = (GInstanceInitFunc) param_spec_int_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamInt", &info);
+    type = g_param_type_register_static ("GParamInt", &pspec_info);
     g_assert (type == G_TYPE_PARAM_INT);
   }
   
   /* G_TYPE_PARAM_UINT
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecUInt),  /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_uint_init,     /* instance_init */
       G_TYPE_UINT,		/* value_type */
       NULL,			/* finalize */
       param_uint_set_default,	/* value_set_default */
       param_uint_validate,	/* value_validate */
       param_uint_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecUInt);
-    info.instance_init = (GInstanceInitFunc) param_spec_uint_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamUInt", &info);
+    type = g_param_type_register_static ("GParamUInt", &pspec_info);
     g_assert (type == G_TYPE_PARAM_UINT);
   }
   
   /* G_TYPE_PARAM_LONG
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecLong),  /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_long_init,     /* instance_init */
       G_TYPE_LONG,		/* value_type */
       NULL,			/* finalize */
       param_long_set_default,	/* value_set_default */
       param_long_validate,	/* value_validate */
       param_long_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecLong);
-    info.instance_init = (GInstanceInitFunc) param_spec_long_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamLong", &info);
+    type = g_param_type_register_static ("GParamLong", &pspec_info);
     g_assert (type == G_TYPE_PARAM_LONG);
   }
   
   /* G_TYPE_PARAM_ULONG
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecULong), /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_ulong_init,    /* instance_init */
       G_TYPE_ULONG,		/* value_type */
       NULL,			/* finalize */
       param_ulong_set_default,	/* value_set_default */
       param_ulong_validate,	/* value_validate */
       param_ulong_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecULong);
-    info.instance_init = (GInstanceInitFunc) param_spec_ulong_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamULong", &info);
+    type = g_param_type_register_static ("GParamULong", &pspec_info);
     g_assert (type == G_TYPE_PARAM_ULONG);
   }
   
   /* G_TYPE_PARAM_ENUM
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecEnum),  /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_enum_init,     /* instance_init */
       G_TYPE_ENUM,		/* value_type */
       param_spec_enum_finalize,	/* finalize */
       param_enum_set_default,	/* value_set_default */
       param_enum_validate,	/* value_validate */
       param_long_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecEnum);
-    info.instance_init = (GInstanceInitFunc) param_spec_enum_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamEnum", &info);
+    type = g_param_type_register_static ("GParamEnum", &pspec_info);
     g_assert (type == G_TYPE_PARAM_ENUM);
   }
   
   /* G_TYPE_PARAM_FLAGS
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecFlags), /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_flags_init,    /* instance_init */
       G_TYPE_FLAGS,		/* value_type */
       param_spec_flags_finalize,/* finalize */
       param_flags_set_default,	/* value_set_default */
       param_flags_validate,	/* value_validate */
       param_ulong_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecFlags);
-    info.instance_init = (GInstanceInitFunc) param_spec_flags_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamFlags", &info);
+    type = g_param_type_register_static ("GParamFlags", &pspec_info);
     g_assert (type == G_TYPE_PARAM_FLAGS);
   }
   
   /* G_TYPE_PARAM_FLOAT
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecFloat), /* instance_size */
+      16,                       /* n_preallocs */
+      param_spec_float_init,    /* instance_init */
       G_TYPE_FLOAT,		/* value_type */
       NULL,			/* finalize */
       param_float_set_default,	/* value_set_default */
       param_float_validate,	/* value_validate */
       param_float_values_cmp,	/* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecFloat);
-    info.instance_init = (GInstanceInitFunc) param_spec_float_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamFloat", &info);
+    type = g_param_type_register_static ("GParamFloat", &pspec_info);
     g_assert (type == G_TYPE_PARAM_FLOAT);
   }
   
   /* G_TYPE_PARAM_DOUBLE
    */
   {
-    static const ParamSpecClassInfo class_info = {
-      G_TYPE_DOUBLE,		/* value_type */
-      NULL,			/* finalize */
-      param_double_set_default,	/* value_set_default */
-      param_double_validate,	/* value_validate */
-      param_double_values_cmp,	/* values_cmp */
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecDouble), /* instance_size */
+      16,                        /* n_preallocs */
+      param_spec_double_init,    /* instance_init */
+      G_TYPE_DOUBLE,		 /* value_type */
+      NULL,			 /* finalize */
+      param_double_set_default,	 /* value_set_default */
+      param_double_validate,	 /* value_validate */
+      param_double_values_cmp,	 /* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecDouble);
-    info.instance_init = (GInstanceInitFunc) param_spec_double_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamDouble", &info);
+    type = g_param_type_register_static ("GParamDouble", &pspec_info);
     g_assert (type == G_TYPE_PARAM_DOUBLE);
   }
   
   /* G_TYPE_PARAM_STRING
    */
   {
-    static const ParamSpecClassInfo class_info = {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecString),  /* instance_size */
+      16,			  /* n_preallocs */
+      param_spec_string_init,	  /* instance_init */
       G_TYPE_STRING,		  /* value_type */
       param_spec_string_finalize, /* finalize */
       param_string_set_default,	  /* value_set_default */
       param_string_validate,	  /* value_validate */
       param_string_values_cmp,	  /* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecString);
-    info.instance_init = (GInstanceInitFunc) param_spec_string_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamString", &info);
+    type = g_param_type_register_static ("GParamString", &pspec_info);
     g_assert (type == G_TYPE_PARAM_STRING);
   }
   
   /* G_TYPE_PARAM_OBJECT
    */
   {
-    static const ParamSpecClassInfo class_info = {
-      G_TYPE_OBJECT,		/* value_type */
-      NULL,			/* finalize */
-      param_object_set_default,	/* value_set_default */
-      param_object_validate,	/* value_validate */
-      param_object_values_cmp,	/* values_cmp */
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecObject), /* instance_size */
+      16,                        /* n_preallocs */
+      param_spec_object_init,    /* instance_init */
+      G_TYPE_OBJECT,		 /* value_type */
+      NULL,			 /* finalize */
+      param_object_set_default,	 /* value_set_default */
+      param_object_validate,	 /* value_validate */
+      param_object_values_cmp,	 /* values_cmp */
     };
-    info.class_data = &class_info;
-    info.instance_size = sizeof (GParamSpecObject);
-    info.instance_init = (GInstanceInitFunc) param_spec_object_init;
-    type = g_type_register_static (G_TYPE_PARAM, "GParamObject", &info);
+    type = g_param_type_register_static ("GParamObject", &pspec_info);
     g_assert (type == G_TYPE_PARAM_OBJECT);
   }
   

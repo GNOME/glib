@@ -80,9 +80,9 @@ GType
 @G_TYPE_DOUBLE: 
 @G_TYPE_STRING: 
 @G_TYPE_PARAM: 
+@G_TYPE_BOXED: 
+@G_TYPE_POINTER: 
 @G_TYPE_OBJECT: 
-@G_TYPE_GTK_BOXED: 
-@G_TYPE_GTK_POINTER: 
 @G_TYPE_GTK_SIGNAL: 
 @G_TYPE_BSE_PROCEDURE: 
 @G_TYPE_BSE_TIME: 
@@ -213,6 +213,7 @@ GType
 @value_init: 
 @value_free: 
 @value_copy: 
+@value_peek_pointer: 
 @collect_type: 
 @collect_value: 
 @lcopy_type: 
@@ -571,10 +572,7 @@ GType
 
 </para>
 
-@G_TYPE_FLAG_CLASSED: 
-@G_TYPE_FLAG_INSTANTIATABLE: 
-@G_TYPE_FLAG_DERIVABLE: 
-@G_TYPE_FLAG_DEEP_DERIVABLE: 
+@G_TYPE_FLAG_ABSTRACT: 
 
 <!-- ##### FUNCTION g_type_register_static ##### -->
 <para>
@@ -584,6 +582,7 @@ GType
 @parent_type: 
 @type_name: 
 @info: 
+@flags: 
 @Returns: 
 
 
@@ -595,6 +594,7 @@ GType
 @parent_type: 
 @type_name: 
 @plugin: 
+@flags: 
 @Returns: 
 
 
@@ -607,6 +607,7 @@ GType
 @type_name: 
 @info: 
 @finfo: 
+@flags: 
 @Returns: 
 
 

@@ -113,6 +113,30 @@ gint		g_param_values_cmp		(GParamSpec    *pspec,
 						 const GValue  *value2);
 
 
+/* --- convenience functions --- */
+typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
+struct _GParamSpecTypeInfo
+{
+  /* type system portion */
+  guint16         instance_size;                               /* obligatory */
+  guint16         n_preallocs;                                 /* optional */
+  void		(*instance_init)	(GParamSpec   *pspec); /* optional */
+
+  /* class portion */
+  GType           value_type;				       /* obligatory */
+  void          (*finalize)             (GParamSpec   *pspec); /* optional */
+  void          (*value_set_default)    (GParamSpec   *pspec,  /* recommended */
+					 GValue       *value);
+  gboolean      (*value_validate)       (GParamSpec   *pspec,  /* optional */
+					 GValue       *value);
+  gint          (*values_cmp)           (GParamSpec   *pspec,  /* recommended */
+					 const GValue *value1,
+					 const GValue *value2);
+};
+GType	g_param_type_register_static	(const gchar		  *name,
+					 const GParamSpecTypeInfo *pspec_info);
+
+
 /* --- private --- */
 gpointer	g_param_spec_internal		(GType	        param_type,
 						 const gchar   *name,
@@ -134,44 +158,18 @@ GParamSpec*	g_param_spec_hash_table_lookup	(GHashTable    *hash_table,
 
 /* contracts:
  *
- * +++ OUTDATED +++
- *
- * class functions may not evaluate param->pspec directly,
- * instead, pspec will be passed as argument if required.
- *
- * void	param_init (GParam *param, GParamSpec *pspec):
- *	initialize param's value to default if pspec is given,
- *	and to zero-equivalent (a value that doesn't need to be
- *	free()ed later on) otherwise.
- *
- * void param_free_value (GParam *param):
- *	free param's value if required, zero-reinitialization
- *	of the value is not required. (this class function
- *	may be NULL for param types that don't need to free
- *	values, such as ints or floats).
- *
- * gboolean param_validate (GParam *param, GParamSpec *pspec):
- *	modify param's value in the least destructive way, so
+ * gboolean value_validate (GParamSpec *pspec,
+ *                          GValue     *value):
+ *	modify value contents in the least destructive way, so
  *	that it complies with pspec's requirements (i.e.
  *	according to minimum/maximum ranges etc...). return
  *	whether modification was necessary.
  *
- * gint param_values_cmp (GParam *param1, GParam *param2, GParamSpec*):
- *	return param1 - param2, i.e. <0 if param1 < param2,
- *	>0 if param1 > param2, and 0 if they are equal
- *	(passing pspec is optional, but recommended)
- *
- * void param_copy_value (GParam *param_src, GParam *param_dest):
- *	copy value from param_src to param_dest, param_dest is
- *	already free()d and zero-initialized, so its value can
- *	simply be overwritten. (may be NULL for memcpy)
- *
- * gchar* param_collect_value ():
- *	class function may be NULL.
- *
- * gchar* param_lcopy_value ():
- *	class function may be NULL.
- *
+ * gint values_cmp (GParamSpec   *pspec,
+ *                  const GValue *value1,
+ *                  const GValue *value2):
+ *	return value1 - value2, i.e. <0 if value1 < value2,
+ *	>0 if value1 > value2, and 0 otherwise (they are equal)
  */
 
 #ifdef __cplusplus

@@ -61,11 +61,13 @@ void
 g_value_copy (const GValue *src_value,
 	      GValue       *dest_value)
 {
-  GTypeValueTable *value_table = g_type_value_table_peek (G_VALUE_TYPE (dest_value));
+  GTypeValueTable *value_table;
   
   g_return_if_fail (G_IS_VALUE (src_value));
   g_return_if_fail (G_IS_VALUE (dest_value));
   g_return_if_fail (g_type_is_a (G_VALUE_TYPE (src_value), G_VALUE_TYPE (dest_value)));
+
+  value_table = g_type_value_table_peek (G_VALUE_TYPE (dest_value));
   if (!value_table)
     g_return_if_fail (g_type_value_table_peek (G_VALUE_TYPE (dest_value)) != NULL);
   
@@ -76,6 +78,36 @@ g_value_copy (const GValue *src_value,
       
       value_table->value_copy (src_value, dest_value);
     }
+}
+
+gboolean
+g_value_fits_pointer (const GValue *value)
+{
+  GTypeValueTable *value_table;
+
+  g_return_val_if_fail (G_IS_VALUE (value), FALSE);
+
+  value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  if (!value_table)
+    g_return_val_if_fail (g_type_value_table_peek (G_VALUE_TYPE (value)) != NULL, FALSE);
+
+  return value_table->value_peek_pointer != NULL;
+}
+
+gpointer
+g_value_get_as_pointer (const GValue *value)
+{
+  GTypeValueTable *value_table;
+
+  g_return_val_if_fail (G_IS_VALUE (value), NULL);
+
+  value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  if (!value_table)
+    g_return_val_if_fail (g_type_value_table_peek (G_VALUE_TYPE (value)) != NULL, NULL);
+  if (!value_table->value_peek_pointer)
+    g_return_val_if_fail (g_value_fits_pointer (value) == TRUE, NULL);
+
+  return value_table->value_peek_pointer (value);
 }
 
 void
@@ -189,8 +221,8 @@ g_value_register_exchange_func (GType          value_type1,
 {
   ExchangeEntry entry;
   
-  g_return_if_fail (G_TYPE_IS_VALUE (value_type1));
-  g_return_if_fail (G_TYPE_IS_VALUE (value_type2));
+  g_return_if_fail (g_type_name (value_type1) != NULL);
+  g_return_if_fail (g_type_name (value_type2) != NULL);
   g_return_if_fail (func != NULL);
   
   entry.value_type1 = MIN (value_type1, value_type2);
@@ -218,7 +250,7 @@ gboolean
 g_value_types_exchangable (GType value_type1,
 			   GType value_type2)
 {
-  g_return_val_if_fail (G_TYPE_IS_VALUE (value_type1), FALSE);
+  g_return_val_if_fail (G_TYPE_IS_VALUE (value_type1), FALSE); /* these might bite us, think G_TYPE_ENUM */
   g_return_val_if_fail (G_TYPE_IS_VALUE (value_type2), FALSE);
   
   return exchange_func_lookup (value_type1, value_type2, NULL) != NULL;

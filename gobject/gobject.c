@@ -46,6 +46,7 @@ static void	g_value_object_init			(GValue		*value);
 static void	g_value_object_free_value		(GValue		*value);
 static void	g_value_object_copy_value		(const GValue	*src_value,
 							 GValue		*dest_value);
+static gpointer g_value_object_peek_pointer             (const GValue   *value);
 static gchar*	g_value_object_collect_value		(GValue		*value,
 							 guint		 nth_value,
 							 GType		*collect_type,
@@ -59,6 +60,7 @@ static gchar*	g_value_object_lcopy_value		(const GValue	*value,
 /* --- variables --- */
 static GQuark		 quark_param_id = 0;
 static GQuark		 quark_param_changed_queue = 0;
+static GQuark		 quark_closure_array = 0;
 static GHashTable	*param_spec_hash_table = NULL;
 
 
@@ -122,6 +124,7 @@ g_object_type_init (void)	/* sync with gtype.c */
     g_value_object_init,	  /* value_init */
     g_value_object_free_value,	  /* value_free */
     g_value_object_copy_value,	  /* value_copy */
+    g_value_object_peek_pointer,  /* value_peek_pointer */
     G_VALUE_COLLECT_POINTER,	  /* collect_type */
     g_value_object_collect_value, /* collect_value */
     G_VALUE_COLLECT_POINTER,	  /* lcopy_type */
@@ -135,7 +138,7 @@ g_object_type_init (void)	/* sync with gtype.c */
   /* G_TYPE_OBJECT
    */
   info.value_table = &value_table;
-  type = g_type_register_fundamental (G_TYPE_OBJECT, "GObject", &info, &finfo);
+  type = g_type_register_fundamental (G_TYPE_OBJECT, "GObject", &info, &finfo, 0);
   g_assert (type == G_TYPE_OBJECT);
   
 #ifdef	DEBUG_OBJECTS
@@ -178,6 +181,7 @@ g_object_do_class_init (GObjectClass *class)
 {
   quark_param_id = g_quark_from_static_string ("glib-object-param-id");
   quark_param_changed_queue = g_quark_from_static_string ("glib-object-param-changed-queue");
+  quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
   param_spec_hash_table = g_param_spec_hash_table_new ();
   
   class->queue_param_changed = g_object_do_queue_param_changed;
@@ -810,6 +814,12 @@ g_value_object_copy_value (const GValue *src_value,
     dest_value->data[0].v_pointer = NULL;
 }
 
+static gpointer
+g_value_object_peek_pointer (const GValue *value)
+{
+  return value->data[0].v_pointer;
+}
+
 static gchar*
 g_value_object_collect_value (GValue	  *value,
 			      guint	   nth_value,
@@ -874,7 +884,7 @@ g_value_set_object (GValue  *value,
 }
 
 GObject*
-g_value_get_object (GValue *value)
+g_value_get_object (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_OBJECT (value), NULL);
   
@@ -882,9 +892,137 @@ g_value_get_object (GValue *value)
 }
 
 GObject*
-g_value_dup_object (GValue *value)
+g_value_dup_object (const GValue *value)
 {
   g_return_val_if_fail (G_IS_VALUE_OBJECT (value), NULL);
   
   return value->data[0].v_pointer ? g_object_ref (value->data[0].v_pointer) : NULL;
+}
+
+typedef struct {
+  GObject  *object;
+  guint     n_closures;
+  GClosure *closures[1]; /* flexible array */
+} CArray;
+
+static void
+object_remove_closure (gpointer  data,
+		       GClosure *closure)
+{
+  GObject *object = data;
+  CArray *carray = g_object_get_qdata (object, quark_closure_array);
+  guint i;
+  
+  for (i = 0; i < carray->n_closures; i++)
+    if (carray->closures[i] == closure)
+      {
+	carray->n_closures--;
+	if (i < carray->n_closures)
+	  carray->closures[i] = carray->closures[carray->n_closures];
+	return;
+      }
+  g_assert_not_reached ();
+}
+
+static void
+destroy_closure_array (gpointer data)
+{
+  CArray *carray = data;
+  GObject *object = carray->object;
+  guint i, n = carray->n_closures;
+  
+  for (i = 0; i < n; i++)
+    {
+      GClosure *closure = carray->closures[i];
+      
+      /* removing object_remove_closure() upfront is probably faster than
+       * letting it fiddle with quark_closure_array which is empty anyways
+       */
+      g_closure_remove_inotify (closure, object, object_remove_closure);
+      g_closure_invalidate (closure);
+    }
+  g_free (carray);
+}
+
+void
+g_object_watch_closure (GObject  *object,
+			GClosure *closure)
+{
+  CArray *carray;
+  
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (closure != NULL);
+  g_return_if_fail (closure->is_invalid == FALSE);
+  g_return_if_fail (closure->in_marshal == FALSE);
+  g_return_if_fail (object->ref_count > 0);	/* this doesn't work on finalizing objects */
+  
+  g_closure_add_inotify (closure, object, object_remove_closure);
+  g_closure_add_marshal_guards (closure,
+				object, (GClosureNotify) g_object_ref,
+				object, (GClosureNotify) g_object_unref);
+  carray = g_object_get_qdata (object, quark_closure_array);
+  if (!carray)
+    {
+      carray = g_renew (CArray, NULL, 1);
+      carray->object = object;
+      carray->n_closures = 1;
+      carray->closures[0] = closure;
+      g_object_set_qdata_full (object, quark_closure_array, carray, destroy_closure_array);
+    }
+  else
+    {
+      guint i = carray->n_closures++;
+      
+      carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
+      carray->closures[i] = closure;
+    }
+}
+
+GClosure*
+g_closure_new_object (guint    sizeof_closure,
+		      GObject *object)
+{
+  GClosure *closure;
+
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+
+  closure = g_closure_new_simple (sizeof_closure, object);
+  g_object_watch_closure (object, closure);
+
+  return closure;
+}
+
+GClosure*
+g_cclosure_new_object (gpointer  _object,
+		       GCallback callback_func)
+{
+  GObject *object = _object;
+  GClosure *closure;
+
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+  g_return_val_if_fail (callback_func != NULL, NULL);
+
+  closure = g_cclosure_new (callback_func, object, NULL);
+  g_object_watch_closure (object, closure);
+
+  return closure;
+}
+
+GClosure*
+g_cclosure_new_object_swap (gpointer  _object,
+			    GCallback callback_func)
+{
+  GObject *object = _object;
+  GClosure *closure;
+
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+  g_return_val_if_fail (callback_func != NULL, NULL);
+
+  closure = g_cclosure_new_swap (callback_func, object, NULL);
+  g_object_watch_closure (object, closure);
+
+  return closure;
 }
