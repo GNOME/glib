@@ -1,3 +1,8 @@
+Sun Jun  6 23:20:42 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: Fix the docs for G_DEFINE_TYPE()
+	and friends.  (#143800, Crispin Flowerday)
+
 2004-05-05  Matthias Clasen  <mclasen@redhat.com>
 
 	* gobject/gobject-docs.sgml: 
