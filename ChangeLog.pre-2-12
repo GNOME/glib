@@ -1,3 +1,8 @@
+Sun Mar 14 13:56:48 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* glib/gmessages.c (escape_string): Handle invalid
+	UTF-8. (#131218, patch from Matthias Clasen)
+
 Sun Mar 14 13:23:36 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* glib/gspawn.c: Use fork1() not fork for 

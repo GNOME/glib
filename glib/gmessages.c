@@ -562,7 +562,7 @@ strdup_convert (const gchar *string,
 	      *p < 0x80)
 	    g_string_append_c (gstring, *p);
 	  else
-	    g_string_append_printf (gstring, "\\%03o", *p);
+	    g_string_append_printf (gstring, "\\x%02x", (guint)(guchar)*p);
 	}
       
       return g_string_free (gstring, FALSE);
@@ -787,7 +787,22 @@ escape_string (GString *string)
     {
       gboolean safe;
 	    
-      wc = g_utf8_get_char (p);
+      wc = g_utf8_get_char_validated (p, -1);
+      if (wc == (gunichar)-1 || wc == (gunichar)-2)  
+	{
+	  gchar *tmp;
+		
+	  g_string_erase (string, p - string->str, 1);
+	  /* Emit invalid UTF-8 as hex escapes 
+           */
+	  tmp = g_strdup_printf ("\\x%02x", (guint)(guchar)*p);
+	  g_string_insert (string, p - string->str, tmp);
+	  g_free (tmp);
+
+	  p += 4;		/* Skip over escape sequence */
+
+	  continue;
+	}
       if (wc == '\r')
 	{
 	  safe = *(p + 1) == '\n';
@@ -866,18 +881,22 @@ g_log_default_handler (const gchar   *log_domain,
     g_string_append (gstring, "(NULL) message");
   else
     {
+      GString *msg;
       const gchar *charset;
 
+      msg = g_string_new (message);
+      escape_string (msg);
+
       if (g_get_charset (&charset))
-	g_string_append (gstring, message);	/* charset is UTF-8 already */
+	g_string_append (gstring, msg->str);	/* charset is UTF-8 already */
       else
 	{
-	  string = strdup_convert (message, charset);
+	  string = strdup_convert (msg->str, charset);
 	  g_string_append (gstring, string);
 	  g_free (string);
 	}
 
-      escape_string (gstring);
+      g_string_free (msg, TRUE);
     }
   if (is_fatal)
     g_string_append (gstring, "\naborting...\n");
