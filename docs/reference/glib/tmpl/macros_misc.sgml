@@ -2,7 +2,7 @@
 Miscellaneous Macros
 
 <!-- ##### SECTION Short_Description ##### -->
-specialised macros which are not used often.
+specialized macros which are not used often.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -50,7 +50,8 @@ compiler in use is a C++ compiler, adds 'extern "C"' around the header.
 <!-- ##### MACRO G_END_DECLS ##### -->
 <para>
 Used (along with #G_BEGIN_DECLS) to bracket header files. If the
-compiler in use is a C++ compiler, adds 'extern "C"' around the header.
+compiler in use is a C++ compiler, adds <literal>extern "C"</literal> 
+around the header.
 </para>
 
 
@@ -71,29 +72,28 @@ arrays or arrays on the stack.
 Portable way to copy <type>va_list</type> variables.
 </para>
 <para>
-In order to use this function, you must include string.h yourself,
-because this macro may use memmove() and GLib does not include
-string.h for you.
+In order to use this function, you must include <filename>string.h</filename> 
+yourself, because this macro may use <function>memmove()</function> and GLib 
+does not include <function>string.h</function> for you.
 </para>
 
-<!-- # Unused Parameters # -->
 @ap1: the <type>va_list</type> variable to place a copy of @ap2 in.
 @ap2: a <type>va_list</type>.
 
 
 <!-- ##### MACRO G_STRINGIFY ##### -->
 <para>
-
+Accepts a macro or a string and converts it into a string.
 </para>
 
-@macro_or_string: 
+@macro_or_string: a macro or a string.
 
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->
 <para>
-Expands to "__extension__" when GNU C is used as the compiler.
+Expands to <literal>__extension__</literal> when GNU C is used as the compiler.
 This simply tells GNU C not to warn about the following non-standard code
-when compiling with the -pedantic option.
+when compiling with the <literal>-pedantic</literal> option.
 </para>
 
 
@@ -128,7 +128,10 @@ It avoids possible compiler warnings. See the GNU C documentation for details.
 
 <!-- ##### MACRO G_GNUC_PURE ##### -->
 <para>
+Expands to the GNU C pure function attribute if the compiler is GNU C.
+See the GNU C documentation for details. 
 
+FIXME: Explain what pure functions are.
 </para>
 
 
@@ -176,36 +179,41 @@ FIXME: I can't find this in my GNU C documentation. Take out?
 
 <!-- ##### MACRO G_GNUC_FUNCTION ##### -->
 <para>
-Expands to the GNU C __FUNCTION__ variable if the compiler is GNU C,
-or "" if it isn't.
-The GNU C __FUNCTION__ variable contains the name of the current function.
-See the GNU C documentation for details. 
+Expands to the GNU C <literal>__FUNCTION__</literal> variable if the 
+compiler is GNU C, or "" if it isn't. The GNU C 
+<literal>__FUNCTION__</literal> variable contains the name of the 
+current function. See the GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_PRETTY_FUNCTION ##### -->
 <para>
-Expands to the GNU C __PRETTY_FUNCTION__ variable if the compiler is GNU C,
-or "" if it isn't.
-The GNU C __PRETTY_FUNCTION__ variable contains the name of the current
-function. For a C program this is the same as the __FUNCTION__ variable
-but for C++ it also includes extra information such as the class
-and function prototype. See the GNU C documentation for details. 
+Expands to the GNU C <literal>__PRETTY_FUNCTION__</literal> variable 
+if the compiler is GNU C, or "" if it isn't.
+The GNU C <literal>__PRETTY_FUNCTION__</literal> variable contains the 
+name of the current function. For a C program this is the same as the 
+<literal>__FUNCTION__</literal> variable but for C++ it also includes 
+extra information such as the class and function prototype. See the 
+GNU C documentation for details. 
 </para>
 
 
 
 <!-- ##### MACRO G_GNUC_NO_INSTRUMENT ##### -->
 <para>
+Expands to the GNU C no_instrument_function function attribute if 
+the compiler is GNU C.
+See the GNU C documentation for details. 
 
+FIXME: Explain no_instrument_function.
 </para>
 
 
 
 <!-- ##### MACRO G_STRLOC ##### -->
 <para>
-
+Expands to a string identifying the current code position. 
 </para>
 
 
@@ -265,7 +273,7 @@ printing values of type #gint64. See also #G_GINT16_FORMAT.
 <note>
 <para>
 Some platforms do not support scanning and printing 64 bit integers,
-even though the types are supported. On such platforms G_GINT64_FORMAT
+even though the types are supported. On such platforms #G_GINT64_FORMAT
 is not defined.
 </para>
 </note>
@@ -281,7 +289,7 @@ printing values of type #guint64. See also #G_GINT16_FORMAT.
 <note>
 <para>
 Some platforms do not support scanning and printing 64 bit integers,
-even though the types are supported. On such platforms G_GUINT64_FORMAT
+even though the types are supported. On such platforms #G_GUINT64_FORMAT
 is not defined.
 </para>
 </note>

@@ -24,9 +24,10 @@ understand it myself. Look at gtkrc.c for some code using the scanner.
 The data structure representing a lexical scanner.
 </para>
 <para>
-You should set input_name after creating the scanner, since it is used
-by the default message handler when displaying warnings and errors.
-If you are scanning a file, the file name would be a good choice.
+You should set <structfield>input_name</structfield> after creating 
+the scanner, since it is used by the default message handler when 
+displaying warnings and errors. If you are scanning a file, the file 
+name would be a good choice.
 </para>
 <para>
 The <structfield>user_data</structfield> and
@@ -66,8 +67,7 @@ handler function is declared by #GScannerMsgFunc.
 Creates a new #GScanner.
 The @config_templ structure specifies the initial settings of the scanner,
 which are copied into the #GScanner <structfield>config</structfield> field.
-If you pass NULL then the default settings are used.
-(See g_scanner_config_template in gscanner.c for the defaults.)
+If you pass %NULL then the default settings are used.
 </para>
 
 @config_templ: the initial scanner settings.
@@ -85,14 +85,14 @@ space, tab, carriage-return and line-feed).
 </para>
 <para>
 <structfield>cset_identifier_first</structfield> specifies the characters
-which can start identifiers.
-(the default is #G_CSET_a_2_z, "_", and #G_CSET_A_2_Z).
+which can start identifiers (the default is #G_CSET_a_2_z, "_", and 
+#G_CSET_A_2_Z).
 </para>
 <para>
 <structfield>cset_identifier_nth</structfield> specifies the characters
-which can be used in identifiers, after the first character.
-The default is #G_CSET_a_2_z, "_0123456789", #G_CSET_A_2_Z, #G_CSET_LATINS,
-#G_CSET_LATINC.
+which can be used in identifiers, after the first character (the default 
+is #G_CSET_a_2_z, "_0123456789", #G_CSET_A_2_Z, #G_CSET_LATINS,
+#G_CSET_LATINC).
 </para>
 <para>
 <structfield>cpair_comment_single</structfield> specifies the characters
@@ -102,11 +102,91 @@ means that single-line comments start with a '#' and continue until a '\n'
 </para>
 <para>
 <structfield>case_sensitive</structfield> specifies if symbols are
-case sensitive.
+case sensitive (the default is %FALSE).
 </para>
 <para>
-The rest of the fields are flags which turn features on or off.
-FIXME: should describe these.
+<structfield>skip_comment_multi</structfield> specifies if multi-line
+comments are skipped and not returned as tokens (the default is %TRUE).
+</para>
+<para>
+<structfield>skip_comment_single</structfield> specifies if single-line
+comments are skipped and not returned as tokens (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_comment_multi</structfield> specifies if multi-line
+comments are recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_identifier</structfield> specifies if identifiers
+are recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_identifier_1char</structfield> specifies if single-character
+identifiers are recognized (the default is %FALSE).
+</para>
+<para>
+<structfield>scan_identifier_NULL</structfield> specifies if 
+<literal>NULL</literal> is reported as #G_TOKEN_IDENTIFIER_NULL.
+(the default is %FALSE).
+</para>
+<para>
+<structfield>scan_symbols</structfield> specifies if symbols are
+recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_binary</structfield> specifies if binary numbers
+are recognized (the default is %FALSE).
+</para>
+<para>
+<structfield>scan_octal</structfield> specifies if octal numbers
+are recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_float</structfield> specifies if floating point numbers
+are recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_hex</structfield> specifies if hexadecimal numbers
+are recognized (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_hex_dollar</structfield> specifies if '$' is recognized
+as a prefix for hexadecimal numbers (the default is %FALSE).
+</para>
+<para>
+<structfield>scan_string_sq</structfield> specifies if strings can be
+enclosed in single quotes (the default is %TRUE).
+</para>
+<para>
+<structfield>scan_string_dq</structfield> specifies if strings can be
+enclosed in double quotes (the default is %TRUE).
+</para>
+<para>
+<structfield>numbers_2_int</structfield> specifies if binary, octal and
+hexadecimal numbers are reported as #G_TOKEN_INT (the default is %TRUE).
+</para>
+<para>
+<structfield>int_2_float</structfield> specifies if all numbers are 
+reported as #G_TOKEN_FLOAT (the default is %FALSE).
+</para>
+<para>
+<structfield>identifier_2_string</structfield> specifies if identifiers
+are reported as strings (the default is %FALSE).
+</para>
+<para>
+<structfield>char_2_token</structfield> specifies if characters
+are reported by setting <literal>token = ch</literal> or as #G_TOKEN_CHAR 
+(the default is %TRUE).
+</para>
+<para>
+<structfield>symbol_2_token</structfield> specifies if symbols 
+are reported by setting <literal>token = v_symbol</literal> or as
+#G_TOKEN_SYMBOL (the default is %FALSE).
+</para>
+<para>
+<structfield>scope_0_fallback</structfield> specifies if a symbol 
+is searched for in the default scope in addition to the current scope
+(the default is %FALSE).
 </para>
 
 @cset_skip_characters: 
@@ -146,10 +226,13 @@ Prepares to scan a file.
 
 <!-- ##### FUNCTION g_scanner_sync_file_offset ##### -->
 <para>
-
+Rewinds the filedescriptor to the current buffer position and blows 
+the file read ahead buffer. This is useful for third party uses of
+the scanners filedescriptor, which hooks onto the current scanning 
+position.
 </para>
 
-@scanner: 
+@scanner: a #GScanner.
 
 
 <!-- ##### FUNCTION g_scanner_input_text ##### -->
@@ -232,11 +315,11 @@ structure.
 
 <!-- ##### FUNCTION g_scanner_eof ##### -->
 <para>
-Returns TRUE if the scanner has reached the end of the file or text buffer.
+Returns %TRUE if the scanner has reached the end of the file or text buffer.
 </para>
 
 @scanner: a #GScanner.
-@Returns: TRUE if the scanner has reached the end of the file or text buffer.
+@Returns: %TRUE if the scanner has reached the end of the file or text buffer.
 
 
 <!-- ##### FUNCTION g_scanner_set_scope ##### -->
@@ -262,34 +345,39 @@ Adds a symbol to the given scope.
 
 <!-- ##### FUNCTION g_scanner_scope_foreach_symbol ##### -->
 <para>
-
+Calls the given function for each of the symbol/value pairs in the 
+given scope of the #GScanner. The function is passed the symbol and 
+value of each pair, and the given @user_data parameter.
 </para>
 
-@scanner: 
-@scope_id: 
-@func: 
-@user_data: 
+@scanner: a #GScanner.
+@scope_id: the scope id.
+@func: the function to call for each symbol/value pair.
+@user_data: user data to pass to the function.
+
 
 
 <!-- ##### FUNCTION g_scanner_scope_lookup_symbol ##### -->
 <para>
-
+Looks up a symbol in a scope and return its value. If the
+symbol is not bound in the scope, %NULL is returned.
 </para>
 
-@scanner: 
-@scope_id: 
-@symbol: 
-@Returns: 
+@scanner: a #GScanner.
+@scope_id: the scope id.
+@symbol: the symbol to look up.
+@Returns: the value of @symbol in the given scope, or %NULL
+if @symbol is not bound in the given scope. 
 
 
 <!-- ##### FUNCTION g_scanner_scope_remove_symbol ##### -->
 <para>
-
+Removes a symbol from a scope.
 </para>
 
-@scanner: 
-@scope_id: 
-@symbol: 
+@scanner: a #GScanner.
+@scope_id: the scope id.
+@symbol: the symbol to remove.
 
 
 <!-- ##### MACRO g_scanner_freeze_symbol_table ##### -->
@@ -298,7 +386,7 @@ This function is deprecated and will be removed in the next major
 release of GLib. It does nothing.
 </para>
 
-@scanner: 
+@scanner: a #GScanner. 
 
 
 <!-- ##### MACRO g_scanner_thaw_symbol_table ##### -->
@@ -307,17 +395,19 @@ This function is deprecated and will be removed in the next major
 release of GLib. It does nothing.
 </para>
 
-@scanner: 
+@scanner: a #GScanner.
 
 
 <!-- ##### FUNCTION g_scanner_lookup_symbol ##### -->
 <para>
-
+Looks up a symbol in the current scope and return its value. If the
+symbol is not bound in the current scope, %NULL is returned.
 </para>
 
-@scanner: 
-@symbol: 
-@Returns: 
+@scanner: a #GScanner. 
+@symbol: the symbol to look up.
+@Returns: the value of @symbol in the current scope, or %NULL
+if @symbol is not bound in the current scope. 
 
 
 <!-- ##### FUNCTION g_scanner_warn ##### -->
@@ -345,29 +435,32 @@ documentation.
 <!-- ##### FUNCTION g_scanner_unexp_token ##### -->
 <para>
 Outputs a message resulting from an unexpected token in the input stream.
-FIXME: I don't understand the arguments here.
 </para>
 
 @scanner: a #GScanner.
 @expected_token: the expected token.
 @identifier_spec: a string describing the expected type of identifier,
-or NULL to use the default "identifier" string.
-@symbol_spec: a string describing the expected type of identifier,
-or NULL to use the default "symbol" string.
-@symbol_name: 
-@message: a message string to output at the end of the warning/error, or NULL.
-@is_error: if TRUE it is output as an error. If False it is output as a
+  or %NULL to use the default "identifier" string. This is used if
+  @expected_token is #G_TOKEN_IDENTIFIER or #G_TOKEN_IDENTIFIER_NULL.
+@symbol_spec: a string describing the expected type of symbol,
+  or %NULL to use the default "symbol" string. This is used if
+  @expected_token is #G_TOKEN_SYMBOL.
+@symbol_name: the name of the expected symbol. This is used if 
+  @expected_token is #G_TOKEN_SYMBOL.
+@message: a message string to output at the end of the warning/error, or %NULL.
+@is_error: if %TRUE it is output as an error. If %FALSE it is output as a
 warning.
 
 
 <!-- ##### USER_FUNCTION GScannerMsgFunc ##### -->
 <para>
-
+Specifies the type of the message handler function.
 </para>
 
-@scanner: 
-@message: 
-@error: 
+@scanner: a #GScanner. 
+@message: the message.
+@error: %TRUE if the message signals an error, %FALSE if it 
+  signals a warning.
 
 
 <!-- ##### FUNCTION g_scanner_destroy ##### -->
@@ -383,10 +476,32 @@ Frees all memory used by the #GScanner.
 The possible types of token returned from each g_scanner_get_next_token() call.
 </para>
 
-@G_TOKEN_EOF: 
-@G_TOKEN_LEFT_PAREN: 
-@G_TOKEN_LEFT_CURLY: 
-@G_TOKEN_RIGHT_CURLY: 
+@G_TOKEN_EOF: the end of the file.
+@G_TOKEN_LEFT_PAREN: a '(' character.
+@G_TOKEN_RIGHT_PAREN: a ')' character.
+@G_TOKEN_LEFT_CURLY: a '{' character. 
+@G_TOKEN_RIGHT_CURLY: a '}' character.
+@G_TOKEN_LEFT_BRACE: a '[' character.
+@G_TOKEN_RIGHT_BRACE: a ']' character.
+@G_TOKEN_EQUAL_SIGN: a '=' character. 
+@G_TOKEN_COMMA: a ',' character.
+@G_TOKEN_NONE: no token.
+@G_TOKEN_ERROR: an error. See #GErrorType for a list of possible errors. 
+@G_TOKEN_CHAR: a character without special meaning.
+@G_TOKEN_BINARY: an integer, specified in binary notation with a '0b' prefix.
+@G_TOKEN_OCTAL: an integer, specified in octal notation with a '0' prefix.
+@G_TOKEN_INT: an integer, specified in the usual decimal notation.
+@G_TOKEN_HEX: an integer, specified in hexadecimal notation with a '0x' or '$' prefix.
+@G_TOKEN_FLOAT: a floating point number.
+@G_TOKEN_STRING: a string enclosed in single or double quotes.
+@G_TOKEN_SYMBOL: a symbol which has been defined before.
+@G_TOKEN_IDENTIFIER: an identifier.
+@G_TOKEN_IDENTIFIER_NULL: the special identifier <literal>NULL</literal>.
+@G_TOKEN_COMMENT_SINGLE: a single-line comment enclosed in the delimiters
+  specified by <structfield>cpair_comment_single</structfield>.
+@G_TOKEN_COMMENT_MULTI: a multi-line comment enclosed in '/*' and '*/'.
+@G_TOKEN_LAST: 
+
 
 <!-- ##### UNION GTokenValue ##### -->
 <para>
@@ -397,21 +512,21 @@ A union holding the value of the token.
 <!-- ##### ENUM GErrorType ##### -->
 <para>
 The possible errors, used in the <structfield>v_error</structfield> field
-of #GTokenValue, when the token is a G_TOKEN_ERROR.
+of #GTokenValue, when the token is a #G_TOKEN_ERROR.
 </para>
 
-@G_ERR_UNKNOWN: 
-@G_ERR_UNEXP_EOF: 
-@G_ERR_UNEXP_EOF_IN_STRING: 
-@G_ERR_UNEXP_EOF_IN_COMMENT: 
-@G_ERR_NON_DIGIT_IN_CONST: 
-@G_ERR_DIGIT_RADIX: 
-@G_ERR_FLOAT_RADIX: 
-@G_ERR_FLOAT_MALFORMED: 
+@G_ERR_UNKNOWN: unknown error.
+@G_ERR_UNEXP_EOF: unexpected end of file. 
+@G_ERR_UNEXP_EOF_IN_STRING: unterminated string constant.
+@G_ERR_UNEXP_EOF_IN_COMMENT: unterminated comment.
+@G_ERR_NON_DIGIT_IN_CONST: non-digit character in a number.
+@G_ERR_DIGIT_RADIX: digit beyond radix in a number.
+@G_ERR_FLOAT_RADIX: non-decimal floating point number.
+@G_ERR_FLOAT_MALFORMED: malformed floating point number.
 
 <!-- ##### MACRO G_CSET_a_2_z ##### -->
 <para>
-The set of lower-case ASCII alphabet characters.
+The set of lowercase ASCII alphabet characters.
 Used for specifying valid identifier characters in #GScannerConfig.
 </para>
 
@@ -419,7 +534,7 @@ Used for specifying valid identifier characters in #GScannerConfig.
 
 <!-- ##### MACRO G_CSET_A_2_Z ##### -->
 <para>
-The set of upper-case ASCII alphabet characters.
+The set of uppercase ASCII alphabet characters.
 Used for specifying valid identifier characters in #GScannerConfig.
 </para>
 
@@ -427,15 +542,16 @@ Used for specifying valid identifier characters in #GScannerConfig.
 
 <!-- ##### MACRO G_CSET_DIGITS ##### -->
 <para>
-
+The set of digits.
+Used for specifying valid identifier characters in #GScannerConfig.
 </para>
 
 
 
 <!-- ##### MACRO G_CSET_LATINC ##### -->
 <para>
-Part of the set of extended characters in the Latin character sets.
-FIXME: lower case?
+The set of uppercase ISO 8859-1 alphabet characters which are 
+not ASCII characters. 
 Used for specifying valid identifier characters in #GScannerConfig.
 </para>
 
@@ -443,8 +559,8 @@ Used for specifying valid identifier characters in #GScannerConfig.
 
 <!-- ##### MACRO G_CSET_LATINS ##### -->
 <para>
-Part of the set of extended characters in the Latin character sets.
-FIXME: upper case?
+The set of lowercase ISO 8859-1 alphabet characters which are 
+not ASCII characters. 
 Used for specifying valid identifier characters in #GScannerConfig.
 </para>
 

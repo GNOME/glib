@@ -1,5 +1,10 @@
 2001-09-27  Matthias Clasen  <matthiasc@poet.de>
 
+	* glib/tmpl/macros.sgml, glib/tmpl/macros_misc.sgml, 
+	glib/tmpl/scanner.sgml: Additions and markup fixes.
+
+2001-09-27  Matthias Clasen  <matthiasc@poet.de>
+
 	* glib/tmpl/warnings.sgml, glib/tmpl/linked_lists_double.sgml,
 	glib/tmpl/completion.sgml, glib/tmpl/strings.sgml: Documented
 	some functions, markup fixes.

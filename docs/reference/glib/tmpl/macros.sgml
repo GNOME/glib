@@ -240,12 +240,13 @@ current platform.
 <!-- ##### MACRO G_CONST_RETURN ##### -->
 <para>
 If %G_DISABLE_CONST_RETURNS is defined, this macro expands to nothing.
-By default, the macro expands to "const". The macro should be used 
-in place of "const" for functions that return a value that should not
-be modified. The purpose of this macro is to allow us to turn on
-"const" for returned constant strings by default, while allowing programmers
-who find that annoying to turn it off. This macro should only be used
-for return values, it doesn't make sense for function arguments.
+By default, the macro expands to <literal>const</literal>. The macro 
+should be used in place of <literal>const</literal> for functions that 
+return a value that should not be modified. The purpose of this macro is 
+to allow us to turn on <literal>const</literal> for returned constant 
+strings by default, while allowing programmers who find that annoying to 
+turn it off. This macro should only be used for return values, it doesn't 
+make sense for function arguments.
 </para>
 
 
