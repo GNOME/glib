@@ -14,6 +14,9 @@
 <!ENTITY gobject-Signals SYSTEM "xml/signals.xml">
 <!ENTITY gobject-Closures SYSTEM "xml/gclosure.xml">
 <!ENTITY gobject-Value-Arrays SYSTEM "xml/value_arrays.xml">
+<!ENTITY glib-mkenums SYSTEM "glib-mkenums.xml">
+<!ENTITY glib-genmarshal SYSTEM "glib-genmarshal.xml">
+<!ENTITY gobject-query SYSTEM "gobject-query.xml">
 <!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
@@ -84,6 +87,14 @@
       &gobject-Value-Arrays;
       
   </reference>
+  <reference>
+    <title>Tools Reference</title>
+
+    &glib-mkenums;
+    &glib-genmarshal;
+    &gobject-query;
+  </reference>
+
 
   <index/>
   

@@ -191,11 +191,6 @@ testgobject_LDADD = $(progs_LDADD)
 testoverride_LDADD = $(progs_LDADD)
 
 #
-# manual pages to install
-#
-man_MANS = glib-genmarshal.1 glib-mkenums.1
-
-#
 # auxillary files
 #
 EXTRA_DIST += 			\

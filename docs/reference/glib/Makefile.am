@@ -48,10 +48,20 @@ content_files =				\
 	changes.sgml			\
 	compiling.sgml			\
 	resources.sgml			\
-	version.xml
+	version.xml			\
+	glib-gettextize.xml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=
+
+man_MANS = glib-gettextize.1 
+
+if ENABLE_MAN
+
+%.1 : %.xml 
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
 
 # include common portion ...
 include $(top_srcdir)/gtk-doc.make

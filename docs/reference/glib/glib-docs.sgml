@@ -61,6 +61,8 @@
 <!ENTITY glib-Resources SYSTEM "resources.sgml">
 <!ENTITY glib-Changes SYSTEM "changes.sgml">
 
+<!ENTITY glib-gettextize SYSTEM "glib-gettextize.xml">
+
 <!ENTITY version SYSTEM "version.xml">
 ]>
 <book id="index">
@@ -155,7 +157,13 @@ OS/2 and BeOS. GLib is released under the GNU Library General Public License
     &glib-Caches;
     &glib-Memory-Allocators;
   </chapter>
- 
+
+  <chapter id="tools">
+    <title>GLib Tools</title>
+
+    &glib-gettextize;
+  </chapter>
+
   <index/>
 
 </book>

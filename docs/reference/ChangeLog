@@ -1,3 +1,36 @@
+2003-06-18  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/Makefile.am: Add rule to regenerate man pages from 
+	Docbook.
+	(man_MANS): Add glib-mkenums.1, glib-genmarshal.1 and gobject-query.1.
+	(content_files): Add glib-mkenums.xml, glib-genmarshal.xml and 
+	gobject-query.xml.
+
+	* gobject/glib-mkenums.xml: 
+	* gobject/glib-genmarshal.xml: 
+	* gobject/gobject-query.xml: New refentries.
+
+	* gobject/glib-mkenums.1: 
+	* gobject/glib-genmarshal.1: 
+	* gobject/gobject-query.1: Man pages generated from the .xml
+	sources.
+
+	* gobject/gobject-docs.sgml: Include glib-mkenums.xml, 
+	glib-genmarshal.xml and gobject-query.xml.
+	
+2003-06-17  Matthias Clasen  <maclas@gmx.de>
+
+	* glib/Makefile.am: Add rule to regenerate man pages from 
+	Docbook.
+	(man_MANS): Add glib-gettextize.1.
+	(content_files): Add glib-gettextize.xml.
+
+	* glib/glib-gettextize.xml: New refentry.
+
+	* glib/glib-gettextize.1: Man page generated from the .xml source.
+
+	* glib/glib-docs.sgml: Include glib-gettextize.xml.
+
 2003-06-17  Matthias Clasen  <mc2@YAST_ASK>
 
 	* gobject/gobject-docs.sgml: 

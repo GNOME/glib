@@ -28,12 +28,29 @@ MKDB_OPTIONS=
 HTML_IMAGES =
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
-content_files = version.xml
+content_files = version.xml 		\
+		glib-mkenums.xml 	\
+		glib-genmarshal.xml	\
+		gobject-query.xml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html
+
+man_MANS = glib-mkenums.1 glib-genmarshal.1 gobject-query.1
+
+if ENABLE_MAN
+
+%.1 : %.xml 
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+endif
 
 include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 EXTRA_DIST += version.xml.in
+
+
+
+
+
