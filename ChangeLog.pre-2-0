@@ -1,3 +1,8 @@
+2000-03-06  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Another small change to the pthread_.. search
+	pattern. Should work *now* for AIX.
+
 2000-03-04  Tor Lillqvist  <tml@iki.fi>
 
 	* gwin32.c (g_win32_error_message): New function that returns the
