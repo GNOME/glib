@@ -1,3 +1,8 @@
+Mon Dec 21 03:48:04 1998  Tim Janik  <timj@gtk.org>
+
+	* gmain.c (g_main_iterate): default initialize source_timeout with -1
+	so we have a sane timeout value if (*prpare) doesn't set it.
+
 Sat Dec 19 16:56:02 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* glib.h gmain.c (G_PRIORITY_LOW): Add #defines defining

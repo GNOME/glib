@@ -436,7 +436,7 @@ g_main_iterate (gboolean block,
 		gboolean dispatch)
 {
   GHook *hook;
-  GTimeVal current_time;
+  GTimeVal current_time  ={ 0, 0 };
   gint n_ready = 0;
   gint current_priority = 0;
   gint timeout;
@@ -468,7 +468,7 @@ g_main_iterate (gboolean block,
     {
       GSource *source = (GSource *)hook;
       GHook *tmp;
-      gint source_timeout;
+      gint source_timeout = -1;
 
       if ((n_ready > 0) && (source->priority > current_priority))
 	break;
