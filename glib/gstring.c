@@ -146,29 +146,9 @@ gchar*
 g_string_chunk_insert (GStringChunk *chunk,
 		       const gchar  *string)
 {
-  gsize len = strlen (string);
-  char* pos;
-
   g_return_val_if_fail (chunk != NULL, NULL);
 
-  if ((chunk->storage_next + len + 1) > chunk->this_size)
-    {
-      gsize new_size = nearest_power (chunk->default_size, len + 1);
-
-      chunk->storage_list = g_slist_prepend (chunk->storage_list,
-					     g_new (char, new_size));
-
-      chunk->this_size = new_size;
-      chunk->storage_next = 0;
-    }
-
-  pos = ((char *) chunk->storage_list->data) + chunk->storage_next;
-
-  strcpy (pos, string);
-
-  chunk->storage_next += len + 1;
-
-  return pos;
+  return g_string_chunk_insert_len (chunk, string, -1);
 }
 
 gchar*
@@ -191,6 +171,58 @@ g_string_chunk_insert_const (GStringChunk *chunk,
     }
 
   return lookup;
+}
+
+/**
+ * g_string_chunk_insert_len:
+ * @chunk: a #GStringChunk
+ * @string: bytes to insert
+ * @len: number of bytes of @string to insert, or -1 to insert a 
+ *     nul-terminated string. 
+ * 
+ * Adds a copy of the first @len bytes of @string to the #GStringChunk. The
+ * copy is nul-terminated.
+ * 
+ * The characters in the string can be changed, if necessary, though you
+ * should not change anything after the end of the string.
+ * 
+ * Return value: a pointer to the copy of @string within the #GStringChunk
+ * 
+ * Since: 2.4
+ **/
+gchar*
+g_string_chunk_insert_len (GStringChunk *chunk,
+			   const gchar  *string, 
+			   gssize        len)
+{
+  gchar* pos;
+
+  g_return_val_if_fail (chunk != NULL, NULL);
+
+  if (len < 0)
+    len = strlen (string);
+  
+  if ((chunk->storage_next + len + 1) > chunk->this_size)
+    {
+      gsize new_size = nearest_power (chunk->default_size, len + 1);
+
+      chunk->storage_list = g_slist_prepend (chunk->storage_list,
+					     g_new (gchar, new_size));
+
+      chunk->this_size = new_size;
+      chunk->storage_next = 0;
+    }
+
+  pos = ((gchar *) chunk->storage_list->data) + chunk->storage_next;
+
+  *(pos + len) = '\0';
+
+  strncpy (pos, string, len);
+  len = strlen (pos);
+
+  chunk->storage_next += len + 1;
+
+  return pos;
 }
 
 /* Strings.
