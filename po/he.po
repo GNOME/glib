@@ -1,0 +1,497 @@
+# translation of glib.HEAD.po to 
+# translation of glib.HEAD.po to
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Meir Kriheli <meirkr@mksoft.co.il>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glib.HEAD\n"
+"POT-Creation-Date: 2002-12-10 06:10+0100\n"
+"PO-Revision-Date: 2002-12-11 03:52+0000\n"
+"Last-Translator: Meir Kriheli <meirkr@mksoft.co.il>\n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.1\n"
+
+#: glib/gconvert.c:401
+#, c-format
+msgid "Conversion from character set '%s' to '%s' is not supported"
+msgstr "אין תמיכה בהמרה ממערך תוים '%s' ל '%s'"
+
+#: glib/gconvert.c:405
+#, c-format
+msgid "Could not open converter from '%s' to '%s': %s"
+msgstr "לא ניתן לפתוח ממיר מ-'%s' ל-'%s': %s"
+
+#: glib/gconvert.c:603 glib/gconvert.c:893 glib/giochannel.c:1295
+#: glib/giochannel.c:1337 glib/giochannel.c:2179 glib/gutf8.c:875
+#: glib/gutf8.c:1320
+msgid "Invalid byte sequence in conversion input"
+msgstr "רצף תווים לא חוקי בקלט המיועד להמרה"
+
+#: glib/gconvert.c:608 glib/gconvert.c:824 glib/giochannel.c:1302
+#: glib/giochannel.c:2191
+#, c-format
+msgid "Error during conversion: %s"
+msgstr "שגיאה בזמן המרה: %s"
+
+#: glib/gconvert.c:626 glib/gutf8.c:871 glib/gutf8.c:1071 glib/gutf8.c:1212
+#: glib/gutf8.c:1316
+msgid "Partial character sequence at end of input"
+msgstr "רצף תווים חלקי בסוף הקלט"
+
+#: glib/gconvert.c:799
+#, c-format
+msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgstr "לא ניתן להמיר ברירת מחדל '%s' למערך תווים '%s'"
+
+#: glib/gconvert.c:1633
+#, c-format
+msgid "The URI '%s' is not an absolute URI using the file scheme"
+msgstr "URI '%s' הוא לא אבסולוטי בשימוש בתור מזהה קובץ"
+
+#: glib/gconvert.c:1643
+#, c-format
+msgid "The local file URI '%s' may not include a '#'"
+msgstr "ה-URI של קובץ מקומי '%s' אינו יכול להכיל '#'"
+
+#: glib/gconvert.c:1660
+#, c-format
+msgid "The URI '%s' is invalid"
+msgstr "URI '%s' אינו תקף"
+
+#: glib/gconvert.c:1672
+#, c-format
+msgid "The hostname of the URI '%s' is invalid"
+msgstr "שם המארח של URI '%s' אינו תקף"
+
+#: glib/gconvert.c:1688
+#, c-format
+msgid "The URI '%s' contains invalidly escaped characters"
+msgstr "URI '%s' מכיל תווים ללא תוי חילוף תקפים"
+
+#: glib/gconvert.c:1759
+#, c-format
+msgid "The pathname '%s' is not an absolute path"
+msgstr "שם הנתיב '%s' אינו נתיב מוחלט"
+
+#: glib/gconvert.c:1769
+msgid "Invalid hostname"
+msgstr "שם מחשב מארח לא תקף"
+
+#: glib/gdir.c:80
+#, c-format
+msgid "Error opening directory '%s': %s"
+msgstr "שגיאה בפתיחת תיקיה '%s': %s"
+
+#: glib/gfileutils.c:382 glib/gfileutils.c:447
+#, c-format
+msgid "Could not allocate %lu bytes to read file \"%s\""
+msgstr "לא ניתן להקצות %lu בתים עבור קריאת קובץ \"%s\""
+
+#: glib/gfileutils.c:393
+#, c-format
+msgid "Error reading file '%s': %s"
+msgstr "שגיאה בקריאת קובץ '%s': %s"
+
+#: glib/gfileutils.c:469
+#, c-format
+msgid "Failed to read from file '%s': %s"
+msgstr "כשלון בקריאה מקובץ %s': %s"
+
+#: glib/gfileutils.c:516 glib/gfileutils.c:584
+#, c-format
+msgid "Failed to open file '%s': %s"
+msgstr "כשלון בפתיחת קובץ %s': %s"
+
+#: glib/gfileutils.c:530
+#, c-format
+msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgstr "כשלון בקבלת מאפייני קובץ '%s': fstat() נכשל: %s"
+
+#: glib/gfileutils.c:556
+#, c-format
+msgid "Failed to open file '%s': fdopen() failed: %s"
+msgstr "כשלון בפתיחת קובץ '%s': fdopen() נכשל: %s"
+
+#: glib/gfileutils.c:763
+#, c-format
+msgid "Template '%s' invalid, should not contain a '%s'"
+msgstr "תבנית '%s'  אינה תקפה, אינה צריכה להכיל '%s'"
+
+#: glib/gfileutils.c:775
+#, c-format
+msgid "Template '%s' doesn't end with XXXXXX"
+msgstr "תבנית '%s' אינה מסתיימת ב-XXXXXX"
+
+#: glib/gfileutils.c:796
+#, c-format
+msgid "Failed to create file '%s': %s"
+msgstr "כשלון ביצירת קובץ '%s': %s"
+
+#: glib/giochannel.c:1123
+#, c-format
+msgid "Conversion from character set `%s' to `%s' is not supported"
+msgstr "המרה ממערך תווים `%s' ל-`%s' אינה נתמכת"
+
+#: glib/giochannel.c:1127
+#, c-format
+msgid "Could not open converter from `%s' to `%s': %s"
+msgstr "לא ניתן לפתוח ממיר מ-`%s' ל-`%s': %s"
+
+#: glib/giochannel.c:1472
+msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgstr "לא ניתן לבצע קריאה ב-g_io_channel_read_line_string"
+
+#: glib/giochannel.c:1519 glib/giochannel.c:1776 glib/giochannel.c:1862
+msgid "Leftover unconverted data in read buffer"
+msgstr "שאריות מידע לא מומר במכלא הקריאה"
+
+#: glib/giochannel.c:1599 glib/giochannel.c:1676
+msgid "Channel terminates in a partial character"
+msgstr "ערוץ מסתיים בתו חלקי"
+
+#: glib/giochannel.c:1662
+msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgstr "לא ניתן לבצע קריאה ב-g_io_channel_read_to_end"
+
+#: glib/giowin32.c:712 glib/giowin32.c:741
+msgid "Incorrect message size"
+msgstr "גודל הודעה שגוי"
+
+#: glib/giowin32.c:1045 glib/giowin32.c:1098
+msgid "Socket error"
+msgstr "שגיאת שקע"
+
+#: glib/giowin32.c:1298
+msgid "Channel set flags unsupported"
+msgstr "דגלים לא נתמכים במערך ערוצים"
+
+#: glib/gmarkup.c:222
+#, c-format
+msgid "Error on line %d char %d: %s"
+msgstr "שגיאה בשורה %d תו %d: %s"
+
+#: glib/gmarkup.c:306
+#, c-format
+msgid "Error on line %d: %s"
+msgstr "שגיאה בשורה %d: %s"
+
+#: glib/gmarkup.c:385
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "ישות '&;' ריקה נמצאה; ישויות חוקיות הן: &amp; &quot; &lt; &gt; &apos;"
+
+#: glib/gmarkup.c:395
+#, c-format
+msgid ""
+"Character '%s' is not valid at the start of an entity name; the & character "
+"begins an entity; if this ampersand isn't supposed to be an entity, escape "
+"it as &amp;"
+msgstr ""
+"תו '%s' אינו חוקי בתחילת שם ישות; התו & מתחיל ישות; "
+"אם תו & אינו אמור להוות ישות, חלף אותו בתור &amp;"
+
+#: glib/gmarkup.c:431
+#, c-format
+msgid "Character '%s' is not valid inside an entity name"
+msgstr "תו '%s'  אינו תקף בתוך שם ישות"
+
+#: glib/gmarkup.c:475
+#, c-format
+msgid "Entity name '%s' is not known"
+msgstr "שם ישות '%s' אינו ידוע"
+
+#: glib/gmarkup.c:485
+msgid ""
+"Entity did not end with a semicolon; most likely you used an ampersand "
+"character without intending to start an entity - escape ampersand as &amp;"
+msgstr ""
+"ישות לא הסתיימה בנקודה פסיק; כנראה השתמשת ב-& "
+"ללא כוונה להתחיל ישות - חלף את & ב-&amp;"
+
+#: glib/gmarkup.c:531
+#, c-format
+msgid ""
+"Failed to parse '%s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
+msgstr ""
+"כשלון בפירוק '%s', אשר היה אמור להיות ספרה בתוך ייחוס "
+"תו (&#234; לדוגמא) - יכול להיות שהספרה גדולה מדי"
+
+#: glib/gmarkup.c:556
+#, c-format
+msgid "Character reference '%s' does not encode a permitted character"
+msgstr "יחוס תו '%s' אינו מסמל תו מורשה"
+
+#: glib/gmarkup.c:573
+msgid "Empty character reference; should include a digit such as &#454;"
+msgstr "יחוס תו ריק; אמור להכיל מספר כגון &#454;"
+
+#: glib/gmarkup.c:583
+msgid ""
+"Character reference did not end with a semicolon; most likely you used an "
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
+msgstr ""
+"יחוס תו אינו הסתיים בנקודה פסיק; כנראה השתמשת בתו & "
+"ללא כוונה להתחיל ישות - חלף & בתור &amp;"
+
+#: glib/gmarkup.c:609
+msgid "Unfinished entity reference"
+msgstr "יחוס ישות לא גמור"
+
+#: glib/gmarkup.c:615
+msgid "Unfinished character reference"
+msgstr "יחוס תו לא גמור"
+
+#: glib/gmarkup.c:860 glib/gmarkup.c:888 glib/gmarkup.c:919
+msgid "Invalid UTF-8 encoded text"
+msgstr "קידוד טקסט לא תקף ב-UTF-8"
+
+#: glib/gmarkup.c:955
+msgid "Document must begin with an element (e.g. <book>)"
+msgstr "מסמך חייב להתחיל באלמנט (כגון: <book>)"
+
+#: glib/gmarkup.c:994
+#, c-format
+msgid ""
+"'%s' is not a valid character following a '<' character; it may not begin an "
+"element name"
+msgstr "'%s' אינו תו תקף אחרי תו '<'; הוא אינו יכול להתחיל שם אלמנט"
+
+#: glib/gmarkup.c:1057
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' character to end the start tag of element "
+"'%s'"
+msgstr ""
+"תו מוזר '%s', מצפה לתו '>' כדי לסיים את התחלת אלמנט "
+"'%s'"
+
+#: glib/gmarkup.c:1144
+#, c-format
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "תו מוזר '%s', מצפה ל-'=' לאחר שם מאפיין '%s' של אלמנט '%s'"
+
+#: glib/gmarkup.c:1185
+#, c-format
+msgid ""
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
+msgstr ""
+"תו מוזר '%s', מצפה לתו '>' או '/' כדי לסיים את תחילת "
+"אלמנט '%s', או מאפיין אופצינלי; כנראה השתמשת בתו "
+"לא תקף בשם המאפיין"
+
+#: glib/gmarkup.c:1268
+#, c-format
+msgid ""
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
+msgstr ""
+"תו מוזר '%s', מצפה לפתיחת גרשיים לאחר סימן השווה בעת "
+"מתן ערך למאפיין '%s'  של אלמנט '%s'"
+
+#: glib/gmarkup.c:1408
+#, c-format
+msgid ""
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
+msgstr "'%s' אינו תו תקף לאחר התווים '</'; '%s' אינו יכול להתחיל שם אלמנט"
+
+#: glib/gmarkup.c:1446
+#, c-format
+msgid ""
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
+msgstr ""
+"'%s' אינו תו תקף לאחר סגירת שם אלמנט '%s'; התו "
+"החוקי הוא '>'"
+
+#: glib/gmarkup.c:1457
+#, c-format
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "אלמנט '%s' נסגר, אין אלמנט פתוח כרגע"
+
+#: glib/gmarkup.c:1466
+#, c-format
+msgid "Element '%s' was closed, but the currently open element is '%s'"
+msgstr "אלמנט '%s' נסגר, אך האלמנט הפתוח כרגע הוא '%s'"
+
+#: glib/gmarkup.c:1613
+msgid "Document was empty or contained only whitespace"
+msgstr "המסמך היה ריק או הכיל שטח לבן בלבד"
+
+#: glib/gmarkup.c:1627
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "המסמך הסתיים בצורה לא צפויה לאחר פתיחת '<'"
+
+#: glib/gmarkup.c:1635 glib/gmarkup.c:1679
+#, c-format
+msgid ""
+"Document ended unexpectedly with elements still open - '%s' was the last "
+"element opened"
+msgstr ""
+"המסמך הסתיים בצורה לא צפויה כאשר אלמנט '%s' היה האלמנט "
+"הפתוח האחרון"
+
+#: glib/gmarkup.c:1643
+#, c-format
+msgid ""
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
+msgstr ""
+"המסמך הסתיים בצורה לא צפויה, מצפה לתו 'גדול מ' לסגירת "
+"תג <%s/>"
+
+#: glib/gmarkup.c:1649
+msgid "Document ended unexpectedly inside an element name"
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך שם אלמנט"
+
+#: glib/gmarkup.c:1654
+msgid "Document ended unexpectedly inside an attribute name"
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך שם מאפיין"
+
+#: glib/gmarkup.c:1659
+msgid "Document ended unexpectedly inside an element-opening tag."
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך תג פתיחת אלמנט"
+
+#: glib/gmarkup.c:1665
+msgid ""
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
+msgstr ""
+"המסמך הסתיים בצורה לא צפויה לאחר תו השווה שבא לאחר שם מאפיין; "
+"אין ערך למאפיין"
+
+#: glib/gmarkup.c:1672
+msgid "Document ended unexpectedly while inside an attribute value"
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך ערך מאפיין"
+
+#: glib/gmarkup.c:1687
+#, c-format
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך תג סגירה לאלמנט '%s'"
+
+#: glib/gmarkup.c:1693
+msgid "Document ended unexpectedly inside a comment or processing instruction"
+msgstr "המסמך הסתיים בצורה לא צפויה בתוך הערה או הוראת עיבוד"
+
+#: glib/gshell.c:72
+msgid "Quoted text doesn't begin with a quotation mark"
+msgstr "טקסט מצוטט אינו מתחיל בגרשיים"
+
+#: glib/gshell.c:162
+msgid "Unmatched quotation mark in command line or other shell-quoted text"
+msgstr "אין גרשיים סוגרות בשורת הפקודה או בטקסט מעטפת מצוטט"
+
+#: glib/gshell.c:530
+#, c-format
+msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgstr "טקסט הסתיים מיד לאחר תו '\\'. (הטקסט היה '%s')"
+
+#: glib/gshell.c:537
+#, c-format
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgstr "טקסט הסתיים לפני שגרשיים סוגרות נמצאו עבור %c. (הטקסט היה '%s')"
+
+#: glib/gshell.c:549
+msgid "Text was empty (or contained only whitespace)"
+msgstr "הטקסט היה ריק (או הכיל שטח לבן בלבד)"
+
+#: glib/gspawn-win32.c:208
+msgid "Failed to read data from child process"
+msgstr "כשלון בקריאת מידע מתהליך ילד"
+
+#: glib/gspawn-win32.c:336
+msgid ""
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
+msgstr "שגיאה לא צפויה ב-g_io_channel_win32_poll()- קריאת מידע מתהליך ילד"
+
+#: glib/gspawn-win32.c:705 glib/gspawn.c:961
+#, c-format
+msgid "Failed to read from child pipe (%s)"
+msgstr "כשלון בקריאת מידע מצינור ילד (%s)"
+
+#: glib/gspawn-win32.c:783
+msgid "Failed to execute helper program"
+msgstr "כשלון בהרצת תוכנת עזר"
+
+#: glib/gspawn-win32.c:816 glib/gspawn.c:1166
+#, c-format
+msgid "Failed to change to directory '%s' (%s)"
+msgstr "כשלון בשינוי לתיקיה '%s' (%s)"
+
+#: glib/gspawn-win32.c:825
+#, c-format
+msgid "Failed to execute child process (%s)"
+msgstr "כשלון בהרצת תהליך ילד (%s)"
+
+#: glib/gspawn-win32.c:868 glib/gspawn.c:1297
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "כשלון ביצירת צינור לתקשורת עם תהליך ילד (%s)"
+
+#: glib/gspawn.c:167
+#, c-format
+msgid "Failed to read data from child process (%s)"
+msgstr "כשלון בקריאת מידע מתהליך ילד (%s)"
+
+#: glib/gspawn.c:299
+#, c-format
+msgid "Unexpected error in select() reading data from a child process (%s)"
+msgstr "שגיאה לא צפויה ב select() בקריאת מידע מתהליך ילד (%s)"
+
+#: glib/gspawn.c:382
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "שגיאה לא צפויה ב waitpid() (%s)"
+
+#: glib/gspawn.c:1026
+#, c-format
+msgid "Failed to fork (%s)"
+msgstr "כשלון בשכפול תהליך (%s)"
+
+#: glib/gspawn.c:1176
+#, c-format
+msgid "Failed to execute child process \"%s\" (%s)"
+msgstr "כשלון בהרצת תהליך ילד  \"%s\" (%s)"
+
+#: glib/gspawn.c:1186
+#, c-format
+msgid "Failed to redirect output or input of child process (%s)"
+msgstr "כישלון בניתוב פלט או קלט של תהליך ילד (%s)"
+
+#: glib/gspawn.c:1195
+#, c-format
+msgid "Failed to fork child process (%s)"
+msgstr "כשלון בשכפול תהליך ילד (%s)"
+
+#: glib/gspawn.c:1203
+#, c-format
+msgid "Unknown error executing child process \"%s\""
+msgstr "שגיאה לא ידועה בהרצת תהליך ילד \"%s\""
+
+#: glib/gspawn.c:1225
+#, c-format
+msgid "Failed to read enough data from child pid pipe (%s)"
+msgstr "שגיאה בקריאת מספיק מידע מצינור מזהה תהליך ילד (%s)"
+
+#: glib/gutf8.c:950
+msgid "Character out of range for UTF-8"
+msgstr "תו מחוץ לטווח UTF-8"
+
+#: glib/gutf8.c:1039 glib/gutf8.c:1048 glib/gutf8.c:1180 glib/gutf8.c:1189
+#: glib/gutf8.c:1330 glib/gutf8.c:1426
+msgid "Invalid sequence in conversion input"
+msgstr "רצף לא תקף בקלט המרה"
+
+#: glib/gutf8.c:1341 glib/gutf8.c:1437
+msgid "Character out of range for UTF-16"
+msgstr "מערך התווים מחוץ לתחום UTF-16"
+
