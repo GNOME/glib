@@ -22,7 +22,6 @@ stamp-gc-h
 testgdate
 testgdateparser
 glibconfig-sysdefs.h
-alloca-test
 hash-test
 list-test
 node-test

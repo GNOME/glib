@@ -1,3 +1,12 @@
+1999-01-11  Jeff Garzik  <jgarzik@pobox.com>
+
+	* gstrfuncs.c:
+	Do not use vasprintf.
+
+	* configure.in, glib.h, testglib.c, tests/.cvsignore,
+	  tests/Makefile.am, tests/alloca-test.c:
+	Do not use alloca.
+
 1999-01-11  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in: Test for localtime_r only after including the

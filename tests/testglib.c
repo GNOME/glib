@@ -910,58 +910,6 @@ main (int   argc,
 #endif
   g_print ("ok\n");
 
-#ifdef G_HAVE_ALLOCA
-  g_print ("checking alloca()-based allocation routines...");
-
-  string = g_alloca(80);
-  g_assert(string != NULL);
-  for (i = 0; i < 80; i++)
-    string[i] = 'x';
-  string[79] = 0;
-  g_assert(strlen(string) == 79);
-
-  gti = g_new_a(GlibTestInfo, 2);
-  string = g_alloca(2);
-  strcpy(string, "x");
-  for (i = 0; i < 2; i++) {
-    for (j = 0; j < 40; j++)
-      gti[i].name[j] = 'x';
-    gti[i].name[39] = 0;
-    g_assert(strlen(gti[i].name) == 39);
-    gti[i].age = 42;
-  }
-  g_assert(strcmp(string, "x") == 0);
-
-  string = g_new0_a(char, 40);
-  for (i = 0; i < 39; i++)
-    string[i] = 'x';
-  g_assert(strlen(string) == 39);
-
-  g_print ("ok\n");
-
-  g_print ("checking alloca()-based string duplication routines...");
-
-  g_strdup_a(string, GLIB_TEST_STRING);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING) == 0);
-  g_strdup_a(string, NULL);
-  g_assert(string == NULL);
-
-  g_strndup_a(string, GLIB_TEST_STRING, 5);
-  g_assert(string != NULL);
-  g_assert(strlen(string) == 5);
-  g_assert(strcmp(string, GLIB_TEST_STRING_5) == 0);
-  g_strndup_a(string, NULL, 20);
-  g_assert(string == NULL);
-
-  g_strconcat3_a(string, GLIB_TEST_STRING, GLIB_TEST_STRING, GLIB_TEST_STRING);
-  g_assert(string != NULL);
-  g_assert(strcmp(string, GLIB_TEST_STRING GLIB_TEST_STRING
-  			  GLIB_TEST_STRING) == 0);
-
-  g_print ("ok\n");
-#endif
-
   return 0;
 }
 

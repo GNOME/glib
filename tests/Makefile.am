@@ -2,7 +2,6 @@
 INCLUDES = -I$(top_srcdir)
 
 TESTS = \
-	alloca-test	\
 	array-test	\
 	dirname-test	\
 	hash-test	\
@@ -16,7 +15,6 @@ TESTS = \
 
 noinst_PROGRAMS = $(TESTS)
 
-alloca_test_LDADD = $(top_builddir)/libglib.la
 array_test_LDADD = $(top_builddir)/libglib.la
 dirname_test_LDADD = $(top_builddir)/libglib.la
 hash_test_LDADD = $(top_builddir)/libglib.la

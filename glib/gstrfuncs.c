@@ -108,15 +108,6 @@ g_strdup_vprintf (const gchar *format,
 		  va_list      args1)
 {
   gchar *buffer;
-
-#if (HAVE_VASPRINTF) && !(ENABLE_MEM_CHECK)
-  /* if memory checking is disabled, that means we can call g_free() on
-   * memory obtained via malloc().  This allows us to use the
-   * glibc vasprintf() call where available.
-   */
-  vasprintf (&buffer, format, args1);
-#else
-
   va_list args2;
 
   G_VA_COPY (args2, args1);
@@ -125,8 +116,6 @@ g_strdup_vprintf (const gchar *format,
 
   vsprintf (buffer, format, args2);
   va_end (args2);
-
-#endif /* (HAVE_VASPRINTF) && !(ENABLE_MEM_CHECK) */
 
   return buffer;
 }

@@ -301,16 +301,6 @@ extern "C" {
       ((type *) g_realloc (mem, (unsigned) sizeof (type) * (count)))
 #endif /* __DMALLOC_H__ */
 
-/* alloca-based counterparts of the above routines */
-#if G_HAVE_ALLOCA
-#  define g_alloca alloca
-#  define g_new_a(type, count)	  \
-      ((type *) alloca ((unsigned) sizeof (type) * (count)))
-#  define g_new0_a(type, count)	  \
-      ((type *) memset (alloca ((unsigned) sizeof (type) * (count)), 0, \
-      			((unsigned) sizeof (type) * (count))))
-#endif /* G_HAVE_ALLOCA */
-
 #define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \
   g_mem_chunk_new (#type " mem chunks (" #pre_alloc ")", \
 		   sizeof (type), \
@@ -1464,71 +1454,6 @@ gchar*   g_strjoin		(const gchar  *separator,
 gchar*	 g_strescape		(gchar	      *string);
 gpointer g_memdup		(gconstpointer mem,
 				 guint	       byte_size);
-
-/* Macros for dynamic strings via fast stack allocation
- * All macros take a special first argument: the target gchar* string
- */
-#if G_HAVE_ALLOCA
-#  define g_strdup_a(newstr,str) G_STMT_START { \
-	  gchar *__new;				\
-	  const gchar *__old = (str);		\
-	  if (__old)				\
-	  {					\
-	    size_t __len = strlen (__old) + 1;	\
-	    __new = alloca (__len);		\
-	    memcpy (__new, __old, __len);	\
-   	  }					\
-          else					\
-            __new = NULL;			\
-          (newstr) = __new;			\
-   } G_STMT_END
-#  define g_strndup_a(newstr,str,n) G_STMT_START { \
-	  gchar *__new;				\
-	  const gchar *__old = (str);		\
-	  if (__old)				\
-	  {					\
-            guint __n = (n);			\
-	    size_t __len = strlen (__old);	\
-	    if (__len > (__n))			\
-              __len = (__n);			\
-	    __new = alloca (__len + 1);		\
-	    memcpy (__new, __old, __len);	\
-	    __new[__len] = 0;			\
-   	  }					\
-          else                                  \
-            __new = NULL;                       \
-	  (newstr) = __new;			\
-   } G_STMT_END
-#  define g_strconcat3_a(newstr,str1,str2,str3) G_STMT_START { \
-          const gchar *__str1 = (str1);				\
-          const gchar *__str2 = (str2);				\
-          const gchar *__str3 = (str3);				\
-	  gchar *__new;						\
-          if (__str1) {						\
-	    size_t __len1 = strlen (__str1);			\
-	    if (__str2) {					\
-	      size_t __len2 = strlen (__str2);			\
-	      if (__str3) {					\
-		size_t __len3 = strlen (__str3);		\
-		__new = alloca (__len1 + __len2 + __len3 + 1);	\
-		__new[__len1 + __len2 + __len3] = 0;		\
-		memcpy (__new + __len1 + __len2, __str3, __len3); \
-	      } else {						\
-		__new = alloca (__len1 + __len2 + 1);		\
-		__new[__len1 + __len2] = 0;			\
-	      }							\
-	      memcpy (__new + __len1, __str2, __len2);		\
-	    } else {						\
-	      __new = alloca (__len1 + 1);			\
-	      __new[__len1] = 0;				\
-	    }							\
-	    memcpy (__new, __str1, __len1);			\
-	  } else						\
-	    __new = NULL;					\
-	  (newstr) = __new;					\
-   } G_STMT_END
-#endif /* G_HAVE_ALLOCA */
-
 
 /* NULL terminated string arrays.
  * g_strsplit() splits up string into max_tokens tokens at delim and
