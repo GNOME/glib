@@ -1,5 +1,12 @@
 2004-04-22  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/testglib.c (main): Add testcases for g_message() involving
+	non-printable and unsafe characters.
+
+	* glib/gmessages.c (escape_string): Don't assume that
+	string->str remains unchanged over g_string_insert() 
+	calls.  (#139030, Christophe Saout)
+
 	* glib/gstrfuncs.c (g_ascii_strtod): Fix problems when a 
 	locale-specific decimal separator directly follows a 
 	number.  (#138424, Nickolay V. Shmyrev)

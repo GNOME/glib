@@ -1230,6 +1230,8 @@ main (int   argc,
   g_message ("the next warning is a test:");
   string = NULL;
   g_print (string);
+  g_message ("non-printable UTF-8: \"\xc3\xa4\xda\x85\"");
+  g_message ("unsafe chars: \"\x10\x11\x12\n\t\x7f\x81\x82\x83\"");
 
   g_print ("checking endian macros (host is ");
 #if G_BYTE_ORDER == G_BIG_ENDIAN
