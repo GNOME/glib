@@ -1,3 +1,7 @@
+Sun Sep  6 19:08:53 PDT 1998 Manish Singh <yosh@gimp.org>
+
+	* configure.in: added -std1 check for ANSI compliance (from gtk)
+
 Sun Sep  6 12:31:50 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* glib.h: provide proper ATEXIT behavior on NeXTStep by !atexit

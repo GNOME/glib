@@ -109,6 +109,25 @@ if eval "test x$GCC = xyes"; then
   fi
 fi
 
+AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
+glib_save_LDFLAGS=$LDFLAGS
+LIBS="$LIBS -lm"
+AC_TRY_RUN([#include <math.h>
+             int main (void) { return (log(1) != log(1.)); }],
+     AC_MSG_RESULT(none needed),
+     glib_save_CFLAGS=$CFLAGS
+     CFLAGS="$CFLAGS -std1"
+     AC_TRY_RUN([#include <math.h>
+                 int main (void) { return (log(1) != log(1.)); }],
+         AC_MSG_RESULT(-std1),
+         AC_MSG_RESULT()
+         CFLAGS=$glib_save_CFLAGS
+         AC_MSG_WARN(
+                [No ANSI prototypes found in library. (-std1 didn't work.)])
+     )
+)
+LIBS=$glib_save_LIBS
+
 # Checks for header files.
 AC_HEADER_STDC
 
