@@ -206,7 +206,7 @@ changequote([,])dnl
       case "$host_os" in
       cygwin*)
         # Convert to a UNC path for cygwin
-        test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive"`
+        test -z "$LD" && LD=`echo X$ac_prog | sed -e "1s/^X//" -e "$sub_uncdrive"`
 	;;
       *)
         test -z "$LD" && LD="$ac_prog"

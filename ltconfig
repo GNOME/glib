@@ -1658,7 +1658,7 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  check_shared_deplibs_method='file_magic ELF 32-bit LSB shared object'
+  check_shared_deplibs_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
   sys_lib_search_path="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
 
   if test -f /lib/ld.so.1; then

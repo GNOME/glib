@@ -53,7 +53,7 @@ main (int   argc,
 {
   GStringChunk *string_chunk;
 
-  gchar *tmp_string, *tmp_string_2;
+  gchar *tmp_string = NULL, *tmp_string_2;
   gint i;
   GString *string1, *string2;
 

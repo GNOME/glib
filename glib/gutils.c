@@ -371,6 +371,7 @@ g_getenv (const gchar *variable)
 #endif
 }
 
+
 G_LOCK_DECLARE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;
@@ -400,6 +401,7 @@ g_get_any_init (void)
 	    g_tmp_dir[k-1] = '\0';
 	}
 #endif
+
       if (!g_tmp_dir)
 	{
 #ifndef NATIVE_WIN32
@@ -409,70 +411,70 @@ g_get_any_init (void)
 #endif /* NATIVE_WIN32 */
 	}
       
-#ifdef NATIVE_WIN32
-      /* The official way to specify a home directory on NT is
-       * the HOMEDRIVE and HOMEPATH environment variables.
-       *
-       * This is inside #ifdef NATIVE_WIN32 because with the cygwin dll,
-       * HOME should be a POSIX style pathname.
-       */
-      
-      if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
-	{
-	  gchar *homedrive, *homepath;
-
-	  homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
-	  homepath = g_strdup (g_getenv ("HOMEPATH"));
-
-	  g_home_dir = g_strconcat (homedrive, homepath, NULL);
-	  g_free (homedrive);
-	  g_free (homepath);
-	}
       if (!g_home_dir)
 	g_home_dir = g_strdup (g_getenv ("HOME"));
-#else
-      g_home_dir = g_strdup (g_getenv ("HOME"));
-#endif
+      
+#ifdef NATIVE_WIN32
+      if (!g_home_dir)
+	{
+	  /* The official way to specify a home directory on NT is
+	   * the HOMEDRIVE and HOMEPATH environment variables.
+	   *
+	   * This is inside #ifdef NATIVE_WIN32 because with the cygwin dll,
+	   * HOME should be a POSIX style pathname.
+	   */
+	  
+	  if (getenv ("HOMEDRIVE") != NULL && getenv ("HOMEPATH") != NULL)
+	    {
+	      gchar *homedrive, *homepath;
+	      
+	      homedrive = g_strdup (g_getenv ("HOMEDRIVE"));
+	      homepath = g_strdup (g_getenv ("HOMEPATH"));
+	      
+	      g_home_dir = g_strconcat (homedrive, homepath, NULL);
+	      g_free (homedrive);
+	      g_free (homepath);
+	    }
+	}
+#endif /* !NATIVE_WIN32 */
       
 #ifdef HAVE_PWD_H
       {
-	struct passwd *pw = NULL, pwd;
+	struct passwd *pw = NULL;
 	gpointer buffer = NULL;
-	guint bufsize = sizeof (struct passwd);
-#  ifdef HAVE_GETPWUID_R 
-	while (TRUE)
-	  {
-	    int error = 0;
-	    errno = 0;
-	    buffer = g_realloc (buffer, bufsize);
-#    ifdef HAVE_GETPWUID_R_POSIX
-	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	    if (errno == 0) /* The errorcode is in error (might be 0, too) */
-	      errno = error;
-#    else /* HAVE_GETPWUID_R_POSIX */
-	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-#    endif /* HAVE_GETPWUID_R_POSIX */
-	    if (errno == 0)
-	      {
-		g_assert (pw);
-		break;
-	      }
 
-	    if (errno != ERANGE)
-	      g_error ("Could not read account information: %s", 
-		       g_strerror (errno));
-	    bufsize *= 2;
-	  }
-#  else /* HAVE_GETPWUID_R */
-#    if defined(G_THREADS_ENABLED) && defined(__GNUC__)
-#    warning "the `g_get_(user_name|real_name|home_dir|tmp_dir)'"
-#    warning "functions will not be MT-safe during their first call"
-#    warning "because there is no `getpwuid_r' on your system."
-#    endif
-	setpwent ();
-	pw = getpwuid (getuid ());
-	endpwent ();
-#  endif /* HAVE_GETPWUID_R */
+#  ifdef HAVE_GETPWUID_R
+        struct passwd pwd;
+        guint bufsize = 64;
+        gint error;
+
+        do
+          {
+            g_free (buffer);
+            buffer = g_malloc (bufsize);
+
+#    ifdef HAVE_GETPWUID_R_POSIX
+            error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+            error = error < 0 ? errno : error;
+#    else /* !HAVE_GETPWUID_R_POSIX */
+            pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+            error = pw ? 0 : errno;
+#    endif /* !HAVE_GETPWUID_R_POSIX */
+
+            bufsize *= 2;
+          }
+        while (error == ERANGE);
+
+        if (error)
+          g_warning ("getpwuid_r(): failed due to: %s", g_strerror (error));
+
+#  else /* !HAVE_GETPWUID_R */
+
+        setpwent ();
+        pw = getpwuid (getuid ());
+        endpwent ();
+
+#  endif /* !HAVE_GETPWUID_R */
 	
 	if (pw)
 	  {
@@ -483,28 +485,28 @@ g_get_any_init (void)
 	  }
 	g_free (buffer);
       }
+
 #else /* !HAVE_PWD_H */
+
 #  ifdef NATIVE_WIN32
       {
 	guint len = 17;
+	gchar buffer[17];
 	
-	g_user_name = g_new (gchar, len);
-	
-	if (!GetUserName (g_user_name, &len))
+	if (GetUserName (buffer, &len))
 	  {
-	    g_free (g_user_name);
-	    g_user_name = g_strdup ("somebody");
-	    g_real_name = g_strdup ("Unknown");
+	    g_user_name = g_strdup (buffer);
+	    g_real_name = g_strdup (buffer);
 	  }
-	else
-	  g_real_name = g_strdup (g_user_name);
       }
-#  else /* !NATIVE_WIN32 */
-      g_user_name = g_strdup ("somebody");
-      g_real_name = g_strdup ("Unknown");
-      g_home_dir = NULL;
-#  endif /* !NATIVE_WIN32 */
+#  endif /* NATIVE_WIN32 */
+
 #endif /* !HAVE_PWD_H */
+
+      if (!g_user_name)
+	g_user_name = g_strdup ("somebody");
+      if (!g_real_name)
+	g_real_name = g_strdup ("Unknown");
     }  
 }
 

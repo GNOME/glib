@@ -1,3 +1,223 @@
+Thu Feb 04 20:42:24 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32 config.h.win32: Update GLIB_MICRO_VERSION.
+
+1999-02-04  Christopher Blizzard  <blizzard@redhat.com>
+
+	* glib.spec (Packager): Change my email address
+
+Thu Feb  4 01:45:01 PST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* ChangeLog
+	  NEWS
+	  README
+	  configure.in
+	  glib.spec
+	  docs/glib-config.1: version=1.1.15
+
+	* Released GLib 1.1.15
+
+Tue Feb 02 00:08:54 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* gmessages.c (g_log_default_handler): (Win32:) Don't call
+ 	ensure_stdout_valid (which would open an unneeded console window)
+ 	if we're calling a logging function.  Define ensure_stdout_valid
+ 	as an empty macro on Unix.
+
+	* gutils.c (g_get_any_init): (Win32:) Trust HOME first if defined,
+	then try HOMEDRIVE and HOMEPATH.
+
+Mon Feb  1 19:04:28 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gmain.c (g_main_iterate): Release the main_loop
+	 lock around calls to prepare() and check() so
+	 that we are not holding the main loop lock
+	 over user code.
+
+1999-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Moved the check for MT safe function variants
+	after the determination of the MT cflags and use them there.
+
+1999-01-29  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Fixed typo. Now HPUX 11 thread system detection
+	should work.
+
+	* gutils.c (g_get_any_init): Changed initial bufsize to 64. Should
+	solve some problems out there.
+
+Wed Jan 27 23:21:50 CST 1999 Shawn T. Amundson <amundson@gtk.org>
+
+	* INSTALL
+	  NEWS
+	  README
+	  configure.in
+	  glib.spec
+	  docs/glib-config.1: version=1.1.14
+
+	* Released GLib 1.1.14
+
+1999-01-28  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Simplified configure.in test for posix threads,
+	systems, that provide /usr/include/pthread.h should also have the
+	posix thread library. This is to avoid writing down all the tests
+	twice. New test for thread system on HPUX 11. Info from Matt
+	Nottingham <matt@sar.dera.gov.uk>.
+
+Wed Jan 27 20:39:49 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4: Xsed isn't valid here, don't use it
+
+	* ltmain.sh
+	* ltconfig: better file magic regexp for Linux libs
+
+	* gmodule/Makefile.am: arg, noinst_LTLIBRARIES doesn't make shared
+	libs, revert my previous change to this file
+
+	* docs/texinfo.tex: add it so automake doesn't whine
+
+Wed Jan 27 01:57:19 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in (G_MODULE_HAVE_DLERROR): applied patch from Andrej
+	Borsenkow <borsenkow.msk@sni.de> to also check for dlsym() in system
+	libraries and -ldl, to catch systems that provide dlopen() in libc
+	and dlsym() in libdl. this is at least the case for Reliant UNIX
+	5.44 (labeling itself as SINIX).
+
+Tue Jan 26 13:39:22 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: don't use backquotes in warning text
+
+1999-01-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gdate.c (g_date_set_time): Removed the #warning about MT
+	unsafety without localtime_r.
+
+	* configure.in: Moved it here.
+
+Mon Jan 25 10:07:53 1999  Raph Levien  <raph@gimp.org>
+
+	* configure.in: (#define G_THREADS_IMPL...) Changed the #define,
+	adding the G_THREADS_IMPL_ prefix to $g_threads_impl_def because
+	it looked wrong to me and was breaking gimp compile.
+
+Mon Jan 25 15:34:43 1999  Timur Bakeyev <mc@bat.ru>
+
+	* configure.in, gstrfuncs.c: Inverted logic of NO_SYS_SYGLIST_DECL -
+	now it's normal (see 1999-01-19 Josh MacDonald). Also, remove from
+	#include <signal.h> wrapper NO_SYS_SYGLIST - *sys_syglist[] declara-
+	tion hides there.
+
+1999-01-25  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* configure.in: Do not use the thread libs, when searching for
+	some functions, as this might require glib to always be linked
+	with the thread libs on some platforms.
+
+	* gutils.c (g_get_any_init): Don't set errno to zero and use it
+	only as the error code, if the function returned a value less
+	0. It might happen, that the call succeeds, even though the errno
+	is set during the call (i.e. it first looks for a passwd file,
+	which is not found). Submitted by Michael Natterer
+	<mitschel@cs.tu-berlin.de>. BTW: Sorry for all the mess with that
+	`getpwuid_r' change, but it had to be done once.
+
+Sun Jan 24 10:33:30 1999  Tim Janik  <timj@gtk.org>
+
+	* gutils.c (g_get_any_init): reverted raja's changes, since they leaked
+	a struct passwd contents buffer and for the rest mostly substituted a
+	while loop with a bunch of gotos.
+	restored the getpwuid() code to what we had after my recent clean ups
+	("Sat Jan 23 02:14:28 1999 Tim Janik"), module yosh's recent changes.
+	to feature solaris behaviour of directly returning errno, we don't
+	modify error anymore if it's > 0 and simply reset errno.
+	don't reset g_home_dir for !NATIVE_WIN32 && !NATIVE_WIN32.
+
+1999-01-24  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gutils.c 
+	(g_get_any_init) [HAVE_GETPWUID_R && HAVE_GETPWUID_R_POSIX]: 
+	Hopefully got the error handling for `getpwuid_r' right.
+	(g_get_any_init) [HAVE_GETPWUID_R && !HAVE_GETPWUID_R_POSIX]:
+	Fix typo (change `pw == NULL' to `pw != NULL').
+	
+Sun Jan 24 00:36:22 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* ghash.c:
+	- Revert previous "fix" (which really just did things a
+	  different way).
+	- (g_hash_table_remove): Don't need to support multiple values
+	  for a single key.
+
+	* tests/hash-test.c:
+	Add test where hash function always returns a single value.
+	Add beginnings of tests for g_hash_table_foreach[_remove] and
+	g_hash_table_remove.
+
+Sat Jan 23 20:40:06 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* gutils.c: removed the #warning about MT without getpwuid_r
+
+	* configure.in: and moved it here
+
+Sat Jan 23 22:45:59 1999  Jeff Garzik  <jgarzik@pobox.com>
+
+	* ghash.c (g_hash_table_lookup_node, g_hash_table_lookup,
+		   g_hash_table_insert, g_hash_table_remove,
+		   g_hash_table_lookup_extended):
+	  - Fixed bug that overwrote nodes in hash buckets instead of
+	    adding them to the hash bucket node list.
+	    Hash tables now work as advertised.
+
+	(g_hash_table_resize):
+	  - Use g_new0 instead of manual init.
+	  - Space out code a bit for readability.
+
+	(g_hash_nodes_destroy):
+	  - Replaced "if (!hash_node) return;" with
+	    "if (hash_node) {do stuff}".
+	    Testing takes up less code space than explicit call to
+	    'return' before end of function.  (look at gcc -S)
+
+	Updated module header copyright to 1999.
+	New module macro G_HASH_BUCKET for (table,key)->bucket lookups.
+
+	* tests/hash-test.c:
+	- Add two new tests, one with strings as the keys and values, and
+	  one with ints as the keys and values.  Tests indirect (strings)
+	  and direct (ints) hashing.
+	- Cleanup unused junk left over from testglib.c.
+	- Converted a g_print call to g_assert_not_reached.
+	- Updated copyright to 1999.
+
+	* testglib.c, tests/string-test.c:
+	- Init 'tmp_string' var to NULL, silencing uninit-var warning.
+
+1999-01-23  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gutils.c (g_get_any_init) [HAVE_GETPWUID_R]:
+	Rewrite not to look at `errno' if library call succeeds, since
+	`errno' is not reset to 0.
+	
+Sat Jan 23 16:17:04 1999  Tor Lillqvist  <tml@iki.fi>
+
+	* glibconfig.h.win32: Update the magic values for
+	pthread_mutex_t size and initializer bytes to match the
+	latest version of pthreads for Win32.
+
+Sat Jan 23 02:14:28 1999  Tim Janik  <timj@gtk.org>
+
+	* gutils.c (g_get_any_init): cleaned up the errno mess for
+	GETPWUID. we especially don't want to g_error() out here!
+	the warning for G_THREADS_ENABLED and !HAVE_GETPWUID_R isn't
+	gcc related.
+	if !HAVE_PWD_H and !NATIVE_WIN32, g_free the home dir before
+	resetting it to NULL, why are we doing this anyways?
+	reordered code a bit so we always provide defaults (except
+	for g_home_dir).
+
 Fri Jan 22 16:51:44 EST 1999  Jeff Garzik  <jgarzik@pobox.com>
 
 	* Makefile.am:
@@ -148,7 +368,7 @@ Tue Jan 19 20:52:43 1999  Tor Lillqvist  <tml@iki.fi>
 	after the determination of the G_THREAD_LIBS and use them for
 	finding those functions, necessary on systems with a different C
 	library libc_r for threaded progs, like FreeBSD 2.2.x. Info from
-	Timur I. Bakeyev <timur@comtat.ru>.
+	Timur Bakeyev <mc@bat.ru>.
 
 Tue Jan 19 00:44:24 1999  Josh MacDonald  <jmacd@axis.hip.berkeley.edu>
 

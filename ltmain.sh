@@ -1460,8 +1460,8 @@ EOF
                    # strict.  What do you think Gordon?
                     potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
                     for potent_lib in $potential_libs; do
-                      file_output=`file $potent_lib`
-                      if test `expr "$file_output" : ".*$file_magic_regex"` -ne 0 ; then
+
+                      if (file "$potent_lib" | sed '11,$d' | egrep "$file_magic_regex") > /dev/null ; then
                         newdeplibs="$newdeplibs $a_deplib"
                         a_deplib=""
                         break 2

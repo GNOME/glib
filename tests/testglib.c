@@ -283,7 +283,7 @@ main (int   argc,
   gint morenums[10] = { 8, 9, 7, 0, 3, 2, 5, 1, 4, 6};
   gchar *string;
 
-  gchar *mem[10000], *tmp_string, *tmp_string_2;
+  gchar *mem[10000], *tmp_string = NULL, *tmp_string_2;
   gint i, j;
   GArray *garray;
   GPtrArray *gparray;
@@ -341,6 +341,10 @@ main (int   argc,
   string = g_get_current_dir ();
   g_print ("cwd: %s\n", string);
   g_free (string);
+  g_print ("user: %s\n", g_get_user_name ());
+  g_print ("real: %s\n", g_get_real_name ());
+  g_print ("home: %s\n", g_get_home_dir ());
+  g_print ("tmp-dir: %s\n", g_get_tmp_dir ());
 
   /* type sizes */
   g_print ("checking size of gint8: %d", (int)sizeof (gint8));

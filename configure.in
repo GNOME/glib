@@ -29,9 +29,9 @@ rm -f glibconfig-sysdefs.h
 #
 GLIB_MAJOR_VERSION=1
 GLIB_MINOR_VERSION=1
-GLIB_MICRO_VERSION=13
-GLIB_INTERFACE_AGE=0
-GLIB_BINARY_AGE=0
+GLIB_MICRO_VERSION=15
+GLIB_INTERFACE_AGE=2
+GLIB_BINARY_AGE=2
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
 AC_SUBST(GLIB_VERSION)
 
@@ -288,7 +288,7 @@ AC_TRY_COMPILE([#include <signal.h>], [
 strlen (sys_siglist[0]);
 ], glib_ok=yes, glib_ok=no)
 AC_MSG_RESULT($glib_ok)
-if test $glib_ok = yes; then
+if test $glib_ok = no; then
     AC_DEFINE(NO_SYS_SIGLIST_DECL)
 fi
 
@@ -450,17 +450,21 @@ G_MODULE_LDFLAGS=
 G_MODULE_IMPL=
 G_MODULE_NEED_USCORE=0
 G_MODULE_HAVE_DLERROR=0
-dnl *** dlopen() in system libraries
+dnl *** dlopen() and dlsym() in system libraries
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_FUNC(dlopen,
-		G_MODULE_IMPL=G_MODULE_IMPL_DL
+		AC_CHECK_FUNC(dlsym,
+			G_MODULE_IMPL=G_MODULE_IMPL_DL
+		,)
 	,)
 fi
-dnl *** dlopen() in libdl
+dnl *** dlopen() and dlsym() in libdl
 if test -z "$G_MODULE_IMPL"; then
 	AC_CHECK_LIB(dl, dlopen,
-		G_MODULE_LIBS=-ldl
-		G_MODULE_IMPL=G_MODULE_IMPL_DL
+		AC_CHECK_LIB(dl, dlsym,
+			G_MODULE_LIBS=-ldl
+			G_MODULE_IMPL=G_MODULE_IMPL_DL
+		,)
 	,)
 fi
 dnl *** shl_load() in libdld (HP-UX)
@@ -575,7 +579,14 @@ LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
 		"
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide informationon your thread implementation."
+		provide information on your thread implementation."
+
+FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
+		functions will not be MT-safe during their first call because
+		there is no 'getpwuid_r' on your system."
+
+FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
+		because there is no 'localtime_r' on your system."
 
 dnl determination of thread implementation
 dnl ***************************************
@@ -590,21 +601,7 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xsolaris; then
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xposix; then
         if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(pthread, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-     	        AC_CHECK_LIB(pthreads, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-     	        AC_CHECK_LIB(c_r, pthread_attr_init, have_threads=posix)
-	fi
-        if test "x$have_threads" = xnone; then
-		AC_CHECK_FUNC(pthread_attr_init, have_threads=posix)
-	fi
-	dnl ********** DG/UX ************
-        if test "x$have_threads" = xnone; then
-                AC_CHECK_LIB(thread, __d10_pthread_attr_init,
-			have_threads=posix)
+                AC_CHECK_HEADER(pthread.h, have_threads=posix)
         fi
 fi
 if test "x$want_threads" = xyes || test "x$want_threads" = xnspr; then
@@ -652,6 +649,11 @@ case $have_threads in
 				G_THREAD_LIBS="-lthread"
 				G_THREAD_CFLAGS="-D_POSIX4A_DRAFT10_SOURCE")
         	fi
+		dnl ********* HPUX 11 ***********
+        	if test "x$G_THREAD_LIBS" = xerror; then
+                	AC_CHECK_LIB(pthread, __pthread_attr_init_system,
+				G_THREAD_LIBS="-lpthread")
+        	fi
                 mutex_has_default=yes
                 mutex_default_type='pthread_mutex_t'
                 mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
@@ -688,31 +690,6 @@ fi
 AC_MSG_CHECKING(necessary linker options)
 AC_MSG_RESULT($G_THREAD_LIBS)
 
-dnl check for mt safe function variants
-dnl ***********************************
-
-if test x"$have_threads" != xnone; then
-	glib_save_LIBS="$LIBS"
-	LIBS="$LIBS $G_THREAD_LIBS"
-	AC_CHECK_FUNCS(localtime_r rand_r)
-	if test "$ac_cv_header_pwd_h" = "yes"; then
-	 	AC_CHECK_FUNCS(getpwuid_r)
-		if test "$ac_cv_func_getpwuid_r" = "yes"; then
-			AC_MSG_CHECKING(whether getpwuid_r is posix like)
-			# getpwuid_r(0, NULL, NULL, 0) is the signature on
-			# solaris, if that is not found, the prog below won't 
-			# compile, then the posix signature is assumed as 
-			# the default.
-			AC_TRY_COMPILE([#include <pwd.h>],
-				[getpwuid_r(0, NULL, NULL, 0);],
-				[AC_MSG_RESULT(no)],
-				[AC_MSG_RESULT(yes)
-				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
-		fi
-	fi
-	LIBS="$glib_save_LIBS"
-fi
-
 dnl determination of G_THREAD_CFLAGS
 dnl ********************************
 
@@ -748,6 +725,45 @@ G_THREAD_CFLAGS="$G_THREAD_CFLAGS -D_REENTRANT" # good default guess
     AC_MSG_RESULT($G_THREAD_CFLAGS)
 else
     G_THREAD_CFLAGS=
+fi
+
+dnl check for mt safe function variants
+dnl ***********************************
+
+if test x"$have_threads" != xnone; then
+	glib_save_LIBS="$LIBS"
+	glib_save_CFLAGS="$CFLAGS"
+	# we are not doing the following for now, as this might require glib 
+	# to always be linked with the thread libs on some platforms. 
+	# LIBS="$LIBS $G_THREAD_LIBS"
+	CFLAGS="$CFLAGS $G_THREAD_CFLAGS"
+	AC_CHECK_FUNCS(localtime_r rand_r)
+	if test "$ac_cv_header_pwd_h" = "yes"; then
+	 	AC_CHECK_FUNCS(getpwuid_r)
+		if test "$ac_cv_func_getpwuid_r" = "yes"; then
+			AC_MSG_CHECKING(whether getpwuid_r is posix like)
+			# getpwuid_r(0, NULL, NULL, 0) is the signature on
+			# solaris, if that is not found, the prog below won't 
+			# compile, then the posix signature is assumed as 
+			# the default.
+			AC_TRY_COMPILE([#include <pwd.h>],
+				[getpwuid_r(0, NULL, NULL, 0);],
+				[AC_MSG_RESULT(no)],
+				[AC_MSG_RESULT(yes)
+				AC_DEFINE(HAVE_GETPWUID_R_POSIX)])
+		fi
+	fi
+	LIBS="$glib_save_LIBS"
+	CFLAGS="$glib_save_CFLAGS"
+fi
+
+if test "x$enable_threads" = "xyes"; then
+	if test "$ac_cv_func_getpwuid_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_GETPWUID_R)
+	fi
+	if test "$ac_cv_func_localtime_r" != "yes"; then
+		AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
+	fi
 fi
 
 AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c")
@@ -947,7 +963,7 @@ _______EOF
 	else
 		cat >>$outfile <<_______EOF
 $g_enable_threads_def G_THREADS_ENABLED
-#define $g_threads_impl_def
+#define G_THREADS_IMPL_$g_threads_impl_def
 typedef struct _GMutex* GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
 #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (&(mutex)))

@@ -173,16 +173,18 @@ g_hash_table_remove (GHashTable	     *hash_table,
   
   g_return_if_fail (hash_table != NULL);
   
-  while (*(node = g_hash_table_lookup_node (hash_table, key)))
+  node = g_hash_table_lookup_node (hash_table, key);
+
+  if (*node)
     {
       dest = *node;
       (*node) = dest->next;
       g_hash_node_destroy (dest);
       hash_table->nnodes--;
-    }
   
-  if (!hash_table->frozen)
-    g_hash_table_resize (hash_table);
+      if (!hash_table->frozen)
+        g_hash_table_resize (hash_table);
+    }
 }
 
 gboolean
@@ -320,16 +322,15 @@ g_hash_table_resize (GHashTable *hash_table)
   new_size = CLAMP(g_spaced_primes_closest (hash_table->nnodes),
 		   HASH_TABLE_MIN_SIZE,
 		   HASH_TABLE_MAX_SIZE);
-  new_nodes = g_new (GHashNode*, new_size);
-  
-  for (i = 0; i < new_size; i++)
-    new_nodes[i] = NULL;
+  new_nodes = g_new0 (GHashNode*, new_size);
   
   for (i = 0; i < hash_table->size; i++)
     for (node = hash_table->nodes[i]; node; node = next)
       {
 	next = node->next;
+
 	hash_val = (* hash_table->hash_func) (node->key) % new_size;
+
 	node->next = new_nodes[hash_val];
 	new_nodes[hash_val] = node;
       }
@@ -381,18 +382,16 @@ g_hash_node_destroy (GHashNode *hash_node)
 static void
 g_hash_nodes_destroy (GHashNode *hash_node)
 {
-  GHashNode *node;
+  if (hash_node)
+    {
+      GHashNode *node = hash_node;
   
-  if (!hash_node)
-    return;
+      while (node->next)
+        node = node->next;
   
-  node = hash_node;
-  
-  while (node->next)
-    node = node->next;
-  
-  G_LOCK (g_hash_global);
-  node->next = node_free_list;
-  node_free_list = hash_node;
-  G_UNLOCK (g_hash_global);
+      G_LOCK (g_hash_global);
+      node->next = node_free_list;
+      node_free_list = hash_node;
+      G_UNLOCK (g_hash_global);
+    }
 }
