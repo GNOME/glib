@@ -3,7 +3,8 @@ Overview of Changes from GLib 2.6.2 to GLib 2.6.3
 * GOption
  - Fix formatting of --help output [Matthias Clasen] 
  - Accept -? [Matthias]
-* Win32 bug fixes [Bill Skaggs, Tor Lillqvist]
+* Win32 bug fixes [Bill Skaggs, Tor Lillqvist, 
+  J. Ali Harlow, Daniel Atallah]
 * Other bug fixes [Ed Avis, Manish Singh, Matthias, 
   Nicolas Laurent, Kjartan Maraas, Bastian Nocera,
   Suren A. Chilingaryan, Michael Banck]
