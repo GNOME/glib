@@ -437,9 +437,8 @@ g_parse_debug_string  (const gchar     *string,
     }
   else
     {
-      gchar *str = g_strdup (string);
-      gchar *p = str;
-      gchar *q;
+      const gchar *p = string;
+      const gchar *q;
       gboolean done = FALSE;
       
       while (*p && !done)
@@ -451,16 +450,13 @@ g_parse_debug_string  (const gchar     *string,
 	      done = TRUE;
 	    }
 	  
-	  *q = 0;
-	  
 	  for (i=0; i<nkeys; i++)
-	    if (!g_strcasecmp(keys[i].key, p))
+	    if (g_strncasecmp(keys[i].key, p, q - p) == 0 &&
+		keys[i].key[q - p] == '\0')
 	      result |= keys[i].value;
 	  
-	  p = q+1;
+	  p = q + 1;
 	}
-      
-      g_free (str);
     }
   
   return result;

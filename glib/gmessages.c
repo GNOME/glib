@@ -151,6 +151,59 @@ ensure_stdout_valid (void)
 #endif
 
 static void
+write_unsigned (gint   fd,
+		gulong num,
+		guint  radix)
+{
+  char buffer[64];
+  gulong tmp;
+  char c;
+  int i, n;
+
+  g_return_if_fail (radix >= 2 && radix <= 36);
+  
+  if (!num)
+    {
+      write (fd, "0", 1);
+      return;
+    } 
+  
+  if (radix == 16)
+    write (fd, "0x", 2);
+  else if (radix == 8)
+    write (fd, "0", 1);
+	
+  n = 0;
+  tmp = num;
+  while (tmp)
+    {
+      tmp /= radix;
+      n++;
+    }
+
+  i = n;
+  while (num)
+    {
+      i--;
+      c = (num % radix);
+      if (c < 10)
+	buffer[i] = c + '0';
+      else
+	buffer[i] = c + 'a' - 10;
+      num /= radix;
+    }
+  
+  write (fd, buffer, n);
+}
+
+static void
+write_string (gint   fd,
+	      gchar *string)
+{
+  write (fd, string, strlen (string));
+}
+
+static void
 g_log_write_prefix (gint           fd,
                     GLogLevelFlags mask)
 {
@@ -185,20 +238,20 @@ g_log_write_prefix (gint           fd,
   
   if ((g_log_msg_prefix & mask) == mask)
     {
-      gchar prg_pid[64], *prg_name;
+      gchar *prg_name;
 
       prg_name = g_get_prgname ();
-      
+
       if (!prg_name)
-        {
-          prg_name = "(process";
-          sprintf (prg_pid, ":%u): ", getpid ());
-        }
+	write_string (fd, "(process:");
       else
-        sprintf (prg_pid, " (pid:%u): ", getpid ());
-      
-      write (fd, prg_name, strlen (prg_name));
-      write (fd, prg_pid, strlen (prg_pid));
+	{
+	  write_string (fd, prg_name);
+	  write_string (fd, " (pid:");
+	}
+
+      write_unsigned (fd, getpid (), 10);
+      write_string (fd, "): ");
     }
 }
 
@@ -530,7 +583,6 @@ g_log_default_handler (const gchar    *log_domain,
   GErrorFunc local_glib_error_func;
   GWarningFunc local_glib_warning_func;
   GPrintFunc local_glib_message_func;
-  gchar prg_pid[64], *prg_name = g_get_prgname ();
   
   in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
@@ -538,13 +590,6 @@ g_log_default_handler (const gchar    *log_domain,
   
   if (!message)
     message = "g_log_default_handler(): (NULL) message";
-  if (!prg_name)
-    {
-      prg_name = "(process";
-      sprintf (prg_pid, ":%u): ", getpid ());
-    }
-  else
-    sprintf (prg_pid, " (pid:%u): ", getpid ());
   
 #ifdef G_OS_WIN32
   /* Use just stdout as stderr is hard to get redirected from the

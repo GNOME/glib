@@ -1,3 +1,13 @@
+Thu May 10 23:21:30 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gmessages.c (g_log_write_prefix): Avoid using stderr
+	to be as robust as possible in out-of-memory.
+
+	* gmessages.c (g_log_default_handler): Remove some dead
+	code.
+
+	* gutils.c (g_parse_debug_string): Fix to avoid mallocs.
+
 Fri May 11 18:25:23 2001  Tim Janik  <timj@gtk.org>
 
 	* gdataset.c:
