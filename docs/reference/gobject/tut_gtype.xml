@@ -127,7 +127,7 @@ GType g_type_register_fundamental (GType                       type_id,
 	</para>
 
 	<para>
-	  The following code shows shows you can copy around a 64 bit integer, as well as a <type>GObject</type>
+	  The following code shows how you can copy around a 64 bit integer, as well as a <type>GObject</type>
 	  instance pointer (sample code for this is located in the source tarball for this document in 
           <filename>sample/gtype/test.c</filename>):
 <programlisting>
