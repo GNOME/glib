@@ -528,7 +528,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
               if (found != NULL)
                 {
                   pt->month = i;
-		  return;
+		  break;
                 }
             }
 	  
@@ -539,12 +539,14 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
               if (found != NULL)
                 {
                   pt->month = i;
-                  return;
+		  break;
                 }
             }
 
           ++i;
-        }      
+        }
+
+      g_free (normalized);
     }
 }
 
