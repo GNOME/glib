@@ -30,6 +30,7 @@ EXTRA_DIST = 			\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
 	makegalias.pl		\
+	abicheck.sh		\
 	glib.symbols
 
 # These may be in the builddir too

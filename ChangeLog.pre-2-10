@@ -1,3 +1,7 @@
+2004-09-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* glib/Makefile.am (EXTRA_DIST): Add abicheck.sh
+
 Thu Sep 16 02:03:15 2004  Matthias Clasen  <maclas@gmx.de>
 
 	Implement the same PLT reduction technique used in GTK+:
