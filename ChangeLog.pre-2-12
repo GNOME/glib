@@ -1,3 +1,7 @@
+Sat Nov 28 01:23:25 1998  Tim Janik  <timj@gtk.org>
+
+	* ghash.c: implemented incremental freezing facility.
+
 Thu Nov 26 01:36:20 1998  Tim Janik  <timj@gtk.org>
 
 	* glib.h: 

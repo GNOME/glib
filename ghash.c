@@ -36,7 +36,7 @@ struct _GHashTable
 {
   gint size;
   gint nnodes;
-  gint frozen;
+  guint frozen;
   GHashNode **nodes;
   GHashFunc hash_func;
   GCompareFunc key_compare_func;
@@ -207,7 +207,7 @@ g_hash_table_freeze (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
   
-  hash_table->frozen = TRUE;
+  hash_table->frozen++;
 }
 
 void
@@ -215,9 +215,9 @@ g_hash_table_thaw (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
   
-  hash_table->frozen = FALSE;
-  
-  g_hash_table_resize (hash_table);
+  if (hash_table->frozen)
+    if (!(--hash_table->frozen))
+      g_hash_table_resize (hash_table);
 }
 
 gint
