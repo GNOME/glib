@@ -367,7 +367,6 @@ unescape_text (GMarkupParseContext *context,
                gchar              **unescaped,
                GError             **error)
 {
-#define MAX_ENT_LEN 5
   GString *str;
   const gchar *p;
   UnescapeState state;
@@ -450,11 +449,6 @@ unescape_text (GMarkupParseContext *context,
 
         case USTATE_INSIDE_ENTITY_NAME:
           {
-            gchar buf[MAX_ENT_LEN+1] = {
-              '\0', '\0', '\0', '\0', '\0', '\0'
-            };
-            gchar *dest;
-
             while (p != text_end)
               {
                 if (*p == ';')
@@ -479,31 +473,22 @@ unescape_text (GMarkupParseContext *context,
               {
                 if (p != text_end)
                   {
-                    const gchar *src;
-                
-                    src = start;
-                    dest = buf;
-                    while (src != p)
-                      {
-                        *dest = *src;
-                        ++dest;
-                        ++src;
-                      }
+		    gchar *ent = g_strndup (start, p - start);
 
                     /* move to after semicolon */
                     p = g_utf8_next_char (p);
                     start = p;
                     state = USTATE_INSIDE_TEXT;
 
-                    if (strcmp (buf, "lt") == 0)
+                    if (strcmp (ent, "lt") == 0)
                       g_string_append_c (str, '<');
-                    else if (strcmp (buf, "gt") == 0)
+                    else if (strcmp (ent, "gt") == 0)
                       g_string_append_c (str, '>');
-                    else if (strcmp (buf, "amp") == 0)
+                    else if (strcmp (ent, "amp") == 0)
                       g_string_append_c (str, '&');
-                    else if (strcmp (buf, "quot") == 0)
+                    else if (strcmp (ent, "quot") == 0)
                       g_string_append_c (str, '"');
-                    else if (strcmp (buf, "apos") == 0)
+                    else if (strcmp (ent, "apos") == 0)
                       g_string_append_c (str, '\'');
                     else
                       {
@@ -511,8 +496,9 @@ unescape_text (GMarkupParseContext *context,
                                             p, text_end,
                                             G_MARKUP_ERROR_PARSE,
                                             _("Entity name '%s' is not known"),
-                                            buf);
+                                            ent);
                       }
+		    g_free (ent);
                   }
                 else
                   {
@@ -666,8 +652,6 @@ unescape_text (GMarkupParseContext *context,
       *unescaped = g_string_free (str, FALSE);
       return TRUE;
     }
-
-#undef MAX_ENT_LEN
 }
 
 static gboolean
