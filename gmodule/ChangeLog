@@ -1,3 +1,8 @@
+1998-12-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmodule.c: Made it MT safe, the g_module_error() is now thread
+	specific.
+
 Fri Nov 20 14:43:44 1998  Tim Janik  <timj@gtk.org>
 
 	* gmodule.c (_g_module_build_path): added empty default imlementation

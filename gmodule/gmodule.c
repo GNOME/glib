@@ -16,6 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/* 
+ * MT safe
+ */
+
 #include	"gmodule.h"
 #include	"gmoduleconf.h"
 #include	<errno.h>
@@ -59,10 +64,11 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 
 
 /* --- variables --- */
-const char      *g_log_domain_gmodule = "GModule";
-static GModule	*modules = NULL;
-static GModule	*main_module = NULL;
-static gchar	*module_error = NULL;
+static G_LOCK_DEFINE (g_module_global);
+const char           *g_log_domain_gmodule = "GModule";
+static GModule	     *modules = NULL;
+static GModule	     *main_module = NULL;
+static GStaticPrivate module_error_private = G_STATIC_PRIVATE_INIT;
 
 
 /* --- inline functions --- */
@@ -70,30 +76,45 @@ static inline GModule*
 g_module_find_by_handle (gpointer handle)
 {
   GModule *module;
+  GModule *retval = NULL;
   
+  g_lock (g_module_global);
   if (main_module && main_module->handle == handle)
-    return main_module;
-  
-  for (module = modules; module; module = module->next)
-    if (handle == module->handle)
-      return module;
-  return NULL;
+    retval = main_module;
+  else
+    for (module = modules; module; module = module->next)
+      if (handle == module->handle)
+	{
+	  retval = module;
+	  break;
+	}
+  g_unlock (g_module_global);
+
+  return retval;
 }
 
 static inline GModule*
 g_module_find_by_name (const gchar *name)
 {
   GModule *module;
+  GModule *retval = NULL;
   
+  g_lock (g_module_global);
   for (module = modules; module; module = module->next)
     if (strcmp (name, module->file_name) == 0)
-      return module;
-  return NULL;
+	{
+	  retval = module;
+	  break;
+	}
+  g_unlock (g_module_global);
+
+  return retval;
 }
 
 static inline void
 g_module_set_error (const gchar *error)
 {
+  gchar* module_error = g_static_private_get (&module_error_private);
   if (module_error)
     g_free (module_error);
   if (error)
@@ -101,6 +122,7 @@ g_module_set_error (const gchar *error)
   else
     module_error = NULL;
   errno = 0;
+  g_static_private_set (&module_error_private, module_error, g_free);
 }
 
 
@@ -175,7 +197,8 @@ g_module_open (const gchar    *file_name,
   CHECK_ERROR (NULL);
   
   if (!file_name)
-    {
+    {      
+      g_lock (g_module_global);
       if (!main_module)
 	{
 	  handle = _g_module_self ();
@@ -190,7 +213,8 @@ g_module_open (const gchar    *file_name,
 	      main_module->next = NULL;
 	    }
 	}
-      
+      g_unlock (g_module_global);
+
       return main_module;
     }
   
@@ -222,8 +246,8 @@ g_module_open (const gchar    *file_name,
 	  return module;
 	}
       
-      saved_error = module_error;
-      module_error = NULL;
+      saved_error = g_module_error();
+      g_static_private_set (&module_error_private, NULL, NULL);
       g_module_set_error (NULL);
       
       module = g_new (GModule, 1);
@@ -232,8 +256,10 @@ g_module_open (const gchar    *file_name,
       module->ref_count = 1;
       module->is_resident = FALSE;
       module->unload = NULL;
+      g_lock (g_module_global);
       module->next = modules;
       modules = module;
+      g_unlock (g_module_global);
       
       /* check initialization */
       if (g_module_symbol (module, "g_module_check_init", (gpointer) &check_init))
@@ -286,6 +312,8 @@ g_module_close (GModule	       *module)
       GModule *node;
       
       last = NULL;
+      
+      g_lock (g_module_global);
       node = modules;
       while (node)
 	{
@@ -301,6 +329,7 @@ g_module_close (GModule	       *module)
 	  node = last->next;
 	}
       module->next = NULL;
+      g_unlock (g_module_global);
       
       _g_module_close (module->handle, FALSE);
       g_free (module->file_name);
@@ -308,7 +337,7 @@ g_module_close (GModule	       *module)
       g_free (module);
     }
   
-  return module_error == NULL;
+  return g_module_error() == NULL;
 }
 
 void
@@ -322,7 +351,7 @@ g_module_make_resident (GModule *module)
 gchar*
 g_module_error (void)
 {
-  return module_error;
+  return g_static_private_get (&module_error_private);
 }
 
 gboolean
@@ -330,6 +359,7 @@ g_module_symbol (GModule	*module,
 		 const gchar	*symbol_name,
 		 gpointer	*symbol)
 {
+  gchar *module_error;
   if (symbol)
     *symbol = NULL;
   CHECK_ERROR (FALSE);
@@ -350,7 +380,7 @@ g_module_symbol (GModule	*module,
   *symbol = _g_module_symbol (module->handle, symbol_name);
 #endif	/* !G_MODULE_NEED_USCORE */
   
-  if (module_error)
+  if ((module_error = g_module_error()))
     {
       gchar *error;
 
