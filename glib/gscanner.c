@@ -862,9 +862,9 @@ g_scanner_unexp_token (GScanner		*scanner,
 	  if ((scanner->token >= ' ' && scanner->token <= '~') ||
 	      strchr (scanner->config->cset_identifier_first, scanner->token) ||
 	      strchr (scanner->config->cset_identifier_nth, scanner->token))
-	    g_snprintf (token_string, expected_string_len, "character `%c'", scanner->token);
+	    g_snprintf (token_string, token_string_len, "character `%c'", scanner->token);
 	  else
-	    g_snprintf (token_string, expected_string_len, "character `\\%o'", scanner->token);
+	    g_snprintf (token_string, token_string_len, "character `\\%o'", scanner->token);
 	  break;
 	}
       else if (!scanner->config->symbol_2_token)

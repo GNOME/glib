@@ -1,3 +1,7 @@
+2001-12-19  Mark McLoughlin  <mark@skynet.ie>
+
+	* glib/gscanner.c: (g_scanner_unexp_token): fix segfaults.
+
 2001-12-20  Michael Meeks  <michael@ximian.com>
 
 	* glib/giounix.c (struct _GIOUnixWatch): kill 'callback'
