@@ -181,9 +181,17 @@ How to compile GLib itself
              <arg>--disable-included-printf</arg>
              <arg>--enable-included-printf</arg>
           </group>
+	  <group>
+             <arg>--disable-visibility</arg>
+             <arg>--enable-visibility</arg>
+          </group>
           <group>
             <arg>--disable-gtk-doc</arg>
             <arg>--enable-gtk-doc</arg>
+          </group>
+          <group>
+            <arg>--disable-man</arg>
+            <arg>--enable-man</arg>
           </group>
         </cmdsynopsis>
       </para>
@@ -328,6 +336,23 @@ How to compile GLib itself
       </formalpara>
 
       <formalpara>
+         <title><systemitem>--disable-visibility</systemitem> and
+           <systemitem>--enable-visibility</systemitem></title>
+
+        <para>
+          By default, GLib uses ELF visibility attributes to optimize
+          PLT table entries if the compiler supports ELF visibility
+          attributes. A side-effect of the way in which this is currently
+          implemented is that any  header change forces a full 
+          recompilation, and missing includes may go unnoticed. 
+          Therefore, it makes sense to turn this feature off while
+          doing GLib development, even if the compiler supports ELF
+          visibility attributes. The <option>--disable-visibility</option> 
+          option allows to do that.
+        </para>
+      </formalpara>
+
+      <formalpara>
         <title><systemitem>--disable-gtk-doc</systemitem> and
           <systemitem>--enable-gtk-doc</systemitem></title>
 
@@ -342,6 +367,22 @@ How to compile GLib itself
           used or not.  If it is not used, the distributed,
           pre-generated HTML files will be installed instead of
           building them on your machine.
+        </para>
+      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--disable-man</systemitem> and
+          <systemitem>--enable-man</systemitem></title>
+
+        <para>
+          By default the <command>configure</command> script will try
+          to auto-detect whether <application>xsltproc</application> 
+          and the necessary Docbook stylesheets are installed.  If
+          they are, then it will use them to rebuild the included
+          man pages from the XML sources.  These options can be used 
+          to explicitly control whether man pages should be rebuilt
+          used or not. The distribution includes pre-generated man 
+          pages.
         </para>
       </formalpara>
 
