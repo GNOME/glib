@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-07-26 17:56-0400\n"
+"POT-Creation-Date: 2002-08-18 05:36-0500\n"
 "PO-Revision-Date: 2002-05-27 14:39-0300\n"
 "Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -178,142 +178,155 @@ msgstr "خطأ في السطر %d الحرف %d: %s"
 msgid "Error on line %d: %s"
 msgstr "خطأ في السطر %d: %s"
 
-#: glib/gmarkup.c:423
+#: glib/gmarkup.c:422
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
+"كيان فارغ '&;' تمت رؤيته, الكيانات الصالحة هي: &amp; &quot; &lt; &gt; &apos"
 
-#: glib/gmarkup.c:433
+#: glib/gmarkup.c:432
 #, c-format
 msgid ""
 "Character '%s' is not valid at the start of an entity name; the & character "
 "begins an entity; if this ampersand isn't supposed to be an entity, escape "
 "it as &amp;"
 msgstr ""
+"الرمز '%s' غير صالح عند بداية اسم الكيان; الرمز & يبدأ كياناً, ان كان هذا غير "
+"مدعوم ككيان, تخطاه باعتباره &amp;"
 
-#: glib/gmarkup.c:469
+#: glib/gmarkup.c:463
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "الحرف '%s' غير موجود داخل اسم أي كيان"
 
-#: glib/gmarkup.c:513
+#: glib/gmarkup.c:498
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "اسم الكيان '%s' غير معروف"
 
-#: glib/gmarkup.c:523
+#: glib/gmarkup.c:509
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
+"اسم الكيان لم ينته بفاصلة منقوطة; الأرجح أنك استخدمت رمزا دون أن تنوي بدء "
+"كيان - تخطاه عن طريق اعتباره &amp;"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:555
 #, c-format
 msgid ""
 "Failed to parse '%s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
+"فشل اعراب '%s', الذي كان يجب أن يكون هناك رقم داخل مرجع الرمز (&#234; مثلا) "
+"- ربما يكون الرقم كبيرا جدا"
 
-#: glib/gmarkup.c:594
+#: glib/gmarkup.c:580
 #, c-format
 msgid "Character reference '%s' does not encode a permitted character"
-msgstr ""
+msgstr "مرجع الرمز '%s' لا يقوم بترميز رمز مسموح به"
 
-#: glib/gmarkup.c:611
+#: glib/gmarkup.c:597
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr ""
+msgstr "مرجع رمز فارغ; يجب أن يتضمن رقماَ مثل &#454;"
 
-#: glib/gmarkup.c:621
+#: glib/gmarkup.c:607
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
+"مرجع الرمز لم ينته بفاصلة منقوطة; الأرجح أنك استخدمت رمزا دون أن تنوي بدء "
+"كيان - تخطاه عن طريق اعتباره &amp;"
 
-#: glib/gmarkup.c:647
+#: glib/gmarkup.c:633
 msgid "Unfinished entity reference"
 msgstr "مرجع كيان غير منتهى منه"
 
-#: glib/gmarkup.c:653
+#: glib/gmarkup.c:639
 msgid "Unfinished character reference"
 msgstr "مرجع رمز غير منتهى منه"
 
-#: glib/gmarkup.c:896 glib/gmarkup.c:924 glib/gmarkup.c:955
+#: glib/gmarkup.c:880 glib/gmarkup.c:908 glib/gmarkup.c:939
 msgid "Invalid UTF-8 encoded text"
 msgstr "نص UTF-8 مشفر غير صحيح"
 
-#: glib/gmarkup.c:991
+#: glib/gmarkup.c:975
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "يجب أن يبدأ المستند مع عنصر (<book> مثلا)"
 
-#: glib/gmarkup.c:1030
+#: glib/gmarkup.c:1014
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr ""
+msgstr "'%s' رمز غير صالح بعد الرمز '<'; لا يمكن أن يبدأ هذا الرمز اسم عنصر"
 
-#: glib/gmarkup.c:1093
+#: glib/gmarkup.c:1077
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
 "'%s'"
-msgstr ""
+msgstr "رمز غريب '%s', كان يتوقع رمز '>' لإنهاء بداية علامة العنصر '%s'"
 
-#: glib/gmarkup.c:1180
+#: glib/gmarkup.c:1164
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
+msgstr "رمز غريب '%s', كان يتوقع '=' بعد اسم الصفة  '%s' للعنصر '%s'"
 
-#: glib/gmarkup.c:1221
+#: glib/gmarkup.c:1205
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
+"رمز غريب '%s', كان يتوقع الرمز '>' أو '/' لإنهاء علامة البداية للعنصر '%s', "
+"أو بشكل اختياري صفة; ربما تكون استخدمت رمزاً غير صالح في اسم صفة"
 
-#: glib/gmarkup.c:1304
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
+"رمز غريب '%s', كان يتوقع علامة اقتباس مفتوحة بعد علامة يساوي عند إعطاء قيمة "
+"للصفة '%s' للعنصر '%s'"
 
-#: glib/gmarkup.c:1444
+#: glib/gmarkup.c:1428
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr ""
+msgstr "'%s' رمز غير صالح بعد الرموز '</'; '%s' لا يمكن أن يبدأ اسم عنصر"
 
-#: glib/gmarkup.c:1482
+#: glib/gmarkup.c:1466
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr ""
+msgstr "'%s' رمز غير صالح بعد اغلاق اسم العنصر '%s'; الرمز المسموح به هو '>'"
 
-#: glib/gmarkup.c:1493
+#: glib/gmarkup.c:1477
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "العنصر '%s' كان مغلقا، لا عنصر مفتوح حاليا"
 
-#: glib/gmarkup.c:1502
+#: glib/gmarkup.c:1486
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "العنصر '%s' كان مغلقا, لكن العنصر المفتوح حاليا هو '%s'"
 
-#: glib/gmarkup.c:1661
+#: glib/gmarkup.c:1645
 msgid "Document was empty or contained only whitespace"
 msgstr "المستند كان فارغا أو كان يحتوي فقط على مساحة فارغة"
 
-#: glib/gmarkup.c:1675
+#: glib/gmarkup.c:1659
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "انتهى المستند بشكل غير متوقع بعد قوس بزاوية '<'"
 
-#: glib/gmarkup.c:1683 glib/gmarkup.c:1727
+#: glib/gmarkup.c:1667 glib/gmarkup.c:1711
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -322,7 +335,7 @@ msgstr ""
 "انتهى المستند بشكل غير متوقع مع عناصر لا زالت مفتوحة - '%s' كان آخر العناصر "
 "المقتوحة"
 
-#: glib/gmarkup.c:1691
+#: glib/gmarkup.c:1675
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -331,34 +344,35 @@ msgstr ""
 "انتهى المستند بشكل غير متوقع، كنت أتوقع أن أري قوسا ذا زاوية لينهي العلامة<%"
 "s/>"
 
-#: glib/gmarkup.c:1697
+#: glib/gmarkup.c:1681
 msgid "Document ended unexpectedly inside an element name"
 msgstr "انتهى المستند بشكل غير متوقع داخل اسم عنصر"
 
-#: glib/gmarkup.c:1702
+#: glib/gmarkup.c:1686
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "انتهى المستند بشكل غير متوقع داخل اسم صفة"
 
-#: glib/gmarkup.c:1707
+#: glib/gmarkup.c:1691
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "انتهى المستند بشكل غير متوقع بعد علامة فتح عنصر"
 
-#: glib/gmarkup.c:1713
+#: glib/gmarkup.c:1697
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
+"انتهى المستند بشكل غير متوقع بعد علامة يساوي بعد اسم صفة; لا توجد قيمة للصفة"
 
-#: glib/gmarkup.c:1720
+#: glib/gmarkup.c:1704
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "انتهى المستند بشكل غير متوقع داخل قيمة صفات"
 
-#: glib/gmarkup.c:1735
+#: glib/gmarkup.c:1719
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "انتهى المستند بشكل غير متوقع داخل علامة انهاء للعنصر '%s'"
 
-#: glib/gmarkup.c:1741
+#: glib/gmarkup.c:1725
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "انتهى المستند بشكل غير متوقع داخل تعليق أو تعليمات معالجة"
 
@@ -369,6 +383,7 @@ msgstr "النص المقتبس لا يبدأ بعلامة اقتباس"
 #: glib/gshell.c:161
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
+"علامة اقتباس غير مطابقة في سطر الأوامر أو نص منقول من الغلاف (سطر الأوامر)"
 
 #: glib/gshell.c:529
 #, c-format
@@ -392,7 +407,7 @@ msgstr "فشلت قراءة البيانات من العملية الإبنة"
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
+msgstr "خطأ غير متوقع في g_io_channel_win32_poll() أثناء القراءة من عملية ابنة"
 
 #: glib/gspawn-win32.c:690 glib/gspawn.c:929
 #, c-format
