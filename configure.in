@@ -1721,10 +1721,19 @@ ${glib_extension}typedef signed $gint64 gint64;
 ${glib_extension}typedef unsigned $gint64 guint64;
 
 #define G_GINT64_CONSTANT(val)	$gint64_constant
+_______EOF
 
+	if test x$gint64_format != x ; then
+	  cat >>$outfile <<_______EOF
 #define G_GINT64_FORMAT $gint64_format
 #define G_GUINT64_FORMAT $guint64_format
 _______EOF
+        else
+	  cat >>$outfile <<_______EOF
+#undef G_GINT64_FORMAT
+#undef G_GUINT64_FORMAT
+_______EOF
+        fi           
 
         cat >>$outfile <<_______EOF
 

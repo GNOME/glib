@@ -1,3 +1,13 @@
+Fri Feb  8 23:52:27 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* gobject/gvaluetransform.c: Register transformations for
+	gint64, guint64. (#70780, patch from Andy Wingo)
+
+	* configure.in: Handle missing G_GINT64_FORMAT, 
+	G_GUINT64_FORMAT ... harder to require GNU libc than GCC.
+
+	* NEWS: Some cleanups that I had setting around.
+
 2002-02-08  Darin Adler  <darin@bentspoon.com>
 
 	* glib/gconvert.h: Make hostname parameter const char *.
