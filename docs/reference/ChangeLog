@@ -1,3 +1,8 @@
+Sat Jan 10 02:18:32 2004  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtype.sgml: Document the new GType boilerplate macros
+	with an example.
+
 Sat Jan 10 01:36:01 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/tmpl/gtype.sgml: Document g_type_class_peek_static.

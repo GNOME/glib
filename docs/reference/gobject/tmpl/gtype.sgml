@@ -1462,55 +1462,117 @@ that implements or has internal knowledge of the implementation of
 
 <!-- ##### MACRO G_DEFINE_TYPE ##### -->
 <para>
-A convenience macro for type implementations.
+A convenience macro for type implementations. 
+See G_DEFINE_TYPE_WITH_CODE() for an example.
 </para>
 
-@TypeName: The name of the new type, in Camel case.
-@type_name: The name of the new type, in lowercase, with words 
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words 
   separated by '_'.
-@TYPE_PARENT: The #GType of the parent type.
-
+@T_P: The #GType of the parent type.
+@Since: 2.4
 
 <!-- ##### MACRO G_DEFINE_TYPE_WITH_CODE ##### -->
 <para>
-
+A convenience macro for type implementations.  
 </para>
+<informalexample><programlisting>
+G_DEFINE_TYPE_WITH_CODE (GtkGadget, 
+                         gtk_gadget, 
+                         GTK_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO, 
+                                                gtk_gadget_gizmo_init));
+</programlisting>
+exands to
+<programlisting>
+static void     gtk_gadget_init       (GtkGadget      *self);
+static void     gtk_gadget_class_init (GtkGadgetClass *klass);
+static gpointer parent_class = NULL;
+static void     gtk_gadget_class_intern_init (gpointer klass)
+{
+  parent_class = g_type_class_peek_parent (klass);
+  gtk_gadget_class_init ((GtkGadgetClass*) klass);
+}
+<!-- -->
+GType
+gtk_gadget_get_type (void)
+{
+  static GType g_define_type_id = 0; 
+  if (G_UNLIKELY (g_define_type_id == 0)) 
+    { 
+      static const GTypeInfo g_define_type_info = { 
+        sizeof (GtkGadgetClass), 
+        (GBaseInitFunc) NULL, 
+        (GBaseFinalizeFunc) NULL, 
+        (GClassInitFunc) gtk_gadget_class_intern_init, 
+        (GClassFinalizeFunc) NULL, 
+        NULL,   /* class_data */ 
+        sizeof (GtkGadget), 
+        0,      /* n_preallocs */ 
+        (GInstanceInitFunc) gtk_gadget_init, 
+      }; 
+      g_define_type_id = g_type_register_static (GTK_TYPE_WIDGET, "GtkGadget", &amp;g_define_type_info, 0); 
+      {
+        static const GInterfaceInfo g_implement_interface_info = {
+          (GInterfaceInitFunc) gtk_gadget_gizmo_init
+        };
+        g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &amp;g_implement_interface_info);
+      } 
+    } 
+  return g_define_type_id; 
+}
+</programlisting>
+The only pieces which have to be manually provided are the definitions of the 
+instance and class structure and the definitions of the instance and class 
+init functions.
+</informalexample>
 
-@TN: 
-@t_n: 
-@T_P: 
-@_C_: 
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type in lowercase, with words separated by '_'.
+@T_P: The #GType of the parent type.
+@_C_: Custom code that gets inserted in the *_get_type() function. 
+@Since: 2.4
 
 
 <!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE ##### -->
 <para>
-
+A convenience macro for type implementations. 
+Similar to G_DEFINE_TYPE(), but defines an abstract type. 
+See G_DEFINE_TYPE_WITH_CODE() for an example.
 </para>
 
-@TN: 
-@t_n: 
-@T_P: 
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words 
+  separated by '_'.
+@T_P: The #GType of the parent type.
+@Since: 2.4
 
 
 <!-- ##### MACRO G_DEFINE_ABSTRACT_TYPE_WITH_CODE ##### -->
 <para>
-
+A convenience macro for type implementations.
+Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type. 
+See G_DEFINE_TYPE_WITH_CODE() for an example.
 </para>
 
-@TN: 
-@t_n: 
-@T_P: 
-@_C_: 
+@TN: The name of the new type, in Camel case.
+@t_n: The name of the new type, in lowercase, with words 
+  separated by '_'.
+@T_P: The #GType of the parent type.
+@_C_: Custom code that gets inserted in the @type_name_get_type() function. 
+@Since: 2.4
 
 
 <!-- ##### MACRO G_IMPLEMENT_INTERFACE ##### -->
 <para>
-
+A convenience macro to ease interface addition in the @Code section
+of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE(). 
+See G_DEFINE_TYPE_WITH_CODE() for an example.
 </para>
 
-@TYPE_IFACE: 
-@iface_init: 
-
+@TYPE_IFACE: The #GType of the interface to add
+@iface_init: The interface init function
+@Since: 2.4
 
 <!-- ##### MACRO G_TYPE_INVALID ##### -->
 <para>
