@@ -196,6 +196,13 @@ Shift value used in converting numbers to type IDs.
 @closure: 
 @Returns: 
 
+<!-- ##### FUNCTION g_signal_handlers_destroy ##### -->
+<para>
+
+</para>
+
+@instance: 
+
 <!-- ##### MACRO g_signal_newc ##### -->
 <para>
 

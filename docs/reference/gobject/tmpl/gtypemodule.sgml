@@ -71,51 +71,70 @@ in #GTypeModuleClass.
 
 <!-- ##### FUNCTION g_type_module_use ##### -->
 <para>
-
+Increases the use count of a #GTypeModule by one. If the
+use count was zero before, the plugin will be loaded.
 </para>
 
-@module: 
-@Returns: 
+@module: a #GTypeModule
+@Returns: %FALSE if the plugin needed to be loaded and
+          loading the plugin failed.
 
 
 <!-- ##### FUNCTION g_type_module_unuse ##### -->
 <para>
-
+Decreases the use count of a #GTypeModule by one. If the
+result is zero, the module will be unloaded. (However, the
+#GTypeModule will not be freed, and types associated with the
+#GTypeModule are not unregistered. Once a #GTypeModule is 
+initialized, it must exist forever.)
 </para>
 
-@module: 
+@module: a #GTypeModule
 
 
 <!-- ##### FUNCTION g_type_module_set_name ##### -->
 <para>
-
+Sets the name for a #GTypeModule 
 </para>
 
-@module: 
-@name: 
+@module: a #GTypeModule.
+@name: a human-readable name to use in error messages.
 
 
 <!-- ##### FUNCTION g_type_module_register_type ##### -->
 <para>
-
+Looks up or registers a type that is implemented with a particular
+type plugin. If a type with name @type_name is already registered,
+the #GType identifier for the type is returned, otherwise the type
+is newly registered, and the resulting #GType identifier returned.
+</para>
+<para>
+As long as any instances of the type exist, the type plugin will
+not be unloaded.
 </para>
 
-@module: 
-@parent_type: 
-@type_name: 
-@type_info: 
-@flags: 
-@Returns: 
+@module:  a #GTypeModule
+@parent_type:    the type for the parent class
+@type_name:      name for the type
+@type_info:      type information structure
+@flags:          flags field providing details about the type
+@Returns: the type ID for the class.
 
 
 <!-- ##### FUNCTION g_type_module_add_interface ##### -->
 <para>
-
+Registers an additional interface for a type, whose interface
+lives in the given type plugin. If the interface was already registered
+for the type in this plugin, nothing will be done. 
+</para>
+<para>
+As long as any instances of the type exist, the type plugin will
+not be unloaded.
 </para>
 
-@module: 
-@instance_type: 
-@interface_type: 
-@interface_info: 
+@module: a #GTypeModule
+@instance_type: type to which to add the interface.
+@interface_type: interface type to add
+@interface_info: type information structure
 
 

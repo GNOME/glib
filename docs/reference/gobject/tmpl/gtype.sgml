@@ -707,11 +707,16 @@ class conforms.
 
 <!-- ##### FUNCTION g_type_interface_peek_parent ##### -->
 <para>
-
+Returns the corresponding #GTypeInterface structure of the parent type
+of the instance type to which @g_iface belongs. This is useful when 
+deriving the implementation of an interface from the parent type and 
+then possibly overriding some methods. 
 </para>
 
-@g_iface: 
-@Returns: 
+@g_iface: A #GTypeInterface structure.
+@Returns: The corresponding #GTypeInterface structure of the parent type
+   of the instance type to which @g_iface belongs, or %NULL if the parent type
+   doesn't conform to the interface.
 
 
 <!-- ##### FUNCTION g_type_children ##### -->
@@ -739,40 +744,50 @@ g_free()ed after use.
 
 <!-- ##### FUNCTION g_type_interface_prerequisites ##### -->
 <para>
-
+Returns the prerequisites of an interfaces type.
 </para>
 
-@interface_type: 
-@n_prerequisites: 
-@Returns: 
+@interface_type: an interface type
+@n_prerequisites: location to return the number of prerequisites, or %NULL
+@Returns: a newly-allocated zero-terminated array of #GType containing 
+   the prerequisites of @interface_type
+<!-- # Unused Parameters # -->
+@Since: 2.2
 
 
 <!-- ##### FUNCTION g_type_set_qdata ##### -->
 <para>
-
+Attaches arbitrary data to a type.
 </para>
 
-@type: 
-@quark: 
-@data: 
+@type: a #GType
+@quark: a #GQuark id to identify the data
+@data: the data
 
 
 <!-- ##### FUNCTION g_type_get_qdata ##### -->
 <para>
-
+Obtains data which has previously been attached to @type
+with g_type_set_qdata().
 </para>
 
-@type: 
-@quark: 
-@Returns: 
+@type: a #GType
+@quark: a #GQuark id to identify the data
+@Returns: the data, or %NULL if no data was found
 
 
 <!-- ##### FUNCTION g_type_query ##### -->
 <para>
+Queries the type system for information about a specific type. 
+This function will fill in a user-provided structure to hold type-specific 
+information. If an invalid #GType is passed in, the @type member of the 
+#GTypeQuery is 0. All members filled into the #GTypeQuery structure should
+be considered constant and have to be left untouched.
 </para>
 
-@type: 
-@query: 
+@type: the #GType value of a static, classed type.
+@query: A user provided structure that is filled in with constant values 
+        upon success.
 
 
 <!-- ##### STRUCT GTypeQuery ##### -->
@@ -1068,20 +1083,27 @@ is used to manage the relationship.
 
 <!-- ##### FUNCTION g_type_add_interface_dynamic ##### -->
 <para>
+Adds the dynamic @interface_type to @instantiable_type. The information
+contained in the #GTypePlugin structure pointed to by @plugin
+is used to manage the relationship.
 </para>
 
-@instance_type: 
-@interface_type: 
-@plugin: 
+@instance_type: the #GType value of an instantiable type.
+@interface_type: the #GType value of an interface type.
+@plugin: the #GTypePlugin structure to retrieve the #GInterfaceInfo from.
 
 
 <!-- ##### FUNCTION g_type_interface_add_prerequisite ##### -->
 <para>
-
+Adds @prerequisite_type to the list of prerequisites of @interface_type.
+This means that any type implementing @interface_type must also implement
+@prerequisite_type. Prerequisites can be thought of as an alternative to
+interface derivation (which GType doesn't support). An interface can have
+at most one instantiatable prerequisite type.
 </para>
 
-@interface_type: 
-@prerequisite_type: 
+@interface_type: #GType value of an interface type.
+@prerequisite_type: #GType value of an interface or instantiatable type.
 
 
 <!-- ##### FUNCTION g_type_get_plugin ##### -->
@@ -1097,11 +1119,16 @@ Returns the #GTypePlugin structure for @type or
 
 <!-- ##### FUNCTION g_type_interface_get_plugin ##### -->
 <para>
+Returns the #GTypePlugin structure for the dynamic interface 
+@interface_type which has been added to @instance_type, or 
+%NULL if @interface_type has not been added to @instance_type or does 
+not have a #GTypePlugin structure. See g_type_add_interface_dynamic().
 </para>
 
-@instance_type: 
-@interface_type: 
-@Returns: 
+@instance_type: the #GType value of an instantiatable type.
+@interface_type: the #GType value of an interface type.
+@Returns: the #GTypePlugin for the dynamic interface @interface_type
+   of @instance_type.
 
 
 <!-- ##### FUNCTION g_type_fundamental_next ##### -->

@@ -311,15 +311,26 @@ if @value1 is found to be less than, equal to or greater than @value2, respectiv
 
 <!-- ##### FUNCTION g_param_spec_internal ##### -->
 <para>
-
+Creates a new #GParamSpec instance.
+</para>
+<para>
+A property name consists of segments consisting of ASCII letters and
+digits, separated by either the '-' or '_' character. The first
+character of a property name must be a letter. Names which violate these
+rules lead to undefined behaviour. 
+</para>
+<para>
+When creating and looking up a #GParamSpec, either separator can be used, 
+but they cannot be mixed. Using '-' is considerably more efficient and in 
+fact required when using property names as detail strings for signals.
 </para>
 
-@param_type: 
-@name: 
-@nick: 
-@blurb: 
-@flags: 
-@Returns: 
+@param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
+@name: the canonical name of the property
+@nick: the nickname of the property
+@blurb: a short description of the property
+@flags: a combination of #GParamFlags
+@Returns: a newly allocated #GParamSpec instance
 
 
 <!-- ##### STRUCT GParamSpecTypeInfo ##### -->

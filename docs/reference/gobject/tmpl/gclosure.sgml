@@ -319,11 +319,16 @@ atfer this function, unles g_closure_ref() was called beforehand.
 
 <!-- ##### FUNCTION g_source_set_closure ##### -->
 <para>
-
+Set the callback for a source as a #GClosure.
+</para>
+<para>
+If the source is not one of the standard GLib types, the @closure_callback
+and @closure_marshal fields of the GSourceFuncs structure must have been
+filled in with pointers to appropriate functions.
 </para>
 
-@source: 
-@closure: 
+@source: the source
+@closure: a #GClosure
 
 
 <!-- ##### MACRO G_TYPE_IO_CHANNEL ##### -->

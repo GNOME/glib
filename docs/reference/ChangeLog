@@ -1,3 +1,14 @@
+2003-02-07  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/gtypemodule.sgml: 
+	* gobject/tmpl/gtype.sgml: 
+	* gobject/tmpl/gclosure.sgml: 
+	* gobject/tmpl/param_value_types.sgml: 
+	* gobject/tmpl/gparamspec.sgml: 
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/signals.sgml: Move all docs out-of-line. Boy, what
+	a waste of time.
+
 2003-01-21  Matthias Clasen  <maclas@gmx.de>
 
 	* glib/tmpl/strings.sgml: Document the return value of g_string_free().
