@@ -1070,16 +1070,123 @@ g_io_win32_sock_create_watch (GIOChannel    *channel,
   return g_io_win32_create_watch (channel, condition, select_thread);
 }
 
-/* Some functions prototypes so win32 will (hopefully) still compile FIXME */
-
 GIOChannel *
 g_io_channel_new_file (const gchar  *filename,
-                       GIOFileMode   mode,
+                       const gchar  *mode,
                        GError      **error)
 {
-  g_warning("Function unimplemented: %s", G_GNUC_FUNCTION);
+  int fid, flags;
+  GIOChannel *channel;
 
-  return NULL;
+  enum { /* Cheesy hack */
+    MODE_R = 1 << 0,
+    MODE_W = 1 << 1,
+    MODE_A = 1 << 2,
+    MODE_PLUS = 1 << 3,
+  } mode_num;
+
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (mode != NULL, NULL);
+  g_return_val_if_fail ((error == NULL) || (*error == NULL), NULL);
+
+  switch (mode[0])
+    {
+      case 'r':
+        mode_num = MODE_R;
+        break;
+      case 'w':
+        mode_num = MODE_W;
+        break;
+      case 'a':
+        mode_num = MODE_A;
+        break;
+      default:
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        return NULL;
+    }
+
+  switch (mode[1])
+    {
+      case '\0':
+        break;
+      case '+':
+        if (mode[2] == '\0')
+          {
+            mode_num |= MODE_PLUS;
+            break;
+          }
+        /* Fall through */
+      default:
+        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        return NULL;
+    }
+
+  switch (mode_num)
+    {
+      case MODE_R:
+        flags = O_RDONLY;
+        break;
+      case MODE_W:
+        flags = O_WRONLY | O_TRUNC | O_CREAT;
+        break;
+      case MODE_A:
+        flags = O_WRONLY | O_APPEND | O_CREAT;
+        break;
+      case MODE_R | MODE_PLUS:
+        flags = O_RDWR;
+        break;
+      case MODE_W | MODE_PLUS:
+        flags = O_RDWR | O_TRUNC | O_CREAT;
+        break;
+      case MODE_A | MODE_PLUS:
+        flags = O_RDWR | O_APPEND | O_CREAT;
+        break;
+      default:
+        g_assert_not_reached ();
+        flags = 0;
+    }
+
+
+  fid = open (filename, flags);
+  if (fid < 0)
+    {
+      g_set_error (error, G_FILE_ERROR,
+                   g_file_error_from_errno (errno),
+                   strerror (errno));
+      return (GIOChannel *)NULL;
+    }
+
+  channel = g_io_channel_win32_new_fd (fid);
+
+  /* XXX: move this to g_io_channel_win32_new_fd () */
+  channel->close_on_unref = TRUE;
+  channel->is_seekable = TRUE;
+
+  switch (mode_num)
+    {
+      case MODE_R:
+        channel->is_readable = TRUE;
+        channel->is_writeable = FALSE;
+        break;
+      case MODE_W:
+      case MODE_A:
+        channel->is_readable = FALSE;
+        channel->is_writeable = TRUE;
+        break;
+      case MODE_R | MODE_PLUS:
+      case MODE_W | MODE_PLUS:
+      case MODE_A | MODE_PLUS:
+        channel->is_readable = TRUE;
+        channel->is_writeable = TRUE;
+        break;
+      default:
+        g_assert_not_reached ();
+    }
+
+  if (((GIOWin32Channel *)channel)->debug)
+    g_print ("g_io_channel_win32_new_file: fd = %ud\n", fid);
+
+  return channel;
 }
 
 GIOStatus
@@ -1087,17 +1194,51 @@ g_io_win32_set_flags (GIOChannel     *channel,
                       GIOFlags        flags,
                       GError        **err)
 {
-  g_message("Function %s unimplemented.\n", G_GNUC_FUNCTION);
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
 
-  return G_IO_STATUS_NORMAL; /* Can't return error, haven't set err */
+  g_set_error (err, 
+               G_IO_CHANNEL_ERROR, 
+               g_file_error_from_errno (EACCES), 
+               _("Channel set flags unsupported"));
+  return G_IO_STATUS_ERROR;
 }
 
 GIOFlags
+g_io_win32_fd_get_flags (GIOChannel     *channel)
+{
+  GIOFlags flags = 0;
+  struct _stat st;
+  GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
+
+  g_return_val_if_fail (win32_channel != NULL, 0);
+  g_return_val_if_fail (win32_channel->type == G_IO_WIN32_FILE_DESC, 0);
+
+  if (0 == _fstat (win32_channel->fd, &st))
+    {
+       /* XXX: G_IO_FLAG_APPEND */
+       /* XXX: G_IO_FLAG_NONBLOCK */
+       if (st.st_mode & _S_IREAD)    flags |= G_IO_FLAG_IS_READABLE;
+       if (st.st_mode & _S_IWRITE)   flags |= G_IO_FLAG_IS_WRITEABLE;
+       /* XXX: */
+       if (!(st.st_mode & _S_IFIFO)) flags |= G_IO_FLAG_IS_SEEKABLE;
+    }
+
+  return flags;
+}
+
+/*
+ * Generic implementation, just translating createion flags
+ */
+GIOFlags
 g_io_win32_get_flags (GIOChannel     *channel)
 {
-  g_message("Function %s unimplemented.\n", G_GNUC_FUNCTION);
+  GIOFlags flags;
 
-  return 0;
+  flags =   (channel->is_readable ? G_IO_FLAG_IS_READABLE : 0)
+          | (channel->is_writeable ? G_IO_FLAG_IS_READABLE : 0)
+          | (channel->is_seekable ? G_IO_FLAG_IS_SEEKABLE : 0);
+
+  return flags;
 }
 
 static GIOFuncs win32_channel_msg_funcs = {
@@ -1119,7 +1260,7 @@ static GIOFuncs win32_channel_fd_funcs = {
   g_io_win32_fd_create_watch,
   g_io_win32_free,
   g_io_win32_set_flags,
-  g_io_win32_get_flags,
+  g_io_win32_fd_get_flags,
 };
 
 static GIOFuncs win32_channel_sock_funcs = {
@@ -1147,7 +1288,9 @@ g_io_channel_win32_new_messages (guint hwnd)
   win32_channel->type = G_IO_WIN32_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
 
-  /* FIXME set is_readable, is_writeable */
+  /* XXX: check this. */
+  channel->is_readable = IsWindow (win32_channel->hwnd);
+  channel->is_writeable = IsWindow (win32_channel->hwnd);
 
   channel->is_seekable = FALSE;
 
@@ -1178,9 +1321,11 @@ g_io_channel_win32_new_fd (gint fd)
   win32_channel->type = G_IO_WIN32_FILE_DESC;
   win32_channel->fd = fd;
 
-  /* FIXME set is_readable, is_writeable */
 
-  channel->is_seekable = TRUE;
+  channel->is_readable  = !!(st.st_mode & _S_IREAD);
+  channel->is_writeable = !!(st.st_mode & _S_IWRITE);
+  /* XXX: pipes aren't seeakable, are they ? */
+  channel->is_seekable = !(st.st_mode & _S_IFIFO);
 
   return channel;
 }
@@ -1207,8 +1352,9 @@ g_io_channel_win32_new_socket (int socket)
   win32_channel->type = G_IO_WIN32_SOCKET;
   win32_channel->fd = socket;
 
-  /* FIXME set is_readable, is_writeable */
-
+  /* XXX: check this */
+  channel->is_readable = TRUE;
+  channel->is_writeable = TRUE;
   channel->is_seekable = FALSE;
 
   return channel;

@@ -1,3 +1,13 @@
+2001-07-21  Hans Breuer  <hans@breuer.org>
+
+	* glib/giowin32.c : intial implementation of new API functions.
+	Not sure if it behaves as intended ...
+
+	* glib.def : removed, glib/glib.def is the file used since moved
+	* glib/glib.def : updated
+
+	* tests/makefile.msc : added iochannel-test
+
 Fri Jul 20 19:19:10 (UTC) 2001  Ron Steinke  <rsteinke@w-link.net>
 
 	* glib/giochannel.c: API changes, fixes to
