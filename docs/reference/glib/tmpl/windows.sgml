@@ -23,12 +23,6 @@ macro %MAXPATHLEN, which is the maximum length of a filename
 
 
 
-<!-- ##### TYPEDEF pid_t ##### -->
-<para>
-Provided for UNIX emulation on Windows; process ID type.
-</para>
-
-
 <!-- ##### MACRO pipe ##### -->
 <para>
 Provided for UNIX emulation on Windows; see documentation for <function>pipe()</function>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-31 11:20+0200\n"
+"POT-Creation-Date: 2005-02-04 00:11-0500\n"
 "PO-Revision-Date: 2005-01-31 11:35+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -87,57 +87,57 @@ msgstr "Klaidingas kompiuterio vardas"
 msgid "Error opening directory '%s': %s"
 msgstr "Klaida atidarant aplanką „%s“: %s"
 
-#: glib/gfileutils.c:498 glib/gfileutils.c:566
+#: glib/gfileutils.c:501 glib/gfileutils.c:569
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepavyko paskirti %lu baitų reikalingų perskaityti bylą „%s“"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:514
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Klaida skaitant bylą „%s“: %s"
 
-#: glib/gfileutils.c:588
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepavyko perskaityti bylos „%s“: %s"
 
-#: glib/gfileutils.c:637 glib/gfileutils.c:720
+#: glib/gfileutils.c:644 glib/gfileutils.c:733
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepavyko atidaryti bylos „%s“: %s"
 
-#: glib/gfileutils.c:652
+#: glib/gfileutils.c:661
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepavyko gauti bylos „%s“ požymių: fstat() klaida: %s"
 
-#: glib/gfileutils.c:684
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepavyko atidaryti bylos „%s“: fdopen() klaida: %s"
 
-#: glib/gfileutils.c:1011
+#: glib/gfileutils.c:1032
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablonas „%s“ klaidingas, jame negali būti „%s“"
 
-#: glib/gfileutils.c:1025
+#: glib/gfileutils.c:1046
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablono „%s“ gale nėra XXXXXX"
 
-#: glib/gfileutils.c:1048
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepavyko sukurti bylos „%s“: %s"
 
-#: glib/gfileutils.c:1424
+#: glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepavyko perskaityti simbolinės nuorodos „%s“: %s"
 
-#: glib/gfileutils.c:1445
+#: glib/gfileutils.c:1470
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
@@ -587,9 +587,9 @@ msgstr "Raktų byla neprasideda grupe"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Raktų byloje yra nepalaikoma koduotė „%s“"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2160
-#: glib/gkeyfile.c:2225 glib/gkeyfile.c:2343 glib/gkeyfile.c:2411
-#: glib/gkeyfile.c:2596 glib/gkeyfile.c:2769 glib/gkeyfile.c:2824
+#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
+#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
+#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Raktų byla neturi grupės „%s“"
@@ -604,13 +604,13 @@ msgstr "Raktų byla neturi rakto „%s“"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Raktų byloje yra raktas „%s“ su reikšme „%s“, kuri nėra UTF-8"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1768
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Raktų byloje yra raktas „%s“, kuriame yra reikšmė, kurios negalima suprasti."
 
-#: glib/gkeyfile.c:1985
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -619,26 +619,26 @@ msgstr ""
 "Raktų byloje yra raktas „%s“ grupėje „%s“, kuriame yra reikšmė, kurios "
 "negalima suprasti."
 
-#: glib/gkeyfile.c:2175 glib/gkeyfile.c:2358 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Raktų byloje nėra rakto „%s“ grupėje „%s“"
 
-#: glib/gkeyfile.c:3031
+#: glib/gkeyfile.c:3035
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Raktų byloje yra klaidinga pabėgimo tvarka „%s“"
 
-#: glib/gkeyfile.c:3055
+#: glib/gkeyfile.c:3059
 msgid "Key file contains escape character at end of line"
 msgstr "Raktų byloje, eilutės pabaigoje yra pabėgimo simbolis"
 
-#: glib/gkeyfile.c:3171
+#: glib/gkeyfile.c:3175
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Reikšmės „%s“ negalima interpretuoti kaip skaičiaus."
 
-#: glib/gkeyfile.c:3199
+#: glib/gkeyfile.c:3203
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Reikšmės „%s“ negalima interpretuoti kaip loginės."

@@ -629,6 +629,27 @@ in any UNIX manual.
 @error: 
 @Returns: 
 
+<!-- ##### FUNCTION g_get_language_names ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 <!-- ##### FUNCTION g_io_channel_error_quark ##### -->
 <para>
 
@@ -843,6 +864,12 @@ in any UNIX manual.
 <!-- ##### MACRO pclose ##### -->
 <para>
 
+</para>
+
+
+<!-- ##### TYPEDEF pid_t ##### -->
+<para>
+Provided for UNIX emulation on Windows; process ID type.
 </para>
 
 

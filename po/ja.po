@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-07 11:51-0500\n"
+"POT-Creation-Date: 2005-02-04 00:11-0500\n"
 "PO-Revision-Date: 2004-12-04 00:45+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -88,57 +88,57 @@ msgstr "無効なホスト名です"
 msgid "Error opening directory '%s': %s"
 msgstr "ディレクトリ '%s' を開く時にエラー: %s"
 
-#: glib/gfileutils.c:490 glib/gfileutils.c:558
+#: glib/gfileutils.c:501 glib/gfileutils.c:569
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu バイトを確保できませんでした (ファイル \"%s\" の読みこみに必要)"
 
-#: glib/gfileutils.c:503
+#: glib/gfileutils.c:514
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "ファイル '%s' の読み出し中にエラー: %s"
 
-#: glib/gfileutils.c:580
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "ファイル '%s' を読めません: %s"
 
-#: glib/gfileutils.c:629 glib/gfileutils.c:712
+#: glib/gfileutils.c:644 glib/gfileutils.c:733
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "ファイル '%s' を開けません: %s"
 
-#: glib/gfileutils.c:644
+#: glib/gfileutils.c:661
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "ファイル '%s' の属性の取得できません: fstat() 失敗: %s"
 
-#: glib/gfileutils.c:676
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "ファイル '%s' を開けません: fdopen() 失敗: %s"
 
-#: glib/gfileutils.c:1003
+#: glib/gfileutils.c:1032
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "テンプレート '%s' が正しくありません。'%s' を含んではいけません"
 
-#: glib/gfileutils.c:1017
+#: glib/gfileutils.c:1046
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "テンプレート '%s' が XXXXXX で終わっていません"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ファイル '%s' を作成できません: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "シンボリック・リンク '%s' の読み込みに失敗: %s"
 
-#: glib/gfileutils.c:1437
+#: glib/gfileutils.c:1470
 msgid "Symbolic links not supported"
 msgstr "シンボリック・リンクはサポートしていません"
 
@@ -196,17 +196,17 @@ msgstr ""
 "表わします。もしアンパサンドがエンティティでなければ、&amp; のようにエスケー"
 "プしてください"
 
-#: glib/gmarkup.c:478
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "文字 '%s' はエンティティ名として使えません"
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "エンティティ名 '%s' というのは不明です"
 
-#: glib/gmarkup.c:531
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -215,7 +215,7 @@ msgstr ""
 "ドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてく"
 "ださい"
 
-#: glib/gmarkup.c:584
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -224,16 +224,16 @@ msgstr ""
 "'%-.*s' をパースできません。文字参照には数字が含まれなくてはなりません (例: "
 "&#234;) おそらく数字が大きすぎます"
 
-#: glib/gmarkup.c:609
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "文字参照 '%-.*s' が使用可能な文字をエンコードしていません"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "空の文字参照です。&#454; のように数字がなくてはなりません"
 
-#: glib/gmarkup.c:634
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -243,23 +243,23 @@ msgstr ""
 "サンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープして"
 "ください"
 
-#: glib/gmarkup.c:720
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "中途半端な実体参照です"
 
-#: glib/gmarkup.c:726
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "中途半端な文字参照です"
 
-#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "UTF-8 として正しくないテキストです"
 
-#: glib/gmarkup.c:1064
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "ドキュメントはエレメントで始まってなくてはなりません (例 <book>)"
 
-#: glib/gmarkup.c:1104
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -268,7 +268,7 @@ msgstr ""
 "'%s' は文字 '<' に続く文字としては正しくありません。おそらくエレメント名の開"
 "始になっていません"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -277,14 +277,14 @@ msgstr ""
 "おかしな文字 '%s' があります。エレメント '%s' の開始タグの最後は文字 '>' でな"
 "くてはなりません"
 
-#: glib/gmarkup.c:1257
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "おかしな文字 '%s' です。属性名'%s' (エレメント '%s') の後には '=' が必要です"
 
-#: glib/gmarkup.c:1299
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -295,7 +295,7 @@ msgstr ""
 "なくてはなりません。あるいは属性になります。おかしな文字を属性名に使ったのか"
 "もしれません"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -304,7 +304,7 @@ msgstr ""
 "おかしな文字 '%s' です。属性 '%s' (エレメント '%s') の値を設定するには等号記"
 "号の後は引用記号で始まってなくてはなりません"
 
-#: glib/gmarkup.c:1533
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -313,7 +313,7 @@ msgstr ""
 "'%s' は '</' に続く文字としては正しくありません。'%s' ではエレメント名は始"
 "まってません"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -322,25 +322,25 @@ msgstr ""
 "'%s' は閉じエレメント名 '%s' に続く文字としては正しくありあません。'>' のみが"
 "使用できます"
 
-#: glib/gmarkup.c:1584
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "エレメント '%s' は閉じています。エレメントは何も開かれてません"
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "エレメント '%s' が閉ました。しかし現在開いているエレメントは '%s' です"
 
-#: glib/gmarkup.c:1740
+#: glib/gmarkup.c:1729
 msgid "Document was empty or contained only whitespace"
 msgstr "ドキュメントが空か、空白だけが含まれています"
 
-#: glib/gmarkup.c:1754
+#: glib/gmarkup.c:1743
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "ドキュメントが開きカギカッコ '<' の直後で突然終わっています"
 
-#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
+#: glib/gmarkup.c:1751 glib/gmarkup.c:1795
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -349,7 +349,7 @@ msgstr ""
 "ドキュメントが突然終わっています。エレメントが開きっぱなしです。最後に開いた"
 "エレメントは '%s' です。"
 
-#: glib/gmarkup.c:1770
+#: glib/gmarkup.c:1759
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -358,19 +358,19 @@ msgstr ""
 "ドキュメントが突然終わっています。閉じカギカッコでタグ <%s/> が終わっていませ"
 "ん"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1765
 msgid "Document ended unexpectedly inside an element name"
 msgstr "エレメント名の途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1770
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "属性名の途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1786
+#: glib/gmarkup.c:1775
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "エレメントの開始タグの途中でドキュメントが突然終わっています"
 
-#: glib/gmarkup.c:1792
+#: glib/gmarkup.c:1781
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -378,16 +378,16 @@ msgstr ""
 "属性名の後の等号記号の後でドキュメントが突然終わっています: 属性値がありませ"
 "ん"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1788
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "ドキュメントが属性値の途中で突然終わっています"
 
-#: glib/gmarkup.c:1814
+#: glib/gmarkup.c:1803
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "ドキュメントがエレメント '%s' の閉じタグの途中で突然終わっています"
 
-#: glib/gmarkup.c:1820
+#: glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ドキュメントがコメントあるいはプロセシング指示子の途中で突然終わっています"
@@ -562,7 +562,7 @@ msgstr "通常のファイルではありません"
 msgid "File is empty"
 msgstr "ファイルが空です"
 
-#: glib/gkeyfile.c:685
+#: glib/gkeyfile.c:689
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -570,38 +570,38 @@ msgstr ""
 "キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
 "ん"
 
-#: glib/gkeyfile.c:753
+#: glib/gkeyfile.c:757
 msgid "Key file does not start with a group"
 msgstr "キー・ファイルがグループで始まっていません"
 
-#: glib/gkeyfile.c:796
+#: glib/gkeyfile.c:800
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
 
-#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
-#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
+#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
+#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "キー・ファイルにグループ '%s' がありません"
 
-#: glib/gkeyfile.c:1158
+#: glib/gkeyfile.c:1167
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "キー・ファイルにキー '%s' がありません"
 
-#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
 
-#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:1976
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -609,26 +609,26 @@ msgid ""
 msgstr ""
 "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
-#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
 
-#: glib/gkeyfile.c:3023
+#: glib/gkeyfile.c:3035
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
 
-#: glib/gkeyfile.c:3047
+#: glib/gkeyfile.c:3059
 msgid "Key file contains escape character at end of line"
 msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
 
-#: glib/gkeyfile.c:3163
+#: glib/gkeyfile.c:3175
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "値 '%s' を数値として解釈できません"
 
-#: glib/gkeyfile.c:3191
+#: glib/gkeyfile.c:3203
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "値 '%s' を論理値として解釈できません"

@@ -9,13 +9,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-28 11:55+0100\n"
+"POT-Creation-Date: 2005-02-04 00:11-0500\n"
 "PO-Revision-Date: 2005-01-28 23:47+0800\n"
 "Last-Translator: Eric Pareja <xenos@upm.edu.ph>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: glib/gconvert.c:403
 #, c-format
@@ -88,57 +88,58 @@ msgstr "Di tanggap na hostname"
 msgid "Error opening directory '%s': %s"
 msgstr "Error sa pagbukas ng directory '%s': %s"
 
-#: glib/gfileutils.c:498 glib/gfileutils.c:566
+#: glib/gfileutils.c:501 glib/gfileutils.c:569
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Hindi makapag-tabi ng %lu byte upang basahin ang tipunang \"%s\""
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:514
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Error sa pagbasa ng tipunang '%s': %s"
 
-#: glib/gfileutils.c:588
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Sawi ang pagbabasa ng tipunang '%s': %s"
 
-#: glib/gfileutils.c:637 glib/gfileutils.c:720
+#: glib/gfileutils.c:644 glib/gfileutils.c:733
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Sawi ang pagbukas ng tipunang '%s': %s"
 
-#: glib/gfileutils.c:652
+#: glib/gfileutils.c:661
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Sawi ang pagkuha ng mga attribute ng tipunang '%s': sawi ang fstat(): %s"
+msgstr ""
+"Sawi ang pagkuha ng mga attribute ng tipunang '%s': sawi ang fstat(): %s"
 
-#: glib/gfileutils.c:684
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Sawi ang pagbukas ng tipunang '%s': sawi ang fdopen(): %s"
 
-#: glib/gfileutils.c:1011
+#: glib/gfileutils.c:1032
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Di tanggap ang template '%s', wala dapat na '%s'"
 
-#: glib/gfileutils.c:1025
+#: glib/gfileutils.c:1046
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Hindi XXXXXX ang dulo ng template '%s'"
 
-#: glib/gfileutils.c:1048
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Sawi ang paglikha ng tipunang '%s': %s"
 
-#: glib/gfileutils.c:1424
+#: glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Sawi ang pagbasa ng symbolic link '%s': %s"
 
-#: glib/gfileutils.c:1445
+#: glib/gfileutils.c:1470
 msgid "Symbolic links not supported"
 msgstr "Hindi suportado ang mga symbolic link"
 
@@ -182,7 +183,8 @@ msgstr "Error sa linya %d: %s"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Walang laman na entity '&' ay nakita; tanggap na mga entity ay: &amp; &quot; &lt; &gt; &apos;"
+"Walang laman na entity '&' ay nakita; tanggap na mga entity ay: &amp; &quot; "
+"&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:438
 #, c-format
@@ -192,8 +194,8 @@ msgid ""
 "it as &amp;"
 msgstr ""
 "Di tanggap ang karakter '%s' sa umpisa ng pangalan ng entity; ang & karakter "
-"ang nag-uumpisa ng entity; kung ang ampersand ay di dapat maging entity, itaglay "
-"ito bilang &amp;"
+"ang nag-uumpisa ng entity; kung ang ampersand ay di dapat maging entity, "
+"itaglay ito bilang &amp;"
 
 #: glib/gmarkup.c:472
 #, c-format
@@ -211,8 +213,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "Di nagtapos ang entity sa puntukoma; malamang ay gumamit kayo ng ampersand "
-"karakter na hindi sinasadyang mag-umpisa ng entity - itaglay ang ampersand ng "
-"&amp;"
+"karakter na hindi sinasadyang mag-umpisa ng entity - itaglay ang ampersand "
+"ng &amp;"
 
 #: glib/gmarkup.c:573
 #, c-format
@@ -220,17 +222,20 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Sawi sa pag-parse ng '%-.*s', na dapat ay numero sa loob ng reference sa karakter "
-"(halimbawa ay &#234;) - maaaring ang numero ay sobra ang laki"
+"Sawi sa pag-parse ng '%-.*s', na dapat ay numero sa loob ng reference sa "
+"karakter (halimbawa ay &#234;) - maaaring ang numero ay sobra ang laki"
 
 #: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Reference sa karakter '%-.*s' ay hindi nag-encode ng tanggap na karakter"
+msgstr ""
+"Reference sa karakter '%-.*s' ay hindi nag-encode ng tanggap na karakter"
 
 #: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
-msgstr "Walang laman na reference sa karakter; dapat may kasamang numero tulad ng &#454;"
+msgstr ""
+"Walang laman na reference sa karakter; dapat may kasamang numero tulad ng "
+"&#454;"
 
 #: glib/gmarkup.c:623
 msgid ""
@@ -239,8 +244,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "Ang reference sa karakter ay di nagtapos sa puntukoma; malamang ay gumamit "
-"kayo ng ampersand na karakter na hindi sinadyang mag-umpisa ng entity - itaglay "
-"ang ampersand bilang &amp;"
+"kayo ng ampersand na karakter na hindi sinadyang mag-umpisa ng entity - "
+"itaglay ang ampersand bilang &amp;"
 
 #: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
@@ -264,8 +269,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' ay di tanggap na karakter matapos ng '<' na karakter; hindi ito maaaring "
-"mag-umpisa ng pangalang elemento"
+"'%s' ay di tanggap na karakter matapos ng '<' na karakter; hindi ito "
+"maaaring mag-umpisa ng pangalang elemento"
 
 #: glib/gmarkup.c:1157
 #, c-format
@@ -291,9 +296,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Kakaibang karakter '%s', inasahan na '>' o '/' na karakter ang pambungad "
-"ng pangbukas na tag ng elementong '%s' o attribute; maaaring gumamit "
-"kayo ng di tanggap na karakter sa pangalang attribute"
+"Kakaibang karakter '%s', inasahan na '>' o '/' na karakter ang pambungad ng "
+"pangbukas na tag ng elementong '%s' o attribute; maaaring gumamit kayo ng di "
+"tanggap na karakter sa pangalang attribute"
 
 #: glib/gmarkup.c:1377
 #, c-format
@@ -302,15 +307,17 @@ msgid ""
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
 "Kakaibang karakter '%s', inasahan na pambukas na quote mark matapos ng "
-"equals sign kapag nagbigay ng halaga para sa attribute '%s' ng elementong '%s'"
+"equals sign kapag nagbigay ng halaga para sa attribute '%s' ng elementong '%"
+"s'"
 
 #: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "Hindi tanggap na karakter ang '%s' matapos ng mga karakter na '</'; "
-"Ang '%s' ay hindi maaaring umpisa ng pangalang elemento"
+msgstr ""
+"Hindi tanggap na karakter ang '%s' matapos ng mga karakter na '</'; Ang '%s' "
+"ay hindi maaaring umpisa ng pangalang elemento"
 
 #: glib/gmarkup.c:1562
 #, c-format
@@ -318,8 +325,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"Hindi tanggap na karakter ang '%s' matapos ang pangsara ng pangalang elemento '%s'; "
-"ang tinatanggap na karakter ay '>'"
+"Hindi tanggap na karakter ang '%s' matapos ang pangsara ng pangalang "
+"elemento '%s'; ang tinatanggap na karakter ay '>'"
 
 #: glib/gmarkup.c:1573
 #, c-format
@@ -329,7 +336,9 @@ msgstr "Sinarhan ang elementong '%s', walang bukas na elemento."
 #: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Sinarhan ang elementong '%s', ngunit ang kasalukuyang elementong bukas ay '%s'"
+msgstr ""
+"Sinarhan ang elementong '%s', ngunit ang kasalukuyang elementong bukas ay '%"
+"s'"
 
 #: glib/gmarkup.c:1729
 msgid "Document was empty or contained only whitespace"
@@ -337,7 +346,9 @@ msgstr "Walang laman ang dokumento o naglalaman lamang ito ng puwang"
 
 #: glib/gmarkup.c:1743
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Nagwakas ng di inaasahan ang dokumento matapos lamang ng pangbukas na angle bracket '<'"
+msgstr ""
+"Nagwakas ng di inaasahan ang dokumento matapos lamang ng pangbukas na angle "
+"bracket '<'"
 
 #: glib/gmarkup.c:1751 glib/gmarkup.c:1795
 #, c-format
@@ -345,8 +356,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Nagwakas ng di inaasahan ang dokumento na may mga bukas na elemento - "
-"'%s' ay ang huling elementong binuksan"
+"Nagwakas ng di inaasahan ang dokumento na may mga bukas na elemento - '%s' "
+"ay ang huling elementong binuksan"
 
 #: glib/gmarkup.c:1759
 #, c-format
@@ -363,32 +374,40 @@ msgstr "Nagwakas ng di inaasahan ang dokumento sa loob ng pangalan ng elemento"
 
 #: glib/gmarkup.c:1770
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Nagwakas ng di inaasahan ang dokumento sa loob ng pangalan ng attribute"
+msgstr ""
+"Nagwakas ng di inaasahan ang dokumento sa loob ng pangalan ng attribute"
 
 #: glib/gmarkup.c:1775
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Nagwakas ng di inaasahan ang dokumento sa loob ng pagbukas na tag ng elemento."
+msgstr ""
+"Nagwakas ng di inaasahan ang dokumento sa loob ng pagbukas na tag ng "
+"elemento."
 
 #: glib/gmarkup.c:1781
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Nagwakas ng di inaasahan ang dokumento matapos ang equal sign na sumunod "
-"sa pangalan ng attribute; walang halaga ang attribute"
+"Nagwakas ng di inaasahan ang dokumento matapos ang equal sign na sumunod sa "
+"pangalan ng attribute; walang halaga ang attribute"
 
 #: glib/gmarkup.c:1788
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Nagwakas ng di inaasahan ang dokumento habang nasa loob ng halagang attribute"
+msgstr ""
+"Nagwakas ng di inaasahan ang dokumento habang nasa loob ng halagang attribute"
 
 #: glib/gmarkup.c:1803
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Nagwakas ang dokumento ng di inaasahan sa loob ng tag ng pagsara para sa elementong '%s'"
+msgstr ""
+"Nagwakas ang dokumento ng di inaasahan sa loob ng tag ng pagsara para sa "
+"elementong '%s'"
 
 #: glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Nagwakas ang dokumento ng di inaasahan sa loob ng komento o utos ng pagproseso"
+msgstr ""
+"Nagwakas ang dokumento ng di inaasahan sa loob ng komento o utos ng "
+"pagproseso"
 
 #: glib/gshell.c:73
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -396,7 +415,8 @@ msgstr "Ang binanggit na teksto ay di nag-umpisa sa quotation mark"
 
 #: glib/gshell.c:163
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "Walang kapares na quotation mark sa command line o ibang shell na teksto."
+msgstr ""
+"Walang kapares na quotation mark sa command line o ibang shell na teksto."
 
 #: glib/gshell.c:541
 #, c-format
@@ -406,7 +426,9 @@ msgstr "Nagwakas ang teksto matapos ng karakter na '\\'. (Ang teksto ay '%s')"
 #: glib/gshell.c:548
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr "Nagwakas ang teksto bago nakahanap ng kapares na quote para sa %c. (Ang teksto ay '%s')"
+msgstr ""
+"Nagwakas ang teksto bago nakahanap ng kapares na quote para sa %c. (Ang "
+"teksto ay '%s')"
 
 #: glib/gshell.c:560
 msgid "Text was empty (or contained only whitespace)"
@@ -456,7 +478,9 @@ msgstr "Sawi sa pagbasa ng datos mula sa prosesong anak (%s)"
 #: glib/gspawn.c:310
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "Di inaasahang error sa select() habang nagbabasa ng datos mula sa prosesong anak (%s)"
+msgstr ""
+"Di inaasahang error sa select() habang nagbabasa ng datos mula sa prosesong "
+"anak (%s)"
 
 #: glib/gspawn.c:393
 #, c-format
@@ -562,7 +586,8 @@ msgstr "Walang laman ang tipunan"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Ang tipunang susi ay naglalaman ng linyang '%s' na hindi pares na susi-halaga, grupo, o komento"
+"Ang tipunang susi ay naglalaman ng linyang '%s' na hindi pares na susi-"
+"halaga, grupo, o komento"
 
 #: glib/gkeyfile.c:757
 msgid "Key file does not start with a group"
@@ -573,9 +598,9 @@ msgstr "Ang tipunang susi ay hindi naguumpisa sa isang grupo"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ang tipunang susi ay naglalaman ng di suportadong encoding '%s'"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2160
-#: glib/gkeyfile.c:2225 glib/gkeyfile.c:2343 glib/gkeyfile.c:2411
-#: glib/gkeyfile.c:2596 glib/gkeyfile.c:2769 glib/gkeyfile.c:2824
+#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
+#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
+#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ang tipunang susi ay walang grupong '%s'"
@@ -588,43 +613,45 @@ msgstr "Ang tipunang susi ay walang susing '%s'"
 #: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Ang tipunang susi ay naglalaman ng susing '%s' na may halagang '%s' na hindi UTF-8"
+msgstr ""
+"Ang tipunang susi ay naglalaman ng susing '%s' na may halagang '%s' na hindi "
+"UTF-8"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1768
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Ang tipunang susi ay naglalaman ng susing '%s' na may halagang di mabasa."
+msgstr ""
+"Ang tipunang susi ay naglalaman ng susing '%s' na may halagang di mabasa."
 
-#: glib/gkeyfile.c:1985
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"Ang tipunang susi ay naglalaman ng susing '%s' sa grupong '%s' na may "
-"halaga na hindi mabasa."
+"Ang tipunang susi ay naglalaman ng susing '%s' sa grupong '%s' na may halaga "
+"na hindi mabasa."
 
-#: glib/gkeyfile.c:2175 glib/gkeyfile.c:2358 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ang tipunang susi ay walang susing '%s' sa grupong '%s'"
 
-#: glib/gkeyfile.c:3031
+#: glib/gkeyfile.c:3035
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ang tipunang susi ay may di tanggap na escape sequence '%s'"
 
-#: glib/gkeyfile.c:3055
+#: glib/gkeyfile.c:3059
 msgid "Key file contains escape character at end of line"
 msgstr "Ang tipunang susi ay may escape karakter sa dulo ng linya"
 
-#: glib/gkeyfile.c:3171
+#: glib/gkeyfile.c:3175
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Ang halagang '%s' ay hindi mabasa bilang numero."
 
-#: glib/gkeyfile.c:3199
+#: glib/gkeyfile.c:3203
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Ang halagang '%s' ay hindi mabasa bilang boolean."
-

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-26 13:33+0900\n"
+"POT-Creation-Date: 2005-02-04 00:11-0500\n"
 "PO-Revision-Date: 2005-01-26 13:34+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -85,57 +85,57 @@ msgstr "잘못된 호스트 이름"
 msgid "Error opening directory '%s': %s"
 msgstr "디렉토리 '%s' 여는 중 오류 : %s"
 
-#: glib/gfileutils.c:498 glib/gfileutils.c:566
+#: glib/gfileutils.c:501 glib/gfileutils.c:569
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "파일 \"%2$s\"을(를) 읽은 %1$lu 바이트를 할당할 수 없습니다"
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:514
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "파일 '%s'을(를) 읽는 중 오류: %s"
 
-#: glib/gfileutils.c:588
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "파일 '%s'에서 읽기 실패 : %s"
 
-#: glib/gfileutils.c:637 glib/gfileutils.c:720
+#: glib/gfileutils.c:644 glib/gfileutils.c:733
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "파일 '%s' 열기 실패 : %s"
 
-#: glib/gfileutils.c:652
+#: glib/gfileutils.c:661
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "파일 '%s'의 속성을 가져오기 실패 : fstat() 실패: %s"
 
-#: glib/gfileutils.c:684
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "파일 '%s' 열기 실패: fdopen() 실패: %s"
 
-#: glib/gfileutils.c:1011
+#: glib/gfileutils.c:1032
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "템플리트 '%s'이(가) 잘못되었습니다, '%s'을(를) 포함하지 않아야 합니다"
 
-#: glib/gfileutils.c:1025
+#: glib/gfileutils.c:1046
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "템플리트 '%s'이(가) XXXXXX로 끝나지 않았습니다"
 
-#: glib/gfileutils.c:1048
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "파일 '%s' 만들기 실패: %s"
 
-#: glib/gfileutils.c:1424
+#: glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
 
-#: glib/gfileutils.c:1445
+#: glib/gfileutils.c:1470
 msgid "Symbolic links not supported"
 msgstr "심볼릭 링크를 지원하지 않습니다"
 
@@ -578,9 +578,9 @@ msgstr "키 파일이 그룹으로 시작하지 않습니다"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "키 파일에 지원하지 않는 '%s' 인코딩이 들어 있습니다"
 
-#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2160
-#: glib/gkeyfile.c:2225 glib/gkeyfile.c:2343 glib/gkeyfile.c:2411
-#: glib/gkeyfile.c:2596 glib/gkeyfile.c:2769 glib/gkeyfile.c:2824
+#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
+#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
+#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "키 파일에 '%s' 그룹이 없습니다"
@@ -595,38 +595,38 @@ msgstr "키 파일에 '%s' 키가 없습니다"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "키 파일의 '%s' 키의 '%s' 값은 UTF-8이 아닙니다"
 
-#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1768
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "키 파일의 '%1$s' 키에 해석할 수 없는 값이 들어 있습니다."
 
-#: glib/gkeyfile.c:1985
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr "키 파일의 '%2$s' 그룹에 '%1$s' 키에 해석할 수 없는 값이 들어 있습니다."
 
-#: glib/gkeyfile.c:2175 glib/gkeyfile.c:2358 glib/gkeyfile.c:2836
+#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "키 파일의 '%2$s' 그룹에 '%1$s' 키가 없습니다"
 
-#: glib/gkeyfile.c:3031
+#: glib/gkeyfile.c:3035
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "키 파일에 잘못된 '%s' 이스케이프 문자가 들어 있습니다"
 
-#: glib/gkeyfile.c:3055
+#: glib/gkeyfile.c:3059
 msgid "Key file contains escape character at end of line"
 msgstr "키 파일의 마지막 줄에 이스케이프 문자가 들어 있습니다"
 
-#: glib/gkeyfile.c:3171
+#: glib/gkeyfile.c:3175
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' 값은 숫자로 해석할 수 없습니다."
 
-#: glib/gkeyfile.c:3199
+#: glib/gkeyfile.c:3203
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' 값은 참/거짓 값으로 해석할 수 없습니다."

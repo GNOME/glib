@@ -8,11 +8,11 @@ Overview of Changes from GLib 2.6.1 to GLib 2.6.2
  - Bug fixes [Kazuki Iwamoto, Tor Lillqvist, Robert Ögren,
    Ulf Lamping]
 * Other bug fixes [Tor, Owen Taylor, Kjartan Maraas, Pawel
- Sakowski, Simon Budig, Mathias Hasselmann, David Hoover]
-* Documentation improvements [Vincent Untz, Sebastian Bacher]
+  Sakowski, Simon Budig, Mathias Hasselmann, David Hoover,
+  Morten Welinder]
+* Documentation improvements [Vincent Untz, Sebastian Bacher,
+  Matthias]
 * New and updated translations (ca,et,it,lt,pl,pt_BR,sk,tl)
-
-Bugs fixed: 163390,164330,164467,163030,164622,165100,165887,165907,165980,164269
 
 Overview of Changes from GLib 2.6.0 to GLib 2.6.1
 =================================================

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-14 06:56+0100\n"
+"POT-Creation-Date: 2005-02-04 00:11-0500\n"
 "PO-Revision-Date: 2005-01-14 07:12+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -91,57 +91,57 @@ msgstr "Neplatné meno hostiteľa"
 msgid "Error opening directory '%s': %s"
 msgstr "Chyba pri otváraní priečinku'%s': %s"
 
-#: glib/gfileutils.c:498 glib/gfileutils.c:566
+#: glib/gfileutils.c:501 glib/gfileutils.c:569
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Nepodarilo sa alokovať %lu bajtov pre načítanie súboru \"%s\""
 
-#: glib/gfileutils.c:511
+#: glib/gfileutils.c:514
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Chyba pri čítaní súboru '%s': %s"
 
-#: glib/gfileutils.c:588
+#: glib/gfileutils.c:593
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Nepodarilo sa čítanie súboru '%s': %s"
 
-#: glib/gfileutils.c:637 glib/gfileutils.c:720
+#: glib/gfileutils.c:644 glib/gfileutils.c:733
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:652
+#: glib/gfileutils.c:661
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nepodarilo sa získať atribúty súboru '%s': fstat() zlyhala: %s"
 
-#: glib/gfileutils.c:684
+#: glib/gfileutils.c:695
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Nepodarilo sa otvoriť súbor '%s': fdopen() zlyhala: %s"
 
-#: glib/gfileutils.c:1011
+#: glib/gfileutils.c:1032
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Šablóna '%s' je neplatná, nesmie obsahovať '%s'"
 
-#: glib/gfileutils.c:1025
+#: glib/gfileutils.c:1046
 #, c-format
 msgid "Template '%s' doesn't end with XXXXXX"
 msgstr "Šablóna '%s' nekončí XXXXXX"
 
-#: glib/gfileutils.c:1048
+#: glib/gfileutils.c:1071
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nepodarilo sa vytvoriť súbor '%s': %s"
 
-#: glib/gfileutils.c:1424
+#: glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nepodarilo sa prečítať symbolický odkaz '%s': %s"
 
-#: glib/gfileutils.c:1445
+#: glib/gfileutils.c:1470
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nepodporované"
 
@@ -197,17 +197,17 @@ msgstr ""
 "Znak '%s' nie je platný na začiatku mena entity. Znak & začína entitu. Ak tu "
 "ale nemá predstavovať entitu, musíte ho zapísať ako &amp;."
 
-#: glib/gmarkup.c:478
+#: glib/gmarkup.c:472
 #, c-format
 msgid "Character '%s' is not valid inside an entity name"
 msgstr "Znak '%s' nie je platný v mene entity"
 
-#: glib/gmarkup.c:521
+#: glib/gmarkup.c:509
 #, c-format
 msgid "Entity name '%s' is not known"
 msgstr "Meno entity '%s' nie je známe"
 
-#: glib/gmarkup.c:531
+#: glib/gmarkup.c:520
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -215,7 +215,7 @@ msgstr ""
 "Entita nekončí bodkočiarkou. Asi ste použili znak & bez toho, aby ste ho "
 "zapísali ako &amp;"
 
-#: glib/gmarkup.c:584
+#: glib/gmarkup.c:573
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -224,17 +224,17 @@ msgstr ""
 "Nepodarilo sa spracovať '%-.*s', čo by mala byť číslica v odkaze na znak "
 "(napríklad &#234;) - možno je číslica príliš veľká"
 
-#: glib/gmarkup.c:609
+#: glib/gmarkup.c:598
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Odkaz na znak '%-.*s' nie je kódom povoleného znaku"
 
-#: glib/gmarkup.c:624
+#: glib/gmarkup.c:613
 msgid "Empty character reference; should include a digit such as &#454;"
 msgstr ""
 "Prázdny odkaz na znak. Odkaz by mal obsahovať číslice, napríklad &#434;"
 
-#: glib/gmarkup.c:634
+#: glib/gmarkup.c:623
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -243,30 +243,30 @@ msgstr ""
 "Odkaz na znak neskončil bodkočiarkou. Asi ste použili & a nezadali ste ho "
 "ako &amp;"
 
-#: glib/gmarkup.c:720
+#: glib/gmarkup.c:709
 msgid "Unfinished entity reference"
 msgstr "Neukončený odkaz na entitu"
 
-#: glib/gmarkup.c:726
+#: glib/gmarkup.c:715
 msgid "Unfinished character reference"
 msgstr "Neukončený odkaz na znak"
 
-#: glib/gmarkup.c:969 glib/gmarkup.c:997 glib/gmarkup.c:1028
+#: glib/gmarkup.c:958 glib/gmarkup.c:986 glib/gmarkup.c:1017
 msgid "Invalid UTF-8 encoded text"
 msgstr "Neplatný text v kódovaní UTF-8"
 
-#: glib/gmarkup.c:1064
+#: glib/gmarkup.c:1053
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument musí začínať elementom (napr. <book>)"
 
-#: glib/gmarkup.c:1104
+#: glib/gmarkup.c:1093
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' nie je platný znak za znakom '<', nesmie začínať meno elementu"
 
-#: glib/gmarkup.c:1168
+#: glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the start tag of element "
@@ -275,7 +275,7 @@ msgstr ""
 "Prebytočný znak '%s'. Bol očakávaný znak '>', aby skončil začiatočnú značku "
 "elementu '%s'"
 
-#: glib/gmarkup.c:1257
+#: glib/gmarkup.c:1246
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -283,7 +283,7 @@ msgstr ""
 "Prebytočný znak '%s'. Bol očakávaný znak '=' za menom atribútu '%s' elementu "
 "'%s'"
 
-#: glib/gmarkup.c:1299
+#: glib/gmarkup.c:1288
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -294,7 +294,7 @@ msgstr ""
 "začiatočnú značku elementu '%s' alebo nepovinne atribút. Možno ste použili "
 "neplatný znak v mene atribútu"
 
-#: glib/gmarkup.c:1388
+#: glib/gmarkup.c:1377
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -303,7 +303,7 @@ msgstr ""
 "Prebytočný znak '%s'. Boli očakávané úvodzovky po '=' pri zadávaní hodnoty "
 "atribútu '%s' v elemente '%s'"
 
-#: glib/gmarkup.c:1533
+#: glib/gmarkup.c:1522
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -311,7 +311,7 @@ msgid ""
 msgstr ""
 "'%s' nie je platný znak po znakoch '</'. '%s' nesmie začínať meno elementu"
 
-#: glib/gmarkup.c:1573
+#: glib/gmarkup.c:1562
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -319,25 +319,25 @@ msgid ""
 msgstr ""
 "'%s' nie je platný znak po koncovom mene elementu '%s'. Povolený znak je '>'"
 
-#: glib/gmarkup.c:1584
+#: glib/gmarkup.c:1573
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element '%s' bol ukončený, momentálne nie je otvorený žiadny element"
 
-#: glib/gmarkup.c:1593
+#: glib/gmarkup.c:1582
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element '%s' bol ukončený, ale momentálne otvorený element je '%s'"
 
-#: glib/gmarkup.c:1740
+#: glib/gmarkup.c:1729
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prázdny alebo obsahuje iba medzery"
 
-#: glib/gmarkup.c:1754
+#: glib/gmarkup.c:1743
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument neočakávane skončil hneď po začiatočnom znaku '<'"
 
-#: glib/gmarkup.c:1762 glib/gmarkup.c:1806
+#: glib/gmarkup.c:1751 glib/gmarkup.c:1795
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -346,7 +346,7 @@ msgstr ""
 "Dokument neočakávane skončil s otvorenými elementami - '%s' bol posledný "
 "otvorený element."
 
-#: glib/gmarkup.c:1770
+#: glib/gmarkup.c:1759
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -354,35 +354,35 @@ msgid ""
 msgstr ""
 "Dokument neočakávane skončil, očakával sa znak '>' pre ukončenie značky <%s>"
 
-#: glib/gmarkup.c:1776
+#: glib/gmarkup.c:1765
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument neočakávane skončil v mene elementu"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1770
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument neočakávane skončil v mene atribútu"
 
-#: glib/gmarkup.c:1786
+#: glib/gmarkup.c:1775
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument neočakávane skončil v začiatočnej značke elementu."
 
-#: glib/gmarkup.c:1792
+#: glib/gmarkup.c:1781
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
 "Dokument neočakávane skončil po '=' za menom atribútu, chýba hodnota atribútu"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1788
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument neočakávane skončil v hodnote atribútu"
 
-#: glib/gmarkup.c:1814
+#: glib/gmarkup.c:1803
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument neočakávane skončil v koncovej značke pre element '%s'"
 
-#: glib/gmarkup.c:1820
+#: glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument neočakávane skončil v komentári alebo inštrukcii pre spracovanie"
@@ -555,7 +555,7 @@ msgstr "Nie je obyčajný súbor"
 msgid "File is empty"
 msgstr "Súbor je prázdny"
 
-#: glib/gkeyfile.c:685
+#: glib/gkeyfile.c:689
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -563,67 +563,68 @@ msgstr ""
 "Súbor kľúčov obsahuje riadok '%s', ktorý nie je pár kľúč-hodnota, skupinou, "
 "ani komentárom"
 
-#: glib/gkeyfile.c:753
+#: glib/gkeyfile.c:757
 msgid "Key file does not start with a group"
 msgstr "Súbor kľúčov nezačína skupinou"
 
-#: glib/gkeyfile.c:796
+#: glib/gkeyfile.c:800
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Súbor kľúčov obsahuje nepodporované kódovane '%s'"
 
-#: glib/gkeyfile.c:1000 glib/gkeyfile.c:1146 glib/gkeyfile.c:2151
-#: glib/gkeyfile.c:2216 glib/gkeyfile.c:2334 glib/gkeyfile.c:2402
-#: glib/gkeyfile.c:2587 glib/gkeyfile.c:2760 glib/gkeyfile.c:2815
+#: glib/gkeyfile.c:1009 glib/gkeyfile.c:1155 glib/gkeyfile.c:2161
+#: glib/gkeyfile.c:2226 glib/gkeyfile.c:2344 glib/gkeyfile.c:2412
+#: glib/gkeyfile.c:2597 glib/gkeyfile.c:2771 glib/gkeyfile.c:2828
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Súbor kľúčov nemá skupinu '%s'"
 
-#: glib/gkeyfile.c:1158
+#: glib/gkeyfile.c:1167
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Súbor kľúčov nemá kľúč '%s'"
 
-#: glib/gkeyfile.c:1259 glib/gkeyfile.c:1368
+#: glib/gkeyfile.c:1268 glib/gkeyfile.c:1377
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Súbor kľúčov obsahuje kľúč '%s' s hodnotou '%s', ktorá nie je UTF-8"
 
-#: glib/gkeyfile.c:1277 glib/gkeyfile.c:1386 glib/gkeyfile.c:1759
+#: glib/gkeyfile.c:1286 glib/gkeyfile.c:1395 glib/gkeyfile.c:1769
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
-"Súbor kľúčov obsahuje kľúč '%s', ktorý má hodnotu, ktorá nemohla byť interpretovaná."
+"Súbor kľúčov obsahuje kľúč '%s', ktorý má hodnotu, ktorá nemohla byť "
+"interpretovaná."
 
-#: glib/gkeyfile.c:1976
+#: glib/gkeyfile.c:1986
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"Súbor kľúčov obsahuje kľúč '%s', v skupine '%s', ktorý má hodnotu, ktorá nemohla "
-"byť interpretovaná."
+"Súbor kľúčov obsahuje kľúč '%s', v skupine '%s', ktorý má hodnotu, ktorá "
+"nemohla byť interpretovaná."
 
-#: glib/gkeyfile.c:2166 glib/gkeyfile.c:2349 glib/gkeyfile.c:2827
+#: glib/gkeyfile.c:2176 glib/gkeyfile.c:2359 glib/gkeyfile.c:2839
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Súbor kľúčov nemá kľúč '%s' v skupine '%s'"
 
-#: glib/gkeyfile.c:3023
+#: glib/gkeyfile.c:3035
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Súbor kľúčov obsahuje neplatne zadanú sekvenciu '%s'"
 
-#: glib/gkeyfile.c:3047
+#: glib/gkeyfile.c:3059
 msgid "Key file contains escape character at end of line"
 msgstr "Súbor kľúčov obsahuje znak escape na konci riadku"
 
-#: glib/gkeyfile.c:3163
+#: glib/gkeyfile.c:3175
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Hodnota '%s' nemohla byť interpretovaná ako číslo."
 
-#: glib/gkeyfile.c:3191
+#: glib/gkeyfile.c:3203
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Hodnota '%s' nemohla byť interpretovaná ako boolovská."

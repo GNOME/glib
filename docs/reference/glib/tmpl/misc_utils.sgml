@@ -127,22 +127,6 @@ cannot be determined, the string "Unknown" is returned.
 @Returns: 
 
 
-<!-- ##### FUNCTION g_get_system_data_dirs ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION g_get_system_config_dirs ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION g_get_home_dir ##### -->
 <para>
 Gets the current user's home directory. 
