@@ -143,8 +143,8 @@ g_cache_insert (GCache   *cache,
 }
 
 void
-g_cache_remove (GCache   *cache,
-		gpointer  value)
+g_cache_remove (GCache        *cache,
+		gconstpointer  value)
 {
   GRealCache *rcache;
   GCacheNode *node;

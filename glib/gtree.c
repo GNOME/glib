@@ -60,7 +60,7 @@ static GTreeNode* g_tree_node_insert                (GTreeNode      *node,
 						     gint           *inserted);
 static GTreeNode* g_tree_node_remove                (GTreeNode      *node,
 						     GCompareFunc    compare,
-						     gpointer        key);
+						     gconstpointer   key);
 static GTreeNode* g_tree_node_balance               (GTreeNode      *node);
 static GTreeNode* g_tree_node_remove_leftmost       (GTreeNode      *node,
 						     GTreeNode     **leftmost);
@@ -70,7 +70,7 @@ static GTreeNode* g_tree_node_restore_right_balance (GTreeNode      *node,
 						     gint            old_balance);
 static gpointer   g_tree_node_lookup                (GTreeNode      *node,
 						     GCompareFunc    compare,
-						     gpointer        key);
+						     gconstpointer   key);
 static gint       g_tree_node_count                 (GTreeNode      *node);
 static gint       g_tree_node_pre_order             (GTreeNode      *node,
 						     GTraverseFunc   traverse_func,
@@ -82,8 +82,8 @@ static gint       g_tree_node_post_order            (GTreeNode      *node,
 						     GTraverseFunc   traverse_func,
 						     gpointer        data);
 static gpointer   g_tree_node_search                (GTreeNode      *node,
-						     GSearchFunc     search_func,
-						     gpointer        data);
+						     GCompareFunc    search_func,
+						     gconstpointer   data);
 static gint       g_tree_node_height                (GTreeNode      *node);
 static GTreeNode* g_tree_node_rotate_left           (GTreeNode      *node);
 static GTreeNode* g_tree_node_rotate_right          (GTreeNode      *node);
@@ -195,8 +195,8 @@ g_tree_insert (GTree    *tree,
 }
 
 void
-g_tree_remove (GTree    *tree,
-	       gpointer  key)
+g_tree_remove (GTree         *tree,
+	       gconstpointer  key)
 {
   GRealTree *rtree;
 
@@ -208,8 +208,8 @@ g_tree_remove (GTree    *tree,
 }
 
 gpointer
-g_tree_lookup (GTree    *tree,
-	       gpointer  key)
+g_tree_lookup (GTree         *tree,
+	       gconstpointer  key)
 {
   GRealTree *rtree;
 
@@ -256,9 +256,9 @@ g_tree_traverse (GTree         *tree,
 }
 
 gpointer
-g_tree_search (GTree       *tree,
-	       GSearchFunc  search_func,
-	       gpointer     data)
+g_tree_search (GTree            *tree,
+	       GCompareFunc      search_func,
+	       gconstpointer     data)
 {
   GRealTree *rtree;
 
@@ -371,9 +371,9 @@ g_tree_node_insert (GTreeNode    *node,
 }
 
 static GTreeNode*
-g_tree_node_remove (GTreeNode    *node,
-		    GCompareFunc  compare,
-		    gpointer      key)
+g_tree_node_remove (GTreeNode     *node,
+		    GCompareFunc   compare,
+		    gconstpointer  key)
 {
   GTreeNode *new_root;
   gint old_balance;
@@ -503,9 +503,9 @@ g_tree_node_restore_right_balance (GTreeNode *node,
 }
 
 static gpointer
-g_tree_node_lookup (GTreeNode    *node,
-		    GCompareFunc  compare,
-		    gpointer      key)
+g_tree_node_lookup (GTreeNode     *node,
+		    GCompareFunc   compare,
+		    gconstpointer  key)
 {
   gint cmp;
 
@@ -608,9 +608,9 @@ g_tree_node_post_order (GTreeNode     *node,
 }
 
 static gpointer
-g_tree_node_search (GTreeNode   *node,
-		    GSearchFunc  search_func,
-		    gpointer     data)
+g_tree_node_search (GTreeNode     *node,
+		    GCompareFunc   search_func,
+		    gconstpointer  data)
 {
   gint dir;
 

@@ -817,8 +817,6 @@ typedef gboolean	(*GNodeTraverseFunc)	(GNode	       *node,
 						 gpointer	data);
 typedef void		(*GNodeForeachFunc)	(GNode	       *node,
 						 gpointer	data);
-typedef gint		(*GSearchFunc)		(gpointer	key,
-						 gpointer	data);
 typedef void		(*GScannerMsgFunc)	(GScanner      *scanner,
 						 gchar	       *message,
 						 gint		error);
@@ -1118,7 +1116,7 @@ void	 g_cache_destroy       (GCache		  *cache);
 gpointer g_cache_insert	       (GCache		  *cache,
 				gpointer	   key);
 void	 g_cache_remove	       (GCache		  *cache,
-				gpointer	   value);
+				gconstpointer	   value);
 void	 g_cache_key_foreach   (GCache		  *cache,
 				GHFunc		   func,
 				gpointer	   user_data);
@@ -1135,16 +1133,16 @@ void	 g_tree_insert	 (GTree		*tree,
 			  gpointer	 key,
 			  gpointer	 value);
 void	 g_tree_remove	 (GTree		*tree,
-			  gpointer	 key);
+			  gconstpointer	 key);
 gpointer g_tree_lookup	 (GTree		*tree,
-			  gpointer	 key);
+			  gconstpointer	 key);
 void	 g_tree_traverse (GTree		*tree,
 			  GTraverseFunc	 traverse_func,
 			  GTraverseType	 traverse_type,
 			  gpointer	 data);
 gpointer g_tree_search	 (GTree		*tree,
-			  GSearchFunc	 search_func,
-			  gpointer	 data);
+			  GCompareFunc	 search_func,
+			  gconstpointer	 data);
 gint	 g_tree_height	 (GTree		*tree);
 gint	 g_tree_nnodes	 (GTree		*tree);
 

@@ -576,7 +576,7 @@ g_mem_chunk_alloc (GMemChunk *mem_chunk)
       
       /* Determine which area this piece of memory is allocated from */
       temp_area = g_tree_search (rmem_chunk->mem_tree,
-				 (GSearchFunc) g_mem_chunk_area_search,
+				 (GCompareFunc) g_mem_chunk_area_search,
 				 mem);
       
       /* If the area has been marked, then it is being destroyed.
@@ -736,7 +736,7 @@ g_mem_chunk_free (GMemChunk *mem_chunk,
       rmem_chunk->free_atoms = free_atom;
       
       temp_area = g_tree_search (rmem_chunk->mem_tree,
-				 (GSearchFunc) g_mem_chunk_area_search,
+				 (GCompareFunc) g_mem_chunk_area_search,
 				 mem);
       
       temp_area->allocated -= 1;
@@ -775,7 +775,7 @@ g_mem_chunk_clean (GMemChunk *mem_chunk)
 	  mem = (gpointer) temp_free_atom;
 	  
 	  mem_area = g_tree_search (rmem_chunk->mem_tree,
-				    (GSearchFunc) g_mem_chunk_area_search,
+				    (GCompareFunc) g_mem_chunk_area_search,
 				    mem);
 	  
           /* If this mem area is marked for destruction then delete the

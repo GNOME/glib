@@ -1,3 +1,15 @@
+2000-04-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h, gcache.c, gtree.c: Changed the 'value' parameter of
+	g_cache_remove from gpointer to gconstpointer. Dito for the 'key'
+	parameter of g_tree_lookup and g_tree_remove and the 'data'
+	parameter of g_tree_serach. This function now takes a function of
+	type GCompareFunc instead of GSearchFunc.
+
+	* glib.h: Removed declaration of GSearchFunc.
+
+	* gmem.c: s/GSearchFunc/GCompareFunc/.
+
 2000-04-19  Tor Lillqvist  <tml@iki.fi>
 
 	* glib.def: Update entry point list.
@@ -5,7 +17,7 @@
 2000-04-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib.h (G_TRYLOCK): Made the debugging G_TRYLOCK call also work
-	for compilers with funnt G_STMT_(START|END) macros.
+	for compilers with funny G_STMT_(START|END) macros.
 
 	* tests/thread-test.c: Implemented a check for that.
 
