@@ -475,6 +475,13 @@ g_object_run_dispose (GObject *object)
   g_object_unref (object);
 }
 
+/**
+ * g_object_freeze_notify:
+ * @object: a #GObject
+ * 
+ * Stops emission of "notify" signals on @object. The signals are
+ * queued until g_object_thaw_notify() is called on @object. 
+ **/
 void
 g_object_freeze_notify (GObject *object)
 {
@@ -487,6 +494,13 @@ g_object_freeze_notify (GObject *object)
   g_object_unref (object);
 }
 
+/**
+ * g_object_notify:
+ * @object: a #GObject
+ * @property_name: the name of a property installed on the class of @object.
+ * 
+ * Emits a "notify" signal for the property @property_name on @object. 
+ **/
 void
 g_object_notify (GObject     *object,
 		 const gchar *property_name)
@@ -518,6 +532,14 @@ g_object_notify (GObject     *object,
   g_object_unref (object);
 }
 
+/**
+ * g_object_thaw_notify:
+ * @object: a #GObject
+ * 
+ * Reverts the effect of a previous call to g_object_freeze_notify().
+ * This causes all queued "notify" signals on @object to be emitted.
+
+ **/
 void
 g_object_thaw_notify (GObject *object)
 {
