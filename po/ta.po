@@ -5,10 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-22 15:09-0500\n"
-"PO-Revision-Date: 2002-08-18 18:43-0500\n"
-"Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
+"POT-Creation-Date: 2004-02-16 20:50+0100\n"
+"PO-Revision-Date: 2004-02-16 20:30-0600\n"
+"Last-Translator: Dinesh Nadarajah <dinesh_list@sbcglobal.net>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,19 +23,28 @@ msgstr "வரியுரு வகை `%s' இலிருந்து `%s' �
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "`%s' இலிருந்து `%s' க்கு மாற்றும் நிலை மாற்றியைத் திறக்க முடியவில்லை: %s"
 
-#: glib/gconvert.c:604 glib/gconvert.c:891 glib/giochannel.c:1315
-#: glib/giochannel.c:1357 glib/giochannel.c:2199 glib/gutf8.c:910
+#: glib/gconvert.c:604
+#: glib/gconvert.c:891
+#: glib/giochannel.c:1315
+#: glib/giochannel.c:1357
+#: glib/giochannel.c:2199
+#: glib/gutf8.c:910
 #: glib/gutf8.c:1355
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
-#: glib/gconvert.c:609 glib/gconvert.c:824 glib/giochannel.c:1322
+#: glib/gconvert.c:609
+#: glib/gconvert.c:824
+#: glib/giochannel.c:1322
 #: glib/giochannel.c:2211
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: glib/gconvert.c:627 glib/gutf8.c:906 glib/gutf8.c:1106 glib/gutf8.c:1247
+#: glib/gconvert.c:627
+#: glib/gutf8.c:906
+#: glib/gutf8.c:1106
+#: glib/gutf8.c:1247
 #: glib/gutf8.c:1351
 msgid "Partial character sequence at end of input"
 msgstr "உள்ளீடின் முடிவில் பூர்த்தியாகாத வரியுரு வரிசைமுறை"
@@ -85,7 +93,8 @@ msgstr "பிழையான விருந்தோம்புப்-பெ�
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: glib/gfileutils.c:393 glib/gfileutils.c:458
+#: glib/gfileutils.c:393
+#: glib/gfileutils.c:458
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "%lu பைட்டுகளை \"%s\" கோப்பு வாசிப்பதற்கு ஒதுக்கிவைக்க முடியவில்லை"
@@ -100,7 +109,8 @@ msgstr "'%s' கோப்பு வாசிக்கும் போது ப�
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' கோப்பிலிருந்து வாசிக்க முடியவில்லை: %s"
 
-#: glib/gfileutils.c:527 glib/gfileutils.c:595
+#: glib/gfileutils.c:527
+#: glib/gfileutils.c:595
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
@@ -131,13 +141,13 @@ msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
 #: glib/gfileutils.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
+msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
 #: glib/gfileutils.c:1172
 msgid "Symbolic links not supported"
-msgstr ""
+msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
 #: glib/giochannel.c:1143
 #, c-format
@@ -153,11 +163,14 @@ msgstr "`%s' 'சை `%s' 'க்கு மாற்றும் மாற்ற
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string இல் மூலமாக வாசிக்க முடியாது"
 
-#: glib/giochannel.c:1539 glib/giochannel.c:1796 glib/giochannel.c:1882
+#: glib/giochannel.c:1539
+#: glib/giochannel.c:1796
+#: glib/giochannel.c:1882
 msgid "Leftover unconverted data in read buffer"
 msgstr "வாசிப்புத் தாங்ககத்தில் மாற்றப்படாத மீதித் தரவுகள்"
 
-#: glib/giochannel.c:1619 glib/giochannel.c:1696
+#: glib/giochannel.c:1619
+#: glib/giochannel.c:1696
 msgid "Channel terminates in a partial character"
 msgstr "வாய்க்கால் பாதி வரியுருவில் முடிவடைகிறது"
 
@@ -176,20 +189,13 @@ msgid "Error on line %d: %s"
 msgstr "%d வரியில் பிழை: %s"
 
 #: glib/gmarkup.c:412
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
 
 #: glib/gmarkup.c:422
 #, c-format
-msgid ""
-"Character '%s' is not valid at the start of an entity name; the & character "
-"begins an entity; if this ampersand isn't supposed to be an entity, escape "
-"it as &amp;"
-msgstr ""
-"'%s' வரியுரு பிரதிநிதியின் தொடக்கத்தில் வரக்கூடாது; & வரியுரு பிரதிநிதியைத் "
-"தொடங்கும்; இந்த & ஓர் பிரதிநிதியாக இருக்கக்கூடாது என்றால்; அதை &amp ஆக விடுவி;"
+msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+msgstr "'%s' வரியுரு பிரதிநிதியின் தொடக்கத்தில் வரக்கூடாது; & வரியுரு பிரதிநிதியைத் தொடங்கும்; இந்த & ஓர் பிரதிநிதியாக இருக்கக்கூடாது என்றால்; அதை &amp ஆக விடுவி;"
 
 #: glib/gmarkup.c:458
 #, c-format
@@ -202,21 +208,13 @@ msgid "Entity name '%s' is not known"
 msgstr "பிரதிநிதியின் பெயர் '%s' தெரியாதது"
 
 #: glib/gmarkup.c:512
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் '&' "
-"பயன்படுத்தி இருக்கலாம் - '&'சை &amp ஆக விடுவி;"
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் '&' பயன்படுத்தி இருக்கலாம் - '&'சை &amp ஆக விடுவி;"
 
 #: glib/gmarkup.c:558
 #, c-format
-msgid ""
-"Failed to parse '%s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Failed to parse '%s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
+msgid "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Failed to parse '%s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
 
 #: glib/gmarkup.c:583
 #, c-format
@@ -228,24 +226,20 @@ msgid "Empty character reference; should include a digit such as &#454;"
 msgstr "வேற்றான வரியுரு குறிப்பு; &#454 ஆகிய இலக்கங்கள் சேர்ந்திருக் வேண்டும்;"
 
 #: glib/gmarkup.c:610
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
 
 #: glib/gmarkup.c:636
 msgid "Unfinished entity reference"
-msgstr ""
+msgstr "முடிவடையாத உள்ளீட்பு மேற்கோள்"
 
 #: glib/gmarkup.c:642
 msgid "Unfinished character reference"
-msgstr ""
+msgstr "முடிவடையாத வரியுரு மேற்கோள்"
 
-#: glib/gmarkup.c:888 glib/gmarkup.c:916 glib/gmarkup.c:947
+#: glib/gmarkup.c:888
+#: glib/gmarkup.c:916
+#: glib/gmarkup.c:947
 msgid "Invalid UTF-8 encoded text"
 msgstr "பிழையான UTF-8 குறியீடு செய்யப்பட்ட உரை"
 
@@ -255,67 +249,38 @@ msgstr "ஆவணம் ஓர் உறுப்புடன் (உதார�
 
 #: glib/gmarkup.c:1022
 #, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr ""
-"'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் "
-"தொடங்க முடியாது"
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் தொடங்க முடியாது"
 
 #: glib/gmarkup.c:1085
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the start tag of element "
-"'%s'"
-msgstr ""
-"ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் "
-"என்று எதிர்பார்த்தது"
+msgid "Odd character '%s', expected a '>' character to end the start tag of element '%s'"
+msgstr "ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் என்று எதிர்பார்த்தது"
 
 #: glib/gmarkup.c:1172
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
-"வரியுரு"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' வரியுரு"
 
 #: glib/gmarkup.c:1213
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
 
 #: glib/gmarkup.c:1296
 #, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
 
 #: glib/gmarkup.c:1436
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
 
 #: glib/gmarkup.c:1474
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
 
 #: glib/gmarkup.c:1485
 #, c-format
@@ -335,23 +300,16 @@ msgstr "வெற்றான ஆவணம் அல்லது ஆவணத்
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "'<' பிறகு ஆவணம் திடீரென முடிவடைந்தது"
 
-#: glib/gmarkup.c:1663 glib/gmarkup.c:1707
+#: glib/gmarkup.c:1663
+#: glib/gmarkup.c:1707
 #, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
-"உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட "
-"உறுப்பு '%s'"
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட உறுப்பு '%s'"
 
 #: glib/gmarkup.c:1671
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
-"ஆவணம் திடீரென முடிவடைந்தது, அடையாள ஒட்டு <%s/> முடிவில் ஓர் '}' இருக்கும் என "
-"எதிர்பார்த்தது"
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "ஆவணம் திடீரென முடிவடைந்தது, அடையாள ஒட்டு <%s/> முடிவில் ஓர் '}' இருக்கும் என எதிர்பார்த்தது"
 
 #: glib/gmarkup.c:1677
 msgid "Document ended unexpectedly inside an element name"
@@ -366,12 +324,8 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "உறுப்பு-தொடங்களின் அடையாள ஒட்டு  உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
 #: glib/gmarkup.c:1693
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
 
 #: glib/gmarkup.c:1700
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -395,15 +349,14 @@ msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "`கட்டளை வடியில் அல்லது வேறு மேற்களித்த உரையில் பொருத்தமற்ற \" "
 
 #: glib/gshell.c:530
-#, fuzzy, c-format
+#, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr " \"  பின்பு உரை முடிவடைந்தது. (உரை: '%s')"
+msgstr "'\\' வரியுருக்கு பின்பு உரை முடிவடைந்தது. (கடைசி உரை: '%s')"
 
 #: glib/gshell.c:537
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
+msgstr "%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
 
 #: glib/gshell.c:549
 msgid "Text was empty (or contained only whitespace)"
@@ -414,34 +367,33 @@ msgid "Failed to read data from child process"
 msgstr "சேய் செயலில் இருந்து தரவு வாசிக்க முடியவில்லை"
 
 #: glib/gspawn-win32.c:426
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
 
-#: glib/gspawn-win32.c:842 glib/gspawn.c:998
+#: glib/gspawn-win32.c:842
+#: glib/gspawn.c:998
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "(%s) சேய் கழாய்த் தொடரில் இருந்து வாசிக்க முடியவில்லை"
 
 #: glib/gspawn-win32.c:922
-#, fuzzy
 msgid "Failed to execute helper program"
-msgstr "(%s) சேய்-செயலை இயக்க முடியவில்லை"
+msgstr "உதவி செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:943 glib/gspawn-win32.c:987
+#: glib/gspawn-win32.c:943
+#: glib/gspawn-win32.c:987
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "(%s) சேய்-செயலை இயக்க முடியவில்லை"
 
-#: glib/gspawn-win32.c:978 glib/gspawn.c:1203
+#: glib/gspawn-win32.c:978
+#: glib/gspawn.c:1203
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' (%s) அடைவுக்கு போக முடியவில்லை"
 
-#: glib/gspawn-win32.c:1032 glib/gspawn.c:1334
+#: glib/gspawn-win32.c:1032
+#: glib/gspawn.c:1334
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "(%s) சேய்-செயலிடன் தொடர்பு கொல்ல கழாய்த்-தொடரைப் படைக்க முடியவில்லை"
@@ -467,9 +419,9 @@ msgid "Failed to fork (%s)"
 msgstr "(%s) தொடங்க முடியவில்லை"
 
 #: glib/gspawn.c:1213
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "(%s) சேய்-செயலை இயக்க முடியவில்லை"
+msgstr "\"%s\" (%s) சேய்-செயலை இயக்க முடியவில்லை"
 
 #: glib/gspawn.c:1223
 #, c-format
@@ -482,9 +434,9 @@ msgid "Failed to fork child process (%s)"
 msgstr "சேய் (%s) செயலகத்தை தொடங்க முடியவில்லை"
 
 #: glib/gspawn.c:1240
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "சேய் செயலகத்தை இயக்கும்போது தெரியாத பிழை"
+msgstr "சேய் செயல் \"%s\" இயக்கும்போது தெரியாத பிழை"
 
 #: glib/gspawn.c:1262
 #, c-format
@@ -495,17 +447,17 @@ msgstr "Failed to read enough data from child pid pipe (%s)"
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#: glib/gutf8.c:1074 glib/gutf8.c:1083 glib/gutf8.c:1215 glib/gutf8.c:1224
-#: glib/gutf8.c:1365 glib/gutf8.c:1461
+#: glib/gutf8.c:1074
+#: glib/gutf8.c:1083
+#: glib/gutf8.c:1215
+#: glib/gutf8.c:1224
+#: glib/gutf8.c:1365
+#: glib/gutf8.c:1461
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: glib/gutf8.c:1376 glib/gutf8.c:1472
+#: glib/gutf8.c:1376
+#: glib/gutf8.c:1472
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#~ msgid "Incorrect message size"
-#~ msgstr "தகவலின் அளவு பிழையானது"
-
-#~ msgid "Socket error"
-#~ msgstr "துளை பிழை"
