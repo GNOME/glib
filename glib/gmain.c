@@ -184,6 +184,10 @@ static gboolean poll_changed = FALSE;
 #endif /* G_THREADS_ENABLED */
 
 #ifdef HAVE_POLL
+/* SunOS has poll, but doesn't provide a prototype. */
+#  if defined (sun) && !defined (__SVR4)
+extern gint poll (GPollFD *ufds, guint nfsd, gint timeout);
+#  endif  /* !sun */
 static GPollFunc poll_func = (GPollFunc) poll;
 #else	/* !HAVE_POLL */
 #ifdef NATIVE_WIN32

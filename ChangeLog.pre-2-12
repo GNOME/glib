@@ -1,3 +1,8 @@
+1999-05-26  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* gmain.c: provide a poll prototype for SunOS, as they do not do
+	it self. Hint from Christian Parg <cparg@fs-design.de>.
+
 Tue May 25 12:23:07 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* gstrfuncs.c (g_strchug): Use g_memmove() not memmove().
