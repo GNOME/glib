@@ -6,7 +6,7 @@ builtin(include, acglib.m4)dnl
 # require autoconf 2.13
 AC_PREREQ(2.13)
 
-# Process this file with autoconf to produce a configure script.
+# init autoconf (and check for presence of glist.c)
 AC_INIT(glist.c)
 
 # Save this value here, since automake will set cflags later
@@ -15,12 +15,12 @@ cflags_set=${CFLAGS+set}
 # we rewrite this file
 rm -f glibconfig-sysdefs.h
 
-dnl we to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
+dnl we need to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
 dnl are available for $ac_help expansion (don't we all *love* autoconf?)
 AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #
-# The following version number definitions apply to GLib and GModule
-# as a whole, so if changes occoured in either of them, they are both
+# The following version number definitions apply to GLib, GModule and GThread
+# as a whole, so if changes occoured in any of them, they are all
 # treated with the same interface and binary age.
 #
 # Making releases:
@@ -29,13 +29,13 @@ AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 #   GLIB_BINARY_AGE += 1;
 # if any functions have been added, set GLIB_INTERFACE_AGE to 0.
 # if backwards compatibility has been broken,
-# set GLIB_BINARY_AGE and GLIB_INTERFACE_AGE to 0.
+# set GLIB_BINARY_AGE _and_ GLIB_INTERFACE_AGE to 0.
 #
 GLIB_MAJOR_VERSION=1
 GLIB_MINOR_VERSION=2
-GLIB_MICRO_VERSION=1
-GLIB_INTERFACE_AGE=1
-GLIB_BINARY_AGE=1
+GLIB_MICRO_VERSION=2
+GLIB_INTERFACE_AGE=2
+GLIB_BINARY_AGE=2
 GLIB_VERSION=$GLIB_MAJOR_VERSION.$GLIB_MINOR_VERSION.$GLIB_MICRO_VERSION
 dnl
 AC_DIVERT_POP()dnl

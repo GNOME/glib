@@ -1,3 +1,14 @@
+Sun Apr 11 15:07:34 1999  Tim Janik  <timj@gtk.org>
+
+	* configure.in: bumped versin number to GLib 1.2.2, interface 2,
+	binary 2.
+	
+	* NEWS: updates.
+
+Sun Apr 11 14:37:06 1999  Tim Janik  <timj@gtk.org>
+
+	* gstrfuncs.c (g_strcasecmp): always check for s1, s2 != NULL.
+
 Sat Apr 10 19:30:50 1999  Tim Janik  <timj@gtk.org>
 
 	* glib.h: removed braces around inline strings for the G_GNUC_FUNCTION
