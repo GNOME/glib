@@ -38,6 +38,23 @@ the setter for the property is called to reinstate the previous value.
 </para>
 
 @g_type_class: 
+@constructor: 
+@set_property: 
+@get_property: 
+@dispose: 
+@finalize: 
+@dispatch_properties_changed: 
+@notify: 
+
+<!-- ##### STRUCT GObjectConstructParam ##### -->
+<para>
+The <structname>GObjectConstructParam</structname> struct is an auxiliary 
+structure used to hand #GParamSpec/#GValue pairs to the @constructor of
+a #GObjectClass.
+</para>
+
+@pspec: the #GParamSpec of the construct parameter 
+@value: the value to set the parameter to
 
 <!-- ##### USER_FUNCTION GObjectGetPropertyFunc ##### -->
 <para>

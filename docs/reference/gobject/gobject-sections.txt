@@ -192,6 +192,7 @@ G_TYPE_MODULE_GET_CLASS
 <FILE>objects</FILE>
 GObject
 GObjectClass
+GObjectConstructParam
 GObjectGetPropertyFunc
 GObjectSetPropertyFunc
 GObjectFinalizeFunc
@@ -243,7 +244,6 @@ g_object_run_dispose
 G_OBJECT_WARN_INVALID_PROPERTY_ID
 <SUBSECTION Private>
 G_OBJECT_WARN_INVALID_PSPEC
-GObjectConstructParam
 </SECTION>
 
 <SECTION>

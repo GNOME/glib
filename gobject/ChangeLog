@@ -1,3 +1,8 @@
+Mon Oct 20 22:06:12 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject.h (struct  _GObjectClass): Add /*< public >*/
+	and /*< private >*/ markers for documentation purposes.
+
 Sat Oct 18 01:24:14 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gtypeplugin.h (struct _GTypePluginClass): Add /*< public >*/

@@ -1,3 +1,13 @@
+Mon Oct 20 22:05:37 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/tmpl/objects.sgml: 
+	* gobject/tmpl/enumerations_flags.sgml: 
+	* gobject/tmpl/gtypeplugin.sgml: Additions.
+
+Mon Oct 20 22:04:45 2003  Matthias Clasen  <maclas@gmx.de>
+
+	* gobject/gobject-sections.txt: Add GObjectConstructParam.
+
 Mon Oct 20 20:38:06 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* gobject/gobject.i: Removed...

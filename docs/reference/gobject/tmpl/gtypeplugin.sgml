@@ -72,7 +72,9 @@ handles multiple registered types per module.
 
 <!-- ##### STRUCT GTypePlugin ##### -->
 <para>
-
+The <structname>GTypePlugin</structname> typedef is used as a placeholder 
+for objects that implement the <structname>GTypePlugin</structname> 
+interface.
 </para>
 
 

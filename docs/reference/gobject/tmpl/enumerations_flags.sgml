@@ -118,22 +118,23 @@ Returns the static type name from a given #GFlagsClass structure.
 
 <!-- ##### STRUCT GEnumValue ##### -->
 <para>
-A structure which contains a single enum value, its name, and it's
+A structure which contains a single enum value, it's name, and it's
 nickname.
 </para>
 
-@value: 
-@value_name: 
-@value_nick: 
+@value: the enum value
+@value_name: the name of the value
+@value_nick: the nickname of the value
 
 <!-- ##### STRUCT GFlagsValue ##### -->
 <para>
-
+A structure which contains a single flags value, it's name, and it's
+nickname.
 </para>
 
-@value: 
-@value_name: 
-@value_nick: 
+@value: the flags value
+@value_name: the name of the value
+@value_nick: the nickname of the value
 
 <!-- ##### FUNCTION g_enum_get_value ##### -->
 <para>

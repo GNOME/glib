@@ -75,7 +75,8 @@ struct  _GObjectClass
   /*< private >*/
   GSList      *construct_properties;
 
-  /* public overridable methods */
+  /*< public >*/
+  /* overridable methods */
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
                                  GObjectConstructParam *construct_properties);
@@ -98,6 +99,7 @@ struct  _GObjectClass
   /* signals */
   void	     (*notify)			(GObject	*object,
 					 GParamSpec	*pspec);
+  /*< private >*/
   /* padding */
   gpointer	pdummy[8];
 };
