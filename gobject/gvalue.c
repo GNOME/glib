@@ -17,6 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/*
+ * FIXME: MT-safety
+ */
+
 #include <string.h>
 
 #include "gvalue.h"

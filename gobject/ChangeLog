@@ -1,3 +1,16 @@
+Wed Jan 31 06:19:49 2001  Tim Janik  <timj@gtk.org>
+
+	* gparam.h: gtk-doc sucks for not dealing with #define inside enums.
+
+	* gtype.[hc]: added G_TYPE_FLAG_RESERVED_ID_BIT, a bit in the type
+	number that's supposed to be left untouched (preserved mainly
+	for the signal code).
+
+	* *.c: added thread safety code, based on an old patch from sebastian.
+	the remaining thread safety issues are now datalists on pspecs (to be
+	solved im gdataset.c) and gvalue.c where locking concerns value exchange
+	functionality only, and that's soon to be revised.
+
 2001-01-27  Tor Lillqvist  <tml@iki.fi>
 
 	* makefile.msc.in: Don't try to compile gmarshal.c on its own.

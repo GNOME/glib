@@ -96,19 +96,28 @@ EXTRA_DIST = 				\
 	$(DOC_MODULE)-overrides.txt
 
 if ENABLE_GTK_DOC
-all-local: html/index.html
-
-$(DOC_MODULE)-decl.txt: 
+all-local:
 	$(MAKE) scan
-
-$(tmpl_sources): $(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
 	$(MAKE) templates
-
-sgml/$(DOC_MODULE)-doc.bottom: $(tmpl_sources) $(DOC_MODULE)-decl.txt
 	$(MAKE) sgml
-
-html/index.html: sgml/$(DOC_MODULE)-doc.bottom $(DOC_MAIN_SGML_FILE)
+	$(MAKE) html.stamp
+html.stamp: sgml.stamp $(EXTRA_SGML_FILES)
 	$(MAKE) html
+DOC_STAMPS= html.stamp sgml.stamp
+
+#all-local: html/index.html
+#
+#$(DOC_MODULE)-decl.txt: 
+#	$(MAKE) scan
+#
+#$(tmpl_sources): $(DOC_MODULE)-decl.txt $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
+#	$(MAKE) templates
+#
+#sgml/$(DOC_MODULE)-doc.bottom: $(tmpl_sources) $(DOC_MODULE)-decl.txt
+#	$(MAKE) sgml
+#
+#html/index.html: sgml/$(DOC_MODULE)-doc.bottom $(DOC_MAIN_SGML_FILE)
+#	$(MAKE) html
 endif
 
 scan:
@@ -133,7 +142,7 @@ clean-local:
 	rm -f *~ *.bak *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
+	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt $(DOC_STAMPS)
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

@@ -19,11 +19,15 @@
  * this code is based on the original GtkSignal implementation
  * for the Gtk+ library by Peter Mattis <petm@xcf.berkeley.edu>
  */
-#include <string.h> 
+
+/*
+ * MT safe
+ */
 
 #include        "gsignal.h"
 #include        "gbsearcharray.h"
 #include        "gvaluecollector.h"
+#include	<string.h> 
 
 
 /* pre allocation configurations
@@ -64,26 +68,10 @@ g_generic_node_alloc (GTrashStack **trash_stack_p,
   
   return node;
 }
-static inline void
-g_generic_node_free (GTrashStack **trash_stack_p,
-                     gpointer      node)
-{
-  g_trash_stack_push (trash_stack_p, node);
-}
+#define	g_generic_node_free(trash_stack_p, node) g_trash_stack_push (trash_stack_p, node)
 #else	/* !DISABLE_MEM_POOLS */
-static inline gpointer
-g_generic_node_alloc (GTrashStack **trash_stack_p,
-                      guint         sizeof_node,
-                      guint         nodes_pre_alloc)
-{
-  return g_malloc (sizeof_node);
-}
-static inline void
-g_generic_node_free (GTrashStack **trash_stack_p,
-                     gpointer      node)
-{
-  g_free (node);
-}
+#define	g_generic_node_alloc(t,sizeof_node,p)	 g_malloc (sizeof_node)
+#define	g_generic_node_free(t,node)		 g_free (node)
 #endif	/* !DISABLE_MEM_POOLS */
 
 
@@ -2027,6 +2015,6 @@ signal_emit_R (SignalNode   *node,
 }
 
 
-/* compile standard marshallers */
+/* --- compile standard marshallers --- */
 #include	"gvaluetypes.h"
 #include        "gmarshal.c"

@@ -16,6 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/*
+ * MT safe
+ */
+
 #include	"gparam.h"
 
 
@@ -25,8 +30,11 @@
 
 
 /* --- defines --- */
-#define G_PARAM_SPEC_CLASS(class)    (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_PARAM, GParamSpecClass))
-#define PSPEC_APPLIES_TO_VALUE(pspec, value)  (G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
+#define G_PARAM_SPEC_CLASS(class)		(G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_PARAM, GParamSpecClass))
+#define	G_PARAM_USER_MASK			((1 << G_PARAM_USER_SHIFT) - 1)
+#define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
+#define	G_SLOCK(mutex)				g_static_mutex_lock (mutex)
+#define	G_SUNLOCK(mutex)			g_static_mutex_unlock (mutex)
 
 
 /* --- prototypes --- */
@@ -54,6 +62,7 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 
 /* --- variables --- */
 static GQuark quark_floating = 0;
+G_LOCK_DEFINE_STATIC (pspec_ref_count);
 
 
 /* --- functions --- */
@@ -151,10 +160,19 @@ GParamSpec*
 g_param_spec_ref (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
-  g_return_val_if_fail (pspec->ref_count > 0, NULL);
 
-  pspec->ref_count += 1;
-
+  G_LOCK (pspec_ref_count);
+  if (pspec->ref_count > 0)
+    {
+      pspec->ref_count += 1;
+      G_UNLOCK (pspec_ref_count);
+    }
+  else
+    {
+      G_UNLOCK (pspec_ref_count);
+      g_return_val_if_fail (pspec->ref_count > 0, NULL);
+    }
+  
   return pspec;
 }
 
@@ -162,27 +180,53 @@ void
 g_param_spec_unref (GParamSpec *pspec)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (pspec->ref_count > 0);
 
-  /* sync with _sink */
-  pspec->ref_count -= 1;
-  if (pspec->ref_count == 0)
-    G_PARAM_SPEC_GET_CLASS (pspec)->finalize (pspec);
+  G_LOCK (pspec_ref_count);
+  if (pspec->ref_count > 0)
+    {
+      gboolean need_finalize;
+
+      /* sync with _sink */
+      pspec->ref_count -= 1;
+      need_finalize = pspec->ref_count == 0;
+      G_UNLOCK (pspec_ref_count);
+      if (need_finalize)
+	G_PARAM_SPEC_GET_CLASS (pspec)->finalize (pspec);
+    }
+  else
+    {
+      G_UNLOCK (pspec_ref_count);
+      g_return_if_fail (pspec->ref_count > 0);
+    }
 }
 
 void
 g_param_spec_sink (GParamSpec *pspec)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (pspec->ref_count > 0);
 
-  if (g_datalist_id_remove_no_notify (&pspec->qdata, quark_floating))
+  G_LOCK (pspec_ref_count);
+  if (pspec->ref_count > 0)
     {
-      /* sync with _unref */
-      if (pspec->ref_count > 1)
-	pspec->ref_count -= 1;
-      else
-	g_param_spec_unref (pspec);
+      if (g_datalist_id_remove_no_notify (&pspec->qdata, quark_floating))
+	{
+	  /* sync with _unref */
+	  if (pspec->ref_count > 1)
+	    pspec->ref_count -= 1;
+	  else
+	    {
+	      G_UNLOCK (pspec_ref_count);
+	      g_param_spec_unref (pspec);
+
+	      return;
+	    }
+	}
+      G_UNLOCK (pspec_ref_count);
+    }
+  else
+    {
+      G_UNLOCK (pspec_ref_count);
+      g_return_if_fail (pspec->ref_count > 0);
     }
 }
 
@@ -405,8 +449,9 @@ value_param_lcopy_value (const GValue *value,
 /* --- param spec pool --- */
 struct _GParamSpecPool
 {
-  gboolean    type_prefixing;
-  GHashTable *hash_table;
+  GStaticMutex smutex;
+  gboolean     type_prefixing;
+  GHashTable  *hash_table;
 };
 
 static guint
@@ -436,8 +481,10 @@ param_spec_pool_equals (gconstpointer key_spec_1,
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
 {
+  static GStaticMutex init_smutex = G_STATIC_MUTEX_INIT;
   GParamSpecPool *pool = g_new (GParamSpecPool, 1);
 
+  memcpy (&pool->smutex, &init_smutex, sizeof (init_smutex));
   pool->type_prefixing = type_prefixing != FALSE;
   pool->hash_table = g_hash_table_new (param_spec_pool_hash, param_spec_pool_equals);
 
@@ -450,37 +497,52 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
 			  GType           owner_type)
 {
   gchar *p;
-
-  g_return_if_fail (pool != NULL);
-  g_return_if_fail (pspec);
-  g_return_if_fail (owner_type > 0);
-  g_return_if_fail (pspec->owner_type == 0);
-
-  for (p = pspec->name; *p; p++)
+  
+  if (pool && pspec && owner_type > 0 && pspec->owner_type == 0)
     {
-      if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
+      G_SLOCK (&pool->smutex);
+      for (p = pspec->name; *p; p++)
 	{
-	  g_warning (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
-	  return;
+	  if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
+	    {
+	      g_warning (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
+	      G_SUNLOCK (&pool->smutex);
+	      return;
+	    }
 	}
+      
+      pspec->owner_type = owner_type;
+      g_param_spec_ref (pspec);
+      g_hash_table_insert (pool->hash_table, pspec, pspec);
+      G_SUNLOCK (&pool->smutex);
     }
-
-  pspec->owner_type = owner_type;
-  g_param_spec_ref (pspec);
-  g_hash_table_insert (pool->hash_table, pspec, pspec);
+  else
+    {
+      g_return_if_fail (pool != NULL);
+      g_return_if_fail (pspec);
+      g_return_if_fail (owner_type > 0);
+      g_return_if_fail (pspec->owner_type == 0);
+    }
 }
 
 void
 g_param_spec_pool_remove (GParamSpecPool *pool,
 			  GParamSpec     *pspec)
 {
-  g_return_if_fail (pool != NULL);
-  g_return_if_fail (pspec);
-
-  if (g_hash_table_remove (pool->hash_table, pspec))
-    g_param_spec_unref (pspec);
+  if (pool && pspec)
+    {
+      G_SLOCK (&pool->smutex);
+      if (g_hash_table_remove (pool->hash_table, pspec))
+	g_param_spec_unref (pspec);
+      else
+	g_warning (G_STRLOC ": attempt to remove unknown pspec `%s' from pool", pspec->name);
+      G_SUNLOCK (&pool->smutex);
+    }
   else
-    g_warning (G_STRLOC ": attempt to remove unknown pspec `%s' from pool", pspec->name);
+    {
+      g_return_if_fail (pool != NULL);
+      g_return_if_fail (pspec);
+    }
 }
 
 static inline GParamSpec*
@@ -542,8 +604,13 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
   GParamSpec *pspec;
   gchar *delim;
 
-  g_return_val_if_fail (pool != NULL, NULL);
-  g_return_val_if_fail (param_name, NULL);
+  if (!pool || !param_name)
+    {
+      g_return_val_if_fail (pool != NULL, NULL);
+      g_return_val_if_fail (param_name != NULL, NULL);
+    }
+
+  G_SLOCK (&pool->smutex);
 
   delim = strchr (param_name, ':');
 
@@ -552,7 +619,10 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
     {
       if (trailer_p)
 	*trailer_p = NULL;
-      return param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+      pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+      G_SUNLOCK (&pool->smutex);
+
+      return pspec;
     }
 
   /* strip type prefix */
@@ -574,6 +644,8 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 	    {
 	      if (trailer_p)
 		*trailer_p = NULL;
+	      G_SUNLOCK (&pool->smutex);
+
 	      return NULL;
 	    }
 	  owner_type = type;
@@ -583,7 +655,10 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 	    {
 	      if (trailer_p)
 		*trailer_p = NULL;
-	      return param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+	      pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
+              G_SUNLOCK (&pool->smutex);
+
+	      return pspec;
 	    }
 	}
     }
@@ -601,12 +676,16 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 	g_free (buffer);
       if (trailer_p)
 	*trailer_p = pspec ? delim + 2 : NULL;
+      G_SUNLOCK (&pool->smutex);
+
       return pspec;
     }
 
   /* malformed param_name */
   if (trailer_p)
     *trailer_p = NULL;
+  G_SUNLOCK (&pool->smutex);
+
   return NULL;
 }
 

@@ -371,6 +371,15 @@ Standard value types
 @v_pointer: 
 
 
+<!-- ##### FUNCTION g_value_get_as_pointer ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_value_set_ccallback ##### -->
 <para>
 

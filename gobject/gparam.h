@@ -48,12 +48,12 @@ typedef enum
   G_PARAM_WRITABLE            = 1 << 1,
   G_PARAM_CONSTRUCT	      = 1 << 2,
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
-  G_PARAM_PRIVATE	      = 1 << 4,
-#define	G_PARAM_MASK		(0x000000ff)
-  /* bits in the range 0xffffff00 are reserved for 3rd party usage */
-#define	G_PARAM_USER_MASK	(0xffffff00)
+  G_PARAM_PRIVATE	      = 1 << 4
 } GParamFlags;
 #define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
+#define	G_PARAM_MASK		(0x000000ff)
+/* bits in the range 0xffffff00 are reserved for 3rd party usage */
+#define	G_PARAM_USER_SHIFT	(8)
 
 
 /* --- typedefs & structures --- */

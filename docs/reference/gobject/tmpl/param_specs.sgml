@@ -88,6 +88,27 @@ Parameter Specifications
 @type: 
 
 
+<!-- ##### MACRO G_PARAM_READWRITE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_MASK ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_PARAM_USER_SHIFT ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### ENUM GParamFlags ##### -->
 <para>
 
@@ -205,17 +226,34 @@ Parameter Specifications
 @Returns: 
 
 
-<!-- ##### FUNCTION g_param_spec_internal ##### -->
+<!-- ##### STRUCT GParamSpecTypeInfo ##### -->
 <para>
 
 </para>
 
-@param_type: 
+@instance_size: 
+@n_preallocs: 
+@instance_init: 
+@value_type: 
+@finalize: 
+@value_set_default: 
+@value_validate: 
+@values_cmp: 
+
+<!-- ##### FUNCTION g_param_type_register_static ##### -->
+<para>
+
+</para>
+
 @name: 
-@nick: 
-@blurb: 
-@flags: 
+@pspec_info: 
 @Returns: 
+
+
+<!-- ##### STRUCT GParamSpecPool ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION g_param_spec_pool_new ##### -->
@@ -259,13 +297,16 @@ Parameter Specifications
 @Returns: 
 
 
-<!-- ##### FUNCTION g_param_type_register_static ##### -->
+<!-- ##### FUNCTION g_param_spec_internal ##### -->
 <para>
 
 </para>
 
+@param_type: 
 @name: 
-@pspec_info: 
+@nick: 
+@blurb: 
+@flags: 
 @Returns: 
 
 

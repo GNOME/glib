@@ -344,6 +344,7 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
+#define	G_TYPE_FLAG_RESERVED_ID_BIT	(1 << 30)
 
 
 #ifdef __cplusplus

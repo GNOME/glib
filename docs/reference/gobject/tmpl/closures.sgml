@@ -14,6 +14,51 @@ Closures
 
 </para>
 
+<!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
+<para>
+
+</para>
+
+@closure: 
+
+
+<!-- ##### MACRO G_CCLOSURE_SWAP_DATA ##### -->
+<para>
+
+</para>
+
+@cclosure: 
+
+
+<!-- ##### MACRO G_CALLBACK ##### -->
+<para>
+
+</para>
+
+@f: 
+
+
+<!-- ##### TYPEDEF GCallback ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GClosure ##### -->
+<para>
+
+</para>
+
+@is_invalid: 
+
+<!-- ##### STRUCT GCClosure ##### -->
+<para>
+
+</para>
+
+@closure: 
+@callback: 
+
 <!-- ##### USER_FUNCTION GClosureMarshal ##### -->
 <para>
 
@@ -36,21 +81,6 @@ Closures
 @closure: 
 
 
-<!-- ##### STRUCT GClosure ##### -->
-<para>
-
-</para>
-
-@is_invalid: 
-
-<!-- ##### STRUCT GCClosure ##### -->
-<para>
-
-</para>
-
-@closure: 
-@callback: 
-
 <!-- ##### STRUCT GClosureNotifyData ##### -->
 <para>
 
@@ -58,28 +88,6 @@ Closures
 
 @data: 
 @notify: 
-
-<!-- ##### TYPEDEF GCallback ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO G_CLOSURE_NEEDS_MARSHAL ##### -->
-<para>
-
-</para>
-
-@closure: 
-
-
-<!-- ##### MACRO G_CCLOSURE_SWAP_DATA ##### -->
-<para>
-
-</para>
-
-@cclosure: 
-
 
 <!-- ##### FUNCTION g_cclosure_new ##### -->
 <para>
@@ -119,6 +127,16 @@ Closures
 </para>
 
 @callback_func: 
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_closure_new_object ##### -->
+<para>
+
+</para>
+
+@sizeof_closure: 
 @object: 
 @Returns: 
 

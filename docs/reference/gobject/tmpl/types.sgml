@@ -2,11 +2,26 @@
 GType
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The GLib Runtime type identification and management system
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The GType API is the foundation of the GObject system.  It provides the
+facilities for registering and managing all fundamental data types,
+user-defined object and interface types.  Before using any GType
+or GObject functions, g_type_init() must be called to initialize the
+type system.
+</para>
+<para>
+For type creation and registration purposes, all types fall into one of
+two categories: static or dynamic.  Static types are never loaded or
+unloaded at run-time as dynamic types may be.  Static types are created
+with g_type_register_static() that gets type specific information passed
+in via a #GTypeInfo structure.
+Dynamic types are created with g_type_register_dynamic() which takes a
+#GTypePlugin structure instead. The remaining type information (the
+#GTypeInfo structure) is retrived during runtime through #GTypePlugin
+and the g_type_plugin_*() API.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -16,21 +31,25 @@ GType
 
 <!-- ##### TYPEDEF GType ##### -->
 <para>
-
+A numerical value which represents the unique identifier of a registered
+type.
 </para>
 
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL ##### -->
 <para>
-
+Returns #TRUE if @type is a fundamental data type such as #G_TYPE_INT or
+#G_TYPE_POINTER. Fundamental types are types that serve as fundaments for
+the derived types, thus they are the roots of distinct inheritance heirachies.
 </para>
 
-@type: 
+@type: a #GType value
 
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL_MAX ##### -->
 <para>
-
+An integer constant that represents the number of identifiers reserved
+for types that are assigned at compile-time.
 </para>
 
 
@@ -54,25 +73,32 @@ GType
 
 <!-- ##### MACRO G_TYPE_FUNDAMENTAL_LAST ##### -->
 <para>
-
+An integer that currently represents the highest value of all
+fundamental type identifiers. This is of interest for dynamic
+introduction of new fundamental types (a
+<emphasis>rarely</emphasis> needed feature).
 </para>
 
 
 
 <!-- ##### MACRO G_TYPE_IS_ABSTRACT ##### -->
 <para>
-
+Returns #TRUE if @type is an abstract type.  An abstract type can not be
+instantiated and is normally used as an abstract base class for
+derived classes.
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_DERIVED ##### -->
 <para>
-
+Returns #TRUE if @type is derived (or in object-oriented terminolgy:
+inherited) from another type (this holds true for all non-fundamental
+types).
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_FUNDAMENTAL ##### -->
@@ -80,7 +106,7 @@ GType
 
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_VALUE_TYPE ##### -->
@@ -88,7 +114,7 @@ GType
 
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_CLASSED ##### -->
@@ -96,15 +122,16 @@ GType
 
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_INSTANTIATABLE ##### -->
 <para>
-
+Returns #TRUE if @type can be instantiated.  Instantiation is the
+process of creating an instance (object) of this type.
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_DERIVABLE ##### -->
@@ -112,7 +139,7 @@ GType
 
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_DEEP_DERIVABLE ##### -->
@@ -120,15 +147,18 @@ GType
 
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### MACRO G_TYPE_IS_INTERFACE ##### -->
 <para>
-
+Returns #TRUE if @type is an interface type.
+Interface types are types that provide pure APIs, the implementation
+of which is provided by another type (which is then said to conform
+to the interface).
 </para>
 
-@type: 
+@type: A #GType value.
 
 
 <!-- ##### ENUM GTypeFundamentals ##### -->
@@ -195,19 +225,27 @@ GType
 
 <!-- ##### STRUCT GTypeInfo ##### -->
 <para>
-
+This structure is used to provide the type system with the information
+required to initialize and destruct (finalize) a type's class and
+instances thereof.
+The initialized structure is passed to the g_type_register_static() function
+(or is copied into the provided #GTypeInfo structure in the
+g_type_plugin_complete_type_info()). The type system will perform a deep
+copy of this structure, so it's memory does not need to be persistent
+across invocation of g_type_register_static().
 </para>
 
-@class_size: 
-@base_init: 
-@base_finalize: 
-@class_init: 
-@class_finalize: 
-@class_data: 
-@instance_size: 
-@n_preallocs: 
-@instance_init: 
-@value_table: 
+@class_size: 	 Size of the class structure (required for interface, classed and instantiatable types).
+@base_init: 	 Location of the base initialization function (optional).
+@base_finalize: 	 Location of the base finalization function (optional).
+@class_init: 	 Location of the class initialization function (optional, for classed and instantiatable types only).
+@class_finalize: Location of the class finalization function (optional).
+@class_data: 	 User-supplied data passed to the class init/finalize functions.
+@instance_size: 	 Size of the instance (object) structure (required for instantiatable types only).
+@n_preallocs: 	 Number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching).
+@instance_init: 	 The location of the instance initialization function (optional, for instantiatable types only).
+@value_table: 	 Function table for generic handling of GValues of this type (usualy only usefull for
+		 fundamental types).
 
 <!-- ##### STRUCT GTypeFundamentalInfo ##### -->
 <para>
@@ -344,6 +382,13 @@ GType
 
 @value: 
 @g_type: 
+
+
+<!-- ##### MACRO G_TYPE_FLAG_RESERVED_ID_BIT ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION g_type_init ##### -->

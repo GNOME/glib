@@ -1,7 +1,32 @@
+Wed Jan 31 07:14:22 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/Makefile.am: adapt to work with new CVS gtk-doc, leaving the old
+	rules in place caused bogus recursions. main changes:
+	- add to conditionalized section:
+	  all-local:
+	        $(MAKE) scan
+	        $(MAKE) templates
+	        $(MAKE) sgml
+	        $(MAKE) html.stamp
+	  html.stamp: sgml.stamp $(EXTRA_SGML_FILES)
+	        $(MAKE) html
+	  DOC_STAMPS= html.stamp sgml.stamp
+	- change:
+	  maintainer-clean-local: clean
+	  -     cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
+	  +     cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt $(DOC_STAMPS)
+
+	* glib/Makefile.am (maintainer-clean-local): dito.
+
+Wed Jan 31 06:21:32 2001  Tim Janik  <timj@gtk.org>
+
+	* gobject/tmpl/types.sgml: applied docu patch from Eric Lemings
+	<eric.b.lemings@lmco.com>, did some more editing.
+
 2001-01-30  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* glib/glib-sections.txt, glib/tmpl/threads.sgml: Added
-	g_static_mutex_free
+	g_static_mutex_free().
 
 Tue Jan  9 03:10:38 2001  Tim Janik  <timj@gtk.org>
 
