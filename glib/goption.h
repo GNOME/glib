@@ -87,6 +87,8 @@ struct _GOptionEntry
   const gchar *arg_description;
 };
 
+#define G_OPTION_REMAINING ""
+
 GOptionContext *g_option_context_new              (const gchar         *parameter_string);
 void            g_option_context_free             (GOptionContext      *context);
 void		g_option_context_set_help_enabled (GOptionContext      *context,
@@ -130,9 +132,6 @@ void          g_option_group_set_translate_func     (GOptionGroup       *group,
 						     GDestroyNotify      destroy_notify);
 void          g_option_group_set_translation_domain (GOptionGroup       *group,
 						     const gchar        *domain);
-
-
-
 
 
 G_END_DECLS

@@ -19,9 +19,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "goption.h"
+#include "config.h"
 
 #include "galias.h"
+
+#include "goption.h"
 #include "glib.h"
 #include "gi18n.h"
 
@@ -148,8 +150,9 @@ g_option_context_new (const gchar *parameter_string)
  *
  * Since: 2.6
  */
-void g_option_context_free (GOptionContext *context) {
-g_return_if_fail (context != NULL);
+void g_option_context_free (GOptionContext *context) 
+{
+  g_return_if_fail (context != NULL);
 
   g_list_foreach (context->groups, (GFunc)g_option_group_free, NULL);
   g_list_free (context->groups);
@@ -404,6 +407,9 @@ print_help (GOptionContext *context,
       /* Then we go through the entries */
       for (i = 0; i < group->n_entries; i++)
 	{
+	  if (group->entries[i].flags & G_OPTION_FLAG_HIDDEN)
+	    continue;
+
 	  len = g_utf8_strlen (group->entries[i].long_name, -1);
 
 	  if (group->entries[i].short_name)
@@ -862,6 +868,40 @@ parse_long_option (GOptionContext *context,
   return TRUE;
 }
 
+static gboolean
+parse_remaining_arg (GOptionContext *context,
+		     GOptionGroup   *group,
+		     gint           *index,
+		     gint           *argc,
+		     gchar        ***argv,
+		     GError        **error,
+		     gboolean       *parsed)
+{
+  gint j;
+
+  for (j = 0; j < group->n_entries; j++)
+    {
+      if (*index >= *argc)
+	return TRUE;
+
+      if (group->entries[j].long_name[0])
+	continue;
+
+      g_return_val_if_fail (group->entries[j].arg == G_OPTION_ARG_STRING_ARRAY ||
+			    group->entries[j].arg == G_OPTION_ARG_FILENAME_ARRAY, FALSE);
+      
+      add_pending_null (context, &((*argv)[*index]), NULL);
+      
+      if (!parse_arg (context, group, &group->entries[j], (*argv)[*index], "", error))
+	return FALSE;
+      
+      *parsed = TRUE;
+      return TRUE;
+    }
+
+  return TRUE;
+}
+
 static void
 free_changes_list (GOptionContext *context,
 		   gboolean        revert)
@@ -1004,12 +1044,14 @@ g_option_context_parse (GOptionContext   *context,
 
   if (argc && argv)
     {
+      gboolean stop_parsing = FALSE;
+
       for (i = 1; i < *argc; i++)
 	{
 	  gchar *arg;
 	  gboolean parsed = FALSE;
 
-	  if ((*argv)[i][0] == '-')
+	  if ((*argv)[i][0] == '-' && !stop_parsing)
 	    {
 	      if ((*argv)[i][1] == '-')
 		{
@@ -1021,7 +1063,8 @@ g_option_context_parse (GOptionContext   *context,
 		  if (*arg == 0)
 		    {
 		      add_pending_null (context, &((*argv)[i]), NULL);
-		      break;
+		      stop_parsing = TRUE;
+		      continue;
 		    }
 
 		  /* Handle help options */
@@ -1167,6 +1210,15 @@ g_option_context_parse (GOptionContext   *context,
 		  goto fail;
 		}
 	    }
+	  else
+	    {
+	      /* Collect remaining args */
+	      if (context->main_group &&
+		  !parse_remaining_arg (context, context->main_group, &i,
+					argc, argv, error, &parsed))
+		goto fail;
+	      
+	    }
 	}
 
       /* Call post-parse hooks */
@@ -1204,7 +1256,10 @@ g_option_context_parse (GOptionContext   *context,
 	    {
 	      k -= i;
 	      for (j = i + k; j < *argc; j++)
-		(*argv)[j-k] = (*argv)[j];
+		{
+		  (*argv)[j-k] = (*argv)[j];
+		  (*argv)[j] = NULL;
+		}
 	      *argc -= k;
 	    }
 	}      
@@ -1415,7 +1470,7 @@ g_option_group_set_translate_func (GOptionGroup   *group,
       
   group->translate_func = func;
   group->translate_data = data;
-  group->translate_notify = notify;
+  group->translate_notify = destroy_notify;
 }
 
 static gchar *

@@ -524,6 +524,184 @@ empty_test3 (void)
   g_option_context_free (context);
 }
 
+/* check that non-option arguments are left in argv by default */
+void
+rest_test1 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "foo") == 0);
+  g_assert (strcmp (argv[2], "bar") == 0);
+  g_assert (argv[3] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+/* check that -- works */
+void
+rest_test2 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test -- -bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (argv[0], "program") == 0);
+  g_assert (strcmp (argv[1], "foo") == 0);
+  g_assert (strcmp (argv[2], "-bar") == 0);
+  g_assert (argv[3] == NULL);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+/* check that G_OPTION_REMAINING collects non-option arguments */
+void
+rest_test3 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &array_test1_array, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (array_test1_array[0], "foo") == 0);
+  g_assert (strcmp (array_test1_array[1], "bar") == 0);
+  g_assert (array_test1_array[2] == NULL);
+
+  g_strfreev (array_test1_array);
+  
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+
+/* check that G_OPTION_REMAINING and -- work together */
+void
+rest_test4 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &array_test1_array, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test -- -bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (array_test1_array[0], "foo") == 0);
+  g_assert (strcmp (array_test1_array[1], "-bar") == 0);
+  g_assert (array_test1_array[2] == NULL);
+
+  g_strfreev (array_test1_array);
+  
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+/* test that G_OPTION_REMAINING works with G_OPTION_ARG_FILENAME_ARRAY */
+void
+rest_test5 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  GOptionEntry entries [] = { 
+      { "test", 0, 0, G_OPTION_ARG_NONE, &ignore_test1_boolean, NULL, NULL },
+      { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &array_test1_array, NULL, NULL },
+      { NULL } 
+  };
+        
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program foo --test bar", &argc);
+  
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+
+  /* Check array */
+  g_assert (ignore_test1_boolean);
+  g_assert (strcmp (array_test1_array[0], "foo") == 0);
+  g_assert (strcmp (array_test1_array[1], "bar") == 0);
+  g_assert (array_test1_array[2] == NULL);
+
+  g_strfreev (array_test1_array);
+  
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+
 int
 main (int argc, char **argv)
 {
@@ -554,6 +732,13 @@ main (int argc, char **argv)
   empty_test1 ();
   empty_test2 ();
   empty_test3 ();
+
+  /* Test handling of rest args */
+  rest_test1 ();
+  rest_test2 ();
+  rest_test3 ();
+  rest_test4 ();
+  rest_test5 ();
 
   return 0;
 }

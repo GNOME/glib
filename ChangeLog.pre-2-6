@@ -1,5 +1,16 @@
 2004-10-29  Matthias Clasen  <mclasen@redhat.com>
 
+	* tests/option-test.c: Add tests for the handling of
+	non-option arguments, "--" and G_OPTION_REMAINING.
+
+	* glib/goption.[hc]: #define G_OPTION_REMAINING, which is
+	a special long option name, which can be used for an option
+	in the main group which collects the non-option arguments.
+	It must be of type G_OPTION_ARG_STRING_ARRAY or 
+	G_OPTION_ARG_FILENAME_ARRAY. If the main group doesn't contain
+	an option whose name is G_OPTION_REMAINING, the non-option
+	arguments are left behind in argv as before.
+
 	* glib/goption.c: Add documentation.
 
 2004-10-28  Matthias Clasen  <mclasen@redhat.com>
