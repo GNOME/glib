@@ -565,17 +565,21 @@ g_scanner_scope_foreach_symbol (GScanner       *scanner,
 void
 g_scanner_freeze_symbol_table (GScanner *scanner)
 {
-  g_return_if_fail (scanner != NULL);
-  
-  g_hash_table_freeze (scanner->symbol_table);
+#ifdef G_ENABLE_DEBUG
+  static gboolean first_call = TRUE;
+
+  if (first_call)
+    {
+      g_warning("g_scanner_freeze_symbol_table and "
+		"g_scanner_thaw_symbol_table are deprecated.");
+      first_call = FALSE;
+    }
+#endif /* G_ENABLE_DEBUG */
 }
 
 void
 g_scanner_thaw_symbol_table (GScanner *scanner)
 {
-  g_return_if_fail (scanner != NULL);
-  
-  g_hash_table_thaw (scanner->symbol_table);
 }
 
 GTokenType

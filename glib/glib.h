@@ -1114,8 +1114,6 @@ gboolean    g_hash_table_lookup_extended(GHashTable	*hash_table,
 					 gconstpointer	 lookup_key,
 					 gpointer	*orig_key,
 					 gpointer	*value);
-void	    g_hash_table_freeze		(GHashTable	*hash_table);
-void	    g_hash_table_thaw		(GHashTable	*hash_table);
 void	    g_hash_table_foreach	(GHashTable	*hash_table,
 					 GHFunc		 func,
 					 gpointer	 user_data);
@@ -1124,6 +1122,10 @@ guint	    g_hash_table_foreach_remove	(GHashTable	*hash_table,
 					 gpointer	 user_data);
 guint	    g_hash_table_size		(GHashTable	*hash_table);
 
+/* The following two functions are deprecated and will be removed in
+ * the next major release. They do no good. */
+void	    g_hash_table_freeze		(GHashTable	*hash_table);
+void	    g_hash_table_thaw		(GHashTable	*hash_table);
 
 /* Caches
  */
@@ -2272,8 +2274,6 @@ void		g_scanner_scope_foreach_symbol	(GScanner	*scanner,
 						 gpointer	 user_data);
 gpointer	g_scanner_lookup_symbol		(GScanner	*scanner,
 						 const gchar	*symbol);
-void		g_scanner_freeze_symbol_table	(GScanner	*scanner);
-void		g_scanner_thaw_symbol_table	(GScanner	*scanner);
 void		g_scanner_unexp_token		(GScanner	*scanner,
 						 GTokenType	expected_token,
 						 const gchar	*identifier_spec,
@@ -2299,6 +2299,10 @@ gint		g_scanner_stat_mode		(const gchar	*filename);
   g_scanner_scope_foreach_symbol ((scanner), 0, (func), (data)); \
 } G_STMT_END
 
+/* The following two functions are deprecated and will be removed in
+ * the next major release. They do no good. */
+void		g_scanner_freeze_symbol_table	(GScanner	*scanner);
+void		g_scanner_thaw_symbol_table	(GScanner	*scanner);
 
 /* GCompletion
  */

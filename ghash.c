@@ -48,7 +48,6 @@ struct _GHashTable
 {
   gint size;
   gint nnodes;
-  guint frozen;
   GHashNode **nodes;
   GHashFunc hash_func;
   GCompareFunc key_compare_func;
@@ -80,7 +79,6 @@ g_hash_table_new (GHashFunc    hash_func,
   hash_table = g_new (GHashTable, 1);
   hash_table->size = HASH_TABLE_MIN_SIZE;
   hash_table->nnodes = 0;
-  hash_table->frozen = FALSE;
   hash_table->hash_func = hash_func ? hash_func : g_direct_hash;
   hash_table->key_compare_func = key_compare_func;
   hash_table->nodes = g_new (GHashNode*, hash_table->size);
@@ -167,8 +165,7 @@ g_hash_table_insert (GHashTable *hash_table,
     {
       *node = g_hash_node_new (key, value);
       hash_table->nnodes++;
-      if (!hash_table->frozen)
-	g_hash_table_resize (hash_table);
+      g_hash_table_resize (hash_table);
     }
 }
 
@@ -189,8 +186,7 @@ g_hash_table_remove (GHashTable	     *hash_table,
       g_hash_node_destroy (dest);
       hash_table->nnodes--;
   
-      if (!hash_table->frozen)
-        g_hash_table_resize (hash_table);
+      g_hash_table_resize (hash_table);
     }
 }
 
@@ -221,19 +217,20 @@ g_hash_table_lookup_extended (GHashTable	*hash_table,
 void
 g_hash_table_freeze (GHashTable *hash_table)
 {
-  g_return_if_fail (hash_table != NULL);
-  
-  hash_table->frozen++;
+#ifdef G_ENABLE_DEBUG
+  static gboolean first_call = TRUE;
+
+  if (first_call)
+    {
+      g_warning("g_hash_table_freeze and g_hash_table_thaw are deprecated.");
+      first_call = FALSE;
+    }
+#endif /* G_ENABLE_DEBUG */
 }
 
 void
 g_hash_table_thaw (GHashTable *hash_table)
 {
-  g_return_if_fail (hash_table != NULL);
-  
-  if (hash_table->frozen)
-    if (!(--hash_table->frozen))
-      g_hash_table_resize (hash_table);
 }
 
 guint
@@ -278,8 +275,7 @@ g_hash_table_foreach_remove (GHashTable	*hash_table,
 	}
     }
   
-  if (!hash_table->frozen)
-    g_hash_table_resize (hash_table);
+  g_hash_table_resize (hash_table);
   
   return deleted;
 }

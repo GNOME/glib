@@ -1,3 +1,12 @@
+2000-07-20  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* ghash.c, gscanner.c, glib.h: Mark the functions
+	g_hash_table_freeze, g_hash_table_thaw and thus
+	g_scanner_freeze_symbol_table and g_scanner_thaw_symbol_table
+	deprecated. They will issue an warning once, when compiled with
+	G_ENABLE_DEBUG. This fixes Bug #3883. For discussion see
+	http://mail.gnome.org/pipermail/gtk-devel-list/2000-April/003139.html
+	
 2000-07-19  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* configure.in, glib.h: glibconfig.h and glib.h now include files
