@@ -1,3 +1,8 @@
+1999-02-10  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* glib.h: s/G_LOCK_DECLARE/G_LOCK_DEFINE/ throuhout glib. Added
+	G_LOCK_EXTERN macro to declare a lock externally.
+
 Wed Feb 10 06:20:30 1999  Tim Janik  <timj@gtk.org>
 
 	* gmutex.c (g_static_private_set): invoke destroy notifier when
