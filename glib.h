@@ -302,48 +302,48 @@
 
 #ifdef __GNUC__
 
-#define g_return_if_fail(expr)		G_STMT_START{	       \
-     if (!(expr))					       \
-       {						       \
-	 g_warning ("file %s: line %d (%s): \"%s\"",	       \
-		    __FILE__,				       \
-		    __LINE__,				       \
-		    __PRETTY_FUNCTION__,		       \
-		    #expr);				       \
-	 return;					       \
+#define g_return_if_fail(expr)		G_STMT_START{	               \
+     if (!(expr))					               \
+       {						               \
+	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
+		    __FILE__,				               \
+		    __LINE__,				               \
+		    __PRETTY_FUNCTION__,		               \
+		    #expr);				               \
+	 return;					               \
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr,val)	G_STMT_START{	       \
-     if (!(expr))					       \
-       {						       \
-	 g_warning ("file %s: line %d (%s): \"%s\"",	       \
-		    __FILE__,				       \
-		    __LINE__,				       \
-		    __PRETTY_FUNCTION__,		       \
-		    #expr);				       \
-	 return val;					       \
+#define g_return_val_if_fail(expr,val)	G_STMT_START{	               \
+     if (!(expr))					               \
+       {						               \
+	 g_warning ("file %s: line %d (%s): assertion \"%s\" failed.", \
+		    __FILE__,				               \
+		    __LINE__,				               \
+		    __PRETTY_FUNCTION__,		               \
+		    #expr);				               \
+	 return val;					               \
        };				}G_STMT_END
 
 #else /* !__GNUC__ */
 
-#define g_return_if_fail(expr)		G_STMT_START{	 \
-     if (!(expr))					 \
-       {						 \
-	 g_warning ("file %s: line %d: \"%s\"",		 \
-		    __FILE__,				 \
-		    __LINE__,				 \
-		    #expr);				 \
-	 return;					 \
+#define g_return_if_fail(expr)		G_STMT_START{	          \
+     if (!(expr))					          \
+       {						          \
+	 g_warning ("file %s: line %d: assertion. \"%s\" failed", \
+		    __FILE__,				          \
+		    __LINE__,				          \
+		    #expr);				          \
+	 return;					          \
        };				}G_STMT_END
 
-#define g_return_val_if_fail(expr, val)	G_STMT_START{	 \
-     if (!(expr))					 \
-       {						 \
-	 g_warning ("file %s: line %d: \"%s\"",		 \
-		    __FILE__,				 \
-		    __LINE__,				 \
-		    #expr);				 \
-	 return val;					 \
+#define g_return_val_if_fail(expr, val)	G_STMT_START{	          \
+     if (!(expr))					          \
+       {						          \
+	 g_warning ("file %s: line %d: assertion \"%s\" failed.", \
+		    __FILE__,				          \
+		    __LINE__,				          \
+		    #expr);				          \
+	 return val;					          \
        };				}G_STMT_END
 
 #endif /* !__GNUC__ */

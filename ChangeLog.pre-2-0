@@ -1,3 +1,8 @@
+Thu Jun 18 02:35:21 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* glib.h: Changed messages for g_return_[val]_if_fail to
+	be somewhat more clear: assertion "blah" failed.
+
 1998-06-18  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* testglib.c (main): Use GINT_TO_POINTER casts to remove compiler
