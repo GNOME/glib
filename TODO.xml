@@ -1,0 +1,39 @@
+<!-- This is used to generate the online TODO list for glib using
+     the script gtk+/docs/make-todo. Whenever a change to this file is
+     committed to CVS,the file is run through make-todo and the online
+     version updated. If you modify this file, you should check for
+     parse errors by running:
+
+     $ ../gtk+/docs/make-todo TODO.xml > /dev/null
+
+     before committing, or you may screw up the online version --> 
+<todo logourl="gtk-logo-rgb.gif">
+  <title>GLib TODO list</title>
+  <section>
+    <title>GLib</title>
+
+    <entry size="medium" status="0%" target="1.4">
+      <title>Time type</title>
+      <description>
+	<p>
+          glib has a GDate class for calendrical calculations, but also needs a
+          way to deal with time. Fairly tricky to implement well.
+	</p>
+      </description>
+      <contact>gtk-devel-list@redhat.com</contact>
+    </entry>
+        
+    <entry size="small" status="8%" target="1.4">
+      <title>Regular expression support</title>
+      <description>
+	<p>
+          Someone (happybob?) wrote regexp support for glib. This needs to get a
+          final audit and then go in to the source tree.
+	</p>
+
+      </description>
+      <contact>gtk-devel-list@redhat.com</contact>
+    </entry>
+
+  </section>
+</todo>
